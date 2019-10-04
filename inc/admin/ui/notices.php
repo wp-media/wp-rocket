@@ -93,7 +93,8 @@ add_action( 'admin_notices', 'rocket_warning_plugin_modification' );
  * @since 1.3.0
  */
 function rocket_plugins_to_deactivate() {
-	$plugins = [];
+	$plugins              = [];
+	$plugins_explanations = [];
 
 	// Deactivate all plugins who can cause conflicts with WP Rocket.
 	$plugins = [
@@ -167,7 +168,8 @@ function rocket_plugins_to_deactivate() {
 	}
 
 	if ( get_rocket_option( 'do_cloudflare' ) ) {
-		$plugins['cloudflare'] = 'cloudflare/cloudflare.php';
+		$plugins['cloudflare']              = 'cloudflare/cloudflare.php';
+		$plugins_explanations['cloudflare'] = __( 'WP Rocket Cloudflare Add-on provides similar functionalities. They can not be active at the same time.', 'rocket' );
 	}
 
 	if ( get_rocket_option( 'control_heartbeat' ) ) {
@@ -195,9 +197,9 @@ function rocket_plugins_to_deactivate() {
 
 		$warning .= '<ul class="rocket-plugins-error">';
 
-		foreach ( $plugins as $plugin ) {
+		foreach ( $plugins as $k => $plugin ) {
 			$plugin_data = get_plugin_data( WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . $plugin );
-			$warning    .= '<li>' . $plugin_data['Name'] . '</span> <a href="' . wp_nonce_url( admin_url( 'admin-post.php?action=deactivate_plugin&plugin=' . rawurlencode( $plugin ) ), 'deactivate_plugin' ) . '" class="button-secondary alignright">' . __( 'Deactivate', 'rocket' ) . '</a></li>';
+			$warning    .= '<li><b>' . $plugin_data['Name'] . '</b>' . ( isset( $plugins_explanations[$k] ) ? ' - ' . $plugins_explanations[$k] : '' ) . '</span> <a href="' . wp_nonce_url( admin_url( 'admin-post.php?action=deactivate_plugin&plugin=' . rawurlencode( $plugin ) ), 'deactivate_plugin' ) . '" class="button-secondary alignright">' . __( 'Deactivate', 'rocket' ) . '</a></li>';
 		}
 
 		$warning .= '</ul>';
