@@ -49,14 +49,14 @@ class CDN {
 	/**
 	 * Rewrites URLs in a srcset attribute using the CDN URL
 	 *
-	 * @since 3.4
+	 * @since 3.4.0.4
 	 * @author Remy Perona
 	 *
 	 * @param string $html HTML content.
 	 * @return string
 	 */
 	public function rewrite_srcset( $html ) {
-		$pattern = '#\s+(?:data-lazy-|data-)?srcset\s*=\s*["\']\s*([^"\',\s]+\.[^"\',\s]+(?:\s+\d+(?:w|px|r?em))?(?:\s*,\s*[^"\',\s]+\.[^"\',\s]+\s+\d+(?:w|px|r?em))*)\s*["\']#i';
+		$pattern = '#\s+(?:data-lazy-|data-)?srcset\s*=\s*["\']\s*([^"\',\s]+\.[^"\',\s]+(?:\s+\d+[wx])?(?:\s*,\s*[^"\',\s]+\.[^"\',\s]+\s+\d+[wx])*)\s*["\']#i';
 
 		if ( ! preg_match_all( $pattern, $html, $srcsets, PREG_SET_ORDER ) ) {
 			return $html;
