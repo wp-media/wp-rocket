@@ -1,7 +1,18 @@
 <?php
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
-function is_api_keys_valid_cloudflare( $cf_email, $cf_api_key, $cf_zone_id ) {
+/**
+ * Validate Cloudflare input data
+ *
+ * @since 3.4.1
+ * @author Soponar Cristina
+ *
+ * @param string $cf_email   - Cloudflare email
+ * @param string $cf_api_key - Cloudflare API key
+ * @param string $cf_zone_id - Cloudflare zone ID
+ * @return Object            - true if credentials are ok, WP_Error otherwise
+ */
+function rocket_is_api_keys_valid_cloudflare( $cf_email, $cf_api_key, $cf_zone_id ) {
 	if ( ! function_exists( 'curl_init' ) || ! function_exists( 'curl_exec' ) ) {
 		return new WP_Error( 'curl_disabled', __( 'Curl functions are disabled, they are required for the Cloudflare Add-on to work correctly.', 'rocket' ) );
 	}
