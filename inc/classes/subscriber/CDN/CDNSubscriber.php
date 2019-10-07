@@ -75,7 +75,7 @@ class CDNSubscriber implements Subscriber_Interface {
 	/**
 	 * Rewrites URLs in srcset attributes to the CDN URLs if allowed
 	 *
-	 * @since 3.4
+	 * @since 3.4.0.4
 	 * @author Remy Perona
 	 *
 	 * @param string $html HTML content.
