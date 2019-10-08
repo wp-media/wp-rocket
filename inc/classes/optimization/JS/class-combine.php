@@ -631,6 +631,7 @@ class Combine extends Abstract_JS_Optimization {
 			'code.tidio.co',
 			'www.uplaunch.com',
 			'widget.reviewability.com',
+			'ck.page',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
