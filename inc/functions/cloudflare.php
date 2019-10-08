@@ -2,6 +2,61 @@
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
+ * Validate Cloudflare input data
+ *
+ * @since 3.4.1
+ * @author Soponar Cristina
+ *
+ * @param string $cf_email   - Cloudflare email
+ * @param string $cf_api_key - Cloudflare API key
+ * @param string $cf_zone_id - Cloudflare zone ID
+ * @return Object            - true if credentials are ok, WP_Error otherwise
+ */
+function rocket_is_api_keys_valid_cloudflare( $cf_email, $cf_api_key, $cf_zone_id ) {
+	if ( ! function_exists( 'curl_init' ) || ! function_exists( 'curl_exec' ) ) {
+		return new WP_Error( 'curl_disabled', __( 'Curl functions are disabled, they are required for the Cloudflare Add-on to work correctly.', 'rocket' ) );
+	}
+
+	if ( ! isset( $cf_email, $cf_api_key ) || empty( $cf_email ) || empty( $cf_api_key ) ) {
+		return new WP_Error( 'cloudflare_credentials_empty', __( 'Cloudflare Email and API key are not set.', 'rocket' ) );
+	}
+
+	if ( ! isset( $cf_zone_id ) || empty( $cf_zone_id ) ) {
+		$msg = sprintf(
+			// translators: %s = WP Rocket plugin name.
+			__( 'Missing Cloudflare zone ID. %s could not fix this automatically.', 'rocket' ),
+			WP_ROCKET_PLUGIN_NAME
+		);
+
+		$msg .= ' ' . sprintf(
+			/* translators: %1$s = opening link; %2$s = closing link */
+			__( 'Read the %1$sdocumentation%2$s for further guidance.', 'rocket' ),
+			/* translators: Documentation exists in EN, DE, FR, ES, IT; use loaclised URL if applicable */
+			'<a href="' . __( 'https://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket', 'rocket' ) . '" target="_blank">',
+			'</a>'
+		);
+
+		return new WP_Error( 'cloudflare_no_zone_id', $msg );
+	}
+
+	try {
+		$cf_api_instance = new Cloudflare\Api( $cf_email, $cf_api_key );
+		$cf_user         = $cf_api_instance->get('user/');
+		$cf_zone         = $cf_api_instance->get('zones/'.$cf_zone_id);
+
+		if ( ! isset( $cf_zone->success ) || empty( $cf_zone->success ) ) {
+			return new WP_Error( 'cloudflare_invalid_auth', $cf_zone->errors[0]->message );
+		}
+
+		if ( true === $cf_zone->success ) {
+		    return true;
+		}
+	} catch ( Exception $e ) {
+		return new WP_Error( 'cloudflare_invalid_auth', $e->getMessage() );
+	}
+}
+
+/**
  * Get a Cloudflare\Api instance
  *
  * @since 2.8.21
