@@ -13,14 +13,15 @@ class TestCleanDomain extends TestCase {
         $map     = [
             [
                 'varnish_auto_purge',
-                '',
-                1,
+                0,
+                0,
             ],
         ];
 
         $options->method('get')->will($this->returnValueMap($map));
 
-        $varnish = $this->createMock('WP_Rocket\Addons\Varnish\Varnish');
+        $varnish = \Mockery::mock(\WP_Rocket\Addons\Varnish\Varnish::class);
+        $varnish->shouldNotReceive('purge');
 
         $varnish_subscriber = new VarnishSubscriber( $varnish, $options );
 
@@ -32,14 +33,15 @@ class TestCleanDomain extends TestCase {
         $map     = [
             [
                 'varnish_auto_purge',
-                '',
+                0,
                 1,
             ],
         ];
 
         $options->method('get')->will($this->returnValueMap($map));
 
-        $varnish = $this->createMock('WP_Rocket\Addons\Varnish\Varnish');
+        $varnish = \Mockery::mock(\WP_Rocket\Addons\Varnish\Varnish::class);
+        $varnish->shouldReceive('purge')->once()->with('http://example.org/?regex');
 
         $varnish_subscriber = new VarnishSubscriber( $varnish, $options );
 
