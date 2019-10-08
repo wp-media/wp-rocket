@@ -336,7 +336,7 @@ class CDN {
 		$files = array_flip( array_flip( $files ) );
 		$files = array_map(
 			function ( $file ) use ( $delimiter ) {
-				return preg_quote( $file, $delimiter );
+				return str_replace( $delimiter, '\\' . $delimiter, $file );
 			},
 			$files
 		);
