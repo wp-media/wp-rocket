@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Tests\Unit\Subscriber\Addons\VarnishSubscriber;
+namespace WP_Rocket\Tests\Integration\Subscriber\Addons\VarnishSubscriber;
 
 use PHPUnit\Framework\TestCase;
 use WP_Rocket\Subscriber\Addons\Varnish\VarnishSubscriber;
