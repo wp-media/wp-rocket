@@ -97,6 +97,7 @@ class Beacon {
 			'lazyload'                => 'Lazyload Images',
 			'lazyload_iframes'        => 'Lazyload Iframes',
 			'lazyload_youtube'        => 'Lazyload Youtube',
+			'cache_webp'              => 'WebP Cache',
 			'minify_css'              => 'Minify CSS',
 			'minify_concatenate_css'  => 'Combine CSS',
 			'minify_js'               => 'Minify JS',

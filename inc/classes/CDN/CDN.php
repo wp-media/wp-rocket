@@ -244,7 +244,13 @@ class CDN {
 	public function is_excluded( $url ) {
 		$path = wp_parse_url( $url, PHP_URL_PATH );
 
-		if ( 'php' === pathinfo( $path, PATHINFO_EXTENSION ) ) {
+		$excluded_extensions = [
+			'php',
+			'html',
+			'htm',
+		];
+
+		if ( in_array( pathinfo( $path, PATHINFO_EXTENSION ), $excluded_extensions, true ) ) {
 			return true;
 		}
 
