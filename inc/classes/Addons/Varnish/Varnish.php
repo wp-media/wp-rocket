@@ -56,7 +56,9 @@ class Varnish {
 			$varnish_ip = WP_ROCKET_VARNISH_IP;
 		}
 
-		if ( \is_string( $varnish_ip ) ) {
+		if ( empty( $varnish_ip ) ) {
+			$varnish_ip = [ '' ];
+		} elseif ( \is_string( $varnish_ip ) ) {
 			$varnish_ip = (array) $varnish_ip;
 		}
 
