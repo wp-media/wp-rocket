@@ -25,7 +25,7 @@ class TestCleanHome extends TestCase {
 
         $varnish_subscriber = new VarnishSubscriber( $varnish, $options );
 
-        $varnish_subscriber->clean_home( 'wp-rocket/cache', '', );
+        $varnish_subscriber->clean_home( 'wp-rocket/cache', '' );
     }
 
     public function testShouldPurgeHomeAndPaginationWhenVarnishEnabled() {
