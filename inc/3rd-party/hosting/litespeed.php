@@ -6,14 +6,15 @@ defined('ABSPATH') || die('Cheatin&#8217; uh?');
 /**
  * Allow to purge the Litespeed cache
  *
- * @since 3.4.1
+ * @since  3.4.1
  * @author Soponar Cristina
  */
 if ( isset( $_SERVER['HTTP_X_LSCACHE'] ) && $_SERVER['HTTP_X_LSCACHE'] ) {
     /**
      * Purge all the domain
      *
-     * @since 3.4.1
+     * @since  3.4.1
+     * @author Soponar Cristina
      *
      * @param string $root The path of home cache file.
      * @param string $lang The current lang to purge.
@@ -31,7 +32,8 @@ if ( isset( $_SERVER['HTTP_X_LSCACHE'] ) && $_SERVER['HTTP_X_LSCACHE'] ) {
     /**
      * Purge a specific page
      *
-     * @since 3.4.1
+     * @since  3.4.1
+     * @author Soponar Cristina
      *
      * @param string $url The url to purge.
      */
@@ -47,7 +49,8 @@ if ( isset( $_SERVER['HTTP_X_LSCACHE'] ) && $_SERVER['HTTP_X_LSCACHE'] ) {
     /**
      * Purge the homepage and its pagination
      *
-     * @since 3.4.1
+     * @since  3.4.1
+     * @author Soponar Cristina
      *
      * @param string $root The path of home cache file.
      * @param string $lang The current lang to purge.
