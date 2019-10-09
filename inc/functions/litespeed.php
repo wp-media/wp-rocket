@@ -12,19 +12,18 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * @param  string $url The URL to purge.
  * @return void
  *
- * @author Soponar Cristina
  */
 function rocket_litespeed_header_purge_url( $url ) {
-    $parse_url      = get_rocket_parse_url( $url );
-    $path           = rtrim($parse_url['path'], '/');
-    $private_prefix = 'X-LiteSpeed-Purge: ' . $path ;
-
     if ( headers_sent() ) {
         Logger::debug( 'X-LiteSpeed Headers already sent', [
             'headers_sent'
         ] );
         return;
     }
+
+    $parse_url      = get_rocket_parse_url( $url );
+    $path           = rtrim($parse_url['path'], '/');
+    $private_prefix = 'X-LiteSpeed-Purge: ' . $path ;
 
     Logger::debug( 'X-LiteSpeed', [
         'rocket_litespeed_header_purge_url',
@@ -43,14 +42,11 @@ function rocket_litespeed_header_purge_url( $url ) {
  * @param  string $url The URL to purge.
  * @return void
  *
- * @author Soponar Cristina
  */
 function rocket_litespeed_header_purge_all( ) {
-    $private_prefix = 'X-LiteSpeed-Purge: *';
-
     if ( headers_sent() ) {
         return;
     }
-    
+    $private_prefix = 'X-LiteSpeed-Purge: *';
     @header( $private_prefix ) ;
 }
