@@ -140,13 +140,25 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 
 		$script_args = [
 			'base_url' => WP_ROCKET_ASSETS_JS_URL . 'lazyload/',
-			'version'  => '11.0.6',
+			'version'  => '12.0',
 			'polyfill' => $polyfill,
 		];
 
 		$inline_args = [
 			'threshold' => $threshold,
 		];
+
+		if ( apply_filters( 'rocket_use_native_lazyload', false ) ) {
+			$inline_args['options'] = [
+				'use_native' => 'true',
+			];
+		}
+
+		if ( $this->options->get( 'lazyload' ) || $this->options->get( 'lazyload_iframes' ) ) {
+			if ( apply_filters( 'rocket_use_native_lazyload', false ) ) {
+				$inline_args['elements']['loading'] = '[loading=lazy]';
+			}
+		}
 
 		if ( $this->options->get( 'lazyload' ) ) {
 			$inline_args['elements']['image']            = 'img[data-lazy-src]';
@@ -205,7 +217,7 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 		 *
 		 * @param string $thumbnail_resolution The resolution of the thumbnail. Accepted values: default, mqdefault, hqdefault, sddefault, maxresdefault
 		 */
-		$thumbnail_resolution = apply_filters_deprecated( 'rocket_youtube_thumbnail_resolution', ['hqdefault'], '3.3', 'rocket_lazyload_youtube_thumbnail_resolution' );
+		$thumbnail_resolution = apply_filters_deprecated( 'rocket_youtube_thumbnail_resolution', [ 'hqdefault' ], '3.3', 'rocket_lazyload_youtube_thumbnail_resolution' );
 
 		/**
 		 * Filters the resolution of the YouTube thumbnail
@@ -441,7 +453,7 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 		 *
 		 * @param bool $do_rocket_lazyload True to apply lazyload, false otherwise.
 		 */
-		return apply_filters( 'do_rocket_lazyload', true ); // WPCS: prefix ok.
+		return apply_filters( 'do_rocket_lazyload', true ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	}
 
 	/**
@@ -460,7 +472,7 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 		 *
 		 * @param bool $do_rocket_lazyload_iframes True to apply lazyload, false otherwise.
 		 */
-		return apply_filters( 'do_rocket_lazyload_iframes', true ); // WPCS: prefix ok.
+		return apply_filters( 'do_rocket_lazyload_iframes', true ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	}
 
 	/**

@@ -11,7 +11,7 @@ $tutorials = [
 	[
 		'title'     => __( 'Getting Started', 'rocket' ),
 		'tutorials' => [
-			'7seqacq2ol' => __( 'What WP Rocket Does For You By Default', 'rocket' ),
+			'7seqacq2ol' => __( 'Getting Started with WP Rocket', 'rocket' ),
 			'fj42vucf99' => __( 'Finding the Best Settings for Your Site', 'rocket' ),
 			'z1qxl7s2zn' => __( 'How to Check if WP Rocket is Caching Your Site', 'rocket' ),
 			'j042jylrre' => __( 'How to Measure the Speed of Your Site', 'rocket' ),
@@ -20,9 +20,9 @@ $tutorials = [
 	[
 		'title'     => __( 'File Optimization', 'rocket' ),
 		'tutorials' => [
-			'frwm2xrksl' => __( 'My Website is Broken', 'rocket' ),
+			'frwm2xrksl' => __( 'Troubleshooting Display Issues with File Optimization', 'rocket' ),
 			'95z0cb0yxb' => __( 'How to Find the Right JavaScript to Exclude', 'rocket' ),
-			'9m1zg8p5wc' => __( 'Why External Resources are Bad', 'rocket' ),
+			'9m1zg8p5wc' => __( 'How External Content Slows Your Site', 'rocket' ),
 		],
 	],
 	[

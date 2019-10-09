@@ -115,6 +115,59 @@ class TestRewriteURL extends TestCase {
         );
     }
 
+    public function testShouldReturnURLWithCDNWhenZoneIsCSSJS() {
+        $options = $this->createMock('WP_Rocket\Admin\Options_Data');
+        $map     = [
+            [
+                'cdn',
+                '',
+                1,
+            ],
+            [
+                'cdn_cnames',
+                [],
+                [
+                    'https://cdn.example.org',
+                ],
+            ],
+            [
+                'cdn_reject_files',
+                [],
+                [],
+            ],
+            [
+                'cdn_zone',
+                [],
+                [
+                    'css_and_js',
+                ],
+            ],
+        ];
+
+        $options->method('get')->will($this->returnValueMap($map));
+
+        $cdn = new CDN( $options );
+
+        Functions\when('wp_parse_url')->alias(function ($url, $component = -1 ) {
+            return parse_url($url, $component);
+        });
+        Functions\when('get_option')->justReturn('http://example.org');
+        Functions\when('rocket_add_url_protocol')->returnArg();
+        Functions\when('rocket_remove_url_protocol')->alias(function($url) {
+            return str_replace( [ 'http://', 'https://' ], '', $url );
+        });
+
+        $this->assertSame(
+            'https://cdn.example.org/style.css?ver=5.2.3',
+            $cdn->rewrite_url( 'http://example.org/style.css?ver=5.2.3' )
+        );
+
+        $this->assertSame(
+            'https://cdn.example.org/script.js',
+            $cdn->rewrite_url( 'http://example.org/script.js' )
+        );
+    }
+
     /**
      * @dataProvider excludedURLProvider
      */

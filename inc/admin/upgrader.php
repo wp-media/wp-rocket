@@ -439,5 +439,9 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		wp_clear_scheduled_hook( 'rocket_purge_time_event' );
 		rocket_clean_domain();
 	}
+
+	if ( version_compare( $actual_version, '3.4.0.1', '<' ) ) {
+		( new WP_Rocket\Subscriber\Plugin\Capabilities_Subscriber() )->add_rocket_capabilities();
+	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );

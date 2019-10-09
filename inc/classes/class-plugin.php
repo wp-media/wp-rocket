@@ -65,6 +65,7 @@ class Plugin {
 
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Options' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Database' );
+		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Beacon' );
 
 		$subscribers = [];
 
@@ -83,7 +84,6 @@ class Plugin {
 					'capability' => 'rocket_manage_options',
 				]
 			);
-			$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Beacon' );
 			$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Settings' );
 			$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Admin_Subscribers' );
 
