@@ -33,13 +33,21 @@ function rocket_upgrader() {
 		$keys = rocket_check_key();
 		if ( is_array( $keys ) ) {
 			$options = array_merge( $keys, $options );
+
+			if ( ! empty( $keys['secret_key'] ) ) {
+				if ( rocket_direct_filesystem()->exists( WP_ROCKET_PATH . 'licence-data.php' ) ) {
+					rocket_direct_filesystem()->delete( WP_ROCKET_PATH . 'licence-data.php' );
+				}
+			}
 		}
 
 		update_option( WP_ROCKET_SLUG, $options );
 	}
 
+	$page = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING );
+
 	if ( ! rocket_valid_key() && current_user_can( 'rocket_manage_options' ) &&
-		( isset( $_GET['page'] ) && 'wprocket' === $_GET['page'] ) ) {
+		'wprocket' === $page ) {
 		add_action( 'admin_notices', 'rocket_need_api_key' );
 	}
 }

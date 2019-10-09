@@ -71,8 +71,18 @@ if ( ! defined( 'WP_ROCKET_LASTVERSION' ) ) {
 	define( 'WP_ROCKET_LASTVERSION', '3.3.7' );
 }
 
+if ( ! function_exists( 'WP_Filesystem' ) ) {
+	require ABSPATH . 'wp-admin/includes/file.php';
+}
+
+WP_Filesystem();
+global $wp_filesystem;
+
+if ( $wp_filesystem->exists( WP_ROCKET_PATH . 'licence-data.php' ) ) {
+	require WP_ROCKET_PATH . 'licence-data.php';
+}
+
 require WP_ROCKET_INC_PATH . 'compat.php';
-require dirname( __FILE__ ) . '/licence-data.php';
 require WP_ROCKET_INC_PATH . 'classes/class-wp-rocket-requirements-check.php';
 
 /**
