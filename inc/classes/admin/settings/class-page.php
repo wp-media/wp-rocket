@@ -1852,8 +1852,9 @@ class Page {
 			]
 		);
 
-		$beacon_cf_credentials = $this->beacon->get_suggest( 'cloudflare_credentials' );
-		$beacon_cf_settings    = $this->beacon->get_suggest( 'cloudflare_settings' );
+		$beacon_cf_credentials     = $this->beacon->get_suggest( 'cloudflare_credentials' );
+		$beacon_cf_settings        = $this->beacon->get_suggest( 'cloudflare_settings' );
+		$beacon_cf_credentials_api = $this->beacon->get_suggest( 'cloudflare_credentials_api' );
 
 		$this->settings->add_settings_sections(
 			[
@@ -1883,7 +1884,7 @@ class Page {
 				[
 					'cloudflare_api_key' => [
 						'label'       => _x( 'Global API key:', 'Cloudflare', 'rocket' ),
-						'description' => sprintf( '<a href="%1$s" target="_blank">%2$s</a>', esc_url( __( 'https://support.cloudflare.com/hc/en-us/articles/200167836-Where-do-I-find-my-Cloudflare-API-key-', 'rocket' ) ), _x( 'Find your API key', 'Cloudflare', 'rocket' ) ),
+						'description' => sprintf( '<a href="%1$s" target="_blank">%2$s</a>', esc_url( $beacon_cf_credentials_api['url'] ), _x( 'Find your API key', 'Cloudflare', 'rocket' ) ),
 						'default'     => '',
 						'section'     => 'cloudflare_credentials',
 						'page'        => 'cloudflare',
