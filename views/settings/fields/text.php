@@ -37,6 +37,6 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 		<div class="wpr-field-description wpr-field-description-helper">
 			<?php echo $data['helper']; ?>
 		</div>
-	<?php endif; ?>
+		<?php endif; ?>
 	</div>
 </div>
