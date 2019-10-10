@@ -149,6 +149,7 @@ class Plugin {
 			'capabilities_subscriber',
 			'varnish_subscriber',
 			'cloudflare_subscriber',
+			'rocketcdn_subscriber',
 		];
 
 		if ( \rocket_valid_key() ) {
