@@ -442,7 +442,7 @@ function rocket_get_cloudflare_ips() {
 				'result'  => (object) [],
 			];
 
-			$cf_ips_values->result->ipv4_cidrs = [
+			$cf_ips->result->ipv4_cidrs = [
 				'103.21.244.0/22',
 				'103.22.200.0/22',
 				'103.31.4.0/22',
@@ -459,7 +459,7 @@ function rocket_get_cloudflare_ips() {
 				'198.41.128.0/17',
 			];
 
-			$cf_ips_values->result->ipv6_cidrs = [
+			$cf_ips->result->ipv6_cidrs = [
 				'2400:cb00::/32',
 				'2405:8100::/32',
 				'2405:b500::/32',
