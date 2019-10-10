@@ -33,5 +33,10 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 			<label for="<?php echo esc_attr( $data['id'] ); ?>"><?php echo $data['label']; ?></label>
 		<?php endif; ?>
 		<input type="text" id="<?php echo esc_attr( $data['id'] ); ?>" class="" name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>]" value="<?php echo esc_attr( $data['value'] ); ?>"<?php echo $data['input_attr']; ?>>
+		<?php if ( ! empty( $data['helper'] ) ) : ?>
+		<div class="wpr-field-description wpr-field-description-helper">
+			<?php echo $data['helper']; ?>
+		</div>
+		<?php endif; ?>
 	</div>
 </div>
