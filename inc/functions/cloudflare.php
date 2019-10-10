@@ -497,7 +497,7 @@ function rocket_get_cloudflare_ips() {
 				'result'  => (object) [],
 			];
 
-			$cf_ips->result->ipv4_cidrs = array(
+			$cf_ips->result->ipv4_cidrs = [
 				'103.21.244.0/22',
 				'103.22.200.0/22',
 				'103.31.4.0/22',
@@ -512,10 +512,9 @@ function rocket_get_cloudflare_ips() {
 				'190.93.240.0/20',
 				'197.234.240.0/22',
 				'198.41.128.0/17',
-				'199.27.128.0/21',
-			);
+			];
 
-			$cf_ips->result->ipv6_cidrs = array(
+			$cf_ips->result->ipv6_cidrs = [
 				'2400:cb00::/32',
 				'2405:8100::/32',
 				'2405:b500::/32',
@@ -523,7 +522,7 @@ function rocket_get_cloudflare_ips() {
 				'2803:f800::/32',
 				'2c0f:f248::/32',
 				'2a06:98c0::/29',
-			);
+			];
 
 			set_transient( 'rocket_cloudflare_ips', $cf_ips, 2 * WEEK_IN_SECONDS );
 			return $cf_ips;
