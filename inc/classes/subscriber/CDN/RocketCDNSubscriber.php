@@ -62,7 +62,7 @@ class RocketCDNSubscriber implements Subscriber_Interface {
 			'wp-rocket/v1',
 			'rocketcdn/enable',
 			[
-				'method'   => 'PUT',
+				'methods'  => 'PUT',
 				'callback' => [ $this, 'enable' ],
 				'args'     => [
 					'email' => [
@@ -102,7 +102,7 @@ class RocketCDNSubscriber implements Subscriber_Interface {
 			'wp-rocket/v1',
 			'rocketcdn/disable',
 			[
-				'method'   => 'PUT',
+				'methods'  => 'PUT',
 				'callback' => [ $this, 'disable' ],
 				'args'     => [
 					'email' => [
@@ -130,11 +130,14 @@ class RocketCDNSubscriber implements Subscriber_Interface {
 	public function enable( \WP_REST_Request $request ) {
 		$params = $request->get_body_params();
 
-		$this->options->set( 'cdn', 1 );
-		$this->options->set( 'cdn_cnames' [ $params['url'] ] );
-		$this->options->set( 'cdn_zones', [ 'all' ] );
+		$cnames   = [];
+		$cnames[] = $params['url'];
 
-		$this->options_api->set( $this->options_api->get_option_name( 'settings' ), $this->options->get_options() );
+		$this->options->set( 'cdn', 1 );
+		$this->options->set( 'cdn_cnames', $cnames );
+		$this->options->set( 'cdn_zone', [ 'all' ] );
+
+		$this->options_api->set( 'settings', $this->options->get_options() );
 	}
 
 	/**
@@ -148,10 +151,10 @@ class RocketCDNSubscriber implements Subscriber_Interface {
 	 */
 	public function disable( \WP_REST_Request $request ) {
 		$this->options->set( 'cdn', 0 );
-		$this->options->set( 'cdn_cnames' [] );
-		$this->options->set( 'cdn_zones', [] );
+		$this->options->set( 'cdn_cnames', [] );
+		$this->options->set( 'cdn_zone', [] );
 
-		$this->options_api->set( $this->options_api->get_option_name( 'settings' ), $this->options->get_options() );
+		$this->options_api->set( 'settings', $this->options->get_options() );
 	}
 
 	/**
