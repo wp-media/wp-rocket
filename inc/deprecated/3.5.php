@@ -5,51 +5,59 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * Purge all the domain
  *
  * @since 2.6.8
+ * @deprecated 3.5
  *
  * @param string $root The path of home cache file.
  * @param string $lang The current lang to purge.
  * @param string $url  The home url.
  */
 function rocket_varnish_clean_domain( $root, $lang, $url ) {
-    rocket_varnish_http_purge( trailingslashit( $url ) . '?vregex' );
+	_deprecated_function( __FUNCTION__ . '()', '3.5', 'WP_Rocket\Subscriber\Addons\Varnish\VarnishSubscriber::clean_domain()' );
+	rocket_varnish_http_purge( trailingslashit( $url ) . '?vregex' );
 }
 
 /**
  * Purge a specific page
  *
  * @since 2.6.8
+ * @deprecated 3.5
  *
  * @param string $url The url to purge.
  */
 function rocket_varnish_clean_file( $url ) {
-    rocket_varnish_http_purge( trailingslashit( $url ) . '?vregex' );
+	_deprecated_function( __FUNCTION__ . '()', '3.5', 'WP_Rocket\Subscriber\Addons\Varnish\VarnishSubscriber::clean_file()' );
+	rocket_varnish_http_purge( trailingslashit( $url ) . '?vregex' );
 }
 
 /**
  * Purge the homepage and its pagination
  *
  * @since 2.6.8
+ * @deprecated 3.5
  *
  * @param string $root The path of home cache file.
  * @param string $lang The current lang to purge.
  */
 function rocket_varnish_clean_home( $root, $lang ) {
-    $home_url            = trailingslashit( get_rocket_i18n_home_url( $lang ) );
-    $home_pagination_url = $home_url . trailingslashit( $GLOBALS['wp_rewrite']->pagination_base ) . '?vregex';
+	_deprecated_function( __FUNCTION__ . '()', '3.5', 'WP_Rocket\Subscriber\Addons\Varnish\VarnishSubscriber::clean_home()' );
+	$home_url            = trailingslashit( get_rocket_i18n_home_url( $lang ) );
+	$home_pagination_url = $home_url . trailingslashit( $GLOBALS['wp_rewrite']->pagination_base ) . '?vregex';
 
-    rocket_varnish_http_purge( $home_url );
-    rocket_varnish_http_purge( $home_pagination_url );
+	rocket_varnish_http_purge( $home_url );
+	rocket_varnish_http_purge( $home_pagination_url );
 }
 
 /**
  * Sets the Varnish IP to localhost if Cloudflare is active
  *
  * @since 3.3.5
+ * @deprecated 3.5
  * @author Remy Perona
  *
  * @return string
  */
 function rocket_varnish_proxy_host() {
+	_deprecated_function( __FUNCTION__ . '()', '3.5', 'WP_Rocket\Subscriber\Addons\Cloudflare\CloudflareSubscriber::set_varnish_localhost()' );
 	return 'localhost';
 }
 
@@ -57,11 +65,13 @@ function rocket_varnish_proxy_host() {
  * Sets the Host header to the website domain if Cloudflare is active
  *
  * @since 3.3.5
+ * @deprecated 3.5
  * @author Remy Perona
  *
  * @return string
  */
 function rocket_varnish_proxy_request_host() {
+	_deprecated_function( __FUNCTION__ . '()', '3.5', 'WP_Rocket\Subscriber\Addons\Cloudflare\CloudflareSubscriber::set_varnish_purge_request_host()' );
 	return wp_parse_url( home_url(), PHP_URL_HOST );
 }
 
@@ -69,11 +79,13 @@ function rocket_varnish_proxy_request_host() {
  * Send data to Varnish
  *
  * @since 2.6.8
+ * @deprecated 3.5
  *
  * @param  string $url The URL to purge.
  * @return void
  */
 function rocket_varnish_http_purge( $url ) {
+	_deprecated_function( __FUNCTION__ . '()', '3.5', 'WP_Rocket\Addons\Varnish\Varnish::purge()' );
 	$parse_url = get_rocket_parse_url( $url );
 
 	$varnish_x_purgemethod = 'default';
