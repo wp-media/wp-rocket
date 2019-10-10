@@ -616,6 +616,7 @@ class Combine extends Abstract_JS_Optimization {
 			'googlesyndication.com',
 			'a.optmstr.com',
 			'a.optmnstr.com',
+			'a.opmnstr.com',
 			'adthrive.com',
 			'mediavine.com',
 			'js.hsforms.net',
