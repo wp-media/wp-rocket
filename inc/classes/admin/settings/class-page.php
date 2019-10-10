@@ -173,6 +173,7 @@ class Page {
 			$this->cdn_section();
 			$this->heartbeat_section();
 			$this->addons_section();
+			$this->varnish_section();
 			$this->cloudflare_section();
 			$this->sucuri_section();
 		} else {
@@ -838,6 +839,19 @@ class Page {
 					'section'           => 'js',
 					'page'              => 'file_optimization',
 					'default'           => 1,
+					'sanitize_callback' => 'sanitize_checkbox',
+				],
+				'dequeue_jquery_migrate'           => [
+					'container_class'   => [
+						'wpr-isLastElem',
+					],
+					'type'              => 'checkbox',
+					'label'             => __( 'Dequeue jQuery Migrate', 'rocket' ),
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description'       => sprintf( __( 'Dequeue jQuery Migrate eliminates a JS file and can improve load time. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $defer_js_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $defer_js_beacon['id'] ) . '" target="_blank">', '</a>' ),
+					'section'           => 'js',
+					'page'              => 'file_optimization',
+					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
 			]
@@ -1759,7 +1773,7 @@ class Page {
 					'rocket_varnish_field_settings',
 					[
 						'varnish_auto_purge' => [
-							'type'              => 'one_click_addon',
+							'type'              => 'rocket_addon',
 							'label'             => __( 'Varnish', 'rocket' ),
 							'logo'              => [
 								'url'    => WP_ROCKET_ASSETS_IMG_URL . 'logo-varnish.svg',
@@ -1769,8 +1783,9 @@ class Page {
 							'title'             => __( 'If Varnish runs on your server, you must activate this add-on.', 'rocket' ),
 							// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 							'description'       => sprintf( __( 'Varnish cache will be purged each time WP Rocket clears its cache to ensure content is always up-to-date.<br>%1$sLearn more%2$s', 'rocket' ), '<a href="' . esc_url( $varnish_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $varnish_beacon['id'] ) . '" target="_blank">', '</a>' ),
-							'section'           => 'one_click',
+							'section'           => 'addons',
 							'page'              => 'addons',
+							'settings_page'     => 'varnish',
 							'default'           => 0,
 							'sanitize_callback' => 'sanitize_checkbox',
 						],
@@ -1826,6 +1841,54 @@ class Page {
 					'settings_page'     => $settings_page,
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
+				],
+			]
+		);
+	}
+
+	/**
+	 * Registers Varnish section
+	 *
+	 * @since 3.5
+	 * @author Remy Perona
+	 */
+	private function varnish_section() {
+		$varnish_beacon = $this->beacon->get_suggest( 'varnish' );
+
+		$this->settings->add_page_section(
+			'varnish',
+			[
+				'title'            => 'Varnish',
+				'menu_description' => '',
+				'class'            => [
+					'wpr-subMenuItem',
+					'wpr-addonSubMenuItem',
+				],
+			]
+		);
+
+		$this->settings->add_settings_sections(
+			[
+				'varnish_settings' => [
+					'type'  => 'fields_container',
+					'title' => __( 'Varnish Settings', 'rocket' ),
+					'help'  => [
+						'id'  => $varnish_beacon['id'],
+						'url' => $varnish_beacon['url'],
+					],
+					'page'  => 'varnish',
+				],
+			]
+		);
+
+		$this->settings->add_settings_fields(
+			[
+				'varnish_custom_ip' => [
+					'label'       => _x( 'Custom Host/IP', 'Varnish', 'rocket' ),
+					'helper'      => __( 'There are cases when a custom IP Address is needed to for the plugin to properly communicate with the cache service. If you are using a CDN like Cloudflare or a Firewall Proxy like Sucuri, you may need to customize this setting.', 'rocket' ),
+					'default'     => '',
+					'section'     => 'varnish_settings',
+					'page'        => 'varnish',
 				],
 			]
 		);
