@@ -27,7 +27,9 @@ class ActionScheduler_WPCommentCleaner {
 	 * Initialize the class and attach callbacks.
 	 */
 	public static function init() {
-		self::$wp_comment_logger = new ActionScheduler_wpCommentLogger();
+		if ( empty( self::$wp_comment_logger ) ) {
+			self::$wp_comment_logger = new ActionScheduler_wpCommentLogger();
+		}
 
 		add_action( self::$cleanup_hook, array( __CLASS__, 'delete_all_action_comments' ) );
 
