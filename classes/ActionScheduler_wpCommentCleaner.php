@@ -74,7 +74,17 @@ class ActionScheduler_WPCommentCleaner {
 	 * Prints details about the orphaned action logs and includes information on where to learn more.
 	 */
 	public static function print_admin_notice() {
-		$notice = sprintf( __( 'Action Scheduler has completed the data migration, however, there remains scheduled action logs left in the WordPress Comments table. After 6 months, they will automatically be deleted. Click here to %slearn more%s.' ), '<a href="https://github.com/Prospress/action-scheduler">' , '</a>' );
+
+		$notice = __( 'Action Scheduler has migrated data to custom tables; however, orphaned log entries exist in the WordPress Comments table.' );
+
+		$next_scheduled_cleanup_hook = as_next_scheduled_action( self::$cleanup_hook );
+
+		if ( $next_scheduled_cleanup_hook ) {
+			$notice .= sprintf( __( ' This data will be deleted in %s.' ), human_time_diff( gmdate( 'U' ), $next_scheduled_cleanup_hook ) );
+		}
+
+		$notice .= sprintf( __( ' %sLearn more &raquo;%s' ), '<a href="https://github.com/Prospress/action-scheduler/">' , '</a>' );
+
 		echo '<div class="notice notice-warning"><p>' . wp_kses_post( $notice ) . '</p></div>';
 	}
 }
