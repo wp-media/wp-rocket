@@ -125,7 +125,7 @@ class RocketCDNSubscriber implements Subscriber_Interface {
 	 * @author Remy Perona
 	 *
 	 * @param \WP_REST_Request $request the WP REST Request object.
-	 * @return void
+	 * @return string
 	 */
 	public function enable( \WP_REST_Request $request ) {
 		$params = $request->get_body_params();
@@ -138,6 +138,8 @@ class RocketCDNSubscriber implements Subscriber_Interface {
 		$this->options->set( 'cdn_zone', [ 'all' ] );
 
 		$this->options_api->set( 'settings', $this->options->get_options() );
+
+		return rest_ensure_response( __( 'RocketCDN Enabled', 'rocket' ) );
 	}
 
 	/**
@@ -147,7 +149,7 @@ class RocketCDNSubscriber implements Subscriber_Interface {
 	 * @author Remy Perona
 	 *
 	 * @param \WP_REST_Request $request the WP Rest Request object.
-	 * @return void
+	 * @return string
 	 */
 	public function disable( \WP_REST_Request $request ) {
 		$this->options->set( 'cdn', 0 );
@@ -155,6 +157,8 @@ class RocketCDNSubscriber implements Subscriber_Interface {
 		$this->options->set( 'cdn_zone', [] );
 
 		$this->options_api->set( 'settings', $this->options->get_options() );
+
+		return rest_ensure_response( __( 'RocketCDN disabled', 'rocket' ) );
 	}
 
 	/**
