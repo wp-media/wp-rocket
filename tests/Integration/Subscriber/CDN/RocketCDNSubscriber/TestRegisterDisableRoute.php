@@ -3,7 +3,7 @@ namespace WP_Rocket\Tests\Integration\Subscriber\CDN\RocketCDNSubscriber;
 
 use PHPUnit\Framework\TestCase;
 
-class TestRegisterEnableRoute extends TestCase {
+class TestRegisterDisableRoute extends TestCase {
     public function setUp() {
 		parent::setUp();
 		/** @var WP_REST_Server $wp_rest_server */
@@ -15,14 +15,14 @@ class TestRegisterEnableRoute extends TestCase {
 
     public function testEnableRouteIsRegistered() {
         $routes = $this->server->get_routes();
-        $this->assertArrayHasKey( '/wp-rocket/v1/rocketcdn/enable', $routes );
+        $this->assertArrayHasKey( '/wp-rocket/v1/rocketcdn/disable', $routes );
     }
 
     public function testEndpoint() {
         $routes = $this->server->get_routes();
 
         foreach( $routes as $route => $route_config ) {
-			if( 0 === strpos( '/wp-rocket/v1/rocketcdn/enable', $route ) ) {
+			if( 0 === strpos( '/wp-rocket/v1/rocketcdn/disable', $route ) ) {
 				$this->assertTrue( is_array( $route_config ) );
 				foreach( $route_config as $i => $endpoint ) {
 					$this->assertArrayHasKey( 'callback', $endpoint );

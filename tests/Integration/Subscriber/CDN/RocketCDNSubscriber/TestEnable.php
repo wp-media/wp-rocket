@@ -1,11 +1,12 @@
 <?php
 namespace WP_Rocket\Tests\Integration\Subscriber\CDN\RocketCDNSubscriber;
 
+use PHPUnit\Framework\TestCase;
 use WP_Rocket\Subscriber\CDN\RocketCDNSubscriber;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 
-class TestEnable extends \WP_UnitTestCase {
+class TestEnable extends TestCase {
     public function testWPRocketOptionsUpdated() {
         $request = new \WP_Rest_Request( 'PUT', '/wp-rocket/v1/rocketcdn/enable' );
         $request->set_body_params(
