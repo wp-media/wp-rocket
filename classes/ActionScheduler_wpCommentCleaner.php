@@ -24,6 +24,13 @@ class ActionScheduler_WPCommentCleaner {
 	protected static $wp_comment_logger = null;
 
 	/**
+	 * The key used to store the cached value of whether there are logs in the WP comment table.
+	 *
+	 * @var string
+	 */
+	protected static $has_logs_option_key = 'as_has_wp_comment_logs';
+
+	/**
 	 * Initialize the class and attach callbacks.
 	 */
 	public static function init() {
@@ -46,10 +53,12 @@ class ActionScheduler_WPCommentCleaner {
 	/**
 	 * Determines if there are log entries in the wp comments table.
 	 *
+	 * Uses the flag set on migration completion set by @see self::maybe_schedule_cleanup().
+	 *
 	 * @return boolean Whether there are scheduled action comments in the comments table.
 	 */
 	public static function has_logs() {
-		return (bool) get_comments( array( 'type' => ActionScheduler_wpCommentLogger::TYPE, 'number' => 1, 'fields' => 'ids' ) );
+		return 'yes' === get_option( self::$has_logs_option_key );
 	}
 
 	/**
@@ -57,8 +66,12 @@ class ActionScheduler_WPCommentCleaner {
 	 * Attached to the migration complete hook 'action_scheduler/migration_complete'.
 	 */
 	public static function maybe_schedule_cleanup() {
-		if ( ! as_next_scheduled_action( self::$cleanup_hook ) && self::has_logs() ) {
-			as_schedule_single_action( gmdate( U ) + ( 6 * MONTH_IN_SECONDS ), self::$cleanup_hook );
+		if ( (bool) get_comments( array( 'type' => ActionScheduler_wpCommentLogger::TYPE, 'number' => 1, 'fields' => 'ids' ) ) ) {
+			update_option( self::$has_logs_option_key, 'yes' );
+
+			if ( ! as_next_scheduled_action( self::$cleanup_hook ) ) {
+				as_schedule_single_action( gmdate( U ) + ( 6 * MONTH_IN_SECONDS ), self::$cleanup_hook );
+			}
 		}
 	}
 
@@ -68,6 +81,7 @@ class ActionScheduler_WPCommentCleaner {
 	public static function delete_all_action_comments() {
 		global $wpdb;
 		$wpdb->delete( $wpdb->comments, array( 'comment_type' => ActionScheduler_wpCommentLogger::TYPE, 'comment_agent' => ActionScheduler_wpCommentLogger::AGENT ) );
+		delete_option( self::$has_logs_option_key );
 	}
 
 	/**
