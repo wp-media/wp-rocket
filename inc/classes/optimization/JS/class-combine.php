@@ -535,8 +535,15 @@ class Combine extends Abstract_JS_Optimization {
 			'styles: \' #custom-menu-',
 			'function svc_center_',
 			'#svc_carousel2_container_',
+			'advads.move',
+			'elementid',
+			'advads_has_ads',
 			'wpseo_map_init',
 			'mdf_current_page_url',
+			'tptn_tracker',
+			'dpsp_pin_button_data',
+			'searchwp_live_search_params',
+			'wpp_params',
 			'top.location,thispage',
 			'selection+pagelink',
 			'ic_window_resolution',
@@ -624,6 +631,7 @@ class Combine extends Abstract_JS_Optimization {
 			'code.tidio.co',
 			'www.uplaunch.com',
 			'widget.reviewability.com',
+			'ck.page',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
@@ -711,6 +719,7 @@ class Combine extends Abstract_JS_Optimization {
 			'cb_nombre',
 			'$(\'.fl-node-',
 			'function($){google_maps_',
+      		'$("#myCarousel',
 			'et_animation_data=',
 			'current_url="',
 			'CustomEvent.prototype=window.Event.prototype',

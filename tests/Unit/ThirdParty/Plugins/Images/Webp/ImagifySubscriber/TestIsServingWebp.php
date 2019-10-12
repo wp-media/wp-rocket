@@ -14,8 +14,6 @@ class TestIsServingWebp extends TestCase {
 		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
 		$subscriber  = new Imagify_Subscriber( $optionsData );
 
-		$this->assertFalse( $subscriber->is_serving_webp() );
-
 		Functions\expect( 'get_imagify_option' )
 			->once()
 			->andReturn( false );

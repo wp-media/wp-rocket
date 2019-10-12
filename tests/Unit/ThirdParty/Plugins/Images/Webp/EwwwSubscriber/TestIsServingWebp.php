@@ -8,16 +8,6 @@ use Brain\Monkey\Functions;
 
 class TestIsServingWebp extends TestCase {
 	/**
-	 * Test EWWW_Subscriber->is_serving_webp() should return false when EWWW is not enabled.
-	 */
-	public function testShouldReturnFalseWhenEwwwNotEnabled() {
-		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
-		$subscriber  = new EWWW_Subscriber( $optionsData );
-
-		$this->assertFalse( $subscriber->is_serving_webp() );
-	}
-
-	/**
 	 * Test EWWW_Subscriber->is_serving_webp() should return true when ExactDN is enabled.
 	 */
 	public function testShouldReturnTrueWhenExactdnIsEnabled() {

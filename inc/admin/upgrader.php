@@ -107,7 +107,7 @@ function rocket_reset_opcache() {
 		if ( ! function_exists( 'opcache_reset' ) ) {
 			$can_reset = false;
 
-			return;
+			return false;
 		}
 
 		$restrict_api = ini_get( 'opcache.restrict_api' );
@@ -115,17 +115,17 @@ function rocket_reset_opcache() {
 		if ( $restrict_api && strpos( __FILE__, $restrict_api ) !== 0 ) {
 			$can_reset = false;
 
-			return;
+			return false;
 		}
 
 		$can_reset = true;
 	}
 
 	if ( ! $can_reset ) {
-		return;
+		return false;
 	}
 
-	opcache_reset();
+	$opcache_reset = opcache_reset();
 
 	/**
 	 * Triggers after WP Rocket tries to reset OPCache
@@ -134,6 +134,8 @@ function rocket_reset_opcache() {
 	 * @author Remy Perona
 	 */
 	do_action( 'rocket_after_reset_opcache' );
+
+	return $opcache_reset;
 }
 
 /**
@@ -437,6 +439,10 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 	if ( version_compare( $actual_version, '3.4', '<' ) ) {
 		wp_clear_scheduled_hook( 'rocket_purge_time_event' );
 		rocket_clean_domain();
+	}
+
+	if ( version_compare( $actual_version, '3.4.0.1', '<' ) ) {
+		( new WP_Rocket\Subscriber\Plugin\Capabilities_Subscriber() )->add_rocket_capabilities();
 	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );

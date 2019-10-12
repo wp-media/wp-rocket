@@ -90,7 +90,7 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 			],
 			'wp_head'              => [ 'insert_nojs_style', PHP_INT_MAX ],
 			'wp_enqueue_scripts'   => [ 'insert_youtube_thumbnail_style', PHP_INT_MAX ],
-			'rocket_buffer'        => [ 'lazyload', 25 ],
+			'rocket_buffer'        => [ 'lazyload', 32 ],
 			'rocket_lazyload_html' => 'lazyload_responsive',
 			'init'                 => 'lazyload_smilies',
 			'wp'                   => 'deactivate_lazyload_on_specific_posts',
@@ -106,10 +106,6 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function insert_lazyload_script() {
-		if ( ! $this->options->get( 'lazyload' ) && ! $this->options->get( 'lazyload_iframes' ) ) {
-			return;
-		}
-
 		if ( ! $this->can_lazyload_images() && ! $this->can_lazyload_iframes() ) {
 			return;
 		}
@@ -146,17 +142,27 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 
 		$inline_args = [
 			'threshold' => $threshold,
-			'options'   => [
-				'use_native' => 'true',
-			],
 		];
 
+		if ( apply_filters( 'rocket_use_native_lazyload', false ) ) {
+			$inline_args['options'] = [
+				'use_native' => 'true',
+			];
+		}
+
 		if ( $this->options->get( 'lazyload' ) || $this->options->get( 'lazyload_iframes' ) ) {
-			$inline_args['elements']['loading'] = '[loading=lazy]';
+			if ( apply_filters( 'rocket_use_native_lazyload', false ) ) {
+				$inline_args['elements']['loading'] = '[loading=lazy]';
+			}
 		}
 
 		if ( $this->options->get( 'lazyload' ) ) {
+			$inline_args['elements']['image']            = 'img[data-lazy-src]';
 			$inline_args['elements']['background_image'] = '.rocket-lazyload';
+		}
+
+		if ( $this->options->get( 'lazyload_iframes' ) ) {
+			$inline_args['elements']['iframe'] = 'iframe[data-lazy-src]';
 		}
 
 		/**
@@ -326,7 +332,7 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 		$buffer = $this->ignore_scripts( $html );
 		$buffer = $this->ignore_noscripts( $buffer );
 
-		if ( $this->options->get( 'lazyload_iframes' ) && $this->can_lazyload_iframes() ) {
+		if ( $this->can_lazyload_iframes() ) {
 			$args = [
 				'youtube' => $this->options->get( 'lazyload_youtube' ),
 			];
@@ -334,7 +340,7 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 			$html = $this->iframe->lazyloadIframes( $html, $buffer, $args );
 		}
 
-		if ( $this->options->get( 'lazyload' ) && $this->can_lazyload_images() ) {
+		if ( $this->can_lazyload_images() ) {
 			$html = $this->image->lazyloadPictures( $html, $buffer );
 			$html = $this->image->lazyloadImages( $html, $buffer );
 
@@ -435,6 +441,10 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 	 * @return boolean
 	 */
 	private function can_lazyload_images() {
+		if ( ! $this->options->get( 'lazyload' ) ) {
+			return false;
+		}
+
 		/**
 		 * Filters the lazyload application on images
 		 *
@@ -454,6 +464,10 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 	 * @return boolean
 	 */
 	private function can_lazyload_iframes() {
+		if ( ! $this->options->get( 'lazyload_iframes' ) ) {
+			return false;
+		}
+
 		/**
 		 * Filters the lazyload application on iframes
 		 *

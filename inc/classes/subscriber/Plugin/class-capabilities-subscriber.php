@@ -50,6 +50,10 @@ class Capabilities_Subscriber implements Subscriber_Interface {
 	public function add_rocket_capabilities() {
 		$role = get_role( 'administrator' );
 
+		if ( ! $role ) {
+			return;
+		}
+
 		foreach ( $this->get_capabilities() as $cap ) {
 			$role->add_cap( $cap );
 		}
@@ -65,6 +69,10 @@ class Capabilities_Subscriber implements Subscriber_Interface {
 	 */
 	public function remove_rocket_capabilities() {
 		$role = get_role( 'administrator' );
+
+		if ( ! $role ) {
+			return;
+		}
 
 		foreach ( $this->get_capabilities() as $cap ) {
 			$role->remove_cap( $cap );
