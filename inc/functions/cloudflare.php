@@ -620,15 +620,15 @@ function rocket_auto_purge_cloudflare() {
     if ( get_rocket_option( 'do_cloudflare' ) ) {
         if ( ! current_user_can( 'rocket_purge_cloudflare_cache' ) ) {
             return;
-		}
+        }
 
-		$cf_cache_everything = rocket_cf_has_page_rule( 'cache_everything' );
-		if ( is_wp_error( $cf_cache_everything ) ) {
-			return;
-		}
-		if ( ! $cf_cache_everything ) {
-			return;
-		}
+        $cf_cache_everything = rocket_cf_has_page_rule( 'cache_everything' );
+        if ( is_wp_error( $cf_cache_everything ) ) {
+		    return;
+        }
+        if ( ! $cf_cache_everything ) {
+            return;
+        }
 
         // Purge CloudFlare.
         $cf_purge = rocket_purge_cloudflare();
@@ -666,15 +666,15 @@ function rocket_auto_purge_cloudflare_by_url( $post, $purge_urls, $lang ) {
     if ( get_rocket_option( 'do_cloudflare' ) ) {
         if ( ! current_user_can( 'rocket_purge_cloudflare_cache' ) ) {
             return;
-		}
+        }
 
-		$cf_cache_everything = rocket_cf_has_page_rule( 'cache_everything' );
-		if ( is_wp_error( $cf_cache_everything ) ) {
-			return;
-		}
-		if ( ! $cf_cache_everything ) {
-			return;
-		}
+        $cf_cache_everything = rocket_cf_has_page_rule( 'cache_everything' );
+        if ( is_wp_error( $cf_cache_everything ) ) {
+		    return;
+        }
+        if ( ! $cf_cache_everything ) {
+            return;
+        }
 
         // Purge CloudFlare.
         $cf_purge = rocket_purge_cloudflare_by_url( $post, $purge_urls, $lang );
