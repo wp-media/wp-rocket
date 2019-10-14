@@ -418,10 +418,13 @@ function get_rocket_exclude_defer_js() {
 		$jquery            = site_url( wp_scripts()->registered['jquery-core']->src );
 		$jetpack_jquery    = 'c0.wp.com/c/(?:.+)/wp-includes/js/jquery/jquery.js';
 		$googleapis_jquery = 'ajax.googleapis.com/ajax/libs/jquery/(?:.+)/jquery(?:\.min)?.js';
+		$cdnjs_jquery      = 'cdnjs.cloudflare.com/ajax/libs/jquery/(?:.+)/jquery(?:\.min)?.js';
 
 		$exclude_defer_js[] = rocket_clean_exclude_file( $jquery );
 		$exclude_defer_js[] = $jetpack_jquery;
 		$exclude_defer_js[] = $googleapis_jquery;
+		$exclude_defer_js[] = $cdnjs_jquery;
+		
 	}
 
 	/**
