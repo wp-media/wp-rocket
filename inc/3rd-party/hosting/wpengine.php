@@ -22,10 +22,13 @@ if ( class_exists( 'WpeCommon' ) && function_exists( 'wpe_param' ) ) {
 	// Prevent mandatory cookies on hosting with server cache.
 	add_filter( 'rocket_cache_mandatory_cookies', '__return_empty_array', PHP_INT_MAX );
 	add_filter( 'rocket_advanced_cache_file', '__return_empty_string' );
-	add_action( 'admin_init', function() {
-		remove_action( 'admin_notices', 'rocket_warning_advanced_cache_permissions' );
-		remove_action( 'admin_notices', 'rocket_warning_advanced_cache_not_ours' );
-	});
+	add_action(
+		'admin_init',
+		function() {
+			remove_action( 'admin_notices', 'rocket_warning_advanced_cache_permissions' );
+			remove_action( 'admin_notices', 'rocket_warning_advanced_cache_not_ours' );
+		}
+	);
 
 	/**
 	 * Always keep WP_CACHE constant to true
@@ -88,7 +91,11 @@ if ( class_exists( 'WpeCommon' ) && function_exists( 'wpe_param' ) ) {
 		global $wpe_netdna_domains, $wpe_netdna_domains_secure;
 
 		$cdn_domain = '';
-		$is_ssl     = @$_SERVER['HTTPS'];
+		$is_ssl     = '';
+
+		if ( isset( $_SERVER['HTTPS'] ) ) {
+			$is_ssl = sanitize_text_field( wp_unslash( $_SERVER['HTTPS'] ) );
+		}
 
 		if ( preg_match( '/^[oO][fF]{2}$/', $is_ssl ) ) {
 			$is_ssl = false;  // have seen this!
@@ -118,15 +125,15 @@ if ( class_exists( 'WpeCommon' ) && function_exists( 'wpe_param' ) ) {
 	 * @since 3.3.2
 	 * @author Remy Perona
 	 *
-	 * @param string $buffer HTML content
+	 * @param string $buffer HTML content.
 	 * @return string
 	 */
 	function rocket_wpengine_add_footprint( $buffer ) {
-		if (! preg_match( '/<\/html>/i', $buffer ) ) {
+		if ( ! preg_match( '/<\/html>/i', $buffer ) ) {
 			return $buffer;
 		}
 
-		$footprint = defined( 'WP_ROCKET_WHITE_LABEL_FOOTPRINT' ) ?
+		$footprint  = defined( 'WP_ROCKET_WHITE_LABEL_FOOTPRINT' ) ?
 						"\n" . '<!-- Optimized for great performance' :
 						"\n" . '<!-- This website is like a Rocket, isn\'t it? Performance optimized by ' . WP_ROCKET_PLUGIN_NAME . '. Learn more: https://wp-rocket.me';
 		$footprint .= ' -->';

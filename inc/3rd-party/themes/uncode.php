@@ -1,7 +1,7 @@
 <?php
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
-$current_theme = wp_get_theme();
+$current_theme = wp_get_theme(); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 if ( 'uncode' === strtolower( $current_theme->get( 'Name' ) ) || 'uncode' === strtolower( $current_theme->get( 'Template' ) ) ) {
 	/**

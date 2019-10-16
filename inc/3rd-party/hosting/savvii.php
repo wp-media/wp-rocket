@@ -32,7 +32,7 @@ if ( class_exists( '\\Savvii\\CacheFlusherPlugin' ) & class_exists( '\\Savvii\\O
 			return false;
 		}
 
-		if ( ( isset( $_REQUEST[ \Savvii\CacheFlusherPlugin::NAME_FLUSH_NOW ] ) && wp_verify_nonce( $_REQUEST['_wpnonce'], \Savvii\Options::CACHING_STYLE ) ) || ( isset( $_REQUEST[ \Savvii\CacheFlusherPlugin::NAME_DOMAINFLUSH_NOW ] ) && wp_verify_nonce( $_REQUEST['_wpnonce'], \Savvii\Options::CACHING_STYLE ) ) ) {
+		if ( ( isset( $_REQUEST[ \Savvii\CacheFlusherPlugin::NAME_FLUSH_NOW ], $_REQUEST['_wpnonce'] ) && wp_verify_nonce( sanitize_key( $_REQUEST['_wpnonce'] ), \Savvii\Options::CACHING_STYLE ) ) || ( isset( $_REQUEST[ \Savvii\CacheFlusherPlugin::NAME_DOMAINFLUSH_NOW ], $_REQUEST['_wpnonce'] ) && wp_verify_nonce( sanitize_key( $_REQUEST['_wpnonce'] ), \Savvii\Options::CACHING_STYLE ) ) ) {
 			// Clear all caching files.
 			rocket_clean_domain();
 

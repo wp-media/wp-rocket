@@ -8,7 +8,7 @@
  * @param  array  $zone (default: array( 'all' )). Deprecated.
  * @return string
  */
-function get_rocket_cdn_url( $url, $zone = array( 'all' ) ) {
+function get_rocket_cdn_url( $url, $zone = array( 'all' ) ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$container = apply_filters( 'rocket_container', '' );
 	$cdn       = $container->get( 'cdn' );
 
@@ -36,7 +36,7 @@ function rocket_cdn_url( $url, $zone = array( 'all' ) ) {
  * @param  string $zone List of zones. Default is 'all'.
  * @return array        List of CNAMES
  */
-function get_rocket_cdn_cnames( $zone = 'all' ) {
+function get_rocket_cdn_cnames( $zone = 'all' ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$hosts  = [];
 	$cnames = get_rocket_option( 'cdn_cnames', [] );
 

@@ -57,10 +57,13 @@ if ( isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
 			$url = get_rocket_i18n_home_url( $lang );
 			$url = trailingslashit( $url ) . 'kinsta-clear-cache/';
 
-			wp_remote_get( $url, array(
-				'blocking' => false,
-				'timeout'  => 0.01,
-			) );
+			wp_remote_get(
+				$url,
+				array(
+					'blocking' => false,
+					'timeout'  => 0.01,
+				)
+			);
 		}
 		add_action( 'after_rocket_clean_home', 'rocket_clean_kinsta_cache_home', 10, 2 );
 
@@ -76,10 +79,13 @@ if ( isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
 		function rocket_clean_kinsta_cache_url( $url ) {
 			$url = trailingslashit( $url ) . 'kinsta-clear-cache/';
 
-			wp_remote_get( $url, array(
-				'blocking' => false,
-				'timeout'  => 0.01,
-			) );
+			wp_remote_get(
+				$url,
+				array(
+					'blocking' => false,
+					'timeout'  => 0.01,
+				)
+				);
 		}
 		add_action( 'after_rocket_clean_file', 'rocket_clean_kinsta_cache_url' );
 
@@ -124,32 +130,39 @@ if ( isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
 			 * @return Array Updated array of CDN hosts
 			 */
 			function rocket_add_kinsta_cdn_cname( $hosts ) {
-				$hosts[] = $_SERVER['KINSTA_CDN_DOMAIN'];
+				if ( ! isset( $_SERVER['KINSTA_CDN_DOMAIN'] ) ) {
+					return $hosts;
+				}
+
+				$hosts[] = sanitize_text_field( wp_unslash( $_SERVER['KINSTA_CDN_DOMAIN'] ) );
 
 				return $hosts;
 			}
 			add_filter( 'rocket_cdn_cnames', 'rocket_add_kinsta_cdn_cname', 1 );
 		}
 	} else {
-		add_action( 'admin_notices', function() {
-			if ( ! current_user_can( 'manage_options' ) ) {
-				return;
-			}
+		add_action(
+			'admin_notices',
+			function() {
+				if ( ! current_user_can( 'manage_options' ) ) {
+					return;
+				}
 
-			$screen = get_current_screen();
+				$screen = get_current_screen();
 
-			if ( 'settings_page_wprocket' !== $screen->id ) {
-				return;
-			}
+				if ( 'settings_page_wprocket' !== $screen->id ) {
+					return;
+				}
 
-			rocket_notice_html(
+				rocket_notice_html(
 				array(
 					'status'      => 'error',
 					'dismissible' => '',
 					// translators: %1$s = opening link tag, %2$s = closing link tag.
 					'message'     => sprintf( __( 'Your installation seems to be missing core Kinsta files managing Cache clearing and CDN, which will prevent your Kinsta installation and WP Rocket from working correctly. Please get in touch with Kinsta support through your %1$sMyKinsta%2$s account to resolve this issue.', 'rocket' ), '<a href="https://my.kinsta.com/login/" target="_blank">', '</a>' ),
 				)
+				);
+			}
 			);
-		} );
 	}
 }

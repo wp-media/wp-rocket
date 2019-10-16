@@ -77,16 +77,19 @@ if ( defined( 'O2SWITCH_VARNISH_PURGE_KEY' ) ) {
 		$parse_url = get_rocket_parse_url( $url );
 
 		// This filter is documented in inc/functions/varnish.php.
-		$headers = apply_filters( 'rocket_varnish_purge_headers', array(
-			/**
-			 * Filters the host value passed in the request headers
-			 *
-			 * @since 2.8.15
-			 * @param string The host
-			 */
-			'host' => apply_filters( 'rocket_varnish_purge_request_host', $parse_url['host'] ),
-			'X-VC-Purge-Key' => O2SWITCH_VARNISH_PURGE_KEY,
-		) );
+		$headers = apply_filters(
+			'rocket_varnish_purge_headers',
+			[
+				/**
+				 * Filters the host value passed in the request headers
+				 *
+				 * @since 2.8.15
+				 * @param string The host
+				 */
+				'host'           => apply_filters( 'rocket_varnish_purge_request_host', $parse_url['host'] ),
+				'X-VC-Purge-Key' => O2SWITCH_VARNISH_PURGE_KEY,
+			]
+		);
 
 		if ( 'vregex' === $parse_url['query'] ) {
 			$headers['X-Purge-Regex'] = '.*';
