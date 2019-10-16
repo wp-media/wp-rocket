@@ -870,6 +870,14 @@ class Page {
 			]
 		);
 
+		$rocket_maybe_disable_lazyload_plugins = '';
+		if ( rocket_maybe_disable_lazyload() ) {
+			$rocket_maybe_disable_lazyload_plugins = __( 'Autoptimize', 'rocket' ) . ', ';
+		}
+		if ( rocket_maybe_disable_lazyload_smush() ) {
+			$rocket_maybe_disable_lazyload_plugins .= __( 'Smush', 'rocket' ) . ', ';
+		}
+		$rocket_maybe_disable_lazyload_plugins = rtrim($rocket_maybe_disable_lazyload_plugins, ', ');
 		$this->settings->add_settings_sections(
 			[
 				'lazyload_section' => [
@@ -883,7 +891,7 @@ class Page {
 					],
 					'page'        => 'media',
 					// translators: %1$s = “WP Rocket”.
-					'helper'      => rocket_maybe_disable_lazyload() ? sprintf( __( 'Lazyload is currently activated in <strong>Autoptimize</strong>. If you want to use %1$s’s lazyload, disable this option in Autoptimize.', 'rocket' ), WP_ROCKET_PLUGIN_NAME ) : '',
+					'helper'      => rocket_maybe_disable_lazyload() || rocket_maybe_disable_lazyload_smush() ? sprintf( __( 'Lazyload is currently activated in <strong>%2$s</strong>. If you want to use %1$s’s lazyload, disable this option in %2$s.', 'rocket' ), WP_ROCKET_PLUGIN_NAME, $rocket_maybe_disable_lazyload_plugins ) : '',
 				],
 				'emoji_section'    => [
 					'title'       => __( 'Emoji 👻', 'rocket' ),
@@ -936,10 +944,10 @@ class Page {
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 					'container_class'   => [
-						( rocket_avada_maybe_disable_lazyload() || rocket_maybe_disable_lazyload() ) ? 'wpr-isDisabled' : '',
+						( rocket_avada_maybe_disable_lazyload() || rocket_maybe_disable_lazyload() || rocket_maybe_disable_lazyload_smush() ) ? 'wpr-isDisabled' : '',
 					],
 					'input_attr'        => [
-						'disabled' => ( rocket_avada_maybe_disable_lazyload() || rocket_maybe_disable_lazyload() ) ? 1 : 0,
+						'disabled' => ( rocket_avada_maybe_disable_lazyload() || rocket_maybe_disable_lazyload() || rocket_maybe_disable_lazyload_smush() ) ? 1 : 0,
 					],
 					'description'       => rocket_avada_maybe_disable_lazyload() ? _x( 'Lazyload for images is currently activated in Avada. If you want to use WP Rocket’s LazyLoad, disable this option in Avada.', 'Avada', 'rocket' ) : '',
 				],
