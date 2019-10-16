@@ -23,7 +23,7 @@ function rocket_need_api_key() {
 		echo esc_html( _n( 'There seems to be an issue validating your license. Please see the error message below.', 'There seems to be an issue validating your license. You can see the error messages below.', count( $errors ), 'rocket' ) );
 		?>
 		</p>
-		<?php echo $message; ?>
+		<?php echo wp_kses_post( $message ); ?>
 	</div>
 	<?php
 }
@@ -98,7 +98,7 @@ function rocket_dismiss_box( $function ) {
  *
  * @since 2.1
  */
-function create_rocket_uniqid() {
+function create_rocket_uniqid() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	return str_replace( '.', '', uniqid( '', true ) );
 }
 
@@ -150,7 +150,7 @@ function rocket_is_ssl_website() {
  *
  * @since 2.7
  */
-function get_rocket_documentation_url() {
+function get_rocket_documentation_url() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$langs  = array(
 		'fr_FR' => 'fr.',
 	);
@@ -169,7 +169,7 @@ function get_rocket_documentation_url() {
  *
  * @return string URL in the correct language
  */
-function get_rocket_faq_url() {
+function get_rocket_faq_url() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$langs  = [
 		'de' => 1,
 		'es' => 1,
@@ -387,7 +387,7 @@ function rocket_data_collection_preview_table() {
 	$html .= sprintf( '<strong>%s</strong>', __( 'WordPress multisite:', 'rocket' ) );
 	$html .= '</td>';
 	$html .= '<td>';
-	$html .= sprintf( '<code>%s</code>', var_export( $data['multisite'], true ) );
+	$html .= sprintf( '<code>%s</code>', $data['multisite'] ? 'true' : 'false' );
 	$html .= '</td>';
 	$html .= '</tr>';
 

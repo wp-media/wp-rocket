@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * @param bool   $default (default: false) The default value of option.
  * @return mixed The option value
  */
-function get_rocket_option( $option, $default = false ) {
+function get_rocket_option( $option, $default = false ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$options_api = new Options( 'wp_rocket_' );
 	$options     = new Options_Data( $options_api->get( 'settings', array() ) );
 
@@ -32,7 +32,7 @@ function get_rocket_option( $option, $default = false ) {
  * @param  string $value  The value of the option.
  * @return void
  */
-function update_rocket_option( $key, $value ) {
+function update_rocket_option( $key, $value ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$options_api = new Options( 'wp_rocket_' );
 	$options     = new Options_Data( $options_api->get( 'settings', array() ) );
 
@@ -83,7 +83,7 @@ function rocket_is_plugin_active_for_network( $plugin ) {
  * @param  string $option  The option name (lazyload, css, js, cdn).
  * @return bool            True if the option is deactivated
  */
-function is_rocket_post_excluded_option( $option ) {
+function is_rocket_post_excluded_option( $option ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	global $post;
 
 	if ( ! is_object( $post ) ) {
@@ -108,7 +108,7 @@ function is_rocket_post_excluded_option( $option ) {
  *
  * @return bool True if option is activated
  */
-function is_rocket_cache_mobile() {
+function is_rocket_cache_mobile() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	return get_rocket_option( 'cache_mobile', false );
 }
 
@@ -119,7 +119,7 @@ function is_rocket_cache_mobile() {
  *
  * @return bool True if option is activated and if mobile caching is enabled
  */
-function is_rocket_generate_caching_mobile_files() {
+function is_rocket_generate_caching_mobile_files() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	return get_rocket_option( 'cache_mobile', false ) && get_rocket_option( 'do_caching_mobile_files', false );
 }
 
@@ -195,7 +195,7 @@ function rocket_get_ignored_parameters() {
  *
  * @return string A pipe separated list of rejected uri.
  */
-function get_rocket_cache_reject_uri() {
+function get_rocket_cache_reject_uri() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	static $uris;
 
 	if ( $uris ) {
@@ -272,7 +272,7 @@ function get_rocket_cache_reject_uri() {
  *
  * @return string A pipe separated list of rejected cookies.
  */
-function get_rocket_cache_reject_cookies() {
+function get_rocket_cache_reject_cookies() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$logged_in_cookie = explode( COOKIEHASH, LOGGED_IN_COOKIE );
 	$logged_in_cookie = array_map( 'preg_quote', $logged_in_cookie );
 	$logged_in_cookie = implode( '.+', $logged_in_cookie );
@@ -305,7 +305,7 @@ function get_rocket_cache_reject_cookies() {
  *
  * @return string A pipe separated list of mandatory cookies.
  */
-function get_rocket_cache_mandatory_cookies() {
+function get_rocket_cache_mandatory_cookies() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$cookies = [];
 
 	/**
@@ -329,7 +329,7 @@ function get_rocket_cache_mandatory_cookies() {
  *
  * @return array List of dynamic cookies.
  */
-function get_rocket_cache_dynamic_cookies() {
+function get_rocket_cache_dynamic_cookies() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$cookies = [];
 
 	/**
@@ -353,7 +353,7 @@ function get_rocket_cache_dynamic_cookies() {
  *
  * @return string A pipe separated list of rejected User-Agent.
  */
-function get_rocket_cache_reject_ua() {
+function get_rocket_cache_reject_ua() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$ua   = get_rocket_option( 'cache_reject_ua', [] );
 	$ua[] = 'facebookexternalhit';
 
@@ -379,7 +379,7 @@ function get_rocket_cache_reject_ua() {
  *
  * @return array List of query strings which can be cached.
  */
-function get_rocket_cache_query_string() {
+function get_rocket_cache_query_string() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$query_strings = get_rocket_option( 'cache_query_strings', [] );
 
 	/**
@@ -404,7 +404,7 @@ function get_rocket_cache_query_string() {
  *
  * @return array An array of URLs for the JS files to be excluded.
  */
-function get_rocket_exclude_defer_js() {
+function get_rocket_exclude_defer_js() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$exclude_defer_js = [
 		'gist.github.com',
 		'content.jwplatform.com',
@@ -449,7 +449,7 @@ function get_rocket_exclude_defer_js() {
  *
  * @return array An array of URLs for the CSS files to be excluded.
  */
-function get_rocket_exclude_async_css() {
+function get_rocket_exclude_async_css() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	/**
 	 * Filter list of async CSS files
 	 *
@@ -509,10 +509,13 @@ function rocket_check_key() {
 	);
 
 	if ( is_wp_error( $response ) ) {
-		Logger::error( 'License validation failed.', [
-			'license validation process',
-			'request_error' => $response->get_error_messages(),
-		] );
+		Logger::error(
+			'License validation failed.',
+			[
+				'license validation process',
+				'request_error' => $response->get_error_messages(),
+			]
+		);
 
 		set_transient( 'rocket_check_key_errors', $response->get_error_messages() );
 
@@ -578,13 +581,13 @@ function rocket_check_key() {
 	if ( ! $json->success ) {
 		$messages = array(
 			// Translators: %1$s = opening link tag, %2$s = closing link tag.
-			'BAD_LICENSE' => __( 'Your license is not valid.', 'rocket' ) . '<br>'  . sprintf( __( 'Make sure you have an active %1$sWP Rocket license%2$s.', 'rocket' ), '<a href="https://wp-rocket.me/" rel="noopener noreferrer" target="_blank">', '</a>' ),
+			'BAD_LICENSE' => __( 'Your license is not valid.', 'rocket' ) . '<br>' . sprintf( __( 'Make sure you have an active %1$sWP Rocket license%2$s.', 'rocket' ), '<a href="https://wp-rocket.me/" rel="noopener noreferrer" target="_blank">', '</a>' ),
 			// Translators: %1$s = opening link tag, %2$s = closing link tag, %3$s = opening link tag.
-			'BAD_NUMBER'  => __( 'You have added as many sites as your current license allows.', 'rocket' ) . '<br>' .  sprintf( __( 'Upgrade your %1$saccount%2$s or %3$stransfer your license%2$s to this domain.', 'rocket' ), '<a href="https://wp-rocket.me/account/" rel="noopener noreferrer" target=_"blank">', '</a>', '<a href="https://docs.wp-rocket.me/article/28-transfering-your-license-to-another-site" rel="noopener noreferrer" target=_"blank">' ),
+			'BAD_NUMBER'  => __( 'You have added as many sites as your current license allows.', 'rocket' ) . '<br>' . sprintf( __( 'Upgrade your %1$saccount%2$s or %3$stransfer your license%2$s to this domain.', 'rocket' ), '<a href="https://wp-rocket.me/account/" rel="noopener noreferrer" target=_"blank">', '</a>', '<a href="https://docs.wp-rocket.me/article/28-transfering-your-license-to-another-site" rel="noopener noreferrer" target=_"blank">' ),
 			// Translators: %1$s = opening link tag, %2$s = closing link tag.
 			'BAD_SITE'    => __( 'This website is not allowed.', 'rocket' ) . '<br>' . sprintf( __( 'Please %1$scontact support%2$s.', 'rocket' ), '<a href="https://wp-rocket.me/support/" rel="noopener noreferrer" target=_"blank">', '</a>' ),
 			// Translators: %1$s = opening link tag, %2$s = closing link tag.
-			'BAD_KEY'     => __( 'This license key is not recognized.', 'rocket' ) . '<ul><li>' . sprintf( __( 'Login to your WP Rocket %1$saccount%2$s', 'rocket' ), '<a href="https://wp-rocket.me/account/" rel="noopener noreferrer" target=_"blank">', '</a>' ) . '</li><li>' . __( 'Download the zip file', 'rocket' ) . '<li></li>' . __( 'Reinstall', 'rocket' ) . '</li></ul>' . sprintf( __( 'If the issue persists, please %1$scontact support%2$s.', 'rocket'), '<a href="https://wp-rocket.me/support/" rel="noopener noreferrer" target=_"blank">', '</a>' ),
+			'BAD_KEY'     => __( 'This license key is not recognized.', 'rocket' ) . '<ul><li>' . sprintf( __( 'Login to your WP Rocket %1$saccount%2$s', 'rocket' ), '<a href="https://wp-rocket.me/account/" rel="noopener noreferrer" target=_"blank">', '</a>' ) . '</li><li>' . __( 'Download the zip file', 'rocket' ) . '<li></li>' . __( 'Reinstall', 'rocket' ) . '</li></ul>' . sprintf( __( 'If the issue persists, please %1$scontact support%2$s.', 'rocket' ), '<a href="https://wp-rocket.me/support/" rel="noopener noreferrer" target=_"blank">', '</a>' ),
 		);
 
 		$rocket_options['secret_key'] = '';
@@ -637,7 +640,7 @@ function rocket_is_subfolder_install() {
 	if ( is_multisite() ) {
 		$subfolder_install = ! is_subdomain_install();
 	} elseif ( ! is_null( $wpdb->sitemeta ) ) {
-		$subfolder_install = ! $wpdb->get_var( "SELECT meta_value FROM $wpdb->sitemeta WHERE site_id = 1 AND meta_key = 'subdomain_install'" );
+		$subfolder_install = ! $wpdb->get_var( "SELECT meta_value FROM $wpdb->sitemeta WHERE site_id = 1 AND meta_key = 'subdomain_install'" );  // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 	} else {
 		$subfolder_install = false;
 	}

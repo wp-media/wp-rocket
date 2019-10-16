@@ -9,7 +9,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * @param int $post_id The post ID.
  * @return array $urls List of taxonomies URLs
  */
-function get_rocket_post_terms_urls( $post_id ) {
+function get_rocket_post_terms_urls( $post_id ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$urls       = array();
 	$taxonomies = get_object_taxonomies( get_post_type( $post_id ), 'objects' );
 
@@ -52,7 +52,7 @@ function get_rocket_post_terms_urls( $post_id ) {
  * @param int $post_id The post ID.
  * @return array $urls List of dates URLs
  */
-function get_rocket_post_dates_urls( $post_id ) {
+function get_rocket_post_dates_urls( $post_id ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	// Get the day and month of the post.
 	$date = explode( '-', get_the_time( 'Y-m-d', $post_id ) );
 
@@ -90,7 +90,7 @@ function get_rocket_post_dates_urls( $post_id ) {
  * @param string $name The post name.
  * @return string The permalink
  */
-function get_rocket_sample_permalink( $id, $title = null, $name = null ) {
+function get_rocket_sample_permalink( $id, $title = null, $name = null ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$post = get_post( $id );
 	if ( ! $post ) {
 		return array( '', '' );
@@ -131,7 +131,7 @@ function get_rocket_sample_permalink( $id, $title = null, $name = null ) {
 		$uri = untrailingslashit( $uri );
 
 		/** This filter is documented in wp-admin/edit-tag-form.php */
-		$uri = apply_filters( 'editable_slug', $uri, $post );
+		$uri = apply_filters( 'editable_slug', $uri, $post ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 		if ( ! empty( $uri ) ) {
 			$uri .= '/';
 		}
@@ -139,7 +139,7 @@ function get_rocket_sample_permalink( $id, $title = null, $name = null ) {
 	}
 
 	/** This filter is documented in wp-admin/edit-tag-form.php */
-	$permalink         = array( $permalink, apply_filters( 'editable_slug', $post->post_name, $post ) );
+	$permalink         = array( $permalink, apply_filters( 'editable_slug', $post->post_name, $post ) ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$post->post_status = $original_status;
 	$post->post_date   = $original_date;
 	$post->post_name   = $original_name;

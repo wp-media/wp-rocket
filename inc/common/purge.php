@@ -8,8 +8,8 @@ add_action( 'profile_update', 'rocket_clean_domain' );  // When a user is update
 add_action( 'deleted_user', 'rocket_clean_domain' );  // When a user is deleted.
 add_action( 'wp_update_nav_menu', 'rocket_clean_domain' );  // When a custom menu is update.
 add_action( 'update_option_sidebars_widgets', 'rocket_clean_domain' );  // When you change the order of widgets.
-add_action( 'update_option_category_base', 'rocket_clean_domain' );  // When category permalink prefix is update.
-add_action( 'update_option_tag_base', 'rocket_clean_domain' );  // When tag permalink prefix is update.
+add_action( 'update_option_category_base', 'rocket_clean_domain' );  // When category permalink is updated.
+add_action( 'update_option_tag_base', 'rocket_clean_domain' );  // When tag permalink is updated.
 add_action( 'permalink_structure_changed', 'rocket_clean_domain' );  // When permalink structure is update.
 add_action( 'create_term', 'rocket_clean_domain' );  // When a term is created.
 add_action( 'edited_terms', 'rocket_clean_domain' );  // When a term is updated.
@@ -204,7 +204,7 @@ function rocket_clean_post( $post_id, $post = null ) {
 	 * @param array   $purge_urls URLs cache files to remove
 	 * @param string  $lang       The post language
 	 */
-	do_action( 'before_rocket_clean_post', $post, $purge_urls, $lang );
+	do_action( 'before_rocket_clean_post', $post, $purge_urls, $lang ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 	/**
 	 * Filter URLs cache files to remove
@@ -233,7 +233,7 @@ function rocket_clean_post( $post_id, $post = null ) {
 	 * @param array   $purge_urls URLs cache files to remove
 	 * @param string  $lang       The post language
 	 */
-	do_action( 'after_rocket_clean_post', $post, $purge_urls, $lang );
+	do_action( 'after_rocket_clean_post', $post, $purge_urls, $lang ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 }
 add_action( 'wp_trash_post',           'rocket_clean_post' );
 add_action( 'delete_post',             'rocket_clean_post' );
@@ -307,16 +307,17 @@ add_filter( 'rocket_post_purge_urls', 'rocket_post_purge_urls_for_qtranslate' );
  * @since 1.3.0 Compatibility with WPML
  * @since 1.0
  */
-function do_admin_post_rocket_purge_cache() {
+function do_admin_post_rocket_purge_cache() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	if ( isset( $_GET['type'], $_GET['_wpnonce'] ) ) {
+		$type = sanitize_key( $_GET['type'] );
 
-		$_type     = explode( '-', $_GET['type'] );
+		$_type     = explode( '-', $type );
 		$_type     = reset( $_type );
-		$_id       = explode( '-', $_GET['type'] );
+		$_id       = explode( '-', $type );
 		$_id       = end( $_id );
-		$_taxonomy = isset( $_GET['taxonomy'] ) ? $_GET['taxonomy'] : false;
+		$_taxonomy = isset( $_GET['taxonomy'] ) ? sanitize_title( wp_unslash( $_GET['taxonomy'] ) ) : false;
 
-		if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'purge_cache_' . $_GET['type'] ) ) {
+		if ( ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'purge_cache_' . $type ) ) {
 			wp_nonce_ays( '' );
 		}
 
@@ -427,8 +428,8 @@ add_action( 'admin_post_purge_cache', 'do_admin_post_rocket_purge_cache' );
  *
  * @since 2.7
  */
-function do_admin_post_rocket_purge_opcache() {
-	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'rocket_purge_opcache' ) ) {
+function do_admin_post_rocket_purge_opcache() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'rocket_purge_opcache' ) ) {
 		wp_nonce_ays( '' );
 	}
 
@@ -462,8 +463,8 @@ add_action( 'admin_post_rocket_purge_opcache', 'do_admin_post_rocket_purge_opcac
  *
  * @since 2.5
  */
-function do_admin_post_rocket_purge_cloudflare() {
-	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'rocket_purge_cloudflare' ) ) {
+function do_admin_post_rocket_purge_cloudflare() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'rocket_purge_cloudflare' ) ) {
 		wp_nonce_ays( '' );
 	}
 

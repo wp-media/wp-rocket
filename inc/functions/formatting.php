@@ -26,28 +26,28 @@ function rocket_clean_exclude_file( $file ) {
  * @since 3.4.2
  * @author Soponar Cristina
  *
- * @param  string       $path URL which needs to be cleaned
+ * @param  string $path URL which needs to be cleaned.
  * @return bool\string  false if $path is empty or cleaned URL
  */
 function rocket_clean_wildcards( $path ) {
-    if ( ! $path ) {
-        return false;
-    }
+	if ( ! $path ) {
+		return false;
+	}
 
-    $path_components = explode( '/', $path );
-    $arr             = [
-            ".*"   => "(.*)",
-            "*"    => "(.*)",
-            '(*)'  => '(.*)',
-            "(.*)" => "(.*)",
+	$path_components = explode( '/', $path );
+	$arr             = [
+		'.*'   => '(.*)',
+		'*'    => '(.*)',
+		'(*)'  => '(.*)',
+		'(.*)' => '(.*)',
 	];
 
-    foreach ( $path_components as &$path_component ) {
-        $path_component = strtr( $path_component, $arr );
-    }
-    $path = implode( '/', $path_components );
+	foreach ( $path_components as &$path_component ) {
+		$path_component = strtr( $path_component, $arr );
+	}
+	$path = implode( '/', $path_components );
 
-    return $path;
+	return $path;
 }
 
 
@@ -334,7 +334,7 @@ function rocket_get_domain( $url ) {
  * @param string $url The URL to parse.
  * @return array Components of an URL
  */
-function get_rocket_parse_url( $url ) {
+function get_rocket_parse_url( $url ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	if ( ! is_string( $url ) ) {
 		return;
 	}

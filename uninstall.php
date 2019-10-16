@@ -38,18 +38,18 @@ wp_clear_scheduled_hook( 'rocket_cache_dir_size_check' );
 function rocket_uninstall_rrmdir( $dir ) {
 
 	if ( ! is_dir( $dir ) ) {
-		@unlink( $dir );
+		@unlink( $dir ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 		return;
 	}
 
 	$globs = glob( $dir . '/*', GLOB_NOSORT );
 	if ( $globs ) {
 		foreach ( $globs as $file ) {
-			is_dir( $file ) ? rocket_uninstall_rrmdir( $file ) : @unlink( $file );
+			is_dir( $file ) ? rocket_uninstall_rrmdir( $file ) : @unlink( $file ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 		}
 	}
 
-	@rmdir( $dir );
+	@rmdir( $dir ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 
 }
 

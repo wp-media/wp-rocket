@@ -10,7 +10,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * @param  bool $remove_rules True to remove WPR rules, false to renew them. Default is false.
  * @return bool               True on success, false otherwise.
  */
-function flush_rocket_htaccess( $remove_rules = false ) {
+function flush_rocket_htaccess( $remove_rules = false ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	global $is_apache;
 
 	/**
@@ -97,13 +97,14 @@ function rocket_htaccess_rules_test( $rules_name ) {
 	 * @param array $args Array of argument for the request.
 	 */
 	$request_args = apply_filters(
-		'rocket_htaccess_rules_test_args', array(
+		'rocket_htaccess_rules_test_args',
+		[
 			'redirection' => 0,
 			'timeout'     => 5,
-			'sslverify'   => apply_filters( 'https_local_ssl_verify', false ),
+			'sslverify'   => apply_filters( 'https_local_ssl_verify', false ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 			'user-agent'  => 'wprocketbot',
 			'cookies'     => $_COOKIE,
-		)
+		]
 	);
 
 	$response = wp_remote_get( site_url( WP_ROCKET_URL . 'tests/' . $rules_name . '/index.html' ), $request_args );
@@ -122,7 +123,7 @@ function rocket_htaccess_rules_test( $rules_name ) {
  *
  * @return string $marker Rules that will be printed
  */
-function get_rocket_htaccess_marker() {
+function get_rocket_htaccess_marker() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	// Recreate WP Rocket marker.
 	$marker = '# BEGIN WP Rocket v' . WP_ROCKET_VERSION . PHP_EOL;
 
@@ -133,7 +134,7 @@ function get_rocket_htaccess_marker() {
 	 *
 	 * @param string $before_marker The content of all rules.
 	*/
-	$marker .= apply_filters( 'before_rocket_htaccess_rules', '' );
+	$marker .= apply_filters( 'before_rocket_htaccess_rules', '' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 	$marker .= get_rocket_htaccess_charset();
 	$marker .= get_rocket_htaccess_etag();
@@ -153,7 +154,7 @@ function get_rocket_htaccess_marker() {
 	 *
 	 * @param string $after_marker The content of all rules.
 	*/
-	$marker .= apply_filters( 'after_rocket_htaccess_rules', '' );
+	$marker .= apply_filters( 'after_rocket_htaccess_rules', '' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 	$marker .= '# END WP Rocket' . PHP_EOL;
 
@@ -176,7 +177,7 @@ function get_rocket_htaccess_marker() {
  *
  * @return string $rules Rules that will be printed
  */
-function get_rocket_htaccess_mod_rewrite() {
+function get_rocket_htaccess_mod_rewrite() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	// No rewrite rules for multisite.
 	if ( is_multisite() ) {
 		return;
@@ -195,8 +196,8 @@ function get_rocket_htaccess_mod_rewrite() {
 	$site_root = isset( $site_root ) ? trailingslashit( $site_root ) : '';
 
 	// Get cache root.
-	if ( strpos( ABSPATH, WP_ROCKET_CACHE_PATH ) === false ) {
-		$cache_root = str_replace( $_SERVER['DOCUMENT_ROOT'] , '', WP_ROCKET_CACHE_PATH );
+	if ( strpos( ABSPATH, WP_ROCKET_CACHE_PATH ) === false && isset( $_SERVER['DOCUMENT_ROOT'] ) ) {
+		$cache_root = str_replace( sanitize_text_field( wp_unslash( $_SERVER['DOCUMENT_ROOT'] ) ), '', WP_ROCKET_CACHE_PATH );
 	} else {
 		$cache_root = $site_root . str_replace( ABSPATH, '', WP_ROCKET_CACHE_PATH );
 	}
@@ -217,7 +218,7 @@ function get_rocket_htaccess_mod_rewrite() {
 	 *
 	 * @param bool true will force the path to be full.
 	 */
-	$is_1and1_or_force = apply_filters( 'rocket_force_full_path', strpos( $_SERVER['DOCUMENT_ROOT'], '/kunden/' ) === 0 );
+	$is_1and1_or_force = apply_filters( 'rocket_force_full_path', strpos( sanitize_text_field( wp_unslash( $_SERVER['DOCUMENT_ROOT'] ) ), '/kunden/' ) === 0 );
 
 	$rules      = '';
 	$gzip_rules = '';
@@ -229,6 +230,7 @@ function get_rocket_htaccess_mod_rewrite() {
 		$cache_dir_path = '%{DOCUMENT_ROOT}/' . ltrim( $cache_root, '/' ) . $http_host . '%{REQUEST_URI}';
 	}
 
+	// @codingStandardsIgnoreStart
 	/**
 	 * Allow to serve gzip cache file
 	 *
@@ -300,13 +302,13 @@ function get_rocket_htaccess_mod_rewrite() {
  *
  * @return string $rules Rules that will be printed
  */
-function get_rocket_htaccess_mobile_rewritecond() {
+function get_rocket_htaccess_mobile_rewritecond() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	// No rewrite rules for multisite.
 	if ( is_multisite() ) {
 		return;
 	}
 
-	$rules = 'RewriteCond %{HTTP:X-Wap-Profile} !^[a-z0-9\"]+ [NC]' . PHP_EOL;
+	$rules  = 'RewriteCond %{HTTP:X-Wap-Profile} !^[a-z0-9\"]+ [NC]' . PHP_EOL;
 	$rules .= 'RewriteCond %{HTTP:Profile} !^[a-z0-9\"]+ [NC]' . PHP_EOL;
 	$rules .= 'RewriteCond %{HTTP_USER_AGENT} !^.*(2.0\ MMP|240x320|400X240|AvantGo|BlackBerry|Blazer|Cellphone|Danger|DoCoMo|Elaine/3.0|EudoraWeb|Googlebot-Mobile|hiptop|IEMobile|KYOCERA/WX310K|LG/U990|MIDP-2.|MMEF20|MOT-V|NetFront|Newt|Nintendo\ Wii|Nitro|Nokia|Opera\ Mini|Palm|PlayStation\ Portable|portalmmm|Proxinet|ProxiNet|SHARP-TQ-GX10|SHG-i900|Small|SonyEricsson|Symbian\ OS|SymbianOS|TS21i-10|UP.Browser|UP.Link|webOS|Windows\ CE|WinWAP|YahooSeeker/M1A1-R2D2|iPhone|iPod|Android|BlackBerry9530|LG-TU915\ Obigo|LGE\ VX|webOS|Nokia5800).* [NC]' . PHP_EOL;
 	$rules .= 'RewriteCond %{HTTP_USER_AGENT} !^(w3c\ |w3c-|acs-|alav|alca|amoi|audi|avan|benq|bird|blac|blaz|brew|cell|cldc|cmd-|dang|doco|eric|hipt|htc_|inno|ipaq|ipod|jigs|kddi|keji|leno|lg-c|lg-d|lg-g|lge-|lg/u|maui|maxo|midp|mits|mmef|mobi|mot-|moto|mwbp|nec-|newt|noki|palm|pana|pant|phil|play|port|prox|qwap|sage|sams|sany|sch-|sec-|send|seri|sgh-|shar|sie-|siem|smal|smar|sony|sph-|symb|t-mo|teli|tim-|tosh|tsm-|upg1|upsi|vk-v|voda|wap-|wapa|wapi|wapp|wapr|webc|winw|winw|xda\ |xda-).* [NC]' . PHP_EOL;
@@ -331,7 +333,7 @@ function get_rocket_htaccess_mobile_rewritecond() {
  *
  * @return string $rules Rules that will be printed
  */
-function get_rocket_htaccess_ssl_rewritecond() {
+function get_rocket_htaccess_ssl_rewritecond() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$rules  = 'RewriteCond %{HTTPS} on [OR]' . PHP_EOL;
 	$rules .= 'RewriteCond %{SERVER_PORT} ^443$ [OR]' . PHP_EOL;
 	$rules .= 'RewriteCond %{HTTP:X-Forwarded-Proto} https' . PHP_EOL;
@@ -385,7 +387,7 @@ function rocket_get_webp_rewritecond( $cache_dir_path ) {
  *
  * @return string $rules Rules that will be printed
  */
-function get_rocket_htaccess_mod_deflate() {
+function get_rocket_htaccess_mod_deflate() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$rules = '# Gzip compression' . PHP_EOL;
 	$rules .= '<IfModule mod_deflate.c>' . PHP_EOL;
 		$rules .= '# Active compression' . PHP_EOL;
@@ -443,7 +445,7 @@ function get_rocket_htaccess_mod_deflate() {
  *
  * @return string $rules Rules that will be printed
  */
-function get_rocket_htaccess_mod_expires() {
+function get_rocket_htaccess_mod_expires() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$rules = <<<HTACCESS
 # Expires headers (for better cache control)
 <IfModule mod_expires.c>
@@ -507,7 +509,7 @@ HTACCESS;
  *
  * @return string $rules Rules that will be printed
  */
-function get_rocket_htaccess_charset() {
+function get_rocket_htaccess_charset() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	// Get charset of the blog.
 	$charset = preg_replace( '/[^a-zA-Z0-9_\-\.:]+/', '', get_bloginfo( 'charset', 'display' ) );
 
@@ -537,7 +539,7 @@ function get_rocket_htaccess_charset() {
  *
  * @return string $rules Rules that will be printed
  */
-function get_rocket_htaccess_files_match() {
+function get_rocket_htaccess_files_match() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$rules = '<IfModule mod_alias.c>' . PHP_EOL;
 		$rules .= '<FilesMatch "\.(html|htm|rtf|rtx|txt|xsd|xsl|xml)$">' . PHP_EOL;
 			$rules .= '<IfModule mod_headers.c>' . PHP_EOL;
@@ -574,7 +576,7 @@ function get_rocket_htaccess_files_match() {
  *
  * @return string $rules Rules that will be printed
  */
-function get_rocket_htaccess_etag() {
+function get_rocket_htaccess_etag() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$rules  = '# FileETag None is not enough for every server.' . PHP_EOL;
 	$rules .= '<IfModule mod_headers.c>' . PHP_EOL;
 	$rules .= 'Header unset ETag' . PHP_EOL;
@@ -602,7 +604,7 @@ function get_rocket_htaccess_etag() {
  *
  * @return string $rules Rules that will be printed
  */
-function get_rocket_htaccess_web_fonts_access() {
+function get_rocket_htaccess_web_fonts_access() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	if ( ! get_rocket_option( 'cdn', false ) ) {
 		return;
 	}
@@ -624,7 +626,7 @@ function get_rocket_htaccess_web_fonts_access() {
 			$rules .= 'Header set Access-Control-Allow-Origin "*"' . PHP_EOL;
 		$rules .= '</IfModule>' . PHP_EOL;
 	$rules .= '</FilesMatch>' . PHP_EOL . PHP_EOL;
-
+	// @codingStandardsIgnoreEnd
 	/**
 	 * Filter rules to Cross-origin fonts sharing
 	 *

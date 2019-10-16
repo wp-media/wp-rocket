@@ -7,9 +7,9 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * @since 3.4.1
  * @author Soponar Cristina
  *
- * @param string $cf_email   - Cloudflare email
- * @param string $cf_api_key - Cloudflare API key
- * @param string $cf_zone_id - Cloudflare zone ID
+ * @param string $cf_email   - Cloudflare email.
+ * @param string $cf_api_key - Cloudflare API key.
+ * @param string $cf_zone_id - Cloudflare zone ID.
  * @return Object            - true if credentials are ok, WP_Error otherwise
  */
 function rocket_is_api_keys_valid_cloudflare( $cf_email, $cf_api_key, $cf_zone_id ) {
@@ -41,15 +41,15 @@ function rocket_is_api_keys_valid_cloudflare( $cf_email, $cf_api_key, $cf_zone_i
 
 	try {
 		$cf_api_instance = new Cloudflare\Api( $cf_email, $cf_api_key );
-		$cf_user         = $cf_api_instance->get('user/');
-		$cf_zone         = $cf_api_instance->get('zones/'.$cf_zone_id);
+		$cf_user         = $cf_api_instance->get( 'user/' );
+		$cf_zone         = $cf_api_instance->get( 'zones/' . $cf_zone_id );
 
 		if ( ! isset( $cf_zone->success ) || empty( $cf_zone->success ) ) {
 			return new WP_Error( 'cloudflare_invalid_auth', $cf_zone->errors[0]->message );
 		}
 
 		if ( true === $cf_zone->success ) {
-		    return true;
+			return true;
 		}
 	} catch ( Exception $e ) {
 		return new WP_Error( 'cloudflare_invalid_auth', $e->getMessage() );
@@ -64,7 +64,7 @@ function rocket_is_api_keys_valid_cloudflare( $cf_email, $cf_api_key, $cf_zone_i
  *
  * @return Object Cloudflare\Api instance if crendentials are set, WP_Error otherwise
  */
-function get_rocket_cloudflare_api_instance() {
+function get_rocket_cloudflare_api_instance() {  // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	if ( ! function_exists( 'curl_init' ) || ! function_exists( 'curl_exec' ) ) {
 		return new WP_Error( 'curl_disabled', __( 'Curl functions are disabled, they are required for the Cloudflare Add-on to work correctly.', 'rocket' ) );
 	}
@@ -89,7 +89,7 @@ function get_rocket_cloudflare_api_instance() {
  *
  * @return Object Cloudflare instance & zone_id if credentials are correct, WP_Error otherwise
  */
-function get_rocket_cloudflare_instance() {
+function get_rocket_cloudflare_instance() {  // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$cf_api_instance = get_rocket_cloudflare_api_instance();
 	if ( is_wp_error( $cf_api_instance ) ) {
 		return $cf_api_instance;
@@ -171,7 +171,7 @@ function rocket_cloudflare_valid_auth() {
  *
  * @return Array List of zones or default no domain
  */
-function get_rocket_cloudflare_zones() {
+function get_rocket_cloudflare_zones() {  // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$cf_api_instance = get_rocket_cloudflare_api_instance();
 	$domains         = array(
 		'' => __( 'Choose a domain from the list', 'rocket' ),
@@ -210,7 +210,7 @@ function get_rocket_cloudflare_zones() {
  *
  * @return mixed bool|Array Array of Cloudflare settings, false if any error connection to Cloudflare
  */
-function get_rocket_cloudflare_settings() {
+function get_rocket_cloudflare_settings() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	if ( is_wp_error( $GLOBALS['rocket_cloudflare'] ) ) {
 		return $GLOBALS['rocket_cloudflare'];
 	}
@@ -249,7 +249,7 @@ function get_rocket_cloudflare_settings() {
  * @throws Exception If any error occurs when doing the API request.
  * @return mixed Object|String Mode value if the update is successful, WP_Error otherwise
  */
-function set_rocket_cloudflare_devmode( $mode ) {
+function set_rocket_cloudflare_devmode( $mode ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	if ( is_wp_error( $GLOBALS['rocket_cloudflare'] ) ) {
 		return $GLOBALS['rocket_cloudflare'];
 	}
@@ -294,7 +294,7 @@ function set_rocket_cloudflare_devmode( $mode ) {
  * @throws Exception If any error occurs when doing the API request.
  * @return mixed Object|String Mode value if the update is successful, WP_Error otherwise
  */
-function set_rocket_cloudflare_cache_level( $mode ) {
+function set_rocket_cloudflare_cache_level( $mode ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	if ( is_wp_error( $GLOBALS['rocket_cloudflare'] ) ) {
 		return $GLOBALS['rocket_cloudflare'];
 	}
@@ -329,7 +329,7 @@ function set_rocket_cloudflare_cache_level( $mode ) {
  * @throws Exception If any error occurs when doing the API request.
  * @return mixed Object|String Mode value if the update is successful, WP_Error otherwise
  */
-function set_rocket_cloudflare_minify( $mode ) {
+function set_rocket_cloudflare_minify( $mode ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	if ( is_wp_error( $GLOBALS['rocket_cloudflare'] ) ) {
 		return $GLOBALS['rocket_cloudflare'];
 	}
@@ -370,7 +370,7 @@ function set_rocket_cloudflare_minify( $mode ) {
  * @throws Exception If any error occurs when doing the API request.
  * @return mixed Object|String Mode value if the update is successful, WP_Error otherwise
  */
-function set_rocket_cloudflare_rocket_loader( $mode ) {
+function set_rocket_cloudflare_rocket_loader( $mode ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	if ( is_wp_error( $GLOBALS['rocket_cloudflare'] ) ) {
 		return $GLOBALS['rocket_cloudflare'];
 	}
@@ -404,7 +404,7 @@ function set_rocket_cloudflare_rocket_loader( $mode ) {
  * @throws Exception If any error occurs when doing the API request.
  * @return mixed Object|String Mode value if the update is successful, WP_Error otherwise
  */
-function set_rocket_cloudflare_browser_cache_ttl( $mode ) {
+function set_rocket_cloudflare_browser_cache_ttl( $mode ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	if ( is_wp_error( $GLOBALS['rocket_cloudflare'] ) ) {
 		return $GLOBALS['rocket_cloudflare'];
 	}
@@ -538,7 +538,7 @@ function rocket_get_cloudflare_ips() {
  * @since 2.9
  * @author Remy Perona
  */
-function do_rocket_deactivate_cloudflare_devmode() {
+function do_rocket_deactivate_cloudflare_devmode() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$options                       = get_option( WP_ROCKET_SLUG );
 	$options['cloudflare_devmode'] = 'off';
 	update_option( WP_ROCKET_SLUG, $options );
