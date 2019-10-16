@@ -2,7 +2,7 @@
 
 ### Is it safe to release Action Scheduler in my plugin? Won't its functions conflict with another copy of the library?
 
-Action Scheduler is designed to be used and released in plugins. It avoids redeclaring public API functions when more than one copy of the library is being loaded by different plugins. It will also load only the most recent version of itself (by checking registered versions after all plugins are loaded on the `'plugins_loaded'` hook).
+Action Scheduler is designed to be used and released in plugins. It avoids redeclaring public API functions when more than one copy of the library is being loaded by different plugins. It will also load only the most recent version of itself (by checking registered versions after all plugins are loaded on the `'init'` hook with priority `-10`).
 
 To use it in your plugin, simply require the `action-scheduler/action-scheduler.php` file. Action Scheduler will take care of the rest.
 
