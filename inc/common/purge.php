@@ -478,12 +478,12 @@ function do_admin_post_rocket_purge_cloudflare() {
 		$cf_purge_result = [
 			'result'  => 'error',
 			// translators: %s = CloudFare API return message.
-			'message' => sprintf( __( 'Cloudflare cache purge error: %s', 'rocket' ), $cf_purge->get_error_message() ),
+			'message' => sprintf( __( '<strong>WP Rocket:</strong> %s', 'rocket' ), $cf_purge->get_error_message() ),
 		];
 	} else {
 		$cf_purge_result = [
 			'result'  => 'success',
-			'message' => __( 'Cloudflare cache successfully purged', 'rocket' ),
+			'message' => __( '<strong>WP Rocket:</strong> Cloudflare cache successfully purged.', 'rocket' ),
 		];
 	}
 
