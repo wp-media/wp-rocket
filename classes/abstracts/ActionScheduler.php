@@ -164,7 +164,7 @@ abstract class ActionScheduler {
 		/**
 		 * Handle WP comment cleanup after migration.
 		 */
-		if ( ! is_a( $logger, 'ActionScheduler_wpCommentLogger' ) && ActionScheduler_DataController::is_migration_complete() && ActionScheduler_WPCommentCleaner::has_logs() ) {
+		if ( is_a( $logger, 'ActionScheduler_DBLogger' ) && ActionScheduler_DataController::is_migration_complete() && ActionScheduler_WPCommentCleaner::has_logs() ) {
 			ActionScheduler_WPCommentCleaner::init();
 		}
 
