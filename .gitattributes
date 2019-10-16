@@ -1,6 +1,5 @@
 # PHPUnit files
 .travis.yml export-ignore
-.stickler.yml export-ignore
 bin export-ignore
 tests export-ignore
 phpunit.xml.dist export-ignore
@@ -17,3 +16,4 @@ src export-ignore
 .babelrc export-ignore
 gulpfile.js export-ignore
 package.json export-ignore
+.prettyci.composer.json export-ignore
