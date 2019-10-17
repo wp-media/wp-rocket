@@ -136,6 +136,7 @@ function rocket_sanitize_textarea_field( $field, $value ) {
 		'exclude_css'          => [ 'rocket_clean_exclude_file', 'rocket_sanitize_css' ], // Pattern.
 		'exclude_inline_js'    => [ 'sanitize_text_field' ], // Pattern.
 		'exclude_js'           => [ 'rocket_validate_js' ], // Pattern.
+		'varnish_custom_ip'    => [ 'sanitize_text_field' ],
 	];
 
 	if ( ! isset( $fields[ $field ] ) ) {
