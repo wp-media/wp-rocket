@@ -36,7 +36,7 @@ class TestRocketUpgrader extends TestCase {
 		}));
     }
 
-    public function testShouldDeleteLicenceDataFile() {
+    public function testShouldDeleteLicenceDataFileWhenSecretKey() {
         Functions\when('get_rocket_option')->justReturn('3.5');
         Functions\when('flush_rocket_htaccess')->justReturn();
         Functions\when('rocket_renew_all_boxes')->justReturn();
@@ -47,6 +47,30 @@ class TestRocketUpgrader extends TestCase {
                 'secret_key' => 'key',
             ]
         );
+        Functions\When( 'rocket_direct_filesystem')->alias( function() {
+			return $this->mock_fs;
+		});
+        Functions\when('rocket_valid_key')->justReturn(true);
+        Functions\when('current_user_can')->justReturn(true);
+
+        define( 'WP_ROCKET_VERSION', '3.4' );
+        define( 'WP_ROCKET_SLUG', 'wp_rocket_settings' );
+        define('WP_ROCKET_PATH', $this->path->url() . '/' );
+
+        $this->assertTrue( $this->path->hasChild('licence-data.php') );
+
+        rocket_upgrader();
+
+        $this->assertFalse( $this->path->hasChild('licence-data.php'));
+    }
+
+    public function testShouldDeleteLicenceDataFileWhenCheckKeyTrue() {
+        Functions\when('get_rocket_option')->justReturn('3.5');
+        Functions\when('flush_rocket_htaccess')->justReturn();
+        Functions\when('rocket_renew_all_boxes')->justReturn();
+        Functions\when('get_option')->justReturn([]);
+        Functions\when('update_option')->justReturn([]);
+        Functions\when('rocket_check_key')->justReturn(true);
         Functions\When( 'rocket_direct_filesystem')->alias( function() {
 			return $this->mock_fs;
 		});
@@ -75,6 +99,30 @@ class TestRocketUpgrader extends TestCase {
 			return $this->mock_fs;
 		});
         Functions\when('rocket_valid_key')->justReturn(true);
+        Functions\when('current_user_can')->justReturn(true);
+
+        define( 'WP_ROCKET_VERSION', '3.4' );
+        define( 'WP_ROCKET_SLUG', 'wp_rocket_settings' );
+        define('WP_ROCKET_PATH', $this->path->url() . '/' );
+
+        $this->assertTrue( $this->path->hasChild('licence-data.php') );
+
+        rocket_upgrader();
+
+        $this->assertTrue( $this->path->hasChild('licence-data.php'));
+    }
+
+    public function testShouldKeepLicenceDataFileWhenNoCheckKeyFalse() {
+        Functions\when('get_rocket_option')->justReturn('3.5');
+        Functions\when('flush_rocket_htaccess')->justReturn();
+        Functions\when('rocket_renew_all_boxes')->justReturn();
+        Functions\when('get_option')->justReturn([]);
+        Functions\when('update_option')->justReturn([]);
+        Functions\when('rocket_check_key')->justReturn(false);
+        Functions\When( 'rocket_direct_filesystem')->alias( function() {
+			return $this->mock_fs;
+		});
+        Functions\when('rocket_valid_key')->justReturn(false);
         Functions\when('current_user_can')->justReturn(true);
 
         define( 'WP_ROCKET_VERSION', '3.4' );
