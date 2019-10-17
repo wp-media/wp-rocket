@@ -737,6 +737,19 @@ class Page {
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
 				],
+				'dequeue_jquery_migrate' => [
+					'container_class'   => [
+						'wpr-isLastElem',
+					],
+					'type'              => 'checkbox',
+					'label'             => __( 'Dequeue jQuery Migrate', 'rocket' ),
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description'       => sprintf( __( 'Dequeue jQuery Migrate eliminates a JS file and can improve load time. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $defer_js_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $defer_js_beacon['id'] ) . '" target="_blank">', '</a>' ),
+					'section'           => 'js',
+					'page'              => 'file_optimization',
+					'default'           => 0,
+					'sanitize_callback' => 'sanitize_checkbox',
+				],
 				'minify_js'              => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Minify JavaScript files', 'rocket' ),
@@ -839,19 +852,6 @@ class Page {
 					'section'           => 'js',
 					'page'              => 'file_optimization',
 					'default'           => 1,
-					'sanitize_callback' => 'sanitize_checkbox',
-				],
-				'dequeue_jquery_migrate'           => [
-					'container_class'   => [
-						'wpr-isLastElem',
-					],
-					'type'              => 'checkbox',
-					'label'             => __( 'Dequeue jQuery Migrate', 'rocket' ),
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'Dequeue jQuery Migrate eliminates a JS file and can improve load time. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $defer_js_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $defer_js_beacon['id'] ) . '" target="_blank">', '</a>' ),
-					'section'           => 'js',
-					'page'              => 'file_optimization',
-					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
 			]
@@ -1884,11 +1884,11 @@ class Page {
 		$this->settings->add_settings_fields(
 			[
 				'varnish_custom_ip' => [
-					'label'       => _x( 'Custom Host/IP', 'Varnish', 'rocket' ),
-					'helper'      => __( 'There are cases when a custom IP Address is needed to for the plugin to properly communicate with the cache service. If you are using a CDN like Cloudflare or a Firewall Proxy like Sucuri, you may need to customize this setting.', 'rocket' ),
-					'default'     => '',
-					'section'     => 'varnish_settings',
-					'page'        => 'varnish',
+					'label'   => _x( 'Custom Host/IP', 'Varnish', 'rocket' ),
+					'helper'  => __( 'There are cases when a custom IP Address is needed to for the plugin to properly communicate with the cache service. If you are using a CDN like Cloudflare or a Firewall Proxy like Sucuri, you may need to customize this setting.', 'rocket' ),
+					'default' => '',
+					'section' => 'varnish_settings',
+					'page'    => 'varnish',
 				],
 			]
 		);
@@ -2012,6 +2012,7 @@ class Page {
 	 *
 	 * @since  3.2
 	 * @access private
+	 *
 	 * @author Grégory Viguier
 	 */
 	private function sucuri_section() {
