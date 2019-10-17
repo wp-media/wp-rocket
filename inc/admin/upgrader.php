@@ -33,11 +33,11 @@ function rocket_upgrader() {
 		$keys = rocket_check_key();
 		if ( is_array( $keys ) ) {
 			$options = array_merge( $keys, $options );
+		}
 
-			if ( ! empty( $keys['secret_key'] ) ) {
-				if ( rocket_direct_filesystem()->exists( WP_ROCKET_PATH . 'licence-data.php' ) ) {
-					rocket_direct_filesystem()->delete( WP_ROCKET_PATH . 'licence-data.php' );
-				}
+		if ( true === $keys || ( is_array( $keys ) && ! empty( $keys['secret_key'] ) ) ) {
+			if ( rocket_direct_filesystem()->exists( WP_ROCKET_PATH . 'licence-data.php' ) ) {
+				rocket_direct_filesystem()->delete( WP_ROCKET_PATH . 'licence-data.php' );
 			}
 		}
 
