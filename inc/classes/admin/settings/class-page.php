@@ -1750,6 +1750,27 @@ class Page {
 			]
 		);
 
+		$this->settings->add_settings_fields(
+			[
+				'do_cloudflare' => [
+					'type'              => 'rocket_addon',
+					'label'             => __( 'Cloudflare', 'rocket' ),
+					'logo'              => [
+						'url'    => WP_ROCKET_ASSETS_IMG_URL . 'logo-cloudflare2.svg',
+						'width'  => 153,
+						'height' => 51,
+					],
+					'title'             => __( 'Integrate your Cloudflare account with this add-on.', 'rocket' ),
+					'description'       => __( 'Provide your account email, global API key, and domain to use options such as clearing the Cloudflare cache and enabling optimal settings with WP Rocket.', 'rocket' ),
+					'section'           => 'addons',
+					'page'              => 'addons',
+					'settings_page'     => 'cloudflare',
+					'default'           => 0,
+					'sanitize_callback' => 'sanitize_checkbox',
+				],
+			]
+		);
+
 		/**
 		 * Allow to display the "Varnish" tab in the settings page
 		 *
@@ -1793,27 +1814,6 @@ class Page {
 				)
 			);
 		}
-
-		$this->settings->add_settings_fields(
-			[
-				'do_cloudflare' => [
-					'type'              => 'rocket_addon',
-					'label'             => __( 'Cloudflare', 'rocket' ),
-					'logo'              => [
-						'url'    => WP_ROCKET_ASSETS_IMG_URL . 'logo-cloudflare2.svg',
-						'width'  => 153,
-						'height' => 51,
-					],
-					'title'             => __( 'Integrate your Cloudflare account with this add-on.', 'rocket' ),
-					'description'       => __( 'Provide your account email, global API key, and domain to use options such as clearing the Cloudflare cache and enabling optimal settings with WP Rocket.', 'rocket' ),
-					'section'           => 'addons',
-					'page'              => 'addons',
-					'settings_page'     => 'cloudflare',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
-				],
-			]
-		);
 
 		if ( defined( 'WP_ROCKET_SUCURI_API_KEY_HIDDEN' ) && WP_ROCKET_SUCURI_API_KEY_HIDDEN ) {
 			// No need to display the dedicated tab if there is nothing to display on it.
