@@ -451,5 +451,13 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 	if ( version_compare( $actual_version, '3.4.0.1', '<' ) ) {
 		( new WP_Rocket\Subscriber\Plugin\Capabilities_Subscriber() )->add_rocket_capabilities();
 	}
+
+	if ( version_compare( $actual_version, '3.5', '<' ) ) {
+		$custom_varnish_ip = apply_filters( 'rocket_varnish_ip', '' );
+
+		if ( ! empty( $custom_varnish_ip ) ) {
+			update_rocket_option( 'custom_varnish_ip', $custom_varnish_ip );
+		}
+	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );
