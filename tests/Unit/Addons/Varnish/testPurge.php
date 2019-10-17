@@ -68,8 +68,10 @@ class TestPurge extends TestCase {
             ],
             [
                 'varnish_custom_ip',
-                '',
-                'localhost',
+                [],
+                [
+                    'localhost'
+                ],
             ],
         ];
 
