@@ -31,7 +31,7 @@ function rocket_is_api_keys_valid_cloudflare( $cf_email, $cf_api_key, $cf_zone_i
 		$msg .= ' ' . sprintf(
 			/* translators: %1$s = opening link; %2$s = closing link */
 			__( 'Read the %1$sdocumentation%2$s for further guidance.', 'rocket' ),
-			/* translators: Documentation exists in EN, DE, FR, ES, IT; use loaclised URL if applicable */
+			// translators: Documentation exists in EN, FR; use localized URL if applicable.
 			'<a href="' . __( 'https://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket', 'rocket' ) . '" target="_blank">',
 			'</a>'
 		);
@@ -50,25 +50,28 @@ function rocket_is_api_keys_valid_cloudflare( $cf_email, $cf_api_key, $cf_zone_i
 
 		if ( true === $cf_zone->success ) {
 			$zone_found = false;
+			$site_url   = get_site_url();
 
-			foreach ( $cf_zone->result as $zone ) {
-				if ( get_site_url() === $zone->name ) {
-					$zone_found = true;
+			if ( function_exists( 'domain_mapping_siteurl' ) ) {
+				$site_url = domain_mapping_siteurl( $site_url );
+			}
+
+			if ( isset( $cf_zone->result ) && ! empty( $cf_zone->result ) ) {
+				foreach ( $cf_zone->result as $zone ) {
+					if ( strtolower( $site_url ) === $zone->name ) {
+						$zone_found = true;
+					}
 				}
 			}
 
 			if ( ! $zone_found ) {
-				$msg = sprintf(
-					// translators: %s = WP Rocket plugin name.
-					__( 'It looks that you domain is not provisioned with Cloudflare.', 'rocket' ),
-					WP_ROCKET_PLUGIN_NAME
-				);
+				$msg = __( 'It looks like your domain is not set up on Cloudflare.', 'rocket' );
 
 				$msg .= ' ' . sprintf(
 					/* translators: %1$s = opening link; %2$s = closing link */
 					__( 'Read the %1$sdocumentation%2$s for further guidance.', 'rocket' ),
-					/* translators: Documentation exists in EN, DE, FR, ES, IT; use loaclised URL if applicable */
-					'<a href="' . __( 'https://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket', 'rocket' ) . '" target="_blank">',
+					// translators: Documentation exists in EN, FR; use localized URL if applicable.
+					'<a href="' . __( 'https://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket#add-on', 'rocket' ) . '" target="_blank">',
 					'</a>'
 				);
 
