@@ -738,9 +738,6 @@ class Page {
 					'sanitize_callback' => 'sanitize_textarea',
 				],
 				'dequeue_jquery_migrate' => [
-					'container_class'   => [
-						'wpr-isLastElem',
-					],
 					'type'              => 'checkbox',
 					'label'             => __( 'Dequeue jQuery Migrate', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
