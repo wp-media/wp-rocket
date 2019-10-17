@@ -445,7 +445,12 @@ class Settings {
 		}
 
 		$input['varnish_auto_purge'] = ! empty( $input['varnish_auto_purge'] ) ? 1 : 0;
-		$input['varnish_custom_ip']  = sanitize_text_field( $input['varnish_custom_ip'] );
+
+		if ( ! empty( $input['varnish_custom_ip'] ) ) {
+			$input['varnish_custom_ip'] = rocket_sanitize_textarea_field( 'varnish_custom_ip', $input['varnish_custom_ip'] );
+		} else {
+			$input['varnish_custom_ip'] = [];
+		}
 
 		if ( ! rocket_valid_key() ) {
 			$checked = rocket_check_key();
