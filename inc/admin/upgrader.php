@@ -236,7 +236,7 @@ function rocket_first_install() {
 				'heartbeat_admin_behavior'    => 'reduce_periodicity',
 				'heartbeat_editor_behavior'   => 'reduce_periodicity',
 				'varnish_auto_purge'          => 0,
-				'varnish_custom_ip'           => '',
+				'varnish_custom_ip'           => [],
 				'do_beta'                     => 0,
 				'analytics_enabled'           => 0,
 				'google_analytics_cache'      => 0,
@@ -453,9 +453,14 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 	}
 
 	if ( version_compare( $actual_version, '3.5', '<' ) ) {
-		$custom_varnish_ip = apply_filters( 'rocket_varnish_ip', '' );
+		// This filter is documented in inc/classes/Addons/Varnish/Varnish.php.
+		$custom_varnish_ip = apply_filters( 'rocket_varnish_ip', [] );
 
 		if ( ! empty( $custom_varnish_ip ) ) {
+			if ( is_string( $custom_varnish_ip ) ) {
+				$custom_varnish_ip = (array) $custom_varnish_ip;
+			}
+
 			update_rocket_option( 'custom_varnish_ip', $custom_varnish_ip );
 		}
 	}
