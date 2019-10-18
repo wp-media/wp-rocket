@@ -56,10 +56,12 @@ function rocket_is_api_keys_valid_cloudflare( $cf_email, $cf_api_key, $cf_zone_i
 				$site_url = domain_mapping_siteurl( $site_url );
 			}
 
-			if ( isset( $cf_zone->result ) && ! empty( $cf_zone->result ) ) {
+			if ( ! empty( $cf_zone->result ) ) {
 				foreach ( $cf_zone->result as $zone ) {
-					if ( strtolower( $site_url ) === $zone->name ) {
+					$parsed_url = wp_parse_url( $site_url );
+					if ( strtolower( $parsed_url['host'] ) === $zone->name ) {
 						$zone_found = true;
+						break;
 					}
 				}
 			}
