@@ -44,4 +44,10 @@ if ( ! function_exists( 'action_scheduler_register_3_dot_0_dot_0_beta_1' ) ) {
 		ActionScheduler::init( __FILE__ );
 	}
 
+	// Support usage in themes - load this version if no plugin has loaded a version yet.
+	if ( did_action( 'plugins_loaded' ) && ! class_exists( 'ActionScheduler' ) ) {
+		action_scheduler_register_3_dot_0_dot_0_beta_1();
+		do_action( 'action_scheduler_pre_theme_init' );
+		ActionScheduler_Versions::initialize_latest_version();
+	}
 }
