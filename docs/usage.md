@@ -116,8 +116,8 @@ When the `action-scheduler.php` file is included, Action Scheduler will register
 
 ### Load Order
 
-Action Scheduler will register its version on `'init'` with priority `-20` - after all other plugin and theme codebases has been loaded. Therefore **the `action-scheduler.php` file must be included before `'init'` priority `-20`**.
+Action Scheduler will register its version on `'plugins_loaded'` with priority `0` - after all other plugin codebases has been loaded. Therefore **the `action-scheduler.php` file must be included before `'plugins_loaded'` priority `0`**.
 
-It is recommended to load it _when the file including it is included_. However, if you need to load it on a hook, then the hook must occur before `'init'`, or you can use `'init'` with negative priority greater than `-20`, like `-100`.
+It is recommended to load it _when the file including it is included_. However, if you need to load it on a hook, then the hook must occur before `'plugins_loaded'`, or you can use `'plugins_loaded'` with negative priority, like `-10`.
 
-Action Scheduler will later initialize itself on `'init'` with priority `-10`.  Action Scheduler APIs should not be used until after `'init'` with priority `-10`.
+Action Scheduler will later initialize itself on `'init'` with priority `1`.  Action Scheduler APIs should not be used until after `'init'` with priority `1`.
