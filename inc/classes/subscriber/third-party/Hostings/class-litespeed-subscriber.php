@@ -24,9 +24,9 @@ class Litespeed_Subscriber implements Subscriber_Interface {
 		}
 
 		return [
-			'before_rocket_clean_domain' => 'rocket_litespeed_clean_domain',
-			'before_rocket_clean_file'   => [ 'rocket_litespeed_clean_file', 10, 1 ],
-			'before_rocket_clean_home'   => [ 'rocket_litespeed_clean_home', 10, 2 ],
+			'before_rocket_clean_domain' => 'litespeed_clean_domain',
+			'before_rocket_clean_file'   => 'litespeed_clean_file',
+			'before_rocket_clean_home'   => [ 'litespeed_clean_home', 10, 2 ],
 		];
 	}
 
@@ -40,8 +40,8 @@ class Litespeed_Subscriber implements Subscriber_Interface {
 	 * @param string $lang The current lang to purge.
 	 * @param string $url  The home url.
 	 */
-	public function rocket_litespeed_clean_domain() {
-		$this->rocket_litespeed_header_purge_all();
+	public function litespeed_clean_domain() {
+		$this->litespeed_header_purge_all();
 	}
 
 	/**
@@ -52,8 +52,8 @@ class Litespeed_Subscriber implements Subscriber_Interface {
 	 *
 	 * @param string $url The url to purge.
 	 */
-	public function rocket_litespeed_clean_file( $url ) {
-		$this->rocket_litespeed_header_purge_url( trailingslashit( $url ) );
+	public function litespeed_clean_file( $url ) {
+		$this->litespeed_header_purge_url( trailingslashit( $url ) );
 	}
 
 	/**
@@ -65,12 +65,12 @@ class Litespeed_Subscriber implements Subscriber_Interface {
 	 * @param string $root The path of home cache file.
 	 * @param string $lang The current lang to purge.
 	 */
-	public function rocket_litespeed_clean_home( $root, $lang ) {
+	public function litespeed_clean_home( $root, $lang ) {
 		$home_url            = trailingslashit( get_rocket_i18n_home_url( $lang ) );
 		$home_pagination_url = $home_url . trailingslashit( $GLOBALS['wp_rewrite']->pagination_base );
 
-		$this->rocket_litespeed_header_purge_url( $home_url );
-		$this->rocket_litespeed_header_purge_url( $home_pagination_url );
+		$this->litespeed_header_purge_url( $home_url );
+		$this->litespeed_header_purge_url( $home_pagination_url );
 	}
 
 	/**
@@ -82,7 +82,7 @@ class Litespeed_Subscriber implements Subscriber_Interface {
 	 * @param  string $url The URL to purge.
 	 * @return void
 	 */
-	public function rocket_litespeed_header_purge_url( $url ) {
+	public function litespeed_header_purge_url( $url ) {
 		if ( headers_sent() ) {
 			Logger::debug(
 				'X-LiteSpeed Headers already sent',
@@ -98,7 +98,7 @@ class Litespeed_Subscriber implements Subscriber_Interface {
 		Logger::debug(
 			'X-LiteSpeed',
 			[
-				'rocket_litespeed_header_purge_url',
+				'litespeed_header_purge_url',
 				'path' => $private_prefix,
 			]
 		);
@@ -115,7 +115,7 @@ class Litespeed_Subscriber implements Subscriber_Interface {
 	 * @param  string $url The URL to purge.
 	 * @return void
 	 */
-	public function rocket_litespeed_header_purge_all() {
+	public function litespeed_header_purge_all() {
 		if ( headers_sent() ) {
 			return;
 		}
