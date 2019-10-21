@@ -12,7 +12,7 @@
     <config name="minimum_supported_wp_version" value="4.7"/>
 
 	<file>.</file>
-	<exclude-pattern>/inc/deprecated/3.3.php</exclude-pattern>
+	<exclude-pattern>/inc/deprecated/*</exclude-pattern>
 	<exclude-pattern>/inc/vendors/*</exclude-pattern>
 	<exclude-pattern>/tests/Integration/*</exclude-pattern>
 	<exclude-pattern>/tests/Unit/*</exclude-pattern>
