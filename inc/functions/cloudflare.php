@@ -47,7 +47,7 @@ function rocket_is_api_keys_valid_cloudflare( $cf_email, $cf_api_key, $cf_zone_i
 	try {
 		$cf_api_instance = new Cloudflare\Api( $cf_email, $cf_api_key );
 		$cf_user         = $cf_api_instance->get( 'user/' );
-		$cf_zone         = $cf_api_instance->get( 'zones/' . $cf_zone_id );
+		$cf_zone         = $cf_api_instance->get( 'zones/' );
 
 		if ( ! isset( $cf_zone->success ) || empty( $cf_zone->success ) ) {
 			$msg = __( 'Incorrect Cloudflare Zone ID.', 'rocket' );
