@@ -5,7 +5,7 @@
  *
  * Used for identifying actions that are invalid in some way.
  *
- * @package Prospress\ActionScheduler
+ * @package ActionScheduler
  */
 class ActionScheduler_InvalidActionException extends \InvalidArgumentException implements ActionScheduler_Exception {
 

@@ -53,7 +53,7 @@ Action Scheduler includes the necessary file headers to be used as a standard Wo
 
 To install it as a plugin:
 
-1. Download the .zip archive of the latest [stable release](https://github.com/Prospress/action-scheduler/releases)
+1. Download the .zip archive of the latest [stable release](https://github.com/woocommerce/action-scheduler/releases)
 1. Go to the **Plugins > Add New > Upload** administration screen on your WordPress site
 1. Select the archive file you just downloaded
 1. Click **Install Now**
@@ -77,7 +77,7 @@ To include Action Scheduler as a git subtree:
 #### Step 1. Add the Repository as a Remote
 
 ```
-git remote add -f subtree-action-scheduler https://github.com/Prospress/action-scheduler.git
+git remote add -f subtree-action-scheduler https://github.com/woocommerce/action-scheduler.git
 ```
 
 Adding the subtree as a remote allows us to refer to it in short from via the name `subtree-action-scheduler`, instead of the full GitHub URL.
@@ -112,7 +112,7 @@ require_once( plugin_dir_path( __FILE__ ) . '/libraries/action-scheduler/action-
 
 There is no need to call any functions or do else to initialize Action Scheduler.
 
-When the `action-scheduler.php` file is included, Action Scheduler will register the version in that file and then load the most recent version of itself on the site. It will also load the most recent version of [all API functions](https://github.com/prospress/action-scheduler#api-functions).
+When the `action-scheduler.php` file is included, Action Scheduler will register the version in that file and then load the most recent version of itself on the site. It will also load the most recent version of [all API functions](https://actionscheduler.org/api/).
 
 ### Load Order
 

@@ -63,6 +63,6 @@ Actions can also be grouped together using a custom taxonomy named `action-group
 
 ## Credits
 
-Developed and maintained by [Prospress](http://prospress.com/) in collaboration with [Flightless](https://flightless.us/).
+Action Scheduler is developed and maintained by [Automattic](http://automattic.com/) with significant early development completed by [Flightless](https://flightless.us/).
 
-Collaboration is cool. We'd love to work with you to improve Action Scheduler. [Pull Requests](https://github.com/prospress/action-scheduler/pulls) welcome.
+Collaboration is cool. We'd love to work with you to improve Action Scheduler. [Pull Requests](https://github.com/woocommerce/action-scheduler/pulls) welcome.
