@@ -64,6 +64,25 @@ abstract class ActionScheduler_Abstract_Schema {
 		$option_name         = 'schema-' . static::class;
 		$version_found_in_db = get_option( $option_name, 0 );
 
+		// Check for schema option stored by the Action Scheduler Custom Tables plugin in case site has migrated from that plugin with an older schema
+		if ( 0 === $version_found_in_db ) {
+
+			$plugin_option_name = 'schema-';
+
+			switch ( static::class ) {
+				case 'ActionScheduler_StoreSchema' :
+					$plugin_option_name .= 'Action_Scheduler\Custom_Tables\DB_Store_Table_Maker';
+					break;
+				case 'ActionScheduler_LoggerSchema' :
+					$plugin_option_name .= 'Action_Scheduler\Custom_Tables\DB_Logger_Table_Maker';
+					break;
+			}
+
+			$version_found_in_db = get_option( $plugin_option_name, 0 );
+
+			delete_option( $plugin_option_name );
+		}
+
 		return version_compare( $version_found_in_db, $this->schema_version, '<' );
 	}
 
