@@ -37,7 +37,6 @@ require WP_ROCKET_3RD_PARTY_PATH . 'plugins/ecommerce/give.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/age-verify.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/appbanners.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/autoptimize.php';
-require WP_ROCKET_3RD_PARTY_PATH . 'plugins/smush.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/envira-gallery.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/cookies/cookie-notice.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/cookies/uk-cookie-consent.php';
