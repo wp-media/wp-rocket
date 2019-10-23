@@ -124,4 +124,4 @@ add_action( 'wp_ajax_nopriv_eg_create_additional_runners', 'eg_create_additional
 
 ## High Volume Plugin
 
-It's not necessary to add all of this code yourself, the folks at [Prospress](https://prospress.com) have created a handy plugin to get access to each of these increases -  the [Action Scheduler - High Volume](https://github.com/prospress/action-scheduler-high-volume) plugin.
+It's not necessary to add all of this code yourself, there is a handy plugin to get access to each of these increases -  the [Action Scheduler - High Volume](https://github.com/woocommerce/action-scheduler-high-volume) plugin.

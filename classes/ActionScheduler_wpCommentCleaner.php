@@ -97,7 +97,7 @@ class ActionScheduler_WPCommentCleaner {
 			$notice .= sprintf( __( ' This data will be deleted in %s.' ), human_time_diff( gmdate( 'U' ), $next_scheduled_cleanup_hook ) );
 		}
 
-		$notice .= sprintf( __( ' %sLearn more &raquo;%s' ), '<a href="https://github.com/Prospress/action-scheduler/issues/368">' , '</a>' );
+		$notice .= sprintf( __( ' %sLearn more &raquo;%s' ), '<a href="https://github.com/woocommerce/action-scheduler/issues/368">' , '</a>' );
 
 		echo '<div class="notice notice-warning"><p>' . wp_kses_post( $notice ) . '</p></div>';
 	}

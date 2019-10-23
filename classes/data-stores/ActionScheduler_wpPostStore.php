@@ -94,7 +94,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	 * action's slug, being probably unique is good enough.
 	 *
 	 * For more backstory on this issue, see:
-	 * - https://github.com/Prospress/action-scheduler/issues/44 and
+	 * - https://github.com/woocommerce/action-scheduler/issues/44 and
 	 * - https://core.trac.wordpress.org/ticket/21112
 	 *
 	 * @param string $override_slug Short-circuit return value.

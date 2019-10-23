@@ -22,9 +22,9 @@ Or trigger the `'action_scheduler_run_queue'` hook and let Action Scheduler do i
 do_action( 'action_scheduler_run_queue', $context_identifier );
 ```
 
-Further customization can be done by extending the `ActionScheduler_Abstract_QueueRunner` class to create a custom Queue Runner. For an example of a customized queue runner, see the [`ActionScheduler_WPCLI_QueueRunner`](https://github.com/Prospress/action-scheduler/blob/master/classes/ActionScheduler_WPCLI_QueueRunner.php), which is used when running WP CLI.
+Further customization can be done by extending the `ActionScheduler_Abstract_QueueRunner` class to create a custom Queue Runner. For an example of a customized queue runner, see the [`ActionScheduler_WPCLI_QueueRunner`](https://github.com/woocommerce/action-scheduler/blob/master/classes/ActionScheduler_WPCLI_QueueRunner.php), which is used when running WP CLI.
 
-Want to create some other method for initiating Action Scheduler? [Open a new issue](https://github.com/Prospress/action-scheduler/issues/new), we'd love to help you with it.
+Want to create some other method for initiating Action Scheduler? [Open a new issue](https://github.com/woocommerce/action-scheduler/issues/new), we'd love to help you with it.
 
 ### I don't want to use WP-Cron, ever. Does Action Scheduler replace WP-Cron?
 
@@ -36,7 +36,7 @@ You could use the `'schedule_event'` hook in WordPress to use Action Scheduler f
 
 Alternatively, you can use a combination of the `'pre_update_option_cron'` and  `'pre_option_cron'` hooks to override all new and previously scheduled WP-Cron jobs (similar to the way [Cavalcade](https://github.com/humanmade/Cavalcade) does it).
 
-If you'd like to create a plugin to do this automatically and want to share your work with others, [open a new issue to let us know](https://github.com/Prospress/action-scheduler/issues/new), we'd love to help you with it.
+If you'd like to create a plugin to do this automatically and want to share your work with others, [open a new issue to let us know](https://github.com/woocommerce/action-scheduler/issues/new), we'd love to help you with it.
 
 ### Eww gross, Custom Post Types! That's _so_ 2010. Can I use a different storage scheme?
 
@@ -58,9 +58,9 @@ add_filter( 'action_scheduler_store_class', 'eg_define_custom_store', 10, 1 );
 
 Take a look at the `ActionScheduler_wpPostStore` class for an example implementation of `ActionScheduler_Store`.
 
-If you'd like to create a plugin to do this automatically and release it publicly to help others, [open a new issue to let us know](https://github.com/Prospress/action-scheduler/issues/new), we'd love to help you with it.
+If you'd like to create a plugin to do this automatically and release it publicly to help others, [open a new issue to let us know](https://github.com/woocommerce/action-scheduler/issues/new), we'd love to help you with it.
 
-> Note: we're also moving Action Scheduler itself to use [custom tables for better scalability](https://github.com/Prospress/action-scheduler/issues/77).
+> Note: we're also moving Action Scheduler itself to use [custom tables for better scalability](https://github.com/woocommerce/action-scheduler/issues/77).
 
 ### Can I use a different storage scheme just for logging?
 
@@ -98,4 +98,4 @@ It requires no setup, and won't override any WordPress APIs (unless you want it 
 
 Action Scheduler is designed to manage the scheduled actions on a single site. It has no special handling for running queues across multiple sites in a multisite network. That said, because its storage and Queue Runner are completely swappable, it would be possible to write multisite handling classes to use with it.
 
-If you'd like to create a multisite plugin to do this and release it publicly to help others, [open a new issue to let us know](https://github.com/Prospress/action-scheduler/issues/new), we'd love to help you with it.
+If you'd like to create a multisite plugin to do this and release it publicly to help others, [open a new issue to let us know](https://github.com/woocommerce/action-scheduler/issues/new), we'd love to help you with it.

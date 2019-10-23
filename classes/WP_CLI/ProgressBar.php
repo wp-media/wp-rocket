@@ -3,7 +3,7 @@
 namespace Action_Scheduler\WP_CLI;
 
 /**
- * WP_CLI progress bar for the Action Scheduler by Prospress.
+ * WP_CLI progress bar for Action Scheduler.
  */
 
 /**

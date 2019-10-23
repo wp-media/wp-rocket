@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Commands for the Action Scheduler by Prospress.
+ * Commands for Action Scheduler.
  */
 class ActionScheduler_WPCLI_Scheduler_command extends WP_CLI_Command {
 

@@ -1,4 +1,4 @@
-# Action Scheduler - Job Queue for WordPress [![Build Status](https://travis-ci.org/Prospress/action-scheduler.png?branch=master)](https://travis-ci.org/Prospress/action-scheduler) [![codecov](https://codecov.io/gh/Prospress/action-scheduler/branch/master/graph/badge.svg)](https://codecov.io/gh/Prospress/action-scheduler)
+# Action Scheduler - Job Queue for WordPress [![Build Status](https://travis-ci.org/woocommerce/action-scheduler.png?branch=master)](https://travis-ci.org/woocommerce/action-scheduler) [![codecov](https://codecov.io/gh/woocommerce/action-scheduler/branch/master/graph/badge.svg)](https://codecov.io/gh/woocommerce/action-scheduler)
 
 Action Scheduler is a scalable, traceable job queue for background processing large sets of actions in WordPress. It's specially designed to be distributed in WordPress plugins.
 
@@ -30,12 +30,6 @@ There you will find:
 
 ## Credits
 
-Action Scheduler is developed and maintained by [Prospress](http://prospress.com/) in collaboration with [Flightless](https://flightless.us/).
+Action Scheduler is developed and maintained by [Automattic](http://automattic.com/) with significant early development completed by [Flightless](https://flightless.us/).
 
-Collaboration is cool. We'd love to work with you to improve Action Scheduler. [Pull Requests](https://github.com/prospress/action-scheduler/pulls) welcome.
-
----
-
-<p align="center">
-<img src="https://cloud.githubusercontent.com/assets/235523/11986380/bb6a0958-a983-11e5-8e9b-b9781d37c64a.png" width="160">
-</p>
+Collaboration is cool. We'd love to work with you to improve Action Scheduler. [Pull Requests](https://github.com/woocommerce/action-scheduler/pulls) welcome.
