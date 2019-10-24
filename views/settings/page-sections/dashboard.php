@@ -92,7 +92,14 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 				</div>
 			</div>
 			<?php endif; ?>
-
+			<?php
+			/**
+			 * Fires after the account data section on the WP Rocket settings dashboard
+			 *
+			 * @since 3.5
+			 */
+			do_action( 'rocket_dashboard_after_account_data' );
+			?>
 			<?php
 				$this->render_settings_sections( $data['id'] );
 			?>
@@ -160,7 +167,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 						?>
 					</div>
 					<?php endif; ?>
-					<?php if ( get_rocket_option( 'async_css' ) && apply_filters( 'do_rocket_critical_css_generation', true ) && current_user_can( 'rocket_regenerate_critical_css' ) ) : ?>
+					<?php if ( get_rocket_option( 'async_css' ) && apply_filters( 'do_rocket_critical_css_generation', true ) && current_user_can( 'rocket_regenerate_critical_css' ) ) : // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals ?>
 					<div class="wpr-field">
 						<h4 class="wpr-title3"><?php esc_html_e( 'Regenerate Critical CSS', 'rocket' ); ?></h4>
 						<?php
