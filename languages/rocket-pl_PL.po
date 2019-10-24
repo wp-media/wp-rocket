@@ -2305,18 +2305,6 @@ msgstr ""
 "konfiguracją Twojego serwera. Jeśli nadal masz problemy, <a "
 "href=\"%s\">skontaktuj się z wsparciem technicznym</a>."
 
-#: inc/classes/traits/trait-updater-api-tools.php:53
-#: inc/deprecated/3.3.php:760 inc/deprecated/3.3.php:769
-#, php-format
-msgid ""
-"An unexpected error occurred. Something may be wrong with WP-Rocket.me or "
-"this server&#8217;s configuration. If you continue to have problems, <a "
-"href=\"%s\">contact support</a>."
-msgstr ""
-"Wystąpił nieoczekiwany błąd. Coś może być nie tak z WP-Rocket.me lub "
-"konfiguracją Twojego serwera. Jeśli nadal masz problemy, <a "
-"href=\"%s\">skontaktuj się z wsparciem technicznym</a>."
-
 #: inc/common/admin-bar.php:106 inc/common/admin-bar.php:260
 #: inc/functions/i18n.php:39 inc/functions/i18n.php:48
 msgid "All languages"
