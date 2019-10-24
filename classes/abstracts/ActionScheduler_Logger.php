@@ -120,7 +120,7 @@ abstract class ActionScheduler_Logger {
 	}
 
 	public function log_reset_action( $action_id ) {
-		$this->log( $action_id, __( 'action reset', 'action_scheduler' ) );
+		$this->log( $action_id, __( 'action reset', 'action-scheduler' ) );
 	}
 
 	public function log_ignored_action( $action_id, $context = '' ) {
