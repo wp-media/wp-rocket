@@ -870,13 +870,21 @@ class Page {
 			]
 		);
 
-		$rocket_maybe_disable_lazyload_plugins = '';
+		$rocket_maybe_disable_lazyload_plugins = [];
 		if ( rocket_maybe_disable_lazyload() ) {
-			$rocket_maybe_disable_lazyload_plugins = __( 'Autoptimize', 'rocket' ) . ', ';
+			$rocket_maybe_disable_lazyload_plugins[] = __( 'Autoptimize', 'rocket' );
 		}
 
+		/**
+		 * Lazyload Helper filter which disables WPR lazyload functionality
+		 *
+		 * @since  3.4.2
+		 * @author Soponar Cristina
+		 *
+		 * @param array Will return the array with all plugin names which should disable LazyLoad
+		 */
 		$rocket_maybe_disable_lazyload_plugins = apply_filters( 'rocket_maybe_disable_lazyload_helper', $rocket_maybe_disable_lazyload_plugins );
-		$rocket_maybe_disable_lazyload_plugins = rtrim( $rocket_maybe_disable_lazyload_plugins, ', ' );
+		$rocket_maybe_disable_lazyload_plugins = wp_sprintf_l( '%l', $rocket_maybe_disable_lazyload_plugins );
 
 		$this->settings->add_settings_sections(
 			[

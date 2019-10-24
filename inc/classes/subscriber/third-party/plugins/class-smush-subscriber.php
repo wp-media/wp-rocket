@@ -1,7 +1,6 @@
 <?php
 namespace WP_Rocket\Subscriber\Third_Party\Plugins;
 
-use WP_Rocket\Logger\Logger;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
@@ -56,10 +55,6 @@ class Smush_Subscriber implements Subscriber_Interface {
 	 * @return string
 	 */
 	public function is_smush_lazyload_active( $rocket_maybe_disable_lazyload_plugins ) {
-		if ( ! defined( 'WP_SMUSH_VERSION' ) ) {
-			return;
-		}
-
 		$lazy_load_option = get_option( WP_SMUSH_PREFIX . 'settings' );
 		$lazyload         = isset( $lazy_load_option['lazy_load'] ) ? $lazy_load_option['lazy_load'] : false;
 
@@ -67,10 +62,7 @@ class Smush_Subscriber implements Subscriber_Interface {
 			return $rocket_maybe_disable_lazyload_plugins;
 		}
 
-		if ( is_plugin_active( 'wp-smushit/wp-smush.php' ) && ! empty( $lazyload ) ) {
-			return $rocket_maybe_disable_lazyload_plugins . __( 'Smush', 'rocket' ) . ', ';
-		}
-
+		$rocket_maybe_disable_lazyload_plugins[] = __( 'Smush', 'rocket' );
 		return $rocket_maybe_disable_lazyload_plugins;
 	}
 }

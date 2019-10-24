@@ -42,14 +42,10 @@ class Smush extends TestCase
             ->once() // called once
             ->andReturn( [ 'lazy_load' => true ] );
 
-        Functions\expect( 'is_plugin_active' )
-            ->once()
-            ->andReturn( true );
-
         Functions\when( '__' )
             ->justReturn( 'Smush, ' );
 
-        $this->assertNotEmpty( $subscriber->is_smush_lazyload_active('') );
+        $this->assertNotEmpty( $subscriber->is_smush_lazyload_active( [] ) );
     }
 
     /**
@@ -67,7 +63,7 @@ class Smush extends TestCase
             ->once() // called once
             ->andReturn( [ ] );
 
-        $this->assertEmpty( $subscriber->is_smush_lazyload_active('') );
+        $this->assertEmpty( $subscriber->is_smush_lazyload_active( [] ) );
     }
 
     /**
@@ -75,7 +71,7 @@ class Smush extends TestCase
      *
      * @since 3.4.2
      * @author Soponar Cristina
-     *co
+     *
      */
     public function testShouldNotMaybeDeactivateLazyload()
     {
