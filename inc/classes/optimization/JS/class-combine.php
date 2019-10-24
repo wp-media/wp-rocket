@@ -548,6 +548,12 @@ class Combine extends Abstract_JS_Optimization {
 			'PHP.wp_p_id',
 			'ShopifyBuy.UI.onReady(client)',
 			'orig_request_uri',
+			'Adman.Flash',
+			'PHP.wp_p_id',
+			'window.broadstreetKeywords',
+			'var productId =',
+			'var flatsomeVars',
+			'wc_product_block_data',
 			'static.mailerlite.com',
 		];
 
