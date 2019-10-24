@@ -686,6 +686,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		$sql = $wpdb->prepare( $sql, array( $claim->get_id() ) );
 		$result = $wpdb->query($sql);
 		if ( $result === false ) {
+			/* translators: %s: claim ID */
 			throw new RuntimeException( sprintf( __('Unable to unlock claim %s. Database error.', 'action-scheduler'), $claim->get_id() ) );
 		}
 	}
@@ -700,6 +701,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		$sql = $wpdb->prepare( $sql, $action_id, self::POST_TYPE );
 		$result = $wpdb->query($sql);
 		if ( $result === false ) {
+			/* translators: %s: action ID */
 			throw new RuntimeException( sprintf( __('Unable to unlock claim on action %s. Database error.', 'action-scheduler'), $action_id ) );
 		}
 	}
@@ -711,6 +713,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		$sql = $wpdb->prepare( $sql, self::STATUS_FAILED, $action_id, self::POST_TYPE );
 		$result = $wpdb->query($sql);
 		if ( $result === false ) {
+			/* translators: %s: action ID */
 			throw new RuntimeException( sprintf( __('Unable to mark failure on action %s. Database error.', 'action-scheduler'), $action_id ) );
 		}
 	}

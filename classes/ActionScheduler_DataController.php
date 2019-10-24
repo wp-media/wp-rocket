@@ -119,6 +119,7 @@ class ActionScheduler_DataController {
 	 */
 	public static function free_memory() {
 		if ( 0 < self::$sleep_time ) {
+			/* translators: %d: amount of time */
 			\WP_CLI::warning( sprintf( _n( 'Stopped the insanity for %d second', 'Stopped the insanity for %d seconds', self::$sleep_time, 'action-scheduler' ), self::$sleep_time ) );
 			sleep( self::$sleep_time );
 		}

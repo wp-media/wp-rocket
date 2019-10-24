@@ -54,6 +54,7 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 
 			return $action_id;
 		} catch ( \Exception $e ) {
+			/* translators: %s: error message */
 			throw new \RuntimeException( sprintf( __( 'Error saving action: %s', 'action-scheduler' ), $e->getMessage() ), 0 );
 		}
 	}
@@ -408,6 +409,7 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 			[ '%d' ]
 		);
 		if ( empty( $updated ) ) {
+			/* translators: %s: action ID */
 			throw new \InvalidArgumentException( sprintf( __( 'Unidentified action %s', 'action-scheduler' ), $action_id ) );
 		}
 		do_action( 'action_scheduler_canceled_action', $action_id );
@@ -610,6 +612,7 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 
 			// throw exception if no matching group found, this matches ActionScheduler_wpPostStore's behaviour
 			if ( empty( $group_id ) ) {
+				/* translators: %s: group name */
 				throw new InvalidArgumentException( sprintf( __( 'The group "%s" does not exist.', 'action-scheduler' ), $group ) );
 			}
 
