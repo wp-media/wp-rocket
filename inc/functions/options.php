@@ -412,6 +412,7 @@ function get_rocket_exclude_defer_js() {
 		'www.uplaunch.com',
 		'google.com/recaptcha',
 		'widget.reviews.co.uk',
+		'jupiterx/lib/admin/assets/lib/webfont/webfont.min.js'
 	];
 
 	if ( get_rocket_option( 'defer_all_js', 0 ) && get_rocket_option( 'defer_all_js_safe', 0 ) ) {
