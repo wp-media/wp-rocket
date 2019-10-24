@@ -88,16 +88,20 @@ class ActionScheduler_WPCommentCleaner {
 	 * Prints details about the orphaned action logs and includes information on where to learn more.
 	 */
 	public static function print_admin_notice() {
-
-		$notice = __( 'Action Scheduler has migrated data to custom tables; however, orphaned log entries exist in the WordPress Comments table.' );
-
+		$next_cleanup_message        = '';
 		$next_scheduled_cleanup_hook = as_next_scheduled_action( self::$cleanup_hook );
 
 		if ( $next_scheduled_cleanup_hook ) {
-			$notice .= sprintf( __( ' This data will be deleted in %s.' ), human_time_diff( gmdate( 'U' ), $next_scheduled_cleanup_hook ) );
+			/* translators: %s: date interval */
+			$next_cleanup_message = sprintf( __( 'This data will be deleted in %s.', 'action-scheduler' ), human_time_diff( gmdate( 'U' ), $next_scheduled_cleanup_hook ) );
 		}
 
-		$notice .= sprintf( __( ' %sLearn more &raquo;%s' ), '<a href="https://github.com/woocommerce/action-scheduler/issues/368">' , '</a>' );
+		$notice = sprintf(
+			/* translators: 1: next cleanup message 2: github issue URL */
+			__( 'Action Scheduler has migrated data to custom tables; however, orphaned log entries exist in the WordPress Comments table. %1$s <a href="%2$s">Learn more &raquo;</a>', 'action-scheduler' ),
+			$next_cleanup_message,
+			'https://github.com/woocommerce/action-scheduler/issues/368'
+		);
 
 		echo '<div class="notice notice-warning"><p>' . wp_kses_post( $notice ) . '</p></div>';
 	}
