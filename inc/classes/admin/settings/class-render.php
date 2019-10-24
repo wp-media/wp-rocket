@@ -444,6 +444,19 @@ class Render extends Abstract_render {
 	}
 
 	/**
+	 * Displays the Rocket CDN template.
+	 *
+	 * @since 3.5
+	 * @author Remy Perona
+	 *
+	 * @param array $args Array of arguments to populate the template.
+	 * @return void
+	 */
+	public function rocket_cdn( $args ) {
+		echo $this->generate( 'fields/rocket-cdn', $args );
+	}
+
+	/**
 	 * Displays the one-click add-on field template.
 	 *
 	 * @since 3.0
