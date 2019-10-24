@@ -540,6 +540,8 @@ class Combine extends Abstract_JS_Optimization {
 			'advads_has_ads',
 			'wpseo_map_init',
 			'mdf_current_page_url',
+			'tptn_tracker',
+			'dpsp_pin_button_data',
 			'searchwp_live_search_params',
 			'wpp_params',
 			'top.location,thispage',
@@ -637,6 +639,7 @@ class Combine extends Abstract_JS_Optimization {
 			'www.uplaunch.com',
 			'widget.reviewability.com',
 			'app.mailerlite.com',
+			'ck.page',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
@@ -724,7 +727,7 @@ class Combine extends Abstract_JS_Optimization {
 			'cb_nombre',
 			'$(\'.fl-node-',
 			'function($){google_maps_',
-      			'$("#myCarousel',
+      		'$("#myCarousel',
 			'et_animation_data=',
 			'current_url="',
 			'CustomEvent.prototype=window.Event.prototype',

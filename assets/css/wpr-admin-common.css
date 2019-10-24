@@ -1,5 +1,5 @@
 .rocket-plugins-error{overflow:hidden; padding-left:20px; list-style-type:disc}
-.rocket-plugins-error li{width:280px; line-height:25px}
+.rocket-plugins-error li{line-height:25px}
 #wp-admin-bar-purge-all-all .dashicons{font:normal 1.5em/1 'dashicons'; -webkit-font-smoothing:antialiased; vertical-align:middle; padding-right:3px; display:inline-block}
 .rocket-purchase, .dashicons.dashicons-update.rocket-dashicons:before{color:#D54E21}
 .rocket-purchase{font-weight:900}
