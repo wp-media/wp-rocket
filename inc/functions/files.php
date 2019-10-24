@@ -561,10 +561,18 @@ function rocket_clean_cache_busting( $extensions = array( 'js', 'css' ) ) {
 		do_action( 'after_rocket_clean_cache_busting', $ext );
 	}
 
-	foreach ( $iterator as $item ) {
-		if ( rocket_direct_filesystem()->is_dir( $item ) ) {
-			rocket_direct_filesystem()->delete( $item );
+	try {
+		foreach ( $iterator as $item ) {
+			if ( rocket_direct_filesystem()->is_dir( $item ) ) {
+				rocket_direct_filesystem()->delete( $item );
+			}
 		}
+	} catch ( \UnexpectedValueException $e ) {
+		// Log the error
+		Logger::debug( 'Cache Busting folder structure contains a directory we cannot recurse into.', [
+			'Full error',
+			'UnexpectedValueException' => $e->getMessage(),
+		] );
 	}
 }
 

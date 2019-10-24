@@ -174,7 +174,13 @@ function rocket_admin_bar( $wp_admin_bar ) {
 		/**
 		 * Purge OPCache content if OPcache is active.
 		 */
-		if ( function_exists( 'opcache_reset' ) ) {
+		$restrict_api     = ini_get( 'opcache.restrict_api' );
+		$can_restrict_api = true;
+		if ( $restrict_api && strpos( __FILE__, $restrict_api ) !== 0 ) {
+		    $can_restrict_api = false;
+		}
+
+		if ( function_exists( 'opcache_reset' ) && $can_restrict_api ) {
 			$action = 'rocket_purge_opcache';
 
 			$wp_admin_bar->add_menu(
@@ -219,6 +225,24 @@ function rocket_admin_bar( $wp_admin_bar ) {
 					'parent' => 'wp-rocket',
 					'id'     => 'purge-cloudflare',
 					'title'  => __( 'Clear Cloudflare cache', 'rocket' ),
+					'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . $referer ), $action ),
+				]
+			);
+		}
+	}
+
+	if ( current_user_can( 'rocket_purge_sucuri_cache' ) ) {
+		/**
+		 * Purge Sucuri cache if Sucuri is active.
+		 */
+		if ( get_rocket_option( 'sucury_waf_cache_sync', 0 ) ) {
+			$action = 'rocket_purge_sucuri';
+
+			$wp_admin_bar->add_menu(
+				[
+					'parent' => 'wp-rocket',
+					'id'     => 'purge-sucuri',
+					'title'  => __( 'Purge Sucuri cache', 'rocket' ),
 					'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . $referer ), $action ),
 				]
 			);

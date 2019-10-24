@@ -143,7 +143,13 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 					</div>
 					<?php endif; ?>
 
-					<?php if ( function_exists( 'opcache_reset' ) && current_user_can( 'rocket_purge_opcache' ) ) : ?>
+					<?php
+					$restrict_api     = ini_get( 'opcache.restrict_api' );
+					$can_restrict_api = true;
+					if ( $restrict_api && strpos(__FILE__, $restrict_api) !== 0 ) {
+					    $can_restrict_api = false;
+					}
+					if ( function_exists( 'opcache_reset' ) && current_user_can( 'rocket_purge_opcache' ) && $can_restrict_api ) : ?>
 					<div class="wpr-field">
 						<h4 class="wpr-title3"><?php esc_html_e( 'Purge OPCache content', 'rocket' ); ?></h4>
 						<?php
