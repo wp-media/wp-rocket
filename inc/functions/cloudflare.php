@@ -118,9 +118,25 @@ function rocket_is_api_keys_valid_cloudflare( $cf_email, $cf_api_key, $cf_zone_i
  * @return Object Cloudflare\Api instance if crendentials are set, WP_Error otherwise
  */
 function get_rocket_cloudflare_api_instance() {
+	if ( ! function_exists( 'curl_init' ) || ! function_exists( 'curl_exec' ) ) {
+		return new WP_Error( 'curl_disabled', __( 'Curl is disabled on your server. Please ask your host to enable it. This is required for the Cloudflare Add-on to work correctly.', 'rocket' ) );
+	}
+
 	$cf_email   = get_rocket_option( 'cloudflare_email', null );
 	$cf_api_key = ( defined( 'WP_ROCKET_CF_API_KEY' ) ) ? WP_ROCKET_CF_API_KEY : get_rocket_option( 'cloudflare_api_key', null );
 
+	if ( ! isset( $cf_email, $cf_api_key ) ) {
+		return new WP_Error(
+			'cloudflare_credentials_empty',
+			sprintf(
+				/* translators: %1$s = opening link; %2$s = closing link */
+				__( 'Cloudflare email and API key are not set. Read the %1$sdocumentation%2$s for further guidance.', 'rocket' ),
+				// translators: Documentation exists in EN, FR; use localized URL if applicable.
+				'<a href="' . esc_url( __( 'https://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket#add-on', 'rocket' ) ) . '" rel="noopener noreferrer" target="_blank">',
+				'</a>'
+			)
+		);
+	}
 	return new Cloudflare\Api( $cf_email, $cf_api_key );
 }
 
