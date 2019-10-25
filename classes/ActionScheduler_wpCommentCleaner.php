@@ -70,7 +70,7 @@ class ActionScheduler_WPCommentCleaner {
 			update_option( self::$has_logs_option_key, 'yes' );
 
 			if ( ! as_next_scheduled_action( self::$cleanup_hook ) ) {
-				as_schedule_single_action( gmdate( U ) + ( 6 * MONTH_IN_SECONDS ), self::$cleanup_hook );
+				as_schedule_single_action( gmdate( 'U' ) + ( 6 * MONTH_IN_SECONDS ), self::$cleanup_hook );
 			}
 		}
 	}
