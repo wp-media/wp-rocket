@@ -33,7 +33,7 @@ class Common_Subscribers extends AbstractServiceProvider {
 		'webp_subscriber',
 		'expired_cache_purge',
 		'expired_cache_purge_subscriber',
-		'rocketcdn_subscriber',
+		'rocketcdn_rest_subscriber',
 	];
 
 	/**
@@ -73,7 +73,7 @@ class Common_Subscribers extends AbstractServiceProvider {
 			->withArgument( $this->getContainer()->get( 'options_api' ) )
 			->withArgument( $this->getContainer()->get( 'cdn_subscriber' ) )
 			->withArgument( $this->getContainer()->get( 'beacon' ) );
-		$this->getContainer()->share( 'rocketcdn_subscriber', 'WP_Rocket\Subscriber\CDN\RocketCDNSubscriber' )
+		$this->getContainer()->share( 'rocketcdn_rest_subscriber', 'WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber' )
 			->withArgument( $this->getContainer()->get( 'options_api' ) )
 			->withArgument( $this->getContainer()->get( 'options' ) );
 	}

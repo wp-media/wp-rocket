@@ -92,6 +92,7 @@ class Plugin {
 				'settings_page_subscriber',
 				'deactivation_intent_subscriber',
 				'hummingbird_subscriber',
+				'rocketcdn_admin_subscriber',
 			];
 		} elseif ( \rocket_valid_key() ) {
 			$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Optimization_Subscribers' );
@@ -149,7 +150,7 @@ class Plugin {
 			'capabilities_subscriber',
 			'varnish_subscriber',
 			'cloudflare_subscriber',
-			'rocketcdn_subscriber',
+			'rocketcdn_rest_subscriber',
 		];
 
 		if ( \rocket_valid_key() ) {
