@@ -1,8 +1,8 @@
 <?php
-namespace WP_Rocket\Tests\Integration\Subscriber\CDN\RocketCDNSubscriber;
+namespace WP_Rocket\Tests\Integration\Subscriber\CDN\Rocket\RESTSubscriber;
 
 use PHPUnit\Framework\TestCase;
-use WP_Rocket\Subscriber\CDN\RocketCDNSubscriber;
+use WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber;
 
 class TestGetSubscribedEvents extends TestCase {
 	public function testShouldReturnSubscribedEventsArray() {
@@ -15,7 +15,7 @@ class TestGetSubscribedEvents extends TestCase {
 
 		$this->assertSame(
 			$events,
-			RocketCDNSubscriber::get_subscribed_events()
+			RESTSubscriber::get_subscribed_events()
 		);
 	}
 }

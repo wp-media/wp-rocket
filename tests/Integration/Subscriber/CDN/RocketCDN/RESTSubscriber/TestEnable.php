@@ -1,8 +1,8 @@
 <?php
-namespace WP_Rocket\Tests\Integration\Subscriber\CDN\RocketCDNSubscriber;
+namespace WP_Rocket\Tests\Integration\Subscriber\CDN\Rocket\RESTSubscriber;
 
 use PHPUnit\Framework\TestCase;
-use WP_Rocket\Subscriber\CDN\RocketCDNSubscriber;
+use WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 
@@ -17,7 +17,7 @@ class TestEnable extends TestCase {
 
         $options_api = new Options( 'wp_rocket_' );
         $options     = new Options_Data( $options_api->get( 'settings' ) );
-        $rocketcdn   = new RocketCDNSubscriber( $options_api, $options );
+        $rocketcdn   = new RESTSubscriber( $options_api, $options );
         $rocketcdn->enable( $request );
 
         $wp_rocket_settings = get_option( 'wp_rocket_settings' );
