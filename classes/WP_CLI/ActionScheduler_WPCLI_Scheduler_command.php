@@ -132,7 +132,7 @@ class ActionScheduler_WPCLI_Scheduler_command extends WP_CLI_Command {
 	protected function print_error( Exception $e ) {
 		WP_CLI::error(
 			sprintf(
-				/* translators: %s refers to the exception error message. */
+				/* translators: %s refers to the exception error message */
 				__( 'There was an error running the action scheduler: %s', 'action-scheduler' ),
 				$e->getMessage()
 			)

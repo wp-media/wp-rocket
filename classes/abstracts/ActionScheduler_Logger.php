@@ -78,6 +78,7 @@ abstract class ActionScheduler_Logger {
 
 	public function log_started_action( $action_id, $context = '' ) {
 		if ( ! empty( $context ) ) {
+			/* translators: %s: context */
 			$message = sprintf( __( 'action started via %s', 'action-scheduler' ), $context );
 		} else {
 			$message = __( 'action started', 'action-scheduler' );
@@ -87,6 +88,7 @@ abstract class ActionScheduler_Logger {
 
 	public function log_completed_action( $action_id, $action = NULL, $context = '' ) {
 		if ( ! empty( $context ) ) {
+			/* translators: %s: context */
 			$message = sprintf( __( 'action complete via %s', 'action-scheduler' ), $context );
 		} else {
 			$message = __( 'action complete', 'action-scheduler' );
@@ -96,29 +98,34 @@ abstract class ActionScheduler_Logger {
 
 	public function log_failed_action( $action_id, Exception $exception, $context = '' ) {
 		if ( ! empty( $context ) ) {
-			$message = sprintf( __( 'action failed via %s: %s', 'action-scheduler' ), $context, $exception->getMessage() );
+			/* translators: 1: context 2: exception message */
+			$message = sprintf( __( 'action failed via %1$s: %2$s', 'action-scheduler' ), $context, $exception->getMessage() );
 		} else {
+			/* translators: %s: exception message */
 			$message = sprintf( __( 'action failed: %s', 'action-scheduler' ), $exception->getMessage() );
 		}
 		$this->log( $action_id, $message );
 	}
 
 	public function log_timed_out_action( $action_id, $timeout ) {
+		/* translators: %s: amount of time */
 		$this->log( $action_id, sprintf( __( 'action timed out after %s seconds', 'action-scheduler' ), $timeout ) );
 	}
 
 	public function log_unexpected_shutdown( $action_id, $error ) {
 		if ( ! empty( $error ) ) {
-			$this->log( $action_id, sprintf( __( 'unexpected shutdown: PHP Fatal error %s in %s on line %s', 'action-scheduler' ), $error['message'], $error['file'], $error['line'] ) );
+			/* translators: 1: error message 2: filename 3: line */
+			$this->log( $action_id, sprintf( __( 'unexpected shutdown: PHP Fatal error %1$s in %2$s on line %3$s', 'action-scheduler' ), $error['message'], $error['file'], $error['line'] ) );
 		}
 	}
 
 	public function log_reset_action( $action_id ) {
-		$this->log( $action_id, __( 'action reset', 'action_scheduler' ) );
+		$this->log( $action_id, __( 'action reset', 'action-scheduler' ) );
 	}
 
 	public function log_ignored_action( $action_id, $context = '' ) {
 		if ( ! empty( $context ) ) {
+			/* translators: %s: context */
 			$message = sprintf( __( 'action ignored via %s', 'action-scheduler' ), $context );
 		} else {
 			$message = __( 'action ignored', 'action-scheduler' );
@@ -135,6 +142,7 @@ abstract class ActionScheduler_Logger {
 	public function log_failed_fetch_action( $action_id, Exception $exception = NULL ) {
 
 		if ( ! is_null( $exception ) ) {
+			/* translators: %s: exception message */
 			$log_message = sprintf( __( 'There was a failure fetching this action: %s', 'action-scheduler' ), $exception->getMessage() );
 		} else {
 			$log_message = __( 'There was a failure fetching this action', 'action-scheduler' );
@@ -144,6 +152,7 @@ abstract class ActionScheduler_Logger {
 	}
 
 	public function log_failed_schedule_next_instance( $action_id, Exception $exception ) {
+		/* translators: %s: exception message */
 		$this->log( $action_id, sprintf( __( 'There was a failure scheduling the next instance of this action: %s', 'action-scheduler' ), $exception->getMessage() ) );
 	}
 

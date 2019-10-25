@@ -177,7 +177,7 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	public function add_wp_cron_schedule( $schedules ) {
 		$schedules['every_minute'] = array(
 			'interval' => 60, // in seconds
-			'display'  => __( 'Every minute' ),
+			'display'  => __( 'Every minute', 'action-scheduler' ),
 		);
 
 		return $schedules;

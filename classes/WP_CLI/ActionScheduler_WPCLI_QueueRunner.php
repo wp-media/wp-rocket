@@ -89,6 +89,7 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 	protected function setup_progress_bar() {
 		$count              = count( $this->actions );
 		$this->progress_bar = new ProgressBar(
+			/* translators: %d: amount of actions */
 			sprintf( _n( 'Running %d action', 'Running %d actions', $count, 'action-scheduler' ), number_format_i18n( $count ) ),
 			$count
 		);
@@ -150,8 +151,8 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 		if ( null === $action ) {
 			$action = $this->store->fetch_action( $action_id );
 		}
-		/* translators: %s refers to the action ID */
-		WP_CLI::log( sprintf( __( 'Completed processing action %s with hook: %s', 'action-scheduler' ), $action_id, $action->get_hook() ) );
+		/* translators: 1: action ID 2: hook name */
+		WP_CLI::log( sprintf( __( 'Completed processing action %1$s with hook: %2$s', 'action-scheduler' ), $action_id, $action->get_hook() ) );
 	}
 
 	/**
@@ -165,7 +166,7 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 	 */
 	public function action_failed( $action_id, $exception ) {
 		WP_CLI::error(
-			/* translators: %1$s refers to the action ID, %2$s refers to the Exception message */
+			/* translators: 1: action ID 2: exception message */
 			sprintf( __( 'Error processing action %1$s: %2$s', 'action-scheduler' ), $action_id, $exception->getMessage() ),
 			false
 		);
