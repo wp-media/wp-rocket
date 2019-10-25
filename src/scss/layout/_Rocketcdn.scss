@@ -10,6 +10,10 @@
     margin: $space * 3 0;
     padding: $space * 2;
 
+    &.wpr-isHidden{
+        display: none;
+    }
+
     .notice-title {
         font-weight: 700;
     }
@@ -29,6 +33,10 @@
 .wpr-rocketcdn-cta {
     margin:10px 0;
     position: relative;
+
+    &.wpr-isHidden{
+        display: none;
+    }
 
     &-close {
         position: absolute;
