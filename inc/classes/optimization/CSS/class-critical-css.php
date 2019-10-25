@@ -192,6 +192,7 @@ class Critical_CSS {
 				'xlwcty_thankyou',
 				'fusion_template',
 				'blocks',
+				'jet-woo-builder',
 				'fl-builder-template'
 			]
 		);

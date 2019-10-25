@@ -36,6 +36,7 @@ class Critical_CSS_Subscriber implements Subscriber_Interface {
 				[ 'stop_process_on_deactivation', 11, 2 ],
 			],
 			'admin_notices'                           => [
+				[ 'notice_critical_css_generation_triggered' ],
 				[ 'critical_css_generation_running_notice' ],
 				[ 'critical_css_generation_complete_notice' ],
 				[ 'warning_critical_css_dir_permissions' ],
@@ -48,6 +49,48 @@ class Critical_CSS_Subscriber implements Subscriber_Interface {
 			'switch_theme'                            => 'maybe_regenerate_cpcss',
 			'rocket_critical_css_generation_process_complete' => 'clean_domain_on_complete',
 		];
+	}
+
+	/**
+	 * This notice is displayed when the Critical CSS Generation is triggered from a different page than WP Rocket settings page
+	 *
+	 * @since 3.4.1
+	 * @author Soponar Cristina
+	 */
+	public function notice_critical_css_generation_triggered() {
+		if ( ! current_user_can( 'rocket_regenerate_critical_css' ) ) {
+			return;
+		}
+
+		$screen = get_current_screen();
+
+		if ( 'settings_page_wprocket' === $screen->id ) {
+			return;
+		}
+
+		if ( false === get_transient( 'rocket_critical_css_generation_triggered' ) ) {
+			return;
+		}
+
+		delete_transient( 'rocket_critical_css_generation_triggered' );
+
+		$message = __( 'Critical CSS generation is currently running.', 'rocket' );
+
+		if ( current_user_can( 'rocket_manage_options' ) ) {
+			$message .= ' ' . sprintf(
+				// Translators: %1$s = opening link tag, %2$s = closing link tag.
+				__( 'Go to the %1$sWP Rocket settings%2$s page to track progress.', 'rocket' ),
+				'<a href="' . esc_url( admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG ) ) . '">',
+				'</a>'
+			);
+		}
+
+		\rocket_notice_html(
+			[
+				'status'  => 'info',
+				'message' => $message,
+			]
+		);
 	}
 
 	/**
@@ -64,6 +107,10 @@ class Critical_CSS_Subscriber implements Subscriber_Interface {
 		}
 
 		$this->critical_css->process_handler();
+
+		if ( ! strpos( wp_get_referer(), 'wprocket' ) ) {
+			set_transient( 'rocket_critical_css_generation_triggered', 1 );
+		}
 
 		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
 		die();
@@ -126,7 +173,7 @@ class Critical_CSS_Subscriber implements Subscriber_Interface {
 		$screen = get_current_screen();
 
 		if ( 'settings_page_wprocket' !== $screen->id ) {
-			return;
+		    return;
 		}
 
 		$transient = get_transient( 'rocket_critical_css_generation_process_running' );
