@@ -412,7 +412,6 @@ function get_rocket_exclude_defer_js() {
 		'www.uplaunch.com',
 		'google.com/recaptcha',
 		'widget.reviews.co.uk',
-		'lib/admin/assets/lib/webfont/webfont.min.js',
 		'app.mailerlite.com',
 	];
 
