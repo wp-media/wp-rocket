@@ -59,6 +59,7 @@ class TestExcludeDeferJS extends TestCase {
             '/wp-includes/js/jquery/jquery.js',
             'c0.wp.com/c/(?:.+)/wp-includes/js/jquery/jquery.js',
             'ajax.googleapis.com/ajax/libs/jquery/(?:.+)/jquery(?:\.min)?.js',
+            'app.mailerlite.com',
         ];
 
         $this->assertSame(
