@@ -72,7 +72,7 @@ function rocket_is_api_keys_valid_cloudflare( $cf_email, $cf_api_key, $cf_zone_i
 
 			if ( ! empty( $cf_zone->result ) ) {
 				$parsed_url = wp_parse_url( $site_url );
-				if ( strtolower( $parsed_url['host'] ) === $cf_zone->result->name ) {
+				if ( strpos( strtolower( $parsed_url['host'] ), $cf_zone->result->name ) >= 0 ) {
 					$zone_found = true;
 				}
 			}
