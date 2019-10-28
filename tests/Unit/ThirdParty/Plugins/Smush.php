@@ -4,6 +4,7 @@ namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\Smush;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Smush_Subscriber;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
+use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
 class Smush extends TestCase
 {
@@ -43,9 +44,9 @@ class Smush extends TestCase
             ->andReturn( [ 'lazy_load' => true ] );
 
         Functions\when( '__' )
-            ->justReturn( 'Smush, ' );
+            ->justReturn( 'Smush' );
 
-        $this->assertNotEmpty( $subscriber->is_smush_lazyload_active( [] ) );
+        $this->assertContains( 'Smush', $subscriber->is_smush_lazyload_active( [] ) );
     }
 
     /**
@@ -81,6 +82,35 @@ class Smush extends TestCase
             ->once() // called once
             ->andReturn();
 
-        $this->assertEmpty( $subscriber->smush_maybe_deactivate_lazyload() );
+        Functions\expect( 'update_rocket_option' )
+            ->never();
+
+        $subscriber->maybe_deactivate_rocket_lazyload();
+
+        $this->assertTrue( true ); // Prevent "risky" warning.
+    }
+
+    /**
+     * Test should disable WP Rocket lazy load functionality when Smush lazyload is enabled
+     *
+     * @since 3.4.2
+     * @author Soponar Cristina
+     *
+     */
+    public function testShouldMaybeDeactivateLazyload()
+    {
+        $subscriber  = new Smush_Subscriber();
+
+        Functions\expect( 'get_option' )
+            ->once() // called once
+            ->andReturn( [ 'lazy_load' => true ] );
+            
+        Functions\expect( 'update_rocket_option' )
+            ->once()
+            ->with('lazyload', '0');
+
+        $subscriber->maybe_deactivate_rocket_lazyload();
+        
+        $this->assertTrue( true ); // Prevent "risky" warning.
     }
 }

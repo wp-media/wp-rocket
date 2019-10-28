@@ -23,8 +23,8 @@ class Smush_Subscriber implements Subscriber_Interface {
 		}
 
 		return [
-			'update_option_wp-smush-settings'      => [ 'smush_maybe_deactivate_lazyload', 11 ],
-			'activate_wp-smushit/wp-smush.php'     => [ 'smush_maybe_deactivate_lazyload', 11 ],
+			'update_option_wp-smush-settings'      => [ 'maybe_deactivate_rocket_lazyload', 11 ],
+			'activate_wp-smushit/wp-smush.php'     => [ 'maybe_deactivate_rocket_lazyload', 11 ],
 			'rocket_maybe_disable_lazyload_helper' => 'is_smush_lazyload_active',
 		];
 	}
@@ -35,7 +35,7 @@ class Smush_Subscriber implements Subscriber_Interface {
 	 * @since  3.4.2
 	 * @author Soponar Cristina
 	 */
-	public function smush_maybe_deactivate_lazyload() {
+	public function maybe_deactivate_rocket_lazyload() {
 		$lazy_load_option = get_option( WP_SMUSH_PREFIX . 'settings' );
 		$lazyload         = isset( $lazy_load_option['lazy_load'] ) ? $lazy_load_option['lazy_load'] : false;
 
