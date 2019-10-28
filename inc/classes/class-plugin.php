@@ -142,6 +142,7 @@ class Plugin {
 			'elementor_subscriber',
 			'bridge_subscriber',
 			'ngg_subscriber',
+			'smush_subscriber',
 			'cache_dir_size_check_subscriber',
 			'plugin_updater_common_subscriber',
 			'plugin_information_subscriber',
