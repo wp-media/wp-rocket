@@ -550,6 +550,7 @@ class Combine extends Abstract_JS_Optimization {
 			'PHP.wp_p_id',
 			'ShopifyBuy.UI.onReady(client)',
 			'orig_request_uri',
+			'gie.widgets.load',
 			'Adman.Flash',
 			'PHP.wp_p_id',
 			'window.broadstreetKeywords',
@@ -639,6 +640,7 @@ class Combine extends Abstract_JS_Optimization {
 			'code.tidio.co',
 			'www.uplaunch.com',
 			'widget.reviewability.com',
+			'embed-cdn.gettyimages.com/widgets.js',
 			'app.mailerlite.com',
 			'ck.page',
 		];
