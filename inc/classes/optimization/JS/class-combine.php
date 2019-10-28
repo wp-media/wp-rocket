@@ -556,6 +556,7 @@ class Combine extends Abstract_JS_Optimization {
 			'var productId =',
 			'var flatsomeVars',
 			'wc_product_block_data',
+			'static.mailerlite.com',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
@@ -637,6 +638,7 @@ class Combine extends Abstract_JS_Optimization {
 			'code.tidio.co',
 			'www.uplaunch.com',
 			'widget.reviewability.com',
+			'app.mailerlite.com',
 			'ck.page',
 		];
 
