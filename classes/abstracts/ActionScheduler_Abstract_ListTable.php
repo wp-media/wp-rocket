@@ -29,7 +29,7 @@ abstract class ActionScheduler_Abstract_ListTable extends WP_List_Table {
 	protected $table_name;
 
 	/**
-	 * Package name, used in translations
+	 * Package name, used to get options from WP_List_Table::get_items_per_page.
 	 */
 	protected $package;
 
