@@ -557,6 +557,7 @@ class Combine extends Abstract_JS_Optimization {
 			'var productId =',
 			'var flatsomeVars',
 			'wc_product_block_data',
+			'static.mailerlite.com',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
@@ -625,6 +626,7 @@ class Combine extends Abstract_JS_Optimization {
 			'googlesyndication.com',
 			'a.optmstr.com',
 			'a.optmnstr.com',
+			'a.opmnstr.com',
 			'adthrive.com',
 			'mediavine.com',
 			'js.hsforms.net',
@@ -639,6 +641,7 @@ class Combine extends Abstract_JS_Optimization {
 			'www.uplaunch.com',
 			'widget.reviewability.com',
 			'embed-cdn.gettyimages.com/widgets.js',
+			'app.mailerlite.com',
 			'ck.page',
 		];
 
