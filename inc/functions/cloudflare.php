@@ -485,7 +485,7 @@ function rocket_purge_cloudflare_by_url( $post, $purge_urls, $lang ) {
 		$cf_cache = new Cloudflare\Zone\Cache( $GLOBALS['rocket_cloudflare']->auth );
 		$cf_purge = $cf_cache->purge_files( $GLOBALS['rocket_cloudflare']->zone_id, $purge_urls );
 
-		if ( ! isset( $cf_purge->success ) || empty( $cf_purge->success ) ) {
+		if ( empty( $cf_purge->success ) ) {
 			foreach ( $cf_purge->errors as $error ) {
 				$errors[] = $error->message;
 			}
@@ -521,7 +521,7 @@ function rocket_cf_has_page_rule( $action_value ) {
 		$cf_page_rules = new Cloudflare\Zone\Pagerules( $GLOBALS['rocket_cloudflare']->auth );
 		$cf_page_rule  = $cf_page_rules->list_pagerules( $GLOBALS['rocket_cloudflare']->zone_id, 'active' );
 
-		if ( ! isset( $cf_page_rule->success ) || empty( $cf_page_rule->success ) ) {
+		if ( empty( $cf_page_rule->success ) ) {
 			foreach ( $cf_page_rule->errors as $error ) {
 				$errors[] = $error->message;
 			}
