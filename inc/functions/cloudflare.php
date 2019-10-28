@@ -7,32 +7,37 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * @since 3.4.1
  * @author Soponar Cristina
  *
- * @param string $cf_email   - Cloudflare email
- * @param string $cf_api_key - Cloudflare API key
- * @param string $cf_zone_id - Cloudflare zone ID
- * @return Object            - true if credentials are ok, WP_Error otherwise
+ * @param string $cf_email   - Cloudflare email.
+ * @param string $cf_api_key - Cloudflare API key.
+ * @param string $cf_zone_id - Cloudflare zone ID.
+ * @return Object            - true if credentials are ok, WP_Error otherwise.
  */
 function rocket_is_api_keys_valid_cloudflare( $cf_email, $cf_api_key, $cf_zone_id ) {
 	if ( ! function_exists( 'curl_init' ) || ! function_exists( 'curl_exec' ) ) {
-		return new WP_Error( 'curl_disabled', __( 'Curl functions are disabled, they are required for the Cloudflare Add-on to work correctly.', 'rocket' ) );
+		return new WP_Error( 'curl_disabled', __( 'Curl is disabled on your server. Please ask your host to enable it. This is required for the Cloudflare Add-on to work correctly.', 'rocket' ) );
 	}
 
 	if ( ! isset( $cf_email, $cf_api_key ) || empty( $cf_email ) || empty( $cf_api_key ) ) {
-		return new WP_Error( 'cloudflare_credentials_empty', __( 'Cloudflare Email and API key are not set.', 'rocket' ) );
+		return new WP_Error(
+			'cloudflare_credentials_empty',
+			sprintf(
+				/* translators: %1$s = opening link; %2$s = closing link */
+				__( 'Cloudflare email, API key and Zone ID are not set. Read the %1$sdocumentation%2$s for further guidance.', 'rocket' ),
+				// translators: Documentation exists in EN, FR; use localized URL if applicable.
+				'<a href="' . esc_url( __( 'https://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket#add-on', 'rocket' ) ) . '" rel="noopener noreferrer" target="_blank">',
+				'</a>'
+			)
+		);
 	}
 
 	if ( ! isset( $cf_zone_id ) || empty( $cf_zone_id ) ) {
-		$msg = sprintf(
-			// translators: %s = WP Rocket plugin name.
-			__( 'Missing Cloudflare zone ID. %s could not fix this automatically.', 'rocket' ),
-			WP_ROCKET_PLUGIN_NAME
-		);
+		$msg = __( 'Missing Cloudflare Zone ID.', 'rocket' );
 
 		$msg .= ' ' . sprintf(
 			/* translators: %1$s = opening link; %2$s = closing link */
 			__( 'Read the %1$sdocumentation%2$s for further guidance.', 'rocket' ),
-			/* translators: Documentation exists in EN, DE, FR, ES, IT; use loaclised URL if applicable */
-			'<a href="' . __( 'https://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket', 'rocket' ) . '" target="_blank">',
+			// translators: Documentation exists in EN, FR; use localized URL if applicable.
+			'<a href="' . esc_url( __( 'https://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket#add-on', 'rocket' ) ) . '" rel="noopener noreferrer" target="_blank">',
 			'</a>'
 		);
 
@@ -41,18 +46,66 @@ function rocket_is_api_keys_valid_cloudflare( $cf_email, $cf_api_key, $cf_zone_i
 
 	try {
 		$cf_api_instance = new Cloudflare\Api( $cf_email, $cf_api_key );
-		$cf_user         = $cf_api_instance->get('user/');
-		$cf_zone         = $cf_api_instance->get('zones/'.$cf_zone_id);
+		$cf_user         = $cf_api_instance->get( 'user/' );
+		$cf_zone         = $cf_api_instance->get( 'zones/' . $cf_zone_id );
 
 		if ( ! isset( $cf_zone->success ) || empty( $cf_zone->success ) ) {
-			return new WP_Error( 'cloudflare_invalid_auth', $cf_zone->errors[0]->message );
+			$msg = __( 'Incorrect Cloudflare Zone ID.', 'rocket' );
+
+			$msg .= ' ' . sprintf(
+				/* translators: %1$s = opening link; %2$s = closing link */
+				__( 'Read the %1$sdocumentation%2$s for further guidance.', 'rocket' ),
+				// translators: Documentation exists in EN, FR; use localized URL if applicable.
+				'<a href="' . esc_url( __( 'https://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket#add-on', 'rocket' ) ) . '" rel="noopener noreferrer" target="_blank">',
+				'</a>'
+			);
+			return new WP_Error( 'cloudflare_invalid_auth', $msg );
 		}
 
 		if ( true === $cf_zone->success ) {
-		    return true;
+			$zone_found = false;
+			$site_url   = get_site_url();
+
+			if ( function_exists( 'domain_mapping_siteurl' ) ) {
+				$site_url = domain_mapping_siteurl( $site_url );
+			}
+
+			if ( ! empty( $cf_zone->result ) ) {
+				$parsed_url = wp_parse_url( $site_url );
+				if ( strtolower( $parsed_url['host'] ) === $cf_zone->result->name ) {
+					$zone_found = true;
+				}
+			}
+
+			if ( ! $zone_found ) {
+				$msg = __( 'It looks like your domain is not set up on Cloudflare.', 'rocket' );
+
+				$msg .= ' ' . sprintf(
+					/* translators: %1$s = opening link; %2$s = closing link */
+					__( 'Read the %1$sdocumentation%2$s for further guidance.', 'rocket' ),
+					// translators: Documentation exists in EN, FR; use localized URL if applicable.
+					'<a href="' . esc_url( __( 'https://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket#add-on', 'rocket' ) ) . '" rel="noopener noreferrer" target="_blank">',
+					'</a>'
+				);
+
+				return new WP_Error( 'cloudflare_wrong_zone_id', $msg );
+			}
+
+			return true;
 		}
+
 	} catch ( Exception $e ) {
-		return new WP_Error( 'cloudflare_invalid_auth', $e->getMessage() );
+		$msg = __( 'Incorrect Cloudflare email address or API key.', 'rocket' );
+
+		$msg .= ' ' . sprintf(
+			/* translators: %1$s = opening link; %2$s = closing link */
+			__( 'Read the %1$sdocumentation%2$s for further guidance.', 'rocket' ),
+			// translators: Documentation exists in EN, FR; use localized URL if applicable.
+			'<a href="' . esc_url( __( 'https://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket#add-on', 'rocket' ) ) . '" rel="noopener noreferrer" target="_blank">',
+			'</a>'
+		);
+
+		return new WP_Error( 'cloudflare_invalid_auth', $msg );
 	}
 }
 
@@ -65,16 +118,8 @@ function rocket_is_api_keys_valid_cloudflare( $cf_email, $cf_api_key, $cf_zone_i
  * @return Object Cloudflare\Api instance if crendentials are set, WP_Error otherwise
  */
 function get_rocket_cloudflare_api_instance() {
-	if ( ! function_exists( 'curl_init' ) || ! function_exists( 'curl_exec' ) ) {
-		return new WP_Error( 'curl_disabled', __( 'Curl functions are disabled, they are required for the Cloudflare Add-on to work correctly.', 'rocket' ) );
-	}
-
 	$cf_email   = get_rocket_option( 'cloudflare_email', null );
 	$cf_api_key = ( defined( 'WP_ROCKET_CF_API_KEY' ) ) ? WP_ROCKET_CF_API_KEY : get_rocket_option( 'cloudflare_api_key', null );
-
-	if ( ! isset( $cf_email, $cf_api_key ) ) {
-		return new WP_Error( 'cloudflare_credentials_empty', __( 'Cloudflare Email and API key are not set', 'rocket' ) );
-	}
 
 	return new Cloudflare\Api( $cf_email, $cf_api_key );
 }
@@ -90,34 +135,16 @@ function get_rocket_cloudflare_api_instance() {
  * @return Object Cloudflare instance & zone_id if credentials are correct, WP_Error otherwise
  */
 function get_rocket_cloudflare_instance() {
+	$cf_email             = get_rocket_option( 'cloudflare_email', null );
+	$cf_api_key           = ( defined( 'WP_ROCKET_CF_API_KEY' ) ) ? WP_ROCKET_CF_API_KEY : get_rocket_option( 'cloudflare_api_key', null );
+	$cf_zone_id           = get_rocket_option( 'cloudflare_zone_id', null );
+	$is_api_keys_valid_cf = rocket_is_api_keys_valid_cloudflare( $cf_email, $cf_api_key, $cf_zone_id );
+
+	if ( is_wp_error( $is_api_keys_valid_cf ) ) {
+		return $is_api_keys_valid_cf;
+	}
+
 	$cf_api_instance = get_rocket_cloudflare_api_instance();
-	if ( is_wp_error( $cf_api_instance ) ) {
-		return $cf_api_instance;
-	}
-
-	$cf_instance = (object) [
-		'auth' => $cf_api_instance,
-	];
-	$cf_zone_id  = get_rocket_option( 'cloudflare_zone_id', null );
-
-	if ( ! isset( $cf_zone_id ) ) {
-
-		$msg = sprintf(
-			// translators: %s = WP Rocket plugin name.
-			__( 'Missing Cloudflare zone ID. %s could not fix this automatically.', 'rocket' ),
-			WP_ROCKET_PLUGIN_NAME
-		);
-
-		$msg .= ' ' . sprintf(
-			/* translators: %1$s = opening link; %2$s = closing link */
-			__( 'Read the %1$sdocumentation%2$s for further guidance.', 'rocket' ),
-			/* translators: Documentation exists in EN, DE, FR, ES, IT; use loaclised URL if applicable */
-			'<a href="' . __( 'https://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket', 'rocket' ) . '" target="_blank">',
-			'</a>'
-		);
-
-		return new WP_Error( 'cloudflare_no_zone_id', $msg );
-	}
 
 	$cf_instance = (object) [
 		'auth'    => $cf_api_instance,
@@ -448,18 +475,31 @@ function rocket_purge_cloudflare() {
 		$cf_purge = $cf_cache->purge( $GLOBALS['rocket_cloudflare']->zone_id, true );
 
 		if ( ! isset( $cf_purge->success ) || empty( $cf_purge->success ) ) {
-			foreach ( $cf_purge->errors as $error ) {
-				$errors[] = $error->message;
-			}
+			$msg = __( 'Incorrect Cloudflare Zone ID.', 'rocket' );
 
-			$errors = implode( ', ', $errors );
-			throw new Exception( $errors );
+			$msg .= ' ' . sprintf(
+				/* translators: %1$s = opening link; %2$s = closing link */
+				__( 'Read the %1$sdocumentation%2$s for further guidance.', 'rocket' ),
+				// translators: Documentation exists in EN, FR; use localized URL if applicable.
+				'<a href="' . esc_url( __( 'https://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket#add-on', 'rocket' ) ) . '" rel="noopener noreferrer" target="_blank">',
+				'</a>'
+			);
+			return new WP_Error( 'cloudflare_invalid_auth', $msg );
 		}
 
 		return true;
 
 	} catch ( Exception $e ) {
-		return new WP_Error( 'cloudflare_purge_failed', $e->getMessage() );
+		$msg = __( 'Incorrect Cloudflare email address or API key.', 'rocket' );
+
+		$msg .= ' ' . sprintf(
+			/* translators: %1$s = opening link; %2$s = closing link */
+			__( 'Read the %1$sdocumentation%2$s for further guidance.', 'rocket' ),
+			// translators: Documentation exists in EN, FR; use localized URL if applicable.
+			'<a href="' . esc_url( __( 'https://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket#add-on', 'rocket' ) ) . '" rel="noopener noreferrer" target="_blank">',
+			'</a>'
+		);
+		return new WP_Error( 'cloudflare_purge_failed', $msg );
 	}
 }
 
