@@ -1,0 +1,39 @@
+{
+  "name": "action-scheduler",
+  "title": "Action Scheduler",
+  "version": "3.0.0",
+  "homepage": "https://actionscheduler.org/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/woocommerce/action-scheduler.git"
+  },
+  "license": "GPL-3.0+",
+  "main": "Gruntfile.js",
+  "scripts": {
+    "build": "grunt",
+    "check-textdomain": "grunt checktextdomain",
+    "phpcs": "grunt phpcs"
+  },
+  "devDependencies": {
+    "grunt": "1.0.4",
+    "grunt-checktextdomain": "1.0.1",
+    "grunt-phpcs": "0.4.0",
+    "husky": "3.0.9",
+    "lint-staged": "9.4.2"
+  },
+  "engines": {
+    "node": ">=10.15.0",
+    "npm": ">=6.4.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.php": [
+      "php -d display_errors=1 -l",
+      "composer run-script phpcs-pre-commit"
+    ]
+  }
+}
