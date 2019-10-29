@@ -7,12 +7,13 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * @since 3.4.1
  * @author Soponar Cristina
  *
- * @param string $cf_email   - Cloudflare email.
- * @param string $cf_api_key - Cloudflare API key.
- * @param string $cf_zone_id - Cloudflare zone ID.
- * @return Object            - true if credentials are ok, WP_Error otherwise.
+ * @param string $cf_email         - Cloudflare email.
+ * @param string $cf_api_key       - Cloudflare API key.
+ * @param string $cf_zone_id       - Cloudflare zone ID.
+ * @param bool   $basic_validation - Bypass Cloudflare API user and zone validation.
+ * @return Object                  - true if credentials are ok, WP_Error otherwise.
  */
-function rocket_is_api_keys_valid_cloudflare( $cf_email, $cf_api_key, $cf_zone_id ) {
+function rocket_is_api_keys_valid_cloudflare( $cf_email, $cf_api_key, $cf_zone_id, $basic_validation = true ) {
 	if ( ! function_exists( 'curl_init' ) || ! function_exists( 'curl_exec' ) ) {
 		return new WP_Error( 'curl_disabled', __( 'Curl is disabled on your server. Please ask your host to enable it. This is required for the Cloudflare Add-on to work correctly.', 'rocket' ) );
 	}
@@ -44,6 +45,10 @@ function rocket_is_api_keys_valid_cloudflare( $cf_email, $cf_api_key, $cf_zone_i
 		return new WP_Error( 'cloudflare_no_zone_id', $msg );
 	}
 
+	if ( $basic_validation ) {
+		return true;
+	}
+
 	try {
 		$cf_api_instance = new Cloudflare\Api( $cf_email, $cf_api_key );
 		$cf_user         = $cf_api_instance->get( 'user/' );
@@ -72,7 +77,7 @@ function rocket_is_api_keys_valid_cloudflare( $cf_email, $cf_api_key, $cf_zone_i
 
 			if ( ! empty( $cf_zone->result ) ) {
 				$parsed_url = wp_parse_url( $site_url );
-				if ( strtolower( $parsed_url['host'] ) === $cf_zone->result->name ) {
+				if ( false !== strpos( strtolower( $parsed_url['host'] ), $cf_zone->result->name ) ) {
 					$zone_found = true;
 				}
 			}
@@ -154,7 +159,7 @@ function get_rocket_cloudflare_instance() {
 	$cf_email             = get_rocket_option( 'cloudflare_email', null );
 	$cf_api_key           = ( defined( 'WP_ROCKET_CF_API_KEY' ) ) ? WP_ROCKET_CF_API_KEY : get_rocket_option( 'cloudflare_api_key', null );
 	$cf_zone_id           = get_rocket_option( 'cloudflare_zone_id', null );
-	$is_api_keys_valid_cf = rocket_is_api_keys_valid_cloudflare( $cf_email, $cf_api_key, $cf_zone_id );
+	$is_api_keys_valid_cf = rocket_is_api_keys_valid_cloudflare( $cf_email, $cf_api_key, $cf_zone_id, true );
 
 	if ( is_wp_error( $is_api_keys_valid_cf ) ) {
 		return $is_api_keys_valid_cf;
@@ -203,45 +208,6 @@ function rocket_cloudflare_valid_auth() {
 		}
 	} catch ( Exception $e ) {
 		return new WP_Error( 'cloudflare_invalid_auth', $e->getMessage() );
-	}
-}
-
-/**
- * Get Zones linked to a Cloudflare account
- *
- * @since 2.9
- * @author Remy Perona
- *
- * @return Array List of zones or default no domain
- */
-function get_rocket_cloudflare_zones() {
-	$cf_api_instance = get_rocket_cloudflare_api_instance();
-	$domains         = array(
-		'' => __( 'Choose a domain from the list', 'rocket' ),
-	);
-
-	if ( is_wp_error( $cf_api_instance ) ) {
-		return $domains;
-	}
-
-	try {
-		$cf_zone_instance = new Cloudflare\Zone( $cf_api_instance );
-		$cf_zones         = $cf_zone_instance->zones( null, 'active', null, 50 );
-		$cf_zones_list    = $cf_zones->result;
-
-		if ( ! (bool) $cf_zones_list ) {
-			$domains[] = __( 'No domain available in your Cloudflare account', 'rocket' );
-
-			return $domains;
-		}
-
-		foreach ( $cf_zones_list as $cf_zone ) {
-			$domains[ $cf_zone->name ] = $cf_zone->name;
-		}
-
-		return $domains;
-	} catch ( Exception $e ) {
-		return $domains;
 	}
 }
 
