@@ -88,6 +88,21 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		rocket_clean_cache_busting();
 	}
 
+	if ( ! empty( $_POST ) &&
+			( ( isset( $oldvalue['cloudflare_email'], $value['cloudflare_email'] ) && $oldvalue['cloudflare_email'] !== $value['cloudflare_email'] ) ||
+			( isset( $oldvalue['cloudflare_api_key'], $value['cloudflare_api_key'] ) && $oldvalue['cloudflare_api_key'] !== $value['cloudflare_api_key'] ) ||
+			( isset( $oldvalue['cloudflare_zone_id'], $value['cloudflare_zone_id'] ) && $oldvalue['cloudflare_zone_id'] !== $value['cloudflare_zone_id'] ) )
+			) {
+		// Check Cloudflare input data and display error message.
+		if ( get_rocket_option( 'do_cloudflare' ) && function_exists( 'rocket_is_api_keys_valid_cloudflare' ) ) {
+			$is_api_keys_valid_cloudflare = rocket_is_api_keys_valid_cloudflare( $value['cloudflare_email'], $value['cloudflare_api_key'], $value['cloudflare_zone_id'], false );
+			if ( is_wp_error( $is_api_keys_valid_cloudflare ) ) {
+				$cloudflare_error_message = $is_api_keys_valid_cloudflare->get_error_message();
+				add_settings_error( 'general', 'cloudflare_api_key_invalid', __( 'WP Rocket: ', 'rocket' ) . '</strong>' . $cloudflare_error_message . '<strong>', 'error' );
+			}
+		}
+	}
+
 	// Update CloudFlare Development Mode.
 	$cloudflare_update_result = array();
 
