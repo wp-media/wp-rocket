@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * @param string $cf_zone_id - Cloudflare zone ID.
  * @return Object            - true if credentials are ok, WP_Error otherwise.
  */
-function rocket_is_api_keys_valid_cloudflare( $cf_email, $cf_api_key, $cf_zone_id ) {
+function rocket_is_api_keys_valid_cloudflare( $cf_email, $cf_api_key, $cf_zone_id, $basic_validation = true ) {
 	if ( ! function_exists( 'curl_init' ) || ! function_exists( 'curl_exec' ) ) {
 		return new WP_Error( 'curl_disabled', __( 'Curl is disabled on your server. Please ask your host to enable it. This is required for the Cloudflare Add-on to work correctly.', 'rocket' ) );
 	}
@@ -42,6 +42,10 @@ function rocket_is_api_keys_valid_cloudflare( $cf_email, $cf_api_key, $cf_zone_i
 		);
 
 		return new WP_Error( 'cloudflare_no_zone_id', $msg );
+	}
+
+	if ( $basic_validation ) {
+		return true;
 	}
 
 	try {
@@ -154,7 +158,7 @@ function get_rocket_cloudflare_instance() {
 	$cf_email             = get_rocket_option( 'cloudflare_email', null );
 	$cf_api_key           = ( defined( 'WP_ROCKET_CF_API_KEY' ) ) ? WP_ROCKET_CF_API_KEY : get_rocket_option( 'cloudflare_api_key', null );
 	$cf_zone_id           = get_rocket_option( 'cloudflare_zone_id', null );
-	$is_api_keys_valid_cf = rocket_is_api_keys_valid_cloudflare( $cf_email, $cf_api_key, $cf_zone_id );
+	$is_api_keys_valid_cf = rocket_is_api_keys_valid_cloudflare( $cf_email, $cf_api_key, $cf_zone_id, true );
 
 	if ( is_wp_error( $is_api_keys_valid_cf ) ) {
 		return $is_api_keys_valid_cf;
