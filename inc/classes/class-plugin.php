@@ -138,6 +138,7 @@ class Plugin {
 			'woocommerce_subscriber',
 			'bigcommerce_subscriber',
 			'pressable_subscriber',
+			'litespeed_subscriber',
 			'syntaxhighlighter_subscriber',
 			'elementor_subscriber',
 			'bridge_subscriber',

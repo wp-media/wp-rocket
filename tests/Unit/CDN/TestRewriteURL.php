@@ -214,6 +214,63 @@ class TestRewriteURL extends TestCase {
         );
     }
 
+    public function testShouldReturnDefaultURLWhenRejectedFiles() {
+        $options = $this->createMock('WP_Rocket\Admin\Options_Data');
+        $map     = [
+            [
+                'cdn',
+                '',
+                1,
+            ],
+            [
+                'cdn_cnames',
+                [],
+                [
+                    'cdn.example.org',
+                ],
+            ],
+            [
+                'cdn_reject_files',
+                [],
+                [
+                    '/wp-content/uploads/file.jpg',
+                    '/wp-content/(.*).css'
+                ],
+            ],
+            [
+                'cdn_zone',
+                [],
+                [
+                    'images',
+                    'css_and_js',
+                ],
+            ],
+        ];
+
+        $options->method('get')->will($this->returnValueMap($map));
+
+        $cdn = new CDN( $options );
+
+        Functions\when('wp_parse_url')->alias(function ($url, $component = -1) {
+            return parse_url($url, $component);
+        });
+
+        $this->assertSame(
+            'http://example.org/wp-content/uploads/file.jpg',
+            $cdn->rewrite_url( 'http://example.org/wp-content/uploads/file.jpg' )
+        );
+
+        $this->assertSame(
+            'http://example.org/wp-content/themes/twentytwenty/style.css',
+            $cdn->rewrite_url( 'http://example.org/wp-content/themes/twentytwenty/style.css' )
+        );
+
+        $this->assertSame(
+            'http://example.org/wp-content/uploads/post.css',
+            $cdn->rewrite_url( 'http://example.org/wp-content/uploads/post.css' )
+        );
+    }
+
     public function rewriteURLProvider() {
         return [
             [

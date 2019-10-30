@@ -22,6 +22,7 @@ class Hostings_Subscribers extends AbstractServiceProvider {
 	 */
 	protected $provides = [
 		'pressable_subscriber',
+		'litespeed_subscriber',
 	];
 
 	/**
@@ -34,5 +35,6 @@ class Hostings_Subscribers extends AbstractServiceProvider {
 	 */
 	public function register() {
 		$this->getContainer()->share( 'pressable_subscriber', 'WP_Rocket\Subscriber\Third_Party\Hostings\Pressable_Subscriber' );
+		$this->getContainer()->share( 'litespeed_subscriber', 'WP_Rocket\Subscriber\Third_Party\Hostings\Litespeed_Subscriber' );
 	}
 }

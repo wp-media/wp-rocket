@@ -550,6 +550,12 @@ class Combine extends Abstract_JS_Optimization {
 			'PHP.wp_p_id',
 			'ShopifyBuy.UI.onReady(client)',
 			'orig_request_uri',
+			'Adman.Flash',
+			'PHP.wp_p_id',
+			'window.broadstreetKeywords',
+			'var productId =',
+			'var flatsomeVars',
+			'wc_product_block_data',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
@@ -631,6 +637,7 @@ class Combine extends Abstract_JS_Optimization {
 			'code.tidio.co',
 			'www.uplaunch.com',
 			'widget.reviewability.com',
+			'ck.page',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
