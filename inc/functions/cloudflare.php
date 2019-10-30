@@ -51,10 +51,24 @@ function rocket_is_api_keys_valid_cloudflare( $cf_email, $cf_api_key, $cf_zone_i
 
 	try {
 		$cf_api_instance = new Cloudflare\Api( $cf_email, $cf_api_key );
-		$cf_user         = $cf_api_instance->get( 'user/' );
 		$cf_zone         = $cf_api_instance->get( 'zones/' . $cf_zone_id );
 
 		if ( ! isset( $cf_zone->success ) || empty( $cf_zone->success ) ) {
+			foreach ( $cf_zone->errors as $error ) {
+				if ( $error->code === 6003 ) {
+					$msg = __( 'Incorrect Cloudflare email address or API key.', 'rocket' );
+
+					$msg .= ' ' . sprintf(
+						/* translators: %1$s = opening link; %2$s = closing link */
+						__( 'Read the %1$sdocumentation%2$s for further guidance.', 'rocket' ),
+						// translators: Documentation exists in EN, FR; use localized URL if applicable.
+						'<a href="' . esc_url( __( 'https://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket#add-on', 'rocket' ) ) . '" rel="noopener noreferrer" target="_blank">',
+						'</a>'
+					);
+
+					return new WP_Error( 'cloudflare_invalid_auth', $msg );
+				}
+			}
 			$msg = __( 'Incorrect Cloudflare Zone ID.', 'rocket' );
 
 			$msg .= ' ' . sprintf(
