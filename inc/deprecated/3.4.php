@@ -2,6 +2,48 @@
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
+ * Get Zones linked to a Cloudflare account
+ *
+ * @since 2.9
+ * @deprecated 3.4.1.2
+ * @author Remy Perona
+ *
+ * @return Array List of zones or default no domain
+ */
+function get_rocket_cloudflare_zones() {
+	_deprecated_function( __FUNCTION__ . '()', '3.4.1.2' );
+	$cf_api_instance = get_rocket_cloudflare_api_instance();
+	$domains         = array(
+		'' => __( 'Choose a domain from the list', 'rocket' ),
+	);
+
+	if ( is_wp_error( $cf_api_instance ) ) {
+		return $domains;
+	}
+
+	try {
+		$cf_zone_instance = new Cloudflare\Zone( $cf_api_instance );
+		$cf_zones         = $cf_zone_instance->zones( null, 'active', null, 50 );
+		$cf_zones_list    = $cf_zones->result;
+
+		if ( ! (bool) $cf_zones_list ) {
+			$domains[] = __( 'No domain available in your Cloudflare account', 'rocket' );
+
+			return $domains;
+		}
+
+		foreach ( $cf_zones_list as $cf_zone ) {
+			$domains[ $cf_zone->name ] = $cf_zone->name;
+		}
+
+		return $domains;
+	} catch ( Exception $e ) {
+		return $domains;
+	}
+}
+
+
+/**
  * Get CNAMES hosts
  *
  * @since 2.3

@@ -367,15 +367,6 @@ class Settings {
 			$input['cloudflare_api_key'] = WP_ROCKET_CF_API_KEY;
 		}
 
-		// Check Cloudflare input data and display error message
-		if ( get_rocket_option( 'do_cloudflare' ) ) {
-			$is_api_keys_valid_cloudflare = rocket_is_api_keys_valid_cloudflare( $input['cloudflare_email'], $input['cloudflare_api_key'], $input['cloudflare_zone_id'] );
-			if ( is_wp_error( $is_api_keys_valid_cloudflare ) ) {
-				$cloudflare_error_message = $is_api_keys_valid_cloudflare->get_error_message();
-				add_settings_error( 'general', 'cloudflare_api_key_invalid', __( 'WP Rocket: ', 'rocket' ) . '</strong>' . $cloudflare_error_message . '<strong>', 'error' );
-			}
-		}
-
 		// Options: Sucuri cache. And yeah, there's a typo, but now it's too late to fix ^^'.
 		$input['sucury_waf_cache_sync'] = ! empty( $input['sucury_waf_cache_sync'] ) ? 1 : 0;
 
