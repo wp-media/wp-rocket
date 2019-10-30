@@ -80,7 +80,7 @@ class Expired_Cache_Purge {
 			return;
 		}
 
-		$urls = array_unique( $urls, true );
+		$urls = array_unique( $urls );
 
 		if ( empty( $this->filesystem ) ) {
 			$this->filesystem = rocket_direct_filesystem();
