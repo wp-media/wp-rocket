@@ -22,7 +22,7 @@ class Minify_JS_Subscriber extends Minify_Subscriber {
 				[ 'fix_ssl_minify' ],
 				[ 'i18n_multidomain_url' ],
 			],
-			'rocket_buffer' => [ 'process', 12 ],
+			'rocket_buffer' => [ 'process', 22 ],
 		];
 
 		return $events;

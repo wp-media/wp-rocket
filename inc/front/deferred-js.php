@@ -55,4 +55,4 @@ function rocket_defer_js( $buffer ) {
 
 	return $buffer;
 }
-add_filter( 'rocket_buffer', 'rocket_defer_js', 14 );
+add_filter( 'rocket_buffer', 'rocket_defer_js', 24 );
