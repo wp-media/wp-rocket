@@ -38,7 +38,7 @@ class Remove_Query_String_Subscriber extends Minify_Subscriber {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_buffer' => [ 'process', 22 ],
+			'rocket_buffer' => [ 'process', 30 ],
 		];
 	}
 
