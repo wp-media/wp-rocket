@@ -109,6 +109,7 @@ function rocket_is_api_keys_valid_cloudflare( $cf_email, $cf_api_key, $cf_zone_i
 
 				return new WP_Error( 'cloudflare_wrong_zone_id', $msg );
 			}
+
 			return true;
 		}
 
@@ -481,6 +482,7 @@ function rocket_purge_cloudflare() {
 			);
 			return new WP_Error( 'cloudflare_invalid_auth', $msg );
 		}
+
 		return true;
 
 	} catch ( Exception $e ) {
