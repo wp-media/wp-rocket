@@ -500,6 +500,89 @@ function rocket_purge_cloudflare() {
 }
 
 /**
+ * Get Cloudflare IPs.
+ *
+ * @since 2.8.21 Save IPs in a transient to prevent calling the API everytime
+ * @since 2.8.16
+ *
+ * @author Remy Perona
+ *
+ * @throws Exception If any error occurs when doing the API request.
+ * @return Object Result of API request if successful, WP_Error otherwise
+ */
+function rocket_get_cloudflare_ips() {
+	$cf_instance = get_rocket_cloudflare_api_instance();
+	if ( is_wp_error( $cf_instance ) ) {
+		return $cf_instance;
+	}
+
+	$cf_ips = get_transient( 'rocket_cloudflare_ips' );
+	if ( false === $cf_ips ) {
+		try {
+			$cf_ips_instance = new Cloudflare\IPs( $cf_instance );
+			$cf_ips          = $cf_ips_instance->ips();
+
+			if ( ! isset( $cf_ips->success ) || ! $cf_ips->success ) {
+				throw new Exception( 'Error connecting to Cloudflare' );
+			}
+
+			set_transient( 'rocket_cloudflare_ips', $cf_ips, 2 * WEEK_IN_SECONDS );
+		} catch ( Exception $e ) {
+			$cf_ips = (object) [
+				'success' => true,
+				'result'  => (object) [],
+			];
+
+			$cf_ips->result->ipv4_cidrs = [
+				'103.21.244.0/22',
+				'103.22.200.0/22',
+				'103.31.4.0/22',
+				'104.16.0.0/12',
+				'108.162.192.0/18',
+				'131.0.72.0/22',
+				'141.101.64.0/18',
+				'162.158.0.0/15',
+				'172.64.0.0/13',
+				'173.245.48.0/20',
+				'188.114.96.0/20',
+				'190.93.240.0/20',
+				'197.234.240.0/22',
+				'198.41.128.0/17',
+			];
+
+			$cf_ips->result->ipv6_cidrs = [
+				'2400:cb00::/32',
+				'2405:8100::/32',
+				'2405:b500::/32',
+				'2606:4700::/32',
+				'2803:f800::/32',
+				'2c0f:f248::/32',
+				'2a06:98c0::/29',
+			];
+
+			set_transient( 'rocket_cloudflare_ips', $cf_ips, 2 * WEEK_IN_SECONDS );
+			return $cf_ips;
+		}
+	}
+
+	return $cf_ips;
+}
+
+/**
+ * Automatically set Cloudflare development mode value to off after 3 hours to reflect Cloudflare behaviour
+ *
+ * @since 2.9
+ * @author Remy Perona
+ */
+function do_rocket_deactivate_cloudflare_devmode() {
+	$options                       = get_option( WP_ROCKET_SLUG );
+	$options['cloudflare_devmode'] = 'off';
+	update_option( WP_ROCKET_SLUG, $options );
+}
+add_action( 'rocket_cron_deactivate_cloudflare_devmode', 'do_rocket_deactivate_cloudflare_devmode' );
+
+
+/**
  * Purge Cloudflare Cache by URL
  *
  * @since 3.4.2
@@ -583,87 +666,6 @@ function rocket_cf_has_page_rule( $action_value ) {
 	}
 }
 
-/**
- * Get Cloudflare IPs.
- *
- * @since 2.8.21 Save IPs in a transient to prevent calling the API everytime
- * @since 2.8.16
- *
- * @author Remy Perona
- *
- * @throws Exception If any error occurs when doing the API request.
- * @return Object Result of API request if successful, WP_Error otherwise
- */
-function rocket_get_cloudflare_ips() {
-	$cf_instance = get_rocket_cloudflare_api_instance();
-	if ( is_wp_error( $cf_instance ) ) {
-		return $cf_instance;
-	}
-
-	$cf_ips = get_transient( 'rocket_cloudflare_ips' );
-	if ( false === $cf_ips ) {
-		try {
-			$cf_ips_instance = new Cloudflare\IPs( $cf_instance );
-			$cf_ips          = $cf_ips_instance->ips();
-
-			if ( ! isset( $cf_ips->success ) || ! $cf_ips->success ) {
-				throw new Exception( 'Error connecting to Cloudflare' );
-			}
-
-			set_transient( 'rocket_cloudflare_ips', $cf_ips, 2 * WEEK_IN_SECONDS );
-		} catch ( Exception $e ) {
-			$cf_ips = (object) [
-				'success' => true,
-				'result'  => (object) [],
-			];
-
-			$cf_ips->result->ipv4_cidrs = [
-				'103.21.244.0/22',
-				'103.22.200.0/22',
-				'103.31.4.0/22',
-				'104.16.0.0/12',
-				'108.162.192.0/18',
-				'131.0.72.0/22',
-				'141.101.64.0/18',
-				'162.158.0.0/15',
-				'172.64.0.0/13',
-				'173.245.48.0/20',
-				'188.114.96.0/20',
-				'190.93.240.0/20',
-				'197.234.240.0/22',
-				'198.41.128.0/17',
-			];
-
-			$cf_ips->result->ipv6_cidrs = [
-				'2400:cb00::/32',
-				'2405:8100::/32',
-				'2405:b500::/32',
-				'2606:4700::/32',
-				'2803:f800::/32',
-				'2c0f:f248::/32',
-				'2a06:98c0::/29',
-			];
-
-			set_transient( 'rocket_cloudflare_ips', $cf_ips, 2 * WEEK_IN_SECONDS );
-			return $cf_ips;
-		}
-	}
-
-	return $cf_ips;
-}
-
-/**
- * Automatically set Cloudflare development mode value to off after 3 hours to reflect Cloudflare behaviour
- *
- * @since 2.9
- * @author Remy Perona
- */
-function do_rocket_deactivate_cloudflare_devmode() {
-	$options                       = get_option( WP_ROCKET_SLUG );
-	$options['cloudflare_devmode'] = 'off';
-	update_option( WP_ROCKET_SLUG, $options );
-}
-add_action( 'rocket_cron_deactivate_cloudflare_devmode', 'do_rocket_deactivate_cloudflare_devmode' );
 
 /**
  * Purge Cloudflare cache automatically if Cache Everything is set as a Page Rule
