@@ -31,12 +31,6 @@ class Detect_Missing_Tags_Subscriber implements Subscriber_Interface {
 	 * @param string $html HTML content.
 	 */
 	public function maybe_missing_tags( $html ) {
-		$notice = get_transient( 'rocket_missing_tags' );
-
-		if ( $notice ) {
-			return;
-		}
-
 		Logger::info( 'START Detect_Missing_Tags_Subscriber - maybe_missing_tags ', [ 'maybe_missing_tags' ] );
 
 		// Remove all comments before testing tags. If </html> or </body> tags are commented this will identify it as a missing tag.
@@ -77,7 +71,7 @@ class Detect_Missing_Tags_Subscriber implements Subscriber_Interface {
 
 		$notice = get_transient( 'rocket_missing_tags' );
 
-		if ( ! $notice ) {
+		if ( $notice ) {
 			return;
 		}
 
