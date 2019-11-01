@@ -25,10 +25,6 @@ class TestDetectMissingTags extends TestCase {
 
         $html = \file_get_contents( WP_ROCKET_PLUGIN_TESTS_ROOT . '/../Fixtures/Subscriber/Tools/original_no_html_and_body.html');
 
-        Functions\expect( 'get_transient' )
-			->once() // called once
-            ->andReturn( false );
-
         // Called did_action('wp_footer'), test also for missing wp_footer()
         Functions\expect( 'did_action' )
             ->once()
@@ -50,10 +46,6 @@ class TestDetectMissingTags extends TestCase {
         $missing_tag = new Detect_Missing_Tags_Subscriber();
 
         $html = \file_get_contents( WP_ROCKET_PLUGIN_TESTS_ROOT . '/../Fixtures/Subscriber/Tools/original_html_and_body.html');
-
-        Functions\expect( 'get_transient' )
-			->once() // called once
-            ->andReturn( false );
 
         // Called did_action('wp_footer'), test only for HTML and BODY
         Functions\expect( 'did_action' )
@@ -78,10 +70,6 @@ class TestDetectMissingTags extends TestCase {
 
         $html = \file_get_contents( WP_ROCKET_PLUGIN_TESTS_ROOT . '/../Fixtures/Subscriber/Tools/original_commented_html_and_body.html');
 
-        Functions\expect( 'get_transient' )
-			->once() // called once
-            ->andReturn( false );
-
         // Called did_action('wp_footer'), test only for HTML and BODY
         Functions\expect( 'did_action' )
             ->once()
@@ -103,10 +91,6 @@ class TestDetectMissingTags extends TestCase {
         $missing_tag = new Detect_Missing_Tags_Subscriber();
 
         $html = \file_get_contents( WP_ROCKET_PLUGIN_TESTS_ROOT . '/../Fixtures/Subscriber/Tools/original_both_html_and_body_commented.html');
-
-        Functions\expect( 'get_transient' )
-			->once() // called once
-            ->andReturn( false );
 
         // Called did_action('wp_footer'), test only for HTML and BODY
         Functions\expect( 'did_action' )
