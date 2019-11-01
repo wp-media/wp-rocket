@@ -69,6 +69,10 @@ class Detect_Missing_Tags_Subscriber implements Subscriber_Interface {
 			return;
 		}
 
+		if ( 'settings_page_wprocket' !== $screen->id ) {
+			return;
+		}
+
 		$notice = get_transient( 'rocket_missing_tags' );
 
 		if ( $notice ) {
