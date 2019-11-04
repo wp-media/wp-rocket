@@ -32,13 +32,13 @@ class TestDetectMissingTags extends TestCase {
 			->once()
 			->andReturn( 0 );
 
-		Functions\expect( 'wp_sprintf_l' )
+		Functions\expect( 'get_transient' )
 			->once()
-			->andReturn( '' );
+			->andReturn( [] );
 
 		Functions\expect( 'set_transient' )
 			->once()
-			->with('rocket_missing_tags', '', HOUR_IN_SECONDS);
+			->with('rocket_missing_tags', ['</html>', '</body>', 'wp_footer()'], HOUR_IN_SECONDS);
 
 		$missing_tag->maybe_missing_tags( $html );
 	}
@@ -55,14 +55,6 @@ class TestDetectMissingTags extends TestCase {
 		Functions\expect( 'did_action' )
 			->once()
 			->andReturn( true );
-
-		Functions\expect( 'wp_sprintf_l' )
-			->once()
-			->andReturn( '</html>, </body> and wp_footer()' );
-
-		Functions\expect( 'set_transient' )
-			->once()
-			->with('rocket_missing_tags', '</html>, </body> and wp_footer()', HOUR_IN_SECONDS);
 
 		$missing_tag->maybe_missing_tags( $html );
 	}
@@ -81,13 +73,13 @@ class TestDetectMissingTags extends TestCase {
 			->once()
 			->andReturn( true );
 
-		Functions\expect( 'wp_sprintf_l' )
+		Functions\expect( 'get_transient' )
 			->once()
-			->andReturn( '</html> and </body>' );
+			->andReturn( [] );
 
 		Functions\expect( 'set_transient' )
 			->once()
-			->with('rocket_missing_tags', '</html> and </body>', HOUR_IN_SECONDS);
+			->with('rocket_missing_tags', ['</html>', '</body>'], HOUR_IN_SECONDS);
 
 		$missing_tag->maybe_missing_tags( $html );
 	}
@@ -104,14 +96,6 @@ class TestDetectMissingTags extends TestCase {
 		Functions\expect( 'did_action' )
 			->once()
 			->andReturn( true );
-
-		Functions\expect( 'wp_sprintf_l' )
-			->once()
-			->andReturn( '' );
-
-		Functions\expect( 'set_transient' )
-			->once()
-			->with('rocket_missing_tags', '', HOUR_IN_SECONDS);
 
 		$missing_tag->maybe_missing_tags( $html );
 	}

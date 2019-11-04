@@ -18,7 +18,7 @@ class Detect_Missing_Tags_Subscriber implements Subscriber_Interface {
 	public static function get_subscribed_events() {
 		return [
 			'admin_notices'                      => 'notice_missing_tags',
-			'before_rocket_maybe_process_buffer' => 'maybe_missing_tags',
+			'rocket_before_maybe_process_buffer' => 'maybe_missing_tags',
 		];
 	}
 
@@ -37,21 +37,33 @@ class Detect_Missing_Tags_Subscriber implements Subscriber_Interface {
 		$html         = preg_replace( '/<!--([\\s\\S]*?)-->/', '', $html );
 		$missing_tags = [];
 		if ( ! preg_match( '/(<\/html>)/i', $html ) ) {
-			$missing_tags[] = esc_html__( '</html>', 'rocket' );
+			$missing_tags[] = '</html>';
 			Logger::debug( 'Not found closing </html> tag.', [ 'maybe_missing_tags' ] );
 		}
 
 		if ( ! preg_match( '/(<\/body>)/i', $html ) ) {
-			$missing_tags[] = esc_html__( '</body>', 'rocket' );
+			$missing_tags[] = '</body>';
 			Logger::debug( 'Not found closing </body> tag.', [ 'maybe_missing_tags' ] );
 		}
 
 		if ( did_action( 'wp_footer' ) === 0 ) {
-			$missing_tags[] = __( 'wp_footer()', 'rocket' );
-			Logger::debug( 'Did action did not run wp_footer() function.', [ 'maybe_missing_tags' ] );
+			$missing_tags[] = 'wp_footer()';
+			Logger::debug( 'wp_footer() function did not run.', [ 'maybe_missing_tags' ] );
 		}
 
-		set_transient( 'rocket_missing_tags', wp_sprintf_l( '%l', $missing_tags ), HOUR_IN_SECONDS );
+		if ( ! $missing_tags ) {
+			return;
+		}
+
+		$transient    = get_transient( 'rocket_missing_tags' );
+		$transient    = is_array( $transient ) ? $transient : [];
+		$missing_tags = array_unique( array_merge( $transient, $missing_tags ) );
+
+		if ( count( $transient ) === count( $missing_tags ) ) {
+			return;
+		}
+
+		set_transient( 'rocket_missing_tags', $missing_tags, HOUR_IN_SECONDS );
 	}
 
 	/**
@@ -73,16 +85,20 @@ class Detect_Missing_Tags_Subscriber implements Subscriber_Interface {
 
 		$notice = get_transient( 'rocket_missing_tags' );
 
-		if ( empty( $notice ) ) {
+		if ( empty( $notice ) || ! is_array( $notice ) ) {
 			return;
+		}
+
+		foreach ( $notice as $i => $tag ) {
+			$notice[ $i ] = '<code>' . esc_html( $tag ) . '</code>';
 		}
 
 		$msg  = '<b>' . __( 'WP Rocket: ', 'rocket' ) . '</b>';
 		$msg .= sprintf(
 			/* translators: %1$s = missing tags; */
-			esc_html__( 'Failed to detect the following requirement(s) in your theme: closing %1$s.', 'rocket' ),
+			esc_html( _n( 'Failed to detect the following requirement in your theme: closing %1$s.', 'Failed to detect the following requirements in your theme: closing %1$s.', count( $notice ), 'rocket' ) ),
 			// translators: Documentation exists in EN, FR.
-			$notice
+			wp_sprintf_l( '%l', $notice )
 		);
 		$msg .= ' ' . sprintf(
 			/* translators: %1$s = opening link; %2$s = closing link */

@@ -80,7 +80,7 @@ class Optimization extends Abstract_Buffer {
 		 *
 		 * @param string $buffer HTML content.
 		 */
-		do_action( 'before_rocket_maybe_process_buffer', $buffer );
+		do_action( 'rocket_before_maybe_process_buffer', $buffer );
 
 		if ( ! $this->is_html( $buffer ) ) {
 			return $buffer;
