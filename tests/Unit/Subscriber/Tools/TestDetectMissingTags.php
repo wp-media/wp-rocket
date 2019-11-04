@@ -4,7 +4,6 @@ namespace WP_Rocket\Tests\Unit\Subscriber\Tools;
 use WP_Rocket\Subscriber\Tools\Detect_Missing_Tags_Subscriber;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
-use WP_Rocket\Logger\Logger;
 
 class TestDetectMissingTags extends TestCase {
 
@@ -12,6 +11,9 @@ class TestDetectMissingTags extends TestCase {
 
 	protected function setUp() {
 		parent::setUp();
+
+		$this->mockCommonWpFunctions();
+
 		if ( ! defined('HOUR_IN_SECONDS') ) {
 			define('HOUR_IN_SECONDS', 60 * 60);
 		}
@@ -30,13 +32,15 @@ class TestDetectMissingTags extends TestCase {
 			->once()
 			->andReturn( 0 );
 
+		Functions\expect( 'wp_sprintf_l' )
+			->once()
+			->andReturn( '' );
+
 		Functions\expect( 'set_transient' )
 			->once()
-			->with('rocket_missing_tags', false, HOUR_IN_SECONDS);
+			->with('rocket_missing_tags', '', HOUR_IN_SECONDS);
 
 		$missing_tag->maybe_missing_tags( $html );
-
-		$this->assertTrue( true ); // Prevent "risky" warning.
 	}
 
 	/**
@@ -52,13 +56,15 @@ class TestDetectMissingTags extends TestCase {
 			->once()
 			->andReturn( true );
 
+		Functions\expect( 'wp_sprintf_l' )
+			->once()
+			->andReturn( '</html>, </body> and wp_footer()' );
+
 		Functions\expect( 'set_transient' )
 			->once()
-			->with('rocket_missing_tags', true, HOUR_IN_SECONDS);
+			->with('rocket_missing_tags', '</html>, </body> and wp_footer()', HOUR_IN_SECONDS);
 
 		$missing_tag->maybe_missing_tags( $html );
-
-		$this->assertTrue( true ); // Prevent "risky" warning.
 	}
 
 
@@ -75,13 +81,15 @@ class TestDetectMissingTags extends TestCase {
 			->once()
 			->andReturn( true );
 
+		Functions\expect( 'wp_sprintf_l' )
+			->once()
+			->andReturn( '</html> and </body>' );
+
 		Functions\expect( 'set_transient' )
 			->once()
-			->with('rocket_missing_tags', false, HOUR_IN_SECONDS);
+			->with('rocket_missing_tags', '</html> and </body>', HOUR_IN_SECONDS);
 
 		$missing_tag->maybe_missing_tags( $html );
-
-		$this->assertTrue( true ); // Prevent "risky" warning.
 	}
 
 	/**
@@ -97,12 +105,14 @@ class TestDetectMissingTags extends TestCase {
 			->once()
 			->andReturn( true );
 
+		Functions\expect( 'wp_sprintf_l' )
+			->once()
+			->andReturn( '' );
+
 		Functions\expect( 'set_transient' )
 			->once()
-			->with('rocket_missing_tags', true, HOUR_IN_SECONDS);
+			->with('rocket_missing_tags', '', HOUR_IN_SECONDS);
 
 		$missing_tag->maybe_missing_tags( $html );
-
-		$this->assertTrue( true ); // Prevent "risky" warning.
 	}
 }

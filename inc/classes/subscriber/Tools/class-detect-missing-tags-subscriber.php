@@ -34,26 +34,24 @@ class Detect_Missing_Tags_Subscriber implements Subscriber_Interface {
 		Logger::info( 'START Detect_Missing_Tags_Subscriber - maybe_missing_tags ', [ 'maybe_missing_tags' ] );
 
 		// Remove all comments before testing tags. If </html> or </body> tags are commented this will identify it as a missing tag.
-		$html    = preg_replace( '/<!--([\\s\\S]*?)-->/', '', $html );
-		$is_html = true;
+		$html         = preg_replace( '/<!--([\\s\\S]*?)-->/', '', $html );
+		$missing_tags = [];
 		if ( ! preg_match( '/(<\/html>)/i', $html ) ) {
-			$is_html = false;
+			$missing_tags[] = esc_html__( '</html>', 'rocket' );
 			Logger::debug( 'Not found closing </html> tag.', [ 'maybe_missing_tags' ] );
 		}
 
-		$is_body = true;
 		if ( ! preg_match( '/(<\/body>)/i', $html ) ) {
-			$is_body = false;
+			$missing_tags[] = esc_html__( '</body>', 'rocket' );
 			Logger::debug( 'Not found closing </body> tag.', [ 'maybe_missing_tags' ] );
 		}
 
-		$did_wp_footer = true;
 		if ( did_action( 'wp_footer' ) === 0 ) {
-			$did_wp_footer = false;
+			$missing_tags[] = __( 'wp_footer()', 'rocket' );
 			Logger::debug( 'Did action did not run wp_footer() function.', [ 'maybe_missing_tags' ] );
 		}
 
-		set_transient( 'rocket_missing_tags', $is_html && $is_body && $did_wp_footer, HOUR_IN_SECONDS );
+		set_transient( 'rocket_missing_tags', wp_sprintf_l( '%l', $missing_tags ), HOUR_IN_SECONDS );
 	}
 
 	/**
@@ -75,12 +73,17 @@ class Detect_Missing_Tags_Subscriber implements Subscriber_Interface {
 
 		$notice = get_transient( 'rocket_missing_tags' );
 
-		if ( $notice ) {
+		if ( empty( $notice ) ) {
 			return;
 		}
 
 		$msg  = '<b>' . __( 'WP Rocket: ', 'rocket' ) . '</b>';
-		$msg .= esc_html__( 'Failed to detect the following requirement(s) in your theme: closing </html>, </body> or wp_footer().', 'rocket' );
+		$msg .= sprintf(
+			/* translators: %1$s = missing tags; */
+			esc_html__( 'Failed to detect the following requirement(s) in your theme: closing %1$s.', 'rocket' ),
+			// translators: Documentation exists in EN, FR.
+			$notice
+		);
 		$msg .= ' ' . sprintf(
 			/* translators: %1$s = opening link; %2$s = closing link */
 			__( 'Read the %1$sdocumentation%2$s for further guidance.', 'rocket' ),
