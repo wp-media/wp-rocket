@@ -17,7 +17,7 @@ class Detect_Missing_Tags_Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'admin_notices'                      => 'notice_missing_tags',
+			'admin_notices'                      => 'rocket_notice_missing_tags',
 			'rocket_before_maybe_process_buffer' => 'maybe_missing_tags',
 		];
 	}
@@ -55,7 +55,7 @@ class Detect_Missing_Tags_Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$transient    = get_transient( 'notice_missing_tags' );
+		$transient    = get_transient( 'rocket_notice_missing_tags' );
 		$transient    = is_array( $transient ) ? $transient : [];
 		$missing_tags = array_unique( array_merge( $transient, $missing_tags ) );
 
@@ -65,11 +65,11 @@ class Detect_Missing_Tags_Subscriber implements Subscriber_Interface {
 
 		// Prevent saving the transient if the notice is dismissed.
 		$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
-		if ( in_array( 'notice_missing_tags', (array) $boxes, true ) ) {
+		if ( in_array( 'rocket_notice_missing_tags', (array) $boxes, true ) ) {
 			return;
 		}
 
-		set_transient( 'notice_missing_tags', $missing_tags, HOUR_IN_SECONDS );
+		set_transient( 'rocket_notice_missing_tags', $missing_tags, HOUR_IN_SECONDS );
 	}
 
 	/**
@@ -78,7 +78,7 @@ class Detect_Missing_Tags_Subscriber implements Subscriber_Interface {
 	 * @since  3.4.2
 	 * @author Soponar Cristina
 	 */
-	public function notice_missing_tags() {
+	public function rocket_notice_missing_tags() {
 		$screen = get_current_screen();
 
 		if ( ! current_user_can( 'rocket_manage_options' ) || ( 'settings_page_wprocket' !== $screen->id ) ) {
@@ -90,7 +90,7 @@ class Detect_Missing_Tags_Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$notice = get_transient( 'notice_missing_tags' );
+		$notice = get_transient( 'rocket_notice_missing_tags' );
 		if ( empty( $notice ) || ! is_array( $notice ) ) {
 			return;
 		}
