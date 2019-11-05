@@ -1,6 +1,8 @@
 <?php
 namespace WP_Rocket\Admin;
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Manages options using the WordPress options API.
  *

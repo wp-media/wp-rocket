@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Admin\Database;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Handles the database optimization process.

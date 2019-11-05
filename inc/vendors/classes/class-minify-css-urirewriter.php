@@ -5,6 +5,8 @@
  * @package Minify
  */
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Rewrite file-relative URIs as root-relative in CSS files
  *
@@ -97,7 +99,7 @@ class Minify_CSS_UriRewriter {
 		$css = self::_trimUrls($css);
 
 		$css = self::_owlifySvgPaths($css);
-		
+
 		// append
 		$pattern = '/@import\\s+([\'"])(.*?)[\'"]/';
 		$css = preg_replace_callback($pattern, array(self::$className, '_processUriCB'), $css);

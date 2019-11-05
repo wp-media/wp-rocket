@@ -3,7 +3,7 @@ namespace WP_Rocket\Admin\Settings;
 
 use \WP_Rocket\Subscriber\Third_Party\Plugins\Security\Sucuri_Subscriber;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Settings class

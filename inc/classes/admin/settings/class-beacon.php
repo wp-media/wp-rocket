@@ -3,6 +3,8 @@ namespace WP_Rocket\Admin\Settings;
 
 use WP_Rocket\Admin\Options_Data;
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Helpscout Beacon integration
  *

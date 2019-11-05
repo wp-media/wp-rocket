@@ -15,7 +15,7 @@
  * }
  */
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 if ( ! empty( $data['upload_dir']['error'] ) ) {
 	?>

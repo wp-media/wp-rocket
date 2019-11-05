@@ -1,5 +1,7 @@
 <?php
 
+defined( 'ABSPATH' ) || exit;
+
 spl_autoload_register(
 	function( $class ) {
 		$rocket_path    = WP_ROCKET_PATH;

@@ -1,5 +1,6 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+
+defined( 'ABSPATH' ) || exit;
 
 if ( defined( 'SFML_VERSION' ) ) :
 	add_filter( 'rocket_cache_reject_uri', 'rocket_add_sfml_exclude_pages' );

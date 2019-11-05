@@ -1,6 +1,6 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Exclude pages of Give plugin from cache.
