@@ -95,7 +95,7 @@ class ActionScheduler_DataController {
 	}
 
 	/**
-	 * Set the tick count reuired for freeing memory.
+	 * Set the tick count required for freeing memory.
 	 *
 	 * @param integer $free_ticks The number of ticks to free memory on.
 	 */
