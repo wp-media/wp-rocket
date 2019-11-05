@@ -55,7 +55,7 @@ class Detect_Missing_Tags_Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$transient    = get_transient( 'rocket_missing_tags' );
+		$transient    = get_transient( 'notice_missing_tags' );
 		$transient    = is_array( $transient ) ? $transient : [];
 		$missing_tags = array_unique( array_merge( $transient, $missing_tags ) );
 
@@ -63,7 +63,13 @@ class Detect_Missing_Tags_Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		set_transient( 'rocket_missing_tags', $missing_tags, HOUR_IN_SECONDS );
+		// Prevent saving the transient if the notice is dismissed.
+		$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
+		if ( in_array( 'notice_missing_tags', (array) $boxes, true ) ) {
+			return;
+		}
+
+		set_transient( 'notice_missing_tags', $missing_tags, HOUR_IN_SECONDS );
 	}
 
 	/**
@@ -75,16 +81,16 @@ class Detect_Missing_Tags_Subscriber implements Subscriber_Interface {
 	public function notice_missing_tags() {
 		$screen = get_current_screen();
 
-		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+		if ( ! current_user_can( 'rocket_manage_options' ) || ( 'settings_page_wprocket' !== $screen->id ) ) {
 			return;
 		}
 
-		if ( 'settings_page_wprocket' !== $screen->id ) {
+		$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
+		if ( in_array( __FUNCTION__, (array) $boxes, true ) ) {
 			return;
 		}
 
-		$notice = get_transient( 'rocket_missing_tags' );
-
+		$notice = get_transient( 'notice_missing_tags' );
 		if ( empty( $notice ) || ! is_array( $notice ) ) {
 			return;
 		}
@@ -110,8 +116,10 @@ class Detect_Missing_Tags_Subscriber implements Subscriber_Interface {
 
 		\rocket_notice_html(
 			[
-				'status'  => 'info',
-				'message' => $msg,
+				'status'         => 'info',
+				'dismissible'    => '',
+				'message'        => $msg,
+				'dismiss_button' => __FUNCTION__,
 			]
 		);
 	}
