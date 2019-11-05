@@ -69,6 +69,9 @@ abstract class ActionScheduler {
 		$classes_dir = self::plugin_path( 'classes' . $d );
 		$separator   = strrpos( $class, '\\' );
 		if ( false !== $separator ) {
+			if ( 0 !== strpos( $class, 'Action_Scheduler' ) ) {
+				return;
+			}
 			$class = substr( $class, $separator + 1 );
 		}
 
