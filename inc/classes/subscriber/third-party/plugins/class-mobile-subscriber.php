@@ -74,9 +74,7 @@ class Mobile_Subscriber implements Subscriber_Interface {
 				$undo[] = $plugin;
 			}
 
-			if ( \is_plugin_active( $plugin ) &&
-					isset( $plugin_data['is_active_callback'] ) &&
-					call_user_func( $plugin_data['is_active_callback'] ) ) {
+			if ( \is_plugin_active( $plugin ) ) {
 				if ( isset( $plugin_data['activation_hook'] ) ) {
 					$plugin_events[ $plugin_data['activation_hook'] ] = 'maybe_update_mobile_cache_activation_plugin_hook';
 				}
