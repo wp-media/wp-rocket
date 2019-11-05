@@ -36,9 +36,17 @@ class TestDetectMissingTags extends TestCase {
 			->once()
 			->andReturn( [] );
 
+		Functions\expect( 'get_user_meta' )
+			->once()
+			->andReturn( [] );
+
+		Functions\expect( 'get_current_user_id' )
+			->once()
+			->andReturn( 1 );
+
 		Functions\expect( 'set_transient' )
 			->once()
-			->with('rocket_missing_tags', ['</html>', '</body>', 'wp_footer()'], HOUR_IN_SECONDS);
+			->with('notice_missing_tags', ['</html>', '</body>', 'wp_footer()'], HOUR_IN_SECONDS);
 
 		$missing_tag->maybe_missing_tags( $html );
 	}
@@ -77,9 +85,17 @@ class TestDetectMissingTags extends TestCase {
 			->once()
 			->andReturn( [] );
 
+		Functions\expect( 'get_user_meta' )
+			->once()
+			->andReturn( [] );
+
+		Functions\expect( 'get_current_user_id' )
+			->once()
+			->andReturn( 1 );
+
 		Functions\expect( 'set_transient' )
 			->once()
-			->with('rocket_missing_tags', ['</html>', '</body>'], HOUR_IN_SECONDS);
+			->with('notice_missing_tags', ['</html>', '</body>'], HOUR_IN_SECONDS);
 
 		$missing_tag->maybe_missing_tags( $html );
 	}
