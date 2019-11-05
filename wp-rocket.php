@@ -15,7 +15,7 @@
  * Copyright 2013-2019 WP Rocket
  * */
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 // Rocket defines.
 define( 'WP_ROCKET_VERSION',               '3.4.1.2' );
@@ -29,7 +29,7 @@ define( 'WP_ROCKET_WEB_CHECK',             WP_ROCKET_WEB_MAIN . 'check_update.ph
 define( 'WP_ROCKET_WEB_VALID',             WP_ROCKET_WEB_MAIN . 'valid_key.php' );
 define( 'WP_ROCKET_WEB_INFO',              WP_ROCKET_WEB_MAIN . 'plugin_information.php' );
 define( 'WP_ROCKET_FILE',                  __FILE__ );
-define( 'WP_ROCKET_PATH',                  realpath( plugin_dir_path( WP_ROCKET_FILE ) ) . '/' );
+define( 'WP_ROCKET_PATH',                  realpath( dirname( WP_ROCKET_FILE ) ) . '/' );
 define( 'WP_ROCKET_INC_PATH',              realpath( WP_ROCKET_PATH . 'inc/' ) . '/' );
 define( 'WP_ROCKET_DEPRECATED_PATH',       realpath( WP_ROCKET_INC_PATH . 'deprecated/' ) . '/' );
 define( 'WP_ROCKET_FRONT_PATH',            realpath( WP_ROCKET_INC_PATH . 'front/' ) . '/' );
@@ -72,7 +72,7 @@ if ( ! defined( 'WP_ROCKET_LASTVERSION' ) ) {
 }
 
 require WP_ROCKET_INC_PATH . 'compat.php';
-require dirname( __FILE__ ) . '/licence-data.php';
+require dirname( WP_ROCKET_FILE ) . '/licence-data.php';
 require WP_ROCKET_INC_PATH . 'classes/class-wp-rocket-requirements-check.php';
 
 /**
@@ -91,7 +91,7 @@ function rocket_load_textdomain() {
 	$locale = apply_filters( 'plugin_locale', $locale, 'rocket' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	load_textdomain( 'rocket', WP_LANG_DIR . '/plugins/wp-rocket-' . $locale . '.mo' );
 
-	load_plugin_textdomain( 'rocket', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+	load_plugin_textdomain( 'rocket', false, dirname( plugin_basename( WP_ROCKET_FILE ) ) . '/languages/' );
 }
 add_action( 'plugins_loaded', 'rocket_load_textdomain' );
 
