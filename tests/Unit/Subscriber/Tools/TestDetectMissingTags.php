@@ -32,17 +32,14 @@ class TestDetectMissingTags extends TestCase {
 			->once()
 			->andReturn( 0 );
 
-		Functions\expect( 'get_transient' )
-			->once()
-			->andReturn( [] );
+		Functions\when( 'get_transient' )
+			->justReturn( [] );
 
-		Functions\expect( 'get_user_meta' )
-			->once()
-			->andReturn( [] );
+		Functions\when( 'get_user_meta' )
+			->justReturn( [] );
 
-		Functions\expect( 'get_current_user_id' )
-			->once()
-			->andReturn( 1 );
+		Functions\when( 'get_current_user_id' )
+			->justReturn( 1 );
 
 		Functions\expect( 'set_transient' )
 			->once()
@@ -84,17 +81,14 @@ class TestDetectMissingTags extends TestCase {
 			->once()
 			->andReturn( true );
 
-		Functions\expect( 'get_transient' )
-			->once()
-			->andReturn( [] );
+		Functions\when( 'get_transient' )
+			->justReturn( [] );
 
-		Functions\expect( 'get_user_meta' )
-			->once()
-			->andReturn( [] );
+		Functions\when( 'get_user_meta' )
+			->justReturn( [] );
 
-		Functions\expect( 'get_current_user_id' )
-			->once()
-			->andReturn( 1 );
+		Functions\when( 'get_current_user_id' )
+			->justReturn( 1 );
 
 		Functions\expect( 'set_transient' )
 			->once()

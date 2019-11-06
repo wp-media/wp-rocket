@@ -36,12 +36,12 @@ class Detect_Missing_Tags_Subscriber implements Subscriber_Interface {
 		// Remove all comments before testing tags. If </html> or </body> tags are commented this will identify it as a missing tag.
 		$html         = preg_replace( '/<!--([\\s\\S]*?)-->/', '', $html );
 		$missing_tags = [];
-		if ( ! preg_match( '/(<\/html>)/i', $html ) ) {
+		if ( false === strpos( $html, '</html>' ) ) {
 			$missing_tags[] = '</html>';
 			Logger::debug( 'Not found closing </html> tag.', [ 'maybe_missing_tags' ] );
 		}
 
-		if ( ! preg_match( '/(<\/body>)/i', $html ) ) {
+		if ( false === strpos( $html, '</body>' ) ) {
 			$missing_tags[] = '</body>';
 			Logger::debug( 'Not found closing </body> tag.', [ 'maybe_missing_tags' ] );
 		}
@@ -81,7 +81,7 @@ class Detect_Missing_Tags_Subscriber implements Subscriber_Interface {
 	public function rocket_notice_missing_tags() {
 		$screen = get_current_screen();
 
-		if ( ! current_user_can( 'rocket_manage_options' ) || ( 'settings_page_wprocket' !== $screen->id ) ) {
+		if ( ! current_user_can( 'rocket_manage_options' ) || 'settings_page_wprocket' !== $screen->id ) {
 			return;
 		}
 
