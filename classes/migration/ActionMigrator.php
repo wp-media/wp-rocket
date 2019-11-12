@@ -43,16 +43,16 @@ class ActionMigrator {
 	 * @return int 0|new action ID
 	 */
 	public function migrate( $source_action_id ) {
-		$action = $this->source->fetch_action( $source_action_id );
-
 		try {
+			$action = $this->source->fetch_action( $source_action_id );
 			$status = $this->source->get_status( $source_action_id );
 		} catch ( \Exception $e ) {
+			$action = null;
 			$status = '';
 		}
 
-		if ( empty( $status ) || ! $action->get_schedule()->get_date() ) {
-			// empty status means the action didn't exist
+		if ( is_null( $action ) || empty( $status ) || ! $action->get_schedule()->get_date() ) {
+			// null action or empty status means the fetch operation failed or the action didn't exist
 			// null schedule means it's missing vital data
 			// delete it and move on
 			try {
