@@ -35,24 +35,48 @@ class Detect_Missing_Tags_Subscriber implements Subscriber_Interface {
 		if ( strlen( $html ) <= 255 ) {
 			return;
 		}
-		Logger::info( 'START Detect Missing closing tags ( <html>, </body> or wp_footer() )', [ 'URI' => $this->get_raw_request_uri() ] );
+		Logger::info(
+			'START Detect Missing closing tags ( <html>, </body> or wp_footer() )',
+			[
+				'maybe_missing_tags',
+				'URI' => $this->get_raw_request_uri(),
+			]
+		);
 
 		// Remove all comments before testing tags. If </html> or </body> tags are commented this will identify it as a missing tag.
 		$html         = preg_replace( '/<!--([\\s\\S]*?)-->/', '', $html );
 		$missing_tags = [];
 		if ( false === strpos( $html, '</html>' ) ) {
 			$missing_tags[] = '</html>';
-			Logger::debug( 'Not found closing </html> tag.', [ 'URI' => $this->get_raw_request_uri() ] );
+			Logger::debug(
+				'Not found closing </html> tag.',
+				[
+					'maybe_missing_tags',
+					'URI' => $this->get_raw_request_uri()
+				]
+			);
 		}
 
 		if ( false === strpos( $html, '</body>' ) ) {
 			$missing_tags[] = '</body>';
-			Logger::debug( 'Not found closing </body> tag.', [ 'URI' => $this->get_raw_request_uri() ] );
+			Logger::debug(
+				'Not found closing </body> tag.',
+				[
+					'maybe_missing_tags',
+					'URI' => $this->get_raw_request_uri()
+				]
+			);
 		}
 
 		if ( did_action( 'wp_footer' ) === 0 ) {
 			$missing_tags[] = 'wp_footer()';
-			Logger::debug( 'wp_footer() function did not run.', [ 'URI' => $this->get_raw_request_uri() ] );
+			Logger::debug(
+				'wp_footer() function did not run.',
+				[
+					'maybe_missing_tags',
+					'URI' => $this->get_raw_request_uri()
+				]
+			);
 		}
 
 		if ( ! $missing_tags ) {
@@ -145,6 +169,6 @@ class Detect_Missing_Tags_Subscriber implements Subscriber_Interface {
 			return '';
 		}
 
-		return '/' . ltrim( $_SERVER['REQUEST_URI'], '/' );
+		return '/' . esc_html( ltrim( wp_unslash( $_SERVER['REQUEST_URI'] ), '/' ) );
 	}
 }
