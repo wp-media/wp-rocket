@@ -52,7 +52,7 @@ class Detect_Missing_Tags_Subscriber implements Subscriber_Interface {
 				'Not found closing </html> tag.',
 				[
 					'maybe_missing_tags',
-					'URI' => $this->get_raw_request_uri()
+					'URI' => $this->get_raw_request_uri(),
 				]
 			);
 		}
@@ -63,7 +63,7 @@ class Detect_Missing_Tags_Subscriber implements Subscriber_Interface {
 				'Not found closing </body> tag.',
 				[
 					'maybe_missing_tags',
-					'URI' => $this->get_raw_request_uri()
+					'URI' => $this->get_raw_request_uri(),
 				]
 			);
 		}
@@ -74,7 +74,7 @@ class Detect_Missing_Tags_Subscriber implements Subscriber_Interface {
 				'wp_footer() function did not run.',
 				[
 					'maybe_missing_tags',
-					'URI' => $this->get_raw_request_uri()
+					'URI' => $this->get_raw_request_uri(),
 				]
 			);
 		}
