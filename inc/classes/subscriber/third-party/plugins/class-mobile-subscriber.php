@@ -221,7 +221,6 @@ class Mobile_Subscriber implements Subscriber_Interface {
 	 */
 	public function maybe_update_mobile_cache_activation( $value, $old_value ) {
 		$plugins   = static::get_mobile_plugins();
-		$plugins   = array_keys( $plugins );
 		$value     = array_intersect( $plugins, (array) $value );
 		$old_value = array_intersect( $plugins, (array) $old_value );
 
