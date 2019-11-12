@@ -51,7 +51,7 @@ class ActionMigrator {
 			$status = '';
 		}
 
-		if ( ! $action instanceof \ActionScheduler_Action || empty( $status ) || ! $action->get_schedule()->get_date() ) {
+		if ( is_null( $action ) || empty( $status ) || ! $action->get_schedule()->get_date() ) {
 			// null action or empty status means the fetch operation failed or the action didn't exist
 			// null schedule means it's missing vital data
 			// delete it and move on
