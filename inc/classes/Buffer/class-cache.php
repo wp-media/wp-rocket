@@ -608,7 +608,7 @@ class Cache extends Abstract_Buffer {
 		}
 
 		if ( ! $http_accept || false === strpos( $http_accept, 'webp' ) ) {
-			if ( preg_match( '#Firefox/(?<version>[1-9]{2})#i', $this->config->get_server_input( 'HTTP_USER_AGENT' ), $matches ) ) {
+			if ( preg_match( '#Firefox/(?<version>[0-9]{2})#i', $this->config->get_server_input( 'HTTP_USER_AGENT' ), $matches ) ) {
 				if ( 66 <= (int) $matches['version'] ) {
 					return $filename . '-webp';
 				}
