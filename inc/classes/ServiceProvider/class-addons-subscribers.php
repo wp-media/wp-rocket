@@ -25,6 +25,7 @@ class Addons_Subscribers extends AbstractServiceProvider {
 		'facebook_tracking_subscriber',
 		'google_tracking_subscriber',
 		'sucuri_subscriber',
+		'cloudflare_subscriber',
 	];
 
 	/**
@@ -47,6 +48,7 @@ class Addons_Subscribers extends AbstractServiceProvider {
 			->withArgument( $this->getContainer()->get( 'options' ) );
 		$this->getContainer()->share( 'sucuri_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Security\Sucuri_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'options' ) );
-
+		$this->getContainer()->share( 'cloudflare_subscriber', 'WP_Rocket\Subscriber\Tools\Cloudflare_Subscriber' )
+			->withArgument( $this->getContainer()->get( 'options' ) );
 	}
 }

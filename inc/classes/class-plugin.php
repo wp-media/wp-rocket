@@ -125,6 +125,7 @@ class Plugin {
 			'cdn_subscriber',
 			'critical_css_subscriber',
 			'sucuri_subscriber',
+			'cloudflare_subscriber',
 			'facebook_tracking_subscriber',
 			'google_tracking_subscriber',
 			'expired_cache_purge_subscriber',
