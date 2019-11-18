@@ -14,9 +14,6 @@ class TestDetectMissingTags extends TestCase {
 
 		$this->mockCommonWpFunctions();
 
-		if ( ! defined('HOUR_IN_SECONDS') ) {
-			define('HOUR_IN_SECONDS', 60 * 60);
-		}
 	}
 
 	/**
@@ -43,7 +40,7 @@ class TestDetectMissingTags extends TestCase {
 
 		Functions\expect( 'set_transient' )
 			->once()
-			->with('rocket_notice_missing_tags', ['</html>', '</body>', 'wp_footer()'], HOUR_IN_SECONDS);
+			->with('rocket_notice_missing_tags', ['</html>', '</body>', 'wp_footer()']);
 
 		$missing_tag->maybe_missing_tags( $html );
 	}
@@ -92,7 +89,7 @@ class TestDetectMissingTags extends TestCase {
 
 		Functions\expect( 'set_transient' )
 			->once()
-			->with('rocket_notice_missing_tags', ['</html>', '</body>'], HOUR_IN_SECONDS);
+			->with('rocket_notice_missing_tags', ['</html>', '</body>']);
 
 		$missing_tag->maybe_missing_tags( $html );
 	}
