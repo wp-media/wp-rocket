@@ -97,7 +97,7 @@ class Detect_Missing_Tags_Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		set_transient( 'rocket_notice_missing_tags', $missing_tags, HOUR_IN_SECONDS );
+		set_transient( 'rocket_notice_missing_tags', $missing_tags );
 	}
 
 	/**
