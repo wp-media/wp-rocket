@@ -303,6 +303,8 @@ class Mobile_Subscriber implements Subscriber_Interface {
 		rocket_generate_config_file();
 		// Update the advanced cache file.
 		rocket_generate_advanced_cache_file();
+		// Flush htaccess file.
+		flush_rocket_htaccess();
 	}
 
 	/**
@@ -333,7 +335,7 @@ class Mobile_Subscriber implements Subscriber_Interface {
 					if ( ! class_exists( 'Jetpack' ) ) {
 						return false;
 					}
-					return \Jetpack::is_module_active( 'minileven' );
+					return \Jetpack::is_active() && \Jetpack::is_module_active( 'minileven' );
 				},
 				'activation_hook'    => 'jetpack_activate_module_minileven',
 				'deactivation_hook'  => 'jetpack_deactivate_module_minileven',
