@@ -226,7 +226,7 @@ class Page {
 		}
 
 		$customer_data->class              = time() < $customer_data->licence_expiration ? 'wpr-isValid' : 'wpr-isInvalid';
-		$customer_data->licence_expiration = date_i18n( get_option( 'date_format' ), $customer_data->licence_expiration );
+		$customer_data->licence_expiration = date_i18n( get_option( 'date_format' ), (int) $customer_data->licence_expiration );
 
 		return $customer_data;
 	}
