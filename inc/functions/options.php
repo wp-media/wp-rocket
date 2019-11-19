@@ -511,10 +511,13 @@ function rocket_check_key() {
 	);
 
 	if ( is_wp_error( $response ) ) {
-		Logger::error( 'License validation failed.', [
-			'license validation process',
-			'request_error' => $response->get_error_messages(),
-		] );
+		Logger::error(
+			'License validation failed.',
+			[
+				'license validation process',
+				'request_error' => $response->get_error_messages(),
+			]
+		);
 
 		set_transient( 'rocket_check_key_errors', $response->get_error_messages() );
 
@@ -580,13 +583,13 @@ function rocket_check_key() {
 	if ( ! $json->success ) {
 		$messages = array(
 			// Translators: %1$s = opening link tag, %2$s = closing link tag.
-			'BAD_LICENSE' => __( 'Your license is not valid.', 'rocket' ) . '<br>'  . sprintf( __( 'Make sure you have an active %1$sWP Rocket license%2$s.', 'rocket' ), '<a href="https://wp-rocket.me/" rel="noopener noreferrer" target="_blank">', '</a>' ),
+			'BAD_LICENSE' => __( 'Your license is not valid.', 'rocket' ) . '<br>' . sprintf( __( 'Make sure you have an active %1$sWP Rocket license%2$s.', 'rocket' ), '<a href="https://wp-rocket.me/" rel="noopener noreferrer" target="_blank">', '</a>' ),
 			// Translators: %1$s = opening link tag, %2$s = closing link tag, %3$s = opening link tag.
-			'BAD_NUMBER'  => __( 'You have added as many sites as your current license allows.', 'rocket' ) . '<br>' .  sprintf( __( 'Upgrade your %1$saccount%2$s or %3$stransfer your license%2$s to this domain.', 'rocket' ), '<a href="https://wp-rocket.me/account/" rel="noopener noreferrer" target=_"blank">', '</a>', '<a href="https://docs.wp-rocket.me/article/28-transfering-your-license-to-another-site" rel="noopener noreferrer" target=_"blank">' ),
+			'BAD_NUMBER'  => __( 'You have added as many sites as your current license allows.', 'rocket' ) . '<br>' . sprintf( __( 'Upgrade your %1$saccount%2$s or %3$stransfer your license%2$s to this domain.', 'rocket' ), '<a href="https://wp-rocket.me/account/" rel="noopener noreferrer" target=_"blank">', '</a>', '<a href="https://docs.wp-rocket.me/article/28-transfering-your-license-to-another-site" rel="noopener noreferrer" target=_"blank">' ),
 			// Translators: %1$s = opening link tag, %2$s = closing link tag.
 			'BAD_SITE'    => __( 'This website is not allowed.', 'rocket' ) . '<br>' . sprintf( __( 'Please %1$scontact support%2$s.', 'rocket' ), '<a href="https://wp-rocket.me/support/" rel="noopener noreferrer" target=_"blank">', '</a>' ),
 			// Translators: %1$s = opening link tag, %2$s = closing link tag.
-			'BAD_KEY'     => __( 'This license key is not recognized.', 'rocket' ) . '<ul><li>' . sprintf( __( 'Login to your WP Rocket %1$saccount%2$s', 'rocket' ), '<a href="https://wp-rocket.me/account/" rel="noopener noreferrer" target=_"blank">', '</a>' ) . '</li><li>' . __( 'Download the zip file', 'rocket' ) . '<li></li>' . __( 'Reinstall', 'rocket' ) . '</li></ul>' . sprintf( __( 'If the issue persists, please %1$scontact support%2$s.', 'rocket'), '<a href="https://wp-rocket.me/support/" rel="noopener noreferrer" target=_"blank">', '</a>' ),
+			'BAD_KEY'     => __( 'This license key is not recognized.', 'rocket' ) . '<ul><li>' . sprintf( __( 'Login to your WP Rocket %1$saccount%2$s', 'rocket' ), '<a href="https://wp-rocket.me/account/" rel="noopener noreferrer" target=_"blank">', '</a>' ) . '</li><li>' . __( 'Download the zip file', 'rocket' ) . '<li></li>' . __( 'Reinstall', 'rocket' ) . '</li></ul>' . sprintf( __( 'If the issue persists, please %1$scontact support%2$s.', 'rocket' ), '<a href="https://wp-rocket.me/support/" rel="noopener noreferrer" target=_"blank">', '</a>' ),
 		);
 
 		$rocket_options['secret_key'] = '';
@@ -612,7 +615,7 @@ function rocket_check_key() {
 		$rocket_options['license'] = '1';
 	}
 
-	Logger::info( 'License validation succeeded.', [ 'license validation process' ] );
+	Logger::info( 'License validation successful.', [ 'license validation process' ] );
 
 	set_transient( WP_ROCKET_SLUG, $rocket_options );
 	delete_transient( 'rocket_check_key_errors' );

@@ -173,6 +173,7 @@ class Page {
 			$this->cdn_section();
 			$this->heartbeat_section();
 			$this->addons_section();
+			$this->varnish_section();
 			$this->cloudflare_section();
 			$this->sucuri_section();
 		} else {
@@ -735,6 +736,16 @@ class Page {
 					'page'              => 'file_optimization',
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
+				],
+				'dequeue_jquery_migrate' => [
+					'type'              => 'checkbox',
+					'label'             => __( 'Dequeue jQuery Migrate', 'rocket' ),
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description'       => sprintf( __( 'Dequeue jQuery Migrate eliminates a JS file and can improve load time. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $defer_js_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $defer_js_beacon['id'] ) . '" target="_blank">', '</a>' ),
+					'section'           => 'js',
+					'page'              => 'file_optimization',
+					'default'           => 0,
+					'sanitize_callback' => 'sanitize_checkbox',
 				],
 				'minify_js'              => [
 					'type'              => 'checkbox',
@@ -1752,6 +1763,27 @@ class Page {
 			]
 		);
 
+		$this->settings->add_settings_fields(
+			[
+				'do_cloudflare' => [
+					'type'              => 'rocket_addon',
+					'label'             => __( 'Cloudflare', 'rocket' ),
+					'logo'              => [
+						'url'    => WP_ROCKET_ASSETS_IMG_URL . 'logo-cloudflare2.svg',
+						'width'  => 153,
+						'height' => 51,
+					],
+					'title'             => __( 'Integrate your Cloudflare account with this add-on.', 'rocket' ),
+					'description'       => __( 'Provide your account email, global API key, and domain to use options such as clearing the Cloudflare cache and enabling optimal settings with WP Rocket.', 'rocket' ),
+					'section'           => 'addons',
+					'page'              => 'addons',
+					'settings_page'     => 'cloudflare',
+					'default'           => 0,
+					'sanitize_callback' => 'sanitize_checkbox',
+				],
+			]
+		);
+
 		/**
 		 * Allow to display the "Varnish" tab in the settings page
 		 *
@@ -1775,7 +1807,7 @@ class Page {
 					'rocket_varnish_field_settings',
 					[
 						'varnish_auto_purge' => [
-							'type'              => 'one_click_addon',
+							'type'              => 'rocket_addon',
 							'label'             => __( 'Varnish', 'rocket' ),
 							'logo'              => [
 								'url'    => WP_ROCKET_ASSETS_IMG_URL . 'logo-varnish.svg',
@@ -1785,8 +1817,9 @@ class Page {
 							'title'             => __( 'If Varnish runs on your server, you must activate this add-on.', 'rocket' ),
 							// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 							'description'       => sprintf( __( 'Varnish cache will be purged each time WP Rocket clears its cache to ensure content is always up-to-date.<br>%1$sLearn more%2$s', 'rocket' ), '<a href="' . esc_url( $varnish_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $varnish_beacon['id'] ) . '" target="_blank">', '</a>' ),
-							'section'           => 'one_click',
+							'section'           => 'addons',
 							'page'              => 'addons',
+							'settings_page'     => 'varnish',
 							'default'           => 0,
 							'sanitize_callback' => 'sanitize_checkbox',
 						],
@@ -1794,27 +1827,6 @@ class Page {
 				)
 			);
 		}
-
-		$this->settings->add_settings_fields(
-			[
-				'do_cloudflare' => [
-					'type'              => 'rocket_addon',
-					'label'             => __( 'Cloudflare', 'rocket' ),
-					'logo'              => [
-						'url'    => WP_ROCKET_ASSETS_IMG_URL . 'logo-cloudflare2.svg',
-						'width'  => 153,
-						'height' => 51,
-					],
-					'title'             => __( 'Integrate your Cloudflare account with this add-on.', 'rocket' ),
-					'description'       => __( 'Provide your account email, global API key, and domain to use options such as clearing the Cloudflare cache and enabling optimal settings with WP Rocket.', 'rocket' ),
-					'section'           => 'addons',
-					'page'              => 'addons',
-					'settings_page'     => 'cloudflare',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
-				],
-			]
-		);
 
 		if ( defined( 'WP_ROCKET_SUCURI_API_KEY_HIDDEN' ) && WP_ROCKET_SUCURI_API_KEY_HIDDEN ) {
 			// No need to display the dedicated tab if there is nothing to display on it.
@@ -1842,6 +1854,55 @@ class Page {
 					'settings_page'     => $settings_page,
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
+				],
+			]
+		);
+	}
+
+	/**
+	 * Registers Varnish section
+	 *
+	 * @since 3.5
+	 * @author Remy Perona
+	 */
+	private function varnish_section() {
+		$varnish_beacon = $this->beacon->get_suggest( 'varnish' );
+
+		$this->settings->add_page_section(
+			'varnish',
+			[
+				'title'            => 'Varnish',
+				'menu_description' => '',
+				'class'            => [
+					'wpr-subMenuItem',
+					'wpr-addonSubMenuItem',
+				],
+			]
+		);
+
+		$this->settings->add_settings_sections(
+			[
+				'varnish_settings' => [
+					'type'  => 'fields_container',
+					'title' => __( 'Varnish Settings', 'rocket' ),
+					'help'  => [
+						'id'  => $varnish_beacon['id'],
+						'url' => $varnish_beacon['url'],
+					],
+					'page'  => 'varnish',
+				],
+			]
+		);
+
+		$this->settings->add_settings_fields(
+			[
+				'varnish_custom_ip' => [
+					'type'        => 'textarea',
+					'label'       => _x( 'Custom Host/IP', 'Varnish', 'rocket' ),
+					'description' => __( 'There are cases when a custom IP Address is needed to for the plugin to properly communicate with the cache service. If you are using a CDN like Cloudflare or a Firewall Proxy like Sucuri, you may need to customize this setting.', 'rocket' ),
+					'default'     => '',
+					'section'     => 'varnish_settings',
+					'page'        => 'varnish',
 				],
 			]
 		);
@@ -1966,6 +2027,7 @@ class Page {
 	 *
 	 * @since  3.2
 	 * @access private
+	 *
 	 * @author Grégory Viguier
 	 */
 	private function sucuri_section() {

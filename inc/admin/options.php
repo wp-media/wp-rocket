@@ -1,6 +1,6 @@
 <?php
 use WP_Rocket\Logger\Logger;
-use WP_Rocket\Subscriber\Tools\Cloudflare_Subscriber;
+
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
@@ -48,6 +48,7 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		'heartbeat_admin_behavior'    => true,
 		'heartbeat_editor_behavior'   => true,
 		'varnish_auto_purge'          => true,
+		'varnish_custom_ip'           => true,
 		'do_beta'                     => true,
 		'analytics_enabled'           => true,
 		'sucury_waf_cache_sync'       => true,
@@ -86,133 +87,6 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	// Purge all cache busting files.
 	if ( ! empty( $_POST ) && ( $oldvalue['remove_query_strings'] !== $value['remove_query_strings'] ) ) {
 		rocket_clean_cache_busting();
-	}
-
-	if ( ! empty( $_POST ) && $oldvalue['do_cloudflare'] !== $value['do_cloudflare'] ) {
-		// Delete Cloudflare API key validation when Cloudflare Addon is activated / deactivated.
-		delete_transient( 'rocket_cloudflare_is_api_keys_valid' );
-	}
-
-	if ( ! empty( $_POST ) &&
-			( ( isset( $oldvalue['cloudflare_email'], $value['cloudflare_email'] ) && $oldvalue['cloudflare_email'] !== $value['cloudflare_email'] ) ||
-			( isset( $oldvalue['cloudflare_api_key'], $value['cloudflare_api_key'] ) && $oldvalue['cloudflare_api_key'] !== $value['cloudflare_api_key'] ) ||
-			( isset( $oldvalue['cloudflare_zone_id'], $value['cloudflare_zone_id'] ) && $oldvalue['cloudflare_zone_id'] !== $value['cloudflare_zone_id'] ) )
-			) {
-		// Check Cloudflare input data and display error message.
-		if ( get_rocket_option( 'do_cloudflare' ) ) {
-			delete_transient( 'rocket_cloudflare_is_api_keys_valid' );
-			$is_api_keys_valid_cloudflare = Cloudflare_Subscriber::is_api_keys_valid( $value['cloudflare_email'], $value['cloudflare_api_key'], $value['cloudflare_zone_id'], true );
-			set_transient( 'rocket_cloudflare_is_api_keys_valid', $is_api_keys_valid_cloudflare, 2 * WEEK_IN_SECONDS );
-			if ( is_wp_error( $is_api_keys_valid_cloudflare ) ) {
-				$cloudflare_error_message = $is_api_keys_valid_cloudflare->get_error_message();
-				add_settings_error( 'general', 'cloudflare_api_key_invalid', __( 'WP Rocket: ', 'rocket' ) . '</strong>' . $cloudflare_error_message . '<strong>', 'error' );
-			}
-		}
-	}
-
-	// Update CloudFlare Development Mode.
-	$cloudflare_update_result = array();
-
-	if ( ! empty( $_POST ) && isset( $oldvalue['cloudflare_devmode'], $value['cloudflare_devmode'] ) && (int) $oldvalue['cloudflare_devmode'] !== (int) $value['cloudflare_devmode'] ) {
-		$cloudflare_dev_mode_return = Cloudflare_Subscriber::set_devmode( $value['cloudflare_devmode'] );
-		if ( is_wp_error( $cloudflare_dev_mode_return ) ) {
-			$cloudflare_update_result[] = array(
-				'result'  => 'error',
-				// translators: %s is the message returned by the CloudFlare API.
-				'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare development mode error: %s', 'rocket' ), $cloudflare_dev_mode_return->get_error_message() ),
-			);
-		} else {
-			$cloudflare_update_result[] = array(
-				'result'  => 'success',
-				// translators: %s is the message returned by the CloudFlare API.
-				'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare development mode %s', 'rocket' ), $cloudflare_dev_mode_return ),
-			);
-		}
-	}
-
-	// Update CloudFlare settings.
-	if ( ! empty( $_POST ) && ! empty( $value['do_cloudflare'] ) && isset( $oldvalue['cloudflare_auto_settings'], $value['cloudflare_auto_settings'] ) && (int) $oldvalue['cloudflare_auto_settings'] !== (int) $value['cloudflare_auto_settings'] ) {
-		$cf_old_settings = explode( ',', $value['cloudflare_old_settings'] );
-
-		// Set Cache Level to Aggressive.
-		$cf_cache_level        = ( isset( $cf_old_settings[0] ) && 0 === $value['cloudflare_auto_settings'] ) ? 'basic' : 'aggressive';
-		$cf_cache_level_return = Cloudflare_Subscriber::set_cache_level( $cf_cache_level );
-
-		if ( is_wp_error( $cf_cache_level_return ) ) {
-			$cloudflare_update_result[] = array(
-				'result'  => 'error',
-				// translators: %s is the message returned by the CloudFlare API.
-				'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare cache level error: %s', 'rocket' ), $cf_cache_level_return->get_error_message() ),
-			);
-		} else {
-			if ( 'aggressive' === $cf_cache_level_return ) {
-				$cf_cache_level_return = _x( 'Standard', 'Cloudflare caching level', 'rocket' );
-			}
-
-			$cloudflare_update_result[] = array(
-				'result'  => 'success',
-				// translators: %s is the caching level returned by the CloudFlare API.
-				'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare cache level set to %s', 'rocket' ), $cf_cache_level_return ),
-			);
-		}
-
-		// Active Minification for HTML, CSS & JS.
-		$cf_minify        = ( isset( $cf_old_settings[1] ) && 0 === $value['cloudflare_auto_settings'] ) ? $cf_old_settings[1] : 'on';
-		$cf_minify_return = Cloudflare_Subscriber::set_minify( $cf_minify );
-
-		if ( is_wp_error( $cf_minify_return ) ) {
-			$cloudflare_update_result[] = array(
-				'result'  => 'error',
-				// translators: %s is the message returned by the CloudFlare API.
-				'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare minification error: %s', 'rocket' ), $cf_minify_return->get_error_message() ),
-			);
-		} else {
-			$cloudflare_update_result[] = array(
-				'result'  => 'success',
-				// translators: %s is the message returned by the CloudFlare API.
-				'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare minification %s', 'rocket' ), $cf_minify_return ),
-			);
-		}
-
-		// Deactivate Rocket Loader to prevent conflicts.
-		$cf_rocket_loader        = ( isset( $cf_old_settings[2] ) && 0 === $value['cloudflare_auto_settings'] ) ? $cf_old_settings[2] : 'off';
-		$cf_rocket_loader_return = Cloudflare_Subscriber::set_rocket_loader( $cf_rocket_loader );
-
-		if ( is_wp_error( $cf_rocket_loader_return ) ) {
-			$cloudflare_update_result[] = array(
-				'result'  => 'error',
-				// translators: %s is the message returned by the CloudFlare API.
-				'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare rocket loader error: %s', 'rocket' ), $cf_rocket_loader_return->get_error_message() ),
-			);
-		} else {
-			$cloudflare_update_result[] = array(
-				'result'  => 'success',
-				// translators: %s is the message returned by the CloudFlare API.
-				'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare rocket loader %s', 'rocket' ), $cf_rocket_loader_return ),
-			);
-		}
-
-		// Set Browser cache to 1 year.
-		$cf_browser_cache_ttl    = ( isset( $cf_old_settings[3] ) && 0 === $value['cloudflare_auto_settings'] ) ? $cf_old_settings[3] : '31536000';
-		$cf_browser_cache_return = Cloudflare_Subscriber::set_browser_cache_ttl( $cf_browser_cache_ttl );
-
-		if ( is_wp_error( $cf_browser_cache_return ) ) {
-			$cloudflare_update_result[] = array(
-				'result'  => 'error',
-				// translators: %s is the message returned by the CloudFlare API.
-				'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare browser cache error: %s', 'rocket' ), $cf_browser_cache_return->get_error_message() ),
-			);
-		} else {
-			$cloudflare_update_result[] = array(
-				'result'  => 'success',
-				// translators: %s is the message returned by the CloudFlare API.
-				'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare browser cache set to %s seconds', 'rocket' ), $cf_browser_cache_return ),
-			);
-		}
-	}
-
-	if ( (bool) $cloudflare_update_result ) {
-		set_transient( $GLOBALS['current_user']->ID . '_cloudflare_update_settings', $cloudflare_update_result );
 	}
 
 	// Regenerate advanced-cache.php file.
@@ -362,11 +236,6 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 		$newvalue['minify_js_key'] = create_rocket_uniqid();
 	}
 
-	// Save old CloudFlare settings.
-	if ( ( isset( $newvalue['cloudflare_auto_settings'], $oldvalue['cloudflare_auto_settings'] ) && $newvalue['cloudflare_auto_settings'] !== $oldvalue['cloudflare_auto_settings'] && 1 === $newvalue['cloudflare_auto_settings'] ) && 0 < (int) get_rocket_option( 'do_cloudflare' ) ) {
-		$cf_settings                         = Cloudflare_Subscriber::get_settings();
-		$newvalue['cloudflare_old_settings'] = ( ! is_wp_error( $cf_settings ) ) ? implode( ',', array_filter( $cf_settings ) ) : '';
-	}
 
 	// Checked the SSL option if the whole website is on SSL.
 	if ( rocket_is_ssl_website() ) {

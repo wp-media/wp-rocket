@@ -109,13 +109,13 @@ class TestPurgeExpiredFiles extends TestCase {
 		$expired_cache_purge->purge_expired_files( 36000 );
 
 		$this->assertFalse(
-			$this->cache_path->getChild('wp-rocket')->getChild('example.org')->hasChild('blog')
+			$this->cache_path->getChild('wp-rocket/example.org')->hasChild('blog')
 		);
 		$this->assertTrue(
-			$this->cache_path->getChild('wp-rocket')->getChild('example.org')->getChild('about')->hasChild('index.html')
+			$this->cache_path->getChild('wp-rocket/example.org/about')->hasChild('index.html')
 		);
 		$this->assertFalse(
-			$this->cache_path->getChild('wp-rocket')->getChild('example.org-Greg-594d03f6ae698691165999')->hasChild('index.html')
+			$this->cache_path->getChild('wp-rocket/example.org-Greg-594d03f6ae698691165999')->hasChild('index.html')
 		);
 	}
 

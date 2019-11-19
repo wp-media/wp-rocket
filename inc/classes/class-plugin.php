@@ -105,6 +105,7 @@ class Plugin {
 				'minify_js_subscriber',
 				'cache_dynamic_resource_subscriber',
 				'remove_query_string_subscriber',
+				'dequeue_jquery_migrate_subscriber',
 			];
 
 			// Don't insert the LazyLoad file if Rocket LazyLoad is activated.
@@ -125,7 +126,6 @@ class Plugin {
 			'cdn_subscriber',
 			'critical_css_subscriber',
 			'sucuri_subscriber',
-			'cloudflare_subscriber',
 			'facebook_tracking_subscriber',
 			'google_tracking_subscriber',
 			'expired_cache_purge_subscriber',
@@ -149,7 +149,8 @@ class Plugin {
 			'plugin_information_subscriber',
 			'plugin_updater_subscriber',
 			'capabilities_subscriber',
-			'detect_missing_tags_subscriber',
+			'varnish_subscriber',
+			'cloudflare_subscriber',
 		];
 
 		if ( \rocket_valid_key() ) {
