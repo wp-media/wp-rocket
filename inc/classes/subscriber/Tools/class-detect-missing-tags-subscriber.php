@@ -35,6 +35,10 @@ class Detect_Missing_Tags_Subscriber implements Subscriber_Interface {
 		if ( strlen( $html ) <= 255 ) {
 			return;
 		}
+		// If the http response is not 200 do not report missing tags.
+		if ( http_response_code() !== 200 ) {
+			return;
+		}
 		Logger::info(
 			'START Detect Missing closing tags ( <html>, </body> or wp_footer() )',
 			[
