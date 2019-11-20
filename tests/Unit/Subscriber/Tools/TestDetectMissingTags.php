@@ -29,6 +29,9 @@ class TestDetectMissingTags extends TestCase {
 			->once()
 			->andReturn( 0 );
 
+		Functions\when( 'http_response_code' )
+			->justReturn( 200 );
+
 		Functions\when( 'get_transient' )
 			->justReturn( [] );
 
@@ -58,6 +61,9 @@ class TestDetectMissingTags extends TestCase {
 			->once()
 			->andReturn( true );
 
+		Functions\when( 'http_response_code' )
+			->justReturn( 200 );
+
 		Functions\expect( 'set_transient' )
 			->never();
 
@@ -77,6 +83,9 @@ class TestDetectMissingTags extends TestCase {
 		Functions\expect( 'did_action' )
 			->once()
 			->andReturn( true );
+
+		Functions\when( 'http_response_code' )
+			->justReturn( 200 );
 
 		Functions\when( 'get_transient' )
 			->justReturn( [] );
@@ -106,6 +115,9 @@ class TestDetectMissingTags extends TestCase {
 		Functions\expect( 'did_action' )
 			->once()
 			->andReturn( true );
+
+		Functions\when( 'http_response_code' )
+			->justReturn( 200 );
 
 		Functions\expect( 'set_transient' )
 			->never();
