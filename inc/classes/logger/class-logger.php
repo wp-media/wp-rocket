@@ -233,7 +233,7 @@ class Logger {
 			return preg_replace( '/\.[^.]*$/', '', WP_ROCKET_DEBUG_LOG_FILE ) . '.log';
 		}
 
-		return WP_CONTENT_DIR . '/wp-rocket-config/' . static::LOG_FILE_NAME;
+		return WP_ROCKET_CONFIG_PATH . static::LOG_FILE_NAME;
 	}
 
 	/**

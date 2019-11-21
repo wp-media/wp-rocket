@@ -48,7 +48,7 @@ if ( ! isset( $_SERVER['REQUEST_METHOD'] ) || 'GET' !== $_SERVER['REQUEST_METHOD
 }
 
 // Get the correct config file.
-$rocket_config_path      = WP_CONTENT_DIR . '/wp-rocket-config/';
+$rocket_config_path      = WP_ROCKET_CONFIG_PATH;
 $rocket_real_config_path = realpath( $rocket_config_path ) . DIRECTORY_SEPARATOR;
 
 $host = isset( $_SERVER['HTTP_HOST'] ) ? $_SERVER['HTTP_HOST'] : (string) time();
