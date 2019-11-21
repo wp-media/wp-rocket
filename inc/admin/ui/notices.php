@@ -354,7 +354,7 @@ add_action( 'admin_notices', 'rocket_warning_wp_config_permissions' );
  * @since 2.0
  */
 function rocket_warning_advanced_cache_permissions() {
-	$advanced_cache_file = WP_CONTENT_DIR . '/advanced-cache.php';
+	$advanced_cache_file = WP_ROCKET_ADVANCED_CACHE_FILE;
 
 	if ( current_user_can( 'rocket_manage_options' )
 		&& ! rocket_direct_filesystem()->is_writable( $advanced_cache_file )
@@ -367,7 +367,7 @@ function rocket_warning_advanced_cache_permissions() {
 			return;
 		}
 
-		$message = rocket_notice_writing_permissions( basename( WP_CONTENT_DIR ) . '/advanced-cache.php' );
+		$message = rocket_notice_writing_permissions( WP_ROCKET_ADVANCED_CACHE_FILE );
 
 		rocket_notice_html( [
 			'status'           => 'error',
@@ -393,7 +393,7 @@ function rocket_warning_advanced_cache_not_ours() {
 		&& get_rocket_option( 'version' ) === WP_ROCKET_VERSION
 		&& rocket_valid_key() ) {
 
-			$message = rocket_notice_writing_permissions( basename( WP_CONTENT_DIR ) . '/advanced-cache.php' );
+			$message = rocket_notice_writing_permissions( WP_ROCKET_ADVANCED_CACHE_FILE );
 
 			rocket_notice_html( [
 				'status'      => 'error',

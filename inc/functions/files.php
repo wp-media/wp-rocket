@@ -95,7 +95,7 @@ function rocket_generate_advanced_cache_file() {
 	}
 	$done = true;
 
-	rocket_put_content( WP_CONTENT_DIR . '/advanced-cache.php', get_rocket_advanced_cache_file() );
+	rocket_put_content( WP_ROCKET_ADVANCED_CACHE_FILE, get_rocket_advanced_cache_file() );
 }
 
 /**

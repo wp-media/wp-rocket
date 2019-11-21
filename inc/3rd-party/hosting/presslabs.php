@@ -2,8 +2,8 @@
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 if ( defined( 'PL_INSTANCE_REF' ) && class_exists( '\Presslabs\Cache\CacheHandler' ) ) {
-	if ( file_exists( WP_CONTENT_DIR . '/advanced-cache.php' ) ) {	
-		require_once WP_CONTENT_DIR . '/advanced-cache.php';
+	if ( file_exists( WP_ROCKET_ADVANCED_CACHE_FILE ) ) {	
+		require_once WP_ROCKET_ADVANCED_CACHE_FILE;
         
 	add_action( 'pl_pre_cache_refresh', 'rocket_clean_files', 0 );
 	add_filter( 'rocket_display_varnish_options_tab', '__return_false' );

@@ -262,7 +262,7 @@ function rocket_rollback() {
 
 	remove_filter( 'site_transient_update_plugins', 'rocket_check_update', 1 );
 	add_filter( 'update_plugin_complete_actions', 'rocket_rollback_add_return_link' );
-	rocket_put_content( WP_CONTENT_DIR . '/advanced-cache.php', '' );
+	rocket_put_content( WP_ROCKET_ADVANCED_CACHE_FILE, '' );
 
 	$upgrader->upgrade( $plugin );
 
