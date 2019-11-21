@@ -19,6 +19,7 @@ class Detect_Missing_Tags_Subscriber implements Subscriber_Interface {
 		return [
 			'admin_notices'                      => 'rocket_notice_missing_tags',
 			'rocket_before_maybe_process_buffer' => 'maybe_missing_tags',
+			'wp_rocket_upgrade'                  => 'delete_transient_after_upgrade',
 		];
 	}
 
@@ -37,6 +38,14 @@ class Detect_Missing_Tags_Subscriber implements Subscriber_Interface {
 		}
 		// If the http response is not 200 do not report missing tags.
 		if ( http_response_code() !== 200 ) {
+			return;
+		}
+		// If content type is not HTML do not report missing tags.
+		if ( empty( $_SERVER['content_type'] ) || false === strpos( wp_unslash( $_SERVER['content_type'] ), 'text/html' ) ) {
+			return;
+		}
+		// If the content does not contain HTML Doctype, do not report missing tags.
+		if ( false === stripos( $html, '<!DOCTYPE html' ) ) {
 			return;
 		}
 		Logger::info(
@@ -174,5 +183,15 @@ class Detect_Missing_Tags_Subscriber implements Subscriber_Interface {
 		}
 
 		return '/' . esc_html( ltrim( wp_unslash( $_SERVER['REQUEST_URI'] ), '/' ) );
+	}
+
+	/**
+	 * Deletes the transient storing the missing tags when updating the plugin
+	 *
+	 * @since  3.4.2.2
+	 * @author Soponar Cristina
+	 */
+	public function delete_transient_after_upgrade() {
+		delete_transient( 'rocket_notice_missing_tags' );
 	}
 }
