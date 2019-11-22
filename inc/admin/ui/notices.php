@@ -126,6 +126,7 @@ function rocket_plugins_to_deactivate() {
 		'force-gzip'                                 => 'force-gzip/force-gzip.php',
 		'enable-gzip-compression'                    => 'enable-gzip-compression/enable-gzip-compression.php',
 		'leverage-browser-caching'                   => 'leverage-browser-caching/leverage-browser-caching.php',
+		'wp-optimize'				     => 'wp-optimize/wp-optimize.php'
 	];
 
 	if ( get_rocket_option( 'lazyload' ) ) {
