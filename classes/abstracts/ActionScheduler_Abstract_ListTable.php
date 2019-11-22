@@ -357,7 +357,7 @@ abstract class ActionScheduler_Abstract_ListTable extends WP_List_Table {
 
 		$filter  = array();
 		foreach ( $this->search_by as $column ) {
-			$filter[] = '`' . $column . '` like "%' . $wpdb->esc_like( $_GET['s'] ) . '%"';
+			$filter[] = $wpdb->prepare('`' . $column . '` like "%%s%"', $wpdb->esc_like( $_GET['s'] ));
 		}
 		return implode( ' OR ', $filter );
 	}
