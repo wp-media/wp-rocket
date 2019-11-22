@@ -881,6 +881,22 @@ class Page {
 			]
 		);
 
+		$rocket_maybe_disable_lazyload_plugins = [];
+		if ( rocket_maybe_disable_lazyload() ) {
+			$rocket_maybe_disable_lazyload_plugins[] = __( 'Autoptimize', 'rocket' );
+		}
+
+		/**
+		 * Lazyload Helper filter which disables WPR lazyload functionality
+		 *
+		 * @since  3.4.2
+		 * @author Soponar Cristina
+		 *
+		 * @param array Will return the array with all plugin names which should disable LazyLoad
+		 */
+		$rocket_maybe_disable_lazyload_plugins = apply_filters( 'rocket_maybe_disable_lazyload_helper', $rocket_maybe_disable_lazyload_plugins );
+		$rocket_maybe_disable_lazyload_plugins = wp_sprintf_l( '%l', $rocket_maybe_disable_lazyload_plugins );
+
 		$this->settings->add_settings_sections(
 			[
 				'lazyload_section' => [
@@ -894,7 +910,7 @@ class Page {
 					],
 					'page'        => 'media',
 					// translators: %1$s = “WP Rocket”.
-					'helper'      => rocket_maybe_disable_lazyload() ? sprintf( __( 'Lazyload is currently activated in <strong>Autoptimize</strong>. If you want to use %1$s’s lazyload, disable this option in Autoptimize.', 'rocket' ), WP_ROCKET_PLUGIN_NAME ) : '',
+					'helper'      => ! empty( $rocket_maybe_disable_lazyload_plugins ) ? sprintf( __( 'Lazyload is currently activated in <strong>%2$s</strong>. If you want to use %1$s’s lazyload, disable this option in %2$s.', 'rocket' ), WP_ROCKET_PLUGIN_NAME, $rocket_maybe_disable_lazyload_plugins ) : '',
 				],
 				'emoji_section'    => [
 					'title'       => __( 'Emoji 👻', 'rocket' ),
@@ -947,10 +963,10 @@ class Page {
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 					'container_class'   => [
-						( rocket_avada_maybe_disable_lazyload() || rocket_maybe_disable_lazyload() ) ? 'wpr-isDisabled' : '',
+						( rocket_avada_maybe_disable_lazyload() || ! empty( $rocket_maybe_disable_lazyload_plugins ) ) ? 'wpr-isDisabled' : '',
 					],
 					'input_attr'        => [
-						'disabled' => ( rocket_avada_maybe_disable_lazyload() || rocket_maybe_disable_lazyload() ) ? 1 : 0,
+						'disabled' => ( rocket_avada_maybe_disable_lazyload() || ! empty( $rocket_maybe_disable_lazyload_plugins ) ) ? 1 : 0,
 					],
 					'description'       => rocket_avada_maybe_disable_lazyload() ? _x( 'Lazyload for images is currently activated in Avada. If you want to use WP Rocket’s LazyLoad, disable this option in Avada.', 'Avada', 'rocket' ) : '',
 				],

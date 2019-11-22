@@ -550,12 +550,14 @@ class Combine extends Abstract_JS_Optimization {
 			'PHP.wp_p_id',
 			'ShopifyBuy.UI.onReady(client)',
 			'orig_request_uri',
+			'gie.widgets.load',
 			'Adman.Flash',
 			'PHP.wp_p_id',
 			'window.broadstreetKeywords',
 			'var productId =',
 			'var flatsomeVars',
 			'wc_product_block_data',
+			'static.mailerlite.com',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
@@ -624,6 +626,7 @@ class Combine extends Abstract_JS_Optimization {
 			'googlesyndication.com',
 			'a.optmstr.com',
 			'a.optmnstr.com',
+			'a.opmnstr.com',
 			'adthrive.com',
 			'mediavine.com',
 			'js.hsforms.net',
@@ -637,6 +640,8 @@ class Combine extends Abstract_JS_Optimization {
 			'code.tidio.co',
 			'www.uplaunch.com',
 			'widget.reviewability.com',
+			'embed-cdn.gettyimages.com/widgets.js',
+			'app.mailerlite.com',
 			'ck.page',
 		];
 

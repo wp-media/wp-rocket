@@ -121,9 +121,15 @@ function rocket_clean_post( $post_id, $post = null ) {
 	if ( 'post' !== $post->post_type ) {
 		$post_type_archive = get_post_type_archive_link( get_post_type( $post_id ) );
 		if ( $post_type_archive ) {
+			// Rename the caching filename for SSL URLs.
+			$filename = 'index';
+			if ( is_ssl() ) {
+				$filename .= '-https';
+			}
+
 			$post_type_archive = trailingslashit( $post_type_archive );
-			array_push( $purge_urls, $post_type_archive . 'index.html' );
-			array_push( $purge_urls, $post_type_archive . 'index.html_gzip' );
+			array_push( $purge_urls, $post_type_archive . $filename . '.html' );
+			array_push( $purge_urls, $post_type_archive . $filename . '.html_gzip' );
 			array_push( $purge_urls, $post_type_archive . $GLOBALS['wp_rewrite']->pagination_base );
 		}
 	}
@@ -527,3 +533,19 @@ function rocket_clean_cache_theme_update( $wp_upgrader, $hook_extra ) {
 
 	rocket_clean_domain();
 }
+
+/**
+ * Purge WP Rocket cache on Slug / Permalink change.
+ *
+ * @since  3.4.2
+ * @author Soponar Cristina
+ *
+ * @param int   $post_id   The post ID.
+ * @param array $post_data Array of unslashed post data.
+ */
+function rocket_clean_post_cache_on_slug_change( $post_id, $post_data ) {
+	if ( get_post_field( 'post_name', $post_id ) !== $post_data['post_name'] ) {
+        rocket_clean_files( get_the_permalink( $post_id ) );
+    }
+}
+add_action( 'pre_post_update', 'rocket_clean_post_cache_on_slug_change', 10, 2 );

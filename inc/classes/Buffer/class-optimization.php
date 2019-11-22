@@ -72,6 +72,16 @@ class Optimization extends Abstract_Buffer {
 	 * @return string         The buffered content.
 	 */
 	public function maybe_process_buffer( $buffer ) {
+		/**
+		 * Triggered before WP Rocket starts the optimization process.
+		 *
+		 * @since  3.4.2
+		 * @author Soponar Cristina
+		 *
+		 * @param string $buffer HTML content.
+		 */
+		do_action( 'rocket_before_maybe_process_buffer', $buffer );
+
 		if ( ! $this->is_html( $buffer ) ) {
 			return $buffer;
 		}
