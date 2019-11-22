@@ -138,7 +138,7 @@ function rocket_deactivation() {
 		set_rocket_wp_cache_define( false );
 
 		// Delete content of advanced-cache.php.
-		rocket_put_content( WP_ROCKET_ADVANCED_CACHE_FILE, '' );
+		rocket_put_content( WP_CONTENT_DIR . '/advanced-cache.php', '' );
 	}
 
 	// Update customer key & licence.

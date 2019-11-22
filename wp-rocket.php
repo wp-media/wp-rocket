@@ -45,9 +45,6 @@ if ( ! defined( 'WP_ROCKET_CONFIG_PATH' ) ) {
 	define( 'WP_ROCKET_CONFIG_PATH',       WP_CONTENT_DIR . '/wp-rocket-config/' );
 }
 
-if ( ! defined( 'WP_ROCKET_ADVANCED_CACHE_FILE' ) ) {
-	define( 'WP_ROCKET_ADVANCED_CACHE_FILE', WP_CONTENT_DIR . '/advanced-cache.php' );
-}
 define( 'WP_ROCKET_URL',                   plugin_dir_url( WP_ROCKET_FILE ) );
 define( 'WP_ROCKET_INC_URL',               WP_ROCKET_URL . 'inc/' );
 define( 'WP_ROCKET_ADMIN_URL',             WP_ROCKET_INC_URL . 'admin/' );
