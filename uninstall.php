@@ -2,7 +2,11 @@
 defined( 'WP_UNINSTALL_PLUGIN' ) || die( 'Cheatin&#8217; uh?' );
 
 if ( ! defined( 'WP_ROCKET_CACHE_ROOT_PATH' ) ) {
-	define( 'WP_ROCKET_CACHE_ROOT_PATH', WP_ROCKET_CACHE_ROOT_PATH );
+	define( 'WP_ROCKET_CACHE_ROOT_PATH', WP_CONTENT_DIR . '/cache/' );
+}
+
+if ( ! defined( 'WP_ROCKET_CONFIG_PATH' ) ) {
+	define( 'WP_ROCKET_CONFIG_PATH', WP_CONTENT_DIR . '/wp-rocket-config/' );
 }
 
 // Delete all transients.
