@@ -5,7 +5,7 @@ use League\Container\ServiceProvider\AbstractServiceProvider;
 
 use \Cloudflare\Api as CloudflareApi;
 use \Cloudflare\Zone\Cache as CloudflareCache;
-use \Cloudflare\Zone\PageRules as CloudflarePageRules;
+//use \Cloudflare\Zone\PageRules as CloudflarePageRules;
 use \Cloudflare\Zone\Settings as CloudflareSettings;
 use \Cloudflare\IPs as CloudflareIPs;
 
@@ -64,7 +64,7 @@ class Addons_Subscribers extends AbstractServiceProvider {
 		$this->getContainer()->add( 'cloudflare_facade', 'WP_Rocket\Addons\Cloudflare\CloudflareFacade' )
 			->withArgument( new CloudflareApi() )
 			->withArgument( new CloudflareCache() )
-			->withArgument( new CloudflarePageRules() )
+			->withArgument( new \Cloudflare\Zone\PageRules() )
 			->withArgument( new CloudflareSettings() )
 			->withArgument( new CloudflareIPs() );
 		$this->getContainer()->add( 'cloudflare', 'WP_Rocket\Addons\Cloudflare\Cloudflare' )
