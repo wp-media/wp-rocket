@@ -59,10 +59,10 @@ class CloudflareSubscriber implements Subscriber_Interface {
 			'rocket_cron_deactivate_cloudflare_devmode' => 'deactivate_devmode',
 			'after_rocket_clean_domain'                 => 'auto_purge',
 			'after_rocket_clean_post'                   => [ 'auto_purge_by_url', 10, 3 ],
-			'admin_post_rocket_purge_cloudflare'        => 'do_purge_cloudflare',
+			'admin_post_rocket_purge_cloudflare'        => 'purge_cache',
 			'init'                                      => [ 'set_real_ip', 1 ],
 			'update_option_' . WP_ROCKET_SLUG           => [ 'save_cloudflare_options', 10, 2 ],
-			'pre_update_option_' . WP_ROCKET_SLUG       => [ 'save_cloudflare_auto_settings', 10, 2 ],
+			'pre_update_option_' . WP_ROCKET_SLUG       => [ 'save_cloudflare_old_settings', 10, 2 ],
 			'admin_notices'                             => [
 				[ 'maybe_display_purge_notice' ],
 				[ 'maybe_print_update_settings_notice' ],
@@ -132,9 +132,10 @@ class CloudflareSubscriber implements Subscriber_Interface {
 	 * @author Remy Perona
 	 */
 	public function deactivate_devmode() {
-		if ( ! $this->options->get( 'do_cloudflare' ) || ! current_user_can( 'rocket_purge_cloudflare_cache' ) ) {
+		if ( ! $this->options->get( 'do_cloudflare' ) ) {
 			return;
 		}
+
 		$this->options->set( 'cloudflare_devmode', 'off' );
 		$this->options_api->set( 'settings', $this->options->get_options() );
 	}
@@ -220,7 +221,7 @@ class CloudflareSubscriber implements Subscriber_Interface {
 	 *
 	 * @since 2.5
 	 */
-	public function do_purge_cloudflare() {
+	public function purge_cache_no_die() {
 		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'rocket_purge_cloudflare' ) ) {
 			wp_nonce_ays( '' );
 		}
@@ -245,7 +246,15 @@ class CloudflareSubscriber implements Subscriber_Interface {
 		}
 
 		set_transient( get_current_user_id() . '_cloudflare_purge_result', $cf_purge_result );
+	}
 
+	/**
+	 * Purge CloudFlare cache
+	 *
+	 * @since 2.5
+	 */
+	public function purge_cache() {
+		$this->purge_cache_no_die();
 		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
 		die();
 	}
@@ -258,43 +267,26 @@ class CloudflareSubscriber implements Subscriber_Interface {
 	 * @source cloudflare.php - https://wordpress.org/plugins/cloudflare/
 	 */
 	public function set_real_ip() {
-		if ( ! isset( $_SERVER['HTTP_CF_CONNECTING_IP'] ) ) {
+		// only run this logic if the REMOTE_ADDR is populated, to avoid causing notices in CLI mode.
+		if ( ! isset( $_SERVER['HTTP_CF_CONNECTING_IP'] ) || ! isset( $_SERVER['REMOTE_ADDR'] ) ) {
 			return;
 		}
-		// only run this logic if the REMOTE_ADDR is populated, to avoid causing notices in CLI mode.
-		if ( isset( $_SERVER['REMOTE_ADDR'] ) ) {
-			$cf_ips_values = $this->cloudflare->get_cloudflare_ips();
 
-			if ( strpos( $_SERVER['REMOTE_ADDR'], ':' ) === false ) {
-				$cf_ip_ranges = $cf_ips_values->result->ipv4_cidrs;
-
-				// IPV4: Update the REMOTE_ADDR value if the current REMOTE_ADDR value is in the specified range.
-				foreach ( $cf_ip_ranges as $range ) {
-					if ( rocket_ipv4_in_range( $_SERVER['REMOTE_ADDR'], $range ) ) {
-						if ( $_SERVER['HTTP_CF_CONNECTING_IP'] ) {
-							$_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_CF_CONNECTING_IP'];
-						}
-						break;
-					}
-				}
-			} else {
-				$cf_ip_ranges = $cf_ips_values->result->ipv6_cidrs;
-
-				$ipv6 = get_rocket_ipv6_full( $_SERVER['REMOTE_ADDR'] );
-				foreach ( $cf_ip_ranges as $range ) {
-					if ( rocket_ipv6_in_range( $ipv6, $range ) ) {
-						if ( $_SERVER['HTTP_CF_CONNECTING_IP'] ) {
-							$_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_CF_CONNECTING_IP'];
-						}
-						break;
-					}
-				}
-			}
+		$cf_ips_values = $this->cloudflare->get_cloudflare_ips();
+		$cf_ip_ranges  = $cf_ips_values->result->ipv6_cidrs;
+		$ip            = wp_unslash( $_SERVER['REMOTE_ADDR'] );
+		$ipv6          = get_rocket_ipv6_full( $ip );
+		if ( false === strpos( $ip, ':' ) ) {
+			// IPV4: Update the REMOTE_ADDR value if the current REMOTE_ADDR value is in the specified range.
+			$cf_ip_ranges = $cf_ips_values->result->ipv4_cidrs;
 		}
 
-		// Let people know that the CF WP plugin is turned on.
-		if ( ! headers_sent() ) {
-			header( 'X-CF-Powered-By: WP Rocket ' . WP_ROCKET_VERSION );
+		foreach ( $cf_ip_ranges as $range ) {
+			if ( ( strpos( $ip, ':' ) && rocket_ipv6_in_range( $ipv6, $range ) ) ||
+					( false === strpos( $ip, ':' ) && rocket_ipv4_in_range( $ip, $range ) ) ) {
+				$_SERVER['REMOTE_ADDR'] = wp_unslash( $_SERVER['HTTP_CF_CONNECTING_IP'] );
+				break;
+			}
 		}
 	}
 
@@ -305,7 +297,7 @@ class CloudflareSubscriber implements Subscriber_Interface {
 	 * @author Remy Perona
 	 */
 	public function maybe_display_purge_notice() {
-		if ( ! $this->options->get( 'do_cloudflare' ) || ! current_user_can( 'rocket_purge_cloudflare_cache' ) || ! is_admin() ) {
+		if ( ! $this->options->get( 'do_cloudflare' ) || ! current_user_can( 'rocket_purge_cloudflare_cache' ) ) {
 			return;
 		}
 
@@ -340,35 +332,38 @@ class CloudflareSubscriber implements Subscriber_Interface {
 
 		$user_id = get_current_user_id();
 		$notices = get_transient( $user_id . '_cloudflare_update_settings' );
-		if ( $notices ) {
-			$errors  = '';
-			$success = '';
-			delete_transient( $user_id . '_cloudflare_update_settings' );
-			foreach ( $notices as $notice ) {
-				if ( 'error' === $notice['result'] ) {
-					$errors .= $notice['message'] . '<br>';
-				} elseif ( 'success' === $notice['result'] ) {
-					$success .= $notice['message'] . '<br>';
-				}
-			}
+		if ( ! $notices ) {
+			return;
+		}
 
-			if ( ! empty( $success ) ) {
-				\rocket_notice_html(
-					[
-						'message' => $success,
-					]
-				);
-			}
-
-			if ( ! empty( $errors ) ) {
-				\rocket_notice_html(
-					[
-						'status'  => 'error',
-						'message' => $errors,
-					]
-				);
+		$errors  = '';
+		$success = '';
+		delete_transient( $user_id . '_cloudflare_update_settings' );
+		foreach ( $notices as $notice ) {
+			if ( 'error' === $notice['result'] ) {
+				$errors .= $notice['message'] . '<br>';
+			} elseif ( 'success' === $notice['result'] ) {
+				$success .= $notice['message'] . '<br>';
 			}
 		}
+
+		if ( ! empty( $success ) ) {
+			\rocket_notice_html(
+				[
+					'message' => $success,
+				]
+			);
+		}
+
+		if ( ! empty( $errors ) ) {
+			\rocket_notice_html(
+				[
+					'status'  => 'error',
+					'message' => $errors,
+				]
+			);
+		}
+
 	}
 
 	/**
@@ -377,23 +372,23 @@ class CloudflareSubscriber implements Subscriber_Interface {
 	 * @since  3.5
 	 * @author Soponar Cristina
 	 *
-	 * @param array $oldvalue An array of previous values for the settings.
-	 * @param array $value An array of submitted values for the settings.
+	 * @param array $old_value An array of previous values for the settings.
+	 * @param array $value     An array of submitted values for the settings.
 	 */
-	public function save_cloudflare_options( $oldvalue, $value ) {
+	public function save_cloudflare_options( $old_value, $value ) {
 
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			return;
 		}
 
-		if ( $oldvalue['do_cloudflare'] !== $value['do_cloudflare'] ) {
+		if ( $old_value['do_cloudflare'] !== $value['do_cloudflare'] ) {
 			// Delete Cloudflare API key validation when Cloudflare Addon is activated / deactivated.
 			delete_transient( 'rocket_cloudflare_is_api_keys_valid' );
 		}
 
-		if ( ( ( isset( $oldvalue['cloudflare_email'], $value['cloudflare_email'] ) && $oldvalue['cloudflare_email'] !== $value['cloudflare_email'] ) ||
-			( isset( $oldvalue['cloudflare_api_key'], $value['cloudflare_api_key'] ) && $oldvalue['cloudflare_api_key'] !== $value['cloudflare_api_key'] ) ||
-			( isset( $oldvalue['cloudflare_zone_id'], $value['cloudflare_zone_id'] ) && $oldvalue['cloudflare_zone_id'] !== $value['cloudflare_zone_id'] ) )
+		if ( ( ( isset( $old_value['cloudflare_email'], $value['cloudflare_email'] ) && $old_value['cloudflare_email'] !== $value['cloudflare_email'] ) ||
+			( isset( $old_value['cloudflare_api_key'], $value['cloudflare_api_key'] ) && $old_value['cloudflare_api_key'] !== $value['cloudflare_api_key'] ) ||
+			( isset( $old_value['cloudflare_zone_id'], $value['cloudflare_zone_id'] ) && $old_value['cloudflare_zone_id'] !== $value['cloudflare_zone_id'] ) )
 			) {
 			// Check Cloudflare input data and display error message.
 			if ( $this->options->get( 'do_cloudflare' ) ) {
@@ -408,27 +403,27 @@ class CloudflareSubscriber implements Subscriber_Interface {
 		}
 
 		// Update CloudFlare Development Mode.
-		$cloudflare_update_result = array();
+		$cloudflare_update_result = [];
 
-		if ( isset( $oldvalue['cloudflare_devmode'], $value['cloudflare_devmode'] ) && (int) $oldvalue['cloudflare_devmode'] !== (int) $value['cloudflare_devmode'] ) {
+		if ( isset( $old_value['cloudflare_devmode'], $value['cloudflare_devmode'] ) && (int) $old_value['cloudflare_devmode'] !== (int) $value['cloudflare_devmode'] ) {
 			$cloudflare_dev_mode_return = $this->cloudflare->set_devmode( $value['cloudflare_devmode'] );
 			if ( is_wp_error( $cloudflare_dev_mode_return ) ) {
-				$cloudflare_update_result[] = array(
+				$cloudflare_update_result[] = [
 					'result'  => 'error',
 					// translators: %s is the message returned by the CloudFlare API.
 					'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare development mode error: %s', 'rocket' ), $cloudflare_dev_mode_return->get_error_message() ),
-				);
+				];
 			} else {
-				$cloudflare_update_result[] = array(
+				$cloudflare_update_result[] = [
 					'result'  => 'success',
 					// translators: %s is the message returned by the CloudFlare API.
 					'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare development mode %s', 'rocket' ), $cloudflare_dev_mode_return ),
-				);
+				];
 			}
 		}
 
 		// Update CloudFlare settings.
-		if ( ! empty( $value['do_cloudflare'] ) && isset( $oldvalue['cloudflare_auto_settings'], $value['cloudflare_auto_settings'] ) && (int) $oldvalue['cloudflare_auto_settings'] !== (int) $value['cloudflare_auto_settings'] ) {
+		if ( ! empty( $value['do_cloudflare'] ) && isset( $old_value['cloudflare_auto_settings'], $value['cloudflare_auto_settings'] ) && (int) $old_value['cloudflare_auto_settings'] !== (int) $value['cloudflare_auto_settings'] ) {
 			$cf_old_settings = explode( ',', $value['cloudflare_old_settings'] );
 
 			// Set Cache Level to Aggressive.
@@ -436,21 +431,21 @@ class CloudflareSubscriber implements Subscriber_Interface {
 			$cf_cache_level_return = $this->cloudflare->set_cache_level( $cf_cache_level );
 
 			if ( is_wp_error( $cf_cache_level_return ) ) {
-				$cloudflare_update_result[] = array(
+				$cloudflare_update_result[] = [
 					'result'  => 'error',
 					// translators: %s is the message returned by the CloudFlare API.
 					'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare cache level error: %s', 'rocket' ), $cf_cache_level_return->get_error_message() ),
-				);
+				];
 			} else {
 				if ( 'aggressive' === $cf_cache_level_return ) {
 					$cf_cache_level_return = _x( 'Standard', 'Cloudflare caching level', 'rocket' );
 				}
 
-				$cloudflare_update_result[] = array(
+				$cloudflare_update_result[] = [
 					'result'  => 'success',
 					// translators: %s is the caching level returned by the CloudFlare API.
 					'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare cache level set to %s', 'rocket' ), $cf_cache_level_return ),
-				);
+				];
 			}
 
 			// Active Minification for HTML, CSS & JS.
@@ -458,17 +453,17 @@ class CloudflareSubscriber implements Subscriber_Interface {
 			$cf_minify_return = $this->cloudflare->set_minify( $cf_minify );
 
 			if ( is_wp_error( $cf_minify_return ) ) {
-				$cloudflare_update_result[] = array(
+				$cloudflare_update_result[] = [
 					'result'  => 'error',
 					// translators: %s is the message returned by the CloudFlare API.
 					'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare minification error: %s', 'rocket' ), $cf_minify_return->get_error_message() ),
-				);
+				];
 			} else {
-				$cloudflare_update_result[] = array(
+				$cloudflare_update_result[] = [
 					'result'  => 'success',
 					// translators: %s is the message returned by the CloudFlare API.
 					'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare minification %s', 'rocket' ), $cf_minify_return ),
-				);
+				];
 			}
 
 			// Deactivate Rocket Loader to prevent conflicts.
@@ -476,17 +471,17 @@ class CloudflareSubscriber implements Subscriber_Interface {
 			$cf_rocket_loader_return = $this->cloudflare->set_rocket_loader( $cf_rocket_loader );
 
 			if ( is_wp_error( $cf_rocket_loader_return ) ) {
-				$cloudflare_update_result[] = array(
+				$cloudflare_update_result[] = [
 					'result'  => 'error',
 					// translators: %s is the message returned by the CloudFlare API.
 					'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare rocket loader error: %s', 'rocket' ), $cf_rocket_loader_return->get_error_message() ),
-				);
+				];
 			} else {
-				$cloudflare_update_result[] = array(
+				$cloudflare_update_result[] = [
 					'result'  => 'success',
 					// translators: %s is the message returned by the CloudFlare API.
 					'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare rocket loader %s', 'rocket' ), $cf_rocket_loader_return ),
-				);
+				];
 			}
 
 			// Set Browser cache to 1 year.
@@ -494,17 +489,17 @@ class CloudflareSubscriber implements Subscriber_Interface {
 			$cf_browser_cache_return = $this->cloudflare->set_browser_cache_ttl( $cf_browser_cache_ttl );
 
 			if ( is_wp_error( $cf_browser_cache_return ) ) {
-				$cloudflare_update_result[] = array(
+				$cloudflare_update_result[] = [
 					'result'  => 'error',
 					// translators: %s is the message returned by the CloudFlare API.
 					'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare browser cache error: %s', 'rocket' ), $cf_browser_cache_return->get_error_message() ),
-				);
+				];
 			} else {
-				$cloudflare_update_result[] = array(
+				$cloudflare_update_result[] = [
 					'result'  => 'success',
 					// translators: %s is the message returned by the CloudFlare API.
 					'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare browser cache set to %s seconds', 'rocket' ), $cf_browser_cache_return ),
-				);
+				];
 			}
 		}
 
@@ -515,26 +510,25 @@ class CloudflareSubscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Save Cloudflare admin auto settings options
+	 * Save Cloudflare old settings when the auto settings option is enabled.
 	 *
 	 * @since  3.5
 	 * @author Soponar Cristina
 	 *
-	 * @param array $newvalue An array of previous values for the settings.
-	 * @param array $oldvalue An array of submitted values for the settings.
+	 * @param array $value     An array of previous values for the settings.
+	 * @param array $old_value An array of submitted values for the settings.
 	 */
-	public function save_cloudflare_auto_settings( $newvalue, $oldvalue ) {
-
-		if ( ! current_user_can( 'rocket_manage_options' ) ) {
-			return $newvalue;
+	public function save_cloudflare_old_settings( $value, $old_value ) {
+		if ( ! current_user_can( 'rocket_manage_options' ) || ! $this->options->get( 'do_cloudflare' ) ) {
+			return $value;
 		}
 
 		// Save old CloudFlare settings.
-		if ( ( isset( $newvalue['cloudflare_auto_settings'], $oldvalue['cloudflare_auto_settings'] ) && $newvalue['cloudflare_auto_settings'] !== $oldvalue['cloudflare_auto_settings'] && 1 === $newvalue['cloudflare_auto_settings'] ) && 0 < (int) $this->options->get( 'do_cloudflare' ) ) {
-			$cf_settings                         = $this->cloudflare->get_settings();
-			$newvalue['cloudflare_old_settings'] = ( ! is_wp_error( $cf_settings ) ) ? implode( ',', array_filter( $cf_settings ) ) : '';
+		if ( isset( $value['cloudflare_auto_settings'], $old_value ['cloudflare_auto_settings'] ) && $value['cloudflare_auto_settings'] !== $old_value ['cloudflare_auto_settings'] && 1 === $value['cloudflare_auto_settings'] ) {
+			$cf_settings                      = $this->cloudflare->get_settings();
+			$value['cloudflare_old_settings'] = ! is_wp_error( $cf_settings ) ? implode( ',', array_filter( $cf_settings ) ) : '';
 		}
 
-		return $newvalue;
+		return $value;
 	}
 }

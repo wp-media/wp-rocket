@@ -2,6 +2,7 @@
 namespace WP_Rocket\Addons\Cloudflare;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Addons\Cloudflare\CloudflareFacade;
 
 /**
  * Cloudflare
@@ -18,11 +19,18 @@ class Cloudflare {
 	private $options;
 
 	/**
-	 * Cloudflare API instance or WP_Error
+	 * Cloudflare Facade instance
 	 *
-	 * @var \Cloudflare\Api
+	 * @var CloudflareFacade
 	 */
-	private $cloudflare_api;
+	private $cloudflare_facade;
+
+	/**
+	 * WP_Error if Cloudflare Credentials are not valid.
+	 *
+	 * @var WP_Error
+	 */
+	private $cloudflare_api_error;
 
 	/**
 	 * Cloudflare User Agent
@@ -32,11 +40,18 @@ class Cloudflare {
 	/**
 	 * Constructor
 	 *
-	 * @param Options_Data $options WP Rocket options instance.
+	 * @param Options_Data     $options WP Rocket options instance.
+	 * @param CloudflareFacade $facade  Cloudflare facade instance.
 	 */
-	public function __construct( Options_Data $options ) {
-		$this->options        = $options;
-		$this->cloudflare_api = $this->get_cloudflare_instance();
+	public function __construct( Options_Data $options, CloudflareFacade $facade ) {
+		$this->options = $options;
+		if ( $this->options->get( 'do_cloudflare' ) ) {
+			$this->cloudflare_api_error = null;
+			$this->cloudflare_facade    = $facade;
+			// Update api_error with WP_Error if credentials are not valid.
+			// Update facade with Cloudflare instance with correct auth data.
+			$this->get_cloudflare_instance();
+		}
 	}
 
 	/**
@@ -61,18 +76,13 @@ class Cloudflare {
 		}
 
 		if ( is_wp_error( $is_api_keys_valid_cf ) ) {
-			return $is_api_keys_valid_cf;
+			// Sets cloudflare facade as WP_Error if credentials are not valid.
+			$this->cloudflare_api_error = $is_api_keys_valid_cf;
+			return;
 		}
 
-		$cf_api_instance = new \Cloudflare\Api( $cf_email, $cf_api_key );
-		$cf_api_instance->setCurlOption( CURLOPT_USERAGENT, self::CF_USER_AGENT );
-
-		$cf_instance = (object) [
-			'auth'    => $cf_api_instance,
-			'zone_id' => $cf_zone_id,
-		];
-
-		return $cf_instance;
+		// Sets Cloudflare Valid Credentials and User Agent.
+		$this->cloudflare_facade->set_api_credentials( $cf_email, $cf_api_key, $cf_zone_id, self::CF_USER_AGENT );
 	}
 
 	/**
@@ -96,7 +106,7 @@ class Cloudflare {
 				'cloudflare_credentials_empty',
 				sprintf(
 					/* translators: %1$s = opening link; %2$s = closing link */
-					__( 'Cloudflare email, API key and Zone ID are not set. Read the %1$sdocumentation%2$s for further guidance.', 'rocket' ),
+					__( 'Cloudflare email and/or API key are not set. Read the %1$sdocumentation%2$s for further guidance.', 'rocket' ),
 					// translators: Documentation exists in EN, FR; use localized URL if applicable.
 					'<a href="' . esc_url( __( 'https://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket#add-on', 'rocket' ) ) . '" rel="noopener noreferrer" target="_blank">',
 					'</a>'
@@ -119,10 +129,9 @@ class Cloudflare {
 		}
 
 		try {
-			$cf_api_instance = new \Cloudflare\Api( $cf_email, $cf_api_key );
-			$cf_api_instance->setCurlOption( CURLOPT_USERAGENT, self::CF_USER_AGENT );
+			$this->cloudflare_facade->set_api_credentials( $cf_email, $cf_api_key, $cf_zone_id, self::CF_USER_AGENT );
 
-			$cf_zone = $cf_api_instance->get( 'zones/' . $cf_zone_id );
+			$cf_zone = $this->cloudflare_facade->get_zones();
 
 			if ( empty( $cf_zone->success ) ) {
 				foreach ( $cf_zone->errors as $error ) {
@@ -206,13 +215,12 @@ class Cloudflare {
 	 * @return mixed  Object|bool   - true / false if $action_value was found or not, WP_Error otherwise
 	 */
 	public function has_page_rule( $action_value ) {
-		if ( is_wp_error( $this->cloudflare_api ) ) {
-			return $this->cloudflare_api;
+		if ( is_wp_error( $this->cloudflare_api_error ) ) {
+			return $this->cloudflare_api_error;
 		}
 
 		try {
-			$cf_page_rules = new \Cloudflare\Zone\Pagerules( $this->cloudflare_api->auth );
-			$cf_page_rule  = $cf_page_rules->list_pagerules( $this->cloudflare_api->zone_id, 'active' );
+			$cf_page_rule = $this->cloudflare_facade->list_pagerules();
 
 			if ( empty( $cf_page_rule->success ) ) {
 				foreach ( $cf_page_rule->errors as $error ) {
@@ -223,8 +231,8 @@ class Cloudflare {
 				return new \WP_Error( 'cloudflare_page_rule_failed', $errors );
 			}
 
-			$cf_page_rule_arr = (array) $cf_page_rule;
-			return in_array( $action_value, $cf_page_rule_arr, true );
+			$cf_page_rule_arr = wp_json_encode( $cf_page_rule );
+			return preg_match( '/' . $action_value . '/', $cf_page_rule_arr );
 		} catch ( \Exception $e ) {
 			return new \WP_Error( 'cloudflare_page_rule_failed', $e->getMessage() );
 		}
@@ -240,13 +248,12 @@ class Cloudflare {
 	 * @return mixed Object|bool true if the purge is successful, WP_Error otherwise
 	 */
 	public function purge_cloudflare() {
-		if ( is_wp_error( $this->cloudflare_api ) ) {
-			return $this->cloudflare_api;
+		if ( is_wp_error( $this->cloudflare_api_error ) ) {
+			return $this->cloudflare_api_error;
 		}
 
 		try {
-			$cf_cache = new \Cloudflare\Zone\Cache( $this->cloudflare_api->auth );
-			$cf_purge = $cf_cache->purge( $this->cloudflare_api->zone_id, true );
+			$cf_purge = $this->cloudflare_facade->purge();
 
 			if ( empty( $cf_purge->success ) ) {
 				foreach ( $cf_purge->errors as $error ) {
@@ -276,13 +283,12 @@ class Cloudflare {
 	 * @return mixed Object|bool  true if the purge is successful, WP_Error otherwise
 	 */
 	public function purge_by_url( $post, $purge_urls, $lang ) {
-		if ( is_wp_error( $this->cloudflare_api ) ) {
-			return $this->cloudflare_api;
+		if ( is_wp_error( $this->cloudflare_api_error ) ) {
+			return $this->cloudflare_api_error;
 		}
 
 		try {
-			$cf_cache = new \Cloudflare\Zone\Cache( $this->cloudflare_api->auth );
-			$cf_purge = $cf_cache->purge_files( $this->cloudflare_api->zone_id, $purge_urls );
+			$cf_purge = $this->cloudflare_facade->purge_files( $purge_urls );
 
 			if ( empty( $cf_purge->success ) ) {
 				foreach ( $cf_purge->errors as $error ) {
@@ -310,13 +316,12 @@ class Cloudflare {
 	 * @return mixed Object|String Mode value if the update is successful, WP_Error otherwise
 	 */
 	public function set_browser_cache_ttl( $mode ) {
-		if ( is_wp_error( $this->cloudflare_api ) ) {
-			return $this->cloudflare_api;
+		if ( is_wp_error( $this->cloudflare_api_error ) ) {
+			return $this->cloudflare_api_error;
 		}
 
 		try {
-			$cf_settings = new \Cloudflare\Zone\Settings( $this->cloudflare_api->auth );
-			$cf_return   = $cf_settings->change_browser_cache_ttl( $this->cloudflare_api->zone_id, (int) $mode );
+			$cf_return = $this->cloudflare_facade->change_browser_cache_ttl( (int) $mode );
 
 			if ( empty( $cf_return->success ) ) {
 				foreach ( $cf_return->errors as $error ) {
@@ -344,13 +349,12 @@ class Cloudflare {
 	 * @return mixed Object|String Mode value if the update is successful, WP_Error otherwise
 	 */
 	public function set_rocket_loader( $mode ) {
-		if ( is_wp_error( $this->cloudflare_api ) ) {
-			return $this->cloudflare_api;
+		if ( is_wp_error( $this->cloudflare_api_error ) ) {
+			return $this->cloudflare_api_error;
 		}
 
 		try {
-			$cf_settings = new \Cloudflare\Zone\Settings( $this->cloudflare_api->auth );
-			$cf_return   = $cf_settings->change_rocket_loader( $this->cloudflare_api->zone_id, $mode );
+			$cf_return = $this->cloudflare_facade->change_rocket_loader( $mode );
 
 			if ( empty( $cf_return->success ) ) {
 				foreach ( $cf_return->errors as $error ) {
@@ -378,19 +382,18 @@ class Cloudflare {
 	 * @return mixed Object|String Mode value if the update is successful, WP_Error otherwise
 	 */
 	public function set_minify( $mode ) {
-		if ( is_wp_error( $this->cloudflare_api ) ) {
-			return $this->cloudflare_api;
+		if ( is_wp_error( $this->cloudflare_api_error ) ) {
+			return $this->cloudflare_api_error;
 		}
 
-		$cf_minify_settings = array(
+		$cf_minify_settings = [
 			'css'  => $mode,
 			'html' => $mode,
 			'js'   => $mode,
-		);
+		];
 
 		try {
-			$cf_settings = new \Cloudflare\Zone\Settings( $this->cloudflare_api->auth );
-			$cf_return   = $cf_settings->change_minify( $this->cloudflare_api->zone_id, $cf_minify_settings );
+			$cf_return = $this->cloudflare_facade->change_minify( $cf_minify_settings );
 
 			if ( empty( $cf_return->success ) ) {
 				foreach ( $cf_return->errors as $error ) {
@@ -418,13 +421,12 @@ class Cloudflare {
 	 * @return mixed Object|String Mode value if the update is successful, WP_Error otherwise
 	 */
 	public function set_cache_level( $mode ) {
-		if ( is_wp_error( $this->cloudflare_api ) ) {
-			return $this->cloudflare_api;
+		if ( is_wp_error( $this->cloudflare_api_error ) ) {
+			return $this->cloudflare_api_error;
 		}
 
 		try {
-			$cf_settings = new \Cloudflare\Zone\Settings( $this->cloudflare_api->auth );
-			$cf_return   = $cf_settings->change_cache_level( $this->cloudflare_api->zone_id, $mode );
+			$cf_return = $this->cloudflare_facade->change_cache_level( $mode );
 
 			if ( empty( $cf_return->success ) ) {
 				foreach ( $cf_return->errors as $error ) {
@@ -452,8 +454,8 @@ class Cloudflare {
 	 * @return mixed Object|String Mode value if the update is successful, WP_Error otherwise
 	 */
 	public function set_devmode( $mode ) {
-		if ( is_wp_error( $this->cloudflare_api ) ) {
-			return $this->cloudflare_api;
+		if ( is_wp_error( $this->cloudflare_api_error ) ) {
+			return $this->cloudflare_api_error;
 		}
 
 		if ( 0 === (int) $mode ) {
@@ -463,8 +465,7 @@ class Cloudflare {
 		}
 
 		try {
-			$cf_settings = new \Cloudflare\Zone\Settings( $this->cloudflare_api->auth );
-			$cf_return   = $cf_settings->change_development_mode( $this->cloudflare_api->zone_id, $value );
+			$cf_return = $this->cloudflare_facade->change_development_mode( $value );
 
 			if ( empty( $cf_return->success ) ) {
 				foreach ( $cf_return->errors as $error ) {
@@ -494,26 +495,25 @@ class Cloudflare {
 	 * @return mixed bool|Array Array of Cloudflare settings, false if any error connection to Cloudflare
 	 */
 	public function get_settings() {
-		if ( is_wp_error( $this->cloudflare_api ) ) {
-			return $this->cloudflare_api;
+		if ( is_wp_error( $this->cloudflare_api_error ) ) {
+			return $this->cloudflare_api_error;
 		}
 
 		try {
-			$cf_settings_instance = new \Cloudflare\Zone\Settings( $this->cloudflare_api->auth );
-			$cf_settings          = $cf_settings_instance->settings( $this->cloudflare_api->zone_id );
-			$cf_minify            = $cf_settings->result[16]->value;
-			$cf_minify_value      = 'on';
+			$cf_settings     = $this->cloudflare_facade->settings();
+			$cf_minify       = $cf_settings->result[16]->value;
+			$cf_minify_value = 'on';
 
 			if ( 'off' === $cf_minify->js || 'off' === $cf_minify->css || 'off' === $cf_minify->html ) {
 				$cf_minify_value = 'off';
 			}
 
-			$cf_settings_array = array(
+			$cf_settings_array = [
 				'cache_level'       => $cf_settings->result[5]->value,
 				'minify'            => $cf_minify_value,
 				'rocket_loader'     => $cf_settings->result[25]->value,
 				'browser_cache_ttl' => $cf_settings->result[3]->value,
-			);
+			];
 
 			return $cf_settings_array;
 		} catch ( \Exception $e ) {
@@ -533,19 +533,16 @@ class Cloudflare {
 	 */
 	public function get_cloudflare_ips() {
 		$cf_ips = get_transient( 'rocket_cloudflare_ips' );
-
 		if ( false !== $cf_ips ) {
 			return $cf_ips;
 		}
 
-		$cf_email        = $this->options->get( 'cloudflare_email', null );
-		$cf_api_key      = ( defined( 'WP_ROCKET_CF_API_KEY' ) ) ? WP_ROCKET_CF_API_KEY : $this->options->get( 'cloudflare_api_key', null );
-		$cf_api_instance = new \Cloudflare\Api( $cf_email, $cf_api_key );
-		$cf_api_instance->setCurlOption( CURLOPT_USERAGENT, self::CF_USER_AGENT );
+		$cf_email   = $this->options->get( 'cloudflare_email', null );
+		$cf_api_key = ( defined( 'WP_ROCKET_CF_API_KEY' ) ) ? WP_ROCKET_CF_API_KEY : $this->options->get( 'cloudflare_api_key', null );
 
+		$this->cloudflare_facade->set_api_credentials( $cf_email, $cf_api_key, '', self::CF_USER_AGENT );
 		try {
-			$cf_ips_instance = new \Cloudflare\IPs( $cf_api_instance );
-			$cf_ips          = $cf_ips_instance->ips();
+			$cf_ips = $this->cloudflare_facade->ips();
 
 			if ( empty( $cf_ips->success ) ) {
 				// Set default IPs from Cloudflare if call to Cloudflare /ips API does not contain a success.

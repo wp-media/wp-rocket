@@ -53,7 +53,9 @@ class TestRocketUpgrader extends TestCase {
         Functions\when('rocket_valid_key')->justReturn(true);
         Functions\when('current_user_can')->justReturn(true);
 
-        define( 'WP_ROCKET_VERSION', '3.4' );
+		if ( ! defined('WP_ROCKET_VERSION') ) {
+			define('WP_ROCKET_VERSION', '3.4');
+		}
         define( 'WP_ROCKET_SLUG', 'wp_rocket_settings' );
         define('WP_ROCKET_PATH', $this->path->url() . '/' );
 
@@ -77,7 +79,9 @@ class TestRocketUpgrader extends TestCase {
         Functions\when('rocket_valid_key')->justReturn(true);
         Functions\when('current_user_can')->justReturn(true);
 
-        define( 'WP_ROCKET_VERSION', '3.4' );
+		if ( ! defined('WP_ROCKET_VERSION') ) {
+			define('WP_ROCKET_VERSION', '3.4');
+		}
         define( 'WP_ROCKET_SLUG', 'wp_rocket_settings' );
         define('WP_ROCKET_PATH', $this->path->url() . '/' );
 
@@ -101,7 +105,9 @@ class TestRocketUpgrader extends TestCase {
         Functions\when('rocket_valid_key')->justReturn(true);
         Functions\when('current_user_can')->justReturn(true);
 
-        define( 'WP_ROCKET_VERSION', '3.4' );
+		if ( ! defined('WP_ROCKET_VERSION') ) {
+			define('WP_ROCKET_VERSION', '3.4');
+		}
         define( 'WP_ROCKET_SLUG', 'wp_rocket_settings' );
         define('WP_ROCKET_PATH', $this->path->url() . '/' );
 
@@ -125,7 +131,9 @@ class TestRocketUpgrader extends TestCase {
         Functions\when('rocket_valid_key')->justReturn(false);
         Functions\when('current_user_can')->justReturn(true);
 
-        define( 'WP_ROCKET_VERSION', '3.4' );
+		if ( ! defined('WP_ROCKET_VERSION') ) {
+			define('WP_ROCKET_VERSION', '3.4');
+		}
         define( 'WP_ROCKET_SLUG', 'wp_rocket_settings' );
         define('WP_ROCKET_PATH', $this->path->url() . '/' );
 
