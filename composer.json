@@ -41,6 +41,7 @@
 		"wp-media/rocket-lazyload-common": "^2.2"
 	},
 	"require-dev": {
+		"brain/faker": "dev-master",
 		"brain/monkey": "^2.0",
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
 		"doctrine/instantiator": "1.0.*",
