@@ -459,7 +459,7 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 				$custom_varnish_ip = (array) $custom_varnish_ip;
 			}
 
-			update_rocket_option( 'custom_varnish_ip', $custom_varnish_ip );
+			update_rocket_option( 'varnish_custom_ip', $custom_varnish_ip );
 		}
 	}
 }
