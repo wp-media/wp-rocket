@@ -45,7 +45,7 @@ class TestSaveOldSettings extends TestCase {
 		];
 		$this->assertSame(
 			$value,
-			$cloudflare_subscriber->save_cloudflare_old_settings( $value, $old_value ),
+			$cloudflare_subscriber->save_cloudflare_old_settings( $value, $old_value )
 		);
 	}
 
@@ -80,7 +80,7 @@ class TestSaveOldSettings extends TestCase {
 		];
 		$this->assertNotEquals(
 			$value,
-			$cloudflare_subscriber->save_cloudflare_old_settings( $value, $old_value ),
+			$cloudflare_subscriber->save_cloudflare_old_settings( $value, $old_value )
 		);
 	}
 

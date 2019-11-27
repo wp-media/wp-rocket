@@ -128,7 +128,7 @@ class TestHasPageRule extends TestCase {
 		$cloudflare_facade_mock->shouldNotReceive('is_api_keys_valid');
 		Functions\expect( 'set_transient' )->never();
 		Functions\when( 'is_wp_error' )->justReturn( false );
-		
+
 		$cloudflare_facade_mock->shouldReceive('set_api_credentials');
 
 		$cloudflare = new Cloudflare( $mocks['options'], $cloudflare_facade_mock );
