@@ -3,11 +3,11 @@ namespace WP_Rocket\ServiceProvider;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
 
-use Cloudflare\Api as CloudflareApi;
-use Cloudflare\Zone\Cache as CloudflareCache;
-use Cloudflare\Zone\PageRules as CloudflarePageRules;
-use Cloudflare\Zone\Settings as CloudflareSettings;
-use Cloudflare\IPs as CloudflareIPs;
+use \Cloudflare\Api as CloudflareApi;
+use \Cloudflare\Zone\Cache as CloudflareCache;
+use \Cloudflare\Zone\PageRules as CloudflarePageRules;
+use \Cloudflare\Zone\Settings as CloudflareSettings;
+use \Cloudflare\IPs as CloudflareIPs;
 
 /**
  * Service provider for WP Rocket addons
