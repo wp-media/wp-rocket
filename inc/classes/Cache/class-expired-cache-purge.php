@@ -1,6 +1,8 @@
 <?php
 namespace WP_Rocket\Cache;
 
+use WP_Rocket\Buffer\Cache;
+
 /**
  * Purge expired cache files based on the defined lifespan
  *
@@ -86,7 +88,8 @@ class Expired_Cache_Purge {
 			$this->filesystem = rocket_direct_filesystem();
 		}
 
-		$deleted = [];
+		$deleted       = [];
+		$cache_enabled = Cache::can_generate_caching_files();
 
 		foreach ( $urls as $url ) {
 			/**
@@ -100,43 +103,45 @@ class Expired_Cache_Purge {
 			 */
 			do_action( 'rocket_before_automatic_cache_purge_dir', $url, $file_age_limit );
 
-			// Get the directory names.
-			$file = get_rocket_parse_url( $url );
-
-			/** This filter is documented in inc/front/htaccess.php */
-			if ( apply_filters( 'rocket_url_no_dots', false ) ) {
-				$file['host'] = str_replace( '.', '_', $file['host'] );
-			}
-
-			$sub_dir = rtrim( $file['path'], '/' );
-
-			$files       = $this->get_cache_files_in_dir( $file );
 			$url_deleted = [];
 
-			foreach ( $files as $item ) {
-				$dir_path     = $item->getPathname();
-				$sub_dir_path = $dir_path . $sub_dir;
+			if ( $cache_enabled ) {
+				// Get the directory names.
+				$file = get_rocket_parse_url( $url );
 
-				// Time to cut old leaves.
-				$item_paths = $this->purge_dir( $sub_dir_path, $file_age_limit );
-
-				if ( $item_paths ) {
-					$url_deleted[] = [
-						'home_url'  => $url,
-						'home_path' => $sub_dir_path,
-						'logged_in' => $dir_path !== $this->cache_path . $file['host'],
-						'files'     => $item_paths,
-					];
+				/** This filter is documented in inc/front/htaccess.php */
+				if ( apply_filters( 'rocket_url_no_dots', false ) ) {
+					$file['host'] = str_replace( '.', '_', $file['host'] );
 				}
 
-				if ( $this->is_dir_empty( $dir_path ) ) {
-					// If the folder is empty, remove it.
-					$this->filesystem->delete( $dir_path );
-				}
-			}
+				$sub_dir = rtrim( $file['path'], '/' );
+				$files   = $this->get_cache_files_in_dir( $file );
 
-			if ( $url_deleted ) {
-				$deleted = array_merge( $deleted, $url_deleted );
+				foreach ( $files as $item ) {
+					$dir_path     = $item->getPathname();
+					$sub_dir_path = $dir_path . $sub_dir;
+
+					// Time to cut old leaves.
+					$item_paths = $this->purge_dir( $sub_dir_path, $file_age_limit );
+
+					if ( $item_paths ) {
+						$url_deleted[] = [
+							'home_url'  => $url,
+							'home_path' => $sub_dir_path,
+							'logged_in' => $dir_path !== $this->cache_path . $file['host'],
+							'files'     => $item_paths,
+						];
+					}
+
+					if ( $this->is_dir_empty( $dir_path ) ) {
+						// If the folder is empty, remove it.
+						$this->filesystem->delete( $dir_path );
+					}
+				}
+
+				if ( $url_deleted ) {
+					$deleted = array_merge( $deleted, $url_deleted );
+				}
 			}
 
 			$args = [
