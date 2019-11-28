@@ -50,7 +50,14 @@ class TestRocketCheckKey extends TestCase {
     public function testShouldReturnFalseWhenIsWPError() {
         define( 'WP_ROCKET_WEB_VALID', 'https://wp-rocket.me/valid_key.php' );
         Functions\when('rocket_valid_key')->justReturn(false);
-        Functions\when('wp_remote_get')->justReturn($this->wpFaker->error());
+        Functions\when('wp_remote_get')->alias( function() {
+            $wp_error = \Mockery::mock(\WP_Error::class)->makePartial();
+            $wp_error->shouldReceive('get_error_messages')
+            ->withNoArgs()
+            ->andReturn('error');
+
+            return $wp_error;
+        });
         Functions\when('is_wp_error')->justReturn(true);
         Functions\when('set_transient')->justReturn(true);
         Functions\expect('rocket_delete_licence_data_file')
