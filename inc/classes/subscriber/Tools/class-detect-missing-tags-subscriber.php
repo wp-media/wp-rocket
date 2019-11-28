@@ -19,6 +19,7 @@ class Detect_Missing_Tags_Subscriber implements Subscriber_Interface {
 		return [
 			'admin_notices'                      => 'rocket_notice_missing_tags',
 			'rocket_before_maybe_process_buffer' => 'maybe_missing_tags',
+			'wp_rocket_upgrade'                  => 'delete_transient_after_upgrade',
 		];
 	}
 
@@ -31,24 +32,64 @@ class Detect_Missing_Tags_Subscriber implements Subscriber_Interface {
 	 * @param string $html HTML content.
 	 */
 	public function maybe_missing_tags( $html ) {
-		Logger::info( 'START Detect_Missing_Tags_Subscriber - maybe_missing_tags ', [ 'maybe_missing_tags' ] );
+		// If there is a redirect the content is empty and can display a false positive notice.
+		if ( strlen( $html ) <= 255 ) {
+			return;
+		}
+		// If the http response is not 200 do not report missing tags.
+		if ( http_response_code() !== 200 ) {
+			return;
+		}
+		// If content type is not HTML do not report missing tags.
+		if ( empty( $_SERVER['content_type'] ) || false === strpos( wp_unslash( $_SERVER['content_type'] ), 'text/html' ) ) {
+			return;
+		}
+		// If the content does not contain HTML Doctype, do not report missing tags.
+		if ( false === stripos( $html, '<!DOCTYPE html' ) ) {
+			return;
+		}
+		Logger::info(
+			'START Detect Missing closing tags ( <html>, </body> or wp_footer() )',
+			[
+				'maybe_missing_tags',
+				'URI' => $this->get_raw_request_uri(),
+			]
+		);
 
 		// Remove all comments before testing tags. If </html> or </body> tags are commented this will identify it as a missing tag.
 		$html         = preg_replace( '/<!--([\\s\\S]*?)-->/', '', $html );
 		$missing_tags = [];
 		if ( false === strpos( $html, '</html>' ) ) {
 			$missing_tags[] = '</html>';
-			Logger::debug( 'Not found closing </html> tag.', [ 'maybe_missing_tags' ] );
+			Logger::debug(
+				'Not found closing </html> tag.',
+				[
+					'maybe_missing_tags',
+					'URI' => $this->get_raw_request_uri(),
+				]
+			);
 		}
 
 		if ( false === strpos( $html, '</body>' ) ) {
 			$missing_tags[] = '</body>';
-			Logger::debug( 'Not found closing </body> tag.', [ 'maybe_missing_tags' ] );
+			Logger::debug(
+				'Not found closing </body> tag.',
+				[
+					'maybe_missing_tags',
+					'URI' => $this->get_raw_request_uri(),
+				]
+			);
 		}
 
 		if ( did_action( 'wp_footer' ) === 0 ) {
 			$missing_tags[] = 'wp_footer()';
-			Logger::debug( 'wp_footer() function did not run.', [ 'maybe_missing_tags' ] );
+			Logger::debug(
+				'wp_footer() function did not run.',
+				[
+					'maybe_missing_tags',
+					'URI' => $this->get_raw_request_uri(),
+				]
+			);
 		}
 
 		if ( ! $missing_tags ) {
@@ -69,7 +110,7 @@ class Detect_Missing_Tags_Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		set_transient( 'rocket_notice_missing_tags', $missing_tags, HOUR_IN_SECONDS );
+		set_transient( 'rocket_notice_missing_tags', $missing_tags );
 	}
 
 	/**
@@ -122,5 +163,35 @@ class Detect_Missing_Tags_Subscriber implements Subscriber_Interface {
 				'dismiss_button' => __FUNCTION__,
 			]
 		);
+	}
+
+	/**
+	 * Get the request URI.
+	 *
+	 * @since  3.4.2
+	 * @author Soponar Cristina
+	 *
+	 * @return string
+	 */
+	public function get_raw_request_uri() {
+		if ( ! isset( $_SERVER['REQUEST_URI'] ) ) {
+			return '';
+		}
+
+		if ( '' === $_SERVER['REQUEST_URI'] ) {
+			return '';
+		}
+
+		return '/' . esc_html( ltrim( wp_unslash( $_SERVER['REQUEST_URI'] ), '/' ) );
+	}
+
+	/**
+	 * Deletes the transient storing the missing tags when updating the plugin
+	 *
+	 * @since  3.4.2.2
+	 * @author Soponar Cristina
+	 */
+	public function delete_transient_after_upgrade() {
+		delete_transient( 'rocket_notice_missing_tags' );
 	}
 }

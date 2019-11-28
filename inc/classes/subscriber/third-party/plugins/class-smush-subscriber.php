@@ -19,12 +19,13 @@ class Smush_Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		if ( ! defined( 'WP_SMUSH_VERSION' ) ) {
-			return [];
+			return [
+				'activate_wp-smushit/wp-smush.php' => [ 'maybe_deactivate_rocket_lazyload', 10 ],
+			];
 		}
 
 		return [
 			'update_option_wp-smush-settings'      => [ 'maybe_deactivate_rocket_lazyload', 11 ],
-			'activate_wp-smushit/wp-smush.php'     => [ 'maybe_deactivate_rocket_lazyload', 11 ],
 			'rocket_maybe_disable_lazyload_helper' => 'is_smush_lazyload_active',
 		];
 	}
