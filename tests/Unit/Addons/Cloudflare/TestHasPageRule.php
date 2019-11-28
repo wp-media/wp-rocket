@@ -91,20 +91,9 @@ class TestHasPageRule extends TestCase {
 		Functions\when( 'is_wp_error' )->justReturn( false );
 		$cloudflare_facade_mock->shouldReceive('set_api_credentials');
 
+		Functions\when( 'wp_sprintf_l' )->justReturn( '' );
 		$cloudflare = new Cloudflare( $mocks['options'], $cloudflare_facade_mock );
-		$cf_page_rule = (object) [
-			'success' => false,
-			"errors"  => (object) [
-				(object) [
-					"code" => 7003,
-					"message" => "Could not route to /zones/ZONE_ID, perhaps your object identifier is invalid?"
-				],
-				(object) [
-					"code" => 7000,
-					"message" => "No route for that URI"
-				]
-			],
-		];
+		$cf_page_rule = json_decode('{"success":false,"errors":[{"code":7003,"message":"Could not route to \/zones\/ZONE_ID, perhaps your object identifier is invalid?"},{"code":7000,"message":"No route for that URI"}],"messages":[],"result":null}');
 		$cloudflare_facade_mock->shouldReceive('list_pagerules')->andReturn( $cf_page_rule );
 		$has_page_rule = $cloudflare->has_page_rule( 'cache_everything' );
 
