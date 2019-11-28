@@ -162,7 +162,7 @@ class CloudflareFacade {
 	 * @since 3.5
 	 * @author Soponar Cristina
 	 *
-	 * @param string $purge_urls - URLs cache files to remove.
+	 * @param array $purge_urls - URLs cache files to remove.
 	 * @return Object
 	 */
 	public function purge_files( $purge_urls ) {
