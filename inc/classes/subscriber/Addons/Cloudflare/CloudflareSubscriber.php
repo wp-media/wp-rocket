@@ -199,21 +199,6 @@ class CloudflareSubscriber implements Subscriber_Interface {
 
 		// Purge CloudFlare.
 		$cf_purge = $this->cloudflare->purge_by_url( $post, $purge_urls, $lang );
-
-		if ( is_wp_error( $cf_purge ) ) {
-			$cf_purge_result = [
-				'result'  => 'error',
-				// translators: %s = CloudFare API return message.
-				'message' => sprintf( __( '<strong>WP Rocket:</strong> %s', 'rocket' ), $cf_purge->get_error_message() ),
-			];
-		} else {
-			$cf_purge_result = [
-				'result'  => 'success',
-				'message' => __( '<strong>WP Rocket:</strong> Cloudflare cache successfully purged.', 'rocket' ),
-			];
-		}
-
-		set_transient( get_current_user_id() . '_cloudflare_purge_result', $cf_purge_result );
 	}
 
 	/**

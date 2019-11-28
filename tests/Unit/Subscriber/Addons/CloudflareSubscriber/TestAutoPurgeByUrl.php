@@ -84,16 +84,6 @@ class TestAutoPurgeByUrl extends TestCase {
 		$cloudflare->shouldReceive('has_page_rule')->andReturn( true );
 		$cloudflare->shouldReceive('purge_by_url')->andReturn( $wp_error );
 
-		$cf_purge_result = [
-			'result'  => 'error',
-			// translators: %s = CloudFare API return message.
-			'message' => sprintf( __( '<strong>WP Rocket:</strong> %s', 'rocket' ), 'Error!' ),
-		];
-
-		Functions\expect( 'set_transient' )
-			->once()
-			->with('1_cloudflare_purge_result', $cf_purge_result );
-
 		$cloudflare_subscriber = new CloudflareSubscriber( $cloudflare, $mocks['options_data'], $mocks['options'] );
 		$cloudflare_subscriber->auto_purge_by_url( 1, [ '/hello-world' ], '' );
 	}
@@ -111,15 +101,6 @@ class TestAutoPurgeByUrl extends TestCase {
         $cloudflare = \Mockery::mock( \WP_Rocket\Addons\Cloudflare\Cloudflare::class );
 		$cloudflare->shouldReceive('has_page_rule')->andReturn( true );
 		$cloudflare->shouldReceive('purge_by_url')->andReturn( true );
-
-		$cf_purge_result = [
-			'result'  => 'success',
-			'message' => __( '<strong>WP Rocket:</strong> Cloudflare cache successfully purged.', 'rocket' ),
-		];
-
-		Functions\expect( 'set_transient' )
-			->once()
-			->with('1_cloudflare_purge_result', $cf_purge_result );
 
 		$cloudflare_subscriber = new CloudflareSubscriber( $cloudflare, $mocks['options_data'], $mocks['options'] );
 		$cloudflare_subscriber->auto_purge_by_url( 1, [ '/hello-world' ], '' );
