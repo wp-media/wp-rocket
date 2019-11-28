@@ -6,9 +6,6 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 class TestDetectMissingTags extends TestCase {
-
-	use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-
 	protected function setUp() {
 		parent::setUp();
 

@@ -6,8 +6,6 @@ use WP_Rocket\Subscriber\Addons\Varnish\VarnishSubscriber;
 use Brain\Monkey\Functions;
 
 class TestCleanHome extends TestCase {
-    use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-
     public function testShouldDoNothingWhenVarnishDisabled() {
         $options = $this->createMock('WP_Rocket\Admin\Options_Data');
         $map     = [

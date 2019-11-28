@@ -35,12 +35,6 @@ function rocket_upgrader() {
 			$options = array_merge( $keys, $options );
 		}
 
-		if ( true === $keys || ( is_array( $keys ) && ! empty( $keys['secret_key'] ) ) ) {
-			if ( rocket_direct_filesystem()->exists( WP_ROCKET_PATH . 'licence-data.php' ) ) {
-				rocket_direct_filesystem()->delete( WP_ROCKET_PATH . 'licence-data.php' );
-			}
-		}
-
 		update_option( WP_ROCKET_SLUG, $options );
 	}
 
@@ -465,7 +459,7 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 				$custom_varnish_ip = (array) $custom_varnish_ip;
 			}
 
-			update_rocket_option( 'custom_varnish_ip', $custom_varnish_ip );
+			update_rocket_option( 'varnish_custom_ip', $custom_varnish_ip );
 		}
 	}
 }
