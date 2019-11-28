@@ -268,7 +268,7 @@ class CloudflareSubscriber implements Subscriber_Interface {
 	 */
 	public function set_real_ip() {
 		// only run this logic if the REMOTE_ADDR is populated, to avoid causing notices in CLI mode.
-		if ( ! isset( $_SERVER['HTTP_CF_CONNECTING_IP'] ) || ! isset( $_SERVER['REMOTE_ADDR'] ) ) {
+		if ( ! isset( $_SERVER['HTTP_CF_CONNECTING_IP'], $_SERVER['REMOTE_ADDR'] ) ) {
 			return;
 		}
 
@@ -427,7 +427,7 @@ class CloudflareSubscriber implements Subscriber_Interface {
 			$cf_old_settings = explode( ',', $value['cloudflare_old_settings'] );
 
 			// Set Cache Level to Aggressive.
-			$cf_cache_level        = ( isset( $cf_old_settings[0] ) && 0 === $value['cloudflare_auto_settings'] ) ? 'basic' : 'aggressive';
+			$cf_cache_level        = isset( $cf_old_settings[0] ) && 0 === $value['cloudflare_auto_settings'] ? 'basic' : 'aggressive';
 			$cf_cache_level_return = $this->cloudflare->set_cache_level( $cf_cache_level );
 
 			if ( is_wp_error( $cf_cache_level_return ) ) {
@@ -449,7 +449,7 @@ class CloudflareSubscriber implements Subscriber_Interface {
 			}
 
 			// Active Minification for HTML, CSS & JS.
-			$cf_minify        = ( isset( $cf_old_settings[1] ) && 0 === $value['cloudflare_auto_settings'] ) ? $cf_old_settings[1] : 'on';
+			$cf_minify        = isset( $cf_old_settings[1] ) && 0 === $value['cloudflare_auto_settings'] ? $cf_old_settings[1] : 'on';
 			$cf_minify_return = $this->cloudflare->set_minify( $cf_minify );
 
 			if ( is_wp_error( $cf_minify_return ) ) {
@@ -467,7 +467,7 @@ class CloudflareSubscriber implements Subscriber_Interface {
 			}
 
 			// Deactivate Rocket Loader to prevent conflicts.
-			$cf_rocket_loader        = ( isset( $cf_old_settings[2] ) && 0 === $value['cloudflare_auto_settings'] ) ? $cf_old_settings[2] : 'off';
+			$cf_rocket_loader        = isset( $cf_old_settings[2] ) && 0 === $value['cloudflare_auto_settings'] ? $cf_old_settings[2] : 'off';
 			$cf_rocket_loader_return = $this->cloudflare->set_rocket_loader( $cf_rocket_loader );
 
 			if ( is_wp_error( $cf_rocket_loader_return ) ) {
@@ -485,7 +485,7 @@ class CloudflareSubscriber implements Subscriber_Interface {
 			}
 
 			// Set Browser cache to 1 year.
-			$cf_browser_cache_ttl    = ( isset( $cf_old_settings[3] ) && 0 === $value['cloudflare_auto_settings'] ) ? $cf_old_settings[3] : '31536000';
+			$cf_browser_cache_ttl    = isset( $cf_old_settings[3] ) && 0 === $value['cloudflare_auto_settings'] ? $cf_old_settings[3] : '31536000';
 			$cf_browser_cache_return = $this->cloudflare->set_browser_cache_ttl( $cf_browser_cache_ttl );
 
 			if ( is_wp_error( $cf_browser_cache_return ) ) {
