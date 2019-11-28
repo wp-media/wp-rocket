@@ -739,6 +739,6 @@ function rocket_auto_purge_cloudflare_by_url( $post, $purge_urls, $lang ) {
 	}
 
 	// Purge CloudFlare.
-	$cf_purge = rocket_purge_cloudflare_by_url( $post, $purge_urls, $lang );
+	rocket_purge_cloudflare_by_url( $post, $purge_urls, $lang );
 }
 add_action( 'after_rocket_clean_post', 'rocket_auto_purge_cloudflare_by_url', 10, 3 );
