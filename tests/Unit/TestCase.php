@@ -7,27 +7,12 @@ use Brain\Monkey;
 class TestCase extends PHPUnitTestCase {
 	use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
-	/**
-     * @var \Faker\Generator
-     */
-    protected $faker;
-    
-    /**
-     * @var \Brain\Faker\Providers
-     */
-	protected $wpFaker;
-
 	protected function setUp() {
 		parent::setUp();
 		Monkey\setUp();
-
-		$this->faker = \Brain\faker();
-        $this->wpFaker = $this->faker->wp();
 	}
 
 	protected function tearDown() {
-		\Brain\fakerReset();
-
 		Monkey\tearDown();
 		parent::tearDown();
 	}
