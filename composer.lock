@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "a097cf0f943c1f333fc35bae59e499cf",
+    "content-hash": "c9d5337710dd39f666de0ed91f404f90",
     "packages": [
         {
             "name": "a5hleyrich/wp-background-processing",
@@ -680,71 +680,6 @@
                 "testing"
             ],
             "time": "2019-10-26T07:10:56+00:00"
-        },
-        {
-            "name": "brain/faker",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Brain-WP/BrainFaker.git",
-                "reference": "5d1410abc95b1acb9f4160f06ed0c18363f92d9b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Brain-WP/BrainFaker/zipball/5d1410abc95b1acb9f4160f06ed0c18363f92d9b",
-                "reference": "5d1410abc95b1acb9f4160f06ed0c18363f92d9b",
-                "shasum": ""
-            },
-            "require": {
-                "brain/monkey": "^2.3.1",
-                "fzaninotto/faker": "^1",
-                "php": ">=7.1"
-            },
-            "require-dev": {
-                "inpsyde/php-coding-standards": "^0.13",
-                "phpunit/phpunit": "^8",
-                "squizlabs/php_codesniffer": "^3"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "inc/functions.php"
-                ],
-                "psr-4": {
-                    "Brain\\Faker\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Giuseppe Mazzapica",
-                    "email": "giuseppe.mazzapica@gmail.com",
-                    "homepage": "https://gmazzap.me",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Faker (fzaninotto/faker) for WordPress via Brain Monkey",
-            "keywords": [
-                "Fake data",
-                "Monkey Patching",
-                "faker",
-                "interception",
-                "mock",
-                "mock functions",
-                "mockery",
-                "patchwork",
-                "redefinition",
-                "runkit",
-                "test",
-                "test data",
-                "testing",
-                "unit tests data",
-                "wordpress"
-            ],
-            "time": "2019-08-08 16:32:17"
         },
         {
             "name": "brain/monkey",
@@ -2710,9 +2645,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "brain/faker": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
