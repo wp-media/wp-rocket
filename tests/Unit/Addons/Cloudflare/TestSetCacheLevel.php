@@ -16,9 +16,8 @@ class TestSetCacheLevel extends TestCase {
 			define('WEEK_IN_SECONDS', 7 * 24 * 60 * 60);
 		}
 
-		// Need to set WP_ROCKET_VERSION=3.4 otherwise testRocketUpgrader tests will fail even if are running in separate process.
 		if ( ! defined('WP_ROCKET_VERSION') ) {
-			define('WP_ROCKET_VERSION', '3.4');
+			define('WP_ROCKET_VERSION', '3.5');
 		}
 	}
 

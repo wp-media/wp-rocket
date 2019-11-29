@@ -501,8 +501,33 @@ class Cloudflare {
 		}
 
 		try {
-			$cf_settings     = $this->cloudflare_facade->settings();
-			$cf_minify       = $cf_settings->result[16]->value;
+			$cf_settings = $this->cloudflare_facade->settings();
+
+			if ( empty( $cf_settings->success ) ) {
+				foreach ( $cf_settings->errors as $error ) {
+					$errors[] = $error->message;
+				}
+
+				$errors = wp_sprintf_l( '%l ', $errors );
+				return new \WP_Error( 'cloudflare_dev_mode', $errors );
+			}
+
+			foreach ( $cf_settings->result as $cloudflare_option ) {
+				switch ( $cloudflare_option->id ) {
+					case 'browser_cache_ttl':
+						$browser_cache_ttl = $cloudflare_option->value;
+						break;
+					case 'cache_level':
+						$cache_level = $cloudflare_option->value;
+						break;
+					case 'rocket_loader':
+						$rocket_loader = $cloudflare_option->value;
+						break;
+					case 'minify':
+						$cf_minify = $cloudflare_option->value;
+						break;
+				}
+			}
 			$cf_minify_value = 'on';
 
 			if ( 'off' === $cf_minify->js || 'off' === $cf_minify->css || 'off' === $cf_minify->html ) {
@@ -510,10 +535,10 @@ class Cloudflare {
 			}
 
 			$cf_settings_array = [
-				'cache_level'       => $cf_settings->result[5]->value,
+				'cache_level'       => $cache_level,
 				'minify'            => $cf_minify_value,
-				'rocket_loader'     => $cf_settings->result[25]->value,
-				'browser_cache_ttl' => $cf_settings->result[3]->value,
+				'rocket_loader'     => $rocket_loader,
+				'browser_cache_ttl' => $browser_cache_ttl,
 			];
 
 			return $cf_settings_array;
@@ -573,35 +598,37 @@ class Cloudflare {
 	 */
 	public function get_default_ips() {
 		$cf_ips = (object) [
-			'success' => true,
-			'result'  => (object) [],
+			'result'   => (object) [],
+			'success'  => true,
+			'errors'   => [],
+			'messages' => [],
 		];
 
 		$cf_ips->result->ipv4_cidrs = [
+			'173.245.48.0/20',
 			'103.21.244.0/22',
 			'103.22.200.0/22',
 			'103.31.4.0/22',
-			'104.16.0.0/12',
-			'108.162.192.0/18',
-			'131.0.72.0/22',
 			'141.101.64.0/18',
-			'162.158.0.0/15',
-			'172.64.0.0/13',
-			'173.245.48.0/20',
-			'188.114.96.0/20',
+			'108.162.192.0/18',
 			'190.93.240.0/20',
+			'188.114.96.0/20',
 			'197.234.240.0/22',
 			'198.41.128.0/17',
+			'162.158.0.0/15',
+			'104.16.0.0/12',
+			'172.64.0.0/13',
+			'131.0.72.0/22',
 		];
 
 		$cf_ips->result->ipv6_cidrs = [
 			'2400:cb00::/32',
-			'2405:8100::/32',
-			'2405:b500::/32',
 			'2606:4700::/32',
 			'2803:f800::/32',
-			'2c0f:f248::/32',
+			'2405:b500::/32',
+			'2405:8100::/32',
 			'2a06:98c0::/29',
+			'2c0f:f248::/32',
 		];
 
 		return $cf_ips;

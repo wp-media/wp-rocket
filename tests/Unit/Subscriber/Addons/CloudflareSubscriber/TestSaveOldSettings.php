@@ -13,10 +13,10 @@ class TestSaveOldSettings extends TestCase {
 		$this->mockCommonWpFunctions();
 
 		if ( ! defined('WEEK_IN_SECONDS') ) {
-		 define('WEEK_IN_SECONDS', 7 * 24 * 60 * 60);
+			define('WEEK_IN_SECONDS', 7 * 24 * 60 * 60);
 		}
 		if ( ! defined('WP_ROCKET_VERSION') ) {
-		 define('WP_ROCKET_VERSION', '3.5');
+			define('WP_ROCKET_VERSION', '3.5');
 		}
 	}
 

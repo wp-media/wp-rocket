@@ -5,7 +5,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Addons\Cloudflare\Cloudflare;
 use Brain\Monkey\Functions;
 
-class TestSetMinify extends TestCase {
+class TestGetSettings extends TestCase {
 
 	protected function setUp() {
 		parent::setUp();
@@ -22,9 +22,9 @@ class TestSetMinify extends TestCase {
 	}
 
 	/**
-	 * Test set minify with cached invalid transient.
+	 * Test get settings with cached invalid transient.
 	 */
-	public function testSetMinifyWithInvalidCredentials() {
+	public function testGetSettingsWithInvalidCredentials() {
 		$mocks = $this->getConstructorMocks( 1,  '',  '', '');
 
 		$cloudflare_facade_mock = $mocks['facade'];
@@ -41,14 +41,14 @@ class TestSetMinify extends TestCase {
 
 		$this->assertEquals(
 		    $wp_error,
-			$cloudflare->set_minify( 'on' )
+			$cloudflare->get_settings()
 		);
 	}
 
 	/**
-	 * Test set minify with exception.
+	 * Test get settings with exception.
 	 */
-	public function testSetMinifyWithException() {
+	public function testGetSettingsWithException() {
 		$mocks = $this->getConstructorMocks( 1,  '',  '', '');
 
 		$cloudflare_facade_mock = $mocks['facade'];
@@ -61,19 +61,18 @@ class TestSetMinify extends TestCase {
 		$cloudflare_facade_mock->shouldReceive('set_api_credentials');
 
 		$cloudflare = new Cloudflare( $mocks['options'], $cloudflare_facade_mock );
-		$cloudflare_facade_mock->shouldReceive('change_minify')->andThrow( new \Exception() );
+		$cloudflare_facade_mock->shouldReceive('change_development_mode')->andThrow( new \Exception() );
 
 		$this->assertEquals(
 		    new \WP_Error(),
-			$cloudflare->set_minify( 'on' )
+			$cloudflare->get_settings()
 		);
 	}
 
-
 	/**
-	 * Test set minify with no success.
+	 * Test get settings with no success.
 	 */
-	public function testSetMinifyWithNoSuccess() {
+	public function testGetSettingsWithNoSuccess() {
 		$mocks = $this->getConstructorMocks( 1,  '',  '', '');
 
 		$cloudflare_facade_mock = $mocks['facade'];
@@ -88,18 +87,18 @@ class TestSetMinify extends TestCase {
 		Functions\when( 'wp_sprintf_l' )->justReturn( '' );
 		$cloudflare = new Cloudflare( $mocks['options'], $cloudflare_facade_mock );
 		$cf_reply   = json_decode('{"success":false,"errors":[{"code":1007,"message":"Invalid value for zone setting minify"}],"messages":[],"result":null}');
-		$cloudflare_facade_mock->shouldReceive('change_minify')->andReturn( $cf_reply );
+		$cloudflare_facade_mock->shouldReceive('settings')->andReturn( $cf_reply );
 
 		$this->assertEquals(
 		    new \WP_Error(),
-			$cloudflare->set_minify( 'on' )
+			$cloudflare->get_settings()
 		);
 	}
 
 	/**
-	 * Test set minify with success.
+	 * Test get settings with success.
 	 */
-	public function testSetMinifyWithSuccess() {
+	public function testGetSettingsWithSuccess() {
 		$mocks = $this->getConstructorMocks( 1,  '',  '', '');
 
 		$cloudflare_facade_mock = $mocks['facade'];
@@ -112,12 +111,18 @@ class TestSetMinify extends TestCase {
 		$cloudflare_facade_mock->shouldReceive('set_api_credentials');
 
 		$cloudflare = new Cloudflare( $mocks['options'], $cloudflare_facade_mock );
-		$cf_reply = json_decode('{"result":{"id":"minify","value":{"js":"on","css":"on","html":"on"},"modified_on":"","editable":true},"success":true,"errors":[],"messages":[]}');
-		$cloudflare_facade_mock->shouldReceive('change_minify')->andReturn( $cf_reply );
+		$cf_reply = json_decode('{"result":[{"id":"0rtt","value":"off","modified_on":null,"editable":true},{"id":"advanced_ddos","value":"on","modified_on":null,"editable":false},{"id":"always_online","value":"on","modified_on":"","editable":true},{"id":"always_use_https","value":"off","modified_on":null,"editable":true},{"id":"automatic_https_rewrites","value":"on","modified_on":"","editable":true},{"id":"brotli","value":"on","modified_on":null,"editable":true},{"id":"browser_cache_ttl","value":31536000,"modified_on":"","editable":true},{"id":"browser_check","value":"on","modified_on":null,"editable":true},{"id":"cache_level","value":"aggressive","modified_on":"","editable":true},{"id":"challenge_ttl","value":1800,"modified_on":null,"editable":true},{"id":"ciphers","value":[],"modified_on":null,"editable":true},{"id":"cname_flattening","value":"flatten_at_root","modified_on":null,"editable":false},{"id":"development_mode","value":"off","modified_on":"","time_remaining":0,"editable":true},{"id":"edge_cache_ttl","value":7200,"modified_on":null,"editable":true},{"id":"email_obfuscation","value":"on","modified_on":"","editable":true},{"id":"hotlink_protection","modified_on":"","value":"off","editable":true},{"id":"http2","value":"on","modified_on":null,"editable":false},{"id":"http3","value":"off","modified_on":null,"editable":true},{"id":"ip_geolocation","value":"on","modified_on":"","editable":true},{"id":"ipv6","value":"off","modified_on":"","editable":true},{"id":"max_upload","value":100,"modified_on":null,"editable":true},{"id":"min_tls_version","value":"1.0","modified_on":null,"editable":true},{"id":"minify","value":{"js":"on","css":"on","html":"on"},"modified_on":"","editable":true},{"id":"mirage","value":"off","modified_on":null,"editable":false},{"id":"mobile_redirect","value":{"status":"off","mobile_subdomain":null,"strip_uri":false},"modified_on":null,"editable":true},{"id":"opportunistic_encryption","value":"on","modified_on":null,"editable":true},{"id":"opportunistic_onion","value":"on","modified_on":null,"editable":true},{"id":"origin_error_page_pass_thru","value":"off","modified_on":null,"editable":false},{"id":"polish","value":"off","modified_on":null,"editable":false},{"id":"prefetch_preload","value":"off","modified_on":null,"editable":false},{"id":"privacy_pass","value":"on","modified_on":null,"editable":true},{"id":"pseudo_ipv4","value":"off","modified_on":null,"editable":true},{"id":"response_buffering","value":"off","modified_on":null,"editable":false},{"id":"rocket_loader","value":"off","modified_on":"","editable":true},{"id":"security_header","modified_on":null,"value":{"strict_transport_security":{"enabled":false,"max_age":0,"include_subdomains":false,"preload":false,"nosniff":false}},"editable":true},{"id":"security_level","value":"medium","modified_on":"","editable":true},{"id":"server_side_exclude","value":"on","modified_on":"","editable":true},{"id":"sort_query_string_for_cache","value":"off","modified_on":null,"editable":false},{"id":"ssl","value":"flexible","modified_on":"","certificate_status":"active","validation_errors":[],"editable":true},{"id":"tls_1_2_only","value":"off","modified_on":null,"editable":true},{"id":"tls_1_3","value":"on","modified_on":null,"editable":true},{"id":"tls_client_auth","value":"off","modified_on":null,"editable":true},{"id":"true_client_ip_header","value":"off","modified_on":null,"editable":false},{"id":"waf","value":"off","modified_on":null,"editable":false},{"id":"webp","value":"off","modified_on":null,"editable":false},{"id":"websockets","value":"on","modified_on":"","editable":true}],"success":true,"errors":[],"messages":[]}');
+		$cloudflare_facade_mock->shouldReceive('settings')->andReturn( $cf_reply );
 
+		$cf_settings_array = [
+			'cache_level'       => 'aggressive',
+			'minify'            => 'on',
+			'rocket_loader'     => 'off',
+			'browser_cache_ttl' => 31536000,
+		];
 		$this->assertEquals(
-		    'on',
-			$cloudflare->set_minify( 'on' )
+		    $cf_settings_array,
+			$cloudflare->get_settings()
 		);
 	}
 
