@@ -23,15 +23,15 @@ class TestAutoPurge extends TestCase {
 	/**
 	 * Test should not AutoPurge Cloudflare if Cloudflare Addon is disabled.
 	 */
-    public function testShouldNotAutoPurgeWhenCloudflareIsDisabled() {
-        $mocks = $this->getConstructorMocks( 0, '', '', '' );
+	public function testShouldNotAutoPurgeWhenCloudflareIsDisabled() {
+		$mocks = $this->getConstructorMocks( 0, '', '', '' );
 
-        $cloudflare = \Mockery::mock(\WP_Rocket\Addons\Cloudflare\Cloudflare::class);
+		$cloudflare = \Mockery::mock(\WP_Rocket\Addons\Cloudflare\Cloudflare::class);
 		$cloudflare->shouldNotReceive('has_page_rule');
 		$cloudflare->shouldNotReceive('purge_cloudflare');
 
-        $cloudflare_subscriber = new CloudflareSubscriber( $cloudflare, $mocks['options_data'], $mocks['options'] );
-        $cloudflare_subscriber->auto_purge();
+		$cloudflare_subscriber = new CloudflareSubscriber( $cloudflare, $mocks['options_data'], $mocks['options'] );
+		$cloudflare_subscriber->auto_purge();
 	}
 
 	/**
@@ -41,12 +41,12 @@ class TestAutoPurge extends TestCase {
 		$mocks = $this->getConstructorMocks( 1, '', '', '' );
 		Functions\when( 'current_user_can' )->justReturn( false );
 
-        $cloudflare = \Mockery::mock(\WP_Rocket\Addons\Cloudflare\Cloudflare::class);
+		$cloudflare = \Mockery::mock(\WP_Rocket\Addons\Cloudflare\Cloudflare::class);
 		$cloudflare->shouldNotReceive('has_page_rule');
 		$cloudflare->shouldNotReceive('purge_cloudflare');
 
-        $cloudflare_subscriber = new CloudflareSubscriber( $cloudflare, $mocks['options_data'], $mocks['options'] );
-        $cloudflare_subscriber->auto_purge();
+		$cloudflare_subscriber = new CloudflareSubscriber( $cloudflare, $mocks['options_data'], $mocks['options'] );
+		$cloudflare_subscriber->auto_purge();
 	}
 
 	/**
@@ -57,7 +57,7 @@ class TestAutoPurge extends TestCase {
 		Functions\when( 'current_user_can' )->justReturn( true );
 
 		$wp_error   = \Mockery::mock( \WP_Error::class );
-        $cloudflare = \Mockery::mock( \WP_Rocket\Addons\Cloudflare\Cloudflare::class );
+		$cloudflare = \Mockery::mock( \WP_Rocket\Addons\Cloudflare\Cloudflare::class );
 		$cloudflare->shouldReceive('has_page_rule')->andReturn( $wp_error );
 		$cloudflare->shouldNotReceive('purge_cloudflare');
 
@@ -76,7 +76,7 @@ class TestAutoPurge extends TestCase {
 		$wp_error   = \Mockery::mock( \WP_Error::class );
 		$wp_error->shouldReceive('get_error_message')->andReturn( 'Error!' );
 
-        $cloudflare = \Mockery::mock( \WP_Rocket\Addons\Cloudflare\Cloudflare::class );
+		$cloudflare = \Mockery::mock( \WP_Rocket\Addons\Cloudflare\Cloudflare::class );
 		$cloudflare->shouldReceive('has_page_rule')->andReturn( true );
 		$cloudflare->shouldReceive('purge_cloudflare')->andReturn( $wp_error );
 
@@ -103,7 +103,7 @@ class TestAutoPurge extends TestCase {
 		Functions\when( 'get_current_user_id' )->justReturn( 1 );
 
 		$wp_error   = \Mockery::mock( \WP_Error::class );
-        $cloudflare = \Mockery::mock( \WP_Rocket\Addons\Cloudflare\Cloudflare::class );
+		$cloudflare = \Mockery::mock( \WP_Rocket\Addons\Cloudflare\Cloudflare::class );
 		$cloudflare->shouldReceive('has_page_rule')->andReturn( true );
 		$cloudflare->shouldReceive('purge_cloudflare')->andReturn( true );
 
@@ -137,27 +137,27 @@ class TestAutoPurge extends TestCase {
 		$options      = $this->createMock('WP_Rocket\Admin\Options');
 		$options_data = $this->createMock('WP_Rocket\Admin\Options_Data');
 		$map     = [
-            [
-                'do_cloudflare',
-                '',
-                $do_cloudflare,
-            ],
-            [
+			[
+				'do_cloudflare',
+				'',
+				$do_cloudflare,
+			],
+			[
 				'cloudflare_email',
 				null,
-                $cloudflare_email,
-            ],
-            [
-                'cloudflare_api_key',
-                null,
-                $cloudflare_api_key,
-            ],
-            [
-                'cloudflare_zone_id',
-                null,
-                $cloudflare_zone_id,
-            ],
-        ];
+				$cloudflare_email,
+			],
+			[
+				'cloudflare_api_key',
+				null,
+				$cloudflare_api_key,
+			],
+			[
+				'cloudflare_zone_id',
+				null,
+				$cloudflare_zone_id,
+			],
+		];
 		$options_data->method('get')->will( $this->returnValueMap( $map ) );
 
 		$mocks = [

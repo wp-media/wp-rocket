@@ -40,7 +40,7 @@ class TestSetCacheLevel extends TestCase {
 		$cloudflare = new Cloudflare( $mocks['options'], $cloudflare_facade_mock );
 
 		$this->assertEquals(
-		    $wp_error,
+			$wp_error,
 			$cloudflare->set_cache_level( 'aggressive' )
 		);
 	}
@@ -64,7 +64,7 @@ class TestSetCacheLevel extends TestCase {
 		$cloudflare_facade_mock->shouldReceive('change_cache_level')->andThrow( new \Exception() );
 
 		$this->assertEquals(
-		    new \WP_Error(),
+			new \WP_Error(),
 			$cloudflare->set_cache_level( 'aggressive' )
 		);
 	}
@@ -91,7 +91,7 @@ class TestSetCacheLevel extends TestCase {
 		$cloudflare_facade_mock->shouldReceive('change_cache_level')->andReturn( $cf_reply );
 
 		$this->assertEquals(
-		    new \WP_Error(),
+			new \WP_Error(),
 			$cloudflare->set_cache_level( 'aggressive' )
 		);
 	}
@@ -116,7 +116,7 @@ class TestSetCacheLevel extends TestCase {
 		$cloudflare_facade_mock->shouldReceive('change_cache_level')->andReturn( $cf_reply );
 
 		$this->assertEquals(
-		    'aggressive',
+			'aggressive',
 			$cloudflare->set_cache_level( 'aggressive' )
 		);
 	}
@@ -137,27 +137,27 @@ class TestSetCacheLevel extends TestCase {
 	private function getConstructorMocks( $do_cloudflare = 1, $cloudflare_email = '',  $cloudflare_api_key = '', $cloudflare_zone_id = '') {
 		$options = $this->createMock('WP_Rocket\Admin\Options_Data');
 		$map     = [
-            [
-                'do_cloudflare',
-                '',
-                $do_cloudflare,
-            ],
-            [
+			[
+				'do_cloudflare',
+				'',
+				$do_cloudflare,
+			],
+			[
 				'cloudflare_email',
 				null,
-                $cloudflare_email,
-            ],
-            [
-                'cloudflare_api_key',
-                null,
-                $cloudflare_api_key,
-            ],
-            [
-                'cloudflare_zone_id',
-                null,
-                $cloudflare_zone_id,
-            ],
-        ];
+				$cloudflare_email,
+			],
+			[
+				'cloudflare_api_key',
+				null,
+				$cloudflare_api_key,
+			],
+			[
+				'cloudflare_zone_id',
+				null,
+				$cloudflare_zone_id,
+			],
+		];
 		$options->method('get')->will( $this->returnValueMap( $map ) );
 
 		$facade   = \Mockery::mock( \WP_Rocket\Addons\Cloudflare\CloudflareFacade::class );

@@ -44,7 +44,7 @@ class TestGetCloudflareIPS extends TestCase {
 		Functions\expect( 'set_transient' )->once();
 
 		$this->assertEquals(
-		    $mocks[ 'cf_ips' ],
+			$mocks[ 'cf_ips' ],
 			$cloudflare->get_cloudflare_ips()
 		);
 	}
@@ -71,7 +71,7 @@ class TestGetCloudflareIPS extends TestCase {
 		$cloudflare_facade_mock->shouldNotReceive('set_api_credentials');
 
 		$this->assertEquals(
-		    $mocks[ 'cf_ips' ],
+			$mocks[ 'cf_ips' ],
 			$cloudflare->get_cloudflare_ips()
 		);
 	}
@@ -86,11 +86,11 @@ class TestGetCloudflareIPS extends TestCase {
 		$wp_error               = $mocks['wp_error'];
 
 		 // The Cloudflare constructor run with transient set as WP_Error.
-	    Functions\when( 'get_transient' )->justReturn( true );
+		Functions\when( 'get_transient' )->justReturn( true );
 		$cloudflare_facade_mock->shouldNotReceive('is_api_keys_valid');
 		Functions\expect( 'set_transient' )->never();
-	    Functions\when( 'is_wp_error' )->justReturn( false );
-	    $cloudflare_facade_mock->shouldReceive('set_api_credentials');
+		Functions\when( 'is_wp_error' )->justReturn( false );
+		$cloudflare_facade_mock->shouldReceive('set_api_credentials');
 
 		$cloudflare = new Cloudflare( $mocks['options'], $cloudflare_facade_mock );
 
@@ -101,7 +101,7 @@ class TestGetCloudflareIPS extends TestCase {
 		Functions\expect( 'set_transient' )->once();
 
 		$this->assertEquals(
-		    $mocks[ 'cf_ips' ],
+			$mocks[ 'cf_ips' ],
 			$cloudflare->get_cloudflare_ips()
 		);
 	}
@@ -116,11 +116,11 @@ class TestGetCloudflareIPS extends TestCase {
 		$wp_error               = $mocks['wp_error'];
 
 		 // The Cloudflare constructor run with transient set as WP_Error.
-	    Functions\when( 'get_transient' )->justReturn( true );
+		Functions\when( 'get_transient' )->justReturn( true );
 		$cloudflare_facade_mock->shouldNotReceive('is_api_keys_valid');
 		Functions\expect( 'set_transient' )->never();
-	    Functions\when( 'is_wp_error' )->justReturn( false );
-	    $cloudflare_facade_mock->shouldReceive('set_api_credentials');
+		Functions\when( 'is_wp_error' )->justReturn( false );
+		$cloudflare_facade_mock->shouldReceive('set_api_credentials');
 
 		$cloudflare = new Cloudflare( $mocks['options'], $cloudflare_facade_mock );
 
@@ -133,11 +133,11 @@ class TestGetCloudflareIPS extends TestCase {
 		$ips = $cloudflare->get_cloudflare_ips();
 
 		$this->assertEquals(
-		    $mocks[ 'cf_ips' ]->result->ipv4_cidrs,
+			$mocks[ 'cf_ips' ]->result->ipv4_cidrs,
 			$ips->result->ipv4_cidrs
 		);
 		$this->assertEquals(
-		    $mocks[ 'cf_ips' ]->result->ipv6_cidrs,
+			$mocks[ 'cf_ips' ]->result->ipv6_cidrs,
 			$ips->result->ipv6_cidrs
 		);
 	}
@@ -158,27 +158,27 @@ class TestGetCloudflareIPS extends TestCase {
 	private function getConstructorMocks( $do_cloudflare = 1, $cloudflare_email = '',  $cloudflare_api_key = '', $cloudflare_zone_id = '') {
 		$options = $this->createMock('WP_Rocket\Admin\Options_Data');
 		$map     = [
-            [
-                'do_cloudflare',
-                '',
-                $do_cloudflare,
-            ],
-            [
+			[
+				'do_cloudflare',
+				'',
+				$do_cloudflare,
+			],
+			[
 				'cloudflare_email',
 				null,
-                $cloudflare_email,
-            ],
-            [
-                'cloudflare_api_key',
-                null,
-                $cloudflare_api_key,
-            ],
-            [
-                'cloudflare_zone_id',
-                null,
-                $cloudflare_zone_id,
-            ],
-        ];
+				$cloudflare_email,
+			],
+			[
+				'cloudflare_api_key',
+				null,
+				$cloudflare_api_key,
+			],
+			[
+				'cloudflare_zone_id',
+				null,
+				$cloudflare_zone_id,
+			],
+		];
 		$options->method('get')->will( $this->returnValueMap( $map ) );
 
 		$facade   = \Mockery::mock( \WP_Rocket\Addons\Cloudflare\CloudflareFacade::class );

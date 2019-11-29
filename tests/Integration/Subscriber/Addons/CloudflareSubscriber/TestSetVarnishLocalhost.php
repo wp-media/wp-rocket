@@ -14,77 +14,77 @@ use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 
 class TestSetVarnishLocalhost extends TestCase {
-    public function testShouldReturnDefaultWhenCloudflareDisabled() {
-        update_option(
-            'wp_rocket_settings',
-            [
-                'do_cloudflare' => 0,
-            ]
+	public function testShouldReturnDefaultWhenCloudflareDisabled() {
+		update_option(
+			'wp_rocket_settings',
+			[
+				'do_cloudflare' => 0,
+			]
 		);
 		$cloudflare_facade = new CloudflareFacade( new CloudflareApi(), new CloudflareCache(), new CloudflarePageRules(), new CloudflareSettings(), new CloudflareIPs() );
-        $cf_subscriber     = new CloudflareSubscriber( new Cloudflare( new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) ), $cloudflare_facade ), new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) ), new Options() );
+		$cf_subscriber     = new CloudflareSubscriber( new Cloudflare( new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) ), $cloudflare_facade ), new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) ), new Options() );
 
-        $this->assertSame(
-            '',
-            $cf_subscriber->set_varnish_localhost( '' )
-        );
-    }
+		$this->assertSame(
+			'',
+			$cf_subscriber->set_varnish_localhost( '' )
+		);
+	}
 
-    public function testShouldReturnDefaultWhenVarnishDisabled() {
-        update_option(
-            'wp_rocket_settings',
-            [
-                'do_cloudflare' => 1,
-                'varnish_auto_purge' => 0,
-            ]
-        );
-
-		$cloudflare_facade = new CloudflareFacade( new CloudflareApi(), new CloudflareCache(), new CloudflarePageRules(), new CloudflareSettings(), new CloudflareIPs() );
-        $cf_subscriber     = new CloudflareSubscriber( new Cloudflare( new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) ), $cloudflare_facade ), new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) ), new Options() );
-
-        $this->assertSame(
-            '',
-            $cf_subscriber->set_varnish_localhost( '' )
-        );
-    }
-
-    public function testShouldReturnLocalhostWhenVarnishEnabled() {
-        update_option(
-            'wp_rocket_settings',
-            [
-                'do_cloudflare' => 1,
-                'varnish_auto_purge' => 1,
-            ]
-        );
+	public function testShouldReturnDefaultWhenVarnishDisabled() {
+		update_option(
+			'wp_rocket_settings',
+			[
+				'do_cloudflare' => 1,
+				'varnish_auto_purge' => 0,
+			]
+		);
 
 		$cloudflare_facade = new CloudflareFacade( new CloudflareApi(), new CloudflareCache(), new CloudflarePageRules(), new CloudflareSettings(), new CloudflareIPs() );
-        $cf_subscriber     = new CloudflareSubscriber( new Cloudflare( new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) ), $cloudflare_facade ), new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) ), new Options() );
+		$cf_subscriber     = new CloudflareSubscriber( new Cloudflare( new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) ), $cloudflare_facade ), new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) ), new Options() );
 
-        $this->assertSame(
-            'localhost',
-            $cf_subscriber->set_varnish_localhost( '' )
-        );
-    }
+		$this->assertSame(
+			'',
+			$cf_subscriber->set_varnish_localhost( '' )
+		);
+	}
 
-    public function testShouldReturnLocalhostWhenFilterTrue() {
-        update_option(
-            'wp_rocket_settings',
-            [
-                'do_cloudflare' => 1,
-                'varnish_auto_purge' => 0,
-            ]
-        );
-
-        add_filter( 'do_rocket_varnish_http_purge', '__return_true' );
+	public function testShouldReturnLocalhostWhenVarnishEnabled() {
+		update_option(
+			'wp_rocket_settings',
+			[
+				'do_cloudflare' => 1,
+				'varnish_auto_purge' => 1,
+			]
+		);
 
 		$cloudflare_facade = new CloudflareFacade( new CloudflareApi(), new CloudflareCache(), new CloudflarePageRules(), new CloudflareSettings(), new CloudflareIPs() );
-        $cf_subscriber     = new CloudflareSubscriber( new Cloudflare( new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) ), $cloudflare_facade ), new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) ), new Options() );
+		$cf_subscriber     = new CloudflareSubscriber( new Cloudflare( new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) ), $cloudflare_facade ), new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) ), new Options() );
 
-        $this->assertSame(
-            'localhost',
-            $cf_subscriber->set_varnish_localhost( '' )
-        );
+		$this->assertSame(
+			'localhost',
+			$cf_subscriber->set_varnish_localhost( '' )
+		);
+	}
 
-        remove_filter( 'do_rocket_varnish_http_purge', '__return_true' );
-    }
+	public function testShouldReturnLocalhostWhenFilterTrue() {
+		update_option(
+			'wp_rocket_settings',
+			[
+				'do_cloudflare' => 1,
+				'varnish_auto_purge' => 0,
+			]
+		);
+
+		add_filter( 'do_rocket_varnish_http_purge', '__return_true' );
+
+		$cloudflare_facade = new CloudflareFacade( new CloudflareApi(), new CloudflareCache(), new CloudflarePageRules(), new CloudflareSettings(), new CloudflareIPs() );
+		$cf_subscriber     = new CloudflareSubscriber( new Cloudflare( new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) ), $cloudflare_facade ), new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) ), new Options() );
+
+		$this->assertSame(
+			'localhost',
+			$cf_subscriber->set_varnish_localhost( '' )
+		);
+
+		remove_filter( 'do_rocket_varnish_http_purge', '__return_true' );
+	}
 }

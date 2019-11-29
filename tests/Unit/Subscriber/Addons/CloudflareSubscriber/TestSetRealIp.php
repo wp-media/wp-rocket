@@ -23,15 +23,15 @@ class TestSetRealIp extends TestCase {
 	/**
 	 * Test should not set real IP.
 	 */
-    public function testShouldNotSetIP() {
-        $mocks = $this->getConstructorMocks( 1, '', '', '' );
+	public function testShouldNotSetIP() {
+		$mocks = $this->getConstructorMocks( 1, '', '', '' );
 
-        $cloudflare = \Mockery::mock(\WP_Rocket\Addons\Cloudflare\Cloudflare::class);
+		$cloudflare = \Mockery::mock(\WP_Rocket\Addons\Cloudflare\Cloudflare::class);
 		$cloudflare->shouldNotReceive('get_cloudflare_ips');
 
-	    $cloudflare_subscriber = new CloudflareSubscriber( $cloudflare, $mocks['options_data'], $mocks['options'] );
+		$cloudflare_subscriber = new CloudflareSubscriber( $cloudflare, $mocks['options_data'], $mocks['options'] );
 
-        $cloudflare_subscriber->set_real_ip();
+		$cloudflare_subscriber->set_real_ip();
 	}
 
 	/**
@@ -42,7 +42,7 @@ class TestSetRealIp extends TestCase {
 		$_SERVER['HTTP_CF_CONNECTING_IP'] = '172.64.0.1';
 		$_SERVER['REMOTE_ADDR']           = '172.64.0.15';
 
-        $cloudflare = \Mockery::mock(\WP_Rocket\Addons\Cloudflare\Cloudflare::class);
+		$cloudflare = \Mockery::mock(\WP_Rocket\Addons\Cloudflare\Cloudflare::class);
 		$cloudflare->shouldReceive('get_cloudflare_ips')->andReturn( $mocks['cf_ips'] );
 
 		Functions\when( 'wp_unslash' )->returnArg();
@@ -50,13 +50,13 @@ class TestSetRealIp extends TestCase {
 		Functions\when( 'rocket_ipv6_in_range' )->justReturn( false );
 		Functions\when( 'rocket_ipv4_in_range' )->justReturn( false );
 
-	    $cloudflare_subscriber = new CloudflareSubscriber( $cloudflare, $mocks['options_data'], $mocks['options'] );
+		$cloudflare_subscriber = new CloudflareSubscriber( $cloudflare, $mocks['options_data'], $mocks['options'] );
 		$cloudflare_subscriber->set_real_ip();
 
 		$this->assertNotEquals(
-            $_SERVER['HTTP_CF_CONNECTING_IP'],
-            $_SERVER['REMOTE_ADDR']
-        );
+			$_SERVER['HTTP_CF_CONNECTING_IP'],
+			$_SERVER['REMOTE_ADDR']
+		);
 	}
 
 	/**
@@ -67,7 +67,7 @@ class TestSetRealIp extends TestCase {
 		$_SERVER['HTTP_CF_CONNECTING_IP'] = '172.64.0.1';
 		$_SERVER['REMOTE_ADDR']           = '172.64.0.15';
 
-        $cloudflare = \Mockery::mock(\WP_Rocket\Addons\Cloudflare\Cloudflare::class);
+		$cloudflare = \Mockery::mock(\WP_Rocket\Addons\Cloudflare\Cloudflare::class);
 		$cloudflare->shouldReceive('get_cloudflare_ips')->andReturn( $mocks['cf_ips'] );
 
 		Functions\when( 'wp_unslash' )->returnArg();
@@ -75,13 +75,13 @@ class TestSetRealIp extends TestCase {
 		Functions\when( 'rocket_ipv6_in_range' )->justReturn( false );
 		Functions\when( 'rocket_ipv4_in_range' )->justReturn( true );
 
-	    $cloudflare_subscriber = new CloudflareSubscriber( $cloudflare, $mocks['options_data'], $mocks['options'] );
+		$cloudflare_subscriber = new CloudflareSubscriber( $cloudflare, $mocks['options_data'], $mocks['options'] );
 		$cloudflare_subscriber->set_real_ip();
 
 		$this->assertSame(
-            $_SERVER['HTTP_CF_CONNECTING_IP'],
-            $_SERVER['REMOTE_ADDR']
-        );
+			$_SERVER['HTTP_CF_CONNECTING_IP'],
+			$_SERVER['REMOTE_ADDR']
+		);
 	}
 
 	/**
@@ -92,7 +92,7 @@ class TestSetRealIp extends TestCase {
 		$_SERVER['HTTP_CF_CONNECTING_IP'] = '2a06:98c0::/29';
 		$_SERVER['REMOTE_ADDR']           = '2001:0db8:85a3:0000:0000:8a2e:0370:7334';
 
-        $cloudflare = \Mockery::mock(\WP_Rocket\Addons\Cloudflare\Cloudflare::class);
+		$cloudflare = \Mockery::mock(\WP_Rocket\Addons\Cloudflare\Cloudflare::class);
 		$cloudflare->shouldReceive('get_cloudflare_ips')->andReturn( $mocks['cf_ips'] );
 
 		Functions\when( 'wp_unslash' )->returnArg();
@@ -100,13 +100,13 @@ class TestSetRealIp extends TestCase {
 		Functions\when( 'rocket_ipv6_in_range' )->justReturn( true );
 		Functions\when( 'rocket_ipv4_in_range' )->justReturn( false );
 
-	    $cloudflare_subscriber = new CloudflareSubscriber( $cloudflare, $mocks['options_data'], $mocks['options'] );
+		$cloudflare_subscriber = new CloudflareSubscriber( $cloudflare, $mocks['options_data'], $mocks['options'] );
 		$cloudflare_subscriber->set_real_ip();
 
 		$this->assertSame(
-            $_SERVER['HTTP_CF_CONNECTING_IP'],
-            $_SERVER['REMOTE_ADDR']
-        );
+			$_SERVER['HTTP_CF_CONNECTING_IP'],
+			$_SERVER['REMOTE_ADDR']
+		);
 	}
 
 
@@ -127,27 +127,27 @@ class TestSetRealIp extends TestCase {
 		$options      = $this->createMock('WP_Rocket\Admin\Options');
 		$options_data = $this->createMock('WP_Rocket\Admin\Options_Data');
 		$map     = [
-            [
-                'do_cloudflare',
-                '',
-                $do_cloudflare,
-            ],
-            [
+			[
+				'do_cloudflare',
+				'',
+				$do_cloudflare,
+			],
+			[
 				'cloudflare_email',
 				null,
-                $cloudflare_email,
-            ],
-            [
-                'cloudflare_api_key',
-                null,
-                $cloudflare_api_key,
-            ],
-            [
-                'cloudflare_zone_id',
-                null,
-                $cloudflare_zone_id,
-            ],
-        ];
+				$cloudflare_email,
+			],
+			[
+				'cloudflare_api_key',
+				null,
+				$cloudflare_api_key,
+			],
+			[
+				'cloudflare_zone_id',
+				null,
+				$cloudflare_zone_id,
+			],
+		];
 		$options_data->method('get')->will( $this->returnValueMap( $map ) );
 
 		$cf_ips = (object) [

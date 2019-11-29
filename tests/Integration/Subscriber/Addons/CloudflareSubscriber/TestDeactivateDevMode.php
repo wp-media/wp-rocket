@@ -17,8 +17,8 @@ class TestDeactivateDevMode extends TestCase {
 	/**
 	 * Test should not deactivate cloudflare dev mode when cloudflare addon is off.
 	 */
-    public function testShouldNotDeactivateDevMode() {
-        $options      = new Options( 'wp_rocket_');
+	public function testShouldNotDeactivateDevMode() {
+		$options      = new Options( 'wp_rocket_');
 		$options_data = new Options_Data( $options->get( 'settings' ) );
 		$settings     = [
 			'do_cloudflare'      => 0,
@@ -28,13 +28,13 @@ class TestDeactivateDevMode extends TestCase {
 		$options->set( 'settings', $options_data->get_options() );
 
 		$cloudflare_facade = new CloudflareFacade( new CloudflareApi(), new CloudflareCache(), new CloudflarePageRules(), new CloudflareSettings(), new CloudflareIPs() );
-        $cf_subscriber     = new CloudflareSubscriber( new Cloudflare( $options_data, $cloudflare_facade ), $options_data, $options );
+		$cf_subscriber     = new CloudflareSubscriber( new Cloudflare( $options_data, $cloudflare_facade ), $options_data, $options );
 		$cf_subscriber->deactivate_devmode();
 
-        $this->assertSame(
-            'on',
+		$this->assertSame(
+			'on',
 			$options_data->get( 'cloudflare_devmode' )
-        );
+		);
 	}
 
 	/**
@@ -50,13 +50,13 @@ class TestDeactivateDevMode extends TestCase {
 		$options_data->set_values( $settings );
 		$options->set( 'settings', $options_data->get_options() );
 
-        $cloudflare_facade = new CloudflareFacade( new CloudflareApi(), new CloudflareCache(), new CloudflarePageRules(), new CloudflareSettings(), new CloudflareIPs() );
-        $cf_subscriber     = new CloudflareSubscriber( new Cloudflare( $options_data, $cloudflare_facade ), $options_data, $options );
+		$cloudflare_facade = new CloudflareFacade( new CloudflareApi(), new CloudflareCache(), new CloudflarePageRules(), new CloudflareSettings(), new CloudflareIPs() );
+		$cf_subscriber     = new CloudflareSubscriber( new Cloudflare( $options_data, $cloudflare_facade ), $options_data, $options );
 		$cf_subscriber->deactivate_devmode();
 
-        $this->assertSame(
-            'off',
+		$this->assertSame(
+			'off',
 			$options_data->get( 'cloudflare_devmode' )
-        );
-    }
+		);
+	}
 }

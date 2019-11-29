@@ -23,15 +23,15 @@ class TestSaveOldSettings extends TestCase {
 	/**
 	 * Test should not save old cloudflare settings.
 	 */
-    public function testShouldNotSaveOldSetting() {
-        $mocks = $this->getConstructorMocks( 1, '', '', '' );
+	public function testShouldNotSaveOldSetting() {
+		$mocks = $this->getConstructorMocks( 1, '', '', '' );
 
 		Functions\when( 'current_user_can' )->justReturn( true );
 
 		$cloudflare = \Mockery::mock(\WP_Rocket\Addons\Cloudflare\Cloudflare::class);
 		$cloudflare->shouldNotReceive('get_settings');
 
-	    $cloudflare_subscriber = new CloudflareSubscriber( $cloudflare, $mocks['options_data'], $mocks['options'] );
+		$cloudflare_subscriber = new CloudflareSubscriber( $cloudflare, $mocks['options_data'], $mocks['options'] );
 
 		$old_value = [
 			'do_cloudflare'            => 1,
@@ -51,8 +51,8 @@ class TestSaveOldSettings extends TestCase {
 	/**
 	 * Test should save old cloudflare settings.
 	 */
-    public function testShouldSaveOldSetting() {
-        $mocks = $this->getConstructorMocks( 1, '', '', '' );
+	public function testShouldSaveOldSetting() {
+		$mocks = $this->getConstructorMocks( 1, '', '', '' );
 
 		Functions\when( 'current_user_can' )->justReturn( true );
 		Functions\when( 'is_wp_error' )->justReturn( false );
@@ -66,7 +66,7 @@ class TestSaveOldSettings extends TestCase {
 		];
 		$cloudflare->shouldReceive('get_settings')->andReturn( $cf_settings_array );
 
-	    $cloudflare_subscriber = new CloudflareSubscriber( $cloudflare, $mocks['options_data'], $mocks['options'] );
+		$cloudflare_subscriber = new CloudflareSubscriber( $cloudflare, $mocks['options_data'], $mocks['options'] );
 
 		$old_value = [
 			'do_cloudflare'            => 1,
@@ -101,27 +101,27 @@ class TestSaveOldSettings extends TestCase {
 		$options      = $this->createMock('WP_Rocket\Admin\Options');
 		$options_data = $this->createMock('WP_Rocket\Admin\Options_Data');
 		$map     = [
-            [
-                'do_cloudflare',
-                '',
-                $do_cloudflare,
-            ],
-            [
+			[
+				'do_cloudflare',
+				'',
+				$do_cloudflare,
+			],
+			[
 				'cloudflare_email',
 				null,
-                $cloudflare_email,
-            ],
-            [
-                'cloudflare_api_key',
-                null,
-                $cloudflare_api_key,
-            ],
-            [
-                'cloudflare_zone_id',
-                null,
-                $cloudflare_zone_id,
-            ],
-        ];
+				$cloudflare_email,
+			],
+			[
+				'cloudflare_api_key',
+				null,
+				$cloudflare_api_key,
+			],
+			[
+				'cloudflare_zone_id',
+				null,
+				$cloudflare_zone_id,
+			],
+		];
 		$options_data->method('get')->will( $this->returnValueMap( $map ) );
 
 		$mocks = [
