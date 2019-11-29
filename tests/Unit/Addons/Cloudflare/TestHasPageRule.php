@@ -6,7 +6,6 @@ use WP_Rocket\Addons\Cloudflare\Cloudflare;
 use Brain\Monkey\Functions;
 
 class TestHasPageRule extends TestCase {
-	use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
 	protected function setUp() {
 		parent::setUp();

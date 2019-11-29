@@ -6,7 +6,6 @@ use WP_Rocket\Subscriber\Addons\Cloudflare\CloudflareSubscriber;
 use Brain\Monkey\Functions;
 
 class TestPurgeCache extends TestCase {
-	use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
 	protected function setUp() {
 		parent::setUp();

@@ -6,7 +6,6 @@ use WP_Rocket\Addons\Cloudflare\Cloudflare;
 use Brain\Monkey\Functions;
 
 class TestIsApiKeyValid extends TestCase {
-	use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
 	protected function setUp() {
 		parent::setUp();

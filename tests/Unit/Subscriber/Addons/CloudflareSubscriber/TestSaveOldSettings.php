@@ -6,7 +6,6 @@ use WP_Rocket\Subscriber\Addons\Cloudflare\CloudflareSubscriber;
 use Brain\Monkey\Functions;
 
 class TestSaveOldSettings extends TestCase {
-	use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
 	protected function setUp() {
 		parent::setUp();
