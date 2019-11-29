@@ -27,6 +27,7 @@
         <exclude name="Squiz.Commenting.FileComment.MissingPackageTag"/>
         <exclude name="Squiz.PHP.CommentedOutCode.Found"/>
 		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
+		<exclude name="Generic.Arrays.DisallowShortArraySyntax" />
 	</rule>
     <rule ref="WordPress.WP.I18n">
         <properties>
