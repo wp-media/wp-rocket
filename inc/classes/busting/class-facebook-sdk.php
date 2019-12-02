@@ -472,7 +472,7 @@ class Facebook_SDK extends Abstract_Busting {
 	 * @return string|bool The XFBML on success. False on failure.
 	 */
 	private function get_xfbml_from_url( $url ) {
-		$pattern = '@//connect\.facebook\.net/(?<locale>[a-zA-Z_-]+)/sdk\.js#xfbml=(?<xfbml>[0-9]+)&version=(?<version>[a-zA-Z0-9.]+)&appId=(?<appId>[0-9]+)@i';
+		$pattern = '@//connect\.facebook\.net/(?<locale>[a-zA-Z_-]+)/sdk\.js#(?:.+&)?xfbml=(?<xfbml>[0-9]+)@i';
 
 		if ( ! preg_match( $pattern, $url, $matches ) ) {
 			return false;
@@ -492,7 +492,7 @@ class Facebook_SDK extends Abstract_Busting {
 	 * @return string|bool The appId on success. False on failure.
 	 */
 	private function get_appId_from_url( $url ) {
-		$pattern = '@//connect\.facebook\.net/(?<locale>[a-zA-Z_-]+)/sdk\.js#xfbml=(?<xfbml>[0-9]+)&version=(?<version>[a-zA-Z0-9.]+)&appId=(?<appId>[0-9]+)@i';
+		$pattern = '@//connect\.facebook\.net/(?<locale>[a-zA-Z_-]+)/sdk\.js#(?:.+&)?appId=(?<appId>[0-9]+)@i';
 
 		if ( ! preg_match( $pattern, $url, $matches ) ) {
 			return false;
@@ -512,7 +512,7 @@ class Facebook_SDK extends Abstract_Busting {
 	 * @return string|bool The version on success. False on failure.
 	 */
 	private function get_version_from_url( $url ) {
-		$pattern = '@//connect\.facebook\.net/(?<locale>[a-zA-Z_-]+)/sdk\.js#xfbml=(?<xfbml>[0-9]+)&version=(?<version>[a-zA-Z0-9.]+)&appId=(?<appId>[0-9]+)@i';
+		$pattern = '@//connect\.facebook\.net/(?<locale>[a-zA-Z_-]+)/sdk\.js#(?:.+&)?version=(?<version>[a-zA-Z0-9.]+)@i';
 
 		if ( ! preg_match( $pattern, $url, $matches ) ) {
 			return false;
