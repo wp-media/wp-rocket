@@ -12,6 +12,9 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	protected $local_timezone = NULL;
 
 	/** @var int */
+	protected $last_deleted_action = null;
+
+	/** @var int */
 	private static $max_index_length = 191;
 
 	public function save_action( ActionScheduler_Action $action, DateTime $scheduled_date = NULL ){
@@ -470,7 +473,15 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 			throw new InvalidArgumentException(sprintf(__('Unidentified action %s', 'action-scheduler'), $action_id));
 		}
 		do_action( 'action_scheduler_deleted_action', $action_id );
-		wp_delete_post($action_id, TRUE);
+
+		$this->last_deleted_action = $action_id;
+		add_action( 'action_scheduler/migrate_action_incomplete', array( $this, 'mark_migrated') );
+
+		if ( ! wp_delete_post( $action_id, TRUE ) ) {
+			$this->mark_migrated( $action_id );
+		}
+
+		remove_action( 'action_scheduler/migrate_action_incomplete', array( $this, 'mark_migrated') );
 	}
 
 	/**
@@ -778,6 +789,22 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		remove_filter( 'pre_wp_unique_post_slug', array( $this, 'set_unique_post_slug' ), 10 );
 		if ( is_wp_error($result) ) {
 			throw new RuntimeException($result->get_error_message());
+		}
+	}
+
+	/**
+	 * Mark action as migrated when there is an error deleting the action.
+	 *
+	 * @param int $action_id Action ID.
+	 */
+	public function mark_migrated( $action_id ) {
+		if ( $action_id === $this->last_deleted_action ) {
+			wp_update_post(
+				array(
+					'ID'          => $action_id,
+					'post_status' => 'migrated'
+				)
+			);
 		}
 	}
 
