@@ -100,6 +100,12 @@ class Facebook_SDK extends Abstract_Busting {
 
 		$html      = str_replace( $tag, $replace_tag, $html );
 		$file_path = $this->get_busting_file_path( $locale );
+		$xfbml     = $this->get_xfbml_from_url( $tag );
+		$app_id    = $this->get_appId_from_url( $tag );
+		$version   = $this->get_version_from_url( $tag );
+
+		// Add FB async init.
+		$html .= '<script>window.fbAsyncInit = function fbAsyncInit () {FB.init({appId: \'' . $app_id . '\',xfbml: ' . $xfbml . ',version: \'' . $version . '\'})}</script>';
 
 		$this->is_replaced = true;
 
@@ -453,6 +459,66 @@ class Facebook_SDK extends Abstract_Busting {
 		}
 
 		return $matches['locale'];
+	}
+
+	/**
+	 * Extract XFBML from a URL to bust.
+	 *
+	 * @since  3.4.3
+	 * @access private
+	 * @author Soponar Cristina
+	 *
+	 * @param  string $url Any string containing the URL to bust.
+	 * @return string|bool The XFBML on success. False on failure.
+	 */
+	private function get_xfbml_from_url( $url ) {
+		$pattern = '@//connect\.facebook\.net/(?<locale>[a-zA-Z_-]+)/sdk\.js#xfbml=(?<xfbml>[0-9]+)&version=(?<version>[a-zA-Z0-9.]+)&appId=(?<appId>[0-9]+)@i';
+
+		if ( ! preg_match( $pattern, $url, $matches ) ) {
+			return false;
+		}
+
+		return $matches['xfbml'];
+	}
+
+	/**
+	 * Extract appId from a URL to bust.
+	 *
+	 * @since  3.4.3
+	 * @access private
+	 * @author Soponar Cristina
+	 *
+	 * @param  string $url Any string containing the URL to bust.
+	 * @return string|bool The appId on success. False on failure.
+	 */
+	private function get_appId_from_url( $url ) {
+		$pattern = '@//connect\.facebook\.net/(?<locale>[a-zA-Z_-]+)/sdk\.js#xfbml=(?<xfbml>[0-9]+)&version=(?<version>[a-zA-Z0-9.]+)&appId=(?<appId>[0-9]+)@i';
+
+		if ( ! preg_match( $pattern, $url, $matches ) ) {
+			return false;
+		}
+
+		return $matches['appId'];
+	}
+
+	/**
+	 * Extract version from a URL to bust.
+	 *
+	 * @since  3.4.3
+	 * @access private
+	 * @author Soponar Cristina
+	 *
+	 * @param  string $url Any string containing the URL to bust.
+	 * @return string|bool The version on success. False on failure.
+	 */
+	private function get_version_from_url( $url ) {
+		$pattern = '@//connect\.facebook\.net/(?<locale>[a-zA-Z_-]+)/sdk\.js#xfbml=(?<xfbml>[0-9]+)&version=(?<version>[a-zA-Z0-9.]+)&appId=(?<appId>[0-9]+)@i';
+
+		if ( ! preg_match( $pattern, $url, $matches ) ) {
+			return false;
+		}
+
+		return $matches['version'];
 	}
 
 	/** ----------------------------------------------------------------------------------------- */
