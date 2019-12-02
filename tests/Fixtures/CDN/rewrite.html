@@ -334,13 +334,13 @@ img.emoji {
 	
 	<header id="masthead" class="site-header" role="banner" style="">
 
-		<div class="col-full">		<a class="skip-link screen-reader-text" href="#site-navigation">Aller à la navigation</a>
+		<div class="col-full">      <a class="skip-link screen-reader-text" href="#site-navigation">Aller à la navigation</a>
 		<a class="skip-link screen-reader-text" href="#content">Aller au contenu</a>
 				<div class="site-branding">
-			<div class="beta site-title"><a href="http://example.org/" rel="home">tests</a></div><p class="site-description">Just another WordPress site</p>		</div>
+			<div class="beta site-title"><a href="http://example.org/" rel="home">tests</a></div><p class="site-description">Just another WordPress site</p>        </div>
 					<nav class="secondary-navigation" role="navigation" aria-label="Navigation secondaire">
 							</nav><!-- #site-navigation -->
-			</div><div class="storefront-primary-navigation"><div class="col-full">		<nav id="site-navigation" class="main-navigation" role="navigation" aria-label="Navigation principale">
+			</div><div class="storefront-primary-navigation"><div class="col-full">     <nav id="site-navigation" class="main-navigation" role="navigation" aria-label="Navigation principale">
 		<button class="menu-toggle" aria-controls="site-navigation" aria-expanded="false"><span>Menu</span></button>
 			<div class="primary-navigation"><ul id="menu-testing-menu" class="menu"><li id="menu-item-1046" class="menu-item menu-item-type-custom menu-item-object-custom current-menu-ancestor current-menu-parent menu-item-has-children menu-item-1046"><a href="#">Pages</a>
 <ul class="sub-menu">
@@ -468,7 +468,7 @@ img.emoji {
 </ul>
 </li>
 <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1063"><a href="#">Menu Description</a></li>
-</ul></div>		</nav><!-- #site-navigation -->
+</ul></div>     </nav><!-- #site-navigation -->
 		</div></div>
 	</header><!-- #masthead -->
 
@@ -483,10 +483,12 @@ img.emoji {
 			
 <article id="post-1133" class="post-1133 page type-page status-publish hentry">
 			<header class="entry-header">
-			<h1 class="entry-title">Page Image Alignment</h1>		</header><!-- .entry-header -->
+			<h1 class="entry-title">Page Image Alignment</h1>       </header><!-- .entry-header -->
 				<div class="entry-content">
 			<p>Welcome to image alignment! The best way to demonstrate the ebb and flow of the various image positioning options is to nestle them snuggly among an ocean of words. Grab a paddle and let&rsquo;s get started.</p>
 <p>On the topic of alignment, it should be noted that users can choose from the options of <em>None</em>, <em>Left</em>, <em>Right, </em>and <em>Center</em>. In addition, they also get the options of <em>Thumbnail</em>, <em>Medium</em>, <em>Large</em> &amp; <em>Fullsize</em>.</p>
+<a href="http://example.org/page.htm">Test link</a>
+<video id="wp-custom-header-video" autoplay="" loop="" width="2000" height="800" src="http://cdn.example.org/wp-content/uploads/2019/01/Website-Intro.mp4"></video>
 <p style="text-align:center;"><img class="size-full wp-image-906 aligncenter" title="Image Alignment 580x300" alt="Image Alignment 580x300" src="http://cdn.example.org/wp-content/uploads/2013/03/image-alignment-580x300.jpg" width="580" height="300" /></p>
 <p>The image above happens to be <em><strong>centered</strong></em>.</p>
 <p><strong><img class="size-full wp-image-904 alignleft" title="Image Alignment 150x150" alt="Image Alignment 150x150" src="http://cdn.example.org/wp-content/uploads/2013/03/image-alignment-150x150.jpg" width="150" height="150" /></strong>The rest of this paragraph is filler for the sake of seeing the text wrap around the 150&#215;150 image, which is <em><strong>left aligned</strong></em>. <strong></strong></p>
@@ -511,21 +513,33 @@ img.emoji {
 <p>In just a bit here, you should see the text start to wrap below the right aligned image and settle in nicely. There should still be plenty of room and everything should be sitting pretty. Yeah&#8230; Just like that. It never felt so good to be right.</p>
 <p>And that&rsquo;s a wrap, yo! You survived the tumultuous waters of alignment. Image alignment achievement unlocked!</p>
 <figure class="post-thumbnail">
-	<img width="1568" height="1046" src="http://cdn.example.org/wp-content/uploads/2018/03/sticker-mule-189122-unsplash-1568x1046.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" srcset="http://cdn.example.org/wp-content/uploads/2018/03/sticker-mule-189122-unsplash-1568x1046.jpg 1568w, http://cdn.example.org/wp-content/uploads/2018/03/sticker-mule-189122-unsplash-300x200.jpg 300w, http://cdn.example.org/wp-content/uploads/2018/03/sticker-mule-189122-unsplash-768x513.jpg 768w, http://cdn.example.org/wp-content/uploads/2018/03/sticker-mule-189122-unsplash-1024x683.jpg 1024w" sizes="(max-width: 1568px) 100vw, 1568px" />
+	<img width="1568" height="1046" src="http://cdn.example.org/wp-content/uploads/2018/03/sticker-mule-189122-unsplash-1568x1046.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" srcset="http://example.org/wp-content/uploads/2018/03/sticker-mule-189122-unsplash-1568x1046.jpg 1568w, http://example.org/wp-content/uploads/2018/03/sticker-mule-189122-unsplash-300x200.jpg 300w, http://example.org/wp-content/uploads/2018/03/sticker-mule-189122-unsplash-768x513.jpg 768w, http://example.org/wp-content/uploads/2018/03/sticker-mule-189122-unsplash-1024x683.jpg 1024w" sizes="(max-width: 1568px) 100vw, 1568px" />
 </figure>
+<picture>
+	<source srcset="http://cdn.example.org/images/site/logo/logo-acommeassure.webp" type="image/webp">
+	<source srcset="/images/site/logo/logo-acommeassure.png 100w" type="image/png">
+	<img
+		width="300"
+		height="60"
+		class="logoSite show-for-large"
+		src="http://cdn.example.org/images/site/logo/logo-acommeassure.png"
+		title="Accueil AcommeAssure"
+		alt="logo d'acommeassure"
+	/>
+</picture>
 					</div><!-- .entry-content -->
 		</article><!-- #post-## -->
 
 <section id="comments" class="comments-area" aria-label="Commentaires de l’article">
 
 		<div id="respond" class="comment-respond">
-		<span id="reply-title" class="gamma comment-reply-title">Laisser un commentaire <small><a rel="nofollow" id="cancel-comment-reply-link" href="/about/page-image-alignment#respond" style="display:none;">Annuler la réponse</a></small></span>			<form action="http://example.org/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate>
+		<span id="reply-title" class="gamma comment-reply-title">Laisser un commentaire <small><a rel="nofollow" id="cancel-comment-reply-link" href="/about/page-image-alignment#respond" style="display:none;">Annuler la réponse</a></small></span>          <form action="http://example.org/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate>
 				<p class="comment-notes"><span id="email-notes">Votre adresse de messagerie ne sera pas publiée.</span> Les champs obligatoires sont indiqués avec <span class="required">*</span></p><p class="comment-form-comment"><label for="comment">Commentaire</label> <textarea id="comment" name="comment" cols="45" rows="8" maxlength="65525" required="required"></textarea></p><p class="comment-form-author"><label for="author">Nom <span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="30" maxlength="245" required='required' /></p>
 <p class="comment-form-email"><label for="email">Adresse de messagerie <span class="required">*</span></label> <input id="email" name="email" type="email" value="" size="30" maxlength="100" aria-describedby="email-notes" required='required' /></p>
 <p class="comment-form-url"><label for="url">Site web</label> <input id="url" name="url" type="url" value="" size="30" maxlength="200" /></p>
 <p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="Laisser un commentaire" /> <input type='hidden' name='comment_post_ID' value='1133' id='comment_post_ID' />
 <input type='hidden' name='comment_parent' id='comment_parent' value='0' />
-</p>			</form>
+</p>            </form>
 			</div><!-- #respond -->
 	
 </section><!-- #comments -->
@@ -541,7 +555,7 @@ img.emoji {
 					<input type="search" class="search-field" placeholder="Recherche&hellip;" value="" name="s" />
 				</label>
 				<input type="submit" class="search-submit" value="Rechercher" />
-			</form></div>		<div id="recent-posts-2" class="widget widget_recent_entries">		<span class="gamma widget-title">Articles récents</span>		<ul>
+			</form></div>       <div id="recent-posts-2" class="widget widget_recent_entries">      <span class="gamma widget-title">Articles récents</span>        <ul>
 											<li>
 					<a href="http://example.org/hello-world">Hello world!</a>
 									</li>
@@ -558,7 +572,7 @@ img.emoji {
 					<a href="http://example.org/title-with-special-characters">Markup: Title With Special Characters</a>
 									</li>
 					</ul>
-		</div><div id="recent-comments-2" class="widget widget_recent_comments"><span class="gamma widget-title">Commentaires récents</span><ul id="recentcomments"><li class="recentcomments"><span class="comment-author-link">Anonyme</span> dans <a href="http://example.org/hello-world#comment-301">Hello world!</a></li><li class="recentcomments"><span class="comment-author-link">Anonyme</span> dans <a href="http://example.org/hello-world#comment-300">Hello world!</a></li><li class="recentcomments"><span class="comment-author-link">Anonyme</span> dans <a href="http://example.org/hello-world#comment-299">Hello world!</a></li><li class="recentcomments"><span class="comment-author-link">Anonyme</span> dans <a href="http://example.org/hello-world#comment-298">Hello world!</a></li><li class="recentcomments"><span class="comment-author-link">Anonyme</span> dans <a href="http://example.org/hello-world#comment-297">Hello world!</a></li></ul></div><div id="archives-2" class="widget widget_archive"><span class="gamma widget-title">Archives</span>		<ul>
+		</div><div id="recent-comments-2" class="widget widget_recent_comments"><span class="gamma widget-title">Commentaires récents</span><ul id="recentcomments"><li class="recentcomments"><span class="comment-author-link">Anonyme</span> dans <a href="http://example.org/hello-world#comment-301">Hello world!</a></li><li class="recentcomments"><span class="comment-author-link">Anonyme</span> dans <a href="http://example.org/hello-world#comment-300">Hello world!</a></li><li class="recentcomments"><span class="comment-author-link">Anonyme</span> dans <a href="http://example.org/hello-world#comment-299">Hello world!</a></li><li class="recentcomments"><span class="comment-author-link">Anonyme</span> dans <a href="http://example.org/hello-world#comment-298">Hello world!</a></li><li class="recentcomments"><span class="comment-author-link">Anonyme</span> dans <a href="http://example.org/hello-world#comment-297">Hello world!</a></li></ul></div><div id="archives-2" class="widget widget_archive"><span class="gamma widget-title">Archives</span>       <ul>
 				<li><a href='http://example.org/2019/02'>février 2019</a></li>
 	<li><a href='http://example.org/2013/01'>janvier 2013</a></li>
 	<li><a href='http://example.org/2012/03'>mars 2012</a></li>
@@ -581,7 +595,7 @@ img.emoji {
 	<li><a href='http://example.org/2009/06'>juin 2009</a></li>
 	<li><a href='http://example.org/2009/05'>mai 2009</a></li>
 		</ul>
-			</div><div id="categories-2" class="widget widget_categories"><span class="gamma widget-title">Catégories</span>		<ul>
+			</div><div id="categories-2" class="widget widget_categories"><span class="gamma widget-title">Catégories</span>        <ul>
 				<li class="cat-item cat-item-2"><a href="http://example.org/category/aciform">aciform</a>
 </li>
 	<li class="cat-item cat-item-3"><a href="http://example.org/category/antiquarianism">antiquarianism</a>
@@ -711,11 +725,11 @@ img.emoji {
 	<li class="cat-item cat-item-56"><a href="http://example.org/category/years">years</a>
 </li>
 		</ul>
-			</div><div id="meta-2" class="widget widget_meta"><span class="gamma widget-title">Méta</span>			<ul>
+			</div><div id="meta-2" class="widget widget_meta"><span class="gamma widget-title">Méta</span>          <ul>
 						<li><a href="http://example.org/wp-login.php">Connexion</a></li>
 			<li><a href="http://example.org/feed">Flux <abbr title="Really Simple Syndication">RSS</abbr> des articles</a></li>
 			<li><a href="http://example.org/comments/feed"><abbr title="Really Simple Syndication">RSS</abbr> des commentaires</a></li>
-			<li><a href="https://fr.wordpress.org/" title="Propulsé par WordPress, plate-forme de publication personnelle sémantique de pointe.">Site de WordPress-FR</a></li>			</ul>
+			<li><a href="https://fr.wordpress.org/" title="Propulsé par WordPress, plate-forme de publication personnelle sémantique de pointe.">Site de WordPress-FR</a></li>          </ul>
 			</div></div><!-- #secondary -->
 
 		</div><!-- .col-full -->
@@ -726,8 +740,8 @@ img.emoji {
 		<div class="col-full">
 
 					<div class="site-info">
-			&copy; tests 2019						<br />
-								<a href="https://woocommerce.com" target="_blank" title="WooCommerce - La meilleure plateforme eCommerce pour WordPress" rel="author">Construit avec Storefront &amp; WooCommerce</a>.					</div><!-- .site-info -->
+			&copy; tests 2019                       <br />
+								<a href="https://woocommerce.com" target="_blank" title="WooCommerce - La meilleure plateforme eCommerce pour WordPress" rel="author">Construit avec Storefront &amp; WooCommerce</a>.                  </div><!-- .site-info -->
 		
 		</div><!-- .col-full -->
 	</footer><!-- #colophon -->

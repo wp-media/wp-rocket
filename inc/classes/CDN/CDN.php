@@ -36,14 +36,46 @@ class CDN {
 	 * @return string
 	 */
 	public function rewrite( $html ) {
-		$pattern = '#(?<url>(?<=[(\"\'])(?:(?:https?:|)' . preg_quote( $this->get_base_url(), '#' ) . ')?\/(?:(?:(?:' . $this->get_allowed_paths() . ')[^\"\')]+)|(?:[^\/\"\'>]+\.[^\/\"\')]+))(?=[\"\')]))#i';
+		$pattern = '#[("\']\s*(?<url>(?:(?:https?:|)' . preg_quote( $this->get_base_url(), '#' ) . ')\/(?:(?:(?:' . $this->get_allowed_paths() . ')[^"\',)]+))|\/[^/](?:[^"\')\s>]+\.[^"\')\s>]+))\s*["\')]#i';
 		return preg_replace_callback(
 			$pattern,
 			function( $matches ) {
-				return $this->rewrite_url( $matches['url'] );
+				return str_replace( $matches['url'], $this->rewrite_url( $matches['url'] ), $matches[0] );
 			},
 			$html
 		);
+	}
+
+	/**
+	 * Rewrites URLs in a srcset attribute using the CDN URL
+	 *
+	 * @since 3.4.0.4
+	 * @author Remy Perona
+	 *
+	 * @param string $html HTML content.
+	 * @return string
+	 */
+	public function rewrite_srcset( $html ) {
+		$pattern = '#\s+(?:data-lazy-|data-)?srcset\s*=\s*["\']\s*(?<sources>[^"\',\s]+\.[^"\',\s]+(?:\s+\d+[wx])?(?:\s*,\s*[^"\',\s]+\.[^"\',\s]+\s+\d+[wx])*)\s*["\']#i';
+
+		if ( ! preg_match_all( $pattern, $html, $srcsets, PREG_SET_ORDER ) ) {
+			return $html;
+		}
+
+		foreach ( $srcsets as $srcset ) {
+			$sources    = explode( ',', $srcset['sources'] );
+			$cdn_srcset = $srcset['sources'];
+
+			foreach ( $sources as $source ) {
+				$url        = \preg_split( '#\s+#', trim( $source ) );
+				$cdn_srcset = str_replace( $url[0], $this->rewrite_url( $url[0] ), $cdn_srcset );
+			}
+
+			$cdn_srcsets = str_replace( $srcset['sources'], $cdn_srcset, $srcset[0] );
+			$html        = str_replace( $srcset[0], $cdn_srcsets, $html );
+		}
+
+		return $html;
 	}
 
 	/**
@@ -211,11 +243,17 @@ class CDN {
 	 * @return boolean
 	 */
 	public function is_excluded( $url ) {
-		if ( 'php' === pathinfo( strtok( $url, '?' ), PATHINFO_EXTENSION ) ) {
+		$path = wp_parse_url( $url, PHP_URL_PATH );
+
+		$excluded_extensions = [
+			'php',
+			'html',
+			'htm',
+		];
+
+		if ( in_array( pathinfo( $path, PATHINFO_EXTENSION ), $excluded_extensions, true ) ) {
 			return true;
 		}
-
-		$path = wp_parse_url( $url, PHP_URL_PATH );
 
 		if ( ! $path ) {
 			return true;
@@ -305,7 +343,7 @@ class CDN {
 		$files = array_flip( array_flip( $files ) );
 		$files = array_map(
 			function ( $file ) use ( $delimiter ) {
-				return preg_quote( $file, $delimiter );
+				return str_replace( $delimiter, '\\' . $delimiter, $file );
 			},
 			$files
 		);

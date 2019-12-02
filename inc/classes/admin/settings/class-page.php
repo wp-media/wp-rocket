@@ -737,6 +737,16 @@ class Page {
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
 				],
+				'dequeue_jquery_migrate' => [
+					'type'              => 'checkbox',
+					'label'             => __( 'Dequeue jQuery Migrate', 'rocket' ),
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description'       => sprintf( __( 'Dequeue jQuery Migrate eliminates a JS file and can improve load time. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $defer_js_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $defer_js_beacon['id'] ) . '" target="_blank">', '</a>' ),
+					'section'           => 'js',
+					'page'              => 'file_optimization',
+					'default'           => 0,
+					'sanitize_callback' => 'sanitize_checkbox',
+				],
 				'minify_js'              => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Minify JavaScript files', 'rocket' ),
@@ -841,19 +851,6 @@ class Page {
 					'default'           => 1,
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
-				'dequeue_jquery_migrate'           => [
-					'container_class'   => [
-						'wpr-isLastElem',
-					],
-					'type'              => 'checkbox',
-					'label'             => __( 'Dequeue jQuery Migrate', 'rocket' ),
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'Dequeue jQuery Migrate eliminates a JS file and can improve load time. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $defer_js_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $defer_js_beacon['id'] ) . '" target="_blank">', '</a>' ),
-					'section'           => 'js',
-					'page'              => 'file_optimization',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
-				],
 			]
 		);
 	}
@@ -884,6 +881,22 @@ class Page {
 			]
 		);
 
+		$rocket_maybe_disable_lazyload_plugins = [];
+		if ( rocket_maybe_disable_lazyload() ) {
+			$rocket_maybe_disable_lazyload_plugins[] = __( 'Autoptimize', 'rocket' );
+		}
+
+		/**
+		 * Lazyload Helper filter which disables WPR lazyload functionality
+		 *
+		 * @since  3.4.2
+		 * @author Soponar Cristina
+		 *
+		 * @param array Will return the array with all plugin names which should disable LazyLoad
+		 */
+		$rocket_maybe_disable_lazyload_plugins = apply_filters( 'rocket_maybe_disable_lazyload_helper', $rocket_maybe_disable_lazyload_plugins );
+		$rocket_maybe_disable_lazyload_plugins = wp_sprintf_l( '%l', $rocket_maybe_disable_lazyload_plugins );
+
 		$this->settings->add_settings_sections(
 			[
 				'lazyload_section' => [
@@ -897,7 +910,7 @@ class Page {
 					],
 					'page'        => 'media',
 					// translators: %1$s = “WP Rocket”.
-					'helper'      => rocket_maybe_disable_lazyload() ? sprintf( __( 'Lazyload is currently activated in <strong>Autoptimize</strong>. If you want to use %1$s’s lazyload, disable this option in Autoptimize.', 'rocket' ), WP_ROCKET_PLUGIN_NAME ) : '',
+					'helper'      => ! empty( $rocket_maybe_disable_lazyload_plugins ) ? sprintf( __( 'Lazyload is currently activated in <strong>%2$s</strong>. If you want to use %1$s’s lazyload, disable this option in %2$s.', 'rocket' ), WP_ROCKET_PLUGIN_NAME, $rocket_maybe_disable_lazyload_plugins ) : '',
 				],
 				'emoji_section'    => [
 					'title'       => __( 'Emoji 👻', 'rocket' ),
@@ -950,10 +963,10 @@ class Page {
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 					'container_class'   => [
-						( rocket_avada_maybe_disable_lazyload() || rocket_maybe_disable_lazyload() ) ? 'wpr-isDisabled' : '',
+						( rocket_avada_maybe_disable_lazyload() || ! empty( $rocket_maybe_disable_lazyload_plugins ) ) ? 'wpr-isDisabled' : '',
 					],
 					'input_attr'        => [
-						'disabled' => ( rocket_avada_maybe_disable_lazyload() || rocket_maybe_disable_lazyload() ) ? 1 : 0,
+						'disabled' => ( rocket_avada_maybe_disable_lazyload() || ! empty( $rocket_maybe_disable_lazyload_plugins ) ) ? 1 : 0,
 					],
 					'description'       => rocket_avada_maybe_disable_lazyload() ? _x( 'Lazyload for images is currently activated in Avada. If you want to use WP Rocket’s LazyLoad, disable this option in Avada.', 'Avada', 'rocket' ) : '',
 				],
@@ -1748,6 +1761,27 @@ class Page {
 			]
 		);
 
+		$this->settings->add_settings_fields(
+			[
+				'do_cloudflare' => [
+					'type'              => 'rocket_addon',
+					'label'             => __( 'Cloudflare', 'rocket' ),
+					'logo'              => [
+						'url'    => WP_ROCKET_ASSETS_IMG_URL . 'logo-cloudflare2.svg',
+						'width'  => 153,
+						'height' => 51,
+					],
+					'title'             => __( 'Integrate your Cloudflare account with this add-on.', 'rocket' ),
+					'description'       => __( 'Provide your account email, global API key, and domain to use options such as clearing the Cloudflare cache and enabling optimal settings with WP Rocket.', 'rocket' ),
+					'section'           => 'addons',
+					'page'              => 'addons',
+					'settings_page'     => 'cloudflare',
+					'default'           => 0,
+					'sanitize_callback' => 'sanitize_checkbox',
+				],
+			]
+		);
+
 		/**
 		 * Allow to display the "Varnish" tab in the settings page
 		 *
@@ -1791,27 +1825,6 @@ class Page {
 				)
 			);
 		}
-
-		$this->settings->add_settings_fields(
-			[
-				'do_cloudflare' => [
-					'type'              => 'rocket_addon',
-					'label'             => __( 'Cloudflare', 'rocket' ),
-					'logo'              => [
-						'url'    => WP_ROCKET_ASSETS_IMG_URL . 'logo-cloudflare2.svg',
-						'width'  => 153,
-						'height' => 51,
-					],
-					'title'             => __( 'Integrate your Cloudflare account with this add-on.', 'rocket' ),
-					'description'       => __( 'Provide your account email, global API key, and domain to use options such as clearing the Cloudflare cache and enabling optimal settings with WP Rocket.', 'rocket' ),
-					'section'           => 'addons',
-					'page'              => 'addons',
-					'settings_page'     => 'cloudflare',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
-				],
-			]
-		);
 
 		if ( defined( 'WP_ROCKET_SUCURI_API_KEY_HIDDEN' ) && WP_ROCKET_SUCURI_API_KEY_HIDDEN ) {
 			// No need to display the dedicated tab if there is nothing to display on it.
@@ -1882,8 +1895,9 @@ class Page {
 		$this->settings->add_settings_fields(
 			[
 				'varnish_custom_ip' => [
+					'type'        => 'textarea',
 					'label'       => _x( 'Custom Host/IP', 'Varnish', 'rocket' ),
-					'helper'      => __( 'There are cases when a custom IP Address is needed to for the plugin to properly communicate with the cache service. If you are using a CDN like Cloudflare or a Firewall Proxy like Sucuri, you may need to customize this setting.', 'rocket' ),
+					'description' => __( 'There are cases when a custom IP Address is needed to for the plugin to properly communicate with the cache service. If you are using a CDN like Cloudflare or a Firewall Proxy like Sucuri, you may need to customize this setting.', 'rocket' ),
 					'default'     => '',
 					'section'     => 'varnish_settings',
 					'page'        => 'varnish',
@@ -1913,8 +1927,9 @@ class Page {
 			]
 		);
 
-		$beacon_cf_credentials = $this->beacon->get_suggest( 'cloudflare_credentials' );
-		$beacon_cf_settings    = $this->beacon->get_suggest( 'cloudflare_settings' );
+		$beacon_cf_credentials     = $this->beacon->get_suggest( 'cloudflare_credentials' );
+		$beacon_cf_settings        = $this->beacon->get_suggest( 'cloudflare_settings' );
+		$beacon_cf_credentials_api = $this->beacon->get_suggest( 'cloudflare_credentials_api' );
 
 		$this->settings->add_settings_sections(
 			[
@@ -1944,7 +1959,7 @@ class Page {
 				[
 					'cloudflare_api_key' => [
 						'label'       => _x( 'Global API key:', 'Cloudflare', 'rocket' ),
-						'description' => sprintf( '<a href="%1$s" target="_blank">%2$s</a>', esc_url( __( 'https://support.cloudflare.com/hc/en-us/articles/200167836-Where-do-I-find-my-Cloudflare-API-key-', 'rocket' ) ), _x( 'Find your API key', 'Cloudflare', 'rocket' ) ),
+						'description' => sprintf( '<a href="%1$s" target="_blank">%2$s</a>', esc_url( $beacon_cf_credentials_api['url'] ), _x( 'Find your API key', 'Cloudflare', 'rocket' ) ),
 						'default'     => '',
 						'section'     => 'cloudflare_credentials',
 						'page'        => 'cloudflare',
@@ -2010,6 +2025,7 @@ class Page {
 	 *
 	 * @since  3.2
 	 * @access private
+	 *
 	 * @author Grégory Viguier
 	 */
 	private function sucuri_section() {

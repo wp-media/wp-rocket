@@ -5,6 +5,8 @@ use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Brain\Monkey;
 
 class TestCase extends PHPUnitTestCase {
+	use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+
 	protected function setUp() {
 		parent::setUp();
 		Monkey\setUp();

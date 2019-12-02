@@ -2,6 +2,48 @@
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
+ * Get Zones linked to a Cloudflare account
+ *
+ * @since 2.9
+ * @deprecated 3.4.1.2
+ * @author Remy Perona
+ *
+ * @return Array List of zones or default no domain
+ */
+function get_rocket_cloudflare_zones() {
+	_deprecated_function( __FUNCTION__ . '()', '3.4.1.2' );
+	$cf_api_instance = get_rocket_cloudflare_api_instance();
+	$domains         = array(
+		'' => __( 'Choose a domain from the list', 'rocket' ),
+	);
+
+	if ( is_wp_error( $cf_api_instance ) ) {
+		return $domains;
+	}
+
+	try {
+		$cf_zone_instance = new Cloudflare\Zone( $cf_api_instance );
+		$cf_zones         = $cf_zone_instance->zones( null, 'active', null, 50 );
+		$cf_zones_list    = $cf_zones->result;
+
+		if ( ! (bool) $cf_zones_list ) {
+			$domains[] = __( 'No domain available in your Cloudflare account', 'rocket' );
+
+			return $domains;
+		}
+
+		foreach ( $cf_zones_list as $cf_zone ) {
+			$domains[ $cf_zone->name ] = $cf_zone->name;
+		}
+
+		return $domains;
+	} catch ( Exception $e ) {
+		return $domains;
+	}
+}
+
+
+/**
  * Get CNAMES hosts
  *
  * @since 2.3
@@ -674,51 +716,3 @@ function rocket_cdn_on_sliders_with_lazyload() {
 	}
 }
 
-/**
- * Get all CNAMES.
- *
- * @since 2.1
- * @since 3.0 Don't check for WP Rocket CDN option activated to be able to use the function on Hosting with CDN auto-enabled.
- * @deprecated 3.4
- *
- * @param  string $zone List of zones. Default is 'all'.
- * @return array        List of CNAMES
- */
-function get_rocket_cdn_cnames( $zone = 'all' ) {
-	_deprecated_function( __FUNCTION__ . '()', '3.4' );
-
-	$hosts  = [];
-	$cnames = get_rocket_option( 'cdn_cnames', [] );
-
-	if ( $cnames ) {
-		$cnames_zone = get_rocket_option( 'cdn_zone', [] );
-		$zone        = (array) $zone;
-
-		foreach ( $cnames as $k => $_urls ) {
-			if ( ! in_array( $cnames_zone[ $k ], $zone, true ) ) {
-				continue;
-			}
-
-			$_urls = explode( ',', $_urls );
-			$_urls = array_map( 'trim', $_urls );
-
-			foreach ( $_urls as $url ) {
-				$hosts[] = $url;
-			}
-		}
-	}
-
-	/**
-	 * Filter all CNAMES.
-	 *
-	 * @since 2.7
-	 *
-	 * @param array $hosts List of CNAMES.
-	 */
-	$hosts = (array) apply_filters( 'rocket_cdn_cnames', $hosts );
-	$hosts = array_filter( $hosts );
-	$hosts = array_flip( array_flip( $hosts ) );
-	$hosts = array_values( $hosts );
-
-	return $hosts;
-}

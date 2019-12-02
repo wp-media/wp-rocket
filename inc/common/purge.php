@@ -121,9 +121,15 @@ function rocket_clean_post( $post_id, $post = null ) {
 	if ( 'post' !== $post->post_type ) {
 		$post_type_archive = get_post_type_archive_link( get_post_type( $post_id ) );
 		if ( $post_type_archive ) {
+			// Rename the caching filename for SSL URLs.
+			$filename = 'index';
+			if ( is_ssl() ) {
+				$filename .= '-https';
+			}
+
 			$post_type_archive = trailingslashit( $post_type_archive );
-			array_push( $purge_urls, $post_type_archive . 'index.html' );
-			array_push( $purge_urls, $post_type_archive . 'index.html_gzip' );
+			array_push( $purge_urls, $post_type_archive . $filename . '.html' );
+			array_push( $purge_urls, $post_type_archive . $filename . '.html_gzip' );
 			array_push( $purge_urls, $post_type_archive . $GLOBALS['wp_rewrite']->pagination_base );
 		}
 	}
@@ -184,7 +190,7 @@ function rocket_clean_post( $post_id, $post = null ) {
 	}
 
 	// Add the author page.
-	$purge_author = array( get_author_posts_url( $post->post_author ) );
+	$purge_author = [ get_author_posts_url( $post->post_author ) ];
 	$purge_urls   = array_merge( $purge_urls, $purge_author );
 
 	// Add all parents.
@@ -249,7 +255,7 @@ add_action( 'wp_update_comment_count', 'rocket_clean_post' );
  * @return array An array of pattern to use for clearing the cache
  */
 function rocket_clean_files_users( $urls ) {
-	$pattern_urls = array();
+	$pattern_urls = [];
 	foreach ( $urls as $url ) {
 		$parse_url      = get_rocket_parse_url( $url );
 		$pattern_urls[] = $parse_url['scheme'] . '://' . $parse_url['host'] . '*' . $parse_url['path'];
@@ -436,7 +442,21 @@ function do_admin_post_rocket_purge_opcache() {
 		return;
 	}
 
-	rocket_reset_opcache();
+	$reset_opcache = rocket_reset_opcache();
+
+	if ( ! $reset_opcache ) {
+		$op_purge_result = [
+			'result'  => 'error',
+			'message' => __( 'OPcache purge failed.', 'rocket' ),
+		];
+	} else {
+		$op_purge_result = [
+			'result'  => 'success',
+			'message' => __( 'OPcache successfully purged', 'rocket' ),
+		];
+	}
+
+	set_transient( get_current_user_id() . '_opcache_purge_result', $op_purge_result );
 
 	wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
 	die();
@@ -461,19 +481,19 @@ function do_admin_post_rocket_purge_cloudflare() {
 	$cf_purge = rocket_purge_cloudflare();
 
 	if ( is_wp_error( $cf_purge ) ) {
-		$cf_purge_result = array(
+		$cf_purge_result = [
 			'result'  => 'error',
 			// translators: %s = CloudFare API return message.
-			'message' => sprintf( __( 'Cloudflare cache purge error: %s', 'rocket' ), $cf_purge->get_error_message() ),
-		);
+			'message' => sprintf( __( '<strong>WP Rocket:</strong> %s', 'rocket' ), $cf_purge->get_error_message() ),
+		];
 	} else {
-		$cf_purge_result = array(
+		$cf_purge_result = [
 			'result'  => 'success',
-			'message' => __( 'Cloudflare cache successfully purged', 'rocket' ),
-		);
+			'message' => __( '<strong>WP Rocket:</strong> Cloudflare cache successfully purged.', 'rocket' ),
+		];
 	}
 
-	set_transient( $GLOBALS['current_user']->ID . '_cloudflare_purge_result', $cf_purge_result );
+	set_transient( get_current_user_id() . '_cloudflare_purge_result', $cf_purge_result );
 
 	wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
 	die();
@@ -513,3 +533,19 @@ function rocket_clean_cache_theme_update( $wp_upgrader, $hook_extra ) {
 
 	rocket_clean_domain();
 }
+
+/**
+ * Purge WP Rocket cache on Slug / Permalink change.
+ *
+ * @since  3.4.2
+ * @author Soponar Cristina
+ *
+ * @param int   $post_id   The post ID.
+ * @param array $post_data Array of unslashed post data.
+ */
+function rocket_clean_post_cache_on_slug_change( $post_id, $post_data ) {
+	if ( get_post_field( 'post_name', $post_id ) !== $post_data['post_name'] ) {
+        rocket_clean_files( get_the_permalink( $post_id ) );
+    }
+}
+add_action( 'pre_post_update', 'rocket_clean_post_cache_on_slug_change', 10, 2 );

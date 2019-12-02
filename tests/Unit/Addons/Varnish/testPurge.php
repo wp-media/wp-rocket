@@ -7,8 +7,6 @@ use Brain\Monkey\Functions;
 use Brain\Monkey\Filters;
 
 class TestPurge extends TestCase {
-    use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-
     public function testShouldSendRequestOnceWithDefaultValues() {
         $options = $this->createMock('WP_Rocket\Admin\Options_Data');
         $map     = [
@@ -68,8 +66,10 @@ class TestPurge extends TestCase {
             ],
             [
                 'varnish_custom_ip',
-                '',
-                'localhost',
+                [],
+                [
+                    'localhost'
+                ],
             ],
         ];
 
