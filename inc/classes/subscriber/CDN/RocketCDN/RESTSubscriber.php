@@ -12,6 +12,8 @@ use WP_Rocket\Admin\Options_Data;
  * @author Remy Perona
  */
 class RESTSubscriber implements Subscriber_Interface {
+	const ROUTE_NAMESPACE = 'wp-rocket/v1';
+
 	/**
 	 * WP Options API instance
 	 *
@@ -59,7 +61,7 @@ class RESTSubscriber implements Subscriber_Interface {
 	 */
 	public function register_enable_route() {
 		register_rest_route(
-			'wp-rocket/v1',
+			self::ROUTE_NAMESPACE,
 			'rocketcdn/enable',
 			[
 				'methods'  => 'PUT',
@@ -99,7 +101,7 @@ class RESTSubscriber implements Subscriber_Interface {
 	 */
 	public function register_disable_route() {
 		register_rest_route(
-			'wp-rocket/v1',
+			self::ROUTE_NAMESPACE,
 			'rocketcdn/disable',
 			[
 				'methods'  => 'PUT',
