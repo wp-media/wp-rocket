@@ -140,7 +140,15 @@ class RESTSubscriber implements Subscriber_Interface {
 		$this->options_api->set( 'settings', $this->options->get_options() );
 		$this->options_api->set( 'rocketcdn_active', 1 );
 
-		return rest_ensure_response( __( 'RocketCDN Enabled', 'rocket' ) );
+		$response = [
+			'code'    => 'success',
+			'message' => __( 'RocketCDN enabled', 'rocket' ),
+			'data'    => [
+				'status' => 200,
+			],
+		];
+
+		return rest_ensure_response( $response );
 	}
 
 	/**
@@ -160,7 +168,15 @@ class RESTSubscriber implements Subscriber_Interface {
 		$this->options_api->set( 'settings', $this->options->get_options() );
 		$this->options_api->set( 'rocketcdn_active', 0 );
 
-		return rest_ensure_response( __( 'RocketCDN disabled', 'rocket' ) );
+		$response = [
+			'code'    => 'success',
+			'message' => __( 'RocketCDN disabled', 'rocket' ),
+			'data'    => [
+				'status' => 200,
+			],
+		];
+
+		return rest_ensure_response( $response );
 	}
 
 	/**
