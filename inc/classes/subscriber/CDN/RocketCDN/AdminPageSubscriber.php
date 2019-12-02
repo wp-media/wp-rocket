@@ -11,6 +11,8 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * @author Remy Perona
  */
 class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interface {
+	const ROCKETCDN_API = 'https://rocketcdn.me/api/';
+
 	/**
 	 * @inheritDoc
 	 */
@@ -43,7 +45,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 
 		$subscription_data = $this->get_subscription_data();
 
-		if ( $subscription_data['active'] ) {
+		if ( $subscription_data['is_active'] ) {
 			return;
 		}
 
@@ -65,9 +67,9 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		$status_class      = 'wpr-isInvalid';
 		$container_class   = 'wpr-flex--egal';
 
-		if ( $subscription_data['active'] ) {
+		if ( $subscription_data['is_active'] ) {
 			$label          .= ' ' . __( 'Next Billing Date', 'rocket' );
-			$status_text     = date_i18n( get_option( 'date_format' ), strtotime( $subscription_data['next_renewal'] ) );
+			$status_text     = date_i18n( get_option( 'date_format' ), strtotime( $subscription_data['consumption_next_date_update'] ) );
 			$status_class    = 'wpr-isValid';
 			$container_class = '';
 		}
@@ -77,7 +79,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 			'label'               => $label,
 			'status_class'        => $status_class,
 			'status_text'         => $status_text,
-			'subscription_status' => $subscription_data['active'],
+			'subscription_status' => $subscription_data['is_active'],
 		];
 
 		echo $this->generate( 'dashboard-status', $data );
@@ -94,7 +96,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	public function display_rocketcdn_cta() {
 		$subscription_data = $this->get_subscription_data();
 
-		if ( $subscription_data['active'] ) {
+		if ( $subscription_data['is_active'] ) {
 			return;
 		}
 
@@ -146,7 +148,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	public function rocketcdn_field( $fields ) {
 		$subscription_data = $this->get_subscription_data();
 
-		if ( ! $subscription_data['active'] ) {
+		if ( ! $subscription_data['is_active'] ) {
 			return $fields;
 		}
 
@@ -194,10 +196,35 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 * @return array
 	 */
 	private function get_subscription_data() {
-		return [
-			'active'       => false,
-			'next_renewal' => '2020-04-10T13:59:42.356081Z',
+		$status = get_transient( 'rocketcdn_status' );
+
+		if ( false !== $status ) {
+			return $status;
+		}
+
+		$default = [
+			'is_active'                    => false,
+			'consumption_next_date_update' => 0,
 		];
+
+		$response = wp_remote_get(
+			self::ROCKETCDN_API . 'website/?url=' . home_url()
+		);
+
+		$data = wp_remote_retrieve_body( $response );
+
+		if ( empty( $data ) ) {
+			set_transient( 'rocketcdn_status', $default, WEEK_IN_SECONDS );
+
+			return $default;
+		}
+
+		$data = json_decode( $data );
+		$data = array_intersect_key( $data, $default );
+
+		set_transient( 'rocketcdn_status', $data, WEEK_IN_SECONDS );
+
+		return $data;
 	}
 
 	/**
