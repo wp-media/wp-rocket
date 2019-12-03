@@ -23,6 +23,8 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 			'rocket_before_cdn_sections'          => 'display_rocketcdn_cta',
 			'rocket_cdn_settings_fields'          => 'rocketcdn_field',
 			'wp_ajax_toggle_rocketcdn_cta'        => 'toggle_cta',
+			'wp_ajax_rocketcdn_dismiss_notice'    => 'dismiss_notice',
+			'admin_footer'                        => 'add_dismiss_script',
 		];
 	}
 
@@ -35,11 +37,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 * @return void
 	 */
 	public function promote_rocketcdn_notice() {
-		if ( ! current_user_can( 'rocket_manage_options' ) ) {
-			return;
-		}
-
-		if ( 'settings_page_wprocket' !== get_current_screen()->id ) {
+		if ( ! $this->should_display_notice() ) {
 			return;
 		}
 
@@ -50,6 +48,82 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		}
 
 		echo $this->generate( 'promote-notice' );
+	}
+
+	/**
+	 * Adds inline script to permanently dismissing the RocketCDN promotion notice
+	 *
+	 * @since 3.5
+	 * @author Remy Perona
+	 *
+	 * @return void
+	 */
+	public function add_dismiss_script() {
+		if ( ! $this->should_display_notice() ) {
+			return;
+		}
+
+		$nonce = wp_create_nonce( 'rocketcdn_dismiss_notice' );
+		?>
+		<script>
+		window.addEventListener( 'load', function() {
+			var dismissBtn  = document.querySelector( '#rocketcdn-promote-notice .notice-dismiss' );
+
+			dismissBtn.addEventListener( 'click', function( event ) {
+				var httpRequest = new XMLHttpRequest(),
+					postData    = '';
+
+				postData += 'action=rocketcdn_dismiss_notice';
+				postData += '&nonce=<?php echo esc_html( $nonce ); ?>';
+				httpRequest.open( 'POST', '<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>' );
+				httpRequest.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' )
+				httpRequest.send( postData );
+			});
+		});
+		</script>
+		<?php
+	}
+
+	/**
+	 * Ajax callback to save the dismiss as a user meta
+	 *
+	 * @since 3.5
+	 * @author Remy Perona
+	 *
+	 * @return void
+	 */
+	public function dismiss_notice() {
+		check_ajax_referer( 'rocketcdn_dismiss_notice', 'nonce', true );
+
+		if ( ! isset( $_POST['action'] ) || 'rocketcdn_dismiss_notice' !== $_POST['action'] ) {
+			return;
+		}
+
+		update_user_meta( get_current_user_id(), 'rocketcdn_dismiss_notice', true );
+	}
+
+	/**
+	 * Checks if the promotion notice should be displayed
+	 *
+	 * @since 3.5
+	 * @author Remy Perona
+	 *
+	 * @return boolean
+	 */
+	private function should_display_notice() {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return false;
+		}
+
+		if ( 'settings_page_wprocket' !== get_current_screen()->id ) {
+			return false;
+		}
+
+		if ( get_user_meta( get_current_user_id(), 'rocketcdn_dismiss_notice', true ) ) {
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
@@ -69,17 +143,20 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 
 		if ( $subscription_data['is_active'] ) {
 			$label          .= ' ' . __( 'Next Billing Date', 'rocket' );
-			$status_text     = date_i18n( get_option( 'date_format' ), strtotime( $subscription_data['consumption_next_date_update'] ) );
 			$status_class    = 'wpr-isValid';
 			$container_class = '';
 		}
 
+		if ( 'cancelled' !== $subscription_data['subscription_status'] ) {
+			$status_text = date_i18n( get_option( 'date_format' ), strtotime( $subscription_data['subscription_next_date_update'] ) );
+		}
+
 		$data = [
-			'container_class'     => $container_class,
-			'label'               => $label,
-			'status_class'        => $status_class,
-			'status_text'         => $status_text,
-			'subscription_status' => $subscription_data['is_active'],
+			'container_class' => $container_class,
+			'label'           => $label,
+			'status_class'    => $status_class,
+			'status_text'     => $status_text,
+			'is_active'       => $subscription_data['is_active'],
 		];
 
 		echo $this->generate( 'dashboard-status', $data );
@@ -203,13 +280,20 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		}
 
 		$default = [
-			'is_active'                    => false,
-			'consumption_next_date_update' => 0,
+			'is_active'                     => false,
+			'subscription_next_date_update' => 0,
+			'subscription_status'           => 'cancelled',
 		];
 
 		$response = wp_remote_get(
 			self::ROCKETCDN_API . 'website/?url=' . home_url()
 		);
+
+		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
+			set_transient( 'rocketcdn_status', $default, WEEK_IN_SECONDS );
+
+			return $default;
+		}
 
 		$data = wp_remote_retrieve_body( $response );
 
