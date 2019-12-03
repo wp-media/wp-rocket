@@ -207,9 +207,6 @@ class CloudflareSubscriber implements Subscriber_Interface {
 	 * @since 2.5
 	 */
 	public function purge_cache_no_die() {
-		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'rocket_purge_cloudflare' ) ) {
-			wp_nonce_ays( '' );
-		}
 		if ( ! $this->options->get( 'do_cloudflare' ) || ! current_user_can( 'rocket_purge_cloudflare_cache' ) ) {
 			return;
 		}
@@ -239,6 +236,9 @@ class CloudflareSubscriber implements Subscriber_Interface {
 	 * @since 2.5
 	 */
 	public function purge_cache() {
+		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'rocket_purge_cloudflare' ) ) {
+			wp_nonce_ays( '' );
+		}
 		$this->purge_cache_no_die();
 		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
 		die();

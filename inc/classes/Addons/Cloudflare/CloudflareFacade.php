@@ -80,19 +80,9 @@ class CloudflareFacade {
 	 *
 	 * @since 3.5
 	 * @author Soponar Cristina
-	 *
-	 * @param Cloudflare\Api            $api        - Cloudflare API Instance.
-	 * @param Cloudflare\Zone\Cache     $cache      - Cloudflare Cache Instance.
-	 * @param Cloudflare\Zone\PageRules $page_rules - Cloudflare Page Rules Instance.
-	 * @param Cloudflare\Zone\Settings  $settings   - Cloudflare Settings Instance.
-	 * @param Cloudflare\IPs            $ips        - Cloudflare IPS Instance.
 	 */
-	public function __construct( $api, $cache, $page_rules, $settings, $ips ) {
-		$this->api        = $api;
-		$this->cache      = $cache;
-		$this->page_rules = $page_rules;
-		$this->settings   = $settings;
-		$this->ips        = $ips;
+	public function __construct() {
+		$this->api = new Api();
 	}
 
 	/**
@@ -104,13 +94,12 @@ class CloudflareFacade {
 	 * @param string $email      - Cloudflare Email.
 	 * @param string $api_key    - Cloudflare API Key.
 	 * @param string $zone_id    - Cloudflare Zone ID.
-	 * @param string $user_agent - Cloudflare User Agent.
 	 * @return void
 	 */
-	public function set_api_credentials( $email, $api_key, $zone_id, $user_agent ) {
+	public function set_api_credentials( $email, $api_key, $zone_id ) {
 		$this->api->setEmail( $email );
 		$this->api->setAuthKey( $api_key );
-		$this->api->setCurlOption( CURLOPT_USERAGENT, $user_agent );
+		$this->api->setCurlOption( CURLOPT_USERAGENT, 'wp-rocket/' . WP_ROCKET_VERSION );
 
 		$this->zone_id = $zone_id;
 		// Loading with Valid API Credentials.

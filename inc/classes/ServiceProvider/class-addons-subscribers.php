@@ -3,12 +3,6 @@ namespace WP_Rocket\ServiceProvider;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
 
-use Cloudflare\Api as CloudflareApi;
-use Cloudflare\Zone\Cache as CloudflareCache;
-use Cloudflare\Zone\Pagerules as CloudflarePageRules;
-use Cloudflare\Zone\Settings as CloudflareSettings;
-use Cloudflare\IPs as CloudflareIPs;
-
 /**
  * Service provider for WP Rocket addons
  *
@@ -61,12 +55,7 @@ class Addons_Subscribers extends AbstractServiceProvider {
 		$this->getContainer()->share( 'varnish_subscriber', 'WP_Rocket\Subscriber\Addons\Varnish\VarnishSubscriber' )
 			->withArgument( $this->getContainer()->get( 'varnish' ) )
 			->withArgument( $this->getContainer()->get( 'options' ) );
-		$this->getContainer()->add( 'cloudflare_facade', 'WP_Rocket\Addons\Cloudflare\CloudflareFacade' )
-			->withArgument( new CloudflareApi() )
-			->withArgument( new CloudflareCache() )
-			->withArgument( new CloudflarePageRules() )
-			->withArgument( new CloudflareSettings() )
-			->withArgument( new CloudflareIPs() );
+		$this->getContainer()->add( 'cloudflare_facade', 'WP_Rocket\Addons\Cloudflare\CloudflareFacade' );
 		$this->getContainer()->add( 'cloudflare', 'WP_Rocket\Addons\Cloudflare\Cloudflare' )
 			->withArgument( $this->getContainer()->get( 'options' ) )
 			->withArgument( $this->getContainer()->get( 'cloudflare_facade' ) );

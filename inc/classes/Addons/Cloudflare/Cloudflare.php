@@ -33,11 +33,6 @@ class Cloudflare {
 	private $cloudflare_api_error;
 
 	/**
-	 * Cloudflare User Agent
-	 */
-	const CF_USER_AGENT = 'wp-rocket/' . WP_ROCKET_VERSION;
-
-	/**
 	 * Constructor
 	 *
 	 * @param Options_Data     $options WP Rocket options instance.
@@ -85,7 +80,7 @@ class Cloudflare {
 		}
 
 		// Sets Cloudflare Valid Credentials and User Agent.
-		$this->cloudflare_facade->set_api_credentials( $cf_email, $cf_api_key, $cf_zone_id, self::CF_USER_AGENT );
+		$this->cloudflare_facade->set_api_credentials( $cf_email, $cf_api_key, $cf_zone_id );
 	}
 
 	/**
@@ -132,7 +127,7 @@ class Cloudflare {
 		}
 
 		try {
-			$this->cloudflare_facade->set_api_credentials( $cf_email, $cf_api_key, $cf_zone_id, self::CF_USER_AGENT );
+			$this->cloudflare_facade->set_api_credentials( $cf_email, $cf_api_key, $cf_zone_id );
 
 			$cf_zone = $this->cloudflare_facade->get_zones();
 
@@ -566,7 +561,7 @@ class Cloudflare {
 		$cf_email   = $this->options->get( 'cloudflare_email', null );
 		$cf_api_key = defined( 'WP_ROCKET_CF_API_KEY' ) ? WP_ROCKET_CF_API_KEY : $this->options->get( 'cloudflare_api_key', null );
 
-		$this->cloudflare_facade->set_api_credentials( $cf_email, $cf_api_key, '', self::CF_USER_AGENT );
+		$this->cloudflare_facade->set_api_credentials( $cf_email, $cf_api_key, '' );
 		try {
 			$cf_ips = $this->cloudflare_facade->ips();
 
@@ -596,7 +591,7 @@ class Cloudflare {
 	 *
 	 * @return Object Default Cloudflare connecting IPs.
 	 */
-	public function get_default_ips() {
+	private function get_default_ips() {
 		$cf_ips = (object) [
 			'result'   => (object) [],
 			'success'  => true,
