@@ -98,11 +98,12 @@ class Facebook_SDK extends Abstract_Busting {
 			return $html;
 		}
 
-		$html      = str_replace( $tag, $replace_tag, $html );
-		$file_path = $this->get_busting_file_path( $locale );
-		$xfbml     = $this->get_xfbml_from_url( $tag ); // Default value should be set to false.
-		$app_id    = $this->get_appId_from_url( $tag ); // APP_ID is the only required value.
-		$version   = false === $this->get_version_from_url( $tag ) ? 'v5.0' : $this->get_version_from_url( $tag ); // If version is not available set it to the latest: v.5.0.
+		$html        = str_replace( $tag, $replace_tag, $html );
+		$file_path   = $this->get_busting_file_path( $locale );
+		$xfbml       = $this->get_xfbml_from_url( $tag ); // Default value should be set to false.
+		$app_id      = $this->get_appId_from_url( $tag ); // APP_ID is the only required value.
+		$url_version = $this->get_version_from_url( $tag );
+		$version     = false === $url_version ? 'v5.0' : $url_version; // If version is not available set it to the latest: v.5.0.
 
 		if ( false !== $app_id ) {
 			// Add FB async init.
