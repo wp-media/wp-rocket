@@ -5,11 +5,6 @@ use PHPUnit\Framework\TestCase;
 use WP_Rocket\Subscriber\Addons\Cloudflare\CloudflareSubscriber;
 use WP_Rocket\Addons\Cloudflare\Cloudflare;
 use WP_Rocket\Addons\Cloudflare\CloudflareFacade;
-use Cloudflare\Api as CloudflareApi;
-use Cloudflare\Zone\Cache as CloudflareCache;
-use Cloudflare\Zone\PageRules as CloudflarePageRules;
-use Cloudflare\Zone\Settings as CloudflareSettings;
-use Cloudflare\IPs as CloudflareIPs;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 
@@ -27,7 +22,7 @@ class TestDeactivateDevMode extends TestCase {
 		$options_data->set_values( $settings );
 		$options->set( 'settings', $options_data->get_options() );
 
-		$cloudflare_facade = new CloudflareFacade( new CloudflareApi(), new CloudflareCache(), new CloudflarePageRules(), new CloudflareSettings(), new CloudflareIPs() );
+		$cloudflare_facade = new CloudflareFacade();
 		$cf_subscriber     = new CloudflareSubscriber( new Cloudflare( $options_data, $cloudflare_facade ), $options_data, $options );
 		$cf_subscriber->deactivate_devmode();
 
@@ -50,7 +45,7 @@ class TestDeactivateDevMode extends TestCase {
 		$options_data->set_values( $settings );
 		$options->set( 'settings', $options_data->get_options() );
 
-		$cloudflare_facade = new CloudflareFacade( new CloudflareApi(), new CloudflareCache(), new CloudflarePageRules(), new CloudflareSettings(), new CloudflareIPs() );
+		$cloudflare_facade = new CloudflareFacade();
 		$cf_subscriber     = new CloudflareSubscriber( new Cloudflare( $options_data, $cloudflare_facade ), $options_data, $options );
 		$cf_subscriber->deactivate_devmode();
 

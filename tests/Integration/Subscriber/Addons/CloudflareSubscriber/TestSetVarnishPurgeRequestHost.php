@@ -5,11 +5,6 @@ use PHPUnit\Framework\TestCase;
 use WP_Rocket\Subscriber\Addons\Cloudflare\CloudflareSubscriber;
 use WP_Rocket\Addons\Cloudflare\Cloudflare;
 use WP_Rocket\Addons\Cloudflare\CloudflareFacade;
-use Cloudflare\Api as CloudflareApi;
-use Cloudflare\Zone\Cache as CloudflareCache;
-use Cloudflare\Zone\PageRules as CloudflarePageRules;
-use Cloudflare\Zone\Settings as CloudflareSettings;
-use Cloudflare\IPs as CloudflareIPs;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 
@@ -22,7 +17,7 @@ class TestSetVarnishPurgeRequestHost extends TestCase {
 			]
 		);
 
-		$cloudflare_facade = new CloudflareFacade( new CloudflareApi(), new CloudflareCache(), new CloudflarePageRules(), new CloudflareSettings(), new CloudflareIPs() );
+		$cloudflare_facade = new CloudflareFacade();
 		$cf_subscriber     = new CloudflareSubscriber( new Cloudflare( new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) ), $cloudflare_facade ), new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) ), new Options() );
 
 		$this->assertSame(
@@ -40,7 +35,7 @@ class TestSetVarnishPurgeRequestHost extends TestCase {
 			]
 		);
 
-		$cloudflare_facade = new CloudflareFacade( new CloudflareApi(), new CloudflareCache(), new CloudflarePageRules(), new CloudflareSettings(), new CloudflareIPs() );
+		$cloudflare_facade = new CloudflareFacade();
 		$cf_subscriber     = new CloudflareSubscriber( new Cloudflare( new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) ), $cloudflare_facade ), new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) ), new Options() );
 
 		$this->assertSame(
@@ -58,7 +53,7 @@ class TestSetVarnishPurgeRequestHost extends TestCase {
 			]
 		);
 
-		$cloudflare_facade = new CloudflareFacade( new CloudflareApi(), new CloudflareCache(), new CloudflarePageRules(), new CloudflareSettings(), new CloudflareIPs() );
+		$cloudflare_facade = new CloudflareFacade();
 		$cf_subscriber     = new CloudflareSubscriber( new Cloudflare( new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) ), $cloudflare_facade ), new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) ), new Options() );
 
 		$this->assertSame(
@@ -78,7 +73,7 @@ class TestSetVarnishPurgeRequestHost extends TestCase {
 
 		add_filter( 'do_rocket_varnish_http_purge', '__return_true' );
 
-		$cloudflare_facade = new CloudflareFacade( new CloudflareApi(), new CloudflareCache(), new CloudflarePageRules(), new CloudflareSettings(), new CloudflareIPs() );
+		$cloudflare_facade = new CloudflareFacade();
 		$cf_subscriber     = new CloudflareSubscriber( new Cloudflare( new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) ), $cloudflare_facade ), new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) ), new Options() );
 
 		$this->assertSame(

@@ -3,7 +3,7 @@ namespace WP_Rocket\Addons\Cloudflare;
 
 use Cloudflare\Api;
 use Cloudflare\Zone\Cache;
-use Cloudflare\Zone\PageRules;
+use Cloudflare\Zone\Pagerules;
 use Cloudflare\Zone\Settings;
 use Cloudflare\IPs;
 
@@ -41,7 +41,7 @@ class CloudflareFacade {
 	 * @since 3.5
 	 * @author Soponar Cristina
 	 *
-	 * @var Cloudflare\Zone\PageRules
+	 * @var Cloudflare\Zone\Pagerules
 	 */
 	protected $page_rules;
 
