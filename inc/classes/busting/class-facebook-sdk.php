@@ -100,12 +100,15 @@ class Facebook_SDK extends Abstract_Busting {
 
 		$html      = str_replace( $tag, $replace_tag, $html );
 		$file_path = $this->get_busting_file_path( $locale );
-		$xfbml     = $this->get_xfbml_from_url( $tag );
-		$app_id    = $this->get_appId_from_url( $tag );
-		$version   = $this->get_version_from_url( $tag );
+		$xfbml     = $this->get_xfbml_from_url( $tag ); // Default value should be set to false.
+		$app_id    = $this->get_appId_from_url( $tag ); // APP_ID is the only required value.
+		$version   = false === $this->get_version_from_url( $tag ) ? 'v5.0' : $this->get_version_from_url( $tag ); // If version is not available set it to the latest: v.5.0.
 
-		// Add FB async init.
-		$html .= '<script>window.fbAsyncInit = function fbAsyncInit () {FB.init({appId: \'' . $app_id . '\',xfbml: ' . $xfbml . ',version: \'' . $version . '\'})}</script>';
+		if ( false !== $app_id ) {
+			// Add FB async init.
+			$fb_async_script = '<script>window.fbAsyncInit = function fbAsyncInit () {FB.init({appId: \'' . $app_id . '\',xfbml: ' . $xfbml . ',version: \'' . $version . '\'})}</script>';
+			$html            = str_replace( '</body>', $fb_async_script . '</body>', $html );
+		}
 
 		$this->is_replaced = true;
 
