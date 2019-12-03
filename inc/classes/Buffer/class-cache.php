@@ -350,12 +350,10 @@ class Cache extends Abstract_Buffer {
 		// Save the cache file.
 		rocket_put_content( $temp_filepath, $content );
 		rocket_direct_filesystem()->move( $temp_filepath, $cache_filepath );
-		rocket_direct_filesystem()->delete( $temp_filepath );
 
 		if ( function_exists( 'gzencode' ) ) {
 			rocket_put_content( $temp_gzip_filepath, gzencode( $content, apply_filters( 'rocket_gzencode_level_compression', 3 ) ) );
 			rocket_direct_filesystem()->move( $temp_gzip_filepath, $gzip_filepath );
-			rocket_direct_filesystem()->delete( $temp_gzip_filepath );
 		}
 	}
 
