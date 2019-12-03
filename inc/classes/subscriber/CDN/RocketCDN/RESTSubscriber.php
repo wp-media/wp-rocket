@@ -142,6 +142,8 @@ class RESTSubscriber implements Subscriber_Interface {
 		$this->options_api->set( 'settings', $this->options->get_options() );
 		$this->options_api->set( 'rocketcdn_active', 1 );
 
+		delete_transient( 'rocketcdn_status' );
+
 		$response = [
 			'code'    => 'success',
 			'message' => __( 'RocketCDN enabled', 'rocket' ),
@@ -169,6 +171,8 @@ class RESTSubscriber implements Subscriber_Interface {
 
 		$this->options_api->set( 'settings', $this->options->get_options() );
 		$this->options_api->set( 'rocketcdn_active', 0 );
+
+		delete_transient( 'rocketcdn_status' );
 
 		$response = [
 			'code'    => 'success',
