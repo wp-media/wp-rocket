@@ -57,14 +57,14 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 			</ul>
 			<div class="wpr-rocketcdn-pricing">
 				<?php if ( ! empty( $data['regular_price'] ) ) : ?>
-				<h4 class="wpr-title2 wpr-rocketcdn-pricing-regular"><del><?php echo esc_html( $data['regular_price'] ); ?></del></h4>
+				<h4 class="wpr-title2 wpr-rocketcdn-pricing-regular"><del>$<?php echo esc_html( number_format_i18n( $data['regular_price'], 2 ) ); ?></del></h4>
 				<?php endif; ?>
 				<h4 class="wpr-rocketcdn-pricing-current">
 				<?php
 				printf(
 					// translators: %s = price of RocketCDN subscription.
 					esc_html__( '%s / month', 'rocket' ),
-					'<span class="wpr-title1">' . esc_html( $data['current_price'] ) . '</span>'
+					'<span class="wpr-title1">$' . esc_html( number_format_i18n( $data['current_price'], 2 ) ) . '</span>'
 				);
 				?>
 				</h4>
