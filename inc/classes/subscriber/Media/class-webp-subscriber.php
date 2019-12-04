@@ -156,7 +156,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 		if ( ! $http_accept || false === strpos( $http_accept, 'webp' ) ) {
 			$user_agent = isset( $this->server['HTTP_USER_AGENT'] ) ? $this->server['HTTP_USER_AGENT'] : '';
 
-			if ( $user_agent && preg_match( '#Firefox/(?<version>[0-9]{2})#i', $this->server['HTTP_USER_AGENT'], $matches ) ) {
+			if ( $user_agent && preg_match( '#Firefox/(?<version>[0-9]{2,})#i', $this->server['HTTP_USER_AGENT'], $matches ) ) {
 				if ( 66 >= (int) $matches['version'] ) {
 					return $html;
 				}
