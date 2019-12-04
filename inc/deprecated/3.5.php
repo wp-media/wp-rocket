@@ -243,31 +243,6 @@ function rocket_cloudflare_valid_auth() {
  */
 function get_rocket_cloudflare_settings() {
 	_deprecated_function( __FUNCTION__ . '()', '3.5', '\WP_Rocket\Subscriber\Tools\Cloudflare_Subscriber::get_settings()' );
-	if ( is_wp_error( $GLOBALS['rocket_cloudflare'] ) ) {
-		return $GLOBALS['rocket_cloudflare'];
-	}
-
-	try {
-		$cf_settings_instance = new Cloudflare\Zone\Settings( $GLOBALS['rocket_cloudflare']->auth );
-		$cf_settings          = $cf_settings_instance->settings( $GLOBALS['rocket_cloudflare']->zone_id );
-		$cf_minify            = $cf_settings->result[16]->value;
-		$cf_minify_value      = 'on';
-
-		if ( 'off' === $cf_minify->js || 'off' === $cf_minify->css || 'off' === $cf_minify->html ) {
-			$cf_minify_value = 'off';
-		}
-
-		$cf_settings_array = array(
-			'cache_level'       => $cf_settings->result[5]->value,
-			'minify'            => $cf_minify_value,
-			'rocket_loader'     => $cf_settings->result[25]->value,
-			'browser_cache_ttl' => $cf_settings->result[3]->value,
-		);
-
-		return $cf_settings_array;
-	} catch ( Exception $e ) {
-		return new WP_Error( 'cloudflare_current_settings', $e->getMessage() );
-	}
 }
 
 
@@ -285,37 +260,6 @@ function get_rocket_cloudflare_settings() {
  */
 function set_rocket_cloudflare_devmode( $mode ) {
 	_deprecated_function( __FUNCTION__ . '()', '3.5', '\WP_Rocket\Subscriber\Tools\Cloudflare_Subscriber::set_devmode()' );
-	if ( is_wp_error( $GLOBALS['rocket_cloudflare'] ) ) {
-		return $GLOBALS['rocket_cloudflare'];
-	}
-
-	if ( (int) 0 === $mode ) {
-		$value = 'off';
-	} elseif ( (int) 1 === $mode ) {
-		$value = 'on';
-	}
-
-	try {
-		$cf_settings = new Cloudflare\Zone\Settings( $GLOBALS['rocket_cloudflare']->auth );
-		$cf_return   = $cf_settings->change_development_mode( $GLOBALS['rocket_cloudflare']->zone_id, $value );
-
-		if ( ! isset( $cf_return->success ) || empty( $cf_return->success ) ) {
-			foreach ( $cf_return->errors as $error ) {
-				$errors[] = $error->message;
-			}
-
-			$errors = implode( ', ', $errors );
-			throw new Exception( $errors );
-		}
-
-		if ( 'on' === $value ) {
-			wp_schedule_single_event( time() + 3 * HOUR_IN_SECONDS, 'rocket_cron_deactivate_cloudflare_devmode' );
-		}
-
-		return $value;
-	} catch ( Exception $e ) {
-		return new WP_Error( 'cloudflare_dev_mode', $e->getMessage() );
-	}
 }
 
 
@@ -333,27 +277,6 @@ function set_rocket_cloudflare_devmode( $mode ) {
  */
 function set_rocket_cloudflare_cache_level( $mode ) {
 	_deprecated_function( __FUNCTION__ . '()', '3.5', '\WP_Rocket\Subscriber\Tools\Cloudflare_Subscriber::set_cache_level()' );
-	if ( is_wp_error( $GLOBALS['rocket_cloudflare'] ) ) {
-		return $GLOBALS['rocket_cloudflare'];
-	}
-
-	try {
-		$cf_settings = new Cloudflare\Zone\Settings( $GLOBALS['rocket_cloudflare']->auth );
-		$cf_return   = $cf_settings->change_cache_level( $GLOBALS['rocket_cloudflare']->zone_id, $mode );
-
-		if ( ! isset( $cf_return->success ) || empty( $cf_return->success ) ) {
-			foreach ( $cf_return->errors as $error ) {
-				$errors[] = $error->message;
-			}
-
-			$errors = implode( ', ', $errors );
-			throw new Exception( $errors );
-		}
-
-		return $mode;
-	} catch ( Exception $e ) {
-		return new WP_Error( 'cloudflare_cache_level', $e->getMessage() );
-	}
 }
 
 /**
@@ -370,33 +293,6 @@ function set_rocket_cloudflare_cache_level( $mode ) {
  */
 function set_rocket_cloudflare_minify( $mode ) {
 	_deprecated_function( __FUNCTION__ . '()', '3.5', '\WP_Rocket\Subscriber\Tools\Cloudflare_Subscriber::set_minify()' );
-	if ( is_wp_error( $GLOBALS['rocket_cloudflare'] ) ) {
-		return $GLOBALS['rocket_cloudflare'];
-	}
-
-	$cf_minify_settings = array(
-		'css'  => $mode,
-		'html' => $mode,
-		'js'   => $mode,
-	);
-
-	try {
-		$cf_settings = new Cloudflare\Zone\Settings( $GLOBALS['rocket_cloudflare']->auth );
-		$cf_return   = $cf_settings->change_minify( $GLOBALS['rocket_cloudflare']->zone_id, $cf_minify_settings );
-
-		if ( ! isset( $cf_return->success ) || empty( $cf_return->success ) ) {
-			foreach ( $cf_return->errors as $error ) {
-				$errors[] = $error->message;
-			}
-
-			$errors = implode( ', ', $errors );
-			throw new Exception( $errors );
-		}
-
-		return $mode;
-	} catch ( Exception $e ) {
-		return new WP_Error( 'cloudflare_minification', $e->getMessage() );
-	}
 }
 
 
@@ -414,27 +310,6 @@ function set_rocket_cloudflare_minify( $mode ) {
  */
 function set_rocket_cloudflare_rocket_loader( $mode ) {
 	_deprecated_function( __FUNCTION__ . '()', '3.5', '\WP_Rocket\Subscriber\Tools\Cloudflare_Subscriber::set_rocket_loader()' );
-	if ( is_wp_error( $GLOBALS['rocket_cloudflare'] ) ) {
-		return $GLOBALS['rocket_cloudflare'];
-	}
-
-	try {
-		$cf_settings = new Cloudflare\Zone\Settings( $GLOBALS['rocket_cloudflare']->auth );
-		$cf_return   = $cf_settings->change_rocket_loader( $GLOBALS['rocket_cloudflare']->zone_id, $mode );
-
-		if ( ! isset( $cf_return->success ) || empty( $cf_return->success ) ) {
-			foreach ( $cf_return->errors as $error ) {
-				$errors[] = $error->message;
-			}
-
-			$errors = implode( ', ', $errors );
-			throw new Exception( $errors );
-		}
-
-		return $mode;
-	} catch ( Exception $e ) {
-		return new WP_Error( 'cloudflare_rocket_loader', $e->getMessage() );
-	}
 }
 
 
@@ -451,27 +326,6 @@ function set_rocket_cloudflare_rocket_loader( $mode ) {
  */
 function set_rocket_cloudflare_browser_cache_ttl( $mode ) {
 	_deprecated_function( __FUNCTION__ . '()', '3.5', '\WP_Rocket\Subscriber\Tools\Cloudflare_Subscriber::set_browser_cache_ttl()' );
-	if ( is_wp_error( $GLOBALS['rocket_cloudflare'] ) ) {
-		return $GLOBALS['rocket_cloudflare'];
-	}
-
-	try {
-		$cf_settings = new Cloudflare\Zone\Settings( $GLOBALS['rocket_cloudflare']->auth );
-		$cf_return   = $cf_settings->change_browser_cache_ttl( $GLOBALS['rocket_cloudflare']->zone_id, (int) $mode );
-
-		if ( ! isset( $cf_return->success ) || empty( $cf_return->success ) ) {
-			foreach ( $cf_return->errors as $error ) {
-				$errors[] = $error->message;
-			}
-
-			$errors = implode( ', ', $errors );
-			throw new Exception( $errors );
-		}
-
-		return $mode;
-	} catch ( Exception $e ) {
-		return new WP_Error( 'cloudflare_browser_cache', $e->getMessage() );
-	}
 }
 
 
@@ -488,41 +342,6 @@ function set_rocket_cloudflare_browser_cache_ttl( $mode ) {
  */
 function rocket_purge_cloudflare() {
 	_deprecated_function( __FUNCTION__ . '()', '3.5', '\WP_Rocket\Subscriber\Tools\Cloudflare_Subscriber::purge_cloudflare()' );
-	if ( is_wp_error( $GLOBALS['rocket_cloudflare'] ) ) {
-		return $GLOBALS['rocket_cloudflare'];
-	}
-
-	try {
-		$cf_cache = new Cloudflare\Zone\Cache( $GLOBALS['rocket_cloudflare']->auth );
-		$cf_purge = $cf_cache->purge( $GLOBALS['rocket_cloudflare']->zone_id, true );
-
-		if ( ! isset( $cf_purge->success ) || empty( $cf_purge->success ) ) {
-			$msg = __( 'Incorrect Cloudflare Zone ID.', 'rocket' );
-
-			$msg .= ' ' . sprintf(
-				/* translators: %1$s = opening link; %2$s = closing link */
-				__( 'Read the %1$sdocumentation%2$s for further guidance.', 'rocket' ),
-				// translators: Documentation exists in EN, FR; use localized URL if applicable.
-				'<a href="' . esc_url( __( 'https://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket#add-on', 'rocket' ) ) . '" rel="noopener noreferrer" target="_blank">',
-				'</a>'
-			);
-			return new WP_Error( 'cloudflare_invalid_auth', $msg );
-		}
-
-		return true;
-
-	} catch ( Exception $e ) {
-		$msg = __( 'Incorrect Cloudflare email address or API key.', 'rocket' );
-
-		$msg .= ' ' . sprintf(
-			/* translators: %1$s = opening link; %2$s = closing link */
-			__( 'Read the %1$sdocumentation%2$s for further guidance.', 'rocket' ),
-			// translators: Documentation exists in EN, FR; use localized URL if applicable.
-			'<a href="' . esc_url( __( 'https://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket#add-on', 'rocket' ) ) . '" rel="noopener noreferrer" target="_blank">',
-			'</a>'
-		);
-		return new WP_Error( 'cloudflare_purge_failed', $msg );
-	}
 }
 
 /**
