@@ -37,7 +37,7 @@ settings_errors( $data['slug'] ); ?>
 				<?php settings_fields( $data['slug'] ); ?>
 				<?php $this->render_form_sections(); ?>
 				<?php $this->render_hidden_fields(); ?>
-				<input type="submit" class="wpr-button" id="wpr-options-submit" value="<?php esc_attr_e( 'Save Changes', 'rocket' ); ?>">
+				<input type="submit" class="wpr-button" id="wpr-options-submit" value="<?php $data['rocket_valid_key'] ? esc_attr_e( 'Save Changes', 'rocket' ) : esc_attr_e( 'Validate License', 'rocket' ); ?>">
 			</form>
 			<?php
 			if ( rocket_valid_key() ) {
