@@ -43,7 +43,7 @@ add_filter( 'widget_update_callback', 'rocket_widget_update_callback' );
  *
  * @param int     $post_id The post ID.
  * @param WP_Post $post    WP_Post object.
- * @return array           Array with all URLs which needs to be purged.
+ * @return array           Array with all URLs which need to be purged.
  */
 function rocket_get_purge_urls( $post_id, $post ) {
 	$purge_urls = [];
