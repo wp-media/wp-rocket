@@ -180,9 +180,9 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		$pricing            = $this->get_pricing_data();
 		$current_price      = $pricing['regular_price'];
 		$regular_price      = '';
-		$promotion_campaign = $pricing['promotion']['campaign'];
-		$promotion_end_date = date_i18n( get_option( 'date_format' ), strtotime( $pricing['promotion']['end_date'] ) );
-		$nopromo_variant    = empty( $pricing['promotion']['campaign'] ) ? '--no-promo' : '';
+		$promotion_campaign = $pricing['discount_campaign_name'];
+		$promotion_end_date = date_i18n( get_option( 'date_format' ), strtotime( $pricing['end_date'] ) );
+		$nopromo_variant    = '--no-promo';
 		$cta_small_class    = 'wpr-isHidden';
 		$cta_big_class      = '';
 
@@ -191,9 +191,10 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 			$cta_big_class   = 'wpr-isHidden';
 		}
 
-		if ( ! empty( $pricing['promotion']['price'] ) ) {
-			$regular_price = $current_price;
-			$current_price = $pricing['promotion']['price'];
+		if ( $pricing['is_discount_active'] ) {
+			$regular_price   = $current_price;
+			$current_price   = $pricing['discounted_price'];
+			$nopromo_variant = '';
 		}
 
 		$small_cta_data = [
@@ -320,13 +321,43 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 * @return array
 	 */
 	private function get_pricing_data() {
-		return [
-			'regular_price' => '$7.99',
-			'promotion'     => [
-				'campaign' => '',
-				'price'    => '',
-				'end_date' => '',
-			],
+		$pricing = get_transient( 'rocketcdn_pricing' );
+
+		if ( false !== $pricing ) {
+			return $pricing;
+		}
+
+		$default = [
+			'regular_price'          => 79.0,
+			'is_discount_active'     => false,
+			'discounted_price'       => 69.0,
+			'discount_campaign_name' => '',
+			'end_date'               => 0,
 		];
+
+		$response = wp_remote_get(
+			self::ROCKETCDN_API . 'pricing'
+		);
+
+		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
+			set_transient( 'rocketcdn_pricing', $default, WEEK_IN_SECONDS );
+
+			return $default;
+		}
+
+		$data = wp_remote_retrieve_body( $response );
+
+		if ( empty( $data ) ) {
+			set_transient( 'rocketcdn_pricing', $default, WEEK_IN_SECONDS );
+
+			return $default;
+		}
+
+		$data = json_decode( $data, true );
+		$data = array_intersect_key( $data, $default );
+
+		set_transient( 'rocketcdn_pricing', $data, WEEK_IN_SECONDS );
+
+		return $data;
 	}
 }
