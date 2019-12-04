@@ -36,58 +36,17 @@ function rocket_widget_update_callback( $instance ) {
 add_filter( 'widget_update_callback', 'rocket_widget_update_callback' );
 
 /**
- * Update cache when a post is updated or commented
+ * Get post purge urls.
  *
- * @since 3.0.5 Don't purge for attachment post type
- * @since 2.8   Only add post type archive if post type is not post
- * @since 2.6   Purge the page defined in "Posts page" option
- * @since 2.5.5 Don't cache for auto-draft post status
- * @since 1.3.2 Add wp_update_comment_count to purge cache when a comment is added/updated/deleted
- * @since 1.3.0 Compatibility with WPML
- * @since 1.3.0 Add 2 hooks : before_rocket_clean_post, after_rocket_clean_post
- * @since 1.3.0 Purge all parents of the post and the author page
- * @since 1.2.2 Add wp_trash_post and delete_post to purge cache when a post is trashed or deleted
- * @since 1.1.3 Use clean_post_cache instead of transition_post_status, transition_comment_status and preprocess_comment
- * @since 1.0
+ * @since 3.4.3
+ * @author Soponar Cristina
  *
  * @param int     $post_id The post ID.
  * @param WP_Post $post    WP_Post object.
+ * @return array           Array with all URLs which needs to be purged.
  */
-function rocket_clean_post( $post_id, $post = null ) {
-	static $done = [];
-
-	if ( isset( $done[ $post_id ] ) ) {
-		return;
-	}
-
-	$done[ $post_id ] = 1;
-
-	if ( defined( 'DOING_AUTOSAVE' ) ) {
-		return;
-	}
-
+function rocket_get_purge_urls( $post_id, $post ) {
 	$purge_urls = [];
-
-	// Get all post infos if the $post object was not supplied.
-	if ( is_null( $post ) ) {
-		$post = get_post( $post_id );
-	}
-
-	// Return if $post is not an object.
-	if ( ! is_object( $post ) ) {
-		return;
-	}
-
-	// No purge for specific conditions.
-	if ( 'auto-draft' === $post->post_status || empty( $post->post_type ) || 'nav_menu_item' === $post->post_type || 'attachment' === $post->post_type ) {
-		return;
-	}
-
-	// Don't purge if post's post type is not public or not publicly queryable.
-	$post_type = get_post_type_object( $post->post_type );
-	if ( ! is_object( $post_type ) || true !== $post_type->public ) {
-		return;
-	}
 
 	// Get the post language.
 	$i18n_plugin = rocket_has_i18n();
@@ -201,6 +160,77 @@ function rocket_clean_post( $post_id, $post = null ) {
 		}
 	}
 
+	return $purge_urls;
+}
+
+/**
+ * Update cache when a post is updated or commented
+ *
+ * @since 3.0.5 Don't purge for attachment post type
+ * @since 2.8   Only add post type archive if post type is not post
+ * @since 2.6   Purge the page defined in "Posts page" option
+ * @since 2.5.5 Don't cache for auto-draft post status
+ * @since 1.3.2 Add wp_update_comment_count to purge cache when a comment is added/updated/deleted
+ * @since 1.3.0 Compatibility with WPML
+ * @since 1.3.0 Add 2 hooks : before_rocket_clean_post, after_rocket_clean_post
+ * @since 1.3.0 Purge all parents of the post and the author page
+ * @since 1.2.2 Add wp_trash_post and delete_post to purge cache when a post is trashed or deleted
+ * @since 1.1.3 Use clean_post_cache instead of transition_post_status, transition_comment_status and preprocess_comment
+ * @since 1.0
+ *
+ * @param int     $post_id The post ID.
+ * @param WP_Post $post    WP_Post object.
+ */
+function rocket_clean_post( $post_id, $post = null ) {
+	static $done = [];
+
+	if ( isset( $done[ $post_id ] ) ) {
+		return;
+	}
+
+	$done[ $post_id ] = 1;
+
+	if ( defined( 'DOING_AUTOSAVE' ) ) {
+		return;
+	}
+
+	$purge_urls = [];
+
+	// Get all post infos if the $post object was not supplied.
+	if ( is_null( $post ) ) {
+		$post = get_post( $post_id );
+	}
+
+	// Return if $post is not an object.
+	if ( ! is_object( $post ) ) {
+		return;
+	}
+
+	// No purge for specific conditions.
+	if ( 'auto-draft' === $post->post_status || 'draft' === $post->post_status || empty( $post->post_type ) || 'nav_menu_item' === $post->post_type || 'attachment' === $post->post_type ) {
+		return;
+	}
+
+	// Don't purge if post's post type is not public or not publicly queryable.
+	$post_type = get_post_type_object( $post->post_type );
+	if ( ! is_object( $post_type ) || true !== $post_type->public ) {
+		return;
+	}
+
+	// Get the post language.
+	$i18n_plugin = rocket_has_i18n();
+	$lang        = false;
+
+	if ( 'wpml' === $i18n_plugin && ! rocket_is_plugin_active( 'woocommerce-multilingual/wpml-woocommerce.php' ) ) {
+		// WPML.
+		$lang = $GLOBALS['sitepress']->get_language_for_element( $post_id, 'post_' . get_post_type( $post_id ) );
+	} elseif ( 'polylang' === $i18n_plugin && function_exists( 'pll_get_post_language' ) ) {
+		// Polylang.
+		$lang = pll_get_post_language( $post_id );
+	}
+
+	$purge_urls = rocket_get_purge_urls( $post_id, $post );
+
 	/**
 	 * Fires before cache files related with the post are deleted
 	 *
@@ -245,6 +275,83 @@ add_action( 'wp_trash_post',           'rocket_clean_post' );
 add_action( 'delete_post',             'rocket_clean_post' );
 add_action( 'clean_post_cache',        'rocket_clean_post' );
 add_action( 'wp_update_comment_count', 'rocket_clean_post' );
+
+/**
+ * Purge WP Rocket cache when post status is changed from publish to draft.
+ *
+ * @since  3.4.3
+ * @author Soponar Cristina
+ *
+ * @param int   $post_id   The post ID.
+ * @param array $post_data Array of unslashed post data.
+ */
+function rocket_clean_post_cache_on_status_change( $post_id, $post_data ) {
+	if ( 'publish' !== get_post_field( 'post_status', $post_id ) || 'draft' !== $post_data['post_status'] ) {
+		return;
+	}
+
+	$purge_urls = [];
+	$post       = get_post( $post_id );
+
+	// Return if $post is not an object.
+	if ( ! is_object( $post ) ) {
+		return;
+	}
+	// Get the post language.
+	$i18n_plugin = rocket_has_i18n();
+	$lang        = false;
+
+	if ( 'wpml' === $i18n_plugin && ! rocket_is_plugin_active( 'woocommerce-multilingual/wpml-woocommerce.php' ) ) {
+		// WPML.
+		$lang = $GLOBALS['sitepress']->get_language_for_element( $post_id, 'post_' . get_post_type( $post_id ) );
+	} elseif ( 'polylang' === $i18n_plugin && function_exists( 'pll_get_post_language' ) ) {
+		// Polylang.
+		$lang = pll_get_post_language( $post_id );
+	}
+
+	$purge_urls = rocket_get_purge_urls( $post_id, $post );
+
+	/**
+	 * Filter URLs cache files to remove
+	 *
+	 * @since 1.0
+	 *
+	 * @param array $purge_urls List of URLs cache files to remove
+	 */
+	$purge_urls = apply_filters( 'rocket_post_purge_urls', $purge_urls, $post );
+
+	/**
+	 * Fires before cache files related with the post are deleted
+	 *
+	 * @since 1.3.0
+	 *
+	 * @param WP_Post $post       The post object
+	 * @param array   $purge_urls URLs cache files to remove
+	 * @param string  $lang       The post language
+	 */
+	do_action( 'before_rocket_clean_post', $post, $purge_urls, $lang );
+
+	// Purge all files.
+	rocket_clean_files( $purge_urls );
+
+	// Never forget to purge homepage and their pagination.
+	rocket_clean_home( $lang );
+
+	// Purge home feeds (blog & comments).
+	rocket_clean_home_feeds();
+
+	/**
+	 * Fires after cache files related with the post are deleted
+	 *
+	 * @since 1.3.0
+	 *
+	 * @param WP_Post $post       The post object
+	 * @param array   $purge_urls URLs cache files to remove
+	 * @param string  $lang       The post language
+	 */
+	do_action( 'after_rocket_clean_post', $post, $purge_urls, $lang );
+}
+add_action( 'pre_post_update', 'rocket_clean_post_cache_on_status_change', 10, 2 );
 
 /**
  * Add pattern to clean files of connected users
