@@ -57,14 +57,14 @@
             &:before {
                 content: "\2715";
                 font-size: 2rem;
-                line-height: 1;
+                line-height: 0.5;
             }
         }
 
         &:before {
             content: "\2715";
             font-size: 2rem;
-            line-height: 1;
+            line-height: 0.5;
         }
     }
 
@@ -73,7 +73,7 @@
         border-top-left-radius: 2px;
         border-top-right-radius: 2px;
         color: $cWhite;
-        padding: $space *2 38px $space *2 $space *2;
+        padding: $space *2 $space *6 $space *2 $space *2;
 
         &-date {
             margin: 0;
