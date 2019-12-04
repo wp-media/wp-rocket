@@ -162,7 +162,8 @@ class Page {
 	 * @return void
 	 */
 	public function render_page() {
-		if ( rocket_valid_key() ) {
+		$rocket_valid_key = rocket_valid_key();
+		if ( $rocket_valid_key ) {
 			$this->dashboard_section();
 			$this->cache_section();
 			$this->assets_section();
@@ -185,7 +186,7 @@ class Page {
 
 		$this->render->set_hidden_settings( $this->settings->get_hidden_settings() );
 
-		echo $this->render->generate( 'page', [ 'slug' => $this->slug ] );
+		echo $this->render->generate( 'page', [ 'slug' => $this->slug, 'btn_submit_text' => $rocket_valid_key ? __( 'Save Changes', 'rocket' ) : __( 'Validate License', 'rocket' ) ] );
 	}
 
 	/**
