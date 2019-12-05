@@ -659,8 +659,7 @@ function rocket_cf_has_page_rule( $action_value ) {
 		}
 
 		$cf_page_rule_arr = wp_json_encode( $cf_page_rule );
-		return preg_match( '/' . $action_value . '/', $cf_page_rule_arr );
-
+		return preg_match( '/' . preg_quote( $action_value, '/' ) . '/', $cf_page_rule_arr );
 	} catch ( Exception $e ) {
 		return new WP_Error( 'cloudflare_page_rule_failed', $e->getMessage() );
 	}
