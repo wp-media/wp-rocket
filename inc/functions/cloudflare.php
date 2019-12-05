@@ -658,9 +658,8 @@ function rocket_cf_has_page_rule( $action_value ) {
 			throw new Exception( $errors );
 		}
 
-		$cf_page_rule_arr = (array) $cf_page_rule;
-		return in_array( $action_value, $cf_page_rule_arr );
-
+		$cf_page_rule_arr = wp_json_encode( $cf_page_rule );
+		return preg_match( '/' . preg_quote( $action_value, '/' ) . '/', $cf_page_rule_arr );
 	} catch ( Exception $e ) {
 		return new WP_Error( 'cloudflare_page_rule_failed', $e->getMessage() );
 	}
