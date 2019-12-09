@@ -70,9 +70,44 @@ class Expired_Cache_Purge_Subscriber implements Subscriber_Interface {
 			'init'                => 'schedule_event',
 			'rocket_deactivation' => 'unschedule_event',
 			static::EVENT_NAME    => 'purge_expired_files',
+			'cron_schedules'      => 'custom_cron_schedule',
 		];
 	}
 
+
+	/**
+	 * Adds a custom cron schedule based on purge lifespan.
+	 * If the Minutes option is selected, then the interval will be set to minutes.
+	 * If the Hours / Days options are selected, then it will be set to 1 hour.
+	 *
+	 * @since  3.4.3
+	 * @access public
+	 * @author Soponar Cristina
+	 *
+	 * @param array $schedules An array of non-default cron schedules.
+	 */
+	public function custom_cron_schedule( $schedules ) {
+		$unit     = $this->options->get( 'purge_cron_unit' );
+		$lifespan = $this->options->get( 'purge_cron_interval' );
+		$interval = HOUR_IN_SECONDS;
+
+		if ( ! $lifespan ) {
+			return $schedules;
+		}
+		if ( ! $unit || ! defined( $unit ) ) {
+			$unit = 'HOUR_IN_SECONDS';
+		}
+		if ( 'MINUTE_IN_SECONDS' === $unit ) {
+			$interval = $lifespan * MINUTE_IN_SECONDS;
+		}
+
+		$schedules['rocket_expired_cache_cron_interval'] = [
+			'interval' => $interval,
+			'display'  => __( 'WP Rocket Expired Cache Interval', 'rocket' ),
+		];
+
+		return $schedules;
+	}
 
 	/** ----------------------------------------------------------------------------------------- */
 	/** HOOK CALLBACKS ========================================================================== */
@@ -88,7 +123,16 @@ class Expired_Cache_Purge_Subscriber implements Subscriber_Interface {
 	 */
 	public function schedule_event() {
 		if ( $this->get_cache_lifespan() && ! wp_next_scheduled( static::EVENT_NAME ) ) {
-			wp_schedule_event( time() + HOUR_IN_SECONDS, 'hourly', static::EVENT_NAME );
+			$unit     = $this->options->get( 'purge_cron_unit' );
+			$lifespan = $this->options->get( 'purge_cron_interval' );
+			$interval = HOUR_IN_SECONDS;
+			if ( ! $unit || ! defined( $unit ) ) {
+				$unit = 'HOUR_IN_SECONDS';
+			}
+			if ( 'MINUTE_IN_SECONDS' === $unit ) {
+				$interval = $lifespan * MINUTE_IN_SECONDS;
+			}
+			wp_schedule_event( time() + $interval, 'rocket_expired_cache_cron_interval', static::EVENT_NAME );
 		}
 	}
 
@@ -111,6 +155,7 @@ class Expired_Cache_Purge_Subscriber implements Subscriber_Interface {
 	 * @author Grégory Viguier
 	 */
 	public function purge_expired_files() {
+		error_log( "\n purge_expired_files " . ($this->get_cache_lifespan()), 3, dirname(__FILE__) . "/my_error_log.log" );
 		$this->purge->purge_expired_files( $this->get_cache_lifespan() );
 	}
 
