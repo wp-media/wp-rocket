@@ -558,6 +558,7 @@ class Combine extends Abstract_JS_Optimization {
 			'var flatsomeVars',
 			'wc_product_block_data',
 			'static.mailerlite.com',
+			'amzn_assoc',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
