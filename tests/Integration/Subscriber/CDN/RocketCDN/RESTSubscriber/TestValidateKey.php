@@ -6,7 +6,14 @@ use WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 
+/**
+ * @coversDefaultClass \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber;
+ */
 class TestValidateKey extends TestCase {
+    /**
+	 * @covers ::validate_key
+	 * @group RocketCDN
+	 */
     public function testShouldReturnTrueWhenKeyIsValid() {
         update_option(
             'wp_rocket_settings',
@@ -23,6 +30,10 @@ class TestValidateKey extends TestCase {
         $this->assertTrue( $rocketcdn->validate_key( '0123456', $request, 'key' ) );
     }
 
+    /**
+	 * @covers ::validate_key
+	 * @group RocketCDN
+	 */
     public function testShouldReturnFalseWhenKeylIsInvalid() {
         update_option(
             'wp_rocket_settings',

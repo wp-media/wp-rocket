@@ -6,7 +6,14 @@ use WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 
+/**
+ * @coversDefaultClass \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber;
+ */
 class TestValidateEmail extends TestCase {
+    /**
+	 * @covers ::validate_email
+	 * @group RocketCDN
+	 */
     public function testShouldReturnTrueWhenEmailIsValid() {
         update_option(
             'wp_rocket_settings',
@@ -23,6 +30,10 @@ class TestValidateEmail extends TestCase {
         $this->assertTrue( $rocketcdn->validate_email( 'dummy@wp-rocket.me', $request, 'email' ) );
     }
 
+    /**
+	 * @covers ::validate_email
+	 * @group RocketCDN
+	 */
     public function testShouldReturnFalseWhenEmailIsInvalid() {
         update_option(
             'wp_rocket_settings',

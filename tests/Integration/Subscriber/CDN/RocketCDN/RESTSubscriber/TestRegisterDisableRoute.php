@@ -3,6 +3,9 @@ namespace WP_Rocket\Tests\Integration\Subscriber\CDN\RocketCDN\RESTSubscriber;
 
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @coversDefaultClass \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber;
+ */
 class TestRegisterDisableRoute extends TestCase {
     public function setUp() {
 		parent::setUp();
@@ -13,11 +16,19 @@ class TestRegisterDisableRoute extends TestCase {
  
     }
 
+	/**
+	 * @covers ::register_disable_route
+	 * @group RocketCDN
+	 */
     public function testEnableRouteIsRegistered() {
         $routes = $this->server->get_routes();
         $this->assertArrayHasKey( '/wp-rocket/v1/rocketcdn/disable', $routes );
     }
 
+	/**
+	 * @covers ::register_disable_route
+	 * @group RocketCDN
+	 */
     public function testEndpoint() {
         $routes = $this->server->get_routes();
 

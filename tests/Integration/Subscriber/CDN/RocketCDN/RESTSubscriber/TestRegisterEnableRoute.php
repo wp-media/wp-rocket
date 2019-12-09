@@ -3,6 +3,9 @@ namespace WP_Rocket\Tests\Integration\Subscriber\CDN\RocketCDN\RESTSubscriber;
 
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @coversDefaultClass \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber;
+ */
 class TestRegisterEnableRoute extends TestCase {
     public function setUp() {
 		parent::setUp();
@@ -11,13 +14,21 @@ class TestRegisterEnableRoute extends TestCase {
 		$this->server = $wp_rest_server = new \WP_REST_Server;
 		do_action( 'rest_api_init' );
  
-    }
+	}
 
+	/**
+	 * @covers ::register_enable_route
+	 * @group RocketCDN
+	 */
     public function testEnableRouteIsRegistered() {
         $routes = $this->server->get_routes();
         $this->assertArrayHasKey( '/wp-rocket/v1/rocketcdn/enable', $routes );
     }
 
+	/**
+	 * @covers ::register_enable_route
+	 * @group RocketCDN
+	 */
     public function testEndpoint() {
         $routes = $this->server->get_routes();
 
