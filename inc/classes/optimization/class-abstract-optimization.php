@@ -49,7 +49,7 @@ abstract class Abstract_Optimization {
 		if ( $langs ) {
 			foreach ( $langs as $lang ) {
 				$url_host = rocket_extract_url_component( $lang, PHP_URL_HOST );
-				if ( ! empty( $url_host ) && ! is_array( $url_host ) ) {
+				if ( ! empty( $url_host ) ) {
 					$hosts[] = $url_host;
 				}
 			}
