@@ -88,12 +88,9 @@ class Expired_Cache_Purge_Subscriber implements Subscriber_Interface {
 	 */
 	public function custom_cron_schedule( $schedules ) {
 		$unit     = $this->options->get( 'purge_cron_unit' );
-		$lifespan = $this->options->get( 'purge_cron_interval' );
+		$lifespan = $this->options->get( 'purge_cron_interval', 10 );
 		$interval = HOUR_IN_SECONDS;
 
-		if ( ! $lifespan ) {
-			return $schedules;
-		}
 		if ( ! $unit || ! defined( $unit ) ) {
 			$unit = 'HOUR_IN_SECONDS';
 		}
