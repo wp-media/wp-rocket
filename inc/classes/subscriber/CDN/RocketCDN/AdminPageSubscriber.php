@@ -405,7 +405,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		if ( ! isset( $subscription['id'] ) || 0 === $subscription['id'] ) {
 			return [
 				'status'  => $status,
-				'message' => __( 'RocketCDN cache purge failed: Missing identifier parameter', 'rocket' ),
+				'message' => __( 'RocketCDN cache purge failed: Missing identifier parameter.', 'rocket' ),
 			];
 		}
 
@@ -419,7 +419,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
 			return [
 				'status'  => $status,
-				'message' => __( 'RocketCDN cache purge failed: The API returned an unexpected response code', 'rocket' ),
+				'message' => __( 'RocketCDN cache purge failed: The API returned an unexpected response code.', 'rocket' ),
 			];
 		}
 
@@ -428,7 +428,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		if ( empty( $data ) ) {
 			return [
 				'status'  => $status,
-				'message' => __( 'RocketCDN cache purge failed: The API returned an empty response', 'rocket' ),
+				'message' => __( 'RocketCDN cache purge failed: The API returned an empty response.', 'rocket' ),
 			];
 		}
 
@@ -437,7 +437,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		if ( ! isset( $data->success ) ) {
 			return [
 				'status'  => $status,
-				'message' => __( 'RocketCDN cache purge failed: The API returned an unexpected response', 'rocket' ),
+				'message' => __( 'RocketCDN cache purge failed: The API returned an unexpected response.', 'rocket' ),
 			];
 		}
 
@@ -446,7 +446,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 				'status'  => $status,
 				'message' => sprintf(
 					// translators: %s = message returned by the API.
-					__( 'RocketCDN cache purge failed: %s', 'rocket' ),
+					__( 'RocketCDN cache purge failed: %s.', 'rocket' ),
 					$data->message
 				),
 			];
