@@ -55,7 +55,13 @@ class Addons_Subscribers extends AbstractServiceProvider {
 		$this->getContainer()->share( 'varnish_subscriber', 'WP_Rocket\Subscriber\Addons\Varnish\VarnishSubscriber' )
 			->withArgument( $this->getContainer()->get( 'varnish' ) )
 			->withArgument( $this->getContainer()->get( 'options' ) );
+		$this->getContainer()->add( 'cloudflare_facade', 'WP_Rocket\Addons\Cloudflare\CloudflareFacade' );
+		$this->getContainer()->add( 'cloudflare', 'WP_Rocket\Addons\Cloudflare\Cloudflare' )
+			->withArgument( $this->getContainer()->get( 'options' ) )
+			->withArgument( $this->getContainer()->get( 'cloudflare_facade' ) );
 		$this->getContainer()->share( 'cloudflare_subscriber', 'WP_Rocket\Subscriber\Addons\Cloudflare\CloudflareSubscriber' )
-			->withArgument( $this->getContainer()->get( 'options' ) );
+			->withArgument( $this->getContainer()->get( 'cloudflare' ) )
+			->withArgument( $this->getContainer()->get( 'options' ) )
+			->withArgument( $this->getContainer()->get( 'options_api' ) );
 	}
 }
