@@ -155,7 +155,6 @@ class Expired_Cache_Purge_Subscriber implements Subscriber_Interface {
 	 * @author Grégory Viguier
 	 */
 	public function purge_expired_files() {
-		error_log( "\n purge_expired_files " . ($this->get_cache_lifespan()), 3, dirname(__FILE__) . "/my_error_log.log" );
 		$this->purge->purge_expired_files( $this->get_cache_lifespan() );
 	}
 
