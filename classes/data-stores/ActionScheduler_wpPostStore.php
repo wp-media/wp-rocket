@@ -12,9 +12,6 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	protected $local_timezone = NULL;
 
 	/** @var int */
-	protected $last_deleted_action = null;
-
-	/** @var int */
 	private static $max_index_length = 191;
 
 	public function save_action( ActionScheduler_Action $action, DateTime $scheduled_date = NULL ){
@@ -474,14 +471,9 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		}
 		do_action( 'action_scheduler_deleted_action', $action_id );
 
-		$this->last_deleted_action = $action_id;
-		add_action( 'action_scheduler/migrate_action_incomplete', array( $this, 'mark_migrated') );
-
 		if ( ! wp_delete_post( $action_id, TRUE ) ) {
 			$this->mark_migrated( $action_id );
 		}
-
-		remove_action( 'action_scheduler/migrate_action_incomplete', array( $this, 'mark_migrated') );
 	}
 
 	/**
@@ -798,14 +790,12 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	 * @param int $action_id Action ID.
 	 */
 	public function mark_migrated( $action_id ) {
-		if ( $action_id === $this->last_deleted_action ) {
-			wp_update_post(
-				array(
-					'ID'          => $action_id,
-					'post_status' => 'migrated'
-				)
-			);
-		}
+		wp_update_post(
+			array(
+				'ID'          => $action_id,
+				'post_status' => 'migrated'
+			)
+		);
 	}
 
 	/**

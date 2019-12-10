@@ -95,6 +95,7 @@ class ActionMigrator {
 			return $destination_action_id;
 		} catch ( \Exception $e ) {
 			// could not delete from the old store
+			$this->source->mark_migrated( $source_action_id );
 			do_action( 'action_scheduler/migrate_action_incomplete', $source_action_id, $destination_action_id, $this->source, $this->destination );
 			do_action( 'action_scheduler/migrated_action', $source_action_id, $destination_action_id, $this->source, $this->destination );
 
