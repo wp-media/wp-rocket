@@ -74,11 +74,8 @@ class Expired_Cache_Purge_Subscriber implements Subscriber_Interface {
 		];
 	}
 
-
 	/**
-	 * Adds a custom cron schedule based on purge lifespan.
-	 * If the Minutes option is selected, then the interval will be set to minutes.
-	 * If the Hours / Days options are selected, then it will be set to 1 hour.
+	 * Adds a custom cron schedule based on purge lifespan interval.
 	 *
 	 * @since  3.4.3
 	 * @access public
@@ -87,17 +84,7 @@ class Expired_Cache_Purge_Subscriber implements Subscriber_Interface {
 	 * @param array $schedules An array of non-default cron schedules.
 	 */
 	public function custom_cron_schedule( $schedules ) {
-		$unit     = $this->options->get( 'purge_cron_unit' );
-		$lifespan = $this->options->get( 'purge_cron_interval', 10 );
-		$interval = HOUR_IN_SECONDS;
-
-		if ( ! $unit || ! defined( $unit ) ) {
-			$unit = 'HOUR_IN_SECONDS';
-		}
-		if ( 'MINUTE_IN_SECONDS' === $unit ) {
-			$interval = $lifespan * MINUTE_IN_SECONDS;
-		}
-
+		$interval                                        = $this->get_interval();
 		$schedules['rocket_expired_cache_cron_interval'] = [
 			'interval' => $interval,
 			'display'  => __( 'WP Rocket Expired Cache Interval', 'rocket' ),
@@ -120,17 +107,34 @@ class Expired_Cache_Purge_Subscriber implements Subscriber_Interface {
 	 */
 	public function schedule_event() {
 		if ( $this->get_cache_lifespan() && ! wp_next_scheduled( static::EVENT_NAME ) ) {
-			$unit     = $this->options->get( 'purge_cron_unit' );
-			$lifespan = $this->options->get( 'purge_cron_interval' );
-			$interval = HOUR_IN_SECONDS;
-			if ( ! $unit || ! defined( $unit ) ) {
-				$unit = 'HOUR_IN_SECONDS';
-			}
-			if ( 'MINUTE_IN_SECONDS' === $unit ) {
-				$interval = $lifespan * MINUTE_IN_SECONDS;
-			}
+			$interval = $this->get_interval();
 			wp_schedule_event( time() + $interval, 'rocket_expired_cache_cron_interval', static::EVENT_NAME );
 		}
+	}
+
+	/**
+	 * Gets the interval when the scheduled clean cache purge needs to run.
+	 * If Minutes option is selected, then the interval will be set to minutes.
+	 * If Hours / Days options are selected, then it will be set to 1 hour.
+	 *
+	 * @since  3.4.3
+	 * @access public
+	 * @author Soponar Cristina
+	 *
+	 * @return int $interval Interval time in seconds.
+	 */
+	private function get_interval() {
+		$unit     = $this->options->get( 'purge_cron_unit' );
+		$lifespan = $this->options->get( 'purge_cron_interval', 10 );
+		$interval = HOUR_IN_SECONDS;
+
+		if ( ! $unit || ! defined( $unit ) ) {
+			$unit = 'HOUR_IN_SECONDS';
+		}
+		if ( 'MINUTE_IN_SECONDS' === $unit ) {
+			$interval = $lifespan * MINUTE_IN_SECONDS;
+		}
+		return $interval;
 	}
 
 	/**
