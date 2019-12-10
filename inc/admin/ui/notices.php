@@ -14,7 +14,7 @@ function rocket_bad_deactivations() {
 
 		delete_transient( $current_user->ID . '_donotdeactivaterocket' );
 		$errors = [];
-		
+
 
 		foreach ( $msgs as $msg ) {
 			switch ( $msg ) {
@@ -109,6 +109,9 @@ function rocket_plugins_to_deactivate() {
 		'wp-fastest-cache'                           => 'wp-fastest-cache/wpFastestCache.php',
 		'lite-cache'                                 => 'lite-cache/plugin.php',
 		'gator-cache'                                => 'gator-cache/gator-cache.php',
+		'cache-enabler'                              => 'cache-enabler/cache-enabler.php',
+		'swift-performance-lite'                     => 'swift-performance-lite/performance.php',
+		'swift-performance'                          => 'swift-performance/performance.php',
 		'wp-http-compression'                        => 'wp-http-compression/wp-http-compression.php',
 		'wordpress-gzip-compression'                 => 'wordpress-gzip-compression/ezgz.php',
 		'gzip-ninja-speed-compression'               => 'gzip-ninja-speed-compression/gzip-ninja-speed.php',
@@ -126,6 +129,7 @@ function rocket_plugins_to_deactivate() {
 		'force-gzip'                                 => 'force-gzip/force-gzip.php',
 		'enable-gzip-compression'                    => 'enable-gzip-compression/enable-gzip-compression.php',
 		'leverage-browser-caching'                   => 'leverage-browser-caching/leverage-browser-caching.php',
+		'add-expires-headers'                        => 'add-expires-headers/add-expires-headers.php',
 	];
 
 	if ( get_rocket_option( 'lazyload' ) ) {
@@ -152,7 +156,8 @@ function rocket_plugins_to_deactivate() {
 	}
 
 	if ( get_rocket_option( 'minify_css' ) || get_rocket_option( 'minify_js' ) ) {
-		$plugins['async-js-and-css'] = 'async-js-and-css/asyncJSandCSS.php';
+		$plugins['async-js-and-css']     = 'async-js-and-css/asyncJSandCSS.php';
+		$plugins['merge-minify-refresh'] = 'merge-minify-refresh/merge-minify-refresh.php';
 	}
 
 	if ( get_rocket_option( 'minify_html' ) ) {
