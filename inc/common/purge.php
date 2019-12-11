@@ -652,9 +652,7 @@ function rocket_clean_cache_theme_update( $wp_upgrader, $hook_extra ) {
  */
 function rocket_clean_post_cache_on_slug_change( $post_id, $post_data ) {
 	// Bail out if the post status is draft, pending or auto-draft.
-	if ( 'draft' === get_post_field( 'post_status', $post_id ) ||
-			'pending' === get_post_field( 'post_status', $post_id ) ||
-			'auto-draft' === get_post_field( 'post_status', $post_id ) ) {
+	if ( in_array( get_post_field( 'post_status', $post_id ), [ 'draft', 'pending', 'auto-draft' ], true ) ) {
 		return;
 	}
 	// Bail out if the slug hasn't changed.
