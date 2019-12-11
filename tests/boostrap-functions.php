@@ -19,6 +19,9 @@ function init_test_suite( $test_suite = 'Unit' ) {
 
 	// Load the Composer autoloader.
 	require_once WP_ROCKET_PLUGIN_ROOT . '/vendor/autoload.php';
+
+	// Load Patchwork before everything else in order to allow us to redefine WordPress, 3rd party, and WP Rocket functions.
+	require_once WP_ROCKET_PLUGIN_ROOT . '/vendor/antecedent/patchwork/Patchwork.php';
 }
 
 /**
