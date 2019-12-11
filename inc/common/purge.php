@@ -651,8 +651,20 @@ function rocket_clean_cache_theme_update( $wp_upgrader, $hook_extra ) {
  * @param array $post_data Array of unslashed post data.
  */
 function rocket_clean_post_cache_on_slug_change( $post_id, $post_data ) {
-	if ( get_post_field( 'post_name', $post_id ) !== $post_data['post_name'] ) {
-        rocket_clean_files( get_the_permalink( $post_id ) );
-    }
+	// Bail out if the post status is draft, pending or auto-draft.
+	if ( 'draft' === get_post_field( 'post_status', $post_id ) ||
+			'pending' === get_post_field( 'post_status', $post_id ) ||
+			'auto-draft' === get_post_field( 'post_status', $post_id ) ) {
+		return;
+	}
+	// Bail out if the slug hasn't changed.
+	if ( get_post_field( 'post_name', $post_id ) === $post_data['post_name'] ) {
+		return;
+	}
+	// Bail out if the old slug has changed, but is empty.
+	if ( empty( get_post_field( 'post_name', $post_id ) ) ) {
+		return;
+	}
+	rocket_clean_files( get_the_permalink( $post_id ) );
 }
 add_action( 'pre_post_update', 'rocket_clean_post_cache_on_slug_change', 10, 2 );
