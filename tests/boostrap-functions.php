@@ -2,7 +2,7 @@
 /**
  * Common bootstrap functionality.
  *
- * @package WP_Rocket\Tests\Unit
+ * @package WP_Rocket\Tests
  */
 
 namespace WP_Rocket\Tests;
