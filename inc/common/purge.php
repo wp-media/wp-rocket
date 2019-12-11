@@ -3,9 +3,6 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 // Launch hooks that deletes all the cache domain.
 add_action( 'switch_theme', 'rocket_clean_domain' );  // When user change theme.
-add_action( 'user_register', 'rocket_clean_domain' );  // When a user is added.
-add_action( 'profile_update', 'rocket_clean_domain' );  // When a user is updated.
-add_action( 'deleted_user', 'rocket_clean_domain' );  // When a user is deleted.
 add_action( 'wp_update_nav_menu', 'rocket_clean_domain' );  // When a custom menu is update.
 add_action( 'update_option_sidebars_widgets', 'rocket_clean_domain' );  // When you change the order of widgets.
 add_action( 'update_option_category_base', 'rocket_clean_domain' );  // When category permalink prefix is update.
