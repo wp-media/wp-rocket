@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Tests\Integration\Buffer\Tests;
 
-use PHPUnit\Framework\TestCase;
+use WP_Rocket\Tests\Integration\TestCase;
 use WP_Rocket\Buffer\Tests;
 use WP_Rocket\Buffer\Config;
 
