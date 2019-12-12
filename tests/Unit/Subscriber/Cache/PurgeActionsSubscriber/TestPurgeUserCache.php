@@ -8,21 +8,21 @@ use Brain\Monkey\Filters;
 
 /**
  * @coversDefaultClass \WP_Rocket\Subscriber\Cache\PurgeActionsSubscriber
+ * @group purge_actions
  */
 class TestPurgeUserCache extends TestCase {
 	/**
 	 * @covers::purge_user_cache
-	 * @group purge_actions
 	 */
-	public function testShouldReturnNullWhenUserCacheDisabled() {
+	public function testShouldNotPurgeUserCacheWhenUserCacheDisabled() {
 		$options = $this->createMock('WP_Rocket\Admin\Options_Data');
-        $map     = [
-            [
-                'cache_logged_user',
-                0,
-                0,
-            ],
-        ];
+		$map     = [
+			[
+				'cache_logged_user',
+				0,
+				0,
+			],
+		];
 
 		$options->method('get')->will($this->returnValueMap($map));
 
@@ -32,17 +32,16 @@ class TestPurgeUserCache extends TestCase {
 
 	/**
 	 * @covers::purge_user_cache
-	 * @group purge_actions
 	 */
-	public function testShouldReturnNullWhenCommonUserCache() {
+	public function testShoulNotPurgeUserCacheWhenCommonUserCacheEnabled() {
 		$options = $this->createMock('WP_Rocket\Admin\Options_Data');
-        $map     = [
-            [
-                'cache_logged_user',
-                0,
-                1,
-            ],
-        ];
+		$map     = [
+			[
+				'cache_logged_user',
+				0,
+				1,
+			],
+		];
 
 		$options->method('get')->will($this->returnValueMap($map));
 
@@ -56,16 +55,15 @@ class TestPurgeUserCache extends TestCase {
 
 	/**
 	 * @covers::purge_user_cache
-	 * @group purge_actions
 	 */
 	public function testShouldPurgeCacheForUserID1() {
 		$options = $this->createMock('WP_Rocket\Admin\Options_Data');
-        $map     = [
-            [
-                'cache_logged_user',
-                0,
-                1,
-            ],
+		$map     = [
+			[
+				'cache_logged_user',
+				0,
+				1,
+			],
 		];
 
 		$options->method('get')->will($this->returnValueMap($map));
