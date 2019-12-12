@@ -152,6 +152,7 @@ class Plugin {
 			'varnish_subscriber',
 			'cloudflare_subscriber',
 			'detect_missing_tags_subscriber',
+			'purge_actions_subscriber',
 		];
 
 		if ( \rocket_valid_key() ) {
