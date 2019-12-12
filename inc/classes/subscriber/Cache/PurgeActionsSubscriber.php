@@ -68,10 +68,6 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 		}
 
 		// This filter is documented in /inc/functions/files.php.
-		if ( apply_filters( 'rocket_common_cache_logged_users', false ) ) {
-			return false;
-		}
-
-		return true;
+		return ! (bool) apply_filters( 'rocket_common_cache_logged_users', false );
 	}
 }
