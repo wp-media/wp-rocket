@@ -5,53 +5,59 @@
  * @package WP_Rocket\Tests\Integration
  */
 
-if (version_compare(phpversion(), '5.6.0', '<')) {
-    die('WP Rocket Plugin Integration Tests require PHP 5.6 or higher.');
-}
+namespace WP_Rocket\Tests\Integration;
 
-// Define testing constants.
-define('WP_ROCKET_PLUGIN_TESTS_ROOT', __DIR__);
-define('WP_ROCKET_PLUGIN_ROOT', dirname(dirname(__DIR__)));
+use function WP_Rocket\Tests\init_test_suite;
+
+require_once dirname( dirname( __FILE__ ) ) . '/boostrap-functions.php';
+init_test_suite( 'Integration' );
 
 /**
- * Gets the WP tests suite directory
+ * Get the WordPress' tests suite directory.
  *
- * @return string
+ * @return string Returns The directory path to the WordPress testing environment.
  */
-function WPRocketPluginGetWPTestsDir()
-{
-    $tests_dir = getenv('WP_TESTS_DIR');
+function get_wp_tests_dir() {
+	$tests_dir = getenv( 'WP_TESTS_DIR' );
 
-    // Travis CI & Vagrant SSH tests directory.
-    if (empty($tests_dir)) {
-        $tests_dir = '/tmp/wordpress-tests-lib';
-    }
-    // If the tests' includes directory does not exist, try a relative path to Core tests directory.
-    if (! file_exists($tests_dir . '/includes/')) {
-        $tests_dir = '../../../../tests/phpunit';
-    }
-    // Check it again. If it doesn't exist, stop here and post a message as to why we stopped.
-    if (! file_exists($tests_dir . '/includes/')) {
-        trigger_error('Unable to run the integration tests, as the WordPress test suite could not be located.', E_USER_ERROR);  // @codingStandardsIgnoreLine.
-    }
-    // Strip off the trailing directory separator, if it exists.
-    return rtrim($tests_dir, DIRECTORY_SEPARATOR);
+	// Travis CI & Vagrant SSH tests directory.
+	if ( empty( $tests_dir ) ) {
+		$tests_dir = '/tmp/wordpress-tests-lib';
+	}
+
+	// If the tests' includes directory does not exist, try a relative path to Core tests directory.
+	if ( ! file_exists( $tests_dir . '/includes/' ) ) {
+		$tests_dir = '../../../../tests/phpunit';
+	}
+
+	// Check it again. If it doesn't exist, stop here and post a message as to why we stopped.
+	if ( ! file_exists( $tests_dir . '/includes/' ) ) {
+		trigger_error( 'Unable to run the integration tests, because the WordPress test suite could not be located.', E_USER_ERROR ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_trigger_error -- Valid use case for our testing suite.
+	}
+
+	// Strip off the trailing directory separator, if it exists.
+	return rtrim( $tests_dir, DIRECTORY_SEPARATOR );
 }
-
-$rocket_tests_dir = WPRocketPluginGetWPTestsDir();
-
-// Give access to tests_add_filter() function.
-require_once $rocket_tests_dir . '/includes/functions.php';
 
 /**
- * Manually load the plugin being tested.
+ * Bootstraps the integration testing environment with WordPress and WP Rocket.
+ *
+ * @param string $wp_tests_dir The directory path to the WordPress testing environment.
  */
-function rocket_manually_load_plugin()
-{
-    require WP_ROCKET_PLUGIN_ROOT . '/wp-rocket.php';
+function bootstrap_integration_suite( $wp_tests_dir ) {
+	// Give access to tests_add_filter() function.
+	require_once $wp_tests_dir . '/includes/functions.php';
+
+	// Manually load the plugin being tested.
+	tests_add_filter(
+		'muplugins_loaded',
+		function() {
+			require WP_ROCKET_PLUGIN_ROOT . '/wp-rocket.php';
+		}
+	);
+
+	// Start up the WP testing environment.
+	require_once $wp_tests_dir . '/includes/bootstrap.php';
 }
-tests_add_filter('muplugins_loaded', 'rocket_manually_load_plugin');
 
-require_once $rocket_tests_dir . '/includes/bootstrap.php';
-
-unset($rocket_tests_dir);
+bootstrap_integration_suite( get_wp_tests_dir() );

@@ -44,5 +44,4 @@ before_script:
     bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
   fi
 script:
-- composer test-unit
-- composer test-integration
+- composer run-tests

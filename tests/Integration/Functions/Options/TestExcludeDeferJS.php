@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Tests\Integration\Functions\Options;
 
-use PHPUnit\Framework\TestCase;
+use WP_Rocket\Tests\Integration\TestCase;
 
 class TestExcludeDeferJS extends TestCase {
     public function testShouldReturnExcludeDeferJSArray() {
