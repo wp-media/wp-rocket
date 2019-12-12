@@ -7,6 +7,9 @@ use Brain\Monkey\Actions;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 
+/**
+ * @group ThirdParty
+ */
 class TestSyncOnNetworkOptionUpdate extends TestCase {
 	/**
 	 * Test Imagify_Subscriber->sync_on_network_option_update() should sync when on the same network.

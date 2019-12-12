@@ -7,6 +7,9 @@ use Brain\Monkey\Functions;
 use org\bovigo\vfs\vfsStream,
 	org\bovigo\vfs\vfsStreamDirectory;
 
+/**
+ * @group Cache
+ */
 class TestPurgeExpiredFiles extends TestCase {
 	private $cache_path;
 	private $mock_fs;

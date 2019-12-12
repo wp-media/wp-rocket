@@ -4,6 +4,9 @@ namespace WP_Rocket\Tests\Integration\Optimize\CSS\CombineGoogleFonts;
 use WP_Rocket\Tests\Integration\TestCase;
 use WP_Rocket\Optimization\CSS\Combine_Google_Fonts;
 
+/**
+ * @group Optimize
+ */
 class TestOptimize extends TestCase {
     public function testShouldCombineGoogleFontsWhenSubset() {
         $combine = new Combine_Google_Fonts();

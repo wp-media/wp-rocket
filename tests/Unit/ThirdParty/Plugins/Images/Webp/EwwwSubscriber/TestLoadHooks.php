@@ -7,6 +7,9 @@ namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\Images\Webp\EwwwSubscriber {
 	use Brain\Monkey\Filters;
 	use Brain\Monkey\Functions;
 
+	/**
+	 * @group ThirdParty
+	 */
 	class TestLoadHooks extends TestCase {
 		/**
 		 * Test EWWW_Subscriber->load_hooks() should not register hooks when separate cache is disabled via the option.
@@ -92,7 +95,7 @@ namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\Images\Webp\EwwwSubscriber {
 			$subscriber
 				->expects( $this->once() )
 				->method( 'plugin_deactivation' );
-			
+
 			Functions\When( 'plugin_basename')->justReturn('ewww-image-optimizer/ewww-image-optimizer.php');
 			Functions\When( 'is_multisite')->justReturn( false );
 

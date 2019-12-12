@@ -5,6 +5,9 @@ use WP_Rocket\Tests\Integration\TestCase;
 use WP_Rocket\Buffer\Tests;
 use WP_Rocket\Buffer\Config;
 
+/**
+ * @group Buffer
+ */
 class TestIsSpeedTool extends TestCase {
      /**
      * @covers ::is_speed_tool
