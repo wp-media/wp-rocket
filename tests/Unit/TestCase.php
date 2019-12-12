@@ -1,15 +1,27 @@
 <?php
+/**
+ * Test Case for all of the unit tests.
+ *
+ * @package WP_Rocket\Tests\Unit
+ */
+
 namespace WP_Rocket\Tests\Unit;
 
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Brain\Monkey;
 
 class TestCase extends PHPUnitTestCase {
+	/**
+	 * Prepares the test environment before each test.
+	 */
 	protected function setUp() {
 		parent::setUp();
 		Monkey\setUp();
 	}
 
+	/**
+	 * Cleans up the test environment after each test.
+	 */
 	protected function tearDown() {
 		Monkey\tearDown();
 		parent::tearDown();
