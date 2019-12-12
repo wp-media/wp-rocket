@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Tests\Integration\Optimize\CSS\Combine;
 
-use PHPUnit\Framework\TestCase;
+use WP_Rocket\Tests\Integration\TestCase;
 use WP_Rocket\Optimization\CSS\Combine;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Admin\Options;
