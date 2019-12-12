@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Tests\Integration\Subscriber\CDNSubscriber;
 
-use PHPUnit\Framework\TestCase;
+use WP_Rocket\Tests\Integration\TestCase;
 use WP_Rocket\Subscriber\CDN\CDNSubscriber;
 
 class TestGetSubscribedEvents extends TestCase {
