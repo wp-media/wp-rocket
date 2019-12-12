@@ -12,10 +12,6 @@ branches:
   - master
   - develop
   - /branch-.*$/
-cache:
-  directories:
-  - vendor
-  - "$HOME/.composer/cache"
 matrix:
   include:
   - php: 7.4
@@ -34,7 +30,7 @@ matrix:
     env: WP_VERSION=latest
 before_script:
 - export PATH="$HOME/.composer/vendor/bin:$PATH"
-- composer install --no-progress
+- composer install
 - |
   if [ -f ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini ]; then
     phpenv config-rm xdebug.ini
