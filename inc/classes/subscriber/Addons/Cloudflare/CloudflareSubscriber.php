@@ -196,6 +196,21 @@ class CloudflareSubscriber implements Subscriber_Interface {
 		if ( is_wp_error( $cf_cache_everything ) || ! $cf_cache_everything ) {
 			return;
 		}
+		// Add home URL and feeds URLs to Cloudflare clean cache URLs list.
+		$home_url     = get_rocket_i18n_home_url( $lang );
+		$purge_urls[] = $home_url;
+		$feed_urls    = [];
+		$feed_urls[]  = get_feed_link();
+		$feed_urls[]  = get_feed_link( 'comments_' );
+
+		/**
+		 * Filter the home feeds urls
+		 *
+		 * @since 2.7
+		 * @param array     $urls The urls of the home feeds.
+		*/
+		$feed_urls  = apply_filters( 'rocket_clean_home_feeds', $feed_urls );
+		$purge_urls = array_unique( array_merge( $purge_urls, $feed_urls ) );
 
 		// Purge CloudFlare.
 		$cf_purge = $this->cloudflare->purge_by_url( $post, $purge_urls, $lang );

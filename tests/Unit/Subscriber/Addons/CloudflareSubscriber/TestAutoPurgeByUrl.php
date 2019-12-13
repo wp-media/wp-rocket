@@ -75,6 +75,8 @@ class TestAutoPurgeByUrl extends TestCase {
 		$mocks = $this->getConstructorMocks( 1, '', '', '' );
 		Functions\when( 'current_user_can' )->justReturn( true );
 		Functions\when( 'get_current_user_id' )->justReturn( 1 );
+		Functions\when( 'get_rocket_i18n_home_url' )->justReturn( 'http://local.com/' );
+		Functions\when( 'get_feed_link' )->justReturn( 'http://local.com/feed/' );
 
 		$wp_error   = \Mockery::mock( \WP_Error::class );
 		$wp_error->shouldReceive('get_error_message')->andReturn( 'Error!' );
@@ -95,6 +97,8 @@ class TestAutoPurgeByUrl extends TestCase {
 		Functions\when( 'current_user_can' )->justReturn( true );
 		Functions\when( 'get_current_user_id' )->justReturn( 1 );
 		Functions\when( 'is_wp_error' )->justReturn( false );
+		Functions\when( 'get_rocket_i18n_home_url' )->justReturn( 'http://local.com/' );
+		Functions\when( 'get_feed_link' )->justReturn( 'http://local.com/feed/' );
 
 		$wp_error   = \Mockery::mock( \WP_Error::class );
 		$cloudflare = \Mockery::mock( \WP_Rocket\Addons\Cloudflare\Cloudflare::class );
