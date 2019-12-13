@@ -12,6 +12,10 @@ branches:
   - master
   - develop
   - /branch-.*$/
+cache:
+  directories:
+  - vendor
+  - "$HOME/.composer/cache"
 matrix:
   include:
   - php: 7.4
