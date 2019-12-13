@@ -24,6 +24,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 			],
 			'rocket_dashboard_after_account_data' => 'display_rocketcdn_status',
 			'rocket_before_cdn_sections'          => 'display_rocketcdn_cta',
+			'rocket_after_cdn_sections'           => 'display_manage_subscription',
 			'rocket_cdn_settings_fields'          => 'rocketcdn_field',
 			'wp_ajax_toggle_rocketcdn_cta'        => 'toggle_cta',
 			'wp_ajax_rocketcdn_dismiss_notice'    => 'dismiss_notice',
@@ -186,7 +187,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 			'type'        => 'rocket_cdn',
 			'label'       => __( 'CDN CNAME(s)', 'rocket' ),
 			'description' => __( 'Specify the CNAME(s) below', 'rocket' ),
-			'helper'      => __( 'Rocket CDN is currently active.', 'rocket' ) . ' <button class="wpr-rocketcdn-open" data-micromodal-trigger="wpr-rocketcdn-modal">' . __( 'Unsubscribe', 'rocket' ) . '</button>',
+			'helper'      => __( 'Rocket CDN is currently active.', 'rocket' ),
 			'default'     => '',
 			'section'     => 'cnames_section',
 			'page'        => 'page_cdn',
@@ -245,6 +246,26 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 
 		echo $this->generate( 'cta-small', $small_cta_data );
 		echo $this->generate( 'cta-big', $big_cta_data );
+	}
+
+	/**
+	 * Displays the button to open the subscription modal
+	 *
+	 * @since 3.5
+	 * @author Remy Perona
+	 *
+	 * @return void
+	 */
+	public function display_manage_subscription() {
+		$subscription_data = $this->get_subscription_data();
+
+		if ( ! $subscription_data['is_active'] ) {
+			return;
+		}
+
+		?>
+		<p class="wpr-rocketcdn-subscription"><button class="wpr-rocketcdn-open" data-micromodal-trigger="wpr-rocketcdn-modal"><?php esc_html_e( 'Manage Subscription', 'rocket' ); ?></button></p>
+		<?php
 	}
 
 	/**
