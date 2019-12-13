@@ -31,8 +31,9 @@ matrix:
 before_script:
 - rm composer.lock
 - export PATH="$HOME/.composer/vendor/bin:$PATH"
+- if [ -z "$WP_VERSION" ]; then composer install; fi;
 - if [ "$WP_VERSION" = "4.9.11" ]; then composer update --no-progress --prefer-lowest -n; fi;
-- if [ "$WP_VERSION" = "latest" ]; then composer install --no-progress -n; fi;
+- if [ "$WP_VERSION" = "latest" ]; then composer update --no-progress -n; fi;
 - |
   if [ -f ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini ]; then
     phpenv config-rm xdebug.ini
