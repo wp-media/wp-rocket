@@ -24,7 +24,7 @@
         align-items: center;
 
         @include respond-to('xs') {
-            text-align: left;
+            text-align: start;
             flex-direction: column;
         }
     }
@@ -110,7 +110,7 @@
         align-items: center;
 
         @include respond-to('xs') {
-            text-align: left;
+            text-align: start;
             flex-direction: column;
         }
     }
@@ -199,5 +199,14 @@
                 font-style: italic;
             }
         }
+    }
+}
+
+.wpr-rocketcdn-subscription {
+    text-align: end;
+    
+    .wpr-rocketcdn-open {
+        color: $cGreyDark2;
+        text-decoration: underline;
     }
 }
