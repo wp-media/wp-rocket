@@ -691,21 +691,6 @@ function rocket_auto_purge_cloudflare() {
 
 	// Purge CloudFlare.
 	$cf_purge = rocket_purge_cloudflare();
-
-	if ( is_wp_error( $cf_purge ) ) {
-		$cf_purge_result = [
-			'result'  => 'error',
-			// translators: %s = CloudFare API return message.
-			'message' => sprintf( __( 'Cloudflare cache purge error: %s', 'rocket' ), $cf_purge->get_error_message() ),
-		];
-	} else {
-		$cf_purge_result = [
-			'result'  => 'success',
-			'message' => __( 'Cloudflare cache successfully purged', 'rocket' ),
-		];
-	}
-
-	set_transient( get_current_user_id() . '_cloudflare_purge_result', $cf_purge_result );
 }
 add_action( 'after_rocket_clean_domain', 'rocket_auto_purge_cloudflare' );
 
