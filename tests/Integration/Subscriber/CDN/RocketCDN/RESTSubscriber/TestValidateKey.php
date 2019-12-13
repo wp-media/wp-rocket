@@ -7,12 +7,12 @@ use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 
 /**
- * @coversDefaultClass \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber;
+ * @coversDefaultClass \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber
+ * @group RocketCDN
  */
 class TestValidateKey extends TestCase {
     /**
 	 * @covers ::validate_key
-	 * @group RocketCDN
 	 */
     public function testShouldReturnTrueWhenKeyIsValid() {
         update_option(
@@ -32,7 +32,6 @@ class TestValidateKey extends TestCase {
 
     /**
 	 * @covers ::validate_key
-	 * @group RocketCDN
 	 */
     public function testShouldReturnFalseWhenKeylIsInvalid() {
         update_option(

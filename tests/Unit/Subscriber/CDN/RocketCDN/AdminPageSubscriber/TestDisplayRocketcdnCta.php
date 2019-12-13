@@ -7,11 +7,11 @@ use Brain\Monkey\Functions;
 
 /**
  * @coversDefaultClass \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber
+ * @group RocketCDN
  */
 class TestDisplayRocketcdnCta extends TestCase {
 	/**
 	 * @covers ::display_rocketcdn_cta
-	 * @group RocketCDN
 	 */
 	public function testShouldReturnNullWhenActive() {
 		Functions\when('get_transient')->justReturn(
@@ -26,7 +26,6 @@ class TestDisplayRocketcdnCta extends TestCase {
 
 	/**
 	 * @covers ::display_rocketcdn_cta
-	 * @group RocketCDN
 	 */
 	public function testShouldDisplayBigCTANoPromoWhenDefault() {
 		$this->mockCommonWpFunctions();
@@ -97,7 +96,6 @@ class TestDisplayRocketcdnCta extends TestCase {
 
 	/**
 	 * @covers ::display_rocketcdn_cta
-	 * @group RocketCDN
 	 */
 	public function testShouldDisplaySmallCTAWhenBigHidden() {
 		$this->mockCommonWpFunctions();
@@ -168,7 +166,6 @@ class TestDisplayRocketcdnCta extends TestCase {
 
 	/**
 	 * @covers ::display_rocketcdn_cta
-	 * @group RocketCDN
 	 */
 	public function testShouldDisplayBigCTAPromoWhenPromoActive() {
 		$this->mockCommonWpFunctions();

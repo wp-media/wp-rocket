@@ -7,11 +7,11 @@ use Brain\Monkey\Functions;
 
 /**
  * @coversDefaultClass \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber
+ * @group RocketCDN
  */
 class TestPurgeCacheNotice extends TestCase {
 	/**
 	 * @covers ::purge_cache_notice
-	 * @group RocketCDN
 	 */
 	public function testShouldReturnNullWhenNoPermissions() {
 		Functions\when('current_user_can')->justReturn(false);
@@ -22,7 +22,6 @@ class TestPurgeCacheNotice extends TestCase {
 
 	/**
 	 * @covers ::purge_cache_notice
-	 * @group RocketCDN
 	 */
 	public function testShouldReturnNullWhenNotRocketPage() {
 		Functions\when('current_user_can')->justReturn(true);
@@ -36,7 +35,6 @@ class TestPurgeCacheNotice extends TestCase {
 
 	/**
 	 * @covers ::purge_cache_notice
-	 * @group RocketCDN
 	 */
 	public function testShouldReturnNullWhenNoTransient() {
 		Functions\when('current_user_can')->justReturn(true);
@@ -51,7 +49,6 @@ class TestPurgeCacheNotice extends TestCase {
 
 	/**
 	 * @covers ::purge_cache_notice
-	 * @group RocketCDN
 	 */
 	public function testShouldDisplayNoticeWhenPurgeAction() {
 		Functions\when('current_user_can')->justReturn(true);

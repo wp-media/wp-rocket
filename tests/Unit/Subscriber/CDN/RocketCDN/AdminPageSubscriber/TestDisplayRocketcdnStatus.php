@@ -7,11 +7,11 @@ use Brain\Monkey\Functions;
 
 /**
  * @coversDefaultClass \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber
+ * @group RocketCDN
  */
 class TestDisplayRocketcdnStatus extends TestCase {
 	/**
 	 * @covers ::display_rocketcdn_status
-	 * @group RocketCDN
 	 */
 	public function testShouldOutputNoSubscriptionWhenInactive() {
 		$this->mockCommonWpFunctions();
@@ -57,7 +57,6 @@ class TestDisplayRocketcdnStatus extends TestCase {
 
 	/**
 	 * @covers ::display_rocketcdn_status
-	 * @group RocketCDN
 	 */
 	public function testShouldOutputSubscriptionDataWhenActive() {
 		$this->mockCommonWpFunctions();

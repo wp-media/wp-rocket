@@ -7,11 +7,11 @@ use Brain\Monkey\Functions;
 
 /**
  * @coversDefaultClass \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber
+ * @group RocketCDN
  */
 class TestRocketcdnField extends TestCase {
     /**
 	 * @covers ::rocketcdn_field
-	 * @group RocketCDN
 	 */
     public function testShouldReturnDefaultFieldWhenRocketCDNNotActive() {
         Functions\when('get_transient')->justReturn(['is_active' => false]);
@@ -29,7 +29,6 @@ class TestRocketcdnField extends TestCase {
 
     /**
 	 * @covers ::rocketcdn_field
-	 * @group RocketCDN
 	 */
     public function testShouldReturnRocketCDNFieldWhenRocketCDNActive() {
         $this->mockCommonWpFunctions();
@@ -45,7 +44,7 @@ class TestRocketcdnField extends TestCase {
                 'type'        => 'rocket_cdn',
                 'label'       => __( 'CDN CNAME(s)', 'rocket' ),
                 'description' => __( 'Specify the CNAME(s) below', 'rocket' ),
-                'helper'      => __( 'Rocket CDN is currently active.', 'rocket' ) . ' <button class="wpr-rocketcdn-open" data-micromodal-trigger="wpr-rocketcdn-modal">' . __( 'Unsubscribe', 'rocket' ) . '</button>',
+                'helper'      => __( 'Rocket CDN is currently active.', 'rocket' ),
                 'default'     => '',
                 'section'     => 'cnames_section',
                 'page'        => 'page_cdn',

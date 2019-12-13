@@ -7,11 +7,11 @@ use Brain\Monkey\Functions;
 
 /**
  * @coversDefaultClass \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber
+ * @group RocketCDN
  */
 class TestPurgeCacheRequest extends TestCase {
     /**
      * @covers ::purge_cache_request
-     * @group RocketCDN
      */
     public function testShouldReturnMissingIdentifierWhenNoID() {
         $this->mockCommonWpFunctions();
@@ -30,7 +30,6 @@ class TestPurgeCacheRequest extends TestCase {
 
     /**
      * @covers ::purge_cache_request
-     * @group RocketCDN
      */
     public function testShouldReturnMissingIdentifierWhenWrongID() {
         $this->mockCommonWpFunctions();
@@ -51,7 +50,6 @@ class TestPurgeCacheRequest extends TestCase {
 
     /**
      * @covers ::purge_cache_request
-     * @group RocketCDN
      */
     public function testShouldReturnUnexpectedResponseWhenIncorrectResponseCode() {
         $this->mockCommonWpFunctions();
@@ -74,7 +72,7 @@ class TestPurgeCacheRequest extends TestCase {
 
     /**
      * @covers ::purge_cache_request
-     * @group RocketCDN
+
      */
     public function testShouldReturnUnexpectedResponseWhenEmptyBody() {
         $this->mockCommonWpFunctions();
@@ -98,7 +96,6 @@ class TestPurgeCacheRequest extends TestCase {
 
     /**
      * @covers ::purge_cache_request
-     * @group RocketCDN
      */
     public function testShouldReturnUnexpectedResponseWhenMissingParameter() {
         $this->mockCommonWpFunctions();
@@ -126,7 +123,6 @@ class TestPurgeCacheRequest extends TestCase {
 
     /**
      * @covers ::purge_cache_request
-     * @group RocketCDN
      */
     public function testShouldReturnErrorMessageWhenSuccessFalse() {
         $this->mockCommonWpFunctions();
@@ -157,7 +153,6 @@ class TestPurgeCacheRequest extends TestCase {
 
     /**
      * @covers ::purge_cache_request
-     * @group RocketCDN
      */
     public function testShouldReturnSuccessMessageWhenSuccessTrue() {
         $this->mockCommonWpFunctions();

@@ -7,11 +7,11 @@ use Brain\Monkey\Functions;
 
 /**
  * @coversDefaultClass \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber
+ * @group RocketCDN
  */
 class TestAddDismissScript extends TestCase {
 	/**
 	 * @covers ::add_dismiss_script
-	 * @group RocketCDN
 	 */
 	public function testShouldNotAddScriptWhenNoCapability() {
 		Functions\when('current_user_can')->justReturn(false);
@@ -23,7 +23,6 @@ class TestAddDismissScript extends TestCase {
 
 	/**
 	 * @covers ::add_dismiss_script
-	 * @group RocketCDN
 	 */
 	public function testShouldNotAddScriptWhenNotRocketPage() {
 		Functions\when('current_user_can')->justReturn(true);
@@ -38,7 +37,6 @@ class TestAddDismissScript extends TestCase {
 
 	/**
 	 * @covers ::add_dismiss_script
-	 * @group RocketCDN
 	 */
 	public function testShouldNotAddScriptWhenDismissed() {
 		Functions\when('current_user_can')->justReturn(true);
@@ -55,7 +53,6 @@ class TestAddDismissScript extends TestCase {
 
 	/**
 	 * @covers ::add_dismiss_script
-	 * @group RocketCDN
 	 */
 	public function testShouldNotAddScriptWhenActive() {
 		Functions\when('current_user_can')->justReturn(true);
@@ -73,7 +70,6 @@ class TestAddDismissScript extends TestCase {
 
 	/**
 	 * @covers ::add_dismiss_script
-	 * @group RocketCDN
 	 */
 	public function testShouldAddScriptWhenNotActive() {
 		$this->mockCommonWpFunctions();

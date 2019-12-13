@@ -7,11 +7,11 @@ use Brain\Monkey\Functions;
 
 /**
  * @coversDefaultClass \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber
+ * @group RocketCDN
  */
 class TestPromoteRocketcdnNotice extends TestCase {
 	/**
 	 * @covers ::promote_rocketcdn_notice
-	 * @group RocketCDN
 	 */
 	public function testShouldNotDisplayNoticeWhenNoCapability() {
 		Functions\when('current_user_can')->justReturn(false);
@@ -23,7 +23,6 @@ class TestPromoteRocketcdnNotice extends TestCase {
 
 	/**
 	 * @covers ::promote_rocketcdn_notice
-	 * @group RocketCDN
 	 */
 	public function testShouldNotDisplayNoticeWhenNotRocketPage() {
 		Functions\when('current_user_can')->justReturn(true);
@@ -38,7 +37,6 @@ class TestPromoteRocketcdnNotice extends TestCase {
 
 	/**
 	 * @covers ::promote_rocketcdn_notice
-	 * @group RocketCDN
 	 */
 	public function testShouldNotDisplayNoticeWhenDismissed() {
 		Functions\when('current_user_can')->justReturn(true);
@@ -55,7 +53,6 @@ class TestPromoteRocketcdnNotice extends TestCase {
 
 	/**
 	 * @covers ::promote_rocketcdn_notice
-	 * @group RocketCDN
 	 */
 	public function testShouldNotDisplayNoticeWhenActive() {
 		Functions\when('current_user_can')->justReturn(true);
@@ -73,7 +70,6 @@ class TestPromoteRocketcdnNotice extends TestCase {
 
 	/**
 	 * @covers ::promote_rocketcdn_notice
-	 * @group RocketCDN
 	 */
 	public function testShoulDisplayNoticeWhenNotActive() {
 		$this->mockCommonWpFunctions();

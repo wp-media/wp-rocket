@@ -4,12 +4,18 @@ namespace WP_Rocket\Tests\Integration\Subscriber\CDN\RocketCDN\RESTSubscriber;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber;
+ * @coversDefaultClass \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber
+ * @group RocketCDN
  */
 class TestRegisterEnableRoute extends TestCase {
+	/**
+	 * Setup the WP REST API Server
+	 */
     public function setUp() {
 		parent::setUp();
-		/** @var WP_REST_Server $wp_rest_server */
+		/**
+		 * @var WP_REST_Server $wp_rest_server
+		 * */
 		global $wp_rest_server;
 		$this->server = $wp_rest_server = new \WP_REST_Server;
 		do_action( 'rest_api_init' );
@@ -18,7 +24,6 @@ class TestRegisterEnableRoute extends TestCase {
 
 	/**
 	 * @covers ::register_enable_route
-	 * @group RocketCDN
 	 */
     public function testEnableRouteIsRegistered() {
         $routes = $this->server->get_routes();
@@ -27,7 +32,6 @@ class TestRegisterEnableRoute extends TestCase {
 
 	/**
 	 * @covers ::register_enable_route
-	 * @group RocketCDN
 	 */
     public function testEndpoint() {
         $routes = $this->server->get_routes();

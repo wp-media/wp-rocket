@@ -5,12 +5,12 @@ use PHPUnit\Framework\TestCase;
 use WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber;
 
 /**
- * @coversDefaultClass \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber;
+ * @coversDefaultClass \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber
+ * @group RocketCDN
  */
 class TestGetSubscribedEvents extends TestCase {
 	/**
 	 * @covers ::get_subscribed_events
-	 * @group RocketCDN
 	 */
 	public function testShouldReturnSubscribedEventsArray() {
 		$events = [

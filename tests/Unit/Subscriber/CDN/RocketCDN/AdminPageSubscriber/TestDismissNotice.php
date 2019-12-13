@@ -7,11 +7,11 @@ use Brain\Monkey\Functions;
 
 /**
  * @coversDefaultClass \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber
+ * @group RocketCDN
  */
 class TestDismissNotice extends TestCase {
     /**
 	 * @covers ::dismiss_notice
-	 * @group RocketCDN
 	 */
     public function testShouldReturnNullWhenPOSTActionNotSet() {
         Functions\when('check_ajax_referer')->justReturn(true);
@@ -22,7 +22,6 @@ class TestDismissNotice extends TestCase {
 
     /**
 	 * @covers ::dismiss_notice
-	 * @group RocketCDN
 	 */
     public function testShouldReturnNullWhenIncorrectPOSTAction() {
         Functions\when('check_ajax_referer')->justReturn(true);
@@ -35,7 +34,6 @@ class TestDismissNotice extends TestCase {
 
     /**
 	 * @covers ::dismiss_notice
-	 * @group RocketCDN
 	 */
     public function testShouldUpdateUserMetaWhenValid() {
         Functions\when('check_ajax_referer')->justReturn(true);

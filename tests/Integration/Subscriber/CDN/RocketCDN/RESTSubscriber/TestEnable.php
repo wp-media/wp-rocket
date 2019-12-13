@@ -7,12 +7,12 @@ use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 
 /**
- * @coversDefaultClass \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber;
+ * @coversDefaultClass \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber
+ * @group RocketCDN
  */
 class TestEnable extends TestCase {
     /**
      * @covers ::enable
-     * @group RocketCDN
      */
     public function testWPRocketOptionsUpdated() {
         $request = new \WP_Rest_Request( 'PUT', '/wp-rocket/v1/rocketcdn/enable' );
