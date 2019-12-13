@@ -5,6 +5,9 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Optimization\CSS\Combine;
 use Brain\Monkey\Functions;
 
+/**
+ * @group Optimize
+ */
 class TestInsertCombinedCSS extends TestCase {
     public function testShouldInsertCombinedCSS() {
         Functions\when('create_rocket_uniqid')->justReturn('1234');

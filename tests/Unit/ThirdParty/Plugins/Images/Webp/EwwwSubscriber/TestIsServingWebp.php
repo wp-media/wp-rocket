@@ -6,6 +6,9 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 
+/**
+ * @group ThirdParty
+ */
 class TestIsServingWebp extends TestCase {
 	/**
 	 * Test EWWW_Subscriber->is_serving_webp() should return true when ExactDN is enabled.

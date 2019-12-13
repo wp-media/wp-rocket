@@ -7,6 +7,9 @@ use WP_Rocket\Admin\Options;
 use WP_Rocket\Cache\Expired_Cache_Purge;
 use WP_Rocket\Subscriber\Cache\Expired_Cache_Purge_Subscriber;
 
+/**
+ * @group Subscriber
+ */
 class TestGetCacheLifespan extends TestCase {
 	public function testShouldReturnLifespan() {
 		update_option(
