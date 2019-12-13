@@ -7,6 +7,9 @@ use Brain\Monkey\Actions;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 
+/**
+ * @group ThirdParty
+ */
 class TestSyncOnOptionAdd extends TestCase {
 	/**
 	 * Test Imagify_Subscriber->sync_on_option_add() should trigger a hook when the "display webp" option is enabled on option creation.

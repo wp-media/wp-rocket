@@ -9,8 +9,11 @@ namespace WP_Rocket\Tests\Unit;
 
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Brain\Monkey;
+use WP_Rocket\Tests\TestCaseTrait;
 
 class TestCase extends PHPUnitTestCase {
+	use TestCaseTrait;
+
 	/**
 	 * Prepares the test environment before each test.
 	 */
