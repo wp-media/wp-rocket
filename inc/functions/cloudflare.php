@@ -723,8 +723,7 @@ function rocket_auto_purge_cloudflare_by_url( $post, $purge_urls, $lang ) {
 	}
 
 	// Add home URL and feeds URLs to Cloudflare clean cache URLs list.
-	$home_url     = get_rocket_i18n_home_url( $lang );
-	$purge_urls[] = $home_url;
+	$purge_urls[] = get_rocket_i18n_home_url( $lang );
 	$feed_urls    = [];
 	$feed_urls[]  = get_feed_link();
 	$feed_urls[]  = get_feed_link( 'comments_' );
