@@ -7,6 +7,9 @@ use WP_Rocket\Admin\Options;
 use WP_Rocket\CDN\CDN;
 use WP_Rocket\Subscriber\CDN\CDNSubscriber;
 
+/**
+ * @group Subscriber
+ */
 class TestRewriteCSSProperties extends TestCase {
     public function testShouldRewriteCSSProperties() {
         update_option(
