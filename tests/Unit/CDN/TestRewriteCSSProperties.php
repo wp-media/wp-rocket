@@ -5,6 +5,9 @@ use WP_Rocket\CDN\CDN;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
+/**
+ * @group CDN
+ */
 class TestRewriteCSSProperties extends TestCase {
     public function testShouldRewriteCSSProperties() {
         $options = $this->createMock('WP_Rocket\Admin\Options_Data');

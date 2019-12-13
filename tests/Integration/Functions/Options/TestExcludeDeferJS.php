@@ -3,6 +3,10 @@ namespace WP_Rocket\Tests\Integration\Functions\Options;
 
 use WP_Rocket\Tests\Integration\TestCase;
 
+/**
+ * @group Functions
+ * @group Options
+ */
 class TestExcludeDeferJS extends TestCase {
     public function testShouldReturnExcludeDeferJSArray() {
         $exclude_defer_js = [

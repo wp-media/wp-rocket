@@ -6,6 +6,9 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 
+/**
+ * @group Subscriber
+ */
 class TestMaybeDisableSettingField extends TestCase {
 	/**
 	 * Test Webp_Subscriber->maybe_disable_setting_field() should return the identical array when webp cache is enabled.
