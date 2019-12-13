@@ -5,6 +5,9 @@ use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
+/**
+ * @group ThirdParty
+ */
 class TestIsConvertingToWebp extends TestCase {
 	/**
 	 * Test EWWW_Subscriber->is_converting_to_webp() should return false when EWWW option not enabled.

@@ -5,6 +5,9 @@ use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
+/**
+ * @group ThirdParty
+ */
 class TestGetBasename extends TestCase {
 	/**
 	 * Test Imagify_Subscriber->get_basename() should return a plugin basename when Imagify not enabled.

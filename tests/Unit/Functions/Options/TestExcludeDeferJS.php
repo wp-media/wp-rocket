@@ -6,6 +6,8 @@ use Brain\Monkey\Functions;
 
 /**
  * @runTestsInSeparateProcesses
+ * @group Functions
+ * @group Options
  */
 class TestExcludeDeferJS extends TestCase {
     protected function setUp() {

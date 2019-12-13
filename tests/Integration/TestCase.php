@@ -8,9 +8,12 @@
 namespace WP_Rocket\Tests\Integration;
 
 use Brain\Monkey;
+use WP_Rocket\Tests\TestCaseTrait;
 use WP_UnitTestCase;
 
 class TestCase extends WP_UnitTestCase {
+	use TestCaseTrait;
+
 	/**
 	 * Prepares the test environment before each test.
 	 */

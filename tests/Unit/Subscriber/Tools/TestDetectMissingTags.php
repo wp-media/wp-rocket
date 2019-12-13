@@ -5,6 +5,9 @@ use WP_Rocket\Subscriber\Tools\Detect_Missing_Tags_Subscriber;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
+/**
+ * @group Subscriber
+ */
 class TestDetectMissingTags extends TestCase {
 	protected function setUp() {
 		parent::setUp();
