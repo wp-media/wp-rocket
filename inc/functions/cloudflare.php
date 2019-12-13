@@ -658,9 +658,8 @@ function rocket_cf_has_page_rule( $action_value ) {
 			throw new Exception( $errors );
 		}
 
-		$cf_page_rule_arr = (array) $cf_page_rule;
-		return in_array( $action_value, $cf_page_rule_arr );
-
+		$cf_page_rule_arr = wp_json_encode( $cf_page_rule );
+		return preg_match( '/' . preg_quote( $action_value, '/' ) . '/', $cf_page_rule_arr );
 	} catch ( Exception $e ) {
 		return new WP_Error( 'cloudflare_page_rule_failed', $e->getMessage() );
 	}
@@ -739,22 +738,6 @@ function rocket_auto_purge_cloudflare_by_url( $post, $purge_urls, $lang ) {
 	}
 
 	// Purge CloudFlare.
-	$cf_purge = rocket_purge_cloudflare_by_url( $post, $purge_urls, $lang );
-
-	if ( is_wp_error( $cf_purge ) ) {
-		$cf_purge_result = [
-			'result'  => 'error',
-			// translators: %s = CloudFare API return message.
-			'message' => sprintf( __( 'Cloudflare cache purge error: %s', 'rocket' ), $cf_purge->get_error_message() ),
-		];
-	} else {
-		$cf_purge_result = [
-			'result'  => 'success',
-			'message' => __( 'Cloudflare cache successfully purged', 'rocket' ),
-		];
-	}
-
-	set_transient( get_current_user_id() . '_cloudflare_purge_result', $cf_purge_result );
-
+	rocket_purge_cloudflare_by_url( $post, $purge_urls, $lang );
 }
 add_action( 'after_rocket_clean_post', 'rocket_auto_purge_cloudflare_by_url', 10, 3 );
