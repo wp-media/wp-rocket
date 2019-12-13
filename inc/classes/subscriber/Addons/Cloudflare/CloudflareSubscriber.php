@@ -203,12 +203,7 @@ class CloudflareSubscriber implements Subscriber_Interface {
 		$feed_urls[]  = get_feed_link();
 		$feed_urls[]  = get_feed_link( 'comments_' );
 
-		/**
-		 * Filter the home feeds urls
-		 *
-		 * @since 2.7
-		 * @param array     $urls The urls of the home feeds.
-		*/
+		// this filter is documented in inc/functions/files.php.
 		$feed_urls  = apply_filters( 'rocket_clean_home_feeds', $feed_urls );
 		$purge_urls = array_unique( array_merge( $purge_urls, $feed_urls ) );
 
