@@ -737,17 +737,6 @@ function rocket_auto_purge_cloudflare_by_url( $post, $purge_urls, $lang ) {
 		return;
 	}
 
-	// Get the post language.
-	$i18n_plugin = rocket_has_i18n();
-	$lang        = false;
-
-	if ( 'wpml' === $i18n_plugin && ! rocket_is_plugin_active( 'woocommerce-multilingual/wpml-woocommerce.php' ) ) {
-		// WPML.
-		$lang = $GLOBALS['sitepress']->get_language_for_element( $post_id, 'post_' . get_post_type( $post_id ) );
-	} elseif ( 'polylang' === $i18n_plugin && function_exists( 'pll_get_post_language' ) ) {
-		// Polylang.
-		$lang = pll_get_post_language( $post_id );
-	}
 	// Add home URL and feeds URLs to Cloudflare clean cache URLs list.
 	$home_url     = get_rocket_i18n_home_url( $lang );
 	$purge_urls[] = $home_url;
