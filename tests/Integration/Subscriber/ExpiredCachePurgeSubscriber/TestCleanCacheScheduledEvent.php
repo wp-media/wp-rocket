@@ -1,14 +1,16 @@
 <?php
 namespace WP_Rocket\Tests\Integration\Subscriber\ExpiredCachePurgeSubscriber;
 
-use PHPUnit\Framework\TestCase;
-use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Admin\Options;
-use WP_Rocket\Cache\Expired_Cache_Purge;
-use WP_Rocket\Subscriber\Cache\Expired_Cache_Purge_Subscriber;
+use WP_Rocket\Tests\Integration\TestCase;
+use Brain\Monkey\Functions;
 
+/**
+ * @group Subscriber_ScheduledEvent
+ */
 class TestCleanCacheScheduledEvent extends TestCase {
-	public function testShouldNotCleanScheduledEventWhenValueIsDifferenThanMinutes() {
+	public function testShouldNotCleanScheduledEventWhenValuesAreTheSame() {
+		Functions\expect( 'wp_clear_scheduled_hook' )->never();
+
 		update_option(
 			'wp_rocket_settings',
 			[
@@ -17,56 +19,50 @@ class TestCleanCacheScheduledEvent extends TestCase {
 			]
 		);
 
-		$old_value = [
-			'purge_cron_interval' => 10,
-			'purge_cron_unit'     => 'HOUR_IN_SECONDS',
-		];
-		$value    = [
-			'purge_cron_interval' => 10,
-			'purge_cron_unit'     => 'HOUR_IN_SECONDS',
-		];
-		$options                        = new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) );
-		$expired_cache_purge_subscriber = new Expired_Cache_Purge_Subscriber( $options, new Expired_Cache_Purge( WP_ROCKET_CACHE_PATH ) );
-
-		$expired_cache_purge_subscriber->schedule_event();
-		$expired_cache_purge_subscriber->clean_expired_cache_scheduled_event( $old_value, $value );
-
-		$event = wp_next_scheduled( 'rocket_purge_time_event' );
-		$this->assertNotFalse( $event );
-
-		wp_clear_scheduled_hook( 'rocket_purge_time_event' );
-	}
-
-	public function testShouldNotCleanScheduledEventWhenBothValuesAreMinutes() {
 		update_option(
 			'wp_rocket_settings',
 			[
 				'purge_cron_interval' => 10,
-				'purge_cron_unit'     => 'MINUTE_IN_SECONDS',
+				'purge_cron_unit'     => 'HOUR_IN_SECONDS',
 			]
 		);
 
-		$old_value = [
-			'purge_cron_interval' => 10,
-			'purge_cron_unit'     => 'MINUTE_IN_SECONDS',
-		];
-		$value    = [
-			'purge_cron_interval' => 10,
-			'purge_cron_unit'     => 'MINUTE_IN_SECONDS',
-		];
-		$options                        = new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) );
-		$expired_cache_purge_subscriber = new Expired_Cache_Purge_Subscriber( $options, new Expired_Cache_Purge( WP_ROCKET_CACHE_PATH ) );
+		$this->assertTrue( true ); // Prevent "risky" warning.
+	}
 
-		$expired_cache_purge_subscriber->schedule_event();
-		$expired_cache_purge_subscriber->clean_expired_cache_scheduled_event( $old_value, $value );
+	public function testShouldNotCleanScheduledEventWhenChangedValueFromHoursToDays() {
+		Functions\expect( 'wp_clear_scheduled_hook' )->never();
 
-		$event = wp_next_scheduled( 'rocket_purge_time_event' );
-		$this->assertNotFalse( $event );
+		update_option(
+			'wp_rocket_settings',
+			[
+				'purge_cron_interval' => 10,
+				'purge_cron_unit'     => 'HOUR_IN_SECONDS',
+			]
+		);
 
-		wp_clear_scheduled_hook( 'rocket_purge_time_event' );
+		update_option(
+			'wp_rocket_settings',
+			[
+				'purge_cron_interval' => 10,
+				'purge_cron_unit'     => 'DAY_IN_SECONDS',
+			]
+		);
+
+		$this->assertTrue( true ); // Prevent "risky" warning.
 	}
 
 	public function testShouldCleanScheduledEventWhenMinutesAndOldValueIsHours() {
+		Functions\expect( 'wp_clear_scheduled_hook' )->once();
+
+		update_option(
+			'wp_rocket_settings',
+			[
+				'purge_cron_interval' => 10,
+				'purge_cron_unit'     => 'DAY_IN_SECONDS',
+			]
+		);
+
 		update_option(
 			'wp_rocket_settings',
 			[
@@ -75,21 +71,6 @@ class TestCleanCacheScheduledEvent extends TestCase {
 			]
 		);
 
-		$old_value = [
-			'purge_cron_interval' => 10,
-			'purge_cron_unit'     => 'HOUR_IN_SECONDS',
-		];
-		$value    = [
-			'purge_cron_interval' => 10,
-			'purge_cron_unit'     => 'MINUTE_IN_SECONDS',
-		];
-		$options                        = new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) );
-		$expired_cache_purge_subscriber = new Expired_Cache_Purge_Subscriber( $options, new Expired_Cache_Purge( WP_ROCKET_CACHE_PATH ) );
-
-		$expired_cache_purge_subscriber->schedule_event();
-		$expired_cache_purge_subscriber->clean_expired_cache_scheduled_event( $old_value, $value );
-
-		$event = wp_next_scheduled( 'rocket_purge_time_event' );
-		$this->assertFalse( $event );
+		$this->assertTrue( true ); // Prevent "risky" warning.
 	}
 }
