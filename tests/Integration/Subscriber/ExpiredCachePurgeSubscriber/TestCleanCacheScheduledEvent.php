@@ -1,6 +1,7 @@
 <?php
 namespace WP_Rocket\Tests\Integration\Subscriber\ExpiredCachePurgeSubscriber;
 
+use WP_Rocket\Subscriber\Cache\Expired_Cache_Purge_Subscriber;
 use WP_Rocket\Tests\Integration\TestCase;
 use Brain\Monkey\Functions;
 
@@ -53,7 +54,10 @@ class TestCleanCacheScheduledEvent extends TestCase {
 	}
 
 	public function testShouldCleanScheduledEventWhenMinutesAndOldValueIsHours() {
-		Functions\expect( 'wp_clear_scheduled_hook' )->once();
+		Functions\expect( 'wp_clear_scheduled_hook' )
+			->once()
+			->with( Expired_Cache_Purge_Subscriber::EVENT_NAME )
+			->andReturnNull(); // No need to run it.
 
 		update_option(
 			'wp_rocket_settings',
