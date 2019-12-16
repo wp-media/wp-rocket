@@ -75,15 +75,17 @@ class TestAutoPurgeByUrl extends TestCase {
 		$mocks = $this->getConstructorMocks( 1, '', '', '' );
 		Functions\when( 'current_user_can' )->justReturn( true );
 		Functions\when( 'get_current_user_id' )->justReturn( 1 );
-		Functions\expect( 'get_rocket_i18n_home_url' )->once()->andReturn( 'http://example.org/' );
+		Functions\expect( 'get_rocket_i18n_home_url' )->once()->with( '' )->andReturn( 'http://example.org/' );
 		Functions\expect( 'get_feed_link' )->twice()->andReturn( 'http://example.org/feed/', 'http://example.org/feed/comments' );
 
 		$wp_error   = \Mockery::mock( \WP_Error::class );
 		$wp_error->shouldReceive('get_error_message')->andReturn( 'Error!' );
 
 		$cloudflare = \Mockery::mock( \WP_Rocket\Addons\Cloudflare\Cloudflare::class );
-		$cloudflare->shouldReceive('has_page_rule')->andReturn( true );
-		$cloudflare->shouldReceive('purge_by_url')->andReturn( $wp_error );
+		$cloudflare->shouldReceive('has_page_rule')->with( 'cache_everything' )->andReturn( true );
+		$cloudflare->shouldReceive('purge_by_url')
+		           ->with( 1, [ '/hello-world', 'http://example.org/', 'http://example.org/feed/', 'http://example.org/feed/comments' ], '' )
+		           ->andReturn( $wp_error );
 
 		$cloudflare_subscriber = new CloudflareSubscriber( $cloudflare, $mocks['options_data'], $mocks['options'] );
 		$cloudflare_subscriber->auto_purge_by_url( 1, [ '/hello-world' ], '' );
@@ -97,13 +99,14 @@ class TestAutoPurgeByUrl extends TestCase {
 		Functions\when( 'current_user_can' )->justReturn( true );
 		Functions\when( 'get_current_user_id' )->justReturn( 1 );
 		Functions\when( 'is_wp_error' )->justReturn( false );
-		Functions\expect( 'get_rocket_i18n_home_url' )->once()->andReturn( 'http://example.org/' );
+		Functions\expect( 'get_rocket_i18n_home_url' )->once()->with( '' )->andReturn( 'http://example.org/' );
 		Functions\expect( 'get_feed_link' )->twice()->andReturn( 'http://example.org/feed/', 'http://example.org/feed/comments' );
 
-		$wp_error   = \Mockery::mock( \WP_Error::class );
 		$cloudflare = \Mockery::mock( \WP_Rocket\Addons\Cloudflare\Cloudflare::class );
-		$cloudflare->shouldReceive('has_page_rule')->andReturn( true );
-		$cloudflare->shouldReceive('purge_by_url')->andReturn( true );
+		$cloudflare->shouldReceive('has_page_rule')->with( 'cache_everything' )->andReturn( true );
+		$cloudflare->shouldReceive('purge_by_url')
+		           ->with( 1, [ '/hello-world', 'http://example.org/', 'http://example.org/feed/', 'http://example.org/feed/comments' ], '' )
+		           ->andReturn( true );
 
 		$cloudflare_subscriber = new CloudflareSubscriber( $cloudflare, $mocks['options_data'], $mocks['options'] );
 		$cloudflare_subscriber->auto_purge_by_url( 1, [ '/hello-world' ], '' );
