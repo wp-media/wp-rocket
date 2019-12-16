@@ -6,6 +6,9 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 
+/**
+ * @group ThirdParty
+ */
 class TestIsServingWebpCompatibleWithCdn extends TestCase {
 	/**
 	 * Test Imagify_Subscriber->is_serving_webp_compatible_with_cdn() should return false when Imagify is not enabled.

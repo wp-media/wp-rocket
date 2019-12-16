@@ -5,6 +5,9 @@ use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Webp_Common;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Actions;
 
+/**
+ * @group ThirdParty
+ */
 class TestTriggerWebpChange extends TestCase {
 	/**
 	 * Test Webp_Common->trigger_webp_change() should trigger a hook.

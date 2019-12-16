@@ -4,6 +4,9 @@ namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\Images\Webp\WebpCommon;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Webp_Common;
 use WP_Rocket\Tests\Unit\TestCase;
 
+/**
+ * @group ThirdParty
+ */
 class TestRegister extends TestCase {
 	/**
 	 * Test Webp_Common->register() should add a reference of itself to the given list.

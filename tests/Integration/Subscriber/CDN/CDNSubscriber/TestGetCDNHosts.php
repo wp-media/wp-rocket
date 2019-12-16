@@ -7,6 +7,9 @@ use WP_Rocket\Admin\Options;
 use WP_Rocket\CDN\CDN;
 use WP_Rocket\Subscriber\CDN\CDNSubscriber;
 
+/**
+ * @group Subscriber
+ */
 class TestRewriteGetCDNHosts extends TestCase {
     public function testShouldReturnCDNHosts() {
         update_option(

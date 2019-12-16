@@ -4,6 +4,9 @@ namespace WP_Rocket\Tests\Unit\Buffer\Tests;
 use PHPUnit\Framework\TestCase;
 use WP_Rocket\Buffer\Tests;
 
+/**
+ * @group Buffer
+ */
 class TestIsSpeedTool extends TestCase {
     /**
      * @covers ::is_speed_tool
