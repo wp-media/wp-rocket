@@ -1,12 +1,15 @@
 <?php
 namespace WP_Rocket\Tests\Integration\Optimize\CSS\Combine;
 
-use PHPUnit\Framework\TestCase;
+use WP_Rocket\Tests\Integration\TestCase;
 use WP_Rocket\Optimization\CSS\Combine;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Admin\Options;
 use MatthiasMullie\Minify\CSS;
 
+/**
+ * @group Optimize
+ */
 class TestInsertCombinedCSS extends TestCase {
     public function testShouldInsertCombinedCSS() {
         $combine      = new Combine( new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) ), new CSS() );

@@ -1,9 +1,12 @@
 <?php
 namespace WP_Rocket\Tests\Integration\Subscriber\ExpiredCachePurgeSubscriber;
 
-use PHPUnit\Framework\TestCase;
+use WP_Rocket\Tests\Integration\TestCase;
 use WP_Rocket\Subscriber\Cache\Expired_Cache_Purge_Subscriber;
 
+/**
+ * @group Subscriber
+ */
 class TestGetSubscribedEvents extends TestCase {
 	public function testShouldReturnSubscribedEventsArray() {
 		$events = [

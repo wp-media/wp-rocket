@@ -6,6 +6,9 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 
+/**
+ * @group Subscriber
+ */
 class TestSyncWebpCacheWithThirdPartyPlugins extends TestCase {
 	/**
 	 * Test Webp_Subscriber->sync_webp_cache_with_third_party_plugins() should not disable the webp cache option when not enabled.

@@ -6,6 +6,9 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 
+/**
+ * @group ThirdParty
+ */
 class TestIsServingWebp extends TestCase {
 	/**
 	 * Test Imagify_Subscriber->is_serving_webp() should return false when Imagify option not enabled.
