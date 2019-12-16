@@ -7,6 +7,9 @@ use Brain\Monkey\Actions;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 
+/**
+ * @group ThirdParty
+ */
 class TestSyncOnOptionUpdate extends TestCase {
 	/**
 	 * Test Imagify_Subscriber->sync_on_option_update() should sync when the plugin’s webp options change.

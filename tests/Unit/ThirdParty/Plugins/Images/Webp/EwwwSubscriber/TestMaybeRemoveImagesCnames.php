@@ -6,6 +6,9 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 use SebastianBergmann\Exporter\Exporter;
 
+/**
+ * @group ThirdParty
+ */
 class TestMaybeRemoveImagesCnames extends TestCase {
 	/**
 	 * Test EWWW_Subscriber->maybe_remove_images_cnames() should return identical when not using ExactDN.
