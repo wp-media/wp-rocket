@@ -5,8 +5,6 @@
  * @package Minify
  */
 
-defined( 'ABSPATH' ) || exit;
-
 /**
  * Rewrite file-relative URIs as root-relative in CSS files
  *

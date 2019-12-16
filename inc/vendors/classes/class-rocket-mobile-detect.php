@@ -1,6 +1,5 @@
 <?php
 
-defined( 'ABSPATH' ) || exit;
 
 /**
  * Mobile Detect Library

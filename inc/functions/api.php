@@ -1,7 +1,5 @@
 <?php
 
-defined( 'ABSPATH' ) || exit;
-
 /**
  * Get an URL with one of CNAMES added in options
  *

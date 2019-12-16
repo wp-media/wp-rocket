@@ -4,8 +4,6 @@
  * @package Minify
  */
 
-defined( 'ABSPATH' ) || exit;
-
 /**
  * Compress HTML
  *
