@@ -30,6 +30,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 			'wp_ajax_rocketcdn_dismiss_notice'    => 'dismiss_notice',
 			'admin_footer'                        => 'add_dismiss_script',
 			'admin_post_rocket_purge_rocketcdn'   => 'purge_cdn_cache',
+			'rocket_settings_page_footer'         => 'add_subscription_modal',
 		];
 	}
 
@@ -510,5 +511,33 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 				'message' => $purge_response['message'],
 			]
 		);
+	}
+
+	/**
+	 * Adds the subscription modal on the WP Rocket settings page
+	 *
+	 * @since 3.5
+	 * @author Remy Perona
+	 *
+	 * @return void
+	 */
+	public function add_subscription_modal() {
+		$base_url     = 'https://dave.wp-rocket.me/cdn/iframe';
+		$website      = '?website=' . home_url();
+		$callback     = '&callback=';
+		$subscription = $this->get_subscription_data();
+		$endpoint     = $subscription['is_active'] ? rest_url( 'wp_rocket/v1/rocketcdn/disable' ) : rest_url( 'wp_rocket/v1/rocketcdn/enable' );
+		$iframe_src   = $base_url . $website . $callback . $endpoint;
+		?>
+		<div class="wpr-rocketcdn-modal" id="wpr-rocketcdn-modal" aria-hidden="true">
+		<div class="wpr-rocketcdn-modal__overlay" tabindex="-1" data-micromodal-close>
+			<div class="wpr-rocketcdn-modal__container" role="dialog" aria-modal="true" aria-labelledby="wpr-rocketcdn-modal-title">
+				<div id="wpr-rocketcdn-modal-content">
+					<iframe src="<?php echo esc_url( $iframe_src ); ?>" width="600" height="425"></iframe>
+				</div>
+			</div>
+		</div>
+		</div>
+		<?php
 	}
 }
