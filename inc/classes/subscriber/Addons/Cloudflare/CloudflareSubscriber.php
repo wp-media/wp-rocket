@@ -159,21 +159,6 @@ class CloudflareSubscriber implements Subscriber_Interface {
 
 		// Purge CloudFlare.
 		$cf_purge = $this->cloudflare->purge_cloudflare();
-
-		if ( is_wp_error( $cf_purge ) ) {
-			$cf_purge_result = [
-				'result'  => 'error',
-				// translators: %s = CloudFare API return message.
-				'message' => sprintf( __( '<strong>WP Rocket:</strong> %s', 'rocket' ), $cf_purge->get_error_message() ),
-			];
-		} else {
-			$cf_purge_result = [
-				'result'  => 'success',
-				'message' => __( '<strong>WP Rocket:</strong> Cloudflare cache successfully purged.', 'rocket' ),
-			];
-		}
-
-		set_transient( get_current_user_id() . '_cloudflare_purge_result', $cf_purge_result );
 	}
 
 	/**
@@ -197,8 +182,7 @@ class CloudflareSubscriber implements Subscriber_Interface {
 			return;
 		}
 		// Add home URL and feeds URLs to Cloudflare clean cache URLs list.
-		$home_url     = get_rocket_i18n_home_url( $lang );
-		$purge_urls[] = $home_url;
+		$purge_urls[] = get_rocket_i18n_home_url( $lang );
 		$feed_urls    = [];
 		$feed_urls[]  = get_feed_link();
 		$feed_urls[]  = get_feed_link( 'comments_' );
