@@ -16,39 +16,43 @@ window.addEventListener('load', function() {
         smallCTA = document.querySelector( '#wpr-rocketcdn-cta-small' ),
         bigCTA   = document.querySelector( '#wpr-rocketcdn-cta' );
 
-    openCTA.addEventListener('click', function(e) {
-        e.preventDefault();
+    if ( null !== openCTA ) {
+        openCTA.addEventListener('click', function(e) {
+            e.preventDefault();
+    
+            smallCTA.classList.add('wpr-isHidden');
+            bigCTA.classList.remove('wpr-isHidden');
+    
+            var httpRequest = new XMLHttpRequest(),
+                postData = '';
+    
+                postData += 'action=toggle_rocketcdn_cta';
+                postData += '&status=big';
+                postData += '&nonce=' + rocket_ajax_data.nonce;
+    
+                httpRequest.open( 'POST', ajaxurl );
+                httpRequest.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' )
+                httpRequest.send( postData );
+        });
+    }
 
-        smallCTA.classList.add('wpr-isHidden');
-        bigCTA.classList.remove('wpr-isHidden');
-
-        var httpRequest = new XMLHttpRequest(),
-            postData = '';
-
-            postData += 'action=toggle_rocketcdn_cta';
-            postData += '&status=big';
-            postData += '&nonce=' + rocket_ajax_data.nonce;
-
-            httpRequest.open( 'POST', ajaxurl );
-            httpRequest.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' )
-            httpRequest.send( postData );
-    });
-
-    closeCTA.addEventListener('click', function(e) {
-        e.preventDefault();
-
-        smallCTA.classList.remove('wpr-isHidden');
-        bigCTA.classList.add('wpr-isHidden');
-
-        var httpRequest = new XMLHttpRequest(),
-            postData = '';
-
-            postData += 'action=toggle_rocketcdn_cta';
-            postData += '&status=small';
-            postData += '&nonce=' + rocket_ajax_data.nonce;
-
-            httpRequest.open( 'POST', ajaxurl );
-            httpRequest.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' )
-            httpRequest.send( postData );
-    });
+    if ( null !== closeCTA ) {
+        closeCTA.addEventListener('click', function(e) {
+            e.preventDefault();
+    
+            smallCTA.classList.remove('wpr-isHidden');
+            bigCTA.classList.add('wpr-isHidden');
+    
+            var httpRequest = new XMLHttpRequest(),
+                postData = '';
+    
+                postData += 'action=toggle_rocketcdn_cta';
+                postData += '&status=small';
+                postData += '&nonce=' + rocket_ajax_data.nonce;
+    
+                httpRequest.open( 'POST', ajaxurl );
+                httpRequest.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' )
+                httpRequest.send( postData );
+        });
+    } 
 });
