@@ -1,5 +1,6 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+
+defined( 'ABSPATH' ) || exit;
 
 if ( function_exists( 'seopress_get_toggle_xml_sitemap_option' ) && 1 === (int) seopress_get_toggle_xml_sitemap_option() ) :
 

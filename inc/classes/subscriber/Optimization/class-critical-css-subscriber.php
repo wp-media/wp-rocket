@@ -5,7 +5,7 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Optimization\CSS\Critical_CSS;
 use WP_Rocket\Admin\Options_Data;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Critical CSS Subscriber

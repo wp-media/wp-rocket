@@ -1,7 +1,7 @@
 <?php
 use WP_Rocket\Logger\Logger;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 /**
  * When our settings are saved: purge, flush, preload!

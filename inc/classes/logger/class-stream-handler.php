@@ -3,7 +3,7 @@ namespace WP_Rocket\Logger;
 
 use Monolog\Handler\StreamHandler;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Class used to log records into a local file.

@@ -1,5 +1,6 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Conflict with Thrive Leads: override the DONOTCACHEPAGE behavior because this plugin add this constant!

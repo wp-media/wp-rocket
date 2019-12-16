@@ -1,5 +1,6 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+
+defined( 'ABSPATH' ) || exit;
 
 /**
  * This warnings are displayed when the plugin can not be deactivated correctly
@@ -14,7 +15,7 @@ function rocket_bad_deactivations() {
 
 		delete_transient( $current_user->ID . '_donotdeactivaterocket' );
 		$errors = [];
-		
+
 
 		foreach ( $msgs as $msg ) {
 			switch ( $msg ) {

@@ -1,5 +1,6 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin\' uh?' );
+
+defined( 'ABSPATH' ) || exit;
 
 if ( function_exists( 'it_exchange_get_page_type' ) && function_exists( 'it_exchange_get_page_url' ) ) :
 	add_filter( 'rocket_cache_reject_uri', 'rocket_exclude_ithemes_exchange_pages' );

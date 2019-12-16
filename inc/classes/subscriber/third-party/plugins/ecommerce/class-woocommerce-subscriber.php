@@ -6,7 +6,7 @@ use WP_Rocket\Event_Management\Event_Manager_Aware_Subscriber_Interface;
 use WooCommerce;
 use WC_API;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 /**
  * WooCommerce compatibility

@@ -4,7 +4,7 @@ namespace WP_Rocket\Admin\Settings;
 use \WP_Rocket\Interfaces\Render_Interface;
 use WP_Rocket\Admin\Database\Optimization;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Registers the admin page and WP Rocket settings

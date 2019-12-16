@@ -5,7 +5,8 @@
  * @since 3.4
  */
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
+
 
 $tutorials = [
 	[
@@ -58,6 +59,6 @@ $tutorials = [
 	<?php endforeach; ?>
 		</div>
 	<?php endforeach; ?>
-		</div>	
+		</div>
 	</div>
 </div>
