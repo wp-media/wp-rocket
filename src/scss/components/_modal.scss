@@ -25,12 +25,13 @@
     }
     
     &__container {
-        background-color: #fff;
-        padding: 30px;
-        max-width: 500px;
+        max-width: 600px;
         max-height: 100vh;
-        border-radius: 2px;
         overflow-y: auto;
         box-sizing: border-box;
+    }
+
+    iframe {
+        max-width: 100%;
     }
 }
