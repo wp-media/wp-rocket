@@ -1,0 +1,38 @@
+#$ composer update --optimize-autoloader
+#$ vendor/bin/phpstan analyze
+
+includes:
+    # @see https://github.com/phpstan/phpstan/blob/master/conf/bleedingEdge.neon
+    - phar://phpstan.phar/conf/bleedingEdge.neon
+    # Include this extension
+    - vendor/szepeviktor/phpstan-wordpress/extension.neon
+parameters:
+    bootstrap: %currentWorkingDirectory%/tests/phpstan/bootstrap.php
+    level: max
+    checkMissingIterableValueType: false
+    inferPrivatePropertyTypeFromConstructor: true
+    paths:
+        - %currentWorkingDirectory%/inc/classes/
+#    excludes_analyse:
+    autoload_files:
+#        # Plugin stubs
+#        - %currentWorkingDirectory%/tests/phpstan/PLUGIN-stubs.php
+#        # Procedural code
+         - %currentWorkingDirectory%/inc/functions/admin.php
+#    autoload_directories:
+#        - %currentWorkingDirectory%/inc/classes/
+    ignoreErrors:
+        # Uses func_get_args()
+        - '#^Function apply_filters(_ref_array)? invoked with [34567] parameters, 2 required\.$#'
+        # Fixed in WordPress 5.3
+        #- '#^Function do_action(_ref_array)? invoked with [3456] parameters, 1-2 required\.$#'
+        #- '#^Function current_user_can invoked with 2 parameters, 1 required\.$#'
+        #- '#^Function add_query_arg invoked with [123] parameters?, 0 required\.$#'
+        #- '#^Function wp_sprintf invoked with [23456] parameters, 1 required\.$#'
+        #- '#^Function add_post_type_support invoked with [345] parameters, 2 required\.$#'
+        #- '#^Function ((get|add)_theme_support|current_theme_supports) invoked with [2345] parameters, 1 required\.$#'
+        # https://core.trac.wordpress.org/ticket/43304
+        - '/^Parameter #2 \$deprecated of function load_plugin_textdomain expects string, false given\.$/'
+        # WP-CLI accepts a class as callable
+        - '/^Parameter #2 \$callable of static method WP_CLI::add_command\(\) expects callable\(\): mixed, \S+ given\.$/'
+        # Please consider commenting ignores: issue URL or reason for ignoring
