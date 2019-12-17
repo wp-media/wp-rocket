@@ -9,6 +9,7 @@ CONTRIBUTOR.md export-ignore
 .gitignore export-ignore
 .github export-ignore
 phpcs.xml export-ignore
+phpstan.neon.dist export-ignore
 .tx export-ignore
 LICENSE.md export-ignore
 CHANGELOG.md export-ignore
