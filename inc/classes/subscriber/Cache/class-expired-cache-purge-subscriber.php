@@ -88,12 +88,31 @@ class Expired_Cache_Purge_Subscriber implements Subscriber_Interface {
 		if ( empty( $value['purge_cron_unit'] ) ) {
 			return;
 		}
-		// If Lifespan unit is not changed to minutes do not reschedule (for hours & days event should be scheduled at 1 hour).
-		if ( 'MINUTE_IN_SECONDS' !== $value['purge_cron_unit'] ) {
+
+		$unit_list = [ 'HOUR_IN_SECONDS', 'DAY_IN_SECONDS' ];
+		// Bail out if the cron unit is changed from hours to days.
+		if ( $old_value['purge_cron_unit'] === $value['purge_cron_unit'] &&
+				in_array( $old_value['purge_cron_unit'], $unit_list, true ) &&
+				in_array( $value['purge_cron_unit'], $unit_list, true ) ) {
 			return;
 		}
-		// If previous Lifespan unit was minutes do not reschedule.
-		if ( $old_value['purge_cron_unit'] === $value['purge_cron_unit'] ) {
+
+		$allow_clear_event = false;
+		if ( in_array( $old_value['purge_cron_unit'], $unit_list, true ) && 'MINUTE_IN_SECONDS' === $value['purge_cron_unit'] ) {
+			$allow_clear_event = true;
+		}
+		if ( in_array( $value['purge_cron_unit'], $unit_list, true ) && 'MINUTE_IN_SECONDS' === $old_value['purge_cron_unit'] ) {
+			$allow_clear_event = true;
+		}
+		// Allow if interval is changed when unit is set to minutes.
+		if ( 'MINUTE_IN_SECONDS' === $old_value['purge_cron_unit'] &&
+				'MINUTE_IN_SECONDS' === $value['purge_cron_unit'] &&
+				$old_value['purge_cron_interval'] !== $value['purge_cron_interval'] ) {
+			$allow_clear_event = true;
+		}
+
+		// Bail out if the cron unit is not changed from minutes to hours / days or other way around.
+		if ( ! $allow_clear_event ) {
 			return;
 		}
 		$this->unschedule_event();

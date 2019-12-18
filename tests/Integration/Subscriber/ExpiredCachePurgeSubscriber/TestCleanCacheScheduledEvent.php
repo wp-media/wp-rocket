@@ -77,4 +77,51 @@ class TestCleanCacheScheduledEvent extends TestCase {
 
 		$this->assertTrue( true ); // Prevent "risky" warning.
 	}
+
+	public function testShouldNotCleanScheduledEventWhenUnitIsMinutesAndIntervalIsNotChanged() {
+		Functions\expect( 'wp_clear_scheduled_hook' )->never();
+
+		update_option(
+			'wp_rocket_settings',
+			[
+				'purge_cron_interval' => 20,
+				'purge_cron_unit'     => 'MINUTE_IN_SECONDS',
+			]
+		);
+
+		update_option(
+			'wp_rocket_settings',
+			[
+				'purge_cron_interval' => 20,
+				'purge_cron_unit'     => 'MINUTE_IN_SECONDS',
+			]
+		);
+
+		$this->assertTrue( true ); // Prevent "risky" warning.
+	}
+
+	public function testShouldCleanScheduledEventWhenUnitIsMinutesAndIntervalIsChanged() {
+		Functions\expect( 'wp_clear_scheduled_hook' )
+			->once()
+			->with( Expired_Cache_Purge_Subscriber::EVENT_NAME )
+			->andReturnNull(); // No need to run it.
+
+		update_option(
+			'wp_rocket_settings',
+			[
+				'purge_cron_interval' => 20,
+				'purge_cron_unit'     => 'MINUTE_IN_SECONDS',
+			]
+		);
+
+		update_option(
+			'wp_rocket_settings',
+			[
+				'purge_cron_interval' => 45,
+				'purge_cron_unit'     => 'MINUTE_IN_SECONDS',
+			]
+		);
+
+		$this->assertTrue( true ); // Prevent "risky" warning.
+	}
 }
