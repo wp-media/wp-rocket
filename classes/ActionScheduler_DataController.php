@@ -44,7 +44,8 @@ class ActionScheduler_DataController {
 	 * @return bool
 	 */
 	public static function dependencies_met() {
-		return version_compare( PHP_VERSION, self::MIN_PHP_VERSION, '>=' );
+		$php_support = version_compare( PHP_VERSION, self::MIN_PHP_VERSION, '>=' );
+		return $php_support && apply_filters( 'action_scheduler_migration_dependencies_met', true );
 	}
 
 	/**
