@@ -526,7 +526,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		$website      = '?website=' . home_url();
 		$callback     = '&callback=';
 		$subscription = $this->get_subscription_data();
-		$endpoint     = $subscription['is_active'] ? rest_url( 'wp_rocket/v1/rocketcdn/disable' ) : rest_url( 'wp_rocket/v1/rocketcdn/enable' );
+		$endpoint     = $subscription['is_active'] ? rest_url( 'wp-rocket/v1/rocketcdn/disable' ) : rest_url( 'wp-rocket/v1/rocketcdn/enable' );
 		$iframe_src   = $base_url . $website . $callback . $endpoint;
 		?>
 		<div class="wpr-rocketcdn-modal" id="wpr-rocketcdn-modal" aria-hidden="true">
