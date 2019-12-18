@@ -7,6 +7,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	const POST_TYPE = 'scheduled-action';
 	const GROUP_TAXONOMY = 'action-group';
 	const SCHEDULE_META_KEY = '_action_manager_schedule';
+	const DEPENDENCIES_MET = 'as-post-store-dependencies-met';
 
 	/** @var DateTimeZone */
 	protected $local_timezone = NULL;
@@ -763,7 +764,12 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		$wpdb->query($sql);
 	}
 
-
+	/**
+	 * Record that an action was completed.
+	 *
+	 * @param int $action_id ID of the completed action.
+	 * @throws InvalidArgumentException|RuntimeException
+	 */
 	public function mark_complete( $action_id ) {
 		$post = get_post($action_id);
 		if ( empty($post) || ($post->post_type != self::POST_TYPE) ) {
@@ -797,6 +803,29 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	}
 
 	/**
+	 * Determine whether the post store can be migrated.
+	 *
+	 * @return bool
+	 */
+	public function migration_dependencies_met( $setting ) {
+		global $wpdb;
+
+		$dependencies_met = get_transient( self::DEPENDENCIES_MET );
+		if ( empty( $dependencies_met ) ) {
+			$found_action = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT ID FROM {$wpdb->posts} WHERE post_type = %s AND CHAR_LENGTH(post_content) > 191 LIMIT 1",
+					self::POST_TYPE
+				)
+			);
+			$dependencies_met = $found_action ? 'no' : 'yes';
+			set_transient( self::DEPENDENCIES_MET, $dependencies_met, DAY_IN_SECONDS );
+		}
+
+		return 'yes' == $dependencies_met ? $setting : false;
+	}
+
+	/**
 	 * InnoDB indexes have a maximum size of 767 bytes by default, which is only 191 characters with utf8mb4.
 	 *
 	 * Previously, AS wasn't concerned about args length, as we used the (unindex) post_content column. However,
@@ -815,6 +844,8 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	 * @codeCoverageIgnore
 	 */
 	public function init() {
+		add_filter( 'action_scheduler_migration_dependencies_met', array( $this, 'migration_dependencies_met' ) );
+
 		$post_type_registrar = new ActionScheduler_wpPostStore_PostTypeRegistrar();
 		$post_type_registrar->register();
 
