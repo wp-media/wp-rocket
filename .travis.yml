@@ -35,7 +35,7 @@ matrix:
 before_script:
 - rm composer.lock
 - export PATH="$HOME/.composer/vendor/bin:$PATH"
-- composer remove phpstan/phpstan szepeviktor/phpstan-wordpress
+- composer remove --dev phpstan/phpstan szepeviktor/phpstan-wordpress
 - composer install --no-progress
 - |
   if [ -f ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini ]; then
