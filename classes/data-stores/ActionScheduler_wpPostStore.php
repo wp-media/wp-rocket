@@ -471,9 +471,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		}
 		do_action( 'action_scheduler_deleted_action', $action_id );
 
-		if ( ! wp_delete_post( $action_id, TRUE ) ) {
-			$this->mark_migrated( $action_id );
-		}
+		wp_delete_post( $action_id, TRUE );
 	}
 
 	/**
