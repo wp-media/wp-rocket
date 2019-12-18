@@ -29,6 +29,9 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	 */
 	public function save_action( ActionScheduler_Action $action, \DateTime $date = null ) {
 		try {
+
+			$this->validate_action( $action );
+
 			/** @var \wpdb $wpdb */
 			global $wpdb;
 			$data = [
