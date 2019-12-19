@@ -471,7 +471,8 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 			throw new InvalidArgumentException(sprintf(__('Unidentified action %s', 'action-scheduler'), $action_id));
 		}
 		do_action( 'action_scheduler_deleted_action', $action_id );
-		wp_delete_post($action_id, TRUE);
+
+		wp_delete_post( $action_id, TRUE );
 	}
 
 	/**
@@ -785,6 +786,20 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		if ( is_wp_error($result) ) {
 			throw new RuntimeException($result->get_error_message());
 		}
+	}
+
+	/**
+	 * Mark action as migrated when there is an error deleting the action.
+	 *
+	 * @param int $action_id Action ID.
+	 */
+	public function mark_migrated( $action_id ) {
+		wp_update_post(
+			array(
+				'ID'          => $action_id,
+				'post_status' => 'migrated'
+			)
+		);
 	}
 
 	/**

@@ -304,7 +304,15 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 		return ! empty( $pending_actions );
 	}
 
+	/**
+	 * Callable initialization function optionally overridden in derived classes.
+	 */
 	public function init() {}
+
+	/**
+	 * Callable function to mark an action as migrated optionally overridden in derived classes.
+	 */
+	public function mark_migrated( $action_id ) {}
 
 	/**
 	 * @return ActionScheduler_Store
