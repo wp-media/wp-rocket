@@ -67,17 +67,19 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		?>
 		<script>
 		window.addEventListener( 'load', function() {
-			var dismissBtn  = document.querySelector( '#rocketcdn-promote-notice .notice-dismiss' );
+			var dismissBtn  = document.querySelectorAll( '#rocketcdn-promote-notice .notice-dismiss, #rocketcdn-promote-notice #rocketcdn-learn-more-dismiss' );
 
-			dismissBtn.addEventListener( 'click', function( event ) {
-				var httpRequest = new XMLHttpRequest(),
-					postData    = '';
+			dismissBtn.forEach(function(element) {
+				element.addEventListener( 'click', function( event ) {
+					var httpRequest = new XMLHttpRequest(),
+						postData    = '';
 
-				postData += 'action=rocketcdn_dismiss_notice';
-				postData += '&nonce=<?php echo esc_html( $nonce ); ?>';
-				httpRequest.open( 'POST', '<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>' );
-				httpRequest.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' )
-				httpRequest.send( postData );
+					postData += 'action=rocketcdn_dismiss_notice';
+					postData += '&nonce=<?php echo esc_html( $nonce ); ?>';
+					httpRequest.open( 'POST', '<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>' );
+					httpRequest.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' )
+					httpRequest.send( postData );
+				});
 			});
 		});
 		</script>
@@ -142,13 +144,13 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 */
 	public function display_rocketcdn_status() {
 		$subscription_data = $this->get_subscription_data();
-		$label             = 'Rocket CDN';
+		$label             = '';
 		$status_text       = __( 'No Subscription', 'rocket' );
 		$status_class      = 'wpr-isInvalid';
 		$container_class   = 'wpr-flex--egal';
 
 		if ( $subscription_data['is_active'] ) {
-			$label          .= ' ' . __( 'Next Billing Date', 'rocket' );
+			$label           = __( 'Next Billing Date', 'rocket' );
 			$status_class    = 'wpr-isValid';
 			$container_class = '';
 		}

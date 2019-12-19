@@ -88,17 +88,19 @@ class TestAddDismissScript extends TestCase {
 
 		$this->expectOutputString("		<script>
 		window.addEventListener( 'load', function() {
-			var dismissBtn  = document.querySelector( '#rocketcdn-promote-notice .notice-dismiss' );
+			var dismissBtn  = document.querySelectorAll( '#rocketcdn-promote-notice .notice-dismiss, #rocketcdn-promote-notice #rocketcdn-learn-more-dismiss' );
 
-			dismissBtn.addEventListener( 'click', function( event ) {
-				var httpRequest = new XMLHttpRequest(),
-					postData    = '';
+			dismissBtn.forEach(function(element) {
+				element.addEventListener( 'click', function( event ) {
+					var httpRequest = new XMLHttpRequest(),
+						postData    = '';
 
-				postData += 'action=rocketcdn_dismiss_notice';
-				postData += '&nonce=123456';
-				httpRequest.open( 'POST', 'https://example.org/wp-admin/admin-ajax.php' );
-				httpRequest.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' )
-				httpRequest.send( postData );
+					postData += 'action=rocketcdn_dismiss_notice';
+					postData += '&nonce=123456';
+					httpRequest.open( 'POST', 'https://example.org/wp-admin/admin-ajax.php' );
+					httpRequest.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' )
+					httpRequest.send( postData );
+				});
 			});
 		});
 		</script>

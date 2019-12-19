@@ -43,7 +43,7 @@ class TestDisplayRocketcdnStatus extends TestCase {
 <div class="wpr-field wpr-field-account">
 	<div class="wpr-flex wpr-flex--egal">
 		<div>
-			<span class="wpr-title3">Rocket CDN</span>
+			<span class="wpr-title3"></span>
 			<span class="wpr-infoAccount wpr-isInvalid">No Subscription</span>
 		</div>
 				<div>
@@ -88,7 +88,7 @@ class TestDisplayRocketcdnStatus extends TestCase {
 <div class="wpr-field wpr-field-account">
 	<div class="wpr-flex ">
 		<div>
-			<span class="wpr-title3">Rocket CDN Next Billing Date</span>
+			<span class="wpr-title3">Next Billing Date</span>
 			<span class="wpr-infoAccount wpr-isValid">2020-01-01</span>
 		</div>
 			</div>
