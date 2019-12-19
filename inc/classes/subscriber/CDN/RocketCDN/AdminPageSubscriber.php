@@ -522,12 +522,10 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 * @return void
 	 */
 	public function add_subscription_modal() {
-		$base_url     = 'https://dave.wp-rocket.me/cdn/iframe';
-		$website      = '?website=' . home_url();
-		$callback     = '&callback=';
-		$subscription = $this->get_subscription_data();
-		$endpoint     = $subscription['is_active'] ? rest_url( 'wp-rocket/v1/rocketcdn/disable' ) : rest_url( 'wp-rocket/v1/rocketcdn/enable' );
-		$iframe_src   = $base_url . $website . $callback . $endpoint;
+		$base_url   = 'https://dave.wp-rocket.me/cdn/iframe';
+		$website    = '?website=' . home_url();
+		$callback   = '&callback=' . rest_url( 'wp-rocket/v1/rocketcdn/' );
+		$iframe_src = $base_url . $website . $callback;
 		?>
 		<div class="wpr-rocketcdn-modal" id="wpr-rocketcdn-modal" aria-hidden="true">
 		<div class="wpr-rocketcdn-modal__overlay" tabindex="-1" data-micromodal-close>
