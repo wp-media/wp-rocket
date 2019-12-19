@@ -12,9 +12,6 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	/** @var DateTimeZone */
 	protected $local_timezone = NULL;
 
-	/** @var int */
-	private static $max_index_length = 191;
-
 	public function save_action( ActionScheduler_Action $action, DateTime $scheduled_date = NULL ){
 		try {
 			$this->validate_action( $action );
@@ -835,8 +832,11 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	 * @param ActionScheduler_Action $action
 	 */
 	protected function validate_action( ActionScheduler_Action $action ) {
-		if ( strlen( json_encode( $action->get_args() ) ) > self::$max_index_length ) {
-			_doing_it_wrong( 'ActionScheduler_Action::$args', sprintf( 'To ensure the action args column can be indexed, action args should not be more than %d characters when encoded as JSON. Support for strings longer than this will be removed in a future version.', self::$max_index_length ), '2.1.0' );
+		try {
+			parent::validate_action( $action );
+		} catch ( Exception $e ) {
+			$message = sprintf( __( '%s Support for strings longer than this will be removed in a future version.', 'action-scheduler' ), $e->getMessage() );
+			_doing_it_wrong( 'ActionScheduler_Action::$args', $message, '2.1.0' );
 		}
 	}
 
