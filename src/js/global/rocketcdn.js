@@ -19,17 +19,17 @@ window.addEventListener('load', function() {
     if ( null !== openCTA ) {
         openCTA.addEventListener('click', function(e) {
             e.preventDefault();
-    
+
             smallCTA.classList.add('wpr-isHidden');
             bigCTA.classList.remove('wpr-isHidden');
-    
+
             var httpRequest = new XMLHttpRequest(),
                 postData = '';
-    
+
                 postData += 'action=toggle_rocketcdn_cta';
                 postData += '&status=big';
                 postData += '&nonce=' + rocket_ajax_data.nonce;
-    
+
                 httpRequest.open( 'POST', ajaxurl );
                 httpRequest.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' )
                 httpRequest.send( postData );
@@ -39,20 +39,31 @@ window.addEventListener('load', function() {
     if ( null !== closeCTA ) {
         closeCTA.addEventListener('click', function(e) {
             e.preventDefault();
-    
+
             smallCTA.classList.remove('wpr-isHidden');
             bigCTA.classList.add('wpr-isHidden');
-    
+
             var httpRequest = new XMLHttpRequest(),
                 postData = '';
-    
+
                 postData += 'action=toggle_rocketcdn_cta';
                 postData += '&status=small';
                 postData += '&nonce=' + rocket_ajax_data.nonce;
-    
+
                 httpRequest.open( 'POST', ajaxurl );
                 httpRequest.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' )
                 httpRequest.send( postData );
         });
-    } 
+    }
 });
+
+window.onmessage = (e) => {
+	if ( e.origin == 'https://dave.wp-rocket.me' ) {
+		if (e.data.hasOwnProperty("cdnFrameHeight")) {
+			document.getElementById("rocketcdn-iframe").style.height = `${e.data.cdnFrameHeight}px`;
+		}
+		if (e.data.hasOwnProperty("cdnFrameClose")) {
+			MicroModal.close('wpr-rocketcdn-modal');
+		}
+	}
+};
