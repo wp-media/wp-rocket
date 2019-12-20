@@ -10,13 +10,23 @@ use Brain\Monkey\Functions;
  * @group RocketCDN
  */
 class TestAddDismissScript extends TestCase {
+	private $options;
+	private $beacon;
+
+	public function setUp() {
+		parent::setUp();
+
+		$this->options = $this->createMock('WP_Rocket\Admin\Options_Data');
+		$this->beacon  = $this->createMock('WP_Rocket\Admin\Settings\Beacon');
+	}
+
 	/**
 	 * @covers ::add_dismiss_script
 	 */
 	public function testShouldNotAddScriptWhenNoCapability() {
 		Functions\when('current_user_can')->justReturn(false);
 
-		$page = new AdminPageSubscriber( 'views/settings/rocketcdn');
+		$page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
 		
 		$this->assertNull($page->add_dismiss_script());
 	}
@@ -30,7 +40,7 @@ class TestAddDismissScript extends TestCase {
 			return (object) [ 'id' => 'general' ];
 		});
 
-		$page = new AdminPageSubscriber( 'views/settings/rocketcdn');
+		$page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
 		
 		$this->assertNull($page->add_dismiss_script());
 	}
@@ -46,7 +56,7 @@ class TestAddDismissScript extends TestCase {
 		Functions\when('get_current_user_id')->justReturn(1);
 		Functions\when('get_user_meta')->justReturn(true);
 
-		$page = new AdminPageSubscriber( 'views/settings/rocketcdn');
+		$page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
 		
 		$this->assertNull($page->add_dismiss_script());
 	}
@@ -63,7 +73,7 @@ class TestAddDismissScript extends TestCase {
 		Functions\when('get_user_meta')->justReturn(false);
 		Functions\when('get_transient')->justReturn(['is_active' => true]);
 
-		$page = new AdminPageSubscriber( 'views/settings/rocketcdn');
+		$page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
 		
 		$this->assertNull($page->add_dismiss_script());
 	}
@@ -84,7 +94,7 @@ class TestAddDismissScript extends TestCase {
 		Functions\when('wp_create_nonce')->justReturn('123456');
 		Functions\when('admin_url')->justReturn('https://example.org/wp-admin/admin-ajax.php');
 
-		$page = new AdminPageSubscriber( 'views/settings/rocketcdn');
+		$page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
 
 		$this->expectOutputString("		<script>
 		window.addEventListener( 'load', function() {

@@ -3,6 +3,8 @@ namespace WP_Rocket\Subscriber\CDN\RocketCDN;
 
 use WP_Rocket\Abstract_Render;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Admin\Settings\Beacon;
 
 /**
  * Subscriber for the RocketCDN integration in WP Rocket settings page
@@ -12,6 +14,34 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  */
 class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interface {
 	const ROCKETCDN_API = 'https://rocketcdn.me/api/';
+
+	/**
+	 * WP Rocket options instance
+	 *
+	 * @var Options_Data
+	 */
+	private $options;
+
+	/**
+	 * Beacon instance
+	 *
+	 * @var Beacon
+	 */
+	private $beacon;
+
+	/**
+	 * Constructor
+	 *
+	 * @param Options_Data $options WP Rocket options instance.
+	 * @param Beacon       $beacon Beacon instance.
+	 * @param string       $template_path Path to the templates.
+	 */
+	public function __construct( Options_Data $options, Beacon $beacon, $template_path ) {
+		parent::__construct( $template_path );
+
+		$this->options = $options;
+		$this->beacon  = $beacon;
+	}
 
 	/**
 	 * @inheritDoc
@@ -186,11 +216,31 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 			return $fields;
 		}
 
+		$helper_text = __( 'Rocket CDN is currently active.', 'rocket' );
+		$cdn_cnames  = $this->options->get( 'cdn_cnames', [] );
+
+		if ( ! empty( $cdn_cnames ) && $cdn_cnames[0] !== $subscription_data['cdn_url'] ) {
+			$helper_text = sprintf(
+				// translators: %1$s = opening <code> tag, %2$s = CDN URL, %3$s = closing </code> tag.
+				__( 'To use Rocket CDN, replace your CNAME with %1$s%2$s%3$s.', 'rocket' ),
+				'<code>',
+				$subscription_data['cdn_url'],
+				'</code>'
+			);
+		}
+
+		$more_info = sprintf(
+			// translators: %1$is = opening link tag, %2$s = closing link tag.
+			__( '%1$sMore Info%2$s', 'rocket' ),
+			'<a href="" data-beacon-article="" rel="noopener noreferrer" target="_blank">',
+			'</a>'
+		);
+
 		$fields['cdn_cnames'] = [
 			'type'        => 'rocket_cdn',
 			'label'       => __( 'CDN CNAME(s)', 'rocket' ),
 			'description' => __( 'Specify the CNAME(s) below', 'rocket' ),
-			'helper'      => __( 'Rocket CDN is currently active.', 'rocket' ),
+			'helper'      => $helper_text . ' ' . $more_info,
 			'default'     => '',
 			'section'     => 'cnames_section',
 			'page'        => 'page_cdn',
@@ -215,7 +265,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		}
 
 		$pricing            = $this->get_pricing_data();
-		$current_price      = $pricing['monthly_price'];
+		$current_price      = number_format_i18n( $pricing['monthly_price'], 2 );
 		$regular_price      = '';
 		$promotion_campaign = $pricing['discount_campaign_name'];
 		$promotion_end_date = date_i18n( get_option( 'date_format' ), strtotime( $pricing['end_date'] ) );
@@ -230,7 +280,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 
 		if ( $pricing['is_discount_active'] ) {
 			$regular_price   = $current_price;
-			$current_price   = $pricing['discounted_price_monthly'];
+			$current_price   = number_format_i18n( $pricing['discounted_price_monthly'], 2 ) . '*';
 			$nopromo_variant = '';
 		}
 
@@ -289,6 +339,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		$default = [
 			'id'                            => 0,
 			'is_active'                     => false,
+			'cdn_url'                       => '',
 			'subscription_next_date_update' => 0,
 			'subscription_status'           => 'cancelled',
 		];

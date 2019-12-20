@@ -10,6 +10,16 @@ use Brain\Monkey\Functions;
  * @group RocketCDN
  */
 class TestRocketcdnField extends TestCase {
+    private $options;
+	private $beacon;
+
+	public function setUp() {
+		parent::setUp();
+
+		$this->options = $this->createMock('WP_Rocket\Admin\Options_Data');
+		$this->beacon  = $this->createMock('WP_Rocket\Admin\Settings\Beacon');
+	}
+
     /**
 	 * @covers ::rocketcdn_field
 	 */
@@ -20,7 +30,7 @@ class TestRocketcdnField extends TestCase {
             'cdn_cnames' => []
         ];
 
-        $page = new AdminPageSubscriber( 'views/settings/rocketcdn');
+        $page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
         $this->assertSame(
             $fields,
             $page->rocketcdn_field( $fields )
@@ -44,14 +54,14 @@ class TestRocketcdnField extends TestCase {
                 'type'        => 'rocket_cdn',
                 'label'       => __( 'CDN CNAME(s)', 'rocket' ),
                 'description' => __( 'Specify the CNAME(s) below', 'rocket' ),
-                'helper'      => __( 'Rocket CDN is currently active.', 'rocket' ),
+                'helper'      => __( 'Rocket CDN is currently active. <a href="" data-beacon-article="" rel="noopener noreferrer" target="_blank">More Info</a>', 'rocket' ),
                 'default'     => '',
                 'section'     => 'cnames_section',
                 'page'        => 'page_cdn',
             ]
         ];
 
-        $page = new AdminPageSubscriber( 'views/settings/rocketcdn');
+        $page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
         $this->assertSame(
             $rocketcdn_field,
             $page->rocketcdn_field( $fields )

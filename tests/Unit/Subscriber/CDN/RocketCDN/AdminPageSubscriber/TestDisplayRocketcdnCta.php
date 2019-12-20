@@ -10,6 +10,16 @@ use Brain\Monkey\Functions;
  * @group RocketCDN
  */
 class TestDisplayRocketcdnCta extends TestCase {
+	private $options;
+	private $beacon;
+
+	public function setUp() {
+		parent::setUp();
+
+		$this->options = $this->createMock('WP_Rocket\Admin\Options_Data');
+		$this->beacon  = $this->createMock('WP_Rocket\Admin\Settings\Beacon');
+	}
+
 	/**
 	 * @covers ::display_rocketcdn_cta
 	 */
@@ -20,7 +30,7 @@ class TestDisplayRocketcdnCta extends TestCase {
 			]
 		);
 
-		$page = new AdminPageSubscriber( 'views/settings/rocketcdn');
+		$page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
 		$this->assertNull($page->display_rocketcdn_cta());
 	}
 
@@ -55,7 +65,7 @@ class TestDisplayRocketcdnCta extends TestCase {
 		});
 		Functions\when('number_format_i18n')->returnArg();
 
-		$page = new AdminPageSubscriber( 'views/settings/rocketcdn');
+		$page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
 		$this->expectOutputString('<div class="wpr-rocketcdn-cta-small notice-alt notice-warning wpr-isHidden" id="wpr-rocketcdn-cta-small">
 	<div class="wpr-flex">
 		<section>
@@ -125,7 +135,7 @@ class TestDisplayRocketcdnCta extends TestCase {
 		});
 		Functions\when('number_format_i18n')->returnArg();
 
-		$page = new AdminPageSubscriber( 'views/settings/rocketcdn');
+		$page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
 		$this->expectOutputString('<div class="wpr-rocketcdn-cta-small notice-alt notice-warning " id="wpr-rocketcdn-cta-small">
 	<div class="wpr-flex">
 		<section>
@@ -195,7 +205,7 @@ class TestDisplayRocketcdnCta extends TestCase {
 		});
 		Functions\when('number_format_i18n')->returnArg();
 
-		$page = new AdminPageSubscriber( 'views/settings/rocketcdn');
+		$page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
 		$this->expectOutputString('<div class="wpr-rocketcdn-cta-small notice-alt notice-warning wpr-isHidden" id="wpr-rocketcdn-cta-small">
 	<div class="wpr-flex">
 		<section>
@@ -226,7 +236,7 @@ class TestDisplayRocketcdnCta extends TestCase {
 			<div class="wpr-rocketcdn-pricing">
 								<h4 class="wpr-title2 wpr-rocketcdn-pricing-regular"><del>$7.99</del></h4>
 								<h4 class="wpr-rocketcdn-pricing-current">
-				<span class="wpr-title1">$6.9</span> / month				</h4>
+				<span class="wpr-title1">$6.9*</span> / month				</h4>
 				<button class="wpr-button wpr-rocketcdn-open" data-micromodal-trigger="wpr-rocketcdn-modal">Get Started</button>
 			</div>
 		</div>
@@ -235,7 +245,9 @@ class TestDisplayRocketcdnCta extends TestCase {
 		<a href="https://go.wp-rocket.me/rocket-cdn" target="_blank" rel="noopener noreferrer">Learn more about Rocket CDN</a>
 	</div>
 	<button class="wpr-rocketcdn-cta-close"  id="wpr-rocketcdn-close-cta"><span class="screen-reader-text">Reduce this banner</span></button>
-</div>',
+</div>
+<p>
+	* $6.9/month for 12 months then $7.99/month. You can cancel your subscription at any time.</p>',
 			$page->display_rocketcdn_cta()
 		);
 	}

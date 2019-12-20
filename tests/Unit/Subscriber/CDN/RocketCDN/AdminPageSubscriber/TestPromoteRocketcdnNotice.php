@@ -10,13 +10,23 @@ use Brain\Monkey\Functions;
  * @group RocketCDN
  */
 class TestPromoteRocketcdnNotice extends TestCase {
+	private $options;
+	private $beacon;
+
+	public function setUp() {
+		parent::setUp();
+
+		$this->options = $this->createMock('WP_Rocket\Admin\Options_Data');
+		$this->beacon  = $this->createMock('WP_Rocket\Admin\Settings\Beacon');
+	}
+
 	/**
 	 * @covers ::promote_rocketcdn_notice
 	 */
 	public function testShouldNotDisplayNoticeWhenNoCapability() {
 		Functions\when('current_user_can')->justReturn(false);
 
-		$page = new AdminPageSubscriber( 'views/settings/rocketcdn');
+		$page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
 		
 		$this->assertNull($page->promote_rocketcdn_notice());
 	}
@@ -30,7 +40,7 @@ class TestPromoteRocketcdnNotice extends TestCase {
 			return (object) [ 'id' => 'general' ];
 		});
 
-		$page = new AdminPageSubscriber( 'views/settings/rocketcdn');
+		$page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
 		
 		$this->assertNull($page->promote_rocketcdn_notice());
 	}
@@ -46,7 +56,7 @@ class TestPromoteRocketcdnNotice extends TestCase {
 		Functions\when('get_current_user_id')->justReturn(1);
 		Functions\when('get_user_meta')->justReturn(true);
 
-		$page = new AdminPageSubscriber( 'views/settings/rocketcdn');
+		$page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
 		
 		$this->assertNull($page->promote_rocketcdn_notice());
 	}
@@ -63,7 +73,7 @@ class TestPromoteRocketcdnNotice extends TestCase {
 		Functions\when('get_user_meta')->justReturn(false);
 		Functions\when('get_transient')->justReturn(['is_active' => true]);
 
-		$page = new AdminPageSubscriber( 'views/settings/rocketcdn');
+		$page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
 		
 		$this->assertNull($page->promote_rocketcdn_notice());
 	}
@@ -92,7 +102,7 @@ class TestPromoteRocketcdnNotice extends TestCase {
 			return $wp_fs;
 		});
 
-		$page = new AdminPageSubscriber( 'views/settings/rocketcdn');
+		$page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
 
 		$this->expectOutputString('<div class="notice notice-alt notice-warning is-dismissible" id="rocketcdn-promote-notice">
 	<h2 class="notice-title">New!</h2>

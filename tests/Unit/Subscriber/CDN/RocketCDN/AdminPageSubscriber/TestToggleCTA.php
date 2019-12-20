@@ -10,13 +10,23 @@ use Brain\Monkey\Functions;
  * @group RocketCDN
  */
 class TestToggleCTA extends TestCase {
+    private $options;
+	private $beacon;
+
+	public function setUp() {
+		parent::setUp();
+
+		$this->options = $this->createMock('WP_Rocket\Admin\Options_Data');
+		$this->beacon  = $this->createMock('WP_Rocket\Admin\Settings\Beacon');
+	}
+
     /**
      * @covers ::toggle_cta
      */
     public function testShouldReturnNullWhenPOSTNotSet() {
         Functions\when('check_ajax_referer')->justReturn(true);
 
-        $page = new AdminPageSubscriber( 'views/settings/rocketcdn');
+        $page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
         $this->assertNull( $page->toggle_cta() );
     }
 
@@ -29,7 +39,7 @@ class TestToggleCTA extends TestCase {
         $_POST['status'] = 'big';
         $_POST['action'] = 'invalid';
 
-        $page = new AdminPageSubscriber( 'views/settings/rocketcdn');
+        $page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
         $this->assertNull( $page->toggle_cta() );
     }
 
@@ -44,7 +54,7 @@ class TestToggleCTA extends TestCase {
         $_POST['status'] = 'big';
         $_POST['action'] = 'toggle_rocketcdn_cta';
 
-        $page = new AdminPageSubscriber( 'views/settings/rocketcdn');
+        $page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
         $page->toggle_cta();
     }
 
@@ -59,7 +69,7 @@ class TestToggleCTA extends TestCase {
         $_POST['status'] = 'small';
         $_POST['action'] = 'toggle_rocketcdn_cta';
 
-        $page = new AdminPageSubscriber( 'views/settings/rocketcdn');
+        $page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
         $page->toggle_cta();
     }
 }

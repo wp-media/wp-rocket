@@ -10,6 +10,16 @@ use Brain\Monkey\Functions;
  * @group RocketCDN
  */
 class TestDisplayRocketcdnStatus extends TestCase {
+	private $options;
+	private $beacon;
+
+	public function setUp() {
+		parent::setUp();
+
+		$this->options = $this->createMock('WP_Rocket\Admin\Options_Data');
+		$this->beacon  = $this->createMock('WP_Rocket\Admin\Settings\Beacon');
+	}
+
 	/**
 	 * @covers ::display_rocketcdn_status
 	 */
@@ -36,7 +46,7 @@ class TestDisplayRocketcdnStatus extends TestCase {
 			return $wp_fs;
 		});
 
-		$page = new AdminPageSubscriber( 'views/settings/rocketcdn');
+		$page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
 		$this->expectOutputString('<div class="wpr-optionHeader">
 	<h3 class="wpr-title2">Rocket CDN</h3>
 </div>
@@ -81,7 +91,7 @@ class TestDisplayRocketcdnStatus extends TestCase {
 			return $wp_fs;
 		});
 
-		$page = new AdminPageSubscriber( 'views/settings/rocketcdn');
+		$page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
 		$this->expectOutputString('<div class="wpr-optionHeader">
 	<h3 class="wpr-title2">Rocket CDN</h3>
 </div>

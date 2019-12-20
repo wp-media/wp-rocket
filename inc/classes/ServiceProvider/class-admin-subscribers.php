@@ -51,6 +51,8 @@ class Admin_Subscribers extends AbstractServiceProvider {
 		$this->getContainer()->share( 'hummingbird_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Optimization\Hummingbird_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'options' ) );
 		$this->getContainer()->share( 'rocketcdn_admin_subscriber', 'WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber' )
+			->withArgument( $this->getContainer()->get( 'options' ) )
+			->withArgument( $this->getContainer()->get( 'beacon' ) )
 			->withArgument( $this->getContainer()->get( 'template_path' ) . '/settings/rocketcdn' );
 	}
 }

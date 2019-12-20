@@ -10,13 +10,23 @@ use Brain\Monkey\Functions;
  * @group RocketCDN
  */
 class TestDismissNotice extends TestCase {
+    private $options;
+	private $beacon;
+
+	public function setUp() {
+		parent::setUp();
+
+		$this->options = $this->createMock('WP_Rocket\Admin\Options_Data');
+		$this->beacon  = $this->createMock('WP_Rocket\Admin\Settings\Beacon');
+    }
+
     /**
 	 * @covers ::dismiss_notice
 	 */
     public function testShouldReturnNullWhenPOSTActionNotSet() {
         Functions\when('check_ajax_referer')->justReturn(true);
 
-        $page = new AdminPageSubscriber( 'views/settings/rocketcdn');
+        $page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
         $this->assertNull($page->dismiss_notice());
     }
 
@@ -28,7 +38,7 @@ class TestDismissNotice extends TestCase {
 
         $_POST['action'] = 'wrong_action';
 
-        $page = new AdminPageSubscriber( 'views/settings/rocketcdn');
+        $page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
         $this->assertNull($page->dismiss_notice());
     }
 
@@ -42,7 +52,7 @@ class TestDismissNotice extends TestCase {
 
         $_POST['action'] = 'rocketcdn_dismiss_notice';
 
-        $page = new AdminPageSubscriber( 'views/settings/rocketcdn');
+        $page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
         $page->dismiss_notice();
     }
 }

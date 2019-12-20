@@ -10,6 +10,16 @@ use Brain\Monkey\Functions;
  * @group RocketCDN
  */
 class TestPurgeCacheRequest extends TestCase {
+    private $options;
+	private $beacon;
+
+	public function setUp() {
+		parent::setUp();
+
+		$this->options = $this->createMock('WP_Rocket\Admin\Options_Data');
+		$this->beacon  = $this->createMock('WP_Rocket\Admin\Settings\Beacon');
+	}
+
     /**
      * @covers ::purge_cache_request
      */
@@ -18,7 +28,7 @@ class TestPurgeCacheRequest extends TestCase {
 
         Functions\when('get_transient')->justReturn([]);
 
-        $page = new AdminPageSubscriber( 'views/settings/rocketcdn');
+        $page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
         $this->assertSame(
             [
                 'status'  => 'error',
@@ -38,7 +48,7 @@ class TestPurgeCacheRequest extends TestCase {
             'id' => 0,
         ]);
 
-        $page = new AdminPageSubscriber( 'views/settings/rocketcdn');
+        $page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
         $this->assertSame(
             [
                 'status'  => 'error',
@@ -60,7 +70,7 @@ class TestPurgeCacheRequest extends TestCase {
         Functions\when('wp_remote_request')->justReturn([]);
         Functions\when('wp_remote_retrieve_response_code')->justReturn(404);
 
-        $page = new AdminPageSubscriber( 'views/settings/rocketcdn');
+        $page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
         $this->assertSame(
             [
                 'status'  => 'error',
@@ -84,7 +94,7 @@ class TestPurgeCacheRequest extends TestCase {
         Functions\when('wp_remote_retrieve_response_code')->justReturn(200);
         Functions\when('wp_remote_retrieve_body')->justReturn('');
 
-        $page = new AdminPageSubscriber( 'views/settings/rocketcdn');
+        $page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
         $this->assertSame(
             [
                 'status'  => 'error',
@@ -111,7 +121,7 @@ class TestPurgeCacheRequest extends TestCase {
             )
         );
 
-        $page = new AdminPageSubscriber( 'views/settings/rocketcdn');
+        $page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
         $this->assertSame(
             [
                 'status'  => 'error',
@@ -141,7 +151,7 @@ class TestPurgeCacheRequest extends TestCase {
             )
         );
 
-        $page = new AdminPageSubscriber( 'views/settings/rocketcdn');
+        $page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
         $this->assertSame(
             [
                 'status'  => 'error',
@@ -170,7 +180,7 @@ class TestPurgeCacheRequest extends TestCase {
             )
         );
 
-        $page = new AdminPageSubscriber( 'views/settings/rocketcdn');
+        $page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
         $this->assertSame(
             [
                 'status'  => 'success',

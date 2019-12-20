@@ -10,13 +10,23 @@ use Brain\Monkey\Functions;
  * @group RocketCDN
  */
 class TestPurgeCacheNotice extends TestCase {
+	private $options;
+	private $beacon;
+
+	public function setUp() {
+		parent::setUp();
+
+		$this->options = $this->createMock('WP_Rocket\Admin\Options_Data');
+		$this->beacon  = $this->createMock('WP_Rocket\Admin\Settings\Beacon');
+	}
+
 	/**
 	 * @covers ::purge_cache_notice
 	 */
 	public function testShouldReturnNullWhenNoPermissions() {
 		Functions\when('current_user_can')->justReturn(false);
 
-		$page = new AdminPageSubscriber( 'views/settings/rocketcdn');
+		$page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
 		$this->assertNull($page->purge_cache_notice() );
 	}
 
@@ -29,7 +39,7 @@ class TestPurgeCacheNotice extends TestCase {
 			return (object) [ 'id' => 'general' ];
 		});
 
-		$page = new AdminPageSubscriber( 'views/settings/rocketcdn');
+		$page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
 		$this->assertNull($page->purge_cache_notice() );
 	}
 
@@ -43,7 +53,7 @@ class TestPurgeCacheNotice extends TestCase {
 		});
 		Functions\when('get_transient')->justReturn(false);
 
-		$page = new AdminPageSubscriber( 'views/settings/rocketcdn');
+		$page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
 		$this->assertNull($page->purge_cache_notice() );
 	}
 
@@ -67,7 +77,7 @@ class TestPurgeCacheNotice extends TestCase {
 			'message' => 'RocketCDN cache purge successful.',
 		]);
 
-		$page = new AdminPageSubscriber( 'views/settings/rocketcdn');
+		$page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
 		$page->purge_cache_notice();
 	}
 }
