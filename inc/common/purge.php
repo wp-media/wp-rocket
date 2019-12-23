@@ -3,9 +3,6 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 // Launch hooks that deletes all the cache domain.
 add_action( 'switch_theme', 'rocket_clean_domain' );  // When user change theme.
-add_action( 'user_register', 'rocket_clean_domain' );  // When a user is added.
-add_action( 'profile_update', 'rocket_clean_domain' );  // When a user is updated.
-add_action( 'deleted_user', 'rocket_clean_domain' );  // When a user is deleted.
 add_action( 'wp_update_nav_menu', 'rocket_clean_domain' );  // When a custom menu is update.
 add_action( 'update_option_sidebars_widgets', 'rocket_clean_domain' );  // When you change the order of widgets.
 add_action( 'update_option_category_base', 'rocket_clean_domain' );  // When category permalink prefix is update.
@@ -463,42 +460,6 @@ function do_admin_post_rocket_purge_opcache() {
 }
 add_action( 'admin_post_rocket_purge_opcache', 'do_admin_post_rocket_purge_opcache' );
 
-/**
- * Purge CloudFlare cache
- *
- * @since 2.5
- */
-function do_admin_post_rocket_purge_cloudflare() {
-	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'rocket_purge_cloudflare' ) ) {
-		wp_nonce_ays( '' );
-	}
-
-	if ( ! current_user_can( 'rocket_purge_cloudflare_cache' ) ) {
-		return;
-	}
-
-	// Purge CloudFlare.
-	$cf_purge = rocket_purge_cloudflare();
-
-	if ( is_wp_error( $cf_purge ) ) {
-		$cf_purge_result = [
-			'result'  => 'error',
-			// translators: %s = CloudFare API return message.
-			'message' => sprintf( __( '<strong>WP Rocket:</strong> %s', 'rocket' ), $cf_purge->get_error_message() ),
-		];
-	} else {
-		$cf_purge_result = [
-			'result'  => 'success',
-			'message' => __( '<strong>WP Rocket:</strong> Cloudflare cache successfully purged.', 'rocket' ),
-		];
-	}
-
-	set_transient( get_current_user_id() . '_cloudflare_purge_result', $cf_purge_result );
-
-	wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
-	die();
-}
-add_action( 'admin_post_rocket_purge_cloudflare', 'do_admin_post_rocket_purge_cloudflare' );
 
 /**
  * Clean the cache when the current theme is updated
@@ -545,7 +506,7 @@ function rocket_clean_cache_theme_update( $wp_upgrader, $hook_extra ) {
  */
 function rocket_clean_post_cache_on_slug_change( $post_id, $post_data ) {
 	if ( get_post_field( 'post_name', $post_id ) !== $post_data['post_name'] ) {
-        rocket_clean_files( get_the_permalink( $post_id ) );
-    }
+		rocket_clean_files( get_the_permalink( $post_id ) );
+	}
 }
 add_action( 'pre_post_update', 'rocket_clean_post_cache_on_slug_change', 10, 2 );

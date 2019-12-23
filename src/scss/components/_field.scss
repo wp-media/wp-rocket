@@ -146,6 +146,10 @@
         padding-bottom: 0;
     }
 
+    &.wpr-isLastElem{
+        margin-top: $space*2;
+    }
+
     .wpr-isHidden{
         display: none;
     }
