@@ -144,7 +144,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 					<?php endif; ?>
 
 					<?php
-					$opcache_enabled  = ini_get( 'opcache.enable' );
+					$opcache_enabled  = filter_var( ini_get( 'opcache.enable' ), FILTER_VALIDATE_BOOLEAN );
 					$restrict_api     = ini_get( 'opcache.restrict_api' );
 					$can_restrict_api = true;
 					if ( $restrict_api && strpos(__FILE__, $restrict_api) !== 0 ) {
