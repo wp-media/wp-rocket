@@ -1173,11 +1173,7 @@
                 "phpcs",
                 "standards"
             ],
-<<<<<<< HEAD
-            "time": "2019-10-16T21:24:24+00:00"
-=======
             "time": "2019-11-15T04:12:02+00:00"
->>>>>>> branch-3.5.1
         },
         {
             "name": "phpcompatibility/phpcompatibility-paragonie",
