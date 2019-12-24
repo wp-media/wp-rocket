@@ -36,7 +36,7 @@ window.addEventListener('load', function() {
         });
     }
 
-    if ( null !== closeCTA ) {
+    if ( null !== closeCTA && null !== smallCTA && null !== bigCTA ) {
         closeCTA.addEventListener('click', function(e) {
             e.preventDefault();
 
