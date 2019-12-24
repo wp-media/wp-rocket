@@ -117,6 +117,7 @@ class CloudflareSubscriber implements Subscriber_Interface {
 			return false;
 		}
 
+		// This filter is documented in inc/classes/subscriber/Addons/Varnish/VarnishSubscriber.php.
 		if ( ! apply_filters( 'do_rocket_varnish_http_purge', false ) && ! $this->options->get( 'varnish_auto_purge', 0 ) ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 			return false;
 		}
