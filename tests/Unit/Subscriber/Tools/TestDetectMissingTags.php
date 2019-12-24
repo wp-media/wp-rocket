@@ -9,6 +9,7 @@ use Brain\Monkey\Functions;
  * @group Subscriber
  */
 class TestDetectMissingTags extends TestCase {
+	use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 	protected function setUp() {
 		parent::setUp();
 

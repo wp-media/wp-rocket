@@ -6,7 +6,7 @@ use WP_Rocket\Addons\Cloudflare\Cloudflare;
 use Brain\Monkey\Functions;
 
 class TestGetInstance extends TestCase {
-
+	use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 	protected function setUp() {
 		parent::setUp();
 

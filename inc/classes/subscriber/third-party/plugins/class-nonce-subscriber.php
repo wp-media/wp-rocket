@@ -18,9 +18,9 @@ class Nonce_Subscriber implements Subscriber_Interface {
 	 * @inheritDoc
 	 */
 	public static function get_subscribed_events() {
-		if ( ! class_exists( 'WooCommerce' ) ) {
-			return [];
-		}
+		// if ( ! class_exists( 'WooCommerce' ) ) {
+		//  return [];
+		// }
 		return [
 			'nonce_user_logged_out' => [ 'maybe_revert_uid_for_nonce_actions', PHP_INT_MAX, 2 ],
 		];

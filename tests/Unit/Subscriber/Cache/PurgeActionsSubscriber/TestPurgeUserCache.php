@@ -11,6 +11,7 @@ use Brain\Monkey\Filters;
  * @group purge_actions
  */
 class TestPurgeUserCache extends TestCase {
+	use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 	/**
 	 * @covers::purge_user_cache
 	 */

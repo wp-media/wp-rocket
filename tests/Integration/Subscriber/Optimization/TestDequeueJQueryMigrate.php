@@ -26,8 +26,8 @@ class TestDequeueJQueryMigrate extends TestCase
                 'dequeue_jquery_migrate' => false,
             ]
         );
-        $scripts 				   		   = wp_scripts();
-        $options        				   = new Options_Data((new Options('wp_rocket_'))->get('settings'));
+        $scripts                           = wp_scripts();
+        $options                           = new Options_Data((new Options('wp_rocket_'))->get('settings'));
         $dequeue_jquery_migrate_subscriber = new Dequeue_JQuery_Migrate_Subscriber($options);
 
         $this->assertSame(
@@ -51,8 +51,8 @@ class TestDequeueJQueryMigrate extends TestCase
 
         define('DONOTROCKETOPTIMIZE', true);
 
-        $scripts 				   		   = wp_scripts();
-        $options        				   = new Options_Data((new Options('wp_rocket_'))->get('settings'));
+        $scripts                           = wp_scripts();
+        $options                           = new Options_Data((new Options('wp_rocket_'))->get('settings'));
         $dequeue_jquery_migrate_subscriber = new Dequeue_JQuery_Migrate_Subscriber($options);
 
         $this->assertSame(
@@ -74,7 +74,7 @@ class TestDequeueJQueryMigrate extends TestCase
             ]
         );
 
-        $options        				   = new Options_Data((new Options('wp_rocket_'))->get('settings'));
+        $options                           = new Options_Data((new Options('wp_rocket_'))->get('settings'));
         $dequeue_jquery_migrate_subscriber = new Dequeue_JQuery_Migrate_Subscriber($options);
 
         $scripts = wp_scripts();
