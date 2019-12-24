@@ -5,7 +5,7 @@ use WP_Rocket\Admin\Options_Data as Options;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Logger\Logger;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Sucuri Security compatibility.

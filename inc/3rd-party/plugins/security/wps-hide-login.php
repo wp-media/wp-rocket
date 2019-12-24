@@ -1,5 +1,6 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin\' uh?' );
+
+defined( 'ABSPATH' ) || exit;
 
 if ( class_exists( 'WPS_Hide_Login' ) || defined( 'WPS_HIDE_LOGIN_VERSION' ) ) :
 	add_action( 'update_option_whl_page', 'rocket_after_update_single_options', 10, 2 );

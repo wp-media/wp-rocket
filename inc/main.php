@@ -1,5 +1,6 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+
+defined( 'ABSPATH' ) || exit;
 
 // Composer autoload.
 if ( file_exists( WP_ROCKET_PATH . 'vendor/autoload.php' ) ) {

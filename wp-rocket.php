@@ -3,7 +3,7 @@
  * Plugin Name: WP Rocket
  * Plugin URI: https://wp-rocket.me
  * Description: The best WordPress performance plugin.
- * Version: 3.4.2.2
+ * Version: 3.4.3
  * Code Name: Scarif
  * Author: WP Media
  * Author URI: https://wp-media.me
@@ -15,10 +15,10 @@
  * Copyright 2013-2019 WP Rocket
  * */
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 // Rocket defines.
-define( 'WP_ROCKET_VERSION',               '3.4.2.2' );
+define( 'WP_ROCKET_VERSION',               '3.4.3' );
 define( 'WP_ROCKET_WP_VERSION',            '4.9' );
 define( 'WP_ROCKET_PHP_VERSION',           '5.6' );
 define( 'WP_ROCKET_PRIVATE_KEY',           false );

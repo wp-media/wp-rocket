@@ -1,7 +1,7 @@
 <?php
 use WP_Rocket\Logger\Logger;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Tell WP what to do when admin is loaded aka upgrader

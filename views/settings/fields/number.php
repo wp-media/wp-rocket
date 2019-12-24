@@ -15,7 +15,8 @@
  * }
  */
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
+
 ?>
 
 <div class="wpr-field wpr-field--text wpr-field--number <?php echo $data['container_class']; ?>">

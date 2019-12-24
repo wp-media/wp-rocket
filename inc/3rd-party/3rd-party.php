@@ -1,5 +1,6 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+
+defined( 'ABSPATH' ) || exit;
 
 require WP_ROCKET_3RD_PARTY_PATH . 'hosting/wpengine.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'hosting/flywheel.php';

@@ -1,6 +1,6 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin\' uh?' );
 
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Clear cache when ACF options page is updated.
