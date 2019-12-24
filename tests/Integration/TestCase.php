@@ -28,10 +28,5 @@ class TestCase extends WP_UnitTestCase {
 	public function tearDown() {
 		Monkey\tearDown();
 		parent::tearDown();
-
-		update_option(
-            'wp_rocket_settings',
-            []
-        );
 	}
 }
