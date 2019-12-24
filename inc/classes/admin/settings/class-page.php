@@ -1900,7 +1900,7 @@ class Page {
 				'varnish_custom_ip' => [
 					'type'        => 'textarea',
 					'label'       => _x( 'Custom Host/IP', 'Varnish', 'rocket' ),
-					'description' => __( 'There are cases when a custom IP Address is needed to for the plugin to properly communicate with the cache service. If you are using a CDN like Cloudflare or a Firewall Proxy like Sucuri, you may need to customize this setting.', 'rocket' ),
+					'description' => __( 'There are cases when a custom IP Address is needed for the plugin to properly communicate with the cache service. If you are using a CDN like Cloudflare or a Firewall Proxy like Sucuri, you may need to customize this setting.', 'rocket' ),
 					'default'     => '',
 					'section'     => 'varnish_settings',
 					'page'        => 'varnish',
