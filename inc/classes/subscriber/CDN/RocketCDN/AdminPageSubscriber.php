@@ -105,7 +105,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 						postData    = '';
 
 					postData += 'action=rocketcdn_dismiss_notice';
-					postData += '&nonce=<?php echo esc_html( $nonce ); ?>';
+					postData += '&nonce=<?php echo esc_attr( $nonce ); ?>';
 					httpRequest.open( 'POST', '<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>' );
 					httpRequest.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' )
 					httpRequest.send( postData );
