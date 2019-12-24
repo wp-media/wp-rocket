@@ -34,7 +34,7 @@ $cnames_zone = get_rocket_option( 'cdn_zone' );
 					</div>
 					<?php endif; ?>
 				</div>
-				<?php endforeach; ?>
+			<?php endforeach; ?>
 		<?php endif; ?>
 		</div>
 	</div>
