@@ -1,5 +1,6 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Conflict with MailChimp List Subscribe Form: Enqueue style without lack of performance, grrrr!!!

@@ -3,7 +3,7 @@ namespace WP_Rocket\Admin\Settings;
 
 use \WP_Rocket\Subscriber\Third_Party\Plugins\Security\Sucuri_Subscriber;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Settings class
@@ -185,6 +185,8 @@ class Settings {
 	 * @return array
 	 */
 	public function sanitize_callback( $input ) {
+		global $wp_settings_errors;
+
 		$input['do_beta'] = ! empty( $input['do_beta'] ) ? 1 : 0;
 
 		$input['cache_logged_user'] = ! empty( $input['cache_logged_user'] ) ? 1 : 0;
@@ -462,10 +464,28 @@ class Settings {
 			$input['secret_key']     = $checked['secret_key'];
 		}
 
-		if ( rocket_valid_key() && ! empty( $input['secret_key'] ) && ! isset( $input['ignore'] ) ) {
-			unset( $input['ignore'] );
-			add_settings_error( 'general', 'settings_updated', __( 'Settings saved.', 'rocket' ), 'updated' );
+		if ( ! empty( $input['secret_key'] ) && empty( $input['ignore'] ) && rocket_valid_key() ) {
+			// Add a "Settings saved." admin notice only if not already added.
+			$notices = array_merge( (array) $wp_settings_errors, (array) get_transient( 'settings_errors' ) );
+			$notices = array_filter(
+				$notices,
+				function( $error ) {
+					if ( ! $error || ! is_array( $error ) ) {
+						return false;
+					}
+					if ( ! isset( $error['setting'], $error['code'], $error['type'] ) ) {
+						return false;
+					}
+					return 'general' === $error['setting'] && 'settings_updated' === $error['code'] && 'updated' === $error['type'];
+				}
+			);
+
+			if ( ! $notices ) {
+				add_settings_error( 'general', 'settings_updated', __( 'Settings saved.', 'rocket' ), 'updated' );
+			}
 		}
+
+		unset( $input['ignore'] );
 
 		return apply_filters( 'rocket_input_sanitize', $input );
 	}

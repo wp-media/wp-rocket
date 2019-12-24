@@ -4,7 +4,7 @@ namespace WP_Rocket\Admin\Settings;
 use \WP_Rocket\Interfaces\Render_Interface;
 use WP_Rocket\Admin\Database\Optimization;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Registers the admin page and WP Rocket settings
@@ -162,7 +162,8 @@ class Page {
 	 * @return void
 	 */
 	public function render_page() {
-		if ( rocket_valid_key() ) {
+		$rocket_valid_key = rocket_valid_key();
+		if ( $rocket_valid_key ) {
 			$this->dashboard_section();
 			$this->cache_section();
 			$this->assets_section();
@@ -186,7 +187,7 @@ class Page {
 
 		$this->render->set_hidden_settings( $this->settings->get_hidden_settings() );
 
-		echo $this->render->generate( 'page', [ 'slug' => $this->slug ] );
+		echo $this->render->generate( 'page', [ 'slug' => $this->slug, 'btn_submit_text' => $rocket_valid_key ? __( 'Save Changes', 'rocket' ) : __( 'Validate License', 'rocket' ) ] );
 	}
 
 	/**
@@ -227,7 +228,7 @@ class Page {
 		}
 
 		$customer_data->class              = time() < $customer_data->licence_expiration ? 'wpr-isValid' : 'wpr-isInvalid';
-		$customer_data->licence_expiration = date_i18n( get_option( 'date_format' ), $customer_data->licence_expiration );
+		$customer_data->licence_expiration = date_i18n( get_option( 'date_format' ), (int) $customer_data->licence_expiration );
 
 		return $customer_data;
 	}

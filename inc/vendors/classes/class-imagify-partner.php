@@ -5,7 +5,7 @@
  * @package wp-media/wp-imagify-partner
  */
 
-defined( 'ABSPATH' ) || die( 'Cheatin\' uh?' );
+defined( 'ABSPATH' ) || exit;
 
 if ( ! class_exists( 'Imagify_Partner' ) ) :
 

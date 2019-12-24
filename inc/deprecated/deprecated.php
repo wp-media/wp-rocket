@@ -1,7 +1,7 @@
 <?php
 use MatthiasMullie\Minify;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Deprecated functions come here to die.

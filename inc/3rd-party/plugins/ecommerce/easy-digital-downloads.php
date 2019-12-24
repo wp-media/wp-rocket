@@ -1,5 +1,6 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin\' uh?' );
+
+defined( 'ABSPATH' ) || exit;
 
 if ( function_exists( 'EDD' ) ) :
 	add_filter( 'rocket_cache_reject_uri', 'rocket_exclude_edd_pages' );

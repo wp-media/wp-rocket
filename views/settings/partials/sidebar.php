@@ -5,7 +5,8 @@
  * @since 3.0
  */
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
+
 ?>
 
 <h3 class="wpr-Sidebar-title wpr-title2"><?php _e( 'How to correctly measure your website’s loading time', 'rocket' ); ?></h3>

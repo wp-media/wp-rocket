@@ -16,7 +16,8 @@
  * }
  */
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
+
 ?>
 <fieldset class="wpr-fieldsContainer-fieldset">
 	<div class="wpr-field">
