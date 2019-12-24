@@ -1,5 +1,6 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+
+defined( 'ABSPATH' ) || exit;
 
 if ( rocket_is_plugin_active( 'sg-cachepress/sg-cachepress.php' ) ) {
 	/**
@@ -59,7 +60,7 @@ if ( rocket_is_plugin_active( 'sg-cachepress/sg-cachepress.php' ) ) {
 			}
 		} else {
 			SiteGround_Optimizer\Supercacher\Supercacher::purge_cache();
-		}	
+		}
 	}
 
 	if ( rocket_is_supercacher_active() ) {
@@ -71,7 +72,7 @@ if ( rocket_is_plugin_active( 'sg-cachepress/sg-cachepress.php' ) ) {
 
 		/**
 		 * Force WP Rocket caching on SG Optimizer versions before 4.0.5
-		 * 
+		 *
 		 * @author Arun Basil Lal
 		 *
 		 * @link https://github.com/wp-media/wp-rocket/issues/925

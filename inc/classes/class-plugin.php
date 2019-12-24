@@ -5,7 +5,7 @@ use League\Container\Container;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Admin\Options;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Assembly class
@@ -154,6 +154,7 @@ class Plugin {
 			'cloudflare_subscriber',
 			'rocketcdn_rest_subscriber',
 			'detect_missing_tags_subscriber',
+			'purge_actions_subscriber',
 		];
 
 		if ( \rocket_valid_key() ) {

@@ -3,7 +3,7 @@ namespace WP_Rocket\Subscriber\Third_Party\Plugins;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Class that handles events related to Next Gen Gallery.

@@ -3,7 +3,7 @@ namespace WP_Rocket\Admin\Settings;
 
 use WP_Rocket\Abstract_Render;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Handle rendering of HTML content for the settings page.

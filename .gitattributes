@@ -1,4 +1,3 @@
-# PHPUnit files
 .travis.yml export-ignore
 bin export-ignore
 tests export-ignore
@@ -16,4 +15,5 @@ src export-ignore
 .babelrc export-ignore
 gulpfile.js export-ignore
 package.json export-ignore
+package-lock.json export-ignore
 .prettyci.composer.json export-ignore

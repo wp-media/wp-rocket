@@ -1,7 +1,7 @@
 <?php
 use WP_Rocket\Logger\Logger;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Tell WP what to do when admin is loaded aka upgrader
@@ -455,11 +455,7 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		$custom_varnish_ip = apply_filters( 'rocket_varnish_ip', [] );
 
 		if ( ! empty( $custom_varnish_ip ) ) {
-			if ( is_string( $custom_varnish_ip ) ) {
-				$custom_varnish_ip = (array) $custom_varnish_ip;
-			}
-
-			update_rocket_option( 'varnish_custom_ip', $custom_varnish_ip );
+			update_rocket_option( 'varnish_custom_ip', (array) $custom_varnish_ip );
 		}
 	}
 }
