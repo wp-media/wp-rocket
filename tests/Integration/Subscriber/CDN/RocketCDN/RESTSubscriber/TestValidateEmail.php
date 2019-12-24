@@ -1,10 +1,11 @@
 <?php
 namespace WP_Rocket\Tests\Integration\Subscriber\CDN\RocketCDN\RESTSubscriber;
 
-use PHPUnit\Framework\TestCase;
+use WP_Rocket\Tests\Integration\TestCase;
 use WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rest_Request;
 
 /**
  * @coversDefaultClass \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber
@@ -22,7 +23,7 @@ class TestValidateEmail extends TestCase {
             ]
         );
 
-        $request     = new \WP_Rest_Request( 'PUT', '/wp-rocket/v1/rocketcdn/enable' );
+        $request     = new WP_Rest_Request( 'PUT', '/wp-rocket/v1/rocketcdn/enable' );
         $options_api = new Options( 'wp_rocket_' );
         $options     = new Options_Data( $options_api->get( 'settings' ) );
         $rocketcdn   = new RESTSubscriber( $options_api, $options );
@@ -41,7 +42,7 @@ class TestValidateEmail extends TestCase {
             ]
         );
 
-        $request     = new \WP_Rest_Request( 'PUT', '/wp-rocket/v1/rocketcdn/enable' );
+        $request     = new WP_Rest_Request( 'PUT', '/wp-rocket/v1/rocketcdn/enable' );
         $options_api = new Options( 'wp_rocket_' );
         $options     = new Options_Data( $options_api->get( 'settings' ) );
         $rocketcdn   = new RESTSubscriber( $options_api, $options );
