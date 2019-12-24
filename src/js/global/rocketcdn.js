@@ -24,15 +24,15 @@ window.addEventListener('load', function() {
             bigCTA.classList.remove('wpr-isHidden');
 
             var httpRequest = new XMLHttpRequest(),
-                postData = '';
+            postData = '';
 
-                postData += 'action=toggle_rocketcdn_cta';
-                postData += '&status=big';
-                postData += '&nonce=' + rocket_ajax_data.nonce;
+            postData += 'action=toggle_rocketcdn_cta';
+            postData += '&status=big';
+            postData += '&nonce=' + rocket_ajax_data.nonce;
 
-                httpRequest.open( 'POST', ajaxurl );
-                httpRequest.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' )
-                httpRequest.send( postData );
+            httpRequest.open( 'POST', ajaxurl );
+            httpRequest.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' )
+            httpRequest.send( postData );
         });
     }
 
@@ -44,15 +44,15 @@ window.addEventListener('load', function() {
             bigCTA.classList.add('wpr-isHidden');
 
             var httpRequest = new XMLHttpRequest(),
-                postData = '';
+            postData = '';
 
-                postData += 'action=toggle_rocketcdn_cta';
-                postData += '&status=small';
-                postData += '&nonce=' + rocket_ajax_data.nonce;
+            postData += 'action=toggle_rocketcdn_cta';
+            postData += '&status=small';
+            postData += '&nonce=' + rocket_ajax_data.nonce;
 
-                httpRequest.open( 'POST', ajaxurl );
-                httpRequest.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' )
-                httpRequest.send( postData );
+            httpRequest.open( 'POST', ajaxurl );
+            httpRequest.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' )
+            httpRequest.send( postData );
         });
     }
 });
