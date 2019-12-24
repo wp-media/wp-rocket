@@ -16,7 +16,7 @@ window.addEventListener('load', function() {
         smallCTA = document.querySelector( '#wpr-rocketcdn-cta-small' ),
         bigCTA   = document.querySelector( '#wpr-rocketcdn-cta' );
 
-    if ( null !== openCTA ) {
+    if ( null !== openCTA && null !== smallCTA && null !== bigCTA ) {
         openCTA.addEventListener('click', function(e) {
             e.preventDefault();
 
