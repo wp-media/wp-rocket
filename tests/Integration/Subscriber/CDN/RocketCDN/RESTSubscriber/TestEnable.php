@@ -5,17 +5,18 @@ use WP_Rocket\Tests\Integration\TestCase;
 use WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rest_Request;
 
 /**
- * @coversDefaultClass \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber
+ * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber::enable
  * @group RocketCDN
  */
 class TestEnable extends TestCase {
     /**
-     * @covers ::enable
+     * Test that the WPR options array is correctly updated after enabling RocketCDN
      */
     public function testWPRocketOptionsUpdated() {
-        $request = new \WP_Rest_Request( 'PUT', '/wp-rocket/v1/rocketcdn/enable' );
+        $request = new WP_Rest_Request( 'PUT', '/wp-rocket/v1/rocketcdn/enable' );
         $request->set_body_params(
             [
                 'url' => 'https://rocketcdn.me',

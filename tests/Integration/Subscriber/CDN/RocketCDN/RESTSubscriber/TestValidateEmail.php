@@ -7,15 +7,14 @@ use WP_Rocket\Tests\Integration\TestCase;
 use WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rest_Request;
 
 /**
- * @coversDefaultClass \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber
+ * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber::validate_email
  * @group RocketCDN
  */
 class TestValidateEmail extends TestCase {
 	/**
-	 * @covers ::validate_email
+	 * Test should return true when the provided email is the same as the one in the WPR options.
 	 */
 	public function testShouldReturnTrueWhenEmailIsValid() {
 		update_option(
@@ -31,7 +30,6 @@ class TestValidateEmail extends TestCase {
 			->with( 'WP_ROCKET_EMAIL' )
 			->andReturn( false );
 
-		$request     = new WP_Rest_Request( 'PUT', '/wp-rocket/v1/rocketcdn/enable' );
 		$options_api = new Options( 'wp_rocket_' );
 		$options     = new Options_Data( $options_api->get( 'settings' ) );
 		$rocketcdn   = new RESTSubscriber( $options_api, $options );
@@ -40,13 +38,14 @@ class TestValidateEmail extends TestCase {
 	}
 
 	/**
-	 * @covers ::validate_email
+	 * Test should return false when the provided email is different from the one in the WPR options
 	 */
 	public function testShouldReturnFalseWhenEmailIsInvalid() {
 		update_option(
 			'wp_rocket_settings',
 			[
 				'consumer_email' => 'dummy@wp-rocket.me',
+				'consumer_key'   => '123456',
 			]
 		);
 
@@ -56,7 +55,6 @@ class TestValidateEmail extends TestCase {
 			->with( 'WP_ROCKET_EMAIL' )
 			->andReturn( false );
 
-		$request     = new WP_Rest_Request( 'PUT', '/wp-rocket/v1/rocketcdn/enable' );
 		$options_api = new Options( 'wp_rocket_' );
 		$options     = new Options_Data( $options_api->get( 'settings' ) );
 		$rocketcdn   = new RESTSubscriber( $options_api, $options );

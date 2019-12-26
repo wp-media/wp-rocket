@@ -6,15 +6,14 @@ use WP_Rocket\Tests\Integration\TestCase;
 use WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rest_Request;
 
 /**
- * @coversDefaultClass \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber
+ * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber::validate_key
  * @group RocketCDN
  */
 class TestValidateKey extends TestCase {
     /**
-	 * @covers ::validate_key
+	 * Test should return true when the provided key is the same as the one in the WPR options.
 	 */
     public function testShouldReturnTrueWhenKeyIsValid() {
         update_option(
@@ -30,7 +29,6 @@ class TestValidateKey extends TestCase {
 		    ->with( 'WP_ROCKET_KEY' )
 		    ->andReturn( false );
 
-        $request     = new WP_Rest_Request( 'PUT', '/wp-rocket/v1/rocketcdn/enable' );
         $options_api = new Options( 'wp_rocket_' );
         $options     = new Options_Data( $options_api->get( 'settings' ) );
         $rocketcdn   = new RESTSubscriber( $options_api, $options );
@@ -39,7 +37,7 @@ class TestValidateKey extends TestCase {
     }
 
     /**
-	 * @covers ::validate_key
+	 * Test should return false when the provided key is different from the one in the WPR options
 	 */
     public function testShouldReturnFalseWhenKeylIsInvalid() {
         update_option(
@@ -55,7 +53,6 @@ class TestValidateKey extends TestCase {
 		    ->with( 'WP_ROCKET_KEY' )
 		    ->andReturn( false );
 
-	    $request     = new WP_Rest_Request( 'PUT', '/wp-rocket/v1/rocketcdn/enable' );
         $options_api = new Options( 'wp_rocket_' );
         $options     = new Options_Data( $options_api->get( 'settings' ) );
         $rocketcdn   = new RESTSubscriber( $options_api, $options );

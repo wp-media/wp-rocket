@@ -1,10 +1,10 @@
 <?php
 namespace WP_Rocket\Tests\Integration\Subscriber\CDN\RocketCDN\RESTSubscriber;
 
-use PHPUnit\Framework\TestCase;
+use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @coversDefaultClass \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber
+ * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber::register_enable_route
  * @group RocketCDN
  */
 class TestRegisterEnableRoute extends TestCase {
@@ -23,15 +23,15 @@ class TestRegisterEnableRoute extends TestCase {
 	}
 
 	/**
-	 * @covers ::register_enable_route
+	 * Test that the enable route is correctly registered in the WP REST API
 	 */
-    public function testEnableRouteIsRegistered() {
+    public function testRouteIsRegistered() {
         $routes = $this->server->get_routes();
         $this->assertArrayHasKey( '/wp-rocket/v1/rocketcdn/enable', $routes );
     }
 
 	/**
-	 * @covers ::register_enable_route
+	 * Test that the enable route array endpoint contains the callbacks and they are callable
 	 */
     public function testEndpoint() {
         $routes = $this->server->get_routes();
