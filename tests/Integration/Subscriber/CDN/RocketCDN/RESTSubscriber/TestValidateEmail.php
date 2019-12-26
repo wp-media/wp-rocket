@@ -1,6 +1,8 @@
 <?php
+
 namespace WP_Rocket\Tests\Integration\Subscriber\CDN\RocketCDN\RESTSubscriber;
 
+use Brain\Monkey;
 use WP_Rocket\Tests\Integration\TestCase;
 use WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber;
 use WP_Rocket\Admin\Options;
@@ -12,41 +14,53 @@ use WP_Rest_Request;
  * @group RocketCDN
  */
 class TestValidateEmail extends TestCase {
-    /**
+	/**
 	 * @covers ::validate_email
 	 */
-    public function testShouldReturnTrueWhenEmailIsValid() {
-        update_option(
-            'wp_rocket_settings',
-            [
-                'consumer_email' => 'dummy@wp-rocket.me',
-            ]
-        );
+	public function testShouldReturnTrueWhenEmailIsValid() {
+		update_option(
+			'wp_rocket_settings',
+			[
+				'consumer_email' => 'dummy@wp-rocket.me',
+			]
+		);
 
-        $request     = new WP_Rest_Request( 'PUT', '/wp-rocket/v1/rocketcdn/enable' );
-        $options_api = new Options( 'wp_rocket_' );
-        $options     = new Options_Data( $options_api->get( 'settings' ) );
-        $rocketcdn   = new RESTSubscriber( $options_api, $options );
+		// Overload the "WP_ROCKET_EMAIL" constant to return false, forcing the code to use the options value.
+		Monkey\Functions\expect( 'rocket_has_constant' )
+			->once()
+			->with( 'WP_ROCKET_EMAIL' )
+			->andReturn( false );
 
-        $this->assertTrue( $rocketcdn->validate_email( 'dummy@wp-rocket.me' ) );
-    }
+		$request     = new WP_Rest_Request( 'PUT', '/wp-rocket/v1/rocketcdn/enable' );
+		$options_api = new Options( 'wp_rocket_' );
+		$options     = new Options_Data( $options_api->get( 'settings' ) );
+		$rocketcdn   = new RESTSubscriber( $options_api, $options );
 
-    /**
+		$this->assertTrue( $rocketcdn->validate_email( 'dummy@wp-rocket.me' ) );
+	}
+
+	/**
 	 * @covers ::validate_email
 	 */
-    public function testShouldReturnFalseWhenEmailIsInvalid() {
-        update_option(
-            'wp_rocket_settings',
-            [
-                'consumer_email' => 'dummy@wp-rocket.me',
-            ]
-        );
+	public function testShouldReturnFalseWhenEmailIsInvalid() {
+		update_option(
+			'wp_rocket_settings',
+			[
+				'consumer_email' => 'dummy@wp-rocket.me',
+			]
+		);
 
-        $request     = new WP_Rest_Request( 'PUT', '/wp-rocket/v1/rocketcdn/enable' );
-        $options_api = new Options( 'wp_rocket_' );
-        $options     = new Options_Data( $options_api->get( 'settings' ) );
-        $rocketcdn   = new RESTSubscriber( $options_api, $options );
+		// Overload the "WP_ROCKET_EMAIL" constant to return false, forcing the code to use the options value.
+		Monkey\Functions\expect( 'rocket_has_constant' )
+			->once()
+			->with( 'WP_ROCKET_EMAIL' )
+			->andReturn( false );
 
-        $this->assertFalse( $rocketcdn->validate_email( 'nulled@wp-rocket.me' ) );
-    }
+		$request     = new WP_Rest_Request( 'PUT', '/wp-rocket/v1/rocketcdn/enable' );
+		$options_api = new Options( 'wp_rocket_' );
+		$options     = new Options_Data( $options_api->get( 'settings' ) );
+		$rocketcdn   = new RESTSubscriber( $options_api, $options );
+
+		$this->assertFalse( $rocketcdn->validate_email( 'nulled@wp-rocket.me' ) );
+	}
 }

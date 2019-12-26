@@ -1,6 +1,7 @@
 <?php
 namespace WP_Rocket\Tests\Integration\Subscriber\CDN\RocketCDN\RESTSubscriber;
 
+use Brain\Monkey;
 use WP_Rocket\Tests\Integration\TestCase;
 use WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber;
 use WP_Rocket\Admin\Options;
@@ -23,12 +24,18 @@ class TestValidateKey extends TestCase {
             ]
         );
 
+	    // Overload the "WP_ROCKET_KEY" constant to return false, forcing the code to use the options value.
+	    Monkey\Functions\expect( 'rocket_has_constant' )
+		    ->once()
+		    ->with( 'WP_ROCKET_KEY' )
+		    ->andReturn( false );
+
         $request     = new WP_Rest_Request( 'PUT', '/wp-rocket/v1/rocketcdn/enable' );
         $options_api = new Options( 'wp_rocket_' );
         $options     = new Options_Data( $options_api->get( 'settings' ) );
         $rocketcdn   = new RESTSubscriber( $options_api, $options );
 
-        $this->assertTrue( $rocketcdn->validate_key( '0123456', $request, 'key' ) );
+        $this->assertTrue( $rocketcdn->validate_key( '0123456' ) );
     }
 
     /**
@@ -42,11 +49,17 @@ class TestValidateKey extends TestCase {
             ]
         );
 
-        $request     = new WP_Rest_Request( 'PUT', '/wp-rocket/v1/rocketcdn/enable' );
+	    // Overload the "WP_ROCKET_KEY" constant to return false, forcing the code to use the options value.
+	    Monkey\Functions\expect( 'rocket_has_constant' )
+		    ->once()
+		    ->with( 'WP_ROCKET_KEY' )
+		    ->andReturn( false );
+
+	    $request     = new WP_Rest_Request( 'PUT', '/wp-rocket/v1/rocketcdn/enable' );
         $options_api = new Options( 'wp_rocket_' );
         $options     = new Options_Data( $options_api->get( 'settings' ) );
         $rocketcdn   = new RESTSubscriber( $options_api, $options );
 
-        $this->assertFalse( $rocketcdn->validate_key( '000000', $request, 'key' ) );
+        $this->assertFalse( $rocketcdn->validate_key( '000000' ) );
     }
 }
