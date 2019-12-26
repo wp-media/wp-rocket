@@ -28,7 +28,7 @@ class TestValidateEmail extends TestCase {
         $options     = new Options_Data( $options_api->get( 'settings' ) );
         $rocketcdn   = new RESTSubscriber( $options_api, $options );
 
-        $this->assertTrue( $rocketcdn->validate_email( 'dummy@wp-rocket.me', $request, 'email' ) );
+        $this->assertTrue( $rocketcdn->validate_email( 'dummy@wp-rocket.me' ) );
     }
 
     /**
@@ -47,6 +47,6 @@ class TestValidateEmail extends TestCase {
         $options     = new Options_Data( $options_api->get( 'settings' ) );
         $rocketcdn   = new RESTSubscriber( $options_api, $options );
 
-        $this->assertFalse( $rocketcdn->validate_email( 'nulled@wp-rocket.me', $request, 'email' ) );
+        $this->assertFalse( $rocketcdn->validate_email( 'nulled@wp-rocket.me' ) );
     }
 }

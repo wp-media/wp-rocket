@@ -77,12 +77,12 @@ class RESTSubscriber implements Subscriber_Interface {
 					],
 					'url'   => [
 						'required'          => true,
-						'validate_callback' => function( $param, $request, $key ) {
+						'validate_callback' => function( $param ) {
 							$url = esc_url_raw( $param );
 
 							return ! empty( $url );
 						},
-						'sanitize_callback' => function( $param, $request, $key ) {
+						'sanitize_callback' => function( $param ) {
 							return esc_url_raw( $param );
 						},
 					],
@@ -192,11 +192,9 @@ class RESTSubscriber implements Subscriber_Interface {
 	 * @author Remy Perona
 	 *
 	 * @param string           $param Parameter value to validate.
-	 * @param \WP_REST_Request $request WP REST Request object.
-	 * @param string           $key Parameter key.
 	 * @return bool
 	 */
-	public function validate_email( $param, $request, $key ) {
+	public function validate_email( $param ) {
 		return $param === $this->options->get( 'consumer_email' );
 	}
 
@@ -207,11 +205,9 @@ class RESTSubscriber implements Subscriber_Interface {
 	 * @author Remy Perona
 	 *
 	 * @param string           $param Parameter value to validate.
-	 * @param \WP_REST_Request $request WP REST Request object.
-	 * @param string           $key Parameter key.
 	 * @return bool
 	 */
-	public function validate_key( $param, $request, $key ) {
+	public function validate_key( $param ) {
 		return $param === $this->options->get( 'consumer_key' );
 	}
 }
