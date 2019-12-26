@@ -661,6 +661,7 @@ class Combine extends Abstract_JS_Optimization {
 			'embed-cdn.gettyimages.com/widgets.js',
 			'app.mailerlite.com',
 			'ck.page',
+			'static.klaviyo.com/onsite/js/klaviyo.js',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
