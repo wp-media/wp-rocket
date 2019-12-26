@@ -191,7 +191,7 @@ class RESTSubscriber implements Subscriber_Interface {
 	 * @since 3.5
 	 * @author Remy Perona
 	 *
-	 * @param string           $param Parameter value to validate.
+	 * @param string $param Parameter value to validate.
 	 * @return bool
 	 */
 	public function validate_email( $param ) {
@@ -204,7 +204,7 @@ class RESTSubscriber implements Subscriber_Interface {
 	 * @since 3.5
 	 * @author Remy Perona
 	 *
-	 * @param string           $param Parameter value to validate.
+	 * @param string $param Parameter value to validate.
 	 * @return bool
 	 */
 	public function validate_key( $param ) {
