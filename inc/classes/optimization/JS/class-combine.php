@@ -774,6 +774,7 @@ class Combine extends Abstract_JS_Optimization {
 			'dfd-button-hover-in',
 			'wpseo-address-wrapper',
 			'platform.stumbleupon.com',
+			'static.klaviyo.com/onsite/js/klaviyo.js',
 		];
 
 		/**
