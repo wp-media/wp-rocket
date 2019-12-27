@@ -344,8 +344,21 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 			'subscription_status'           => 'cancelled',
 		];
 
+		$token = get_option( 'rocketcdn_user_token' );
+
+		if ( empty( $token ) ) {
+			return $default;
+		}
+
+		$args = [
+			'headers' => [
+				'Authorization' => 'Token ' . $token,
+			],
+		];
+
 		$response = wp_remote_get(
-			self::ROCKETCDN_API . 'website/?url=' . home_url()
+			self::ROCKETCDN_API . 'website/?url=' . home_url(),
+			$args
 		);
 
 		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
