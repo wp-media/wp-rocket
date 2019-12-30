@@ -66,6 +66,7 @@ class Plugin {
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Options' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Database' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Beacon' );
+		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\RocketCDN' );
 
 		$subscribers = [];
 
@@ -93,6 +94,7 @@ class Plugin {
 				'deactivation_intent_subscriber',
 				'hummingbird_subscriber',
 				'rocketcdn_admin_subscriber',
+				'rocketcdn_notices_subscriber',
 			];
 		} elseif ( \rocket_valid_key() ) {
 			$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Optimization_Subscribers' );
