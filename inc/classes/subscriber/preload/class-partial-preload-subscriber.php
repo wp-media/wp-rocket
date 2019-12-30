@@ -135,8 +135,10 @@ class Partial_Preload_Subscriber implements Subscriber_Interface {
 					// URL with query string.
 					$file_path = preg_replace( '/#/', '?', $file_path, 1 );
 				} else {
-					$permalink_structure = get_option( 'permalink_structure' );
-					$file_path           = rtrim( $file_path, '/' ) . ( '/' === substr( $permalink_structure, -1 ) ? '/' : '' );
+					$file_path = untrailingslashit( $file_path );
+					if ( '/' === substr( get_option( 'permalink_structure' ), -1 ) ) {
+						$file_path .= '/';
+					}
 				}
 
 				$this->urls[] = str_replace( $data['home_path'], $data['home_url'], $file_path );
