@@ -2,23 +2,21 @@
 namespace WP_Rocket\Tests\Unit\Subscriber\CDN\RocketCDN;
 
 use WP_Rocket\Tests\Unit\TestCase;
-use WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber;
+use WP_Rocket\Subscriber\CDN\RocketCDN\NoticesSubscriber;
 use Brain\Monkey\Functions;
 
 /**
- * @coversDefaultClass \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber
+ * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\NoticesSubscriber::toggle_cta
  * @group RocketCDN
  */
 class TestToggleCTA extends TestCase {
-    private $options;
-	private $beacon;
+    private $api_client;
 
 	public function setUp() {
 		parent::setUp();
 
-		$this->options = $this->createMock('WP_Rocket\Admin\Options_Data');
-		$this->beacon  = $this->createMock('WP_Rocket\Admin\Settings\Beacon');
-	}
+        $this->api_client = $this->createMock( 'WP_Rocket\CDN\RocketCDN\APIClient' );
+    }
 
     /**
      * @covers ::toggle_cta
@@ -26,7 +24,7 @@ class TestToggleCTA extends TestCase {
     public function testShouldReturnNullWhenPOSTNotSet() {
         Functions\when('check_ajax_referer')->justReturn(true);
 
-        $page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
+        $page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
         $this->assertNull( $page->toggle_cta() );
     }
 
@@ -39,7 +37,7 @@ class TestToggleCTA extends TestCase {
         $_POST['status'] = 'big';
         $_POST['action'] = 'invalid';
 
-        $page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
+        $page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
         $this->assertNull( $page->toggle_cta() );
     }
 
@@ -54,7 +52,7 @@ class TestToggleCTA extends TestCase {
         $_POST['status'] = 'big';
         $_POST['action'] = 'toggle_rocketcdn_cta';
 
-        $page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
+        $page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
         $page->toggle_cta();
     }
 
@@ -69,7 +67,7 @@ class TestToggleCTA extends TestCase {
         $_POST['status'] = 'small';
         $_POST['action'] = 'toggle_rocketcdn_cta';
 
-        $page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
+        $page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
         $page->toggle_cta();
     }
 }

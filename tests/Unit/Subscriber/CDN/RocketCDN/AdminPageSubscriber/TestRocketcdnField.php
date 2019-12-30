@@ -6,31 +6,34 @@ use WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber;
 use Brain\Monkey\Functions;
 
 /**
- * @coversDefaultClass \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber
+ * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber::rocketcdn_field
  * @group RocketCDN
  */
 class TestRocketcdnField extends TestCase {
+    private $api_client;
     private $options;
 	private $beacon;
 
 	public function setUp() {
 		parent::setUp();
 
-		$this->options = $this->createMock('WP_Rocket\Admin\Options_Data');
-		$this->beacon  = $this->createMock('WP_Rocket\Admin\Settings\Beacon');
+        $this->api_client = $this->createMock( 'WP_Rocket\CDN\RocketCDN\APIClient' );
+		$this->options    = $this->createMock('WP_Rocket\Admin\Options_Data');
+		$this->beacon     = $this->createMock('WP_Rocket\Admin\Settings\Beacon');
 	}
 
     /**
 	 * @covers ::rocketcdn_field
 	 */
     public function testShouldReturnDefaultFieldWhenRocketCDNNotActive() {
-        Functions\when('get_transient')->justReturn(['is_active' => false]);
+        $this->api_client->method('get_subscription_data')
+			->willReturn(['is_active' => false]);
 
         $fields = [
             'cdn_cnames' => []
         ];
 
-        $page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
+        $page = new AdminPageSubscriber( $this->api_client, $this->options, $this->beacon, 'views/settings/rocketcdn');
         $this->assertSame(
             $fields,
             $page->rocketcdn_field( $fields )
@@ -43,7 +46,8 @@ class TestRocketcdnField extends TestCase {
     public function testShouldReturnRocketCDNFieldWhenRocketCDNActive() {
         $this->mockCommonWpFunctions();
 
-        Functions\when('get_transient')->justReturn(['is_active' => true]);
+        $this->api_client->method('get_subscription_data')
+			->willReturn(['is_active' => true]);
 
         $fields = [
             'cdn_cnames' => []
@@ -61,7 +65,7 @@ class TestRocketcdnField extends TestCase {
             ]
         ];
 
-        $page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
+        $page = new AdminPageSubscriber( $this->api_client, $this->options, $this->beacon, 'views/settings/rocketcdn');
         $this->assertSame(
             $rocketcdn_field,
             $page->rocketcdn_field( $fields )

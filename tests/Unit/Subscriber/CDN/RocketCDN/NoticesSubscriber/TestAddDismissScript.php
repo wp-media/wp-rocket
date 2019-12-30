@@ -2,22 +2,20 @@
 namespace WP_Rocket\Tests\Unit\Subscriber\CDN\RocketCDN;
 
 use WP_Rocket\Tests\Unit\TestCase;
-use WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber;
+use WP_Rocket\Subscriber\CDN\RocketCDN\NoticesSubscriber;
 use Brain\Monkey\Functions;
 
 /**
- * @coversDefaultClass \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber
+ * @covers\WP_Rocket\Subscriber\CDN\RocketCDN\NoticesSubscriber::add_dismiss_script
  * @group RocketCDN
  */
 class TestAddDismissScript extends TestCase {
-	private $options;
-	private $beacon;
+	private $api_client;
 
 	public function setUp() {
 		parent::setUp();
 
-		$this->options = $this->createMock('WP_Rocket\Admin\Options_Data');
-		$this->beacon  = $this->createMock('WP_Rocket\Admin\Settings\Beacon');
+		$this->api_client = $this->createMock( 'WP_Rocket\CDN\RocketCDN\APIClient' );
 	}
 
 	/**
@@ -26,7 +24,7 @@ class TestAddDismissScript extends TestCase {
 	public function testShouldNotAddScriptWhenNoCapability() {
 		Functions\when('current_user_can')->justReturn(false);
 
-		$page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
+		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
 		
 		$this->assertNull($page->add_dismiss_script());
 	}
@@ -40,7 +38,7 @@ class TestAddDismissScript extends TestCase {
 			return (object) [ 'id' => 'general' ];
 		});
 
-		$page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
+		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
 		
 		$this->assertNull($page->add_dismiss_script());
 	}
@@ -56,7 +54,7 @@ class TestAddDismissScript extends TestCase {
 		Functions\when('get_current_user_id')->justReturn(1);
 		Functions\when('get_user_meta')->justReturn(true);
 
-		$page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
+		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
 		
 		$this->assertNull($page->add_dismiss_script());
 	}
@@ -71,9 +69,11 @@ class TestAddDismissScript extends TestCase {
 		});
 		Functions\when('get_current_user_id')->justReturn(1);
 		Functions\when('get_user_meta')->justReturn(false);
-		Functions\when('get_transient')->justReturn(['is_active' => true]);
 
-		$page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
+		$this->api_client->method('get_subscription_data')
+			->willReturn(['is_active' => true]);
+
+		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
 		
 		$this->assertNull($page->add_dismiss_script());
 	}
@@ -90,11 +90,14 @@ class TestAddDismissScript extends TestCase {
 		});
 		Functions\when('get_current_user_id')->justReturn(1);
 		Functions\when('get_user_meta')->justReturn(false);
-		Functions\when('get_transient')->justReturn(['is_active' => false]);
+
+		$this->api_client->method('get_subscription_data')
+			->willReturn(['is_active' => false]);
+
 		Functions\when('wp_create_nonce')->justReturn('123456');
 		Functions\when('admin_url')->justReturn('https://example.org/wp-admin/admin-ajax.php');
 
-		$page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
+		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
 
 		$this->expectOutputString("		<script>
 		window.addEventListener( 'load', function() {

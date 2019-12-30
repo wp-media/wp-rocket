@@ -2,35 +2,41 @@
 namespace WP_Rocket\Tests\Unit\Subscriber\CDN\RocketCDN;
 
 use WP_Rocket\Tests\Unit\TestCase;
-use WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber;
+use WP_Rocket\Subscriber\CDN\RocketCDN\NoticesSubscriber;
 use Brain\Monkey\Functions;
 
 /**
- * @coversDefaultClass \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber
+ * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\NoticesSubscriber::display_rocketcdn_cta
  * @group RocketCDN
  */
 class TestDisplayRocketcdnCta extends TestCase {
-	private $options;
-	private $beacon;
+	private $api_client;
+	private $filesystem;
 
 	public function setUp() {
 		parent::setUp();
 
-		$this->options = $this->createMock('WP_Rocket\Admin\Options_Data');
-		$this->beacon  = $this->createMock('WP_Rocket\Admin\Settings\Beacon');
-	}
+		$this->api_client = $this->createMock( 'WP_Rocket\CDN\RocketCDN\APIClient' );
+		$this->filesystem = $this->getMockBuilder( 'WP_Filesystem_Direct' )
+							->setMethods( [
+								'is_readable',
+							])
+							->getMock();
+		$this->filesystem->method('is_readable')->will($this->returnCallback('is_readable'));
+    }
 
 	/**
 	 * @covers ::display_rocketcdn_cta
 	 */
 	public function testShouldReturnNullWhenActive() {
-		Functions\when('get_transient')->justReturn(
+		$this->api_client->method('get_subscription_data')
+			->willReturn(
 			[
 				'is_active' => true,
 			]
 		);
 
-		$page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
+		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
 		$this->assertNull($page->display_rocketcdn_cta());
 	}
 
@@ -40,32 +46,34 @@ class TestDisplayRocketcdnCta extends TestCase {
 	public function testShouldDisplayBigCTANoPromoWhenDefault() {
 		$this->mockCommonWpFunctions();
 
-		Functions\when('get_transient')->justReturn(
+		$this->api_client->method('get_subscription_data')
+			->willReturn(
 			[
 				'is_active' => false,
-				'monthly_price' => 7.99,
-				'is_discount_active' => false,
-				'discount_campaign_name' => '',
-				'end_date' => 0,
-				'discounted_price_monthly' => 6.9,
 			]
 		);
+
+		$this->api_client->method('get_pricing_data')
+			->willReturn(
+				[
+					'monthly_price' => 7.99,
+					'is_discount_active' => false,
+					'discount_campaign_name' => '',
+					'end_date' => 0,
+					'discounted_price_monthly' => 6.9,
+				]
+		);
+
 		Functions\when('get_option')->justReturn('Y-m-d');
 		Functions\when('date_i18n')->justReturn('2020-01-01');
 		Functions\when('get_current_user_id')->justReturn(1);
 		Functions\when('get_user_meta')->justReturn(false);
 		Functions\When( 'rocket_direct_filesystem')->alias( function() {
-			$wp_fs = $this->getMockBuilder( 'WP_Filesystem_Direct' )
-							->setMethods( [
-								'is_readable',
-							])
-							->getMock();
-			$wp_fs->method('is_readable')->will($this->returnCallback('is_readable'));
-			return $wp_fs;
+			return $this->filesystem;
 		});
 		Functions\when('number_format_i18n')->returnArg();
 
-		$page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
+		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
 		$this->expectOutputString('<div class="wpr-rocketcdn-cta-small notice-alt notice-warning wpr-isHidden" id="wpr-rocketcdn-cta-small">
 	<div class="wpr-flex">
 		<section>
@@ -110,32 +118,34 @@ class TestDisplayRocketcdnCta extends TestCase {
 	public function testShouldDisplaySmallCTAWhenBigHidden() {
 		$this->mockCommonWpFunctions();
 
-		Functions\when('get_transient')->justReturn(
+		$this->api_client->method('get_subscription_data')
+			->willReturn(
 			[
 				'is_active' => false,
-				'monthly_price' => 7.99,
-				'is_discount_active' => false,
-				'discount_campaign_name' => '',
-				'end_date' => 0,
-				'discounted_price_monthly' => 6.9,
 			]
 		);
+
+		$this->api_client->method('get_pricing_data')
+			->willReturn(
+				[
+					'monthly_price' => 7.99,
+					'is_discount_active' => false,
+					'discount_campaign_name' => '',
+					'end_date' => 0,
+					'discounted_price_monthly' => 6.9,
+				]
+		);
+
 		Functions\when('get_option')->justReturn('Y-m-d');
 		Functions\when('date_i18n')->justReturn('2020-01-01');
 		Functions\when('get_current_user_id')->justReturn(1);
 		Functions\when('get_user_meta')->justReturn(true);
 		Functions\When( 'rocket_direct_filesystem')->alias( function() {
-			$wp_fs = $this->getMockBuilder( 'WP_Filesystem_Direct' )
-							->setMethods( [
-								'is_readable',
-							])
-							->getMock();
-			$wp_fs->method('is_readable')->will($this->returnCallback('is_readable'));
-			return $wp_fs;
+			return $this->filesystem;
 		});
 		Functions\when('number_format_i18n')->returnArg();
 
-		$page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
+		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
 		$this->expectOutputString('<div class="wpr-rocketcdn-cta-small notice-alt notice-warning " id="wpr-rocketcdn-cta-small">
 	<div class="wpr-flex">
 		<section>
@@ -180,32 +190,34 @@ class TestDisplayRocketcdnCta extends TestCase {
 	public function testShouldDisplayBigCTAPromoWhenPromoActive() {
 		$this->mockCommonWpFunctions();
 
-		Functions\when('get_transient')->justReturn(
+		$this->api_client->method('get_subscription_data')
+			->willReturn(
 			[
 				'is_active' => false,
-				'monthly_price' => 7.99,
-				'is_discount_active' => true,
-				'discount_campaign_name' => 'Launch',
-				'end_date' => '2020-01-01',
-				'discounted_price_monthly' => 6.90,
 			]
 		);
+
+		$this->api_client->method('get_pricing_data')
+			->willReturn(
+				[
+					'monthly_price' => 7.99,
+					'is_discount_active' => true,
+					'discount_campaign_name' => 'Launch',
+					'end_date' => '2020-01-01',
+					'discounted_price_monthly' => 6.90,
+				]
+		);
+
 		Functions\when('get_option')->justReturn('Y-m-d');
 		Functions\when('date_i18n')->justReturn('2020-01-01');
 		Functions\when('get_current_user_id')->justReturn(1);
 		Functions\when('get_user_meta')->justReturn(false);
 		Functions\When( 'rocket_direct_filesystem')->alias( function() {
-			$wp_fs = $this->getMockBuilder( 'WP_Filesystem_Direct' )
-							->setMethods( [
-								'is_readable',
-							])
-							->getMock();
-			$wp_fs->method('is_readable')->will($this->returnCallback('is_readable'));
-			return $wp_fs;
+			return $this->filesystem;
 		});
 		Functions\when('number_format_i18n')->returnArg();
 
-		$page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
+		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
 		$this->expectOutputString('<div class="wpr-rocketcdn-cta-small notice-alt notice-warning wpr-isHidden" id="wpr-rocketcdn-cta-small">
 	<div class="wpr-flex">
 		<section>

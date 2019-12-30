@@ -1,40 +1,30 @@
 <?php
-namespace WP_Rocket\Tests\Unit\Subscriber\CDN\RocketCDN;
+namespace WP_Rocket\Tests\Unit\CDN\RocketCDN\APIClient;
 
 use WP_Rocket\Tests\Unit\TestCase;
-use WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber;
+use WP_Rocket\CDN\RocketCDN\APIClient;
 use Brain\Monkey\Functions;
 
 /**
- * @coversDefaultClass \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber
+ * @covers\WP_Rocket\CDN\RocketCDN\APIClient::purge_cache_request
  * @group RocketCDN
  */
 class TestPurgeCacheRequest extends TestCase {
-    private $options;
-	private $beacon;
-
-	public function setUp() {
-		parent::setUp();
-
-		$this->options = $this->createMock('WP_Rocket\Admin\Options_Data');
-		$this->beacon  = $this->createMock('WP_Rocket\Admin\Settings\Beacon');
-	}
-
     /**
      * @covers ::purge_cache_request
      */
     public function testShouldReturnMissingIdentifierWhenNoID() {
         $this->mockCommonWpFunctions();
 
-        Functions\when('get_transient')->justReturn([]);
-
-        $page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
+        Functions\when('get_transient')
+			->justReturn([]);
+        $client = new APIClient();
         $this->assertSame(
             [
                 'status'  => 'error',
                 'message' => 'RocketCDN cache purge failed: Missing identifier parameter.',
             ],
-            $page->purge_cache_request()
+            $client->purge_cache_request()
         );
     }
 
@@ -44,17 +34,18 @@ class TestPurgeCacheRequest extends TestCase {
     public function testShouldReturnMissingIdentifierWhenWrongID() {
         $this->mockCommonWpFunctions();
 
-        Functions\when('get_transient')->justReturn([
+        Functions\when('get_transient')
+			->justReturn([
             'id' => 0,
         ]);
 
-        $page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
+        $client = new APIClient();
         $this->assertSame(
             [
                 'status'  => 'error',
                 'message' => 'RocketCDN cache purge failed: Missing identifier parameter.',
             ],
-            $page->purge_cache_request()
+            $client->purge_cache_request()
         );
     }
 
@@ -64,19 +55,21 @@ class TestPurgeCacheRequest extends TestCase {
     public function testShouldReturnUnexpectedResponseWhenIncorrectResponseCode() {
         $this->mockCommonWpFunctions();
 
-        Functions\when('get_transient')->justReturn([
+        Functions\when('get_transient')
+			->justReturn([
             'id' => 1,
         ]);
+        Functions\when('get_option')->justReturn('01234');
         Functions\when('wp_remote_request')->justReturn([]);
         Functions\when('wp_remote_retrieve_response_code')->justReturn(404);
 
-        $page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
+        $client = new APIClient();
         $this->assertSame(
             [
                 'status'  => 'error',
                 'message' => 'RocketCDN cache purge failed: The API returned an unexpected response code.',
             ],
-            $page->purge_cache_request()
+            $client->purge_cache_request()
         );
     }
 
@@ -87,20 +80,22 @@ class TestPurgeCacheRequest extends TestCase {
     public function testShouldReturnUnexpectedResponseWhenEmptyBody() {
         $this->mockCommonWpFunctions();
 
-        Functions\when('get_transient')->justReturn([
+        Functions\when('get_transient')
+			->justReturn([
             'id' => 1,
         ]);
+        Functions\when('get_option')->justReturn('01234');
         Functions\when('wp_remote_request')->justReturn([]);
         Functions\when('wp_remote_retrieve_response_code')->justReturn(200);
         Functions\when('wp_remote_retrieve_body')->justReturn('');
 
-        $page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
+        $client = new APIClient();
         $this->assertSame(
             [
                 'status'  => 'error',
                 'message' => 'RocketCDN cache purge failed: The API returned an empty response.',
             ],
-            $page->purge_cache_request()
+            $client->purge_cache_request()
         );
     }
 
@@ -110,9 +105,11 @@ class TestPurgeCacheRequest extends TestCase {
     public function testShouldReturnUnexpectedResponseWhenMissingParameter() {
         $this->mockCommonWpFunctions();
 
-        Functions\when('get_transient')->justReturn([
+        Functions\when('get_transient')
+			->justReturn([
             'id' => 1,
         ]);
+        Functions\when('get_option')->justReturn('01234');
         Functions\when('wp_remote_request')->justReturn([]);
         Functions\when('wp_remote_retrieve_response_code')->justReturn(200);
         Functions\when('wp_remote_retrieve_body')->justReturn(
@@ -121,13 +118,13 @@ class TestPurgeCacheRequest extends TestCase {
             )
         );
 
-        $page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
+        $client = new APIClient();
         $this->assertSame(
             [
                 'status'  => 'error',
                 'message' => 'RocketCDN cache purge failed: The API returned an unexpected response.',
             ],
-            $page->purge_cache_request()
+            $client->purge_cache_request()
         );
     }
 
@@ -137,9 +134,11 @@ class TestPurgeCacheRequest extends TestCase {
     public function testShouldReturnErrorMessageWhenSuccessFalse() {
         $this->mockCommonWpFunctions();
 
-        Functions\when('get_transient')->justReturn([
+        Functions\when('get_transient')
+			->justReturn([
             'id' => 1,
         ]);
+        Functions\when('get_option')->justReturn('01234');
         Functions\when('wp_remote_request')->justReturn([]);
         Functions\when('wp_remote_retrieve_response_code')->justReturn(200);
         Functions\when('wp_remote_retrieve_body')->justReturn(
@@ -151,13 +150,13 @@ class TestPurgeCacheRequest extends TestCase {
             )
         );
 
-        $page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
+        $client = new APIClient();
         $this->assertSame(
             [
                 'status'  => 'error',
                 'message' => 'RocketCDN cache purge failed: error message.',
             ],
-            $page->purge_cache_request()
+            $client->purge_cache_request()
         );
     }
 
@@ -167,9 +166,11 @@ class TestPurgeCacheRequest extends TestCase {
     public function testShouldReturnSuccessMessageWhenSuccessTrue() {
         $this->mockCommonWpFunctions();
 
-        Functions\when('get_transient')->justReturn([
+        Functions\when('get_transient')
+			->justReturn([
             'id' => 1,
         ]);
+        Functions\when('get_option')->justReturn('01234');
         Functions\when('wp_remote_request')->justReturn([]);
         Functions\when('wp_remote_retrieve_response_code')->justReturn(200);
         Functions\when('wp_remote_retrieve_body')->justReturn(
@@ -180,13 +181,13 @@ class TestPurgeCacheRequest extends TestCase {
             )
         );
 
-        $page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
+        $client = new APIClient();
         $this->assertSame(
             [
                 'status'  => 'success',
                 'message' => 'RocketCDN cache purge successful.',
             ],
-            $page->purge_cache_request()
+            $client->purge_cache_request()
         );
     }
 }

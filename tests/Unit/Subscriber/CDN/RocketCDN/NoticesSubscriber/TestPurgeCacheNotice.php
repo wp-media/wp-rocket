@@ -2,23 +2,21 @@
 namespace WP_Rocket\Tests\Unit\Subscriber\CDN\RocketCDN;
 
 use WP_Rocket\Tests\Unit\TestCase;
-use WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber;
+use WP_Rocket\Subscriber\CDN\RocketCDN\NoticesSubscriber;
 use Brain\Monkey\Functions;
 
 /**
- * @coversDefaultClass \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber
+ * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\NoticesSubscriber::purge_cache_notice
  * @group RocketCDN
  */
 class TestPurgeCacheNotice extends TestCase {
-	private $options;
-	private $beacon;
+	private $api_client;
 
 	public function setUp() {
 		parent::setUp();
 
-		$this->options = $this->createMock('WP_Rocket\Admin\Options_Data');
-		$this->beacon  = $this->createMock('WP_Rocket\Admin\Settings\Beacon');
-	}
+        $this->api_client = $this->createMock( 'WP_Rocket\CDN\RocketCDN\APIClient' );
+    }
 
 	/**
 	 * @covers ::purge_cache_notice
@@ -26,7 +24,7 @@ class TestPurgeCacheNotice extends TestCase {
 	public function testShouldReturnNullWhenNoPermissions() {
 		Functions\when('current_user_can')->justReturn(false);
 
-		$page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
+		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
 		$this->assertNull($page->purge_cache_notice() );
 	}
 
@@ -39,7 +37,7 @@ class TestPurgeCacheNotice extends TestCase {
 			return (object) [ 'id' => 'general' ];
 		});
 
-		$page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
+		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
 		$this->assertNull($page->purge_cache_notice() );
 	}
 
@@ -53,7 +51,7 @@ class TestPurgeCacheNotice extends TestCase {
 		});
 		Functions\when('get_transient')->justReturn(false);
 
-		$page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
+		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
 		$this->assertNull($page->purge_cache_notice() );
 	}
 
@@ -77,7 +75,7 @@ class TestPurgeCacheNotice extends TestCase {
 			'message' => 'RocketCDN cache purge successful.',
 		]);
 
-		$page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
+		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
 		$page->purge_cache_notice();
 	}
 }

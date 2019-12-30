@@ -2,22 +2,20 @@
 namespace WP_Rocket\Tests\Unit\Subscriber\CDN\RocketCDN;
 
 use WP_Rocket\Tests\Unit\TestCase;
-use WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber;
+use WP_Rocket\Subscriber\CDN\RocketCDN\NoticesSubscriber;
 use Brain\Monkey\Functions;
 
 /**
- * @coversDefaultClass \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber
+ * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\NoticesSubscriber::dismiss_notice
  * @group RocketCDN
  */
 class TestDismissNotice extends TestCase {
-    private $options;
-	private $beacon;
+    private $api_client;
 
 	public function setUp() {
 		parent::setUp();
 
-		$this->options = $this->createMock('WP_Rocket\Admin\Options_Data');
-		$this->beacon  = $this->createMock('WP_Rocket\Admin\Settings\Beacon');
+        $this->api_client = $this->createMock( 'WP_Rocket\CDN\RocketCDN\APIClient' );
     }
 
     /**
@@ -26,7 +24,7 @@ class TestDismissNotice extends TestCase {
     public function testShouldReturnNullWhenPOSTActionNotSet() {
         Functions\when('check_ajax_referer')->justReturn(true);
 
-        $page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
+        $page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
         $this->assertNull($page->dismiss_notice());
     }
 
@@ -38,7 +36,7 @@ class TestDismissNotice extends TestCase {
 
         $_POST['action'] = 'wrong_action';
 
-        $page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
+        $page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
         $this->assertNull($page->dismiss_notice());
     }
 
@@ -52,7 +50,7 @@ class TestDismissNotice extends TestCase {
 
         $_POST['action'] = 'rocketcdn_dismiss_notice';
 
-        $page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
+        $page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
         $page->dismiss_notice();
     }
 }

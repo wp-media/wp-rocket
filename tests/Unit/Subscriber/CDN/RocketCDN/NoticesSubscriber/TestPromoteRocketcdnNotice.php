@@ -2,23 +2,28 @@
 namespace WP_Rocket\Tests\Unit\Subscriber\CDN\RocketCDN;
 
 use WP_Rocket\Tests\Unit\TestCase;
-use WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber;
+use WP_Rocket\Subscriber\CDN\RocketCDN\NoticesSubscriber;
 use Brain\Monkey\Functions;
 
 /**
- * @coversDefaultClass \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber
+ * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\NoticesSubscriber::promote_rocketcdn_notice
  * @group RocketCDN
  */
 class TestPromoteRocketcdnNotice extends TestCase {
-	private $options;
-	private $beacon;
+	private $api_client;
+	private $filesystem;
 
 	public function setUp() {
 		parent::setUp();
 
-		$this->options = $this->createMock('WP_Rocket\Admin\Options_Data');
-		$this->beacon  = $this->createMock('WP_Rocket\Admin\Settings\Beacon');
-	}
+		$this->api_client = $this->createMock( 'WP_Rocket\CDN\RocketCDN\APIClient' );
+		$this->filesystem = $this->getMockBuilder( 'WP_Filesystem_Direct' )
+							->setMethods( [
+								'is_readable',
+							])
+							->getMock();
+		$this->filesystem->method('is_readable')->will($this->returnCallback('is_readable'));
+    }
 
 	/**
 	 * @covers ::promote_rocketcdn_notice
@@ -26,7 +31,7 @@ class TestPromoteRocketcdnNotice extends TestCase {
 	public function testShouldNotDisplayNoticeWhenNoCapability() {
 		Functions\when('current_user_can')->justReturn(false);
 
-		$page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
+		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
 		
 		$this->assertNull($page->promote_rocketcdn_notice());
 	}
@@ -40,7 +45,7 @@ class TestPromoteRocketcdnNotice extends TestCase {
 			return (object) [ 'id' => 'general' ];
 		});
 
-		$page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
+		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
 		
 		$this->assertNull($page->promote_rocketcdn_notice());
 	}
@@ -56,7 +61,7 @@ class TestPromoteRocketcdnNotice extends TestCase {
 		Functions\when('get_current_user_id')->justReturn(1);
 		Functions\when('get_user_meta')->justReturn(true);
 
-		$page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
+		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
 		
 		$this->assertNull($page->promote_rocketcdn_notice());
 	}
@@ -71,9 +76,11 @@ class TestPromoteRocketcdnNotice extends TestCase {
 		});
 		Functions\when('get_current_user_id')->justReturn(1);
 		Functions\when('get_user_meta')->justReturn(false);
-		Functions\when('get_transient')->justReturn(['is_active' => true]);
 
-		$page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
+		$this->api_client->method('get_subscription_data')
+			->willReturn(['is_active' => true]);
+
+		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
 		
 		$this->assertNull($page->promote_rocketcdn_notice());
 	}
@@ -90,19 +97,15 @@ class TestPromoteRocketcdnNotice extends TestCase {
 		});
 		Functions\when('get_current_user_id')->justReturn(1);
 		Functions\when('get_user_meta')->justReturn(false);
-		Functions\when('get_transient')->justReturn(['is_active' => false]);
+
+		$this->api_client->method('get_subscription_data')
+			->willReturn(['is_active' => false]);
 
 		Functions\When( 'rocket_direct_filesystem')->alias( function() {
-			$wp_fs = $this->getMockBuilder( 'WP_Filesystem_Direct' )
-							->setMethods( [
-								'is_readable',
-							])
-							->getMock();
-			$wp_fs->method('is_readable')->will($this->returnCallback('is_readable'));
-			return $wp_fs;
+			return $this->filesystem;
 		});
 
-		$page = new AdminPageSubscriber( $this->options, $this->beacon, 'views/settings/rocketcdn');
+		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
 
 		$this->expectOutputString('<div class="notice notice-alt notice-warning is-dismissible" id="rocketcdn-promote-notice">
 	<h2 class="notice-title">New!</h2>
