@@ -52,6 +52,8 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		'analytics_enabled'           => true,
 		'sucury_waf_cache_sync'       => true,
 		'sucury_waf_api_key'          => true,
+		'manual_preload'              => true,
+		'sitemap_preload'             => true,
 	];
 
 	// Create 2 arrays to compare.
