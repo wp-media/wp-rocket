@@ -63,15 +63,7 @@ class CDN {
 		}
 		foreach ( $srcsets as $srcset ) {
 			$sources    = explode( ',', $srcset['sources'] );
-			$sources    =
-				array_unique(
-					array_map(
-						function( $source ) {
-							return trim( $source );
-						},
-						$sources
-					)
-				);
+			$sources    = array_unique( array_map( 'trim', $sources ) );
 			$cdn_srcset = $srcset['sources'];
 			foreach ( $sources as $source ) {
 				$url        = \preg_split( '#\s+#', trim( $source ) );
