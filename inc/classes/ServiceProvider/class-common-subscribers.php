@@ -33,7 +33,6 @@ class Common_Subscribers extends AbstractServiceProvider {
 		'webp_subscriber',
 		'expired_cache_purge',
 		'expired_cache_purge_subscriber',
-		'rocketcdn_rest_subscriber',
 		'detect_missing_tags',
 		'purge_actions_subscriber',
 	];
@@ -75,9 +74,6 @@ class Common_Subscribers extends AbstractServiceProvider {
 			->withArgument( $this->getContainer()->get( 'options_api' ) )
 			->withArgument( $this->getContainer()->get( 'cdn_subscriber' ) )
 			->withArgument( $this->getContainer()->get( 'beacon' ) );
-		$this->getContainer()->share( 'rocketcdn_rest_subscriber', 'WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber' )
-			->withArgument( $this->getContainer()->get( 'options_api' ) )
-			->withArgument( $this->getContainer()->get( 'options' ) );
 		$this->getContainer()->share( 'detect_missing_tags_subscriber', 'WP_Rocket\Subscriber\Tools\Detect_Missing_Tags_Subscriber' );
 		$this->getContainer()->share( 'purge_actions_subscriber', 'WP_Rocket\Subscriber\Cache\PurgeActionsSubscriber' )
 			->withArgument( $this->getContainer()->get( 'options' ) );
