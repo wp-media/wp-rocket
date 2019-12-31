@@ -162,38 +162,49 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			return;
 		}
 
-		$pricing            = $this->api_client->get_pricing_data();
-		$current_price      = number_format_i18n( $pricing['monthly_price'], 2 );
-		$regular_price      = '';
-		$promotion_campaign = $pricing['discount_campaign_name'];
-		$promotion_end_date = date_i18n( get_option( 'date_format' ), strtotime( $pricing['end_date'] ) );
-		$nopromo_variant    = '--no-promo';
-		$cta_small_class    = 'wpr-isHidden';
-		$cta_big_class      = '';
+		$pricing = $this->api_client->get_pricing_data();
+
+		$regular_price   = '';
+		$nopromo_variant = '--no-promo';
+		$cta_small_class = 'wpr-isHidden';
+		$cta_big_class   = '';
 
 		if ( get_user_meta( get_current_user_id(), 'rocket_rocketcdn_cta_hidden', true ) ) {
 			$cta_small_class = '';
 			$cta_big_class   = 'wpr-isHidden';
 		}
 
-		if ( $pricing['is_discount_active'] ) {
-			$regular_price   = $current_price;
-			$current_price   = number_format_i18n( $pricing['discounted_price_monthly'], 2 ) . '*';
-			$nopromo_variant = '';
-		}
-
 		$small_cta_data = [
 			'container_class' => $cta_small_class,
 		];
 
-		$big_cta_data = [
-			'container_class'    => $cta_big_class,
-			'promotion_campaign' => $promotion_campaign,
-			'promotion_end_date' => $promotion_end_date,
-			'nopromo_variant'    => $nopromo_variant,
-			'regular_price'      => $regular_price,
-			'current_price'      => $current_price,
-		];
+		if ( is_wp_error( $pricing ) ) {
+			$big_cta_data = [
+				'container_class' => $cta_big_class,
+				'nopromo_variant' => $nopromo_variant,
+				'error'           => true,
+				'message'         => $pricing->get_error_message(),
+			];
+		} else {
+			$current_price      = number_format_i18n( $pricing['monthly_price'], 2 );
+			$promotion_campaign = $pricing['discount_campaign_name'];
+			$promotion_end_date = date_i18n( get_option( 'date_format' ), strtotime( $pricing['end_date'] ) );
+
+			if ( $pricing['is_discount_active'] ) {
+				$regular_price   = $current_price;
+				$current_price   = number_format_i18n( $pricing['discounted_price_monthly'], 2 ) . '*';
+				$nopromo_variant = '';
+			}
+
+			$big_cta_data = [
+				'container_class'    => $cta_big_class,
+				'promotion_campaign' => $promotion_campaign,
+				'promotion_end_date' => $promotion_end_date,
+				'nopromo_variant'    => $nopromo_variant,
+				'regular_price'      => $regular_price,
+				'current_price'      => $current_price,
+			];
+		}
 
 		echo $this->generate( 'cta-small', $small_cta_data );
 		echo $this->generate( 'cta-big', $big_cta_data );

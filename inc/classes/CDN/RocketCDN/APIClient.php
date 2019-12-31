@@ -109,42 +109,28 @@ class APIClient {
 	 * @since 3.5
 	 * @author Remy Perona
 	 *
-	 * @return array
+	 * @return array|WP_Error
 	 */
 	private function get_remote_pricing_data() {
-		$transient_duration = 6 * HOUR_IN_SECONDS;
-		$default            = [
-			'monthly_price'            => 7.99,
-			'is_discount_active'       => false,
-			'discounted_price_monthly' => 5.99,
-			'discount_campaign_name'   => '',
-			'end_date'                 => 0,
-		];
+		$error = new \WP_Error( 'rocketcdn_error', __( 'RocketCDN is not available at the moment. Plese retry later', 'rocket' ) );
 
 		$response = wp_remote_get(
 			self::ROCKETCDN_API . 'pricing'
 		);
 
 		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
-			set_transient( 'rocketcdn_pricing', $default, $transient_duration );
-
-			return $default;
+			return $error;
 		}
 
 		$data = wp_remote_retrieve_body( $response );
 
 		if ( empty( $data ) ) {
-			set_transient( 'rocketcdn_pricing', $default, $transient_duration );
-
-			return $default;
+			return $error;
 		}
 
-		$data = json_decode( $data, true );
-		$data = array_intersect_key( $data, $default );
+		set_transient( 'rocketcdn_pricing', $data, 6 * HOUR_IN_SECONDS );
 
-		set_transient( 'rocketcdn_pricing', $data, $transient_duration );
-
-		return $data;
+		return json_decode( $data, true );
 	}
 
 	/**

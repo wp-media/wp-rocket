@@ -56,19 +56,23 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 				</li>
 			</ul>
 			<div class="wpr-rocketcdn-pricing">
-				<?php if ( ! empty( $data['regular_price'] ) ) : ?>
-				<h4 class="wpr-title2 wpr-rocketcdn-pricing-regular"><del>$<?php echo esc_html( $data['regular_price'] ); ?></del></h4>
+				<?php if ( ! empty( $data['error'] ) ) : ?>
+				<p><?php echo esc_html( $data['message'] ); ?></p>
+				<?php else : ?>
+					<?php if ( ! empty( $data['regular_price'] ) ) : ?>
+					<h4 class="wpr-title2 wpr-rocketcdn-pricing-regular"><del>$<?php echo esc_html( $data['regular_price'] ); ?></del></h4>
+					<?php endif; ?>
+					<h4 class="wpr-rocketcdn-pricing-current">
+						<?php
+						printf(
+							// translators: %s = price of RocketCDN subscription.
+							esc_html__( '%s / month', 'rocket' ),
+							'<span class="wpr-title1">$' . esc_html( $data['current_price'] ) . '</span>'
+						);
+						?>
+					</h4>
+					<button class="wpr-button wpr-rocketcdn-open" data-micromodal-trigger="wpr-rocketcdn-modal"><?php esc_html_e( 'Get Started', 'rocket' ); ?></button>
 				<?php endif; ?>
-				<h4 class="wpr-rocketcdn-pricing-current">
-				<?php
-				printf(
-					// translators: %s = price of RocketCDN subscription.
-					esc_html__( '%s / month', 'rocket' ),
-					'<span class="wpr-title1">$' . esc_html( $data['current_price'] ) . '</span>'
-				);
-				?>
-				</h4>
-				<button class="wpr-button wpr-rocketcdn-open" data-micromodal-trigger="wpr-rocketcdn-modal"><?php esc_html_e( 'Get Started', 'rocket' ); ?></button>
 			</div>
 		</div>
 	</section>
