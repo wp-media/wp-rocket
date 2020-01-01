@@ -238,7 +238,7 @@ class procedural_api_Test extends ActionScheduler_UnitTestCase {
 		$au_now    = new ActionScheduler_DateTime(null);
 		$as_au_now = as_get_datetime_object();
 
-		$this->assertEquals($au_now->getTimestamp(),$as_now->getTimestamp());
+		$this->assertEquals( $au_now->getTimestamp(), $as_now->getTimestamp(), '', 2 );
 
 		// But not in the same timezone, as $as_now should be using UTC
 		$this->assertNotEquals($au_now->format('Y-m-d H:i:s'),$as_now->format('Y-m-d H:i:s'));
