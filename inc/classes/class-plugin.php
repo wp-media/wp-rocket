@@ -149,6 +149,7 @@ class Plugin {
 			'plugin_updater_subscriber',
 			'capabilities_subscriber',
 			'detect_missing_tags_subscriber',
+			'purge_actions_subscriber',
 		];
 
 		if ( \rocket_valid_key() ) {
