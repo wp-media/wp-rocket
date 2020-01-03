@@ -54,6 +54,7 @@ class WooCommerce_Subscriber implements Event_Manager_Aware_Subscriber_Interface
 			];
 			$events['rocket_cache_query_strings']         = 'cache_geolocation_query_string';
 			$events['rocket_cpcss_excluded_taxonomies']   = 'exclude_product_attributes_cpcss';
+			$events['nonce_user_logged_out']              = [ 'maybe_revert_uid_for_nonce_actions', PHP_INT_MAX, 2 ];
 
 			/**
 			 * Filters activation of WooCommerce empty cart caching
@@ -417,5 +418,41 @@ class WooCommerce_Subscriber implements Event_Manager_Aware_Subscriber_Interface
 		}
 
 		return array_merge( $excluded_taxonomies, wc_get_attribute_taxonomy_names() );
+	}
+
+	/**
+	 * Set $uid to 0 for certain nonce actions.
+	 *
+	 * @since  3.5.1
+	 * @access public
+	 * @author Soponar Cristina
+	 *
+	 * @param int    $uid    ID of the nonce-owning user.
+	 * @param string $action The nonce action.
+	 *
+	 * @return int $uid      ID of the nonce-owning user.
+	 */
+	public function maybe_revert_uid_for_nonce_actions( $uid, $action ) {
+		if ( $uid && 0 !== $uid && $action && in_array( $action, $this->get_nonce_actions(), true ) ) {
+			$uid = 0;
+		}
+		return $uid;
+	}
+
+	/**
+	 * List with nonce actions which needs to revert the $uid.
+	 *
+	 * @since  3.5.1
+	 * @access private
+	 * @author Soponar Cristina
+	 *
+	 * @return array $nonce_actions List with all nonce actions.
+	 */
+	private function get_nonce_actions() {
+		$nonce_actions = [
+			'wcmd-subscribe-secret', // WooCommerce MailChimp Discount.
+			'td-block', // "Load more" AJAX functionality of the Newspaper theme.
+		];
+		return $nonce_actions;
 	}
 }

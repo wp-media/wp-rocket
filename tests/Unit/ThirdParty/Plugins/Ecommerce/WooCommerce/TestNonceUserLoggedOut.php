@@ -1,11 +1,11 @@
 <?php
-namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\Smush;
+namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\Ecommerce\WooCommerce;
 
-use WP_Rocket\Subscriber\Third_Party\Plugins\Nonce_Subscriber;
+use WP_Rocket\Subscriber\Third_Party\Plugins\Ecommerce\WooCommerce_Subscriber;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
-class Nonce extends TestCase
+class TestNonceUserLoggedOut extends TestCase
 {
 	/**
 	 * Test should keep the original $uid.
@@ -18,7 +18,7 @@ class Nonce extends TestCase
 	{
 		$this->mockCommonWpFunctions();
 
-		$subscriber  = new Nonce_Subscriber();
+		$subscriber  = new WooCommerce_Subscriber();
 
 		$uid    = 1;
 		$action = 'security';
@@ -36,7 +36,7 @@ class Nonce extends TestCase
 	{
 		$this->mockCommonWpFunctions();
 
-		$subscriber  = new Nonce_Subscriber();
+		$subscriber  = new WooCommerce_Subscriber();
 
 		$uid    = 0;
 		$action = 'security';
@@ -54,7 +54,7 @@ class Nonce extends TestCase
 	{
 		$this->mockCommonWpFunctions();
 
-		$subscriber  = new Nonce_Subscriber();
+		$subscriber  = new WooCommerce_Subscriber();
 
 		$uid    = 1;
 		$action = '';
@@ -72,7 +72,7 @@ class Nonce extends TestCase
 	{
 		$this->mockCommonWpFunctions();
 
-		$subscriber  = new Nonce_Subscriber();
+		$subscriber  = new WooCommerce_Subscriber();
 
 		$uid    = 1;
 		$action = 'wcmd-subscribe-secret';

@@ -153,7 +153,6 @@ class Plugin {
 			'cloudflare_subscriber',
 			'detect_missing_tags_subscriber',
 			'purge_actions_subscriber',
-			'nonce_subscriber',
 		];
 
 		if ( \rocket_valid_key() ) {

@@ -51,7 +51,8 @@
 		"phpunit/php-token-stream": "^1.4",
 		"phpunit/phpunit": "^5.7",
 		"symfony/yaml": "2.8.*",
-		"wp-coding-standards/wpcs": "^2.1.0"
+		"wp-coding-standards/wpcs": "^2.1.0",
+		"woocommerce/woocommerce": "^3.8"
 	},
 	"autoload": {
 		"classmap": [
@@ -70,6 +71,11 @@
 		"psr-4": {
 			"WP_Rocket\\Tests\\Unit\\": "tests/Unit",
 			"WP_Rocket\\Tests\\Integration\\": "tests/Integration"
+		}
+	},
+	"extra": {
+		"installer-paths": {
+		  "vendor/{$vendor}/{$name}/": ["type:wordpress-plugin"]
 		}
 	},
 	"scripts": {
