@@ -1,6 +1,8 @@
 <?php
 namespace WP_Rocket\CDN\RocketCDN;
 
+use WP_Error;
+
 /**
  * Class to Interact with the RocketCDN API
  */
@@ -125,25 +127,35 @@ class APIClient {
 	 * @return array|WP_Error
 	 */
 	private function get_remote_pricing_data() {
-		$error = new \WP_Error( 'rocketcdn_error', __( 'RocketCDN is not available at the moment. Plese retry later', 'rocket' ) );
-
 		$response = wp_remote_get(
 			self::ROCKETCDN_API . 'pricing'
 		);
 
 		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
-			return $error;
+			return $this->get_wp_error();
 		}
 
 		$data = wp_remote_retrieve_body( $response );
 
 		if ( empty( $data ) ) {
-			return $error;
+			return $this->get_wp_error();
 		}
 
 		set_transient( 'rocketcdn_pricing', $data, 6 * HOUR_IN_SECONDS );
 
 		return json_decode( $data, true );
+	}
+
+	/**
+	 * Gets a new WP_Error instance
+	 *
+	 * @since 3.5
+	 * @author Remy Perona
+	 *
+	 * @return WP_Error
+	 */
+	private function get_wp_error() {
+		return new WP_Error( 'rocketcdn_error', __( 'RocketCDN is not available at the moment. Plese retry later', 'rocket' ) );
 	}
 
 	/**
