@@ -423,6 +423,12 @@ class WooCommerce_Subscriber implements Event_Manager_Aware_Subscriber_Interface
 	/**
 	 * Set $user_id to 0 for certain nonce actions.
 	 *
+	 * WooCommerce core changes how nonces are used for non-logged customers.
+	 * When a user is logged out, but has items in their cart, WC core sets the $uid as a random string customer id.
+	 * This is going to mess out nonce validation with WP Rocket and third party plugins which do not bypass WC nonce changes.
+	 * WP Rocket caches the page so the nonce $uid will be always different than the session customer $uid.
+	 * This function will check the nonce against a UID of 0 because this is how WP Rocket generated the cached page.
+	 *
 	 * @since  3.5.1
 	 * @author Soponar Cristina
 	 *

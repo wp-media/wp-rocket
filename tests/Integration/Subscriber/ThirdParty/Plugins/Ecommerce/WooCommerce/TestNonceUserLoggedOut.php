@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Tests\Integration\ThirdParty\Plugins\Ecommerce\WooCommerce;
 use WP_Rocket\Tests\Integration\TestCase;
-use Brain\Monkey\Functions;
+
 /**
  * @group Subscriber_TestNonce
  */
@@ -36,6 +36,22 @@ class TestNonceUserLoggedOut extends TestCase {
 		$result                  = check_ajax_referer( $action, false, false );
 
 		$this->assertEquals( $count, did_action( 'wp_verify_nonce_failed' ) );
+	}
+
+	public function testShouldReturnGivenUserIdWhenActionNotInList() {
+		wp_set_current_user( $this->factory->user->create() );
+
+		$nonce                       = wp_create_nonce( __METHOD__ );
+		$verified_nonce_failed_count = did_action( 'wp_verify_nonce_failed' );
+
+		// Test when a user is logged in.
+		$this->assertSame( 1, wp_verify_nonce( $nonce, __METHOD__ ) );
+		$this->assertEquals( $verified_nonce_failed_count, did_action( 'wp_verify_nonce_failed' ) );
+
+		// Test when there isn't a user logged in.
+		wp_set_current_user( 0 );
+		$this->assertFalse( wp_verify_nonce( $nonce, __METHOD__ ) );
+		$this->assertEquals( $verified_nonce_failed_count + 1, did_action( 'wp_verify_nonce_failed' ) );
 	}
 
 	/**
