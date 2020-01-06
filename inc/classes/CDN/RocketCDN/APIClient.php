@@ -62,7 +62,7 @@ class APIClient {
 		);
 
 		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
-			set_transient( 'rocketcdn_status', $default, WEEK_IN_SECONDS );
+			$this->set_status_transient( $default );
 
 			return $default;
 		}
@@ -70,7 +70,7 @@ class APIClient {
 		$data = wp_remote_retrieve_body( $response );
 
 		if ( empty( $data ) ) {
-			set_transient( 'rocketcdn_status', $default, WEEK_IN_SECONDS );
+			$this->set_status_transient( $default );
 
 			return $default;
 		}
@@ -78,9 +78,22 @@ class APIClient {
 		$data = json_decode( $data );
 		$data = array_intersect_key( $data, $default );
 
-		set_transient( 'rocketcdn_status', $data, WEEK_IN_SECONDS );
+		$this->set_status_transient( $data );
 
 		return $data;
+	}
+
+	/**
+	 * Sets the RocketCDN status transient with the provided value
+	 *
+	 * @since 3.5
+	 * @author Remy Perona
+	 *
+	 * @param array $value Transient value.
+	 * @return void
+	 */
+	private function set_status_transient( $value ) {
+		set_transient( 'rocketcdn_status', $value, WEEK_IN_SECONDS );
 	}
 
 	/**
