@@ -61,9 +61,23 @@ window.onmessage = (e) => {
 	if ( e.origin == 'https://dave.wp-rocket.me' ) {
 		if (e.data.hasOwnProperty("cdnFrameHeight")) {
 			document.getElementById("rocketcdn-iframe").style.height = `${e.data.cdnFrameHeight}px`;
-		}
+        }
+
 		if (e.data.hasOwnProperty("cdnFrameClose")) {
 			MicroModal.close('wpr-rocketcdn-modal');
-		}
+        }
+
+        if (e.data.hasOwnProperty("cdn_token")) {
+            var httpRequest = new XMLHttpRequest(),
+            postData = '';
+
+            postData += 'action=save_rocketcdn_token';
+            postData += '&value=' + e.data.cdn_token;
+            postData += '&nonce=' + rocket_ajax_data.nonce;
+
+            httpRequest.open( 'POST', ajaxurl );
+            httpRequest.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' )
+            httpRequest.send( postData );
+        }
 	}
 };
