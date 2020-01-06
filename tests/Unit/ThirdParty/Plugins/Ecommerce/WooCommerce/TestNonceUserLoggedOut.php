@@ -16,8 +16,6 @@ class TestNonceUserLoggedOut extends TestCase
 	 */
 	public function testShouldKeepTheOriginalUID()
 	{
-		$this->mockCommonWpFunctions();
-
 		$subscriber  = new WooCommerce_Subscriber();
 
 		$uid    = 1;
@@ -34,8 +32,6 @@ class TestNonceUserLoggedOut extends TestCase
 	 */
 	public function testShouldKeepTheOriginalUIDWithZero()
 	{
-		$this->mockCommonWpFunctions();
-
 		$subscriber  = new WooCommerce_Subscriber();
 
 		$uid    = 0;
@@ -52,8 +48,6 @@ class TestNonceUserLoggedOut extends TestCase
 	 */
 	public function testShouldKeepTheOriginalUIDWithEmptyAction()
 	{
-		$this->mockCommonWpFunctions();
-
 		$subscriber  = new WooCommerce_Subscriber();
 
 		$uid    = 1;
@@ -70,12 +64,13 @@ class TestNonceUserLoggedOut extends TestCase
 	 */
 	public function testShouldChangeUIDToZero()
 	{
-		$this->mockCommonWpFunctions();
-
 		$subscriber  = new WooCommerce_Subscriber();
 
 		$uid    = 1;
 		$action = 'wcmd-subscribe-secret';
+		$this->assertSame( 0, $subscriber->maybe_revert_uid_for_nonce_actions( $uid, $action ) );
+
+		$action = 'td-block';
 		$this->assertSame( 0, $subscriber->maybe_revert_uid_for_nonce_actions( $uid, $action ) );
 	}
 }
