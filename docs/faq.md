@@ -4,7 +4,7 @@
 
 Action Scheduler is designed to be used and released in plugins. It avoids redeclaring public API functions when more than one copy of the library is being loaded by different plugins. It will also load only the most recent version of itself (by checking registered versions after all plugins are loaded on the `'plugins_loaded'` hook).
 
-To use it in your plugin, simply require the `action-scheduler/action-scheduler.php` file. Action Scheduler will take care of the rest.
+To use it in your plugin (or theme), simply require the `action-scheduler/action-scheduler.php` file. Action Scheduler will take care of the rest. __Note:__ Action Scheduler is only loaded from a theme if it is not included in any active plugins.
 
 ### I don't want to use WP-Cron. Does Action Scheduler depend on WP-Cron?
 
@@ -38,11 +38,19 @@ Alternatively, you can use a combination of the `'pre_update_option_cron'` and  
 
 If you'd like to create a plugin to do this automatically and want to share your work with others, [open a new issue to let us know](https://github.com/woocommerce/action-scheduler/issues/new), we'd love to help you with it.
 
-### Eww gross, Custom Post Types! That's _so_ 2010. Can I use a different storage scheme?
+### How does Action Scheduler store its data?
+
+Action Scheduler 3.0 and newer stores data in custom tables prefixed with `actionscheduler_`. For the list of all tables and their schemas, refer to the `ActionScheduler_StoreSchema` class.
+
+Prior to Action 3.0, actions were a custom post type, and data was stored in `wp_posts`, `wp_postmeta` and related tables.
+
+Action Scheduler 3+ migrates data from the custom post type to custom tables.
+
+### Can I use a different storage scheme?
 
 Of course! Action Scheduler data storage is completely swappable, and always has been.
 
-You can store scheduled actions in custom tables in the WordPress site's database. Some sites using it already are. You can actually store them anywhere for that matter, like in a remote storage service from Amazon Web Services.
+If you choose to, you can actually store them anywhere, like in a remote storage service from Amazon Web Services.
 
 To implement a custom store:
 
@@ -56,11 +64,9 @@ function eg_define_custom_store( $existing_storage_class ) {
 add_filter( 'action_scheduler_store_class', 'eg_define_custom_store', 10, 1 );
 ```
 
-Take a look at the `ActionScheduler_wpPostStore` class for an example implementation of `ActionScheduler_Store`.
+Take a look at the `classes/data-stores/ActionScheduler_DBStore.php` class for an example implementation of `ActionScheduler_Store`.
 
 If you'd like to create a plugin to do this automatically and release it publicly to help others, [open a new issue to let us know](https://github.com/woocommerce/action-scheduler/issues/new), we'd love to help you with it.
-
-> Note: we're also moving Action Scheduler itself to use [custom tables for better scalability](https://github.com/woocommerce/action-scheduler/issues/77).
 
 ### Can I use a different storage scheme just for logging?
 
@@ -78,7 +84,7 @@ function eg_define_custom_logger( $existing_storage_class ) {
 add_filter( 'action_scheduler_logger_class', 'eg_define_custom_logger', 10, 1 );
 ```
 
-Take a look at the `ActionScheduler_wpCommentLogger` class for an example implementation of `ActionScheduler_Logger`.
+Take a look at the `classes/data-stores/ActionScheduler_DBLogger.php` class for an example implementation of `ActionScheduler_Logger`.
 
 ### I want to run Action Scheduler only on a dedicated application server in my cluster. Can I do that?
 
