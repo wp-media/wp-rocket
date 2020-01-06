@@ -64,6 +64,10 @@ class TestRewrite extends TestCase {
         );
     }
 
+	/**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
     public function testShouldReturnOriginalWhenDONOTROCKETOPTIMIZE() {
         update_option(
             'wp_rocket_settings',
@@ -92,10 +96,6 @@ class TestRewrite extends TestCase {
         );
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
     public function testShouldReturnOriginalWhenNoCNAME() {
         update_option(
             'wp_rocket_settings',
