@@ -99,63 +99,61 @@ abstract class Abstract_Render implements Render_Interface {
 			$args['attributes'] = $attributes;
 		}
 
-		switch ( $type ) {
-			case 'link':
-				switch ( $action ) {
-					case 'ask_support':
-						$args['url'] = rocket_get_external_url(
-							'support',
-							[
-								'utm_source' => 'wp_plugin',
-								'utm_medium' => 'wp_rocket',
-							]
-						);
-						break;
-					case 'view_account':
-						$args['url'] = rocket_get_external_url(
-							'account',
-							[
-								'utm_source' => 'wp_plugin',
-								'utm_medium' => 'wp_rocket',
-							]
-						);
-						break;
-					case 'purge_cache':
-						$url = admin_url( 'admin-post.php?action=' . $action );
+		if ( 'link' !== $type ) {
+			$args['action'] = $action;
+			echo $this->generate( 'buttons/button', $args );
+			return;
+		}
 
-						if ( isset( $args['parameters'] ) ) {
-							$url = add_query_arg( $args['parameters'], $url );
-						}
+		switch ( $action ) {
+			case 'ask_support':
+				$args['url'] = rocket_get_external_url(
+					'support',
+					[
+						'utm_source' => 'wp_plugin',
+						'utm_medium' => 'wp_rocket',
+					]
+				);
+				break;
+			case 'view_account':
+				$args['url'] = rocket_get_external_url(
+					'account',
+					[
+						'utm_source' => 'wp_plugin',
+						'utm_medium' => 'wp_rocket',
+					]
+				);
+				break;
+			case 'purge_cache':
+				$url = admin_url( 'admin-post.php?action=' . $action );
 
-						$args['url'] = wp_nonce_url( $url, $action . '_all' );
-						break;
-					case 'preload':
-					case 'rocket_purge_opcache':
-					case 'rocket_purge_cloudflare':
-					case 'rocket_purge_sucuri':
-					case 'rocket_rollback':
-					case 'rocket_export':
-					case 'rocket_generate_critical_css':
-					case 'rocket_purge_rocketcdn':
-						$url = admin_url( 'admin-post.php?action=' . $action );
-
-						if ( ! empty( $args['parameters'] ) ) {
-							$url = add_query_arg( $args['parameters'], $url );
-						}
-
-						$args['url'] = wp_nonce_url( $url, $action );
-						break;
-					case 'documentation':
-						$args['url'] = get_rocket_documentation_url();
-						break;
+				if ( isset( $args['parameters'] ) ) {
+					$url = add_query_arg( $args['parameters'], $url );
 				}
 
-				echo $this->generate( 'buttons/link', $args );
+				$args['url'] = wp_nonce_url( $url, $action . '_all' );
 				break;
-			default:
-				$args['action'] = $action;
-				echo $this->generate( 'buttons/button', $args );
+			case 'preload':
+			case 'rocket_purge_opcache':
+			case 'rocket_purge_cloudflare':
+			case 'rocket_purge_sucuri':
+			case 'rocket_rollback':
+			case 'rocket_export':
+			case 'rocket_generate_critical_css':
+			case 'rocket_purge_rocketcdn':
+				$url = admin_url( 'admin-post.php?action=' . $action );
+
+				if ( ! empty( $args['parameters'] ) ) {
+					$url = add_query_arg( $args['parameters'], $url );
+				}
+
+				$args['url'] = wp_nonce_url( $url, $action );
+				break;
+			case 'documentation':
+				$args['url'] = get_rocket_documentation_url();
 				break;
 		}
+
+		echo $this->generate( 'buttons/link', $args );
 	}
 }
