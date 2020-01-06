@@ -61,6 +61,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 			'rocket_cdn_settings_fields'          => 'rocketcdn_field',
 			'admin_post_rocket_purge_rocketcdn'   => 'purge_cdn_cache',
 			'rocket_settings_page_footer'         => 'add_subscription_modal',
+			'admin_ajax_save_rocketcdn_token'     => 'update_user_token',
 		];
 	}
 
@@ -219,5 +220,35 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		</div>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Updates the RocketCDN user token value
+	 *
+	 * @since 3.5
+	 * @author Remy Perona
+	 *
+	 * @return void
+	 */
+	public function update_user_token() {
+		check_ajax_referer( 'rocket-ajax', 'nonce', true );
+
+		if ( ! isset( $_POST['action'] ) || 'save_rocketcdn_token' !== $_POST['action'] ) {
+			return;
+		}
+
+		if ( empty( $_POST['value'] ) ) {
+			delete_option( 'rocketcdn_user_token' );
+
+			return;
+		}
+
+		$token = sanitize_key( $_POST['value'] );
+
+		if ( 40 !== strlen( $token ) ) {
+			return;
+		}
+
+		update_option( 'rocketcdn_user_token', $token );
 	}
 }
