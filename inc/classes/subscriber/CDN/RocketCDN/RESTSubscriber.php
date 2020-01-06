@@ -172,6 +172,7 @@ class RESTSubscriber implements Subscriber_Interface {
 		$this->options_api->set( 'settings', $this->options->get_options() );
 		$this->options_api->set( 'rocketcdn_active', 0 );
 
+		delete_option( 'rocketcdn_user_token' );
 		delete_transient( 'rocketcdn_status' );
 
 		$response = [
