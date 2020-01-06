@@ -179,7 +179,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 * @return void
 	 */
 	public function purge_cdn_cache() {
-		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'rocket_purge_rocketcdn' ) ) {
+		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( wp_strip_all_tags( wp_unslash( $_GET['_wpnonce'] ) ), 'rocket_purge_rocketcdn' ) ) {
 			wp_nonce_ays( '' );
 		}
 
