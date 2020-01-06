@@ -421,38 +421,42 @@ class WooCommerce_Subscriber implements Event_Manager_Aware_Subscriber_Interface
 	}
 
 	/**
-	 * Set $uid to 0 for certain nonce actions.
+	 * Set $user_id to 0 for certain nonce actions.
 	 *
 	 * @since  3.5.1
-	 * @access public
 	 * @author Soponar Cristina
 	 *
-	 * @param int    $uid    ID of the nonce-owning user.
-	 * @param string $action The nonce action.
+	 * @param string|int $user_id ID of the nonce-owning user.
+	 * @param string|int $action  The nonce action.
 	 *
 	 * @return int $uid      ID of the nonce-owning user.
 	 */
-	public function maybe_revert_uid_for_nonce_actions( $uid, $action ) {
-		if ( $uid && 0 !== $uid && $action && in_array( $action, $this->get_nonce_actions(), true ) ) {
-			$uid = 0;
+	public function maybe_revert_uid_for_nonce_actions( $user_id, $action ) {
+		// User ID is invalid.
+		if ( empty( $user_id ) || 0 === $user_id ) {
+			return $user_id;
 		}
-		return $uid;
+
+		// The nonce action is not in the list.
+		if ( ! $action || ! in_array( $action, $this->get_nonce_actions(), true ) ) {
+			return $user_id;
+		}
+
+		return 0;
 	}
 
 	/**
 	 * List with nonce actions which needs to revert the $uid.
 	 *
 	 * @since  3.5.1
-	 * @access private
 	 * @author Soponar Cristina
 	 *
 	 * @return array $nonce_actions List with all nonce actions.
 	 */
 	private function get_nonce_actions() {
-		$nonce_actions = [
+		return [
 			'wcmd-subscribe-secret', // WooCommerce MailChimp Discount.
 			'td-block', // "Load more" AJAX functionality of the Newspaper theme.
 		];
-		return $nonce_actions;
 	}
 }
