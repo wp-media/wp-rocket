@@ -127,9 +127,7 @@ class APIClient {
 	 * @return array|WP_Error
 	 */
 	private function get_remote_pricing_data() {
-		$response = wp_remote_get(
-			self::ROCKETCDN_API . 'pricing'
-		);
+		$response = wp_remote_get( self::ROCKETCDN_API . 'pricing' );
 
 		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
 			return $this->get_wp_error();
@@ -234,10 +232,8 @@ class APIClient {
 			];
 		}
 
-		$status = 'success';
-
 		return [
-			'status'  => $status,
+			'status'  => 'success',
 			'message' => __( 'RocketCDN cache purge successful.', 'rocket' ),
 		];
 	}
