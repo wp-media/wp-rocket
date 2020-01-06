@@ -4,9 +4,7 @@
 
 Action Scheduler is designed to be used and released in plugins. It avoids redeclaring public API functions when more than one copy of the library is being loaded by different plugins. It will also load only the most recent version of itself (by checking registered versions after all plugins are loaded on the `'plugins_loaded'` hook).
 
-To use it in your plugin or theme, simply require the `action-scheduler/action-scheduler.php` file. Action Scheduler will take care of the rest. __Note:__ Action Scheduler is only loaded from a theme if it is not included in any active plugins.
-
-
+To use it in your plugin (or theme), simply require the `action-scheduler/action-scheduler.php` file. Action Scheduler will take care of the rest. __Note:__ Action Scheduler is only loaded from a theme if it is not included in any active plugins.
 
 ### I don't want to use WP-Cron. Does Action Scheduler depend on WP-Cron?
 
