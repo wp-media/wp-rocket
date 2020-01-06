@@ -38,11 +38,19 @@ Alternatively, you can use a combination of the `'pre_update_option_cron'` and  
 
 If you'd like to create a plugin to do this automatically and want to share your work with others, [open a new issue to let us know](https://github.com/woocommerce/action-scheduler/issues/new), we'd love to help you with it.
 
-### Eww gross, Custom Post Types! That's _so_ 2010. Can I use a different storage scheme?
+### How does Action Scheduler store its data?
+
+Action Scheduler 3.0 and newer stores data in custom tables prefixed with `actionscheduler_`. For the list of all tables and their schemas, refer to the `ActionScheduler_StoreSchema` class.
+
+Prior to Action 3.0, actions were a custom post type, and data was stored in `wp_posts`, `wp_postmeta` and related tables.
+
+Action Scheduler 3+ migrates data from the custom post type to custom tables.
+
+### Can I use a different storage scheme?
 
 Of course! Action Scheduler data storage is completely swappable, and always has been.
 
-Action Scheduler 3.0 migrates its data from the custom post type to custom tables. If you choose to, you can actually store them anywhere, like in a remote storage service from Amazon Web Services.
+If you choose to, you can actually store them anywhere, like in a remote storage service from Amazon Web Services.
 
 To implement a custom store:
 
