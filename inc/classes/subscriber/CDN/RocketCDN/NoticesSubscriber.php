@@ -122,7 +122,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 
 		$subscription_data = $this->api_client->get_subscription_data();
 
-		return $subscription_data['is_active'];
+		return ! $subscription_data['is_active'];
 	}
 
 	/**
