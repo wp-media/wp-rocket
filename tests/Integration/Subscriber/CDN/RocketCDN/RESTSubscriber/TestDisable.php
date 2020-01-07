@@ -2,14 +2,13 @@
 
 namespace WP_Rocket\Tests\Integration\Subscriber\CDN\RocketCDN\RESTSubscriber;
 
-use WP_Rocket\Tests\Integration\TestCase;
-use WP_Rest_Request;
+use WP_Rocket\Tests\Integration\RESTfulTestCase;
 
 /**
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber::disable
  * @group  RocketCDN
  */
-class TestDisable extends TestCase {
+class TestDisable extends RESTfulTestCase {
 
 	/**
 	 * Test should update the option settings when the "disable" endpoint is requested.
@@ -65,22 +64,6 @@ class TestDisable extends TestCase {
 			],
 		];
 
-		$this->assertSame( $expected, $this->requestDisableEndpoint()->get_data() );
-	}
-
-	/**
-	 * Runs the RESTful endpoint which invokes WordPress to run in an integrated fashion. Callback will be fired.
-	 */
-	protected function requestDisableEndpoint() {
-		$request = new WP_Rest_Request( 'PUT', '/wp-rocket/v1/rocketcdn/disable' );
-		$request->set_header( 'Content-Type', 'application/x-www-form-urlencoded' );
-		$request->set_body_params(
-			[
-				'email' => '',
-				'key'   => '',
-			]
-		);
-
-		return rest_do_request( $request );
+		$this->assertSame( $expected, $this->requestDisableEndpoint() );
 	}
 }

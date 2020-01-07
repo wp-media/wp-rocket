@@ -1,28 +1,13 @@
 <?php
 namespace WP_Rocket\Tests\Integration\Subscriber\CDN\RocketCDN\RESTSubscriber;
 
-use WP_Rocket\Tests\Integration\TestCase;
-use WP_Rest_Request;
+use WP_Rocket\Tests\Integration\RESTfulTestCase;
 
 /**
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber::register_disable_route
  * @group RocketCDN
  */
-class TestRegisterDisableRoute extends TestCase {
-	protected $server;
-
-	/**
-	 * Setup the WP REST API Server.
-	 */
-    public function setUp() {
-		parent::setUp();
-		/**
-		 * @var WP_REST_Server $wp_rest_server
-		 */
-		global $wp_rest_server;
-		$this->server = $wp_rest_server = new \WP_REST_Server;
-		do_action( 'rest_api_init' );
-    }
+class TestRegisterDisableRoute extends RESTfulTestCase {
 
 	/**
 	 * Test should register the disable route with the WP REST API.
@@ -126,20 +111,5 @@ class TestRegisterDisableRoute extends TestCase {
 		];
 
 		$this->assertSame( $expected, $actual );
-	}
-
-	/**
-	 * Runs the RESTful endpoint which invokes WordPress to run in an integrated fashion. Callback will be fired.
-	 *
-	 * @param array $body_params Array of body parameters.
-	 *
-	 * @return array a response packet.
-	 */
-	protected function requestDisableEndpoint( array $body_params ) {
-		$request = new WP_Rest_Request( 'PUT', '/wp-rocket/v1/rocketcdn/disable' );
-		$request->set_header( 'Content-Type', 'application/x-www-form-urlencoded' );
-		$request->set_body_params( $body_params );
-
-		return rest_do_request( $request )->get_data();
 	}
 }
