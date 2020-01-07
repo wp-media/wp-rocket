@@ -41,17 +41,31 @@ class TestDisable extends TestCase {
 	}
 
 	/**
+	 * Test should delete the transient when the "disable" endpoint is requested.
+	 */
+	public function testShouldDeleteTransientWhenDisableRequest() {
+		// Set up the transient.
+		set_transient( 'rocketcdn_status', 'some value', WEEK_IN_SECONDS );
+
+		// Request the "disable" endpoint.
+		$this->requestDisableEndpoint();
+
+		$this->assertFalse( get_transient( 'rocketcdn_status' ) );
+	}
+
+	/**
 	 * Runs the RESTful endpoint which invokes WordPress to run in an integrated fashion. Callback will be fired.
 	 */
 	protected function requestDisableEndpoint() {
 		$request = new WP_Rest_Request( 'PUT', '/wp-rocket/v1/rocketcdn/disable' );
-		$request->set_header('Content-Type', 'application/x-www-form-urlencoded');
+		$request->set_header( 'Content-Type', 'application/x-www-form-urlencoded' );
 		$request->set_body_params(
 			[
 				'email' => '',
-				'key'   => ''
+				'key'   => '',
 			]
 		);
+
 		return rest_do_request( $request );
 	}
 }
