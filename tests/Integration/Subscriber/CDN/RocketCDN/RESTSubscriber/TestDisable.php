@@ -1,41 +1,57 @@
 <?php
+
 namespace WP_Rocket\Tests\Integration\Subscriber\CDN\RocketCDN\RESTSubscriber;
 
 use WP_Rocket\Tests\Integration\TestCase;
-use WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber;
-use WP_Rocket\Admin\Options;
-use WP_Rocket\Admin\Options_Data;
 use WP_Rest_Request;
 
 /**
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber::disable
- * @group RocketCDN
+ * @group  RocketCDN
  */
 class TestDisable extends TestCase {
-    /**
-     * Test that the WPR options array is correctly updated after disabling RocketCDN
-     */
-    public function testWPRocketOptionsUpdated() {
-        $request = new WP_Rest_Request( 'PUT', '/wp-rocket/v1/rocketcdn/disable' );
 
-        $options_api = new Options( 'wp_rocket_' );
-        $options     = new Options_Data( $options_api->get( 'settings' ) );
-        $rocketcdn   = new RESTSubscriber( $options_api, $options );
-        $rocketcdn->disable( $request );
+	/**
+	 * Test should update the option settings when the "disable" endpoint is requested.
+	 */
+	public function testShouldUpdateRocketSettingsWhenDisableRequest() {
+		// Set up the settings.
+		update_option(
+			'wp_rocket_settings',
+			[
+				'cdn'        => 1,
+				'cdn_cnames' => [ 'example1.com', 'example2.com' ],
+				'cdn_zone'   => [ 'all' ],
+			]
+		);
+		update_option( 'wp_rocket_rocketcdn_active', 1 );
 
-        $wp_rocket_settings = get_option( 'wp_rocket_settings' );
+		// Request the "disable" endpoint.
+		$this->requestDisableEndpoint();
 
-        $this->assertSame(
-            0,
-            $wp_rocket_settings['cdn']
-        );
+		$this->assertSame(
+			[
+				'cdn'        => 0,
+				'cdn_cnames' => [],
+				'cdn_zone'   => [],
+			],
+			get_option( 'wp_rocket_settings' )
+		);
+		$this->assertSame( 0, get_option( 'wp_rocket_rocketcdn_active' ) );
+	}
 
-        $this->assertEmpty(
-            $wp_rocket_settings['cdn_cnames']
-        );
-
-        $this->assertEmpty(
-            $wp_rocket_settings['cdn_zone']
-        );
-    }
+	/**
+	 * Runs the RESTful endpoint which invokes WordPress to run in an integrated fashion. Callback will be fired.
+	 */
+	protected function requestDisableEndpoint() {
+		$request = new WP_Rest_Request( 'PUT', '/wp-rocket/v1/rocketcdn/disable' );
+		$request->set_header('Content-Type', 'application/x-www-form-urlencoded');
+		$request->set_body_params(
+			[
+				'email' => '',
+				'key'   => ''
+			]
+		);
+		return rest_do_request( $request );
+	}
 }
