@@ -153,7 +153,7 @@ class APIClient {
 	 * @return WP_Error
 	 */
 	private function get_wp_error() {
-		return new WP_Error( 'rocketcdn_error', __( 'RocketCDN is not available at the moment. Plese retry later', 'rocket' ) );
+		return new WP_Error( 'rocketcdn_error', __( 'RocketCDN is not available at the moment. Please retry later', 'rocket' ) );
 	}
 
 	/**
