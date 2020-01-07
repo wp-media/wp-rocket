@@ -54,6 +54,7 @@ class WooCommerce_Subscriber implements Event_Manager_Aware_Subscriber_Interface
 			];
 			$events['rocket_cache_query_strings']         = 'cache_geolocation_query_string';
 			$events['rocket_cpcss_excluded_taxonomies']   = 'exclude_product_attributes_cpcss';
+			$events['nonce_user_logged_out']              = [ 'maybe_revert_uid_for_nonce_actions', PHP_INT_MAX, 2 ];
 
 			/**
 			 * Filters activation of WooCommerce empty cart caching
@@ -417,5 +418,51 @@ class WooCommerce_Subscriber implements Event_Manager_Aware_Subscriber_Interface
 		}
 
 		return array_merge( $excluded_taxonomies, wc_get_attribute_taxonomy_names() );
+	}
+
+	/**
+	 * Set $user_id to 0 for certain nonce actions.
+	 *
+	 * WooCommerce core changes how nonces are used for non-logged customers.
+	 * When a user is logged out, but has items in their cart, WC core sets the $uid as a random string customer id.
+	 * This is going to mess out nonce validation with WP Rocket and third party plugins which do not bypass WC nonce changes.
+	 * WP Rocket caches the page so the nonce $uid will be always different than the session customer $uid.
+	 * This function will check the nonce against a UID of 0 because this is how WP Rocket generated the cached page.
+	 *
+	 * @since  3.5.1
+	 * @author Soponar Cristina
+	 *
+	 * @param string|int $user_id ID of the nonce-owning user.
+	 * @param string|int $action  The nonce action.
+	 *
+	 * @return int $uid      ID of the nonce-owning user.
+	 */
+	public function maybe_revert_uid_for_nonce_actions( $user_id, $action ) {
+		// User ID is invalid.
+		if ( empty( $user_id ) || 0 === $user_id ) {
+			return $user_id;
+		}
+
+		// The nonce action is not in the list.
+		if ( ! $action || ! in_array( $action, $this->get_nonce_actions(), true ) ) {
+			return $user_id;
+		}
+
+		return 0;
+	}
+
+	/**
+	 * List with nonce actions which needs to revert the $uid.
+	 *
+	 * @since  3.5.1
+	 * @author Soponar Cristina
+	 *
+	 * @return array $nonce_actions List with all nonce actions.
+	 */
+	private function get_nonce_actions() {
+		return [
+			'wcmd-subscribe-secret', // WooCommerce MailChimp Discount.
+			'td-block', // "Load more" AJAX functionality of the Newspaper theme.
+		];
 	}
 }

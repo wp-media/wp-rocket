@@ -47,7 +47,8 @@
 		"mikey179/vfsstream": "^1.6",
 		"phpcompatibility/phpcompatibility-wp": "^2.0",
 		"phpunit/phpunit": "^5.7 || ^7",
-		"wp-coding-standards/wpcs": "^2"
+		"wp-coding-standards/wpcs": "^2",
+		"woocommerce/woocommerce": "^3.8"
 	},
 	"autoload": {
 		"classmap": [
@@ -66,6 +67,11 @@
 		"psr-4": {
 			"WP_Rocket\\Tests\\Unit\\": "tests/Unit",
 			"WP_Rocket\\Tests\\Integration\\": "tests/Integration"
+		}
+	},
+	"extra": {
+		"installer-paths": {
+		  "vendor/{$vendor}/{$name}/": ["type:wordpress-plugin"]
 		}
 	},
 	"scripts": {
