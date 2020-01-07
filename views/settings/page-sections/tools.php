@@ -7,7 +7,7 @@
 
 use WP_Rocket\Logger\Logger;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 // Debug mode.
 $log_description = '';

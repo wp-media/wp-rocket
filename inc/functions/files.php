@@ -2,7 +2,7 @@
 
 use WP_Rocket\Logger\Logger;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Generate the content of advanced-cache.php file
@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  */
 function get_rocket_advanced_cache_file() {
 	$buffer  = "<?php\n";
-	$buffer .= "defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );\n\n";
+	$buffer .= "defined( 'ABSPATH' ) || exit;\n\n";
 
 	// Add a constant to be sure this is our file.
 	$buffer .= "define( 'WP_ROCKET_ADVANCED_CACHE', true );\n\n";
@@ -113,7 +113,7 @@ function get_rocket_config_file() {
 	}
 
 	$buffer  = "<?php\n";
-	$buffer .= "defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );\n\n";
+	$buffer .= "defined( 'ABSPATH' ) || exit;\n\n";
 
 	$buffer .= '$rocket_cookie_hash = \'' . COOKIEHASH . "';\n";
 	$buffer .= '$rocket_logged_in_cookie = \'' . LOGGED_IN_COOKIE . "';\n";
@@ -382,7 +382,7 @@ function set_rocket_wp_cache_define( $turn_it_on ) {
 	$is_wp_cache_exist = false;
 
 	// Get WP_CACHE constant define.
-	$constant = "define('WP_CACHE', $turn_it_on); // Added by WP Rocket" . "\r\n";
+	$constant = "define( 'WP_CACHE', $turn_it_on );    // Added by WP Rocket." . "\r\n";
 
 	foreach ( $config_file as &$line ) {
 		if ( ! preg_match( '/^define\(\s*\'([A-Z_]+)\',(.*)\)/', $line, $match ) ) {
@@ -561,10 +561,18 @@ function rocket_clean_cache_busting( $extensions = array( 'js', 'css' ) ) {
 		do_action( 'after_rocket_clean_cache_busting', $ext );
 	}
 
-	foreach ( $iterator as $item ) {
-		if ( rocket_direct_filesystem()->is_dir( $item ) ) {
-			rocket_direct_filesystem()->delete( $item );
+	try {
+		foreach ( $iterator as $item ) {
+			if ( rocket_direct_filesystem()->is_dir( $item ) ) {
+				rocket_direct_filesystem()->delete( $item );
+			}
 		}
+	} catch ( \UnexpectedValueException $e ) {
+		// Log the error
+		Logger::debug( 'Cache Busting folder structure contains a directory we cannot recurse into.', [
+			'Full error',
+			'UnexpectedValueException' => $e->getMessage(),
+		] );
 	}
 }
 

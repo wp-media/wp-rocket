@@ -6,6 +6,8 @@ use Brain\Monkey\Functions;
 
 /**
  * @runTestsInSeparateProcesses
+ * @group Functions
+ * @group Options
  */
 class TestExcludeDeferJS extends TestCase {
     protected function setUp() {
@@ -24,6 +26,8 @@ class TestExcludeDeferJS extends TestCase {
             'www.uplaunch.com',
             'google.com/recaptcha',
             'widget.reviews.co.uk',
+            'lib/admin/assets/lib/webfont/webfont.min.js',
+            'app.mailerlite.com',
         ];
 
         $this->assertSame(
@@ -54,6 +58,8 @@ class TestExcludeDeferJS extends TestCase {
             'www.uplaunch.com',
             'google.com/recaptcha',
             'widget.reviews.co.uk',
+            'lib/admin/assets/lib/webfont/webfont.min.js',
+            'app.mailerlite.com',
             '/wp-includes/js/jquery/jquery.js',
             'c0.wp.com/c/(?:.+)/wp-includes/js/jquery/jquery.js',
             'ajax.googleapis.com/ajax/libs/jquery/(?:.+)/jquery(?:\.min)?.js',

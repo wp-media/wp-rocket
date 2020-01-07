@@ -39,7 +39,7 @@ class Minify_HTML_Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_buffer' => [ 'process', 34 ],
+			'rocket_buffer' => [ 'process', 14 ],
 		];
 	}
 

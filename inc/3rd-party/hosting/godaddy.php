@@ -1,5 +1,6 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+
+defined( 'ABSPATH' ) || exit;
 
 if ( class_exists( 'WPaaS\Plugin' ) ) :
 	/**
@@ -23,6 +24,7 @@ if ( class_exists( 'WPaaS\Plugin' ) ) :
 	add_filter( 'set_rocket_wp_cache_define', '__return_true' );
 	// Prevent mandatory cookies on hosting with server cache.
 	add_filter( 'rocket_cache_mandatory_cookies', '__return_empty_array', PHP_INT_MAX );
+	add_filter( 'rocket_htaccess_mod_rewrite', '__return_false' );
 
 	/**
 	 * Remove expiration on HTML to prevent issue with Varnish cache.

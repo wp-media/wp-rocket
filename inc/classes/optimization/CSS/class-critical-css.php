@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Optimization\CSS;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Handles the critical CSS generation process.
@@ -192,6 +192,7 @@ class Critical_CSS {
 				'xlwcty_thankyou',
 				'fusion_template',
 				'blocks',
+				'jet-woo-builder',
 				'fl-builder-template'
 			]
 		);

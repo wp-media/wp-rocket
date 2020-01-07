@@ -97,6 +97,7 @@ class Beacon {
 			'lazyload'                => 'Lazyload Images',
 			'lazyload_iframes'        => 'Lazyload Iframes',
 			'lazyload_youtube'        => 'Lazyload Youtube',
+			'cache_webp'              => 'WebP Cache',
 			'minify_css'              => 'Minify CSS',
 			'minify_concatenate_css'  => 'Combine CSS',
 			'minify_js'               => 'Minify JS',
@@ -138,10 +139,17 @@ class Beacon {
 	 * @return array
 	 */
 	private function identify_data() {
-		return [
+		$identify_data = [
 			'email'   => $this->options->get( 'consumer_email' ),
 			'Website' => home_url(),
 		];
+		$customer_data = get_transient( 'wp_rocket_customer_data' );
+
+		if ( false !== $customer_data && isset( $customer_data->status ) ) {
+			$identify_data['status'] = $customer_data->status;
+		}
+
+		return $identify_data;
 	}
 
 	/**
@@ -487,6 +495,16 @@ class Beacon {
 				'fr' => [
 					'id'  => '5696837e9033603f7da308ae',
 					'url' => 'https://fr.docs.wp-rocket.me/article/247-utiliser-wp-rocket-avec-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
+			'cloudflare_credentials_api' => [
+				'en' => [
+					'id'  => '54205619e4b0e7b8127bf849',
+					'url' => 'https://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket#add-on',
+				],
+				'fr' => [
+					'id'  => '5696837e9033603f7da308ae',
+					'url' => 'https://fr.docs.wp-rocket.me/article/247-utiliser-wp-rocket-avec-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket#add-on',
 				],
 			],
 			'sucuri_credentials'     => [

@@ -5,7 +5,7 @@
  * @since 3.0
  */
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 $purge_interval = get_rocket_option( 'purge_cron_interval', 10 );
 $purge_unit     = get_rocket_option( 'purge_cron_unit', 'HOUR_IN_SECONDS' );

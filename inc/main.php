@@ -1,10 +1,22 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+
+defined( 'ABSPATH' ) || exit;
 
 // Composer autoload.
 if ( file_exists( WP_ROCKET_PATH . 'vendor/autoload.php' ) ) {
 	require WP_ROCKET_PATH . 'vendor/autoload.php';
 }
+
+/**
+ * Fix Cloudflare Flexible SSL redirect first
+ *
+ * @since  3.4.1
+ * @author Soponar Cristina
+ */
+require WP_ROCKET_VENDORS_PATH . 'ip_in_range.php';
+require WP_ROCKET_COMMON_PATH . 'cloudflare-flexible-ssl.php';
+
+rocket_fix_cf_flexible_ssl();
 
 /**
  * Tell WP what to do when plugin is loaded.
@@ -50,7 +62,6 @@ function rocket_init() {
 
 		if ( 0 < (int) get_rocket_option( 'do_cloudflare' ) ) {
 			require WP_ROCKET_FUNCTIONS_PATH . 'cloudflare.php';
-			require WP_ROCKET_VENDORS_PATH . 'ip_in_range.php';
 			require WP_ROCKET_COMMON_PATH . 'cloudflare.php';
 		}
 

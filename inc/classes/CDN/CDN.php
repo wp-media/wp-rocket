@@ -36,7 +36,7 @@ class CDN {
 	 * @return string
 	 */
 	public function rewrite( $html ) {
-		$pattern = '#[("\']\s*(?<url>(?:(?:https?:|)' . preg_quote( $this->get_base_url(), '#' ) . ')?\/(?:(?:(?:' . $this->get_allowed_paths() . ')[^"\',)]+)|(?:[^\/"\'>]+\.[^\/"\')]+)))\s*["\')]#i';
+		$pattern = '#[("\']\s*(?<url>(?:(?:https?:|)' . preg_quote( $this->get_base_url(), '#' ) . ')\/(?:(?:(?:' . $this->get_allowed_paths() . ')[^"\',)]+))|\/[^/](?:[^"\')\s>]+\.[[:alnum:]]+))\s*["\')]#i';
 		return preg_replace_callback(
 			$pattern,
 			function( $matches ) {
@@ -56,22 +56,23 @@ class CDN {
 	 * @return string
 	 */
 	public function rewrite_srcset( $html ) {
-		$pattern = '#\s+(?:data-lazy-|data-)?srcset\s*=\s*["\']\s*([^"\',\s]+\.[^"\',\s]+(?:\s+\d+[wx])?(?:\s*,\s*[^"\',\s]+\.[^"\',\s]+\s+\d+[wx])*)\s*["\']#i';
+		$pattern = '#\s+(?:data-lazy-|data-)?srcset\s*=\s*["\']\s*(?<sources>[^"\',\s]+\.[^"\',\s]+(?:\s+\d+[wx])?(?:\s*,\s*[^"\',\s]+\.[^"\',\s]+\s+\d+[wx])*)\s*["\']#i';
 
 		if ( ! preg_match_all( $pattern, $html, $srcsets, PREG_SET_ORDER ) ) {
 			return $html;
 		}
 
 		foreach ( $srcsets as $srcset ) {
-			$sources    = explode( ',', $srcset[1] );
-			$cdn_srcset = $srcset;
+			$sources    = explode( ',', $srcset['sources'] );
+			$cdn_srcset = $srcset['sources'];
 
 			foreach ( $sources as $source ) {
 				$url        = \preg_split( '#\s+#', trim( $source ) );
 				$cdn_srcset = str_replace( $url[0], $this->rewrite_url( $url[0] ), $cdn_srcset );
 			}
 
-			$html = str_replace( $srcset, $cdn_srcset, $html );
+			$cdn_srcsets = str_replace( $srcset['sources'], $cdn_srcset, $srcset[0] );
+			$html        = str_replace( $srcset[0], $cdn_srcsets, $html );
 		}
 
 		return $html;
@@ -244,7 +245,13 @@ class CDN {
 	public function is_excluded( $url ) {
 		$path = wp_parse_url( $url, PHP_URL_PATH );
 
-		if ( 'php' === pathinfo( $path, PATHINFO_EXTENSION ) ) {
+		$excluded_extensions = [
+			'php',
+			'html',
+			'htm',
+		];
+
+		if ( in_array( pathinfo( $path, PATHINFO_EXTENSION ), $excluded_extensions, true ) ) {
 			return true;
 		}
 

@@ -1,5 +1,6 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+
+defined( 'ABSPATH' ) || exit;
 
 if ( defined( 'WPB_VC_VERSION' ) && class_exists( 'Vc_Manager' ) ) :
 	/*

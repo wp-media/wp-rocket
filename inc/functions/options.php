@@ -3,7 +3,7 @@ use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Logger\Logger;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 /**
  * A wrapper to easily get rocket option
@@ -413,6 +413,8 @@ function get_rocket_exclude_defer_js() {
 		'google.com/recaptcha',
 		'widget.reviews.co.uk',
 		'verify.authorize.net/anetseal',
+		'lib/admin/assets/lib/webfont/webfont.min.js',
+		'app.mailerlite.com',
 	];
 
 	if ( get_rocket_option( 'defer_all_js', 0 ) && get_rocket_option( 'defer_all_js_safe', 0 ) ) {

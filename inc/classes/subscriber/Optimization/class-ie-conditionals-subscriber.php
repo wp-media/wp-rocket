@@ -27,7 +27,7 @@ class IE_Conditionals_Subscriber implements Subscriber_Interface {
 		return [
 			'rocket_buffer' => [
 				[ 'extract_ie_conditionals', 1 ],
-				[ 'inject_ie_conditionals', 26 ],
+				[ 'inject_ie_conditionals', 34 ],
 			],
 		];
 	}

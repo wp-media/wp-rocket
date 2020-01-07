@@ -5,6 +5,9 @@ use WP_Rocket\CDN\CDN;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
+/**
+ * @group CDN
+ */
 class TestRewriteURL extends TestCase {
     /**
      * @dataProvider rewriteURLProvider

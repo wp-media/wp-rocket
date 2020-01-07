@@ -7,9 +7,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.3.7\n"
+"Project-Id-Version: WP Rocket 3.4\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2019-08-26 11:14-0400\n"
+"POT-Creation-Date: 2019-11-13 14:38+0200\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Tomas Hrdina <mot2425@gmail.com>, 2019\n"
 "Language-Team: Czech (Czech Republic) (https://www.transifex.com/wp-media/teams/18133/cs_CZ/)\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 2.2.4\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -41,7 +41,7 @@ msgid ""
 "compatibility."
 msgstr ""
 "Váš web je hostován u %s, z důvodu kompatibility bylo aktivováno automatické"
-" vyprázdnění Varnish mezipaměti"
+" vyprázdnění Varnish mezipaměti."
 
 #: inc/3rd-party/hosting/kinsta.php:150
 #, php-format
@@ -68,7 +68,7 @@ msgstr "Předběžně načítat mapu webu z pluginu Jetpack"
 #: inc/3rd-party/plugins/seo/all-in-one-seo-pack.php:88
 #: inc/3rd-party/plugins/seo/rank-math-seo.php:34
 #: inc/3rd-party/plugins/seo/seopress.php:85
-#: inc/3rd-party/plugins/seo/the-seo-framework.php:123
+#: inc/3rd-party/plugins/seo/the-seo-framework.php:144
 #: inc/3rd-party/plugins/seo/yoast-seo.php:86
 #, php-format
 msgid ""
@@ -88,9 +88,9 @@ msgstr "Rank Math XML mapa webu"
 
 #: inc/3rd-party/plugins/seo/seopress.php:83
 msgid "SEOPress XML sitemap"
-msgstr ""
+msgstr "SEOPress XML mapa webu"
 
-#: inc/3rd-party/plugins/seo/the-seo-framework.php:121
+#: inc/3rd-party/plugins/seo/the-seo-framework.php:142
 msgid "The SEO Framework XML sitemap"
 msgstr "The SEO Framework XML mapa webu"
 
@@ -98,223 +98,235 @@ msgstr "The SEO Framework XML mapa webu"
 msgid "Yoast SEO XML sitemap"
 msgstr "Yoast SEO XML mapa webu"
 
-#: inc/admin/admin.php:13 inc/common/admin-bar.php:311
+#: inc/admin/admin.php:17 inc/common/admin-bar.php:362
 #: inc/deprecated/deprecated.php:1789
 msgid "Support"
 msgstr "Podpora"
 
-#: inc/admin/admin.php:15
+#: inc/admin/admin.php:19
 msgid "Docs"
 msgstr "Dokumentace"
 
-#: inc/admin/admin.php:17 inc/common/admin-bar.php:299
+#: inc/admin/admin.php:21 inc/common/admin-bar.php:350
 msgid "FAQ"
 msgstr "Časté dotazy"
 
-#: inc/admin/admin.php:19 inc/common/admin-bar.php:46
+#: inc/admin/admin.php:23 inc/common/admin-bar.php:63
 msgid "Settings"
 msgstr "Nastavení"
 
-#: inc/admin/admin.php:64 inc/admin/admin.php:86 inc/admin/admin.php:105
+#: inc/admin/admin.php:70 inc/admin/admin.php:94 inc/admin/admin.php:114
 msgid "Clear this cache"
 msgstr "Vymazat tuto mezipaměť"
 
-#: inc/admin/admin.php:249 inc/admin/admin.php:264
-#: inc/classes/class-wp-rocket-requirements-check.php:204
+#: inc/admin/admin.php:257 inc/admin/admin.php:272
+#: inc/classes/class-wp-rocket-requirements-check.php:203
 #: inc/classes/class-wp-rocket-requirements-check.php:214
 #, php-format
 msgid "%s Update Rollback"
 msgstr "Obnovení předchozí verze %s"
 
-#: inc/admin/admin.php:290
+#: inc/admin/admin.php:298
 #, php-format
 msgid "%1$sReturn to WP Rocket%2$s or %3$sgo to Plugins page%2$s"
 msgstr "%1$sZpět k WP Rocket%2$s nebo %3$spřejít na stránku pluginů%2$s"
 
-#: inc/admin/admin.php:529
+#: inc/admin/admin.php:537
 msgid "Settings import failed: you do not have the permissions to do this."
 msgstr "Selhal import nastavení: pro tuto akci nemáte dostatečné oprávnění."
 
-#: inc/admin/admin.php:533
+#: inc/admin/admin.php:541
 msgid "Settings import failed: no file uploaded."
 msgstr "Selhal import nastavení: žádný soubor nebyl nahrán."
 
-#: inc/admin/admin.php:537
+#: inc/admin/admin.php:545
 msgid "Settings import failed: incorrect filename."
 msgstr "Selhal import nastavení: nesprávný název souboru."
 
-#: inc/admin/admin.php:546
+#: inc/admin/admin.php:556
 msgid "Settings import failed: incorrect filetype."
 msgstr "Selhal import nastavení: nesprávný typ souboru."
 
-#: inc/admin/admin.php:554
+#: inc/admin/admin.php:566
 msgid "Settings import failed: "
-msgstr "Selhal import nastavení:"
+msgstr "Selhal import nastavení: "
 
-#: inc/admin/admin.php:571
+#: inc/admin/admin.php:583
 msgid "Settings import failed: unexpected file content."
 msgstr "Selhal import nastavení: nesprávný typ souboru."
 
-#: inc/admin/admin.php:592
+#: inc/admin/admin.php:604
 msgid "Settings imported and saved."
 msgstr "Nastavení bylo importováno a uloženo."
 
 #: inc/admin/options.php:101
+#: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:102
+msgid "WP Rocket: "
+msgstr "WP Rocket: "
+
+#: inc/admin/options.php:116
 #, php-format
 msgid "Cloudflare development mode error: %s"
 msgstr "Cloudflare chyba režimu pro vývojáře: %s"
 
-#: inc/admin/options.php:107
+#: inc/admin/options.php:122
 #, php-format
 msgid "Cloudflare development mode %s"
 msgstr "Cloudflare režim pro vývojáře %s"
 
-#: inc/admin/options.php:124
+#: inc/admin/options.php:139
 #, php-format
 msgid "Cloudflare cache level error: %s"
 msgstr "Cloudflare chyba úrovně mezipaměti: %s"
 
-#: inc/admin/options.php:128
+#: inc/admin/options.php:143
 msgctxt "Cloudflare caching level"
 msgid "Standard"
 msgstr "Základní"
 
-#: inc/admin/options.php:134
+#: inc/admin/options.php:149
 #, php-format
 msgid "Cloudflare cache level set to %s"
 msgstr "Cloudflare úroveň mezipaměti byla nastavena na hodnotu %s"
 
-#: inc/admin/options.php:146
+#: inc/admin/options.php:161
 #, php-format
 msgid "Cloudflare minification error: %s"
 msgstr "Cloudflare chyba zmenšení: %s"
 
-#: inc/admin/options.php:152
+#: inc/admin/options.php:167
 #, php-format
 msgid "Cloudflare minification %s"
 msgstr "Cloudflare zmenšení: %s"
 
-#: inc/admin/options.php:164
+#: inc/admin/options.php:179
 #, php-format
 msgid "Cloudflare rocket loader error: %s"
 msgstr "Chyba Cloudflare RocketLoaderu: %s"
 
-#: inc/admin/options.php:170
+#: inc/admin/options.php:185
 #, php-format
 msgid "Cloudflare rocket loader %s"
 msgstr "Cloudflare RocketLoader %s"
 
-#: inc/admin/options.php:182
+#: inc/admin/options.php:197
 #, php-format
 msgid "Cloudflare browser cache error: %s"
 msgstr "Cloudflare chyba mezipaměti prohlížeče: %s"
 
-#: inc/admin/options.php:188
+#: inc/admin/options.php:203
 #, php-format
 msgid "Cloudflare browser cache set to %s seconds"
 msgstr "Cloudflare mezipaměť prohlížeče byla nastaven na %s sekund"
 
-#: inc/admin/options.php:241 inc/classes/admin/settings/class-page.php:692
+#: inc/admin/options.php:249 inc/admin/options.php:295
+#: inc/classes/admin/settings/class-page.php:692
 msgid "Excluded CSS Files"
 msgstr "Vyloučené CSS soubory"
 
-#: inc/admin/options.php:242 inc/classes/admin/settings/class-page.php:784
+#: inc/admin/options.php:250 inc/admin/options.php:296
+#: inc/classes/admin/settings/class-page.php:784
 msgid "Excluded Inline JavaScript"
 msgstr "Vyloučený vložený JavaScript"
 
-#: inc/admin/options.php:243 inc/classes/admin/settings/class-page.php:802
+#: inc/admin/options.php:251 inc/admin/options.php:297
+#: inc/classes/admin/settings/class-page.php:802
 msgid "Excluded JavaScript Files"
 msgstr "Vyloučené soubory JavaScriptu"
 
-#: inc/admin/options.php:244 inc/classes/admin/settings/class-page.php:1128
+#: inc/admin/options.php:252 inc/admin/options.php:298
+#: inc/classes/admin/settings/class-page.php:1188
 msgid "Never Cache URL(s)"
 msgstr "Nevytvářet mezipaměť pro tyto URL"
 
-#: inc/admin/options.php:245 inc/classes/admin/settings/class-page.php:1144
+#: inc/admin/options.php:253 inc/admin/options.php:299
+#: inc/classes/admin/settings/class-page.php:1204
 msgid "Never Cache User Agent(s)"
 msgstr "User Agent nepřijímající soubory mezipaměti"
 
-#: inc/admin/options.php:246 inc/classes/admin/settings/class-page.php:1149
+#: inc/admin/options.php:254 inc/admin/options.php:300
+#: inc/classes/admin/settings/class-page.php:1209
 msgid "Always Purge URL(s)"
 msgstr "URL u kterých se má vždy vyprázdnit mezipaměť"
 
-#: inc/admin/options.php:247 inc/classes/admin/settings/class-page.php:1443
+#: inc/admin/options.php:255 inc/admin/options.php:301
+#: inc/classes/admin/settings/class-page.php:1503
 msgid "Exclude files from CDN"
 msgstr "Vyloučení souborů z CDN"
 
-#: inc/admin/options.php:265
+#: inc/admin/options.php:273 inc/admin/options.php:319
 #, php-format
 msgid "%1$s: <em>%2$s</em>."
-msgstr ""
+msgstr "%1$s: <em>%2$s</em>."
 
-#: inc/admin/options.php:275
+#: inc/admin/options.php:283 inc/admin/options.php:329
 msgid "The following pattern is invalid and has been removed:"
 msgid_plural "The following patterns are invalid and have been removed:"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "Následující vzorek je neplatný a byl odebrán:"
+msgstr[1] "Následující vzorek jsou neplatné a byly odebrány:"
+msgstr[2] "Následující vzorek jsou neplatné a byly odebrány:"
+msgstr[3] "Následující vzorek jsou neplatné a byly odebrány:"
 
-#: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:955
-#: inc/common/admin-bar.php:65 inc/common/admin-bar.php:118
-#: views/settings/page-sections/dashboard.php:115
+#: inc/admin/ui/meta-boxes.php:13 inc/admin/ui/notices.php:984
+#: inc/common/admin-bar.php:84 inc/common/admin-bar.php:136
+#: views/settings/page-sections/dashboard.php:116
 msgid "Clear cache"
 msgstr "Vymazat mezipaměť"
 
-#: inc/admin/ui/meta-boxes.php:36
+#: inc/admin/ui/meta-boxes.php:35
 msgid "WP Rocket Options"
 msgstr "Možnosti WP Rocket"
 
-#: inc/admin/ui/meta-boxes.php:66
+#: inc/admin/ui/meta-boxes.php:64
 msgid "Never cache this page"
 msgstr "Nikdy tuto stránku neukládat do mezipaměti"
 
-#: inc/admin/ui/meta-boxes.php:70
+#: inc/admin/ui/meta-boxes.php:68
 msgid "Activate these options on this post:"
 msgstr "Aktivujte možnosti jen pro tento příspěvek:"
 
-#: inc/admin/ui/meta-boxes.php:73
+#: inc/admin/ui/meta-boxes.php:71
 msgid "LazyLoad for images"
 msgstr "LazyLoad pro obrázky"
 
-#: inc/admin/ui/meta-boxes.php:74
+#: inc/admin/ui/meta-boxes.php:72
 msgid "LazyLoad for iframes/videos"
 msgstr "LazyLoad pro iframe/videa"
 
-#: inc/admin/ui/meta-boxes.php:75
+#: inc/admin/ui/meta-boxes.php:73
 #: inc/classes/admin/settings/class-page.php:615
 msgid "Minify HTML"
 msgstr "Zmenšit HTML"
 
-#: inc/admin/ui/meta-boxes.php:76
+#: inc/admin/ui/meta-boxes.php:74
 msgid "Minify/combine CSS"
 msgstr "Zmenšit/zkombinovat CSS"
 
-#: inc/admin/ui/meta-boxes.php:77
+#: inc/admin/ui/meta-boxes.php:75
 msgid "Minify/combine JS"
 msgstr "Zmenšit/zkombinovat JS"
 
-#: inc/admin/ui/meta-boxes.php:78
-#: inc/classes/admin/settings/class-page.php:1413
-#: inc/classes/admin/settings/class-page.php:1424
+#: inc/admin/ui/meta-boxes.php:76
+#: inc/classes/admin/settings/class-page.php:1473
+#: inc/classes/admin/settings/class-page.php:1484
 #: inc/deprecated/deprecated.php:1775
 msgid "CDN"
 msgstr "CDN"
 
-#: inc/admin/ui/meta-boxes.php:79
+#: inc/admin/ui/meta-boxes.php:77
 msgid "Optimize CSS Delivery"
 msgstr "Optimalizovat doručení CSS"
 
-#: inc/admin/ui/meta-boxes.php:80
+#: inc/admin/ui/meta-boxes.php:78
 msgid "Defer JS"
 msgstr "Pozdržet JS"
 
-#: inc/admin/ui/meta-boxes.php:86
+#: inc/admin/ui/meta-boxes.php:84
 #, php-format
 msgid "Activate first the %s option."
 msgstr "Nejprve aktivujte možnost %s."
 
-#: inc/admin/ui/meta-boxes.php:102
+#: inc/admin/ui/meta-boxes.php:100
 #, php-format
 msgid ""
 "%1$sNote:%2$s None of these options will be applied if this post has been "
@@ -332,7 +344,7 @@ msgstr ""
 "<strong>%1$s</strong> nebyl deaktivován z důvodu chybějících práv k zápisu.<br>\n"
 "Nastavte souboru <strong>%2$s</strong> práva pro zápis a zkuste plugin opět deaktivovat, nebo proveďte vynucenou deaktivaci:"
 
-#: inc/admin/ui/notices.php:83
+#: inc/admin/ui/notices.php:82
 #, php-format
 msgid ""
 "<strong>%s</strong>: One or more plugins have been enabled or disabled, "
@@ -341,6 +353,14 @@ msgstr ""
 "<strong>%s</strong>: Jeden nebo více pluginů bylo aktivováno nebo "
 "deaktivováno. Pokud mají vlil na veřejnou část webu, pak raději vymažte "
 "mezipaměť."
+
+#: inc/admin/ui/notices.php:172
+msgid ""
+"WP Rocket Cloudflare Add-on provides similar functionalities. They can not "
+"be active at the same time."
+msgstr ""
+"Cloudflare rozšíření pro WP Rocket poskytuje podobnou funkcionalitu. Nemohou"
+" být aktivní současně."
 
 #: inc/admin/ui/notices.php:196
 #, php-format
@@ -355,7 +375,7 @@ msgstr ""
 msgid "Deactivate"
 msgstr "Deaktivovat"
 
-#: inc/admin/ui/notices.php:243
+#: inc/admin/ui/notices.php:242
 msgid ""
 "WP Rocket Footer JS is not an official add-on. It prevents some options in "
 "WP Rocket from working correctly. Please deactivate it if you have problems."
@@ -364,15 +384,18 @@ msgstr ""
 "tímto doplňkem správně nefungují. Pokud se vyskytnou problémy s WP Rocket, "
 "deaktivujte jej prosím."
 
-#: inc/admin/ui/notices.php:283
+#: inc/admin/ui/notices.php:282
 #, php-format
 msgid ""
 "Endurance Cache is currently enabled, which will conflict with WP Rocket "
 "Cache. Please set the Endurance Cache cache level to Off (Level 0) on the "
 "%1$sSettings > General%2$s page to prevent any issues."
 msgstr ""
+"Nyní je aktivní Endurance Cache, která bude v konfliktu s mezipamětí WP "
+"Rocket. Nastavte úroveň Endurance Cache na Off (úroveň 0) na stránce "
+"%1$sSettings > General %2$s, aby se zabránilo problémům."
 
-#: inc/admin/ui/notices.php:305
+#: inc/admin/ui/notices.php:303
 #, php-format
 msgid ""
 "%1$s: A custom permalink structure is required for the plugin to work "
@@ -381,19 +404,19 @@ msgstr ""
 "%1$s: Pro správnou funkci pluginu je vyžadována vlastní struktura trvalých "
 "odkazů. %2$sPřejděte na nastavení trvalých odkazů%3$s"
 
-#: inc/admin/ui/notices.php:442
+#: inc/admin/ui/notices.php:437
 #, php-format
 msgid ""
 "%s could not modify the .htaccess file due to missing writing permissions."
 msgstr "%s nemohlo upravit soubor .htaccess kvůli omezených práv pro zápis."
 
-#: inc/admin/ui/notices.php:448 inc/admin/ui/notices.php:1032
+#: inc/admin/ui/notices.php:443 inc/admin/ui/notices.php:1061
 #, php-format
 msgid "Troubleshoot: %1$sHow to make system files writeable%2$s"
 msgstr ""
 "Odstraňování problémů: %1$sJakudělit systémovým souborům práva k zápisu%2$s"
 
-#: inc/admin/ui/notices.php:450 inc/admin/ui/notices.php:1034
+#: inc/admin/ui/notices.php:445 inc/admin/ui/notices.php:1063
 msgid ""
 "https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
 "config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
@@ -401,14 +424,14 @@ msgstr ""
 "https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
 "config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
 
-#: inc/admin/ui/notices.php:456
+#: inc/admin/ui/notices.php:451
 msgid ""
 "Don’t worry, WP Rocket’s page caching and settings will still function "
 "correctly."
 msgstr ""
 "Nebojte se, nastavení a mezipaměť WP Rocket bude pořád správně fungovat."
 
-#: inc/admin/ui/notices.php:456
+#: inc/admin/ui/notices.php:451
 msgid ""
 "For optimal performance, adding the following lines into your .htaccess is "
 "recommended (not required):"
@@ -416,7 +439,7 @@ msgstr ""
 "Pro optimální funkčnost byste měli přidat následující řádky do souboru "
 ".htaccess (nepovinné):"
 
-#: inc/admin/ui/notices.php:600
+#: inc/admin/ui/notices.php:592
 #, php-format
 msgid ""
 "%1$s is good to go! %2$sTest your load time%4$s, or visit your "
@@ -425,21 +448,21 @@ msgstr ""
 "Plugin %1$s je připraven! %2$sOtestujte si rychlost načítání%4$s, nebo "
 "přejděte na %3$snastavení%4$s."
 
-#: inc/admin/ui/notices.php:721
+#: inc/admin/ui/notices.php:740
 msgid ""
 "Would you allow WP Rocket to collect non-sensitive diagnostic data from this"
 " website?"
 msgstr "Chcete WP Rocket povolit sběr diagnostických dat z tohoto webu?"
 
-#: inc/admin/ui/notices.php:722
+#: inc/admin/ui/notices.php:741
 msgid "This would help us to improve WP Rocket for you in the future."
 msgstr "Pomůže to do budoucna zlepšit WP Rocket podle Vás, uživatelů."
 
-#: inc/admin/ui/notices.php:728
+#: inc/admin/ui/notices.php:747
 msgid "What info will we collect?"
 msgstr "Jaké údaje budou shromažďovány?"
 
-#: inc/admin/ui/notices.php:733
+#: inc/admin/ui/notices.php:752
 msgid ""
 "Below is a detailed view of all data WP Rocket will collect if granted "
 "permission. WP Rocket will never transmit any domain names or email "
@@ -451,43 +474,43 @@ msgstr ""
 " nebo emailové adresy (kromě ověření licence), IP adresy nebo API klíče "
 "třetích stran."
 
-#: inc/admin/ui/notices.php:742
+#: inc/admin/ui/notices.php:761
 msgid "Yes, allow"
 msgstr "Ano, povolit"
 
-#: inc/admin/ui/notices.php:745
+#: inc/admin/ui/notices.php:764
 msgid "No, thanks"
 msgstr "Ne"
 
-#: inc/admin/ui/notices.php:783
+#: inc/admin/ui/notices.php:801
 msgid "Thank you!"
 msgstr "Děkujeme Vám!"
 
-#: inc/admin/ui/notices.php:788
+#: inc/admin/ui/notices.php:806
 msgid "WP Rocket now collects these metrics from your website:"
 msgstr "WP Rocket nyní z tohoto webu shromažďuje následující údaje:"
 
-#: inc/admin/ui/notices.php:825
+#: inc/admin/ui/notices.php:842
 #, php-format
 msgid "%s: Cache cleared."
 msgstr "%s: Mezipaměť byla vymazána."
 
-#: inc/admin/ui/notices.php:830
+#: inc/admin/ui/notices.php:849
 #, php-format
 msgid "%s: Post cache cleared."
 msgstr "%s: Mezipaměť příspěvku byla vymazána."
 
-#: inc/admin/ui/notices.php:835
+#: inc/admin/ui/notices.php:856
 #, php-format
 msgid "%s: Term cache cleared."
 msgstr "%s: Mezipaměť položky byla vymazána."
 
-#: inc/admin/ui/notices.php:840
+#: inc/admin/ui/notices.php:863
 #, php-format
 msgid "%s: User cache cleared."
 msgstr "%s: Uživatelská mezipaměť byla vymazána."
 
-#: inc/admin/ui/notices.php:910
+#: inc/admin/ui/notices.php:939
 msgid ""
 "The following scheduled event failed to run. This may indicate the CRON "
 "system is not running properly, which can prevent some WP Rocket features "
@@ -497,67 +520,79 @@ msgid_plural ""
 "system is not running properly, which can prevent some WP Rocket features "
 "from working as intended:"
 msgstr[0] ""
+"Nepodařilo se spustit následující plánovanou událost. Systém CRON "
+"pravděpodobně nepracuje správně, což může zabránit správnému chodu některých"
+" funkcí WP Rocket:"
 msgstr[1] ""
+"Nepodařilo se spustit následující plánované události. Systém CRON "
+"pravděpodobně nepracuje správně, což může zabránit správnému chodu některých"
+" funkcí WP Rocket:"
 msgstr[2] ""
+"Nepodařilo se spustit následující plánované události. Systém CRON "
+"pravděpodobně nepracuje správně, což může zabránit správnému chodu některých"
+" funkcí WP Rocket:"
 msgstr[3] ""
+"Nepodařilo se spustit následující plánované události. Systém CRON "
+"pravděpodobně nepracuje správně, což může zabránit správnému chodu některých"
+" funkcí WP Rocket:"
 
-#: inc/admin/ui/notices.php:919
+#: inc/admin/ui/notices.php:948
 msgid "Please contact your host to check if CRON is working."
-msgstr ""
+msgstr "Obraťte se na poskytovatele hostingu a zjistěte, zda je CRON funkční."
 
-#: inc/admin/ui/notices.php:958
+#: inc/admin/ui/notices.php:987
 msgid "Stop Preload"
 msgstr "Zastavit prednačítání"
 
-#: inc/admin/ui/notices.php:976
+#: inc/admin/ui/notices.php:1005
 msgid "Force deactivation "
 msgstr "Vynutit vypnutí "
 
-#: inc/admin/ui/notices.php:989
+#: inc/admin/ui/notices.php:1018
 msgid "The following code should have been written to this file:"
 msgstr "Následující kód by měl být zapsán do tohoto souboru:"
 
-#: inc/admin/ui/notices.php:999 views/settings/page-sections/dashboard.php:45
+#: inc/admin/ui/notices.php:1028 views/settings/page-sections/dashboard.php:45
 msgid "Dismiss this notice."
 msgstr "Zavřít toto oznámení."
 
-#: inc/admin/ui/notices.php:1020
+#: inc/admin/ui/notices.php:1049
 #, php-format
 msgid "%s cannot configure itself due to missing writing permissions."
 msgstr "%s se nemůže nastavit kvůli chybějícím oprávněním k zápisu."
 
-#: inc/admin/ui/notices.php:1026
+#: inc/admin/ui/notices.php:1055
 #, php-format
 msgid "Affected file/folder: %s"
 msgstr "Ovlivněný soubor/složka: %s"
 
 #: inc/classes/admin/Database/class-optimization.php:41
-#: inc/classes/admin/settings/class-page.php:1289
+#: inc/classes/admin/settings/class-page.php:1349
 msgid "Revisions"
 msgstr "Starší verze"
 
 #: inc/classes/admin/Database/class-optimization.php:42
-#: inc/classes/admin/settings/class-page.php:1299
+#: inc/classes/admin/settings/class-page.php:1359
 msgid "Auto Drafts"
 msgstr "Automatické koncepty"
 
 #: inc/classes/admin/Database/class-optimization.php:43
-#: inc/classes/admin/settings/class-page.php:1309
+#: inc/classes/admin/settings/class-page.php:1369
 msgid "Trashed Posts"
 msgstr "Odstraněné příspěvky"
 
 #: inc/classes/admin/Database/class-optimization.php:44
-#: inc/classes/admin/settings/class-page.php:1319
+#: inc/classes/admin/settings/class-page.php:1379
 msgid "Spam Comments"
 msgstr "Komentáře označené jako spam"
 
 #: inc/classes/admin/Database/class-optimization.php:45
-#: inc/classes/admin/settings/class-page.php:1329
+#: inc/classes/admin/settings/class-page.php:1389
 msgid "Trashed Comments"
 msgstr "Odstraněné komentáře"
 
 #: inc/classes/admin/Database/class-optimization.php:46
-#: inc/classes/admin/settings/class-page.php:1339
+#: inc/classes/admin/settings/class-page.php:1399
 msgid "Expired transients"
 msgstr "Vypršená dočasná data"
 
@@ -604,7 +639,7 @@ msgstr "Nápověda, informace o účtu"
 msgid "My Status"
 msgstr "Stav"
 
-#: inc/classes/admin/settings/class-page.php:408 views/settings/page.php:71
+#: inc/classes/admin/settings/class-page.php:408 views/settings/page.php:72
 msgid "Rocket Tester"
 msgstr "Tester raket"
 
@@ -612,7 +647,7 @@ msgstr "Tester raket"
 msgid "I am part of the WP Rocket Beta Testing Program."
 msgstr "Jsem součástí programu WP Rocket Beta Testing."
 
-#: inc/classes/admin/settings/class-page.php:417 views/settings/page.php:89
+#: inc/classes/admin/settings/class-page.php:417 views/settings/page.php:90
 msgid "Rocket Analytics"
 msgstr "Diagnostika raket"
 
@@ -625,23 +660,23 @@ msgstr ""
 "Souhlasím se sdílením anonymních dat s vývojovým týmem, které pomohou "
 "zlepšit WP Rocket. %1$sJaké data budou shromažďována?%2$s"
 
-#: inc/classes/admin/settings/class-page.php:447
+#: inc/classes/admin/settings/class-page.php:446
 msgid "Cache"
 msgstr "Mezipaměť"
 
-#: inc/classes/admin/settings/class-page.php:448
+#: inc/classes/admin/settings/class-page.php:447
 msgid "Basic cache options"
 msgstr "Základní nastavení mezipaměti"
 
-#: inc/classes/admin/settings/class-page.php:455
+#: inc/classes/admin/settings/class-page.php:454
 msgid "Mobile Cache"
 msgstr "Mezipaměť pro mobilní zařízení"
 
-#: inc/classes/admin/settings/class-page.php:457
+#: inc/classes/admin/settings/class-page.php:456
 msgid "Speed up your site for mobile visitors."
 msgstr "Zrychlete svůj web pro mobilní návštěvníky."
 
-#: inc/classes/admin/settings/class-page.php:462
+#: inc/classes/admin/settings/class-page.php:461
 msgid ""
 "We detected you use a plugin that requires a separate cache for mobile, and "
 "automatically enabled this option for compatibility."
@@ -650,11 +685,11 @@ msgstr ""
 "zařízení, a pro zajištění kompatibility bylo toto nastavení automaticky "
 "aktivováno."
 
-#: inc/classes/admin/settings/class-page.php:466
+#: inc/classes/admin/settings/class-page.php:465
 msgid "User Cache"
 msgstr "Uživatelská mezipaměť"
 
-#: inc/classes/admin/settings/class-page.php:469
+#: inc/classes/admin/settings/class-page.php:468
 #, php-format
 msgid ""
 "%1$sUser cache%2$s is great when you have user-specific or restricted "
@@ -663,34 +698,34 @@ msgstr ""
 "%1$sUživatelská mezipaměť%2$s je skvěla, pokud máte na webu uživatelský nebo"
 " omezený obsah."
 
-#: inc/classes/admin/settings/class-page.php:477
+#: inc/classes/admin/settings/class-page.php:476
 msgid "Cache Lifespan"
 msgstr "Životnost mezipaměti"
 
-#: inc/classes/admin/settings/class-page.php:480
+#: inc/classes/admin/settings/class-page.php:479
 #, php-format
 msgid ""
-"Cache lifespan is the period of time after which all cache files are "
-"removed.<br>Enable %1$spreloading%2$s for the cache to be rebuilt "
-"automatically after lifespan expiration."
+"Cache files older than the specified lifespan will be deleted.<br>Enable "
+"%1$spreloading%2$s for the cache to be rebuilt automatically after lifespan "
+"expiration."
 msgstr ""
-"Životnost mezipaměti je doba po jejímž vypršení se vymažou veškeré soubory "
-"mezipaměti.<br>Povolte %1$spřednačítání%2$s, aby se mezipaměť po vypršení "
-"znovu vygenerovala."
+"Soubory mezipaměti starší než zadané životnosti budou odstraněny.<br>Povolte"
+" %1$spřednačítání%2$s pro automatickou přegenerování mezipaměti po vypršení "
+"její životnosti."
 
-#: inc/classes/admin/settings/class-page.php:494
+#: inc/classes/admin/settings/class-page.php:493
 msgid "Enable caching for logged-in WordPress users"
 msgstr "Povolit ukládání do mezipaměti pro přihlášené uživatele WordPressu"
 
-#: inc/classes/admin/settings/class-page.php:502
+#: inc/classes/admin/settings/class-page.php:501
 msgid "Enable caching for mobile devices"
 msgstr "Povolit ukládání do mezipaměti pro mobilní zařízení"
 
-#: inc/classes/admin/settings/class-page.php:517
+#: inc/classes/admin/settings/class-page.php:516
 msgid "Separate cache files for mobile devices"
 msgstr "Oddělit soubory mezipaměti pro mobilní zařízení"
 
-#: inc/classes/admin/settings/class-page.php:519
+#: inc/classes/admin/settings/class-page.php:518
 #, php-format
 msgid ""
 "%1$sMobile cache%2$s works safest with both options enabled. When in doubt, "
@@ -699,13 +734,13 @@ msgstr ""
 "%1$sMezipaměť pro mobilní zařízení%2$s funguje nejlépe s povolenými oběmi "
 "možnostmi. Pokud si nejste jisti, nechte zapnuté obě možnosti."
 
-#: inc/classes/admin/settings/class-page.php:535
+#: inc/classes/admin/settings/class-page.php:534
 msgid ""
 "Specify time after which the global cache is cleared<br>(0 = unlimited )"
 msgstr ""
 "Zadejte čas, po kterém se globální mezipaměť vymaže<br>(0 = neomezeně)"
 
-#: inc/classes/admin/settings/class-page.php:537
+#: inc/classes/admin/settings/class-page.php:536
 #, php-format
 msgid ""
 "Reduce lifespan to 10 hours or less if you notice issues that seem to appear"
@@ -714,19 +749,20 @@ msgstr ""
 "Snižte životnost na 10 nebo méně hodin pokud si všimnete opakujících se "
 "problémů. %1$sProč?%2$s"
 
-#: inc/classes/admin/settings/class-page.php:543
+#: inc/classes/admin/settings/class-page.php:542
 msgid "Minutes"
 msgstr "Minuty"
 
-#: inc/classes/admin/settings/class-page.php:544
+#: inc/classes/admin/settings/class-page.php:543
 msgid "Hours"
 msgstr "Hodiny"
 
-#: inc/classes/admin/settings/class-page.php:545
+#: inc/classes/admin/settings/class-page.php:544
 msgid "Days"
 msgstr "Dny"
 
 #: inc/classes/admin/settings/class-page.php:571
+#: views/settings/page-sections/tutorials.php:21
 msgid "File Optimization"
 msgstr "Optimalizace souborů"
 
@@ -988,19 +1024,23 @@ msgstr ""
 " části dokumentu jako skript blokující vykreslování.<br><em>Deaktivace může "
 "vést k poškození funkcionality, proveďte pečlivé testy!</em>"
 
-#: inc/classes/admin/settings/class-page.php:861
+#: inc/classes/admin/settings/class-page.php:868
 msgid "Media"
 msgstr "Média"
 
-#: inc/classes/admin/settings/class-page.php:862
-msgid "LazyLoad, emojis, embeds"
-msgstr "LazyLoad, smajlíci, externí obsah"
-
 #: inc/classes/admin/settings/class-page.php:869
+msgid "LazyLoad, emojis, embeds, WebP"
+msgstr "LazyLoad, smajlíci, externí obsah, WebP"
+
+#: inc/classes/admin/settings/class-page.php:875
+msgid "Autoptimize"
+msgstr "Autoptimize"
+
+#: inc/classes/admin/settings/class-page.php:892
 msgid "LazyLoad"
 msgstr "LazyLoad"
 
-#: inc/classes/admin/settings/class-page.php:872
+#: inc/classes/admin/settings/class-page.php:895
 #, php-format
 msgid ""
 "It can improve actual and perceived loading time as images, iframes, and "
@@ -1012,21 +1052,20 @@ msgstr ""
 "budou mít za chvíli objevit) v zobrazovaném prostoru, a bude tím snížen "
 "počet HTTP požadavků. %1$sVíce informací%2$s"
 
-#: inc/classes/admin/settings/class-page.php:879
+#: inc/classes/admin/settings/class-page.php:902
 #, php-format
 msgid ""
-"Lazyload is currently activated in <strong>Autoptimize</strong>. If you want"
-" to use %1$s’s lazyload, disable this option in Autoptimize."
+"Lazyload is currently activated in <strong>%2$s</strong>. If you want to use"
+" %1$s’s lazyload, disable this option in %2$s."
 msgstr ""
-"LazyLoad je aktuálně aktivováno v pluginu <strong>Autoptimize</strong>. "
-"Chcete-li použít LazyLoad od %1$s, deaktivujte tuto možnost v pluginu "
-"Autoptimize."
+"LazyLoad je aktuálně aktivováno v pluginu <strong>%2$s</strong>. Chcete-li "
+"použít LazyLoad od %1$s, deaktivujte tuto možnost v pluginu %2$s."
 
-#: inc/classes/admin/settings/class-page.php:882
+#: inc/classes/admin/settings/class-page.php:905
 msgid "Emoji 👻"
 msgstr "Smajlíci 👻"
 
-#: inc/classes/admin/settings/class-page.php:884
+#: inc/classes/admin/settings/class-page.php:907
 msgid ""
 "Use default emoji of visitor's browser instead of loading emoji from "
 "WordPress.org"
@@ -1034,11 +1073,11 @@ msgstr ""
 "Používejte výchozí smajlíky návštěvníkova prohlížeče namísto načítání "
 "smajlíků z WordPress.org"
 
-#: inc/classes/admin/settings/class-page.php:888
+#: inc/classes/admin/settings/class-page.php:911
 msgid "Embeds"
 msgstr "Vkládání externího obsahu"
 
-#: inc/classes/admin/settings/class-page.php:890
+#: inc/classes/admin/settings/class-page.php:913
 msgid ""
 "Prevents others from embedding content from your site, prevents you from "
 "embedding content from other (non-whitelisted) sites, and removes JavaScript"
@@ -1048,11 +1087,28 @@ msgstr ""
 "obsah z jiných (nepovolených) webů a odstraní JavaScriptové požadavky "
 "spojené s „WordPress embeds“"
 
-#: inc/classes/admin/settings/class-page.php:900
+#: inc/classes/admin/settings/class-page.php:917
+msgid "WebP compatibility"
+msgstr "Kompatibilita s WebP"
+
+#: inc/classes/admin/settings/class-page.php:921
+#, php-format
+msgid ""
+"Enable this option if you would like WP Rocket to serve WebP images to "
+"compatible browsers. Please note that WP Rocket cannot create WebP images "
+"for you. To create WebP images we recommend %1$sImagify%2$s. %3$sMore "
+"info%2$s"
+msgstr ""
+"Tuto možnost povolte, pokud chcete, aby WP Rocket poskytovalo WebP obrázky "
+"kompatibilním prohlížečům. Berte na vědomí, že WP Rocket nemůže vytvářet "
+"WebP obrázky. Pro vytvoření WebP obrázků můžete použít např. plugin "
+"%1$sImagify%2$s. %3$sVíce informací%2$s"
+
+#: inc/classes/admin/settings/class-page.php:949
 msgid "Enable for images"
 msgstr "Povolit pro obrázky"
 
-#: inc/classes/admin/settings/class-page.php:911
+#: inc/classes/admin/settings/class-page.php:960
 msgctxt "Avada"
 msgid ""
 "Lazyload for images is currently activated in Avada. If you want to use WP "
@@ -1061,15 +1117,15 @@ msgstr ""
 "LazyLoad obrázků je momentálně aktivní v Avadě. Pokud chcete používat "
 "Lazyload od WP Rocket, zakažte tuto možnost v šabloně."
 
-#: inc/classes/admin/settings/class-page.php:919
+#: inc/classes/admin/settings/class-page.php:968
 msgid "Enable for iframes and videos"
 msgstr "Povolit pro iframe a videa"
 
-#: inc/classes/admin/settings/class-page.php:934
+#: inc/classes/admin/settings/class-page.php:983
 msgid "Replace YouTube iframe with preview image"
 msgstr "Nahraďte iframe YouTube za náhledový obrázek"
 
-#: inc/classes/admin/settings/class-page.php:935
+#: inc/classes/admin/settings/class-page.php:984
 msgid ""
 "This can significantly improve your loading time if you have a lot of "
 "YouTube videos on a page."
@@ -1077,29 +1133,35 @@ msgstr ""
 "Toto nastavení může výrazně zkrátit dobu načítání, pokud máte na stránce "
 "mnoho videí z YouTube."
 
-#: inc/classes/admin/settings/class-page.php:947
+#: inc/classes/admin/settings/class-page.php:996
 msgid "Disable Emoji"
 msgstr "Zakázat smajlíky"
 
-#: inc/classes/admin/settings/class-page.php:948
+#: inc/classes/admin/settings/class-page.php:997
 msgid "Disable Emoji will reduce the number of external HTTP requests."
 msgstr "Zakázaní smajlíků sníží počet externích HTTP požadavků."
 
-#: inc/classes/admin/settings/class-page.php:956
+#: inc/classes/admin/settings/class-page.php:1005
 msgid "Disable WordPress embeds"
 msgstr "Zakázat vkládání externího obsahu"
 
-#: inc/classes/admin/settings/class-page.php:978
-#: inc/classes/admin/settings/class-page.php:988
+#: inc/classes/admin/settings/class-page.php:1015
+#: inc/classes/subscriber/Media/class-webp-subscriber.php:360
+msgid "Enable WebP caching"
+msgstr "Povolit mezipaměť pro WebP"
+
+#: inc/classes/admin/settings/class-page.php:1038
+#: inc/classes/admin/settings/class-page.php:1048
 #: inc/deprecated/deprecated.php:1778
+#: views/settings/page-sections/tutorials.php:29
 msgid "Preload"
 msgstr "Předběžné načítání"
 
-#: inc/classes/admin/settings/class-page.php:979
+#: inc/classes/admin/settings/class-page.php:1039
 msgid "Generate cache files"
 msgstr "Generování souborů mezipaměti"
 
-#: inc/classes/admin/settings/class-page.php:991
+#: inc/classes/admin/settings/class-page.php:1051
 #, php-format
 msgid ""
 "When you enable preloading WP Rocket will generate the cache starting with "
@@ -1108,17 +1170,17 @@ msgid ""
 "manually triggered from the admin bar or from the %1$sWP Rocket "
 "Dashboard%2$s."
 msgstr ""
-"Jakmile aktivujete přednačítání, WP Rocket začne automaticky generovat "
-"mezipaměť nejprve pro odkazy na úvodní stránce webu, a následně dle vámi "
+"Jakmile aktivujete předběžné načítání, WP Rocket začne automaticky generovat"
+" mezipaměť nejprve pro odkazy na úvodní stránce webu, a následně dle vámi "
 "zadaných map webu. Předběžné načítání bude automaticky spuštěno kdykoliv "
 "přidáte, nebo změníte obsah. Lze jej také spustit ručně z administrační "
 "lišty nebo z %1$snástěnky WP Rocket%2$s."
 
-#: inc/classes/admin/settings/class-page.php:999
+#: inc/classes/admin/settings/class-page.php:1059
 msgid "Prefetch DNS Requests"
 msgstr "Předběžné požadavky DNS"
 
-#: inc/classes/admin/settings/class-page.php:1001
+#: inc/classes/admin/settings/class-page.php:1061
 msgid ""
 "DNS prefetching can make external files load faster, especially on mobile "
 "networks"
@@ -1126,29 +1188,29 @@ msgstr ""
 "Předběžné požadavky DNS mohou zrychlit předběžné načítání externích souborů,"
 " především na mobilních sítích"
 
-#: inc/classes/admin/settings/class-page.php:1015
+#: inc/classes/admin/settings/class-page.php:1075
 msgid "Activate Preloading"
 msgstr "Aktivovat předběžné načítání"
 
-#: inc/classes/admin/settings/class-page.php:1034
+#: inc/classes/admin/settings/class-page.php:1094
 msgid "Activate sitemap-based cache preloading"
 msgstr "Aktivovat předběžné načtení mezipaměti založené na mapě webu"
 
-#: inc/classes/admin/settings/class-page.php:1053
+#: inc/classes/admin/settings/class-page.php:1113
 msgid "Sitemaps for preloading"
 msgstr "Mapy webu pro předběžné načítání"
 
-#: inc/classes/admin/settings/class-page.php:1057
+#: inc/classes/admin/settings/class-page.php:1117
 msgid "Specify XML sitemap(s) to be used for preloading"
 msgstr ""
 "Zadejte URL adresy XML soubory map webu, které se mají používat pro "
 "přednačítání (jedenu na řádek)"
 
-#: inc/classes/admin/settings/class-page.php:1067
+#: inc/classes/admin/settings/class-page.php:1127
 msgid "URLs to prefetch"
 msgstr "URL adresy pro přednačítání"
 
-#: inc/classes/admin/settings/class-page.php:1068
+#: inc/classes/admin/settings/class-page.php:1128
 msgid ""
 "Specify external hosts to be prefetched (no <code>http:</code>, one per "
 "line)"
@@ -1156,47 +1218,47 @@ msgstr ""
 "Zadejte externí hostitele, kteří se mají předběžně načítat (bez "
 "<code>http:</code>, pište jednoho na řádek)"
 
-#: inc/classes/admin/settings/class-page.php:1091
+#: inc/classes/admin/settings/class-page.php:1151
 msgid "Advanced Rules"
 msgstr "Pokročilá pravidla"
 
-#: inc/classes/admin/settings/class-page.php:1092
+#: inc/classes/admin/settings/class-page.php:1152
 msgid "Fine-tune cache rules"
 msgstr "Vyladění pravidel mezipaměti"
 
-#: inc/classes/admin/settings/class-page.php:1101
+#: inc/classes/admin/settings/class-page.php:1161
 msgid ""
 "Sensitive pages like custom login/logout URLs should be excluded from cache."
 msgstr ""
 "Citlivé stránky jako URL pro vlastní přihlášení/odhlášení by neměly být "
 "ukládány do mezipaměti."
 
-#: inc/classes/admin/settings/class-page.php:1104
+#: inc/classes/admin/settings/class-page.php:1164
 msgctxt "plugin name"
 msgid "WooCommerce"
 msgstr "WooCommerce"
 
-#: inc/classes/admin/settings/class-page.php:1106
+#: inc/classes/admin/settings/class-page.php:1166
 msgctxt "plugin name"
 msgid "Easy Digital Downloads"
 msgstr "Easy Digital Downloads"
 
-#: inc/classes/admin/settings/class-page.php:1108
+#: inc/classes/admin/settings/class-page.php:1168
 msgctxt "plugin name"
 msgid "iThemes Exchange"
 msgstr "iThemes Exchange"
 
-#: inc/classes/admin/settings/class-page.php:1110
+#: inc/classes/admin/settings/class-page.php:1170
 msgctxt "plugin name"
 msgid "Jigoshop"
 msgstr "Jigoshop"
 
-#: inc/classes/admin/settings/class-page.php:1112
+#: inc/classes/admin/settings/class-page.php:1172
 msgctxt "plugin name"
 msgid "WP-Shop"
 msgstr "WP-Shop"
 
-#: inc/classes/admin/settings/class-page.php:1118
+#: inc/classes/admin/settings/class-page.php:1178
 #, php-format
 msgid ""
 "<br>Cart, checkout and \"my account\" pages set in "
@@ -1206,15 +1268,15 @@ msgstr ""
 "<strong>%1$s%2$s%3$s</strong>, budou detekovány a ve výchozím nastavení jim "
 "nebude generována mezipaměť."
 
-#: inc/classes/admin/settings/class-page.php:1139
+#: inc/classes/admin/settings/class-page.php:1199
 msgid "Never Cache Cookies"
 msgstr "Cookies pro zakázání vytváření mezipaměti"
 
-#: inc/classes/admin/settings/class-page.php:1158
+#: inc/classes/admin/settings/class-page.php:1218
 msgid "Cache Query String(s)"
 msgstr "Ukládání řetězců dotazů do mezipaměti"
 
-#: inc/classes/admin/settings/class-page.php:1161
+#: inc/classes/admin/settings/class-page.php:1221
 #, php-format
 msgid ""
 "%1$sCache for query strings%2$s enables you to force caching for specific "
@@ -1223,15 +1285,15 @@ msgstr ""
 "%1$sMezipaměť pro řetězce dotazu%2$s vám umožní vytvářet mezipaměť pro "
 "konkrétní parametry typu GET."
 
-#: inc/classes/admin/settings/class-page.php:1175
+#: inc/classes/admin/settings/class-page.php:1235
 msgid ""
 "Specify URLs of pages or posts that should never be cached (one per line)"
 msgstr ""
 "Určete URL adresy stránek, nebo příspěvků, které by nikdy neměly mít "
 "vytvořenou mezipaměť (jednu na řádek)"
 
-#: inc/classes/admin/settings/class-page.php:1176
-#: inc/classes/admin/settings/class-page.php:1204
+#: inc/classes/admin/settings/class-page.php:1236
+#: inc/classes/admin/settings/class-page.php:1264
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use (.*) "
 "wildcards to address multiple URLs under a given path."
@@ -1239,7 +1301,7 @@ msgstr ""
 "Doménová část URL adresy bude automaticky odstraněna.<br>Použijte (.*) "
 "hvězdičky pro vyloučení více URL adres umístěných v konkrétní cestě."
 
-#: inc/classes/admin/settings/class-page.php:1185
+#: inc/classes/admin/settings/class-page.php:1245
 msgid ""
 "Specify the IDs of cookies that, when set in the visitor's browser, should "
 "prevent a page from getting cached (one per line)"
@@ -1247,18 +1309,18 @@ msgstr ""
 "Zadejte ID souborů cookies, které kdyby byly uloženy v prohlížeči "
 "návštěvníka by zabránily uložení stránky do mezipaměti (jedno na řádek)"
 
-#: inc/classes/admin/settings/class-page.php:1193
+#: inc/classes/admin/settings/class-page.php:1253
 msgid ""
 "Specify user agent strings that should never see cached pages (one per line)"
 msgstr ""
 "Zadejte řetězce user-agent, kterým by nikdy neměly být poskytnuty stránky z "
 "mezipaměti (jeden na řádek)"
 
-#: inc/classes/admin/settings/class-page.php:1194
+#: inc/classes/admin/settings/class-page.php:1254
 msgid "Use (.*) wildcards to detect parts of UA strings."
 msgstr "Použijte (.*) hvězdičku pro určení částí UA řetězců."
 
-#: inc/classes/admin/settings/class-page.php:1203
+#: inc/classes/admin/settings/class-page.php:1263
 msgid ""
 "Specify URLs you always want purged from cache whenever you update any post "
 "or page (one per line)"
@@ -1266,24 +1328,24 @@ msgstr ""
 "Určete URL adresy, kterým chcete vymazat mezipaměť vždy, když bude provedena"
 " aktualizace jakéhokoliv příspěvku nebo stránky (jednu na řádek)"
 
-#: inc/classes/admin/settings/class-page.php:1212
+#: inc/classes/admin/settings/class-page.php:1272
 msgid "Specify query strings for caching (one per line)"
 msgstr "Zadejte řetězce dotazů pro ukládání do mezipaměti (jeden na řádek)"
 
-#: inc/classes/admin/settings/class-page.php:1240
+#: inc/classes/admin/settings/class-page.php:1300
 #: inc/deprecated/deprecated.php:1777
 msgid "Database"
 msgstr "Databáze"
 
-#: inc/classes/admin/settings/class-page.php:1241
+#: inc/classes/admin/settings/class-page.php:1301
 msgid "Optimize, reduce bloat"
 msgstr "Optimalizace, zeštíhlení"
 
-#: inc/classes/admin/settings/class-page.php:1250
+#: inc/classes/admin/settings/class-page.php:1310
 msgid "Post Cleanup"
 msgstr "Čištění příspěvků"
 
-#: inc/classes/admin/settings/class-page.php:1252
+#: inc/classes/admin/settings/class-page.php:1312
 msgid ""
 "Post revisions and drafts will be permanently deleted. Do not use this "
 "option if you need to retain revisions or drafts."
@@ -1291,19 +1353,19 @@ msgstr ""
 "Starší verze příspěvků a koncepty budou trvale odstraněny. Nepoužívejte tuto"
 " volbu pokud potřebujete zachovat starší verze nebo koncepty."
 
-#: inc/classes/admin/settings/class-page.php:1260
+#: inc/classes/admin/settings/class-page.php:1320
 msgid "Comments Cleanup"
 msgstr "Čištění komentářů"
 
-#: inc/classes/admin/settings/class-page.php:1262
+#: inc/classes/admin/settings/class-page.php:1322
 msgid "Spam and trashed comments will be permanently deleted."
 msgstr "Komentářový spam a komentáře uložené v koši budou trvale odstraněny."
 
-#: inc/classes/admin/settings/class-page.php:1266
+#: inc/classes/admin/settings/class-page.php:1326
 msgid "Transients Cleanup"
 msgstr "Čištění dočasných dat databáze"
 
-#: inc/classes/admin/settings/class-page.php:1268
+#: inc/classes/admin/settings/class-page.php:1328
 msgid ""
 "Transients are temporary options; they are safe to remove. They will be "
 "automatically regenerated as your plugins require them."
@@ -1311,123 +1373,123 @@ msgstr ""
 "Zde jsou zobrazena dočasná data databáze; s klidem je můžete odstranit. "
 "Pokud je pluginy budou zase potřebovat, vygenerují se znovu."
 
-#: inc/classes/admin/settings/class-page.php:1272
+#: inc/classes/admin/settings/class-page.php:1332
 msgid "Database Cleanup"
 msgstr "Čištění databáze"
 
-#: inc/classes/admin/settings/class-page.php:1274
+#: inc/classes/admin/settings/class-page.php:1334
 msgid "Reduces overhead of database tables"
 msgstr "Snižuje možnost přetěžování tabulek databáze"
 
-#: inc/classes/admin/settings/class-page.php:1278
+#: inc/classes/admin/settings/class-page.php:1338
 msgid "Automatic cleanup"
 msgstr "Automatické čištění"
 
-#: inc/classes/admin/settings/class-page.php:1291
+#: inc/classes/admin/settings/class-page.php:1351
 #, php-format
 msgid "%s revision in your database."
 msgid_plural "%s revisions in your database."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-
-#: inc/classes/admin/settings/class-page.php:1301
-#, php-format
-msgid "%s draft in your database."
-msgid_plural "%s drafts in your database."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-
-#: inc/classes/admin/settings/class-page.php:1311
-#, php-format
-msgid "%s trashed post in your database."
-msgid_plural "%s trashed posts in your database."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-
-#: inc/classes/admin/settings/class-page.php:1321
-#, php-format
-msgid "%s spam comment in your database."
-msgid_plural "%s spam comments in your database."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-
-#: inc/classes/admin/settings/class-page.php:1331
-#, php-format
-msgid "%s trashed comment in your database."
-msgid_plural "%s trashed comments in your database."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-
-#: inc/classes/admin/settings/class-page.php:1341
-#, php-format
-msgid "%s expired transient in your database."
-msgid_plural "%s expired transients in your database."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-
-#: inc/classes/admin/settings/class-page.php:1349
-msgid "All transients"
-msgstr "Veškerá dočasná data"
-
-#: inc/classes/admin/settings/class-page.php:1351
-#, php-format
-msgid "%s transient in your database."
-msgid_plural "%s transients in your database."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-
-#: inc/classes/admin/settings/class-page.php:1359
-msgid "Optimize Tables"
-msgstr "Optimalizovat tabulky"
+msgstr[0] "V databázi je %s starší verze stránky/příspěvku."
+msgstr[1] "%s starší verze stránek/příspěvků jsou v databázi."
+msgstr[2] "%s starší verze stránek/příspěvků jsou v databázi."
+msgstr[3] "%s starších verzí stránek/příspěvků je v databázi."
 
 #: inc/classes/admin/settings/class-page.php:1361
 #, php-format
+msgid "%s draft in your database."
+msgid_plural "%s drafts in your database."
+msgstr[0] "V databázi je %s automatický koncept."
+msgstr[1] "%s automatické koncepty jsou v databázi."
+msgstr[2] "%s automatické koncepty jsou v databázi."
+msgstr[3] "%s automatických konceptů je v databázi."
+
+#: inc/classes/admin/settings/class-page.php:1371
+#, php-format
+msgid "%s trashed post in your database."
+msgid_plural "%s trashed posts in your database."
+msgstr[0] "V databázi je %s odstraněný příspěvek."
+msgstr[1] "%s odstraněné příspěvky jsou v databázi."
+msgstr[2] "%s odstraněné příspěvky jsou v databázi."
+msgstr[3] "%s odstraněných příspěvků je v databázi."
+
+#: inc/classes/admin/settings/class-page.php:1381
+#, php-format
+msgid "%s spam comment in your database."
+msgid_plural "%s spam comments in your database."
+msgstr[0] "V databázi je %s komentářový spam."
+msgstr[1] "%s komentářové spamy jsou v databázi."
+msgstr[2] "%s komentářové spamy jsou v databázi."
+msgstr[3] "%s komentářových spamů je v databázi."
+
+#: inc/classes/admin/settings/class-page.php:1391
+#, php-format
+msgid "%s trashed comment in your database."
+msgid_plural "%s trashed comments in your database."
+msgstr[0] "V databázi je %s odstraněný komentář."
+msgstr[1] "V databázi jsou %s odstraněné komentáře."
+msgstr[2] "V databázi je %s odstraněných komentářů."
+msgstr[3] "V databázi je %s odstraněných komentářů."
+
+#: inc/classes/admin/settings/class-page.php:1401
+#, php-format
+msgid "%s expired transient in your database."
+msgid_plural "%s expired transients in your database."
+msgstr[0] "V databázi jsou %s vypršená dočasná data."
+msgstr[1] "V databázi jsou %s vypršená dočasná data."
+msgstr[2] "V databázi jsou %s vypršená dočasná data."
+msgstr[3] "V databázi je %s vypršených dočasných dat."
+
+#: inc/classes/admin/settings/class-page.php:1409
+msgid "All transients"
+msgstr "Veškerá dočasná data"
+
+#: inc/classes/admin/settings/class-page.php:1411
+#, php-format
+msgid "%s transient in your database."
+msgid_plural "%s transients in your database."
+msgstr[0] "V databázi jsou %s vypršené dočasné dat."
+msgstr[1] "V databázi jsou %s vypršené dočasné data."
+msgstr[2] "V databázi je %s vypršených dočasných dat."
+msgstr[3] "V databázi je %s vypršených dočasných dat."
+
+#: inc/classes/admin/settings/class-page.php:1419
+msgid "Optimize Tables"
+msgstr "Optimalizovat tabulky"
+
+#: inc/classes/admin/settings/class-page.php:1421
+#, php-format
 msgid "%s table to optimize in your database."
 msgid_plural "%s tables to optimize in your database."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "V databázi je %s tabulka, kterou je potřeba optimalizovat."
+msgstr[1] "%s tabulky v databázi je potřeba optimalizovat."
+msgstr[2] "%s tabulky v databázi je potřeba optimalizovat."
+msgstr[3] "%s tabulek v databázi je potřeba optimalizovat."
 
-#: inc/classes/admin/settings/class-page.php:1372
+#: inc/classes/admin/settings/class-page.php:1432
 msgid "Schedule Automatic Cleanup"
 msgstr "Naplánovat automatické čištění"
 
-#: inc/classes/admin/settings/class-page.php:1384
+#: inc/classes/admin/settings/class-page.php:1444
 msgid "Frequency"
 msgstr "Frekvence"
 
-#: inc/classes/admin/settings/class-page.php:1392
+#: inc/classes/admin/settings/class-page.php:1452
 msgid "Daily"
 msgstr "Denně"
 
-#: inc/classes/admin/settings/class-page.php:1393
+#: inc/classes/admin/settings/class-page.php:1453
 msgid "Weekly"
 msgstr "Týdně"
 
-#: inc/classes/admin/settings/class-page.php:1394
+#: inc/classes/admin/settings/class-page.php:1454
 msgid "Monthly"
 msgstr "Měsíčně"
 
-#: inc/classes/admin/settings/class-page.php:1414
+#: inc/classes/admin/settings/class-page.php:1474
 msgid "Integrate your CDN"
 msgstr "Integrace CDN"
 
-#: inc/classes/admin/settings/class-page.php:1426
+#: inc/classes/admin/settings/class-page.php:1486
 msgid ""
 "All URLs of static files (CSS, JS, images) will be rewritten to the CNAME(s)"
 " you provide."
@@ -1435,7 +1497,7 @@ msgstr ""
 "Všechny URL adresy statických souborů (obrázky, CSS, JS) budou přepsány pro "
 "níže zadané CNAME(s)."
 
-#: inc/classes/admin/settings/class-page.php:1428
+#: inc/classes/admin/settings/class-page.php:1488
 #, php-format
 msgid ""
 "Not required for services like Cloudflare and Sucuri. Please see our "
@@ -1444,7 +1506,7 @@ msgstr ""
 "Není nutné pro služby jako je Cloudflare nebo Sucuri. Podívejte se na "
 "dostupné %1$srozšíření%2$s."
 
-#: inc/classes/admin/settings/class-page.php:1469
+#: inc/classes/admin/settings/class-page.php:1529
 #, php-format
 msgid ""
 "%1$s%2$s Add-on%3$s is currently enabled. Configuration of the CDN settings "
@@ -1453,30 +1515,38 @@ msgid_plural ""
 "%1$s%2$s Add-ons%3$s are currently enabled. Configuration of the CDN "
 "settings is not required for %2$s to work on your site."
 msgstr[0] ""
+"%1$s%2$s rozšíření %3$s je aktuálně povoleno. Konfigurace nastavení CDN není"
+" vyžadována pro funkčnost %2$s na tomto webu."
 msgstr[1] ""
+"%1$s%2$s rozšíření %3$s jsou aktuálně povolena. Konfigurace nastavení CDN "
+"není vyžadována pro funkčnost %2$s na tomto webu."
 msgstr[2] ""
+"%1$s%2$s rozšíření %3$s jsou aktuálně povolena. Konfigurace nastavení CDN "
+"není vyžadována pro funkčnost %2$s na tomto webu."
 msgstr[3] ""
+"%1$s%2$s rozšíření %3$s je aktuálně povoleno. Konfigurace nastavení CDN není"
+" vyžadována pro funkčnost %2$s na tomto webu."
 
-#: inc/classes/admin/settings/class-page.php:1484
+#: inc/classes/admin/settings/class-page.php:1556
 msgid "Enable Content Delivery Network"
 msgstr "Povolit Content Delivery Network"
 
-#: inc/classes/admin/settings/class-page.php:1493
+#: inc/classes/admin/settings/class-page.php:1566
 msgid "CDN CNAME(s)"
 msgstr "CDN CNAME(s)"
 
-#: inc/classes/admin/settings/class-page.php:1494
+#: inc/classes/admin/settings/class-page.php:1567
 msgid "Specify the CNAME(s) below"
 msgstr "Níže určete CNAME(s)"
 
-#: inc/classes/admin/settings/class-page.php:1501
+#: inc/classes/admin/settings/class-page.php:1574
 msgid ""
 "Specify URL(s) of files that should not get served via CDN (one per line)."
 msgstr ""
 "Zadejte URL adresy souborů, které by neměly být se neměly zobrazovat přes "
 "CDN (jednu na řádek)."
 
-#: inc/classes/admin/settings/class-page.php:1502
+#: inc/classes/admin/settings/class-page.php:1575
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use (.*) "
 "wildcards to exclude all files of a given file type located at a specific "
@@ -1486,27 +1556,27 @@ msgstr ""
 "hvězdičky pro vyloučení všech souborů, daného typu, umístěných v konkrétní "
 "cestě."
 
-#: inc/classes/admin/settings/class-page.php:1525
-#: inc/classes/admin/settings/class-page.php:1533
+#: inc/classes/admin/settings/class-page.php:1598
+#: inc/classes/admin/settings/class-page.php:1606
 msgid "Heartbeat"
 msgstr "Heartbeat"
 
-#: inc/classes/admin/settings/class-page.php:1526
+#: inc/classes/admin/settings/class-page.php:1599
 msgid "Control WordPress Heartbeat API"
 msgstr "Správa WordPress Heartbeat API"
 
-#: inc/classes/admin/settings/class-page.php:1534
+#: inc/classes/admin/settings/class-page.php:1607
 msgid ""
 "Reducing or disabling the Heartbeat API’s activity can help save some of "
 "your server’s resources."
 msgstr ""
 "Omezení nebo zakázání aktivity Heartbeat API může snížit zatěžování serveru."
 
-#: inc/classes/admin/settings/class-page.php:1543
+#: inc/classes/admin/settings/class-page.php:1616
 msgid "Reduce or disable Heartbeat activity"
 msgstr "Správa Heartbeat aktivity"
 
-#: inc/classes/admin/settings/class-page.php:1544
+#: inc/classes/admin/settings/class-page.php:1617
 msgid ""
 "Reducing activity will change Heartbeat frequency from one hit each minute "
 "to one hit every 2 minutes."
@@ -1514,54 +1584,55 @@ msgstr ""
 "Omezení aktivity změní frekvenci Heartbeat, z jednou za minutu na jednou za "
 "2 minuty."
 
-#: inc/classes/admin/settings/class-page.php:1544
+#: inc/classes/admin/settings/class-page.php:1617
 msgid ""
 "Disabling Heartbeat entirely may break plugins and themes using this API."
 msgstr ""
 "Úplné vypnutí Heartbeat může znefunkčnit pluginy a šablony používající toto "
 "API."
 
-#: inc/classes/admin/settings/class-page.php:1558
+#: inc/classes/admin/settings/class-page.php:1631
 msgid "Do not limit"
 msgstr "Neomezovat"
 
-#: inc/classes/admin/settings/class-page.php:1559
+#: inc/classes/admin/settings/class-page.php:1632
 msgid "Reduce activity"
 msgstr "Omezit aktivitu"
 
-#: inc/classes/admin/settings/class-page.php:1560
+#: inc/classes/admin/settings/class-page.php:1633
 msgid "Disable"
 msgstr "Vypnout"
 
-#: inc/classes/admin/settings/class-page.php:1568
+#: inc/classes/admin/settings/class-page.php:1641
 msgid "Control Heartbeat"
 msgstr "Ovládat Heartbeat"
 
-#: inc/classes/admin/settings/class-page.php:1577
+#: inc/classes/admin/settings/class-page.php:1650
 msgid "Behavior in backend"
 msgstr "Chování v administraci"
 
-#: inc/classes/admin/settings/class-page.php:1584
+#: inc/classes/admin/settings/class-page.php:1657
 msgid "Behavior in post editor"
 msgstr "Chování v editoru stránek/příspěvků"
 
-#: inc/classes/admin/settings/class-page.php:1590
+#: inc/classes/admin/settings/class-page.php:1663
 msgid "Behavior in frontend"
 msgstr "Chování ve veřejné části webu"
 
-#: inc/classes/admin/settings/class-page.php:1609
+#: inc/classes/admin/settings/class-page.php:1682
+#: views/settings/page-sections/tutorials.php:35
 msgid "Add-ons"
 msgstr "Rozšíření"
 
-#: inc/classes/admin/settings/class-page.php:1610
+#: inc/classes/admin/settings/class-page.php:1683
 msgid "Add more features"
 msgstr "Přidání dalších funkcí"
 
-#: inc/classes/admin/settings/class-page.php:1617
+#: inc/classes/admin/settings/class-page.php:1690
 msgid "One-click Rocket Add-ons"
 msgstr "Rocket rozšíření na jedno kliknutí"
 
-#: inc/classes/admin/settings/class-page.php:1618
+#: inc/classes/admin/settings/class-page.php:1691
 msgid ""
 "One-Click Add-ons are features extending available options without "
 "configuration needed. Switch the option \"on\" to enable from this screen."
@@ -1570,23 +1641,23 @@ msgstr ""
 " bez nutnosti další konfigurace. Přepněte tlačítko na „zap“ pro aktivaci z "
 "této stránky."
 
-#: inc/classes/admin/settings/class-page.php:1628
+#: inc/classes/admin/settings/class-page.php:1701
 msgid "Rocket Add-ons"
 msgstr "Rocket rozšíření"
 
-#: inc/classes/admin/settings/class-page.php:1629
+#: inc/classes/admin/settings/class-page.php:1702
 msgid "Rocket Add-ons are complementary features extending available options."
 msgstr "Rocket rozšíření jsou doplňkové funkce rozšiřující dostupné možnosti."
 
-#: inc/classes/admin/settings/class-page.php:1642
+#: inc/classes/admin/settings/class-page.php:1715
 msgid "Google Tracking"
 msgstr "Google analytika"
 
-#: inc/classes/admin/settings/class-page.php:1648
+#: inc/classes/admin/settings/class-page.php:1721
 msgid "Improve browser caching for Google Analytics"
 msgstr "Vylepšete mezipaměť pro Google Analytics"
 
-#: inc/classes/admin/settings/class-page.php:1650
+#: inc/classes/admin/settings/class-page.php:1723
 #, php-format
 msgid ""
 "WP Rocket will host these Google scripts locally on your server to help "
@@ -1597,15 +1668,15 @@ msgstr ""
 "doporučení PageSpeed pro <em>Leverage browser caching (využití mezipaměti "
 "prohlížeče)</em>.<br>%1$sVíce informací%2$s"
 
-#: inc/classes/admin/settings/class-page.php:1665
+#: inc/classes/admin/settings/class-page.php:1738
 msgid "Facebook Pixel"
 msgstr "Facebook Pixel"
 
-#: inc/classes/admin/settings/class-page.php:1671
+#: inc/classes/admin/settings/class-page.php:1744
 msgid "Improve browser caching for Facebook Pixel"
 msgstr "Zlepšete mezipaměť pro Facebook Pixel"
 
-#: inc/classes/admin/settings/class-page.php:1673
+#: inc/classes/admin/settings/class-page.php:1746
 #, php-format
 msgid ""
 "WP Rocket will host these Facebook Pixels locally on your server to help "
@@ -1616,16 +1687,16 @@ msgstr ""
 "uspokojit PageSpeed doporučení pro <em>využití mezipaměti "
 "prohlížeče</em>.<br>%1$sVíce informací%2$s"
 
-#: inc/classes/admin/settings/class-page.php:1706
+#: inc/classes/admin/settings/class-page.php:1779
 msgid "Varnish"
 msgstr "Varnish"
 
-#: inc/classes/admin/settings/class-page.php:1712
+#: inc/classes/admin/settings/class-page.php:1785
 msgid "If Varnish runs on your server, you must activate this add-on."
 msgstr ""
 "Pokud na vašem serveru používáte Varnish, musíte aktivovat toto rozšíření."
 
-#: inc/classes/admin/settings/class-page.php:1714
+#: inc/classes/admin/settings/class-page.php:1787
 #, php-format
 msgid ""
 "Varnish cache will be purged each time WP Rocket clears its cache to ensure "
@@ -1634,16 +1705,16 @@ msgstr ""
 "Mezipaměť Varnish bude pročištěna vždy současně s čištěním mezipaměti WP "
 "Rocket, aby byla vždy zajištěna aktuálnost obsahu.<br>%1$sVíce informací%2$s"
 
-#: inc/classes/admin/settings/class-page.php:1729
-#: inc/classes/admin/settings/class-page.php:1789
+#: inc/classes/admin/settings/class-page.php:1802
+#: inc/classes/admin/settings/class-page.php:1862
 msgid "Cloudflare"
 msgstr "Cloudflare"
 
-#: inc/classes/admin/settings/class-page.php:1735
+#: inc/classes/admin/settings/class-page.php:1808
 msgid "Integrate your Cloudflare account with this add-on."
 msgstr "Integrujte svůj účet Cloudflare tímto rozšířením."
 
-#: inc/classes/admin/settings/class-page.php:1736
+#: inc/classes/admin/settings/class-page.php:1809
 msgid ""
 "Provide your account email, global API key, and domain to use options such "
 "as clearing the Cloudflare cache and enabling optimal settings with WP "
@@ -1653,67 +1724,59 @@ msgstr ""
 "možnosti jako je vymazání mezipaměti Cloudflare a aktivovat optimální "
 "nastavení pro WP Rocket."
 
-#: inc/classes/admin/settings/class-page.php:1748
+#: inc/classes/admin/settings/class-page.php:1821
 msgid "Clear the Sucuri cache when WP Rocket’s cache is cleared."
 msgstr "Vymaže společně mezipaměť Sucuri i WP Rocket."
 
-#: inc/classes/admin/settings/class-page.php:1751
+#: inc/classes/admin/settings/class-page.php:1824
 msgid ""
 "Provide your API key to clear the Sucuri cache when WP Rocket’s cache is "
 "cleared."
 msgstr ""
 "Zadejte svůj API klíč pro společné čištění mezipaměti WP Rocket i Sucuri."
 
-#: inc/classes/admin/settings/class-page.php:1759
-#: inc/classes/admin/settings/class-page.php:1907
+#: inc/classes/admin/settings/class-page.php:1832
+#: inc/classes/admin/settings/class-page.php:1981
 msgid "Sucuri"
 msgstr "Sucuri"
 
-#: inc/classes/admin/settings/class-page.php:1765
+#: inc/classes/admin/settings/class-page.php:1838
 msgid "Synchronize Sucuri cache with this add-on."
 msgstr "Synchronizujte mezipaměť Sucuri pomoci tohoto rozšíření."
 
-#: inc/classes/admin/settings/class-page.php:1805
+#: inc/classes/admin/settings/class-page.php:1879
 msgid "Cloudflare credentials"
 msgstr "Údaje ke Cloudflare"
 
-#: inc/classes/admin/settings/class-page.php:1814
+#: inc/classes/admin/settings/class-page.php:1888
 msgid "Cloudflare settings"
 msgstr "Cloudflare nastavení"
 
-#: inc/classes/admin/settings/class-page.php:1828
+#: inc/classes/admin/settings/class-page.php:1902
 msgctxt "Cloudflare"
 msgid "Global API key:"
 msgstr "Globální klíč API:"
 
-#: inc/classes/admin/settings/class-page.php:1829
-msgid ""
-"https://support.cloudflare.com/hc/en-us/articles/200167836-Where-do-I-find-"
-"my-Cloudflare-API-key-"
-msgstr ""
-"https://support.cloudflare.com/hc/en-us/articles/200167836-Where-do-I-find-"
-"my-Cloudflare-API-key-"
-
-#: inc/classes/admin/settings/class-page.php:1829
+#: inc/classes/admin/settings/class-page.php:1903
 msgctxt "Cloudflare"
 msgid "Find your API key"
 msgstr "Nemůžete najít svůj API klíč?"
 
-#: inc/classes/admin/settings/class-page.php:1841
+#: inc/classes/admin/settings/class-page.php:1915
 msgctxt "Cloudflare"
 msgid "Account email"
 msgstr "Přihlašovací email"
 
-#: inc/classes/admin/settings/class-page.php:1850
+#: inc/classes/admin/settings/class-page.php:1924
 msgctxt "Cloudflare"
 msgid "Zone ID"
 msgstr "ID zóny"
 
-#: inc/classes/admin/settings/class-page.php:1860
+#: inc/classes/admin/settings/class-page.php:1934
 msgid "Development mode"
 msgstr "Vývojový režim"
 
-#: inc/classes/admin/settings/class-page.php:1862
+#: inc/classes/admin/settings/class-page.php:1936
 #, php-format
 msgid ""
 "Temporarily activate development mode on your website. This setting will "
@@ -1722,11 +1785,11 @@ msgstr ""
 "Dočasně na webu zapne vývojový režim. Po 3 hodinách se toto nastavení "
 "automaticky vypne. %1$sVíce informací%2$s"
 
-#: inc/classes/admin/settings/class-page.php:1870
+#: inc/classes/admin/settings/class-page.php:1944
 msgid "Optimal settings"
 msgstr "Optimální nastavení"
 
-#: inc/classes/admin/settings/class-page.php:1871
+#: inc/classes/admin/settings/class-page.php:1945
 msgid ""
 "Automatically enhances your Cloudflare configuration for speed, performance "
 "grade and compatibility."
@@ -1734,11 +1797,11 @@ msgstr ""
 "Automaticky vylepší konfiguraci služby Cloudflare pro vyšší rychlost, lepší "
 "výkon a kompatibilitu."
 
-#: inc/classes/admin/settings/class-page.php:1879
+#: inc/classes/admin/settings/class-page.php:1953
 msgid "Relative protocol"
 msgstr "Relativní protokol"
 
-#: inc/classes/admin/settings/class-page.php:1880
+#: inc/classes/admin/settings/class-page.php:1954
 msgid ""
 "Should only be used with Cloudflare's flexible SSL feature. URLs of static "
 "files (CSS, JS, images) will be rewritten to use // instead of http:// or "
@@ -1748,25 +1811,25 @@ msgstr ""
 "statických souborů (CSS, JS, obrázky) budou používat „//“ místo „http://“ "
 "nebo „https://“."
 
-#: inc/classes/admin/settings/class-page.php:1920
+#: inc/classes/admin/settings/class-page.php:1994
 msgid "Sucuri credentials"
 msgstr "Sucuri údaje"
 
-#: inc/classes/admin/settings/class-page.php:1933
+#: inc/classes/admin/settings/class-page.php:2007
 msgctxt "Sucuri"
 msgid ""
 "Firewall API key (for plugin), must be in format <code>{32 characters}/{32 "
 "characters}</code>:"
 msgstr ""
 "API klíč firewallu (pro plugin) musí být ve formátu<code>{32 znaků}/{32 "
-"znaků}</code>"
+"znaků}</code>:"
 
-#: inc/classes/admin/settings/class-page.php:1934
+#: inc/classes/admin/settings/class-page.php:2008
 msgctxt "Sucuri"
 msgid "Find your API key"
 msgstr "Nemůžete najít svůj API klíč?"
 
-#: inc/classes/admin/settings/class-render.php:486
+#: inc/classes/admin/settings/class-render.php:496
 #: inc/deprecated/deprecated.php:1296
 msgid "Upload file and import settings"
 msgstr "Nahrát soubor a importovat nastavení"
@@ -1779,17 +1842,17 @@ msgstr ""
 "Sucuri Rozšíření: API klíč pro Sucuri firewall musí být ve formátu<code>{32 "
 "znaků}/{32 znaků}</code>."
 
-#: inc/classes/admin/settings/class-settings.php:462
+#: inc/classes/admin/settings/class-settings.php:461
 #: inc/deprecated/deprecated.php:1247
 msgid "Settings saved."
 msgstr "Nastavení bylo uloženo."
 
-#: inc/classes/class-wp-rocket-requirements-check.php:148
+#: inc/classes/class-wp-rocket-requirements-check.php:147
 #, php-format
 msgid "To function properly, %1$s %2$s requires at least:"
 msgstr "Pro správnou funkčnost %1$s %2$s je vyžadováno alespoň:"
 
-#: inc/classes/class-wp-rocket-requirements-check.php:152
+#: inc/classes/class-wp-rocket-requirements-check.php:151
 #, php-format
 msgid ""
 "PHP %1$s. To use this WP Rocket version, please ask your web host how to "
@@ -1798,7 +1861,7 @@ msgstr ""
 "PHP %1$s. Pokud chcete používat tuto verzi WP Rocket, požádejte svůj "
 "webhosting o pomoc s upgradem serveru na PHP %1$s nebo vyšší."
 
-#: inc/classes/class-wp-rocket-requirements-check.php:157
+#: inc/classes/class-wp-rocket-requirements-check.php:156
 #, php-format
 msgid ""
 "WordPress %1$s. To use this WP Rocket version, please upgrade WordPress to "
@@ -1807,7 +1870,7 @@ msgstr ""
 "WordPress %1$s. Pokud chcete používat tuto verzi WP Rocket, tak musíte "
 "aktualizovat WordPress na verzi %1$s nebo vyšší."
 
-#: inc/classes/class-wp-rocket-requirements-check.php:160
+#: inc/classes/class-wp-rocket-requirements-check.php:159
 msgid ""
 "If you are not able to upgrade, you can rollback to the previous version by "
 "using the button below."
@@ -1815,7 +1878,7 @@ msgstr ""
 "Pokud nemáte možnost přechodu na požadovanou verzi, můžete WP Rocket "
 "přeinstalovat na předchozí verzi, pomoci níže zobrazeného tlačítka."
 
-#: inc/classes/class-wp-rocket-requirements-check.php:162
+#: inc/classes/class-wp-rocket-requirements-check.php:161
 #: inc/deprecated/deprecated.php:1949
 #, php-format
 msgid "Re-install version %s"
@@ -1868,8 +1931,8 @@ msgid ""
 "Preload encountered an error. Could not gather links on %1$s because of the "
 "following error: %2$s. %3$sLearn more%4$s."
 msgstr ""
-"Během přednačítání nastala chyba. Nepodařilo se získat odkazy z adresy %1$s "
-"kvůli následující chyby: %2$s. %3$sVíce informaci%4$s."
+"Během předběžného načítání nastala chyba. Nepodařilo se získat odkazy z "
+"adresy %1$s kvůli následující chyby: %2$s. %3$sVíce informaci%4$s."
 
 #: inc/classes/preload/class-homepage.php:96
 #, php-format
@@ -1878,9 +1941,9 @@ msgid ""
 " response code: %2$s. Security measures could be preventing access. "
 "%3$sLearn more%4$s."
 msgstr ""
-"Během přednačítání nastala chyba. Nedostupné - %1$s kvůli následujícímu kódu"
-" odpovědi: %2$s.  Chybu mohou způsobovat některá bezpečnostní opatření. "
-"%3$sVíce informaci%4$s."
+"Během předběžného načítání nastala chyba. Nedostupné - %1$s kvůli "
+"následujícímu kódu odpovědi: %2$s.  Chybu mohou způsobovat některá "
+"bezpečnostní opatření. %3$sVíce informaci%4$s."
 
 #: inc/classes/preload/class-homepage.php:102
 #, php-format
@@ -1889,9 +1952,9 @@ msgid ""
 " response code: 404. Please make sure your homepage is accessible in your "
 "browser. %2$sLearn more%3$s."
 msgstr ""
-"Během přednačítání nastala chyba. %1$s je nedostupné kvůli následujícímu "
-"kódu: 404. Vyzkoušejte v prohlížeči, jestli je vaše úvodní stránka dostupná."
-" %2$sVíce informací%3$s."
+"Během předběžného načítání nastala chyba. %1$s je nedostupné kvůli "
+"následujícímu kódu: 404. Vyzkoušejte v prohlížeči, jestli je vaše úvodní "
+"stránka dostupná. %2$sVíce informací%3$s."
 
 #: inc/classes/preload/class-homepage.php:108
 #, php-format
@@ -1900,9 +1963,9 @@ msgid ""
 " response code: 500. Please check with your web host about server access. "
 "%2$sLearn more%3$s."
 msgstr ""
-"Během přednačítání nastala chyba. Nedostupné - %1$s - kvůli následujícímu "
-"stavovému kódu: 500. Požádejte svůj webhosting o informaci dostupnosti "
-"vašeho serveru. %2$sVíce informací%3$s."
+"Během předběžného načítání nastala chyba. Nedostupné - %1$s - kvůli "
+"následujícímu stavovému kódu: 500. Požádejte svůj webhosting o informaci "
+"dostupnosti vašeho serveru. %2$sVíce informací%3$s."
 
 #: inc/classes/preload/class-homepage.php:114
 #, php-format
@@ -1910,8 +1973,8 @@ msgid ""
 "Preload encountered an error. Could not gather links on %1$s because it "
 "returned the following response code: %2$s. %3$sLearn more%4$s."
 msgstr ""
-"Během přednačítání nastala chyba. Nepodařilo se získat odkazy z adresy %1$s "
-"kvůli následující chyby:%2$s. %3$sVíce informací%4$s."
+"Během předběžného načítání nastala chyba. Nepodařilo se získat odkazy z "
+"adresy %1$s kvůli následující chyby:%2$s. %3$sVíce informací%4$s."
 
 #: inc/classes/preload/class-sitemap.php:138
 #, php-format
@@ -1919,8 +1982,8 @@ msgid ""
 "Sitemap preload encountered an error. Could not gather links on %1$s because"
 " of the following error: %2$s. %3$sLearn more%4$s."
 msgstr ""
-"Během přednačítání mapy webu nastala chyba. Nepodařilo se získat odkazy - "
-"%1$s - kvůli následující chyby: %2$s. %3$sVíce informaci%4$s."
+"Během předběžného načítání mapy webu nastala chyba. Nepodařilo se získat "
+"odkazy - %1$s - kvůli následující chyby: %2$s. %3$sVíce informaci%4$s."
 
 #: inc/classes/preload/class-sitemap.php:153
 #, php-format
@@ -1929,9 +1992,9 @@ msgid ""
 "following response code: %2$s. Security measures could be preventing access."
 " %3$sLearn more%4$s."
 msgstr ""
-"Během přednačítání mapy webu nastala chyba. Nepodařilo se získat odkazy - "
-"%1$s - kvůli následující chyby: %2$s.  Chybu mohou způsobovat určitá "
-"bezpečnostní opatření. %3$sVíce informaci%4$s."
+"Během předběžného načítání mapy webu nastala chyba. Nepodařilo se získat "
+"odkazy - %1$s - kvůli následující chyby: %2$s.  Chybu mohou způsobovat "
+"určitá bezpečnostní opatření. %3$sVíce informaci%4$s."
 
 #: inc/classes/preload/class-sitemap.php:158
 #, php-format
@@ -1940,9 +2003,9 @@ msgid ""
 "following response code: 404. Please make sure you entered the correct "
 "sitemap URL and it is accessible in your browser. %2$sLearn more%3$s."
 msgstr ""
-"Během přednačítání mapy webu nastala chyba. %1$s je nedostupné kvůli "
-"následujícímu kódu: 404. Ujistěte se, že jste zadali platnou URL mapy webu, "
-"a vyzkoušejte v prohlížeči, jestli je tato adresa dostupná. %2$sVíce "
+"Během předběžného načítání mapy webu nastala chyba. %1$s je nedostupné kvůli"
+" následujícímu kódu: 404. Ujistěte se, že jste zadali platnou URL mapy webu,"
+" a vyzkoušejte v prohlížeči, jestli je tato adresa dostupná. %2$sVíce "
 "informací%3$s."
 
 #: inc/classes/preload/class-sitemap.php:163
@@ -1952,9 +2015,9 @@ msgid ""
 "following response code: 500. Please check with your web host about server "
 "access. %2$sLearn more%3$s."
 msgstr ""
-"Během přednačítání mapy webu nastala chyba. Nedostupné - %1$s - kvůli "
-"následujícímu stavovému kódu: 500. Požádejte svůj webhosting o informaci "
-"dostupnosti vašeho serveru. %2$sVíce informací%3$s."
+"Během předběžného načítání mapy webu nastala chyba. Nedostupné - %1$s - "
+"kvůli následujícímu stavovému kódu: 500. Požádejte svůj webhosting o "
+"informaci dostupnosti vašeho serveru. %2$sVíce informací%3$s."
 
 #: inc/classes/preload/class-sitemap.php:168
 #, php-format
@@ -1962,8 +2025,8 @@ msgid ""
 "Sitemap preload encountered an error. Could not gather links on %1$s because"
 " it returned the following response code: %2$s. %3$sLearn more%4$s."
 msgstr ""
-"Během přednačítání mapy webu nastala chyba. Nepodařilo se získat odkazy z "
-"adresy %1$s kvůli následující chyby:%2$s. %3$sVíce informací%4$s."
+"Během předběžného načítání mapy webu nastala chyba. Nepodařilo se získat "
+"odkazy z adresy %1$s kvůli následující chyby:%2$s. %3$sVíce informací%4$s."
 
 #: inc/classes/preload/class-sitemap.php:184
 #, php-format
@@ -1971,8 +2034,8 @@ msgid ""
 "Sitemap preload encountered an error. Could not collect links from %1$s "
 "because the file is empty. %2$sLearn more%3$s."
 msgstr ""
-"Během přednačítání mapy webu nastala chyba. Nepodařilo se získat odkazy z "
-"%1$s, protože cílový soubor je prázdný. %2$sVíce informací%3$s."
+"Během předběžného načítání mapy webu nastala chyba. Nepodařilo se získat "
+"odkazy z %1$s, protože cílový soubor je prázdný. %2$sVíce informací%3$s."
 
 #: inc/classes/preload/class-sitemap.php:205
 #, php-format
@@ -1980,11 +2043,144 @@ msgid ""
 "Sitemap preload encountered an error. Could not collect links from %1$s "
 "because of an error during the XML sitemap parsing. %2$sLearn more%3$s."
 msgstr ""
-"Během přednačítání mapy webu nastala chyba. Nepodařilo se získat odkazy z "
-"adresy %1$s, protože během analýzy XML mapy webu nastala chyba. %2$sVíce "
-"informací%3$s."
+"Během předběžného načítání mapy webu nastala chyba. Nepodařilo se získat "
+"odkazy z adresy %1$s, protože během analýzy XML mapy webu nastala chyba. "
+"%2$sVíce informací%3$s."
 
-#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:138
+#: inc/classes/subscriber/Media/class-webp-subscriber.php:267
+#, php-format
+msgid ""
+"You are using %1$s to serve WebP images so you do not need to enable this "
+"option. If you prefer to have WP Rocket serve WebP for you instead, please "
+"disable them from serving in %1$s. %2$sMore info%3$s"
+msgid_plural ""
+"You are using %1$s to serve WebP images so you do not need to enable this "
+"option. If you prefer to have WP Rocket serve WebP for you instead, please "
+"disable them from serving in %1$s. %2$sMore info%3$s"
+msgstr[0] ""
+"Pro poskytování WebP obrázků používáte plugin %1$s, proto tuto možnost "
+"nemusíte zapínat. Chcete-li místo toho využívat WP Rocket, zakažte "
+"poskytování WebP v pluginu %1$s. %2$sVíce Informací%3$s"
+msgstr[1] ""
+"Pro poskytování WebP obrázků používáte plugin %1$s, proto tuto možnost "
+"nemusíte zapínat. Chcete-li místo toho využívat WP Rocket, zakažte "
+"poskytování WebP v pluginu %1$s. %2$sVíce Informací%3$s"
+msgstr[2] ""
+"Pro poskytování WebP obrázků používáte plugin %1$s, proto tuto možnost "
+"nemusíte zapínat. Chcete-li místo toho využívat WP Rocket, zakažte "
+"poskytování WebP v pluginu %1$s. %2$sVíce Informací%3$s"
+msgstr[3] ""
+"Pro poskytování WebP obrázků používáte plugin %1$s, proto tuto možnost "
+"nemusíte zapínat. Chcete-li místo toho využívat WP Rocket, zakažte "
+"poskytování WebP v pluginu %1$s. %2$sVíce Informací%3$s"
+
+#: inc/classes/subscriber/Media/class-webp-subscriber.php:278
+msgid "WebP cache is disabled by filter."
+msgstr "Mezipaměť WebP je zakázána filtrem."
+
+#: inc/classes/subscriber/Media/class-webp-subscriber.php:288
+#: inc/classes/subscriber/Media/class-webp-subscriber.php:314
+#, php-format
+msgid ""
+"You are using %1$s to convert images to WebP. If you want WP Rocket to serve"
+" them for you, activate this option. %2$sMore info%3$s"
+msgid_plural ""
+"You are using %1$s to convert images to WebP. If you want WP Rocket to serve"
+" them for you, activate this option. %2$sMore info%3$s"
+msgstr[0] ""
+"Pro převod obrázků do formátu WebP používáte plugin %1$s . WP Rocket vytvoří"
+" samostatné soubory mezipaměti, které budou poskytovat WebP obrázky. Pokud "
+"chcete, aby je poskytoval WP Rocket, aktivujte tuto možnost. %2$sVíce "
+"informací%3$s"
+msgstr[1] ""
+"Pro převod obrázků do formátu WebP používáte plugin %1$s . WP Rocket vytvoří"
+" samostatné soubory mezipaměti, které budou poskytovat WebP obrázky. Pokud "
+"chcete, aby je poskytoval WP Rocket, aktivujte tuto možnost. %2$sVíce "
+"informací%3$s"
+msgstr[2] ""
+"Pro převod obrázků do formátu WebP používáte plugin %1$s . WP Rocket vytvoří"
+" samostatné soubory mezipaměti, které budou poskytovat WebP obrázky. Pokud "
+"chcete, aby je poskytoval WP Rocket, aktivujte tuto možnost. %2$sVíce "
+"informací%3$s"
+msgstr[3] ""
+"Pro převod obrázků do formátu WebP používáte plugin %1$s . WP Rocket vytvoří"
+" samostatné soubory mezipaměti, které budou poskytovat WebP obrázky. Pokud "
+"chcete, aby je poskytoval WP Rocket, aktivujte tuto možnost. %2$sVíce "
+"informací%3$s"
+
+#: inc/classes/subscriber/Media/class-webp-subscriber.php:300
+#: inc/classes/subscriber/Media/class-webp-subscriber.php:326
+#, php-format
+msgid ""
+"You are using %1$s to convert images to WebP. WP Rocket will create separate"
+" cache files to serve your WebP images. %2$sMore info%3$s"
+msgid_plural ""
+"You are using %1$s to convert images to WebP. WP Rocket will create separate"
+" cache files to serve your WebP images. %2$sMore info%3$s"
+msgstr[0] ""
+"Pro převod obrázků do formátu WebP používáte plugin %1$s . WP Rocket vytvoří"
+" samostatné soubory mezipaměti, které budou poskytovat WebP obrázky. "
+"%2$sVíce informací%3$s"
+msgstr[1] ""
+"Pro převod obrázků do formátu WebP používáte plugin %1$s . WP Rocket vytvoří"
+" samostatné soubory mezipaměti, které budou poskytovat WebP obrázky. "
+"%2$sVíce informací%3$s"
+msgstr[2] ""
+"Pro převod obrázků do formátu WebP používáte plugin %1$s . WP Rocket vytvoří"
+" samostatné soubory mezipaměti, které budou poskytovat WebP obrázky. "
+"%2$sVíce informací%3$s"
+msgstr[3] ""
+"Pro převod obrázků do formátu WebP používáte plugin %1$s . WP Rocket vytvoří"
+" samostatné soubory mezipaměti, které budou poskytovat WebP obrázky. "
+"%2$sVíce informací%3$s"
+
+#: inc/classes/subscriber/Media/class-webp-subscriber.php:347
+#, php-format
+msgid ""
+"You don’t seem to be using a method to create and serve WebP that we are "
+"auto-compatible with. If you are not using WebP do not enable this option. "
+"%1$sMore info%2$s"
+msgstr ""
+"Pravděpodobně nepoužíváte metodu pro vytvoření a poskytování WebP obsahu, s "
+"níž jsme automaticky kompatibilní. Pokud nepoužíváte WebP, tuto možnost "
+"nepovolujte. %1$sVíce informací%2$s"
+
+#: inc/classes/subscriber/Media/class-webp-subscriber.php:352
+msgid "We have not detected any compatible WebP plugin!"
+msgstr "Nebyl zjištěn žádný kompatibilní WebP plugin."
+
+#: inc/classes/subscriber/Media/class-webp-subscriber.php:355
+#, php-format
+msgid ""
+"If you activate this option WP Rocket will create separate cache files to "
+"serve WebP images. Any WebP images you have on your site will be served from"
+" these files to compatible browsers. If you don’t already have WebP images "
+"on your site consider using %1$sImagify%3$s or another supported plugin. "
+"%2$sMore info%3$s"
+msgstr ""
+"Pokud aktivujete tuto volbu, WP Rocket vytvoří samostatné soubory mezipaměti"
+" pro poskytování WebP obrázků. Všechny WebP obrázky, které máte na webu, "
+"budou z těchto souborů poskytovány kompatibilními prohlížeči. Pokud ještě "
+"nemáte na webu WebP obrázky, zvažte použití %1$sImagify%3$s nebo jiného "
+"podporovaného pluginu. %2$sVíce inforamcí%3$s"
+
+#: inc/classes/subscriber/Media/class-webp-subscriber.php:367
+msgid "WP Rocket will create separate cache files to serve your WebP images."
+msgstr ""
+"WP Rocket vytvoří samostatné soubory mezipaměti, které budou poskytovat WebP"
+" obrázky."
+
+#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:77
+msgid "Critical CSS generation is currently running."
+msgstr "Právě běží generování kritického CSS."
+
+#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:82
+#: inc/classes/subscriber/preload/class-preload-subscriber.php:210
+#, php-format
+msgid "Go to the %1$sWP Rocket settings%2$s page to track progress."
+msgstr "Přejděte na %1$s nastavení WP Rocket%2$s a sledujte průběh."
+
+#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:185
 #, php-format
 msgid ""
 "Critical CSS generation is currently running: %1$d of %2$d page types "
@@ -1993,77 +2189,121 @@ msgstr ""
 "Právě probíhá generování kritického CSS: %1$d z %2$d typů obsahu bylo "
 "dokončen. (Pro zobrazení pokroku aktualizujte tuto stránku)"
 
-#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:189
+#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:236
 #, php-format
 msgid "Critical CSS generation finished for %1$d of %2$d page types."
 msgstr "Generování kritického CSS bylo dokončeno pro %1$d z %2$d typů obsahu."
 
-#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:203
+#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:250
 msgid "Critical CSS generation encountered one or more errors."
 msgstr "Během generování kritického CSS nastala jedna nebo více chyb."
 
-#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:203
+#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:250
 msgid "Learn more."
 msgstr "Více informací."
 
 #: inc/classes/subscriber/Tools/class-cache-dir-size-check-subscriber.php:51
+#: inc/classes/subscriber/admin/Database/class-optimization-subscriber.php:87
 #: inc/classes/subscriber/class-facebook-tracking-cache-busting-subscriber.php:97
 #: inc/classes/subscriber/class-google-tracking-cache-busting-subscriber.php:154
-#: inc/common/cron.php:33
 msgid "weekly"
 msgstr "týdně"
 
-#: inc/classes/subscriber/admin/Database/class-optimization-subscriber.php:148
+#: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:105
+#, php-format
+msgid ""
+"Failed to detect the following requirement in your theme: closing %1$s."
+msgid_plural ""
+"Failed to detect the following requirements in your theme: closing %1$s."
+msgstr[0] ""
+"Nepodařilo se identifikovat následující požadavek šablony: uzavírací značky "
+"%1$s."
+msgstr[1] ""
+"Nepodařilo se identifikovat následující požadavky šablony: uzavírací značky "
+"%1$s."
+msgstr[2] ""
+"Nepodařilo se identifikovat následující požadavky šablony: uzavírací značky "
+"%1$s."
+msgstr[3] ""
+"Nepodařilo se identifikovat následující požadavky šablony: uzavírací značky "
+"%1$s."
+
+#: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:111
+#: inc/functions/cloudflare.php:39 inc/functions/cloudflare.php:63
+#: inc/functions/cloudflare.php:76 inc/functions/cloudflare.php:104
+#: inc/functions/cloudflare.php:121 inc/functions/cloudflare.php:478
+#: inc/functions/cloudflare.php:493 inc/functions/cloudflare.php:623
+#, php-format
+msgid "Read the %1$sdocumentation%2$s for further guidance."
+msgstr "Další pokyny naleznete v %1$sdokumentaci%2$s."
+
+#: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:113
+msgid ""
+"https://docs.wp-rocket.me/article/99-pages-not-cached-or-minify-cssjs-not-"
+"working/?utm_source=wp_plugin&utm_medium=wp_rocket#theme"
+msgstr ""
+"https://docs.wp-rocket.me/article/99-pages-not-cached-or-minify-cssjs-not-"
+"working/?utm_source=wp_plugin&utm_medium=wp_rocket#theme"
+
+#: inc/classes/subscriber/admin/Database/class-optimization-subscriber.php:93
+msgid "monthly"
+msgstr "měsíčně"
+
+#: inc/classes/subscriber/admin/Database/class-optimization-subscriber.php:206
 msgid "Database optimization process is running"
 msgstr "Probíhá optimalizace databáze"
 
-#: inc/classes/subscriber/admin/Database/class-optimization-subscriber.php:179
+#: inc/classes/subscriber/admin/Database/class-optimization-subscriber.php:237
 msgid ""
 "Database optimization process is complete. Everything was already optimized!"
 msgstr ""
 "Optimalizace databáze byla dokončena. Všechno již bylo optimalizováno!"
 
-#: inc/classes/subscriber/admin/Database/class-optimization-subscriber.php:182
+#: inc/classes/subscriber/admin/Database/class-optimization-subscriber.php:240
 msgid ""
 "Database optimization process is complete. List of optimized items below:"
 msgstr ""
 "Optimalizace databáze byla dokončena. Níže je zobrazen seznam "
 "optimalizovaných položek:"
 
-#: inc/classes/subscriber/admin/Database/class-optimization-subscriber.php:190
+#: inc/classes/subscriber/admin/Database/class-optimization-subscriber.php:248
 #, php-format
 msgid "%1$d %2$s optimized."
 msgstr "Optimalizováno %1$d %2$s."
 
-#: inc/classes/subscriber/admin/Settings/class-page-subscriber.php:137
+#: inc/classes/subscriber/admin/Settings/class-page-subscriber.php:123
 #: inc/deprecated/deprecated.php:1788
 #: views/settings/page-sections/tools.php:33
 msgid "Tools"
 msgstr "Nástroje"
 
-#: inc/classes/subscriber/admin/Settings/class-page-subscriber.php:138
+#: inc/classes/subscriber/admin/Settings/class-page-subscriber.php:124
 msgid "Import, Export, Rollback"
 msgstr "Import, export, návrat k předchozí verzi"
 
-#: inc/classes/subscriber/admin/Settings/class-page-subscriber.php:160
+#: inc/classes/subscriber/admin/Settings/class-page-subscriber.php:146
 #: views/settings/page-sections/imagify.php:13
 msgid "Image Optimization"
 msgstr "Optimalizace obrázků"
 
-#: inc/classes/subscriber/admin/Settings/class-page-subscriber.php:161
+#: inc/classes/subscriber/admin/Settings/class-page-subscriber.php:147
 msgid "Compress your images"
 msgstr "Zmenší velikost obrázků"
 
-#: inc/classes/subscriber/preload/class-preload-subscriber.php:212
-#, php-format
-msgid ""
-"Preload: WP Rocket has started preloading your website. Go to the %1$sWP "
-"Rocket settings%2$s page to track progress."
-msgstr ""
-"Předběžné načítání: WP Rocket začalo přednačítat váš web. Pro sledování "
-"postupu, přejděte na %1$sNastavení WP Rocket%2$s"
+#: inc/classes/subscriber/admin/Settings/class-page-subscriber.php:165
+#: views/settings/page-sections/tutorials.php:44
+msgid "Tutorials"
+msgstr "Návody"
 
-#: inc/classes/subscriber/preload/class-preload-subscriber.php:246
+#: inc/classes/subscriber/admin/Settings/class-page-subscriber.php:166
+msgid "Getting started and how to videos"
+msgstr "Videa s návody nejen pro začátečníky"
+
+#: inc/classes/subscriber/preload/class-preload-subscriber.php:205
+msgid "Preload: WP Rocket has started preloading your website."
+msgstr "Předběžné načtení: WP Rocket zahájilo předběžné načítání webu."
+
+#: inc/classes/subscriber/preload/class-preload-subscriber.php:249
 #, php-format
 msgid ""
 "Preload: %1$s uncached page has now been preloaded. (refresh to see "
@@ -2072,25 +2312,40 @@ msgid_plural ""
 "Preload: %1$s uncached pages have now been preloaded. (refresh to see "
 "progress)"
 msgstr[0] ""
+"Předběžné načtení: Stránka %1$s bez mezipaměti byla nyní předběžně načtena. "
+"(aktualizujte pro zobrazení průběhu)"
 msgstr[1] ""
+"Předběžné načtení: %1$s stránky bez mezipaměti byly nyní předběžně načteny. "
+"(aktualizujte pro zobrazení průběhu)"
 msgstr[2] ""
+"Předběžné načtení: %1$s stránky bez mezipaměti byly nyní předběžně načteny. "
+"(aktualizujte pro zobrazení průběhu)"
 msgstr[3] ""
+"Předběžné načtení: %1$s stránek bez mezipaměti bylo nyní předběžně načteno. "
+"(aktualizujte pro zobrazení průběhu)"
 
-#: inc/classes/subscriber/preload/class-preload-subscriber.php:255
+#: inc/classes/subscriber/preload/class-preload-subscriber.php:258
 msgid "The following error happened during gathering of the URLs to preload:"
 msgid_plural ""
 "The following errors happened during gathering of the URLs to preload:"
 msgstr[0] ""
+"Při shromažďování URL adres k předběžnému načtení došlo k následující chybě:"
 msgstr[1] ""
+"Při shromažďování URL adres k předběžnému načtení došlo k následujícím "
+"chybám:"
 msgstr[2] ""
+"Při shromažďování URL adres k předběžnému načtení došlo k následujícím "
+"chybám:"
 msgstr[3] ""
+"Při shromažďování URL adres k předběžnému načtení došlo k následujícím "
+"chybám:"
 
-#: inc/classes/subscriber/preload/class-preload-subscriber.php:308
+#: inc/classes/subscriber/preload/class-preload-subscriber.php:310
 #, php-format
 msgid "Preload complete: %d pages have been cached."
-msgstr ""
+msgstr "Předběžné načtení dokončeno: %d stránek bylo uloženo do mezipaměti."
 
-#: inc/classes/subscriber/preload/class-sitemap-preload-subscriber.php:117
+#: inc/classes/subscriber/preload/class-sitemap-preload-subscriber.php:115
 #, php-format
 msgid ""
 "%1$sSimpleXML PHP extension%2$s is not enabled on your server. Please "
@@ -2111,9 +2366,17 @@ msgid_plural ""
 "Please deactivate the following %s options which conflict with WP Rocket "
 "features:"
 msgstr[0] ""
+"Deaktivujte následující možnost %s, která je v konfliktu s funkcemi WP "
+"Rocket:"
 msgstr[1] ""
+"Deaktivujte následující možnosti %s, které jsou v konfliktu s funkcemi WP "
+"Rocket:"
 msgstr[2] ""
+"Deaktivujte následující možnosti %s, které jsou v konfliktu s funkcemi WP "
+"Rocket:"
 msgstr[3] ""
+"Deaktivujte následující možnosti %s, které jsou v konfliktu s funkcemi WP "
+"Rocket:"
 
 #: inc/classes/subscriber/third-party/plugins/Optimization/class-hummingbird-subscriber.php:145
 #, php-format
@@ -2172,12 +2435,16 @@ msgstr ""
 "%1$s %2$sprostředek optimalizace%3$s je v konfliktu s WP Rocket "
 "%2$soptimalizací souborů%3$s"
 
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:123
+#: inc/classes/subscriber/third-party/plugins/class-smush-subscriber.php:65
+msgid "Smush"
+msgstr "Smush"
+
+#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:122
 #, php-format
 msgid "Sucuri cache purge error: %s"
 msgstr "Sucuri chyba vyprázdnění mezipaměti: %s"
 
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:128
+#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:127
 msgid ""
 "The Sucuri cache is being cleared. Note that it may take up to two minutes "
 "for it to be fully flushed."
@@ -2185,45 +2452,45 @@ msgstr ""
 "Čištění mezipaměti Sucuri bylo zahájeno. Nezapomeňte, že tato akce může "
 "trvat až dvě minuty."
 
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:242
+#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:240
 msgid "Sucuri firewall API key was not found."
 msgstr "Sucuri API klíč firewallu nebyl nalezen."
 
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:251
+#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:249
 msgid "Sucuri firewall API key is invalid."
 msgstr "Sucuri API klíč firewallu je neplatný."
 
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:303
+#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:301
 msgid "Error when contacting Sucuri firewall API."
 msgstr "Chyba při kontaktování Sucuri firewall API."
 
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:313
+#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:311
 #, php-format
 msgid "Error when contacting Sucuri firewall API. Error message was: %s"
 msgstr ""
 "Chyba při kontaktování Sucuri firewall API. Chybová zpráva je následující: "
 "%s"
 
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:324
+#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:322
 msgid "Could not get a response from the Sucuri firewall API."
 msgstr "Nepodařilo se dostat odpověď od Sucuri firewall API."
 
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:335
+#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:333
 msgid "Got an invalid response from the Sucuri firewall API."
 msgstr "Byla přijata neplatná odpověď od Sucuri firewall API."
 
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:345
+#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:343
 msgid "The Sucuri firewall API returned an unknown error."
 msgstr "Sucuri firewall API vrátilo neznámou chybu."
 
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:348
+#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:346
 #, php-format
 msgid "The Sucuri firewall API returned the following error: %s"
 msgid_plural "The Sucuri firewall API returned the following errors: %s"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "Sucuri firewall API vrátilo následující chybu: %s"
+msgstr[1] "Sucuri firewall API vrátilo následující chyby: %s"
+msgstr[2] "Sucuri firewall API vrátilo následující chyby: %s"
+msgstr[3] "Sucuri firewall API vrátilo následující chyby: %s"
 
 #: inc/classes/traits/trait-updater-api-tools.php:53
 #: inc/deprecated/3.3.php:760 inc/deprecated/3.3.php:769
@@ -2237,57 +2504,61 @@ msgstr ""
 "nastavení vašeho serveru. Pokud máte nadále problémy, <a "
 "href=\"%s\">kontaktujte technickou podporu</a>."
 
-#: inc/common/admin-bar.php:106 inc/common/admin-bar.php:260
+#: inc/common/admin-bar.php:124 inc/common/admin-bar.php:310
 #: inc/functions/i18n.php:39 inc/functions/i18n.php:48
 msgid "All languages"
 msgstr "Všechny jazyky"
 
-#: inc/common/admin-bar.php:133
+#: inc/common/admin-bar.php:151
 msgid "Clear this post"
 msgstr "Vymazat mezipaměť tohoto příspěvku"
 
-#: inc/common/admin-bar.php:147
+#: inc/common/admin-bar.php:165
 msgid "Purge this URL"
 msgstr "Vymazat mezipaměť pro tuto URL"
 
-#: inc/common/admin-bar.php:163
+#: inc/common/admin-bar.php:190
 msgid "Purge OPcache"
 msgstr "Vyprázdnit OPcache"
 
-#: inc/common/admin-bar.php:180
+#: inc/common/admin-bar.php:209
 msgid "Regenerate Critical Path CSS"
 msgstr "Znovu vygenerovat kritické CSS"
 
-#: inc/common/admin-bar.php:196
+#: inc/common/admin-bar.php:227
 msgid "Clear Cloudflare cache"
 msgstr "Vymazat mezipaměť Cloudflare"
 
-#: inc/common/admin-bar.php:217 inc/common/admin-bar.php:272
-#: views/settings/page-sections/dashboard.php:135
+#: inc/common/admin-bar.php:245
+msgid "Purge Sucuri cache"
+msgstr "Vyprázdnit Sucuri mezipaměť"
+
+#: inc/common/admin-bar.php:268 inc/common/admin-bar.php:322
+#: views/settings/page-sections/dashboard.php:136
 msgid "Preload cache"
 msgstr "Přednačíst mezipaměť"
 
-#: inc/common/admin-bar.php:287 views/settings/partials/documentation.php:13
+#: inc/common/admin-bar.php:338 views/settings/partials/documentation.php:13
 msgid "Documentation"
 msgstr "Dokumentace"
 
-#: inc/common/cron.php:24
+#: inc/common/purge.php:450
+msgid "OPcache purge failed."
+msgstr "Vyprázdnění OPcache se nezdařilo."
+
+#: inc/common/purge.php:455
+msgid "OPcache successfully purged"
+msgstr "OPcache byla úspěšně vyprázdněna"
+
+#: inc/common/purge.php:487
 #, php-format
-msgid "%s clear"
-msgstr "Vyprázdnit %s"
+msgid "<strong>WP Rocket:</strong> %s"
+msgstr "<strong>WP Rocket:</strong> %s"
 
-#: inc/common/cron.php:39
-msgid "monthly"
-msgstr "měsíčně"
-
-#: inc/common/purge.php:456
-#, php-format
-msgid "Cloudflare cache purge error: %s"
-msgstr "Cloudflare chyba vyprázdnění mezipaměti: %s"
-
-#: inc/common/purge.php:461
-msgid "Cloudflare cache successfully purged"
-msgstr "Cloudflare mezipaměť byla úspěšně vyprázdněna"
+#: inc/common/purge.php:492
+msgid "<strong>WP Rocket:</strong> Cloudflare cache successfully purged."
+msgstr ""
+"<strong>WP Rocket:</strong> Cloudflare mezipaměť byla úspěšně vyprázdněna."
 
 #: inc/deprecated/3.2.php:51 views/settings/page-sections/imagify.php:35
 msgid "Activate Imagify"
@@ -2322,6 +2593,14 @@ msgid ""
 msgstr ""
 "Předběžné načítání map webu: %d neuložených stránek v mezipaměti bylo "
 "předběžně načteno. (obnovte pro zobrazení postupu)"
+
+#: inc/deprecated/3.4.php:17
+msgid "Choose a domain from the list"
+msgstr "Vyberte doménu ze seznamu"
+
+#: inc/deprecated/3.4.php:30
+msgid "No domain available in your Cloudflare account"
+msgstr "V účtu Cloudflare není k dispozici žádná doména"
 
 #: inc/deprecated/deprecated.php:242
 msgid "<strong>JS</strong> files with Deferred Loading JavaScript"
@@ -2412,7 +2691,7 @@ msgstr "Obrázky"
 msgid "Add CNAME"
 msgstr "Přidat CNAME"
 
-#: inc/deprecated/deprecated.php:1708
+#: inc/deprecated/deprecated.php:1708 views/settings/partials/sidebar.php:14
 msgid "Watch the video"
 msgstr "Přehrát video"
 
@@ -2449,94 +2728,128 @@ msgid_plural ""
 "There seems to be an issue validating your license. You can see the error "
 "messages below."
 msgstr[0] ""
+"Během ověřování licence nastala chyba. Přečtěte si následující chybovou "
+"zprávu."
 msgstr[1] ""
+"Během ověřování licence nastala chyba. Přečtěte si následující chybové "
+"zprávy."
 msgstr[2] ""
+"Během ověřování licence nastala chyba. Přečtěte si následující chybové "
+"zprávy."
 msgstr[3] ""
+"Během ověřování licence nastala chyba. Přečtěte si následující chybové "
+"zprávy."
 
-#: inc/functions/admin.php:361
+#: inc/functions/admin.php:360
 msgid "Server type:"
 msgstr "Typ serveru:"
 
-#: inc/functions/admin.php:370
+#: inc/functions/admin.php:369
 msgid "PHP version number:"
 msgstr "Verze PHP:"
 
-#: inc/functions/admin.php:379
+#: inc/functions/admin.php:378
 msgid "WordPress version number:"
 msgstr "Verze WordPressu:"
 
-#: inc/functions/admin.php:388
+#: inc/functions/admin.php:387
 msgid "WordPress multisite:"
 msgstr "Síť webů WordPressu:"
 
-#: inc/functions/admin.php:397
+#: inc/functions/admin.php:396
 msgid "Current theme:"
 msgstr "Aktuální šablona:"
 
-#: inc/functions/admin.php:406
+#: inc/functions/admin.php:405
 msgid "Current site language:"
 msgstr "Aktuální jazyk webu:"
 
-#: inc/functions/admin.php:415
+#: inc/functions/admin.php:414
 msgid "Active plugins:"
 msgstr "Aktivované pluginy:"
 
-#: inc/functions/admin.php:418
+#: inc/functions/admin.php:417
 msgid "Plugin names of all active plugins"
 msgstr "Názvy všech aktivovaných pluginů"
 
-#: inc/functions/admin.php:424
+#: inc/functions/admin.php:423
 msgid "Anonymized WP Rocket settings:"
 msgstr "Anonymizované WP Rocket nastavení:"
 
-#: inc/functions/admin.php:427
+#: inc/functions/admin.php:426
 msgid "Which WP Rocket settings are active"
 msgstr "Jaká nastavení pluginu WP Rocket jsou aktivní"
 
-#: inc/functions/cloudflare.php:14
+#: inc/functions/cloudflare.php:18 inc/functions/cloudflare.php:141
 msgid ""
-"Curl functions are disabled, they are required for the Cloudflare Add-on to "
-"work correctly."
+"Curl is disabled on your server. Please ask your host to enable it. This is "
+"required for the Cloudflare Add-on to work correctly."
 msgstr ""
-"cURL funkce jsou zakázány, jsou potřebné pro správnou funkčnost Cloudflare "
-"rozšíření"
+"cURL funkce je zakázána. Požádejte technickou podporu hostingu, aby cURL "
+"aktivovala. Tato funkce je nezbytná pro správnou funkčnost Cloudflare "
+"rozšíření."
 
-#: inc/functions/cloudflare.php:21
-msgid "Cloudflare Email and API key are not set"
-msgstr "Cloudflare email a API klíč nejsou nastaveny"
-
-#: inc/functions/cloudflare.php:52
+#: inc/functions/cloudflare.php:26
 #, php-format
-msgid "Missing Cloudflare zone ID. %s could not fix this automatically."
+msgid ""
+"Cloudflare email, API key and Zone ID are not set. Read the "
+"%1$sdocumentation%2$s for further guidance."
 msgstr ""
-"Chybí ID zóny Cloudflare. %s nemohlo tento problém vyřešit automaticky."
+"Cloudflare email, API klíč a Zone ID nejsou nastaveny. Další pokyny "
+"naleznete v %1$sdokumentaci%2$s."
 
-#: inc/functions/cloudflare.php:58
-#, php-format
-msgid "Read the %1$sdocumentation%2$s for further guidance."
-msgstr "Další pokyny naleznete v %1$sdokumentaci%2$s."
-
-#: inc/functions/cloudflare.php:60
+#: inc/functions/cloudflare.php:28 inc/functions/cloudflare.php:41
+#: inc/functions/cloudflare.php:65 inc/functions/cloudflare.php:78
+#: inc/functions/cloudflare.php:106 inc/functions/cloudflare.php:123
+#: inc/functions/cloudflare.php:154 inc/functions/cloudflare.php:480
+#: inc/functions/cloudflare.php:495 inc/functions/cloudflare.php:625
 msgid ""
 "https://docs.wp-rocket.me/article/18-using-wp-rocket-with-"
-"cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket"
+"cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket#add-on"
 msgstr ""
 "https://docs.wp-rocket.me/article/18-using-wp-rocket-with-"
-"cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket"
+"cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket#add-on"
+
+#: inc/functions/cloudflare.php:35
+msgid "Missing Cloudflare Zone ID."
+msgstr "Chybí Cloudflare Zone ID."
+
+#: inc/functions/cloudflare.php:59 inc/functions/cloudflare.php:117
+#: inc/functions/cloudflare.php:489 inc/functions/cloudflare.php:619
+msgid "Incorrect Cloudflare email address or API key."
+msgstr "Chybná Cloudflare emailová adresa nebo API klíč."
+
+#: inc/functions/cloudflare.php:72 inc/functions/cloudflare.php:474
+msgid "Incorrect Cloudflare Zone ID."
+msgstr "Neplatné Cloudflare Zone ID."
 
 #: inc/functions/cloudflare.php:100
+msgid "It looks like your domain is not set up on Cloudflare."
+msgstr "Tato doména není v Cloudflare nastavena."
+
+#: inc/functions/cloudflare.php:152
+#, php-format
+msgid ""
+"Cloudflare email and API key are not set. Read the %1$sdocumentation%2$s for"
+" further guidance."
+msgstr ""
+"Cloudflare email a API klíč nejsou nastaveny. Další pokyny naleznete v "
+"%1$sdokumentaci%2$s."
+
+#: inc/functions/cloudflare.php:217
 msgid "Connection to Cloudflare failed"
 msgstr "Připojení ke Cloudflare selhalo"
 
-#: inc/functions/cloudflare.php:122
-msgid "Choose a domain from the list"
-msgstr "Vyberte doménu ze seznamu"
+#: inc/functions/cloudflare.php:700 inc/functions/cloudflare.php:748
+#, php-format
+msgid "Cloudflare cache purge error: %s"
+msgstr "Cloudflare chyba vyprázdnění mezipaměti: %s"
 
-#: inc/functions/cloudflare.php:135
-msgid "No domain available in your Cloudflare account"
-msgstr "V účtu Cloudflare není k dispozici žádná doména"
+#: inc/functions/cloudflare.php:705 inc/functions/cloudflare.php:753
+msgid "Cloudflare cache successfully purged"
+msgstr "Cloudflare mezipaměť byla úspěšně vyprázdněna"
 
-#: inc/functions/options.php:580 inc/functions/options.php:619
+#: inc/functions/options.php:531 inc/functions/options.php:570
 msgid ""
 "License validation failed. Our server could not resolve the request from "
 "your website."
@@ -2544,7 +2857,7 @@ msgstr ""
 "Ověřování licence se nezdařilo. Nepodařilo se navázat spojeni mezi web a "
 "našim serverem."
 
-#: inc/functions/options.php:580 inc/functions/options.php:619
+#: inc/functions/options.php:531 inc/functions/options.php:570
 #, php-format
 msgid ""
 "Try clicking %1$sSave Changes%2$s below. If the error persists, follow "
@@ -2553,7 +2866,7 @@ msgstr ""
 "Zkuste níže kliknout na %1$sUložit změny%2$s. Pokud problém přetrvává, "
 "postupujte podle %3$stohoto návodu%4$s."
 
-#: inc/functions/options.php:596
+#: inc/functions/options.php:547
 msgid ""
 "License validation failed. You may be using a nulled version of the plugin. "
 "Please do the following:"
@@ -2561,85 +2874,85 @@ msgstr ""
 "Ověření licence se nezdařilo. Možná používáte nulovou verzi tohoto pluginu. "
 "Postupujte podle následujících kroků:"
 
-#: inc/functions/options.php:596 inc/functions/options.php:638
+#: inc/functions/options.php:547 inc/functions/options.php:589
 #, php-format
 msgid "Login to your WP Rocket %1$saccount%2$s"
 msgstr "Přihlaste se ke svému WP Rocket %1$súčtu%2$s"
 
-#: inc/functions/options.php:596 inc/functions/options.php:638
+#: inc/functions/options.php:547 inc/functions/options.php:589
 msgid "Download the zip file"
 msgstr "Stáhněte soubor zip"
 
-#: inc/functions/options.php:596 inc/functions/options.php:638
+#: inc/functions/options.php:547 inc/functions/options.php:589
 msgid "Reinstall"
 msgstr "Přeinstalujte plugin"
 
-#: inc/functions/options.php:596
+#: inc/functions/options.php:547
 #, php-format
 msgid ""
 "If you do not have a WP Rocket account, please %1$spurchase a license%2$s."
 msgstr "Pokud nemáte účet u WP Rocket, %1$skupte si licenci%2$s."
 
-#: inc/functions/options.php:604
+#: inc/functions/options.php:555
 msgid ""
 "License validation failed. This user account does not exist in our database."
 msgstr ""
 "Ověřování licence se nezdařilo. Tento uživatelský účet v naši databázi "
 "neexistuje."
 
-#: inc/functions/options.php:604
+#: inc/functions/options.php:555
 msgid "To resolve, please contact support."
 msgstr "Kontaktujte, prosím, technickou podporu."
 
-#: inc/functions/options.php:612
+#: inc/functions/options.php:563
 msgid "License validation failed. This user account is blacklisted."
 msgstr "Ověřování licence se nezdařilo. Tento uživatelský účet byl zakázán."
 
-#: inc/functions/options.php:612
+#: inc/functions/options.php:563
 #, php-format
 msgid "Please see %1$sthis guide%2$s for more info."
 msgstr "Pro více informací se podívejte na %1$stento návod%2$s."
 
-#: inc/functions/options.php:632
+#: inc/functions/options.php:583
 msgid "Your license is not valid."
 msgstr "Vaše licence je neplatná."
 
-#: inc/functions/options.php:632
+#: inc/functions/options.php:583
 #, php-format
 msgid "Make sure you have an active %1$sWP Rocket license%2$s."
 msgstr "Ujistěte se, že máte aktivní %1$sWP Rocket licenci%2$s."
 
-#: inc/functions/options.php:634
+#: inc/functions/options.php:585
 msgid "You have added as many sites as your current license allows."
 msgstr "Přidali jste maximální počet webů ke svým zakoupeným licencím."
 
-#: inc/functions/options.php:634
+#: inc/functions/options.php:585
 #, php-format
 msgid ""
 "Upgrade your %1$saccount%2$s or %3$stransfer your license%2$s to this "
 "domain."
 msgstr "Upgradujte %1$súčet%2$s, nebo%3$spřeveďte licenci%2$s na tuto doménu."
 
-#: inc/functions/options.php:636
+#: inc/functions/options.php:587
 msgid "This website is not allowed."
 msgstr "Tato webová stránka není povolena."
 
-#: inc/functions/options.php:636
+#: inc/functions/options.php:587
 #, php-format
 msgid "Please %1$scontact support%2$s."
 msgstr "%1$sKontaktujte technickou podporu%2$s."
 
-#: inc/functions/options.php:638
+#: inc/functions/options.php:589
 msgid "This license key is not recognized."
 msgstr "Licenční klíč nebyl rozpoznán."
 
-#: inc/functions/options.php:638
+#: inc/functions/options.php:589
 #, php-format
 msgid "If the issue persists, please %1$scontact support%2$s."
 msgstr ""
 "Pokud problém přetrvává, neváhejte %1$skontaktovat technickou podporu%2$s."
 
-#: inc/functions/options.php:644
+#: inc/functions/options.php:595
 #, php-format
 msgid "License validation failed: %s"
 msgstr "Ověření licence se nezdařilo: %s"
@@ -2935,14 +3248,14 @@ msgstr "Import nastavení"
 
 #: views/settings/fields/one-click-addon.php:39
 #: views/settings/fields/rocket-addon.php:31
-#: views/settings/fields/sliding-checkbox.php:24 views/settings/page.php:54
+#: views/settings/fields/sliding-checkbox.php:24 views/settings/page.php:55
 msgctxt "Active state of checkbox"
 msgid "On"
 msgstr "Zap"
 
 #: views/settings/fields/one-click-addon.php:40
 #: views/settings/fields/rocket-addon.php:32
-#: views/settings/fields/sliding-checkbox.php:25 views/settings/page.php:55
+#: views/settings/fields/sliding-checkbox.php:25 views/settings/page.php:56
 msgctxt "Inactive state of checkbox"
 msgid "Off"
 msgstr "Vyp"
@@ -2960,22 +3273,22 @@ msgstr "Upravit nastavení"
 msgid "Cloudflare Cache"
 msgstr "Cloudflare mezipaměť"
 
-#: views/settings/page-sections/cloudflare.php:33
-#: views/settings/page-sections/sucuri.php:34
+#: views/settings/page-sections/cloudflare.php:34
+#: views/settings/page-sections/sucuri.php:35
 #, php-format
 msgid "Purges cached resources for your website. %s"
 msgstr "Vyprázdní zdroje mezipaměti pro váš web. %s"
 
-#: views/settings/page-sections/cloudflare.php:34
+#: views/settings/page-sections/cloudflare.php:35
 msgid "https://support.cloudflare.com/hc/en-us/articles/200169246"
 msgstr "https://support.cloudflare.com/hc/en-us/articles/200169246"
 
-#: views/settings/page-sections/cloudflare.php:34
-#: views/settings/page-sections/sucuri.php:35
+#: views/settings/page-sections/cloudflare.php:35
+#: views/settings/page-sections/sucuri.php:36
 msgid "Learn more"
 msgstr "Více informací"
 
-#: views/settings/page-sections/cloudflare.php:40
+#: views/settings/page-sections/cloudflare.php:44
 msgid "Clear all Cloudflare cache files"
 msgstr "Vymzata veškeré soubory Cloudflare mezipaměti"
 
@@ -3030,42 +3343,42 @@ msgstr "Zobrazit můj účet"
 msgid "Quick Actions"
 msgstr "Rychlé akce"
 
-#: views/settings/page-sections/dashboard.php:109
+#: views/settings/page-sections/dashboard.php:110
 msgid "Remove all cached files"
 msgstr "Odstranit veškeré soubory mezipaměti"
 
-#: views/settings/page-sections/dashboard.php:129
+#: views/settings/page-sections/dashboard.php:130
 msgid "Start cache preloading"
-msgstr "Zahájit přednačítání mezipaměti"
+msgstr "Zahájit předběžné načítání mezipaměti"
 
-#: views/settings/page-sections/dashboard.php:147
+#: views/settings/page-sections/dashboard.php:154
 msgid "Purge OPCache content"
 msgstr "Vyprázdnit obsah OPcache"
 
-#: views/settings/page-sections/dashboard.php:153
+#: views/settings/page-sections/dashboard.php:160
 msgid "Purge OPCache"
 msgstr "Vyprázdnit OPcache"
 
-#: views/settings/page-sections/dashboard.php:164
-#: views/settings/page-sections/dashboard.php:170
+#: views/settings/page-sections/dashboard.php:171
+#: views/settings/page-sections/dashboard.php:177
 msgid "Regenerate Critical CSS"
 msgstr "Znovu vygenerovat kritické CSS"
 
-#: views/settings/page-sections/dashboard.php:186
+#: views/settings/page-sections/dashboard.php:194
 msgid "Frequently Asked Questions"
 msgstr "Často kladené dotazy"
 
-#: views/settings/page-sections/dashboard.php:199
+#: views/settings/page-sections/dashboard.php:207
 msgid "Still cannot find a solution?"
 msgstr "Pořád nemůžete najít řešení?"
 
-#: views/settings/page-sections/dashboard.php:200
+#: views/settings/page-sections/dashboard.php:208
 msgid ""
 "Submit a ticket and get help from our friendly and knowledgeable Rocketeers."
 msgstr ""
 "Napište na technickou podporu, kde se vám budou věnovat naši odborníci."
 
-#: views/settings/page-sections/dashboard.php:208
+#: views/settings/page-sections/dashboard.php:216
 msgid "Ask support"
 msgstr "Zeptat se podpory"
 
@@ -3109,7 +3422,7 @@ msgstr "Web Imagify"
 
 #: views/settings/page-sections/imagify.php:28
 msgid "Review of Image Compression Plugins"
-msgstr "Porovnání kompresních pluginů."
+msgstr "Porovnání kompresních pluginů"
 
 #: views/settings/page-sections/imagify.php:37
 msgid "Install Imagify"
@@ -3137,9 +3450,9 @@ msgstr ""
 "https://docs.wp-rocket.me/article/100-resolving-problems-with-license-"
 "validation/?utm_source=wp_plugin&utm_medium=wp_rocket"
 
-#: views/settings/page-sections/sucuri.php:41
+#: views/settings/page-sections/sucuri.php:45
 msgid "Clear all Sucuri cache files"
-msgstr "Vzmazat veškeré soubory mezipaměti Sucuri "
+msgstr "Vzmazat veškeré soubory mezipaměti Sucuri"
 
 #: views/settings/page-sections/tools.php:20
 #, php-format
@@ -3198,6 +3511,50 @@ msgstr "Režim ladění"
 msgid "Create a debug log file."
 msgstr "Vytvoření souboru záznamu ladění."
 
+#: views/settings/page-sections/tutorials.php:12
+#: views/settings/partials/getting-started.php:18
+msgid "Getting Started"
+msgstr "Začínáme"
+
+#: views/settings/page-sections/tutorials.php:14
+msgid "Getting Started with WP Rocket"
+msgstr "Začínáme s WP Rocket"
+
+#: views/settings/page-sections/tutorials.php:15
+#: views/settings/partials/getting-started.php:12
+msgid "Finding the Best Settings for Your Site"
+msgstr "Hledání nejlepšího nastavení pro váš web"
+
+#: views/settings/page-sections/tutorials.php:16
+#: views/settings/partials/getting-started.php:13
+msgid "How to Check if WP Rocket is Caching Your Site"
+msgstr "Jak zjistit jestli WP Rocket cachuje váš web"
+
+#: views/settings/page-sections/tutorials.php:17
+#: views/settings/partials/getting-started.php:14
+msgid "How to Measure the Speed of Your Site"
+msgstr "Jak měřit rychlost vašeho webu"
+
+#: views/settings/page-sections/tutorials.php:23
+msgid "Troubleshooting Display Issues with File Optimization"
+msgstr "Řešení potíží se zobrazováním obsahu při optimalizaci souborů"
+
+#: views/settings/page-sections/tutorials.php:24
+msgid "How to Find the Right JavaScript to Exclude"
+msgstr "Jak najít ten pravý JavaScript pro vyloučení"
+
+#: views/settings/page-sections/tutorials.php:25
+msgid "How External Content Slows Your Site"
+msgstr "Jak externí obsah zpomaluje váš web"
+
+#: views/settings/page-sections/tutorials.php:31
+msgid "How Preloading Works"
+msgstr "Jak funguje předběžné načítání"
+
+#: views/settings/page-sections/tutorials.php:37
+msgid "Set Up the Cloudflare Add-on"
+msgstr "Nastavení rozšíření pro Cloudflare"
+
 #: views/settings/page.php:16
 msgid "WP Rocket Settings"
 msgstr "WP Rocket nastavení"
@@ -3211,15 +3568,15 @@ msgstr "verze %s"
 msgid "Save Changes"
 msgstr "Uložit změny"
 
-#: views/settings/page.php:56
+#: views/settings/page.php:57
 msgid "Show Sidebar"
 msgstr "Zobrazit postranní panel"
 
-#: views/settings/page.php:75
+#: views/settings/page.php:76
 msgid "Thanks for choosing to participate in the WP Rocket beta program!"
 msgstr "Děkujeme Vám za účast ve WP Rocket beta programu!"
 
-#: views/settings/page.php:76
+#: views/settings/page.php:77
 msgid ""
 "A beta version is usually one that has new features and improvements, but we"
 " want to test it a little more before full launch."
@@ -3227,7 +3584,7 @@ msgstr ""
 "Beta verze je většinou, vydání, které obsahuje nové funkce a vylepšení, "
 "které ještě potřebujeme trochu otestovat, než je vydáme pro všechny."
 
-#: views/settings/page.php:77
+#: views/settings/page.php:78
 msgid ""
 "We’d love it if you took our beta versions for a ride, but please keep in "
 "mind that it might be less stable than our other releases. Don’t worry, you "
@@ -3237,7 +3594,7 @@ msgstr ""
 "tyto verze mohou být méně stabilní, než naše ostatní vydání. Nebojte, "
 "kdykoliv se však můžete vrátit zpět k oficiální verzi našeho pluginu."
 
-#: views/settings/page.php:78
+#: views/settings/page.php:79
 msgid ""
 "Your mission: please send all feedback about our beta versions, including "
 "bug reports, to support@wp-rocket.me"
@@ -3245,16 +3602,16 @@ msgstr ""
 "Vaše mise: posílejte nám prosím veškerou zpětnou vazbu ohledně beta verzí, i"
 " hlášení nalezených chyb na adresu support@wp-rocket.me"
 
-#: views/settings/page.php:80
+#: views/settings/page.php:81
 msgid "If you don’t want to join the beta program, simply close this window."
 msgstr ""
 "Pokud se nechcete připojit k beta testování, jednoduše zavřete toto okno."
 
-#: views/settings/page.php:82
+#: views/settings/page.php:83
 msgid "Activate Rocket Tester"
 msgstr "Aktivovat testování"
 
-#: views/settings/page.php:93
+#: views/settings/page.php:94
 msgid ""
 "Below is a detailed view of all data WP Rocket will collect <strong>if "
 "granted permission.</strong>"
@@ -3262,7 +3619,7 @@ msgstr ""
 "Níže je podrobný seznam všech dat, která bude <strong>v případě udělení "
 "souhlasu</strong> WP Rocket shromažďovat."
 
-#: views/settings/page.php:96
+#: views/settings/page.php:97
 msgid ""
 "WP Rocket will never transmit any domain names or email addresses (except "
 "for license validation), IP addresses, or third-party API keys."
@@ -3270,7 +3627,7 @@ msgstr ""
 "WP Rocket nikdy nebude posílat názvy domén nebo emailové adresy (kromě "
 "ověření licence), IP adresy nebo API klíče třetích stran."
 
-#: views/settings/page.php:98
+#: views/settings/page.php:99
 msgid "Activate Rocket analytics"
 msgstr "Aktivovat shromažďování dat"
 
@@ -3282,17 +3639,25 @@ msgstr "Ideální první krok pro řešení nejčastějších problémů."
 msgid "Read the documentation"
 msgstr "Přečíst dokumentaci"
 
+#: views/settings/partials/getting-started.php:11
+msgid "What WP Rocket Does For You By Default"
+msgstr "Co dělá WP Rocket ve výchozím nastavení"
+
 #: views/settings/partials/sidebar.php:11
 msgid "How to correctly measure your website’s loading time"
 msgstr "Jak správně měřit rychlost načítání webu"
 
 #: views/settings/partials/sidebar.php:13
+msgid "Check our tutorial and learn how to measure the speed of your site."
+msgstr "Podívejte se na návody a naučte se měřit rychlost vašeho webu."
+
+#: views/settings/partials/sidebar.php:17
 msgid ""
 "Learn how to use best practices to correctly measure your site's "
 "performance."
 msgstr "Zjistěte nejvhodnější správný způsob měření výkonu webu."
 
-#: views/settings/partials/sidebar.php:14
+#: views/settings/partials/sidebar.php:18
 msgid ""
 "https://wp-rocket.me/blog/correctly-measure-websites-page-load-"
 "time/?utm_source=wp_plugin&utm_medium=wp_rocket"
@@ -3300,15 +3665,15 @@ msgstr ""
 "https://wp-rocket.me/blog/correctly-measure-websites-page-load-"
 "time/?utm_source=wp_plugin&utm_medium=wp_rocket"
 
-#: views/settings/partials/sidebar.php:14
+#: views/settings/partials/sidebar.php:18
 msgid "Read our guide"
 msgstr "Zobrazit návod"
 
-#: views/settings/partials/sidebar.php:17
+#: views/settings/partials/sidebar.php:21
 msgid "Why Google PageSpeed grade should not matter"
 msgstr "Proč byste neměli Google PageSpeed přikládat takovou váhu"
 
-#: views/settings/partials/sidebar.php:18
+#: views/settings/partials/sidebar.php:22
 msgid ""
 "https://wp-rocket.me/blog/the-truth-about-google-pagespeed-"
 "insights/?utm_source=wp_plugin&utm_medium=wp_rocket"
@@ -3316,15 +3681,15 @@ msgstr ""
 "https://wp-rocket.me/blog/the-truth-about-google-pagespeed-"
 "insights/?utm_source=wp_plugin&utm_medium=wp_rocket"
 
-#: views/settings/partials/sidebar.php:18
+#: views/settings/partials/sidebar.php:22
 msgid "Read more"
 msgstr "Více informací"
 
-#: views/settings/partials/sidebar.php:23
+#: views/settings/partials/sidebar.php:27
 msgid "You have not activated logged-in user cache."
 msgstr "Mezipaměť pro přihlášené uživatele není aktivní."
 
-#: views/settings/partials/sidebar.php:24
+#: views/settings/partials/sidebar.php:28
 msgid ""
 "Use a private browser to check your website's speed and visual appearance."
 msgstr ""

@@ -4,9 +4,13 @@ namespace WP_Rocket\Tests\Unit\Cache;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Cache\Expired_Cache_Purge;
 use Brain\Monkey\Functions;
+use Brain\Monkey\Filters;
 use org\bovigo\vfs\vfsStream,
 	org\bovigo\vfs\vfsStreamDirectory;
 
+/**
+ * @group Cache
+ */
 class TestPurgeExpiredFiles extends TestCase {
 	private $cache_path;
 	private $mock_fs;
@@ -35,6 +39,10 @@ class TestPurgeExpiredFiles extends TestCase {
 						'index.html' => '',
 						'index.html_gzip' => '',
 					],
+					'en' => [
+						'index.html' => '',
+						'index.html_gzip' => '',
+					],
 				],
 				'example.org-Greg-594d03f6ae698691165999' => [
 					'index.html' => '',
@@ -47,6 +55,7 @@ class TestPurgeExpiredFiles extends TestCase {
 		$this->cache_path->getChild('wp-rocket')->getChild('example.org')->getChild('blog')->getChild('index.html')->lastAttributeModified( strtotime( '11 hours ago' ) );
 		$this->cache_path->getChild('wp-rocket')->getChild('example.org')->getChild('blog')->getChild('index.html_gzip')->lastAttributeModified( strtotime( '11 hours ago' ) );
 		$this->cache_path->getChild('wp-rocket')->getChild('example.org-Greg-594d03f6ae698691165999')->getChild('index.html')->lastAttributeModified( strtotime( '11 hours ago' ) );
+		$this->cache_path->getChild('wp-rocket')->getChild('example.org')->getChild('en')->getChild('index.html')->lastAttributeModified( strtotime( '11 hours ago' ) );
 
 		$this->mock_fs = $this->getMockBuilder( 'WP_Filesystem_Direct' )
 							->setMethods( [
@@ -111,6 +120,40 @@ class TestPurgeExpiredFiles extends TestCase {
 		);
 		$this->assertFalse(
 			$this->cache_path->getChild('wp-rocket')->getChild('example.org-Greg-594d03f6ae698691165999')->hasChild('index.html')
+		);
+	}
+
+	public function testShouldDeleteCacheFilesOlderThanLifespanWhenMultilingual() {
+		Functions\When('get_rocket_i18n_uri')->justReturn(
+			[
+				'http://example.org/en',
+				'http://example.org/',
+			]
+		);
+
+		Functions\When( 'rocket_direct_filesystem')->alias( function() {
+			return $this->mock_fs;
+		});
+
+		Functions\When('get_rocket_parse_url')->alias( function( $value ) {
+			return parse_url( $value );
+		} );
+
+		$expired_cache_purge = new Expired_Cache_Purge( $this->cache_path->getChild( 'wp-rocket' )->url() );
+
+		$expired_cache_purge->purge_expired_files( 36000 );
+
+		$this->assertFalse(
+			$this->cache_path->getChild('wp-rocket')->getChild('example.org')->hasChild('blog')
+		);
+		$this->assertTrue(
+			$this->cache_path->getChild('wp-rocket')->getChild('example.org')->getChild('about')->hasChild('index.html')
+		);
+		$this->assertFalse(
+			$this->cache_path->getChild('wp-rocket')->getChild('example.org-Greg-594d03f6ae698691165999')->hasChild('index.html')
+		);
+		$this->assertFalse(
+			$this->cache_path->getChild('wp-rocket')->getChild('example.org')->getChild('en')->hasChild('index.html')
 		);
 	}
 }

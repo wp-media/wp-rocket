@@ -7,6 +7,9 @@ use Brain\Monkey\Actions;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 
+/**
+ * @group ThirdParty
+ */
 class TestSyncOnOptionDelete extends TestCase {
 	/**
 	 * Test Imagify_Subscriber->sync_on_option_delete() should sync when serving webp.

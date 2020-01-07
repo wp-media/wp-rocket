@@ -6,6 +6,9 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 
+/**
+ * @group Subscriber
+ */
 class TestWebpSectionDescription extends TestCase {
 	/**
 	 * Test Webp_Subscriber->webp_section_description() should return specific text when no webp plugin is available and cache option is disabled.

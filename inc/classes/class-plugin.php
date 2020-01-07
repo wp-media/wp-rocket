@@ -5,7 +5,7 @@ use League\Container\Container;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Admin\Options;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Assembly class
@@ -137,15 +137,18 @@ class Plugin {
 			'woocommerce_subscriber',
 			'bigcommerce_subscriber',
 			'pressable_subscriber',
+			'litespeed_subscriber',
 			'syntaxhighlighter_subscriber',
 			'elementor_subscriber',
 			'bridge_subscriber',
 			'ngg_subscriber',
+			'smush_subscriber',
 			'cache_dir_size_check_subscriber',
 			'plugin_updater_common_subscriber',
 			'plugin_information_subscriber',
 			'plugin_updater_subscriber',
 			'capabilities_subscriber',
+			'detect_missing_tags_subscriber',
 		];
 
 		if ( \rocket_valid_key() ) {

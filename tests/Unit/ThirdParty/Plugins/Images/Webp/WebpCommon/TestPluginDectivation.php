@@ -4,6 +4,9 @@ namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\Images\Webp\WebpCommon;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Webp_Common;
 use WP_Rocket\Tests\Unit\TestCase;
 
+/**
+ * @group ThirdParty
+ */
 class TestPluginDeactivation extends TestCase {
 	/**
 	 * Test Webp_Common->plugin_deactivation() should trigger a hook when serving webp.
