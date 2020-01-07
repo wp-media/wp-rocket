@@ -217,6 +217,14 @@ class Combine extends Abstract_JS_Optimization {
 			} else {
 				preg_match( '/<script\b(?<attrs>[^>]*)>\s*(?:\/\*\s*<!\[CDATA\[\s*\*\/)?\s*(?<content>[\s\S]*?)\s*(?:\/\*\s*\]\]>\s*\*\/)?\s*<\/script>/msi', $script[0], $matches_inline );
 
+				$matches_inline = array_merge(
+					[
+						'attrs'   => '',
+						'content' => '',
+					],
+					$matches_inline
+				);
+
 				if (preg_last_error() == PREG_BACKTRACK_LIMIT_ERROR) {
 					Logger::debug( 'PCRE regex execution Catastrophic Backtracking', [
 						'inline JS backtracking error',
@@ -225,7 +233,7 @@ class Combine extends Abstract_JS_Optimization {
 					return;
 				}
 
-				if ( isset( $matches_inline['attrs'] ) && strpos( $matches_inline['attrs'], 'type' ) !== false && ! preg_match( '/type\s*=\s*["\']?(?:text|application)\/(?:(?:x\-)?javascript|ecmascript)["\']?/i', $matches_inline['attrs'] ) ) {
+				if ( strpos( $matches_inline['attrs'], 'type' ) !== false && ! preg_match( '/type\s*=\s*["\']?(?:text|application)\/(?:(?:x\-)?javascript|ecmascript)["\']?/i', $matches_inline['attrs'] ) ) {
 					Logger::debug( 'Inline script is not JS.', [
 						'js combine process',
 						'attributes' => $matches_inline['attrs'],
@@ -233,7 +241,7 @@ class Combine extends Abstract_JS_Optimization {
 					return;
 				}
 
-				if ( isset( $matches_inline['attrs'] ) && false !== strpos( $matches_inline['attrs'], 'src=' ) ) {
+				if ( false !== strpos( $matches_inline['attrs'], 'src=' ) ) {
 					Logger::debug( 'Inline script has a `src` attribute.', [
 						'js combine process',
 						'attributes' => $matches_inline['attrs'],
@@ -253,7 +261,7 @@ class Combine extends Abstract_JS_Optimization {
 				}
 
 				foreach ( $this->get_excluded_inline_content() as $excluded_content ) {
-					if ( isset( $matches_inline['content'] ) && false !== strpos( $matches_inline['content'], $excluded_content ) ) {
+					if ( false !== strpos( $matches_inline['content'], $excluded_content ) ) {
 						Logger::debug( 'Inline script has excluded content.', [
 							'js combine process',
 							'excluded_content' => $excluded_content,
@@ -263,7 +271,7 @@ class Combine extends Abstract_JS_Optimization {
 				}
 
 				foreach ( $this->get_move_after_inline_scripts() as $move_after_script ) {
-					if ( isset( $matches_inline['content'] ) && false !== strpos( $matches_inline['content'], $move_after_script ) ) {
+					if ( false !== strpos( $matches_inline['content'], $move_after_script ) ) {
 						$this->move_after[] = $script[0];
 						return;
 					}
