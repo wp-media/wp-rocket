@@ -1,38 +1,43 @@
-#$ composer update --optimize-autoloader
-#$ vendor/bin/phpstan analyze
-
 includes:
-    # @see https://github.com/phpstan/phpstan/blob/master/conf/bleedingEdge.neon
     - phar://phpstan.phar/conf/bleedingEdge.neon
-    # Include this extension
     - vendor/szepeviktor/phpstan-wordpress/extension.neon
 parameters:
-    bootstrap: %currentWorkingDirectory%/tests/phpstan/bootstrap.php
-    level: max
+#    level: max
+    level: 4
     checkMissingIterableValueType: false
     inferPrivatePropertyTypeFromConstructor: true
     paths:
+#        Test all PHP code.
+#        - %currentWorkingDirectory%/inc/
         - %currentWorkingDirectory%/inc/classes/
-#    excludes_analyse:
     autoload_files:
-#        # Plugin stubs
-#        - %currentWorkingDirectory%/tests/phpstan/PLUGIN-stubs.php
-#        # Procedural code
-         - %currentWorkingDirectory%/inc/functions/admin.php
-#    autoload_directories:
-#        - %currentWorkingDirectory%/inc/classes/
+        - %currentWorkingDirectory%/tests/phpstan/bootstrap.php
+        # Must be first
+        - %currentWorkingDirectory%/inc/functions/options.php
+        # Procedural code
+        - %currentWorkingDirectory%/inc/3rd-party/plugins/autoptimize.php
+        - %currentWorkingDirectory%/inc/admin/ui/notices.php
+        - %currentWorkingDirectory%/inc/functions/admin.php
+        - %currentWorkingDirectory%/inc/functions/api.php
+        - %currentWorkingDirectory%/inc/functions/cloudflare.php
+        - %currentWorkingDirectory%/inc/functions/files.php
+        - %currentWorkingDirectory%/inc/functions/formatting.php
+        - %currentWorkingDirectory%/inc/functions/htaccess.php
+        - %currentWorkingDirectory%/inc/functions/i18n.php
+        - %currentWorkingDirectory%/inc/functions/posts.php
+        - %currentWorkingDirectory%/inc/functions/preload.php
+        - %currentWorkingDirectory%/inc/functions/varnish.php
+        # Composer autoloader "exclude-from-classmap"
+        - %currentWorkingDirectory%/inc/classes/class-wp-rocket-requirements-check.php
+        - %currentWorkingDirectory%/inc/vendors/classes/class-rocket-mobile-detect.php
+    excludes_analyse:
+         - %currentWorkingDirectory%/inc/vendors/
+         # These need plugin stubs!
+         - %currentWorkingDirectory%/inc/classes/subscriber/third-party/
     ignoreErrors:
         # Uses func_get_args()
         - '#^Function apply_filters(_ref_array)? invoked with [34567] parameters, 2 required\.$#'
-        # Fixed in WordPress 5.3
-        #- '#^Function do_action(_ref_array)? invoked with [3456] parameters, 1-2 required\.$#'
-        #- '#^Function current_user_can invoked with 2 parameters, 1 required\.$#'
-        #- '#^Function add_query_arg invoked with [123] parameters?, 0 required\.$#'
-        #- '#^Function wp_sprintf invoked with [23456] parameters, 1 required\.$#'
-        #- '#^Function add_post_type_support invoked with [345] parameters, 2 required\.$#'
-        #- '#^Function ((get|add)_theme_support|current_theme_supports) invoked with [2345] parameters, 1 required\.$#'
         # https://core.trac.wordpress.org/ticket/43304
-        - '/^Parameter #2 \$deprecated of function load_plugin_textdomain expects string, false given\.$/'
-        # WP-CLI accepts a class as callable
-        - '/^Parameter #2 \$callable of static method WP_CLI::add_command\(\) expects callable\(\): mixed, \S+ given\.$/'
-        # Please consider commenting ignores: issue URL or reason for ignoring
+        #- '/^Parameter #2 \$deprecated of function load_plugin_textdomain expects string, false given\.$/'
+        # TODO #1 Define properties.
+        - '#^Access to an undefined property WP_Rocket\\\S+\.$#'

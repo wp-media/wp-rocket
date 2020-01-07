@@ -5,6 +5,7 @@ use Monolog\Logger as Monologger;
 use Monolog\Registry;
 use Monolog\Processor\IntrospectionProcessor;
 use Monolog\Handler\StreamHandler as MonoStreamHandler;
+use Monolog\Formatter\LineFormatter;
 use WP_Rocket\Logger\HTML_Formatter as HtmlFormatter;
 use WP_Rocket\Logger\Stream_Handler as StreamHandler;
 
