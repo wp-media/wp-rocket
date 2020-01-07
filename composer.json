@@ -46,11 +46,8 @@
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
 		"mikey179/vfsstream": "^1.6",
 		"phpcompatibility/phpcompatibility-wp": "^2.0",
-		"phpdocumentor/reflection-docblock": "^3.3",
-		"phpunit/php-token-stream": "^1.4",
-		"phpunit/phpunit": "^5.7",
-		"symfony/yaml": "2.8.*",
-		"wp-coding-standards/wpcs": "^2.1.0",
+		"phpunit/phpunit": "^5.7 || ^7",
+		"wp-coding-standards/wpcs": "^2",
 		"woocommerce/woocommerce": "^3.8"
 	},
 	"autoload": {
