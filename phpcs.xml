@@ -73,4 +73,12 @@
 	</rule>
 
 	<rule ref="WordPress-Docs"/>
+
+	<!-- Rules: WordPress Coding Standards - see
+		https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards
+		WordPress-Extra includes WordPress-Core -->
+	<rule ref="WordPress-Extra">
+		<exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
+		<exclude name="WordPress.PHP.DisallowShortTernary.Found"/>
+	</rule>
 </ruleset>
