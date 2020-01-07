@@ -54,6 +54,21 @@ class TestDisable extends TestCase {
 	}
 
 	/**
+	 * Test should return success packet when the "disable" endpoint is requested.
+	 */
+	public function testShouldReturnSuccessWhenDisableRequest() {
+		$expected = [
+			'code'    => 'success',
+			'message' => __( 'RocketCDN disabled', 'rocket' ),
+			'data'    => [
+				'status' => 200,
+			],
+		];
+
+		$this->assertSame( $expected, $this->requestDisableEndpoint()->get_data() );
+	}
+
+	/**
 	 * Runs the RESTful endpoint which invokes WordPress to run in an integrated fashion. Callback will be fired.
 	 */
 	protected function requestDisableEndpoint() {
