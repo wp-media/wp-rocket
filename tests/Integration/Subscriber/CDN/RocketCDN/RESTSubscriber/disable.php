@@ -13,7 +13,7 @@ class Test_Disable extends RESTfulTestCase {
 	/**
 	 * Test should update the option settings when the "disable" endpoint is requested.
 	 */
-	public function testShouldUpdateRocketSettingsWhenDisableRequest() {
+	public function testShouldUpdateRocketSettingsWhenEndpointRequest() {
 		// Set up the settings.
 		update_option(
 			'wp_rocket_settings',
@@ -42,7 +42,7 @@ class Test_Disable extends RESTfulTestCase {
 	/**
 	 * Test should delete the transient when the "disable" endpoint is requested.
 	 */
-	public function testShouldDeleteTransientWhenDisableRequest() {
+	public function testShouldDeleteTransientWhenEndpointRequest() {
 		// Set up the transient.
 		set_transient( 'rocketcdn_status', 'some value', WEEK_IN_SECONDS );
 
@@ -55,7 +55,7 @@ class Test_Disable extends RESTfulTestCase {
 	/**
 	 * Test should return success packet when the "disable" endpoint is requested.
 	 */
-	public function testShouldReturnSuccessWhenDisableRequest() {
+	public function testShouldReturnSuccessWhenEndpointRequest() {
 		$expected = [
 			'code'    => 'success',
 			'message' => __( 'RocketCDN disabled', 'rocket' ),

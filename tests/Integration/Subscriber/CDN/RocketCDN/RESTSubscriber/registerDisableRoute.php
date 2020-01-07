@@ -1,21 +1,22 @@
 <?php
+
 namespace WP_Rocket\Tests\Integration\Subscriber\CDN\RocketCDN\RESTSubscriber;
 
 use WP_Rocket\Tests\Integration\RESTfulTestCase;
 
 /**
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber::register_disable_route
- * @group RocketCDN
+ * @group  RocketCDN
  */
 class Test_RegisterDisableRoute extends RESTfulTestCase {
 
 	/**
 	 * Test should register the disable route with the WP REST API.
 	 */
-    public function testShouldRegisterDisableRoute() {
-	    $routes = $this->server->get_routes();
-        $this->assertArrayHasKey( '/wp-rocket/v1/rocketcdn/disable', $routes );
-    }
+	public function testShouldRegisterRoute() {
+		$routes = $this->server->get_routes();
+		$this->assertArrayHasKey( '/wp-rocket/v1/rocketcdn/disable', $routes );
+	}
 
 	/**
 	 * Test should return an error response when providing an incorrect email in the request.
@@ -24,7 +25,7 @@ class Test_RegisterDisableRoute extends RESTfulTestCase {
 		$actual = $this->requestDisableEndpoint(
 			[
 				'email' => 'nulled@wp-rocket.me',
-				'key'   => ''
+				'key'   => '',
 			]
 		);
 
@@ -49,7 +50,7 @@ class Test_RegisterDisableRoute extends RESTfulTestCase {
 		$actual = $this->requestDisableEndpoint(
 			[
 				'email' => '',
-				'key'   => '0123456'
+				'key'   => '0123456',
 			]
 		);
 
@@ -71,10 +72,10 @@ class Test_RegisterDisableRoute extends RESTfulTestCase {
 	 * Test should return an error response when providing an incorrect email & key in the request.
 	 */
 	public function testShouldReturnErrorWhenIncorrectEmailAndKeyProvided() {
-		$actual = $this->requestDisableEndpoint(
+		$actual   = $this->requestDisableEndpoint(
 			[
 				'email' => 'nulled@wp-rocket.me',
-				'key'   => '0123456'
+				'key'   => '0123456',
 			]
 		);
 		$expected = [
@@ -84,7 +85,7 @@ class Test_RegisterDisableRoute extends RESTfulTestCase {
 				'status' => 400,
 				'params' => [
 					'email' => 'Invalid parameter.',
-					'key' => 'Invalid parameter.',
+					'key'   => 'Invalid parameter.',
 				],
 			],
 		];
@@ -93,10 +94,10 @@ class Test_RegisterDisableRoute extends RESTfulTestCase {
 	}
 
 	/**
-	 * Test should return success packet when the "disable" endpoint is requested.
+	 * Test should return success packet when providing the correct body params in the request.
 	 */
-	public function testShouldReturnSuccessWhenDisableRequest() {
-		$actual = $this->requestDisableEndpoint(
+	public function testShouldReturnSuccessWhenCorrectDataProvided() {
+		$actual   = $this->requestDisableEndpoint(
 			[
 				'email' => '',
 				'key'   => '',
