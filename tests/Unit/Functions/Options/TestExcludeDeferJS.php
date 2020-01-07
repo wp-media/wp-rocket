@@ -56,8 +56,8 @@ class TestExcludeDeferJS extends TestCase {
             'widget.reviews.co.uk',
             '/wp-includes/js/jquery/jquery.js',
             'c0.wp.com/c/(?:.+)/wp-includes/js/jquery/jquery.js',
-			'ajax.googleapis.com/ajax/libs/jquery/(?:.+)/jquery(?:\.min)?.js',
-			'cdnjs.cloudflare.com/ajax/libs/jquery/(?:.+)/jquery(?:\.min)?.js',
+            'ajax.googleapis.com/ajax/libs/jquery/(?:.+)/jquery(?:\.min)?.js',
+            'cdnjs.cloudflare.com/ajax/libs/jquery/(?:.+)/jquery(?:\.min)?.js',
         ];
 
         $this->assertSame(
