@@ -77,7 +77,7 @@ class APIClient {
 			return $default;
 		}
 
-		$data = json_decode( $data );
+		$data = json_decode( $data, true );
 		$data = array_intersect_key( $data, $default );
 
 		$this->set_status_transient( $data );
