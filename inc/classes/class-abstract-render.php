@@ -107,17 +107,9 @@ abstract class Abstract_Render implements Render_Interface {
 
 		switch ( $action ) {
 			case 'ask_support':
-				$args['url'] = rocket_get_external_url(
-					'support',
-					[
-						'utm_source' => 'wp_plugin',
-						'utm_medium' => 'wp_rocket',
-					]
-				);
-				break;
 			case 'view_account':
 				$args['url'] = rocket_get_external_url(
-					'account',
+					'ask_support' === $action ? 'support' : 'account',
 					[
 						'utm_source' => 'wp_plugin',
 						'utm_medium' => 'wp_rocket',
@@ -125,14 +117,6 @@ abstract class Abstract_Render implements Render_Interface {
 				);
 				break;
 			case 'purge_cache':
-				$url = admin_url( 'admin-post.php?action=' . $action );
-
-				if ( isset( $args['parameters'] ) ) {
-					$url = add_query_arg( $args['parameters'], $url );
-				}
-
-				$args['url'] = wp_nonce_url( $url, $action . '_all' );
-				break;
 			case 'preload':
 			case 'rocket_purge_opcache':
 			case 'rocket_purge_cloudflare':
@@ -145,6 +129,10 @@ abstract class Abstract_Render implements Render_Interface {
 
 				if ( ! empty( $args['parameters'] ) ) {
 					$url = add_query_arg( $args['parameters'], $url );
+				}
+
+				if ( 'purge_cache' === $action ) {
+					$action .= '_all';
 				}
 
 				$args['url'] = wp_nonce_url( $url, $action );
