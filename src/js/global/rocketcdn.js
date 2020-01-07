@@ -23,16 +23,7 @@ window.addEventListener('load', function() {
             smallCTA.classList.add('wpr-isHidden');
             bigCTA.classList.remove('wpr-isHidden');
 
-            var httpRequest = new XMLHttpRequest(),
-            postData = '';
-
-            postData += 'action=toggle_rocketcdn_cta';
-            postData += '&status=big';
-            postData += '&nonce=' + rocket_ajax_data.nonce;
-
-            httpRequest.open( 'POST', ajaxurl );
-            httpRequest.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' )
-            httpRequest.send( postData );
+            rocketSendHTTPRequest( rocketGetPostData( 'big' ) );
         });
     }
 
@@ -43,17 +34,18 @@ window.addEventListener('load', function() {
             smallCTA.classList.remove('wpr-isHidden');
             bigCTA.classList.add('wpr-isHidden');
 
-            var httpRequest = new XMLHttpRequest(),
-            postData = '';
-
-            postData += 'action=toggle_rocketcdn_cta';
-            postData += '&status=small';
-            postData += '&nonce=' + rocket_ajax_data.nonce;
-
-            httpRequest.open( 'POST', ajaxurl );
-            httpRequest.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' )
-            httpRequest.send( postData );
+            rocketSendHTTPRequest( rocketGetPostData( 'small' ) );
         });
+    }
+
+    function rocketGetPostData( status ) {
+        let postData = '';
+        
+        postData += 'action=toggle_rocketcdn_cta';
+        postData += '&status=' + status;
+        postData += '&nonce=' + rocket_ajax_data.nonce;
+        
+        return postData;
     }
 });
 
@@ -68,16 +60,21 @@ window.onmessage = (e) => {
         }
 
         if (e.data.hasOwnProperty("cdn_token")) {
-            var httpRequest = new XMLHttpRequest(),
-            postData = '';
+            let postData = '';
 
             postData += 'action=save_rocketcdn_token';
             postData += '&value=' + e.data.cdn_token;
             postData += '&nonce=' + rocket_ajax_data.nonce;
 
-            httpRequest.open( 'POST', ajaxurl );
-            httpRequest.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' )
-            httpRequest.send( postData );
+            rocketSendHTTPRequest( postData );
         }
 	}
 };
+
+function rocketSendHTTPRequest( postData ) {
+    const httpRequest = new XMLHttpRequest();
+    
+    httpRequest.open( 'POST', ajaxurl );
+    httpRequest.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' )
+    httpRequest.send( postData );
+}
