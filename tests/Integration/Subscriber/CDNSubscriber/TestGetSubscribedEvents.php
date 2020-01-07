@@ -1,15 +1,18 @@
 <?php
 namespace WP_Rocket\Tests\Integration\Subscriber\CDNSubscriber;
 
-use PHPUnit\Framework\TestCase;
+use WP_Rocket\Tests\Integration\TestCase;
 use WP_Rocket\Subscriber\CDN\CDNSubscriber;
 
+/**
+ * @group Subscriber
+ */
 class TestGetSubscribedEvents extends TestCase {
     public function testShouldReturnSubscribedEventsArray() {
         $events = [
 			'rocket_buffer'           => [
-                [ 'rewrite', 34 ],
-                [ 'rewrite_srcset', 35 ],
+                [ 'rewrite', 20 ],
+                [ 'rewrite_srcset', 21 ],
             ],
 			'rocket_css_content'      => 'rewrite_css_properties',
 			'rocket_cdn_hosts'        => [ 'get_cdn_hosts', 10, 2 ],

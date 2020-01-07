@@ -1,5 +1,6 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+
+defined( 'ABSPATH' ) || exit;
 
 if ( defined( 'DB_HOST' ) && strpos( DB_HOST, '.wpserveur.net' ) !== false ) {
 	/**

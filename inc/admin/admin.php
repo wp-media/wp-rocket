@@ -1,5 +1,6 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Link to the configuration page of the plugin, support & documentation
@@ -548,15 +549,19 @@ function rocket_handle_settings_import() {
 	add_filter( 'mime_types', 'rocket_allow_json_mime_type' );
 	add_filter( 'wp_check_filetype_and_ext', 'rocket_check_json_filetype', 10, 4 );
 
-	$file_data = wp_check_filetype_and_ext( $_FILES['import']['tmp_name'], $_FILES['import']['name'] );
+	$mimes     = get_allowed_mime_types();
+	$mimes     = rocket_allow_json_mime_type( $mimes );
+	$file_data = wp_check_filetype_and_ext( $_FILES['import']['tmp_name'], $_FILES['import']['name'], $mimes );
 
 	if ( 'text/plain' !== $file_data['type'] && 'application/json' !== $file_data['type'] ) {
 		rocket_settings_import_redirect( __( 'Settings import failed: incorrect filetype.', 'rocket' ), 'error' );
 	}
 
-	$_post_action    = $_POST['action'];
-	$_POST['action'] = 'wp_handle_sideload';
-	$file            = wp_handle_sideload( $_FILES['import'] );
+	$_post_action       = $_POST['action'];
+	$_POST['action']    = 'wp_handle_sideload';
+	$overrides          = [];
+	$overrides['mimes'] = $mimes;
+	$file               = wp_handle_sideload( $_FILES['import'], $overrides );
 
 	if ( isset( $file['error'] ) ) {
 		rocket_settings_import_redirect( __( 'Settings import failed: ', 'rocket' ) . $file['error'], 'error' );

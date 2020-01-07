@@ -27,6 +27,276 @@
 		gtag('js', new Date());
 		gtag('config', gaProperty, {'anonymize_ip': true});
 	</script> -->
+<script type="text/javascript">(function (undefined) {var _targetWindow ="prefer-popup";
+		window.NSLPopupCenter = function (url, title, w, h) {
+			var userAgent = navigator.userAgent,
+				mobile = function () {
+					return /\b(iPhone|iP[ao]d)/.test(userAgent) ||
+						/\b(iP[ao]d)/.test(userAgent) ||
+						/Android/i.test(userAgent) ||
+						/Mobile/i.test(userAgent);
+				},
+				screenX = window.screenX !== undefined ? window.screenX : window.screenLeft,
+				screenY = window.screenY !== undefined ? window.screenY : window.screenTop,
+				outerWidth = window.outerWidth !== undefined ? window.outerWidth : document.documentElement.clientWidth,
+				outerHeight = window.outerHeight !== undefined ? window.outerHeight : document.documentElement.clientHeight - 22,
+				targetWidth = mobile() ? null : w,
+				targetHeight = mobile() ? null : h,
+				V = screenX < 0 ? window.screen.width + screenX : screenX,
+				left = parseInt(V + (outerWidth - targetWidth) / 2, 10),
+				right = parseInt(screenY + (outerHeight - targetHeight) / 2.5, 10),
+				features = [];
+			if (targetWidth !== null) {
+				features.push('width=' + targetWidth);
+			}
+			if (targetHeight !== null) {
+				features.push('height=' + targetHeight);
+			}
+			features.push('left=' + left);
+			features.push('top=' + right);
+			features.push('scrollbars=1');
+		
+			var newWindow = window.open(url, title, features.join(','));
+		
+			if (window.focus) {
+				newWindow.focus();
+			}
+		
+			return newWindow;
+		};
+		
+		var isWebView = null;
+		
+		function checkWebView() {
+			if (isWebView === null) {
+				function _detectOS(ua) {
+					switch (true) {
+						case /Android/.test(ua):
+							return "Android";
+						case /iPhone|iPad|iPod/.test(ua):
+							return "iOS";
+						case /Windows/.test(ua):
+							return "Windows";
+						case /Mac OS X/.test(ua):
+							return "Mac";
+						case /CrOS/.test(ua):
+							return "Chrome OS";
+						case /Firefox/.test(ua):
+							return "Firefox OS";
+					}
+					return "";
+				}
+		
+				function _detectBrowser(ua) {
+					var android = /Android/.test(ua);
+		
+					switch (true) {
+						case /CriOS/.test(ua):
+							return "Chrome for iOS";
+						case /Edge/.test(ua):
+							return "Edge";
+						case android && /Silk\//.test(ua):
+							return "Silk";
+						case /Chrome/.test(ua):
+							return "Chrome";
+						case /Firefox/.test(ua):
+							return "Firefox";
+						case android:
+							return "AOSP";
+						case /MSIE|Trident/.test(ua):
+							return "IE";
+						case /Safari\//.test(ua):
+							return "Safari";
+						case /AppleWebKit/.test(ua):
+							return "WebKit";
+					}
+					return "";
+				}
+		
+				function _detectBrowserVersion(ua, browser) {
+					switch (browser) {
+						case "Chrome for iOS":
+							return _getVersion(ua, "CriOS/");
+						case "Edge":
+							return _getVersion(ua, "Edge/");
+						case "Chrome":
+							return _getVersion(ua, "Chrome/");
+						case "Firefox":
+							return _getVersion(ua, "Firefox/");
+						case "Silk":
+							return _getVersion(ua, "Silk/");
+						case "AOSP":
+							return _getVersion(ua, "Version/");
+						case "IE":
+							return /IEMobile/.test(ua) ? _getVersion(ua, "IEMobile/") :
+								/MSIE/.test(ua) ? _getVersion(ua, "MSIE ")
+									:
+									_getVersion(ua, "rv:");
+						case "Safari":
+							return _getVersion(ua, "Version/");
+						case "WebKit":
+							return _getVersion(ua, "WebKit/");
+					}
+					return "0.0.0";
+				}
+		
+				function _getVersion(ua, token) {
+					try {
+						return _normalizeSemverString(ua.split(token)[1].trim().split(/[^\w\.]/)[0]);
+					} catch (o_O) {
+					}
+					return "0.0.0";
+				}
+		
+				function _normalizeSemverString(version) {
+					var ary = version.split(/[\._]/);
+					return (parseInt(ary[0], 10) || 0) + "." +
+						(parseInt(ary[1], 10) || 0) + "." +
+						(parseInt(ary[2], 10) || 0);
+				}
+		
+				function _isWebView(ua, os, browser, version, options) {
+					switch (os + browser) {
+						case "iOSSafari":
+							return false;
+						case "iOSWebKit":
+							return _isWebView_iOS(options);
+						case "AndroidAOSP":
+							return false;
+						case "AndroidChrome":
+							return parseFloat(version) >= 42 ? /; wv/.test(ua) : /\d{2}\.0\.0/.test(version) ? true : _isWebView_Android(options);
+					}
+					return false;
+				}
+		
+				function _isWebView_iOS(options) {
+					var document = (window["document"] || {});
+		
+					if ("WEB_VIEW" in options) {
+						return options["WEB_VIEW"];
+					}
+					return !("fullscreenEnabled" in document || "webkitFullscreenEnabled" in document || false);
+				}
+		
+				function _isWebView_Android(options) {
+					if ("WEB_VIEW" in options) {
+						return options["WEB_VIEW"];
+					}
+					return !("requestFileSystem" in window || "webkitRequestFileSystem" in window || false);
+				}
+		
+				var options = {};
+				var nav = window.navigator || {};
+				var ua = nav.userAgent || "";
+				var os = _detectOS(ua);
+				var browser = _detectBrowser(ua);
+				var browserVersion = _detectBrowserVersion(ua, browser);
+		
+				isWebView = _isWebView(ua, os, browser, browserVersion, options);
+			}
+		
+			return isWebView;
+		}
+		
+		window._nsl.push(function ($) {
+			var targetWindow = _targetWindow || 'prefer-popup';
+		
+			$('a[data-plugin="nsl"][data-action="connect"],a[data-plugin="nsl"][data-action="link"]').on('click', function (e) {
+				var $target = $(this),
+					href = $target.attr('href'),
+					success = false;
+				if (href.indexOf('?') !== -1) {
+					href += '&';
+				} else {
+					href += '?';
+				}
+				var redirectTo = $target.data('redirect');
+				if (redirectTo === 'current') {
+					href += 'redirect=' + encodeURIComponent(window.location.href) + '&';
+				} else if (redirectTo && redirectTo !== '') {
+					href += 'redirect=' + encodeURIComponent(redirectTo) + '&';
+				}
+		
+				if (targetWindow !== 'prefer-same-window' && checkWebView()) {
+					targetWindow = 'prefer-same-window';
+				}
+		
+				if (targetWindow === 'prefer-popup') {
+					if (NSLPopupCenter(href + 'display=popup', 'nsl-social-connect', $target.data('popupwidth'), $target.data('popupheight'))) {
+						success = true;
+						e.preventDefault();
+					}
+				} else if (targetWindow === 'prefer-new-tab') {
+					var newTab = window.open(href + 'display=popup', '_blank');
+					if (newTab) {
+						if (window.focus) {
+							newTab.focus();
+						}
+						success = true;
+						e.preventDefault();
+					}
+				}
+		
+				if (!success) {
+					window.location = href;
+					e.preventDefault();
+				}
+			});
+		
+			var googleLoginButton = $('a[data-plugin="nsl"][data-provider="google"]');
+			if (googleLoginButton.length && checkWebView()) {
+				googleLoginButton.remove();
+			}
+		});})();
+</script>
+<script>
+//td_js_generator - mini detector
+(function(){
+var htmlTag = document.getElementsByTagName("html")[0];
+
+        if ( navigator.userAgent.indexOf("MSIE 10.0") > -1 ) {
+            htmlTag.className += ' ie10';
+        }
+
+        if ( !!navigator.userAgent.match(/Trident.*rv\:11\./) ) { 
+            htmlTag.className += ' ie11';
+        }
+
+        if ( navigator.userAgent.indexOf("Edge") > -1 ) {
+            htmlTag.className += ' ieEdge';
+        }
+
+        if ( /(iPad|iPhone|iPod)/g.test(navigator.userAgent) ) {
+            htmlTag.className += ' td-md-is-ios';
+        }
+
+        var user_agent = navigator.userAgent.toLowerCase();
+        if ( user_agent.indexOf("android") > -1 ) {
+            htmlTag.className += ' td-md-is-android';
+        }
+
+        if ( -1 !== navigator.userAgent.indexOf('Mac OS X')  ) {
+            htmlTag.className += ' td-md-is-os-x';
+        }
+
+        if ( /chrom(e|ium)/.test(navigator.userAgent.toLowerCase()) ) {
+           htmlTag.className += ' td-md-is-chrome';
+        }
+
+        if ( -1 !== navigator.userAgent.indexOf('Firefox') ) {
+            htmlTag.className += ' td-md-is-firefox';
+        }
+
+        if ( -1 !== navigator.userAgent.indexOf('Safari') && -1 === navigator.userAgent.indexOf('Chrome') ) {
+            htmlTag.className += ' td-md-is-safari';
+        }
+
+        if( -1 !== navigator.userAgent.indexOf('IEMobile') ){
+            htmlTag.className += ' td-md-is-iemobile';
+        }
+
+	})();
+</script>
 <link rel="profile" href="http://gmpg.org/xfn/11">
 <link rel="pingback" href="http://example.org/xmlrpc.php">
 
@@ -334,13 +604,13 @@ img.emoji {
 	
 	<header id="masthead" class="site-header" role="banner" style="">
 
-		<div class="col-full">		<a class="skip-link screen-reader-text" href="#site-navigation">Aller à la navigation</a>
+		<div class="col-full">      <a class="skip-link screen-reader-text" href="#site-navigation">Aller à la navigation</a>
 		<a class="skip-link screen-reader-text" href="#content">Aller au contenu</a>
 				<div class="site-branding">
-			<div class="beta site-title"><a href="http://example.org/" rel="home">tests</a></div><p class="site-description">Just another WordPress site</p>		</div>
+			<div class="beta site-title"><a href="http://example.org/" rel="home">tests</a></div><p class="site-description">Just another WordPress site</p>        </div>
 					<nav class="secondary-navigation" role="navigation" aria-label="Navigation secondaire">
 							</nav><!-- #site-navigation -->
-			</div><div class="storefront-primary-navigation"><div class="col-full">		<nav id="site-navigation" class="main-navigation" role="navigation" aria-label="Navigation principale">
+			</div><div class="storefront-primary-navigation"><div class="col-full">     <nav id="site-navigation" class="main-navigation" role="navigation" aria-label="Navigation principale">
 		<button class="menu-toggle" aria-controls="site-navigation" aria-expanded="false"><span>Menu</span></button>
 			<div class="primary-navigation"><ul id="menu-testing-menu" class="menu"><li id="menu-item-1046" class="menu-item menu-item-type-custom menu-item-object-custom current-menu-ancestor current-menu-parent menu-item-has-children menu-item-1046"><a href="#">Pages</a>
 <ul class="sub-menu">
@@ -468,7 +738,7 @@ img.emoji {
 </ul>
 </li>
 <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1063"><a href="#">Menu Description</a></li>
-</ul></div>		</nav><!-- #site-navigation -->
+</ul></div>     </nav><!-- #site-navigation -->
 		</div></div>
 	</header><!-- #masthead -->
 
@@ -483,7 +753,7 @@ img.emoji {
 			
 <article id="post-1133" class="post-1133 page type-page status-publish hentry">
 			<header class="entry-header">
-			<h1 class="entry-title">Page Image Alignment</h1>		</header><!-- .entry-header -->
+			<h1 class="entry-title">Page Image Alignment</h1>       </header><!-- .entry-header -->
 				<div class="entry-content">
 			<p>Welcome to image alignment! The best way to demonstrate the ebb and flow of the various image positioning options is to nestle them snuggly among an ocean of words. Grab a paddle and let&rsquo;s get started.</p>
 <p>On the topic of alignment, it should be noted that users can choose from the options of <em>None</em>, <em>Left</em>, <em>Right, </em>and <em>Center</em>. In addition, they also get the options of <em>Thumbnail</em>, <em>Medium</em>, <em>Large</em> &amp; <em>Fullsize</em>.</p>
@@ -515,19 +785,31 @@ img.emoji {
 <figure class="post-thumbnail">
 	<img width="1568" height="1046" src="http://example.org/wp-content/uploads/2018/03/sticker-mule-189122-unsplash-1568x1046.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" srcset="http://example.org/wp-content/uploads/2018/03/sticker-mule-189122-unsplash-1568x1046.jpg 1568w, http://example.org/wp-content/uploads/2018/03/sticker-mule-189122-unsplash-300x200.jpg 300w, http://example.org/wp-content/uploads/2018/03/sticker-mule-189122-unsplash-768x513.jpg 768w, http://example.org/wp-content/uploads/2018/03/sticker-mule-189122-unsplash-1024x683.jpg 1024w" sizes="(max-width: 1568px) 100vw, 1568px" />
 </figure>
+<picture>
+	<source srcset="/images/site/logo/logo-acommeassure.webp" type="image/webp">
+	<source srcset="/images/site/logo/logo-acommeassure.png 100w" type="image/png">
+	<img
+		width="300"
+		height="60"
+		class="logoSite show-for-large"
+		src="/images/site/logo/logo-acommeassure.png"
+		title="Accueil AcommeAssure"
+		alt="logo d'acommeassure"
+	/>
+</picture>
 					</div><!-- .entry-content -->
 		</article><!-- #post-## -->
 
 <section id="comments" class="comments-area" aria-label="Commentaires de l’article">
 
 		<div id="respond" class="comment-respond">
-		<span id="reply-title" class="gamma comment-reply-title">Laisser un commentaire <small><a rel="nofollow" id="cancel-comment-reply-link" href="/about/page-image-alignment#respond" style="display:none;">Annuler la réponse</a></small></span>			<form action="http://example.org/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate>
+		<span id="reply-title" class="gamma comment-reply-title">Laisser un commentaire <small><a rel="nofollow" id="cancel-comment-reply-link" href="/about/page-image-alignment#respond" style="display:none;">Annuler la réponse</a></small></span>          <form action="http://example.org/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate>
 				<p class="comment-notes"><span id="email-notes">Votre adresse de messagerie ne sera pas publiée.</span> Les champs obligatoires sont indiqués avec <span class="required">*</span></p><p class="comment-form-comment"><label for="comment">Commentaire</label> <textarea id="comment" name="comment" cols="45" rows="8" maxlength="65525" required="required"></textarea></p><p class="comment-form-author"><label for="author">Nom <span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="30" maxlength="245" required='required' /></p>
 <p class="comment-form-email"><label for="email">Adresse de messagerie <span class="required">*</span></label> <input id="email" name="email" type="email" value="" size="30" maxlength="100" aria-describedby="email-notes" required='required' /></p>
 <p class="comment-form-url"><label for="url">Site web</label> <input id="url" name="url" type="url" value="" size="30" maxlength="200" /></p>
 <p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="Laisser un commentaire" /> <input type='hidden' name='comment_post_ID' value='1133' id='comment_post_ID' />
 <input type='hidden' name='comment_parent' id='comment_parent' value='0' />
-</p>			</form>
+</p>            </form>
 			</div><!-- #respond -->
 	
 </section><!-- #comments -->
@@ -543,7 +825,7 @@ img.emoji {
 					<input type="search" class="search-field" placeholder="Recherche&hellip;" value="" name="s" />
 				</label>
 				<input type="submit" class="search-submit" value="Rechercher" />
-			</form></div>		<div id="recent-posts-2" class="widget widget_recent_entries">		<span class="gamma widget-title">Articles récents</span>		<ul>
+			</form></div>       <div id="recent-posts-2" class="widget widget_recent_entries">      <span class="gamma widget-title">Articles récents</span>        <ul>
 											<li>
 					<a href="http://example.org/hello-world">Hello world!</a>
 									</li>
@@ -560,7 +842,7 @@ img.emoji {
 					<a href="http://example.org/title-with-special-characters">Markup: Title With Special Characters</a>
 									</li>
 					</ul>
-		</div><div id="recent-comments-2" class="widget widget_recent_comments"><span class="gamma widget-title">Commentaires récents</span><ul id="recentcomments"><li class="recentcomments"><span class="comment-author-link">Anonyme</span> dans <a href="http://example.org/hello-world#comment-301">Hello world!</a></li><li class="recentcomments"><span class="comment-author-link">Anonyme</span> dans <a href="http://example.org/hello-world#comment-300">Hello world!</a></li><li class="recentcomments"><span class="comment-author-link">Anonyme</span> dans <a href="http://example.org/hello-world#comment-299">Hello world!</a></li><li class="recentcomments"><span class="comment-author-link">Anonyme</span> dans <a href="http://example.org/hello-world#comment-298">Hello world!</a></li><li class="recentcomments"><span class="comment-author-link">Anonyme</span> dans <a href="http://example.org/hello-world#comment-297">Hello world!</a></li></ul></div><div id="archives-2" class="widget widget_archive"><span class="gamma widget-title">Archives</span>		<ul>
+		</div><div id="recent-comments-2" class="widget widget_recent_comments"><span class="gamma widget-title">Commentaires récents</span><ul id="recentcomments"><li class="recentcomments"><span class="comment-author-link">Anonyme</span> dans <a href="http://example.org/hello-world#comment-301">Hello world!</a></li><li class="recentcomments"><span class="comment-author-link">Anonyme</span> dans <a href="http://example.org/hello-world#comment-300">Hello world!</a></li><li class="recentcomments"><span class="comment-author-link">Anonyme</span> dans <a href="http://example.org/hello-world#comment-299">Hello world!</a></li><li class="recentcomments"><span class="comment-author-link">Anonyme</span> dans <a href="http://example.org/hello-world#comment-298">Hello world!</a></li><li class="recentcomments"><span class="comment-author-link">Anonyme</span> dans <a href="http://example.org/hello-world#comment-297">Hello world!</a></li></ul></div><div id="archives-2" class="widget widget_archive"><span class="gamma widget-title">Archives</span>       <ul>
 				<li><a href='http://example.org/2019/02'>février 2019</a></li>
 	<li><a href='http://example.org/2013/01'>janvier 2013</a></li>
 	<li><a href='http://example.org/2012/03'>mars 2012</a></li>
@@ -583,7 +865,7 @@ img.emoji {
 	<li><a href='http://example.org/2009/06'>juin 2009</a></li>
 	<li><a href='http://example.org/2009/05'>mai 2009</a></li>
 		</ul>
-			</div><div id="categories-2" class="widget widget_categories"><span class="gamma widget-title">Catégories</span>		<ul>
+			</div><div id="categories-2" class="widget widget_categories"><span class="gamma widget-title">Catégories</span>        <ul>
 				<li class="cat-item cat-item-2"><a href="http://example.org/category/aciform">aciform</a>
 </li>
 	<li class="cat-item cat-item-3"><a href="http://example.org/category/antiquarianism">antiquarianism</a>
@@ -713,11 +995,11 @@ img.emoji {
 	<li class="cat-item cat-item-56"><a href="http://example.org/category/years">years</a>
 </li>
 		</ul>
-			</div><div id="meta-2" class="widget widget_meta"><span class="gamma widget-title">Méta</span>			<ul>
+			</div><div id="meta-2" class="widget widget_meta"><span class="gamma widget-title">Méta</span>          <ul>
 						<li><a href="http://example.org/wp-login.php">Connexion</a></li>
 			<li><a href="http://example.org/feed">Flux <abbr title="Really Simple Syndication">RSS</abbr> des articles</a></li>
 			<li><a href="http://example.org/comments/feed"><abbr title="Really Simple Syndication">RSS</abbr> des commentaires</a></li>
-			<li><a href="https://fr.wordpress.org/" title="Propulsé par WordPress, plate-forme de publication personnelle sémantique de pointe.">Site de WordPress-FR</a></li>			</ul>
+			<li><a href="https://fr.wordpress.org/" title="Propulsé par WordPress, plate-forme de publication personnelle sémantique de pointe.">Site de WordPress-FR</a></li>          </ul>
 			</div></div><!-- #secondary -->
 
 		</div><!-- .col-full -->
@@ -728,8 +1010,8 @@ img.emoji {
 		<div class="col-full">
 
 					<div class="site-info">
-			&copy; tests 2019						<br />
-								<a href="https://woocommerce.com" target="_blank" title="WooCommerce - La meilleure plateforme eCommerce pour WordPress" rel="author">Construit avec Storefront &amp; WooCommerce</a>.					</div><!-- .site-info -->
+			&copy; tests 2019                       <br />
+								<a href="https://woocommerce.com" target="_blank" title="WooCommerce - La meilleure plateforme eCommerce pour WordPress" rel="author">Construit avec Storefront &amp; WooCommerce</a>.                  </div><!-- .site-info -->
 		
 		</div><!-- .col-full -->
 	</footer><!-- #colophon -->

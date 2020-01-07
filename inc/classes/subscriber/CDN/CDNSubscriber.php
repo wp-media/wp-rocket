@@ -43,8 +43,8 @@ class CDNSubscriber implements Subscriber_Interface {
 	public static function get_subscribed_events() {
 		return [
 			'rocket_buffer'           => [
-				[ 'rewrite', 34 ],
-				[ 'rewrite_srcset', 35 ],
+				[ 'rewrite', 20 ],
+				[ 'rewrite_srcset', 21 ],
 			],
 			'rocket_css_content'      => 'rewrite_css_properties',
 			'rocket_cdn_hosts'        => [ 'get_cdn_hosts', 10, 2 ],

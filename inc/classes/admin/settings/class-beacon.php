@@ -139,10 +139,17 @@ class Beacon {
 	 * @return array
 	 */
 	private function identify_data() {
-		return [
+		$identify_data = [
 			'email'   => $this->options->get( 'consumer_email' ),
 			'Website' => home_url(),
 		];
+		$customer_data = get_transient( 'wp_rocket_customer_data' );
+
+		if ( false !== $customer_data && isset( $customer_data->status ) ) {
+			$identify_data['status'] = $customer_data->status;
+		}
+
+		return $identify_data;
 	}
 
 	/**

@@ -1,5 +1,6 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin\' uh?' );
+
+defined( 'ABSPATH' ) || exit;
 
 add_action( 'admin_init', 'rocket_clear_cache_after_studiopress_accelerator' );
 /**

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Get an URL with one of CNAMES added in options
  *

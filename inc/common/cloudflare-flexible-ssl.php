@@ -1,5 +1,6 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Check if request is from Cloudflare
@@ -13,7 +14,6 @@ function rocket_is_cloudflare() {
 	if ( ! isset( $_SERVER['HTTP_CF_CONNECTING_IP'] ) ) {
 		return false;
 	}
-
 	// Check if original ip has already been restored, e.g. by nginx - assume it was from cloudflare then.
 	if ( isset( $_SERVER['REMOTE_ADDR'] ) && $_SERVER['REMOTE_ADDR'] === $_SERVER['HTTP_CF_CONNECTING_IP'] ) {
 		return true;
@@ -33,7 +33,6 @@ function rocket_is_cloudflare() {
 function rocket_is_cf_ip() {
 	// Store original remote address in $original_ip.
 	$original_ip = filter_input( INPUT_SERVER, 'REMOTE_ADDR', FILTER_VALIDATE_IP );
-
 	if ( ! isset( $original_ip ) ) {
 		return false;
 	}
@@ -102,14 +101,11 @@ function rocket_is_cf_ip() {
  * @author Soponar Cristina
  */
 function rocket_fix_cf_flexible_ssl() {
-	$is_cf = rocket_is_cloudflare();
-
-	if ( ! $is_cf ) {
-		return;
-	}
-
-	// Fixes Flexible SSL.
-	if ( isset( $_SERVER['HTTP_X_FORWARDED_PROTO'] ) && 'https' === $_SERVER['HTTP_X_FORWARDED_PROTO'] ) {
-		$_SERVER['HTTPS'] = 'on';
-	}
+    $isCf = rocket_is_cloudflare();
+    if ( $isCf ) {
+        // Fixes Flexible SSL
+        if ( isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https' ) {
+            $_SERVER['HTTPS'] = 'on';
+        }
+    }
 }

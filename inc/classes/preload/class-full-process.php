@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Preload;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Extends the background process class for the preload background process.

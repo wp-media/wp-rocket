@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.4\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2019-09-26 17:27-0500\n"
+"POT-Creation-Date: 2019-11-13 14:38+0200\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: wpmedia <contact@wp-media.me>, 2019\n"
 "Language-Team: French (France) (https://www.transifex.com/wp-media/teams/18133/fr_FR/)\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 2.2.4\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -68,7 +68,7 @@ msgstr "Précharger le sitemap de l'extension Jetpack"
 #: inc/3rd-party/plugins/seo/all-in-one-seo-pack.php:88
 #: inc/3rd-party/plugins/seo/rank-math-seo.php:34
 #: inc/3rd-party/plugins/seo/seopress.php:85
-#: inc/3rd-party/plugins/seo/the-seo-framework.php:123
+#: inc/3rd-party/plugins/seo/the-seo-framework.php:144
 #: inc/3rd-party/plugins/seo/yoast-seo.php:86
 #, php-format
 msgid ""
@@ -90,7 +90,7 @@ msgstr "Sitemap de Rank Math XML"
 msgid "SEOPress XML sitemap"
 msgstr "Sitemap XML SEOPress"
 
-#: inc/3rd-party/plugins/seo/the-seo-framework.php:121
+#: inc/3rd-party/plugins/seo/the-seo-framework.php:142
 msgid "The SEO Framework XML sitemap"
 msgstr "Sitemap de SEO Framework XML"
 
@@ -98,7 +98,7 @@ msgstr "Sitemap de SEO Framework XML"
 msgid "Yoast SEO XML sitemap"
 msgstr "Sitemap XML Yoast SEO"
 
-#: inc/admin/admin.php:17 inc/common/admin-bar.php:338
+#: inc/admin/admin.php:17 inc/common/admin-bar.php:362
 #: inc/deprecated/deprecated.php:1789
 msgid "Support"
 msgstr "Support"
@@ -107,7 +107,7 @@ msgstr "Support"
 msgid "Docs"
 msgstr "Docs"
 
-#: inc/admin/admin.php:21 inc/common/admin-bar.php:326
+#: inc/admin/admin.php:21 inc/common/admin-bar.php:350
 msgid "FAQ"
 msgstr "FAQ"
 
@@ -145,124 +145,129 @@ msgstr "L'import des réglages a échoué : aucun fichier téléversé."
 msgid "Settings import failed: incorrect filename."
 msgstr "L'import des réglages a échoué : nom de fichier incorrect."
 
-#: inc/admin/admin.php:554
+#: inc/admin/admin.php:556
 msgid "Settings import failed: incorrect filetype."
 msgstr "L'import des réglages a échoué : type de fichier incorrect."
 
-#: inc/admin/admin.php:562
+#: inc/admin/admin.php:566
 msgid "Settings import failed: "
 msgstr "L'import des réglages a échoué :"
 
-#: inc/admin/admin.php:579
+#: inc/admin/admin.php:583
 msgid "Settings import failed: unexpected file content."
 msgstr "L'import des réglages a échoué : type de fichier incorrect."
 
-#: inc/admin/admin.php:600
+#: inc/admin/admin.php:604
 msgid "Settings imported and saved."
 msgstr "Réglages importés et sauvegardés."
 
 #: inc/admin/options.php:101
+#: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:102
+msgid "WP Rocket: "
+msgstr "WP Rocket :"
+
+#: inc/admin/options.php:116
 #, php-format
 msgid "Cloudflare development mode error: %s"
 msgstr "Erreur du mode développement de CloudFlare : %s"
 
-#: inc/admin/options.php:107
+#: inc/admin/options.php:122
 #, php-format
 msgid "Cloudflare development mode %s"
 msgstr "Mode développement de CloudFlare %s"
 
-#: inc/admin/options.php:124
+#: inc/admin/options.php:139
 #, php-format
 msgid "Cloudflare cache level error: %s"
 msgstr "Erreur du niveau de cache de CloudFlare : %s"
 
-#: inc/admin/options.php:128
+#: inc/admin/options.php:143
 msgctxt "Cloudflare caching level"
 msgid "Standard"
 msgstr "Standard"
 
-#: inc/admin/options.php:134
+#: inc/admin/options.php:149
 #, php-format
 msgid "Cloudflare cache level set to %s"
 msgstr "Niveau de cache de Cloudflare défini à %s"
 
-#: inc/admin/options.php:146
+#: inc/admin/options.php:161
 #, php-format
 msgid "Cloudflare minification error: %s"
 msgstr "Erreur de la minification CloudFlare : %s"
 
-#: inc/admin/options.php:152
+#: inc/admin/options.php:167
 #, php-format
 msgid "Cloudflare minification %s"
 msgstr "Minification CloudFlare %s"
 
-#: inc/admin/options.php:164
+#: inc/admin/options.php:179
 #, php-format
 msgid "Cloudflare rocket loader error: %s"
 msgstr "Erreur du Rocket Loader de CloudFlare : %s"
 
-#: inc/admin/options.php:170
+#: inc/admin/options.php:185
 #, php-format
 msgid "Cloudflare rocket loader %s"
 msgstr "Rocket Loader de CloudFlare %s"
 
-#: inc/admin/options.php:182
+#: inc/admin/options.php:197
 #, php-format
 msgid "Cloudflare browser cache error: %s"
 msgstr "Erreur du cache navigateur CloudFlare : %s"
 
-#: inc/admin/options.php:188
+#: inc/admin/options.php:203
 #, php-format
 msgid "Cloudflare browser cache set to %s seconds"
 msgstr "Cache navigateur de Cloudflare défini à %s secondes"
 
-#: inc/admin/options.php:234 inc/admin/options.php:280
+#: inc/admin/options.php:249 inc/admin/options.php:295
 #: inc/classes/admin/settings/class-page.php:692
 msgid "Excluded CSS Files"
 msgstr "Fichiers CSS à exclure"
 
-#: inc/admin/options.php:235 inc/admin/options.php:281
+#: inc/admin/options.php:250 inc/admin/options.php:296
 #: inc/classes/admin/settings/class-page.php:784
 msgid "Excluded Inline JavaScript"
 msgstr "JavaScript inline exclu"
 
-#: inc/admin/options.php:236 inc/admin/options.php:282
+#: inc/admin/options.php:251 inc/admin/options.php:297
 #: inc/classes/admin/settings/class-page.php:802
 msgid "Excluded JavaScript Files"
 msgstr "Fichiers JavaScript exclus"
 
-#: inc/admin/options.php:237 inc/admin/options.php:283
-#: inc/classes/admin/settings/class-page.php:1172
+#: inc/admin/options.php:252 inc/admin/options.php:298
+#: inc/classes/admin/settings/class-page.php:1188
 msgid "Never Cache URL(s)"
 msgstr "Ne jamais mettre en cache ces URL(s)"
 
-#: inc/admin/options.php:238 inc/admin/options.php:284
-#: inc/classes/admin/settings/class-page.php:1188
+#: inc/admin/options.php:253 inc/admin/options.php:299
+#: inc/classes/admin/settings/class-page.php:1204
 msgid "Never Cache User Agent(s)"
 msgstr "Ne jamais mettre en cache ces User Agents"
 
-#: inc/admin/options.php:239 inc/admin/options.php:285
-#: inc/classes/admin/settings/class-page.php:1193
+#: inc/admin/options.php:254 inc/admin/options.php:300
+#: inc/classes/admin/settings/class-page.php:1209
 msgid "Always Purge URL(s)"
 msgstr "Toujours purger ces URL(s)"
 
-#: inc/admin/options.php:240 inc/admin/options.php:286
-#: inc/classes/admin/settings/class-page.php:1487
+#: inc/admin/options.php:255 inc/admin/options.php:301
+#: inc/classes/admin/settings/class-page.php:1503
 msgid "Exclude files from CDN"
 msgstr "Exclure des fichiers du CDN"
 
-#: inc/admin/options.php:258 inc/admin/options.php:304
+#: inc/admin/options.php:273 inc/admin/options.php:319
 #, php-format
 msgid "%1$s: <em>%2$s</em>."
 msgstr "%1$s: <em>%2$s</em>."
 
-#: inc/admin/options.php:268 inc/admin/options.php:314
+#: inc/admin/options.php:283 inc/admin/options.php:329
 msgid "The following pattern is invalid and has been removed:"
 msgid_plural "The following patterns are invalid and have been removed:"
 msgstr[0] "Le pattern suivant est invalide et a été supprimé :"
 msgstr[1] "Les patterns suivants sont invalides et ont été supprimés :"
 
-#: inc/admin/ui/meta-boxes.php:13 inc/admin/ui/notices.php:950
+#: inc/admin/ui/meta-boxes.php:13 inc/admin/ui/notices.php:984
 #: inc/common/admin-bar.php:84 inc/common/admin-bar.php:136
 #: views/settings/page-sections/dashboard.php:116
 msgid "Clear cache"
@@ -302,8 +307,8 @@ msgid "Minify/combine JS"
 msgstr "Minifier / combiner le JS"
 
 #: inc/admin/ui/meta-boxes.php:76
-#: inc/classes/admin/settings/class-page.php:1457
-#: inc/classes/admin/settings/class-page.php:1468
+#: inc/classes/admin/settings/class-page.php:1473
+#: inc/classes/admin/settings/class-page.php:1484
 #: inc/deprecated/deprecated.php:1775
 msgid "CDN"
 msgstr "CDN"
@@ -330,7 +335,7 @@ msgstr ""
 "%1$sRemarque :%2$s Ces options ne seront pas appliquées si vous avez exclu "
 "cette page du cache dans les réglages généraux de WP Rocket."
 
-#: inc/admin/ui/notices.php:23 inc/admin/ui/notices.php:33
+#: inc/admin/ui/notices.php:24 inc/admin/ui/notices.php:34
 #, php-format
 msgid ""
 "<strong>%1$s</strong> has not been deactivated due to missing writing permissions.<br>\n"
@@ -339,7 +344,7 @@ msgstr ""
 "<strong>%1$s</strong> n'a pas été désactivé en raisons de l'absence des permissions d'écriture.<br>\n"
 "Rendez <strong>%2$s</strong> inscriptible et réessayez de désactiver, ou forcez la désactivation maintenant :"
 
-#: inc/admin/ui/notices.php:81
+#: inc/admin/ui/notices.php:82
 #, php-format
 msgid ""
 "<strong>%s</strong>: One or more plugins have been enabled or disabled, "
@@ -348,7 +353,15 @@ msgstr ""
 "<strong>%s</strong>: Une ou plusieurs extensions ont été activées ou "
 "désactivées, videz le cache si elles influent sur le front de votre site."
 
-#: inc/admin/ui/notices.php:193
+#: inc/admin/ui/notices.php:172
+msgid ""
+"WP Rocket Cloudflare Add-on provides similar functionalities. They can not "
+"be active at the same time."
+msgstr ""
+"l’Add-on Cloudflare de WP Rocket fournit les même fonctionnalités. Ils ne "
+"peuvent pas être activés en même temps."
+
+#: inc/admin/ui/notices.php:196
 #, php-format
 msgid ""
 "<strong>%s</strong>: The following plugins are not compatible with this "
@@ -357,11 +370,11 @@ msgstr ""
 "<strong>%s</strong>: Les extensions suivantes ne sont pas compatibles avec "
 "WP Rocket et vont générer des résultats inattendus :"
 
-#: inc/admin/ui/notices.php:199
+#: inc/admin/ui/notices.php:202
 msgid "Deactivate"
 msgstr "Désactiver"
 
-#: inc/admin/ui/notices.php:239
+#: inc/admin/ui/notices.php:242
 msgid ""
 "WP Rocket Footer JS is not an official add-on. It prevents some options in "
 "WP Rocket from working correctly. Please deactivate it if you have problems."
@@ -370,7 +383,7 @@ msgstr ""
 "options de WP Rocket de fonctionner correctement. Veuillez le désactiver si "
 "vous avez des problèmes."
 
-#: inc/admin/ui/notices.php:279
+#: inc/admin/ui/notices.php:282
 #, php-format
 msgid ""
 "Endurance Cache is currently enabled, which will conflict with WP Rocket "
@@ -381,7 +394,7 @@ msgstr ""
 " WP Rocket. Veuillez régler Endurance Cache sur Off (Niveau 0) sur la page "
 "%1$sRéglages > Général%2$s pour éviter tout problème."
 
-#: inc/admin/ui/notices.php:300
+#: inc/admin/ui/notices.php:303
 #, php-format
 msgid ""
 "%1$s: A custom permalink structure is required for the plugin to work "
@@ -390,7 +403,7 @@ msgstr ""
 "%1$s: Une structure de permalien personnalisée est requise pour que WP "
 "Rocket fonctionne. %2$sRendez-vous aux réglages des permaliens%3$s"
 
-#: inc/admin/ui/notices.php:434
+#: inc/admin/ui/notices.php:437
 #, php-format
 msgid ""
 "%s could not modify the .htaccess file due to missing writing permissions."
@@ -398,14 +411,14 @@ msgstr ""
 "%s n'a pas pu modifier le fichier .htaccess en raison d'un défaut de "
 "permissions en écriture."
 
-#: inc/admin/ui/notices.php:440 inc/admin/ui/notices.php:1027
+#: inc/admin/ui/notices.php:443 inc/admin/ui/notices.php:1061
 #, php-format
 msgid "Troubleshoot: %1$sHow to make system files writeable%2$s"
 msgstr ""
 "Pour résoudre le problème : %1$sComment rendre les fichiers systèmes "
 "accessible à l'écriture%2$s"
 
-#: inc/admin/ui/notices.php:442 inc/admin/ui/notices.php:1029
+#: inc/admin/ui/notices.php:445 inc/admin/ui/notices.php:1063
 msgid ""
 "https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
 "config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
@@ -413,7 +426,7 @@ msgstr ""
 "https://fr.docs.wp-rocket.me/article/945-fichiers-systemes-accessible-"
 "ecriture/?utm_source=wp_plugin&utm_medium=wp_rocket"
 
-#: inc/admin/ui/notices.php:448
+#: inc/admin/ui/notices.php:451
 msgid ""
 "Don’t worry, WP Rocket’s page caching and settings will still function "
 "correctly."
@@ -421,7 +434,7 @@ msgstr ""
 "Ne vous inquiétez pas, la mise en cache des pages et les réglages de WP "
 "Rocket fonctionneront toujours correctement."
 
-#: inc/admin/ui/notices.php:448
+#: inc/admin/ui/notices.php:451
 msgid ""
 "For optimal performance, adding the following lines into your .htaccess is "
 "recommended (not required):"
@@ -429,7 +442,7 @@ msgstr ""
 "Pour des performances optimales, il est recommandé d'ajouter les lignes "
 "suivantes dans votre fichier .htaccess (pas obligatoire) :"
 
-#: inc/admin/ui/notices.php:588
+#: inc/admin/ui/notices.php:592
 #, php-format
 msgid ""
 "%1$s is good to go! %2$sTest your load time%4$s, or visit your "
@@ -438,7 +451,7 @@ msgstr ""
 "%1$s est prêt à décoller ! %2$sTestez votre temps de chargement%4$s, ou "
 "jetez un oeil aux %3$sréglages%4$s."
 
-#: inc/admin/ui/notices.php:706
+#: inc/admin/ui/notices.php:740
 msgid ""
 "Would you allow WP Rocket to collect non-sensitive diagnostic data from this"
 " website?"
@@ -446,15 +459,15 @@ msgstr ""
 "Autorisez-vous WP Rocket à collecter les données de diagnostic non sensibles"
 " de votre site web ?"
 
-#: inc/admin/ui/notices.php:707
+#: inc/admin/ui/notices.php:741
 msgid "This would help us to improve WP Rocket for you in the future."
 msgstr "Cela nous aiderait à améliorer WP Rocket pour vous dans le futur."
 
-#: inc/admin/ui/notices.php:713
+#: inc/admin/ui/notices.php:747
 msgid "What info will we collect?"
 msgstr "Quelles infos collecterons-nous ?"
 
-#: inc/admin/ui/notices.php:718
+#: inc/admin/ui/notices.php:752
 msgid ""
 "Below is a detailed view of all data WP Rocket will collect if granted "
 "permission. WP Rocket will never transmit any domain names or email "
@@ -466,43 +479,43 @@ msgstr ""
 "transmettra jamais de noms de domaine ou d'adresses email (sauf pour la "
 "validation de licence), d'adresses IP ou de clés API tierces."
 
-#: inc/admin/ui/notices.php:727
+#: inc/admin/ui/notices.php:761
 msgid "Yes, allow"
 msgstr "Oui, j'autorise"
 
-#: inc/admin/ui/notices.php:730
+#: inc/admin/ui/notices.php:764
 msgid "No, thanks"
 msgstr "Non, merci"
 
-#: inc/admin/ui/notices.php:767
+#: inc/admin/ui/notices.php:801
 msgid "Thank you!"
 msgstr "Merci !"
 
-#: inc/admin/ui/notices.php:772
+#: inc/admin/ui/notices.php:806
 msgid "WP Rocket now collects these metrics from your website:"
 msgstr "WP Rocket collecte désormais ces données sur votre site web :"
 
-#: inc/admin/ui/notices.php:808
+#: inc/admin/ui/notices.php:842
 #, php-format
 msgid "%s: Cache cleared."
 msgstr "%s : Cache vidé."
 
-#: inc/admin/ui/notices.php:815
+#: inc/admin/ui/notices.php:849
 #, php-format
 msgid "%s: Post cache cleared."
 msgstr "%s : Cache Article vidé."
 
-#: inc/admin/ui/notices.php:822
+#: inc/admin/ui/notices.php:856
 #, php-format
 msgid "%s: Term cache cleared."
 msgstr "%s : Cache Terme vidé."
 
-#: inc/admin/ui/notices.php:829
+#: inc/admin/ui/notices.php:863
 #, php-format
 msgid "%s: User cache cleared."
 msgstr "%s : Cache Utilisateur vidé."
 
-#: inc/admin/ui/notices.php:905
+#: inc/admin/ui/notices.php:939
 msgid ""
 "The following scheduled event failed to run. This may indicate the CRON "
 "system is not running properly, which can prevent some WP Rocket features "
@@ -520,65 +533,65 @@ msgstr[1] ""
 "le système CRON ne fonctionne pas correctement, ce qui peut empêcher "
 "certaines fonctions de WP Rocket de fonctionner comme prévu :"
 
-#: inc/admin/ui/notices.php:914
+#: inc/admin/ui/notices.php:948
 msgid "Please contact your host to check if CRON is working."
 msgstr "Veuillez contacter votre hébergeur pour vérifier si CRON fonctionne."
 
-#: inc/admin/ui/notices.php:953
+#: inc/admin/ui/notices.php:987
 msgid "Stop Preload"
 msgstr "Arrêter le préchargement"
 
-#: inc/admin/ui/notices.php:971
+#: inc/admin/ui/notices.php:1005
 msgid "Force deactivation "
 msgstr "Forcer la désactivation"
 
-#: inc/admin/ui/notices.php:984
+#: inc/admin/ui/notices.php:1018
 msgid "The following code should have been written to this file:"
 msgstr "Le code suivant aurait dû être écrit sur ce fichier :"
 
-#: inc/admin/ui/notices.php:994 views/settings/page-sections/dashboard.php:45
+#: inc/admin/ui/notices.php:1028 views/settings/page-sections/dashboard.php:45
 msgid "Dismiss this notice."
 msgstr "Ne pas tenir compte de cet avertissement."
 
-#: inc/admin/ui/notices.php:1015
+#: inc/admin/ui/notices.php:1049
 #, php-format
 msgid "%s cannot configure itself due to missing writing permissions."
 msgstr ""
 "%s ne peut pas se configurer seul en raison de l'absence de permissions en "
 "écriture."
 
-#: inc/admin/ui/notices.php:1021
+#: inc/admin/ui/notices.php:1055
 #, php-format
 msgid "Affected file/folder: %s"
 msgstr "Fichier/dossier affecté : %s"
 
 #: inc/classes/admin/Database/class-optimization.php:41
-#: inc/classes/admin/settings/class-page.php:1333
+#: inc/classes/admin/settings/class-page.php:1349
 msgid "Revisions"
 msgstr "Révisions"
 
 #: inc/classes/admin/Database/class-optimization.php:42
-#: inc/classes/admin/settings/class-page.php:1343
+#: inc/classes/admin/settings/class-page.php:1359
 msgid "Auto Drafts"
 msgstr "Brouillons auto"
 
 #: inc/classes/admin/Database/class-optimization.php:43
-#: inc/classes/admin/settings/class-page.php:1353
+#: inc/classes/admin/settings/class-page.php:1369
 msgid "Trashed Posts"
 msgstr "Contenus dans la corbeille"
 
 #: inc/classes/admin/Database/class-optimization.php:44
-#: inc/classes/admin/settings/class-page.php:1363
+#: inc/classes/admin/settings/class-page.php:1379
 msgid "Spam Comments"
 msgstr "Commentaires indésirables"
 
 #: inc/classes/admin/Database/class-optimization.php:45
-#: inc/classes/admin/settings/class-page.php:1373
+#: inc/classes/admin/settings/class-page.php:1389
 msgid "Trashed Comments"
 msgstr "Commentaires à la corbeille"
 
 #: inc/classes/admin/Database/class-optimization.php:46
-#: inc/classes/admin/settings/class-page.php:1383
+#: inc/classes/admin/settings/class-page.php:1399
 msgid "Expired transients"
 msgstr "Transients expirés"
 
@@ -1027,11 +1040,15 @@ msgstr "Média"
 msgid "LazyLoad, emojis, embeds, WebP"
 msgstr "LazyLoad, emojis, embeds, WebP"
 
-#: inc/classes/admin/settings/class-page.php:876
+#: inc/classes/admin/settings/class-page.php:875
+msgid "Autoptimize"
+msgstr "Autoptimize"
+
+#: inc/classes/admin/settings/class-page.php:892
 msgid "LazyLoad"
 msgstr "LazyLoad"
 
-#: inc/classes/admin/settings/class-page.php:879
+#: inc/classes/admin/settings/class-page.php:895
 #, php-format
 msgid ""
 "It can improve actual and perceived loading time as images, iframes, and "
@@ -1043,21 +1060,20 @@ msgstr ""
 " le point d'entrer) dans la fenêtre. Réduit le nombre de requêtes "
 "HTTP.%1$sPlus d'infos%2$s"
 
-#: inc/classes/admin/settings/class-page.php:886
+#: inc/classes/admin/settings/class-page.php:902
 #, php-format
 msgid ""
-"Lazyload is currently activated in <strong>Autoptimize</strong>. If you want"
-" to use %1$s’s lazyload, disable this option in Autoptimize."
+"Lazyload is currently activated in <strong>%2$s</strong>. If you want to use"
+" %1$s’s lazyload, disable this option in %2$s."
 msgstr ""
-"Le Lazyload est actuellement activé dans <strong>Autoptimize</strong>. Si "
-"vous souhaitez utiliser le lazyload de %1$s, désactivez cette option dans "
-"Autoptimize."
+"Le Lazyload est actuellement activé dans <strong>%2$s</strong>. Si vous "
+"souhaitez utiliser le lazyload de %1$s, désactivez cette option dans %2$s."
 
-#: inc/classes/admin/settings/class-page.php:889
+#: inc/classes/admin/settings/class-page.php:905
 msgid "Emoji 👻"
 msgstr "Emoji 👻"
 
-#: inc/classes/admin/settings/class-page.php:891
+#: inc/classes/admin/settings/class-page.php:907
 msgid ""
 "Use default emoji of visitor's browser instead of loading emoji from "
 "WordPress.org"
@@ -1065,11 +1081,11 @@ msgstr ""
 "Utiliser les emoji du navigateur de vos visiteurs au lieu de charger celles "
 "de WordPress.org"
 
-#: inc/classes/admin/settings/class-page.php:895
+#: inc/classes/admin/settings/class-page.php:911
 msgid "Embeds"
 msgstr "Embeds"
 
-#: inc/classes/admin/settings/class-page.php:897
+#: inc/classes/admin/settings/class-page.php:913
 msgid ""
 "Prevents others from embedding content from your site, prevents you from "
 "embedding content from other (non-whitelisted) sites, and removes JavaScript"
@@ -1079,11 +1095,11 @@ msgstr ""
 "empêche d'incorporer du contenu des autres sites (non sur liste blanche), "
 "retire les requêtes JavaScript liées aux embeds WordPress"
 
-#: inc/classes/admin/settings/class-page.php:901
+#: inc/classes/admin/settings/class-page.php:917
 msgid "WebP compatibility"
 msgstr "Compatibilité WebP"
 
-#: inc/classes/admin/settings/class-page.php:905
+#: inc/classes/admin/settings/class-page.php:921
 #, php-format
 msgid ""
 "Enable this option if you would like WP Rocket to serve WebP images to "
@@ -1096,11 +1112,11 @@ msgstr ""
 "d'images WebP pour vous. Pour créer des images WebP, nous vous recommandons "
 "%1$sImagify%2$s. %3$sPlus d'infos%2$s"
 
-#: inc/classes/admin/settings/class-page.php:933
+#: inc/classes/admin/settings/class-page.php:949
 msgid "Enable for images"
 msgstr "Activer pour les images"
 
-#: inc/classes/admin/settings/class-page.php:944
+#: inc/classes/admin/settings/class-page.php:960
 msgctxt "Avada"
 msgid ""
 "Lazyload for images is currently activated in Avada. If you want to use WP "
@@ -1110,15 +1126,15 @@ msgstr ""
 "souhaitez utiliser le lazyload de WP Rocket, désactivez cette option dans "
 "Avada."
 
-#: inc/classes/admin/settings/class-page.php:952
+#: inc/classes/admin/settings/class-page.php:968
 msgid "Enable for iframes and videos"
 msgstr "Activer sur les iframes et vidéos"
 
-#: inc/classes/admin/settings/class-page.php:967
+#: inc/classes/admin/settings/class-page.php:983
 msgid "Replace YouTube iframe with preview image"
 msgstr "Remplacer l'iframe Youtube par une image d'aperçu"
 
-#: inc/classes/admin/settings/class-page.php:968
+#: inc/classes/admin/settings/class-page.php:984
 msgid ""
 "This can significantly improve your loading time if you have a lot of "
 "YouTube videos on a page."
@@ -1126,35 +1142,35 @@ msgstr ""
 "Cela peut considérablement améliorer votre chargement si vous avez beaucoup "
 "de vidéos Youtube sur une page."
 
-#: inc/classes/admin/settings/class-page.php:980
+#: inc/classes/admin/settings/class-page.php:996
 msgid "Disable Emoji"
 msgstr "Désactiver les emojis"
 
-#: inc/classes/admin/settings/class-page.php:981
+#: inc/classes/admin/settings/class-page.php:997
 msgid "Disable Emoji will reduce the number of external HTTP requests."
 msgstr "Réduit le nombre de requêtes HTTP externes"
 
-#: inc/classes/admin/settings/class-page.php:989
+#: inc/classes/admin/settings/class-page.php:1005
 msgid "Disable WordPress embeds"
 msgstr "Désactiver les embeds de WordPress"
 
-#: inc/classes/admin/settings/class-page.php:999
+#: inc/classes/admin/settings/class-page.php:1015
 #: inc/classes/subscriber/Media/class-webp-subscriber.php:360
 msgid "Enable WebP caching"
 msgstr "Activer la mise en cache pour WebP"
 
-#: inc/classes/admin/settings/class-page.php:1022
-#: inc/classes/admin/settings/class-page.php:1032
+#: inc/classes/admin/settings/class-page.php:1038
+#: inc/classes/admin/settings/class-page.php:1048
 #: inc/deprecated/deprecated.php:1778
 #: views/settings/page-sections/tutorials.php:29
 msgid "Preload"
 msgstr "Préchargement"
 
-#: inc/classes/admin/settings/class-page.php:1023
+#: inc/classes/admin/settings/class-page.php:1039
 msgid "Generate cache files"
 msgstr "Générer le cache"
 
-#: inc/classes/admin/settings/class-page.php:1035
+#: inc/classes/admin/settings/class-page.php:1051
 #, php-format
 msgid ""
 "When you enable preloading WP Rocket will generate the cache starting with "
@@ -1170,11 +1186,11 @@ msgstr ""
 "manuellement à partir de la barre d'admin ou du %1$stableau de bord de WP "
 "Rocket%2$s."
 
-#: inc/classes/admin/settings/class-page.php:1043
+#: inc/classes/admin/settings/class-page.php:1059
 msgid "Prefetch DNS Requests"
 msgstr "Préchargement des requêtes DNS"
 
-#: inc/classes/admin/settings/class-page.php:1045
+#: inc/classes/admin/settings/class-page.php:1061
 msgid ""
 "DNS prefetching can make external files load faster, especially on mobile "
 "networks"
@@ -1182,27 +1198,27 @@ msgstr ""
 "Le préchargement des requêtes DNS peut permettre aux ressources externes de "
 "charger plus rapidement, surtout sur les réseaux mobiles."
 
-#: inc/classes/admin/settings/class-page.php:1059
+#: inc/classes/admin/settings/class-page.php:1075
 msgid "Activate Preloading"
 msgstr "Activer le préchargement"
 
-#: inc/classes/admin/settings/class-page.php:1078
+#: inc/classes/admin/settings/class-page.php:1094
 msgid "Activate sitemap-based cache preloading"
 msgstr "Activer le préchargement du sitemap"
 
-#: inc/classes/admin/settings/class-page.php:1097
+#: inc/classes/admin/settings/class-page.php:1113
 msgid "Sitemaps for preloading"
 msgstr "Préchargement de la sitemap"
 
-#: inc/classes/admin/settings/class-page.php:1101
+#: inc/classes/admin/settings/class-page.php:1117
 msgid "Specify XML sitemap(s) to be used for preloading"
 msgstr "Indiquez la ou les sitemap(s) XML à utiliser pour le préchargement"
 
-#: inc/classes/admin/settings/class-page.php:1111
+#: inc/classes/admin/settings/class-page.php:1127
 msgid "URLs to prefetch"
 msgstr "URLs à précharger"
 
-#: inc/classes/admin/settings/class-page.php:1112
+#: inc/classes/admin/settings/class-page.php:1128
 msgid ""
 "Specify external hosts to be prefetched (no <code>http:</code>, one per "
 "line)"
@@ -1210,47 +1226,47 @@ msgstr ""
 "Indiquez les hôtes externes à précharger (sans <code>http:</code>, un par "
 "ligne)"
 
-#: inc/classes/admin/settings/class-page.php:1135
+#: inc/classes/admin/settings/class-page.php:1151
 msgid "Advanced Rules"
 msgstr "Règles avancées"
 
-#: inc/classes/admin/settings/class-page.php:1136
+#: inc/classes/admin/settings/class-page.php:1152
 msgid "Fine-tune cache rules"
 msgstr "Affiner les règles du cache"
 
-#: inc/classes/admin/settings/class-page.php:1145
+#: inc/classes/admin/settings/class-page.php:1161
 msgid ""
 "Sensitive pages like custom login/logout URLs should be excluded from cache."
 msgstr ""
 "Les pages sensibles telles que les URLs de connexion / déconnexion "
 "personnalisées doivent être exclues du cache."
 
-#: inc/classes/admin/settings/class-page.php:1148
+#: inc/classes/admin/settings/class-page.php:1164
 msgctxt "plugin name"
 msgid "WooCommerce"
 msgstr "WooCommerce"
 
-#: inc/classes/admin/settings/class-page.php:1150
+#: inc/classes/admin/settings/class-page.php:1166
 msgctxt "plugin name"
 msgid "Easy Digital Downloads"
 msgstr "Easy Digital Downloads"
 
-#: inc/classes/admin/settings/class-page.php:1152
+#: inc/classes/admin/settings/class-page.php:1168
 msgctxt "plugin name"
 msgid "iThemes Exchange"
 msgstr "iThemes Exchange"
 
-#: inc/classes/admin/settings/class-page.php:1154
+#: inc/classes/admin/settings/class-page.php:1170
 msgctxt "plugin name"
 msgid "Jigoshop"
 msgstr "Jigoshop"
 
-#: inc/classes/admin/settings/class-page.php:1156
+#: inc/classes/admin/settings/class-page.php:1172
 msgctxt "plugin name"
 msgid "WP-Shop"
 msgstr "WP-Shop"
 
-#: inc/classes/admin/settings/class-page.php:1162
+#: inc/classes/admin/settings/class-page.php:1178
 #, php-format
 msgid ""
 "<br>Cart, checkout and \"my account\" pages set in "
@@ -1260,15 +1276,15 @@ msgstr ""
 "<strong>%1$s%2$s%3$s</strong> seront automatiquement détectées et exclues du"
 " cache par défaut."
 
-#: inc/classes/admin/settings/class-page.php:1183
+#: inc/classes/admin/settings/class-page.php:1199
 msgid "Never Cache Cookies"
 msgstr "Ne jamais mettre en cache ces Cookies"
 
-#: inc/classes/admin/settings/class-page.php:1202
+#: inc/classes/admin/settings/class-page.php:1218
 msgid "Cache Query String(s)"
 msgstr "Cacher les Query String(s)"
 
-#: inc/classes/admin/settings/class-page.php:1205
+#: inc/classes/admin/settings/class-page.php:1221
 #, php-format
 msgid ""
 "%1$sCache for query strings%2$s enables you to force caching for specific "
@@ -1277,15 +1293,15 @@ msgstr ""
 "%1$sCacher les Query Strings%2$s vous permet de forcer la mise en cache de "
 "paramètres GET spécifiques."
 
-#: inc/classes/admin/settings/class-page.php:1219
+#: inc/classes/admin/settings/class-page.php:1235
 msgid ""
 "Specify URLs of pages or posts that should never be cached (one per line)"
 msgstr ""
 "Indiquez les URLs des pages ou des articles qui doivent être exclues de la "
 "mise en cache (une par ligne)"
 
-#: inc/classes/admin/settings/class-page.php:1220
-#: inc/classes/admin/settings/class-page.php:1248
+#: inc/classes/admin/settings/class-page.php:1236
+#: inc/classes/admin/settings/class-page.php:1264
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use (.*) "
 "wildcards to address multiple URLs under a given path."
@@ -1294,7 +1310,7 @@ msgstr ""
 "expressions régulières (.*) pour exclure plusieurs URLs pour un chemin "
 "donné."
 
-#: inc/classes/admin/settings/class-page.php:1229
+#: inc/classes/admin/settings/class-page.php:1245
 msgid ""
 "Specify the IDs of cookies that, when set in the visitor's browser, should "
 "prevent a page from getting cached (one per line)"
@@ -1302,20 +1318,20 @@ msgstr ""
 "Indiquez les IDs des cookies qui, lorsqu'ils sont déposés dans le navigateur"
 " du visiteur, devraient empêcher la mise en cache de la page (un par ligne)"
 
-#: inc/classes/admin/settings/class-page.php:1237
+#: inc/classes/admin/settings/class-page.php:1253
 msgid ""
 "Specify user agent strings that should never see cached pages (one per line)"
 msgstr ""
 "Indiquez les chaînes de user agent qui ne devraient jamais voir les pages "
 "mises en cache (une par ligne)"
 
-#: inc/classes/admin/settings/class-page.php:1238
+#: inc/classes/admin/settings/class-page.php:1254
 msgid "Use (.*) wildcards to detect parts of UA strings."
 msgstr ""
 "Utilisez les expressions régulières (.*) détecter les parties des chaînes "
 "des UA."
 
-#: inc/classes/admin/settings/class-page.php:1247
+#: inc/classes/admin/settings/class-page.php:1263
 msgid ""
 "Specify URLs you always want purged from cache whenever you update any post "
 "or page (one per line)"
@@ -1323,25 +1339,25 @@ msgstr ""
 "Indiquez les URLs dont vous voulez systématiquement vider le cache lorsque "
 "vous mettez à jour n'importe quel article ou page (une par ligne)"
 
-#: inc/classes/admin/settings/class-page.php:1256
+#: inc/classes/admin/settings/class-page.php:1272
 msgid "Specify query strings for caching (one per line)"
 msgstr ""
 "Indiquez les query strings qui peuvent être mises en cache (une par ligne)"
 
-#: inc/classes/admin/settings/class-page.php:1284
+#: inc/classes/admin/settings/class-page.php:1300
 #: inc/deprecated/deprecated.php:1777
 msgid "Database"
 msgstr "Base de données"
 
-#: inc/classes/admin/settings/class-page.php:1285
+#: inc/classes/admin/settings/class-page.php:1301
 msgid "Optimize, reduce bloat"
 msgstr "Optimiser & nettoyer"
 
-#: inc/classes/admin/settings/class-page.php:1294
+#: inc/classes/admin/settings/class-page.php:1310
 msgid "Post Cleanup"
 msgstr "Nettoyage des contenus"
 
-#: inc/classes/admin/settings/class-page.php:1296
+#: inc/classes/admin/settings/class-page.php:1312
 msgid ""
 "Post revisions and drafts will be permanently deleted. Do not use this "
 "option if you need to retain revisions or drafts."
@@ -1349,19 +1365,19 @@ msgstr ""
 "Les révisions et les brouillons seront supprimés définitivement. N'utilisez "
 "pas cette option si vous souhaitez conserver vos révisions et brouillons."
 
-#: inc/classes/admin/settings/class-page.php:1304
+#: inc/classes/admin/settings/class-page.php:1320
 msgid "Comments Cleanup"
 msgstr "Nettoyage des commentaires"
 
-#: inc/classes/admin/settings/class-page.php:1306
+#: inc/classes/admin/settings/class-page.php:1322
 msgid "Spam and trashed comments will be permanently deleted."
 msgstr "Les Spams et les commentaires mis à la corbeille seront supprimés"
 
-#: inc/classes/admin/settings/class-page.php:1310
+#: inc/classes/admin/settings/class-page.php:1326
 msgid "Transients Cleanup"
 msgstr "Nettoyage des transients"
 
-#: inc/classes/admin/settings/class-page.php:1312
+#: inc/classes/admin/settings/class-page.php:1328
 msgid ""
 "Transients are temporary options; they are safe to remove. They will be "
 "automatically regenerated as your plugins require them."
@@ -1370,107 +1386,107 @@ msgstr ""
 "risque. Elles seront automatiquement régénérées si vos plugins en ont "
 "besoin."
 
-#: inc/classes/admin/settings/class-page.php:1316
+#: inc/classes/admin/settings/class-page.php:1332
 msgid "Database Cleanup"
 msgstr "Nettoyage de la base de données"
 
-#: inc/classes/admin/settings/class-page.php:1318
+#: inc/classes/admin/settings/class-page.php:1334
 msgid "Reduces overhead of database tables"
 msgstr "Réduit les tables de la base de données"
 
-#: inc/classes/admin/settings/class-page.php:1322
+#: inc/classes/admin/settings/class-page.php:1338
 msgid "Automatic cleanup"
 msgstr "Nettoyage automatique"
 
-#: inc/classes/admin/settings/class-page.php:1335
+#: inc/classes/admin/settings/class-page.php:1351
 #, php-format
 msgid "%s revision in your database."
 msgid_plural "%s revisions in your database."
 msgstr[0] "%s révision dans votre base de données."
 msgstr[1] "%s révisions dans votre base de données."
 
-#: inc/classes/admin/settings/class-page.php:1345
+#: inc/classes/admin/settings/class-page.php:1361
 #, php-format
 msgid "%s draft in your database."
 msgid_plural "%s drafts in your database."
 msgstr[0] "%s brouillon dans votre base de données."
 msgstr[1] "%s brouillons dans votre base de données."
 
-#: inc/classes/admin/settings/class-page.php:1355
+#: inc/classes/admin/settings/class-page.php:1371
 #, php-format
 msgid "%s trashed post in your database."
 msgid_plural "%s trashed posts in your database."
 msgstr[0] "%s contenu à la corbeille dans votre base de données."
 msgstr[1] "%s contenus à la corbeille dans votre base de données."
 
-#: inc/classes/admin/settings/class-page.php:1365
+#: inc/classes/admin/settings/class-page.php:1381
 #, php-format
 msgid "%s spam comment in your database."
 msgid_plural "%s spam comments in your database."
 msgstr[0] "%s commentaire indésirable dans votre base de données."
 msgstr[1] "%s commentaires indésirables dans votre base de données."
 
-#: inc/classes/admin/settings/class-page.php:1375
+#: inc/classes/admin/settings/class-page.php:1391
 #, php-format
 msgid "%s trashed comment in your database."
 msgid_plural "%s trashed comments in your database."
 msgstr[0] "%s commentaire mis à la corbeille dans votre base de données."
 msgstr[1] "%s commentaires mis à la corbeille dans votre base de données."
 
-#: inc/classes/admin/settings/class-page.php:1385
+#: inc/classes/admin/settings/class-page.php:1401
 #, php-format
 msgid "%s expired transient in your database."
 msgid_plural "%s expired transients in your database."
 msgstr[0] "%s transient expiré dans votre base de données."
 msgstr[1] "%s transients expirés dans votre base de données."
 
-#: inc/classes/admin/settings/class-page.php:1393
+#: inc/classes/admin/settings/class-page.php:1409
 msgid "All transients"
 msgstr "Tous les transients"
 
-#: inc/classes/admin/settings/class-page.php:1395
+#: inc/classes/admin/settings/class-page.php:1411
 #, php-format
 msgid "%s transient in your database."
 msgid_plural "%s transients in your database."
 msgstr[0] "%s transient dans votre base de données."
 msgstr[1] "%s transients dans votre base de données."
 
-#: inc/classes/admin/settings/class-page.php:1403
+#: inc/classes/admin/settings/class-page.php:1419
 msgid "Optimize Tables"
 msgstr "Optimiser les tables"
 
-#: inc/classes/admin/settings/class-page.php:1405
+#: inc/classes/admin/settings/class-page.php:1421
 #, php-format
 msgid "%s table to optimize in your database."
 msgid_plural "%s tables to optimize in your database."
 msgstr[0] "%s table à optimiser dans votre base de données."
 msgstr[1] "%s tables à optimiser dans votre base de données."
 
-#: inc/classes/admin/settings/class-page.php:1416
+#: inc/classes/admin/settings/class-page.php:1432
 msgid "Schedule Automatic Cleanup"
 msgstr "Planifier le nettoyage automatique"
 
-#: inc/classes/admin/settings/class-page.php:1428
+#: inc/classes/admin/settings/class-page.php:1444
 msgid "Frequency"
 msgstr "Fréquence"
 
-#: inc/classes/admin/settings/class-page.php:1436
+#: inc/classes/admin/settings/class-page.php:1452
 msgid "Daily"
 msgstr "Journalier"
 
-#: inc/classes/admin/settings/class-page.php:1437
+#: inc/classes/admin/settings/class-page.php:1453
 msgid "Weekly"
 msgstr "Hebdomadaire"
 
-#: inc/classes/admin/settings/class-page.php:1438
+#: inc/classes/admin/settings/class-page.php:1454
 msgid "Monthly"
 msgstr "Mensuel"
 
-#: inc/classes/admin/settings/class-page.php:1458
+#: inc/classes/admin/settings/class-page.php:1474
 msgid "Integrate your CDN"
 msgstr "Intégrez votre CDN"
 
-#: inc/classes/admin/settings/class-page.php:1470
+#: inc/classes/admin/settings/class-page.php:1486
 msgid ""
 "All URLs of static files (CSS, JS, images) will be rewritten to the CNAME(s)"
 " you provide."
@@ -1478,7 +1494,7 @@ msgstr ""
 "Toutes les URLs de vos fichiers statiques (CSS, JS, images) seront ré-"
 "écrites avec le CNAME fourni."
 
-#: inc/classes/admin/settings/class-page.php:1472
+#: inc/classes/admin/settings/class-page.php:1488
 #, php-format
 msgid ""
 "Not required for services like Cloudflare and Sucuri. Please see our "
@@ -1487,7 +1503,7 @@ msgstr ""
 "Non requis pour des services comme Cloudflare et Sucuri. Veuillez consulter "
 "nos %1$sAdd-ons%2$s disponibles."
 
-#: inc/classes/admin/settings/class-page.php:1513
+#: inc/classes/admin/settings/class-page.php:1529
 #, php-format
 msgid ""
 "%1$s%2$s Add-on%3$s is currently enabled. Configuration of the CDN settings "
@@ -1502,26 +1518,26 @@ msgstr[1] ""
 "Les %1$s add-ons %2$s%3$s  sont actuellement activés. La configuration des "
 "paramètres CDN n’est pas nécessaire pour que %2$s fonctionne sur votre site."
 
-#: inc/classes/admin/settings/class-page.php:1540
+#: inc/classes/admin/settings/class-page.php:1556
 msgid "Enable Content Delivery Network"
 msgstr "Activer le Content Delivery Network."
 
-#: inc/classes/admin/settings/class-page.php:1550
+#: inc/classes/admin/settings/class-page.php:1566
 msgid "CDN CNAME(s)"
 msgstr "CNAME(s) CDN"
 
-#: inc/classes/admin/settings/class-page.php:1551
+#: inc/classes/admin/settings/class-page.php:1567
 msgid "Specify the CNAME(s) below"
 msgstr "Indiquez le(s) CNAME(s) ci-dessous"
 
-#: inc/classes/admin/settings/class-page.php:1558
+#: inc/classes/admin/settings/class-page.php:1574
 msgid ""
 "Specify URL(s) of files that should not get served via CDN (one per line)."
 msgstr ""
 "Indiquez les URLs des fichiers qui ne doivent pas être servies par le CDN "
 "(une par ligne)."
 
-#: inc/classes/admin/settings/class-page.php:1559
+#: inc/classes/admin/settings/class-page.php:1575
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use (.*) "
 "wildcards to exclude all files of a given file type located at a specific "
@@ -1531,16 +1547,16 @@ msgstr ""
 "expressions régulières  (.*) pour exclure plusieurs URLs pour un chemin "
 "donné."
 
-#: inc/classes/admin/settings/class-page.php:1582
-#: inc/classes/admin/settings/class-page.php:1590
+#: inc/classes/admin/settings/class-page.php:1598
+#: inc/classes/admin/settings/class-page.php:1606
 msgid "Heartbeat"
 msgstr "Heartbeat"
 
-#: inc/classes/admin/settings/class-page.php:1583
+#: inc/classes/admin/settings/class-page.php:1599
 msgid "Control WordPress Heartbeat API"
 msgstr "Contrôler l'API WordPress Heartbeat"
 
-#: inc/classes/admin/settings/class-page.php:1591
+#: inc/classes/admin/settings/class-page.php:1607
 msgid ""
 "Reducing or disabling the Heartbeat API’s activity can help save some of "
 "your server’s resources."
@@ -1548,11 +1564,11 @@ msgstr ""
 "Réduire ou désactiver l’activité de l’API Heartbeat peut permettre "
 "d’économiser certaines ressources de votre serveur."
 
-#: inc/classes/admin/settings/class-page.php:1600
+#: inc/classes/admin/settings/class-page.php:1616
 msgid "Reduce or disable Heartbeat activity"
 msgstr "Réduire ou désactiver l'activité Heartbeat"
 
-#: inc/classes/admin/settings/class-page.php:1601
+#: inc/classes/admin/settings/class-page.php:1617
 msgid ""
 "Reducing activity will change Heartbeat frequency from one hit each minute "
 "to one hit every 2 minutes."
@@ -1560,55 +1576,55 @@ msgstr ""
 "La réduction de l'activité fera passer la fréquence Heartbeat d'un coup "
 "toutes les minutes à un coup toutes les 2 minutes."
 
-#: inc/classes/admin/settings/class-page.php:1601
+#: inc/classes/admin/settings/class-page.php:1617
 msgid ""
 "Disabling Heartbeat entirely may break plugins and themes using this API."
 msgstr ""
 "La désactivation complète de Heartbeat peut endommager les plugins et les "
 "thèmes utilisant cette API."
 
-#: inc/classes/admin/settings/class-page.php:1615
+#: inc/classes/admin/settings/class-page.php:1631
 msgid "Do not limit"
 msgstr "Ne pas limiter"
 
-#: inc/classes/admin/settings/class-page.php:1616
+#: inc/classes/admin/settings/class-page.php:1632
 msgid "Reduce activity"
 msgstr "Réduire l'activité"
 
-#: inc/classes/admin/settings/class-page.php:1617
+#: inc/classes/admin/settings/class-page.php:1633
 msgid "Disable"
 msgstr "Désactiver"
 
-#: inc/classes/admin/settings/class-page.php:1625
+#: inc/classes/admin/settings/class-page.php:1641
 msgid "Control Heartbeat"
 msgstr "Contrôler Heartbeat"
 
-#: inc/classes/admin/settings/class-page.php:1634
+#: inc/classes/admin/settings/class-page.php:1650
 msgid "Behavior in backend"
 msgstr "Comportement en Backend"
 
-#: inc/classes/admin/settings/class-page.php:1641
+#: inc/classes/admin/settings/class-page.php:1657
 msgid "Behavior in post editor"
 msgstr "Comportement dans l’éditeur d'article"
 
-#: inc/classes/admin/settings/class-page.php:1647
+#: inc/classes/admin/settings/class-page.php:1663
 msgid "Behavior in frontend"
 msgstr "Comportement en Frontend"
 
-#: inc/classes/admin/settings/class-page.php:1666
+#: inc/classes/admin/settings/class-page.php:1682
 #: views/settings/page-sections/tutorials.php:35
 msgid "Add-ons"
 msgstr "Add-ons"
 
-#: inc/classes/admin/settings/class-page.php:1667
+#: inc/classes/admin/settings/class-page.php:1683
 msgid "Add more features"
 msgstr "Ajoutez des fonctionnalités"
 
-#: inc/classes/admin/settings/class-page.php:1674
+#: inc/classes/admin/settings/class-page.php:1690
 msgid "One-click Rocket Add-ons"
 msgstr "One-click Rocket Add-ons"
 
-#: inc/classes/admin/settings/class-page.php:1675
+#: inc/classes/admin/settings/class-page.php:1691
 msgid ""
 "One-Click Add-ons are features extending available options without "
 "configuration needed. Switch the option \"on\" to enable from this screen."
@@ -1617,25 +1633,25 @@ msgstr ""
 "disponibles sans besoin de configuration. Mettez l'option sur \"ON\" pour "
 "l'activer depuis cet écran."
 
-#: inc/classes/admin/settings/class-page.php:1685
+#: inc/classes/admin/settings/class-page.php:1701
 msgid "Rocket Add-ons"
 msgstr "Rocket Add-ons"
 
-#: inc/classes/admin/settings/class-page.php:1686
+#: inc/classes/admin/settings/class-page.php:1702
 msgid "Rocket Add-ons are complementary features extending available options."
 msgstr ""
 "Ce sont de simples fonctionnalités complémentaires étendant les option déjà "
 "disponibles."
 
-#: inc/classes/admin/settings/class-page.php:1699
+#: inc/classes/admin/settings/class-page.php:1715
 msgid "Google Tracking"
 msgstr "Google Tracking"
 
-#: inc/classes/admin/settings/class-page.php:1705
+#: inc/classes/admin/settings/class-page.php:1721
 msgid "Improve browser caching for Google Analytics"
 msgstr "Améliore le cache navigateur pour Google Analytics"
 
-#: inc/classes/admin/settings/class-page.php:1707
+#: inc/classes/admin/settings/class-page.php:1723
 #, php-format
 msgid ""
 "WP Rocket will host these Google scripts locally on your server to help "
@@ -1646,15 +1662,15 @@ msgstr ""
 "aider à satisfaire la recommandation de PageSpeed ​​pour <em>Exploiter la "
 "mise en cache du navigateur</em>.<br>%1$sEn savoir plus%2$s"
 
-#: inc/classes/admin/settings/class-page.php:1722
+#: inc/classes/admin/settings/class-page.php:1738
 msgid "Facebook Pixel"
 msgstr "Facebook Pixel"
 
-#: inc/classes/admin/settings/class-page.php:1728
+#: inc/classes/admin/settings/class-page.php:1744
 msgid "Improve browser caching for Facebook Pixel"
 msgstr "Améliore le cache navigateur pour Facebook Pixel"
 
-#: inc/classes/admin/settings/class-page.php:1730
+#: inc/classes/admin/settings/class-page.php:1746
 #, php-format
 msgid ""
 "WP Rocket will host these Facebook Pixels locally on your server to help "
@@ -1665,15 +1681,15 @@ msgstr ""
 "pour aider à satisfaire la recommandation de PageSpeed ​​pour <em>Exploiter "
 "la mise en cache du navigateur</em>.<br>%1$sEn savoir plus%2$s"
 
-#: inc/classes/admin/settings/class-page.php:1763
+#: inc/classes/admin/settings/class-page.php:1779
 msgid "Varnish"
 msgstr "Varnish"
 
-#: inc/classes/admin/settings/class-page.php:1769
+#: inc/classes/admin/settings/class-page.php:1785
 msgid "If Varnish runs on your server, you must activate this add-on."
 msgstr "Si votre serveur utilise Varnish, vous devez activer cet add-on"
 
-#: inc/classes/admin/settings/class-page.php:1771
+#: inc/classes/admin/settings/class-page.php:1787
 #, php-format
 msgid ""
 "Varnish cache will be purged each time WP Rocket clears its cache to ensure "
@@ -1683,16 +1699,16 @@ msgstr ""
 "pour vous assurer que le contenu soit toujours à jour.<br>%1$sEn savoir "
 "plus%2$s"
 
-#: inc/classes/admin/settings/class-page.php:1786
-#: inc/classes/admin/settings/class-page.php:1846
+#: inc/classes/admin/settings/class-page.php:1802
+#: inc/classes/admin/settings/class-page.php:1862
 msgid "Cloudflare"
 msgstr "CloudFlare"
 
-#: inc/classes/admin/settings/class-page.php:1792
+#: inc/classes/admin/settings/class-page.php:1808
 msgid "Integrate your Cloudflare account with this add-on."
 msgstr "Intégrez votre compte Cloudflare avec cet add-on"
 
-#: inc/classes/admin/settings/class-page.php:1793
+#: inc/classes/admin/settings/class-page.php:1809
 msgid ""
 "Provide your account email, global API key, and domain to use options such "
 "as clearing the Cloudflare cache and enabling optimal settings with WP "
@@ -1702,11 +1718,11 @@ msgstr ""
 "CloudFlare pour pouvoir purger le cache Cloudflare et bénéficier des "
 "réglages optimaux pour WP Rocket."
 
-#: inc/classes/admin/settings/class-page.php:1805
+#: inc/classes/admin/settings/class-page.php:1821
 msgid "Clear the Sucuri cache when WP Rocket’s cache is cleared."
 msgstr "Effacez le cache Sucuri lorsque le cache de WP Rocket est effacé."
 
-#: inc/classes/admin/settings/class-page.php:1808
+#: inc/classes/admin/settings/class-page.php:1824
 msgid ""
 "Provide your API key to clear the Sucuri cache when WP Rocket’s cache is "
 "cleared."
@@ -1714,56 +1730,48 @@ msgstr ""
 "Fournissez votre clé API pour vider le cache Sucuri lorsque le cache de WP "
 "Rocket est effacé."
 
-#: inc/classes/admin/settings/class-page.php:1816
-#: inc/classes/admin/settings/class-page.php:1964
+#: inc/classes/admin/settings/class-page.php:1832
+#: inc/classes/admin/settings/class-page.php:1981
 msgid "Sucuri"
 msgstr "Sucuri"
 
-#: inc/classes/admin/settings/class-page.php:1822
+#: inc/classes/admin/settings/class-page.php:1838
 msgid "Synchronize Sucuri cache with this add-on."
 msgstr "Synchronisez le cache Sucuri avec cet add-on."
 
-#: inc/classes/admin/settings/class-page.php:1862
+#: inc/classes/admin/settings/class-page.php:1879
 msgid "Cloudflare credentials"
 msgstr "Accès CloudFlare"
 
-#: inc/classes/admin/settings/class-page.php:1871
+#: inc/classes/admin/settings/class-page.php:1888
 msgid "Cloudflare settings"
 msgstr "Réglages CloudFlare"
 
-#: inc/classes/admin/settings/class-page.php:1885
+#: inc/classes/admin/settings/class-page.php:1902
 msgctxt "Cloudflare"
 msgid "Global API key:"
 msgstr "Clé API globale :"
 
-#: inc/classes/admin/settings/class-page.php:1886
-msgid ""
-"https://support.cloudflare.com/hc/en-us/articles/200167836-Where-do-I-find-"
-"my-Cloudflare-API-key-"
-msgstr ""
-"https://support.cloudflare.com/hc/en-us/articles/200167836-Where-do-I-find-"
-"my-Cloudflare-API-key-"
-
-#: inc/classes/admin/settings/class-page.php:1886
+#: inc/classes/admin/settings/class-page.php:1903
 msgctxt "Cloudflare"
 msgid "Find your API key"
 msgstr "Trouver votre clé API"
 
-#: inc/classes/admin/settings/class-page.php:1898
+#: inc/classes/admin/settings/class-page.php:1915
 msgctxt "Cloudflare"
 msgid "Account email"
 msgstr "E-mail du compte"
 
-#: inc/classes/admin/settings/class-page.php:1907
+#: inc/classes/admin/settings/class-page.php:1924
 msgctxt "Cloudflare"
 msgid "Zone ID"
 msgstr "Zone ID"
 
-#: inc/classes/admin/settings/class-page.php:1917
+#: inc/classes/admin/settings/class-page.php:1934
 msgid "Development mode"
 msgstr "Mode développement"
 
-#: inc/classes/admin/settings/class-page.php:1919
+#: inc/classes/admin/settings/class-page.php:1936
 #, php-format
 msgid ""
 "Temporarily activate development mode on your website. This setting will "
@@ -1772,11 +1780,11 @@ msgstr ""
 "Active temporairement le mode développement sur votre site. Ce réglage se "
 "désactivera automatiquement après 3 heures. %1$sEn savoir plus%2$s"
 
-#: inc/classes/admin/settings/class-page.php:1927
+#: inc/classes/admin/settings/class-page.php:1944
 msgid "Optimal settings"
 msgstr "Réglages optimaux"
 
-#: inc/classes/admin/settings/class-page.php:1928
+#: inc/classes/admin/settings/class-page.php:1945
 msgid ""
 "Automatically enhances your Cloudflare configuration for speed, performance "
 "grade and compatibility."
@@ -1784,11 +1792,11 @@ msgstr ""
 "Améliore automatiquement votre configuration Cloudflare pour le temps de "
 "chargement, les notes de performance et la compatibilité."
 
-#: inc/classes/admin/settings/class-page.php:1936
+#: inc/classes/admin/settings/class-page.php:1953
 msgid "Relative protocol"
 msgstr "Protocol relatif"
 
-#: inc/classes/admin/settings/class-page.php:1937
+#: inc/classes/admin/settings/class-page.php:1954
 msgid ""
 "Should only be used with Cloudflare's flexible SSL feature. URLs of static "
 "files (CSS, JS, images) will be rewritten to use // instead of http:// or "
@@ -1798,11 +1806,11 @@ msgstr ""
 "URLs de vos fichiers statiques (CSS, JS, images) seront ré-écrites pour "
 "utiliser // au lieu de http:// ou https:// ."
 
-#: inc/classes/admin/settings/class-page.php:1977
+#: inc/classes/admin/settings/class-page.php:1994
 msgid "Sucuri credentials"
 msgstr "Accès Sucuri"
 
-#: inc/classes/admin/settings/class-page.php:1990
+#: inc/classes/admin/settings/class-page.php:2007
 msgctxt "Sucuri"
 msgid ""
 "Firewall API key (for plugin), must be in format <code>{32 characters}/{32 "
@@ -1811,7 +1819,7 @@ msgstr ""
 "Firewall API key (for plugin),  format doit être au format <code>{32 "
 "caractères}/{32 caractères}</code> :"
 
-#: inc/classes/admin/settings/class-page.php:1991
+#: inc/classes/admin/settings/class-page.php:2008
 msgctxt "Sucuri"
 msgid "Find your API key"
 msgstr "Trouver votre clé API"
@@ -2128,7 +2136,18 @@ msgid "WP Rocket will create separate cache files to serve your WebP images."
 msgstr ""
 "WP Rocket créera des fichiers cache séparés pour servir vos images WebP."
 
-#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:138
+#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:77
+msgid "Critical CSS generation is currently running."
+msgstr "La génération du Critical CSS est en cours."
+
+#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:82
+#: inc/classes/subscriber/preload/class-preload-subscriber.php:210
+#, php-format
+msgid "Go to the %1$sWP Rocket settings%2$s page to track progress."
+msgstr ""
+"Rendez-vous aux %1$sréglages de WP Rocket%2$s pour suivre la progression."
+
+#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:185
 #, php-format
 msgid ""
 "Critical CSS generation is currently running: %1$d of %2$d page types "
@@ -2137,18 +2156,18 @@ msgstr ""
 "La génération du Critical CSS est en cours : %1$d de %2$d de types de page "
 "complétés. (Rafraîchir pour voir la progression)"
 
-#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:189
+#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:236
 #, php-format
 msgid "Critical CSS generation finished for %1$d of %2$d page types."
 msgstr ""
 "La génération du Critical CSS est en terminée : %1$d de %2$d de types de "
 "page."
 
-#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:203
+#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:250
 msgid "Critical CSS generation encountered one or more errors."
 msgstr "La génération du CSS critique a rencontré une ou plusieurs erreur(s)."
 
-#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:203
+#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:250
 msgid "Learn more."
 msgstr "En savoir plus."
 
@@ -2158,6 +2177,37 @@ msgstr "En savoir plus."
 #: inc/classes/subscriber/class-google-tracking-cache-busting-subscriber.php:154
 msgid "weekly"
 msgstr "hebdomadaire"
+
+#: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:105
+#, php-format
+msgid ""
+"Failed to detect the following requirement in your theme: closing %1$s."
+msgid_plural ""
+"Failed to detect the following requirements in your theme: closing %1$s."
+msgstr[0] ""
+"Impossible de détecter l'exigence suivante dans votre thème : fermeture de "
+"%1$s."
+msgstr[1] ""
+"Impossible de détecter les exigences suivantes dans votre thème : fermeture "
+"de %1$s."
+
+#: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:111
+#: inc/functions/cloudflare.php:39 inc/functions/cloudflare.php:63
+#: inc/functions/cloudflare.php:76 inc/functions/cloudflare.php:104
+#: inc/functions/cloudflare.php:121 inc/functions/cloudflare.php:478
+#: inc/functions/cloudflare.php:493 inc/functions/cloudflare.php:623
+#, php-format
+msgid "Read the %1$sdocumentation%2$s for further guidance."
+msgstr "Lisez la %1$sdocumentation%2$s pour plus d'indication."
+
+#: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:113
+msgid ""
+"https://docs.wp-rocket.me/article/99-pages-not-cached-or-minify-cssjs-not-"
+"working/?utm_source=wp_plugin&utm_medium=wp_rocket#theme"
+msgstr ""
+"https://fr.docs.wp-rocket.me/article/264-les-pages-ne-sont-pas-mises-en-"
+"cache-ou-la-minification-css-et-js-ne-fonctionne-"
+"pas/?utm_source=wp_plugin&utm_medium=wp_rocket#theme"
 
 #: inc/classes/subscriber/admin/Database/class-optimization-subscriber.php:93
 msgid "monthly"
@@ -2216,12 +2266,6 @@ msgstr "Prise en main et tutos vidéos"
 #: inc/classes/subscriber/preload/class-preload-subscriber.php:205
 msgid "Preload: WP Rocket has started preloading your website."
 msgstr "Préchargement : WP Rocket a commencé à précharger votre site."
-
-#: inc/classes/subscriber/preload/class-preload-subscriber.php:210
-#, php-format
-msgid "Go to the %1$sWP Rocket settings%2$s page to track progress."
-msgstr ""
-"Rendez-vous aux %1$sréglages de WP Rocket%2$s pour suivre la progression."
 
 #: inc/classes/subscriber/preload/class-preload-subscriber.php:249
 #, php-format
@@ -2339,6 +2383,10 @@ msgstr ""
 "%2$sL'optimisation des fichiers %3$s de %1$s est en conflit avec "
 "%2$sl'optimisation des fichiers%3$s de WP Rocket"
 
+#: inc/classes/subscriber/third-party/plugins/class-smush-subscriber.php:65
+msgid "Smush"
+msgstr "Smush"
+
 #: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:122
 #, php-format
 msgid "Sucuri cache purge error: %s"
@@ -2402,7 +2450,7 @@ msgstr ""
 "Rocket.me ou avec la configuration de ce serveur. Si vous continuez à avoir "
 "des problèmes, <a href=\"%s\">contactez notre support</a>."
 
-#: inc/common/admin-bar.php:124 inc/common/admin-bar.php:286
+#: inc/common/admin-bar.php:124 inc/common/admin-bar.php:310
 #: inc/functions/i18n.php:39 inc/functions/i18n.php:48
 msgid "All languages"
 msgstr "Toutes les langues"
@@ -2415,35 +2463,48 @@ msgstr "Vider cet article"
 msgid "Purge this URL"
 msgstr "Purger cette URL"
 
-#: inc/common/admin-bar.php:184
+#: inc/common/admin-bar.php:190
 msgid "Purge OPcache"
 msgstr "Vider OPcache"
 
-#: inc/common/admin-bar.php:203
+#: inc/common/admin-bar.php:209
 msgid "Regenerate Critical Path CSS"
 msgstr "Régénérer Critical path CSS"
 
-#: inc/common/admin-bar.php:221
+#: inc/common/admin-bar.php:227
 msgid "Clear Cloudflare cache"
 msgstr "Vider le cache CloudFlare"
 
-#: inc/common/admin-bar.php:244 inc/common/admin-bar.php:298
+#: inc/common/admin-bar.php:245
+msgid "Purge Sucuri cache"
+msgstr "Vider cache Sucuri"
+
+#: inc/common/admin-bar.php:268 inc/common/admin-bar.php:322
 #: views/settings/page-sections/dashboard.php:136
 msgid "Preload cache"
 msgstr "Précharger le cache"
 
-#: inc/common/admin-bar.php:314 views/settings/partials/documentation.php:13
+#: inc/common/admin-bar.php:338 views/settings/partials/documentation.php:13
 msgid "Documentation"
 msgstr "Documentation"
 
-#: inc/common/purge.php:467
-#, php-format
-msgid "Cloudflare cache purge error: %s"
-msgstr "Erreur lors de la purge du cache CloudFlare: %s"
+#: inc/common/purge.php:450
+msgid "OPcache purge failed."
+msgstr "La purge OPcache a échouée."
 
-#: inc/common/purge.php:472
-msgid "Cloudflare cache successfully purged"
-msgstr "Cache de CloudFlare purgé avec succès"
+#: inc/common/purge.php:455
+msgid "OPcache successfully purged"
+msgstr "OPcache purgé avec succès "
+
+#: inc/common/purge.php:487
+#, php-format
+msgid "<strong>WP Rocket:</strong> %s"
+msgstr "<strong>WP Rocket :</strong> %s"
+
+#: inc/common/purge.php:492
+msgid "<strong>WP Rocket:</strong> Cloudflare cache successfully purged."
+msgstr ""
+"<strong>WP Rocket :</strong> Le cache Cloudflare a été purgé avec succès."
 
 #: inc/deprecated/3.2.php:51 views/settings/page-sections/imagify.php:35
 msgid "Activate Imagify"
@@ -2478,6 +2539,14 @@ msgid ""
 msgstr ""
 "Préchargement du Sitemap : %d pages ont été pré-chargées.  (rafraîchir pour "
 "voir la progression)"
+
+#: inc/deprecated/3.4.php:17
+msgid "Choose a domain from the list"
+msgstr "Choisissez un domaine dans la liste"
+
+#: inc/deprecated/3.4.php:30
+msgid "No domain available in your Cloudflare account"
+msgstr "Aucun domaine disponible dans votre compte CloudFlare"
 
 #: inc/deprecated/deprecated.php:242
 msgid "<strong>JS</strong> files with Deferred Loading JavaScript"
@@ -2612,91 +2681,116 @@ msgstr[1] ""
 "Il semble y avoir un problème avec la validation de votre licence. Vous "
 "pouvez voir les messages d'erreur ci-dessous."
 
-#: inc/functions/admin.php:362
+#: inc/functions/admin.php:360
 msgid "Server type:"
 msgstr "Type de serveur :"
 
-#: inc/functions/admin.php:371
+#: inc/functions/admin.php:369
 msgid "PHP version number:"
 msgstr "Version PHP :"
 
-#: inc/functions/admin.php:380
+#: inc/functions/admin.php:378
 msgid "WordPress version number:"
 msgstr "Version de WordPress :"
 
-#: inc/functions/admin.php:389
+#: inc/functions/admin.php:387
 msgid "WordPress multisite:"
 msgstr "WordPress Multisite :"
 
-#: inc/functions/admin.php:398
+#: inc/functions/admin.php:396
 msgid "Current theme:"
 msgstr "Thème actif :"
 
-#: inc/functions/admin.php:407
+#: inc/functions/admin.php:405
 msgid "Current site language:"
 msgstr "Langage du site :"
 
-#: inc/functions/admin.php:416
+#: inc/functions/admin.php:414
 msgid "Active plugins:"
 msgstr "Extensions actives :"
 
-#: inc/functions/admin.php:419
+#: inc/functions/admin.php:417
 msgid "Plugin names of all active plugins"
 msgstr "Noms des toutes les extensions actives"
 
-#: inc/functions/admin.php:425
+#: inc/functions/admin.php:423
 msgid "Anonymized WP Rocket settings:"
 msgstr "Réglages de WP Rocket anonymes :"
 
-#: inc/functions/admin.php:428
+#: inc/functions/admin.php:426
 msgid "Which WP Rocket settings are active"
 msgstr "Quels sont les réglages de WP Rocket activés"
 
-#: inc/functions/cloudflare.php:14
+#: inc/functions/cloudflare.php:18 inc/functions/cloudflare.php:141
 msgid ""
-"Curl functions are disabled, they are required for the Cloudflare Add-on to "
-"work correctly."
+"Curl is disabled on your server. Please ask your host to enable it. This is "
+"required for the Cloudflare Add-on to work correctly."
 msgstr ""
-"Les fonctions PHP cURL sont actuellement désactivées. Elles sont nécessaires"
-" pour le bon fonctionnement de l'Add-on Cloudflare."
+"Curl est désactivé sur votre serveur. Veuillez demander à votre hébergeur de"
+" l'activer. Ceci est nécessaire pour que l’add-on Cloudflare fonctionne "
+"correctement."
 
-#: inc/functions/cloudflare.php:21
-msgid "Cloudflare Email and API key are not set"
-msgstr "L'email & la clé API de CloudFlare ne sont pas définis"
-
-#: inc/functions/cloudflare.php:52
+#: inc/functions/cloudflare.php:26
 #, php-format
-msgid "Missing Cloudflare zone ID. %s could not fix this automatically."
+msgid ""
+"Cloudflare email, API key and Zone ID are not set. Read the "
+"%1$sdocumentation%2$s for further guidance."
 msgstr ""
-"Il manque la Zone ID de Cloudflare.%s ne pourra pas corriger ça "
-"automatiquement."
+"L'email Cloudflare, l’API Key et le Zone ID ne sont pas définis. Lisez la "
+"documentation %1$sdocumentation%2$s pour plus d'informations."
 
-#: inc/functions/cloudflare.php:58
-#, php-format
-msgid "Read the %1$sdocumentation%2$s for further guidance."
-msgstr "Lisez la %1$sdocumentation%2$s pour plus d'indication."
-
-#: inc/functions/cloudflare.php:60
+#: inc/functions/cloudflare.php:28 inc/functions/cloudflare.php:41
+#: inc/functions/cloudflare.php:65 inc/functions/cloudflare.php:78
+#: inc/functions/cloudflare.php:106 inc/functions/cloudflare.php:123
+#: inc/functions/cloudflare.php:154 inc/functions/cloudflare.php:480
+#: inc/functions/cloudflare.php:495 inc/functions/cloudflare.php:625
 msgid ""
 "https://docs.wp-rocket.me/article/18-using-wp-rocket-with-"
-"cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket"
+"cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket#add-on"
 msgstr ""
 "https://fr.docs.wp-rocket.me/article/247-utiliser-wp-rocket-avec-"
-"cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket"
+"cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket#add-on"
+
+#: inc/functions/cloudflare.php:35
+msgid "Missing Cloudflare Zone ID."
+msgstr "Il manque le Zone ID de Cloudflare "
+
+#: inc/functions/cloudflare.php:59 inc/functions/cloudflare.php:117
+#: inc/functions/cloudflare.php:489 inc/functions/cloudflare.php:619
+msgid "Incorrect Cloudflare email address or API key."
+msgstr "L’email ou l’API key Cloudflare incorrect."
+
+#: inc/functions/cloudflare.php:72 inc/functions/cloudflare.php:474
+msgid "Incorrect Cloudflare Zone ID."
+msgstr "Le Zone ID de Cloudflare est incorrect."
 
 #: inc/functions/cloudflare.php:100
+msgid "It looks like your domain is not set up on Cloudflare."
+msgstr "Il semble que votre domaine ne soit pas configuré sur Cloudflare."
+
+#: inc/functions/cloudflare.php:152
+#, php-format
+msgid ""
+"Cloudflare email and API key are not set. Read the %1$sdocumentation%2$s for"
+" further guidance."
+msgstr ""
+"L'email Cloudflare et l’API Key ne sont pas définis. Lisez la "
+"%1$sdocumentation%2$s pour plus d'informations."
+
+#: inc/functions/cloudflare.php:217
 msgid "Connection to Cloudflare failed"
 msgstr "La connexion à CloudFlare a échoué"
 
-#: inc/functions/cloudflare.php:122
-msgid "Choose a domain from the list"
-msgstr "Choisissez un domaine dans la liste"
+#: inc/functions/cloudflare.php:700 inc/functions/cloudflare.php:748
+#, php-format
+msgid "Cloudflare cache purge error: %s"
+msgstr "Erreur lors de la purge du cache CloudFlare: %s"
 
-#: inc/functions/cloudflare.php:135
-msgid "No domain available in your Cloudflare account"
-msgstr "Aucun domaine disponible dans votre compte CloudFlare"
+#: inc/functions/cloudflare.php:705 inc/functions/cloudflare.php:753
+msgid "Cloudflare cache successfully purged"
+msgstr "Cache de CloudFlare purgé avec succès"
 
-#: inc/functions/options.php:529 inc/functions/options.php:568
+#: inc/functions/options.php:531 inc/functions/options.php:570
 msgid ""
 "License validation failed. Our server could not resolve the request from "
 "your website."
@@ -2704,7 +2798,7 @@ msgstr ""
 "La validation de la licence a échoué. Notre serveur n'a pas pu résoudre la "
 "demande de votre site Web.."
 
-#: inc/functions/options.php:529 inc/functions/options.php:568
+#: inc/functions/options.php:531 inc/functions/options.php:570
 #, php-format
 msgid ""
 "Try clicking %1$sSave Changes%2$s below. If the error persists, follow "
@@ -2713,7 +2807,7 @@ msgstr ""
 "Essayez de cliquer sur %1$sEnregistrer les modifications%2$s ci-dessous. Si "
 "l’erreur persiste, suivez les instructions de %3$sce guide%4$s."
 
-#: inc/functions/options.php:545
+#: inc/functions/options.php:547
 msgid ""
 "License validation failed. You may be using a nulled version of the plugin. "
 "Please do the following:"
@@ -2721,20 +2815,20 @@ msgstr ""
 "La validation de la licence a échoué. Vous utilisez peut-être une version "
 "cackée du plugin. Veuillez faire la chose suivante :"
 
-#: inc/functions/options.php:545 inc/functions/options.php:587
+#: inc/functions/options.php:547 inc/functions/options.php:589
 #, php-format
 msgid "Login to your WP Rocket %1$saccount%2$s"
 msgstr "Connectez-vous à votre %1$scompte%2$s WP Rocket"
 
-#: inc/functions/options.php:545 inc/functions/options.php:587
+#: inc/functions/options.php:547 inc/functions/options.php:589
 msgid "Download the zip file"
 msgstr "Télécharger le fichier zip."
 
-#: inc/functions/options.php:545 inc/functions/options.php:587
+#: inc/functions/options.php:547 inc/functions/options.php:589
 msgid "Reinstall"
 msgstr "Réinstaller"
 
-#: inc/functions/options.php:545
+#: inc/functions/options.php:547
 #, php-format
 msgid ""
 "If you do not have a WP Rocket account, please %1$spurchase a license%2$s."
@@ -2742,43 +2836,43 @@ msgstr ""
 "Si vous ne possédez pas de compte WP Rocket, veuillez %1$sacheter une "
 "licence%2$s."
 
-#: inc/functions/options.php:553
+#: inc/functions/options.php:555
 msgid ""
 "License validation failed. This user account does not exist in our database."
 msgstr ""
 "La validation de la licence a échoué. Ce compte utilisateur n'existe pas "
 "dans notre base de données."
 
-#: inc/functions/options.php:553
+#: inc/functions/options.php:555
 msgid "To resolve, please contact support."
 msgstr "Pour résoudre ce problème, veuillez contacter le support."
 
-#: inc/functions/options.php:561
+#: inc/functions/options.php:563
 msgid "License validation failed. This user account is blacklisted."
 msgstr ""
 "La validation de la licence a échoué. Ce compte utilisateur a été "
 "blacklisté."
 
-#: inc/functions/options.php:561
+#: inc/functions/options.php:563
 #, php-format
 msgid "Please see %1$sthis guide%2$s for more info."
 msgstr "Veuillez consulter %1$sce guide%2$s pour plus d’informations."
 
-#: inc/functions/options.php:581
+#: inc/functions/options.php:583
 msgid "Your license is not valid."
 msgstr "Votre licence n’est pas correcte."
 
-#: inc/functions/options.php:581
+#: inc/functions/options.php:583
 #, php-format
 msgid "Make sure you have an active %1$sWP Rocket license%2$s."
 msgstr "Assurez-vous que vous avez une %1$slicence WP Rocket%2$s active."
 
-#: inc/functions/options.php:583
+#: inc/functions/options.php:585
 msgid "You have added as many sites as your current license allows."
 msgstr ""
 "Vous avez ajouté autant de sites que votre licence actuelle vous le permet."
 
-#: inc/functions/options.php:583
+#: inc/functions/options.php:585
 #, php-format
 msgid ""
 "Upgrade your %1$saccount%2$s or %3$stransfer your license%2$s to this "
@@ -2787,25 +2881,25 @@ msgstr ""
 "Mettez à niveau votre %1$scompte%2$s ou %3$stransfèrez votre licence%2$s "
 "vers ce domaine."
 
-#: inc/functions/options.php:585
+#: inc/functions/options.php:587
 msgid "This website is not allowed."
 msgstr "Ce site n'est pas autorisé."
 
-#: inc/functions/options.php:585
+#: inc/functions/options.php:587
 #, php-format
 msgid "Please %1$scontact support%2$s."
 msgstr "Veuillez %1$scontacter le support%2$s."
 
-#: inc/functions/options.php:587
+#: inc/functions/options.php:589
 msgid "This license key is not recognized."
 msgstr "Cette clé de licence n'est pas reconnue."
 
-#: inc/functions/options.php:587
+#: inc/functions/options.php:589
 #, php-format
 msgid "If the issue persists, please %1$scontact support%2$s."
 msgstr "Si le problème persiste, veuillez %1$scontacter le support%2$s."
 
-#: inc/functions/options.php:593
+#: inc/functions/options.php:595
 #, php-format
 msgid "License validation failed: %s"
 msgstr "La validation de la licence a échoué : %s"
@@ -3214,35 +3308,35 @@ msgstr "Supprimer tous les fichiers du cache"
 msgid "Start cache preloading"
 msgstr "Démarrer le préchargement du cache"
 
-#: views/settings/page-sections/dashboard.php:148
+#: views/settings/page-sections/dashboard.php:154
 msgid "Purge OPCache content"
 msgstr "Vider le contenu OPcache"
 
-#: views/settings/page-sections/dashboard.php:154
+#: views/settings/page-sections/dashboard.php:160
 msgid "Purge OPCache"
 msgstr "Vider OPcache"
 
-#: views/settings/page-sections/dashboard.php:165
 #: views/settings/page-sections/dashboard.php:171
+#: views/settings/page-sections/dashboard.php:177
 msgid "Regenerate Critical CSS"
 msgstr "Régénérer le Critical CSS"
 
-#: views/settings/page-sections/dashboard.php:188
+#: views/settings/page-sections/dashboard.php:194
 msgid "Frequently Asked Questions"
 msgstr "Foire aux questions"
 
-#: views/settings/page-sections/dashboard.php:201
+#: views/settings/page-sections/dashboard.php:207
 msgid "Still cannot find a solution?"
 msgstr "Toujours pas trouvé de solution ?"
 
-#: views/settings/page-sections/dashboard.php:202
+#: views/settings/page-sections/dashboard.php:208
 msgid ""
 "Submit a ticket and get help from our friendly and knowledgeable Rocketeers."
 msgstr ""
 "Envoyez un ticket ci-dessous et obtenez l'aide de nos sympathiques "
 "Rocketeers."
 
-#: views/settings/page-sections/dashboard.php:210
+#: views/settings/page-sections/dashboard.php:216
 msgid "Ask support"
 msgstr "Demandez au Support"
 
@@ -3382,9 +3476,8 @@ msgid "Getting Started"
 msgstr "Prise en main"
 
 #: views/settings/page-sections/tutorials.php:14
-#: views/settings/partials/getting-started.php:11
-msgid "What WP Rocket Does For You By Default"
-msgstr "Ce que WP Rocket fait pour vous par défaut"
+msgid "Getting Started with WP Rocket"
+msgstr "Premiers pas avec WP Rocket"
 
 #: views/settings/page-sections/tutorials.php:15
 #: views/settings/partials/getting-started.php:12
@@ -3402,16 +3495,17 @@ msgid "How to Measure the Speed of Your Site"
 msgstr "Comment mesurer la vitesse de votre site"
 
 #: views/settings/page-sections/tutorials.php:23
-msgid "My Website is Broken"
-msgstr "Mon site Web est cassé"
+msgid "Troubleshooting Display Issues with File Optimization"
+msgstr ""
+"Résolution des problèmes d'affichage liés à l'Optimisation des Fichiers"
 
 #: views/settings/page-sections/tutorials.php:24
 msgid "How to Find the Right JavaScript to Exclude"
 msgstr "Comment trouver le bon fichier JS à exclure"
 
 #: views/settings/page-sections/tutorials.php:25
-msgid "Why External Resources are Bad"
-msgstr "Pourquoi les ressources externes sont mauvaises"
+msgid "How External Content Slows Your Site"
+msgstr "Comment le contenu externe ralentit votre site"
 
 #: views/settings/page-sections/tutorials.php:31
 msgid "How Preloading Works"
@@ -3508,6 +3602,10 @@ msgstr ""
 #: views/settings/partials/documentation.php:18
 msgid "Read the documentation"
 msgstr "Lire la documentation"
+
+#: views/settings/partials/getting-started.php:11
+msgid "What WP Rocket Does For You By Default"
+msgstr "Ce que WP Rocket fait pour vous par défaut"
 
 #: views/settings/partials/sidebar.php:11
 msgid "How to correctly measure your website’s loading time"

@@ -1,5 +1,6 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+
+defined( 'ABSPATH' ) || exit;
 
 if ( defined( 'AIOSEOP_VERSION' ) ) :
 	$aioseosp_options = get_option( 'aioseop_options' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals

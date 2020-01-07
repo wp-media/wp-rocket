@@ -5,7 +5,7 @@ use WP_Rocket\Admin\Options_Data as Options;
 use WP_Rocket\Logger\Logger;
 use MatthiasMullie\Minify;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Minify & Combine CSS files

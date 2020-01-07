@@ -5,7 +5,7 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Optimization\CSS\Critical_CSS;
 use WP_Rocket\Admin\Options_Data;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Critical CSS Subscriber
@@ -43,8 +43,8 @@ class Critical_CSS_Subscriber implements Subscriber_Interface {
 			],
 			'wp_head'                                 => [ 'insert_load_css', PHP_INT_MAX ],
 			'rocket_buffer'                           => [
-				[ 'insert_critical_css_buffer', 18 ],
-				[ 'async_css', 24 ],
+				[ 'insert_critical_css_buffer', 29 ],
+				[ 'async_css', 32 ],
 			],
 			'switch_theme'                            => 'maybe_regenerate_cpcss',
 			'rocket_critical_css_generation_process_complete' => 'clean_domain_on_complete',
@@ -173,7 +173,7 @@ class Critical_CSS_Subscriber implements Subscriber_Interface {
 		$screen = get_current_screen();
 
 		if ( 'settings_page_wprocket' !== $screen->id ) {
-		    return;
+			return;
 		}
 
 		$transient = get_transient( 'rocket_critical_css_generation_process_running' );
@@ -233,7 +233,7 @@ class Critical_CSS_Subscriber implements Subscriber_Interface {
 		}
 
 		// Translators: %1$d = number of critical CSS generated, %2$d = total number of critical CSS to generate.
-		$message = '<p>' . sprintf( __( 'Critical CSS generation finished for %1$d of %2$d page types.', 'rocket' ), $transient['generated'], $transient['total'] );
+		$message  = '<p>' . sprintf( __( 'Critical CSS generation finished for %1$d of %2$d page types.', 'rocket' ), $transient['generated'], $transient['total'] );
 		$message .= ' <em> (' . date_i18n( get_option( 'date_format' ), current_time( 'timestamp' ) ) . ' @ ' . date_i18n( get_option( 'time_format' ), current_time( 'timestamp' ) ) . ') </em></p>';
 
 		if ( ! empty( $transient['items'] ) ) {

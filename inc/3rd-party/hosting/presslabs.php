@@ -1,5 +1,6 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+
+defined( 'ABSPATH' ) || exit;
 
 if ( defined( 'PL_INSTANCE_REF' ) && class_exists( '\Presslabs\Cache\CacheHandler' ) ) {
 	if ( file_exists( WP_CONTENT_DIR . '/advanced-cache.php' ) ) {
@@ -11,7 +12,7 @@ if ( defined( 'PL_INSTANCE_REF' ) && class_exists( '\Presslabs\Cache\CacheHandle
 		add_filter( 'rocket_cache_mandatory_cookies', '__return_empty_array', PHP_INT_MAX );
 		add_action( 'after_rocket_clean_home', 'rocket_pl_clean_home', 10, 2 );
 		add_action( 'after_rocket_clean_file', 'rocket_pl_clean_post', 2 );
-		add_action( 'pl_pre_url_button_cache_refresh', 'rocket_clean_files' );
+	    add_action( 'pl_pre_url_button_cache_refresh', 'rocket_clean_files' );
 		add_action( 'wp_rocket_loaded', 'rocket_remove_partial_purge_hooks' );
 
 		/**
@@ -74,10 +75,10 @@ if ( defined( 'PL_INSTANCE_REF' ) && class_exists( '\Presslabs\Cache\CacheHandle
 			);
 			// Remove rocket_clean_post() from core action hooks.
 			array_map(
-			function( $hook ) {
-				remove_action( $hook, 'rocket_clean_post' );
-			},
-			$clean_post_hooks
+				function( $hook ) {
+					remove_action( $hook, 'rocket_clean_post' );
+				},
+				$clean_post_hooks
 			);
 			remove_filter( 'rocket_clean_files', 'rocket_clean_files_users' );
 		}
@@ -87,6 +88,7 @@ if ( defined( 'PL_INSTANCE_REF' ) && class_exists( '\Presslabs\Cache\CacheHandle
 			 * If we have CDN enabled we'll add our HOST to the list
 			 *
 			 * @since 3.3
+			 *
 			 * @param Array $hosts Array of CDN hosts.
 			 * @return Array Updated array of CDN hosts
 			 */

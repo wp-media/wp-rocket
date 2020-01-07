@@ -1,5 +1,6 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+
+defined( 'ABSPATH' ) || exit;
 
 if ( rocket_is_plugin_active( 'sg-cachepress/sg-cachepress.php' ) ) {
 	/**

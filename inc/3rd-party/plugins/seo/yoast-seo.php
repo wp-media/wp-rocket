@@ -1,5 +1,6 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+
+defined( 'ABSPATH' ) || exit;
 
 if ( defined( 'WPSEO_VERSION' ) && class_exists( 'WPSEO_Sitemaps_Router' ) ) :
 	$yoast_seo_xml = get_option( 'wpseo_xml' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals

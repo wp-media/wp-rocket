@@ -6,7 +6,7 @@
  * @package WP Rocket
  */
 
-defined( 'ABSPATH' ) || die( 'Cheatin\' uh?' );
+defined( 'ABSPATH' ) || exit;
 
 // Is Jetpack installed and active?
 if ( class_exists( 'Jetpack' ) ) :

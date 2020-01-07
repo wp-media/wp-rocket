@@ -8,8 +8,7 @@
  * @link https://wordpress.org/plugins/sumome/
  * @since 3.0.4
  */
-
-defined( 'ABSPATH' ) || die( 'Cheatin\' uh?' );
+defined( 'ABSPATH' ) || exit;
 
 if ( class_exists( 'WP_Plugin_SumoMe' ) ) {
 
@@ -21,7 +20,7 @@ if ( class_exists( 'WP_Plugin_SumoMe' ) ) {
 	 */
 	function rocket_dequeue_sumo_me_css() {
 
-		// Return on all pages but WP Rocket settings page.
+		// Retun on all pages but WP Rocket settings page
 		$screen = get_current_screen();
 		if ( 'settings_page_wprocket' !== $screen->id ) {
 			return;
@@ -40,7 +39,7 @@ if ( class_exists( 'WP_Plugin_SumoMe' ) ) {
 	 */
 	function rocket_dequeue_sumo_me_js() {
 
-		// Return on all pages but WP Rocket settings page.
+		// Retun on all pages but WP Rocket settings page
 		$screen = get_current_screen();
 		if ( 'settings_page_wprocket' !== $screen->id ) {
 			return;

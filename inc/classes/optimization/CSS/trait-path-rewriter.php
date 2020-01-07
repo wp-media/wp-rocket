@@ -49,8 +49,10 @@ trait Path_Rewriter {
 		 * @author Remy Perona
 		 *
 		 * @param string $content CSS content.
+		 * @param string $source  Source filepath.
+		 * @param string $target  Target filepath.
 		 */
-		return apply_filters( 'rocket_css_content', $this->move( $this->get_converter( $source, $target ), $content ) );
+		return apply_filters( 'rocket_css_content', $this->move( $this->get_converter( $source, $target ), $content ), $source, $target );
 	}
 
 	/**

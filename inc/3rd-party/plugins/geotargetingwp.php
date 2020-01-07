@@ -1,5 +1,6 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin\' uh?' );
+
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Compatibility with GeotargetingWP Plugins

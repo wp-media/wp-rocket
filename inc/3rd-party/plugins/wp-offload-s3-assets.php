@@ -1,5 +1,6 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+
+defined( 'ABSPATH' ) || exit;
 
 if ( is_admin() && function_exists( 'as3cf_assets_init' ) ) :
 	add_action( 'aws_init', 'rocket_as3cf_assets_compatibility', 13 );

@@ -1,7 +1,7 @@
 <?php
 use WP_Rocket\Logger\Logger;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Tell WP what to do when admin is loaded aka upgrader
@@ -432,8 +432,10 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 	}
 
 	if ( rocket_is_ssl_website() ) {
-		update_rocket_option( 'cache_ssl', 1 );
-		rocket_generate_config_file();
+		if ( 1 !== (int) get_rocket_option( 'cache_ssl' ) ) {
+			update_rocket_option( 'cache_ssl', 1 );
+			rocket_generate_config_file();
+		}
 	}
 
 	if ( version_compare( $actual_version, '3.4', '<' ) ) {

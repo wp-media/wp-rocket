@@ -1,8 +1,12 @@
 <?php
 namespace WP_Rocket\Tests\Integration\Functions\Options;
 
-use PHPUnit\Framework\TestCase;
+use WP_Rocket\Tests\Integration\TestCase;
 
+/**
+ * @group Functions
+ * @group Options
+ */
 class TestExcludeDeferJS extends TestCase {
     public function testShouldReturnExcludeDeferJSArray() {
         $exclude_defer_js = [
@@ -12,6 +16,8 @@ class TestExcludeDeferJS extends TestCase {
             'www.uplaunch.com',
             'google.com/recaptcha',
             'widget.reviews.co.uk',
+            'lib/admin/assets/lib/webfont/webfont.min.js',
+            'app.mailerlite.com',
         ];
 
         $this->assertSame(
@@ -35,6 +41,8 @@ class TestExcludeDeferJS extends TestCase {
             'www.uplaunch.com',
             'google.com/recaptcha',
             'widget.reviews.co.uk',
+            'lib/admin/assets/lib/webfont/webfont.min.js',
+            'app.mailerlite.com',
             '/wp-includes/js/jquery/jquery.js',
             'c0.wp.com/c/(?:.+)/wp-includes/js/jquery/jquery.js',
             'ajax.googleapis.com/ajax/libs/jquery/(?:.+)/jquery(?:\.min)?.js',

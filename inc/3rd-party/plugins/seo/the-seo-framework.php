@@ -1,6 +1,6 @@
 <?php
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 /**
  * This file is loaded at plugins_loaded, priority 10.
@@ -14,7 +14,9 @@ rocket_add_tsf_compat();
 /**
  * Runs detection and adds extra compatibility for The SEO Framework plugin.
  *
- * @since TODO
+ * @since 3.2.1
+ * @since TODO Removed "conflicting sitemap detection" (detect_sitemap_plugin) call.
+ *             TSF always tries to output it now while trying to give WP Rewrite priority for display.
  * @author Sybre Waaijer
  */
 function rocket_add_tsf_compat() {
@@ -34,7 +36,7 @@ function rocket_add_tsf_compat() {
 	 *
 	 * @link https://github.com/wp-media/wp-rocket/issues/899
 	 */
-	if ( $tsf->can_run_sitemap() && ! $tsf->detect_sitemap_plugin() ) {
+	if ( $tsf->can_run_sitemap() ) {
 		rocket_add_tsf_sitemap_compat();
 	}
 }
@@ -42,7 +44,7 @@ function rocket_add_tsf_compat() {
 /**
  * Adds compatibility for the sitemap functionality in The SEO Framework plugin.
  *
- * @since TODO
+ * @since 3.2.1
  * @author Sybre Waaijer
  */
 function rocket_add_tsf_sitemap_compat() {
@@ -55,7 +57,7 @@ function rocket_add_tsf_sitemap_compat() {
 /**
  * Adds a sitemap option in WP Rocket for The SEO Framework.
  *
- * @since TODO
+ * @since 3.2.1
  * @author Sybre Waaijer
  * @source ./yoast-seo.php (Remy Perona)
  *
@@ -71,7 +73,7 @@ function rocket_add_tsf_seo_sitemap_option( $options ) {
 /**
  * Sanitizes the added sitemap option for The SEO Framework.
  *
- * @since TODO
+ * @since 3.2.1
  * @author Sybre Waaijer
  * @source ./yoast-seo.php (Remy Perona)
  *
@@ -87,7 +89,8 @@ function rocket_tsf_seo_sitemap_option_sanitize( $inputs ) {
 /**
  * Adds TSF sitemap URLs to preload.
  *
- * @since TODO
+ * @since 3.2.1
+ * @since TODO Added compatibility support for The SEO Framework v4.0+
  * @author Sybre Waaijer
  * @source ./yoast-seo.php (Remy Perona)
  *
@@ -95,8 +98,26 @@ function rocket_tsf_seo_sitemap_option_sanitize( $inputs ) {
  * @return array Updated Sitemaps to preload
  */
 function rocket_add_tsf_sitemap_to_preload( $sitemaps ) {
+
 	if ( get_rocket_option( 'tsf_xml_sitemap', false ) ) {
-		$sitemaps[] = the_seo_framework()->get_sitemap_xml_url();
+		// The autoloader in TSF doesn't check for file_exists(). So, use version compare instead to prevent fatal errors.
+		if ( version_compare( THE_SEO_FRAMEWORK_VERSION, '4.0', '>=' ) ) {
+			// TSF 4.0+. Expect the class to exist indefinitely.
+
+			$sitemap_bridge = The_SEO_Framework\Bridges\Sitemap::get_instance();
+
+			foreach ( $sitemap_bridge->get_sitemap_endpoint_list() as $id => $data ) {
+				// When the sitemap is good enough for a robots display, we determine it as valid for precaching.
+				// Non-robots display types are among the stylesheet endpoint, or the Yoast SEO-compatible endpoint.
+				// In other words, this enables support for ALL current and future public sitemap endpoints.
+				if ( ! empty( $data['robots'] ) ) {
+					$sitemaps[] = $sitemap_bridge->get_expected_sitemap_endpoint_url( $id );
+				}
+			}
+		} else {
+			// Deprecated. TSF <4.0.
+			$sitemaps[] = the_seo_framework()->get_sitemap_xml_url();
+		}
 	}
 
 	return $sitemaps;
@@ -105,7 +126,7 @@ function rocket_add_tsf_sitemap_to_preload( $sitemaps ) {
 /**
  * Add The SEO Framework SEO option to WP Rocket settings
  *
- * @since TODO
+ * @since 3.2.1
  * @author Sybre Waaijer
  * @source ./yoast-seo.php (Remy Perona)
  *
