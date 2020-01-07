@@ -8,7 +8,7 @@ use WP_Rocket\Tests\Integration\RESTfulTestCase;
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber::disable
  * @group  RocketCDN
  */
-class TestDisable extends RESTfulTestCase {
+class Test_Disable extends RESTfulTestCase {
 
 	/**
 	 * Test should update the option settings when the "disable" endpoint is requested.
