@@ -26,6 +26,7 @@ class TestExcludeDeferJS extends TestCase {
             'www.uplaunch.com',
             'google.com/recaptcha',
             'widget.reviews.co.uk',
+            'verify.authorize.net/anetseal',
             'lib/admin/assets/lib/webfont/webfont.min.js',
             'app.mailerlite.com',
         ];
