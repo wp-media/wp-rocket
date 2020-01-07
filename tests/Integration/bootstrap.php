@@ -52,6 +52,8 @@ function bootstrap_integration_suite( $wp_tests_dir ) {
 	tests_add_filter(
 		'muplugins_loaded',
 		function() {
+			// Load WooCommerce.
+			require WP_ROCKET_PLUGIN_ROOT . '/vendor/woocommerce/woocommerce/woocommerce.php';
 			// Overload the license key for testing.
 			\Patchwork\redefine( 'rocket_valid_key', '__return_true' );
 
