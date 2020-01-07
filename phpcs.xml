@@ -81,4 +81,7 @@
 		<exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
 		<exclude name="WordPress.PHP.DisallowShortTernary.Found"/>
 	</rule>
+
+	<!-- Enforce short array syntax: `[]` in place of `array()`. -->
+	<rule ref="Generic.Arrays.DisallowLongArraySyntax" />
 </ruleset>
