@@ -71,4 +71,6 @@
 		<exclude-pattern>inc/classes/buffer/class-cache.php</exclude-pattern>
 		<exclude-pattern>inc/classes/class-secure-stream-logger.php</exclude-pattern>
 	</rule>
+
+	<rule ref="WordPress-Docs"/>
 </ruleset>
