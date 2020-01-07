@@ -6,7 +6,7 @@ use WP_Rocket\Interfaces\Render_Interface;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Deactivation intent form on plugins page
@@ -130,7 +130,7 @@ mixpanel.init("a36067b00a263cce0299cfd960e26ecf", {
 	public function activate_safe_mode() {
 		check_ajax_referer( 'rocket-ajax' );
 
-		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			wp_die();
 		}
 

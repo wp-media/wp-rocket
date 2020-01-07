@@ -7,12 +7,12 @@
 
     <!-- Run against the PHPCompatibility ruleset -->
     <rule ref="PHPCompatibility"/>
-    <!-- Check for cross-version support for PHP 5.4 and higher. -->
-    <config name="testVersion" value="5.4-"/>
+    <!-- Check for cross-version support for PHP 5.6 and higher. -->
+    <config name="testVersion" value="5.6-"/>
     <config name="minimum_supported_wp_version" value="4.7"/>
 
 	<file>.</file>
-	<exclude-pattern>/inc/deprecated/3.3.php</exclude-pattern>
+	<exclude-pattern>/inc/deprecated/*</exclude-pattern>
 	<exclude-pattern>/inc/vendors/*</exclude-pattern>
 	<exclude-pattern>/tests/Integration/*</exclude-pattern>
 	<exclude-pattern>/tests/Unit/*</exclude-pattern>
@@ -26,6 +26,7 @@
         <exclude name="Squiz.Commenting.FileComment.Missing"/>
         <exclude name="Squiz.Commenting.FileComment.MissingPackageTag"/>
         <exclude name="Squiz.PHP.CommentedOutCode.Found"/>
+		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
 	</rule>
     <rule ref="WordPress.WP.I18n">
         <properties>

@@ -1,5 +1,6 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+
+defined( 'ABSPATH' ) || exit;
 
 // Launch hooks that deletes all the cache domain.
 add_action( 'switch_theme', 'rocket_clean_domain' );  // When user change theme.
@@ -36,58 +37,17 @@ function rocket_widget_update_callback( $instance ) {
 add_filter( 'widget_update_callback', 'rocket_widget_update_callback' );
 
 /**
- * Update cache when a post is updated or commented
+ * Get post purge urls.
  *
- * @since 3.0.5 Don't purge for attachment post type
- * @since 2.8   Only add post type archive if post type is not post
- * @since 2.6   Purge the page defined in "Posts page" option
- * @since 2.5.5 Don't cache for auto-draft post status
- * @since 1.3.2 Add wp_update_comment_count to purge cache when a comment is added/updated/deleted
- * @since 1.3.0 Compatibility with WPML
- * @since 1.3.0 Add 2 hooks : before_rocket_clean_post, after_rocket_clean_post
- * @since 1.3.0 Purge all parents of the post and the author page
- * @since 1.2.2 Add wp_trash_post and delete_post to purge cache when a post is trashed or deleted
- * @since 1.1.3 Use clean_post_cache instead of transition_post_status, transition_comment_status and preprocess_comment
- * @since 1.0
+ * @since 3.4.3
+ * @author Soponar Cristina
  *
  * @param int     $post_id The post ID.
  * @param WP_Post $post    WP_Post object.
+ * @return array           Array with all URLs which need to be purged.
  */
-function rocket_clean_post( $post_id, $post = null ) {
-	static $done = [];
-
-	if ( isset( $done[ $post_id ] ) ) {
-		return;
-	}
-
-	$done[ $post_id ] = 1;
-
-	if ( defined( 'DOING_AUTOSAVE' ) ) {
-		return;
-	}
-
+function rocket_get_purge_urls( $post_id, $post ) {
 	$purge_urls = [];
-
-	// Get all post infos if the $post object was not supplied.
-	if ( is_null( $post ) ) {
-		$post = get_post( $post_id );
-	}
-
-	// Return if $post is not an object.
-	if ( ! is_object( $post ) ) {
-		return;
-	}
-
-	// No purge for specific conditions.
-	if ( 'auto-draft' === $post->post_status || empty( $post->post_type ) || 'nav_menu_item' === $post->post_type || 'attachment' === $post->post_type ) {
-		return;
-	}
-
-	// Don't purge if post's post type is not public or not publicly queryable.
-	$post_type = get_post_type_object( $post->post_type );
-	if ( ! is_object( $post_type ) || true !== $post_type->public ) {
-		return;
-	}
 
 	// Get the post language.
 	$i18n_plugin = rocket_has_i18n();
@@ -121,9 +81,15 @@ function rocket_clean_post( $post_id, $post = null ) {
 	if ( 'post' !== $post->post_type ) {
 		$post_type_archive = get_post_type_archive_link( get_post_type( $post_id ) );
 		if ( $post_type_archive ) {
+			// Rename the caching filename for SSL URLs.
+			$filename = 'index';
+			if ( is_ssl() ) {
+				$filename .= '-https';
+			}
+
 			$post_type_archive = trailingslashit( $post_type_archive );
-			array_push( $purge_urls, $post_type_archive . 'index.html' );
-			array_push( $purge_urls, $post_type_archive . 'index.html_gzip' );
+			array_push( $purge_urls, $post_type_archive . $filename . '.html' );
+			array_push( $purge_urls, $post_type_archive . $filename . '.html_gzip' );
 			array_push( $purge_urls, $post_type_archive . $GLOBALS['wp_rewrite']->pagination_base );
 		}
 	}
@@ -184,7 +150,7 @@ function rocket_clean_post( $post_id, $post = null ) {
 	}
 
 	// Add the author page.
-	$purge_author = array( get_author_posts_url( $post->post_author ) );
+	$purge_author = [ get_author_posts_url( $post->post_author ) ];
 	$purge_urls   = array_merge( $purge_urls, $purge_author );
 
 	// Add all parents.
@@ -194,6 +160,77 @@ function rocket_clean_post( $post_id, $post = null ) {
 			array_push( $purge_urls, get_permalink( $parent_id ) );
 		}
 	}
+
+	return $purge_urls;
+}
+
+/**
+ * Update cache when a post is updated or commented
+ *
+ * @since 3.0.5 Don't purge for attachment post type
+ * @since 2.8   Only add post type archive if post type is not post
+ * @since 2.6   Purge the page defined in "Posts page" option
+ * @since 2.5.5 Don't cache for auto-draft post status
+ * @since 1.3.2 Add wp_update_comment_count to purge cache when a comment is added/updated/deleted
+ * @since 1.3.0 Compatibility with WPML
+ * @since 1.3.0 Add 2 hooks : before_rocket_clean_post, after_rocket_clean_post
+ * @since 1.3.0 Purge all parents of the post and the author page
+ * @since 1.2.2 Add wp_trash_post and delete_post to purge cache when a post is trashed or deleted
+ * @since 1.1.3 Use clean_post_cache instead of transition_post_status, transition_comment_status and preprocess_comment
+ * @since 1.0
+ *
+ * @param int     $post_id The post ID.
+ * @param WP_Post $post    WP_Post object.
+ */
+function rocket_clean_post( $post_id, $post = null ) {
+	static $done = [];
+
+	if ( isset( $done[ $post_id ] ) ) {
+		return;
+	}
+
+	$done[ $post_id ] = 1;
+
+	if ( defined( 'DOING_AUTOSAVE' ) ) {
+		return;
+	}
+
+	$purge_urls = [];
+
+	// Get all post infos if the $post object was not supplied.
+	if ( is_null( $post ) ) {
+		$post = get_post( $post_id );
+	}
+
+	// Return if $post is not an object.
+	if ( ! is_object( $post ) ) {
+		return;
+	}
+
+	// No purge for specific conditions.
+	if ( 'auto-draft' === $post->post_status || 'draft' === $post->post_status || empty( $post->post_type ) || 'nav_menu_item' === $post->post_type || 'attachment' === $post->post_type ) {
+		return;
+	}
+
+	// Don't purge if post's post type is not public or not publicly queryable.
+	$post_type = get_post_type_object( $post->post_type );
+	if ( ! is_object( $post_type ) || true !== $post_type->public ) {
+		return;
+	}
+
+	// Get the post language.
+	$i18n_plugin = rocket_has_i18n();
+	$lang        = false;
+
+	if ( 'wpml' === $i18n_plugin && ! rocket_is_plugin_active( 'woocommerce-multilingual/wpml-woocommerce.php' ) ) {
+		// WPML.
+		$lang = $GLOBALS['sitepress']->get_language_for_element( $post_id, 'post_' . get_post_type( $post_id ) );
+	} elseif ( 'polylang' === $i18n_plugin && function_exists( 'pll_get_post_language' ) ) {
+		// Polylang.
+		$lang = pll_get_post_language( $post_id );
+	}
+
+	$purge_urls = rocket_get_purge_urls( $post_id, $post );
 
 	/**
 	 * Fires before cache files related with the post are deleted
@@ -241,6 +278,83 @@ add_action( 'clean_post_cache',        'rocket_clean_post' );
 add_action( 'wp_update_comment_count', 'rocket_clean_post' );
 
 /**
+ * Purge WP Rocket cache when post status is changed from publish to draft.
+ *
+ * @since  3.4.3
+ * @author Soponar Cristina
+ *
+ * @param int   $post_id   The post ID.
+ * @param array $post_data Array of unslashed post data.
+ */
+function rocket_clean_post_cache_on_status_change( $post_id, $post_data ) {
+	if ( 'publish' !== get_post_field( 'post_status', $post_id ) || 'draft' !== $post_data['post_status'] ) {
+		return;
+	}
+
+	$purge_urls = [];
+	$post       = get_post( $post_id );
+
+	// Return if $post is not an object.
+	if ( ! is_object( $post ) ) {
+		return;
+	}
+	// Get the post language.
+	$i18n_plugin = rocket_has_i18n();
+	$lang        = false;
+
+	if ( 'wpml' === $i18n_plugin && ! rocket_is_plugin_active( 'woocommerce-multilingual/wpml-woocommerce.php' ) ) {
+		// WPML.
+		$lang = $GLOBALS['sitepress']->get_language_for_element( $post_id, 'post_' . get_post_type( $post_id ) );
+	} elseif ( 'polylang' === $i18n_plugin && function_exists( 'pll_get_post_language' ) ) {
+		// Polylang.
+		$lang = pll_get_post_language( $post_id );
+	}
+
+	$purge_urls = rocket_get_purge_urls( $post_id, $post );
+
+	/**
+	 * Filter URLs cache files to remove
+	 *
+	 * @since 1.0
+	 *
+	 * @param array $purge_urls List of URLs cache files to remove
+	 */
+	$purge_urls = apply_filters( 'rocket_post_purge_urls', $purge_urls, $post );
+
+	/**
+	 * Fires before cache files related with the post are deleted
+	 *
+	 * @since 1.3.0
+	 *
+	 * @param WP_Post $post       The post object
+	 * @param array   $purge_urls URLs cache files to remove
+	 * @param string  $lang       The post language
+	 */
+	do_action( 'before_rocket_clean_post', $post, $purge_urls, $lang );
+
+	// Purge all files.
+	rocket_clean_files( $purge_urls );
+
+	// Never forget to purge homepage and their pagination.
+	rocket_clean_home( $lang );
+
+	// Purge home feeds (blog & comments).
+	rocket_clean_home_feeds();
+
+	/**
+	 * Fires after cache files related with the post are deleted
+	 *
+	 * @since 1.3.0
+	 *
+	 * @param WP_Post $post       The post object
+	 * @param array   $purge_urls URLs cache files to remove
+	 * @param string  $lang       The post language
+	 */
+	do_action( 'after_rocket_clean_post', $post, $purge_urls, $lang );
+}
+add_action( 'pre_post_update', 'rocket_clean_post_cache_on_status_change', 10, 2 );
+
+/**
  * Add pattern to clean files of connected users
  *
  * @since 2.0
@@ -249,7 +363,7 @@ add_action( 'wp_update_comment_count', 'rocket_clean_post' );
  * @return array An array of pattern to use for clearing the cache
  */
 function rocket_clean_files_users( $urls ) {
-	$pattern_urls = array();
+	$pattern_urls = [];
 	foreach ( $urls as $url ) {
 		$parse_url      = get_rocket_parse_url( $url );
 		$pattern_urls[] = $parse_url['scheme'] . '://' . $parse_url['host'] . '*' . $parse_url['path'];
@@ -320,8 +434,7 @@ function do_admin_post_rocket_purge_cache() {
 			wp_nonce_ays( '' );
 		}
 
-		// This filter is documented in inc/admin-bar.php.
-		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		if ( ! current_user_can( 'rocket_purge_cache' ) ) {
 			return;
 		}
 
@@ -351,12 +464,26 @@ function do_admin_post_rocket_purge_cache() {
 				}
 
 				if ( get_rocket_option( 'manual_preload' ) && ( ! defined( 'WP_ROCKET_DEBUG' ) || ! WP_ROCKET_DEBUG ) ) {
+					/**
+					 * Filters the arguments for the preload request being triggered after clearing the cache.
+					 *
+					 * @since  3.4
+					 * @author Grégory Viguier
+					 *
+					 * @param array $args Request arguments.
+					 */
+					$args = apply_filters(
+						'rocket_preload_after_purge_cache_request_args',
+						[
+							'blocking'   => false,
+							'timeout'    => 0.01,
+							'user-agent' => 'WP Rocket/Homepage_Preload_After_Purge_Cache',
+							'sslverify'  => apply_filters( 'https_local_ssl_verify', false ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+						]
+					);
 					wp_safe_remote_get(
 						home_url( $lang ),
-						[
-							'blocking' => false,
-							'timeout'  => 0.01,
-						]
+						$args
 					);
 				}
 
@@ -419,12 +546,25 @@ function do_admin_post_rocket_purge_opcache() {
 		wp_nonce_ays( '' );
 	}
 
-	// This filter is documented in inc/admin-bar.php.
-	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+	if ( ! current_user_can( 'rocket_purge_opcache' ) ) {
 		return;
 	}
 
-	rocket_reset_opcache();
+	$reset_opcache = rocket_reset_opcache();
+
+	if ( ! $reset_opcache ) {
+		$op_purge_result = [
+			'result'  => 'error',
+			'message' => __( 'OPcache purge failed.', 'rocket' ),
+		];
+	} else {
+		$op_purge_result = [
+			'result'  => 'success',
+			'message' => __( 'OPcache successfully purged', 'rocket' ),
+		];
+	}
+
+	set_transient( get_current_user_id() . '_opcache_purge_result', $op_purge_result );
 
 	wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
 	die();
@@ -441,8 +581,7 @@ function do_admin_post_rocket_purge_cloudflare() {
 		wp_nonce_ays( '' );
 	}
 
-	// This filter is documented in inc/admin-bar.php.
-	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+	if ( ! current_user_can( 'rocket_purge_cloudflare_cache' ) ) {
 		return;
 	}
 
@@ -450,19 +589,19 @@ function do_admin_post_rocket_purge_cloudflare() {
 	$cf_purge = rocket_purge_cloudflare();
 
 	if ( is_wp_error( $cf_purge ) ) {
-		$cf_purge_result = array(
+		$cf_purge_result = [
 			'result'  => 'error',
 			// translators: %s = CloudFare API return message.
-			'message' => sprintf( __( 'Cloudflare cache purge error: %s', 'rocket' ), $cf_purge->get_error_message() ),
-		);
+			'message' => sprintf( __( '<strong>WP Rocket:</strong> %s', 'rocket' ), $cf_purge->get_error_message() ),
+		];
 	} else {
-		$cf_purge_result = array(
+		$cf_purge_result = [
 			'result'  => 'success',
-			'message' => __( 'Cloudflare cache successfully purged', 'rocket' ),
-		);
+			'message' => __( '<strong>WP Rocket:</strong> Cloudflare cache successfully purged.', 'rocket' ),
+		];
 	}
 
-	set_transient( $GLOBALS['current_user']->ID . '_cloudflare_purge_result', $cf_purge_result );
+	set_transient( get_current_user_id() . '_cloudflare_purge_result', $cf_purge_result );
 
 	wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
 	die();
@@ -502,3 +641,30 @@ function rocket_clean_cache_theme_update( $wp_upgrader, $hook_extra ) {
 
 	rocket_clean_domain();
 }
+
+/**
+ * Purge WP Rocket cache on Slug / Permalink change.
+ *
+ * @since  3.4.2
+ * @author Soponar Cristina
+ *
+ * @param int   $post_id   The post ID.
+ * @param array $post_data Array of unslashed post data.
+ */
+function rocket_clean_post_cache_on_slug_change( $post_id, $post_data ) {
+	// Bail out if the post status is draft, pending or auto-draft.
+	if ( in_array( get_post_field( 'post_status', $post_id ), [ 'draft', 'pending', 'auto-draft' ], true ) ) {
+		return;
+	}
+	$post_name = get_post_field( 'post_name', $post_id );
+	// Bail out if the slug hasn't changed.
+	if ( $post_name === $post_data['post_name'] ) {
+		return;
+	}
+	// Bail out if the old slug has changed, but is empty.
+	if ( empty( $post_name ) ) {
+		return;
+	}
+	rocket_clean_files( get_the_permalink( $post_id ) );
+}
+add_action( 'pre_post_update', 'rocket_clean_post_cache_on_slug_change', PHP_INT_MAX, 2 );

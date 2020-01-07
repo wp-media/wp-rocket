@@ -105,7 +105,7 @@ class Minify extends Abstract_CSS_Optimization {
 		$filename  = preg_replace( '/\.(css)$/', '-' . $unique_id . '.css', ltrim( rocket_realpath( rocket_extract_url_component( $url, PHP_URL_PATH ) ), '/' ) );
 
 		$minified_file = $this->minify_base_path . $filename;
-		$minify_url    = $this->get_minify_url( $filename );
+		$minify_url    = $this->get_minify_url( $filename, $url );
 
 		if ( rocket_direct_filesystem()->exists( $minified_file ) ) {
 			Logger::debug( 'Minified CSS file already exists.', [

@@ -5,7 +5,7 @@ use WP_Rocket\Admin\Options_Data as Options;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Logger\Logger;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Sucuri Security compatibility.
@@ -109,8 +109,7 @@ class Sucuri_Subscriber implements Subscriber_Interface {
 			wp_nonce_ays( '' );
 		}
 
-		/** This filter is documented in inc/admin-bar.php */
-		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		if ( ! current_user_can( 'rocket_purge_sucuri_cache' ) ) {
 			wp_nonce_ays( '' );
 		}
 
@@ -143,8 +142,7 @@ class Sucuri_Subscriber implements Subscriber_Interface {
 	 * @author Grégory Viguier
 	 */
 	public function maybe_print_notice() {
-		// This filter is documented in inc/admin-bar.php.
-		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		if ( ! current_user_can( 'rocket_purge_sucuri_cache' ) ) {
 			return;
 		}
 
@@ -273,14 +271,27 @@ class Sucuri_Subscriber implements Subscriber_Interface {
 		$url            = sprintf( static::API_URL, $params );
 
 		try {
-			$response = wp_remote_get( $url, [
-				'timeout'     => 5,
-				'redirection' => 5,
-				'httpversion' => '1.1',
-				'blocking'    => true,
-				/** This filter is documented in wp-includes/class-wp-http-streams.php */
-				'sslverify'   => apply_filters( 'https_ssl_verify', true ),
-			] );
+			/**
+			 * Filters the arguments for the Sucuri API request
+			 *
+			 * @since 3.3.4
+			 * @author Soponar Cristina
+			 *
+			 * @param array $args Arguments for the request.
+			 */
+			$args = apply_filters(
+				'rocket_sucuri_api_request_args',
+				[
+					'timeout'     => 5,
+					'redirection' => 5,
+					'httpversion' => '1.1',
+					'blocking'    => true,
+					/** This filter is documented in wp-includes/class-wp-http-streams.php */
+					'sslverify'   => apply_filters( 'https_ssl_verify', true ),
+				]
+			);
+
+			$response = wp_remote_get( $url, $args );
 		} catch ( \Exception $e ) {
 			Logger::error( 'Error when contacting the API.', [
 				'sucuri firewall cache',

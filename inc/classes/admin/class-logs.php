@@ -4,7 +4,7 @@ namespace WP_Rocket\Admin;
 use WP_Rocket\Logger\Logger;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Class that handles few things about the logs.
@@ -160,8 +160,7 @@ class Logs implements Subscriber_Interface {
 	 * @return bool
 	 */
 	protected function current_user_can() {
-		/** This filter is documented in inc/admin-bar.php */
-		return current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) );
+		return current_user_can( 'rocket_manage_options' );
 	}
 
 	/**

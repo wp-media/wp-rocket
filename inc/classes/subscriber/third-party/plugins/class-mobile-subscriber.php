@@ -3,7 +3,7 @@ namespace WP_Rocket\Subscriber\Third_Party\Plugins;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Class that handles events related to plugins that add mobile themes.
@@ -50,15 +50,37 @@ class Mobile_Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		// In case a mobile plugin has already been activated.
-		$do   = [];
-		$undo = [];
+		$do            = [];
+		$undo          = [];
+		$plugin_events = [];
 
-		foreach ( static::get_mobile_plugins() as $plugin ) {
-			if ( \did_action( 'activate_' . $plugin ) ) {
+		if ( ! function_exists( '\is_plugin_active' ) ) {
+			include_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+
+		foreach ( static::get_mobile_plugins() as $plugin => $plugin_data ) {
+			if ( \did_action( 'activate_' . $plugin ) &&
+					! isset( $plugin_data['is_active_callback'] ) ) {
 				$do[] = $plugin;
 			}
+
+			if ( \did_action( 'activate_' . $plugin ) &&
+					isset( $plugin_data['is_active_callback'] ) &&
+					call_user_func( $plugin_data['is_active_callback'] ) ) {
+				$do[] = $plugin;
+			}
+
 			if ( \did_action( 'deactivate_' . $plugin ) ) {
 				$undo[] = $plugin;
+			}
+
+			if ( \is_plugin_active( $plugin ) ) {
+				if ( isset( $plugin_data['activation_hook'] ) ) {
+					$plugin_events[ $plugin_data['activation_hook'] ] = 'maybe_update_mobile_cache_activation_plugin_hook';
+				}
+				if ( isset( $plugin_data['deactivation_hook'] ) ) {
+					$plugin_events[ $plugin_data['deactivation_hook'] ] = 'maybe_update_mobile_cache_activation_plugin_hook';
+				}
 			}
 		}
 
@@ -83,6 +105,8 @@ class Mobile_Subscriber implements Subscriber_Interface {
 			// WPR settings (`get_rocket_option()`).
 			$events[ 'pre_get_rocket_option_' . $option ] = 'is_mobile_plugin_active_callback';
 		}
+
+		$events = array_merge( $events, $plugin_events );
 
 		return $events;
 	}
@@ -197,10 +221,29 @@ class Mobile_Subscriber implements Subscriber_Interface {
 	 */
 	public function maybe_update_mobile_cache_activation( $value, $old_value ) {
 		$plugins   = static::get_mobile_plugins();
+		$plugins   = array_keys( $plugins );
 		$value     = array_intersect( $plugins, (array) $value );
 		$old_value = array_intersect( $plugins, (array) $old_value );
 
 		if ( $value !== $old_value ) {
+			static::update_mobile_cache_activation();
+		}
+	}
+
+	/**
+	 * Enables mobile caching when a mobile plugin option is activated, or reverts it back to its previous state when a mobile plugin option is deactivated.
+	 *
+	 * @since  3.4.2
+	 * @access public
+	 * @author Soponar Cristina
+	 *
+	 * @return void
+	 */
+	public function maybe_update_mobile_cache_activation_plugin_hook() {
+		$is_mobile_plugin_active = static::is_mobile_plugin_active();
+		static::reset_class_cache();
+		$is_new_mobile_plugin_active = static::is_mobile_plugin_active();
+		if ( $is_mobile_plugin_active !== $is_new_mobile_plugin_active ) {
 			static::update_mobile_cache_activation();
 		}
 	}
@@ -260,6 +303,8 @@ class Mobile_Subscriber implements Subscriber_Interface {
 		rocket_generate_config_file();
 		// Update the advanced cache file.
 		rocket_generate_advanced_cache_file();
+		// Flush htaccess file.
+		flush_rocket_htaccess();
 	}
 
 	/**
@@ -285,14 +330,24 @@ class Mobile_Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_mobile_plugins() {
 		return [
-			'wptouch/wptouch.php',
-			'wiziapp-create-your-own-native-iphone-app/wiziapp.php',
-			'wordpress-mobile-pack/wordpress-mobile-pack.php',
-			'wp-mobilizer/wp-mobilizer.php',
-			'wp-mobile-edition/wp-mobile-edition.php',
-			'device-theme-switcher/dts_controller.php',
-			'wp-mobile-detect/wp-mobile-detect.php',
-			'easy-social-share-buttons3/easy-social-share-buttons3.php',
+			'jetpack/jetpack.php'                                       => [
+				'is_active_callback' => function() {
+					if ( ! class_exists( 'Jetpack' ) ) {
+						return false;
+					}
+					return \Jetpack::is_active() && \Jetpack::is_module_active( 'minileven' );
+				},
+				'activation_hook'    => 'jetpack_activate_module_minileven',
+				'deactivation_hook'  => 'jetpack_deactivate_module_minileven',
+			],
+			'wptouch/wptouch.php'                                       => [],
+			'wiziapp-create-your-own-native-iphone-app/wiziapp.php'     => [],
+			'wordpress-mobile-pack/wordpress-mobile-pack.php'           => [],
+			'wp-mobilizer/wp-mobilizer.php'                             => [],
+			'wp-mobile-edition/wp-mobile-edition.php'                   => [],
+			'device-theme-switcher/dts_controller.php'                  => [],
+			'wp-mobile-detect/wp-mobile-detect.php'                     => [],
+			'easy-social-share-buttons3/easy-social-share-buttons3.php' => [],
 		];
 	}
 
@@ -321,8 +376,15 @@ class Mobile_Subscriber implements Subscriber_Interface {
 			static::$is_mobile_active[ $network_id ] = [];
 		}
 
-		foreach ( static::get_mobile_plugins() as $mobile_plugin ) {
-			if ( \is_plugin_active( $mobile_plugin ) ) {
+		foreach ( static::get_mobile_plugins() as $mobile_plugin => $mobile_plugin_data ) {
+			if ( \is_plugin_active( $mobile_plugin ) &&
+					isset( $mobile_plugin_data['is_active_callback'] ) &&
+					call_user_func( $mobile_plugin_data['is_active_callback'] ) ) {
+				static::$is_mobile_active[ $network_id ][ $blog_id ] = true;
+				return true;
+			}
+			if ( \is_plugin_active( $mobile_plugin ) &&
+					! isset( $mobile_plugin_data['is_active_callback'] ) ) {
 				static::$is_mobile_active[ $network_id ][ $blog_id ] = true;
 				return true;
 			}

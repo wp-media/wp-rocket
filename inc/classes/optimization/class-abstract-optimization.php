@@ -40,14 +40,18 @@ abstract class Abstract_Optimization {
 	protected function is_external_file( $url ) {
 		$file       = get_rocket_parse_url( $url );
 		$wp_content = get_rocket_parse_url( WP_CONTENT_URL );
-		$hosts      = get_rocket_cnames_host( $this->get_zones() );
-		$hosts[]    = $wp_content['host'];
-		$langs      = get_rocket_i18n_uri();
+		// This filter is documented in inc/classes/admin/settings/class-settings.php.
+		$hosts   = apply_filters( 'rocket_cdn_hosts', [], $this->get_zones() );
+		$hosts[] = $wp_content['host'];
+		$langs   = get_rocket_i18n_uri();
 
 		// Get host for all langs.
 		if ( $langs ) {
 			foreach ( $langs as $lang ) {
-				$hosts[] = rocket_extract_url_component( $lang, PHP_URL_HOST );
+				$url_host = rocket_extract_url_component( $lang, PHP_URL_HOST );
+				if ( ! empty( $url_host ) ) {
+					$hosts[] = $url_host;
+				}
 			}
 		}
 
@@ -98,7 +102,8 @@ abstract class Abstract_Optimization {
 	 * @return string
 	 */
 	protected function get_file_path( $url ) {
-		$hosts         = get_rocket_cnames_host( $this->get_zones() );
+		// This filter is documented in inc/classes/admin/settings/class-settings.php.
+		$hosts         = apply_filters( 'rocket_cdn_hosts', [], $this->get_zones() );
 		$hosts['home'] = rocket_extract_url_component( home_url(), PHP_URL_HOST );
 		$hosts_index   = array_flip( $hosts );
 

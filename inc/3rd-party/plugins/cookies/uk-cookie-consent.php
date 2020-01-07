@@ -7,10 +7,10 @@
  * @link   https://wordpress.org/plugins/uk-cookie-consent/
  */
 
-defined( 'ABSPATH' ) || die( 'Cheatin\' uh?' );
+defined( 'ABSPATH' ) || exit;
 
 if ( class_exists( 'CTCC_Public' ) ) {
-	add_filter( 'rocket_htaccess_mod_rewrite', '__return_false' );
+	add_filter( 'rocket_htaccess_mod_rewrite', '__return_false', 62 );
 	// Create cache version based on value set in cookie_consent_accepted cookie.
 	add_filter( 'rocket_cache_dynamic_cookies', 'rocket_get_cookie_uk_consent_cookie' );
 }
@@ -36,7 +36,7 @@ function rocket_get_cookie_uk_consent_cookie( $cookies ) {
  * @author TheZoker
  */
 function rocket_add_uk_cookie_consent_dynamic_cookie() {
-	add_filter( 'rocket_htaccess_mod_rewrite', '__return_false' );
+	add_filter( 'rocket_htaccess_mod_rewrite', '__return_false', 62 );
 	// Create cache version based on value set in cookie_consent_accepted cookie.
 	add_filter( 'rocket_cache_dynamic_cookies', 'rocket_get_cookie_uk_consent_cookie' );
 
@@ -58,7 +58,7 @@ add_action( 'activate_uk-cookie-consent/uk-cookie-consent.php', 'rocket_add_uk_c
  * @author TheZoker
  */
 function rocket_remove_uk_cookie_consent_dynamic_cookie() {
-	remove_filter( 'rocket_htaccess_mod_rewrite', '__return_false' );
+	remove_filter( 'rocket_htaccess_mod_rewrite', '__return_false', 62 );
 	remove_filter( 'rocket_cache_dynamic_cookies', 'rocket_get_cookie_uk_consent_cookie' );
 
 	// Update the WP Rocket rules on the .htaccess file.

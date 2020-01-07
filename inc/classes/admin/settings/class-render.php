@@ -3,7 +3,7 @@ namespace WP_Rocket\Admin\Settings;
 
 use WP_Rocket\Abstract_Render;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Handle rendering of HTML content for the settings page.
@@ -141,6 +141,16 @@ class Render extends Abstract_render {
 	 */
 	public function render_imagify_section() {
 		echo $this->generate( 'page-sections/imagify' );
+	}
+
+	/**
+	 * Render the Tutorials page section.
+	 *
+	 * @since 3.4
+	 * @author Remy Perona
+	 */
+	public function render_tutorials_section() {
+		echo $this->generate( 'page-sections/tutorials' );
 	}
 
 	/**

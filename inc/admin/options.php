@@ -1,7 +1,7 @@
 <?php
 use WP_Rocket\Logger\Logger;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 /**
  * When our settings are saved: purge, flush, preload!
@@ -86,6 +86,21 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	// Purge all cache busting files.
 	if ( ! empty( $_POST ) && ( $oldvalue['remove_query_strings'] !== $value['remove_query_strings'] ) ) {
 		rocket_clean_cache_busting();
+	}
+
+	if ( ! empty( $_POST ) &&
+			( ( isset( $oldvalue['cloudflare_email'], $value['cloudflare_email'] ) && $oldvalue['cloudflare_email'] !== $value['cloudflare_email'] ) ||
+			( isset( $oldvalue['cloudflare_api_key'], $value['cloudflare_api_key'] ) && $oldvalue['cloudflare_api_key'] !== $value['cloudflare_api_key'] ) ||
+			( isset( $oldvalue['cloudflare_zone_id'], $value['cloudflare_zone_id'] ) && $oldvalue['cloudflare_zone_id'] !== $value['cloudflare_zone_id'] ) )
+			) {
+		// Check Cloudflare input data and display error message.
+		if ( get_rocket_option( 'do_cloudflare' ) && function_exists( 'rocket_is_api_keys_valid_cloudflare' ) ) {
+			$is_api_keys_valid_cloudflare = rocket_is_api_keys_valid_cloudflare( $value['cloudflare_email'], $value['cloudflare_api_key'], $value['cloudflare_zone_id'], false );
+			if ( is_wp_error( $is_api_keys_valid_cloudflare ) ) {
+				$cloudflare_error_message = $is_api_keys_valid_cloudflare->get_error_message();
+				add_settings_error( 'general', 'cloudflare_api_key_invalid', __( 'WP Rocket: ', 'rocket' ) . '</strong>' . $cloudflare_error_message . '<strong>', 'error' );
+			}
+		}
 	}
 
 	// Update CloudFlare Development Mode.
@@ -217,7 +232,7 @@ function rocket_after_save_options( $oldvalue, $value ) {
 add_action( 'update_option_' . WP_ROCKET_SLUG, 'rocket_after_save_options', 10, 2 );
 
 /**
- * When purge settings are saved we change the scheduled purge
+ * Perform actions when settings are saved.
  *
  * @since 1.0
  *
@@ -226,11 +241,57 @@ add_action( 'update_option_' . WP_ROCKET_SLUG, 'rocket_after_save_options', 10, 
  * @return array Updated submitted options values.
  */
 function rocket_pre_main_option( $newvalue, $oldvalue ) {
-	if ( ( isset( $newvalue['purge_cron_interval'], $oldvalue['purge_cron_interval'] ) && $newvalue['purge_cron_interval'] !== $oldvalue['purge_cron_interval'] ) || ( isset( $newvalue['purge_cron_unit'], $oldvalue['purge_cron_unit'] ) && $newvalue['purge_cron_unit'] !== $oldvalue['purge_cron_unit'] ) ) {
-		// Clear WP Rocket cron.
-		if ( wp_next_scheduled( 'rocket_purge_time_event' ) ) {
-			wp_clear_scheduled_hook( 'rocket_purge_time_event' );
+	$rocket_settings_errors = [];
+
+	// Make sure that fields that allow users to enter patterns are well formatted.
+	$is_form_submit = filter_input( INPUT_POST, 'option_page', FILTER_SANITIZE_STRING );
+	$is_form_submit = WP_ROCKET_PLUGIN_SLUG === $is_form_submit;
+	$errors         = [];
+	$pattern_labels = [
+		'exclude_css'       => __( 'Excluded CSS Files', 'rocket' ),
+		'exclude_inline_js' => __( 'Excluded Inline JavaScript', 'rocket' ),
+		'exclude_js'        => __( 'Excluded JavaScript Files', 'rocket' ),
+		'cache_reject_uri'  => __( 'Never Cache URL(s)', 'rocket' ),
+		'cache_reject_ua'   => __( 'Never Cache User Agent(s)', 'rocket' ),
+		'cache_purge_pages' => __( 'Always Purge URL(s)', 'rocket' ),
+		'cdn_reject_files'  => __( 'Exclude files from CDN', 'rocket' ),
+	];
+
+	foreach ( $pattern_labels as $pattern_field => $label ) {
+		if ( empty( $newvalue[ $pattern_field ] ) ) {
+			// The field is empty.
+			continue;
 		}
+
+		// Sanitize.
+		$newvalue[ $pattern_field ] = rocket_sanitize_textarea_field( $pattern_field, $newvalue[ $pattern_field ] );
+
+		// Validate.
+		$newvalue[ $pattern_field ] = array_filter(
+			$newvalue[ $pattern_field ],
+			function( $excluded ) use ( $pattern_field, $label, $is_form_submit, &$errors ) {
+				if ( false === @preg_match( '#' . str_replace( '#', '\#', $excluded ) . '#', 'dummy-sample' ) && $is_form_submit ) { // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+					/* translators: 1 and 2 can be anything. */
+					$errors[ $pattern_field ] = sprintf( __( '%1$s: <em>%2$s</em>.', 'rocket' ), $label, esc_html( $excluded ) );
+					return false;
+				}
+
+				return true;
+			}
+		);
+	}
+
+	if ( $errors ) {
+		$error_message  = _n( 'The following pattern is invalid and has been removed:', 'The following patterns are invalid and have been removed:', count( $errors ), 'rocket' );
+		$error_message .= '<ul><li>' . implode( '</li><li>', $errors ) . '</li></ul>';
+		$errors         = [];
+
+		$rocket_settings_errors[] = [
+			'setting' => 'general',
+			'code'    => 'invalid_patterns',
+			'message' => __( 'WP Rocket: ', 'rocket' ) . '</strong>' . $error_message . '<strong>',
+			'type'    => 'error',
+		];
 	}
 
 	// Clear WP Rocket database optimize cron if the setting has been modified.
@@ -257,9 +318,9 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 	}
 
 	// Save old CloudFlare settings.
-	if ( ( isset( $newvalue['cloudflare_auto_settings'], $oldvalue['cloudflare_auto_settings'] ) && $newvalue['cloudflare_auto_settings'] !== $oldvalue['cloudflare_auto_settings'] && 1 === $newvalue['cloudflare_auto_settings'] ) && 0 < (int) get_rocket_option( 'do_cloudflare' ) ) {
+	if ( isset( $newvalue['cloudflare_auto_settings'], $oldvalue['cloudflare_auto_settings'] ) && $newvalue['cloudflare_auto_settings'] !== $oldvalue['cloudflare_auto_settings'] && 1 === $newvalue['cloudflare_auto_settings'] && 0 < (int) get_rocket_option( 'do_cloudflare' ) ) {
 		$cf_settings                         = get_rocket_cloudflare_settings();
-		$newvalue['cloudflare_old_settings'] = ( ! is_wp_error( $cf_settings ) ) ? implode( ',', array_filter( $cf_settings ) ) : '';
+		$newvalue['cloudflare_old_settings'] = ! is_wp_error( $cf_settings ) ? implode( ',', array_filter( $cf_settings ) ) : '';
 	}
 
 	// Checked the SSL option if the whole website is on SSL.
@@ -272,10 +333,29 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 	}
 
 	$keys = get_transient( WP_ROCKET_SLUG );
+
 	if ( $keys ) {
 		delete_transient( WP_ROCKET_SLUG );
 		$newvalue = array_merge( $newvalue, $keys );
 	}
+
+	if ( ! $rocket_settings_errors ) {
+		return $newvalue;
+	}
+
+	/**
+	 * Display an error notice.
+	 * The notices are stored directly in the transient instead of using `add_settings_error()`, to make sure they are displayed even if we’re outside an admin screen.
+	 */
+	$transient_errors = get_transient( 'settings_errors' );
+
+	if ( ! $transient_errors || ! is_array( $transient_errors ) ) {
+		$transient_errors = [];
+	}
+
+	$transient_errors = array_merge( $transient_errors, $rocket_settings_errors );
+
+	set_transient( 'settings_errors', $transient_errors, 30 );
 
 	return $newvalue;
 }

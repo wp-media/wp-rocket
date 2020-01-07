@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 /**
  * This warning is displayed when the API KEY isn't already set or not valid
@@ -153,8 +153,6 @@ function rocket_is_ssl_website() {
 function get_rocket_documentation_url() {
 	$langs  = array(
 		'fr_FR' => 'fr.',
-		'it_IT' => 'it.',
-		'de_DE' => 'de.',
 	);
 	$lang   = get_locale();
 	$prefix = isset( $langs[ $lang ] ) ? $langs[ $lang ] : '';
@@ -172,14 +170,15 @@ function get_rocket_documentation_url() {
  * @return string URL in the correct language
  */
 function get_rocket_faq_url() {
-	$langs = array(
-		'fr_FR' => 'fr.docs.wp-rocket.me/category/146-faq',
-		'it_IT' => 'it.docs.wp-rocket.me/category/321-domande-frequenti',
-		'de_DE' => 'de.docs.wp-rocket.me/category/285-haufig-gestellte-fragen-faq',
-	);
-	$lang  = get_locale();
-	$faq   = isset( $langs[ $lang ] ) ? $langs[ $lang ] : 'docs.wp-rocket.me/category/65-faq';
-	$url   = "https://{$faq}/?utm_source=wp_plugin&utm_medium=wp_rocket";
+	$langs  = [
+		'de' => 1,
+		'es' => 1,
+		'fr' => 1,
+		'it' => 1,
+	];
+	$locale = explode( '_', get_locale() );
+	$lang   = isset( $langs[ $locale[0] ] ) ? $locale[0] . '/' : '';
+	$url    = WP_ROCKET_WEB_MAIN . "{$lang}faq/?utm_source=wp_plugin&utm_medium=wp_rocket";
 
 	return $url;
 }

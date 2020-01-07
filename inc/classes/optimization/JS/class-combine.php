@@ -215,7 +215,7 @@ class Combine extends Abstract_JS_Optimization {
 					'content' => $file_path,
 				];
 			} else {
-				preg_match( '/<script\b(?<attrs>[^>]*)>\s*(?:\/\*\s*<!\[CDATA\[\s*\*\/)?\s*(?<content>[\s\S]*?)\s*(?:\/\*\s*\]\]>\s*\*\/)?\s*<\/script>/msi', $script[0], $matches_inline );
+				preg_match( '/<script\b(?<attrs>[^>]*)>(?:\/\*\s*<!\[CDATA\[\s*\*\/)?\s*(?<content>[\s\S]*?)\s*(?:\/\*\s*\]\]>\s*\*\/)?<\/script>/msi', $script[0], $matches_inline );
 
 				$matches_inline = array_merge(
 					[
@@ -225,7 +225,7 @@ class Combine extends Abstract_JS_Optimization {
 					$matches_inline
 				);
 
-				if (preg_last_error() == PREG_BACKTRACK_LIMIT_ERROR) {
+				if ( preg_last_error() == PREG_BACKTRACK_LIMIT_ERROR ) {
 					Logger::debug( 'PCRE regex execution Catastrophic Backtracking', [
 						'inline JS backtracking error',
 						'content' => $matches_inline['content'],
@@ -480,7 +480,6 @@ class Combine extends Abstract_JS_Optimization {
 			'cherry_ajax',
 			'ad_block_',
 			'elementorFrontendConfig',
-			'omapi_localized',
 			'zeen_',
 			'disqusIdentifier',
 			'currentAjaxUrl',
@@ -495,7 +494,9 @@ class Combine extends Abstract_JS_Optimization {
 			'ct_checkjs_',
 			'WP_Statistics_http',
 			'penci_block_',
+			'omapi_localized',
 			'omapi_data',
+			'OptinMonsterApp',
 			'tminusnow',
 			'nfForms',
 			'galleries.gallery_',
@@ -537,6 +538,53 @@ class Combine extends Abstract_JS_Optimization {
 			'var categories_',
 			'"+nRemaining+"',
 			'cartsguru_cart_token',
+			'after_share_easyoptin',
+			'location_data.push',
+			'thirstyFunctions.isThirstyLink',
+			'styles: \' #custom-menu-',
+			'function svc_center_',
+			'#svc_carousel2_container_',
+			'advads.move',
+			'elementid',
+			'advads_has_ads',
+			'wpseo_map_init',
+			'mdf_current_page_url',
+			'tptn_tracker',
+			'dpsp_pin_button_data',
+			'searchwp_live_search_params',
+			'wpp_params',
+			'top.location,thispage',
+			'selection+pagelink',
+			'ic_window_resolution',
+			'PHP.wp_p_id',
+			'ShopifyBuy.UI.onReady(client)',
+			'orig_request_uri',
+			'gie.widgets.load',
+			'Adman.Flash',
+			'PHP.wp_p_id',
+			'window.broadstreetKeywords',
+			'var productId =',
+			'var flatsomeVars',
+			'wc_product_block_data',
+			'static.mailerlite.com',
+			'_bs_getParameterByName',
+			'_stq.push',
+			'h._remove',
+			'var FlowFlowOpts',
+			'var WCPFData =',
+			'var _beeketing',
+			'var _statcounter',
+			'var actions =',
+			'var current_url',
+			'var object_name',
+			'var the_ajax_script',
+			'var wc_cart_fragments_params',
+			'var woocommerce_params',
+			'var wpml_cookies',
+			'wc_add_to_cart_params',
+			'window.broadstreetKeywords',
+			'window.wc_ga_pro.available_gateways',
+			'xa.prototype',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
@@ -605,6 +653,7 @@ class Combine extends Abstract_JS_Optimization {
 			'googlesyndication.com',
 			'a.optmstr.com',
 			'a.optmnstr.com',
+			'a.opmnstr.com',
 			'adthrive.com',
 			'mediavine.com',
 			'js.hsforms.net',
@@ -618,6 +667,9 @@ class Combine extends Abstract_JS_Optimization {
 			'code.tidio.co',
 			'www.uplaunch.com',
 			'widget.reviewability.com',
+			'embed-cdn.gettyimages.com/widgets.js',
+			'app.mailerlite.com',
+			'ck.page',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
@@ -704,6 +756,33 @@ class Combine extends Abstract_JS_Optimization {
 			'test_run_nf_conditional_logic',
 			'cb_nombre',
 			'$(\'.fl-node-',
+			'function($){google_maps_',
+            '$("#myCarousel',
+			'et_animation_data=',
+			'current_url="',
+			'CustomEvent.prototype=window.Event.prototype',
+			'electro-wc-product-gallery',
+			'woof_is_mobile',
+			'jQuery(\'.videonextup',
+			'wpp_params',
+			'us.templateDirectoryUri=',
+			'.fat-gallery-item',
+			'.ratingbox',
+			'user_rating.prototype.eraseCookie',
+			'test_run_nf_conditional',
+			'dpsp-networks-btns-wrapper',
+			'pa_woo_product_info',
+			'sharing_enabled_on_post_via_metabox',
+			'#product-search-field-',
+			'GOTMLS_login_offset',
+			'berocket_aapf_time_to_fix_products_style',
+			'window.vc_googleMapsPointer',
+			'sinceID_',
+			'#ut-background-video-ut-section',
+			'+window.comment_tab_width+',
+			'dfd-button-hover-in',
+			'wpseo-address-wrapper',
+			'platform.stumbleupon.com',
 		];
 
 		/**

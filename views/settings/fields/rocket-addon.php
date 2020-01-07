@@ -16,7 +16,7 @@
  * }
  */
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 $settings_page = ! empty( $data['settings_page'] ) ? $data['settings_page'] : '';
 ?>

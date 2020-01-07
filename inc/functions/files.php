@@ -1,5 +1,8 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+
+use WP_Rocket\Logger\Logger;
+
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Generate the content of advanced-cache.php file
@@ -11,7 +14,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  */
 function get_rocket_advanced_cache_file() {
 	$buffer  = "<?php\n";
-	$buffer .= "defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );\n\n";
+	$buffer .= "defined( 'ABSPATH' ) || exit;\n\n";
 
 	// Add a constant to be sure this is our file.
 	$buffer .= "define( 'WP_ROCKET_ADVANCED_CACHE', true );\n\n";
@@ -44,13 +47,13 @@ function get_rocket_advanced_cache_file() {
 		}
 		return;
 	}
-	
+
 	$rocket_config_class = new \WP_Rocket\Buffer\Config(
 		[
 			\'config_dir_path\' => \'' . WP_ROCKET_CONFIG_PATH . '\',
 		]
 	);
-	
+
 	( new \WP_Rocket\Buffer\Cache(
 		new \WP_Rocket\Buffer\Tests(
 			$rocket_config_class
@@ -110,7 +113,7 @@ function get_rocket_config_file() {
 	}
 
 	$buffer  = "<?php\n";
-	$buffer .= "defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );\n\n";
+	$buffer .= "defined( 'ABSPATH' ) || exit;\n\n";
 
 	$buffer .= '$rocket_cookie_hash = \'' . COOKIEHASH . "';\n";
 	$buffer .= '$rocket_logged_in_cookie = \'' . LOGGED_IN_COOKIE . "';\n";
@@ -125,6 +128,15 @@ function get_rocket_config_file() {
 	 */
 	if ( apply_filters( 'rocket_common_cache_logged_users', false ) ) {
 		$buffer .= '$rocket_common_cache_logged_users = 1;' . "\n";
+	}
+
+	if ( ! empty( $options['cache_webp'] ) ) {
+		/** This filter is documented in inc/classes/buffer/class-cache.php */
+		$disable_webp_cache = apply_filters( 'rocket_disable_webp_cache', false );
+
+		if ( $disable_webp_cache ) {
+			$options['cache_webp'] = 0;
+		}
 	}
 
 	/**
@@ -150,7 +162,7 @@ function get_rocket_config_file() {
 			$buffer .= '$rocket_' . $option . ' = ' . (int) $value . ";\n";
 		}
 
-		if ( 'cache_mobile' === $option || 'do_caching_mobile_files' === $option ) {
+		if ( 'cache_mobile' === $option || 'do_caching_mobile_files' === $option || 'cache_webp' === $option ) {
 			$buffer .= '$rocket_' . $option . ' = ' . (int) $value . ";\n";
 		}
 
@@ -186,6 +198,7 @@ function get_rocket_config_file() {
 		}
 	}
 
+	$buffer .= '$rocket_cache_ignored_parameters = ' . call_user_func( 'var_export', rocket_get_ignored_parameters(), true ) . ";\n";
 	$buffer .= '$rocket_cache_mandatory_cookies = ' . call_user_func( 'var_export', get_rocket_cache_mandatory_cookies(), true ) . ";\n";
 
 	$buffer .= '$rocket_cache_dynamic_cookies = ' . call_user_func( 'var_export', get_rocket_cache_dynamic_cookies(), true ) . ";\n";
@@ -369,7 +382,7 @@ function set_rocket_wp_cache_define( $turn_it_on ) {
 	$is_wp_cache_exist = false;
 
 	// Get WP_CACHE constant define.
-	$constant = "define('WP_CACHE', $turn_it_on); // Added by WP Rocket" . "\r\n";
+	$constant = "define( 'WP_CACHE', $turn_it_on );    // Added by WP Rocket." . "\r\n";
 
 	foreach ( $config_file as &$line ) {
 		if ( ! preg_match( '/^define\(\s*\'([A-Z_]+)\',(.*)\)/', $line, $match ) ) {
@@ -491,8 +504,21 @@ function rocket_clean_minify( $extensions = array( 'js', 'css' ) ) {
 function rocket_clean_cache_busting( $extensions = array( 'js', 'css' ) ) {
 	$extensions = is_string( $extensions ) ? (array) $extensions : $extensions;
 
+	$cache_busting_path = WP_ROCKET_CACHE_BUSTING_PATH . get_current_blog_id();
+
+	if ( ! rocket_direct_filesystem()->is_dir( $cache_busting_path ) ) {
+		rocket_mkdir_p( $cache_busting_path );
+
+		Logger::debug( 'No Cache Busting folder found.', [
+			'mkdir cache busting folder',
+			'cache_busting_path' => $cache_busting_path,
+		] );
+
+		return;
+	}
+
 	try {
-		$dir = new RecursiveDirectoryIterator( WP_ROCKET_CACHE_BUSTING_PATH . get_current_blog_id(), FilesystemIterator::SKIP_DOTS );
+		$dir = new RecursiveDirectoryIterator( $cache_busting_path, FilesystemIterator::SKIP_DOTS );
 	} catch ( \UnexpectedValueException $e ) {
 		// No logging yet.
 		return;
@@ -535,10 +561,18 @@ function rocket_clean_cache_busting( $extensions = array( 'js', 'css' ) ) {
 		do_action( 'after_rocket_clean_cache_busting', $ext );
 	}
 
-	foreach ( $iterator as $item ) {
-		if ( rocket_direct_filesystem()->is_dir( $item ) ) {
-			rocket_direct_filesystem()->delete( $item );
+	try {
+		foreach ( $iterator as $item ) {
+			if ( rocket_direct_filesystem()->is_dir( $item ) ) {
+				rocket_direct_filesystem()->delete( $item );
+			}
 		}
+	} catch ( \UnexpectedValueException $e ) {
+		// Log the error
+		Logger::debug( 'Cache Busting folder structure contains a directory we cannot recurse into.', [
+			'Full error',
+			'UnexpectedValueException' => $e->getMessage(),
+		] );
 	}
 }
 
@@ -686,6 +720,14 @@ function rocket_clean_home( $lang = '' ) {
 	if ( $nginx_mobile_detect_files ) {
 		foreach ( $nginx_mobile_detect_files as $nginx_mobile_detect_file ) { // no array map to use @.
 			rocket_direct_filesystem()->delete( $nginx_mobile_detect_file );
+		}
+	}
+
+	// Remove the hidden empty file for webp.
+	$nowebp_detect_files = glob( $root . '/.no-webp', GLOB_BRACE | GLOB_NOSORT );
+	if ( $nowebp_detect_files ) {
+		foreach ( $nowebp_detect_files as $nowebp_detect_file ) { // no array map to use @.
+			rocket_direct_filesystem()->delete( $nowebp_detect_file );
 		}
 	}
 
@@ -1001,6 +1043,13 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = array() ) {
 
 	if ( rocket_direct_filesystem()->is_dir( $dir ) && rocket_direct_filesystem()->exists( $nginx_mobile_detect_file ) ) {
 		rocket_direct_filesystem()->delete( $nginx_mobile_detect_file );
+	}
+
+	// Remove the hidden empty file for webp.
+	$nowebp_detect_file = $dir . '/.no-webp';
+
+	if ( rocket_direct_filesystem()->is_dir( $dir ) && rocket_direct_filesystem()->exists( $nowebp_detect_file ) ) {
+		rocket_direct_filesystem()->delete( $nowebp_detect_file );
 	}
 
 	if ( ! rocket_direct_filesystem()->is_dir( $dir ) ) {
