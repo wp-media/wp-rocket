@@ -139,9 +139,11 @@ class APIClient {
 			return $this->get_wp_error();
 		}
 
+		$data = json_decode( $data, true );
+
 		set_transient( 'rocketcdn_pricing', $data, 6 * HOUR_IN_SECONDS );
 
-		return json_decode( $data, true );
+		return $data;
 	}
 
 	/**
