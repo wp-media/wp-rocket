@@ -1,22 +1,31 @@
 <?xml version="1.0"?>
-<ruleset name="WPRocket">
-	<description>Caching plugin for WordPress by WP Media.</description>
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="WP Rocket" xsi:noNamespaceSchemaLocation="vendor/squizlabs/php_codesniffer/phpcs.xsd">
+	<description>The custom ruleset for WP Rocket.</description>
 
-	<arg name="extensions" value="php"/>
-	<!--<arg value="s"/>-->
+	<!-- For help in understanding this file: https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-ruleset.xml -->
+	<!-- For help in using PHPCS: https://github.com/squizlabs/PHP_CodeSniffer/wiki/Usage -->
 
-    <!-- Run against the PHPCompatibility ruleset -->
-    <rule ref="PHPCompatibility"/>
-    <!-- Check for cross-version support for PHP 5.6 and higher. -->
-    <config name="testVersion" value="5.6-"/>
-    <config name="minimum_supported_wp_version" value="4.7"/>
+	<!-- ** WHAT TO SCAN ** -->
 
 	<file>.</file>
+	<!-- Ignoring Files and Folders: https://github.com/squizlabs/PHP_CodeSniffer/wiki/Advanced-Usage#ignoring-files-and-folders -->
 	<exclude-pattern>/inc/deprecated/*</exclude-pattern>
 	<exclude-pattern>/inc/vendors/*</exclude-pattern>
 	<exclude-pattern>/tests/Integration/*</exclude-pattern>
 	<exclude-pattern>/tests/Unit/*</exclude-pattern>
 	<exclude-pattern>/vendor/*</exclude-pattern>
+
+	<!-- ** HOW TO SCAN ** -->
+
+	<arg value="sp"/><!-- Show sniff and progress -->
+	<arg name="colors"/><!-- Show results with colors -->
+	<arg name="parallel" value="50"/><!-- Enables parallel processing when available for faster results. -->
+	<arg name="extensions" value="php"/><!-- Limit to PHP files -->
+
+	<!-- Rules: Check PHP version compatibility - see https://github.com/PHPCompatibility/PHPCompatibilityWP -->
+	<rule ref="PHPCompatibility"/>
+    <config name="testVersion" value="5.6-"/>
+    <config name="minimum_supported_wp_version" value="4.7"/>
 
 	<rule ref="WordPress">
         <exclude name="Generic.Functions.FunctionCallArgumentSpacing.TooMuchSpaceAfterComma"/>
