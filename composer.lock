@@ -589,16 +589,16 @@
         },
         {
             "name": "wp-media/rocket-lazyload-common",
-            "version": "v2.5.4",
+            "version": "v2.5.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-media/rocket-lazyload-common.git",
-                "reference": "e5ad49418784776e54d181791522c0fa6bf172a4"
+                "reference": "a8860c37679b7d424b4aa3c9c05c4360e2be5b6f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-media/rocket-lazyload-common/zipball/e5ad49418784776e54d181791522c0fa6bf172a4",
-                "reference": "e5ad49418784776e54d181791522c0fa6bf172a4",
+                "url": "https://api.github.com/repos/wp-media/rocket-lazyload-common/zipball/a8860c37679b7d424b4aa3c9c05c4360e2be5b6f",
+                "reference": "a8860c37679b7d424b4aa3c9c05c4360e2be5b6f",
                 "shasum": ""
             },
             "require": {
@@ -633,7 +633,7 @@
                 }
             ],
             "description": "Common Code between WP Rocket and Lazyload by WP Rocket",
-            "time": "2019-10-28T15:10:39+00:00"
+            "time": "2020-01-07T06:38:00+00:00"
         }
     ],
     "packages-dev": [
@@ -1842,16 +1842,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "7.5.19",
+            "version": "7.5.20",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "4263f76a3fc65385e242ef7357b99f3bed36707e"
+                "reference": "9467db479d1b0487c99733bb1e7944d32deded2c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/4263f76a3fc65385e242ef7357b99f3bed36707e",
-                "reference": "4263f76a3fc65385e242ef7357b99f3bed36707e",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/9467db479d1b0487c99733bb1e7944d32deded2c",
+                "reference": "9467db479d1b0487c99733bb1e7944d32deded2c",
                 "shasum": ""
             },
             "require": {
@@ -1922,7 +1922,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2020-01-06T16:53:05+00:00"
+            "time": "2020-01-08T08:45:45+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
