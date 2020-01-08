@@ -47,6 +47,7 @@
 		"mikey179/vfsstream": "^1.6",
 		"phpcompatibility/phpcompatibility-wp": "^2.0",
 		"phpunit/phpunit": "^5.7 || ^7",
+	  	"roave/security-advisories": "dev-master",
 		"wp-coding-standards/wpcs": "^2"
 	},
 	"autoload": {
@@ -74,6 +75,10 @@
 		"run-tests": [
 			"@test-unit",
 			"@test-integration"
-		]
+		],
+	  	"install-codestandards": "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run",
+	  	"phpcs": "phpcs --basepath=.",
+	  	"phpcs-changed": "./bin/phpcs-changed.sh",
+	  	"phpcs:fix": "phpcbf"
 	}
 }
