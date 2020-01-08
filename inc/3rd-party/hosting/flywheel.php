@@ -36,9 +36,12 @@ if ( class_exists( 'FlywheelNginxCompat' ) ) {
 	 * Set up the right Varnish IP for Flywheel
 	 *
 	 * @since 2.6.8
+	 * @param array $varnish_ip Varnish IP.
 	 */
-	function rocket_varnish_ip_on_flywheel() {
-		return '127.0.0.1';
+	function rocket_varnish_ip_on_flywheel( $varnish_ip ) {
+		$varnish_ip[] = '127.0.0.1';
+
+		return $varnish_ip;
 	}
 	add_filter( 'rocket_varnish_ip', 'rocket_varnish_ip_on_flywheel' );
 
