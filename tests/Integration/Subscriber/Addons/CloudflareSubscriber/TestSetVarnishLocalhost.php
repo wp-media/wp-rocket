@@ -27,7 +27,7 @@ class Test_SetVarnishLocalhost extends TestCase {
 		$cf_subscriber     = new CloudflareSubscriber( new Cloudflare( new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) ), $cloudflare_facade ), new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) ), new Options() );
 
 		$this->assertSame(
-			'',
+			[],
 			$cf_subscriber->set_varnish_localhost( [] )
 		);
 	}
@@ -48,7 +48,7 @@ class Test_SetVarnishLocalhost extends TestCase {
 		$cf_subscriber     = new CloudflareSubscriber( new Cloudflare( new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) ), $cloudflare_facade ), new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) ), new Options() );
 
 		$this->assertSame(
-			'',
+			[],
 			$cf_subscriber->set_varnish_localhost( [] )
 		);
 	}
