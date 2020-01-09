@@ -8,7 +8,7 @@ use WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber;
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber::get_subscribed_events
  * @group RocketCDN
  */
-class TestGetSubscribedEvents extends TestCase {
+class Test_GetSubscribedEvents extends TestCase {
 	/**
 	 * Test the registered events array is as expected
 	 */

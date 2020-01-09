@@ -9,7 +9,7 @@ use Brain\Monkey\Functions;
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber::display_rocketcdn_status
  * @group RocketCDN
  */
-class TestDisplayRocketcdnStatus extends TestCase {
+class Test_DisplayRocketcdnStatus extends TestCase {
 	private $api_client;
 	private $options;
 	private $beacon;

@@ -9,7 +9,7 @@ use Brain\Monkey\Functions;
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\NoticesSubscriber::dismiss_notice
  * @group RocketCDN
  */
-class TestDismissNotice extends TestCase {
+class Test_DismissNotice extends TestCase {
     private $api_client;
 
 	public function setUp() {

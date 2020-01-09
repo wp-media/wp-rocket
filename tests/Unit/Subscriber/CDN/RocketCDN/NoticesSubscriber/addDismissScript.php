@@ -6,40 +6,33 @@ use WP_Rocket\Subscriber\CDN\RocketCDN\NoticesSubscriber;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\NoticesSubscriber::promote_rocketcdn_notice
+ * @covers\WP_Rocket\Subscriber\CDN\RocketCDN\NoticesSubscriber::add_dismiss_script
  * @group RocketCDN
  */
-class TestPromoteRocketcdnNotice extends TestCase {
+class Test_AddDismissScript extends TestCase {
 	private $api_client;
-	private $filesystem;
 
 	public function setUp() {
 		parent::setUp();
 
 		$this->api_client = $this->createMock( 'WP_Rocket\CDN\RocketCDN\APIClient' );
-		$this->filesystem = $this->getMockBuilder( 'WP_Filesystem_Direct' )
-							->setMethods( [
-								'is_readable',
-							])
-							->getMock();
-		$this->filesystem->method('is_readable')->will($this->returnCallback('is_readable'));
-    }
+	}
 
 	/**
-	 * @covers ::promote_rocketcdn_notice
+	 * @covers ::add_dismiss_script
 	 */
-	public function testShouldNotDisplayNoticeWhenNoCapability() {
+	public function testShouldNotAddScriptWhenNoCapability() {
 		Functions\when('current_user_can')->justReturn(false);
 
 		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
 		
-		$this->assertNull($page->promote_rocketcdn_notice());
+		$this->assertNull($page->add_dismiss_script());
 	}
 
 	/**
-	 * @covers ::promote_rocketcdn_notice
+	 * @covers ::add_dismiss_script
 	 */
-	public function testShouldNotDisplayNoticeWhenNotRocketPage() {
+	public function testShouldNotAddScriptWhenNotRocketPage() {
 		Functions\when('current_user_can')->justReturn(true);
 		Functions\when('get_current_screen')->alias(function() {
 			return (object) [ 'id' => 'general' ];
@@ -47,13 +40,13 @@ class TestPromoteRocketcdnNotice extends TestCase {
 
 		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
 		
-		$this->assertNull($page->promote_rocketcdn_notice());
+		$this->assertNull($page->add_dismiss_script());
 	}
 
 	/**
-	 * @covers ::promote_rocketcdn_notice
+	 * @covers ::add_dismiss_script
 	 */
-	public function testShouldNotDisplayNoticeWhenDismissed() {
+	public function testShouldNotAddScriptWhenDismissed() {
 		Functions\when('current_user_can')->justReturn(true);
 		Functions\when('get_current_screen')->alias(function() {
 			return (object) [ 'id' => 'settings_page_wprocket' ];
@@ -63,13 +56,13 @@ class TestPromoteRocketcdnNotice extends TestCase {
 
 		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
 		
-		$this->assertNull($page->promote_rocketcdn_notice());
+		$this->assertNull($page->add_dismiss_script());
 	}
 
 	/**
-	 * @covers ::promote_rocketcdn_notice
+	 * @covers ::add_dismiss_script
 	 */
-	public function testShouldNotDisplayNoticeWhenActive() {
+	public function testShouldNotAddScriptWhenActive() {
 		Functions\when('current_user_can')->justReturn(true);
 		Functions\when('get_current_screen')->alias(function() {
 			return (object) [ 'id' => 'settings_page_wprocket' ];
@@ -82,13 +75,13 @@ class TestPromoteRocketcdnNotice extends TestCase {
 
 		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
 		
-		$this->assertNull($page->promote_rocketcdn_notice());
+		$this->assertNull($page->add_dismiss_script());
 	}
 
 	/**
-	 * @covers ::promote_rocketcdn_notice
+	 * @covers ::add_dismiss_script
 	 */
-	public function testShoulDisplayNoticeWhenNotActive() {
+	public function testShouldAddScriptWhenNotActive() {
 		$this->mockCommonWpFunctions();
 
 		Functions\when('current_user_can')->justReturn(true);
@@ -101,17 +94,30 @@ class TestPromoteRocketcdnNotice extends TestCase {
 		$this->api_client->method('get_subscription_data')
 			->willReturn(['is_active' => false]);
 
-		Functions\When( 'rocket_direct_filesystem')->alias( function() {
-			return $this->filesystem;
-		});
+		Functions\when('wp_create_nonce')->justReturn('123456');
+		Functions\when('admin_url')->justReturn('https://example.org/wp-admin/admin-ajax.php');
 
 		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
 
-		$this->expectOutputString('<div class="notice notice-alt notice-warning is-dismissible" id="rocketcdn-promote-notice">
-	<h2 class="notice-title">New!</h2>
-	<p>Speed up your website with Rocket CDN, WP Rocket’s Content Delivery Network!</p>
-	<p><a href="#page_cdn" class="wpr-button" id="rocketcdn-learn-more-dismiss">Learn More</a></p>
-</div>');
-		$page->promote_rocketcdn_notice();
+		$this->expectOutputString("     <script>
+		window.addEventListener( 'load', function() {
+			var dismissBtn  = document.querySelectorAll( '#rocketcdn-promote-notice .notice-dismiss, #rocketcdn-promote-notice #rocketcdn-learn-more-dismiss' );
+
+			dismissBtn.forEach(function(element) {
+				element.addEventListener( 'click', function( event ) {
+					var httpRequest = new XMLHttpRequest(),
+						postData    = '';
+
+					postData += 'action=rocketcdn_dismiss_notice';
+					postData += '&nonce=123456';
+					httpRequest.open( 'POST', 'https://example.org/wp-admin/admin-ajax.php' );
+					httpRequest.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' )
+					httpRequest.send( postData );
+				});
+			});
+		});
+		</script>
+		");
+		$page->add_dismiss_script();
 	}
 }

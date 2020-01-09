@@ -11,7 +11,7 @@ use WP_Rocket\Admin\Options_Data;
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber::validate_key
  * @group RocketCDN
  */
-class TestValidateKey extends TestCase {
+class Test_ValidateKey extends TestCase {
     /**
 	 * Test should return true when the provided key is the same as the one in the WPR options.
 	 */

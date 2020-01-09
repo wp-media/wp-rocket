@@ -9,7 +9,7 @@ use Brain\Monkey\Functions;
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber::update_user_token
  * @group RocketCDN
  */
-class TestUpdateUserToken extends TestCase {
+class Test_UpdateUserToken extends TestCase {
     private $api_client;
     private $options;
 	private $beacon;

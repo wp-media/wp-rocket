@@ -9,7 +9,7 @@ use Brain\Monkey\Functions;
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\NoticesSubscriber::purge_cache_notice
  * @group RocketCDN
  */
-class TestPurgeCacheNotice extends TestCase {
+class Test_PurgeCacheNotice extends TestCase {
 	private $api_client;
 
 	public function setUp() {

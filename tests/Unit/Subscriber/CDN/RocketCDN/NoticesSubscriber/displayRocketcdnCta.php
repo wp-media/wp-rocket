@@ -9,7 +9,7 @@ use Brain\Monkey\Functions;
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\NoticesSubscriber::display_rocketcdn_cta
  * @group RocketCDN
  */
-class TestDisplayRocketcdnCta extends TestCase {
+class Test_DisplayRocketcdnCta extends TestCase {
 	private $api_client;
 	private $filesystem;
 

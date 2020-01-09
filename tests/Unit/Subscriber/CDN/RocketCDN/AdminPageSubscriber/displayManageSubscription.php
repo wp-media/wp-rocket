@@ -9,7 +9,7 @@ use Brain\Monkey\Functions;
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber::display_manage_subscription
  * @group RocketCDN
  */
-class TestDisplayManageSubscription extends TestCase {
+class Test_DisplayManageSubscription extends TestCase {
     private $api_client;
 	private $options;
 	private $beacon;

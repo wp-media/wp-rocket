@@ -9,7 +9,7 @@ use Brain\Monkey\Functions;
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\NoticesSubscriber::toggle_cta
  * @group RocketCDN
  */
-class TestToggleCTA extends TestCase {
+class Test_ToggleCTA extends TestCase {
     private $api_client;
 
 	public function setUp() {

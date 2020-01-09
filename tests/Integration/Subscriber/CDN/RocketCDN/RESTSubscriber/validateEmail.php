@@ -12,7 +12,7 @@ use WP_Rocket\Admin\Options_Data;
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber::validate_email
  * @group RocketCDN
  */
-class TestValidateEmail extends TestCase {
+class Test_ValidateEmail extends TestCase {
 	/**
 	 * Test should return true when the provided email is the same as the one in the WPR options.
 	 */
