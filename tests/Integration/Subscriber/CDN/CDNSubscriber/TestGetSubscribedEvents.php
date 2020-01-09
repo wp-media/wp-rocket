@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Tests\Integration\Subscriber\CDNSubscriber;
+namespace WP_Rocket\Tests\Integration\Subscriber\CDN\CDNSubscriber;
 
 use WP_Rocket\Tests\Integration\TestCase;
 use WP_Rocket\Subscriber\CDN\CDNSubscriber;

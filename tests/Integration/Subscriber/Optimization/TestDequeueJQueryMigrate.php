@@ -9,15 +9,11 @@ use WP_Rocket\Subscriber\Optimization\Dequeue_JQuery_Migrate_Subscriber;
 /**
  * Test Dequeue jQuery Migrate
  *
- * @since 3.4
+ * @since 3.5
  * @author Soponar Cristina
  */
 class TestDequeueJQueryMigrate extends TestCase
 {
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
     public function testShouldNotDequeueJQueryMigrate()
     {
         update_option(
@@ -36,35 +32,6 @@ class TestDequeueJQueryMigrate extends TestCase
         );
 	}
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
-    public function testShouldNotDequeueJQueryMigrateWhenDONOTROCKETOPTIMIZE()
-    {
-        update_option(
-            'wp_rocket_settings',
-            [
-                'dequeue_jquery_migrate' => true,
-            ]
-        );
-
-        define('DONOTROCKETOPTIMIZE', true);
-
-        $scripts 				   		   = wp_scripts();
-        $options        				   = new Options_Data((new Options('wp_rocket_'))->get('settings'));
-        $dequeue_jquery_migrate_subscriber = new Dequeue_JQuery_Migrate_Subscriber($options);
-
-        $this->assertSame(
-            false,
-            $dequeue_jquery_migrate_subscriber->dequeue_jquery_migrate($scripts)
-        );
-    }
-
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
     public function testShouldDequeueJQueryMigrate()
     {
         update_option(
