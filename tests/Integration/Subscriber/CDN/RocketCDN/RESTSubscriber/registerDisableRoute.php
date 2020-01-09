@@ -6,6 +6,8 @@ use WP_Rocket\Tests\Integration\RESTfulTestCase;
 
 /**
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber::register_disable_route
+ * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber::validateEmail
+ * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber::validateKey
  * @group  RocketCDN
  */
 class Test_RegisterDisableRoute extends RESTfulTestCase {
