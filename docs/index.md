@@ -3,7 +3,7 @@ title: Action Scheduler - Background Processing Job Queue for WordPress
 ---
 ## WordPress Job Queue with Background Processing
 
-Action Scheduler is a library for triggering a WordPress hook to run at some time in the future. Each hook can be scheduled with unique data, to allow callbacks to perform operations on that data. The hook can also be scheduled to run on one or more occassions.
+Action Scheduler is a library for triggering a WordPress hook to run at some time in the future (or as soon as possible, in the case of an async action). Each hook can be scheduled with unique data, to allow callbacks to perform operations on that data. The hook can also be scheduled to run on one or more occassions.
 
 Think of it like an extension to `do_action()` which adds the ability to delay and repeat a hook.
 
