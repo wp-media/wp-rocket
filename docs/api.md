@@ -13,7 +13,7 @@ The Action Scheduler API functions are designed to mirror the WordPress [WP-Cron
 
 Functions return similar values and accept similar arguments to their WP-Cron counterparts. The notable differences are:
 
-* `as_schedule_single_action()` & `as_schedule_recurring_action()` will return the post ID of the scheduled action rather than boolean indicating whether the event was scheduled
+* `as_schedule_single_action()` & `as_schedule_recurring_action()` will return the ID of the scheduled action rather than boolean indicating whether the event was scheduled
 * `as_schedule_recurring_action()` takes an interval in seconds as the recurring interval rather than an arbitrary string
 * `as_schedule_single_action()` & `as_schedule_recurring_action()` can accept a `$group` parameter to group different actions for the one plugin together.
 * the `wp_` prefix is substituted with `as_` and the term `event` is replaced with `action`
@@ -45,7 +45,7 @@ as_schedule_single_action( $timestamp, $hook, $args, $group )
 
 ### Return value
 
-(integer) the action's ID in the [posts](http://codex.wordpress.org/Database_Description#Table_Overview) table.
+(integer) the action's ID.
 
 
 ## Function Reference / `as_schedule_recurring_action()`
@@ -70,7 +70,7 @@ as_schedule_recurring_action( $timestamp, $interval_in_seconds, $hook, $args, $g
 
 ### Return value
 
-(integer) the action's ID in the [posts](http://codex.wordpress.org/Database_Description#Table_Overview) table.
+(integer) the action's ID.
 
 
 ## Function Reference / `as_schedule_cron_action()`
@@ -95,7 +95,7 @@ as_schedule_cron_action( $timestamp, $schedule, $hook, $args, $group )
 
 ### Return value
 
-(integer) the action's ID in the [posts](http://codex.wordpress.org/Database_Description#Table_Overview) table.
+(integer) the action's ID.
 
 
 ## Function Reference / `as_unschedule_action()`
