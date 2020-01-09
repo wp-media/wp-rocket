@@ -19,9 +19,9 @@ While using [WP CLI to process queues](/wp-cli/) is the best approach to increas
 
 By default, Action Scheduler will only process actions for a maximum of 30 seconds. This time limit minimises the risk of a script timeout on unknown hosting environments, some of which enforce 30 second timeouts.
 
-If you know your host supports longer than this time limit for web requests, you can increase this time limit. This allows more actions to be processed in each request and reduces the lag between processing each queue, greating speeding up the processing rate of scheduled actions.
+If you know your host supports longer than this time limit for web requests, you can increase this time limit. This allows more actions to be processed in each request and reduces the lag between processing each queue, greatly speeding up the processing rate of scheduled actions.
 
-For example, the following snippet will increase the timelimit to 2 minutes (120 seconds):
+For example, the following snippet will increase the time limit to 2 minutes (120 seconds):
 
 ```php
 function eg_increase_time_limit( $time_limit ) {
@@ -57,7 +57,7 @@ By default, Action Scheduler will run up to 5 concurrent batches of actions. Thi
 
 However, your server may allow a large number of connection, for example, because it has a high value for Apache's `MaxClients` setting or PHP-FPM's `pm.max_children` setting.
 
-If this is the case, you can use the `'action_scheduler_queue_runner_concurrent_batches'` filter to increase the number of conncurrent batches allowed, and therefore speed up processing large numbers of actions scheduled to be processed simultaneously.
+If this is the case, you can use the `'action_scheduler_queue_runner_concurrent_batches'` filter to increase the number of concurrent batches allowed, and therefore speed up processing large numbers of actions scheduled to be processed simultaneously.
 
 For example, to increase the allowed number of concurrent queues to 10, we can use the following code:
 
@@ -70,7 +70,7 @@ add_filter( 'action_scheduler_queue_runner_concurrent_batches', 'eg_increase_act
 
 ## Increasing Initialisation Rate of Runners
 
-By default, Action scheduler initiates at most, one queue runner every time the `'action_scheduler_run_queue'` action is triggered by WP Cron.
+By default, Action scheduler initiates at most one queue runner every time the `'action_scheduler_run_queue'` action is triggered by WP Cron.
 
 Because this action is only triggered at most once every minute, if a queue is only allowed to process for one minute, then there will never be more than one queue processing actions, greatly reducing the processing rate.
 
@@ -78,7 +78,7 @@ To handle larger queues on more powerful servers, it's a good idea to initiate a
 
 That can be done by initiated additional secure requests to our server via loopback requests.
 
-The code below demonstrates how to create 5 loopback requests each time a queue begins
+The code below demonstrates how to create 5 loopback requests each time a queue begins:
 
 ```php
 /**
@@ -124,4 +124,4 @@ add_action( 'wp_ajax_nopriv_eg_create_additional_runners', 'eg_create_additional
 
 ## High Volume Plugin
 
-It's not necessary to add all of this code yourself, there is a handy plugin to get access to each of these increases -  the [Action Scheduler - High Volume](https://github.com/woocommerce/action-scheduler-high-volume) plugin.
+It's not necessary to add all of this code yourself, there is a handy plugin to get access to each of these increases - the [Action Scheduler - High Volume](https://github.com/woocommerce/action-scheduler-high-volume) plugin.
