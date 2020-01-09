@@ -1549,21 +1549,19 @@ class Page {
 			) . '<br>';
 		}
 
-		/**
-		 * Add more content to the 'cdn' setting field.
-		 *
-		 * @since  3.4
-		 * @author Grégory Viguier
-		 *
-		 * @param array $cdn_field Data to be added to the setting field.
-		 */
-		$cdn_field = (array) apply_filters( 'rocket_cdn_setting_field', [] );
-
 		$this->settings->add_settings_fields(
-			[
-				'cdn'              => array_merge(
-					$cdn_field,
-					[
+			/**
+			 * Filters the fields for the CDN section.
+			 *
+			 * @since  3.5
+			 * @author Remy Perona
+			 *
+			 * @param array $cdn_settings_fields Data to be added to the CDN section.
+			 */
+			apply_filters(
+				'rocket_cdn_settings_fields',
+				[
+					'cdn'              => [
 						'type'              => 'checkbox',
 						'label'             => __( 'Enable Content Delivery Network', 'rocket' ),
 						'helper'            => $maybe_display_cdn_helper,
@@ -1571,27 +1569,27 @@ class Page {
 						'page'              => 'page_cdn',
 						'default'           => 0,
 						'sanitize_callback' => 'sanitize_checkbox',
-					]
-				),
-				'cdn_cnames'       => [
-					'type'        => 'cnames',
-					'label'       => __( 'CDN CNAME(s)', 'rocket' ),
-					'description' => __( 'Specify the CNAME(s) below', 'rocket' ),
-					'default'     => [],
-					'section'     => 'cnames_section',
-					'page'        => 'page_cdn',
-				],
-				'cdn_reject_files' => [
-					'type'              => 'textarea',
-					'description'       => __( 'Specify URL(s) of files that should not get served via CDN (one per line).', 'rocket' ),
-					'helper'            => __( 'The domain part of the URL will be stripped automatically.<br>Use (.*) wildcards to exclude all files of a given file type located at a specific path.', 'rocket' ),
-					'placeholder'       => '/wp-content/plugins/some-plugins/(.*).css',
-					'section'           => 'exclude_cdn_section',
-					'page'              => 'page_cdn',
-					'default'           => [],
-					'sanitize_callback' => 'sanitize_textarea',
-				],
-			]
+					],
+					'cdn_cnames'       => [
+						'type'        => 'cnames',
+						'label'       => __( 'CDN CNAME(s)', 'rocket' ),
+						'description' => __( 'Specify the CNAME(s) below', 'rocket' ),
+						'default'     => [],
+						'section'     => 'cnames_section',
+						'page'        => 'page_cdn',
+					],
+					'cdn_reject_files' => [
+						'type'              => 'textarea',
+						'description'       => __( 'Specify URL(s) of files that should not get served via CDN (one per line).', 'rocket' ),
+						'helper'            => __( 'The domain part of the URL will be stripped automatically.<br>Use (.*) wildcards to exclude all files of a given file type located at a specific path.', 'rocket' ),
+						'placeholder'       => '/wp-content/plugins/some-plugins/(.*).css',
+						'section'           => 'exclude_cdn_section',
+						'page'              => 'page_cdn',
+						'default'           => [],
+						'sanitize_callback' => 'sanitize_textarea',
+					],
+				]
+			)
 		);
 	}
 
@@ -2094,19 +2092,30 @@ class Page {
 	 */
 	private function hidden_fields() {
 		$this->settings->add_hidden_settings_fields(
-			[
-				'consumer_key',
-				'consumer_email',
-				'secret_key',
-				'license',
-				'secret_cache_key',
-				'minify_css_key',
-				'minify_js_key',
-				'version',
-				'cloudflare_old_settings',
-				'sitemap_preload_url_crawl',
-				'cache_ssl',
-			]
+			/**
+			 * Filters the hidden settings fields
+			 *
+			 * @since 3.5
+			 * @author Remy Perona
+			 *
+			 * @param array $hidden_settings_fields An array of hidden settings fields ID
+			 */
+			apply_filters(
+				'rocket_hidden_settings_fields',
+				[
+					'consumer_key',
+					'consumer_email',
+					'secret_key',
+					'license',
+					'secret_cache_key',
+					'minify_css_key',
+					'minify_js_key',
+					'version',
+					'cloudflare_old_settings',
+					'sitemap_preload_url_crawl',
+					'cache_ssl',
+				]
+			)
 		);
 	}
 }

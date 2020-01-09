@@ -66,6 +66,7 @@ class Plugin {
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Options' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Database' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Beacon' );
+		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\RocketCDN' );
 
 		$subscribers = [];
 
@@ -92,6 +93,8 @@ class Plugin {
 				'settings_page_subscriber',
 				'deactivation_intent_subscriber',
 				'hummingbird_subscriber',
+				'rocketcdn_admin_subscriber',
+				'rocketcdn_notices_subscriber',
 			];
 		} elseif ( \rocket_valid_key() ) {
 			$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Optimization_Subscribers' );
@@ -151,6 +154,7 @@ class Plugin {
 			'capabilities_subscriber',
 			'varnish_subscriber',
 			'cloudflare_subscriber',
+			'rocketcdn_rest_subscriber',
 			'detect_missing_tags_subscriber',
 			'purge_actions_subscriber',
 		];
