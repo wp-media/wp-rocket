@@ -26,9 +26,9 @@ class Test_PromoteRocketcdnNotice extends TestCase {
     }
 
 	/**
-	 * @covers ::promote_rocketcdn_notice
+	 * Test should return null when current user doesn't have the capability
 	 */
-	public function testShouldNotDisplayNoticeWhenNoCapability() {
+	public function testShouldReturnNullWhenNoCapability() {
 		Functions\when('current_user_can')->justReturn(false);
 
 		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
@@ -37,9 +37,9 @@ class Test_PromoteRocketcdnNotice extends TestCase {
 	}
 
 	/**
-	 * @covers ::promote_rocketcdn_notice
+	 * Test should return null when not on WP Rocket settings page
 	 */
-	public function testShouldNotDisplayNoticeWhenNotRocketPage() {
+	public function testShouldReturnNullWhenNotRocketPage() {
 		Functions\when('current_user_can')->justReturn(true);
 		Functions\when('get_current_screen')->alias(function() {
 			return (object) [ 'id' => 'general' ];
@@ -51,9 +51,9 @@ class Test_PromoteRocketcdnNotice extends TestCase {
 	}
 
 	/**
-	 * @covers ::promote_rocketcdn_notice
+	 * Test should return null when the notice was dismissed
 	 */
-	public function testShouldNotDisplayNoticeWhenDismissed() {
+	public function testShouldReturNullWhenDismissed() {
 		Functions\when('current_user_can')->justReturn(true);
 		Functions\when('get_current_screen')->alias(function() {
 			return (object) [ 'id' => 'settings_page_wprocket' ];
@@ -67,9 +67,9 @@ class Test_PromoteRocketcdnNotice extends TestCase {
 	}
 
 	/**
-	 * @covers ::promote_rocketcdn_notice
+	 * Test should return null when RocketCDN is active
 	 */
-	public function testShouldNotDisplayNoticeWhenActive() {
+	public function testShouldReturnNullWhenActive() {
 		Functions\when('current_user_can')->justReturn(true);
 		Functions\when('get_current_screen')->alias(function() {
 			return (object) [ 'id' => 'settings_page_wprocket' ];
@@ -86,7 +86,7 @@ class Test_PromoteRocketcdnNotice extends TestCase {
 	}
 
 	/**
-	 * @covers ::promote_rocketcdn_notice
+	 * Test should display the notice when RocketCDN is inactive
 	 */
 	public function testShoulDisplayNoticeWhenNotActive() {
 		$this->mockCommonWpFunctions();

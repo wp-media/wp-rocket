@@ -23,7 +23,7 @@ class Test_RocketcdnField extends TestCase {
 	}
 
     /**
-	 * @covers ::rocketcdn_field
+	 * Test should return default array for the field when RocketCDN is not active
 	 */
     public function testShouldReturnDefaultFieldWhenRocketCDNNotActive() {
         $this->api_client->method('get_subscription_data')
@@ -41,7 +41,7 @@ class Test_RocketcdnField extends TestCase {
     }
 
     /**
-	 * @covers ::rocketcdn_field
+	 * Test should return the special array for the field when RocketCDN is active
 	 */
     public function testShouldReturnRocketCDNFieldWhenRocketCDNActive() {
         $this->mockCommonWpFunctions();

@@ -19,7 +19,7 @@ class Test_PurgeCacheNotice extends TestCase {
     }
 
 	/**
-	 * @covers ::purge_cache_notice
+	 * Test should return null when current user doesn't have capability
 	 */
 	public function testShouldReturnNullWhenNoPermissions() {
 		Functions\when('current_user_can')->justReturn(false);
@@ -29,7 +29,7 @@ class Test_PurgeCacheNotice extends TestCase {
 	}
 
 	/**
-	 * @covers ::purge_cache_notice
+	 * Test should return null when not on WP Rocket settings page
 	 */
 	public function testShouldReturnNullWhenNotRocketPage() {
 		Functions\when('current_user_can')->justReturn(true);
@@ -42,7 +42,7 @@ class Test_PurgeCacheNotice extends TestCase {
 	}
 
 	/**
-	 * @covers ::purge_cache_notice
+	 * Test should return null when the transient is not set
 	 */
 	public function testShouldReturnNullWhenNoTransient() {
 		Functions\when('current_user_can')->justReturn(true);
@@ -56,7 +56,7 @@ class Test_PurgeCacheNotice extends TestCase {
 	}
 
 	/**
-	 * @covers ::purge_cache_notice
+	 * Test should display notice on successful purge action
 	 */
 	public function testShouldDisplayNoticeWhenPurgeAction() {
 		Functions\when('current_user_can')->justReturn(true);

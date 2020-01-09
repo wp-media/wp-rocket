@@ -19,7 +19,7 @@ class Test_DismissNotice extends TestCase {
     }
 
     /**
-	 * @covers ::dismiss_notice
+	 * Test should return null when $_POST values are not set
 	 */
     public function testShouldReturnNullWhenPOSTActionNotSet() {
         Functions\when('check_ajax_referer')->justReturn(true);
@@ -29,7 +29,7 @@ class Test_DismissNotice extends TestCase {
     }
 
     /**
-	 * @covers ::dismiss_notice
+	 * Test should return null when the $_POST action key is incorrect
 	 */
     public function testShouldReturnNullWhenIncorrectPOSTAction() {
         Functions\when('check_ajax_referer')->justReturn(true);
@@ -41,7 +41,7 @@ class Test_DismissNotice extends TestCase {
     }
 
     /**
-	 * @covers ::dismiss_notice
+	 * Test should update the user meta when valid
 	 */
     public function testShouldUpdateUserMetaWhenValid() {
         Functions\when('check_ajax_referer')->justReturn(true);

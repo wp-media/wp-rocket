@@ -26,7 +26,7 @@ class Test_DisplayRocketcdnCta extends TestCase {
     }
 
 	/**
-	 * @covers ::display_rocketcdn_cta
+	 * Test should return null when RocketCDN is active
 	 */
 	public function testShouldReturnNullWhenActive() {
 		$this->api_client->method('get_subscription_data')
@@ -41,7 +41,7 @@ class Test_DisplayRocketcdnCta extends TestCase {
 	}
 
 	/**
-	 * @covers ::display_rocketcdn_cta
+	 * test should display the big CTA without promo
 	 */
 	public function testShouldDisplayBigCTANoPromoWhenDefault() {
 		$this->mockCommonWpFunctions();
@@ -84,7 +84,7 @@ class Test_DisplayRocketcdnCta extends TestCase {
 	}
 
 	/**
-	 * @covers ::display_rocketcdn_cta
+	 * Test should display the small CTA when the big one is hidden
 	 */
 	public function testShouldDisplaySmallCTAWhenBigHidden() {
 		$this->mockCommonWpFunctions();
@@ -127,7 +127,7 @@ class Test_DisplayRocketcdnCta extends TestCase {
 	}
 
 	/**
-	 * @covers ::display_rocketcdn_cta
+	 * Test should display the big CTA with the promo when active
 	 */
 	public function testShouldDisplayBigCTAPromoWhenPromoActive() {
 		$this->mockCommonWpFunctions();

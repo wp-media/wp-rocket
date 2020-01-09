@@ -19,7 +19,7 @@ class Test_ToggleCTA extends TestCase {
     }
 
     /**
-     * @covers ::toggle_cta
+     * Test should return null when the $_POST values are not set
      */
     public function testShouldReturnNullWhenPOSTNotSet() {
         Functions\when('check_ajax_referer')->justReturn(true);
@@ -29,7 +29,7 @@ class Test_ToggleCTA extends TestCase {
     }
 
     /**
-     * @covers ::toggle_cta
+     * Test should return null when $_POST action key is invalid
      */
     public function testShouldReturnNullWhenInvalidPOSTAction() {
         Functions\when('check_ajax_referer')->justReturn(true);
@@ -42,7 +42,7 @@ class Test_ToggleCTA extends TestCase {
     }
 
     /**
-     * @covers ::toggle_cta
+     * Test should call delete_user_meta once when status value is big
      */
     public function testShouldReturnDeleteUserMetaWhenStatusIsBig() {
         Functions\when('check_ajax_referer')->justReturn(true);
@@ -57,7 +57,7 @@ class Test_ToggleCTA extends TestCase {
     }
 
     /**
-     * @covers ::toggle_cta
+     * Test should call update_user_meta once when status value is small
      */
     public function testShouldReturnUpdateUserMetaWhenStatusIsSmall() {
         Functions\when('check_ajax_referer')->justReturn(true);
