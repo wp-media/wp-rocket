@@ -99,7 +99,10 @@ class Test_AddDismissScript extends TestCase {
 
 		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
 
-		$this->expectOutputString("     <script>
+		$this->setOutputCallback(function($output) {
+			return trim($output);
+		});
+		$this->expectOutputString("<script>
 		window.addEventListener( 'load', function() {
 			var dismissBtn  = document.querySelectorAll( '#rocketcdn-promote-notice .notice-dismiss, #rocketcdn-promote-notice #rocketcdn-learn-more-dismiss' );
 
@@ -116,8 +119,7 @@ class Test_AddDismissScript extends TestCase {
 				});
 			});
 		});
-		</script>
-		");
+		</script>");
 		$page->add_dismiss_script();
 	}
 }
