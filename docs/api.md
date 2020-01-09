@@ -24,11 +24,34 @@ As mentioned in the [Usage - Load Order](/usage/#load-order) section, Action Sch
 
 Do not use Action Scheduler API functions prior to `'init'` hook with priority `1`. Doing so could lead to unexpected results, like data being stored in the incorrect location.
 
+## Function Reference / `as_enqueue_async_action()`
+
+### Description
+
+Enqueue an action to run one time, as soon as possible.
+
+### Usage
+
+```php
+as_enqueue_async_action( $hook, $args, $group )
+````
+
+### Parameters
+
+- **$hook** (string)(required) Name of the action hook. Default: _none_.
+- **$args** (array) Arguments to pass to callbacks when the hook triggers. Default: _`array()`_.
+- **$group** (array) The group to assign this job to. Default: _''_.
+
+### Return value
+
+(integer) the action's ID.
+
+
 ## Function Reference / `as_schedule_single_action()`
 
 ### Description
 
-Schedule an action to run one time.
+Schedule an action to run one time at some defined point in the future.
 
 ### Usage
 
