@@ -9,7 +9,7 @@ use Brain\Monkey\Functions;
  * @covers\WP_Rocket\CDN\RocketCDN\APIClient::get_pricing_data
  * @group RocketCDN
  */
-class TestGetPricingData extends TestCase {
+class Test_GetPricingData extends TestCase {
     private $pricing_data = [
         'is_discount_active'       => true,
         'discounted_price_monthly' => 5.99,
@@ -53,7 +53,7 @@ class TestGetPricingData extends TestCase {
         Functions\when('wp_remote_retrieve_response_code')->justReturn(400);
 
         $wp_error   = \Mockery::mock( \WP_Error::class );
-		$wp_error->shouldReceive('get_error_message')->andReturn( 'RocketCDN is not available at the moment. Plese retry later' );
+        $wp_error->shouldReceive('get_error_message')->andReturn( 'RocketCDN is not available at the moment. Plese retry later' );
         $client = new APIClient();
 
         $this->assertInstanceOf(

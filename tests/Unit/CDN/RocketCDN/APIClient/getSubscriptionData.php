@@ -9,7 +9,7 @@ use Brain\Monkey\Functions;
  * @covers\WP_Rocket\CDN\RocketCDN\APIClient::get_subscription_data
  * @group RocketCDN
  */
-class TestGetSubscriptionData extends TestCase {
+class Test_GetSubscriptionData extends TestCase {
     /**
      * Default returned array
      *
