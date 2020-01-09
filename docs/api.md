@@ -125,7 +125,7 @@ as_schedule_cron_action( $timestamp, $schedule, $hook, $args, $group )
 
 ### Description
 
-Cancel the next occurrence of a job.
+Cancel the next occurrence of a scheduled action.
 
 ### Usage
 
@@ -136,6 +136,28 @@ as_unschedule_action( $hook, $args, $group )
 ### Parameters
 
 - **$hook** (string)(required) Name of the action hook. Default: _none_.
+- **$args** (array) Arguments to pass to callbacks when the hook triggers. Default: _`array()`_.
+- **$group** (array) The group to assign this job to. Default: _''_.
+
+### Return value
+
+(null)
+
+## Function Reference / `as_unschedule_all_actions()`
+
+### Description
+
+Cancel all occurrences of a scheduled action.
+
+### Usage
+
+```php
+as_unschedule_action( $hook, $args, $group )
+````
+
+### Parameters
+
+- **$hook** (string)(required) Name of the action hook.
 - **$args** (array) Arguments to pass to callbacks when the hook triggers. Default: _`array()`_.
 - **$group** (array) The group to assign this job to. Default: _''_.
 
