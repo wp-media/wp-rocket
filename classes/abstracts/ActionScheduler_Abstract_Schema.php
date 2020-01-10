@@ -13,17 +13,17 @@
 abstract class ActionScheduler_Abstract_Schema {
 
 	/**
-	 * @var int Increment this value to trigger a schema update
+	 * @var int Increment this value in derived class to trigger a schema update.
 	 */
 	protected $schema_version = 1;
 
 	/**
-	 * @var array Names of tables that will be registered by this class
+	 * @var array Names of tables that will be registered by this class.
 	 */
 	protected $tables = [];
 
 	/**
-	 * Register tables with WordPress, and create them if needed
+	 * Register tables with WordPress, and create them if needed.
 	 *
 	 * @return void
 	 */

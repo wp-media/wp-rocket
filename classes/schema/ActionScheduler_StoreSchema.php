@@ -12,7 +12,10 @@ class ActionScheduler_StoreSchema extends ActionScheduler_Abstract_Schema {
 	const CLAIMS_TABLE  = 'actionscheduler_claims';
 	const GROUPS_TABLE  = 'actionscheduler_groups';
 
-	protected $schema_version = 1;
+	/**
+	 * @var int Increment this value to trigger a schema update.
+	 */
+	protected $schema_version = 2;
 
 	public function __construct() {
 		$this->tables = [

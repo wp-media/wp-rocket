@@ -10,7 +10,10 @@
 class ActionScheduler_LoggerSchema extends ActionScheduler_Abstract_Schema {
 	const LOG_TABLE = 'actionscheduler_logs';
 
-	protected $schema_version = 1;
+	/**
+	 * @var int Increment this value to trigger a schema update.
+	 */
+	protected $schema_version = 2;
 
 	public function __construct() {
 		$this->tables = [
