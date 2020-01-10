@@ -13,11 +13,11 @@ $cnames_zone = get_rocket_option( 'cdn_zone' );
 <div class="wpr-fieldsContainer-fieldset">
 	<div class="wpr-field">
 		<div class="wpr-field-description-label">
-			<?php echo $data['label']; ?>
+			<?php echo $data['label']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
 		</div>
 		<?php if ( ! empty( $data['description'] ) ) : ?>
 			<div class="wpr-field-description">
-				<?php echo $data['description']; ?>
+				<?php echo $data['description']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
 			</div>
 		<?php endif; ?>
 		<div id="wpr-cnames-list">

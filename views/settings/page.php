@@ -18,8 +18,8 @@ settings_errors( $data['slug'] ); ?>
 
 		<header class="wpr-Header">
 			<div class="wpr-Header-logo">
-				<img src="<?php echo WP_ROCKET_ASSETS_IMG_URL; ?>logo-wprocket-dark.svg" width="163" height="44" alt="Logo WP Rocket" class="wpr-Header-logo-desktop">
-				<img src="<?php echo WP_ROCKET_ASSETS_IMG_URL; ?>picto-wprocket-dark.svg" width="28" height="50" alt="Logo WP Rocket" class="wpr-Header-logo-mobile">
+				<img src="<?php echo esc_url( WP_ROCKET_ASSETS_IMG_URL ); ?>logo-wprocket-dark.svg" width="163" height="44" alt="Logo WP Rocket" class="wpr-Header-logo-desktop">
+				<img src="<?php echo esc_url( WP_ROCKET_ASSETS_IMG_URL ); ?>picto-wprocket-dark.svg" width="28" height="50" alt="Logo WP Rocket" class="wpr-Header-logo-mobile">
 			</div>
 			<div class="wpr-Header-nav">
 				<?php $this->render_navigation(); ?>
@@ -27,7 +27,7 @@ settings_errors( $data['slug'] ); ?>
 			<div class="wpr-Header-footer">
 				<?php
 				// translators: %s = Plugin version number.
-				printf( __( 'version %s', 'rocket' ), WP_ROCKET_VERSION );
+				printf( esc_html__( 'version %s', 'rocket' ), esc_attr( WP_ROCKET_VERSION ) );
 				?>
 			</div>
 		</header>
@@ -92,7 +92,7 @@ settings_errors( $data['slug'] ); ?>
 		</div>
 		<div class="wpr-Popin-content">
 			<p><?php esc_html_e( 'Below is a detailed view of all data WP Rocket will collect <strong>if granted permission.</strong>', 'rocket' ); ?></p>
-			<?php echo rocket_data_collection_preview_table(); ?>
+			<?php echo rocket_data_collection_preview_table(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
 			<div class="wpr-Popin-flex">
 				<p><?php _e( 'WP Rocket will never transmit any domain names or email addresses (except for license validation), IP addresses, or third-party API keys.', 'rocket' ); ?></p>
 				<div>

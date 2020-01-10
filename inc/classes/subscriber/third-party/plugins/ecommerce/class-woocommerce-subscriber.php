@@ -286,7 +286,7 @@ class WooCommerce_Subscriber implements Event_Manager_Aware_Subscriber_Interface
 
 		if ( false !== $cart ) {
 			@header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
-			echo $cart;
+			echo $cart; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 			die();
 		}
 	}

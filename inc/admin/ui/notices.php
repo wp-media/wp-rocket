@@ -1053,11 +1053,11 @@ function rocket_notice_html( $args ) {
 	}
 
 	?>
-	<div class="notice notice-<?php echo $args['status']; ?> <?php echo $args['dismissible']; ?>">
+	<div class="notice notice-<?php echo esc_attr( $args['status'] ); ?> <?php echo esc_attr( $args['dismissible'] ); ?>">
 		<?php
 			$tag = 0 !== strpos( $args['message'], '<p' ) && 0 !== strpos( $args['message'], '<ul' );
 
-			echo ( $tag ? '<p>' : '' ) . $args['message'] . ( $tag ? '</p>' : '' );
+			echo ( $tag ? '<p>' : '' ) . $args['message'] . ( $tag ? '</p>' : '' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 		?>
 		<?php if ( ! empty( $args['readonly_content'] ) ) : ?>
 		<p><?php _e( 'The following code should have been written to this file:', 'rocket' ); ?>
@@ -1068,9 +1068,9 @@ function rocket_notice_html( $args ) {
 		if ( $args['action'] || $args['dismiss_button'] ) :
 			?>
 		<p>
-			<?php echo $args['action']; ?>
+			<?php echo esc_attr( $args['action'] ); ?>
 			<?php if ( $args['dismiss_button'] ) : ?>
-			<a class="rocket-dismiss" href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=' . $args['dismiss_button'] ), 'rocket_ignore_' . $args['dismiss_button'] ); ?>"><?php _e( 'Dismiss this notice.', 'rocket' ); ?></a>
+			<a class="rocket-dismiss" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=' . $args['dismiss_button'] ), 'rocket_ignore_' . $args['dismiss_button'] ) ); ?>"><?php _e( 'Dismiss this notice.', 'rocket' ); ?></a>
 			<?php endif; ?>
 		</p>
 		<?php endif; ?>

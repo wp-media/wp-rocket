@@ -18,7 +18,7 @@ defined( 'ABSPATH' ) || exit;
 			<p>
 			<?php
 			// Translators: %1$s = <strong>, %2$s = </strong>, %3$s = <span class="imagify-name">, %4$s = </span>.
-			printf( __( '%1$sWP ROCKET%2$s created %3$sIMAGIFY%4$s %1$sfor best-in-class image optimization.%2$s', 'rocket' ), '<strong>', '</strong>', '<span class="wpr-imagify-name">', '</span>' );
+			printf( esc_html__( '%1$sWP ROCKET%2$s created %3$sIMAGIFY%4$s %1$sfor best-in-class image optimization.%2$s', 'rocket' ), '<strong>', '</strong>', '<span class="wpr-imagify-name">', '</span>' );
 			?>
 			</p>
 			<p><?php esc_html_e( 'Compress image to make your website faster, all while maintaining image quality.', 'rocket' ); ?></p>

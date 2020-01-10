@@ -224,7 +224,7 @@ function rocket_do_options_export() {
 	@header( 'Content-Transfer-Encoding: binary' );
 	@header( 'Content-Length: ' . strlen( $options ) );
 	@header( 'Connection: close' );
-	echo $options;
+	echo $options; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	exit();
 }
 add_action( 'admin_post_rocket_export', 'rocket_do_options_export' );

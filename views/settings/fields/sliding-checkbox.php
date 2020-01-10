@@ -18,7 +18,7 @@ defined( 'ABSPATH' ) || exit;
 
 ?>
 
-<div class="wpr-field wpr-field--radio <?php echo $data['container_class']; ?>">
+<div class="wpr-field wpr-field--radio <?php echo esc_attr( $data['container_class'] ); ?>">
 	<div class="wpr-radio">
 		<input type="checkbox" id="<?php echo esc_attr( $data['id'] ); ?>" class="" name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>]" value="1" <?php checked( $data['value'], 1 ); ?>>
 		<label for="<?php echo esc_attr( $data['id'] ); ?>" class="">
@@ -30,7 +30,7 @@ defined( 'ABSPATH' ) || exit;
 
 	<?php if ( ! empty( $data['description'] ) ) : ?>
 		<div class="wpr-field-description">
-			<?php echo $data['description']; ?>
+			<?php echo $data['description']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
 		</div>
 	<?php endif; ?>
 </div>

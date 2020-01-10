@@ -186,11 +186,12 @@ class Page {
 
 		$this->render->set_hidden_settings( $this->settings->get_hidden_settings() );
 
-		echo $this->render->generate(
+		$btn_submit_text = $rocket_valid_key ? __( 'Save Changes', 'rocket' ) : __( 'Validate License', 'rocket' );
+		echo $this->render->generate( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 			'page',
 			[
-				'slug'            => $this->slug,
-				'btn_submit_text' => $rocket_valid_key ? __( 'Save Changes', 'rocket' ) : __( 'Validate License', 'rocket' ),
+				'slug'            => esc_attr( $this->slug ),
+				'btn_submit_text' => esc_html( $btn_submit_text ),
 			]
 		);
 	}

@@ -183,7 +183,7 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 			$inline_script = $minify->minify();
 		}
 
-		echo '<script>' . $inline_script . '</script>';
+		echo '<script>' . $inline_script . '</script>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 		$this->assets->insertLazyloadScript( $script_args );
 	}
 

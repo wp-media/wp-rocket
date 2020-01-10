@@ -88,8 +88,8 @@ function rocket_display_cache_options_meta_boxes() {
 				?>
 
 				<input name="rocket_post_exclude_hidden[<?php echo esc_attr( $field ); ?>]" type="hidden" value="on">
-				<input name="rocket_post_exclude[<?php echo esc_attr( $field ); ?>]" id="rocket_post_exclude_<?php echo esc_attr( $field ); ?>" type="checkbox"<?php echo $title; ?><?php echo $checked; ?><?php echo $disabled; ?>>
-				<label for="rocket_post_exclude_<?php echo esc_attr( $field ); ?>"<?php echo $title; ?><?php echo $class; ?>><?php echo $label; ?></label><br>
+				<input name="rocket_post_exclude[<?php echo esc_attr( $field ); ?>]" id="rocket_post_exclude_<?php echo esc_attr( $field ); ?>" type="checkbox"<?php echo esc_attr( $title ); ?><?php echo esc_attr( $checked ); ?><?php echo esc_attr( $disabled ); ?>>
+				<label for="rocket_post_exclude_<?php echo esc_attr( $field ); ?>"<?php echo esc_attr( $title ); ?><?php echo esc_attr( $class ); ?>><?php echo esc_attr( $label ); ?></label><br>
 
 				<?php
 			}

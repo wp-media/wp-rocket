@@ -45,6 +45,6 @@ class Beacon_Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function insert_script() {
-		echo $this->beacon->insert_script();
+		echo $this->beacon->insert_script(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 }

@@ -100,7 +100,7 @@ class Logs implements Subscriber_Interface {
 		@header( 'Content-Transfer-Encoding: binary' );
 		@header( 'Content-Length: ' . strlen( $contents ) );
 		@header( 'Connection: close' );
-		echo $contents;
+		echo $contents; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		exit();
 	}
 

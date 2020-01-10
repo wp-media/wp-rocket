@@ -32,7 +32,7 @@ if ( ! empty( $data['upload_dir']['error'] ) ) {
 				<small for="upload" class="wpr-field-description">
 					<?php
 					// translators: %s is the maximum upload size set on the current server.
-					printf( __( 'Choose a file from your computer (maximum size: %s)', 'rocket' ), esc_html( $data['size'] ) );
+					printf( esc_html__( 'Choose a file from your computer (maximum size: %s)', 'rocket' ), esc_html( $data['size'] ) );
 					?>
 				</small>
 			</div>

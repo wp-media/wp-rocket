@@ -61,7 +61,7 @@ if ( rocket_direct_filesystem()->exists( Logger::get_log_file_path() ) ) {
 			<div class="wpr-field-description">
 				<?php
 				// translators: %s = WP Rocket version number.
-				printf( __( 'Has version %s caused an issue on your website?', 'rocket' ), WP_ROCKET_VERSION );
+				printf( esc_html__( 'Has version %s caused an issue on your website?', 'rocket' ), esc_html( WP_ROCKET_VERSION ) );
 				?>
 				<br><br>
 				<?php _e( 'You can rollback to the previous major version here.<br>Then send us a support request.', 'rocket' ); ?>
@@ -100,7 +100,7 @@ if ( rocket_direct_filesystem()->exists( Logger::get_log_file_path() ) ) {
 			</div>
 		</div>
 		<div class="wpr-tools-col">
-			<?php echo $rocket_log_description; ?>
+			<?php echo $rocket_log_description; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
 		</div>
 	</div>
 	-->

@@ -18,6 +18,6 @@
 defined( 'ABSPATH' ) || exit;
 
 ?>
-<?php echo $data['title']; ?>
+<?php echo esc_attr( $data['title'] ); ?>
 <?php
 $this->render_settings_fields( $data['page'], $data['id'] );

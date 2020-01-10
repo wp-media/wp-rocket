@@ -44,12 +44,12 @@ $settings_page = ! empty( $data['settings_page'] ) ? $data['settings_page'] : ''
 			<div class="wpr-addon-text">
 				<?php if ( ! empty( $data['title'] ) ) : ?>
 					<div class="wpr-addon-title">
-						<?php echo $data['title']; ?>
+						<?php echo esc_attr( $data['title'] ); ?>
 					</div>
 				<?php endif; ?>
 				<?php if ( ! empty( $data['description'] ) ) : ?>
 					<div class="wpr-field-description">
-						<?php echo $data['description']; ?>
+						<?php echo $data['description']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
 					</div>
 				<?php endif; ?>
 				<?php if ( $settings_page ) : ?>
