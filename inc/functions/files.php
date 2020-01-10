@@ -19,6 +19,10 @@ function get_rocket_advanced_cache_file() {
 	// Add a constant to be sure this is our file.
 	$buffer .= "define( 'WP_ROCKET_ADVANCED_CACHE', true );\n\n";
 
+	$buffer .= "if ( ! defined( 'WP_ROCKET_CONFIG_PATH' ) ) {\n";
+	$buffer .= "\tdefine( 'WP_ROCKET_CONFIG_PATH',       WP_CONTENT_DIR . '/wp-rocket-config/' );\n";
+	$buffer .= "}\n\n";
+
 	// Include the Mobile Detect class if we have to create a different caching file for mobile.
 	if ( is_rocket_generate_caching_mobile_files() ) {
 		$buffer .= "if ( file_exists( '" . WP_ROCKET_VENDORS_PATH . "classes/class-rocket-mobile-detect.php' ) && ! class_exists( 'Rocket_Mobile_Detect' ) ) {\n";
