@@ -113,8 +113,8 @@ as_unschedule_action( $hook, $args, $group )
 ### Parameters
 
 - **$hook** (string)(required) Name of the action hook. Default: _none_.
-- **$args** (array) Arguments to pass to callbacks when the hook triggers. Default: _`array()`_.
-- **$group** (array) The group to assign this job to. Default: _''_.
+- **$args** (array) Arguments passed to callbacks when the hook triggers. Default: _`array()`_.
+- **$group** (array) The group job was assigned to. Default: _''_.
 
 ### Return value
 
