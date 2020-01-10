@@ -22,7 +22,7 @@ function rocket_bad_deactivations() {
 					$errors['wpconfig'] = '<p>' . sprintf(
 						// translators: %1$s WP Rocket plugin name; %2$s = file name.
 						__(
-							 '<strong>%1$s</strong> has not been deactivated due to missing writing permissions.<br>
+							'<strong>%1$s</strong> has not been deactivated due to missing writing permissions.<br>
 Make <strong>%2$s</strong> writeable and retry deactivation, or force deactivation now:',
 							'rocket'
 							),
@@ -35,7 +35,7 @@ Make <strong>%2$s</strong> writeable and retry deactivation, or force deactivati
 					$errors['htaccess'] = '<p>' . sprintf(
 						// translators: %1$s WP Rocket plugin name; %2$s = file name.
 						__(
-							 '<strong>%1$s</strong> has not been deactivated due to missing writing permissions.<br>
+							'<strong>%1$s</strong> has not been deactivated due to missing writing permissions.<br>
 Make <strong>%2$s</strong> writeable and retry deactivation, or force deactivation now:',
 							'rocket'
 							),
@@ -58,13 +58,13 @@ Make <strong>%2$s</strong> writeable and retry deactivation, or force deactivati
 		}
 
 		rocket_notice_html(
-			 [
-				 'status'      => 'error',
-				 'dismissible' => '',
-				 'message'     => implode( '', $errors ),
-				 'action'      => 'force_deactivation',
-			 ]
-			);
+			[
+				'status'      => 'error',
+				'dismissible' => '',
+				'message'     => implode( '', $errors ),
+				'action'      => 'force_deactivation',
+			]
+		);
 	}
 }
 add_action( 'admin_notices', 'rocket_bad_deactivations' );
@@ -84,15 +84,15 @@ function rocket_warning_plugin_modification() {
 		}
 
 		rocket_notice_html(
-			 [
-				 'status'         => 'warning',
-				 'dismissible'    => '',
-				 // translators: %s is WP Rocket plugin name.
-				 'message'        => sprintf( __( '<strong>%s</strong>: One or more plugins have been enabled or disabled, clear the cache if they affect the front end of your site.', 'rocket' ), WP_ROCKET_PLUGIN_NAME ),
-				 'action'         => 'clear_cache',
-				 'dismiss_button' => __FUNCTION__,
-			 ]
-			);
+			[
+				'status'         => 'warning',
+				'dismissible'    => '',
+				// translators: %s is WP Rocket plugin name.
+				'message'        => sprintf( __( '<strong>%s</strong>: One or more plugins have been enabled or disabled, clear the cache if they affect the front end of your site.', 'rocket' ), WP_ROCKET_PLUGIN_NAME ),
+				'action'         => 'clear_cache',
+				'dismiss_button' => __FUNCTION__,
+			]
+		);
 	}
 }
 add_action( 'admin_notices', 'rocket_warning_plugin_modification' );
@@ -220,12 +220,12 @@ function rocket_plugins_to_deactivate() {
 		$warning .= '</ul>';
 
 		rocket_notice_html(
-			 [
-				 'status'      => 'error',
-				 'dismissible' => '',
-				 'message'     => $warning,
-			 ]
-			);
+			[
+				'status'      => 'error',
+				'dismissible' => '',
+				'message'     => $warning,
+			]
+		);
 	}
 }
 add_action( 'admin_notices', 'rocket_plugins_to_deactivate' );
@@ -324,12 +324,12 @@ function rocket_warning_using_permalinks() {
 		);
 
 		rocket_notice_html(
-			 [
-				 'status'      => 'error',
-				 'dismissible' => '',
-				 'message'     => $message,
-			 ]
-			);
+			[
+				'status'      => 'error',
+				'dismissible' => '',
+				'message'     => $message,
+			]
+		);
 	}
 }
 add_action( 'admin_notices', 'rocket_warning_using_permalinks' );
@@ -357,14 +357,14 @@ function rocket_warning_wp_config_permissions() {
 		$message = rocket_notice_writing_permissions( 'wp-config.php' );
 
 		rocket_notice_html(
-			 [
-				 'status'           => 'error',
-				 'dismissible'      => '',
-				 'message'          => $message,
-				 'dismiss_button'   => __FUNCTION__,
-				 'readonly_content' => '/** Enable Cache by ' . WP_ROCKET_PLUGIN_NAME . " */\r\ndefine( 'WP_CACHE', true );\r\n",
-			 ]
-			);
+			[
+				'status'           => 'error',
+				'dismissible'      => '',
+				'message'          => $message,
+				'dismiss_button'   => __FUNCTION__,
+				'readonly_content' => '/** Enable Cache by ' . WP_ROCKET_PLUGIN_NAME . " */\r\ndefine( 'WP_CACHE', true );\r\n",
+			]
+		);
 	}
 }
 add_action( 'admin_notices', 'rocket_warning_wp_config_permissions' );
@@ -391,14 +391,14 @@ function rocket_warning_advanced_cache_permissions() {
 		$message = rocket_notice_writing_permissions( basename( WP_CONTENT_DIR ) . '/advanced-cache.php' );
 
 		rocket_notice_html(
-			 [
-				 'status'           => 'error',
-				 'dismissible'      => '',
-				 'message'          => $message,
-				 'dismiss_button'   => __FUNCTION__,
-				 'readonly_content' => get_rocket_advanced_cache_file(),
-			 ]
-			);
+			[
+				'status'           => 'error',
+				'dismissible'      => '',
+				'message'          => $message,
+				'dismiss_button'   => __FUNCTION__,
+				'readonly_content' => get_rocket_advanced_cache_file(),
+			]
+		);
 	}
 }
 add_action( 'admin_notices', 'rocket_warning_advanced_cache_permissions' );
@@ -419,12 +419,12 @@ function rocket_warning_advanced_cache_not_ours() {
 			$message = rocket_notice_writing_permissions( basename( WP_CONTENT_DIR ) . '/advanced-cache.php' );
 
 			rocket_notice_html(
-				 [
-					 'status'      => 'error',
-					 'dismissible' => '',
-					 'message'     => $message,
-				 ]
-				);
+				[
+					'status'      => 'error',
+					'dismissible' => '',
+					'message'     => $message,
+				]
+			);
 	}
 }
 add_action( 'admin_notices', 'rocket_warning_advanced_cache_not_ours' );
@@ -507,12 +507,12 @@ function rocket_warning_config_dir_permissions() {
 		$message = rocket_notice_writing_permissions( trim( str_replace( ABSPATH, '', WP_ROCKET_CONFIG_PATH ), '/' ) );
 
 		rocket_notice_html(
-			 [
-				 'status'      => 'error',
-				 'dismissible' => '',
-				 'message'     => $message,
-			 ]
-			);
+			[
+				'status'      => 'error',
+				'dismissible' => '',
+				'message'     => $message,
+			]
+		);
 
 	}
 }
@@ -537,12 +537,12 @@ function rocket_warning_cache_dir_permissions() {
 		$message = rocket_notice_writing_permissions( trim( str_replace( ABSPATH, '', WP_ROCKET_CACHE_PATH ), '/' ) );
 
 		rocket_notice_html(
-			 [
-				 'status'      => 'error',
-				 'dismissible' => '',
-				 'message'     => $message,
-			 ]
-			);
+			[
+				'status'      => 'error',
+				'dismissible' => '',
+				'message'     => $message,
+			]
+		);
 	}
 }
 add_action( 'admin_notices', 'rocket_warning_cache_dir_permissions' );
@@ -567,12 +567,12 @@ function rocket_warning_minify_cache_dir_permissions() {
 		$message = rocket_notice_writing_permissions( trim( str_replace( ABSPATH, '', WP_ROCKET_MINIFY_CACHE_PATH ), '/' ) );
 
 		rocket_notice_html(
-			 [
-				 'status'      => 'error',
-				 'dismissible' => '',
-				 'message'     => $message,
-			 ]
-			);
+			[
+				'status'      => 'error',
+				'dismissible' => '',
+				'message'     => $message,
+			]
+		);
 	}
 }
 add_action( 'admin_notices', 'rocket_warning_minify_cache_dir_permissions' );
@@ -598,12 +598,12 @@ function rocket_warning_busting_cache_dir_permissions() {
 		$message = rocket_notice_writing_permissions( trim( str_replace( ABSPATH, '', WP_ROCKET_CACHE_BUSTING_PATH ), '/' ) );
 
 		rocket_notice_html(
-			 [
-				 'status'      => 'error',
-				 'dismissible' => '',
-				 'message'     => $message,
-			 ]
-			);
+			[
+				'status'      => 'error',
+				'dismissible' => '',
+				'message'     => $message,
+			]
+		);
 	}
 }
 add_action( 'admin_notices', 'rocket_warning_busting_cache_dir_permissions' );
@@ -658,11 +658,11 @@ function rocket_cloudflare_purge_result() {
 	delete_transient( $current_user->ID . '_cloudflare_purge_result' );
 
 	rocket_notice_html(
-		 [
-			 'status'  => $notice['result'],
-			 'message' => $notice['message'],
-		 ]
-		);
+		[
+			'status'  => $notice['result'],
+			'message' => $notice['message'],
+		]
+	);
 }
 add_action( 'admin_notices', 'rocket_cloudflare_purge_result' );
 
@@ -690,11 +690,11 @@ function rocket_opcache_purge_result() {
 	delete_transient( $user_id . '_opcache_purge_result' );
 
 	rocket_notice_html(
-		 [
-			 'status'  => $notice['result'],
-			 'message' => $notice['message'],
-		 ]
-		);
+		[
+			'status'  => $notice['result'],
+			'message' => $notice['message'],
+		]
+	);
 }
 add_action( 'admin_notices', 'rocket_opcache_purge_result' );
 
@@ -731,19 +731,19 @@ function rocket_cloudflare_update_settings() {
 
 		if ( ! empty( $success ) ) {
 			rocket_notice_html(
-				 [
-					 'message' => $success,
-				 ]
-				);
+				[
+					'message' => $success,
+				]
+			);
 		}
 
 		if ( ! empty( $errors ) ) {
 			rocket_notice_html(
-				 [
-					 'status'  => 'error',
-					 'message' => $success,
-				 ]
-				);
+				[
+					'status'  => 'error',
+					'message' => $success,
+				]
+			);
 		}
 	}
 }
@@ -807,11 +807,11 @@ function rocket_analytics_optin_notice() {
 
 	// Status should be as neutral as possible; nothing has happened yet.
 	rocket_notice_html(
-		 [
-			 'status'  => 'info',
-			 'message' => $analytics_notice,
-		 ]
-		);
+		[
+			'status'  => 'info',
+			'message' => $analytics_notice,
+		]
+	);
 }
 add_action( 'admin_notices', 'rocket_analytics_optin_notice' );
 
@@ -854,10 +854,10 @@ function rocket_analytics_optin_thankyou_notice() {
 	$thankyou_message .= '<p>';
 
 	rocket_notice_html(
-		 [
-			 'message' => $thankyou_message,
-		 ]
-		);
+		[
+			'message' => $thankyou_message,
+		]
+	);
 
 	delete_transient( 'rocket_analytics_optin' );
 }
