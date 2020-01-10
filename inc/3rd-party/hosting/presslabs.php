@@ -12,7 +12,7 @@ if ( defined( 'PL_INSTANCE_REF' ) && class_exists( '\Presslabs\Cache\CacheHandle
 		add_filter( 'rocket_cache_mandatory_cookies', '__return_empty_array', PHP_INT_MAX );
 		add_action( 'after_rocket_clean_home', 'rocket_pl_clean_home', 10, 2 );
 		add_action( 'after_rocket_clean_file', 'rocket_pl_clean_post', 2 );
-	    add_action( 'pl_pre_url_button_cache_refresh', 'rocket_clean_files' );
+		add_action( 'pl_pre_url_button_cache_refresh', 'rocket_clean_files' );
 		add_action( 'wp_rocket_loaded', 'rocket_remove_partial_purge_hooks' );
 
 		/**
@@ -66,13 +66,13 @@ if ( defined( 'PL_INSTANCE_REF' ) && class_exists( '\Presslabs\Cache\CacheHandle
 		 */
 		function rocket_remove_partial_purge_hooks() {
 			// WP core action hooks rocket_clean_post() gets hooked into.
-			$clean_post_hooks = array(
+			$clean_post_hooks = [
 				// Disables the refreshing of partial cache when content is edited.
 				'wp_trash_post',
 				'delete_post',
 				'clean_post_cache',
 				'wp_update_comment_count',
-			);
+			];
 			// Remove rocket_clean_post() from core action hooks.
 			array_map(
 				function( $hook ) {

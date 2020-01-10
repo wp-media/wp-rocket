@@ -135,9 +135,9 @@ function rocket_dismiss_boxes( $args ) {
 		if ( ! wp_verify_nonce( $args['_wpnonce'], $args['action'] . '_' . $args['box'] ) ) {
 			if ( defined( 'DOING_AJAX' ) ) {
 				wp_send_json(
-					array(
+					[
 						'error' => 1,
-					)
+					]
 				);
 			} else {
 				wp_nonce_ays( '' );
@@ -150,7 +150,7 @@ function rocket_dismiss_boxes( $args ) {
 
 		global $current_user;
 		$actual = get_user_meta( $current_user->ID, 'rocket_boxes', true );
-		$actual = array_merge( (array) $actual, array( $args['box'] ) );
+		$actual = array_merge( (array) $actual, [ $args['box'] ] );
 		$actual = array_filter( $actual );
 		$actual = array_unique( $actual );
 		update_user_meta( $current_user->ID, 'rocket_boxes', $actual );
@@ -159,9 +159,9 @@ function rocket_dismiss_boxes( $args ) {
 		if ( 'admin-post.php' === $GLOBALS['pagenow'] ) {
 			if ( defined( 'DOING_AJAX' ) ) {
 				wp_send_json(
-					array(
+					[
 						'error' => 0,
-					)
+					]
 				);
 			} else {
 				wp_safe_redirect( wp_get_referer() );
@@ -385,15 +385,15 @@ function rocket_add_imagify_api_result( $result, $action, $args ) {
 		return $result;
 	}
 
-	$query_args   = array(
+	$query_args   = [
 		'slug'   => 'imagify',
-		'fields' => array(
+		'fields' => [
 			'icons'             => true,
 			'active_installs'   => true,
 			'short_description' => true,
 			'group'             => true,
-		),
-	);
+		],
+	];
 	$imagify_data = plugins_api( 'plugin_information', $query_args );
 
 	if ( is_wp_error( $imagify_data ) ) {
@@ -426,7 +426,7 @@ function rocket_analytics_data() {
 		return false;
 	}
 
-	$untracked_wp_rocket_options = array(
+	$untracked_wp_rocket_options = [
 		'license'                 => 1,
 		'consumer_email'          => 1,
 		'consumer_key'            => 1,
@@ -440,7 +440,7 @@ function rocket_analytics_data() {
 		'cloudflare_old_settings' => 1,
 		'submit_optimize'         => 1,
 		'analytics_enabled'       => 1,
-	);
+	];
 
 	$theme              = wp_get_theme();
 	$data               = array_diff_key( get_option( WP_ROCKET_SLUG ), $untracked_wp_rocket_options );
@@ -574,8 +574,7 @@ function rocket_handle_settings_import() {
 
 	if ( 'text/plain' === $file_data['type'] ) {
 		$gz       = 'gz' . strrev( 'etalfni' );
-		$settings = $gz// ;
-		( $settings );
+		$settings = $gz( $settings );
 		$settings = maybe_unserialize( $settings );
 	} elseif ( 'application/json' === $file_data['type'] ) {
 		$settings = json_decode( $settings, true );
@@ -590,7 +589,7 @@ function rocket_handle_settings_import() {
 
 	if ( is_array( $settings ) ) {
 		$options_api     = new WP_Rocket\Admin\Options( 'wp_rocket_' );
-		$current_options = $options_api->get( 'settings', array() );
+		$current_options = $options_api->get( 'settings', [] );
 
 		$settings['consumer_key']     = $current_options['consumer_key'];
 		$settings['consumer_email']   = $current_options['consumer_email'];

@@ -11,7 +11,7 @@ defined( 'ABSPATH' ) || exit;
  */
 function get_rocket_wpml_langs_for_admin_bar() {  // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	global $sitepress;
-	$langlinks = array();
+	$langlinks = [];
 
 	foreach ( $sitepress->get_active_languages() as $lang ) {
 		// Get flag.
@@ -24,33 +24,33 @@ function get_rocket_wpml_langs_for_admin_bar() {  // phpcs:ignore WordPress.Nami
 			$flag_url = ICL_PLUGIN_URL . '/res/flags/' . $flag->flag;
 		}
 
-		$langlinks[] = array(
+		$langlinks[] = [
 			'code'    => $lang['code'],
 			'current' => $lang['code'] === $sitepress->get_current_language(),
 			'anchor'  => $lang['display_name'],
 			'flag'    => '<img class="icl_als_iclflag" src="' . $flag_url . '" alt="' . $lang['code'] . '" width="18" height="12" />',
-		);
+		];
 	}
 
 	if ( isset( $_GET['lang'] ) && 'all' === $_GET['lang'] ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		array_unshift(
 			$langlinks,
-			array(
+			[
 				'code'    => 'all',
 				'current' => 'all' === $sitepress->get_current_language(),
 				'anchor'  => __( 'All languages', 'rocket' ),
 				'flag'    => '<img class="icl_als_iclflag" src="' . ICL_PLUGIN_URL . '/res/img/icon16.png" alt="all" width="16" height="16" />',
-			)
+			]
 		);
 	} else {
 		array_push(
 			$langlinks,
-			array(
+			[
 				'code'    => 'all',
 				'current' => 'all' === $sitepress->get_current_language(),
 				'anchor'  => __( 'All languages', 'rocket' ),
 				'flag'    => '<img class="icl_als_iclflag" src="' . ICL_PLUGIN_URL . '/res/img/icon16.png" alt="all" width="16" height="16" />',
-			)
+			]
 		);
 	}
 
@@ -69,16 +69,16 @@ function get_rocket_wpml_langs_for_admin_bar() {  // phpcs:ignore WordPress.Nami
 function get_rocket_qtranslate_langs_for_admin_bar( $fork = '' ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	global $q_config;
 
-	$langlinks   = array();
-	$currentlang = array();
+	$langlinks   = [];
+	$currentlang = [];
 
 	foreach ( $q_config['enabled_languages'] as $lang ) {
 
-		$langlinks[ $lang ] = array(
+		$langlinks[ $lang ] = [
 			'code'   => $lang,
 			'anchor' => $q_config['language_name'][ $lang ],
 			'flag'   => '<img src="' . trailingslashit( WP_CONTENT_URL ) . $q_config['flag_location'] . $q_config['flag'][ $lang ] . '" alt="' . $q_config['language_name'][ $lang ] . '" width="18" height="12" />',
-		);
+		];
 
 	}
 
@@ -111,9 +111,9 @@ function get_rocket_qtranslate_langs_for_admin_bar( $fork = '' ) { // phpcs:igno
 function get_rocket_polylang_langs_for_admin_bar() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	global $polylang;
 
-	$langlinks   = array();
-	$currentlang = array();
-	$langs       = array();
+	$langlinks   = [];
+	$currentlang = [];
+	$langs       = [];
 	$img         = '';
 
 	$pll = function_exists( 'PLL' ) ? PLL() : $polylang;
@@ -128,17 +128,17 @@ function get_rocket_polylang_langs_for_admin_bar() { // phpcs:ignore WordPress.N
 				}
 
 				if ( isset( $pll->curlang->slug ) && $lang->slug === $pll->curlang->slug ) {
-					$currentlang[ $lang->slug ] = array(
+					$currentlang[ $lang->slug ] = [
 						'code'   => $lang->slug,
 						'anchor' => $lang->name,
 						'flag'   => $img,
-					);
+					];
 				} else {
-					$langlinks[ $lang->slug ] = array(
+					$langlinks[ $lang->slug ] = [
 						'code'   => $lang->slug,
 						'anchor' => $lang->name,
 						'flag'   => $img,
-					);
+					];
 				}
 			}
 		}
@@ -229,7 +229,7 @@ function get_rocket_i18n_code() { // phpcs:ignore WordPress.NamingConventions.Pr
  * @return array $urls List of all active languages host
  */
 function get_rocket_i18n_host() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
-	$langs_host = array();
+	$langs_host = [];
 	$langs      = get_rocket_i18n_uri();
 
 	if ( $langs ) {
@@ -454,7 +454,7 @@ function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $r
 		case 'qtranslate':
 		case 'qtranslate-x':
 			$langs  = $GLOBALS['q_config']['enabled_languages'];
-			$langs  = array_diff( $langs, array( $GLOBALS['q_config']['default_language'] ) );
+			$langs  = array_diff( $langs, [ $GLOBALS['q_config']['default_language'] ] );
 			$urls[] = wp_parse_url( get_permalink( $post_id ), PHP_URL_PATH ) . $regex;
 
 			if ( $langs ) {

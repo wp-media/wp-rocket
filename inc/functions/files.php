@@ -424,7 +424,7 @@ function set_rocket_wp_cache_define( $turn_it_on ) { // phpcs:ignore WordPress.N
  * @param  string|array $extensions (default: array('js','css') File extensions to minify.
  * @return void
  */
-function rocket_clean_minify( $extensions = array( 'js', 'css' ) ) {
+function rocket_clean_minify( $extensions = [ 'js', 'css' ] ) {
 	$extensions = is_string( $extensions ) ? (array) $extensions : $extensions;
 
 	try {
@@ -502,7 +502,7 @@ function rocket_clean_minify( $extensions = array( 'js', 'css' ) ) {
  * @param  string|array $extensions (default: array('js','css') File extensions to clean.
  * @return void
  */
-function rocket_clean_cache_busting( $extensions = array( 'js', 'css' ) ) {
+function rocket_clean_cache_busting( $extensions = [ 'js', 'css' ] ) {
 	$extensions = is_string( $extensions ) ? (array) $extensions : $extensions;
 
 	$cache_busting_path = WP_ROCKET_CACHE_BUSTING_PATH . get_current_blog_id();
@@ -758,7 +758,7 @@ function rocket_clean_home( $lang = '' ) {
  */
 function rocket_clean_home_feeds() {
 
-	$urls   = array();
+	$urls   = [];
 	$urls[] = get_feed_link();
 	$urls[] = get_feed_link( 'comments_' );
 
@@ -1032,7 +1032,7 @@ function rocket_clean_cache_dir() {
  * @param array  $dirs_to_preserve (default: array()) Dirs that should not be deleted.
  * @return void
  */
-function rocket_rrmdir( $dir, $dirs_to_preserve = array() ) {
+function rocket_rrmdir( $dir, $dirs_to_preserve = [] ) {
 	$dir = untrailingslashit( $dir );
 
 	/**
@@ -1067,7 +1067,7 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = array() ) {
 	$dirs = glob( $dir . '/*', GLOB_NOSORT );
 	if ( $dirs ) {
 
-		$keys = array();
+		$keys = [];
 		foreach ( $dirs_to_preserve as $dir_to_preserve ) {
 			$matches = preg_grep( "#^$dir_to_preserve$#", $dirs );
 			$keys[]  = reset( $matches );

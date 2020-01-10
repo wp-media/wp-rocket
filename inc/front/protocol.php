@@ -47,7 +47,7 @@ function rocket_protocol_rewrite( $buffer ) {
 function rocket_protocol_rewrite_srcset( $sources ) {
 	if ( (bool) $sources ) {
 		foreach ( $sources as $i => $source ) {
-			$sources[ $i ]['url'] = str_replace( array( 'http:', 'https:' ), '', $source['url'] );
+			$sources[ $i ]['url'] = str_replace( [ 'http:', 'https:' ], '', $source['url'] );
 		}
 	}
 

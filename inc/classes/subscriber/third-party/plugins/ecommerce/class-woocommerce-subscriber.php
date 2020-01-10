@@ -35,10 +35,10 @@ class WooCommerce_Subscriber implements Event_Manager_Aware_Subscriber_Interface
 	 * {@inheritdoc}
 	 */
 	public static function get_subscribed_events() {
-		$events = array(
+		$events = [
 			'activate_woocommerce/woocommerce.php'   => [ 'activate_woocommerce', 11 ],
 			'deactivate_woocommerce/woocommerce.php' => [ 'deactivate_woocommerce', 11 ],
-		);
+		];
 
 		if ( class_exists( 'WooCommerce' ) ) {
 			$events['update_option_woocommerce_cart_page_id']             = [ 'after_update_single_option', 10, 2 ];

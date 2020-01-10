@@ -33,7 +33,7 @@ defined( 'ABSPATH' ) || exit;
 			 * @param bool $display True to display, false otherwise.
 			 */
 			if ( apply_filters( 'rocket_display_input_' . $data['id'], true ) ) :
-			?>
+				?>
 			<div class="wpr-radio wpr-radio--reverse">
 				<input type="checkbox" id="<?php echo esc_attr( $data['id'] ); ?>" class="" name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>]" value="1" <?php checked( $data['value'], 1 ); ?>>
 				<label for="<?php echo esc_attr( $data['id'] ); ?>" class="">

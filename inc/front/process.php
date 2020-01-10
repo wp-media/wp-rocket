@@ -13,7 +13,7 @@ $request_uri = explode( '?', $_SERVER['REQUEST_URI'] );
 $request_uri = reset( $request_uri );
 
 // Don't cache disallowed extensions.
-if ( strtolower( $_SERVER['REQUEST_URI'] ) !== '/index.php' && in_array( pathinfo( $request_uri, PATHINFO_EXTENSION ), array( 'php', 'xml', 'xsl' ), true ) ) {
+if ( strtolower( $_SERVER['REQUEST_URI'] ) !== '/index.php' && in_array( pathinfo( $request_uri, PATHINFO_EXTENSION ), [ 'php', 'xml', 'xsl' ], true ) ) {
 	rocket_define_donotoptimize_constant( true );
 
 	return;
@@ -165,7 +165,7 @@ if ( isset( $rocket_cache_reject_cookies ) && preg_match( '#(' . $rocket_cache_r
 }
 
 $ip          = rocket_get_ip();
-$allowed_ips = array(
+$allowed_ips = [
 	'208.70.247.157' => '', // GT Metrix - Vancouver 1.
 	'204.187.14.70'  => '', // GT Metrix - Vancouver 2.
 	'204.187.14.71'  => '', // GT Metrix - Vancouver 3.
@@ -194,7 +194,7 @@ $allowed_ips = array(
 	'191.235.86.0'   => '', // GT Metrix - São Paulo 2.
 	'52.66.75.147'   => '', // GT Metrix - Mumbai.
 	'52.175.28.116'  => '', // GT Metrix - Hong Kong.
-);
+];
 
 // Don't cache page when these cookies don't exist.
 if ( ( ! isset( $allowed_ips[ $ip ] ) && ( isset( $_SERVER['HTTP_USER_AGENT'] ) ) && ! preg_match( '#(PingdomPageSpeed|DareBoost|Google|PTST|WP Rocket)#i', $_SERVER['HTTP_USER_AGENT'] ) ) && isset( $rocket_cache_mandatory_cookies ) && ! preg_match( '#(' . $rocket_cache_mandatory_cookies . ')#', var_export( $_COOKIE, true ) ) ) {
@@ -280,7 +280,7 @@ if ( ! empty( $rocket_cache_dynamic_cookies ) ) {
 }
 
 // Caching file path.
-$request_uri_path      = preg_replace_callback( '/%[0-9A-F]{2}/', 'rocket_urlencode_lowercase', $request_uri_path );
+$request_uri_path = preg_replace_callback( '/%[0-9A-F]{2}/', 'rocket_urlencode_lowercase', $request_uri_path );
 // Directories in Windows can't contain question marks
 $request_uri_path = str_replace( '?', '_', $request_uri_path );
 
@@ -485,7 +485,7 @@ function rocket_urlencode_lowercase( $matches ) {
  * @since 2.7.3
  */
 function rocket_get_ip() {
-	$keys = array(
+	$keys = [
 		'HTTP_CF_CONNECTING_IP', // CF = CloudFlare.
 		'HTTP_CLIENT_IP',
 		'HTTP_X_FORWARDED_FOR',
@@ -495,7 +495,7 @@ function rocket_get_ip() {
 		'HTTP_FORWARDED_FOR',
 		'HTTP_FORWARDED',
 		'REMOTE_ADDR',
-	);
+	];
 
 	foreach ( $keys as $key ) {
 		if ( array_key_exists( $key, $_SERVER ) ) {

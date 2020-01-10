@@ -61,39 +61,51 @@ class Combine extends Abstract_CSS_Optimization {
 			return $html;
 		}
 
-		Logger::debug( 'Found ' . count( $styles ) . ' `<link>` tag(s).', [
-			'css combine process',
-			'tags' => $styles,
-		] );
+		Logger::debug(
+			'Found ' . count( $styles ) . ' `<link>` tag(s).',
+			[
+				'css combine process',
+				'tags' => $styles,
+			]
+		);
 
 		$files  = [];
-		$styles = array_map( function( $style ) use ( &$files ) {
-			if ( $this->is_external_file( $style[2] ) ) {
-				Logger::debug( 'Style is external.', [
-					'css combine process',
-					'tag' => $style[0],
-				] );
-				return;
-			}
+		$styles = array_map(
+				function( $style ) use ( &$files ) {
+					if ( $this->is_external_file( $style[2] ) ) {
+						Logger::debug(
+							'Style is external.',
+							[
+								'css combine process',
+								'tag' => $style[0],
+							]
+						);
+						return;
+					}
 
-			if ( $this->is_minify_excluded_file( $style ) ) {
-				Logger::debug( 'Style is excluded.', [
-					'css combine process',
-					'tag' => $style[0],
-				] );
-				return;
-			}
+					if ( $this->is_minify_excluded_file( $style ) ) {
+						Logger::debug(
+							'Style is excluded.',
+							[
+								'css combine process',
+								'tag' => $style[0],
+							]
+						);
+						return;
+					}
 
-			$style_filepath = $this->get_file_path( $style[2] );
+					$style_filepath = $this->get_file_path( $style[2] );
 
-			if ( ! $style_filepath ) {
-				return;
-			}
+					if ( ! $style_filepath ) {
+						return;
+					}
 
-			$files[] = $style_filepath;
+					$files[] = $style_filepath;
 
-			return $style;
-		}, $styles );
+					return $style;
+				},
+			$styles
+			);
 
 		$styles = array_filter( $styles );
 
@@ -102,10 +114,13 @@ class Combine extends Abstract_CSS_Optimization {
 			return $html;
 		}
 
-		Logger::debug( count( $styles ) . ' `<link>` tag(s) remaining.', [
-			'css combine process',
-			'tags' => $styles,
-		] );
+		Logger::debug(
+			count( $styles ) . ' `<link>` tag(s) remaining.',
+			[
+				'css combine process',
+				'tags' => $styles,
+			]
+		);
 
 		$minify_url = $this->combine( $files );
 
@@ -116,10 +131,13 @@ class Combine extends Abstract_CSS_Optimization {
 
 		$html = $this->insert_combined_css( $html, $minify_url, $styles );
 
-		Logger::info( 'Combined CSS file successfully added.', [
-			'css combine process',
-			'url' => $minify_url,
-		] );
+		Logger::info(
+			'Combined CSS file successfully added.',
+			[
+				'css combine process',
+				'url' => $minify_url,
+			]
+		);
 
 		return $html;
 	}
@@ -138,7 +156,7 @@ class Combine extends Abstract_CSS_Optimization {
 	 * @return string
 	 */
 	public function insert_combined_css( $html, $css_url, array $to_remove ) {
-		$html = preg_replace('/<\/title>/i', '$0<link rel="stylesheet" href="' . $css_url . '" data-minify="1" />', $html, 1 );
+		$html = preg_replace( '/<\/title>/i', '$0<link rel="stylesheet" href="' . $css_url . '" data-minify="1" />', $html, 1 );
 
 		foreach ( $to_remove as $style ) {
 			$html = str_replace( $style[0], '', $html );
@@ -171,32 +189,44 @@ class Combine extends Abstract_CSS_Optimization {
 			$minified_content = $this->minify( $files, $minified_file );
 
 			if ( ! $minified_content ) {
-				Logger::error( 'No minified content.', [
-					'css combine process',
-					'path' => $minified_file,
-				] );
+				Logger::error(
+					'No minified content.',
+					[
+						'css combine process',
+						'path' => $minified_file,
+					]
+				);
 				return false;
 			}
 
 			$minify_filepath = $this->write_file( $minified_content, $minified_file );
 
 			if ( ! $minify_filepath ) {
-				Logger::error( 'Minified CSS file could not be created.', [
-					'css combine process',
-					'path' => $minified_file,
-				] );
+				Logger::error(
+					'Minified CSS file could not be created.',
+					[
+						'css combine process',
+						'path' => $minified_file,
+					]
+				);
 				return false;
 			}
 
-			Logger::debug( 'Combined CSS file successfully created.', [
-				'css combine process',
-				'path' => $minified_file,
-			] );
+			Logger::debug(
+				'Combined CSS file successfully created.',
+				[
+					'css combine process',
+					'path' => $minified_file,
+				]
+			);
 		} else {
-			Logger::debug( 'Combined CSS file already exists.', [
-				'css combine process',
-				'path' => $minified_file,
-			] );
+			Logger::debug(
+				'Combined CSS file already exists.',
+				[
+					'css combine process',
+					'path' => $minified_file,
+				]
+			);
 		}
 
 		return $this->get_minify_url( $filename );

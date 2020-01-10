@@ -20,7 +20,7 @@ class Render extends Abstract_render {
 	 *
 	 * @var array
 	 */
-	private $settings = array();
+	private $settings = [];
 
 	/**
 	 * Hidden settings array
@@ -194,7 +194,7 @@ class Render extends Abstract_render {
 				$args['class'] = implode( ' ', array_map( 'sanitize_html_class', $args['class'] ) );
 			}
 
-			call_user_func_array( array( $this, $args['type'] ), array( $args ) );
+			call_user_func_array( [ $this, $args['type'] ], [ $args ] );
 		}
 	}
 
@@ -263,7 +263,7 @@ class Render extends Abstract_render {
 				$args['container_class'] = implode( ' ', array_map( 'sanitize_html_class', $args['container_class'] ) );
 			}
 
-			call_user_func_array( array( $this, $args['type'] ), array( $args ) );
+			call_user_func_array( [ $this, $args['type'] ], [ $args ] );
 		}
 	}
 
@@ -277,7 +277,7 @@ class Render extends Abstract_render {
 	 */
 	public function render_hidden_fields() {
 		foreach ( $this->hidden_settings as $setting ) {
-			call_user_func_array( array( $this, 'hidden' ), array( $setting ) );
+			call_user_func_array( [ $this, 'hidden' ], [ $setting ] );
 		}
 	}
 
@@ -478,7 +478,7 @@ class Render extends Abstract_render {
 	 * @return void
 	 */
 	public function render_import_form() {
-		$args = array();
+		$args = [];
 
 		/**
 		 * Filter the maximum allowed upload size for import files.
@@ -509,7 +509,7 @@ class Render extends Abstract_render {
 	 * @param array  $args   Optional array of arguments to populate the button attributes.
 	 * @return void
 	 */
-	public function render_action_button( $type, $action, $args = array() ) {
+	public function render_action_button( $type, $action, $args = [] ) {
 		$default = [
 			'label'      => '',
 			'action'     => '',
@@ -533,16 +533,22 @@ class Render extends Abstract_render {
 			case 'link':
 				switch ( $action ) {
 					case 'ask_support':
-						$args['url'] = rocket_get_external_url( 'support', array(
-							'utm_source' => 'wp_plugin',
-							'utm_medium' => 'wp_rocket',
-						) );
-					break;
+						$args['url'] = rocket_get_external_url(
+							'support',
+							[
+								'utm_source' => 'wp_plugin',
+								'utm_medium' => 'wp_rocket',
+							]
+						);
+						break;
 					case 'view_account':
-						$args['url'] = rocket_get_external_url( 'account', array(
-							'utm_source' => 'wp_plugin',
-							'utm_medium' => 'wp_rocket',
-						) );
+						$args['url'] = rocket_get_external_url(
+							'account',
+							[
+								'utm_source' => 'wp_plugin',
+								'utm_medium' => 'wp_rocket',
+							]
+						);
 						break;
 					case 'purge_cache':
 						$url = admin_url( 'admin-post.php?action=' . $action );

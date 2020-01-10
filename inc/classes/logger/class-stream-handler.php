@@ -92,7 +92,7 @@ class Stream_Handler extends StreamHandler {
 
 		$this->error_message = null;
 
-		set_error_handler( array( $this, 'custom_error_handler' ) );
+		set_error_handler( [ $this, 'custom_error_handler' ] );
 
 		$file_resource = fopen( $file_path, 'a' );
 

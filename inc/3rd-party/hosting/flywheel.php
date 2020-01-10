@@ -52,13 +52,13 @@ if ( class_exists( 'FlywheelNginxCompat' ) ) {
 	 */
 	function rocket_flywheel_remove_partial_purge_hooks() {
 		// WP core action hooks rocket_clean_post() gets hooked into.
-		$clean_post_hooks = array(
+		$clean_post_hooks = [
 			// Disables the refreshing of partial cache when content is edited.
 			'wp_trash_post',
 			'delete_post',
 			'clean_post_cache',
 			'wp_update_comment_count',
-		);
+		];
 
 		// Remove rocket_clean_post() from core action hooks.
 		array_map(

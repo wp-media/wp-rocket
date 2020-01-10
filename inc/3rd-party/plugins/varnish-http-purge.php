@@ -60,14 +60,14 @@ function rocket_clean_varnish_http_purge() {
 
 		wp_remote_request(
 			$purgeme,
-			array(
+			[
 				'method'   => 'PURGE',
 				'blocking' => false,
-				'headers'  => array(
+				'headers'  => [
 					'host'           => $p['host'],
 					'X-Purge-Method' => 'regex',
-				),
-			)
+				],
+			]
 		);
 
 		do_action( 'after_purge_url', $url, $purgeme ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals

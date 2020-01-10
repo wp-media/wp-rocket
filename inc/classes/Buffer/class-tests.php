@@ -798,7 +798,7 @@ class Tests {
 			return self::get_memoized( __FUNCTION__ );
 		}
 
-		$keys = array(
+		$keys = [
 			'HTTP_CF_CONNECTING_IP', // CF = CloudFlare.
 			'HTTP_CLIENT_IP',
 			'HTTP_X_FORWARDED_FOR',
@@ -808,7 +808,7 @@ class Tests {
 			'HTTP_FORWARDED_FOR',
 			'HTTP_FORWARDED',
 			'REMOTE_ADDR',
-		);
+		];
 
 		foreach ( $keys as $key ) {
 			if ( ! $this->config->get_server_input( $key ) ) {

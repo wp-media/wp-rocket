@@ -24,10 +24,17 @@ defined( 'ABSPATH' ) || exit;
 	<div class="wpr-sectionHeader-description">
 		<?php
 		// translators: %1$s = tutorial URL, %2$s = support URL.
-		printf( __( 'Follow this <a href="%1$s" target="_blank">tutorial</a>, or contact <a href="%2$s" target="_blank">support</a> to get the engine started.', 'rocket' ), __( 'https://docs.wp-rocket.me/article/100-resolving-problems-with-license-validation/?utm_source=wp_plugin&utm_medium=wp_rocket', 'rocket' ), rocket_get_external_url( 'support', array(
-			'utm_source' => 'wp_plugin',
-			'utm_medium' => 'wp_rocket',
-		) ) );
+		printf(
+			__( 'Follow this <a href="%1$s" target="_blank">tutorial</a>, or contact <a href="%2$s" target="_blank">support</a> to get the engine started.', 'rocket' ),
+			__( 'https://docs.wp-rocket.me/article/100-resolving-problems-with-license-validation/?utm_source=wp_plugin&utm_medium=wp_rocket', 'rocket' ),
+			rocket_get_external_url(
+				'support',
+				[
+					'utm_source' => 'wp_plugin',
+					'utm_medium' => 'wp_rocket',
+				]
+			)
+		);
 		?>
 	</div>
 </div><br>

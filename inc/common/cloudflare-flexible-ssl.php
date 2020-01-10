@@ -101,11 +101,11 @@ function rocket_is_cf_ip() {
  * @author Soponar Cristina
  */
 function rocket_fix_cf_flexible_ssl() {
-    $isCf = rocket_is_cloudflare();
-    if ( $isCf ) {
-        // Fixes Flexible SSL
-        if ( isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https' ) {
-            $_SERVER['HTTPS'] = 'on';
-        }
-    }
+	$is_cf = rocket_is_cloudflare();
+	if ( $is_cf ) {
+		// Fixes Flexible SSL.
+		if ( isset( $_SERVER['HTTP_X_FORWARDED_PROTO'] ) && 'https' === $_SERVER['HTTP_X_FORWARDED_PROTO'] ) {
+			$_SERVER['HTTPS'] = 'on';
+		}
+	}
 }

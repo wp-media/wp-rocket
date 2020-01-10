@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) || exit;
  */
 function get_rocket_option( $option, $default = false ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$options_api = new Options( 'wp_rocket_' );
-	$options     = new Options_Data( $options_api->get( 'settings', array() ) );
+	$options     = new Options_Data( $options_api->get( 'settings', [] ) );
 
 	return $options->get( $option, $default );
 }
@@ -34,7 +34,7 @@ function get_rocket_option( $option, $default = false ) { // phpcs:ignore WordPr
  */
 function update_rocket_option( $key, $value ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$options_api = new Options( 'wp_rocket_' );
-	$options     = new Options_Data( $options_api->get( 'settings', array() ) );
+	$options     = new Options_Data( $options_api->get( 'settings', [] ) );
 
 	$options->set( $key, $value );
 	$options_api->set( 'settings', $options->get_options() );
@@ -50,7 +50,7 @@ function update_rocket_option( $key, $value ) { // phpcs:ignore WordPress.Naming
  * @param string $plugin Plugin folder/main file.
  */
 function rocket_is_plugin_active( $plugin ) {
-	return in_array( $plugin, (array) get_option( 'active_plugins', array() ), true ) || rocket_is_plugin_active_for_network( $plugin );
+	return in_array( $plugin, (array) get_option( 'active_plugins', [] ), true ) || rocket_is_plugin_active_for_network( $plugin );
 }
 
 /**
@@ -202,7 +202,7 @@ function get_rocket_cache_reject_uri() { // phpcs:ignore WordPress.NamingConvent
 		return $uris;
 	}
 
-	$uris      = get_rocket_option( 'cache_reject_uri', array() );
+	$uris      = get_rocket_option( 'cache_reject_uri', [] );
 	$home_root = rocket_get_home_dirname();
 
 	if ( '' !== $home_root ) {
@@ -369,7 +369,7 @@ function get_rocket_cache_reject_ua() { // phpcs:ignore WordPress.NamingConventi
 	$ua = array_flip( array_flip( $ua ) );
 	$ua = implode( '|', $ua );
 
-	return str_replace( array( ' ', '\\\\ ' ), '\\ ', $ua );
+	return str_replace( [ ' ', '\\\\ ' ], '\\ ', $ua );
 }
 
 /**
@@ -581,7 +581,7 @@ function rocket_check_key() {
 	$rocket_options['consumer_email'] = $json->data->consumer_email;
 
 	if ( ! $json->success ) {
-		$messages = array(
+		$messages = [
 			// Translators: %1$s = opening link tag, %2$s = closing link tag.
 			'BAD_LICENSE' => __( 'Your license is not valid.', 'rocket' ) . '<br>' . sprintf( __( 'Make sure you have an active %1$sWP Rocket license%2$s.', 'rocket' ), '<a href="https://wp-rocket.me/" rel="noopener noreferrer" target="_blank">', '</a>' ),
 			// Translators: %1$s = opening link tag, %2$s = closing link tag, %3$s = opening link tag.
@@ -590,7 +590,7 @@ function rocket_check_key() {
 			'BAD_SITE'    => __( 'This website is not allowed.', 'rocket' ) . '<br>' . sprintf( __( 'Please %1$scontact support%2$s.', 'rocket' ), '<a href="https://wp-rocket.me/support/" rel="noopener noreferrer" target=_"blank">', '</a>' ),
 			// Translators: %1$s = opening link tag, %2$s = closing link tag.
 			'BAD_KEY'     => __( 'This license key is not recognized.', 'rocket' ) . '<ul><li>' . sprintf( __( 'Login to your WP Rocket %1$saccount%2$s', 'rocket' ), '<a href="https://wp-rocket.me/account/" rel="noopener noreferrer" target=_"blank">', '</a>' ) . '</li><li>' . __( 'Download the zip file', 'rocket' ) . '<li></li>' . __( 'Reinstall', 'rocket' ) . '</li></ul>' . sprintf( __( 'If the issue persists, please %1$scontact support%2$s.', 'rocket' ), '<a href="https://wp-rocket.me/support/" rel="noopener noreferrer" target=_"blank">', '</a>' ),
-		);
+		];
 
 		$rocket_options['secret_key'] = '';
 

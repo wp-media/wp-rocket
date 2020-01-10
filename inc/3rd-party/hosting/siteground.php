@@ -18,7 +18,7 @@ if ( rocket_is_plugin_active( 'sg-cachepress/sg-cachepress.php' ) ) {
 			return $version;
 		}
 
-		$sg_optimizer = get_file_data( WP_PLUGIN_DIR . '/sg-cachepress/sg-cachepress.php', array( 'Version' => 'Version' ) );
+		$sg_optimizer = get_file_data( WP_PLUGIN_DIR . '/sg-cachepress/sg-cachepress.php', [ 'Version' => 'Version' ] );
 		$version      = $sg_optimizer['Version'];
 
 		return $version;

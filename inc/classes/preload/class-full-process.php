@@ -57,12 +57,15 @@ class Full_Process extends \WP_Background_Process {
 		 *
 		 * @param array $args Arguments for the request.
 		 */
-		$args = apply_filters( 'rocket_preload_url_request_args', [
-			'timeout'    => 0.01,
-			'blocking'   => false,
-			'user-agent' => 'WP Rocket/Preload',
-			'sslverify'  => apply_filters( 'https_local_ssl_verify', false ),
-		] );
+		$args = apply_filters(
+			'rocket_preload_url_request_args',
+			[
+				'timeout'    => 0.01,
+				'blocking'   => false,
+				'user-agent' => 'WP Rocket/Preload',
+				'sslverify'  => apply_filters( 'https_local_ssl_verify', false ),
+			]
+		);
 
 		wp_remote_get( esc_url_raw( $item ), $args );
 
@@ -131,4 +134,3 @@ class Full_Process extends \WP_Background_Process {
 		return parent::is_process_running();
 	}
 }
-

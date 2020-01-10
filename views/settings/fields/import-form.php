@@ -21,7 +21,7 @@ if ( ! empty( $data['upload_dir']['error'] ) ) {
 	?>
 	<div class="error"><p><?php _e( 'Before you can upload your import file, you will need to fix the following error:', 'rocket' ); ?></p>
 	<p><strong><?php echo esc_html( $data['upload_dir']['error'] ); ?></strong></p></div>
-<?php
+	<?php
 } else {
 	?>
 	<form action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="POST" enctype="multipart/form-data" class="wpr-tools">

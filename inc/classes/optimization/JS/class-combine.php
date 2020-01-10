@@ -101,10 +101,13 @@ class Combine extends Abstract_JS_Optimization {
 			return $html;
 		}
 
-		Logger::debug( 'Found ' . count( $scripts ) . ' `<script>` tag(s).', [
-			'js combine process',
-			'tags' => $scripts,
-		] );
+		Logger::debug(
+			'Found ' . count( $scripts ) . ' `<script>` tag(s).',
+			[
+				'js combine process',
+				'tags' => $scripts,
+			]
+		);
 
 		$combine_scripts = $this->parse( $scripts );
 
@@ -113,10 +116,13 @@ class Combine extends Abstract_JS_Optimization {
 			return $html;
 		}
 
-		Logger::debug( count( $combine_scripts ) . ' `<script>` tag(s) remaining.', [
-			'js combine process',
-			'tags' => $combine_scripts,
-		] );
+		Logger::debug(
+			count( $combine_scripts ) . ' `<script>` tag(s) remaining.',
+			[
+				'js combine process',
+				'tags' => $combine_scripts,
+			]
+		);
 
 		$content = $this->get_content();
 
@@ -147,10 +153,13 @@ class Combine extends Abstract_JS_Optimization {
 			$html = str_replace( $script[0], '', $html );
 		}
 
-		Logger::info( 'Combined JS file successfully added.', [
-			'js combine process',
-			'url' => $minify_url,
-		] );
+		Logger::info(
+			'Combined JS file successfully added.',
+			[
+				'js combine process',
+				'url' => $minify_url,
+			]
+		);
 
 		return $html;
 	}
@@ -165,118 +174,142 @@ class Combine extends Abstract_JS_Optimization {
 	 * @return array
 	 */
 	protected function parse( $scripts ) {
-		$scripts = array_map( function( $script ) {
-			preg_match( '/<script\s+([^>]+[\s\'"])?src\s*=\s*[\'"]\s*?([^\'"]+\.js(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>/Umsi', $script[0], $matches );
+		$scripts = array_map(
+			function( $script ) {
+				preg_match( '/<script\s+([^>]+[\s\'"])?src\s*=\s*[\'"]\s*?([^\'"]+\.js(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>/Umsi', $script[0], $matches );
 
-			if ( isset( $matches[2] ) ) {
-				if ( $this->is_external_file( $matches[2] ) ) {
-					foreach ( $this->get_excluded_external_file_path() as $excluded_file ) {
-						if ( false !== strpos( $matches[2], $excluded_file ) ) {
-							Logger::debug( 'Script is external.', [
+				if ( isset( $matches[2] ) ) {
+					if ( $this->is_external_file( $matches[2] ) ) {
+						foreach ( $this->get_excluded_external_file_path() as $excluded_file ) {
+							if ( false !== strpos( $matches[2], $excluded_file ) ) {
+								Logger::debug(
+									'Script is external.',
+									[
+										'js combine process',
+										'tag' => $matches[0],
+									]
+								);
+								return;
+							}
+						}
+
+						$this->scripts[] = [
+							'type'    => 'url',
+							'content' => $matches[2],
+						];
+
+						return $script;
+					}
+
+					if ( $this->is_minify_excluded_file( $matches ) ) {
+						Logger::debug(
+							'Script is excluded.',
+							[
 								'js combine process',
 								'tag' => $matches[0],
-							] );
+							]
+						);
+						return;
+					}
+
+					if ( $this->jquery_url && false !== strpos( $matches[2], $this->jquery_url ) ) {
+						Logger::debug(
+							'Script is jQuery.',
+							[
+								'js combine process',
+								'tag' => $matches[0],
+							]
+						);
+						return;
+					}
+
+					$file_path = $this->get_file_path( $matches[2] );
+
+					if ( ! $file_path ) {
+						return;
+					}
+
+					$this->scripts[] = [
+						'type'    => 'file',
+						'content' => $file_path,
+					];
+				} else {
+					preg_match( '/<script\b(?<attrs>[^>]*)>(?:\/\*\s*<!\[CDATA\[\s*\*\/)?\s*(?<content>[\s\S]*?)\s*(?:\/\*\s*\]\]>\s*\*\/)?<\/script>/msi', $script[0], $matches_inline );
+
+					if ( preg_last_error() === PREG_BACKTRACK_LIMIT_ERROR ) {
+						Logger::debug(
+							'PCRE regex execution Catastrophic Backtracking',
+							[
+								'inline JS backtracking error',
+								'content' => $matches_inline['content'],
+							]
+						);
+						return;
+					}
+
+					if ( strpos( $matches_inline['attrs'], 'type' ) !== false && ! preg_match( '/type\s*=\s*["\']?(?:text|application)\/(?:(?:x\-)?javascript|ecmascript)["\']?/i', $matches_inline['attrs'] ) ) {
+						Logger::debug(
+							'Inline script is not JS.',
+							[
+								'js combine process',
+								'attributes' => $matches_inline['attrs'],
+							]
+						);
+						return;
+					}
+
+					if ( false !== strpos( $matches_inline['attrs'], 'src=' ) ) {
+						Logger::debug(
+							'Inline script has a `src` attribute.',
+							[
+								'js combine process',
+								'attributes' => $matches_inline['attrs'],
+							]
+						);
+						return;
+					}
+
+					if ( in_array( $matches_inline['content'], $this->get_localized_scripts(), true ) ) {
+						Logger::debug(
+							'Inline script is a localize script',
+							[
+								'js combine process',
+								'excluded_content' => $matches_inline['content'],
+							]
+						);
+						return;
+					}
+
+					foreach ( $this->get_excluded_inline_content() as $excluded_content ) {
+						if ( false !== strpos( $matches_inline['content'], $excluded_content ) ) {
+							Logger::debug(
+								'Inline script has excluded content.',
+								[
+									'js combine process',
+									'excluded_content' => $excluded_content,
+								]
+							);
+							return;
+						}
+					}
+
+					foreach ( $this->get_move_after_inline_scripts() as $move_after_script ) {
+						if ( false !== strpos( $matches_inline['content'], $move_after_script ) ) {
+							$this->move_after[] = $script[0];
 							return;
 						}
 					}
 
 					$this->scripts[] = [
-						'type'    => 'url',
-						'content' => $matches[2],
-					];
-
-					return $script;
-				}
-
-				if ( $this->is_minify_excluded_file( $matches ) ) {
-					Logger::debug( 'Script is excluded.', [
-						'js combine process',
-						'tag' => $matches[0],
-					] );
-					return;
-				}
-
-				if ( $this->jquery_url && false !== strpos( $matches[2], $this->jquery_url ) ) {
-					Logger::debug( 'Script is jQuery.', [
-						'js combine process',
-						'tag' => $matches[0],
-					] );
-					return;
-				}
-
-				$file_path = $this->get_file_path( $matches[2] );
-
-				if ( ! $file_path ) {
-					return;
-				}
-
-				$this->scripts[] = [
-					'type'    => 'file',
-					'content' => $file_path,
-				];
-			} else {
-				preg_match( '/<script\b(?<attrs>[^>]*)>(?:\/\*\s*<!\[CDATA\[\s*\*\/)?\s*(?<content>[\s\S]*?)\s*(?:\/\*\s*\]\]>\s*\*\/)?<\/script>/msi', $script[0], $matches_inline );
-
-				if ( preg_last_error() == PREG_BACKTRACK_LIMIT_ERROR ) {
-					Logger::debug( 'PCRE regex execution Catastrophic Backtracking', [
-						'inline JS backtracking error',
+						'type'    => 'inline',
 						'content' => $matches_inline['content'],
-					] );
-					return;
+					];
 				}
 
-				if ( strpos( $matches_inline['attrs'], 'type' ) !== false && ! preg_match( '/type\s*=\s*["\']?(?:text|application)\/(?:(?:x\-)?javascript|ecmascript)["\']?/i', $matches_inline['attrs'] ) ) {
-					Logger::debug( 'Inline script is not JS.', [
-						'js combine process',
-						'attributes' => $matches_inline['attrs'],
-					] );
-					return;
-				}
-
-				if ( false !== strpos( $matches_inline['attrs'], 'src=' ) ) {
-					Logger::debug( 'Inline script has a `src` attribute.', [
-						'js combine process',
-						'attributes' => $matches_inline['attrs'],
-					] );
-					return;
-				}
-
-				if ( in_array( $matches_inline['content'], $this->get_localized_scripts(), true ) ) {
-					Logger::debug(
-						'Inline script is a localize script',
-						[
-							'js combine process',
-							'excluded_content' => $matches_inline['content'],
-						]
-					);
-					return;
-				}
-
-				foreach ( $this->get_excluded_inline_content() as $excluded_content ) {
-					if ( false !== strpos( $matches_inline['content'], $excluded_content ) ) {
-						Logger::debug( 'Inline script has excluded content.', [
-							'js combine process',
-							'excluded_content' => $excluded_content,
-						] );
-						return;
-					}
-				}
-
-				foreach ( $this->get_move_after_inline_scripts() as $move_after_script ) {
-					if ( false !== strpos( $matches_inline['content'], $move_after_script ) ) {
-						$this->move_after[] = $script[0];
-						return;
-					}
-				}
-
-				$this->scripts[] = [
-					'type'    => 'inline',
-					'content' => $matches_inline['content'],
-				];
-			}
-
-			return $script;
-		}, $scripts );
+				return $script;
+			},
+			$scripts
+		);
 
 		return array_filter( $scripts );
 	}
@@ -370,7 +403,7 @@ class Combine extends Abstract_JS_Optimization {
 	/**
 	 * Adds content to the minifier
 	 *
-	 * @since 3.1
+	 * @since  3.1
 	 * @author Remy Perona
 	 *
 	 * @param string $content Content to minify/combine.
@@ -383,7 +416,7 @@ class Combine extends Abstract_JS_Optimization {
 	/**
 	 * Patterns in content excluded from being combined
 	 *
-	 * @since 3.1
+	 * @since  3.1
 	 * @author Remy Perona
 	 *
 	 * @return array
@@ -749,7 +782,7 @@ class Combine extends Abstract_JS_Optimization {
 			'cb_nombre',
 			'$(\'.fl-node-',
 			'function($){google_maps_',
-      		'$("#myCarousel',
+			'$("#myCarousel',
 			'et_animation_data=',
 			'current_url="',
 			'CustomEvent.prototype=window.Event.prototype',

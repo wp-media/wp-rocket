@@ -47,7 +47,7 @@ settings_errors( $data['slug'] ); ?>
 
 				$this->render_tools_section();
 				$this->render_tutorials_section();
-			?>
+				?>
 			<div class="wpr-Content-tips">
 				<div class="wpr-radio wpr-radio--reverse wpr-radio--tips">
 					<input type="checkbox" class="wpr-js-tips" id="wpr-js-tips" value="1" checked>
@@ -57,7 +57,7 @@ settings_errors( $data['slug'] ); ?>
 						<?php _e( 'Show Sidebar', 'rocket' ); ?></label>
 				</div>
 			</div>
-			<?php
+				<?php
 			}
 			?>
 		</section>

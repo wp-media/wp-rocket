@@ -55,7 +55,8 @@ $cnames_zone = get_rocket_option( 'cdn_zone' );
 					</div>
 				<?php
 			endforeach;
-		else : ?>
+		else :
+			?>
 			<div class="wpr-multiple wpr-multiple-default">
 				<div class="wpr-text">
 					<input type="text" name="wp_rocket_settings[cdn_cnames][]" placeholder="cdn.example.com" />
@@ -74,7 +75,7 @@ $cnames_zone = get_rocket_option( 'cdn_zone' );
 						 * @param bool $allow true to add the option, false otherwise.
 						 */
 						if ( apply_filters( 'rocket_allow_cdn_images', true ) ) :
-						?>
+							?>
 						<option value="images"><?php esc_html_e( 'Images', 'rocket' ); ?></option>
 						<?php endif; ?>
 						<option value="css_and_js"><?php esc_html_e( 'CSS & JavaScript', 'rocket' ); ?></option>
@@ -104,7 +105,7 @@ $cnames_zone = get_rocket_option( 'cdn_zone' );
 						 * @param bool $allow true to add the option, false otherwise.
 						 */
 						if ( apply_filters( 'rocket_allow_cdn_images', true ) ) :
-						?>
+							?>
 						<option value="images"><?php esc_html_e( 'Images', 'rocket' ); ?></option>
 						<?php endif; ?>
 						<option value="css_and_js"><?php esc_html_e( 'CSS & JavaScript', 'rocket' ); ?></option>

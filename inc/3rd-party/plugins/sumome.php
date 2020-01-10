@@ -46,7 +46,7 @@ if ( class_exists( 'WP_Plugin_SumoMe' ) ) {
 		}
 
 		global $wp_plugin_sumome;
-		remove_action( 'admin_footer', array( $wp_plugin_sumome, 'append_admin_script_code' ) );
+		remove_action( 'admin_footer', [ $wp_plugin_sumome, 'append_admin_script_code' ] );
 	}
 	add_action( 'admin_head', 'rocket_dequeue_sumo_me_js' );
 }

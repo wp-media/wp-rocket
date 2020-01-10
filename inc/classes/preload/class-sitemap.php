@@ -249,7 +249,7 @@ class Sitemap extends Abstract_Preload {
 		$urls = [];
 
 		// Get public post types.
-		$post_types = get_post_types( array( 'public' => true ) );
+		$post_types = get_post_types( [ 'public' => true ] );
 		$post_types = array_filter( $post_types, 'is_post_type_viewable' );
 
 		/**

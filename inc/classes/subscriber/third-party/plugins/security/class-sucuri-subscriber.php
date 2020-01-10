@@ -160,10 +160,12 @@ class Sucuri_Subscriber implements Subscriber_Interface {
 
 		delete_transient( $user_id . '_sucuri_purge_result' );
 
-		rocket_notice_html( array(
-			'status'  => $notice['result'],
-			'message' => $notice['message'],
-		) );
+		rocket_notice_html(
+			[
+				'status'  => $notice['result'],
+				'message' => $notice['message'],
+			]
+		);
 	}
 
 	/** ----------------------------------------------------------------------------------------- */
@@ -204,19 +206,24 @@ class Sucuri_Subscriber implements Subscriber_Interface {
 			return $api_key;
 		}
 
-		$response = $this->request_api( [
-			'a' => 'clear_cache',
-			'k' => $api_key['k'],
-			's' => $api_key['s'],
-		] );
+		$response = $this->request_api(
+			[
+				'a' => 'clear_cache',
+				'k' => $api_key['k'],
+				's' => $api_key['s'],
+			]
+		);
 
 		if ( is_wp_error( $response ) ) {
 			return $response;
 		}
 
-		Logger::info( 'Sucuri firewall cache cleared.', [
-			'sucuri firewall cache',
-		] );
+		Logger::info(
+			'Sucuri firewall cache cleared.',
+			[
+				'sucuri firewall cache',
+			]
+		);
 
 		return true;
 	}
@@ -234,18 +241,24 @@ class Sucuri_Subscriber implements Subscriber_Interface {
 		$api_key = trim( $this->options->get( 'sucury_waf_api_key', '' ) );
 
 		if ( ! $api_key ) {
-			Logger::error( 'API key was not found.', [
-				'sucuri firewall cache',
-			] );
+			Logger::error(
+				'API key was not found.',
+				[
+					'sucuri firewall cache',
+				]
+			);
 			return new \WP_Error( 'no_sucuri_api_key', __( 'Sucuri firewall API key was not found.', 'rocket' ) );
 		}
 
 		$matches = self::is_api_key_valid( $api_key );
 
 		if ( ! $matches ) {
-			Logger::error( 'API key is invalid.', [
-				'sucuri firewall cache',
-			] );
+			Logger::error(
+				'API key is invalid.',
+				[
+					'sucuri firewall cache',
+				]
+			);
 			return new \WP_Error( 'invalid_sucuri_api_key', __( 'Sucuri firewall API key is invalid.', 'rocket' ) );
 		}
 
@@ -293,20 +306,26 @@ class Sucuri_Subscriber implements Subscriber_Interface {
 
 			$response = wp_remote_get( $url, $args );
 		} catch ( \Exception $e ) {
-			Logger::error( 'Error when contacting the API.', [
-				'sucuri firewall cache',
-				'url'      => $url,
-				'response' => $e->getMessage(),
-			] );
+			Logger::error(
+				'Error when contacting the API.',
+				[
+					'sucuri firewall cache',
+					'url'      => $url,
+					'response' => $e->getMessage(),
+				]
+			);
 			return new \WP_Error( 'error_sucuri_api', __( 'Error when contacting Sucuri firewall API.', 'rocket' ) );
 		}
 
 		if ( is_wp_error( $response ) ) {
-			Logger::error( 'Error when contacting the API.', [
-				'sucuri firewall cache',
-				'url'      => $url,
-				'response' => $response->get_error_message(),
-			] );
+			Logger::error(
+				'Error when contacting the API.',
+				[
+					'sucuri firewall cache',
+					'url'      => $url,
+					'response' => $response->get_error_message(),
+				]
+			);
 			/* translators: %s is an error message. */
 			return new \WP_Error( 'wp_error_sucuri_api', sprintf( __( 'Error when contacting Sucuri firewall API. Error message was: %s', 'rocket' ), $response->get_error_message() ) );
 		}
@@ -314,31 +333,40 @@ class Sucuri_Subscriber implements Subscriber_Interface {
 		$contents = wp_remote_retrieve_body( $response );
 
 		if ( ! $contents ) {
-			Logger::error( 'Could not get a response from the API.', [
-				'sucuri firewall cache',
-				'url'      => $url,
-				'response' => $response,
-			] );
+			Logger::error(
+				'Could not get a response from the API.',
+				[
+					'sucuri firewall cache',
+					'url'      => $url,
+					'response' => $response,
+				]
+			);
 			return new \WP_Error( 'sucuri_api_no_response', __( 'Could not get a response from the Sucuri firewall API.', 'rocket' ) );
 		}
 
 		$data = @json_decode( $contents, true );
 
 		if ( ! $data || ! is_array( $data ) ) {
-			Logger::error( 'Invalid response from the API.', [
-				'sucuri firewall cache',
-				'url'           => $url,
-				'response_body' => $contents,
-			] );
+			Logger::error(
+				'Invalid response from the API.',
+				[
+					'sucuri firewall cache',
+					'url'           => $url,
+					'response_body' => $contents,
+				]
+			);
 			return new \WP_Error( 'sucuri_api_invalid_response', __( 'Got an invalid response from the Sucuri firewall API.', 'rocket' ) );
 		}
 
 		if ( empty( $data['status'] ) ) {
-			Logger::error( 'The action failed.', [
-				'sucuri firewall cache',
-				'url'           => $url,
-				'response_data' => $data,
-			] );
+			Logger::error(
+				'The action failed.',
+				[
+					'sucuri firewall cache',
+					'url'           => $url,
+					'response_data' => $data,
+				]
+			);
 			if ( empty( $data['messages'] ) || ! is_array( $data['messages'] ) ) {
 				return new \WP_Error( 'sucuri_api_error_status', __( 'The Sucuri firewall API returned an unknown error.', 'rocket' ) );
 			}

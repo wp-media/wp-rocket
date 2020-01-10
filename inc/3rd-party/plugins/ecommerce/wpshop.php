@@ -19,13 +19,13 @@ endif;
  * @return array Updated array of URLs to exclude from cache
  */
 function rocket_exclude_wpshop_pages( $urls ) {
-	$pages = array(
+	$pages = [
 		'wpshop_cart_page_id',
 		'wpshop_checkout_page_id',
 		'wpshop_payment_return_page_id',
 		'wpshop_payment_return_nok_page_id',
 		'wpshop_myaccount_page_id',
-	);
+	];
 
 	foreach ( $pages as $page ) {
 		$page_id = wpshop_tools::get_page_id( get_option( $page ) );

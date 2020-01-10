@@ -60,10 +60,10 @@ if ( isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
 
 			wp_remote_get(
 				$url,
-				array(
+				[
 					'blocking' => false,
 					'timeout'  => 0.01,
-				)
+				]
 			);
 		}
 		add_action( 'after_rocket_clean_home', 'rocket_clean_kinsta_cache_home', 10, 2 );
@@ -82,10 +82,10 @@ if ( isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
 
 			wp_remote_get(
 				$url,
-				array(
+				[
 					'blocking' => false,
 					'timeout'  => 0.01,
-				)
+				]
 				);
 		}
 		add_action( 'after_rocket_clean_file', 'rocket_clean_kinsta_cache_url' );
@@ -100,13 +100,13 @@ if ( isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
 		 */
 		function rocket_remove_partial_purge_hooks() {
 			// WP core action hooks rocket_clean_post() gets hooked into.
-			$clean_post_hooks = array(
+			$clean_post_hooks = [
 				// Disables the refreshing of partial cache when content is edited.
 				'wp_trash_post',
 				'delete_post',
 				'clean_post_cache',
 				'wp_update_comment_count',
-			);
+			];
 
 			// Remove rocket_clean_post() from core action hooks.
 			array_map(
@@ -156,12 +156,12 @@ if ( isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
 				}
 
 				rocket_notice_html(
-				array(
+				[
 					'status'      => 'error',
 					'dismissible' => '',
 					// translators: %1$s = opening link tag, %2$s = closing link tag.
 					'message'     => sprintf( __( 'Your installation seems to be missing core Kinsta files managing Cache clearing and CDN, which will prevent your Kinsta installation and WP Rocket from working correctly. Please get in touch with Kinsta support through your %1$sMyKinsta%2$s account to resolve this issue.', 'rocket' ), '<a href="https://my.kinsta.com/login/" target="_blank">', '</a>' ),
-				)
+				]
 				);
 			}
 			);

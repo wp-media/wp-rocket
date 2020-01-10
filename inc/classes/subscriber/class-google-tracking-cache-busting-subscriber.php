@@ -149,10 +149,10 @@ class Google_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface {
 			return $schedules;
 		}
 
-		$schedules['weekly'] = array(
+		$schedules['weekly'] = [
 			'interval' => 604800,
 			'display'  => __( 'weekly', 'rocket' ),
-		);
+		];
 
 		return $schedules;
 	}

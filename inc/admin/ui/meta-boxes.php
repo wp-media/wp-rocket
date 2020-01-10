@@ -24,9 +24,9 @@ add_action( 'post_submitbox_start', 'rocket_post_submitbox_start' );
 function rocket_cache_options_meta_boxes() {
 	if ( current_user_can( 'rocket_manage_options' ) ) {
 		$cpts = get_post_types(
-			array(
+			[
 				'public' => true,
-			),
+			],
 			'objects'
 		);
 		unset( $cpts['attachment'] );
@@ -68,7 +68,7 @@ function rocket_display_cache_options_meta_boxes() {
 		<div class="misc-pub-section">
 			<p><?php esc_html_e( 'Activate these options on this post:', 'rocket' ); ?></p>
 			<?php
-			$fields = array(
+			$fields = [
 				'lazyload'         => __( 'LazyLoad for images', 'rocket' ),
 				'lazyload_iframes' => __( 'LazyLoad for iframes/videos', 'rocket' ),
 				'minify_html'      => __( 'Minify HTML', 'rocket' ),
@@ -77,7 +77,7 @@ function rocket_display_cache_options_meta_boxes() {
 				'cdn'              => __( 'CDN', 'rocket' ),
 				'async_css'        => __( 'Optimize CSS Delivery', 'rocket' ),
 				'defer_all_js'     => __( 'Defer JS', 'rocket' ),
-			);
+			];
 
 			foreach ( $fields as $field => $label ) {
 				$disabled = disabled( ! get_rocket_option( $field ), true, false );
@@ -144,7 +144,7 @@ function rocket_save_metabox_options() {
 		}
 
 		// Options fields.
-		$fields = array(
+		$fields = [
 			'lazyload',
 			'lazyload_iframes',
 			'minify_html',
@@ -153,7 +153,7 @@ function rocket_save_metabox_options() {
 			'cdn',
 			'async_css',
 			'defer_all_js',
-		);
+		];
 
 		foreach ( $fields as $field ) {
 			if ( isset( $_POST['rocket_post_exclude_hidden'][ $field ] ) && $_POST['rocket_post_exclude_hidden'][ $field ] ) {

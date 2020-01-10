@@ -113,7 +113,6 @@ function rocket_is_api_keys_valid_cloudflare( $cf_email, $cf_api_key, $cf_zone_i
 
 			return true;
 		}
-
 	} catch ( Exception $e ) {
 		$msg = __( 'Incorrect Cloudflare email address or API key.', 'rocket' );
 
@@ -249,12 +248,12 @@ function get_rocket_cloudflare_settings() { // phpcs:ignore WordPress.NamingConv
 			$cf_minify_value = 'off';
 		}
 
-		$cf_settings_array = array(
+		$cf_settings_array = [
 			'cache_level'       => $cf_settings->result[5]->value,
 			'minify'            => $cf_minify_value,
 			'rocket_loader'     => $cf_settings->result[25]->value,
 			'browser_cache_ttl' => $cf_settings->result[3]->value,
-		);
+		];
 
 		return $cf_settings_array;
 	} catch ( Exception $e ) {
@@ -358,11 +357,11 @@ function set_rocket_cloudflare_minify( $mode ) { // phpcs:ignore WordPress.Namin
 		return $GLOBALS['rocket_cloudflare'];
 	}
 
-	$cf_minify_settings = array(
+	$cf_minify_settings = [
 		'css'  => $mode,
 		'html' => $mode,
 		'js'   => $mode,
-	);
+	];
 
 	try {
 		$cf_settings = new Cloudflare\Zone\Settings( $GLOBALS['rocket_cloudflare']->auth );

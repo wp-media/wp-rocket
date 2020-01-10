@@ -121,12 +121,12 @@ if ( defined( 'O2SWITCH_VARNISH_PURGE_KEY' ) ) {
 
 		wp_remote_request(
 			$purgeme,
-			array(
+			[
 				'method'      => 'PURGE',
 				'blocking'    => false,
 				'redirection' => 0,
 				'headers'     => $headers,
-			)
+			]
 		);
 	}
 

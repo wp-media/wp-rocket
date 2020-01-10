@@ -108,13 +108,13 @@ if ( class_exists( 'WPaaS\Plugin' ) ) :
 
 		wp_remote_request(
 			esc_url_raw( $url ),
-			array(
+			[
 				'method'   => $method,
 				'blocking' => false,
-				'headers'  => array(
+				'headers'  => [
 					'Host' => $host,
-				),
-			)
+				],
+			]
 		);
 	}
 endif;

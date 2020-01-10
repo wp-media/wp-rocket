@@ -17,7 +17,7 @@ function rocket_clear_cache_after_studiopress_accelerator() {
 			$submitted_url = sanitize_text_field( wp_unslash( $_REQUEST['cache-purge-url'] ) );
 
 			// Clear the URL.
-			rocket_clean_files( array( $submitted_url ) );
+			rocket_clean_files( [ $submitted_url ] );
 		} elseif ( wp_verify_nonce( $nonce, 'sp-accel-purge-theme' ) ) {
 			// Clear all caching files.
 			rocket_clean_domain();

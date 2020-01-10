@@ -105,7 +105,7 @@ function rocket_add_geotargetingwp_mandatory_cookie( $cookies ) {
  */
 function rocket_add_geot_cookies( $cookies ) {
 	// valid options are country, state, city.
-	$enabled_cookies = apply_filters( 'rocket_geotargetingwp_enabled_cookies', array( 'country' ) );
+	$enabled_cookies = apply_filters( 'rocket_geotargetingwp_enabled_cookies', [ 'country' ] );
 	foreach ( $enabled_cookies as $enabled_cookie ) {
 		if ( ! in_array( 'geot_rocket_' . $enabled_cookie, $cookies, true ) ) {
 			$cookies[] = 'geot_rocket_' . $enabled_cookie;

@@ -104,23 +104,23 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	}
 
 	// Update CloudFlare Development Mode.
-	$cloudflare_update_result = array();
+	$cloudflare_update_result = [];
 
 	if ( ! empty( $_POST ) && isset( $oldvalue['cloudflare_devmode'], $value['cloudflare_devmode'] ) && (int) $oldvalue['cloudflare_devmode'] !== (int) $value['cloudflare_devmode'] ) {
 		$cloudflare_dev_mode_return = set_rocket_cloudflare_devmode( $value['cloudflare_devmode'] );
 
 		if ( is_wp_error( $cloudflare_dev_mode_return ) ) {
-			$cloudflare_update_result[] = array(
+			$cloudflare_update_result[] = [
 				'result'  => 'error',
 				// translators: %s is the message returned by the CloudFlare API.
 				'message' => sprintf( __( 'Cloudflare development mode error: %s', 'rocket' ), $cloudflare_dev_mode_return->get_error_message() ),
-			);
+			];
 		} else {
-			$cloudflare_update_result[] = array(
+			$cloudflare_update_result[] = [
 				'result'  => 'success',
 				// translators: %s is the message returned by the CloudFlare API.
 				'message' => sprintf( __( 'Cloudflare development mode %s', 'rocket' ), $cloudflare_dev_mode_return ),
-			);
+			];
 		}
 	}
 
@@ -133,21 +133,21 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		$cf_cache_level_return = set_rocket_cloudflare_cache_level( $cf_cache_level );
 
 		if ( is_wp_error( $cf_cache_level_return ) ) {
-			$cloudflare_update_result[] = array(
+			$cloudflare_update_result[] = [
 				'result'  => 'error',
 				// translators: %s is the message returned by the CloudFlare API.
 				'message' => sprintf( __( 'Cloudflare cache level error: %s', 'rocket' ), $cf_cache_level_return->get_error_message() ),
-			);
+			];
 		} else {
 			if ( 'aggressive' === $cf_cache_level_return ) {
 				$cf_cache_level_return = _x( 'Standard', 'Cloudflare caching level', 'rocket' );
 			}
 
-			$cloudflare_update_result[] = array(
+			$cloudflare_update_result[] = [
 				'result'  => 'success',
 				// translators: %s is the caching level returned by the CloudFlare API.
 				'message' => sprintf( __( 'Cloudflare cache level set to %s', 'rocket' ), $cf_cache_level_return ),
-			);
+			];
 		}
 
 		// Active Minification for HTML, CSS & JS.
@@ -155,17 +155,17 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		$cf_minify_return = set_rocket_cloudflare_minify( $cf_minify );
 
 		if ( is_wp_error( $cf_minify_return ) ) {
-			$cloudflare_update_result[] = array(
+			$cloudflare_update_result[] = [
 				'result'  => 'error',
 				// translators: %s is the message returned by the CloudFlare API.
 				'message' => sprintf( __( 'Cloudflare minification error: %s', 'rocket' ), $cf_minify_return->get_error_message() ),
-			);
+			];
 		} else {
-			$cloudflare_update_result[] = array(
+			$cloudflare_update_result[] = [
 				'result'  => 'success',
 				// translators: %s is the message returned by the CloudFlare API.
 				'message' => sprintf( __( 'Cloudflare minification %s', 'rocket' ), $cf_minify_return ),
-			);
+			];
 		}
 
 		// Deactivate Rocket Loader to prevent conflicts.
@@ -173,17 +173,17 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		$cf_rocket_loader_return = set_rocket_cloudflare_rocket_loader( $cf_rocket_loader );
 
 		if ( is_wp_error( $cf_rocket_loader_return ) ) {
-			$cloudflare_update_result[] = array(
+			$cloudflare_update_result[] = [
 				'result'  => 'error',
 				// translators: %s is the message returned by the CloudFlare API.
 				'message' => sprintf( __( 'Cloudflare rocket loader error: %s', 'rocket' ), $cf_rocket_loader_return->get_error_message() ),
-			);
+			];
 		} else {
-			$cloudflare_update_result[] = array(
+			$cloudflare_update_result[] = [
 				'result'  => 'success',
 				// translators: %s is the message returned by the CloudFlare API.
 				'message' => sprintf( __( 'Cloudflare rocket loader %s', 'rocket' ), $cf_rocket_loader_return ),
-			);
+			];
 		}
 
 		// Set Browser cache to 1 year.
@@ -191,17 +191,17 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		$cf_browser_cache_return = set_rocket_cloudflare_browser_cache_ttl( $cf_browser_cache_ttl );
 
 		if ( is_wp_error( $cf_browser_cache_return ) ) {
-			$cloudflare_update_result[] = array(
+			$cloudflare_update_result[] = [
 				'result'  => 'error',
 				// translators: %s is the message returned by the CloudFlare API.
 				'message' => sprintf( __( 'Cloudflare browser cache error: %s', 'rocket' ), $cf_browser_cache_return->get_error_message() ),
-			);
+			];
 		} else {
-			$cloudflare_update_result[] = array(
+			$cloudflare_update_result[] = [
 				'result'  => 'success',
 				// translators: %s is the message returned by the CloudFlare API.
 				'message' => sprintf( __( 'Cloudflare browser cache set to %s seconds', 'rocket' ), $cf_browser_cache_return ),
-			);
+			];
 		}
 	}
 
