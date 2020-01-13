@@ -86,7 +86,7 @@ class Critical_CSS_Generation extends \WP_Background_Process {
 			if ( isset( $data->message ) ) {
 				// translators: %1$s = type of content, %2$s = error message.
 				$error                = sprintf( __( 'Critical CSS for %1$s not generated. Error: %2$s', 'rocket' ), $item['type'], $data->message );
-				$error               .= ' <em> (' . date_i18n( get_option( 'date_format' ), current_time( 'timestamp' ) ) . ' @ ' . date_i18n( get_option( 'time_format' ), current_time( 'timestamp' ) ) . ') </em>';
+				$error               .= ' <em> (' . date_i18n( get_option( 'date_format' ) ) . ' @ ' . date_i18n( get_option( 'time_format' ) ) . ') </em>';
 				$transient['items'][] = $error;
 				set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
 			}
@@ -97,7 +97,7 @@ class Critical_CSS_Generation extends \WP_Background_Process {
 		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
 			// translators: %1$s = type of content, %2$s = error message.
 			$error                = sprintf( __( 'Critical CSS for %1$s not generated. Error: %2$s', 'rocket' ), $item['type'], __( 'The API returned an invalid response code.', 'rocket' ) );
-			$error               .= ' <em> (' . date_i18n( get_option( 'date_format' ), current_time( 'timestamp' ) ) . ' @ ' . date_i18n( get_option( 'time_format' ), current_time( 'timestamp' ) ) . ') </em>';
+			$error               .= ' <em> (' . date_i18n( get_option( 'date_format' ) ) . ' @ ' . date_i18n( get_option( 'time_format' ) ) . ') </em>';
 			$transient['items'][] = $error;
 			set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
 			return false;
@@ -108,7 +108,7 @@ class Critical_CSS_Generation extends \WP_Background_Process {
 		if ( ! isset( $data->data ) ) {
 			// translators: %1$s = type of content, %2$s = error message.
 			$error                = sprintf( __( 'Critical CSS for %1$s not generated. Error: %2$s', 'rocket' ), $item['type'], __( 'The API returned an empty response.', 'rocket' ) );
-			$error               .= ' <em> (' . date_i18n( get_option( 'date_format' ), current_time( 'timestamp' ) ) . ' @ ' . date_i18n( get_option( 'time_format' ), current_time( 'timestamp' ) ) . ') </em>';
+			$error               .= ' <em> (' . date_i18n( get_option( 'date_format' ) ) . ' @ ' . date_i18n( get_option( 'time_format' ) ) . ') </em>';
 			$transient['items'][] = $error;
 			set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
 			return false;
@@ -118,7 +118,7 @@ class Critical_CSS_Generation extends \WP_Background_Process {
 			if ( 400 === (int) $job_data->status ) {
 				// translators: %1$s = type of content, %2$s = error message.
 				$error                = sprintf( __( 'Critical CSS for %1$s not generated. Error: %2$s', 'rocket' ), $item['type'], $job_data->message );
-				$error               .= ' <em> (' . date_i18n( get_option( 'date_format' ), current_time( 'timestamp' ) ) . ' @ ' . date_i18n( get_option( 'time_format' ), current_time( 'timestamp' ) ) . ') </em>';
+				$error               .= ' <em> (' . date_i18n( get_option( 'date_format' ) ) . ' @ ' . date_i18n( get_option( 'time_format' ) ) . ') </em>';
 				$transient['items'][] = $error;
 				set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
 				break;
@@ -144,7 +144,7 @@ class Critical_CSS_Generation extends \WP_Background_Process {
 						// translators: %s = critical CSS directory path.
 						sprintf( __( 'The critical CSS content could not be saved as a file in %s.', 'rocket' ), $critical_css_path )
 					);
-					$error               .= ' <em> (' . date_i18n( get_option( 'date_format' ), current_time( 'timestamp' ) ) . ' @ ' . date_i18n( get_option( 'time_format' ), current_time( 'timestamp' ) ) . ') </em>';
+					$error               .= ' <em> (' . date_i18n( get_option( 'date_format' ) ) . ' @ ' . date_i18n( get_option( 'time_format' ) ) . ') </em>';
 					$transient['items'][] = $error;
 					set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
 					break;
@@ -152,7 +152,7 @@ class Critical_CSS_Generation extends \WP_Background_Process {
 
 				// translators: %s = type of content.
 				$success              = sprintf( __( 'Critical CSS for %s generated.', 'rocket' ), $item['type'] );
-				$success             .= ' <em> (' . date_i18n( get_option( 'date_format' ), current_time( 'timestamp' ) ) . ' @ ' . date_i18n( get_option( 'time_format' ), current_time( 'timestamp' ) ) . ') </em>';
+				$success             .= ' <em> (' . date_i18n( get_option( 'date_format' ) ) . ' @ ' . date_i18n( get_option( 'time_format' ) ) . ') </em>';
 				$transient['items'][] = $success;
 				$transient['generated']++;
 				set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );

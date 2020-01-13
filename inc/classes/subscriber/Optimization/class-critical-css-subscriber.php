@@ -239,7 +239,7 @@ class Critical_CSS_Subscriber implements Subscriber_Interface {
 
 		// Translators: %1$d = number of critical CSS generated, %2$d = total number of critical CSS to generate.
 		$message  = '<p>' . sprintf( __( 'Critical CSS generation finished for %1$d of %2$d page types.', 'rocket' ), $transient['generated'], $transient['total'] );
-		$message .= ' <em> (' . date_i18n( get_option( 'date_format' ), current_time( 'timestamp' ) ) . ' @ ' . date_i18n( get_option( 'time_format' ), current_time( 'timestamp' ) ) . ') </em></p>';
+		$message .= ' <em> (' . date_i18n( get_option( 'date_format' ) ) . ' @ ' . date_i18n( get_option( 'time_format' ) ) . ') </em></p>';
 
 		if ( ! empty( $transient['items'] ) ) {
 			$message .= '<ul>';
