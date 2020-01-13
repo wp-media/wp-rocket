@@ -9,11 +9,11 @@ if ( strstr( $_SERVER['REQUEST_URI'], 'robots.txt' ) || strstr( $_SERVER['REQUES
 	return;
 }
 
-$request_uri = explode( '?', $_SERVER['REQUEST_URI'] );
-$request_uri = reset( $request_uri );
+$rocket_request_uri = explode( '?', $_SERVER['REQUEST_URI'] );
+$rocket_request_uri = reset( $rocket_request_uri );
 
 // Don't cache disallowed extensions.
-if ( strtolower( $_SERVER['REQUEST_URI'] ) !== '/index.php' && in_array( pathinfo( $request_uri, PATHINFO_EXTENSION ), [ 'php', 'xml', 'xsl' ], true ) ) {
+if ( strtolower( $_SERVER['REQUEST_URI'] ) !== '/index.php' && in_array( pathinfo( $rocket_request_uri, PATHINFO_EXTENSION ), [ 'php', 'xml', 'xsl' ], true ) ) {
 	rocket_define_donotoptimize_constant( true );
 
 	return;
@@ -51,41 +51,41 @@ if ( ! isset( $_SERVER['REQUEST_METHOD'] ) || 'GET' !== $_SERVER['REQUEST_METHOD
 $rocket_config_path      = WP_ROCKET_CONFIG_PATH;
 $rocket_real_config_path = realpath( $rocket_config_path ) . DIRECTORY_SEPARATOR;
 
-$host = isset( $_SERVER['HTTP_HOST'] ) ? $_SERVER['HTTP_HOST'] : (string) time();
-$host = preg_replace( '/:\d+$/', '', $host );
-$host = trim( strtolower( $host ), '.' );
-$host = rawurlencode( $host );
+$rocket_host = isset( $_SERVER['HTTP_HOST'] ) ? $_SERVER['HTTP_HOST'] : (string) time();
+$rocket_host = preg_replace( '/:\d+$/', '', $rocket_host );
+$rocket_host = trim( strtolower( $rocket_host ), '.' );
+$rocket_host = rawurlencode( $rocket_host );
 
-$continue = false;
-if ( realpath( $rocket_config_path . $host . '.php' ) && 0 === stripos( realpath( $rocket_config_path . $host . '.php' ), $rocket_real_config_path ) ) {
-	include $rocket_config_path . $host . '.php';
-	$continue = true;
+$rocket_continue = false;
+if ( realpath( $rocket_config_path . $rocket_host . '.php' ) && 0 === stripos( realpath( $rocket_config_path . $rocket_host . '.php' ), $rocket_real_config_path ) ) {
+	include $rocket_config_path . $rocket_host . '.php';
+	$rocket_continue = true;
 } else {
 	$path = str_replace( '\\', '/', strtok( $_SERVER['REQUEST_URI'], '?' ) );
 	$path = preg_replace( '|(?<=.)/+|', '/', $path );
 	$path = explode( '%2F', preg_replace( '/^(?:%2F)*(.*?)(?:%2F)*$/', '$1', rawurlencode( $path ) ) );
 
-	foreach ( $path as $p ) {
+	foreach ( $path as $p ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 		static $dir;
 
-		if ( realpath( $rocket_config_path . $host . '.' . $p . '.php' ) && 0 === stripos( realpath( $rocket_config_path . $host . '.' . $p . '.php' ), $rocket_real_config_path ) ) {
-			include $rocket_config_path . $host . '.' . $p . '.php';
-			$continue = true;
+		if ( realpath( $rocket_config_path . $rocket_host . '.' . $p . '.php' ) && 0 === stripos( realpath( $rocket_config_path . $rocket_host . '.' . $p . '.php' ), $rocket_real_config_path ) ) {
+			include $rocket_config_path . $rocket_host . '.' . $p . '.php';
+			$rocket_continue = true;
 			break;
 		}
 
-		if ( realpath( $rocket_config_path . $host . '.' . $dir . $p . '.php' ) && 0 === stripos( realpath( $rocket_config_path . $host . '.' . $dir . $p . '.php' ), $rocket_real_config_path ) ) {
-			include $rocket_config_path . $host . '.' . $dir . $p . '.php';
-			$continue = true;
+		if ( realpath( $rocket_config_path . $rocket_host . '.' . $dir . $p . '.php' ) && 0 === stripos( realpath( $rocket_config_path . $rocket_host . '.' . $dir . $p . '.php' ), $rocket_real_config_path ) ) {
+			include $rocket_config_path . $rocket_host . '.' . $dir . $p . '.php';
+			$rocket_continue = true;
 			break;
 		}
 
-		$dir .= $p . '.';
+		$dir .= $p . '.'; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 	}
 }
 
 // Exit if no config file exists.
-if ( ! $continue ) {
+if ( ! $rocket_continue ) {
 	rocket_define_donotoptimize_constant( true );
 
 	return;
@@ -115,15 +115,15 @@ $rocket_remove_query_strings = [
 	'_ga'             => 1,
 ];
 
-$params = [];
+$rocket_params = [];
 
 if ( ! empty( $_GET ) ) {
-	$params = array_diff_key( $_GET, $rocket_remove_query_strings );
+	$rocket_params = array_diff_key( $_GET, $rocket_remove_query_strings );
 
-	if ( ! empty( $params ) ) {
-		ksort( $params );
+	if ( ! empty( $rocket_params ) ) {
+		ksort( $rocket_params );
 
-		$request_uri .= http_build_query( $params );
+		$rocket_request_uri .= http_build_query( $rocket_params );
 	}
 }
 
@@ -134,9 +134,9 @@ $rocket_ignore_query_strings = [
 	'lp-variation-id' => 1,
 ];
 
-if ( ! empty( $params )
-	&& ( ! (bool) array_intersect_key( $params, $rocket_ignore_query_strings ) )
-	&& ( ! isset( $rocket_cache_query_strings ) || ! array_intersect( array_keys( $params ), $rocket_cache_query_strings ) )
+if ( ! empty( $rocket_params )
+	&& ( ! (bool) array_intersect_key( $rocket_params, $rocket_ignore_query_strings ) )
+	&& ( ! isset( $rocket_cache_query_strings ) || ! array_intersect( array_keys( $rocket_params ), $rocket_cache_query_strings ) )
 ) {
 	rocket_define_donotoptimize_constant( true );
 
@@ -151,7 +151,7 @@ if ( empty( $rocket_cache_ssl ) && is_ssl() ) {
 }
 
 // Don't cache these pages.
-if ( isset( $rocket_cache_reject_uri ) && preg_match( '#^(' . $rocket_cache_reject_uri . ')$#', $request_uri ) ) {
+if ( isset( $rocket_cache_reject_uri ) && preg_match( '#^(' . $rocket_cache_reject_uri . ')$#', $rocket_request_uri ) ) {
 	rocket_define_donotoptimize_constant( true );
 
 	return;
@@ -164,8 +164,8 @@ if ( isset( $rocket_cache_reject_cookies ) && preg_match( '#(' . $rocket_cache_r
 	return;
 }
 
-$ip          = rocket_get_ip();
-$allowed_ips = [
+$rocket_ip          = rocket_get_ip();
+$rocket_allowed_ips = [
 	'208.70.247.157' => '', // GT Metrix - Vancouver 1.
 	'204.187.14.70'  => '', // GT Metrix - Vancouver 2.
 	'204.187.14.71'  => '', // GT Metrix - Vancouver 3.
@@ -197,7 +197,7 @@ $allowed_ips = [
 ];
 
 // Don't cache page when these cookies don't exist.
-if ( ( ! isset( $allowed_ips[ $ip ] ) && ( isset( $_SERVER['HTTP_USER_AGENT'] ) ) && ! preg_match( '#(PingdomPageSpeed|DareBoost|Google|PTST|WP Rocket)#i', $_SERVER['HTTP_USER_AGENT'] ) ) && isset( $rocket_cache_mandatory_cookies ) && ! preg_match( '#(' . $rocket_cache_mandatory_cookies . ')#', var_export( $_COOKIE, true ) ) ) {
+if ( ( ! isset( $rocket_allowed_ips[ $rocket_ip ] ) && ( isset( $_SERVER['HTTP_USER_AGENT'] ) ) && ! preg_match( '#(PingdomPageSpeed|DareBoost|Google|PTST|WP Rocket)#i', $_SERVER['HTTP_USER_AGENT'] ) ) && isset( $rocket_cache_mandatory_cookies ) && ! preg_match( '#(' . $rocket_cache_mandatory_cookies . ')#', var_export( $_COOKIE, true ) ) ) {
 	rocket_define_donotoptimize_constant( true );
 
 	return;
@@ -218,7 +218,7 @@ if ( ! isset( $rocket_cache_mobile ) && isset( $_SERVER['HTTP_USER_AGENT'] ) && 
 }
 
 // Check if dots should be replace by underscores.
-$host = isset( $rocket_url_no_dots ) ? str_replace( '.', '_', $host ) : $host;
+$rocket_host = isset( $rocket_url_no_dots ) ? str_replace( '.', '_', $rocket_host ) : $rocket_host;
 
 // Get cache folder of host name.
 if ( isset( $rocket_cookie_hash )
@@ -227,62 +227,62 @@ if ( isset( $rocket_cookie_hash )
 	&& ! strstr( $rocket_cache_reject_cookies, 'wordpress_logged_in_' )
 ) {
 	if ( isset( $rocket_common_cache_logged_users ) ) {
-		$request_uri_path = $rocket_cache_path . $host . '-loggedin' . rtrim( $request_uri, '/' );
+		$request_uri_path = $rocket_cache_path . $rocket_host . '-loggedin' . rtrim( $rocket_request_uri, '/' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 	} else {
-		$user_key = explode( '|', $_COOKIE[ 'wordpress_logged_in_' . $rocket_cookie_hash ] );
-		$user_key = reset( ( $user_key ) );
-		$user_key = $user_key . '-' . $rocket_secret_cache_key;
+		$rocket_user_key = explode( '|', $_COOKIE[ 'wordpress_logged_in_' . $rocket_cookie_hash ] );
+		$rocket_user_key = reset( ( $rocket_user_key ) );
+		$rocket_user_key = $rocket_user_key . '-' . $rocket_secret_cache_key;
 
 		// Get cache folder of host name.
-		$request_uri_path = $rocket_cache_path . $host . '-' . $user_key . rtrim( $request_uri, '/' );
+		$request_uri_path = $rocket_cache_path . $rocket_host . '-' . $rocket_user_key . rtrim( $rocket_request_uri, '/' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 	}
 }
 else {
-	$request_uri_path = $rocket_cache_path . $host . rtrim( $request_uri, '/' );
+	$request_uri_path = $rocket_cache_path . $rocket_host . rtrim( $rocket_request_uri, '/' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 }
 
-$filename = 'index';
+$rocket_filename = 'index';
 
 // Rename the caching filename for mobile.
 if ( isset( $rocket_cache_mobile, $rocket_do_caching_mobile_files, $rocket_cache_mobile_files_tablet ) && class_exists( 'Rocket_Mobile_Detect' ) ) {
-	$detect = new Rocket_Mobile_Detect();
+	$rocket_detect = new Rocket_Mobile_Detect();
 
-	if ( $detect->isMobile() && ! $detect->isTablet() && 'desktop' === $rocket_cache_mobile_files_tablet || ( $detect->isMobile() || $detect->isTablet() ) && 'mobile' === $rocket_cache_mobile_files_tablet ) {
-		$filename .= '-mobile';
+	if ( $rocket_detect->isMobile() && ! $rocket_detect->isTablet() && 'desktop' === $rocket_cache_mobile_files_tablet || ( $rocket_detect->isMobile() || $rocket_detect->isTablet() ) && 'mobile' === $rocket_cache_mobile_files_tablet ) {
+		$rocket_filename .= '-mobile';
 	}
 }
 
 // Rename the caching filename for SSL URLs.
 if ( ( is_ssl() && ! empty( $rocket_cache_ssl ) ) ) {
-	$filename .= '-https';
+	$rocket_filename .= '-https';
 }
 
 // Rename the caching filename depending to dynamic cookies.
 if ( ! empty( $rocket_cache_dynamic_cookies ) ) {
-	foreach ( $rocket_cache_dynamic_cookies as $key => $cookie_name ) {
+	foreach ( $rocket_cache_dynamic_cookies as $key => $cookie_name ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 		if ( is_array( $cookie_name ) && isset( $_COOKIE[ $key ] ) ) {
-			foreach ( $cookie_name as $cookie_key ) {
+			foreach ( $cookie_name as $cookie_key ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 				if ( '' !== $_COOKIE[ $key ][ $cookie_key ] ) {
-					$cache_key = $_COOKIE[ $key ][ $cookie_key ];
-					$cache_key = preg_replace( '/[^a-z0-9_\-]/i', '-', $cache_key );
-					$filename .= '-' . $cache_key;
+					$rocket_cache_key = $_COOKIE[ $key ][ $cookie_key ];
+					$rocket_cache_key = preg_replace( '/[^a-z0-9_\-]/i', '-', $cache_key );
+					$rocket_filename .= '-' . $rocket_cache_key;
 				}
 			}
 			continue;
 		}
 
 		if ( isset( $_COOKIE[ $cookie_name ] ) && '' !== $_COOKIE[ $cookie_name ] ) {
-			$cache_key = $_COOKIE[ $cookie_name ];
-			$cache_key = preg_replace( '/[^a-z0-9_\-]/i', '-', $cache_key );
-			$filename .= '-' . $cache_key;
+			$rocket_cache_key = $_COOKIE[ $cookie_name ];
+			$rocket_cache_key = preg_replace( '/[^a-z0-9_\-]/i', '-', $cache_key );
+			$rocket_filename .= '-' . $rocket_cache_key;
 		}
 	}
 }
 
 // Caching file path.
-$request_uri_path = preg_replace_callback( '/%[0-9A-F]{2}/', 'rocket_urlencode_lowercase', $request_uri_path );
+$request_uri_path = preg_replace_callback( '/%[0-9A-F]{2}/', 'rocket_urlencode_lowercase', $request_uri_path ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 // Directories in Windows can't contain question marks
-$request_uri_path = str_replace( '?', '_', $request_uri_path );
+$request_uri_path = str_replace( '?', '_', $request_uri_path ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 
 $rocket_cache_filepath = $request_uri_path . '/' . $filename . '.html';
 

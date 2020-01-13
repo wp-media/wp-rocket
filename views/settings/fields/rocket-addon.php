@@ -18,7 +18,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$settings_page = ! empty( $data['settings_page'] ) ? $data['settings_page'] : '';
+$rocket_settings_page = ! empty( $data['settings_page'] ) ? $data['settings_page'] : '';
 ?>
 
 <fieldset class="wpr-fieldsContainer-fieldset">
@@ -52,8 +52,8 @@ $settings_page = ! empty( $data['settings_page'] ) ? $data['settings_page'] : ''
 						<?php echo $data['description']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
 					</div>
 				<?php endif; ?>
-				<?php if ( $settings_page ) : ?>
-					<a href="#<?php echo esc_attr( $settings_page ); ?>" class="wpr-button wpr-button--small wpr-button--icon wpr-button--purple wpr-icon-chevron-right wpr-toggle-button wpr-<?php echo esc_attr( $settings_page ); ?>ToggleButton"><?php esc_html_e( 'Modify options', 'rocket' ); ?></a>
+				<?php if ( $rocket_settings_page ) : ?>
+					<a href="#<?php echo esc_attr( $rocket_settings_page ); ?>" class="wpr-button wpr-button--small wpr-button--icon wpr-button--purple wpr-icon-chevron-right wpr-toggle-button wpr-<?php echo esc_attr( $rocket_settings_page ); ?>ToggleButton"><?php esc_html_e( 'Modify options', 'rocket' ); ?></a>
 				<?php endif; ?>
 			</div>
 		</div>
