@@ -122,9 +122,9 @@ function rocket_save_metabox_options() {
 		if ( 'publish' === $_POST['post_status'] ) {
 			$new_cache_reject_uri = $cache_reject_uri = get_rocket_option( 'cache_reject_uri' );
 			$rejected_uris        = array_flip( $cache_reject_uri );
-			$path                 = rocket_clean_exclude_file( get_permalink( $_POST['post_ID'] ) );
+			$path                 = rocket_clean_exclude_file( get_permalink( (int) $_POST['post_ID'] ) );
 
-			if ( isset( $_POST['rocket_post_nocache'] ) && $_POST['rocket_post_nocache'] ) {
+			if ( isset( $_POST['rocket_post_nocache'] ) ) {
 				if ( ! isset( $rejected_uris[ $path ] ) ) {
 					array_push( $new_cache_reject_uri, $path );
 				}
@@ -156,12 +156,12 @@ function rocket_save_metabox_options() {
 		];
 
 		foreach ( $fields as $field ) {
-			if ( isset( $_POST['rocket_post_exclude_hidden'][ $field ] ) && $_POST['rocket_post_exclude_hidden'][ $field ] ) {
+			if ( isset( $_POST['rocket_post_exclude_hidden'][ $field ] ) ) {
 				if ( isset( $_POST['rocket_post_exclude'][ $field ] ) ) {
-					delete_post_meta( $_POST['post_ID'], '_rocket_exclude_' . $field );
+					delete_post_meta( (int) $_POST['post_ID'], '_rocket_exclude_' . $field );
 				} else {
 					if ( get_rocket_option( $field ) ) {
-						update_post_meta( $_POST['post_ID'], '_rocket_exclude_' . $field, true );
+						update_post_meta( (int) $_POST['post_ID'], '_rocket_exclude_' . $field, true );
 					}
 				}
 			}

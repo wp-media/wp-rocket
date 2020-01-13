@@ -1068,7 +1068,7 @@ function rocket_notice_html( $args ) {
 		if ( $args['action'] || $args['dismiss_button'] ) :
 			?>
 		<p>
-			<?php echo esc_attr( $args['action'] ); ?>
+			<?php echo $args['action']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			<?php if ( $args['dismiss_button'] ) : ?>
 			<a class="rocket-dismiss" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=' . $args['dismiss_button'] ), 'rocket_ignore_' . $args['dismiss_button'] ) ); ?>"><?php _e( 'Dismiss this notice.', 'rocket' ); ?></a>
 			<?php endif; ?>

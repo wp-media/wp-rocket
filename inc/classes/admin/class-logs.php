@@ -147,7 +147,7 @@ class Logs implements Subscriber_Interface {
 	 * @return bool
 	 */
 	protected function verify_nonce( $nonce_name ) {
-		return isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], $nonce_name );
+		return isset( $_GET['_wpnonce'] ) && wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), $nonce_name );
 	}
 
 	/**

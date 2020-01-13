@@ -141,6 +141,6 @@ abstract class Minify_Subscriber implements Subscriber_Interface {
 			return $url;
 		}
 
-		return str_replace( $url_host, $_SERVER['HTTP_HOST'], $url );
+		return str_replace( $url_host, sanitize_text_field( $_SERVER['HTTP_HOST'] ), $url );
 	}
 }

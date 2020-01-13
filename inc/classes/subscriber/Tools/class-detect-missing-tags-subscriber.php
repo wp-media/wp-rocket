@@ -41,7 +41,7 @@ class Detect_Missing_Tags_Subscriber implements Subscriber_Interface {
 			return;
 		}
 		// If content type is not HTML do not report missing tags.
-		if ( empty( $_SERVER['content_type'] ) || false === strpos( wp_unslash( $_SERVER['content_type'] ), 'text/html' ) ) {
+		if ( empty( $_SERVER['content_type'] ) || false === strpos( wp_unslash( $_SERVER['content_type'] ), 'text/html' ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 			return;
 		}
 		// If the content does not contain HTML Doctype, do not report missing tags.
@@ -182,7 +182,7 @@ class Detect_Missing_Tags_Subscriber implements Subscriber_Interface {
 			return '';
 		}
 
-		return '/' . esc_html( ltrim( wp_unslash( $_SERVER['REQUEST_URI'] ), '/' ) );
+		return '/' . esc_html( ltrim( filter_var( wp_unslash( $_SERVER['REQUEST_URI'] ), FILTER_SANITIZE_URL ), '/' ) );
 	}
 
 	/**

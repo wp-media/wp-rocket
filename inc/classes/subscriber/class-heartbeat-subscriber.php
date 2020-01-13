@@ -98,7 +98,7 @@ class Heartbeat_Subscriber implements Subscriber_Interface {
 	 * @return string Either 'site' (frontend), 'admin' (backend), or 'editor'.
 	 */
 	private function get_current_context() {
-		$request_uri = ! empty( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '';
+		$request_uri = ! empty( $_SERVER['REQUEST_URI'] ) ? filter_var( wp_unslash( $_SERVER['REQUEST_URI'] ), FILTER_SANITIZE_URL ) : '';
 		$request_uri = explode( '?', $request_uri, 2 );
 		$request_uri = reset( $request_uri );
 
@@ -108,7 +108,7 @@ class Heartbeat_Subscriber implements Subscriber_Interface {
 			$context = 'admin';
 
 			if ( wp_doing_ajax() && ! empty( $_POST['action'] ) ) {
-				if ( 'wp-remove-post-lock' === wp_unslash( $_POST['action'] ) ) {
+				if ( 'wp-remove-post-lock' === sanitize_key( wp_unslash( $_POST['action'] ) ) ) {
 					$context = 'editor';
 				} elseif ( ! empty( $_POST['screen_id'] ) ) {
 					switch ( $_POST['screen_id'] ) {
