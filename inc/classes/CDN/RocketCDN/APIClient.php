@@ -64,7 +64,7 @@ class APIClient {
 		);
 
 		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
-			$this->set_status_transient( $default );
+			$this->set_status_transient( $default, 3 * MINUTE_IN_SECONDS );
 
 			return $default;
 		}
@@ -72,7 +72,7 @@ class APIClient {
 		$data = wp_remote_retrieve_body( $response );
 
 		if ( empty( $data ) ) {
-			$this->set_status_transient( $default );
+			$this->set_status_transient( $default, 3 * MINUTE_IN_SECONDS );
 
 			return $default;
 		}
@@ -80,7 +80,7 @@ class APIClient {
 		$data = json_decode( $data, true );
 		$data = array_intersect_key( $data, $default );
 
-		$this->set_status_transient( $data );
+		$this->set_status_transient( $data, WEEK_IN_SECONDS );
 
 		return $data;
 	}
@@ -92,10 +92,11 @@ class APIClient {
 	 * @author Remy Perona
 	 *
 	 * @param array $value Transient value.
+	 * @param int   $duration Transient duration.
 	 * @return void
 	 */
-	private function set_status_transient( $value ) {
-		set_transient( 'rocketcdn_status', $value, WEEK_IN_SECONDS );
+	private function set_status_transient( $value, $duration ) {
+		set_transient( 'rocketcdn_status', $value, $duration );
 	}
 
 	/**
