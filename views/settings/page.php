@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 
 settings_errors( $data['slug'] ); ?>
 <div class="wpr-wrap wrap">
-	<h1 class="screen-reader-text"><?php _e( 'WP Rocket Settings', 'rocket' ); ?></h1>
+	<h1 class="screen-reader-text"><?php esc_html_e( 'WP Rocket Settings', 'rocket' ); ?></h1>
 	<div class="wpr-body">
 
 		<header class="wpr-Header">
@@ -54,7 +54,7 @@ settings_errors( $data['slug'] ); ?>
 					<label for="wpr-js-tips">
 						<span data-l10n-active="<?php echo esc_attr_x( 'On', 'Active state of checkbox', 'rocket' ); ?>"
 							data-l10n-inactive="<?php echo esc_attr_x( 'Off', 'Inactive state of checkbox', 'rocket' ); ?>" class="wpr-radio-ui"></span>
-						<?php _e( 'Show Sidebar', 'rocket' ); ?></label>
+						<?php esc_html_e( 'Show Sidebar', 'rocket' ); ?></label>
 				</div>
 			</div>
 				<?php
@@ -94,7 +94,7 @@ settings_errors( $data['slug'] ); ?>
 			<p><?php esc_html_e( 'Below is a detailed view of all data WP Rocket will collect <strong>if granted permission.</strong>', 'rocket' ); ?></p>
 			<?php echo rocket_data_collection_preview_table(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
 			<div class="wpr-Popin-flex">
-				<p><?php _e( 'WP Rocket will never transmit any domain names or email addresses (except for license validation), IP addresses, or third-party API keys.', 'rocket' ); ?></p>
+				<p><?php esc_html_e( 'WP Rocket will never transmit any domain names or email addresses (except for license validation), IP addresses, or third-party API keys.', 'rocket' ); ?></p>
 				<div>
 					<button class="wpr-button wpr-button--small wpr-button--icon wpr-icon-check wpr-button--blue"><?php esc_html_e( 'Activate Rocket analytics', 'rocket' ); ?></button>
 				</div>

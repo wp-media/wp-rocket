@@ -34,8 +34,8 @@ if ( rocket_direct_filesystem()->exists( Logger::get_log_file_path() ) ) {
 	</div>
 	<div class="wpr-tools">
 		<div class="wpr-tools-col">
-			<div class="wpr-title3 wpr-tools-label wpr-icon-export"><?php _e( 'Export settings', 'rocket' ); ?></div>
-			<div class="wpr-field-description"><?php _e( 'Download a backup file of your settings', 'rocket' ); ?></div>
+			<div class="wpr-title3 wpr-tools-label wpr-icon-export"><?php esc_html_e( 'Export settings', 'rocket' ); ?></div>
+			<div class="wpr-field-description"><?php esc_html_e( 'Download a backup file of your settings', 'rocket' ); ?></div>
 		</div>
 		<div class="wpr-tools-col">
 			<?php
@@ -57,14 +57,17 @@ if ( rocket_direct_filesystem()->exists( Logger::get_log_file_path() ) ) {
 
 	<div class="wpr-tools">
 		<div class="wpr-tools-col">
-			<div class="wpr-title3 wpr-tools-label wpr-icon-rollback"><?php _e( 'Rollback', 'rocket' ); ?></div>
+			<div class="wpr-title3 wpr-tools-label wpr-icon-rollback"><?php esc_html_e( 'Rollback', 'rocket' ); ?></div>
 			<div class="wpr-field-description">
 				<?php
 				// translators: %s = WP Rocket version number.
 				printf( esc_html__( 'Has version %s caused an issue on your website?', 'rocket' ), esc_html( WP_ROCKET_VERSION ) );
 				?>
 				<br><br>
-				<?php _e( 'You can rollback to the previous major version here.<br>Then send us a support request.', 'rocket' ); ?>
+				<?php
+				// translators: %s = <br>
+				printf( esc_html__( 'You can rollback to the previous major version here.%sThen send us a support request.', 'rocket' ), '<br/>' );
+				?>
 			</div>
 		</div>
 		<div class="wpr-tools-col">

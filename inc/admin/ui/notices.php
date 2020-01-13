@@ -1060,7 +1060,7 @@ function rocket_notice_html( $args ) {
 			echo ( $tag ? '<p>' : '' ) . $args['message'] . ( $tag ? '</p>' : '' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 		?>
 		<?php if ( ! empty( $args['readonly_content'] ) ) : ?>
-		<p><?php _e( 'The following code should have been written to this file:', 'rocket' ); ?>
+		<p><?php esc_html_e( 'The following code should have been written to this file:', 'rocket' ); ?>
 			<br><textarea readonly="readonly" id="rules" name="rules" class="large-text readonly" rows="6"><?php echo esc_textarea( $args['readonly_content'] ); ?></textarea>
 		</p>
 			<?php
@@ -1070,7 +1070,7 @@ function rocket_notice_html( $args ) {
 		<p>
 			<?php echo $args['action']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			<?php if ( $args['dismiss_button'] ) : ?>
-			<a class="rocket-dismiss" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=' . $args['dismiss_button'] ), 'rocket_ignore_' . $args['dismiss_button'] ) ); ?>"><?php _e( 'Dismiss this notice.', 'rocket' ); ?></a>
+			<a class="rocket-dismiss" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=' . $args['dismiss_button'] ), 'rocket_ignore_' . $args['dismiss_button'] ) ); ?>"><?php esc_html_e( 'Dismiss this notice.', 'rocket' ); ?></a>
 			<?php endif; ?>
 		</p>
 		<?php endif; ?>

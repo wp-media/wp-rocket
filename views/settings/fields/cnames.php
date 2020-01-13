@@ -29,7 +29,7 @@ $rocket_cnames_zone = get_rocket_option( 'cdn_zone' );
 						<div class="wpr-text">
 							<input type="text" name="wp_rocket_settings[cdn_cnames][<?php echo esc_attr( $key ); ?>]" value="<?php echo esc_attr( $url ); ?>" placeholder="cdn.example.com" />
 						</div>
-						<div class="wpr-field-betweenText"><?php _e( 'reserved for', 'rocket' ); ?></div>
+						<div class="wpr-field-betweenText"><?php esc_html_e( 'reserved for', 'rocket' ); ?></div>
 						<div class="wpr-select">
 							<select name="wp_rocket_settings[cdn_zone][<?php echo esc_attr( $key ); ?>]">
 								<option value="all" <?php selected( $rocket_cnames_zone[ $key ], 'all' ); ?>><?php esc_html_e( 'All files', 'rocket' ); ?></option>
@@ -61,7 +61,7 @@ $rocket_cnames_zone = get_rocket_option( 'cdn_zone' );
 				<div class="wpr-text">
 					<input type="text" name="wp_rocket_settings[cdn_cnames][]" placeholder="cdn.example.com" />
 				</div>
-				<div class="wpr-field-betweenText"><?php _e( 'reserved for', 'rocket' ); ?></div>
+				<div class="wpr-field-betweenText"><?php esc_html_e( 'reserved for', 'rocket' ); ?></div>
 				<div class="wpr-select">
 					<select name="wp_rocket_settings[cdn_zone][]">
 						<option value="all"><?php esc_html_e( 'All files', 'rocket' ); ?></option>
@@ -91,7 +91,7 @@ $rocket_cnames_zone = get_rocket_option( 'cdn_zone' );
 				<div class="wpr-text">
 					<input type="text" name="wp_rocket_settings[cdn_cnames][]" placeholder="cdn.example.com" />
 				</div>
-				<div class="wpr-field-betweenText"><?php _e( 'reserved for', 'rocket' ); ?></div>
+				<div class="wpr-field-betweenText"><?php esc_html_e( 'reserved for', 'rocket' ); ?></div>
 				<div class="wpr-select">
 					<select name="wp_rocket_settings[cdn_zone][]">
 						<option value="all"><?php esc_html_e( 'All files', 'rocket' ); ?></option>
