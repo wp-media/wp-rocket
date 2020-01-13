@@ -6,7 +6,10 @@ document.addEventListener( 'DOMContentLoaded', function() {
     });
 
     MicroModal.init({
-        disableScroll: true
+        disableScroll: true,
+        onClose: function() {
+            document.location.reload();
+        }
     });
 });
 
