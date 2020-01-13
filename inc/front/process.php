@@ -3,17 +3,17 @@
 defined( 'ABSPATH' ) || exit;
 
 // Don't cache robots.txt && .htaccess directory (it's happened sometimes with weird server configuration).
-if ( strstr( filter_var( wp_unslash( $_SERVER['REQUEST_URI'] ), FILTER_SANITIZE_URL ), 'robots.txt' ) || strstr( filter_var( wp_unslash( $_SERVER['REQUEST_URI'] ), FILTER_SANITIZE_URL ), '.htaccess' ) ) {
+if ( strstr( wp_unslash( $_SERVER['REQUEST_URI'] ), 'robots.txt' ) || strstr( wp_unslash( $_SERVER['REQUEST_URI'] ), '.htaccess' ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 	rocket_define_donotoptimize_constant( true );
 
 	return;
 }
 
-$rocket_request_uri = explode( '?', filter_var( wp_unslash( $_SERVER['REQUEST_URI'] ), FILTER_SANITIZE_URL ) );
+$rocket_request_uri = explode( '?', wp_unslash( $_SERVER['REQUEST_URI'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 $rocket_request_uri = reset( $rocket_request_uri );
 
 // Don't cache disallowed extensions.
-if ( strtolower( filter_var( wp_unslash( $_SERVER['REQUEST_URI'] ), FILTER_SANITIZE_URL ) ) !== '/index.php' && in_array( pathinfo( $rocket_request_uri, PATHINFO_EXTENSION ), [ 'php', 'xml', 'xsl' ], true ) ) {
+if ( strtolower( wp_unslash( $_SERVER['REQUEST_URI'] ) ) !== '/index.php' && in_array( pathinfo( $rocket_request_uri, PATHINFO_EXTENSION ), [ 'php', 'xml', 'xsl' ], true ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 	rocket_define_donotoptimize_constant( true );
 
 	return;
@@ -51,7 +51,7 @@ if ( ! isset( $_SERVER['REQUEST_METHOD'] ) || 'GET' !== $_SERVER['REQUEST_METHOD
 $rocket_config_path      = WP_ROCKET_CONFIG_PATH;
 $rocket_real_config_path = realpath( $rocket_config_path ) . DIRECTORY_SEPARATOR;
 
-$rocket_host = isset( $_SERVER['HTTP_HOST'] ) ? filter_var( $_SERVER['HTTP_HOST'], FILTER_SANITIZE_URL ) : (string) time(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+$rocket_host = isset( $_SERVER['HTTP_HOST'] ) ? $_SERVER['HTTP_HOST'] : (string) time(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 $rocket_host = preg_replace( '/:\d+$/', '', $rocket_host );
 $rocket_host = trim( strtolower( $rocket_host ), '.' );
 $rocket_host = rawurlencode( $rocket_host );
@@ -61,7 +61,7 @@ if ( realpath( $rocket_config_path . $rocket_host . '.php' ) && 0 === stripos( r
 	include $rocket_config_path . $rocket_host . '.php';
 	$rocket_continue = true;
 } else {
-	$path = str_replace( '\\', '/', strtok( filter_var( $_SERVER['REQUEST_URI'], FILTER_SANITIZE_URL ), '?' ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+	$path = str_replace( '\\', '/', strtok( $_SERVER['REQUEST_URI'], '?' ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 	$path = preg_replace( '|(?<=.)/+|', '/', $path );
 	$path = explode( '%2F', preg_replace( '/^(?:%2F)*(.*?)(?:%2F)*$/', '$1', rawurlencode( $path ) ) );
 

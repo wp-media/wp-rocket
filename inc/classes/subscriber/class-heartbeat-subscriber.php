@@ -98,7 +98,7 @@ class Heartbeat_Subscriber implements Subscriber_Interface {
 	 * @return string Either 'site' (frontend), 'admin' (backend), or 'editor'.
 	 */
 	private function get_current_context() {
-		$request_uri = ! empty( $_SERVER['REQUEST_URI'] ) ? filter_var( wp_unslash( $_SERVER['REQUEST_URI'] ), FILTER_SANITIZE_URL ) : '';
+		$request_uri = ! empty( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		$request_uri = explode( '?', $request_uri, 2 );
 		$request_uri = reset( $request_uri );
 

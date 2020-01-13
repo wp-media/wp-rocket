@@ -11,7 +11,12 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  */
 class SyntaxHighlighter_Subscriber implements Subscriber_Interface {
 	/**
-	 * @inheritDoc
+	 * Return an array of events that this subscriber wants to listen to.
+	 *
+	 * @since  3.3.1
+	 * @author Remy Perona
+	 *
+	 * @return array
 	 */
 	public static function get_subscribed_events() {
 		if ( ! class_exists( 'SyntaxHighlighter' ) ) {

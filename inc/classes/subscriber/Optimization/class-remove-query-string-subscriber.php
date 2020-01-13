@@ -34,7 +34,12 @@ class Remove_Query_String_Subscriber extends Minify_Subscriber {
 	}
 
 	/**
-	 * @inheritDoc
+	 * Return an array of events that this subscriber wants to listen to.
+	 *
+	 * @since  3.1
+	 * @author Remy Perona
+	 *
+	 * @return array
 	 */
 	public static function get_subscribed_events() {
 		return [
@@ -63,7 +68,12 @@ class Remove_Query_String_Subscriber extends Minify_Subscriber {
 	}
 
 	/**
-	 * @inheritDoc
+	 * Checks if is allowed to remove query strings for static files.
+	 *
+	 * @since 3.1
+	 * @author Remy Perona
+	 *
+	 * @return bool
 	 */
 	protected function is_allowed() {
 		return $this->remove_query_string->is_allowed();
