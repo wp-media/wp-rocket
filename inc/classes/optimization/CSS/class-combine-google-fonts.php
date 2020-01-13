@@ -90,7 +90,7 @@ class Combine_Google_Fonts extends Abstract_Optimization {
 	protected function find( $pattern, $html ) {
 		preg_match_all( '/' . $pattern . '/Umsi', $html, $matches, PREG_SET_ORDER );
 
-		if ( count( $matches ) <= 1 ) {
+		if ( count( $matches ) == 0 ) {
 			return false;
 		}
 
