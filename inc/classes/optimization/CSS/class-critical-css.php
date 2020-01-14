@@ -201,7 +201,7 @@ class Critical_CSS {
 		$post_types = esc_sql( $post_types );
 		$post_types = "'" . implode( "','", $post_types ) . "'";
 
-		$rows = $wpdb->get_results( // WPCS: unprepared SQL ok.
+		$rows = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 			"
 		    SELECT MAX(ID) as ID, post_type
 		    FROM (
@@ -258,7 +258,7 @@ class Critical_CSS {
 		$taxonomies = esc_sql( $taxonomies );
 		$taxonomies = "'" . implode( "','", $taxonomies ) . "'";
 
-		$rows = $wpdb->get_results( // WPCS: unprepared SQL ok.
+		$rows = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 			"
 			SELECT MAX( term_id ) AS ID, taxonomy
 			FROM (

@@ -61,7 +61,7 @@ class Optimization_Process extends \WP_Background_Process {
 
 		switch ( $item ) {
 			case 'database_revisions':
-				$query = $wpdb->get_col( "SELECT ID FROM $wpdb->posts WHERE post_type = 'revision'" );
+				$query = $wpdb->get_col( "SELECT ID FROM $wpdb->posts WHERE post_type = 'revision'" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 				if ( $query ) {
 					$number = 0;
 					foreach ( $query as $id ) {
@@ -72,7 +72,7 @@ class Optimization_Process extends \WP_Background_Process {
 				}
 				break;
 			case 'database_auto_drafts':
-				$query = $wpdb->get_col( "SELECT ID FROM $wpdb->posts WHERE post_status = 'auto-draft'" );
+				$query = $wpdb->get_col( "SELECT ID FROM $wpdb->posts WHERE post_status = 'auto-draft'" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 				if ( $query ) {
 					$number = 0;
 					foreach ( $query as $id ) {
@@ -83,7 +83,7 @@ class Optimization_Process extends \WP_Background_Process {
 				}
 				break;
 			case 'database_trashed_posts':
-				$query = $wpdb->get_col( "SELECT ID FROM $wpdb->posts WHERE post_status = 'trash'" );
+				$query = $wpdb->get_col( "SELECT ID FROM $wpdb->posts WHERE post_status = 'trash'" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 				if ( $query ) {
 					$number = 0;
 					foreach ( $query as $id ) {
@@ -94,7 +94,7 @@ class Optimization_Process extends \WP_Background_Process {
 				}
 				break;
 			case 'database_spam_comments':
-				$query = $wpdb->get_col( "SELECT comment_ID FROM $wpdb->comments WHERE comment_approved = 'spam'" );
+				$query = $wpdb->get_col( "SELECT comment_ID FROM $wpdb->comments WHERE comment_approved = 'spam'" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 				if ( $query ) {
 					$number = 0;
 					foreach ( $query as $id ) {
@@ -105,7 +105,7 @@ class Optimization_Process extends \WP_Background_Process {
 				}
 				break;
 			case 'database_trashed_comments':
-				$query = $wpdb->get_col( "SELECT comment_ID FROM $wpdb->comments WHERE (comment_approved = 'trash' OR comment_approved = 'post-trashed')" );
+				$query = $wpdb->get_col( "SELECT comment_ID FROM $wpdb->comments WHERE (comment_approved = 'trash' OR comment_approved = 'post-trashed')" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 				if ( $query ) {
 					$number = 0;
 					foreach ( $query as $id ) {
@@ -117,7 +117,7 @@ class Optimization_Process extends \WP_Background_Process {
 				break;
 			case 'database_expired_transients':
 				$time  = isset( $_SERVER['REQUEST_TIME'] ) ? (int) $_SERVER['REQUEST_TIME'] : time();
-				$query = $wpdb->get_col( $wpdb->prepare( "SELECT option_name FROM $wpdb->options WHERE option_name LIKE %s AND option_value < %d", $wpdb->esc_like( '_transient_timeout' ) . '%', $time ) );
+				$query = $wpdb->get_col( $wpdb->prepare( "SELECT option_name FROM $wpdb->options WHERE option_name LIKE %s AND option_value < %d", $wpdb->esc_like( '_transient_timeout' ) . '%', $time ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 
 				if ( $query ) {
 					$number = 0;
@@ -130,7 +130,7 @@ class Optimization_Process extends \WP_Background_Process {
 				}
 				break;
 			case 'database_all_transients':
-				$query = $wpdb->get_col( $wpdb->prepare( "SELECT option_name FROM $wpdb->options WHERE option_name LIKE %s OR option_name LIKE %s", $wpdb->esc_like( '_transient_' ) . '%', $wpdb->esc_like( '_site_transient_' ) . '%' ) );
+				$query = $wpdb->get_col( $wpdb->prepare( "SELECT option_name FROM $wpdb->options WHERE option_name LIKE %s OR option_name LIKE %s", $wpdb->esc_like( '_transient_' ) . '%', $wpdb->esc_like( '_site_transient_' ) . '%' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 				if ( $query ) {
 					$number = 0;
 					foreach ( $query as $transient ) {
@@ -145,11 +145,11 @@ class Optimization_Process extends \WP_Background_Process {
 				}
 				break;
 			case 'database_optimize_tables':
-				$query = $wpdb->get_results( "SELECT table_name, data_free FROM information_schema.tables WHERE table_schema = '" . DB_NAME . "' and Engine <> 'InnoDB' and data_free > 0" );
+				$query = $wpdb->get_results( "SELECT table_name, data_free FROM information_schema.tables WHERE table_schema = '" . DB_NAME . "' and Engine <> 'InnoDB' and data_free > 0" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 				if ( $query ) {
 					$number = 0;
 					foreach ( $query as $table ) {
-						$number += (int) $wpdb->query( "OPTIMIZE TABLE $table->table_name" );
+						$number += (int) $wpdb->query( "OPTIMIZE TABLE $table->table_name" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 					}
 
 					$this->count[ $item ] = $number;
