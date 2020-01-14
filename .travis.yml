@@ -48,3 +48,4 @@ before_script:
   fi
 script:
 - composer run-tests
+- composer phpcs
