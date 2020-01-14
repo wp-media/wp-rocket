@@ -111,11 +111,11 @@ class Tests {
 			$args['cookies'] = $_COOKIE;
 		}
 
-		if ( ! isset( $args['post'] ) && ! empty( $_POST ) && is_array( $_POST ) ) { // WPCS: CSRF ok.
-			$args['post'] = $_POST; // WPCS: CSRF ok.
+		if ( ! isset( $args['post'] ) && ! empty( $_POST ) && is_array( $_POST ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$args['post'] = $_POST; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 		}
-		if ( ! isset( $args['get'] ) && ! empty( $_GET ) && is_array( $_GET ) ) { // WPCS: CSRF ok.
-			$args['get'] = $_GET; // WPCS: CSRF ok.
+		if ( ! isset( $args['get'] ) && ! empty( $_GET ) && is_array( $_GET ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.NonceVerification.Recommended
+			$args['get'] = $_GET; // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.NonceVerification.Recommended
 		}
 
 		self::$cookies = ! empty( $args['cookies'] ) && is_array( $args['cookies'] ) ? $args['cookies'] : [];

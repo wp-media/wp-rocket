@@ -84,7 +84,7 @@ class Critical_CSS {
 		 *
 		 * @param bool $do_rocket_critical_css_generation True to activate the automatic generation, false to prevent it.
 		 */
-		if ( ! apply_filters( 'do_rocket_critical_css_generation', true ) ) { // WPCS: prefix ok.
+		if ( ! apply_filters( 'do_rocket_critical_css_generation', true ) ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			return;
 		}
 

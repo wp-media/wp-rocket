@@ -26,6 +26,8 @@ class WooCommerce_Subscriber implements Event_Manager_Aware_Subscriber_Interface
 
 	/**
 	 * {@inheritdoc}
+	 *
+	 * @param Event_Manager $event_manager The WordPress Event Manager
 	 */
 	public function set_event_manager( Event_Manager $event_manager ) {
 		$this->event_manager = $event_manager;
@@ -363,11 +365,11 @@ class WooCommerce_Subscriber implements Event_Manager_Aware_Subscriber_Interface
 	 * @return boolean
 	 */
 	private function is_get_refreshed_fragments() {
-		if ( ! isset( $_GET['wc-ajax'] ) ) { // WPCS: CSRF ok.
+		if ( ! isset( $_GET['wc-ajax'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return false;
 		}
 
-		if ( 'get_refreshed_fragments' !== $_GET['wc-ajax'] ) { // WPCS: CSRF ok.
+		if ( 'get_refreshed_fragments' !== $_GET['wc-ajax'] ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return false;
 		}
 
