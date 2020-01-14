@@ -27,10 +27,13 @@ class Test_UpdateUserToken extends TestCase {
      */
     public function testShouldReturnNullWhenPOSTNotSet() {
         Functions\when('check_ajax_referer')->justReturn(true);
+        Functions\expect('wp_send_json_error')
+        ->once()
+        ->with('invalid_post_action');
 
         $page = new AdminPageSubscriber( $this->api_client, $this->options, $this->beacon, 'views/settings/rocketcdn');
 
-        $this->assertNull( $page->update_user_token() );
+        $page->update_user_token();
     }
 
     /**
@@ -38,13 +41,16 @@ class Test_UpdateUserToken extends TestCase {
      */
     public function testShouldReturnNullWhenInvalidPOSTAction() {
         Functions\when('check_ajax_referer')->justReturn(true);
+        Functions\expect('wp_send_json_error')
+        ->once()
+        ->with('invalid_post_action');
 
         $_POST['action'] = 'invalid';
         $_POST['value']  = 'test';
 
         $page = new AdminPageSubscriber( $this->api_client, $this->options, $this->beacon, 'views/settings/rocketcdn');
 
-        $this->assertNull( $page->update_user_token() );
+        $page->update_user_token();
     }
 
     /**
@@ -59,6 +65,10 @@ class Test_UpdateUserToken extends TestCase {
         Functions\expect('delete_option')
         ->once()
         ->with('rocketcdn_user_token');
+        Functions\expect('wp_send_json_success')
+        ->once()
+        ->with('user_token_deleted')
+        ->andReturn();
 
         $page = new AdminPageSubscriber( $this->api_client, $this->options, $this->beacon, 'views/settings/rocketcdn');
 
@@ -71,13 +81,16 @@ class Test_UpdateUserToken extends TestCase {
     public function testShouldReturnNullWhenValueLengthIsNot40() {
         Functions\when('check_ajax_referer')->justReturn(true);
         Functions\when('sanitize_key')->returnArg();
+        Functions\expect('wp_send_json_error')
+        ->once()
+        ->with('invalid_token_length');
 
         $_POST['action'] = 'save_rocketcdn_token';
         $_POST['value']  = 'test';
 
         $page = new AdminPageSubscriber( $this->api_client, $this->options, $this->beacon, 'views/settings/rocketcdn');
 
-        $this->assertNull( $page->update_user_token() );
+        $page->update_user_token();
     }
 
     /**
@@ -93,6 +106,9 @@ class Test_UpdateUserToken extends TestCase {
         Functions\expect('update_option')
         ->once()
         ->with('rocketcdn_user_token', '9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b');
+        Functions\expect('wp_send_json_success')
+        ->once()
+        ->with('user_token_saved');
 
         $page = new AdminPageSubscriber( $this->api_client, $this->options, $this->beacon, 'views/settings/rocketcdn');
 
