@@ -330,7 +330,7 @@ function rocket_clean_post_cache_on_status_change( $post_id, $post_data ) {
 	 * @param array   $purge_urls URLs cache files to remove
 	 * @param string  $lang       The post language
 	 */
-	do_action( 'before_rocket_clean_post', $post, $purge_urls, $lang );
+	do_action( 'before_rocket_clean_post', $post, $purge_urls, $lang ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 
 	// Purge all files.
 	rocket_clean_files( $purge_urls );
@@ -350,7 +350,7 @@ function rocket_clean_post_cache_on_status_change( $post_id, $post_data ) {
 	 * @param array   $purge_urls URLs cache files to remove
 	 * @param string  $lang       The post language
 	 */
-	do_action( 'after_rocket_clean_post', $post, $purge_urls, $lang );
+	do_action( 'after_rocket_clean_post', $post, $purge_urls, $lang ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 }
 add_action( 'pre_post_update', 'rocket_clean_post_cache_on_status_change', 10, 2 );
 

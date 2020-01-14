@@ -489,7 +489,7 @@ class Render extends Abstract_render {
 		 *
 		 * @param int $max_upload_size Allowed upload size. Default 1 MB.
 		 */
-		$args['bytes']       = apply_filters( 'import_upload_size_limit', wp_max_upload_size() ); // Filter from WP Core.
+		$args['bytes']       = apply_filters( 'import_upload_size_limit', wp_max_upload_size() ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		$args['size']        = size_format( $args['bytes'] );
 		$args['upload_dir']  = wp_upload_dir();
 		$args['action']      = 'rocket_import_settings';

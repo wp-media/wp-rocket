@@ -344,7 +344,7 @@ function do_rocket_callback( $buffer ) {
 		 *
 		 * @param bool true will force the caching file generation.
 		 */
-		if ( apply_filters( 'do_rocket_generate_caching_files', true ) ) {
+		if ( apply_filters( 'do_rocket_generate_caching_files', true ) ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			// Create cache folders of the request uri.
 			rocket_mkdir_p( $request_uri_path );
 

@@ -55,7 +55,7 @@ class Options_Data {
 		 *
 		 * @param mixed $default The default value.
 		*/
-		$value = apply_filters( 'pre_get_rocket_option_' . $key, null, $default );
+		$value = apply_filters( 'pre_get_rocket_option_' . $key, null, $default ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 
 		if ( null !== $value ) {
 			return $value;
@@ -78,7 +78,7 @@ class Options_Data {
 		 *
 		 * @param mixed $default The default value.
 		*/
-		return apply_filters( 'get_rocket_option_' . $key, $this->options[ $key ], $default );
+		return apply_filters( 'get_rocket_option_' . $key, $this->options[ $key ], $default ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 	}
 
 	/**

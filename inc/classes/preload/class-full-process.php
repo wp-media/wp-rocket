@@ -63,7 +63,7 @@ class Full_Process extends \WP_Background_Process {
 				'timeout'    => 0.01,
 				'blocking'   => false,
 				'user-agent' => 'WP Rocket/Preload',
-				'sslverify'  => apply_filters( 'https_local_ssl_verify', false ),
+				'sslverify'  => apply_filters( 'https_local_ssl_verify', false ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			]
 		);
 

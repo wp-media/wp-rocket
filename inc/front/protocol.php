@@ -9,7 +9,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * @param bool true will force the protocol rewrite
  */
-$do_rocket_protocol_rewrite = apply_filters( 'do_rocket_protocol_rewrite', false ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+$do_rocket_protocol_rewrite = apply_filters( 'do_rocket_protocol_rewrite', false ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound, WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 
 if ( ( get_rocket_option( 'do_cloudflare', 0 ) && get_rocket_option( 'cloudflare_protocol_rewrite', 0 ) || $do_rocket_protocol_rewrite ) ) {
 	add_filter( 'rocket_buffer', 'rocket_protocol_rewrite', PHP_INT_MAX );

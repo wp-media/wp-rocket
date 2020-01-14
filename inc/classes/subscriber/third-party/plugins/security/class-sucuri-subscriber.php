@@ -300,7 +300,7 @@ class Sucuri_Subscriber implements Subscriber_Interface {
 					'httpversion' => '1.1',
 					'blocking'    => true,
 					/** This filter is documented in wp-includes/class-wp-http-streams.php */
-					'sslverify'   => apply_filters( 'https_ssl_verify', true ),
+					'sslverify'   => apply_filters( 'https_ssl_verify', true ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 				]
 			);
 
