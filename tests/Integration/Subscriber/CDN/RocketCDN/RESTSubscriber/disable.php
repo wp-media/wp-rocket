@@ -23,7 +23,6 @@ class Test_Disable extends RESTfulTestCase {
 				'cdn_zone'   => [ 'all' ],
 			]
 		);
-		update_option( 'wp_rocket_rocketcdn_active', 1 );
 
 		// Request the "disable" endpoint.
 		$this->requestDisableEndpoint();
@@ -36,7 +35,6 @@ class Test_Disable extends RESTfulTestCase {
 			],
 			get_option( 'wp_rocket_settings' )
 		);
-		$this->assertSame( 0, get_option( 'wp_rocket_rocketcdn_active' ) );
 	}
 
 	/**

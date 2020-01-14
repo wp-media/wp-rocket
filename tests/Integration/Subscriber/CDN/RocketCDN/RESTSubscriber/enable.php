@@ -24,7 +24,6 @@ class Test_Enable extends RESTfulTestCase {
 			],
 			get_option( 'wp_rocket_settings' )
 		);
-		$this->assertSame( 1, get_option( 'wp_rocket_rocketcdn_active' ) );
 	}
 
 
