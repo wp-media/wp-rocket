@@ -53,23 +53,49 @@ window.addEventListener('load', function() {
 });
 
 window.onmessage = (e) => {
-	if ( e.origin == 'https://dave.wp-rocket.me' ) {
+    let iframeURL = 'https://dave.wp-rocket.me';
+
+	if ( e.origin == iframeURL ) {
 		if (e.data.hasOwnProperty("cdnFrameHeight")) {
-			document.getElementById("rocketcdn-iframe").style.height = `${e.data.cdnFrameHeight}px`;
+            document.getElementById("rocketcdn-iframe").style.height = `${e.data.cdnFrameHeight}px`;
+            return;
         }
 
 		if (e.data.hasOwnProperty("cdnFrameClose")) {
-			MicroModal.close('wpr-rocketcdn-modal');
+            MicroModal.close('wpr-rocketcdn-modal');
+            return;
         }
 
+        let iframe = document.querySelector('#rocketcdn-iframe').contentWindow;
+
         if (e.data.hasOwnProperty("cdn_token")) {
-            let postData = '';
+            let postData = '',
+            request = '';
 
             postData += 'action=save_rocketcdn_token';
             postData += '&value=' + e.data.cdn_token;
             postData += '&nonce=' + rocket_ajax_data.nonce;
 
-            rocketSendHTTPRequest( postData );
+            request = rocketSendHTTPRequest( postData );
+
+            request.onreadystatechange = function() {
+                if (request.readyState === XMLHttpRequest.DONE) {
+                    if (request.status === 200) {
+                        iframe.postMessage(
+                            request.responseText,
+                            iframeURL
+                        );
+                    }
+                }
+            };
+        } else {
+           iframe.postMessage(
+               {
+                   'success': false,
+                   'data': 'token_not_received'
+               },
+               iframeURL
+           );
         }
 	}
 };
@@ -80,4 +106,6 @@ function rocketSendHTTPRequest( postData ) {
     httpRequest.open( 'POST', ajaxurl );
     httpRequest.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' )
     httpRequest.send( postData );
+
+    return httpRequest;
 }
