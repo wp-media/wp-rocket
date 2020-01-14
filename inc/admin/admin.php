@@ -218,7 +218,7 @@ function rocket_do_options_export() {
 		wp_nonce_ays( '' );
 	}
 
-	$filename = sprintf( 'wp-rocket-settings-%s-%s.json', date( 'Y-m-d' ), uniqid() );
+	$filename = sprintf( 'wp-rocket-settings-%s-%s.json', date( 'Y-m-d' ), uniqid() ); // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
 	$gz       = 'gz' . strrev( 'etalfed' );
 	$options  = wp_json_encode( get_option( WP_ROCKET_SLUG ) ); // do not use get_rocket_option() here.
 	nocache_headers();

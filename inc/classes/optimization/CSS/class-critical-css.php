@@ -207,7 +207,8 @@ class Critical_CSS {
 		    FROM (
 		        SELECT ID, post_type
 		        FROM $wpdb->posts
-		        WHERE post_type IN ( $post_types )
+				WHERE post_type IN ( $post_types )" . // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			"
 		        AND post_status = 'publish'
 		        ORDER BY post_date DESC
 		    ) AS posts
@@ -264,11 +265,12 @@ class Critical_CSS {
 			FROM (
 				SELECT term_id, taxonomy
 				FROM $wpdb->term_taxonomy
-				WHERE taxonomy IN ( $taxonomies )
+				WHERE taxonomy IN ( $taxonomies )" . // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			'
 				AND count > 0
 			) AS taxonomies
 			GROUP BY taxonomy
-			"
+			'
 		);
 
 		return $rows;

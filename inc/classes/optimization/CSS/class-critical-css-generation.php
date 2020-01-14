@@ -114,7 +114,7 @@ class Critical_CSS_Generation extends \WP_Background_Process {
 			return false;
 		}
 
-		while ( $job_data = $this->get_critical_path( $data->data->id ) ) {
+		while ( $job_data = $this->get_critical_path( $data->data->id ) ) { // phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
 			if ( 400 === (int) $job_data->status ) {
 				// translators: %1$s = type of content, %2$s = error message.
 				$error                = sprintf( __( 'Critical CSS for %1$s not generated. Error: %2$s', 'rocket' ), $item['type'], $job_data->message );

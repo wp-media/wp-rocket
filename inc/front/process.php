@@ -447,7 +447,7 @@ function rocket_serve_cache_file( $rocket_cache_filepath ) {
 		}
 
 		// Serve the cache if file isn't store in the client browser cache.
-		readfile( $rocket_cache_filepath );
+		readfile( $rocket_cache_filepath ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_readfile
 
 		exit;
 	}

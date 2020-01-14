@@ -149,7 +149,7 @@ class Optimization_Process extends \WP_Background_Process {
 				if ( $query ) {
 					$number = 0;
 					foreach ( $query as $table ) {
-						$number += (int) $wpdb->query( "OPTIMIZE TABLE $table->table_name" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+						$number += (int) $wpdb->query( "OPTIMIZE TABLE $table->table_name" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 					}
 
 					$this->count[ $item ] = $number;

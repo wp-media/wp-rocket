@@ -19,7 +19,7 @@ if ( class_exists( 'psp' ) ) {
 
 		// Retun on all pages but WP Rocket settings page.
 		$screen = get_current_screen();
-		if ( 'settings_page_wprocket' != $screen->id ) {
+		if ( 'settings_page_wprocket' !== $screen->id ) {
 			return;
 		}
 
