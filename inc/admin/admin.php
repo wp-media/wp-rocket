@@ -128,7 +128,7 @@ add_filter( 'user_row_actions', 'rocket_user_row_actions', 10, 2 );
  * @param array $args An array of query args.
  */
 function rocket_dismiss_boxes( $args ) {
-	$args = empty( $args ) ? $_GET : $args;
+	$args = empty( $args ) ? $_GET : $args; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 	if ( isset( $args['box'], $args['_wpnonce'] ) ) {
 

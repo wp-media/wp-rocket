@@ -342,7 +342,7 @@ add_action( 'admin_notices', 'rocket_warning_using_permalinks' );
 function rocket_warning_wp_config_permissions() {
 	$config_file = rocket_find_wpconfig_path();
 
-	if ( ! ( 'plugins.php' === $GLOBALS['pagenow'] && isset( $_GET['activate'] ) )
+	if ( ! ( 'plugins.php' === $GLOBALS['pagenow'] && isset( $_GET['activate'] ) ) // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 		&& current_user_can( 'rocket_manage_options' )
 		&& ( ! rocket_direct_filesystem()->is_writable( $config_file ) && ( ! defined( 'WP_CACHE' ) || ! WP_CACHE ) )
@@ -409,7 +409,7 @@ add_action( 'admin_notices', 'rocket_warning_advanced_cache_permissions' );
  * @since 2.2
  */
 function rocket_warning_advanced_cache_not_ours() {
-	if ( ! ( 'plugins.php' === $GLOBALS['pagenow'] && isset( $_GET['activate'] ) )
+	if ( ! ( 'plugins.php' === $GLOBALS['pagenow'] && isset( $_GET['activate'] ) ) // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		&& current_user_can( 'rocket_manage_options' )
 		&& ! defined( 'WP_ROCKET_ADVANCED_CACHE' )
 		&& ( defined( 'WP_CACHE' ) && WP_CACHE )

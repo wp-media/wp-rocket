@@ -312,7 +312,7 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 		];
 
 		foreach ( $excluded_parameters as $excluded ) {
-			if ( isset( $_GET[ $excluded ] ) ) {
+			if ( isset( $_GET[ $excluded ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 				return false;
 			}
 		}

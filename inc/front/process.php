@@ -117,8 +117,8 @@ $rocket_remove_query_strings = [
 
 $rocket_params = [];
 
-if ( ! empty( $_GET ) ) {
-	$rocket_params = array_diff_key( $_GET, $rocket_remove_query_strings );
+if ( ! empty( $_GET ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	$rocket_params = array_diff_key( $_GET, $rocket_remove_query_strings ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 	if ( ! empty( $rocket_params ) ) {
 		ksort( $rocket_params );
