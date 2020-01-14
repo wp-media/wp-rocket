@@ -410,7 +410,7 @@ function rocket_serve_cache_file( $rocket_cache_filepath ) {
 		}
 
 		// Checking if the client is validating his cache and if it is current.
-		if ( $http_if_modified_since && ( strtotime( $http_if_modified_since ) === @filemtime( $rocket_cache_filepath_gzip ) ) ) {
+		if ( $http_if_modified_since && ( strtotime( $http_if_modified_since ) === @filemtime( $rocket_cache_filepath_gzip ) ) ) { // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 			// Client's cache is current, so we just respond '304 Not Modified'.
 			header( ( isset( $_SERVER['SERVER_PROTOCOL'] ) ? $_SERVER['SERVER_PROTOCOL'] : '' ) . ' 304 Not Modified', true, 304 ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 			header( 'Expires: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
@@ -437,7 +437,7 @@ function rocket_serve_cache_file( $rocket_cache_filepath ) {
 		}
 
 		// Checking if the client is validating his cache and if it is current.
-		if ( $http_if_modified_since && ( strtotime( $http_if_modified_since ) === @filemtime( $rocket_cache_filepath ) ) ) {
+		if ( $http_if_modified_since && ( strtotime( $http_if_modified_since ) === @filemtime( $rocket_cache_filepath ) ) ) { // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 			// Client's cache is current, so we just respond '304 Not Modified'.
 			header( ( isset( $_SERVER['SERVER_PROTOCOL'] ) ? $_SERVER['SERVER_PROTOCOL'] : '' ) . ' 304 Not Modified', true, 304 ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 			header( 'Expires: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );

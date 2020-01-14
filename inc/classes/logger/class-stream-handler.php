@@ -107,7 +107,7 @@ class Stream_Handler extends StreamHandler {
 
 		fwrite( $file_resource, $new_content );
 		fclose( $file_resource );
-		@chmod( $file_path, 0644 );
+		@chmod( $file_path, 0644 ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 
 		$this->htaccess_exists = true;
 

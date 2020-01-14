@@ -344,7 +344,7 @@ class Sucuri_Subscriber implements Subscriber_Interface {
 			return new \WP_Error( 'sucuri_api_no_response', __( 'Could not get a response from the Sucuri firewall API.', 'rocket' ) );
 		}
 
-		$data = @json_decode( $contents, true );
+		$data = @json_decode( $contents, true ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 
 		if ( ! $data || ! is_array( $data ) ) {
 			Logger::error(
