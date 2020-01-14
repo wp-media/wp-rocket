@@ -3,7 +3,7 @@
 defined( 'ABSPATH' ) || exit;
 
 // Don't cache robots.txt && .htaccess directory (it's happened sometimes with weird server configuration).
-if ( strstr( wp_unslash( $_SERVER['REQUEST_URI'] ), 'robots.txt' ) || strstr( wp_unslash( $_SERVER['REQUEST_URI'] ), '.htaccess' ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+if ( isset( $_SERVER['REQUEST_URI'] ) && ( strstr( wp_unslash( $_SERVER['REQUEST_URI'] ), 'robots.txt' ) || strstr( wp_unslash( $_SERVER['REQUEST_URI'] ), '.htaccess' ) ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 	rocket_define_donotoptimize_constant( true );
 
 	return;
@@ -262,7 +262,7 @@ if ( ! empty( $rocket_cache_dynamic_cookies ) ) {
 	foreach ( $rocket_cache_dynamic_cookies as $key => $cookie_name ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 		if ( is_array( $cookie_name ) && isset( $_COOKIE[ $key ] ) ) {
 			foreach ( $cookie_name as $cookie_key ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-				if ( '' !== $_COOKIE[ $key ][ $cookie_key ] ) {
+				if ( isset( $_COOKIE[ $key ][ $cookie_key ] ) && '' !== $_COOKIE[ $key ][ $cookie_key ] ) {
 					$rocket_cache_key = $_COOKIE[ $key ][ $cookie_key ]; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 					$rocket_cache_key = preg_replace( '/[^a-z0-9_\-]/i', '-', $cache_key );
 					$rocket_filename .= '-' . $rocket_cache_key;
@@ -412,7 +412,7 @@ function rocket_serve_cache_file( $rocket_cache_filepath ) {
 		// Checking if the client is validating his cache and if it is current.
 		if ( $http_if_modified_since && ( strtotime( $http_if_modified_since ) === @filemtime( $rocket_cache_filepath_gzip ) ) ) {
 			// Client's cache is current, so we just respond '304 Not Modified'.
-			header( $_SERVER['SERVER_PROTOCOL'] . ' 304 Not Modified', true, 304 ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+			header( ( isset( $_SERVER['SERVER_PROTOCOL'] ) ? $_SERVER['SERVER_PROTOCOL'] : '' ) . ' 304 Not Modified', true, 304 ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 			header( 'Expires: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
 			header( 'Cache-Control: no-cache, must-revalidate' );
 
@@ -439,7 +439,7 @@ function rocket_serve_cache_file( $rocket_cache_filepath ) {
 		// Checking if the client is validating his cache and if it is current.
 		if ( $http_if_modified_since && ( strtotime( $http_if_modified_since ) === @filemtime( $rocket_cache_filepath ) ) ) {
 			// Client's cache is current, so we just respond '304 Not Modified'.
-			header( $_SERVER['SERVER_PROTOCOL'] . ' 304 Not Modified', true, 304 ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+			header( ( isset( $_SERVER['SERVER_PROTOCOL'] ) ? $_SERVER['SERVER_PROTOCOL'] : '' ) . ' 304 Not Modified', true, 304 ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 			header( 'Expires: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
 			header( 'Cache-Control: no-cache, must-revalidate' );
 

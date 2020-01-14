@@ -194,6 +194,9 @@ add_action( 'deactivated_plugin', 'rocket_dismiss_plugin_box' );
  * @since 1.3.0
  */
 function rocket_deactivate_plugin() {
+	if ( ! isset( $_GET['plugin'], $_GET['_wpnonce'] ) ) {
+		return;
+	}
 	if ( ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'deactivate_plugin' ) ) {
 		wp_nonce_ays( '' );
 	}
@@ -510,7 +513,7 @@ function rocket_analytics_optin() {
 		die();
 	}
 
-	if ( 'yes' === $_GET['value'] ) {
+	if ( isset( $_GET['value'] ) && 'yes' === $_GET['value'] ) {
 		update_rocket_option( 'analytics_enabled', 1 );
 		set_transient( 'rocket_analytics_optin', 1 );
 	}
@@ -538,11 +541,11 @@ function rocket_handle_settings_import() {
 		rocket_settings_import_redirect( __( 'Settings import failed: you do not have the permissions to do this.', 'rocket' ), 'error' );
 	}
 
-	if ( ! isset( $_FILES['import'] ) || 0 === $_FILES['import']['size'] ) {
+	if ( ! isset( $_FILES['import'] ) || ( isset( $_FILES['import']['size'] ) && 0 === $_FILES['import']['size'] ) ) {
 		rocket_settings_import_redirect( __( 'Settings import failed: no file uploaded.', 'rocket' ), 'error' );
 	}
 
-	if ( ! preg_match( '/wp-rocket-settings-20\d{2}-\d{2}-\d{2}-[a-f0-9]{13}\.(?:txt|json)/', sanitize_file_name( $_FILES['import']['name'] ) ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+	if ( isset( $_FILES['import']['name'] ) && ! preg_match( '/wp-rocket-settings-20\d{2}-\d{2}-\d{2}-[a-f0-9]{13}\.(?:txt|json)/', sanitize_file_name( $_FILES['import']['name'] ) ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 		rocket_settings_import_redirect( __( 'Settings import failed: incorrect filename.', 'rocket' ), 'error' );
 	}
 
@@ -551,13 +554,13 @@ function rocket_handle_settings_import() {
 
 	$mimes     = get_allowed_mime_types();
 	$mimes     = rocket_allow_json_mime_type( $mimes );
-	$file_data = wp_check_filetype_and_ext( $_FILES['import']['tmp_name'], sanitize_file_name( $_FILES['import']['name'] ), $mimes ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+	$file_data = wp_check_filetype_and_ext( $_FILES['import']['tmp_name'], sanitize_file_name( $_FILES['import']['name'] ), $mimes ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
 
 	if ( 'text/plain' !== $file_data['type'] && 'application/json' !== $file_data['type'] ) {
 		rocket_settings_import_redirect( __( 'Settings import failed: incorrect filetype.', 'rocket' ), 'error' );
 	}
 
-	$_post_action       = wp_unslash( sanitize_key( $_POST['action'] ) );
+	$_post_action       = isset( $_POST['action'] ) ? wp_unslash( sanitize_key( $_POST['action'] ) ) : '';
 	$_POST['action']    = 'wp_handle_sideload';
 	$overrides          = [];
 	$overrides['mimes'] = $mimes;

@@ -126,7 +126,7 @@ abstract class Minify_Subscriber implements Subscriber_Interface {
 
 		$url_host = \rocket_extract_url_component( $url, PHP_URL_HOST );
 
-		if ( $url_host === $_SERVER['HTTP_HOST'] ) {
+		if ( isset( $_SERVER['HTTP_HOST'] ) && $url_host === $_SERVER['HTTP_HOST'] ) {
 			return $url;
 		}
 

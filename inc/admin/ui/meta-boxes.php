@@ -119,7 +119,7 @@ function rocket_save_metabox_options() {
 		check_admin_referer( 'rocket_box_option', '_rocketnonce' );
 
 		// No cache field.
-		if ( 'publish' === $_POST['post_status'] ) {
+		if ( isset( $_POST['post_status'] ) && 'publish' === $_POST['post_status'] ) {
 			$new_cache_reject_uri = $cache_reject_uri = get_rocket_option( 'cache_reject_uri' );
 			$rejected_uris        = array_flip( $cache_reject_uri );
 			$path                 = rocket_clean_exclude_file( get_permalink( (int) $_POST['post_ID'] ) );
