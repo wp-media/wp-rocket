@@ -91,7 +91,7 @@ trait Path_Rewriter {
 		 * recent PCRE version. That's why I'm doing 2 separate regular
 		 * expressions & combining the matches after executing of both.
 		 */
-		$relativeRegexes = [
+		$relative_regexes = [
 			// url(xxx).
 			'/
 			# open url()
@@ -140,9 +140,9 @@ trait Path_Rewriter {
 
 		// find all relative urls in css.
 		$matches = [];
-		foreach ( $relativeRegexes as $relativeRegex ) {
-			if ( preg_match_all( $relativeRegex, $content, $regexMatches, PREG_SET_ORDER ) ) {
-				$matches = array_merge( $matches, $regexMatches );
+		foreach ( $relative_regexes as $relative_regex ) {
+			if ( preg_match_all( $relative_regex, $content, $regex_matches, PREG_SET_ORDER ) ) {
+				$matches = array_merge( $matches, $regex_matches );
 			}
 		}
 

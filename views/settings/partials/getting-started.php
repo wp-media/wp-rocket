@@ -20,8 +20,9 @@ $rocket_tutorials = [
 <div class="wpr-fieldsContainer-fieldset">
 	<div class="wpr-field">
 		<ul class="wpr-field-list">
-			<?php foreach ( $rocket_tutorials as $id => $title ) : ?>
-			<li class="wpr-icon-tutorial-alt"><script src="https://fast.wistia.com/embed/medias/<?php echo esc_attr( $id ); ?>.jsonp" async></script><script src="https://fast.wistia.com/assets/external/E-v1.js" async></script><span class="wpr-tutorial-link wistia_embed wistia_async_<?php echo esc_attr( $id ); ?> popover=true popoverContent=link" style="display:inline;position:relative"><?php echo esc_html( $title ); ?></span></li>
+			<?php foreach ( $rocket_tutorials as $rocket_tutorial_id => $rocket_tutorial_title ) : ?>
+			<?php // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript ?>
+			<li class="wpr-icon-tutorial-alt"><script src="https://fast.wistia.com/embed/medias/<?php echo esc_attr( $rocket_tutorial_id ); ?>.jsonp" async></script><script src="https://fast.wistia.com/assets/external/E-v1.js" async></script><span class="wpr-tutorial-link wistia_embed wistia_async_<?php echo esc_attr( $rocket_tutorial_id ); ?> popover=true popoverContent=link" style="display:inline;position:relative"><?php echo esc_html( $rocket_tutorial_title ); ?></span></li>
 			<?php endforeach; ?>
 		</ul>
 	</div>

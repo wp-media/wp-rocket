@@ -147,6 +147,7 @@ class Combine extends Abstract_JS_Optimization {
 			}
 		}
 
+		// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript
 		$html = str_replace( '</body>', '<script src="' . esc_url( $minify_url ) . '" data-minify="1"></script>' . $move_after . '</body>', $html );
 
 		foreach ( $combine_scripts as $script ) {

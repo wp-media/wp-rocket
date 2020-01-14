@@ -61,11 +61,11 @@ if ( realpath( $rocket_config_path . $rocket_host . '.php' ) && 0 === stripos( r
 	include $rocket_config_path . $rocket_host . '.php';
 	$rocket_continue = true;
 } else {
-	$path = str_replace( '\\', '/', strtok( $_SERVER['REQUEST_URI'], '?' ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
-	$path = preg_replace( '|(?<=.)/+|', '/', $path );
-	$path = explode( '%2F', preg_replace( '/^(?:%2F)*(.*?)(?:%2F)*$/', '$1', rawurlencode( $path ) ) );
+	$rocket_path = str_replace( '\\', '/', strtok( $_SERVER['REQUEST_URI'], '?' ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+	$rocket_path = preg_replace( '|(?<=.)/+|', '/', $rocket_path );
+	$rocket_path = explode( '%2F', preg_replace( '/^(?:%2F)*(.*?)(?:%2F)*$/', '$1', rawurlencode( $rocket_path ) ) );
 
-	foreach ( $path as $p ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+	foreach ( $rocket_path as $p ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 		static $dir;
 
 		if ( realpath( $rocket_config_path . $rocket_host . '.' . $p . '.php' ) && 0 === stripos( realpath( $rocket_config_path . $rocket_host . '.' . $p . '.php' ), $rocket_real_config_path ) ) {
