@@ -8,6 +8,7 @@
  * @link https://wordpress.org/plugins/sumome/
  * @since 3.0.4
  */
+
 defined( 'ABSPATH' ) || exit;
 
 if ( class_exists( 'WP_Plugin_SumoMe' ) ) {

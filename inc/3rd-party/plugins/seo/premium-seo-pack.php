@@ -4,6 +4,7 @@
  *
  * @link http://premiumseopack.com
  */
+
 defined( 'ABSPATH' ) || exit;
 
 if ( class_exists( 'psp' ) ) {

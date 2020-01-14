@@ -168,6 +168,7 @@ class Combine_Google_Fonts extends Abstract_Optimization {
 
 		$display = isset( $allowed_values[ $display ] ) ? $display : 'swap';
 
+		// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
 		return '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=' . $this->fonts . $this->subsets . '&display=' . $display . '" />';
 	}
 }

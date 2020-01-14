@@ -35,7 +35,7 @@ class SyntaxHighlighter_Subscriber implements Subscriber_Interface {
 	 * @since 3.3.1
 	 * @author Remy Perona
 	 *
-	 * @param array $excluded_scripts Array of scripts to exclude
+	 * @param array $excluded_scripts Array of scripts to exclude.
 	 * @return array
 	 */
 	public function exclude_defer_js_syntaxhighlighter_scripts( $excluded_scripts ) {
@@ -54,7 +54,7 @@ class SyntaxHighlighter_Subscriber implements Subscriber_Interface {
 	 * @since 3.3.1
 	 * @author Remy Perona
 	 *
-	 * @param array $excluded_scripts Array of scripts to exclude
+	 * @param array $excluded_scripts Array of scripts to exclude.
 	 * @return array
 	 */
 	public function exclude_minify_js_syntaxhighlighter_scripts( $excluded_scripts ) {

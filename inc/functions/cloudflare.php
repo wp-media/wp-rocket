@@ -169,7 +169,7 @@ function get_rocket_cloudflare_api_instance() {  // phpcs:ignore WordPress.Namin
  *
  * @return Object Cloudflare instance & zone_id if credentials are correct, WP_Error otherwise
  */
-function get_rocket_cloudflare_instance() {
+function get_rocket_cloudflare_instance() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 	$cf_email             = get_rocket_option( 'cloudflare_email', null );
 	$cf_api_key           = ( defined( 'WP_ROCKET_CF_API_KEY' ) ) ? WP_ROCKET_CF_API_KEY : get_rocket_option( 'cloudflare_api_key', null );
 	$cf_zone_id           = get_rocket_option( 'cloudflare_zone_id', null );

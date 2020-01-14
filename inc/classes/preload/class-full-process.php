@@ -130,7 +130,7 @@ class Full_Process extends \WP_Background_Process {
 	 * @see WP_Background_Process::is_process_running()
 	 * @return boolean
 	 */
-	public function is_process_running() {
+	public function is_process_running() { // phpcs:ignore Generic.CodeAnalysis.UselessOverridingMethod.Found
 		return parent::is_process_running();
 	}
 }

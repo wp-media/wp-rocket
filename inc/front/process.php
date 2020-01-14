@@ -158,7 +158,7 @@ if ( isset( $rocket_cache_reject_uri ) && preg_match( '#^(' . $rocket_cache_reje
 }
 
 // Don't cache page with these cookies.
-if ( isset( $rocket_cache_reject_cookies ) && preg_match( '#(' . $rocket_cache_reject_cookies . ')#', var_export( $_COOKIE, true ) ) ) {
+if ( isset( $rocket_cache_reject_cookies ) && preg_match( '#(' . $rocket_cache_reject_cookies . ')#', var_export( $_COOKIE, true ) ) ) { // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_var_export
 	rocket_define_donotoptimize_constant( true );
 
 	return;
@@ -197,7 +197,7 @@ $rocket_allowed_ips = [
 ];
 
 // Don't cache page when these cookies don't exist.
-if ( ( ! isset( $rocket_allowed_ips[ $rocket_ip ] ) && ( isset( $_SERVER['HTTP_USER_AGENT'] ) ) && ! preg_match( '#(PingdomPageSpeed|DareBoost|Google|PTST|WP Rocket)#i', $_SERVER['HTTP_USER_AGENT'] ) ) && isset( $rocket_cache_mandatory_cookies ) && ! preg_match( '#(' . $rocket_cache_mandatory_cookies . ')#', var_export( $_COOKIE, true ) ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+if ( ( ! isset( $rocket_allowed_ips[ $rocket_ip ] ) && ( isset( $_SERVER['HTTP_USER_AGENT'] ) ) && ! preg_match( '#(PingdomPageSpeed|DareBoost|Google|PTST|WP Rocket)#i', $_SERVER['HTTP_USER_AGENT'] ) ) && isset( $rocket_cache_mandatory_cookies ) && ! preg_match( '#(' . $rocket_cache_mandatory_cookies . ')#', var_export( $_COOKIE, true ) ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.PHP.DevelopmentFunctions.error_log_var_export
 	rocket_define_donotoptimize_constant( true );
 
 	return;
@@ -301,7 +301,7 @@ ob_start( 'do_rocket_callback' );
  * @param string $buffer The buffer content.
  * @return string the buffered content
  */
-function do_rocket_callback( $buffer ) {
+function do_rocket_callback( $buffer ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 	/**
 	 * Allow to cache search results
 	 *
@@ -463,7 +463,7 @@ function rocket_serve_cache_file( $rocket_cache_filepath ) {
  */
 function rocket_define_donotoptimize_constant( $value ) {
 	if ( ! defined( 'DONOTROCKETOPTIMIZE' ) ) {
-		define( 'DONOTROCKETOPTIMIZE', (bool) $value );
+		define( 'DONOTROCKETOPTIMIZE', (bool) $value ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
 	}
 }
 

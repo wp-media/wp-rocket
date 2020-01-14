@@ -48,6 +48,6 @@ function init_constants( $test_suite_folder ) {
 	define( 'WP_ROCKET_PLUGIN_TESTS_ROOT', __DIR__ . DIRECTORY_SEPARATOR . $test_suite_folder );
 
 	if ( 'Unit' === $test_suite_folder && ! defined( 'ABSPATH' ) ) {
-		define( 'ABSPATH', WP_ROCKET_PLUGIN_ROOT );
+		define( 'ABSPATH', WP_ROCKET_PLUGIN_ROOT ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
 	}
 }

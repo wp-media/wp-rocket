@@ -156,6 +156,7 @@ class Combine extends Abstract_CSS_Optimization {
 	 * @return string
 	 */
 	public function insert_combined_css( $html, $css_url, array $to_remove ) {
+		// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
 		$html = preg_replace( '/<\/title>/i', '$0<link rel="stylesheet" href="' . $css_url . '" data-minify="1" />', $html, 1 );
 
 		foreach ( $to_remove as $style ) {
