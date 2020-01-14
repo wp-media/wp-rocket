@@ -13,7 +13,7 @@ The Action Scheduler API functions are designed to mirror the WordPress [WP-Cron
 
 Functions return similar values and accept similar arguments to their WP-Cron counterparts. The notable differences are:
 
-* `as_schedule_single_action()` & `as_schedule_recurring_action()` will return the post ID of the scheduled action rather than boolean indicating whether the event was scheduled
+* `as_schedule_single_action()` & `as_schedule_recurring_action()` will return the ID of the scheduled action rather than boolean indicating whether the event was scheduled
 * `as_schedule_recurring_action()` takes an interval in seconds as the recurring interval rather than an arbitrary string
 * `as_schedule_single_action()` & `as_schedule_recurring_action()` can accept a `$group` parameter to group different actions for the one plugin together.
 * the `wp_` prefix is substituted with `as_` and the term `event` is replaced with `action`
@@ -24,11 +24,34 @@ As mentioned in the [Usage - Load Order](/usage/#load-order) section, Action Sch
 
 Do not use Action Scheduler API functions prior to `'init'` hook with priority `1`. Doing so could lead to unexpected results, like data being stored in the incorrect location.
 
+## Function Reference / `as_enqueue_async_action()`
+
+### Description
+
+Enqueue an action to run one time, as soon as possible.
+
+### Usage
+
+```php
+as_enqueue_async_action( $hook, $args, $group )
+````
+
+### Parameters
+
+- **$hook** (string)(required) Name of the action hook. Default: _none_.
+- **$args** (array) Arguments to pass to callbacks when the hook triggers. Default: _`array()`_.
+- **$group** (array) The group to assign this job to. Default: _''_.
+
+### Return value
+
+(integer) the action's ID.
+
+
 ## Function Reference / `as_schedule_single_action()`
 
 ### Description
 
-Schedule an action to run one time.
+Schedule an action to run one time at some defined point in the future.
 
 ### Usage
 
@@ -45,7 +68,7 @@ as_schedule_single_action( $timestamp, $hook, $args, $group )
 
 ### Return value
 
-(integer) the action's ID in the [posts](http://codex.wordpress.org/Database_Description#Table_Overview) table.
+(integer) the action's ID.
 
 
 ## Function Reference / `as_schedule_recurring_action()`
@@ -70,7 +93,7 @@ as_schedule_recurring_action( $timestamp, $interval_in_seconds, $hook, $args, $g
 
 ### Return value
 
-(integer) the action's ID in the [posts](http://codex.wordpress.org/Database_Description#Table_Overview) table.
+(integer) the action's ID.
 
 
 ## Function Reference / `as_schedule_cron_action()`
@@ -95,14 +118,14 @@ as_schedule_cron_action( $timestamp, $schedule, $hook, $args, $group )
 
 ### Return value
 
-(integer) the action's ID in the [posts](http://codex.wordpress.org/Database_Description#Table_Overview) table.
+(integer) the action's ID.
 
 
 ## Function Reference / `as_unschedule_action()`
 
 ### Description
 
-Cancel the next occurrence of a job.
+Cancel the next occurrence of a scheduled action.
 
 ### Usage
 
@@ -115,6 +138,28 @@ as_unschedule_action( $hook, $args, $group )
 - **$hook** (string)(required) Name of the action hook. Default: _none_.
 - **$args** (array) Arguments passed to callbacks when the hook triggers. Default: _`array()`_.
 - **$group** (array) The group job was assigned to. Default: _''_.
+
+### Return value
+
+(null)
+
+## Function Reference / `as_unschedule_all_actions()`
+
+### Description
+
+Cancel all occurrences of a scheduled action.
+
+### Usage
+
+```php
+as_unschedule_action( $hook, $args, $group )
+````
+
+### Parameters
+
+- **$hook** (string)(required) Name of the action hook.
+- **$args** (array) Arguments to pass to callbacks when the hook triggers. Default: _`array()`_.
+- **$group** (array) The group to assign this job to. Default: _''_.
 
 ### Return value
 
