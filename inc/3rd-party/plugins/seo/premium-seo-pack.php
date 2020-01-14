@@ -16,13 +16,13 @@ if ( class_exists( 'psp' ) ) {
 	 */
 	function rocket_dequeue_premium_seo_pack_stylesheet() {
 
-		// Retun on all pages but WP Rocket settings page
+		// Retun on all pages but WP Rocket settings page.
 		$screen = get_current_screen();
 		if ( 'settings_page_wprocket' != $screen->id ) {
 			return;
 		}
 
-		// Dequeueing this stylesheet unfreezes WP Rocket
+		// Dequeueing this stylesheet unfreezes WP Rocket.
 		wp_dequeue_style( 'psp-main-style' );
 	}
 	add_action( 'admin_print_styles', 'rocket_dequeue_premium_seo_pack_stylesheet', 11 );

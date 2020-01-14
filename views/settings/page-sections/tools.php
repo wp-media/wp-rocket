@@ -65,7 +65,7 @@ if ( rocket_direct_filesystem()->exists( Logger::get_log_file_path() ) ) {
 				?>
 				<br><br>
 				<?php
-				// translators: %s = <br>
+				// translators: %s = <br>.
 				printf( esc_html__( 'You can rollback to the previous major version here.%sThen send us a support request.', 'rocket' ), '<br/>' );
 				?>
 			</div>

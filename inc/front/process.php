@@ -281,7 +281,7 @@ if ( ! empty( $rocket_cache_dynamic_cookies ) ) {
 
 // Caching file path.
 $request_uri_path = preg_replace_callback( '/%[0-9A-F]{2}/', 'rocket_urlencode_lowercase', $request_uri_path ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-// Directories in Windows can't contain question marks
+// Directories in Windows can't contain question marks.
 $request_uri_path = str_replace( '?', '_', $request_uri_path ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 
 $rocket_cache_filepath = $request_uri_path . '/' . $filename . '.html';

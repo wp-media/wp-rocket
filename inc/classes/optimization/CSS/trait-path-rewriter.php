@@ -92,7 +92,7 @@ trait Path_Rewriter {
 		 * expressions & combining the matches after executing of both.
 		 */
 		$relativeRegexes = [
-			// url(xxx)
+			// url(xxx).
 			'/
 			# open url()
 			url\(
