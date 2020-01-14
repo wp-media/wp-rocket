@@ -75,19 +75,23 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	}
 
 	// Purge all minify cache files.
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing
 	if ( ! empty( $_POST ) && ( $oldvalue['minify_css'] !== $value['minify_css'] || $oldvalue['exclude_css'] !== $value['exclude_css'] ) || ( isset( $oldvalue['cdn'] ) && ! isset( $value['cdn'] ) || ! isset( $oldvalue['cdn'] ) && isset( $value['cdn'] ) ) ) {
 		rocket_clean_minify( 'css' );
 	}
 
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing
 	if ( ! empty( $_POST ) && ( $oldvalue['minify_js'] !== $value['minify_js'] || $oldvalue['exclude_js'] !== $value['exclude_js'] ) || ( isset( $oldvalue['cdn'] ) && ! isset( $value['cdn'] ) || ! isset( $oldvalue['cdn'] ) && isset( $value['cdn'] ) ) ) {
 		rocket_clean_minify( 'js' );
 	}
 
 	// Purge all cache busting files.
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing
 	if ( ! empty( $_POST ) && ( $oldvalue['remove_query_strings'] !== $value['remove_query_strings'] ) ) {
 		rocket_clean_cache_busting();
 	}
 
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing
 	if ( ! empty( $_POST ) &&
 			( ( isset( $oldvalue['cloudflare_email'], $value['cloudflare_email'] ) && $oldvalue['cloudflare_email'] !== $value['cloudflare_email'] ) ||
 			( isset( $oldvalue['cloudflare_api_key'], $value['cloudflare_api_key'] ) && $oldvalue['cloudflare_api_key'] !== $value['cloudflare_api_key'] ) ||
@@ -106,6 +110,7 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	// Update CloudFlare Development Mode.
 	$cloudflare_update_result = [];
 
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing
 	if ( ! empty( $_POST ) && isset( $oldvalue['cloudflare_devmode'], $value['cloudflare_devmode'] ) && (int) $oldvalue['cloudflare_devmode'] !== (int) $value['cloudflare_devmode'] ) {
 		$cloudflare_dev_mode_return = set_rocket_cloudflare_devmode( $value['cloudflare_devmode'] );
 
@@ -125,6 +130,7 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	}
 
 	// Update CloudFlare settings.
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing
 	if ( ! empty( $_POST ) && ! empty( $value['do_cloudflare'] ) && isset( $oldvalue['cloudflare_auto_settings'], $value['cloudflare_auto_settings'] ) && (int) $oldvalue['cloudflare_auto_settings'] !== (int) $value['cloudflare_auto_settings'] ) {
 		$cf_old_settings = explode( ',', $value['cloudflare_old_settings'] );
 
@@ -210,6 +216,7 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	}
 
 	// Regenerate advanced-cache.php file.
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing
 	if ( ! empty( $_POST ) && ( ( isset( $oldvalue['do_caching_mobile_files'] ) && ! isset( $value['do_caching_mobile_files'] ) ) || ( ! isset( $oldvalue['do_caching_mobile_files'] ) && isset( $value['do_caching_mobile_files'] ) ) || ( isset( $oldvalue['do_caching_mobile_files'], $value['do_caching_mobile_files'] ) ) && $oldvalue['do_caching_mobile_files'] !== $value['do_caching_mobile_files'] ) ) {
 		rocket_generate_advanced_cache_file();
 	}

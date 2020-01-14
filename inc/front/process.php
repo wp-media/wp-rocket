@@ -34,7 +34,7 @@ if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 }
 
 // Don't cache the customizer preview.
-if ( isset( $_POST['wp_customize'] ) ) {
+if ( isset( $_POST['wp_customize'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
 	rocket_define_donotoptimize_constant( true );
 
 	return;

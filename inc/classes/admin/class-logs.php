@@ -47,7 +47,7 @@ class Logs implements Subscriber_Interface {
 	 * @return array           Updated submitted options values.
 	 */
 	public function enable_debug( $newvalue, $oldvalue ) {
-		if ( empty( $_POST ) ) {
+		if ( empty( $_POST ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
 			return $newvalue;
 		}
 

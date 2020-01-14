@@ -156,6 +156,7 @@ class Critical_CSS_Subscriber implements Subscriber_Interface {
 	 * @param array $value     New values for WP Rocket settings.
 	 */
 	public function stop_process_on_deactivation( $old_value, $value ) {
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
 		if ( ! empty( $_POST[ WP_ROCKET_SLUG ] ) && isset( $old_value['async_css'], $value['async_css'] ) && ( $old_value['async_css'] !== $value['async_css'] ) && 0 === (int) $value['async_css'] ) {
 			$this->critical_css->stop_generation();
 
