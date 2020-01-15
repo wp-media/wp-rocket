@@ -17,85 +17,61 @@ class Test_SetVarnishLocalhost extends TestCase {
 	 * Test should return unchanged array when Cloudflare is disabled
 	 */
 	public function testShouldReturnDefaultWhenCloudflareDisabled() {
-		update_option(
-			'wp_rocket_settings',
-			[
-				'do_cloudflare' => 0,
-			]
-		);
-		$cloudflare_facade = new CloudflareFacade();
-		$cf_subscriber     = new CloudflareSubscriber( new Cloudflare( new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) ), $cloudflare_facade ), new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) ), new Options() );
+		add_filter( 'pre_get_rocket_option_do_cloudflare', '__return_false');
 
 		$this->assertSame(
 			[],
-			$cf_subscriber->set_varnish_localhost( [] )
+			apply_filters('rocket_varnish_ip', [] )
 		);
+
+		remove_filter( 'pre_get_rocket_option_do_cloudflare', '__return_false');
 	}
 
 	/**
 	 * Test should return unchanged array when Varnish is disabled
 	 */
 	public function testShouldReturnDefaultWhenVarnishDisabled() {
-		update_option(
-			'wp_rocket_settings',
-			[
-				'do_cloudflare' => 1,
-				'varnish_auto_purge' => 0,
-			]
-		);
-
-		$cloudflare_facade = new CloudflareFacade();
-		$cf_subscriber     = new CloudflareSubscriber( new Cloudflare( new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) ), $cloudflare_facade ), new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) ), new Options() );
+		add_filter( 'pre_get_rocket_option_do_cloudflare', '__return_true');
+		add_filter( 'pre_get_rocket_option_varnish_auto_purge', '__return_false');
 
 		$this->assertSame(
 			[],
-			$cf_subscriber->set_varnish_localhost( [] )
+			apply_filters('rocket_varnish_ip', [] )
 		);
+
+		remove_filter( 'pre_get_rocket_option_do_cloudflare', '__return_true');
+		remove_filter( 'pre_get_rocket_option_varnish_auto_purge', '__return_false');
 	}
 
 	/**
 	 * Test should update the array when Varnish & Cloudflare are enabled
 	 */
 	public function testShouldReturnLocalhostWhenVarnishEnabled() {
-		update_option(
-			'wp_rocket_settings',
-			[
-				'do_cloudflare' => 1,
-				'varnish_auto_purge' => 1,
-			]
-		);
-
-		$cloudflare_facade = new CloudflareFacade();
-		$cf_subscriber     = new CloudflareSubscriber( new Cloudflare( new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) ), $cloudflare_facade ), new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) ), new Options() );
+		add_filter( 'pre_get_rocket_option_do_cloudflare', '__return_true');
+		add_filter( 'pre_get_rocket_option_varnish_auto_purge', '__return_true');
 
 		$this->assertSame(
 			[ 'localhost' ],
-			$cf_subscriber->set_varnish_localhost( [] )
+			apply_filters('rocket_varnish_ip', [] )
 		);
+
+		remove_filter( 'pre_get_rocket_option_do_cloudflare', '__return_true');
+		remove_filter( 'pre_get_rocket_option_varnish_auto_purge', '__return_true');
 	}
 
 	/**
 	 * Test should update the array when Varnish is enabled via filter
 	 */
 	public function testShouldReturnLocalhostWhenFilterTrue() {
-		update_option(
-			'wp_rocket_settings',
-			[
-				'do_cloudflare' => 1,
-				'varnish_auto_purge' => 0,
-			]
-		);
-
+		add_filter( 'pre_get_rocket_option_do_cloudflare', '__return_true');
 		add_filter( 'do_rocket_varnish_http_purge', '__return_true' );
-
-		$cloudflare_facade = new CloudflareFacade();
-		$cf_subscriber     = new CloudflareSubscriber( new Cloudflare( new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) ), $cloudflare_facade ), new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) ), new Options() );
 
 		$this->assertSame(
 			[ 'localhost' ],
-			$cf_subscriber->set_varnish_localhost( [] )
+			apply_filters('rocket_varnish_ip', [] )
 		);
 
+		remove_filter( 'pre_get_rocket_option_do_cloudflare', '__return_true');
 		remove_filter( 'do_rocket_varnish_http_purge', '__return_true' );
 	}
 }
