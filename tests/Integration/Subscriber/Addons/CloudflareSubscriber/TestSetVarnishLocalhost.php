@@ -2,11 +2,6 @@
 namespace WP_Rocket\Tests\Integration\Subscriber\Addons\CloudflareSubscriber;
 
 use WP_Rocket\Tests\Integration\TestCase;
-use WP_Rocket\Subscriber\Addons\Cloudflare\CloudflareSubscriber;
-use WP_Rocket\Addons\Cloudflare\Cloudflare;
-use WP_Rocket\Addons\Cloudflare\CloudflareFacade;
-use WP_Rocket\Admin\Options;
-use WP_Rocket\Admin\Options_Data;
 
 /**
  * @covers WP_Rocket\Subscriber\Addons\Cloudflare\CloudflareSubscriber::set_varnish_localhost
