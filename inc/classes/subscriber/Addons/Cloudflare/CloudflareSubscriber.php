@@ -84,7 +84,7 @@ class CloudflareSubscriber implements Subscriber_Interface {
 			return $varnish_ip;
 		}
 
-		if ( \is_string( $varnish_ip ) ) {
+		if ( is_string( $varnish_ip ) ) {
 			$varnish_ip = (array) $varnish_ip;
 		}
 
