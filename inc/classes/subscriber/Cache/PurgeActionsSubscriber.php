@@ -33,7 +33,7 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 	public static function get_subscribed_events() {
 		return [
 			'profile_update' => 'purge_user_cache',
-			'deleted_user'   => 'purge_user_cache',
+			'delete_user'    => 'purge_user_cache',
 		];
 	}
 
