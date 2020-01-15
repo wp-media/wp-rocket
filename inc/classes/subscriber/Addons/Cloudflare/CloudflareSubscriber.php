@@ -76,15 +76,21 @@ class CloudflareSubscriber implements Subscriber_Interface {
 	 * @since 3.5
 	 * @author Remy Perona
 	 *
-	 * @param string $varnish_ip Varnish IP.
-	 * @return string
+	 * @param string|array $varnish_ip Varnish IP.
+	 * @return array
 	 */
 	public function set_varnish_localhost( $varnish_ip ) {
 		if ( ! $this->should_filter_varnish() ) {
 			return $varnish_ip;
 		}
 
-		return 'localhost';
+		if ( is_string( $varnish_ip ) ) {
+			$varnish_ip = (array) $varnish_ip;
+		}
+
+		$varnish_ip[] = 'localhost';
+
+		return $varnish_ip;
 	}
 
 	/**
