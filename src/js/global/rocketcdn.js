@@ -1,113 +1,125 @@
-( function( document, window ) {
-    document.addEventListener( 'DOMContentLoaded', function() {
-        document.querySelectorAll( '.wpr-rocketcdn-open' ).forEach( function(el) {
-            el.addEventListener( 'click', function(e) {
-                e.preventDefault();
-            });
-        });
+/*eslint-env es6*/
+( ( document, window ) => {
+	'use strict';
 
-        MicroModal.init({
-            disableScroll: true,
-            onClose: function() {
-                document.location.reload();
-            }
-        });
-    });
+	document.addEventListener( 'DOMContentLoaded', () => {
+		document.querySelectorAll( '.wpr-rocketcdn-open' ).forEach( ( el ) => {
+			el.addEventListener( 'click', ( e ) => {
+				e.preventDefault();
+			} );
+		} );
 
-    window.addEventListener('load', function() {
-        var openCTA  = document.querySelector( '#wpr-rocketcdn-open-cta' ),
-            closeCTA = document.querySelector( '#wpr-rocketcdn-close-cta' ),
-            smallCTA = document.querySelector( '#wpr-rocketcdn-cta-small' ),
-            bigCTA   = document.querySelector( '#wpr-rocketcdn-cta' );
+		MicroModal.init( {
+			disableScroll: true,
+			onClose: () => {
+				document.location.reload();
+			}
+		} );
+	} );
 
-        if ( null !== openCTA && null !== smallCTA && null !== bigCTA ) {
-            openCTA.addEventListener('click', function(e) {
-                e.preventDefault();
+	window.addEventListener( 'load', () => {
+		let openCTA = document.querySelector( '#wpr-rocketcdn-open-cta' ),
+			closeCTA = document.querySelector( '#wpr-rocketcdn-close-cta' ),
+			smallCTA = document.querySelector( '#wpr-rocketcdn-cta-small' ),
+			bigCTA = document.querySelector( '#wpr-rocketcdn-cta' );
 
-                smallCTA.classList.add('wpr-isHidden');
-                bigCTA.classList.remove('wpr-isHidden');
+		if ( null !== openCTA && null !== smallCTA && null !== bigCTA ) {
+			openCTA.addEventListener( 'click', ( e ) => {
+				e.preventDefault();
 
-                rocketSendHTTPRequest( rocketGetPostData( 'big' ) );
-            });
-        }
+				smallCTA.classList.add( 'wpr-isHidden' );
+				bigCTA.classList.remove( 'wpr-isHidden' );
 
-        if ( null !== closeCTA && null !== smallCTA && null !== bigCTA ) {
-            closeCTA.addEventListener('click', function(e) {
-                e.preventDefault();
+				rocketSendHTTPRequest( rocketGetPostData( 'big' ) );
+			} );
+		}
 
-                smallCTA.classList.remove('wpr-isHidden');
-                bigCTA.classList.add('wpr-isHidden');
+		if ( null !== closeCTA && null !== smallCTA && null !== bigCTA ) {
+			closeCTA.addEventListener( 'click', ( e ) => {
+				e.preventDefault();
 
-                rocketSendHTTPRequest( rocketGetPostData( 'small' ) );
-            });
-        }
+				smallCTA.classList.remove( 'wpr-isHidden' );
+				bigCTA.classList.add( 'wpr-isHidden' );
 
-        function rocketGetPostData( status ) {
-            let postData = '';
+				rocketSendHTTPRequest( rocketGetPostData( 'small' ) );
+			} );
+		}
 
-            postData += 'action=toggle_rocketcdn_cta';
-            postData += '&status=' + status;
-            postData += '&nonce=' + rocket_ajax_data.nonce;
+		function rocketGetPostData( status ) {
+			let postData = '';
 
-            return postData;
-        }
-    });
+			postData += 'action=toggle_rocketcdn_cta';
+			postData += '&status=' + status;
+			postData += '&nonce=' + rocket_ajax_data.nonce;
 
-    window.onmessage = (e) => {
-        let iframeURL = 'https://dave.wp-rocket.me';
+			return postData;
+		}
+	} );
 
-        if ( e.origin == iframeURL ) {
-            if (e.data.hasOwnProperty("cdnFrameHeight")) {
-                document.getElementById("rocketcdn-iframe").style.height = `${e.data.cdnFrameHeight}px`;
-                return;
-            }
+	window.onmessage = ( e ) => {
+		const iframeURL = 'https://dave.wp-rocket.me';
 
-            if (e.data.hasOwnProperty("cdnFrameClose")) {
-                MicroModal.close('wpr-rocketcdn-modal');
-                return;
-            }
+		if ( e.origin !== iframeURL ) {
+			return;
+		}
 
-            let iframe = document.querySelector('#rocketcdn-iframe').contentWindow;
+		setCDNFrameHeight( e.data );
+		closeModal( e.data );
+		tokenHandler( e.data, iframeURL );
+	};
 
-            if (e.data.hasOwnProperty("cdn_token")) {
-                let postData = '',
-                request = '';
+	function closeModal( data ) {
+		if ( ! data.hasOwnProperty( 'cdnFrameClose' ) ) {
+			return;
+		}
 
-                postData += 'action=save_rocketcdn_token';
-                postData += '&value=' + e.data.cdn_token;
-                postData += '&nonce=' + rocket_ajax_data.nonce;
+		MicroModal.close( 'wpr-rocketcdn-modal' );
+	}
 
-                request = rocketSendHTTPRequest( postData );
+	function rocketSendHTTPRequest( postData ) {
+		const httpRequest = new XMLHttpRequest();
 
-                request.onreadystatechange = function() {
-                    if (request.readyState === XMLHttpRequest.DONE) {
-                        if (request.status === 200) {
-                            iframe.postMessage(
-                                request.responseText,
-                                iframeURL
-                            );
-                        }
-                    }
-                };
-            } else {
-               iframe.postMessage(
-                   {
-                       'success': false,
-                       'data': 'token_not_received'
-                   },
-                   iframeURL
-               );
-            }
-        }
-    };
+		httpRequest.open( 'POST', ajaxurl );
+		httpRequest.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
+		httpRequest.send( postData );
 
-    function rocketSendHTTPRequest( postData ) {
-        const httpRequest = new XMLHttpRequest();
+		return httpRequest;
+	}
 
-        httpRequest.open( 'POST', ajaxurl );
-        httpRequest.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' )
-        httpRequest.send( postData );
+	function setCDNFrameHeight( data ) {
+		if ( ! data.hasOwnProperty( 'cdnFrameHeight' ) ) {
+			return;
+		}
 
-        return httpRequest;
-    }
+		document.getElementById( 'rocketcdn-iframe' ).style.height = `${ data.cdnFrameHeight }px`;
+	}
+
+	function tokenHandler( data, iframeURL ) {
+		let iframe = document.querySelector( '#rocketcdn-iframe' ).contentWindow;
+
+		if ( ! data.hasOwnProperty( 'cdn_token' ) ) {
+			iframe.postMessage(
+				{
+					'success': false,
+					'data': 'token_not_received'
+				},
+				iframeURL
+			);
+			return;
+		}
+
+		let postData = '';
+
+		postData += 'action=save_rocketcdn_token';
+		postData += '&value=' + data.cdn_token;
+		postData += '&nonce=' + rocket_ajax_data.nonce;
+
+		const request = rocketSendHTTPRequest( postData );
+
+		request.onreadystatechange = () => {
+			if ( request.readyState === XMLHttpRequest.DONE && 200 === request.status ) {
+				iframe.postMessage( request.responseText, iframeURL );
+			}
+		};
+	}
 } )( document, window );
