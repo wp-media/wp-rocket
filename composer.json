@@ -35,23 +35,20 @@
 		"a5hleyrich/wp-background-processing": "1.3",
 		"composer/installers": "~1.0",
 		"jamesryanbell/cloudflare": "^1.11",
-		"league/container": "2.4.1",
+		"league/container": "^2.4",
 		"matthiasmullie/minify": "1.3.*",
 		"monolog/monolog": "^1.0",
-		"wp-media/rocket-lazyload-common": "^2.2"
+		"wp-media/rocket-lazyload-common": "^2"
 	},
 	"require-dev": {
+		"php": "^5.6 || ^7",
 		"brain/monkey": "^2.0",
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
-		"doctrine/instantiator": "1.0.*",
 		"mikey179/vfsstream": "^1.6",
-		"myclabs/deep-copy": "1.6.*",
 		"phpcompatibility/phpcompatibility-wp": "^2.0",
-		"phpdocumentor/reflection-docblock": "^3.3",
-		"phpunit/php-token-stream": "^1.4",
-		"phpunit/phpunit": "^5.7",
-		"symfony/yaml": "2.8.*",
-		"wp-coding-standards/wpcs": "^2.1.0"
+		"phpunit/phpunit": "^5.7 || ^7",
+		"wp-coding-standards/wpcs": "^2",
+		"woocommerce/woocommerce": "^3.8"
 	},
 	"autoload": {
 		"classmap": [
@@ -70,6 +67,11 @@
 		"psr-4": {
 			"WP_Rocket\\Tests\\Unit\\": "tests/Unit",
 			"WP_Rocket\\Tests\\Integration\\": "tests/Integration"
+		}
+	},
+	"extra": {
+		"installer-paths": {
+		  "vendor/{$vendor}/{$name}/": ["type:wordpress-plugin"]
 		}
 	},
 	"scripts": {

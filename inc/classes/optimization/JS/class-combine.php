@@ -217,6 +217,14 @@ class Combine extends Abstract_JS_Optimization {
 			} else {
 				preg_match( '/<script\b(?<attrs>[^>]*)>(?:\/\*\s*<!\[CDATA\[\s*\*\/)?\s*(?<content>[\s\S]*?)\s*(?:\/\*\s*\]\]>\s*\*\/)?<\/script>/msi', $script[0], $matches_inline );
 
+				$matches_inline = array_merge(
+					[
+						'attrs'   => '',
+						'content' => '',
+					],
+					$matches_inline
+				);
+
 				if ( preg_last_error() == PREG_BACKTRACK_LIMIT_ERROR ) {
 					Logger::debug( 'PCRE regex execution Catastrophic Backtracking', [
 						'inline JS backtracking error',
@@ -472,7 +480,6 @@ class Combine extends Abstract_JS_Optimization {
 			'cherry_ajax',
 			'ad_block_',
 			'elementorFrontendConfig',
-			'omapi_localized',
 			'zeen_',
 			'disqusIdentifier',
 			'currentAjaxUrl',
@@ -487,7 +494,9 @@ class Combine extends Abstract_JS_Optimization {
 			'ct_checkjs_',
 			'WP_Statistics_http',
 			'penci_block_',
+			'omapi_localized',
 			'omapi_data',
+			'OptinMonsterApp',
 			'tminusnow',
 			'nfForms',
 			'galleries.gallery_',
@@ -748,7 +757,7 @@ class Combine extends Abstract_JS_Optimization {
 			'cb_nombre',
 			'$(\'.fl-node-',
 			'function($){google_maps_',
-      		'$("#myCarousel',
+            '$("#myCarousel',
 			'et_animation_data=',
 			'current_url="',
 			'CustomEvent.prototype=window.Event.prototype',

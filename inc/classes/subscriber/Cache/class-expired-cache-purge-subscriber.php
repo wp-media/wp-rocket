@@ -91,12 +91,7 @@ class Expired_Cache_Purge_Subscriber implements Subscriber_Interface {
 
 		$unit_list = [ 'HOUR_IN_SECONDS', 'DAY_IN_SECONDS' ];
 		// Bail out if the cron unit is changed from hours to days.
-		if ( $old_value['purge_cron_unit'] === $value['purge_cron_unit'] &&
-				in_array( $old_value['purge_cron_unit'], $unit_list, true ) &&
-				in_array( $value['purge_cron_unit'], $unit_list, true ) ) {
-			return;
-		}
-
+		// Allow clean scheduled event when is changed from Minutes to Hours or Days, or the other way around.
 		$allow_clear_event = false;
 		if ( in_array( $old_value['purge_cron_unit'], $unit_list, true ) && 'MINUTE_IN_SECONDS' === $value['purge_cron_unit'] ) {
 			$allow_clear_event = true;

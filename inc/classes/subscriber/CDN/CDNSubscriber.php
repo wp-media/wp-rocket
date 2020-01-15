@@ -197,7 +197,7 @@ class CDNSubscriber implements Subscriber_Interface {
 	 * @return boolean
 	 */
 	private function is_allowed() {
-		if ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
+		if ( rocket_has_constant( 'DONOTROCKETOPTIMIZE' ) && rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
 			return false;
 		}
 
