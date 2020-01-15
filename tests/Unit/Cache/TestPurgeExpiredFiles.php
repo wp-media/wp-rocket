@@ -8,6 +8,9 @@ use Brain\Monkey\Filters;
 use org\bovigo\vfs\vfsStream,
 	org\bovigo\vfs\vfsStreamDirectory;
 
+/**
+ * @group Cache
+ */
 class TestPurgeExpiredFiles extends TestCase {
 	private $cache_path;
 	private $mock_fs;
@@ -151,49 +154,6 @@ class TestPurgeExpiredFiles extends TestCase {
 		);
 		$this->assertFalse(
 			$this->cache_path->getChild('wp-rocket')->getChild('example.org')->getChild('en')->hasChild('index.html')
-		);
-	}
-
-	public function testShouldNotDeleteCacheFilesWhenCachingIsDisabled() {
-		Functions\When( 'get_rocket_i18n_uri' )->justReturn(
-			[
-				'http://example.org/'
-			]
-		);
-
-		Functions\When( 'rocket_direct_filesystem' )
-			->alias( function() {
-				return $this->mock_fs;
-			} );
-
-		Filters\expectApplied( 'do_rocket_generate_caching_files' )
-			->once()
-			->andReturn( false ); // Simulate a filter.
-
-		Functions\expect( 'get_rocket_parse_url' )
-			->never()
-			->andReturnUsing( function( $value ) {
-				return parse_url( $value );
-			} );
-
-		$expired_cache_purge = new Expired_Cache_Purge( $this->cache_path->getChild( 'wp-rocket' )->url() );
-
-		$expired_cache_purge->purge_expired_files( 36000 );
-
-		$this->assertTrue(
-			$this->cache_path->getChild( 'wp-rocket' )->getChild( 'example.org' )->getChild( 'about' )->hasChild( 'index.html' )
-		);
-		$this->assertTrue(
-			$this->cache_path->getChild( 'wp-rocket' )->getChild( 'example.org' )->getChild( 'category' )->getChild( 'wordpress' )->hasChild( 'index.html' )
-		);
-		$this->assertTrue(
-			$this->cache_path->getChild( 'wp-rocket' )->getChild( 'example.org' )->getChild( 'blog' )->hasChild( 'index.html' )
-		);
-		$this->assertTrue(
-			$this->cache_path->getChild( 'wp-rocket' )->getChild( 'example.org' )->getChild( 'en' )->hasChild( 'index.html' )
-		);
-		$this->assertTrue(
-			$this->cache_path->getChild( 'wp-rocket' )->getChild( 'example.org-Greg-594d03f6ae698691165999' )->hasChild( 'index.html' )
 		);
 	}
 }

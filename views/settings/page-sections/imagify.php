@@ -5,7 +5,8 @@
  * @since 3.2
  */
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
+
 ?>
 
 <div id="imagify" class="wpr-Page">

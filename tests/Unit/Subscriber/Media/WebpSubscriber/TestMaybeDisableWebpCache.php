@@ -6,6 +6,9 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 
+/**
+ * @group Subscriber
+ */
 class TestMaybeDisableWebpCache extends TestCase {
 	/**
 	 * Test Webp_Subscriber->maybe_disable_webp_cache() should return true when webp cache is already disabled.

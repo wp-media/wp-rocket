@@ -9,7 +9,7 @@
  * }
  */
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 settings_errors( $data['slug'] ); ?>
 <div class="wpr-wrap wrap">

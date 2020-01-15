@@ -1,5 +1,6 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+
+defined( 'ABSPATH' ) || exit;
 
 if ( defined( 'SCCSS_FILE' ) ) :
 	add_action( 'wp_enqueue_scripts', 'rocket_cache_sccss', 98 );

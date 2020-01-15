@@ -1,10 +1,11 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+
+defined( 'ABSPATH' ) || exit;
 
 if ( defined( 'PL_INSTANCE_REF' ) && class_exists( '\Presslabs\Cache\CacheHandler' ) ) {
-	if ( file_exists( WP_CONTENT_DIR . '/advanced-cache.php' ) ) {	
+	if ( file_exists( WP_CONTENT_DIR . '/advanced-cache.php' ) ) {
 		require_once WP_CONTENT_DIR . '/advanced-cache.php';
-        
+
 	add_action( 'pl_pre_cache_refresh', 'rocket_clean_files', 0 );
 	add_filter( 'rocket_display_varnish_options_tab', '__return_false' );
 	add_filter( 'do_rocket_generate_caching_files', '__return_false', PHP_INT_MAX );
@@ -85,7 +86,7 @@ if ( defined( 'PL_INSTANCE_REF' ) && class_exists( '\Presslabs\Cache\CacheHandle
 	if ( !defined('DISABLE_CDN_OFFLOAD') && defined( 'PL_CDN_HOST' ) ) {
 		/**
 		 * If we have CDN enabled we'll add our HOST to the list
-		 * 
+		 *
 		 * @since 3.3
 
 		 * @param Array $hosts Array of CDN hosts.

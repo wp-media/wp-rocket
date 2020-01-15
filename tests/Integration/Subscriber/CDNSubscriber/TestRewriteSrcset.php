@@ -1,17 +1,17 @@
 <?php
 namespace WP_Rocket\Tests\Integration\Subscriber\CDNSubscriber;
 
-use PHPUnit\Framework\TestCase;
+use WP_Rocket\Tests\Integration\TestCase;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\CDN\CDN;
 use WP_Rocket\Subscriber\CDN\CDNSubscriber;
 
+/**
+ * @group Subscriber
+ */
 class TestRewriteSrcset extends TestCase {
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
+
     public function testShouldRewriteSrcsetURLs() {
         update_option(
             'wp_rocket_settings',
@@ -39,10 +39,6 @@ class TestRewriteSrcset extends TestCase {
         );
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
     public function testShouldReturnOriginalWhenCDNDisabled() {
         update_option(
             'wp_rocket_settings',
@@ -69,10 +65,6 @@ class TestRewriteSrcset extends TestCase {
         );
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
     public function testShouldReturnOriginalWhenNoCNAME() {
         update_option(
             'wp_rocket_settings',

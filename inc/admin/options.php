@@ -1,7 +1,7 @@
 <?php
 use WP_Rocket\Logger\Logger;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 /**
  * When our settings are saved: purge, flush, preload!
@@ -52,6 +52,7 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		'analytics_enabled'           => true,
 		'sucury_waf_cache_sync'       => true,
 		'sucury_waf_api_key'          => true,
+		'manual_preload'              => true,
 	];
 
 	// Create 2 arrays to compare.

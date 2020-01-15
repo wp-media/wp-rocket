@@ -6,6 +6,9 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 
+/**
+ * @group Subscriber
+ */
 class TestConvertToWebp extends TestCase {
 	/**
 	 * Test Webp_Subscriber->convert_to_webp() should return the identical HTML when separate cache is disabled via the option.

@@ -7,6 +7,9 @@ use Brain\Monkey\Actions;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 
+/**
+ * @group ThirdParty
+ */
 class TestLoadHooks extends TestCase {
 	/**
 	 * Test Imagify_Subscriber->load_hooks() should not register hooks when separate cache is disabled via the option.
