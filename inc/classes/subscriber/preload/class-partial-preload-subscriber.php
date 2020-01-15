@@ -140,8 +140,10 @@ class Partial_Preload_Subscriber implements Subscriber_Interface {
 						$file_path .= '/';
 					}
 				}
-
-				$this->urls[] = str_replace( $data['home_path'], $data['home_url'], $file_path );
+				$file_path = str_replace( $data['home_path'], '', $file_path );
+				$file_path = str_replace( DIRECTORY_SEPARATOR, '/', $file_path );
+				$file_path = $data['home_url'] . ltrim( $file_path, '/' );
+				$this->urls[] = $file_path;
 			}
 		}
 	}

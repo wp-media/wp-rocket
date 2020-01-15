@@ -124,11 +124,14 @@ class Expired_Cache_Purge {
 					// Time to cut old leaves.
 					$item_paths = $this->purge_dir( $sub_dir_path, $file_age_limit );
 
+					$logged_dir_path   = str_replace( [ '/', '\\' ], DIRECTORY_SEPARATOR, $dir_path );
+					$logged_cache_path = str_replace( [ '/', '\\' ], DIRECTORY_SEPARATOR, $this->cache_path . $file['host'] );
+
 					if ( $item_paths ) {
 						$url_deleted[] = [
 							'home_url'  => $url,
 							'home_path' => $sub_dir_path,
-							'logged_in' => $dir_path !== $this->cache_path . $file['host'],
+							'logged_in' => $logged_dir_path !== $logged_cache_path,
 							'files'     => $item_paths,
 						];
 					}
