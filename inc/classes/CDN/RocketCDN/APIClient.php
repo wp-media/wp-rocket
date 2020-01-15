@@ -59,7 +59,7 @@ class APIClient {
 		];
 
 		$response = wp_remote_get(
-			self::ROCKETCDN_API . 'website/?url=' . home_url(),
+			self::ROCKETCDN_API . 'website/search/?url=' . home_url(),
 			$args
 		);
 

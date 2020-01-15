@@ -72,7 +72,7 @@ class Test_GetSubscriptionData extends TestCase {
         Functions\expect('wp_remote_get')
         ->once()
         ->with(
-            'https://rocketcdn.me/api/website/?url=http://example.org',
+            'https://rocketcdn.me/api/website/search/?url=http://example.org',
             [
                 'headers' => [
                     'Authorization' => 'Token 9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b',
@@ -106,7 +106,7 @@ class Test_GetSubscriptionData extends TestCase {
         Functions\expect('wp_remote_get')
         ->once()
         ->with(
-            'https://rocketcdn.me/api/website/?url=http://example.org',
+            'https://rocketcdn.me/api/website/search/?url=http://example.org',
             [
                 'headers' => [
                     'Authorization' => 'Token 9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b',
@@ -141,7 +141,7 @@ class Test_GetSubscriptionData extends TestCase {
         Functions\expect('wp_remote_get')
         ->once()
         ->with(
-            'https://rocketcdn.me/api/website/?url=http://example.org',
+            'https://rocketcdn.me/api/website/search/?url=http://example.org',
             [
                 'headers' => [
                     'Authorization' => 'Token 9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b',
