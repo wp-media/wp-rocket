@@ -16,7 +16,7 @@ function rocket_add_admin_css_js() {
 		'rocket_ajax_data',
 		[
 			'nonce'      => wp_create_nonce( 'rocket-ajax' ),
-			'origin_url' => defined( 'WP_ROCKET_DEBUG' ) && WP_ROCKET_DEBUG ? 'https://dave.wp-rocket.me' : WP_ROCKET_WEB_MAIN,
+			'origin_url' => rocket_get_constant( 'WP_ROCKET_DEBUG', false ) ? 'https://dave.wp-rocket.me' : rocket_get_constant( 'WP_ROCKET_WEB_MAIN' ),
 		]
 	);
 

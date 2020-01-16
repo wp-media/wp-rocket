@@ -202,12 +202,13 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 * @return void
 	 */
 	public function add_subscription_modal() {
+		$base_url   = rocket_get_constant( 'WP_ROCKET_DEBUG', false ) ? 'https://dave.wp-rocket.me/' : rocket_get_constant( 'WP_ROCKET_WEB_MAIN' );
 		$iframe_src = add_query_arg(
 			[
 				'website'  => home_url(),
 				'callback' => rest_url( 'wp-rocket/v1/rocketcdn/' ),
 			],
-			'https://dave.wp-rocket.me/cdn/iframe'
+			$base_url . 'cdn/iframe'
 		);
 		?>
 		<div class="wpr-rocketcdn-modal" id="wpr-rocketcdn-modal" aria-hidden="true">
