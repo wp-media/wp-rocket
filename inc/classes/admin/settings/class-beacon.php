@@ -335,6 +335,12 @@ class Beacon {
 					'url' => 'https://fr.​docs.​wp-rocket.​me/article/1270-chargement-differe-des-fichiers-js/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
+			'jquery_migrate'         => [
+				'en' => [
+					'id'  => '5e1d27de2c7d3a7e9ae627e8',
+					'url' => 'https://docs.wp-rocket.me/article/1304-remove-jquery-migrate/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
 			'async' => [
 				'en' => [
 					'id'  => '5d52144c0428631e94f94ae2',

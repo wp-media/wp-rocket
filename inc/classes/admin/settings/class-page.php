@@ -559,13 +559,14 @@ class Page {
 	 * @return void
 	 */
 	private function assets_section() {
-		$remove_qs_beacon  = $this->beacon->get_suggest( 'remove_query_strings' );
-		$combine_beacon    = $this->beacon->get_suggest( 'combine' );
-		$defer_js_beacon   = $this->beacon->get_suggest( 'defer_js' );
-		$async_beacon      = $this->beacon->get_suggest( 'async' );
-		$files_beacon      = $this->beacon->get_suggest( 'file_optimization' );
-		$inline_js_beacon  = $this->beacon->get_suggest( 'exclude_inline_js' );
-		$exclude_js_beacon = $this->beacon->get_suggest( 'exclude_js' );
+		$remove_qs_beacon      = $this->beacon->get_suggest( 'remove_query_strings' );
+		$combine_beacon        = $this->beacon->get_suggest( 'combine' );
+		$defer_js_beacon       = $this->beacon->get_suggest( 'defer_js' );
+		$async_beacon          = $this->beacon->get_suggest( 'async' );
+		$files_beacon          = $this->beacon->get_suggest( 'file_optimization' );
+		$inline_js_beacon      = $this->beacon->get_suggest( 'exclude_inline_js' );
+		$exclude_js_beacon     = $this->beacon->get_suggest( 'exclude_js' );
+		$jquery_migrate_beacon = $this->beacon->get_suggest( 'jquery_migrate' );
 
 		$this->settings->add_page_section(
 			'file_optimization',
@@ -740,9 +741,9 @@ class Page {
 				],
 				'dequeue_jquery_migrate' => [
 					'type'              => 'checkbox',
-					'label'             => __( 'Dequeue jQuery Migrate', 'rocket' ),
+					'label'             => __( 'Remove jQuery Migrate', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'Dequeue jQuery Migrate eliminates a JS file and can improve load time. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $defer_js_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $defer_js_beacon['id'] ) . '" target="_blank">', '</a>' ),
+					'description'       => sprintf( __( 'Remove jQuery Migrate eliminates a JS file and can improve load time. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $jquery_migrate_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $jquery_migrate_beacon['id'] ) . '" target="_blank">', '</a>' ),
 					'section'           => 'js',
 					'page'              => 'file_optimization',
 					'default'           => 0,
