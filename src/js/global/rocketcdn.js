@@ -57,7 +57,7 @@
 	} );
 
 	window.onmessage = ( e ) => {
-		const iframeURL = 'https://dave.wp-rocket.me';
+		const iframeURL = rocket_ajax_data.origin_url;
 
 		if ( e.origin !== iframeURL ) {
 			return;
