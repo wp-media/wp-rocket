@@ -58,7 +58,12 @@ function bootstrap_integration_suite( $wp_tests_dir ) {
 			// Load the plugin.
 			require WP_ROCKET_PLUGIN_ROOT . '/wp-rocket.php';
 
-			define( 'WP_ADMIN', true );
+			// Set WP_ADMIN constant when running the AdminOnly group of tests.
+			// This is necessary to set is_admin() for Rocket to load all the admin files.
+			global $argv;
+			if ( '--group' === $argv[6] && 'AdminOnly' === $argv[7] ) {
+				define( 'WP_ADMIN', true );
+			}
 		}
 	);
 

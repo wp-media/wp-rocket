@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Integration\AjaxTestCase;
 /**
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber::update_user_token
  * @group  RocketCDN
- * @group  CDNAjax
+ * @group  AdminOnly
  */
 class Test_UpdateUserToken extends AjaxTestCase {
 
@@ -17,7 +17,6 @@ class Test_UpdateUserToken extends AjaxTestCase {
 		$_POST['nonce'] = wp_create_nonce( 'rocket-ajax' );
 		$this->action   = 'save_rocketcdn_token';
 	}
-
 
 	/**
 	 * Test that the callback is registered to the action.

@@ -70,10 +70,12 @@
 	},
 	"scripts": {
 		"test-unit":"\"vendor/bin/phpunit\" --testsuite unit --colors=always --configuration tests/Unit/phpunit.xml.dist",
-		"test-integration": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist",
+		"test-integration": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --exclude-group AdminOnly",
+		"test-integration-admin": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group AdminOnly",
 		"run-tests": [
 			"@test-unit",
-			"@test-integration"
+			"@test-integration",
+			"@test-integration-admin"
 		]
 	}
 }
