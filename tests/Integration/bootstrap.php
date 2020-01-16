@@ -57,6 +57,8 @@ function bootstrap_integration_suite( $wp_tests_dir ) {
 
 			// Load the plugin.
 			require WP_ROCKET_PLUGIN_ROOT . '/wp-rocket.php';
+
+			define( 'WP_ADMIN', true );
 		}
 	);
 
