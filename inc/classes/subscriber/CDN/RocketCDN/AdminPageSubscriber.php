@@ -234,11 +234,6 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	public function update_user_token() {
 		check_ajax_referer( 'rocket-ajax', 'nonce', true );
 
-		if ( ! isset( $_POST['action'] ) || 'save_rocketcdn_token' !== $_POST['action'] ) {
-			wp_send_json_error( 'invalid_post_action' );
-			return;
-		}
-
 		if ( empty( $_POST['value'] ) ) {
 			delete_option( 'rocketcdn_user_token' );
 

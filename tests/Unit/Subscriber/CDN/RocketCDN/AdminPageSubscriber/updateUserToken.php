@@ -27,37 +27,9 @@ class Test_UpdateUserToken extends TestCase {
 	}
 
 	/**
-	 * Test should send "invalid_post_action" JSON error when "action" is not in $_POST.
-	 */
-	public function testShouldSendInvalidPostActionJsonErrorWhenPOSTNotSet() {
-		Functions\expect( 'wp_send_json_error' )->once()->with( 'invalid_post_action' );
-		Functions\expect( 'delete_option' )->never();
-		Functions\expect( 'sanitize_key' )->never();
-		Functions\expect( 'wp_send_json_success' )->never();
-
-		$this->assertArrayNotHasKey( 'action', $_POST );
-		$this->page->update_user_token();
-	}
-
-	/**
-	 * Test should send "invalid_post_action" JSON error when the $_POST action is incorrect.
-	 */
-	public function testShouldSendInvalidPostActionJsonErrorWhenInvalidPOSTAction() {
-		$_POST['action'] = 'invalid';
-
-		Functions\expect( 'wp_send_json_error' )->once()->with( 'invalid_post_action' );
-		Functions\expect( 'delete_option' )->never();
-		Functions\expect( 'sanitize_key' )->never();
-		Functions\expect( 'wp_send_json_success' )->never();
-
-		$this->page->update_user_token();
-	}
-
-	/**
 	 * Test should delete the option and send "user_token_deleted" JSON success when the $_POST "value" is null.
 	 */
 	public function testShouldDeleteOptionAndSendUserTokenDeletedJSONSuccessWhenValueIsNull() {
-		$_POST['action'] = 'save_rocketcdn_token';
 		$_POST['value']  = null;
 
 		Functions\expect( 'delete_option' )->once()->with( 'rocketcdn_user_token' );
@@ -73,7 +45,6 @@ class Test_UpdateUserToken extends TestCase {
 	 * Test should send "invalid_token_length" JSON error when the token value provided is not 40 characters length.
 	 */
 	public function testShouldSendInvalidTokenLengthJsonErrorWhenValueLengthIsNot40() {
-		$_POST['action'] = 'save_rocketcdn_token';
 		$_POST['value']  = 'not40charslong';
 
 		$this->assertNotEquals( 40, strlen( $_POST['value'] ) );
@@ -91,7 +62,6 @@ class Test_UpdateUserToken extends TestCase {
 	 * Test should update the option and send "user_token_saved" JSON success when the token value is valid.
 	 */
 	public function testShouldUpdateOptionAndSendUserTokenSavedJsonSuccessWhenValueIsValid() {
-		$_POST['action'] = 'save_rocketcdn_token';
 		$_POST['value']  = '9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b';
 
 		$this->assertEquals( 40, strlen( $_POST['value'] ) );
