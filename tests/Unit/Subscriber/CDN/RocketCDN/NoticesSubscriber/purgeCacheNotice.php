@@ -68,6 +68,10 @@ class Test_PurgeCacheNotice extends TestCase {
 			'message' => 'RocketCDN cache purge successful.',
 		]);
 
+		Functions\expect('delete_transient')
+		->once()
+		->with('rocketcdn_purge_cache_response');
+
 		Functions\expect('rocket_notice_html')
 		->once()
 		->with([

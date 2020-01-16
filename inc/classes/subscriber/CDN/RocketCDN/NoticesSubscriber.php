@@ -251,6 +251,8 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			return;
 		}
 
+		delete_transient( 'rocketcdn_purge_cache_response' );
+
 		\rocket_notice_html(
 			[
 				'status'  => $purge_response['status'],
