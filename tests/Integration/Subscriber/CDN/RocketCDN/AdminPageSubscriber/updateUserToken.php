@@ -23,8 +23,10 @@ class Test_UpdateUserToken extends AjaxTestCase {
 	 */
 	public function testCallbackIsRegistered() {
 		$this->assertTrue( has_action( 'wp_ajax_save_rocketcdn_token' ) );
+
 		global $wp_filter;
-		$callback_registration = current( ( $wp_filter['wp_ajax_save_rocketcdn_token'] )->callbacks[10] );
+		$obj = $wp_filter['wp_ajax_save_rocketcdn_token'];
+		$callback_registration = current( $obj->callbacks[10] );
 		$this->assertEquals( 'update_user_token', $callback_registration['function'][1] );
 	}
 
