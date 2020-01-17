@@ -39,6 +39,7 @@ class Test_UpdateUserToken extends AjaxTestCase {
 		$_POST['action'] = 'save_rocketcdn_token';
 		$_POST['value']  = null;
 
+
 		$response = $this->callAjaxAction();
 
 		$this->assertFalse( get_option( 'rocketcdn_user_token' ) );

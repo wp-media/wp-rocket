@@ -181,7 +181,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 * @return void
 	 */
 	public function purge_cdn_cache() {
-		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( wp_strip_all_tags( wp_unslash( $_GET['_wpnonce'] ) ), 'rocket_purge_rocketcdn' ) ) {
+		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'rocket_purge_rocketcdn' ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 			wp_nonce_ays( '' );
 		}
 
@@ -192,7 +192,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		set_transient( 'rocketcdn_purge_cache_response', $this->api_client->purge_cache_request(), HOUR_IN_SECONDS );
 
 		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
-		die();
+		defined( 'WP_ROCKET_IS_TESTING' ) ? wp_die() : exit;
 	}
 
 	/**

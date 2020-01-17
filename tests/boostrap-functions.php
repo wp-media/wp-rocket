@@ -44,10 +44,20 @@ function check_readiness() {
  * @param string $test_suite_folder Directory name of the test suite.
  */
 function init_constants( $test_suite_folder ) {
+	define( 'WP_ROCKET_IS_TESTING', true );
 	define( 'WP_ROCKET_PLUGIN_ROOT', dirname( __DIR__ ) . DIRECTORY_SEPARATOR );
 	define( 'WP_ROCKET_PLUGIN_TESTS_ROOT', __DIR__ . DIRECTORY_SEPARATOR . $test_suite_folder );
 
 	if ( 'Unit' === $test_suite_folder && ! defined( 'ABSPATH' ) ) {
 		define( 'ABSPATH', WP_ROCKET_PLUGIN_ROOT );
 	}
+}
+
+/**
+ * Returns the absolute path to this directory.
+ *
+ * @return string
+ */
+function getTestsRootDir() {
+	return __DIR__;
 }
