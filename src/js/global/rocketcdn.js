@@ -101,7 +101,8 @@
 			iframe.postMessage(
 				{
 					'success': false,
-					'data': 'token_not_received'
+					'data': 'token_not_received',
+					'rocketcdn': true
 				},
 				iframeURL
 			);
@@ -118,7 +119,15 @@
 
 		request.onreadystatechange = () => {
 			if ( request.readyState === XMLHttpRequest.DONE && 200 === request.status ) {
-				iframe.postMessage( request.responseText, iframeURL );
+				let responseTxt = JSON.parse(request.responseText);
+				iframe.postMessage(
+					{
+						'success': responseTxt.success,
+						'data': responseTxt.data,
+						'rocketcdn': true
+					},
+					iframeURL
+				);
 			}
 		};
 	}
