@@ -6,6 +6,10 @@ use WP_Rocket\Addons\Varnish\Varnish;
 use Brain\Monkey\Functions;
 use Brain\Monkey\Filters;
 
+/**
+ * @covers \WP_Rocket\Tests\Unit\Addons\Varnish::purge
+ * @group Varnish
+ */
 class TestPurge extends TestCase {
     public function testShouldSendRequestOnceWithDefaultValues() {
         $options = $this->createMock('WP_Rocket\Admin\Options_Data');
@@ -64,14 +68,15 @@ class TestPurge extends TestCase {
                 0,
                 0,
             ],
-            [
-                'varnish_custom_ip',
-                [],
-                [
-                    'localhost'
-                ],
-            ],
         ];
+
+        Filters\expectApplied('rocket_varnish_ip')
+        ->once()
+        ->andReturn(
+            [
+                'localhost',
+            ]
+        );
 
         $options->method('get')->will($this->returnValueMap($map));
 

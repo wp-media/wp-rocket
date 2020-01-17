@@ -50,7 +50,7 @@ class Varnish {
 		* @since 2.6.8
 		* @param string|array $varnish_ip The Varnish IP
 		*/
-		$varnish_ip = apply_filters( 'rocket_varnish_ip', $this->options->get( 'varnish_custom_ip', [] ) );
+		$varnish_ip = apply_filters( 'rocket_varnish_ip', [] );
 
 		if ( defined( 'WP_ROCKET_VARNISH_IP' ) && ! $varnish_ip ) {
 			$varnish_ip = WP_ROCKET_VARNISH_IP;
