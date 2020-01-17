@@ -1,33 +1,32 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\Subscriber\CDN\RocketCDN;
+namespace WP_Rocket\Tests\Integration\Subscriber\CDN\RocketCDN;
 
-use WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber;
-use WP_Rocket\Tests\Unit\TestCase;
+use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber::display_manage_subscription
  * @group  RocketCDN
+ * @group  AdminOnly
  */
 class Test_DisplayManageSubscription extends TestCase {
-	private $api_client;
-	private $page;
 
 	public function setUp() {
 		parent::setUp();
 
-		$this->api_client = $this->createMock( 'WP_Rocket\CDN\RocketCDN\APIClient' );
-		$this->page       = new AdminPageSubscriber(
-			$this->api_client,
-			$this->createMock( 'WP_Rocket\Admin\Options_Data' ),
-			$this->createMock( 'WP_Rocket\Admin\Settings\Beacon' ),
-			''
-		);
+		set_current_screen( 'settings_page_wprocket' );
+	}
+
+	public function tearDown() {
+		parent::tearDown();
+
+		delete_transient( 'rocketcdn_status' );
 	}
 
 	private function getActualHtml() {
 		ob_start();
-		$this->page->display_manage_subscription();
+		do_action( 'rocket_after_cdn_sections' );
+
 		return $this->format_the_html( ob_get_clean() );
 	}
 
@@ -35,9 +34,8 @@ class Test_DisplayManageSubscription extends TestCase {
 	 * Test should return not render the HTML when the subscription is inactive.
 	 */
 	public function testShouldNotRenderButtonHTMLWhenSubscriptionInactive() {
-		$this->api_client->expects( $this->once() )
-		                 ->method( 'get_subscription_data' )
-		                 ->willReturn( ['is_active' => false ] );
+		set_transient( 'rocketcdn_status', [ 'is_active' => false ], MINUTE_IN_SECONDS );
+
 		$this->assertEmpty( $this->getActualHtml() );
 	}
 
@@ -45,11 +43,7 @@ class Test_DisplayManageSubscription extends TestCase {
 	 * Test should render the manage subscription button HTML when the subscription is active.
 	 */
 	public function testShouldRenderButtonHTMLWhenSubscriptionActive() {
-		$this->mockCommonWpFunctions();
-
-		$this->api_client->expects( $this->once() )
-		                 ->method( 'get_subscription_data' )
-		                 ->willReturn( ['is_active' => true ] );
+		set_transient( 'rocketcdn_status', [ 'is_active' => true ], MINUTE_IN_SECONDS );
 
 		$expected = <<<HTML
 <p class="wpr-rocketcdn-subscription">

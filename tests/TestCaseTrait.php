@@ -72,6 +72,10 @@ trait TestCaseTrait {
 	 * @return string formatted HTML.
 	 */
 	protected function format_the_html( $html ) {
+		if ( ! $html ) {
+			return $html;
+		}
+
 		$html = trim( $html );
 
 		// Strip whitespace between the tags.

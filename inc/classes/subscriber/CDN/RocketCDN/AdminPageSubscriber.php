@@ -167,8 +167,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 
 		?>
 		<p class="wpr-rocketcdn-subscription">
-			<button class="wpr-rocketcdn-open"
-			        data-micromodal-trigger="wpr-rocketcdn-modal"><?php esc_html_e( 'Manage Subscription', 'rocket' ); ?></button>
+			<button class="wpr-rocketcdn-open" data-micromodal-trigger="wpr-rocketcdn-modal"><?php esc_html_e( 'Manage Subscription', 'rocket' ); ?></button>
 		</p>
 		<?php
 	}
