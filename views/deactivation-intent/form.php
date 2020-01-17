@@ -71,7 +71,7 @@ defined( 'ABSPATH' ) || exit;
 					<input type="radio" name="reason" id="reason-host" value="Host">
 					<label for="reason-host"><?php esc_html_e( 'My host already has its own caching system.', 'rocket' ); ?></label>
 					<div class="wpr-Modal-fieldHidden">
-						<input type="text" name="reason-hostname" id="reason-hostname" value="" placeholder="<?php esc_html_e( 'What is the name of your web host?', 'rocket' ); ?>">
+						<input type="text" name="reason-hostname" id="reason-hostname" value="" placeholder="<?php esc_attr_e( 'What is the name of your web host?', 'rocket' ); ?>">
 					</div>
 				</li>
 				<li>
@@ -151,7 +151,7 @@ defined( 'ABSPATH' ) || exit;
 			<a href="<?php echo esc_attr( $data['deactivation_url'] ); ?>" class="button button-primary wpr-isDisabled" disabled id="mixpanel-send-deactivation"><?php esc_html_e( 'Send & Deactivate', 'rocket' ); ?></a>
 			<button class="wpr-Modal-cancel"><?php esc_html_e( 'Cancel', 'rocket' ); ?></button>
 		</div>
-		<a href="<?php echo esc_attr( $data['deactivation_url'] ); ?>" class="button button-secondary"><?php esc_html_e( 'Skip & Deactivate', 'rocket' ); ?></a>
+		<a href="<?php echo esc_url( $data['deactivation_url'] ); ?>" class="button button-secondary"><?php esc_html_e( 'Skip & Deactivate', 'rocket' ); ?></a>
 	</div>
 </div>
 <div class="wpr-Modal-overlay"></div>

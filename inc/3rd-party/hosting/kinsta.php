@@ -156,12 +156,12 @@ if ( isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
 				}
 
 				rocket_notice_html(
-				[
-					'status'      => 'error',
-					'dismissible' => '',
-					// translators: %1$s = opening link tag, %2$s = closing link tag.
-					'message'     => sprintf( __( 'Your installation seems to be missing core Kinsta files managing Cache clearing and CDN, which will prevent your Kinsta installation and WP Rocket from working correctly. Please get in touch with Kinsta support through your %1$sMyKinsta%2$s account to resolve this issue.', 'rocket' ), '<a href="https://my.kinsta.com/login/" target="_blank">', '</a>' ),
-				]
+					[
+						'status'      => 'error',
+						'dismissible' => '',
+						// translators: %1$s = opening link tag, %2$s = closing link tag.
+						'message'     => sprintf( __( 'Your installation seems to be missing core Kinsta files managing Cache clearing and CDN, which will prevent your Kinsta installation and WP Rocket from working correctly. Please get in touch with Kinsta support through your %1$sMyKinsta%2$s account to resolve this issue.', 'rocket' ), '<a href="https://my.kinsta.com/login/" target="_blank">', '</a>' ),
+					]
 				);
 			}
 			);

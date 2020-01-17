@@ -26,7 +26,7 @@ if ( isset( $_SERVER['HTTP_X_LSCACHE'] ) && boolval( $_SERVER['HTTP_X_LSCACHE'] 
 			[
 				'rocket_litespeed_clean_domain',
 			]
-			);
+		);
 		rocket_litespeed_header_purge_url( trailingslashit( $url ) );
 	}
 	add_action( 'before_rocket_clean_domain', 'rocket_litespeed_clean_domain', 10, 3 );
@@ -45,7 +45,7 @@ if ( isset( $_SERVER['HTTP_X_LSCACHE'] ) && boolval( $_SERVER['HTTP_X_LSCACHE'] 
 			[
 				'rocket_litespeed_clean_file',
 			]
-			);
+		);
 		rocket_litespeed_header_purge_url( trailingslashit( $url ) );
 	}
 	add_action( 'before_rocket_clean_file', 'rocket_litespeed_clean_file' );
@@ -68,7 +68,7 @@ if ( isset( $_SERVER['HTTP_X_LSCACHE'] ) && boolval( $_SERVER['HTTP_X_LSCACHE'] 
 			[
 				'rocket_litespeed_clean_home',
 			]
-			);
+		);
 		rocket_litespeed_header_purge_url( $home_url );
 		rocket_litespeed_header_purge_url( $home_pagination_url );
 	}

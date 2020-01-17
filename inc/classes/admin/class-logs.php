@@ -95,11 +95,11 @@ class Logs implements Subscriber_Interface {
 		$file_name = basename( $file_name, '.log' ) . Logger::get_log_file_extension();
 
 		nocache_headers();
-		@header( 'Content-Type: text/x-log' ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
-		@header( 'Content-Disposition: attachment; filename="' . $file_name . '"' ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
-		@header( 'Content-Transfer-Encoding: binary' ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
-		@header( 'Content-Length: ' . strlen( $contents ) ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
-		@header( 'Connection: close' ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+		@header( 'Content-Type: text/x-log' );
+		@header( 'Content-Disposition: attachment; filename="' . $file_name . '"' );
+		@header( 'Content-Transfer-Encoding: binary' );
+		@header( 'Content-Length: ' . strlen( $contents ) );
+		@header( 'Connection: close' );
 		echo $contents; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		exit();
 	}
@@ -147,7 +147,7 @@ class Logs implements Subscriber_Interface {
 	 * @return bool
 	 */
 	protected function verify_nonce( $nonce_name ) {
-		return isset( $_GET['_wpnonce'] ) && wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), $nonce_name );
+		return isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], $nonce_name ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 	}
 
 	/**

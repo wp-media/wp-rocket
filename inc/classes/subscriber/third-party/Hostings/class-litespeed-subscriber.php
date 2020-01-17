@@ -99,7 +99,7 @@ class Litespeed_Subscriber implements Subscriber_Interface {
 			]
 		);
 
-		@header( $private_prefix ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+		@header( $private_prefix );
 	}
 
 	/**
@@ -115,7 +115,7 @@ class Litespeed_Subscriber implements Subscriber_Interface {
 			return;
 		}
 		$private_prefix = 'X-LiteSpeed-Purge: *';
-		@header( $private_prefix ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+		@header( $private_prefix );
 	}
 
 }

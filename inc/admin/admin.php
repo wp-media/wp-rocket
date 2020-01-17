@@ -222,11 +222,11 @@ function rocket_do_options_export() {
 	$gz       = 'gz' . strrev( 'etalfed' );
 	$options  = wp_json_encode( get_option( WP_ROCKET_SLUG ) ); // do not use get_rocket_option() here.
 	nocache_headers();
-	@header( 'Content-Type: application/json' ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
-	@header( 'Content-Disposition: attachment; filename="' . $filename . '"' ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
-	@header( 'Content-Transfer-Encoding: binary' ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
-	@header( 'Content-Length: ' . strlen( $options ) ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
-	@header( 'Connection: close' ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+	@header( 'Content-Type: application/json' );
+	@header( 'Content-Disposition: attachment; filename="' . $filename . '"' );
+	@header( 'Content-Transfer-Encoding: binary' );
+	@header( 'Content-Length: ' . strlen( $options ) );
+	@header( 'Connection: close' );
 	echo $options; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	exit();
 }

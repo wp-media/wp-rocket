@@ -27,7 +27,7 @@ settings_errors( $data['slug'] ); ?>
 			<div class="wpr-Header-footer">
 				<?php
 				// translators: %s = Plugin version number.
-				printf( esc_html__( 'version %s', 'rocket' ), esc_attr( WP_ROCKET_VERSION ) );
+				echo esc_html( sprintf( __( 'version %s', 'rocket' ), WP_ROCKET_VERSION ) );
 				?>
 			</div>
 		</header>

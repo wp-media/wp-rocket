@@ -28,7 +28,7 @@ function get_rocket_wpml_langs_for_admin_bar() {  // phpcs:ignore WordPress.Nami
 			'code'    => $lang['code'],
 			'current' => $lang['code'] === $sitepress->get_current_language(),
 			'anchor'  => $lang['display_name'],
-			'flag'    => '<img class="icl_als_iclflag" src="' . $flag_url . '" alt="' . $lang['code'] . '" width="18" height="12" />',
+			'flag'    => '<img class="icl_als_iclflag" src="' . esc_url( $flag_url ) . '" alt="' . esc_attr( $lang['code'] ) . '" width="18" height="12" />',
 		];
 	}
 
@@ -77,7 +77,7 @@ function get_rocket_qtranslate_langs_for_admin_bar( $fork = '' ) { // phpcs:igno
 		$langlinks[ $lang ] = [
 			'code'   => $lang,
 			'anchor' => $q_config['language_name'][ $lang ],
-			'flag'   => '<img src="' . trailingslashit( WP_CONTENT_URL ) . $q_config['flag_location'] . $q_config['flag'][ $lang ] . '" alt="' . $q_config['language_name'][ $lang ] . '" width="18" height="12" />',
+			'flag'   => '<img src="' . esc_url( trailingslashit( WP_CONTENT_URL ) . $q_config['flag_location'] . $q_config['flag'][ $lang ] ) . '" alt="' . esc_attr( $q_config['language_name'][ $lang ] ) . '" width="18" height="12" />',
 		];
 
 	}

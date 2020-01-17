@@ -26,14 +26,28 @@ defined( 'ABSPATH' ) || exit;
 		// translators: %1$s = tutorial URL, %2$s = support URL.
 		printf(
 			// translators: %1$s = tutorial URL, %2$s = support URL.
-			esc_html__( 'Follow this <a href="%1$s" target="_blank">tutorial</a>, or contact <a href="%2$s" target="_blank">support</a> to get the engine started.', 'rocket' ),
-			esc_html__( 'https://docs.wp-rocket.me/article/100-resolving-problems-with-license-validation/?utm_source=wp_plugin&utm_medium=wp_rocket', 'rocket' ),
-			rocket_get_external_url( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
-				'support',
-				[
-					'utm_source' => 'wp_plugin',
-					'utm_medium' => 'wp_rocket',
-				]
+			esc_html__( 'Follow this %1$s, or contact %2$s to get the engine started.', 'rocket' ),
+			sprintf(
+				// translators: %1$s = <a href=", %2$s =  tutorial href,  %3$s =  " target="_blank">,  %4$s =  </a>.
+				esc_html__( '%1$s%2$s%3$stutorial%4$s', 'rocket' ),
+				'<a href="',
+				esc_url( __( 'https://docs.wp-rocket.me/article/100-resolving-problems-with-license-validation/?utm_source=wp_plugin&utm_medium=wp_rocket', 'rocket' ) ),
+				'" target="_blank">',
+				'</a>'
+			),
+			sprintf(
+				// translators: %1$s = <a href=", %2$s =  support href,  %3$s =  " target="_blank">,  %4$s =  </a>.
+				esc_html__( '%1$s%2$s%3$ssupport%4$s', 'rocket' ),
+				'<a href="',
+				rocket_get_external_url( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+					'support',
+					[
+						'utm_source' => 'wp_plugin',
+						'utm_medium' => 'wp_rocket',
+					]
+				),
+				'" target="_blank">',
+				'</a>'
 			)
 		);
 		?>

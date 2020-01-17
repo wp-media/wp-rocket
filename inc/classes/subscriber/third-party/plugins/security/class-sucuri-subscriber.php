@@ -105,7 +105,7 @@ class Sucuri_Subscriber implements Subscriber_Interface {
 	 * @author Grégory Viguier
 	 */
 	public function do_admin_post_rocket_purge_sucuri() {
-		if ( empty( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'rocket_purge_sucuri' ) ) {
+		if ( empty( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'rocket_purge_sucuri' ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 			wp_nonce_ays( '' );
 		}
 
@@ -344,7 +344,7 @@ class Sucuri_Subscriber implements Subscriber_Interface {
 			return new \WP_Error( 'sucuri_api_no_response', __( 'Could not get a response from the Sucuri firewall API.', 'rocket' ) );
 		}
 
-		$data = @json_decode( $contents, true ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+		$data = @json_decode( $contents, true );
 
 		if ( ! $data || ! is_array( $data ) ) {
 			Logger::error(

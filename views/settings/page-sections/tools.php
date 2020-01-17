@@ -17,13 +17,13 @@ if ( rocket_direct_filesystem()->exists( Logger::get_log_file_path() ) ) {
 
 	if ( ! is_wp_error( $rocket_stats ) ) {
 		// translators: %1$s = formatted file size, %2$s = formatted number of entries (don't use %2$d).
-		$rocket_log_description .= sprintf( __( 'Files size: %1$s. Number of entries: %2$s.', 'rocket' ), '<strong>' . esc_html( $rocket_stats['bytes'] ) . '</strong>', '<strong>' . esc_html( $rocket_stats['entries'] ) . '</strong>' );
+		$rocket_log_description .= sprintf( esc_html__( 'Files size: %1$s. Number of entries: %2$s.', 'rocket' ), '<strong>' . esc_html( $rocket_stats['bytes'] ) . '</strong>', '<strong>' . esc_html( $rocket_stats['entries'] ) . '</strong>' );
 
 		// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-		$rocket_log_description .= '<br/>' . sprintf( __( '%1$sDownload the file%2$s.', 'rocket' ), '<a href="' . esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=rocket_download_debug_file' ), 'download_debug_file' ) ) . '">', '</a>' );
+		$rocket_log_description .= '<br/>' . sprintf( esc_html__( '%1$sDownload the file%2$s.', 'rocket' ), '<a href="' . esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=rocket_download_debug_file' ), 'download_debug_file' ) ) . '">', '</a>' );
 
 		// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-		$rocket_log_description .= ' - ' . sprintf( __( '%1$sDelete the file%2$s.', 'rocket' ), '<a href="' . esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=rocket_delete_debug_file' ), 'delete_debug_file' ) ) . '">', '</a>' );
+		$rocket_log_description .= ' - ' . sprintf( esc_html__( '%1$sDelete the file%2$s.', 'rocket' ), '<a href="' . esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=rocket_delete_debug_file' ), 'delete_debug_file' ) ) . '">', '</a>' );
 	}
 }
 ?>

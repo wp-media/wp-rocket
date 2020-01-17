@@ -191,7 +191,7 @@ class Page {
 			'page',
 			[
 				'slug'            => esc_attr( $this->slug ),
-				'btn_submit_text' => esc_html( $btn_submit_text ),
+				'btn_submit_text' => esc_attr( $btn_submit_text ),
 			]
 		);
 	}

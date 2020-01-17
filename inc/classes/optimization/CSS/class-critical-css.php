@@ -201,13 +201,13 @@ class Critical_CSS {
 		$post_types = esc_sql( $post_types );
 		$post_types = "'" . implode( "','", $post_types ) . "'";
 
-		$rows = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$rows = $wpdb->get_results(
 			"
 		    SELECT MAX(ID) as ID, post_type
 		    FROM (
 		        SELECT ID, post_type
 		        FROM $wpdb->posts
-				WHERE post_type IN ( $post_types )" . // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				WHERE post_type IN ( $post_types )" .
 			"
 		        AND post_status = 'publish'
 		        ORDER BY post_date DESC
@@ -259,13 +259,13 @@ class Critical_CSS {
 		$taxonomies = esc_sql( $taxonomies );
 		$taxonomies = "'" . implode( "','", $taxonomies ) . "'";
 
-		$rows = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$rows = $wpdb->get_results(
 			"
 			SELECT MAX( term_id ) AS ID, taxonomy
 			FROM (
 				SELECT term_id, taxonomy
 				FROM $wpdb->term_taxonomy
-				WHERE taxonomy IN ( $taxonomies )" . // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				WHERE taxonomy IN ( $taxonomies )" .
 			'
 				AND count > 0
 			) AS taxonomies
