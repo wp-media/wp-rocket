@@ -1,56 +1,64 @@
 <?php
+
 namespace WP_Rocket\Tests\Unit\Subscriber\CDN\RocketCDN;
 
-use WP_Rocket\Tests\Unit\TestCase;
-use WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber;
 use Brain\Monkey\Functions;
+use WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber;
+use WP_Rocket\Tests\Fixtures\WP_Filesystem_Direct;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber::display_rocketcdn_status
- * @group RocketCDN
+ * @group  RocketCDN
  */
 class Test_DisplayRocketcdnStatus extends TestCase {
 	private $api_client;
-	private $options;
-	private $beacon;
-	private $filesystem;
+	private $page;
 
 	public function setUp() {
 		parent::setUp();
 
-		$this->api_client = $this->createMock('WP_Rocket\CDN\RocketCDN\APIClient');
-		$this->options    = $this->createMock('WP_Rocket\Admin\Options_Data');
-		$this->beacon     = $this->createMock('WP_Rocket\Admin\Settings\Beacon');
-		$this->filesystem = $this->getMockBuilder( 'WP_Filesystem_Direct' )
-							->setMethods( [
-								'is_readable',
-							])
-							->getMock();
-		$this->filesystem->method('is_readable')->will($this->returnCallback('is_readable'));
+		$this->api_client = $this->createMock( 'WP_Rocket\CDN\RocketCDN\APIClient' );
+		$this->page       = new AdminPageSubscriber(
+			$this->api_client,
+			$this->createMock( 'WP_Rocket\Admin\Options_Data' ),
+			$this->createMock( 'WP_Rocket\Admin\Settings\Beacon' ),
+			'views/settings/rocketcdn'
+		);
+
+		Functions\expect( 'rocket_direct_filesystem' )
+			->once()
+			->andReturnUsing( function() {
+				return new WP_Filesystem_Direct;
+			});
+
+		$this->mockCommonWpFunctions();
+	}
+
+	private function getActualHtml() {
+		ob_start();
+		$this->page->display_rocketcdn_status();
+		return $this->format_the_html( ob_get_clean() );
 	}
 
 	/**
-	 * Test should output HTML for an inactive subscription
+	 * Test should render the "no subscription" HTML when the subscription status is "cancelled."
 	 */
-	public function testShouldOutputNoSubscriptionWhenInactive() {
-		$this->mockCommonWpFunctions();
+	public function testShouldRenderNoSubscriptionHTMLWhenCancelled() {
+		$this->api_client->expects( $this->once() )
+		                 ->method( 'get_subscription_data' )
+		                 ->willReturn(
+			                 [
+				                 'is_active'                     => false,
+				                 'subscription_status'           => 'cancelled',
+				                 'subscription_next_date_update' => '2020-01-01',
+			                 ]
+		                 );
+		Functions\expect( 'get_option' )->never();
+		Functions\expect( 'date_il18n' )->never();
 
-		$this->api_client->method('get_subscription_data')
-			->willReturn([
-				'is_active' => false,
-				'subscription_status' => 'cancelled',
-				'subscription_next_date_update' => '2020-01-01'
-			]
-		);
-
-		Functions\when('get_option')->justReturn('Y-m-d');
-		Functions\when('date_i18n')->justReturn('2020-01-01');
-		Functions\When( 'rocket_direct_filesystem')->alias( function() {
-			return $this->filesystem;
-		});
-
-		$page = new AdminPageSubscriber( $this->api_client, $this->options, $this->beacon, 'views/settings/rocketcdn');
-		$this->expectOutputString('<div class="wpr-optionHeader">
+		$expected = <<<HTML
+<div class="wpr-optionHeader">
 	<h3 class="wpr-title2">Rocket CDN</h3>
 </div>
 <div class="wpr-field wpr-field-account">
@@ -59,49 +67,127 @@ class Test_DisplayRocketcdnStatus extends TestCase {
 			<span class="wpr-title3"></span>
 			<span class="wpr-infoAccount wpr-isInvalid">No Subscription</span>
 		</div>
-				<div>
+		<div>
 			<a href="#page_cdn" class="wpr-button">Get Rocket CDN</a>
 		</div>
-			</div>
-</div>',
-			$page->display_rocketcdn_status()
-		);
+	</div>
+</div>
+HTML;
+
+		$this->assertSame( $this->format_the_html( $expected ), $this->getActualHtml() );
 	}
 
 	/**
-	 * Test should output HTML for an active subscription
+	 * Test should render HTML when the subscription status is "active" but "is_active" is false.
 	 */
-	public function testShouldOutputSubscriptionDataWhenActive() {
-		$this->mockCommonWpFunctions();
+	public function testShouldRenderHTMLWhenIsActiveFalseAndStatusIsActive() {
+		$this->api_client->expects( $this->once() )
+		                 ->method( 'get_subscription_data' )
+		                 ->willReturn(
+			                 [
+				                 'is_active'                     => false,
+				                 'subscription_status'           => 'active',
+				                 'subscription_next_date_update' => '2020-01-01',
+			                 ]
+		                 );
+		Functions\expect( 'get_option' )
+			->once()
+			->with( 'date_format' )
+			->andReturn( 'Y-m-d' );
+		Functions\expect( 'date_i18n' )
+			->once()
+			->with( 'Y-m-d', strtotime( '2020-01-01' ) )
+			->andReturn( '2020-01-01' );
 
-		$this->api_client->method('get_subscription_data')
-			->willReturn(
-			[
-				'is_active' => true,
-				'subscription_status' => 'active',
-				'subscription_next_date_update' => '2020-01-01'
-			]
-		);
-
-		Functions\when('get_option')->justReturn('Y-m-d');
-		Functions\when('date_i18n')->justReturn('2020-01-01');
-		Functions\When( 'rocket_direct_filesystem')->alias( function() {
-			return $this->filesystem;
-		});
-
-		$page = new AdminPageSubscriber( $this->api_client, $this->options, $this->beacon, 'views/settings/rocketcdn');
-		$this->expectOutputString('<div class="wpr-optionHeader">
+		$expected = <<<HTML
+<div class="wpr-optionHeader">
 	<h3 class="wpr-title2">Rocket CDN</h3>
 </div>
 <div class="wpr-field wpr-field-account">
-	<div class="wpr-flex ">
+	<div class="wpr-flex wpr-flex--egal">
+		<div>
+			<span class="wpr-title3"></span>
+			<span class="wpr-infoAccount wpr-isInvalid">2020-01-01</span>
+		</div>
+		<div>
+			<a href="#page_cdn" class="wpr-button">Get Rocket CDN</a>
+		</div>		
+	</div>
+</div>
+HTML;
+
+		$this->assertSame( $this->format_the_html( $expected ), $this->getActualHtml() );
+	}
+
+	/**
+	 * Test should render HTML when the subscription status is "cancelled" but "is_active" is true.
+	 */
+	public function testShouldRenderHTMLWhenStatusCancelledAndIsActiveTrue() {
+		$this->api_client->expects( $this->once() )
+		                 ->method( 'get_subscription_data' )
+		                 ->willReturn(
+			                 [
+				                 'is_active'                     => true,
+				                 'subscription_status'           => 'cancelled',
+				                 'subscription_next_date_update' => '2020-01-01',
+			                 ]
+		                 );
+		Functions\expect( 'get_option' )->never();
+		Functions\expect( 'date_i18n' )->never();
+
+		$expected = <<<HTML
+<div class="wpr-optionHeader">
+	<h3 class="wpr-title2">Rocket CDN</h3>
+</div>
+<div class="wpr-field wpr-field-account">
+	<div class="wpr-flex">
+		<div>
+			<span class="wpr-title3">Next Billing Date</span>
+			<span class="wpr-infoAccount wpr-isValid">No Subscription</span>
+		</div>	
+	</div>
+</div>
+HTML;
+
+		$this->assertSame( $this->format_the_html( $expected ), $this->getActualHtml() );
+	}
+
+	/**
+	 * Test should render HTML when the subscription status is "active" and "is_active" is true.
+	 */
+	public function testShouldRenderHTMLWhenActiveSubscriptionIsActive() {
+		$this->api_client->expects( $this->once() )
+		                 ->method( 'get_subscription_data' )
+		                 ->willReturn(
+			                 [
+				                 'is_active'                     => true,
+				                 'subscription_status'           => 'active',
+				                 'subscription_next_date_update' => '2020-01-01',
+			                 ]
+		                 );
+		Functions\expect( 'get_option' )
+			->once()
+			->with( 'date_format' )
+			->andReturn( 'Y-m-d' );
+		Functions\expect( 'date_i18n' )
+			->once()
+			->with( 'Y-m-d', strtotime( '2020-01-01' ) )
+			->andReturn( '2020-01-01' );
+
+		$expected = <<<HTML
+<div class="wpr-optionHeader">
+	<h3 class="wpr-title2">Rocket CDN</h3>
+</div>
+<div class="wpr-field wpr-field-account">
+	<div class="wpr-flex">
 		<div>
 			<span class="wpr-title3">Next Billing Date</span>
 			<span class="wpr-infoAccount wpr-isValid">2020-01-01</span>
 		</div>
-			</div>
-</div>',
-			$page->display_rocketcdn_status()
-		);
+	</div>
+</div>
+HTML;
+
+		$this->assertSame( $this->format_the_html( $expected ), $this->getActualHtml() );
 	}
 }

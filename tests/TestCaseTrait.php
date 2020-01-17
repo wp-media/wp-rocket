@@ -59,4 +59,30 @@ trait TestCaseTrait {
 
 		return $property;
 	}
+
+	/**
+	 * Format the HTML by stripping out the whitespace between the HTML tags and then putting each tag on a separate
+	 * line.
+	 *
+	 * Why? We can then compare the actual vs. expected HTML patterns without worrying about tabs, new lines, and extra
+	 * spaces.
+	 *
+	 * @param string $html HTML to strip.
+	 *
+	 * @return string formatted HTML.
+	 */
+	protected function format_the_html( $html ) {
+		$html = trim( $html );
+
+		// Strip whitespace between the tags.
+		$html = preg_replace( '/(\>)\s*(\<)/m', '$1$2', $html );
+
+		// Strip whitespace at the end of a tag.
+		$html = preg_replace( '/(\>)\s*/m', '$1$2', $html );
+
+		// Strip whitespace at the start of a tag.
+		$html = preg_replace( '/\s*(\<)/m', '$1$2', $html );
+
+		return str_replace( '>', ">\n", $html );
+	}
 }

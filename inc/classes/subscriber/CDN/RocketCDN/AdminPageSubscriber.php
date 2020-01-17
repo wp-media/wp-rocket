@@ -1,4 +1,5 @@
 <?php
+
 namespace WP_Rocket\Subscriber\CDN\RocketCDN;
 
 use WP_Rocket\Abstract_Render;
@@ -10,7 +11,7 @@ use WP_Rocket\CDN\RocketCDN\APIClient;
 /**
  * Subscriber for the RocketCDN integration in WP Rocket settings page
  *
- * @since 3.5
+ * @since  3.5
  * @author Remy Perona
  */
 class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interface {
@@ -38,9 +39,9 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	/**
 	 * Constructor
 	 *
-	 * @param APIClient    $api_client RocketCDN API Client instance.
-	 * @param Options_Data $options WP Rocket options instance.
-	 * @param Beacon       $beacon Beacon instance.
+	 * @param APIClient    $api_client    RocketCDN API Client instance.
+	 * @param Options_Data $options       WP Rocket options instance.
+	 * @param Beacon       $beacon        Beacon instance.
 	 * @param string       $template_path Path to the templates.
 	 */
 	public function __construct( APIClient $api_client, Options_Data $options, Beacon $beacon, $template_path ) {
@@ -68,33 +69,31 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	/**
 	 * Displays the Rocket CDN section on the dashboard tab
 	 *
-	 * @since 3.5
+	 * @since  3.5
 	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
 	public function display_rocketcdn_status() {
 		$subscription_data = $this->api_client->get_subscription_data();
-		$label             = '';
-		$status_text       = __( 'No Subscription', 'rocket' );
-		$status_class      = 'wpr-isInvalid';
-		$container_class   = 'wpr-flex--egal';
 
 		if ( $subscription_data['is_active'] ) {
 			$label           = __( 'Next Billing Date', 'rocket' );
-			$status_class    = 'wpr-isValid';
+			$status_class    = ' wpr-isValid';
 			$container_class = '';
-		}
-
-		if ( 'cancelled' !== $subscription_data['subscription_status'] ) {
-			$status_text = date_i18n( get_option( 'date_format' ), strtotime( $subscription_data['subscription_next_date_update'] ) );
+		} else {
+			$label           = '';
+			$status_class    = ' wpr-isInvalid';
+			$container_class = ' wpr-flex--egal';
 		}
 
 		$data = [
 			'container_class' => $container_class,
 			'label'           => $label,
 			'status_class'    => $status_class,
-			'status_text'     => $status_text,
+			'status_text'     => 'cancelled' === $subscription_data['subscription_status']
+				? __( 'No Subscription', 'rocket' )
+				: date_i18n( get_option( 'date_format' ), strtotime( $subscription_data['subscription_next_date_update'] ) ),
 			'is_active'       => $subscription_data['is_active'],
 		];
 
@@ -104,10 +103,11 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	/**
 	 * Adds the Rocket CDN fields to the CDN section
 	 *
-	 * @since 3.5
+	 * @since  3.5
 	 * @author Remy Perona
 	 *
 	 * @param array $fields CDN settings fields.
+	 *
 	 * @return array
 	 */
 	public function rocketcdn_field( $fields ) {
@@ -122,7 +122,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 
 		if ( ! empty( $cdn_cnames ) && $cdn_cnames[0] !== $subscription_data['cdn_url'] ) {
 			$helper_text = sprintf(
-				// translators: %1$s = opening <code> tag, %2$s = CDN URL, %3$s = closing </code> tag.
+			// translators: %1$s = opening <code> tag, %2$s = CDN URL, %3$s = closing </code> tag.
 				__( 'To use Rocket CDN, replace your CNAME with %1$s%2$s%3$s.', 'rocket' ),
 				'<code>',
 				$subscription_data['cdn_url'],
@@ -131,7 +131,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		}
 
 		$more_info = sprintf(
-			// translators: %1$is = opening link tag, %2$s = closing link tag.
+		// translators: %1$is = opening link tag, %2$s = closing link tag.
 			__( '%1$sMore Info%2$s', 'rocket' ),
 			'<a href="" data-beacon-article="" rel="noopener noreferrer" target="_blank">',
 			'</a>'
@@ -153,7 +153,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	/**
 	 * Displays the button to open the subscription modal
 	 *
-	 * @since 3.5
+	 * @since  3.5
 	 * @author Remy Perona
 	 *
 	 * @return void
@@ -166,14 +166,17 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		}
 
 		?>
-		<p class="wpr-rocketcdn-subscription"><button class="wpr-rocketcdn-open" data-micromodal-trigger="wpr-rocketcdn-modal"><?php esc_html_e( 'Manage Subscription', 'rocket' ); ?></button></p>
+		<p class="wpr-rocketcdn-subscription">
+			<button class="wpr-rocketcdn-open"
+			        data-micromodal-trigger="wpr-rocketcdn-modal"><?php esc_html_e( 'Manage Subscription', 'rocket' ); ?></button>
+		</p>
 		<?php
 	}
 
 	/**
 	 * Purges the CDN cache and store the response in a transient.
 	 *
-	 * @since 3.5
+	 * @since  3.5
 	 * @author Remy Perona
 	 *
 	 * @return void
@@ -196,7 +199,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	/**
 	 * Adds the subscription modal on the WP Rocket settings page
 	 *
-	 * @since 3.5
+	 * @since  3.5
 	 * @author Remy Perona
 	 *
 	 * @return void
@@ -212,13 +215,15 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		);
 		?>
 		<div class="wpr-rocketcdn-modal" id="wpr-rocketcdn-modal" aria-hidden="true">
-		<div class="wpr-rocketcdn-modal__overlay" tabindex="-1" data-micromodal-close>
-			<div class="wpr-rocketcdn-modal__container" role="dialog" aria-modal="true" aria-labelledby="wpr-rocketcdn-modal-title">
-				<div id="wpr-rocketcdn-modal-content">
-					<iframe id="rocketcdn-iframe" src="<?php echo esc_url( $iframe_src ); ?>" width="674" height="425"></iframe>
+			<div class="wpr-rocketcdn-modal__overlay" tabindex="-1" data-micromodal-close>
+				<div class="wpr-rocketcdn-modal__container" role="dialog" aria-modal="true"
+				     aria-labelledby="wpr-rocketcdn-modal-title">
+					<div id="wpr-rocketcdn-modal-content">
+						<iframe id="rocketcdn-iframe" src="<?php echo esc_url( $iframe_src ); ?>" width="674"
+						        height="425"></iframe>
+					</div>
 				</div>
 			</div>
-		</div>
 		</div>
 		<?php
 	}
@@ -226,7 +231,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	/**
 	 * Updates the RocketCDN user token value
 	 *
-	 * @since 3.5
+	 * @since  3.5
 	 * @author Remy Perona
 	 *
 	 * @return void
@@ -238,6 +243,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 			delete_option( 'rocketcdn_user_token' );
 
 			wp_send_json_success( 'user_token_deleted' );
+
 			return;
 		}
 
@@ -245,6 +251,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 
 		if ( 40 !== strlen( $token ) ) {
 			wp_send_json_error( 'invalid_token_length' );
+
 			return;
 		}
 

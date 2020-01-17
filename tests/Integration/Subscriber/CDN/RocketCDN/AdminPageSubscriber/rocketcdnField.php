@@ -12,7 +12,9 @@ use WP_Rocket\Tests\Integration\TestCase;
 class Test_RocketcdnField extends TestCase {
 	private static $fields;
 
-	public function wpBeforeClassSetUp() {
+	public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
+
 		self::$fields = [
 			'cdn'              => [
 				'type'              => 'checkbox',
