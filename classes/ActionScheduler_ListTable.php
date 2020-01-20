@@ -252,7 +252,7 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 	 */
 	public function column_args( array $row ) {
 		if ( empty( $row['args'] ) ) {
-			return '';
+			return apply_filters( 'action_scheduler_list_table_column_args', '', $row );
 		}
 
 		$row_html = '<ul>';
