@@ -43,6 +43,18 @@ class Test_RocketcdnField extends TestCase {
 				'default'           => [],
 				'sanitize_callback' => 'sanitize_textarea',
 			],
+			'rocketcdn_token' => [
+				'type'            => 'text',
+				'label'           => 'RocketCDN token',
+				'description'     => __( 'The RocketCDN token used to send request to RocketCDN API', 'rocket' ),
+				'default'         => '',
+				'container_class' => [
+					'wpr-rocketcdn-token',
+					'wpr-isHidden',
+				],
+				'section'         => 'cnames_section',
+				'page'            => 'page_cdn',
+			],
 		];
 	}
 
