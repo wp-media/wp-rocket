@@ -630,6 +630,7 @@ class Combine extends Abstract_JS_Optimization {
 			'window.broadstreetKeywords',
 			'window.wc_ga_pro.available_gateways',
 			'xa.prototype',
+			'var blockClass',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
