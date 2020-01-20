@@ -135,14 +135,14 @@ class Test_GetSubscriptionData extends TestCase {
 			->andReturn( false );
 
 		Functions\expect( 'wp_remote_retrieve_response_code' )->once()->andReturn( 200 );
-		Functions\expect( 'wp_remote_retrieve_body' )->once()->andReturn( '{"id":1,"is_active":true,"cdn_url":"https:\/\/rocketcdn.me","subscription_next_date_update":"2020-01-01","subscription_status":"active"}' );
+		Functions\expect( 'wp_remote_retrieve_body' )->once()->andReturn( '{"id":1,"is_active":true,"cdn_url":"https:\/\/rocketcdn.me","subscription_next_date_update":"2020-01-01","subscription_status":"running"}' );
 
-		$expected = 			[
+		$expected =             [
 			'id'                            => 1,
 			'is_active'                     => true,
 			'cdn_url'                       => 'https://rocketcdn.me',
 			'subscription_next_date_update' => '2020-01-01',
-			'subscription_status'           => 'active',
+			'subscription_status'           => 'running',
 		];
 
 		Functions\expect( 'set_transient' )->once()->with( 'rocketcdn_status', $expected, WEEK_IN_SECONDS );

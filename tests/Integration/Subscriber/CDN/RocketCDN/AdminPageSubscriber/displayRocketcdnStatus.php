@@ -71,79 +71,14 @@ HTML;
 	}
 
 	/**
-	 * Test should render HTML when the subscription status is "active" but "is_active" is false.
+	 * Test should render HTML when the subscription status is "running".
 	 */
-	public function testShouldRenderHTMLWhenIsActiveFalseAndStatusIsActive() {
-		set_transient(
-			'rocketcdn_status',
-			[
-				'is_active'                     => false,
-				'subscription_status'           => 'active',
-				'subscription_next_date_update' => '2020-01-01',
-			],
-			MINUTE_IN_SECONDS
-		);
-
-		$expected = <<<HTML
-<div class="wpr-optionHeader">
-	<h3 class="wpr-title2">Rocket CDN</h3>
-</div>
-<div class="wpr-field wpr-field-account">
-	<div class="wpr-flex wpr-flex--egal">
-		<div>
-			<span class="wpr-title3"></span>
-			<span class="wpr-infoAccount wpr-isInvalid">2020-01-01</span>
-		</div>
-		<div>
-			<a href="#page_cdn" class="wpr-button">Get Rocket CDN</a>
-		</div>		
-	</div>
-</div>
-HTML;
-
-		$this->assertSame( $this->format_the_html( $expected ), $this->getActualHtml() );
-	}
-
-	/**
-	 * Test should render HTML when the subscription status is "cancelled" but "is_active" is true.
-	 */
-	public function testShouldRenderHTMLWhenStatusCancelledAndIsActiveTrue() {
+	public function testShouldRenderHTMLWhenSubscriptionIsRunning() {
 		set_transient(
 			'rocketcdn_status',
 			[
 				'is_active'                     => true,
-				'subscription_status'           => 'cancelled',
-				'subscription_next_date_update' => '2020-01-01',
-			],
-			MINUTE_IN_SECONDS
-		);
-
-		$expected = <<<HTML
-<div class="wpr-optionHeader">
-	<h3 class="wpr-title2">Rocket CDN</h3>
-</div>
-<div class="wpr-field wpr-field-account">
-	<div class="wpr-flex">
-		<div>
-			<span class="wpr-title3">Next Billing Date</span>
-			<span class="wpr-infoAccount wpr-isValid">No Subscription</span>
-		</div>	
-	</div>
-</div>
-HTML;
-
-		$this->assertSame( $this->format_the_html( $expected ), $this->getActualHtml() );
-	}
-
-	/**
-	 * Test should render HTML when the subscription status is "active" and "is_active" is true.
-	 */
-	public function testShouldRenderHTMLWhenActiveSubscriptionIsActive() {
-		set_transient(
-			'rocketcdn_status',
-			[
-				'is_active'                     => true,
-				'subscription_status'           => 'active',
+				'subscription_status'           => 'running',
 				'subscription_next_date_update' => '2020-01-01',
 			],
 			MINUTE_IN_SECONDS

@@ -35,7 +35,7 @@ class Test_RocketcdnField extends TestCase {
 	public function testShouldReturnDefaultFieldWhenRocketCDNNotActive() {
 		$this->api_client->expects( $this->once() )
 		                 ->method( 'get_subscription_data' )
-		                 ->willReturn( [ 'is_active' => false ] );
+		                 ->willReturn( [ 'subscription_status' => 'cancelled' ] );
 		$this->options->expects( $this->never() )->method( 'get' );
 
 		$fields = [ 'cdn_cnames' => [] ];
@@ -48,7 +48,7 @@ class Test_RocketcdnField extends TestCase {
 	public function testShouldReturnRocketCDNFieldWhenRocketCDNActive() {
 		$this->api_client->expects( $this->once() )
 		                 ->method( 'get_subscription_data' )
-		                 ->willReturn( [ 'is_active' => true, 'cdn_url' => 'example1.org' ] );
+		                 ->willReturn( [ 'subscription_status' => 'running', 'cdn_url' => 'example1.org' ] );
 		$this->options->expects( $this->once() )
 		              ->method( 'get' )
 		              ->with( 'cdn_cnames', [] )
@@ -75,7 +75,7 @@ class Test_RocketcdnField extends TestCase {
 	public function testShouldReturnRocketCDNFieldWithCNAMEWhenRocketCDNActiveAndCNames() {
 		$this->api_client->expects( $this->once() )
 		                 ->method( 'get_subscription_data' )
-		                 ->willReturn( [ 'is_active' => true, 'cdn_url' => 'example1.org' ] );
+		                 ->willReturn( [ 'subscription_status' => 'running', 'cdn_url' => 'example1.org' ] );
 		$this->options->expects( $this->once() )
 		              ->method( 'get' )
 		              ->with( 'cdn_cnames', [] )

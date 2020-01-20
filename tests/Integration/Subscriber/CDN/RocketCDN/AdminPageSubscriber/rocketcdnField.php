@@ -74,7 +74,7 @@ class Test_RocketcdnField extends TestCase {
 	 * Test should return default array for the field when RocketCDN is not active
 	 */
 	public function testShouldReturnDefaultFieldWhenRocketCDNNotActive() {
-		set_transient( 'rocketcdn_status', [ 'is_active' => 0, 'cdn_url' => '' ], MINUTE_IN_SECONDS );
+		set_transient( 'rocketcdn_status', [ 'subscription_status' => 'cancelled', 'cdn_url' => '' ], MINUTE_IN_SECONDS );
 
 		$this->assertSame( self::$fields, apply_filters( 'rocket_cdn_settings_fields', self::$fields ) );
 	}
@@ -83,7 +83,7 @@ class Test_RocketcdnField extends TestCase {
 	 * Test should return the special array for the field when RocketCDN is active.
 	 */
 	public function testShouldReturnRocketCDNFieldWhenRocketCDNActive() {
-		set_transient( 'rocketcdn_status', [ 'is_active' => 1, 'cdn_url' => 'example1.org' ], MINUTE_IN_SECONDS );
+		set_transient( 'rocketcdn_status', [ 'subscription_status' => 'running', 'cdn_url' => 'example1.org' ], MINUTE_IN_SECONDS );
 
 		$expected               = self::$fields;
 		$expected['cdn_cnames'] = [
@@ -108,7 +108,7 @@ class Test_RocketcdnField extends TestCase {
 			return [ 'example2.com' ];
 		};
 		add_filter( 'pre_get_rocket_option_cdn_cnames', $cdn_names_cb );
-		set_transient( 'rocketcdn_status', [ 'is_active' => 1, 'cdn_url' => 'example1.org' ], MINUTE_IN_SECONDS );
+		set_transient( 'rocketcdn_status', [ 'subscription_status' => 'running', 'cdn_url' => 'example1.org' ], MINUTE_IN_SECONDS );
 
 		$expected               = self::$fields;
 		$expected['cdn_cnames'] = [

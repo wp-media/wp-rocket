@@ -23,11 +23,13 @@ class Test_GetPricingData extends TestCase {
 	 */
 	public function testShouldReturnPricingWhenInTransient() {
 		$status = [
-			'id'                            => 0,
-			'is_active'                     => false,
-			'cdn_url'                       => '',
-			'subscription_next_date_update' => 0,
-			'subscription_status'           => 'cancelled',
+			"is_discount_active"       => true,
+			"discounted_price_monthly" => 5.99,
+			"discounted_price_yearly"  => 59.0,
+			"discount_campaign_name"   => "Launch",
+			"end_date"                 => "2020-01-30",
+			"monthly_price"            => 7.99,
+			"annual_price"             => 79.0
 		];
 		set_transient( 'rocketcdn_pricing', $status, MINUTE_IN_SECONDS );
 

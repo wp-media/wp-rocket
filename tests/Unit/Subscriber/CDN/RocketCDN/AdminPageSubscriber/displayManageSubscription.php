@@ -37,7 +37,7 @@ class Test_DisplayManageSubscription extends TestCase {
 	public function testShouldNotRenderButtonHTMLWhenSubscriptionInactive() {
 		$this->api_client->expects( $this->once() )
 		                 ->method( 'get_subscription_data' )
-		                 ->willReturn( ['is_active' => false ] );
+		                 ->willReturn( ['subscription_status' => 'cancelled' ] );
 		$this->assertEmpty( $this->getActualHtml() );
 	}
 
@@ -49,7 +49,7 @@ class Test_DisplayManageSubscription extends TestCase {
 
 		$this->api_client->expects( $this->once() )
 		                 ->method( 'get_subscription_data' )
-		                 ->willReturn( ['is_active' => true ] );
+		                 ->willReturn( ['subscription_status' => 'running' ] );
 
 		$expected = <<<HTML
 <p class="wpr-rocketcdn-subscription">

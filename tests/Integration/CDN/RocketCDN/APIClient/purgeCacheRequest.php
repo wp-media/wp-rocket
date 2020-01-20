@@ -23,7 +23,7 @@ class Test_PurgeCacheRequest extends TestCase {
 	 * Test should return the error packet when there's no subscription ID.
 	 */
 	public function testShouldReturnErrorPacketWhenNoSubscriptionId() {
-		set_transient( 'rocketcdn_status', [ 'is_active' => false ], MINUTE_IN_SECONDS );
+		set_transient( 'rocketcdn_status', [ 'subscription_status' => 'cancelled' ], MINUTE_IN_SECONDS );
 
 		$this->assertSame(
 			[
@@ -38,7 +38,7 @@ class Test_PurgeCacheRequest extends TestCase {
 	 * Test should return the error packet when the subscription ID is 0.
 	 */
 	public function testShouldReturnErrorPacketWhenSubscriptionIdIsZero() {
-		set_transient( 'rocketcdn_status', [ 'is_active' => 0 ], MINUTE_IN_SECONDS );
+		set_transient( 'rocketcdn_status', [ 'subscription_status' => 'cancelled' ], MINUTE_IN_SECONDS );
 
 		$this->assertSame(
 			[

@@ -33,7 +33,7 @@ class Test_RocketcdnTokenField extends TestCase {
     public function testShouldReturnDefaultFieldsWhenRocketCDNIsActive() {
         $this->api_client->expects( $this->once() )
 		                 ->method( 'get_subscription_data' )
-                         ->willReturn( [ 'is_active' => true, 'cdn_url' => 'example1.org' ] );
+                         ->willReturn( [ 'subscription_status' => 'running', 'cdn_url' => 'example1.org' ] );
 
         $fields = [ 'cdn_cnames' => [] ];
 
@@ -46,7 +46,7 @@ class Test_RocketcdnTokenField extends TestCase {
     public function testShouldReturnTokenFieldWhenRocketCDNNotActive() {
         $this->api_client->expects( $this->once() )
 		                 ->method( 'get_subscription_data' )
-                         ->willReturn( [ 'is_active' => false ] );
+                         ->willReturn( [ 'subscription_status' => 'cancelled' ] );
 
         $expected = [
             'rocketcdn_token' => [

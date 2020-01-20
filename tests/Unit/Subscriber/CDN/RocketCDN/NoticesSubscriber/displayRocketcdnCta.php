@@ -32,7 +32,7 @@ class Test_DisplayRocketcdnCta extends TestCase {
 		$this->api_client->method('get_subscription_data')
 			->willReturn(
 			[
-				'is_active' => true,
+				'subscription_status' => 'running',
 			]
 		);
 
@@ -49,7 +49,7 @@ class Test_DisplayRocketcdnCta extends TestCase {
 		$this->api_client->method('get_subscription_data')
 			->willReturn(
 			[
-				'is_active' => false,
+				'subscription_status' => 'cancelled',
 			]
 		);
 
@@ -92,7 +92,7 @@ class Test_DisplayRocketcdnCta extends TestCase {
 		$this->api_client->method('get_subscription_data')
 			->willReturn(
 			[
-				'is_active' => false,
+				'subscription_status' => 'cancelled',
 			]
 		);
 
@@ -135,7 +135,7 @@ class Test_DisplayRocketcdnCta extends TestCase {
 		$this->api_client->method('get_subscription_data')
 			->willReturn(
 			[
-				'is_active' => false,
+				'subscription_status' => 'cancelled',
 			]
 		);
 
@@ -178,7 +178,7 @@ class Test_DisplayRocketcdnCta extends TestCase {
 		$this->api_client->method('get_subscription_data')
 			->willReturn(
 			[
-				'is_active' => false,
+				'subscription_status' => 'cancelled',
 			]
 		);
 

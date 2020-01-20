@@ -34,7 +34,7 @@ class Test_DisplayManageSubscription extends TestCase {
 	 * Test should return not render the HTML when the subscription is inactive.
 	 */
 	public function testShouldNotRenderButtonHTMLWhenSubscriptionInactive() {
-		set_transient( 'rocketcdn_status', [ 'is_active' => false ], MINUTE_IN_SECONDS );
+		set_transient( 'rocketcdn_status', [ 'subscription_status' => 'cancelled' ], MINUTE_IN_SECONDS );
 
 		$this->assertEmpty( $this->getActualHtml() );
 	}
@@ -43,7 +43,7 @@ class Test_DisplayManageSubscription extends TestCase {
 	 * Test should render the manage subscription button HTML when the subscription is active.
 	 */
 	public function testShouldRenderButtonHTMLWhenSubscriptionActive() {
-		set_transient( 'rocketcdn_status', [ 'is_active' => true ], MINUTE_IN_SECONDS );
+		set_transient( 'rocketcdn_status', [ 'subscription_status' => 'running' ], MINUTE_IN_SECONDS );
 
 		$expected = <<<HTML
 <p class="wpr-rocketcdn-subscription">
