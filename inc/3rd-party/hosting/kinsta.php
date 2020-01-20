@@ -86,7 +86,7 @@ if ( isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
 					'blocking' => false,
 					'timeout'  => 0.01,
 				]
-				);
+			);
 		}
 		add_action( 'after_rocket_clean_file', 'rocket_clean_kinsta_cache_url' );
 
