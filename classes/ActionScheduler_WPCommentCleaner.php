@@ -46,8 +46,8 @@ class ActionScheduler_WPCommentCleaner {
 		add_action( 'comment_feed_where', array( self::$wp_comment_logger, 'filter_comment_feed' ), 10, 2 );
 
 		// Action Scheduler may be displayed as a Tools screen or WooCommerce > Status administration screen
-		add_action( 'load-tools_page_action-scheduler', array( __CLASS__, 'print_admin_notice' ) );
-		add_action( 'load-woocommerce_page_wc-status', array( __CLASS__, 'print_admin_notice' ) );
+		add_action( 'load-tools_page_action-scheduler', array( __CLASS__, 'register_admin_notice' ) );
+		add_action( 'load-woocommerce_page_wc-status', array( __CLASS__, 'register_admin_notice' ) );
 	}
 
 	/**
@@ -84,6 +84,13 @@ class ActionScheduler_WPCommentCleaner {
 		delete_option( self::$has_logs_option_key );
 	}
 
+	/**
+	 * Registers admin notices about the orphaned action logs.
+	 */
+	public static function register_admin_notice() {
+		add_action( 'admin_notices', array( __CLASS__, 'print_admin_notice' ) );
+	}
+	
 	/**
 	 * Prints details about the orphaned action logs and includes information on where to learn more.
 	 */
