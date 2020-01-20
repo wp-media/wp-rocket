@@ -59,10 +59,14 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		return [
 			'rocket_dashboard_after_account_data' => 'display_rocketcdn_status',
 			'rocket_after_cdn_sections'           => 'display_manage_subscription',
-			'rocket_cdn_settings_fields'          => 'rocketcdn_field',
+			'rocket_cdn_settings_fields'          => [
+				[ 'rocketcdn_field' ],
+				[ 'rocketcdn_token_field' ],
+			],
 			'admin_post_rocket_purge_rocketcdn'   => 'purge_cdn_cache',
 			'rocket_settings_page_footer'         => 'add_subscription_modal',
 			'wp_ajax_save_rocketcdn_token'        => 'update_user_token',
+			'pre_update_option_' . WP_ROCKET_SLUG => [ 'maybe_save_token', 11 ],
 		];
 	}
 
@@ -148,6 +152,66 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		];
 
 		return $fields;
+	}
+
+	/**
+	 * Adds an input text field to add the RocketCDN token manually
+	 *
+	 * @since 3.5
+	 * @author Remy Perona
+	 *
+	 * @param array $fields An array of fields for the CDN section.
+	 * @return array
+	 */
+	public function rocketcdn_token_field( $fields ) {
+		$subscription_data = $this->api_client->get_subscription_data();
+
+		if ( $subscription_data['is_active'] ) {
+			return $fields;
+		}
+
+		$fields['rocketcdn_token'] = [
+			'type'            => 'text',
+			'label'           => 'RocketCDN token',
+			'description'     => __( 'The RocketCDN token used to send request to RocketCDN API', 'rocket' ),
+			'default'         => '',
+			'container_class' => [
+				'wpr-rocketcdn-token',
+				'wpr-isHidden',
+			],
+			'section'         => 'cnames_section',
+			'page'            => 'page_cdn',
+		];
+
+		return $fields;
+	}
+
+	/**
+	 * Saves the RocketCDN token in the correct option if the field is filled
+	 *
+	 * @since 3.5
+	 * @author Remy Perona
+	 *
+	 * @param array $value The new, unserialized option value.
+	 * @return array
+	 */
+	public function maybe_save_token( $value ) {
+		if ( empty( $value['rocketcdn_token'] ) ) {
+			return $value;
+		}
+
+		$token = sanitize_text_field( $value['rocketcdn_token'] );
+		unset( $value['rocketcdn_token'] );
+
+		if ( 40 !== strlen( $token ) ) {
+			add_settings_error( 'general', 'rocketcdn-token', __( 'RocketCDN token length is not 40 characters.', 'rocket' ), 'error' );
+
+			return $value;
+		}
+
+		update_option( 'rocketcdn_user_token', $token );
+
+		return $value;
 	}
 
 	/**
