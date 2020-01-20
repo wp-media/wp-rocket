@@ -150,10 +150,13 @@
         margin-top: $space*2;
     }
 
-    .wpr-isHidden{
+    &.wpr-isHidden{
         display: none;
     }
 
+    .wpr-isHidden{
+        display: none;
+    }
 
 
     // Children field
