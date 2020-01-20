@@ -122,7 +122,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 
 		$subscription_data = $this->api_client->get_subscription_data();
 
-		return ! $subscription_data['is_active'];
+		return 'running' !== $subscription_data['subscription_status'];
 	}
 
 	/**
@@ -154,7 +154,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	public function display_rocketcdn_cta() {
 		$subscription_data = $this->api_client->get_subscription_data();
 
-		if ( $subscription_data['is_active'] ) {
+		if ( 'running' === $subscription_data['subscription_status'] ) {
 			return;
 		}
 

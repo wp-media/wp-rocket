@@ -81,24 +81,26 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	public function display_rocketcdn_status() {
 		$subscription_data = $this->api_client->get_subscription_data();
 
-		if ( $subscription_data['is_active'] ) {
+		if ( 'running' === $subscription_data['subscription_status'] ) {
 			$label           = __( 'Next Billing Date', 'rocket' );
 			$status_class    = ' wpr-isValid';
 			$container_class = '';
-		} else {
+			$status_text     = date_i18n( get_option( 'date_format' ), strtotime( $subscription_data['subscription_next_date_update'] ) );
+			$is_active       = true;
+		} elseif ( 'cancelled' === $subscription_data['subscription_status'] ) {
 			$label           = '';
 			$status_class    = ' wpr-isInvalid';
 			$container_class = ' wpr-flex--egal';
+			$status_text     = __( 'No Subscription', 'rocket' );
+			$is_active       = false;
 		}
 
 		$data = [
 			'container_class' => $container_class,
 			'label'           => $label,
 			'status_class'    => $status_class,
-			'status_text'     => 'cancelled' === $subscription_data['subscription_status']
-				? __( 'No Subscription', 'rocket' )
-				: date_i18n( get_option( 'date_format' ), strtotime( $subscription_data['subscription_next_date_update'] ) ),
-			'is_active'       => $subscription_data['is_active'],
+			'status_text'     => $status_text,
+			'is_active'       => $is_active,
 		];
 
 		echo $this->generate( 'dashboard-status', $data );
@@ -117,7 +119,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	public function rocketcdn_field( $fields ) {
 		$subscription_data = $this->api_client->get_subscription_data();
 
-		if ( ! $subscription_data['is_active'] ) {
+		if ( 'running' !== $subscription_data['subscription_status'] ) {
 			return $fields;
 		}
 
@@ -166,7 +168,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	public function rocketcdn_token_field( $fields ) {
 		$subscription_data = $this->api_client->get_subscription_data();
 
-		if ( $subscription_data['is_active'] ) {
+		if ( 'running' === $subscription_data['subscription_status'] ) {
 			return $fields;
 		}
 
@@ -225,7 +227,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	public function display_manage_subscription() {
 		$subscription_data = $this->api_client->get_subscription_data();
 
-		if ( ! $subscription_data['is_active'] ) {
+		if ( 'running' !== $subscription_data['subscription_status'] ) {
 			return;
 		}
 
