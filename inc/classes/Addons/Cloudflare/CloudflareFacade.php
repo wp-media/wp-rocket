@@ -16,73 +16,54 @@ use Cloudflare\IPs;
 class CloudflareFacade {
 
 	/**
-	 * Cloudflare API Class
-	 *
-	 * @since 3.5
-	 * @author Soponar Cristina
+	 * Instance of Cloudflare API.
 	 *
 	 * @var Cloudflare\Api
 	 */
 	protected $api;
 
 	/**
-	 * Cloudflare Cache Class
-	 *
-	 * @since 3.5
-	 * @author Soponar Cristina
+	 * Instance of Cloudflare Zone Cache.
 	 *
 	 * @var Cloudflare\Zone\Cache
 	 */
 	protected $cache;
 
 	/**
-	 * Cloudflare PageRules Class
-	 *
-	 * @since 3.5
-	 * @author Soponar Cristina
+	 * Instance of Cloudflare Zone PageRules.
 	 *
 	 * @var Cloudflare\Zone\Pagerules
 	 */
 	protected $page_rules;
 
 	/**
-	 * Cloudflare Settings Class
-	 *
-	 * @since 3.5
-	 * @author Soponar Cristina
+	 * Instance of Cloudflare Zone Settings.
 	 *
 	 * @var Cloudflare\Zone\Settings
 	 */
 	protected $settings;
 
 	/**
-	 * Cloudflare IPs Class
-	 *
-	 * @since 3.5
-	 * @author Soponar Cristina
+	 * Instance of Cloudflare IPs.
 	 *
 	 * @var Cloudflare\IPs
 	 */
 	protected $ips;
 
 	/**
-	 * Cloudflare Zone ID
-	 *
-	 * @since 3.5
-	 * @author Soponar Cristina
+	 * The Cloudflare Zone ID.
 	 *
 	 * @var String
 	 */
 	protected $zone_id;
 
 	/**
-	 * Constructor
+	 * Instantiate the facade.
 	 *
-	 * @since 3.5
-	 * @author Soponar Cristina
+	 * @param Api $api Instance of the Cloudflare API.
 	 */
-	public function __construct() {
-		$this->api = new Api();
+	public function __construct( Api $api ) {
+		$this->api = $api;
 	}
 
 	/**
@@ -94,7 +75,6 @@ class CloudflareFacade {
 	 * @param string $email      - Cloudflare Email.
 	 * @param string $api_key    - Cloudflare API Key.
 	 * @param string $zone_id    - Cloudflare Zone ID.
-	 * @return void
 	 */
 	public function set_api_credentials( $email, $api_key, $zone_id ) {
 		$this->api->setEmail( $email );

@@ -50,12 +50,18 @@ class Addons_Subscribers extends AbstractServiceProvider {
 			->withArgument( $this->getContainer()->get( 'options' ) );
 		$this->getContainer()->share( 'sucuri_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Security\Sucuri_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'options' ) );
+
+		// Varnish.
 		$this->getContainer()->add( 'varnish', 'WP_Rocket\Addons\Varnish\Varnish' )
 			->withArgument( $this->getContainer()->get( 'options' ) );
 		$this->getContainer()->share( 'varnish_subscriber', 'WP_Rocket\Subscriber\Addons\Varnish\VarnishSubscriber' )
 			->withArgument( $this->getContainer()->get( 'varnish' ) )
 			->withArgument( $this->getContainer()->get( 'options' ) );
-		$this->getContainer()->add( 'cloudflare_facade', 'WP_Rocket\Addons\Cloudflare\CloudflareFacade' );
+
+		// Cloudflare.
+		$this->getContainer()->add( 'cloudflare_api', 'Cloudflare\Api' );
+		$this->getContainer()->add( 'cloudflare_facade', 'WP_Rocket\Addons\Cloudflare\CloudflareFacade' )
+			->withArgument( $this->getContainer()->get( 'cloudflare_api' ) );
 		$this->getContainer()->add( 'cloudflare', 'WP_Rocket\Addons\Cloudflare\Cloudflare' )
 			->withArgument( $this->getContainer()->get( 'options' ) )
 			->withArgument( $this->getContainer()->get( 'cloudflare_facade' ) );
