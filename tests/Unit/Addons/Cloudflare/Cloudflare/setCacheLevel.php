@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Tests\Unit\Addons\Cloudflare;
+namespace WP_Rocket\Tests\Unit\Addons\Cloudflare\Cloudflare;
 
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Addons\Cloudflare\Cloudflare;
