@@ -35,6 +35,16 @@ $cnames_zone = get_rocket_option( 'cdn_zone' );
 					<?php endif; ?>
 				</div>
 			<?php endforeach; ?>
+		<?php else : ?>
+			<div class="wpr-text">
+				<input type="text" name="wp_rocket_settings[cdn_cnames][]" value="" placeholder="a123bc.rocketcdn.me" />
+				<input type="hidden" name="wp_rocket_settings[cdn_zone][]" value="all" />
+				<?php if ( ! empty( $data['helper'] ) ) : ?>
+				<div class="wpr-field-description wpr-field-description-helper">
+					<?php echo $data['helper']; ?>
+				</div>
+				<?php endif; ?>
+			</div>
 		<?php endif; ?>
 		</div>
 	</div>
