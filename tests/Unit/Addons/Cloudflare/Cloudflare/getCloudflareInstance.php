@@ -5,7 +5,12 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Addons\Cloudflare\Cloudflare;
 use Brain\Monkey\Functions;
 
-class TestSetCacheLevel extends TestCase {
+/**
+ * @covers WP_Rocket\Addons\Cloudflare\Cloudflare::get_cloudflare_instance
+ *
+ * @group Cloudflare
+ */
+class Test_GetCloudflareInstance extends TestCase {
 
 	protected function setUp() {
 		parent::setUp();
@@ -22,15 +27,50 @@ class TestSetCacheLevel extends TestCase {
 	}
 
 	/**
-	 * Test set cache level with cached invalid transient.
+	 * Test Get Instance with Invalid Cloudflare credentials and no transient set.
 	 */
-	public function testSetCacheLevelWithInvalidCredentials() {
+	public function testGetInstanceWithInvalidCFCredentialsNoTransient() {
 		$mocks = $this->getConstructorMocks( 1,  '',  '', '');
 
 		$cloudflare_facade_mock = $mocks['facade'];
-		$wp_error               = $mocks['wp_error'];
+		$wp_error   = \Mockery::mock( \WP_Error::class );
 
-		// The Cloudflare constructor run with transient set as WP_Error.
+		Functions\when( 'get_transient' )->justReturn( false );
+		$cloudflare_facade_mock->shouldReceive('is_api_keys_valid')->andReturn( $wp_error );
+		Functions\expect( 'set_transient' )->once();
+		Functions\when( 'is_wp_error' )->justReturn( true );
+		$cloudflare_facade_mock->shouldNotReceive('set_api_credentials');
+
+		$cloudflare = new Cloudflare( $mocks['options'], $cloudflare_facade_mock );
+	}
+
+	/**
+	 * Test Get Instance with valid Cloudflare credentials and no transient set.
+	 */
+	public function testGetInstanceWithValidCFCredentialsNoTransient() {
+		$mocks = $this->getConstructorMocks( 1,  '',  '', '');
+
+		$cloudflare_facade_mock = $mocks['facade'];
+		$wp_error   = \Mockery::mock( \WP_Error::class );
+
+		Functions\when( 'get_transient' )->justReturn( false );
+		$cloudflare_facade_mock->shouldReceive('is_api_keys_valid')->andReturn( true );
+		Functions\expect( 'set_transient' )->once();
+		Functions\when( 'is_wp_error' )->justReturn( false );
+		$cloudflare_facade_mock->shouldReceive('set_api_credentials');
+
+		$cloudflare = new Cloudflare( $mocks['options'], $cloudflare_facade_mock );
+	}
+
+	/**
+	 * Test Get Instance with invalid Cloudflare credentials and transient set.
+	 */
+	public function testGetInstanceWithInValidCFCredentialsAndTransient() {
+		$mocks = $this->getConstructorMocks( 1,  '',  '', '');
+
+		$cloudflare_facade_mock = $mocks['facade'];
+		$wp_error   = \Mockery::mock( \WP_Error::class );
+
 		Functions\when( 'get_transient' )->justReturn( $wp_error );
 		$cloudflare_facade_mock->shouldNotReceive('is_api_keys_valid');
 		Functions\expect( 'set_transient' )->never();
@@ -38,88 +78,24 @@ class TestSetCacheLevel extends TestCase {
 		$cloudflare_facade_mock->shouldNotReceive('set_api_credentials');
 
 		$cloudflare = new Cloudflare( $mocks['options'], $cloudflare_facade_mock );
-
-		$this->assertEquals(
-			$wp_error,
-			$cloudflare->set_cache_level( 'aggressive' )
-		);
 	}
 
 	/**
-	 * Test set cache level with exception.
+	 * Test Get Instance with valid Cloudflare credentials and transient set.
 	 */
-	public function testSetCacheLevelWithException() {
+	public function testGetInstanceWithValidCFCredentialsAndTransient() {
 		$mocks = $this->getConstructorMocks( 1,  '',  '', '');
 
 		$cloudflare_facade_mock = $mocks['facade'];
-
-		// The Cloudflare constructor run with transient set as WP_Error.
 		Functions\when( 'get_transient' )->justReturn( true );
 		$cloudflare_facade_mock->shouldNotReceive('is_api_keys_valid');
 		Functions\expect( 'set_transient' )->never();
-		Functions\when( 'is_wp_error' )->justReturn( false );
-		$cloudflare_facade_mock->shouldReceive('set_api_credentials');
+		Functions\when( 'is_wp_error' )->justReturn( true );
+		$cloudflare_facade_mock->shouldNotReceive('set_api_credentials');
 
 		$cloudflare = new Cloudflare( $mocks['options'], $cloudflare_facade_mock );
-		$cloudflare_facade_mock->shouldReceive('change_cache_level')->andThrow( new \Exception() );
-
-		$this->assertEquals(
-			new \WP_Error(),
-			$cloudflare->set_cache_level( 'aggressive' )
-		);
 	}
 
-
-	/**
-	 * Test set cache level with no success.
-	 */
-	public function testSetCacheLevelWithNoSuccess() {
-		$mocks = $this->getConstructorMocks( 1,  '',  '', '');
-
-		$cloudflare_facade_mock = $mocks['facade'];
-
-		// The Cloudflare constructor run with transient set as WP_Error.
-		Functions\when( 'get_transient' )->justReturn( true );
-		$cloudflare_facade_mock->shouldNotReceive('is_api_keys_valid');
-		Functions\expect( 'set_transient' )->never();
-		Functions\when( 'is_wp_error' )->justReturn( false );
-		$cloudflare_facade_mock->shouldReceive('set_api_credentials');
-
-		Functions\when( 'wp_sprintf_l' )->justReturn( '' );
-		$cloudflare = new Cloudflare( $mocks['options'], $cloudflare_facade_mock );
-		$cf_reply   = json_decode('{"success":false,"errors":[{"code":1007,"message":"Invalid value for zone setting cache_level"}],"messages":[],"result":null}');
-		$cloudflare_facade_mock->shouldReceive('change_cache_level')->andReturn( $cf_reply );
-
-		$this->assertEquals(
-			new \WP_Error(),
-			$cloudflare->set_cache_level( 'aggressive' )
-		);
-	}
-
-	/**
-	 * Test set cache level with success.
-	 */
-	public function testSetCacheLevelWithSuccess() {
-		$mocks = $this->getConstructorMocks( 1,  '',  '', '');
-
-		$cloudflare_facade_mock = $mocks['facade'];
-
-		// The Cloudflare constructor run with transient set as WP_Error.
-		Functions\when( 'get_transient' )->justReturn( true );
-		$cloudflare_facade_mock->shouldNotReceive('is_api_keys_valid');
-		Functions\expect( 'set_transient' )->never();
-		Functions\when( 'is_wp_error' )->justReturn( false );
-		$cloudflare_facade_mock->shouldReceive('set_api_credentials');
-
-		$cloudflare = new Cloudflare( $mocks['options'], $cloudflare_facade_mock );
-		$cf_reply = json_decode('{"result":{"id":"cache_level","value":"aggressive","modified_on":"","editable":true},"success":true,"errors":[],"messages":[]}');
-		$cloudflare_facade_mock->shouldReceive('change_cache_level')->andReturn( $cf_reply );
-
-		$this->assertEquals(
-			'aggressive',
-			$cloudflare->set_cache_level( 'aggressive' )
-		);
-	}
 
 	/**
 	 * Get the mocks required by Cloudflare’s constructor.
@@ -160,13 +136,11 @@ class TestSetCacheLevel extends TestCase {
 		];
 		$options->method('get')->will( $this->returnValueMap( $map ) );
 
-		$facade   = \Mockery::mock( \WP_Rocket\Addons\Cloudflare\CloudflareFacade::class );
-		$wp_error = \Mockery::mock( \WP_Error::class );
+		$facade = \Mockery::mock(\WP_Rocket\Addons\Cloudflare\CloudflareFacade::class);
 
 		$mocks = [
-			'options'  => $options,
-			'facade'   => $facade,
-			'wp_error' => $wp_error,
+			'options' => $options,
+			'facade'  => $facade,
 		];
 		return $mocks;
 	}

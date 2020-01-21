@@ -5,7 +5,12 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Addons\Cloudflare\Cloudflare;
 use Brain\Monkey\Functions;
 
-class TestSetDevMode extends TestCase {
+/**
+ * @covers WP_Rocket\Addons\Cloudflare\Cloudflare::set_minify
+ *
+ * @group Cloudflare
+ */
+class Test_SetMinify extends TestCase {
 
 	protected function setUp() {
 		parent::setUp();
@@ -22,9 +27,9 @@ class TestSetDevMode extends TestCase {
 	}
 
 	/**
-	 * Test set dev mode with cached invalid transient.
+	 * Test set minify with cached invalid transient.
 	 */
-	public function testSetDevModeWithInvalidCredentials() {
+	public function testSetMinifyWithInvalidCredentials() {
 		$mocks = $this->getConstructorMocks( 1,  '',  '', '');
 
 		$cloudflare_facade_mock = $mocks['facade'];
@@ -41,14 +46,14 @@ class TestSetDevMode extends TestCase {
 
 		$this->assertEquals(
 			$wp_error,
-			$cloudflare->set_devmode( false )
+			$cloudflare->set_minify( 'on' )
 		);
 	}
 
 	/**
-	 * Test set dev mode with exception.
+	 * Test set minify with exception.
 	 */
-	public function testSetDevModeWithException() {
+	public function testSetMinifyWithException() {
 		$mocks = $this->getConstructorMocks( 1,  '',  '', '');
 
 		$cloudflare_facade_mock = $mocks['facade'];
@@ -61,19 +66,19 @@ class TestSetDevMode extends TestCase {
 		$cloudflare_facade_mock->shouldReceive('set_api_credentials');
 
 		$cloudflare = new Cloudflare( $mocks['options'], $cloudflare_facade_mock );
-		$cloudflare_facade_mock->shouldReceive('change_development_mode')->andThrow( new \Exception() );
+		$cloudflare_facade_mock->shouldReceive('change_minify')->andThrow( new \Exception() );
 
 		$this->assertEquals(
 			new \WP_Error(),
-			$cloudflare->set_devmode( false )
+			$cloudflare->set_minify( 'on' )
 		);
 	}
 
 
 	/**
-	 * Test set dev mode with no success.
+	 * Test set minify with no success.
 	 */
-	public function testSetDevModeWithNoSuccess() {
+	public function testSetMinifyWithNoSuccess() {
 		$mocks = $this->getConstructorMocks( 1,  '',  '', '');
 
 		$cloudflare_facade_mock = $mocks['facade'];
@@ -87,19 +92,19 @@ class TestSetDevMode extends TestCase {
 
 		Functions\when( 'wp_sprintf_l' )->justReturn( '' );
 		$cloudflare = new Cloudflare( $mocks['options'], $cloudflare_facade_mock );
-		$cf_reply   = json_decode('{"success":false,"errors":[{"code":1007,"message":"Invalid value for zone setting development_mode"}],"messages":[],"result":null}');
-		$cloudflare_facade_mock->shouldReceive('change_development_mode')->andReturn( $cf_reply );
+		$cf_reply   = json_decode('{"success":false,"errors":[{"code":1007,"message":"Invalid value for zone setting minify"}],"messages":[],"result":null}');
+		$cloudflare_facade_mock->shouldReceive('change_minify')->andReturn( $cf_reply );
 
 		$this->assertEquals(
 			new \WP_Error(),
-			$cloudflare->set_devmode( false )
+			$cloudflare->set_minify( 'on' )
 		);
 	}
 
 	/**
-	 * Test set dev mode with success.
+	 * Test set minify with success.
 	 */
-	public function testSetDevModeWithSuccess() {
+	public function testSetMinifyWithSuccess() {
 		$mocks = $this->getConstructorMocks( 1,  '',  '', '');
 
 		$cloudflare_facade_mock = $mocks['facade'];
@@ -112,12 +117,12 @@ class TestSetDevMode extends TestCase {
 		$cloudflare_facade_mock->shouldReceive('set_api_credentials');
 
 		$cloudflare = new Cloudflare( $mocks['options'], $cloudflare_facade_mock );
-		$cf_reply = json_decode('{"result":{"id":"development_mode","value":"off","modified_on":"","time_remaining":0,"editable":true},"success":true,"errors":[],"messages":[]}');
-		$cloudflare_facade_mock->shouldReceive('change_development_mode')->andReturn( $cf_reply );
+		$cf_reply = json_decode('{"result":{"id":"minify","value":{"js":"on","css":"on","html":"on"},"modified_on":"","editable":true},"success":true,"errors":[],"messages":[]}');
+		$cloudflare_facade_mock->shouldReceive('change_minify')->andReturn( $cf_reply );
 
 		$this->assertEquals(
-			'off',
-			$cloudflare->set_devmode( false )
+			'on',
+			$cloudflare->set_minify( 'on' )
 		);
 	}
 

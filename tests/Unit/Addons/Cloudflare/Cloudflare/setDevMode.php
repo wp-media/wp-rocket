@@ -5,7 +5,12 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Addons\Cloudflare\Cloudflare;
 use Brain\Monkey\Functions;
 
-class TestSetBrowserCacheTTL extends TestCase {
+/**
+ * @covers WP_Rocket\Addons\Cloudflare\Cloudflare::set_devmode
+ *
+ * @group Cloudflare
+ */
+class Test_SetDevMode extends TestCase {
 
 	protected function setUp() {
 		parent::setUp();
@@ -22,9 +27,9 @@ class TestSetBrowserCacheTTL extends TestCase {
 	}
 
 	/**
-	 * Test purge by url Cloudflare with cached invalid transient.
+	 * Test set dev mode with cached invalid transient.
 	 */
-	public function testSetBrowserCacheTTLWithInvalidCredentials() {
+	public function testSetDevModeWithInvalidCredentials() {
 		$mocks = $this->getConstructorMocks( 1,  '',  '', '');
 
 		$cloudflare_facade_mock = $mocks['facade'];
@@ -41,14 +46,14 @@ class TestSetBrowserCacheTTL extends TestCase {
 
 		$this->assertEquals(
 			$wp_error,
-			$cloudflare->set_browser_cache_ttl( 31536000 )
+			$cloudflare->set_devmode( false )
 		);
 	}
 
 	/**
-	 * Test purge by url Cloudflare with exception.
+	 * Test set dev mode with exception.
 	 */
-	public function testSetBrowserCacheTTLWithException() {
+	public function testSetDevModeWithException() {
 		$mocks = $this->getConstructorMocks( 1,  '',  '', '');
 
 		$cloudflare_facade_mock = $mocks['facade'];
@@ -61,19 +66,19 @@ class TestSetBrowserCacheTTL extends TestCase {
 		$cloudflare_facade_mock->shouldReceive('set_api_credentials');
 
 		$cloudflare = new Cloudflare( $mocks['options'], $cloudflare_facade_mock );
-		$cloudflare_facade_mock->shouldReceive('change_browser_cache_ttl')->andThrow( new \Exception() );
+		$cloudflare_facade_mock->shouldReceive('change_development_mode')->andThrow( new \Exception() );
 
 		$this->assertEquals(
 			new \WP_Error(),
-			$cloudflare->set_browser_cache_ttl( 31536000 )
+			$cloudflare->set_devmode( false )
 		);
 	}
 
 
 	/**
-	 * Test purge by url Cloudflare with no success.
+	 * Test set dev mode with no success.
 	 */
-	public function testSetBrowserCacheTTLWithNoSuccess() {
+	public function testSetDevModeWithNoSuccess() {
 		$mocks = $this->getConstructorMocks( 1,  '',  '', '');
 
 		$cloudflare_facade_mock = $mocks['facade'];
@@ -87,19 +92,19 @@ class TestSetBrowserCacheTTL extends TestCase {
 
 		Functions\when( 'wp_sprintf_l' )->justReturn( '' );
 		$cloudflare = new Cloudflare( $mocks['options'], $cloudflare_facade_mock );
-		$cf_reply   = json_decode('{"success":false,"errors":[{"code":1007,"message":"Invalid value for zone setting browser_cache_ttl"}],"messages":[],"result":null}');
-		$cloudflare_facade_mock->shouldReceive('change_browser_cache_ttl')->andReturn( $cf_reply );
+		$cf_reply   = json_decode('{"success":false,"errors":[{"code":1007,"message":"Invalid value for zone setting development_mode"}],"messages":[],"result":null}');
+		$cloudflare_facade_mock->shouldReceive('change_development_mode')->andReturn( $cf_reply );
 
 		$this->assertEquals(
 			new \WP_Error(),
-			$cloudflare->set_browser_cache_ttl( 31536000 )
+			$cloudflare->set_devmode( false )
 		);
 	}
 
 	/**
-	 * Test purge by url Cloudflare with success.
+	 * Test set dev mode with success.
 	 */
-	public function testSetBrowserCacheTTLWithSuccess() {
+	public function testSetDevModeWithSuccess() {
 		$mocks = $this->getConstructorMocks( 1,  '',  '', '');
 
 		$cloudflare_facade_mock = $mocks['facade'];
@@ -112,12 +117,12 @@ class TestSetBrowserCacheTTL extends TestCase {
 		$cloudflare_facade_mock->shouldReceive('set_api_credentials');
 
 		$cloudflare = new Cloudflare( $mocks['options'], $cloudflare_facade_mock );
-		$cf_reply = json_decode('{"result":{"id":"browser_cache_ttl","value":31536000,"modified_on":"","editable":true},"success":true,"errors":[],"messages":[]}');
-		$cloudflare_facade_mock->shouldReceive('change_browser_cache_ttl')->andReturn( $cf_reply );
+		$cf_reply = json_decode('{"result":{"id":"development_mode","value":"off","modified_on":"","time_remaining":0,"editable":true},"success":true,"errors":[],"messages":[]}');
+		$cloudflare_facade_mock->shouldReceive('change_development_mode')->andReturn( $cf_reply );
 
 		$this->assertEquals(
-			31536000,
-			$cloudflare->set_browser_cache_ttl( 31536000 )
+			'off',
+			$cloudflare->set_devmode( false )
 		);
 	}
 

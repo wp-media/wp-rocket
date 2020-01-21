@@ -5,7 +5,12 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Addons\Cloudflare\Cloudflare;
 use Brain\Monkey\Functions;
 
-class TestIsApiKeyValid extends TestCase {
+/**
+ * @covers WP_Rocket\Addons\Cloudflare\Cloudflare::is_api_keys_valid
+ *
+ * @group Cloudflare
+ */
+class Test_IsApiKeysValid extends TestCase {
 
 	protected function setUp() {
 		parent::setUp();

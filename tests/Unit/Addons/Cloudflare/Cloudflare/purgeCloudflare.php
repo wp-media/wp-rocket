@@ -5,7 +5,12 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Addons\Cloudflare\Cloudflare;
 use Brain\Monkey\Functions;
 
-class TestGetCloudflareIPS extends TestCase {
+/**
+ * @covers WP_Rocket\Addons\Cloudflare\Cloudflare::purge_cloudflare
+ *
+ * @group Cloudflare
+ */
+class Test_PurgeCloudflare extends TestCase {
 
 	protected function setUp() {
 		parent::setUp();
@@ -15,15 +20,16 @@ class TestGetCloudflareIPS extends TestCase {
 		if ( ! defined('WEEK_IN_SECONDS') ) {
 			define('WEEK_IN_SECONDS', 7 * 24 * 60 * 60);
 		}
+
 		if ( ! defined('WP_ROCKET_VERSION') ) {
 			define('WP_ROCKET_VERSION', '3.5');
 		}
 	}
 
 	/**
-	 * Test get cloudflare IPs with cached invalid transient for credentials.
+	 * Test purge Cloudflare with cached invalid transient.
 	 */
-	public function testGetCloudflareIPSWithInvalidCredentials() {
+	public function testPurgeCloudflareWithInvalidCredentials() {
 		$mocks = $this->getConstructorMocks( 1,  '',  '', '');
 
 		$cloudflare_facade_mock = $mocks['facade'];
@@ -38,54 +44,21 @@ class TestGetCloudflareIPS extends TestCase {
 
 		$cloudflare = new Cloudflare( $mocks['options'], $cloudflare_facade_mock );
 
-		Functions\when( 'get_transient' )->justReturn( false );
-		$cloudflare_facade_mock->shouldReceive('set_api_credentials');
-		$cloudflare_facade_mock->shouldReceive('ips')->andThrow( new \Exception() );
-		Functions\expect( 'set_transient' )->once();
-
 		$this->assertEquals(
-			$mocks[ 'cf_ips' ],
-			$cloudflare->get_cloudflare_ips()
+			$wp_error,
+			$cloudflare->purge_cloudflare()
 		);
 	}
 
 	/**
-	 * Test get cloudflare IPs with invalid credentials and cached IPs in transient `rocket_cloudflare_ips`.
+	 * Test purge Cloudflare with exception.
 	 */
-	public function testGetCloudflareIPSWithInvalidCredentialsButIPSCached() {
+	public function testPurgeCloudflareWithException() {
 		$mocks = $this->getConstructorMocks( 1,  '',  '', '');
 
 		$cloudflare_facade_mock = $mocks['facade'];
-		$wp_error               = $mocks['wp_error'];
 
 		// The Cloudflare constructor run with transient set as WP_Error.
-		Functions\when( 'get_transient' )->justReturn( $wp_error );
-		$cloudflare_facade_mock->shouldNotReceive('is_api_keys_valid');
-		Functions\expect( 'set_transient' )->never();
-		Functions\when( 'is_wp_error' )->justReturn( true );
-		$cloudflare_facade_mock->shouldNotReceive('set_api_credentials');
-
-		$cloudflare = new Cloudflare( $mocks['options'], $cloudflare_facade_mock );
-
-		Functions\when( 'get_transient' )->justReturn( $mocks[ 'cf_ips' ] );
-		$cloudflare_facade_mock->shouldNotReceive('set_api_credentials');
-
-		$this->assertEquals(
-			$mocks[ 'cf_ips' ],
-			$cloudflare->get_cloudflare_ips()
-		);
-	}
-
-	/**
-	 * The get Cloudflare IPs with valid CF credentials, no cached `rocket_cloudflare_ips` and error on `ips()`.
-	 */
-	public function testGetCloudflareIPSWithValidCredentialsAndNoCachedIPSWithError() {
-		$mocks = $this->getConstructorMocks( 1,  '',  '', '');
-
-		$cloudflare_facade_mock = $mocks['facade'];
-		$wp_error               = $mocks['wp_error'];
-
-		 // The Cloudflare constructor run with transient set as WP_Error.
 		Functions\when( 'get_transient' )->justReturn( true );
 		$cloudflare_facade_mock->shouldNotReceive('is_api_keys_valid');
 		Functions\expect( 'set_transient' )->never();
@@ -93,29 +66,50 @@ class TestGetCloudflareIPS extends TestCase {
 		$cloudflare_facade_mock->shouldReceive('set_api_credentials');
 
 		$cloudflare = new Cloudflare( $mocks['options'], $cloudflare_facade_mock );
-
-		Functions\when( 'get_transient' )->justReturn( false );
-		$cloudflare_facade_mock->shouldReceive('set_api_credentials');
-		$cf_reply = json_decode('{"success":false,"errors":[{"code":1007,"message":"Invalid value"}],"messages":[],"result":null}');
-		$cloudflare_facade_mock->shouldReceive('ips')->andReturn( $cf_reply );
-		Functions\expect( 'set_transient' )->once();
+		$cloudflare_facade_mock->shouldReceive('purge')->andThrow( new \Exception() );
 
 		$this->assertEquals(
-			$mocks[ 'cf_ips' ],
-			$cloudflare->get_cloudflare_ips()
+			new \WP_Error(),
+			$cloudflare->purge_cloudflare()
+		);
+	}
+
+
+	/**
+	 * Test purge Cloudflare with no success.
+	 */
+	public function testPurgeCloudflareWithNoSuccess() {
+		$mocks = $this->getConstructorMocks( 1,  '',  '', '');
+
+		$cloudflare_facade_mock = $mocks['facade'];
+
+		// The Cloudflare constructor run with transient set as WP_Error.
+		Functions\when( 'get_transient' )->justReturn( true );
+		$cloudflare_facade_mock->shouldNotReceive('is_api_keys_valid');
+		Functions\expect( 'set_transient' )->never();
+		Functions\when( 'is_wp_error' )->justReturn( false );
+		$cloudflare_facade_mock->shouldReceive('set_api_credentials');
+
+		Functions\when( 'wp_sprintf_l' )->justReturn( '' );
+		$cloudflare = new Cloudflare( $mocks['options'], $cloudflare_facade_mock );
+		$cf_purge   = json_decode('{"success":false,"errors":[{"code":7001,"message":"Method GET not available for that URI."}],"messages":[],"result":null}');
+		$cloudflare_facade_mock->shouldReceive('purge')->andReturn( $cf_purge );
+
+		$this->assertEquals(
+			new \WP_Error(),
+			$cloudflare->purge_cloudflare()
 		);
 	}
 
 	/**
-	 * The get Cloudflare IPs with valid CF credentials, no cached `rocket_cloudflare_ips` and success `ips()`.
+	 * Test purge Cloudflare with success.
 	 */
-	public function testGetCloudflareIPSWithValidCredentialsAndNoCachedIPSWithSuccess() {
+	public function testPurgeCloudflareWithSuccess() {
 		$mocks = $this->getConstructorMocks( 1,  '',  '', '');
 
 		$cloudflare_facade_mock = $mocks['facade'];
-		$wp_error               = $mocks['wp_error'];
 
-		 // The Cloudflare constructor run with transient set as WP_Error.
+		// The Cloudflare constructor run with transient set as WP_Error.
 		Functions\when( 'get_transient' )->justReturn( true );
 		$cloudflare_facade_mock->shouldNotReceive('is_api_keys_valid');
 		Functions\expect( 'set_transient' )->never();
@@ -123,22 +117,12 @@ class TestGetCloudflareIPS extends TestCase {
 		$cloudflare_facade_mock->shouldReceive('set_api_credentials');
 
 		$cloudflare = new Cloudflare( $mocks['options'], $cloudflare_facade_mock );
-
-		Functions\when( 'get_transient' )->justReturn( false );
-		$cloudflare_facade_mock->shouldReceive('set_api_credentials');
-		$cf_reply = json_decode('{"result":{"ipv4_cidrs":["173.245.48.0/20","103.21.244.0/22","103.22.200.0/22","103.31.4.0/22","141.101.64.0/18","108.162.192.0/18","190.93.240.0/20","188.114.96.0/20","197.234.240.0/22","198.41.128.0/17","162.158.0.0/15","104.16.0.0/12","172.64.0.0/13","131.0.72.0/22"],"ipv6_cidrs":["2400:cb00::/32","2606:4700::/32","2803:f800::/32","2405:b500::/32","2405:8100::/32","2a06:98c0::/29","2c0f:f248::/32"],"etag":"fb21705459fea38d23b210ee7d67b753"},"success":true,"errors":[],"messages":[]}');
-		$cloudflare_facade_mock->shouldReceive('ips')->andReturn( $cf_reply );
-		Functions\expect( 'set_transient' )->once();
-
-		$ips = $cloudflare->get_cloudflare_ips();
+		$cf_purge = json_decode('{"success": true,"errors": [],"messages": [],"result": {"id": ""}}');
+		$cloudflare_facade_mock->shouldReceive('purge')->andReturn( $cf_purge );
 
 		$this->assertEquals(
-			$mocks[ 'cf_ips' ]->result->ipv4_cidrs,
-			$ips->result->ipv4_cidrs
-		);
-		$this->assertEquals(
-			$mocks[ 'cf_ips' ]->result->ipv6_cidrs,
-			$ips->result->ipv6_cidrs
+			true,
+			$cloudflare->purge_cloudflare()
 		);
 	}
 
@@ -184,45 +168,10 @@ class TestGetCloudflareIPS extends TestCase {
 		$facade   = \Mockery::mock( \WP_Rocket\Addons\Cloudflare\CloudflareFacade::class );
 		$wp_error = \Mockery::mock( \WP_Error::class );
 
-		$cf_ips = (object) [
-			'result'   => (object) [],
-			'success'  => true,
-			'errors'   => [],
-			'messages' => [],
-		];
-
-		$cf_ips->result->ipv4_cidrs = [
-			'173.245.48.0/20',
-			'103.21.244.0/22',
-			'103.22.200.0/22',
-			'103.31.4.0/22',
-			'141.101.64.0/18',
-			'108.162.192.0/18',
-			'190.93.240.0/20',
-			'188.114.96.0/20',
-			'197.234.240.0/22',
-			'198.41.128.0/17',
-			'162.158.0.0/15',
-			'104.16.0.0/12',
-			'172.64.0.0/13',
-			'131.0.72.0/22',
-		];
-
-		$cf_ips->result->ipv6_cidrs = [
-			'2400:cb00::/32',
-			'2606:4700::/32',
-			'2803:f800::/32',
-			'2405:b500::/32',
-			'2405:8100::/32',
-			'2a06:98c0::/29',
-			'2c0f:f248::/32',
-		];
-
 		$mocks = [
 			'options'  => $options,
 			'facade'   => $facade,
 			'wp_error' => $wp_error,
-			'cf_ips'   => $cf_ips,
 		];
 		return $mocks;
 	}

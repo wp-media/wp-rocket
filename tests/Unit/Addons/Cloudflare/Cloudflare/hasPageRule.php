@@ -5,7 +5,12 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Addons\Cloudflare\Cloudflare;
 use Brain\Monkey\Functions;
 
-class TestPurgeByUrl extends TestCase {
+/**
+ * @covers WP_Rocket\Addons\Cloudflare\Cloudflare::has_page_rule
+ *
+ * @group Cloudflare
+ */
+class Test_HasPageRule extends TestCase {
 
 	protected function setUp() {
 		parent::setUp();
@@ -22,9 +27,9 @@ class TestPurgeByUrl extends TestCase {
 	}
 
 	/**
-	 * Test purge by url Cloudflare with cached invalid transient.
+	 * Test Cloudflare has page rules with cached invalid transient.
 	 */
-	public function testPurgeCloudflareByUrlWithInvalidCredentials() {
+	public function testHasRuleWithInvalidCredentials() {
 		$mocks = $this->getConstructorMocks( 1,  '',  '', '');
 
 		$cloudflare_facade_mock = $mocks['facade'];
@@ -38,20 +43,22 @@ class TestPurgeByUrl extends TestCase {
 		$cloudflare_facade_mock->shouldNotReceive('set_api_credentials');
 
 		$cloudflare = new Cloudflare( $mocks['options'], $cloudflare_facade_mock );
+		$has_page_rule = $cloudflare->has_page_rule( 'cache_everything' );
 
 		$this->assertEquals(
 			$wp_error,
-			$cloudflare->purge_by_url( null, [ '/purge-url' ], null )
+			$has_page_rule
 		);
 	}
 
 	/**
-	 * Test purge by url Cloudflare with exception.
+	 * Test Cloudflare has page rules with exception.
 	 */
-	public function testPurgeCloudflareByUrlWithException() {
+	public function testHasRuleWithException() {
 		$mocks = $this->getConstructorMocks( 1,  '',  '', '');
 
 		$cloudflare_facade_mock = $mocks['facade'];
+		$wp_error               = $mocks['wp_error'];
 
 		// The Cloudflare constructor run with transient set as WP_Error.
 		Functions\when( 'get_transient' )->justReturn( true );
@@ -61,22 +68,24 @@ class TestPurgeByUrl extends TestCase {
 		$cloudflare_facade_mock->shouldReceive('set_api_credentials');
 
 		$cloudflare = new Cloudflare( $mocks['options'], $cloudflare_facade_mock );
-		$cloudflare_facade_mock->shouldReceive('purge_files')->andThrow( new \Exception() );
+		$cloudflare_facade_mock->shouldReceive('list_pagerules')->andThrow( new \Exception() );
+		$has_page_rule = $cloudflare->has_page_rule( 'cache_everything' );
 
 		$this->assertEquals(
 			new \WP_Error(),
-			$cloudflare->purge_by_url( null, [ '/purge-url' ], null )
+			$has_page_rule
 		);
 	}
 
 
 	/**
-	 * Test purge by url Cloudflare with no success.
+	 * Test Cloudflare has page rules with no success.
 	 */
-	public function testPurgeCloudflareByUrlWithNoSuccess() {
+	public function testHasRuleWithNoSuccess() {
 		$mocks = $this->getConstructorMocks( 1,  '',  '', '');
 
 		$cloudflare_facade_mock = $mocks['facade'];
+		$wp_error               = $mocks['wp_error'];
 
 		// The Cloudflare constructor run with transient set as WP_Error.
 		Functions\when( 'get_transient' )->justReturn( true );
@@ -87,22 +96,53 @@ class TestPurgeByUrl extends TestCase {
 
 		Functions\when( 'wp_sprintf_l' )->justReturn( '' );
 		$cloudflare = new Cloudflare( $mocks['options'], $cloudflare_facade_mock );
-		$cf_purge   = json_decode('{"success":false,"errors":[{"code":7001,"message":"Method GET not available for that URI."}],"messages":[],"result":null}');
-		$cloudflare_facade_mock->shouldReceive('purge_files')->andReturn( $cf_purge );
+		$cf_page_rule = json_decode('{"success":false,"errors":[{"code":7003,"message":"Could not route to \/zones\/ZONE_ID, perhaps your object identifier is invalid?"},{"code":7000,"message":"No route for that URI"}],"messages":[],"result":null}');
+		$cloudflare_facade_mock->shouldReceive('list_pagerules')->andReturn( $cf_page_rule );
+		$has_page_rule = $cloudflare->has_page_rule( 'cache_everything' );
 
 		$this->assertEquals(
 			new \WP_Error(),
-			$cloudflare->purge_by_url( null, [ '/purge-url' ], null )
+			$has_page_rule
 		);
 	}
 
 	/**
-	 * Test purge by url Cloudflare with success.
+	 * Test Cloudflare has page rules with success but no page rule.
 	 */
-	public function testPurgeCloudflareByUrlWithSuccess() {
+	public function testHasRuleWithSuccessButNoPageRule() {
 		$mocks = $this->getConstructorMocks( 1,  '',  '', '');
 
 		$cloudflare_facade_mock = $mocks['facade'];
+		$wp_error               = $mocks['wp_error'];
+
+		// The Cloudflare constructor run with transient set as WP_Error.
+		Functions\when( 'get_transient' )->justReturn( true );
+		$cloudflare_facade_mock->shouldNotReceive('is_api_keys_valid');
+		Functions\expect( 'set_transient' )->never();
+		Functions\when( 'is_wp_error' )->justReturn( false );
+
+		$cloudflare_facade_mock->shouldReceive('set_api_credentials');
+
+		$cloudflare = new Cloudflare( $mocks['options'], $cloudflare_facade_mock );
+		$cf_page_rule = json_decode('{"result":[{"id":"","targets":[{"target":"url","constraint":{"operator":"matches","value":""}}],"actions":[{"id":"cache_level","value":"bypass"}],"priority":3,"status":"active","created_on":"","modified_on":""},{"id":"","targets":[{"target":"url","constraint":{"operator":"matches","value":""}}],"actions":[{"id":"cache_level","value":""}],"priority":2,"status":"active","created_on":"","modified_on":""}],"success":true,"errors":[],"messages":[]}');
+		Functions\when( 'wp_json_encode' )->justReturn( json_encode( $cf_page_rule ) );
+		$cloudflare_facade_mock->shouldReceive('list_pagerules')->andReturn( $cf_page_rule );
+		$has_page_rule = $cloudflare->has_page_rule( 'cache_everything' );
+
+		$this->assertEquals(
+			false,
+			$has_page_rule
+		);
+	}
+
+	/**
+	 * Test Cloudflare has page rules with success and page rule.
+	 */
+	public function testHasRuleWithSuccessAndPageRule() {
+		$mocks = $this->getConstructorMocks( 1,  '',  '', '');
+
+		$cloudflare_facade_mock = $mocks['facade'];
+		$wp_error               = $mocks['wp_error'];
 
 		// The Cloudflare constructor run with transient set as WP_Error.
 		Functions\when( 'get_transient' )->justReturn( true );
@@ -112,12 +152,14 @@ class TestPurgeByUrl extends TestCase {
 		$cloudflare_facade_mock->shouldReceive('set_api_credentials');
 
 		$cloudflare = new Cloudflare( $mocks['options'], $cloudflare_facade_mock );
-		$cf_purge = json_decode('{"success": true,"errors": [],"messages": [],"result": {"id": ""}}');
-		$cloudflare_facade_mock->shouldReceive('purge_files')->andReturn( $cf_purge );
+		$cf_page_rule = json_decode('{"result":[{"id":"","targets":[{"target":"url","constraint":{"operator":"matches","value":""}}],"actions":[{"id":"cache_level","value":"bypass"}],"priority":3,"status":"active","created_on":"","modified_on":""},{"id":"","targets":[{"target":"url","constraint":{"operator":"matches","value":""}}],"actions":[{"id":"cache_level","value":"cache_everything"}],"priority":2,"status":"active","created_on":"","modified_on":""}],"success":true,"errors":[],"messages":[]}');
+		Functions\when( 'wp_json_encode' )->justReturn( json_encode( $cf_page_rule ) );
+		$cloudflare_facade_mock->shouldReceive('list_pagerules')->andReturn( $cf_page_rule );
+		$has_page_rule = $cloudflare->has_page_rule( 'cache_everything' );
 
 		$this->assertEquals(
 			true,
-			$cloudflare->purge_by_url( null, [ '/purge-url' ], null )
+			$has_page_rule
 		);
 	}
 

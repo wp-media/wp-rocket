@@ -5,7 +5,12 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Addons\Cloudflare\Cloudflare;
 use Brain\Monkey\Functions;
 
-class TestSetRocketLoader extends TestCase {
+/**
+ * @covers WP_Rocket\Addons\Cloudflare\Cloudflare::set_browser_cache_ttl
+ *
+ * @group Cloudflare
+ */
+class Test_SetBrowserCacheTTL extends TestCase {
 
 	protected function setUp() {
 		parent::setUp();
@@ -22,9 +27,9 @@ class TestSetRocketLoader extends TestCase {
 	}
 
 	/**
-	 * Test set rocket loader with cached invalid transient.
+	 * Test purge by url Cloudflare with cached invalid transient.
 	 */
-	public function testSetRocketLoaderWithInvalidCredentials() {
+	public function testSetBrowserCacheTTLWithInvalidCredentials() {
 		$mocks = $this->getConstructorMocks( 1,  '',  '', '');
 
 		$cloudflare_facade_mock = $mocks['facade'];
@@ -41,14 +46,14 @@ class TestSetRocketLoader extends TestCase {
 
 		$this->assertEquals(
 			$wp_error,
-			$cloudflare->set_rocket_loader( 'off' )
+			$cloudflare->set_browser_cache_ttl( 31536000 )
 		);
 	}
 
 	/**
-	 * Test set rocket loader with exception.
+	 * Test purge by url Cloudflare with exception.
 	 */
-	public function testSetRocketLoaderWithException() {
+	public function testSetBrowserCacheTTLWithException() {
 		$mocks = $this->getConstructorMocks( 1,  '',  '', '');
 
 		$cloudflare_facade_mock = $mocks['facade'];
@@ -61,19 +66,19 @@ class TestSetRocketLoader extends TestCase {
 		$cloudflare_facade_mock->shouldReceive('set_api_credentials');
 
 		$cloudflare = new Cloudflare( $mocks['options'], $cloudflare_facade_mock );
-		$cloudflare_facade_mock->shouldReceive('change_rocket_loader')->andThrow( new \Exception() );
+		$cloudflare_facade_mock->shouldReceive('change_browser_cache_ttl')->andThrow( new \Exception() );
 
 		$this->assertEquals(
 			new \WP_Error(),
-			$cloudflare->set_rocket_loader( 'off' )
+			$cloudflare->set_browser_cache_ttl( 31536000 )
 		);
 	}
 
 
 	/**
-	 * Test set rocket loader with no success.
+	 * Test purge by url Cloudflare with no success.
 	 */
-	public function testSetRocketLoaderWithNoSuccess() {
+	public function testSetBrowserCacheTTLWithNoSuccess() {
 		$mocks = $this->getConstructorMocks( 1,  '',  '', '');
 
 		$cloudflare_facade_mock = $mocks['facade'];
@@ -87,19 +92,19 @@ class TestSetRocketLoader extends TestCase {
 
 		Functions\when( 'wp_sprintf_l' )->justReturn( '' );
 		$cloudflare = new Cloudflare( $mocks['options'], $cloudflare_facade_mock );
-		$cf_reply   = json_decode('{"success":false,"errors":[{"code":1007,"message":"Invalid value for zone setting rocket_loader"}],"messages":[],"result":null}');
-		$cloudflare_facade_mock->shouldReceive('change_rocket_loader')->andReturn( $cf_reply );
+		$cf_reply   = json_decode('{"success":false,"errors":[{"code":1007,"message":"Invalid value for zone setting browser_cache_ttl"}],"messages":[],"result":null}');
+		$cloudflare_facade_mock->shouldReceive('change_browser_cache_ttl')->andReturn( $cf_reply );
 
 		$this->assertEquals(
 			new \WP_Error(),
-			$cloudflare->set_rocket_loader( 'off' )
+			$cloudflare->set_browser_cache_ttl( 31536000 )
 		);
 	}
 
 	/**
-	 * Test set rocket loader with success.
+	 * Test purge by url Cloudflare with success.
 	 */
-	public function testSetRocketLoaderWithSuccess() {
+	public function testSetBrowserCacheTTLWithSuccess() {
 		$mocks = $this->getConstructorMocks( 1,  '',  '', '');
 
 		$cloudflare_facade_mock = $mocks['facade'];
@@ -112,12 +117,12 @@ class TestSetRocketLoader extends TestCase {
 		$cloudflare_facade_mock->shouldReceive('set_api_credentials');
 
 		$cloudflare = new Cloudflare( $mocks['options'], $cloudflare_facade_mock );
-		$cf_reply = json_decode('{"result":{"id":"rocket_loader","value":"off","modified_on":"","editable":true},"success":true,"errors":[],"messages":[]}');
-		$cloudflare_facade_mock->shouldReceive('change_rocket_loader')->andReturn( $cf_reply );
+		$cf_reply = json_decode('{"result":{"id":"browser_cache_ttl","value":31536000,"modified_on":"","editable":true},"success":true,"errors":[],"messages":[]}');
+		$cloudflare_facade_mock->shouldReceive('change_browser_cache_ttl')->andReturn( $cf_reply );
 
 		$this->assertEquals(
-			'off',
-			$cloudflare->set_rocket_loader( 'off' )
+			31536000,
+			$cloudflare->set_browser_cache_ttl( 31536000 )
 		);
 	}
 

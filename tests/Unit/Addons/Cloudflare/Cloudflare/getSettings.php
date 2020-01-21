@@ -5,7 +5,12 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Addons\Cloudflare\Cloudflare;
 use Brain\Monkey\Functions;
 
-class TestGetSettings extends TestCase {
+/**
+ * @covers WP_Rocket\Addons\Cloudflare\Cloudflare::get_settings
+ *
+ * @group Cloudflare
+ */
+class Test_GetSettings extends TestCase {
 
 	protected function setUp() {
 		parent::setUp();

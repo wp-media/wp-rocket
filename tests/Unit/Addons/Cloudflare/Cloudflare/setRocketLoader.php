@@ -5,7 +5,12 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Addons\Cloudflare\Cloudflare;
 use Brain\Monkey\Functions;
 
-class TestPurgeCloudflare extends TestCase {
+/**
+ * @covers WP_Rocket\Addons\Cloudflare\Cloudflare::set_rocket_loader
+ *
+ * @group Cloudflare
+ */
+class Test_SetRocketLoader extends TestCase {
 
 	protected function setUp() {
 		parent::setUp();
@@ -22,9 +27,9 @@ class TestPurgeCloudflare extends TestCase {
 	}
 
 	/**
-	 * Test purge Cloudflare with cached invalid transient.
+	 * Test set rocket loader with cached invalid transient.
 	 */
-	public function testPurgeCloudflareWithInvalidCredentials() {
+	public function testSetRocketLoaderWithInvalidCredentials() {
 		$mocks = $this->getConstructorMocks( 1,  '',  '', '');
 
 		$cloudflare_facade_mock = $mocks['facade'];
@@ -41,14 +46,14 @@ class TestPurgeCloudflare extends TestCase {
 
 		$this->assertEquals(
 			$wp_error,
-			$cloudflare->purge_cloudflare()
+			$cloudflare->set_rocket_loader( 'off' )
 		);
 	}
 
 	/**
-	 * Test purge Cloudflare with exception.
+	 * Test set rocket loader with exception.
 	 */
-	public function testPurgeCloudflareWithException() {
+	public function testSetRocketLoaderWithException() {
 		$mocks = $this->getConstructorMocks( 1,  '',  '', '');
 
 		$cloudflare_facade_mock = $mocks['facade'];
@@ -61,19 +66,19 @@ class TestPurgeCloudflare extends TestCase {
 		$cloudflare_facade_mock->shouldReceive('set_api_credentials');
 
 		$cloudflare = new Cloudflare( $mocks['options'], $cloudflare_facade_mock );
-		$cloudflare_facade_mock->shouldReceive('purge')->andThrow( new \Exception() );
+		$cloudflare_facade_mock->shouldReceive('change_rocket_loader')->andThrow( new \Exception() );
 
 		$this->assertEquals(
 			new \WP_Error(),
-			$cloudflare->purge_cloudflare()
+			$cloudflare->set_rocket_loader( 'off' )
 		);
 	}
 
 
 	/**
-	 * Test purge Cloudflare with no success.
+	 * Test set rocket loader with no success.
 	 */
-	public function testPurgeCloudflareWithNoSuccess() {
+	public function testSetRocketLoaderWithNoSuccess() {
 		$mocks = $this->getConstructorMocks( 1,  '',  '', '');
 
 		$cloudflare_facade_mock = $mocks['facade'];
@@ -87,19 +92,19 @@ class TestPurgeCloudflare extends TestCase {
 
 		Functions\when( 'wp_sprintf_l' )->justReturn( '' );
 		$cloudflare = new Cloudflare( $mocks['options'], $cloudflare_facade_mock );
-		$cf_purge   = json_decode('{"success":false,"errors":[{"code":7001,"message":"Method GET not available for that URI."}],"messages":[],"result":null}');
-		$cloudflare_facade_mock->shouldReceive('purge')->andReturn( $cf_purge );
+		$cf_reply   = json_decode('{"success":false,"errors":[{"code":1007,"message":"Invalid value for zone setting rocket_loader"}],"messages":[],"result":null}');
+		$cloudflare_facade_mock->shouldReceive('change_rocket_loader')->andReturn( $cf_reply );
 
 		$this->assertEquals(
 			new \WP_Error(),
-			$cloudflare->purge_cloudflare()
+			$cloudflare->set_rocket_loader( 'off' )
 		);
 	}
 
 	/**
-	 * Test purge Cloudflare with success.
+	 * Test set rocket loader with success.
 	 */
-	public function testPurgeCloudflareWithSuccess() {
+	public function testSetRocketLoaderWithSuccess() {
 		$mocks = $this->getConstructorMocks( 1,  '',  '', '');
 
 		$cloudflare_facade_mock = $mocks['facade'];
@@ -112,12 +117,12 @@ class TestPurgeCloudflare extends TestCase {
 		$cloudflare_facade_mock->shouldReceive('set_api_credentials');
 
 		$cloudflare = new Cloudflare( $mocks['options'], $cloudflare_facade_mock );
-		$cf_purge = json_decode('{"success": true,"errors": [],"messages": [],"result": {"id": ""}}');
-		$cloudflare_facade_mock->shouldReceive('purge')->andReturn( $cf_purge );
+		$cf_reply = json_decode('{"result":{"id":"rocket_loader","value":"off","modified_on":"","editable":true},"success":true,"errors":[],"messages":[]}');
+		$cloudflare_facade_mock->shouldReceive('change_rocket_loader')->andReturn( $cf_reply );
 
 		$this->assertEquals(
-			true,
-			$cloudflare->purge_cloudflare()
+			'off',
+			$cloudflare->set_rocket_loader( 'off' )
 		);
 	}
 

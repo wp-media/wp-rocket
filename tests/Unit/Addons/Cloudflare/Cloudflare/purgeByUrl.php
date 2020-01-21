@@ -5,7 +5,12 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Addons\Cloudflare\Cloudflare;
 use Brain\Monkey\Functions;
 
-class TestGetInstance extends TestCase {
+/**
+ * @covers WP_Rocket\Addons\Cloudflare\Cloudflare::purge_by_url
+ *
+ * @group Cloudflare
+ */
+class Test_PurgeByUrl extends TestCase {
 
 	protected function setUp() {
 		parent::setUp();
@@ -22,50 +27,15 @@ class TestGetInstance extends TestCase {
 	}
 
 	/**
-	 * Test Get Instance with Invalid Cloudflare credentials and no transient set.
+	 * Test purge by url Cloudflare with cached invalid transient.
 	 */
-	public function testGetInstanceWithInvalidCFCredentialsNoTransient() {
+	public function testPurgeCloudflareByUrlWithInvalidCredentials() {
 		$mocks = $this->getConstructorMocks( 1,  '',  '', '');
 
 		$cloudflare_facade_mock = $mocks['facade'];
-		$wp_error   = \Mockery::mock( \WP_Error::class );
+		$wp_error               = $mocks['wp_error'];
 
-		Functions\when( 'get_transient' )->justReturn( false );
-		$cloudflare_facade_mock->shouldReceive('is_api_keys_valid')->andReturn( $wp_error );
-		Functions\expect( 'set_transient' )->once();
-		Functions\when( 'is_wp_error' )->justReturn( true );
-		$cloudflare_facade_mock->shouldNotReceive('set_api_credentials');
-
-		$cloudflare = new Cloudflare( $mocks['options'], $cloudflare_facade_mock );
-	}
-
-	/**
-	 * Test Get Instance with valid Cloudflare credentials and no transient set.
-	 */
-	public function testGetInstanceWithValidCFCredentialsNoTransient() {
-		$mocks = $this->getConstructorMocks( 1,  '',  '', '');
-
-		$cloudflare_facade_mock = $mocks['facade'];
-		$wp_error   = \Mockery::mock( \WP_Error::class );
-
-		Functions\when( 'get_transient' )->justReturn( false );
-		$cloudflare_facade_mock->shouldReceive('is_api_keys_valid')->andReturn( true );
-		Functions\expect( 'set_transient' )->once();
-		Functions\when( 'is_wp_error' )->justReturn( false );
-		$cloudflare_facade_mock->shouldReceive('set_api_credentials');
-
-		$cloudflare = new Cloudflare( $mocks['options'], $cloudflare_facade_mock );
-	}
-
-	/**
-	 * Test Get Instance with invalid Cloudflare credentials and transient set.
-	 */
-	public function testGetInstanceWithInValidCFCredentialsAndTransient() {
-		$mocks = $this->getConstructorMocks( 1,  '',  '', '');
-
-		$cloudflare_facade_mock = $mocks['facade'];
-		$wp_error   = \Mockery::mock( \WP_Error::class );
-
+		// The Cloudflare constructor run with transient set as WP_Error.
 		Functions\when( 'get_transient' )->justReturn( $wp_error );
 		$cloudflare_facade_mock->shouldNotReceive('is_api_keys_valid');
 		Functions\expect( 'set_transient' )->never();
@@ -73,24 +43,88 @@ class TestGetInstance extends TestCase {
 		$cloudflare_facade_mock->shouldNotReceive('set_api_credentials');
 
 		$cloudflare = new Cloudflare( $mocks['options'], $cloudflare_facade_mock );
+
+		$this->assertEquals(
+			$wp_error,
+			$cloudflare->purge_by_url( null, [ '/purge-url' ], null )
+		);
 	}
 
 	/**
-	 * Test Get Instance with valid Cloudflare credentials and transient set.
+	 * Test purge by url Cloudflare with exception.
 	 */
-	public function testGetInstanceWithValidCFCredentialsAndTransient() {
+	public function testPurgeCloudflareByUrlWithException() {
 		$mocks = $this->getConstructorMocks( 1,  '',  '', '');
 
 		$cloudflare_facade_mock = $mocks['facade'];
+
+		// The Cloudflare constructor run with transient set as WP_Error.
 		Functions\when( 'get_transient' )->justReturn( true );
 		$cloudflare_facade_mock->shouldNotReceive('is_api_keys_valid');
 		Functions\expect( 'set_transient' )->never();
-		Functions\when( 'is_wp_error' )->justReturn( true );
-		$cloudflare_facade_mock->shouldNotReceive('set_api_credentials');
+		Functions\when( 'is_wp_error' )->justReturn( false );
+		$cloudflare_facade_mock->shouldReceive('set_api_credentials');
 
 		$cloudflare = new Cloudflare( $mocks['options'], $cloudflare_facade_mock );
+		$cloudflare_facade_mock->shouldReceive('purge_files')->andThrow( new \Exception() );
+
+		$this->assertEquals(
+			new \WP_Error(),
+			$cloudflare->purge_by_url( null, [ '/purge-url' ], null )
+		);
 	}
 
+
+	/**
+	 * Test purge by url Cloudflare with no success.
+	 */
+	public function testPurgeCloudflareByUrlWithNoSuccess() {
+		$mocks = $this->getConstructorMocks( 1,  '',  '', '');
+
+		$cloudflare_facade_mock = $mocks['facade'];
+
+		// The Cloudflare constructor run with transient set as WP_Error.
+		Functions\when( 'get_transient' )->justReturn( true );
+		$cloudflare_facade_mock->shouldNotReceive('is_api_keys_valid');
+		Functions\expect( 'set_transient' )->never();
+		Functions\when( 'is_wp_error' )->justReturn( false );
+		$cloudflare_facade_mock->shouldReceive('set_api_credentials');
+
+		Functions\when( 'wp_sprintf_l' )->justReturn( '' );
+		$cloudflare = new Cloudflare( $mocks['options'], $cloudflare_facade_mock );
+		$cf_purge   = json_decode('{"success":false,"errors":[{"code":7001,"message":"Method GET not available for that URI."}],"messages":[],"result":null}');
+		$cloudflare_facade_mock->shouldReceive('purge_files')->andReturn( $cf_purge );
+
+		$this->assertEquals(
+			new \WP_Error(),
+			$cloudflare->purge_by_url( null, [ '/purge-url' ], null )
+		);
+	}
+
+	/**
+	 * Test purge by url Cloudflare with success.
+	 */
+	public function testPurgeCloudflareByUrlWithSuccess() {
+		$mocks = $this->getConstructorMocks( 1,  '',  '', '');
+
+		$cloudflare_facade_mock = $mocks['facade'];
+
+		// The Cloudflare constructor run with transient set as WP_Error.
+		Functions\when( 'get_transient' )->justReturn( true );
+		$cloudflare_facade_mock->shouldNotReceive('is_api_keys_valid');
+		Functions\expect( 'set_transient' )->never();
+		Functions\when( 'is_wp_error' )->justReturn( false );
+		$cloudflare_facade_mock->shouldReceive('set_api_credentials');
+
+		$cloudflare = new Cloudflare( $mocks['options'], $cloudflare_facade_mock );
+		$cf_purge = json_decode('{"success": true,"errors": [],"messages": [],"result": {"id": ""}}');
+		$cloudflare_facade_mock->shouldReceive('purge_files')->andReturn( $cf_purge );
+
+		$this->assertEquals(
+			true,
+			$cloudflare->purge_by_url( null, [ '/purge-url' ], null )
+		);
+	}
 
 	/**
 	 * Get the mocks required by Cloudflare’s constructor.
@@ -131,11 +165,13 @@ class TestGetInstance extends TestCase {
 		];
 		$options->method('get')->will( $this->returnValueMap( $map ) );
 
-		$facade = \Mockery::mock(\WP_Rocket\Addons\Cloudflare\CloudflareFacade::class);
+		$facade   = \Mockery::mock( \WP_Rocket\Addons\Cloudflare\CloudflareFacade::class );
+		$wp_error = \Mockery::mock( \WP_Error::class );
 
 		$mocks = [
-			'options' => $options,
-			'facade'  => $facade,
+			'options'  => $options,
+			'facade'   => $facade,
+			'wp_error' => $wp_error,
 		];
 		return $mocks;
 	}
