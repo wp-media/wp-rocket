@@ -79,9 +79,13 @@ class CloudflareFacade {
 	public function set_api_credentials( $email, $api_key, $zone_id ) {
 		$this->api->setEmail( $email );
 		$this->api->setAuthKey( $api_key );
-		$this->api->setCurlOption( CURLOPT_USERAGENT, 'wp-rocket/' . WP_ROCKET_VERSION );
+		$this->api->setCurlOption(
+			CURLOPT_USERAGENT,
+			'wp-rocket/' . rocket_get_constant( 'WP_ROCKET_VERSION', '3.5' )
+		);
 
 		$this->zone_id = $zone_id;
+
 		// Loading with Valid API Credentials.
 		$this->page_rules = new Pagerules( $this->api );
 		$this->cache      = new Cache( $this->api );
