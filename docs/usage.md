@@ -6,7 +6,7 @@ description: Learn how to use the Action Scheduler background processing job que
 Using Action Scheduler requires:
 
 1. installing the library
-1. scheduling and action
+1. scheduling an action
 1. attaching a callback to that action
 
 ## Scheduling an Action
