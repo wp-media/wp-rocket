@@ -7,12 +7,13 @@
 
 namespace WP_Rocket\Tests\Unit;
 
-use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Brain\Monkey;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use WP_Rocket\Tests\TestCaseTrait;
 
-class TestCase extends PHPUnitTestCase {
-	use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+abstract class TestCase extends PHPUnitTestCase {
+	use MockeryPHPUnitIntegration;
 	use TestCaseTrait;
 
 	/**
@@ -33,10 +34,6 @@ class TestCase extends PHPUnitTestCase {
 
 	/**
 	 * Mock common WP functions.
-	 *
-	 * @since  3.4
-	 * @author Grégory Viguier
-	 * @access protected
 	 */
 	protected function mockCommonWpFunctions() {
 		Monkey\Functions\stubs(
