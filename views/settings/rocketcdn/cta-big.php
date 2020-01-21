@@ -79,7 +79,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 	<div class="wpr-rocketcdn-cta-footer">
 		<a href="https://go.wp-rocket.me/rocket-cdn" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Learn more about Rocket CDN', 'rocket' ); ?></a>
 	</div>
-	<button class="wpr-rocketcdn-cta-close<?php echo esc_attr( $data['nopromo_variant'] ); ?>"  id="wpr-rocketcdn-close-cta"><span class="screen-reader-text"><?php esc_html_e( 'Reduce this banner', 'rocket' ); ?></span></button>
+	<button class="wpr-rocketcdn-cta-close<?php echo esc_attr( $data['nopromo_variant'] ); ?>" id="wpr-rocketcdn-close-cta"><span class="screen-reader-text"><?php esc_html_e( 'Reduce this banner', 'rocket' ); ?></span></button>
 	<?php if ( ! empty( $data['promotion_campaign'] ) ) : ?>
 <p>
 	<?php
