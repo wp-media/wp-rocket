@@ -1,23 +1,25 @@
 <?php
+
 namespace WP_Rocket\Tests\Unit\Subscriber\Addons\CloudflareSubscriber;
 
-use WP_Rocket\Tests\Unit\TestCase;
-use WP_Rocket\Subscriber\Addons\Cloudflare\CloudflareSubscriber;
 use Brain\Monkey\Functions;
+use Mockery;
+use WP_Error;
+use WP_Rocket\Addons\Cloudflare\Cloudflare;
+use WP_Rocket\Subscriber\Addons\Cloudflare\CloudflareSubscriber;
 
-class TestPurgeCache extends TestCase {
+/**
+ * @covers WP_Rocket\Addons\Cloudflare\CloudflareFacade::purge_cache
+ *
+ * @group  Cloudflare
+ */
+class Test_PurgeCache extends CloudflareTestCase {
 
-	protected function setUp() {
-		parent::setUp();
+	protected function tearDown() {
+		parent::tearDown();
 
-		$this->mockCommonWpFunctions();
-
-		if ( ! defined('WEEK_IN_SECONDS') ) {
-			define('WEEK_IN_SECONDS', 7 * 24 * 60 * 60);
-		}
-		if ( ! defined('WP_ROCKET_VERSION') ) {
-			define('WP_ROCKET_VERSION', '3.5');
-		}
+		// Reset.
+		unset( $_GET['_wpnonce'] );
 	}
 
 	/**
@@ -26,8 +28,8 @@ class TestPurgeCache extends TestCase {
 	public function testShouldNotPurgeWhenCloudflareIsDisabled() {
 		$mocks = $this->getConstructorMocks( 0, '', '', '' );
 
-		$cloudflare = \Mockery::mock(\WP_Rocket\Addons\Cloudflare\Cloudflare::class);
-		$cloudflare->shouldNotReceive('purge_cloudflare');
+		$cloudflare = Mockery::mock( Cloudflare::class );
+		$cloudflare->shouldNotReceive( 'purge_cloudflare' );
 
 		$_GET['_wpnonce'] = 'nonce';
 		Functions\when( 'wp_verify_nonce' )->justReturn( true );
@@ -43,8 +45,8 @@ class TestPurgeCache extends TestCase {
 	public function testShouldNotPurgeWhenCloudflareIsEnabledNoUserPermission() {
 		$mocks = $this->getConstructorMocks( 1, '', '', '' );
 
-		$cloudflare = \Mockery::mock(\WP_Rocket\Addons\Cloudflare\Cloudflare::class);
-		$cloudflare->shouldNotReceive('purge_cloudflare');
+		$cloudflare = Mockery::mock( Cloudflare::class );
+		$cloudflare->shouldNotReceive( 'purge_cloudflare' );
 
 		$_GET['_wpnonce'] = '';
 		Functions\when( 'wp_verify_nonce' )->justReturn( true );
@@ -63,11 +65,11 @@ class TestPurgeCache extends TestCase {
 
 		Functions\when( 'is_wp_error' )->justReturn( true );
 
-		$wp_error   = \Mockery::mock( \WP_Error::class );
-		$wp_error->shouldReceive('get_error_message')->andReturn( 'Error!' );
-
-		$cloudflare = \Mockery::mock(\WP_Rocket\Addons\Cloudflare\Cloudflare::class);
-		$cloudflare->shouldReceive('purge_cloudflare')->andReturn( $wp_error );
+		$cloudflare = Mockery::mock( Cloudflare::class, [
+			'purge_cloudflare' => Mockery::mock( WP_Error::class, [
+				'get_error_message' => 'Error!',
+			] ),
+		] );
 
 		$_GET['_wpnonce'] = '';
 		Functions\when( 'wp_verify_nonce' )->justReturn( true );
@@ -83,10 +85,9 @@ class TestPurgeCache extends TestCase {
 
 		Functions\expect( 'set_transient' )
 			->once()
-			->with('1_cloudflare_purge_result', $cf_purge_result );
+			->with( '1_cloudflare_purge_result', $cf_purge_result );
 
 		$cloudflare_subscriber = new CloudflareSubscriber( $cloudflare, $mocks['options_data'], $mocks['options'] );
-
 		$cloudflare_subscriber->purge_cache_no_die();
 	}
 
@@ -96,8 +97,9 @@ class TestPurgeCache extends TestCase {
 	public function testShouldPurgeWithSuccess() {
 		$mocks = $this->getConstructorMocks( 1, '', '', '' );
 
-		$cloudflare = \Mockery::mock(\WP_Rocket\Addons\Cloudflare\Cloudflare::class);
-		$cloudflare->shouldReceive('purge_cloudflare')->andReturn( true );
+		$cloudflare = Mockery::mock( Cloudflare::class, [
+			 'purge_cloudflare' => true,
+		] );
 
 		$_GET['_wpnonce'] = '';
 		Functions\when( 'wp_verify_nonce' )->justReturn( true );
@@ -112,58 +114,9 @@ class TestPurgeCache extends TestCase {
 
 		Functions\expect( 'set_transient' )
 			->once()
-			->with('1_cloudflare_purge_result', $cf_purge_result );
+			->with( '1_cloudflare_purge_result', $cf_purge_result );
 
 		$cloudflare_subscriber = new CloudflareSubscriber( $cloudflare, $mocks['options_data'], $mocks['options'] );
-
 		$cloudflare_subscriber->purge_cache_no_die();
-	}
-
-	/**
-	 * Get the mocks required by Cloudflare’s constructor.
-	 *
-	 * @since  3.5
-	 * @author Soponar Cristina
-	 * @access private
-	 *
-	 * @param integer $do_cloudflare      - Value to return for $options->get( 'do_cloudflare' ).
-	 * @param string  $cloudflare_email   - Value to return for $options->get( 'cloudflare_email' ).
-	 * @param string  $cloudflare_api_key - Value to return for $options->get( 'cloudflare_api_key' ).
-	 * @param string  $cloudflare_zone_id - Value to return for $options->get( 'cloudflare_zone_id' ).
-	 * @return array                      - Array of Mocks
-	 */
-	private function getConstructorMocks( $do_cloudflare = 1, $cloudflare_email = '',  $cloudflare_api_key = '', $cloudflare_zone_id = '') {
-		$options      = $this->createMock('WP_Rocket\Admin\Options');
-		$options_data = $this->createMock('WP_Rocket\Admin\Options_Data');
-		$map     = [
-			[
-				'do_cloudflare',
-				'',
-				$do_cloudflare,
-			],
-			[
-				'cloudflare_email',
-				null,
-				$cloudflare_email,
-			],
-			[
-				'cloudflare_api_key',
-				null,
-				$cloudflare_api_key,
-			],
-			[
-				'cloudflare_zone_id',
-				null,
-				$cloudflare_zone_id,
-			],
-		];
-		$options_data->method('get')->will( $this->returnValueMap( $map ) );
-
-		$mocks = [
-			'options_data' => $options_data,
-			'options'      => $options,
-		];
-
-		return $mocks;
 	}
 }

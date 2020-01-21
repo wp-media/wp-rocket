@@ -4,7 +4,12 @@ namespace WP_Rocket\Tests\Integration\Subscriber\Addons\CloudflareSubscriber;
 use PHPUnit\Framework\TestCase;
 use WP_Rocket\Subscriber\Addons\Cloudflare\CloudflareSubscriber;
 
-class TestGetSubscribedEvents extends TestCase {
+/**
+ * @covers WP_Rocket\Subscriber\Addons\Cloudflare\CloudflareSubscriber::get_subscribed_events
+ *
+ * @group  Cloudflare
+ */
+class Test_GetSubscribedEvents extends TestCase {
 
 	/**
 	 * Setup constants required by Cloudflare
