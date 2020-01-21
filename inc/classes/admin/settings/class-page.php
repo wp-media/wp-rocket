@@ -190,8 +190,8 @@ class Page {
 		echo $this->render->generate( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 			'page',
 			[
-				'slug'            => esc_attr( $this->slug ),
-				'btn_submit_text' => esc_attr( $btn_submit_text ),
+				'slug'            => $this->slug, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+				'btn_submit_text' => $btn_submit_text, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 			]
 		);
 	}
