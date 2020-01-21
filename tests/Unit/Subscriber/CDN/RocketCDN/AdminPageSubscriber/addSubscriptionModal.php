@@ -22,6 +22,7 @@ class Test_AddSubscriptionModal extends TestCase {
 			$this->createMock( 'WP_Rocket\Admin\Settings\Beacon' ),
 			''
 		);
+		$this->mockCommonWpFunctions();
 	}
 
 	private function getActualHtml() {
@@ -49,7 +50,6 @@ class Test_AddSubscriptionModal extends TestCase {
 				'add_query_arg' => 'https://wp-rocket.me/cdn/iframe?website=http://example.org&callback=http://example.org/wp-json/wp-rocket/v1/rocketcdn/',
 				'home_url' => 'http://example.org',
 				'rest_url' => 'http://example.org/wp-json/',
-				'esc_url'
 			]
 		);
 
@@ -84,7 +84,6 @@ HTML;
 				'add_query_arg' => 'https://dave.wp-rocket.me/cdn/iframe?website=http://example.org&callback=http://example.org/wp-json/wp-rocket/v1/rocketcdn/',
 				'home_url' => 'http://example.org',
 				'rest_url' => 'http://example.org/wp-json/',
-				'esc_url'
 			]
 		);
 
