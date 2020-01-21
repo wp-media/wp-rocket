@@ -417,7 +417,7 @@ add_filter( 'plugins_api_result', 'rocket_add_imagify_api_result', 11, 3 );
  * @since 2.11
  * @author Remy Perona
  *
- * @return array An array of data
+ * @return mixed An array of data, or false if WP Rocket options is not an array
  */
 function rocket_analytics_data() {
 	global $wp_version, $is_nginx, $is_apache, $is_iis7, $is_IIS;
