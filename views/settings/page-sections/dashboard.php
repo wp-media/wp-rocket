@@ -145,12 +145,13 @@ defined( 'ABSPATH' ) || exit;
 					<?php endif; ?>
 
 					<?php
-					$rocket_restrict_api     = ini_get( 'opcache.restrict_api' );
-					$rocket_can_restrict_api = true;
-					if ( $rocket_restrict_api && strpos( __FILE__, $rocket_restrict_api ) !== 0 ) {
-						$rocket_can_restrict_api = false;
+					$opcache_enabled  = filter_var( ini_get( 'opcache.enable' ), FILTER_VALIDATE_BOOLEAN ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+					$restrict_api     = ini_get( 'opcache.restrict_api' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+					$can_restrict_api = true; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+					if ( $restrict_api && strpos( __FILE__, $restrict_api ) !== 0 ) {
+						$can_restrict_api = false; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 					}
-					if ( function_exists( 'opcache_reset' ) && current_user_can( 'rocket_purge_opcache' ) && $rocket_can_restrict_api ) :
+					if ( function_exists( 'opcache_reset' ) && $opcache_enabled && current_user_can( 'rocket_purge_opcache' ) && $can_restrict_api ) :
 						?>
 					<div class="wpr-field">
 						<h4 class="wpr-title3"><?php esc_html_e( 'Purge OPCache content', 'rocket' ); ?></h4>

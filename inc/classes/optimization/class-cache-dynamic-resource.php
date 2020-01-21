@@ -167,7 +167,7 @@ class Cache_Dynamic_Resource extends Abstract_Optimization {
 	public function is_excluded_file( $src ) {
 		$file = get_rocket_parse_url( $src );
 
-		if ( ! preg_match( '#\.php$#', $file['path'] ) ) {
+		if ( isset( $file['path'] ) && ! preg_match( '#\.php$#', $file['path'] ) ) {
 			return true;
 		}
 
@@ -179,13 +179,13 @@ class Cache_Dynamic_Resource extends Abstract_Optimization {
 			return true;
 		}
 
-		$file['query'] = remove_query_arg( 'ver', $file['query'] );
-
-		if ( $file['query'] ) {
-			return true;
+		if ( ! isset( $file['query'] ) ) {
+			return false;
 		}
 
-		return false;
+		$file['query'] = remove_query_arg( 'ver', $file['query'] );
+
+		return (bool) $file['query'];
 	}
 
 	/**
