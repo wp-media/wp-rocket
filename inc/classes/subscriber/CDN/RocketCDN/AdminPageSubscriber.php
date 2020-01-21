@@ -128,7 +128,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 
 		if ( ! empty( $cdn_cnames ) && $cdn_cnames[0] !== $subscription_data['cdn_url'] ) {
 			$helper_text = sprintf(
-			// translators: %1$s = opening <code> tag, %2$s = CDN URL, %3$s = closing </code> tag.
+				// translators: %1$s = opening <code> tag, %2$s = CDN URL, %3$s = closing </code> tag.
 				__( 'To use Rocket CDN, replace your CNAME with %1$s%2$s%3$s.', 'rocket' ),
 				'<code>',
 				$subscription_data['cdn_url'],
@@ -137,7 +137,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		}
 
 		$more_info = sprintf(
-		// translators: %1$is = opening link tag, %2$s = closing link tag.
+			// translators: %1$is = opening link tag, %2$s = closing link tag.
 			__( '%1$sMore Info%2$s', 'rocket' ),
 			'<a href="" data-beacon-article="" rel="noopener noreferrer" target="_blank">',
 			'</a>'
@@ -159,10 +159,11 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	/**
 	 * Adds an input text field to add the RocketCDN token manually
 	 *
-	 * @since 3.5
+	 * @since  3.5
 	 * @author Remy Perona
 	 *
 	 * @param array $fields An array of fields for the CDN section.
+	 *
 	 * @return array
 	 */
 	public function rocketcdn_token_field( $fields ) {
@@ -191,10 +192,11 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	/**
 	 * Saves the RocketCDN token in the correct option if the field is filled
 	 *
-	 * @since 3.5
+	 * @since  3.5
 	 * @author Remy Perona
 	 *
 	 * @param array $value The new, unserialized option value.
+	 *
 	 * @return array
 	 */
 	public function maybe_save_token( $value ) {
@@ -206,7 +208,12 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		unset( $value['rocketcdn_token'] );
 
 		if ( 40 !== strlen( $token ) ) {
-			add_settings_error( 'general', 'rocketcdn-token', __( 'RocketCDN token length is not 40 characters.', 'rocket' ), 'error' );
+			add_settings_error(
+				'general',
+				'rocketcdn-token',
+				__( 'RocketCDN token length is not 40 characters.', 'rocket' ),
+				'error'
+			);
 
 			return $value;
 		}
@@ -270,7 +277,9 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 * @return void
 	 */
 	public function add_subscription_modal() {
-		$base_url   = rocket_get_constant( 'WP_ROCKET_DEBUG', false ) ? 'https://dave.wp-rocket.me/' : rocket_get_constant( 'WP_ROCKET_WEB_MAIN' );
+		$base_url   = rocket_get_constant( 'WP_ROCKET_DEBUG', false )
+			? 'https://dave.wp-rocket.me/'
+			: rocket_get_constant( 'WP_ROCKET_WEB_MAIN' );
 		$iframe_src = add_query_arg(
 			[
 				'website'  => home_url(),
@@ -281,11 +290,9 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		?>
 		<div class="wpr-rocketcdn-modal" id="wpr-rocketcdn-modal" aria-hidden="true">
 			<div class="wpr-rocketcdn-modal__overlay" tabindex="-1" data-micromodal-close>
-				<div class="wpr-rocketcdn-modal__container" role="dialog" aria-modal="true"
-					aria-labelledby="wpr-rocketcdn-modal-title">
+				<div class="wpr-rocketcdn-modal__container" role="dialog" aria-modal="true" aria-labelledby="wpr-rocketcdn-modal-title">
 					<div id="wpr-rocketcdn-modal-content">
-						<iframe id="rocketcdn-iframe" src="<?php echo esc_url( $iframe_src ); ?>" width="674"
-						height="425"></iframe>
+						<iframe id="rocketcdn-iframe" src="<?php echo esc_url( $iframe_src ); ?>" width="674" height="425"></iframe>
 					</div>
 				</div>
 			</div>

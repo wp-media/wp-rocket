@@ -16,7 +16,7 @@ class Test_AddSubscriptionModal extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->page       = new AdminPageSubscriber(
+		$this->page = new AdminPageSubscriber(
 			$this->createMock( 'WP_Rocket\CDN\RocketCDN\APIClient' ),
 			$this->createMock( 'WP_Rocket\Admin\Options_Data' ),
 			$this->createMock( 'WP_Rocket\Admin\Settings\Beacon' ),
@@ -28,6 +28,7 @@ class Test_AddSubscriptionModal extends TestCase {
 	private function getActualHtml() {
 		ob_start();
 		$this->page->add_subscription_modal();
+
 		return $this->format_the_html( ob_get_clean() );
 	}
 
@@ -55,19 +56,17 @@ class Test_AddSubscriptionModal extends TestCase {
 
 		$expected = <<<HTML
 <div class="wpr-rocketcdn-modal" id="wpr-rocketcdn-modal" aria-hidden="true">
-			<div class="wpr-rocketcdn-modal__overlay" tabindex="-1" data-micromodal-close>
-				<div class="wpr-rocketcdn-modal__container" role="dialog" aria-modal="true"
-					aria-labelledby="wpr-rocketcdn-modal-title">
-					<div id="wpr-rocketcdn-modal-content">
-						<iframe id="rocketcdn-iframe" src="https://wp-rocket.me/cdn/iframe?website=http://example.org&callback=http://example.org/wp-json/wp-rocket/v1/rocketcdn/" width="674"
-						height="425"></iframe>
-					</div>
-				</div>
+	<div class="wpr-rocketcdn-modal__overlay" tabindex="-1" data-micromodal-close>
+		<div class="wpr-rocketcdn-modal__container" role="dialog" aria-modal="true" aria-labelledby="wpr-rocketcdn-modal-title">
+			<div id="wpr-rocketcdn-modal-content">
+				<iframe id="rocketcdn-iframe" src="https://wp-rocket.me/cdn/iframe?website=http://example.org&callback=http://example.org/wp-json/wp-rocket/v1/rocketcdn/" width="674" height="425"></iframe>
 			</div>
 		</div>
+	</div>
+</div>
 HTML;
 
-		$this->assertSame( $this->format_the_html($expected), $this->getActualHtml() );
+		$this->assertSame( $this->format_the_html( $expected ), $this->getActualHtml() );
 	}
 
 	/**
@@ -89,18 +88,16 @@ HTML;
 
 		$expected = <<<HTML
 <div class="wpr-rocketcdn-modal" id="wpr-rocketcdn-modal" aria-hidden="true">
-			<div class="wpr-rocketcdn-modal__overlay" tabindex="-1" data-micromodal-close>
-				<div class="wpr-rocketcdn-modal__container" role="dialog" aria-modal="true"
-					aria-labelledby="wpr-rocketcdn-modal-title">
-					<div id="wpr-rocketcdn-modal-content">
-						<iframe id="rocketcdn-iframe" src="https://dave.wp-rocket.me/cdn/iframe?website=http://example.org&callback=http://example.org/wp-json/wp-rocket/v1/rocketcdn/" width="674"
-						height="425"></iframe>
-					</div>
-				</div>
+	<div class="wpr-rocketcdn-modal__overlay" tabindex="-1" data-micromodal-close>
+		<div class="wpr-rocketcdn-modal__container" role="dialog" aria-modal="true" aria-labelledby="wpr-rocketcdn-modal-title">
+			<div id="wpr-rocketcdn-modal-content">
+				<iframe id="rocketcdn-iframe" src="https://dave.wp-rocket.me/cdn/iframe?website=http://example.org&callback=http://example.org/wp-json/wp-rocket/v1/rocketcdn/" width="674" height="425"></iframe>
 			</div>
 		</div>
+	</div>
+</div>
 HTML;
 
-		$this->assertSame( $this->format_the_html($expected), $this->getActualHtml() );
+		$this->assertSame( $this->format_the_html( $expected ), $this->getActualHtml() );
 	}
 }
