@@ -585,6 +585,7 @@ class Combine extends Abstract_JS_Optimization {
 			'window.broadstreetKeywords',
 			'window.wc_ga_pro.available_gateways',
 			'xa.prototype',
+			'HOUZEZ_ajaxcalls_vars',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
@@ -757,7 +758,7 @@ class Combine extends Abstract_JS_Optimization {
 			'cb_nombre',
 			'$(\'.fl-node-',
 			'function($){google_maps_',
-            '$("#myCarousel',
+            		'$("#myCarousel',
 			'et_animation_data=',
 			'current_url="',
 			'CustomEvent.prototype=window.Event.prototype',
@@ -783,6 +784,12 @@ class Combine extends Abstract_JS_Optimization {
 			'dfd-button-hover-in',
 			'wpseo-address-wrapper',
 			'platform.stumbleupon.com',
+			'#woo_pp_ec_button_mini_cart',
+			'#supercarousel',
+			'blockClass',
+			'tdbMenuItem',
+			'tdbSearchItem',
+			'best_seller_badge',
 		];
 
 		/**
