@@ -22,8 +22,8 @@ defined( 'ABSPATH' ) || exit;
 	</div>
 	<?php $this->render_settings_sections( $data['id'] ); ?>
 	<div class="wpr-fieldsContainer-helper wpr-icon-important">
-		<?php _e( 'Backup your database before you run a cleanup!', 'rocket' ); ?>
-		<p><?php _e( 'Once a database optimization has been performed, there is no way to undo it.', 'rocket' ); ?></p>
+		<?php esc_html_e( 'Backup your database before you run a cleanup!', 'rocket' ); ?>
+		<p><?php esc_html_e( 'Once a database optimization has been performed, there is no way to undo it.', 'rocket' ); ?></p>
 	</div>
 	<input type="submit" class="wpr-button" name="wp_rocket_settings[submit_optimize]" value="<?php esc_attr_e( 'Optimize', 'rocket' ); ?>">
 </div>

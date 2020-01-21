@@ -57,12 +57,15 @@ class Full_Process extends \WP_Background_Process {
 		 *
 		 * @param array $args Arguments for the request.
 		 */
-		$args = apply_filters( 'rocket_preload_url_request_args', [
-			'timeout'    => 0.01,
-			'blocking'   => false,
-			'user-agent' => 'WP Rocket/Preload',
-			'sslverify'  => apply_filters( 'https_local_ssl_verify', false ),
-		] );
+		$args = apply_filters(
+			'rocket_preload_url_request_args',
+			[
+				'timeout'    => 0.01,
+				'blocking'   => false,
+				'user-agent' => 'WP Rocket/Preload',
+				'sslverify'  => apply_filters( 'https_local_ssl_verify', false ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+			]
+		);
 
 		wp_remote_get( esc_url_raw( $item ), $args );
 
@@ -113,7 +116,7 @@ class Full_Process extends \WP_Background_Process {
 	 */
 	public function complete() {
 		set_transient( 'rocket_preload_complete', get_transient( 'rocket_preload_running' ) );
-		set_transient( 'rocket_preload_complete_time', date_i18n( get_option( 'date_format' ), current_time( 'timestamp' ) ) . ' @ ' . date_i18n( get_option( 'time_format' ), current_time( 'timestamp' ) ) );
+		set_transient( 'rocket_preload_complete_time', date_i18n( get_option( 'date_format' ) ) . ' @ ' . date_i18n( get_option( 'time_format' ) ) );
 		delete_transient( 'rocket_preload_running' );
 		parent::complete();
 	}
@@ -127,8 +130,7 @@ class Full_Process extends \WP_Background_Process {
 	 * @see WP_Background_Process::is_process_running()
 	 * @return boolean
 	 */
-	public function is_process_running() {
+	public function is_process_running() { // phpcs:ignore Generic.CodeAnalysis.UselessOverridingMethod.Found
 		return parent::is_process_running();
 	}
 }
-

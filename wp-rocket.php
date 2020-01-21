@@ -102,14 +102,14 @@ function rocket_load_textdomain() {
 add_action( 'plugins_loaded', 'rocket_load_textdomain' );
 
 $wp_rocket_requirement_checks = new WP_Rocket_Requirements_Check(
-	array(
+	[
 		'plugin_name'         => 'WP Rocket',
 		'plugin_file'         => WP_ROCKET_FILE,
 		'plugin_version'      => WP_ROCKET_VERSION,
 		'plugin_last_version' => WP_ROCKET_LASTVERSION,
 		'wp_version'          => WP_ROCKET_WP_VERSION,
 		'php_version'         => WP_ROCKET_PHP_VERSION,
-	)
+	]
 );
 
 if ( $wp_rocket_requirement_checks->check() ) {

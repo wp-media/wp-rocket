@@ -144,7 +144,7 @@ function rocket_admin_bar( $wp_admin_bar ) {
 				/**
 				 * Purge a post.
 				 */
-				if ( $post && 'post.php' === $pagenow && isset( $_GET['action'], $_GET['post'] ) ) {
+				if ( $post && 'post.php' === $pagenow && isset( $_GET['action'], $_GET['post'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 					$wp_admin_bar->add_menu(
 						[
 							'parent' => 'wp-rocket',
@@ -201,7 +201,7 @@ function rocket_admin_bar( $wp_admin_bar ) {
 		 * Regenerate Critical Path CSS.
 		 */
 		/** This filter is documented in inc/classes/class-rocket-critical-css.php. */
-		if ( get_rocket_option( 'async_css' ) && apply_filters( 'do_rocket_critical_css_generation', true ) ) {
+		if ( get_rocket_option( 'async_css' ) && apply_filters( 'do_rocket_critical_css_generation', true ) ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 			$action = 'rocket_generate_critical_css';
 
 			$wp_admin_bar->add_menu(
