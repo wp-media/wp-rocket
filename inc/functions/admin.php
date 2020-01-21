@@ -349,8 +349,11 @@ function rocket_check_json_filetype( $wp_check_filetype_and_ext, $file, $filenam
  * @return string HTML list table
  */
 function rocket_data_collection_preview_table() {
-
 	$data = rocket_analytics_data();
+
+	if ( ! $data ) {
+		return;
+	}
 
 	$html  = '<table class="wp-rocket-data-table widefat striped">';
 	$html .= '<tbody>';
