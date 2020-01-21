@@ -136,10 +136,6 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	public function dismiss_notice() {
 		check_ajax_referer( 'rocketcdn_dismiss_notice', 'nonce', true );
 
-		if ( ! isset( $_POST['action'] ) || 'rocketcdn_dismiss_notice' !== $_POST['action'] ) {
-			return;
-		}
-
 		update_user_meta( get_current_user_id(), 'rocketcdn_dismiss_notice', true );
 	}
 
@@ -217,7 +213,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	public function toggle_cta() {
 		check_ajax_referer( 'rocket-ajax', 'nonce', true );
 
-		if ( ! isset( $_POST['action'], $_POST['status'] ) || 'toggle_rocketcdn_cta' !== $_POST['action'] ) {
+		if ( ! isset( $_POST['status'] ) ) {
 			return;
 		}
 
