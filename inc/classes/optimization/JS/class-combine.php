@@ -633,8 +633,8 @@ class Combine extends Abstract_JS_Optimization {
 			'w2dc_maps_objects',
 			'w2dc_controller_args_array',
 			'w2dc_map_markers_attrs',
-			'YT.Player','
-			WPFC.data',
+			'YT.Player',
+			'WPFC.data',
 			'function current_video_',
 			'var videodiv',
 			'var slider_wppasrotate',
