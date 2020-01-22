@@ -8,11 +8,10 @@
 namespace WP_Rocket\Tests\Integration;
 
 use Brain\Monkey;
-use Kint\Parser\Plugin;
 use WP_Rocket\Tests\TestCaseTrait;
 use WP_UnitTestCase;
 
-class TestCase extends WP_UnitTestCase {
+abstract class TestCase extends WP_UnitTestCase {
 	use TestCaseTrait;
 
 	/**
