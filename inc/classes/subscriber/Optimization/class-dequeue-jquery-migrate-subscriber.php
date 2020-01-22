@@ -71,7 +71,7 @@ class Dequeue_JQuery_Migrate_Subscriber implements Subscriber_Interface {
 	 * @return boolean
 	 */
 	protected function is_allowed() {
-		if ( rocket_has_constant( 'DONOTROCKETOPTIMIZE' ) && rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
+		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE', false ) ) {
 			return false;
 		}
 

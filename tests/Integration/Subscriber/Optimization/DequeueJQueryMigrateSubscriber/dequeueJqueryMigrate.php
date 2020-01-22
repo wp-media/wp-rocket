@@ -59,9 +59,6 @@ class Test_DequeueJqueryMigrate extends TestCase {
 	public function testShouldNotDequeueJqueryMigrateWithDONOTROCKETOPTIMIZE() {
 		add_filter( 'pre_get_rocket_option_dequeue_jquery_migrate', '__return_true' );
 
-		Monkey\Functions\expect( 'rocket_has_constant' )
-			->with( 'DONOTROCKETOPTIMIZE' )
-			->andReturn( true );
 		Monkey\Functions\expect( 'rocket_get_constant' )
 			->with( 'DONOTROCKETOPTIMIZE' )
 			->andReturn( true );
