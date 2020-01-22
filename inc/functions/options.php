@@ -635,11 +635,13 @@ function rocket_check_key() {
  * @return void
  */
 function rocket_delete_licence_data_file() {
-	if ( ! rocket_direct_filesystem()->exists( WP_ROCKET_PATH . 'licence-data.php' ) ) {
+	$rocket_path = rocket_get_constant( 'WP_ROCKET_PATH' );
+
+	if ( ! rocket_direct_filesystem()->exists( $rocket_path . 'licence-data.php' ) ) {
 		return;
 	}
 
-	rocket_direct_filesystem()->delete( WP_ROCKET_PATH . 'licence-data.php' );
+	rocket_direct_filesystem()->delete( $rocket_path . 'licence-data.php' );
 }
 
 /**
