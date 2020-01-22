@@ -2,8 +2,8 @@
 
 namespace WP_Rocket\Tests\Integration\Subscriber\Optimization\Dequeue_JQuery_Migrate_Subscriber;
 
-use PHPUnit\Framework\TestCase;
 use Brain\Monkey;
+use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * @covers WP_Rocket\Subscriber\Optimization\Dequeue_JQuery_Migrate_Subscriber::dequeue_jquery_migrate
@@ -18,18 +18,17 @@ class Test_DequeueJqueryMigrate extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		global $wp_scripts;
-		$this->orig_deps = $wp_scripts->registered['jquery']->deps;
-		$this->wp_scripts  = $wp_scripts;
-		$this->count       = did_action( 'wp_default_scripts' );
+		$wp_scripts       = wp_scripts();
+		$this->orig_deps  = $wp_scripts->registered['jquery']->deps;
+		$this->wp_scripts = $wp_scripts;
+		$this->count      = did_action( 'wp_default_scripts' );
 	}
 
 	public function tearDown() {
 		parent::tearDown();
 
 		// Restore.
-		global $wp_scripts;
-		$wp_scripts->registered['jquery']->deps = $this->orig_deps;
+		wp_scripts()->registered['jquery']->deps = $this->orig_deps;
 	}
 
 	public function testShouldDequeueJqueryMigrate() {
