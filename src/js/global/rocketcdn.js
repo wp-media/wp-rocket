@@ -10,10 +10,7 @@
 		} );
 
 		MicroModal.init( {
-			disableScroll: true,
-			onClose: () => {
-				document.location.reload();
-			}
+			disableScroll: true
 		} );
 	} );
 
