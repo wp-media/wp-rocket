@@ -1,4 +1,5 @@
 <?php
+
 namespace WP_Rocket\Tests\Integration\Subscriber\Optimization\Dequeue_JQuery_Migrate_Subscriber;
 
 use PHPUnit\Framework\TestCase;
@@ -7,34 +8,56 @@ use Brain\Monkey;
 /**
  * @covers WP_Rocket\Subscriber\Optimization\Dequeue_JQuery_Migrate_Subscriber::dequeue_jquery_migrate
  *
- * @group jQueryMigrate
+ * @group  jQueryMigrate
  */
 class Test_DequeueJqueryMigrate extends TestCase {
+	private $orig_deps;
+	private $wp_scripts;
+	private $count;
+
+	public function setUp() {
+		parent::setUp();
+
+		global $wp_scripts;
+		$this->orig_deps = $wp_scripts->registered['jquery']->deps;
+		$this->wp_scripts  = $wp_scripts;
+		$this->count       = did_action( 'wp_default_scripts' );
+	}
+
+	public function tearDown() {
+		parent::tearDown();
+
+		// Restore.
+		global $wp_scripts;
+		$wp_scripts->registered['jquery']->deps = $this->orig_deps;
+	}
 
 	public function testShouldDequeueJqueryMigrate() {
-		add_filter( 'pre_get_rocket_option_dequeue_jquery_migrate', '__return_true');
+		add_filter( 'pre_get_rocket_option_dequeue_jquery_migrate', '__return_true' );
 
-		$scripts             = new \WP_Scripts();
-		$jquery_dependencies = $scripts->registered['jquery']->deps;
+		$this->wp_scripts->init();
+		$this->assertGreaterThan( $this->count, did_action( 'wp_default_scripts' ) );
+		$jquery_dependencies = $this->wp_scripts->registered['jquery']->deps;
 
-		$this->assertFalse( in_array( 'jquery-migrate', $jquery_dependencies ) );
+		$this->assertNotContains( 'jquery-migrate', $jquery_dependencies );
 
-		remove_filter( 'pre_get_rocket_option_dequeue_jquery_migrate', '__return_true');
+		remove_filter( 'pre_get_rocket_option_dequeue_jquery_migrate', '__return_true' );
 	}
 
 	public function testShouldNotDequeueJqueryMigrate() {
-		add_filter( 'pre_get_rocket_option_dequeue_jquery_migrate', '__return_false');
+		add_filter( 'pre_get_rocket_option_dequeue_jquery_migrate', '__return_false' );
 
-		$scripts             = new \WP_Scripts();
-		$jquery_dependencies = $scripts->registered['jquery']->deps;
+		$this->wp_scripts->init();
+		$this->assertGreaterThan( $this->count, did_action( 'wp_default_scripts' ) );
+		$jquery_dependencies = $this->wp_scripts->registered['jquery']->deps;
 
-		$this->assertTrue( in_array( 'jquery-migrate', $jquery_dependencies ) );
+		$this->assertContains( 'jquery-migrate', $jquery_dependencies );
 
-		remove_filter( 'pre_get_rocket_option_dequeue_jquery_migrate', '__return_false');
+		remove_filter( 'pre_get_rocket_option_dequeue_jquery_migrate', '__return_false' );
 	}
 
 	public function testShouldNotDequeueJqueryMigrateWithDONOTROCKETOPTIMIZE() {
-		add_filter( 'pre_get_rocket_option_dequeue_jquery_migrate', '__return_true');
+		add_filter( 'pre_get_rocket_option_dequeue_jquery_migrate', '__return_true' );
 
 		Monkey\Functions\expect( 'rocket_has_constant' )
 			->with( 'DONOTROCKETOPTIMIZE' )
@@ -43,11 +66,12 @@ class Test_DequeueJqueryMigrate extends TestCase {
 			->with( 'DONOTROCKETOPTIMIZE' )
 			->andReturn( true );
 
-		$scripts             = new \WP_Scripts();
-		$jquery_dependencies = $scripts->registered['jquery']->deps;
+		$this->wp_scripts->init();
+		$this->assertGreaterThan( $this->count, did_action( 'wp_default_scripts' ) );
+		$jquery_dependencies = $this->wp_scripts->registered['jquery']->deps;
 
-		$this->assertTrue( in_array( 'jquery-migrate', $jquery_dependencies ) );
+		$this->assertContains( 'jquery-migrate', $jquery_dependencies );
 
-		remove_filter( 'pre_get_rocket_option_dequeue_jquery_migrate', '__return_true');
+		remove_filter( 'pre_get_rocket_option_dequeue_jquery_migrate', '__return_true' );
 	}
 }
