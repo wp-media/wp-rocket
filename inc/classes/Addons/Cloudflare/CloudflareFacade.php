@@ -87,6 +87,15 @@ class CloudflareFacade {
 		$this->zone_id = $zone_id;
 
 		// Loading with Valid API Credentials.
+		$this->init_api_objects();
+	}
+
+	/**
+	 * Initialize the API's objects, i.e. page rules, cache, settings, and IPs.
+	 *
+	 * @since 3.5
+	 */
+	protected function init_api_objects() {
 		$this->page_rules = new Pagerules( $this->api );
 		$this->cache      = new Cache( $this->api );
 		$this->settings   = new Settings( $this->api );
@@ -99,7 +108,7 @@ class CloudflareFacade {
 	 * @since 3.5
 	 * @author Soponar Cristina
 	 *
-	 * @return Object
+	 * @return stdClass
 	 */
 	public function get_zones() {
 		return $this->api->get( 'zones/' . $this->zone_id );

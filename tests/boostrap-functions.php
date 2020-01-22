@@ -45,7 +45,8 @@ function check_readiness() {
  */
 function init_constants( $test_suite_folder ) {
 	define( 'WP_ROCKET_PLUGIN_ROOT', dirname( __DIR__ ) . DIRECTORY_SEPARATOR );
-	define( 'WP_ROCKET_PLUGIN_TESTS_ROOT', __DIR__ . DIRECTORY_SEPARATOR . $test_suite_folder );
+	define( 'WP_ROCKET_TESTS_DIR', __DIR__ . DIRECTORY_SEPARATOR );
+	define( 'WP_ROCKET_PLUGIN_TESTS_ROOT', WP_ROCKET_TESTS_DIR . $test_suite_folder );
 
 	if ( 'Unit' === $test_suite_folder && ! defined( 'ABSPATH' ) ) {
 		define( 'ABSPATH', WP_ROCKET_PLUGIN_ROOT );
