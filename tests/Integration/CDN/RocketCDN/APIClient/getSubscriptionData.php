@@ -133,7 +133,7 @@ class Test_GetSubscriptionData extends TestCase {
 
 		update_option( 'rocketcdn_user_token', self::getApiCredential( 'ROCKETCDN_TOKEN' ) );
 		$expected = [
-			'id'                            => self::getApiCredential( 'ROCKETCDN_WEBSITE_ID' ),
+			'id'                            => (int) self::getApiCredential( 'ROCKETCDN_WEBSITE_ID' ),
 			'is_active'                     => false,
 			'cdn_url'                       => self::getApiCredential( 'ROCKETCDN_URL' ),
 			'subscription_next_date_update' => '2020-02-22T15:06:15.947362Z',
