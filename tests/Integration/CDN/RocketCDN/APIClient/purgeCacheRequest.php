@@ -11,6 +11,7 @@ use WP_Rocket\CDN\RocketCDN\APIClient;
  * @group  RocketCDNAPI
  */
 class Test_PurgeCacheRequest extends TestCase {
+	protected static $api_credentials_config_file = 'rocketcdn.php';
 
 	public function tearDown() {
 		parent::tearDown();
@@ -38,7 +39,7 @@ class Test_PurgeCacheRequest extends TestCase {
 	 * Test should return the error packet when the subscription ID is 0.
 	 */
 	public function testShouldReturnErrorPacketWhenSubscriptionIdIsZero() {
-		set_transient( 'rocketcdn_status', [ 'subscription_status' => 'cancelled' ], MINUTE_IN_SECONDS );
+		set_transient( 'rocketcdn_status', [ 'id' => 0, 'subscription_status' => 'cancelled' ], MINUTE_IN_SECONDS );
 
 		$this->assertSame(
 			[
@@ -84,8 +85,15 @@ class Test_PurgeCacheRequest extends TestCase {
 	 * Test should return the status when set in the transient.
 	 */
 	public function testShouldReturnSuccessPacketWhenAPIPurgedCache() {
-		$this->assertTrue( true );
+		set_transient( 'rocketcdn_status', [ 'id' => self::getApiCredential( 'ROCKETCDN_WEBSITE_ID' ) ], MINUTE_IN_SECONDS );
+		update_option( 'rocketcdn_user_token', self::getApiCredential( 'ROCKETCDN_TOKEN' ) );
 
-		// TODO: Needs assertions once we have a valid user token for a dummy testing account.
+		$this->assertSame(
+			[
+				'status'  => 'success',
+				'message' => 'RocketCDN cache purge successful.',
+			],
+			( new APIClient )->purge_cache_request()
+		);
 	}
 }
