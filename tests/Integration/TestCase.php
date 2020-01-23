@@ -52,11 +52,11 @@ abstract class TestCase extends WP_UnitTestCase {
 			return $var;
 		}
 
-		if ( ! self::$api_credentials_config_file ) {
+		if ( ! static::$api_credentials_config_file ) {
 			return '';
 		}
 
-		$config_file = dirname( __DIR__ ) . '/env/local/' . self::$api_credentials_config_file;
+		$config_file = dirname( __DIR__ ) . '/env/local/' . static::$api_credentials_config_file;
 
 		if ( ! is_readable( $config_file ) ) {
 			return '';
