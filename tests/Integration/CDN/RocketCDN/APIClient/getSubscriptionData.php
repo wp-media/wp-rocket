@@ -135,7 +135,7 @@ class Test_GetSubscriptionData extends TestCase {
 		$expected = [
 			'id'                            => self::getApiCredential( 'ROCKETCDN_WEBSITE_ID' ),
 			'is_active'                     => false,
-			'cdn_url'                       => self::getApiCredential( 'ROCKETCDN_WEBSITE_ID' ),
+			'cdn_url'                       => self::getApiCredential( 'ROCKETCDN_URL' ),
 			'subscription_next_date_update' => '2020-02-22T15:06:15.947362Z',
 			'subscription_status'           => 'running',
 		];
