@@ -174,7 +174,6 @@ class Page {
 			$this->cdn_section();
 			$this->heartbeat_section();
 			$this->addons_section();
-			$this->varnish_section();
 			$this->cloudflare_section();
 			$this->sucuri_section();
 		} else {
@@ -559,13 +558,14 @@ class Page {
 	 * @return void
 	 */
 	private function assets_section() {
-		$remove_qs_beacon  = $this->beacon->get_suggest( 'remove_query_strings' );
-		$combine_beacon    = $this->beacon->get_suggest( 'combine' );
-		$defer_js_beacon   = $this->beacon->get_suggest( 'defer_js' );
-		$async_beacon      = $this->beacon->get_suggest( 'async' );
-		$files_beacon      = $this->beacon->get_suggest( 'file_optimization' );
-		$inline_js_beacon  = $this->beacon->get_suggest( 'exclude_inline_js' );
-		$exclude_js_beacon = $this->beacon->get_suggest( 'exclude_js' );
+		$remove_qs_beacon      = $this->beacon->get_suggest( 'remove_query_strings' );
+		$combine_beacon        = $this->beacon->get_suggest( 'combine' );
+		$defer_js_beacon       = $this->beacon->get_suggest( 'defer_js' );
+		$async_beacon          = $this->beacon->get_suggest( 'async' );
+		$files_beacon          = $this->beacon->get_suggest( 'file_optimization' );
+		$inline_js_beacon      = $this->beacon->get_suggest( 'exclude_inline_js' );
+		$exclude_js_beacon     = $this->beacon->get_suggest( 'exclude_js' );
+		$jquery_migrate_beacon = $this->beacon->get_suggest( 'jquery_migrate' );
 
 		$this->settings->add_page_section(
 			'file_optimization',
@@ -740,9 +740,9 @@ class Page {
 				],
 				'dequeue_jquery_migrate' => [
 					'type'              => 'checkbox',
-					'label'             => __( 'Dequeue jQuery Migrate', 'rocket' ),
+					'label'             => __( 'Remove jQuery Migrate', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'Dequeue jQuery Migrate eliminates a JS file and can improve load time. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $defer_js_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $defer_js_beacon['id'] ) . '" target="_blank">', '</a>' ),
+					'description'       => sprintf( __( 'Remove jQuery Migrate eliminates a JS file and can improve load time. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $jquery_migrate_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $jquery_migrate_beacon['id'] ) . '" target="_blank">', '</a>' ),
 					'section'           => 'js',
 					'page'              => 'file_optimization',
 					'default'           => 0,
@@ -1806,7 +1806,7 @@ class Page {
 					'rocket_varnish_field_settings',
 					[
 						'varnish_auto_purge' => [
-							'type'              => 'rocket_addon',
+							'type'              => 'one_click_addon',
 							'label'             => __( 'Varnish', 'rocket' ),
 							'logo'              => [
 								'url'    => WP_ROCKET_ASSETS_IMG_URL . 'logo-varnish.svg',
@@ -1816,7 +1816,7 @@ class Page {
 							'title'             => __( 'If Varnish runs on your server, you must activate this add-on.', 'rocket' ),
 							// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 							'description'       => sprintf( __( 'Varnish cache will be purged each time WP Rocket clears its cache to ensure content is always up-to-date.<br>%1$sLearn more%2$s', 'rocket' ), '<a href="' . esc_url( $varnish_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $varnish_beacon['id'] ) . '" target="_blank">', '</a>' ),
-							'section'           => 'addons',
+							'section'           => 'one_click',
 							'page'              => 'addons',
 							'settings_page'     => 'varnish',
 							'default'           => 0,
@@ -1853,62 +1853,6 @@ class Page {
 					'settings_page'     => $settings_page,
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
-				],
-			]
-		);
-	}
-
-	/**
-	 * Registers Varnish section
-	 *
-	 * @since 3.5
-	 * @author Remy Perona
-	 */
-	private function varnish_section() {
-		$varnish_beacon = $this->beacon->get_suggest( 'varnish' );
-
-		$this->settings->add_page_section(
-			'varnish',
-			[
-				'title'            => 'Varnish',
-				'menu_description' => '',
-				'class'            => [
-					'wpr-subMenuItem',
-					'wpr-addonSubMenuItem',
-				],
-			]
-		);
-
-		$this->settings->add_settings_sections(
-			[
-				'varnish_settings' => [
-					'type'  => 'fields_container',
-					'title' => __( 'Varnish Settings', 'rocket' ),
-					'help'  => [
-						'id'  => $varnish_beacon['id'],
-						'url' => $varnish_beacon['url'],
-					],
-					'page'  => 'varnish',
-				],
-			]
-		);
-
-		$this->settings->add_settings_fields(
-			[
-				'varnish_custom_ip' => [
-					'type'        => 'textarea',
-					'label'       => _x( 'Custom Host/IP', 'Varnish', 'rocket' ),
-					'description' => sprintf(
-						// translators: %1$s = <code>, %2$s = </code>.
-						__( 'Most hosts use %1$s127.0.0.1%2$s as the IP for the Varnish cache server. Contact your host to see if they use a different IP. If you are using a CDN like Cloudflare or a firewall proxy like Sucuri, you may need to customize this setting.', 'rocket' ),
-						'<code>',
-						'</code>'
-					),
-					'helper'      => __( 'Enter custom Varnish host or IP, one per line.', 'rocket' ),
-					'default'     => '',
-					'placeholder' => '127.0.0.1',
-					'section'     => 'varnish_settings',
-					'page'        => 'varnish',
 				],
 			]
 		);
