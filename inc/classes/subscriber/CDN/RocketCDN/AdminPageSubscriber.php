@@ -289,7 +289,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		);
 		?>
 		<div class="wpr-rocketcdn-modal" id="wpr-rocketcdn-modal" aria-hidden="true">
-			<div class="wpr-rocketcdn-modal__overlay" tabindex="-1" data-micromodal-close>
+			<div class="wpr-rocketcdn-modal__overlay" tabindex="-1">
 				<div class="wpr-rocketcdn-modal__container" role="dialog" aria-modal="true" aria-labelledby="wpr-rocketcdn-modal-title">
 					<div id="wpr-rocketcdn-modal-content">
 						<iframe id="rocketcdn-iframe" src="<?php echo esc_url( $iframe_src ); ?>" width="674" height="425"></iframe>
