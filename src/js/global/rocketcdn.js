@@ -10,10 +10,7 @@
 		} );
 
 		MicroModal.init( {
-			disableScroll: true,
-			onClose: () => {
-				document.location.reload();
-			}
+			disableScroll: true
 		} );
 	} );
 
@@ -84,6 +81,16 @@
 		}
 
 		MicroModal.close( 'wpr-rocketcdn-modal' );
+
+		if ( ! data.hasOwnProperty( 'cdn_page_message' ) ) {
+			return;
+		}
+
+		if ( 'iframe-payment-success' !== data.cdn_page_message || 'iframe-unsubscribe-success' !== data.cdn_page_message ) {
+			return;
+		}         
+
+		document.location.reload();
 	}
 
 	function rocketSendHTTPRequest( postData ) {
