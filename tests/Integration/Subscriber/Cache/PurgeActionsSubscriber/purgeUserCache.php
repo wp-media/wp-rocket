@@ -3,6 +3,8 @@ namespace WP_Rocket\Tests\Integration\Subscriber\Cache\PurgeActionsSubscriber;
 
 use WP_Rocket\Tests\Integration\TestCase;
 use Brain\Monkey\Functions;
+use org\bovigo\vfs\vfsStream,
+	org\bovigo\vfs\vfsStreamDirectory;
 
 /**
  * @covers \WP_Rocket\Subscriber\Cache\PurgeActionsSubscriber:purge_user_cache
@@ -11,47 +13,51 @@ use Brain\Monkey\Functions;
 class Test_PurgeUserCache extends TestCase {
 	use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
+	private static $user_id;
+
 	/**
-	 * Test should not purge user cache when user cache is disabled
+	 * Set up the User before tests start.
 	 */
+	public static function wpSetUpBeforeClass( $factory ) {
+		self::$user_id = $factory->user->create( [ 'user_login' => 'wpmedia', 'role' => 'editor' ] );
+	}
+
 	public function testShouldNotPurgeUserCacheWhenUserCacheDisabled() {
 		add_filter( 'pre_get_rocket_option_cache_logged_user', '__return_false' );
 
-		Functions\expect( 'rocket_clean_user' )
-			->never();
+		Functions\expect( 'rocket_clean_user' )->never();
 
-		do_action( 'delete_user', 1 );
+		do_action( 'delete_user', self::$user_id );
+
+		// TODO Integrate with vfsStream.
 
 		remove_filter( 'pre_get_rocket_option_cache_logged_user', '__return_false' );
 	}
 
-	/**
-	 * Test should not purge user cache when commonuser cache is enabled
-	 */
 	public function testShoulNotPurgeUserCacheWhenCommonUserCacheEnabled() {
 		add_filter( 'pre_get_rocket_option_cache_logged_user', '__return_true' );
 		add_filter( 'rocket_common_cache_logged_users', '__return_true' );
 
-		Functions\expect( 'rocket_clean_user' )
-			->never();
+		Functions\expect( 'rocket_clean_user' )->never();
 
-		do_action( 'delete_user', 1 );
+		do_action( 'delete_user', self::$user_id );
+
+		// TODO Integrate with vfsStream.
 
 		remove_filter( 'pre_get_rocket_option_cache_logged_user', '__return_true' );
 		remove_filter( 'rocket_common_cache_logged_users', '__return_true' );
 	}
 
-	/**
-	 * Test should purge cache for user ID = 1
-	 */
-	public function testShouldPurgeCacheForUserID1() {
+	public function testShouldPurgeCacheForUser() {
 		add_filter( 'pre_get_rocket_option_cache_logged_user', '__return_true' );
 
 		Functions\expect( 'rocket_clean_user' )
 			->once()
-			->with( 1 );
+			->with( self::$user_id );
 
-		do_action( 'delete_user', 1 );
+		do_action( 'delete_user', self::$user_id );
+
+		// TODO Integrate with vfsStream.
 
 		remove_filter( 'pre_get_rocket_option_cache_logged_user', '__return_true' );
 	}
