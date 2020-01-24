@@ -18,7 +18,7 @@ class Test_RocketDeleteLicenceDataFile extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		require WP_ROCKET_PLUGIN_ROOT . 'inc/functions/options.php';
+		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/functions/options.php';
 
 		$structure = [
 			'licence-data.php' => '',
