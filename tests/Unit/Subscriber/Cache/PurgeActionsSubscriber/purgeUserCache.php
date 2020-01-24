@@ -26,8 +26,9 @@ class Test_PurgeUserCache extends TestCase {
 
 		$options->method( 'get' )->will( $this->returnValueMap( $map ) );
 
-		$purge = new PurgeActionsSubscriber( $options );
-		$this->assertNull( $purge->purge_user_cache( 1 ) );
+		Functions\expect( 'rocket_clean_user' )->never();
+
+		( new PurgeActionsSubscriber( $options ) )->purge_user_cache( 1 );
 	}
 
 	/**
@@ -49,8 +50,9 @@ class Test_PurgeUserCache extends TestCase {
 		->once()
 		->andReturn( true );
 
-		$purge = new PurgeActionsSubscriber( $options );
-		$this->assertNull( $purge->purge_user_cache( 1 ) );
+		Functions\expect( 'rocket_clean_user' )->never();
+
+		( new PurgeActionsSubscriber( $options ) )->purge_user_cache( 1 );
 	}
 
 	/**
@@ -72,7 +74,6 @@ class Test_PurgeUserCache extends TestCase {
 		->once()
 		->with(1);
 
-		$purge = new PurgeActionsSubscriber( $options );
-		$purge->purge_user_cache( 1 );
+		( new PurgeActionsSubscriber( $options ) )->purge_user_cache( 1 );
 	}
 }
