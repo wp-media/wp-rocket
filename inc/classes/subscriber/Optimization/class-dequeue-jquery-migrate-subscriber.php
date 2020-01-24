@@ -29,7 +29,7 @@ class Dequeue_JQuery_Migrate_Subscriber implements Subscriber_Interface {
 	 *
 	 * @param Options $options Plugin options.
 	 */
-	public function __construct( Options $options) {
+	public function __construct( Options $options ) {
 		$this->options = $options;
 	}
 
@@ -71,7 +71,7 @@ class Dequeue_JQuery_Migrate_Subscriber implements Subscriber_Interface {
 	 * @return boolean
 	 */
 	protected function is_allowed() {
-		if ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
+		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE', false ) ) {
 			return false;
 		}
 
