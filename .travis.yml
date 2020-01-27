@@ -36,15 +36,10 @@ matrix:
 before_install:
   # Unless we need XDebug, disable it for improved performance.
   - phpenv config-rm xdebug.ini || return 0
+  - rm composer.lock
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
 install:
   - composer install --prefer-dist --no-interaction
-  # Install an older version of PHPUnit if we're still running PHP 5.6.
-  - |
-    if [[ "$TRAVIS_PHP_VERSION" == "5.6" ]]; then
-      wget -O ./vendor/bin/phpunit https://phar.phpunit.de/phpunit-5.phar
-      chmod +x ./vendor/bin/phpunit
-    fi
 before_script:
 - |
   if [[ ! -z "$WP_VERSION" ]] ; then
