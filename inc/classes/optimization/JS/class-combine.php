@@ -639,6 +639,7 @@ class Combine extends Abstract_JS_Optimization {
 			'var videodiv',
 			'var slider_wppasrotate',
 			'wppas_ga',
+			'var blockClass',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
