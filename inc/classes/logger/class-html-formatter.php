@@ -3,7 +3,7 @@ namespace WP_Rocket\Logger;
 
 use Monolog\Formatter\HtmlFormatter;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Class used to format log records as HTML.

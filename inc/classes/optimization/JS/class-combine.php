@@ -217,6 +217,14 @@ class Combine extends Abstract_JS_Optimization {
 			} else {
 				preg_match( '/<script\b(?<attrs>[^>]*)>(?:\/\*\s*<!\[CDATA\[\s*\*\/)?\s*(?<content>[\s\S]*?)\s*(?:\/\*\s*\]\]>\s*\*\/)?<\/script>/msi', $script[0], $matches_inline );
 
+				$matches_inline = array_merge(
+					[
+						'attrs'   => '',
+						'content' => '',
+					],
+					$matches_inline
+				);
+
 				if ( preg_last_error() == PREG_BACKTRACK_LIMIT_ERROR ) {
 					Logger::debug( 'PCRE regex execution Catastrophic Backtracking', [
 						'inline JS backtracking error',
@@ -472,7 +480,6 @@ class Combine extends Abstract_JS_Optimization {
 			'cherry_ajax',
 			'ad_block_',
 			'elementorFrontendConfig',
-			'omapi_localized',
 			'zeen_',
 			'disqusIdentifier',
 			'currentAjaxUrl',
@@ -487,7 +494,9 @@ class Combine extends Abstract_JS_Optimization {
 			'ct_checkjs_',
 			'WP_Statistics_http',
 			'penci_block_',
+			'omapi_localized',
 			'omapi_data',
+			'OptinMonsterApp',
 			'tminusnow',
 			'nfForms',
 			'galleries.gallery_',
@@ -559,6 +568,24 @@ class Combine extends Abstract_JS_Optimization {
 			'wc_product_block_data',
 			'static.mailerlite.com',
 			'amzn_assoc',
+			'_bs_getParameterByName',
+			'_stq.push',
+			'h._remove',
+			'var FlowFlowOpts',
+			'var WCPFData =',
+			'var _beeketing',
+			'var _statcounter',
+			'var actions =',
+			'var current_url',
+			'var object_name',
+			'var the_ajax_script',
+			'var wc_cart_fragments_params',
+			'var woocommerce_params',
+			'var wpml_cookies',
+			'wc_add_to_cart_params',
+			'window.broadstreetKeywords',
+			'window.wc_ga_pro.available_gateways',
+			'xa.prototype',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
@@ -731,7 +758,7 @@ class Combine extends Abstract_JS_Optimization {
 			'cb_nombre',
 			'$(\'.fl-node-',
 			'function($){google_maps_',
-      		'$("#myCarousel',
+            '$("#myCarousel',
 			'et_animation_data=',
 			'current_url="',
 			'CustomEvent.prototype=window.Event.prototype',

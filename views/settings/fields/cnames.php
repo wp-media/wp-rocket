@@ -5,7 +5,7 @@
  * @since 3.0
  */
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 $cnames      = get_rocket_option( 'cdn_cnames' );
 $cnames_zone = get_rocket_option( 'cdn_zone' );

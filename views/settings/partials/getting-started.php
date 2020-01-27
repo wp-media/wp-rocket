@@ -5,7 +5,7 @@
  * @since 3.4
  */
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 $tutorials = [
 	'7seqacq2ol' => __( 'What WP Rocket Does For You By Default', 'rocket' ),

@@ -1,5 +1,6 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+
+defined( 'ABSPATH' ) || exit;
 
 // Compatibility with the currency switcher in WooCommerce Multilingual plugin.
 if ( defined( 'WCML_VERSION' ) ) :

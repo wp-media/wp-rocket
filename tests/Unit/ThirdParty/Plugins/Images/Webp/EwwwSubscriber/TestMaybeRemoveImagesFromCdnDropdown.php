@@ -5,6 +5,9 @@ use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
+/**
+ * @group ThirdParty
+ */
 class TestMaybeRemoveImagesFromCdnDropdown extends TestCase {
 	/**
 	 * Test EWWW_Subscriber->maybe_remove_images_from_cdn_dropdown() should return identical when not using ExactDN.
