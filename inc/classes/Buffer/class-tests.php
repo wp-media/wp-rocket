@@ -111,11 +111,11 @@ class Tests {
 			$args['cookies'] = $_COOKIE;
 		}
 
-		if ( ! isset( $args['post'] ) && ! empty( $_POST ) && is_array( $_POST ) ) { // WPCS: CSRF ok.
-			$args['post'] = $_POST; // WPCS: CSRF ok.
+		if ( ! isset( $args['post'] ) && ! empty( $_POST ) && is_array( $_POST ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$args['post'] = $_POST; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 		}
-		if ( ! isset( $args['get'] ) && ! empty( $_GET ) && is_array( $_GET ) ) { // WPCS: CSRF ok.
-			$args['get'] = $_GET; // WPCS: CSRF ok.
+		if ( ! isset( $args['get'] ) && ! empty( $_GET ) && is_array( $_GET ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.NonceVerification.Recommended
+			$args['get'] = $_GET; // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.NonceVerification.Recommended
 		}
 
 		self::$cookies = ! empty( $args['cookies'] ) && is_array( $args['cookies'] ) ? $args['cookies'] : [];
@@ -798,7 +798,7 @@ class Tests {
 			return self::get_memoized( __FUNCTION__ );
 		}
 
-		$keys = array(
+		$keys = [
 			'HTTP_CF_CONNECTING_IP', // CF = CloudFlare.
 			'HTTP_CLIENT_IP',
 			'HTTP_X_FORWARDED_FOR',
@@ -808,7 +808,7 @@ class Tests {
 			'HTTP_FORWARDED_FOR',
 			'HTTP_FORWARDED',
 			'REMOTE_ADDR',
-		);
+		];
 
 		foreach ( $keys as $key ) {
 			if ( ! $this->config->get_server_input( $key ) ) {

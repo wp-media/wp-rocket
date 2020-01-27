@@ -28,7 +28,12 @@ class Beacon_Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * @inheritDoc
+	 * Return an array of events that this subscriber wants to listen to.
+	 *
+	 * @since  3.2
+	 * @author Remy Perona
+	 *
+	 * @return array
 	 */
 	public static function get_subscribed_events() {
 		return [
@@ -45,6 +50,6 @@ class Beacon_Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function insert_script() {
-		echo $this->beacon->insert_script();
+		echo $this->beacon->insert_script(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 }

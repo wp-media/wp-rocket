@@ -26,6 +26,8 @@ class WooCommerce_Subscriber implements Event_Manager_Aware_Subscriber_Interface
 
 	/**
 	 * {@inheritdoc}
+	 *
+	 * @param Event_Manager $event_manager The WordPress Event Manager.
 	 */
 	public function set_event_manager( Event_Manager $event_manager ) {
 		$this->event_manager = $event_manager;
@@ -35,10 +37,10 @@ class WooCommerce_Subscriber implements Event_Manager_Aware_Subscriber_Interface
 	 * {@inheritdoc}
 	 */
 	public static function get_subscribed_events() {
-		$events = array(
+		$events = [
 			'activate_woocommerce/woocommerce.php'   => [ 'activate_woocommerce', 11 ],
 			'deactivate_woocommerce/woocommerce.php' => [ 'deactivate_woocommerce', 11 ],
-		);
+		];
 
 		if ( class_exists( 'WooCommerce' ) ) {
 			$events['update_option_woocommerce_cart_page_id']             = [ 'after_update_single_option', 10, 2 ];
@@ -287,7 +289,7 @@ class WooCommerce_Subscriber implements Event_Manager_Aware_Subscriber_Interface
 
 		if ( false !== $cart ) {
 			@header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
-			echo $cart;
+			echo $cart; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 			die();
 		}
 	}
@@ -364,11 +366,11 @@ class WooCommerce_Subscriber implements Event_Manager_Aware_Subscriber_Interface
 	 * @return boolean
 	 */
 	private function is_get_refreshed_fragments() {
-		if ( ! isset( $_GET['wc-ajax'] ) ) { // WPCS: CSRF ok.
+		if ( ! isset( $_GET['wc-ajax'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return false;
 		}
 
-		if ( 'get_refreshed_fragments' !== $_GET['wc-ajax'] ) { // WPCS: CSRF ok.
+		if ( 'get_refreshed_fragments' !== $_GET['wc-ajax'] ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return false;
 		}
 

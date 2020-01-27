@@ -24,7 +24,7 @@ add_filter( 'envira_gallery_output_image_attr', 'rocket_deactivate_lazyload_on_e
  * @return string Updated HTML code
  */
 function rocket_deactivate_lazyload_on_envira_gallery_indexable_images( $images ) {
-	$images = str_replace( '<img' , '<img data-no-lazy="1" ', $images );
+	$images = str_replace( '<img', '<img data-no-lazy="1" ', $images );
 
 	return $images;
 }

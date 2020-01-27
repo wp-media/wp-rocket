@@ -24,7 +24,7 @@ add_filter( 'soliloquy_output_image_attr', 'rocket_deactivate_lazyload_on_solilo
  * @return string Updated image HTML code
  */
 function rocket_deactivate_lazyload_on_soliloquy_indexable_images( $images ) {
-	$images = str_replace( '<img' , '<img data-no-lazy="1" ', $images );
+	$images = str_replace( '<img', '<img data-no-lazy="1" ', $images );
 
 	return $images;
 }

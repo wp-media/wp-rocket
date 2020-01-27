@@ -7,32 +7,32 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$cnames      = get_rocket_option( 'cdn_cnames' );
-$cnames_zone = get_rocket_option( 'cdn_zone' );
+$rocket_cnames      = get_rocket_option( 'cdn_cnames' );
+$rocket_cnames_zone = get_rocket_option( 'cdn_zone' );
 ?>
 <div class="wpr-fieldsContainer-fieldset">
 	<div class="wpr-field">
 		<div class="wpr-field-description-label">
-			<?php echo $data['label']; ?>
+			<?php echo $data['label']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
 		</div>
 		<?php if ( ! empty( $data['description'] ) ) : ?>
 			<div class="wpr-field-description">
-				<?php echo $data['description']; ?>
+				<?php echo $data['description']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
 			</div>
 		<?php endif; ?>
 		<div id="wpr-cnames-list">
 		<?php
-		if ( $cnames ) :
-			foreach ( $cnames as $key => $url ) :
+		if ( $rocket_cnames ) :
+			foreach ( $rocket_cnames as $key => $url ) : // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 				?>
 					<div class="wpr-multiple">
 						<div class="wpr-text">
 							<input type="text" name="wp_rocket_settings[cdn_cnames][<?php echo esc_attr( $key ); ?>]" value="<?php echo esc_attr( $url ); ?>" placeholder="cdn.example.com" />
 						</div>
-						<div class="wpr-field-betweenText"><?php _e( 'reserved for', 'rocket' ); ?></div>
+						<div class="wpr-field-betweenText"><?php esc_html_e( 'reserved for', 'rocket' ); ?></div>
 						<div class="wpr-select">
 							<select name="wp_rocket_settings[cdn_zone][<?php echo esc_attr( $key ); ?>]">
-								<option value="all" <?php selected( $cnames_zone[ $key ], 'all' ); ?>><?php esc_html_e( 'All files', 'rocket' ); ?></option>
+								<option value="all" <?php selected( $rocket_cnames_zone[ $key ], 'all' ); ?>><?php esc_html_e( 'All files', 'rocket' ); ?></option>
 								<?php
 								/**
 								 * Controls the inclusion of images option for the CDN dropdown
@@ -44,23 +44,24 @@ $cnames_zone = get_rocket_option( 'cdn_zone' );
 								 */
 								if ( apply_filters( 'rocket_allow_cdn_images', true ) ) :
 									?>
-									<option value="images" <?php selected( $cnames_zone[ $key ], 'images' ); ?>><?php esc_html_e( 'Images', 'rocket' ); ?></option>
+									<option value="images" <?php selected( $rocket_cnames_zone[ $key ], 'images' ); ?>><?php esc_html_e( 'Images', 'rocket' ); ?></option>
 								<?php endif; ?>
-								<option value="css_and_js" <?php selected( $cnames_zone[ $key ], 'css_and_js' ); ?>><?php esc_html_e( 'CSS & JavaScript', 'rocket' ); ?></option>
-								<option value="js" <?php selected( $cnames_zone[ $key ], 'js' ); ?>><?php esc_html_e( 'JavaScript', 'rocket' ); ?></option>
-								<option value="css" <?php selected( $cnames_zone[ $key ], 'css' ); ?>><?php esc_html_e( 'CSS', 'rocket' ); ?></option>
+								<option value="css_and_js" <?php selected( $rocket_cnames_zone[ $key ], 'css_and_js' ); ?>><?php esc_html_e( 'CSS & JavaScript', 'rocket' ); ?></option>
+								<option value="js" <?php selected( $rocket_cnames_zone[ $key ], 'js' ); ?>><?php esc_html_e( 'JavaScript', 'rocket' ); ?></option>
+								<option value="css" <?php selected( $rocket_cnames_zone[ $key ], 'css' ); ?>><?php esc_html_e( 'CSS', 'rocket' ); ?></option>
 							</select>
 						</div>
 						<button class="dashicons dashicons-no wpr-multiple-close hide-if-no-js"></button>
 					</div>
 				<?php
 			endforeach;
-		else : ?>
+		else :
+			?>
 			<div class="wpr-multiple wpr-multiple-default">
 				<div class="wpr-text">
 					<input type="text" name="wp_rocket_settings[cdn_cnames][]" placeholder="cdn.example.com" />
 				</div>
-				<div class="wpr-field-betweenText"><?php _e( 'reserved for', 'rocket' ); ?></div>
+				<div class="wpr-field-betweenText"><?php esc_html_e( 'reserved for', 'rocket' ); ?></div>
 				<div class="wpr-select">
 					<select name="wp_rocket_settings[cdn_zone][]">
 						<option value="all"><?php esc_html_e( 'All files', 'rocket' ); ?></option>
@@ -74,7 +75,7 @@ $cnames_zone = get_rocket_option( 'cdn_zone' );
 						 * @param bool $allow true to add the option, false otherwise.
 						 */
 						if ( apply_filters( 'rocket_allow_cdn_images', true ) ) :
-						?>
+							?>
 						<option value="images"><?php esc_html_e( 'Images', 'rocket' ); ?></option>
 						<?php endif; ?>
 						<option value="css_and_js"><?php esc_html_e( 'CSS & JavaScript', 'rocket' ); ?></option>
@@ -90,7 +91,7 @@ $cnames_zone = get_rocket_option( 'cdn_zone' );
 				<div class="wpr-text">
 					<input type="text" name="wp_rocket_settings[cdn_cnames][]" placeholder="cdn.example.com" />
 				</div>
-				<div class="wpr-field-betweenText"><?php _e( 'reserved for', 'rocket' ); ?></div>
+				<div class="wpr-field-betweenText"><?php esc_html_e( 'reserved for', 'rocket' ); ?></div>
 				<div class="wpr-select">
 					<select name="wp_rocket_settings[cdn_zone][]">
 						<option value="all"><?php esc_html_e( 'All files', 'rocket' ); ?></option>
@@ -104,7 +105,7 @@ $cnames_zone = get_rocket_option( 'cdn_zone' );
 						 * @param bool $allow true to add the option, false otherwise.
 						 */
 						if ( apply_filters( 'rocket_allow_cdn_images', true ) ) :
-						?>
+							?>
 						<option value="images"><?php esc_html_e( 'Images', 'rocket' ); ?></option>
 						<?php endif; ?>
 						<option value="css_and_js"><?php esc_html_e( 'CSS & JavaScript', 'rocket' ); ?></option>
