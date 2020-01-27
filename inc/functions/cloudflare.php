@@ -1,5 +1,6 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Validate Cloudflare input data
@@ -55,7 +56,7 @@ function rocket_is_api_keys_valid_cloudflare( $cf_email, $cf_api_key, $cf_zone_i
 
 		if ( ! isset( $cf_zone->success ) || empty( $cf_zone->success ) ) {
 			foreach ( $cf_zone->errors as $error ) {
-				if ( $error->code === 6003 ) {
+				if ( 6003 === $error->code ) {
 					$msg = __( 'Incorrect Cloudflare email address or API key.', 'rocket' );
 
 					$msg .= ' ' . sprintf(
@@ -112,7 +113,6 @@ function rocket_is_api_keys_valid_cloudflare( $cf_email, $cf_api_key, $cf_zone_i
 
 			return true;
 		}
-
 	} catch ( Exception $e ) {
 		$msg = __( 'Incorrect Cloudflare email address or API key.', 'rocket' );
 
@@ -136,7 +136,7 @@ function rocket_is_api_keys_valid_cloudflare( $cf_email, $cf_api_key, $cf_zone_i
  *
  * @return Object Cloudflare\Api instance if crendentials are set, WP_Error otherwise
  */
-function get_rocket_cloudflare_api_instance() {
+function get_rocket_cloudflare_api_instance() {  // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	if ( ! function_exists( 'curl_init' ) || ! function_exists( 'curl_exec' ) ) {
 		return new WP_Error( 'curl_disabled', __( 'Curl is disabled on your server. Please ask your host to enable it. This is required for the Cloudflare Add-on to work correctly.', 'rocket' ) );
 	}
@@ -169,7 +169,7 @@ function get_rocket_cloudflare_api_instance() {
  *
  * @return Object Cloudflare instance & zone_id if credentials are correct, WP_Error otherwise
  */
-function get_rocket_cloudflare_instance() {
+function get_rocket_cloudflare_instance() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 	$cf_email             = get_rocket_option( 'cloudflare_email', null );
 	$cf_api_key           = ( defined( 'WP_ROCKET_CF_API_KEY' ) ) ? WP_ROCKET_CF_API_KEY : get_rocket_option( 'cloudflare_api_key', null );
 	$cf_zone_id           = get_rocket_option( 'cloudflare_zone_id', null );
@@ -233,7 +233,7 @@ function rocket_cloudflare_valid_auth() {
  *
  * @return mixed bool|Array Array of Cloudflare settings, false if any error connection to Cloudflare
  */
-function get_rocket_cloudflare_settings() {
+function get_rocket_cloudflare_settings() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	if ( is_wp_error( $GLOBALS['rocket_cloudflare'] ) ) {
 		return $GLOBALS['rocket_cloudflare'];
 	}
@@ -248,12 +248,12 @@ function get_rocket_cloudflare_settings() {
 			$cf_minify_value = 'off';
 		}
 
-		$cf_settings_array = array(
+		$cf_settings_array = [
 			'cache_level'       => $cf_settings->result[5]->value,
 			'minify'            => $cf_minify_value,
 			'rocket_loader'     => $cf_settings->result[25]->value,
 			'browser_cache_ttl' => $cf_settings->result[3]->value,
-		);
+		];
 
 		return $cf_settings_array;
 	} catch ( Exception $e ) {
@@ -272,7 +272,7 @@ function get_rocket_cloudflare_settings() {
  * @throws Exception If any error occurs when doing the API request.
  * @return mixed Object|String Mode value if the update is successful, WP_Error otherwise
  */
-function set_rocket_cloudflare_devmode( $mode ) {
+function set_rocket_cloudflare_devmode( $mode ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	if ( is_wp_error( $GLOBALS['rocket_cloudflare'] ) ) {
 		return $GLOBALS['rocket_cloudflare'];
 	}
@@ -317,7 +317,7 @@ function set_rocket_cloudflare_devmode( $mode ) {
  * @throws Exception If any error occurs when doing the API request.
  * @return mixed Object|String Mode value if the update is successful, WP_Error otherwise
  */
-function set_rocket_cloudflare_cache_level( $mode ) {
+function set_rocket_cloudflare_cache_level( $mode ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	if ( is_wp_error( $GLOBALS['rocket_cloudflare'] ) ) {
 		return $GLOBALS['rocket_cloudflare'];
 	}
@@ -352,16 +352,16 @@ function set_rocket_cloudflare_cache_level( $mode ) {
  * @throws Exception If any error occurs when doing the API request.
  * @return mixed Object|String Mode value if the update is successful, WP_Error otherwise
  */
-function set_rocket_cloudflare_minify( $mode ) {
+function set_rocket_cloudflare_minify( $mode ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	if ( is_wp_error( $GLOBALS['rocket_cloudflare'] ) ) {
 		return $GLOBALS['rocket_cloudflare'];
 	}
 
-	$cf_minify_settings = array(
+	$cf_minify_settings = [
 		'css'  => $mode,
 		'html' => $mode,
 		'js'   => $mode,
-	);
+	];
 
 	try {
 		$cf_settings = new Cloudflare\Zone\Settings( $GLOBALS['rocket_cloudflare']->auth );
@@ -393,7 +393,7 @@ function set_rocket_cloudflare_minify( $mode ) {
  * @throws Exception If any error occurs when doing the API request.
  * @return mixed Object|String Mode value if the update is successful, WP_Error otherwise
  */
-function set_rocket_cloudflare_rocket_loader( $mode ) {
+function set_rocket_cloudflare_rocket_loader( $mode ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	if ( is_wp_error( $GLOBALS['rocket_cloudflare'] ) ) {
 		return $GLOBALS['rocket_cloudflare'];
 	}
@@ -427,7 +427,7 @@ function set_rocket_cloudflare_rocket_loader( $mode ) {
  * @throws Exception If any error occurs when doing the API request.
  * @return mixed Object|String Mode value if the update is successful, WP_Error otherwise
  */
-function set_rocket_cloudflare_browser_cache_ttl( $mode ) {
+function set_rocket_cloudflare_browser_cache_ttl( $mode ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	if ( is_wp_error( $GLOBALS['rocket_cloudflare'] ) ) {
 		return $GLOBALS['rocket_cloudflare'];
 	}
@@ -574,7 +574,7 @@ function rocket_get_cloudflare_ips() {
  * @since 2.9
  * @author Remy Perona
  */
-function do_rocket_deactivate_cloudflare_devmode() {
+function do_rocket_deactivate_cloudflare_devmode() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$options                       = get_option( WP_ROCKET_SLUG );
 	$options['cloudflare_devmode'] = 'off';
 	update_option( WP_ROCKET_SLUG, $options );
@@ -658,9 +658,8 @@ function rocket_cf_has_page_rule( $action_value ) {
 			throw new Exception( $errors );
 		}
 
-		$cf_page_rule_arr = (array) $cf_page_rule;
-		return in_array( $action_value, $cf_page_rule_arr );
-
+		$cf_page_rule_arr = wp_json_encode( $cf_page_rule );
+		return preg_match( '/' . preg_quote( $action_value, '/' ) . '/', $cf_page_rule_arr );
 	} catch ( Exception $e ) {
 		return new WP_Error( 'cloudflare_page_rule_failed', $e->getMessage() );
 	}
@@ -692,21 +691,6 @@ function rocket_auto_purge_cloudflare() {
 
 	// Purge CloudFlare.
 	$cf_purge = rocket_purge_cloudflare();
-
-	if ( is_wp_error( $cf_purge ) ) {
-		$cf_purge_result = [
-			'result'  => 'error',
-			// translators: %s = CloudFare API return message.
-			'message' => sprintf( __( 'Cloudflare cache purge error: %s', 'rocket' ), $cf_purge->get_error_message() ),
-		];
-	} else {
-		$cf_purge_result = [
-			'result'  => 'success',
-			'message' => __( 'Cloudflare cache successfully purged', 'rocket' ),
-		];
-	}
-
-	set_transient( get_current_user_id() . '_cloudflare_purge_result', $cf_purge_result );
 }
 add_action( 'after_rocket_clean_domain', 'rocket_auto_purge_cloudflare' );
 
@@ -738,23 +722,17 @@ function rocket_auto_purge_cloudflare_by_url( $post, $purge_urls, $lang ) {
 		return;
 	}
 
+	// Add home URL and feeds URLs to Cloudflare clean cache URLs list.
+	$purge_urls[] = get_rocket_i18n_home_url( $lang );
+	$feed_urls    = [];
+	$feed_urls[]  = get_feed_link();
+	$feed_urls[]  = get_feed_link( 'comments_' );
+
+	// this filter is documented in inc/functions/files.php.
+	$feed_urls  = apply_filters( 'rocket_clean_home_feeds', $feed_urls );
+	$purge_urls = array_unique( array_merge( $purge_urls, $feed_urls ) );
+
 	// Purge CloudFlare.
-	$cf_purge = rocket_purge_cloudflare_by_url( $post, $purge_urls, $lang );
-
-	if ( is_wp_error( $cf_purge ) ) {
-		$cf_purge_result = [
-			'result'  => 'error',
-			// translators: %s = CloudFare API return message.
-			'message' => sprintf( __( 'Cloudflare cache purge error: %s', 'rocket' ), $cf_purge->get_error_message() ),
-		];
-	} else {
-		$cf_purge_result = [
-			'result'  => 'success',
-			'message' => __( 'Cloudflare cache successfully purged', 'rocket' ),
-		];
-	}
-
-	set_transient( get_current_user_id() . '_cloudflare_purge_result', $cf_purge_result );
-
+	rocket_purge_cloudflare_by_url( $post, $purge_urls, $lang );
 }
 add_action( 'after_rocket_clean_post', 'rocket_auto_purge_cloudflare_by_url', 10, 3 );

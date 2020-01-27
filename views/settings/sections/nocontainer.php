@@ -15,8 +15,9 @@
  * }
  */
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
+
 ?>
-<?php echo $data['title']; ?>
+<?php echo esc_html( $data['title'] ); ?>
 <?php
 $this->render_settings_fields( $data['page'], $data['id'] );

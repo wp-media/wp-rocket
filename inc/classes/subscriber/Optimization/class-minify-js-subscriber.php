@@ -14,7 +14,12 @@ use \MatthiasMullie\Minify;
  */
 class Minify_JS_Subscriber extends Minify_Subscriber {
 	/**
-	 * @inheritDoc
+	 * Return an array of events that this subscriber wants to listen to.
+	 *
+	 * @since  3.1
+	 * @author Remy Perona
+	 *
+	 * @return array
 	 */
 	public static function get_subscribed_events() {
 		$events = [
@@ -29,7 +34,13 @@ class Minify_JS_Subscriber extends Minify_Subscriber {
 	}
 
 	/**
-	 * @inheritDoc
+	 * Processes the HTML to Minify/Combine JS.
+	 *
+	 * @since 3.1
+	 * @author Remy Perona
+	 *
+	 * @param string $html HTML content.
+	 * @return string
 	 */
 	public function process( $html ) {
 		if ( ! $this->is_allowed() ) {
@@ -46,7 +57,12 @@ class Minify_JS_Subscriber extends Minify_Subscriber {
 	}
 
 	/**
-	 * @inheritDoc
+	 * Checks if is allowed to Minify/Combine JS.
+	 *
+	 * @since 3.1
+	 * @author Remy Perona
+	 *
+	 * @return bool
 	 */
 	protected function is_allowed() {
 		if ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {

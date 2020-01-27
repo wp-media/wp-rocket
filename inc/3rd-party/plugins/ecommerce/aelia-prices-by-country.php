@@ -1,5 +1,6 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Compatibility with Aelia Prices by Country.
@@ -10,7 +11,7 @@ if ( class_exists( 'Aelia\WC\PricesByCountry\WC_Aelia_Prices_By_Country' ) ) :
 	/**
 	 * Generate a caching file depending on the country cookie value
 	 */
-	add_filter( 'rocket_htaccess_mod_rewrite' , '__return_false', 66 );
+	add_filter( 'rocket_htaccess_mod_rewrite', '__return_false', 66 );
 	add_filter( 'rocket_cache_dynamic_cookies', 'rocket_add_aelia_prices_by_country_dynamic_cookies' );
 endif;
 
@@ -21,7 +22,7 @@ endif;
  * @author Remy Perona
  */
 function rocket_activate_aelia_prices_by_country() {
-	add_filter( 'rocket_htaccess_mod_rewrite' , '__return_false', 66 );
+	add_filter( 'rocket_htaccess_mod_rewrite', '__return_false', 66 );
 	add_filter( 'rocket_cache_dynamic_cookies', 'rocket_add_aelia_prices_by_country_dynamic_cookies' );
 
 	// Update the WP Rocket rules on the .htaccess file.
@@ -39,7 +40,7 @@ add_action( 'activate_woocommerce-prices-by-country/woocommerce-prices-by-countr
  * @author Remy Perona
  */
 function rocket_deactivate_aelia_prices_by_country() {
-	remove_filter( 'rocket_htaccess_mod_rewrite' , '__return_false', 66 );
+	remove_filter( 'rocket_htaccess_mod_rewrite', '__return_false', 66 );
 	remove_filter( 'rocket_cache_dynamic_cookies', 'rocket_add_aelia_prices_by_country_dynamic_cookies' );
 
 	// Update the WP Rocket rules on the .htaccess file.

@@ -1,5 +1,6 @@
 <?php
-defined( 'WP_UNINSTALL_PLUGIN' ) || die( 'Cheatin&#8217; uh?' );
+
+defined( 'WP_UNINSTALL_PLUGIN' ) || exit;
 
 if ( ! defined( 'WP_ROCKET_CACHE_ROOT_PATH' ) ) {
 	define( 'WP_ROCKET_CACHE_ROOT_PATH', WP_CONTENT_DIR . '/cache/' );

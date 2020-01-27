@@ -1,5 +1,6 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+
+defined( 'ABSPATH' ) || exit;
 
 if ( class_exists( 'WpAppKit' ) ) :
 	add_filter( 'rocket_cache_reject_uri', 'rocket_add_appkit_exclude_pages' );

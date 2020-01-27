@@ -1,5 +1,6 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+
+defined( 'ABSPATH' ) || exit;
 
 if ( get_rocket_option( 'embeds', 0 ) ) {
 	/**
@@ -17,7 +18,8 @@ if ( get_rocket_option( 'embeds', 0 ) ) {
 
 		// Remove the embed query var.
 		$wp->public_query_vars = array_diff(
-			$wp->public_query_vars, [
+			$wp->public_query_vars,
+			[
 				'embed',
 			]
 		);
@@ -46,7 +48,7 @@ if ( get_rocket_option( 'embeds', 0 ) ) {
 
 		// Remove filter of the oEmbed result before any HTTP requests are made.
 		remove_filter( 'pre_oembed_result', 'wp_filter_pre_oembed_result', 10 );
-	
+
 		// Load block editor JavaScript.
 		add_action( 'enqueue_block_editor_assets', 'rocket_disable_embeds_enqueue_block_editor_assets' );
 

@@ -1,5 +1,6 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Send data to Varnish
@@ -45,7 +46,7 @@ function rocket_varnish_http_purge( $url ) {
 
 	wp_remote_request(
 		$purgeme,
-		array(
+		[
 			'method'      => 'PURGE',
 			'blocking'    => false,
 			'redirection' => 0,
@@ -70,6 +71,6 @@ function rocket_varnish_http_purge( $url ) {
 					'X-Purge-Method' => $varnish_x_purgemethod,
 				]
 			),
-		)
+		]
 	);
 }
