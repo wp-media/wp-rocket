@@ -251,6 +251,7 @@ class Critical_CSS {
 				'truethemes-gallery-category',
 				'coupon_campaign',
 				'element_category',
+				'mediamatic_wpfolder',
 				'attachment_category',
 			]
 		);
