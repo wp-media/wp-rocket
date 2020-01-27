@@ -630,6 +630,7 @@ class Combine extends Abstract_JS_Optimization {
 			'window.broadstreetKeywords',
 			'window.wc_ga_pro.available_gateways',
 			'xa.prototype',
+			'HOUZEZ_ajaxcalls_vars',
 			'w2dc_maps_objects',
 			'w2dc_controller_args_array',
 			'w2dc_map_markers_attrs',
@@ -838,6 +839,12 @@ class Combine extends Abstract_JS_Optimization {
 			'dfd-button-hover-in',
 			'wpseo-address-wrapper',
 			'platform.stumbleupon.com',
+			'#woo_pp_ec_button_mini_cart',
+			'#supercarousel',
+			'blockClass',
+			'tdbMenuItem',
+			'tdbSearchItem',
+			'best_seller_badge',
 		];
 
 		/**
