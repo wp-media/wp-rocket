@@ -33,12 +33,12 @@ defined( 'ABSPATH' ) || exit;
 			 * @param bool $display True to display, false otherwise.
 			 */
 			if ( apply_filters( 'rocket_display_input_' . $data['id'], true ) ) :
-			?>
+				?>
 			<div class="wpr-radio wpr-radio--reverse">
 				<input type="checkbox" id="<?php echo esc_attr( $data['id'] ); ?>" class="" name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>]" value="1" <?php checked( $data['value'], 1 ); ?>>
 				<label for="<?php echo esc_attr( $data['id'] ); ?>" class="">
 					<span data-l10n-active="<?php echo esc_attr_x( 'On', 'Active state of checkbox', 'rocket' ); ?>"
-  data-l10n-inactive="<?php echo esc_attr_x( 'Off', 'Inactive state of checkbox', 'rocket' ); ?>" class="wpr-radio-ui"></span>
+						data-l10n-inactive="<?php echo esc_attr_x( 'Off', 'Inactive state of checkbox', 'rocket' ); ?>" class="wpr-radio-ui"></span>
 					<?php esc_html_e( 'Add-on status', 'rocket' ); ?>
 				</label>
 			</div>
@@ -54,12 +54,12 @@ defined( 'ABSPATH' ) || exit;
 			<div class="wpr-addon-text">
 				<?php if ( ! empty( $data['title'] ) ) : ?>
 					<div class="wpr-addon-title">
-						<?php echo $data['title']; ?>
+						<?php echo esc_attr( $data['title'] ); ?>
 					</div>
 				<?php endif; ?>
 				<?php if ( ! empty( $data['description'] ) ) : ?>
 					<div class="wpr-field-description">
-						<?php echo $data['description']; ?>
+						<?php echo $data['description']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
 					</div>
 				<?php endif; ?>
 			</div>

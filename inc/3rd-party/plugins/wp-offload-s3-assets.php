@@ -16,7 +16,7 @@ endif;
 function rocket_as3cf_assets_compatibility() {
 	global $as3cf_assets;
 
-	if ( isset( $as3cf_assets) && $as3cf_assets->is_plugin_setup() && 1 === (int) $as3cf_assets->get_setting( 'enable-addon' ) ) {
+	if ( isset( $as3cf_assets ) && $as3cf_assets->is_plugin_setup() && 1 === (int) $as3cf_assets->get_setting( 'enable-addon' ) ) {
 			// Disable WP Rocket CDN option.
 			add_filter( 'rocket_readonly_cdn_option', '__return_true' );
 	}

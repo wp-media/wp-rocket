@@ -69,7 +69,7 @@ class Homepage extends Abstract_Preload {
 			[
 				'timeout'    => 10,
 				'user-agent' => 'WP Rocket/Homepage_Preload',
-				'sslverify'  => apply_filters( 'https_local_ssl_verify', false ), // WPCS: prefix ok.
+				'sslverify'  => apply_filters( 'https_local_ssl_verify', false ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			]
 		);
 

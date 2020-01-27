@@ -18,7 +18,8 @@ if ( get_rocket_option( 'embeds', 0 ) ) {
 
 		// Remove the embed query var.
 		$wp->public_query_vars = array_diff(
-			$wp->public_query_vars, [
+			$wp->public_query_vars,
+			[
 				'embed',
 			]
 		);

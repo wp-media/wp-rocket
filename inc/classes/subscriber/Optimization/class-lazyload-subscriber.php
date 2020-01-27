@@ -80,7 +80,12 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * @inheritDoc
+	 * Return an array of events that this subscriber wants to listen to.
+	 *
+	 * @since  3.3
+	 * @author Remy Perona
+	 *
+	 * @return array
 	 */
 	public static function get_subscribed_events() {
 		return [
@@ -183,7 +188,7 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 			$inline_script = $minify->minify();
 		}
 
-		echo '<script>' . $inline_script . '</script>';
+		echo '<script>' . $inline_script . '</script>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 		$this->assets->insertLazyloadScript( $script_args );
 	}
 
@@ -307,7 +312,7 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 		];
 
 		foreach ( $excluded_parameters as $excluded ) {
-			if ( isset( $_GET[ $excluded ] ) ) {
+			if ( isset( $_GET[ $excluded ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 				return false;
 			}
 		}

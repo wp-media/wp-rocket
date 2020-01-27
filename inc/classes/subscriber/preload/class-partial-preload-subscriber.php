@@ -57,7 +57,12 @@ class Partial_Preload_Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * @inheritDoc
+	 * Return an array of events that this subscriber wants to listen to.
+	 *
+	 * @since  3.2
+	 * @author Remy Perona
+	 *
+	 * @return array
 	 */
 	public static function get_subscribed_events() {
 		return [
@@ -91,7 +96,7 @@ class Partial_Preload_Subscriber implements Subscriber_Interface {
 		array_push( $purge_urls, get_rocket_i18n_home_url( $lang ) );
 
 		// Get the author page.
-		$purge_author = array( get_author_posts_url( $post->post_author ) );
+		$purge_author = [ get_author_posts_url( $post->post_author ) ];
 
 		// Get all dates archive page.
 		$purge_dates = get_rocket_post_dates_urls( $post->ID );
@@ -134,6 +139,11 @@ class Partial_Preload_Subscriber implements Subscriber_Interface {
 				if ( strpos( $file_path, '#' ) ) {
 					// URL with query string.
 					$file_path = preg_replace( '/#/', '?', $file_path, 1 );
+				} else {
+					$file_path = untrailingslashit( $file_path );
+					if ( '/' === substr( get_option( 'permalink_structure' ), -1 ) ) {
+						$file_path .= '/';
+					}
 				}
 
 				$this->urls[] = str_replace( $data['home_path'], $data['home_url'], $file_path );
@@ -196,7 +206,6 @@ class Partial_Preload_Subscriber implements Subscriber_Interface {
 
 		foreach ( $this->urls as $url ) {
 			$path = wp_parse_url( $url, PHP_URL_PATH );
-
 			if ( isset( $path ) && preg_match( '#^(' . \get_rocket_cache_reject_uri() . ')$#', $path ) ) {
 				continue;
 			}

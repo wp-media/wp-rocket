@@ -13,7 +13,12 @@ use WP_Rocket\Logger\Logger;
 class Detect_Missing_Tags_Subscriber implements Subscriber_Interface {
 
 	/**
-	 * @inheritDoc
+	 * Return an array of events that this subscriber wants to listen to.
+	 *
+	 * @since  3.4.2
+	 * @author Soponar Cristina
+	 *
+	 * @return array
 	 */
 	public static function get_subscribed_events() {
 		return [
@@ -41,7 +46,7 @@ class Detect_Missing_Tags_Subscriber implements Subscriber_Interface {
 			return;
 		}
 		// If content type is not HTML do not report missing tags.
-		if ( empty( $_SERVER['content_type'] ) || false === strpos( wp_unslash( $_SERVER['content_type'] ), 'text/html' ) ) {
+		if ( empty( $_SERVER['content_type'] ) || false === strpos( wp_unslash( $_SERVER['content_type'] ), 'text/html' ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 			return;
 		}
 		// If the content does not contain HTML Doctype, do not report missing tags.
@@ -182,7 +187,7 @@ class Detect_Missing_Tags_Subscriber implements Subscriber_Interface {
 			return '';
 		}
 
-		return '/' . esc_html( ltrim( wp_unslash( $_SERVER['REQUEST_URI'] ), '/' ) );
+		return '/' . esc_html( ltrim( wp_unslash( $_SERVER['REQUEST_URI'] ), '/' ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 	}
 
 	/**

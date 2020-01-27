@@ -74,7 +74,7 @@ class Optimization {
 			$this->process->cancel_process();
 		}
 
-		array_map( array( $this->process, 'push_to_queue' ), $options );
+		array_map( [ $this->process, 'push_to_queue' ], $options );
 
 		$this->process->save()->dispatch();
 	}

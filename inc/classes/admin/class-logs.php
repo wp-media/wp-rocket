@@ -47,7 +47,7 @@ class Logs implements Subscriber_Interface {
 	 * @return array           Updated submitted options values.
 	 */
 	public function enable_debug( $newvalue, $oldvalue ) {
-		if ( empty( $_POST ) ) {
+		if ( empty( $_POST ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
 			return $newvalue;
 		}
 
@@ -100,7 +100,7 @@ class Logs implements Subscriber_Interface {
 		@header( 'Content-Transfer-Encoding: binary' );
 		@header( 'Content-Length: ' . strlen( $contents ) );
 		@header( 'Connection: close' );
-		echo $contents;
+		echo $contents; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		exit();
 	}
 
@@ -147,7 +147,7 @@ class Logs implements Subscriber_Interface {
 	 * @return bool
 	 */
 	protected function verify_nonce( $nonce_name ) {
-		return isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], $nonce_name );
+		return isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], $nonce_name ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 	}
 
 	/**

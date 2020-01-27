@@ -41,7 +41,7 @@ abstract class Abstract_Render implements Render_Interface {
 	 * @param string $template Template slug.
 	 * @param array  $data     Data to pass to the template.
 	 */
-	public function generate( $template, $data = array() ) {
+	public function generate( $template, $data = [] ) {
 		$template_path = $this->get_template_path( $template );
 
 		if ( ! rocket_direct_filesystem()->is_readable( $template_path ) ) {
