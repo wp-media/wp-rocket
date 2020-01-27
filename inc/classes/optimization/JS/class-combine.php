@@ -630,6 +630,15 @@ class Combine extends Abstract_JS_Optimization {
 			'window.broadstreetKeywords',
 			'window.wc_ga_pro.available_gateways',
 			'xa.prototype',
+			'w2dc_maps_objects',
+			'w2dc_controller_args_array',
+			'w2dc_map_markers_attrs',
+			'YT.Player',
+			'WPFC.data',
+			'function current_video_',
+			'var videodiv',
+			'var slider_wppasrotate',
+			'wppas_ga',
 			'var blockClass',
 		];
 
