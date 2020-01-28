@@ -82,11 +82,13 @@
 
 		MicroModal.close( 'wpr-rocketcdn-modal' );
 
+		let pages = [ 'iframe-payment-success', 'iframe-unsubscribe-success' ];
+
 		if ( ! data.hasOwnProperty( 'cdn_page_message' ) ) {
 			return;
 		}
 
-		if ( 'iframe-payment-success' !== data.cdn_page_message || 'iframe-unsubscribe-success' !== data.cdn_page_message ) {
+		if ( pages.indexOf( data.cdn_page_message ) === -1 ) {
 			return;
 		}         
 
