@@ -11,7 +11,7 @@ class ActionScheduler_wpPostStore_TaxonomyRegistrar {
 
 	protected function taxonomy_args() {
 		$args = array(
-			'label' => __('Action Group', 'action-scheduler'),
+			'label' => __( 'Action Group', 'action-scheduler' ),
 			'public' => false,
 			'hierarchical' => false,
 			'show_admin_column' => true,
@@ -19,7 +19,7 @@ class ActionScheduler_wpPostStore_TaxonomyRegistrar {
 			'rewrite' => false,
 		);
 
-		$args = apply_filters('action_scheduler_taxonomy_args', $args);
+		$args = apply_filters( 'action_scheduler_taxonomy_args', $args );
 		return $args;
 	}
 }
