@@ -641,6 +641,7 @@ class Combine extends Abstract_JS_Optimization {
 			'var slider_wppasrotate',
 			'wppas_ga',
 			'var blockClass',
+			'pw_brand_product_list',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
