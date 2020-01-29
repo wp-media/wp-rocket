@@ -22,7 +22,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 			do_action( 'action_scheduler_stored_action', $post_id );
 			return $post_id;
 		} catch ( Exception $e ) {
-			throw new RuntimeException( sprintf( __('Error saving action: %s', 'action-scheduler'), $e->getMessage() ), 0 );
+			throw new RuntimeException( sprintf( __( 'Error saving action: %s', 'action-scheduler' ), $e->getMessage() ), 0 );
 		}
 	}
 
@@ -59,7 +59,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		remove_filter( 'pre_wp_unique_post_slug', array( $this, 'set_unique_post_slug' ), 10 );
 
 		if ( is_wp_error($post_id) || empty($post_id) ) {
-			throw new RuntimeException(__('Unable to save action.', 'action-scheduler'));
+			throw new RuntimeException( __( 'Unable to save action.', 'action-scheduler' ) );
 		}
 		return $post_id;
 	}
@@ -280,7 +280,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	protected function get_query_actions_sql( array $query, $select_or_count = 'select' ) {
 
 		if ( ! in_array( $select_or_count, array( 'select', 'count' ) ) ) {
-			throw new InvalidArgumentException(__('Invalid schedule. Cannot save action.', 'action-scheduler'));
+			throw new InvalidArgumentException( __( 'Invalid schedule. Cannot save action.', 'action-scheduler' ) );
 		}
 
 		$query = wp_parse_args( $query, array(
@@ -452,20 +452,20 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	 * @throws InvalidArgumentException
 	 */
 	public function cancel_action( $action_id ) {
-		$post = get_post($action_id);
-		if ( empty($post) || ($post->post_type != self::POST_TYPE) ) {
-			throw new InvalidArgumentException(sprintf(__('Unidentified action %s', 'action-scheduler'), $action_id));
+		$post = get_post( $action_id );
+		if ( empty( $post ) || ( $post->post_type != self::POST_TYPE ) ) {
+			throw new InvalidArgumentException( sprintf( __( 'Unidentified action %s', 'action-scheduler' ), $action_id ) );
 		}
 		do_action( 'action_scheduler_canceled_action', $action_id );
 		add_filter( 'pre_wp_unique_post_slug', array( $this, 'set_unique_post_slug' ), 10, 5 );
-		wp_trash_post($action_id);
+		wp_trash_post( $action_id );
 		remove_filter( 'pre_wp_unique_post_slug', array( $this, 'set_unique_post_slug' ), 10 );
 	}
 
 	public function delete_action( $action_id ) {
-		$post = get_post($action_id);
-		if ( empty($post) || ($post->post_type != self::POST_TYPE) ) {
-			throw new InvalidArgumentException(sprintf(__('Unidentified action %s', 'action-scheduler'), $action_id));
+		$post = get_post( $action_id );
+		if ( empty( $post ) || ( $post->post_type != self::POST_TYPE ) ) {
+			throw new InvalidArgumentException( sprintf( __( 'Unidentified action %s', 'action-scheduler' ), $action_id ) );
 		}
 		do_action( 'action_scheduler_deleted_action', $action_id );
 
@@ -490,14 +490,14 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	 * @return ActionScheduler_DateTime The date the action is schedule to run, or the date that it ran.
 	 */
 	public function get_date_gmt( $action_id ) {
-		$post = get_post($action_id);
-		if ( empty($post) || ($post->post_type != self::POST_TYPE) ) {
-			throw new InvalidArgumentException(sprintf(__('Unidentified action %s', 'action-scheduler'), $action_id));
+		$post = get_post( $action_id );
+		if ( empty( $post ) || ( $post->post_type != self::POST_TYPE ) ) {
+			throw new InvalidArgumentException( sprintf( __( 'Unidentified action %s', 'action-scheduler' ), $action_id ) );
 		}
 		if ( $post->post_status == 'publish' ) {
-			return as_get_datetime_object($post->post_modified_gmt);
+			return as_get_datetime_object( $post->post_modified_gmt );
 		} else {
-			return as_get_datetime_object($post->post_date_gmt);
+			return as_get_datetime_object( $post->post_date_gmt );
 		}
 	}
 
@@ -675,18 +675,18 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 
 	public function release_claim( ActionScheduler_ActionClaim $claim ) {
 		$action_ids = $this->find_actions_by_claim_id( $claim->get_id() );
-		if ( empty($action_ids) ) {
+		if ( empty( $action_ids ) ) {
 			return; // nothing to do
 		}
-		$action_id_string = implode(',', array_map('intval', $action_ids));
+		$action_id_string = implode( ',', array_map( 'intval', $action_ids ) );
 		/** @var wpdb $wpdb */
 		global $wpdb;
 		$sql = "UPDATE {$wpdb->posts} SET post_password = '' WHERE ID IN ($action_id_string) AND post_password = %s";
 		$sql = $wpdb->prepare( $sql, array( $claim->get_id() ) );
-		$result = $wpdb->query($sql);
+		$result = $wpdb->query( $sql );
 		if ( $result === false ) {
 			/* translators: %s: claim ID */
-			throw new RuntimeException( sprintf( __('Unable to unlock claim %s. Database error.', 'action-scheduler'), $claim->get_id() ) );
+			throw new RuntimeException( sprintf( __( 'Unable to unlock claim %s. Database error.', 'action-scheduler' ), $claim->get_id() ) );
 		}
 	}
 
@@ -698,10 +698,10 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		global $wpdb;
 		$sql = "UPDATE {$wpdb->posts} SET post_password = '' WHERE ID = %d AND post_type = %s";
 		$sql = $wpdb->prepare( $sql, $action_id, self::POST_TYPE );
-		$result = $wpdb->query($sql);
+		$result = $wpdb->query( $sql );
 		if ( $result === false ) {
 			/* translators: %s: action ID */
-			throw new RuntimeException( sprintf( __('Unable to unlock claim on action %s. Database error.', 'action-scheduler'), $action_id ) );
+			throw new RuntimeException( sprintf( __( 'Unable to unlock claim on action %s. Database error.', 'action-scheduler' ), $action_id ) );
 		}
 	}
 
@@ -710,10 +710,10 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		global $wpdb;
 		$sql = "UPDATE {$wpdb->posts} SET post_status = %s WHERE ID = %d AND post_type = %s";
 		$sql = $wpdb->prepare( $sql, self::STATUS_FAILED, $action_id, self::POST_TYPE );
-		$result = $wpdb->query($sql);
+		$result = $wpdb->query( $sql );
 		if ( $result === false ) {
 			/* translators: %s: action ID */
-			throw new RuntimeException( sprintf( __('Unable to mark failure on action %s. Database error.', 'action-scheduler'), $action_id ) );
+			throw new RuntimeException( sprintf( __( 'Unable to mark failure on action %s. Database error.', 'action-scheduler' ), $action_id ) );
 		}
 	}
 
@@ -768,9 +768,9 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	 * @throws InvalidArgumentException|RuntimeException
 	 */
 	public function mark_complete( $action_id ) {
-		$post = get_post($action_id);
-		if ( empty($post) || ($post->post_type != self::POST_TYPE) ) {
-			throw new InvalidArgumentException(sprintf(__('Unidentified action %s', 'action-scheduler'), $action_id));
+		$post = get_post( $action_id );
+		if ( empty( $post ) || ( $post->post_type != self::POST_TYPE ) ) {
+			throw new InvalidArgumentException( sprintf( __( 'Unidentified action %s', 'action-scheduler' ), $action_id ) );
 		}
 		add_filter( 'wp_insert_post_data', array( $this, 'filter_insert_post_data' ), 10, 1 );
 		add_filter( 'pre_wp_unique_post_slug', array( $this, 'set_unique_post_slug' ), 10, 5 );
@@ -780,8 +780,8 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		), TRUE);
 		remove_filter( 'wp_insert_post_data', array( $this, 'filter_insert_post_data' ), 10 );
 		remove_filter( 'pre_wp_unique_post_slug', array( $this, 'set_unique_post_slug' ), 10 );
-		if ( is_wp_error($result) ) {
-			throw new RuntimeException($result->get_error_message());
+		if ( is_wp_error( $result ) ) {
+			throw new RuntimeException( $result->get_error_message() );
 		}
 	}
 
