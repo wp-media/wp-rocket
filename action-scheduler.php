@@ -40,7 +40,14 @@ if ( ! function_exists( 'action_scheduler_register_3_dot_0_dot_1' ) ) {
 	}
 
 	function action_scheduler_initialize_3_dot_0_dot_1() {
-		require_once( 'classes/abstracts/ActionScheduler.php' );
+		$autoloader = __DIR__ . '/vendor/autoload.php';
+		if ( is_readable( $autoloader ) ) {
+			require_once( $autoloader );
+			define( 'AS_COMPOSER_AUTOLOADING', true );
+		} else {
+			define( 'AS_COMPOSER_AUTOLOADING', false );
+			require_once( 'classes/abstracts/ActionScheduler.php' );
+		}
 		ActionScheduler::init( __FILE__ );
 	}
 

@@ -104,12 +104,13 @@ class ActionScheduler_AdminView extends ActionScheduler_AdminView_Deprecated {
 			return;
 		}
 
+		$as_version = ActionScheduler_Versions::instance()->latest_version();
 		$screen->add_help_tab(
 			array(
 				'id'      => 'action_scheduler_about',
 				'title'   => __( 'About', 'action-scheduler' ),
 				'content' =>
-					'<h2>' . __( 'About Action Scheduler', 'action-scheduler' ) . '</h2>' .
+					'<h2>' . sprintf( __( 'About Action Scheduler %s', 'action-scheduler' ), $as_version ) . '</h2>' .
 					'<p>' .
 						__( 'Action Scheduler is a scalable, traceable job queue for background processing large sets of actions. Action Scheduler works by triggering an action hook to run at some time in the future. Scheduled actions can also be scheduled to run on a recurring schedule.', 'action-scheduler' ) .
 					'</p>',
