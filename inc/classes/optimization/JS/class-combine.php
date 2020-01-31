@@ -641,6 +641,7 @@ class Combine extends Abstract_JS_Optimization {
 			'var slider_wppasrotate',
 			'wppas_ga',
 			'var blockClass',
+			'tarteaucitron',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
@@ -726,6 +727,7 @@ class Combine extends Abstract_JS_Optimization {
 			'embed-cdn.gettyimages.com/widgets.js',
 			'app.mailerlite.com',
 			'ck.page',
+			'cdn.jsdelivr.net/gh/AmauriC/',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
