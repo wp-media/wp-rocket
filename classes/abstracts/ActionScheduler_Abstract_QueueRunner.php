@@ -49,6 +49,7 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 	 */
 	public function process_action( $action_id, $context = '' ) {
 		try {
+			$valid_action = false;
 			do_action( 'action_scheduler_before_execute', $action_id, $context );
 
 			if ( ActionScheduler_Store::STATUS_PENDING !== $this->store->get_status( $action_id ) ) {
@@ -56,14 +57,21 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 				return;
 			}
 
+			$valid_action = true;
+			do_action( 'action_scheduler_begin_execute', $action_id, $context );
+
 			$action = $this->store->fetch_action( $action_id );
 			$this->store->log_execution( $action_id );
 			$action->execute();
 			do_action( 'action_scheduler_after_execute', $action_id, $action, $context );
 			$this->store->mark_complete( $action_id );
 		} catch ( Exception $e ) {
-			$this->store->mark_failure( $action_id );
-			do_action( 'action_scheduler_failed_execution', $action_id, $e, $context );
+			if ( $valid_action ) {
+				$this->store->mark_failure( $action_id );
+				do_action( 'action_scheduler_failed_execution', $action_id, $e, $context );
+			} else {
+				do_action( 'action_scheduler_failed_validation', $action_id, $e, $context );
+			}
 		}
 
 		if ( isset( $action ) && is_a( $action, 'ActionScheduler_Action' ) && $action->get_schedule()->is_recurring() ) {
