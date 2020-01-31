@@ -65,8 +65,6 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 			],
 			'admin_post_rocket_purge_rocketcdn'   => 'purge_cdn_cache',
 			'rocket_settings_page_footer'         => 'add_subscription_modal',
-			'wp_ajax_save_rocketcdn_token'        => 'update_user_token',
-			'pre_update_option_' . WP_ROCKET_SLUG => [ 'maybe_save_token', 11 ],
 		];
 	}
 
@@ -190,40 +188,6 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	}
 
 	/**
-	 * Saves the RocketCDN token in the correct option if the field is filled
-	 *
-	 * @since  3.5
-	 * @author Remy Perona
-	 *
-	 * @param array $value The new, unserialized option value.
-	 *
-	 * @return array
-	 */
-	public function maybe_save_token( $value ) {
-		if ( empty( $value['rocketcdn_token'] ) ) {
-			return $value;
-		}
-
-		$token = sanitize_text_field( $value['rocketcdn_token'] );
-		unset( $value['rocketcdn_token'] );
-
-		if ( 40 !== strlen( $token ) ) {
-			add_settings_error(
-				'general',
-				'rocketcdn-token',
-				__( 'RocketCDN token length is not 40 characters.', 'rocket' ),
-				'error'
-			);
-
-			return $value;
-		}
-
-		update_option( 'rocketcdn_user_token', $token );
-
-		return $value;
-	}
-
-	/**
 	 * Displays the button to open the subscription modal
 	 *
 	 * @since  3.5
@@ -298,37 +262,5 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 			</div>
 		</div>
 		<?php
-	}
-
-	/**
-	 * Updates the RocketCDN user token value
-	 *
-	 * @since  3.5
-	 * @author Remy Perona
-	 *
-	 * @return void
-	 */
-	public function update_user_token() {
-		check_ajax_referer( 'rocket-ajax', 'nonce', true );
-
-		if ( empty( $_POST['value'] ) ) {
-			delete_option( 'rocketcdn_user_token' );
-
-			wp_send_json_success( 'user_token_deleted' );
-
-			return;
-		}
-
-		$token = sanitize_key( $_POST['value'] );
-
-		if ( 40 !== strlen( $token ) ) {
-			wp_send_json_error( 'invalid_token_length' );
-
-			return;
-		}
-
-		update_option( 'rocketcdn_user_token', $token );
-
-		wp_send_json_success( 'user_token_saved' );
 	}
 }
