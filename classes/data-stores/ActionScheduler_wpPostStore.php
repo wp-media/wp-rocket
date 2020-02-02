@@ -809,9 +809,11 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 
 		$dependencies_met = get_transient( self::DEPENDENCIES_MET );
 		if ( empty( $dependencies_met ) ) {
-			$found_action = $wpdb->get_var(
+			$maximum_args_length = apply_filters( 'action_scheduler_maximum_args_length', 191 );
+			$found_action        = $wpdb->get_var(
 				$wpdb->prepare(
-					"SELECT ID FROM {$wpdb->posts} WHERE post_type = %s AND CHAR_LENGTH(post_content) > 191 LIMIT 1",
+					"SELECT ID FROM {$wpdb->posts} WHERE post_type = %s AND CHAR_LENGTH(post_content) > %d LIMIT 1",
+					$maximum_args_length,
 					self::POST_TYPE
 				)
 			);
