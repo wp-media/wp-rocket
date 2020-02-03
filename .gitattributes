@@ -10,6 +10,7 @@ gulpfile.js export-ignore
 LICENSE.md export-ignore
 package.json export-ignore
 package-lock.json export-ignore
+phpstan.neon.dist export-ignore
 phpcs.xml export-ignore
 phpunit.xml.dist export-ignore
 .prettyci.composer.json export-ignore

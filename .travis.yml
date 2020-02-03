@@ -38,6 +38,7 @@ before_install:
   - phpenv config-rm xdebug.ini || return 0
   - rm composer.lock
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
+  - composer remove --dev phpstan/phpstan szepeviktor/phpstan-wordpress
 install:
   - composer install --prefer-dist --no-interaction
 before_script:
