@@ -13,6 +13,7 @@
 	<exclude-pattern>/inc/vendors/*</exclude-pattern>
 	<exclude-pattern>/tests/Integration/*</exclude-pattern>
 	<exclude-pattern>/tests/Unit/*</exclude-pattern>
+	<exclude-pattern>/tests/phpstan/*</exclude-pattern>
 	<exclude-pattern>/vendor/*</exclude-pattern>
 
 	<!-- ** HOW TO SCAN ** -->

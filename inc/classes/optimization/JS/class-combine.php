@@ -642,6 +642,7 @@ class Combine extends Abstract_JS_Optimization {
 			'wppas_ga',
 			'var blockClass',
 			'tarteaucitron',
+			'pw_brand_product_list',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
@@ -728,6 +729,7 @@ class Combine extends Abstract_JS_Optimization {
 			'app.mailerlite.com',
 			'ck.page',
 			'cdn.jsdelivr.net/gh/AmauriC/',
+			'static.klaviyo.com/onsite/js/klaviyo.js',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
