@@ -1,18 +1,25 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\CDN\RocketCDN;
+namespace WP_Rocket\Tests\Integration\CDN\RocketCDN\APIClient;
 
 use WP_Rocket\Tests\Integration\TestCase;
 use WP_Rocket\CDN\RocketCDN\APIClient;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber::display_manage_subscription
+ * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\APIClient::get_subscription_data
  * @group  RocketCDN
  * @group  RocketCDNAPI
  */
 class Test_GetSubscriptionData extends TestCase {
+	private $client;
 	protected static $api_credentials_config_file = 'rocketcdn.php';
+
+	public function setUp() {
+		parent::setUp();
+
+		$this->client = new APIClient();
+	}
 
 	public function tearDown() {
 		parent::tearDown();
@@ -34,7 +41,7 @@ class Test_GetSubscriptionData extends TestCase {
 		];
 		set_transient( 'rocketcdn_status', $status, MINUTE_IN_SECONDS );
 
-		$this->assertSame( $status, ( new APIClient )->get_subscription_data() );
+		$this->assertSame( $status, $this->client->get_subscription_data() );
 	}
 
 	/**
@@ -51,7 +58,7 @@ class Test_GetSubscriptionData extends TestCase {
 			'subscription_next_date_update' => 0,
 			'subscription_status'           => 'cancelled',
 		];
-		$this->assertSame( $expected, ( new APIClient )->get_subscription_data() );
+		$this->assertSame( $expected, $this->client->get_subscription_data() );
 	}
 
 	/**
@@ -79,7 +86,7 @@ class Test_GetSubscriptionData extends TestCase {
 			'subscription_status'           => 'cancelled',
 		];
 		$this->assertFalse( get_transient( 'rocketcdn_status' ) );
-		$this->assertSame( $expected, ( new APIClient )->get_subscription_data() );
+		$this->assertSame( $expected, $this->client->get_subscription_data() );
 		$this->assertSame( $expected, get_transient( 'rocketcdn_status' ) );
 	}
 
@@ -111,7 +118,7 @@ class Test_GetSubscriptionData extends TestCase {
 		Functions\when( 'wp_remote_retrieve_body' )->justReturn( '' );
 
 		$this->assertFalse( get_transient( 'rocketcdn_status' ) );
-		$this->assertSame( $expected, ( new APIClient )->get_subscription_data() );
+		$this->assertSame( $expected, $this->client->get_subscription_data() );
 		$this->assertSame( $expected, get_transient( 'rocketcdn_status' ) );
 	}
 
@@ -132,16 +139,27 @@ class Test_GetSubscriptionData extends TestCase {
 		$this->assertEquals( 200, wp_remote_retrieve_response_code( $response ) );
 
 		update_option( 'rocketcdn_user_token', self::getApiCredential( 'ROCKETCDN_TOKEN' ) );
-		$expected = [
-			'id'                            => (int) self::getApiCredential( 'ROCKETCDN_WEBSITE_ID' ),
-			'is_active'                     => false,
-			'cdn_url'                       => self::getApiCredential( 'ROCKETCDN_URL' ),
-			'subscription_next_date_update' => '2020-02-22T15:06:15.947362Z',
-			'subscription_status'           => 'running',
+
+		$expected_keys = [
+			'id',
+			'is_active',
+			'cdn_url',
+			'subscription_next_date_update',
+			'subscription_status',
 		];
 
 		$this->assertFalse( get_transient( 'rocketcdn_status' ) );
-		$this->assertSame( $expected, ( new APIClient )->get_subscription_data() );
-		$this->assertSame( $expected, get_transient( 'rocketcdn_status' ) );
+
+		$data = $this->client->get_subscription_data();
+
+		foreach ( $expected_keys as $key ) {
+			$this->assertArrayHasKey( $key, $data );
+		}
+
+		$this->assertSame( $data['id'], (int) self::getApiCredential( 'ROCKETCDN_WEBSITE_ID' ) );
+		$this->assertTrue( in_array( $data['is_active'], [ true, false ], true ) );
+		$this->assertSame( $data['cdn_url'], self::getApiCredential( 'ROCKETCDN_URL' ) );
+		$this->assertTrue( in_array( $data['subscription_status'], [ 'running', 'cancelled' ], true ) );
+		$this->assertSame( $data, get_transient( 'rocketcdn_status' ) );
 	}
 }
