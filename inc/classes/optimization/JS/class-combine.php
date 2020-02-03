@@ -612,6 +612,7 @@ class Combine extends Abstract_JS_Optimization {
 			'var flatsomeVars',
 			'wc_product_block_data',
 			'static.mailerlite.com',
+			'amzn_assoc',
 			'_bs_getParameterByName',
 			'_stq.push',
 			'h._remove',
