@@ -641,6 +641,7 @@ class Combine extends Abstract_JS_Optimization {
 			'var slider_wppasrotate',
 			'wppas_ga',
 			'var blockClass',
+			'tarteaucitron',
 			'pw_brand_product_list',
 		];
 
@@ -727,6 +728,7 @@ class Combine extends Abstract_JS_Optimization {
 			'embed-cdn.gettyimages.com/widgets.js',
 			'app.mailerlite.com',
 			'ck.page',
+			'cdn.jsdelivr.net/gh/AmauriC/',
 			'static.klaviyo.com/onsite/js/klaviyo.js',
 		];
 
