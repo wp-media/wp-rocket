@@ -1,11 +1,11 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\Subscriber\CDN\RocketCDN;
+namespace WP_Rocket\Tests\Integration\Subscriber\CDN\RocketCDN\DataManagerSubscriber;
 
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber::maybe_save_token
+ * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\DataManagerSubscriber::maybe_save_token
  * @group  RocketCDN
  * @group  AdminOnly
  */

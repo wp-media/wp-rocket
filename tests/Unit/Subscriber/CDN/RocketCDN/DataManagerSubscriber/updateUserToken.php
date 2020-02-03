@@ -1,26 +1,24 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\Subscriber\CDN\RocketCDN;
+namespace WP_Rocket\Tests\Unit\Subscriber\CDN\RocketCDN\DataManagerSubscriber;
 
 use WP_Rocket\Tests\Unit\TestCase;
-use WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber;
+use WP_Rocket\Subscriber\CDN\RocketCDN\DataManagerSubscriber;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber::update_user_token
+ * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\DataManagerSubscriber::update_user_token
  * @group  RocketCDN
  */
 class Test_UpdateUserToken extends TestCase {
-	private $page;
+	private $data_manager;
 
 	public function setUp() {
 		parent::setUp();
 
-		$this->page = new AdminPageSubscriber(
+		$this->data_manager = new DataManagerSubscriber(
 			$this->createMock( 'WP_Rocket\CDN\RocketCDN\APIClient' ),
-			$this->createMock( 'WP_Rocket\Admin\Options_Data' ),
-			$this->createMock( 'WP_Rocket\Admin\Settings\Beacon' ),
-			'views/settings/rocketcdn'
+			$this->createMock( 'WP_Rocket\CDN\RocketCDN\CDNOptionsManager' )
 		);
 
 		Functions\when( 'check_ajax_referer' )->justReturn( true );
@@ -38,7 +36,7 @@ class Test_UpdateUserToken extends TestCase {
 		Functions\expect( 'wp_send_json_error' )->never();
 		Functions\expect( 'sanitize_key' )->never();
 
-		$this->page->update_user_token();
+		$this->data_manager->update_user_token();
 	}
 
 	/**
@@ -55,7 +53,7 @@ class Test_UpdateUserToken extends TestCase {
 		Functions\expect( 'update_option' )->never();
 		Functions\expect( 'wp_send_json_success' )->never();
 
-		$this->page->update_user_token();
+		$this->data_manager->update_user_token();
 	}
 
 	/**
@@ -72,6 +70,6 @@ class Test_UpdateUserToken extends TestCase {
 		Functions\expect( 'wp_send_json_error' )->never();
 		Functions\expect( 'delete_option' )->never();
 
-		$this->page->update_user_token();
+		$this->data_manager->update_user_token();
 	}
 }

@@ -1,11 +1,11 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\Subscriber\CDN\RocketCDN;
+namespace WP_Rocket\Tests\Integration\Subscriber\CDN\RocketCDN\DataManagerSubscriber;
 
 use WP_Rocket\Tests\Integration\AjaxTestCase;
 
 /**
- * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber::update_user_token
+ * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\DataManagerSubscriber::update_user_token
  * @group  RocketCDN
  * @group  AdminOnly
  */

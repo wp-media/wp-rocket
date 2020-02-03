@@ -1,26 +1,24 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\Subscriber\CDN\RocketCDN;
+namespace WP_Rocket\Tests\Unit\Subscriber\CDN\RocketCDN\DataManagerSubscriber;
 
 use WP_Rocket\Tests\Unit\TestCase;
-use WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber;
+use WP_Rocket\Subscriber\CDN\RocketCDN\DataManagerSubscriber;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber::maybe_save_token
+ * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\DataManagerSubscriber::maybe_save_token
  * @group  RocketCDN
  */
 class Test_MaybeShareToken extends TestCase {
-	private $page;
+	private $data_manager;
 
 	public function setUp() {
 		parent::setUp();
 
-		$this->page = new AdminPageSubscriber(
+		$this->data_manager = new DataManagerSubscriber(
 			$this->createMock( 'WP_Rocket\CDN\RocketCDN\APIClient' ),
-			$this->createMock( 'WP_Rocket\Admin\Options_Data' ),
-			$this->createMock( 'WP_Rocket\Admin\Settings\Beacon' ),
-			'views/settings/rocketcdn'
+			$this->createMock( 'WP_Rocket\CDN\RocketCDN\CDNOptionsManager' )
         );
 
         $this->mockCommonWpFunctions();
@@ -32,7 +30,7 @@ class Test_MaybeShareToken extends TestCase {
     public function testShouldDoNothingWhenTokenValueNotSet() {
         $value = [];
 
-        $this->assertSame( $value, $this->page->maybe_save_token( $value ) );
+        $this->assertSame( $value, $this->data_manager->maybe_save_token( $value ) );
     }
 
     /**
@@ -48,7 +46,7 @@ class Test_MaybeShareToken extends TestCase {
             'rocketcdn_token' => 'test',
         ];
 
-        $this->assertSame( [], $this->page->maybe_save_token( $value ) );
+        $this->assertSame( [], $this->data_manager->maybe_save_token( $value ) );
     }
 
     /**
@@ -64,6 +62,6 @@ class Test_MaybeShareToken extends TestCase {
             'rocketcdn_token' => '9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b',
         ];
 
-        $this->assertSame( [], $this->page->maybe_save_token( $value ) );
+        $this->assertSame( [], $this->data_manager->maybe_save_token( $value ) );
     }
 }
