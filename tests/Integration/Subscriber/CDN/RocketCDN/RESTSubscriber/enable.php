@@ -16,16 +16,19 @@ class Test_Enable extends RESTfulTestCase {
 	public function testShouldUpdateRocketSettingsWhenEndpointRequest() {
 		$this->requestEnableEndpoint();
 
-		$this->assertSame(
-			[
-				'cdn'        => 1,
-				'cdn_cnames' => [ 'https://rocketcdn.me' ],
-				'cdn_zone'   => [ 'all' ],
-			],
-			get_option( 'wp_rocket_settings' )
-		);
-	}
+		$expected_subset = [
+			'cdn'        => 1,
+			'cdn_cnames' => [ 'https://rocketcdn.me' ],
+			'cdn_zone'   => [ 'all' ],
+		];
 
+		$options = get_option( 'wp_rocket_settings' );
+
+		foreach ( $expected_subset as $key => $value ) {
+			$this->assertArrayHasKey( $key, $options );
+			$this->assertSame( $value, $options[$key] );
+		}
+	}
 
 	/**
 	 * Test should delete the transient when the "enable" endpoint is requested.
