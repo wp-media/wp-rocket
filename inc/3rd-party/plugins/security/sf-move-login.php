@@ -1,5 +1,6 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+
+defined( 'ABSPATH' ) || exit;
 
 if ( defined( 'SFML_VERSION' ) ) :
 	add_filter( 'rocket_cache_reject_uri', 'rocket_add_sfml_exclude_pages' );
@@ -18,7 +19,7 @@ endif;
 function rocket_add_sfml_exclude_pages( $urls ) {
 	if ( ! function_exists( 'sfml_get_slugs' ) ) {
 		if ( file_exists( SFML_PLUGIN_DIR . 'inc/utilities.php' ) ) {
-			include( SFML_PLUGIN_DIR . 'inc/utilities.php' );
+			include SFML_PLUGIN_DIR . 'inc/utilities.php';
 		} else {
 			return $urls;
 		}
@@ -26,7 +27,7 @@ function rocket_add_sfml_exclude_pages( $urls ) {
 
 	if ( ! class_exists( 'SFML_Options' ) && ! defined( 'SFML_NOOP_VERSION' ) ) {
 		if ( file_exists( SFML_PLUGIN_DIR . 'inc/class-sfml-options.php' ) ) {
-			include( SFML_PLUGIN_DIR . 'inc/class-sfml-options.php' );
+			include SFML_PLUGIN_DIR . 'inc/class-sfml-options.php';
 		} else {
 			return $urls;
 		}

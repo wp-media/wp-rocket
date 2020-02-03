@@ -49,8 +49,10 @@ trait Path_Rewriter {
 		 * @author Remy Perona
 		 *
 		 * @param string $content CSS content.
+		 * @param string $source  Source filepath.
+		 * @param string $target  Target filepath.
 		 */
-		return apply_filters( 'rocket_css_content', $this->move( $this->get_converter( $source, $target ), $content ) );
+		return apply_filters( 'rocket_css_content', $this->move( $this->get_converter( $source, $target ), $content ), $source, $target );
 	}
 
 	/**
@@ -89,8 +91,8 @@ trait Path_Rewriter {
 		 * recent PCRE version. That's why I'm doing 2 separate regular
 		 * expressions & combining the matches after executing of both.
 		 */
-		$relativeRegexes = array(
-			// url(xxx)
+		$relative_regexes = [
+			// url(xxx).
 			'/
 			# open url()
 			url\(
@@ -134,13 +136,13 @@ trait Path_Rewriter {
 				(?P=quotes)
 
 			/ix',
-		);
+		];
 
 		// find all relative urls in css.
 		$matches = [];
-		foreach ( $relativeRegexes as $relativeRegex ) {
-			if ( preg_match_all( $relativeRegex, $content, $regexMatches, PREG_SET_ORDER ) ) {
-				$matches = array_merge( $matches, $regexMatches );
+		foreach ( $relative_regexes as $relative_regex ) {
+			if ( preg_match_all( $relative_regex, $content, $regex_matches, PREG_SET_ORDER ) ) {
+				$matches = array_merge( $matches, $regex_matches );
 			}
 		}
 

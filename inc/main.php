@@ -1,5 +1,6 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+
+defined( 'ABSPATH' ) || exit;
 
 // Composer autoload.
 if ( file_exists( WP_ROCKET_PATH . 'vendor/autoload.php' ) ) {
@@ -108,7 +109,7 @@ add_action( 'plugins_loaded', 'rocket_init' );
 function rocket_deactivation() {
 	if ( ! isset( $_GET['rocket_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_GET['rocket_nonce'] ), 'force_deactivation' ) ) {
 		global $is_apache;
-		$causes = array();
+		$causes = [];
 
 		// .htaccess problem.
 		if ( $is_apache && ! rocket_direct_filesystem()->is_writable( get_home_path() . '.htaccess' ) ) {

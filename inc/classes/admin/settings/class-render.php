@@ -3,7 +3,7 @@ namespace WP_Rocket\Admin\Settings;
 
 use WP_Rocket\Abstract_Render;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Handle rendering of HTML content for the settings page.
@@ -20,7 +20,7 @@ class Render extends Abstract_render {
 	 *
 	 * @var array
 	 */
-	private $settings = array();
+	private $settings = [];
 
 	/**
 	 * Hidden settings array
@@ -105,7 +105,7 @@ class Render extends Abstract_render {
 			$navigation
 		);
 
-		echo $this->generate( 'navigation', $navigation );
+		echo $this->generate( 'navigation', $navigation ); // phpcs:ignore WordPress.Security.EscapeOutput -- Dynamic content is properly escaped in the view.
 	}
 
 	/**
@@ -129,7 +129,7 @@ class Render extends Abstract_render {
 			$args = wp_parse_args( $args, $default );
 			$id   = str_replace( '_', '-', $id );
 
-			echo $this->generate( 'page-sections/' . $id, $args );
+			echo $this->generate( 'page-sections/' . $id, $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 		}
 	}
 
@@ -140,7 +140,7 @@ class Render extends Abstract_render {
 	 * @author Remy Perona
 	 */
 	public function render_imagify_section() {
-		echo $this->generate( 'page-sections/imagify' );
+		echo $this->generate( 'page-sections/imagify' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**
@@ -150,7 +150,7 @@ class Render extends Abstract_render {
 	 * @author Remy Perona
 	 */
 	public function render_tutorials_section() {
-		echo $this->generate( 'page-sections/tutorials' );
+		echo $this->generate( 'page-sections/tutorials' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**
@@ -160,7 +160,7 @@ class Render extends Abstract_render {
 	 * @author Remy Perona
 	 */
 	public function render_tools_section() {
-		echo $this->generate( 'page-sections/tools' );
+		echo $this->generate( 'page-sections/tools' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**
@@ -194,7 +194,7 @@ class Render extends Abstract_render {
 				$args['class'] = implode( ' ', array_map( 'sanitize_html_class', $args['class'] ) );
 			}
 
-			call_user_func_array( array( $this, $args['type'] ), array( $args ) );
+			call_user_func_array( [ $this, $args['type'] ], [ $args ] );
 		}
 	}
 
@@ -263,7 +263,7 @@ class Render extends Abstract_render {
 				$args['container_class'] = implode( ' ', array_map( 'sanitize_html_class', $args['container_class'] ) );
 			}
 
-			call_user_func_array( array( $this, $args['type'] ), array( $args ) );
+			call_user_func_array( [ $this, $args['type'] ], [ $args ] );
 		}
 	}
 
@@ -277,7 +277,7 @@ class Render extends Abstract_render {
 	 */
 	public function render_hidden_fields() {
 		foreach ( $this->hidden_settings as $setting ) {
-			call_user_func_array( array( $this, 'hidden' ), array( $setting ) );
+			call_user_func_array( [ $this, 'hidden' ], [ $setting ] );
 		}
 	}
 
@@ -291,7 +291,7 @@ class Render extends Abstract_render {
 	 * @return void
 	 */
 	public function fields_container( $args ) {
-		echo $this->generate( 'sections/fields-container', $args );
+		echo $this->generate( 'sections/fields-container', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**
@@ -304,7 +304,7 @@ class Render extends Abstract_render {
 	 * @return void
 	 */
 	public function nocontainer( $args ) {
-		echo $this->generate( 'sections/nocontainer', $args );
+		echo $this->generate( 'sections/nocontainer', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**
@@ -317,7 +317,7 @@ class Render extends Abstract_render {
 	 * @return void
 	 */
 	public function addons_container( $args ) {
-		echo $this->generate( 'sections/addons-container', $args );
+		echo $this->generate( 'sections/addons-container', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**
@@ -330,7 +330,7 @@ class Render extends Abstract_render {
 	 * @return void
 	 */
 	public function text( $args ) {
-		echo $this->generate( 'fields/text', $args );
+		echo $this->generate( 'fields/text', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**
@@ -343,7 +343,7 @@ class Render extends Abstract_render {
 	 * @return void
 	 */
 	public function checkbox( $args ) {
-		echo $this->generate( 'fields/checkbox', $args );
+		echo $this->generate( 'fields/checkbox', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**
@@ -362,7 +362,7 @@ class Render extends Abstract_render {
 
 		$args['value'] = empty( $args['value'] ) ? '' : $args['value'];
 
-		echo $this->generate( 'fields/textarea', $args );
+		echo $this->generate( 'fields/textarea', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**
@@ -375,7 +375,7 @@ class Render extends Abstract_render {
 	 * @return void
 	 */
 	public function sliding_checkbox( $args ) {
-		echo $this->generate( 'fields/sliding-checkbox', $args );
+		echo $this->generate( 'fields/sliding-checkbox', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**
@@ -388,7 +388,7 @@ class Render extends Abstract_render {
 	 * @return void
 	 */
 	public function number( $args ) {
-		echo $this->generate( 'fields/number', $args );
+		echo $this->generate( 'fields/number', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**
@@ -401,7 +401,7 @@ class Render extends Abstract_render {
 	 * @return void
 	 */
 	public function select( $args ) {
-		echo $this->generate( 'fields/select', $args );
+		echo $this->generate( 'fields/select', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**
@@ -414,7 +414,7 @@ class Render extends Abstract_render {
 	 * @return void
 	 */
 	public function cache_lifespan( $args ) {
-		echo $this->generate( 'fields/cache-lifespan', $args );
+		echo $this->generate( 'fields/cache-lifespan', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**
@@ -427,7 +427,7 @@ class Render extends Abstract_render {
 	 * @return void
 	 */
 	public function hidden( $args ) {
-		echo $this->generate( 'fields/hidden', $args );
+		echo $this->generate( 'fields/hidden', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**
@@ -440,7 +440,7 @@ class Render extends Abstract_render {
 	 * @return void
 	 */
 	public function cnames( $args ) {
-		echo $this->generate( 'fields/cnames', $args );
+		echo $this->generate( 'fields/cnames', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**
@@ -453,7 +453,7 @@ class Render extends Abstract_render {
 	 * @return void
 	 */
 	public function one_click_addon( $args ) {
-		echo $this->generate( 'fields/one-click-addon', $args );
+		echo $this->generate( 'fields/one-click-addon', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**
@@ -466,7 +466,7 @@ class Render extends Abstract_render {
 	 * @return void
 	 */
 	public function rocket_addon( $args ) {
-		echo $this->generate( 'fields/rocket-addon', $args );
+		echo $this->generate( 'fields/rocket-addon', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**
@@ -478,7 +478,7 @@ class Render extends Abstract_render {
 	 * @return void
 	 */
 	public function render_import_form() {
-		$args = array();
+		$args = [];
 
 		/**
 		 * Filter the maximum allowed upload size for import files.
@@ -489,13 +489,13 @@ class Render extends Abstract_render {
 		 *
 		 * @param int $max_upload_size Allowed upload size. Default 1 MB.
 		 */
-		$args['bytes']       = apply_filters( 'import_upload_size_limit', wp_max_upload_size() ); // Filter from WP Core.
+		$args['bytes']       = apply_filters( 'import_upload_size_limit', wp_max_upload_size() ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		$args['size']        = size_format( $args['bytes'] );
 		$args['upload_dir']  = wp_upload_dir();
 		$args['action']      = 'rocket_import_settings';
 		$args['submit_text'] = __( 'Upload file and import settings', 'rocket' );
 
-		echo $this->generate( 'fields/import-form', $args );
+		echo $this->generate( 'fields/import-form', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**
@@ -509,7 +509,7 @@ class Render extends Abstract_render {
 	 * @param array  $args   Optional array of arguments to populate the button attributes.
 	 * @return void
 	 */
-	public function render_action_button( $type, $action, $args = array() ) {
+	public function render_action_button( $type, $action, $args = [] ) {
 		$default = [
 			'label'      => '',
 			'action'     => '',
@@ -533,16 +533,22 @@ class Render extends Abstract_render {
 			case 'link':
 				switch ( $action ) {
 					case 'ask_support':
-						$args['url'] = rocket_get_external_url( 'support', array(
-							'utm_source' => 'wp_plugin',
-							'utm_medium' => 'wp_rocket',
-						) );
-					break;
+						$args['url'] = rocket_get_external_url(
+							'support',
+							[
+								'utm_source' => 'wp_plugin',
+								'utm_medium' => 'wp_rocket',
+							]
+						);
+						break;
 					case 'view_account':
-						$args['url'] = rocket_get_external_url( 'account', array(
-							'utm_source' => 'wp_plugin',
-							'utm_medium' => 'wp_rocket',
-						) );
+						$args['url'] = rocket_get_external_url(
+							'account',
+							[
+								'utm_source' => 'wp_plugin',
+								'utm_medium' => 'wp_rocket',
+							]
+						);
 						break;
 					case 'purge_cache':
 						$url = admin_url( 'admin-post.php?action=' . $action );
@@ -573,11 +579,11 @@ class Render extends Abstract_render {
 						break;
 				}
 
-				echo $this->generate( 'buttons/link', $args );
+				echo $this->generate( 'buttons/link', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 				break;
 			default:
 				$args['action'] = $action;
-				echo $this->generate( 'buttons/button', $args );
+				echo $this->generate( 'buttons/button', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 				break;
 		}
 	}
@@ -593,6 +599,6 @@ class Render extends Abstract_render {
 	 * @return void
 	 */
 	public function render_part( $part ) {
-		echo $this->generate( 'partials/' . $part );
+		echo $this->generate( 'partials/' . $part ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 }

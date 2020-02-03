@@ -6,7 +6,7 @@ use WP_Rocket\Interfaces\Render_Interface;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Deactivation intent form on plugins page
@@ -62,7 +62,12 @@ class Deactivation_Intent_Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * @inheritDoc
+	 * Return an array of events that this subscriber wants to listen to.
+	 *
+	 * @since  3.0
+	 * @author Remy Perona
+	 *
+	 * @return array
 	 */
 	public static function get_subscribed_events() {
 		return [

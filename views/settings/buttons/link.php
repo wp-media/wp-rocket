@@ -13,6 +13,7 @@
  * }
  */
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
+
 ?>
-<a href="<?php echo esc_url( $data['url'] ); ?>" <?php echo $data['attributes']; ?>><?php echo esc_html( $data['label'] ); ?></a>
+<a href="<?php echo esc_url( $data['url'] ); ?>" <?php echo $data['attributes']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $data['attributes'] escaped with sanitize_key & esc_attr ?>><?php echo $data['label']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?></a>

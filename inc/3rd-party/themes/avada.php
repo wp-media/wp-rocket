@@ -1,7 +1,8 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
-$current_theme = wp_get_theme();
+defined( 'ABSPATH' ) || exit;
+
+$current_theme = wp_get_theme(); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 if ( 'Avada' === $current_theme->get( 'Name' ) ) {
 	// When Avada theme purge its own cache.

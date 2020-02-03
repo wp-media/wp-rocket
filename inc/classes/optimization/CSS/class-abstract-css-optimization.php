@@ -38,7 +38,7 @@ abstract class Abstract_CSS_Optimization extends Abstract_Optimization {
 	 * @return string
 	 */
 	protected function get_excluded_files() {
-		$excluded_files = $this->options->get( 'exclude_css', array() );
+		$excluded_files = $this->options->get( 'exclude_css', [] );
 
 		/**
 		 * Filters CSS files to exclude from minification/concatenation.
@@ -69,7 +69,7 @@ abstract class Abstract_CSS_Optimization extends Abstract_Optimization {
 	 * @return array
 	 */
 	public function get_zones() {
-		return array( 'all', 'css_and_js', self::FILE_TYPE );
+		return [ 'all', 'css_and_js', self::FILE_TYPE ];
 	}
 
 	/**

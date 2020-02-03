@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Admin\Database;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Handles the database optimization process.
@@ -74,7 +74,7 @@ class Optimization {
 			$this->process->cancel_process();
 		}
 
-		array_map( array( $this->process, 'push_to_queue' ), $options );
+		array_map( [ $this->process, 'push_to_queue' ], $options );
 
 		$this->process->save()->dispatch();
 	}

@@ -1,7 +1,8 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
-if ( function_exists( 'autoptimize_do_cachepurged_action' ) ) :
+defined( 'ABSPATH' ) || exit;
+
+if ( class_exists( 'autoptimizeCache' ) ) :
 	/**
 	 * Improvement with Autoptimize: clear the cache when Autoptimize's cache is cleared
 	 *

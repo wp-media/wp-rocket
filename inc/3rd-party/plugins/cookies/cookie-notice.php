@@ -7,7 +7,7 @@
  * @link   https://wordpress.org/plugins/cookie-notice/
  */
 
-defined( 'ABSPATH' ) || die( 'Cheatin\' uh?' );
+defined( 'ABSPATH' ) || exit;
 
 if ( class_exists( 'Cookie_Notice' ) ) {
 	// Don't add the WP Rocket rewrite rules to avoid issues.

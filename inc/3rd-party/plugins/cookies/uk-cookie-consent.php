@@ -7,7 +7,7 @@
  * @link   https://wordpress.org/plugins/uk-cookie-consent/
  */
 
-defined( 'ABSPATH' ) || die( 'Cheatin\' uh?' );
+defined( 'ABSPATH' ) || exit;
 
 if ( class_exists( 'CTCC_Public' ) ) {
 	add_filter( 'rocket_htaccess_mod_rewrite', '__return_false', 62 );

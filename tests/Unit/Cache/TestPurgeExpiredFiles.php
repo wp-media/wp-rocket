@@ -4,6 +4,7 @@ namespace WP_Rocket\Tests\Unit\Cache;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Cache\Expired_Cache_Purge;
 use Brain\Monkey\Functions;
+use Brain\Monkey\Filters;
 use org\bovigo\vfs\vfsStream,
 	org\bovigo\vfs\vfsStreamDirectory;
 

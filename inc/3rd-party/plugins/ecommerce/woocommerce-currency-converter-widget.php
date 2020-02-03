@@ -1,5 +1,6 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Compatibility with WooCommerce Currency Converter Widget.
@@ -8,8 +9,8 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  */
 if ( class_exists( 'WC_Currency_Converter' ) ) :
 	// Add cookie to config file when WP Rocket is activated and WooCommerce Currency Converter Widget is already active.
-	add_filter( 'rocket_htaccess_mod_rewrite'   , '__return_false', 70 );
-	add_filter( 'rocket_cache_dynamic_cookies'  , 'rocket_add_woocommerce_currency_converter_dynamic_cookies', 11 );
+	add_filter( 'rocket_htaccess_mod_rewrite', '__return_false', 70 );
+	add_filter( 'rocket_cache_dynamic_cookies', 'rocket_add_woocommerce_currency_converter_dynamic_cookies', 11 );
 	add_filter( 'rocket_cache_mandatory_cookies', 'rocket_add_woocommerce_currency_converter_mandatory_cookie', 11 );
 	add_action( 'update_option_woocommerce_default_customer_address', 'rocket_after_update_single_options', 10, 2 );
 endif;
@@ -20,8 +21,8 @@ endif;
  * @since 2.7
  */
 function rocket_activate_woocommerce_currency_converter() {
-	add_filter( 'rocket_htaccess_mod_rewrite'   , '__return_false', 70 );
-	add_filter( 'rocket_cache_dynamic_cookies'  , 'rocket_add_woocommerce_currency_converter_dynamic_cookies' );
+	add_filter( 'rocket_htaccess_mod_rewrite', '__return_false', 70 );
+	add_filter( 'rocket_cache_dynamic_cookies', 'rocket_add_woocommerce_currency_converter_dynamic_cookies' );
 	add_filter( 'rocket_cache_mandatory_cookies', 'rocket_add_woocommerce_currency_converter_mandatory_cookie' );
 
 	// Update the WP Rocket rules on the .htaccess file.
@@ -38,8 +39,8 @@ add_action( 'activate_woocommerce-currency-converter-widget/currency-converter.p
  * @since 2.7
  */
 function rocket_deactivate_woocommerce_currency_converter() {
-	remove_filter( 'rocket_htaccess_mod_rewrite'   , '__return_false', 70 );
-	remove_filter( 'rocket_cache_dynamic_cookies'  , 'rocket_add_woocommerce_currency_converter_dynamic_cookies' );
+	remove_filter( 'rocket_htaccess_mod_rewrite', '__return_false', 70 );
+	remove_filter( 'rocket_cache_dynamic_cookies', 'rocket_add_woocommerce_currency_converter_dynamic_cookies' );
 	remove_filter( 'rocket_cache_mandatory_cookies', 'rocket_add_woocommerce_currency_converter_mandatory_cookie' );
 
 	// Update the WP Rocket rules on the .htaccess file.
