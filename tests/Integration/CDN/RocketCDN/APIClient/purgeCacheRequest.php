@@ -1,12 +1,12 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\CDN\RocketCDN;
+namespace WP_Rocket\Tests\Integration\CDN\RocketCDN\APIClient;
 
 use WP_Rocket\Tests\Integration\TestCase;
 use WP_Rocket\CDN\RocketCDN\APIClient;
 
 /**
- * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber::purge_cache_request
+ * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\APIClient::purge_cache_request
  * @group  RocketCDN
  * @group  RocketCDNAPI
  */
