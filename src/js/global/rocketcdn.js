@@ -8,6 +8,8 @@
 				e.preventDefault();
 			} );
 		} );
+	
+		rocketMaybeOpenModal();
 
 		MicroModal.init( {
 			disableScroll: true
@@ -64,7 +66,29 @@
 		setCDNFrameHeight( e.data );
 		closeModal( e.data );
 		tokenHandler( e.data, iframeURL );
+		processStatus( e.data );
+		enableCDN( e.data, iframeURL );
+		disableCDN( e.data, iframeURL );
 	};
+
+	function rocketMaybeOpenModal() {
+		let postData = '';
+
+		postData += 'action=rocketcdn_process_status';
+		postData += '&nonce=' + rocket_ajax_data.nonce;
+
+		const request = rocketSendHTTPRequest( postData );
+
+		request.onreadystatechange = () => {
+			if ( request.readyState === XMLHttpRequest.DONE && 200 === request.status ) {
+				let responseTxt = JSON.parse(request.responseText);
+
+				if ( true === responseTxt.success ) {
+					MicroModal.show( 'wpr-rocketcdn-modal' );
+				}
+			}
+		};
+	}
 
 	function displayTokenField( data ) {
 		if ( ! data.hasOwnProperty( 'cdn_manual_token' ) ) {
@@ -93,6 +117,75 @@
 		}         
 
 		document.location.reload();
+	}
+
+	function processStatus( data ) {
+		if ( ! data.hasOwnProperty( 'rocketcdn_process' ) ) {
+			return;
+		}
+
+		let postData = '';
+
+		postData += 'action=rocketcdn_process_set';
+		postData += '&status=' + data.rocketcdn_process;
+		postData += '&nonce=' + rocket_ajax_data.nonce;
+
+		rocketSendHTTPRequest( postData );
+	}
+
+	function enableCDN( data, iframe ) {
+		if ( ! data.hasOwnProperty( 'rocketcdn_url' ) ) {
+			return;
+		}
+
+		let postData = '';
+
+		postData += 'action=rocketcdn_enable';
+		postData += '&cdn_url=' + data.rocketcdn_url;
+		postData += '&nonce=' + rocket_ajax_data.nonce;
+
+		const request = rocketSendHTTPRequest( postData );
+
+		request.onreadystatechange = () => {
+			if ( request.readyState === XMLHttpRequest.DONE && 200 === request.status ) {
+				let responseTxt = JSON.parse(request.responseText);
+				iframe.postMessage(
+					{
+						'success': responseTxt.success,
+						'data': responseTxt.data,
+						'rocketcdn': true
+					},
+					iframeURL
+				);
+			}
+		};
+	}
+
+	function disableCDN( data, iframe ) {
+		if ( ! data.hasOwnProperty( 'rocketcdn_disable' ) ) {
+			return;
+		}
+
+		let postData = '';
+
+		postData += 'action=rocketcdn_disable';
+		postData += '&nonce=' + rocket_ajax_data.nonce;
+
+		const request = rocketSendHTTPRequest( postData );
+
+		request.onreadystatechange = () => {
+			if ( request.readyState === XMLHttpRequest.DONE && 200 === request.status ) {
+				let responseTxt = JSON.parse(request.responseText);
+				iframe.postMessage(
+					{
+						'success': responseTxt.success,
+						'data': responseTxt.data,
+						'rocketcdn': true
+					},
+					iframeURL
+				);
+			}
+		};
 	}
 
 	function rocketSendHTTPRequest( postData ) {
