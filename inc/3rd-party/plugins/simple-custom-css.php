@@ -1,5 +1,6 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+
+defined( 'ABSPATH' ) || exit;
 
 if ( defined( 'SCCSS_FILE' ) ) :
 	add_action( 'wp_enqueue_scripts', 'rocket_cache_sccss', 98 );
@@ -69,7 +70,7 @@ function rocket_sccss_cache_busting_filename( $filename ) {
 function rocket_sccss_create_cache_file( $cache_busting_path, $cache_sccss_filepath ) {
 	$options     = get_option( 'sccss_settings' );
 	$raw_content = isset( $options['sccss-content'] ) ? $options['sccss-content'] : '';
-	$content     = wp_kses( $raw_content, array( '\'', '\"' ) );
+	$content     = wp_kses( $raw_content, [ '\'', '\"' ] );
 	$content     = str_replace( '&gt;', '>', $content );
 
 	if ( ! rocket_direct_filesystem()->is_dir( $cache_busting_path ) ) {

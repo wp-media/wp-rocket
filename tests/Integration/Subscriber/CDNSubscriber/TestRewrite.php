@@ -6,7 +6,11 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\CDN\CDN;
 use WP_Rocket\Subscriber\CDN\CDNSubscriber;
+use Brain\Monkey;
 
+/**
+ * @group Subscriber
+ */
 class TestRewrite extends TestCase {
     public function testShouldRewriteURL() {
         update_option(
@@ -76,7 +80,13 @@ class TestRewrite extends TestCase {
             ]
         );
 
-        define( 'DONOTROCKETOPTIMIZE', true );
+		// Mock DONOTROCKETOPTIMIZE constant.
+		Monkey\Functions\expect( 'rocket_has_constant' )
+			->with( 'DONOTROCKETOPTIMIZE' )
+			->andReturn( true );
+		Monkey\Functions\expect( 'rocket_get_constant' )
+			->with( 'DONOTROCKETOPTIMIZE' )
+			->andReturn( true );
 
         $options        = new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) );
         $cdn_subscriber = new CDNSubscriber( $options, new CDN( $options ) );
@@ -89,10 +99,6 @@ class TestRewrite extends TestCase {
         );
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
     public function testShouldReturnOriginalWhenNoCNAME() {
         update_option(
             'wp_rocket_settings',

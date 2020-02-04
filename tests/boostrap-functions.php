@@ -19,6 +19,7 @@ function init_test_suite( $test_suite = 'Unit' ) {
 
 	// Load the Composer autoloader.
 	require_once WP_ROCKET_PLUGIN_ROOT . '/vendor/autoload.php';
+	require_once __DIR__ . '/TestCaseTrait.php';
 
 	// Load Patchwork before everything else in order to allow us to redefine WordPress, 3rd party, and WP Rocket functions.
 	require_once WP_ROCKET_PLUGIN_ROOT . '/vendor/antecedent/patchwork/Patchwork.php';
@@ -47,6 +48,6 @@ function init_constants( $test_suite_folder ) {
 	define( 'WP_ROCKET_PLUGIN_TESTS_ROOT', __DIR__ . DIRECTORY_SEPARATOR . $test_suite_folder );
 
 	if ( 'Unit' === $test_suite_folder && ! defined( 'ABSPATH' ) ) {
-		define( 'ABSPATH', WP_ROCKET_PLUGIN_ROOT );
+		define( 'ABSPATH', WP_ROCKET_PLUGIN_ROOT ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
 	}
 }

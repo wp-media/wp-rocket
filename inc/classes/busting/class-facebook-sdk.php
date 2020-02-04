@@ -78,10 +78,13 @@ class Facebook_SDK extends Abstract_Busting {
 			return $html;
 		}
 
-		Logger::info( 'FACEBOOK SDK CACHING PROCESS STARTED.', [
-			'fb sdk',
-			'tag' => $tag,
-		] );
+		Logger::info(
+			'FACEBOOK SDK CACHING PROCESS STARTED.',
+			[
+				'fb sdk',
+				'tag' => $tag,
+			]
+		);
 
 		$locale     = $this->get_locale_from_url( $tag );
 		$remote_url = $this->get_url( $locale );
@@ -98,8 +101,18 @@ class Facebook_SDK extends Abstract_Busting {
 			return $html;
 		}
 
-		$html      = str_replace( $tag, $replace_tag, $html );
-		$file_path = $this->get_busting_file_path( $locale );
+		$html        = str_replace( $tag, $replace_tag, $html );
+		$file_path   = $this->get_busting_file_path( $locale );
+		$xfbml       = $this->get_xfbml_from_url( $tag ); // Default value should be set to false.
+		$app_id      = $this->get_appId_from_url( $tag ); // APP_ID is the only required value.
+		$url_version = $this->get_version_from_url( $tag );
+		$version     = false === $url_version ? 'v5.0' : $url_version; // If version is not available set it to the latest: v.5.0.
+
+		if ( false !== $app_id ) {
+			// Add FB async init.
+			$fb_async_script = '<script>window.fbAsyncInit = function fbAsyncInit () {FB.init({appId: \'' . $app_id . '\',xfbml: ' . $xfbml . ',version: \'' . $version . '\'})}</script>';
+			$html            = str_replace( '</body>', $fb_async_script . '</body>', $html );
+		}
 
 		$this->is_replaced = true;
 
@@ -114,10 +127,13 @@ class Facebook_SDK extends Abstract_Busting {
 		 */
 		do_action( 'rocket_after_facebook_sdk_url_replaced', $file_url, $file_path );
 
-		Logger::info( 'Facebook SDK caching process succeeded.', [
-			'fb sdk',
-			'file' => $file_path,
-		] );
+		Logger::info(
+			'Facebook SDK caching process succeeded.',
+			[
+				'fb sdk',
+				'file' => $file_path,
+			]
+		);
 
 		return $html;
 	}
@@ -233,10 +249,13 @@ class Facebook_SDK extends Abstract_Busting {
 		}
 
 		if ( ! \rocket_put_content( $file_path, $file_contents ) ) {
-			Logger::error( 'Contents could not be written into file.', [
-				'fb sdk',
-				'path' => $file_path,
-			] );
+			Logger::error(
+				'Contents could not be written into file.',
+				[
+					'fb sdk',
+					'path' => $file_path,
+				]
+			);
 			return false;
 		}
 
@@ -291,10 +310,13 @@ class Facebook_SDK extends Abstract_Busting {
 		}
 
 		if ( $error_paths ) {
-			Logger::error( 'Local file(s) could not be updated.', [
-				'fb sdk',
-				'paths' => $error_paths,
-			] );
+			Logger::error(
+				'Local file(s) could not be updated.',
+				[
+					'fb sdk',
+					'paths' => $error_paths,
+				]
+			);
 		}
 
 		/**
@@ -338,10 +360,13 @@ class Facebook_SDK extends Abstract_Busting {
 		}
 
 		if ( $error_paths ) {
-			Logger::error( 'Local file(s) could not be deleted.', [
-				'fb sdk',
-				'paths' => $error_paths,
-			] );
+			Logger::error(
+				'Local file(s) could not be deleted.',
+				[
+					'fb sdk',
+					'paths' => $error_paths,
+				]
+			);
 		}
 
 		/**
@@ -380,20 +405,26 @@ class Facebook_SDK extends Abstract_Busting {
 		}
 
 		if ( ! $filesystem->is_writable( $dir_path ) ) {
-			Logger::error( 'Directory is not writable.', [
-				'fb sdk',
-				'path' => $dir_path,
-			] );
+			Logger::error(
+				'Directory is not writable.',
+				[
+					'fb sdk',
+					'path' => $dir_path,
+				]
+			);
 			return false;
 		}
 
 		$dir = $filesystem->dirlist( $dir_path );
 
 		if ( false === $dir ) {
-			Logger::error( 'Could not get the directory contents.', [
-				'fb sdk',
-				'path' => $dir_path,
-			] );
+			Logger::error(
+				'Could not get the directory contents.',
+				[
+					'fb sdk',
+					'path' => $dir_path,
+				]
+			);
 			return false;
 		}
 
@@ -453,6 +484,66 @@ class Facebook_SDK extends Abstract_Busting {
 		}
 
 		return $matches['locale'];
+	}
+
+	/**
+	 * Extract XFBML from a URL to bust.
+	 *
+	 * @since  3.4.3
+	 * @access private
+	 * @author Soponar Cristina
+	 *
+	 * @param  string $url Any string containing the URL to bust.
+	 * @return string|bool The XFBML on success. False on failure.
+	 */
+	private function get_xfbml_from_url( $url ) {
+		$pattern = '@//connect\.facebook\.net/(?<locale>[a-zA-Z_-]+)/sdk\.js#(?:.+&)?xfbml=(?<xfbml>[0-9]+)@i';
+
+		if ( ! preg_match( $pattern, $url, $matches ) ) {
+			return false;
+		}
+
+		return $matches['xfbml'];
+	}
+
+	/**
+	 * Extract appId from a URL to bust.
+	 *
+	 * @since  3.4.3
+	 * @access private
+	 * @author Soponar Cristina
+	 *
+	 * @param  string $url Any string containing the URL to bust.
+	 * @return string|bool The appId on success. False on failure.
+	 */
+	private function get_appId_from_url( $url ) {
+		$pattern = '@//connect\.facebook\.net/(?<locale>[a-zA-Z_-]+)/sdk\.js#(?:.+&)?appId=(?<appId>[0-9]+)@i';
+
+		if ( ! preg_match( $pattern, $url, $matches ) ) {
+			return false;
+		}
+
+		return $matches['appId'];
+	}
+
+	/**
+	 * Extract version from a URL to bust.
+	 *
+	 * @since  3.4.3
+	 * @access private
+	 * @author Soponar Cristina
+	 *
+	 * @param  string $url Any string containing the URL to bust.
+	 * @return string|bool The version on success. False on failure.
+	 */
+	private function get_version_from_url( $url ) {
+		$pattern = '@//connect\.facebook\.net/(?<locale>[a-zA-Z_-]+)/sdk\.js#(?:.+&)?version=(?<version>[a-zA-Z0-9.]+)@i';
+
+		if ( ! preg_match( $pattern, $url, $matches ) ) {
+			return false;
+		}
+
+		return $matches['version'];
 	}
 
 	/** ----------------------------------------------------------------------------------------- */
@@ -522,31 +613,40 @@ class Facebook_SDK extends Abstract_Busting {
 		try {
 			$response = wp_remote_get( $url );
 		} catch ( \Exception $e ) {
-			Logger::error( 'Remote file could not be fetched.', [
-				'fb sdk',
-				'url'      => $url,
-				'response' => $e->getMessage(),
-			] );
+			Logger::error(
+				'Remote file could not be fetched.',
+				[
+					'fb sdk',
+					'url'      => $url,
+					'response' => $e->getMessage(),
+				]
+			);
 			return false;
 		}
 
 		if ( is_wp_error( $response ) ) {
-			Logger::error( 'Remote file could not be fetched.', [
-				'fb sdk',
-				'url'      => $url,
-				'response' => $response->get_error_message(),
-			] );
+			Logger::error(
+				'Remote file could not be fetched.',
+				[
+					'fb sdk',
+					'url'      => $url,
+					'response' => $response->get_error_message(),
+				]
+			);
 			return false;
 		}
 
 		$contents = wp_remote_retrieve_body( $response );
 
 		if ( ! $contents ) {
-			Logger::error( 'Remote file could not be fetched.', [
-				'fb sdk',
-				'url'      => $url,
-				'response' => $response,
-			] );
+			Logger::error(
+				'Remote file could not be fetched.',
+				[
+					'fb sdk',
+					'url'      => $url,
+					'response' => $response,
+				]
+			);
 			return false;
 		}
 

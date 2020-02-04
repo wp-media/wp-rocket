@@ -51,10 +51,13 @@ class Combine_Google_Fonts extends Abstract_Optimization {
 			return $html;
 		}
 
-		Logger::debug( 'Found ' . count( $fonts ) . ' Google Fonts.', [
-			'GF combine process',
-			'tags' => $fonts,
-		] );
+		Logger::debug(
+			'Found ' . count( $fonts ) . ' Google Fonts.',
+			[
+				'GF combine process',
+				'tags' => $fonts,
+			]
+		);
 
 		$this->parse( $fonts );
 
@@ -69,10 +72,13 @@ class Combine_Google_Fonts extends Abstract_Optimization {
 			$html = str_replace( $font[0], '', $html );
 		}
 
-		Logger::info( 'Google Fonts successfully combined.', [
-			'GF combine process',
-			'url' => $this->fonts . $this->subsets,
-		] );
+		Logger::info(
+			'Google Fonts successfully combined.',
+			[
+				'GF combine process',
+				'url' => $this->fonts . $this->subsets,
+			]
+		);
 
 		return $html;
 	}
@@ -162,6 +168,7 @@ class Combine_Google_Fonts extends Abstract_Optimization {
 
 		$display = isset( $allowed_values[ $display ] ) ? $display : 'swap';
 
+		// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
 		return '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=' . $this->fonts . $this->subsets . '&display=' . $display . '" />';
 	}
 }

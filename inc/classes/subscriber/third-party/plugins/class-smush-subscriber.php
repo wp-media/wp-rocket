@@ -53,6 +53,7 @@ class Smush_Subscriber implements Subscriber_Interface {
 	 * @since  3.4.2
 	 * @author Soponar Cristina
 	 *
+	 * @param array $rocket_maybe_disable_lazyload_plugins Array with plugins which disable lazyload functionality.
 	 * @return string
 	 */
 	public function is_smush_lazyload_active( $rocket_maybe_disable_lazyload_plugins ) {

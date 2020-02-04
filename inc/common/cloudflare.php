@@ -1,5 +1,6 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Set Real IP from CloudFlare
@@ -9,8 +10,6 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * @source cloudflare.php - https://wordpress.org/plugins/cloudflare/
  */
 function rocket_set_real_ip_cloudflare() {
-	global $is_cf;
-
 	$is_cf = ( isset( $_SERVER['HTTP_CF_CONNECTING_IP'] ) ) ? true : false;
 
 	if ( ! $is_cf ) {
@@ -25,14 +24,17 @@ function rocket_set_real_ip_cloudflare() {
 			return;
 		}
 
-		if ( strpos( $_SERVER['REMOTE_ADDR'], ':' ) === false ) {
+		$remote_addr      = filter_input( INPUT_SERVER, 'REMOTE_ADDR', FILTER_VALIDATE_IP );
+		$cf_connecting_ip = filter_input( INPUT_SERVER, 'HTTP_CF_CONNECTING_IP', FILTER_VALIDATE_IP );
+
+		if ( strpos( $remote_addr, ':' ) === false ) {
 			$cf_ip_ranges = $cf_ips_values->result->ipv4_cidrs;
 
 			// IPV4: Update the REMOTE_ADDR value if the current REMOTE_ADDR value is in the specified range.
 			foreach ( $cf_ip_ranges as $range ) {
-				if ( rocket_ipv4_in_range( $_SERVER['REMOTE_ADDR'], $range ) ) {
-					if ( $_SERVER['HTTP_CF_CONNECTING_IP'] ) {
-						$_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_CF_CONNECTING_IP'];
+				if ( rocket_ipv4_in_range( $remote_addr, $range ) ) {
+					if ( $cf_connecting_ip ) {
+						$_SERVER['REMOTE_ADDR'] = $cf_connecting_ip;
 					}
 					break;
 				}
@@ -41,11 +43,11 @@ function rocket_set_real_ip_cloudflare() {
 		else {
 			$cf_ip_ranges = $cf_ips_values->result->ipv6_cidrs;
 
-			$ipv6 = get_rocket_ipv6_full( $_SERVER['REMOTE_ADDR'] );
+			$ipv6 = get_rocket_ipv6_full( $remote_addr );
 			foreach ( $cf_ip_ranges as $range ) {
 				if ( rocket_ipv6_in_range( $ipv6, $range ) ) {
-					if ( $_SERVER['HTTP_CF_CONNECTING_IP'] ) {
-						$_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_CF_CONNECTING_IP'];
+					if ( $cf_connecting_ip ) {
+						$_SERVER['REMOTE_ADDR'] = $cf_connecting_ip;
 					}
 					break;
 				}

@@ -1,12 +1,13 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+
+defined( 'ABSPATH' ) || exit;
 
 if ( defined( 'WPSEO_VERSION' ) && class_exists( 'WPSEO_Sitemaps_Router' ) ) :
-	$yoast_seo_xml = get_option( 'wpseo_xml' );
+	$yoast_seo_xml = get_option( 'wpseo_xml' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 	if ( version_compare( WPSEO_VERSION, '7.0' ) >= 0 ) {
-		$yoast_seo                         = get_option( 'wpseo' );
-		$yoast_seo_xml['enablexmlsitemap'] = isset( $yoast_seo['enable_xml_sitemap'] ) && $yoast_seo['enable_xml_sitemap'];
+		$yoast_seo                         = get_option( 'wpseo' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+		$yoast_seo_xml['enablexmlsitemap'] = isset( $yoast_seo['enable_xml_sitemap'] ) && $yoast_seo['enable_xml_sitemap']; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	}
 
 	/**

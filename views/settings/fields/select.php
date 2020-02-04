@@ -21,13 +21,14 @@
  * }
  */
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
+
 ?>
 
-<div class="wpr-field wpr-field--select <?php echo $data['container_class']; ?>"<?php echo $data['parent']; ?>>
+<div class="wpr-field wpr-field--select <?php echo esc_attr( $data['container_class'] ); ?>"<?php echo $data['parent']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $data['parent'] escaped with esc_attr. ?>>
 	<div class="wpr-select">
 		<select id="<?php echo esc_attr( $data['id'] ); ?>" name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>]">
-		<?php foreach ( $data['choices'] as $value => $label ) : ?>
+		<?php foreach ( $data['choices'] as $value => $label ) : // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound ?>
 			<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $value, $data['value'] ); ?>><?php echo esc_html( $label ); ?></option>
 		<?php endforeach; ?>
 		</select>
@@ -36,7 +37,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 	<?php if ( ! empty( $data['description'] ) ) : ?>
 		<div class="wpr-field-description">
-			<?php echo $data['description']; ?>
+			<?php echo $data['description']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
 		</div>
 	<?php endif; ?>
 </div>

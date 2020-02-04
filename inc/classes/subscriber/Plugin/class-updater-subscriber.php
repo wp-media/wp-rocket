@@ -366,6 +366,7 @@ class Updater_Subscriber implements Subscriber_Interface {
 		$obj->new_version = $match['user_version'];
 		$obj->url         = $this->vendor_url;
 		$obj->package     = $match['package'];
+		$obj->tested      = WP_ROCKET_WP_VERSION_TESTED;
 
 		if ( $this->icons && ! empty( $this->icons['1x'] ) ) {
 			$obj->icons = $this->icons;

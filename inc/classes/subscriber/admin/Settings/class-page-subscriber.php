@@ -4,7 +4,7 @@ namespace WP_Rocket\Subscriber\Admin\Settings;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Admin\Settings\Page;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 /**
  * WP Rocket settings page subscriber
@@ -30,7 +30,12 @@ class Page_Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * @inheritDoc
+	 * Return an array of events that this subscriber wants to listen to.
+	 *
+	 * @since  3.3
+	 * @author Remy Perona
+	 *
+	 * @return array
 	 */
 	public static function get_subscribed_events() {
 		return [

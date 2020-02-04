@@ -3,7 +3,7 @@ namespace WP_Rocket\Logger;
 
 use Monolog\Formatter\HtmlFormatter;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Class used to format log records as HTML.
@@ -29,7 +29,7 @@ class HTML_Formatter extends HtmlFormatter {
 		$output .= '<table cellspacing="1" width="100%" class="monolog-output">';
 
 		$output .= $this->addRow( 'Message', (string) $record['message'] );
-		$output .= $this->addRow( 'Time', $record['datetime']->format( $this->dateFormat ) );
+		$output .= $this->addRow( 'Time', $record['datetime']->format( $this->dateFormat ) ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 
 		if ( $record['context'] ) {
 			$embedded_table = '<table cellspacing="1" width="100%">';

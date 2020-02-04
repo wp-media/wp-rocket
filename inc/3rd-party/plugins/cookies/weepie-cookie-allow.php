@@ -1,5 +1,6 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Compatibility with WeePie Cookie Allow
@@ -23,7 +24,7 @@ endif;
  * @param array $value New values for the plugin options.
  */
 function rocket_after_update_wp_cookie_allow_options( $old_value, $value ) {
-	// clear the cache because WeePie Cookie Allow plugin settings might have been changed
+	// clear the cache because WeePie Cookie Allow plugin settings might have been changed.
 	rocket_clean_domain();
 }
 
@@ -34,7 +35,7 @@ function rocket_after_update_wp_cookie_allow_options( $old_value, $value ) {
  * @author Remy Perona
  */
 function rocket_activate_wp_cookie_allow() {
-	// clear the cache because plugin might be enabled already before
+	// clear the cache because plugin might be enabled already before.
 	rocket_clean_domain();
 }
 add_action( 'activate_wp-cookie-allow/wp-cookie-allow.php', 'rocket_activate_wp_cookie_allow', 11 );
@@ -46,7 +47,7 @@ add_action( 'activate_wp-cookie-allow/wp-cookie-allow.php', 'rocket_activate_wp_
  * @author Remy Perona
  */
 function rocket_deactivate_wp_cookie_allow() {
-	// clear the cache because the bar/box and other WeePie Cookie Allow plugin frontend HTML is not needed anymore
+	// clear the cache because the bar/box and other WeePie Cookie Allow plugin frontend HTML is not needed anymore.
 	rocket_clean_domain();
 }
 add_action( 'deactivate_wp-cookie-allow/wp-cookie-allow.php', 'rocket_deactivate_wp_cookie_allow', 11 );

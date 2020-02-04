@@ -5,6 +5,9 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Optimization\CSS\Combine_Google_Fonts;
 use Brain\Monkey\Functions;
 
+/**
+ * @group Optimize
+ */
 class TestOptimize extends TestCase {
     public function testShouldCombineGoogleFontsWhenSubset() {
         Functions\when('rocket_extract_url_component')->alias( function($url, $component ) {

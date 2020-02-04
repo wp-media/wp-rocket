@@ -310,7 +310,7 @@ class Sitemap extends Abstract_Preload {
 			'rocket_preload_sitemap_fallback_request_args',
 			[
 				'fields'         => 'ids',
-				'numberposts'    => 1000,
+				'numberposts'    => 1000, // phpcs:ignore WordPress.WP.PostsPerPage.posts_per_page_numberposts
 				'posts_per_page' => -1,
 				'post_type'      => $post_types,
 			]
