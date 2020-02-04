@@ -12,6 +12,8 @@ use WP_Rocket\CDN\RocketCDN\CDNOptionsManager;
  * @author Remy Perona
  */
 class DataManagerSubscriber implements Subscriber_Interface {
+	const CRON_EVENT = 'rocketcdn_check_subscription_status_event';
+
 	/**
 	 * RocketCDN API Client instance.
 	 *
@@ -48,7 +50,7 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			'wp_ajax_rocketcdn_disable'           => 'disable',
 			'wp_ajax_rocketcdn_process_set'       => 'set_process_status',
 			'wp_ajax_rocketcdn_process_status'    => 'get_process_status',
-			'check_subscription_status_event'     => 'maybe_disable_cdn',
+			self::CRON_EVENT                      => 'maybe_disable_cdn',
 			'update_option_' . WP_ROCKET_SLUG     => [ 'maybe_update_api_status', 12, 2 ],
 		];
 	}
@@ -136,15 +138,15 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$cdn_url = esc_url_raw( wp_unslash( $_POST['cdn_url'] ) );
+		$cdn_url = filter_var( wp_unslash( $_POST['cdn_url'] ), FILTER_VALIDATE_URL );
 
-		if ( empty( $cdn_url ) ) {
+		if ( ! $cdn_url ) {
 			wp_send_json_error( 'cdn_url_invalid_format' );
 
 			return;
 		}
 
-		$this->options->enable( $cdn_url );
+		$this->cdn_options->enable( esc_url_raw( $cdn_url ) );
 
 		$subscription = $this->api_client->get_subscription_data();
 
@@ -167,8 +169,10 @@ class DataManagerSubscriber implements Subscriber_Interface {
 
 		$this->cdn_options->disable();
 
-		if ( wp_next_scheduled( 'check_subscription_status_event' ) ) {
-			wp_clear_scheduled_hook( [ $this, 'check_subscription_status_event' ] );
+		$timestamp = wp_next_scheduled( self::CRON_EVENT );
+
+		if ( $timestamp ) {
+			wp_unschedule_event( $timestamp, self::CRON_EVENT );
 		}
 
 		$this->delete_process();
@@ -203,10 +207,11 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$status = boolval( $_POST['status'] );
+		$status = filter_var( $_POST['status'], FILTER_VALIDATE_BOOLEAN );
 
 		if ( false === $status ) {
 			delete_option( 'rocketcdn_process' );
+			return;
 		}
 
 		update_option( 'rocketcdn_process', $status );
@@ -266,8 +271,8 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	private function schedule_subscription_check( $subscription ) {
 		$timestamp = strtotime( $subscription['subscription_next_date_update'] ) + strtotime( '+2 days' );
 
-		if ( ! wp_next_scheduled( 'check_subscription_status_event' ) ) {
-			wp_schedule_single_event( $timestamp, [ $this, 'check_subscription_status_event' ] );
+		if ( ! wp_next_scheduled( self::CRON_EVENT ) ) {
+			wp_schedule_single_event( $timestamp, self::CRON_EVENT );
 		}
 	}
 
