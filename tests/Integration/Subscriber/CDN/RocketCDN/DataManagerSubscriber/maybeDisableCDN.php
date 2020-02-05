@@ -27,11 +27,69 @@ class Test_MaybeDisableCDN extends TestCase {
         delete_option( 'wp_rocket_settings' );
 	}
 
-	public function testShouldReturnScheduleNewCheckEventWhenSubscriptionRunning() {
-		do_action( 'rocketcdn_check_subscription_status_event' );
+	public function testShouldScheduleNewCheckEventWhenSubscriptionRunning() {
+        $expected_subset = [
+			'cdn'        => 1,
+			'cdn_cnames' => [ 'https://rocketcdn.me' ],
+			'cdn_zone'   => [ 'all' ],
+        ];
+
+        update_option( 'wp_rocket_settings', $expected_subset );
+
+        $callback = function( $subscription ) {
+            if ( ! isset( $subscription['subscription_status'] ) || 'running' !== $subscription['subscription_status'] ) {
+                $subscription['subscription_status'] = 'running';
+            }
+
+            return $subscription;
+        };
+
+        add_filter( 'rocket_pre_get_subscription_data', $callback );
+        do_action( 'rocketcdn_check_subscription_status_event' );
+        remove_filter( 'rocket_pre_get_subscription_data', $callback );
+
+        $this->assertNotFalse( wp_next_scheduled( 'rocketcdn_check_subscription_status_event' ) );
+
+        $options = get_option( 'wp_rocket_settings' );
+
+		foreach ( $expected_subset as $key => $value ) {
+			$this->assertArrayHasKey( $key, $options );
+			$this->assertSame( $value, $options[$key] );
+		}
 	}
 
 	public function testShouldDisableCDNWhenSubscriptionCancelled() {
-		do_action( 'rocketcdn_check_subscription_status_event' );
+        $expected_subset = [
+			'cdn'        => 0,
+			'cdn_cnames' => [],
+			'cdn_zone'   => [],
+        ];
+
+        update_option( 'wp_rocket_settings', [
+			'cdn'        => 1,
+			'cdn_cnames' => [ 'https://rocketcdn.me' ],
+			'cdn_zone'   => [ 'all' ],
+        ] );
+
+        $callback = function( $subscription ) {
+            if ( ! isset( $subscription['subscription_status'] ) || 'cancelled' !== $subscription['subscription_status'] ) {
+                $subscription['subscription_status'] = 'cancelled';
+            }
+
+            return $subscription;
+        };
+
+		add_filter( 'rocket_pre_get_subscription_data', $callback );
+        do_action( 'rocketcdn_check_subscription_status_event' );
+        remove_filter( 'rocket_pre_get_subscription_data', $callback );
+
+        $this->assertFalse( wp_next_scheduled( 'rocketcdn_check_subscription_status_event' ) );
+
+        $options = get_option( 'wp_rocket_settings' );
+
+		foreach ( $expected_subset as $key => $value ) {
+			$this->assertArrayHasKey( $key, $options );
+			$this->assertSame( $value, $options[$key] );
+		}
 	}
 }
