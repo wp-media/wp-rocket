@@ -731,6 +731,7 @@ class Combine extends Abstract_JS_Optimization {
 			'ck.page',
 			'cdn.jsdelivr.net/gh/AmauriC/',
 			'static.klaviyo.com/onsite/js/klaviyo.js',
+			'c0.wp.com/c/' . get_bloginfo( 'version' ) . '/wp-includes/js/jquery/jquery.js',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
