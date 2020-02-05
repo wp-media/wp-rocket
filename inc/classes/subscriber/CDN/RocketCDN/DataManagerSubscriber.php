@@ -250,6 +250,10 @@ class DataManagerSubscriber implements Subscriber_Interface {
 
 		$subscription = $this->api_client->get_subscription_data();
 
+		if ( defined( 'WP_ROCKET_IS_TESTING' ) ) {
+			$subscription = apply_filters( 'rocket_pre_get_subscription_data', $subscription );
+		}
+
 		if ( 'running' === $subscription['subscription_status'] ) {
 			$this->schedule_subscription_check( $subscription );
 
