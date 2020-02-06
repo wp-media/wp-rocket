@@ -10,7 +10,7 @@ use WP_Rocket\Preload\Full_Process;
 use WP_Rocket\Preload\Homepage;
 
 /**
- * @covers \WP_Rocket\Preload\Process::is_mobile_preload_enabled
+ * @covers \WP_Rocket\Tests\Unit\Preload\Process\Homepage::preload
  * @group Preload
  */
 class Test_preload extends TestCase {
