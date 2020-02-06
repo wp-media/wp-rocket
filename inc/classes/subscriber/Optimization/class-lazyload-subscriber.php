@@ -433,14 +433,15 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 	 * @since 3.5
 	 * @author Remy Perona
 	 *
+	 * @param bool $value Current value for the enabling variable.
 	 * @return bool
 	 */
-	public function maybe_disable_core_lazyload() {
+	public function maybe_disable_core_lazyload( $value ) {
 		if ( $this->can_lazyload_images() ) {
 			return false;
 		}
 
-		return true;
+		return $value;
 	}
 
 	/**
