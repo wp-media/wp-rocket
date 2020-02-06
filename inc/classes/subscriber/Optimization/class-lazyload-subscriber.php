@@ -437,11 +437,11 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 	 * @return bool
 	 */
 	public function maybe_disable_core_lazyload( $value ) {
-		if ( $this->can_lazyload_images() ) {
-			return false;
+		if ( false === $value ) {
+			return $value;
 		}
 
-		return $value;
+		return ! (bool) $this->can_lazyload_images();
 	}
 
 	/**
