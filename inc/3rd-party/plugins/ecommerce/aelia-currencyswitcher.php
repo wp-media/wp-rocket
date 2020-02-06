@@ -7,7 +7,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since 2.7
  */
-if ( class_exists( 'WC_Aelia_CurrencySwitcher' ) ) :
+if ( class_exists( 'WC_Aelia_CurrencySwitcher' ) || class_exists( 'Aelia_CurrencySwitcher' )) :
 	/**
 	 * Update .htaccess & config files when the Geolocation option is updated
 	 *
@@ -27,6 +27,7 @@ if ( class_exists( 'WC_Aelia_CurrencySwitcher' ) ) :
 		}
 	}
 	add_action( 'update_option_wc_aelia_currency_switcher', 'rocket_after_update_aelia_currencyswitcher_options', 10, 2 );
+	add_action( 'update_option_edd_aelia_currency_switcher', 'rocket_after_update_aelia_currencyswitcher_options', 10, 2 );
 
 	/**
 	 * Generate a caching file depending on the currency cookie value
@@ -53,6 +54,7 @@ function rocket_activate_aelia_currencyswitcher() {
 	rocket_generate_config_file();
 }
 add_action( 'activate_woocommerce-aelia-currencyswitcher/woocommerce-aelia-currencyswitcher.php', 'rocket_activate_aelia_currencyswitcher', 11 );
+add_action( 'activate_edd-aelia-currencyswitcher/edd-aelia-currencyswitcher.php', 'rocket_activate_edd_aelia_currencyswitcher', 11 );
 
 /**
  * Remove the Aelia Currency Switcher cookies when deactivating the plugin
@@ -71,6 +73,7 @@ function rocket_deactivate_aelia_currencyswitcher() {
 	rocket_generate_config_file();
 }
 add_action( 'deactivate_woocommerce-aelia-currencyswitcher/woocommerce-aelia-currencyswitcher.php', 'rocket_deactivate_aelia_currencyswitcher', 11 );
+add_action( 'deactivate_edd-aelia-currencyswitcher/edd-aelia-currencyswitcher.php', 'rocket_deactivate_edd_aelia_currencyswitcher', 11 );
 
 /**
  * Add the Aelia Currency Switcher cookies to the dynamic cookies list
@@ -96,9 +99,10 @@ function rocket_add_aelia_currencyswitcher_dynamic_cookies( $cookies ) {
  * @return array Updated cookies list
  */
 function rocket_add_aelia_currencyswitcher_mandatory_cookie( $cookies ) {
-	$acs_options = get_option( 'wc_aelia_currency_switcher' );
+	$wc_acs_options = get_option( 'wc_aelia_currency_switcher' );
+	$edd_acs_options = get_option( 'edd_aelia_currency_switcher' );
 
-	if ( ! empty( $acs_options['ipgeolocation_enabled'] ) ) {
+	if ( ! empty( $wc_acs_options['ipgeolocation_enabled'] ) || ! empty( $edd_acs_options['ipgeolocation_enabled'] ) ) {
 		$cookies[] = 'aelia_cs_selected_currency';
 	}
 
