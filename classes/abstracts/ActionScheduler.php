@@ -154,6 +154,14 @@ abstract class ActionScheduler {
 		$admin_view = self::admin_view();
 		add_action( 'init', array( $admin_view, 'init' ), 0, 0 ); // run before $store::init()
 
+		// Ensure initialization on plugin activation.
+		if ( did_action( 'init' ) ) {
+			$store->init();
+			$logger->init();
+			$runner->init();
+			$admin_view->init();
+		}
+
 		if ( apply_filters( 'action_scheduler_load_deprecated_functions', true ) ) {
 			require_once( self::plugin_path('deprecated/functions.php') );
 		}
