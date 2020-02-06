@@ -99,7 +99,7 @@ function rocket_add_aelia_currencyswitcher_dynamic_cookies( $cookies ) {
  * @return array Updated cookies list
  */
 function rocket_add_aelia_currencyswitcher_mandatory_cookie( $cookies ) {
-	$wc_acs_options = get_option( 'wc_aelia_currency_switcher' );
+	$wc_acs_options  = get_option( 'wc_aelia_currency_switcher' );
 	$edd_acs_options = get_option( 'edd_aelia_currency_switcher' );
 
 	if ( ! empty( $wc_acs_options['ipgeolocation_enabled'] ) || ! empty( $edd_acs_options['ipgeolocation_enabled'] ) ) {
