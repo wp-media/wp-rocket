@@ -95,7 +95,8 @@ class Sitemap extends Abstract_Preload {
 	 * Processes the sitemaps recursively.
 	 *
 	 * @since  3.2
-	 * @access public
+	 * @since  3.6 Now private.
+	 * @access private
 	 * @author Remy Perona
 	 *
 	 * @param  string $sitemap_url URL of the sitemap.
@@ -108,7 +109,7 @@ class Sitemap extends Abstract_Preload {
 	 *     @type bool   $mobile True when we want to send a "mobile" user agent with the request. Optional.
 	 * }
 	 */
-	public function process_sitemap( $sitemap_url, $urls = [] ) {
+	private function process_sitemap( $sitemap_url, $urls = [] ) {
 		$this->sitemap_error = false;
 
 		/**
@@ -279,7 +280,8 @@ class Sitemap extends Abstract_Preload {
 	 *
 	 * @since  3.3
 	 * @since  3.6 New $urls argument.
-	 * @access public
+	 * @since  3.6 Now private.
+	 * @access private
 	 * @author Arun Basil Lal
 	 *
 	 * @link https://github.com/wp-media/wp-rocket/issues/1306
@@ -293,7 +295,7 @@ class Sitemap extends Abstract_Preload {
 	 *     @type bool   $mobile True when we want to send a "mobile" user agent with the request. Optional.
 	 * }
 	 */
-	public function get_urls( $urls = [] ) {
+	private function get_urls( $urls = [] ) {
 		// Get public post types.
 		$post_types = get_post_types( [ 'public' => true ] );
 		$post_types = array_filter( $post_types, 'is_post_type_viewable' );
