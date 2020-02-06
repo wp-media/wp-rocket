@@ -28,7 +28,10 @@ class Test_Disable extends TestCase {
 			->with( 'rocketcdn_process' );
 		Functions\expect( 'wp_send_json_success' )
 			->once()
-			->with( 'rocketcdn_disabled' );
+			->with( [
+				'process' => 'unsubscribe',
+				'message' => 'rocketcdn_disabled',
+			] );
 
 		$options = $this->createMock( \WP_Rocket\CDN\RocketCDN\CDNOptionsManager::class );
 		$options->expects( $this->once() )

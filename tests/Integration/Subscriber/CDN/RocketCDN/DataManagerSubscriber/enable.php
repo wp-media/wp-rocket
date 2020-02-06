@@ -41,29 +41,44 @@ class Test_Enable extends AjaxTestCase {
 		$_POST['action'] = 'rocketcdn_enable';
 		$_POST['cdn_url']  = null;
 
+		$expected_data = (object) [
+			'process' => 'subscribe',
+			'message' => 'cdn_url_empty',
+		];
+
 		$response = $this->callAjaxAction();
 
 		$this->assertObjectHasAttribute( 'success', $response );
 		$this->assertFalse( $response->success );
 		$this->assertObjectHasAttribute( 'data', $response );
-		$this->assertEquals( 'cdn_url_empty', $response->data );
+		$this->assertEquals( $expected_data, $response->data );
 	}
 
 	public function testShouldSendErrorWhenCDNURLInvalid() {
 		$_POST['action'] = 'rocketcdn_enable';
 		$_POST['cdn_url']  = '%20%20';
 
+		$expected_data = (object) [
+			'process' => 'subscribe',
+			'message' => 'cdn_url_invalid_format',
+		];
+
 		$response = $this->callAjaxAction();
 
 		$this->assertObjectHasAttribute( 'success', $response );
 		$this->assertFalse( $response->success );
 		$this->assertObjectHasAttribute( 'data', $response );
-		$this->assertEquals( 'cdn_url_invalid_format', $response->data );
+		$this->assertEquals( $expected_data, $response->data );
 	}
 
 	public function testShouldSendSuccessWhenCDNURLValid() {
 		$_POST['action'] = 'rocketcdn_enable';
 		$_POST['cdn_url']  = 'https://rocketcdn.me';
+
+		$expected_data = (object) [
+			'process' => 'subscribe',
+			'message' => 'rocketcdn_enabled',
+		];
 
 		add_option( 'rocketcdn_process', true );
 
@@ -72,7 +87,7 @@ class Test_Enable extends AjaxTestCase {
 		$this->assertObjectHasAttribute( 'success', $response );
 		$this->assertTrue( $response->success );
 		$this->assertObjectHasAttribute( 'data', $response );
-		$this->assertEquals( 'rocketcdn_enabled', $response->data );
+		$this->assertEquals( $expected_data, $response->data );
 		$this->assertFalse( get_option( 'rocketcdn_process' ) );
 		$this->assertNotFalse( wp_next_scheduled( 'rocketcdn_check_subscription_status_event' ) );
 

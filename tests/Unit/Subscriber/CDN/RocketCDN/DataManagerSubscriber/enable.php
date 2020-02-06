@@ -15,7 +15,10 @@ class Test_Enable extends TestCase {
 		Functions\when( 'check_ajax_referer' )->justReturn( true );
 		Functions\expect( 'wp_send_json_error' )
 			->once()
-			->with( 'cdn_url_empty' );
+			->with( [
+				'process' => 'subscribe',
+				'message' => 'cdn_url_empty',
+			] );
 
 		$data_manager = new DataManagerSubscriber(
 			$this->createMock( 'WP_Rocket\CDN\RocketCDN\APIClient' ),
@@ -34,7 +37,10 @@ class Test_Enable extends TestCase {
 
 		Functions\expect( 'wp_send_json_error' )
 			->once()
-			->with( 'cdn_url_invalid_format' );
+			->with( [
+				'process' => 'subscribe',
+				'message' => 'cdn_url_invalid_format',
+			] );
 
 		$data_manager = new DataManagerSubscriber(
 			$this->createMock( 'WP_Rocket\CDN\RocketCDN\APIClient' ),
@@ -62,7 +68,10 @@ class Test_Enable extends TestCase {
 			->with( 'rocketcdn_process' );
 		Functions\expect( 'wp_send_json_success' )
 			->once()
-			->with( 'rocketcdn_enabled' );
+			->with( [
+				'process' => 'subscribe',
+				'message' => 'rocketcdn_enabled',
+			] );
 
 		$api = $this->createMock( \WP_Rocket\CDN\RocketCDN\APIClient::class );
 		$api->expects( $this->once() )

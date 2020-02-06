@@ -40,7 +40,13 @@ class Test_Disable extends AjaxTestCase {
 		$this->assertObjectHasAttribute( 'success', $response );
 		$this->assertTrue( $response->success );
 		$this->assertObjectHasAttribute( 'data', $response );
-		$this->assertEquals( 'rocketcdn_disabled', $response->data );
+		$this->assertEquals(
+			(object) [
+				'process' => 'unsubscribe',
+				'message' => 'rocketcdn_disabled',
+			],
+			$response->data
+		);
 		$this->assertFalse( get_option( 'rocketcdn_process' ) );
 		$this->assertFalse( wp_next_scheduled( 'rocketcdn_check_subscription_status_event' ) );
 

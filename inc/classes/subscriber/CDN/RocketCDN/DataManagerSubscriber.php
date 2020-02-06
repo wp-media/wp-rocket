@@ -132,8 +132,14 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	public function enable() {
 		check_ajax_referer( 'rocket-ajax', 'nonce', true );
 
+		$data = [
+			'process' => 'subscribe',
+		];
+
 		if ( empty( $_POST['cdn_url'] ) ) {
-			wp_send_json_error( 'cdn_url_empty' );
+			$data['message'] = 'cdn_url_empty';
+
+			wp_send_json_error( $data );
 
 			return;
 		}
@@ -141,7 +147,9 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		$cdn_url = filter_var( wp_unslash( $_POST['cdn_url'] ), FILTER_VALIDATE_URL );
 
 		if ( ! $cdn_url ) {
-			wp_send_json_error( 'cdn_url_invalid_format' );
+			$data['message'] = 'cdn_url_invalid_format';
+
+			wp_send_json_error( $data );
 
 			return;
 		}
@@ -153,7 +161,9 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		$this->schedule_subscription_check( $subscription );
 		$this->delete_process();
 
-		wp_send_json_success( 'rocketcdn_enabled' );
+		$data['message'] = 'rocketcdn_enabled';
+
+		wp_send_json_success( $data );
 	}
 
 	/**
@@ -177,7 +187,12 @@ class DataManagerSubscriber implements Subscriber_Interface {
 
 		$this->delete_process();
 
-		wp_send_json_success( 'rocketcdn_disabled' );
+		wp_send_json_success(
+			[
+				'process' => 'unsubscribe',
+				'message' => 'rocketcdn_disabled',
+			]
+		);
 	}
 
 	/**
