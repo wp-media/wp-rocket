@@ -133,7 +133,9 @@
 		rocketSendHTTPRequest( postData );
 	}
 
-	function enableCDN( data, iframe ) {
+	function enableCDN( data, iframeURL ) {
+		let iframe = document.querySelector( '#rocketcdn-iframe' ).contentWindow;
+
 		if ( ! data.hasOwnProperty( 'rocketcdn_url' ) ) {
 			return;
 		}
@@ -161,7 +163,9 @@
 		};
 	}
 
-	function disableCDN( data, iframe ) {
+	function disableCDN( data, iframeURL ) {
+		let iframe = document.querySelector( '#rocketcdn-iframe' ).contentWindow;
+
 		if ( ! data.hasOwnProperty( 'rocketcdn_disable' ) ) {
 			return;
 		}
