@@ -2,9 +2,7 @@
 namespace WP_Rocket\Tests\Unit\Preload\Process;
 
 use WP_Rocket\Tests\Unit\TestCase;
-use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
-use Mockery;
 
 use WP_Rocket\Preload\Full_Process;
 use WP_Rocket\Preload\Homepage;
