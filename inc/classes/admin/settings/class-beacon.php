@@ -40,7 +40,6 @@ class Beacon {
 	 */
 	public function __construct( Options_Data $options ) {
 		$this->options = $options;
-		$this->locale  = current( array_slice( explode( '_', get_user_locale() ), 0, 1 ) );
 	}
 
 	/**
@@ -56,7 +55,7 @@ class Beacon {
 			return;
 		}
 
-		switch ( $this->locale ) {
+		switch ( $this->get_user_locale() ) {
 			case 'fr':
 				$form_id = '9db9417a-5e2f-41dd-8857-1421d5112aea';
 				break;
@@ -72,6 +71,24 @@ class Beacon {
 			<script>window.addEventListener("hashchange", function () {
 				window.Beacon("suggest");
 			  }, false);</script>';
+	}
+
+	/**
+	 * Sets the locale property with the current user locale if not set yet
+	 *
+	 * @since 3.5
+	 * @author Remy Perona
+	 *
+	 * @return string
+	 */
+	private function get_user_locale() {
+		if ( isset( $this->locale ) ) {
+			return $this->locale;
+		}
+
+		$this->locale = current( array_slice( explode( '_', get_user_locale() ), 0, 1 ) );
+
+		return $this->locale;
 	}
 
 	/**
@@ -555,6 +572,6 @@ class Beacon {
 			],
 		];
 
-		return isset( $suggest[ $doc_id ][ $this->locale ] ) ? $suggest[ $doc_id ][ $this->locale ] : $suggest[ $doc_id ]['en'];
+		return isset( $suggest[ $doc_id ][ $this->get_user_locale() ] ) ? $suggest[ $doc_id ][ $this->get_user_locale() ] : $suggest[ $doc_id ]['en'];
 	}
 }
