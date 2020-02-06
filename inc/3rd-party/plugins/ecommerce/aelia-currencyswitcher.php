@@ -7,7 +7,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since 2.7
  */
-if ( class_exists( 'WC_Aelia_CurrencySwitcher' ) || class_exists( 'Aelia_CurrencySwitcher' )) :
+if ( class_exists( 'WC_Aelia_CurrencySwitcher' ) || class_exists( 'Aelia_CurrencySwitcher' ) ) :
 	/**
 	 * Update .htaccess & config files when the Geolocation option is updated
 	 *
