@@ -89,6 +89,8 @@ abstract class Abstract_Optimization {
 			return false;
 		}
 
+		rocket_put_content( $file . '.gz', gzencode( $content, apply_filters( 'rocket_gzencode_level_compression', 3 ) ) );
+
 		return rocket_put_content( $file, $content );
 	}
 
