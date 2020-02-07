@@ -8,7 +8,7 @@
 				e.preventDefault();
 			} );
 		} );
-	
+
 		rocketMaybeOpenModal();
 
 		MicroModal.init( {
@@ -114,7 +114,7 @@
 
 		if ( pages.indexOf( data.cdn_page_message ) === -1 ) {
 			return;
-		}         
+		}
 
 		document.location.reload();
 	}
@@ -213,7 +213,7 @@
 	function tokenHandler( data, iframeURL ) {
 		let iframe = document.querySelector( '#rocketcdn-iframe' ).contentWindow;
 
-		if ( ! data.hasOwnProperty( 'cdn_token' ) ) {
+		if ( ! data.hasOwnProperty( 'rocketcdn_token' ) ) {
 			iframe.postMessage(
 				{
 					'success': false,
@@ -228,7 +228,7 @@
 		let postData = '';
 
 		postData += 'action=save_rocketcdn_token';
-		postData += '&value=' + data.cdn_token;
+		postData += '&value=' + data.rocketcdn_token;
 		postData += '&nonce=' + rocket_ajax_data.nonce;
 
 		const request = rocketSendHTTPRequest( postData );
