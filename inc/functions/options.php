@@ -203,9 +203,10 @@ function get_rocket_cache_reject_uri() { // phpcs:ignore WordPress.NamingConvent
 	}
 
 	$uris      = get_rocket_option( 'cache_reject_uri', [] );
+	$uris      = is_array( $uris ) ? $uris : [];
 	$home_root = rocket_get_home_dirname();
 
-	if ( '' !== $home_root ) {
+	if ( '' !== $home_root && $uris ) {
 		// The site is not at the domain root, it's in a folder.
 		$home_root_escaped = preg_quote( $home_root, '/' );
 		$home_root_len     = strlen( $home_root );
