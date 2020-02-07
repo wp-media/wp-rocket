@@ -214,10 +214,11 @@
 		let iframe = document.querySelector( '#rocketcdn-iframe' ).contentWindow;
 
 		if ( ! data.hasOwnProperty( 'rocketcdn_token' ) ) {
+			let data = {process:"subscribe", message:"token_not_received"};
 			iframe.postMessage(
 				{
 					'success': false,
-					'data': 'token_not_received',
+					'data': data,
 					'rocketcdn': true
 				},
 				iframeURL
