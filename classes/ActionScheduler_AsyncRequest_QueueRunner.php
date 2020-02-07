@@ -91,6 +91,6 @@ class ActionScheduler_AsyncRequest_QueueRunner extends WP_Async_Request {
 	 * Chaining async requests can crash MySQL. A brief sleep call in PHP prevents that.
 	 */
 	protected function get_sleep_seconds() {
-		return apply_filters( 'action_scheduler_async_request_sleep_seconds', 1, $this );
+		return apply_filters( 'action_scheduler_async_request_sleep_seconds', 5, $this );
 	}
 }
