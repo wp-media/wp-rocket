@@ -30,8 +30,8 @@ class TestInsertCombinedCSS extends TestCase {
             ],
         ];
 
-        $original = \file_get_contents( WP_ROCKET_PLUGIN_TESTS_ROOT . '/../Fixtures/Optimization/CSS/original.html');
-        $combined = \file_get_contents( WP_ROCKET_PLUGIN_TESTS_ROOT . '/../Fixtures/Optimization/CSS/combined.html');
+        $original = \file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/Optimization/CSS/original.html');
+        $combined = \file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/Optimization/CSS/combined.html');
 
         $this->assertSame(
             $combined,

@@ -20,8 +20,7 @@ class TestConvertToWebp extends TestCase {
 		$mocks = $this->getConstructorMocks( 0 );
 
 		// Make sure the filter to disable caching never runs.
-		Filters\expectApplied( 'rocket_disable_webp_cache' )
-			->never();
+		Filters\expectApplied( 'rocket_disable_webp_cache' )->never();
 
 		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
 
@@ -401,34 +400,34 @@ class TestConvertToWebp extends TestCase {
 	 * Get a HTML sample containing images.
 	 */
 	private function getMatchingContents() {
-		return file_get_contents( str_replace( '/Unit/', '/Fixtures/', __DIR__ ) . '/html/matching.html' );
+		return file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/Subscriber/Media/WebpSubscriber/html/matching.html' );
 	}
 
 	/**
 	 * Get a HTML sample not containing images with the right file extension.
 	 */
 	private function getContentsNotMatchingFileExtensions() {
-		return file_get_contents( str_replace( '/Unit/', '/Fixtures/', __DIR__ ) . '/html/not-matching-file-extensions.html' );
+		return file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/Subscriber/Media/WebpSubscriber/html/not-matching-file-extensions.html' );
 	}
 
 	/**
 	 * Get a HTML sample not containing images with the right attributes.
 	 */
 	private function getContentsNotMatchingAttributes() {
-		return file_get_contents( str_replace( '/Unit/', '/Fixtures/', __DIR__ ) . '/html/not-matching-attributes.html' );
+		return file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/Subscriber/Media/WebpSubscriber/html/not-matching-attributes.html' );
 	}
 
 	/**
 	 * Get a HTML sample containing images that have empty attributes.
 	 */
 	private function getContentsWithEmptySources() {
-		return file_get_contents( str_replace( '/Unit/', '/Fixtures/', __DIR__ ) . '/html/not-matching-with-empty-sources.html' );
+		return file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/Subscriber/Media/WebpSubscriber/html/not-matching-with-empty-sources.html' );
 	}
 
 	/**
 	 * Get the HTML contents expected after replacing some image URLs.
 	 */
 	private function getExpectedContents() {
-		return file_get_contents( str_replace( '/Unit/', '/Fixtures/', __DIR__ ) . '/html/expected.html' );
+		return file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/Subscriber/Media/WebpSubscriber/html/expected.html' );
 	}
 }

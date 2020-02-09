@@ -41,6 +41,6 @@ class Test_RocketHasConstant extends TestCase {
 
 	public function testShouldReturnTrueWhenConstantIsDefined() {
 		$this->assertTrue( rocket_has_constant( 'WP_ROCKET_PLUGIN_ROOT' ) );
-		$this->assertTrue( rocket_has_constant( 'WP_ROCKET_PLUGIN_TESTS_ROOT' ) );
+		$this->assertTrue( rocket_has_constant( 'WP_ROCKET_TESTS_FIXTURES_DIR' ) );
 	}
 }

@@ -53,8 +53,8 @@ class TestRewriteSrcset extends TestCase {
             return 'http://' . $url;
         });
 
-        $original = \file_get_contents( WP_ROCKET_PLUGIN_TESTS_ROOT . '/../Fixtures/CDN/original.html');
-        $rewrite  = \file_get_contents( WP_ROCKET_PLUGIN_TESTS_ROOT . '/../Fixtures/CDN/srcset/rewrite.html');
+        $original = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/CDN/original.html');
+        $rewrite  = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/CDN/srcset/rewrite.html');
 
         $this->assertSame(
             $rewrite,
@@ -106,8 +106,8 @@ class TestRewriteSrcset extends TestCase {
             return 'http://' . $url;
         });
 
-        $original = \file_get_contents( WP_ROCKET_PLUGIN_TESTS_ROOT . '/../Fixtures/CDN/original.html');
-        $rewrite  = \file_get_contents( WP_ROCKET_PLUGIN_TESTS_ROOT . '/../Fixtures/CDN/srcset/rewrite.html');
+        $original = \file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/CDN/original.html');
+        $rewrite  = \file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/CDN/srcset/rewrite.html');
 
         $this->assertSame(
             $rewrite,
