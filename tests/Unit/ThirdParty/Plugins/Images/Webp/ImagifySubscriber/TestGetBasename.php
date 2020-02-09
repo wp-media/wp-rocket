@@ -18,10 +18,15 @@ class TestGetBasename extends TestCase {
 		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
 		$subscriber  = new Imagify_Subscriber( $optionsData );
 
-		$expected = 'imagify/imagify.php';
-		$basename = $subscriber->get_basename();
+		Functions\expect( 'rocket_has_constant' )
+			->once()
+			->with( 'IMAGIFY_FILE' )
+			->andReturn( false );
+		Functions\expect( 'rocket_get_constant' )
+			->with( 'IMAGIFY_FILE' )
+			->never();
 
-		$this->assertSame( $expected, $basename );
+		$this->assertSame( 'imagify/imagify.php', $subscriber->get_basename() );
 	}
 
 	/**
@@ -30,16 +35,21 @@ class TestGetBasename extends TestCase {
 	public function testShouldReturnBasenameWhenImagifyIsEnabled() {
 		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
 		$subscriber  = new Imagify_Subscriber( $optionsData );
-		$expected    = 'imagify/imagify.php';
+		$expected    = 'some-file.php';
 
-		define( 'IMAGIFY_FILE', '/path/to/' . $expected );
+		Functions\expect( 'rocket_has_constant' )
+			->once()
+			->with( 'IMAGIFY_FILE' )
+			->andReturn( true );
+		Functions\expect( 'rocket_get_constant' )
+			->once()
+			->with( 'IMAGIFY_FILE' )
+			->andReturn( "/path/to/{$expected}" );
 
 		Functions\expect( 'plugin_basename' )
 			->once()
 			->andReturn( $expected );
 
-		$basename = $subscriber->get_basename();
-
-		$this->assertSame( $expected, $basename );
+		$this->assertSame( $expected, $subscriber->get_basename() );
 	}
 }

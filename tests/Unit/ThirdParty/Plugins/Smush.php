@@ -2,32 +2,23 @@
 
 namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\Smush;
 
+use Brain\Monkey\Functions;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Smush_Subscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
-use Brain\Monkey\Functions;
 
 /**
+ * @covers Smush_Subscriber::is_smush_lazyload_active
  * @group ThirdParty
+ * @group Smush
  */
 class Smush extends TestCase {
 
-	/**
-	 * Setup constants required by Smush plugin & include the smush.php
-	 *
-	 * @since  3.4.2
-	 * @return void
-	 * @author Soponar Cristina
-	 *
-	 */
 	protected function setUp() {
 		parent::setUp();
 
-		if ( ! defined( 'WP_SMUSH_VERSION' ) ) {
-			define( 'WP_SMUSH_VERSION', '3.2.4' );
-		}
-		if ( ! defined( 'WP_SMUSH_PREFIX' ) ) {
-			define( 'WP_SMUSH_PREFIX', 'wp-smush-' );
-		}
+		Functions\expect( 'rocket_get_constant' )
+			->with( 'WP_SMUSH_PREFIX' )
+			->andReturn( 'wp-smush-' );
 	}
 
 	/**
@@ -80,12 +71,9 @@ class Smush extends TestCase {
 			->once() // called once
 			->andReturn();
 
-		Functions\expect( 'update_rocket_option' )
-			->never();
+		Functions\expect( 'update_rocket_option' )->never();
 
 		$subscriber->maybe_deactivate_rocket_lazyload();
-
-		$this->assertTrue( true ); // Prevent "risky" warning.
 	}
 
 	/**
@@ -107,7 +95,5 @@ class Smush extends TestCase {
 			->with( 'lazyload', '0' );
 
 		$subscriber->maybe_deactivate_rocket_lazyload();
-
-		$this->assertTrue( true ); // Prevent "risky" warning.
 	}
 }

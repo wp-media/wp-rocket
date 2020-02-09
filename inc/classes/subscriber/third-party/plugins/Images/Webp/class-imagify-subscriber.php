@@ -100,7 +100,7 @@ class Imagify_Subscriber implements Webp_Interface, Subscriber_Interface {
 		add_action( 'imagify_activation',   [ $this, 'plugin_activation' ], 20 );
 		add_action( 'imagify_deactivation', [ $this, 'plugin_deactivation' ], 20 );
 
-		if ( ! defined( 'IMAGIFY_VERSION' ) ) {
+		if ( ! rocket_has_constant( 'IMAGIFY_VERSION' ) ) {
 			return;
 		}
 
@@ -353,7 +353,9 @@ class Imagify_Subscriber implements Webp_Interface, Subscriber_Interface {
 	 */
 	public function get_basename() {
 		if ( empty( $this->plugin_basename ) ) {
-			$this->plugin_basename = defined( 'IMAGIFY_FILE' ) ? plugin_basename( IMAGIFY_FILE ) : 'imagify/imagify.php';
+			$this->plugin_basename = rocket_has_constant( 'IMAGIFY_FILE' )
+				? plugin_basename( rocket_get_constant( 'IMAGIFY_FILE' ) )
+				: 'imagify/imagify.php';
 		}
 
 		return $this->plugin_basename;

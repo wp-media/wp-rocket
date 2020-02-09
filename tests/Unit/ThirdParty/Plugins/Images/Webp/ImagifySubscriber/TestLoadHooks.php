@@ -53,6 +53,10 @@ class TestLoadHooks extends TestCase {
 		$subscriber  = new Imagify_Subscriber( $optionsData );
 		$option_name = 'imagify_settings';
 
+		Functions\expect( 'rocket_has_constant' )
+			->once()
+			->with( 'IMAGIFY_VERSION' )
+			->andReturn( false );
 		Actions\expectAdded( 'imagify_activation' )
 			->once()
 			->with( [ $subscriber, 'plugin_activation' ], 20 );
@@ -82,7 +86,10 @@ class TestLoadHooks extends TestCase {
 
 		Functions\when( 'is_multisite' )->justReturn( false );
 
-		define( 'IMAGIFY_VERSION', '1.2.3-nous-irons-au-bois' );
+		Functions\expect( 'rocket_has_constant' )
+			->once()
+			->with( 'IMAGIFY_VERSION' )
+			->andReturn( true );
 
 		$subscriber  = new Imagify_Subscriber( $optionsData );
 		$option_name = 'imagify_settings';
