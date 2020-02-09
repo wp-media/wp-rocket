@@ -5,7 +5,6 @@ use WPMedia\PHPUnit\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @runTestsInSeparateProcesses
  * @group Functions
  * @group Options
  */

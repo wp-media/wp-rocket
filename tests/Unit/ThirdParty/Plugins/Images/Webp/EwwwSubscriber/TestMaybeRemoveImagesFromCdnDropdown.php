@@ -1,12 +1,14 @@
 <?php
 namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\Images\Webp\EwwwSubscriber;
 
+use Brain\Monkey\Functions;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
-use Brain\Monkey\Functions;
 
 /**
+ * @covers EWWW_Subscriber::get_basename
  * @group ThirdParty
+ * @group Webp
  */
 class TestMaybeRemoveImagesFromCdnDropdown extends TestCase {
 	/**

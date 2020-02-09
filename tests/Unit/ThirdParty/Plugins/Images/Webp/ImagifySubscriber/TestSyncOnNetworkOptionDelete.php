@@ -1,14 +1,15 @@
 <?php
 namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\Images\Webp\ImagifySubscriber;
 
+use Brain\Monkey\Actions;
+use Brain\Monkey\Functions;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
-use Brain\Monkey\Actions;
-use Brain\Monkey\Filters;
-use Brain\Monkey\Functions;
 
 /**
+ * @covers Imagify_Subscriber::sync_on_network_option_delete
  * @group ThirdParty
+ * @group Webp
  */
 class TestSyncOnNetworkOptionDelete extends TestCase {
 	/**
@@ -18,8 +19,7 @@ class TestSyncOnNetworkOptionDelete extends TestCase {
 		$option     = 'imagify_settings';
 		$network_id = 3;
 
-		Functions\when( 'get_current_network_id' )
-			->justReturn( $network_id );
+		Functions\when( 'get_current_network_id' )->justReturn( $network_id );
 
 		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
 
@@ -32,8 +32,7 @@ class TestSyncOnNetworkOptionDelete extends TestCase {
 			->method( 'is_serving_webp' )
 			->willReturn( true );
 
-		Actions\expectDone( 'rocket_third_party_webp_change' )
-			->once();
+		Actions\expectDone( 'rocket_third_party_webp_change' )->once();
 
 		$subscriber->store_option_value_before_network_delete( $option, $network_id );
 		$subscriber->sync_on_network_option_delete( $option, $network_id );
@@ -46,8 +45,7 @@ class TestSyncOnNetworkOptionDelete extends TestCase {
 		$option     = 'imagify_settings';
 		$network_id = 3;
 
-		Functions\when( 'get_current_network_id' )
-			->justReturn( $network_id );
+		Functions\when( 'get_current_network_id' )->justReturn( $network_id );
 
 		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
 
@@ -60,8 +58,7 @@ class TestSyncOnNetworkOptionDelete extends TestCase {
 			->method( 'is_serving_webp' )
 			->willReturn( false );
 
-		Actions\expectDone( 'rocket_third_party_webp_change' )
-			->never();
+		Actions\expectDone( 'rocket_third_party_webp_change' )->never();
 
 		$subscriber->store_option_value_before_network_delete( $option, $network_id );
 		$subscriber->sync_on_network_option_delete( $option, $network_id );
@@ -74,8 +71,7 @@ class TestSyncOnNetworkOptionDelete extends TestCase {
 		$option     = 'imagify_settings';
 		$network_id = 3;
 
-		Functions\when( 'get_current_network_id' )
-			->justReturn( 2 );
+		Functions\when( 'get_current_network_id' )->justReturn( 2 );
 
 		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
 
@@ -88,8 +84,7 @@ class TestSyncOnNetworkOptionDelete extends TestCase {
 			->method( 'is_serving_webp' )
 			->willReturn( true );
 
-		Actions\expectDone( 'rocket_third_party_webp_change' )
-			->never();
+		Actions\expectDone( 'rocket_third_party_webp_change' )->never();
 
 		$subscriber->store_option_value_before_network_delete( $option, $network_id );
 		$subscriber->sync_on_network_option_delete( $option, $network_id );

@@ -4,6 +4,11 @@ namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\Ecommerce\WooCommerce;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Ecommerce\WooCommerce_Subscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
 
+/**
+ * @covers WooCommerce_Subscriber::maybe_revert_uid_for_nonce_actions
+ * @group WooCommerce
+ * @group ThirdParty
+ */
 class TestNonceUserLoggedOut extends TestCase
 {
 	/**

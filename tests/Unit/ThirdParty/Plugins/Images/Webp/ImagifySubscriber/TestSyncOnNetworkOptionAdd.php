@@ -1,14 +1,15 @@
 <?php
 namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\Images\Webp\ImagifySubscriber;
 
+use Brain\Monkey\Actions;
+use Brain\Monkey\Functions;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
-use Brain\Monkey\Actions;
-use Brain\Monkey\Filters;
-use Brain\Monkey\Functions;
 
 /**
+ * @covers Imagify_Subscriber::sync_on_network_option_add
  * @group ThirdParty
+ * @group Webp
  */
 class TestSyncOnNetworkOptionAdd extends TestCase {
 	/**
@@ -21,15 +22,11 @@ class TestSyncOnNetworkOptionAdd extends TestCase {
 		$value       = [ 'display_webp' => 1 ];
 		$network_id  = 3;
 
-		Actions\expectDone( 'rocket_third_party_webp_change' )
-			->once();
+		Actions\expectDone( 'rocket_third_party_webp_change' )->once();
 
-		Functions\when( 'get_current_network_id' )
-			->justReturn( $network_id );
+		Functions\when( 'get_current_network_id' )->justReturn( $network_id );
 
 		$subscriber->sync_on_network_option_add( $option, $value, $network_id );
-
-		$this->assertTrue( true ); // Prevent "risky" warning.
 	}
 
 	/**
@@ -42,18 +39,15 @@ class TestSyncOnNetworkOptionAdd extends TestCase {
 		$value       = [ 'display_webp' => 1 ];
 		$network_id  = 3;
 
-		Actions\expectDone( 'rocket_third_party_webp_change' )
-			->never();
+		Actions\expectDone( 'rocket_third_party_webp_change' )->never();
 
 		// Different network ID.
-		Functions\when( 'get_current_network_id' )
-			->justReturn( 2 );
+		Functions\when( 'get_current_network_id' )->justReturn( 2 );
 
 		$subscriber->sync_on_network_option_add( $option, $value, $network_id );
 
 		// The 'display_webp' option is false.
-		Functions\when( 'get_current_network_id' )
-			->justReturn( $network_id );
+		Functions\when( 'get_current_network_id' )->justReturn( $network_id );
 
 		$value = [ 'display_webp' => 0 ];
 
@@ -62,7 +56,5 @@ class TestSyncOnNetworkOptionAdd extends TestCase {
 		$value = [ 'foobar' => 1 ];
 
 		$subscriber->sync_on_network_option_add( $option, $value, $network_id );
-
-		$this->assertTrue( true ); // Prevent "risky" warning.
 	}
 }

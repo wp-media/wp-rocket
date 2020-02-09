@@ -9,14 +9,7 @@ use Brain\Monkey\Functions;
  * @group Subscriber
  */
 class TestDetectMissingTags extends TestCase {
-
-	use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-
-	protected function setUp() {
-		parent::setUp();
-
-		$this->mockCommonWpFunctions();
-	}
+	protected static $mockCommonWpFunctionsInSetUp = true;
 
 	/**
 	 * Test Detect_Missing_Tags_Subscriber->maybe_missing_tags() with missing HTML code </html> and </body> are missing.

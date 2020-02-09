@@ -2,19 +2,20 @@
 
 namespace WP_Rocket\Tests\Unit\Inc\Common;
 
-use WPMedia\PHPUnit\Unit\TestCase;
 use Brain\Monkey\Functions;
+use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @runTestsInSeparateProcesses
+ * @group Common
  */
 class TestRocketCleanPostCacheOnSlugChange extends TestCase {
+
 	protected function setUp() {
 		parent::setUp();
 
 		Functions\when( 'get_option' )->justReturn( '' );
 
-		require WP_ROCKET_PLUGIN_ROOT . 'inc/common/purge.php';
+		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/common/purge.php';
 	}
 
 	/**

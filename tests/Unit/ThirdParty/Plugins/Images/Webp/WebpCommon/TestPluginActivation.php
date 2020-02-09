@@ -5,7 +5,9 @@ use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Webp_Common;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
+ * @covers Webp_Common::plugin_activation
  * @group ThirdParty
+ * @group Webp
  */
 class TestPluginActivation extends TestCase {
 	/**

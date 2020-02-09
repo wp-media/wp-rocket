@@ -10,7 +10,6 @@ use Brain\Monkey\Functions;
  * @group ThirdParty
  */
 class Smush extends TestCase {
-	use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
 	/**
 	 * Setup constants required by Smush plugin & include the smush.php
