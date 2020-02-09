@@ -1,32 +1,8 @@
 <?php
-/**
- * Test Case for all of the integration tests.
- *
- * @package WP_Rocket\Tests\Integration
- */
 
 namespace WP_Rocket\Tests\Integration;
 
-use Brain\Monkey;
-use WP_Rocket\Tests\TestCaseTrait;
-use WP_UnitTestCase;
+use WPMedia\PHPUnit\Integration\TestCase as WPMediaTestCase;
 
-class TestCase extends WP_UnitTestCase {
-	use TestCaseTrait;
-
-	/**
-	 * Prepares the test environment before each test.
-	 */
-	public function setUp() {
-		parent::setUp();
-		Monkey\setUp();
-	}
-
-	/**
-	 * Cleans up the test environment after each test.
-	 */
-	public function tearDown() {
-		Monkey\tearDown();
-		parent::tearDown();
-	}
+abstract class TestCase extends WPMediaTestCase {
 }
