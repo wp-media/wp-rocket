@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\Inc;
 
-use WP_Rocket\Tests\Unit\TestCase;
+use WPMedia\PHPUnit\Unit\TestCase;
 use Brain\Monkey;
 
 /**

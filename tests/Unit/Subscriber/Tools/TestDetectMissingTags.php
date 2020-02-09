@@ -2,7 +2,7 @@
 namespace WP_Rocket\Tests\Unit\Subscriber\Tools;
 
 use WP_Rocket\Subscriber\Tools\Detect_Missing_Tags_Subscriber;
-use WP_Rocket\Tests\Unit\TestCase;
+use WPMedia\PHPUnit\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**

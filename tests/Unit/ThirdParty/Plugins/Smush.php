@@ -3,7 +3,7 @@
 namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\Smush;
 
 use WP_Rocket\Subscriber\Third_Party\Plugins\Smush_Subscriber;
-use WP_Rocket\Tests\Unit\TestCase;
+use WPMedia\PHPUnit\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**

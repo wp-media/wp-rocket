@@ -2,7 +2,7 @@
 namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\Ecommerce\WooCommerce;
 
 use WP_Rocket\Subscriber\Third_Party\Plugins\Ecommerce\WooCommerce_Subscriber;
-use WP_Rocket\Tests\Unit\TestCase;
+use WPMedia\PHPUnit\Unit\TestCase;
 
 class TestNonceUserLoggedOut extends TestCase
 {

@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Tests\Unit\Optimize\CSS\CombineGoogleFonts;
 
-use WP_Rocket\Tests\Unit\TestCase;
+use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Optimization\CSS\Combine_Google_Fonts;
 use Brain\Monkey\Functions;
 

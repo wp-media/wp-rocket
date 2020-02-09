@@ -2,7 +2,7 @@
 namespace WP_Rocket\Tests\Unit\CDN;
 
 use WP_Rocket\CDN\CDN;
-use WP_Rocket\Tests\Unit\TestCase;
+use WPMedia\PHPUnit\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**

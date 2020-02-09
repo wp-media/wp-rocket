@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Tests\Unit\Optimize\CSS\Combine;
 
-use WP_Rocket\Tests\Unit\TestCase;
+use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Optimization\CSS\Combine;
 use Brain\Monkey\Functions;
 
