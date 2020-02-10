@@ -62,7 +62,6 @@
 			return;
 		}
 
-		displayTokenField( e.data );
 		setCDNFrameHeight( e.data );
 		closeModal( e.data );
 		tokenHandler( e.data, iframeURL );
@@ -88,15 +87,6 @@
 				}
 			}
 		};
-	}
-
-	function displayTokenField( data ) {
-		if ( ! data.hasOwnProperty( 'cdn_manual_token' ) ) {
-			return;
-		}
-
-		let field = document.querySelector( '.wpr-rocketcdn-token' );
-		field.classList.remove( 'wpr-isHidden' );
 	}
 
 	function closeModal( data ) {

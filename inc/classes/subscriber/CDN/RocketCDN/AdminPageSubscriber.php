@@ -59,10 +59,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		return [
 			'rocket_dashboard_after_account_data' => 'display_rocketcdn_status',
 			'rocket_after_cdn_sections'           => 'display_manage_subscription',
-			'rocket_cdn_settings_fields'          => [
-				[ 'rocketcdn_field' ],
-				[ 'rocketcdn_token_field' ],
-			],
+			'rocket_cdn_settings_fields'          => 'rocketcdn_field',
 			'admin_post_rocket_purge_rocketcdn'   => 'purge_cdn_cache',
 			'rocket_settings_page_footer'         => 'add_subscription_modal',
 		];
@@ -149,39 +146,6 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 			'default'     => '',
 			'section'     => 'cnames_section',
 			'page'        => 'page_cdn',
-		];
-
-		return $fields;
-	}
-
-	/**
-	 * Adds an input text field to add the RocketCDN token manually
-	 *
-	 * @since  3.5
-	 * @author Remy Perona
-	 *
-	 * @param array $fields An array of fields for the CDN section.
-	 *
-	 * @return array
-	 */
-	public function rocketcdn_token_field( $fields ) {
-		$subscription_data = $this->api_client->get_subscription_data();
-
-		if ( 'running' === $subscription_data['subscription_status'] ) {
-			return $fields;
-		}
-
-		$fields['rocketcdn_token'] = [
-			'type'            => 'text',
-			'label'           => 'RocketCDN token',
-			'description'     => __( 'The RocketCDN token used to send request to RocketCDN API', 'rocket' ),
-			'default'         => '',
-			'container_class' => [
-				'wpr-rocketcdn-token',
-				'wpr-isHidden',
-			],
-			'section'         => 'cnames_section',
-			'page'            => 'page_cdn',
 		];
 
 		return $fields;

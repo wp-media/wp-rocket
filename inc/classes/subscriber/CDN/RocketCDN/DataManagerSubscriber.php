@@ -44,14 +44,13 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'wp_ajax_save_rocketcdn_token'        => 'update_user_token',
-			'pre_update_option_' . WP_ROCKET_SLUG => [ 'maybe_save_token', 11 ],
-			'wp_ajax_rocketcdn_enable'            => 'enable',
-			'wp_ajax_rocketcdn_disable'           => 'disable',
-			'wp_ajax_rocketcdn_process_set'       => 'set_process_status',
-			'wp_ajax_rocketcdn_process_status'    => 'get_process_status',
-			self::CRON_EVENT                      => 'maybe_disable_cdn',
-			'update_option_' . WP_ROCKET_SLUG     => [ 'maybe_update_api_status', 12, 2 ],
+			'wp_ajax_save_rocketcdn_token'     => 'update_user_token',
+			'wp_ajax_rocketcdn_enable'         => 'enable',
+			'wp_ajax_rocketcdn_disable'        => 'disable',
+			'wp_ajax_rocketcdn_process_set'    => 'set_process_status',
+			'wp_ajax_rocketcdn_process_status' => 'get_process_status',
+			self::CRON_EVENT                   => 'maybe_disable_cdn',
+			'update_option_' . WP_ROCKET_SLUG  => [ 'maybe_update_api_status', 12, 2 ],
 		];
 	}
 
@@ -85,40 +84,6 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		update_option( 'rocketcdn_user_token', $token );
 
 		wp_send_json_success( 'user_token_saved' );
-	}
-
-	/**
-	 * Saves the RocketCDN token in the correct option if the field is filled
-	 *
-	 * @since  3.5
-	 * @author Remy Perona
-	 *
-	 * @param array $value The new, unserialized option value.
-	 *
-	 * @return array
-	 */
-	public function maybe_save_token( $value ) {
-		if ( empty( $value['rocketcdn_token'] ) ) {
-			return $value;
-		}
-
-		$token = sanitize_text_field( $value['rocketcdn_token'] );
-		unset( $value['rocketcdn_token'] );
-
-		if ( 40 !== strlen( $token ) ) {
-			add_settings_error(
-				'general',
-				'rocketcdn-token',
-				__( 'RocketCDN token length is not 40 characters.', 'rocket' ),
-				'error'
-			);
-
-			return $value;
-		}
-
-		update_option( 'rocketcdn_user_token', $token );
-
-		return $value;
 	}
 
 	/**
