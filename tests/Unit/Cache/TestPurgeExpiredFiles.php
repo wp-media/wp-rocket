@@ -46,8 +46,8 @@ class TestPurgeExpiredFiles extends VirtualFilesystemTestCase {
 		$this->structure['wp-rocket'] = $this->wprocket_structure;
 		parent::setUp();
 
-		Functions\When( 'rocket_direct_filesystem' )->justReturn( $this->filesystem );
-		Functions\When( 'get_rocket_parse_url' )->alias( function( $value ) {
+		Functions\when( 'rocket_direct_filesystem' )->justReturn( $this->filesystem );
+		Functions\when( 'get_rocket_parse_url' )->alias( function( $value ) {
 			return parse_url( $value );
 		} );
 
@@ -73,7 +73,7 @@ class TestPurgeExpiredFiles extends VirtualFilesystemTestCase {
 	}
 
 	public function testShouldReturnNullWhenNoURLs() {
-		Functions\When( 'get_rocket_i18n_uri' )->justReturn( [ null, 1, '' ] );
+		Functions\when( 'get_rocket_i18n_uri' )->justReturn( [ null, 1, '' ] );
 		Functions\expect( 'rocket_direct_filesystem' )->never();
 
 		$expired_cache_purge = new Expired_Cache_Purge( $this->cache_path );
@@ -81,7 +81,7 @@ class TestPurgeExpiredFiles extends VirtualFilesystemTestCase {
 	}
 
 	public function testShouldDeleteCacheFilesOlderThanLifespan() {
-		Functions\When( 'get_rocket_i18n_uri' )->justReturn( [ 'http://example.org/' ] );
+		Functions\when( 'get_rocket_i18n_uri' )->justReturn( [ 'http://example.org/' ] );
 
 		$expired_cache_purge = new Expired_Cache_Purge( $this->cache_path );
 
