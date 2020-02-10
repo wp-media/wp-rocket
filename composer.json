@@ -51,7 +51,7 @@
 		"szepeviktor/phpstan-wordpress": "^0.5.0",
 		"woocommerce/woocommerce": "^3.8",
 		"wp-coding-standards/wpcs": "^2",
-		"wp-media/phpunit": "dev-add/virtual-filesystem"
+		"wp-media/phpunit": "dev-master"
 	},
 	"autoload": {
 		"classmap": [
@@ -79,7 +79,7 @@
 	},
 	"scripts": {
 		"test-unit": "\"vendor/bin/wpmedia-phpunit\" unit path=tests/Unit",
-		"test-integration": "\"vendor/bin/wpmedia-phpunit\" unit path=tests/Integration",
+		"test-integration": "\"vendor/bin/wpmedia-phpunit\" integration path=tests/Integration",
 		"run-tests": [
 			"@test-unit",
 			"@test-integration"
