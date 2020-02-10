@@ -319,17 +319,22 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 	 *
 	 * Notifications:
 	 *  1. When the maximum number of tasks are being executed simultaneously
-	 *  2. Notifications when a task us manually executed
+	 *  2. Notifications when a task is manually executed
 	 */
 	public function display_admin_notices() {
-
 		if ( $this->runner->has_maximum_concurrent_batches() ) {
+			$claim_count           = $this->store->get_claim_count();
 			$this->admin_notices[] = array(
 				'class'   => 'updated',
 				'message' => sprintf(
 					/* translators: %s: amount of claims */
-					__( 'Maximum simultaneous queues already in progress (%s queues). No additional queues will begin processing until the current queues are complete.', 'action-scheduler' ),
-					$this->store->get_claim_count()
+					_n(
+						'Maximum simultaneous queues already in progress (%s queue). No additional queues will begin processing until the current queues are complete.',
+						'Maximum simultaneous queues already in progress (%s queues). No additional queues will begin processing until the current queues are complete.',
+						$claim_count,
+						'action-scheduler'
+					),
+					$claim_count
 				),
 			);
 		} elseif ( $this->store->has_pending_actions_due() ) {
