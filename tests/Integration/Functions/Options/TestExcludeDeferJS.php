@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Tests\Integration\Functions\Options;
 
-use WP_Rocket\Tests\Integration\TestCase;
+use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
  * @group Functions

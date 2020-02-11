@@ -1,7 +1,8 @@
 <?php
+
 namespace WP_Rocket\Tests\Integration\Subscriber\CDNSubscriber;
 
-use WP_Rocket\Tests\Integration\TestCase;
+use WPMedia\PHPUnit\Integration\TestCase;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\CDN\CDN;
@@ -9,76 +10,78 @@ use WP_Rocket\Subscriber\CDN\CDNSubscriber;
 use Brain\Monkey;
 
 /**
+ * @covers Combine::rewrite
  * @group Subscriber
  */
 class TestRewrite extends TestCase {
-    public function testShouldRewriteURL() {
-        update_option(
-            'wp_rocket_settings',
-            [
-                'cdn' => '1',
-                'cdn_cnames' => [
-                    'cdn.example.org'
-                ],
-                'cdn_zone' => [
-                    'all'
-                ],
-                'cdn_reject_files' => [],
-            ]
-        );
 
-        $options        = new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) );
-        $cdn_subscriber = new CDNSubscriber( $options, new CDN( $options ) );
+	public function testShouldRewriteURL() {
+		update_option(
+			'wp_rocket_settings',
+			[
+				'cdn'              => '1',
+				'cdn_cnames'       => [
+					'cdn.example.org',
+				],
+				'cdn_zone'         => [
+					'all',
+				],
+				'cdn_reject_files' => [],
+			]
+		);
 
-        $original = \file_get_contents( WP_ROCKET_PLUGIN_TESTS_ROOT . '/../Fixtures/CDN/original.html');
-        $rewrite = \file_get_contents( WP_ROCKET_PLUGIN_TESTS_ROOT . '/../Fixtures/CDN/rewrite.html');
+		$options        = new Options_Data( ( new Options( 'wp_rocket_' ) )->get( 'settings' ) );
+		$cdn_subscriber = new CDNSubscriber( $options, new CDN( $options ) );
 
-        $this->assertSame(
-            $rewrite,
-            $cdn_subscriber->rewrite( $original )
-        );
-    }
+		$original = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/CDN/original.html' );
+		$rewrite  = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/CDN/rewrite.html' );
 
-    public function testShouldReturnOriginalWhenCDNDisabled() {
-        update_option(
-            'wp_rocket_settings',
-            [
-                'cdn' => '0',
-                'cdn_cnames' => [
-                    'cdn.example.org'
-                ],
-                'cdn_zone' => [
-                    'all'
-                ],
-                'cdn_reject_files' => [],
-            ]
-        );
+		$this->assertSame(
+			$rewrite,
+			$cdn_subscriber->rewrite( $original )
+		);
+	}
 
-        $options        = new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) );
-        $cdn_subscriber = new CDNSubscriber( $options, new CDN( $options ) );
+	public function testShouldReturnOriginalWhenCDNDisabled() {
+		update_option(
+			'wp_rocket_settings',
+			[
+				'cdn'              => '0',
+				'cdn_cnames'       => [
+					'cdn.example.org',
+				],
+				'cdn_zone'         => [
+					'all',
+				],
+				'cdn_reject_files' => [],
+			]
+		);
 
-        $original = \file_get_contents( WP_ROCKET_PLUGIN_TESTS_ROOT . '/../Fixtures/CDN/original.html');
+		$options        = new Options_Data( ( new Options( 'wp_rocket_' ) )->get( 'settings' ) );
+		$cdn_subscriber = new CDNSubscriber( $options, new CDN( $options ) );
 
-        $this->assertSame(
-            $original,
-            $cdn_subscriber->rewrite( $original )
-        );
-    }
+		$original = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/CDN/original.html' );
 
-    public function testShouldReturnOriginalWhenDONOTROCKETOPTIMIZE() {
-        update_option(
-            'wp_rocket_settings',
-            [
-                'cdn' => '1',
-                'cdn_cnames' => [
-                    'cdn.example.org'
-                ],
-                'cdn_zone' => [
-                    'all'
-                ],
-                'cdn_reject_files' => [],
-            ]
-        );
+		$this->assertSame(
+			$original,
+			$cdn_subscriber->rewrite( $original )
+		);
+	}
+
+	public function testShouldReturnOriginalWhenDONOTROCKETOPTIMIZE() {
+		update_option(
+			'wp_rocket_settings',
+			[
+				'cdn'              => '1',
+				'cdn_cnames'       => [
+					'cdn.example.org',
+				],
+				'cdn_zone'         => [
+					'all',
+				],
+				'cdn_reject_files' => [],
+			]
+		);
 
 		// Mock DONOTROCKETOPTIMIZE constant.
 		Monkey\Functions\expect( 'rocket_has_constant' )
@@ -88,38 +91,38 @@ class TestRewrite extends TestCase {
 			->with( 'DONOTROCKETOPTIMIZE' )
 			->andReturn( true );
 
-        $options        = new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) );
-        $cdn_subscriber = new CDNSubscriber( $options, new CDN( $options ) );
+		$options        = new Options_Data( ( new Options( 'wp_rocket_' ) )->get( 'settings' ) );
+		$cdn_subscriber = new CDNSubscriber( $options, new CDN( $options ) );
 
-        $original = \file_get_contents( WP_ROCKET_PLUGIN_TESTS_ROOT . '/../Fixtures/CDN/original.html');
+		$original = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/CDN/original.html' );
 
-        $this->assertSame(
-            $original,
-            $cdn_subscriber->rewrite( $original )
-        );
-    }
+		$this->assertSame(
+			$original,
+			$cdn_subscriber->rewrite( $original )
+		);
+	}
 
-    public function testShouldReturnOriginalWhenNoCNAME() {
-        update_option(
-            'wp_rocket_settings',
-            [
-                'cdn' => '1',
-                'cdn_cnames' => [
-                ],
-                'cdn_zone' => [
-                ],
-                'cdn_reject_files' => [],
-            ]
-        );
+	public function testShouldReturnOriginalWhenNoCNAME() {
+		update_option(
+			'wp_rocket_settings',
+			[
+				'cdn'              => '1',
+				'cdn_cnames'       => [
+				],
+				'cdn_zone'         => [
+				],
+				'cdn_reject_files' => [],
+			]
+		);
 
-        $options        = new Options_Data( (new Options( 'wp_rocket_'))->get( 'settings' ) );
-        $cdn_subscriber = new CDNSubscriber( $options, new CDN( $options ) );
+		$options        = new Options_Data( ( new Options( 'wp_rocket_' ) )->get( 'settings' ) );
+		$cdn_subscriber = new CDNSubscriber( $options, new CDN( $options ) );
 
-        $original = \file_get_contents( WP_ROCKET_PLUGIN_TESTS_ROOT . '/../Fixtures/CDN/original.html');
+		$original = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/CDN/original.html' );
 
-        $this->assertSame(
-            $original,
-            $cdn_subscriber->rewrite( $original )
-        );
-    }
+		$this->assertSame(
+			$original,
+			$cdn_subscriber->rewrite( $original )
+		);
+	}
 }

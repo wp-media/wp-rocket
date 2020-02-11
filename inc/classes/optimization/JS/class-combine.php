@@ -633,6 +633,7 @@ class Combine extends Abstract_JS_Optimization {
 			'var blockClass',
 			'tarteaucitron',
 			'pw_brand_product_list',
+			'tminusCountDown',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );

@@ -1,15 +1,19 @@
 <?php
+
 namespace WP_Rocket\Tests\Integration\ThirdParty\Plugins\Ecommerce\WooCommerce;
-use WP_Rocket\Tests\Integration\TestCase;
+
+use WC_Session_Handler;
+use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
- * @group Subscriber_TestNonce
+ * @group  Subscriber_TestNonce
  */
 class TestNonceUserLoggedOut extends TestCase {
+
 	public function setUp() {
 		parent::setUp();
 
-		$this->handler = new \WC_Session_Handler();
+		$this->handler = new WC_Session_Handler();
 	}
 
 	public function testShouldNotValidateNonce() {
@@ -20,9 +24,9 @@ class TestNonceUserLoggedOut extends TestCase {
 		$count                   = did_action( 'wp_verify_nonce_failed' );
 		// Create WOO Session and set cookie when the form is submited and the nonce is validated.
 		$this->create_session();
-		$result                  = check_ajax_referer( $action, false, false );
+		$result = check_ajax_referer( $action, false, false );
 
-		$this->assertEquals( $count + 1 , did_action( 'wp_verify_nonce_failed' ) );
+		$this->assertEquals( $count + 1, did_action( 'wp_verify_nonce_failed' ) );
 	}
 
 	public function testShouldValidateNonce() {
@@ -33,7 +37,7 @@ class TestNonceUserLoggedOut extends TestCase {
 		$count                   = did_action( 'wp_verify_nonce_failed' );
 		// Create WOO Session and set cookie when the form is submited and the nonce is validated.
 		$this->create_session();
-		$result                  = check_ajax_referer( $action, false, false );
+		check_ajax_referer( $action, false, false );
 
 		$this->assertEquals( $count, did_action( 'wp_verify_nonce_failed' ) );
 	}

@@ -1,14 +1,14 @@
 <?php
 namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\Images\Webp\ImagifySubscriber;
 
-use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber;
-use WP_Rocket\Tests\Unit\TestCase;
-use Brain\Monkey\Actions;
-use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
+use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber;
+use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
+ * @covers Imagify_Subscriber::sync_on_network_option_update
  * @group ThirdParty
+ * @group Webp
  */
 class TestSyncOnNetworkOptionUpdate extends TestCase {
 	/**
@@ -29,8 +29,7 @@ class TestSyncOnNetworkOptionUpdate extends TestCase {
 		$old_value  = [ 'display_webp' => 1 ];
 		$network_id = 3;
 
-		Functions\when( 'get_current_network_id' )
-			->justReturn( $network_id );
+		Functions\when( 'get_current_network_id' )->justReturn( $network_id );
 
 		$subscriber->sync_on_network_option_update( $option, $value, $old_value, $network_id );
 	}
@@ -53,8 +52,7 @@ class TestSyncOnNetworkOptionUpdate extends TestCase {
 		$old_value  = [ 'display_webp' => 1 ];
 		$network_id = 3;
 
-		Functions\when( 'get_current_network_id' )
-			->justReturn( 2 );
+		Functions\when( 'get_current_network_id' )->justReturn( 2 );
 
 		$subscriber->sync_on_network_option_update( $option, $value, $old_value, $network_id );
 	}

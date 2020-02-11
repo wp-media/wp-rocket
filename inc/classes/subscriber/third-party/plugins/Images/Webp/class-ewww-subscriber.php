@@ -352,7 +352,9 @@ class EWWW_Subscriber implements Webp_Interface, Subscriber_Interface {
 	 */
 	public function get_basename() {
 		if ( empty( $this->plugin_basename ) ) {
-			$this->plugin_basename = defined( 'EWWW_IMAGE_OPTIMIZER_PLUGIN_FILE' ) ? plugin_basename( EWWW_IMAGE_OPTIMIZER_PLUGIN_FILE ) : 'ewww-image-optimizer/ewww-image-optimizer.php';
+			$this->plugin_basename = rocket_has_constant( 'EWWW_IMAGE_OPTIMIZER_PLUGIN_FILE' )
+				? plugin_basename( rocket_get_constant( 'EWWW_IMAGE_OPTIMIZER_PLUGIN_FILE' ) )
+				: 'ewww-image-optimizer/ewww-image-optimizer.php';
 		}
 
 		return $this->plugin_basename;
