@@ -69,6 +69,7 @@ class ActionScheduler_AsyncRequest_QueueRunner extends WP_Async_Request {
 		}
 
 		$this->dispatch();
+		ActionScheduler_QueueRunner::instance()->unhook_dispatch_async_request();
 	}
 
 	/**
