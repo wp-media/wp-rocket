@@ -1,19 +1,19 @@
 <?php
 namespace WP_Rocket\Tests\Unit\Functions\Options;
 
-use WP_Rocket\Tests\Unit\TestCase;
+use WPMedia\PHPUnit\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @runTestsInSeparateProcesses
  * @group Functions
  * @group Options
  */
 class TestExcludeDeferJS extends TestCase {
+
     protected function setUp() {
         parent::setUp();
 
-        require( WP_ROCKET_PLUGIN_ROOT . 'inc/functions/options.php' );
+        require_once WP_ROCKET_PLUGIN_ROOT . 'inc/functions/options.php';
     }
 
     public function testShouldReturnExcludeDeferJSArray() {

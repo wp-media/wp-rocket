@@ -1,13 +1,28 @@
 <?php
-/**
- * Bootstraps the WP Rocket Plugin Unit Tests
- *
- * @package WP_Rocket\Tests\Unit
- */
 
 namespace WP_Rocket\Tests\Unit;
 
-use function WP_Rocket\Tests\init_test_suite;
+define( 'WP_ROCKET_PLUGIN_ROOT', dirname( dirname( __DIR__ ) ) . DIRECTORY_SEPARATOR );
+define( 'WP_ROCKET_TESTS_FIXTURES_DIR', dirname( __DIR__ ) . '/Fixtures' );
+define( 'WP_ROCKET_TESTS_DIR', __DIR__ );
+define( 'WP_ROCKET_TESTS_RUNNING', true );
 
-require_once dirname( dirname( __FILE__ ) ) . '/boostrap-functions.php';
-init_test_suite( 'Unit' );
+/**
+ * The original files need to loaded into memory before we mock them with Patchwork. Add files here before the unit
+ * tests start.
+ *
+ * @since 3.5
+ */
+function load_original_functions_before_mocking() {
+	$originals = [
+		'rocket_get_constant' => require_once WP_ROCKET_PLUGIN_ROOT . 'inc/constants.php',
+	];
+
+	foreach ( $originals as $function_name => $file ) {
+		if ( ! function_exists( $function_name ) ) {
+			require_once $file;
+		}
+	}
+}
+
+load_original_functions_before_mocking();

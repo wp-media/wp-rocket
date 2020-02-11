@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Tests\Unit\Optimize\CSS\CombineGoogleFonts;
 
-use WP_Rocket\Tests\Unit\TestCase;
+use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Optimization\CSS\Combine_Google_Fonts;
 use Brain\Monkey\Functions;
 
@@ -9,6 +9,7 @@ use Brain\Monkey\Functions;
  * @group Optimize
  */
 class TestOptimize extends TestCase {
+
     public function testShouldCombineGoogleFontsWhenSubset() {
         Functions\when('rocket_extract_url_component')->alias( function($url, $component ) {
             return parse_url( $url, $component );
@@ -21,8 +22,8 @@ class TestOptimize extends TestCase {
 
         $combine = new Combine_Google_Fonts();
 
-        $original = \file_get_contents( WP_ROCKET_PLUGIN_TESTS_ROOT . '/../Fixtures/Optimization/CSS/GoogleFonts/original-subset.html');
-        $combined = \file_get_contents( WP_ROCKET_PLUGIN_TESTS_ROOT . '/../Fixtures/Optimization/CSS/GoogleFonts/combined-subset.html');
+        $original = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/Optimization/CSS/GoogleFonts/original-subset.html');
+        $combined = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/Optimization/CSS/GoogleFonts/combined-subset.html');
 
         $this->assertSame(
             $combined,
@@ -42,8 +43,8 @@ class TestOptimize extends TestCase {
 
         $combine = new Combine_Google_Fonts();
 
-        $original = \file_get_contents( WP_ROCKET_PLUGIN_TESTS_ROOT . '/../Fixtures/Optimization/CSS/GoogleFonts/original.html');
-        $combined = \file_get_contents( WP_ROCKET_PLUGIN_TESTS_ROOT . '/../Fixtures/Optimization/CSS/GoogleFonts/combined.html');
+        $original = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/Optimization/CSS/GoogleFonts/original.html');
+        $combined = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/Optimization/CSS/GoogleFonts/combined.html');
 
         $this->assertSame(
             $combined,

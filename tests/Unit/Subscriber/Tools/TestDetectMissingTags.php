@@ -2,22 +2,14 @@
 namespace WP_Rocket\Tests\Unit\Subscriber\Tools;
 
 use WP_Rocket\Subscriber\Tools\Detect_Missing_Tags_Subscriber;
-use WP_Rocket\Tests\Unit\TestCase;
+use WPMedia\PHPUnit\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
  * @group Subscriber
  */
 class TestDetectMissingTags extends TestCase {
-
-	use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-
-	protected function setUp() {
-		parent::setUp();
-
-		$this->mockCommonWpFunctions();
-
-	}
+	protected static $mockCommonWpFunctionsInSetUp = true;
 
 	/**
 	 * Test Detect_Missing_Tags_Subscriber->maybe_missing_tags() with missing HTML code </html> and </body> are missing.
@@ -25,7 +17,7 @@ class TestDetectMissingTags extends TestCase {
 	public function testShouldIdentifyMissingHtmlAndBodyAndWPFooter() {
 		$missing_tag = new Detect_Missing_Tags_Subscriber();
 
-		$html = \file_get_contents( WP_ROCKET_PLUGIN_TESTS_ROOT . '/../Fixtures/Subscriber/Tools/original_no_html_and_body.html');
+		$html = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/Subscriber/Tools/original_no_html_and_body.html');
 		http_response_code( 200 );
 		$_SERVER['content_type'] = 'text/html';
 
@@ -59,7 +51,7 @@ class TestDetectMissingTags extends TestCase {
 	public function testShouldNotIdentifyMissingTags() {
 		$missing_tag = new Detect_Missing_Tags_Subscriber();
 
-		$html = \file_get_contents( WP_ROCKET_PLUGIN_TESTS_ROOT . '/../Fixtures/Subscriber/Tools/original_html_and_body.html');
+		$html = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/Subscriber/Tools/original_html_and_body.html');
 		http_response_code( 200 );
 		$_SERVER['content_type'] = 'text/html';
 		Functions\when( 'wp_unslash' )
@@ -82,7 +74,7 @@ class TestDetectMissingTags extends TestCase {
 	public function testShouldIdentifyHTMLAndBodyAreCommented(){
 		$missing_tag = new Detect_Missing_Tags_Subscriber();
 
-		$html = \file_get_contents( WP_ROCKET_PLUGIN_TESTS_ROOT . '/../Fixtures/Subscriber/Tools/original_commented_html_and_body.html');
+		$html = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/Subscriber/Tools/original_commented_html_and_body.html');
 		http_response_code( 200 );
 		$_SERVER['content_type'] = 'text/html';
 		Functions\when( 'wp_unslash' )
@@ -114,18 +106,16 @@ class TestDetectMissingTags extends TestCase {
 	public function testShouldIdentifyFineHTMLAndBodyWhenAreCommented(){
 		$missing_tag = new Detect_Missing_Tags_Subscriber();
 
-		$html = \file_get_contents( WP_ROCKET_PLUGIN_TESTS_ROOT . '/../Fixtures/Subscriber/Tools/original_both_html_and_body_commented.html');
+		$html = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/Subscriber/Tools/original_both_html_and_body_commented.html');
 		http_response_code( 200 );
 		$_SERVER['content_type'] = 'text/html';
-		Functions\when( 'wp_unslash' )
-			->returnArg( );
+		Functions\when( 'wp_unslash' )->returnArg( );
 		// Called did_action('wp_footer'), test only for HTML and BODY
 		Functions\expect( 'did_action' )
 			->once()
 			->andReturn( true );
 
-		Functions\expect( 'set_transient' )
-			->never();
+		Functions\expect( 'set_transient' )->never();
 
 		$missing_tag->maybe_missing_tags( $html );
 	}
