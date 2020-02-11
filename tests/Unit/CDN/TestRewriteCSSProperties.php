@@ -2,7 +2,7 @@
 namespace WP_Rocket\Tests\Unit\CDN;
 
 use WP_Rocket\CDN\CDN;
-use WP_Rocket\Tests\Unit\TestCase;
+use WPMedia\PHPUnit\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
@@ -50,8 +50,8 @@ class TestRewriteCSSProperties extends TestCase {
             return 'http://' . $url;
         });
 
-        $original = \file_get_contents( WP_ROCKET_PLUGIN_TESTS_ROOT . '/../Fixtures/CDN/original.css');
-        $rewrite  = \file_get_contents( WP_ROCKET_PLUGIN_TESTS_ROOT . '/../Fixtures/CDN/rewrite.css');
+        $original = \file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/CDN/original.css');
+        $rewrite  = \file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/CDN/rewrite.css');
 
         $this->assertSame(
             $rewrite,

@@ -1,8 +1,9 @@
 <?php
+
 namespace WP_Rocket\Tests\Unit\Subscriber\Media\WebpSubscriber;
 
 use WP_Rocket\Subscriber\Media\Webp_Subscriber;
-use WP_Rocket\Tests\Unit\TestCase;
+use WPMedia\PHPUnit\Unit\TestCase;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 
@@ -11,7 +12,8 @@ use Brain\Monkey\Functions;
  */
 class TestConvertToWebp extends TestCase {
 	/**
-	 * Test Webp_Subscriber->convert_to_webp() should return the identical HTML when separate cache is disabled via the option.
+	 * Test Webp_Subscriber->convert_to_webp() should return the identical HTML when separate cache is disabled via the
+	 * option.
 	 */
 	public function testShouldReturnIdenticalHtmlWhenCacheIsDisabledByOption() {
 		$html = $this->getMatchingContents();
@@ -20,8 +22,7 @@ class TestConvertToWebp extends TestCase {
 		$mocks = $this->getConstructorMocks( 0 );
 
 		// Make sure the filter to disable caching never runs.
-		Filters\expectApplied( 'rocket_disable_webp_cache' )
-			->never();
+		Filters\expectApplied( 'rocket_disable_webp_cache' )->never();
 
 		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
 
@@ -51,8 +52,7 @@ class TestConvertToWebp extends TestCase {
 			->andReturn( true ); // Simulate a filter.
 
 		// Make sure the method get_extensions() never runs.
-		Filters\expectApplied( 'rocket_file_extensions_for_webp' )
-			->never();
+		Filters\expectApplied( 'rocket_file_extensions_for_webp' )->never();
 
 		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
 
@@ -92,7 +92,8 @@ class TestConvertToWebp extends TestCase {
 	}
 
 	/**
-	 * Test Webp_Subscriber->convert_to_webp() should return the identical HTML when there are no file extensions to look for.
+	 * Test Webp_Subscriber->convert_to_webp() should return the identical HTML when there are no file extensions to
+	 * look for.
 	 */
 	public function testShouldReturnIdenticalHtmlWhenNoFileExtensions() {
 		$html = $this->getMatchingContents();
@@ -122,7 +123,8 @@ class TestConvertToWebp extends TestCase {
 	}
 
 	/**
-	 * Test Webp_Subscriber->convert_to_webp() should return the identical HTML when there are no attribute names to look for.
+	 * Test Webp_Subscriber->convert_to_webp() should return the identical HTML when there are no attribute names to
+	 * look for.
 	 */
 	public function testShouldReturnIdenticalHtmlWhenNoAttributeNames() {
 		$html = $this->getMatchingContents();
@@ -152,7 +154,8 @@ class TestConvertToWebp extends TestCase {
 	}
 
 	/**
-	 * Test Webp_Subscriber->convert_to_webp() should return the identical HTML when no images with the right file extension are found.
+	 * Test Webp_Subscriber->convert_to_webp() should return the identical HTML when no images with the right file
+	 * extension are found.
 	 */
 	public function testShouldReturnIdenticalHtmlWhenNoImageExtensionsFound() {
 		$html = $this->getContentsNotMatchingFileExtensions();
@@ -177,7 +180,8 @@ class TestConvertToWebp extends TestCase {
 	}
 
 	/**
-	 * Test Webp_Subscriber->convert_to_webp() should return the identical HTML when no images with the right attributes are found.
+	 * Test Webp_Subscriber->convert_to_webp() should return the identical HTML when no images with the right
+	 * attributes are found.
 	 */
 	public function testShouldReturnIdenticalHtmlWhenNoImageAttributesFound() {
 		$html = $this->getContentsNotMatchingAttributes();
@@ -244,8 +248,8 @@ class TestConvertToWebp extends TestCase {
 		Functions\when( 'rocket_direct_filesystem' )->alias( function() {
 			$uploads_path = '/Internal/path/to/root/wp-content/uploads/';
 			$filesystem   = $this->getMockBuilder( 'WP_Filesystem_Direct' )
-				->setMethods( [ 'exists' ] )
-				->getMock();
+			                     ->setMethods( [ 'exists' ] )
+			                     ->getMock();
 			$filesystem
 				->method( 'exists' )
 				->will(
@@ -289,8 +293,9 @@ class TestConvertToWebp extends TestCase {
 	 * @author Grégory Viguier
 	 * @access private
 	 *
-	 * @param  int   $cache_webp_option_value Value to return for $mocks['optionsData']->get( 'cache_webp' ).
-	 * @param  array $cdn_hosts               An array of URL hosts.
+	 * @param int   $cache_webp_option_value Value to return for $mocks['optionsData']->get( 'cache_webp' ).
+	 * @param array $cdn_hosts               An array of URL hosts.
+	 *
 	 * @return array An array containing the mocks.
 	 */
 	private function getConstructorMocks( $cache_webp_option_value = 1, $cdn_hosts = [ 'cdn-example.net' ] ) {
@@ -327,10 +332,13 @@ class TestConvertToWebp extends TestCase {
 			->will(
 				$this->returnValueMap(
 					[
-						[ 'webp', [
-							'id'  => 'some-random-id',
-							'url' => 'https://docs.wp-rocket.me/some/request-uri/part',
-						] ],
+						[
+							'webp',
+							[
+								'id'  => 'some-random-id',
+								'url' => 'https://docs.wp-rocket.me/some/request-uri/part',
+							],
+						],
 					]
 				)
 			);
@@ -346,7 +354,10 @@ class TestConvertToWebp extends TestCase {
 	 * @access private
 	 */
 	private function mockWpFunctions() {
-		define( 'WP_CONTENT_DIR', '/Internal/path/to/root/wp-content' );
+		Functions\expect( 'rocket_get_constant' )
+			->once()
+			->with( 'WP_CONTENT_DIR' )
+			->andReturn( '/Internal/path/to/root/wp-content' );
 
 		// wp_parse_url().
 		Functions\when( 'wp_parse_url' )->alias( function( $url, $component ) {
@@ -401,34 +412,34 @@ class TestConvertToWebp extends TestCase {
 	 * Get a HTML sample containing images.
 	 */
 	private function getMatchingContents() {
-		return file_get_contents( str_replace( '/Unit/', '/Fixtures/', __DIR__ ) . '/html/matching.html' );
+		return file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/Subscriber/Media/WebpSubscriber/html/matching.html' );
 	}
 
 	/**
 	 * Get a HTML sample not containing images with the right file extension.
 	 */
 	private function getContentsNotMatchingFileExtensions() {
-		return file_get_contents( str_replace( '/Unit/', '/Fixtures/', __DIR__ ) . '/html/not-matching-file-extensions.html' );
+		return file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/Subscriber/Media/WebpSubscriber/html/not-matching-file-extensions.html' );
 	}
 
 	/**
 	 * Get a HTML sample not containing images with the right attributes.
 	 */
 	private function getContentsNotMatchingAttributes() {
-		return file_get_contents( str_replace( '/Unit/', '/Fixtures/', __DIR__ ) . '/html/not-matching-attributes.html' );
+		return file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/Subscriber/Media/WebpSubscriber/html/not-matching-attributes.html' );
 	}
 
 	/**
 	 * Get a HTML sample containing images that have empty attributes.
 	 */
 	private function getContentsWithEmptySources() {
-		return file_get_contents( str_replace( '/Unit/', '/Fixtures/', __DIR__ ) . '/html/not-matching-with-empty-sources.html' );
+		return file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/Subscriber/Media/WebpSubscriber/html/not-matching-with-empty-sources.html' );
 	}
 
 	/**
 	 * Get the HTML contents expected after replacing some image URLs.
 	 */
 	private function getExpectedContents() {
-		return file_get_contents( str_replace( '/Unit/', '/Fixtures/', __DIR__ ) . '/html/expected.html' );
+		return file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/Subscriber/Media/WebpSubscriber/html/expected.html' );
 	}
 }

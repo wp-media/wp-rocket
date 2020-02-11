@@ -2,7 +2,7 @@
 namespace WP_Rocket\Tests\Unit\Subscriber\Media\WebpSubscriber;
 
 use WP_Rocket\Subscriber\Media\Webp_Subscriber;
-use WP_Rocket\Tests\Unit\TestCase;
+use WPMedia\PHPUnit\Unit\TestCase;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 

@@ -1,14 +1,14 @@
 <?php
 namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\Images\Webp\ImagifySubscriber;
 
-use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber;
-use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Actions;
-use Brain\Monkey\Filters;
-use Brain\Monkey\Functions;
+use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber;
+use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
+ * @covers Imagify_Subscriber::sync_on_option_add
  * @group ThirdParty
+ * @group Webp
  */
 class TestSyncOnOptionAdd extends TestCase {
 	/**
@@ -20,12 +20,9 @@ class TestSyncOnOptionAdd extends TestCase {
 		$option      = 'imagify_settings';
 		$value       = [ 'display_webp' => 1 ];
 
-		Actions\expectDone( 'rocket_third_party_webp_change' )
-			->once();
+		Actions\expectDone( 'rocket_third_party_webp_change' )->once();
 
 		$subscriber->sync_on_option_add( $option, $value );
-
-		$this->assertTrue( true ); // Prevent "risky" warning.
 	}
 
 	/**
@@ -37,15 +34,12 @@ class TestSyncOnOptionAdd extends TestCase {
 		$option      = 'imagify_settings';
 		$value       = [ 'display_webp' => 0 ];
 
-		Actions\expectDone( 'rocket_third_party_webp_change' )
-			->never();
+		Actions\expectDone( 'rocket_third_party_webp_change' )->never();
 
 		$subscriber->sync_on_option_add( $option, $value );
 
 		$value = [ 'foobar' => 1 ];
 
 		$subscriber->sync_on_option_add( $option, $value );
-
-		$this->assertTrue( true ); // Prevent "risky" warning.
 	}
 }

@@ -2,7 +2,7 @@
 namespace WP_Rocket\Tests\Unit\CDN;
 
 use WP_Rocket\CDN\CDN;
-use WP_Rocket\Tests\Unit\TestCase;
+use WPMedia\PHPUnit\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
@@ -53,8 +53,8 @@ class TestRewrite extends TestCase {
             return 'http://' . $url;
         });
 
-        $original = \file_get_contents( WP_ROCKET_PLUGIN_TESTS_ROOT . '/../Fixtures/CDN/original.html');
-        $rewrite  = \file_get_contents( WP_ROCKET_PLUGIN_TESTS_ROOT . '/../Fixtures/CDN/rewrite.html');
+        $original = \file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/CDN/original.html');
+        $rewrite  = \file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/CDN/rewrite.html');
 
         $this->assertSame(
             $rewrite,
@@ -106,8 +106,8 @@ class TestRewrite extends TestCase {
             return 'https://' . $url;
         });
 
-        $original = \file_get_contents( WP_ROCKET_PLUGIN_TESTS_ROOT . '/../Fixtures/CDN/subdir/original.html');
-        $rewrite  = \file_get_contents( WP_ROCKET_PLUGIN_TESTS_ROOT . '/../Fixtures/CDN/subdir/rewrite.html');
+        $original = \file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/CDN/subdir/original.html');
+        $rewrite  = \file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/CDN/subdir/rewrite.html');
 
         $this->assertSame(
             $rewrite,
