@@ -606,6 +606,7 @@ abstract class ActionScheduler_Abstract_ListTable extends WP_List_Table {
 			}
 
 			$status_filter_url   = ( 'all' === $status_name ) ? remove_query_arg( 'status' ) : add_query_arg( 'status', $status_name );
+			$status_filter_url   = remove_query_arg( array( 'paged', 's' ), $status_filter_url );
 			$status_list_items[] = sprintf( $status_list_item, esc_attr( $status_name ), esc_url( $status_filter_url ), esc_html( ucfirst( $status_name ) ), absint( $count ) );
 		}
 
