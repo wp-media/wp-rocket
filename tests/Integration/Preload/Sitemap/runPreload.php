@@ -253,5 +253,7 @@ class Test_runPreload extends TestCase {
 		$this->assertContains( [ 'url' => 'https://example.com/es/', 'mobile' => true ], $queue );
 		$this->assertContains( [ 'url' => $permalink, 'mobile' => true ], $queue );
 		$this->assertCount( 8, $queue );
+
+		wp_delete_post( $post_id, true );
 	}
 }
