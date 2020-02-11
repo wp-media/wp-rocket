@@ -89,6 +89,7 @@ abstract class Abstract_Optimization {
 			return false;
 		}
 
+		// This filter is documented in inc/classes/Buffer/class-cache.php.
 		rocket_put_content( $file . '.gz', gzencode( $content, apply_filters( 'rocket_gzencode_level_compression', 3 ) ) );
 
 		return rocket_put_content( $file, $content );

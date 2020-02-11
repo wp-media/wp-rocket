@@ -309,7 +309,14 @@ class Cache extends Abstract_Buffer {
 		rocket_put_content( $cache_filepath, $buffer . $footprint );
 
 		if ( function_exists( 'gzencode' ) ) {
-			rocket_put_content( $cache_filepath . '_gzip', gzencode( $buffer . $footprint, apply_filters( 'rocket_gzencode_level_compression', 3 ) ) );
+			/**
+			 * Filters the compression level to use for gzip compression.
+			 *
+			 * @param int $compression_level Level to use, from 0 to 9. Default 3.
+			 */
+			$compression_level = apply_filters( 'rocket_gzencode_level_compression', 3 );
+
+			rocket_put_content( $cache_filepath . '_gzip', gzencode( $buffer . $footprint, $compression_level ) );
 		}
 
 		$this->maybe_create_nginx_mobile_file( $cache_dir_path );
