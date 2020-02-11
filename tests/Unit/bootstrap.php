@@ -15,7 +15,8 @@ define( 'WP_ROCKET_TESTS_RUNNING', true );
  */
 function load_original_functions_before_mocking() {
 	$originals = [
-		'rocket_get_constant' => require_once WP_ROCKET_PLUGIN_ROOT . 'inc/constants.php',
+		'rocket_get_constant'      => require_once WP_ROCKET_PLUGIN_ROOT . 'inc/constants.php',
+		'rocket_direct_filesystem' => require_once WP_ROCKET_PLUGIN_ROOT . 'inc/functions/files.php'
 	];
 
 	foreach ( $originals as $function_name => $file ) {
