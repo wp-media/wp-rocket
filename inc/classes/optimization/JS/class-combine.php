@@ -224,25 +224,6 @@ class Combine extends Abstract_JS_Optimization {
 						return;
 					}
 
-					$matches_inline = array_merge(
-						[
-							'attrs'   => '',
-							'content' => '',
-						],
-						$matches_inline
-					);
-
-					if ( preg_last_error() === PREG_BACKTRACK_LIMIT_ERROR ) {
-						Logger::debug(
-							'PCRE regex execution Catastrophic Backtracking',
-							[
-								'inline JS backtracking error',
-								'content' => $matches_inline['content'],
-							]
-						);
-						return;
-					}
-
 					$file_path = $this->get_file_path( $matches[2] );
 
 					if ( ! $file_path ) {
@@ -255,6 +236,14 @@ class Combine extends Abstract_JS_Optimization {
 					];
 				} else {
 					preg_match( '/<script\b(?<attrs>[^>]*)>(?:\/\*\s*<!\[CDATA\[\s*\*\/)?\s*(?<content>[\s\S]*?)\s*(?:\/\*\s*\]\]>\s*\*\/)?<\/script>/msi', $script[0], $matches_inline );
+
+					$matches_inline = array_merge(
+						[
+							'attrs'   => '',
+							'content' => '',
+						],
+						$matches_inline
+					);
 
 					if ( preg_last_error() === PREG_BACKTRACK_LIMIT_ERROR ) {
 						Logger::debug(

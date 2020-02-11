@@ -89,16 +89,17 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'wp_footer'            => [
+			'wp_footer'               => [
 				[ 'insert_lazyload_script', PHP_INT_MAX ],
 				[ 'insert_youtube_thumbnail_script', PHP_INT_MAX ],
 			],
-			'wp_head'              => [ 'insert_nojs_style', PHP_INT_MAX ],
-			'wp_enqueue_scripts'   => [ 'insert_youtube_thumbnail_style', PHP_INT_MAX ],
-			'rocket_buffer'        => [ 'lazyload', 18 ],
-			'rocket_lazyload_html' => 'lazyload_responsive',
-			'init'                 => 'lazyload_smilies',
-			'wp'                   => 'deactivate_lazyload_on_specific_posts',
+			'wp_head'                 => [ 'insert_nojs_style', PHP_INT_MAX ],
+			'wp_enqueue_scripts'      => [ 'insert_youtube_thumbnail_style', PHP_INT_MAX ],
+			'rocket_buffer'           => [ 'lazyload', 18 ],
+			'rocket_lazyload_html'    => 'lazyload_responsive',
+			'init'                    => 'lazyload_smilies',
+			'wp'                      => 'deactivate_lazyload_on_specific_posts',
+			'wp_lazy_loading_enabled' => 'maybe_disable_core_lazyload',
 		];
 	}
 
@@ -424,6 +425,23 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 		if ( is_rocket_post_excluded_option( 'lazyload_iframes' ) ) {
 			add_filter( 'do_rocket_lazyload_iframes', '__return_false' );
 		}
+	}
+
+	/**
+	 * Disable WP core lazyload if our images lazyload is active
+	 *
+	 * @since 3.5
+	 * @author Remy Perona
+	 *
+	 * @param bool $value Current value for the enabling variable.
+	 * @return bool
+	 */
+	public function maybe_disable_core_lazyload( $value ) {
+		if ( false === $value ) {
+			return $value;
+		}
+
+		return ! (bool) $this->can_lazyload_images();
 	}
 
 	/**
