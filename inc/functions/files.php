@@ -481,7 +481,7 @@ function rocket_clean_minify( $extensions = [ 'js', 'css' ] ) {
 		}
 	}
 
-	$third_party = WP_ROCKET_MINIFY_CACHE_PATH . '3rd-party';
+	$third_party = rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' ) . '3rd-party';
 
 	try {
 		$files = new FilesystemIterator( $third_party );
