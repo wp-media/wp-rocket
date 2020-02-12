@@ -52,13 +52,39 @@ class Test_RocketcdnField extends TestCase {
 		$this->options->expects( $this->once() )
 		              ->method( 'get' )
 		              ->with( 'cdn_cnames', [] )
-		              ->willReturn( [] );
+		              ->willReturn( [ 'example1.org' ] );
 		$expected = [
 			'cdn_cnames' => [
 				'type'        => 'rocket_cdn',
 				'label'       => 'CDN CNAME(s)',
 				'description' => 'Specify the CNAME(s) below',
 				'helper'      => 'Rocket CDN is currently active. <a href="" data-beacon-article="" rel="noopener noreferrer" target="_blank">More Info</a>',
+				'default'     => '',
+				'section'     => 'cnames_section',
+				'page'        => 'page_cdn',
+			],
+		];
+
+		$this->assertSame( $expected, $this->page->rocketcdn_field( [ 'cdn_cnames' => [] ] ) );
+	}
+
+	/**
+	 * Test should return the special array with CNAME for the field when RocketCDN is active and the field is empty.
+	 */
+	public function testShouldReturnRocketCDNFieldWithCNAMEWhenRocketCDNActiveAndCNamesEmpty() {
+		$this->api_client->expects( $this->once() )
+		                 ->method( 'get_subscription_data' )
+		                 ->willReturn( [ 'subscription_status' => 'running', 'cdn_url' => 'example1.org' ] );
+		$this->options->expects( $this->once() )
+		              ->method( 'get' )
+		              ->with( 'cdn_cnames', [] )
+		              ->willReturn( [] );
+		$expected = [
+			'cdn_cnames' => [
+				'type'        => 'rocket_cdn',
+				'label'       => 'CDN CNAME(s)',
+				'description' => 'Specify the CNAME(s) below',
+				'helper'      => 'To use Rocket CDN, replace your CNAME with <code>example1.org</code>. <a href="" data-beacon-article="" rel="noopener noreferrer" target="_blank">More Info</a>',
 				'default'     => '',
 				'section'     => 'cnames_section',
 				'page'        => 'page_cdn',

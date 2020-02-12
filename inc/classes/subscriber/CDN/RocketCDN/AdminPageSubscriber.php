@@ -121,7 +121,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		$helper_text = __( 'Rocket CDN is currently active.', 'rocket' );
 		$cdn_cnames  = $this->options->get( 'cdn_cnames', [] );
 
-		if ( ! empty( $cdn_cnames ) && $cdn_cnames[0] !== $subscription_data['cdn_url'] ) {
+		if ( empty( $cdn_cnames ) || $cdn_cnames[0] !== $subscription_data['cdn_url'] ) {
 			$helper_text = sprintf(
 				// translators: %1$s = opening <code> tag, %2$s = CDN URL, %3$s = closing </code> tag.
 				__( 'To use Rocket CDN, replace your CNAME with %1$s%2$s%3$s.', 'rocket' ),

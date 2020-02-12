@@ -83,6 +83,10 @@ class Test_RocketcdnField extends TestCase {
 	 * Test should return the special array for the field when RocketCDN is active.
 	 */
 	public function testShouldReturnRocketCDNFieldWhenRocketCDNActive() {
+		$cdn_names_cb = function(){
+			return [ 'example1.org' ];
+		};
+		add_filter( 'pre_get_rocket_option_cdn_cnames', $cdn_names_cb );
 		set_transient( 'rocketcdn_status', [ 'subscription_status' => 'running', 'cdn_url' => 'example1.org' ], MINUTE_IN_SECONDS );
 
 		$expected               = self::$fields;
@@ -97,6 +101,32 @@ class Test_RocketcdnField extends TestCase {
 		];
 
 		$this->assertSame( $expected, apply_filters( 'rocket_cdn_settings_fields', self::$fields ) );
+		remove_filter( 'pre_get_rocket_option_cdn_cnames', $cdn_names_cb );
+	}
+
+	/**
+	 * Test should return the special array with CNAME for the field when RocketCDN is active and the field is empty.
+	 */
+	public function testShouldReturnRocketCDNFieldWithCNAMEWhenRocketCDNActiveAndCNamesEmpty() {
+		$cdn_names_cb = function(){
+			return [];
+		};
+		add_filter( 'pre_get_rocket_option_cdn_cnames', $cdn_names_cb );
+		set_transient( 'rocketcdn_status', [ 'subscription_status' => 'running', 'cdn_url' => 'example1.org' ], MINUTE_IN_SECONDS );
+
+		$expected               = self::$fields;
+		$expected['cdn_cnames'] = [
+			'type'        => 'rocket_cdn',
+			'label'       => 'CDN CNAME(s)',
+			'description' => 'Specify the CNAME(s) below',
+			'helper'      => 'To use Rocket CDN, replace your CNAME with <code>example1.org</code>. <a href="" data-beacon-article="" rel="noopener noreferrer" target="_blank">More Info</a>',
+			'default'     => '',
+			'section'     => 'cnames_section',
+			'page'        => 'page_cdn',
+		];
+
+		$this->assertSame( $expected, apply_filters( 'rocket_cdn_settings_fields', self::$fields ) );
+		remove_filter( 'pre_get_rocket_option_cdn_cnames', $cdn_names_cb );
 	}
 
 	/**
