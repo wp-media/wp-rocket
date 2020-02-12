@@ -64,13 +64,11 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 			]
 		]
 	];
-	protected $cache_path;
 
 	public function setUp() {
 		parent::setUp();
 
 		// Redefine rocket_direct_filesystem() to use the virtual filesystem.
 		Functions\when( 'rocket_direct_filesystem' )->justReturn( $this->filesystem );
-		$this->cache_path = $this->filesystem->getUrl( 'cache' );
 	}
 }
