@@ -3395,12 +3395,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-media/phpunit.git",
-                "reference": "a2edb1d80eecadd10f0dcf93d99267c66fb00776"
+                "reference": "766715679911ff453d5686c6d7befc395a9f452a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-media/phpunit/zipball/a2edb1d80eecadd10f0dcf93d99267c66fb00776",
-                "reference": "a2edb1d80eecadd10f0dcf93d99267c66fb00776",
+                "url": "https://api.github.com/repos/wp-media/phpunit/zipball/766715679911ff453d5686c6d7befc395a9f452a",
+                "reference": "766715679911ff453d5686c6d7befc395a9f452a",
                 "shasum": ""
             },
             "require": {
@@ -3431,7 +3431,7 @@
             ],
             "description": "PHPUnit extender for bootstrapping unit and WordPress integration test suites.",
             "homepage": "https://github.com/wp-media/phpunit",
-            "time": "2020-02-12T18:10:53+00:00"
+            "time": "2020-02-12T20:10:29+00:00"
         }
     ],
     "aliases": [],
