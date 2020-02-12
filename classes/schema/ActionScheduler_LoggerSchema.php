@@ -25,7 +25,6 @@ class ActionScheduler_LoggerSchema extends ActionScheduler_Abstract_Schema {
 		global $wpdb;
 		$table_name       = $wpdb->$table;
 		$charset_collate  = $wpdb->get_charset_collate();
-		$max_index_length = 191; // @see wp_get_db_schema()
 		switch ( $table ) {
 
 			case self::LOG_TABLE:

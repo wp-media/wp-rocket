@@ -9,6 +9,12 @@
  */
 class ActionScheduler_DBStore extends ActionScheduler_Store {
 
+	/** @var int */
+	protected static $max_args_length = 8000;
+
+	/** @var int */
+	protected static $max_index_length = 191;
+
 	/**
 	 * Initialize the data store
 	 *
@@ -39,10 +45,17 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 				'status'               => ( $action->is_finished() ? self::STATUS_COMPLETE : self::STATUS_PENDING ),
 				'scheduled_date_gmt'   => $this->get_scheduled_date_string( $action, $date ),
 				'scheduled_date_local' => $this->get_scheduled_date_string_local( $action, $date ),
-				'args'                 => json_encode( $action->get_args() ),
 				'schedule'             => serialize( $action->get_schedule() ),
 				'group_id'             => $this->get_group_id( $action->get_group() ),
 			];
+			$args = wp_json_encode( $action->get_args() );
+			if ( strlen( $args ) <= static::$max_index_length ) {
+				$data['args'] = $args;
+			} else {
+				$data['args']          = $this->hash_args( $args );
+				$data['extended_args'] = $args;
+			}
+
 			$wpdb->insert( $wpdb->actionscheduler_actions, $data );
 			$action_id = $wpdb->insert_id;
 
@@ -62,6 +75,29 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 		}
 	}
 
+	/**
+	 * Generate a hash from json_encoded $args using MD5 as this isn't for security.
+	 *
+	 * @param string $args JSON encoded action args.
+	 * @return string
+	 */
+	protected function hash_args( $args ) {
+		return md5( $args );
+	}
+
+	/**
+	 * Get action args query param value from action args.
+	 *
+	 * @param array $args Action args.
+	 * @return string
+	 */
+	protected function get_args_for_query( $args ) {
+		$encoded = wp_json_encode( $args );
+		if ( strlen( $encoded ) <= static::$max_index_length ) {
+			return $encoded;
+		}
+		return $this->hash_args( $encoded );
+	}
 	/**
 	 * Get a group's ID based on its name/slug.
 	 *
@@ -116,6 +152,11 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 
 		if ( empty( $data ) ) {
 			return $this->get_null_action();
+		}
+
+		if ( ! empty( $data->extended_args ) ) {
+			$data->args = $data->extended_args;
+			unset( $data->extended_args );
 		}
 
 		try {
@@ -188,7 +229,7 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 		$args[] = $hook;
 		if ( ! is_null( $params[ 'args' ] ) ) {
 			$query  .= " AND a.args=%s";
-			$args[] = json_encode( $params[ 'args' ] );
+			$args[] = $this->get_args_for_query( $params[ 'args' ] );
 		}
 
 		$order = 'ASC';
@@ -265,7 +306,7 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 		}
 		if ( ! is_null( $query[ 'args' ] ) ) {
 			$sql          .= " AND a.args=%s";
-			$sql_params[] = json_encode( $query[ 'args' ] );
+			$sql_params[] = $this->get_args_for_query( $query[ 'args' ] );
 		}
 
 		if ( $query[ 'status' ] ) {
@@ -301,8 +342,8 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 		}
 
 		if ( ! empty( $query['search'] ) ) {
-			$sql .= " AND (a.hook LIKE %s OR a.args LIKE %s";
-			for( $i = 0; $i < 2; $i++ ) {
+			$sql .= " AND (a.hook LIKE %s OR (a.extended_args IS NULL AND a.args LIKE %s) OR a.extended_args LIKE %s";
+			for( $i = 0; $i < 3; $i++ ) {
 				$sql_params[] = sprintf( '%%%s%%', $query['search'] );
 			}
 
