@@ -840,6 +840,7 @@ class Combine extends Abstract_JS_Optimization {
 			'tdbMenuItem',
 			'tdbSearchItem',
 			'best_seller_badge',
+			'wp_post_blocks_vars.listed_posts=[',
 		];
 
 		/**
