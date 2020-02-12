@@ -3,10 +3,10 @@
 namespace WP_Rocket\Tests\Integration;
 
 use Brain\Monkey\Functions;
-use WPMedia\PHPUnit\Unit\VirtualFilesystemTestCase as WPMediaVirtualFilesystemTestCase;
+use WPMedia\PHPUnit\Unit\VirtualFilesystemTestCase;
 
-abstract class VirtualFilesystemTestCase extends WPMediaVirtualFilesystemTestCase {
-	protected $wprocket_structure = [
+abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
+	protected $structure = [
 		'example.org'                             => [
 			'index.html'      => '',
 			'index.html_gzip' => '',
