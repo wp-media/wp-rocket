@@ -10,7 +10,6 @@ use Brain\Monkey\Functions;
  * @group Files
  */
 class Test_RocketCleanMinify extends FilesystemTestCase {
-	protected $rootVirtualDir = 'cache';
 	protected $structure = [
 		'min' => [
 			'1' => [

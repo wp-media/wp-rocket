@@ -10,7 +10,6 @@ use Brain\Monkey\Functions;
  * @group Files
  */
 class Test_RocketCleanCacheBusting extends FilesystemTestCase {
-	protected $rootVirtualDir = 'cache';
 	protected $structure = [
 		'busting' => [
 			'1' => [
