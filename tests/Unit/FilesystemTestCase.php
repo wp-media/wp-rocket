@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\VirtualFilesystemTestCase;
 
 abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
-	protected $wprocket_structure = [
+	protected $structure = [
 		'wp-rocket' => [
 			'example.org'                             => [
 				'index.html'      => '',
@@ -67,7 +67,6 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 	protected $cache_path;
 
 	public function setUp() {
-		$this->structure['cache'] = $this->wprocket_structure;
 		parent::setUp();
 
 		// Redefine rocket_direct_filesystem() to use the virtual filesystem.
