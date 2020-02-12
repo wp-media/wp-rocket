@@ -7,7 +7,34 @@ use WPMedia\PHPUnit\Unit\VirtualFilesystemTestCase;
 
 abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 	protected $structure = [
-		'wp-rocket' => [
+		'busting'      => [
+			'1' => [
+				'wp-content' => [
+					'themes' => [
+						'storefront' => [
+							'assets'             => [
+								'js' => [
+									'navigation.min-2.5.3.js'    => '',
+									'navigation.min-2.5.3.js.gz' => '',
+								],
+							],
+							'style-2.5.3.css'    => '',
+							'style-2.5.3.css.gz' => '',
+						],
+					],
+				],
+			],
+		],
+		'critical-css' => [],
+		'min'          => [
+			'1' => [
+				'5c795b0e3a1884eec34a989485f863ff.js'     => '',
+				'5c795b0e3a1884eec34a989485f863ff.js.gz'  => '',
+				'fa2965d41f1515951de523cecb81f85e.css'    => '',
+				'fa2965d41f1515951de523cecb81f85e.css.gz' => '',
+			],
+		],
+		'wp-rocket'    => [
 			'example.org'                             => [
 				'index.html'      => '',
 				'index.html_gzip' => '',
@@ -35,32 +62,6 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 			'example.org-Greg-594d03f6ae698691165999' => [
 				'index.html'      => '',
 				'index.html_gzip' => '',
-			],
-		],
-		'min'       => [
-			'1' => [
-				'5c795b0e3a1884eec34a989485f863ff.js'     => '',
-				'5c795b0e3a1884eec34a989485f863ff.js.gz'  => '',
-				'fa2965d41f1515951de523cecb81f85e.css'    => '',
-				'fa2965d41f1515951de523cecb81f85e.css.gz' => '',
-			],
-		],
-		'busting'   => [
-			'1' => [
-				'wp-content' => [
-					'themes' => [
-						'storefront' => [
-							'assets'             => [
-								'js' => [
-									'navigation.min-2.5.3.js'    => '',
-									'navigation.min-2.5.3.js.gz' => '',
-								],
-							],
-							'style-2.5.3.css'    => '',
-							'style-2.5.3.css.gz' => '',
-						],
-					],
-				],
 			],
 		],
 	];
