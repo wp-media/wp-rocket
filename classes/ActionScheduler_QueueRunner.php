@@ -65,8 +65,21 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 		}
 
 		add_action( self::WP_CRON_HOOK, array( self::instance(), 'run' ) );
+		$this->hook_dispatch_async_request();
+	}
 
-		add_filter( 'shutdown', array( $this, 'maybe_dispatch_async_request' ) );
+	/**
+	 * Hook check for dispatching an async request.
+	 */
+	public function hook_dispatch_async_request() {
+		add_action( 'shutdown', array( $this, 'maybe_dispatch_async_request' ) );
+	}
+
+	/**
+	 * Unhook check for dispatching an async request.
+	 */
+	public function unhook_dispatch_async_request() {
+		remove_action( 'shutdown', array( $this, 'maybe_dispatch_async_request' ) );
 	}
 
 	/**
