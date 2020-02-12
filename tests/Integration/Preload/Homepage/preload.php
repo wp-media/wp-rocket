@@ -2,7 +2,7 @@
 namespace WP_Rocket\Tests\Integration\Preload\Homepage;
 
 use Brain\Monkey\Functions;
-use WP_Rocket\Tests\Integration\TestCase;
+use WPMedia\PHPUnit\Integration\TestCase;
 
 use WP_Rocket\Preload\Full_Process;
 use WP_Rocket\Preload\Homepage;
@@ -36,28 +36,20 @@ class Process extends Full_Process {
  * @group Preload
  */
 class Test_preload extends TestCase {
-	protected $identifier = 'rocket_preload';
-	protected $manualPreloadOption;
-	protected $cacheMobileOption;
-	protected $doCachingMobileFilesOption;
-	protected $cacheRejectUriOption;
-	protected $cacheQueryStringsOptions;
+	protected $identifier         = 'rocket_preload';
+	protected $option_hook_prefix = 'pre_get_rocket_option_';
 	protected $homeWpOption;
 	protected $preloadErrorsTransient;
+	protected $preloadRunningTransient;
 	protected $process;
 
 	public function setUp() {
 		parent::setUp();
 
-		$this->manualPreloadOption        = get_rocket_option( 'manual_preload' );
-		$this->cacheMobileOption          = get_rocket_option( 'cache_mobile' );
-		$this->doCachingMobileFilesOption = get_rocket_option( 'do_caching_mobile_files' );
-		$this->cacheRejectUriOption       = get_rocket_option( 'cache_reject_uri' );
-		$this->cacheQueryStringsOption    = get_rocket_option( 'cache_query_strings' );
-		$this->homeWpOption               = get_option( 'home' );
-		$this->preloadErrorsTransient     = get_transient( 'rocket_preload_errors' );
-		$this->preloadRunningTransient    = get_transient( 'rocket_preload_running' );
-		$this->process                    = new Process();
+		$this->homeWpOption            = get_option( 'home' );
+		$this->preloadErrorsTransient  = get_transient( 'rocket_preload_errors' );
+		$this->preloadRunningTransient = get_transient( 'rocket_preload_running' );
+		$this->process                 = new Process();
 
 		update_option( 'home', 'https://example.com/' );
 	}
@@ -74,24 +66,21 @@ class Test_preload extends TestCase {
 			remove_filter( 'cron_schedules', [ $this->process, 'schedule_cron_healthcheck' ] );
 		}
 
-		update_rocket_option( 'manual_preload', $this->manualPreloadOption );
-		update_rocket_option( 'cache_mobile', $this->cacheMobileOption );
-		update_rocket_option( 'do_caching_mobile_files', $this->doCachingMobileFilesOption );
-		update_rocket_option( 'cache_reject_uri', $this->cacheRejectUriOption );
-		update_rocket_option( 'cache_query_strings', $this->cacheQueryStringsOption );
+		foreach ( [ 'manual_preload', 'cache_mobile', 'do_caching_mobile_files' ] as $option ) {
+			remove_filter( $this->option_hook_prefix . $option, [ $this, 'return_0' ] );
+			remove_filter( $this->option_hook_prefix . $option, [ $this, 'return_1' ] );
+		}
+
+		remove_filter( $this->option_hook_prefix . 'cache_reject_uri', [ $this, 'return_empty_array' ] );
+
 		update_option( 'home', $this->homeWpOption );
 		set_transient( 'rocket_preload_errors', $this->preloadErrorsTransient );
 		set_transient( 'rocket_preload_running', $this->preloadRunningTransient );
 
-		$this->manualPreloadOption        = null;
-		$this->cacheMobileOption          = null;
-		$this->doCachingMobileFilesOption = null;
-		$this->cacheRejectUriOption       = null;
-		$this->cacheQueryStringsOption    = null;
-		$this->homeWpOption               = null;
-		$this->preloadErrorsTransient     = null;
-		$this->preloadRunningTransient    = null;
-		$this->process                    = null;
+		$this->homeWpOption            = null;
+		$this->preloadErrorsTransient  = null;
+		$this->preloadRunningTransient = null;
+		$this->process                 = null;
 	}
 
 	public function testShouldPreloadWhenValidUrls() {
@@ -118,7 +107,7 @@ class Test_preload extends TestCase {
 			}
 
 			$mobile_sub = ! empty( $args['user-agent'] ) && strpos( $args['user-agent'], 'iPhone' ) ? '-mobile' : '';
-			$path       = WP_ROCKET_PLUGIN_TESTS_ROOT . '/../Fixtures/Preload/Homepage/' . $file_name . $mobile_sub . '.html';
+			$path       = WP_ROCKET_TESTS_FIXTURES_DIR . '/Preload/Homepage/' . $file_name . $mobile_sub . '.html';
 
 			if ( ! \file_exists( $path ) ) {
 				return new \WP_Error( 'file-not-found', 'File not found', [ $file_name . $mobile_sub . '.html' ] );
@@ -137,10 +126,11 @@ class Test_preload extends TestCase {
 			];
 		} );
 
-		update_rocket_option( 'manual_preload', 1 );
-		update_rocket_option( 'cache_mobile', 1 );
-		update_rocket_option( 'do_caching_mobile_files', 1 );
-		update_rocket_option( 'cache_reject_uri', [] );
+		add_filter( $this->option_hook_prefix . 'manual_preload', [ $this, 'return_1' ] );
+		add_filter( $this->option_hook_prefix . 'cache_mobile', [ $this, 'return_1' ] );
+		add_filter( $this->option_hook_prefix . 'do_caching_mobile_files', [ $this, 'return_1' ] );
+		add_filter( $this->option_hook_prefix . 'cache_reject_uri', [ $this, 'return_empty_array' ] );
+
 		delete_transient( 'rocket_preload_errors' );
 
 		( new Homepage( $this->process ) )->preload( $home_urls );
@@ -161,5 +151,17 @@ class Test_preload extends TestCase {
 		$this->assertContains( [ 'url' => 'https://example.com/mobile/de', 'mobile' => true ], $queue );
 		$this->assertContains( [ 'url' => 'https://example.com/mobile/it', 'mobile' => true ], $queue );
 		$this->assertCount( 8, $queue );
+	}
+
+	public function return_0() {
+		return 0;
+	}
+
+	public function return_1() {
+		return 1;
+	}
+
+	public function return_empty_array() {
+		return [];
 	}
 }

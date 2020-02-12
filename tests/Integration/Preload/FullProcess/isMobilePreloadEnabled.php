@@ -1,7 +1,8 @@
 <?php
 namespace WP_Rocket\Tests\Integration\Preload\FullProcess;
 
-use WP_Rocket\Tests\Integration\TestCase;
+use WPMedia\PHPUnit\Integration\TestCase;
+
 use WP_Rocket\Preload\Full_Process;
 
 /**
@@ -9,19 +10,14 @@ use WP_Rocket\Preload\Full_Process;
  * @group Preload
  */
 class Test_isMobilePreloadEnabled extends TestCase {
-	protected $identifier = 'rocket_preload';
-	protected $manualPreloadOption;
-	protected $cacheMobileOption;
-	protected $doCachingMobileFilesOption;
+	protected $identifier         = 'rocket_preload';
+	protected $option_hook_prefix = 'pre_get_rocket_option_';
 	protected $process;
 
 	public function setUp() {
 		parent::setUp();
 
-		$this->manualPreloadOption        = get_rocket_option( 'manual_preload' );
-		$this->cacheMobileOption          = get_rocket_option( 'cache_mobile' );
-		$this->doCachingMobileFilesOption = get_rocket_option( 'do_caching_mobile_files' );
-		$this->process                    = new Full_Process();
+		$this->process = new Full_Process();
 	}
 
 	public function tearDown() {
@@ -36,67 +32,64 @@ class Test_isMobilePreloadEnabled extends TestCase {
 			remove_filter( 'cron_schedules', [ $this->process, 'schedule_cron_healthcheck' ] );
 		}
 
-		update_rocket_option( 'manual_preload', $this->manualPreloadOption );
-		update_rocket_option( 'cache_mobile', $this->cacheMobileOption );
-		update_rocket_option( 'do_caching_mobile_files', $this->doCachingMobileFilesOption );
-
-		$this->manualPreloadOption        = null;
-		$this->cacheMobileOption          = null;
-		$this->doCachingMobileFilesOption = null;
-		$this->process                    = null;
+		foreach ( [ 'manual_preload', 'cache_mobile', 'do_caching_mobile_files' ] as $option ) {
+			remove_filter( $this->option_hook_prefix . $option, [ $this, 'return_0' ] );
+			remove_filter( $this->option_hook_prefix . $option, [ $this, 'return_1' ] );
+		}
 	}
 
 	public function testShouldReturnTrueWhenOptionsEnabled() {
-		update_rocket_option( 'manual_preload', 1 );
-		update_rocket_option( 'cache_mobile', 1 );
-		update_rocket_option( 'do_caching_mobile_files', 1 );
+		add_filter( $this->option_hook_prefix . 'manual_preload', [ $this, 'return_1' ] );
+		add_filter( $this->option_hook_prefix . 'cache_mobile', [ $this, 'return_1' ] );
+		add_filter( $this->option_hook_prefix . 'do_caching_mobile_files', [ $this, 'return_1' ] );
 
 		$this->assertTrue( $this->process->is_mobile_preload_enabled() );
 	}
 
 	public function testShouldReturnFalseWhenOptionsDisabled() {
-		update_rocket_option( 'manual_preload', 0 );
-		update_rocket_option( 'cache_mobile', 1 );
-		update_rocket_option( 'do_caching_mobile_files', 1 );
+		add_filter( $this->option_hook_prefix . 'manual_preload', [ $this, 'return_0' ] );
+		add_filter( $this->option_hook_prefix . 'cache_mobile', [ $this, 'return_1' ] );
+		add_filter( $this->option_hook_prefix . 'do_caching_mobile_files', [ $this, 'return_1' ] );
 
 		$this->assertFalse( $this->process->is_mobile_preload_enabled() );
 
-		update_rocket_option( 'manual_preload', 1 );
-		update_rocket_option( 'cache_mobile', 0 );
-		update_rocket_option( 'do_caching_mobile_files', 1 );
+		add_filter( $this->option_hook_prefix . 'manual_preload', [ $this, 'return_1' ] );
+		add_filter( $this->option_hook_prefix . 'cache_mobile', [ $this, 'return_0' ] );
 
 		$this->assertFalse( $this->process->is_mobile_preload_enabled() );
 
-		update_rocket_option( 'manual_preload', 1 );
-		update_rocket_option( 'cache_mobile', 1 );
-		update_rocket_option( 'do_caching_mobile_files', 0 );
+		add_filter( $this->option_hook_prefix . 'cache_mobile', [ $this, 'return_1' ] );
+		add_filter( $this->option_hook_prefix . 'do_caching_mobile_files', [ $this, 'return_0' ] );
 
 		$this->assertFalse( $this->process->is_mobile_preload_enabled() );
 	}
 
 	public function testShouldReturnBooleanWhenFiltered() {
-		update_rocket_option( 'manual_preload', 0 );
-		update_rocket_option( 'cache_mobile', 1 );
-		update_rocket_option( 'do_caching_mobile_files', 1 );
-
-		add_filter( 'rocket_mobile_preload_enabled', [ $this, 'mobilePreloadEnabledFilter' ], 123 );
+		add_filter( 'rocket_mobile_preload_enabled', [ $this, 'mobilePreloadEnabledFilter' ] );
+		add_filter( $this->option_hook_prefix . 'manual_preload', [ $this, 'return_0' ] );
+		add_filter( $this->option_hook_prefix . 'cache_mobile', [ $this, 'return_1' ] );
+		add_filter( $this->option_hook_prefix . 'do_caching_mobile_files', [ $this, 'return_1' ] );
 
 		$this->assertTrue( $this->process->is_mobile_preload_enabled() );
 
-		remove_filter( 'rocket_mobile_preload_enabled', [ $this, 'mobilePreloadEnabledFilter' ], 123 );
-
-		update_rocket_option( 'manual_preload', 1 );
-		update_rocket_option( 'cache_mobile', 1 );
-		update_rocket_option( 'do_caching_mobile_files', 1 );
-
-		add_filter( 'rocket_mobile_preload_enabled', '__return_empty_string', 123 );
+		remove_filter( 'rocket_mobile_preload_enabled', [ $this, 'mobilePreloadEnabledFilter' ] );
+		add_filter( 'rocket_mobile_preload_enabled', [ $this, 'return_0' ] );
+		add_filter( $this->option_hook_prefix . 'manual_preload', [ $this, 'return_1' ] );
 
 		$this->assertFalse( $this->process->is_mobile_preload_enabled() );
 
-		remove_filter( 'rocket_mobile_preload_enabled', '__return_empty_string', 123 );
+		remove_filter( 'rocket_mobile_preload_enabled', [ $this, 'return_0' ] );
 	}
 
 	public function mobilePreloadEnabledFilter() {
 		return 'foobar';
+	}
+
+	public function return_0() {
+		return 0;
+	}
+
+	public function return_1() {
+		return 1;
 	}
 }

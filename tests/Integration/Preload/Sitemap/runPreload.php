@@ -1,10 +1,9 @@
 <?php
-namespace WP_Rocket\Tests\Unit\Preload\Process;
+namespace WP_Rocket\Tests\Integration\Preload\Sitemap;
 
-use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Actions;
-use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
+use WPMedia\PHPUnit\Integration\TestCase;
 
 use WP_Rocket\Preload\Full_Process;
 use WP_Rocket\Preload\Sitemap;
@@ -34,32 +33,24 @@ class Process extends Full_Process {
 }
 
 /**
- * @covers \WP_Rocket\Tests\Unit\Preload\Process\Sitemap::run_preload
+ * @covers \WP_Rocket\Preload\Sitemap::run_preload
  * @group Preload
  */
 class Test_runPreload extends TestCase {
-	protected $identifier = 'rocket_preload';
-	protected $manualPreloadOption;
-	protected $cacheMobileOption;
-	protected $doCachingMobileFilesOption;
-	protected $cacheRejectUriOption;
-	protected $cacheQueryStringsOptions;
+	protected $identifier         = 'rocket_preload';
+	protected $option_hook_prefix = 'pre_get_rocket_option_';
 	protected $homeWpOption;
 	protected $preloadErrorsTransient;
+	protected $preloadRunningTransient;
 	protected $process;
 
 	public function setUp() {
 		parent::setUp();
 
-		$this->manualPreloadOption        = get_rocket_option( 'manual_preload' );
-		$this->cacheMobileOption          = get_rocket_option( 'cache_mobile' );
-		$this->doCachingMobileFilesOption = get_rocket_option( 'do_caching_mobile_files' );
-		$this->cacheRejectUriOption       = get_rocket_option( 'cache_reject_uri' );
-		$this->cacheQueryStringsOption    = get_rocket_option( 'cache_query_strings' );
-		$this->homeWpOption               = get_option( 'home' );
-		$this->preloadErrorsTransient     = get_transient( 'rocket_preload_errors' );
-		$this->preloadRunningTransient    = get_transient( 'rocket_preload_running' );
-		$this->process                    = new Process();
+		$this->homeWpOption            = get_option( 'home' );
+		$this->preloadErrorsTransient  = get_transient( 'rocket_preload_errors' );
+		$this->preloadRunningTransient = get_transient( 'rocket_preload_running' );
+		$this->process                 = new Process();
 
 		update_option( 'home', 'https://example.com/' );
 	}
@@ -76,24 +67,22 @@ class Test_runPreload extends TestCase {
 			remove_filter( 'cron_schedules', [ $this->process, 'schedule_cron_healthcheck' ] );
 		}
 
-		update_rocket_option( 'manual_preload', $this->manualPreloadOption );
-		update_rocket_option( 'cache_mobile', $this->cacheMobileOption );
-		update_rocket_option( 'do_caching_mobile_files', $this->doCachingMobileFilesOption );
-		update_rocket_option( 'cache_reject_uri', $this->cacheRejectUriOption );
-		update_rocket_option( 'cache_query_strings', $this->cacheQueryStringsOption );
+		foreach ( [ 'manual_preload', 'cache_mobile', 'do_caching_mobile_files' ] as $option ) {
+			remove_filter( $this->option_hook_prefix . $option, [ $this, 'return_0' ] );
+			remove_filter( $this->option_hook_prefix . $option, [ $this, 'return_1' ] );
+		}
+
+		remove_filter( $this->option_hook_prefix . 'cache_reject_uri', [ $this, 'return_empty_array' ] );
+		remove_filter( $this->option_hook_prefix . 'cache_query_strings', [ $this, 'return_cache_query_strings' ] );
+
 		update_option( 'home', $this->homeWpOption );
 		set_transient( 'rocket_preload_errors', $this->preloadErrorsTransient );
 		set_transient( 'rocket_preload_running', $this->preloadRunningTransient );
 
-		$this->manualPreloadOption        = null;
-		$this->cacheMobileOption          = null;
-		$this->doCachingMobileFilesOption = null;
-		$this->cacheRejectUriOption       = null;
-		$this->cacheQueryStringsOption    = null;
-		$this->homeWpOption               = null;
-		$this->preloadErrorsTransient     = null;
-		$this->preloadRunningTransient    = null;
-		$this->process                    = null;
+		$this->homeWpOption            = null;
+		$this->preloadErrorsTransient  = null;
+		$this->preloadRunningTransient = null;
+		$this->process                 = null;
 	}
 
 	public function testShouldNotPreloadWhenNoUrls() {
@@ -115,7 +104,7 @@ class Test_runPreload extends TestCase {
 
 		// Fake the requests.
 		Functions\when( 'wp_remote_get' )->alias( function( $url, $args = [] ) {
-			$path = WP_ROCKET_PLUGIN_TESTS_ROOT . '/../Fixtures/Preload/Sitemap/';
+			$path = WP_ROCKET_TESTS_FIXTURES_DIR . '/Preload/Sitemap/';
 
 			switch ( $url ) {
 				case 'https://example.com/sitemap.xml':
@@ -145,10 +134,11 @@ class Test_runPreload extends TestCase {
 			];
 		} );
 
-		update_rocket_option( 'manual_preload', 1 );
-		update_rocket_option( 'cache_mobile', 1 );
-		update_rocket_option( 'do_caching_mobile_files', 1 );
-		update_rocket_option( 'cache_reject_uri', [] );
+		add_filter( $this->option_hook_prefix . 'manual_preload', [ $this, 'return_1' ] );
+		add_filter( $this->option_hook_prefix . 'cache_mobile', [ $this, 'return_1' ] );
+		add_filter( $this->option_hook_prefix . 'do_caching_mobile_files', [ $this, 'return_1' ] );
+		add_filter( $this->option_hook_prefix . 'cache_reject_uri', [ $this, 'return_empty_array' ] );
+
 		delete_transient( 'rocket_preload_errors' );
 
 		( new Sitemap( $this->process ) )->run_preload( $sitemaps );
@@ -200,7 +190,7 @@ class Test_runPreload extends TestCase {
 
 		// Fake the requests.
 		Functions\when( 'wp_remote_get' )->alias( function( $url, $args = [] ) use ( $permalink ) {
-			$path = WP_ROCKET_PLUGIN_TESTS_ROOT . '/../Fixtures/Preload/Sitemap/';
+			$path = WP_ROCKET_TESTS_FIXTURES_DIR . '/Preload/Sitemap/';
 
 			switch ( $url ) {
 				case 'https://example.com/sitemap.xml':
@@ -228,11 +218,12 @@ class Test_runPreload extends TestCase {
 			];
 		} );
 
-		update_rocket_option( 'manual_preload', 1 );
-		update_rocket_option( 'cache_mobile', 1 );
-		update_rocket_option( 'do_caching_mobile_files', 1 );
-		update_rocket_option( 'cache_reject_uri', [] );
-		update_rocket_option( 'cache_query_strings', [ 'page_id' ] ); // For our newly created page.
+		add_filter( $this->option_hook_prefix . 'manual_preload', [ $this, 'return_1' ] );
+		add_filter( $this->option_hook_prefix . 'cache_mobile', [ $this, 'return_1' ] );
+		add_filter( $this->option_hook_prefix . 'do_caching_mobile_files', [ $this, 'return_1' ] );
+		add_filter( $this->option_hook_prefix . 'cache_reject_uri', [ $this, 'return_empty_array' ] );
+		add_filter( $this->option_hook_prefix . 'cache_query_strings', [ $this, 'return_cache_query_strings' ] ); // For our newly created page.
+
 		delete_transient( 'rocket_preload_errors' );
 
 		( new Sitemap( $this->process ) )->run_preload( $sitemaps );
@@ -255,5 +246,21 @@ class Test_runPreload extends TestCase {
 		$this->assertCount( 8, $queue );
 
 		wp_delete_post( $post_id, true );
+	}
+
+	public function return_0() {
+		return 0;
+	}
+
+	public function return_1() {
+		return 1;
+	}
+
+	public function return_empty_array() {
+		return [];
+	}
+
+	public function return_cache_query_strings() {
+		return [ 'page_id' ];
 	}
 }

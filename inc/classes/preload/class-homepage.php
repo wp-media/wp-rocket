@@ -10,7 +10,7 @@ namespace WP_Rocket\Preload;
 class Homepage extends Abstract_Preload {
 
 	/**
-	 * Cache a processing that use get_rocket_cache_query_string().
+	 * Cache processing that use get_rocket_cache_query_string().
 	 *
 	 * @since  3.6
 	 * @access private

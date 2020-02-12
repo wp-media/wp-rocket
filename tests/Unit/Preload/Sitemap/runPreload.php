@@ -1,16 +1,15 @@
 <?php
-namespace WP_Rocket\Tests\Unit\Preload\Process;
+namespace WP_Rocket\Tests\Unit\Preload\Sitemap;
 
-use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Actions;
-use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
+use WPMedia\PHPUnit\Unit\TestCase;
 
 use WP_Rocket\Preload\Full_Process;
 use WP_Rocket\Preload\Sitemap;
 
 /**
- * @covers \WP_Rocket\Tests\Unit\Preload\Process\Sitemap::run_preload
+ * @covers \WP_Rocket\Preload\Sitemap::run_preload
  * @group Preload
  */
 class Test_runPreload extends TestCase {
@@ -29,8 +28,8 @@ class Test_runPreload extends TestCase {
 	public function testShouldPreloadSitemapsWhenValidUrls() {
 		$queue    = [];
 		$sitemaps = [
-			'https://wordpress.org/sitemap.xml',
-			'https://wordpress.org/sitemap-mobile.xml',
+			'https://example.com/sitemap.xml',
+			'https://example.com/sitemap-mobile.xml',
 		];
 
 		// Stubs.
@@ -64,10 +63,10 @@ class Test_runPreload extends TestCase {
 		Functions\when( 'esc_url_raw' )->returnArg();
 		Functions\when( 'wp_remote_get' )->alias( function( $url, $args = [] ) {
 			switch ( $url ) {
-				case 'https://wordpress.org/sitemap.xml':
-					return [ 'body' => \file_get_contents( WP_ROCKET_PLUGIN_TESTS_ROOT . '/../Fixtures/Preload/Sitemap/sitemap.xml' ) ];
-				case 'https://wordpress.org/sitemap-mobile.xml':
-					return [ 'body' => \file_get_contents( WP_ROCKET_PLUGIN_TESTS_ROOT . '/../Fixtures/Preload/Sitemap/sitemap-mobile.xml' ) ];
+				case 'https://example.com/sitemap.xml':
+					return [ 'body' => \file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/Preload/Sitemap/sitemap.xml' ) ];
+				case 'https://example.com/sitemap-mobile.xml':
+					return [ 'body' => \file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/Preload/Sitemap/sitemap-mobile.xml' ) ];
 			}
 			return false;
 		} );
@@ -86,6 +85,9 @@ class Test_runPreload extends TestCase {
 			}
 			return $response['body'];
 		} );
+
+		// Stubs for $this->get_url_identifier().
+		Functions\when( 'get_rocket_cache_query_string' )->justReturn( [] );
 		Functions\when( 'trailingslashit' )->alias( function( $url ) {
 			return rtrim( $url, '/' ) . '/';
 		} );
@@ -94,15 +96,15 @@ class Test_runPreload extends TestCase {
 
 		$preload->run_preload( $sitemaps );
 
-		$this->assertContains( 'https://wordpress.org/', $queue );
-		$this->assertContains( 'https://wordpress.org/fr/', $queue );
-		$this->assertContains( 'https://wordpress.org/es/', $queue );
-		$this->assertContains( [ 'url' => 'https://wordpress.org/', 'mobile' => true ], $queue );
-		$this->assertContains( [ 'url' => 'https://wordpress.org/fr/', 'mobile' => true ], $queue );
-		$this->assertContains( [ 'url' => 'https://wordpress.org/es/', 'mobile' => true ], $queue );
-		$this->assertContains( [ 'url' => 'https://wordpress.org/mobile/de/', 'mobile' => true ], $queue );
-		$this->assertContains( [ 'url' => 'https://wordpress.org/mobile/fr/', 'mobile' => true ], $queue );
-		$this->assertContains( [ 'url' => 'https://wordpress.org/mobile/es/', 'mobile' => true ], $queue );
+		$this->assertContains( 'https://example.com/', $queue );
+		$this->assertContains( 'https://example.com/fr/', $queue );
+		$this->assertContains( 'https://example.com/es/', $queue );
+		$this->assertContains( [ 'url' => 'https://example.com/', 'mobile' => true ], $queue );
+		$this->assertContains( [ 'url' => 'https://example.com/fr/', 'mobile' => true ], $queue );
+		$this->assertContains( [ 'url' => 'https://example.com/es/', 'mobile' => true ], $queue );
+		$this->assertContains( [ 'url' => 'https://example.com/mobile/de/', 'mobile' => true ], $queue );
+		$this->assertContains( [ 'url' => 'https://example.com/mobile/fr/', 'mobile' => true ], $queue );
+		$this->assertContains( [ 'url' => 'https://example.com/mobile/es/', 'mobile' => true ], $queue );
 		$this->assertCount( 9, $queue );
 	}
 }

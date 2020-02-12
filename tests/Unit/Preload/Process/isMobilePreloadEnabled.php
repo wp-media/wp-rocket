@@ -1,10 +1,11 @@
 <?php
 namespace WP_Rocket\Tests\Unit\Preload\Process;
 
-use WP_Rocket\Tests\Unit\TestCase;
-use WP_Rocket\Preload\Process;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
+use WPMedia\PHPUnit\Unit\TestCase;
+
+use WP_Rocket\Preload\Process;
 
 /**
  * @covers \WP_Rocket\Preload\Process::is_mobile_preload_enabled

@@ -20,7 +20,7 @@ class Sitemap extends Abstract_Preload {
 	private $sitemap_error = false;
 
 	/**
-	 * Cache a processing that use get_rocket_cache_query_string().
+	 * Cache processing that use get_rocket_cache_query_string().
 	 *
 	 * @since  3.6
 	 * @access private

@@ -1,7 +1,8 @@
 <?php
 namespace WP_Rocket\Tests\Unit\Preload\Process;
 
-use WP_Rocket\Tests\Unit\TestCase;
+use WPMedia\PHPUnit\Unit\TestCase;
+
 use WP_Rocket\Preload\Process;
 
 /**
@@ -19,7 +20,6 @@ class Test_getItemUserAgent extends TestCase {
 	public function testShouldNotReturnMobileUaWhenNotMobileItem() {
 		$stub = $this->getMockForAbstractClass( Process::class );
 
-		$this->assertNotContains( 'iPhone', $stub->get_item_user_agent( [] ) );
 		$this->assertNotContains( 'iPhone', $stub->get_item_user_agent( [ 'mobile' => 0 ] ) );
 	}
 }

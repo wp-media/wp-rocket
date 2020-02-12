@@ -1,14 +1,14 @@
 <?php
-namespace WP_Rocket\Tests\Unit\Preload\Process;
+namespace WP_Rocket\Tests\Unit\Preload\Homepage;
 
-use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
+use WPMedia\PHPUnit\Unit\TestCase;
 
 use WP_Rocket\Preload\Full_Process;
 use WP_Rocket\Preload\Homepage;
 
 /**
- * @covers \WP_Rocket\Tests\Unit\Preload\Process\Homepage::preload
+ * @covers \WP_Rocket\Preload\Homepage::preload
  * @group Preload
  */
 class Test_preload extends TestCase {
@@ -41,9 +41,9 @@ class Test_preload extends TestCase {
 	public function testShouldPreloadWhenValidUrls() {
 		$queue     = [];
 		$home_urls = [
-			[ 'url' => 'https://wordpress.org' ],
-			[ 'url' => 'https://wordpress.org/foobar/' ],
-			[ 'url' => 'https://wordpress.org/category/barbaz/', 'mobile' => 1 ],
+			[ 'url' => 'https://example.com' ],
+			[ 'url' => 'https://example.com/foobar/' ],
+			[ 'url' => 'https://example.com/category/barbaz/', 'mobile' => 1 ],
 		];
 
 		// Stubs.
@@ -52,9 +52,9 @@ class Test_preload extends TestCase {
 			->expects( $this->exactly( 3 ) )
 			->method( 'format_item' )
 			->willReturnOnConsecutiveCalls(
-				[ 'url' => 'https://wordpress.org', 'mobile' => false ],
-				[ 'url' => 'https://wordpress.org/foobar/', 'mobile' => false ],
-				[ 'url' => 'https://wordpress.org/category/barbaz/', 'mobile' => true ]
+				[ 'url' => 'https://example.com', 'mobile' => false ],
+				[ 'url' => 'https://example.com/foobar/', 'mobile' => false ],
+				[ 'url' => 'https://example.com/category/barbaz/', 'mobile' => true ]
 			);
 		$preload_process
 			->expects( $this->once() )
@@ -87,13 +87,13 @@ class Test_preload extends TestCase {
 		Functions\when( 'esc_url_raw' )->returnArg();
 		Functions\when( 'wp_remote_get' )->alias( function( $url, $args = [] ) {
 			$mobile_sub = ! empty( $args['user-agent'] ) && strpos( $args['user-agent'], 'iPhone' ) ? '/mobile' : '';
-			$home_url   = 'https://wordpress.org' . $mobile_sub;
+			$home_url   = 'https://example.com' . $mobile_sub;
 			switch ( $url ) {
-				case 'https://wordpress.org':
+				case 'https://example.com':
 					return [ 'body' => sprintf( '<a href="%1$s"><a href="%1$s/fr"><a href="%1$s/es">', $home_url ) ];
-				case 'https://wordpress.org/foobar/':
+				case 'https://example.com/foobar/':
 					return [ 'body' => sprintf( '<a href="%1$s/de"><a href="%1$s/es"><a href="https://toto.org">', $home_url ) ];
-				case 'https://wordpress.org/category/barbaz/':
+				case 'https://example.com/category/barbaz/':
 					return [ 'body' => sprintf( '<a href="%1$s"><a href="%1$s/it">', $home_url ) ];
 			}
 			return false;
@@ -128,7 +128,7 @@ class Test_preload extends TestCase {
 			];
 			return array_intersect_key( array_merge( $def, parse_url( $url ) ), $def );
 		} );
-		Functions\when( 'home_url' )->justReturn( 'https://wordpress.org/' );
+		Functions\when( 'home_url' )->justReturn( 'https://example.com/' );
 		Functions\when( 'rocket_add_url_protocol' )->returnArg();
 		Functions\when( 'untrailingslashit' )->alias( function( $url ) {
 			return rtrim( $url, '/' );
@@ -140,14 +140,14 @@ class Test_preload extends TestCase {
 
 		$preload->preload( $home_urls );
 
-		$this->assertContains( 'https://wordpress.org/fr', $queue );
-		$this->assertContains( 'https://wordpress.org/es', $queue );
-		$this->assertContains( 'https://wordpress.org/de', $queue );
-		$this->assertContains( [ 'url' => 'https://wordpress.org/mobile', 'mobile' => true ], $queue );
-		$this->assertContains( [ 'url' => 'https://wordpress.org/mobile/fr', 'mobile' => true ], $queue );
-		$this->assertContains( [ 'url' => 'https://wordpress.org/mobile/es', 'mobile' => true ], $queue );
-		$this->assertContains( [ 'url' => 'https://wordpress.org/mobile/de', 'mobile' => true ], $queue );
-		$this->assertContains( [ 'url' => 'https://wordpress.org/mobile/it', 'mobile' => true ], $queue );
+		$this->assertContains( 'https://example.com/fr', $queue );
+		$this->assertContains( 'https://example.com/es', $queue );
+		$this->assertContains( 'https://example.com/de', $queue );
+		$this->assertContains( [ 'url' => 'https://example.com/mobile', 'mobile' => true ], $queue );
+		$this->assertContains( [ 'url' => 'https://example.com/mobile/fr', 'mobile' => true ], $queue );
+		$this->assertContains( [ 'url' => 'https://example.com/mobile/es', 'mobile' => true ], $queue );
+		$this->assertContains( [ 'url' => 'https://example.com/mobile/de', 'mobile' => true ], $queue );
+		$this->assertContains( [ 'url' => 'https://example.com/mobile/it', 'mobile' => true ], $queue );
 		$this->assertCount( 8, $queue );
 	}
 }
