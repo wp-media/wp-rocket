@@ -1,6 +1,8 @@
 <?php
 namespace WP_Rocket\Preload;
 
+use WP_Background_Process;
+
 /**
  * Abstract class to be extended by preload process classes.
  * Extends the background process class for the preload background process.
@@ -11,7 +13,7 @@ namespace WP_Rocket\Preload;
  *
  * @see WP_Background_Process
  */
-abstract class Process extends \WP_Background_Process {
+abstract class Process extends WP_Background_Process {
 	/**
 	 * Prefix
 	 *
@@ -206,7 +208,7 @@ abstract class Process extends \WP_Background_Process {
 		}
 
 		$mobile          = $item['mobile'] ? '-mobile' : '';
-		$file_cache_path = WP_ROCKET_CACHE_PATH . $url['host'] . strtolower( $url['path'] . $url['query'] ) . 'index' . $mobile . $https . '.html';
+		$file_cache_path = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) . $url['host'] . strtolower( $url['path'] . $url['query'] ) . 'index' . $mobile . $https . '.html';
 
 		return rocket_direct_filesystem()->exists( $file_cache_path );
 	}
