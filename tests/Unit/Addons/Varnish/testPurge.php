@@ -1,10 +1,10 @@
 <?php
 namespace WP_Rocket\Tests\Unit\Addons\Varnish;
 
-use WP_Rocket\Tests\Unit\TestCase;
-use WP_Rocket\Addons\Varnish\Varnish;
-use Brain\Monkey\Functions;
 use Brain\Monkey\Filters;
+use Brain\Monkey\Functions;
+use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Addons\Varnish\Varnish;
 
 /**
  * @covers \WP_Rocket\Tests\Unit\Addons\Varnish::purge
@@ -41,7 +41,7 @@ class TestPurge extends TestCase {
                     'query'    => $query,
                     'fragment' => $fragment,
                 ];
-        } ); 
+        } );
         Functions\expect( 'wp_remote_request' )
             ->once()
             ->with(
@@ -98,7 +98,7 @@ class TestPurge extends TestCase {
                     'query'    => $query,
                     'fragment' => $fragment,
                 ];
-        } ); 
+        } );
         Functions\expect( 'wp_remote_request' )
             ->once()
             ->with(
@@ -147,7 +147,7 @@ class TestPurge extends TestCase {
                     'query'    => $query,
                     'fragment' => $fragment,
                 ];
-        } ); 
+        } );
         Filters\expectApplied('rocket_varnish_ip')
             ->once()
             ->andReturn(
@@ -171,7 +171,7 @@ class TestPurge extends TestCase {
                     ],
 				]
             );
-        
+
         Functions\expect( 'wp_remote_request' )
             ->once()
             ->with(

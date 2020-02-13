@@ -1,23 +1,20 @@
 <?php
 namespace WP_Rocket\Tests\Unit\Subscriber\Addons\CloudflareSubscriber;
 
-use WP_Rocket\Tests\Unit\TestCase;
-use WP_Rocket\Subscriber\Addons\Cloudflare\CloudflareSubscriber;
 use Brain\Monkey\Functions;
+use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Subscriber\Addons\Cloudflare\CloudflareSubscriber;
 
+/**
+ * @group Cloudflare
+ */
 class TestSetRealIp extends TestCase {
+	protected static $mockCommonWpFunctionsInSetUp = true;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->mockCommonWpFunctions();
-
-		if ( ! defined('WEEK_IN_SECONDS') ) {
-			define('WEEK_IN_SECONDS', 7 * 24 * 60 * 60);
-		}
-		if ( ! defined('WP_ROCKET_VERSION') ) {
-			define('WP_ROCKET_VERSION', '3.5');
-		}
+		Functions\stubs( [ 'sanitize_text_field' ] );
 	}
 
 	/**

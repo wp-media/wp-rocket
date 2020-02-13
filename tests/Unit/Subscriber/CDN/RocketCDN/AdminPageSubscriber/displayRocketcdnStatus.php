@@ -1,19 +1,29 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\Subscriber\CDN\RocketCDN;
+namespace WP_Rocket\Tests\Unit\Subscriber\CDN\RocketCDN\AdminPageSubscriber;
 
 use Brain\Monkey\Functions;
+use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber;
-use WP_Rocket\Tests\Fixtures\WP_Filesystem_Direct;
-use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber::display_rocketcdn_status
+ * @covers AdminPageSubscriber::display_rocketcdn_status
  * @group  RocketCDN
  */
-class Test_DisplayRocketcdnStatus extends TestCase {
+class Test_DisplayRocketcdnStatus extends FilesystemTestCase {
+	protected static $mockCommonWpFunctionsInSetUp = true;
 	private $api_client;
 	private $page;
+	protected $rootVirtualDir = 'wp-rocket';
+	protected $structure = [
+			'views' => [
+				'settings' => [
+					'rocketcdn' => [
+						'dashboard-status.php' => ''
+					]
+				]
+			]
+	];
 
 	public function setUp() {
 		parent::setUp();
@@ -26,13 +36,7 @@ class Test_DisplayRocketcdnStatus extends TestCase {
 			'views/settings/rocketcdn'
 		);
 
-		Functions\expect( 'rocket_direct_filesystem' )
-			->once()
-			->andReturnUsing( function() {
-				return new WP_Filesystem_Direct;
-			});
-
-		$this->mockCommonWpFunctions();
+		Functions\When( 'rocket_direct_filesystem' )->justReturn( $this->filesystem );
 	}
 
 	private function getActualHtml() {
@@ -42,11 +46,10 @@ class Test_DisplayRocketcdnStatus extends TestCase {
 	}
 
 	/**
-	 * Test should render the "no subscription" HTML when the subscription status is "cancelled."
+	 * Test should output HTML for an inactive subscription
 	 */
-	public function testShouldRenderNoSubscriptionHTMLWhenCancelled() {
-		$this->api_client->expects( $this->once() )
-		                 ->method( 'get_subscription_data' )
+	public function testShouldOutputNoSubscriptionWhenInactive() {
+		$this->api_client->method( 'get_subscription_data' )
 		                 ->willReturn(
 			                 [
 				                 'is_active'                     => false,
@@ -55,7 +58,7 @@ class Test_DisplayRocketcdnStatus extends TestCase {
 			                 ]
 		                 );
 		Functions\expect( 'get_option' )->never();
-		Functions\expect( 'date_il18n' )->never();
+		Functions\expect( 'date_i18n' )->never();
 
 		$expected = <<<HTML
 <div class="wpr-optionHeader">
@@ -77,12 +80,8 @@ HTML;
 		$this->assertSame( $this->format_the_html( $expected ), $this->getActualHtml() );
 	}
 
-	/**
-	 * Test should render HTML when the subscription status is "running".
-	 */
-	public function testShouldRenderHTMLWhenSubscriptionIsRunning() {
-		$this->api_client->expects( $this->once() )
-		                 ->method( 'get_subscription_data' )
+	public function testShouldOutputSubscriptionDataWhenActive() {
+		$this->api_client->method( 'get_subscription_data' )
 		                 ->willReturn(
 			                 [
 				                 'is_active'                     => true,
@@ -90,14 +89,8 @@ HTML;
 				                 'subscription_next_date_update' => '2020-01-01',
 			                 ]
 		                 );
-		Functions\expect( 'get_option' )
-			->once()
-			->with( 'date_format' )
-			->andReturn( 'Y-m-d' );
-		Functions\expect( 'date_i18n' )
-			->once()
-			->with( 'Y-m-d', strtotime( '2020-01-01' ) )
-			->andReturn( '2020-01-01' );
+		Functions\when( 'get_option' )->justReturn( 'Y-m-d' );
+		Functions\when( 'date_i18n' )->justReturn( '2020-01-01' );
 
 		$expected = <<<HTML
 <div class="wpr-optionHeader">

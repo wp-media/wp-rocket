@@ -96,13 +96,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Returns an array of events that this subscriber wants to listen to.
-	 *
-	 * @since  3.4
-	 * @access public
-	 * @author Remy Perona
-	 *
-	 * @return array
+	 * {@inheritdoc}
 	 */
 	public static function get_subscribed_events() {
 		return [
@@ -706,7 +700,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 		}
 
 		$content_url = preg_replace( '@^https?:@', '', content_url( '/' ) );
-		$content_dir = trailingslashit( WP_CONTENT_DIR );
+		$content_dir = trailingslashit( rocket_get_constant( 'WP_CONTENT_DIR' ) );
 		$list        = [ $content_url => $content_dir ];
 
 		/**

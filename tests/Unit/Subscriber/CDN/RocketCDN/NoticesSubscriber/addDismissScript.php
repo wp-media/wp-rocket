@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Tests\Unit\Subscriber\CDN\RocketCDN;
 
-use WP_Rocket\Tests\Unit\TestCase;
+use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Subscriber\CDN\RocketCDN\NoticesSubscriber;
 use Brain\Monkey\Functions;
 
@@ -25,7 +25,7 @@ class Test_AddDismissScript extends TestCase {
 		Functions\when('current_user_can')->justReturn(false);
 
 		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
-		
+
 		$this->assertNull($page->add_dismiss_script());
 	}
 
@@ -39,7 +39,7 @@ class Test_AddDismissScript extends TestCase {
 		});
 
 		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
-		
+
 		$this->assertNull($page->add_dismiss_script());
 	}
 
@@ -55,7 +55,7 @@ class Test_AddDismissScript extends TestCase {
 		Functions\when('get_user_meta')->justReturn(true);
 
 		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
-		
+
 		$this->assertNull($page->add_dismiss_script());
 	}
 
@@ -74,7 +74,7 @@ class Test_AddDismissScript extends TestCase {
 			->willReturn(['subscription_status' => 'running']);
 
 		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
-		
+
 		$this->assertNull($page->add_dismiss_script());
 	}
 

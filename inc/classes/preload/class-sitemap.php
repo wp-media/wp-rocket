@@ -44,7 +44,7 @@ class Sitemap extends Abstract_Preload {
 			 * @param string $sitemap_type  the sitemap identifier
 			 * @param string $sitemap_url sitemap URL to be crawler
 			*/
-			do_action( 'before_run_rocket_sitemap_preload', $sitemap_type, $sitemap_url ); // WPCS: prefix ok.
+			do_action( 'before_run_rocket_sitemap_preload', $sitemap_type, $sitemap_url ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 
 			$urls_group[] = $this->process_sitemap( $sitemap_url );
 
@@ -56,7 +56,7 @@ class Sitemap extends Abstract_Preload {
 			 * @param string $sitemap_type  the sitemap identifier
 			 * @param string $sitemap_url sitemap URL crawled
 			*/
-			do_action( 'after_run_rocket_sitemap_preload', $sitemap_type, $sitemap_url ); // WPCS: prefix ok.
+			do_action( 'after_run_rocket_sitemap_preload', $sitemap_type, $sitemap_url ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		}
 
 		if ( true === $this->sitemap_error ) {
@@ -124,7 +124,7 @@ class Sitemap extends Abstract_Preload {
 			[
 				'timeout'    => 10,
 				'user-agent' => 'WP Rocket/Sitemaps',
-				'sslverify'  => apply_filters( 'https_local_ssl_verify', false ), // WPCS: prefix ok.
+				'sslverify'  => apply_filters( 'https_local_ssl_verify', false ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			]
 		);
 
@@ -249,7 +249,7 @@ class Sitemap extends Abstract_Preload {
 		$urls = [];
 
 		// Get public post types.
-		$post_types = get_post_types( array( 'public' => true ) );
+		$post_types = get_post_types( [ 'public' => true ] );
 		$post_types = array_filter( $post_types, 'is_post_type_viewable' );
 
 		/**
@@ -264,7 +264,7 @@ class Sitemap extends Abstract_Preload {
 			'rocket_preload_sitemap_fallback_request_args',
 			[
 				'fields'         => 'ids',
-				'numberposts'    => 1000,
+				'numberposts'    => 1000, // phpcs:ignore WordPress.WP.PostsPerPage.posts_per_page_numberposts
 				'posts_per_page' => -1,
 				'post_type'      => $post_types,
 			]

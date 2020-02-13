@@ -1,14 +1,16 @@
 <?php
 namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\Images\Webp\ImagifySubscriber;
 
-use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber;
-use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Actions;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
+use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber;
+use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
+ * @covers Imagify_Subscriber::load_hooks
  * @group ThirdParty
+ * @group Webp
  */
 class TestLoadHooks extends TestCase {
 	/**
@@ -28,12 +30,9 @@ class TestLoadHooks extends TestCase {
 
 		$subscriber = new Imagify_Subscriber( $optionsData );
 
-		Actions\expectAdded( 'imagify_activation' )
-			->never();
+		Actions\expectAdded( 'imagify_activation' )->never();
 
 		$subscriber->load_hooks();
-
-		$this->assertTrue( true ); // Prevent "risky" warning.
 	}
 
 	/**
@@ -54,20 +53,20 @@ class TestLoadHooks extends TestCase {
 		$subscriber  = new Imagify_Subscriber( $optionsData );
 		$option_name = 'imagify_settings';
 
+		Functions\expect( 'rocket_has_constant' )
+			->once()
+			->with( 'IMAGIFY_VERSION' )
+			->andReturn( false );
 		Actions\expectAdded( 'imagify_activation' )
 			->once()
 			->with( [ $subscriber, 'plugin_activation' ], 20 );
 		Actions\expectAdded( 'imagify_deactivation' )
 			->once()
 			->with( [ $subscriber, 'plugin_deactivation' ], 20 );
-		Actions\expectAdded( 'add_site_option_' . $option_name )
-			->never();
-		Actions\expectAdded( 'add_option_' . $option_name )
-			->never();
+		Actions\expectAdded( 'add_site_option_' . $option_name )->never();
+		Actions\expectAdded( 'add_option_' . $option_name )->never();
 
 		$subscriber->load_hooks();
-
-		$this->assertTrue( true ); // Prevent "risky" warning.
 	}
 
 	/**
@@ -85,10 +84,12 @@ class TestLoadHooks extends TestCase {
 				)
 			);
 
-		Functions\when( 'is_multisite' )
-			->justReturn( false );
+		Functions\when( 'is_multisite' )->justReturn( false );
 
-		define( 'IMAGIFY_VERSION', '1.2.3-nous-irons-au-bois' );
+		Functions\expect( 'rocket_has_constant' )
+			->once()
+			->with( 'IMAGIFY_VERSION' )
+			->andReturn( true );
 
 		$subscriber  = new Imagify_Subscriber( $optionsData );
 		$option_name = 'imagify_settings';
@@ -107,7 +108,5 @@ class TestLoadHooks extends TestCase {
 			->with( [ $subscriber, 'sync_on_option_delete' ] );
 
 		$subscriber->load_hooks();
-
-		$this->assertTrue( true ); // Prevent "risky" warning.
 	}
 }

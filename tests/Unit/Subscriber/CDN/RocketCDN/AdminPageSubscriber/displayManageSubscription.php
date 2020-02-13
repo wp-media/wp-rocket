@@ -2,8 +2,8 @@
 
 namespace WP_Rocket\Tests\Unit\Subscriber\CDN\RocketCDN;
 
+use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber;
-use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber::display_manage_subscription

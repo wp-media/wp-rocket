@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Tests\Unit\Subscriber\CDN\RocketCDN;
 
-use WP_Rocket\Tests\Unit\TestCase;
+use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Subscriber\CDN\RocketCDN\NoticesSubscriber;
 use Brain\Monkey\Functions;
 
@@ -10,9 +10,6 @@ use Brain\Monkey\Functions;
  * @group RocketCDN
  */
 class Test_DismissNotice extends TestCase {
-	/**
-	 * Test should update the user meta when valid
-	 */
 	public function testShouldUpdateUserMetaWhenValid() {
 		Functions\when('check_ajax_referer')->justReturn(true);
 		Functions\when('get_current_user_id')->justReturn(1);

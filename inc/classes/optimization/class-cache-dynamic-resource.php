@@ -75,7 +75,7 @@ class Cache_Dynamic_Resource extends Abstract_Optimization {
 		 *
 		 * @param array $excluded_files An array of filepath to exclude.
 		 */
-		$this->excluded_files   = apply_filters( 'rocket_exclude_static_dynamic_resources', array() );
+		$this->excluded_files   = apply_filters( 'rocket_exclude_static_dynamic_resources', [] );
 		$this->excluded_files[] = '/wp-admin/admin-ajax.php';
 
 		foreach ( $this->excluded_files as $i => $excluded_file ) {
@@ -107,7 +107,7 @@ class Cache_Dynamic_Resource extends Abstract_Optimization {
 		* @param string $filename filename for the cache file
 		*/
 		$filename = apply_filters( 'rocket_dynamic_resource_cache_filename', preg_replace( '/\.php$/', '-' . $this->minify_key . '.' . $this->extension, $path ) );
-		$filename = rocket_realpath( rtrim( str_replace( array( ' ', '%20' ), '-', $filename ) ) );
+		$filename = rocket_realpath( rtrim( str_replace( [ ' ', '%20' ], '-', $filename ) ) );
 		$filepath = $this->busting_path . $filename;
 
 		if ( ! rocket_direct_filesystem()->is_readable( $filepath ) ) {
@@ -167,7 +167,7 @@ class Cache_Dynamic_Resource extends Abstract_Optimization {
 	public function is_excluded_file( $src ) {
 		$file = get_rocket_parse_url( $src );
 
-		if ( ! preg_match( '#\.php$#', $file['path'] ) ) {
+		if ( isset( $file['path'] ) && ! preg_match( '#\.php$#', $file['path'] ) ) {
 			return true;
 		}
 
@@ -179,13 +179,13 @@ class Cache_Dynamic_Resource extends Abstract_Optimization {
 			return true;
 		}
 
-		$file['query'] = remove_query_arg( 'ver', $file['query'] );
-
-		if ( $file['query'] ) {
-			return true;
+		if ( ! isset( $file['query'] ) ) {
+			return false;
 		}
 
-		return false;
+		$file['query'] = remove_query_arg( 'ver', $file['query'] );
+
+		return (bool) $file['query'];
 	}
 
 	/**
@@ -251,7 +251,7 @@ class Cache_Dynamic_Resource extends Abstract_Optimization {
 	 * @return string|bool
 	 */
 	protected function get_url_content( $url ) {
-		$content  = wp_remote_retrieve_body( wp_remote_get( $url ) );
+		$content = wp_remote_retrieve_body( wp_remote_get( $url ) );
 
 		if ( ! $content ) {
 			return false;

@@ -27,8 +27,12 @@ class Sitemap_Preload_Subscriber implements Subscriber_Interface {
 	}
 
 	/**
+	 * Return an array of events that this subscriber wants to listen to.
 	 *
-	 * @inheritDoc
+	 * @since  3.2
+	 * @author Remy Perona
+	 *
+	 * @return array
 	 */
 	public static function get_subscribed_events() {
 		return [

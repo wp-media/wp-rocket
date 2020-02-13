@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Tests\Integration\Subscriber\Addons\VarnishSubscriber;
 
-use PHPUnit\Framework\TestCase;
+use WPMedia\PHPUnit\Integration\TestCase;
 use WP_Rocket\Subscriber\Addons\Varnish\VarnishSubscriber;
 
 class TestGetSubscribedEvents extends TestCase {

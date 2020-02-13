@@ -28,7 +28,7 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritdoc}
 	 */
 	public static function get_subscribed_events() {
 		return [

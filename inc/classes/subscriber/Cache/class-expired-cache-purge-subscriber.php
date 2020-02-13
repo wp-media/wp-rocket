@@ -57,13 +57,7 @@ class Expired_Cache_Purge_Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Return an array of events that this subscriber wants to listen to.
-	 *
-	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
-	 *
-	 * @return array
+	 * {@inheritdoc}
 	 */
 	public static function get_subscribed_events() {
 		return [
@@ -100,9 +94,13 @@ class Expired_Cache_Purge_Subscriber implements Subscriber_Interface {
 			$allow_clear_event = true;
 		}
 		// Allow if interval is changed when unit is set to minutes.
-		if ( 'MINUTE_IN_SECONDS' === $old_value['purge_cron_unit'] &&
-				'MINUTE_IN_SECONDS' === $value['purge_cron_unit'] &&
-				$old_value['purge_cron_interval'] !== $value['purge_cron_interval'] ) {
+		if (
+			'MINUTE_IN_SECONDS' === $old_value['purge_cron_unit']
+			&&
+			'MINUTE_IN_SECONDS' === $value['purge_cron_unit']
+			&&
+			$old_value['purge_cron_interval'] !== $value['purge_cron_interval']
+		) {
 			$allow_clear_event = true;
 		}
 
