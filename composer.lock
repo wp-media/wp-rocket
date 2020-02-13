@@ -3204,12 +3204,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/woocommerce/woocommerce.git",
-                "reference": "f3ceba5a95e700ef9429615b0ba82752ee328bb2"
+                "reference": "91f19495b5620d5e30600f4514ac33a8c0e73e9b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/woocommerce/woocommerce/zipball/f3ceba5a95e700ef9429615b0ba82752ee328bb2",
-                "reference": "f3ceba5a95e700ef9429615b0ba82752ee328bb2",
+                "url": "https://api.github.com/repos/woocommerce/woocommerce/zipball/91f19495b5620d5e30600f4514ac33a8c0e73e9b",
+                "reference": "91f19495b5620d5e30600f4514ac33a8c0e73e9b",
                 "shasum": ""
             },
             "require": {
@@ -3255,7 +3255,7 @@
             ],
             "description": "An eCommerce toolkit that helps you sell anything. Beautifully.",
             "homepage": "https://woocommerce.com/",
-            "time": "2020-02-13T16:18:48+00:00"
+            "time": "2020-02-13T15:13:27+00:00"
         },
         {
             "name": "woocommerce/woocommerce-blocks",
@@ -3395,12 +3395,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-media/phpunit.git",
-                "reference": "41e78fb6d8d2a4c47f0e7e342bab478436f5ecc4"
+                "reference": "75d0d2421090c0ac25d4d0db81565f0e499c4a71"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-media/phpunit/zipball/41e78fb6d8d2a4c47f0e7e342bab478436f5ecc4",
-                "reference": "41e78fb6d8d2a4c47f0e7e342bab478436f5ecc4",
+                "url": "https://api.github.com/repos/wp-media/phpunit/zipball/75d0d2421090c0ac25d4d0db81565f0e499c4a71",
+                "reference": "75d0d2421090c0ac25d4d0db81565f0e499c4a71",
                 "shasum": ""
             },
             "require": {
@@ -3431,7 +3431,7 @@
             ],
             "description": "PHPUnit extender for bootstrapping unit and WordPress integration test suites.",
             "homepage": "https://github.com/wp-media/phpunit",
-            "time": "2020-02-13T18:48:51+00:00"
+            "time": "2020-02-13T19:14:05+00:00"
         }
     ],
     "aliases": [],
