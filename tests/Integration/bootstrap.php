@@ -7,7 +7,7 @@ use function Patchwork\redefine;
 define( 'WP_ROCKET_PLUGIN_ROOT', dirname( dirname( __DIR__ ) ) . DIRECTORY_SEPARATOR );
 define( 'WP_ROCKET_TESTS_FIXTURES_DIR', dirname( __DIR__ ) . '/Fixtures' );
 define( 'WP_ROCKET_TESTS_DIR', __DIR__ );
-define( 'WP_ROCKET_TESTS_RUNNING', true );
+define( 'WP_ROCKET_IS_TESTING', true );
 
 // Manually load the plugin being tested.
 tests_add_filter(
