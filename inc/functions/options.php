@@ -15,9 +15,9 @@ defined( 'ABSPATH' ) || exit;
  * @param bool   $default (default: false) The default value of option.
  * @return mixed The option value
  */
-function get_rocket_option( $option, $default = false ) {
+function get_rocket_option( $option, $default = false ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$options_api = new Options( 'wp_rocket_' );
-	$options     = new Options_Data( $options_api->get( 'settings', array() ) );
+	$options     = new Options_Data( $options_api->get( 'settings', [] ) );
 
 	return $options->get( $option, $default );
 }
@@ -32,9 +32,9 @@ function get_rocket_option( $option, $default = false ) {
  * @param  string $value  The value of the option.
  * @return void
  */
-function update_rocket_option( $key, $value ) {
+function update_rocket_option( $key, $value ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$options_api = new Options( 'wp_rocket_' );
-	$options     = new Options_Data( $options_api->get( 'settings', array() ) );
+	$options     = new Options_Data( $options_api->get( 'settings', [] ) );
 
 	$options->set( $key, $value );
 	$options_api->set( 'settings', $options->get_options() );
@@ -50,7 +50,7 @@ function update_rocket_option( $key, $value ) {
  * @param string $plugin Plugin folder/main file.
  */
 function rocket_is_plugin_active( $plugin ) {
-	return in_array( $plugin, (array) get_option( 'active_plugins', array() ), true ) || rocket_is_plugin_active_for_network( $plugin );
+	return in_array( $plugin, (array) get_option( 'active_plugins', [] ), true ) || rocket_is_plugin_active_for_network( $plugin );
 }
 
 /**
@@ -83,7 +83,7 @@ function rocket_is_plugin_active_for_network( $plugin ) {
  * @param  string $option  The option name (lazyload, css, js, cdn).
  * @return bool            True if the option is deactivated
  */
-function is_rocket_post_excluded_option( $option ) {
+function is_rocket_post_excluded_option( $option ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	global $post;
 
 	if ( ! is_object( $post ) ) {
@@ -108,7 +108,7 @@ function is_rocket_post_excluded_option( $option ) {
  *
  * @return bool True if option is activated
  */
-function is_rocket_cache_mobile() {
+function is_rocket_cache_mobile() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	return get_rocket_option( 'cache_mobile', false );
 }
 
@@ -119,7 +119,7 @@ function is_rocket_cache_mobile() {
  *
  * @return bool True if option is activated and if mobile caching is enabled
  */
-function is_rocket_generate_caching_mobile_files() {
+function is_rocket_generate_caching_mobile_files() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	return get_rocket_option( 'cache_mobile', false ) && get_rocket_option( 'do_caching_mobile_files', false );
 }
 
@@ -195,14 +195,14 @@ function rocket_get_ignored_parameters() {
  *
  * @return string A pipe separated list of rejected uri.
  */
-function get_rocket_cache_reject_uri() {
+function get_rocket_cache_reject_uri() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	static $uris;
 
 	if ( $uris ) {
 		return $uris;
 	}
 
-	$uris      = get_rocket_option( 'cache_reject_uri', array() );
+	$uris      = get_rocket_option( 'cache_reject_uri', [] );
 	$home_root = rocket_get_home_dirname();
 
 	if ( '' !== $home_root ) {
@@ -272,7 +272,7 @@ function get_rocket_cache_reject_uri() {
  *
  * @return string A pipe separated list of rejected cookies.
  */
-function get_rocket_cache_reject_cookies() {
+function get_rocket_cache_reject_cookies() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$logged_in_cookie = explode( COOKIEHASH, LOGGED_IN_COOKIE );
 	$logged_in_cookie = array_map( 'preg_quote', $logged_in_cookie );
 	$logged_in_cookie = implode( '.+', $logged_in_cookie );
@@ -305,7 +305,7 @@ function get_rocket_cache_reject_cookies() {
  *
  * @return string A pipe separated list of mandatory cookies.
  */
-function get_rocket_cache_mandatory_cookies() {
+function get_rocket_cache_mandatory_cookies() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$cookies = [];
 
 	/**
@@ -329,7 +329,7 @@ function get_rocket_cache_mandatory_cookies() {
  *
  * @return array List of dynamic cookies.
  */
-function get_rocket_cache_dynamic_cookies() {
+function get_rocket_cache_dynamic_cookies() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$cookies = [];
 
 	/**
@@ -353,7 +353,7 @@ function get_rocket_cache_dynamic_cookies() {
  *
  * @return string A pipe separated list of rejected User-Agent.
  */
-function get_rocket_cache_reject_ua() {
+function get_rocket_cache_reject_ua() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$ua   = get_rocket_option( 'cache_reject_ua', [] );
 	$ua[] = 'facebookexternalhit';
 
@@ -369,7 +369,7 @@ function get_rocket_cache_reject_ua() {
 	$ua = array_flip( array_flip( $ua ) );
 	$ua = implode( '|', $ua );
 
-	return str_replace( array( ' ', '\\\\ ' ), '\\ ', $ua );
+	return str_replace( [ ' ', '\\\\ ' ], '\\ ', $ua );
 }
 
 /**
@@ -379,7 +379,7 @@ function get_rocket_cache_reject_ua() {
  *
  * @return array List of query strings which can be cached.
  */
-function get_rocket_cache_query_string() {
+function get_rocket_cache_query_string() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$query_strings = get_rocket_option( 'cache_query_strings', [] );
 
 	/**
@@ -404,7 +404,7 @@ function get_rocket_cache_query_string() {
  *
  * @return array An array of URLs for the JS files to be excluded.
  */
-function get_rocket_exclude_defer_js() {
+function get_rocket_exclude_defer_js() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$exclude_defer_js = [
 		'gist.github.com',
 		'content.jwplatform.com',
@@ -412,6 +412,7 @@ function get_rocket_exclude_defer_js() {
 		'www.uplaunch.com',
 		'google.com/recaptcha',
 		'widget.reviews.co.uk',
+		'verify.authorize.net/anetseal',
 		'lib/admin/assets/lib/webfont/webfont.min.js',
 		'app.mailerlite.com',
 	];
@@ -420,10 +421,13 @@ function get_rocket_exclude_defer_js() {
 		$jquery            = site_url( wp_scripts()->registered['jquery-core']->src );
 		$jetpack_jquery    = 'c0.wp.com/c/(?:.+)/wp-includes/js/jquery/jquery.js';
 		$googleapis_jquery = 'ajax.googleapis.com/ajax/libs/jquery/(?:.+)/jquery(?:\.min)?.js';
+		$cdnjs_jquery      = 'cdnjs.cloudflare.com/ajax/libs/jquery/(?:.+)/jquery(?:\.min)?.js';
 
 		$exclude_defer_js[] = rocket_clean_exclude_file( $jquery );
 		$exclude_defer_js[] = $jetpack_jquery;
 		$exclude_defer_js[] = $googleapis_jquery;
+		$exclude_defer_js[] = $cdnjs_jquery;
+
 	}
 
 	/**
@@ -451,7 +455,7 @@ function get_rocket_exclude_defer_js() {
  *
  * @return array An array of URLs for the CSS files to be excluded.
  */
-function get_rocket_exclude_async_css() {
+function get_rocket_exclude_async_css() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	/**
 	 * Filter list of async CSS files
 	 *
@@ -506,7 +510,7 @@ function rocket_check_key() {
 	Logger::info( 'LICENSE VALIDATION PROCESS STARTED.', [ 'license validation process' ] );
 
 	$response = wp_remote_get(
-		WP_ROCKET_WEB_VALID,
+		rocket_get_constant( 'WP_ROCKET_WEB_VALID' ),
 		[
 			'timeout' => 30,
 		]
@@ -607,7 +611,7 @@ function rocket_check_key() {
 			]
 		);
 
-		set_transient( WP_ROCKET_SLUG, $rocket_options );
+		set_transient( rocket_get_constant( 'WP_ROCKET_SLUG' ), $rocket_options );
 		return $rocket_options;
 	}
 
@@ -619,7 +623,7 @@ function rocket_check_key() {
 
 	Logger::info( 'License validation successful.', [ 'license validation process' ] );
 
-	set_transient( WP_ROCKET_SLUG, $rocket_options );
+	set_transient( rocket_get_constant( 'WP_ROCKET_SLUG' ), $rocket_options );
 	delete_transient( 'rocket_check_key_errors' );
 	rocket_delete_licence_data_file();
 
@@ -663,7 +667,7 @@ function rocket_is_subfolder_install() {
 	if ( is_multisite() ) {
 		$subfolder_install = ! is_subdomain_install();
 	} elseif ( ! is_null( $wpdb->sitemeta ) ) {
-		$subfolder_install = ! $wpdb->get_var( "SELECT meta_value FROM $wpdb->sitemeta WHERE site_id = 1 AND meta_key = 'subdomain_install'" );
+		$subfolder_install = ! $wpdb->get_var( "SELECT meta_value FROM $wpdb->sitemeta WHERE site_id = 1 AND meta_key = 'subdomain_install'" );  // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 	} else {
 		$subfolder_install = false;
 	}

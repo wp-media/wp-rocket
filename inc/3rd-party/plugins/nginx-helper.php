@@ -115,7 +115,7 @@ if ( isset( $nginx_helper ) ) :
 			return;
 		}
 
-		if ( ! isset( $_GET['type'], $_GET['_wpnonce'] ) ) { // WPCS: csrf ok.
+		if ( ! isset( $_GET['type'], $_GET['_wpnonce'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return;
 		}
 
@@ -139,11 +139,11 @@ if ( isset( $nginx_helper ) ) :
 	 * @since 3.3.0.1
 	 */
 	function rocket_clean_nginx_helper_cache() {
-		if ( isset( $_GET['nginx_helper_action'] ) ) { // WPCS: csrf ok.
+		if ( isset( $_GET['nginx_helper_action'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return;
 		}
 
-		do_action( 'rt_nginx_helper_purge_all' ); // WPCS: prefix ok.
+		do_action( 'rt_nginx_helper_purge_all' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	}
 	add_action( 'after_rocket_clean_domain', 'rocket_clean_nginx_helper_cache' );
 endif;

@@ -52,7 +52,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritdoc}
 	 */
 	public static function get_subscribed_events() {
 		return [
@@ -98,7 +98,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 			'is_active'       => $subscription_data['is_active'],
 		];
 
-		echo $this->generate( 'dashboard-status', $data );
+		echo $this->generate( 'dashboard-status', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**

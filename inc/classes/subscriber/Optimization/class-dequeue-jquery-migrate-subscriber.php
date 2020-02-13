@@ -3,6 +3,7 @@ namespace WP_Rocket\Subscriber\Optimization;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Admin\Options_Data as Options;
+use WP_Scripts;
 
 /**
  * Dequeue jQuery Migrate
@@ -34,7 +35,7 @@ class Dequeue_JQuery_Migrate_Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritdoc}
 	 */
 	public static function get_subscribed_events() {
 		return [
@@ -48,7 +49,7 @@ class Dequeue_JQuery_Migrate_Subscriber implements Subscriber_Interface {
 	 * @since 3.5
 	 * @author Soponar Cristina
 	 *
-	 * @param \WP_Scripts $scripts WP_Scripts instance.
+	 * @param WP_Scripts $scripts WP_Scripts instance.
 	 * @return bool|void
 	 */
 	public function dequeue_jquery_migrate( $scripts ) {
@@ -58,7 +59,7 @@ class Dequeue_JQuery_Migrate_Subscriber implements Subscriber_Interface {
 
 		if ( ! empty( $scripts->registered['jquery'] ) ) {
 			$jquery_dependencies                 = $scripts->registered['jquery']->deps;
-			$scripts->registered['jquery']->deps = array_diff( $jquery_dependencies, array( 'jquery-migrate' ) );
+			$scripts->registered['jquery']->deps = array_diff( $jquery_dependencies, [ 'jquery-migrate' ] );
 		}
 	}
 

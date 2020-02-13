@@ -1,43 +1,58 @@
 <?php
+
 namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\Images\Webp\EwwwSubscriber;
 
-use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber;
-use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
+use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber;
+use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @group ThirdParty
+ * @covers EWWW_Subscriber::get_basename
+ * @group  ThirdParty
+ * @group  Webp
  */
 class TestGetBasename extends TestCase {
-	/**
-	 * Test EWWW_Subscriber->get_basename() should return a plugin basename when EWWW not enabled.
-	 */
-	public function testShouldReturnBasenameWhenEwwwNotEnabled() {
+
+	private function getSubscriber() {
 		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
-		$subscriber  = new EWWW_Subscriber( $optionsData );
 
-		$expected = 'ewww-image-optimizer/ewww-image-optimizer.php';
-		$basename = $subscriber->get_basename();
+		return new EWWW_Subscriber( $optionsData );
+	}
 
-		$this->assertSame( $expected, $basename );
+	public function testShouldReturnBasenameWhenEwwwNotEnabled() {
+		$subscriber = $this->getSubscriber();
+
+		Functions\expect( 'rocket_has_constant' )
+			->once()
+			->with( 'EWWW_IMAGE_OPTIMIZER_PLUGIN_FILE' )
+			->andReturn( false );
+		Functions\expect( 'rocket_get_constant' )
+			->with( 'EWWW_IMAGE_OPTIMIZER_PLUGIN_FILE' )
+			->never();
+
+		$this->assertSame( 'ewww-image-optimizer/ewww-image-optimizer.php', $subscriber->get_basename() );
 	}
 
 	/**
 	 * Test EWWW_Subscriber->get_basename() should return a plugin basename when EWWW is enabled.
 	 */
 	public function testShouldReturnBasenameWhenEwwwIsEnabled() {
-		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
-		$subscriber  = new EWWW_Subscriber( $optionsData );
-		$expected    = 'ewww-image-optimizer/ewww-image-optimizer.php';
+		$subscriber = $this->getSubscriber();
+		$expected   = 'some-basename.php';
 
-		define( 'EWWW_IMAGE_OPTIMIZER_PLUGIN_FILE', '/path/to/' . $expected );
+		Functions\expect( 'rocket_has_constant' )
+			->once()
+			->with( 'EWWW_IMAGE_OPTIMIZER_PLUGIN_FILE' )
+			->andReturn( true );
+		Functions\expect( 'rocket_get_constant' )
+			->once()
+			->with( 'EWWW_IMAGE_OPTIMIZER_PLUGIN_FILE' )
+			->andReturn( "/path/to/{$expected}" );
 
 		Functions\expect( 'plugin_basename' )
 			->once()
 			->andReturn( $expected );
 
-		$basename = $subscriber->get_basename();
-
-		$this->assertSame( $expected, $basename );
+		$this->assertSame( $expected, $subscriber->get_basename() );
 	}
 }

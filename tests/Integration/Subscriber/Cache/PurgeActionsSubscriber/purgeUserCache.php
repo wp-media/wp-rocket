@@ -1,25 +1,32 @@
 <?php
 namespace WP_Rocket\Tests\Integration\Subscriber\Cache\PurgeActionsSubscriber;
 
-use WP_Rocket\Tests\Integration\TestCase;
 use Brain\Monkey\Functions;
-use org\bovigo\vfs\vfsStream,
-	org\bovigo\vfs\vfsStreamDirectory;
+use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
  * @covers \WP_Rocket\Subscriber\Cache\PurgeActionsSubscriber:purge_user_cache
  * @group purge_actions
  */
-class Test_PurgeUserCache extends TestCase {
-	use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-
+class Test_PurgeUserCache extends FilesystemTestCase {
 	private static $user_id;
 
-	/**
-	 * Set up the User before tests start.
-	 */
 	public static function wpSetUpBeforeClass( $factory ) {
 		self::$user_id = $factory->user->create( [ 'user_login' => 'wpmedia', 'role' => 'editor' ] );
+	}
+
+	public function setUp() {
+		parent::setUp();
+
+		// Unhook WooCommerce, as it throws wpdb::prepare errors.
+		remove_action( 'delete_user', 'wc_delete_user_data' );
+	}
+
+	public function tearDown() {
+		parent::tearDown();
+
+		// Rewire WooCommerce.
+		add_action( 'delete_user', 'wc_delete_user_data' );
 	}
 
 	public function testShouldNotPurgeUserCacheWhenUserCacheDisabled() {

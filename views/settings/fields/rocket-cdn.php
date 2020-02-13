@@ -5,32 +5,32 @@
  * @since 3.5
  */
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || exit;
 
-$cnames      = get_rocket_option( 'cdn_cnames' );
-$cnames_zone = get_rocket_option( 'cdn_zone' );
+$rocket_cnames      = get_rocket_option( 'cdn_cnames' );
+$rocket_cnames_zone = get_rocket_option( 'cdn_zone' );
 ?>
 <div class="wpr-fieldsContainer-fieldset">
 	<div class="wpr-field">
 		<div class="wpr-field-description-label">
-			<?php echo $data['label']; ?>
+			<?php echo $data['label']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
 		</div>
 		<?php if ( ! empty( $data['description'] ) ) : ?>
 			<div class="wpr-field-description">
-				<?php echo $data['description']; ?>
+				<?php echo $data['description']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
 			</div>
 		<?php endif; ?>
 		<div id="wpr-cnames-list">
 		<?php
-		if ( $cnames ) :
-			foreach ( $cnames as $key => $url ) :
+		if ( $rocket_cnames ) :
+			foreach ( $rocket_cnames as $key => $url ) : // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 				?>
 				<div class="wpr-text">
 					<input type="text" name="wp_rocket_settings[cdn_cnames][<?php echo esc_attr( $key ); ?>]" value="<?php echo esc_attr( $url ); ?>" placeholder="cdn.example.com" />
-					<input type="hidden" name="wp_rocket_settings[cdn_zone][<?php echo esc_attr( $key ); ?>]" value="<?php echo esc_attr( $cnames_zone[ $key ] ); ?>" />
+					<input type="hidden" name="wp_rocket_settings[cdn_zone][<?php echo esc_attr( $key ); ?>]" value="<?php echo esc_attr( $rocket_cnames_zone[ $key ] ); ?>" />
 					<?php if ( ! empty( $data['helper'] ) ) : ?>
 					<div class="wpr-field-description wpr-field-description-helper">
-						<?php echo $data['helper']; ?>
+						<?php echo $data['helper']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
 					</div>
 					<?php endif; ?>
 				</div>
@@ -53,15 +53,15 @@ $cnames_zone = get_rocket_option( 'cdn_zone' );
 		?>
 	</div><br>
 	<?php
-		$this->render_action_button(
-			'link',
-			'rocket_purge_rocketcdn',
-			[
-				'label'      => __( 'Clear all RocketCDN cache files', 'rocket' ),
-				'attributes' => [
-					'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-button--purple wpr-icon-trash',
-				],
-			]
-		);
+	$this->render_action_button(
+		'link',
+		'rocket_purge_rocketcdn',
+		[
+			'label'      => __( 'Clear all RocketCDN cache files', 'rocket' ),
+			'attributes' => [
+				'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-button--purple wpr-icon-trash',
+			],
+		]
+	);
 	?>
 </div>

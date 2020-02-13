@@ -12,7 +12,12 @@ use WP_Rocket\Optimization\CSS;
  */
 class Combine_Google_Fonts_Subscriber extends Minify_Subscriber {
 	/**
-	 * @inheritDoc
+	 * Return an array of events that this subscriber wants to listen to.
+	 *
+	 * @since  3.1
+	 * @author Remy Perona
+	 *
+	 * @return array
 	 */
 	public static function get_subscribed_events() {
 		return [
@@ -40,7 +45,10 @@ class Combine_Google_Fonts_Subscriber extends Minify_Subscriber {
 	}
 
 	/**
-	 * @inheritDoc
+	 * Checks if files can combine found Google fonts.
+	 *
+	 * @since 3.1
+	 * @author Remy Perona
 	 */
 	protected function is_allowed() {
 		if ( ! $this->options->get( 'minify_google_fonts' ) ) {

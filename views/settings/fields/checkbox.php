@@ -31,16 +31,16 @@ defined( 'ABSPATH' ) || exit;
 <div class="wpr-warningContainer">
 <?php endif; ?>
 
-	<div class="wpr-field wpr-field--checkbox <?php echo esc_attr( $data['container_class'] ); ?>"<?php echo $data['parent']; ?>>
+	<div class="wpr-field wpr-field--checkbox <?php echo esc_attr( $data['container_class'] ); ?>"<?php echo $data['parent']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $data['parent'] escaped with esc_attr ?>>
 		<div class="wpr-checkbox">
 			<input type="checkbox" id="<?php echo esc_attr( $data['id'] ); ?>" class="" name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>]" value="1" <?php checked( $data['value'], 1 ); ?>
-			<?php echo $data['input_attr']; ?>>
-			<label for="<?php echo esc_attr( $data['id'] ); ?>" class=""><?php echo $data['label']; ?></label>
+			<?php echo $data['input_attr']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>>
+			<label for="<?php echo esc_attr( $data['id'] ); ?>" class=""><?php echo $data['label']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?></label>
 		</div>
 
 		<?php if ( ! empty( $data['description'] ) ) : ?>
 		<div class="wpr-field-description">
-			<?php echo $data['description']; ?>
+			<?php echo $data['description']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
 		</div>
 		<?php endif; ?>
 	</div>
@@ -52,7 +52,7 @@ defined( 'ABSPATH' ) || exit;
 		</div>
 		<?php if ( isset( $data['warning']['description'] ) ) : ?>
 			<div class="wpr-fieldWarning-description">
-				<?php echo $data['warning']['description']; ?>
+				<?php echo $data['warning']['description']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
 			</div>
 		<?php endif; ?>
 		<button class="wpr-button wpr-button--small wpr-button--icon wpr-icon-check"><?php echo esc_html( $data['warning']['button_label'] ); ?></button>
@@ -61,7 +61,7 @@ defined( 'ABSPATH' ) || exit;
 
 <?php if ( ! empty( $data['helper'] ) ) : ?>
 	<div class="wpr-field-description wpr-field-description-helper wpr-icon-important">
-		<?php echo $data['helper']; ?>
+		<?php echo $data['helper']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
 	</div>
 <?php endif; ?>
 

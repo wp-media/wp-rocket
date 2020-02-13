@@ -27,7 +27,7 @@ settings_errors( $data['slug'] ); ?>
 			<div class="wpr-Header-footer">
 				<?php
 				// translators: %s = Plugin version number.
-				printf( esc_html__( 'version %s', 'rocket' ), WP_ROCKET_VERSION );
+				echo esc_html( sprintf( __( 'version %s', 'rocket' ), rocket_get_constant( 'WP_ROCKET_VERSION' ) ) );
 				?>
 			</div>
 		</header>
@@ -91,7 +91,7 @@ settings_errors( $data['slug'] ); ?>
 		</div>
 		<div class="wpr-Popin-content">
 			<p><?php esc_html_e( 'Below is a detailed view of all data WP Rocket will collect <strong>if granted permission.</strong>', 'rocket' ); ?></p>
-			<?php echo rocket_data_collection_preview_table(); ?>
+			<?php echo rocket_data_collection_preview_table(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
 			<div class="wpr-Popin-flex">
 				<p><?php esc_html_e( 'WP Rocket will never transmit any domain names or email addresses (except for license validation), IP addresses, or third-party API keys.', 'rocket' ); ?></p>
 				<div>

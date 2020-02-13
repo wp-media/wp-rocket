@@ -11,7 +11,7 @@ function rocket_add_admin_css_js() {
 	wp_enqueue_style( 'wpr-admin', WP_ROCKET_ASSETS_CSS_URL . 'wpr-admin.css', null, WP_ROCKET_VERSION );
 	wp_enqueue_script( 'micromodal', WP_ROCKET_ASSETS_JS_URL . 'micromodal.min.js', null, '0.4.2', true );
 	wp_enqueue_script( 'wpr-admin', WP_ROCKET_ASSETS_JS_URL . 'wpr-admin.js', [ 'micromodal' ], WP_ROCKET_VERSION, true );
-	wp_localize_script( 'wpr-admin', 'rocket_ajax_data', array( 'nonce' => wp_create_nonce( 'rocket-ajax' ) ) );
+	wp_localize_script( 'wpr-admin', 'rocket_ajax_data', [ 'nonce' => wp_create_nonce( 'rocket-ajax' ) ] );
 
 	if ( is_rtl() ) {
 		wp_enqueue_style( 'wpr-admin-rtl', WP_ROCKET_ASSETS_CSS_URL . 'wpr-admin-rtl.css', null, WP_ROCKET_VERSION );
@@ -28,13 +28,13 @@ add_action( 'admin_print_styles-settings_page_' . WP_ROCKET_PLUGIN_SLUG, 'rocket
  * @param string $hook Current admin page.
  */
 function rocket_add_admin_css_js_everywhere( $hook ) {
-	wp_enqueue_script( 'wpr-admin-common', WP_ROCKET_ASSETS_JS_URL . 'wpr-admin-common.js', array( 'jquery' ), WP_ROCKET_VERSION, true );
-	wp_enqueue_style( 'wpr-admin-common', WP_ROCKET_ASSETS_CSS_URL . 'wpr-admin-common.css', array(), WP_ROCKET_VERSION );
+	wp_enqueue_script( 'wpr-admin-common', WP_ROCKET_ASSETS_JS_URL . 'wpr-admin-common.js', [ 'jquery' ], WP_ROCKET_VERSION, true );
+	wp_enqueue_style( 'wpr-admin-common', WP_ROCKET_ASSETS_CSS_URL . 'wpr-admin-common.css', [], WP_ROCKET_VERSION );
 
 	if ( 'plugins.php' === $hook ) {
 		wp_enqueue_style( 'wpr-modal', WP_ROCKET_ASSETS_CSS_URL . 'wpr-modal.css', null, WP_ROCKET_VERSION );
 		wp_enqueue_script( 'wpr-modal', WP_ROCKET_ASSETS_JS_URL . 'wpr-modal.js', null, WP_ROCKET_VERSION, true );
-		wp_localize_script( 'wpr-modal', 'rocket_ajax_data', array( 'nonce' => wp_create_nonce( 'rocket-ajax' ) ) );
+		wp_localize_script( 'wpr-modal', 'rocket_ajax_data', [ 'nonce' => wp_create_nonce( 'rocket-ajax' ) ] );
 	}
 }
 add_action( 'admin_enqueue_scripts', 'rocket_add_admin_css_js_everywhere', 11 );

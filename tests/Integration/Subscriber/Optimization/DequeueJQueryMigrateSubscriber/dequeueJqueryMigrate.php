@@ -3,7 +3,7 @@
 namespace WP_Rocket\Tests\Integration\Subscriber\Optimization\Dequeue_JQuery_Migrate_Subscriber;
 
 use Brain\Monkey;
-use WP_Rocket\Tests\Integration\TestCase;
+use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
  * @covers WP_Rocket\Subscriber\Optimization\Dequeue_JQuery_Migrate_Subscriber::dequeue_jquery_migrate
