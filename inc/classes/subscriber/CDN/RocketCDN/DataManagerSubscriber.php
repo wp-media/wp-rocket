@@ -65,6 +65,12 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	public function update_user_token() {
 		check_ajax_referer( 'rocket-ajax', 'nonce', true );
 
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			wp_send_json_error( 'unauthorized_user' );
+
+			return;
+		}
+
 		if ( empty( $_POST['value'] ) ) {
 			delete_option( 'rocketcdn_user_token' );
 
@@ -100,6 +106,14 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		$data = [
 			'process' => 'subscribe',
 		];
+
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			$data['message'] = 'unauthorized_user';
+
+			wp_send_json_error( $data );
+
+			return;
+		}
 
 		if ( empty( $_POST['cdn_url'] ) ) {
 			$data['message'] = 'cdn_url_empty';
@@ -142,6 +156,18 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	public function disable() {
 		check_ajax_referer( 'rocket-ajax', 'nonce', true );
 
+		$data = [
+			'process' => 'unsubscribe',
+		];
+
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			$data['message'] = 'unauthorized_user';
+
+			wp_send_json_error( $data );
+
+			return;
+		}
+
 		$this->cdn_options->disable();
 
 		$timestamp = wp_next_scheduled( self::CRON_EVENT );
@@ -152,12 +178,9 @@ class DataManagerSubscriber implements Subscriber_Interface {
 
 		$this->delete_process();
 
-		wp_send_json_success(
-			[
-				'process' => 'unsubscribe',
-				'message' => 'rocketcdn_disabled',
-			]
-		);
+		$data['message'] = 'rocketcdn_disabled';
+
+		wp_send_json_success( $data );
 	}
 
 	/**
@@ -183,6 +206,10 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	public function set_process_status() {
 		check_ajax_referer( 'rocket-ajax', 'nonce', true );
 
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
 		if ( empty( $_POST['status'] ) ) {
 			return;
 		}
@@ -207,6 +234,12 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	 */
 	public function get_process_status() {
 		check_ajax_referer( 'rocket-ajax', 'nonce', true );
+
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			wp_send_json_error();
+
+			return;
+		}
 
 		if ( get_option( 'rocketcdn_process' ) ) {
 			wp_send_json_success();
