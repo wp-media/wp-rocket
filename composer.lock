@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f6184b383cc731ee6b24df72da000be3",
+    "content-hash": "43806f13f9108b2088b3a613d8c5a612",
     "packages": [
         {
             "name": "a5hleyrich/wp-background-processing",
@@ -3354,12 +3354,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-media/phpunit.git",
-                "reference": "75d0d2421090c0ac25d4d0db81565f0e499c4a71"
+                "reference": "d5fa8ffd5645b6e75b7cdfa2dfc3fb4530d12037"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-media/phpunit/zipball/75d0d2421090c0ac25d4d0db81565f0e499c4a71",
-                "reference": "75d0d2421090c0ac25d4d0db81565f0e499c4a71",
+                "url": "https://api.github.com/repos/wp-media/phpunit/zipball/d5fa8ffd5645b6e75b7cdfa2dfc3fb4530d12037",
+                "reference": "d5fa8ffd5645b6e75b7cdfa2dfc3fb4530d12037",
                 "shasum": ""
             },
             "require": {
@@ -3390,7 +3390,7 @@
             ],
             "description": "PHPUnit extender for bootstrapping unit and WordPress integration test suites.",
             "homepage": "https://github.com/wp-media/phpunit",
-            "time": "2020-02-13T19:14:05+00:00"
+            "time": "2020-02-13T22:37:58+00:00"
         }
     ],
     "aliases": [],
@@ -3404,5 +3404,7 @@
     "platform": {
         "php": ">=5.6.0"
     },
-    "platform-dev": []
+    "platform-dev": {
+        "php": "^5.6 || ^7"
+    }
 }

@@ -2,13 +2,13 @@
 
 namespace WP_Rocket\Tests\Integration\Subscriber\CDN\RocketCDN\RESTSubscriber;
 
-use WP_Rocket\Tests\Integration\RESTfulTestCase;
+use WP_Rocket\Tests\Integration\ApiTestCase;
 
 /**
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber::disable
  * @group  RocketCDN
  */
-class Test_Disable extends RESTfulTestCase {
+class Test_Disable extends ApiTestCase {
 
 	/**
 	 * Test should update the option settings when the "disable" endpoint is requested.
@@ -23,7 +23,6 @@ class Test_Disable extends RESTfulTestCase {
 				'cdn_zone'   => [ 'all' ],
 			]
 		);
-		update_option( 'wp_rocket_rocketcdn_active', 1 );
 
 		// Request the "disable" endpoint.
 		$this->requestDisableEndpoint();
@@ -36,7 +35,6 @@ class Test_Disable extends RESTfulTestCase {
 			],
 			get_option( 'wp_rocket_settings' )
 		);
-		$this->assertSame( 0, get_option( 'wp_rocket_rocketcdn_active' ) );
 	}
 
 	/**

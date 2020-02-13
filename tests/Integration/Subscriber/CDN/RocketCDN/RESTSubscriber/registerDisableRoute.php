@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\Subscriber\CDN\RocketCDN\RESTSubscriber;
 
-use WP_Rocket\Tests\Integration\RESTfulTestCase;
+use WP_Rocket\Tests\Integration\ApiTestCase;
 
 /**
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber::register_disable_route
@@ -10,7 +10,7 @@ use WP_Rocket\Tests\Integration\RESTfulTestCase;
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber::validateKey
  * @group  RocketCDN
  */
-class Test_RegisterDisableRoute extends RESTfulTestCase {
+class Test_RegisterDisableRoute extends ApiTestCase {
 
 	/**
 	 * Test should register the disable route with the WP REST API.

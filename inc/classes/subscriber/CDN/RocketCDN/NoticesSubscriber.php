@@ -122,7 +122,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 
 		$subscription_data = $this->api_client->get_subscription_data();
 
-		return ! $subscription_data['is_active'];
+		return 'running' !== $subscription_data['subscription_status'];
 	}
 
 	/**
@@ -136,7 +136,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	public function dismiss_notice() {
 		check_ajax_referer( 'rocketcdn_dismiss_notice', 'nonce', true );
 
-		if ( ! isset( $_POST['action'] ) || 'rocketcdn_dismiss_notice' !== $_POST['action'] ) {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			return;
 		}
 
@@ -154,7 +154,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	public function display_rocketcdn_cta() {
 		$subscription_data = $this->api_client->get_subscription_data();
 
-		if ( $subscription_data['is_active'] ) {
+		if ( 'running' === $subscription_data['subscription_status'] ) {
 			return;
 		}
 
@@ -217,7 +217,11 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	public function toggle_cta() {
 		check_ajax_referer( 'rocket-ajax', 'nonce', true );
 
-		if ( ! isset( $_POST['action'], $_POST['status'] ) || 'toggle_rocketcdn_cta' !== $_POST['action'] ) {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
+		if ( ! isset( $_POST['status'] ) ) {
 			return;
 		}
 
@@ -250,6 +254,8 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 		if ( false === $purge_response ) {
 			return;
 		}
+
+		delete_transient( 'rocketcdn_purge_cache_response' );
 
 		\rocket_notice_html(
 			[

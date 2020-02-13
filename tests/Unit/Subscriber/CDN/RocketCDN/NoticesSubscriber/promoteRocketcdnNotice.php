@@ -78,7 +78,7 @@ class Test_PromoteRocketcdnNotice extends TestCase {
 		Functions\when('get_user_meta')->justReturn(false);
 
 		$this->api_client->method('get_subscription_data')
-			->willReturn(['is_active' => true]);
+			->willReturn(['subscription_status' => 'running']);
 
 		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
 
@@ -99,7 +99,7 @@ class Test_PromoteRocketcdnNotice extends TestCase {
 		Functions\when('get_user_meta')->justReturn(false);
 
 		$this->api_client->method('get_subscription_data')
-			->willReturn(['is_active' => false]);
+			->willReturn(['subscription_status' => 'cancelled']);
 
 		Functions\When( 'rocket_direct_filesystem')->alias( function() {
 			return $this->filesystem;

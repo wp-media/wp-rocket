@@ -40,6 +40,7 @@
 		"wp-media/rocket-lazyload-common": "^2"
 	},
 	"require-dev": {
+		"php": "^5.6 || ^7",
 		"brain/monkey": "^2.0",
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
 		"mikey179/vfsstream": "^1.6",
@@ -70,6 +71,7 @@
 	},
 	"autoload-dev": {
 		"psr-4": {
+			"WP_Rocket\\Tests\\Fixtures\\": "tests/Fixtures",
 			"WP_Rocket\\Tests\\Unit\\": "tests/Unit",
 			"WP_Rocket\\Tests\\Integration\\": "tests/Integration"
 		}
@@ -84,10 +86,12 @@
 	},
 	"scripts": {
 		"test-unit": "\"vendor/bin/wpmedia-phpunit\" unit path=tests/Unit",
-		"test-integration": "\"vendor/bin/wpmedia-phpunit\" integration path=tests/Integration",
+		"test-integration": "\"vendor/bin/wpmedia-phpunit\" integration path=tests/Integration --exclude-group AdminOnly",
+		"test-integration-admin": "\"vendor/bin/wpmedia-phpunit\" integration path=tests/Integration --group AdminOnly",
 		"run-tests": [
 			"@test-unit",
-			"@test-integration"
+			"@test-integration",
+			"@test-integration-admin"
 		],
 		"run-stan":"vendor/bin/phpstan analyze --memory-limit=2G --no-progress",
 		"install-codestandards": "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run",
