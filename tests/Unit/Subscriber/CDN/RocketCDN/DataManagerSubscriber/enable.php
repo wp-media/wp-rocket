@@ -2,9 +2,9 @@
 
 namespace WP_Rocket\Tests\Unit\Subscriber\CDN\RocketCDN\DataManagerSubscriber;
 
-use WP_Rocket\Tests\Unit\TestCase;
-use WP_Rocket\Subscriber\CDN\RocketCDN\DataManagerSubscriber;
 use Brain\Monkey\Functions;
+use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Subscriber\CDN\RocketCDN\DataManagerSubscriber;
 
 /**
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\DataManagerSubscriber::enable
@@ -75,15 +75,15 @@ class Test_Enable extends TestCase {
 
 		$api = $this->createMock( \WP_Rocket\CDN\RocketCDN\APIClient::class );
 		$api->expects( $this->once() )
-			->method( 'get_subscription_data' )
-			->willReturn( [
-				'subscription_next_date_update' => time(),
-			] );
+		    ->method( 'get_subscription_data' )
+		    ->willReturn( [
+			    'subscription_next_date_update' => time(),
+		    ] );
 
 		$options = $this->createMock( \WP_Rocket\CDN\RocketCDN\CDNOptionsManager::class );
 		$options->expects( $this->once() )
-			->method( 'enable' )
-			->with( 'https://rocketcdn.me' );
+		        ->method( 'enable' )
+		        ->with( 'https://rocketcdn.me' );
 
 		$data_manager = new DataManagerSubscriber(
 			$api,

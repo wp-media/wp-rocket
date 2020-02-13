@@ -2,15 +2,16 @@
 
 namespace WP_Rocket\Tests\Unit\Subscriber\CDN\RocketCDN\DataManagerSubscriber;
 
-use WP_Rocket\Tests\Unit\TestCase;
-use WP_Rocket\Subscriber\CDN\RocketCDN\DataManagerSubscriber;
 use Brain\Monkey\Functions;
+use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Subscriber\CDN\RocketCDN\DataManagerSubscriber;
 
 /**
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\DataManagerSubscriber::set_process_status
  * @group  RocketCDN
  */
 class Test_SetProcessStatus extends TestCase {
+
 	public function testShouldReturnNullWhenStatusEmpty() {
 		Functions\when( 'check_ajax_referer' )->justReturn( true );
 

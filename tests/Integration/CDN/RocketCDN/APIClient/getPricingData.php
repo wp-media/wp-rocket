@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\CDN\RocketCDN;
 
-use WP_Rocket\Tests\Integration\TestCase;
+use WP_Rocket\Tests\Integration\ApiTestCase;
 use WP_Rocket\CDN\RocketCDN\APIClient;
 
 /**
@@ -10,7 +10,7 @@ use WP_Rocket\CDN\RocketCDN\APIClient;
  * @group  RocketCDN
  * @group  RocketCDNAPI
  */
-class Test_GetPricingData extends TestCase {
+class Test_GetPricingData extends ApiTestCase {
 
 	public function tearDown() {
 		parent::tearDown();

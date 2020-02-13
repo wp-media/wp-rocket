@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\CDN\RocketCDN\CDNOptionsManager;
 
-use WP_Rocket\Tests\Integration\TestCase;
+use WPMedia\PHPUnit\Integration\TestCase;
 use WP_Rocket\CDN\RocketCDN\CDNOptionsManager;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
@@ -12,6 +12,7 @@ use WP_Rocket\Admin\Options_Data;
  * @group RocketCDN
  */
 class Test_Disable extends TestCase {
+
 	public function testShouldDisableCDNOptions() {
         add_option( 'rocketcdn_user_token', '123456' );
 		set_transient( 'rocketcdn_status', [ 'transient' ], MINUTE_IN_SECONDS );

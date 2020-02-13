@@ -2,9 +2,9 @@
 
 namespace WP_Rocket\Tests\Unit\Subscriber\CDN\RocketCDN\DataManagerSubscriber;
 
-use WP_Rocket\Tests\Unit\TestCase;
-use WP_Rocket\Subscriber\CDN\RocketCDN\DataManagerSubscriber;
 use Brain\Monkey\Functions;
+use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Subscriber\CDN\RocketCDN\DataManagerSubscriber;
 
 /**
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\DataManagerSubscriber::disable
@@ -15,7 +15,7 @@ class Test_Disable extends TestCase {
 		Functions\when( 'check_ajax_referer' )->justReturn( true );
 
 		$time = time();
-		
+
 		Functions\expect( 'wp_next_scheduled' )
 			->once()
 			->with( 'rocketcdn_check_subscription_status_event' )
@@ -35,7 +35,7 @@ class Test_Disable extends TestCase {
 
 		$options = $this->createMock( \WP_Rocket\CDN\RocketCDN\CDNOptionsManager::class );
 		$options->expects( $this->once() )
-			->method( 'disable' );
+		        ->method( 'disable' );
 
 		$data_manager = new DataManagerSubscriber(
 			$this->createMock( 'WP_Rocket\CDN\RocketCDN\APIClient' ),

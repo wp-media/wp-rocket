@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\Subscriber\CDN\RocketCDN;
 
-use WP_Rocket\Tests\Integration\TestCase;
+use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber::display_rocketcdn_status

@@ -3,8 +3,8 @@
 namespace WP_Rocket\Tests\Integration\Subscriber\CDN\RocketCDN;
 
 use Brain\Monkey\Functions;
+use WPMedia\PHPUnit\Integration\TestCase;
 use WP_Rocket\Subscriber\Plugin\Capabilities_Subscriber;
-use WP_Rocket\Tests\Integration\TestCase;
 use WPDieException;
 
 /**

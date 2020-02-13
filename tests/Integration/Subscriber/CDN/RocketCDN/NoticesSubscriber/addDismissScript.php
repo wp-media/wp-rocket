@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\Subscriber\CDN\RocketCDN;
 
-use WP_Rocket\Tests\Integration\TestCase;
+use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\NoticesSubscriber::add_dismiss_script
@@ -68,7 +68,7 @@ class Test_AddDismissScript extends TestCase {
 		$user_id = self::factory()->user->create( [ 'role' => 'administrator' ] );
 
 		wp_set_current_user( $user_id );
-	
+
 		set_current_screen( 'settings_page_wprocket' );
 		add_user_meta( get_current_user_id(), 'rocketcdn_dismiss_notice', true );
 
@@ -82,7 +82,7 @@ class Test_AddDismissScript extends TestCase {
 		$user_id = self::factory()->user->create( [ 'role' => 'administrator' ] );
 
 		wp_set_current_user( $user_id );
-	
+
 		set_current_screen( 'settings_page_wprocket' );
 		set_transient( 'rocketcdn_status', [ 'subscription_status' => 'running' ], MINUTE_IN_SECONDS );
 
@@ -96,7 +96,7 @@ class Test_AddDismissScript extends TestCase {
 		$user_id = self::factory()->user->create( [ 'role' => 'administrator' ] );
 
 		wp_set_current_user( $user_id );
-	
+
 		set_current_screen( 'settings_page_wprocket' );
 		set_transient( 'rocketcdn_status', [ 'subscription_status' => 'cancelled' ], MINUTE_IN_SECONDS );
 

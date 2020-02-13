@@ -2,9 +2,9 @@
 
 namespace WP_Rocket\Tests\Unit\Subscriber\CDN\RocketCDN\DataManagerSubscriber;
 
-use WP_Rocket\Tests\Unit\TestCase;
-use WP_Rocket\Subscriber\CDN\RocketCDN\DataManagerSubscriber;
 use Brain\Monkey\Functions;
+use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Subscriber\CDN\RocketCDN\DataManagerSubscriber;
 
 /**
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\DataManagerSubscriber::update_user_token
@@ -28,7 +28,7 @@ class Test_UpdateUserToken extends TestCase {
 	 * Test should delete the option and send "user_token_deleted" JSON success when the $_POST "value" is null.
 	 */
 	public function testShouldDeleteOptionAndSendUserTokenDeletedJSONSuccessWhenValueIsNull() {
-		$_POST['value']  = null;
+		$_POST['value'] = null;
 
 		Functions\expect( 'delete_option' )->once()->with( 'rocketcdn_user_token' );
 		Functions\expect( 'wp_send_json_success' )->once()->with( 'user_token_deleted' );
@@ -43,7 +43,7 @@ class Test_UpdateUserToken extends TestCase {
 	 * Test should send "invalid_token_length" JSON error when the token value provided is not 40 characters length.
 	 */
 	public function testShouldSendInvalidTokenLengthJsonErrorWhenValueLengthIsNot40() {
-		$_POST['value']  = 'not40charslong';
+		$_POST['value'] = 'not40charslong';
 
 		$this->assertNotEquals( 40, strlen( $_POST['value'] ) );
 
@@ -60,7 +60,7 @@ class Test_UpdateUserToken extends TestCase {
 	 * Test should update the option and send "user_token_saved" JSON success when the token value is valid.
 	 */
 	public function testShouldUpdateOptionAndSendUserTokenSavedJsonSuccessWhenValueIsValid() {
-		$_POST['value']  = '9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b';
+		$_POST['value'] = '9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b';
 
 		$this->assertEquals( 40, strlen( $_POST['value'] ) );
 

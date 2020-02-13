@@ -2,13 +2,13 @@
 
 namespace WP_Rocket\Tests\Integration\Subscriber\CDN\RocketCDN\RESTSubscriber;
 
-use WP_Rocket\Tests\Integration\RESTfulTestCase;
+use WP_Rocket\Tests\Integration\ApiTestCase;
 
 /**
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber::disable
  * @group  RocketCDN
  */
-class Test_Disable extends RESTfulTestCase {
+class Test_Disable extends ApiTestCase {
 
 	/**
 	 * Test should update the option settings when the "disable" endpoint is requested.

@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\CDN\RocketCDN\APIClient;
 
-use WP_Rocket\Tests\Integration\TestCase;
+use WP_Rocket\Tests\Integration\ApiTestCase;
 use WP_Rocket\CDN\RocketCDN\APIClient;
 
 /**
@@ -10,8 +10,7 @@ use WP_Rocket\CDN\RocketCDN\APIClient;
  * @group  RocketCDN
  * @group  RocketCDNAPI
  */
-class Test_PurgeCacheRequest extends TestCase {
-	protected static $api_credentials_config_file = 'rocketcdn.php';
+class Test_PurgeCacheRequest extends ApiTestCase {
 
 	public function tearDown() {
 		parent::tearDown();

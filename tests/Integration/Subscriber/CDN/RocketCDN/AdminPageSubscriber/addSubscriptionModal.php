@@ -2,8 +2,8 @@
 
 namespace WP_Rocket\Tests\Integration\Subscriber\CDN\RocketCDN;
 
-use WP_Rocket\Tests\Integration\TestCase;
 use Brain\Monkey\Functions;
+use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber::add_subscription_modal

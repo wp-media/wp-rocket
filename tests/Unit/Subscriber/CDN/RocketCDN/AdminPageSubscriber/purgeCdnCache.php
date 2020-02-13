@@ -3,8 +3,8 @@
 namespace WP_Rocket\Tests\Unit\Subscriber\CDN\RocketCDN;
 
 use Brain\Monkey\Functions;
+use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber;
-use WP_Rocket\Tests\Unit\TestCase;
 use WPDieException;
 use function WP_Rocket\Tests\getTestsRootDir;
 
@@ -19,7 +19,7 @@ class Test_PurgeCdnCache extends TestCase {
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
 
-		require_once getTestsRootDir() . '/Fixtures/WPDieException.php';
+		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/WPDieException.php';
 	}
 
 	public function setUp() {

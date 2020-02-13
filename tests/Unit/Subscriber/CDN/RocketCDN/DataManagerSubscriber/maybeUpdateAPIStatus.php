@@ -2,15 +2,15 @@
 
 namespace WP_Rocket\Tests\Unit\Subscriber\CDN\RocketCDN\DataManagerSubscriber;
 
-use WP_Rocket\Tests\Unit\TestCase;
+use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Subscriber\CDN\RocketCDN\DataManagerSubscriber;
-use Brain\Monkey\Functions;
 
 /**
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\DataManagerSubscriber::maybe_update_api_status
  * @group  RocketCDN
  */
 class Test_MaybeUpdateAPIStatus extends TestCase {
+
 	public function testShouldReturNullWhenMissingIndex() {
 		$old_value = [];
 		$value     = [];

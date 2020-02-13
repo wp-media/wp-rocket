@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\Subscriber\CDN\RocketCDN;
 
-use WP_Rocket\Tests\Integration\TestCase;
+use WPMedia\PHPUnit\Integration\TestCase;
 use Brain\Monkey\Functions;
 
 /**
@@ -54,7 +54,7 @@ class Test_PurgeCacheNotice extends TestCase {
 		$user_id = self::factory()->user->create( [ 'role' => 'administrator' ] );
 
 		wp_set_current_user( $user_id );
-	
+
 		set_current_screen( 'settings_page_wprocket' );
 
 		$this->assertNotContains( $this->get_notice(), $this->getActualHtml() );
@@ -67,7 +67,7 @@ class Test_PurgeCacheNotice extends TestCase {
 		$user_id = self::factory()->user->create( [ 'role' => 'administrator' ] );
 
 		wp_set_current_user( $user_id );
-	
+
 		set_current_screen( 'settings_page_wprocket' );
 		set_transient( 'rocketcdn_purge_cache_response', [ 'status' => 'success', 'message' => 'RocketCDN cache purge successful.' ], MINUTE_IN_SECONDS );
 

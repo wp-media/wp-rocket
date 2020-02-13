@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\Subscriber\CDN\RocketCDN\RESTSubscriber;
 
-use WP_Rocket\Tests\Integration\RESTfulTestCase;
+use WP_Rocket\Tests\Integration\ApiTestCase;
 use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
@@ -11,7 +11,7 @@ use WPMedia\PHPUnit\Integration\TestCase;
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber::validateKey
  * @group  RocketCDN
  */
-class Test_RegisterEnableRoute extends RESTfulTestCase {
+class Test_RegisterEnableRoute extends ApiTestCase {
 
 	/**
 	 * Test should register the enable route with the WP REST API.

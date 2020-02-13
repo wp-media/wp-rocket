@@ -10,6 +10,7 @@ use WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber;
  * @group  RocketCDN
  */
 class Test_RocketcdnField extends TestCase {
+	protected static $mockCommonWpFunctionsInSetUp = true;
 	private $api_client;
 	private $options;
 	private $page;
@@ -25,8 +26,6 @@ class Test_RocketcdnField extends TestCase {
 			$this->createMock( 'WP_Rocket\Admin\Settings\Beacon' ),
 			'views/settings/rocketcdn'
 		);
-
-		$this->mockCommonWpFunctions();
 	}
 
 	/**

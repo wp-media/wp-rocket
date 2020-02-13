@@ -2,12 +2,10 @@
 
 namespace WP_Rocket\Tests\Integration;
 
-use WP_Rest_Request;
-use WP_REST_Server;
-use WPMedia\PHPUnit\Integration\TestCase as WPMediaTestCase;
+use WPMedia\PHPUnit\Integration\RESTfulTestCase as WPMediaRESTfulTestCase;
 
-abstract class RESTfulTestCase extends WPMediaTestCase {
-	protected $server;
+abstract class ApiTestCase extends WPMediaRESTfulTestCase {
+
 	/**
 	 * Name of the API credentials config file, if applicable. Set in the test or new TestCase.
 	 *
@@ -15,20 +13,7 @@ abstract class RESTfulTestCase extends WPMediaTestCase {
 	 *
 	 * @var string
 	 */
-	protected static $api_credentials_config_file;
-
-	/**
-	 * Setup the WP REST API Server.
-	 */
-	public function setUp() {
-		parent::setUp();
-		/**
-		 * @var WP_REST_Server $wp_rest_server
-		 */
-		global $wp_rest_server;
-		$this->server = $wp_rest_server = new WP_REST_Server;
-		do_action( 'rest_api_init' );
-	}
+	protected static $api_credentials_config_file = 'rocketcdn.php';
 
 	/**
 	 * Runs the RESTful endpoint which invokes WordPress to run in an integrated fashion. Callback will be fired.
@@ -67,14 +52,6 @@ abstract class RESTfulTestCase extends WPMediaTestCase {
 		return $this->doRestRequest( $body_params, '/wp-rocket/v1/rocketcdn/enable' );
 	}
 
-	protected function doRestRequest( array $body_params, $route ) {
-		$request = new WP_Rest_Request( 'PUT', $route );
-		$request->set_header( 'Content-Type', 'application/x-www-form-urlencoded' );
-		$request->set_body_params( $body_params );
-
-		return rest_do_request( $request )->get_data();
-	}
-
 
 	/**
 	 * Gets the credential's value from either an environment variable (stored locally on the machine or CI) or from a local constant defined in `tests/env/local/cloudflare.php`.
@@ -89,11 +66,11 @@ abstract class RESTfulTestCase extends WPMediaTestCase {
 			return $var;
 		}
 
-		if ( ! self::$api_credentials_config_file ) {
+		if ( ! static::$api_credentials_config_file ) {
 			return '';
 		}
 
-		$config_file = dirname( __DIR__ ) . '/env/local/' . self::$api_credentials_config_file;
+		$config_file = dirname( __DIR__ ) . '/env/local/' . static::$api_credentials_config_file;
 
 		if ( ! is_readable( $config_file ) ) {
 			return '';

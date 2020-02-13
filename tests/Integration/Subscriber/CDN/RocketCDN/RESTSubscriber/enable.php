@@ -2,13 +2,13 @@
 
 namespace WP_Rocket\Tests\Integration\Subscriber\CDN\RocketCDN\RESTSubscriber;
 
-use WP_Rocket\Tests\Integration\RESTfulTestCase;
+use WP_Rocket\Tests\Integration\ApiTestCase;
 
 /**
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber::enable
  * @group  RocketCDN
  */
-class Test_Enable extends RESTfulTestCase {
+class Test_Enable extends ApiTestCase {
 
 	/**
 	 * Test should update the option settings when the "enable" endpoint is requested.

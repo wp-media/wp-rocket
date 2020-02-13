@@ -2,9 +2,9 @@
 
 namespace WP_Rocket\Tests\Unit\Subscriber\CDN\RocketCDN\DataManagerSubscriber;
 
-use WP_Rocket\Tests\Unit\TestCase;
-use WP_Rocket\Subscriber\CDN\RocketCDN\DataManagerSubscriber;
 use Brain\Monkey\Functions;
+use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Subscriber\CDN\RocketCDN\DataManagerSubscriber;
 
 /**
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\DataManagerSubscriber::get_process_status
@@ -15,8 +15,7 @@ class Test_GetProcessStatus extends TestCase {
 		Functions\when( 'check_ajax_referer' )->justReturn( true );
 		Functions\when( 'get_option' )->justReturn( true );
 
-		Functions\expect( 'wp_send_json_success' )
-			->once();
+		Functions\expect( 'wp_send_json_success' )->once();
 
 		$data_manager = new DataManagerSubscriber(
 			$this->createMock( 'WP_Rocket\CDN\RocketCDN\APIClient' ),

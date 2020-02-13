@@ -2,14 +2,14 @@
 
 namespace WP_Rocket\Tests\Integration\Subscriber\CDN\RocketCDN\DataManagerSubscriber;
 
-use WP_Rocket\Tests\Integration\TestCase;
+use WPMedia\PHPUnit\Integration\AjaxTestCase;
 
 /**
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\DataManagerSubscriber::maybe_disable_cdn
  * @group  RocketCDN
  * @group  AdminOnly
  */
-class Test_MaybeDisableCDN extends TestCase {
+class Test_MaybeDisableCDN extends AjaxTestCase {
 	protected static $api_credentials_config_file = 'rocketcdn.php';
 
     public function setUp() {

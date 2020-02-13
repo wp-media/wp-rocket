@@ -2,15 +2,16 @@
 
 namespace WP_Rocket\Tests\Unit\Subscriber\CDN\RocketCDN;
 
-use WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber;
-use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
+use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber;
 
 /**
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber::add_subscription_modal
  * @group  RocketCDN
  */
 class Test_AddSubscriptionModal extends TestCase {
+	protected static $mockCommonWpFunctionsInSetUp = true;
 	private $page;
 
 	public function setUp() {
@@ -22,7 +23,6 @@ class Test_AddSubscriptionModal extends TestCase {
 			$this->createMock( 'WP_Rocket\Admin\Settings\Beacon' ),
 			''
 		);
-		$this->mockCommonWpFunctions();
 	}
 
 	private function getActualHtml() {
@@ -49,8 +49,8 @@ class Test_AddSubscriptionModal extends TestCase {
 		Functions\stubs(
 			[
 				'add_query_arg' => 'https://wp-rocket.me/cdn/iframe?website=http://example.org&callback=http://example.org/wp-json/wp-rocket/v1/rocketcdn/',
-				'home_url' => 'http://example.org',
-				'rest_url' => 'http://example.org/wp-json/',
+				'home_url'      => 'http://example.org',
+				'rest_url'      => 'http://example.org/wp-json/',
 			]
 		);
 
@@ -81,8 +81,8 @@ HTML;
 		Functions\stubs(
 			[
 				'add_query_arg' => 'https://dave.wp-rocket.me/cdn/iframe?website=http://example.org&callback=http://example.org/wp-json/wp-rocket/v1/rocketcdn/',
-				'home_url' => 'http://example.org',
-				'rest_url' => 'http://example.org/wp-json/',
+				'home_url'      => 'http://example.org',
+				'rest_url'      => 'http://example.org/wp-json/',
 			]
 		);
 
