@@ -71,7 +71,7 @@ class Test_AddDismissScript extends TestCase {
 		Functions\when('get_user_meta')->justReturn(false);
 
 		$this->api_client->method('get_subscription_data')
-			->willReturn(['is_active' => true]);
+			->willReturn(['subscription_status' => 'running']);
 
 		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
 
@@ -92,7 +92,7 @@ class Test_AddDismissScript extends TestCase {
 		Functions\when('get_user_meta')->justReturn(false);
 
 		$this->api_client->method('get_subscription_data')
-			->willReturn(['is_active' => false]);
+			->willReturn(['subscription_status' => 'cancelled']);
 
 		Functions\when('wp_create_nonce')->justReturn('123456');
 		Functions\when('admin_url')->justReturn('https://example.org/wp-admin/admin-ajax.php');

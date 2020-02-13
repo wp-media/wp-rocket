@@ -29,14 +29,20 @@ class Test_DisplayRocketcdnStatus extends FilesystemTestCase {
 		parent::setUp();
 
 		$this->api_client = $this->createMock( 'WP_Rocket\CDN\RocketCDN\APIClient' );
-
-		$this->page = new AdminPageSubscriber(
+		$this->page       = new AdminPageSubscriber(
 			$this->api_client,
 			$this->createMock( 'WP_Rocket\Admin\Options_Data' ),
 			$this->createMock( 'WP_Rocket\Admin\Settings\Beacon' ),
 			'views/settings/rocketcdn'
 		);
+
 		Functions\When( 'rocket_direct_filesystem' )->justReturn( $this->filesystem );
+	}
+
+	private function getActualHtml() {
+		ob_start();
+		$this->page->display_rocketcdn_status();
+		return $this->format_the_html( ob_get_clean() );
 	}
 
 	/**
@@ -51,12 +57,11 @@ class Test_DisplayRocketcdnStatus extends FilesystemTestCase {
 				                 'subscription_next_date_update' => '2020-01-01',
 			                 ]
 		                 );
-
 		Functions\expect( 'get_option' )->never();
 		Functions\expect( 'date_i18n' )->never();
 
-		$this->expectOutputString(
-			'<div class="wpr-optionHeader">
+		$expected = <<<HTML
+<div class="wpr-optionHeader">
 	<h3 class="wpr-title2">Rocket CDN</h3>
 </div>
 <div class="wpr-field wpr-field-account">
@@ -65,13 +70,14 @@ class Test_DisplayRocketcdnStatus extends FilesystemTestCase {
 			<span class="wpr-title3"></span>
 			<span class="wpr-infoAccount wpr-isInvalid">No Subscription</span>
 		</div>
-				<div>
+		<div>
 			<a href="#page_cdn" class="wpr-button">Get Rocket CDN</a>
 		</div>
-			</div>
-</div>',
-			$this->page->display_rocketcdn_status()
-		);
+	</div>
+</div>
+HTML;
+
+		$this->assertSame( $this->format_the_html( $expected ), $this->getActualHtml() );
 	}
 
 	public function testShouldOutputSubscriptionDataWhenActive() {
@@ -79,27 +85,27 @@ class Test_DisplayRocketcdnStatus extends FilesystemTestCase {
 		                 ->willReturn(
 			                 [
 				                 'is_active'                     => true,
-				                 'subscription_status'           => 'active',
+				                 'subscription_status'           => 'running',
 				                 'subscription_next_date_update' => '2020-01-01',
 			                 ]
 		                 );
-
 		Functions\when( 'get_option' )->justReturn( 'Y-m-d' );
 		Functions\when( 'date_i18n' )->justReturn( '2020-01-01' );
 
-		$this->expectOutputString(
-			'<div class="wpr-optionHeader">
+		$expected = <<<HTML
+<div class="wpr-optionHeader">
 	<h3 class="wpr-title2">Rocket CDN</h3>
 </div>
 <div class="wpr-field wpr-field-account">
-	<div class="wpr-flex ">
+	<div class="wpr-flex">
 		<div>
 			<span class="wpr-title3">Next Billing Date</span>
 			<span class="wpr-infoAccount wpr-isValid">2020-01-01</span>
 		</div>
-			</div>
-</div>',
-			$this->page->display_rocketcdn_status()
-		);
+	</div>
+</div>
+HTML;
+
+		$this->assertSame( $this->format_the_html( $expected ), $this->getActualHtml() );
 	}
 }

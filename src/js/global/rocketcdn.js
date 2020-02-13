@@ -1,80 +1,241 @@
-document.addEventListener( 'DOMContentLoaded', function() {
-    document.querySelectorAll( '.wpr-rocketcdn-open' ).forEach( function(el) {
-        el.addEventListener( 'click', function(e) {
-            e.preventDefault();
-        });
-    });
+/*eslint-env es6*/
+( ( document, window ) => {
+	'use strict';
 
-    MicroModal.init({
-        disableScroll: true
-    });
-});
+	document.addEventListener( 'DOMContentLoaded', () => {
+		document.querySelectorAll( '.wpr-rocketcdn-open' ).forEach( ( el ) => {
+			el.addEventListener( 'click', ( e ) => {
+				e.preventDefault();
+			} );
+		} );
 
-window.addEventListener('load', function() {
-    var openCTA  = document.querySelector( '#wpr-rocketcdn-open-cta' ),
-        closeCTA = document.querySelector( '#wpr-rocketcdn-close-cta' ),
-        smallCTA = document.querySelector( '#wpr-rocketcdn-cta-small' ),
-        bigCTA   = document.querySelector( '#wpr-rocketcdn-cta' );
+		rocketMaybeOpenModal();
 
-    if ( null !== openCTA && null !== smallCTA && null !== bigCTA ) {
-        openCTA.addEventListener('click', function(e) {
-            e.preventDefault();
+		MicroModal.init( {
+			disableScroll: true
+		} );
+	} );
 
-            smallCTA.classList.add('wpr-isHidden');
-            bigCTA.classList.remove('wpr-isHidden');
+	window.addEventListener( 'load', () => {
+		let openCTA = document.querySelector( '#wpr-rocketcdn-open-cta' ),
+			closeCTA = document.querySelector( '#wpr-rocketcdn-close-cta' ),
+			smallCTA = document.querySelector( '#wpr-rocketcdn-cta-small' ),
+			bigCTA = document.querySelector( '#wpr-rocketcdn-cta' );
 
-            rocketSendHTTPRequest( rocketGetPostData( 'big' ) );
-        });
-    }
+		if ( null !== openCTA && null !== smallCTA && null !== bigCTA ) {
+			openCTA.addEventListener( 'click', ( e ) => {
+				e.preventDefault();
 
-    if ( null !== closeCTA && null !== smallCTA && null !== bigCTA ) {
-        closeCTA.addEventListener('click', function(e) {
-            e.preventDefault();
+				smallCTA.classList.add( 'wpr-isHidden' );
+				bigCTA.classList.remove( 'wpr-isHidden' );
 
-            smallCTA.classList.remove('wpr-isHidden');
-            bigCTA.classList.add('wpr-isHidden');
+				rocketSendHTTPRequest( rocketGetPostData( 'big' ) );
+			} );
+		}
 
-            rocketSendHTTPRequest( rocketGetPostData( 'small' ) );
-        });
-    }
+		if ( null !== closeCTA && null !== smallCTA && null !== bigCTA ) {
+			closeCTA.addEventListener( 'click', ( e ) => {
+				e.preventDefault();
 
-    function rocketGetPostData( status ) {
-        let postData = '';
-        
-        postData += 'action=toggle_rocketcdn_cta';
-        postData += '&status=' + status;
-        postData += '&nonce=' + rocket_ajax_data.nonce;
-        
-        return postData;
-    }
-});
+				smallCTA.classList.remove( 'wpr-isHidden' );
+				bigCTA.classList.add( 'wpr-isHidden' );
 
-window.onmessage = (e) => {
-	if ( e.origin == 'https://dave.wp-rocket.me' ) {
-		if (e.data.hasOwnProperty("cdnFrameHeight")) {
-			document.getElementById("rocketcdn-iframe").style.height = `${e.data.cdnFrameHeight}px`;
-        }
+				rocketSendHTTPRequest( rocketGetPostData( 'small' ) );
+			} );
+		}
 
-		if (e.data.hasOwnProperty("cdnFrameClose")) {
-			MicroModal.close('wpr-rocketcdn-modal');
-        }
+		function rocketGetPostData( status ) {
+			let postData = '';
 
-        if (e.data.hasOwnProperty("cdn_token")) {
-            let postData = '';
+			postData += 'action=toggle_rocketcdn_cta';
+			postData += '&status=' + status;
+			postData += '&nonce=' + rocket_ajax_data.nonce;
 
-            postData += 'action=save_rocketcdn_token';
-            postData += '&value=' + e.data.cdn_token;
-            postData += '&nonce=' + rocket_ajax_data.nonce;
+			return postData;
+		}
+	} );
 
-            rocketSendHTTPRequest( postData );
-        }
+	window.onmessage = ( e ) => {
+		const iframeURL = rocket_ajax_data.origin_url;
+
+		if ( e.origin !== iframeURL ) {
+			return;
+		}
+
+		setCDNFrameHeight( e.data );
+		closeModal( e.data );
+		tokenHandler( e.data, iframeURL );
+		processStatus( e.data );
+		enableCDN( e.data, iframeURL );
+		disableCDN( e.data, iframeURL );
+	};
+
+	function rocketMaybeOpenModal() {
+		let postData = '';
+
+		postData += 'action=rocketcdn_process_status';
+		postData += '&nonce=' + rocket_ajax_data.nonce;
+
+		const request = rocketSendHTTPRequest( postData );
+
+		request.onreadystatechange = () => {
+			if ( request.readyState === XMLHttpRequest.DONE && 200 === request.status ) {
+				let responseTxt = JSON.parse(request.responseText);
+
+				if ( true === responseTxt.success ) {
+					MicroModal.show( 'wpr-rocketcdn-modal' );
+				}
+			}
+		};
 	}
-};
 
-function rocketSendHTTPRequest( postData ) {
-    const httpRequest = new XMLHttpRequest();
-    
-    httpRequest.open( 'POST', ajaxurl );
-    httpRequest.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' )
-    httpRequest.send( postData );
-}
+	function closeModal( data ) {
+		if ( ! data.hasOwnProperty( 'cdnFrameClose' ) ) {
+			return;
+		}
+
+		MicroModal.close( 'wpr-rocketcdn-modal' );
+
+		let pages = [ 'iframe-payment-success', 'iframe-unsubscribe-success' ];
+
+		if ( ! data.hasOwnProperty( 'cdn_page_message' ) ) {
+			return;
+		}
+
+		if ( pages.indexOf( data.cdn_page_message ) === -1 ) {
+			return;
+		}
+
+		document.location.reload();
+	}
+
+	function processStatus( data ) {
+		if ( ! data.hasOwnProperty( 'rocketcdn_process' ) ) {
+			return;
+		}
+
+		let postData = '';
+
+		postData += 'action=rocketcdn_process_set';
+		postData += '&status=' + data.rocketcdn_process;
+		postData += '&nonce=' + rocket_ajax_data.nonce;
+
+		rocketSendHTTPRequest( postData );
+	}
+
+	function enableCDN( data, iframeURL ) {
+		let iframe = document.querySelector( '#rocketcdn-iframe' ).contentWindow;
+
+		if ( ! data.hasOwnProperty( 'rocketcdn_url' ) ) {
+			return;
+		}
+
+		let postData = '';
+
+		postData += 'action=rocketcdn_enable';
+		postData += '&cdn_url=' + data.rocketcdn_url;
+		postData += '&nonce=' + rocket_ajax_data.nonce;
+
+		const request = rocketSendHTTPRequest( postData );
+
+		request.onreadystatechange = () => {
+			if ( request.readyState === XMLHttpRequest.DONE && 200 === request.status ) {
+				let responseTxt = JSON.parse(request.responseText);
+				iframe.postMessage(
+					{
+						'success': responseTxt.success,
+						'data': responseTxt.data,
+						'rocketcdn': true
+					},
+					iframeURL
+				);
+			}
+		};
+	}
+
+	function disableCDN( data, iframeURL ) {
+		let iframe = document.querySelector( '#rocketcdn-iframe' ).contentWindow;
+
+		if ( ! data.hasOwnProperty( 'rocketcdn_disable' ) ) {
+			return;
+		}
+
+		let postData = '';
+
+		postData += 'action=rocketcdn_disable';
+		postData += '&nonce=' + rocket_ajax_data.nonce;
+
+		const request = rocketSendHTTPRequest( postData );
+
+		request.onreadystatechange = () => {
+			if ( request.readyState === XMLHttpRequest.DONE && 200 === request.status ) {
+				let responseTxt = JSON.parse(request.responseText);
+				iframe.postMessage(
+					{
+						'success': responseTxt.success,
+						'data': responseTxt.data,
+						'rocketcdn': true
+					},
+					iframeURL
+				);
+			}
+		};
+	}
+
+	function rocketSendHTTPRequest( postData ) {
+		const httpRequest = new XMLHttpRequest();
+
+		httpRequest.open( 'POST', ajaxurl );
+		httpRequest.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
+		httpRequest.send( postData );
+
+		return httpRequest;
+	}
+
+	function setCDNFrameHeight( data ) {
+		if ( ! data.hasOwnProperty( 'cdnFrameHeight' ) ) {
+			return;
+		}
+
+		document.getElementById( 'rocketcdn-iframe' ).style.height = `${ data.cdnFrameHeight }px`;
+	}
+
+	function tokenHandler( data, iframeURL ) {
+		let iframe = document.querySelector( '#rocketcdn-iframe' ).contentWindow;
+
+		if ( ! data.hasOwnProperty( 'rocketcdn_token' ) ) {
+			let data = {process:"subscribe", message:"token_not_received"};
+			iframe.postMessage(
+				{
+					'success': false,
+					'data': data,
+					'rocketcdn': true
+				},
+				iframeURL
+			);
+			return;
+		}
+
+		let postData = '';
+
+		postData += 'action=save_rocketcdn_token';
+		postData += '&value=' + data.rocketcdn_token;
+		postData += '&nonce=' + rocket_ajax_data.nonce;
+
+		const request = rocketSendHTTPRequest( postData );
+
+		request.onreadystatechange = () => {
+			if ( request.readyState === XMLHttpRequest.DONE && 200 === request.status ) {
+				let responseTxt = JSON.parse(request.responseText);
+				iframe.postMessage(
+					{
+						'success': responseTxt.success,
+						'data': responseTxt.data,
+						'rocketcdn': true
+					},
+					iframeURL
+				);
+			}
+		};
+	}
+} )( document, window );

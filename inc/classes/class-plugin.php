@@ -95,6 +95,7 @@ class Plugin {
 				'hummingbird_subscriber',
 				'rocketcdn_admin_subscriber',
 				'rocketcdn_notices_subscriber',
+				'rocketcdn_data_manager_subscriber',
 			];
 		} elseif ( \rocket_valid_key() ) {
 			$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Optimization_Subscribers' );

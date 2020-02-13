@@ -59,12 +59,12 @@ class APIClient {
 		];
 
 		$response = wp_remote_get(
-			self::ROCKETCDN_API . 'website/?url=' . home_url(),
+			self::ROCKETCDN_API . 'website/search/?url=' . home_url(),
 			$args
 		);
 
 		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
-			$this->set_status_transient( $default );
+			$this->set_status_transient( $default, 3 * MINUTE_IN_SECONDS );
 
 			return $default;
 		}
@@ -72,7 +72,7 @@ class APIClient {
 		$data = wp_remote_retrieve_body( $response );
 
 		if ( empty( $data ) ) {
-			$this->set_status_transient( $default );
+			$this->set_status_transient( $default, 3 * MINUTE_IN_SECONDS );
 
 			return $default;
 		}
@@ -80,7 +80,7 @@ class APIClient {
 		$data = json_decode( $data, true );
 		$data = array_intersect_key( $data, $default );
 
-		$this->set_status_transient( $data );
+		$this->set_status_transient( $data, WEEK_IN_SECONDS );
 
 		return $data;
 	}
@@ -92,10 +92,11 @@ class APIClient {
 	 * @author Remy Perona
 	 *
 	 * @param array $value Transient value.
+	 * @param int   $duration Transient duration.
 	 * @return void
 	 */
-	private function set_status_transient( $value ) {
-		set_transient( 'rocketcdn_status', $value, WEEK_IN_SECONDS );
+	private function set_status_transient( $value, $duration ) {
+		set_transient( 'rocketcdn_status', $value, $duration );
 	}
 
 	/**
@@ -238,5 +239,43 @@ class APIClient {
 			'status'  => 'success',
 			'message' => __( 'RocketCDN cache purge successful.', 'rocket' ),
 		];
+	}
+
+	/**
+	 * Update website status 'is_active' on RocketCDN
+	 *
+	 * @since 3.5
+	 * @author Remy Perona
+	 *
+	 * @param bool $is_active True if CDN is active on website, false otherwise.
+	 * @return void
+	 */
+	public function update_website_status( $is_active ) {
+		$subscription = $this->get_subscription_data();
+
+		if ( ! isset( $subscription['id'] ) || 0 === $subscription['id'] ) {
+			return;
+		}
+
+		$token = get_option( 'rocketcdn_user_token' );
+
+		if ( empty( $token ) ) {
+			return;
+		}
+
+		$args = [
+			'method'  => 'PATCH',
+			'headers' => [
+				'Authorization' => 'Token ' . $token,
+			],
+			'body'    => [
+				'is_active' => $is_active,
+			],
+		];
+
+		wp_remote_request(
+			self::ROCKETCDN_API . 'website/' . $subscription['id'] . '/',
+			$args
+		);
 	}
 }

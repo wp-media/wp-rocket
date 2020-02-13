@@ -1,4 +1,5 @@
 <?php
+
 namespace WP_Rocket\Tests\Unit\CDN\RocketCDN\APIClient;
 
 use WPMedia\PHPUnit\Unit\TestCase;

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "56ec11260d87b5cb6b163d051e562daa",
+    "content-hash": "b7548393efe5a49350920d66de309211",
     "packages": [
         {
             "name": "a5hleyrich/wp-background-processing",
@@ -2941,16 +2941,16 @@
         },
         {
             "name": "symfony/polyfill-ctype",
-            "version": "v1.13.1",
+            "version": "v1.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-ctype.git",
-                "reference": "f8f0b461be3385e56d6de3dbb5a0df24c0c275e3"
+                "reference": "fbdeaec0df06cf3d51c93de80c7eb76e271f5a38"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/f8f0b461be3385e56d6de3dbb5a0df24c0c275e3",
-                "reference": "f8f0b461be3385e56d6de3dbb5a0df24c0c275e3",
+                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/fbdeaec0df06cf3d51c93de80c7eb76e271f5a38",
+                "reference": "fbdeaec0df06cf3d51c93de80c7eb76e271f5a38",
                 "shasum": ""
             },
             "require": {
@@ -2962,7 +2962,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.13-dev"
+                    "dev-master": "1.14-dev"
                 }
             },
             "autoload": {
@@ -2995,20 +2995,20 @@
                 "polyfill",
                 "portable"
             ],
-            "time": "2019-11-27T13:56:44+00:00"
+            "time": "2020-01-13T11:15:53+00:00"
         },
         {
             "name": "symfony/polyfill-php73",
-            "version": "v1.13.1",
+            "version": "v1.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php73.git",
-                "reference": "4b0e2222c55a25b4541305a053013d5647d3a25f"
+                "reference": "5e66a0fa1070bf46bec4bea7962d285108edd675"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php73/zipball/4b0e2222c55a25b4541305a053013d5647d3a25f",
-                "reference": "4b0e2222c55a25b4541305a053013d5647d3a25f",
+                "url": "https://api.github.com/repos/symfony/polyfill-php73/zipball/5e66a0fa1070bf46bec4bea7962d285108edd675",
+                "reference": "5e66a0fa1070bf46bec4bea7962d285108edd675",
                 "shasum": ""
             },
             "require": {
@@ -3017,7 +3017,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.13-dev"
+                    "dev-master": "1.14-dev"
                 }
             },
             "autoload": {
@@ -3053,7 +3053,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2019-11-27T16:25:15+00:00"
+            "time": "2020-01-13T11:15:53+00:00"
         },
         {
             "name": "szepeviktor/phpstan-wordpress",
@@ -3200,16 +3200,16 @@
         },
         {
             "name": "woocommerce/woocommerce",
-            "version": "3.9.1",
+            "version": "3.9.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/woocommerce/woocommerce.git",
-                "reference": "37899bdee89799b435da4223795a26a992d35468"
+                "reference": "f3ceba5a95e700ef9429615b0ba82752ee328bb2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/woocommerce/woocommerce/zipball/37899bdee89799b435da4223795a26a992d35468",
-                "reference": "37899bdee89799b435da4223795a26a992d35468",
+                "url": "https://api.github.com/repos/woocommerce/woocommerce/zipball/f3ceba5a95e700ef9429615b0ba82752ee328bb2",
+                "reference": "f3ceba5a95e700ef9429615b0ba82752ee328bb2",
                 "shasum": ""
             },
             "require": {
@@ -3255,7 +3255,7 @@
             ],
             "description": "An eCommerce toolkit that helps you sell anything. Beautifully.",
             "homepage": "https://woocommerce.com/",
-            "time": "2020-01-28T21:27:09+00:00"
+            "time": "2020-02-13T16:18:48+00:00"
         },
         {
             "name": "woocommerce/woocommerce-blocks",
@@ -3395,12 +3395,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-media/phpunit.git",
-                "reference": "766715679911ff453d5686c6d7befc395a9f452a"
+                "reference": "d5fa8ffd5645b6e75b7cdfa2dfc3fb4530d12037"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-media/phpunit/zipball/766715679911ff453d5686c6d7befc395a9f452a",
-                "reference": "766715679911ff453d5686c6d7befc395a9f452a",
+                "url": "https://api.github.com/repos/wp-media/phpunit/zipball/d5fa8ffd5645b6e75b7cdfa2dfc3fb4530d12037",
+                "reference": "d5fa8ffd5645b6e75b7cdfa2dfc3fb4530d12037",
                 "shasum": ""
             },
             "require": {
@@ -3431,7 +3431,7 @@
             ],
             "description": "PHPUnit extender for bootstrapping unit and WordPress integration test suites.",
             "homepage": "https://github.com/wp-media/phpunit",
-            "time": "2020-02-12T20:10:29+00:00"
+            "time": "2020-02-13T22:37:58+00:00"
         }
     ],
     "aliases": [],
@@ -3445,5 +3445,7 @@
     "platform": {
         "php": ">=5.6.0"
     },
-    "platform-dev": []
+    "platform-dev": {
+        "php": "^5.6 || ^7"
+    }
 }
