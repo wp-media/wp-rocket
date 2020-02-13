@@ -2,7 +2,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-if ( class_exists( 'FlywheelNginxCompat' ) ) {
+if ( ! class_exists( 'FlywheelNginxCompat' ) ) {
 	return;
 }
 

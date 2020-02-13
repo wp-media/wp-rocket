@@ -11,11 +11,22 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 class Test_PurgeUserCache extends FilesystemTestCase {
 	private static $user_id;
 
-	/**
-	 * Set up the User before tests start.
-	 */
 	public static function wpSetUpBeforeClass( $factory ) {
 		self::$user_id = $factory->user->create( [ 'user_login' => 'wpmedia', 'role' => 'editor' ] );
+	}
+
+	public function setUp() {
+		parent::setUp();
+
+		// Unhook WooCommerce, as it throws wpdb::prepare errors.
+		remove_action( 'delete_user', 'wc_delete_user_data' );
+	}
+
+	public function tearDown() {
+		parent::tearDown();
+
+		// Rewire WooCommerce.
+		add_action( 'delete_user', 'wc_delete_user_data' );
 	}
 
 	public function testShouldNotPurgeUserCacheWhenUserCacheDisabled() {

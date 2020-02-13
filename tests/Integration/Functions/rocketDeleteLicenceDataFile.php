@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Tests\Integration\Functions\Options;
+namespace WP_Rocket\Tests\Integration\Functions;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
@@ -10,15 +10,16 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group Options
  */
 class Test_RocketDeleteLicenceDataFile extends FilesystemTestCase {
-	private $path;
 	protected $rootVirtualDir = 'wp-rocket';
 	protected $structure = [
 		'licence-data.php' => '',
 	];
 
 	public function testShouldDeleteLicenceDataFileWhenExists() {
-		Functions\when( 'rocket_get_constant' )
-			->justReturn( $this->path->url() . '/' );
+		Functions\expect( 'rocket_get_constant' )
+			->once()
+			->with( 'WP_ROCKET_PATH' )
+			->andReturn( $this->rootVirtualUrl . '/' );
 
 		$this->assertTrue( $this->filesystem->exists( 'licence-data.php' ) );
 

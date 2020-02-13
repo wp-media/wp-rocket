@@ -4,10 +4,12 @@ namespace WP_Rocket\Tests\Integration\Functions\Options;
 use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
+ * @covers ::get_rocket_exclude_defer_js
  * @group Functions
  * @group Options
  */
-class TestExcludeDeferJS extends TestCase {
+class Test_GetRocketExcludeDeferJS extends TestCase {
+
     public function testShouldReturnExcludeDeferJSArray() {
         $this->assertSame(
             $this->get_exclude_defer_js_list( false ),
