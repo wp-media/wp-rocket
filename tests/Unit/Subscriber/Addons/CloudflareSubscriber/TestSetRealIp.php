@@ -1,15 +1,21 @@
 <?php
 namespace WP_Rocket\Tests\Unit\Subscriber\Addons\CloudflareSubscriber;
 
+use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Subscriber\Addons\Cloudflare\CloudflareSubscriber;
-use Brain\Monkey\Functions;
 
 /**
  * @group Cloudflare
  */
 class TestSetRealIp extends TestCase {
 	protected static $mockCommonWpFunctionsInSetUp = true;
+
+	protected function setUp() {
+		parent::setUp();
+
+		Functions\stubs( [ 'sanitize_text_field' ] );
+	}
 
 	/**
 	 * Test should not set real IP.
