@@ -10,6 +10,8 @@ use WPMedia\PHPUnit\Integration\TestCase;
  * @group  AdminOnly
  */
 class Test_MaybeUpdateAPIStatus extends TestCase {
+    use \WPMedia\PHPUnit\Integration\ApiTrait;
+
     protected static $api_credentials_config_file = 'rocketcdn.php';
 
     public function setUp() {
