@@ -51,5 +51,5 @@ script:
   if [[ "$WP_TRAVISCI" == "phpcs" ]]; then
     composer phpcs
   else
-    composer test-unit
+    composer run-tests
   fi
