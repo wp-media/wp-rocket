@@ -21,11 +21,19 @@ class Test_ToggleCTA extends TestCase {
 		);
 	}
 
+	public function testShouldReturnNullWhenNoCapacity() {
+		Functions\when('check_ajax_referer')->justReturn(true);
+		Functions\when( 'current_user_can' )->justReturn( false );
+
+		$this->assertNull( $this->notices->toggle_cta() );
+	}
+
 	/**
 	 * Test should return null when the $_POST values are not set
 	 */
 	public function testShouldReturnNullWhenPOSTNotSet() {
 		Functions\when('check_ajax_referer')->justReturn(true);
+		Functions\when( 'current_user_can' )->justReturn( true );
 
 		$this->assertNull( $this->notices->toggle_cta() );
 	}
@@ -35,6 +43,7 @@ class Test_ToggleCTA extends TestCase {
 	 */
 	public function testShouldDeleteUserMetaWhenStatusIsBig() {
 		Functions\when('check_ajax_referer')->justReturn(true);
+		Functions\when( 'current_user_can' )->justReturn( true );
 		Functions\when('get_current_user_id')->justReturn(1);
 		Functions\expect('delete_user_meta')
 			->once()
@@ -51,6 +60,7 @@ class Test_ToggleCTA extends TestCase {
 	 */
 	public function testShouldUpdateUserMetaWhenStatusIsSmall() {
 		Functions\when('check_ajax_referer')->justReturn(true);
+		Functions\when( 'current_user_can' )->justReturn( true );
 		Functions\when('get_current_user_id')->justReturn(1);
 		Functions\expect('update_user_meta')
 			->once()

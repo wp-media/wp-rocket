@@ -4,6 +4,8 @@ namespace WP_Rocket\Tests\Unit\Subscriber\CDN\RocketCDN\DataManagerSubscriber;
 
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\CDN\RocketCDN\APIClient;
+use WP_Rocket\CDN\RocketCDN\CDNOptionsManager;
 use WP_Rocket\Subscriber\CDN\RocketCDN\DataManagerSubscriber;
 
 /**
@@ -11,8 +13,29 @@ use WP_Rocket\Subscriber\CDN\RocketCDN\DataManagerSubscriber;
  * @group  RocketCDN
  */
 class Test_Enable extends TestCase {
+	public function testShouldSendJSONErrorWhenNoCapacity() {
+		Functions\when( 'check_ajax_referer' )->justReturn( true );
+		Functions\when( 'current_user_can' )->justReturn( false );
+
+		Functions\expect( 'wp_send_json_error' )
+			->once()
+			->with( [
+				'process' => 'subscribe',
+				'message' => 'unauthorized_user',
+			] );
+
+		$data_manager = new DataManagerSubscriber(
+			$this->createMock( APIClient::class ),
+			$this->createMock( CDNOptionsManager::class )
+		);
+
+		$data_manager->enable();
+	}
+
 	public function testShouldSendJSONErrorWhenCDNUrlEmpty() {
 		Functions\when( 'check_ajax_referer' )->justReturn( true );
+		Functions\when( 'current_user_can' )->justReturn( true );
+
 		Functions\expect( 'wp_send_json_error' )
 			->once()
 			->with( [
@@ -21,8 +44,8 @@ class Test_Enable extends TestCase {
 			] );
 
 		$data_manager = new DataManagerSubscriber(
-			$this->createMock( 'WP_Rocket\CDN\RocketCDN\APIClient' ),
-			$this->createMock( 'WP_Rocket\CDN\RocketCDN\CDNOptionsManager' )
+			$this->createMock( APIClient::class ),
+			$this->createMock( CDNOptionsManager::class )
 		);
 
 		$data_manager->enable();
@@ -32,6 +55,7 @@ class Test_Enable extends TestCase {
 		$_POST['cdn_url'] = 'invalid';
 
 		Functions\when( 'check_ajax_referer' )->justReturn( true );
+		Functions\when( 'current_user_can' )->justReturn( true );
 		Functions\when( 'wp_unslash' )->returnArg();
 		Functions\when( 'esc_url_raw' )->justReturn( '' );
 
@@ -43,8 +67,8 @@ class Test_Enable extends TestCase {
 			] );
 
 		$data_manager = new DataManagerSubscriber(
-			$this->createMock( 'WP_Rocket\CDN\RocketCDN\APIClient' ),
-			$this->createMock( 'WP_Rocket\CDN\RocketCDN\CDNOptionsManager' )
+			$this->createMock( APIClient::class ),
+			$this->createMock( CDNOptionsManager::class )
 		);
 
 		$data_manager->enable();
@@ -54,6 +78,7 @@ class Test_Enable extends TestCase {
 		$_POST['cdn_url'] = 'https://rocketcdn.me';
 
 		Functions\when( 'check_ajax_referer' )->justReturn( true );
+		Functions\when( 'current_user_can' )->justReturn( true );
 		Functions\when( 'wp_unslash' )->returnArg();
 		Functions\when( 'esc_url_raw' )->returnArg();
 
@@ -73,14 +98,14 @@ class Test_Enable extends TestCase {
 				'message' => 'rocketcdn_enabled',
 			] );
 
-		$api = $this->createMock( \WP_Rocket\CDN\RocketCDN\APIClient::class );
+		$api = $this->createMock( APIClient::class );
 		$api->expects( $this->once() )
 		    ->method( 'get_subscription_data' )
 		    ->willReturn( [
 			    'subscription_next_date_update' => time(),
 		    ] );
 
-		$options = $this->createMock( \WP_Rocket\CDN\RocketCDN\CDNOptionsManager::class );
+		$options = $this->createMock( CDNOptionsManager::class );
 		$options->expects( $this->once() )
 		        ->method( 'enable' )
 		        ->with( 'https://rocketcdn.me' );

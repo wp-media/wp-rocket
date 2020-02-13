@@ -4,6 +4,8 @@ namespace WP_Rocket\Tests\Unit\Subscriber\CDN\RocketCDN\DataManagerSubscriber;
 
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\CDN\RocketCDN\APIClient;
+use WP_Rocket\CDN\RocketCDN\CDNOptionsManager;
 use WP_Rocket\Subscriber\CDN\RocketCDN\DataManagerSubscriber;
 
 /**
@@ -17,11 +19,18 @@ class Test_UpdateUserToken extends TestCase {
 		parent::setUp();
 
 		$this->data_manager = new DataManagerSubscriber(
-			$this->createMock( 'WP_Rocket\CDN\RocketCDN\APIClient' ),
-			$this->createMock( 'WP_Rocket\CDN\RocketCDN\CDNOptionsManager' )
+			$this->createMock( APIClient::class ),
+			$this->createMock( CDNOptionsManager::class )
 		);
 
 		Functions\when( 'check_ajax_referer' )->justReturn( true );
+	}
+
+	public function testShouldSendErrorWhenNoCapacity() {
+		Functions\when( 'current_user_can' )->justReturn( false );
+		Functions\expect( 'wp_send_json_error' )->once()->with( 'unauthorized_user' );
+
+		$this->data_manager->update_user_token();
 	}
 
 	/**
@@ -30,6 +39,7 @@ class Test_UpdateUserToken extends TestCase {
 	public function testShouldDeleteOptionAndSendUserTokenDeletedJSONSuccessWhenValueIsNull() {
 		$_POST['value'] = null;
 
+		Functions\when( 'current_user_can' )->justReturn( true );
 		Functions\expect( 'delete_option' )->once()->with( 'rocketcdn_user_token' );
 		Functions\expect( 'wp_send_json_success' )->once()->with( 'user_token_deleted' );
 
@@ -47,6 +57,7 @@ class Test_UpdateUserToken extends TestCase {
 
 		$this->assertNotEquals( 40, strlen( $_POST['value'] ) );
 
+		Functions\when( 'current_user_can' )->justReturn( true );
 		Functions\expect( 'sanitize_key' )->once()->with( 'not40charslong' )->andReturnFirstArg();
 		Functions\expect( 'wp_send_json_error' )->once()->with( 'invalid_token_length' );
 		Functions\expect( 'delete_option' )->never();
@@ -64,6 +75,7 @@ class Test_UpdateUserToken extends TestCase {
 
 		$this->assertEquals( 40, strlen( $_POST['value'] ) );
 
+		Functions\when( 'current_user_can' )->justReturn( true );
 		Functions\expect( 'sanitize_key' )->once()->with( $_POST['value'] )->andReturnFirstArg();
 		Functions\expect( 'update_option' )->once()->with( 'rocketcdn_user_token', $_POST['value'] );
 		Functions\expect( 'wp_send_json_success' )->once()->with( 'user_token_saved' );
