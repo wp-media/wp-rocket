@@ -34,6 +34,8 @@ class Dequeue_JQuery_Migrate_Subscriber implements Subscriber_Interface {
 	}
 
 	/**
+	 * Return an array of events that this subscriber wants to listen to.
+	 *
 	 * @inheritDoc
 	 */
 	public static function get_subscribed_events() {
@@ -58,7 +60,7 @@ class Dequeue_JQuery_Migrate_Subscriber implements Subscriber_Interface {
 
 		if ( ! empty( $scripts->registered['jquery'] ) ) {
 			$jquery_dependencies                 = $scripts->registered['jquery']->deps;
-			$scripts->registered['jquery']->deps = array_diff( $jquery_dependencies, array( 'jquery-migrate' ) );
+			$scripts->registered['jquery']->deps = array_diff( $jquery_dependencies, [ 'jquery-migrate' ] );
 		}
 	}
 

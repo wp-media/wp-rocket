@@ -50,6 +50,8 @@ class CloudflareSubscriber implements Subscriber_Interface {
 	}
 
 	/**
+	 * Return an array of events that this subscriber wants to listen to.
+	 *
 	 * @inheritDoc
 	 */
 	public static function get_subscribed_events() {
@@ -261,7 +263,7 @@ class CloudflareSubscriber implements Subscriber_Interface {
 
 		$cf_ips_values = $this->cloudflare->get_cloudflare_ips();
 		$cf_ip_ranges  = $cf_ips_values->result->ipv6_cidrs;
-		$ip            = wp_unslash( $_SERVER['REMOTE_ADDR'] );
+		$ip            = sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) );
 		$ipv6          = get_rocket_ipv6_full( $ip );
 		if ( false === strpos( $ip, ':' ) ) {
 			// IPV4: Update the REMOTE_ADDR value if the current REMOTE_ADDR value is in the specified range.
@@ -271,7 +273,7 @@ class CloudflareSubscriber implements Subscriber_Interface {
 		foreach ( $cf_ip_ranges as $range ) {
 			if ( ( strpos( $ip, ':' ) && rocket_ipv6_in_range( $ipv6, $range ) ) ||
 					( false === strpos( $ip, ':' ) && rocket_ipv4_in_range( $ip, $range ) ) ) {
-				$_SERVER['REMOTE_ADDR'] = wp_unslash( $_SERVER['HTTP_CF_CONNECTING_IP'] );
+				$_SERVER['REMOTE_ADDR'] = sanitize_text_field( wp_unslash( $_SERVER['HTTP_CF_CONNECTING_IP'] ) );
 				break;
 			}
 		}

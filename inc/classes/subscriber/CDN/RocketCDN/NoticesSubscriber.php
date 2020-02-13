@@ -32,6 +32,8 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	}
 
 	/**
+	 * Return an array of events that this subscriber wants to listen to.
+	 *
 	 * @inheritDoc
 	 */
 	public static function get_subscribed_events() {
@@ -60,7 +62,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			return;
 		}
 
-		echo $this->generate( 'promote-notice' );
+		echo $this->generate( 'promote-notice' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**
@@ -202,8 +204,8 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			];
 		}
 
-		echo $this->generate( 'cta-small', $small_cta_data );
-		echo $this->generate( 'cta-big', $big_cta_data );
+		echo $this->generate( 'cta-small', $small_cta_data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+		echo $this->generate( 'cta-big', $big_cta_data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**

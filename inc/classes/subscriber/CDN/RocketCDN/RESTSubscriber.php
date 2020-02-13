@@ -40,6 +40,8 @@ class RESTSubscriber implements Subscriber_Interface {
 	}
 
 	/**
+	 * Return an array of events that this subscriber wants to listen to.
+	 *
 	 * @inheritDoc
 	 */
 	public static function get_subscribed_events() {
