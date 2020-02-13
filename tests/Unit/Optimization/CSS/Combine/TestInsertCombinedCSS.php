@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Tests\Unit\Optimize\CSS\Combine;
 
-use WP_Rocket\Tests\Unit\TestCase;
+use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Optimization\CSS\Combine;
 use Brain\Monkey\Functions;
 
@@ -13,8 +13,14 @@ class TestInsertCombinedCSS extends TestCase {
         Functions\when('create_rocket_uniqid')->justReturn('1234');
         Functions\when('get_current_blog_id')->justReturn('1');
 
-        define( 'WP_ROCKET_MINIFY_CACHE_PATH', 'wp-content/cache/' );
-        define('WP_ROCKET_MINIFY_CACHE_URL', 'http://example.com/wp-content/cache/');
+        Functions\expect( 'rocket_get_constant' )
+	        ->once()
+	        ->with( 'WP_ROCKET_MINIFY_CACHE_PATH' )
+	        ->andReturn( 'wp-content/cache/' )
+	        ->andAlsoExpectIt()
+	        ->once()
+	        ->with( 'WP_ROCKET_MINIFY_CACHE_URL' )
+	        ->andReturn( 'http://example.com/wp-content/cache/' );
 
         $options = $this->createMock('WP_Rocket\Admin\Options_Data');
         $minify  = $this->createMock('MatthiasMullie\Minify\CSS');
@@ -30,8 +36,8 @@ class TestInsertCombinedCSS extends TestCase {
             ],
         ];
 
-        $original = \file_get_contents( WP_ROCKET_PLUGIN_TESTS_ROOT . '/../Fixtures/Optimization/CSS/original.html');
-        $combined = \file_get_contents( WP_ROCKET_PLUGIN_TESTS_ROOT . '/../Fixtures/Optimization/CSS/combined.html');
+        $original = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/Optimization/CSS/original.html');
+        $combined = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/Optimization/CSS/combined.html');
 
         $this->assertSame(
             $combined,

@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Tests\Unit\Functions\Options;
 
-use WP_Rocket\Tests\Unit\TestCase;
+use WPMedia\PHPUnit\Unit\TestCase;
 use Brain\Monkey\Functions;
 use org\bovigo\vfs\vfsStream,
 	org\bovigo\vfs\vfsStreamDirectory;

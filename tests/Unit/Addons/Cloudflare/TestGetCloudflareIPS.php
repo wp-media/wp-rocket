@@ -1,24 +1,15 @@
 <?php
 namespace WP_Rocket\Tests\Unit\Addons\Cloudflare;
 
-use WP_Rocket\Tests\Unit\TestCase;
-use WP_Rocket\Addons\Cloudflare\Cloudflare;
 use Brain\Monkey\Functions;
+use WP_Rocket\Addons\Cloudflare\Cloudflare;
+use WPMedia\PHPUnit\Unit\TestCase;
 
+/**
+ * @group Cloudflare
+ */
 class TestGetCloudflareIPS extends TestCase {
-
-	protected function setUp() {
-		parent::setUp();
-
-		$this->mockCommonWpFunctions();
-
-		if ( ! defined('WEEK_IN_SECONDS') ) {
-			define('WEEK_IN_SECONDS', 7 * 24 * 60 * 60);
-		}
-		if ( ! defined('WP_ROCKET_VERSION') ) {
-			define('WP_ROCKET_VERSION', '3.5');
-		}
-	}
+	protected static $mockCommonWpFunctionsInSetUp = true;
 
 	/**
 	 * Test get cloudflare IPs with cached invalid transient for credentials.

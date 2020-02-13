@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Tests\Unit\Functions\Options;
 
-use WP_Rocket\Tests\Unit\TestCase;
+use WPMedia\PHPUnit\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
@@ -95,7 +95,7 @@ class TestRocketCheckKey extends TestCase {
                 'consumer_email' => 'example@example.org',
                 'secret_key' => '',
             ];
-    
+
             $this->assertSame($expected, rocket_check_key());
     }
 }

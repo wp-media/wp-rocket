@@ -108,7 +108,7 @@ class Facebook_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface
 	 * @author Grégory Viguier
 	 */
 	public function schedule_cache_update() {
-		$scheduled  = wp_next_scheduled( self::CRON_NAME );
+		$scheduled = wp_next_scheduled( self::CRON_NAME );
 
 		if ( ! $this->is_busting_active() ) {
 			if ( $scheduled ) {

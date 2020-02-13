@@ -2,14 +2,15 @@
 
 namespace WP_Rocket\Tests\Unit\Inc;
 
-use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey;
+use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
  * @group Init
  * @group Constants
  */
 class Test_RocketHasConstant extends TestCase {
+
 	protected function setUp() {
 		parent::setUp();
 
@@ -41,6 +42,6 @@ class Test_RocketHasConstant extends TestCase {
 
 	public function testShouldReturnTrueWhenConstantIsDefined() {
 		$this->assertTrue( rocket_has_constant( 'WP_ROCKET_PLUGIN_ROOT' ) );
-		$this->assertTrue( rocket_has_constant( 'WP_ROCKET_PLUGIN_TESTS_ROOT' ) );
+		$this->assertTrue( rocket_has_constant( 'WP_ROCKET_TESTS_FIXTURES_DIR' ) );
 	}
 }

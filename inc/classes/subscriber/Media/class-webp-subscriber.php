@@ -706,7 +706,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 		}
 
 		$content_url = preg_replace( '@^https?:@', '', content_url( '/' ) );
-		$content_dir = trailingslashit( WP_CONTENT_DIR );
+		$content_dir = trailingslashit( rocket_get_constant( 'WP_CONTENT_DIR' ) );
 		$list        = [ $content_url => $content_dir ];
 
 		/**

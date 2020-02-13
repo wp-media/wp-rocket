@@ -91,7 +91,7 @@ settings_errors( $data['slug'] ); ?>
 		</div>
 		<div class="wpr-Popin-content">
 			<p><?php esc_html_e( 'Below is a detailed view of all data WP Rocket will collect <strong>if granted permission.</strong>', 'rocket' ); ?></p>
-			<?php echo rocket_data_collection_preview_table(); ?>
+			<?php echo rocket_data_collection_preview_table(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
 			<div class="wpr-Popin-flex">
 				<p><?php esc_html_e( 'WP Rocket will never transmit any domain names or email addresses (except for license validation), IP addresses, or third-party API keys.', 'rocket' ); ?></p>
 				<div>

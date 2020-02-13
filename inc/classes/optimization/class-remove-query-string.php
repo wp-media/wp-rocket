@@ -237,7 +237,7 @@ class Remove_Query_String extends Abstract_Optimization {
 		}
 
 		if ( false !== strpos( $url, 'ver=' . $GLOBALS['wp_version'] ) ) {
-			$url = rtrim( str_replace( array( 'ver=' . $GLOBALS['wp_version'], '?&', '&&' ), array( '', '?', '&' ), $url ), '?&' );
+			$url = rtrim( str_replace( [ 'ver=' . $GLOBALS['wp_version'], '?&', '&&' ], [ '', '?', '&' ], $url ), '?&' );
 		}
 
 		if ( $this->is_external_file( $url ) ) {

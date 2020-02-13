@@ -2,7 +2,7 @@
 namespace WP_Rocket\Tests\Unit\Subscriber\Cache\PurgeActionsSubscriber;
 
 use WP_Rocket\Subscriber\Cache\PurgeActionsSubscriber;
-use WP_Rocket\Tests\Unit\TestCase;
+use WPMedia\PHPUnit\Unit\TestCase;
 use Brain\Monkey\Functions;
 use Brain\Monkey\Filters;
 

@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Tests\Unit\Subscriber\Addons\VarnishSubscriber;
 
-use WP_Rocket\Tests\Unit\TestCase;
+use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Subscriber\Addons\Varnish\VarnishSubscriber;
 use Brain\Monkey\Functions;
 

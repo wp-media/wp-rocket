@@ -2,8 +2,8 @@
 
 namespace WP_Rocket\Tests\Integration\Inc\Common;
 
-use WP_Rocket\Tests\Integration\TestCase;
 use Brain\Monkey\Functions;
+use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
  * @covers ::rocket_clean_post_cache_on_slug_change
