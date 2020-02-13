@@ -40,7 +40,7 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritdoc}
 	 */
 	public static function get_subscribed_events() {
 		return [
@@ -214,7 +214,7 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$status = filter_var( $_POST['status'], FILTER_VALIDATE_BOOLEAN );
+		$status = filter_var( $_POST['status'], FILTER_VALIDATE_BOOLEAN ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- Used as a boolean.
 
 		if ( false === $status ) {
 			delete_option( 'rocketcdn_process' );

@@ -41,7 +41,7 @@ $rocket_cnames_zone = get_rocket_option( 'cdn_zone' );
 				<input type="hidden" name="wp_rocket_settings[cdn_zone][]" value="all" />
 				<?php if ( ! empty( $data['helper'] ) ) : ?>
 				<div class="wpr-field-description wpr-field-description-helper">
-					<?php echo $data['helper']; ?>
+					<?php echo $data['helper']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
 				</div>
 				<?php endif; ?>
 			</div>
