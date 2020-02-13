@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "56ec11260d87b5cb6b163d051e562daa",
+    "content-hash": "b7548393efe5a49350920d66de309211",
     "packages": [
         {
             "name": "a5hleyrich/wp-background-processing",
@@ -3204,12 +3204,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/woocommerce/woocommerce.git",
-                "reference": "91f19495b5620d5e30600f4514ac33a8c0e73e9b"
+                "reference": "f3ceba5a95e700ef9429615b0ba82752ee328bb2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/woocommerce/woocommerce/zipball/91f19495b5620d5e30600f4514ac33a8c0e73e9b",
-                "reference": "91f19495b5620d5e30600f4514ac33a8c0e73e9b",
+                "url": "https://api.github.com/repos/woocommerce/woocommerce/zipball/f3ceba5a95e700ef9429615b0ba82752ee328bb2",
+                "reference": "f3ceba5a95e700ef9429615b0ba82752ee328bb2",
                 "shasum": ""
             },
             "require": {
@@ -3395,12 +3395,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-media/phpunit.git",
-                "reference": "75d0d2421090c0ac25d4d0db81565f0e499c4a71"
+                "reference": "d5fa8ffd5645b6e75b7cdfa2dfc3fb4530d12037"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-media/phpunit/zipball/75d0d2421090c0ac25d4d0db81565f0e499c4a71",
-                "reference": "75d0d2421090c0ac25d4d0db81565f0e499c4a71",
+                "url": "https://api.github.com/repos/wp-media/phpunit/zipball/d5fa8ffd5645b6e75b7cdfa2dfc3fb4530d12037",
+                "reference": "d5fa8ffd5645b6e75b7cdfa2dfc3fb4530d12037",
                 "shasum": ""
             },
             "require": {
@@ -3431,7 +3431,7 @@
             ],
             "description": "PHPUnit extender for bootstrapping unit and WordPress integration test suites.",
             "homepage": "https://github.com/wp-media/phpunit",
-            "time": "2020-02-13T19:14:05+00:00"
+            "time": "2020-02-13T22:37:58+00:00"
         }
     ],
     "aliases": [],
@@ -3445,5 +3445,7 @@
     "platform": {
         "php": ">=5.6.0"
     },
-    "platform-dev": []
+    "platform-dev": {
+        "php": "^5.6 || ^7"
+    }
 }
