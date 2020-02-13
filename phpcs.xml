@@ -38,6 +38,14 @@
         <exclude name="Squiz.PHP.CommentedOutCode.Found"/>
 		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
 		<exclude name="Generic.Arrays.DisallowShortArraySyntax" />
+		<!-- Allow cURL. -->
+		<exclude name="WordPress.WP.AlternativeFunctions.curl_curl_init" />
+		<exclude name="WordPress.WP.AlternativeFunctions.curl_curl_exec" />
+		<exclude name="WordPress.WP.AlternativeFunctions.curl_curl_error" />
+		<exclude name="WordPress.WP.AlternativeFunctions.curl_curl_getinfo" />
+		<exclude name="WordPress.WP.AlternativeFunctions.curl_curl_close" />
+		<exclude name="WordPress.WP.AlternativeFunctions.curl_curl_setopt_array" />
+		<exclude name="WordPress.WP.AlternativeFunctions.curl_curl_setopt" />
 	</rule>
     <rule ref="WordPress.WP.I18n">
         <properties>
@@ -46,7 +54,7 @@
     </rule>
     <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
         <properties>
-            <property name="prefixes" type="array" value="rocket,wp_rocket" />
+            <property name="prefixes" type="array" value="rocket,wp_rocket,WPMedia" />
         </properties>
     </rule>
     <rule ref="WordPress.Files.FileName">
@@ -91,7 +99,11 @@
 		<exclude-pattern>inc/classes/admin/Database/class-optimization-process.php</exclude-pattern>
 		<exclude-pattern>inc/classes/optimization/CSS/class-critical-css.php</exclude-pattern>
 	</rule>
-	<rule ref="WordPress-Docs"/>
+
+	<rule ref="WordPress-Docs">
+		<exclude name="Squiz.Commenting.FileComment.Missing"/>
+		<exclude name="Squiz.Commenting.ClassComment.Missing"/>
+	</rule>
 
 	<!-- Rules: WordPress Coding Standards - see
 		https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards
