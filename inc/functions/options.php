@@ -510,7 +510,7 @@ function rocket_check_key() {
 	Logger::info( 'LICENSE VALIDATION PROCESS STARTED.', [ 'license validation process' ] );
 
 	$response = wp_remote_get(
-		WP_ROCKET_WEB_VALID,
+		rocket_get_constant( 'WP_ROCKET_WEB_VALID' ),
 		[
 			'timeout' => 30,
 		]
@@ -611,7 +611,7 @@ function rocket_check_key() {
 			]
 		);
 
-		set_transient( WP_ROCKET_SLUG, $rocket_options );
+		set_transient( rocket_get_constant( 'WP_ROCKET_SLUG' ), $rocket_options );
 		return $rocket_options;
 	}
 
@@ -623,7 +623,7 @@ function rocket_check_key() {
 
 	Logger::info( 'License validation successful.', [ 'license validation process' ] );
 
-	set_transient( WP_ROCKET_SLUG, $rocket_options );
+	set_transient( rocket_get_constant( 'WP_ROCKET_SLUG' ), $rocket_options );
 	delete_transient( 'rocket_check_key_errors' );
 	rocket_delete_licence_data_file();
 
