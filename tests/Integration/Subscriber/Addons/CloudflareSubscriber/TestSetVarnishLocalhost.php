@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Tests\Integration\Subscriber\Addons\CloudflareSubscriber;
 
-use WP_Rocket\Tests\Integration\TestCase;
+use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
  * @covers WP_Rocket\Subscriber\Addons\Cloudflare\CloudflareSubscriber::set_varnish_localhost

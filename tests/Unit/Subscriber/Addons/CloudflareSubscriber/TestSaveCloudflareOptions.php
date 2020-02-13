@@ -5,20 +5,11 @@ use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Subscriber\Addons\Cloudflare\CloudflareSubscriber;
 use Brain\Monkey\Functions;
 
+/**
+ * @group Cloudflare
+ */
 class TestSaveCloudflareOptions extends TestCase {
-
-	protected function setUp() {
-		parent::setUp();
-
-		$this->mockCommonWpFunctions();
-
-		if ( ! defined('WEEK_IN_SECONDS') ) {
-			define('WEEK_IN_SECONDS', 7 * 24 * 60 * 60);
-		}
-		if ( ! defined('WP_ROCKET_VERSION') ) {
-			define('WP_ROCKET_VERSION', '3.5');
-		}
-	}
+	protected static $mockCommonWpFunctionsInSetUp = true;
 
 	/**
 	 * Test should clean transient when Cloudflare Addons is enabled / disabled.

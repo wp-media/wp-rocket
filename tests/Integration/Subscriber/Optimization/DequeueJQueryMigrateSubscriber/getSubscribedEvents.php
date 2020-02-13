@@ -2,12 +2,11 @@
 
 namespace WP_Rocket\Tests\Integration\Subscriber\Optimization\Dequeue_JQuery_Migrate_Subscriber;
 
-use WP_Rocket\Tests\Integration\TestCase;
+use WPMedia\PHPUnit\Integration\TestCase;
 use WP_Rocket\Subscriber\Optimization\Dequeue_JQuery_Migrate_Subscriber;
 
 /**
  * @covers WP_Rocket\Subscriber\Optimization\Dequeue_JQuery_Migrate_Subscriber::get_subscribed_events
- *
  * @group  jQueryMigrate
  */
 class Test_GetSubscribedEvents extends TestCase {

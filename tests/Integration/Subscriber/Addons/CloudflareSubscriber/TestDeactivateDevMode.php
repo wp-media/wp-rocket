@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Tests\Integration\Subscriber\Addons\CloudflareSubscriber;
 
-use PHPUnit\Framework\TestCase;
+use WPMedia\PHPUnit\Integration\TestCase;
 use WP_Rocket\Subscriber\Addons\Cloudflare\CloudflareSubscriber;
 use WP_Rocket\Addons\Cloudflare\Cloudflare;
 use WP_Rocket\Addons\Cloudflare\CloudflareFacade;

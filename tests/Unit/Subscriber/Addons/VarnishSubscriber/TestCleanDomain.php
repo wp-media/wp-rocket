@@ -5,6 +5,11 @@ use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Subscriber\Addons\Varnish\VarnishSubscriber;
 use Brain\Monkey\Functions;
 
+/**
+ * @group Varnish
+ * @group Addons
+ * @group Subscriber
+ */
 class TestCleanDomain extends TestCase {
     public function testShouldDoNothingWhenVarnishDisabled() {
         $options = $this->createMock('WP_Rocket\Admin\Options_Data');

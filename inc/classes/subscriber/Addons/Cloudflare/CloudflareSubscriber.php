@@ -53,6 +53,7 @@ class CloudflareSubscriber implements Subscriber_Interface {
 	 * @inheritDoc
 	 */
 	public static function get_subscribed_events() {
+		$slug = rocket_get_constant( 'WP_ROCKET_SLUG' );
 		return [
 			'rocket_varnish_ip'                         => 'set_varnish_localhost',
 			'rocket_varnish_purge_request_host'         => 'set_varnish_purge_request_host',
@@ -61,8 +62,8 @@ class CloudflareSubscriber implements Subscriber_Interface {
 			'after_rocket_clean_post'                   => [ 'auto_purge_by_url', 10, 3 ],
 			'admin_post_rocket_purge_cloudflare'        => 'purge_cache',
 			'init'                                      => [ 'set_real_ip', 1 ],
-			'update_option_' . WP_ROCKET_SLUG           => [ 'save_cloudflare_options', 10, 2 ],
-			'pre_update_option_' . WP_ROCKET_SLUG       => [ 'save_cloudflare_old_settings', 10, 2 ],
+			'update_option_' . $slug                    => [ 'save_cloudflare_options', 10, 2 ],
+			'pre_update_option_' . $slug                => [ 'save_cloudflare_old_settings', 10, 2 ],
 			'admin_notices'                             => [
 				[ 'maybe_display_purge_notice' ],
 				[ 'maybe_print_update_settings_notice' ],

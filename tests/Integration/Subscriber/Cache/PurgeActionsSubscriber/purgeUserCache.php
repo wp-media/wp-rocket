@@ -1,18 +1,14 @@
 <?php
 namespace WP_Rocket\Tests\Integration\Subscriber\Cache\PurgeActionsSubscriber;
 
-use WP_Rocket\Tests\Integration\TestCase;
 use Brain\Monkey\Functions;
-use org\bovigo\vfs\vfsStream,
-	org\bovigo\vfs\vfsStreamDirectory;
+use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
  * @covers \WP_Rocket\Subscriber\Cache\PurgeActionsSubscriber:purge_user_cache
  * @group purge_actions
  */
-class Test_PurgeUserCache extends TestCase {
-	use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-
+class Test_PurgeUserCache extends FilesystemTestCase {
 	private static $user_id;
 
 	/**

@@ -3,7 +3,7 @@
 namespace WP_Rocket\Tests\Integration\Subscriber\CDN\RocketCDN\RESTSubscriber;
 
 use WP_Rocket\Tests\Integration\RESTfulTestCase;
-use WP_Rocket\Tests\Integration\TestCase;
+use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber::register_enable_route
