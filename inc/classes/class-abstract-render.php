@@ -101,7 +101,7 @@ abstract class Abstract_Render implements Render_Interface {
 
 		if ( 'link' !== $type ) {
 			$args['action'] = $action;
-			echo $this->generate( 'buttons/button', $args );
+			echo $this->generate( 'buttons/button', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 			return;
 		}
 
@@ -142,6 +142,6 @@ abstract class Abstract_Render implements Render_Interface {
 				break;
 		}
 
-		echo $this->generate( 'buttons/link', $args );
+		echo $this->generate( 'buttons/link', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 }

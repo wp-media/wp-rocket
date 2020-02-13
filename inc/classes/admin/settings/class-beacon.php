@@ -1,4 +1,5 @@
 <?php
+
 namespace WP_Rocket\Admin\Settings;
 
 use WP_Rocket\Admin\Options_Data;
@@ -6,14 +7,14 @@ use WP_Rocket\Admin\Options_Data;
 /**
  * Helpscout Beacon integration
  *
- * @since 3.2
+ * @since  3.2
  * @author Remy Perona
  */
 class Beacon {
 	/**
 	 * Options_Data instance
 	 *
-	 * @since 3.2
+	 * @since  3.2
 	 * @author Remy Perona
 	 *
 	 * @var Options_Data $options
@@ -23,7 +24,7 @@ class Beacon {
 	/**
 	 * Current user locale
 	 *
-	 * @since 3.2
+	 * @since  3.2
 	 * @author Remy Perona
 	 *
 	 * @var string $locale
@@ -33,7 +34,7 @@ class Beacon {
 	/**
 	 * Constructor
 	 *
-	 * @since 3.2
+	 * @since  3.2
 	 * @author Remy Perona
 	 *
 	 * @param Options_Data $options Options instance.
@@ -45,7 +46,7 @@ class Beacon {
 	/**
 	 * Configures and returns beacon javascript
 	 *
-	 * @since 3.2
+	 * @since  3.2
 	 * @author Remy Perona
 	 *
 	 * @return string
@@ -76,7 +77,7 @@ class Beacon {
 	/**
 	 * Sets the locale property with the current user locale if not set yet
 	 *
-	 * @since 3.5
+	 * @since  3.5
 	 * @author Remy Perona
 	 *
 	 * @return string
@@ -94,7 +95,7 @@ class Beacon {
 	/**
 	 * Returns Session specific data to pass to Beacon
 	 *
-	 * @since 3.3.3
+	 * @since  3.3.3
 	 * @author Remy Perona
 	 *
 	 * @return array
@@ -150,7 +151,7 @@ class Beacon {
 	/**
 	 * Returns Identify data to pass to Beacon
 	 *
-	 * @since 3.0
+	 * @since  3.0
 	 * @author Remy Perona
 	 *
 	 * @return array
@@ -172,10 +173,11 @@ class Beacon {
 	/**
 	 * Returns the IDs for the HelpScout docs for the corresponding section and language.
 	 *
-	 * @since 3.0
+	 * @since  3.0
 	 * @author Remy Perona
 	 *
 	 * @param string $doc_id Section identifier.
+	 *
 	 * @return string|array
 	 */
 	public function get_suggest( $doc_id ) {
@@ -352,13 +354,13 @@ class Beacon {
 					'url' => 'https://fr.​docs.​wp-rocket.​me/article/1270-chargement-differe-des-fichiers-js/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
-			'jquery_migrate'         => [
+			'jquery_migrate'             => [
 				'en' => [
 					'id'  => '5e1d27de2c7d3a7e9ae627e8',
 					'url' => 'https://docs.wp-rocket.me/article/1304-remove-jquery-migrate/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
-			'async' => [
+			'async'                      => [
 				'en' => [
 					'id'  => '5d52144c0428631e94f94ae2',
 					'url' => 'https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&utm_medium=wp_rocket',
@@ -578,6 +580,8 @@ class Beacon {
 			],
 		];
 
-		return isset( $suggest[ $doc_id ][ $this->get_user_locale() ] ) ? $suggest[ $doc_id ][ $this->get_user_locale() ] : $suggest[ $doc_id ]['en'];
+		return isset( $suggest[ $doc_id ][ $this->get_user_locale() ] )
+			? $suggest[ $doc_id ][ $this->get_user_locale() ]
+			: $suggest[ $doc_id ]['en'];
 	}
 }

@@ -453,7 +453,7 @@ class Render extends Abstract_render {
 	 * @return void
 	 */
 	public function rocket_cdn( $args ) {
-		echo $this->generate( 'fields/rocket-cdn', $args );
+		echo $this->generate( 'fields/rocket-cdn', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**
