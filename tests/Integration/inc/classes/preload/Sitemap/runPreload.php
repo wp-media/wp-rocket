@@ -3,33 +3,10 @@ namespace WP_Rocket\Tests\Integration\inc\classes\preload\Sitemap;
 
 use Brain\Monkey\Actions;
 use Brain\Monkey\Functions;
+use WP_Rocket\Tests\Integration\Fixtures\Preload\Process_Wrapper;
 use WPMedia\PHPUnit\Integration\TestCase;
 use WP_Rocket\Preload\Full_Process;
 use WP_Rocket\Preload\Sitemap;
-
-/**
- * Wrapper class used to test the results.
- */
-class Process extends Full_Process {
-	private $generatedKey;
-
-	public function save() {
-		$key = $this->generate_key();
-
-		if ( ! empty( $this->data ) ) {
-			update_site_option( $key, $this->data );
-			$this->generatedKey = $key;
-		} else {
-			$this->generatedKey = null;
-		}
-
-		return $this;
-	}
-
-	public function getGeneratedKey() {
-		return $this->generatedKey;
-	}
-}
 
 /**
  * @covers \WP_Rocket\Preload\Sitemap::run_preload
@@ -43,13 +20,17 @@ class Test_runPreload extends TestCase {
 	protected $preloadRunningTransient;
 	protected $process;
 
+	public static function setUpBeforeClass() {
+		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/Preload/Process_Wrapper.php';
+	}
+
 	public function setUp() {
 		parent::setUp();
 
 		$this->homeWpOption            = get_option( 'home' );
 		$this->preloadErrorsTransient  = get_transient( 'rocket_preload_errors' );
 		$this->preloadRunningTransient = get_transient( 'rocket_preload_running' );
-		$this->process                 = new Process();
+		$this->process                 = new Process_Wrapper();
 
 		update_option( 'home', 'https://example.com/' );
 	}
