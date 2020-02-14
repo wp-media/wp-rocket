@@ -1,25 +1,20 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\CDN\RocketCDN\APIClient;
+namespace WP_Rocket\Tests\Integration\Subscriber\CDN\RocketCDN\AdminPageSubscriber;
 
-use WP_Rocket\Tests\Integration\ApiTestCase;
+use WPMedia\Phpunit\Integration\TestCase;
 use WP_Rocket\CDN\RocketCDN\APIClient;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\APIClient::preserve_authorization_token
+ * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber::preserve_authorization_token
  * @group  RocketCDN
- * @group  RocketCDNAPI
  */
-class Test_PreserveAuthorizationToken extends ApiTestCase {
+class Test_PreserveAuthorizationToken extends TestCase {
+	use \WPMedia\Phpunit\Integration\ApiTrait;
+
 	private $client;
 	protected static $api_credentials_config_file = 'rocketcdn.php';
-
-	public function setUp() {
-		parent::setUp();
-
-		$this->client = new APIClient();
-	}
 
 	public function tearDown() {
 		parent::tearDown();
@@ -66,6 +61,8 @@ class Test_PreserveAuthorizationToken extends ApiTestCase {
 	}
 
 	public function testShouldReturnCorrectTokenWhenAuthorizationHeadersIncorrect() {
+		add_option( 'rocketcdn_user_token', self::getApiCredential( 'ROCKETCDN_TOKEN' ) );
+
 		$sent = [
 			'method'  => 'GET',
 			'headers' => [
