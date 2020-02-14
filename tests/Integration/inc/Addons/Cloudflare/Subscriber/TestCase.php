@@ -35,12 +35,12 @@ abstract class TestCase extends BaseTestCase {
 		self::resetTransients();
 		self::$subscriber = self::$container->get( 'cloudflare_subscriber' );
 
-		// Store original state. Why? We'll restore it before existing this class.
-		$class    = new ReflectionClass( self::$subscriber );
+		// Store original state. Why? We'll restore it before exiting this class.
+		$class             = new ReflectionClass( self::$subscriber );
 		self::$cf_property = $class->getProperty( 'cloudflare' );
 		self::$cf_property->setAccessible( true );
-		self::$subscriber_cf = self::$cf_property->getValue( self::$subscriber );
-		self::$options_property            = $class->getProperty( 'options' );
+		self::$subscriber_cf    = self::$cf_property->getValue( self::$subscriber );
+		self::$options_property = $class->getProperty( 'options' );
 		self::$options_property->setAccessible( true );
 		self::$subscriber_options = self::$options_property->getValue( self::$subscriber );
 	}
@@ -110,7 +110,7 @@ abstract class TestCase extends BaseTestCase {
 		$cf_options = $this->getConcrete( 'options' );
 		$cf_options->set_values( $data );
 		self::$cf_property->setValue( self::$subscriber, new Cloudflare( $cf_options, $this->getConcrete( 'cloudflare_api' ) ) );
-		self::$options_property->setValue( self::$subscriber,$cf_options );
+		self::$options_property->setValue( self::$subscriber, $cf_options );
 	}
 
 	public function setSiteUrl() {
@@ -118,7 +118,8 @@ abstract class TestCase extends BaseTestCase {
 	}
 
 	/**
-	 * Gets the credential's value from either an environment variable (stored locally on the machine or CI) or from a local constant defined in `tests/env/local/cloudflare.php`.
+	 * Gets the credential's value from either an environment variable (stored locally on the machine or CI) or from a
+	 * local constant defined in `tests/env/local/cloudflare.php`.
 	 *
 	 * @param string $name Name of the environment variable or constant to find.
 	 *
