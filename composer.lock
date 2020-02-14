@@ -3255,7 +3255,7 @@
             ],
             "description": "An eCommerce toolkit that helps you sell anything. Beautifully.",
             "homepage": "https://woocommerce.com/",
-            "time": "2020-02-13T16:18:48+00:00"
+            "time": "2020-02-13T15:13:27+00:00"
         },
         {
             "name": "woocommerce/woocommerce-blocks",
@@ -3395,12 +3395,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-media/phpunit.git",
-                "reference": "d5fa8ffd5645b6e75b7cdfa2dfc3fb4530d12037"
+                "reference": "36a126eb75bcf758f0a17d92a75b4dbdebe0de55"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-media/phpunit/zipball/d5fa8ffd5645b6e75b7cdfa2dfc3fb4530d12037",
-                "reference": "d5fa8ffd5645b6e75b7cdfa2dfc3fb4530d12037",
+                "url": "https://api.github.com/repos/wp-media/phpunit/zipball/36a126eb75bcf758f0a17d92a75b4dbdebe0de55",
+                "reference": "36a126eb75bcf758f0a17d92a75b4dbdebe0de55",
                 "shasum": ""
             },
             "require": {
@@ -3431,7 +3431,7 @@
             ],
             "description": "PHPUnit extender for bootstrapping unit and WordPress integration test suites.",
             "homepage": "https://github.com/wp-media/phpunit",
-            "time": "2020-02-13T22:37:58+00:00"
+            "time": "2020-02-14T03:13:42+00:00"
         }
     ],
     "aliases": [],
