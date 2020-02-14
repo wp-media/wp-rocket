@@ -25,6 +25,7 @@ class Test_AddDismissScript extends TestCase {
 		Functions\when('current_user_can')->justReturn(false);
 
 		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
+
 		$this->assertNull($page->add_dismiss_script());
 	}
 
@@ -38,6 +39,7 @@ class Test_AddDismissScript extends TestCase {
 		});
 
 		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
+
 		$this->assertNull($page->add_dismiss_script());
 	}
 
@@ -53,6 +55,7 @@ class Test_AddDismissScript extends TestCase {
 		Functions\when('get_user_meta')->justReturn(true);
 
 		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
+
 		$this->assertNull($page->add_dismiss_script());
 	}
 

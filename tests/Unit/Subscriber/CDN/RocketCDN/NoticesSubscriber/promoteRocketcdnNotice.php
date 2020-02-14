@@ -32,6 +32,7 @@ class Test_PromoteRocketcdnNotice extends TestCase {
 		Functions\when('current_user_can')->justReturn(false);
 
 		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
+
 		$this->assertNull($page->promote_rocketcdn_notice());
 	}
 
@@ -45,6 +46,7 @@ class Test_PromoteRocketcdnNotice extends TestCase {
 		});
 
 		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
+
 		$this->assertNull($page->promote_rocketcdn_notice());
 	}
 
@@ -60,6 +62,7 @@ class Test_PromoteRocketcdnNotice extends TestCase {
 		Functions\when('get_user_meta')->justReturn(true);
 
 		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
+
 		$this->assertNull($page->promote_rocketcdn_notice());
 	}
 

@@ -10,6 +10,7 @@ use WPMedia\PHPUnit\Unit\TestCase;
  * @group Constants
  */
 class Test_RocketHasConstant extends TestCase {
+
 	protected function setUp() {
 		parent::setUp();
 
