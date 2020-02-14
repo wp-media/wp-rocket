@@ -79,6 +79,7 @@ class APIClient {
 
 		$data = json_decode( $data, true );
 		$data = array_intersect_key( (array) $data, $default );
+		$data = array_merge( $default, $data );
 
 		$this->set_status_transient( $data, WEEK_IN_SECONDS );
 
