@@ -81,6 +81,8 @@ class DataManagerSubscriber implements Subscriber_Interface {
 
 		if ( ! is_string( $_POST['value'] ) ) {
 			wp_send_json_error( 'invalid_token' );
+
+			return;
 		}
 
 		$token = sanitize_key( $_POST['value'] );
