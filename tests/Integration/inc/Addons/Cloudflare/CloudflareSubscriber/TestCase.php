@@ -31,7 +31,7 @@ abstract class TestCase extends BaseTestCase {
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
 
-		self::pathToApiCredentialsConfigFile( WP_ROCKET_PLUGIN_ROOT . '/tests/env/local/' );
+		static::pathToApiCredentialsConfigFile( WP_ROCKET_PLUGIN_ROOT . '/tests/env/local/' );
 
 		self::$container = apply_filters( 'rocket_container', '' );
 		self::setApiCredentials();
@@ -59,10 +59,10 @@ abstract class TestCase extends BaseTestCase {
 	}
 
 	protected static function setApiCredentials() {
-		self::$api_credentials['email']    = self::getApiCredential( 'ROCKET_CLOUDFLARE_EMAIL' );
-		self::$api_credentials['api_key']  = self::getApiCredential( 'ROCKET_CLOUDFLARE_API_KEY' );
-		self::$api_credentials['zone_id']  = self::getApiCredential( 'ROCKET_CLOUDFLARE_ZONE_ID' );
-		self::$api_credentials['site_url'] = self::getApiCredential( 'ROCKET_CLOUDFLARE_SITE_URL' );
+		self::$api_credentials['email']    = static::getApiCredential( 'ROCKET_CLOUDFLARE_EMAIL' );
+		self::$api_credentials['api_key']  = static::getApiCredential( 'ROCKET_CLOUDFLARE_API_KEY' );
+		self::$api_credentials['zone_id']  = static::getApiCredential( 'ROCKET_CLOUDFLARE_ZONE_ID' );
+		self::$api_credentials['site_url'] = static::getApiCredential( 'ROCKET_CLOUDFLARE_SITE_URL' );
 	}
 
 	public function setUp() {
