@@ -71,7 +71,7 @@ class Addons_Subscribers extends AbstractServiceProvider {
 		$this->getContainer()->add( 'cloudflare', 'WPMedia\Cloudflare\Cloudflare' )
 			->withArgument( $this->getContainer()->get( 'options' ) )
 			->withArgument( $this->getContainer()->get( 'cloudflare_api' ) );
-		$this->getContainer()->share( 'cloudflare_subscriber', 'WPMedia\Cloudflare\CloudflareSubscriber' )
+		$this->getContainer()->share( 'cloudflare_subscriber', 'WPMedia\Cloudflare\Subscriber' )
 			->withArgument( $this->getContainer()->get( 'cloudflare' ) )
 			->withArgument( $this->getContainer()->get( 'options' ) )
 			->withArgument( $this->getContainer()->get( 'options_api' ) );

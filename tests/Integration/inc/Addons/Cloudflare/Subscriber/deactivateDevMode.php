@@ -1,9 +1,9 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\Addons\Cloudflare\CloudflareSubscriber;
+namespace WP_Rocket\Tests\Integration\inc\Addons\Cloudflare\Subscriber;
 
 /**
- * @covers WPMedia\Cloudflare\CloudflareSubscriber::deactivate_devmode
+ * @covers WPMedia\Cloudflare\Subscriber::deactivate_devmode
  * @group  Cloudflare
  * @group  CloudflareSubscriber
  */

@@ -1,9 +1,9 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\Addons\Cloudflare\CloudflareSubscriber;
+namespace WP_Rocket\Tests\Integration\inc\Addons\Cloudflare\Subscriber;
 
 /**
- * @covers WPMedia\Cloudflare\CloudflareSubscriber::set_varnish_purge_request_host
+ * @covers WPMedia\Cloudflare\Subscriber::set_varnish_purge_request_host
  * @group  Cloudflare
  * @group  CloudflareSubscriber
  */

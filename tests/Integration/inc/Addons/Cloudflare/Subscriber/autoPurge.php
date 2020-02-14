@@ -1,11 +1,11 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\Addons\Cloudflare\CloudflareSubscriber;
+namespace WP_Rocket\Tests\Integration\inc\Addons\Cloudflare\Subscriber;
 
 use Brain\Monkey\Functions;
 
 /**
- * @covers WPMedia\Cloudflare\CloudflareSubscriber::auto_purge
+ * @covers WPMedia\Cloudflare\Subscriber::auto_purge
  * @group  Cloudflare
  * @group  CloudflareSubscriber
  */

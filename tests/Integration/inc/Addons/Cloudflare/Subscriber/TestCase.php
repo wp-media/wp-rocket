@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\Addons\Cloudflare\CloudflareSubscriber;
+namespace WP_Rocket\Tests\Integration\inc\Addons\Cloudflare\Subscriber;
 
 use ReflectionClass;
 use WPMedia\Cloudflare\Cloudflare;
@@ -10,7 +10,7 @@ abstract class TestCase extends BaseTestCase {
 	protected static $container;
 	protected static $subscriber;
 
-	// Original instances within CloudflareSubscriber. Don't touch. We want to retain and then restore when done.
+	// Original instances within Subscriber. Don't touch. We want to retain and then restore when done.
 	private static $subscriber_cf;
 	private static $subscriber_options;
 	private static $cf_property;
