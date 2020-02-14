@@ -1,5 +1,5 @@
 <?php
-// phpcs::ignoreFile
+// phpcs:ignoreFile
 namespace WP_Rocket\Tests\Integration\Fixtures\Preload;
 
 use WP_Rocket\Preload\Full_Process;
