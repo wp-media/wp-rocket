@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\CDN\RocketCDN\APIClient;
 
-use WP_Rocket\Tests\Integration\ApiTestCase;
+use WPMedia\Phpunit\Integration\TestCase;
 use WP_Rocket\CDN\RocketCDN\APIClient;
 
 /**
@@ -10,8 +10,11 @@ use WP_Rocket\CDN\RocketCDN\APIClient;
  * @group  RocketCDN
  * @group  RocketCDNAPI
  */
-class Test_UpdateWebsiteStatus extends ApiTestCase {
+class Test_UpdateWebsiteStatus extends TestCase {
+	use \WPMedia\Phpunit\Integration\ApiTrait;
+
 	private $client;
+	protected static $api_credentials_config_file = 'rocketcdn.php';
 
 	public function setUp() {
 		$this->client = new APIClient();
