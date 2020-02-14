@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Addons\Cloudflare\Subscriber;
 /**
  * @covers WPMedia\Cloudflare\Subscriber::set_varnish_localhost
  * @group  Cloudflare
- * @group  CloudflareSubscriber
+ * @group  Addons
  */
 class Test_SetVarnishLocalhost extends TestCase {
 
