@@ -2,9 +2,8 @@
 
 namespace WP_Rocket\Tests\Integration\Subscriber\CDN\RocketCDN\AdminPageSubscriber;
 
-use WPMedia\Phpunit\Integration\TestCase;
-use WP_Rocket\CDN\RocketCDN\APIClient;
-use Brain\Monkey\Functions;
+use WPMedia\PHPUnit\Integration\TestCase;
+use WPMedia\PHPUnit\Integration\ApiTrait;
 
 /**
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber::preserve_authorization_token
@@ -12,7 +11,7 @@ use Brain\Monkey\Functions;
  * @group  AdminOnly
  */
 class Test_PreserveAuthorizationToken extends TestCase {
-	use \WPMedia\Phpunit\Integration\ApiTrait;
+	use ApiTrait;
 
 	private $client;
 	protected static $api_credentials_config_file = 'rocketcdn.php';
