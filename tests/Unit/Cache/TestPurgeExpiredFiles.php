@@ -18,42 +18,45 @@ class TestPurgeExpiredFiles extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
+		// Force nginx for .gz
+		$_SERVER['SERVER_SOFTWARE'] = 'nginx';
+
 		$structure = [
 			'wp-rocket' => [
 				'example.org' => [
 					'index.html' => '',
-					'index.html_gzip' => '',
+					'index.html.gz' => '',
 					'about' => [
 						'index.html'=> '',
-						'index.html_gzip' => '',
+						'index.html.gz' => '',
 						'index-mobile.html' => '',
-						'index-mobile.html_gzip' => '',
+						'index-mobile.html.gz' => '',
 					],
 					'category' => [
 						'wordpress' => [
 							'index.html' => '',
-							'index.html_gzip' => '',
+							'index.html.gz' => '',
 						],
 					],
 					'blog' => [
 						'index.html' => '',
-						'index.html_gzip' => '',
+						'index.html.gz' => '',
 					],
 					'en' => [
 						'index.html' => '',
-						'index.html_gzip' => '',
+						'index.html.gz' => '',
 					],
 				],
 				'example.org-Greg-594d03f6ae698691165999' => [
 					'index.html' => '',
-					'index.html_gzip' => '',
+					'index.html.gz' => '',
 				],
 			],
 		];
 
 		$this->cache_path = vfsStream::setup( 'cache', null, $structure );
 		$this->cache_path->getChild('wp-rocket')->getChild('example.org')->getChild('blog')->getChild('index.html')->lastAttributeModified( strtotime( '11 hours ago' ) );
-		$this->cache_path->getChild('wp-rocket')->getChild('example.org')->getChild('blog')->getChild('index.html_gzip')->lastAttributeModified( strtotime( '11 hours ago' ) );
+		$this->cache_path->getChild('wp-rocket')->getChild('example.org')->getChild('blog')->getChild('index.html.gz')->lastAttributeModified( strtotime( '11 hours ago' ) );
 		$this->cache_path->getChild('wp-rocket')->getChild('example.org-Greg-594d03f6ae698691165999')->getChild('index.html')->lastAttributeModified( strtotime( '11 hours ago' ) );
 		$this->cache_path->getChild('wp-rocket')->getChild('example.org')->getChild('en')->getChild('index.html')->lastAttributeModified( strtotime( '11 hours ago' ) );
 
