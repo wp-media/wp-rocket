@@ -2,7 +2,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-if ( function_exists( 'autoptimize_do_cachepurged_action' ) ) :
+if ( class_exists( 'autoptimizeCache' ) ) :
 	/**
 	 * Improvement with Autoptimize: clear the cache when Autoptimize's cache is cleared
 	 *

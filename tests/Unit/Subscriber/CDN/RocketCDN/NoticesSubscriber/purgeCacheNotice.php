@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Tests\Unit\Subscriber\CDN\RocketCDN;
 
-use WP_Rocket\Tests\Unit\TestCase;
+use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Subscriber\CDN\RocketCDN\NoticesSubscriber;
 use Brain\Monkey\Functions;
 
@@ -67,6 +67,10 @@ class Test_PurgeCacheNotice extends TestCase {
 			'status'  => 'success',
 			'message' => 'RocketCDN cache purge successful.',
 		]);
+
+		Functions\expect('delete_transient')
+		->once()
+		->with('rocketcdn_purge_cache_response');
 
 		Functions\expect('rocket_notice_html')
 		->once()

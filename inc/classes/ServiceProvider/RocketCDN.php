@@ -21,6 +21,8 @@ class RocketCDN extends AbstractServiceProvider {
 	 */
 	protected $provides = [
 		'rocketcdn_api_client',
+		'rocketcdn_options_manager',
+		'rocketcdn_data_manager_subscriber',
 		'rocketcdn_rest_subscriber',
 		'rocketcdn_admin_subscriber',
 		'rocketcdn_notices_subscriber',
@@ -37,9 +39,17 @@ class RocketCDN extends AbstractServiceProvider {
 	public function register() {
 		// RocketCDN API Client.
 		$this->getContainer()->add( 'rocketcdn_api_client', 'WP_Rocket\CDN\RocketCDN\APIClient' );
+		// RocketCDN CDN options manager.
+		$this->getContainer()->add( 'rocketcdn_options_manager', 'WP_Rocket\CDN\RocketCDN\CDNOptionsManager' )
+			->withArgument( $this->getContainer()->get( 'options_api' ) )
+			->withArgument( $this->getContainer()->get( 'options' ) );
+		// RocketCDN Data manager subscriber.
+		$this->getContainer()->share( 'rocketcdn_data_manager_subscriber', 'WP_Rocket\Subscriber\CDN\RocketCDN\DataManagerSubscriber' )
+			->withArgument( $this->getContainer()->get( 'rocketcdn_api_client' ) )
+			->withArgument( $this->getContainer()->get( 'rocketcdn_options_manager' ) );
 		// RocketCDN REST API Subscriber.
 		$this->getContainer()->share( 'rocketcdn_rest_subscriber', 'WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber' )
-			->withArgument( $this->getContainer()->get( 'options_api' ) )
+			->withArgument( $this->getContainer()->get( 'rocketcdn_options_manager' ) )
 			->withArgument( $this->getContainer()->get( 'options' ) );
 		// RocketCDN Notices Subscriber.
 		$this->getContainer()->share( 'rocketcdn_notices_subscriber', 'WP_Rocket\Subscriber\CDN\RocketCDN\NoticesSubscriber' )

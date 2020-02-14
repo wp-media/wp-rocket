@@ -24,9 +24,9 @@ add_action( 'post_submitbox_start', 'rocket_post_submitbox_start' );
 function rocket_cache_options_meta_boxes() {
 	if ( current_user_can( 'rocket_manage_options' ) ) {
 		$cpts = get_post_types(
-			array(
+			[
 				'public' => true,
-			),
+			],
 			'objects'
 		);
 		unset( $cpts['attachment'] );
@@ -68,7 +68,7 @@ function rocket_display_cache_options_meta_boxes() {
 		<div class="misc-pub-section">
 			<p><?php esc_html_e( 'Activate these options on this post:', 'rocket' ); ?></p>
 			<?php
-			$fields = array(
+			$fields = [
 				'lazyload'         => __( 'LazyLoad for images', 'rocket' ),
 				'lazyload_iframes' => __( 'LazyLoad for iframes/videos', 'rocket' ),
 				'minify_html'      => __( 'Minify HTML', 'rocket' ),
@@ -77,7 +77,7 @@ function rocket_display_cache_options_meta_boxes() {
 				'cdn'              => __( 'CDN', 'rocket' ),
 				'async_css'        => __( 'Optimize CSS Delivery', 'rocket' ),
 				'defer_all_js'     => __( 'Defer JS', 'rocket' ),
-			);
+			];
 
 			foreach ( $fields as $field => $label ) {
 				$disabled = disabled( ! get_rocket_option( $field ), true, false );
@@ -88,8 +88,8 @@ function rocket_display_cache_options_meta_boxes() {
 				?>
 
 				<input name="rocket_post_exclude_hidden[<?php echo esc_attr( $field ); ?>]" type="hidden" value="on">
-				<input name="rocket_post_exclude[<?php echo esc_attr( $field ); ?>]" id="rocket_post_exclude_<?php echo esc_attr( $field ); ?>" type="checkbox"<?php echo $title; ?><?php echo $checked; ?><?php echo $disabled; ?>>
-				<label for="rocket_post_exclude_<?php echo esc_attr( $field ); ?>"<?php echo $title; ?><?php echo $class; ?>><?php echo $label; ?></label><br>
+				<input name="rocket_post_exclude[<?php echo esc_attr( $field ); ?>]" id="rocket_post_exclude_<?php echo esc_attr( $field ); ?>" type="checkbox"<?php echo $title; ?><?php echo $checked; ?><?php echo $disabled; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>>
+				<label for="rocket_post_exclude_<?php echo esc_attr( $field ); ?>"<?php echo $title; ?><?php echo $class; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>><?php echo esc_html( $label ); ?></label><br>
 
 				<?php
 			}
@@ -119,12 +119,12 @@ function rocket_save_metabox_options() {
 		check_admin_referer( 'rocket_box_option', '_rocketnonce' );
 
 		// No cache field.
-		if ( 'publish' === $_POST['post_status'] ) {
-			$new_cache_reject_uri = $cache_reject_uri = get_rocket_option( 'cache_reject_uri' );
+		if ( isset( $_POST['post_status'] ) && 'publish' === $_POST['post_status'] ) {
+			$new_cache_reject_uri = $cache_reject_uri = get_rocket_option( 'cache_reject_uri' ); // phpcs:ignore Squiz.PHP.DisallowMultipleAssignments.Found
 			$rejected_uris        = array_flip( $cache_reject_uri );
-			$path                 = rocket_clean_exclude_file( get_permalink( $_POST['post_ID'] ) );
+			$path                 = rocket_clean_exclude_file( get_permalink( (int) $_POST['post_ID'] ) );
 
-			if ( isset( $_POST['rocket_post_nocache'] ) && $_POST['rocket_post_nocache'] ) {
+			if ( isset( $_POST['rocket_post_nocache'] ) ) {
 				if ( ! isset( $rejected_uris[ $path ] ) ) {
 					array_push( $new_cache_reject_uri, $path );
 				}
@@ -144,7 +144,7 @@ function rocket_save_metabox_options() {
 		}
 
 		// Options fields.
-		$fields = array(
+		$fields = [
 			'lazyload',
 			'lazyload_iframes',
 			'minify_html',
@@ -153,15 +153,15 @@ function rocket_save_metabox_options() {
 			'cdn',
 			'async_css',
 			'defer_all_js',
-		);
+		];
 
 		foreach ( $fields as $field ) {
-			if ( isset( $_POST['rocket_post_exclude_hidden'][ $field ] ) && $_POST['rocket_post_exclude_hidden'][ $field ] ) {
+			if ( isset( $_POST['rocket_post_exclude_hidden'][ $field ] ) ) {
 				if ( isset( $_POST['rocket_post_exclude'][ $field ] ) ) {
-					delete_post_meta( $_POST['post_ID'], '_rocket_exclude_' . $field );
+					delete_post_meta( (int) $_POST['post_ID'], '_rocket_exclude_' . $field );
 				} else {
 					if ( get_rocket_option( $field ) ) {
-						update_post_meta( $_POST['post_ID'], '_rocket_exclude_' . $field, true );
+						update_post_meta( (int) $_POST['post_ID'], '_rocket_exclude_' . $field, true );
 					}
 				}
 			}

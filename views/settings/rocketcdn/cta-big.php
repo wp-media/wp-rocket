@@ -79,17 +79,17 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 	<div class="wpr-rocketcdn-cta-footer">
 		<a href="https://go.wp-rocket.me/rocket-cdn" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Learn more about Rocket CDN', 'rocket' ); ?></a>
 	</div>
-	<button class="wpr-rocketcdn-cta-close<?php echo esc_attr( $data['nopromo_variant'] ); ?>"  id="wpr-rocketcdn-close-cta"><span class="screen-reader-text"><?php esc_html_e( 'Reduce this banner', 'rocket' ); ?></span></button>
-</div>
-<?php if ( ! empty( $data['promotion_campaign'] ) ) : ?>
-<p>
-	<?php
-	printf(
-		// translators: %1$s = discounted price, %2$s = regular price.
-		esc_html__( '* $%1$s/month for 12 months then $%2$s/month. You can cancel your subscription at any time.', 'rocket' ),
-		esc_html( str_replace( '*', '', $data['current_price'] ) ),
-		esc_html( $data['regular_price'] )
-	);
-	?>
-</p>
+	<button class="wpr-rocketcdn-cta-close<?php echo esc_attr( $data['nopromo_variant'] ); ?>" id="wpr-rocketcdn-close-cta"><span class="screen-reader-text"><?php esc_html_e( 'Reduce this banner', 'rocket' ); ?></span></button>
+	<?php if ( ! empty( $data['promotion_campaign'] ) ) : ?>
+	<p>
+		<?php
+		printf(
+			// translators: %1$s = discounted price, %2$s = regular price.
+			esc_html__( '* $%1$s/month for 12 months then $%2$s/month. You can cancel your subscription at any time.', 'rocket' ),
+			esc_html( str_replace( '*', '', $data['current_price'] ) ),
+			esc_html( $data['regular_price'] )
+		);
+		?>
+	</p>
 <?php endif; ?>
+</div>

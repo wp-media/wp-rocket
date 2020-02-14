@@ -1,66 +1,62 @@
 <?php
+
 namespace WP_Rocket\Tests\Unit\Subscriber\CDN\RocketCDN;
 
-use WP_Rocket\Tests\Unit\TestCase;
+use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber;
-use Brain\Monkey\Functions;
 
 /**
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber::display_manage_subscription
- * @group RocketCDN
+ * @group  RocketCDN
  */
 class Test_DisplayManageSubscription extends TestCase {
-    private $api_client;
-	private $options;
-	private $beacon;
+	private $api_client;
+	private $page;
 
 	public function setUp() {
 		parent::setUp();
 
-		$this->api_client = $this->createMock('WP_Rocket\CDN\RocketCDN\APIClient');
-		$this->options    = $this->createMock('WP_Rocket\Admin\Options_Data');
-		$this->beacon     = $this->createMock('WP_Rocket\Admin\Settings\Beacon');
-    }
+		$this->api_client = $this->createMock( 'WP_Rocket\CDN\RocketCDN\APIClient' );
+		$this->page       = new AdminPageSubscriber(
+			$this->api_client,
+			$this->createMock( 'WP_Rocket\Admin\Options_Data' ),
+			$this->createMock( 'WP_Rocket\Admin\Settings\Beacon' ),
+			''
+		);
+	}
 
-    /**
-     * test should return null when the subscription is inactive
-     */
-    public function testShouldReturnNullWhenSubscriptionInactive() {
-        $this->api_client->method('get_subscription_data')
-			->willReturn([
-				'is_active' => false,
-				'subscription_status' => 'cancelled',
-				'subscription_next_date_update' => '2020-01-01'
-			]
-        );
+	private function getActualHtml() {
+		ob_start();
+		$this->page->display_manage_subscription();
+		return $this->format_the_html( ob_get_clean() );
+	}
 
-        $page = new AdminPageSubscriber( $this->api_client, $this->options, $this->beacon, 'views/settings/rocketcdn');
+	/**
+	 * Test should return not render the HTML when the subscription is inactive.
+	 */
+	public function testShouldNotRenderButtonHTMLWhenSubscriptionInactive() {
+		$this->api_client->expects( $this->once() )
+		                 ->method( 'get_subscription_data' )
+		                 ->willReturn( ['subscription_status' => 'cancelled' ] );
+		$this->assertEmpty( $this->getActualHtml() );
+	}
 
-        $this->assertNull( $page->display_manage_subscription() );
-    }
+	/**
+	 * Test should render the manage subscription button HTML when the subscription is active.
+	 */
+	public function testShouldRenderButtonHTMLWhenSubscriptionActive() {
+		$this->mockCommonWpFunctions();
 
-    /**
-     * Test should display manage subscription button when subscription is active
-     */
-    public function testShouldDisplayButtonWhenSubscriptionActive() {
-        $this->mockCommonWpFunctions();
+		$this->api_client->expects( $this->once() )
+		                 ->method( 'get_subscription_data' )
+		                 ->willReturn( ['subscription_status' => 'running' ] );
 
-        $this->api_client->method('get_subscription_data')
-			->willReturn([
-				'is_active' => true,
-				'subscription_status' => 'active',
-				'subscription_next_date_update' => '2020-01-01'
-			]
-        );
+		$expected = <<<HTML
+<p class="wpr-rocketcdn-subscription">
+	<button class="wpr-rocketcdn-open" data-micromodal-trigger="wpr-rocketcdn-modal">Manage Subscription</button>
+</p>
+HTML;
 
-        $page = new AdminPageSubscriber( $this->api_client, $this->options, $this->beacon, 'views/settings/rocketcdn');
-
-        $this->setOutputCallback(function($output) {
-			return preg_replace("/\r|\n|\t/", '', $output);
-		});
-        $this->expectOutputString(
-            '<p class="wpr-rocketcdn-subscription"><button class="wpr-rocketcdn-open" data-micromodal-trigger="wpr-rocketcdn-modal">Manage Subscription</button></p>',
-            $page->display_manage_subscription()
-        );
-    }
+		$this->assertSame( $this->format_the_html( $expected ), $this->getActualHtml() );
+	}
 }

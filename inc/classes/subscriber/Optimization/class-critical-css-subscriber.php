@@ -26,7 +26,7 @@ class Critical_CSS_Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritdoc}
 	 */
 	public static function get_subscribed_events() {
 		return [
@@ -151,6 +151,7 @@ class Critical_CSS_Subscriber implements Subscriber_Interface {
 	 * @param array $value     New values for WP Rocket settings.
 	 */
 	public function stop_process_on_deactivation( $old_value, $value ) {
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
 		if ( ! empty( $_POST[ WP_ROCKET_SLUG ] ) && isset( $old_value['async_css'], $value['async_css'] ) && ( $old_value['async_css'] !== $value['async_css'] ) && 0 === (int) $value['async_css'] ) {
 			$this->critical_css->stop_generation();
 
@@ -234,7 +235,7 @@ class Critical_CSS_Subscriber implements Subscriber_Interface {
 
 		// Translators: %1$d = number of critical CSS generated, %2$d = total number of critical CSS to generate.
 		$message  = '<p>' . sprintf( __( 'Critical CSS generation finished for %1$d of %2$d page types.', 'rocket' ), $transient['generated'], $transient['total'] );
-		$message .= ' <em> (' . date_i18n( get_option( 'date_format' ), current_time( 'timestamp' ) ) . ' @ ' . date_i18n( get_option( 'time_format' ), current_time( 'timestamp' ) ) . ') </em></p>';
+		$message .= ' <em> (' . date_i18n( get_option( 'date_format' ) ) . ' @ ' . date_i18n( get_option( 'time_format' ) ) . ') </em></p>';
 
 		if ( ! empty( $transient['items'] ) ) {
 			$message .= '<ul>';
@@ -344,7 +345,7 @@ class Critical_CSS_Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		echo <<<JS
+		echo /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. */<<<JS
 <script>
 /*! loadCSS rel=preload polyfill. [c]2017 Filament Group, Inc. MIT License */
 (function(w){"use strict";if(!w.loadCSS){w.loadCSS=function(){}}

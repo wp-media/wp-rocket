@@ -25,8 +25,8 @@ abstract class Abstract_CSS_Optimization extends Abstract_Optimization {
 		$this->options          = $options;
 		$this->minify_key       = $this->options->get( 'minify_css_key', create_rocket_uniqid() );
 		$this->excluded_files   = $this->get_excluded_files();
-		$this->minify_base_path = WP_ROCKET_MINIFY_CACHE_PATH . get_current_blog_id() . '/';
-		$this->minify_base_url  = WP_ROCKET_MINIFY_CACHE_URL . get_current_blog_id() . '/';
+		$this->minify_base_path = rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' ) . get_current_blog_id() . '/';
+		$this->minify_base_url  = rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_URL' ) . get_current_blog_id() . '/';
 	}
 
 	/**
@@ -38,7 +38,7 @@ abstract class Abstract_CSS_Optimization extends Abstract_Optimization {
 	 * @return string
 	 */
 	protected function get_excluded_files() {
-		$excluded_files = $this->options->get( 'exclude_css', array() );
+		$excluded_files = $this->options->get( 'exclude_css', [] );
 
 		/**
 		 * Filters CSS files to exclude from minification/concatenation.
@@ -69,7 +69,7 @@ abstract class Abstract_CSS_Optimization extends Abstract_Optimization {
 	 * @return array
 	 */
 	public function get_zones() {
-		return array( 'all', 'css_and_js', self::FILE_TYPE );
+		return [ 'all', 'css_and_js', self::FILE_TYPE ];
 	}
 
 	/**

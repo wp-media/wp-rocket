@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Tests\Unit\Subscriber\CDN\RocketCDN;
 
-use WP_Rocket\Tests\Unit\TestCase;
+use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Subscriber\CDN\RocketCDN\NoticesSubscriber;
 use Brain\Monkey\Functions;
 
@@ -10,47 +10,27 @@ use Brain\Monkey\Functions;
  * @group RocketCDN
  */
 class Test_DismissNotice extends TestCase {
-    private $api_client;
+	public function testShouldReturnNullWhenNoCapacity() {
+		Functions\when('check_ajax_referer')->justReturn(true);
+		Functions\when( 'current_user_can' )->justReturn( false );
 
-	public function setUp() {
-		parent::setUp();
+		$_POST['action'] = 'rocketcdn_dismiss_notice';
 
-        $this->api_client = $this->createMock( 'WP_Rocket\CDN\RocketCDN\APIClient' );
-    }
+		$notices = new NoticesSubscriber( $this->createMock( 'WP_Rocket\CDN\RocketCDN\APIClient' ), 'views/settings/rocketcdn');
+		$this->assertNull( $notices->dismiss_notice() );
+	}
 
-    /**
-	 * Test should return null when $_POST values are not set
-	 */
-    public function testShouldReturnNullWhenPOSTActionNotSet() {
-        Functions\when('check_ajax_referer')->justReturn(true);
+	public function testShouldUpdateUserMetaWhenValid() {
+		Functions\when('check_ajax_referer')->justReturn(true);
+		Functions\when( 'current_user_can' )->justReturn( true );
+		Functions\when('get_current_user_id')->justReturn(1);
+		Functions\expect('update_user_meta')
+			->once()
+			->with( 1, 'rocketcdn_dismiss_notice', true );
 
-        $page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
-        $this->assertNull($page->dismiss_notice());
-    }
+		$_POST['action'] = 'rocketcdn_dismiss_notice';
 
-    /**
-	 * Test should return null when the $_POST action key is incorrect
-	 */
-    public function testShouldReturnNullWhenIncorrectPOSTAction() {
-        Functions\when('check_ajax_referer')->justReturn(true);
-
-        $_POST['action'] = 'wrong_action';
-
-        $page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
-        $this->assertNull($page->dismiss_notice());
-    }
-
-    /**
-	 * Test should update the user meta when valid
-	 */
-    public function testShouldUpdateUserMetaWhenValid() {
-        Functions\when('check_ajax_referer')->justReturn(true);
-        Functions\when('get_current_user_id')->justReturn(1);
-        Functions\expect('update_user_meta')->once();
-
-        $_POST['action'] = 'rocketcdn_dismiss_notice';
-
-        $page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
-        $page->dismiss_notice();
-    }
+		$notices = new NoticesSubscriber( $this->createMock( 'WP_Rocket\CDN\RocketCDN\APIClient' ), 'views/settings/rocketcdn');
+		$notices->dismiss_notice();
+	}
 }

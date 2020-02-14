@@ -1,13 +1,14 @@
 <?php
 namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\Images\Webp\ImagifySubscriber;
 
-use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber;
-use WP_Rocket\Tests\Unit\TestCase;
-use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
+use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber;
+use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
+ * @covers Imagify_Subscriber::is_serving_webp
  * @group ThirdParty
+ * @group Webp
  */
 class TestIsServingWebp extends TestCase {
 	/**

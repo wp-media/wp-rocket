@@ -48,11 +48,11 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		'heartbeat_admin_behavior'    => true,
 		'heartbeat_editor_behavior'   => true,
 		'varnish_auto_purge'          => true,
-		'varnish_custom_ip'           => true,
 		'do_beta'                     => true,
 		'analytics_enabled'           => true,
 		'sucury_waf_cache_sync'       => true,
 		'sucury_waf_api_key'          => true,
+		'manual_preload'              => true,
 	];
 
 	// Create 2 arrays to compare.
@@ -70,26 +70,30 @@ function rocket_after_save_options( $oldvalue, $value ) {
 				'timeout'    => 0.01,
 				'blocking'   => false,
 				'user-agent' => 'WP Rocket/Homepage Preload',
-				'sslverify'  => apply_filters( 'https_local_ssl_verify', false ),
+				'sslverify'  => apply_filters( 'https_local_ssl_verify', false ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			]
 		);
 	}
 
 	// Purge all minify cache files.
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing
 	if ( ! empty( $_POST ) && ( $oldvalue['minify_css'] !== $value['minify_css'] || $oldvalue['exclude_css'] !== $value['exclude_css'] ) || ( isset( $oldvalue['cdn'] ) && ! isset( $value['cdn'] ) || ! isset( $oldvalue['cdn'] ) && isset( $value['cdn'] ) ) ) {
 		rocket_clean_minify( 'css' );
 	}
 
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing
 	if ( ! empty( $_POST ) && ( $oldvalue['minify_js'] !== $value['minify_js'] || $oldvalue['exclude_js'] !== $value['exclude_js'] ) || ( isset( $oldvalue['cdn'] ) && ! isset( $value['cdn'] ) || ! isset( $oldvalue['cdn'] ) && isset( $value['cdn'] ) ) ) {
 		rocket_clean_minify( 'js' );
 	}
 
 	// Purge all cache busting files.
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing
 	if ( ! empty( $_POST ) && ( $oldvalue['remove_query_strings'] !== $value['remove_query_strings'] ) ) {
 		rocket_clean_cache_busting();
 	}
 
 	// Regenerate advanced-cache.php file.
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing
 	if ( ! empty( $_POST ) && ( ( isset( $oldvalue['do_caching_mobile_files'] ) && ! isset( $value['do_caching_mobile_files'] ) ) || ( ! isset( $oldvalue['do_caching_mobile_files'] ) && isset( $value['do_caching_mobile_files'] ) ) || ( isset( $oldvalue['do_caching_mobile_files'], $value['do_caching_mobile_files'] ) ) && $oldvalue['do_caching_mobile_files'] !== $value['do_caching_mobile_files'] ) ) {
 		rocket_generate_advanced_cache_file();
 	}

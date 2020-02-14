@@ -2,8 +2,8 @@
 namespace WP_Rocket\Subscriber\CDN\RocketCDN;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\CDN\RocketCDN\CDNOptionsManager;
 
 /**
  * Subscriber for RocketCDN REST API Integration
@@ -15,11 +15,11 @@ class RESTSubscriber implements Subscriber_Interface {
 	const ROUTE_NAMESPACE = 'wp-rocket/v1';
 
 	/**
-	 * WP Options API instance
+	 * CDNOptionsManager instance
 	 *
-	 * @var Options
+	 * @var CDNOptionsManager
 	 */
-	private $options_api;
+	private $cdn_options;
 
 	/**
 	 * WP Rocket Options instance
@@ -31,16 +31,16 @@ class RESTSubscriber implements Subscriber_Interface {
 	/**
 	 * Constructor
 	 *
-	 * @param Options      $options_api WP Options API instance.
-	 * @param Options_Data $options     WP Rocket Options instance.
+	 * @param CDNOptionsManager $cdn_options CDNOptionsManager instance.
+	 * @param Options_Data      $options     WP Rocket Options instance.
 	 */
-	public function __construct( Options $options_api, Options_Data $options ) {
-		$this->options_api = $options_api;
+	public function __construct( CDNOptionsManager $cdn_options, Options_Data $options ) {
+		$this->cdn_options = $cdn_options;
 		$this->options     = $options;
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritdoc}
 	 */
 	public static function get_subscribed_events() {
 		return [
@@ -132,17 +132,7 @@ class RESTSubscriber implements Subscriber_Interface {
 	public function enable( \WP_REST_Request $request ) {
 		$params = $request->get_body_params();
 
-		$cnames   = [];
-		$cnames[] = $params['url'];
-
-		$this->options->set( 'cdn', 1 );
-		$this->options->set( 'cdn_cnames', $cnames );
-		$this->options->set( 'cdn_zone', [ 'all' ] );
-
-		$this->options_api->set( 'settings', $this->options->get_options() );
-		$this->options_api->set( 'rocketcdn_active', 1 );
-
-		delete_transient( 'rocketcdn_status' );
+		$this->cdn_options->enable( $params['url'] );
 
 		$response = [
 			'code'    => 'success',
@@ -165,15 +155,7 @@ class RESTSubscriber implements Subscriber_Interface {
 	 * @return string
 	 */
 	public function disable( \WP_REST_Request $request ) {
-		$this->options->set( 'cdn', 0 );
-		$this->options->set( 'cdn_cnames', [] );
-		$this->options->set( 'cdn_zone', [] );
-
-		$this->options_api->set( 'settings', $this->options->get_options() );
-		$this->options_api->set( 'rocketcdn_active', 0 );
-
-		delete_option( 'rocketcdn_user_token' );
-		delete_transient( 'rocketcdn_status' );
+		$this->cdn_options->disable();
 
 		$response = [
 			'code'    => 'success',

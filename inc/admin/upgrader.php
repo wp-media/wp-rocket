@@ -25,7 +25,7 @@ function rocket_upgrader() {
 	if ( did_action( 'wp_rocket_first_install' ) || did_action( 'wp_rocket_upgrade' ) ) {
 		flush_rocket_htaccess();
 
-		rocket_renew_all_boxes( 0, array( 'rocket_warning_plugin_modification' ) );
+		rocket_renew_all_boxes( 0, [ 'rocket_warning_plugin_modification' ] );
 
 		$options            = get_option( WP_ROCKET_SLUG ); // do not use get_rocket_option() here.
 		$options['version'] = WP_ROCKET_VERSION;
@@ -40,8 +40,7 @@ function rocket_upgrader() {
 
 	$page = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING );
 
-	if ( ! rocket_valid_key() && current_user_can( 'rocket_manage_options' ) &&
-		'wprocket' === $page ) {
+	if ( ! rocket_valid_key() && current_user_can( 'rocket_manage_options' ) && 'wprocket' === $page ) {
 		add_action( 'admin_notices', 'rocket_need_api_key' );
 	}
 }
@@ -232,7 +231,6 @@ function rocket_first_install() {
 				'heartbeat_admin_behavior'    => 'reduce_periodicity',
 				'heartbeat_editor_behavior'   => 'reduce_periodicity',
 				'varnish_auto_purge'          => 0,
-				'varnish_custom_ip'           => [],
 				'do_beta'                     => 0,
 				'analytics_enabled'           => 0,
 				'google_analytics_cache'      => 0,
@@ -448,15 +446,6 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 
 	if ( version_compare( $actual_version, '3.4.0.1', '<' ) ) {
 		( new WP_Rocket\Subscriber\Plugin\Capabilities_Subscriber() )->add_rocket_capabilities();
-	}
-
-	if ( version_compare( $actual_version, '3.5', '<' ) ) {
-		// This filter is documented in inc/classes/Addons/Varnish/Varnish.php.
-		$custom_varnish_ip = apply_filters( 'rocket_varnish_ip', [] );
-
-		if ( ! empty( $custom_varnish_ip ) ) {
-			update_rocket_option( 'varnish_custom_ip', (array) $custom_varnish_ip );
-		}
 	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );

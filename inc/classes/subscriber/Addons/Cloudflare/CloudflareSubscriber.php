@@ -50,9 +50,10 @@ class CloudflareSubscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritdoc}
 	 */
 	public static function get_subscribed_events() {
+		$slug = rocket_get_constant( 'WP_ROCKET_SLUG' );
 		return [
 			'rocket_varnish_ip'                         => 'set_varnish_localhost',
 			'rocket_varnish_purge_request_host'         => 'set_varnish_purge_request_host',
@@ -61,8 +62,8 @@ class CloudflareSubscriber implements Subscriber_Interface {
 			'after_rocket_clean_post'                   => [ 'auto_purge_by_url', 10, 3 ],
 			'admin_post_rocket_purge_cloudflare'        => 'purge_cache',
 			'init'                                      => [ 'set_real_ip', 1 ],
-			'update_option_' . WP_ROCKET_SLUG           => [ 'save_cloudflare_options', 10, 2 ],
-			'pre_update_option_' . WP_ROCKET_SLUG       => [ 'save_cloudflare_old_settings', 10, 2 ],
+			'update_option_' . $slug                    => [ 'save_cloudflare_options', 10, 2 ],
+			'pre_update_option_' . $slug                => [ 'save_cloudflare_old_settings', 10, 2 ],
 			'admin_notices'                             => [
 				[ 'maybe_display_purge_notice' ],
 				[ 'maybe_print_update_settings_notice' ],
@@ -84,7 +85,7 @@ class CloudflareSubscriber implements Subscriber_Interface {
 			return $varnish_ip;
 		}
 
-		if ( \is_string( $varnish_ip ) ) {
+		if ( is_string( $varnish_ip ) ) {
 			$varnish_ip = (array) $varnish_ip;
 		}
 
@@ -260,7 +261,7 @@ class CloudflareSubscriber implements Subscriber_Interface {
 
 		$cf_ips_values = $this->cloudflare->get_cloudflare_ips();
 		$cf_ip_ranges  = $cf_ips_values->result->ipv6_cidrs;
-		$ip            = wp_unslash( $_SERVER['REMOTE_ADDR'] );
+		$ip            = sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) );
 		$ipv6          = get_rocket_ipv6_full( $ip );
 		if ( false === strpos( $ip, ':' ) ) {
 			// IPV4: Update the REMOTE_ADDR value if the current REMOTE_ADDR value is in the specified range.
@@ -270,7 +271,7 @@ class CloudflareSubscriber implements Subscriber_Interface {
 		foreach ( $cf_ip_ranges as $range ) {
 			if ( ( strpos( $ip, ':' ) && rocket_ipv6_in_range( $ipv6, $range ) ) ||
 					( false === strpos( $ip, ':' ) && rocket_ipv4_in_range( $ip, $range ) ) ) {
-				$_SERVER['REMOTE_ADDR'] = wp_unslash( $_SERVER['HTTP_CF_CONNECTING_IP'] );
+				$_SERVER['REMOTE_ADDR'] = sanitize_text_field( wp_unslash( $_SERVER['HTTP_CF_CONNECTING_IP'] ) );
 				break;
 			}
 		}

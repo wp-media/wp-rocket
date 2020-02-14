@@ -25,9 +25,9 @@ if ( defined( 'GIVE_VERSION' ) && function_exists( 'give_get_settings' ) ) {
  */
 function rocket_add_give_exclude_pages( $urls ) {
 	$give_options = give_get_settings();
-	$urls = array_merge( $urls, get_rocket_i18n_translated_post_urls( $give_options['success_page'], 'page' ) );
-	$urls = array_merge( $urls, get_rocket_i18n_translated_post_urls( $give_options['history_page'], 'page' ) );
-	$urls = array_merge( $urls, get_rocket_i18n_translated_post_urls( $give_options['failure_page'], 'page' ) );
+	$urls         = array_merge( $urls, get_rocket_i18n_translated_post_urls( $give_options['success_page'], 'page' ) );
+	$urls         = array_merge( $urls, get_rocket_i18n_translated_post_urls( $give_options['history_page'], 'page' ) );
+	$urls         = array_merge( $urls, get_rocket_i18n_translated_post_urls( $give_options['failure_page'], 'page' ) );
 
 	return $urls;
 }

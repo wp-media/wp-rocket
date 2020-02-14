@@ -21,7 +21,7 @@ class Cache_Dir_Size_Check_Subscriber implements Subscriber_Interface {
 	const MAX_SIZE = 10737418240;
 
 	/**
-	 * @inheritDoc
+	 * {@inheritdoc}
 	 */
 	public static function get_subscribed_events() {
 		return [

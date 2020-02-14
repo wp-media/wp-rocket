@@ -1,11 +1,15 @@
 <?php
 namespace WP_Rocket\Tests\Unit\Addons\Varnish;
 
-use WP_Rocket\Tests\Unit\TestCase;
-use WP_Rocket\Addons\Varnish\Varnish;
-use Brain\Monkey\Functions;
 use Brain\Monkey\Filters;
+use Brain\Monkey\Functions;
+use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Addons\Varnish\Varnish;
 
+/**
+ * @covers \WP_Rocket\Tests\Unit\Addons\Varnish::purge
+ * @group Varnish
+ */
 class TestPurge extends TestCase {
     public function testShouldSendRequestOnceWithDefaultValues() {
         $options = $this->createMock('WP_Rocket\Admin\Options_Data');
@@ -37,7 +41,7 @@ class TestPurge extends TestCase {
                     'query'    => $query,
                     'fragment' => $fragment,
                 ];
-        } ); 
+        } );
         Functions\expect( 'wp_remote_request' )
             ->once()
             ->with(
@@ -64,14 +68,15 @@ class TestPurge extends TestCase {
                 0,
                 0,
             ],
-            [
-                'varnish_custom_ip',
-                [],
-                [
-                    'localhost'
-                ],
-            ],
         ];
+
+        Filters\expectApplied('rocket_varnish_ip')
+        ->once()
+        ->andReturn(
+            [
+                'localhost',
+            ]
+        );
 
         $options->method('get')->will($this->returnValueMap($map));
 
@@ -93,7 +98,7 @@ class TestPurge extends TestCase {
                     'query'    => $query,
                     'fragment' => $fragment,
                 ];
-        } ); 
+        } );
         Functions\expect( 'wp_remote_request' )
             ->once()
             ->with(
@@ -142,7 +147,7 @@ class TestPurge extends TestCase {
                     'query'    => $query,
                     'fragment' => $fragment,
                 ];
-        } ); 
+        } );
         Filters\expectApplied('rocket_varnish_ip')
             ->once()
             ->andReturn(
@@ -166,7 +171,7 @@ class TestPurge extends TestCase {
                     ],
 				]
             );
-        
+
         Functions\expect( 'wp_remote_request' )
             ->once()
             ->with(

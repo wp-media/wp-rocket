@@ -1,27 +1,11 @@
 <?php
+
 namespace WP_Rocket\Tests\Integration\Subscriber\Addons\CloudflareSubscriber;
 
-use PHPUnit\Framework\TestCase;
+use WPMedia\PHPUnit\Integration\TestCase;
 use WP_Rocket\Subscriber\Addons\Cloudflare\CloudflareSubscriber;
 
 class TestGetSubscribedEvents extends TestCase {
-
-	/**
-	 * Setup constants required by Cloudflare
-	 *
-	 * @since 3.5
-	 * @author Soponar Cristina
-	 *
-	 * @return void
-	 */
-	protected function setUp()
-	{
-		parent::setUp();
-
-		if ( ! defined( 'WP_ROCKET_SLUG' ) ) {
-			define( 'WP_ROCKET_SLUG', 'wp_rocket_settings' );
-		}
-	}
 
 	public function testShouldReturnSubscribedEventsArray() {
 		$events = [
@@ -32,8 +16,8 @@ class TestGetSubscribedEvents extends TestCase {
 			'after_rocket_clean_post'                   => [ 'auto_purge_by_url', 10, 3 ],
 			'admin_post_rocket_purge_cloudflare'        => 'purge_cache',
 			'init'                                      => [ 'set_real_ip', 1 ],
-			'update_option_' . WP_ROCKET_SLUG           => [ 'save_cloudflare_options', 10, 2 ],
-			'pre_update_option_' . WP_ROCKET_SLUG       => [ 'save_cloudflare_old_settings', 10, 2 ],
+			'update_option_wp_rocket_settings'          => [ 'save_cloudflare_options', 10, 2 ],
+			'pre_update_option_wp_rocket_settings'      => [ 'save_cloudflare_old_settings', 10, 2 ],
 			'admin_notices'                             => [
 				[ 'maybe_display_purge_notice' ],
 				[ 'maybe_print_update_settings_notice' ],

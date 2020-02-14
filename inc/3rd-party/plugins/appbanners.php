@@ -12,8 +12,9 @@ defined( 'ABSPATH' ) || exit;
  */
 function rocket_deactivate_js_minifier_with_appbanner( $html_options ) {
 	if ( isset( $html_options['jsMinifier'] ) && class_exists( 'AppBanners' ) ) {
-		 unset( $html_options['jsMinifier'] );
+		unset( $html_options['jsMinifier'] );
 	}
-	 return $html_options;
+
+	return $html_options;
 }
 add_filter( 'rocket_minify_html_options', 'rocket_deactivate_js_minifier_with_appbanner' );

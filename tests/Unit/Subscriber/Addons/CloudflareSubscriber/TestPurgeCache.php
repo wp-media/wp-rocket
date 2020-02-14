@@ -1,24 +1,15 @@
 <?php
 namespace WP_Rocket\Tests\Unit\Subscriber\Addons\CloudflareSubscriber;
 
-use WP_Rocket\Tests\Unit\TestCase;
+use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Subscriber\Addons\Cloudflare\CloudflareSubscriber;
 use Brain\Monkey\Functions;
 
+/**
+ * @group Cloudflare
+ */
 class TestPurgeCache extends TestCase {
-
-	protected function setUp() {
-		parent::setUp();
-
-		$this->mockCommonWpFunctions();
-
-		if ( ! defined('WEEK_IN_SECONDS') ) {
-			define('WEEK_IN_SECONDS', 7 * 24 * 60 * 60);
-		}
-		if ( ! defined('WP_ROCKET_VERSION') ) {
-			define('WP_ROCKET_VERSION', '3.5');
-		}
-	}
+	protected static $mockCommonWpFunctionsInSetUp = true;
 
 	/**
 	 * Test should not Purge Cloudflare if Cloudflare addon is disabled.

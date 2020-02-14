@@ -1,14 +1,17 @@
 <?php
+
 namespace WP_Rocket\Tests\Integration\Subscriber\ExpiredCachePurgeSubscriber;
 
 use WP_Rocket\Subscriber\Cache\Expired_Cache_Purge_Subscriber;
-use WP_Rocket\Tests\Integration\TestCase;
+use WPMedia\PHPUnit\Integration\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @group Subscriber_ScheduledEvent
+ * @covers Expired_Cache_Purge_Subscriber::wp_clear_scheduled_hook
+ * @group  Subscriber_ScheduledEvent
  */
 class TestCleanCacheScheduledEvent extends TestCase {
+
 	public function testShouldNotCleanScheduledEventWhenValuesAreTheSame() {
 		Functions\expect( 'wp_clear_scheduled_hook' )->never();
 
@@ -27,8 +30,6 @@ class TestCleanCacheScheduledEvent extends TestCase {
 				'purge_cron_unit'     => 'HOUR_IN_SECONDS',
 			]
 		);
-
-		$this->assertTrue( true ); // Prevent "risky" warning.
 	}
 
 	public function testShouldNotCleanScheduledEventWhenChangedValueFromHoursToDays() {
@@ -49,8 +50,6 @@ class TestCleanCacheScheduledEvent extends TestCase {
 				'purge_cron_unit'     => 'DAY_IN_SECONDS',
 			]
 		);
-
-		$this->assertTrue( true ); // Prevent "risky" warning.
 	}
 
 	public function testShouldCleanScheduledEventWhenMinutesAndOldValueIsHours() {
@@ -74,8 +73,6 @@ class TestCleanCacheScheduledEvent extends TestCase {
 				'purge_cron_unit'     => 'MINUTE_IN_SECONDS',
 			]
 		);
-
-		$this->assertTrue( true ); // Prevent "risky" warning.
 	}
 
 	public function testShouldNotCleanScheduledEventWhenUnitIsMinutesAndIntervalIsNotChanged() {
@@ -96,8 +93,6 @@ class TestCleanCacheScheduledEvent extends TestCase {
 				'purge_cron_unit'     => 'MINUTE_IN_SECONDS',
 			]
 		);
-
-		$this->assertTrue( true ); // Prevent "risky" warning.
 	}
 
 	public function testShouldCleanScheduledEventWhenUnitIsMinutesAndIntervalIsChanged() {
@@ -121,7 +116,5 @@ class TestCleanCacheScheduledEvent extends TestCase {
 				'purge_cron_unit'     => 'MINUTE_IN_SECONDS',
 			]
 		);
-
-		$this->assertTrue( true ); // Prevent "risky" warning.
 	}
 }

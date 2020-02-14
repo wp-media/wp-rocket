@@ -2,13 +2,13 @@
 
 namespace WP_Rocket\Tests\Integration\Subscriber\CDN\RocketCDN\RESTSubscriber;
 
-use WP_Rocket\Tests\Integration\RESTfulTestCase;
+use WP_Rocket\Tests\Integration\ApiTestCase;
 
 /**
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber::enable
  * @group  RocketCDN
  */
-class Test_Enable extends RESTfulTestCase {
+class Test_Enable extends ApiTestCase {
 
 	/**
 	 * Test should update the option settings when the "enable" endpoint is requested.
@@ -16,17 +16,19 @@ class Test_Enable extends RESTfulTestCase {
 	public function testShouldUpdateRocketSettingsWhenEndpointRequest() {
 		$this->requestEnableEndpoint();
 
-		$this->assertSame(
-			[
-				'cdn'        => 1,
-				'cdn_cnames' => [ 'https://rocketcdn.me' ],
-				'cdn_zone'   => [ 'all' ],
-			],
-			get_option( 'wp_rocket_settings' )
-		);
-		$this->assertSame( 1, get_option( 'wp_rocket_rocketcdn_active' ) );
-	}
+		$expected_subset = [
+			'cdn'        => 1,
+			'cdn_cnames' => [ 'https://rocketcdn.me' ],
+			'cdn_zone'   => [ 'all' ],
+		];
 
+		$options = get_option( 'wp_rocket_settings' );
+
+		foreach ( $expected_subset as $key => $value ) {
+			$this->assertArrayHasKey( $key, $options );
+			$this->assertSame( $value, $options[$key] );
+		}
+	}
 
 	/**
 	 * Test should delete the transient when the "enable" endpoint is requested.

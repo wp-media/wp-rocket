@@ -21,7 +21,7 @@ class IE_Conditionals_Subscriber implements Subscriber_Interface {
 	private $conditionals = [];
 
 	/**
-	 * @inheritDoc
+	 * {@inheritdoc}
 	 */
 	public static function get_subscribed_events() {
 		return [

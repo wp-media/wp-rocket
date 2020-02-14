@@ -48,7 +48,12 @@ class Preload_Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * @inheritDoc
+	 * Return an array of events that this subscriber wants to listen to.
+	 *
+	 * @since  3.2
+	 * @author Remy Perona
+	 *
+	 * @return array
 	 */
 	public static function get_subscribed_events() {
 		return [
@@ -159,7 +164,6 @@ class Preload_Subscriber implements Subscriber_Interface {
 			'heartbeat_admin_behavior'    => true,
 			'heartbeat_editor_behavior'   => true,
 			'varnish_auto_purge'          => true,
-			'varnish_custom_ip'           => true,
 			'do_beta'                     => true,
 			'analytics_enabled'           => true,
 			'sucury_waf_cache_sync'       => true,
@@ -248,7 +252,7 @@ class Preload_Subscriber implements Subscriber_Interface {
 		$status = 'info';
 		// translators: %1$s = Number of pages preloaded.
 		$message  = '<p>' . sprintf( _n( 'Preload: %1$s uncached page has now been preloaded. (refresh to see progress)', 'Preload: %1$s uncached pages have now been preloaded. (refresh to see progress)', $running, 'rocket' ), number_format_i18n( $running ) );
-		$message .= ' <em> - (' . date_i18n( get_option( 'date_format' ), current_time( 'timestamp' ) ) . ' @ ' . date_i18n( get_option( 'time_format' ), current_time( 'timestamp' ) ) . ') </em></p>';
+		$message .= ' <em> - (' . date_i18n( get_option( 'date_format' ) ) . ' @ ' . date_i18n( get_option( 'time_format' ) ) . ') </em></p>';
 
 		if ( defined( 'WP_ROCKET_DEBUG' ) && WP_ROCKET_DEBUG ) {
 

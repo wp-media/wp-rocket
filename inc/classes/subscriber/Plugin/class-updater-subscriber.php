@@ -112,13 +112,7 @@ class Updater_Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Returns an array of events that this subscriber wants to listen to.
-	 *
-	 * @since  3.3.6
-	 * @access public
-	 * @author Grégory Viguier
-	 *
-	 * @return array
+	 * {@inheritdoc}
 	 */
 	public static function get_subscribed_events() {
 		return [
@@ -366,6 +360,7 @@ class Updater_Subscriber implements Subscriber_Interface {
 		$obj->new_version = $match['user_version'];
 		$obj->url         = $this->vendor_url;
 		$obj->package     = $match['package'];
+		$obj->tested      = WP_ROCKET_WP_VERSION_TESTED;
 
 		if ( $this->icons && ! empty( $this->icons['1x'] ) ) {
 			$obj->icons = $this->icons;

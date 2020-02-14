@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Tests\Unit\Subscriber\CDN\RocketCDN;
 
-use WP_Rocket\Tests\Unit\TestCase;
+use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Subscriber\CDN\RocketCDN\NoticesSubscriber;
 use Brain\Monkey\Functions;
 
@@ -32,7 +32,6 @@ class Test_PromoteRocketcdnNotice extends TestCase {
 		Functions\when('current_user_can')->justReturn(false);
 
 		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
-		
 		$this->assertNull($page->promote_rocketcdn_notice());
 	}
 
@@ -46,7 +45,6 @@ class Test_PromoteRocketcdnNotice extends TestCase {
 		});
 
 		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
-		
 		$this->assertNull($page->promote_rocketcdn_notice());
 	}
 
@@ -62,7 +60,6 @@ class Test_PromoteRocketcdnNotice extends TestCase {
 		Functions\when('get_user_meta')->justReturn(true);
 
 		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
-		
 		$this->assertNull($page->promote_rocketcdn_notice());
 	}
 
@@ -78,10 +75,10 @@ class Test_PromoteRocketcdnNotice extends TestCase {
 		Functions\when('get_user_meta')->justReturn(false);
 
 		$this->api_client->method('get_subscription_data')
-			->willReturn(['is_active' => true]);
+			->willReturn(['subscription_status' => 'running']);
 
 		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
-		
+
 		$this->assertNull($page->promote_rocketcdn_notice());
 	}
 
@@ -99,7 +96,7 @@ class Test_PromoteRocketcdnNotice extends TestCase {
 		Functions\when('get_user_meta')->justReturn(false);
 
 		$this->api_client->method('get_subscription_data')
-			->willReturn(['is_active' => false]);
+			->willReturn(['subscription_status' => 'cancelled']);
 
 		Functions\When( 'rocket_direct_filesystem')->alias( function() {
 			return $this->filesystem;

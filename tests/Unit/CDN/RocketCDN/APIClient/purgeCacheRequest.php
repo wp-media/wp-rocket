@@ -1,7 +1,8 @@
 <?php
+
 namespace WP_Rocket\Tests\Unit\CDN\RocketCDN\APIClient;
 
-use WP_Rocket\Tests\Unit\TestCase;
+use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\CDN\RocketCDN\APIClient;
 use Brain\Monkey\Functions;
 
