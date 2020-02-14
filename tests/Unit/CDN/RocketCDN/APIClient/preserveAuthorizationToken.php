@@ -32,7 +32,7 @@ class Test_PreserveAuthorizationToken extends TestCase {
 		);
 	}
 
-	public function testShouldReturnSameArgsWhenAuthorizationHeadersEmpty() {
+	public function testShouldReturnSameArgsWhenAuthorizationHeadersEmptyAndEndpointIsPricing() {
 		$expected = [
 			'method'  => 'GET',
 			'headers' => [],
@@ -41,7 +41,7 @@ class Test_PreserveAuthorizationToken extends TestCase {
 
 		$this->assertSame(
 			$expected,
-			$this->api_client->preserve_authorization_token( $expected, 'https://rocketcdn.me/api/' )
+			$this->api_client->preserve_authorization_token( $expected, 'https://rocketcdn.me/api/pricing' )
 		);
 	}
 
@@ -59,6 +59,29 @@ class Test_PreserveAuthorizationToken extends TestCase {
 		$this->assertSame(
 			$expected,
 			$this->api_client->preserve_authorization_token( $expected, 'https://rocketcdn.me/api/' )
+		);
+	}
+
+	public function testShouldReturnCorrectTokenWhenAuthorizationHeadersEmpty() {
+		Functions\when( 'get_option' )->justReturn( '1234' );
+
+		$sent = [
+			'method'  => 'GET',
+			'headers' => [],
+			'body'    => '',
+		];
+
+		$expected = [
+			'method'  => 'GET',
+			'headers' => [
+				'Authorization' => 'token 1234'
+			],
+			'body'    => '',
+		];
+
+		$this->assertSame(
+			$expected,
+			$this->api_client->preserve_authorization_token( $sent, 'https://rocketcdn.me/api/website' )
 		);
 	}
 

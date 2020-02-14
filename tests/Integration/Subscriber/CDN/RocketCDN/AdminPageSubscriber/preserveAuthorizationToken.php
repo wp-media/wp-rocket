@@ -44,14 +44,14 @@ class Test_PreserveAuthorizationToken extends TestCase {
 		$this->assertSame( $expected, $args );
 	}
 
-	public function testShouldReturnSameArgsWhenAuthorizationHeadersEmpty() {
+	public function testShouldReturnSameArgsWhenAuthorizationHeadersEmptyAndEndpointIsPricing() {
 		$expected = [
 			'method'  => 'GET',
 			'headers' => [],
 			'body'    => '',
 		];
 
-		$args = apply_filters( 'http_request_args', $expected, 'https://rocketcdn.me/api/' );
+		$args = apply_filters( 'http_request_args', $expected, 'https://rocketcdn.me/api/pricing' );
 
 		$this->assertSame( $expected, $args );
 	}
@@ -66,6 +66,26 @@ class Test_PreserveAuthorizationToken extends TestCase {
 		];
 
 		$args = apply_filters( 'http_request_args', $expected, 'https://rocketcdn.me/api/' );
+
+		$this->assertSame( $expected, $args );
+	}
+
+	public function testShouldReturnCorrectTokenWhenAuthorizationHeadersEmpty() {
+		$sent = [
+			'method'  => 'GET',
+			'headers' => [],
+			'body'    => '',
+		];
+
+		$expected = [
+			'method'  => 'GET',
+			'headers' => [
+				'Authorization' => 'token ' . self::getApiCredential( 'ROCKETCDN_TOKEN' )
+			],
+			'body'    => '',
+		];
+
+		$args = apply_filters( 'http_request_args', $sent, 'https://rocketcdn.me/api/' );
 
 		$this->assertSame( $expected, $args );
 	}
