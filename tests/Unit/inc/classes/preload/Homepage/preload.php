@@ -1,9 +1,8 @@
 <?php
-namespace WP_Rocket\Tests\Unit\Preload\Homepage;
+namespace WP_Rocket\Tests\Unit\inc\classes\preload\Homepage;
 
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
-
 use WP_Rocket\Preload\Full_Process;
 use WP_Rocket\Preload\Homepage;
 

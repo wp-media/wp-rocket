@@ -1,9 +1,8 @@
 <?php
-namespace WP_Rocket\Tests\Integration\Preload\Homepage;
+namespace WP_Rocket\Tests\Integration\inc\classes\preload\Homepage;
 
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Integration\TestCase;
-
 use WP_Rocket\Preload\Full_Process;
 use WP_Rocket\Preload\Homepage;
 
@@ -35,7 +34,7 @@ class Process extends Full_Process {
  * @covers \WP_Rocket\Preload\Homepage::preload
  * @group Preload
  */
-class Test_preload extends TestCase {
+class Test_Preload extends TestCase {
 	protected $identifier         = 'rocket_preload';
 	protected $option_hook_prefix = 'pre_get_rocket_option_';
 	protected $homeWpOption;

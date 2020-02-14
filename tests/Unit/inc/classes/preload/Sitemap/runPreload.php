@@ -1,10 +1,9 @@
 <?php
-namespace WP_Rocket\Tests\Unit\Preload\Sitemap;
+namespace WP_Rocket\Tests\Unit\inc\classes\preload\Sitemap;
 
 use Brain\Monkey\Actions;
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
-
 use WP_Rocket\Preload\Full_Process;
 use WP_Rocket\Preload\Sitemap;
 

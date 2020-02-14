@@ -1,8 +1,7 @@
 <?php
-namespace WP_Rocket\Tests\Unit\Preload\Process;
+namespace WP_Rocket\Tests\Unit\inc\classes\preload\Process;
 
 use WPMedia\PHPUnit\Unit\TestCase;
-
 use WP_Rocket\Preload\Process;
 
 /**

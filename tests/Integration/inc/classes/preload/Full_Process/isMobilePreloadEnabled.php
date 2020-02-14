@@ -1,8 +1,7 @@
 <?php
-namespace WP_Rocket\Tests\Integration\Preload\FullProcess;
+namespace WP_Rocket\Tests\Integration\inc\classes\preload\Full_Process;
 
 use WPMedia\PHPUnit\Integration\TestCase;
-
 use WP_Rocket\Preload\Full_Process;
 
 /**

@@ -1,10 +1,9 @@
 <?php
-namespace WP_Rocket\Tests\Unit\Preload\Process;
+namespace WP_Rocket\Tests\Unit\inc\classes\preload\Process;
 
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
-
 use WP_Rocket\Preload\Process;
 
 /**
