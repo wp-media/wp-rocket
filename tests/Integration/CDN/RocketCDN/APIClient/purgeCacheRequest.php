@@ -2,7 +2,8 @@
 
 namespace WP_Rocket\Tests\Integration\CDN\RocketCDN\APIClient;
 
-use WPMedia\Phpunit\Integration\TestCase;
+use WPMedia\PHPUnit\Integration\TestCase;
+use WPMedia\PHPUnit\Integration\ApiTrait;
 use WP_Rocket\CDN\RocketCDN\APIClient;
 
 /**
@@ -11,7 +12,7 @@ use WP_Rocket\CDN\RocketCDN\APIClient;
  * @group  RocketCDNAPI
  */
 class Test_PurgeCacheRequest extends TestCase {
-	use \WPMedia\Phpunit\Integration\ApiTrait;
+	use ApiTrait;
 
 	protected static $api_credentials_config_file = 'rocketcdn.php';
 

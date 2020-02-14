@@ -2,7 +2,8 @@
 
 namespace WP_Rocket\Tests\Integration\CDN\RocketCDN\APIClient;
 
-use WPMedia\Phpunit\Integration\TestCase;
+use WPMedia\PHPUnit\Integration\TestCase;
+use WPMedia\PHPUnit\Integration\ApiTrait;
 use WP_Rocket\CDN\RocketCDN\APIClient;
 use Brain\Monkey\Functions;
 
@@ -12,7 +13,7 @@ use Brain\Monkey\Functions;
  * @group  RocketCDNAPI
  */
 class Test_GetSubscriptionData extends TestCase {
-	use \WPMedia\Phpunit\Integration\ApiTrait;
+	use ApiTrait;
 
 	private $client;
 	protected static $api_credentials_config_file = 'rocketcdn.php';
