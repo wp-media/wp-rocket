@@ -50,7 +50,7 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			'wp_ajax_rocketcdn_process_set'    => 'set_process_status',
 			'wp_ajax_rocketcdn_process_status' => 'get_process_status',
 			self::CRON_EVENT                   => 'maybe_disable_cdn',
-			'update_option_' . WP_ROCKET_SLUG  => [ 'maybe_update_api_status', 12, 2 ],
+			'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ) => [ 'maybe_update_api_status', 12, 2 ],
 		];
 	}
 
@@ -75,6 +75,12 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			delete_option( 'rocketcdn_user_token' );
 
 			wp_send_json_success( 'user_token_deleted' );
+
+			return;
+		}
+
+		if ( ! is_string( $_POST['value'] ) ) {
+			wp_send_json_error( 'invalid_token' );
 
 			return;
 		}
@@ -263,7 +269,7 @@ class DataManagerSubscriber implements Subscriber_Interface {
 
 		$subscription = $this->api_client->get_subscription_data();
 
-		if ( defined( 'WP_ROCKET_IS_TESTING' ) ) {
+		if ( rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ) {
 			$subscription = apply_filters( 'rocket_pre_get_subscription_data', $subscription );
 		}
 
