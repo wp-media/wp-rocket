@@ -299,7 +299,13 @@ class APIClient {
 			return $args;
 		}
 
-		$value = 'token ' . get_option( 'rocketcdn_user_token' );
+		$token = get_option( 'rocketcdn_user_token' );
+
+		if ( empty( $token ) ) {
+			return $args;
+		}
+
+		$value = 'token ' . $token;
 
 		if ( $value === $args['headers']['Authorization'] ) {
 			return $args;
