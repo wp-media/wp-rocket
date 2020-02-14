@@ -18,7 +18,10 @@
 	],
 	"type": "wordpress-plugin",
 	"config": {
-		"sort-packages": true
+		"sort-packages": true,
+		"preferred-install": {
+			"wp-media/phpunit": "source"
+		}
 	},
 	"support": {
 		"issues": "https://github.com/wp-media/wp-rocket/issues",
