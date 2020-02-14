@@ -14,6 +14,12 @@ class Test_MaybeUpdateAPIStatus extends TestCase {
 
     protected static $api_credentials_config_file = 'rocketcdn.php';
 
+    public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
+
+		self::pathToApiCredentialsConfigFile( WP_ROCKET_TESTS_DIR . '/../env/local/' );
+	}
+
     public function setUp() {
         parent::setUp();
 

@@ -17,6 +17,12 @@ class Test_GetSubscriptionData extends TestCase {
 	private $client;
 	protected static $api_credentials_config_file = 'rocketcdn.php';
 
+	public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
+
+		self::pathToApiCredentialsConfigFile( WP_ROCKET_TESTS_DIR . '/../env/local/' );
+	}
+
 	public function setUp() {
 		parent::setUp();
 

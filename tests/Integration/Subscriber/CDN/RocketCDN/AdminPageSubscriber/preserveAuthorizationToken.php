@@ -17,6 +17,16 @@ class Test_PreserveAuthorizationToken extends TestCase {
 	private $client;
 	protected static $api_credentials_config_file = 'rocketcdn.php';
 
+	public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
+
+		self::pathToApiCredentialsConfigFile( WP_ROCKET_TESTS_DIR . '/../env/local/' );
+	}
+
+	public function setUp() {
+		add_option( 'rocketcdn_user_token', self::getApiCredential( 'ROCKETCDN_TOKEN' ) );
+	}
+
 	public function tearDown() {
 		parent::tearDown();
 
@@ -62,8 +72,6 @@ class Test_PreserveAuthorizationToken extends TestCase {
 	}
 
 	public function testShouldReturnCorrectTokenWhenAuthorizationHeadersIncorrect() {
-		add_option( 'rocketcdn_user_token', self::getApiCredential( 'ROCKETCDN_TOKEN' ) );
-
 		$sent = [
 			'method'  => 'GET',
 			'headers' => [
