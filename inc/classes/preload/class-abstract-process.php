@@ -37,7 +37,7 @@ abstract class Process extends WP_Background_Process {
 	 *     @type string $url    The URL to preload.
 	 *     @type bool   $mobile True when we want to send a "mobile" user agent with the request. Optional.
 	 * }
-	 * @return array|bool The formatted item. False for invalid items.
+	 * @return array The formatted item. An empty array for invalid items.
 	 */
 	public function format_item( $item ) {
 		if ( is_string( $item ) ) {
@@ -45,11 +45,11 @@ abstract class Process extends WP_Background_Process {
 				'url' => $item,
 			];
 		} elseif ( ! is_array( $item ) ) {
-			return false;
+			return [];
 		}
 
 		if ( empty( $item['url'] ) ) {
-			return false;
+			return [];
 		}
 
 		$item['mobile'] = ! empty( $item['mobile'] );

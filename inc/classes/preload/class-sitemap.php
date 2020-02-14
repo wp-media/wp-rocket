@@ -220,7 +220,6 @@ class Sitemap extends Abstract_Preload {
 
 		if ( $url_count > 0 ) {
 			$mobile_preload = $this->preload_process->is_mobile_preload_enabled();
-			$mobile_suffix  = '##wpm-mobile##';
 
 			for ( $i = 0; $i < $url_count; $i++ ) {
 				$url = (string) $xml->url[ $i ]->loc;
@@ -231,7 +230,7 @@ class Sitemap extends Abstract_Preload {
 
 				$namespaces = $xml->url[ $i ]->getNamespaces( true );
 				$path       = $this->get_url_identifier( $url );
-				$mobile_key = $path . $mobile_suffix;
+				$mobile_key = $path . self::MOBILE_SUFFIX;
 
 				if ( ! empty( $namespaces['mobile'] ) ) {
 					// According to the sitemap, this URL is dedicated to mobile devices.
@@ -319,7 +318,6 @@ class Sitemap extends Abstract_Preload {
 
 		$all_posts      = get_posts( $args );
 		$mobile_preload = $this->preload_process->is_mobile_preload_enabled();
-		$mobile_suffix  = '##wpm-mobile##';
 
 		foreach ( $all_posts as $post ) {
 			$permalink = get_permalink( $post );
@@ -336,7 +334,7 @@ class Sitemap extends Abstract_Preload {
 				continue;
 			}
 
-			$urls[ $path . $mobile_suffix ] = [
+			$urls[ $path . self::MOBILE_SUFFIX ] = [
 				'url'    => $permalink,
 				'mobile' => true,
 			];

@@ -43,8 +43,7 @@ class Homepage extends Abstract_Preload {
 			}
 		}
 
-		$preload_urls  = [];
-		$mobile_suffix = '##wpm-mobile##';
+		$preload_urls = [];
 
 		foreach ( $home_urls as $home_item ) {
 			$urls = $this->get_urls( $home_item );
@@ -67,9 +66,9 @@ class Homepage extends Abstract_Preload {
 					$preload_urls[ $path ] = $url;
 				}
 
-				if ( $home_item['mobile'] && ! isset( $preload_urls[ $path . $mobile_suffix ] ) ) {
+				if ( $home_item['mobile'] && ! isset( $preload_urls[ $path . self::MOBILE_SUFFIX ] ) ) {
 					// A URL for mobile.
-					$preload_urls[ $path . $mobile_suffix ] = [
+					$preload_urls[ $path . self::MOBILE_SUFFIX ] = [
 						'url'    => $url,
 						'mobile' => true,
 					];

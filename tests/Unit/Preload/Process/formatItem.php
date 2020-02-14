@@ -63,11 +63,11 @@ class Test_FormatItem extends TestCase {
 		$this->assertFalse( $item['mobile'] );
 	}
 
-	public function testShouldReturnFalseWhenInvalidArgIsProvided() {
+	public function testShouldReturnEmptyArrayWhenInvalidArgIsProvided() {
 		$stub = $this->getMockForAbstractClass( Process::class );
 		$item = $stub->format_item( [] );
 
-		$this->assertFalse( $item );
+		$this->assertSame( [], $item );
 
 		$item = $stub->format_item(
 			[
@@ -75,10 +75,10 @@ class Test_FormatItem extends TestCase {
 			]
 		);
 
-		$this->assertFalse( $item );
+		$this->assertSame( [], $item );
 
 		$item = $stub->format_item( 666 );
 
-		$this->assertFalse( $item );
+		$this->assertSame( [], $item );
 	}
 }

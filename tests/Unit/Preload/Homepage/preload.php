@@ -18,7 +18,7 @@ class Test_preload extends TestCase {
 		$preload_process
 			->expects( $this->exactly( 3 ) )
 			->method( 'format_item' )
-			->willReturn( false );
+			->willReturn( [] );
 		$preload_process
 			->expects( $this->never() )
 			->method( 'is_mobile_preload_enabled' );

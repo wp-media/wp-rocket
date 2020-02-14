@@ -21,8 +21,6 @@ class Test_runPreload extends TestCase {
 
 		// No URLs.
 		( new Sitemap( $preload_process ) )->run_preload( [] );
-
-		$this->assertTrue( true );
 	}
 
 	public function testShouldPreloadSitemapsWhenValidUrls() {

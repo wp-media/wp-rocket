@@ -8,6 +8,17 @@ namespace WP_Rocket\Preload;
  * @author Remy Perona
  */
 abstract class Abstract_Preload {
+
+	/**
+	 * Suffix used to identify "mobile items" to preload.
+	 *
+	 * @since  3.6
+	 * @author Grégory Viguier
+	 *
+	 * @var string
+	 */
+	const MOBILE_SUFFIX = '##wpm-mobile##';
+
 	/**
 	 * Background Process instance
 	 *
