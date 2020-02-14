@@ -9,6 +9,7 @@ use Brain\Monkey\Functions;
 /**
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber::preserve_authorization_token
  * @group  RocketCDN
+ * @group  AdminOnly
  */
 class Test_PreserveAuthorizationToken extends TestCase {
 	use \WPMedia\Phpunit\Integration\ApiTrait;
