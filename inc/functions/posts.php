@@ -54,15 +54,16 @@ function get_rocket_post_terms_urls( $post_id ) {
  * @return array $urls List of dates URLs
  */
 function get_rocket_post_dates_urls( $post_id ) {
+	global $is_nginx;
 	// Get the day and month of the post.
 	$date = explode( '-', get_the_time( 'Y-m-d', $post_id ) );
 
 	$urls = array(
 		trailingslashit( get_year_link( $date[0] ) ) . 'index.html',
-		trailingslashit( get_year_link( $date[0] ) ) . 'index.html_gzip',
+		trailingslashit( get_year_link( $date[0] ) ) . 'index.html' . ( $is_nginx ? '.gz' : '_gzip' ),
 		trailingslashit( get_year_link( $date[0] ) ) . $GLOBALS['wp_rewrite']->pagination_base,
 		trailingslashit( get_month_link( $date[0], $date[1] ) ) . 'index.html',
-		trailingslashit( get_month_link( $date[0], $date[1] ) ) . 'index.html_gzip',
+		trailingslashit( get_month_link( $date[0], $date[1] ) ) . 'index.html' . ( $is_nginx ? '.gz' : '_gzip' ),
 		trailingslashit( get_month_link( $date[0], $date[1] ) ) . $GLOBALS['wp_rewrite']->pagination_base,
 		get_day_link( $date[0], $date[1], $date[2] ),
 	);

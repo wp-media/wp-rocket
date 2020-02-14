@@ -700,7 +700,8 @@ function rocket_clean_home( $lang = '' ) {
 	do_action( 'before_rocket_clean_home', $root, $lang );
 
 	// Delete homepage.
-	$files = glob( $root . '/{index,index-*}.{html,html_gzip}', GLOB_BRACE | GLOB_NOSORT );
+	global $is_nginx;
+	$files = glob( $root . '/{index,index-*}.{html,html' . ( $is_nginx ? '.gz' : '_gzip' ) . '}', GLOB_BRACE | GLOB_NOSORT );
 	if ( $files ) {
 		foreach ( $files as $file ) { // no array map to use @.
 			rocket_direct_filesystem()->delete( $file );
