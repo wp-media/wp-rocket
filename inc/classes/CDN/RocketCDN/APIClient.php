@@ -295,7 +295,7 @@ class APIClient {
 			return $args;
 		}
 
-		if ( empty( $args['headers']['Authorization'] ) ) {
+		if ( empty( $args['headers']['Authorization'] ) && self::ROCKETCDN_API . 'pricing' === $url ) {
 			return $args;
 		}
 
@@ -307,7 +307,7 @@ class APIClient {
 
 		$value = 'token ' . $token;
 
-		if ( $value === $args['headers']['Authorization'] ) {
+		if ( isset( $args['headers']['Authorization'] ) && $value === $args['headers']['Authorization'] ) {
 			return $args;
 		}
 
