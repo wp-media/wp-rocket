@@ -78,7 +78,7 @@ class APIClient {
 		}
 
 		$data = json_decode( $data, true );
-		$data = array_intersect_key( $data, $default );
+		$data = array_intersect_key( (array) $data, $default );
 
 		$this->set_status_transient( $data, WEEK_IN_SECONDS );
 
@@ -277,5 +277,36 @@ class APIClient {
 			self::ROCKETCDN_API . 'website/' . $subscription['id'] . '/',
 			$args
 		);
+	}
+
+	/**
+	 * Filter the arguments used in an HTTP request, to make sure our user token has not been overwritten
+	 * by some other plugin.
+	 *
+	 * @since  3.5
+	 * @author Rémy Peorna
+	 *
+	 * @param  array  $args An array of HTTP request arguments.
+	 * @param  string $url  The request URL.
+	 * @return array
+	 */
+	public function preserve_authorization_token( $args, $url ) {
+		if ( strpos( $url, self::ROCKETCDN_API ) === false ) {
+			return $args;
+		}
+
+		if ( empty( $args['headers']['Authorization'] ) ) {
+			return $args;
+		}
+
+		$value = 'token ' . get_option( 'rocketcdn_user_token' );
+
+		if ( $value === $args['headers']['Authorization'] ) {
+			return $args;
+		}
+
+		$args['headers']['Authorization'] = $value;
+
+		return $args;
 	}
 }
