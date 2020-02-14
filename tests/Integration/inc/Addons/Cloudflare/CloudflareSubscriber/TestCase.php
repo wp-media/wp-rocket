@@ -4,12 +4,9 @@ namespace WP_Rocket\Tests\Integration\inc\Addons\Cloudflare\CloudflareSubscriber
 
 use ReflectionClass;
 use WPMedia\Cloudflare\Cloudflare;
-use WPMedia\PHPUnit\Integration\ApiTrait;
 use WPMedia\PHPUnit\Integration\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase {
-	use ApiTrait;
-
 	protected static $container;
 	protected static $subscriber;
 
@@ -20,7 +17,7 @@ abstract class TestCase extends BaseTestCase {
 	private static $options_property;
 
 	// API Credentials.
-	protected static $api_credentials_config_file = 'cloudflare.php';
+	protected static $api_credentials_config_file;
 	protected static $api_credentials = [
 		'api_key'  => '',
 		'email'    => '',
@@ -31,7 +28,7 @@ abstract class TestCase extends BaseTestCase {
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
 
-		static::pathToApiCredentialsConfigFile( WP_ROCKET_PLUGIN_ROOT . '/tests/env/local/' );
+		self::$api_credentials_config_file = WP_ROCKET_PLUGIN_ROOT . '/tests/env/local/cloudflare.php';
 
 		self::$container = apply_filters( 'rocket_container', '' );
 		self::setApiCredentials();
@@ -118,5 +115,32 @@ abstract class TestCase extends BaseTestCase {
 
 	public function setSiteUrl() {
 		return self::$api_credentials['site_url'];
+	}
+
+	/**
+	 * Gets the credential's value from either an environment variable (stored locally on the machine or CI) or from a local constant defined in `tests/env/local/cloudflare.php`.
+	 *
+	 * @param string $name Name of the environment variable or constant to find.
+	 *
+	 * @return string returns the value if available; else an empty string.
+	 */
+	protected static function getApiCredential( $name ) {
+		$var = getenv( $name );
+		if ( ! empty( $var ) ) {
+			return $var;
+		}
+
+		if ( ! static::$api_credentials_config_file ) {
+			return '';
+		}
+
+		if ( ! is_readable( self::$api_credentials_config_file ) ) {
+			return '';
+		}
+
+		// This file is local to the developer's machine and not stored in the repo.
+		require_once self::$api_credentials_config_file;
+
+		return rocket_get_constant( $name, '' );
 	}
 }
