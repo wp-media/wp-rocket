@@ -1,6 +1,6 @@
 <?php
 /**
- * Rocket CDN template.
+ * RocketCDN template.
  *
  * @since 3.5
  */

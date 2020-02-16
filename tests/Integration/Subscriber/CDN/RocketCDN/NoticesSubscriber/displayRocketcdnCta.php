@@ -27,7 +27,7 @@ class Test_DisplayRocketcdnCta extends TestCase {
 		$not_expected = $this->format_the_html( '<div class="wpr-rocketcdn-cta-small notice-alt notice-warning wpr-isHidden" id="wpr-rocketcdn-cta-small">
 			<div class="wpr-flex">
 				<section>
-					<h3 class="notice-title">Speed up your website with Rocket CDN, WP Rocket’s Content Delivery Network.</strong></h3>
+					<h3 class="notice-title">Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network.</strong></h3>
 				</section>
 				<div>
 					<button class="wpr-button" id="wpr-rocketcdn-open-cta">Learn More</button>
@@ -36,7 +36,7 @@ class Test_DisplayRocketcdnCta extends TestCase {
 		</div>
 		<div class="wpr-rocketcdn-cta " id="wpr-rocketcdn-cta">
 			<section class="wpr-rocketcdn-cta-content--no-promo">
-				<h3 class="wpr-title2">Rocket CDN</h3>
+				<h3 class="wpr-title2">RocketCDN</h3>
 				<p class="wpr-rocketcdn-cta-subtitle">Speed up your website thanks to:</p>
 				<div class="wpr-flex">
 					<ul class="wpr-rocketcdn-features">
@@ -51,7 +51,7 @@ class Test_DisplayRocketcdnCta extends TestCase {
 				</div>
 			</section>
 			<div class="wpr-rocketcdn-cta-footer">
-				<a href="https://go.wp-rocket.me/rocket-cdn" target="_blank" rel="noopener noreferrer">Learn more about Rocket CDN</a>
+				<a href="https://go.wp-rocket.me/rocket-cdn" target="_blank" rel="noopener noreferrer">Learn more about RocketCDN</a>
 			</div>
 			<button class="wpr-rocketcdn-cta-close--no-promo" id="wpr-rocketcdn-close-cta">
 				<span class="screen-reader-text">Reduce this banner</span>
@@ -83,7 +83,7 @@ class Test_DisplayRocketcdnCta extends TestCase {
 		$expected = $this->format_the_html( '<div class="wpr-rocketcdn-cta-small notice-alt notice-warning wpr-isHidden" id="wpr-rocketcdn-cta-small">
 			<div class="wpr-flex">
 				<section>
-					<h3 class="notice-title">Speed up your website with Rocket CDN, WP Rocket’s Content Delivery Network.</strong></h3>
+					<h3 class="notice-title">Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network.</strong></h3>
 				</section>
 				<div>
 					<button class="wpr-button" id="wpr-rocketcdn-open-cta">Learn More</button>
@@ -92,7 +92,7 @@ class Test_DisplayRocketcdnCta extends TestCase {
 		</div>
 		<div class="wpr-rocketcdn-cta " id="wpr-rocketcdn-cta">
 			<section class="wpr-rocketcdn-cta-content--no-promo">
-				<h3 class="wpr-title2">Rocket CDN</h3>
+				<h3 class="wpr-title2">RocketCDN</h3>
 				<p class="wpr-rocketcdn-cta-subtitle">Speed up your website thanks to:</p>
 				<div class="wpr-flex">
 					<ul class="wpr-rocketcdn-features">
@@ -107,7 +107,7 @@ class Test_DisplayRocketcdnCta extends TestCase {
 				</div>
 			</section>
 			<div class="wpr-rocketcdn-cta-footer">
-				<a href="https://go.wp-rocket.me/rocket-cdn" target="_blank" rel="noopener noreferrer">Learn more about Rocket CDN</a>
+				<a href="https://go.wp-rocket.me/rocket-cdn" target="_blank" rel="noopener noreferrer">Learn more about RocketCDN</a>
 			</div>
 			<button class="wpr-rocketcdn-cta-close--no-promo" id="wpr-rocketcdn-close-cta">
 				<span class="screen-reader-text">Reduce this banner</span>
@@ -145,7 +145,7 @@ class Test_DisplayRocketcdnCta extends TestCase {
 		$expected = $this->format_the_html( '<div class="wpr-rocketcdn-cta-small notice-alt notice-warning " id="wpr-rocketcdn-cta-small">
 			<div class="wpr-flex">
 				<section>
-					<h3 class="notice-title">Speed up your website with Rocket CDN, WP Rocket’s Content Delivery Network.</strong></h3>
+					<h3 class="notice-title">Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network.</strong></h3>
 				</section>
 				<div>
 					<button class="wpr-button" id="wpr-rocketcdn-open-cta">Learn More</button>
@@ -154,7 +154,7 @@ class Test_DisplayRocketcdnCta extends TestCase {
 		</div>
 		<div class="wpr-rocketcdn-cta wpr-isHidden" id="wpr-rocketcdn-cta">
 			<section class="wpr-rocketcdn-cta-content--no-promo">
-				<h3 class="wpr-title2">Rocket CDN</h3>
+				<h3 class="wpr-title2">RocketCDN</h3>
 				<p class="wpr-rocketcdn-cta-subtitle">Speed up your website thanks to:</p>
 				<div class="wpr-flex">
 					<ul class="wpr-rocketcdn-features">
@@ -169,7 +169,7 @@ class Test_DisplayRocketcdnCta extends TestCase {
 				</div>
 			</section>
 			<div class="wpr-rocketcdn-cta-footer">
-				<a href="https://go.wp-rocket.me/rocket-cdn" target="_blank" rel="noopener noreferrer">Learn more about Rocket CDN</a>
+				<a href="https://go.wp-rocket.me/rocket-cdn" target="_blank" rel="noopener noreferrer">Learn more about RocketCDN</a>
 			</div>
 			<button class="wpr-rocketcdn-cta-close--no-promo" id="wpr-rocketcdn-close-cta">
 				<span class="screen-reader-text">Reduce this banner</span>
@@ -201,7 +201,7 @@ class Test_DisplayRocketcdnCta extends TestCase {
 		$expected = $this->format_the_html( '<div class="wpr-rocketcdn-cta-small notice-alt notice-warning wpr-isHidden" id="wpr-rocketcdn-cta-small">
 			<div class="wpr-flex">
 				<section>
-					<h3 class="notice-title">Speed up your website with Rocket CDN, WP Rocket’s Content Delivery Network.</strong></h3>
+					<h3 class="notice-title">Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network.</strong></h3>
 				</section>
 				<div>
 					<button class="wpr-button" id="wpr-rocketcdn-open-cta">Learn More</button>
@@ -214,7 +214,7 @@ class Test_DisplayRocketcdnCta extends TestCase {
 				<p class="wpr-title2 wpr-rocketcdn-promo-date">Valid until 2020-01-30 only!</p>
 			</div>
 			<section class="wpr-rocketcdn-cta-content">
-				<h3 class="wpr-title2">Rocket CDN</h3>
+				<h3 class="wpr-title2">RocketCDN</h3>
 				<p class="wpr-rocketcdn-cta-subtitle">Speed up your website thanks to:</p>
 				<div class="wpr-flex">
 					<ul class="wpr-rocketcdn-features">
@@ -230,7 +230,7 @@ class Test_DisplayRocketcdnCta extends TestCase {
 				</div>
 			</section>
 			<div class="wpr-rocketcdn-cta-footer">
-				<a href="https://go.wp-rocket.me/rocket-cdn" target="_blank" rel="noopener noreferrer">Learn more about Rocket CDN</a>
+				<a href="https://go.wp-rocket.me/rocket-cdn" target="_blank" rel="noopener noreferrer">Learn more about RocketCDN</a>
 			</div>
 			<button class="wpr-rocketcdn-cta-close" id="wpr-rocketcdn-close-cta">
 				<span class="screen-reader-text">Reduce this banner</span>
@@ -251,7 +251,7 @@ class Test_DisplayRocketcdnCta extends TestCase {
 		$expected = $this->format_the_html( '<div class="wpr-rocketcdn-cta-small notice-alt notice-warning wpr-isHidden" id="wpr-rocketcdn-cta-small">
 			<div class="wpr-flex">
 				<section>
-					<h3 class="notice-title">Speed up your website with Rocket CDN, WP Rocket’s Content Delivery Network.</strong></h3>
+					<h3 class="notice-title">Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network.</strong></h3>
 				</section>
 				<div>
 					<button class="wpr-button" id="wpr-rocketcdn-open-cta">Learn More</button>
@@ -260,7 +260,7 @@ class Test_DisplayRocketcdnCta extends TestCase {
 		</div>
 		<div class="wpr-rocketcdn-cta " id="wpr-rocketcdn-cta">
 			<section class="wpr-rocketcdn-cta-content--no-promo">
-				<h3 class="wpr-title2">Rocket CDN</h3>
+				<h3 class="wpr-title2">RocketCDN</h3>
 				<p class="wpr-rocketcdn-cta-subtitle">Speed up your website thanks to:</p>
 				<div class="wpr-flex">
 					<ul class="wpr-rocketcdn-features">
@@ -274,7 +274,7 @@ class Test_DisplayRocketcdnCta extends TestCase {
 				</div>
 			</section>
 			<div class="wpr-rocketcdn-cta-footer">
-				<a href="https://go.wp-rocket.me/rocket-cdn" target="_blank" rel="noopener noreferrer">Learn more about Rocket CDN</a>
+				<a href="https://go.wp-rocket.me/rocket-cdn" target="_blank" rel="noopener noreferrer">Learn more about RocketCDN</a>
 			</div>
 			<button class="wpr-rocketcdn-cta-close--no-promo" id="wpr-rocketcdn-close-cta">
 				<span class="screen-reader-text">Reduce this banner</span>

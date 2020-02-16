@@ -67,7 +67,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	}
 
 	/**
-	 * Displays the Rocket CDN section on the dashboard tab
+	 * Displays the RocketCDN section on the dashboard tab
 	 *
 	 * @since  3.5
 	 * @author Remy Perona
@@ -103,7 +103,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	}
 
 	/**
-	 * Adds the Rocket CDN fields to the CDN section
+	 * Adds the RocketCDN fields to the CDN section
 	 *
 	 * @since  3.5
 	 * @author Remy Perona
@@ -119,13 +119,13 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 			return $fields;
 		}
 
-		$helper_text = __( 'Rocket CDN is currently active.', 'rocket' );
+		$helper_text = __( 'RocketCDN is currently active.', 'rocket' );
 		$cdn_cnames  = $this->options->get( 'cdn_cnames', [] );
 
 		if ( empty( $cdn_cnames ) || $cdn_cnames[0] !== $subscription_data['cdn_url'] ) {
 			$helper_text = sprintf(
 				// translators: %1$s = opening <code> tag, %2$s = CDN URL, %3$s = closing </code> tag.
-				__( 'To use Rocket CDN, replace your CNAME with %1$s%2$s%3$s.', 'rocket' ),
+				__( 'To use RocketCDN, replace your CNAME with %1$s%2$s%3$s.', 'rocket' ),
 				'<code>',
 				$subscription_data['cdn_url'],
 				'</code>'
