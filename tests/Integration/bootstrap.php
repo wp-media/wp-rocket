@@ -9,6 +9,7 @@ define( 'WP_ROCKET_TESTS_FIXTURES_DIR', dirname( __DIR__ ) . '/Fixtures' );
 define( 'WP_ROCKET_TESTS_DIR', __DIR__ );
 define( 'WP_ROCKET_IS_TESTING', true );
 define( 'WPMEDIA_IS_TESTING', true ); // Used by wp-media/{package}.
+define( 'WP_ROCKET_ADVANCED_CACHE', true );
 
 // Manually load the plugin being tested.
 tests_add_filter(
