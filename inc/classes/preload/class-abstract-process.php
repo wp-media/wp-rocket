@@ -96,7 +96,7 @@ abstract class Process extends WP_Background_Process {
 	 * }
 	 * @return string
 	 */
-	public function get_item_user_agent( $item = [] ) {
+	public function get_item_user_agent( array $item ) {
 		if ( $item['mobile'] ) {
 			return 'WP Rocket/Preload iPhone';
 		}
@@ -141,14 +141,14 @@ abstract class Process extends WP_Background_Process {
 	 * @access protected
 	 * @author Grégory Viguier
 	 *
-	 * @param  array|string $item {
+	 * @param  array $item {
 	 *     The item to preload: an array containing the following values.
 	 *
 	 *     @type string $url    The URL to preload.
 	 *     @type bool   $mobile True when we want to send a "mobile" user agent with the request. Optional.
 	 * }
 	 */
-	protected function preload( $item ) {
+	protected function preload( array $item ) {
 		/**
 		 * Filters the arguments for the partial preload request.
 		 *

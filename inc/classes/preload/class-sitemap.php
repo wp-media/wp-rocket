@@ -29,7 +29,7 @@ class Sitemap extends Abstract_Preload {
 	 * @param array $sitemaps Sitemaps to use for preloading.
 	 * @return void
 	 */
-	public function run_preload( $sitemaps ) {
+	public function run_preload( array $sitemaps ) {
 		if ( ! $sitemaps ) {
 			return;
 		}
@@ -109,7 +109,7 @@ class Sitemap extends Abstract_Preload {
 	 *     @type bool   $mobile True when we want to send a "mobile" user agent with the request. Optional.
 	 * }
 	 */
-	private function process_sitemap( $sitemap_url, $urls = [] ) {
+	private function process_sitemap( $sitemap_url, array $urls = [] ) {
 		$this->sitemap_error = false;
 
 		/**
@@ -293,7 +293,7 @@ class Sitemap extends Abstract_Preload {
 	 *     @type bool   $mobile True when we want to send a "mobile" user agent with the request. Optional.
 	 * }
 	 */
-	private function get_urls( $urls = [] ) {
+	private function get_urls( array $urls = [] ) {
 		// Get public post types.
 		$post_types = get_post_types( [ 'public' => true ] );
 		$post_types = array_filter( $post_types, 'is_post_type_viewable' );

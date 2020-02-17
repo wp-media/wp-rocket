@@ -18,7 +18,7 @@ class Homepage extends Abstract_Preload {
 	 * @param array $home_urls Homepages URLs to preload.
 	 * @return void
 	 */
-	public function preload( $home_urls ) {
+	public function preload( array $home_urls ) {
 		if ( ! $home_urls ) {
 			return;
 		}
@@ -93,7 +93,7 @@ class Homepage extends Abstract_Preload {
 	 * @since  3.6 $item is an array.
 	 * @author Remy Perona
 	 *
-	 * @param  array|string $item {
+	 * @param  array $item {
 	 *     The item to get content and links from: an array containing the following values.
 	 *
 	 *     @type string $url    The URL to preload.
@@ -101,12 +101,9 @@ class Homepage extends Abstract_Preload {
 	 * }
 	 * @return bool|array
 	 */
-	private function get_urls( $item ) {
-		if ( $item['mobile'] ) {
-			$user_agent = 'WP Rocket/Homepage_Preload iPhone';
-		} else {
-			$user_agent = 'WP Rocket/Homepage_Preload';
-		}
+	private function get_urls( array $item ) {
+		$user_agent = $this->preload_process->get_item_user_agent( $item );
+
 		/**
 		 * Filters the arguments for the partial preload request.
 		 *
