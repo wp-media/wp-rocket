@@ -79,10 +79,12 @@
 	},
 	"scripts": {
 		"test-unit": "\"vendor/bin/wpmedia-phpunit\" unit path=tests/Unit",
-		"test-integration": "\"vendor/bin/wpmedia-phpunit\" integration path=tests/Integration",
+		"test-integration": "\"vendor/bin/wpmedia-phpunit\" integration path=tests/Integration --exclude-group AdminOnly",
+		"test-integration-admin": "\"vendor/bin/wpmedia-phpunit\" integration path=tests/Integration --group AdminOnly",
 		"run-tests": [
 			"@test-unit",
-			"@test-integration"
+			"@test-integration",
+			"@test-integration-admin"
 		],
 		"run-stan":"vendor/bin/phpstan analyze --memory-limit=2G --no-progress",
 		"install-codestandards": "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run",
