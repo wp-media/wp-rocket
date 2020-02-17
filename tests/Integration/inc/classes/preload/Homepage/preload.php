@@ -3,6 +3,7 @@ namespace WP_Rocket\Tests\Integration\inc\classes\preload\Homepage;
 
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Integration\TestCase;
+use WP_Error;
 use WP_Rocket\Tests\Integration\Fixtures\Preload\Process_Wrapper;
 use WP_Rocket\Preload\Homepage;
 
@@ -82,19 +83,19 @@ class Test_Preload extends TestCase {
 					$file_name = 'category-barbaz';
 					break;
 				default:
-					return new \WP_Error( 'wrong-url', 'Wrong URL', [ $url ] );
+					return new WP_Error( 'wrong-url', 'Wrong URL', [ $url ] );
 			}
 
 			$mobile_sub = ! empty( $args['user-agent'] ) && strpos( $args['user-agent'], 'iPhone' ) ? '-mobile' : '';
 			$path       = WP_ROCKET_TESTS_FIXTURES_DIR . '/Preload/Homepage/' . $file_name . $mobile_sub . '.html';
 
-			if ( ! \file_exists( $path ) ) {
-				return new \WP_Error( 'file-not-found', 'File not found', [ $file_name . $mobile_sub . '.html' ] );
+			if ( ! file_exists( $path ) ) {
+				return new WP_Error( 'file-not-found', 'File not found', [ $file_name . $mobile_sub . '.html' ] );
 			}
 
 			return [
 				'headers'       => null, // Requests_Utility_CaseInsensitiveDictionary object.
-				'body'          => \file_get_contents( $path ),
+				'body'          => file_get_contents( $path ),
 				'response'      => [
 					'code'    => 200,
 					'message' => 'OK',

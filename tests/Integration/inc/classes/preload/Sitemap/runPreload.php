@@ -5,6 +5,7 @@ use Brain\Monkey\Actions;
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\Fixtures\Preload\Process_Wrapper;
 use WPMedia\PHPUnit\Integration\TestCase;
+use WP_Error;
 use WP_Rocket\Preload\Full_Process;
 use WP_Rocket\Preload\Sitemap;
 
@@ -92,16 +93,16 @@ class Test_runPreload extends TestCase {
 					$path .= 'sitemap-mobile.xml';
 					break;
 				default:
-					return new \WP_Error( 'wrong-url', 'Wrong URL', [ $url ] );
+					return new WP_Error( 'wrong-url', 'Wrong URL', [ $url ] );
 			}
 
-			if ( ! \file_exists( $path ) ) {
-				return new \WP_Error( 'file-not-found', 'File not found', [ basename( $path ) ] );
+			if ( ! file_exists( $path ) ) {
+				return new WP_Error( 'file-not-found', 'File not found', [ basename( $path ) ] );
 			}
 
 			return [
 				'headers'       => null, // Requests_Utility_CaseInsensitiveDictionary object.
-				'body'          => \file_get_contents( $path ),
+				'body'          => file_get_contents( $path ),
 				'response'      => [
 					'code'    => 200,
 					'message' => 'OK',
@@ -176,16 +177,16 @@ class Test_runPreload extends TestCase {
 					break;
 				// sitemap-mobile.xml will return an error, and will trigger get_urls().
 				default:
-					return new \WP_Error( 'wrong-url', 'Wrong URL', [ $url ] );
+					return new WP_Error( 'wrong-url', 'Wrong URL', [ $url ] );
 			}
 
-			if ( ! \file_exists( $path ) ) {
-				return new \WP_Error( 'file-not-found', 'File not found', [ basename( $path ) ] );
+			if ( ! file_exists( $path ) ) {
+				return new WP_Error( 'file-not-found', 'File not found', [ basename( $path ) ] );
 			}
 
 			return [
 				'headers'       => null, // Requests_Utility_CaseInsensitiveDictionary object.
-				'body'          => \file_get_contents( $path ),
+				'body'          => file_get_contents( $path ),
 				'response'      => [
 					'code'    => 200,
 					'message' => 'OK',
