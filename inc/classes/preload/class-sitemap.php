@@ -95,7 +95,7 @@ class Sitemap extends Abstract_Preload {
 	 * Processes the sitemaps recursively.
 	 *
 	 * @since  3.2
-	 * @since  3.6 Now private.
+	 * @since  3.5 Now private.
 	 * @author Remy Perona
 	 *
 	 * @param  string $sitemap_url URL of the sitemap.
@@ -276,8 +276,8 @@ class Sitemap extends Abstract_Preload {
 	 * Used as a fallback when extracting URLs from sitemap fails.
 	 *
 	 * @since  3.3
-	 * @since  3.6 New $urls argument.
-	 * @since  3.6 Now private.
+	 * @since  3.5 New $urls argument.
+	 * @since  3.5 Now private.
 	 * @author Arun Basil Lal
 	 *
 	 * @link https://github.com/wp-media/wp-rocket/issues/1306

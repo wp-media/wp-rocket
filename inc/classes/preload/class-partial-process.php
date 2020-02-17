@@ -23,7 +23,7 @@ class Partial_Process extends Process {
 	 * Preload the URL provided by $item.
 	 *
 	 * @since  3.2
-	 * @since  3.6 $item can be an array.
+	 * @since  3.5 $item can be an array.
 	 * @author Remy Perona
 	 *
 	 * @param  array|string $item {

@@ -12,7 +12,7 @@ abstract class Abstract_Preload {
 	/**
 	 * Suffix used to identify "mobile items" to preload.
 	 *
-	 * @since  3.6
+	 * @since  3.5
 	 * @author Grégory Viguier
 	 *
 	 * @var string
@@ -30,7 +30,7 @@ abstract class Abstract_Preload {
 	/**
 	 * Cache processing that use get_rocket_cache_query_string().
 	 *
-	 * @since  3.6
+	 * @since  3.5
 	 * @author Grégory Viguier
 	 *
 	 * @var array
@@ -81,7 +81,7 @@ abstract class Abstract_Preload {
 	 * Create a unique identifier for a given URL.
 	 * This is used for the "mobile items"
 	 *
-	 * @since  3.6
+	 * @since  3.5
 	 * @author Grégory Viguier
 	 *
 	 * @param  string $url A URL.

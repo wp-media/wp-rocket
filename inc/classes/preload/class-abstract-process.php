@@ -8,7 +8,7 @@ use WP_Background_Process;
  * Extends the background process class for the preload background process.
  * The class extending this one must have a $action property and a task() method at least.
  *
- * @since  3.6
+ * @since  3.5
  * @author Grégory Viguier
  *
  * @see WP_Background_Process
@@ -26,7 +26,7 @@ abstract class Process extends WP_Background_Process {
 	/**
 	 * Format the item to an array.
 	 *
-	 * @since  3.6
+	 * @since  3.5
 	 * @author Grégory Viguier
 	 *
 	 * @param  array|string $item {
@@ -59,7 +59,7 @@ abstract class Process extends WP_Background_Process {
 	/**
 	 * Tell if mobile preload is enabled.
 	 *
-	 * @since  3.6
+	 * @since  3.5
 	 * @author Grégory Viguier
 	 *
 	 * @return bool
@@ -70,7 +70,7 @@ abstract class Process extends WP_Background_Process {
 		/**
 		 * Tell if mobile preload is enabled.
 		 *
-		 * @since  3.6
+		 * @since  3.5
 		 * @author Grégory Viguier
 		 *
 		 * @param bool   $enabled True when enabled. False otherwise.
@@ -82,7 +82,7 @@ abstract class Process extends WP_Background_Process {
 	/**
 	 * Get the user agent to use for the item.
 	 *
-	 * @since  3.6
+	 * @since  3.5
 	 * @author Grégory Viguier
 	 *
 	 * @param  array $item {
@@ -104,7 +104,7 @@ abstract class Process extends WP_Background_Process {
 	/**
 	 * Preload the URL provided by $item.
 	 *
-	 * @since  3.6
+	 * @since  3.5
 	 * @author Grégory Viguier
 	 *
 	 * @param  array|string $item {
@@ -133,7 +133,7 @@ abstract class Process extends WP_Background_Process {
 	/**
 	 * Preload the URL provided by $item.
 	 *
-	 * @since  3.6
+	 * @since  3.5
 	 * @author Grégory Viguier
 	 *
 	 * @param  array $item {
@@ -149,7 +149,7 @@ abstract class Process extends WP_Background_Process {
 		 *
 		 * @since  2.10.8 'rocket_preload_url_request_args'
 		 * @since  3.2 'rocket_partial_preload_url_request_args'
-		 * @since  3.6 "rocket_{$this->action}_url_request_args"
+		 * @since  3.5 "rocket_{$this->action}_url_request_args"
 		 * @author Remy Perona
 		 *
 		 * @param array $args Request arguments.
@@ -171,7 +171,7 @@ abstract class Process extends WP_Background_Process {
 	 * Check if the cache file for $item already exists.
 	 *
 	 * @since  3.2
-	 * @since  3.6 $item is an array.
+	 * @since  3.5 $item is an array.
 	 * @author Remy Perona
 	 *
 	 * @param  array $item {

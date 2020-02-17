@@ -90,7 +90,7 @@ class Homepage extends Abstract_Preload {
 	 * Gets links in the content of the URL provided.
 	 *
 	 * @since  3.2.2
-	 * @since  3.6 $item is an array.
+	 * @since  3.5 $item is an array.
 	 * @author Remy Perona
 	 *
 	 * @param  array $item {
