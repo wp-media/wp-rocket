@@ -15,7 +15,7 @@
 
 ?>
 <div class="wpr-optionHeader">
-	<h3 class="wpr-title2">Rocket CDN</h3>
+	<h3 class="wpr-title2">RocketCDN</h3>
 </div>
 <div class="wpr-field wpr-field-account">
 	<div class="wpr-flex<?php echo esc_attr( $data['container_class'] ); ?>">
@@ -25,7 +25,7 @@
 		</div>
 		<?php if ( ! $data['is_active'] ) : ?>
 		<div>
-			<a href="#page_cdn" class="wpr-button"><?php esc_html_e( 'Get Rocket CDN', 'rocket' ); ?></a>
+			<a href="#page_cdn" class="wpr-button"><?php esc_html_e( 'Get RocketCDN', 'rocket' ); ?></a>
 		</div>
 		<?php endif; ?>
 	</div>
