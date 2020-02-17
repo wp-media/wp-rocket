@@ -143,7 +143,7 @@ abstract class Process extends WP_Background_Process {
 	 *     @type bool   $mobile True when we want to send a "mobile" user agent with the request. Optional.
 	 * }
 	 */
-	protected function preload( array $item ) {
+	private function preload( array $item ) {
 		/**
 		 * Filters the arguments for the partial preload request.
 		 *
