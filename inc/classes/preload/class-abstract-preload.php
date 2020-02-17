@@ -31,7 +31,6 @@ abstract class Abstract_Preload {
 	 * Cache processing that use get_rocket_cache_query_string().
 	 *
 	 * @since  3.6
-	 * @access protected
 	 * @author Grégory Viguier
 	 *
 	 * @var array
@@ -83,7 +82,6 @@ abstract class Abstract_Preload {
 	 * This is used for the "mobile items"
 	 *
 	 * @since  3.6
-	 * @access protected
 	 * @author Grégory Viguier
 	 *
 	 * @param  string $url A URL.

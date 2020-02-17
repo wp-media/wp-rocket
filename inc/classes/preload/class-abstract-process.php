@@ -27,7 +27,6 @@ abstract class Process extends WP_Background_Process {
 	 * Format the item to an array.
 	 *
 	 * @since  3.6
-	 * @access public
 	 * @author Grégory Viguier
 	 *
 	 * @param  array|string $item {
@@ -61,7 +60,6 @@ abstract class Process extends WP_Background_Process {
 	 * Tell if mobile preload is enabled.
 	 *
 	 * @since  3.6
-	 * @access public
 	 * @author Grégory Viguier
 	 *
 	 * @return bool
@@ -85,7 +83,6 @@ abstract class Process extends WP_Background_Process {
 	 * Get the user agent to use for the item.
 	 *
 	 * @since  3.6
-	 * @access public
 	 * @author Grégory Viguier
 	 *
 	 * @param  array $item {
@@ -108,7 +105,6 @@ abstract class Process extends WP_Background_Process {
 	 * Preload the URL provided by $item.
 	 *
 	 * @since  3.6
-	 * @access protected
 	 * @author Grégory Viguier
 	 *
 	 * @param  array|string $item {
@@ -138,7 +134,6 @@ abstract class Process extends WP_Background_Process {
 	 * Preload the URL provided by $item.
 	 *
 	 * @since  3.6
-	 * @access protected
 	 * @author Grégory Viguier
 	 *
 	 * @param  array $item {

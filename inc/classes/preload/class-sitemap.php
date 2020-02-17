@@ -96,7 +96,6 @@ class Sitemap extends Abstract_Preload {
 	 *
 	 * @since  3.2
 	 * @since  3.6 Now private.
-	 * @access private
 	 * @author Remy Perona
 	 *
 	 * @param  string $sitemap_url URL of the sitemap.
@@ -279,7 +278,6 @@ class Sitemap extends Abstract_Preload {
 	 * @since  3.3
 	 * @since  3.6 New $urls argument.
 	 * @since  3.6 Now private.
-	 * @access private
 	 * @author Arun Basil Lal
 	 *
 	 * @link https://github.com/wp-media/wp-rocket/issues/1306
