@@ -73,3 +73,75 @@ function get_rocket_cdn_cnames( $zone = 'all' ) { // phpcs:ignore WordPress.Nami
 
 	return $hosts;
 }
+
+/**
+ * Check if the current URL is for a live site (not local, not staging)
+ *
+ * @since 3.5
+ * @author Remy Perona
+ *
+ * @return bool True if live, false otherwise.
+ */
+function rocket_is_live_site() {
+	if ( rocket_get_constant( 'WP_ROCKET_DEBUG' ) ) {
+		return true;
+	}
+
+	$host = wp_parse_url( home_url(), PHP_URL_HOST );
+
+	if ( ! $host ) {
+		return false;
+	}
+
+	$localhost = [
+		'127.0.0.1',
+		'localhost',
+	];
+
+	if ( in_array( $host, $localhost, true ) ) {
+		return false;
+	}
+
+	$tld           = pathinfo( $host, PATHINFO_EXTENSION );
+	$excluded_tlds = [
+		'localhost',
+		'local',
+		'dev',
+		'test',
+		'docksal',
+	];
+
+	if ( in_array( $tld, $excluded_tlds, true ) ) {
+		return false;
+	}
+
+	if ( '.dev.cc' === substr( $host, -7 ) ) {
+		return false;
+	}
+
+	if ( '.lndo.site' === substr( $host, -10 ) ) {
+		return false;
+	}
+
+	$staging = [
+		'.wpengine.com',
+		'.pantheonsite.io',
+		'.flywheelsites.com',
+		'.flywheelstaging.com',
+		'.kinsta.com',
+		'.kinsta.cloud',
+		'.cloudwaysapps.com',
+		'.azurewebsites.net',
+		'.wpserveur.net',
+		'-liquidwebsites.com',
+		'.myftpupload.com',
+	];
+
+	foreach ( $staging as $domain ) {
+		if ( strpos( $host, $domain ) ) {
+			return false;
+		}
+	}
+
+	return true;
+}
