@@ -36,6 +36,7 @@ class Test_AddSubscriptionModal extends TestCase {
 	 * Test should display the modal HTML with the production URL in the iframe
 	 */
 	public function testShouldDisplayModalWithProductionURL() {
+		Functions\when( 'rocket_is_live_site' )->justReturn( true );
 		Functions\expect( 'rocket_get_constant' )
 			->ordered()
 			->once()
@@ -73,6 +74,7 @@ HTML;
 	 * Test should display the modal HTML with the development URL in the iframe
 	 */
 	public function testShouldDisplayModalWithDevURL() {
+		Functions\when( 'rocket_is_live_site' )->justReturn( true );
 		Functions\expect( 'rocket_get_constant' )
 			->once()
 			->with( 'WP_ROCKET_DEBUG', false )

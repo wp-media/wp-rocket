@@ -49,6 +49,7 @@ class Test_DisplayRocketcdnStatus extends FilesystemTestCase {
 	 * Test should output HTML for an inactive subscription
 	 */
 	public function testShouldOutputNoSubscriptionWhenInactive() {
+		Functions\when( 'rocket_is_live_site' )->justReturn( true );
 		$this->api_client->method( 'get_subscription_data' )
 		                 ->willReturn(
 			                 [
@@ -81,6 +82,7 @@ HTML;
 	}
 
 	public function testShouldOutputSubscriptionDataWhenActive() {
+		Functions\when( 'rocket_is_live_site' )->justReturn( true );
 		$this->api_client->method( 'get_subscription_data' )
 		                 ->willReturn(
 			                 [

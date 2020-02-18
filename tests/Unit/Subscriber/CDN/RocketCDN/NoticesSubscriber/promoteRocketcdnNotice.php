@@ -29,6 +29,7 @@ class Test_PromoteRocketcdnNotice extends TestCase {
 	 * Test should return null when current user doesn't have the capability
 	 */
 	public function testShouldReturnNullWhenNoCapability() {
+		Functions\when( 'rocket_is_live_site' )->justReturn( true );
 		Functions\when('current_user_can')->justReturn(false);
 
 		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
@@ -40,6 +41,7 @@ class Test_PromoteRocketcdnNotice extends TestCase {
 	 * Test should return null when not on WP Rocket settings page
 	 */
 	public function testShouldReturnNullWhenNotRocketPage() {
+		Functions\when( 'rocket_is_live_site' )->justReturn( true );
 		Functions\when('current_user_can')->justReturn(true);
 		Functions\when('get_current_screen')->alias(function() {
 			return (object) [ 'id' => 'general' ];
@@ -54,6 +56,7 @@ class Test_PromoteRocketcdnNotice extends TestCase {
 	 * Test should return null when the notice was dismissed
 	 */
 	public function testShouldReturNullWhenDismissed() {
+		Functions\when( 'rocket_is_live_site' )->justReturn( true );
 		Functions\when('current_user_can')->justReturn(true);
 		Functions\when('get_current_screen')->alias(function() {
 			return (object) [ 'id' => 'settings_page_wprocket' ];
@@ -70,6 +73,7 @@ class Test_PromoteRocketcdnNotice extends TestCase {
 	 * Test should return null when RocketCDN is active
 	 */
 	public function testShouldReturnNullWhenActive() {
+		Functions\when( 'rocket_is_live_site' )->justReturn( true );
 		Functions\when('current_user_can')->justReturn(true);
 		Functions\when('get_current_screen')->alias(function() {
 			return (object) [ 'id' => 'settings_page_wprocket' ];
@@ -89,6 +93,7 @@ class Test_PromoteRocketcdnNotice extends TestCase {
 	 * Test should display the notice when RocketCDN is inactive
 	 */
 	public function testShoulDisplayNoticeWhenNotActive() {
+		Functions\when( 'rocket_is_live_site' )->justReturn( true );
 		$this->mockCommonWpFunctions();
 
 		Functions\when('current_user_can')->justReturn(true);

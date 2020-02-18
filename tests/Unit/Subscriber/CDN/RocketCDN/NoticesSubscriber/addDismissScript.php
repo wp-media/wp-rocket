@@ -22,6 +22,7 @@ class Test_AddDismissScript extends TestCase {
 	 * Test should not add script when user doesn't have the capability to use it
 	 */
 	public function testShouldNotAddScriptWhenNoCapability() {
+		Functions\when( 'rocket_is_live_site' )->justReturn( true );
 		Functions\when('current_user_can')->justReturn(false);
 
 		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
@@ -33,6 +34,7 @@ class Test_AddDismissScript extends TestCase {
 	 * Test should not add script when not on WP Rocket settings page
 	 */
 	public function testShouldNotAddScriptWhenNotRocketPage() {
+		Functions\when( 'rocket_is_live_site' )->justReturn( true );
 		Functions\when('current_user_can')->justReturn(true);
 		Functions\when('get_current_screen')->alias(function() {
 			return (object) [ 'id' => 'general' ];
@@ -47,6 +49,7 @@ class Test_AddDismissScript extends TestCase {
 	 * Test should not add script when the notice has been dismissed
 	 */
 	public function testShouldNotAddScriptWhenDismissed() {
+		Functions\when( 'rocket_is_live_site' )->justReturn( true );
 		Functions\when('current_user_can')->justReturn(true);
 		Functions\when('get_current_screen')->alias(function() {
 			return (object) [ 'id' => 'settings_page_wprocket' ];
@@ -63,6 +66,7 @@ class Test_AddDismissScript extends TestCase {
 	 * Test should not add script when RocketCDN is active
 	 */
 	public function testShouldNotAddScriptWhenActive() {
+		Functions\when( 'rocket_is_live_site' )->justReturn( true );
 		Functions\when('current_user_can')->justReturn(true);
 		Functions\when('get_current_screen')->alias(function() {
 			return (object) [ 'id' => 'settings_page_wprocket' ];
@@ -82,6 +86,7 @@ class Test_AddDismissScript extends TestCase {
 	 * Test should add script when RocketCDN is inactive
 	 */
 	public function testShouldAddScriptWhenNotActive() {
+		Functions\when( 'rocket_is_live_site' )->justReturn( true );
 		$this->mockCommonWpFunctions();
 
 		Functions\when('current_user_can')->justReturn(true);

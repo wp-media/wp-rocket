@@ -29,6 +29,7 @@ class Test_DisplayRocketcdnCta extends TestCase {
 	 * Test should return null when RocketCDN is active
 	 */
 	public function testShouldReturnNullWhenActive() {
+		Functions\when( 'rocket_is_live_site' )->justReturn( true );
 		$this->api_client->method('get_subscription_data')
 			->willReturn(
 			[
@@ -44,6 +45,7 @@ class Test_DisplayRocketcdnCta extends TestCase {
 	 * test should display the big CTA without promo
 	 */
 	public function testShouldDisplayBigCTANoPromoWhenDefault() {
+		Functions\when( 'rocket_is_live_site' )->justReturn( true );
 		$this->mockCommonWpFunctions();
 
 		$this->api_client->method('get_subscription_data')
@@ -87,6 +89,7 @@ class Test_DisplayRocketcdnCta extends TestCase {
 	 * Test should display the small CTA when the big one is hidden
 	 */
 	public function testShouldDisplaySmallCTAWhenBigHidden() {
+		Functions\when( 'rocket_is_live_site' )->justReturn( true );
 		$this->mockCommonWpFunctions();
 
 		$this->api_client->method('get_subscription_data')
@@ -130,6 +133,7 @@ class Test_DisplayRocketcdnCta extends TestCase {
 	 * Test should display the big CTA with the promo when active
 	 */
 	public function testShouldDisplayBigCTAPromoWhenPromoActive() {
+		Functions\when( 'rocket_is_live_site' )->justReturn( true );
 		$this->mockCommonWpFunctions();
 
 		$this->api_client->method('get_subscription_data')
@@ -173,6 +177,7 @@ class Test_DisplayRocketcdnCta extends TestCase {
 	 * Test should have an error message instead of pricing when the pricing API is not available
 	 */
 	public function testShouldDisplayErrorMessageWhenPricingAPINotAvailable() {
+		Functions\when( 'rocket_is_live_site' )->justReturn( true );
 		$this->mockCommonWpFunctions();
 
 		$this->api_client->method('get_subscription_data')

@@ -4,6 +4,7 @@ namespace WP_Rocket\Tests\Unit\Subscriber\CDN\RocketCDN;
 
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber;
+use Brain\Monkey\Functions;
 
 /**
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber::display_manage_subscription
@@ -35,6 +36,7 @@ class Test_DisplayManageSubscription extends TestCase {
 	 * Test should return not render the HTML when the subscription is inactive.
 	 */
 	public function testShouldNotRenderButtonHTMLWhenSubscriptionInactive() {
+		Functions\when( 'rocket_is_live_site' )->justReturn( true );
 		$this->api_client->expects( $this->once() )
 		                 ->method( 'get_subscription_data' )
 		                 ->willReturn( ['subscription_status' => 'cancelled' ] );
@@ -45,6 +47,7 @@ class Test_DisplayManageSubscription extends TestCase {
 	 * Test should render the manage subscription button HTML when the subscription is active.
 	 */
 	public function testShouldRenderButtonHTMLWhenSubscriptionActive() {
+		Functions\when( 'rocket_is_live_site' )->justReturn( true );
 		$this->mockCommonWpFunctions();
 
 		$this->api_client->expects( $this->once() )
