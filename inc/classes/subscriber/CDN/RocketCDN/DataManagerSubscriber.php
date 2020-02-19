@@ -50,7 +50,6 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			'wp_ajax_rocketcdn_process_set'    => 'set_process_status',
 			'wp_ajax_rocketcdn_process_status' => 'get_process_status',
 			self::CRON_EVENT                   => 'maybe_disable_cdn',
-			'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ) => [ 'maybe_update_api_status', 12, 2 ],
 		];
 	}
 
@@ -297,24 +296,5 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		if ( ! wp_next_scheduled( self::CRON_EVENT ) ) {
 			wp_schedule_single_event( $timestamp, self::CRON_EVENT );
 		}
-	}
-
-	/**
-	 * Send request to RocketCDN API if the CDN option changed
-	 *
-	 * @param array $old_value Previous values for WPR options.
-	 * @param array $value     New values for WPR options.
-	 * @return void
-	 */
-	public function maybe_update_api_status( $old_value, $value ) {
-		if ( ! isset( $old_value['cdn'], $value['cdn'] ) ) {
-			return;
-		}
-
-		if ( $old_value['cdn'] === $value['cdn'] ) {
-			return;
-		}
-
-		$this->api_client->update_website_status( (bool) $value['cdn'] );
 	}
 }

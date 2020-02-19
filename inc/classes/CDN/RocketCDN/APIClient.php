@@ -243,44 +243,6 @@ class APIClient {
 	}
 
 	/**
-	 * Update website status 'is_active' on RocketCDN
-	 *
-	 * @since 3.5
-	 * @author Remy Perona
-	 *
-	 * @param bool $is_active True if CDN is active on website, false otherwise.
-	 * @return void
-	 */
-	public function update_website_status( $is_active ) {
-		$subscription = $this->get_subscription_data();
-
-		if ( ! isset( $subscription['id'] ) || 0 === $subscription['id'] ) {
-			return;
-		}
-
-		$token = get_option( 'rocketcdn_user_token' );
-
-		if ( empty( $token ) ) {
-			return;
-		}
-
-		$args = [
-			'method'  => 'PATCH',
-			'headers' => [
-				'Authorization' => 'Token ' . $token,
-			],
-			'body'    => [
-				'is_active' => $is_active,
-			],
-		];
-
-		wp_remote_request(
-			self::ROCKETCDN_API . 'website/' . $subscription['id'] . '/',
-			$args
-		);
-	}
-
-	/**
 	 * Filter the arguments used in an HTTP request, to make sure our user token has not been overwritten
 	 * by some other plugin.
 	 *
