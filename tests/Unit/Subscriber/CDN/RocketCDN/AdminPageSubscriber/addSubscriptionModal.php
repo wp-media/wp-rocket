@@ -20,6 +20,13 @@ class Test_AddSubscriptionModal extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
+		Functions\stubs(
+			[
+				'home_url'      => 'http://example.org',
+				'rest_url'      => 'http://example.org/wp-json/',
+			]
+		);
+
 		$this->page = new AdminPageSubscriber(
 			$this->createMock( APIClient::class ),
 			$this->createMock( Options_Data::class ),
@@ -43,6 +50,7 @@ class Test_AddSubscriptionModal extends TestCase {
 
 	public function testShouldDisplayModalWithProductionURL() {
 		Functions\when( 'rocket_is_live_site' )->justReturn( true );
+		Functions\when( 'add_query_arg' )->justReturn( 'https://wp-rocket.me/cdn/iframe?website=http://example.org&callback=http://example.org/wp-json/wp-rocket/v1/rocketcdn/');
 		Functions\expect( 'rocket_get_constant' )
 			->ordered()
 			->once()
@@ -52,14 +60,6 @@ class Test_AddSubscriptionModal extends TestCase {
 			->once()
 			->with( 'WP_ROCKET_WEB_MAIN' )
 			->andReturn( 'https://wp-rocket.me' );
-
-		Functions\stubs(
-			[
-				'add_query_arg' => 'https://wp-rocket.me/cdn/iframe?website=http://example.org&callback=http://example.org/wp-json/wp-rocket/v1/rocketcdn/',
-				'home_url'      => 'http://example.org',
-				'rest_url'      => 'http://example.org/wp-json/',
-			]
-		);
 
 		$expected = <<<HTML
 <div class="wpr-rocketcdn-modal" id="wpr-rocketcdn-modal" aria-hidden="true">
@@ -78,18 +78,11 @@ HTML;
 
 	public function testShouldDisplayModalWithDevURL() {
 		Functions\when( 'rocket_is_live_site' )->justReturn( true );
+		Functions\when( 'add_query_arg' )->justReturn( 'https://dave.wp-rocket.me/cdn/iframe?website=http://example.org&callback=http://example.org/wp-json/wp-rocket/v1/rocketcdn/' );
 		Functions\expect( 'rocket_get_constant' )
 			->once()
 			->with( 'WP_ROCKET_DEBUG', false )
 			->andReturn( true );
-
-		Functions\stubs(
-			[
-				'add_query_arg' => 'https://dave.wp-rocket.me/cdn/iframe?website=http://example.org&callback=http://example.org/wp-json/wp-rocket/v1/rocketcdn/',
-				'home_url'      => 'http://example.org',
-				'rest_url'      => 'http://example.org/wp-json/',
-			]
-		);
 
 		$expected = <<<HTML
 <div class="wpr-rocketcdn-modal" id="wpr-rocketcdn-modal" aria-hidden="true">

@@ -50,10 +50,10 @@ class Test_PromoteRocketcdnNotice extends FilesystemTestCase {
 		Functions\when( 'rocket_is_live_site' )->justReturn( true );
 		Functions\when( 'current_user_can' )->justReturn( true );
 		Functions\when( 'get_current_screen' )->alias(
-				function() {
-					return (object) [ 'id' => 'general' ];
-				}
-			);
+			function() {
+				return (object) [ 'id' => 'general' ];
+			}
+		);
 
 		$this->assertNull( $this->notices->promote_rocketcdn_notice() );
 	}
@@ -62,10 +62,10 @@ class Test_PromoteRocketcdnNotice extends FilesystemTestCase {
 		Functions\when( 'rocket_is_live_site' )->justReturn( true );
 		Functions\when( 'current_user_can' )->justReturn( true );
 		Functions\when( 'get_current_screen' )->alias(
-				function() {
-					return (object) [ 'id' => 'settings_page_wprocket' ];
-				}
-			);
+			function() {
+				return (object) [ 'id' => 'settings_page_wprocket' ];
+			}
+		);
 		Functions\when( 'get_current_user_id' )->justReturn( 1 );
 		Functions\when( 'get_user_meta' )->justReturn( true );
 
@@ -79,7 +79,7 @@ class Test_PromoteRocketcdnNotice extends FilesystemTestCase {
 			function() {
 				return (object) [ 'id' => 'settings_page_wprocket' ];
 			}
-			);
+		);
 		Functions\when( 'get_current_user_id' )->justReturn( 1 );
 		Functions\when( 'get_user_meta' )->justReturn( false );
 
@@ -91,14 +91,12 @@ class Test_PromoteRocketcdnNotice extends FilesystemTestCase {
 
 	public function testShoulDisplayNoticeWhenNotActive() {
 		Functions\when( 'rocket_is_live_site' )->justReturn( true );
-		$this->mockCommonWpFunctions();
-
 		Functions\when( 'current_user_can' )->justReturn( true );
 		Functions\when( 'get_current_screen' )->alias(
 			function() {
 				return (object) [ 'id' => 'settings_page_wprocket' ];
 			}
-			);
+		);
 		Functions\when( 'get_current_user_id' )->justReturn( 1 );
 		Functions\when( 'get_user_meta' )->justReturn( false );
 

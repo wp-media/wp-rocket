@@ -42,7 +42,7 @@ class Test_AddDismissScript extends TestCase {
 			function() {
 				return (object) [ 'id' => 'general' ];
 			}
-			);
+		);
 
 		$this->assertNull( $this->notices->add_dismiss_script() );
 	}
@@ -54,7 +54,7 @@ class Test_AddDismissScript extends TestCase {
 			function() {
 				return (object) [ 'id' => 'settings_page_wprocket' ];
 			}
-			);
+		);
 		Functions\when( 'get_current_user_id' )->justReturn( 1 );
 		Functions\when( 'get_user_meta' )->justReturn( true );
 
@@ -68,7 +68,7 @@ class Test_AddDismissScript extends TestCase {
 			function() {
 				return (object) [ 'id' => 'settings_page_wprocket' ];
 			}
-			);
+		);
 		Functions\when( 'get_current_user_id' )->justReturn( 1 );
 		Functions\when( 'get_user_meta' )->justReturn( false );
 
@@ -86,21 +86,20 @@ class Test_AddDismissScript extends TestCase {
 			function() {
 				return (object) [ 'id' => 'settings_page_wprocket' ];
 			}
-			);
+		);
 		Functions\when( 'get_current_user_id' )->justReturn( 1 );
 		Functions\when( 'get_user_meta' )->justReturn( false );
+		Functions\when( 'wp_create_nonce' )->justReturn( '123456' );
+		Functions\when( 'admin_url' )->justReturn( 'https://example.org/wp-admin/admin-ajax.php' );
 
 		$this->api_client->method( 'get_subscription_data' )
 			->willReturn( [ 'subscription_status' => 'cancelled' ] );
-
-		Functions\when( 'wp_create_nonce' )->justReturn( '123456' );
-		Functions\when( 'admin_url' )->justReturn( 'https://example.org/wp-admin/admin-ajax.php' );
 
 		$this->setOutputCallback(
 			function( $output ) {
 				return trim( $output );
 			}
-			);
+		);
 		$this->expectOutputString(
 			"<script>
 		window.addEventListener( 'load', function() {
