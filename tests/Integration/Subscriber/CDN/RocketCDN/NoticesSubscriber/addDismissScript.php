@@ -38,9 +38,18 @@ class Test_AddDismissScript extends TestCase {
 		return $this->format_the_html( ob_get_clean() );
 	}
 
-	/**
-	 * Test should not add script when user doesn't have the capability to use it
-	 */
+	public function testShouldDisplayNothingWhenNotLiveSite() {
+		$callback = function() {
+			return 'http://localhost';
+		};
+
+		add_filter( 'home_url', $callback );
+
+		$this->assertNotContains( $this->get_script( wp_create_nonce( 'rocketcdn_dismiss_notice' ) ), $this->getActualHtml() );
+
+		remove_filter( 'home_url', $callback );
+	}
+
 	public function testShouldNotAddScriptWhenNoCapability() {
 		$user_id = self::factory()->user->create( [ 'role' => 'editor' ] );
 
@@ -49,9 +58,6 @@ class Test_AddDismissScript extends TestCase {
 		$this->assertNotContains( $this->get_script( wp_create_nonce( 'rocketcdn_dismiss_notice' ) ), $this->getActualHtml() );
 	}
 
-	/**
-	 * Test should not add script when not on WP Rocket settings page
-	 */
 	public function testShouldNotAddScriptWhenNotRocketPage() {
 		$user_id = self::factory()->user->create( [ 'role' => 'administrator' ] );
 
@@ -61,9 +67,6 @@ class Test_AddDismissScript extends TestCase {
 		$this->assertNotContains( $this->get_script( wp_create_nonce( 'rocketcdn_dismiss_notice' ) ), $this->getActualHtml() );
 	}
 
-	/**
-	 * Test should not add script when the notice has been dismissed
-	 */
 	public function testShouldNotAddScriptWhenDismissed() {
 		$user_id = self::factory()->user->create( [ 'role' => 'administrator' ] );
 
@@ -75,9 +78,6 @@ class Test_AddDismissScript extends TestCase {
 		$this->assertNotContains( $this->get_script( wp_create_nonce( 'rocketcdn_dismiss_notice' ) ), $this->getActualHtml() );
 	}
 
-	/**
-	 * Test should not add script when RocketCDN is active
-	 */
 	public function testShouldNotAddScriptWhenActive() {
 		$user_id = self::factory()->user->create( [ 'role' => 'administrator' ] );
 
@@ -89,9 +89,6 @@ class Test_AddDismissScript extends TestCase {
 		$this->assertNotContains( $this->get_script( wp_create_nonce( 'rocketcdn_dismiss_notice' ) ), $this->getActualHtml() );
 	}
 
-	/**
-	 * Test should add script when RocketCDN is inactive
-	 */
 	public function testShouldAddScriptWhenNotActive() {
 		$user_id = self::factory()->user->create( [ 'role' => 'administrator' ] );
 

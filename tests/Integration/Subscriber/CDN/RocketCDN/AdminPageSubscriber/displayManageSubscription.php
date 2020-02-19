@@ -30,6 +30,18 @@ class Test_DisplayManageSubscription extends TestCase {
 		return $this->format_the_html( ob_get_clean() );
 	}
 
+	public function testShouldDisplayNothingWhenNotLiveSite() {
+		$callback = function() {
+			return 'http://localhost';
+		};
+
+		add_filter( 'home_url', $callback );
+
+		$this->assertEmpty( $this->getActualHtml() );
+
+		remove_filter( 'home_url', $callback );
+	}
+
 	/**
 	 * Test should return not render the HTML when the subscription is inactive.
 	 */

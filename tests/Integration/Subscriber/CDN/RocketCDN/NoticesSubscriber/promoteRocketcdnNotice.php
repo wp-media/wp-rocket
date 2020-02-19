@@ -25,9 +25,18 @@ class Test_PromoteRocketcdnNotice extends TestCase {
 	</div>' );
 	}
 
-	/**
-	 * Test should not display the notice when current user doesn't have the capability
-	 */
+	public function testShouldDisplayNothingWhenNotLiveSite() {
+		$callback = function() {
+			return 'http://localhost';
+		};
+
+		add_filter( 'home_url', $callback );
+
+		$this->assertNotContains( $this->get_notice(), $this->getActualHtml() );
+
+		remove_filter( 'home_url', $callback );
+	}
+
 	public function testShouldNotDisplayNoticeWhenNoCapability() {
 		$user_id = self::factory()->user->create( [ 'role' => 'editor' ] );
 
@@ -36,9 +45,6 @@ class Test_PromoteRocketcdnNotice extends TestCase {
 		$this->assertNotContains( $this->get_notice(), $this->getActualHtml() );
 	}
 
-	/**
-	 * Test should not display the notice when not on WP Rocket settings page
-	 */
 	public function testShouldNotDisplayNoticeWhenNotRocketPage() {
 		$user_id = self::factory()->user->create( [ 'role' => 'administrator' ] );
 
@@ -48,9 +54,6 @@ class Test_PromoteRocketcdnNotice extends TestCase {
 		$this->assertNotContains( $this->get_notice(), $this->getActualHtml() );
 	}
 
-	/**
-	 * Test should not display the notice when the notice has been dismissed
-	 */
 	public function testShouldNotDisplayNoticeWhenDismissed() {
 		$user_id = self::factory()->user->create( [ 'role' => 'administrator' ] );
 
@@ -62,9 +65,6 @@ class Test_PromoteRocketcdnNotice extends TestCase {
 		$this->assertNotContains( $this->get_notice(), $this->getActualHtml() );
 	}
 
-	/**
-	 * Test should not display the notice when RocketCDN is active
-	 */
 	public function testShouldNotDisplayNoticeWhenActive() {
 		$user_id = self::factory()->user->create( [ 'role' => 'administrator' ] );
 
@@ -76,9 +76,6 @@ class Test_PromoteRocketcdnNotice extends TestCase {
 		$this->assertNotContains( $this->get_notice(), $this->getActualHtml() );
 	}
 
-	/**
-	 * Test should display the notice when RocketCDN is inactive
-	 */
 	public function testShouldDisplayNoticeWhenNotActive() {
 		$user_id = self::factory()->user->create( [ 'role' => 'administrator' ] );
 
