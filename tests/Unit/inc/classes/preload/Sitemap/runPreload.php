@@ -25,12 +25,14 @@ class Test_runPreload extends TestCase {
 	public function testShouldPreloadSitemapsWhenValidUrls() {
 		$queue    = [];
 		$sitemaps = [
-			'https://example.com/sitemap.xml',
-			'https://example.com/sitemap-mobile.xml',
+			'https://example.org/sitemap.xml',
+			'https://example.org/sitemap-mobile.xml',
 		];
 
 		// Stubs.
-		$preload_process = $this->createMock( Full_Process::class );
+		$preload_process = $this->getMockBuilder( Full_Process::class )
+			->setMethods( [ 'is_mobile_preload_enabled', 'push_to_queue', 'save', 'dispatch' ] )
+			->getMock();
 		$preload_process
 			->expects( $this->any() )
 			->method( 'is_mobile_preload_enabled' )
@@ -60,10 +62,10 @@ class Test_runPreload extends TestCase {
 		Functions\when( 'esc_url_raw' )->returnArg();
 		Functions\when( 'wp_remote_get' )->alias( function( $url, $args = [] ) {
 			switch ( $url ) {
-				case 'https://example.com/sitemap.xml':
-					return [ 'body' => \file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/Preload/Sitemap/sitemap.xml' ) ];
-				case 'https://example.com/sitemap-mobile.xml':
-					return [ 'body' => \file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/Preload/Sitemap/sitemap-mobile.xml' ) ];
+				case 'https://example.org/sitemap.xml':
+					return [ 'body' => file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/Preload/Sitemap/sitemap.xml' ) ];
+				case 'https://example.org/sitemap-mobile.xml':
+					return [ 'body' => file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/Preload/Sitemap/sitemap-mobile.xml' ) ];
 			}
 			return false;
 		} );
@@ -93,15 +95,15 @@ class Test_runPreload extends TestCase {
 
 		$preload->run_preload( $sitemaps );
 
-		$this->assertContains( 'https://example.com/', $queue );
-		$this->assertContains( 'https://example.com/fr/', $queue );
-		$this->assertContains( 'https://example.com/es/', $queue );
-		$this->assertContains( [ 'url' => 'https://example.com/', 'mobile' => true ], $queue );
-		$this->assertContains( [ 'url' => 'https://example.com/fr/', 'mobile' => true ], $queue );
-		$this->assertContains( [ 'url' => 'https://example.com/es/', 'mobile' => true ], $queue );
-		$this->assertContains( [ 'url' => 'https://example.com/mobile/de/', 'mobile' => true ], $queue );
-		$this->assertContains( [ 'url' => 'https://example.com/mobile/fr/', 'mobile' => true ], $queue );
-		$this->assertContains( [ 'url' => 'https://example.com/mobile/es/', 'mobile' => true ], $queue );
+		$this->assertContains( 'https://example.org/', $queue );
+		$this->assertContains( 'https://example.org/fr/', $queue );
+		$this->assertContains( 'https://example.org/es/', $queue );
+		$this->assertContains( [ 'url' => 'https://example.org/', 'mobile' => true ], $queue );
+		$this->assertContains( [ 'url' => 'https://example.org/fr/', 'mobile' => true ], $queue );
+		$this->assertContains( [ 'url' => 'https://example.org/es/', 'mobile' => true ], $queue );
+		$this->assertContains( [ 'url' => 'https://example.org/mobile/de/', 'mobile' => true ], $queue );
+		$this->assertContains( [ 'url' => 'https://example.org/mobile/fr/', 'mobile' => true ], $queue );
+		$this->assertContains( [ 'url' => 'https://example.org/mobile/es/', 'mobile' => true ], $queue );
 		$this->assertCount( 9, $queue );
 	}
 }

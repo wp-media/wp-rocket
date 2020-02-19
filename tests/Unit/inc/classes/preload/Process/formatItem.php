@@ -14,19 +14,19 @@ class Test_FormatItem extends TestCase {
 		$stub = $this->getMockForAbstractClass( Process::class );
 		$item = $stub->format_item(
 			[
-				'url' => 'https://example.com',
+				'url' => 'https://example.org',
 			]
 		);
 
 		$this->assertTrue( is_array( $item ) );
 		$this->assertArrayHasKey( 'url', $item );
 		$this->assertArrayHasKey( 'mobile', $item );
-		$this->assertSame( 'https://example.com', $item['url'] );
+		$this->assertSame( 'https://example.org', $item['url'] );
 		$this->assertFalse( $item['mobile'] );
 
 		$item = $stub->format_item(
 			[
-				'url'    => 'https://example.com',
+				'url'    => 'https://example.org',
 				'mobile' => 0,
 			]
 		);
@@ -34,12 +34,12 @@ class Test_FormatItem extends TestCase {
 		$this->assertTrue( is_array( $item ) );
 		$this->assertArrayHasKey( 'url', $item );
 		$this->assertArrayHasKey( 'mobile', $item );
-		$this->assertSame( 'https://example.com', $item['url'] );
+		$this->assertSame( 'https://example.org', $item['url'] );
 		$this->assertFalse( $item['mobile'] );
 
 		$item = $stub->format_item(
 			[
-				'url'    => 'https://example.com',
+				'url'    => 'https://example.org',
 				'mobile' => 1,
 			]
 		);
@@ -47,18 +47,18 @@ class Test_FormatItem extends TestCase {
 		$this->assertTrue( is_array( $item ) );
 		$this->assertArrayHasKey( 'url', $item );
 		$this->assertArrayHasKey( 'mobile', $item );
-		$this->assertSame( 'https://example.com', $item['url'] );
+		$this->assertSame( 'https://example.org', $item['url'] );
 		$this->assertTrue( $item['mobile'] );
 	}
 
 	public function testShouldReturnArrayWhenStringIsProvided() {
 		$stub = $this->getMockForAbstractClass( Process::class );
-		$item = $stub->format_item( 'https://example.com' );
+		$item = $stub->format_item( 'https://example.org' );
 
 		$this->assertTrue( is_array( $item ) );
 		$this->assertArrayHasKey( 'url', $item );
 		$this->assertArrayHasKey( 'mobile', $item );
-		$this->assertSame( 'https://example.com', $item['url'] );
+		$this->assertSame( 'https://example.org', $item['url'] );
 		$this->assertFalse( $item['mobile'] );
 	}
 
@@ -70,7 +70,7 @@ class Test_FormatItem extends TestCase {
 
 		$item = $stub->format_item(
 			[
-				'src' => 'https://example.com',
+				'src' => 'https://example.org',
 			]
 		);
 

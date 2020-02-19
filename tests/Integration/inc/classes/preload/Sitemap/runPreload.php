@@ -2,11 +2,8 @@
 namespace WP_Rocket\Tests\Integration\inc\classes\preload\Sitemap;
 
 use Brain\Monkey\Actions;
-use Brain\Monkey\Functions;
-use WP_Rocket\Tests\Integration\Fixtures\Preload\Process_Wrapper;
 use WPMedia\PHPUnit\Integration\TestCase;
-use WP_Error;
-use WP_Rocket\Preload\Full_Process;
+use WP_Rocket\Tests\Integration\Fixtures\Preload\Process_Wrapper;
 use WP_Rocket\Preload\Sitemap;
 
 /**
@@ -14,30 +11,38 @@ use WP_Rocket\Preload\Sitemap;
  * @group Preload
  */
 class Test_runPreload extends TestCase {
+	protected $site_url           = 'https://smashingcoding.com';
 	protected $identifier         = 'rocket_preload';
 	protected $option_hook_prefix = 'pre_get_rocket_option_';
-	protected $homeWpOption;
 	protected $preloadErrorsTransient;
 	protected $preloadRunningTransient;
 	protected $process;
+	protected $post_id;
 
 	public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
+
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/Preload/Process_Wrapper.php';
 	}
 
 	public function setUp() {
 		parent::setUp();
 
-		$this->homeWpOption            = get_option( 'home' );
+		add_filter( 'site_url', [ $this, 'setSiteUrl' ] );
+
 		$this->preloadErrorsTransient  = get_transient( 'rocket_preload_errors' );
 		$this->preloadRunningTransient = get_transient( 'rocket_preload_running' );
 		$this->process                 = new Process_Wrapper();
+	}
 
-		update_option( 'home', 'https://example.com/' );
+	public function setSiteUrl() {
+		return $this->site_url;
 	}
 
 	public function tearDown() {
 		parent::tearDown();
+
+		remove_filter( 'site_url', [ $this, 'setSiteUrl' ] );
 
 		if ( $this->process ) {
 			// Added by \WP_Async_Request.
@@ -56,62 +61,27 @@ class Test_runPreload extends TestCase {
 		remove_filter( $this->option_hook_prefix . 'cache_reject_uri', [ $this, 'return_empty_array' ] );
 		remove_filter( $this->option_hook_prefix . 'cache_query_strings', [ $this, 'return_cache_query_strings' ] );
 
-		update_option( 'home', $this->homeWpOption );
 		set_transient( 'rocket_preload_errors', $this->preloadErrorsTransient );
 		set_transient( 'rocket_preload_running', $this->preloadRunningTransient );
 
-		$this->homeWpOption            = null;
 		$this->preloadErrorsTransient  = null;
 		$this->preloadRunningTransient = null;
 		$this->process                 = null;
+		$this->post_id                 = null;
 	}
 
 	public function testShouldNotPreloadWhenNoUrls() {
-		$preload_process = $this->createMock( Full_Process::class );
-
 		Actions\expectDone( 'before_run_rocket_sitemap_preload' )->never();
 
 		// No URLs.
-		( new Sitemap( $preload_process ) )->run_preload( [] );
+		( new Sitemap( $this->process ) )->run_preload( [] );
 	}
 
 	public function testShouldPreloadSitemapsWhenValidUrls() {
 		$sitemaps = [
-			'https://example.com/sitemap.xml',
-			'https://example.com/sitemap-mobile.xml',
+			"{$this->site_url}/mobile-preload-sitemap.xml",
+			"{$this->site_url}/mobile-preload-sitemap-mobile.xml",
 		];
-
-		// Fake the requests.
-		Functions\when( 'wp_remote_get' )->alias( function( $url, $args = [] ) {
-			$path = WP_ROCKET_TESTS_FIXTURES_DIR . '/Preload/Sitemap/';
-
-			switch ( $url ) {
-				case 'https://example.com/sitemap.xml':
-					$path .= 'sitemap.xml';
-					break;
-				case 'https://example.com/sitemap-mobile.xml':
-					$path .= 'sitemap-mobile.xml';
-					break;
-				default:
-					return new WP_Error( 'wrong-url', 'Wrong URL', [ $url ] );
-			}
-
-			if ( ! file_exists( $path ) ) {
-				return new WP_Error( 'file-not-found', 'File not found', [ basename( $path ) ] );
-			}
-
-			return [
-				'headers'       => null, // Requests_Utility_CaseInsensitiveDictionary object.
-				'body'          => file_get_contents( $path ),
-				'response'      => [
-					'code'    => 200,
-					'message' => 'OK',
-				],
-				'cookies'       => [],
-				'filename'      => '',
-				'http_response' => null, // WP_HTTP_Requests_Response object.
-			];
-		} );
 
 		add_filter( $this->option_hook_prefix . 'manual_preload', [ $this, 'return_1' ] );
 		add_filter( $this->option_hook_prefix . 'cache_mobile', [ $this, 'return_1' ] );
@@ -129,25 +99,21 @@ class Test_runPreload extends TestCase {
 		$queue = get_site_option( $key );
 		delete_site_option( $key );
 
-		$this->assertContains( 'https://example.com/', $queue );
-		$this->assertContains( 'https://example.com/fr/', $queue );
-		$this->assertContains( 'https://example.com/es/', $queue );
-		$this->assertContains( [ 'url' => 'https://example.com/', 'mobile' => true ], $queue );
-		$this->assertContains( [ 'url' => 'https://example.com/fr/', 'mobile' => true ], $queue );
-		$this->assertContains( [ 'url' => 'https://example.com/es/', 'mobile' => true ], $queue );
-		$this->assertContains( [ 'url' => 'https://example.com/mobile/de/', 'mobile' => true ], $queue );
-		$this->assertContains( [ 'url' => 'https://example.com/mobile/fr/', 'mobile' => true ], $queue );
-		$this->assertContains( [ 'url' => 'https://example.com/mobile/es/', 'mobile' => true ], $queue );
-		$this->assertCount( 9, $queue );
+		$this->assertContains( "{$this->site_url}/mobile-preload-homepage/", $queue );
+		$this->assertContains( "{$this->site_url}/2020/02/18/mobile-preload-post-tester/", $queue );
+		$this->assertContains( [ 'url' => "{$this->site_url}/mobile-preload-homepage/", 'mobile' => true ], $queue );
+		$this->assertContains( [ 'url' => "{$this->site_url}/2020/02/18/mobile-preload-post-tester/", 'mobile' => true ], $queue );
+		$this->assertContains( [ 'url' => "{$this->site_url}/category/mobile-preload/", 'mobile' => true ], $queue );
+		$this->assertCount( 5, $queue );
 	}
 
 	public function testShouldPreloadFallbackUrlsWhenInvalidSitemap() {
 		$sitemaps = [
-			'https://example.com/sitemap.xml',
-			'https://example.com/sitemap-mobile.xml',
+			"{$this->site_url}/mobile-preload-sitemap.xml",
+			"{$this->site_url}/mobile-preload-sitemap-that-does-not-exist.xml",
 		];
 
-		$post_id = wp_insert_post(
+		$this->post_id = wp_insert_post(
 			[
 				'post_title'   => 'Hoy',
 				'post_content' => 'Hello World',
@@ -157,51 +123,22 @@ class Test_runPreload extends TestCase {
 		);
 
 		if ( method_exists( $this, 'assertIsInt' ) ) {
-			$this->assertIsInt( $post_id );
+			$this->assertIsInt( $this->post_id );
 		} else {
 			// Deprecated in phpunit 8.
-			$this->assertInternalType( 'int', $post_id );
+			$this->assertInternalType( 'int', $this->post_id );
 		}
 
-		$permalink = get_permalink( $post_id );
+		add_filter( 'page_link', [ $this, 'change_page_link' ], 10, 3 );
+
+		$permalink = get_permalink( $this->post_id );
 
 		$this->assertNotFalse( $permalink );
-
-		// Fake the requests.
-		Functions\when( 'wp_remote_get' )->alias( function( $url, $args = [] ) use ( $permalink ) {
-			$path = WP_ROCKET_TESTS_FIXTURES_DIR . '/Preload/Sitemap/';
-
-			switch ( $url ) {
-				case 'https://example.com/sitemap.xml':
-					$path .= 'sitemap.xml';
-					break;
-				// sitemap-mobile.xml will return an error, and will trigger get_urls().
-				default:
-					return new WP_Error( 'wrong-url', 'Wrong URL', [ $url ] );
-			}
-
-			if ( ! file_exists( $path ) ) {
-				return new WP_Error( 'file-not-found', 'File not found', [ basename( $path ) ] );
-			}
-
-			return [
-				'headers'       => null, // Requests_Utility_CaseInsensitiveDictionary object.
-				'body'          => file_get_contents( $path ),
-				'response'      => [
-					'code'    => 200,
-					'message' => 'OK',
-				],
-				'cookies'       => [],
-				'filename'      => '',
-				'http_response' => null, // WP_HTTP_Requests_Response object.
-			];
-		} );
 
 		add_filter( $this->option_hook_prefix . 'manual_preload', [ $this, 'return_1' ] );
 		add_filter( $this->option_hook_prefix . 'cache_mobile', [ $this, 'return_1' ] );
 		add_filter( $this->option_hook_prefix . 'do_caching_mobile_files', [ $this, 'return_1' ] );
 		add_filter( $this->option_hook_prefix . 'cache_reject_uri', [ $this, 'return_empty_array' ] );
-		add_filter( $this->option_hook_prefix . 'cache_query_strings', [ $this, 'return_cache_query_strings' ] ); // For our newly created page.
 
 		delete_transient( 'rocket_preload_errors' );
 
@@ -214,32 +151,23 @@ class Test_runPreload extends TestCase {
 		$queue = get_site_option( $key );
 		delete_site_option( $key );
 
-		$this->assertContains( 'https://example.com/', $queue );
-		$this->assertContains( 'https://example.com/fr/', $queue );
-		$this->assertContains( 'https://example.com/es/', $queue );
-		$this->assertContains( $permalink, $queue );
-		$this->assertContains( [ 'url' => 'https://example.com/', 'mobile' => true ], $queue );
-		$this->assertContains( [ 'url' => 'https://example.com/fr/', 'mobile' => true ], $queue );
-		$this->assertContains( [ 'url' => 'https://example.com/es/', 'mobile' => true ], $queue );
-		$this->assertContains( [ 'url' => $permalink, 'mobile' => true ], $queue );
-		$this->assertCount( 8, $queue );
+		$this->assertContains( "{$this->site_url}/mobile-preload-homepage/", $queue );
+		$this->assertContains( "{$this->site_url}/2020/02/18/mobile-preload-post-tester/", $queue );
+		$this->assertContains( [ 'url' => "{$this->site_url}/mobile-preload-homepage/", 'mobile' => true ], $queue );
+		$this->assertContains( [ 'url' => "{$this->site_url}/2020/02/18/mobile-preload-post-tester/", 'mobile' => true ], $queue );
+		$this->assertContains( "{$this->site_url}/category/mobile-preload/", $queue );
+		$this->assertContains( [ 'url' => "{$this->site_url}/category/mobile-preload/", 'mobile' => true ], $queue );
+		$this->assertCount( 6, $queue );
 
-		wp_delete_post( $post_id, true );
+		wp_delete_post( $this->post_id, true );
+
+		remove_filter( 'page_link', [ $this, 'change_page_link' ] );
 	}
 
-	public function return_0() {
-		return 0;
-	}
-
-	public function return_1() {
-		return 1;
-	}
-
-	public function return_empty_array() {
-		return [];
-	}
-
-	public function return_cache_query_strings() {
-		return [ 'page_id' ];
+	public function change_page_link( $link, $post_id, $sample ) {
+		if ( $sample || $post_id !== $this->post_id ) {
+			return $link;
+		}
+		return 'https://smashingcoding.com/category/mobile-preload/';
 	}
 }
