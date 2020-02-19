@@ -14,6 +14,9 @@ tests_add_filter(
 	'muplugins_loaded',
 	function() {
 		// Load WooCommerce.
+		require WP_ROCKET_PLUGIN_ROOT . '/vendor/woocommerce/woocommerce/includes/class-wc-install.php';
+		WC_Install::install();
+
 		require WP_ROCKET_PLUGIN_ROOT . '/vendor/woocommerce/woocommerce/woocommerce.php';
 
 		// Overload the license key for testing.
