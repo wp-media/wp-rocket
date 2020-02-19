@@ -3,8 +3,11 @@
 namespace WP_Rocket\Tests\Unit\Subscriber\CDN\RocketCDN\AdminPageSubscriber;
 
 use Brain\Monkey\Functions;
-use WP_Rocket\Tests\Unit\FilesystemTestCase;
+use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Admin\Settings\Beacon;
+use WP_Rocket\CDN\RocketCDN\APIClient;
 use WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber;
+use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
  * @covers AdminPageSubscriber::display_rocketcdn_status
@@ -15,28 +18,28 @@ class Test_DisplayRocketcdnStatus extends FilesystemTestCase {
 	private $api_client;
 	private $page;
 	protected $rootVirtualDir = 'wp-rocket';
-	protected $structure = [
-			'views' => [
-				'settings' => [
-					'rocketcdn' => [
-						'dashboard-status.php' => ''
-					]
-				]
-			]
+	protected $structure      = [
+		'views' => [
+			'settings' => [
+				'rocketcdn' => [
+					'dashboard-status.php' => '',
+				],
+			],
+		],
 	];
 
 	public function setUp() {
 		parent::setUp();
 
-		$this->api_client = $this->createMock( 'WP_Rocket\CDN\RocketCDN\APIClient' );
+		$this->api_client = $this->createMock( APIClient::class );
 		$this->page       = new AdminPageSubscriber(
 			$this->api_client,
-			$this->createMock( 'WP_Rocket\Admin\Options_Data' ),
-			$this->createMock( 'WP_Rocket\Admin\Settings\Beacon' ),
+			$this->createMock( Options_Data::class ),
+			$this->createMock( Beacon::class ),
 			'views/settings/rocketcdn'
 		);
 
-		Functions\When( 'rocket_direct_filesystem' )->justReturn( $this->filesystem );
+		Functions\when( 'rocket_direct_filesystem' )->justReturn( $this->filesystem );
 	}
 
 	private function getActualHtml() {
@@ -45,21 +48,25 @@ class Test_DisplayRocketcdnStatus extends FilesystemTestCase {
 		return $this->format_the_html( ob_get_clean() );
 	}
 
-	/**
-	 * Test should output HTML for an inactive subscription
-	 */
+	public function testShouldDisplayNothingWhenNotLiveSite() {
+		Functions\when( 'rocket_is_live_site' )->justReturn( false );
+
+		$this->assertNull( $this->page->display_rocketcdn_status() );
+	}
+
 	public function testShouldOutputNoSubscriptionWhenInactive() {
 		Functions\when( 'rocket_is_live_site' )->justReturn( true );
-		$this->api_client->method( 'get_subscription_data' )
-		                 ->willReturn(
-			                 [
-				                 'is_active'                     => false,
-				                 'subscription_status'           => 'cancelled',
-				                 'subscription_next_date_update' => '2020-01-01',
-			                 ]
-		                 );
 		Functions\expect( 'get_option' )->never();
 		Functions\expect( 'date_i18n' )->never();
+
+		$this->api_client->method( 'get_subscription_data' )
+			->willReturn(
+				[
+					'is_active'           => false,
+					'subscription_status' => 'cancelled',
+					'subscription_next_date_update' => '2020-01-01',
+				]
+			);
 
 		$expected = <<<HTML
 <div class="wpr-optionHeader">
@@ -83,16 +90,17 @@ HTML;
 
 	public function testShouldOutputSubscriptionDataWhenActive() {
 		Functions\when( 'rocket_is_live_site' )->justReturn( true );
-		$this->api_client->method( 'get_subscription_data' )
-		                 ->willReturn(
-			                 [
-				                 'is_active'                     => true,
-				                 'subscription_status'           => 'running',
-				                 'subscription_next_date_update' => '2020-01-01',
-			                 ]
-		                 );
 		Functions\when( 'get_option' )->justReturn( 'Y-m-d' );
 		Functions\when( 'date_i18n' )->justReturn( '2020-01-01' );
+
+		$this->api_client->method( 'get_subscription_data' )
+			->willReturn(
+					[
+						'is_active'           => true,
+						'subscription_status' => 'running',
+						'subscription_next_date_update' => '2020-01-01',
+					]
+				);
 
 		$expected = <<<HTML
 <div class="wpr-optionHeader">

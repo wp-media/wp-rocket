@@ -1,113 +1,108 @@
 <?php
 namespace WP_Rocket\Tests\Unit\Subscriber\CDN\RocketCDN;
 
-use WPMedia\PHPUnit\Unit\TestCase;
-use WP_Rocket\Subscriber\CDN\RocketCDN\NoticesSubscriber;
 use Brain\Monkey\Functions;
+use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\CDN\RocketCDN\APIClient;
+use WP_Rocket\Subscriber\CDN\RocketCDN\NoticesSubscriber;
 
 /**
  * @covers\WP_Rocket\Subscriber\CDN\RocketCDN\NoticesSubscriber::add_dismiss_script
  * @group RocketCDN
  */
 class Test_AddDismissScript extends TestCase {
+	protected static $mockCommonWpFunctionsInSetUp = true;
 	private $api_client;
+	private $notices;
 
 	public function setUp() {
 		parent::setUp();
 
-		$this->api_client = $this->createMock( 'WP_Rocket\CDN\RocketCDN\APIClient' );
+		$this->api_client = $this->createMock( APIClient::class );
+		$this->notices    = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn' );
 	}
 
-	/**
-	 * Test should not add script when user doesn't have the capability to use it
-	 */
+	public function testShouldDisplayNothingWhenNotLiveSite() {
+		Functions\when( 'rocket_is_live_site' )->justReturn( false );
+
+		$this->assertNull( $this->notices->add_dismiss_script() );
+	}
+
 	public function testShouldNotAddScriptWhenNoCapability() {
 		Functions\when( 'rocket_is_live_site' )->justReturn( true );
-		Functions\when('current_user_can')->justReturn(false);
+		Functions\when( 'current_user_can' )->justReturn( false );
 
-		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
-
-		$this->assertNull($page->add_dismiss_script());
+		$this->assertNull( $this->notices->add_dismiss_script() );
 	}
 
-	/**
-	 * Test should not add script when not on WP Rocket settings page
-	 */
 	public function testShouldNotAddScriptWhenNotRocketPage() {
 		Functions\when( 'rocket_is_live_site' )->justReturn( true );
-		Functions\when('current_user_can')->justReturn(true);
-		Functions\when('get_current_screen')->alias(function() {
-			return (object) [ 'id' => 'general' ];
-		});
+		Functions\when( 'current_user_can' )->justReturn( true );
+		Functions\when( 'get_current_screen' )->alias(
+			function() {
+				return (object) [ 'id' => 'general' ];
+			}
+			);
 
-		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
-
-		$this->assertNull($page->add_dismiss_script());
+		$this->assertNull( $this->notices->add_dismiss_script() );
 	}
 
-	/**
-	 * Test should not add script when the notice has been dismissed
-	 */
 	public function testShouldNotAddScriptWhenDismissed() {
 		Functions\when( 'rocket_is_live_site' )->justReturn( true );
-		Functions\when('current_user_can')->justReturn(true);
-		Functions\when('get_current_screen')->alias(function() {
-			return (object) [ 'id' => 'settings_page_wprocket' ];
-		});
-		Functions\when('get_current_user_id')->justReturn(1);
-		Functions\when('get_user_meta')->justReturn(true);
+		Functions\when( 'current_user_can' )->justReturn( true );
+		Functions\when( 'get_current_screen' )->alias(
+			function() {
+				return (object) [ 'id' => 'settings_page_wprocket' ];
+			}
+			);
+		Functions\when( 'get_current_user_id' )->justReturn( 1 );
+		Functions\when( 'get_user_meta' )->justReturn( true );
 
-		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
-
-		$this->assertNull($page->add_dismiss_script());
+		$this->assertNull( $this->notices->add_dismiss_script() );
 	}
 
-	/**
-	 * Test should not add script when RocketCDN is active
-	 */
 	public function testShouldNotAddScriptWhenActive() {
 		Functions\when( 'rocket_is_live_site' )->justReturn( true );
-		Functions\when('current_user_can')->justReturn(true);
-		Functions\when('get_current_screen')->alias(function() {
-			return (object) [ 'id' => 'settings_page_wprocket' ];
-		});
-		Functions\when('get_current_user_id')->justReturn(1);
-		Functions\when('get_user_meta')->justReturn(false);
+		Functions\when( 'current_user_can' )->justReturn( true );
+		Functions\when( 'get_current_screen' )->alias(
+			function() {
+				return (object) [ 'id' => 'settings_page_wprocket' ];
+			}
+			);
+		Functions\when( 'get_current_user_id' )->justReturn( 1 );
+		Functions\when( 'get_user_meta' )->justReturn( false );
 
-		$this->api_client->method('get_subscription_data')
-			->willReturn(['subscription_status' => 'running']);
+		$this->api_client->method( 'get_subscription_data' )
+			->willReturn( [ 'subscription_status' => 'running' ] );
 
-		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
-
-		$this->assertNull($page->add_dismiss_script());
+		$this->assertNull( $this->notices->add_dismiss_script() );
 	}
 
-	/**
-	 * Test should add script when RocketCDN is inactive
-	 */
 	public function testShouldAddScriptWhenNotActive() {
 		Functions\when( 'rocket_is_live_site' )->justReturn( true );
-		$this->mockCommonWpFunctions();
 
-		Functions\when('current_user_can')->justReturn(true);
-		Functions\when('get_current_screen')->alias(function() {
-			return (object) [ 'id' => 'settings_page_wprocket' ];
-		});
-		Functions\when('get_current_user_id')->justReturn(1);
-		Functions\when('get_user_meta')->justReturn(false);
+		Functions\when( 'current_user_can' )->justReturn( true );
+		Functions\when( 'get_current_screen' )->alias(
+			function() {
+				return (object) [ 'id' => 'settings_page_wprocket' ];
+			}
+			);
+		Functions\when( 'get_current_user_id' )->justReturn( 1 );
+		Functions\when( 'get_user_meta' )->justReturn( false );
 
-		$this->api_client->method('get_subscription_data')
-			->willReturn(['subscription_status' => 'cancelled']);
+		$this->api_client->method( 'get_subscription_data' )
+			->willReturn( [ 'subscription_status' => 'cancelled' ] );
 
-		Functions\when('wp_create_nonce')->justReturn('123456');
-		Functions\when('admin_url')->justReturn('https://example.org/wp-admin/admin-ajax.php');
+		Functions\when( 'wp_create_nonce' )->justReturn( '123456' );
+		Functions\when( 'admin_url' )->justReturn( 'https://example.org/wp-admin/admin-ajax.php' );
 
-		$page = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn');
-
-		$this->setOutputCallback(function($output) {
-			return trim($output);
-		});
-		$this->expectOutputString("<script>
+		$this->setOutputCallback(
+			function( $output ) {
+				return trim( $output );
+			}
+			);
+		$this->expectOutputString(
+			"<script>
 		window.addEventListener( 'load', function() {
 			var dismissBtn  = document.querySelectorAll( '#rocketcdn-promote-notice .notice-dismiss, #rocketcdn-promote-notice #rocketcdn-learn-more-dismiss' );
 
@@ -124,7 +119,8 @@ class Test_AddDismissScript extends TestCase {
 				});
 			});
 		});
-		</script>");
-		$page->add_dismiss_script();
+		</script>"
+			);
+		$this->notices->add_dismiss_script();
 	}
 }

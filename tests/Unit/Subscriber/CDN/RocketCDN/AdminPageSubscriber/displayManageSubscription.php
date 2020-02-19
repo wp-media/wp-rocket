@@ -2,27 +2,31 @@
 
 namespace WP_Rocket\Tests\Unit\Subscriber\CDN\RocketCDN;
 
-use WPMedia\PHPUnit\Unit\TestCase;
-use WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber;
 use Brain\Monkey\Functions;
+use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Admin\Settings\Beacon;
+use WP_Rocket\CDN\RocketCDN\APIClient;
+use WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber;
 
 /**
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber::display_manage_subscription
  * @group  RocketCDN
  */
 class Test_DisplayManageSubscription extends TestCase {
+	protected static $mockCommonWpFunctionsInSetUp = true;
 	private $api_client;
 	private $page;
 
 	public function setUp() {
 		parent::setUp();
 
-		$this->api_client = $this->createMock( 'WP_Rocket\CDN\RocketCDN\APIClient' );
+		$this->api_client = $this->createMock( APIClient::class );
 		$this->page       = new AdminPageSubscriber(
 			$this->api_client,
-			$this->createMock( 'WP_Rocket\Admin\Options_Data' ),
-			$this->createMock( 'WP_Rocket\Admin\Settings\Beacon' ),
-			''
+			$this->createMock( Options_Data::class ),
+			$this->createMock( Beacon::class ),
+			'views/settings/rocketcdn'
 		);
 	}
 
@@ -32,27 +36,28 @@ class Test_DisplayManageSubscription extends TestCase {
 		return $this->format_the_html( ob_get_clean() );
 	}
 
-	/**
-	 * Test should return not render the HTML when the subscription is inactive.
-	 */
+	public function testShouldDisplayNothingWhenNotLiveSite() {
+		Functions\when( 'rocket_is_live_site' )->justReturn( false );
+
+		$this->assertNull( $this->page->display_manage_subscription() );
+	}
+
 	public function testShouldNotRenderButtonHTMLWhenSubscriptionInactive() {
 		Functions\when( 'rocket_is_live_site' )->justReturn( true );
+
 		$this->api_client->expects( $this->once() )
-		                 ->method( 'get_subscription_data' )
-		                 ->willReturn( ['subscription_status' => 'cancelled' ] );
+			->method( 'get_subscription_data' )
+			->willReturn( [ 'subscription_status' => 'cancelled' ] );
+
 		$this->assertEmpty( $this->getActualHtml() );
 	}
 
-	/**
-	 * Test should render the manage subscription button HTML when the subscription is active.
-	 */
 	public function testShouldRenderButtonHTMLWhenSubscriptionActive() {
 		Functions\when( 'rocket_is_live_site' )->justReturn( true );
-		$this->mockCommonWpFunctions();
 
 		$this->api_client->expects( $this->once() )
-		                 ->method( 'get_subscription_data' )
-		                 ->willReturn( ['subscription_status' => 'running' ] );
+			->method( 'get_subscription_data' )
+			->willReturn( [ 'subscription_status' => 'running' ] );
 
 		$expected = <<<HTML
 <p class="wpr-rocketcdn-subscription">

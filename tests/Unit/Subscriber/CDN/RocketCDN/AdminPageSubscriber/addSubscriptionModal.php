@@ -4,6 +4,9 @@ namespace WP_Rocket\Tests\Unit\Subscriber\CDN\RocketCDN;
 
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Admin\Settings\Beacon;
+use WP_Rocket\CDN\RocketCDN\APIClient;
 use WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber;
 
 /**
@@ -18,10 +21,10 @@ class Test_AddSubscriptionModal extends TestCase {
 		parent::setUp();
 
 		$this->page = new AdminPageSubscriber(
-			$this->createMock( 'WP_Rocket\CDN\RocketCDN\APIClient' ),
-			$this->createMock( 'WP_Rocket\Admin\Options_Data' ),
-			$this->createMock( 'WP_Rocket\Admin\Settings\Beacon' ),
-			''
+			$this->createMock( APIClient::class ),
+			$this->createMock( Options_Data::class ),
+			$this->createMock( Beacon::class ),
+			'views/settings/rocketcdn'
 		);
 	}
 
@@ -32,9 +35,12 @@ class Test_AddSubscriptionModal extends TestCase {
 		return $this->format_the_html( ob_get_clean() );
 	}
 
-	/**
-	 * Test should display the modal HTML with the production URL in the iframe
-	 */
+	public function testShouldDisplayNothingWhenNotLiveSite() {
+		Functions\when( 'rocket_is_live_site' )->justReturn( false );
+
+		$this->assertNull( $this->page->add_subscription_modal() );
+	}
+
 	public function testShouldDisplayModalWithProductionURL() {
 		Functions\when( 'rocket_is_live_site' )->justReturn( true );
 		Functions\expect( 'rocket_get_constant' )
@@ -70,9 +76,6 @@ HTML;
 		$this->assertSame( $this->format_the_html( $expected ), $this->getActualHtml() );
 	}
 
-	/**
-	 * Test should display the modal HTML with the development URL in the iframe
-	 */
 	public function testShouldDisplayModalWithDevURL() {
 		Functions\when( 'rocket_is_live_site' )->justReturn( true );
 		Functions\expect( 'rocket_get_constant' )
