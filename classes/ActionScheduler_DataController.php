@@ -65,6 +65,15 @@ class ActionScheduler_DataController {
 	}
 
 	/**
+	 * Unmark migration when a plugin is de-activated. Will not work in case of silent activation, for example in an update.
+	 * We do this to mitigate the bug of lost actions which happens if there was an AS 2.x to AS 3.x migration in the past, but that plugin is now
+	 * deactivated and the site was running on AS 2.x again.
+	 */
+	public static function mark_migration_incomplete() {
+		delete_option( self::STATUS_FLAG );
+	}
+
+	/**
 	 * Set the action store class name.
 	 *
 	 * @param string $class Classname of the store class.
@@ -157,6 +166,7 @@ class ActionScheduler_DataController {
 		if ( self::is_migration_complete() ) {
 			add_filter( 'action_scheduler_store_class', array( 'ActionScheduler_DataController', 'set_store_class' ), 100 );
 			add_filter( 'action_scheduler_logger_class', array( 'ActionScheduler_DataController', 'set_logger_class' ), 100 );
+			add_action( 'deactivate_plugin', array( 'ActionScheduler_DataController', 'mark_migration_incomplete' ) );
 		} elseif ( self::dependencies_met() ) {
 			Controller::init();
 		}
