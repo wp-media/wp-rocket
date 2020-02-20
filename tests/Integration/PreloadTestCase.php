@@ -4,7 +4,7 @@ namespace WP_Rocket\Tests\Integration;
 use WPMedia\PHPUnit\Integration\TestCase;
 use WP_Rocket\Tests\Integration\Fixtures\Preload\Process_Wrapper;
 
-class PreloadTestCase extends TestCase {
+abstract class PreloadTestCase extends TestCase {
 	protected $site_url           = 'https://smashingcoding.com';
 	protected $identifier         = 'rocket_preload';
 	protected $option_hook_prefix = 'pre_get_rocket_option_';
@@ -59,13 +59,5 @@ class PreloadTestCase extends TestCase {
 		$this->preloadErrorsTransient  = null;
 		$this->preloadRunningTransient = null;
 		$this->process                 = null;
-	}
-
-	/**
-	 * @group Exclude
-	 */
-	public function testStopNowYouAreAnnoying() {
-		// Prevent a warning. This should not run.
-		$this->assertTrue( true );
 	}
 }
