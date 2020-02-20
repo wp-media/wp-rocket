@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 
 /**
  * @covers WPMedia\Cloudflare\Subscriber::auto_purge_by_url
- * @group  Cloudflare
+ * @group  DoCloudflare
  * @group  Addons
  */
 class Test_AutoPurgeByUrl extends TestCase {

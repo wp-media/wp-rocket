@@ -4,7 +4,7 @@ namespace WP_Rocket\Tests\Integration\inc\Addons\Cloudflare\Subscriber;
 
 /**
  * @covers WPMedia\Cloudflare\Subscriber::deactivate_devmode
- * @group  Cloudflare
+ * @group  DoCloudflare
  * @group  Addons
  */
 class Test_DeactivateDevMode extends TestCase {

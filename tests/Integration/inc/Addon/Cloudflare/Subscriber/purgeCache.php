@@ -8,7 +8,7 @@ use WPDieException;
 /**
  * @covers WPMedia\Cloudflare\Subscriber::purge_cache
  * @covers WPMedia\Cloudflare\Subscriber::purge_cache_no_die
- * @group  Cloudflare
+ * @group  DoCloudflare
  * @group  Addons
  */
 class Test_PurgeCache extends TestCase {
