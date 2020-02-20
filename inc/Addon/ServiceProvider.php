@@ -30,12 +30,9 @@ class ServiceProvider extends AbstractServiceProvider {
 	];
 
 	/**
-	 * Registers the subscribers in the container
+	 * Registers the subscribers in the container.
 	 *
 	 * @since 3.3
-	 * @author Remy Perona
-	 *
-	 * @return void
 	 */
 	public function register() {
 		// Busting Factory.
@@ -74,7 +71,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @since 3.5
 	 */
 	protected function addon_cloudflare() {
-		// If the addon is not enabled, don't load the Cloudflare Addon into memory.
+		// If the addon is not enabled, bail out.
 		if ( ! get_rocket_option( 'do_cloudflare' ) ) {
 			return;
 		}
@@ -82,13 +79,13 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->provides[] = 'cloudflare_subscriber';
 
 		$this->getContainer()->add( 'cloudflare_api', 'WPMedia\Cloudflare\APIClient' )
-		     ->withArgument( rocket_get_constant( 'WP_ROCKET_VERSION' ) );
+			->withArgument( rocket_get_constant( 'WP_ROCKET_VERSION' ) );
 		$this->getContainer()->add( 'cloudflare', 'WPMedia\Cloudflare\Cloudflare' )
-		     ->withArgument( $this->getContainer()->get( 'options' ) )
-		     ->withArgument( $this->getContainer()->get( 'cloudflare_api' ) );
+			->withArgument( $this->getContainer()->get( 'options' ) )
+			->withArgument( $this->getContainer()->get( 'cloudflare_api' ) );
 		$this->getContainer()->share( 'cloudflare_subscriber', 'WPMedia\Cloudflare\Subscriber' )
-		     ->withArgument( $this->getContainer()->get( 'cloudflare' ) )
-		     ->withArgument( $this->getContainer()->get( 'options' ) )
-		     ->withArgument( $this->getContainer()->get( 'options_api' ) );
+			->withArgument( $this->getContainer()->get( 'cloudflare' ) )
+			->withArgument( $this->getContainer()->get( 'options' ) )
+			->withArgument( $this->getContainer()->get( 'options_api' ) );
 	}
 }
