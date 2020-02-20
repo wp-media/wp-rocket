@@ -71,8 +71,9 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @since 3.5
 	 */
 	protected function addon_cloudflare() {
-		// If the addon is not enabled, bail out.
+		// If the addon is not enabled, delete the transient and bail out. Don't load the addon.
 		if ( ! get_rocket_option( 'do_cloudflare' ) ) {
+			delete_transient( 'rocket_cloudflare_is_api_keys_valid' );
 			return;
 		}
 
