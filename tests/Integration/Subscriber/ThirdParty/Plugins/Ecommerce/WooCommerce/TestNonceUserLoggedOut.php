@@ -7,6 +7,7 @@ use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
  * @group  Subscriber_TestNonce
+ * @group  WithWoo
  */
 class TestNonceUserLoggedOut extends TestCase {
 
