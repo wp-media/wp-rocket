@@ -137,8 +137,8 @@ function rocket_is_live_site() {
 		'.myftpupload.com',
 	];
 
-	foreach ( $staging as $domain ) {
-		if ( strpos( $host, $domain ) ) {
+	foreach ( $staging as $partial_host ) {
+		if ( strpos( $host, $partial_host ) ) {
 			return false;
 		}
 	}
