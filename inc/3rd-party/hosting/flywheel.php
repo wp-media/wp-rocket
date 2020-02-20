@@ -9,19 +9,14 @@ if ( ! class_exists( 'FlywheelNginxCompat' ) ) {
 /**
  * Changes the text on the Varnish one-click block.
  *
- * @since  3.0
+ * @since 3.0
  * @author Remy Perona
  *
  * @param array $settings Field settings data.
- *
- * @return array modified field settings data.
  */
 function rocket_flywheel_varnish_field( $settings ) {
-	$settings['varnish_auto_purge']['title'] = sprintf(
-		// Translators: %s = Hosting name.
-		__( 'Your site is hosted on %s, we have enabled Varnish auto-purge for compatibility.', 'rocket' ),
-		'Flywheel'
-	);
+	// Translators: %s = Hosting name.
+	$settings['varnish_auto_purge']['title'] = sprintf( __( 'Your site is hosted on %s, we have enabled Varnish auto-purge for compatibility.', 'rocket' ), 'Flywheel' );
 
 	return $settings;
 }
@@ -44,16 +39,19 @@ add_filter( 'rocket_cache_mandatory_cookies', '__return_empty_array', PHP_INT_MA
  * Set up the right Varnish IP for Flywheel
  *
  * @since 2.6.8
+ * @param array $varnish_ip Varnish IP.
  */
-function rocket_varnish_ip_on_flywheel() {
-	return '127.0.0.1';
+function rocket_varnish_ip_on_flywheel( $varnish_ip ) {
+	$varnish_ip[] = '127.0.0.1';
+
+	return $varnish_ip;
 }
 add_filter( 'rocket_varnish_ip', 'rocket_varnish_ip_on_flywheel' );
 
 /**
  * Remove WP Rocket functions on WP core action hooks to prevent triggering a double cache clear.
  *
- * @since  3.3.1
+ * @since 3.3.1
  * @author Remy Perona
  *
  * @return void

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "56ec11260d87b5cb6b163d051e562daa",
+    "content-hash": "f6184b383cc731ee6b24df72da000be3",
     "packages": [
         {
             "name": "a5hleyrich/wp-background-processing",
@@ -197,47 +197,6 @@
             "homepage": "https://github.com/container-interop/container-interop",
             "abandoned": "psr/container",
             "time": "2017-02-14T19:40:03+00:00"
-        },
-        {
-            "name": "jamesryanbell/cloudflare",
-            "version": "1.11.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/jamesryanbell/cloudflare.git",
-                "reference": "75e93bb822619d8ddb8b1843588caa2fad739491"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/jamesryanbell/cloudflare/zipball/75e93bb822619d8ddb8b1843588caa2fad739491",
-                "reference": "75e93bb822619d8ddb8b1843588caa2fad739491",
-                "shasum": ""
-            },
-            "require-dev": {
-                "phpunit/phpunit": "< 6",
-                "satooshi/php-coveralls": "dev-master"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Cloudflare\\": "src/CloudFlare"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "James Bell",
-                    "email": "james@james-bell.co.uk"
-                }
-            ],
-            "description": "CloudFlare API - PHP",
-            "keywords": [
-                "api",
-                "cloudflare"
-            ],
-            "time": "2017-08-04T19:01:02+00:00"
         },
         {
             "name": "league/container",
@@ -1691,16 +1650,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "0.12.9",
+            "version": "0.12.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "297cb2458a96ea96d5e9d6ef38f1b7305c071f32"
+                "reference": "ca5f2b7cf81c6d8fba74f9576970399c5817e03b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/297cb2458a96ea96d5e9d6ef38f1b7305c071f32",
-                "reference": "297cb2458a96ea96d5e9d6ef38f1b7305c071f32",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/ca5f2b7cf81c6d8fba74f9576970399c5817e03b",
+                "reference": "ca5f2b7cf81c6d8fba74f9576970399c5817e03b",
                 "shasum": ""
             },
             "require": {
@@ -1726,7 +1685,7 @@
                 "MIT"
             ],
             "description": "PHPStan - PHP Static Analysis Tool",
-            "time": "2020-02-04T22:30:27+00:00"
+            "time": "2020-02-16T14:00:29+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -2941,16 +2900,16 @@
         },
         {
             "name": "symfony/polyfill-ctype",
-            "version": "v1.13.1",
+            "version": "v1.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-ctype.git",
-                "reference": "f8f0b461be3385e56d6de3dbb5a0df24c0c275e3"
+                "reference": "fbdeaec0df06cf3d51c93de80c7eb76e271f5a38"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/f8f0b461be3385e56d6de3dbb5a0df24c0c275e3",
-                "reference": "f8f0b461be3385e56d6de3dbb5a0df24c0c275e3",
+                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/fbdeaec0df06cf3d51c93de80c7eb76e271f5a38",
+                "reference": "fbdeaec0df06cf3d51c93de80c7eb76e271f5a38",
                 "shasum": ""
             },
             "require": {
@@ -2962,7 +2921,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.13-dev"
+                    "dev-master": "1.14-dev"
                 }
             },
             "autoload": {
@@ -2995,20 +2954,20 @@
                 "polyfill",
                 "portable"
             ],
-            "time": "2019-11-27T13:56:44+00:00"
+            "time": "2020-01-13T11:15:53+00:00"
         },
         {
             "name": "symfony/polyfill-php73",
-            "version": "v1.13.1",
+            "version": "v1.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php73.git",
-                "reference": "4b0e2222c55a25b4541305a053013d5647d3a25f"
+                "reference": "5e66a0fa1070bf46bec4bea7962d285108edd675"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php73/zipball/4b0e2222c55a25b4541305a053013d5647d3a25f",
-                "reference": "4b0e2222c55a25b4541305a053013d5647d3a25f",
+                "url": "https://api.github.com/repos/symfony/polyfill-php73/zipball/5e66a0fa1070bf46bec4bea7962d285108edd675",
+                "reference": "5e66a0fa1070bf46bec4bea7962d285108edd675",
                 "shasum": ""
             },
             "require": {
@@ -3017,7 +2976,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.13-dev"
+                    "dev-master": "1.14-dev"
                 }
             },
             "autoload": {
@@ -3053,7 +3012,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2019-11-27T16:25:15+00:00"
+            "time": "2020-01-13T11:15:53+00:00"
         },
         {
             "name": "szepeviktor/phpstan-wordpress",
@@ -3152,16 +3111,16 @@
         },
         {
             "name": "webmozart/assert",
-            "version": "1.6.0",
+            "version": "1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webmozart/assert.git",
-                "reference": "573381c0a64f155a0d9a23f4b0c797194805b925"
+                "reference": "aed98a490f9a8f78468232db345ab9cf606cf598"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozart/assert/zipball/573381c0a64f155a0d9a23f4b0c797194805b925",
-                "reference": "573381c0a64f155a0d9a23f4b0c797194805b925",
+                "url": "https://api.github.com/repos/webmozart/assert/zipball/aed98a490f9a8f78468232db345ab9cf606cf598",
+                "reference": "aed98a490f9a8f78468232db345ab9cf606cf598",
                 "shasum": ""
             },
             "require": {
@@ -3196,20 +3155,20 @@
                 "check",
                 "validate"
             ],
-            "time": "2019-11-24T13:36:37+00:00"
+            "time": "2020-02-14T12:15:55+00:00"
         },
         {
             "name": "woocommerce/woocommerce",
-            "version": "3.9.1",
+            "version": "3.9.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/woocommerce/woocommerce.git",
-                "reference": "37899bdee89799b435da4223795a26a992d35468"
+                "reference": "f3ceba5a95e700ef9429615b0ba82752ee328bb2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/woocommerce/woocommerce/zipball/37899bdee89799b435da4223795a26a992d35468",
-                "reference": "37899bdee89799b435da4223795a26a992d35468",
+                "url": "https://api.github.com/repos/woocommerce/woocommerce/zipball/f3ceba5a95e700ef9429615b0ba82752ee328bb2",
+                "reference": "f3ceba5a95e700ef9429615b0ba82752ee328bb2",
                 "shasum": ""
             },
             "require": {
@@ -3255,7 +3214,7 @@
             ],
             "description": "An eCommerce toolkit that helps you sell anything. Beautifully.",
             "homepage": "https://woocommerce.com/",
-            "time": "2020-01-28T21:27:09+00:00"
+            "time": "2020-02-13T16:18:48+00:00"
         },
         {
             "name": "woocommerce/woocommerce-blocks",

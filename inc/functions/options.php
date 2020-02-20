@@ -503,13 +503,15 @@ function rocket_check_key() {
 	$return = rocket_valid_key();
 
 	if ( $return ) {
+		rocket_delete_licence_data_file();
+
 		return $return;
 	}
 
 	Logger::info( 'LICENSE VALIDATION PROCESS STARTED.', [ 'license validation process' ] );
 
 	$response = wp_remote_get(
-		WP_ROCKET_WEB_VALID,
+		rocket_get_constant( 'WP_ROCKET_WEB_VALID' ),
 		[
 			'timeout' => 30,
 		]
@@ -610,7 +612,7 @@ function rocket_check_key() {
 			]
 		);
 
-		set_transient( WP_ROCKET_SLUG, $rocket_options );
+		set_transient( rocket_get_constant( 'WP_ROCKET_SLUG' ), $rocket_options );
 		return $rocket_options;
 	}
 
@@ -620,12 +622,31 @@ function rocket_check_key() {
 		$rocket_options['license'] = '1';
 	}
 
-	Logger::info( 'License validation succeeded.', [ 'license validation process' ] );
+	Logger::info( 'License validation successful.', [ 'license validation process' ] );
 
-	set_transient( WP_ROCKET_SLUG, $rocket_options );
+	set_transient( rocket_get_constant( 'WP_ROCKET_SLUG' ), $rocket_options );
 	delete_transient( 'rocket_check_key_errors' );
+	rocket_delete_licence_data_file();
 
 	return $rocket_options;
+}
+
+/**
+ * Deletes the licence-data.php file if it exists
+ *
+ * @since 3.5
+ * @author Remy Perona
+ *
+ * @return void
+ */
+function rocket_delete_licence_data_file() {
+	$rocket_path = rocket_get_constant( 'WP_ROCKET_PATH' );
+
+	if ( ! rocket_direct_filesystem()->exists( $rocket_path . 'licence-data.php' ) ) {
+		return;
+	}
+
+	rocket_direct_filesystem()->delete( $rocket_path . 'licence-data.php' );
 }
 
 /**

@@ -38,8 +38,9 @@ function rocket_upgrader() {
 		update_option( WP_ROCKET_SLUG, $options );
 	}
 
-	if ( ! rocket_valid_key() && current_user_can( 'rocket_manage_options' ) &&
-		( isset( $_GET['page'] ) && 'wprocket' === $_GET['page'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	$page = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING );
+
+	if ( ! rocket_valid_key() && current_user_can( 'rocket_manage_options' ) && 'wprocket' === $page ) {
 		add_action( 'admin_notices', 'rocket_need_api_key' );
 	}
 }

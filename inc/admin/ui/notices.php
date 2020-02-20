@@ -635,38 +635,6 @@ function rocket_thank_you_license() {
 add_action( 'admin_notices', 'rocket_thank_you_license' );
 
 /**
- * This notice is displayed after purging the CloudFlare cache
- *
- * @since 2.9
- * @author Remy Perona
- */
-function rocket_cloudflare_purge_result() {
-	global $current_user;
-	if ( ! current_user_can( 'rocket_purge_cloudflare_cache' ) ) {
-		return;
-	}
-
-	if ( ! is_admin() ) {
-		return;
-	}
-
-	$notice = get_transient( $current_user->ID . '_cloudflare_purge_result' );
-	if ( ! $notice ) {
-		return;
-	}
-
-	delete_transient( $current_user->ID . '_cloudflare_purge_result' );
-
-	rocket_notice_html(
-		[
-			'status'  => $notice['result'],
-			'message' => $notice['message'],
-		]
-	);
-}
-add_action( 'admin_notices', 'rocket_cloudflare_purge_result' );
-
-/**
  * This notice is displayed after purging OPcache
  *
  * @since 3.4.1
@@ -697,57 +665,6 @@ function rocket_opcache_purge_result() {
 	);
 }
 add_action( 'admin_notices', 'rocket_opcache_purge_result' );
-
-/**
- * This notice is displayed after modifying the CloudFlare settings
- *
- * @since 2.9
- * @author Remy Perona
- */
-function rocket_cloudflare_update_settings() {
-	global $current_user;
-	$screen = get_current_screen();
-
-	if ( ! current_user_can( 'rocket_manage_options' ) ) {
-		return;
-	}
-
-	if ( 'settings_page_wprocket' !== $screen->id ) {
-		return;
-	}
-
-	$notices = get_transient( $current_user->ID . '_cloudflare_update_settings' );
-	if ( $notices ) {
-		$errors  = '';
-		$success = '';
-		delete_transient( $current_user->ID . '_cloudflare_update_settings' );
-		foreach ( $notices as $notice ) {
-			if ( 'error' === $notice['result'] ) {
-				$errors .= $notice['message'] . '<br>';
-			} elseif ( 'success' === $notice['result'] ) {
-				$success .= $notice['message'] . '<br>';
-			}
-		}
-
-		if ( ! empty( $success ) ) {
-			rocket_notice_html(
-				[
-					'message' => $success,
-				]
-			);
-		}
-
-		if ( ! empty( $errors ) ) {
-			rocket_notice_html(
-				[
-					'status'  => 'error',
-					'message' => $success,
-				]
-			);
-		}
-	}
-}
-add_action( 'admin_notices', 'rocket_cloudflare_update_settings' );
 
 /**
  * Displays a notice for analytics opt-in

@@ -1,11 +1,12 @@
 <?php
 namespace WP_Rocket\Tests\Unit\Subscriber\Tools;
 
-use WP_Rocket\Subscriber\Tools\Detect_Missing_Tags_Subscriber;
-use WPMedia\PHPUnit\Unit\TestCase;
 use Brain\Monkey\Functions;
+use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Subscriber\Tools\Detect_Missing_Tags_Subscriber;
 
 /**
+ * @covers Detect_Missing_Tags_Subscriber::maybe_missing_tags
  * @group Subscriber
  */
 class TestDetectMissingTags extends TestCase {

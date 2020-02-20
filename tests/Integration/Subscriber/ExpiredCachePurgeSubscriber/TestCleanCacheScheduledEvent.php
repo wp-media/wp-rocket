@@ -13,6 +13,8 @@ use Brain\Monkey\Functions;
 class TestCleanCacheScheduledEvent extends TestCase {
 
 	public function testShouldNotCleanScheduledEventWhenValuesAreTheSame() {
+		Functions\expect( 'wp_clear_scheduled_hook' )->never();
+
 		update_option(
 			'wp_rocket_settings',
 			[

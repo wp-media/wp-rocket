@@ -66,6 +66,7 @@ class Plugin {
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Options' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Database' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Beacon' );
+		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\RocketCDN' );
 
 		$subscribers = [];
 
@@ -92,6 +93,9 @@ class Plugin {
 				'settings_page_subscriber',
 				'deactivation_intent_subscriber',
 				'hummingbird_subscriber',
+				'rocketcdn_admin_subscriber',
+				'rocketcdn_notices_subscriber',
+				'rocketcdn_data_manager_subscriber',
 			];
 		} elseif ( \rocket_valid_key() ) {
 			$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Optimization_Subscribers' );
@@ -105,6 +109,7 @@ class Plugin {
 				'minify_js_subscriber',
 				'cache_dynamic_resource_subscriber',
 				'remove_query_string_subscriber',
+				'dequeue_jquery_migrate_subscriber',
 			];
 
 			// Don't insert the LazyLoad file if Rocket LazyLoad is activated.
@@ -148,7 +153,11 @@ class Plugin {
 			'plugin_information_subscriber',
 			'plugin_updater_subscriber',
 			'capabilities_subscriber',
+			'varnish_subscriber',
+			'cloudflare_subscriber',
+			'rocketcdn_rest_subscriber',
 			'detect_missing_tags_subscriber',
+			'purge_actions_subscriber',
 		];
 
 		if ( \rocket_valid_key() ) {

@@ -2,14 +2,15 @@
 
 namespace WP_Rocket\Tests\Unit\Inc;
 
-use WPMedia\PHPUnit\Unit\TestCase;
 use Brain\Monkey;
+use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
  * @group Init
  * @group Constants
  */
 class Test_RocketHasConstant extends TestCase {
+
 	protected function setUp() {
 		parent::setUp();
 

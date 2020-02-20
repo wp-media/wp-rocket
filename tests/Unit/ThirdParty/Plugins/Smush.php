@@ -21,13 +21,6 @@ class Smush extends TestCase {
 			->andReturn( 'wp-smush-' );
 	}
 
-	/**
-	 * Test should disable WP Rocket lazy load functionality when Smush lazyload is enabled
-	 *
-	 * @since  3.4.2
-	 * @author Soponar Cristina
-	 *
-	 */
 	public function testShouldDisableWPRocketLazyLoad() {
 		$this->mockCommonWpFunctions();
 
@@ -40,13 +33,6 @@ class Smush extends TestCase {
 		$this->assertContains( 'Smush', $subscriber->is_smush_lazyload_active( [] ) );
 	}
 
-	/**
-	 * Test should not disable WP Rocket lazy load functionality when Smush lazyload is disabled
-	 *
-	 * @since  3.4.2
-	 * @author Soponar Cristina
-	 *
-	 */
 	public function testShouldNotDisableWPRocketLazyLoad() {
 		$subscriber = new Smush_Subscriber();
 
@@ -57,13 +43,6 @@ class Smush extends TestCase {
 		$this->assertEmpty( $subscriber->is_smush_lazyload_active( [] ) );
 	}
 
-	/**
-	 * Test should not disable WP Rocket lazy load functionality when Smush lazyload is disabled
-	 *
-	 * @since  3.4.2
-	 * @author Soponar Cristina
-	 *
-	 */
 	public function testShouldNotMaybeDeactivateLazyload() {
 		$subscriber = new Smush_Subscriber();
 
@@ -76,13 +55,6 @@ class Smush extends TestCase {
 		$subscriber->maybe_deactivate_rocket_lazyload();
 	}
 
-	/**
-	 * Test should disable WP Rocket lazy load functionality when Smush lazyload is enabled
-	 *
-	 * @since  3.4.2
-	 * @author Soponar Cristina
-	 *
-	 */
 	public function testShouldMaybeDeactivateLazyload() {
 		$subscriber = new Smush_Subscriber();
 

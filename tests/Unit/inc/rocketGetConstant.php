@@ -2,13 +2,13 @@
 
 namespace WP_Rocket\Tests\Unit\Inc;
 
-use WPMedia\PHPUnit\Unit\TestCase;
 use Brain\Monkey;
+use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
+ * @covers ::rocket_get_constant
  * @group Init
  * @group Constants
- * @covers ::rocket_get_constant
  */
 class Test_RocketGetConstant extends TestCase {
 	protected function setUp() {

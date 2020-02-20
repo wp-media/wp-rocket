@@ -18,8 +18,8 @@ settings_errors( $data['slug'] ); ?>
 
 		<header class="wpr-Header">
 			<div class="wpr-Header-logo">
-				<img src="<?php echo esc_url( WP_ROCKET_ASSETS_IMG_URL ); ?>logo-wprocket-dark.svg" width="163" height="44" alt="Logo WP Rocket" class="wpr-Header-logo-desktop">
-				<img src="<?php echo esc_url( WP_ROCKET_ASSETS_IMG_URL ); ?>picto-wprocket-dark.svg" width="28" height="50" alt="Logo WP Rocket" class="wpr-Header-logo-mobile">
+				<img src="<?php echo esc_url( WP_ROCKET_ASSETS_IMG_URL . 'logo-wprocket-dark.svg' ); ?>" width="163" height="44" alt="Logo WP Rocket" class="wpr-Header-logo-desktop">
+				<img src="<?php echo esc_url( WP_ROCKET_ASSETS_IMG_URL . 'picto-wprocket-dark.svg' ); ?>" width="28" height="50" alt="Logo WP Rocket" class="wpr-Header-logo-mobile">
 			</div>
 			<div class="wpr-Header-nav">
 				<?php $this->render_navigation(); ?>
@@ -27,7 +27,7 @@ settings_errors( $data['slug'] ); ?>
 			<div class="wpr-Header-footer">
 				<?php
 				// translators: %s = Plugin version number.
-				echo esc_html( sprintf( __( 'version %s', 'rocket' ), WP_ROCKET_VERSION ) );
+				echo esc_html( sprintf( __( 'version %s', 'rocket' ), rocket_get_constant( 'WP_ROCKET_VERSION' ) ) );
 				?>
 			</div>
 		</header>
@@ -52,8 +52,7 @@ settings_errors( $data['slug'] ); ?>
 				<div class="wpr-radio wpr-radio--reverse wpr-radio--tips">
 					<input type="checkbox" class="wpr-js-tips" id="wpr-js-tips" value="1" checked>
 					<label for="wpr-js-tips">
-						<span data-l10n-active="<?php echo esc_attr_x( 'On', 'Active state of checkbox', 'rocket' ); ?>"
-							data-l10n-inactive="<?php echo esc_attr_x( 'Off', 'Inactive state of checkbox', 'rocket' ); ?>" class="wpr-radio-ui"></span>
+						<span data-l10n-active="<?php echo esc_attr_x( 'On', 'Active state of checkbox', 'rocket' ); ?>" data-l10n-inactive="<?php echo esc_attr_x( 'Off', 'Inactive state of checkbox', 'rocket' ); ?>" class="wpr-radio-ui"></span>
 						<?php esc_html_e( 'Show Sidebar', 'rocket' ); ?></label>
 				</div>
 			</div>
@@ -102,4 +101,13 @@ settings_errors( $data['slug'] ); ?>
 		</div>
 	</div>
 	<div class="wpr-Popin-overlay"></div>
+	<?php
+	/**
+	 * Fires after the Settings page content
+	 *
+	 * @since 3.5
+	 * @author Remy Perona
+	 */
+	do_action( 'rocket_settings_page_footer' );
+	?>
 </div>
