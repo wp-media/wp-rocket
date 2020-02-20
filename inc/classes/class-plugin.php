@@ -119,7 +119,7 @@ class Plugin {
 			}
 		}
 
-		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Addons_Subscribers' );
+		$this->container->addServiceProvider( 'WP_Rocket\Addon\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Preload_Subscribers' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Common_Subscribers' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Third_Party_Subscribers' );

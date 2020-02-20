@@ -1,15 +1,15 @@
 <?php
-namespace WP_Rocket\ServiceProvider;
+namespace WP_Rocket\Addon;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
 
 /**
- * Service provider for WP Rocket addons
+ * Service provider for WP Rocket addons.
  *
  * @since 3.3
- * @author Remy Perona
+ * @since 3.5 - renamed and moved into this module.
  */
-class Addons_Subscribers extends AbstractServiceProvider {
+class ServiceProvider extends AbstractServiceProvider {
 
 	/**
 	 * The provides array is a way to let the container

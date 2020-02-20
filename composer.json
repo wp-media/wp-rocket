@@ -69,7 +69,8 @@
 			"inc/functions/api.php"
 		],
 		"psr-4": {
-			"WPMedia\\Cloudflare\\": "inc/Addon/Cloudflare"
+			"WP_Rocket\\": "inc/",
+			"WPMedia\\Cloudflare\\": "inc/Addon/Cloudflare/"
 		}
 	},
 	"autoload-dev": {
