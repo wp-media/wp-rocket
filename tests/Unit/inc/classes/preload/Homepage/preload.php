@@ -10,7 +10,7 @@ use WP_Rocket\Preload\Homepage;
  * @covers \WP_Rocket\Preload\Homepage::preload
  * @group Preload
  */
-class Test_preload extends TestCase {
+class Test_Preload extends TestCase {
 
 	public function testShouldNotPreloadWhenInvalidUrls() {
 		$preload_process = $this->createMock( Full_Process::class );

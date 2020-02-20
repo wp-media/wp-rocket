@@ -11,7 +11,7 @@ use WP_Rocket\Preload\Sitemap;
  * @covers \WP_Rocket\Preload\Sitemap::run_preload
  * @group Preload
  */
-class Test_runPreload extends TestCase {
+class Test_RunPreload extends TestCase {
 
 	public function testShouldNotPreloadWhenNoUrls() {
 		$preload_process = $this->createMock( Full_Process::class );
