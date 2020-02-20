@@ -11,15 +11,6 @@ use Brain\Monkey\Functions;
  */
 class Test_AutoPurge extends TestCase {
 
-	public function testShouldBailoutWhenCFAddonOff() {
-		$this->setOptions( [ 'do_cloudflare' => 0 ] );
-
-		Functions\expect( 'current_user_can' )->with( 'rocket_purge_cloudflare_cache' )->never();
-		Functions\expect( 'is_wp_error' )->never();
-
-		do_action( 'after_rocket_clean_domain' );
-	}
-
 	public function testShouldBailoutWhenUserCantPurgeCF() {
 		$this->setApiCredentialsInOptions();
 

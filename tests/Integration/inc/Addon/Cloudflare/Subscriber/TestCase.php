@@ -93,7 +93,6 @@ abstract class TestCase extends BaseTestCase {
 				'cloudflare_email'   => self::$api_credentials['email'],
 				'cloudflare_api_key' => self::$api_credentials['api_key'],
 				'cloudflare_zone_id' => self::$api_credentials['zone_id'],
-				'do_cloudflare'      => 1,
 			],
 			$options
 		);
@@ -109,7 +108,9 @@ abstract class TestCase extends BaseTestCase {
 
 		$cf_options = $this->getConcrete( 'options' );
 		$cf_options->set_values( $data );
-		self::$cf_property->setValue( self::$subscriber, new Cloudflare( $cf_options, $this->getConcrete( 'cloudflare_api' ) ) );
+		delete_transient( 'rocket_cloudflare_is_api_keys_valid' );
+		$cf = new Cloudflare( $cf_options, $this->getConcrete( 'cloudflare_api' ) );
+		self::$cf_property->setValue( self::$subscriber, $cf );
 		self::$options_property->setValue( self::$subscriber, $cf_options );
 	}
 

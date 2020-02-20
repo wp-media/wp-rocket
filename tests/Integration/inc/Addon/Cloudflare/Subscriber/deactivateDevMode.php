@@ -10,26 +10,16 @@ namespace WP_Rocket\Tests\Integration\inc\Addons\Cloudflare\Subscriber;
 class Test_DeactivateDevMode extends TestCase {
 
 	public function testShouldNotDeactivateDevMode() {
-		$this->setApiCredentialsInOptions(
-			[
-				'do_cloudflare'      => 0,
-				'cloudflare_devmode' => 'on',
-			]
-		);
+		$this->setApiCredentialsInOptions( [ 'cloudflare_devmode' => 'off' ] );
 
 		do_action( 'rocket_cron_deactivate_cloudflare_devmode' );
 
 		$settings = get_option( 'wp_rocket_settings' );
-		$this->assertSame( 'on', $settings['cloudflare_devmode'] );
+		$this->assertSame( 'off', $settings['cloudflare_devmode'] );
 	}
 
 	public function testShouldDeactivateDevMode() {
-		$this->setApiCredentialsInOptions(
-			[
-				'do_cloudflare'      => 1,
-				'cloudflare_devmode' => 'on',
-			]
-		);
+		$this->setApiCredentialsInOptions( [ 'cloudflare_devmode' => 'on' ] );
 
 		do_action( 'rocket_cron_deactivate_cloudflare_devmode' );
 
