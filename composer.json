@@ -43,6 +43,7 @@
 		"wp-media/rocket-lazyload-common": "^2"
 	},
 	"require-dev": {
+		"php": "^5.6 || ^7",
 		"brain/monkey": "^2.0",
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
 		"mikey179/vfsstream": "^1.6",
