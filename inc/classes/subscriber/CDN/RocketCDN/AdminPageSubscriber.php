@@ -215,15 +215,12 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 			return;
 		}
 
-		$base_url   = rocket_get_constant( 'WP_ROCKET_DEBUG', false )
-			? 'https://dave.wp-rocket.me/'
-			: rocket_get_constant( 'WP_ROCKET_WEB_MAIN' );
 		$iframe_src = add_query_arg(
 			[
 				'website'  => home_url(),
 				'callback' => rest_url( 'wp-rocket/v1/rocketcdn/' ),
 			],
-			$base_url . 'cdn/iframe'
+			rocket_get_constant( 'WP_ROCKET_WEB_MAIN' ) . 'cdn/iframe'
 		);
 		?>
 		<div class="wpr-rocketcdn-modal" id="wpr-rocketcdn-modal" aria-hidden="true">
