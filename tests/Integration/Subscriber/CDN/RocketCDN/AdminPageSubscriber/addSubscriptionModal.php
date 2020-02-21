@@ -2,7 +2,6 @@
 
 namespace WP_Rocket\Tests\Integration\Subscriber\CDN\RocketCDN;
 
-use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
@@ -44,27 +43,6 @@ class Test_AddSubscriptionModal extends TestCase {
 		<div class="wpr-rocketcdn-modal__container" role="dialog" aria-modal="true" aria-labelledby="wpr-rocketcdn-modal-title">
 			<div id="wpr-rocketcdn-modal-content">
 				<iframe id="rocketcdn-iframe" src="https://wp-rocket.me/cdn/iframe?website=http://example.org&#038;callback=http://example.org/index.php?rest_route=/wp-rocket/v1/rocketcdn/" width="674" height="425"></iframe>
-			</div>
-		</div>
-	</div>
-</div>
-HTML;
-
-		$this->assertSame( $this->format_the_html( $expected ), $this->getActualHtml() );
-	}
-
-	public function testShouldDisplayModalWithDevURL() {
-		Functions\expect( 'rocket_get_constant' )
-			->once()
-			->with( 'WP_ROCKET_DEBUG', false )
-			->andReturn( true );
-
-		$expected = <<<HTML
-<div class="wpr-rocketcdn-modal" id="wpr-rocketcdn-modal" aria-hidden="true">
-	<div class="wpr-rocketcdn-modal__overlay" tabindex="-1">
-		<div class="wpr-rocketcdn-modal__container" role="dialog" aria-modal="true" aria-labelledby="wpr-rocketcdn-modal-title">
-			<div id="wpr-rocketcdn-modal-content">
-				<iframe id="rocketcdn-iframe" src="https://dave.wp-rocket.me/cdn/iframe?website=http://example.org&#038;callback=http://example.org/index.php?rest_route=/wp-rocket/v1/rocketcdn/" width="674" height="425"></iframe>
 			</div>
 		</div>
 	</div>
