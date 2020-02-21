@@ -37,13 +37,32 @@ class Test_DisplayRocketcdnStatus extends TestCase {
 	}
 
 	public function testShouldDisplayNothingWhenNotLiveSite() {
+		set_transient(
+			'rocketcdn_status',
+			[
+				'is_active'                     => false,
+				'subscription_status'           => 'cancelled',
+				'subscription_next_date_update' => '2020-01-01',
+			],
+			MINUTE_IN_SECONDS
+		);
+
 		$callback = function() {
 			return 'http://localhost';
 		};
 
+		$expected = <<<HTML
+<div class="wpr-optionHeader">
+	<h3 class="wpr-title2">RocketCDN</h3>
+</div>
+<div class="wpr-field wpr-field-account">
+	<span class="wpr-infoAccount wpr-isInvalid">RocketCDN is unavailable on local domains and staging sites.</span>
+</div>
+HTML;
+
 		add_filter( 'home_url', $callback );
 
-		$this->assertEmpty( $this->getActualHtml() );
+		$this->assertSame( $this->format_the_html( $expected ), $this->getActualHtml() );
 
 		remove_filter( 'home_url', $callback );
 	}

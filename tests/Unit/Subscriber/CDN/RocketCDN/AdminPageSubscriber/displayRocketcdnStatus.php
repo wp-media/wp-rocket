@@ -51,7 +51,25 @@ class Test_DisplayRocketcdnStatus extends FilesystemTestCase {
 	public function testShouldDisplayNothingWhenNotLiveSite() {
 		Functions\when( 'rocket_is_live_site' )->justReturn( false );
 
-		$this->assertNull( $this->page->display_rocketcdn_status() );
+		$this->api_client->method( 'get_subscription_data' )
+			->willReturn(
+				[
+					'is_active'           => false,
+					'subscription_status' => 'cancelled',
+					'subscription_next_date_update' => '2020-01-01',
+				]
+		);
+
+		$expected = <<<HTML
+<div class="wpr-optionHeader">
+	<h3 class="wpr-title2">RocketCDN</h3>
+</div>
+<div class="wpr-field wpr-field-account">
+	<span class="wpr-infoAccount wpr-isInvalid">RocketCDN is unavailable on local domains and staging sites.</span>
+</div>
+HTML;
+
+		$this->assertSame( $this->format_the_html( $expected ), $this->getActualHtml() );
 	}
 
 	public function testShouldOutputNoSubscriptionWhenInactive() {
@@ -66,7 +84,7 @@ class Test_DisplayRocketcdnStatus extends FilesystemTestCase {
 					'subscription_status' => 'cancelled',
 					'subscription_next_date_update' => '2020-01-01',
 				]
-			);
+		);
 
 		$expected = <<<HTML
 <div class="wpr-optionHeader">
