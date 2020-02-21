@@ -2,6 +2,7 @@
 namespace WP_Rocket\Addon;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Admin\Options_Data;
 
 /**
  * Service provider for WP Rocket addons.
@@ -35,6 +36,8 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @since 3.3
 	 */
 	public function register() {
+		$options = $this->getContainer()->get( 'options' );
+
 		// Busting Factory.
 		$this->getContainer()->add( 'busting_factory', 'WP_Rocket\Busting\Busting_Factory' )
 			->withArgument( rocket_get_constant( 'WP_ROCKET_CACHE_BUSTING_PATH' ) )
@@ -43,36 +46,38 @@ class ServiceProvider extends AbstractServiceProvider {
 		// Facebook Tracking Subscriber.
 		$this->getContainer()->share( 'facebook_tracking_subscriber', 'WP_Rocket\Subscriber\Facebook_Tracking_Cache_Busting_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'busting_factory' ) )
-			->withArgument( $this->getContainer()->get( 'options' ) );
+			->withArgument( $options );
 
 		// Google Tracking Subscriber.
 		$this->getContainer()->share( 'google_tracking_subscriber', 'WP_Rocket\Subscriber\Google_Tracking_Cache_Busting_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'busting_factory' ) )
-			->withArgument( $this->getContainer()->get( 'options' ) );
+			->withArgument( $options );
 
 		// Sucuri Addon.
 		$this->getContainer()->share( 'sucuri_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Security\Sucuri_Subscriber' )
-			->withArgument( $this->getContainer()->get( 'options' ) );
+			->withArgument( $options );
 
 		// Varnish Addon.
 		$this->getContainer()->add( 'varnish', 'WP_Rocket\Addons\Varnish\Varnish' )
-			->withArgument( $this->getContainer()->get( 'options' ) );
+			->withArgument( $options );
 		$this->getContainer()->share( 'varnish_subscriber', 'WP_Rocket\Subscriber\Addons\Varnish\VarnishSubscriber' )
 			->withArgument( $this->getContainer()->get( 'varnish' ) )
-			->withArgument( $this->getContainer()->get( 'options' ) );
+			->withArgument( $options );
 
 		// Cloudflare Addon.
-		$this->addon_cloudflare();
+		$this->addon_cloudflare( $options );
 	}
 
 	/**
 	 * Adds Cloudflare Addon into the Container when the addon is enabled.
 	 *
 	 * @since 3.5
+	 *
+	 * @param Options_Data $options Instance of options.
 	 */
-	protected function addon_cloudflare() {
+	protected function addon_cloudflare( Options_Data $options ) {
 		// If the addon is not enabled, delete the transient and bail out. Don't load the addon.
-		if ( ! get_rocket_option( 'do_cloudflare' ) ) {
+		if ( ! (bool) $options->get( 'do_cloudflare', false ) ) {
 			delete_transient( 'rocket_cloudflare_is_api_keys_valid' );
 			return;
 		}
@@ -82,11 +87,11 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'cloudflare_api', 'WPMedia\Cloudflare\APIClient' )
 			->withArgument( rocket_get_constant( 'WP_ROCKET_VERSION' ) );
 		$this->getContainer()->add( 'cloudflare', 'WPMedia\Cloudflare\Cloudflare' )
-			->withArgument( $this->getContainer()->get( 'options' ) )
+			->withArgument( $options )
 			->withArgument( $this->getContainer()->get( 'cloudflare_api' ) );
 		$this->getContainer()->share( 'cloudflare_subscriber', 'WPMedia\Cloudflare\Subscriber' )
 			->withArgument( $this->getContainer()->get( 'cloudflare' ) )
-			->withArgument( $this->getContainer()->get( 'options' ) )
+			->withArgument( $options )
 			->withArgument( $this->getContainer()->get( 'options_api' ) );
 	}
 }
