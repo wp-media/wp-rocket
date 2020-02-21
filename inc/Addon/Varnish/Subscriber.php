@@ -1,17 +1,16 @@
 <?php
-namespace WP_Rocket\Subscriber\Addons\Varnish;
+namespace WP_Rocket\Addon\Varnish;
 
-use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Rocket\Addons\Varnish\Varnish;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
- * Subscriber for the Varnish Purge
+ * Subscriber for the Varnish Purge.
  *
  * @since 3.5
  * @author Remy Perona
  */
-class VarnishSubscriber implements Subscriber_Interface {
+class Subscriber implements Subscriber_Interface {
 	/**
 	 * Varnish instance
 	 *

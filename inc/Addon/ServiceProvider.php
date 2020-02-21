@@ -58,14 +58,25 @@ class ServiceProvider extends AbstractServiceProvider {
 			->withArgument( $options );
 
 		// Varnish Addon.
-		$this->getContainer()->add( 'varnish', 'WP_Rocket\Addons\Varnish\Varnish' )
-			->withArgument( $options );
-		$this->getContainer()->share( 'varnish_subscriber', 'WP_Rocket\Subscriber\Addons\Varnish\VarnishSubscriber' )
-			->withArgument( $this->getContainer()->get( 'varnish' ) )
-			->withArgument( $options );
+		$this->addon_varnish( $options );
 
 		// Cloudflare Addon.
 		$this->addon_cloudflare( $options );
+	}
+
+	/**
+	 * Adds Varnish Addon into the Container.
+	 *
+	 * @since 3.5
+	 *
+	 * @param Options_Data $options Instance of options.
+	 */
+	protected function addon_varnish( Options_Data $options ) {
+		$this->getContainer()->add( 'varnish', 'WP_Rocket\Addon\Varnish\Varnish' )
+			->withArgument( $options );
+		$this->getContainer()->share( 'varnish_subscriber', 'WP_Rocket\Addon\Varnish\Subscriber' )
+			->withArgument( $this->getContainer()->get( 'varnish' ) )
+			->withArgument( $options );
 	}
 
 	/**

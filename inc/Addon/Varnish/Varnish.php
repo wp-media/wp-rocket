@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Addons\Varnish;
+namespace WP_Rocket\Addon\Varnish;
 
 use WP_Rocket\Admin\Options_Data;
 
