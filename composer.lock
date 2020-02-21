@@ -4,46 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "43806f13f9108b2088b3a613d8c5a612",
+    "content-hash": "807e18fbbc13150ab209992f8319d29a",
     "packages": [
-        {
-            "name": "a5hleyrich/wp-background-processing",
-            "version": "v1.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Tabrisrp/wp-background-processing.git",
-                "reference": "3fb239ecb5261f7eeff76d430d54028d297c176c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Tabrisrp/wp-background-processing/zipball/3fb239ecb5261f7eeff76d430d54028d297c176c",
-                "reference": "3fb239ecb5261f7eeff76d430d54028d297c176c",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.2"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "classes/"
-                ]
-            },
-            "license": [
-                "GPLv2+"
-            ],
-            "authors": [
-                {
-                    "name": "Ashley Rich",
-                    "email": "hello@ashleyrich.com"
-                }
-            ],
-            "description": "WP Background Processing can be used to fire off non-blocking asynchronous requests or as a background processing tool, allowing you to queue tasks.",
-            "support": {
-                "source": "https://github.com/Tabrisrp/wp-background-processing/tree/v1.3"
-            },
-            "time": "2018-10-23T18:30:25+00:00"
-        },
         {
             "name": "composer/installers",
             "version": "v1.7.0",
@@ -545,6 +507,50 @@
                 "psr-3"
             ],
             "time": "2019-11-01T11:05:21+00:00"
+        },
+        {
+            "name": "wp-media/background-processing",
+            "version": "v1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wp-media/background-processing.git",
+                "reference": "6cacc6dd2411ae82b33d7cd33fb4f2104ebf9846"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wp-media/background-processing/zipball/6cacc6dd2411ae82b33d7cd33fb4f2104ebf9846",
+                "reference": "6cacc6dd2411ae82b33d7cd33fb4f2104ebf9846",
+                "shasum": ""
+            },
+            "require-dev": {
+                "brain/monkey": "^2.0",
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
+                "php": "^5.6 || ^7",
+                "phpcompatibility/phpcompatibility-wp": "^2.0",
+                "phpunit/phpunit": "^5.7 || ^7",
+                "wp-coding-standards/wpcs": "^2",
+                "wp-media/phpunit": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    ""
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "WP Media",
+                    "email": "contact@wp-media.me",
+                    "homepage": "https://wp-media.me"
+                }
+            ],
+            "description": "Async & Background Tasks Processing",
+            "homepage": "https://github.com/wp-media/background-processing",
+            "time": "2020-02-21T20:04:18+00:00"
         },
         {
             "name": "wp-media/rocket-lazyload-common",
@@ -3215,7 +3221,7 @@
             ],
             "description": "An eCommerce toolkit that helps you sell anything. Beautifully.",
             "homepage": "https://woocommerce.com/",
-            "time": "2020-02-13T16:18:48+00:00"
+            "time": "2020-02-13T15:13:27+00:00"
         },
         {
             "name": "woocommerce/woocommerce-blocks",
@@ -3351,7 +3357,7 @@
         },
         {
             "name": "wp-media/phpunit",
-            "version": "dev-master",
+            "version": "v1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-media/phpunit.git",
@@ -3397,8 +3403,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "roave/security-advisories": 20,
-        "wp-media/phpunit": 20
+        "roave/security-advisories": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
