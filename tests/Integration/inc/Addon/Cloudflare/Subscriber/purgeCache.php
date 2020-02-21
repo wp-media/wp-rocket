@@ -8,7 +8,7 @@ use WPDieException;
 /**
  * @covers WPMedia\Cloudflare\Subscriber::purge_cache
  * @covers WPMedia\Cloudflare\Subscriber::purge_cache_no_die
- * @group  Cloudflare
+ * @group  DoCloudflare
  * @group  Addons
  */
 class Test_PurgeCache extends TestCase {
@@ -37,27 +37,6 @@ class Test_PurgeCache extends TestCase {
 		$this->expectException( WPDieException::class );
 		$this->expectExceptionMessage( 'The link you followed has expired.' );
 		do_action( 'admin_post_rocket_purge_cloudflare' );
-	}
-
-	public function testShouldBailoutWhenCFAddonOff() {
-		$this->setNonce();
-		Functions\expect( 'wp_nonce_ays' )->never();
-
-		// Turn off cloudflare.
-		$this->setOptions( [ 'do_cloudflare' => 0 ] );
-
-		Functions\expect( 'current_user_can' )->with( 'rocket_purge_cloudflare_cache' )->never();
-
-		$this->setRedirect();
-
-		// Run it.
-		do_action( 'admin_post_rocket_purge_cloudflare' );
-
-		// Just to make sure the transient did not get set.
-		$user_id = get_current_user_id();
-		$this->assertFalse( get_transient( "{$user_id}_cloudflare_purge_result" ) );
-
-		$this->cleanUp();
 	}
 
 	public function testShouldBailoutWhenUserCantPurgeCF() {

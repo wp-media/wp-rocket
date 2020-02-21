@@ -283,7 +283,7 @@ class APIClient {
 	/**
 	 * API call method for sending requests using GET, POST, PUT, DELETE OR PATCH.
 	 *
-	 * @since 1.0
+	 * @since  1.0
 	 *
 	 * @author James Bell <james@james-bell.co.uk> - credit for original code adapted for version 1.0.
 	 * @author WP Media
@@ -297,7 +297,7 @@ class APIClient {
 	 * @throws UnauthorizedException When Cloudflare's API returns a 401 or 403.
 	 */
 	protected function request( $path, array $data = [], $method = 'get' ) {
-		if ( ! $this->is_authorized() ) {
+		if ( '/ips' !== $path && ! $this->is_authorized() ) {
 			throw new AuthenticationException( 'Authentication information must be provided.' );
 		}
 
@@ -392,9 +392,43 @@ class APIClient {
 		}
 
 		// Set up the headers.
-		curl_setopt( $ch, CURLOPT_HTTPHEADER, $this->headers );
+		curl_setopt( $ch, CURLOPT_HTTPHEADER, $this->get_headers( $url ) );
 
 		// Set up the URL.
 		curl_setopt( $ch, CURLOPT_URL, $url );
+	}
+
+	/**
+	 * Gets the request headers.
+	 *
+	 * @since 1.0
+	 *
+	 * @param string $url Request route.
+	 *
+	 * @return array array of headers.
+	 */
+	private function get_headers( $url ) {
+		if ( $this->are_credentials_needed( $url ) ) {
+			return $this->headers;
+		}
+
+		// Credentials are not needed. Remove them from the headers.
+		$headers = $this->headers;
+		unset( $headers[0], $headers[1] );
+
+		return $headers;
+	}
+
+	/**
+	 * Checks if this request needs API credentials.
+	 *
+	 * @since 1.0
+	 *
+	 * @param string $url Request route.
+	 *
+	 * @return bool true when API credentials are needed; else false.
+	 */
+	private function are_credentials_needed( $url ) {
+		return ( substr( $url, -4 ) !== '/ips' );
 	}
 }

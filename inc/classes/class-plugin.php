@@ -119,7 +119,7 @@ class Plugin {
 			}
 		}
 
-		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Addons_Subscribers' );
+		$this->container->addServiceProvider( 'WP_Rocket\Addon\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Preload_Subscribers' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Common_Subscribers' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Third_Party_Subscribers' );
@@ -154,13 +154,16 @@ class Plugin {
 			'plugin_updater_subscriber',
 			'capabilities_subscriber',
 			'varnish_subscriber',
-			'cloudflare_subscriber',
 			'rocketcdn_rest_subscriber',
 			'detect_missing_tags_subscriber',
 			'purge_actions_subscriber',
 		];
 
-		if ( \rocket_valid_key() ) {
+		if ( get_rocket_option( 'do_cloudflare' ) ) {
+			$common_subscribers[] = 'cloudflare_subscriber';
+		}
+
+		if ( rocket_valid_key() ) {
 			$common_subscribers = array_merge(
 				$common_subscribers,
 				[

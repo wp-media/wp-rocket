@@ -42,12 +42,7 @@ class Cloudflare {
 	 * @param APIClient    $api     Cloudflare API instance.
 	 */
 	public function __construct( Options_Data $options, APIClient $api ) {
-		$this->options = $options;
-
-		if ( ! $this->options->get( 'do_cloudflare' ) ) {
-			return;
-		}
-
+		$this->options              = $options;
 		$this->cloudflare_api_error = null;
 		$this->api                  = $api;
 		// Update api_error with WP_Error if credentials are not valid.
@@ -56,7 +51,7 @@ class Cloudflare {
 	}
 
 	/**
-	 * Get a Cloudflare\Api instance & the zone_id corresponding to the domain
+	 * Get a Cloudflare\Api instance & the zone_id corresponding to the domain.
 	 *
 	 * @since 1.0
 	 *
@@ -561,10 +556,6 @@ class Cloudflare {
 			return $cf_ips;
 		}
 
-		$cf_email   = $this->options->get( 'cloudflare_email', null );
-		$cf_api_key = defined( 'WP_ROCKET_CF_API_KEY' ) ? WP_ROCKET_CF_API_KEY : $this->options->get( 'cloudflare_api_key', null );
-
-		$this->api->set_api_credentials( $cf_email, $cf_api_key, '' );
 		try {
 			$cf_ips = $this->api->get_ips();
 
@@ -573,16 +564,13 @@ class Cloudflare {
 				// Prevents from making API calls on each page load.
 				$cf_ips = $this->get_default_ips();
 			}
-
-			set_transient( 'rocket_cloudflare_ips', $cf_ips, 2 * WEEK_IN_SECONDS );
 		} catch ( Exception $e ) {
 			// Set default IPs from Cloudflare if call to Cloudflare /ips API fails.
 			// Prevents from making API calls on each page load.
 			$cf_ips = $this->get_default_ips();
-			set_transient( 'rocket_cloudflare_ips', $cf_ips, 2 * WEEK_IN_SECONDS );
-
-			return $cf_ips;
 		}
+
+		set_transient( 'rocket_cloudflare_ips', $cf_ips, 2 * WEEK_IN_SECONDS );
 
 		return $cf_ips;
 	}

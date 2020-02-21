@@ -26,6 +26,10 @@ tests_add_filter(
 		// Overload the license key for testing.
 		redefine( 'rocket_valid_key', '__return_true' );
 
+		if ( BootstrapManager::isGroup( 'DoCloudflare' ) ) {
+			update_option( 'wp_rocket_settings', [ 'do_cloudflare' => 1 ] );
+		}
+
 		// Load the plugin.
 		require WP_ROCKET_PLUGIN_ROOT . '/wp-rocket.php';
 	}

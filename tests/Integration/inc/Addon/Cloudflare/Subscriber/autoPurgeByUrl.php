@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 
 /**
  * @covers WPMedia\Cloudflare\Subscriber::auto_purge_by_url
- * @group  Cloudflare
+ * @group  DoCloudflare
  * @group  Addons
  */
 class Test_AutoPurgeByUrl extends TestCase {
@@ -14,15 +14,6 @@ class Test_AutoPurgeByUrl extends TestCase {
 
 	public static function wpSetUpBeforeClass( $factory ) {
 		self::$post_id = $factory->post->create();
-	}
-
-	public function testShouldBailoutWhenCFAddonOff() {
-		$this->setOptions( [ 'do_cloudflare' => 0 ] );
-
-		Functions\expect( 'current_user_can' )->with( 'rocket_purge_cloudflare_cache' )->never();
-		Functions\expect( 'get_rocket_i18n_home_url' )->never();
-
-		do_action( 'after_rocket_clean_post', self::$post_id, [], 'en' );
 	}
 
 	public function testShouldBailoutWhenUserCantPurgeCF() {
