@@ -40,6 +40,7 @@ function rocket_init() {
 	$wp_rocket->load();
 
 	// Call defines and functions.
+	require_once WP_ROCKET_FUNCTIONS_PATH . 'api.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'files.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'posts.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'admin.php';

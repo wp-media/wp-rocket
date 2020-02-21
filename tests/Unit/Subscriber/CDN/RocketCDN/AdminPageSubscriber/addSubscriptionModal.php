@@ -4,6 +4,9 @@ namespace WP_Rocket\Tests\Unit\Subscriber\CDN\RocketCDN;
 
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Admin\Settings\Beacon;
+use WP_Rocket\CDN\RocketCDN\APIClient;
 use WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber;
 
 /**
@@ -17,11 +20,18 @@ class Test_AddSubscriptionModal extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
+		Functions\stubs(
+			[
+				'home_url'      => 'http://example.org',
+				'rest_url'      => 'http://example.org/wp-json/',
+			]
+		);
+
 		$this->page = new AdminPageSubscriber(
-			$this->createMock( 'WP_Rocket\CDN\RocketCDN\APIClient' ),
-			$this->createMock( 'WP_Rocket\Admin\Options_Data' ),
-			$this->createMock( 'WP_Rocket\Admin\Settings\Beacon' ),
-			''
+			$this->createMock( APIClient::class ),
+			$this->createMock( Options_Data::class ),
+			$this->createMock( Beacon::class ),
+			'views/settings/rocketcdn'
 		);
 	}
 
@@ -32,10 +42,15 @@ class Test_AddSubscriptionModal extends TestCase {
 		return $this->format_the_html( ob_get_clean() );
 	}
 
-	/**
-	 * Test should display the modal HTML with the production URL in the iframe
-	 */
+	public function testShouldDisplayNothingWhenNotLiveSite() {
+		Functions\when( 'rocket_is_live_site' )->justReturn( false );
+
+		$this->assertNull( $this->page->add_subscription_modal() );
+	}
+
 	public function testShouldDisplayModalWithProductionURL() {
+		Functions\when( 'rocket_is_live_site' )->justReturn( true );
+		Functions\when( 'add_query_arg' )->justReturn( 'https://wp-rocket.me/cdn/iframe?website=http://example.org&callback=http://example.org/wp-json/wp-rocket/v1/rocketcdn/');
 		Functions\expect( 'rocket_get_constant' )
 			->ordered()
 			->once()
@@ -45,14 +60,6 @@ class Test_AddSubscriptionModal extends TestCase {
 			->once()
 			->with( 'WP_ROCKET_WEB_MAIN' )
 			->andReturn( 'https://wp-rocket.me' );
-
-		Functions\stubs(
-			[
-				'add_query_arg' => 'https://wp-rocket.me/cdn/iframe?website=http://example.org&callback=http://example.org/wp-json/wp-rocket/v1/rocketcdn/',
-				'home_url'      => 'http://example.org',
-				'rest_url'      => 'http://example.org/wp-json/',
-			]
-		);
 
 		$expected = <<<HTML
 <div class="wpr-rocketcdn-modal" id="wpr-rocketcdn-modal" aria-hidden="true">
@@ -69,22 +76,13 @@ HTML;
 		$this->assertSame( $this->format_the_html( $expected ), $this->getActualHtml() );
 	}
 
-	/**
-	 * Test should display the modal HTML with the development URL in the iframe
-	 */
 	public function testShouldDisplayModalWithDevURL() {
+		Functions\when( 'rocket_is_live_site' )->justReturn( true );
+		Functions\when( 'add_query_arg' )->justReturn( 'https://dave.wp-rocket.me/cdn/iframe?website=http://example.org&callback=http://example.org/wp-json/wp-rocket/v1/rocketcdn/' );
 		Functions\expect( 'rocket_get_constant' )
 			->once()
 			->with( 'WP_ROCKET_DEBUG', false )
 			->andReturn( true );
-
-		Functions\stubs(
-			[
-				'add_query_arg' => 'https://dave.wp-rocket.me/cdn/iframe?website=http://example.org&callback=http://example.org/wp-json/wp-rocket/v1/rocketcdn/',
-				'home_url'      => 'http://example.org',
-				'rest_url'      => 'http://example.org/wp-json/',
-			]
-		);
 
 		$expected = <<<HTML
 <div class="wpr-rocketcdn-modal" id="wpr-rocketcdn-modal" aria-hidden="true">

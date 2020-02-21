@@ -65,9 +65,6 @@
 			"inc/vendors/classes/class-rocket-mobile-detect.php",
 			"inc/classes/class-wp-rocket-requirements-check.php"
 		],
-		"files": [
-			"inc/functions/api.php"
-		],
 		"psr-4": {
 			"WP_Rocket\\": "inc/",
 			"WPMedia\\Cloudflare\\": "inc/Addon/Cloudflare/"

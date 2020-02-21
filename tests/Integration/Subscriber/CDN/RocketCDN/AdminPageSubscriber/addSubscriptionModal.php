@@ -25,9 +25,18 @@ class Test_AddSubscriptionModal extends TestCase {
 		return $this->format_the_html( ob_get_clean() );
 	}
 
-	/**
-	 * Test should display the modal HTML with the production URL in the iframe.
-	 */
+	public function testShouldDisplayNothingWhenNotLiveSite() {
+		$callback = function() {
+			return 'http://localhost';
+		};
+
+		add_filter( 'home_url', $callback );
+
+		$this->assertEmpty( $this->getActualHtml() );
+
+		remove_filter( 'home_url', $callback );
+	}
+
 	public function testShouldDisplayModalWithProductionURL() {
 		$expected = <<<HTML
 <div class="wpr-rocketcdn-modal" id="wpr-rocketcdn-modal" aria-hidden="true">
@@ -44,9 +53,6 @@ HTML;
 		$this->assertSame( $this->format_the_html( $expected ), $this->getActualHtml() );
 	}
 
-	/**
-	 * Test should display the modal HTML with the development URL in the iframe.
-	 */
 	public function testShouldDisplayModalWithDevURL() {
 		Functions\expect( 'rocket_get_constant' )
 			->once()

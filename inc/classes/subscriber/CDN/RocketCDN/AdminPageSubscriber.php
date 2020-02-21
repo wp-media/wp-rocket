@@ -92,6 +92,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		}
 
 		$data = [
+			'is_live_site'    => rocket_is_live_site(),
 			'container_class' => $container_class,
 			'label'           => $label,
 			'status_class'    => $status_class,
@@ -161,6 +162,10 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 * @return void
 	 */
 	public function display_manage_subscription() {
+		if ( ! rocket_is_live_site() ) {
+			return;
+		}
+
 		$subscription_data = $this->api_client->get_subscription_data();
 
 		if ( 'running' !== $subscription_data['subscription_status'] ) {
@@ -206,6 +211,10 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 * @return void
 	 */
 	public function add_subscription_modal() {
+		if ( ! rocket_is_live_site() ) {
+			return;
+		}
+
 		$base_url   = rocket_get_constant( 'WP_ROCKET_DEBUG', false )
 			? 'https://dave.wp-rocket.me/'
 			: rocket_get_constant( 'WP_ROCKET_WEB_MAIN' );

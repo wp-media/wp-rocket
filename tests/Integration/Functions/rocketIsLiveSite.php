@@ -1,0 +1,75 @@
+<?php
+namespace WP_Rocket\Tests\Integration\Functions\Options;
+
+use WPMedia\PHPUnit\Integration\TestCase;
+use Brain\Monkey\Functions;
+
+/**
+ * @covers rocket_is_live_site()
+ * @group Functions
+ * @group API
+ */
+class Test_RocketIsLiveSite extends TestCase {
+	public function testShouldReturnTrueWhenWPROCKETDEBUG() {
+		Functions\when( 'rocket_get_constant' )->justReturn( true );
+
+		$this->assertTrue( rocket_is_live_site() );
+	}
+
+	public function testShouldReturnFalseWhenNoHost() {
+		Functions\when( 'rocket_get_constant' )->justReturn( false );
+
+		$callback = function() {
+			return 'http://';
+		};
+
+		add_filter( 'home_url', $callback );
+
+		$this->assertFalse( rocket_is_live_site() );
+
+		remove_filter( 'home_url', $callback );
+	}
+
+	public function testShouldReturnFalseWhenLocalOrStaging() {
+		Functions\when( 'rocket_get_constant' )->justReturn( false );
+
+		$local_staging = [
+			'127.0.0.1',
+			'localhost',
+			'example.localhost',
+			'example.local',
+			'example.dev',
+			'example.test',
+			'example.docksal',
+			'example.dev.cc',
+			'example.lndo.site',
+			'example.wpengine.com',
+			'example.pantheonsite.io',
+			'example.flywheelsites.com',
+			'example.flywheelstaging.com',
+			'example.kinsta.com',
+			'example.kinsta.cloud',
+			'example.cloudwaysapps.com',
+			'example.azurewebsites.net',
+			'example.wpserveur.net',
+			'example-liquidwebsites.com',
+			'example.myftpupload.com'
+		];
+
+		foreach ( $local_staging as $domain ) {
+			$callback = function() use ( $domain ) {
+				return 'http://' . $domain;
+			};
+
+			add_filter( 'home_url', $callback );
+			$this->assertFalse( rocket_is_live_site() );
+			remove_filter( 'home_url', $callback );
+		}
+	}
+
+	public function testShouldReturnTrueWhenLiveSite() {
+		Functions\when( 'rocket_get_constant' )->justReturn( false );
+
+		$this->assertTrue( rocket_is_live_site() );
+	}
+}

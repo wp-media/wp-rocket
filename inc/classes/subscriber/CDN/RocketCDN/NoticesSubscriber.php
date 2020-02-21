@@ -56,6 +56,10 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 * @return void
 	 */
 	public function promote_rocketcdn_notice() {
+		if ( ! rocket_is_live_site() ) {
+			return;
+		}
+
 		if ( ! $this->should_display_notice() ) {
 			return;
 		}
@@ -72,6 +76,10 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 * @return void
 	 */
 	public function add_dismiss_script() {
+		if ( ! rocket_is_live_site() ) {
+			return;
+		}
+
 		if ( ! $this->should_display_notice() ) {
 			return;
 		}
@@ -152,6 +160,10 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 * @return void
 	 */
 	public function display_rocketcdn_cta() {
+		if ( ! rocket_is_live_site() ) {
+			return;
+		}
+
 		$subscription_data = $this->api_client->get_subscription_data();
 
 		if ( 'running' === $subscription_data['subscription_status'] ) {

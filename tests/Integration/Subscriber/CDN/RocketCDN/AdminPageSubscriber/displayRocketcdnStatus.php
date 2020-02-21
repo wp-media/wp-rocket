@@ -36,9 +36,37 @@ class Test_DisplayRocketcdnStatus extends TestCase {
 		return $this->format_the_html( ob_get_clean() );
 	}
 
-	/**
-	 * Test should render the "no subscription" HTML when the subscription status is "cancelled."
-	 */
+	public function testShouldDisplayNothingWhenNotLiveSite() {
+		set_transient(
+			'rocketcdn_status',
+			[
+				'is_active'                     => false,
+				'subscription_status'           => 'cancelled',
+				'subscription_next_date_update' => '2020-01-01',
+			],
+			MINUTE_IN_SECONDS
+		);
+
+		$callback = function() {
+			return 'http://localhost';
+		};
+
+		$expected = <<<HTML
+<div class="wpr-optionHeader">
+	<h3 class="wpr-title2">RocketCDN</h3>
+</div>
+<div class="wpr-field wpr-field-account">
+	<span class="wpr-infoAccount wpr-isInvalid">RocketCDN is unavailable on local domains and staging sites.</span>
+</div>
+HTML;
+
+		add_filter( 'home_url', $callback );
+
+		$this->assertSame( $this->format_the_html( $expected ), $this->getActualHtml() );
+
+		remove_filter( 'home_url', $callback );
+	}
+
 	public function testShouldRenderNoSubscriptionHTMLWhenCancelled() {
 		set_transient(
 			'rocketcdn_status',
@@ -70,9 +98,6 @@ HTML;
 		$this->assertSame( $this->format_the_html( $expected ), $this->getActualHtml() );
 	}
 
-	/**
-	 * Test should render HTML when the subscription status is "running".
-	 */
 	public function testShouldRenderHTMLWhenSubscriptionIsRunning() {
 		set_transient(
 			'rocketcdn_status',
