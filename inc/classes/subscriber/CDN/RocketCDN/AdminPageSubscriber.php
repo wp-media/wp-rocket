@@ -75,10 +75,6 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 * @return void
 	 */
 	public function display_rocketcdn_status() {
-		if ( ! rocket_is_live_site() ) {
-			return;
-		}
-
 		$subscription_data = $this->api_client->get_subscription_data();
 
 		if ( 'running' === $subscription_data['subscription_status'] ) {
@@ -96,6 +92,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		}
 
 		$data = [
+			'is_live_site'    => rocket_is_live_site(),
 			'container_class' => $container_class,
 			'label'           => $label,
 			'status_class'    => $status_class,
