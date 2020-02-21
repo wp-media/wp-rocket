@@ -60,7 +60,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		// Varnish Addon.
 		$this->getContainer()->add( 'varnish', 'WP_Rocket\Addons\Varnish\Varnish' )
 			->withArgument( $options );
-		$this->getContainer()->share( 'varnish_subscriber', 'WP_Rocket\Subscriber\Addons\Varnish\VarnishSubscriber' )
+		$this->getContainer()->share( 'varnish_subscriber', 'WP_Rocket\Subscriber\Addons\Varnish\Subscriber' )
 			->withArgument( $this->getContainer()->get( 'varnish' ) )
 			->withArgument( $options );
 
