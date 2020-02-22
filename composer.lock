@@ -3410,7 +3410,5 @@
     "platform": {
         "php": ">=5.6.0"
     },
-    "platform-dev": {
-        "php": "^5.6 || ^7"
-    }
+    "platform-dev": []
 }

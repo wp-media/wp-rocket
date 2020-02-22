@@ -2,14 +2,14 @@
 namespace WP_Rocket\Preload;
 
 /**
- * Sitemap preload
+ * Sitemap preload.
  *
  * @since 3.2
  * @author Remy Perona
  */
 class Sitemap extends Abstract_Preload {
 	/**
-	 * Flag to track sitemap read failures
+	 * Flag to track sitemap read failures.
 	 *
 	 * @since 3.3
 	 * @author Arun Basil Lal
@@ -20,77 +20,70 @@ class Sitemap extends Abstract_Preload {
 	private $sitemap_error = false;
 
 	/**
-	 * Launches the sitemap preload
+	 * Launches the sitemap preload.
 	 *
-	 * @since 3.2
+	 * @since  3.2
+	 * @access public
 	 * @author Remy Perona
 	 *
 	 * @param array $sitemaps Sitemaps to use for preloading.
 	 * @return void
 	 */
-	public function run_preload( $sitemaps ) {
+	public function run_preload( array $sitemaps ) {
 		if ( ! $sitemaps ) {
 			return;
 		}
 
-		$urls_group = [];
+		$urls = [];
 
 		foreach ( $sitemaps as $sitemap_type => $sitemap_url ) {
 			/**
-			 * Fires before WP Rocket sitemap preload is called for a sitemap URL
+			 * Fires before WP Rocket sitemap preload is called for a sitemap URL.
 			 *
 			 * @since 2.8
 			 *
-			 * @param string $sitemap_type  the sitemap identifier
-			 * @param string $sitemap_url sitemap URL to be crawler
+			 * @param string $sitemap_type The sitemap identifier.
+			 * @param string $sitemap_url  Sitemap URL to be crawled.
 			*/
 			do_action( 'before_run_rocket_sitemap_preload', $sitemap_type, $sitemap_url ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 
-			$urls_group[] = $this->process_sitemap( $sitemap_url );
+			$urls = $this->process_sitemap( $sitemap_url, $urls );
 
 			/**
-			 * Fires after WP Rocket sitemap preload was called for a sitemap URL
+			 * Fires after WP Rocket sitemap preload was called for a sitemap URL.
 			 *
 			 * @since 2.8
 			 *
-			 * @param string $sitemap_type  the sitemap identifier
-			 * @param string $sitemap_url sitemap URL crawled
+			 * @param string $sitemap_type The sitemap identifier.
+			 * @param string $sitemap_url  Sitemap URL crawled.
 			*/
 			do_action( 'after_run_rocket_sitemap_preload', $sitemap_type, $sitemap_url ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		}
 
 		if ( true === $this->sitemap_error ) {
 			// Attempt to use the fallback method.
-			$fallback_urls = $this->get_urls();
-
-			if ( ! empty( $fallback_urls ) ) {
-				$urls_group[] = $fallback_urls;
-			}
+			$urls = $this->get_urls( $urls );
 		}
 
-		$urls_group = array_filter( $urls_group );
-
-		if ( ! $urls_group ) {
+		if ( ! $urls ) {
 			return;
 		}
 
 		$preload = 0;
 
-		foreach ( $urls_group as $urls ) {
-			$urls = array_flip( array_flip( $urls ) );
-			foreach ( $urls as $url ) {
-				$path = wp_parse_url( $url, PHP_URL_PATH );
+		foreach ( $urls as $item ) {
+			$url  = is_array( $item ) ? $item['url'] : $item;
+			$path = wp_parse_url( $url, PHP_URL_PATH );
 
-				if ( isset( $path ) && preg_match( '#^(' . \get_rocket_cache_reject_uri() . ')$#', $path ) ) {
-					continue;
-				}
-
-				$this->preload_process->push_to_queue( $url );
-				$preload++;
+			if ( isset( $path ) && preg_match( '#^(' . \get_rocket_cache_reject_uri() . ')$#', $path ) ) {
+				continue;
 			}
+
+			$this->preload_process->push_to_queue( $item );
+			$preload++;
 		}
 
-		if ( 0 === $preload ) {
+		if ( ! $preload ) {
 			return;
 		}
 
@@ -99,20 +92,27 @@ class Sitemap extends Abstract_Preload {
 	}
 
 	/**
-	 * Processes the sitemaps recursively
+	 * Processes the sitemaps recursively.
 	 *
-	 * @since 3.2
+	 * @since  3.2
+	 * @since  3.5 Now private.
 	 * @author Remy Perona
 	 *
-	 * @param string $sitemap_url URL of the sitemap.
-	 * @param array  $urls        An array of URLs.
-	 * @return array
+	 * @param  string $sitemap_url URL of the sitemap.
+	 * @param  array  $urls        An array of URLs and arrays.
+	 * @return array {
+	 *     Array values can be URLs (string) or arrays described as follow.
+	 *     Array keys are an identifier based on the URL path.
+	 *
+	 *     @type string $url    The URL to preload.
+	 *     @type bool   $mobile True when we want to send a "mobile" user agent with the request. Optional.
+	 * }
 	 */
-	public function process_sitemap( $sitemap_url, $urls = [] ) {
-		$tmp_urls = [];
+	private function process_sitemap( $sitemap_url, array $urls = [] ) {
+		$this->sitemap_error = false;
 
 		/**
-		 * Filters the arguments for the sitemap preload request
+		 * Filters the arguments for the sitemap preload request.
 		 *
 		 * @since 2.10.8
 		 * @author Remy Perona
@@ -128,19 +128,19 @@ class Sitemap extends Abstract_Preload {
 			]
 		);
 
-		$sitemap          = wp_remote_get( esc_url( $sitemap_url ), $args );
+		$sitemap          = wp_remote_get( esc_url_raw( $sitemap_url ), $args );
 		$errors           = get_transient( 'rocket_preload_errors' );
 		$errors           = is_array( $errors ) ? $errors : [];
 		$errors['errors'] = isset( $errors['errors'] ) && is_array( $errors['errors'] ) ? $errors['errors'] : [];
 
 		if ( is_wp_error( $sitemap ) ) {
-			// Translators: %1$s is a XML sitemap URL, %2$s is the error message, %3$s = opening link tag, %4$s = closing link tag..
+			// Translators: %1$s is a XML sitemap URL, %2$s is the error message, %3$s = opening link tag, %4$s = closing link tag.
 			$errors['errors'][] = sprintf( __( 'Sitemap preload encountered an error. Could not gather links on %1$s because of the following error: %2$s. %3$sLearn more%4$s.', 'rocket' ), $sitemap_url, $sitemap->get_error_message(), '<a href="https://docs.wp-rocket.me/article/1065-sitemap-preload-is-slow-or-some-pages-are-not-preloaded-at-all#failed-preload" rel="noopener noreferrer" target=_"blank">', '</a>' );
 
 			$this->sitemap_error = true;
 
 			set_transient( 'rocket_preload_errors', $errors );
-			return [];
+			return $urls;
 		}
 
 		$response_code = wp_remote_retrieve_response_code( $sitemap );
@@ -173,7 +173,7 @@ class Sitemap extends Abstract_Preload {
 			$this->sitemap_error = true;
 
 			set_transient( 'rocket_preload_errors', $errors );
-			return [];
+			return $urls;
 		}
 
 		$xml_data = wp_remote_retrieve_body( $sitemap );
@@ -186,13 +186,13 @@ class Sitemap extends Abstract_Preload {
 			$this->sitemap_error = true;
 
 			set_transient( 'rocket_preload_errors', $errors );
-			return [];
+			return $urls;
 		}
 
 		if ( ! function_exists( 'simplexml_load_string' ) ) {
 
 			$this->sitemap_error = true;
-			return [];
+			return $urls;
 		}
 
 		libxml_use_internal_errors( true );
@@ -211,54 +211,98 @@ class Sitemap extends Abstract_Preload {
 			$this->sitemap_error = true;
 
 			set_transient( 'rocket_preload_errors', $errors );
-			return [];
+			return $urls;
 		}
 
 		$url_count        = count( $xml->url );
 		$sitemap_children = count( $xml->sitemap );
 
 		if ( $url_count > 0 ) {
+			$mobile_preload = $this->preload_process->is_mobile_preload_enabled();
+
 			for ( $i = 0; $i < $url_count; $i++ ) {
-				$tmp_urls[] = (string) $xml->url[ $i ]->loc;
+				$url = (string) $xml->url[ $i ]->loc;
+
+				if ( ! $url ) {
+					continue;
+				}
+
+				$namespaces = $xml->url[ $i ]->getNamespaces( true );
+				$path       = $this->get_url_identifier( $url );
+				$mobile_key = $path . self::MOBILE_SUFFIX;
+
+				if ( ! empty( $namespaces['mobile'] ) ) {
+					// According to the sitemap, this URL is dedicated to mobile devices.
+					if ( isset( $urls[ $mobile_key ] ) ) {
+						continue;
+					}
+
+					$urls[ $mobile_key ] = [
+						'url'    => $url,
+						'mobile' => true,
+					];
+				} else {
+					if ( ! isset( $urls[ $path ] ) ) {
+						$urls[ $path ] = $url;
+					}
+
+					if ( $mobile_preload && ! isset( $urls[ $mobile_key ] ) ) {
+						$urls[ $mobile_key ] = [
+							'url'    => $url,
+							'mobile' => true,
+						];
+					}
+				}
 			}
-		} elseif ( $sitemap_children > 0 ) {
-			for ( $i = 0; $i < $sitemap_children; $i++ ) {
-				$sub_sitemap_url = (string) $xml->sitemap[ $i ]->loc;
-				$urls            = $this->process_sitemap( $sub_sitemap_url, $urls );
-			}
+
+			return $urls;
 		}
 
-		$urls = array_merge( $urls, $tmp_urls );
+		if ( ! $sitemap_children ) {
+			return $urls;
+		}
+
+		for ( $i = 0; $i < $sitemap_children; $i++ ) {
+			$sub_sitemap_url = (string) $xml->sitemap[ $i ]->loc;
+			$urls            = $this->process_sitemap( $sub_sitemap_url, $urls );
+		}
+
 		return $urls;
 	}
 
 	/**
-	 * Get URLs from WordPress
+	 * Get URLs from WordPress.
 	 *
 	 * Used as a fallback when extracting URLs from sitemap fails.
 	 *
-	 * @since 3.3
+	 * @since  3.3
+	 * @since  3.5 New $urls argument.
+	 * @since  3.5 Now private.
 	 * @author Arun Basil Lal
 	 *
 	 * @link https://github.com/wp-media/wp-rocket/issues/1306
 	 *
-	 * @return array $urls Array of permalinks.
+	 * @param  array $urls An array of URLs and arrays.
+	 * @return array {
+	 *     Array values can be URLs (string) or arrays described as follow.
+	 *     Array keys are an identifier based on the URL path.
+	 *
+	 *     @type string $url    The URL to preload.
+	 *     @type bool   $mobile True when we want to send a "mobile" user agent with the request. Optional.
+	 * }
 	 */
-	public function get_urls() {
-
-		$urls = [];
-
+	private function get_urls( array $urls = [] ) {
 		// Get public post types.
 		$post_types = get_post_types( [ 'public' => true ] );
 		$post_types = array_filter( $post_types, 'is_post_type_viewable' );
 
 		/**
-		 * Filters the arguments for get_posts
+		 * Filters the arguments for get_posts.
 		 *
 		 * @since 3.3
 		 * @author Arun Basil Lal
 		 *
-		 * @param array $args Arguments for get_posts
+		 * @param array $args Arguments for get_posts.
 		 */
 		$args = apply_filters(
 			'rocket_preload_sitemap_fallback_request_args',
@@ -270,14 +314,28 @@ class Sitemap extends Abstract_Preload {
 			]
 		);
 
-		$all_posts = get_posts( $args );
+		$all_posts      = get_posts( $args );
+		$mobile_preload = $this->preload_process->is_mobile_preload_enabled();
 
 		foreach ( $all_posts as $post ) {
 			$permalink = get_permalink( $post );
 
-			if ( false !== $permalink ) {
-				$urls[] = $permalink;
+			if ( false === $permalink ) {
+				continue;
 			}
+
+			$path = $this->get_url_identifier( $permalink );
+
+			$urls[ $path ] = $permalink;
+
+			if ( ! $mobile_preload ) {
+				continue;
+			}
+
+			$urls[ $path . self::MOBILE_SUFFIX ] = [
+				'url'    => $permalink,
+				'mobile' => true,
+			];
 		}
 
 		return $urls;

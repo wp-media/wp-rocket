@@ -80,7 +80,12 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * Return an array of events that this subscriber wants to listen to.
+	 *
+	 * @since  3.3
+	 * @author Remy Perona
+	 *
+	 * @return array
 	 */
 	public static function get_subscribed_events() {
 		return [

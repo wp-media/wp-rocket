@@ -13,7 +13,12 @@ use WP_Rocket\Logger\Logger;
 class Detect_Missing_Tags_Subscriber implements Subscriber_Interface {
 
 	/**
-	 * {@inheritdoc}
+	 * Return an array of events that this subscriber wants to listen to.
+	 *
+	 * @since  3.4.2
+	 * @author Soponar Cristina
+	 *
+	 * @return array
 	 */
 	public static function get_subscribed_events() {
 		return [

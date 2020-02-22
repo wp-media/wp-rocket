@@ -13,8 +13,8 @@ class TestOptimize extends TestCase {
     public function testShouldCombineGoogleFontsWhenSubset() {
         $combine = new Combine_Google_Fonts();
 
-        $original = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/Optimization/CSS/GoogleFonts/original-subset.html');
-        $combined = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/Optimization/CSS/GoogleFonts/combined-subset.html');
+        $original = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/Optimization/CSS/GoogleFonts/original-subset.html' );
+        $combined = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/Optimization/CSS/GoogleFonts/combined-subset.html' );
 
         $this->assertSame(
             $combined,
@@ -25,8 +25,8 @@ class TestOptimize extends TestCase {
     public function testShouldCombineGoogleFontsWhenNoSubset() {
         $combine = new Combine_Google_Fonts();
 
-        $original = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/Optimization/CSS/GoogleFonts/original.html');
-        $combined = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/Optimization/CSS/GoogleFonts/combined.html');
+        $original = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/Optimization/CSS/GoogleFonts/original.html' );
+        $combined = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/Optimization/CSS/GoogleFonts/combined.html' );
 
         $this->assertSame(
             $combined,

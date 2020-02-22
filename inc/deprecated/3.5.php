@@ -59,7 +59,7 @@ function rocket_is_api_keys_valid_cloudflare( $cf_email, $cf_api_key, $cf_zone_i
 
 		if ( ! isset( $cf_zone->success ) || empty( $cf_zone->success ) ) {
 			foreach ( $cf_zone->errors as $error ) {
-				if ( $error->code === 6003 ) {
+				if ( 6003 === $error->code ) {
 					$msg = __( 'Incorrect Cloudflare email address or API key.', 'rocket' );
 
 					$msg .= ' ' . sprintf(
@@ -116,7 +116,6 @@ function rocket_is_api_keys_valid_cloudflare( $cf_email, $cf_api_key, $cf_zone_i
 
 			return true;
 		}
-
 	} catch ( Exception $e ) {
 		$msg = __( 'Incorrect Cloudflare email address or API key.', 'rocket' );
 
