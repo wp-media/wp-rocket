@@ -3,7 +3,7 @@ bin export-ignore
 src export-ignore
 tests export-ignore
 
-//files
+// files
 .babelrc export-ignore
 .editorconfig export-ignore
 .gitattributes export-ignore

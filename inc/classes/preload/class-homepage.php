@@ -2,14 +2,15 @@
 namespace WP_Rocket\Preload;
 
 /**
- * Preloads the homepage and the internal URLs on it
+ * Preloads the homepage and the internal URLs on it.
  *
  * @since 3.2
  * @author Remy Perona
  */
 class Homepage extends Abstract_Preload {
+
 	/**
-	 * Gets the internal URLs on the homepage and sends them to the preload queue
+	 * Gets the internal URLs on the homepage and sends them to the preload queue.
 	 *
 	 * @since 3.2
 	 * @author Remy Perona
@@ -17,47 +18,94 @@ class Homepage extends Abstract_Preload {
 	 * @param array $home_urls Homepages URLs to preload.
 	 * @return void
 	 */
-	public function preload( $home_urls ) {
-		$preload = 0;
-		foreach ( $home_urls as $home_url ) {
-			$urls = $this->get_urls( $home_url );
+	public function preload( array $home_urls ) {
+		if ( ! $home_urls ) {
+			return;
+		}
+
+		$home_urls = array_map( [ $this->preload_process, 'format_item' ], $home_urls );
+		$home_urls = array_filter( $home_urls );
+
+		if ( ! $home_urls ) {
+			return;
+		}
+
+		if ( $this->preload_process->is_mobile_preload_enabled() ) {
+			foreach ( $home_urls as $home_item ) {
+				if ( $home_item['mobile'] ) {
+					continue;
+				}
+
+				$home_urls[] = [
+					'url'    => $home_item['url'],
+					'mobile' => true,
+				];
+			}
+		}
+
+		$preload_urls = [];
+
+		foreach ( $home_urls as $home_item ) {
+			$urls = $this->get_urls( $home_item );
 
 			if ( ! $urls ) {
 				continue;
 			}
 
-			$home_host = wp_parse_url( $home_url, PHP_URL_HOST );
+			$home_host = wp_parse_url( $home_item['url'], PHP_URL_HOST );
 
 			foreach ( $urls as $url ) {
-				if ( ! $this->should_preload( $url, $home_url, $home_host ) ) {
+				if ( ! $this->should_preload( $url, $home_item['url'], $home_host ) ) {
 					continue;
 				}
 
-				$this->preload_process->push_to_queue( $url );
-				$preload++;
+				$path = $this->get_url_identifier( $url );
+
+				if ( ! $home_item['mobile'] && ! isset( $preload_urls[ $path ] ) ) {
+					// Not a URL for mobile.
+					$preload_urls[ $path ] = $url;
+				}
+
+				if ( $home_item['mobile'] && ! isset( $preload_urls[ $path . self::MOBILE_SUFFIX ] ) ) {
+					// A URL for mobile.
+					$preload_urls[ $path . self::MOBILE_SUFFIX ] = [
+						'url'    => $url,
+						'mobile' => true,
+					];
+				}
 			}
 		}
 
-		if ( 0 === $preload ) {
+		if ( ! $preload_urls ) {
 			return;
 		}
+
+		array_map( [ $this->preload_process, 'push_to_queue' ], $preload_urls );
 
 		set_transient( 'rocket_preload_running', 0 );
 		$this->preload_process->save()->dispatch();
 	}
 
 	/**
-	 * Gets links in the content of the URL provided
+	 * Gets links in the content of the URL provided.
 	 *
-	 * @since 3.2.2
+	 * @since  3.2.2
+	 * @since  3.5 $item is an array.
 	 * @author Remy Perona
 	 *
-	 * @param string $url URL to get content and links from.
+	 * @param  array $item {
+	 *     The item to get content and links from: an array containing the following values.
+	 *
+	 *     @type string $url    The URL to preload.
+	 *     @type bool   $mobile True when we want to send a "mobile" user agent with the request. Optional.
+	 * }
 	 * @return bool|array
 	 */
-	private function get_urls( $url ) {
+	private function get_urls( array $item ) {
+		$user_agent = $this->preload_process->get_item_user_agent( $item );
+
 		/**
-		 * Filters the arguments for the partial preload request
+		 * Filters the arguments for the partial preload request.
 		 *
 		 * @since 3.2
 		 * @author Remy Perona
@@ -68,19 +116,19 @@ class Homepage extends Abstract_Preload {
 			'rocket_homepage_preload_url_request_args',
 			[
 				'timeout'    => 10,
-				'user-agent' => 'WP Rocket/Homepage_Preload',
+				'user-agent' => $user_agent,
 				'sslverify'  => apply_filters( 'https_local_ssl_verify', false ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			]
 		);
 
-		$response         = wp_remote_get( $url, $args );
+		$response         = wp_remote_get( esc_url_raw( $item['url'] ), $args );
 		$errors           = get_transient( 'rocket_preload_errors' );
 		$errors           = is_array( $errors ) ? $errors : [];
 		$errors['errors'] = isset( $errors['errors'] ) && is_array( $errors['errors'] ) ? $errors['errors'] : [];
 
 		if ( is_wp_error( $response ) ) {
 			// Translators: %1$s is an URL, %2$s is the error message, %3$s = opening link tag, %4$s = closing link tag.
-			$errors['errors'][] = sprintf( __( 'Preload encountered an error. Could not gather links on %1$s because of the following error: %2$s. %3$sLearn more%4$s.', 'rocket' ), $url, $response->get_error_message(), '<a href="https://docs.wp-rocket.me/article/1065-sitemap-preload-is-slow-or-some-pages-are-not-preloaded-at-all#failed-preload" rel="noopener noreferrer" target=_"blank">', '</a>' );
+			$errors['errors'][] = sprintf( __( 'Preload encountered an error. Could not gather links on %1$s because of the following error: %2$s. %3$sLearn more%4$s.', 'rocket' ), $item['url'], $response->get_error_message(), '<a href="https://docs.wp-rocket.me/article/1065-sitemap-preload-is-slow-or-some-pages-are-not-preloaded-at-all#failed-preload" rel="noopener noreferrer" target=_"blank">', '</a>' );
 
 			set_transient( 'rocket_preload_errors', $errors );
 			return false;
@@ -93,25 +141,25 @@ class Homepage extends Abstract_Preload {
 				case 401:
 				case 403:
 					// Translators: %1$s is an URL, %2$s is the HTTP response code, %3$s = opening link tag, %4$s = closing link tag.
-					$errors['errors'][] = sprintf( __( 'Preload encountered an error. %1$s is not accessible to due to the following response code: %2$s. Security measures could be preventing access. %3$sLearn more%4$s.', 'rocket' ), $url, $response_code, '<a href="https://docs.wp-rocket.me/article/1065-sitemap-preload-is-slow-or-some-pages-are-not-preloaded-at-all#failed-preload" rel="noopener noreferrer" target=_"blank">', '</a>' );
+					$errors['errors'][] = sprintf( __( 'Preload encountered an error. %1$s is not accessible to due to the following response code: %2$s. Security measures could be preventing access. %3$sLearn more%4$s.', 'rocket' ), $item['url'], $response_code, '<a href="https://docs.wp-rocket.me/article/1065-sitemap-preload-is-slow-or-some-pages-are-not-preloaded-at-all#failed-preload" rel="noopener noreferrer" target=_"blank">', '</a>' );
 
 					set_transient( 'rocket_preload_errors', $errors );
 					break;
 				case 404:
 					// Translators: %1$s is an URL, %2$s = opening link tag, %3$s = closing link tag.
-					$errors['errors'][] = sprintf( __( 'Preload encountered an error. %1$s is not accessible to due to the following response code: 404. Please make sure your homepage is accessible in your browser. %2$sLearn more%3$s.', 'rocket' ), $url, '<a href="https://docs.wp-rocket.me/article/1065-sitemap-preload-is-slow-or-some-pages-are-not-preloaded-at-all#failed-preload" rel="noopener noreferrer" target=_"blank">', '</a>' );
+					$errors['errors'][] = sprintf( __( 'Preload encountered an error. %1$s is not accessible to due to the following response code: 404. Please make sure your homepage is accessible in your browser. %2$sLearn more%3$s.', 'rocket' ), $item['url'], '<a href="https://docs.wp-rocket.me/article/1065-sitemap-preload-is-slow-or-some-pages-are-not-preloaded-at-all#failed-preload" rel="noopener noreferrer" target=_"blank">', '</a>' );
 
 					set_transient( 'rocket_preload_errors', $errors );
 					break;
 				case 500:
 					// Translators: %1$s is an URL, %2$s = opening link tag, %3$s = closing link tag.
-					$errors['errors'][] = sprintf( __( 'Preload encountered an error. %1$s is not accessible to due to the following response code: 500. Please check with your web host about server access. %2$sLearn more%3$s.', 'rocket' ), $url, '<a href="https://docs.wp-rocket.me/article/1065-sitemap-preload-is-slow-or-some-pages-are-not-preloaded-at-all#failed-preload" rel="noopener noreferrer" target=_"blank">', '</a>' );
+					$errors['errors'][] = sprintf( __( 'Preload encountered an error. %1$s is not accessible to due to the following response code: 500. Please check with your web host about server access. %2$sLearn more%3$s.', 'rocket' ), $item['url'], '<a href="https://docs.wp-rocket.me/article/1065-sitemap-preload-is-slow-or-some-pages-are-not-preloaded-at-all#failed-preload" rel="noopener noreferrer" target=_"blank">', '</a>' );
 
 					set_transient( 'rocket_preload_errors', $errors );
 					break;
 				default:
 					// Translators: %1$s is an URL, %2$s is the HTTP response code, %3$s = opening link tag, %4$s = closing link tag.
-					$errors['errors'][] = sprintf( __( 'Preload encountered an error. Could not gather links on %1$s because it returned the following response code: %2$s. %3$sLearn more%4$s.', 'rocket' ), $url, $response_code, '<a href="https://docs.wp-rocket.me/article/1065-sitemap-preload-is-slow-or-some-pages-are-not-preloaded-at-all#failed-preload" rel="noopener noreferrer" target=_"blank">', '</a>' );
+					$errors['errors'][] = sprintf( __( 'Preload encountered an error. Could not gather links on %1$s because it returned the following response code: %2$s. %3$sLearn more%4$s.', 'rocket' ), $item['url'], $response_code, '<a href="https://docs.wp-rocket.me/article/1065-sitemap-preload-is-slow-or-some-pages-are-not-preloaded-at-all#failed-preload" rel="noopener noreferrer" target=_"blank">', '</a>' );
 
 					set_transient( 'rocket_preload_errors', $errors );
 					break;
@@ -128,14 +176,15 @@ class Homepage extends Abstract_Preload {
 	}
 
 	/**
-	 * Checks if the URL should be preloaded
+	 * Checks if the URL should be preloaded.
 	 *
-	 * @since 3.2.2
+	 * @since  3.2.2
+	 * @access private
 	 * @author Remy Perona
 	 *
-	 * @param string $url URL to check.
-	 * @param string $home_url Homepage URL.
-	 * @param string $home_host Homepage host.
+	 * @param  string $url URL to check.
+	 * @param  string $home_url Homepage URL.
+	 * @param  string $home_host Homepage host.
 	 * @return bool
 	 */
 	private function should_preload( $url, $home_url, $home_host ) {
@@ -157,7 +206,7 @@ class Homepage extends Abstract_Preload {
 
 		$url = \rocket_add_url_protocol( $url );
 
-		if ( $url === $home_url ) {
+		if ( untrailingslashit( $url ) === untrailingslashit( $home_url ) ) {
 			return false;
 		}
 
@@ -183,12 +232,13 @@ class Homepage extends Abstract_Preload {
 	}
 
 	/**
-	 * Checks if URL is an URL to a file
+	 * Checks if URL is an URL to a file.
 	 *
-	 * @since 3.2.2
+	 * @since  3.2.2
+	 * @access private
 	 * @author Remy Perona
 	 *
-	 * @param string $url URL to check.
+	 * @param  string $url URL to check.
 	 * @return bool
 	 */
 	private function is_file_url( $url ) {
