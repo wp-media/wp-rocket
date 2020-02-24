@@ -99,7 +99,6 @@ class Cache extends Abstract_Buffer {
 			]
 		);
 
-		global $is_nginx;
 		$cache_filepath_gzip = $cache_filepath . '.gz';
 		$accept_encoding     = $this->config->get_server_input( 'HTTP_ACCEPT_ENCODING' );
 		$accept_gzip         = $accept_encoding && false !== strpos( $accept_encoding, 'gzip' );
@@ -340,7 +339,6 @@ class Cache extends Abstract_Buffer {
 	 * @return void
 	 */
 	private function write_cache_file( $cache_filepath, $content ) {
-		global $is_nginx;
 		$gzip_filepath      = $cache_filepath . '.gz';
 		$temp_filepath      = $cache_filepath . '_temp';
 		$temp_gzip_filepath = $gzip_filepath . '_temp';

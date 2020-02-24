@@ -83,7 +83,6 @@ function rocket_get_purge_urls( $post_id, $post ) {
 			if ( is_ssl() ) {
 				$filename .= '-https';
 			}
-			global $is_nginx;
 			$post_type_archive = trailingslashit( $post_type_archive );
 			array_push( $purge_urls, $post_type_archive . $filename . '.html' );
 			array_push( $purge_urls, $post_type_archive . $filename . '.html.gz' );

@@ -367,7 +367,6 @@ function do_rocket_callback( $buffer ) { // phpcs:ignore WordPress.NamingConvent
 			}
 
 			if ( function_exists( 'gzencode' ) ) {
-				global $is_nginx;
 				rocket_put_content( $rocket_cache_filepath . '.gz', gzencode( $buffer . $footprint, apply_filters( 'rocket_gzencode_level_compression', 3 ) ) );
 			}
 
@@ -396,7 +395,6 @@ function do_rocket_callback( $buffer ) { // phpcs:ignore WordPress.NamingConvent
  * @param string $rocket_cache_filepath Path to the cache file.
  */
 function rocket_serve_cache_file( $rocket_cache_filepath ) {
-	global $is_nginx;
 	$rocket_cache_filepath_gzip = $rocket_cache_filepath . '.gz';
 
 	// Check if cache file exist.

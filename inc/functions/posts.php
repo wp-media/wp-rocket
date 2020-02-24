@@ -54,7 +54,6 @@ function get_rocket_post_terms_urls( $post_id ) { // phpcs:ignore WordPress.Nami
  * @return array $urls List of dates URLs
  */
 function get_rocket_post_dates_urls( $post_id ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
-	global $is_nginx;
 	// Get the day and month of the post.
 	$date = explode( '-', get_the_time( 'Y-m-d', $post_id ) );
 
