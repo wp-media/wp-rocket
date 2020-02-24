@@ -9,7 +9,7 @@
 			} );
 		} );
 
-		rocketMaybeOpenModal();
+		maybeOpenModal();
 
 		MicroModal.init( {
 			disableScroll: true
@@ -29,7 +29,7 @@
 				smallCTA.classList.add( 'wpr-isHidden' );
 				bigCTA.classList.remove( 'wpr-isHidden' );
 
-				rocketSendHTTPRequest( rocketGetPostData( 'big' ) );
+				sendHTTPRequest( getPostData( 'big' ) );
 			} );
 		}
 
@@ -40,11 +40,11 @@
 				smallCTA.classList.remove( 'wpr-isHidden' );
 				bigCTA.classList.add( 'wpr-isHidden' );
 
-				rocketSendHTTPRequest( rocketGetPostData( 'small' ) );
+				sendHTTPRequest( getPostData( 'small' ) );
 			} );
 		}
 
-		function rocketGetPostData( status ) {
+		function getPostData( status ) {
 			let postData = '';
 
 			postData += 'action=toggle_rocketcdn_cta';
@@ -70,13 +70,13 @@
 		disableCDN( e.data, iframeURL );
 	};
 
-	function rocketMaybeOpenModal() {
+	function maybeOpenModal() {
 		let postData = '';
 
 		postData += 'action=rocketcdn_process_status';
 		postData += '&nonce=' + rocket_ajax_data.nonce;
 
-		const request = rocketSendHTTPRequest( postData );
+		const request = sendHTTPRequest( postData );
 
 		request.onreadystatechange = () => {
 			if ( request.readyState === XMLHttpRequest.DONE && 200 === request.status ) {
@@ -120,7 +120,7 @@
 		postData += '&status=' + data.rocketcdn_process;
 		postData += '&nonce=' + rocket_ajax_data.nonce;
 
-		rocketSendHTTPRequest( postData );
+		sendHTTPRequest( postData );
 	}
 
 	function enableCDN( data, iframeURL ) {
@@ -136,7 +136,7 @@
 		postData += '&cdn_url=' + data.rocketcdn_url;
 		postData += '&nonce=' + rocket_ajax_data.nonce;
 
-		const request = rocketSendHTTPRequest( postData );
+		const request = sendHTTPRequest( postData );
 
 		request.onreadystatechange = () => {
 			if ( request.readyState === XMLHttpRequest.DONE && 200 === request.status ) {
@@ -165,7 +165,7 @@
 		postData += 'action=rocketcdn_disable';
 		postData += '&nonce=' + rocket_ajax_data.nonce;
 
-		const request = rocketSendHTTPRequest( postData );
+		const request = sendHTTPRequest( postData );
 
 		request.onreadystatechange = () => {
 			if ( request.readyState === XMLHttpRequest.DONE && 200 === request.status ) {
@@ -182,7 +182,7 @@
 		};
 	}
 
-	function rocketSendHTTPRequest( postData ) {
+	function sendHTTPRequest( postData ) {
 		const httpRequest = new XMLHttpRequest();
 
 		httpRequest.open( 'POST', ajaxurl );
@@ -222,7 +222,7 @@
 		postData += '&value=' + data.rocketcdn_token;
 		postData += '&nonce=' + rocket_ajax_data.nonce;
 
-		const request = rocketSendHTTPRequest( postData );
+		const request = sendHTTPRequest( postData );
 
 		request.onreadystatechange = () => {
 			if ( request.readyState === XMLHttpRequest.DONE && 200 === request.status ) {

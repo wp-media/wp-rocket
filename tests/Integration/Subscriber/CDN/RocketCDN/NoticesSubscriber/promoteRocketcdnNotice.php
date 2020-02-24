@@ -20,7 +20,7 @@ class Test_PromoteRocketcdnNotice extends TestCase {
 	private function get_notice() {
 		return $this->format_the_html( '<div class="notice notice-alt notice-warning is-dismissible" id="rocketcdn-promote-notice">
 		<h2 class="notice-title">New!</h2>
-		<p>Speed up your website with Rocket CDN, WP Rocket’s Content Delivery Network!</p>
+		<p>Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network!</p>
 		<p><a href="#page_cdn" class="wpr-button" id="rocketcdn-learn-more-dismiss">Learn More</a></p>
 	</div>' );
 	}

@@ -52,7 +52,7 @@ class Test_DisplayRocketcdnStatus extends TestCase {
 
 		$expected = <<<HTML
 <div class="wpr-optionHeader">
-	<h3 class="wpr-title2">Rocket CDN</h3>
+	<h3 class="wpr-title2">RocketCDN</h3>
 </div>
 <div class="wpr-field wpr-field-account">
 	<div class="wpr-flex wpr-flex--egal">
@@ -61,7 +61,7 @@ class Test_DisplayRocketcdnStatus extends TestCase {
 			<span class="wpr-infoAccount wpr-isInvalid">No Subscription</span>
 		</div>
 		<div>
-			<a href="#page_cdn" class="wpr-button">Get Rocket CDN</a>
+			<a href="#page_cdn" class="wpr-button">Get RocketCDN</a>
 		</div>
 	</div>
 </div>
@@ -86,7 +86,7 @@ HTML;
 
 		$expected = <<<HTML
 <div class="wpr-optionHeader">
-	<h3 class="wpr-title2">Rocket CDN</h3>
+	<h3 class="wpr-title2">RocketCDN</h3>
 </div>
 <div class="wpr-field wpr-field-account">
 	<div class="wpr-flex">

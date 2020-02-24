@@ -444,7 +444,7 @@ class Render extends Abstract_render {
 	}
 
 	/**
-	 * Displays the Rocket CDN template.
+	 * Displays the RocketCDN template.
 	 *
 	 * @since 3.5
 	 * @author Remy Perona

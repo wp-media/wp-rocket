@@ -2,7 +2,8 @@
 
 namespace WP_Rocket\Tests\Integration\CDN\RocketCDN\APIClient;
 
-use WP_Rocket\Tests\Integration\ApiTestCase;
+use WPMedia\PHPUnit\Integration\TestCase;
+use WPMedia\PHPUnit\Integration\ApiTrait;
 use WP_Rocket\CDN\RocketCDN\APIClient;
 use Brain\Monkey\Functions;
 
@@ -11,9 +12,17 @@ use Brain\Monkey\Functions;
  * @group  RocketCDN
  * @group  RocketCDNAPI
  */
-class Test_GetSubscriptionData extends ApiTestCase {
+class Test_GetSubscriptionData extends TestCase {
+	use ApiTrait;
+
 	private $client;
 	protected static $api_credentials_config_file = 'rocketcdn.php';
+
+	public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
+
+		self::pathToApiCredentialsConfigFile( WP_ROCKET_TESTS_DIR . '/../env/local/' );
+	}
 
 	public function setUp() {
 		parent::setUp();

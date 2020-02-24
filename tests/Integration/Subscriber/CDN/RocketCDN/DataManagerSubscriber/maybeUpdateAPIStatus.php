@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration\Subscriber\CDN\RocketCDN\DataManagerSubscriber;
 
 use WPMedia\PHPUnit\Integration\TestCase;
+use WPMedia\PHPUnit\Integration\ApiTrait;
 
 /**
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\DataManagerSubscriber::maybe_update_api_status
@@ -10,9 +11,15 @@ use WPMedia\PHPUnit\Integration\TestCase;
  * @group  AdminOnly
  */
 class Test_MaybeUpdateAPIStatus extends TestCase {
-    use \WPMedia\PHPUnit\Integration\ApiTrait;
+    use ApiTrait;
 
     protected static $api_credentials_config_file = 'rocketcdn.php';
+
+    public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
+
+		self::pathToApiCredentialsConfigFile( WP_ROCKET_TESTS_DIR . '/../env/local/' );
+	}
 
     public function setUp() {
         parent::setUp();

@@ -61,11 +61,12 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 			'rocket_cdn_settings_fields'          => 'rocketcdn_field',
 			'admin_post_rocket_purge_rocketcdn'   => 'purge_cdn_cache',
 			'rocket_settings_page_footer'         => 'add_subscription_modal',
+			'http_request_args'                   => [ 'preserve_authorization_token', PHP_INT_MAX, 2 ],
 		];
 	}
 
 	/**
-	 * Displays the Rocket CDN section on the dashboard tab
+	 * Displays the RocketCDN section on the dashboard tab
 	 *
 	 * @since  3.5
 	 * @author Remy Perona
@@ -101,7 +102,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	}
 
 	/**
-	 * Adds the Rocket CDN fields to the CDN section
+	 * Adds the RocketCDN fields to the CDN section
 	 *
 	 * @since  3.5
 	 * @author Remy Perona
@@ -117,13 +118,13 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 			return $fields;
 		}
 
-		$helper_text = __( 'Rocket CDN is currently active.', 'rocket' );
+		$helper_text = __( 'RocketCDN is currently active.', 'rocket' );
 		$cdn_cnames  = $this->options->get( 'cdn_cnames', [] );
 
 		if ( empty( $cdn_cnames ) || $cdn_cnames[0] !== $subscription_data['cdn_url'] ) {
 			$helper_text = sprintf(
 				// translators: %1$s = opening <code> tag, %2$s = CDN URL, %3$s = closing </code> tag.
-				__( 'To use Rocket CDN, replace your CNAME with %1$s%2$s%3$s.', 'rocket' ),
+				__( 'To use RocketCDN, replace your CNAME with %1$s%2$s%3$s.', 'rocket' ),
 				'<code>',
 				$subscription_data['cdn_url'],
 				'</code>'
@@ -192,7 +193,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		set_transient( 'rocketcdn_purge_cache_response', $this->api_client->purge_cache_request(), HOUR_IN_SECONDS );
 
 		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
-		defined( 'WP_ROCKET_IS_TESTING' ) ? wp_die() : exit;
+		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
 	}
 
 	/**
@@ -225,5 +226,20 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 			</div>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Filter the arguments used in an HTTP request, to make sure our user token has not been overwritten
+	 * by some other plugin.
+	 *
+	 * @since  3.5
+	 * @author Rémy Peorna
+	 *
+	 * @param  array  $args An array of HTTP request arguments.
+	 * @param  string $url  The request URL.
+	 * @return array
+	 */
+	public function preserve_authorization_token( $args, $url ) {
+		return $this->api_client->preserve_authorization_token( $args, $url );
 	}
 }

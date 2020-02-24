@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b7548393efe5a49350920d66de309211",
+    "content-hash": "43806f13f9108b2088b3a613d8c5a612",
     "packages": [
         {
             "name": "a5hleyrich/wp-background-processing",
@@ -197,47 +197,6 @@
             "homepage": "https://github.com/container-interop/container-interop",
             "abandoned": "psr/container",
             "time": "2017-02-14T19:40:03+00:00"
-        },
-        {
-            "name": "jamesryanbell/cloudflare",
-            "version": "1.11.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/jamesryanbell/cloudflare.git",
-                "reference": "75e93bb822619d8ddb8b1843588caa2fad739491"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/jamesryanbell/cloudflare/zipball/75e93bb822619d8ddb8b1843588caa2fad739491",
-                "reference": "75e93bb822619d8ddb8b1843588caa2fad739491",
-                "shasum": ""
-            },
-            "require-dev": {
-                "phpunit/phpunit": "< 6",
-                "satooshi/php-coveralls": "dev-master"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Cloudflare\\": "src/CloudFlare"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "James Bell",
-                    "email": "james@james-bell.co.uk"
-                }
-            ],
-            "description": "CloudFlare API - PHP",
-            "keywords": [
-                "api",
-                "cloudflare"
-            ],
-            "time": "2017-08-04T19:01:02+00:00"
         },
         {
             "name": "league/container",
@@ -3152,16 +3111,16 @@
         },
         {
             "name": "webmozart/assert",
-            "version": "1.6.0",
+            "version": "1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webmozart/assert.git",
-                "reference": "573381c0a64f155a0d9a23f4b0c797194805b925"
+                "reference": "aed98a490f9a8f78468232db345ab9cf606cf598"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozart/assert/zipball/573381c0a64f155a0d9a23f4b0c797194805b925",
-                "reference": "573381c0a64f155a0d9a23f4b0c797194805b925",
+                "url": "https://api.github.com/repos/webmozart/assert/zipball/aed98a490f9a8f78468232db345ab9cf606cf598",
+                "reference": "aed98a490f9a8f78468232db345ab9cf606cf598",
                 "shasum": ""
             },
             "require": {
@@ -3196,7 +3155,7 @@
                 "check",
                 "validate"
             ],
-            "time": "2019-11-24T13:36:37+00:00"
+            "time": "2020-02-14T12:15:55+00:00"
         },
         {
             "name": "woocommerce/woocommerce",
@@ -3255,7 +3214,7 @@
             ],
             "description": "An eCommerce toolkit that helps you sell anything. Beautifully.",
             "homepage": "https://woocommerce.com/",
-            "time": "2020-02-13T16:18:48+00:00"
+            "time": "2020-02-13T15:13:27+00:00"
         },
         {
             "name": "woocommerce/woocommerce-blocks",
@@ -3395,12 +3354,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-media/phpunit.git",
-                "reference": "d5fa8ffd5645b6e75b7cdfa2dfc3fb4530d12037"
+                "reference": "36a126eb75bcf758f0a17d92a75b4dbdebe0de55"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-media/phpunit/zipball/d5fa8ffd5645b6e75b7cdfa2dfc3fb4530d12037",
-                "reference": "d5fa8ffd5645b6e75b7cdfa2dfc3fb4530d12037",
+                "url": "https://api.github.com/repos/wp-media/phpunit/zipball/36a126eb75bcf758f0a17d92a75b4dbdebe0de55",
+                "reference": "36a126eb75bcf758f0a17d92a75b4dbdebe0de55",
                 "shasum": ""
             },
             "require": {
@@ -3431,7 +3390,7 @@
             ],
             "description": "PHPUnit extender for bootstrapping unit and WordPress integration test suites.",
             "homepage": "https://github.com/wp-media/phpunit",
-            "time": "2020-02-13T22:37:58+00:00"
+            "time": "2020-02-14T03:13:42+00:00"
         }
     ],
     "aliases": [],

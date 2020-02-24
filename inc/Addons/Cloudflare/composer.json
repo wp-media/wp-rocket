@@ -1,0 +1,54 @@
+{
+	"name": "wp-media/cloudflare",
+	"description": "Cloudflare Addon",
+	"homepage": "https://github.com/wp-media/cloudflare",
+	"license": "GPL-2.0+",
+	"authors": [
+		{
+			"name": "WP Media",
+			"email": "contact@wp-media.me",
+			"homepage": "https://wp-media.me"
+		}
+	],
+	"type": "wp-media-addon",
+	"config": {
+		"sort-packages": true,
+		"preferred-install": {
+			"wp-media/phpunit": "source"
+		}
+	},
+	"support": {
+		"issues": "https://github.com/wp-media/cloudflare/issues",
+		"source": "https://github.com/wp-media/cloudflare"
+	},
+	"require-dev": {
+		"php": "^5.6 || ^7",
+		"brain/monkey": "^2.0",
+		"dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
+		"phpcompatibility/phpcompatibility-wp": "^2.0",
+		"phpunit/phpunit": "^5.7 || ^7",
+		"wp-coding-standards/wpcs": "^2",
+		"wp-media/event-manager": "^3.1",
+		"wp-media/options": "^3.0",
+		"wp-media/phpunit": "dev-master"
+	},
+	"autoload": {
+		"psr-4": { "WPMedia\\Cloudflare\\": "." },
+		"exclude-from-classmap": [ "/Tests/" ]
+	},
+	"autoload-dev": {
+		"psr-4": { "WPMedia\\Cloudflare\\Tests\\": "Tests/"	}
+	},
+	"scripts": {
+		"test-unit": "\"vendor/bin/wpmedia-phpunit\" unit path=Tests/Unit",
+		"test-integration": "\"vendor/bin/wpmedia-phpunit\" integration path=Tests/Integration/",
+		"run-tests": [
+			"@test-unit",
+			"@test-integration"
+		],
+		"install-codestandards": "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run",
+		"phpcs": "phpcs --basepath=.",
+		"phpcs-changed": "./bin/phpcs-changed.sh",
+		"phpcs:fix": "phpcbf"
+	}
+}

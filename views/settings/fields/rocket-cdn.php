@@ -1,6 +1,6 @@
 <?php
 /**
- * Rocket CDN template.
+ * RocketCDN template.
  *
  * @since 3.5
  */
@@ -26,7 +26,8 @@ $rocket_cnames_zone = get_rocket_option( 'cdn_zone' );
 			foreach ( $rocket_cnames as $key => $url ) : // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 				?>
 				<div class="wpr-text">
-					<input type="text" name="wp_rocket_settings[cdn_cnames][<?php echo esc_attr( $key ); ?>]" value="<?php echo esc_attr( $url ); ?>" placeholder="cdn.example.com" />
+					<label for="cdn_cnames_<?php echo esc_attr( $key ); ?>" class="screen-reader-text"><?php esc_html_e( 'CDN CNAME', 'rocket' ); ?></label>
+					<input type="text" id="cdn_cnames_<?php echo esc_attr( $key ); ?>" name="wp_rocket_settings[cdn_cnames][<?php echo esc_attr( $key ); ?>]" value="<?php echo esc_attr( $url ); ?>" placeholder="cdn.example.com" />
 					<input type="hidden" name="wp_rocket_settings[cdn_zone][<?php echo esc_attr( $key ); ?>]" value="<?php echo esc_attr( $rocket_cnames_zone[ $key ] ); ?>" />
 					<?php if ( ! empty( $data['helper'] ) ) : ?>
 					<div class="wpr-field-description wpr-field-description-helper">
@@ -37,7 +38,8 @@ $rocket_cnames_zone = get_rocket_option( 'cdn_zone' );
 			<?php endforeach; ?>
 		<?php else : ?>
 			<div class="wpr-text">
-				<input type="text" name="wp_rocket_settings[cdn_cnames][]" value="" placeholder="xxxxxx.rocketcdn.me" />
+				<label for="cdn_cnames" class="screen-reader-text"><?php esc_html_e( 'CDN CNAME', 'rocket' ); ?></label>
+				<input type="text" id="cdn_cnames" name="wp_rocket_settings[cdn_cnames][]" value="" placeholder="xxxxxx.rocketcdn.me" />
 				<input type="hidden" name="wp_rocket_settings[cdn_zone][]" value="all" />
 				<?php if ( ! empty( $data['helper'] ) ) : ?>
 				<div class="wpr-field-description wpr-field-description-helper">

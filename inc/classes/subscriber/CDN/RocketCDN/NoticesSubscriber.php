@@ -48,7 +48,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	}
 
 	/**
-	 * Adds notice to promote Rocket CDN on settings page
+	 * Adds notice to promote RocketCDN on settings page
 	 *
 	 * @since 3.5
 	 * @author Remy Perona
@@ -144,7 +144,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	}
 
 	/**
-	 * Displays the Rocket CDN Call to Action on the CDN tab of WP Rocket settings page
+	 * Displays the RocketCDN Call to Action on the CDN tab of WP Rocket settings page
 	 *
 	 * @since 3.5
 	 * @author Remy Perona
@@ -207,7 +207,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	}
 
 	/**
-	 * Toggles display of the Rocket CDN CTAs on the settings page
+	 * Toggles display of the RocketCDN CTAs on the settings page
 	 *
 	 * @since 3.5
 	 * @author Remy Perona
