@@ -1,13 +1,13 @@
 <?php
-namespace WP_Rocket\Tests\Integration\Functions;
+namespace WP_Rocket\Tests\Unit\inc\Functions;
 
-use WP_Rocket\Tests\Integration\FilesystemTestCase;
+use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use Brain\Monkey\Functions;
 
 /**
  * @covers rocket_clean_minify()
  * @group Functions
- * @group AdminOnly
+ * @group Files
  */
 class Test_RocketCleanMinify extends FilesystemTestCase {
 	protected $structure = [
@@ -24,70 +24,29 @@ class Test_RocketCleanMinify extends FilesystemTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		add_option( 'wp_rocket_settings', [
-			'minify_css' => 0,
-			'minify_js' => 0,
-			'exclude_css' => [],
-			'exclude_js' => [],
-			'remove_query_strings' => 0,
-		] );
-	}
-
-	public function tearDown() {
-		delete_option( 'wp_rocket_settings' );
-
-		parent::tearDown();
-	}
-
-	public function testShouldCleanMinifiedCSS() {
 		Functions\expect( 'rocket_get_constant' )
 			->twice()
 			->with( 'WP_ROCKET_MINIFY_CACHE_PATH' )
 			->andReturn( 'vfs://cache/min/' );
+		Functions\when( 'get_current_blog_id' )->justReturn( '1' );
+	}
 
-		update_option( 'wp_rocket_settings', [
-			'minify_css' => 1,
-			'minify_js' => 0,
-			'exclude_css' => [],
-			'exclude_js' => [],
-			'remove_query_strings' => 0,
-		] );
+	public function testShouldCleanMinifiedCSS() {
+		rocket_clean_minify( 'css' );
 
 		$this->assertFalse( $this->filesystem->exists( 'min/1/fa2965d41f1515951de523cecb81f85e.css' ) );
 		$this->assertFalse( $this->filesystem->exists( 'min/1/fa2965d41f1515951de523cecb81f85e.css.gz' ) );
 	}
 
 	public function testShouldCleanMinifiedJS() {
-		Functions\expect( 'rocket_get_constant' )
-			->twice()
-			->with( 'WP_ROCKET_MINIFY_CACHE_PATH' )
-			->andReturn( 'vfs://cache/min/' );
-
-		update_option( 'wp_rocket_settings', [
-			'minify_css' => 0,
-			'minify_js' => 1,
-			'exclude_css' => [],
-			'exclude_js' => [],
-			'remove_query_strings' => 0,
-		] );
+		rocket_clean_minify( 'js' );
 
 		$this->assertFalse( $this->filesystem->exists( 'min/1/5c795b0e3a1884eec34a989485f863ff.js' ) );
 		$this->assertFalse( $this->filesystem->exists( 'min/1/5c795b0e3a1884eec34a989485f863ff.js.gz' ) );
 	}
 
 	public function testShouldCleanAllMinified() {
-		Functions\expect( 'rocket_get_constant' )
-			->times(4)
-			->with( 'WP_ROCKET_MINIFY_CACHE_PATH' )
-			->andReturn( 'vfs://cache/min/' );
-
-		update_option( 'wp_rocket_settings', [
-			'minify_css' => 1,
-			'minify_js' => 1,
-			'exclude_css' => [],
-			'exclude_js' => [],
-			'remove_query_strings' => 0,
-		] );
+		rocket_clean_minify();
 
 		$this->assertFalse( $this->filesystem->exists( 'min/1/fa2965d41f1515951de523cecb81f85e.css' ) );
 		$this->assertFalse( $this->filesystem->exists( 'min/1/fa2965d41f1515951de523cecb81f85e.css.gz' ) );

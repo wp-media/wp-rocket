@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Tests\Integration\Functions;
+namespace WP_Rocket\Tests\Integration\inc\Functions;
 
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 use Brain\Monkey\Functions;

@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Tests\Unit\Functions;
+namespace WP_Rocket\Tests\Unit\inc\Functions;
 
 use WPMedia\PHPUnit\Unit\TestCase;
 use Brain\Monkey\Functions;
