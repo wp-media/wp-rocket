@@ -60,10 +60,10 @@ function get_rocket_post_dates_urls( $post_id ) { // phpcs:ignore WordPress.Nami
 
 	$urls = [
 		trailingslashit( get_year_link( $date[0] ) ) . 'index.html',
-		trailingslashit( get_year_link( $date[0] ) ) . 'index.html' . ( $is_nginx ? '.gz' : '_gzip' ),
+		trailingslashit( get_year_link( $date[0] ) ) . 'index.html.gz',
 		trailingslashit( get_year_link( $date[0] ) ) . $GLOBALS['wp_rewrite']->pagination_base,
 		trailingslashit( get_month_link( $date[0], $date[1] ) ) . 'index.html',
-		trailingslashit( get_month_link( $date[0], $date[1] ) ) . 'index.html' . ( $is_nginx ? '.gz' : '_gzip' ),
+		trailingslashit( get_month_link( $date[0], $date[1] ) ) . 'index.html.gz',
 		trailingslashit( get_month_link( $date[0], $date[1] ) ) . $GLOBALS['wp_rewrite']->pagination_base,
 		get_day_link( $date[0], $date[1], $date[2] ),
 	];

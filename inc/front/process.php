@@ -368,7 +368,7 @@ function do_rocket_callback( $buffer ) { // phpcs:ignore WordPress.NamingConvent
 
 			if ( function_exists( 'gzencode' ) ) {
 				global $is_nginx;
-				rocket_put_content( $rocket_cache_filepath . ( $is_nginx ? '.gz' : '_gzip' ), gzencode( $buffer . $footprint, apply_filters( 'rocket_gzencode_level_compression', 3 ) ) );
+				rocket_put_content( $rocket_cache_filepath . '.gz', gzencode( $buffer . $footprint, apply_filters( 'rocket_gzencode_level_compression', 3 ) ) );
 			}
 
 			// Send headers with the last modified time of the cache file.
@@ -397,7 +397,7 @@ function do_rocket_callback( $buffer ) { // phpcs:ignore WordPress.NamingConvent
  */
 function rocket_serve_cache_file( $rocket_cache_filepath ) {
 	global $is_nginx;
-	$rocket_cache_filepath_gzip = $rocket_cache_filepath . ( $is_nginx ? '.gz' : '_gzip' );
+	$rocket_cache_filepath_gzip = $rocket_cache_filepath . '.gz';
 
 	// Check if cache file exist.
 	if ( isset( $_SERVER['HTTP_ACCEPT_ENCODING'] ) && false !== strpos( $_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip' ) && file_exists( $rocket_cache_filepath_gzip ) && is_readable( $rocket_cache_filepath_gzip ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash

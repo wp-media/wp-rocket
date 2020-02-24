@@ -86,7 +86,7 @@ function rocket_get_purge_urls( $post_id, $post ) {
 			global $is_nginx;
 			$post_type_archive = trailingslashit( $post_type_archive );
 			array_push( $purge_urls, $post_type_archive . $filename . '.html' );
-			array_push( $purge_urls, $post_type_archive . $filename . '.html' . ( $is_nginx ? '.gz' : '_gzip' ) );
+			array_push( $purge_urls, $post_type_archive . $filename . '.html.gz' );
 			array_push( $purge_urls, $post_type_archive . $GLOBALS['wp_rewrite']->pagination_base );
 		}
 	}
