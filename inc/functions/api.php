@@ -106,7 +106,6 @@ function rocket_is_live_site() {
 	$excluded_tlds = [
 		'localhost',
 		'local',
-		'dev',
 		'test',
 		'docksal',
 	];
@@ -115,8 +114,15 @@ function rocket_is_live_site() {
 		return false;
 	}
 
-	if ( '.dev.cc' === substr( $host, -7 ) ) {
-		return false;
+	if ( 'dev' === $tld || '.dev.cc' === substr( $host, -7 ) ) {
+		/**
+		 * Indicates if this website's .dev TLD is the real live production website, i.e. not staging or local dev.
+		 *
+		 * @since 3.5
+		 *
+		 * @param bool True indicates .dev is the real live PROD website.
+		 */
+		return (bool) apply_filters( 'rocket_tld_is_live_prod_site', false );
 	}
 
 	if ( '.lndo.site' === substr( $host, -10 ) ) {
