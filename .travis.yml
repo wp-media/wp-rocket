@@ -1,4 +1,7 @@
 sudo: false
+os:
+  - linux
+  - windows
 language: php
 services:
   - mysql
