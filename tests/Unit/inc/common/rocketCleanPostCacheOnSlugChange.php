@@ -6,6 +6,7 @@ use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
+ * @covers ::rocket_clean_post_cache_on_slug_change
  * @group Common
  */
 class TestRocketCleanPostCacheOnSlugChange extends TestCase {
@@ -18,10 +19,6 @@ class TestRocketCleanPostCacheOnSlugChange extends TestCase {
 		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/common/purge.php';
 	}
 
-	/**
-	 * Test rocket_clean_post_cache_on_slug_change() should not fire rocket_clean_files() when the post status is
-	 * 'draft', 'pending', or 'auto-draft'.
-	 */
 	public function testShouldBailOutWhenPostStatusIsNotCorrect() {
 		$post_id   = 10;
 		$post_name = 'new-post-name-slug';
@@ -41,11 +38,6 @@ class TestRocketCleanPostCacheOnSlugChange extends TestCase {
 		}
 	}
 
-	/**
-	 * Test rocket_clean_post_cache_on_slug_change() should not fire rocket_clean_files() when the slug (post name)
-	 * hasn't changed, i.e. meaning when the previous post name (saved in the database) is still the same as the new one
-	 * (passed into this callback).
-	 */
 	public function testShouldBailOutWhenSlugHasntChanged() {
 		$post_id   = 50;
 		$post_name = 'original-post-name-slug';
@@ -65,10 +57,6 @@ class TestRocketCleanPostCacheOnSlugChange extends TestCase {
 		$this->assertNull( rocket_clean_post_cache_on_slug_change( $post_id, [ 'post_name' => $post_name ] ) );
 	}
 
-	/**
-	 * Test rocket_clean_post_cache_on_slug_change() should not fire rocket_clean_files() when the old slug (post name),
-	 * i.e. saved in the database, is empty.
-	 */
 	public function testShouldBailOutWhenOldSlugIsEmpty() {
 		$post_id   = 100;
 		$post_name = 'new-post-name-slug';
@@ -88,13 +76,7 @@ class TestRocketCleanPostCacheOnSlugChange extends TestCase {
 		$this->assertNull( rocket_clean_post_cache_on_slug_change( $post_id, [ 'post_name' => $post_name ] ) );
 	}
 
-	/**
-	 * Test rocket_clean_post_cache_on_slug_change() should fire rocket_clean_files() when the existing post status is
-	 * correct
-	 * (i.e. not draft, pending, or auto-draft), the existing/old slug (post name) and new slug are the same, and the
-	 * existing/old slug is not empty.
-	 */
-	public function testShouldFireRocketCleanFiles() {
+	public function testShouldFireRocketCleanFilesWhenExistingPostStatusIsCorrect() {
 		$post_id   = 200;
 		$post_name = 'new-post-name-slug';
 		$permalink = "https://wp-rocket.test/{$post_name}/";

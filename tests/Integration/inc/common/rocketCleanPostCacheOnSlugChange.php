@@ -1,12 +1,13 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\Inc\Common;
+namespace WP_Rocket\Tests\Integration\inc\common;
 
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
  * @covers ::rocket_clean_post_cache_on_slug_change
+ * @uses  ::rocket_clean_files
  * @group Purge
  */
 class TestRocketCleanPostCacheOnSlugChange extends TestCase {
