@@ -130,9 +130,7 @@ abstract class ActionScheduler {
 	 */
 	public static function init( $plugin_file ) {
 		self::$plugin_file = $plugin_file;
-		if ( ! AS_COMPOSER_AUTOLOADING ) {
-			spl_autoload_register( array( __CLASS__, 'autoload' ) );
-		}
+		spl_autoload_register( array( __CLASS__, 'autoload' ) );
 
 		/**
 		 * Fires in the early stages of Action Scheduler init hook.

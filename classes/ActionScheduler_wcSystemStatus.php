@@ -93,7 +93,6 @@ class ActionScheduler_wcSystemStatus {
 	 */
 	protected function get_template( $status_labels, $action_counts, $oldest_and_newest ) {
 		$as_version = ActionScheduler_Versions::instance()->latest_version();
-		$autoloader = AS_COMPOSER_AUTOLOADING ? __( 'Composer', 'action-scheduler' ) : __( 'Internal', 'action-scheduler' );
 		?>
 
 		<table class="wc_status_table widefat" cellspacing="0">
@@ -104,10 +103,6 @@ class ActionScheduler_wcSystemStatus {
 				<tr>
 					<td colspan="2" data-export-label="Version"><?php esc_html_e( 'Version:', 'action-scheduler' ); ?></td>
 					<td colspan="3"><?php echo esc_html( $as_version ); ?></td>
-				</tr>
-				<tr>
-					<td colspan="2" data-export-label="Version"><?php esc_html_e( 'Autoloader:', 'action-scheduler' ); ?></td>
-					<td colspan="3"><?php echo esc_html( $autoloader ); ?></td>
 				</tr>
 				<tr>
 					<td><strong><?php esc_html_e( 'Action Status', 'action-scheduler' ); ?></strong></td>
