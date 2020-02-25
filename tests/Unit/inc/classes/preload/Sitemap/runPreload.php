@@ -53,7 +53,7 @@ class Test_RunPreload extends TestCase {
 			->willReturn( null );
 
 		Functions\when( 'wp_parse_url' )->alias( function( $url, $component = -1 ) {
-			return \parse_url( $url, $component );
+			return parse_url( $url, $component );
 		} );
 		Functions\when( 'get_rocket_cache_reject_uri' )->justReturn( '/foo/|/bar/|/(?:.+/)?embed/' );
 		Functions\when( 'set_transient' )->justReturn( null );
@@ -70,40 +70,34 @@ class Test_RunPreload extends TestCase {
 			return false;
 		} );
 		Functions\when( 'get_transient' )->alias( function( $transient ) {
-			switch ( $transient ) {
-				case 'rocket_preload_errors':
-					return [];
-			}
-			return false;
+			return 'rocket_preload_errors' === $transient ? [] : false;
 		} );
 		Functions\when( 'is_wp_error' )->justReturn( false );
 		Functions\when( 'wp_remote_retrieve_response_code' )->justReturn( 200 );
 		Functions\when( 'wp_remote_retrieve_body' )->alias( function ( $response ) {
-			if ( ! is_array( $response ) || ! isset( $response['body'] ) ) {
-				return '';
-			}
-			return $response['body'];
+			return is_array( $response ) && isset( $response['body'] ) ? $response['body'] : '';
 		} );
 
 		// Stubs for $this->get_url_identifier().
 		Functions\when( 'get_rocket_cache_query_string' )->justReturn( [] );
-		Functions\when( 'trailingslashit' )->alias( function( $url ) {
-			return rtrim( $url, '/' ) . '/';
-		} );
 
 		$preload = new Sitemap( $preload_process );
 
 		$preload->run_preload( $sitemaps );
 
-		$this->assertContains( 'https://example.org/', $queue );
-		$this->assertContains( 'https://example.org/fr/', $queue );
-		$this->assertContains( 'https://example.org/es/', $queue );
-		$this->assertContains( [ 'url' => 'https://example.org/', 'mobile' => true ], $queue );
-		$this->assertContains( [ 'url' => 'https://example.org/fr/', 'mobile' => true ], $queue );
-		$this->assertContains( [ 'url' => 'https://example.org/es/', 'mobile' => true ], $queue );
-		$this->assertContains( [ 'url' => 'https://example.org/mobile/de/', 'mobile' => true ], $queue );
-		$this->assertContains( [ 'url' => 'https://example.org/mobile/fr/', 'mobile' => true ], $queue );
-		$this->assertContains( [ 'url' => 'https://example.org/mobile/es/', 'mobile' => true ], $queue );
+		$expected = [
+			[ 'url' => 'https://example.org/', 'mobile' => false, 'source' => 'sitemap' ],
+			[ 'url' => 'https://example.org/', 'mobile' => true, 'source' => 'sitemap' ],
+			[ 'url' => 'https://example.org/fr/', 'mobile' => false, 'source' => 'sitemap' ],
+			[ 'url' => 'https://example.org/fr/', 'mobile' => true, 'source' => 'sitemap' ],
+			[ 'url' => 'https://example.org/es/', 'mobile' => false, 'source' => 'sitemap' ],
+			[ 'url' => 'https://example.org/es/', 'mobile' => true, 'source' => 'sitemap' ],
+			[ 'url' => 'https://example.org/mobile/de/', 'mobile' => true, 'source' => 'sitemap' ],
+			[ 'url' => 'https://example.org/mobile/fr/', 'mobile' => true, 'source' => 'sitemap' ],
+			[ 'url' => 'https://example.org/mobile/es/', 'mobile' => true, 'source' => 'sitemap' ],
+		];
+
+		$this->assertSame( $expected, $queue );
 		$this->assertCount( 9, $queue );
 	}
 }
