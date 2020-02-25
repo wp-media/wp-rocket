@@ -10,7 +10,7 @@ use WPMedia\PHPUnit\Unit\TestCase;
  * @group Functions
  * @group Options
  */
-class TestRocketCheckKey extends TestCase {
+class Test_RocketCheckKey extends TestCase {
 	protected static $mockCommonWpFunctionsInSetUp = true;
 
 	public static function setUpBeforeClass() {

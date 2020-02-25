@@ -11,9 +11,10 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
  * @group Options
  */
 class Test_RocketDeleteLicenceDataFile extends FilesystemTestCase {
-	protected $rootVirtualDir = 'wp-rocket';
-	protected $structure      = [
-		'licence-data.php' => '',
+	protected $structure = [
+		'wp-rocket' => [
+			'licence-data.php' => '',
+		],
 	];
 
 	public static function setUpBeforeClass() {
@@ -26,13 +27,12 @@ class Test_RocketDeleteLicenceDataFile extends FilesystemTestCase {
 		Functions\expect( 'rocket_get_constant' )
 			->once()
 			->with( 'WP_ROCKET_PATH' )
-			->andReturn( $this->rootVirtualUrl );
+			->andReturn( $this->filesystem->getUrl( 'wp-rocket/' ) );
 
-		$filename = $this->filesystem->getUrl( 'licence-data.php' );
-		$this->assertFileExists( $filename );
+		$this->assertTrue( $this->filesystem->exists( 'wp-rocket/licence-data.php' ) );
 
 		rocket_delete_licence_data_file();
 
-		$this->assertFileNotExists( $filename );
+		$this->assertFalse( $this->filesystem->exists( 'wp-rocket/licence-data.php' ) );
 	}
 }
