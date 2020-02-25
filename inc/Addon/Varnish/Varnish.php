@@ -68,7 +68,7 @@ class Varnish {
 		 * @since 2.7.3
 		 * @param string $scheme The HTTP protocol
 		 */
-		$scheme = apply_filters( 'rocket_varnish_http_purge_scheme', $parse_url['scheme'] );
+		$scheme = apply_filters( 'rocket_varnish_http_purge_scheme', 'http' );
 
 		/**
 		 * Filters the headers to send with the Varnish purge request
