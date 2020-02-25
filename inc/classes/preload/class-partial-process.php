@@ -31,11 +31,13 @@ class Partial_Process extends Process {
 	 *     A string is allowed for backward compatibility (for the URL).
 	 *
 	 *     @type string $url    The URL to preload.
-	 *     @type bool   $mobile True when we want to send a "mobile" user agent with the request. Optional.
+	 *     @type bool   $mobile True when we want to send a "mobile" user agent with the request.
+	 *     @type string $source An identifier related to the source of the preload (e.g. RELOAD_ID).
 	 * }
 	 * @return bool False.
 	 */
 	protected function task( $item ) {
-		return $this->maybe_preload( $item );
+		$this->maybe_preload( $item );
+		return false;
 	}
 }

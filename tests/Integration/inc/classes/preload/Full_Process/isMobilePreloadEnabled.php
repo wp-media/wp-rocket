@@ -1,14 +1,13 @@
 <?php
 namespace WP_Rocket\Tests\Integration\inc\classes\preload\Full_Process;
 
-use WP_Rocket\Tests\Integration\PreloadTestCase as TestCase;
-use WP_Rocket\Preload\Full_Process;
+use WP_Rocket\Tests\Integration\inc\classes\preload\PreloadTestCase;
 
 /**
  * @covers \WP_Rocket\Preload\Full_Process::is_mobile_preload_enabled
  * @group Preload
  */
-class Test_isMobilePreloadEnabled extends TestCase {
+class Test_isMobilePreloadEnabled extends PreloadTestCase {
 
 	public function testShouldReturnTrueWhenOptionsEnabled() {
 		add_filter( $this->option_hook_prefix . 'manual_preload', [ $this, 'return_1' ] );

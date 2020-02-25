@@ -58,11 +58,9 @@ abstract class Abstract_Preload {
 	 * @return void
 	 */
 	public function cancel_preload() {
-		delete_transient( 'rocket_preload_running' );
+		delete_transient( $this->get_running_transient_name() );
 
-		if ( \method_exists( $this->preload_process, 'cancel_process' ) ) {
-			$this->preload_process->cancel_process();
-		}
+		$this->preload_process->cancel_process();
 	}
 
 	/**
@@ -75,6 +73,24 @@ abstract class Abstract_Preload {
 	 */
 	public function is_process_running() {
 		return $this->preload_process->is_process_running();
+	}
+
+	/**
+	 * Get the number of preloaded URLs.
+	 *
+	 * @since  3.5
+	 * @author Grégory Viguier
+	 *
+	 * @return int|bool The number of preloaded URLs. False if the process is not running.
+	 */
+	public function get_number_of_preloaded_items() {
+		$nbr = get_transient( $this->get_running_transient_name() );
+
+		if ( false === $nbr ) {
+			return false;
+		}
+
+		return absint( $nbr );
 	}
 
 	/**
@@ -109,5 +125,17 @@ abstract class Abstract_Preload {
 		$query_array = array_merge( $this->cache_query_strings, $query_array );
 
 		return $path . '?' . http_build_query( $query_array );
+	}
+
+	/**
+	 * Get the name of the transient that stores the number of preloaded URLs.
+	 *
+	 * @since  3.5
+	 * @author Grégory Viguier
+	 *
+	 * @return string
+	 */
+	protected function get_running_transient_name() {
+		return sprintf( 'rocket_%s_preload_running', static::PRELOAD_ID );
 	}
 }

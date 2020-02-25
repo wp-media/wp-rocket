@@ -2,15 +2,17 @@
 namespace WP_Rocket\Tests\Integration\inc\classes\preload\Sitemap;
 
 use Brain\Monkey\Actions;
-use WP_Rocket\Tests\Integration\PreloadTestCase as TestCase;
 use WP_Rocket\Preload\Sitemap;
+use WP_Rocket\Tests\Integration\inc\classes\preload\PreloadTestCase;
 
 /**
  * @covers \WP_Rocket\Preload\Sitemap::run_preload
  * @group Preload
  */
-class Test_RunPreload extends TestCase {
+class Test_RunPreload extends PreloadTestCase {
 	protected $post_id;
+	protected $setUpFilters    = true;
+	protected $tearDownFilters = true;
 
 	public function tearDown() {
 		parent::tearDown();
@@ -31,12 +33,7 @@ class Test_RunPreload extends TestCase {
 			"{$this->site_url}/mobile-preload-sitemap-mobile.xml",
 		];
 
-		add_filter( $this->option_hook_prefix . 'manual_preload', [ $this, 'return_1' ] );
-		add_filter( $this->option_hook_prefix . 'cache_mobile', [ $this, 'return_1' ] );
-		add_filter( $this->option_hook_prefix . 'do_caching_mobile_files', [ $this, 'return_1' ] );
-		add_filter( $this->option_hook_prefix . 'cache_reject_uri', [ $this, 'return_empty_array' ] );
-
-		delete_transient( 'rocket_preload_errors' );
+		$this->setUpFilters();
 
 		( new Sitemap( $this->process ) )->run_preload( $sitemaps );
 
@@ -47,11 +44,15 @@ class Test_RunPreload extends TestCase {
 		$queue = get_site_option( $key );
 		delete_site_option( $key );
 
-		$this->assertContains( "{$this->site_url}/mobile-preload-homepage/", $queue );
-		$this->assertContains( "{$this->site_url}/2020/02/18/mobile-preload-post-tester/", $queue );
-		$this->assertContains( [ 'url' => "{$this->site_url}/mobile-preload-homepage/", 'mobile' => true ], $queue );
-		$this->assertContains( [ 'url' => "{$this->site_url}/2020/02/18/mobile-preload-post-tester/", 'mobile' => true ], $queue );
-		$this->assertContains( [ 'url' => "{$this->site_url}/category/mobile-preload/", 'mobile' => true ], $queue );
+		$expected = [
+			[ 'url' => "{$this->site_url}/mobile-preload-homepage/", 'mobile' => false, 'source' => 'sitemap' ],
+			[ 'url' => "{$this->site_url}/mobile-preload-homepage/", 'mobile' => true, 'source' => 'sitemap' ],
+			[ 'url' => "{$this->site_url}/2020/02/18/mobile-preload-post-tester/", 'mobile' => false, 'source' => 'sitemap' ],
+			[ 'url' => "{$this->site_url}/2020/02/18/mobile-preload-post-tester/", 'mobile' => true, 'source' => 'sitemap' ],
+			[ 'url' => "{$this->site_url}/category/mobile-preload/", 'mobile' => true, 'source' => 'sitemap' ],
+		];
+
+		$this->assertSame( $expected, $queue );
 		$this->assertCount( 5, $queue );
 	}
 
@@ -83,12 +84,7 @@ class Test_RunPreload extends TestCase {
 
 		$this->assertNotFalse( $permalink );
 
-		add_filter( $this->option_hook_prefix . 'manual_preload', [ $this, 'return_1' ] );
-		add_filter( $this->option_hook_prefix . 'cache_mobile', [ $this, 'return_1' ] );
-		add_filter( $this->option_hook_prefix . 'do_caching_mobile_files', [ $this, 'return_1' ] );
-		add_filter( $this->option_hook_prefix . 'cache_reject_uri', [ $this, 'return_empty_array' ] );
-
-		delete_transient( 'rocket_preload_errors' );
+		$this->setUpFilters();
 
 		( new Sitemap( $this->process ) )->run_preload( $sitemaps );
 
@@ -99,12 +95,16 @@ class Test_RunPreload extends TestCase {
 		$queue = get_site_option( $key );
 		delete_site_option( $key );
 
-		$this->assertContains( "{$this->site_url}/mobile-preload-homepage/", $queue );
-		$this->assertContains( "{$this->site_url}/2020/02/18/mobile-preload-post-tester/", $queue );
-		$this->assertContains( [ 'url' => "{$this->site_url}/mobile-preload-homepage/", 'mobile' => true ], $queue );
-		$this->assertContains( [ 'url' => "{$this->site_url}/2020/02/18/mobile-preload-post-tester/", 'mobile' => true ], $queue );
-		$this->assertContains( "{$this->site_url}/category/mobile-preload/", $queue );
-		$this->assertContains( [ 'url' => "{$this->site_url}/category/mobile-preload/", 'mobile' => true ], $queue );
+		$expected = [
+			[ 'url' => "{$this->site_url}/mobile-preload-homepage/", 'mobile' => false, 'source' => 'sitemap' ],
+			[ 'url' => "{$this->site_url}/mobile-preload-homepage/", 'mobile' => true, 'source' => 'sitemap' ],
+			[ 'url' => "{$this->site_url}/2020/02/18/mobile-preload-post-tester/", 'mobile' => false, 'source' => 'sitemap' ],
+			[ 'url' => "{$this->site_url}/2020/02/18/mobile-preload-post-tester/", 'mobile' => true, 'source' => 'sitemap' ],
+			[ 'url' => "{$this->site_url}/category/mobile-preload/", 'mobile' => false, 'source' => 'sitemap' ],
+			[ 'url' => "{$this->site_url}/category/mobile-preload/", 'mobile' => true, 'source' => 'sitemap' ],
+		];
+
+		$this->assertSame( $expected, $queue );
 		$this->assertCount( 6, $queue );
 
 		wp_delete_post( $this->post_id, true );
