@@ -492,6 +492,16 @@ class Beacon {
 					'url' => 'https://fr.docs.wp-rocket.me/article/246-utiliser-wp-rocket-avec-un-cdn/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
+			'rocketcdn'                  => [
+				'en' => [
+					'id'  => '5e4c84bd04286364bc958833',
+					'url' => 'https://docs.wp-rocket.me/article/1307-rocketcdn/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '',
+					'url' => '',
+				],
+			],
 			'exclude_cdn'                => [
 				'en' => [
 					'id'  => '5434667fe4b0310ce5ee867a',

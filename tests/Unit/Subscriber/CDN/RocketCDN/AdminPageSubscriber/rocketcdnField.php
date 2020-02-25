@@ -13,6 +13,7 @@ class Test_RocketcdnField extends TestCase {
 	protected static $mockCommonWpFunctionsInSetUp = true;
 	private $api_client;
 	private $options;
+	private $beacon;
 	private $page;
 
 	public function setUp() {
@@ -20,10 +21,11 @@ class Test_RocketcdnField extends TestCase {
 
 		$this->api_client = $this->createMock( 'WP_Rocket\CDN\RocketCDN\APIClient' );
 		$this->options    = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
+		$this->beacon     = $this->createMock( 'WP_Rocket\Admin\Settings\Beacon' );
 		$this->page       = new AdminPageSubscriber(
 			$this->api_client,
 			$this->options,
-			$this->createMock( 'WP_Rocket\Admin\Settings\Beacon' ),
+			$this->beacon,
 			'views/settings/rocketcdn'
 		);
 	}
@@ -51,16 +53,27 @@ class Test_RocketcdnField extends TestCase {
 		$this->options->expects( $this->once() )
 		              ->method( 'get' )
 		              ->with( 'cdn_cnames', [] )
-		              ->willReturn( [ 'example1.org' ] );
+					  ->willReturn( [ 'example1.org' ] );
+		$this->beacon->expects( $this->once() )
+					  ->method( 'get_suggest' )
+					  ->willReturn( [
+						'url' => 'https://docs.wp-rocket.me/article/1307-rocketcdn',
+						'id'  => '5e4c84bd04286364bc958833',
+		] );
+
 		$expected = [
 			'cdn_cnames' => [
 				'type'        => 'rocket_cdn',
 				'label'       => 'CDN CNAME(s)',
 				'description' => 'Specify the CNAME(s) below',
-				'helper'      => 'RocketCDN is currently active. <a href="" data-beacon-article="" rel="noopener noreferrer" target="_blank">More Info</a>',
+				'helper'      => 'RocketCDN is currently active. <a href="https://docs.wp-rocket.me/article/1307-rocketcdn" data-beacon-article="5e4c84bd04286364bc958833" rel="noopener noreferrer" target="_blank">More Info</a>',
 				'default'     => '',
 				'section'     => 'cnames_section',
 				'page'        => 'page_cdn',
+				'beacon'      => [
+					'url' => 'https://docs.wp-rocket.me/article/1307-rocketcdn',
+					'id'  => '5e4c84bd04286364bc958833',
+				],
 			],
 		];
 
@@ -77,16 +90,27 @@ class Test_RocketcdnField extends TestCase {
 		$this->options->expects( $this->once() )
 		              ->method( 'get' )
 		              ->with( 'cdn_cnames', [] )
-		              ->willReturn( [] );
+					  ->willReturn( [] );
+		$this->beacon->expects( $this->once() )
+					  ->method( 'get_suggest' )
+					  ->willReturn( [
+						'url' => 'https://docs.wp-rocket.me/article/1307-rocketcdn',
+						'id'  => '5e4c84bd04286364bc958833',
+		] );
+
 		$expected = [
 			'cdn_cnames' => [
 				'type'        => 'rocket_cdn',
 				'label'       => 'CDN CNAME(s)',
 				'description' => 'Specify the CNAME(s) below',
-				'helper'      => 'To use RocketCDN, replace your CNAME with <code>example1.org</code>. <a href="" data-beacon-article="" rel="noopener noreferrer" target="_blank">More Info</a>',
+				'helper'      => 'To use RocketCDN, replace your CNAME with <code>example1.org</code>. <a href="https://docs.wp-rocket.me/article/1307-rocketcdn" data-beacon-article="5e4c84bd04286364bc958833" rel="noopener noreferrer" target="_blank">More Info</a>',
 				'default'     => '',
 				'section'     => 'cnames_section',
 				'page'        => 'page_cdn',
+				'beacon'      => [
+					'url' => 'https://docs.wp-rocket.me/article/1307-rocketcdn',
+					'id'  => '5e4c84bd04286364bc958833',
+				],
 			],
 		];
 
@@ -104,16 +128,27 @@ class Test_RocketcdnField extends TestCase {
 		$this->options->expects( $this->once() )
 		              ->method( 'get' )
 		              ->with( 'cdn_cnames', [] )
-		              ->willReturn( [ 'example2.com' ] );
+					  ->willReturn( [ 'example2.com' ] );
+		$this->beacon->expects( $this->once() )
+					  ->method( 'get_suggest' )
+					  ->willReturn( [
+						'url' => 'https://docs.wp-rocket.me/article/1307-rocketcdn',
+						'id'  => '5e4c84bd04286364bc958833',
+		] );
+
 		$expected = [
 			'cdn_cnames' => [
 				'type'        => 'rocket_cdn',
 				'label'       => 'CDN CNAME(s)',
 				'description' => 'Specify the CNAME(s) below',
-				'helper'      => 'To use RocketCDN, replace your CNAME with <code>example1.org</code>. <a href="" data-beacon-article="" rel="noopener noreferrer" target="_blank">More Info</a>',
+				'helper'      => 'To use RocketCDN, replace your CNAME with <code>example1.org</code>. <a href="https://docs.wp-rocket.me/article/1307-rocketcdn" data-beacon-article="5e4c84bd04286364bc958833" rel="noopener noreferrer" target="_blank">More Info</a>',
 				'default'     => '',
 				'section'     => 'cnames_section',
 				'page'        => 'page_cdn',
+				'beacon'      => [
+					'url' => 'https://docs.wp-rocket.me/article/1307-rocketcdn',
+					'id'  => '5e4c84bd04286364bc958833',
+				],
 			],
 		];
 

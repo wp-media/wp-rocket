@@ -133,10 +133,12 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 			);
 		}
 
+		$beacon = $this->beacon->get_suggest( 'rocketcdn' );
+
 		$more_info = sprintf(
 			// translators: %1$is = opening link tag, %2$s = closing link tag.
 			__( '%1$sMore Info%2$s', 'rocket' ),
-			'<a href="" data-beacon-article="" rel="noopener noreferrer" target="_blank">',
+			'<a href="' . esc_url( $beacon['url'] ) . '" data-beacon-article="' . esc_attr( $beacon['id'] ) . '" rel="noopener noreferrer" target="_blank">',
 			'</a>'
 		);
 
@@ -148,6 +150,10 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 			'default'     => '',
 			'section'     => 'cnames_section',
 			'page'        => 'page_cdn',
+			'beacon'      => [
+				'url' => $beacon['url'],
+				'id'  => $beacon['id'],
+			],
 		];
 
 		return $fields;

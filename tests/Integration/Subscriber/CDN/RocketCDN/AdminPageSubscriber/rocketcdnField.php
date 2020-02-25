@@ -94,10 +94,14 @@ class Test_RocketcdnField extends TestCase {
 			'type'        => 'rocket_cdn',
 			'label'       => 'CDN CNAME(s)',
 			'description' => 'Specify the CNAME(s) below',
-			'helper'      => 'RocketCDN is currently active. <a href="" data-beacon-article="" rel="noopener noreferrer" target="_blank">More Info</a>',
+			'helper'      => 'RocketCDN is currently active. <a href="https://docs.wp-rocket.me/article/1307-rocketcdn/?utm_source=wp_plugin&#038;utm_medium=wp_rocket" data-beacon-article="5e4c84bd04286364bc958833" rel="noopener noreferrer" target="_blank">More Info</a>',
 			'default'     => '',
 			'section'     => 'cnames_section',
 			'page'        => 'page_cdn',
+			'beacon'      => [
+				'url' => 'https://docs.wp-rocket.me/article/1307-rocketcdn/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				'id'  => '5e4c84bd04286364bc958833',
+			],
 		];
 
 		$this->assertSame( $expected, apply_filters( 'rocket_cdn_settings_fields', self::$fields ) );
@@ -119,10 +123,14 @@ class Test_RocketcdnField extends TestCase {
 			'type'        => 'rocket_cdn',
 			'label'       => 'CDN CNAME(s)',
 			'description' => 'Specify the CNAME(s) below',
-			'helper'      => 'To use RocketCDN, replace your CNAME with <code>example1.org</code>. <a href="" data-beacon-article="" rel="noopener noreferrer" target="_blank">More Info</a>',
+			'helper'      => 'To use RocketCDN, replace your CNAME with <code>example1.org</code>. <a href="https://docs.wp-rocket.me/article/1307-rocketcdn/?utm_source=wp_plugin&#038;utm_medium=wp_rocket" data-beacon-article="5e4c84bd04286364bc958833" rel="noopener noreferrer" target="_blank">More Info</a>',
 			'default'     => '',
 			'section'     => 'cnames_section',
 			'page'        => 'page_cdn',
+			'beacon'      => [
+				'url' => 'https://docs.wp-rocket.me/article/1307-rocketcdn/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				'id'  => '5e4c84bd04286364bc958833',
+			],
 		];
 
 		$this->assertSame( $expected, apply_filters( 'rocket_cdn_settings_fields', self::$fields ) );
@@ -145,10 +153,14 @@ class Test_RocketcdnField extends TestCase {
 			'type'        => 'rocket_cdn',
 			'label'       => 'CDN CNAME(s)',
 			'description' => 'Specify the CNAME(s) below',
-			'helper'      => 'To use RocketCDN, replace your CNAME with <code>example1.org</code>. <a href="" data-beacon-article="" rel="noopener noreferrer" target="_blank">More Info</a>',
+			'helper'      => 'To use RocketCDN, replace your CNAME with <code>example1.org</code>. <a href="https://docs.wp-rocket.me/article/1307-rocketcdn/?utm_source=wp_plugin&#038;utm_medium=wp_rocket" data-beacon-article="5e4c84bd04286364bc958833" rel="noopener noreferrer" target="_blank">More Info</a>',
 			'default'     => '',
 			'section'     => 'cnames_section',
 			'page'        => 'page_cdn',
+			'beacon'      => [
+				'url' => 'https://docs.wp-rocket.me/article/1307-rocketcdn/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				'id'  => '5e4c84bd04286364bc958833',
+			],
 		];
 
 		$this->assertSame( $expected, apply_filters( 'rocket_cdn_settings_fields', self::$fields ) );
