@@ -136,7 +136,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		$more_info = sprintf(
 			// translators: %1$is = opening link tag, %2$s = closing link tag.
 			__( '%1$sMore Info%2$s', 'rocket' ),
-			'<a href="" data-beacon-article="" rel="noopener noreferrer" target="_blank">',
+			'<a href="https://b7d3i3z8.rocketcdn.me" data-beacon-article="5e4c84bd04286364bc958833" rel="noopener noreferrer" target="_blank">',
 			'</a>'
 		);
 
