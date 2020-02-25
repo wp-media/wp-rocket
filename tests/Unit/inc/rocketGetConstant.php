@@ -6,20 +6,19 @@ use Brain\Monkey;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers ::rocket_get_constant
+ * @covers ::rocket_has_constant
+ * @uses  ::rocket_get_constant
  * @group Init
  * @group Constants
  */
 class Test_RocketGetConstant extends TestCase {
-	protected function setUp() {
-		parent::setUp();
+
+	public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/constants.php';
 	}
 
-	/**
-	 * Test rocket_get_constant() should mock getting constants, allowing tests to override what gets returned.
-	 */
 	public function testShouldMockConstants() {
 		Monkey\Functions\expect( 'rocket_get_constant' )
 			->ordered()

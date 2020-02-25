@@ -6,20 +6,18 @@ use Brain\Monkey;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
+ * @covers ::rocket_has_constant
  * @group Init
  * @group Constants
  */
 class Test_RocketHasConstant extends TestCase {
 
-	protected function setUp() {
-		parent::setUp();
+	public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/constants.php';
 	}
 
-	/**
-	 * Test rocket_has_constant() should mock constants, allowing tests to override if a constant is defined or not.
-	 */
 	public function testShouldMockConstants() {
 		Monkey\Functions\expect( 'rocket_has_constant' )
 			->ordered()
