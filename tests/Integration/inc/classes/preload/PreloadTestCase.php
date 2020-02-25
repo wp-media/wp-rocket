@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\classes\preload;
 use WP_Rocket\Tests\Integration\Fixtures\Preload\Process_Wrapper;
 use WPMedia\PHPUnit\Integration\TestCase;
 
-class PreloadTestCase extends TestCase {
+abstract class PreloadTestCase extends TestCase {
 	protected $site_url           = 'https://smashingcoding.com';
 	protected $identifier         = 'rocket_preload';
 	protected $option_hook_prefix = 'pre_get_rocket_option_';

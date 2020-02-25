@@ -1,4 +1,5 @@
 <?php
+
 namespace WP_Rocket\Tests\Integration\inc\classes\preload\Sitemap;
 
 use Brain\Monkey\Actions;
@@ -7,11 +8,12 @@ use WP_Rocket\Tests\Integration\inc\classes\preload\PreloadTestCase;
 
 /**
  * @covers \WP_Rocket\Preload\Sitemap::run_preload
- * @group Preload
+ * @uses   ::get_rocket_cache_reject_uri
+ * @group  Preload
  */
 class Test_RunPreload extends PreloadTestCase {
 	protected $post_id;
-	protected $setUpFilters    = true;
+	protected $setUpFilters = true;
 	protected $tearDownFilters = true;
 
 	public function tearDown() {
@@ -116,6 +118,7 @@ class Test_RunPreload extends PreloadTestCase {
 		if ( $sample || $post_id !== $this->post_id ) {
 			return $link;
 		}
+
 		return 'https://smashingcoding.com/category/mobile-preload/';
 	}
 }
