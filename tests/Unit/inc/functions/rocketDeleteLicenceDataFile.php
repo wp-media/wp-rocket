@@ -2,19 +2,19 @@
 
 namespace WP_Rocket\Tests\Unit\inc\functions;
 
-use WPMedia\PHPUnit\Unit\TestCase;
 use Brain\Monkey\Functions;
-use org\bovigo\vfs\vfsStream,
-	org\bovigo\vfs\vfsStreamDirectory;
+use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
  * @covers ::rocket_delete_licence_data_file
  * @group Functions
  * @group Options
  */
-class Test_RocketDeleteLicenceDataFile extends TestCase {
-	private $path;
-	private $mock_fs;
+class Test_RocketDeleteLicenceDataFile extends FilesystemTestCase {
+	protected $rootVirtualDir = 'wp-rocket';
+	protected $structure      = [
+		'licence-data.php' => '',
+	];
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
@@ -22,42 +22,17 @@ class Test_RocketDeleteLicenceDataFile extends TestCase {
 		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/functions/options.php';
 	}
 
-	public function setUp() {
-		parent::setUp();
-
-
-		$structure = [
-			'licence-data.php' => '',
-		];
-
-		$this->path = vfsStream::setup( 'wp-rocket', null, $structure );
-
-		$this->mock_fs = $this->getMockBuilder( 'WP_Filesystem_Direct' )
-		                      ->setMethods( [
-			                      'exists',
-			                      'delete',
-		                      ] )
-		                      ->getMock();
-		$this->mock_fs->method( 'exists' )->will( $this->returnCallback( 'file_exists' ) );
-		$this->mock_fs->method( 'delete' )->will( $this->returnCallback( function( $file ) {
-			unlink( $file );
-		} ) );
-	}
-
-	/**
-	 * Test should delete the licence-data.php file if it exists
-	 */
 	public function testShouldDeleteLicenceDataFileWhenExists() {
-		Functions\when( 'rocket_get_constant' )
-			->justReturn( $this->path->url() . '/' );
-		Functions\when( 'rocket_direct_filesystem' )->alias( function() {
-			return $this->mock_fs;
-		} );
+		Functions\expect( 'rocket_get_constant' )
+			->once()
+			->with( 'WP_ROCKET_PATH' )
+			->andReturn( $this->rootVirtualUrl );
 
-		$this->assertTrue( $this->path->hasChild( 'licence-data.php' ) );
+		$filename = $this->filesystem->getUrl( 'licence-data.php' );
+		$this->assertFileExists( $filename );
 
 		rocket_delete_licence_data_file();
 
-		$this->assertFalse( $this->path->hasChild( 'licence-data.php' ) );
+		$this->assertFileNotExists( $filename );
 	}
 }
