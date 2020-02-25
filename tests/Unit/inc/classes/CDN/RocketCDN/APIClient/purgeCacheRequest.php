@@ -1,19 +1,17 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\CDN\RocketCDN\APIClient;
+namespace WP_Rocket\Tests\Unit\inc\classes\CDN\RocketCDN\APIClient;
 
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\CDN\RocketCDN\APIClient;
 use Brain\Monkey\Functions;
 
 /**
- * @covers\WP_Rocket\CDN\RocketCDN\APIClient::purge_cache_request
+ * @covers \WP_Rocket\CDN\RocketCDN\APIClient::purge_cache_request
  * @group RocketCDN
  */
 class Test_PurgeCacheRequest extends TestCase {
-    /**
-     * Test should return error message when no user token
-     */
+
     public function testShouldReturnMissingIdentifierWhenNoID() {
         $this->mockCommonWpFunctions();
 
@@ -29,9 +27,6 @@ class Test_PurgeCacheRequest extends TestCase {
         );
     }
 
-    /**
-     * Test should return error message when incorrect user token
-     */
     public function testShouldReturnMissingIdentifierWhenWrongID() {
         $this->mockCommonWpFunctions();
 
@@ -50,9 +45,6 @@ class Test_PurgeCacheRequest extends TestCase {
         );
     }
 
-    /**
-     * Test should return error message when incorrect response code received
-     */
     public function testShouldReturnUnexpectedResponseWhenIncorrectResponseCode() {
         $this->mockCommonWpFunctions();
 
@@ -74,9 +66,6 @@ class Test_PurgeCacheRequest extends TestCase {
         );
     }
 
-    /**
-     * Test should return error message when the response body is empty
-     */
     public function testShouldReturnUnexpectedResponseWhenEmptyBody() {
         $this->mockCommonWpFunctions();
 
@@ -99,9 +88,6 @@ class Test_PurgeCacheRequest extends TestCase {
         );
     }
 
-    /**
-     * Test should return error message when the API returns an unexpected response
-     */
     public function testShouldReturnUnexpectedResponseWhenMissingParameter() {
         $this->mockCommonWpFunctions();
 
@@ -128,9 +114,6 @@ class Test_PurgeCacheRequest extends TestCase {
         );
     }
 
-    /**
-     * Test should return an error message when the API return false for success
-     */
     public function testShouldReturnErrorMessageWhenSuccessFalse() {
         $this->mockCommonWpFunctions();
 
@@ -160,9 +143,6 @@ class Test_PurgeCacheRequest extends TestCase {
         );
     }
 
-    /**
-     * Test should return a success message when the purge is successful
-     */
     public function testShouldReturnSuccessMessageWhenSuccessTrue() {
         $this->mockCommonWpFunctions();
 

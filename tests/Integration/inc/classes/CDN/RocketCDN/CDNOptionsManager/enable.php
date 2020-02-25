@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\CDN\RocketCDN\CDNOptionsManager;
+namespace WP_Rocket\Tests\Integration\inc\classes\CDN\RocketCDN\CDNOptionsManager;
 
 use WPMedia\PHPUnit\Integration\TestCase;
 use WP_Rocket\CDN\RocketCDN\CDNOptionsManager;
@@ -8,13 +8,12 @@ use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 
 /**
- * @covers\WP_Rocket\CDN\RocketCDN\CDNOptionsManager::disable
+ * @covers \WP_Rocket\CDN\RocketCDN\CDNOptionsManager::enable
  * @group RocketCDN
  */
-class Test_Disable extends TestCase {
+class Test_Enable extends TestCase {
 
-	public function testShouldDisableCDNOptions() {
-        add_option( 'rocketcdn_user_token', '123456' );
+	public function testShouldEnableCDNOptions() {
 		set_transient( 'rocketcdn_status', [ 'transient' ], MINUTE_IN_SECONDS );
 
 		$options      = new Options( 'wp_rocket_' );
@@ -23,12 +22,12 @@ class Test_Disable extends TestCase {
 		( new CDNOptionsManager(
 				$options,
 				$option_array
-			) )->disable();
+			) )->enable( 'https://rocketcdn.me' );
 
 		$expected_subset = [
-			'cdn'        => 0,
-			'cdn_cnames' => [],
-			'cdn_zone'   => [],
+			'cdn'        => 1,
+			'cdn_cnames' => [ 'https://rocketcdn.me' ],
+			'cdn_zone'   => [ 'all' ],
 		];
 
 		$options = get_option( 'wp_rocket_settings' );
@@ -38,7 +37,6 @@ class Test_Disable extends TestCase {
 			$this->assertSame( $value, $options[$key] );
 		}
 
-        $this->assertFalse( get_option( 'rocketcdn_user_token' ) );
 		$this->assertFalse( get_transient( 'rocketcdn_status' ) );
 	}
 }

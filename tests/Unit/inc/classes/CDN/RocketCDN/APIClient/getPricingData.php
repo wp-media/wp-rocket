@@ -1,13 +1,13 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\CDN\RocketCDN\APIClient;
+namespace WP_Rocket\Tests\Unit\inc\classes\CDN\RocketCDN\APIClient;
 
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\CDN\RocketCDN\APIClient;
 use Brain\Monkey\Functions;
 
 /**
- * @covers\WP_Rocket\CDN\RocketCDN\APIClient::get_pricing_data
+ * @covers \WP_Rocket\CDN\RocketCDN\APIClient::get_pricing_data
  * @group RocketCDN
  */
 class Test_GetPricingData extends TestCase {
@@ -21,9 +21,6 @@ class Test_GetPricingData extends TestCase {
 		'annual_price'             => 79.0,
 	];
 
-	/**
-	 * Test should return data from the transient when it exists
-	 */
 	public function testShouldReturnCachedArrayWhenDataInTransient() {
 		Functions\expect( 'get_transient' )
 			->once()
@@ -34,9 +31,6 @@ class Test_GetPricingData extends TestCase {
 		$this->assertSame( $this->pricing_data, $client->get_pricing_data() );
 	}
 
-	/**
-	 * Test should return a WP Error when the remote request returns a response code that is not 200
-	 */
 	public function testShouldReturnWPErrorWhenResponseNot200() {
 		$this->mockCommonWpFunctions();
 
@@ -56,9 +50,6 @@ class Test_GetPricingData extends TestCase {
 		$this->assertInstanceOf( \WP_Error::class, $client->get_pricing_data() );
 	}
 
-	/**
-	 * Test should return default array when the response body is empty
-	 */
 	public function testShouldReturnWPErrorWhenReponseDataIsEmpty() {
 		$this->mockCommonWpFunctions();
 
@@ -79,9 +70,6 @@ class Test_GetPricingData extends TestCase {
 		$this->assertInstanceOf( \WP_Error::class, $client->get_pricing_data() );
 	}
 
-	/**
-	 * Test should return the pricing array when request is successful
-	 */
 	public function testShouldReturnPricingArrayWhenSuccessful() {
 		$this->mockCommonWpFunctions();
 

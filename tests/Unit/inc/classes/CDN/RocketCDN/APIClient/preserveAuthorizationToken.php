@@ -1,13 +1,13 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\CDN\RocketCDN\APIClient;
+namespace WP_Rocket\Tests\Unit\inc\classes\CDN\RocketCDN\APIClient;
 
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\CDN\RocketCDN\APIClient;
 use Brain\Monkey\Functions;
 
 /**
- * @covers\WP_Rocket\CDN\RocketCDN\APIClient::preserve_authorization_token
+ * @covers \WP_Rocket\CDN\RocketCDN\APIClient::preserve_authorization_token
  * @group RocketCDN
  */
 class Test_PreserveAuthorizationToken extends TestCase {

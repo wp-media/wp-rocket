@@ -1,13 +1,13 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\CDN\RocketCDN\APIClient;
+namespace WP_Rocket\Tests\Unit\inc\classes\CDN\RocketCDN\APIClient;
 
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\CDN\RocketCDN\APIClient;
 use Brain\Monkey\Functions;
 
 /**
- * @covers\WP_Rocket\CDN\RocketCDN\APIClient::get_subscription_data
+ * @covers \WP_Rocket\CDN\RocketCDN\APIClient::get_subscription_data
  * @group RocketCDN
  */
 class Test_GetSubscriptionData extends TestCase {
@@ -19,9 +19,6 @@ class Test_GetSubscriptionData extends TestCase {
 		'subscription_status'           => 'cancelled',
 	];
 
-	/**
-	 * Test should return data from the transient when it exists
-	 */
 	public function testShouldReturnCachedArrayWhenDataInTransient() {
 		Functions\expect( 'get_transient' )
 			->once()
@@ -32,9 +29,6 @@ class Test_GetSubscriptionData extends TestCase {
 		$this->assertSame( $this->default, $client->get_subscription_data() );
 	}
 
-	/**
-	 * Test should return default data when the RocketCDN user token doesn't exist
-	 */
 	public function testShouldReturnDefaultArrayWhenNoUserToken() {
 		Functions\when( 'get_transient' )->justReturn( false );
 
@@ -47,9 +41,6 @@ class Test_GetSubscriptionData extends TestCase {
 		$this->assertSame( $this->default, $client->get_subscription_data() );
 	}
 
-	/**
-	 * Test should return default array when the remote request returns a response code that is not 200
-	 */
 	public function testShouldReturnDefaultArrayWhenResponseNot200() {
 		Functions\when( 'get_transient' )->justReturn( false );
 
@@ -78,9 +69,6 @@ class Test_GetSubscriptionData extends TestCase {
 		$this->assertSame( $this->default, $client->get_subscription_data() );
 	}
 
-	/**
-	 * Test should return default array when the response body is empty
-	 */
 	public function testShouldReturnDefaultArrayWhenReponseDataIsEmpty() {
 		Functions\when( 'get_transient' )->justReturn( false );
 
@@ -110,9 +98,6 @@ class Test_GetSubscriptionData extends TestCase {
 		$this->assertSame( $this->default, $client->get_subscription_data() );
 	}
 
-	/**
-	 * Test should return array with data from API when the call is successful
-	 */
 	public function testShouldReturnArrayWhenSuccessful() {
 		Functions\when( 'get_transient' )->justReturn( false );
 
