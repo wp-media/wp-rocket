@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\Optimize\CSS\Combine;
+namespace WP_Rocket\Tests\Integration\inc\optimization\CSS\Combine;
 
 use MatthiasMullie\Minify\CSS;
 use WP_Rocket\Optimization\CSS\Combine;
@@ -9,10 +9,10 @@ use WP_Rocket\Admin\Options;
 use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
- * @covers Combine::insert_combined_css
+ * @covers \WP_Rocket\Optimization\CSS\Combine::insert_combined_css
  * @group Optimize
  */
-class TestInsertCombinedCSS extends TestCase {
+class Test_InsertCombinedCSS extends TestCase {
 
 	public function testShouldInsertCombinedCSS() {
 		$combine      = new Combine( new Options_Data( ( new Options( 'wp_rocket_' ) )->get( 'settings' ) ), new CSS() );

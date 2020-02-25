@@ -1,14 +1,15 @@
 <?php
-namespace WP_Rocket\Tests\Unit\Optimize\CSS\CombineGoogleFonts;
+namespace WP_Rocket\Tests\Unit\inc\optimization\CSS\Combine_Google_Fonts;
 
+use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Optimization\CSS\Combine_Google_Fonts;
-use Brain\Monkey\Functions;
 
 /**
+ * @covers \WP_Rocket\Optimization\CSS\Combine_Google_Fonts::optimize
  * @group Optimize
  */
-class TestOptimize extends TestCase {
+class Test_Optimize extends TestCase {
 
     public function testShouldCombineGoogleFontsWhenSubset() {
         Functions\when('rocket_extract_url_component')->alias( function($url, $component ) {
