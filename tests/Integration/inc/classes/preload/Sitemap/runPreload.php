@@ -11,7 +11,7 @@ use WP_Rocket\Tests\Integration\inc\classes\preload\PreloadTestCase;
  */
 class Test_RunPreload extends PreloadTestCase {
 	protected $post_id;
-	protected $setUpFilters = true;
+	protected $setUpFilters    = true;
 	protected $tearDownFilters = true;
 
 	public function tearDown() {

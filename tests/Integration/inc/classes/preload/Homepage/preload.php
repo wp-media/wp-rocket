@@ -10,7 +10,7 @@ use WP_Rocket\Tests\Integration\inc\classes\preload\PreloadTestCase;
  * @group  Preload
  */
 class Test_Preload extends PreloadTestCase {
-	protected $setUpFilters = true;
+	protected $setUpFilters    = true;
 	protected $tearDownFilters = true;
 
 	public function testShouldPreloadWhenValidUrls() {

@@ -6,14 +6,14 @@ use WP_Rocket\Tests\Integration\Fixtures\Preload\Process_Wrapper;
 use WPMedia\PHPUnit\Integration\TestCase;
 
 class PreloadTestCase extends TestCase {
-	protected $site_url = 'https://smashingcoding.com';
-	protected $identifier = 'rocket_preload';
+	protected $site_url           = 'https://smashingcoding.com';
+	protected $identifier         = 'rocket_preload';
 	protected $option_hook_prefix = 'pre_get_rocket_option_';
 	protected $preloadErrorsTransient;
 	protected $preloadRunningTransient;
 	protected $process;
-	protected $setUpFilters = false;
-	protected $tearDownFilters = false;
+	protected $setUpFilters       = false;
+	protected $tearDownFilters    = false;
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
