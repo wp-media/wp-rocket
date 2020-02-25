@@ -60,7 +60,7 @@ $rocket_cnames_zone = get_rocket_option( 'cdn_zone' );
 		printf(
 			// translators: %s is a "Learn more" link.
 			esc_html__( 'Purges RocketCDN cached resources for your website. %s', 'rocket' ),
-			'<a href="" target="_blank">' . esc_html__( 'Learn more', 'rocket' ) . '</a>'
+			'<a href="' . esc_url( $data['beacon']['url'] ) . '" data-beacon-article="' . esc_attr( $data['beacon']['id'] ) . '" rel="noopener noreferrer" target="_blank">' . esc_html__( 'Learn more', 'rocket' ) . '</a>'
 		);
 		?>
 	</div><br>
