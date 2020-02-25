@@ -36,9 +36,10 @@ abstract class Process extends WP_Background_Process {
 	 *     @type string $url    The URL to preload.
 	 *     @type bool   $mobile True when we want to send a "mobile" user agent with the request. Optional.
 	 * }
-	 * @return array The formatted item. An empty array for invalid items.
+	 * @param  string       $source An identifier related to the source of the preload.
+	 * @return array                The formatted item. An empty array for invalid items.
 	 */
-	public function format_item( $item ) {
+	public function format_item( $item, $source = '' ) {
 		if ( is_string( $item ) ) {
 			$item = [
 				'url' => $item,
@@ -51,7 +52,10 @@ abstract class Process extends WP_Background_Process {
 			return [];
 		}
 
+		$source = is_string( $source ) ? $source : '';
+
 		$item['mobile'] = ! empty( $item['mobile'] );
+		$item['source'] = ! empty( $item['source'] ) ? $item['source'] : $source;
 
 		return $item;
 	}
@@ -112,9 +116,10 @@ abstract class Process extends WP_Background_Process {
 	 *     A string is allowed for backward compatibility (for the URL).
 	 *
 	 *     @type string $url    The URL to preload.
-	 *     @type bool   $mobile True when we want to send a "mobile" user agent with the request. Optional.
+	 *     @type bool   $mobile True when we want to send a "mobile" user agent with the request.
+	 *     @type string $source An identifier related to the source of the preload.
 	 * }
-	 * @return bool False.
+	 * @return bool True when preload has been launched. False otherwise.
 	 */
 	protected function maybe_preload( $item ) {
 		$item = $this->format_item( $item );
@@ -123,11 +128,11 @@ abstract class Process extends WP_Background_Process {
 			return false;
 		}
 
-		$this->preload( $item );
+		$result = $this->preload( $item );
 
 		usleep( absint( get_rocket_option( 'sitemap_preload_url_crawl', 500000 ) ) );
 
-		return false;
+		return ! is_wp_error( $result );
 	}
 
 	/**
@@ -140,8 +145,10 @@ abstract class Process extends WP_Background_Process {
 	 *     The item to preload: an array containing the following values.
 	 *
 	 *     @type string $url    The URL to preload.
-	 *     @type bool   $mobile True when we want to send a "mobile" user agent with the request. Optional.
+	 *     @type bool   $mobile True when we want to send a "mobile" user agent with the request.
+	 *     @type string $source An identifier related to the source of the preload.
 	 * }
+	 * @return array|WP_Error An array on success. A WP_Error object on failure.
 	 */
 	private function preload( array $item ) {
 		/**
@@ -164,7 +171,7 @@ abstract class Process extends WP_Background_Process {
 			]
 		);
 
-		wp_remote_get( esc_url_raw( $item['url'] ), $args );
+		return wp_remote_get( esc_url_raw( $item['url'] ), $args );
 	}
 
 	/**
@@ -178,7 +185,8 @@ abstract class Process extends WP_Background_Process {
 	 *     The item to preload: an array containing the following values.
 	 *
 	 *     @type string $url    The URL to preload.
-	 *     @type bool   $mobile True when we want to send a "mobile" user agent with the request. Optional.
+	 *     @type bool   $mobile True when we want to send a "mobile" user agent with the request.
+	 *     @type string $source An identifier related to the source of the preload.
 	 * }
 	 * @return bool
 	 */
@@ -206,5 +214,17 @@ abstract class Process extends WP_Background_Process {
 		$file_cache_path = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) . $url['host'] . strtolower( $url['path'] . $url['query'] ) . 'index' . $mobile . $https . '.html';
 
 		return rocket_direct_filesystem()->exists( $file_cache_path );
+	}
+
+	/**
+	 * Stop the process.
+	 *
+	 * @since  3.5
+	 * @author Grégory Viguier
+	 */
+	public function cancel_process() {
+		if ( method_exists( get_parent_class( $this ), 'cancel_process' ) ) {
+			parent::cancel_process();
+		}
 	}
 }

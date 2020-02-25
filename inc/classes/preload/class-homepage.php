@@ -10,6 +10,16 @@ namespace WP_Rocket\Preload;
 class Homepage extends Abstract_Preload {
 
 	/**
+	 * An ID used in the "running" transient’s name.
+	 *
+	 * @since  3.5
+	 * @author Grégory Viguier
+	 *
+	 * @var string
+	 */
+	const PRELOAD_ID = 'homepage';
+
+	/**
 	 * Gets the internal URLs on the homepage and sends them to the preload queue.
 	 *
 	 * @since 3.2
@@ -44,9 +54,15 @@ class Homepage extends Abstract_Preload {
 		}
 
 		$preload_urls = [];
+		$nbr_homes    = 0;
 
 		foreach ( $home_urls as $home_item ) {
 			$urls = $this->get_urls( $home_item );
+
+			if ( false !== $urls && ! $home_item['mobile'] ) {
+				// Homepage successfully preloaded (and not mobile).
+				++$nbr_homes;
+			}
 
 			if ( ! $urls ) {
 				continue;
@@ -63,7 +79,11 @@ class Homepage extends Abstract_Preload {
 
 				if ( ! $home_item['mobile'] && ! isset( $preload_urls[ $path ] ) ) {
 					// Not a URL for mobile.
-					$preload_urls[ $path ] = $url;
+					$preload_urls[ $path ] = [
+						'url'    => $url,
+						'mobile' => false,
+						'source' => self::PRELOAD_ID,
+					];
 				}
 
 				if ( $home_item['mobile'] && ! isset( $preload_urls[ $path . self::MOBILE_SUFFIX ] ) ) {
@@ -71,6 +91,7 @@ class Homepage extends Abstract_Preload {
 					$preload_urls[ $path . self::MOBILE_SUFFIX ] = [
 						'url'    => $url,
 						'mobile' => true,
+						'source' => self::PRELOAD_ID,
 					];
 				}
 			}
@@ -82,7 +103,7 @@ class Homepage extends Abstract_Preload {
 
 		array_map( [ $this->preload_process, 'push_to_queue' ], $preload_urls );
 
-		set_transient( 'rocket_preload_running', 0 );
+		set_transient( $this->get_running_transient_name(), $nbr_homes );
 		$this->preload_process->save()->dispatch();
 	}
 

@@ -8,6 +8,17 @@ namespace WP_Rocket\Preload;
  * @author Remy Perona
  */
 class Sitemap extends Abstract_Preload {
+
+	/**
+	 * An ID used in the "running" transient’s name.
+	 *
+	 * @since  3.5
+	 * @author Grégory Viguier
+	 *
+	 * @var string
+	 */
+	const PRELOAD_ID = 'sitemap';
+
 	/**
 	 * Flag to track sitemap read failures.
 	 *
@@ -72,8 +83,7 @@ class Sitemap extends Abstract_Preload {
 		$preload = 0;
 
 		foreach ( $urls as $item ) {
-			$url  = is_array( $item ) ? $item['url'] : $item;
-			$path = wp_parse_url( $url, PHP_URL_PATH );
+			$path = wp_parse_url( $item['url'], PHP_URL_PATH );
 
 			if ( isset( $path ) && preg_match( '#^(' . \get_rocket_cache_reject_uri() . ')$#', $path ) ) {
 				continue;
@@ -87,7 +97,7 @@ class Sitemap extends Abstract_Preload {
 			return;
 		}
 
-		set_transient( 'rocket_preload_running', 0 );
+		set_transient( $this->get_running_transient_name(), 0 );
 		$this->preload_process->save()->dispatch();
 	}
 
@@ -99,13 +109,14 @@ class Sitemap extends Abstract_Preload {
 	 * @author Remy Perona
 	 *
 	 * @param  string $sitemap_url URL of the sitemap.
-	 * @param  array  $urls        An array of URLs and arrays.
+	 * @param  array  $urls        An array of arrays.
 	 * @return array {
-	 *     Array values can be URLs (string) or arrays described as follow.
+	 *     Array values are arrays described as follow.
 	 *     Array keys are an identifier based on the URL path.
 	 *
 	 *     @type string $url    The URL to preload.
 	 *     @type bool   $mobile True when we want to send a "mobile" user agent with the request. Optional.
+	 *     @type string $source An identifier related to the source of the preload (e.g. RELOAD_ID).
 	 * }
 	 */
 	private function process_sitemap( $sitemap_url, array $urls = [] ) {
@@ -240,16 +251,22 @@ class Sitemap extends Abstract_Preload {
 					$urls[ $mobile_key ] = [
 						'url'    => $url,
 						'mobile' => true,
+						'source' => self::PRELOAD_ID,
 					];
 				} else {
 					if ( ! isset( $urls[ $path ] ) ) {
-						$urls[ $path ] = $url;
+						$urls[ $path ] = [
+							'url'    => $url,
+							'mobile' => false,
+							'source' => self::PRELOAD_ID,
+						];
 					}
 
 					if ( $mobile_preload && ! isset( $urls[ $mobile_key ] ) ) {
 						$urls[ $mobile_key ] = [
 							'url'    => $url,
 							'mobile' => true,
+							'source' => self::PRELOAD_ID,
 						];
 					}
 				}
@@ -282,13 +299,14 @@ class Sitemap extends Abstract_Preload {
 	 *
 	 * @link https://github.com/wp-media/wp-rocket/issues/1306
 	 *
-	 * @param  array $urls An array of URLs and arrays.
+	 * @param  array $urls An array of arrays.
 	 * @return array {
-	 *     Array values can be URLs (string) or arrays described as follow.
+	 *     Array values are arrays described as follow.
 	 *     Array keys are an identifier based on the URL path.
 	 *
 	 *     @type string $url    The URL to preload.
 	 *     @type bool   $mobile True when we want to send a "mobile" user agent with the request. Optional.
+	 *     @type string $source An identifier related to the source of the preload (e.g. RELOAD_ID).
 	 * }
 	 */
 	private function get_urls( array $urls = [] ) {
@@ -326,7 +344,11 @@ class Sitemap extends Abstract_Preload {
 
 			$path = $this->get_url_identifier( $permalink );
 
-			$urls[ $path ] = $permalink;
+			$urls[ $path ] = [
+				'url'    => $permalink,
+				'mobile' => false,
+				'source' => self::PRELOAD_ID,
+			];
 
 			if ( ! $mobile_preload ) {
 				continue;
@@ -335,6 +357,7 @@ class Sitemap extends Abstract_Preload {
 			$urls[ $path . self::MOBILE_SUFFIX ] = [
 				'url'    => $permalink,
 				'mobile' => true,
+				'source' => self::PRELOAD_ID,
 			];
 		}
 

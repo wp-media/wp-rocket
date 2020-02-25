@@ -243,7 +243,7 @@ class Preload_Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$running = get_transient( 'rocket_preload_running' );
+		$running = $this->homepage_preloader->get_number_of_preloaded_items();
 
 		if ( false === $running ) {
 			return;
