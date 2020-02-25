@@ -52,10 +52,10 @@ abstract class Process extends WP_Background_Process {
 			return [];
 		}
 
-		$source = is_string( $source ) ? $source : '';
-
 		$item['mobile'] = ! empty( $item['mobile'] );
-		$item['source'] = ! empty( $item['source'] ) ? $item['source'] : $source;
+		if ( empty( $item['source'] ) ) {
+			$item['source'] = is_string( $source ) ? $source : '';
+		}
 
 		return $item;
 	}
