@@ -1,9 +1,9 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\Functions\Options;
+namespace WP_Rocket\Tests\Unit\inc\functions;
 
-use WPMedia\PHPUnit\Unit\TestCase;
 use Brain\Monkey\Functions;
+use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
  * @covers ::rocket_check_key
@@ -13,8 +13,8 @@ use Brain\Monkey\Functions;
 class TestRocketCheckKey extends TestCase {
 	protected static $mockCommonWpFunctionsInSetUp = true;
 
-	protected function setUp() {
-		parent::setUp();
+	public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/functions/options.php';
 	}

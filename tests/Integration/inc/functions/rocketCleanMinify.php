@@ -1,5 +1,6 @@
 <?php
-namespace WP_Rocket\Tests\Integration\Functions;
+
+namespace WP_Rocket\Tests\Integration\inc\functions;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
@@ -28,13 +29,13 @@ class Test_RocketCleanMinify extends FilesystemTestCase {
 			->twice()
 			->with( 'WP_ROCKET_MINIFY_CACHE_PATH' )
 			->andReturn( trailingslashit( $this->filesystem->getUrl( 'min/' ) ) );
-    }
+	}
 
-    public function tearDown() {
-        delete_option( 'wp_rocket_settings' );
+	public function tearDown() {
+		delete_option( 'wp_rocket_settings' );
 
-        parent::tearDown();
-    }
+		parent::tearDown();
+	}
 
 	public function testShouldCleanMinifiedCSS() {
 		$this->assertTrue( $this->filesystem->exists( 'min/1/fa2965d41f1515951de523cecb81f85e.css' ) );

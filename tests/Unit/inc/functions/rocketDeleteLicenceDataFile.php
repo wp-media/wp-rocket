@@ -1,5 +1,6 @@
 <?php
-namespace WP_Rocket\Tests\Unit\Functions\Options;
+
+namespace WP_Rocket\Tests\Unit\inc\functions;
 
 use WPMedia\PHPUnit\Unit\TestCase;
 use Brain\Monkey\Functions;
@@ -7,7 +8,7 @@ use org\bovigo\vfs\vfsStream,
 	org\bovigo\vfs\vfsStreamDirectory;
 
 /**
- * @covers rocket_delete_licence_data_file
+ * @covers ::rocket_delete_licence_data_file
  * @group Functions
  * @group Options
  */
@@ -15,10 +16,15 @@ class Test_RocketDeleteLicenceDataFile extends TestCase {
 	private $path;
 	private $mock_fs;
 
+	public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
+
+		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/functions/options.php';
+	}
+
 	public function setUp() {
 		parent::setUp();
 
-		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/functions/options.php';
 
 		$structure = [
 			'licence-data.php' => '',
@@ -27,15 +33,15 @@ class Test_RocketDeleteLicenceDataFile extends TestCase {
 		$this->path = vfsStream::setup( 'wp-rocket', null, $structure );
 
 		$this->mock_fs = $this->getMockBuilder( 'WP_Filesystem_Direct' )
-							->setMethods( [
-								'exists',
-								'delete'
-							] )
-							->getMock();
+		                      ->setMethods( [
+			                      'exists',
+			                      'delete',
+		                      ] )
+		                      ->getMock();
 		$this->mock_fs->method( 'exists' )->will( $this->returnCallback( 'file_exists' ) );
 		$this->mock_fs->method( 'delete' )->will( $this->returnCallback( function( $file ) {
-				unlink( $file );
-		}));
+			unlink( $file );
+		} ) );
 	}
 
 	/**
@@ -44,9 +50,9 @@ class Test_RocketDeleteLicenceDataFile extends TestCase {
 	public function testShouldDeleteLicenceDataFileWhenExists() {
 		Functions\when( 'rocket_get_constant' )
 			->justReturn( $this->path->url() . '/' );
-		Functions\when( 'rocket_direct_filesystem')->alias( function() {
+		Functions\when( 'rocket_direct_filesystem' )->alias( function() {
 			return $this->mock_fs;
-		});
+		} );
 
 		$this->assertTrue( $this->path->hasChild( 'licence-data.php' ) );
 

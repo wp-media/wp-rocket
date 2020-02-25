@@ -1,11 +1,12 @@
 <?php
-namespace WP_Rocket\Tests\Integration\Functions;
+
+namespace WP_Rocket\Tests\Integration\inc\functions;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers rocket_delete_licence_data_file
+ * @covers ::rocket_delete_licence_data_file
  * @group Functions
  * @group Options
  */

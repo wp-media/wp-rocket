@@ -1,11 +1,12 @@
 <?php
-namespace WP_Rocket\Tests\Integration\Functions\Options;
 
-use WPMedia\PHPUnit\Integration\TestCase;
+namespace WP_Rocket\Tests\Integration\inc\functions;
+
 use Brain\Monkey\Functions;
+use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
- * @covers rocket_is_live_site()
+ * @covers ::rocket_is_live_site
  * @group Functions
  * @group API
  */

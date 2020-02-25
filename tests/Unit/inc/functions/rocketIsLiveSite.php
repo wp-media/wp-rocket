@@ -1,19 +1,20 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\Functions\Options;
+namespace WP_Rocket\Tests\Unit\inc\functions;
 
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers rocket_is_live_site()
+ * @covers ::rocket_is_live_site
  * @group  Functions
  * @group  API
  */
 class Test_RocketIsLiveSite extends TestCase {
-	public function setUp() {
-		parent::setUp();
+
+	public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/functions/api.php';
 	}
