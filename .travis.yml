@@ -52,4 +52,9 @@ script:
     composer phpcs
   else
     composer run-tests
+    composer code-coverage
   fi
+after_script:
+  # send the code coverage report to Scrutinizer.
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
