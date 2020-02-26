@@ -10,7 +10,7 @@ use WP_Rocket\Preload\Process;
  * @covers \WP_Rocket\Preload\Process::is_mobile_preload_enabled
  * @group Preload
  */
-class Test_isMobilePreloadEnabled extends TestCase {
+class Test_IsMobilePreloadEnabled extends TestCase {
 
 	public function testShouldReturnTrueWhenOptionsEnabled() {
 		$stub = $this->getMockForAbstractClass( Process::class );

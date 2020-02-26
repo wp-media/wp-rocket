@@ -7,10 +7,11 @@ use WP_Rocket\Tests\Integration\inc\classes\preload\PreloadTestCase;
 
 /**
  * @covers \WP_Rocket\Preload\Homepage::preload
+ * @uses   ::get_rocket_cache_query_string
  * @group  Preload
  */
 class Test_Preload extends PreloadTestCase {
-	protected $setUpFilters    = true;
+	protected $setUpFilters = true;
 	protected $tearDownFilters = true;
 
 	public function testShouldPreloadWhenValidUrls() {
