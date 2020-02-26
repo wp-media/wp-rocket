@@ -12,8 +12,9 @@ use WPMedia\PHPUnit\Unit\TestCase;
  * @group  API
  */
 class Test_RocketIsLiveSite extends TestCase {
-	public function setUp() {
-		parent::setUp();
+
+	public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/functions/api.php';
 	}
@@ -37,8 +38,6 @@ class Test_RocketIsLiveSite extends TestCase {
 		Functions\when( 'home_url' )->justReturn( 'http://example.org' );
 
 		$urls   = $this->getLocalStagingSites();
-		$urls[] = 'example.dev';
-		$urls[] = 'example.dev.cc';
 		foreach ( $urls as $domain ) {
 			Functions\when( 'wp_parse_url' )->justReturn( $domain );
 
@@ -46,40 +45,24 @@ class Test_RocketIsLiveSite extends TestCase {
 		}
 	}
 
-	public function testShouldReturnFalseWhenIsLiveProdSiteFilterOnButLocalOrStaging() {
+	public function testShouldReturnTrueWhenLiveSite() {
 		Functions\when( 'rocket_get_constant' )->justReturn( false );
-		Functions\when( 'home_url' )->justReturn( 'http://example.org' );
 
-		add_filter( 'rocket_tld_is_live_prod_site', '__return_true' );
-		foreach ( $this->getLocalStagingSites() as $domain ) {
-			Functions\when( 'wp_parse_url' )->justReturn( $domain );
-
-			$this->assertFalse( rocket_is_live_site() );
-		}
-		remove_filter( 'rocket_tld_is_live_prod_site', '__return_false' );
-	}
-
-	public function testShouldReturnTrueWhenDevTLDIsLiveSite() {
-		Functions\when( 'rocket_get_constant' )->justReturn( false );
-		Functions\when( 'home_url' )->justReturn( 'http://example.org' );
-
-		foreach ( [ 'example.dev', 'example.dev.cc' ] as $domain ) {
-			Functions\when( 'wp_parse_url' )->justReturn( $domain );
-			Filters\expectApplied( 'rocket_tld_is_live_prod_site' )
-				->once()
-				->with( false )
-				->andReturn( true );
+		$live_tlds = [
+			'.org',
+			'.org.uk',
+			'.com',
+			'.co.uk',
+			'.dev',
+			'.me',
+			'.me.uk',
+		];
+		foreach ( $live_tlds as $tld ) {
+			Functions\expect( 'home_url' )->once()->andReturn( "http://example{$tld}" );
+			Functions\expect( 'wp_parse_url' )->once()->andReturn( "example{$tld}" );
 
 			$this->assertTrue( rocket_is_live_site() );
 		}
-	}
-
-	public function testShouldReturnTrueWhenLiveSite() {
-		Functions\when( 'rocket_get_constant' )->justReturn( false );
-		Functions\when( 'home_url' )->justReturn( 'http://example.org' );
-		Functions\when( 'wp_parse_url' )->justReturn( 'example.org' );
-
-		$this->assertTrue( rocket_is_live_site() );
 	}
 
 	private function getLocalStagingSites() {
@@ -89,6 +72,7 @@ class Test_RocketIsLiveSite extends TestCase {
 			'example.localhost',
 			'example.local',
 			'example.test',
+			'example.dev.cc',
 			'example.docksal',
 			'example.lndo.site',
 			'example.wpengine.com',

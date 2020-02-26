@@ -75,7 +75,7 @@ function get_rocket_cdn_cnames( $zone = 'all' ) { // phpcs:ignore WordPress.Nami
 }
 
 /**
- * Check if the current URL is for a live site (not local, not staging)
+ * Check if the current URL is for a live site (not local, not staging).
  *
  * @since 3.5
  * @author Remy Perona
@@ -114,15 +114,8 @@ function rocket_is_live_site() {
 		return false;
 	}
 
-	if ( 'dev' === $tld || '.dev.cc' === substr( $host, -7 ) ) {
-		/**
-		 * Indicates if this website's .dev TLD is the real live production website, i.e. not staging or local dev.
-		 *
-		 * @since 3.5
-		 *
-		 * @param bool True indicates .dev is the real live PROD website.
-		 */
-		return (bool) apply_filters( 'rocket_tld_is_live_prod_site', false );
+	if ( '.dev.cc' === substr( $host, -7 ) ) {
+		return false;
 	}
 
 	if ( '.lndo.site' === substr( $host, -10 ) ) {
