@@ -66,7 +66,7 @@ class Test_RocketcdnField extends TestCase {
 				'type'        => 'rocket_cdn',
 				'label'       => 'CDN CNAME(s)',
 				'description' => 'Specify the CNAME(s) below',
-				'helper'      => 'RocketCDN is currently active. <a href="https://docs.wp-rocket.me/article/1307-rocketcdn" data-beacon-article="5e4c84bd04286364bc958833" rel="noopener noreferrer" target="_blank">More Info</a>',
+				'helper'      => 'Your RocketCDN subscription is currently active. <a href="https://docs.wp-rocket.me/article/1307-rocketcdn" data-beacon-article="5e4c84bd04286364bc958833" rel="noopener noreferrer" target="_blank">More Info</a>',
 				'default'     => '',
 				'section'     => 'cnames_section',
 				'page'        => 'page_cdn',

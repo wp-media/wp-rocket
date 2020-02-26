@@ -120,7 +120,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 			return $fields;
 		}
 
-		$helper_text = __( 'RocketCDN is currently active.', 'rocket' );
+		$helper_text = __( 'Your RocketCDN subscription is currently active.', 'rocket' );
 		$cdn_cnames  = $this->options->get( 'cdn_cnames', [] );
 
 		if ( empty( $cdn_cnames ) || $cdn_cnames[0] !== $subscription_data['cdn_url'] ) {
