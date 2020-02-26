@@ -1,5 +1,6 @@
 <?php
-namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\Images\Webp\EwwwSubscriber;
+
+namespace WP_Rocket\Tests\Unit\inc\classes\third_party\plugins\Images\Webp\EwwwSubscriber;
 
 use Brain\Monkey\Functions;
 use SebastianBergmann\Exporter\Exporter;
@@ -7,14 +8,12 @@ use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers EWWW_Subscriber::get_basename
- * @group ThirdParty
- * @group Webp
+ * @covers \WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber::::maybe_remove_images_cnames
+ * @group  ThirdParty
+ * @group  Webp
  */
-class TestMaybeRemoveImagesCnames extends TestCase {
-	/**
-	 * Test EWWW_Subscriber->maybe_remove_images_cnames() should return identical when not using ExactDN.
-	 */
+class Test_MaybeRemoveImagesCnames extends TestCase {
+
 	public function testShouldReturnIdenticalWhenExactdnNotEnabled() {
 		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
 
@@ -29,9 +28,6 @@ class TestMaybeRemoveImagesCnames extends TestCase {
 		$this->assertSame( $hosts, $result );
 	}
 
-	/**
-	 * Test EWWW_Subscriber->maybe_remove_images_cnames() should return identical when no 'images' value in zones list.
-	 */
 	public function testShouldReturnIdenticalWhenNoImagesZone() {
 		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
 		$optionsData
@@ -49,9 +45,6 @@ class TestMaybeRemoveImagesCnames extends TestCase {
 		$this->assertSame( $hosts, $result );
 	}
 
-	/**
-	 * Test EWWW_Subscriber->maybe_remove_images_cnames() should return an empty array when only 'all' and 'images' values are listed in zones list.
-	 */
 	public function testShouldReturnEmptyArrayWhenOnlyImagesAllZones() {
 		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
 		$optionsData
@@ -73,9 +66,6 @@ class TestMaybeRemoveImagesCnames extends TestCase {
 		$this->assertSame( [], $result );
 	}
 
-	/**
-	 * Test EWWW_Subscriber->maybe_remove_images_cnames() should return identical when no CDN names are set.
-	 */
 	public function testShouldReturnIdenticalWhenNoCdnNames() {
 		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
 		$optionsData
@@ -115,9 +105,6 @@ class TestMaybeRemoveImagesCnames extends TestCase {
 		$this->assertSame( $hosts, $result );
 	}
 
-	/**
-	 * Test EWWW_Subscriber->maybe_remove_images_cnames() should return identical when there are no hosts for images.
-	 */
 	public function testShouldReturnIdenticalWhenNoImagesHosts() {
 		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
 		$optionsData
@@ -143,9 +130,6 @@ class TestMaybeRemoveImagesCnames extends TestCase {
 		$this->assertSame( $hosts, $result );
 	}
 
-	/**
-	 * Test EWWW_Subscriber->maybe_remove_images_cnames() should return identical when host for images is also used for 'all'.
-	 */
 	public function testShouldReturnIdenticalWhenImagesHostSameForAll() {
 		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
 		$optionsData
@@ -154,7 +138,15 @@ class TestMaybeRemoveImagesCnames extends TestCase {
 			->will(
 				$this->returnValueMap(
 					[
-						[ 'cdn_cnames', [], [ 'dns.example.com, all.example.com', 'dns.example.com, images.example.com', 'evil.example.com' ] ],
+						[
+							'cdn_cnames',
+							[],
+							[
+								'dns.example.com, all.example.com',
+								'dns.example.com, images.example.com',
+								'evil.example.com',
+							],
+						],
 						[ 'cdn_zone', [], [ 'all', 'images', 'js' ] ],
 					]
 				)
@@ -171,9 +163,6 @@ class TestMaybeRemoveImagesCnames extends TestCase {
 		$this->assertSame( $hosts, $result );
 	}
 
-	/**
-	 * Test EWWW_Subscriber->maybe_remove_images_cnames() should remove hosts for images.
-	 */
 	public function testShouldRemoveHostForImages() {
 		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
 		$optionsData
@@ -182,7 +171,15 @@ class TestMaybeRemoveImagesCnames extends TestCase {
 			->will(
 				$this->returnValueMap(
 					[
-						[ 'cdn_cnames', [], [ 'dns.example.com, all.example.com', 'dns.example.com, images.example.com', 'evil.example.com' ] ],
+						[
+							'cdn_cnames',
+							[],
+							[
+								'dns.example.com, all.example.com',
+								'dns.example.com, images.example.com',
+								'evil.example.com',
+							],
+						],
 						[ 'cdn_zone', [], [ 'all', 'images', 'js' ] ],
 					]
 				)
@@ -208,7 +205,11 @@ class TestMaybeRemoveImagesCnames extends TestCase {
 			->will(
 				$this->returnValueMap(
 					[
-						[ 'cdn_cnames', [], [ 'all.example.com', 'dns.example.com, images.example.com', 'evil.example.com' ] ],
+						[
+							'cdn_cnames',
+							[],
+							[ 'all.example.com', 'dns.example.com, images.example.com', 'evil.example.com' ],
+						],
 						[ 'cdn_zone', [], [ 'all', 'images', 'js' ] ],
 					]
 				)

@@ -1,17 +1,17 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\Smush;
+namespace WP_Rocket\Tests\Unit\inc\classes\third_party\plugins\Smush_Subscriber;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Smush_Subscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers Smush_Subscriber::is_smush_lazyload_active
+ * @covers \WP_Rocket\Subscriber\Third_Party\Plugins\Smush_Subscriber::is_smush_lazyload_active
  * @group ThirdParty
  * @group Smush
  */
-class Smush extends TestCase {
+class Test_IsSmushLazyloadActive extends TestCase {
 
 	protected function setUp() {
 		parent::setUp();

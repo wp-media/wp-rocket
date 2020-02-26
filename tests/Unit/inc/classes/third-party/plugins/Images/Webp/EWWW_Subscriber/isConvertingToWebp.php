@@ -1,19 +1,18 @@
 <?php
-namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\Images\Webp\EwwwSubscriber;
+
+namespace WP_Rocket\Tests\Unit\inc\classes\third_party\plugins\Images\Webp\EwwwSubscriber;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers EWWW_Subscriber::is_converting_to_webp
- * @group ThirdParty
- * @group Webp
+ * @covers \WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber::is_converting_to_webp
+ * @group  ThirdParty
+ * @group  Webp
  */
-class TestIsConvertingToWebp extends TestCase {
-	/**
-	 * Test EWWW_Subscriber->is_converting_to_webp() should return false when EWWW option not enabled.
-	 */
+class Test_IsConvertingToWebp extends TestCase {
+
 	public function testShouldReturnFalseWhenEwwwOptionNotEnabled() {
 		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
 		$subscriber  = new EWWW_Subscriber( $optionsData );
@@ -25,9 +24,6 @@ class TestIsConvertingToWebp extends TestCase {
 		$this->assertFalse( $subscriber->is_converting_to_webp() );
 	}
 
-	/**
-	 * Test EWWW_Subscriber->is_converting_to_webp() should return true when EWWW option is enabled.
-	 */
 	public function testShouldReturnTrueWhenEwwwOptionIsEnabled() {
 		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
 		$subscriber  = new EWWW_Subscriber( $optionsData );

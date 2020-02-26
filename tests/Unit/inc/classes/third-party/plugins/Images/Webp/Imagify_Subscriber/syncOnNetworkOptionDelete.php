@@ -1,5 +1,6 @@
 <?php
-namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\Images\Webp\ImagifySubscriber;
+
+namespace WP_Rocket\Tests\Unit\inc\classes\third_party\plugins\Images\Webp\Imagify_Subscriber;
 
 use Brain\Monkey\Actions;
 use Brain\Monkey\Functions;
@@ -7,14 +8,12 @@ use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers Imagify_Subscriber::sync_on_network_option_delete
- * @group ThirdParty
- * @group Webp
+ * @covers \WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber::sync_on_network_option_delete
+ * @group  ThirdParty
+ * @group  Webp
  */
-class TestSyncOnNetworkOptionDelete extends TestCase {
-	/**
-	 * Test Imagify_Subscriber->sync_on_network_option_delete() should sync when on the same network and serving webp.
-	 */
+class Test_SyncOnNetworkOptionDelete extends TestCase {
+
 	public function testShouldSyncWhenSameNetworkAndServingWebp() {
 		$option     = 'imagify_settings';
 		$network_id = 3;
@@ -24,9 +23,9 @@ class TestSyncOnNetworkOptionDelete extends TestCase {
 		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
 
 		$subscriber = $this->getMockBuilder( Imagify_Subscriber::class )
-			->setConstructorArgs( [ $optionsData ] )
-			->setMethods( [ 'is_serving_webp' ] )
-			->getMock();
+		                   ->setConstructorArgs( [ $optionsData ] )
+		                   ->setMethods( [ 'is_serving_webp' ] )
+		                   ->getMock();
 		$subscriber
 			->expects( $this->once() )
 			->method( 'is_serving_webp' )
@@ -38,9 +37,6 @@ class TestSyncOnNetworkOptionDelete extends TestCase {
 		$subscriber->sync_on_network_option_delete( $option, $network_id );
 	}
 
-	/**
-	 * Test Imagify_Subscriber->sync_on_network_option_delete() should not sync when on the same network but not serving webp.
-	 */
 	public function testShouldNotSyncWhenSameNetworkAndNotServingWebp() {
 		$option     = 'imagify_settings';
 		$network_id = 3;
@@ -50,9 +46,9 @@ class TestSyncOnNetworkOptionDelete extends TestCase {
 		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
 
 		$subscriber = $this->getMockBuilder( Imagify_Subscriber::class )
-			->setConstructorArgs( [ $optionsData ] )
-			->setMethods( [ 'is_serving_webp' ] )
-			->getMock();
+		                   ->setConstructorArgs( [ $optionsData ] )
+		                   ->setMethods( [ 'is_serving_webp' ] )
+		                   ->getMock();
 		$subscriber
 			->expects( $this->once() )
 			->method( 'is_serving_webp' )
@@ -64,9 +60,6 @@ class TestSyncOnNetworkOptionDelete extends TestCase {
 		$subscriber->sync_on_network_option_delete( $option, $network_id );
 	}
 
-	/**
-	 * Test Imagify_Subscriber->sync_on_network_option_delete() should not sync when not on the same network but serving webp.
-	 */
 	public function testShouldNotSyncWhenNotSameNetworkAndServingWebp() {
 		$option     = 'imagify_settings';
 		$network_id = 3;
@@ -76,9 +69,9 @@ class TestSyncOnNetworkOptionDelete extends TestCase {
 		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
 
 		$subscriber = $this->getMockBuilder( Imagify_Subscriber::class )
-			->setConstructorArgs( [ $optionsData ] )
-			->setMethods( [ 'is_serving_webp' ] )
-			->getMock();
+		                   ->setConstructorArgs( [ $optionsData ] )
+		                   ->setMethods( [ 'is_serving_webp' ] )
+		                   ->getMock();
 		$subscriber
 			->expects( $this->never() )
 			->method( 'is_serving_webp' )

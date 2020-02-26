@@ -1,19 +1,18 @@
 <?php
-namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\Images\Webp\ImagifySubscriber;
+
+namespace WP_Rocket\Tests\Unit\inc\classes\third_party\plugins\Images\Webp\Imagify_Subscriber;
 
 use Brain\Monkey\Actions;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers Imagify_Subscriber::sync_on_option_add
- * @group ThirdParty
- * @group Webp
+ * @covers \WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber::sync_on_option_add
+ * @group  ThirdParty
+ * @group  Webp
  */
-class TestSyncOnOptionAdd extends TestCase {
-	/**
-	 * Test Imagify_Subscriber->sync_on_option_add() should trigger a hook when the "display webp" option is enabled on option creation.
-	 */
+class Test_SyncOnOptionAdd extends TestCase {
+
 	public function testShouldTriggerHookWhenDisplayWebpOptionEnabled() {
 		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
 		$subscriber  = new Imagify_Subscriber( $optionsData );
@@ -25,9 +24,6 @@ class TestSyncOnOptionAdd extends TestCase {
 		$subscriber->sync_on_option_add( $option, $value );
 	}
 
-	/**
-	 * Test Imagify_Subscriber->sync_on_option_add() should not trigger a hook when the "display webp" option is disabled on option creation.
-	 */
 	public function testShouldNotTriggerHookDisplayWebpOptionDisabled() {
 		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
 		$subscriber  = new Imagify_Subscriber( $optionsData );

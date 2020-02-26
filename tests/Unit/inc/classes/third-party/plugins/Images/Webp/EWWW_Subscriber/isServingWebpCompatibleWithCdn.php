@@ -1,14 +1,16 @@
 <?php
-namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\Images\Webp\EwwwSubscriber;
+
+namespace WP_Rocket\Tests\Unit\inc\classes\third_party\plugins\Images\Webp\EwwwSubscriber;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @group ThirdParty
+ * @covers \WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber::is_serving_webp_compatible_with_cdn
+ * @group  ThirdParty
  */
-class TestIsServingWebpCompatibleWithCdn extends TestCase {
+class Test_IsServingWebpCompatibleWithCdn extends TestCase {
 
 	public function testShouldReturnTrueWhenExactdnIsEnabled() {
 		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );

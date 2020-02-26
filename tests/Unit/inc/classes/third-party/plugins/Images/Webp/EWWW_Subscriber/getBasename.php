@@ -1,17 +1,17 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\Images\Webp\EwwwSubscriber;
+namespace WP_Rocket\Tests\Unit\inc\classes\third_party\plugins\Images\Webp\EwwwSubscriber;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers EWWW_Subscriber::get_basename
+ * @covers \WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber::get_basename
  * @group  ThirdParty
  * @group  Webp
  */
-class TestGetBasename extends TestCase {
+class Test_GetBasename extends TestCase {
 
 	private function getSubscriber() {
 		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );

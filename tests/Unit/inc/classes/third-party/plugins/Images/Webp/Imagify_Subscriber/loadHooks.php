@@ -1,5 +1,6 @@
 <?php
-namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\Images\Webp\ImagifySubscriber;
+
+namespace WP_Rocket\Tests\Unit\inc\classes\third_party\plugins\Images\Webp\Imagify_Subscriber;
 
 use Brain\Monkey\Actions;
 use Brain\Monkey\Filters;
@@ -8,14 +9,12 @@ use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers Imagify_Subscriber::load_hooks
- * @group ThirdParty
- * @group Webp
+ * @covers \WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber::load_hooks
+ * @group  ThirdParty
+ * @group  Webp
  */
-class TestLoadHooks extends TestCase {
-	/**
-	 * Test Imagify_Subscriber->load_hooks() should not register hooks when separate cache is disabled via the option.
-	 */
+class Test_LoadHooks extends TestCase {
+
 	public function testShouldRegisterHooksWhenCacheIsDisabledByOption() {
 		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
 		$optionsData
@@ -35,9 +34,6 @@ class TestLoadHooks extends TestCase {
 		$subscriber->load_hooks();
 	}
 
-	/**
-	 * Test Imagify_Subscriber->load_hooks() should register hooks when Imagify plugin is not available.
-	 */
 	public function testShouldRegisterHooksWhenPluginNotAvailable() {
 		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
 		$optionsData
@@ -69,9 +65,6 @@ class TestLoadHooks extends TestCase {
 		$subscriber->load_hooks();
 	}
 
-	/**
-	 * Test Imagify_Subscriber->load_hooks() should register hooks when Imagify plugin is available.
-	 */
 	public function testShouldRegisterHooksWhenPluginIsAvailable() {
 		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
 		$optionsData

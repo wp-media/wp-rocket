@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\Images\Webp\EwwwSubscriber;
+namespace WP_Rocket\Tests\Unit\inc\classes\third_party\plugins\Images\Webp\EwwwSubscriber;
 
 use Brain\Monkey\Actions;
 use Brain\Monkey\Filters;
@@ -9,14 +9,12 @@ use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers EWWW_Subscriber::load_hooks
- * @group ThirdParty
- * @group Webp
+ * @covers \WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber::::load_hooks
+ * @group  ThirdParty
+ * @group  Webp
  */
-class TestLoadHooks extends TestCase {
-	/**
-	 * Test EWWW_Subscriber->load_hooks() should not register hooks when separate cache is disabled via the option.
-	 */
+class Test_LoadHooks extends TestCase {
+
 	public function testShouldRegisterHooksWhenCacheIsDisabledByOption() {
 		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
 		$optionsData
@@ -36,9 +34,6 @@ class TestLoadHooks extends TestCase {
 		$subscriber->load_hooks();
 	}
 
-	/**
-	 * Test EWWW_Subscriber->load_hooks() should register hooks when EWWW plugin is not available.
-	 */
 	public function testShouldRegisterHooksWhenPluginNotAvailable() {
 		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
 		$optionsData
@@ -70,9 +65,6 @@ class TestLoadHooks extends TestCase {
 		$this->assertTrue( true ); // Prevent "risky" warning.
 	}
 
-	/**
-	 * Test EWWW_Subscriber->load_hooks() should call plugin_activation() and plugin_deactivation() when did action.
-	 */
 	public function testShouldCallCallbacksWhenDidAction() {
 		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
 		$optionsData
@@ -105,9 +97,6 @@ class TestLoadHooks extends TestCase {
 		$subscriber->load_hooks();
 	}
 
-	/**
-	 * Test EWWW_Subscriber->load_hooks() should register hooks when EWWW plugin is available.
-	 */
 	public function testShouldRegisterHooksWhenPluginIsAvailable() {
 		global $ewww_get_option;
 

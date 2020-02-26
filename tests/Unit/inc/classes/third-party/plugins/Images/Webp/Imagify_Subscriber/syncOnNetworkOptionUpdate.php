@@ -1,25 +1,24 @@
 <?php
-namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\Images\Webp\ImagifySubscriber;
+
+namespace WP_Rocket\Tests\Unit\inc\classes\third_party\plugins\Images\Webp\Imagify_Subscriber;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers Imagify_Subscriber::sync_on_network_option_update
- * @group ThirdParty
- * @group Webp
+ * @covers \WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber::sync_on_network_option_update
+ * @group  ThirdParty
+ * @group  Webp
  */
-class TestSyncOnNetworkOptionUpdate extends TestCase {
-	/**
-	 * Test Imagify_Subscriber->sync_on_network_option_update() should sync when on the same network.
-	 */
+class Test_SyncOnNetworkOptionUpdate extends TestCase {
+
 	public function testShouldSyncWhenSameNetwork() {
 		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
 		$subscriber  = $this->getMockBuilder( Imagify_Subscriber::class )
-			->setConstructorArgs( [ $optionsData ] )
-			->setMethods( [ 'sync_on_option_update' ] )
-			->getMock();
+		                    ->setConstructorArgs( [ $optionsData ] )
+		                    ->setMethods( [ 'sync_on_option_update' ] )
+		                    ->getMock();
 		$subscriber
 			->expects( $this->once() )
 			->method( 'sync_on_option_update' );
@@ -34,15 +33,12 @@ class TestSyncOnNetworkOptionUpdate extends TestCase {
 		$subscriber->sync_on_network_option_update( $option, $value, $old_value, $network_id );
 	}
 
-	/**
-	 * Test Imagify_Subscriber->sync_on_network_option_update() should not sync when not on the same network.
-	 */
 	public function testShouldNotSyncWhenNotSameNetwork() {
 		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
 		$subscriber  = $this->getMockBuilder( Imagify_Subscriber::class )
-			->setConstructorArgs( [ $optionsData ] )
-			->setMethods( [ 'sync_on_option_update' ] )
-			->getMock();
+		                    ->setConstructorArgs( [ $optionsData ] )
+		                    ->setMethods( [ 'sync_on_option_update' ] )
+		                    ->getMock();
 		$subscriber
 			->expects( $this->never() )
 			->method( 'sync_on_option_update' );

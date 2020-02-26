@@ -1,5 +1,6 @@
 <?php
-namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\Images\Webp\ImagifySubscriber;
+
+namespace WP_Rocket\Tests\Unit\inc\classes\third_party\plugins\Images\Webp\Imagify_Subscriber;
 
 use Brain\Monkey\Actions;
 use Brain\Monkey\Functions;
@@ -7,14 +8,12 @@ use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers Imagify_Subscriber::sync_on_network_option_add
- * @group ThirdParty
- * @group Webp
+ * @covers \WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber::sync_on_network_option_add
+ * @group  ThirdParty
+ * @group  Webp
  */
-class TestSyncOnNetworkOptionAdd extends TestCase {
-	/**
-	 * Test Imagify_Subscriber->sync_on_network_option_add() should trigger a hook when the "display webp" option is enabled on option creation.
-	 */
+class Test_SyncOnNetworkOptionAdd extends TestCase {
+
 	public function testShouldTriggerHookWhenDisplayWebpOptionEnabled() {
 		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
 		$subscriber  = new Imagify_Subscriber( $optionsData );
@@ -29,9 +28,6 @@ class TestSyncOnNetworkOptionAdd extends TestCase {
 		$subscriber->sync_on_network_option_add( $option, $value, $network_id );
 	}
 
-	/**
-	 * Test Imagify_Subscriber->sync_on_network_option_add() should not trigger a hook.
-	 */
 	public function testShouldNotTriggerHook() {
 		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
 		$subscriber  = new Imagify_Subscriber( $optionsData );

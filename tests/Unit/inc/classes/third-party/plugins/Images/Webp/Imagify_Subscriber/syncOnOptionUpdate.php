@@ -1,19 +1,18 @@
 <?php
-namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\Images\Webp\ImagifySubscriber;
+
+namespace WP_Rocket\Tests\Unit\inc\classes\third_party\plugins\Images\Webp\Imagify_Subscriber;
 
 use Brain\Monkey\Actions;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers Imagify_Subscriber::sync_on_option_update
- * @group ThirdParty
- * @group Webp
+ * @covers \WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber::sync_on_option_update
+ * @group  ThirdParty
+ * @group  Webp
  */
-class TestSyncOnOptionUpdate extends TestCase {
-	/**
-	 * Test Imagify_Subscriber->sync_on_option_update() should sync when the plugin’s webp options change.
-	 */
+class Test_SyncOnOptionUpdate extends TestCase {
+
 	public function testShouldSyncWhenOptionsChange() {
 		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
 		$subscriber  = new Imagify_Subscriber( $optionsData );
@@ -41,9 +40,6 @@ class TestSyncOnOptionUpdate extends TestCase {
 		$subscriber->sync_on_option_update( $old_value, $new_value );
 	}
 
-	/**
-	 * Test Imagify_Subscriber->sync_on_option_update() should not sync when the plugin’s webp options do not change.
-	 */
 	public function testShouldNotSyncWhenOptionsDontChange() {
 		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
 		$subscriber  = new Imagify_Subscriber( $optionsData );
