@@ -2,7 +2,6 @@
 
 namespace WP_Rocket\Tests\Integration\inc\classes\subscriber\CDN\CDNSubscriber;
 
-use WPMedia\PHPUnit\Integration\TestCase;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\CDN\CDN;
