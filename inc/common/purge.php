@@ -462,6 +462,8 @@ function do_admin_post_rocket_purge_cache() { // phpcs:ignore WordPress.NamingCo
 				}
 
 				if ( get_rocket_option( 'manual_preload' ) && ( ! defined( 'WP_ROCKET_DEBUG' ) || ! WP_ROCKET_DEBUG ) ) {
+					$home_url = get_rocket_i18n_home_url( $lang );
+
 					/**
 					 * Filters the arguments for the preload request being triggered after clearing the cache.
 					 *
@@ -470,7 +472,7 @@ function do_admin_post_rocket_purge_cache() { // phpcs:ignore WordPress.NamingCo
 					 *
 					 * @param array $args Request arguments.
 					 */
-					$args = apply_filters(
+					$args = (array) apply_filters(
 						'rocket_preload_after_purge_cache_request_args',
 						[
 							'blocking'   => false,
@@ -479,10 +481,20 @@ function do_admin_post_rocket_purge_cache() { // phpcs:ignore WordPress.NamingCo
 							'sslverify'  => apply_filters( 'https_local_ssl_verify', false ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 						]
 					);
-					wp_safe_remote_get(
-						home_url( $lang ),
-						$args
-					);
+
+					wp_safe_remote_get( $home_url, $args );
+
+					/**
+					 * Fires after automatically preloading the homepage, which occurs after purging the cache.
+					 *
+					 * @since  3.5
+					 * @author Grégory Viguier
+					 *
+					 * @param string $home_url URL to the homepage being preloaded.
+					 * @param string $lang     The lang of the homepage.
+					 * @param array  $args     Arguments used for the preload request.
+					 */
+					do_action( 'rocket_after_preload_after_purge_cache', $home_url, $lang, $args );
 				}
 
 				rocket_dismiss_box( 'rocket_warning_plugin_modification' );

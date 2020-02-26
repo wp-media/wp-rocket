@@ -76,6 +76,18 @@ abstract class Abstract_Preload {
 	}
 
 	/**
+	 * Tell if mobile preload is enabled.
+	 *
+	 * @since  3.5
+	 * @author Grégory Viguier
+	 *
+	 * @return bool
+	 */
+	public function is_mobile_preload_enabled() {
+		return $this->preload_process->is_mobile_preload_enabled();
+	}
+
+	/**
 	 * Get the number of preloaded URLs.
 	 *
 	 * @since  3.5
