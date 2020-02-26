@@ -99,6 +99,7 @@ function rocket_is_live_site() {
 		'.local',
 		'.test',
 		'.docksal',
+		'.docksal.site',
 		'.dev.cc',
 		'.lndo.site'
 	];

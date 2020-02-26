@@ -74,6 +74,7 @@ class Test_RocketIsLiveSite extends TestCase {
 			'example.test',
 			'example.dev.cc',
 			'example.docksal',
+			'example.docksal.site',
 			'example.lndo.site',
 			'example.wpengine.com',
 			'example.pantheonsite.io',
