@@ -101,7 +101,7 @@ function rocket_is_live_site() {
 		'.docksal',
 		'.docksal.site',
 		'.dev.cc',
-		'.lndo.site'
+		'.lndo.site',
 	];
 	foreach ( $local_tlds as $local_tld ) {
 		if ( $host === $local_tld ) {
