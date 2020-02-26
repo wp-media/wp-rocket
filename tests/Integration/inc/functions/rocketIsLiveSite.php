@@ -35,10 +35,7 @@ class Test_RocketIsLiveSite extends TestCase {
 	public function testShouldReturnFalseWhenLocalOrStaging() {
 		Functions\when( 'rocket_get_constant' )->justReturn( false );
 
-		$urls   = $this->getLocalStagingSites();
-		$urls[] = 'example.dev';
-		$urls[] = 'example.dev.cc';
-		foreach ( $urls as $domain ) {
+		foreach ( $this->getLocalStagingSites() as $domain ) {
 			$callback = function() use ( $domain ) {
 				return 'http://' . $domain;
 			};
@@ -49,26 +46,27 @@ class Test_RocketIsLiveSite extends TestCase {
 		}
 	}
 
-	public function testShouldReturnTrueWhenDevTLDIsLiveSite() {
-		Functions\expect( 'rocket_get_constant' )->with( 'WP_ROCKET_DEBUG' )->andReturn( false );
+	public function testShouldReturnTrueWhenLiveSite() {
+		Functions\when( 'rocket_get_constant' )->justReturn( false );
 
-		add_filter( 'rocket_tld_is_live_prod_site', [ $this, 'return_true' ] );
-		foreach ( [ 'example.dev', 'example.dev.css' ] as $domain ) {
-			$callback = function() use ( $domain ) {
-				return 'http://' . $domain;
+		$live_tlds = [
+			'.org',
+			'.org.uk',
+			'.com',
+			'.co.uk',
+			'.dev',
+			'.me',
+			'.me.uk',
+		];
+		foreach ( $live_tlds as $tld ) {
+			$callback = function() use ( $tld ) {
+				return "http://example{$tld}";
 			};
 
 			add_filter( 'home_url', $callback );
 			$this->assertTrue( rocket_is_live_site() );
 			remove_filter( 'home_url', $callback );
 		}
-		remove_filter( 'rocket_tld_is_live_prod_site', [ $this, 'return_true' ] );
-	}
-
-	public function testShouldReturnTrueWhenLiveSite() {
-		Functions\when( 'rocket_get_constant' )->justReturn( false );
-
-		$this->assertTrue( rocket_is_live_site() );
 	}
 
 	private function getLocalStagingSites() {
@@ -78,7 +76,9 @@ class Test_RocketIsLiveSite extends TestCase {
 			'example.localhost',
 			'example.local',
 			'example.test',
+			'example.dev.cc',
 			'example.docksal',
+			'example.docksal.site',
 			'example.lndo.site',
 			'example.wpengine.com',
 			'example.pantheonsite.io',
