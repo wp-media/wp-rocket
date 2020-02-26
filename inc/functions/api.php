@@ -75,7 +75,7 @@ function get_rocket_cdn_cnames( $zone = 'all' ) { // phpcs:ignore WordPress.Nami
 }
 
 /**
- * Check if the current URL is for a live site (not local, not staging)
+ * Check if the current URL is for a live site (not local, not staging).
  *
  * @since 3.5
  * @author Remy Perona
@@ -88,47 +88,33 @@ function rocket_is_live_site() {
 	}
 
 	$host = wp_parse_url( home_url(), PHP_URL_HOST );
-
 	if ( ! $host ) {
 		return false;
 	}
 
-	$localhost = [
+	// Check for local development sites.
+	$local_tlds = [
 		'127.0.0.1',
 		'localhost',
+		'.local',
+		'.test',
+		'.docksal',
+		'.docksal.site',
+		'.dev.cc',
+		'.lndo.site',
 	];
+	foreach ( $local_tlds as $local_tld ) {
+		if ( $host === $local_tld ) {
+			return false;
+		}
 
-	if ( in_array( $host, $localhost, true ) ) {
-		return false;
+		// Check the TLD.
+		if ( substr( $host, -strlen( $local_tld ) ) === $local_tld ) {
+			return false;
+		}
 	}
 
-	$tld           = pathinfo( $host, PATHINFO_EXTENSION );
-	$excluded_tlds = [
-		'localhost',
-		'local',
-		'test',
-		'docksal',
-	];
-
-	if ( in_array( $tld, $excluded_tlds, true ) ) {
-		return false;
-	}
-
-	if ( 'dev' === $tld || '.dev.cc' === substr( $host, -7 ) ) {
-		/**
-		 * Indicates if this website's .dev TLD is the real live production website, i.e. not staging or local dev.
-		 *
-		 * @since 3.5
-		 *
-		 * @param bool True indicates .dev is the real live PROD website.
-		 */
-		return (bool) apply_filters( 'rocket_tld_is_live_prod_site', false );
-	}
-
-	if ( '.lndo.site' === substr( $host, -10 ) ) {
-		return false;
-	}
-
+	// Check for staging sites.
 	$staging = [
 		'.wpengine.com',
 		'.pantheonsite.io',
@@ -142,7 +128,6 @@ function rocket_is_live_site() {
 		'-liquidwebsites.com',
 		'.myftpupload.com',
 	];
-
 	foreach ( $staging as $partial_host ) {
 		if ( strpos( $host, $partial_host ) ) {
 			return false;
