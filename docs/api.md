@@ -40,7 +40,7 @@ as_enqueue_async_action( $hook, $args, $group )
 
 - **$hook** (string)(required) Name of the action hook. Default: _none_.
 - **$args** (array) Arguments to pass to callbacks when the hook triggers. Default: _`array()`_.
-- **$group** (array) The group to assign this job to. Default: _''_.
+- **$group** (string) The group to assign this job to. Default: _''_.
 
 ### Return value
 
@@ -64,7 +64,7 @@ as_schedule_single_action( $timestamp, $hook, $args, $group )
 - **$timestamp** (integer)(required) The Unix timestamp representing the date you want the action to run. Default: _none_.
 - **$hook** (string)(required) Name of the action hook. Default: _none_.
 - **$args** (array) Arguments to pass to callbacks when the hook triggers. Default: _`array()`_.
-- **$group** (array) The group to assign this job to. Default: _''_.
+- **$group** (string) The group to assign this job to. Default: _''_.
 
 ### Return value
 
@@ -89,7 +89,7 @@ as_schedule_recurring_action( $timestamp, $interval_in_seconds, $hook, $args, $g
 - **$interval_in_seconds** (integer)(required) How long to wait between runs. Default: _none_.
 - **$hook** (string)(required) Name of the action hook. Default: _none_.
 - **$args** (array) Arguments to pass to callbacks when the hook triggers. Default: _`array()`_.
-- **$group** (array) The group to assign this job to. Default: _''_.
+- **$group** (string) The group to assign this job to. Default: _''_.
 
 ### Return value
 
@@ -114,7 +114,7 @@ as_schedule_cron_action( $timestamp, $schedule, $hook, $args, $group )
 - **$schedule** (string)(required) $schedule A cron-link schedule string, see http://en.wikipedia.org/wiki/Cron. Default: _none_.
 - **$hook** (string)(required) Name of the action hook. Default: _none_.
 - **$args** (array) Arguments to pass to callbacks when the hook triggers. Default: _`array()`_.
-- **$group** (array) The group to assign this job to. Default: _''_.
+- **$group** (string) The group to assign this job to. Default: _''_.
 
 ### Return value
 
@@ -137,7 +137,7 @@ as_unschedule_action( $hook, $args, $group )
 
 - **$hook** (string)(required) Name of the action hook. Default: _none_.
 - **$args** (array) Arguments passed to callbacks when the hook triggers. Default: _`array()`_.
-- **$group** (array) The group job was assigned to. Default: _''_.
+- **$group** (string) The group the job is assigned to. Default: _''_.
 
 ### Return value
 
@@ -158,12 +158,12 @@ as_unschedule_action( $hook, $args, $group )
 ### Parameters
 
 - **$hook** (string)(required) Name of the action hook.
-- **$args** (array) Arguments to pass to callbacks when the hook triggers. Default: _`array()`_.
-- **$group** (array) The group to assign this job to. Default: _''_.
+- **$args** (array) Arguments passed to callbacks when the hook triggers. Default: _`array()`_.
+- **$group** (string) The group the job is assigned to. Default: _''_.
 
 ### Return value
 
-(null)
+(string|null) The scheduled action ID if a scheduled action was found, or null if no matching action found.
 
 
 ## Function Reference / `as_next_scheduled_action()`
@@ -181,8 +181,8 @@ as_next_scheduled_action( $hook, $args, $group )
 ### Parameters
 
 - **$hook** (string)(required) Name of the action hook. Default: _none_.
-- **$args** (array) Arguments to pass to callbacks when the hook triggers. Default: _`array()`_.
-- **$group** (array) The group to assign this job to. Default: _''_.
+- **$args** (array) Arguments passed to callbacks when the hook triggers. Default: _`array()`_.
+- **$group** (string) The group the job is assigned to. Default: _''_.
 
 ### Return value
 
