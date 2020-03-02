@@ -23,10 +23,6 @@ if ( class_exists( 'VarnishPurger' ) ) :
 	}
 endif;
 
-/*
- @since 2.5.5
- * For not conflit with Varnish HTTP Purge
-*/
 add_action( 'after_rocket_clean_domain', 'rocket_clean_varnish_http_purge' );
 /**
  * Call the cache server to purge the cache with Varnish HTTP Purge.
@@ -53,7 +49,7 @@ function rocket_clean_varnish_http_purge() {
 			$path = $p['path'];
 		}
 
-		$schema = apply_filters( 'varnish_http_purge_schema', 'http://' );
+		$schema = apply_filters( 'varnish_http_purge_schema', 'http://' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 		// If we made varniship, let it sail.
 		if ( ! empty( $varniship ) ) {
@@ -64,16 +60,16 @@ function rocket_clean_varnish_http_purge() {
 
 		wp_remote_request(
 			$purgeme,
-			array(
+			[
 				'method'   => 'PURGE',
 				'blocking' => false,
-				'headers'  => array(
+				'headers'  => [
 					'host'           => $p['host'],
 					'X-Purge-Method' => 'regex',
-				),
-			)
+				],
+			]
 		);
 
-		do_action( 'after_purge_url', $url, $purgeme );
+		do_action( 'after_purge_url', $url, $purgeme ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	}
 }

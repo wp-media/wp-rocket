@@ -8,6 +8,7 @@
  * @link https://wordpress.org/plugins/sumome/
  * @since 3.0.4
  */
+
 defined( 'ABSPATH' ) || exit;
 
 if ( class_exists( 'WP_Plugin_SumoMe' ) ) {
@@ -20,9 +21,9 @@ if ( class_exists( 'WP_Plugin_SumoMe' ) ) {
 	 */
 	function rocket_dequeue_sumo_me_css() {
 
-		// Retun on all pages but WP Rocket settings page
+		// Retun on all pages but WP Rocket settings page.
 		$screen = get_current_screen();
-		if ( $screen->id !== 'settings_page_wprocket' ) {
+		if ( 'settings_page_wprocket' !== $screen->id ) {
 			return;
 		}
 
@@ -39,14 +40,14 @@ if ( class_exists( 'WP_Plugin_SumoMe' ) ) {
 	 */
 	function rocket_dequeue_sumo_me_js() {
 
-		// Retun on all pages but WP Rocket settings page
+		// Retun on all pages but WP Rocket settings page.
 		$screen = get_current_screen();
-		if ( $screen->id !== 'settings_page_wprocket' ) {
+		if ( 'settings_page_wprocket' !== $screen->id ) {
 			return;
 		}
 
 		global $wp_plugin_sumome;
-		remove_action( 'admin_footer', array( $wp_plugin_sumome, 'append_admin_script_code' ) );
+		remove_action( 'admin_footer', [ $wp_plugin_sumome, 'append_admin_script_code' ] );
 	}
 	add_action( 'admin_head', 'rocket_dequeue_sumo_me_js' );
 }

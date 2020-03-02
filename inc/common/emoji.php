@@ -27,10 +27,10 @@ if ( get_rocket_option( 'emoji', 0 ) ) {
 	 */
 	function rocket_disable_emoji_tinymce( $plugins ) {
 		if ( is_array( $plugins ) ) {
-			return array_diff( $plugins, array( 'wpemoji' ) );
+			return array_diff( $plugins, [ 'wpemoji' ] );
 		}
 
-		return array();
+		return [];
 	}
 	add_filter( 'tiny_mce_plugins', 'rocket_disable_emoji_tinymce' );
 }

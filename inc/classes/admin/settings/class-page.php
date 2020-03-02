@@ -186,7 +186,14 @@ class Page {
 
 		$this->render->set_hidden_settings( $this->settings->get_hidden_settings() );
 
-		echo $this->render->generate( 'page', [ 'slug' => $this->slug, 'btn_submit_text' => $rocket_valid_key ? __( 'Save Changes', 'rocket' ) : __( 'Validate License', 'rocket' ) ] );
+		$btn_submit_text = $rocket_valid_key ? __( 'Save Changes', 'rocket' ) : __( 'Validate License', 'rocket' );
+		echo $this->render->generate( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+			'page',
+			[
+				'slug'            => $this->slug, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+				'btn_submit_text' => $btn_submit_text, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+			]
+		);
 	}
 
 	/**
@@ -558,13 +565,14 @@ class Page {
 	 * @return void
 	 */
 	private function assets_section() {
-		$remove_qs_beacon  = $this->beacon->get_suggest( 'remove_query_strings' );
-		$combine_beacon    = $this->beacon->get_suggest( 'combine' );
-		$defer_js_beacon   = $this->beacon->get_suggest( 'defer_js' );
-		$async_beacon      = $this->beacon->get_suggest( 'async' );
-		$files_beacon      = $this->beacon->get_suggest( 'file_optimization' );
-		$inline_js_beacon  = $this->beacon->get_suggest( 'exclude_inline_js' );
-		$exclude_js_beacon = $this->beacon->get_suggest( 'exclude_js' );
+		$remove_qs_beacon      = $this->beacon->get_suggest( 'remove_query_strings' );
+		$combine_beacon        = $this->beacon->get_suggest( 'combine' );
+		$defer_js_beacon       = $this->beacon->get_suggest( 'defer_js' );
+		$async_beacon          = $this->beacon->get_suggest( 'async' );
+		$files_beacon          = $this->beacon->get_suggest( 'file_optimization' );
+		$inline_js_beacon      = $this->beacon->get_suggest( 'exclude_inline_js' );
+		$exclude_js_beacon     = $this->beacon->get_suggest( 'exclude_js' );
+		$jquery_migrate_beacon = $this->beacon->get_suggest( 'jquery_migrate' );
 
 		$this->settings->add_page_section(
 			'file_optimization',
@@ -736,6 +744,16 @@ class Page {
 					'page'              => 'file_optimization',
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
+				],
+				'dequeue_jquery_migrate' => [
+					'type'              => 'checkbox',
+					'label'             => __( 'Remove jQuery Migrate', 'rocket' ),
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description'       => sprintf( __( 'Remove jQuery Migrate eliminates a JS file and can improve load time. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $jquery_migrate_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $jquery_migrate_beacon['id'] ) . '" target="_blank">', '</a>' ),
+					'section'           => 'js',
+					'page'              => 'file_optimization',
+					'default'           => 0,
+					'sanitize_callback' => 'sanitize_checkbox',
 				],
 				'minify_js'              => [
 					'type'              => 'checkbox',
@@ -1538,21 +1556,19 @@ class Page {
 			) . '<br>';
 		}
 
-		/**
-		 * Add more content to the 'cdn' setting field.
-		 *
-		 * @since  3.4
-		 * @author Grégory Viguier
-		 *
-		 * @param array $cdn_field Data to be added to the setting field.
-		 */
-		$cdn_field = (array) apply_filters( 'rocket_cdn_setting_field', [] );
-
 		$this->settings->add_settings_fields(
-			[
-				'cdn'              => array_merge(
-					$cdn_field,
-					[
+			/**
+			 * Filters the fields for the CDN section.
+			 *
+			 * @since  3.5
+			 * @author Remy Perona
+			 *
+			 * @param array $cdn_settings_fields Data to be added to the CDN section.
+			 */
+			apply_filters(
+				'rocket_cdn_settings_fields',
+				[
+					'cdn'              => [
 						'type'              => 'checkbox',
 						'label'             => __( 'Enable Content Delivery Network', 'rocket' ),
 						'helper'            => $maybe_display_cdn_helper,
@@ -1560,27 +1576,27 @@ class Page {
 						'page'              => 'page_cdn',
 						'default'           => 0,
 						'sanitize_callback' => 'sanitize_checkbox',
-					]
-				),
-				'cdn_cnames'       => [
-					'type'        => 'cnames',
-					'label'       => __( 'CDN CNAME(s)', 'rocket' ),
-					'description' => __( 'Specify the CNAME(s) below', 'rocket' ),
-					'default'     => [],
-					'section'     => 'cnames_section',
-					'page'        => 'page_cdn',
-				],
-				'cdn_reject_files' => [
-					'type'              => 'textarea',
-					'description'       => __( 'Specify URL(s) of files that should not get served via CDN (one per line).', 'rocket' ),
-					'helper'            => __( 'The domain part of the URL will be stripped automatically.<br>Use (.*) wildcards to exclude all files of a given file type located at a specific path.', 'rocket' ),
-					'placeholder'       => '/wp-content/plugins/some-plugins/(.*).css',
-					'section'           => 'exclude_cdn_section',
-					'page'              => 'page_cdn',
-					'default'           => [],
-					'sanitize_callback' => 'sanitize_textarea',
-				],
-			]
+					],
+					'cdn_cnames'       => [
+						'type'        => 'cnames',
+						'label'       => __( 'CDN CNAME(s)', 'rocket' ),
+						'description' => __( 'Specify the CNAME(s) below', 'rocket' ),
+						'default'     => [],
+						'section'     => 'cnames_section',
+						'page'        => 'page_cdn',
+					],
+					'cdn_reject_files' => [
+						'type'              => 'textarea',
+						'description'       => __( 'Specify URL(s) of files that should not get served via CDN (one per line).', 'rocket' ),
+						'helper'            => __( 'The domain part of the URL will be stripped automatically.<br>Use (.*) wildcards to exclude all files of a given file type located at a specific path.', 'rocket' ),
+						'placeholder'       => '/wp-content/plugins/some-plugins/(.*).css',
+						'section'           => 'exclude_cdn_section',
+						'page'              => 'page_cdn',
+						'default'           => [],
+						'sanitize_callback' => 'sanitize_textarea',
+					],
+				]
+			)
 		);
 	}
 
@@ -1753,6 +1769,27 @@ class Page {
 			]
 		);
 
+		$this->settings->add_settings_fields(
+			[
+				'do_cloudflare' => [
+					'type'              => 'rocket_addon',
+					'label'             => __( 'Cloudflare', 'rocket' ),
+					'logo'              => [
+						'url'    => WP_ROCKET_ASSETS_IMG_URL . 'logo-cloudflare2.svg',
+						'width'  => 153,
+						'height' => 51,
+					],
+					'title'             => __( 'Integrate your Cloudflare account with this add-on.', 'rocket' ),
+					'description'       => __( 'Provide your account email, global API key, and domain to use options such as clearing the Cloudflare cache and enabling optimal settings with WP Rocket.', 'rocket' ),
+					'section'           => 'addons',
+					'page'              => 'addons',
+					'settings_page'     => 'cloudflare',
+					'default'           => 0,
+					'sanitize_callback' => 'sanitize_checkbox',
+				],
+			]
+		);
+
 		/**
 		 * Allow to display the "Varnish" tab in the settings page
 		 *
@@ -1788,6 +1825,7 @@ class Page {
 							'description'       => sprintf( __( 'Varnish cache will be purged each time WP Rocket clears its cache to ensure content is always up-to-date.<br>%1$sLearn more%2$s', 'rocket' ), '<a href="' . esc_url( $varnish_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $varnish_beacon['id'] ) . '" target="_blank">', '</a>' ),
 							'section'           => 'one_click',
 							'page'              => 'addons',
+							'settings_page'     => 'varnish',
 							'default'           => 0,
 							'sanitize_callback' => 'sanitize_checkbox',
 						],
@@ -1795,27 +1833,6 @@ class Page {
 				)
 			);
 		}
-
-		$this->settings->add_settings_fields(
-			[
-				'do_cloudflare' => [
-					'type'              => 'rocket_addon',
-					'label'             => __( 'Cloudflare', 'rocket' ),
-					'logo'              => [
-						'url'    => WP_ROCKET_ASSETS_IMG_URL . 'logo-cloudflare2.svg',
-						'width'  => 153,
-						'height' => 51,
-					],
-					'title'             => __( 'Integrate your Cloudflare account with this add-on.', 'rocket' ),
-					'description'       => __( 'Provide your account email, global API key, and domain to use options such as clearing the Cloudflare cache and enabling optimal settings with WP Rocket.', 'rocket' ),
-					'section'           => 'addons',
-					'page'              => 'addons',
-					'settings_page'     => 'cloudflare',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
-				],
-			]
-		);
 
 		if ( defined( 'WP_ROCKET_SUCURI_API_KEY_HIDDEN' ) && WP_ROCKET_SUCURI_API_KEY_HIDDEN ) {
 			// No need to display the dedicated tab if there is nothing to display on it.
@@ -1967,6 +1984,7 @@ class Page {
 	 *
 	 * @since  3.2
 	 * @access private
+	 *
 	 * @author Grégory Viguier
 	 */
 	private function sucuri_section() {
@@ -2025,19 +2043,30 @@ class Page {
 	 */
 	private function hidden_fields() {
 		$this->settings->add_hidden_settings_fields(
-			[
-				'consumer_key',
-				'consumer_email',
-				'secret_key',
-				'license',
-				'secret_cache_key',
-				'minify_css_key',
-				'minify_js_key',
-				'version',
-				'cloudflare_old_settings',
-				'sitemap_preload_url_crawl',
-				'cache_ssl',
-			]
+			/**
+			 * Filters the hidden settings fields
+			 *
+			 * @since 3.5
+			 * @author Remy Perona
+			 *
+			 * @param array $hidden_settings_fields An array of hidden settings fields ID
+			 */
+			apply_filters(
+				'rocket_hidden_settings_fields',
+				[
+					'consumer_key',
+					'consumer_email',
+					'secret_key',
+					'license',
+					'secret_cache_key',
+					'minify_css_key',
+					'minify_js_key',
+					'version',
+					'cloudflare_old_settings',
+					'sitemap_preload_url_crawl',
+					'cache_ssl',
+				]
+			)
 		);
 	}
 }
