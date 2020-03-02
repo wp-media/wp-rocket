@@ -12,13 +12,29 @@ Yes! The Action Scheduler Custom Tables plugin code is now part of Action Schedu
 
 By default, Action Scheduler will only initiate a migration from the internal `WPPostStore` data store. To enable migration from any custom datastore add the following filter `add_filter( 'action_scheduler_migrate_data_store', '__return_true' );`.
 
-### I'm currently on PHP <5.5. When I update PHP will the migration start automatically?
+### I'm currently on PHP >=5.5. When I update PHP will the migration start automatically?
 
 Yes! The migration is initiated as soon as all dependencies are met.
 
 ### I would like to update a plugin for testing that includes Action Scheduler 3.0 but would like to postpone the migration until that testing is complete. Is that possible?
 
 Yes, while we recommend migrating to custom tables as soon as possible for performance reasons, you can use `add_filter( 'action_scheduler_migration_dependencies_met', '__return_false' );` to prevent the migration from initiating.
+
+### I updated to Action Scheduler 3.0+, the migration is running, and I'm seeing a lot of `admin-ajax.php?action=as_async_request_queue` requests. Is it possible to reduce this load?
+
+You can increase the delay (in seconds) between these requests with
+
+```
+add_filter( 'action_scheduler_async_request_sleep_seconds', function( $sleep ) {
+	return 10;
+} );
+```
+
+The default value for this filter is `1` in versions 3.0.X and `5` in versions 3.1.X.
+
+Alternatively, the async queue runner can be disabled while your migration is in process with `add_filter( 'action_scheduler_allow_async_request_runner', '__return_false' );`.
+
+Once the migration is complete, these filters should be removed.
 
 ### Is there a strong likelihood of migration issues with any of the above?
 
@@ -35,7 +51,7 @@ If you wish to undertake more comprehensive testing on a development or staging 
 1. Take a screenshot of the action status counts at the top of the page. Example screenshot: https://cld.wthms.co/kwIqv7
 
 
-#### Stage 2: Install & Activate Action Scheduler 3.0 as a plugin
+#### Stage 2: Install & Activate Action Scheduler 3.0+ as a plugin
 
 1. The migration will start almost immediately
 1. Keep an eye on your error log

@@ -7,7 +7,7 @@ Action Scheduler is a library for triggering a WordPress hook to run at some tim
 
 Think of it like an extension to `do_action()` which adds the ability to delay and repeat a hook.
 
-It just so happens, this functionality also creates a robust job queue for background processing large queues of tasks in WordPress. With the additional of logging and an [administration interface](/admin/), that also provide tracability on your tasks processed in the background.
+It just so happens, this functionality also creates a robust job queue for background processing large queues of tasks in WordPress. With the addition of logging and an [administration interface](/admin/), it also provide tracability on your tasks processed in the background.
 
 ### Battle-Tested Background Processing
 
@@ -39,7 +39,7 @@ This process and the loopback requests will continue until all actions are proce
 
 Before processing a batch, the scheduler will remove any existing claims on actions which have been sitting in a queue for more than five minutes (or more specifically, 10 times the allowed time limit, which defaults to 30 seconds).
 
-Action Scheduler will also trash any actions which were completed or canceled more than a month ago.
+Action Scheduler will also delete any actions which were completed or canceled more than a month ago.
 
 If an action runs for more than 5 minutes, Action Scheduler will assume the action has timed out and will mark it as failed. However, if all callbacks attached to the action were to successfully complete sometime after that 5 minute timeout, its status would later be updated to completed.
 
@@ -58,8 +58,6 @@ The events logged by default include when an action:
  * fails
 
 If it fails with an error that can be recorded, that error will be recorded in the log and visible in administration interface, making it possible to trace what went wrong at some point in the past on a site you didn't have access to in the past.
-
-Actions can also be grouped together using a custom taxonomy named `action-group`.
 
 ## Credits
 

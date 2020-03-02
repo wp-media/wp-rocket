@@ -19,6 +19,10 @@ If you choose to utilize WP CLI exclusively, you can disable the normal WP CLI q
 
 These are the commands available to use with Action Scheduler:
 
+* `action-scheduler migrate`
+
+    **Note**: This command is only available while the migration to custom tables is in progress.
+
 * `action-scheduler run`
     
     Options:
