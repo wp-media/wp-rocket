@@ -132,6 +132,8 @@ class CDNSubscriber implements Subscriber_Interface {
 	 *
 	 * @param array $hosts Base hosts.
 	 * @param array $zones Zones to get the CND URLs associated with.
+	 *
+	 * @return array
 	 */
 	public function get_cdn_hosts( $hosts, $zones ) {
 		$cdn_urls = $this->cdn->get_cdn_urls( $zones );
