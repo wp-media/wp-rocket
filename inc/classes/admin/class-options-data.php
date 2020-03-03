@@ -61,9 +61,9 @@ class Options_Data {
 			return $value;
 		}
 
-		if ( 'consumer_key' === $key && defined( 'WP_ROCKET_KEY' ) ) {
+		if ( 'consumer_key' === $key && rocket_has_constant( 'WP_ROCKET_KEY' ) ) {
 			return WP_ROCKET_KEY;
-		} elseif ( 'consumer_email' === $key && defined( 'WP_ROCKET_EMAIL' ) ) {
+		} elseif ( 'consumer_email' === $key && rocket_has_constant( 'WP_ROCKET_EMAIL' ) ) {
 			return WP_ROCKET_EMAIL;
 		}
 

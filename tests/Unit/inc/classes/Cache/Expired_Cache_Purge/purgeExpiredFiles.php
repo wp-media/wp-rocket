@@ -8,7 +8,8 @@ use WP_Rocket\Cache\Expired_Cache_Purge;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers Expired_Cache_Purge::purge_expired_files
+ * @covers \WP_Rocket\Cache\Expired_Cache_Purge::purge_expired_files
+ * @uses   \WP_Rocket\Buffer\Cache::can_generate_caching_files
  * @group  Cache
  */
 class Test_PurgeExpiredFiles extends FilesystemTestCase {
@@ -74,7 +75,7 @@ class Test_PurgeExpiredFiles extends FilesystemTestCase {
 		$expired_cache_purge = new Expired_Cache_Purge( $this->rootVirtualUrl );
 
 		// Test the expired files exist before we purge.
-		foreach( $this->expired_files as $file ) {
+		foreach ( $this->expired_files as $file ) {
 			$this->assertTrue( $this->filesystem->exists( $file ) );
 		}
 
@@ -87,7 +88,7 @@ class Test_PurgeExpiredFiles extends FilesystemTestCase {
 		$this->assertEquals( 1, did_action( 'rocket_after_automatic_cache_purge' ) );
 
 		// Test the expired files were purged.
-		foreach( $this->expired_files as $file ) {
+		foreach ( $this->expired_files as $file ) {
 			$this->assertFalse( $this->filesystem->exists( $file ) );
 		}
 

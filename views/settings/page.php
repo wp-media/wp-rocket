@@ -18,8 +18,8 @@ settings_errors( $data['slug'] ); ?>
 
 		<header class="wpr-Header">
 			<div class="wpr-Header-logo">
-				<img src="<?php echo esc_url( WP_ROCKET_ASSETS_IMG_URL ); ?>logo-wprocket-dark.svg" width="163" height="44" alt="Logo WP Rocket" class="wpr-Header-logo-desktop">
-				<img src="<?php echo esc_url( WP_ROCKET_ASSETS_IMG_URL ); ?>picto-wprocket-dark.svg" width="28" height="50" alt="Logo WP Rocket" class="wpr-Header-logo-mobile">
+				<img src="<?php echo esc_url( WP_ROCKET_ASSETS_IMG_URL . 'logo-wprocket-dark.svg' ); ?>" width="163" height="44" alt="Logo WP Rocket" class="wpr-Header-logo-desktop">
+				<img src="<?php echo esc_url( WP_ROCKET_ASSETS_IMG_URL . 'picto-wprocket-dark.svg' ); ?>" width="28" height="50" alt="Logo WP Rocket" class="wpr-Header-logo-mobile">
 			</div>
 			<div class="wpr-Header-nav">
 				<?php $this->render_navigation(); ?>
@@ -27,7 +27,7 @@ settings_errors( $data['slug'] ); ?>
 			<div class="wpr-Header-footer">
 				<?php
 				// translators: %s = Plugin version number.
-				echo esc_html( sprintf( __( 'version %s', 'rocket' ), WP_ROCKET_VERSION ) );
+				echo esc_html( sprintf( __( 'version %s', 'rocket' ), rocket_get_constant( 'WP_ROCKET_VERSION' ) ) );
 				?>
 			</div>
 		</header>
@@ -102,4 +102,13 @@ settings_errors( $data['slug'] ); ?>
 		</div>
 	</div>
 	<div class="wpr-Popin-overlay"></div>
+	<?php
+	/**
+	 * Fires after the Settings page content
+	 *
+	 * @since 3.5
+	 * @author Remy Perona
+	 */
+	do_action( 'rocket_settings_page_footer' );
+	?>
 </div>

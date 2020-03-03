@@ -432,7 +432,7 @@ function rocket_clean_minify( $extensions = [ 'js', 'css' ] ) {
 	$extensions = is_string( $extensions ) ? (array) $extensions : $extensions;
 
 	try {
-		$dir = new RecursiveDirectoryIterator( WP_ROCKET_MINIFY_CACHE_PATH . get_current_blog_id(), FilesystemIterator::SKIP_DOTS );
+		$dir = new RecursiveDirectoryIterator( rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' ) . get_current_blog_id(), FilesystemIterator::SKIP_DOTS );
 	} catch ( \UnexpectedValueException $e ) {
 		// No logging yet.
 		return;
@@ -481,7 +481,7 @@ function rocket_clean_minify( $extensions = [ 'js', 'css' ] ) {
 		}
 	}
 
-	$third_party = WP_ROCKET_MINIFY_CACHE_PATH . '3rd-party';
+	$third_party = rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' ) . '3rd-party';
 
 	try {
 		$files = new FilesystemIterator( $third_party );
@@ -964,7 +964,7 @@ function rocket_clean_user( $user_id, $lang = '' ) {
 			$parse_url['host'] = str_replace( '.', '_', $parse_url['host'] );
 		}
 
-		$root = WP_ROCKET_CACHE_PATH . $parse_url['host'] . '-' . $user_key . '*' . $parse_url['path'];
+		$root = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) . $parse_url['host'] . '-' . $user_key . '*' . $parse_url['path'];
 
 		/**
 		 * Fires before all caching files are deleted for a specific user

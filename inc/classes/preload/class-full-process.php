@@ -11,19 +11,9 @@ defined( 'ABSPATH' ) || exit;
  *
  * @see WP_Background_Process
  */
-class Full_Process extends \WP_Background_Process {
+class Full_Process extends Process {
 	/**
-	 * Prefix
-	 *
-	 * @since 3.2
-	 * @author Remy Perona
-	 *
-	 * @var string
-	 */
-	protected $prefix = 'rocket';
-
-	/**
-	 * Specific action identifier for sitemap preload
+	 * Specific action identifier for the current preload type.
 	 *
 	 * @since 3.2
 	 * @author Remy Perona
@@ -33,79 +23,33 @@ class Full_Process extends \WP_Background_Process {
 	protected $action = 'preload';
 
 	/**
-	 * Preload the URL provided by $item
+	 * Preload the URL provided by $item.
 	 *
-	 * @since 3.2
+	 * @since  3.2
+	 * @since  3.5 $item can be an array.
 	 * @author Remy Perona
 	 *
-	 * @param mixed $item Queue item to iterate over.
-	 * @return null
+	 * @param  array|string $item {
+	 *     The item to preload: an array containing the following values.
+	 *     A string is allowed for backward compatibility (for the URL).
+	 *
+	 *     @type string $url    The URL to preload.
+	 *     @type bool   $mobile True when we want to send a "mobile" user agent with the request.
+	 *     @type string $source An identifier related to the source of the preload.
+	 * }
+	 * @return bool False.
 	 */
 	protected function task( $item ) {
-		$count = get_transient( 'rocket_preload_running' );
-		set_transient( 'rocket_preload_running', $count + 1 );
+		$result = $this->maybe_preload( $item );
 
-		if ( $this->is_already_cached( $item ) ) {
-			return false;
+		if ( $result && ! empty( $item['source'] ) && ( ! is_array( $item ) || empty( $item['mobile'] ) ) ) {
+			// Count only successful non mobile items.
+			$transient_name = sprintf( 'rocket_%s_preload_running', $item['source'] );
+			$preload_count  = get_transient( $transient_name );
+			set_transient( $transient_name, $preload_count + 1 );
 		}
-
-		/**
-		 * Filters the arguments for the preload request
-		 *
-		 * @since 2.10.8
-		 * @author Remy Perona
-		 *
-		 * @param array $args Arguments for the request.
-		 */
-		$args = apply_filters(
-			'rocket_preload_url_request_args',
-			[
-				'timeout'    => 0.01,
-				'blocking'   => false,
-				'user-agent' => 'WP Rocket/Preload',
-				'sslverify'  => apply_filters( 'https_local_ssl_verify', false ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-			]
-		);
-
-		wp_remote_get( esc_url_raw( $item ), $args );
-
-		usleep( absint( get_rocket_option( 'sitemap_preload_url_crawl', 500000 ) ) );
 
 		return false;
-	}
-
-	/**
-	 * Check if the cache file for $item already exists
-	 *
-	 * @since 3.2
-	 * @author Remy Perona
-	 *
-	 * @param string $item Queue item to iterate over.
-	 * @return bool
-	 */
-	protected function is_already_cached( $item ) {
-		static $https;
-
-		if ( ! isset( $https ) ) {
-			$https = ( is_ssl() && get_rocket_option( 'cache_ssl' ) ) ? '-https' : '';
-		}
-
-		$url = get_rocket_parse_url( $item );
-
-		/** This filter is documented in inc/functions/htaccess.php */
-		if ( apply_filters( 'rocket_url_no_dots', false ) ) {
-			$url['host'] = str_replace( '.', '_', $url['host'] );
-		}
-
-		$url['path'] = trailingslashit( $url['path'] );
-
-		if ( '' !== $url['query'] ) {
-			$url['query'] = '#' . $url['query'] . '/';
-		}
-
-		$file_cache_path = WP_ROCKET_CACHE_PATH . $url['host'] . strtolower( $url['path'] . $url['query'] ) . 'index' . $https . '.html';
-
-		return rocket_direct_filesystem()->exists( $file_cache_path );
 	}
 
 	/**
@@ -115,19 +59,26 @@ class Full_Process extends \WP_Background_Process {
 	 * @author Remy Perona
 	 */
 	public function complete() {
-		set_transient( 'rocket_preload_complete', get_transient( 'rocket_preload_running' ) );
+		$homepage_count = get_transient( 'rocket_homepage_preload_running' );
+		$sitemap_count  = get_transient( 'rocket_sitemap_preload_running' );
+
+		set_transient( 'rocket_preload_complete', $homepage_count + $sitemap_count );
 		set_transient( 'rocket_preload_complete_time', date_i18n( get_option( 'date_format' ) ) . ' @ ' . date_i18n( get_option( 'time_format' ) ) );
-		delete_transient( 'rocket_preload_running' );
+		delete_transient( 'rocket_homepage_preload_running' );
+		delete_transient( 'rocket_sitemap_preload_running' );
+
 		parent::complete();
 	}
 
 	/**
-	 * Checks if a process is already running
+	 * Checks if a process is already running.
+	 * This allows the method to be public.
 	 *
-	 * @since 3.2.1.1
+	 * @since  3.2.1.1
+	 * @access public
 	 * @author Remy Perona
-	 *
 	 * @see WP_Background_Process::is_process_running()
+	 *
 	 * @return boolean
 	 */
 	public function is_process_running() { // phpcs:ignore Generic.CodeAnalysis.UselessOverridingMethod.Found

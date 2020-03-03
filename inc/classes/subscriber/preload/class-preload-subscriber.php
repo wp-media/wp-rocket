@@ -57,16 +57,19 @@ class Preload_Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'admin_notices'                   => [
+			'admin_notices'                          => [
 				[ 'notice_preload_triggered' ],
 				[ 'notice_preload_running' ],
 				[ 'notice_preload_complete' ],
 			],
-			'admin_post_rocket_stop_preload'  => [ 'do_admin_post_stop_preload' ],
-			'pagely_cache_purge_after'        => [ 'run_preload', 11 ],
-			'update_option_' . WP_ROCKET_SLUG => [
+			'admin_post_rocket_stop_preload'         => [ 'do_admin_post_stop_preload' ],
+			'pagely_cache_purge_after'               => [ 'run_preload', 11 ],
+			'update_option_' . WP_ROCKET_SLUG        => [
 				[ 'maybe_launch_preload', 11, 2 ],
 				[ 'maybe_cancel_preload', 10, 2 ],
+			],
+			'rocket_after_preload_after_purge_cache' => [
+				[ 'maybe_preload_mobile_homepage', 10, 3 ],
 			],
 		];
 	}
@@ -185,6 +188,30 @@ class Preload_Subscriber implements Subscriber_Interface {
 	}
 
 	/**
+	 * After automatically preloading the homepage (after purging the cache), also preload the homepage for mobile.
+	 *
+	 * @since  3.5
+	 * @author Grégory Viguier
+	 *
+	 * @param string $home_url URL to the homepage being preloaded.
+	 * @param string $lang     The lang of the homepage.
+	 * @param array  $args     Arguments used for the preload request.
+	 */
+	public function maybe_preload_mobile_homepage( $home_url, $lang, $args ) {
+		if ( ! $this->homepage_preloader->is_mobile_preload_enabled() ) {
+			return;
+		}
+
+		if ( empty( $args['user-agent'] ) ) {
+			$args['user-agent'] = 'WP Rocket/Homepage_Preload_After_Purge_Cache';
+		}
+
+		$args['user-agent'] .= ' iPhone';
+
+		wp_safe_remote_get( $home_url, $args );
+	}
+
+	/**
 	 * This notice is displayed when the preload is triggered from a different page than WP Rocket settings page
 	 *
 	 * @since 3.2
@@ -243,7 +270,7 @@ class Preload_Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$running = get_transient( 'rocket_preload_running' );
+		$running = $this->homepage_preloader->get_number_of_preloaded_items();
 
 		if ( false === $running ) {
 			return;

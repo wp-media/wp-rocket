@@ -9,8 +9,16 @@ defined( 'ABSPATH' ) || exit;
  */
 function rocket_add_admin_css_js() {
 	wp_enqueue_style( 'wpr-admin', WP_ROCKET_ASSETS_CSS_URL . 'wpr-admin.css', null, WP_ROCKET_VERSION );
-	wp_enqueue_script( 'wpr-admin', WP_ROCKET_ASSETS_JS_URL . 'wpr-admin.js', null, WP_ROCKET_VERSION, true );
-	wp_localize_script( 'wpr-admin', 'rocket_ajax_data', [ 'nonce' => wp_create_nonce( 'rocket-ajax' ) ] );
+	wp_enqueue_script( 'micromodal', WP_ROCKET_ASSETS_JS_URL . 'micromodal.min.js', null, '0.4.2', true );
+	wp_enqueue_script( 'wpr-admin', WP_ROCKET_ASSETS_JS_URL . 'wpr-admin.js', [ 'micromodal' ], WP_ROCKET_VERSION, true );
+	wp_localize_script(
+		'wpr-admin',
+		'rocket_ajax_data',
+		[
+			'nonce'      => wp_create_nonce( 'rocket-ajax' ),
+			'origin_url' => untrailingslashit( rocket_get_constant( 'WP_ROCKET_WEB_MAIN' ) ),
+		]
+	);
 
 	if ( is_rtl() ) {
 		wp_enqueue_style( 'wpr-admin-rtl', WP_ROCKET_ASSETS_CSS_URL . 'wpr-admin-rtl.css', null, WP_ROCKET_VERSION );
