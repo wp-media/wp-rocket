@@ -1,5 +1,4 @@
 <?php
-
 namespace WP_Rocket\Subscriber\CDN\RocketCDN;
 
 use WP_Rocket\Abstract_Render;

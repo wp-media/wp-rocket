@@ -241,15 +241,17 @@ function get_rocket_htaccess_mod_rewrite() { // phpcs:ignore WordPress.NamingCon
 	 */
 	if ( function_exists( 'gzencode' ) && apply_filters( 'rocket_force_gzip_htaccess_rules', true ) ) {
 		$rules = '<IfModule mod_mime.c>' . PHP_EOL;
-			$rules .= 'AddType text/html .html_gzip' . PHP_EOL;
-			$rules .= 'AddEncoding gzip .html_gzip' . PHP_EOL;
+			$rules .= 'RemoveType .gz' . PHP_EOL;
+			$rules .= 'AddEncoding x-gzip .gz' . PHP_EOL;
+			$rules .= 'AddType text/html html.gz' . PHP_EOL;
+			$rules .= 'AddEncoding gzip .html.gz' . PHP_EOL;
 		$rules .= '</IfModule>' . PHP_EOL;
 		$rules .= '<IfModule mod_setenvif.c>' . PHP_EOL;
-			$rules .= 'SetEnvIfNoCase Request_URI \.html_gzip$ no-gzip' . PHP_EOL;
+			$rules .= 'SetEnvIfNoCase Request_URI \.html\.gz$ no-gzip' . PHP_EOL;
 		$rules .= '</IfModule>' . PHP_EOL . PHP_EOL;
 
 		$gzip_rules .= 'RewriteCond %{HTTP:Accept-Encoding} gzip' . PHP_EOL;
-		$gzip_rules .= 'RewriteRule .* - [E=WPR_ENC:_gzip]' . PHP_EOL;
+		$gzip_rules .= 'RewriteRule .* - [E=WPR_ENC:.gz]' . PHP_EOL;
 
 		$enc = '%{ENV:WPR_ENC}';
 	}

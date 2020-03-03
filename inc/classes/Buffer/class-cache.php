@@ -99,7 +99,7 @@ class Cache extends Abstract_Buffer {
 			]
 		);
 
-		$cache_filepath_gzip = $cache_filepath . '_gzip';
+		$cache_filepath_gzip = $cache_filepath . '.gz';
 		$accept_encoding     = $this->config->get_server_input( 'HTTP_ACCEPT_ENCODING' );
 		$accept_gzip         = $accept_encoding && false !== strpos( $accept_encoding, 'gzip' );
 
@@ -122,7 +122,7 @@ class Cache extends Abstract_Buffer {
 			if ( file_exists( $cache_dir_path . '.no-webp' ) ) {
 				// We have a `.no-webp` file: try to deliver a non-webp cache file.
 				$cache_filepath      = $cache_dir_path . str_replace( '-webp', '', $cache_filename );
-				$cache_filepath_gzip = $cache_filepath . '_gzip';
+				$cache_filepath_gzip = $cache_filepath . '.gz';
 
 				$this->log(
 					'Looking for non-webp cache file.',
@@ -339,7 +339,7 @@ class Cache extends Abstract_Buffer {
 	 * @return void
 	 */
 	private function write_cache_file( $cache_filepath, $content ) {
-		$gzip_filepath      = $cache_filepath . '_gzip';
+		$gzip_filepath      = $cache_filepath . '.gz';
 		$temp_filepath      = $cache_filepath . '_temp';
 		$temp_gzip_filepath = $gzip_filepath . '_temp';
 
