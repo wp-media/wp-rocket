@@ -428,7 +428,6 @@ function get_rocket_exclude_defer_js() { // phpcs:ignore WordPress.NamingConvent
 		$exclude_defer_js[] = $jetpack_jquery;
 		$exclude_defer_js[] = $googleapis_jquery;
 		$exclude_defer_js[] = $cdnjs_jquery;
-
 	}
 
 	/**
