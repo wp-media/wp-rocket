@@ -9,7 +9,7 @@ use WPMedia\PHPUnit\Unit\TestCase;
  * @covers ::rocket_clean_post_cache_on_slug_change
  * @group Common
  */
-class TestRocketCleanPostCacheOnSlugChange extends TestCase {
+class Test_RocketCleanPostCacheOnSlugChange extends TestCase {
 
 	protected function setUp() {
 		parent::setUp();

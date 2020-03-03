@@ -3077,6 +3077,119 @@
             "time": "2019-12-05T22:19:53+00:00"
         },
         {
+            "name": "symfony/polyfill-php73",
+            "version": "v1.13.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/polyfill-php73.git",
+                "reference": "4b0e2222c55a25b4541305a053013d5647d3a25f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/polyfill-php73/zipball/4b0e2222c55a25b4541305a053013d5647d3a25f",
+                "reference": "4b0e2222c55a25b4541305a053013d5647d3a25f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.13-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Polyfill\\Php73\\": ""
+                },
+                "files": [
+                    "bootstrap.php"
+                ],
+                "classmap": [
+                    "Resources/stubs"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nicolas Grekas",
+                    "email": "p@tchwork.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony polyfill backporting some PHP 7.3+ features to lower PHP versions",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "compatibility",
+                "polyfill",
+                "portable",
+                "shim"
+            ],
+            "time": "2019-11-27T16:25:15+00:00"
+        },
+        {
+            "name": "szepeviktor/phpstan-wordpress",
+            "version": "v0.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/szepeviktor/phpstan-wordpress.git",
+                "reference": "1946738cdec130df4727f780ac541f8c6fd746a2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/szepeviktor/phpstan-wordpress/zipball/1946738cdec130df4727f780ac541f8c6fd746a2",
+                "reference": "1946738cdec130df4727f780ac541f8c6fd746a2",
+                "shasum": ""
+            },
+            "require": {
+                "php": "~7.1",
+                "php-stubs/wordpress-stubs": "^4.7 || ^5.0",
+                "phpstan/phpstan": "^0.12.0",
+                "symfony/polyfill-php73": "^1.12.0"
+            },
+            "require-dev": {
+                "composer/composer": "^1.8.6",
+                "consistence/coding-standard": "^3.8",
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.5",
+                "jakub-onderka/php-parallel-lint": "^1.0",
+                "phpstan/phpstan-strict-rules": "^0.12",
+                "slevomat/coding-standard": "^5.0.4"
+            },
+            "type": "phpstan-extension",
+            "extra": {
+                "phpstan": {
+                    "includes": [
+                        "extension.neon"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PHPStan\\WordPress\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "WordPress extensions for PHPStan",
+            "keywords": [
+                "PHPStan",
+                "code analyse",
+                "code analysis",
+                "static analysis",
+                "wordpress"
+            ],
+            "time": "2019-12-05T22:19:53+00:00"
+        },
+        {
             "name": "theseer/tokenizer",
             "version": "1.1.3",
             "source": {
@@ -3312,28 +3425,29 @@
         },
         {
             "name": "woocommerce/woocommerce",
-            "version": "3.8.1",
+            "version": "3.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/woocommerce/woocommerce.git",
-                "reference": "674d7f65ee1bfc10908e6d4a551687a08e0bb4a5"
+                "reference": "37899bdee89799b435da4223795a26a992d35468"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/woocommerce/woocommerce/zipball/674d7f65ee1bfc10908e6d4a551687a08e0bb4a5",
-                "reference": "674d7f65ee1bfc10908e6d4a551687a08e0bb4a5",
+                "url": "https://api.github.com/repos/woocommerce/woocommerce/zipball/37899bdee89799b435da4223795a26a992d35468",
+                "reference": "37899bdee89799b435da4223795a26a992d35468",
                 "shasum": ""
             },
             "require": {
                 "automattic/jetpack-autoloader": "^1.2.0",
                 "composer/installers": "1.7.0",
+                "maxmind-db/reader": "1.6.0",
                 "php": ">=5.6|>=7.0",
-                "woocommerce/woocommerce-blocks": "2.4.5",
-                "woocommerce/woocommerce-rest-api": "1.0.3"
+                "woocommerce/woocommerce-blocks": "2.5.11",
+                "woocommerce/woocommerce-rest-api": "1.0.7"
             },
             "require-dev": {
-                "phpunit/phpunit": "7.5.16",
-                "woocommerce/woocommerce-sniffs": "0.0.7"
+                "phpunit/phpunit": "7.5.18",
+                "woocommerce/woocommerce-sniffs": "0.0.9"
             },
             "type": "wordpress-plugin",
             "extra": {
@@ -3366,29 +3480,29 @@
             ],
             "description": "An eCommerce toolkit that helps you sell anything. Beautifully.",
             "homepage": "https://woocommerce.com/",
-            "time": "2019-11-27T18:18:26+00:00"
+            "time": "2020-01-28T21:27:09+00:00"
         },
         {
             "name": "woocommerce/woocommerce-blocks",
-            "version": "v2.4.5",
+            "version": "v2.5.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/woocommerce/woocommerce-gutenberg-products-block.git",
-                "reference": "130bc40824f844c0870c94c0ad0aa7a6abb74f6f"
+                "reference": "3d3c7bf1b425bbf39a222a4715b1c8efe9e72f60"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/woocommerce/woocommerce-gutenberg-products-block/zipball/130bc40824f844c0870c94c0ad0aa7a6abb74f6f",
-                "reference": "130bc40824f844c0870c94c0ad0aa7a6abb74f6f",
+                "url": "https://api.github.com/repos/woocommerce/woocommerce-gutenberg-products-block/zipball/3d3c7bf1b425bbf39a222a4715b1c8efe9e72f60",
+                "reference": "3d3c7bf1b425bbf39a222a4715b1c8efe9e72f60",
                 "shasum": ""
             },
             "require": {
-                "automattic/jetpack-autoloader": "1.2.0",
+                "automattic/jetpack-autoloader": "1.3.2",
                 "composer/installers": "1.7.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "6.5.14",
-                "woocommerce/woocommerce-sniffs": "0.0.6"
+                "woocommerce/woocommerce-sniffs": "0.0.7"
             },
             "type": "wordpress-plugin",
             "extra": {
@@ -3413,28 +3527,28 @@
                 "gutenberg",
                 "woocommerce"
             ],
-            "time": "2019-11-02T13:48:18+00:00"
+            "time": "2020-01-20T20:26:05+00:00"
         },
         {
             "name": "woocommerce/woocommerce-rest-api",
-            "version": "1.0.3",
+            "version": "1.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/woocommerce/woocommerce-rest-api.git",
-                "reference": "7d9babf1c25890c32df3edb28b8351732640f5ce"
+                "reference": "49162ec26a25bd0c6efc0f3452b113cdfff0a823"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/woocommerce/woocommerce-rest-api/zipball/7d9babf1c25890c32df3edb28b8351732640f5ce",
-                "reference": "7d9babf1c25890c32df3edb28b8351732640f5ce",
+                "url": "https://api.github.com/repos/woocommerce/woocommerce-rest-api/zipball/49162ec26a25bd0c6efc0f3452b113cdfff0a823",
+                "reference": "49162ec26a25bd0c6efc0f3452b113cdfff0a823",
                 "shasum": ""
             },
             "require": {
-                "automattic/jetpack-autoloader": "1.2.0"
+                "automattic/jetpack-autoloader": "^1.2.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "6.5.14",
-                "woocommerce/woocommerce-sniffs": "0.0.6"
+                "woocommerce/woocommerce-sniffs": "0.0.9"
             },
             "type": "wordpress-plugin",
             "autoload": {
@@ -3453,7 +3567,7 @@
             ],
             "description": "The WooCommerce core REST API.",
             "homepage": "https://github.com/woocommerce/woocommerce-rest-api",
-            "time": "2019-07-16T14:27:40+00:00"
+            "time": "2020-01-28T21:04:51+00:00"
         },
         {
             "name": "wp-coding-standards/wpcs",

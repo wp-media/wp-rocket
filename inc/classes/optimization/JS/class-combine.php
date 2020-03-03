@@ -808,11 +808,7 @@ class Combine extends Abstract_JS_Optimization {
 			'cb_nombre',
 			'$(\'.fl-node-',
 			'function($){google_maps_',
-<<<<<<< HEAD
-            '$("#myCarousel',
-=======
 			'$("#myCarousel',
->>>>>>> branch-3.5
 			'et_animation_data=',
 			'current_url="',
 			'CustomEvent.prototype=window.Event.prototype',
