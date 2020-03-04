@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
  * @param string $lang (default: '') The language code to preload.
  * @return false
  */
-function run_rocket_bot( $spider = 'cache-preload', $lang = '' ) {
+function run_rocket_bot( $spider = 'cache-preload', $lang = '' ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	if ( ! get_rocket_option( 'manual_preload' ) ) {
 		return;
 	}
@@ -38,7 +38,7 @@ function run_rocket_bot( $spider = 'cache-preload', $lang = '' ) {
  *
  * @return void
  */
-function run_rocket_sitemap_preload() {
+function run_rocket_sitemap_preload() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	if ( ! get_rocket_option( 'sitemap_preload' ) || ! get_rocket_option( 'manual_preload' ) ) {
 		return;
 	}
@@ -69,13 +69,13 @@ function run_rocket_sitemap_preload() {
  * @since 1.0 (delete in 1.1.6 and re-add in 1.1.9)
  * @deprecated 3.2
  */
-function do_admin_post_rocket_preload_cache() {
+function do_admin_post_rocket_preload_cache() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	if ( empty( $_GET['_wpnonce'] ) ) {
 		wp_safe_redirect( wp_get_referer() );
 		die();
 	}
 
-	if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'preload' ) ) {
+	if ( ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'preload' ) ) {
 		wp_nonce_ays( '' );
 	}
 

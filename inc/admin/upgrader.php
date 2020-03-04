@@ -25,7 +25,7 @@ function rocket_upgrader() {
 	if ( did_action( 'wp_rocket_first_install' ) || did_action( 'wp_rocket_upgrade' ) ) {
 		flush_rocket_htaccess();
 
-		rocket_renew_all_boxes( 0, array( 'rocket_warning_plugin_modification' ) );
+		rocket_renew_all_boxes( 0, [ 'rocket_warning_plugin_modification' ] );
 
 		$options            = get_option( WP_ROCKET_SLUG ); // do not use get_rocket_option() here.
 		$options['version'] = WP_ROCKET_VERSION;
@@ -38,8 +38,9 @@ function rocket_upgrader() {
 		update_option( WP_ROCKET_SLUG, $options );
 	}
 
-	if ( ! rocket_valid_key() && current_user_can( 'rocket_manage_options' ) &&
-		( isset( $_GET['page'] ) && 'wprocket' === $_GET['page'] ) ) {
+	$page = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING );
+
+	if ( ! rocket_valid_key() && current_user_can( 'rocket_manage_options' ) && 'wprocket' === $page ) {
 		add_action( 'admin_notices', 'rocket_need_api_key' );
 	}
 }

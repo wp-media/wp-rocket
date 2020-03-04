@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		 xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/6.3/phpunit.xsd"
-		 bootstrap="bootstrap.php"
+		 bootstrap="init-tests.php"
 		 backupGlobals="false"
 		 colors="true"
-		 beStrictAboutCoversAnnotation="true"
+		 beStrictAboutCoversAnnotation="false"
 		 beStrictAboutOutputDuringTests="true"
 		 beStrictAboutTestsThatDoNotTestAnything="true"
 		 beStrictAboutTodoAnnotatedTests="true"
@@ -15,8 +15,13 @@
 
 	<testsuites>
 		<testsuite name="integration">
-			<directory suffix=".php">.</directory>
-			<exclude>TestCase.php</exclude>
+			<directory suffix=".php">inc</directory>
 		</testsuite>
 	</testsuites>
+
+	<filter>
+		<whitelist addUncoveredFilesFromWhitelist="true">
+			<directory suffix=".php">../../inc</directory>
+		</whitelist>
+	</filter>
 </phpunit>

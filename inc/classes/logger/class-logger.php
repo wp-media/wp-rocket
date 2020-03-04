@@ -5,6 +5,7 @@ use Monolog\Logger as Monologger;
 use Monolog\Registry;
 use Monolog\Processor\IntrospectionProcessor;
 use Monolog\Handler\StreamHandler as MonoStreamHandler;
+use Monolog\Formatter\LineFormatter;
 use WP_Rocket\Logger\HTML_Formatter as HtmlFormatter;
 use WP_Rocket\Logger\Stream_Handler as StreamHandler;
 
@@ -63,7 +64,7 @@ class Logger {
 	 * @param  array  $context The log context.
 	 * @return bool|null       Whether the record has been processed.
 	 */
-	public static function debug( $message, array $context = array() ) {
+	public static function debug( $message, array $context = [] ) {
 		return static::debug_enabled() ? static::get_logger()->debug( $message, $context ) : null;
 	}
 
@@ -78,7 +79,7 @@ class Logger {
 	 * @param  array  $context The log context.
 	 * @return bool|null       Whether the record has been processed.
 	 */
-	public static function info( $message, array $context = array() ) {
+	public static function info( $message, array $context = [] ) {
 		return static::debug_enabled() ? static::get_logger()->info( $message, $context ) : null;
 	}
 
@@ -93,7 +94,7 @@ class Logger {
 	 * @param  array  $context The log context.
 	 * @return bool|null       Whether the record has been processed.
 	 */
-	public static function notice( $message, array $context = array() ) {
+	public static function notice( $message, array $context = [] ) {
 		return static::debug_enabled() ? static::get_logger()->notice( $message, $context ) : null;
 	}
 
@@ -108,7 +109,7 @@ class Logger {
 	 * @param  array  $context The log context.
 	 * @return bool|null       Whether the record has been processed.
 	 */
-	public static function warning( $message, array $context = array() ) {
+	public static function warning( $message, array $context = [] ) {
 		return static::debug_enabled() ? static::get_logger()->warning( $message, $context ) : null;
 	}
 
@@ -123,7 +124,7 @@ class Logger {
 	 * @param  array  $context The log context.
 	 * @return bool|null       Whether the record has been processed.
 	 */
-	public static function error( $message, array $context = array() ) {
+	public static function error( $message, array $context = [] ) {
 		return static::debug_enabled() ? static::get_logger()->error( $message, $context ) : null;
 	}
 
@@ -138,7 +139,7 @@ class Logger {
 	 * @param  array  $context The log context.
 	 * @return bool|null       Whether the record has been processed.
 	 */
-	public static function critical( $message, array $context = array() ) {
+	public static function critical( $message, array $context = [] ) {
 		return static::debug_enabled() ? static::get_logger()->critical( $message, $context ) : null;
 	}
 
@@ -153,7 +154,7 @@ class Logger {
 	 * @param  array  $context The log context.
 	 * @return bool|null       Whether the record has been processed.
 	 */
-	public static function alert( $message, array $context = array() ) {
+	public static function alert( $message, array $context = [] ) {
 		return static::debug_enabled() ? static::get_logger()->alert( $message, $context ) : null;
 	}
 
@@ -168,7 +169,7 @@ class Logger {
 	 * @param  array  $context The log context.
 	 * @return bool|null       Whether the record has been processed.
 	 */
-	public static function emergency( $message, array $context = array() ) {
+	public static function emergency( $message, array $context = [] ) {
 		return static::debug_enabled() ? static::get_logger()->emergency( $message, $context ) : null;
 	}
 

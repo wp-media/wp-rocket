@@ -55,15 +55,15 @@ class Options_Data {
 		 *
 		 * @param mixed $default The default value.
 		*/
-		$value = apply_filters( 'pre_get_rocket_option_' . $key, null, $default );
+		$value = apply_filters( 'pre_get_rocket_option_' . $key, null, $default ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 
 		if ( null !== $value ) {
 			return $value;
 		}
 
-		if ( 'consumer_key' === $key && defined( 'WP_ROCKET_KEY' ) ) {
+		if ( 'consumer_key' === $key && rocket_has_constant( 'WP_ROCKET_KEY' ) ) {
 			return WP_ROCKET_KEY;
-		} elseif ( 'consumer_email' === $key && defined( 'WP_ROCKET_EMAIL' ) ) {
+		} elseif ( 'consumer_email' === $key && rocket_has_constant( 'WP_ROCKET_EMAIL' ) ) {
 			return WP_ROCKET_EMAIL;
 		}
 
@@ -78,7 +78,7 @@ class Options_Data {
 		 *
 		 * @param mixed $default The default value.
 		*/
-		return apply_filters( 'get_rocket_option_' . $key, $this->options[ $key ], $default );
+		return apply_filters( 'get_rocket_option_' . $key, $this->options[ $key ], $default ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 	}
 
 	/**

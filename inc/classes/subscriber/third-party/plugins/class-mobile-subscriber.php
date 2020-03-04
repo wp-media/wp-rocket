@@ -330,7 +330,7 @@ class Mobile_Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_mobile_plugins() {
 		return [
-			'jetpack/jetpack.php'                                       => [
+			'jetpack/jetpack.php'                      => [
 				'is_active_callback' => function() {
 					if ( ! class_exists( 'Jetpack' ) ) {
 						return false;
@@ -340,13 +340,13 @@ class Mobile_Subscriber implements Subscriber_Interface {
 				'activation_hook'    => 'jetpack_activate_module_minileven',
 				'deactivation_hook'  => 'jetpack_deactivate_module_minileven',
 			],
-			'wptouch/wptouch.php'                                       => [],
-			'wiziapp-create-your-own-native-iphone-app/wiziapp.php'     => [],
-			'wordpress-mobile-pack/wordpress-mobile-pack.php'           => [],
-			'wp-mobilizer/wp-mobilizer.php'                             => [],
-			'wp-mobile-edition/wp-mobile-edition.php'                   => [],
-			'device-theme-switcher/dts_controller.php'                  => [],
-			'wp-mobile-detect/wp-mobile-detect.php'                     => [],
+			'wptouch/wptouch.php'                      => [],
+			'wiziapp-create-your-own-native-iphone-app/wiziapp.php' => [],
+			'wordpress-mobile-pack/wordpress-mobile-pack.php' => [],
+			'wp-mobilizer/wp-mobilizer.php'            => [],
+			'wp-mobile-edition/wp-mobile-edition.php'  => [],
+			'device-theme-switcher/dts_controller.php' => [],
+			'wp-mobile-detect/wp-mobile-detect.php'    => [],
 			'easy-social-share-buttons3/easy-social-share-buttons3.php' => [],
 		];
 	}

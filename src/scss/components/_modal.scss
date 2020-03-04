@@ -1,0 +1,37 @@
+// main: ../main.scss
+
+/*-----------------------------------------------*\
+
+    RocketCDN modal style
+
+\*-----------------------------------------------*/
+.wpr-rocketcdn-modal {
+    display: none;
+
+    &.is-open {
+        display: block;
+    }
+
+    &__overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &__container {
+        max-width: 674px;
+        max-height: 100vh;
+        overflow-y: auto;
+        box-sizing: border-box;
+    }
+
+    iframe {
+        max-width: 100%;
+    }
+}

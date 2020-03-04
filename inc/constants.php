@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Checks if the constant is defined.
  *
- * NOTE: This function allows us to mock constants when testing.
+ * NOTE: This function allows mocking constants when testing.
  *
  * @since 3.5
  *
@@ -20,11 +20,11 @@ function rocket_has_constant( $constant_name ) {
 /**
  * Gets the constant is defined.
  *
- * NOTE: This function allows us to mock constants when testing.
+ * NOTE: This function allows mocking constants when testing.
  *
  * @since 3.5
  *
- * @param string $constant_name Name of the constant to check.
+ * @param string     $constant_name Name of the constant to check.
  * @param mixed|null $default Optional. Default value to return if constant is not defined.
  *
  * @return bool true when constant is defined; else, false.
