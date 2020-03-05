@@ -48,7 +48,10 @@ class Test_CacheDynamicResource extends FilesystemTestCase {
 		$this->subscriber = self::$container->get( 'cache_dynamic_resource_subscriber' );
 	}
 
-	public function testShouldReplaceURLWhenDynamicCSSFile() {
+	/**
+	 * @dataProvider includedCSSURLProvider
+	 */
+	public function testShouldReplaceURLWhenDynamicCSSFile( $url, $expected ) {
 		Functions\when( 'current_filter' )->justReturn( 'style_loader_src' );
 
 		$callback = function() {
@@ -58,10 +61,79 @@ class Test_CacheDynamicResource extends FilesystemTestCase {
 		add_filter( 'pre_get_rocket_option_minify_css_key', $callback );
 
 		$this->assertSame(
-			'http://example.org/wp-content/cache/busting/1/wp-content/themes/twentytwenty/style-123456.css',
-			$this->subscriber->cache_dynamic_resource( 'http://example.org/wp-content/themes/twentytwenty/style.php' )
+			$expected,
+			$this->subscriber->cache_dynamic_resource( $url )
 		);
 
 		remove_filter( 'pre_get_rocket_option_minify_css_key', $callback );
+	}
+
+	/**
+	 * @dataProvider includedJSURLProvider
+	 */
+	public function testShouldReplaceURLWhenDynamicJSFile( $url, $expected ) {
+		Functions\when( 'current_filter' )->justReturn( 'script_loader_src' );
+
+		$callback = function() {
+			return '123456';
+		};
+	
+		add_filter( 'pre_get_rocket_option_minify_js_key', $callback );
+
+		$this->assertSame(
+			$expected,
+			$this->subscriber->cache_dynamic_resource( $url )
+		);
+
+		remove_filter( 'pre_get_rocket_option_minify_js_key', $callback );
+	}
+
+	/**
+	 * @dataProvider excludedURLProvider
+	 */
+	public function testShouldPreserveURLWhenURLIsExcluded( $url ) {
+		$this->assertSame(
+			$url,
+			$this->subscriber->cache_dynamic_resource( $url )
+		);
+	}
+
+	public function includedCSSURLProvider() {
+		return [
+			[ 
+				'http://example.org/wp-content/themes/twentytwenty/style.php',
+				'http://example.org/wp-content/cache/busting/1/wp-content/themes/twentytwenty/style-123456.css',
+			 ],
+			[
+				'http://example.org/wp-content/plugins/hello-dolly/style.php?ver=5.3',
+				'http://example.org/wp-content/cache/busting/1/wp-content/plugins/hello-dolly/style-123456.css'
+			],
+		];
+	}
+
+	public function includedJSURLProvider() {
+		return [
+			[ 
+				'http://example.org/wp-content/themes/twentytwenty/assets/script.php',
+				'http://example.org/wp-content/cache/busting/1/wp-content/themes/twentytwenty/assets/script-123456.js',
+			 ],
+			[
+				'http://example.org/wp-content/plugins/hello-dolly/script.php?ver=5.3',
+				'http://example.org/wp-content/cache/busting/1/wp-content/plugins/hello-dolly/script-123456.js'
+			],
+		];
+	}
+
+	public function excludedURLProvider() {
+		return [
+			[ 'http://example.org/wp-content/themes/storefront/style.css' ],
+			[ 'https://example.org/wp-content/themes/storefront/script.js' ],
+			[ 'http://example.org' ],
+			[ 'http://example.org/wp-admin/admin-ajax.php' ],
+			[ 'https://example.org/wp-content/plugins/test/style.php?data=foo&ver=5.3' ],
+			[ 'https://example.org/wp-content/plugins/test/script.php?data=foo' ],
+			[ 'http://en.example.org/wp-content/plugins/test/style.css' ],
+			[ 'https://example.de/wp-content/themes/storefront/assets/script.js?ver=5.3' ],
+		];
 	}
 }
