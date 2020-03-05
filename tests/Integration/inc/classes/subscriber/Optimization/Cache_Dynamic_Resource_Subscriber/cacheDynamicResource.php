@@ -69,6 +69,44 @@ class Test_CacheDynamicResource extends FilesystemTestCase {
 	}
 
 	/**
+	 * @dataProvider includedCSSCDNURLProvider
+	 */
+	public function testShouldReplaceURLWithCDNURLWhenDynamicCSSFile( $url, $expected ) {
+		Functions\when( 'current_filter' )->justReturn( 'style_loader_src' );
+
+		$callback_minify_key = function() {
+			return '123456';
+		};
+
+		$callback_cdn_cnames = function() {
+			return [
+				'https://123456.rocketcdn.me',
+			];
+		};
+
+		$callback_cdn_zones = function() {
+			return [
+				'css',
+			];
+		};
+	
+		add_filter( 'pre_get_rocket_option_cdn', '__return_true' );
+		add_filter( 'pre_get_rocket_option_minify_css_key', $callback_minify_key );
+		add_filter( 'pre_get_rocket_option_cdn_cnames', $callback_cdn_cnames );
+		add_filter( 'pre_get_rocket_option_cdn_zone', $callback_cdn_zones );
+
+		$this->assertSame(
+			$expected,
+			$this->subscriber->cache_dynamic_resource( $url )
+		);
+
+		remove_filter( 'pre_get_rocket_option_cdn', '__return_true' );
+		remove_filter( 'pre_get_rocket_option_minify_css_key', $callback_minify_key );
+		remove_filter( 'pre_get_rocket_option_cdn_cnames', $callback_cdn_cnames );
+		remove_filter( 'pre_get_rocket_option_cdn_zone', $callback_cdn_zones );
+	}
+
+	/**
 	 * @dataProvider includedJSURLProvider
 	 */
 	public function testShouldReplaceURLWhenDynamicJSFile( $url, $expected ) {
@@ -86,6 +124,44 @@ class Test_CacheDynamicResource extends FilesystemTestCase {
 		);
 
 		remove_filter( 'pre_get_rocket_option_minify_js_key', $callback );
+	}
+
+	/**
+	 * @dataProvider includedJSCDNURLProvider
+	 */
+	public function testShouldReplaceURLWithCDNURLWhenDynamicJSFile( $url, $expected ) {
+		Functions\when( 'current_filter' )->justReturn( 'script_loader_src' );
+
+		$callback_minify_key = function() {
+			return '123456';
+		};
+
+		$callback_cdn_cnames = function() {
+			return [
+				'https://123456.rocketcdn.me',
+			];
+		};
+
+		$callback_cdn_zones = function() {
+			return [
+				'js',
+			];
+		};
+	
+		add_filter( 'pre_get_rocket_option_cdn', '__return_true' );
+		add_filter( 'pre_get_rocket_option_minify_js_key', $callback_minify_key );
+		add_filter( 'pre_get_rocket_option_cdn_cnames', $callback_cdn_cnames );
+		add_filter( 'pre_get_rocket_option_cdn_zone', $callback_cdn_zones );
+
+		$this->assertSame(
+			$expected,
+			$this->subscriber->cache_dynamic_resource( $url )
+		);
+
+		remove_filter( 'pre_get_rocket_option_cdn', '__return_true' );
+		remove_filter( 'pre_get_rocket_option_minify_js_key', $callback_minify_key );
+		remove_filter( 'pre_get_rocket_option_cdn_cnames', $callback_cdn_cnames );
+		remove_filter( 'pre_get_rocket_option_cdn_zone', $callback_cdn_zones );
 	}
 
 	/**
@@ -111,6 +187,19 @@ class Test_CacheDynamicResource extends FilesystemTestCase {
 		];
 	}
 
+	public function includedCSSCDNURLProvider() {
+		return [
+			[ 
+				'http://example.org/wp-content/themes/twentytwenty/style.php',
+				'https://123456.rocketcdn.me/wp-content/cache/busting/1/wp-content/themes/twentytwenty/style-123456.css',
+			],
+			[
+				'http://example.org/wp-content/plugins/hello-dolly/style.php?ver=5.3',
+				'https://123456.rocketcdn.me/wp-content/cache/busting/1/wp-content/plugins/hello-dolly/style-123456.css'
+			],
+		];
+	}
+
 	public function includedJSURLProvider() {
 		return [
 			[ 
@@ -120,6 +209,19 @@ class Test_CacheDynamicResource extends FilesystemTestCase {
 			[
 				'http://example.org/wp-content/plugins/hello-dolly/script.php?ver=5.3',
 				'http://example.org/wp-content/cache/busting/1/wp-content/plugins/hello-dolly/script-123456.js'
+			],
+		];
+	}
+
+	public function includedJSCDNURLProvider() {
+		return [
+			[ 
+				'http://example.org/wp-content/themes/twentytwenty/assets/script.php',
+				'https://123456.rocketcdn.me/wp-content/cache/busting/1/wp-content/themes/twentytwenty/assets/script-123456.js',
+			 ],
+			[
+				'http://example.org/wp-content/plugins/hello-dolly/script.php?ver=5.3',
+				'https://123456.rocketcdn.me/wp-content/cache/busting/1/wp-content/plugins/hello-dolly/script-123456.js'
 			],
 		];
 	}
