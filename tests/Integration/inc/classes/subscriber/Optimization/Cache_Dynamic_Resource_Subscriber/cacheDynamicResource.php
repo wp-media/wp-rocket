@@ -134,6 +134,7 @@ class Test_CacheDynamicResource extends FilesystemTestCase {
 			[ 'https://example.org/wp-content/plugins/test/script.php?data=foo' ],
 			[ 'http://en.example.org/wp-content/plugins/test/style.css' ],
 			[ 'https://example.de/wp-content/themes/storefront/assets/script.js?ver=5.3' ],
+			[ 'http://123456.rocketcdn.me/wp-content/plugins/test/style.css' ],
 		];
 	}
 }
