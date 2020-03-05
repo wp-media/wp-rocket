@@ -21,7 +21,7 @@ class Combine_Google_Fonts_Subscriber extends Minify_Subscriber {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_buffer' => [ 'process', 28 ],
+			'rocket_buffer' => [ 'process', 18 ],
 		];
 	}
 
