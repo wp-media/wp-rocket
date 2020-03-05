@@ -2,10 +2,6 @@
 
 defined( 'ABSPATH' ) || exit;
 
-if ( ! file_exists( WP_CONTENT_DIR . '/advanced-cache.php' ) ) {
-	return;
-}
-
 require_once WP_CONTENT_DIR . '/advanced-cache.php';
 
 add_action( 'pl_pre_cache_refresh', 'rocket_clean_files', 0 );
