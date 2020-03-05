@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\optimization\Cache_Dynamic_Resource;
 
+use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Admin\Options_Data;
@@ -45,6 +46,15 @@ class Test_IsExcludedFile extends TestCase {
 		} );
 
 		Functions\when( 'content_url' )->justReturn( 'http://example.org/wp-content' );
+		Filters\expectApplied( 'rocket_cdn_hosts' )
+			->atMost()
+			->times(1)
+			->with( [], [ 'all', 'css_and_js', '' ] )
+			->andReturn( [
+				'123456.rocketcdn.me',
+			]
+		);
+
 		Functions\when( 'get_rocket_i18n_uri' )->justReturn( [
 			'http://en.example.org',
 			'https://example.de',
@@ -84,6 +94,7 @@ class Test_IsExcludedFile extends TestCase {
 			[ 'https://example.org/wp-content/plugins/test/script.php?data=foo' ],
 			[ 'http://en.example.org/wp-content/plugins/test/style.css' ],
 			[ 'https://example.de/wp-content/themes/storefront/assets/script.js?ver=5.3' ],
+			[ 'http://123456.rocketcdn.me/wp-content/plugins/test/style.css' ],
 		];
 	}
 
@@ -94,6 +105,7 @@ class Test_IsExcludedFile extends TestCase {
 			[ 'http://example.org/wp-content/plugins/test/assets/custom.php' ],
 			[ 'http://en.example.org/wp-content/plugins/test/style.php' ],
 			[ 'https://example.de/wp-content/themes/storefront/assets/script.php?ver=5.3' ],
+			[ 'http://123456.rocketcdn.me/wp-content/plugins/test/style.php' ],
 		];
 	}
 }
