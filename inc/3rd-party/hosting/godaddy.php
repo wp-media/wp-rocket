@@ -2,10 +2,6 @@
 
 defined( 'ABSPATH' ) || exit;
 
-if ( ! class_exists( 'WPaaS\Plugin' ) ) {
-	return;
-}
-
 /**
  * Changes the text on the Varnish one-click block.
  *
