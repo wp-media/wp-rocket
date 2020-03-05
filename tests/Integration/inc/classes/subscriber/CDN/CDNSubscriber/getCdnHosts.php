@@ -10,12 +10,6 @@ namespace WP_Rocket\Tests\Integration\inc\classes\subscriber\CDN\CDNSubscriber;
  * @group  CDN
  */
 class Test_GetCdnHosts extends TestCase {
-	public function tearDown() {
-		delete_option( 'wp_rocket_settings' );
-
-		parent::tearDown();
-	}
-
 	public function testShouldReturnOriginalArrayWhenNoCDNURL() {
 		$this->assertSame(
 			[],
