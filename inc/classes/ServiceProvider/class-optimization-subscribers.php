@@ -56,8 +56,8 @@ class Optimization_Subscribers extends AbstractServiceProvider {
 			->withArgument( $this->getContainer()->get( 'buffer_optimization' ) );
 		$this->getContainer()->add( 'cache_dynamic_resource', 'WP_Rocket\Optimization\Cache_Dynamic_Resource' )
 			->withArgument( $this->getContainer()->get( 'options' ) )
-			->withArgument( WP_ROCKET_CACHE_BUSTING_PATH )
-			->withArgument( WP_ROCKET_CACHE_BUSTING_URL );
+			->withArgument( rocket_get_constant( 'WP_ROCKET_CACHE_BUSTING_PATH' ) )
+			->withArgument( rocket_get_constant( 'WP_ROCKET_CACHE_BUSTING_URL' ) );
 		$this->getContainer()->add( 'remove_query_string', 'WP_Rocket\Optimization\Remove_Query_String' )
 			->withArgument( $this->getContainer()->get( 'options' ) )
 			->withArgument( WP_ROCKET_CACHE_BUSTING_PATH )
