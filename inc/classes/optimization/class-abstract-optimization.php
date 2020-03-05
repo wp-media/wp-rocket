@@ -39,7 +39,7 @@ abstract class Abstract_Optimization {
 	 */
 	protected function is_external_file( $url ) {
 		$file       = get_rocket_parse_url( $url );
-		$wp_content = get_rocket_parse_url( WP_CONTENT_URL );
+		$wp_content = get_rocket_parse_url( content_url() );
 		// This filter is documented in inc/classes/admin/settings/class-settings.php.
 		$hosts   = apply_filters( 'rocket_cdn_hosts', [], $this->get_zones() );
 		$hosts[] = $wp_content['host'];
