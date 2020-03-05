@@ -2,10 +2,6 @@
 
 defined( 'ABSPATH' ) || exit;
 
-if ( ! defined( 'PL_INSTANCE_REF' ) || ! class_exists( '\Presslabs\Cache\CacheHandler' ) ) {
-	return;
-}
-
 if ( ! file_exists( WP_CONTENT_DIR . '/advanced-cache.php' ) ) {
 	return;
 }

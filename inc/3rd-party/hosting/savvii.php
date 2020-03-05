@@ -2,10 +2,6 @@
 
 defined( 'ABSPATH' ) || exit;
 
-if ( ! class_exists( '\\Savvii\\CacheFlusherPlugin' ) || ! class_exists( '\\Savvii\\Options' ) ) {
-	return;
-}
-
 /**
  * Changes the text on the Varnish one-click block.
  *

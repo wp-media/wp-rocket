@@ -2,10 +2,6 @@
 
 defined( 'ABSPATH' ) || exit;
 
-if ( ! defined( 'O2SWITCH_VARNISH_PURGE_KEY' ) ) {
-	return;
-}
-
 /**
  * Changes the text on the Varnish one-click block.
  *
