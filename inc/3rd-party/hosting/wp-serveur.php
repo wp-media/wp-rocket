@@ -2,10 +2,6 @@
 
 defined( 'ABSPATH' ) || exit;
 
-if ( ! ( defined( 'DB_HOST' ) && strpos( DB_HOST, '.wpserveur.net' ) !== false ) ) {
-	return;
-}
-
 /**
  * Allow to purge Varnish on WP Serveur websites.
  *
