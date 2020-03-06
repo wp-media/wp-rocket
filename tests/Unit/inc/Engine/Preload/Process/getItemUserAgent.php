@@ -1,11 +1,11 @@
 <?php
-namespace WP_Rocket\Tests\Unit\inc\classes\preload\Process;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Process;
 
 use WPMedia\PHPUnit\Unit\TestCase;
-use WP_Rocket\Preload\Process;
+use WP_Rocket\Engine\Preload\Process;
 
 /**
- * @covers \WP_Rocket\Preload\Process::get_item_user_agent
+ * @covers \WP_Rocket\Engine\Preload\Process::get_item_user_agent
  * @group Preload
  */
 class Test_GetItemUserAgent extends TestCase {

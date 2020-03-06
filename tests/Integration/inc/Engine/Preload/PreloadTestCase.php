@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\classes\preload;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Preload;
 
 use WP_Rocket\Tests\Integration\Fixtures\Preload\Process_Wrapper;
 use WPMedia\PHPUnit\Integration\TestCase;

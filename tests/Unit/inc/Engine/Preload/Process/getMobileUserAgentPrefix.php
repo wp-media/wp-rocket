@@ -1,12 +1,12 @@
 <?php
-namespace WP_Rocket\Tests\Unit\inc\classes\preload\Process;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Process;
 
 use Brain\Monkey\Filters;
 use WPMedia\PHPUnit\Unit\TestCase;
-use WP_Rocket\Preload\Process;
+use WP_Rocket\Engine\Preload\Process;
 
 /**
- * @covers \WP_Rocket\Preload\Process::get_mobile_user_agent_prefix
+ * @covers \WP_Rocket\Engine\Preload\Process::get_mobile_user_agent_prefix
  * @group Preload
  */
 class Test_GetMobileUserAgentPrefix extends TestCase {

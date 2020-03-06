@@ -1,14 +1,14 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\classes\preload\Homepage;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Homepage;
 
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
-use WP_Rocket\Preload\Full_Process;
-use WP_Rocket\Preload\Homepage;
+use WP_Rocket\Engine\Preload\Full_Process;
+use WP_Rocket\Engine\Preload\Homepage;
 
 /**
- * @covers \WP_Rocket\Preload\Homepage::preload
+ * @covers \WP_Rocket\Engine\Preload\Homepage::preload
  * @group  Preload
  */
 class Test_Preload extends TestCase {

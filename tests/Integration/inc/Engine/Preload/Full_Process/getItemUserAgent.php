@@ -1,10 +1,10 @@
 <?php
-namespace WP_Rocket\Tests\Integration\inc\classes\preload\Full_Process;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Preload\Full_Process;
 
-use WP_Rocket\Tests\Integration\inc\classes\preload\PreloadTestCase;
+use WP_Rocket\Tests\Integration\inc\Engine\Preload\PreloadTestCase;
 
 /**
- * @covers \WP_Rocket\Preload\Full_Process::get_item_user_agent
+ * @covers \WP_Rocket\Engine\Preload\Full_Process::get_item_user_agent
  * @group  Preload
  */
 class Test_GetItemUserAgent extends PreloadTestCase {

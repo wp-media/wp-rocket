@@ -1,14 +1,14 @@
 <?php
-namespace WP_Rocket\Tests\Unit\inc\classes\preload\Sitemap;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Sitemap;
 
 use Brain\Monkey\Actions;
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
-use WP_Rocket\Preload\Full_Process;
-use WP_Rocket\Preload\Sitemap;
+use WP_Rocket\Engine\Preload\Full_Process;
+use WP_Rocket\Engine\Preload\Sitemap;
 
 /**
- * @covers \WP_Rocket\Preload\Sitemap::run_preload
+ * @covers \WP_Rocket\Engine\Preload\Sitemap::run_preload
  * @group Preload
  */
 class Test_RunPreload extends TestCase {

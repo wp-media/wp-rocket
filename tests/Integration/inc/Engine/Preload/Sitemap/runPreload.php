@@ -1,13 +1,13 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\classes\preload\Sitemap;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Preload\Sitemap;
 
 use Brain\Monkey\Actions;
-use WP_Rocket\Preload\Sitemap;
-use WP_Rocket\Tests\Integration\inc\classes\preload\PreloadTestCase;
+use WP_Rocket\Engine\Preload\Sitemap;
+use WP_Rocket\Tests\Integration\inc\Engine\Preload\PreloadTestCase;
 
 /**
- * @covers \WP_Rocket\Preload\Sitemap::run_preload
+ * @covers \WP_Rocket\Engine\Preload\Sitemap::run_preload
  * @uses   ::get_rocket_cache_reject_uri
  * @group  Preload
  */

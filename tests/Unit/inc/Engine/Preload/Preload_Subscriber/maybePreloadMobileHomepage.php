@@ -1,16 +1,16 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\classes\subscriber\preload\Preload_Subscriber;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Preload_Subscriber;
 
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Preload\Full_Process;
-use WP_Rocket\Preload\Homepage;
-use WP_Rocket\Subscriber\Preload\Preload_Subscriber;
+use WP_Rocket\Engine\Preload\Full_Process;
+use WP_Rocket\Engine\Preload\Homepage;
+use WP_Rocket\Engine\Preload\Preload_Subscriber;
 
 /**
- * @covers \WP_Rocket\Subscriber\Preload::maybe_preload_mobile_homepage
+ * @covers \WP_Rocket\Engine\Preload\Preload_Subscriber::maybe_preload_mobile_homepage
  * @group  Preload
  */
 class Test_MaybePreloadMobileHomepage extends TestCase {

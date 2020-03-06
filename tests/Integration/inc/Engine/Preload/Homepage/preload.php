@@ -1,12 +1,12 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\classes\preload\Homepage;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Preload\Homepage;
 
-use WP_Rocket\Preload\Homepage;
-use WP_Rocket\Tests\Integration\inc\classes\preload\PreloadTestCase;
+use WP_Rocket\Engine\Preload\Homepage;
+use WP_Rocket\Tests\Integration\inc\Engine\Preload\PreloadTestCase;
 
 /**
- * @covers \WP_Rocket\Preload\Homepage::preload
+ * @covers \WP_Rocket\Engine\Preload\Homepage::preload
  * @uses   ::get_rocket_cache_query_string
  * @group  Preload
  */
