@@ -24,7 +24,7 @@ function as_enqueue_async_action( $hook, $args = array(), $group = '' ) {
  * @param array $args Arguments to pass when the hook triggers
  * @param string $group The group to assign this job to
  *
- * @return int The job ID
+ * @return int The action ID
  */
 function as_schedule_single_action( $timestamp, $hook, $args = array(), $group = '' ) {
 	return ActionScheduler::factory()->single( $hook, $args, $timestamp, $group );
@@ -39,7 +39,7 @@ function as_schedule_single_action( $timestamp, $hook, $args = array(), $group =
  * @param array $args Arguments to pass when the hook triggers
  * @param string $group The group to assign this job to
  *
- * @return int The job ID
+ * @return int The action ID
  */
 function as_schedule_recurring_action( $timestamp, $interval_in_seconds, $hook, $args = array(), $group = '' ) {
 	return ActionScheduler::factory()->recurring( $hook, $args, $timestamp, $interval_in_seconds, $group );
@@ -66,7 +66,7 @@ function as_schedule_recurring_action( $timestamp, $interval_in_seconds, $hook, 
  * @param array $args Arguments to pass when the hook triggers
  * @param string $group The group to assign this job to
  *
- * @return int The job ID
+ * @return int The action ID
  */
 function as_schedule_cron_action( $timestamp, $schedule, $hook, $args = array(), $group = '' ) {
 	return ActionScheduler::factory()->cron( $hook, $args, $timestamp, $schedule, $group );
