@@ -52,7 +52,7 @@ class Critical_CSS {
 			'url'  => home_url( '/' ),
 		];
 
-		$this->critical_css_path = WP_ROCKET_CRITICAL_CSS_PATH . get_current_blog_id() . '/';
+		$this->critical_css_path = rocket_get_constant( 'WP_ROCKET_CRITICAL_CSS_PATH' ) . get_current_blog_id() . '/';
 	}
 
 	/**
