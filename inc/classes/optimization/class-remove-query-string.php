@@ -3,6 +3,7 @@ namespace WP_Rocket\Optimization;
 
 use WP_Rocket\Admin\Options_Data as Options;
 use WP_Rocket\Optimization\Abstract_Optimization;
+use WP_Rocket\Optimization\CSS\Path_Rewriter;
 
 /**
  * Remove query string from static resources
@@ -11,7 +12,7 @@ use WP_Rocket\Optimization\Abstract_Optimization;
  * @author Remy Perona
  */
 class Remove_Query_String extends Abstract_Optimization {
-	use \WP_Rocket\Optimization\CSS\Path_Rewriter;
+	use Path_Rewriter;
 
 	/**
 	 * Plugin options instance.
@@ -209,7 +210,7 @@ class Remove_Query_String extends Abstract_Optimization {
 	 * @return boolean
 	 */
 	public function is_allowed() {
-		if ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
+		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
 			return false;
 		}
 
@@ -236,8 +237,10 @@ class Remove_Query_String extends Abstract_Optimization {
 			return false;
 		}
 
-		if ( false !== strpos( $url, 'ver=' . $GLOBALS['wp_version'] ) ) {
-			$url = rtrim( str_replace( [ 'ver=' . $GLOBALS['wp_version'], '?&', '&&' ], [ '', '?', '&' ], $url ), '?&' );
+		$version = get_bloginfo( 'version' );
+
+		if ( false !== strpos( $url, 'ver=' . $version ) ) {
+			$url = rtrim( str_replace( [ 'ver=' . $version, '?&', '&&' ], [ '', '?', '&' ], $url ), '?&' );
 		}
 
 		if ( $this->is_external_file( $url ) ) {
