@@ -18,7 +18,7 @@ class Test_GenerateCriticalCssOnActivation extends FilesystemTestCase {
 			'1' => [
 				'.'            => '',
 				'..'           => '',
-				'critical.css' => 'css content',
+				'critical.css' => 'body { font-family: Helvetica, Arial, sans-serif; text-align: center;}',
 			],
 		],
 	];

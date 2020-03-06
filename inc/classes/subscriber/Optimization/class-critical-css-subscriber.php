@@ -138,27 +138,29 @@ class Critical_CSS_Subscriber implements Subscriber_Interface {
 	 * @param array $value     New values for WP Rocket settings.
 	 */
 	public function generate_critical_css_on_activation( $old_value, $value ) {
-		if ( isset( $old_value['async_css'], $value['async_css'] ) && ( $old_value['async_css'] !== $value['async_css'] ) && 1 === (int) $value['async_css'] ) {
-			$critical_css_path = $this->critical_css->get_critical_css_path();
+		if ( ! isset( $old_value['async_css'], $value['async_css'] ) || ( $old_value['async_css'] === $value['async_css'] ) || 1 !== (int) $value['async_css'] ) {
+			return;
+		}
 
-			// Check if the CPCSS path exists and create it.
-			if ( ! rocket_direct_filesystem()->is_dir( $critical_css_path ) ) {
-				rocket_mkdir_p( $critical_css_path );
-			}
+		$critical_css_path = $this->critical_css->get_critical_css_path();
 
-			try {
-				if ( ( new FilesystemIterator( $critical_css_path, FilesystemIterator::SKIP_DOTS ) )->valid() ) {
-					// Bail out if the folder is not empty.
-					return;
-				}
-			} catch ( UnexpectedValueException $e ) {
-				// Bail out when folder is invalid.
+		// Check if the CPCSS path exists and create it.
+		if ( ! rocket_direct_filesystem()->is_dir( $critical_css_path ) ) {
+			rocket_mkdir_p( $critical_css_path );
+		}
+
+		try {
+			if ( ( new FilesystemIterator( $critical_css_path, FilesystemIterator::SKIP_DOTS ) )->valid() ) {
+				// Bail out if the folder is not empty.
 				return;
 			}
-
-			// Generate the CPCSS files.
-			$this->critical_css->process_handler();
+		} catch ( UnexpectedValueException $e ) {
+			// Bail out when folder is invalid.
+			return;
 		}
+
+		// Generate the CPCSS files.
+		$this->critical_css->process_handler();
 	}
 
 	/**
