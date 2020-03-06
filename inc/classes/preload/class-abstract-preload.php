@@ -88,6 +88,18 @@ abstract class Abstract_Preload {
 	}
 
 	/**
+	 * Get the prefix to prepend to the user agent used for preload to make a HTTP request detected as a mobile device.
+	 *
+	 * @since  3.5.0.2
+	 * @author Grégory Viguier
+	 *
+	 * @return string
+	 */
+	public function get_mobile_user_agent_prefix() {
+		return $this->preload_process->get_mobile_user_agent_prefix();
+	}
+
+	/**
 	 * Get the number of preloaded URLs.
 	 *
 	 * @since  3.5

@@ -206,7 +206,7 @@ class Preload_Subscriber implements Subscriber_Interface {
 			$args['user-agent'] = 'WP Rocket/Homepage_Preload_After_Purge_Cache';
 		}
 
-		$args['user-agent'] .= ' iPhone';
+		$args['user-agent'] = $this->homepage_preloader->get_mobile_user_agent_prefix() . ' ' . $args['user-agent'];
 
 		wp_safe_remote_get( $home_url, $args );
 	}
