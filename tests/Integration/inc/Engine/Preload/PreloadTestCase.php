@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Preload;
 
-use WP_Rocket\Tests\Integration\Fixtures\Preload\Process_Wrapper;
+use WP_Rocket\Tests\Integration\Fixtures\inc\Engine\Preload\Process_Wrapper;
 use WPMedia\PHPUnit\Integration\TestCase;
 
 abstract class PreloadTestCase extends TestCase {
@@ -18,7 +18,7 @@ abstract class PreloadTestCase extends TestCase {
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
 
-		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/Preload/Process_Wrapper.php';
+		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Preload/Process_Wrapper.php';
 	}
 
 	public function setUp() {

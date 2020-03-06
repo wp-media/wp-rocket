@@ -1,8 +1,8 @@
 <?php
 // phpcs:ignoreFile
-namespace WP_Rocket\Tests\Integration\Fixtures\Preload;
+namespace WP_Rocket\Tests\Integration\Fixtures\inc\Engine\Preload;
 
-use WP_Rocket\Preload\Full_Process;
+use WP_Rocket\Engine\Preload\Full_Process;
 
 /**
  * Wrapper class used to test the results.

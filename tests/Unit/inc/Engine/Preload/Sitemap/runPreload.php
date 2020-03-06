@@ -63,9 +63,9 @@ class Test_RunPreload extends TestCase {
 		Functions\when( 'wp_remote_get' )->alias( function( $url, $args = [] ) {
 			switch ( $url ) {
 				case 'https://example.org/sitemap.xml':
-					return [ 'body' => file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/Preload/Sitemap/sitemap.xml' ) ];
+					return [ 'body' => file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Preload/Sitemap/sitemap.xml' ) ];
 				case 'https://example.org/sitemap-mobile.xml':
-					return [ 'body' => file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/Preload/Sitemap/sitemap-mobile.xml' ) ];
+					return [ 'body' => file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Preload/Sitemap/sitemap-mobile.xml' ) ];
 			}
 			return false;
 		} );
