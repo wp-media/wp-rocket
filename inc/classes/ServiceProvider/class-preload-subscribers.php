@@ -47,6 +47,7 @@ class Preload_Subscribers extends AbstractServiceProvider {
 			->withArgument( $this->getContainer()->get( 'full_preload_process' ) );
 		$this->getContainer()->share( 'preload_subscriber', 'WP_Rocket\Subscriber\Preload\Preload_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'homepage_preload' ) )
+			->withArgument( $this->getContainer()->get( 'sitemap_preload' ) )
 			->withArgument( $this->getContainer()->get( 'options' ) );
 		$this->getContainer()->share( 'sitemap_preload_subscriber', 'WP_Rocket\Subscriber\Preload\Sitemap_Preload_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'sitemap_preload' ) )
