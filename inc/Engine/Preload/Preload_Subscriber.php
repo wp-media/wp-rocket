@@ -1,10 +1,9 @@
 <?php
-namespace WP_Rocket\Subscriber\Preload;
 
-use WP_Rocket\Logger\Logger;
-use WP_Rocket\Event_Management\Subscriber_Interface;
+namespace WP_Rocket\Engine\Preload;
+
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Preload\Homepage;
+use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
  * Preload Subscriber
@@ -13,6 +12,7 @@ use WP_Rocket\Preload\Homepage;
  * @author Remy Perona
  */
 class Preload_Subscriber implements Subscriber_Interface {
+
 	/**
 	 * Homepage Preload instance
 	 *
@@ -34,7 +34,7 @@ class Preload_Subscriber implements Subscriber_Interface {
 	private $options;
 
 	/**
-	 * Constructor
+	 * Constructor.
 	 *
 	 * @since 3.2
 	 * @author Remy Perona

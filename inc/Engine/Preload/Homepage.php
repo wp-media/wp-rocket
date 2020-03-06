@@ -1,5 +1,6 @@
 <?php
-namespace WP_Rocket\Preload;
+
+namespace WP_Rocket\Engine\Preload;
 
 /**
  * Preloads the homepage and the internal URLs on it.

@@ -1,9 +1,9 @@
 <?php
-namespace WP_Rocket\Subscriber\Preload;
+
+namespace WP_Rocket\Engine\Preload;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Preload\Partial_Process;
 
 /**
  * Subscriber for the partial preload

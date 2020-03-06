@@ -1,17 +1,18 @@
 <?php
-namespace WP_Rocket\Subscriber\Preload;
 
-use WP_Rocket\Preload\Sitemap;
+namespace WP_Rocket\Engine\Preload;
+
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
- * Sitemap Preload Subscriber
+ * Sitemap Preload Subscriber.
  *
  * @since 3.2
  * @author Remy Perona
  */
 class Sitemap_Preload_Subscriber implements Subscriber_Interface {
+
 	/**
 	 * Constructor
 	 *

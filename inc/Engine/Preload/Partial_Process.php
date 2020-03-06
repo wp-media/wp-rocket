@@ -1,5 +1,6 @@
 <?php
-namespace WP_Rocket\Preload;
+
+namespace WP_Rocket\Engine\Preload;
 
 /**
  * Extends the background process class for the partial preload background process.

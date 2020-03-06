@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Preload;
+namespace WP_Rocket\Engine\Preload;
 
 use WP_Background_Process;
 
