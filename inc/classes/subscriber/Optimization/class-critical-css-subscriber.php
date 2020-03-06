@@ -41,7 +41,7 @@ class Critical_CSS_Subscriber implements Subscriber_Interface {
 
 		return [
 			'admin_post_rocket_generate_critical_css' => 'init_critical_css_generation',
-			'update_option_' . $slug         => [
+			'update_option_' . $slug                  => [
 				[ 'generate_critical_css_on_activation', 11, 2 ],
 				[ 'stop_process_on_deactivation', 11, 2 ],
 			],
