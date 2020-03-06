@@ -27,7 +27,7 @@ class Preload_Subscriber implements Subscriber_Interface {
 	/**
 	 * Sitemap Preload instance.
 	 *
-	 * @since  3.5.0.2
+	 * @since  3.5.0.3
 	 * @author Grégory Viguier
 	 *
 	 * @var Sitemap
