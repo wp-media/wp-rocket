@@ -9,16 +9,20 @@ use WP_Rocket\Preload\Process;
  * @group Preload
  */
 class Test_GetItemUserAgent extends TestCase {
+	private $user_agent = 'WP Rocket/Preload';
+	private $prefix     = 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1';
 
 	public function testShouldReturnMobileUaWhenMobileItem() {
-		$stub = $this->getMockForAbstractClass( Process::class );
+		$expected = $this->prefix . ' ' . $this->user_agent;
+		$stub     = $this->getMockForAbstractClass( Process::class );
 
-		$this->assertContains( 'iPhone', $stub->get_item_user_agent( [ 'mobile' => 1 ] ) );
+		$this->assertSame( $expected, $stub->get_item_user_agent( [ 'mobile' => 1 ] ) );
 	}
 
 	public function testShouldNotReturnMobileUaWhenNotMobileItem() {
-		$stub = $this->getMockForAbstractClass( Process::class );
+		$expected = $this->user_agent;
+		$stub     = $this->getMockForAbstractClass( Process::class );
 
-		$this->assertNotContains( 'iPhone', $stub->get_item_user_agent( [ 'mobile' => 0 ] ) );
+		$this->assertSame( $expected, $stub->get_item_user_agent( [ 'mobile' => 0 ] ) );
 	}
 }
