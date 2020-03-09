@@ -169,6 +169,11 @@ class Test_RocketUrlToPath extends FilesystemTestCase {
 		Functions\when( 'content_url' )->justReturn( 'http://example.org/wordpress/wp-content' );
 		Functions\when( 'site_url' )->justReturn( 'http://example.org/wordpress' );
 
+		$hosts = [
+			'home'                => 0,
+			'123456.rocketcdn.me' => 1,
+		];
+
 		$this->assertSame(
 			$path,
 			rocket_url_to_path( $url, $hosts )
