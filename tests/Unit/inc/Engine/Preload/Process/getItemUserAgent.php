@@ -1,11 +1,11 @@
 <?php
-namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Process;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\AbstractProcess;
 
 use WPMedia\PHPUnit\Unit\TestCase;
-use WP_Rocket\Engine\Preload\Process;
+use WP_Rocket\Engine\Preload\AbstractProcess;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Process::get_item_user_agent
+ * @covers \WP_Rocket\Engine\Preload\AbstractProcess::get_item_user_agent
  * @group Preload
  */
 class Test_GetItemUserAgent extends TestCase {
@@ -14,14 +14,14 @@ class Test_GetItemUserAgent extends TestCase {
 
 	public function testShouldReturnMobileUaWhenMobileItem() {
 		$expected = $this->prefix . ' ' . $this->user_agent;
-		$stub     = $this->getMockForAbstractClass( Process::class );
+		$stub     = $this->getMockForAbstractClass( AbstractProcess::class );
 
 		$this->assertSame( $expected, $stub->get_item_user_agent( [ 'mobile' => 1 ] ) );
 	}
 
 	public function testShouldNotReturnMobileUaWhenNotMobileItem() {
 		$expected = $this->user_agent;
-		$stub     = $this->getMockForAbstractClass( Process::class );
+		$stub     = $this->getMockForAbstractClass( AbstractProcess::class );
 
 		$this->assertSame( $expected, $stub->get_item_user_agent( [ 'mobile' => 0 ] ) );
 	}

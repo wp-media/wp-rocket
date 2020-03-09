@@ -1,19 +1,19 @@
 <?php
-namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Process;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\AbstractProcess;
 
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
-use WP_Rocket\Engine\Preload\Process;
+use WP_Rocket\Engine\Preload\AbstractProcess;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Process::is_mobile_preload_enabled
+ * @covers \WP_Rocket\Engine\Preload\AbstractProcess::is_mobile_preload_enabled
  * @group Preload
  */
 class Test_IsMobilePreloadEnabled extends TestCase {
 
 	public function testShouldReturnTrueWhenOptionsEnabled() {
-		$stub = $this->getMockForAbstractClass( Process::class );
+		$stub = $this->getMockForAbstractClass( AbstractProcess::class );
 
 		Functions\when( 'get_rocket_option' )->alias( function( $option, $default = '' ) {
 			switch ( $option ) {
@@ -29,7 +29,7 @@ class Test_IsMobilePreloadEnabled extends TestCase {
 	}
 
 	public function testShouldReturnFalseWhenOptionsDisabled() {
-		$stub = $this->getMockForAbstractClass( Process::class );
+		$stub = $this->getMockForAbstractClass( AbstractProcess::class );
 
 		Functions\when( 'get_rocket_option' )->alias( function( $option, $default = '' ) {
 			switch ( $option ) {
@@ -73,7 +73,7 @@ class Test_IsMobilePreloadEnabled extends TestCase {
 	}
 
 	public function testShouldReturnBooleanWhenFiltered() {
-		$stub = $this->getMockForAbstractClass( Process::class );
+		$stub = $this->getMockForAbstractClass( AbstractProcess::class );
 
 		Functions\when( 'get_rocket_option' )->alias( function( $option, $default = '' ) {
 			switch ( $option ) {
