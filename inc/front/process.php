@@ -1,19 +1,19 @@
 <?php
-
+// phpcs:ignoreFile
 defined( 'ABSPATH' ) || exit;
 
 // Don't cache robots.txt && .htaccess directory (it's happened sometimes with weird server configuration).
-if ( isset( $_SERVER['REQUEST_URI'] ) && ( strstr( wp_unslash( $_SERVER['REQUEST_URI'] ), 'robots.txt' ) || strstr( wp_unslash( $_SERVER['REQUEST_URI'] ), '.htaccess' ) ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+if ( isset( $_SERVER['REQUEST_URI'] ) && ( strstr( $_SERVER['REQUEST_URI'], 'robots.txt' ) || strstr( $_SERVER['REQUEST_URI'], '.htaccess' ) ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 	rocket_define_donotoptimize_constant( true );
 
 	return;
 }
 
-$rocket_request_uri = explode( '?', wp_unslash( $_SERVER['REQUEST_URI'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+$rocket_request_uri = explode( '?', $_SERVER['REQUEST_URI'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 $rocket_request_uri = reset( $rocket_request_uri );
 
 // Don't cache disallowed extensions.
-if ( strtolower( wp_unslash( $_SERVER['REQUEST_URI'] ) ) !== '/index.php' && in_array( pathinfo( $rocket_request_uri, PATHINFO_EXTENSION ), [ 'php', 'xml', 'xsl' ], true ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+if ( strtolower( $_SERVER['REQUEST_URI'] ) !== '/index.php' && in_array( pathinfo( $rocket_request_uri, PATHINFO_EXTENSION ), [ 'php', 'xml', 'xsl' ], true ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 	rocket_define_donotoptimize_constant( true );
 
 	return;
