@@ -465,9 +465,10 @@ function rocket_realpath( $file ) {
  * @return string|bool
  */
 function rocket_url_to_path( $url, $hosts = '' ) {
-	$root_dir = trailingslashit( dirname( WP_CONTENT_DIR ) );
-	$root_url = str_replace( wp_basename( WP_CONTENT_DIR ), '', content_url() );
-	$url_host = wp_parse_url( $url, PHP_URL_HOST );
+	$wp_content_dir = rocket_get_constant( 'WP_CONTENT_DIR' );
+	$root_dir       = trailingslashit( dirname( $wp_content_dir ) );
+	$root_url       = str_replace( wp_basename( $wp_content_dir ), '', content_url() );
+	$url_host       = wp_parse_url( $url, PHP_URL_HOST );
 
 	// relative path.
 	if ( null === $url_host ) {
