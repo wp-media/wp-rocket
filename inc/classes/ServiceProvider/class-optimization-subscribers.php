@@ -60,8 +60,8 @@ class Optimization_Subscribers extends AbstractServiceProvider {
 			->withArgument( rocket_get_constant( 'WP_ROCKET_CACHE_BUSTING_URL' ) );
 		$this->getContainer()->add( 'remove_query_string', 'WP_Rocket\Optimization\Remove_Query_String' )
 			->withArgument( $this->getContainer()->get( 'options' ) )
-			->withArgument( WP_ROCKET_CACHE_BUSTING_PATH )
-			->withArgument( WP_ROCKET_CACHE_BUSTING_URL );
+			->withArgument( rocket_get_constant( 'WP_ROCKET_CACHE_BUSTING_PATH' ) )
+			->withArgument( rocket_get_constant( 'WP_ROCKET_CACHE_BUSTING_URL' ) );
 		$this->getContainer()->share( 'ie_conditionals_subscriber', 'WP_Rocket\Subscriber\Optimization\IE_Conditionals_Subscriber' );
 		$this->getContainer()->share( 'minify_html_subscriber', 'WP_Rocket\Subscriber\Optimization\Minify_HTML_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'options' ) );
