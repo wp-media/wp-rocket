@@ -267,11 +267,9 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		}
 
 		update_option( WP_ROCKET_SLUG, $options );
-
 	}
 
 	if ( version_compare( $actual_version, '2.7', '<' ) ) {
-
 		// Regenerate config file.
 		rocket_generate_config_file();
 	}
