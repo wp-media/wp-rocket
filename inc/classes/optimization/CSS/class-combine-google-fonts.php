@@ -117,18 +117,20 @@ class Combine_Google_Fonts extends Abstract_Optimization {
 		$subsets_array = [];
 		foreach ( $matches as $match ) {
 			$url   = html_entity_decode( $match[2] );
-			$query = \rocket_extract_url_component( $url, PHP_URL_QUERY );
+			$query = rocket_extract_url_component( $url, PHP_URL_QUERY );
 
 			if ( ! isset( $query ) ) {
 				return;
 			}
 
-			$font        = wp_parse_args( $query );
-			$font_family = $font['family'];
-			$font_family = rtrim( $font_family, '%7C' );
-			$font_family = rtrim( $font_family, '|' );
-			// Add font to the collection.
-			$fonts_array[] = rawurlencode( htmlentities( $font_family ) );
+			$font = wp_parse_args( $query );
+			if ( isset( $font['family'] ) ) {
+				$font_family = $font['family'];
+				$font_family = rtrim( $font_family, '%7C' );
+				$font_family = rtrim( $font_family, '|' );
+				// Add font to the collection.
+				$fonts_array[] = rawurlencode( htmlentities( $font_family ) );
+			}
 
 			// Add subset to collection.
 			if ( isset( $font['subset'] ) ) {

@@ -49,4 +49,73 @@ return [
 			'</body>' .
 		'</html>',
 	],
+	// Without Subsets & no ending |
+	[
+		// Test Data: Original HTML.
+		'<html>' .
+			'<head>' .
+				'<title>Sample Page</title>' .
+				'<link rel="stylesheet" id="dt-web-fonts-css"  href="//fonts.googleapis.com/css?family=Josefin+Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica+One%3A400%2C600%2C700&#038;ver=7.3.2" type="text/css" media="all" />' .
+				'<link rel="stylesheet" id="ultimate-google-fonts-css"  href="https://fonts.googleapis.com/css?family=Josefin+Sans:regular,300" type="text/css" media="all" />' .
+				'<link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300" rel="stylesheet" property="stylesheet" type"text/css" media="all">' .
+			'</head>' .
+			'<body>' .
+			'</body>' .
+		'</html>',
+		// Expected: Combined HTML.
+		'<html>' .
+			'<head>' .
+				'<title>Sample Page</title><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&display=swap" />' .
+			'</head>' .
+			'<body>' .
+			'</body>' .
+		'</html>',
+	],
+	// Without Subsets & malformed URL (no family, but wrong query string)
+	[
+		// Test Data: Original HTML.
+		'<html>' .
+			'<head>' .
+				'<title>Sample Page</title>' .
+				'<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin+Sans:regular,300" type="text/css" media="all" />' .
+				'<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:regular,300" type="text/css" media="all" />' .
+				'<link href="https://fonts.googleapis.com/css?fam=Error" rel="stylesheet" property="stylesheet" type"text/css" media="all">' .
+			'</head>' .
+			'<body>' .
+			'</body>' .
+		'</html>',
+		// Expected: Combined HTML.
+		'<html>' .
+			'<head>' .
+				'<title>Sample Page</title><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3Aregular%2C300%7CLato%3Aregular%2C300&display=swap" />' .
+			'</head>' .
+			'<body>' .
+			'</body>' .
+		'</html>',
+	],
+	// Without Subsets & malformed URL (no family query string)
+	[
+		// Test Data: Original HTML.
+		'<html>' .
+			'<head>' .
+				'<title>Sample Page</title>' .
+				'<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin+Sans:regular,300" type="text/css" media="all" />' .
+				'<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:regular,300" type="text/css" media="all" />' .
+				'<link href="https://fonts.googleapis.com/css?" rel="stylesheet" property="stylesheet" type"text/css" media="all">' .
+			'</head>' .
+			'<body>' .
+			'</body>' .
+		'</html>',
+		// Expected: Combined HTML.
+		'<html>' .
+			'<head>' .
+			'<title>Sample Page</title>' .
+			'<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin+Sans:regular,300" type="text/css" media="all" />' .
+			'<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:regular,300" type="text/css" media="all" />' .
+			'<link href="https://fonts.googleapis.com/css?" rel="stylesheet" property="stylesheet" type"text/css" media="all">' .
+			'</head>' .
+			'<body>' .
+			'</body>' .
+		'</html>',
+	],
 ];
