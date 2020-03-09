@@ -254,8 +254,6 @@ add_action( 'wp_rocket_first_install', 'rocket_first_install' );
  */
 function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 	if ( version_compare( $actual_version, '2.4.1', '<' ) ) {
-		// Regenerate advanced-cache.php file.
-		rocket_generate_advanced_cache_file();
 		delete_transient( 'rocket_ask_for_update' );
 	}
 
@@ -270,13 +268,9 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 
 		update_option( WP_ROCKET_SLUG, $options );
 
-		// Regenerate advanced-cache.php file.
-		rocket_generate_advanced_cache_file();
 	}
 
 	if ( version_compare( $actual_version, '2.7', '<' ) ) {
-		// Regenerate advanced-cache.php file.
-		rocket_generate_advanced_cache_file();
 
 		// Regenerate config file.
 		rocket_generate_config_file();
@@ -334,7 +328,6 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		rocket_clean_domain();
 		rocket_clean_minify();
 		rocket_clean_cache_busting();
-		rocket_generate_advanced_cache_file();
 	}
 
 	if ( version_compare( $actual_version, '3.0.3', '<' ) ) {
@@ -347,10 +340,6 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 
 	if ( version_compare( $actual_version, '3.1.1', '<' ) ) {
 		rocket_generate_config_file();
-	}
-
-	if ( version_compare( $actual_version, '3.1.4', '<' ) ) {
-		rocket_generate_advanced_cache_file();
 	}
 
 	if ( version_compare( $actual_version, '3.2', '<' ) ) {
@@ -366,7 +355,6 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 
 		update_option( WP_ROCKET_SLUG, $options );
 		rocket_generate_config_file();
-		rocket_generate_advanced_cache_file();
 
 		// Create a .htaccess file in the log folder.
 		$handler = Logger::get_stream_handler();
@@ -409,13 +397,11 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 	}
 
 	if ( version_compare( $actual_version, '3.3', '<' ) ) {
-		rocket_generate_advanced_cache_file();
 		rocket_generate_config_file();
 		rocket_clean_domain();
 	}
 
 	if ( version_compare( $actual_version, '3.3.2', '<' ) ) {
-		rocket_generate_advanced_cache_file();
 		flush_rocket_htaccess();
 		rocket_generate_config_file();
 		rocket_clean_domain();
@@ -446,6 +432,10 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 
 	if ( version_compare( $actual_version, '3.4.0.1', '<' ) ) {
 		( new WP_Rocket\Subscriber\Plugin\Capabilities_Subscriber() )->add_rocket_capabilities();
+	}
+
+	if ( version_compare( $actual_version, '3.5.1', '<' ) ) {
+		rocket_generate_advanced_cache_file();
 	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );
