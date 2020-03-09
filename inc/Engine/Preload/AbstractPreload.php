@@ -8,7 +8,7 @@ namespace WP_Rocket\Engine\Preload;
  * @since 3.2
  * @author Remy Perona
  */
-abstract class Abstract_Preload {
+abstract class AbstractPreload {
 
 	/**
 	 * Suffix used to identify "mobile items" to preload.
@@ -24,7 +24,7 @@ abstract class Abstract_Preload {
 	 * Background Process instance
 	 *
 	 * @since 3.2
-	 * @var Full_Process
+	 * @var FullProcess
 	 */
 	protected $preload_process;
 
@@ -44,9 +44,9 @@ abstract class Abstract_Preload {
 	 * @since 3.2
 	 * @author Remy Perona
 	 *
-	 * @param Full_Process $preload_process Background Process instance.
+	 * @param FullProcess $preload_process Background Process instance.
 	 */
-	public function __construct( Full_Process $preload_process ) {
+	public function __construct( FullProcess $preload_process ) {
 		$this->preload_process = $preload_process;
 	}
 

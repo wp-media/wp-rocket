@@ -1,11 +1,11 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\Preload\Full_Process;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Preload\FullProcess;
 
 use WP_Rocket\Tests\Integration\inc\Engine\Preload\PreloadTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Full_Process::is_mobile_preload_enabled
+ * @covers \WP_Rocket\Engine\Preload\FullProcess::is_mobile_preload_enabled
  * @uses   ::get_rocket_option
  * @group  Preload
  */

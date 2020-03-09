@@ -2,12 +2,12 @@
 // phpcs:ignoreFile
 namespace WP_Rocket\Tests\Integration\Fixtures\inc\Engine\Preload;
 
-use WP_Rocket\Engine\Preload\Full_Process;
+use WP_Rocket\Engine\Preload\FullProcess;
 
 /**
  * Wrapper class used to test the results.
  */
-class Process_Wrapper extends Full_Process {
+class Process_Wrapper extends FullProcess {
 	private $generatedKey;
 
 	public function save() {

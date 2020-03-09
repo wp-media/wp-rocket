@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * @see WP_Background_Process
  */
-class Full_Process extends Process {
+class FullProcess extends AbstractProcess {
 	/**
 	 * Specific action identifier for the current preload type.
 	 *

@@ -13,7 +13,7 @@ use WP_Background_Process;
  *
  * @see WP_Background_Process
  */
-abstract class Process extends WP_Background_Process {
+abstract class AbstractProcess extends WP_Background_Process {
 	/**
 	 * Prefix
 	 *
