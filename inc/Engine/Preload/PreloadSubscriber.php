@@ -270,13 +270,15 @@ class PreloadSubscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$running = $this->homepage_preloader->get_number_of_preloaded_items();
+		$homepage_count = get_transient( 'rocket_homepage_preload_running' );
+		$sitemap_count  = get_transient( 'rocket_sitemap_preload_running' );
 
-		if ( false === $running ) {
+		if ( false === $homepage_count && false === $sitemap_count ) {
 			return;
 		}
 
-		$status = 'info';
+		$running = $homepage_count + $sitemap_count;
+		$status  = 'info';
 		// translators: %1$s = Number of pages preloaded.
 		$message  = '<p>' . sprintf( _n( 'Preload: %1$s uncached page has now been preloaded. (refresh to see progress)', 'Preload: %1$s uncached pages have now been preloaded. (refresh to see progress)', $running, 'rocket' ), number_format_i18n( $running ) );
 		$message .= ' <em> - (' . date_i18n( get_option( 'date_format' ) ) . ' @ ' . date_i18n( get_option( 'time_format' ) ) . ') </em></p>';
