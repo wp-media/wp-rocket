@@ -8,7 +8,7 @@ namespace WP_Rocket\Engine\Preload;
  * @since 3.2
  * @author Remy Perona
  */
-class Homepage extends Abstract_Preload {
+class Homepage extends AbstractPreload {
 
 	/**
 	 * An ID used in the "running" transient’s name.

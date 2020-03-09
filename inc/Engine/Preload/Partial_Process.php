@@ -10,7 +10,7 @@ namespace WP_Rocket\Engine\Preload;
  *
  * @see WP_Background_Process
  */
-class Partial_Process extends Process {
+class PartialProcess extends Process {
 
 	/**
 	 * Specific action identifier for partial preload

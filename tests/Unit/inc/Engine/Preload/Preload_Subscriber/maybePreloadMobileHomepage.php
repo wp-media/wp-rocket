@@ -1,16 +1,16 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Preload_Subscriber;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\PreloadSubscriber;
 
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\Preload\Full_Process;
+use WP_Rocket\Engine\Preload\FullProcess;
 use WP_Rocket\Engine\Preload\Homepage;
-use WP_Rocket\Engine\Preload\Preload_Subscriber;
+use WP_Rocket\Engine\Preload\PreloadSubscriber;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Preload_Subscriber::maybe_preload_mobile_homepage
+ * @covers \WP_Rocket\Engine\Preload\PreloadSubscriber::maybe_preload_mobile_homepage
  * @group  Preload
  */
 class Test_MaybePreloadMobileHomepage extends TestCase {
@@ -39,7 +39,7 @@ class Test_MaybePreloadMobileHomepage extends TestCase {
 				]
 			);
 
-		$subscriber = new Preload_Subscriber( $homepage_preloader, $options );
+		$subscriber = new PreloadSubscriber( $homepage_preloader, $options );
 
 		$subscriber->maybe_preload_mobile_homepage( $this->home_url, 'whatever', [] );
 	}
@@ -58,7 +58,7 @@ class Test_MaybePreloadMobileHomepage extends TestCase {
 		Functions\expect( 'wp_safe_remote_get' )
 			->never();
 
-		$subscriber = new Preload_Subscriber( $homepage_preloader, $options );
+		$subscriber = new PreloadSubscriber( $homepage_preloader, $options );
 
 		$subscriber->maybe_preload_mobile_homepage( $this->home_url, 'whatever', [] );
 	}

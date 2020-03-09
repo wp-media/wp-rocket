@@ -4,7 +4,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Homepage;
 
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
-use WP_Rocket\Engine\Preload\Full_Process;
+use WP_Rocket\Engine\Preload\FullProcess;
 use WP_Rocket\Engine\Preload\Homepage;
 
 /**
@@ -14,7 +14,7 @@ use WP_Rocket\Engine\Preload\Homepage;
 class Test_Preload extends TestCase {
 
 	public function testShouldNotPreloadWhenInvalidUrls() {
-		$preload_process = $this->createMock( Full_Process::class );
+		$preload_process = $this->createMock( FullProcess::class );
 		$preload_process
 			->expects( $this->exactly( 3 ) )
 			->method( 'format_item' )
@@ -47,7 +47,7 @@ class Test_Preload extends TestCase {
 		];
 
 		// Stubs.
-		$preload_process = $this->getMockBuilder( Full_Process::class )
+		$preload_process = $this->getMockBuilder( FullProcess::class )
 		                        ->setMethods( [ 'is_mobile_preload_enabled', 'push_to_queue', 'save', 'dispatch' ] )
 		                        ->getMock();
 		$preload_process

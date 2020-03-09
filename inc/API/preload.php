@@ -2,7 +2,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-use WP_Rocket\Engine\Preload\Full_Process;
+use WP_Rocket\Engine\Preload\FullProcess;
 use WP_Rocket\Engine\Preload\Homepage;
 use WP_Rocket\Engine\Preload\Sitemap;
 
@@ -29,7 +29,7 @@ function run_rocket_bot( $spider = 'cache-preload', $lang = '' ) { // phpcs:igno
 		$urls[] = get_rocket_i18n_home_url( $lang );
 	}
 
-	$homepage_preload = new Homepage( new Full_Process() );
+	$homepage_preload = new Homepage( new FullProcess() );
 
 	$homepage_preload->preload( $urls );
 }
@@ -61,7 +61,7 @@ function run_rocket_sitemap_preload() { // phpcs:ignore WordPress.NamingConventi
 		return;
 	}
 
-	$sitemap_preload = new Sitemap( new Full_Process() );
+	$sitemap_preload = new Sitemap( new FullProcess() );
 
 	$sitemap_preload->run_preload( $sitemaps );
 }
@@ -88,7 +88,7 @@ function do_admin_post_rocket_preload_cache() { // phpcs:ignore WordPress.Naming
 		die();
 	}
 
-	$preload_process = new Full_Process();
+	$preload_process = new FullProcess();
 
 	if ( $preload_process->is_process_running() ) {
 		wp_safe_redirect( wp_get_referer() );

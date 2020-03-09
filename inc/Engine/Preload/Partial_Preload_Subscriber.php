@@ -11,14 +11,14 @@ use WP_Rocket\Admin\Options_Data;
  * @since 3.2
  * @author Remy Perona
  */
-class Partial_Preload_Subscriber implements Subscriber_Interface {
+class PartialPreloadSubscriber implements Subscriber_Interface {
 	/**
 	 * Partial preload process instance
 	 *
 	 * @since 3.2
 	 * @author Remy Perona
 	 *
-	 * @var Partial_Process
+	 * @var PartialProcess
 	 */
 	private $partial_preload;
 
@@ -48,10 +48,10 @@ class Partial_Preload_Subscriber implements Subscriber_Interface {
 	 * @since 3.2
 	 * @author Remy Perona
 	 *
-	 * @param Partial_Process $partial Partial preload instance.
-	 * @param Options_Data    $options Options instance.
+	 * @param PartialProcess $partial Partial preload instance.
+	 * @param Options_Data   $options Options instance.
 	 */
-	public function __construct( Partial_Process $partial, Options_Data $options ) {
+	public function __construct( PartialProcess $partial, Options_Data $options ) {
 		$this->partial_preload = $partial;
 		$this->options         = $options;
 	}

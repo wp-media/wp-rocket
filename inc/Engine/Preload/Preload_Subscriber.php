@@ -11,7 +11,7 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * @since 3.2
  * @author Remy Perona
  */
-class Preload_Subscriber implements Subscriber_Interface {
+class PreloadSubscriber implements Subscriber_Interface {
 
 	/**
 	 * Homepage Preload instance

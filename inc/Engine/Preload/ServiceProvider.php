@@ -39,8 +39,8 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-		$this->getContainer()->add( 'full_preload_process', 'WP_Rocket\Engine\Preload\Full_Process' );
-		$this->getContainer()->add( 'partial_preload_process', 'WP_Rocket\Engine\Preload\Partial_Process' );
+		$this->getContainer()->add( 'full_preload_process', 'WP_Rocket\Engine\Preload\FullProcess' );
+		$this->getContainer()->add( 'partial_preload_process', 'WP_Rocket\Engine\Preload\PartialProcess' );
 
 		$full_preload_process = $this->getContainer()->get( 'full_preload_process' );
 		$this->getContainer()->add( 'homepage_preload', 'WP_Rocket\Engine\Preload\Homepage' )
@@ -50,13 +50,13 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		// Subscribers.
 		$options = $this->getContainer()->get( 'options' );
-		$this->getContainer()->share( 'preload_subscriber', 'WP_Rocket\Engine\Preload\Preload_Subscriber' )
+		$this->getContainer()->share( 'preload_subscriber', 'WP_Rocket\Engine\Preload\PreloadSubscriber' )
 			->withArgument( $this->getContainer()->get( 'homepage_preload' ) )
 			->withArgument( $options );
-		$this->getContainer()->share( 'sitemap_preload_subscriber', 'WP_Rocket\Engine\Preload\Sitemap_Preload_Subscriber' )
+		$this->getContainer()->share( 'sitemap_preload_subscriber', 'WP_Rocket\Engine\Preload\SitemapPreloadSubscriber' )
 			->withArgument( $this->getContainer()->get( 'sitemap_preload' ) )
 			->withArgument( $options );
-		$this->getContainer()->share( 'partial_preload_subscriber', 'WP_Rocket\Engine\Preload\Partial_Preload_Subscriber' )
+		$this->getContainer()->share( 'partial_preload_subscriber', 'WP_Rocket\Engine\Preload\PartialPreloadSubscriber' )
 			->withArgument( $this->getContainer()->get( 'partial_preload_process' ) )
 			->withArgument( $options );
 	}
