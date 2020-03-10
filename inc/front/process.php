@@ -284,7 +284,7 @@ $request_uri_path = preg_replace_callback( '/%[0-9A-F]{2}/', 'rocket_urlencode_l
 // Directories in Windows can't contain question marks.
 $request_uri_path = str_replace( '?', '_', $request_uri_path ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 
-$rocket_cache_filepath = $request_uri_path . '/' . $filename . '.html';
+$rocket_cache_filepath = $request_uri_path . '/' . $rocket_filename . '.html';
 
 
 // Serve the cache file if exist.
