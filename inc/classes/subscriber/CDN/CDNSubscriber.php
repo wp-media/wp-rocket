@@ -1,9 +1,9 @@
 <?php
 namespace WP_Rocket\Subscriber\CDN;
 
-use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Rocket\CDN\CDN;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\CDN\CDN;
+use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
  * Subscriber for the CDN feature
@@ -204,7 +204,7 @@ class CDNSubscriber implements Subscriber_Interface {
 	 * @return boolean
 	 */
 	private function is_allowed() {
-		if ( rocket_has_constant( 'DONOTROCKETOPTIMIZE' ) && rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
+		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
 			return false;
 		}
 
