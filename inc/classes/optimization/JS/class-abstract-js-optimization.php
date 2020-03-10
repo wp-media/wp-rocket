@@ -25,8 +25,8 @@ class Abstract_JS_Optimization extends Abstract_Optimization {
 		$this->options          = $options;
 		$this->minify_key       = $this->options->get( 'minify_js_key', create_rocket_uniqid() );
 		$this->excluded_files   = $this->get_excluded_files();
-		$this->minify_base_path = WP_ROCKET_MINIFY_CACHE_PATH . get_current_blog_id() . '/';
-		$this->minify_base_url  = WP_ROCKET_MINIFY_CACHE_URL . get_current_blog_id() . '/';
+		$this->minify_base_path = rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' ) . get_current_blog_id() . '/';
+		$this->minify_base_url  = rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_URL' ) . get_current_blog_id() . '/';
 	}
 
 	/**

@@ -1,18 +1,19 @@
 <?php
-namespace WP_Rocket\Tests\Unit\inc\optimization\CSS\Combine;
+namespace WP_Rocket\Tests\Unit\inc\optimization\JS\Combine;
 
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
-use WP_Rocket\Optimization\CSS\Combine;
+use WP_Rocket\Optimization\JS\Combine;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Optimization\Assets_Local_Cache;
 use MatthiasMullie\Minify;
 
 /**
- * @covers \WP_Rocket\Optimization\CSS\Combine::optimize
- * @group Combine
- * @group CombineCSS
+ * @covers \WP_Rocket\Optimization\JS\Combine::optimize
+ * @group Optimize
+ * @group CombineJS
  */
 class Test_Optimize extends FilesystemTestCase {
 	private   $combine;
@@ -32,7 +33,9 @@ class Test_Optimize extends FilesystemTestCase {
             'cache' => [
                 'min' => [
                     '1' => [
-						'468169e0b2801936e9dbb849292a541a.css' => 'body { font-family: Helvetica, Arial, sans-serif; text-align: center;}',
+						'c31414824a105f4f0a484a3c235b884e.js' => 'combined js',
+						'0d6f19b3f50bd8bae278ac5c7e41846d.js' => 'combined js',
+						'40aa0e42de6db86591cbab276ebb3586.js' => 'combined js',
 					],
                 ],
             ],
@@ -68,6 +71,20 @@ class Test_Optimize extends FilesystemTestCase {
 
 		Functions\when( 'get_current_blog_id' )->justReturn( 1 );
 		Functions\when( 'create_rocket_uniqid' )->justReturn( 'rocket_uniqid' );
+
+		Functions\when( 'esc_url' )->alias( function( $url ) {
+			return $url;
+		} );
+
+		Functions\when('wp_scripts')->alias(function() {
+            $wp_scripts = new \stdClass();
+            $jquery = new \stdClass();
+            $jquery->src = '/wp-includes/js/jquery/jquery.js';
+            $wp_scripts->queue = [];
+
+            return $wp_scripts;
+        });
+
 
 		Functions\when( 'get_rocket_parse_url' )->alias( function( $url ) {
 			$parsed = parse_url( $url );
@@ -127,19 +144,24 @@ class Test_Optimize extends FilesystemTestCase {
 
 			return $prefix . join( '/', $path );
 		} );
-
-		$this->combine = new Combine( $this->createMock( Options_Data::class ), $this->createMock( Minify\CSS::class ) );
+		$options =  $this->createMock( Options_Data::class );
+		$map     = [
+			[ 'exclude_inline_js', [], [] ],
+			[ 'exclude_js', [], [] ],
+		];
+		$options->method( 'get' )->will( $this->returnValueMap( $map ) );
+		$this->combine = new Combine( $options, $this->createMock( Minify\JS::class ), $this->createMock( Assets_Local_Cache::class ) );
 	}
 
 	/**
 	 * @dataProvider addDataProvider
 	 */
-    public function testShouldCombineCSS( $original, $combined ) {
+    public function testShouldCombineJS( $original, $combined ) {
         Functions\when('rocket_extract_url_component')->alias( function($url, $component ) {
             return parse_url( $url, $component );
 		});
 
-        $this->assertSame(
+	    $this->assertSame(
             $combined,
             $this->combine->optimize( $original )
         );
@@ -148,7 +170,7 @@ class Test_Optimize extends FilesystemTestCase {
     /**
      * @dataProvider addCDNDataProvider
      */
-    public function testShouldCombineCSSAndCDN( $original, $combined ) {
+    public function testShouldCombineJSAndCDN( $original, $combined ) {
         Filters\expectApplied( 'rocket_cdn_hosts' )
 			->zeroOrMoreTimes()
 			->with( [], [ 'all', 'css_and_js', 'css', 'js' ] )
@@ -157,7 +179,7 @@ class Test_Optimize extends FilesystemTestCase {
 			]
         );
 
-        Filters\expectApplied( 'rocket_css_url' )
+        Filters\expectApplied( 'rocket_js_url' )
             ->atLeast()
             ->times(1)
             ->andReturnUsing( function( $url, $original_url ) {
@@ -170,10 +192,11 @@ class Test_Optimize extends FilesystemTestCase {
         );
 	}
 
-	/**
+
+	    /**
      * @dataProvider addCDNDataPathProvider
      */
-    public function testShouldCombineCSSAndCDNPath( $original, $combined ) {
+    public function testShouldCombineJSAndCDNPath( $original, $combined ) {
         Filters\expectApplied( 'rocket_cdn_hosts' )
 			->zeroOrMoreTimes()
 			->with( [], [ 'all', 'css_and_js', 'css', 'js' ] )
@@ -182,7 +205,7 @@ class Test_Optimize extends FilesystemTestCase {
 			]
         );
 
-        Filters\expectApplied( 'rocket_css_url' )
+        Filters\expectApplied( 'rocket_js_url' )
             ->atLeast()
             ->times(1)
             ->andReturnUsing( function( $url, $original_url ) {

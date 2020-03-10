@@ -1,21 +1,20 @@
 <?php
-namespace WP_Rocket\Tests\Unit\inc\optimization\CSS\Combine;
+namespace WP_Rocket\Tests\Unit\inc\optimization\JS\Minify;
 
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
-use WP_Rocket\Optimization\CSS\Combine;
+use WP_Rocket\Optimization\JS\Minify;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use WP_Rocket\Admin\Options_Data;
-use MatthiasMullie\Minify;
 
 /**
- * @covers \WP_Rocket\Optimization\CSS\Combine::optimize
- * @group Combine
- * @group CombineCSS
+ * @covers \WP_Rocket\Optimization\JS\Minify::optimize
+ * @group Optimize
+ * @group MinifyJS
  */
 class Test_Optimize extends FilesystemTestCase {
-	private   $combine;
+	private   $minify;
 	protected $rootVirtualDir = 'wordpress';
 	protected $structure      = [
         'wp-includes' => [
@@ -30,10 +29,8 @@ class Test_Optimize extends FilesystemTestCase {
         ],
         'wp-content' => [
             'cache' => [
-                'min' => [
-                    '1' => [
-						'468169e0b2801936e9dbb849292a541a.css' => 'body { font-family: Helvetica, Arial, sans-serif; text-align: center;}',
-					],
+                'busting' => [
+                    '1' => [],
                 ],
             ],
             'themes' => [
@@ -128,27 +125,27 @@ class Test_Optimize extends FilesystemTestCase {
 			return $prefix . join( '/', $path );
 		} );
 
-		$this->combine = new Combine( $this->createMock( Options_Data::class ), $this->createMock( Minify\CSS::class ) );
+		$this->minify = new Minify( $this->createMock( Options_Data::class ) );
 	}
 
 	/**
 	 * @dataProvider addDataProvider
 	 */
-    public function testShouldCombineCSS( $original, $combined ) {
+    public function testShouldMinifyJS( $original, $minified ) {
         Functions\when('rocket_extract_url_component')->alias( function($url, $component ) {
             return parse_url( $url, $component );
-		});
+        });
 
         $this->assertSame(
-            $combined,
-            $this->combine->optimize( $original )
+            $minified,
+            $this->minify->optimize( $original )
         );
     }
 
     /**
      * @dataProvider addCDNDataProvider
      */
-    public function testShouldCombineCSSAndCDN( $original, $combined ) {
+    public function testShouldMinifyJSAndCDN( $original, $minified ) {
         Filters\expectApplied( 'rocket_cdn_hosts' )
 			->zeroOrMoreTimes()
 			->with( [], [ 'all', 'css_and_js', 'css', 'js' ] )
@@ -157,7 +154,7 @@ class Test_Optimize extends FilesystemTestCase {
 			]
         );
 
-        Filters\expectApplied( 'rocket_css_url' )
+        Filters\expectApplied( 'rocket_js_url' )
             ->atLeast()
             ->times(1)
             ->andReturnUsing( function( $url, $original_url ) {
@@ -165,15 +162,15 @@ class Test_Optimize extends FilesystemTestCase {
             } );
 
         $this->assertSame(
-            $combined,
-            $this->combine->optimize( $original )
+            $minified,
+            $this->minify->optimize( $original )
         );
 	}
 
 	/**
-     * @dataProvider addCDNDataPathProvider
+     * @dataProvider addCDNPathDataProvider
      */
-    public function testShouldCombineCSSAndCDNPath( $original, $combined ) {
+    public function testShouldMinifyJSAndCDNPath( $original, $minified ) {
         Filters\expectApplied( 'rocket_cdn_hosts' )
 			->zeroOrMoreTimes()
 			->with( [], [ 'all', 'css_and_js', 'css', 'js' ] )
@@ -182,7 +179,7 @@ class Test_Optimize extends FilesystemTestCase {
 			]
         );
 
-        Filters\expectApplied( 'rocket_css_url' )
+        Filters\expectApplied( 'rocket_js_url' )
             ->atLeast()
             ->times(1)
             ->andReturnUsing( function( $url, $original_url ) {
@@ -190,20 +187,20 @@ class Test_Optimize extends FilesystemTestCase {
             } );
 
         $this->assertSame(
-            $combined,
-            $this->combine->optimize( $original )
+            $minified,
+            $this->minify->optimize( $original )
         );
 	}
 
 	public function addDataProvider() {
-		return $this->getTestData( __DIR__, 'combine' );
+		return $this->getTestData( __DIR__, 'optimize' );
 	}
 
 	public function addCDNDataProvider() {
-		return $this->getTestData( __DIR__, 'combine-cdn' );
+		return $this->getTestData( __DIR__, 'optimize-cdn' );
 	}
 
-	public function addCDNDataPathProvider() {
-		return $this->getTestData( __DIR__, 'combine-cdn-path' );
+	public function addCDNPathDataProvider() {
+		return $this->getTestData( __DIR__, 'optimize-cdn-path' );
 	}
 }
