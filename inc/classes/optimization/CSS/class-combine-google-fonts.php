@@ -140,12 +140,7 @@ class Combine_Google_Fonts extends Abstract_Optimization {
 
 		// Concatenate fonts tag.
 		$this->subsets = ! empty( $subsets_array ) ? '&subset=' . implode( ',', array_filter( array_unique( $subsets_array ) ) ) : '';
-		if ( ! empty( $fonts_array ) ) {
-			$this->fonts = implode( '|', array_filter( array_unique( $fonts_array ) ) );
-			$this->fonts = str_replace( '|', '%7C', $this->fonts );
-		} else {
-			$this->fonts = '';
-		}
+		$this->fonts   = ! empty( $fonts_array ) ? implode( '%7C', array_filter( array_unique( $fonts_array ) ) ) : '';
 	}
 
 	/**
