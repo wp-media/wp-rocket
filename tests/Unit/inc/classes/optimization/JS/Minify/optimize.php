@@ -167,11 +167,40 @@ class Test_Optimize extends FilesystemTestCase {
         );
 	}
 
+	/**
+     * @dataProvider addCDNPathDataProvider
+     */
+    public function testShouldMinifyJSAndCDNPath( $original, $minified ) {
+        Filters\expectApplied( 'rocket_cdn_hosts' )
+			->zeroOrMoreTimes()
+			->with( [], [ 'all', 'css_and_js', 'css', 'js' ] )
+			->andReturn( [
+				'123456.rocketcdn.me',
+			]
+        );
+
+        Filters\expectApplied( 'rocket_js_url' )
+            ->atLeast()
+            ->times(1)
+            ->andReturnUsing( function( $url, $original_url ) {
+                return str_replace( 'http://example.org', 'https://123456.rocketcdn.me/path/to/cdn', $url );
+            } );
+
+        $this->assertSame(
+            $minified,
+            $this->minify->optimize( $original )
+        );
+	}
+
 	public function addDataProvider() {
 		return $this->getTestData( __DIR__, 'optimize' );
 	}
 
 	public function addCDNDataProvider() {
 		return $this->getTestData( __DIR__, 'optimize-cdn' );
+	}
+
+	public function addCDNPathDataProvider() {
+		return $this->getTestData( __DIR__, 'optimize-cdn-path' );
 	}
 }
