@@ -170,7 +170,7 @@ class Cache_Dynamic_Resource extends Abstract_Optimization {
 	 * @author Remy Perona
 	 *
 	 * @param string $src source URL.
-	 * @return boolean
+	 * @return bool
 	 */
 	public function is_excluded_file( $src ) {
 		$file = get_rocket_parse_url( $src );
@@ -183,7 +183,7 @@ class Cache_Dynamic_Resource extends Abstract_Optimization {
 			return true;
 		}
 
-		if ( preg_match( '#^' . $this->excluded_files . '$#', rocket_clean_exclude_file( $src ) ) ) {
+		if ( preg_match( '#^' . $this->excluded_files . '$#', $file['path'] ) ) {
 			return true;
 		}
 
