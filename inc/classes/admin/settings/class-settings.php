@@ -1,9 +1,7 @@
 <?php
 namespace WP_Rocket\Admin\Settings;
 
-use \WP_Rocket\Subscriber\Third_Party\Plugins\Security\Sucuri_Subscriber;
-
-defined( 'ABSPATH' ) || exit;
+use WP_Rocket\Subscriber\Third_Party\Plugins\Security\Sucuri_Subscriber;
 
 /**
  * Settings class
@@ -246,11 +244,7 @@ class Settings {
 		$input['remove_query_strings'] = ! empty( $input['remove_query_strings'] ) ? 1 : 0;
 
 		// Option : Prefetch DNS requests.
-		if ( ! empty( $input['dns_prefetch'] ) ) {
-			$input['dns_prefetch'] = rocket_sanitize_textarea_field( 'dns_prefetch', $input['dns_prefetch'] );
-		} else {
-			$input['dns_prefetch'] = [];
-		}
+		$input['dns_prefetch'] = $this->sanitize_dns_prefetch( $input['dns_prefetch'] );
 
 		// Option : Empty the cache of the following pages when updating a post.
 		if ( ! empty( $input['cache_purge_pages'] ) ) {
@@ -495,5 +489,35 @@ class Settings {
 	 */
 	public function sanitize_checkbox( $value ) {
 		return isset( $value ) ? 1 : 0;
+	}
+
+	/**
+	 * Sanitizes the DNS Prefetch option entries
+	 *
+	 * @since 3.5.1
+	 * @author Remy Perona
+	 *
+	 * @param array $urls Array of URLs to add to DNS prefetching.
+	 * @return array Sanitized array
+	 */
+	private function sanitize_dns_prefetch( array $urls ) {
+		if ( empty( $urls ) ) {
+			return [];
+		}
+
+		return array_filter(
+			array_map(
+				function( $url ) {
+					$url = esc_url_raw( $url, [ 'http', 'https' ] );
+
+					if ( empty( $url ) ) {
+						return;
+					}
+
+					return '//' . wp_parse_url( $url, PHP_URL_HOST );
+				},
+				$urls
+			)
+		);
 	}
 }
