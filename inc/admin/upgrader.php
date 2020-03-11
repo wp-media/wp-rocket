@@ -388,7 +388,7 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		( new Capabilities_Subscriber() )->add_rocket_capabilities();
 	}
 
-	if ( version_compare( $actual_version, '3.5.1', '<' ) ) {
+	if ( version_compare( $actual_version, '3.5.0.3', '<' ) ) {
 		rocket_generate_advanced_cache_file();
 	}
 }
