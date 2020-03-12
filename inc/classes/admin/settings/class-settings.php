@@ -500,7 +500,7 @@ class Settings {
 	 * @param array $input Array of values for the WP Rocket settings option.
 	 * @return array Sanitized array for the DNS Prefetch sub-option
 	 */
-	private function sanitize_dns_prefetch( $input ) {
+	private function sanitize_dns_prefetch( array $input ) {
 		if ( ! isset( $input['dns_prefetch'] ) || empty( $input['dns_prefetch'] ) ) {
 			return [];
 		}
@@ -511,13 +511,27 @@ class Settings {
 			$value = explode( "\n", $value );
 		}
 
-		$value = array_filter( array_map( 'trim', $value ) );
+		$urls = [];
 
-		if ( empty( $value ) ) {
-			return [];
+		foreach ( $value as $url ) {
+			$url = trim( $url );
+
+			if ( empty( $url ) ) {
+				continue;
+			}
+
+			$url = esc_url_raw( $url );
+
+			if ( empty( $url ) ) {
+				continue;
+			}
+
+			$urls[] = $url;
 		}
 
-		$value = array_filter( array_map( 'esc_url_raw', $value ) );
+		if ( empty( $urls ) ) {
+			return [];
+		}
 
 		return array_unique(
 			array_map(
