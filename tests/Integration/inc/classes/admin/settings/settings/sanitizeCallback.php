@@ -17,6 +17,7 @@ class Test_SanitizeCallback extends TestCase {
 	 */
 	public function testShouldSanitize( $original, $sanitized ) {
 		remove_action( 'admin_init', 'send_frame_options_header' );
+		header_remove( 'Referrer-Policy' );
 		do_action('admin_init');
 
 		$sanitize_callback = apply_filters( 'sanitize_option_wp_rocket_settings', $original );
