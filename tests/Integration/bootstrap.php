@@ -16,6 +16,11 @@ tests_add_filter(
 	'muplugins_loaded',
 	function() {
 
+		if ( BootstrapManager::isGroup( 'WithSmush' ) ) {
+			// Load WP Smush.
+			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/wp-smushit/wp-smush.php';
+		}
+
 		if ( BootstrapManager::isGroup( 'WithWoo' ) ) {
 			// Load WooCommerce.
 			define( 'WC_TAX_ROUNDING_MODE', 'auto' );
