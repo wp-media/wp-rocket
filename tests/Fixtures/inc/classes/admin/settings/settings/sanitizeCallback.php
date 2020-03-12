@@ -2,7 +2,7 @@
 
 // phpcs:disable WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
 
-$settings = [
+$original = [
 	'do_beta'                     => 0,
 	'cache_logged_user'           => 0,
 	'cache_ssl'                   => 0,
@@ -68,18 +68,19 @@ $settings = [
 	'varnish_auto_purge'          => 0,
 ];
 
-$with_xss                 = $settings;
+$sanitized = $original;
+$with_xss                 = $original;
 $with_xss['critical_css'] = '<script>alert("a");</script>' . $with_xss['critical_css'];
 
 return [
 	// Test Critical CSS with >
 	[
-		$settings,
-		$settings,
+		$original,
+		$sanitized,
 	],
 	// Test Critical CSS with > and XSS
 	[
-		$with_xss['critical_css'],
-		$settings,
+		$with_xss,
+		$sanitized,
 	],
 ];
