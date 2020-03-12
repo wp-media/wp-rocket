@@ -12,7 +12,7 @@ return [
 	// Textarea with various values as a string.
 	[
 		[
-			'dns_prefetch' => "http://google.com\nhttps://fonts.gstatic.com/\n//123456.rocketcdn.me\n \ntesttest\nhttp://facebook.com/sdk"
+			'dns_prefetch' => "http://google.com\nhttps://fonts.gstatic.com/\n//123456.rocketcdn.me\n \nhttp://facebook.com/sdk"
 		],
 		[
 			'dns_prefetch' => [
@@ -31,7 +31,6 @@ return [
 				'https://fonts.gstatic.com/',
 				'//123456.rocketcdn.me',
 				' ',
-				'testtest',
 				'http://facebook.com/sdk',
 			],
 		],

@@ -31,7 +31,7 @@ class Test_SanitizeCallback extends TestCase {
 				$url = 'http:' . $url;
 			}
 
-			return filter_var( $url, FILTER_VALIDATE_URL, [] );
+			return filter_var( $url, FILTER_VALIDATE_URL );
 		} );
 		Functions\when( 'wp_parse_url' )->alias( function( $url, $component ) {
 			return parse_url( $url, $component );
