@@ -1,0 +1,47 @@
+<?php
+return [
+	// Empty textarea for DNS prefetch.
+	[
+		[
+			'dns_prefetch' => '',
+		],
+		[
+			'dns_prefetch' => [],
+		],
+	],
+	// Textarea with various values as a string.
+	[
+		[
+			'dns_prefetch' => "http://google.com\nhttps://fonts.gstatic.com/\n//123456.rocketcdn.me\n \ntesttest\nhttp://facebook.com/sdk"
+		],
+		[
+			'dns_prefetch' => [
+				'//google.com',
+				'//fonts.gstatic.com',
+				'//123456.rocketcdn.me',
+				'//facebook.com',
+			],
+		],
+	],
+	// Input as an array instead of a string.
+	[
+		[
+			'dns_prefetch' => [
+				'http://google.com',
+				'https://fonts.gstatic.com/',
+				'//123456.rocketcdn.me',
+				' ',
+				'testtest',
+				'http://facebook.com/sdk',
+			],
+		],
+		[
+			'dns_prefetch' => [
+				'//google.com',
+				'//fonts.gstatic.com',
+				'//123456.rocketcdn.me',
+				'//facebook.com',
+			],
+		],
+	],
+];
