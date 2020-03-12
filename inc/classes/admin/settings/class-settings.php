@@ -244,7 +244,7 @@ class Settings {
 		$input['remove_query_strings'] = ! empty( $input['remove_query_strings'] ) ? 1 : 0;
 
 		// Option : Prefetch DNS requests.
-		$input['dns_prefetch'] = $this->sanitize_dns_prefetch( $input['dns_prefetch'] );
+		$input['dns_prefetch'] = $this->sanitize_dns_prefetch( $input );
 
 		// Option : Empty the cache of the following pages when updating a post.
 		if ( ! empty( $input['cache_purge_pages'] ) ) {
@@ -492,18 +492,20 @@ class Settings {
 	}
 
 	/**
-	 * Sanitizes the DNS Prefetch option value
+	 * Sanitizes the DNS Prefetch sub-option value
 	 *
 	 * @since 3.5.1
 	 * @author Remy Perona
 	 *
-	 * @param mixed $value Value for the DNS prefetch textarea field.
-	 * @return array Sanitized array
+	 * @param array $input Array of values for the WP Rocket settings option.
+	 * @return array Sanitized array for the DNS Prefetch sub-option
 	 */
-	private function sanitize_dns_prefetch( $value ) {
-		if ( empty( $value ) ) {
+	private function sanitize_dns_prefetch( $input ) {
+		if ( empty( $input['dns_prefetch'] ) ) {
 			return [];
 		}
+
+		$value = $input['dns_prefetch'];
 
 		if ( ! is_array( $value ) ) {
 			$value = explode( "\n", $value );
