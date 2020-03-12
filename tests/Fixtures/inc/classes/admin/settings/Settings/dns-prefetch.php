@@ -1,5 +1,13 @@
 <?php
 return [
+	// Empty WP Rocket options array.
+	[
+		[
+		],
+		[
+			'dns_prefetch' => [],
+		],
+	],
 	// Empty textarea for DNS prefetch.
 	[
 		[
