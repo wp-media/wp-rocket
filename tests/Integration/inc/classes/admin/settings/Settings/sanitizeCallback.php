@@ -7,7 +7,7 @@ use WPMedia\PHPUnit\Integration\AdminTestCase;
 /**
  * @covers \WP_Rocket\Admin\Settings::sanitize_callback
  * @group  AdminOnly
- * @group  AdminSettings
+ * @group  Settings
  */
 class Test_SanitizeCallback extends AdminTestCase {
 

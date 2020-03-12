@@ -9,7 +9,7 @@ use WPMedia\PHPUnit\Unit\TestCase;
 /**
  * @covers \WP_Rocket\Admin\Settings::sanitize_callback
  * @group  Admin
- * @group  AdminSettings
+ * @group  Settings
  */
 class Test_SanitizeCallback extends TestCase {
 	/**
