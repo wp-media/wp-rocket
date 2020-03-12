@@ -26,7 +26,7 @@ class Test_SanitizeCallback extends AdminTestCase {
 	/**
 	 * @dataProvider addDataProvider
 	 */
-	public function testShouldSanitize( $original, $sanitized ) {
+	public function testShouldSanitizeCriticalCss( $original, $sanitized ) {
 		$actual = apply_filters( 'sanitize_option_wp_rocket_settings', $original );
 		$this->assertSame(
 			$sanitized['critical_css'],

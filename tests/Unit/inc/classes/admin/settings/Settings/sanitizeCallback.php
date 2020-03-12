@@ -15,7 +15,7 @@ class Test_SanitizeCallback extends TestCase {
 	/**
 	 * @dataProvider addDataProvider
 	 */
-	public function testShouldSanitize( $original, $sanitized ) {
+	public function testShouldSanitizeCriticalCss( $original, $sanitized ) {
 		Functions\when( 'wp_strip_all_tags' )->alias( function( $string, $remove_breaks ) {
 			$string = preg_replace( '@<(script|style)[^>]*?>.*?</\\1>@si', '', $string );
 			$string = strip_tags( $string );
