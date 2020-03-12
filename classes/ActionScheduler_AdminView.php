@@ -91,6 +91,7 @@ class ActionScheduler_AdminView extends ActionScheduler_AdminView_Deprecated {
 	 */
 	public function render_admin_ui() {
 		$table = new ActionScheduler_ListTable( ActionScheduler::store(), ActionScheduler::logger(), ActionScheduler::runner() );
+		$table->process_actions();
 		$table->display_page();
 	}
 

@@ -140,7 +140,6 @@ abstract class ActionScheduler_Abstract_ListTable extends WP_List_Table {
 		global $wpdb;
 		// Detect when a bulk action is being triggered.
 		$action = $this->current_action();
-
 		if ( ! $action ) {
 			return;
 		}
@@ -161,13 +160,14 @@ abstract class ActionScheduler_Abstract_ListTable extends WP_List_Table {
 	}
 
 	/**
-	 * Default code for deleting entries. We trust ids_sql because it is
+	 * Default code for deleting entries.
 	 * validated already by process_bulk_action()
 	 */
 	protected function bulk_delete( array $ids, $ids_sql ) {
-		global $wpdb;
-
-		$wpdb->query( "DELETE FROM {$this->table_name} WHERE {$this->ID} IN $ids_sql" );
+		$store = ActionScheduler::store();
+		foreach ( $ids as $action_id ) {
+			$store->delete( $action_id );
+		}
 	}
 
 	/**
