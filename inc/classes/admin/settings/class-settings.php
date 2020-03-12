@@ -492,31 +492,37 @@ class Settings {
 	}
 
 	/**
-	 * Sanitizes the DNS Prefetch option entries
+	 * Sanitizes the DNS Prefetch option value
 	 *
 	 * @since 3.5.1
 	 * @author Remy Perona
 	 *
-	 * @param array $urls Array of URLs to add to DNS prefetching.
+	 * @param mixed $value Value for the DNS prefetch textarea field.
 	 * @return array Sanitized array
 	 */
-	private function sanitize_dns_prefetch( array $urls ) {
-		if ( empty( $urls ) ) {
+	private function sanitize_dns_prefetch( $value ) {
+		if ( empty( $value ) ) {
 			return [];
 		}
 
-		return array_filter(
+		if ( ! is_array( $value ) ) {
+			$value = explode( "\n", $value );
+		}
+
+		$value = array_filter( array_map( 'trim', $value ) );
+
+		if ( empty( $value ) ) {
+			return [];
+		}
+
+		$value = array_filter( array_map( 'esc_url_raw', $value ) );
+
+		return array_unique(
 			array_map(
 				function( $url ) {
-					$url = esc_url_raw( $url, [ 'http', 'https' ] );
-
-					if ( empty( $url ) ) {
-						return;
-					}
-
 					return '//' . wp_parse_url( $url, PHP_URL_HOST );
 				},
-				$urls
+				$value
 			)
 		);
 	}
