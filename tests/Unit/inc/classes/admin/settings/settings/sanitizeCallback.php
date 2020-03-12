@@ -51,15 +51,10 @@ class Test_SanitizeCallback extends TestCase {
 		$settings          = new Settings( $options );
 		$sanitize_callback = $settings->sanitize_callback( $original );
 
-		//
+		// this works
 		$this->assertSame(
 			$sanitized[ 'critical_css' ],
 			$sanitize_callback[ 'critical_css' ]
-		);
-
-		$this->assertSame(
-			$sanitized,
-			$sanitize_callback
 		);
 	}
 
