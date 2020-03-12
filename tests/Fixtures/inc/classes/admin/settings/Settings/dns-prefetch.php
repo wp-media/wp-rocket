@@ -26,7 +26,7 @@ return [
 	// Textarea with various values as a string and duplicates.
 	[
 		[
-			'dns_prefetch' => "http://google.com\nhttps://fonts.gstatic.com/\n//123456.rocketcdn.me\n \nhttp://google.com\nhttp://facebook.com/sdk//123456.rocketcdn.me\n \n \google.com\n",
+			'dns_prefetch' => "http://google.com\nhttps://fonts.gstatic.com/\n//123456.rocketcdn.me\n \nhttp://google.com\nhttp://facebook.com/sdk//123456.rocketcdn.me\n \n \//google.com\nhttps://123456.rocketcdn.me",
 		],
 		[
 			'dns_prefetch' => [
@@ -46,6 +46,8 @@ return [
 				'//123456.rocketcdn.me',
 				' ',
 				'http://facebook.com/sdk',
+				'https://123456.rocketcdn.me',
+				'//google.com'
 			],
 		],
 		[
