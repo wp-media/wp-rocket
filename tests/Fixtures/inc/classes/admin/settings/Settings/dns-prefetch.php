@@ -12,7 +12,21 @@ return [
 	// Textarea with various values as a string.
 	[
 		[
-			'dns_prefetch' => "http://google.com\nhttps://fonts.gstatic.com/\n//123456.rocketcdn.me\n \nhttp://facebook.com/sdk"
+			'dns_prefetch' => "http://google.com\nhttps://fonts.gstatic.com/\n//123456.rocketcdn.me\n \nhttp://facebook.com/sdk",
+		],
+		[
+			'dns_prefetch' => [
+				'//google.com',
+				'//fonts.gstatic.com',
+				'//123456.rocketcdn.me',
+				'//facebook.com',
+			],
+		],
+	],
+	// Textarea with various values as a string and duplicates.
+	[
+		[
+			'dns_prefetch' => "http://google.com\nhttps://fonts.gstatic.com/\n//123456.rocketcdn.me\n \nhttp://google.com\nhttp://facebook.com/sdk//123456.rocketcdn.me\n \n \google.com\n",
 		],
 		[
 			'dns_prefetch' => [
@@ -32,6 +46,29 @@ return [
 				'//123456.rocketcdn.me',
 				' ',
 				'http://facebook.com/sdk',
+			],
+		],
+		[
+			'dns_prefetch' => [
+				'//google.com',
+				'//fonts.gstatic.com',
+				'//123456.rocketcdn.me',
+				'//facebook.com',
+			],
+		],
+	],
+	// Input as an array with duplicates.
+	[
+		[
+			'dns_prefetch' => [
+				'http://google.com',
+				'https://fonts.gstatic.com/',
+				'//123456.rocketcdn.me',
+				' ',
+				'http://google.com',
+				'http://facebook.com/sdk',
+				'//123456.rocketcdn.me',
+				'https://fonts.gstatic.com/',
 			],
 		],
 		[
