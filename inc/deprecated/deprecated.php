@@ -1123,7 +1123,7 @@ if ( ! function_exists( 'rocket_settings_callback' ) ) {
 		$inputs['database_optimize_tables']    = ! empty( $inputs['database_optimize_tables'] ) ? 1 : 0;
 		$inputs['schedule_automatic_cleanup']  = ! empty( $inputs['schedule_automatic_cleanup'] ) ? 1 : 0;
 		$inputs['automatic_cleanup_frequency'] = ! empty( $inputs['automatic_cleanup_frequency'] ) ? $inputs['automatic_cleanup_frequency'] : '';
-
+echo 'depre';
 		if ( 1 !== $inputs['schedule_automatic_cleanup'] && ( 'daily' !== $inputs['automatic_cleanup_frequency'] || 'weekly' !== $inputs['automatic_cleanup_frequency'] || 'monthly' !== $inputs['automatic_cleanup_frequency'] ) ) {
 			unset( $inputs['automatic_cleanup_frequency'] );
 		}
