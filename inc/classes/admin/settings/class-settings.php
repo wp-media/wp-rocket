@@ -501,7 +501,7 @@ class Settings {
 	 * @return array Sanitized array for the DNS Prefetch sub-option
 	 */
 	private function sanitize_dns_prefetch( array $input ) {
-		if ( ! isset( $input['dns_prefetch'] ) || empty( $input['dns_prefetch'] ) ) {
+		if ( empty( $input['dns_prefetch'] ) ) {
 			return [];
 		}
 
