@@ -1,8 +1,6 @@
 <?php
 namespace WP_Rocket\Tests\Integration\inc\classes\third_party\plugins\Smush_Subscriber;
 
-use WP_Rocket\Tests\Integration\SmushSubscriberTestCase;
-
 /**
  * @covers \WP_Rocket\Subscriber\Third_Party\Plugins\Smush_Subscriber::is_smush_lazyload_active
  * @group ThirdParty

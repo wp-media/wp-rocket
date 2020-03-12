@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Tests\Integration;
+namespace WP_Rocket\Tests\Integration\inc\classes\third_party\plugins\Smush_Subscriber;
 
 use Smush\Core\Settings;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Smush_Subscriber;

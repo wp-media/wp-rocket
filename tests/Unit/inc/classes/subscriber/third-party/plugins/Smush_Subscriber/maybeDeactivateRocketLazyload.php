@@ -2,7 +2,6 @@
 namespace WP_Rocket\Tests\Unit\inc\classes\third_party\plugins\Smush_Subscriber;
 
 use Brain\Monkey\Functions;
-use WP_Rocket\Tests\Unit\SmushSubscriberTestCase;
 
 /**
  * @covers \WP_Rocket\Subscriber\Third_Party\Plugins\Smush_Subscriber::maybe_deactivate_rocket_lazyload

@@ -1,6 +1,5 @@
 <?php
-
-namespace WP_Rocket\Tests\Unit;
+namespace WP_Rocket\Tests\Unit\inc\classes\third_party\plugins\Smush_Subscriber;
 
 use Brain\Monkey\Functions;
 use Mockery;
