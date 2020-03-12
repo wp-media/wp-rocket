@@ -538,7 +538,7 @@ class Settings {
 				function( $url ) {
 					return '//' . wp_parse_url( $url, PHP_URL_HOST );
 				},
-				$value
+				$urls
 			)
 		);
 	}
