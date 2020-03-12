@@ -101,6 +101,9 @@ add_action( 'before_rocket_clean_home', 'rocket_clean_home_godaddy', 10, 2 );
  * @return void
  */
 function rocket_godaddy_request( $method, $url = null ) {
+	if ( ! method_exists( 'WPass\Plugin', 'vip' ) ) {
+		return;
+	}
 	if ( empty( $url ) ) {
 		$url = home_url();
 	}
