@@ -38,7 +38,7 @@ function rocket_is_cf_ip() {
 	// Store original remote address in $original_ip.
 	$original_ip = filter_var( wp_unslash( $_SERVER['REMOTE_ADDR'] ), FILTER_VALIDATE_IP );
 
-	if ( ! isset( $original_ip ) ) {
+	if ( empty( $original_ip ) ) {
 		return false;
 	}
 
