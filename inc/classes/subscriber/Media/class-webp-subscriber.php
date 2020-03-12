@@ -163,14 +163,14 @@ class Webp_Subscriber implements Subscriber_Interface {
 		$attribute_names = $this->get_attribute_names();
 
 		if ( ! $extensions || ! $attribute_names ) {
-			return $html;
+			return $html . '<!-- Rocket no webp -->';
 		}
 
 		$extensions      = implode( '|', $extensions );
 		$attribute_names = implode( '|', $attribute_names );
 
 		if ( ! preg_match_all( '@["\'\s](?<name>(?:data-(?:[a-z0-9_-]+-)?)?(?:' . $attribute_names . '))\s*=\s*["\']\s*(?<value>(?:https?:/)?/[^"\']+\.(?:' . $extensions . ')[^"\']*?)\s*["\']@is', $html, $attributes, PREG_SET_ORDER ) ) {
-			return $html;
+			return $html . '<!-- Rocket no webp -->';
 		}
 
 		if ( ! isset( $this->filesystem ) ) {

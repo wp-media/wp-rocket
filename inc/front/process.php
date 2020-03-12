@@ -1,19 +1,19 @@
 <?php
-
+// phpcs:ignoreFile
 defined( 'ABSPATH' ) || exit;
 
 // Don't cache robots.txt && .htaccess directory (it's happened sometimes with weird server configuration).
-if ( isset( $_SERVER['REQUEST_URI'] ) && ( strstr( wp_unslash( $_SERVER['REQUEST_URI'] ), 'robots.txt' ) || strstr( wp_unslash( $_SERVER['REQUEST_URI'] ), '.htaccess' ) ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+if ( isset( $_SERVER['REQUEST_URI'] ) && ( strstr( $_SERVER['REQUEST_URI'], 'robots.txt' ) || strstr( $_SERVER['REQUEST_URI'], '.htaccess' ) ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 	rocket_define_donotoptimize_constant( true );
 
 	return;
 }
 
-$rocket_request_uri = explode( '?', wp_unslash( $_SERVER['REQUEST_URI'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+$rocket_request_uri = explode( '?', $_SERVER['REQUEST_URI'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 $rocket_request_uri = reset( $rocket_request_uri );
 
 // Don't cache disallowed extensions.
-if ( strtolower( wp_unslash( $_SERVER['REQUEST_URI'] ) ) !== '/index.php' && in_array( pathinfo( $rocket_request_uri, PATHINFO_EXTENSION ), [ 'php', 'xml', 'xsl' ], true ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+if ( strtolower( $_SERVER['REQUEST_URI'] ) !== '/index.php' && in_array( pathinfo( $rocket_request_uri, PATHINFO_EXTENSION ), [ 'php', 'xml', 'xsl' ], true ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 	rocket_define_donotoptimize_constant( true );
 
 	return;
@@ -284,7 +284,7 @@ $request_uri_path = preg_replace_callback( '/%[0-9A-F]{2}/', 'rocket_urlencode_l
 // Directories in Windows can't contain question marks.
 $request_uri_path = str_replace( '?', '_', $request_uri_path ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 
-$rocket_cache_filepath = $request_uri_path . '/' . $filename . '.html';
+$rocket_cache_filepath = $request_uri_path . '/' . $rocket_filename . '.html';
 
 
 // Serve the cache file if exist.

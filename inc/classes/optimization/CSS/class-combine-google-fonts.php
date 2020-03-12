@@ -17,9 +17,9 @@ class Combine_Google_Fonts extends Abstract_Optimization {
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
-	 * @var array
+	 * @var string
 	 */
-	protected $fonts = [];
+	protected $fonts = '';
 
 	/**
 	 * Found subsets
@@ -27,9 +27,9 @@ class Combine_Google_Fonts extends Abstract_Optimization {
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
-	 * @var array
+	 * @var string
 	 */
-	protected $subsets = [];
+	protected $subsets = '';
 
 	/**
 	 * Combines multiple Google Fonts links into one
@@ -113,29 +113,34 @@ class Combine_Google_Fonts extends Abstract_Optimization {
 	 * @return void
 	 */
 	protected function parse( $matches ) {
+		$fonts_array   = [];
+		$subsets_array = [];
 		foreach ( $matches as $match ) {
 			$url   = html_entity_decode( $match[2] );
-			$query = \rocket_extract_url_component( $url, PHP_URL_QUERY );
+			$query = rocket_extract_url_component( $url, PHP_URL_QUERY );
 
 			if ( ! isset( $query ) ) {
 				return;
 			}
 
 			$font = wp_parse_args( $query );
-
-			// Add font to the collection.
-			$this->fonts[] = rawurlencode( htmlentities( $font['family'] ) );
+			if ( isset( $font['family'] ) ) {
+				$font_family = $font['family'];
+				$font_family = rtrim( $font_family, '%7C' );
+				$font_family = rtrim( $font_family, '|' );
+				// Add font to the collection.
+				$fonts_array[] = rawurlencode( htmlentities( $font_family ) );
+			}
 
 			// Add subset to collection.
 			if ( isset( $font['subset'] ) ) {
-				$this->subsets[] = rawurlencode( htmlentities( $font['subset'] ) );
+				$subsets_array[] = rawurlencode( htmlentities( $font['subset'] ) );
 			}
 		}
 
 		// Concatenate fonts tag.
-		$this->subsets = ! empty( $this->subsets ) ? '&subset=' . implode( ',', array_filter( array_unique( $this->subsets ) ) ) : '';
-		$this->fonts   = implode( '|', array_filter( array_unique( $this->fonts ) ) );
-		$this->fonts   = str_replace( '|', '%7C', $this->fonts );
+		$this->subsets = ! empty( $subsets_array ) ? '&subset=' . implode( ',', array_filter( array_unique( $subsets_array ) ) ) : '';
+		$this->fonts   = ! empty( $fonts_array ) ? implode( '%7C', array_filter( array_unique( $fonts_array ) ) ) : '';
 	}
 
 	/**

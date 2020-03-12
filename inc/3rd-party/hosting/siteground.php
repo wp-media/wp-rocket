@@ -2,10 +2,6 @@
 
 defined( 'ABSPATH' ) || exit;
 
-if ( ! rocket_is_plugin_active( 'sg-cachepress/sg-cachepress.php' ) ) {
-	return;
-}
-
 /**
  * Returns the current version of the SG Optimizer plugin.
  *
