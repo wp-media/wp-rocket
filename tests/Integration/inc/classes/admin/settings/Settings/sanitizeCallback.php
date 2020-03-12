@@ -23,14 +23,6 @@ class Test_SanitizeCallback extends AdminTestCase {
 		add_action( 'admin_init', 'send_frame_options_header' );
 	}
 
-	public function testSettingsAreRegistered() {
-		$registered = get_registered_settings();
-		$this->assertArrayHasKey( 'wp_rocket_settings', $registered );
-
-		$args = $registered['wp_rocket_settings'];
-		$this->assertEquals( 'wprocket', $args['group'] );
-	}
-
 	/**
 	 * @dataProvider addDataProvider
 	 */
