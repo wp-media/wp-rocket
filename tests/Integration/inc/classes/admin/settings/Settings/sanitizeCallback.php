@@ -10,19 +10,6 @@ use WPMedia\PHPUnit\Integration\AdminTestCase;
  * @group  Settings
  */
 class Test_SanitizeCallback extends AdminTestCase {
-
-	public function setUp() {
-		parent::setUp();
-
-		remove_action( 'admin_init', 'send_frame_options_header' );
-	}
-
-	public function tearDown() {
-		parent::tearDown();
-
-		add_action( 'admin_init', 'send_frame_options_header' );
-	}
-
 	/**
 	 * @dataProvider addDataProvider
 	 */
