@@ -527,6 +527,9 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 			} catch ( Exception $e ) {
 				continue;
 			}
+			if ( is_a( $action, 'ActionScheduler_NullAction' ) ) {
+				continue;
+			}
 			$this->items[ $action_id ] = array(
 				'ID'          => $action_id,
 				'hook'        => $action->get_hook(),
