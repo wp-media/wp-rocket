@@ -1,8 +1,8 @@
 <?php
 namespace WP_Rocket\Optimization\CSS;
 
-use WP_Rocket\Optimization\Abstract_Optimization;
 use WP_Rocket\Logger\Logger;
+use WP_Rocket\Optimization\Abstract_Optimization;
 
 /**
  * Combine Google Fonts
@@ -44,7 +44,7 @@ class Combine_Google_Fonts extends Abstract_Optimization {
 		Logger::info( 'GOOGLE FONTS COMBINE PROCESS STARTED.', [ 'GF combine process' ] );
 
 		$html_nocomments = $this->hide_comments( $html );
-		$fonts           = $this->find( '<link(?:\s+(?:(?!href\s*=\s*)[^>])+)?(?:\s+href\s*=\s*([\'"])((?:https?:)?\/\/fonts\.googleapis\.com\/css(?:(?!\1).)+)\1)(?:\s+[^>]*)?>', $html_nocomments );
+		$fonts           = $this->find( '<link(?:\s+(?:(?!href\s*=\s*)[^>])+)?(?:\s+href\s*=\s*([\'"])(?<url>(?:https?:)?\/\/fonts\.googleapis\.com\/css(?:(?!\1).)+)\1)(?:\s+[^>]*)?>', $html_nocomments );
 
 		if ( ! $fonts ) {
 			Logger::debug( 'No Google Fonts found.', [ 'GF combine process' ] );
@@ -60,12 +60,7 @@ class Combine_Google_Fonts extends Abstract_Optimization {
 		);
 
 		if ( 1 === count( $fonts ) ) {
-			$font_url              = $fonts[0][2];
-			$font_full_tag         = $fonts[0][0];
-			$font_url_with_display = $this->get_font_with_display( $font_url );
-			$font_tag_with_display = str_replace( $font_url, $font_url_with_display, $font_full_tag );
-			$html                  = str_replace( $font_full_tag, $font_tag_with_display, $html );
-			return $html;
+			return str_replace( $fonts[0][0], $this->get_font_with_display( $fonts[0] ), $html );
 		}
 
 		$this->parse( $fonts );
@@ -103,9 +98,9 @@ class Combine_Google_Fonts extends Abstract_Optimization {
 	 * @return bool|array
 	 */
 	protected function find( $pattern, $html ) {
-		preg_match_all( '/' . $pattern . '/Umsi', $html, $matches, PREG_SET_ORDER );
+		$result = preg_match_all( '/' . $pattern . '/Umsi', $html, $matches, PREG_SET_ORDER );
 
-		if ( count( $matches ) <= 0 ) {
+		if ( empty( $result ) ) {
 			return false;
 		}
 
@@ -126,7 +121,7 @@ class Combine_Google_Fonts extends Abstract_Optimization {
 		$subsets_array = [];
 		foreach ( $matches as $match ) {
 			$url   = html_entity_decode( $match[2] );
-			$query = rocket_extract_url_component( $url, PHP_URL_QUERY );
+			$query = wp_parse_url( $url, PHP_URL_QUERY );
 
 			if ( ! isset( $query ) ) {
 				return;
@@ -175,7 +170,7 @@ class Combine_Google_Fonts extends Abstract_Optimization {
 		$display        = isset( $allowed_values[ $display ] ) ? $display : 'swap';
 
 		// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
-		return '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=' . $this->fonts . $this->subsets . '&display=' . $display . '" />';
+		return '<link rel="stylesheet" href="' . esc_url( 'https://fonts.googleapis.com/css?family=' . $this->fonts . $this->subsets . '&display=' . $display ) . '" />';
 	}
 
 	/**
@@ -184,29 +179,33 @@ class Combine_Google_Fonts extends Abstract_Optimization {
 	 * @since  3.5.1
 	 * @author Soponar Cristina
 	 *
-	 * @param  array $font_url Google Font string.
-	 * @return string          Google Font URL with display param.
+	 * @param  array $font Array containing font tag and matches.
+	 * @return string Google Font tag with display param.
 	 */
-	protected function get_font_with_display( $font_url ) {
-		$display        = apply_filters( 'rocket_combined_google_fonts_display', 'swap' );
-		$allowed_values = $this->get_font_display_values();
-		$font_url       = html_entity_decode( $font_url );
+	protected function get_font_with_display( array $font ) {
+		$font_url = html_entity_decode( $font['url'] );
 
-		$query = rocket_extract_url_component( $font_url, PHP_URL_QUERY );
+		$query = wp_parse_url( $font_url, PHP_URL_QUERY );
 
 		if ( ! isset( $query ) ) {
-			return $font;
+			return $font[0];
 		}
+
+		// This filter is documented in inc/classes/optimization/CSS/class-combine-google-fonts.php.
+		$display        = apply_filters( 'rocket_combined_google_fonts_display', 'swap' );
+		$allowed_values = $this->get_font_display_values();
+		$display        = isset( $allowed_values[ $display ] ) ? $display : 'swap';
 
 		$parsed_font = wp_parse_args( $query );
 
 		if ( empty( $parsed_font['display'] ) ) {
 			// Add default display.
-			return $font_url . '&display=' . $display;
+			return str_replace( $font['url'], esc_url( $font_url . '&display=' . $display ), $font[0] );
 		}
 
-		$font_url = str_replace( '&display=' . $parsed_font['display'], '', $font_url );
-		return $font_url . '&display=' . $display;
+		$font_url = str_replace( '&display=' . $parsed_font['display'], '&display=' . $display, $font_url );
+
+		return str_replace( $font['url'], esc_url( $font_url ), $font[0] );
 	}
 
 	/**
