@@ -27,9 +27,7 @@ class Test_SanitizeCallback extends TestCase {
 			return trim( $string );
 		} );
 
-		Functions\when( 'sanitize_email' )->alias( function( $email ) {
-			return $email;
-		} );
+		Functions\when( 'sanitize_email' )->returnArg();
 
 		Functions\when( 'sanitize_text_field' )->returnArg();
 		Functions\when( 'rocket_valid_key' )->justReturn( true );
