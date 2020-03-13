@@ -31,7 +31,7 @@ function rocket_is_cloudflare() {
  * @return bool
  */
 function rocket_is_cf_ip() {
-	if ( ! isset( $_SERVER['REMOTE_ADDR'] ) ) {
+	if ( empty( $_SERVER['REMOTE_ADDR'] ) ) {
 		return false;
 	}
 
