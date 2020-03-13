@@ -118,4 +118,88 @@ return [
 			'</body>' .
 		'</html>',
 	],
+	// Single Font no Display param
+	[
+		// Test Data: Original HTML.
+		'<html>' .
+			'<head>' .
+				'<title>Sample Page</title>' .
+				'<link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300" rel="stylesheet" property="stylesheet" type"text/css" media="all">' .
+			'</head>' .
+			'<body>' .
+			'</body>' .
+		'</html>',
+		// Expected: Combined HTML.
+		'<html>' .
+			'<head>' .
+				'<title>Sample Page</title>' .
+				'<link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300&display=swap" rel="stylesheet" property="stylesheet" type"text/css" media="all">' .
+			'</head>' .
+			'<body>' .
+			'</body>' .
+		'</html>',
+	],
+	// Single Font Display param
+	[
+		// Test Data: Original HTML.
+		'<html>' .
+			'<head>' .
+				'<title>Sample Page</title>' .
+				'<link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300&display=auto" rel="stylesheet" property="stylesheet" type"text/css" media="all">' .
+			'</head>' .
+			'<body>' .
+			'</body>' .
+		'</html>',
+		// Expected: Combined HTML.
+		'<html>' .
+			'<head>' .
+				'<title>Sample Page</title>' .
+				'<link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300&display=auto" rel="stylesheet" property="stylesheet" type"text/css" media="all">' .
+			'</head>' .
+			'<body>' .
+			'</body>' .
+		'</html>',
+	],
+	// Single Font Invalid Display param
+	[
+		// Test Data: Original HTML.
+		'<html>' .
+			'<head>' .
+				'<title>Sample Page</title>' .
+				'<link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300&display=invalid" rel="stylesheet" property="stylesheet" type"text/css" media="all">' .
+			'</head>' .
+			'<body>' .
+			'</body>' .
+		'</html>',
+		// Expected: Combined HTML.
+		'<html>' .
+			'<head>' .
+				'<title>Sample Page</title>' .
+				'<link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300&display=swap" rel="stylesheet" property="stylesheet" type"text/css" media="all">' .
+			'</head>' .
+			'<body>' .
+			'</body>' .
+		'</html>',
+	],
+	// Single Font with decode
+	[
+		// Test Data: Original HTML.
+		'<html>' .
+			'<head>' .
+				'<title>Sample Page</title>' .
+				'<link rel="stylesheet" id="dt-web-fonts-css"  href="//fonts.googleapis.com/css?family=Josefin+Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica+One%3A400%2C600%2C700&#038;ver=7.3.2" type="text/css" media="all" />' .
+			'</head>' .
+			'<body>' .
+			'</body>' .
+		'</html>',
+		// Expected: Combined HTML.
+		'<html>' .
+			'<head>' .
+				'<title>Sample Page</title>' .
+				'<link rel="stylesheet" id="dt-web-fonts-css"  href="//fonts.googleapis.com/css?family=Josefin+Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica+One%3A400%2C600%2C700&ver=7.3.2&display=swap" type="text/css" media="all" />' .
+			'</head>' .
+			'<body>' .
+			'</body>' .
+		'</html>',
+	],
 ];

@@ -59,6 +59,15 @@ class Combine_Google_Fonts extends Abstract_Optimization {
 			]
 		);
 
+		if ( 1 === count( $fonts ) ) {
+			$font_url              = $fonts[0][2];
+			$font_full_tag         = $fonts[0][0];
+			$font_url_with_display = $this->get_font_with_display( $font_url );
+			$font_tag_with_display = str_replace( $font_url, $font_url_with_display, $font_full_tag );
+			$html                  = str_replace( $font_full_tag, $font_tag_with_display, $html );
+			return $html;
+		}
+
 		$this->parse( $fonts );
 
 		if ( empty( $this->fonts ) ) {
@@ -96,7 +105,7 @@ class Combine_Google_Fonts extends Abstract_Optimization {
 	protected function find( $pattern, $html ) {
 		preg_match_all( '/' . $pattern . '/Umsi', $html, $matches, PREG_SET_ORDER );
 
-		if ( count( $matches ) <= 1 ) {
+		if ( count( $matches ) <= 0 ) {
 			return false;
 		}
 
@@ -161,19 +170,65 @@ class Combine_Google_Fonts extends Abstract_Optimization {
 		 *
 		 * @param string $display Display value. Can be either auto, block, swap, fallback or optional.
 		 */
-		$display = apply_filters( 'rocket_combined_google_fonts_display', 'swap' );
+		$display        = apply_filters( 'rocket_combined_google_fonts_display', 'swap' );
+		$allowed_values = $this->get_font_display_values();
+		$display        = isset( $allowed_values[ $display ] ) ? $display : 'swap';
 
-		$allowed_values = [
+		// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
+		return '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=' . $this->fonts . $this->subsets . '&display=' . $display . '" />';
+	}
+
+	/**
+	 * Returns font with display value.
+	 *
+	 * @since  3.5.1
+	 * @author Soponar Cristina
+	 *
+	 * @param  array $font_url Google Font string.
+	 * @return string          Google Font URL with display param.
+	 */
+	protected function get_font_with_display( $font_url ) {
+		$display        = apply_filters( 'rocket_combined_google_fonts_display', 'swap' );
+		$allowed_values = $this->get_font_display_values();
+		$font_url       = html_entity_decode( $font_url );
+
+		$query = rocket_extract_url_component( $font_url, PHP_URL_QUERY );
+
+		if ( ! isset( $query ) ) {
+			return $font;
+		}
+
+		$parsed_font = wp_parse_args( $query );
+
+		if ( empty( $parsed_font['display'] ) ) {
+			// Add default display.
+			return $font_url . '&display=' . $display;
+		}
+
+		if ( isset( $allowed_values[ $parsed_font['display'] ] ) ) {
+			// Font display exists and is valid.
+			return $font_url;
+		}
+
+		$font_url = str_replace( '&display=' . $parsed_font['display'], '', $font_url );
+		return $font_url . '&display=' . $display;
+	}
+
+	/**
+	 * Returns array with font display accepted values
+	 *
+	 * @since  3.5.1
+	 * @author Soponar Cristina
+	 *
+	 * @return array
+	 */
+	protected function get_font_display_values() {
+		return [
 			'auto'     => 1,
 			'block'    => 1,
 			'swap'     => 1,
 			'fallback' => 1,
 			'optional' => 1,
 		];
-
-		$display = isset( $allowed_values[ $display ] ) ? $display : 'swap';
-
-		// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
-		return '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=' . $this->fonts . $this->subsets . '&display=' . $display . '" />';
 	}
 }
