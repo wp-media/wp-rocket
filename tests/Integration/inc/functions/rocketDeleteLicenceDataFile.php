@@ -28,4 +28,15 @@ class Test_RocketDeleteLicenceDataFile extends FilesystemTestCase {
 
 		$this->assertFalse( $this->filesystem->exists( 'licence-data.php' ) );
 	}
+
+	/**
+	 * @group Multisite
+	 */
+	public function testShouldDoNothingWhenMultisite() {
+		$this->assertTrue( $this->filesystem->exists( 'wp-rocket/licence-data.php' ) );
+
+		rocket_delete_licence_data_file();
+
+		$this->assertTrue( $this->filesystem->exists( 'wp-rocket/licence-data.php' ) );
+	}
 }
