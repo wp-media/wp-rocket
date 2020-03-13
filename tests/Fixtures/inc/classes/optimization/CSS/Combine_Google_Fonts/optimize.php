@@ -154,7 +154,7 @@ return [
 		'<html>' .
 			'<head>' .
 				'<title>Sample Page</title>' .
-				'<link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300&display=auto" rel="stylesheet" property="stylesheet" type"text/css" media="all">' .
+				'<link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300&display=swap" rel="stylesheet" property="stylesheet" type"text/css" media="all">' .
 			'</head>' .
 			'<body>' .
 			'</body>' .

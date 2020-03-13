@@ -205,11 +205,6 @@ class Combine_Google_Fonts extends Abstract_Optimization {
 			return $font_url . '&display=' . $display;
 		}
 
-		if ( isset( $allowed_values[ $parsed_font['display'] ] ) ) {
-			// Font display exists and is valid.
-			return $font_url;
-		}
-
 		$font_url = str_replace( '&display=' . $parsed_font['display'], '', $font_url );
 		return $font_url . '&display=' . $display;
 	}
