@@ -639,6 +639,10 @@ function rocket_check_key() {
  * @return void
  */
 function rocket_delete_licence_data_file() {
+	if ( is_multisite() ) {
+		return;
+	}
+
 	$rocket_path = rocket_get_constant( 'WP_ROCKET_PATH' );
 
 	if ( ! rocket_direct_filesystem()->exists( $rocket_path . 'licence-data.php' ) ) {

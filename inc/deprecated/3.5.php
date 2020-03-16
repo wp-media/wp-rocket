@@ -4,6 +4,20 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
+ * Class aliases.
+ */
+class_alias( '\\WP_Rocket\\Engine\\Preload\\AbstractPreload', '\\WP_Rocket\\Preload\\Abstract_Preload' );
+class_alias( '\\WP_Rocket\\Engine\\Preload\\AbstractProcess', '\\WP_Rocket\\Preload\\Process' );
+class_alias( '\\WP_Rocket\\Engine\\Preload\\FullProcess', '\\WP_Rocket\\Preload\\Full_Process' );
+class_alias( '\\WP_Rocket\\Engine\\Preload\\Homepage', '\\WP_Rocket\\Preload\\Homepage' );
+class_alias( '\\WP_Rocket\\Engine\\Preload\\PartialPreloadSubscriber', '\\WP_Rocket\\Subscriber\\Preload\\Partial_Preload_Subscriber' );
+class_alias( '\\WP_Rocket\\Engine\\Preload\\PartialProcess', '\\WP_Rocket\\Preload\\Partial_Process' );
+class_alias( '\\WP_Rocket\\Engine\\Preload\\PreloadSubscriber', '\\WP_Rocket\\Subscriber\\Preload\\Preload_Subscriber' );
+class_alias( '\\WP_Rocket\\Engine\\Preload\\ServiceProvider', '\\WP_Rocket\\ServiceProvider\\Preload_Subscribers' );
+class_alias( '\\WP_Rocket\\Engine\\Preload\\Sitemap', '\\WP_Rocket\\Preload\\Sitemap' );
+class_alias( '\\WP_Rocket\\Engine\\Preload\\SitemapPreloadSubscriber', '\\WP_Rocket\\Subscriber\\Preload\\Sitemap_Preload_Subscriber' );
+
+/**
  * Validate Cloudflare input data
  *
  * @since 3.4.1

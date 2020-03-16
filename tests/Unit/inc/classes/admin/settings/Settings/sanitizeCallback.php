@@ -9,6 +9,7 @@ use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
  * @covers \WP_Rocket\Admin\Settings::sanitize_callback
+ * @group  Admin
  * @group  Settings
  */
 class Test_SanitizeCallback extends TestCase {
@@ -23,7 +24,36 @@ class Test_SanitizeCallback extends TestCase {
 	}
 
 	/**
-	 * @dataProvider addDataProvider
+	 * @dataProvider addCriticalCSSProvider
+	 */
+	public function testShouldSanitizeCriticalCss( $original, $sanitized ) {
+		Functions\when( 'wp_strip_all_tags' )->alias( function( $string, $remove_breaks ) {
+			$string = preg_replace( '@<(script|style)[^>]*?>.*?</\\1>@si', '', $string );
+			$string = strip_tags( $string );
+
+			if ( $remove_breaks ) {
+				$string = preg_replace( '/[\r\n\t ]+/', ' ', $string );
+			}
+
+			return trim( $string );
+		} );
+
+		Functions\when( 'sanitize_email' )->returnArg();
+
+		Functions\when( 'sanitize_text_field' )->returnArg();
+		Functions\when( 'rocket_valid_key' )->justReturn( true );
+
+		$sanitize_callback = $this->settings->sanitize_callback( $original );
+
+		// this works
+		$this->assertSame(
+			$sanitized['critical_css'],
+			$sanitize_callback['critical_css']
+		);
+	}
+
+	/**
+	 * @dataProvider addDNSPrefetchProvider
 	 */
 	public function testShouldSanitizeDNSPrefetchEntries( $input, $expected ) {
 		Functions\when( 'esc_url_raw' )->alias( function( $url ) {
@@ -47,7 +77,11 @@ class Test_SanitizeCallback extends TestCase {
 		);
 	}
 
-	public function addDataProvider() {
+	public function addDNSPrefetchProvider() {
 		return $this->getTestData( __DIR__, 'dns-prefetch' );
+	}
+
+	public function addCriticalCSSProvider() {
+		return $this->getTestData( __DIR__, 'sanitizeCallback' );
 	}
 }

@@ -16,13 +16,16 @@ class Test_Optimize extends TestCase {
 	 * @dataProvider addDataProvider
 	 */
 	public function testShouldCombineGoogleFonts( $original, $combined ) {
-		Functions\when( 'rocket_extract_url_component' )->alias( function( $url, $component ) {
+		Functions\when( 'wp_parse_url' )->alias( function( $url, $component ) {
 			return parse_url( $url, $component );
 		} );
 		Functions\when( 'wp_parse_args' )->alias( function( $value ) {
 			parse_str( $value, $r );
 
 			return $r;
+		} );
+		Functions\when( 'esc_url' )->alias( function( $url ) {
+			return str_replace( [ '&amp;', '&' ], '&#038;', $url );
 		} );
 
 		$combine = new Combine_Google_Fonts();

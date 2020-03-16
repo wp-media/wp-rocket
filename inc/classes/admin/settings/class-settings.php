@@ -306,7 +306,7 @@ class Settings {
 		$input['async_css'] = ! empty( $input['async_css'] ) ? 1 : 0;
 
 		// Option: Critical CSS.
-		$input['critical_css'] = ! empty( $input['critical_css'] ) ? str_replace( [ '<style>', '</style>' ], '', wp_kses( $input['critical_css'], [ "\'", '\"' ] ) ) : '';
+		$input['critical_css'] = ! empty( $input['critical_css'] ) ? str_replace( [ '<style>', '</style>' ], '', wp_strip_all_tags( $input['critical_css'], [ "\'", '\"' ] ) ) : '';
 
 		// Database options.
 		$input['database_revisions']          = ! empty( $input['database_revisions'] ) ? 1 : 0;
