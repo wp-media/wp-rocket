@@ -642,7 +642,6 @@ abstract class ActionScheduler_Abstract_ListTable extends WP_List_Table {
 	 */
 	public function process_actions() {
 		$this->process_bulk_action();
-
 		$this->process_row_actions();
 
 		if ( ! empty( $_REQUEST['_wp_http_referer'] ) ) {
