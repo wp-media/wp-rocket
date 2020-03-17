@@ -25,8 +25,22 @@ class Test_GetCdnHosts extends TestCase {
 			$this->cdn
 		);
 
-		Functions\when( 'wp_parse_url' )->alias( function( $url, $component = -1 ) {
-			return parse_url( $url, $component );
+		Functions\when( 'get_rocket_parse_url' )->alias( function( $url ) {
+			$parsed = parse_url( $url );
+
+			$host     = isset( $parsed['host'] ) ? strtolower( urldecode( $parsed['host'] ) ) : '';
+			$path     = isset( $parsed['path'] ) ? urldecode( $parsed['path'] ) : '';
+			$scheme   = isset( $parsed['scheme'] ) ? urldecode( $parsed['scheme'] ) : '';
+			$query    = isset( $parsed['query'] ) ? urldecode( $parsed['query'] ) : '';
+			$fragment = isset( $parsed['fragment'] ) ? urldecode( $parsed['fragment'] ) : '';
+
+			return [
+				'host'     => $host,
+				'path'     => $path,
+				'scheme'   => $scheme,
+				'query'    => $query,
+				'fragment' => $fragment,
+			];
 		} );
 		Functions\when( 'rocket_add_url_protocol' )->alias( function( $url ) {
 			if ( strpos( $url, 'http://' ) !== false || strpos( $url, 'https://' ) !== false ) {
@@ -41,74 +55,21 @@ class Test_GetCdnHosts extends TestCase {
 		} );
 	}
 
-	public function testShouldReturnOriginalArrayWhenNoCDNURL() {
+	public function addDataProvider() {
+        return $this->getTestData( __DIR__, 'get-cdn-hosts' );
+    }
+
+	/**
+	 * @dataProvider addDataProvider
+	 */
+	public function testShouldReturnCdnArray( $original, $zones, $cdn_urls, $expected ) {
 		$this->cdn->expects( $this->once() )
 			->method( 'get_cdn_urls' )
-			->willReturn( [] );
+			->willReturn( $cdn_urls );
 
 		$this->assertSame(
-			[],
-			$this->subscriber->get_cdn_hosts( [], [ 'all' ] )
-		);
-	}
-
-	public function testShouldReturnCDNHostsWhenExists() {
-		$this->cdn->expects( $this->once() )
-			->method( 'get_cdn_urls' )
-			->willReturn( [
-				'http://cdn.example.org',
-				'//cdn2.example.org',
-				'https://cdn3.example.org',
-				'cdn4.example.org',
-			] );
-
-		$this->assertSame(
-			[
-				'cdn.example.org',
-				'cdn2.example.org',
-				'cdn3.example.org',
-				'cdn4.example.org',
-			],
-			$this->subscriber->get_cdn_hosts( [], [ 'all' ] )
-		);
-	}
-
-	public function testShouldReturnCDNHostsWhenExistsAndOriginalHasValue() {
-		$this->cdn->expects( $this->once() )
-			->method( 'get_cdn_urls' )
-			->willReturn( [
-				'http://cdn.example.org',
-				'//cdn2.example.org',
-				'https://cdn3.example.org',
-				'cdn4.example.org',
-			] );
-
-		$this->assertSame(
-			[
-				'cdn5.example.org',
-				'cdn.example.org',
-				'cdn2.example.org',
-				'cdn3.example.org',
-				'cdn4.example.org',
-			],
-			$this->subscriber->get_cdn_hosts( [ 'cdn5.example.org' ], [ 'all' ] )
-		);
-	}
-
-	public function testShouldReturnCDNHostsWhenCDNHasPath() {
-		$this->cdn->expects( $this->once() )
-			->method( 'get_cdn_urls' )
-			->willReturn( [
-				'http://cdn.example.org/path',
-				'//cdn2.example.org'
-			] );
-
-		$this->assertSame(
-			[
-				'cdn.example.org',
-				'cdn2.example.org'
-			],
-			$this->subscriber->get_cdn_hosts( [], [ 'all' ] )
+			$expected,
+			array_values( $this->subscriber->get_cdn_hosts( $original, $zones ) )
 		);
 	}
 }
