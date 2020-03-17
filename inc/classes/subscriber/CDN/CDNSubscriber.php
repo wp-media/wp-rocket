@@ -135,21 +135,24 @@ class CDNSubscriber implements Subscriber_Interface {
 	 *
 	 * @return array
 	 */
-	public function get_cdn_hosts( $hosts, $zones ) {
+	public function get_cdn_hosts( array $hosts = [], array $zones = [ 'all' ] ) {
 		$cdn_urls = $this->cdn->get_cdn_urls( $zones );
 
-		if ( ! $cdn_urls ) {
+		if ( empty( $cdn_urls ) ) {
 			return $hosts;
 		}
 
-		$cdn_hosts = array_map(
-			function( $url ) {
-				return wp_parse_url( rocket_add_url_protocol( $url ), PHP_URL_HOST );
-			},
-			$cdn_urls
-		);
+		foreach ( $cdn_urls as $cdn_url ) {
+			$parsed = get_rocket_parse_url( rocket_add_url_protocol( $cdn_url ) );
 
-		return array_merge( $hosts, $cdn_hosts );
+			if ( empty( $parsed['host'] ) ) {
+				continue;
+			}
+
+			$hosts[] = untrailingslashit( $parsed['host'] . $parsed['path'] );
+		}
+
+		return array_unique( $hosts );
 	}
 
 	/**
