@@ -511,7 +511,7 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 		add_action( 'action_scheduler/created_table', array( $store, 'set_autoincrement' ), 10, 2 );
 
 		$store_schema  = new ActionScheduler_StoreSchema();
-		$logger_schema = new ActionScheduler_StoreSchema();
+		$logger_schema = new ActionScheduler_LoggerSchema();
 		$store_schema->register_tables( true );
 		$logger_schema->register_tables( true );
 
