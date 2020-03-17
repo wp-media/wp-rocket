@@ -52,6 +52,7 @@ class Test_IsExcludedFile extends TestCase {
 			->with( [], [ 'all', 'css_and_js', '' ] )
 			->andReturn( [
 				'123456.rocketcdn.me',
+				'cdn.example.org/path',
 			]
 		);
 
@@ -59,12 +60,10 @@ class Test_IsExcludedFile extends TestCase {
 			'http://en.example.org',
 			'https://example.de',
 		] );
-		Functions\when( 'rocket_extract_url_component' )->alias( function( $url, $component ) {
+		Functions\when( 'wp_parse_url' )->alias( function( $url, $component ) {
 			return parse_url( $url, $component );
 		} );
-		Functions\when( 'rocket_clean_exclude_file' )->alias( function( $url ) {
-			return parse_url( $url, PHP_URL_PATH );
-		} );
+
 		Functions\when( 'remove_query_arg' )->alias( function( $key, $query ) {
 			return str_replace( [ '&ver=5.3', 'ver=5.3' ], '', $query );
 		} );
@@ -85,27 +84,10 @@ class Test_IsExcludedFile extends TestCase {
 	}
 
 	public function excludedURLProvider() {
-		return [
-			[ 'http://example.org/wp-content/themes/storefront/style.css' ],
-			[ 'https://example.org/wp-content/themes/storefront/script.js' ],
-			[ 'http://example.org' ],
-			[ 'http://example.org/wp-admin/admin-ajax.php' ],
-			[ 'https://example.org/wp-content/plugins/test/style.php?data=foo&ver=5.3' ],
-			[ 'https://example.org/wp-content/plugins/test/script.php?data=foo' ],
-			[ 'http://en.example.org/wp-content/plugins/test/style.css' ],
-			[ 'https://example.de/wp-content/themes/storefront/assets/script.js?ver=5.3' ],
-			[ 'http://123456.rocketcdn.me/wp-content/plugins/test/style.css' ],
-		];
+		return $this->getTestData( __DIR__, 'excluded-urls' );
 	}
 
 	public function includedURLProvider() {
-		return [
-			[ 'http://example.org/wp-content/themes/test/style.php' ],
-			[ 'https://example.org/wp-content/themes/test/script.php?ver=5.3' ],
-			[ 'http://example.org/wp-content/plugins/test/assets/custom.php' ],
-			[ 'http://en.example.org/wp-content/plugins/test/style.php' ],
-			[ 'https://example.de/wp-content/themes/storefront/assets/script.php?ver=5.3' ],
-			[ 'http://123456.rocketcdn.me/wp-content/plugins/test/style.php' ],
-		];
+		return $this->getTestData( __DIR__, 'included-urls' );
 	}
 }
