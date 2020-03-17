@@ -13,7 +13,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
  * @group  Optimize
  * @group  RemoveQueryStrings
  */
-class Test_removeQueryStringsCSS extends FilesystemTestCase {
+class Test_RemoveQueryStringsCSS extends FilesystemTestCase {
     private $rqs;
     protected $rootVirtualDir = 'wordpress';
 	protected $structure = [
@@ -85,7 +85,7 @@ class Test_removeQueryStringsCSS extends FilesystemTestCase {
 			'http://en.example.org',
 			'https://example.de',
 		] );
-		Functions\when( 'rocket_extract_url_component' )->alias( function( $url, $component ) {
+		Functions\when( 'wp_parse_url' )->alias( function( $url, $component ) {
 			return parse_url( $url, $component );
         } );
         Functions\when( 'rocket_clean_exclude_file' )->alias( function( $url ) {
@@ -101,41 +101,23 @@ class Test_removeQueryStringsCSS extends FilesystemTestCase {
         Functions\when( 'rocket_get_filesystem_perms' )->justReturn( 0644 );
     }
 
-    public function addDefaultDataProvider() {
+    public function addDataProvider() {
         return $this->getTestData( __DIR__, 'css/remove-query-strings' );
     }
 
     /**
-     * @dataProvider addDefaultDataProvider
+     * @dataProvider addDataProvider
      */
-    public function testShouldRemoveQueryStringsWhenCSSURL( $original, $expected ) {
-        $this->assertSame(
-            $expected,
-            $this->rqs->remove_query_strings_css( $original )
-        );
-    }
-
-    public function addCDNDataProvider() {
-        return $this->getTestData( __DIR__, 'css/remove-query-strings-cdn' );
-    }
-
-    /**
-     * @dataProvider addCDNDataProvider
-     */
-    public function testShouldRemoveQueryStringsWhenCSSURLAndCDN( $original, $expected ) {
+    public function testShouldRemoveQueryStringsWhenCSSURL( $original, $expected, $cdn_host, $cdn_url ) {
         Filters\expectApplied( 'rocket_cdn_hosts' )
 			->zeroOrMoreTimes()
 			->with( [], [ 'all', 'css_and_js', 'css', 'js' ] )
-			->andReturn( [
-				'123456.rocketcdn.me',
-			]
-        );
+			->andReturn( $cdn_host );
 
         Filters\expectApplied( 'rocket_css_url' )
-            ->atLeast()
-            ->times(1)
-            ->andReturnUsing( function( $url, $original_url ) {
-                return str_replace( 'http://example.org', 'https://123456.rocketcdn.me', $url );
+            ->zeroOrMoreTimes()
+            ->andReturnUsing( function( $url, $original_url ) use ( $cdn_url ) {
+                return str_replace( 'http://example.org', $cdn_url, $url );
             } );
 
         $this->assertSame(
