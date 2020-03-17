@@ -38,32 +38,58 @@ abstract class Abstract_Optimization {
 	 * @return bool True if external, false otherwise
 	 */
 	protected function is_external_file( $url ) {
-		$file       = get_rocket_parse_url( $url );
+		$file = get_rocket_parse_url( $url );
+
+		if ( empty( $file['path'] ) ) {
+			return true;
+		}
+
+		/**
+		 * Filters the allowed hosts for optimization
+		 *
+		 * @since  3.4
+		 * @author Remy Perona
+		 *
+		 * @param array $hosts Allowed hosts.
+		 * @param array $zones Zones to check available hosts.
+		 */
+		$hosts      = apply_filters( 'rocket_cdn_hosts', [], $this->get_zones() );
 		$wp_content = get_rocket_parse_url( content_url() );
-		// This filter is documented in inc/classes/admin/settings/class-settings.php.
-		$hosts   = apply_filters( 'rocket_cdn_hosts', [], $this->get_zones() );
-		$hosts[] = $wp_content['host'];
-		$langs   = get_rocket_i18n_uri();
+		$hosts[]    = $wp_content['host'];
+		$langs      = get_rocket_i18n_uri();
 
 		// Get host for all langs.
-		if ( $langs ) {
+		if ( ! empty( $langs ) ) {
 			foreach ( $langs as $lang ) {
-				$url_host = rocket_extract_url_component( $lang, PHP_URL_HOST );
-				if ( ! empty( $url_host ) ) {
-					$hosts[] = $url_host;
+				$url_host = wp_parse_url( $lang, PHP_URL_HOST );
+
+				if ( ! isset( $url_host ) ) {
+					continue;
 				}
+
+				$hosts[] = $url_host;
 			}
 		}
 
-		$hosts_index = array_flip( array_unique( $hosts ) );
+		$hosts = array_unique( $hosts );
 
-		// URL has domain and domain is not part of the internal domains.
-		if ( isset( $file['host'] ) && ! empty( $file['host'] ) && ! isset( $hosts_index[ $file['host'] ] ) ) {
+		if ( empty( $hosts ) ) {
+			return true;
+		}
+
+		// URL has domain and domain is part of the internal domains.
+		if ( ! empty( $file['host'] ) ) {
+			foreach ( $hosts as $host ) {
+				if ( false !== strpos( $url, $host ) ) {
+					return false;
+				}
+			}
+
 			return true;
 		}
 
 		// URL has no domain and doesn't contain the WP_CONTENT path or wp-includes.
-		if ( ! isset( $file['host'] ) && ! preg_match( '#(' . $wp_content['path'] . '|wp-includes)#', $file['path'] ) ) {
+		if ( ! preg_match( '#(' . $wp_content['path'] . '|wp-includes)#', $file['path'] ) ) {
 			return true;
 		}
 
@@ -102,12 +128,11 @@ abstract class Abstract_Optimization {
 	 * @return string
 	 */
 	protected function get_file_path( $url ) {
-		// This filter is documented in inc/classes/admin/settings/class-settings.php.
+		// This filter is documented in inc/classes/optimization/class-abstract-optimization.php.
 		$hosts         = apply_filters( 'rocket_cdn_hosts', [], $this->get_zones() );
-		$hosts['home'] = rocket_extract_url_component( home_url(), PHP_URL_HOST );
-		$hosts_index   = array_flip( $hosts );
+		$hosts['home'] = wp_parse_url( home_url(), PHP_URL_HOST );
 
-		return rocket_url_to_path( strtok( $url, '?' ), $hosts_index );
+		return rocket_url_to_path( strtok( $url, '?' ), $hosts );
 	}
 
 	/**
