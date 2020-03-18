@@ -3,11 +3,11 @@ namespace WP_Rocket\Tests\Unit\inc\optimization\CSS\Combine;
 
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
+use MatthiasMullie\Minify;
 use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Optimization\CSS\Combine;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
-use WP_Rocket\Admin\Options_Data;
-use MatthiasMullie\Minify;
 
 /**
  * @covers \WP_Rocket\Optimization\CSS\Combine::optimize
@@ -92,11 +92,8 @@ class Test_Optimize extends FilesystemTestCase {
 			'http://en.example.org',
 			'https://example.de',
 		] );
-		Functions\when( 'rocket_extract_url_component' )->alias( function( $url, $component ) {
+		Functions\when( 'wp_parse_url' )->alias( function( $url, $component ) {
 			return parse_url( $url, $component );
-        } );
-        Functions\when( 'rocket_clean_exclude_file' )->alias( function( $url ) {
-			return parse_url( $url, PHP_URL_PATH );
         } );
         Functions\when( 'home_url' )->justReturn( 'http://example.org' );
         Functions\when( 'rocket_url_to_path' )->alias( function( $url, $hosts ) {
@@ -131,79 +128,28 @@ class Test_Optimize extends FilesystemTestCase {
 		$this->combine = new Combine( $this->createMock( Options_Data::class ), $this->createMock( Minify\CSS::class ) );
 	}
 
+	public function addDataProvider() {
+		return $this->getTestData( __DIR__, 'combine' );
+	}
+
 	/**
 	 * @dataProvider addDataProvider
 	 */
-    public function testShouldCombineCSS( $original, $combined ) {
-        Functions\when('rocket_extract_url_component')->alias( function($url, $component ) {
-            return parse_url( $url, $component );
-		});
+    public function testShouldCombineCSS( $original, $combined, $cdn_host, $cdn_url ) {
+		Filters\expectApplied( 'rocket_cdn_hosts' )
+			->zeroOrMoreTimes()
+			->with( [], [ 'all', 'css_and_js', 'css' ] )
+			->andReturn( $cdn_host );
+
+        Filters\expectApplied( 'rocket_css_url' )
+			->zeroOrMoreTimes()
+            ->andReturnUsing( function( $url, $original_url ) use ( $cdn_url ) {
+                return str_replace( 'http://example.org', $cdn_url, $url );
+			} );
 
         $this->assertSame(
             $combined,
             $this->combine->optimize( $original )
         );
     }
-
-    /**
-     * @dataProvider addCDNDataProvider
-     */
-    public function testShouldCombineCSSAndCDN( $original, $combined ) {
-        Filters\expectApplied( 'rocket_cdn_hosts' )
-			->zeroOrMoreTimes()
-			->with( [], [ 'all', 'css_and_js', 'css', 'js' ] )
-			->andReturn( [
-				'123456.rocketcdn.me',
-			]
-        );
-
-        Filters\expectApplied( 'rocket_css_url' )
-            ->atLeast()
-            ->times(1)
-            ->andReturnUsing( function( $url, $original_url ) {
-                return str_replace( 'http://example.org', 'https://123456.rocketcdn.me', $url );
-            } );
-
-        $this->assertSame(
-            $combined,
-            $this->combine->optimize( $original )
-        );
-	}
-
-	/**
-     * @dataProvider addCDNDataPathProvider
-     */
-    public function testShouldCombineCSSAndCDNPath( $original, $combined ) {
-        Filters\expectApplied( 'rocket_cdn_hosts' )
-			->zeroOrMoreTimes()
-			->with( [], [ 'all', 'css_and_js', 'css', 'js' ] )
-			->andReturn( [
-				'123456.rocketcdn.me',
-			]
-        );
-
-        Filters\expectApplied( 'rocket_css_url' )
-            ->atLeast()
-            ->times(1)
-            ->andReturnUsing( function( $url, $original_url ) {
-                return str_replace( 'http://example.org', 'https://123456.rocketcdn.me/path/to/cdn', $url );
-            } );
-
-        $this->assertSame(
-            $combined,
-            $this->combine->optimize( $original )
-        );
-	}
-
-	public function addDataProvider() {
-		return $this->getTestData( __DIR__, 'combine' );
-	}
-
-	public function addCDNDataProvider() {
-		return $this->getTestData( __DIR__, 'combine-cdn' );
-	}
-
-	public function addCDNDataPathProvider() {
-		return $this->getTestData( __DIR__, 'combine-cdn-path' );
-	}
 }
