@@ -1,6 +1,8 @@
 <?php
 namespace WP_Rocket\Tests\Unit\inc\classes\third_party\plugins\Smush_Subscriber;
 
+use WP_Rocket\Subscriber\Third_Party\Plugins\Smush_Subscriber;
+
 /**
  * @covers \WP_Rocket\Subscriber\Third_Party\Plugins\Smush_Subscriber::is_smush_lazyload_active
  * @group ThirdParty
@@ -9,6 +11,8 @@ namespace WP_Rocket\Tests\Unit\inc\classes\third_party\plugins\Smush_Subscriber;
 class Test_IsSmushLazyloadActive extends SmushSubscriberTestCase {
 
 	public function testShouldNotDisableWPRocketLazyLoad() {
+		$subscriber = new Smush_Subscriber( $this->createMock( 'WP_Rocket\Admin\Options' ), $this->createMock( 'WP_Rocket\Admin\Options_Data' ) );
+
 		// Disabled.
 		$this->mock_is_smush_lazyload_enabled(
 			false,
@@ -21,7 +25,7 @@ class Test_IsSmushLazyloadActive extends SmushSubscriberTestCase {
 			]
 		);
 
-		$this->assertNotContains( 'Smush', $this->subscriber->is_smush_lazyload_active( [] ) );
+		$this->assertNotContains( 'Smush', $subscriber->is_smush_lazyload_active( [] ) );
 
 		// No image formats.
 		$this->mock_is_smush_lazyload_enabled(
@@ -36,7 +40,7 @@ class Test_IsSmushLazyloadActive extends SmushSubscriberTestCase {
 			]
 		);
 
-		$this->assertNotContains( 'Smush', $this->subscriber->is_smush_lazyload_active( [] ) );
+		$this->assertNotContains( 'Smush', $subscriber->is_smush_lazyload_active( [] ) );
 
 		// Empty formats.
 		$this->mock_is_smush_lazyload_enabled(
@@ -44,11 +48,13 @@ class Test_IsSmushLazyloadActive extends SmushSubscriberTestCase {
 			[]
 		);
 
-		$this->assertNotContains( 'Smush', $this->subscriber->is_smush_lazyload_active( [] ) );
+		$this->assertNotContains( 'Smush', $subscriber->is_smush_lazyload_active( [] ) );
 	}
 
 	public function testShouldDisableWPRocketLazyLoadWhenAtLeastOneImageFormat() {
 		$this->mockCommonWpFunctions();
+
+		$subscriber = new Smush_Subscriber( $this->createMock( 'WP_Rocket\Admin\Options' ), $this->createMock( 'WP_Rocket\Admin\Options_Data' ) );
 
 		$this->mock_is_smush_lazyload_enabled(
 			true,
@@ -62,7 +68,7 @@ class Test_IsSmushLazyloadActive extends SmushSubscriberTestCase {
 			]
 		);
 
-		$this->assertContains( 'Smush', $this->subscriber->is_smush_lazyload_active( [] ) );
+		$this->assertContains( 'Smush', $subscriber->is_smush_lazyload_active( [] ) );
 
 		$this->mock_is_smush_lazyload_enabled(
 			true,
@@ -74,7 +80,7 @@ class Test_IsSmushLazyloadActive extends SmushSubscriberTestCase {
 			]
 		);
 
-		$this->assertContains( 'Smush', $this->subscriber->is_smush_lazyload_active( [] ) );
+		$this->assertContains( 'Smush', $subscriber->is_smush_lazyload_active( [] ) );
 
 		$this->mock_is_smush_lazyload_enabled(
 			true,
@@ -86,7 +92,7 @@ class Test_IsSmushLazyloadActive extends SmushSubscriberTestCase {
 			]
 		);
 
-		$this->assertContains( 'Smush', $this->subscriber->is_smush_lazyload_active( [] ) );
+		$this->assertContains( 'Smush', $subscriber->is_smush_lazyload_active( [] ) );
 
 		$this->mock_is_smush_lazyload_enabled(
 			true,
@@ -98,7 +104,7 @@ class Test_IsSmushLazyloadActive extends SmushSubscriberTestCase {
 			]
 		);
 
-		$this->assertContains( 'Smush', $this->subscriber->is_smush_lazyload_active( [] ) );
+		$this->assertContains( 'Smush', $subscriber->is_smush_lazyload_active( [] ) );
 
 		$this->mock_is_smush_lazyload_enabled(
 			true,
@@ -107,6 +113,6 @@ class Test_IsSmushLazyloadActive extends SmushSubscriberTestCase {
 			]
 		);
 
-		$this->assertContains( 'Smush', $this->subscriber->is_smush_lazyload_active( [] ) );
+		$this->assertContains( 'Smush', $subscriber->is_smush_lazyload_active( [] ) );
 	}
 }

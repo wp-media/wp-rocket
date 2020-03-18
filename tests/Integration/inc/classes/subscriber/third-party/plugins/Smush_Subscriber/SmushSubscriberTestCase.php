@@ -16,7 +16,12 @@ abstract class SmushSubscriberTestCase extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->subscriber                 = new Smush_Subscriber();
+		$container = apply_filters( 'rocket_container', null );
+
+		if ( ! empty( $container ) ) {
+			$this->subscriber = $container->get( 'smush_subscriber' );
+		}
+
 		$this->smush                      = Settings::get_instance();
 		$this->smush_settings_option_name = WP_SMUSH_PREFIX . 'settings';
 		$this->smush_settings             = $this->smush->get_setting( $this->smush_settings_option_name );

@@ -3,11 +3,9 @@ namespace WP_Rocket\Tests\Unit\inc\classes\third_party\plugins\Smush_Subscriber;
 
 use Brain\Monkey\Functions;
 use Mockery;
-use WP_Rocket\Subscriber\Third_Party\Plugins\Smush_Subscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 abstract class SmushSubscriberTestCase extends TestCase {
-	protected $subscriber;
 
 	protected function setUp() {
 		parent::setUp();
@@ -15,17 +13,15 @@ abstract class SmushSubscriberTestCase extends TestCase {
 		Functions\expect( 'rocket_get_constant' )
 			->with( 'WP_SMUSH_PREFIX' )
 			->andReturn( 'wp-smush-' );
-
-		$this->subscriber = new Smush_Subscriber();
 	}
 
 	protected function mock_is_smush_lazyload_enabled( $lazyload_enabled, array $lazyload_formats ) {
-		$settings = Mockery::mock( 'alias:\\Smush\\Core\\Settings' );
+		$settings = Mockery::mock( 'alias:\Smush\Core\Settings' );
 		$settings
 			->shouldReceive( 'get_instance' )
 			->andReturnUsing(
 				function() use ( $lazyload_enabled, $lazyload_formats ) {
-					$settings = Mockery::mock( '\\WP_Rocket\\Tests\\Fixtures\\ThirdPartyPlugins\\Smush\\Core\\Settings' ); // Don't look for me, I don’t exist.
+					$settings = Mockery::mock( '\WP_Rocket\Tests\Fixtures\ThirdPartyPlugins\Smush\Core\Settings' ); // Don't look for me, I don’t exist.
 					$settings
 						->shouldReceive( 'get' )
 						->with( 'lazy_load' )

@@ -2,6 +2,8 @@
 namespace WP_Rocket\Subscriber\Third_Party\Plugins;
 
 use Smush\Core\Settings;
+use WP_Rocket\Admin\Options;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
@@ -11,6 +13,19 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * @author Soponar Cristina
  */
 class Smush_Subscriber implements Subscriber_Interface {
+	/**
+	 * WP Options API instance
+	 *
+	 * @var Options
+	 */
+	private $options_api;
+
+	/**
+	 * Options instance
+	 *
+	 * @var Options_Data
+	 */
+	private $options;
 
 	/**
 	 * Subscribed events for Smush.
@@ -29,12 +44,26 @@ class Smush_Subscriber implements Subscriber_Interface {
 		$prefix = rocket_get_constant( 'WP_SMUSH_PREFIX', 'wp-smush-' );
 
 		return [
-			'update_option_' . $prefix . 'settings'       => [ 'maybe_deactivate_rocket_lazyload', 11 ],
-			'update_site_option_' . $prefix . 'settings'  => [ 'maybe_deactivate_rocket_lazyload', 11 ],
-			'update_option_' . $prefix . 'lazy_load'      => [ 'maybe_deactivate_rocket_lazyload', 11 ],
-			'update_site_option_' . $prefix . 'lazy_load' => [ 'maybe_deactivate_rocket_lazyload', 11 ],
-			'rocket_maybe_disable_lazyload_helper'        => 'is_smush_lazyload_active',
+			"update_option_{$prefix}settings"       => [ 'maybe_deactivate_rocket_lazyload', 11 ],
+			"update_site_option_{$prefix}settings"  => [ 'maybe_deactivate_rocket_lazyload', 11 ],
+			"update_option_{$prefix}lazy_load"      => [ 'maybe_deactivate_rocket_lazyload', 11 ],
+			"update_site_option_{$prefix}lazy_load" => [ 'maybe_deactivate_rocket_lazyload', 11 ],
+			'rocket_maybe_disable_lazyload_helper'  => 'is_smush_lazyload_active',
 		];
+	}
+
+	/**
+	 * Constructor.
+	 *
+	 * @since  3.6
+	 * @author Grégory Viguier
+	 *
+	 * @param Options      $options_api WP Options API instance.
+	 * @param Options_Data $options     WP Rocket Options instance.
+	 */
+	public function __construct( Options $options_api, Options_Data $options ) {
+		$this->options_api = $options_api;
+		$this->options     = $options;
 	}
 
 	/**
@@ -45,18 +74,27 @@ class Smush_Subscriber implements Subscriber_Interface {
 	 */
 	public function maybe_deactivate_rocket_lazyload() {
 		$enabled = $this->is_smush_lazyload_enabled();
+		$updated = false;
 
-		if ( $enabled['images'] && get_rocket_option( 'lazyload' ) ) {
-			update_rocket_option( 'lazyload', 0 );
+		if ( $enabled['images'] && $this->options->get( 'lazyload' ) ) {
+			$this->options->set( 'lazyload', 0 );
+			$updated = true;
 		}
 
-		if ( $enabled['iframes'] && get_rocket_option( 'lazyload_iframes' ) ) {
-			update_rocket_option( 'lazyload_iframes', 0 );
+		if ( $enabled['iframes'] && $this->options->get( 'lazyload_iframes' ) ) {
+			$this->options->set( 'lazyload_iframes', 0 );
+			$updated = true;
 		}
+
+		if ( ! $updated ) {
+			return;
+		}
+
+		$this->options_api->set( 'settings', $this->options->get_options() );
 	}
 
 	/**
-	 * Disable WP Rocket lazyload field for images if WP Smush lazyload is enabled.
+	 * Add "Smush" to the provided array if WP Smush lazyload is enabled for images.
 	 *
 	 * @since  3.4.2
 	 * @author Soponar Cristina
@@ -64,7 +102,7 @@ class Smush_Subscriber implements Subscriber_Interface {
 	 * @param  array $disable_images_lazyload Array with plugins which disable lazyload functionality.
 	 * @return array                          A list of plugin names.
 	 */
-	public function is_smush_lazyload_active( $disable_images_lazyload ) {
+	public function is_smush_lazyload_active( array $disable_images_lazyload ) {
 		$enabled = $this->is_smush_lazyload_enabled();
 
 		if ( $enabled['images'] ) {
@@ -91,18 +129,16 @@ class Smush_Subscriber implements Subscriber_Interface {
 			'iframes' => false,
 		];
 
-		if ( ! class_exists( '\\Smush\\Core\\Settings' ) ) {
+		if ( ! class_exists( '\Smush\Core\Settings' ) ) {
 			return $enabled;
 		}
 
-		$settings = Settings::get_instance();
-
-		if ( ! $settings->get( 'lazy_load' ) ) {
+		if ( ! Settings::get_instance()->get( 'lazy_load' ) ) {
 			return $enabled;
 		}
 
 		$prefix  = rocket_get_constant( 'WP_SMUSH_PREFIX', 'wp-smush-' );
-		$formats = $settings->get_setting( $prefix . 'lazy_load' );
+		$formats = Settings::get_instance()->get_setting( $prefix . 'lazy_load' );
 		$formats = ! empty( $formats['format'] ) && is_array( $formats['format'] ) ? array_filter( $formats['format'] ) : [];
 
 		$image_formats = array_intersect_key(
@@ -116,7 +152,7 @@ class Smush_Subscriber implements Subscriber_Interface {
 			]
 		);
 
-		if ( $image_formats ) {
+		if ( ! empty( $image_formats ) ) {
 			// One or several image formats are enabled in Smush.
 			$enabled['images'] = true;
 		}

@@ -1,7 +1,9 @@
 <?php
 namespace WP_Rocket\Tests\Unit\inc\classes\third_party\plugins\Smush_Subscriber;
 
-use Brain\Monkey\Functions;
+//use Brain\Monkey\Functions;
+use Mockery;
+use WP_Rocket\Subscriber\Third_Party\Plugins\Smush_Subscriber;
 
 /**
  * @covers \WP_Rocket\Subscriber\Third_Party\Plugins\Smush_Subscriber::maybe_deactivate_rocket_lazyload
@@ -9,27 +11,16 @@ use Brain\Monkey\Functions;
  * @group Smush
  */
 class Test_MaybeDeactivateRocketLazyload extends SmushSubscriberTestCase {
+	private $subscriber;
 
 	public function testShouldNotDisableWPRocketLazyLoad() {
-		Functions\expect( 'update_rocket_option' )->never();
-
 		// Smush not enabled, WPR enabled.
 		$this->mock_is_smush_lazyload_enabled(
 			false,
 			[]
 		);
 
-		Functions\when( 'get_rocket_option' )
-			->alias(
-				function( $option ) {
-					switch ( $option ) {
-						case 'lazyload':
-						case 'lazyload_iframes':
-							return true;
-					}
-					return false;
-				}
-			);
+		$this->setSubscriber( true, true, false, false );
 
 		$this->subscriber->maybe_deactivate_rocket_lazyload();
 
@@ -42,29 +33,12 @@ class Test_MaybeDeactivateRocketLazyload extends SmushSubscriberTestCase {
 			]
 		);
 
-		Functions\when( 'get_rocket_option' )->justReturn( false );
+		$this->setSubscriber( false, false, false, false );
 
 		$this->subscriber->maybe_deactivate_rocket_lazyload();
 	}
 
 	public function testShouldDisableWPRocketLazyLoadForImagesWhenSmushLazyLoadForImagesIsEnabled() {
-		Functions\when( 'get_rocket_option' )
-			->alias(
-				function( $option ) {
-					switch ( $option ) {
-						case 'lazyload':
-						case 'lazyload_iframes':
-							return true;
-					}
-					return false;
-				}
-			);
-		Functions\expect( 'update_rocket_option' )
-			->once()
-			->with( 'lazyload', 0 )
-			->never()
-			->with( 'lazyload_iframes', 0 );
-
 		$this->mock_is_smush_lazyload_enabled(
 			true,
 			[
@@ -73,27 +47,12 @@ class Test_MaybeDeactivateRocketLazyload extends SmushSubscriberTestCase {
 			]
 		);
 
+		$this->setSubscriber( true, true, true, false );
+
 		$this->subscriber->maybe_deactivate_rocket_lazyload();
 	}
 
 	public function testShouldDisableWPRocketLazyLoadForIframesWhenSmushLazyLoadForIframesIsEnabled() {
-		Functions\when( 'get_rocket_option' )
-			->alias(
-				function( $option ) {
-					switch ( $option ) {
-						case 'lazyload':
-						case 'lazyload_iframes':
-							return true;
-					}
-					return false;
-				}
-			);
-		Functions\expect( 'update_rocket_option' )
-			->never()
-			->with( 'lazyload', 0 )
-			->once()
-			->with( 'lazyload_iframes', 0 );
-
 		$this->mock_is_smush_lazyload_enabled(
 			true,
 			[
@@ -102,27 +61,12 @@ class Test_MaybeDeactivateRocketLazyload extends SmushSubscriberTestCase {
 			]
 		);
 
+		$this->setSubscriber( true, true, false, true );
+
 		$this->subscriber->maybe_deactivate_rocket_lazyload();
 	}
 
 	public function testShouldDisableWPRocketBothLazyLoadWhenSmushLazyLoadForImagesAndIframesIsEnabled() {
-		Functions\when( 'get_rocket_option' )
-			->alias(
-				function( $option ) {
-					switch ( $option ) {
-						case 'lazyload':
-						case 'lazyload_iframes':
-							return true;
-					}
-					return false;
-				}
-			);
-		Functions\expect( 'update_rocket_option' )
-			->once()
-			->with( 'lazyload', 0 )
-			->once()
-			->with( 'lazyload_iframes', 0 );
-
 		$this->mock_is_smush_lazyload_enabled(
 			true,
 			[
@@ -131,6 +75,49 @@ class Test_MaybeDeactivateRocketLazyload extends SmushSubscriberTestCase {
 			]
 		);
 
+		$this->setSubscriber( true, true, true, true );
+
 		$this->subscriber->maybe_deactivate_rocket_lazyload();
+	}
+
+	private function setSubscriber( $getLazyload, $getLazyloadIframes, $setLazyload, $setLazyloadIframes ) {
+		$options      = Mockery::mock( 'WP_Rocket\Admin\Options' );
+		$options_data = Mockery::mock( 'WP_Rocket\Admin\Options_Data' );
+		$options_data
+			->shouldReceive( 'get' )
+			->andReturnUsing(
+				function ( $setting, $default = '' ) use ( $getLazyload, $getLazyloadIframes ) {
+					if ( 'lazyload' === $setting ) {
+						return $getLazyload;
+					}
+					if ( 'lazyload_iframes' === $setting ) {
+						return $getLazyloadIframes;
+					}
+					return $default;
+				}
+			);
+
+		$setLazyload        = $setLazyload ? 1 : 0;
+		$setLazyloadIframes = $setLazyloadIframes ? 1 : 0;
+		$setCount           = min( $setLazyload + $setLazyloadIframes, 1 );
+		$options_data
+			->shouldReceive( 'set' )
+			->times( $setLazyload )
+			->with( 'lazyload', 0 );
+
+		$options_data
+			->shouldReceive( 'set' )
+			->times( $setLazyloadIframes )
+			->with( 'lazyload_iframes', 0 );
+
+		$options_data
+			->shouldReceive( 'get_options' )
+			->times( $setCount );
+
+		$options
+			->shouldReceive( 'set' )
+			->times( $setCount );
+
+		$this->subscriber = new Smush_Subscriber( $options, $options_data );
 	}
 }
