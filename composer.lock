@@ -3357,16 +3357,16 @@
         },
         {
             "name": "wp-media/phpunit",
-            "version": "v1.1.1",
+            "version": "v1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-media/phpunit.git",
-                "reference": "a58a305ab8cd79a466a20b24639571dbc018f09e"
+                "reference": "09ab45c5ef7e8410f873baab226d3ff5cc52d8ab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-media/phpunit/zipball/a58a305ab8cd79a466a20b24639571dbc018f09e",
-                "reference": "a58a305ab8cd79a466a20b24639571dbc018f09e",
+                "url": "https://api.github.com/repos/wp-media/phpunit/zipball/09ab45c5ef7e8410f873baab226d3ff5cc52d8ab",
+                "reference": "09ab45c5ef7e8410f873baab226d3ff5cc52d8ab",
                 "shasum": ""
             },
             "require": {

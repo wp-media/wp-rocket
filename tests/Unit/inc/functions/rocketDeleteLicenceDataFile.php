@@ -24,6 +24,7 @@ class Test_RocketDeleteLicenceDataFile extends FilesystemTestCase {
 	}
 
 	public function testShouldDeleteLicenceDataFileWhenExists() {
+		Functions\when( 'is_multisite' )->justReturn( false );
 		Functions\expect( 'rocket_get_constant' )
 			->once()
 			->with( 'WP_ROCKET_PATH' )
@@ -34,5 +35,15 @@ class Test_RocketDeleteLicenceDataFile extends FilesystemTestCase {
 		rocket_delete_licence_data_file();
 
 		$this->assertFalse( $this->filesystem->exists( 'wp-rocket/licence-data.php' ) );
+	}
+
+	public function testShouldDoNothingWhenMultisite() {
+		Functions\when( 'is_multisite' )->justReturn( true );
+
+		$this->assertTrue( $this->filesystem->exists( 'wp-rocket/licence-data.php' ) );
+
+		rocket_delete_licence_data_file();
+
+		$this->assertTrue( $this->filesystem->exists( 'wp-rocket/licence-data.php' ) );
 	}
 }
