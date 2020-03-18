@@ -47,16 +47,17 @@ class CDNSubscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_buffer'           => [
+			'rocket_buffer'             => [
 				[ 'rewrite', 20 ],
 				[ 'rewrite_srcset', 21 ],
 			],
-			'rocket_css_content'      => 'rewrite_css_properties',
-			'rocket_cdn_hosts'        => [ 'get_cdn_hosts', 10, 2 ],
-			'rocket_dns_prefetch'     => 'add_dns_prefetch_cdn',
-			'rocket_facebook_sdk_url' => 'add_cdn_url',
-			'rocket_css_url'          => [ 'add_cdn_url', 10, 2 ],
-			'rocket_js_url'           => [ 'add_cdn_url', 10, 2 ],
+			'rocket_css_content'        => 'rewrite_css_properties',
+			'rocket_cdn_hosts'          => [ 'get_cdn_hosts', 10, 2 ],
+			'rocket_dns_prefetch'       => 'add_dns_prefetch_cdn',
+			'rocket_facebook_sdk_url'   => 'add_cdn_url',
+			'rocket_css_url'            => [ 'add_cdn_url', 10, 2 ],
+			'rocket_js_url'             => [ 'add_cdn_url', 10, 2 ],
+			'rocket_before_url_to_path' => [ 'maybe_replace_url', 10, 2 ],
 		];
 	}
 
@@ -196,6 +197,35 @@ class CDNSubscriber implements Subscriber_Interface {
 		}
 
 		return $this->cdn->rewrite_url( $url );
+	}
+
+	/**
+	 * Replace CDN URL with site URL on the provided asset URL.
+	 *
+	 * @param string $url URL of the asset.
+	 * @param array  $zones Array of corresponding zones for the asset.
+	 * @return string
+	 */
+	public function maybe_replace_url( $url, array $zones = [ 'all' ] ) {
+		if ( ! $this->is_allowed() ) {
+			return $url;
+		}
+
+		$cdn_urls = $this->cdn->get_cdn_urls( $zones );
+
+		if ( empty( $cdn_urls ) ) {
+			return $url;
+		}
+
+		foreach ( $cdn_urls as $cdn_url ) {
+			if ( false === strpos( $url, $cdn_url ) ) {
+				continue;
+			}
+
+			return str_replace( $cdn_url, site_url(), $url );
+		}
+
+		return $url;
 	}
 
 	/**
