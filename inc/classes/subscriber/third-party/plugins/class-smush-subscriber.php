@@ -115,7 +115,7 @@ class Smush_Subscriber implements Subscriber_Interface {
 	/**
 	 * Tell if Smush’s lazyload is enabled for each type of content.
 	 *
-	 * @since  3.5.1
+	 * @since  3.6
 	 * @author Grégory Viguier
 	 *
 	 * @return array {
