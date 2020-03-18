@@ -1,8 +1,8 @@
 <?php
 namespace WP_Rocket\Optimization\CSS;
 
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Optimization\Abstract_Optimization;
-use WP_Rocket\Admin\Options_Data as Options;
 
 /**
  * Abstract class for CSS Optimization
@@ -19,9 +19,9 @@ abstract class Abstract_CSS_Optimization extends Abstract_Optimization {
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
-	 * @param Options $options Options instance.
+	 * @param Options_Data $options Options instance.
 	 */
-	public function __construct( Options $options ) {
+	public function __construct( Options_Data $options ) {
 		$this->options          = $options;
 		$this->minify_key       = $this->options->get( 'minify_css_key', create_rocket_uniqid() );
 		$this->excluded_files   = $this->get_excluded_files();
@@ -119,7 +119,7 @@ abstract class Abstract_CSS_Optimization extends Abstract_Optimization {
 			return true;
 		}
 
-		$file_path = rocket_extract_url_component( $tag[2], PHP_URL_PATH );
+		$file_path = wp_parse_url( $tag[2], PHP_URL_PATH );
 
 		// File extension is not css.
 		if ( pathinfo( $file_path, PATHINFO_EXTENSION ) !== self::FILE_TYPE ) {
