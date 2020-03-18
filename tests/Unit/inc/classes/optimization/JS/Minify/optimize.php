@@ -4,9 +4,9 @@ namespace WP_Rocket\Tests\Unit\inc\optimization\JS\Minify;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Optimization\JS\Minify;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
-use WP_Rocket\Admin\Options_Data;
 
 /**
  * @covers \WP_Rocket\Optimization\JS\Minify::optimize
@@ -89,11 +89,8 @@ class Test_Optimize extends FilesystemTestCase {
 			'http://en.example.org',
 			'https://example.de',
 		] );
-		Functions\when( 'rocket_extract_url_component' )->alias( function( $url, $component ) {
+		Functions\when( 'wp_parse_url' )->alias( function( $url, $component ) {
 			return parse_url( $url, $component );
-        } );
-        Functions\when( 'rocket_clean_exclude_file' )->alias( function( $url ) {
-			return parse_url( $url, PHP_URL_PATH );
         } );
         Functions\when( 'home_url' )->justReturn( 'http://example.org' );
         Functions\when( 'rocket_url_to_path' )->alias( function( $url, $hosts ) {
@@ -131,10 +128,25 @@ class Test_Optimize extends FilesystemTestCase {
 	/**
 	 * @dataProvider addDataProvider
 	 */
-    public function testShouldMinifyJS( $original, $minified ) {
-        Functions\when('rocket_extract_url_component')->alias( function($url, $component ) {
-            return parse_url( $url, $component );
-        });
+    public function testShouldMinifyJS( $original, $minified, $cdn_hosts, $cdn_url ) {
+		$GLOBALS['wp_scripts'] = (object) [
+			'registered' => [
+				'jquery-core' => (object) [
+					'src' => 'wp-includes/js/jquery/jquery.js',
+				],
+			]
+		]; 
+
+		Filters\expectApplied( 'rocket_cdn_hosts' )
+			->zeroOrMoreTimes()
+			->with( [], [ 'all', 'css_and_js', 'js' ] )
+			->andReturn( $cdn_hosts );
+
+        Filters\expectApplied( 'rocket_js_url' )
+			->zeroOrMoreTimes()
+            ->andReturnUsing( function( $url, $original_url ) use ( $cdn_url ) {
+                return str_replace( 'http://example.org', $cdn_url, $url );
+			} );
 
         $this->assertSame(
             $minified,
@@ -142,65 +154,7 @@ class Test_Optimize extends FilesystemTestCase {
         );
     }
 
-    /**
-     * @dataProvider addCDNDataProvider
-     */
-    public function testShouldMinifyJSAndCDN( $original, $minified ) {
-        Filters\expectApplied( 'rocket_cdn_hosts' )
-			->zeroOrMoreTimes()
-			->with( [], [ 'all', 'css_and_js', 'css', 'js' ] )
-			->andReturn( [
-				'123456.rocketcdn.me',
-			]
-        );
-
-        Filters\expectApplied( 'rocket_js_url' )
-            ->atLeast()
-            ->times(1)
-            ->andReturnUsing( function( $url, $original_url ) {
-                return str_replace( 'http://example.org', 'https://123456.rocketcdn.me', $url );
-            } );
-
-        $this->assertSame(
-            $minified,
-            $this->minify->optimize( $original )
-        );
-	}
-
-	/**
-     * @dataProvider addCDNPathDataProvider
-     */
-    public function testShouldMinifyJSAndCDNPath( $original, $minified ) {
-        Filters\expectApplied( 'rocket_cdn_hosts' )
-			->zeroOrMoreTimes()
-			->with( [], [ 'all', 'css_and_js', 'css', 'js' ] )
-			->andReturn( [
-				'123456.rocketcdn.me',
-			]
-        );
-
-        Filters\expectApplied( 'rocket_js_url' )
-            ->atLeast()
-            ->times(1)
-            ->andReturnUsing( function( $url, $original_url ) {
-                return str_replace( 'http://example.org', 'https://123456.rocketcdn.me/path/to/cdn', $url );
-            } );
-
-        $this->assertSame(
-            $minified,
-            $this->minify->optimize( $original )
-        );
-	}
-
 	public function addDataProvider() {
 		return $this->getTestData( __DIR__, 'optimize' );
-	}
-
-	public function addCDNDataProvider() {
-		return $this->getTestData( __DIR__, 'optimize-cdn' );
-	}
-
-	public function addCDNPathDataProvider() {
-		return $this->getTestData( __DIR__, 'optimize-cdn-path' );
 	}
 }
