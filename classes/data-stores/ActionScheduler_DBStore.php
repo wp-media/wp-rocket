@@ -56,7 +56,8 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 				$data['extended_args'] = $args;
 			}
 
-			$wpdb->insert( $wpdb->actionscheduler_actions, $data );
+			$table_name = ! empty( $wpdb->actionscheduler_actions ) ? $wpdb->actionscheduler_actions : $wpdb->prefix . 'actionscheduler_actions';
+			$wpdb->insert( $table_name, $data );
 			$action_id = $wpdb->insert_id;
 
 			if ( is_wp_error( $action_id ) ) {
