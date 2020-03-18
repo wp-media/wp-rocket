@@ -132,7 +132,7 @@ class Minify extends Abstract_JS_Optimization {
 		}
 
 		$unique_id = md5( $url . $this->minify_key );
-		$filename  = preg_replace( '/\.js$/', '-' . $unique_id . '.js', ltrim( rocket_realpath( rocket_extract_url_component( $url, PHP_URL_PATH ) ), '/' ) );
+		$filename  = preg_replace( '/\.js$/', '-' . $unique_id . '.js', ltrim( rocket_realpath( wp_parse_url( $url, PHP_URL_PATH ) ), '/' ) );
 
 		$minified_file = $this->minify_base_path . $filename;
 		$minified_url  = $this->get_minify_url( $filename, $url );
