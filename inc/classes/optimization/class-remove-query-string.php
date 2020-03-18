@@ -284,12 +284,15 @@ class Remove_Query_String extends Abstract_Optimization {
 	 * @return bool|string
 	 */
 	protected function replace_url( $url, $extension ) {
-		$parsed_url = get_rocket_parse_url( $url );
+		$query = wp_parse_url( $url, PHP_URL_QUERY );
 
-		if ( empty( $parsed_url['query'] ) ) {
+		if ( empty( $query ) ) {
 			return $url;
 		}
 
+		// This filter is documented in /inc/classes/optimization/class-abstract-optimization.php.
+		$internal_url = apply_filters( 'rocket_before_url_to_path', $url, $this->get_zones() );
+		$parsed_url   = get_rocket_parse_url( $internal_url );
 		$relative_src = ltrim( $parsed_url['path'] . '?' . $parsed_url['query'], '/' );
 		$filename     = preg_replace( '/\.(' . $extension . ')\?(?:timestamp|ver)=([^&]+)(?:.*)/', '-$2.$1', $relative_src );
 
