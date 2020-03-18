@@ -128,6 +128,7 @@ abstract class Abstract_Optimization {
 	 * @return string
 	 */
 	protected function get_file_path( $url ) {
+		$url            = strtok( $url, '?' );
 		$wp_content_dir = rocket_get_constant( 'WP_CONTENT_DIR' );
 		$root_dir       = trailingslashit( dirname( $wp_content_dir ) );
 		$root_url       = str_replace( wp_basename( $wp_content_dir ), '', content_url() );
@@ -154,6 +155,7 @@ abstract class Abstract_Optimization {
 		$url      = preg_replace( '/^https?:/', '', $url );
 		$file     = str_replace( $root_url, $root_dir, $url );
 		$file     = rocket_realpath( $file );
+
 		/**
 		 * Filters the absolute path to the asset file
 		 *
