@@ -53,6 +53,11 @@ class Test_RemoveQueryStringsCSS extends FilesystemTestCase {
 	public function setUp() {
 		parent::setUp();
 
+        Functions\expect( 'rocket_get_constant' )
+			->zeroOrMoreTimes()
+			->with( 'WP_CONTENT_DIR' )
+			->andReturn( $this->filesystem->getUrl( 'wordpress/wp-content/' ) );
+
 		Functions\when( 'get_current_blog_id' )->justReturn( 1 );
 
 		$this->rqs = new Remove_Query_String(
@@ -88,16 +93,29 @@ class Test_RemoveQueryStringsCSS extends FilesystemTestCase {
 		Functions\when( 'wp_parse_url' )->alias( function( $url, $component ) {
 			return parse_url( $url, $component );
         } );
-        Functions\when( 'rocket_clean_exclude_file' )->alias( function( $url ) {
-			return parse_url( $url, PHP_URL_PATH );
-        } );
+        Functions\when( 'wp_basename' )->alias( function( $path, $suffix = '' ) {
+			return urldecode( basename( str_replace( array( '%2F', '%5C' ), '/', urlencode( $path ) ), $suffix ) );
+		} );
         Functions\when( 'home_url' )->justReturn( 'http://example.org' );
-        Functions\when( 'rocket_url_to_path' )->alias( function( $url, $hosts ) {
-            $path = parse_url( $url, PHP_URL_PATH );
+        Functions\when( 'rocket_realpath' )->alias( function( $file ) {
+			$path = [];
+			$file = substr( $file, 6 );
 
-            return $this->filesystem->getUrl( $path );
-        } );
+			foreach ( explode( '/', $file ) as $part ) {
+				if ( '' === $part || '.' === $part ) {
+					continue;
+				}
 
+				if ( '..' !== $part ) {
+					array_push( $path, $part );
+				}
+				elseif ( count( $path ) > 0 ) {
+					array_pop( $path );
+				}
+			}
+
+			return 'vfs://' . join( '/', $path );
+		} );
         Functions\when( 'rocket_get_filesystem_perms' )->justReturn( 0644 );
     }
 
@@ -108,11 +126,17 @@ class Test_RemoveQueryStringsCSS extends FilesystemTestCase {
     /**
      * @dataProvider addDataProvider
      */
-    public function testShouldRemoveQueryStringsWhenCSSURL( $original, $expected, $cdn_host, $cdn_url ) {
+    public function testShouldRemoveQueryStringsWhenCSSURL( $original, $expected, $cdn_host, $cdn_url, $site_url ) {
         Filters\expectApplied( 'rocket_cdn_hosts' )
 			->zeroOrMoreTimes()
 			->with( [], [ 'all', 'css_and_js', 'css', 'js' ] )
-			->andReturn( $cdn_host );
+            ->andReturn( $cdn_host );
+
+        Filters\expectApplied( 'rocket_before_url_to_path' )
+			->zeroOrMoreTimes()
+			->andReturnUsing( function( $url ) use ( $cdn_url, $site_url ) {
+                return str_replace( $cdn_url, $site_url, $url );
+            } );
 
         Filters\expectApplied( 'rocket_css_url' )
             ->zeroOrMoreTimes()
