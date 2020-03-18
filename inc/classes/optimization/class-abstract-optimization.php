@@ -128,11 +128,48 @@ abstract class Abstract_Optimization {
 	 * @return string
 	 */
 	protected function get_file_path( $url ) {
-		// This filter is documented in inc/classes/optimization/class-abstract-optimization.php.
-		$hosts         = apply_filters( 'rocket_cdn_hosts', [], $this->get_zones() );
-		$hosts['home'] = wp_parse_url( home_url(), PHP_URL_HOST );
+		$wp_content_dir = rocket_get_constant( 'WP_CONTENT_DIR' );
+		$root_dir       = trailingslashit( dirname( $wp_content_dir ) );
+		$root_url       = str_replace( wp_basename( $wp_content_dir ), '', content_url() );
+		$url_host       = wp_parse_url( $url, PHP_URL_HOST );
 
-		return rocket_url_to_path( strtok( $url, '?' ), $hosts );
+		// relative path.
+		if ( null === $url_host ) {
+			$subdir_levels = substr_count( preg_replace( '/https?:\/\//', '', site_url() ), '/' );
+			$url           = trailingslashit( site_url() . str_repeat( '/..', $subdir_levels ) ) . ltrim( $url, '/' );
+		}
+
+		/**
+		 * Filters the URL before converting it to a path
+		 *
+		 * @since 3.5.1
+		 * @author Remy Perona
+		 *
+		 * @param string $url   URL of the asset.
+		 * @param array  $zones CDN zones corresponding to the current assets type.
+		 */
+		$url = apply_filters( 'rocket_before_url_to_path', $url, $this->get_zones() );
+
+		$root_url = preg_replace( '/^https?:/', '', $root_url );
+		$url      = preg_replace( '/^https?:/', '', $url );
+		$file     = str_replace( $root_url, $root_dir, $url );
+		$file     = rocket_realpath( $file );
+		/**
+		 * Filters the absolute path to the asset file
+		 *
+		 * @since 3.3
+		 * @author Remy Perona
+		 *
+		 * @param string $file Absolute path to the file.
+		 * @param string $url  URL of the asset.
+		 */
+		$file = apply_filters( 'rocket_url_to_path', $file, $url );
+
+		if ( ! rocket_direct_filesystem()->is_readable( $file ) ) {
+			return false;
+		}
+
+		return $file;
 	}
 
 	/**
