@@ -63,6 +63,11 @@ class Test_Optimize extends FilesystemTestCase {
 			->with( 'WP_ROCKET_MINIFY_CACHE_URL' )
 			->andReturn( 'http://example.org/wp-content/cache/min/' );
 
+		Functions\expect( 'rocket_get_constant' )
+			->zeroOrMoreTimes()
+			->with( 'WP_CONTENT_DIR' )
+			->andReturn( $this->filesystem->getUrl( 'wordpress/wp-content/' ) );
+
 		Functions\when( 'get_current_blog_id' )->justReturn( 1 );
 		Functions\when( 'create_rocket_uniqid' )->justReturn( 'rocket_uniqid' );
 
@@ -94,11 +99,9 @@ class Test_Optimize extends FilesystemTestCase {
         } );
 
         Functions\when( 'home_url' )->justReturn( 'http://example.org' );
-        Functions\when( 'rocket_url_to_path' )->alias( function( $url, $hosts ) {
-            $path = parse_url( $url, PHP_URL_PATH );
-
-            return $this->filesystem->getUrl( $path );
-        } );
+        Functions\when( 'wp_basename' )->alias( function( $path, $suffix = '' ) {
+			return urldecode( basename( str_replace( array( '%2F', '%5C' ), '/', urlencode( $path ) ), $suffix ) );
+		} );
 
 		Functions\when( 'rocket_get_filesystem_perms' )->justReturn( 0644 );
 
@@ -123,6 +126,10 @@ class Test_Optimize extends FilesystemTestCase {
 			return $prefix . join( '/', $path );
 		} );
 
+		Filters\expectApplied( 'rocket_url_to_path' )
+			->andReturnUsing( function( $file ) {
+				return str_replace( '/vfs:/', 'vfs://', $file );
+			} );
 		$this->minify = new Minify( $this->createMock( Options_Data::class ) );
 	}
 
@@ -133,11 +140,17 @@ class Test_Optimize extends FilesystemTestCase {
 	/**
 	 * @dataProvider addDataProvider
 	 */
-    public function testShouldMinifyCSS( $original, $minified, $cdn_host, $cdn_url ) {
+    public function testShouldMinifyCSS( $original, $minified, $cdn_host, $cdn_url, $site_url ) {
 		Filters\expectApplied( 'rocket_cdn_hosts' )
 			->zeroOrMoreTimes()
 			->with( [], [ 'all', 'css_and_js', 'css' ] )
 			->andReturn( $cdn_host );
+		
+		Filters\expectApplied( 'rocket_before_url_to_path' )
+			->zeroOrMoreTimes()
+			->andReturnUsing( function( $url ) use ( $cdn_url, $site_url ) {
+                return str_replace( $cdn_url, $site_url, $url );
+            } );
 
         Filters\expectApplied( 'rocket_css_url' )
 			->zeroOrMoreTimes()
