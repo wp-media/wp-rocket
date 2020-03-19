@@ -1,8 +1,6 @@
 <?php
 namespace WP_Rocket\Tests\Integration\inc\classes\third_party\plugins\Smush_Subscriber;
 
-use Brain\Monkey\Functions;
-
 /**
  * @covers \WP_Rocket\Subscriber\Third_Party\Plugins\Smush_Subscriber::maybe_deactivate_rocket_lazyload
  * @group ThirdParty
@@ -51,8 +49,6 @@ class Test_MaybeDeactivateRocketLazyload extends SmushSubscriberTestCase {
 	}
 
 	public function testShouldNotDisableWPRocketLazyLoad() {
-		Functions\expect( 'update_rocket_option' )->never();
-
 		// Smush not enabled, WPR enabled.
 		$this->setSmushSettings(
 			false,
@@ -68,7 +64,7 @@ class Test_MaybeDeactivateRocketLazyload extends SmushSubscriberTestCase {
 
 		$this->subscriber->maybe_deactivate_rocket_lazyload();
 
-		$new_settings = $this->getLazyloadSettings();
+		$new_settings = $this->getRocketLazyloadSettings();
 
 		$this->assertNotEmpty( $new_settings['lazyload'] );
 		$this->assertNotEmpty( $new_settings['lazyload_iframes'] );
@@ -91,7 +87,7 @@ class Test_MaybeDeactivateRocketLazyload extends SmushSubscriberTestCase {
 
 		$this->subscriber->maybe_deactivate_rocket_lazyload();
 
-		$new_settings = $this->getLazyloadSettings();
+		$new_settings = $this->getRocketLazyloadSettings();
 
 		$this->assertEmpty( $new_settings['lazyload'] );
 		$this->assertEmpty( $new_settings['lazyload_iframes'] );
@@ -115,7 +111,7 @@ class Test_MaybeDeactivateRocketLazyload extends SmushSubscriberTestCase {
 
 		$this->subscriber->maybe_deactivate_rocket_lazyload();
 
-		$new_settings = $this->getLazyloadSettings();
+		$new_settings = $this->getRocketLazyloadSettings();
 
 		$this->assertEmpty( $new_settings['lazyload'] );
 		$this->assertNotEmpty( $new_settings['lazyload_iframes'] );
@@ -139,7 +135,7 @@ class Test_MaybeDeactivateRocketLazyload extends SmushSubscriberTestCase {
 
 		$this->subscriber->maybe_deactivate_rocket_lazyload();
 
-		$new_settings = $this->getLazyloadSettings();
+		$new_settings = $this->getRocketLazyloadSettings();
 
 		$this->assertNotEmpty( $new_settings['lazyload'] );
 		$this->assertEmpty( $new_settings['lazyload_iframes'] );
@@ -163,19 +159,22 @@ class Test_MaybeDeactivateRocketLazyload extends SmushSubscriberTestCase {
 
 		$this->subscriber->maybe_deactivate_rocket_lazyload();
 
-		$new_settings = $this->getLazyloadSettings();
+		$new_settings = $this->getRocketLazyloadSettings();
 
 		$this->assertEmpty( $new_settings['lazyload'] );
 		$this->assertEmpty( $new_settings['lazyload_iframes'] );
 	}
 
 	private function setRocketSettings( array $settings ) {
-		$current_settings = (array) get_option( 'wp_rocket_settings', [] );
-		$current_settings = array_merge( $current_settings, $settings );
-		update_option( 'wp_rocket_settings', $current_settings );
+		foreach ( $settings as $setting => $value ) {
+			$this->options_data->set( $setting, $value );
+		}
+
+		$this->options_api->set( 'settings', $this->options_data->get_options() );
+		$this->set_reflective_property( $this->options_data, 'options', $this->subscriber );
 	}
 
-	private function getLazyloadSettings() {
+	private function getRocketLazyloadSettings() {
 		$settings = (array) get_option( 'wp_rocket_settings', [] );
 
 		return [

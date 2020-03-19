@@ -7,6 +7,8 @@ use WPMedia\PHPUnit\Integration\TestCase;
 
 abstract class SmushSubscriberTestCase extends TestCase {
 	protected $subscriber;
+	protected $options_data;
+	protected $options_api;
 	protected $smush;
 	protected $smush_settings_option_name;
 	protected $smush_settings;
@@ -18,9 +20,9 @@ abstract class SmushSubscriberTestCase extends TestCase {
 
 		$container = apply_filters( 'rocket_container', null );
 
-		if ( ! empty( $container ) ) {
-			$this->subscriber = $container->get( 'smush_subscriber' );
-		}
+		$this->subscriber   = $container->get( 'smush_subscriber' );
+		$this->options_data = $container->get( 'options' );
+		$this->options_api  = $container->get( 'options_api' );
 
 		$this->smush                      = Settings::get_instance();
 		$this->smush_settings_option_name = WP_SMUSH_PREFIX . 'settings';
@@ -32,6 +34,9 @@ abstract class SmushSubscriberTestCase extends TestCase {
 	public function tearDown() {
 		parent::tearDown();
 
+		$this->options_api->set( 'settings', $this->options_data->get_options() );
+		$this->set_reflective_property( $this->options_data, 'options', $this->subscriber );
+
 		// Added by \Smush\Core\Settings::__construct().
 		remove_action( 'wp_ajax_save_settings', [ $this->subscriber, 'save' ] );
 		remove_action( 'wp_ajax_reset_settings', [ $this->subscriber, 'reset' ] );
@@ -40,6 +45,8 @@ abstract class SmushSubscriberTestCase extends TestCase {
 		$this->smush->set_setting( $this->smush_lazy_option_name, $this->smush_lazy );
 
 		$this->subscriber     = null;
+		$this->options_data   = null;
+		$this->options_api    = null;
 		$this->smush_settings = null;
 		$this->smush_lazy     = null;
 	}
