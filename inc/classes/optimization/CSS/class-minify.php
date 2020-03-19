@@ -119,6 +119,9 @@ class Minify extends Abstract_CSS_Optimization {
 			return false;
 		}
 
+		// This filter is documented in /inc/classes/optimization/class-abstract-optimization.php.
+		$url = apply_filters( 'rocket_before_url_to_path', $url, $this->get_zones() );
+
 		$unique_id = md5( $url . $this->minify_key );
 		$filename  = preg_replace( '/\.(css)$/', '-' . $unique_id . '.css', ltrim( rocket_realpath( wp_parse_url( $url, PHP_URL_PATH ) ), '/' ) );
 
