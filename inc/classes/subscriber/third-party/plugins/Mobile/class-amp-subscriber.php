@@ -27,7 +27,7 @@ class Amp_Subscriber implements Subscriber_Interface {
 		}
 
 		if ( function_exists( 'is_amp_endpoint' ) ) {
-			$events['get_rocket_option_cache_query_strings'] = 'is_amp_active_callback';
+			$events['get_rocket_option_cache_query_strings'] = 'is_amp_compatible_callback';
 		}
 
 		return $events;
@@ -41,9 +41,13 @@ class Amp_Subscriber implements Subscriber_Interface {
 	 *
 	 * @param array $value WP Rocket cache_query_strings value.
 	 */
-	public function is_amp_active_callback( $value ) {
+	public function is_amp_compatible_callback( $value ) {
 		$options       = get_option( self::AMP_OPTIONS, [] );
 		$query_strings = array_diff( $value, [ static::QUERY ] );
+
+		if ( empty( $options['theme_support'] ) ) {
+			return $query_strings;
+		}
 
 		if ( 'transitional' === $options['theme_support'] ) {
 			$query_strings[] = static::QUERY;
