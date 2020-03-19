@@ -217,12 +217,26 @@ class CDNSubscriber implements Subscriber_Interface {
 			return $url;
 		}
 
+		$url_parts = get_rocket_parse_url( $url );
+
+		if ( empty( $url_parts['host'] ) ) {
+			return $url;
+		}
+
+		$site_url_parts = get_rocket_parse_url( site_url() );
+
+		if ( empty( $site_url_parts['host'] ) ) {
+			return $url;
+		}
+
+		$site_url = $site_url_parts['scheme'] . '://' . $site_url_parts['host'];
+
 		foreach ( $cdn_urls as $cdn_url ) {
 			if ( false === strpos( $url, $cdn_url ) ) {
 				continue;
 			}
 
-			return str_replace( $cdn_url, site_url(), $url );
+			return str_replace( $cdn_url, $site_url, $url );
 		}
 
 		return $url;
