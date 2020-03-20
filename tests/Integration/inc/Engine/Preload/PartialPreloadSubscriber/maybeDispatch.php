@@ -62,9 +62,6 @@ class Test_MaybeDispatch extends TestCase {
 		do_action( 'after_rocket_clean_post', $post, $purge_urls, 'en' );
 		do_action( 'shutdown' );
 
-		//$this->subscriber->preload_after_clean_post( $post, $purge_urls, 'en' );
-		//$this->subscriber->maybe_dispatch();
-
 		$key = $this->process_wrapper->getGeneratedKey();
 
 		$this->assertNotNull( $key );
