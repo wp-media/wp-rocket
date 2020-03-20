@@ -52,8 +52,8 @@ class Test_PurgeCache extends FilesystemTestCase {
 		$this->assertNull( $this->filesystem->getFile( 'wp-rocket/example.org/index.html_gzip' ) );
 		$this->assertNull( $this->filesystem->getFile( 'wp-rocket/example.org-Greg-594d03f6ae698691165999/about/index.html' ) );
 		$this->assertNull( $this->filesystem->getFile( 'wp-rocket/example.org-Greg-594d03f6ae698691165999/about/index.html_gzip' ) );
-		$this->assertNull( $this->filesystem->getFile( 'wp-rocket/min/1/5c795b0e3a1884eec34a989485f863ff.js' ) );
-		$this->assertNull( $this->filesystem->getFile( 'wp-rocket/min/1/fa2965d41f1515951de523cecb81f85e.css' ) );
+		$this->assertNull( $this->filesystem->getFile( 'min/1/5c795b0e3a1884eec34a989485f863ff.js' ) );
+		$this->assertNull( $this->filesystem->getFile( 'min/1/fa2965d41f1515951de523cecb81f85e.css' ) );
 	}
 
 	public function testShouldCleanRocketCacheDirectoriesWhenFLCacheCleared() {
@@ -72,7 +72,7 @@ class Test_PurgeCache extends FilesystemTestCase {
 		$this->assertNull( $this->filesystem->getFile( 'wp-rocket/example.org/index.html_gzip' ) );
 		$this->assertNull( $this->filesystem->getFile( 'wp-rocket/example.org-Greg-594d03f6ae698691165999/about/index.html' ) );
 		$this->assertNull( $this->filesystem->getFile( 'wp-rocket/example.org-Greg-594d03f6ae698691165999/about/index.html_gzip' ) );
-		$this->assertNull( $this->filesystem->getFile( 'wp-rocket/min/1/5c795b0e3a1884eec34a989485f863ff.js' ) );
-		$this->assertNull( $this->filesystem->getFile( 'wp-rocket/min/1/fa2965d41f1515951de523cecb81f85e.css' ) );
+		$this->assertNull( $this->filesystem->getFile( 'min/1/5c795b0e3a1884eec34a989485f863ff.js' ) );
+		$this->assertNull( $this->filesystem->getFile( 'min/1/fa2965d41f1515951de523cecb81f85e.css' ) );
 	}
 }

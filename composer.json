@@ -87,6 +87,7 @@
 		"test-integration-withwoo": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group WithWoo",
 		"test-integration-multisite": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group Multisite",
 		"test-integration-bb": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group BeaverBuilder",
+		"test-integration-elementor": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group Elementor",
 		"run-tests": [
 			"@test-unit",
 			"@test-integration",
@@ -94,7 +95,8 @@
 			"@test-integration-docloudflare",
 			"@test-integration-withwoo",
 			"@test-integration-multisite",
-			"@test-integration-bb"
+			"@test-integration-bb",
+			"@test-integration-elementor"
 		],
 		"run-stan":"vendor/bin/phpstan analyze --memory-limit=2G --no-progress",
 		"install-codestandards": "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run",

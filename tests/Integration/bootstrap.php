@@ -31,6 +31,10 @@ tests_add_filter(
 			define( 'FL_BUILDER_VERSION', '5.3' );
 		}
 
+		if ( BootstrapManager::isGroup( 'Elementor' ) ) {
+			define( 'ELEMENTOR_VERSION', '2.0' );
+		}
+
 		// Overload the license key for testing.
 		redefine( 'rocket_valid_key', '__return_true' );
 
