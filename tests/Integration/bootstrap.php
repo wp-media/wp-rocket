@@ -27,6 +27,10 @@ tests_add_filter(
 			define( 'MULTISITE', true );
 		}
 
+		if ( BootstrapManager::isGroup( 'BeaverBuilder' ) ) {
+			define( 'FL_BUILDER_VERSION', '5.3' );
+		}
+
 		// Overload the license key for testing.
 		redefine( 'rocket_valid_key', '__return_true' );
 
