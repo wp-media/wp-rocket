@@ -45,3 +45,16 @@ function rocket_exclude_busting_uncode( $exclude_busting ) {
     $exclude_busting[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/plugins.min.js' );
     return $exclude_busting;
 }
+
+/**
+ * Purge the cache when the beaver builder layout is updated to update the minified files content & URL
+ *
+ * @deprecated 3.6
+ * @since 2.9 Also clear the cache busting folder
+ * @since 2.8.6
+ */
+function rocket_beaver_builder_clean_domain() {
+    _deprecated_function( __FUNCTION__ . '()', '3.6', 'WP_Rocket\ThirdParty\Plugins\PageBuilder\BeaverBuilder::purge_cache' );
+	rocket_clean_minify();
+	rocket_clean_domain();
+}
