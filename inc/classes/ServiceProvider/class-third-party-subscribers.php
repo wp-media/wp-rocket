@@ -50,7 +50,7 @@ class Third_Party_Subscribers extends AbstractServiceProvider {
 		$this->getContainer()->share( 'elementor_subscriber', \WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor::class )
 			->withArgument( $this->getContainer()->get( 'options' ) );
 		$this->getContainer()->share( 'syntaxhighlighter_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\SyntaxHighlighter_Subscriber' );
-		$this->getContainer()->share( 'bridge_subscriber', WP_Rocket\ThirdParty\Themes\Bridge::class )
+		$this->getContainer()->share( 'bridge_subscriber', \WP_Rocket\ThirdParty\Themes\Bridge::class )
 			->withArgument( $this->getContainer()->get( 'options' ) );
 		$this->getContainer()->share( 'ngg_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\NGG_Subscriber' );
 		$this->getContainer()->share( 'smush_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Smush_Subscriber' );
