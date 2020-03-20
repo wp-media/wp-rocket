@@ -32,10 +32,6 @@ class Test_PurgeCache extends FilesystemTestCase {
 		],
 	];
 
-	public function setUp() {
-		parent::setUp();
-	}
-
 	public function testShouldCleanRocketCacheDirectoriesWhenSaveLayout() {
 		Functions\expect( 'rocket_get_constant' )
 			->once()

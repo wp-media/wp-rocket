@@ -32,10 +32,10 @@ class Test_ClearCache extends FilesystemTestCase {
 		],
 	];
 
-	public function setUp() {
-        parent::setUp();
+	public function tearDown() {
+		delete_option( 'elementor_css_print_method' );
 
-        delete_option( 'elementor_css_print_method' );
+		parent::tearDown();
     }
 
     public function testShouldDoNothingWhenNotExternal() {
