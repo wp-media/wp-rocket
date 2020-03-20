@@ -1,4 +1,5 @@
 <?php
+
 namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\PartialPreloadSubscriber;
 
 use Brain\Monkey\Functions;
