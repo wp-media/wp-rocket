@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Subscriber\Third_Party\Themes;
+namespace WP_Rocket\ThirdParty\Themes;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
@@ -10,7 +10,7 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * @since 3.3.1
  * @author Remy Perona
  */
-class Bridge_Subscriber implements Subscriber_Interface {
+class Bridge implements Subscriber_Interface {
 	/**
 	 * Options instance
 	 *
@@ -73,7 +73,7 @@ class Bridge_Subscriber implements Subscriber_Interface {
 	public function maybe_clear_cache( $old_value, $new_value ) {
 		$clear = false;
 
-		if ( $this->options->get( 'remove_query_strings' ) || $this->options->get( 'minify_css' ) ) {
+		if ( $this->options->get( 'minify_css', 0 ) ) {
 			if ( isset( $old_value['custom_css'], $new_value['custom_css'] ) && $old_value['custom_css'] !== $new_value['custom_css'] ) {
 				$clear = true;
 			}
@@ -83,16 +83,15 @@ class Bridge_Subscriber implements Subscriber_Interface {
 			}
 		}
 
-		if ( $this->options->get( 'remove_query_strings' ) || $this->options->get( 'minify_js' ) ) {
+		if ( $this->options->get( 'minify_js', 0 ) ) {
 			if ( isset( $old_value['custom_js'], $new_value['custom_js'] ) && $old_value['custom_js'] !== $new_value['custom_js'] ) {
 				$clear = true;
 			}
 		}
 
 		if ( $clear ) {
-			\rocket_clean_domain();
-			\rocket_clean_minify();
-			\rocket_clean_cache_busting();
+			rocket_clean_domain();
+			rocket_clean_minify();
 		}
 	}
 }
