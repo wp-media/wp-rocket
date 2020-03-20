@@ -429,10 +429,11 @@ function set_rocket_wp_cache_define( $turn_it_on ) { // phpcs:ignore WordPress.N
  * @return void
  */
 function rocket_clean_minify( $extensions = [ 'js', 'css' ] ) {
-	$extensions = is_string( $extensions ) ? (array) $extensions : $extensions;
+	$extensions  = is_string( $extensions ) ? (array) $extensions : $extensions;
+	$minify_path = rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' );
 
 	try {
-		$dir = new RecursiveDirectoryIterator( rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' ) . get_current_blog_id(), FilesystemIterator::SKIP_DOTS );
+		$dir = new RecursiveDirectoryIterator( $minify_path . get_current_blog_id(), FilesystemIterator::SKIP_DOTS );
 	} catch ( \UnexpectedValueException $e ) {
 		// No logging yet.
 		return;
@@ -481,7 +482,7 @@ function rocket_clean_minify( $extensions = [ 'js', 'css' ] ) {
 		}
 	}
 
-	$third_party = rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' ) . '3rd-party';
+	$third_party = $minify_path . '3rd-party';
 
 	try {
 		$files = new FilesystemIterator( $third_party );
@@ -818,6 +819,22 @@ function rocket_clean_domain( $lang = '' ) {
 	$urls = apply_filters( 'rocket_clean_domain_urls', $urls, $lang );
 	$urls = array_filter( $urls );
 
+	$cache_path = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' );
+
+	try {
+		$cache = new RecursiveDirectoryIterator( $cache_path, FilesystemIterator::SKIP_DOTS );
+	} catch ( \UnexpectedValueException $e ) {
+		// No logging yet.
+		return;
+	}
+
+	try {
+		$iterator = new RecursiveIteratorIterator( $cache, RecursiveIteratorIterator::CHILD_FIRST );
+	} catch ( \Exception $e ) {
+		// No logging yet.
+		return;
+	}
+
 	foreach ( $urls as $url ) {
 		$file = get_rocket_parse_url( $url );
 
@@ -826,7 +843,7 @@ function rocket_clean_domain( $lang = '' ) {
 			$file['host'] = str_replace( '.', '_', $file['host'] );
 		}
 
-		$root = WP_ROCKET_CACHE_PATH . $file['host'] . '*' . $file['path'];
+		$root = $cache_path . $file['host'] . $file['path'];
 
 		/**
 		 * Fires before all cache files are deleted
@@ -839,12 +856,14 @@ function rocket_clean_domain( $lang = '' ) {
 		*/
 		do_action( 'before_rocket_clean_domain', $root, $lang, $url ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
-		// Delete cache domain files.
-		$dirs = glob( $root . '*', GLOB_NOSORT );
-		if ( $dirs ) {
-			foreach ( $dirs as $dir ) {
-				rocket_rrmdir( $dir, get_rocket_i18n_to_preserve( $lang ) );
+		try {
+			$files = new RegexIterator( $iterator, "/{$file['host']}*{$file['path']}/i" );
+			foreach ( $files as $file ) {
+				rocket_rrmdir( $file, get_rocket_i18n_to_preserve( $lang ) );
 			}
+		} catch ( \InvalidArgumentException $e ) {
+			// No logging yet.
+			return;
 		}
 
 		/**
