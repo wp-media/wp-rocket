@@ -1,13 +1,13 @@
 <?php
-namespace WP_Rocket\Subscriber\Third_Party\Plugins\Optimization;
+namespace WP_Rocket\ThirdParty\Plugins\Optimization;
 
-use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
  * Hummingbird compatibility class
  */
-class Hummingbird_Subscriber implements Subscriber_Interface {
+class Hummingbird implements Subscriber_Interface {
 	/**
 	 * WP Rocket Options instance
 	 *
@@ -67,7 +67,6 @@ class Hummingbird_Subscriber implements Subscriber_Interface {
 		$this->check_browser_caching();
 		$this->check_gzip();
 		$this->check_emoji();
-		$this->check_remove_query_strings();
 
 		if ( 0 === count( $this->errors ) ) {
 			return;
@@ -148,28 +147,6 @@ class Hummingbird_Subscriber implements Subscriber_Interface {
 		if ( $this->options->get( 'emoji' ) && \WP_Hummingbird_Settings::get_setting( 'emoji', 'advanced' ) ) {
 			// Translators: %1$s = Plugin name, %2$s = <em>, %3$s = </em>.
 			$this->errors[] = sprintf( _x( '%1$s %2$sdisable emoji%3$s conflicts with WP Rockets %2$sdisable emoji%3$s', 'Hummingbird notice', 'rocket' ), 'Hummingbird', '<em>', '</em>' );
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Checks if Hummingbird and WP Rocket remove query strings options are active at the same time
-	 *
-	 * @since 3.3.3
-	 * @author Remy Perona
-	 *
-	 * @return bool
-	 */
-	private function check_remove_query_strings() {
-		if ( ! $this->is_settings_available() ) {
-			return false;
-		}
-
-		if ( $this->options->get( 'remove_query_strings' ) && \WP_Hummingbird_Settings::get_setting( 'query_string', 'advanced' ) ) {
-			// Translators: %1$s = Plugin name, %2$s = <em>, %3$s = </em>.
-			$this->errors[] = sprintf( _x( '%1$s %2$sremove query strings%3$s conflicts with WP Rocket %2$sremove query strings%3$s', 'Hummingbird notice', 'rocket' ), 'Hummingbird', '<em>', '</em>' );
 			return true;
 		}
 

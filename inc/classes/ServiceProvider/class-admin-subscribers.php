@@ -47,7 +47,7 @@ class Admin_Subscribers extends AbstractServiceProvider {
 			->withArgument( $this->getContainer()->get( 'options' ) );
 		$this->getContainer()->share( 'beacon_subscriber', 'WP_Rocket\Subscriber\Admin\Settings\Beacon_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'beacon' ) );
-		$this->getContainer()->share( 'hummingbird_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Optimization\Hummingbird_Subscriber' )
+		$this->getContainer()->share( 'hummingbird_subscriber', \WP_Rocket\ThirdParty\Plugins\Optimization\Hummingbird::class )
 			->withArgument( $this->getContainer()->get( 'options' ) );
 	}
 }
