@@ -47,7 +47,7 @@ class Third_Party_Subscribers extends AbstractServiceProvider {
 	public function register() {
 		$this->getContainer()->share( 'mobile_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Mobile_Subscriber' );
 		$this->getContainer()->share( 'woocommerce_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Ecommerce\WooCommerce_Subscriber' );
-		$this->getContainer()->share( 'elementor_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\PageBuilder\Elementor_Subscriber' )
+		$this->getContainer()->share( 'elementor_subscriber', \WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor::class )
 			->withArgument( $this->getContainer()->get( 'options' ) );
 		$this->getContainer()->share( 'syntaxhighlighter_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\SyntaxHighlighter_Subscriber' );
 		$this->getContainer()->share( 'bridge_subscriber', 'WP_Rocket\Subscriber\Third_Party\Themes\Bridge_Subscriber' )
