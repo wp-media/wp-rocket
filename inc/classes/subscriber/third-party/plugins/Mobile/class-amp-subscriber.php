@@ -22,11 +22,8 @@ class Amp_Subscriber implements Subscriber_Interface {
 	public static function get_subscribed_events() {
 		$events = [];
 
-		if ( function_exists( 'is_amp_endpoint' ) && is_amp_endpoint() ) {
-			$events['wp'] = 'disable_options_on_amp';
-		}
-
 		if ( function_exists( 'is_amp_endpoint' ) ) {
+			$events['wp']                                    = 'disable_options_on_amp';
 			$events['get_rocket_option_cache_query_strings'] = 'is_amp_compatible_callback';
 		}
 
@@ -63,6 +60,10 @@ class Amp_Subscriber implements Subscriber_Interface {
 	 * @author Soponar Cristina
 	 */
 	public function disable_options_on_amp() {
+		if ( ! is_amp_endpoint() ) {
+			return;
+		}
+
 		global $wp_filter;
 
 		remove_filter( 'wp_resource_hints', 'rocket_dns_prefetch', 10, 2 );

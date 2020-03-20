@@ -15,6 +15,10 @@ define( 'WP_ROCKET_IS_TESTING', true );
 tests_add_filter(
 	'muplugins_loaded',
 	function() {
+		if ( BootstrapManager::isGroup( 'WithAmp' ) ) {
+			// Load AMP plugin.
+			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/amp/amp.php';
+		}
 
 		if ( BootstrapManager::isGroup( 'WithWoo' ) ) {
 			// Load WooCommerce.

@@ -9,7 +9,7 @@ use WPMedia\PHPUnit\Unit\TestCase;
 /**
  * @covers \WP_Rocket\Subscriber\Third_Party\Plugins\Mobile\Amp_Subscriber::is_amp_compatible_callback
  * @group ThirdParty
- * @group Amp
+ * @group WithAmp
  */
 class Test_IsAmpCompatibleCallback extends TestCase {
 	public function testShouldBailoutIfAmpThemeOptionsAreNull() {
