@@ -826,7 +826,7 @@ function rocket_clean_domain( $lang = '' ) {
 			$file['host'] = str_replace( '.', '_', $file['host'] );
 		}
 
-		$root = WP_ROCKET_CACHE_PATH . $file['host'] . '*' . $file['path'];
+		$root = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) . $file['host'] . '*' . $file['path'];
 
 		/**
 		 * Fires before all cache files are deleted
