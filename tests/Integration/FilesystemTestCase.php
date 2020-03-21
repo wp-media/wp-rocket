@@ -72,4 +72,48 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 		// Redefine rocket_direct_filesystem() to use the virtual filesystem.
 		Functions\when( 'rocket_direct_filesystem' )->justReturn( $this->filesystem );
 	}
+
+	/**
+	 * Gets the files and directories for the given virtual root directory.
+	 *
+	 * @param string $dir Virtual directory absolute path.
+	 *
+	 * @return array Array of files and directories in the given root directory.
+	 */
+	protected function scandir( $dir ) {
+		$items = @scandir( $dir ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged -- Valid use case.
+
+		if ( ! $items ) {
+			return [];
+		}
+
+		// Get rid of dot files when present.
+		if ( '.' === $items[0] ) {
+			unset( $items[0], $items[1] );
+		}
+
+		$dir = trailingslashit( $dir );
+
+		return array_map(
+			function ( $item ) use ( $dir ) {
+				return "{$dir}{$item}";
+			},
+			$items
+		);
+	}
+
+	/**
+	 * Recursively deletes all the files in the given virtual directory.
+	 *
+	 * @param string $dir Virtual directory absolute path.
+	 */
+	protected function delete_files( $dir ) {
+		foreach ( $this->scandir( $dir ) as $item ) {
+			if ( $this->filesystem->is_dir( $item ) ) {
+				$this->delete_files( $item );
+			} else {
+				$this->filesystem->delete( $item );
+			}
+		}
+	}
 }
