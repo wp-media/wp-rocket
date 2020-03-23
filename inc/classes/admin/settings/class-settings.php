@@ -520,6 +520,7 @@ class Settings {
 				continue;
 			}
 
+			$url = preg_replace( '/^(?:https?)?:?\/{3,}/i', 'http://', $url );
 			$url = esc_url_raw( $url );
 
 			if ( empty( $url ) ) {
