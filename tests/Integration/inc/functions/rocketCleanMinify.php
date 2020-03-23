@@ -26,7 +26,7 @@ class Test_RocketCleanMinify extends FilesystemTestCase {
 		parent::setUp();
 
 		Functions\expect( 'rocket_get_constant' )
-			->twice()
+			->once()
 			->with( 'WP_ROCKET_MINIFY_CACHE_PATH' )
 			->andReturn( trailingslashit( $this->filesystem->getUrl( 'min/' ) ) );
 	}
