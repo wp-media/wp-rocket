@@ -77,14 +77,12 @@ if ( ! defined( 'WP_ROCKET_LASTVERSION' ) ) {
 	define( 'WP_ROCKET_LASTVERSION', '3.4.4' );
 }
 
-if ( ! function_exists( 'WP_Filesystem' ) ) {
-	require ABSPATH . 'wp-admin/includes/file.php';
-}
-
-WP_Filesystem();
-global $wp_filesystem;
-
-if ( $wp_filesystem->exists( WP_ROCKET_PATH . 'licence-data.php' ) ) {
+/**
+ * We use is_readable() with @ silencing as WP_Filesystem() can use different methods to access the filesystem.
+ *
+ * This is more performant and more compatible. It allows us to work around file permissions and missing credentials.
+ */
+if ( @is_readable( WP_ROCKET_PATH . 'licence-data.php' ) ) { //phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 	require WP_ROCKET_PATH . 'licence-data.php';
 }
 
