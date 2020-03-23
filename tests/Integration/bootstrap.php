@@ -16,6 +16,10 @@ tests_add_filter(
 	'muplugins_loaded',
 	function() {
 
+		// Set the path and URL to our virtual filesystem.
+		define( 'WP_ROCKET_CACHE_ROOT_PATH', 'vfs://wp-content/cache/' );
+		define( 'WP_ROCKET_CACHE_ROOT_URL', 'vfs://wp-content/cache/' );
+
 		if ( BootstrapManager::isGroup( 'WithWoo' ) ) {
 			// Load WooCommerce.
 			define( 'WC_TAX_ROUNDING_MODE', 'auto' );
