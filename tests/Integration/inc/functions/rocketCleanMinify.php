@@ -2,7 +2,6 @@
 
 namespace WP_Rocket\Tests\Integration\inc\functions;
 
-use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
@@ -11,24 +10,18 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group Files
  */
 class Test_RocketCleanMinify extends FilesystemTestCase {
-	protected $structure = [
-		'min' => [
-			'1' => [
-				'5c795b0e3a1884eec34a989485f863ff.js'     => '',
-				'5c795b0e3a1884eec34a989485f863ff.js.gz'  => '',
-				'fa2965d41f1515951de523cecb81f85e.css'    => '',
-				'fa2965d41f1515951de523cecb81f85e.css.gz' => '',
-			],
-		],
-	];
+	protected static $path_to_test_data = '/inc/functions/rocketCleanMinify.php';
+	private static $origin_files;
 
-	public function setUp() {
-		parent::setUp();
+	public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
 
-		Functions\expect( 'rocket_get_constant' )
-			->twice()
-			->with( 'WP_ROCKET_MINIFY_CACHE_PATH' )
-			->andReturn( trailingslashit( $this->filesystem->getUrl( 'min/' ) ) );
+		static::$origin_files = array_map(
+			function ( $file ) {
+				return "cache/min/1/{$file}";
+			},
+			array_keys( static::$config['structure']['cache']['min']['1'] )
+		);
 	}
 
 	public function tearDown() {
@@ -37,32 +30,28 @@ class Test_RocketCleanMinify extends FilesystemTestCase {
 		parent::tearDown();
 	}
 
-	public function testShouldCleanMinifiedCSS() {
-		$this->assertTrue( $this->filesystem->exists( 'min/1/fa2965d41f1515951de523cecb81f85e.css' ) );
-		$this->assertTrue( $this->filesystem->exists( 'min/1/fa2965d41f1515951de523cecb81f85e.css.gz' ) );
-
-		rocket_clean_minify( [ 'css' ] );
-
-//		$this->assertFalse( $this->filesystem->exists( 'min/1/fa2965d41f1515951de523cecb81f85e.css' ) );
-//		$this->assertFalse( $this->filesystem->exists( 'min/1/fa2965d41f1515951de523cecb81f85e.css.gz' ) );
+	public function testPath() {
+		$this->assertSame( 'vfs://wp-content/cache/min/', WP_ROCKET_MINIFY_CACHE_PATH );
 	}
 
-	public function testShouldCleanMinifiedJS() {
-		$this->assertTrue( $this->filesystem->exists( 'min/1/5c795b0e3a1884eec34a989485f863ff.js' ) );
-		$this->assertTrue( $this->filesystem->exists( 'min/1/5c795b0e3a1884eec34a989485f863ff.js.gz' ) );
+	/**
+	 * @dataProvider addDataProvider
+	 */
+	public function testShouldCleanMinified( $config, $filesToClean ) {
+		$cache = $this->scandir( 'cache/min/1/' );
 
-		rocket_clean_minify( 'js' );
+		// Check files before cleaning.
+		$this->assertSame( static::$origin_files, $cache );
 
-//		$this->assertFalse( $this->filesystem->exists( 'min/1/5c795b0e3a1884eec34a989485f863ff.js' ) );
-//		$this->assertFalse( $this->filesystem->exists( 'min/1/5c795b0e3a1884eec34a989485f863ff.js.gz' ) );
-	}
+		rocket_clean_minify( $config );
 
-	public function testShouldCleanAllMinified() {
-		rocket_clean_minify();
-
-//		$this->assertFalse( $this->filesystem->exists( 'min/1/fa2965d41f1515951de523cecb81f85e.css' ) );
-//		$this->assertFalse( $this->filesystem->exists( 'min/1/fa2965d41f1515951de523cecb81f85e.css.gz' ) );
-//		$this->assertFalse( $this->filesystem->exists( 'min/1/5c795b0e3a1884eec34a989485f863ff.js' ) );
-//		$this->assertFalse( $this->filesystem->exists( 'min/1/5c795b0e3a1884eec34a989485f863ff.js.gz' ) );
+		foreach ( $cache as $file ) {
+			// Check that the files were cleaned.
+			if ( in_array( $file, $filesToClean, true ) ) {
+				$this->assertFalse( $this->filesystem->exists( $file ) );
+			} else {
+				$this->assertTrue( $this->filesystem->exists( $file ) );
+			}
+		}
 	}
 }
