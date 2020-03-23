@@ -7,7 +7,6 @@ use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
  * @covers WP_Rocket\inc\ThirdParty\Plugins\Optimization\Hummingbird::warning_notice
- * @group AdminOnly
  * @group Hummingbird
  * @group ThirdParty
  */
