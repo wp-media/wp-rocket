@@ -360,6 +360,8 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
+		$is_api_keys_valid_cloudflare = get_transient( 'rocket_cloudflare_is_api_keys_valid' );
+		$submit_cloudflare_view       = false;
 		if (
 			( isset( $old_value['cloudflare_email'], $value['cloudflare_email'] ) && $old_value['cloudflare_email'] !== $value['cloudflare_email'] )
 			||
@@ -370,15 +372,29 @@ class Subscriber implements Subscriber_Interface {
 			delete_transient( 'rocket_cloudflare_is_api_keys_valid' );
 			$is_api_keys_valid_cloudflare = $this->cloudflare->is_api_keys_valid( $value['cloudflare_email'], $value['cloudflare_api_key'], $value['cloudflare_zone_id'], true );
 			set_transient( 'rocket_cloudflare_is_api_keys_valid', $is_api_keys_valid_cloudflare, 2 * WEEK_IN_SECONDS );
-			if ( is_wp_error( $is_api_keys_valid_cloudflare ) ) {
-				$cloudflare_error_message = $is_api_keys_valid_cloudflare->get_error_message();
-				add_settings_error( 'general', 'cloudflare_api_key_invalid', __( 'WP Rocket: ', 'rocket' ) . '</strong>' . $cloudflare_error_message . '<strong>', 'error' );
-			}
+			$submit_cloudflare_view = true;
+		}
+
+		if ( ( isset( $old_value['cloudflare_devmode'], $value['cloudflare_devmode'] ) && (int) $old_value['cloudflare_devmode'] !== (int) $value['cloudflare_devmode'] ) ||
+			( isset( $old_value['cloudflare_auto_settings'], $value['cloudflare_auto_settings'] ) && (int) $old_value['cloudflare_auto_settings'] !== (int) $value['cloudflare_auto_settings'] ) ) {
+			$submit_cloudflare_view = true;
+		}
+
+		// Revalidate Cloudflare credentials if transient is false.
+		if ( false === $is_api_keys_valid_cloudflare ) {
+			$is_api_keys_valid_cloudflare = $this->cloudflare->is_api_keys_valid( $value['cloudflare_email'], $value['cloudflare_api_key'], $value['cloudflare_zone_id'] );
+			set_transient( 'rocket_cloudflare_is_api_keys_valid', $is_api_keys_valid_cloudflare, 2 * WEEK_IN_SECONDS );
+		}
+
+		// If is submit CF view & CF Credentials are invalid, display error and bail out.
+		if ( is_wp_error( $is_api_keys_valid_cloudflare ) && $submit_cloudflare_view ) {
+			$cloudflare_error_message = $is_api_keys_valid_cloudflare->get_error_message();
+			add_settings_error( 'general', 'cloudflare_api_key_invalid', __( 'WP Rocket: ', 'rocket' ) . '</strong>' . $cloudflare_error_message . '<strong>', 'error' );
+			return;
 		}
 
 		// Update CloudFlare Development Mode.
 		$cloudflare_update_result = [];
-
 		if ( isset( $old_value['cloudflare_devmode'], $value['cloudflare_devmode'] ) && (int) $old_value['cloudflare_devmode'] !== (int) $value['cloudflare_devmode'] ) {
 			$cloudflare_dev_mode_return = $this->cloudflare->set_devmode( $value['cloudflare_devmode'] );
 			if ( is_wp_error( $cloudflare_dev_mode_return ) ) {
