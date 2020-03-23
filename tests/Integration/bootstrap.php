@@ -35,6 +35,11 @@ tests_add_filter(
 			define( 'ELEMENTOR_VERSION', '2.0' );
 		}
 
+		if ( BootstrapManager::isGroup( 'Hummingbird' ) ) {
+			define( 'WP_ADMIN',  true );
+			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/hummingbird-performance/wp-hummingbird.php';
+		}
+
 		// Overload the license key for testing.
 		redefine( 'rocket_valid_key', '__return_true' );
 
