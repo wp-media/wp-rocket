@@ -1,6 +1,8 @@
 <?php
 namespace WP_Rocket\ThirdParty\Plugins\Optimization;
 
+use WP_Hummingbird_Settings;
+use WP_Hummingbird_Utils;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
@@ -83,7 +85,7 @@ class Hummingbird implements Subscriber_Interface {
 
 		$message .= '</ul>';
 
-		\rocket_notice_html(
+		rocket_notice_html(
 			[
 				'status'  => 'error',
 				'message' => $message,
@@ -104,7 +106,7 @@ class Hummingbird implements Subscriber_Interface {
 			return false;
 		}
 
-		if ( ! \method_exists( 'WP_Hummingbird_Utils', 'get_module' ) ) {
+		if ( ! method_exists( 'WP_Hummingbird_Utils', 'get_module' ) ) {
 			return false;
 		}
 
@@ -124,7 +126,7 @@ class Hummingbird implements Subscriber_Interface {
 			return false;
 		}
 
-		if ( ! \method_exists( 'WP_Hummingbird_Settings', 'get_setting' ) ) {
+		if ( ! method_exists( 'WP_Hummingbird_Settings', 'get_setting' ) ) {
 			return false;
 		}
 
@@ -144,7 +146,7 @@ class Hummingbird implements Subscriber_Interface {
 			return false;
 		}
 
-		if ( $this->options->get( 'emoji' ) && \WP_Hummingbird_Settings::get_setting( 'emoji', 'advanced' ) ) {
+		if ( $this->options->get( 'emoji' ) && WP_Hummingbird_Settings::get_setting( 'emoji', 'advanced' ) ) {
 			// Translators: %1$s = Plugin name, %2$s = <em>, %3$s = </em>.
 			$this->errors[] = sprintf( _x( '%1$s %2$sdisable emoji%3$s conflicts with WP Rockets %2$sdisable emoji%3$s', 'Hummingbird notice', 'rocket' ), 'Hummingbird', '<em>', '</em>' );
 			return true;
@@ -166,7 +168,7 @@ class Hummingbird implements Subscriber_Interface {
 			return false;
 		}
 
-		$gzip = \WP_Hummingbird_Utils::get_module( 'gzip' );
+		$gzip = WP_Hummingbird_Utils::get_module( 'gzip' );
 
 		if ( ! $gzip instanceof \WP_Hummingbird_Module_GZip ) {
 			return false;
@@ -202,7 +204,7 @@ class Hummingbird implements Subscriber_Interface {
 			return false;
 		}
 
-		$caching = \WP_Hummingbird_Utils::get_module( 'caching' );
+		$caching = WP_Hummingbird_Utils::get_module( 'caching' );
 
 		if ( ! $caching instanceof \WP_Hummingbird_Module_Caching ) {
 			return false;
@@ -238,7 +240,7 @@ class Hummingbird implements Subscriber_Interface {
 			return false;
 		}
 
-		$cache = \WP_Hummingbird_Utils::get_module( 'page_cache' );
+		$cache = WP_Hummingbird_Utils::get_module( 'page_cache' );
 
 		if ( ! $cache instanceof \WP_Hummingbird_Module_Page_Cache ) {
 			return false;
@@ -272,7 +274,7 @@ class Hummingbird implements Subscriber_Interface {
 			return false;
 		}
 
-		$minify = \WP_Hummingbird_Utils::get_module( 'minify' );
+		$minify = WP_Hummingbird_Utils::get_module( 'minify' );
 
 		if ( ! $minify instanceof \WP_Hummingbird_Module_Minify ) {
 			return false;
