@@ -20,6 +20,18 @@ tests_add_filter(
 			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/amp/amp.php';
 		}
 
+		if ( BootstrapManager::isGroup( 'WithAmpAndCloudflare' ) ) {
+			// Load AMP plugin.
+			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/amp/amp.php';
+			update_option(
+				'wp_rocket_settings',
+				[
+					'do_cloudflare'               => 1,
+					'cloudflare_protocol_rewrite' => 1,
+				]
+			);
+		}
+
 		if ( BootstrapManager::isGroup( 'WithWoo' ) ) {
 			// Load WooCommerce.
 			define( 'WC_TAX_ROUNDING_MODE', 'auto' );
