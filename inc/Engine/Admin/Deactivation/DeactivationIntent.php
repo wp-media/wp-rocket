@@ -1,12 +1,11 @@
 <?php
-namespace WP_Rocket\Subscriber\Admin\Deactivation;
 
-use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Rocket\Interfaces\Render_Interface;
+namespace WP_Rocket\Engine\Admin\Deactivation;
+
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
-
-defined( 'ABSPATH' ) || exit;
+use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Interfaces\Render_Interface;
 
 /**
  * Deactivation intent form on plugins page
@@ -14,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
  * @since 3.0
  * @author Remy Perona
  */
-class Deactivation_Intent_Subscriber implements Subscriber_Interface {
+class DeactivationIntent implements Subscriber_Interface {
 	/**
 	 * Render Interface
 	 *
@@ -130,13 +129,14 @@ mixpanel.init("a36067b00a263cce0299cfd960e26ecf", {
 	 * @since 3.0
 	 * @author Remy Perona
 	 *
-	 * @return string
+	 * @return void
 	 */
 	public function activate_safe_mode() {
-		check_ajax_referer( 'rocket-ajax' );
+		check_ajax_referer( 'rocket-ajax', 'nonce' );
 
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
-			wp_die();
+			wp_send_json_error();
+			return;
 		}
 
 		$reset_options = [
@@ -158,6 +158,6 @@ mixpanel.init("a36067b00a263cce0299cfd960e26ecf", {
 		$this->options->set_values( $reset_options );
 		$this->options_api->set( 'settings', $this->options->get_options() );
 
-		return wp_send_json_success();
+		wp_send_json_success();
 	}
 }
