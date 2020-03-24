@@ -62,6 +62,7 @@ class Third_Party_Subscribers extends AbstractServiceProvider {
 			->withArgument( $this->getContainer()->get( 'options' ) );
 		$this->getContainer()->share( 'optimus_webp_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Optimus_Subscriber' );
 		$this->getContainer()->share( 'bigcommerce_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Ecommerce\BigCommerce_Subscriber' );
-		$this->getContainer()->share( 'amp_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Mobile\Amp_Subscriber' );
+		$this->getContainer()->share( 'amp_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Optimization\AMP' )
+			->withArgument( $this->getContainer()->get( 'options' ) );
 	}
 }

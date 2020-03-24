@@ -27,7 +27,7 @@ class_alias( '\\WP_Rocket\\Engine\\Preload\\SitemapPreloadSubscriber', '\\WP_Roc
  * @author Remy Perona
  */
 function rocket_disable_options_on_amp() {
-	_deprecated_function( __FUNCTION__ . '()', '3.5.2', '\WP_Rocket\Subscriber\Third_Party\Plugins\Mobile\Amp_Subscriber::disable_options_on_amp()' );
+	_deprecated_function( __FUNCTION__ . '()', '3.5.2', '\WP_Rocket\Subscriber\Third_Party\Plugins\Optimization\AMP::disable_options_on_amp()' );
 	global $wp_filter;
 
 	if ( function_exists( 'is_amp_endpoint' ) && is_amp_endpoint() ) {

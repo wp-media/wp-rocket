@@ -1,60 +1,60 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\classes\subscriber\third_party\plugins\Mobile\Amp_Subscriber;
+namespace WP_Rocket\Tests\Unit\inc\classes\subscriber\third_party\plugins\Optimization\AMP;
 
 use Brain\Monkey\Functions;
-use WP_Rocket\Subscriber\Third_Party\Plugins\Mobile\Amp_Subscriber;
+use WP_Rocket\Subscriber\Third_Party\Plugins\Optimization\AMP;
 use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Admin\Options_Data;
 
 /**
- * @covers \WP_Rocket\Subscriber\Third_Party\Plugins\Mobile\Amp_Subscriber::is_amp_compatible_callback
+ * @covers \WP_Rocket\Subscriber\Third_Party\Plugins\Optimization\AMP::is_amp_compatible_callback
  * @group ThirdParty
  * @group WithAmp
  */
 class Test_IsAmpCompatibleCallback extends TestCase {
-	public function testShouldBailoutIfAmpThemeOptionsAreNull() {
-		$subscriber = new Amp_Subscriber();
+	private $subscriber;
 
+	public function setUp() {
+		parent::setUp();
+		$this->subscriber = new AMP( $this->createMock( Options_Data::class ) );
+	}
+
+	public function testShouldBailoutIfAmpThemeOptionsAreNull() {
 		Functions\expect( 'get_option' )
 			->once()
 			->with( 'amp-options', [] )
 			->andReturn( null );
 
-		$this->assertEquals( [], $subscriber->is_amp_compatible_callback( [] ) );
+		$this->assertEquals( [], $this->subscriber->is_amp_compatible_callback( [] ) );
 	}
 
 	public function testShouldBailoutIfAmpThemeSupportIsNull() {
-		$subscriber = new Amp_Subscriber();
-
 		Functions\expect( 'get_option' )
 			->once()
 			->with( 'amp-options', [] )
 			->andReturn( [ 'theme_support' => null ] );
 
-		$this->assertEquals( [], $subscriber->is_amp_compatible_callback( [] ) );
+		$this->assertEquals( [], $this->subscriber->is_amp_compatible_callback( [] ) );
 	}
 
 
 	public function testShouldBailoutIfAmpIsNotTransitional() {
-		$subscriber = new Amp_Subscriber();
-
 		Functions\expect( 'get_option' )
 			->once()
 			->with( 'amp-options', [] )
 			->andReturn( [ 'theme_support' => 'standard' ] );
 
-		$this->assertEquals( [], $subscriber->is_amp_compatible_callback( [] ) );
+		$this->assertEquals( [], $this->subscriber->is_amp_compatible_callback( [] ) );
 	}
 
 	public function testShouldAddAmpWhenThemeSupportIsTransitional() {
-		$subscriber = new Amp_Subscriber();
-
 		Functions\expect( 'get_option' )
 			->once()
 			->with( 'amp-options', [] )
 			->andReturn( [ 'theme_support' => 'transitional' ] );
 
-		$this->assertContains( 'amp', $subscriber->is_amp_compatible_callback( [] ) );
+		$this->assertContains( 'amp', $this->subscriber->is_amp_compatible_callback( [] ) );
 	}
 
 }

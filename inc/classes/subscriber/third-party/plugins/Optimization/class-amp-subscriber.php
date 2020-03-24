@@ -1,7 +1,8 @@
 <?php
-namespace WP_Rocket\Subscriber\Third_Party\Plugins\Mobile;
+namespace WP_Rocket\Subscriber\Third_Party\Plugins\Optimization;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Admin\Options_Data;
 
 /**
  * Subscriber for compatibility with AMP
@@ -9,9 +10,26 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * @since  3.5.2
  * @author Soponar Cristina
  */
-class Amp_Subscriber implements Subscriber_Interface {
+class AMP implements Subscriber_Interface {
 	const QUERY       = 'amp';
 	const AMP_OPTIONS = 'amp-options';
+
+	/**
+	 * WP Rocket Options instance
+	 *
+	 * @var Options_Data
+	 */
+	private $options;
+
+	/**
+	 * Constructor
+	 *
+	 * @param Options_Data $options WP Rocket Options instance.
+	 */
+	public function __construct( Options_Data $options ) {
+		$this->options = $options;
+	}
+
 	/**
 	 * Subscribed events for AMP.
 	 *
@@ -23,8 +41,8 @@ class Amp_Subscriber implements Subscriber_Interface {
 		$events = [];
 
 		if ( function_exists( 'is_amp_endpoint' ) ) {
-			$events['wp']                                    = 'disable_options_on_amp';
-			$events['get_rocket_option_cache_query_strings'] = 'is_amp_compatible_callback';
+			$events['wp']                         = 'disable_options_on_amp';
+			$events['rocket_cache_query_strings'] = 'is_amp_compatible_callback';
 		}
 
 		return $events;
@@ -73,7 +91,7 @@ class Amp_Subscriber implements Subscriber_Interface {
 		// this filter is documented in inc/front/protocol.php.
 		$do_rocket_protocol_rewrite = apply_filters( 'do_rocket_protocol_rewrite', false ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
-		if ( ( get_rocket_option( 'do_cloudflare', 0 ) && get_rocket_option( 'cloudflare_protocol_rewrite', 0 ) || $do_rocket_protocol_rewrite ) ) {
+		if ( ( $this->options->get( 'do_cloudflare', 0 ) && $this->options->get( 'cloudflare_protocol_rewrite', 0 ) || $do_rocket_protocol_rewrite ) ) {
 			remove_filter( 'rocket_buffer', 'rocket_protocol_rewrite', PHP_INT_MAX );
 			remove_filter( 'wp_calculate_image_srcset', 'rocket_protocol_rewrite_srcset', PHP_INT_MAX );
 		}
