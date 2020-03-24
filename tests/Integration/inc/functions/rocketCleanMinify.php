@@ -11,25 +11,6 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  */
 class Test_RocketCleanMinify extends FilesystemTestCase {
 	protected static $path_to_test_data = '/inc/functions/rocketCleanMinify.php';
-	private static $original_files;
-
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
-
-		$files_1 = array_map(
-			function ( $file ) {
-				return "cache/min/1/{$file}";
-			},
-			array_keys( static::$config['structure']['cache']['min']['1'] )
-		);
-		$files_3rdparty = array_map(
-			function ( $file ) {
-				return "cache/min/3rd-party/{$file}";
-			},
-			array_keys( static::$config['structure']['cache']['min']['3rd-party'] )
-		);
-		static::$original_files = array_merge( $files_1, $files_3rdparty );
-	}
 
 	public function tearDown() {
 		delete_option( 'wp_rocket_settings' );

@@ -3,10 +3,14 @@
 namespace WP_Rocket\Tests\Integration;
 
 use Brain\Monkey\Functions;
+use WP_Rocket\Tests\ArrayTrait;
 use WPMedia\PHPUnit\VirtualFilesystemDirect;
 use WPMedia\PHPUnit\Integration\TestCase;
 
 abstract class FilesystemTestCase extends TestCase {
+
+	use ArrayTrait;
+
 	protected static $path_to_test_data;
 
 	/**
@@ -35,16 +39,24 @@ abstract class FilesystemTestCase extends TestCase {
 	 *
 	 * @var array
 	 */
-	protected static $config;
+	protected static $config = [];
 
 	private $merged_structure;
+	protected static $original_files = [];
+	protected static $original_dirs = [];
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
 
+		static::loadConfig();
+
 		if ( empty( static::$config ) ) {
-			static::loadConfig();
+			return;
 		}
+
+		$vfs = ArrayTrait::get( static::$config['structure'], rtrim( self::$config['vfs_dir'], '\//' ), [], '/' );
+		static::$original_files = static::getAllFiles( $vfs, self::$config['vfs_dir'] );
+		static::$original_dirs = static::getAllDirs( $vfs, self::$config['vfs_dir'] );
 	}
 
 	/**
@@ -145,5 +157,13 @@ abstract class FilesystemTestCase extends TestCase {
 			},
 			$items
 		);
+	}
+
+	public static function getAllFiles( array $dir, $prepend ) {
+		return array_keys( ArrayTrait::flatten( $dir, $prepend ) );
+	}
+
+	public static function getAllDirs( array $dir, $prepend ) {
+		return array_keys( ArrayTrait::flatten( $dir, $prepend, true ) );
 	}
 }

@@ -1,6 +1,8 @@
 <?php
 
 return [
+	'vfs_dir'   => 'cache/min/',
+
 	// Virtual filesystem structure.
 	'structure'      => [
 		'cache' => [
