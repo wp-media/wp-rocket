@@ -102,6 +102,7 @@
 			"@test-integration-docloudflare",
 			"@test-integration-withwoo",
 			"@test-integration-withamp",
+			"@test-integration-withampcloudflare",
 			"@test-integration-multisite"
 		],
 		"run-stan":"vendor/bin/phpstan analyze --memory-limit=2G --no-progress",
