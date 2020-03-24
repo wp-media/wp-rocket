@@ -13,9 +13,10 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @uses   ::get_rocket_parse_url
  * @uses   \WP_Rocket\Buffer\Cache::can_generate_caching_files
  * @group  Cache
+ * @group vfs
  */
 class Test_PurgeExpiredFiles extends FilesystemTestCase {
-	protected static $path_to_test_data = '/inc/classes/Cache/Expired_Cache_Purge/purgeExpiredFiles.php';
+	protected $path_to_test_data = '/inc/classes/Cache/Expired_Cache_Purge/purgeExpiredFiles.php';
 
 	public function testShouldReturnNullWhenNoLifespan() {
 		Functions\expect( 'get_rocket_il8n_uri' )->never();
@@ -30,13 +31,13 @@ class Test_PurgeExpiredFiles extends FilesystemTestCase {
 
 		add_filter( 'rocket_automatic_cache_purge_urls', '__return_empty_array' );
 
-		$this->setFilesToExpire( static::$original_files );
+		$this->setFilesToExpire( $this->original_files );
 
 		$expired_cache_purge = new Expired_Cache_Purge( $this->filesystem->getUrl( 'cache/wp-rocket' ) );
 		$this->assertNull( $expired_cache_purge->purge_expired_files( 36000 ) );
 
 		// Check that no files were purged, i.e. just to make sure.
-		foreach( static::$original_files as $file ) {
+		foreach ( $this->original_files as $file ) {
 			$this->assertTrue( $this->filesystem->exists( $file ) );
 		}
 
@@ -74,7 +75,7 @@ class Test_PurgeExpiredFiles extends FilesystemTestCase {
 		}
 
 		// Test that non-expired files were not purged.
-		foreach( array_diff( static::$original_files, $expiredFiles ) as $file ) {
+		foreach ( array_diff( $this->original_files, $expiredFiles ) as $file ) {
 			$this->assertTrue( $this->filesystem->exists( $file ) );
 		}
 	}

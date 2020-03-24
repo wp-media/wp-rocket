@@ -8,9 +8,10 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @covers ::rocket_clean_minify
  * @group Functions
  * @group Files
+ * @group vfs
  */
 class Test_RocketCleanMinify extends FilesystemTestCase {
-	protected static $path_to_test_data = '/inc/functions/rocketCleanMinify.php';
+	protected $path_to_test_data = '/inc/functions/rocketCleanMinify.php';
 
 	public function tearDown() {
 		delete_option( 'wp_rocket_settings' );
@@ -46,7 +47,7 @@ class Test_RocketCleanMinify extends FilesystemTestCase {
 		);
 
 		// Check files before cleaning.
-		$this->assertSame( static::$original_files, $cache );
+		$this->assertSame( $this->original_files, $cache );
 
 		rocket_clean_minify( $config );
 

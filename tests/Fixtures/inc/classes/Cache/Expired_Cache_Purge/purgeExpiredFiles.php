@@ -32,7 +32,7 @@ return [
 						'index.html_gzip' => '',
 					],
 				],
-				'example.org-Greg-594d03f6ae698691165999' => [
+				'example.org-wpmedia-594d03f6ae698691165999' => [
 					'index.html'      => '',
 					'index.html_gzip' => '',
 				],
@@ -61,7 +61,7 @@ return [
 			[
 				'cache/wp-rocket/example.org/about/index.html',
 				'cache/wp-rocket/example.org/blog/index.html_gzip',
-				'cache/wp-rocket/example.org-Greg-594d03f6ae698691165999/index.html',
+				'cache/wp-rocket/example.org-wpmedia-594d03f6ae698691165999/index.html',
 				'cache/wp-rocket/example.org/en/index.html',
 			],
 			// Deleted directories.
@@ -95,14 +95,14 @@ return [
 				'cache/wp-rocket/example.org/en/index.html_gzip',
 				'cache/wp-rocket/example.org/category/wordpress/index.html',
 				'cache/wp-rocket/example.org/category/wordpress/index.html_gzip',
-				'cache/wp-rocket/example.org-Greg-594d03f6ae698691165999/index.html',
-				'cache/wp-rocket/example.org-Greg-594d03f6ae698691165999/index.html_gzip',
+				'cache/wp-rocket/example.org-wpmedia-594d03f6ae698691165999/index.html',
+				'cache/wp-rocket/example.org-wpmedia-594d03f6ae698691165999/index.html_gzip',
 			],
 			// Deleted directories.
 			[
 				'cache/wp-rocket/example.org/en/',
 				'cache/wp-rocket/example.org/category/wordpress/',
-				'cache/wp-rocket/example.org-Greg-594d03f6ae698691165999/',
+				'cache/wp-rocket/example.org-wpmedia-594d03f6ae698691165999/',
 			]
 		],
 	],

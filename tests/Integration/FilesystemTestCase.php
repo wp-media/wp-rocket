@@ -11,7 +11,7 @@ abstract class FilesystemTestCase extends TestCase {
 
 	use ArrayTrait;
 
-	protected static $path_to_test_data;
+	protected $path_to_test_data;
 
 	/**
 	 * Overwrite with the structure for this test. Gets merged with the default structure.
@@ -39,30 +39,23 @@ abstract class FilesystemTestCase extends TestCase {
 	 *
 	 * @var array
 	 */
-	protected static $config = [];
-
+	protected $config = [];
 	private $merged_structure;
-	protected static $original_files = [];
-	protected static $original_dirs = [];
-
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
-
-		static::loadConfig();
-
-		if ( empty( static::$config ) ) {
-			return;
-		}
-
-		$vfs = ArrayTrait::get( static::$config['structure'], rtrim( self::$config['vfs_dir'], '\//' ), [], '/' );
-		static::$original_files = static::getAllFiles( $vfs, self::$config['vfs_dir'] );
-		static::$original_dirs = static::getAllDirs( $vfs, self::$config['vfs_dir'] );
-	}
+	protected $original_files = [];
+	protected $original_dirs = [];
 
 	/**
 	 * Prepares the test environment before each test.
 	 */
 	public function setUp() {
+		if ( empty( $this->config ) ) {
+			$this->loadConfig();
+		}
+
+		$vfs                  = ArrayTrait::get( $this->config['structure'], rtrim( $this->config['vfs_dir'], '\//' ), [], '/' );
+		$this->original_files = static::getAllFiles( $vfs, $this->config['vfs_dir'] );
+		$this->original_dirs  = static::getAllDirs( $vfs, $this->config['vfs_dir'] );
+
 		$this->filesystem     = new VirtualFilesystemDirect( 'wp-content', $this->mergeStructure(), 0777 );
 		$this->rootVirtualUrl = $this->filesystem->getUrl( '/' );
 
@@ -73,15 +66,13 @@ abstract class FilesystemTestCase extends TestCase {
 	}
 
 	public function addDataProvider() {
-		if ( empty( static::$config ) ) {
-			static::loadConfig();
-		}
+		$this->loadConfig();
 
-		return static::$config['test_data'];
+		return $this->config['test_data'];
 	}
 
-	protected static function loadConfig() {
-		static::$config = require WP_ROCKET_TESTS_FIXTURES_DIR . static::$path_to_test_data;
+	protected function loadConfig() {
+		$this->config = require WP_ROCKET_TESTS_FIXTURES_DIR . $this->path_to_test_data;
 	}
 
 	protected function mergeStructure() {
@@ -89,10 +80,10 @@ abstract class FilesystemTestCase extends TestCase {
 			return $this->merged_structure;
 		}
 
-		if ( isset( static::$config['structure'] ) ) {
-			$this->structure = static::$config['structure'];
+		if ( isset( $this->config['structure'] ) ) {
+			$this->structure = $this->config['structure'];
 		}
-		$this->merged_structure = array_replace_recursive( $this->getDefaultVfs(), static::$config['structure'] );
+		$this->merged_structure = array_replace_recursive( $this->getDefaultVfs(), $this->config['structure'] );
 
 		return $this->merged_structure;
 	}
