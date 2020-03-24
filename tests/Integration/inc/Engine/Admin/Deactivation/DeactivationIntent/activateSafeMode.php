@@ -10,6 +10,19 @@ use WPMedia\PHPUnit\Integration\AjaxTestCase;
  * @group  AdminOnly
  */
 class Test_ActivateSafeMode extends AjaxTestCase {
+	/**
+	 * User's ID.
+	 * @var int
+	 */
+	private static $user_id = 0;
+
+	/**
+	 * Set up the User ID before tests start.
+	 */
+	public static function wpSetUpBeforeClass( $factory ) {
+		self::$user_id = $factory->user->create( [ 'role' => 'administrator' ] );
+	}
+
 	public function setUp() {
 		parent::setUp();
 
@@ -41,7 +54,7 @@ class Test_ActivateSafeMode extends AjaxTestCase {
 	}
 
 	public function testShouldResetOptions() {
-		$this->_setRole( 'administrator' );
+		wp_set_current_user( self::$user_id );
 
 		$_POST['nonce'] = wp_create_nonce( 'rocket-ajax' );
 
