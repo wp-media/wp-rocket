@@ -1,7 +1,6 @@
 <?php
 namespace WP_Rocket\Tests\Integration\inc\classes\subscriber\Optimization\Critical_CSS_Subscriber;
 
-use FilesystemIterator;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
@@ -10,19 +9,10 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @covers \WP_Rocket\Subscriber\Optimization\Critical_CSS_Subscriber::generate_critical_css_on_activation
  * @group  Subscribers
  * @group  CriticalCss
+ * @group  vfs
  */
 class Test_GenerateCriticalCssOnActivation extends FilesystemTestCase {
-
-	protected $structure = [
-		'critical-css' => [
-			'1' => [
-				'.'            => '',
-				'..'           => '',
-				'critical.css' => 'body { font-family: Helvetica, Arial, sans-serif; text-align: center;}',
-			],
-		],
-	];
-
+	protected $path_to_test_data = '/inc/classes/subscriber/Optimization/class-critical-css-subscriber/generateCriticalCssOnActivation.php';
 	private static $container;
 	private $subscriber;
 
@@ -34,7 +24,6 @@ class Test_GenerateCriticalCssOnActivation extends FilesystemTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		Functions\expect( 'rocket_get_constant' )->atLeast( 1 )->with( 'WP_ROCKET_CRITICAL_CSS_PATH' )->andReturn( $this->filesystem->getUrl( 'cache/critical-css/' ) );
 		$this->subscriber = self::$container->get( 'critical_css_subscriber' );
 	}
 
@@ -52,4 +41,11 @@ class Test_GenerateCriticalCssOnActivation extends FilesystemTestCase {
 		$this->subscriber->generate_critical_css_on_activation( [ 'async_css' => 0 ], [ 'async_css' => 1 ] );
 	}
 
+	/**
+	 * @dataProvider addDataProvider
+	 */
+	public function testShouldGenerateCriticalCss( $old_value, $new_value ) {
+		$this->assertTrue( true );
+		// TODO: Add test data and the tests here.
+	}
 }

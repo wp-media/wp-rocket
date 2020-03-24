@@ -13,7 +13,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @uses   ::get_rocket_parse_url
  * @uses   \WP_Rocket\Buffer\Cache::can_generate_caching_files
  * @group  Cache
- * @group vfs
+ * @group  vfs
  */
 class Test_PurgeExpiredFiles extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/classes/Cache/Expired_Cache_Purge/purgeExpiredFiles.php';
