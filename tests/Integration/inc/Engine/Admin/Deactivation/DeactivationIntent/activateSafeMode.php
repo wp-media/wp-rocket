@@ -10,9 +10,24 @@ use WPMedia\PHPUnit\Integration\AjaxTestCase;
  * @group  AdminOnly
  */
 class Test_ActivateSafeMode extends AjaxTestCase {
+	/**
+	 * User's ID.
+	 * @var int
+	 */
+	private static $user_id = 0;
+
+	/**
+	 * Set up the User ID before tests start.
+	 */
+	public static function wpSetUpBeforeClass( $factory ) {
+		self::$user_id = $factory->user->create( [ 'role' => 'administrator' ] );
+	}
+
 	public function setUp() {
 		parent::setUp();
 
+		wp_set_current_user( self::$user_id );
+		$_POST['nonce'] = wp_create_nonce( 'rocket-ajax' );
 		$_POST['action'] = 'rocket_safe_mode';
 		$this->action    = 'rocket_safe_mode';
 	}
@@ -41,13 +56,12 @@ class Test_ActivateSafeMode extends AjaxTestCase {
 	}
 
 	public function testShouldResetOptions() {
-		$this->_setRole( 'administrator' );
-
-		$this->assertTrue( current_user_can( 'rocket_manage_options' ) );
-
 		$_POST['nonce'] = wp_create_nonce( 'rocket-ajax' );
 
 		$response = $this->callAjaxAction();
+
+		$this->assertObjectHasAttribute( 'success', $response );
+		$this->assertTrue( $response->success );
 
 		$expected_subset = [
 			'embeds'                 => 0,
@@ -71,10 +85,6 @@ class Test_ActivateSafeMode extends AjaxTestCase {
 			$this->assertArrayHasKey( $key, $options );
 			$this->assertSame( $value, $options[$key] );
 		}
-
-		$this->assertObjectHasAttribute( 'success', $response );
-		$this->assertTrue( $response->success );
-		var_export( $response );
 
 		delete_option( 'wp_rocket_settings' );
 	}
