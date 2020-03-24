@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Fixtures\inc\Engine\Preload\PartialProcess_Wrapper;
 use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\PartialPreloadSubscriber::maybeDispatch
+ * @covers \WP_Rocket\Engine\Preload\PartialPreloadSubscriber::maybe_dispatch
  * @group  Preload
  */
 class Test_MaybeDispatch extends TestCase {
