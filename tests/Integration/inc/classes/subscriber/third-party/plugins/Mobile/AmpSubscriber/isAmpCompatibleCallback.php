@@ -1,9 +1,9 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\classes\subscriber\third_party\plugins\Optimization\AMP;
+namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\Optimization\AMP;
 
 /**
- * @covers \WP_Rocket\Subscriber\Third_Party\Plugins\Optimization\AMP::is_amp_compatible_callback
+ * @covers \WP_Rocket\ThirdParty\Plugins\Optimization\AMP::is_amp_compatible_callback
  * @group ThirdParty
  * @group WithAmp
  */

@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Subscriber\Third_Party\Plugins\Optimization;
+namespace WP_Rocket\ThirdParty\Plugins\Optimization;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Admin\Options_Data;
@@ -38,14 +38,27 @@ class AMP implements Subscriber_Interface {
 	 * @inheritDoc
 	 */
 	public static function get_subscribed_events() {
-		$events = [];
-
+		$events = [
+			'activate_amp/amp.php'   => 'generate_config_file',
+			'deactivate_amp/amp.php' => 'generate_config_file',
+		];
 		if ( function_exists( 'is_amp_endpoint' ) ) {
 			$events['wp']                         = 'disable_options_on_amp';
 			$events['rocket_cache_query_strings'] = 'is_amp_compatible_callback';
+			$events['update_option_amp-options']  = 'generate_config_file';
 		}
 
 		return $events;
+	}
+
+	/**
+	 * Regenerate config file on plugin activation / deactivation.
+	 *
+	 * @since  3.5.2
+	 * @author Soponar Cristina
+	 */
+	public function generate_config_file() {
+		rocket_generate_config_file();
 	}
 
 	/**
@@ -92,7 +105,6 @@ class AMP implements Subscriber_Interface {
 		$do_rocket_protocol_rewrite = apply_filters( 'do_rocket_protocol_rewrite', false ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 		if ( ( $this->options->get( 'do_cloudflare', 0 ) && $this->options->get( 'cloudflare_protocol_rewrite', 0 ) || $do_rocket_protocol_rewrite ) ) {
-			remove_filter( 'rocket_buffer', 'rocket_protocol_rewrite', PHP_INT_MAX );
 			remove_filter( 'wp_calculate_image_srcset', 'rocket_protocol_rewrite_srcset', PHP_INT_MAX );
 		}
 	}
