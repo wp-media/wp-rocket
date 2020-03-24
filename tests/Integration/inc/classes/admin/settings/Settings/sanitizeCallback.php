@@ -11,7 +11,20 @@ use WPMedia\PHPUnit\Integration\AdminTestCase;
  */
 class Test_SanitizeCallback extends AdminTestCase {
 	/**
-	 * @dataProvider addDataProvider
+	 * @dataProvider addDNSPrefetchProvider
+	 */
+	public function testShouldSanitizeDNSPrefetchEntries( $input, $expected ) {
+		$output = apply_filters( 'sanitize_option_wp_rocket_settings', $input );
+
+		$this->assertArrayHasKey( 'dns_prefetch', $output );
+		$this->assertSame(
+			$expected['dns_prefetch'],
+			array_values( $output['dns_prefetch'] )
+		);
+	}
+
+	/**
+	 * @dataProvider addCriticalCSSProvider
 	 */
 	public function testShouldSanitizeCriticalCss( $original, $sanitized ) {
 		$actual = apply_filters( 'sanitize_option_wp_rocket_settings', $original );
@@ -21,7 +34,11 @@ class Test_SanitizeCallback extends AdminTestCase {
 		);
 	}
 
-	public function addDataProvider() {
+	public function addDNSPrefetchProvider() {
+		return $this->getTestData( __DIR__, 'dns-prefetch' );
+	}
+
+	public function addCriticalCSSProvider() {
 		return $this->getTestData( __DIR__, 'sanitizeCallback' );
 	}
 }
