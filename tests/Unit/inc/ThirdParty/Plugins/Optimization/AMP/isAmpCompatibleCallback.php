@@ -3,9 +3,9 @@
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\Optimization\AMP;
 
 use Brain\Monkey\Functions;
-use WP_Rocket\ThirdParty\Plugins\Optimization\AMP;
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\ThirdParty\Plugins\Optimization\AMP;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Plugins\Optimization\AMP::is_amp_compatible_callback
@@ -13,11 +13,12 @@ use WP_Rocket\Admin\Options_Data;
  * @group WithAmp
  */
 class Test_IsAmpCompatibleCallback extends TestCase {
-	private $subscriber;
+	private $amp;
 
 	public function setUp() {
 		parent::setUp();
-		$this->subscriber = new AMP( $this->createMock( Options_Data::class ) );
+
+		$this->amp = new AMP( $this->createMock( Options_Data::class ) );
 	}
 
 	public function testShouldBailoutIfAmpThemeOptionsAreNull() {
@@ -26,7 +27,7 @@ class Test_IsAmpCompatibleCallback extends TestCase {
 			->with( 'amp-options', [] )
 			->andReturn( null );
 
-		$this->assertEquals( [], $this->subscriber->is_amp_compatible_callback( [] ) );
+		$this->assertEquals( [], $this->amp->is_amp_compatible_callback( [] ) );
 	}
 
 	public function testShouldBailoutIfAmpThemeSupportIsNull() {
@@ -35,7 +36,7 @@ class Test_IsAmpCompatibleCallback extends TestCase {
 			->with( 'amp-options', [] )
 			->andReturn( [ 'theme_support' => null ] );
 
-		$this->assertEquals( [], $this->subscriber->is_amp_compatible_callback( [] ) );
+		$this->assertEquals( [], $this->amp->is_amp_compatible_callback( [] ) );
 	}
 
 
@@ -45,7 +46,7 @@ class Test_IsAmpCompatibleCallback extends TestCase {
 			->with( 'amp-options', [] )
 			->andReturn( [ 'theme_support' => 'standard' ] );
 
-		$this->assertEquals( [], $this->subscriber->is_amp_compatible_callback( [] ) );
+		$this->assertEquals( [], $this->amp->is_amp_compatible_callback( [] ) );
 	}
 
 	public function testShouldAddAmpWhenThemeSupportIsTransitional() {
@@ -54,7 +55,7 @@ class Test_IsAmpCompatibleCallback extends TestCase {
 			->with( 'amp-options', [] )
 			->andReturn( [ 'theme_support' => 'transitional' ] );
 
-		$this->assertContains( 'amp', $this->subscriber->is_amp_compatible_callback( [] ) );
+		$this->assertContains( 'amp', $this->amp->is_amp_compatible_callback( [] ) );
 	}
 
 }

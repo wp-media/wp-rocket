@@ -3,9 +3,9 @@
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\Optimization\AMP;
 
 use Brain\Monkey\Functions;
-use WP_Rocket\ThirdParty\Plugins\Optimization\AMP;
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\ThirdParty\Plugins\Optimization\AMP;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Plugins\Optimization\AMP::disable_options_on_amp
@@ -13,6 +13,15 @@ use WP_Rocket\Admin\Options_Data;
  * @group WithAmp
  */
 class Test_DisableOptionsOnAmp extends TestCase {
+	private $amp;
+	private $options;
+
+	public function setUp() {
+		parent::setUp();
+
+		$this->options = $this->createMock( Options_Data::class );
+		$this->amp     = new AMP( $this->options );
+	}
 
 	public function testShouldBailoutIfIsNotAmpEndpoint() {
 		Functions\expect( 'is_amp_endpoint' )
@@ -21,8 +30,7 @@ class Test_DisableOptionsOnAmp extends TestCase {
 
 		Functions\expect( 'remove_filter' )->never();
 
-		$subscriber = new AMP( $this->createMock( Options_Data::class ) );
-		$subscriber->disable_options_on_amp();
+		$this->amp->disable_options_on_amp();
 	}
 
 	public function testShouldDisableOptionForAmpExceptImageSrcSet() {
@@ -42,14 +50,13 @@ class Test_DisableOptionsOnAmp extends TestCase {
 			->once()
 			->with(  'do_rocket_protocol_rewrite', false );
 
-		$options = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
-		$map     = [
+		$map = [
 			[ 'do_cloudflare', 0, 0, ],
 		];
-		$options->method( 'get' )->will( $this->returnValueMap( $map ) );
 
-		$subscriber = new AMP( $options );
-		$subscriber->disable_options_on_amp();
+		$this->options->method( 'get' )->will( $this->returnValueMap( $map ) );
+
+		$this->amp->disable_options_on_amp();
 	}
 
 	public function testShouldDisableOptionForAmpWhenCloudflareEnabled() {
@@ -73,15 +80,14 @@ class Test_DisableOptionsOnAmp extends TestCase {
 			->once()
 			->with(  'do_rocket_protocol_rewrite', false );
 
-		$options = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
-		$map     = [
+		$map = [
 			[ 'do_cloudflare', 0, 1, ],
 			[ 'cloudflare_protocol_rewrite', 0, 1, ],
 		];
-		$options->method( 'get' )->will( $this->returnValueMap( $map ) );
 
-		$subscriber = new AMP( $options );
-		$subscriber->disable_options_on_amp();
+		$this->options->method( 'get' )->will( $this->returnValueMap( $map ) );
+
+		$this->amp->disable_options_on_amp();
 	}
 
 	public function testShouldDisableOptionForAmpWhenCloudflareDisabledButProtocolRewrite() {
@@ -106,14 +112,13 @@ class Test_DisableOptionsOnAmp extends TestCase {
 			->with(  'do_rocket_protocol_rewrite', false )
 			->andReturn( true );
 
-		$options = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
-		$map     = [
+		$map = [
 			[ 'do_cloudflare', 0, 0, ],
 			[ 'cloudflare_protocol_rewrite', 0, 0, ],
 		];
-		$options->method( 'get' )->will( $this->returnValueMap( $map ) );
 
-		$subscriber = new AMP( $options );
-		$subscriber->disable_options_on_amp();
+		$this->options->method( 'get' )->will( $this->returnValueMap( $map ) );
+
+		$this->amp->disable_options_on_amp();
 	}
 }

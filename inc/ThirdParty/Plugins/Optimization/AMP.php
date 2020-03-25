@@ -1,8 +1,8 @@
 <?php
 namespace WP_Rocket\ThirdParty\Plugins\Optimization;
 
-use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
  * Subscriber for compatibility with AMP
