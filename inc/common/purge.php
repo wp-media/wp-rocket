@@ -420,13 +420,14 @@ add_filter( 'rocket_post_purge_urls', 'rocket_post_purge_urls_for_qtranslate' );
  */
 function do_admin_post_rocket_purge_cache() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	if ( isset( $_GET['type'], $_GET['_wpnonce'] ) ) {
-		$type = sanitize_key( $_GET['type'] );
+		$type       = sanitize_key( $_GET['type'] );
+		$type_array = explode( '-', $type );
 
-		$_type     = explode( '-', $type );
-		$_type     = reset( $_type );
-		$_id       = explode( '-', $type );
-		$_id       = end( $_id );
-		$_taxonomy = isset( $_GET['taxonomy'] ) ? sanitize_title( wp_unslash( $_GET['taxonomy'] ) ) : false;
+		$_type     = reset( $type_array );
+		$_id       = end( $type_array );
+		$_id       = is_numeric( $_id ) ? absint( $_id ) : 0;
+		$_taxonomy = isset( $_GET['taxonomy'] ) ? sanitize_title( wp_unslash( $_GET['taxonomy'] ) ) : '';
+		$_url      = '';
 
 		if ( ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'purge_cache_' . $type ) ) {
 			wp_nonce_ays( '' );
@@ -521,17 +522,17 @@ function do_admin_post_rocket_purge_cache() { // phpcs:ignore WordPress.NamingCo
 
 			// Clear cache file of the current page in front-end.
 			case 'url':
-				$referer = wp_get_referer();
+				$_url = wp_get_referer();
 
-				if ( 0 !== strpos( $referer, 'http' ) ) {
+				if ( 0 !== strpos( $_url, 'http' ) ) {
 					$parse_url = get_rocket_parse_url( untrailingslashit( home_url() ) );
-					$referer   = $parse_url['scheme'] . '://' . $parse_url['host'] . $referer;
+					$_url      = $parse_url['scheme'] . '://' . $parse_url['host'] . $_url;
 				}
 
-				if ( home_url( '/' ) === $referer ) {
+				if ( home_url( '/' ) === $_url ) {
 					rocket_clean_home();
 				} else {
-					rocket_clean_files( $referer );
+					rocket_clean_files( $_url );
 				}
 				break;
 
@@ -539,6 +540,19 @@ function do_admin_post_rocket_purge_cache() { // phpcs:ignore WordPress.NamingCo
 				wp_nonce_ays( '' );
 				break;
 		}
+
+		/**
+		 * Fires after the cache is cleared.
+		 *
+		 * @since  3.6
+		 * @author Grégory Viguier
+		 *
+		 * @param string $_type     Type of cache clearance: 'all', 'post', 'term', 'user', 'url'.
+		 * @param int    $_id       The post ID, term ID, or user ID being cleared. 0 when $_type is not 'post', 'term', or 'user'.
+		 * @param string $_taxonomy The taxonomy the term being cleared belong to. '' when $_type is not 'term'.
+		 * @param string $_url      The URL being cleared. '' when $_type is not 'url'.
+		 */
+		do_action( 'rocket_purge_cache', $_type, $_id, $_taxonomy, $_url );
 
 		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
 		die();
