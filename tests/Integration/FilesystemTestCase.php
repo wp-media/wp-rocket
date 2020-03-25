@@ -11,6 +11,12 @@ abstract class FilesystemTestCase extends TestCase {
 
 	use ArrayTrait;
 
+	/**
+	 * Path to the config and test data in the Fixtures directory.
+	 * Set this path in each test class.
+	 *
+	 * @var string
+	 */
 	protected $path_to_test_data;
 
 	/**
@@ -40,8 +46,26 @@ abstract class FilesystemTestCase extends TestCase {
 	 * @var array
 	 */
 	protected $config = [];
+	
+	/**
+	 * Virtual filestructure for this test, i.e. default merged with configured.
+	 *
+	 * @var array
+	 */
 	private $merged_structure;
+	
+	/**
+	 * Original virtual files with flattened full paths.
+	 *
+	 * @var array
+	 */
 	protected $original_files = [];
+	
+	/**
+	 * Original virtual directories with flattened full paths.
+	 *
+	 * @var array
+	 */
 	protected $original_dirs = [];
 
 	/**
@@ -116,7 +140,7 @@ abstract class FilesystemTestCase extends TestCase {
 	/**
 	 * Gets the files and directories for the given virtual root directory.
 	 *
-	 * @param string $dir Virtual directory absolute path.
+	 * @param string  $dir      Virtual directory absolute path.
 	 * @param boolean $relative Optional. When true, returns as relative path.
 	 *
 	 * @return array Array of files and directories in the given root directory.
