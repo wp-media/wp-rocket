@@ -22,7 +22,7 @@ class Test_PurgeExpiredFiles extends FilesystemTestCase {
 		Functions\expect( 'get_rocket_il8n_uri' )->never();
 		Functions\expect( 'rocket_direct_filesystem' )->never();
 
-		$expired_cache_purge = new Expired_Cache_Purge( $this->filesystem->getUrl( 'cache' ) );
+		$expired_cache_purge = new Expired_Cache_Purge( $this->filesystem->getUrl( 'cache/wp-rocket' ) );
 		$this->assertNull( $expired_cache_purge->purge_expired_files( 0 ) );
 	}
 
