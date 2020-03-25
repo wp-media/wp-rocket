@@ -34,14 +34,14 @@ class Test_DisableOptionsOnAmpWithCloudflare extends TestCase {
 	public function testShouldDisableOptionForAmpWhenCloudflareEnabled() {
 		global $wp_filter;
 		add_theme_support( \AMP_Theme_Support::SLUG );
-		$this->assertTrue( (bool) has_filter( 'wp_resource_hints', 'rocket_dns_prefetch') );
-		$this->assertFalse( (bool) has_filter( 'do_rocket_lazyload', '__return_false') );
+		$this->assertNotFalse( has_filter( 'wp_resource_hints', 'rocket_dns_prefetch') );
+		$this->assertFalse( has_filter( 'do_rocket_lazyload', '__return_false') );
 		$this->assertFalse( empty( $wp_filter['rocket_buffer'] ) );
-		$this->assertTrue( (bool) has_filter( 'wp_calculate_image_srcset', 'rocket_protocol_rewrite_srcset') );
+		$this->assertNotFalse( has_filter( 'wp_calculate_image_srcset', 'rocket_protocol_rewrite_srcset') );
 		do_action( 'wp' );
-		$this->assertFalse( (bool) has_filter( 'wp_resource_hints', 'rocket_dns_prefetch') );
-		$this->assertTrue( (bool) has_filter( 'do_rocket_lazyload', '__return_false') );
+		$this->assertFalse( has_filter( 'wp_resource_hints', 'rocket_dns_prefetch') );
+		$this->assertNotFalse( has_filter( 'do_rocket_lazyload', '__return_false') );
 		$this->assertTrue( empty( $wp_filter['rocket_buffer'] ) );
-		$this->assertFalse( (bool) has_filter( 'wp_calculate_image_srcset', 'rocket_protocol_rewrite_srcset') );
+		$this->assertFalse( dhas_filter( 'wp_calculate_image_srcset', 'rocket_protocol_rewrite_srcset') );
 	}
 }
