@@ -97,4 +97,5 @@ function rocket_uninstall_rrmdir( $dir ) {
 rocket_uninstall_rrmdir( WP_ROCKET_CACHE_ROOT_PATH . 'wp-rocket/' );
 rocket_uninstall_rrmdir( WP_ROCKET_CACHE_ROOT_PATH . 'min/' );
 rocket_uninstall_rrmdir( WP_ROCKET_CACHE_ROOT_PATH . 'busting/' );
+rocket_uninstall_rrmdir( WP_ROCKET_CACHE_ROOT_PATH . 'critical-css/' );
 rocket_uninstall_rrmdir( WP_ROCKET_CONFIG_PATH );
