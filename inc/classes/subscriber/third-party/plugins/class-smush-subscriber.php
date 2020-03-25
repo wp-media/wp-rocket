@@ -133,17 +133,27 @@ class Smush_Subscriber implements Subscriber_Interface {
 			return $enabled;
 		}
 
-		if ( ! Settings::get_instance()->get( 'lazy_load' ) ) {
+		if ( ! method_exists( '\Smush\Core\Settings', 'get_instance' ) ) {
+			return $enabled;
+		}
+
+		$smush_settings = Settings::get_instance();
+
+		if ( ! method_exists( $smush_settings, 'get' ) || ! method_exists( $smush_settings, 'get_setting' ) ) {
+			return $enabled;
+		}
+
+		if ( ! $smush_settings->get( 'lazy_load' ) ) {
 			return $enabled;
 		}
 
 		$prefix  = rocket_get_constant( 'WP_SMUSH_PREFIX', 'wp-smush-' );
-		$formats = Settings::get_instance()->get_setting( $prefix . 'lazy_load' );
+		$formats = $smush_settings->get_setting( $prefix . 'lazy_load' );
 		$formats = ! empty( $formats['format'] ) && is_array( $formats['format'] ) ? array_filter( $formats['format'] ) : [];
 
 		$image_formats = array_intersect_key(
 			$formats,
-			// Whitelist image formats.
+			// Allowlist image formats.
 			[
 				'jpeg' => false,
 				'png'  => false,
