@@ -13,7 +13,7 @@ trait ArrayTrait {
 	 *
 	 * @return array flattened array
 	 */
-	public static function flatten( array $array, $prepend = '', $arrayOnly = false, $delimiter '/' ) {
+	public static function flatten( array $array, $prepend = '', $arrayOnly = false, $delimiter = '/' ) {
 		$results = [];
 
 		foreach ( $array as $key => $value ) {
