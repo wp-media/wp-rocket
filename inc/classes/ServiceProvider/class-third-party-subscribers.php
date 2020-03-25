@@ -47,10 +47,10 @@ class Third_Party_Subscribers extends AbstractServiceProvider {
 	public function register() {
 		$this->getContainer()->share( 'mobile_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Mobile_Subscriber' );
 		$this->getContainer()->share( 'woocommerce_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Ecommerce\WooCommerce_Subscriber' );
-		$this->getContainer()->share( 'elementor_subscriber', \WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor::class )
+		$this->getContainer()->share( 'elementor_subscriber', 'WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor' )
 			->withArgument( $this->getContainer()->get( 'options' ) );
 		$this->getContainer()->share( 'syntaxhighlighter_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\SyntaxHighlighter_Subscriber' );
-		$this->getContainer()->share( 'bridge_subscriber', \WP_Rocket\ThirdParty\Themes\Bridge::class )
+		$this->getContainer()->share( 'bridge_subscriber', 'WP_Rocket\ThirdParty\Themes\Bridge' )
 			->withArgument( $this->getContainer()->get( 'options' ) );
 		$this->getContainer()->share( 'ngg_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\NGG_Subscriber' );
 		$this->getContainer()->share( 'smush_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Smush_Subscriber' );
@@ -62,6 +62,6 @@ class Third_Party_Subscribers extends AbstractServiceProvider {
 			->withArgument( $this->getContainer()->get( 'options' ) );
 		$this->getContainer()->share( 'optimus_webp_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Optimus_Subscriber' );
 		$this->getContainer()->share( 'bigcommerce_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Ecommerce\BigCommerce_Subscriber' );
-		$this->getContainer()->share( 'beaverbuilder_subscriber', \WP_Rocket\ThirdParty\Plugins\PageBuilder\BeaverBuilder::class );
+		$this->getContainer()->share( 'beaverbuilder_subscriber', 'WP_Rocket\ThirdParty\Plugins\PageBuilder\BeaverBuilder' );
 	}
 }
