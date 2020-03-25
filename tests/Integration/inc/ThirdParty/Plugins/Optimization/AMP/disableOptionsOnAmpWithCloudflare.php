@@ -42,6 +42,6 @@ class Test_DisableOptionsOnAmpWithCloudflare extends TestCase {
 		$this->assertFalse( has_filter( 'wp_resource_hints', 'rocket_dns_prefetch') );
 		$this->assertNotFalse( has_filter( 'do_rocket_lazyload', '__return_false') );
 		$this->assertTrue( empty( $wp_filter['rocket_buffer'] ) );
-		$this->assertFalse( dhas_filter( 'wp_calculate_image_srcset', 'rocket_protocol_rewrite_srcset') );
+		$this->assertFalse( has_filter( 'wp_calculate_image_srcset', 'rocket_protocol_rewrite_srcset') );
 	}
 }
