@@ -634,6 +634,7 @@ class Combine extends Abstract_JS_Optimization {
 			'tarteaucitron',
 			'pw_brand_product_list',
 			'tminusCountDown',
+			'pysWooSelectContentData',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
@@ -840,6 +841,7 @@ class Combine extends Abstract_JS_Optimization {
 			'tdbMenuItem',
 			'tdbSearchItem',
 			'best_seller_badge',
+			'jQuery(\'#product-top-bar',
 		];
 
 		/**
