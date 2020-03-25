@@ -353,7 +353,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @since 3.5.2
 	 * @author Soponar Cristina
 	 *
-	 * @param array $devmode New value for Cloudflare dev mode.
+	 * @param string $devmode New value for Cloudflare dev mode.
 	 */
 	private function save_cloudflare_devmode( $devmode ) {
 		$cloudflare_dev_mode_return = $this->cloudflare->set_devmode( $devmode );
@@ -377,7 +377,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @since 3.5.2
 	 * @author Soponar Cristina
 	 *
-	 * @param array $cache_level New value for Cloudflare cache_level.
+	 * @param string $cache_level New value for Cloudflare cache_level.
 	 */
 	private function save_cache_level( $cache_level ) {
 		// Set Cache Level to Aggressive.
@@ -408,7 +408,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @since 3.5.2
 	 * @author Soponar Cristina
 	 *
-	 * @param array $minify New value for Cloudflare minify.
+	 * @param string $minify New value for Cloudflare minify.
 	 */
 	private function save_minify( $minify ) {
 		$cf_minify_return = $this->cloudflare->set_minify( $minify );
@@ -433,7 +433,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @since 3.5.2
 	 * @author Soponar Cristina
 	 *
-	 * @param array $rocket_loader New value for Cloudflare rocket loader.
+	 * @param string $rocket_loader New value for Cloudflare rocket loader.
 	 */
 	private function save_rocket_loader( $rocket_loader ) {
 		$cf_rocket_loader_return = $this->cloudflare->set_rocket_loader( $rocket_loader );
@@ -458,7 +458,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @since 3.5.2
 	 * @author Soponar Cristina
 	 *
-	 * @param array $browser_cache_ttl New value for Cloudflare browser cache ttl.
+	 * @param int $browser_cache_ttl New value for Cloudflare browser cache ttl.
 	 */
 	private function save_browser_cache_ttl( $browser_cache_ttl ) {
 		$cf_browser_cache_return = $this->cloudflare->set_browser_cache_ttl( $browser_cache_ttl );
