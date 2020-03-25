@@ -1,16 +1,18 @@
 <?php
 
 return [
-	'vfs_dir'   => 'cache/critical-css/',
+	'vfs_dir'   => 'wp-content/cache/critical-css/',
 
 	// Virtual filesystem structure.
 	'structure' => [
-		'cache' => [
-			'critical-css' => [
-				'1' => [
-					'.'            => '',
-					'..'           => '',
-					'critical.css' => 'body { font-family: Helvetica, Arial, sans-serif; text-align: center;}',
+		'wp-content' => [
+			'cache' => [
+				'critical-css' => [
+					'1' => [
+						'.'            => '',
+						'..'           => '',
+						'critical.css' => 'body { font-family: Helvetica, Arial, sans-serif; text-align: center;}',
+					],
 				],
 			],
 		],

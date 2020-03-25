@@ -1,13 +1,15 @@
 <?php
 
 return [
-	'vfs_dir'   => 'plugins/wp-rocket/',
+	'vfs_dir'   => 'wp-content/plugins/wp-rocket/',
 
 	// Virtual filesystem structure.
 	'structure' => [
-		'plugins' => [
-			'wp-rocket' => [
-				'licence-data.php' => '',
+		'wp-content' => [
+			'plugins' => [
+				'wp-rocket' => [
+					'licence-data.php' => '',
+				],
 			],
 		],
 	],

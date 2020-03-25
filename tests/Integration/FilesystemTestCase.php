@@ -46,21 +46,21 @@ abstract class FilesystemTestCase extends TestCase {
 	 * @var array
 	 */
 	protected $config = [];
-	
+
 	/**
 	 * Virtual filestructure for this test, i.e. default merged with configured.
 	 *
 	 * @var array
 	 */
 	private $merged_structure;
-	
+
 	/**
 	 * Original virtual files with flattened full paths.
 	 *
 	 * @var array
 	 */
 	protected $original_files = [];
-	
+
 	/**
 	 * Original virtual directories with flattened full paths.
 	 *
@@ -80,7 +80,7 @@ abstract class FilesystemTestCase extends TestCase {
 		$this->original_files = static::getAllFiles( $vfs, $this->config['vfs_dir'] );
 		$this->original_dirs  = static::getAllDirs( $vfs, $this->config['vfs_dir'] );
 
-		$this->filesystem     = new VirtualFilesystemDirect( 'wp-content', $this->mergeStructure(), 0777 );
+		$this->filesystem     = new VirtualFilesystemDirect( 'public', $this->mergeStructure(), 0777 );
 		$this->rootVirtualUrl = $this->filesystem->getUrl( '/' );
 
 		parent::setUp();
@@ -119,28 +119,35 @@ abstract class FilesystemTestCase extends TestCase {
 	 */
 	private function getDefaultVfs() {
 		return [
-			'cache'            => [
-				'busting'      => [
-					1 => [],
+			'wp-admin'      => [],
+			'wp-content'    => [
+				'cache'            => [
+					'busting'      => [
+						1 => [],
+					],
+					'critical-css' => [],
+					'min'          => [],
+					'wp-rocket'    => [
+						'index.html' => '',
+					],
 				],
-				'critical-css' => [],
-				'min'          => [],
-				'wp-rocket'    => [
-					'index.html' => '',
+				'mu-plugins'       => [],
+				'plugins'          => [
+					'wp-rocket' => [],
 				],
+				'themes'           => [],
+				'uploads'          => [],
+				'wp-rocket-config' => [],
 			],
-			'mu-plugins'       => [],
-			'plugins'          => [],
-			'themes'           => [],
-			'uploads'          => [],
-			'wp-rocket-config' => [],
+			'wp-includes'   => [],
+			'wp-config.php' => '',
 		];
 	}
 
 	/**
 	 * Gets the files and directories for the given virtual root directory.
 	 *
-	 * @param string  $dir      Virtual directory absolute path.
+	 * @param string $dir Virtual directory absolute path.
 	 * @param boolean $relative Optional. When true, returns as relative path.
 	 *
 	 * @return array Array of files and directories in the given root directory.

@@ -17,8 +17,8 @@ tests_add_filter(
 	function() {
 
 		// Set the path and URL to our virtual filesystem.
-		define( 'WP_ROCKET_CACHE_ROOT_PATH', 'vfs://wp-content/cache/' );
-		define( 'WP_ROCKET_CACHE_ROOT_URL', 'vfs://wp-content/cache/' );
+		define( 'WP_ROCKET_CACHE_ROOT_PATH', 'vfs://public/wp-content/cache/' );
+		define( 'WP_ROCKET_CACHE_ROOT_URL', 'vfs://public/wp-content/cache/' );
 
 		if ( BootstrapManager::isGroup( 'WithWoo' ) ) {
 			// Load WooCommerce.
