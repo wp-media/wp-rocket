@@ -6,7 +6,7 @@ trait GlobTrait {
 
 	public function deleteDomainCallback( $root ) {
 		$root = rtrim( $root, '*' );
-		$this->delete_files( $root );
+		$this->deleteFiles( $root );
 	}
 
 	/**
