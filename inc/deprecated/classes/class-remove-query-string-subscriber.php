@@ -5,10 +5,12 @@ use WP_Rocket\Optimization\Remove_Query_String;
 use WP_Rocket\Subscriber\Optimization\Minify_Subscriber;
 
 /**
- * Hooks into WordPress to remove query strings for static files
+ * Hooks into WordPress to remove query strings for static files.
  *
- * @since 3.1
+ * @since  3.1
+ * @since  3.6 Deprecated.
  * @author Remy Perona
+ * @deprecated
  */
 class Remove_Query_String_Subscriber extends Minify_Subscriber {
 	/**
@@ -30,6 +32,8 @@ class Remove_Query_String_Subscriber extends Minify_Subscriber {
 	 * @param Remove_Query_String $remove_query_string Remove Query String instance.
 	 */
 	public function __construct( Remove_Query_String $remove_query_string ) {
+		rocket_deprecated_class( get_class( $this ), '3.6' );
+
 		$this->remove_query_string = $remove_query_string;
 	}
 

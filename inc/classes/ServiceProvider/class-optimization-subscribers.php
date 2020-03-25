@@ -26,14 +26,12 @@ class Optimization_Subscribers extends AbstractServiceProvider {
 		'buffer_optimization',
 		'buffer_subscriber',
 		'cache_dynamic_resource',
-		'remove_query_string',
 		'ie_conditionals_subscriber',
 		'minify_html_subscriber',
 		'combine_google_fonts_subscriber',
 		'minify_css_subscriber',
 		'minify_js_subscriber',
 		'cache_dynamic_resource_subscriber',
-		'remove_query_string_subscriber',
 		'dequeue_jquery_migrate_subscriber',
 	];
 
@@ -58,10 +56,6 @@ class Optimization_Subscribers extends AbstractServiceProvider {
 			->withArgument( $this->getContainer()->get( 'options' ) )
 			->withArgument( WP_ROCKET_CACHE_BUSTING_PATH )
 			->withArgument( WP_ROCKET_CACHE_BUSTING_URL );
-		$this->getContainer()->add( 'remove_query_string', 'WP_Rocket\Optimization\Remove_Query_String' )
-			->withArgument( $this->getContainer()->get( 'options' ) )
-			->withArgument( WP_ROCKET_CACHE_BUSTING_PATH )
-			->withArgument( WP_ROCKET_CACHE_BUSTING_URL );
 		$this->getContainer()->share( 'ie_conditionals_subscriber', 'WP_Rocket\Subscriber\Optimization\IE_Conditionals_Subscriber' );
 		$this->getContainer()->share( 'minify_html_subscriber', 'WP_Rocket\Subscriber\Optimization\Minify_HTML_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'options' ) );
@@ -73,8 +67,6 @@ class Optimization_Subscribers extends AbstractServiceProvider {
 			->withArgument( $this->getContainer()->get( 'options' ) );
 		$this->getContainer()->share( 'cache_dynamic_resource_subscriber', 'WP_Rocket\Subscriber\Optimization\Cache_Dynamic_Resource_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'cache_dynamic_resource' ) );
-		$this->getContainer()->share( 'remove_query_string_subscriber', 'WP_Rocket\Subscriber\Optimization\Remove_Query_String_Subscriber' )
-			->withArgument( $this->getContainer()->get( 'remove_query_string' ) );
 		$this->getContainer()->share( 'dequeue_jquery_migrate_subscriber', 'WP_Rocket\Subscriber\Optimization\Dequeue_JQuery_Migrate_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'options' ) );
 	}

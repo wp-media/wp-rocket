@@ -108,7 +108,6 @@ class Plugin {
 				'minify_css_subscriber',
 				'minify_js_subscriber',
 				'cache_dynamic_resource_subscriber',
-				'remove_query_string_subscriber',
 				'dequeue_jquery_migrate_subscriber',
 			];
 

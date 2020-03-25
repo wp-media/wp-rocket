@@ -5,10 +5,12 @@ use WP_Rocket\Admin\Options_Data as Options;
 use WP_Rocket\Optimization\Abstract_Optimization;
 
 /**
- * Remove query string from static resources
+ * Remove query string from static resources.
  *
- * @since 3.1
+ * @since  3.1
+ * @since  3.6 Deprecated.
  * @author Remy Perona
+ * @deprecated
  */
 class Remove_Query_String extends Abstract_Optimization {
 	use \WP_Rocket\Optimization\CSS\Path_Rewriter;
@@ -64,6 +66,8 @@ class Remove_Query_String extends Abstract_Optimization {
 	 * @param string  $busting_url  Base cache busting files URL.
 	 */
 	public function __construct( Options $options, $busting_path, $busting_url ) {
+		rocket_deprecated_class( get_class( $this ), '3.6' );
+
 		$this->options      = $options;
 		$this->busting_path = $busting_path . get_current_blog_id() . '/';
 		$this->busting_url  = $busting_url . get_current_blog_id() . '/';
