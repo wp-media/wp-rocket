@@ -68,6 +68,7 @@ class AMP implements Subscriber_Interface {
 	 * @author Soponar Cristina
 	 *
 	 * @param array $value WP Rocket cache_query_strings value.
+	 * @return array
 	 */
 	public function is_amp_compatible_callback( $value ) {
 		$options       = get_option( self::AMP_OPTIONS, [] );
@@ -101,12 +102,15 @@ class AMP implements Subscriber_Interface {
 		add_filter( 'do_rocket_lazyload', '__return_false' );
 		unset( $wp_filter['rocket_buffer'] );
 
-		// this filter is documented in inc/front/protocol.php.
-		$do_rocket_protocol_rewrite = apply_filters( 'do_rocket_protocol_rewrite', false ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
-
-		if ( ( $this->options->get( 'do_cloudflare', 0 ) && $this->options->get( 'cloudflare_protocol_rewrite', 0 ) || $do_rocket_protocol_rewrite ) ) {
+		if (
+			(bool) $this->options->get( 'do_cloudflare', 0 )
+			&& (
+				(bool) $this->options->get( 'cloudflare_protocol_rewrite', 0 )
+				// this filter is documented in inc/front/protocol.php.
+				|| (bool) apply_filters( 'do_rocket_protocol_rewrite', false ) // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+				)
+		) {
 			remove_filter( 'wp_calculate_image_srcset', 'rocket_protocol_rewrite_srcset', PHP_INT_MAX );
 		}
 	}
-
 }
