@@ -43,30 +43,22 @@ class Test_WarningNotice extends TestCase {
 		return $plugins;
 	}
 
-	public function testShouldDisplayWarningNotice() {
+	public function addDataProvider() {
+		error_log( var_export( $this->getTestData( __DIR__, 'settings' ), true ) );
+		return $this->getTestData( __DIR__, 'settings' );
+	}
+
+	/**
+	 * @dataProvider addDataProvider
+	 */
+	public function testShouldDisplayWarningNotice( $hb_settings, $html ) {
 		add_filter( 'pre_get_rocket_option_emoji', [ $this, 'return_true' ] );
 		add_filter( 'pre_get_rocket_option_minify_css', [ $this, 'return_true' ] );
 
-		update_option( 'wphb_settings', [
-			'advanced' => [
-				'emoji' => true,
-			],
-			'page_cache' => [
-				'enabled' => true,
-			],
-			'minify' => [
-				'enabled' => true,
-			],
-		] );
+		update_option( 'wphb_settings', $hb_settings );
 
 		$this->assertContains(
-			$this->format_the_html( '<div class="notice notice-error is-dismissible">
-			<p>Please deactivate the following Hummingbird options which conflict with WP Rocket features:</p>
-			<ul>
-				<li>Hummingbird <em>page caching</em> conflicts with WP Rocket <em>page caching</em></li>
-				<li>Hummingbird <em>asset optimization</em> conflicts with WP Rocket <em>file optimization</em></li>
-				<li>Hummingbird <em>disable emoji</em> conflicts with WP Rockets <em>disable emoji</em></li>
-			</ul></div>' ),
+			$this->format_the_html( '<div class="notice notice-error is-dismissible">' . $html . '</div>' ),
 			$this->getActualHtml()
 		);
 
