@@ -7,36 +7,20 @@ use WPMedia\PHPUnit\Unit\TestCase;
 
 abstract class SmushSubscriberTestCase extends TestCase {
 
-	protected function setUp() {
-		parent::setUp();
+	public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
 
 		Functions\expect( 'rocket_get_constant' )
 			->with( 'WP_SMUSH_PREFIX' )
 			->andReturn( 'wp-smush-' );
+
+		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/classes/subscriber/third-party/plugins/Smush_Subscriber/SmushCoreSettings.php';
 	}
 
 	protected function mock_is_smush_lazyload_enabled( $lazyload_enabled, array $lazyload_formats ) {
-		$settings = Mockery::mock( 'alias:\Smush\Core\Settings' );
-		$settings
-			->shouldReceive( 'get_instance' )
-			->andReturnUsing(
-				function() use ( $lazyload_enabled, $lazyload_formats ) {
-					$settings = Mockery::mock( '\WP_Rocket\Tests\Fixtures\ThirdPartyPlugins\Smush\Core\Settings' ); // Don't look for me, I don’t exist.
-					$settings
-						->shouldReceive( 'get' )
-						->with( 'lazy_load' )
-						->andReturn( (bool) $lazyload_enabled );
-					$settings
-						->shouldReceive( 'get_setting' )
-						->with( 'wp-smush-lazy_load' )
-						->andReturn(
-							[
-								'format' => $lazyload_formats,
-							]
-						);
-					return $settings;
-				}
-			);
+		$settings = \Smush\Core\Settings::get_instance();
+
+		$settings->set_settings( $lazyload_enabled, $lazyload_formats );
 
 		return $settings;
 	}
