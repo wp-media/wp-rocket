@@ -70,28 +70,50 @@ foreach ( $rocket_events as $rocket_event ) {
 }
 
 /**
- * Remove all cache files.
+ * Remove all WP Rocket files.
  *
  * @since 1.2.0
  *
- * @param string $dir Path to directory.
+ * @param string $dir Path to file or directory to remove.
  */
 function rocket_uninstall_rrmdir( $dir ) {
-
 	if ( ! is_dir( $dir ) ) {
 		@unlink( $dir );
 		return;
 	}
 
-	$globs = glob( $dir . '/*', GLOB_NOSORT );
-	if ( $globs ) {
-		foreach ( $globs as $file ) {
-			is_dir( $file ) ? rocket_uninstall_rrmdir( $file ) : @unlink( $file );
+	$items = @scandir( $dir );
+
+	if ( ! $items ) {
+		return;
+	}
+
+	// Get rid of dot files when present.
+	if ( '.' === $items[0] ) {
+		unset( $items[0], $items[1] );
+
+		// Reindex back to 0.
+		$items = array_values( $items );
+	}
+
+	$dir = trailingslashit( $dir );
+
+	$items = array_map(
+		function ( $item ) use ( $dir ) {
+			return "{$dir}{$item}";
+		},
+		$items
+	);
+
+	foreach ( $items as $item ) {
+		if ( is_dir( $item ) ) {
+			rocket_uninstall_rrmdir( $item );
+		} else {
+			@unlink( $item );
 		}
 	}
 
 	@rmdir( $dir );
-
 }
 
 rocket_uninstall_rrmdir( WP_ROCKET_CACHE_ROOT_PATH . 'wp-rocket/' );
