@@ -17,7 +17,7 @@ trait GlobTrait {
 	protected function deleteFiles( $dir ) {
 		foreach ( $this->scandir( $dir ) as $item ) {
 			if ( $this->filesystem->is_dir( $item ) ) {
-				$this->delete_files( $item );
+				$this->deleteFiles( $item );
 			} else {
 				$this->filesystem->delete( $item );
 			}
