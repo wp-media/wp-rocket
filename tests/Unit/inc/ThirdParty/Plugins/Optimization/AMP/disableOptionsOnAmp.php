@@ -46,10 +46,6 @@ class Test_DisableOptionsOnAmp extends TestCase {
 			->once()
 			->with( 'do_rocket_lazyload', '__return_false' );
 
-		Functions\expect( 'apply_filters' )
-			->once()
-			->with(  'do_rocket_protocol_rewrite', false );
-
 		$map = [
 			[ 'do_cloudflare', 0, 0, ],
 		];
@@ -76,10 +72,6 @@ class Test_DisableOptionsOnAmp extends TestCase {
 			->once()
 			->with( 'do_rocket_lazyload', '__return_false' );
 
-		Functions\expect( 'apply_filters' )
-			->once()
-			->with(  'do_rocket_protocol_rewrite', false );
-
 		$map = [
 			[ 'do_cloudflare', 0, 1, ],
 			[ 'cloudflare_protocol_rewrite', 0, 1, ],
@@ -90,7 +82,7 @@ class Test_DisableOptionsOnAmp extends TestCase {
 		$this->amp->disable_options_on_amp();
 	}
 
-	public function testShouldDisableOptionForAmpWhenCloudflareDisabledButProtocolRewrite() {
+	public function testShouldDisableOptionForAmpWhenCloudflareEnabledAndFilterProtocolRewrite() {
 		Functions\expect( 'is_amp_endpoint' )
 			->once()
 			->andReturn( true );
@@ -113,7 +105,7 @@ class Test_DisableOptionsOnAmp extends TestCase {
 			->andReturn( true );
 
 		$map = [
-			[ 'do_cloudflare', 0, 0, ],
+			[ 'do_cloudflare', 0, 1, ],
 			[ 'cloudflare_protocol_rewrite', 0, 0, ],
 		];
 
