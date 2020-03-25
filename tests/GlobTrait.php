@@ -5,8 +5,6 @@ namespace WP_Rocket\Tests;
 trait GlobTrait {
 
 	public function deleteDomainCallback( $root ) {
-		var_dump( $root );
-		exit;
 		$root = rtrim( $root, '*' );
 		$this->delete_files( $root );
 	}
