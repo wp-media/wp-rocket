@@ -823,14 +823,14 @@ function rocket_clean_domain( $lang = '' ) {
 
 	try {
 		$cache = new RecursiveDirectoryIterator( $cache_path, FilesystemIterator::SKIP_DOTS );
-	} catch ( \UnexpectedValueException $e ) {
+	} catch ( UnexpectedValueException $e ) {
 		// No logging yet.
 		return;
 	}
 
 	try {
 		$iterator = new RecursiveIteratorIterator( $cache, RecursiveIteratorIterator::CHILD_FIRST );
-	} catch ( \Exception $e ) {
+	} catch ( Exception $e ) {
 		// No logging yet.
 		return;
 	}
@@ -861,7 +861,7 @@ function rocket_clean_domain( $lang = '' ) {
 			foreach ( $files as $file ) {
 				rocket_rrmdir( $file, get_rocket_i18n_to_preserve( $lang ) );
 			}
-		} catch ( \InvalidArgumentException $e ) {
+		} catch ( InvalidArgumentException $e ) {
 			// No logging yet.
 			return;
 		}
