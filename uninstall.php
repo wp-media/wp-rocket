@@ -6,6 +6,10 @@ if ( ! defined( 'WP_ROCKET_CACHE_ROOT_PATH' ) ) {
 	define( 'WP_ROCKET_CACHE_ROOT_PATH', WP_CONTENT_DIR . '/cache/' );
 }
 
+if ( ! defined( 'WP_ROCKET_CONFIG_PATH' ) ) {
+	define( 'WP_ROCKET_CONFIG_PATH', WP_CONTENT_DIR . '/wp-rocket-config/' );
+}
+
 // Delete all transients.
 $rocket_transients = [
 	'wp_rocket_customer_data',
@@ -93,4 +97,4 @@ function rocket_uninstall_rrmdir( $dir ) {
 rocket_uninstall_rrmdir( WP_ROCKET_CACHE_ROOT_PATH . 'wp-rocket/' );
 rocket_uninstall_rrmdir( WP_ROCKET_CACHE_ROOT_PATH . 'min/' );
 rocket_uninstall_rrmdir( WP_ROCKET_CACHE_ROOT_PATH . 'busting/' );
-rocket_uninstall_rrmdir( WP_CONTENT_DIR . '/wp-rocket-config/' );
+rocket_uninstall_rrmdir( WP_ROCKET_CONFIG_PATH );
