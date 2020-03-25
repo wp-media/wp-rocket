@@ -1,4 +1,5 @@
 <?php
+
 namespace WP_Rocket\Tests\Integration\inc\classes\third_party\plugins\Smush_Subscriber;
 
 /**
@@ -8,104 +9,29 @@ namespace WP_Rocket\Tests\Integration\inc\classes\third_party\plugins\Smush_Subs
  * @group WithSmush
  */
 class Test_IsSmushLazyloadActive extends SmushSubscriberTestCase {
-
-	public function testShouldNotDisableWPRocketLazyLoad() {
-		// Disabled.
-		$this->setSmushSettings(
-			false,
-			[
-				'jpeg'   => true,
-				'png'    => true,
-				'gif'    => true,
-				'svg'    => true,
-				'iframe' => true,
-			]
-		);
-
-		$this->assertNotContains( 'Smush', $this->subscriber->is_smush_lazyload_active( [] ) );
-
-		// No image formats.
-		$this->setSmushSettings(
-			true,
-			[
-				'jpeg'   => false,
-				'png'    => false,
-				'gif'    => false,
-				'svg'    => false,
-				'foo'    => true,
-				'iframe' => true,
-			]
-		);
-
-		$this->assertNotContains( 'Smush', $this->subscriber->is_smush_lazyload_active( [] ) );
-
-		// Empty formats.
-		$this->setSmushSettings(
-			true,
-			[]
-		);
+	/**
+	 * @dataProvider addDataProviderThatShouldNotDisableWPRocketLazyLoad
+	 */
+	public function testShouldNotDisableWPRocketLazyLoad( $lazyload_enabled, array $lazyload_formats ) {
+		$this->setSmushSettings( $lazyload_enabled, $lazyload_formats );
 
 		$this->assertNotContains( 'Smush', $this->subscriber->is_smush_lazyload_active( [] ) );
 	}
 
-	public function testShouldDisableWPRocketLazyLoadWhenAtLeastOneImageFormat() {
-		$this->setSmushSettings(
-			true,
-			[
-				'jpeg'   => true,
-				'png'    => false,
-				'gif'    => false,
-				'svg'    => false,
-				'foo'    => false,
-				'iframe' => false,
-			]
-		);
+	/**
+	 * @dataProvider addDataProviderThatShouldDisableWPRocketLazyLoad
+	 */
+	public function testShouldDisableWPRocketLazyLoadWhenAtLeastOneImageFormat( $lazyload_enabled, array $lazyload_formats ) {
+		$this->setSmushSettings( $lazyload_enabled, $lazyload_formats );
 
 		$this->assertContains( 'Smush', $this->subscriber->is_smush_lazyload_active( [] ) );
+	}
 
-		$this->setSmushSettings(
-			true,
-			[
-				'jpeg' => false,
-				'png'  => true,
-				'gif'  => true,
-				'svg'  => false,
-			]
-		);
+	public function addDataProviderThatShouldNotDisableWPRocketLazyLoad() {
+		return $this->getTestData( __DIR__, 'isSmushLazyloadActiveNotDisable' );
+	}
 
-		$this->assertContains( 'Smush', $this->subscriber->is_smush_lazyload_active( [] ) );
-
-		$this->setSmushSettings(
-			true,
-			[
-				'jpeg' => true,
-				'png'  => true,
-				'gif'  => true,
-				'svg'  => false,
-			]
-		);
-
-		$this->assertContains( 'Smush', $this->subscriber->is_smush_lazyload_active( [] ) );
-
-		$this->setSmushSettings(
-			true,
-			[
-				'jpeg' => true,
-				'png'  => true,
-				'gif'  => true,
-				'svg'  => true,
-			]
-		);
-
-		$this->assertContains( 'Smush', $this->subscriber->is_smush_lazyload_active( [] ) );
-
-		$this->setSmushSettings(
-			true,
-			[
-				'png' => true,
-			]
-		);
-
-		$this->assertContains( 'Smush', $this->subscriber->is_smush_lazyload_active( [] ) );
+	public function addDataProviderThatShouldDisableWPRocketLazyLoad() {
+		return $this->getTestData( __DIR__, 'isSmushLazyloadActiveDisable' );
 	}
 }
