@@ -32,7 +32,7 @@ class Test_MaybeClearCache extends TestCase {
 	public function testShouldDoNothingWhenSettingsDontMatch( $old_value, $value, $map ) {
 		$this->options->method( 'get' )->will( $this->returnValueMap( $map ) );
 
-        Functions\expect( 'rocket_clean_domain' )
+		Functions\expect( 'rocket_clean_domain' )
 			->never();
 		Functions\expect( 'rocket_clean_minify' )
 			->never();
@@ -50,7 +50,7 @@ class Test_MaybeClearCache extends TestCase {
 	public function testShouldCleanCacheWhenSettingsMatch( $old_value, $value, $map ) {
 		$this->options->method( 'get' )->will( $this->returnValueMap( $map ) );
 
-        Functions\expect( 'rocket_clean_domain' )
+		Functions\expect( 'rocket_clean_domain' )
 			->once();
 		Functions\expect( 'rocket_clean_minify' )
 			->once();

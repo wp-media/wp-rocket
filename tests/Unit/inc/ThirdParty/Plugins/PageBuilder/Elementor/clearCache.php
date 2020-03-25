@@ -18,27 +18,27 @@ class Test_ClearCache extends TestCase {
 		parent::setUp();
 
 		$this->elementor = new Elementor( $this->createMock( Options_Data::class ) );
-    }
+	}
 
-    public function testShouldDoNothingWhenNotExternal() {
-        Functions\when( 'get_option' )->justReturn( 'internal' );
+	public function testShouldDoNothingWhenNotExternal() {
+		Functions\when( 'get_option' )->justReturn( 'internal' );
 
-        Functions\expect( 'rocket_clean_domain' )
+		Functions\expect( 'rocket_clean_domain' )
 			->never();
 		Functions\expect( 'rocket_clean_minify' )
 			->never();
 
 		$this->elementor->clear_cache();
-    }
+	}
 
 	public function testShouldCleanRocketCacheDirectories() {
-        Functions\when( 'get_option' )->justReturn( 'external' );
+		Functions\when( 'get_option' )->justReturn( 'external' );
 
 		Functions\expect( 'rocket_clean_domain' )
 			->once();
 		Functions\expect( 'rocket_clean_minify' )
-            ->once()
-            ->with( 'css' );
+			->once()
+			->with( 'css' );
 
 		$this->elementor->clear_cache();
 	}
