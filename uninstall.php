@@ -8,26 +8,41 @@ if ( ! defined( 'WP_ROCKET_CACHE_ROOT_PATH' ) ) {
 
 // Delete all transients.
 delete_site_transient( 'wp_rocket_update_data' );
-delete_transient( 'wp_rocket_settings' );
-delete_transient( 'rocket_cloudflare_ips' );
-delete_transient( 'rocket_send_analytics_data' );
+
+$rocket_transients = [
+	'rocket_cloudflare_ips',
+	'rocket_send_analytics_data',
+];
+
+foreach ( $rocket_transients as $rocket_transient ) {
+	delete_transient( $rocket_transient );
+}
 
 // Delete WP Rocket options.
-delete_option( 'wp_rocket_settings' );
-delete_option( 'rocket_analytics_notice_displayed' );
+$rocket_options = [
+	'wp_rocket_settings',
+	'rocket_analytics_notice_displayed',
+];
 
-// Delete Compatibility options.
-delete_option( 'rocket_jetpack_eu_cookie_widget' );
+foreach ( $rocket_options as $rocket_option ) {
+	delete_option( $rocket_option );
+}
 
 // Delete all user meta related to WP Rocket.
 delete_metadata( 'user', '', 'rocket_boxes', '', true );
 
 // Clear scheduled WP Rocket Cron.
-wp_clear_scheduled_hook( 'rocket_purge_time_event' );
-wp_clear_scheduled_hook( 'rocket_database_optimization_time_event' );
-wp_clear_scheduled_hook( 'rocket_google_tracking_cache_update' );
-wp_clear_scheduled_hook( 'rocket_facebook_tracking_cache_update' );
-wp_clear_scheduled_hook( 'rocket_cache_dir_size_check' );
+$rocket_events = [
+	'rocket_purge_time_event',
+	'rocket_database_optimization_time_event',
+	'rocket_google_tracking_cache_update',
+	'rocket_facebook_tracking_cache_update',
+	'rocket_cache_dir_size_check',
+];
+
+foreach ( $rocket_events as $rocket_event ) {
+	wp_clear_scheduled_hook( $rocket_event );
+}
 
 /**
  * Remove all cache files.
