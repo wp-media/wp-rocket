@@ -5,15 +5,15 @@ namespace WP_Rocket\Tests;
 trait ArrayTrait {
 
 	/**
-	 * Flatten a multi-dimensional associative array with dots.
+	 * Flatten a multi-dimensional associative array with the delimiter.
 	 *
-	 * @param array $array Array to flatten.
-	 * @param string $prepend Optional. String to prepend to key.
-	 * @param bool $arrayOnly Optional. When true, only processes when value is an array.
+	 * @param array  $array     Array to flatten.
+	 * @param string $prepend   Optional. String to prepend to key.
+	 * @param bool   $arrayOnly Optional. When true, only processes when value is an array.
 	 *
-	 * @return array
+	 * @return array flattened array
 	 */
-	public static function flatten( array $array, $prepend = '', $arrayOnly = false ) {
+	public static function flatten( array $array, $prepend = '', $arrayOnly = false, $delimiter '/' ) {
 		$results = [];
 
 		foreach ( $array as $key => $value ) {
@@ -21,12 +21,15 @@ trait ArrayTrait {
 				if ( ! is_array( $value ) ) {
 					continue;
 				}
-				$results["{$prepend}{$key}"] = $value;
+				$results[ "{$prepend}{$key}" ] = $value;
 			}
 			if ( ( $arrayOnly || is_array( $value ) ) && ! empty( $value ) ) {
-				$results = array_merge( $results, self::flatten( $value, "{$prepend}{$key}/", $arrayOnly ) );
+				$results = array_merge( 
+					$results,
+					static::flatten( $value, "{$prepend}{$key}{$delimiter}", $arrayOnly, $delimiter ) 
+				);
 			} elseif ( ! $arrayOnly ) {
-				$results["{$prepend}{$key}"] = $value;
+				$results[ "{$prepend}{$key}" ] = $value;
 			}
 		}
 
@@ -34,18 +37,18 @@ trait ArrayTrait {
 	}
 
 	/**
-	 * Get an item from an array using "dot" notation.
+	 * Get an item from an array using delimiter notation.
 	 *
-	 * @param array $search Search array.
+	 * @param array  $search    Search array.
 	 * @param string $keyToFind Key to find.
-	 * @param mixed $default Optional. Default value to return if key does not exist in search array.
-	 * @param string $delimiter Optional. The keys' delimiter, i.e. separating the keys.
+	 * @param mixed  $default   Optional. Default value to return if key does not exist in search array.
+	 * @param string $delimiter Optional. The keys' delimiter, i.e. what separating the keys.
 	 *
 	 * @return mixed value returned.
 	 */
-	public static function get( $search, $keyToFind, $default = null, $delimiter = '.' ) {
+	public static function get( $search, $keyToFind, $default = null, $delimiter = '/' ) {
 		if ( ! is_array( $search ) ) {
-			return value( $default );
+			return $default;
 		}
 
 		if ( is_null( $keyToFind ) ) {
@@ -60,7 +63,7 @@ trait ArrayTrait {
 			if ( is_array( $search ) && array_key_exists( $segment, $search ) ) {
 				$search = $search[ $segment ];
 			} else {
-				return value( $default );
+				return $default;
 			}
 		}
 
@@ -68,14 +71,15 @@ trait ArrayTrait {
 	}
 
 	/**
-	 * Check if an item exists in an array using "dot" notation.
+	 * Check if an item exists in an array using delimiter notation.
 	 *
-	 * @param array $search Search array.
+	 * @param array  $search    Search array.
 	 * @param string $keyToFind Key to find.
+	 * @param string $delimiter Optional. The keys' delimiter, i.e. what separates the keys.
 	 *
 	 * @return bool
 	 */
-	public static function has( array $search, $keyToFind ) {
+	public static function has( array $search, $keyToFind, $delimiter = '/' ) {
 		if ( empty( $search ) ) {
 			return false;
 		}
@@ -88,8 +92,8 @@ trait ArrayTrait {
 			return true;
 		}
 
-		foreach ( explode( '.', $keyToFind ) as $segment ) {
-			if ( static::accessible( $haystack ) && array_key_exists( $segment, $search ) ) {
+		foreach ( explode( $delimiter, $keyToFind ) as $segment ) {
+			if ( array_key_exists( $segment, $search ) ) {
 				$search = $search[ $segment ];
 			} else {
 				return false;
