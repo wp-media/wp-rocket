@@ -7,21 +7,40 @@ if ( ! defined( 'WP_ROCKET_CACHE_ROOT_PATH' ) ) {
 }
 
 // Delete all transients.
-delete_site_transient( 'wp_rocket_update_data' );
-
 $rocket_transients = [
-	'rocket_cloudflare_ips',
+	'wp_rocket_customer_data',
+	'rocket_notice_missing_tags',
+	'rocket_clear_cache',
+	'rocket_check_key_errors',
 	'rocket_send_analytics_data',
+	'rocket_critical_css_generation_process_running',
+	'rocket_critical_css_generation_process_complete',
+	'rocket_critical_css_generation_triggered',
+	'rocketcdn_status',
+	'rocketcdn_pricing',
+	'rocketcdn_purge_cache_response',
+	'rocket_cloudflare_ips',
+	'rocket_cloudflare_is_api_keys_valid',
+	'rocket_preload_triggered',
+	'rocket_preload_complete',
+	'rocket_preload_complete_time',
+	'rocket_preload_errors',
+	'rocket_database_optimization_process',
+	'rocket_database_optimization_process_complete',
 ];
 
 foreach ( $rocket_transients as $rocket_transient ) {
 	delete_transient( $rocket_transient );
 }
 
+delete_site_transient( 'wp_rocket_update_data' );
+
 // Delete WP Rocket options.
 $rocket_options = [
 	'wp_rocket_settings',
 	'rocket_analytics_notice_displayed',
+	'rocketcdn_user_token',
+	'rocketcdn_process',
 ];
 
 foreach ( $rocket_options as $rocket_option ) {
@@ -38,6 +57,8 @@ $rocket_events = [
 	'rocket_google_tracking_cache_update',
 	'rocket_facebook_tracking_cache_update',
 	'rocket_cache_dir_size_check',
+	'rocketcdn_check_subscription_status_event',
+	'rocket_cron_deactivate_cloudflare_devmode',
 ];
 
 foreach ( $rocket_events as $rocket_event ) {
