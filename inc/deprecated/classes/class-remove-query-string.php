@@ -14,6 +14,7 @@ use WP_Rocket\Optimization\Abstract_Optimization;
  */
 class Remove_Query_String extends Abstract_Optimization {
 	use \WP_Rocket\Optimization\CSS\Path_Rewriter;
+	use \WP_Rocket\Traits\DeprecatedClass;
 
 	/**
 	 * Plugin options instance.
@@ -66,7 +67,7 @@ class Remove_Query_String extends Abstract_Optimization {
 	 * @param string  $busting_url  Base cache busting files URL.
 	 */
 	public function __construct( Options $options, $busting_path, $busting_url ) {
-		rocket_deprecated_class( get_class( $this ), '3.6' );
+		self::deprecated_class( '3.6' );
 
 		$this->options      = $options;
 		$this->busting_path = $busting_path . get_current_blog_id() . '/';
