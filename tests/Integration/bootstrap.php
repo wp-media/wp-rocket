@@ -16,15 +16,15 @@ tests_add_filter(
 	'muplugins_loaded',
 	function() {
 
+		// Set the path and URL to our virtual filesystem.
+		define( 'WP_ROCKET_CACHE_ROOT_PATH', 'vfs://public/wp-content/cache/' );
+		define( 'WP_ROCKET_CACHE_ROOT_URL', 'vfs://public/wp-content/cache/' );
+
 		if ( BootstrapManager::isGroup( 'WithWoo' ) ) {
 			// Load WooCommerce.
 			define( 'WC_TAX_ROUNDING_MODE', 'auto' );
 			define( 'WC_USE_TRANSACTIONS', false );
 			require WP_ROCKET_PLUGIN_ROOT . '/vendor/woocommerce/woocommerce/woocommerce.php';
-		}
-
-		if ( BootstrapManager::isGroup( 'Multisite' ) ) {
-			define( 'MULTISITE', true );
 		}
 
 		// Overload the license key for testing.
