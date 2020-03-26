@@ -171,36 +171,23 @@ class WP_Rocket_Uninstall {
 			return;
 		}
 
-		$items = @scandir( $file );
-
-		if ( ! $items ) {
-			@rmdir( $file );
+		try {
+			$iterator = new RecursiveIteratorIterator(
+				new RecursiveDirectoryIterator( $file, FilesystemIterator::SKIP_DOTS ),
+				RecursiveIteratorIterator::CHILD_FIRST
+			);
+		} catch ( UnexpectedValueException $e ) {
 			return;
 		}
 
-		// Get rid of dot files when present.
-		if ( '.' === $items[0] ) {
-			unset( $items[0], $items[1] );
-
-			// Reindex back to 0.
-			$items = array_values( $items );
-		}
-
-		$dir = trailingslashit( $file );
-
-		$items = array_map(
-			function ( $item ) use ( $dir ) {
-				return "{$dir}{$item}";
-			},
-			$items
-		);
-
-		foreach ( $items as $item ) {
+		foreach ( $iterator as $item ) {
 			if ( is_dir( $item ) ) {
-				$this->delete( $item );
-			} else {
-				@unlink( $item );
+				@rmdir( $item );
+
+				continue;
 			}
+
+			@unlink( $item );
 		}
 
 		@rmdir( $file );
