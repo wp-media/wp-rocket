@@ -104,11 +104,13 @@ class AMP implements Subscriber_Interface {
 
 		if (
 			(bool) $this->options->get( 'do_cloudflare', 0 )
-			&& (
+			&&
+			(
 				(bool) $this->options->get( 'cloudflare_protocol_rewrite', 0 )
+				||
 				// this filter is documented in inc/front/protocol.php.
-				|| (bool) apply_filters( 'do_rocket_protocol_rewrite', false ) // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
-				)
+				(bool) apply_filters( 'do_rocket_protocol_rewrite', false ) // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+			)
 		) {
 			remove_filter( 'wp_calculate_image_srcset', 'rocket_protocol_rewrite_srcset', PHP_INT_MAX );
 		}
