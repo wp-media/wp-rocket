@@ -175,8 +175,8 @@ class Google_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface {
 		}
 
 		$dir_paths = [
-			$this->busting_factory->type( 'fbsdk' )->get_busting_dir_path(),
-			$this->busting_factory->type( 'fbpix' )->get_busting_dir_path(),
+			$this->busting_factory->type( 'ga' )->get_busting_dir_path(),
+			$this->busting_factory->type( 'gtm' )->get_busting_dir_path(),
 		];
 
 		$dir_paths  = array_unique( $dir_paths );
