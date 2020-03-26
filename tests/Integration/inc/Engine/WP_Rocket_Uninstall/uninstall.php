@@ -57,7 +57,7 @@ class Test_Uninstall extends FilesystemTestCase {
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
 
-		require_once WP_ROCKET_PLUGIN_ROOT . '/inc/Engine/wp-rocket-uninstall.php';
+		require_once WP_ROCKET_PLUGIN_ROOT . '/inc/Engine/WP_Rocket_Uninstall.php';
 	}
 
 	public function setUp() {
