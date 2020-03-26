@@ -54,29 +54,10 @@ class Google_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface {
 			'rocket_google_tracking_cache_update' => 'update_tracking_cache',
 			'rocket_purge_cache'                  => 'delete_tracking_cache',
 			'rocket_buffer'                       => 'cache_busting_google_tracking',
+			'admin_notices'                       => 'busting_dir_not_writable_admin_notice',
 		];
 
 		return $events;
-	}
-
-	/**
-	 * Checks if the cache busting should happen
-	 *
-	 * @since 3.1
-	 * @author Remy Perona
-	 *
-	 * @return boolean
-	 */
-	private function is_allowed() {
-		if ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
-			return false;
-		}
-
-		if ( ! $this->options->get( 'google_analytics_cache', 0 ) ) {
-			return false;
-		}
-
-		return true;
 	}
 
 	/**
@@ -113,7 +94,7 @@ class Google_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function schedule_tracking_cache_update() {
-		if ( ! $this->options->get( 'google_analytics_cache', 0 ) ) {
+		if ( ! $this->is_busting_active() ) {
 			return;
 		}
 
@@ -131,7 +112,7 @@ class Google_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface {
 	 * @return bool
 	 */
 	public function update_tracking_cache() {
-		if ( ! $this->options->get( 'google_analytics_cache', 0 ) ) {
+		if ( ! $this->is_busting_active() ) {
 			return false;
 		}
 
@@ -150,7 +131,7 @@ class Google_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface {
 	 * @return Array
 	 */
 	public function add_schedule( $schedules ) {
-		if ( ! $this->options->get( 'google_analytics_cache', 0 ) ) {
+		if ( ! $this->is_busting_active() ) {
 			return $schedules;
 		}
 
@@ -173,16 +154,97 @@ class Google_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface {
 	 * @return bool
 	 */
 	public function delete_tracking_cache( $_type ) {
-		if ( 'all' !== $_type ) {
-			return false;
-		}
-
-		if ( ! $this->options->get( 'google_analytics_cache', 0 ) ) {
+		if ( 'all' !== $_type || ! $this->is_busting_active() ) {
 			return false;
 		}
 
 		$processor = $this->busting_factory->type( 'ga' );
 
 		return $processor->delete();
+	}
+
+	/**
+	 * Display an admin notice if the cache folder is not writable.
+	 *
+	 * @since  3.6
+	 * @author Grégory Viguier
+	 */
+	public function busting_dir_not_writable_admin_notice() {
+		if ( ! $this->is_busting_active() || ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
+		$dir_paths = [
+			$this->busting_factory->type( 'fbsdk' )->get_busting_dir_path(),
+			$this->busting_factory->type( 'fbpix' )->get_busting_dir_path(),
+		];
+
+		$dir_paths  = array_unique( $dir_paths );
+		$filesystem = rocket_direct_filesystem();
+
+		foreach ( $dir_paths as $i => $dir_path ) {
+			if ( ! $filesystem->exists( $dir_path ) ) {
+				rocket_mkdir_p( $dir_path );
+			}
+			if ( $filesystem->exists( $dir_path ) && $filesystem->is_writable( $dir_path ) ) {
+				unset( $dir_paths[ $i ] );
+			} else {
+				$dir_paths[ $i ] = '<code>' . esc_html( trim( str_replace( ABSPATH, '', $dir_path ), '/' ) ) . '</code>';
+			}
+		}
+
+		if ( ! $dir_paths ) {
+			return;
+		}
+
+		$message  = '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>';
+		$message .= sprintf(
+			/* translators: %s is a list of folder paths. */
+			_n( 'The folder %s used to cache Google tracking scripts could not be created or is missing writing permissions.', 'The folders %s used to cache Google tracking scripts could not be created or are missing writing permissions.', count( $dir_paths ), 'rocket' ),
+			wp_sprintf_l( '%l', $dir_paths )
+		);
+		$message .= '<br>' . sprintf(
+			/* translators: This is a doc title! %1$s = opening link; %2$s = closing link */
+			__( 'Troubleshoot: %1$sHow to make system files writeable%2$s', 'rocket' ),
+			/* translators: Documentation exists in EN, DE, FR, ES, IT; use loaclised URL if applicable */
+			'<a href="' . __( 'https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket', 'rocket' ) . '" target="_blank">',
+			'</a>'
+		);
+
+		rocket_notice_html(
+			[
+				'status'      => 'error',
+				'dismissible' => '',
+				'message'     => $message,
+			]
+		);
+	}
+
+	/**
+	 * Checks if the cache busting should happen
+	 *
+	 * @since 3.1
+	 * @author Remy Perona
+	 *
+	 * @return boolean
+	 */
+	private function is_allowed() {
+		if ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
+			return false;
+		}
+
+		return $this->is_busting_active();
+	}
+
+	/**
+	 * Tell if the cache busting option is active.
+	 *
+	 * @since  3.6
+	 * @author Grégory Viguier
+	 *
+	 * @return bool
+	 */
+	private function is_busting_active() {
+		return (bool) $this->options->get( 'google_analytics_cache', 0 );
 	}
 }
