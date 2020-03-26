@@ -125,7 +125,10 @@ class WP_Rocket_Uninstall {
 
 		array_walk( $this->transients, 'delete_transient' );
 		array_walk( $this->options, 'delete_option' );
-		array_walk( $this->events, 'wp_clear_scheduled_hook' );
+
+		foreach ( $this->events as $event ) {
+			wp_clear_scheduled_hook( $event );
+		}
 	}
 
 	/**
