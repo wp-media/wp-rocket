@@ -53,7 +53,7 @@
 	"autoload": {
 		"classmap": [
 			"inc/classes",
-			"inc/deprecated/classes",
+			"inc/deprecated",
 			"inc/vendors/classes"
 		],
 		"exclude-from-classmap": [
