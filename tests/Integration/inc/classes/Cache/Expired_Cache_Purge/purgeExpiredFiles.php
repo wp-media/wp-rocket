@@ -13,44 +13,16 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @uses   ::get_rocket_parse_url
  * @uses   \WP_Rocket\Buffer\Cache::can_generate_caching_files
  * @group  Cache
+ * @group  vfs
  */
 class Test_PurgeExpiredFiles extends FilesystemTestCase {
-	private $expired_files = [
-		'wp-rocket/example.org/blog/index.html',
-		'wp-rocket/example.org/blog/index.html_gzip',
-		'wp-rocket/example.org-Greg-594d03f6ae698691165999/index.html',
-		'wp-rocket/example.org/en/index.html',
-	];
-	private $non_expired_files = [
-		'wp-rocket/example.org/index.html',
-		'wp-rocket/example.org/index.html_gzip',
-		'wp-rocket/example.org/about/index.html',
-		'wp-rocket/example.org/about/index.html_gzip',
-		'wp-rocket/example.org/about/index-mobile.html',
-		'wp-rocket/example.org/about/index-mobile.html_gzip',
-		'wp-rocket/example.org/category/wordpress/index.html',
-		'wp-rocket/example.org/category/wordpress/index.html_gzip',
-		'wp-rocket/example.org/en/index.html_gzip',
-		'wp-rocket/example.org-Greg-594d03f6ae698691165999/index.html_gzip',
-	];
-
-	public function setUp() {
-		parent::setUp();
-
-		$this->rootVirtualUrl = $this->filesystem->getUrl( 'cache/wp-rocket' );
-
-		// Set file permissions back 11 hours.
-		foreach ( $this->expired_files as $filepath ) {
-			$file = $this->filesystem->getFile( $filepath );
-			$file->lastAttributeModified( strtotime( '11 hours ago' ) );
-		}
-	}
+	protected $path_to_test_data = '/inc/classes/Cache/Expired_Cache_Purge/purgeExpiredFiles.php';
 
 	public function testShouldReturnNullWhenNoLifespan() {
 		Functions\expect( 'get_rocket_il8n_uri' )->never();
 		Functions\expect( 'rocket_direct_filesystem' )->never();
 
-		$expired_cache_purge = new Expired_Cache_Purge( $this->rootVirtualUrl );
+		$expired_cache_purge = new Expired_Cache_Purge( $this->filesystem->getUrl( 'wp-content/cache/wp-rocket' ) );
 		$this->assertNull( $expired_cache_purge->purge_expired_files( 0 ) );
 	}
 
@@ -59,19 +31,13 @@ class Test_PurgeExpiredFiles extends FilesystemTestCase {
 
 		add_filter( 'rocket_automatic_cache_purge_urls', '__return_empty_array' );
 
-		$expired_cache_purge = new Expired_Cache_Purge( $this->rootVirtualUrl );
+		$this->setFilesToExpire( $this->original_files );
+
+		$expired_cache_purge = new Expired_Cache_Purge( $this->filesystem->getUrl( 'wp-content/cache/wp-rocket' ) );
 		$this->assertNull( $expired_cache_purge->purge_expired_files( 36000 ) );
 
-		// Test that expired files were not purged.
-		foreach ( $this->expired_files as $file ) {
-			$this->assertTrue( $this->filesystem->exists( $file ) );
-		}
-
-		// Test the blog directory was not deleted.
-		$this->assertTrue( $this->filesystem->exists( 'wp-rocket/example.org/blog' ) );
-
-		// Test that non-expired files were not purged.
-		foreach ( $this->non_expired_files as $file ) {
+		// Check that no files were purged, i.e. just to make sure.
+		foreach ( $this->original_files as $file ) {
 			$this->assertTrue( $this->filesystem->exists( $file ) );
 		}
 
@@ -79,27 +45,45 @@ class Test_PurgeExpiredFiles extends FilesystemTestCase {
 		remove_filter( 'rocket_automatic_cache_purge_urls', '__return_empty_array' );
 	}
 
-	public function testShouldDeleteCacheFilesOlderThanLifespan() {
-		$expired_cache_purge = new Expired_Cache_Purge( $this->rootVirtualUrl );
+	/**
+	 * @dataProvider providerTestData
+	 */
+	public function testShouldDeleteCacheFilesOlderThanLifespan( $expirationTime, $lifespan, $expiredFiles, $deletedDirs ) {
+		$this->setFilesToExpire( $expiredFiles, $expirationTime );
 
 		// Test the expired files exist before we purge.
-		foreach ( $this->expired_files as $file ) {
+		foreach ( $expiredFiles as $file ) {
 			$this->assertTrue( $this->filesystem->exists( $file ) );
 		}
 
-		$expired_cache_purge->purge_expired_files( 36000 );
+		// Purge the expired files.
+		$expired_cache_purge = new Expired_Cache_Purge( $this->filesystem->getUrl( $this->config['vfs_dir'] ) );
+		$expired_cache_purge->purge_expired_files( $lifespan );
+
+		$this->assertEquals( 1, did_action( 'rocket_before_automatic_cache_purge_dir' ) );
+		$this->assertEquals( 1, did_action( 'rocket_after_automatic_cache_purge_dir' ) );
+		$this->assertEquals( 1, did_action( 'rocket_after_automatic_cache_purge' ) );
 
 		// Test the expired files were purged.
-		foreach ( $this->expired_files as $file ) {
+		foreach ( $expiredFiles as $file ) {
 			$this->assertFalse( $this->filesystem->exists( $file ) );
 		}
 
-		// Test the blog directory was deleted.
-		$this->assertFalse( $this->filesystem->exists( 'wp-rocket/example.org/blog' ) );
+		// Test the directories were deleted.
+		foreach ( $deletedDirs as $dir ) {
+			$this->assertFalse( $this->filesystem->exists( $dir ) );
+		}
 
 		// Test that non-expired files were not purged.
-		foreach ( $this->non_expired_files as $file ) {
+		foreach ( array_diff( $this->original_files, $expiredFiles ) as $file ) {
 			$this->assertTrue( $this->filesystem->exists( $file ) );
+		}
+	}
+
+	private function setFilesToExpire( $files, $expirationTime = '11 hours ago' ) {
+		foreach ( $files as $filepath ) {
+			$file = $this->filesystem->getFile( $filepath );
+			$file->lastAttributeModified( strtotime( $expirationTime ) );
 		}
 	}
 }
