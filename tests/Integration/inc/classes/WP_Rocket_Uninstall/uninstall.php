@@ -114,17 +114,9 @@ class Test_Uninstall extends FilesystemTestCase {
 	}
 
 	public function tearDown() {
-		foreach ( $this->options as $option ) {
-			delete_option( $option);
-		}
-
-		foreach ( $this->transients as $transient ) {
-			delete_transient( $transient);
-		}
-
-		foreach( $this->events as $event ) {
-			wp_clear_scheduled_hook( $event );
-		}
+		array_walk( $this->options, 'delete_option' );
+		array_walk( $this->transients, 'delete_transient' );
+		array_walk( $this->events, 'wp_clear_scheduled_hook' );
 
 		parent::tearDown();
 	}

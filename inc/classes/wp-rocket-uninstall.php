@@ -118,22 +118,14 @@ class WP_Rocket_Uninstall {
 	 * @return void
 	 */
 	private function delete_plugin_data() {
-		foreach ( $this->transients as $transient ) {
-			delete_transient( $transient );
-		}
-
 		delete_site_transient( 'wp_rocket_update_data' );
-
-		foreach ( $this->options as $option ) {
-			delete_option( $option );
-		}
 
 		// Delete all user meta related to WP Rocket.
 		delete_metadata( 'user', '', 'rocket_boxes', '', true );
 
-		foreach ( $this->events as $event ) {
-			wp_clear_scheduled_hook( $event );
-		}
+		array_walk( $this->transients, 'delete_transient' );
+		array_walk( $this->options, 'delete_option' );
+		array_walk( $this->events, 'wp_clear_scheduled_hook' );
 	}
 
 	/**
@@ -179,6 +171,7 @@ class WP_Rocket_Uninstall {
 		$items = @scandir( $file );
 
 		if ( ! $items ) {
+			@rmdir( $file );
 			return;
 		}
 
