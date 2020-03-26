@@ -167,7 +167,7 @@ class WP_Rocket_Uninstall {
 	 */
 	private function delete( $file ) {
 		if ( ! is_dir( $file ) ) {
-			@unlink( $file );
+			@unlink( $file ); //phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 			return;
 		}
 
