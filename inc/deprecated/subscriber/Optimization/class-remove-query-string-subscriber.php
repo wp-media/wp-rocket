@@ -3,6 +3,7 @@ namespace WP_Rocket\Subscriber\Optimization;
 
 use WP_Rocket\Optimization\Remove_Query_String;
 use WP_Rocket\Subscriber\Optimization\Minify_Subscriber;
+use WP_Rocket\Traits\DeprecatedClass;
 
 /**
  * Hooks into WordPress to remove query strings for static files.
@@ -13,7 +14,7 @@ use WP_Rocket\Subscriber\Optimization\Minify_Subscriber;
  * @deprecated
  */
 class Remove_Query_String_Subscriber extends Minify_Subscriber {
-	use \WP_Rocket\Traits\DeprecatedClass;
+	use DeprecatedClass;
 
 	/**
 	 * Remove Query String instance.
