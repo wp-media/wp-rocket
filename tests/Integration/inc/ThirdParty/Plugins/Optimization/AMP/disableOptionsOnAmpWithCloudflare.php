@@ -2,27 +2,16 @@
 
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\Optimization\AMP;
 
-use Brain\Monkey\Functions;
+use AMP_Theme_Support;;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Plugins\Optimization\AMP::disable_options_on_amp
  * @group WithAmpAndCloudflare
  */
 class Test_DisableOptionsOnAmpWithCloudflare extends TestCase {
-	/**
-	 * User's ID.
-	 * @var int
-	 */
 	private static $user_id = 0;
-	/**
-	 * Instance of the post.
-	 * @var WP_Post
-	 */
 	private static $post_id;
 
-	/**
-	 * Set up the User ID & current page before tests start.
-	 */
 	public static function wpSetUpBeforeClass( $factory ) {
 		self::$user_id = $factory->user->create( [ 'role' => 'editor' ] );
 		self::$post_id = $factory->post->create( [ 'post_author' => self::$user_id, ] );
@@ -33,15 +22,17 @@ class Test_DisableOptionsOnAmpWithCloudflare extends TestCase {
 
 	public function testShouldDisableOptionForAmpWhenCloudflareEnabled() {
 		global $wp_filter;
-		add_theme_support( \AMP_Theme_Support::SLUG );
+		add_theme_support( AMP_Theme_Support::SLUG );
 		$this->assertNotFalse( has_filter( 'wp_resource_hints', 'rocket_dns_prefetch') );
 		$this->assertFalse( has_filter( 'do_rocket_lazyload', '__return_false') );
-		$this->assertFalse( empty( $wp_filter['rocket_buffer'] ) );
+		$this->assertArrayHasKey( 'rocket_buffer', $wp_filter );
 		$this->assertNotFalse( has_filter( 'wp_calculate_image_srcset', 'rocket_protocol_rewrite_srcset') );
+
 		do_action( 'wp' );
+
 		$this->assertFalse( has_filter( 'wp_resource_hints', 'rocket_dns_prefetch') );
 		$this->assertNotFalse( has_filter( 'do_rocket_lazyload', '__return_false') );
-		$this->assertTrue( empty( $wp_filter['rocket_buffer'] ) );
+		$this->assertArrayNotHasKey( 'rocket_buffer', $wp_filter );
 		$this->assertFalse( has_filter( 'wp_calculate_image_srcset', 'rocket_protocol_rewrite_srcset') );
 	}
 }

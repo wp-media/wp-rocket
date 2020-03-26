@@ -11,6 +11,7 @@ use Brain\Monkey\Functions;
  * @group WithAmp
  */
 class Test_IsAmpCompatibleCallback extends TestCase {
+
 	public function testShouldAddAmpWhenThemeSupportIsTransitional() {
 		Functions\expect( 'rocket_generate_config_file' )->once();
 		$this->setSettings( 'theme_support', 'transitional' );

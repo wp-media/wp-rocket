@@ -13,7 +13,6 @@ use WP_Rocket\ThirdParty\Plugins\Optimization\AMP;
  * @covers \WP_Rocket\ThirdParty\Plugins\Optimization\AMP::disable_options_on_amp
  * @group  ThirdParty
  * @group  WithAmp
- * @group  thisone
  */
 class Test_DisableOptionsOnAmp extends TestCase {
 	private $amp;
