@@ -181,15 +181,15 @@ class WP_Rocket_Uninstall {
 		}
 
 		foreach ( $iterator as $item ) {
-			if ( is_dir( $item ) ) {
-				@rmdir( $item );
+			if ( $item->isDir() ) {
+				@rmdir( $item ); //phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 
 				continue;
 			}
 
-			@unlink( $item );
+			@unlink( $item ); //phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 		}
 
-		@rmdir( $file );
+		@rmdir( $file ); //phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 	}
 }

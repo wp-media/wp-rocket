@@ -57,8 +57,7 @@
 		],
 		"exclude-from-classmap": [
 			"inc/vendors/classes/class-rocket-mobile-detect.php",
-			"inc/classes/class-wp-rocket-requirements-check.php",
-			"inc/classes/wp-rocket-uninstall.php"
+			"inc/classes/class-wp-rocket-requirements-check.php"
 		],
 		"psr-4": {
 			"WP_Rocket\\": "inc/",

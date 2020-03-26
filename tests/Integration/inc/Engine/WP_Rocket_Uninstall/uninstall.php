@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\classes\WP_Rocket_Uninstall;
+namespace WP_Rocket\Tests\Integration\inc\Engine\WP_Rocket_Uninstall;
 
 use WP_Rocket_Uninstall;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
@@ -11,7 +11,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group  vfs
  */
 class Test_Uninstall extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/classes/WP_Rocket_Uninstall/uninstall.php';
+	protected $path_to_test_data = '/inc/Engine/WP_Rocket_Uninstall/uninstall.php';
 
 	private $uninstall;
 
@@ -57,7 +57,7 @@ class Test_Uninstall extends FilesystemTestCase {
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
 
-		require_once WP_ROCKET_PLUGIN_ROOT . '/inc/classes/wp-rocket-uninstall.php';
+		require_once WP_ROCKET_PLUGIN_ROOT . '/inc/Engine/wp-rocket-uninstall.php';
 	}
 
 	public function setUp() {
