@@ -2,9 +2,17 @@
 
 namespace WP_Rocket\Tests\Integration;
 
+use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Integration\VirtualFilesystemTestCase;
 
 abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
+
+	public function setUp() {
+		parent::setUp();
+
+		// Redefine rocket_direct_filesystem() to use the virtual filesystem.
+		Functions\when( 'rocket_direct_filesystem' )->justReturn( $this->filesystem );
+	}
 
 	public function getPathToFixturesDir() {
 		return WP_ROCKET_TESTS_FIXTURES_DIR;

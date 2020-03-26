@@ -8,7 +8,7 @@ return [
 		'wp-content' => [
 			'cache' => [
 				'critical-css' => [
-					'1' => [
+					'2' => [
 						'.'            => '',
 						'..'           => '',
 						'critical.css' => 'body { font-family: Helvetica, Arial, sans-serif; text-align: center;}',
@@ -20,11 +20,23 @@ return [
 
 	// Test data.
 	'test_data' => [
-		[
+		'testShouldBailOutWhenCriticalCssPathIsNotEmpty'           => [
+			[
+				'path' => 'wp-content/cache/critical-css/2/',
+			],
 			// Old Value.
-			[],
+			[ 'async_css' => 0 ],
 			// New Value.
-			[],
+			[ 'async_css' => 1 ],
+		],
+		'testShouldInvokeProcessHandlerWhenCriticalCssPathIsEmpty' => [
+			[
+				'path' => 'wp-content/cache/critical-css/1/',
+			],
+			// Old Value.
+			[ 'async_css' => 0 ],
+			// New Value.
+			[ 'async_css' => 1 ],
 		],
 	],
 ];

@@ -57,7 +57,7 @@ class Test_PurgeExpiredFiles extends FilesystemTestCase {
 		}
 
 		// Purge the expired files.
-		$expired_cache_purge = new Expired_Cache_Purge( $this->filesystem->getUrl( 'wp-content/cache/wp-rocket' ) );
+		$expired_cache_purge = new Expired_Cache_Purge( $this->filesystem->getUrl( $this->config['vfs_dir'] ) );
 		$expired_cache_purge->purge_expired_files( $lifespan );
 
 		$this->assertEquals( 1, did_action( 'rocket_before_automatic_cache_purge_dir' ) );
