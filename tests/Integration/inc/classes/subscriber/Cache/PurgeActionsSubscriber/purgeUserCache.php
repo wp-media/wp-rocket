@@ -66,7 +66,7 @@ class Test_PurgeUserCache extends FilesystemTestCase {
 	}
 
 	/**
-	 * @dataProvider addDataProvider
+	 * @dataProvider providerTestData
 	 */
 	public function testShouldPurgeCacheForUser( $username, $dir, $userCacheFiles ) {
 		add_filter( 'pre_get_rocket_option_cache_logged_user', '__return_true' );
@@ -77,7 +77,7 @@ class Test_PurgeUserCache extends FilesystemTestCase {
 		}
 
 		// rocket_clean_user() uses glob(), which not compatible with vfsStream.
-		$this->deleteFiles( $dir );
+		$this->deleteFiles( $dir, $this->filesystem );
 
 		do_action( 'delete_user', $this->getUserId( $username ) );
 

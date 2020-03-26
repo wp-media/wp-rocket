@@ -42,7 +42,7 @@ class Test_GenerateCriticalCssOnActivation extends FilesystemTestCase {
 	}
 
 	/**
-	 * @dataProvider addDataProvider
+	 * @dataProvider providerTestData
 	 */
 	public function testShouldGenerateCriticalCss( $old_value, $new_value ) {
 		$this->assertTrue( true );

@@ -20,7 +20,7 @@ class Test_RocketCleanMinify extends FilesystemTestCase {
 	}
 
 	public function testPath() {
-		$this->assertSame( 'vfs://wp-content/cache/min/', WP_ROCKET_MINIFY_CACHE_PATH );
+		$this->assertSame( 'vfs://public/wp-content/cache/min/', WP_ROCKET_MINIFY_CACHE_PATH );
 	}
 
 	public function testShouldFireEventsForEachExt() {
@@ -38,23 +38,17 @@ class Test_RocketCleanMinify extends FilesystemTestCase {
 	}
 
 	/**
-	 * @dataProvider addDataProvider
+	 * @dataProvider providerTestData
 	 */
 	public function testShouldCleanMinified( $config, $filesToClean ) {
-		$cache = array_merge(
-			$this->scandir( 'cache/min/1/' ),
-			$this->scandir( 'cache/min/3rd-party/' )
-		);
+		$cache = $this->stripRoot( $this->filesystem->getFilesListing( 'wp-content/cache/min' ) );
 
 		// Check files before cleaning.
 		$this->assertSame( $this->original_files, $cache );
 
 		rocket_clean_minify( $config );
 
-		$after_cache = array_merge(
-			$this->scandir( 'cache/min/1/' ),
-			$this->scandir( 'cache/min/3rd-party/' )
-		);
+		$after_cache = $this->stripRoot( $this->filesystem->getFilesListing( 'wp-content/cache/min' ) );
 
 		// Check the "cleaned" files were deleted.
 		$this->assertEquals( $filesToClean, array_intersect( $filesToClean, $cache ) );
@@ -63,5 +57,14 @@ class Test_RocketCleanMinify extends FilesystemTestCase {
 
 		// Check that non-cleaned files still exists, i.e. were not deleted.
 		$this->assertEquals( $after_cache, array_intersect( $after_cache, $cache ) );
+	}
+
+	private function stripRoot( $files ) {
+		return array_map(
+			function( $file ) {
+				return str_replace( 'vfs://public/', '', $file );
+			},
+			$files
+		);
 	}
 }

@@ -20,21 +20,21 @@ class Test_RocketDeleteLicenceDataFile extends FilesystemTestCase {
 			->with( 'WP_ROCKET_PATH' )
 			->andReturn( $this->filesystem->getUrl( $this->config['vfs_dir'] ) );
 
-		$this->assertTrue( $this->filesystem->exists( 'plugins/wp-rocket/licence-data.php' ) );
+		$this->assertTrue( $this->filesystem->exists( 'wp-content/plugins/wp-rocket/licence-data.php' ) );
 
 		rocket_delete_licence_data_file();
 
-		$this->assertFalse( $this->filesystem->exists( 'plugins/wp-rocket/licence-data.php' ) );
+		$this->assertFalse( $this->filesystem->exists( 'wp-content/plugins/wp-rocket/licence-data.php' ) );
 	}
 
 	/**
 	 * @group Multisite
 	 */
 	public function testShouldDoNothingWhenMultisite() {
-		$this->assertTrue( $this->filesystem->exists( 'plugins/wp-rocket/licence-data.php' ) );
+		$this->assertTrue( $this->filesystem->exists( 'wp-content/plugins/wp-rocket/licence-data.php' ) );
 
 		rocket_delete_licence_data_file();
 
-		$this->assertTrue( $this->filesystem->exists( 'plugins/wp-rocket/licence-data.php' ) );
+		$this->assertTrue( $this->filesystem->exists( 'wp-content/plugins/wp-rocket/licence-data.php' ) );
 	}
 }

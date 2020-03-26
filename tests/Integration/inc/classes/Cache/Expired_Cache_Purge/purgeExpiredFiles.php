@@ -22,7 +22,7 @@ class Test_PurgeExpiredFiles extends FilesystemTestCase {
 		Functions\expect( 'get_rocket_il8n_uri' )->never();
 		Functions\expect( 'rocket_direct_filesystem' )->never();
 
-		$expired_cache_purge = new Expired_Cache_Purge( $this->filesystem->getUrl( 'cache/wp-rocket' ) );
+		$expired_cache_purge = new Expired_Cache_Purge( $this->filesystem->getUrl( 'wp-content/cache/wp-rocket' ) );
 		$this->assertNull( $expired_cache_purge->purge_expired_files( 0 ) );
 	}
 
@@ -33,7 +33,7 @@ class Test_PurgeExpiredFiles extends FilesystemTestCase {
 
 		$this->setFilesToExpire( $this->original_files );
 
-		$expired_cache_purge = new Expired_Cache_Purge( $this->filesystem->getUrl( 'cache/wp-rocket' ) );
+		$expired_cache_purge = new Expired_Cache_Purge( $this->filesystem->getUrl( 'wp-content/cache/wp-rocket' ) );
 		$this->assertNull( $expired_cache_purge->purge_expired_files( 36000 ) );
 
 		// Check that no files were purged, i.e. just to make sure.
@@ -46,7 +46,7 @@ class Test_PurgeExpiredFiles extends FilesystemTestCase {
 	}
 
 	/**
-	 * @dataProvider addDataProvider
+	 * @dataProvider providerTestData
 	 */
 	public function testShouldDeleteCacheFilesOlderThanLifespan( $expirationTime, $lifespan, $expiredFiles, $deletedDirs ) {
 		$this->setFilesToExpire( $expiredFiles, $expirationTime );
@@ -57,7 +57,7 @@ class Test_PurgeExpiredFiles extends FilesystemTestCase {
 		}
 
 		// Purge the expired files.
-		$expired_cache_purge = new Expired_Cache_Purge( $this->filesystem->getUrl( 'cache/wp-rocket' ) );
+		$expired_cache_purge = new Expired_Cache_Purge( $this->filesystem->getUrl( 'wp-content/cache/wp-rocket' ) );
 		$expired_cache_purge->purge_expired_files( $lifespan );
 
 		$this->assertEquals( 1, did_action( 'rocket_before_automatic_cache_purge_dir' ) );
