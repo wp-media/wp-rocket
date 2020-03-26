@@ -94,7 +94,8 @@ return [
 		<span class="screen-reader-text">Reduce this banner</span>
 	</button>
 </div>
-HTML,
+HTML
+	,
 		],
 		// Configuration.
 		[
@@ -169,7 +170,8 @@ HTML,
 		<span class="screen-reader-text">Reduce this banner</span>
 	</button>
 </div>
-HTML,
+HTML
+	,
 		],
 		// Configuration.
 		[
@@ -250,7 +252,8 @@ HTML,
 	</button>
 	<p>* $5.99/month for 12 months then $7.99/month. You can cancel your subscription at any time.</p>
 </div>
-HTML,
+HTML
+	,
 		],
 		// Configuration.
 		[
@@ -314,7 +317,8 @@ HTML,
 		<span class="screen-reader-text">Reduce this banner</span>
 	</button>
 </div>
-HTML,
+HTML
+	,
 		],
 		// Configuration.
 		[

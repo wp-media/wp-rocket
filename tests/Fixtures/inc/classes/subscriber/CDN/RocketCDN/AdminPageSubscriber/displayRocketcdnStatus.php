@@ -1,6 +1,7 @@
 <?php
 
 return [
+
 	'testShouldDisplayNothingWhenNotLiveSite' => [
 		// Subscription data.
 		[
@@ -25,7 +26,8 @@ return [
 <div class="wpr-field wpr-field-account">
 	<span class="wpr-infoAccount wpr-isInvalid">RocketCDN is unavailable on local domains and staging sites.</span>
 </div>
-HTML,
+HTML
+	,
 		],
 		// Configuration.
 		[
@@ -67,7 +69,8 @@ HTML,
 		</div>
 	</div>
 </div>
-HTML,
+HTML
+	,
 		],
 		// Configuration.
 		[
@@ -94,8 +97,7 @@ HTML,
 				'status_text'     => '2020-01-01',
 				'is_active'       => true,
 			],
-			'integration' =>
-				<<<HTML
+			'integration' => <<<HTML
 <div class="wpr-optionHeader">
 	<h3 class="wpr-title2">RocketCDN</h3>
 </div>
@@ -107,7 +109,8 @@ HTML,
 		</div>
 	</div>
 </div>
-HTML,
+HTML
+	,
 		],
 		// Configuration.
 		[
