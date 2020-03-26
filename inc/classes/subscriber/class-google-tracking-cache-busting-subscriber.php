@@ -52,7 +52,7 @@ class Google_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface {
 			'cron_schedules'                      => 'add_schedule',
 			'init'                                => 'schedule_tracking_cache_update',
 			'rocket_google_tracking_cache_update' => 'update_tracking_cache',
-			'after_rocket_clean_cache_busting'    => 'delete_tracking_cache',
+			'rocket_purge_cache'                  => 'delete_tracking_cache',
 			'rocket_buffer'                       => 'cache_busting_google_tracking',
 		];
 
@@ -165,14 +165,15 @@ class Google_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface {
 	/**
 	 * Deletes the GA busting file.
 	 *
-	 * @since 3.1
+	 * @since  3.1
+	 * @since  3.6 Argument replacement.
 	 * @author Remy Perona
 	 *
-	 * @param string $ext File extension type.
+	 * @param  string $_type Type of cache clearance: 'all', 'post', 'term', 'user', 'url'.
 	 * @return bool
 	 */
-	public function delete_tracking_cache( $ext ) {
-		if ( 'js' !== $ext ) {
+	public function delete_tracking_cache( $_type ) {
+		if ( 'all' !== $_type ) {
 			return false;
 		}
 
