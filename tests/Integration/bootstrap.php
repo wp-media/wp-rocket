@@ -27,10 +27,6 @@ tests_add_filter(
 			require WP_ROCKET_PLUGIN_ROOT . '/vendor/woocommerce/woocommerce/woocommerce.php';
 		}
 
-		if ( BootstrapManager::isGroup( 'Multisite' ) ) {
-			define( 'MULTISITE', true );
-		}
-
 		// Overload the license key for testing.
 		redefine( 'rocket_valid_key', '__return_true' );
 
