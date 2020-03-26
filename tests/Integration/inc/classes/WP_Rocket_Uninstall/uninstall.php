@@ -7,9 +7,12 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
  * @covers WP_Rocket_Uninstall::uninstall
- * @group Uninstall
+ * @group  Uninstall
+ * @group  vfs
  */
 class Test_Uninstall extends FilesystemTestCase {
+	protected $path_to_test_data = '/inc/classes/WP_Rocket_Uninstall/uninstall.php';
+
 	private $uninstall;
 
 	private $options = [
@@ -49,44 +52,6 @@ class Test_Uninstall extends FilesystemTestCase {
 		'rocket_cache_dir_size_check',
 		'rocketcdn_check_subscription_status_event',
 		'rocket_cron_deactivate_cloudflare_devmode',
-	];
-
-	protected $rootVirtualDir = 'public_html';
-	protected $structure = [
-		'wp-content' => [
-			'cache' => [
-				'wp-rocket' => [
-					'example.org' => [
-						'index.html'      => '',
-						'index.html_gzip' => '',
-					],
-					'example.org-wpmedia-123456' => [
-						'index.html'      => '',
-						'index.html_gzip' => '',
-					],
-				],
-				'min' => [
-					'1' => [
-						'123456.css' => '',
-						'123456.js'  => '',
-					],
-				],
-				'busting' => [
-					'1' => [
-						'ga-123456.js' => '',
-					],
-				],
-				'critical-css' => [
-					'1' => [
-						'front-page.php' => '',
-						'blog.php'       => '',
-					],
-				],
-			],
-			'wp-rocket-config' => [
-				'example.org.php' => 'test',
-			]
-		],
 	];
 
 	public static function setUpBeforeClass() {
