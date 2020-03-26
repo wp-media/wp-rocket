@@ -98,6 +98,18 @@ abstract class Abstract_Busting {
 	}
 
 	/**
+	 * Get the path to the folder containing the busting files.
+	 *
+	 * @since  3.6
+	 * @author Grégory Viguier
+	 *
+	 * @return string
+	 */
+	public function get_busting_dir_path() {
+		return $this->busting_path;
+	}
+
+	/**
 	 * Gets the final URL for the cache busting file.
 	 *
 	 * @since 3.1

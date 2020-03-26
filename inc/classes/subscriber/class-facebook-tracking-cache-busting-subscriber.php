@@ -1,4 +1,5 @@
 <?php
+
 namespace WP_Rocket\Subscriber;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
@@ -72,6 +73,7 @@ class Facebook_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface
 			self::CRON_NAME      => 'update_cache',
 			'rocket_purge_cache' => 'delete_cache',
 			'rocket_buffer'      => 'cache_busting_facebook_tracking',
+			'admin_notices'      => 'busting_dir_not_writable_admin_notice',
 		];
 
 		return $events;
@@ -180,6 +182,63 @@ class Facebook_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface
 		$html = $this->busting_factory->type( 'fbsdk' )->replace_url( $html );
 
 		return $this->busting_factory->type( 'fbpix' )->replace_url( $html );
+	}
+
+	/**
+	 * Display an admin notice if the cache folder is not writable.
+	 *
+	 * @since  3.6
+	 * @author Grégory Viguier
+	 */
+	public function busting_dir_not_writable_admin_notice() {
+		if ( ! $this->is_busting_active() || ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
+		$dir_paths = [
+			$this->busting_factory->type( 'fbsdk' )->get_busting_dir_path(),
+			$this->busting_factory->type( 'fbpix' )->get_busting_dir_path(),
+		];
+
+		$dir_paths  = array_unique( $dir_paths );
+		$filesystem = rocket_direct_filesystem();
+
+		foreach ( $dir_paths as $i => $dir_path ) {
+			if ( ! $filesystem->exists( $dir_path ) ) {
+				rocket_mkdir_p( $dir_path );
+			}
+			if ( $filesystem->exists( $dir_path ) && $filesystem->is_writable( $dir_path ) ) {
+				unset( $dir_paths[ $i ] );
+			} else {
+				$dir_paths[ $i ] = '<code>' . esc_html( trim( str_replace( ABSPATH, '', $dir_path ), '/' ) ) . '</code>';
+			}
+		}
+
+		if ( ! $dir_paths ) {
+			return;
+		}
+
+		$message  = '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>';
+		$message .= sprintf(
+			/* translators: %s is a list of folder paths. */
+			_n( 'The folder %s used to cache Facebook tracking scripts could not be created or is missing writing permissions.', 'The folders %s used to cache Facebook tracking scripts could not be created or are missing writing permissions.', count( $dir_paths ), 'rocket' ),
+			wp_sprintf_l( '%l', $dir_paths )
+		);
+		$message .= '<br>' . sprintf(
+			/* translators: This is a doc title! %1$s = opening link; %2$s = closing link */
+			__( 'Troubleshoot: %1$sHow to make system files writeable%2$s', 'rocket' ),
+			/* translators: Documentation exists in EN, DE, FR, ES, IT; use loaclised URL if applicable */
+			'<a href="' . __( 'https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket', 'rocket' ) . '" target="_blank">',
+			'</a>'
+		);
+
+		rocket_notice_html(
+			[
+				'status'      => 'error',
+				'dismissible' => '',
+				'message'     => $message,
+			]
+		);
 	}
 
 	/**

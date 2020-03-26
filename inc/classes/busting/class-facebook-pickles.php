@@ -1020,6 +1020,18 @@ class Facebook_Pickles {
 		return $this->busting_path . $this->get_busting_file_name( $locale, $version );
 	}
 
+	/**
+	 * Get the path to the folder containing the busting files.
+	 *
+	 * @since  3.6
+	 * @author Grégory Viguier
+	 *
+	 * @return string
+	 */
+	public function get_busting_dir_path() {
+		return $this->busting_path;
+	}
+
 	/** ----------------------------------------------------------------------------------------- */
 	/** CONFIG FILE ============================================================================= */
 	/** ----------------------------------------------------------------------------------------- */
