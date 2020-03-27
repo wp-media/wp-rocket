@@ -555,7 +555,8 @@ function do_admin_post_rocket_purge_cache() { // phpcs:ignore WordPress.NamingCo
 		do_action( 'rocket_purge_cache', $_type, $_id, $_taxonomy, $_url );
 
 		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
-		die();
+		wp_die();
+		return;
 	}
 }
 add_action( 'admin_post_purge_cache', 'do_admin_post_rocket_purge_cache' );
