@@ -15,7 +15,7 @@ use WPMedia\PHPUnit\Unit\TestCase;
  * @group  ThirdParty
  * @group  FacebookTracking
  */
-class Test_deleteCache extends TestCase {
+class Test_DeleteCache extends TestCase {
 
 	public function testShouldNotDeleteBustingFilesWhenNotClearingAllCache() {
 		$subscriber = new Facebook_Tracking_Cache_Busting_Subscriber( $this->getFactory( false ), $this->getOptionsData( true ) );

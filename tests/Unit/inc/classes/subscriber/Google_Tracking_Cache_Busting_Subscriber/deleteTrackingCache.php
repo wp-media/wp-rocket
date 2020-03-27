@@ -14,7 +14,7 @@ use WPMedia\PHPUnit\Unit\TestCase;
  * @group  ThirdParty
  * @group  GoogleTracking
  */
-class Test_deleteTrackingCache extends TestCase {
+class Test_DeleteTrackingCache extends TestCase {
 
 	public function testShouldNotDeleteBustingFilesWhenNotClearingAllCache() {
 		$subscriber = new Google_Tracking_Cache_Busting_Subscriber( $this->getFactory( false ), $this->getOptionsData( true ) );
