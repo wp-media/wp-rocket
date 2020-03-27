@@ -1,17 +1,17 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\WP_Rocket_Uninstall;
+namespace WP_Rocket\Tests\Integration\inc\Engine\WPRocketUninstall;
 
-use WP_Rocket_Uninstall;
+use WPRocketUninstall;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers WP_Rocket_Uninstall::uninstall
+ * @covers WPRocketUninstall::uninstall
  * @group  Uninstall
  * @group  vfs
  */
 class Test_Uninstall extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/Engine/WP_Rocket_Uninstall/uninstall.php';
+	protected $path_to_test_data = '/inc/Engine/WPRocketUninstall/uninstall.php';
 
 	private $uninstall;
 
@@ -57,7 +57,7 @@ class Test_Uninstall extends FilesystemTestCase {
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
 
-		require_once WP_ROCKET_PLUGIN_ROOT . '/inc/Engine/WP_Rocket_Uninstall.php';
+		require_once WP_ROCKET_PLUGIN_ROOT . '/inc/Engine/WPRocketUninstall.php';
 	}
 
 	public function setUp() {
@@ -75,7 +75,7 @@ class Test_Uninstall extends FilesystemTestCase {
 			wp_schedule_event( time() + 3600, 'hourly', $event );
 		}
 
-		$this->uninstall = new WP_Rocket_Uninstall( $this->filesystem->getUrl( 'wp-content/cache'), $this->filesystem->getUrl( 'wp-content/wp-rocket-config' ) );
+		$this->uninstall = new WPRocketUninstall( $this->filesystem->getUrl( 'wp-content/cache'), $this->filesystem->getUrl( 'wp-content/wp-rocket-config' ) );
 	}
 
 	public function tearDown() {
