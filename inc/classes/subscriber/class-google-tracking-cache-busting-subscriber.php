@@ -158,9 +158,7 @@ class Google_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface {
 			return false;
 		}
 
-		$processor = $this->busting_factory->type( 'ga' );
-
-		return $processor->delete();
+		return $this->busting_factory->type( 'ga' )->delete();
 	}
 
 	/**
