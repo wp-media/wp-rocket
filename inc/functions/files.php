@@ -432,7 +432,7 @@ function rocket_clean_minify( $extensions = [ 'js', 'css' ] ) {
 	$extensions = is_string( $extensions ) ? (array) $extensions : $extensions;
 
 	try {
-		$dir = new RecursiveDirectoryIterator( rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' ) . get_current_blog_id(), FilesystemIterator::SKIP_DOTS );
+		$dir = new RecursiveDirectoryIterator( WP_ROCKET_MINIFY_CACHE_PATH . get_current_blog_id(), FilesystemIterator::SKIP_DOTS );
 	} catch ( \UnexpectedValueException $e ) {
 		// No logging yet.
 		return;
@@ -481,7 +481,7 @@ function rocket_clean_minify( $extensions = [ 'js', 'css' ] ) {
 		}
 	}
 
-	$third_party = rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' ) . '3rd-party';
+	$third_party = WP_ROCKET_MINIFY_CACHE_PATH . '3rd-party';
 
 	try {
 		$files = new FilesystemIterator( $third_party );
