@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\ServiceProvider;
+namespace WP_Rocket\Engine\Admin;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
 
@@ -9,7 +9,7 @@ use League\Container\ServiceProvider\AbstractServiceProvider;
  * @since 3.3
  * @author Remy Perona
  */
-class Admin_Subscribers extends AbstractServiceProvider {
+class ServiceProvider extends AbstractServiceProvider {
 
 	/**
 	 * The provides array is a way to let the container

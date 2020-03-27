@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\Deactivation\DeactivationIntent;
 
+use Mockery;
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Engine\Admin\Deactivation\DeactivationIntent;
@@ -18,9 +19,9 @@ class Test_ActivateSafeMode extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->options_api  = $this->createMock( 'WP_Rocket\Admin\Options' );
-		$this->options      = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
-		$this->deactivation = new DeactivationIntent( $this->createMock( 'WP_Rocket\Admin\Deactivation\Render' ), $this->options_api, $this->options );
+		$this->options_api  = Mockery::mock( 'WP_Rocket\Admin\Options' );
+		$this->options      = Mockery::mock( 'WP_Rocket\Admin\Options_Data' );
+		$this->deactivation = new DeactivationIntent( Mockery::mock( 'WP_Rocket\Admin\Deactivation\Render' ), $this->options_api, $this->options );
 
 		Functions\when( 'check_ajax_referer' )->justReturn( true );
 	}
@@ -52,14 +53,14 @@ class Test_ActivateSafeMode extends TestCase {
 
 		Functions\when( 'current_user_can' )->justReturn( true );
 
-		$this->options->expects( $this->once() )
-			->method( 'set_values' )
+		$this->options->shouldReceive( 'set_values' )
+			->once()
 			->with( $options );
-		$this->options->expects( $this->once() )
-			->method( 'get_options' )
-			->willReturn( $options );
-		$this->options_api->expects( $this->once() )
-			->method( 'set' )
+		$this->options->shouldReceive( 'get_options' )
+			->once()
+			->andReturn( $options );
+		$this->options_api->shouldReceive( 'set' )
+			->once()
 			->with( 'settings', $options );
 
 		Functions\expect( 'wp_send_json_success' )->once();
