@@ -556,6 +556,7 @@ class Subscriber implements Subscriber_Interface {
 		if ( is_wp_error( $is_api_keys_valid_cloudflare ) && $submit_cloudflare_view ) {
 			$cloudflare_error_message = $is_api_keys_valid_cloudflare->get_error_message();
 			add_settings_error( 'general', 'cloudflare_api_key_invalid', __( 'WP Rocket: ', 'rocket' ) . '</strong>' . $cloudflare_error_message . '<strong>', 'error' );
+			set_transient( get_current_user_id() . '_cloudflare_update_settings', [] );
 			return;
 		}
 
@@ -570,9 +571,7 @@ class Subscriber implements Subscriber_Interface {
 			$cloudflare_update_result = array_merge( $cloudflare_update_result, $this->save_cloudflare_auto_settings( $value['cloudflare_auto_settings'], $value['cloudflare_old_settings'] ) );
 		}
 
-		if ( [] !== $cloudflare_update_result ) {
-			set_transient( get_current_user_id() . '_cloudflare_update_settings', $cloudflare_update_result );
-		}
+		set_transient( get_current_user_id() . '_cloudflare_update_settings', $cloudflare_update_result );
 	}
 
 	/**
