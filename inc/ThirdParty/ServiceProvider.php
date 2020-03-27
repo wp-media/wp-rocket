@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\ServiceProvider;
+namespace WP_Rocket\ThirdParty;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
 
@@ -9,7 +9,7 @@ use League\Container\ServiceProvider\AbstractServiceProvider;
  * @since 3.3
  * @author Remy Perona
  */
-class Third_Party_Subscribers extends AbstractServiceProvider {
+class ServiceProvider extends AbstractServiceProvider {
 
 	/**
 	 * The provides array is a way to let the container
@@ -33,6 +33,7 @@ class Third_Party_Subscribers extends AbstractServiceProvider {
 		'ewww_webp_subscriber',
 		'optimus_webp_subscriber',
 		'bigcommerce_subscriber',
+		'amp_subscriber',
 	];
 
 	/**
@@ -44,22 +45,26 @@ class Third_Party_Subscribers extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
+		$options = $this->getContainer()->get( 'options' );
+
 		$this->getContainer()->share( 'mobile_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Mobile_Subscriber' );
 		$this->getContainer()->share( 'woocommerce_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Ecommerce\WooCommerce_Subscriber' );
 		$this->getContainer()->share( 'elementor_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\PageBuilder\Elementor_Subscriber' )
-			->withArgument( $this->getContainer()->get( 'options' ) );
+			->withArgument( $options );
 		$this->getContainer()->share( 'syntaxhighlighter_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\SyntaxHighlighter_Subscriber' );
 		$this->getContainer()->share( 'bridge_subscriber', 'WP_Rocket\Subscriber\Third_Party\Themes\Bridge_Subscriber' )
-			->withArgument( $this->getContainer()->get( 'options' ) );
+			->withArgument( $options );
 		$this->getContainer()->share( 'ngg_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\NGG_Subscriber' );
 		$this->getContainer()->share( 'smush_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Smush_Subscriber' );
 		$this->getContainer()->share( 'imagify_webp_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber' )
-			->withArgument( $this->getContainer()->get( 'options' ) );
+			->withArgument( $options );
 		$this->getContainer()->share( 'shortpixel_webp_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\ShortPixel_Subscriber' )
-			->withArgument( $this->getContainer()->get( 'options' ) );
+			->withArgument( $options );
 		$this->getContainer()->share( 'ewww_webp_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber' )
-			->withArgument( $this->getContainer()->get( 'options' ) );
+			->withArgument( $options );
 		$this->getContainer()->share( 'optimus_webp_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Optimus_Subscriber' );
 		$this->getContainer()->share( 'bigcommerce_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Ecommerce\BigCommerce_Subscriber' );
+		$this->getContainer()->share( 'amp_subscriber', 'WP_Rocket\ThirdParty\Plugins\Optimization\AMP' )
+			->withArgument( $options );
 	}
 }
