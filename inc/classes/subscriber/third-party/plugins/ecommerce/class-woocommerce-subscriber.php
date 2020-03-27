@@ -465,6 +465,10 @@ class WooCommerce_Subscriber implements Event_Manager_Aware_Subscriber_Interface
 		return [
 			'wcmd-subscribe-secret', // WooCommerce MailChimp Discount.
 			'td-block', // "Load more" AJAX functionality of the Newspaper theme.
+			'codevz_selective_refresh', // xtra theme.
+			'xtra_quick_view', // xtra theme quick view.
+			'ajax_search_nonce', // xtra theme AJAX search.
+			'xtra_wishlist_content', // xtra theme wishlist feature.
 		];
 	}
 }
