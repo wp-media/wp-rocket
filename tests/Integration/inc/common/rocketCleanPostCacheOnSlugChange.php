@@ -3,147 +3,118 @@
 namespace WP_Rocket\Tests\Integration\inc\common;
 
 use Brain\Monkey\Functions;
-use WPMedia\PHPUnit\Integration\TestCase;
+use WP_Rocket\Tests\GlobTrait;
+use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
  * @covers ::rocket_clean_post_cache_on_slug_change
- * @uses  ::rocket_clean_files
- * @group Purge
+ * @uses   ::rocket_clean_files
+ * @group  Purge
+ * @group  vfs
  */
-class TestRocketCleanPostCacheOnSlugChange extends TestCase {
-	/**
-	 * User's ID.
-	 * @var int
-	 */
-	private static $user_id = 0;
-	/**
-	 * Instance of the original post, ie before editing.
-	 * @var WP_Post
-	 */
-	private $original_post;
+class TestRocketCleanPostCacheOnSlugChange extends FilesystemTestCase {
+	use GlobTrait;
 
-	/**
-	 * Set up the User ID before tests start.
-	 */
+	protected $path_to_test_data = '/inc/common/rocketCleanPostCacheOnSlugChange.php';
+	private static $user_id = 0;
+	private $posts = [];
+
 	public static function wpSetUpBeforeClass( $factory ) {
 		self::$user_id = $factory->user->create( [ 'role' => 'editor' ] );
 	}
 
-	/**
-	 * Prepares the test environment before each test.
-	 */
 	public function setUp() {
 		parent::setUp();
 
 		wp_set_current_user( self::$user_id );
-		$this->original_post = self::factory()->post->create_and_get(
-			[
-				'post_title'  => 'Some cool post',
-				'content'     => 'Lorem ipsum dolor sit amet',
-				'post_status' => 'publish',
-			]
-		);
 		$this->set_permalink_structure( "/%postname%/" );
 		set_current_screen( 'edit.php' );
+
+		foreach ( $this->config['posts'] as $slug => $post_data ) {
+			$this->posts[ $slug ] = $this->factory->post->create_and_get( $post_data );
+		}
 	}
 
-	/**
-	 * Tests rocket_clean_post_cache_on_slug_change() should be registered to the "pre_post_update" action event.
-	 */
+	public function tearDown() {
+		parent::tearDown();
+
+		remove_action( 'after_rocket_clean_file', [ $this, 'after_rocket_clean_file_cb' ] );
+	}
+
 	public function testShouldRegisterCallbackToPrePostUpdate() {
 		$this->assertTrue( function_exists( 'rocket_clean_post_cache_on_slug_change' ) );
 		$this->assertEquals( PHP_INT_MAX, has_action( 'pre_post_update', 'rocket_clean_post_cache_on_slug_change' ) );
 	}
 
 	/**
-	 * Test rocket_clean_post_cache_on_slug_change() should not fire rocket_clean_files() when the post status is
-	 * 'draft', 'pending', or 'auto-draft'.
+	 * @dataProvider providerTestData
 	 */
-	public function testShouldBailOutWhenPostStatusIsNotCorrect() {
-		// Shouldn't run after we edit the post.
-		Functions\expect( 'rocket_clean_files' )->never();
+	public function testTestData( $slug, $new_post_data ) {
+		$post                     = $this->posts[ $slug ];
+		$new_post_data['post_ID'] = $post->ID;
+		$post_cache_dir           = trailingslashit( $this->filesystem->getUrl( $this->config['vfs_dir'] . $post->post_name ) );
 
-		// Edit the post's status.
-		$post_id = edit_post(
-			[
-				'post_status' => 'pending', // changed the post status from 'publish' to 'pending'.
-				'post_ID'     => $this->original_post->ID,
-			]
-		);
+		// Check the post is cached before editing it.
+		$this->assertTrue( $this->filesystem->exists( $post_cache_dir ) );
+		$this->assertNotEmpty( $this->filesystem->getListing( $post_cache_dir ) );
 
-		// Double-check the post status did change.
-		$this->assertEquals( 'pending', get_post( $post_id )->post_status ); // makes sure the status changed.
+		$rocket_clean_files_should_run = isset( $new_post_data['post_name'] ) && $new_post_data['post_name'] !== $post->post_name;
+		if ( $rocket_clean_files_should_run ) {
+			add_action( 'after_rocket_clean_file', [ $this, 'after_rocket_clean_file_cb' ] );
+		}
+
+		// Run it.
+		$post_id      = edit_post( $new_post_data );
+		$updated_post = get_post( $post_id );
+
+		if ( $rocket_clean_files_should_run ) {
+
+			// Check the slug (post name) changed.
+			$this->assertNotSame( $post->post_name, $updated_post->post_name );
+
+			// Check rocket_clean_files() ran.
+			$this->assertFalse( $this->filesystem->exists( $post_cache_dir ) );
+		} else {
+
+			// Check the slug (post name) did not changed.
+			$this->assertSame( $post->post_name, $updated_post->post_name );
+
+			// Check the post's cache files and directory were not purged.
+			$this->assertTrue( $this->filesystem->exists( $post_cache_dir ) );
+			$this->assertNotEmpty( $this->filesystem->getListing( $post_cache_dir ) );
+		}
 	}
 
 	/**
-	 * Test rocket_clean_post_cache_on_slug_change() should not fire rocket_clean_files() when the slug (post name)
-	 * hasn't changed, i.e. meaning when the previous post name (saved in the database) is still the same as the new one
-	 * (passed into this callback).
+	 * Callback is required, as the virtual filesystem does not work with glob().
 	 */
-	public function testShouldBailOutWhenSlugHasntChanged() {
-		// Shouldn't run after we edit the post.
-		Functions\expect( 'rocket_clean_files' )->never();
-
-		// Edit the post's content only. Slug should remain the same.
-		$post_id = edit_post(
-			[
-				'post_content' => 'Updated content happened here',
-				'post_ID'      => $this->original_post->ID,
-			]
-		);
-
-		// Slug didn't change.
-		$this->assertSame( $this->original_post->post_name, get_post( $post_id )->post_name );
+	public function after_rocket_clean_file_cb( $url ) {
+		$url = str_replace( 'http://example.org*', 'http://example.org', $url );
+		$dir = trailingslashit( WP_ROCKET_CACHE_PATH . rocket_remove_url_protocol( $url ) );
+		$this->deleteFiles( $dir, $this->filesystem );
+		$this->filesystem->rmdir( $dir );
 	}
 
-	/**
-	 * Test rocket_clean_post_cache_on_slug_change() should not fire rocket_clean_files() when the old slug (post name),
-	 * i.e. saved in the database, is empty.
-	 */
 	public function testShouldBailOutWhenOldSlugIsEmpty() {
-		// Modify the WP Cache to empty the slug ('post_name') in memory.
-		$this->original_post->post_name = '';
-		wp_cache_replace( $this->original_post->ID, $this->original_post, 'posts' );
-		$this->assertEmpty( get_post( $this->original_post->ID )->post_name );
+		foreach ( $this->posts as $slug => $post ) {
+			// Shouldn't run after we edit the post.
+			Functions\expect( 'rocket_clean_files' )->with( get_the_permalink( $post->ID ) )->never();
 
-		// Shouldn't run after we edit the post.
-		Functions\expect( 'rocket_clean_files' )->never();
+			// Modify the WP Cache to empty the slug ('post_name') in memory.
+			$post->post_name = '';
+			wp_cache_replace( $post->ID, $post, 'posts' );
+			$this->assertEmpty( get_post( $post->ID )->post_name );
 
-		// Edit the post.
-		$post_id = edit_post(
-			[
-				'post_content' => 'Updated content happened here',
-				'post_ID'      => $this->original_post->ID,
-			]
-		);
+			// Edit the post.
+			$post_id = edit_post(
+				[
+					'post_content' => "[Updated] {$post->post_content}",
+					'post_ID'      => $post->ID,
+				]
+			);
 
-		// The original is empty, but the updated one is not.
-		$this->assertNotEmpty( get_post( $post_id )->post_name );
-	}
-
-	/**
-	 * Test rocket_clean_post_cache_on_slug_change() should fire rocket_clean_files() when the existing post status is
-	 * correct (i.e. not draft, pending, or auto-draft), the existing/old slug (post name) and new slug are the same,
-	 * and the existing/old slug is not empty.
-	 */
-	public function testShouldFireRocketCleanFiles() {
-		// rocket_clean_files() should run.
-		Functions\expect( 'rocket_clean_files' )
-			->once()
-			->with( get_permalink( $this->original_post->ID ) )
-			->andReturn(); // don't do anything.
-
-		// Edit the post.
-		$post_id = edit_post(
-			[
-				'post_title'  => 'Updated Cool Post',
-				'post_name'   => 'updated-cool-post',
-				'post_status' => $this->original_post->post_status,
-				'post_ID'     => $this->original_post->ID,
-			]
-		);
-
-		// Double check the post names (slugs) are no longer the same.
-		$this->assertNotSame( $this->original_post->post_name, get_post( $post_id )->post_name );
+			// The original is empty, but the updated one is not.
+			$this->assertNotEmpty( get_post( $post_id )->post_name );
+		}
 	}
 }

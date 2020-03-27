@@ -3,93 +3,95 @@
 namespace WP_Rocket\Tests\Unit\inc\common;
 
 use Brain\Monkey\Functions;
-use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
  * @covers ::rocket_clean_post_cache_on_slug_change
- * @group Common
+ * @group Purge
+ * @group vfs
  */
-class Test_RocketCleanPostCacheOnSlugChange extends TestCase {
+class Test_RocketCleanPostCacheOnSlugChange extends FilesystemTestCase {
+	protected $path_to_test_data = '/inc/common/rocketCleanPostCacheOnSlugChange.php';
+	private $posts = [];
 
-	protected function setUp() {
+	public function setUp() {
 		parent::setUp();
 
 		Functions\when( 'get_option' )->justReturn( '' );
 
 		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/common/purge.php';
-	}
 
-	public function testShouldBailOutWhenPostStatusIsNotCorrect() {
-		$post_id   = 10;
-		$post_name = 'new-post-name-slug';
-
-		Functions\expect( 'get_the_permalink' )->never();
-		Functions\expect( 'rocket_clean_files' )->never();
-		Functions\expect( 'get_post_field' )
-			->with( 'post_name', $post_id )
-			->never();
-
-		foreach ( [ 'draft', 'pending', 'auto-draft' ] as $post_status ) {
-			Functions\expect( 'get_post_field' )
-				->once()
-				->with( 'post_status', $post_id )
-				->andReturn( $post_status );
-			$this->assertNull( rocket_clean_post_cache_on_slug_change( $post_id, [ 'post_name' => $post_name ] ) );
+		$post_id = 5;
+		foreach ( $this->config['posts'] as $slug => $post_data ) {
+			$this->posts[ $slug ] = (object) array_merge(
+				[
+					'ID'          => $post_id,
+					'post_name'   => $slug,
+					'post_status' => '',
+				],
+				$post_data
+			);
+			$post_id++;
 		}
 	}
 
-	public function testShouldBailOutWhenSlugHasntChanged() {
-		$post_id   = 50;
-		$post_name = 'original-post-name-slug';
+	public function testShouldRegisterCallbackToPrePostUpdate() {
+		$this->assertTrue( function_exists( 'rocket_clean_post_cache_on_slug_change' ) );
+		$this->assertEquals( PHP_INT_MAX, has_action( 'pre_post_update', 'rocket_clean_post_cache_on_slug_change' ) );
+	}
 
-		Functions\expect( 'get_the_permalink' )->never();
-		Functions\expect( 'rocket_clean_files' )->never();
+	/**
+	 * @dataProvider providerTestData
+	 */
+	public function testTestData( $slug, $new_post_data ) {
+		$post          = $this->posts[ $slug ];
+		$new_post_data = array_merge( (array) $post, $new_post_data );
+
 		Functions\expect( 'get_post_field' )
-			->ordered()
 			->once()
-			->with( 'post_status', $post_id )
-			->andReturn( 'publish' )
-			->andAlsoExpectIt()
+			->with( 'post_status', $post->ID )
+			->andReturn( $new_post_data['post_status'] );
+
+		// Test when the post status is 'draft', 'pending', or 'auto-draft'.
+		if ( in_array( $new_post_data['post_status'], [ 'draft', 'pending', 'auto-draft' ], true ) ) {
+			$this->shouldBailOutWhenPostStatusIsNotCorrect( $post->ID );
+
+			// Test when the slug (post_name) changes.
+		} elseif ( $new_post_data['post_name'] !== $post->post_name ) {
+			$this->shouldPurgeWhenPostStatusCorrectAndSlugChanged( $post->ID, $post->post_name );
+
+			// Test when the slug (post name) did not change.
+		} else {
+			$this->shouldBailOutWhenSlugHasntChanged( $post->ID, $new_post_data['post_name'] );
+		}
+
+		// Run it.
+		rocket_clean_post_cache_on_slug_change( $post->ID, $new_post_data );
+	}
+
+	private function shouldBailOutWhenPostStatusIsNotCorrect( $post_id ) {
+		Functions\expect( 'get_post_field' )->with( 'post_name', $post_id )->never();
+		Functions\expect( 'get_the_permalink' )->with( $post_id )->never();
+		Functions\expect( 'rocket_clean_files' )->never();
+	}
+
+	private function shouldBailOutWhenSlugHasntChanged( $post_id, $post_name ) {
+		Functions\expect( 'get_post_field' )
 			->once()
 			->with( 'post_name', $post_id )
 			->andReturn( $post_name ); // slug hasn't changed.
 
-		$this->assertNull( rocket_clean_post_cache_on_slug_change( $post_id, [ 'post_name' => $post_name ] ) );
-	}
-
-	public function testShouldBailOutWhenOldSlugIsEmpty() {
-		$post_id   = 100;
-		$post_name = 'new-post-name-slug';
-
-		Functions\expect( 'get_the_permalink' )->never();
+		Functions\expect( 'get_the_permalink' )->with( $post_id )->never();
 		Functions\expect( 'rocket_clean_files' )->never();
-		Functions\expect( 'get_post_field' )
-			->ordered()
-			->once()
-			->with( 'post_status', $post_id )
-			->andReturn( 'publish' )
-			->andAlsoExpectIt()
-			->once()
-			->with( 'post_name', $post_id )
-			->andReturn( '' ); // No slug saved in the database.
-
-		$this->assertNull( rocket_clean_post_cache_on_slug_change( $post_id, [ 'post_name' => $post_name ] ) );
 	}
 
-	public function testShouldFireRocketCleanFilesWhenExistingPostStatusIsCorrect() {
-		$post_id   = 200;
-		$post_name = 'new-post-name-slug';
-		$permalink = "https://wp-rocket.test/{$post_name}/";
+	public function shouldPurgeWhenPostStatusCorrectAndSlugChanged( $post_id, $post_name ) {
+		$permalink = "http://example.org/{$post_name}/";
 
 		Functions\expect( 'get_post_field' )
-			->ordered()
-			->once()
-			->with( 'post_status', $post_id )
-			->andReturn( 'publish' )
-			->andAlsoExpectIt()
 			->once()
 			->with( 'post_name', $post_id )
-			->andReturn( 'original-post-name-slug' );
+			->andReturn( $post_name ); // slug changed.
 
 		Functions\expect( 'get_the_permalink' )
 			->once()
@@ -100,7 +102,25 @@ class Test_RocketCleanPostCacheOnSlugChange extends TestCase {
 			->once()
 			->with( $permalink )
 			->andReturnNull();
+	}
 
-		$this->assertNull( rocket_clean_post_cache_on_slug_change( $post_id, [ 'post_name' => $post_name ] ) );
+	public function testShouldBailOutWhenOldSlugIsEmpty() {
+		$post_id   = 100;
+		$post_name = 'new-post-name-slug';
+
+		Functions\expect( 'get_post_field' )
+			->ordered()
+			->once()
+			->with( 'post_status', $post_id )
+			->andReturn( 'publish' )
+			->andAlsoExpectIt()
+			->once()
+			->with( 'post_name', $post_id )
+			->andReturn( '' ); // No slug saved in the database.
+
+		Functions\expect( 'get_the_permalink' )->never();
+		Functions\expect( 'rocket_clean_files' )->never();
+
+		rocket_clean_post_cache_on_slug_change( $post_id, [ 'post_name' => $post_name ] );
 	}
 }
