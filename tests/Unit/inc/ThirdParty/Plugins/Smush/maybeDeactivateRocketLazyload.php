@@ -1,12 +1,12 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\classes\third_party\plugins\Smush_Subscriber;
+namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\Smush\Subscriber;
 
 use Mockery;
-use WP_Rocket\Subscriber\Third_Party\Plugins\Smush_Subscriber;
+use WP_Rocket\ThirdParty\Plugins\Smush\Subscriber;
 
 /**
- * @covers \WP_Rocket\Subscriber\Third_Party\Plugins\Smush_Subscriber::maybe_deactivate_rocket_lazyload
+ * @covers \WP_Rocket\ThirdParty\Plugins\Smush\Subscriber::maybe_deactivate_rocket_lazyload
  * @group ThirdParty
  * @group Smush
  */
@@ -74,7 +74,7 @@ class Test_MaybeDeactivateRocketLazyload extends SmushSubscriberTestCase {
 			->shouldReceive( 'set' )
 			->times( $setCount );
 
-		$this->subscriber = new Smush_Subscriber( $options, $options_data );
+		$this->subscriber = new Subscriber( $options, $options_data );
 	}
 
 	public function addDataProviderThatShouldNotDisableWPRocketLazyLoad() {

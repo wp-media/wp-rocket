@@ -1,8 +1,9 @@
 <?php
-namespace WP_Rocket\Tests\Unit\inc\classes\third_party\plugins\Smush_Subscriber;
+namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\Smush\Subscriber;
 
 use Brain\Monkey\Functions;
 use Mockery;
+use Smush\Core\Settings;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 abstract class SmushSubscriberTestCase extends TestCase {
@@ -14,11 +15,11 @@ abstract class SmushSubscriberTestCase extends TestCase {
 			->with( 'WP_SMUSH_PREFIX' )
 			->andReturn( 'wp-smush-' );
 
-		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/classes/subscriber/third-party/plugins/Smush_Subscriber/SmushCoreSettings.php';
+		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/Smush/SmushCoreSettings.php';
 	}
 
 	protected function mock_is_smush_lazyload_enabled( $lazyload_enabled, array $lazyload_formats ) {
-		$settings = \Smush\Core\Settings::get_instance();
+		$settings = Settings::get_instance();
 
 		$settings->set_settings( $lazyload_enabled, $lazyload_formats );
 

@@ -1,11 +1,11 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\classes\third_party\plugins\Smush_Subscriber;
+namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\Smush\Subscriber;
 
-use WP_Rocket\Subscriber\Third_Party\Plugins\Smush_Subscriber;
+use WP_Rocket\ThirdParty\Plugins\Smush\Subscriber;
 
 /**
- * @covers \WP_Rocket\Subscriber\Third_Party\Plugins\Smush_Subscriber::is_smush_lazyload_active
+ * @covers \WP_Rocket\ThirdParty\Plugins\Smush\Subscriber::is_smush_lazyload_active
  * @group ThirdParty
  * @group Smush
  */
@@ -14,7 +14,7 @@ class Test_IsSmushLazyloadActive extends SmushSubscriberTestCase {
 	 * @dataProvider addDataProviderThatShouldNotDisableWPRocketLazyLoad
 	 */
 	public function testShouldNotDisableWPRocketLazyLoad( $lazyload_enabled, array $lazyload_formats ) {
-		$subscriber = new Smush_Subscriber( $this->createMock( 'WP_Rocket\Admin\Options' ), $this->createMock( 'WP_Rocket\Admin\Options_Data' ) );
+		$subscriber = new Subscriber( $this->createMock( 'WP_Rocket\Admin\Options' ), $this->createMock( 'WP_Rocket\Admin\Options_Data' ) );
 
 		$this->mock_is_smush_lazyload_enabled( $lazyload_enabled, $lazyload_formats );
 
@@ -27,7 +27,7 @@ class Test_IsSmushLazyloadActive extends SmushSubscriberTestCase {
 	public function testShouldDisableWPRocketLazyLoadWhenAtLeastOneImageFormat( $lazyload_enabled, array $lazyload_formats ) {
 		$this->mockCommonWpFunctions();
 
-		$subscriber = new Smush_Subscriber( $this->createMock( 'WP_Rocket\Admin\Options' ), $this->createMock( 'WP_Rocket\Admin\Options_Data' ) );
+		$subscriber = new Subscriber( $this->createMock( 'WP_Rocket\Admin\Options' ), $this->createMock( 'WP_Rocket\Admin\Options_Data' ) );
 
 		$this->mock_is_smush_lazyload_enabled( $lazyload_enabled, $lazyload_formats );
 
