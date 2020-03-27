@@ -3,7 +3,6 @@
 namespace WP_Rocket\Subscriber;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Rocket\Busting\AdminNotices;
 use WP_Rocket\Busting\Busting_Factory;
 use WP_Rocket\Admin\Options_Data as Options;
 
@@ -14,7 +13,6 @@ use WP_Rocket\Admin\Options_Data as Options;
  * @author Grégory Viguier
  */
 class Facebook_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface {
-	use AdminNotices;
 
 	/**
 	 * Name of the cron.
@@ -44,20 +42,6 @@ class Facebook_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface
 	 * @author Grégory Viguier
 	 */
 	private $options;
-
-	/**
-	 * Busting types.
-	 *
-	 * @var string
-	 */
-	private $busting_types = [ 'fbsdk', 'fbpix' ];
-
-	/**
-	 * Vendor name.
-	 *
-	 * @var string
-	 */
-	private $vendor_name = 'Facebook';
 
 	/**
 	 * Constructor.
@@ -90,7 +74,6 @@ class Facebook_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface
 			self::CRON_NAME      => 'update_cache',
 			'rocket_purge_cache' => 'delete_cache',
 			'rocket_buffer'      => 'cache_busting_facebook_tracking',
-			'admin_notices'      => 'busting_dir_not_writable_admin_notice',
 		];
 
 		return $events;
