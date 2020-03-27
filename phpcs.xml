@@ -52,7 +52,7 @@
     </rule>
     <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
         <properties>
-            <property name="prefixes" type="array" value="rocket,wp_rocket,WPMedia" />
+            <property name="prefixes" type="array" value="rocket,wp_rocket,WPMedia,WPRocket" />
         </properties>
     </rule>
     <rule ref="WordPress.Files.FileName">
