@@ -1,25 +1,26 @@
 <?php
 
 /**
- * Manages the deletion of WP Rocket data and files on uninstall
+ * Manages the deletion of WP Rocket data and files on uninstall.
  */
-class WP_Rocket_Uninstall {
+class WPRocketUninstall {
+
 	/**
-	 * Path to the cache folder
+	 * Path to the cache folder.
 	 *
 	 * @var string
 	 */
 	private $cache_path;
 
 	/**
-	 * Path to the config folder
+	 * Path to the config folder.
 	 *
 	 * @var string
 	 */
 	private $config_path;
 
 	/**
-	 * WP Rocket options
+	 * WP Rocket options.
 	 *
 	 * @var array
 	 */
@@ -31,7 +32,7 @@ class WP_Rocket_Uninstall {
 	];
 
 	/**
-	 * WP Rocket transients
+	 * WP Rocket transients.
 	 *
 	 * @var array
 	 */
@@ -58,7 +59,7 @@ class WP_Rocket_Uninstall {
 	];
 
 	/**
-	 * WP Rocket scheduled events
+	 * WP Rocket scheduled events.
 	 *
 	 * @var array
 	 */
@@ -73,7 +74,7 @@ class WP_Rocket_Uninstall {
 	];
 
 	/**
-	 * WP Rocket cache directories
+	 * WP Rocket cache directories.
 	 *
 	 * @var array
 	 */
@@ -85,7 +86,7 @@ class WP_Rocket_Uninstall {
 	];
 
 	/**
-	 * Constructor
+	 * Constructor.
 	 *
 	 * @param string $cache_path  Path to the cache folder.
 	 * @param string $config_path Path to the config folder.
@@ -96,7 +97,7 @@ class WP_Rocket_Uninstall {
 	}
 
 	/**
-	 * Deletes all plugin data and files on uninstall
+	 * Deletes all plugin data and files on uninstall.
 	 *
 	 * @since 3.5.2
 	 * @author Remy Perona
@@ -110,7 +111,7 @@ class WP_Rocket_Uninstall {
 	}
 
 	/**
-	 * Deletes WP Rocket options, transients and events
+	 * Deletes WP Rocket options, transients and events.
 	 *
 	 * @since 3.5.2
 	 * @author Remy Perona
@@ -132,7 +133,7 @@ class WP_Rocket_Uninstall {
 	}
 
 	/**
-	 * Deletes all WP Rocket cache files
+	 * Deletes all WP Rocket cache files.
 	 *
 	 * @since 3.5.2
 	 * @author Remy Perona
@@ -146,7 +147,7 @@ class WP_Rocket_Uninstall {
 	}
 
 	/**
-	 * Deletes all WP Rocket config files
+	 * Deletes all WP Rocket config files.
 	 *
 	 * @since 3.5.2
 	 * @author Remy Perona
@@ -158,7 +159,7 @@ class WP_Rocket_Uninstall {
 	}
 
 	/**
-	 * Recursively deletes files and directories
+	 * Recursively deletes files and directories.
 	 *
 	 * @since 3.5.2
 	 * @author Remy Perona
