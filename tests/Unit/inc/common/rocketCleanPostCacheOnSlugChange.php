@@ -35,11 +35,6 @@ class Test_RocketCleanPostCacheOnSlugChange extends FilesystemTestCase {
 		}
 	}
 
-	public function testShouldRegisterCallbackToPrePostUpdate() {
-		$this->assertTrue( function_exists( 'rocket_clean_post_cache_on_slug_change' ) );
-		$this->assertEquals( PHP_INT_MAX, has_action( 'pre_post_update', 'rocket_clean_post_cache_on_slug_change' ) );
-	}
-
 	/**
 	 * @dataProvider providerTestData
 	 */
