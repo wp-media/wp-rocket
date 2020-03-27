@@ -15,16 +15,36 @@ define( 'WP_ROCKET_IS_TESTING', true );
 tests_add_filter(
 	'muplugins_loaded',
 	function() {
+		if ( BootstrapManager::isGroup( 'WithAmp' ) ) {
+			// Load AMP plugin.
+			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/amp/amp.php';
+		}
+
+		if ( BootstrapManager::isGroup( 'WithAmpAndCloudflare' ) ) {
+			// Load AMP plugin.
+			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/amp/amp.php';
+			update_option(
+				'wp_rocket_settings',
+				[
+					'do_cloudflare'               => 1,
+					'cloudflare_protocol_rewrite' => 1,
+				]
+			);
+		}
+
+		// Set the path and URL to our virtual filesystem.
+		define( 'WP_ROCKET_CACHE_ROOT_PATH', 'vfs://public/wp-content/cache/' );
+		define( 'WP_ROCKET_CACHE_ROOT_URL', 'vfs://public/wp-content/cache/' );
+
+		// Set the path and URL to our virtual filesystem.
+		define( 'WP_ROCKET_CACHE_ROOT_PATH', 'vfs://public/wp-content/cache/' );
+		define( 'WP_ROCKET_CACHE_ROOT_URL', 'vfs://public/wp-content/cache/' );
 
 		if ( BootstrapManager::isGroup( 'WithWoo' ) ) {
 			// Load WooCommerce.
 			define( 'WC_TAX_ROUNDING_MODE', 'auto' );
 			define( 'WC_USE_TRANSACTIONS', false );
 			require WP_ROCKET_PLUGIN_ROOT . '/vendor/woocommerce/woocommerce/woocommerce.php';
-		}
-
-		if ( BootstrapManager::isGroup( 'Multisite' ) ) {
-			define( 'MULTISITE', true );
 		}
 
 		// Overload the license key for testing.
