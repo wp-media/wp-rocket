@@ -16,6 +16,12 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 class Test_PurgeExpiredFiles extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/classes/Cache/Expired_Cache_Purge/purgeExpiredFiles.php';
 
+	public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
+
+		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/functions/i18n.php';
+	}
+
 	public function testShouldReturnNullWhenNoLifespan() {
 		Functions\expect( 'get_rocket_i18n_uri' )->never();
 		Functions\expect( 'rocket_direct_filesystem' )->never();
