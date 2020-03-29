@@ -78,9 +78,7 @@ function get_rocket_post_dates_urls( $post_id ) { // phpcs:ignore WordPress.Nami
 	 *
 	 * @param array $urls List of dates URLs
 	*/
-	$urls = apply_filters( 'rocket_post_dates_urls', $urls );
-
-	return $urls;
+	return apply_filters( 'rocket_post_dates_urls', $urls );
 }
 
 /**

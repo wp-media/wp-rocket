@@ -50,41 +50,12 @@ class Test_GetRocketPostDatesUrls extends TestCase {
 	}
 
 	public function set_did_filter( $urls ) {
-		$this->did_filter ++;
+		$this->did_filter++;
 
 		return $urls;
 	}
 
 	public function providerTestData() {
 		return $this->getTestData( __DIR__, 'getRocketPostDatesUrls' );
-	}
-
-	function get_rocket_post_dates_urls( $post_id ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
-		// Get the day and month of the post.
-		$date = explode( '-', get_the_time( 'Y-m-d', $post_id ) );
-
-		$year  = trailingslashit( get_year_link( $date[0] ) );
-		$month = trailingslashit( get_month_link( $date[0], $date[1] ) );
-
-		$urls = [
-			"{$year}index.html",
-			"{$year}index.html_gzip",
-			$year . $GLOBALS['wp_rewrite']->pagination_base,
-			"{$month}index.html",
-			"{$month}index.html_gzip",
-			$month . $GLOBALS['wp_rewrite']->pagination_base,
-			get_day_link( $date[0], $date[1], $date[2] ),
-		];
-
-		/**
-		 * Filter the list of dates URLs
-		 *
-		 * @since 1.1.0
-		 *
-		 * @param array $urls List of dates URLs
-		 */
-		$urls = apply_filters( 'rocket_post_dates_urls', $urls );
-
-		return $urls;
 	}
 }
