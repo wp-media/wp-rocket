@@ -52,12 +52,16 @@ function get_rocket_post_terms_urls( $post_id ) { // phpcs:ignore WordPress.Nami
  *
  * @param int $post_id The post ID.
  *
- * @return array $urls List of dates URLs
+ * @return array $urls List of dates URLs on success; else, an empty [].
  */
 function get_rocket_post_dates_urls( $post_id ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
-	// Get the day and month of the post.
-	$date = explode( '-', get_the_time( 'Y-m-d', $post_id ) );
+	$time = get_the_time( 'Y-m-d', $post_id );
+	if ( empty( $time ) ) {
+		return [];
+	}
 
+	// Extract and prep the year, month, and day.
+	$date  = explode( '-', $time );
 	$year  = trailingslashit( get_year_link( $date[0] ) );
 	$month = trailingslashit( get_month_link( $date[0], $date[1] ) );
 
@@ -72,11 +76,11 @@ function get_rocket_post_dates_urls( $post_id ) { // phpcs:ignore WordPress.Nami
 	];
 
 	/**
-	 * Filter the list of dates URLs
+	 * Filter the list of dates URLs.
 	 *
 	 * @since 1.1.0
 	 *
-	 * @param array $urls List of dates URLs
+	 * @param array $urls List of dates URLs.
 	*/
 	return apply_filters( 'rocket_post_dates_urls', $urls );
 }

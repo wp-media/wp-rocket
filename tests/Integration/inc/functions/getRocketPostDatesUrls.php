@@ -37,6 +37,11 @@ class Test_GetRocketPostDatesUrls extends TestCase {
 		remove_filter( 'rocket_post_dates_urls', [ $this, 'set_did_filter' ] );
 	}
 
+	public function testShouldBailOutWhenPostDoesNotExist() {
+		$this->assertNull( get_post( -1 ) );
+		$this->assertSame( [], get_rocket_post_dates_urls( -1 ) );
+	}
+
 	/**
 	 * @dataProvider providerTestData
 	 */

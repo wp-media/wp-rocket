@@ -25,6 +25,18 @@ class Test_GetRocketPostDatesUrls extends TestCase {
 		unset( $GLOBALS['wp_rewrite'] );
 	}
 
+	public function testShouldBailOutWhenPostDoesNotExist() {
+		Functions\expect( 'get_the_time' )
+			->once()
+			->with( 'Y-m-d', - 1 )
+			->andReturn( false );
+		Functions\expect( 'get_year_link' )->never();
+		Functions\expect( 'get_month_link' )->never();
+		Filters\expectApplied( 'rocket_post_dates_urls' )->never();
+
+		$this->assertSame( [], get_rocket_post_dates_urls( - 1 ) );
+	}
+
 	/**
 	 * @dataProvider providerTestData
 	 */
