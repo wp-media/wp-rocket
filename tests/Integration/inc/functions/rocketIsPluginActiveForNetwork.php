@@ -2,15 +2,12 @@
 
 namespace WP_Rocket\Tests\Integration\inc\functions;
 
-use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
  * @covers ::rocket_is_plugin_active_for_network
  * @group  Options
  * @group  Functions
- * @group  Multisite
- * @group  thisone
  */
 class Test_RocketIsPluginActiveForNetwork extends TestCase {
 	private $config;
@@ -25,8 +22,13 @@ class Test_RocketIsPluginActiveForNetwork extends TestCase {
 		update_site_option( 'active_sitewide_plugins', $this->config['active_sitewide_plugins'] );
 	}
 
+	public function testShouldReturnFalseWhenNotMultisite() {
+		$this->assertFalse( rocket_is_plugin_active_for_network( 'wp-rocket/wp-rocket.php' ) );
+	}
+
 	/**
 	 * @dataProvider providerTestData
+	 * @group        Multisite
 	 */
 	public function testShouldReturnCorrectState( $plugin, $expected ) {
 		$this->assertSame( $this->config['active_sitewide_plugins'], get_site_option( 'active_sitewide_plugins' ) );
