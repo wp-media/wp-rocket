@@ -39,11 +39,11 @@ class Test_GetRocketPostDatesUrls extends TestCase {
 			->with( 'Y-m-d', $post_id )
 			->andReturn( $post_data['post_date'] );
 		Functions\expect( 'get_year_link' )
-			->times( 3 )
+			->once()
 			->with( $date[0] )
 			->andReturn( "http://example.org/{$date[0]}" );
 		Functions\expect( 'get_month_link' )
-			->times( 3 )
+			->once()
 			->with( $date[0], $date[1] )
 			->andReturn( "http://example.org/{$date[0]}/{$date[1]}" );
 		Functions\expect( 'get_day_link' )
