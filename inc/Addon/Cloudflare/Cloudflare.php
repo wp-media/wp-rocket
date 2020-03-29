@@ -185,6 +185,7 @@ class Cloudflare {
 				return new WP_Error( 'cloudflare_wrong_zone_id', $msg );
 			}
 
+			$this->cloudflare_api_error = null;
 			return true;
 		} catch ( Exception $e ) {
 			$msg  = __( 'Incorrect Cloudflare email address or API key.', 'rocket' );
