@@ -61,6 +61,8 @@ function rocket_is_plugin_active( $plugin ) {
  * @source wp-admin/includes/plugin.php
  *
  * @param string $plugin Plugin folder/main file.
+ *
+ * @return bool true if multisite and plugin is active for network; else, false.
  */
 function rocket_is_plugin_active_for_network( $plugin ) {
 	if ( ! is_multisite() ) {
