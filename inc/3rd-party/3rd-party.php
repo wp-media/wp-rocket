@@ -75,7 +75,6 @@ require WP_ROCKET_3RD_PARTY_PATH . 'plugins/wp-print.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/buddypress.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/disqus.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/custom-login.php';
-require WP_ROCKET_3RD_PARTY_PATH . 'plugins/mobile/amp.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/mobile/wp-appkit.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/seo/seopress.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/seo/rank-math-seo.php';

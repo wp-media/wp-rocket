@@ -1,10 +1,9 @@
 <?php
+
 namespace WP_Rocket\Tests\Unit\inc\classes\subscriber\Optimization\Critical_CSS_Subscriber;
 
-use FilesystemIterator;
 use Brain\Monkey\Functions;
 use Mockery;
-use UnexpectedValueException;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Optimization\CSS\Critical_CSS;
 use WP_Rocket\Optimization\CSS\Critical_CSS_Generation;
@@ -15,24 +14,10 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
  * @covers \WP_Rocket\Subscriber\Optimization\Critical_CSS_Subscriber::generate_critical_css_on_activation
  * @group  Subscribers
  * @group  CriticalCss
+ * @group  vfs
  */
 class Test_GenerateCriticalCssOnActivation extends FilesystemTestCase {
-
-	protected $structure = [
-		'critical-css' => [
-			'1' => [
-				'.'            => '',
-				'..'           => '',
-				'critical.css' => 'body { font-family: Helvetica, Arial, sans-serif; text-align: center;}',
-			],
-			// This one is empty.
-			'2' => [
-				'.'  => '',
-				'..' => '',
-			],
-		],
-	];
-
+	protected $path_to_test_data = '/inc/classes/subscriber/Optimization/class-critical-css-subscriber/generateCriticalCssOnActivation.php';
 	private $critical_css;
 	private $subscriber;
 
@@ -63,19 +48,19 @@ class Test_GenerateCriticalCssOnActivation extends FilesystemTestCase {
 		$this->subscriber->generate_critical_css_on_activation( [ 'async_css' => 0 ], [ 'async_css' => 1 ] );
 	}
 
+	/**
+	 * @dataProvider providerTestData
+	 */
+	public function testShouldGenerateCriticalCss( $critical_css_path, $old_value, $new_value ) {
+		$dirs = $this->filesystem->getDirsListing( $this->config['vfs_dir'] );
+		if ( ! in_array( $critical_css_path['path'], $dirs, true ) ) {
+			$this->critical_css->shouldReceive( 'process_handler' )->never();
+		} else {
+			$this->critical_css->shouldReceive( 'process_handler' )->once()->andReturn();
+		}
 
-	public function testShouldBailOutWhenCriticalCssPathIsNotEmpty() {
-		$this->critical_css->shouldReceive( 'process_handler' )->never();
-		$this->critical_css->shouldReceive( 'get_critical_css_path' )->once()->andReturn( 'vfs://cache/critical-css/1/' );
+		$this->critical_css->shouldReceive( 'get_critical_css_path' )->once()->andReturn( $critical_css_path['path'] );
 
-		$this->subscriber->generate_critical_css_on_activation( [ 'async_css' => 0 ], [ 'async_css' => 1 ] );
+		$this->subscriber->generate_critical_css_on_activation( $old_value, $new_value );
 	}
-
-	public function testShouldInvokeProcessHandlerWhenCriticalCssPathIsEmpty() {
-		$this->critical_css->shouldReceive( 'process_handler' )->once()->andReturn();
-		$this->critical_css->shouldReceive( 'get_critical_css_path' )->once()->andReturn( 'vfs://cache/critical-css/2/' );
-
-		$this->subscriber->generate_critical_css_on_activation( [ 'async_css' => 0 ], [ 'async_css' => 1 ] );
-	}
-
 }

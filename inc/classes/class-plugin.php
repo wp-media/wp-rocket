@@ -86,7 +86,7 @@ class Plugin {
 				]
 			);
 			$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Settings' );
-			$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Admin_Subscribers' );
+			$this->container->addServiceProvider( 'WP_Rocket\Engine\Admin\ServiceProvider' );
 
 			$subscribers = [
 				'beacon_subscriber',
@@ -122,7 +122,7 @@ class Plugin {
 		$this->container->addServiceProvider( 'WP_Rocket\Addon\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Preload\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Common_Subscribers' );
-		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Third_Party_Subscribers' );
+		$this->container->addServiceProvider( 'WP_Rocket\ThirdParty\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Hostings_Subscribers' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Updater_Subscribers' );
 
@@ -158,6 +158,7 @@ class Plugin {
 			'detect_missing_tags_subscriber',
 			'purge_actions_subscriber',
 			'beaverbuilder_subscriber',
+			'amp_subscriber',
 		];
 
 		if ( get_rocket_option( 'do_cloudflare' ) ) {

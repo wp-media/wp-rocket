@@ -2,34 +2,16 @@
 
 namespace WP_Rocket\Tests\Integration\inc\functions;
 
-use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
  * @covers ::rocket_clean_minify
  * @group Functions
  * @group Files
+ * @group vfs
  */
 class Test_RocketCleanMinify extends FilesystemTestCase {
-	protected $structure = [
-		'min' => [
-			'1' => [
-				'5c795b0e3a1884eec34a989485f863ff.js'     => '',
-				'5c795b0e3a1884eec34a989485f863ff.js.gz'  => '',
-				'fa2965d41f1515951de523cecb81f85e.css'    => '',
-				'fa2965d41f1515951de523cecb81f85e.css.gz' => '',
-			],
-		],
-	];
-
-	public function setUp() {
-		parent::setUp();
-
-		Functions\expect( 'rocket_get_constant' )
-			->once()
-			->with( 'WP_ROCKET_MINIFY_CACHE_PATH' )
-			->andReturn( trailingslashit( $this->filesystem->getUrl( 'min/' ) ) );
-	}
+	protected $path_to_test_data = '/inc/functions/rocketCleanMinify.php';
 
 	public function tearDown() {
 		delete_option( 'wp_rocket_settings' );
@@ -37,32 +19,52 @@ class Test_RocketCleanMinify extends FilesystemTestCase {
 		parent::tearDown();
 	}
 
-	public function testShouldCleanMinifiedCSS() {
-		$this->assertTrue( $this->filesystem->exists( 'min/1/fa2965d41f1515951de523cecb81f85e.css' ) );
-		$this->assertTrue( $this->filesystem->exists( 'min/1/fa2965d41f1515951de523cecb81f85e.css.gz' ) );
+	public function testPath() {
+		$this->assertSame( 'vfs://public/wp-content/cache/min/', WP_ROCKET_MINIFY_CACHE_PATH );
+	}
 
+	public function testShouldFireEventsForEachExt() {
 		rocket_clean_minify( [ 'css' ] );
 
-//		$this->assertFalse( $this->filesystem->exists( 'min/1/fa2965d41f1515951de523cecb81f85e.css' ) );
-//		$this->assertFalse( $this->filesystem->exists( 'min/1/fa2965d41f1515951de523cecb81f85e.css.gz' ) );
+		$expected = 1;
+		$this->assertEquals( $expected, did_action( 'before_rocket_clean_minify' ) );
+		$this->assertEquals( $expected, did_action( 'after_rocket_clean_minify' ) );
+
+		rocket_clean_minify( [ 'css', 'js' ] );
+
+		$expected += 2;
+		$this->assertEquals( $expected, did_action( 'before_rocket_clean_minify' ) );
+		$this->assertEquals( $expected, did_action( 'after_rocket_clean_minify' ) );
 	}
 
-	public function testShouldCleanMinifiedJS() {
-		$this->assertTrue( $this->filesystem->exists( 'min/1/5c795b0e3a1884eec34a989485f863ff.js' ) );
-		$this->assertTrue( $this->filesystem->exists( 'min/1/5c795b0e3a1884eec34a989485f863ff.js.gz' ) );
+	/**
+	 * @dataProvider providerTestData
+	 */
+	public function testShouldCleanMinified( $config, $filesToClean ) {
+		$cache = $this->stripRoot( $this->filesystem->getFilesListing( 'wp-content/cache/min' ) );
 
-		rocket_clean_minify( 'js' );
+		// Check files before cleaning.
+		$this->assertSame( $this->original_files, $cache );
 
-//		$this->assertFalse( $this->filesystem->exists( 'min/1/5c795b0e3a1884eec34a989485f863ff.js' ) );
-//		$this->assertFalse( $this->filesystem->exists( 'min/1/5c795b0e3a1884eec34a989485f863ff.js.gz' ) );
+		rocket_clean_minify( $config );
+
+		$after_cache = $this->stripRoot( $this->filesystem->getFilesListing( 'wp-content/cache/min' ) );
+
+		// Check the "cleaned" files were deleted.
+		$this->assertEquals( $filesToClean, array_intersect( $filesToClean, $cache ) );
+		$this->assertEquals( $filesToClean, array_diff( $filesToClean, $after_cache ) );
+		$this->assertNotContains( $filesToClean, $after_cache );
+
+		// Check that non-cleaned files still exists, i.e. were not deleted.
+		$this->assertEquals( $after_cache, array_intersect( $after_cache, $cache ) );
 	}
 
-	public function testShouldCleanAllMinified() {
-		rocket_clean_minify();
-
-//		$this->assertFalse( $this->filesystem->exists( 'min/1/fa2965d41f1515951de523cecb81f85e.css' ) );
-//		$this->assertFalse( $this->filesystem->exists( 'min/1/fa2965d41f1515951de523cecb81f85e.css.gz' ) );
-//		$this->assertFalse( $this->filesystem->exists( 'min/1/5c795b0e3a1884eec34a989485f863ff.js' ) );
-//		$this->assertFalse( $this->filesystem->exists( 'min/1/5c795b0e3a1884eec34a989485f863ff.js.gz' ) );
+	private function stripRoot( $files ) {
+		return array_map(
+			function( $file ) {
+				return str_replace( 'vfs://public/', '', $file );
+			},
+			$files
+		);
 	}
 }
