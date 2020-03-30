@@ -16,7 +16,6 @@ class Test_GetRocketSamePermalink extends TestCase {
 		parent::setUp();
 
 		$this->did_filter = [ 'editable_slug' => 0 ];
-//		add_filter( 'editable_slug', [ $this, 'editable_slug_cb' ] );
 	}
 
 	public function tearDown() {
@@ -28,7 +27,7 @@ class Test_GetRocketSamePermalink extends TestCase {
 	public function testShouldBailOutWhenPostDoesNotExist() {
 		$this->assertSame(
 			[ '', '' ],
-			get_rocket_sample_permalink( -1 )
+			get_rocket_sample_permalink( - 1 )
 		);
 
 		$this->assertSame(
@@ -64,7 +63,8 @@ class Test_GetRocketSamePermalink extends TestCase {
 	}
 
 	public function editable_slug_cb( $slug ) {
-		$this->did_filter['editable_slug']++;
+		$this->did_filter['editable_slug'] ++;
+
 		return $slug;
 	}
 }
