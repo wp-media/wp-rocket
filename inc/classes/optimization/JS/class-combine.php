@@ -635,6 +635,9 @@ class Combine extends Abstract_JS_Optimization {
 			'pw_brand_product_list',
 			'tminusCountDown',
 			'pysWooSelectContentData',
+			'wpvq_ans89733',
+			'_isp_version',
+			'price_range_data',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
