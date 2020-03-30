@@ -86,7 +86,7 @@ class Plugin {
 				]
 			);
 			$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Settings' );
-			$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Admin_Subscribers' );
+			$this->container->addServiceProvider( 'WP_Rocket\Engine\Admin\ServiceProvider' );
 
 			$subscribers = [
 				'beacon_subscriber',
