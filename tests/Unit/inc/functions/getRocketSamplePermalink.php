@@ -12,12 +12,6 @@ use WPMedia\PHPUnit\Unit\TestCase;
  */
 class Test_GetRocketSamePermalink extends TestCase {
 
-	public function tearDown() {
-		parent::tearDown();
-
-		remove_filter( 'editable_slug', [ $this, 'editable_slug_cb' ] );
-	}
-
 	public function testShouldBailOutWhenPostDoesNotExist() {
 		Functions\expect( 'get_post' )
 			->ordered()
