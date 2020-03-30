@@ -77,18 +77,33 @@ class ActionScheduler_HybridStore extends Store {
 			}
 			/** @var \wpdb $wpdb */
 			global $wpdb;
-			$wpdb->insert(
+			/**
+			 * A default date of '0000-00-00 00:00:00' is invalid in MySQL 5.7 when configured with 
+			 * sql_mode including both STRICT_TRANS_TABLES and NO_ZERO_DATE.
+			 */
+			$default_date = new DateTime( 'tomorrow' );
+			$null_action  = new ActionScheduler_NullAction();
+			$date_gmt     = $this->get_scheduled_date_string( $null_action, $default_date );
+			$date_local   = $this->get_scheduled_date_string_local( $null_action, $default_date );
+
+			$row_count = $wpdb->insert(
 				$wpdb->{ActionScheduler_StoreSchema::ACTIONS_TABLE},
 				[
-					'action_id' => $this->demarkation_id,
-					'hook'      => '',
-					'status'    => '',
+					'action_id'            => $this->demarkation_id,
+					'hook'                 => '',
+					'status'               => '',
+					'scheduled_date_gmt'   => $date_gmt,
+					'scheduled_date_local' => $date_local,
+					'last_attempt_gmt'     => $date_gmt,
+					'last_attempt_local'   => $date_local,
 				]
 			);
-			$wpdb->delete(
-				$wpdb->{ActionScheduler_StoreSchema::ACTIONS_TABLE},
-				[ 'action_id' => $this->demarkation_id ]
-			);
+			if ( $row_count > 0 ) {
+				$wpdb->delete(
+					$wpdb->{ActionScheduler_StoreSchema::ACTIONS_TABLE},
+					[ 'action_id' => $this->demarkation_id ]
+				);
+			}
 		}
 	}
 
