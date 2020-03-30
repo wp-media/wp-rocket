@@ -84,4 +84,30 @@ return [
 			'override-nec-ullamcorper',
 		],
 	],
+
+	// Test page hierarchy.
+	[
+		[
+			'structure'           => '/%year%/%postname%/',
+			'override_post_title' => null,
+			'override_post_name'  => null,
+			'parent_post'         => [
+				'post_title'   => 'Dolor sit amet',
+				'post_content' => 'Dolor sit amet consectetur adipiscing.',
+				'post_date'    => '2019-10-24',
+				'post_type'    => 'page',
+			],
+		],
+		[
+			'post_title'   => 'Odio eu feugiat',
+			'post_content' => 'Odio eu feugiat pretium nibh. Dolor sit amet consectetur adipiscing.',
+			'post_date'    => '2019-10-24',
+			'post_type'    => 'page',
+			'post_parent'  => '', // will be autofilled.
+		],
+		[
+			'http://example.org/dolor-sit-amet/odio-eu-feugiat/',
+			'odio-eu-feugiat',
+		],
+	],
 ];
