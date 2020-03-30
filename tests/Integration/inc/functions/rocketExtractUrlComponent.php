@@ -13,7 +13,7 @@ class Test_RocketExtractUrlComponent extends TestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldFireEventsForEachExt( $url, $component, $expected ) {
+	public function testShouldReturnExpectedUrlComponent( $url, $component, $expected ) {
 		$this->assertSame( $expected, rocket_extract_url_component( $url, $component ) );
 	}
 
