@@ -63,7 +63,7 @@ class Test_GetRocketSamePermalink extends TestCase {
 	}
 
 	public function editable_slug_cb( $slug ) {
-		$this->did_filter['editable_slug'] ++;
+		$this->did_filter['editable_slug']++;
 
 		return $slug;
 	}
