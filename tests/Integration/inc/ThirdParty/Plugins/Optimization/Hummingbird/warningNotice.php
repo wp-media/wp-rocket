@@ -44,7 +44,6 @@ class Test_WarningNotice extends TestCase {
 	}
 
 	public function addDataProvider() {
-		error_log( var_export( $this->getTestData( __DIR__, 'settings' ), true ) );
 		return $this->getTestData( __DIR__, 'settings' );
 	}
 
