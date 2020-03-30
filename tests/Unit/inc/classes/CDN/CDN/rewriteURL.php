@@ -11,12 +11,6 @@ use WP_Rocket\CDN\CDN;
  */
 class Test_RewriteURL extends TestCase {
 
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
-
-		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/functions/formatting.php';
-	}
-
 	/**
 	 * @dataProvider rewriteURLProvider
 	 */

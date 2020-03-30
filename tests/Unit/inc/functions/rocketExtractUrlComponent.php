@@ -11,12 +11,6 @@ use WPMedia\PHPUnit\Unit\TestCase;
  */
 class Test_RocketExtractUrlComponent extends TestCase {
 
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
-
-		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/functions/formatting.php';
-	}
-
 	/**
 	 * @dataProvider providerTestData
 	 */
