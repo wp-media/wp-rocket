@@ -22,6 +22,7 @@ function load_original_functions_before_mocking() {
 		'rocket_get_constant'      => WP_ROCKET_PLUGIN_ROOT . 'inc/constants.php',
 		'rocket_is_live_site'      => WP_ROCKET_PLUGIN_ROOT . 'inc/functions/api.php',
 		'rocket_direct_filesystem' => WP_ROCKET_PLUGIN_ROOT . 'inc/functions/files.php',
+		'rocket_add_url_protocol'  => WP_ROCKET_PLUGIN_ROOT . 'inc/functions/formatting.php',
 		'get_rocket_option'        => WP_ROCKET_PLUGIN_ROOT . 'inc/functions/options.php',
 	];
 
