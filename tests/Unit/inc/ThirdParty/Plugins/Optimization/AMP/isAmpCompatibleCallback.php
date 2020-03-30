@@ -58,4 +58,13 @@ class Test_IsAmpCompatibleCallback extends TestCase {
 		$this->assertContains( 'amp', $this->amp->is_amp_compatible_callback( [] ) );
 	}
 
+	public function testShouldAddAmpWhenThemeSupportIsReader() {
+		Functions\expect( 'get_option' )
+			->once()
+			->with( 'amp-options', [] )
+			->andReturn( [ 'theme_support' => 'reader' ] );
+
+		$this->assertContains( 'amp', $this->amp->is_amp_compatible_callback( [] ) );
+	}
+
 }

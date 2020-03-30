@@ -18,6 +18,12 @@ class Test_IsAmpCompatibleCallback extends TestCase {
 		$this->assertContains( 'amp', apply_filters( 'rocket_cache_query_strings', [] ) );
 	}
 
+	public function testShouldAddAmpWhenThemeSupportIsReader() {
+		Functions\expect( 'rocket_generate_config_file' )->once();
+		$this->setSettings( 'theme_support', 'reader' );
+		$this->assertContains( 'amp', apply_filters( 'rocket_cache_query_strings', [] ) );
+	}
+
 	public function testShouldNotAddAmpWhenThemeSupportIsNotTransitional() {
 		Functions\expect( 'rocket_generate_config_file' )->once();
 		$this->setSettings( 'theme_support', 'standard' );
