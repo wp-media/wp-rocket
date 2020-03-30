@@ -11,6 +11,12 @@ use Brain\Monkey\Functions;
  */
 class TestRewriteCSSProperties extends TestCase {
 
+	public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
+
+		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/functions/formatting.php';
+	}
+
 	public function testShouldRewriteCSSProperties() {
 		Functions\when( 'get_option' )->justReturn( 'http://example.org' );
 		Functions\when( 'rocket_add_url_protocol' )->alias( function( $url ) {

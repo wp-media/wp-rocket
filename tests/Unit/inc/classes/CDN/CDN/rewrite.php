@@ -11,6 +11,12 @@ use Brain\Monkey\Functions;
  */
 class Test_Rewrite extends TestCase {
 
+	public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
+
+		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/functions/formatting.php';
+	}
+
 	public function testShouldRewriteURLToCDN() {
 		Functions\when( 'content_url' )->justReturn( 'http://example.org/wp-content/' );
 		Functions\when( 'includes_url' )->justReturn( 'http://example.org/wp-includes/' );
