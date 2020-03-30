@@ -11,40 +11,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group ThirdParty
  */
 class Test_MaybeClearCache extends FilesystemTestCase {
-	protected $rootVirtualDir = 'public_html';
-	protected $structure = [
-		'wp-content' => [
-			'cache' => [
-				'min'          => [
-					'1' => [
-						'5c795b0e3a1884eec34a989485f863ff.js'     => '',
-						'fa2965d41f1515951de523cecb81f85e.css'    => '',
-					],
-				],
-				'wp-rocket'    => [
-					'example.org' => [
-						'index.html'      => '',
-						'index.html_gzip' => '',
-					],
-					'example.org-Greg-594d03f6ae698691165999' => [
-						'about' => [
-							'index.html'      => '',
-							'index.html_gzip' => '',
-						],
-					],
-				],
-			],
-			'themes' => [
-				'bridge' => [
-					'style.css' => '
-					/**
-					 * Theme Name: Bridge
-					 */',
-					'index.php' => '',
-				],
-			],
-		],
-	];
+	protected $path_to_test_data = '/inc/ThirdParty/Themes/Bridge/maybeClearCache.php';
 
 	public function setUp() {
 		parent::setUp();
@@ -78,19 +45,15 @@ class Test_MaybeClearCache extends FilesystemTestCase {
 		return $this->filesystem->getUrl( 'wp-content/themes/' );
 	}
 
-	public function neverDataProvider() {
-		return $this->getTestData( __DIR__, 'no-clean' );
-	}
-
 	/**
-	 * @dataProvider neverDataProvider
+	 * @dataProvider providerTestData
 	 */
-	public function testShouldDoNothingWhenSettingsDontMatch( $old_value, $value, $map ) {
-		$minify_css_value = function() use ( $map ) {
-			return $map[0][2];
+	public function testShouldCleanCacheWhenSettingsMatch( $old_value, $value, $settings, $expected ) {
+		$minify_css_value = function() use ( $settings ) {
+			return $settings['minify_css'];
 		};
-		$minify_js_value = function() use ( $map ) {
-			return $map[1][2];
+		$minify_js_value = function() use ( $settings ) {
+			return $settings['minify_js'];
 		};
 
 		add_filter( 'pre_get_rocket_option_minify_css', $minify_css_value );
@@ -98,52 +61,12 @@ class Test_MaybeClearCache extends FilesystemTestCase {
 
 		apply_filters( 'update_option_qode_options_proya', $old_value, $value );
 
-		$this->assertNotNull( $this->filesystem->getFile( 'wp-content/cache/wp-rocket/example.org/index.html' ) );
-		$this->assertNotNull( $this->filesystem->getFile( 'wp-content/cache/wp-rocket/example.org/index.html_gzip' ) );
-		$this->assertNotNull( $this->filesystem->getFile( 'wp-content/cache/wp-rocket/example.org-Greg-594d03f6ae698691165999/about/index.html' ) );
-		$this->assertNotNull( $this->filesystem->getFile( 'wp-content/cache/wp-rocket/example.org-Greg-594d03f6ae698691165999/about/index.html_gzip' ) );
-		$this->assertNotNull( $this->filesystem->getFile( 'wp-content/cache/min/1/5c795b0e3a1884eec34a989485f863ff.js' ) );
-		$this->assertNotNull( $this->filesystem->getFile( 'wp-content/cache/min/1/fa2965d41f1515951de523cecb81f85e.css' ) );
-
-		remove_filter( 'pre_get_rocket_option_minify_css', $minify_css_value );
-		remove_filter( 'pre_get_rocket_option_minify_js', $minify_js_value );
-	}
-
-	public function cleanDataProvider() {
-		return $this->getTestData( __DIR__, 'clean' );
-	}
-
-	/**
-	 * @dataProvider cleanDataProvider
-	 */
-	public function testShouldCleanCacheWhenSettingsMatch( $old_value, $value, $map ) {
-		Functions\expect( 'rocket_get_constant' )
-			->once()
-			->with( 'WP_ROCKET_MINIFY_CACHE_PATH' )
-			->andReturn( $this->filesystem->getUrl( 'wp-content/cache/min/' ) )
-			->andAlsoExpectIt()
-			->once()
-			->with( 'WP_ROCKET_CACHE_PATH' )
-			->andReturn( $this->filesystem->getUrl( 'wp-content/cache/wp-rocket/' ) );
-
-		$minify_css_value = function() use ( $map ) {
-			return $map[0][2];
-		};
-		$minify_js_value = function() use ( $map ) {
-			return $map[1][2];
-		};
-
-		add_filter( 'pre_get_rocket_option_minify_css', $minify_css_value );
-		add_filter( 'pre_get_rocket_option_minify_js', $minify_js_value );
-
-		apply_filters( 'update_option_qode_options_proya', $old_value, $value );
-
-		$this->assertNull( $this->filesystem->getFile( 'wp-content/cache/wp-rocket/example.org/index.html' ) );
-		$this->assertNull( $this->filesystem->getFile( 'wp-content/cache/wp-rocket/example.org/index.html_gzip' ) );
-		$this->assertNull( $this->filesystem->getFile( 'wp-content/cache/wp-rocket/example.org-Greg-594d03f6ae698691165999/about/index.html' ) );
-		$this->assertNull( $this->filesystem->getFile( 'wp-content/cache/wp-rocket/example.org-Greg-594d03f6ae698691165999/about/index.html_gzip' ) );
-		$this->assertNull( $this->filesystem->getFile( 'wp-content/cache/min/1/5c795b0e3a1884eec34a989485f863ff.js' ) );
-		$this->assertNull( $this->filesystem->getFile( 'wp-content/cache/min/1/fa2965d41f1515951de523cecb81f85e.css' ) );
+		$this->assertSame( $expected, $this->filesystem->exists( 'wp-content/cache/wp-rocket/example.org/index.html' ) );
+		$this->assertSame( $expected, $this->filesystem->exists( 'wp-content/cache/wp-rocket/example.org/index.html_gzip' ) );
+		$this->assertSame( $expected, $this->filesystem->exists( 'wp-content/cache/wp-rocket/example.org-wpmedia-594d03f6ae698691165999/about/index.html' ) );
+		$this->assertSame( $expected, $this->filesystem->exists( 'wp-content/cache/wp-rocket/example.org-wpmedia-594d03f6ae698691165999/about/index.html_gzip' ) );
+		$this->assertSame( $expected, $this->filesystem->exists( 'wp-content/cache/min/1/5c795b0e3a1884eec34a989485f863ff.js' ) );
+		$this->assertSame( $expected, $this->filesystem->exists( 'wp-content/cache/min/1/fa2965d41f1515951de523cecb81f85e.css' ) );
 
 		remove_filter( 'pre_get_rocket_option_minify_css', $minify_css_value );
 		remove_filter( 'pre_get_rocket_option_minify_js', $minify_js_value );
