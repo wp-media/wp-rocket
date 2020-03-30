@@ -19,7 +19,7 @@ class Test_IsAmpCompatibleCallback extends TestCase {
 	}
 
 	public function testShouldAddAmpWhenThemeSupportIsReader() {
-		Functions\expect( 'rocket_generate_config_file' )->once();
+		// Default value is reader, so rocket_generate_config_file will not be called because update_option is not called.
 		$this->setSettings( 'theme_support', 'reader' );
 		$this->assertContains( 'amp', apply_filters( 'rocket_cache_query_strings', [] ) );
 	}

@@ -57,7 +57,7 @@ class AMP implements Subscriber_Interface {
 	 * @since  3.5.2
 	 * @author Soponar Cristina
 	 */
-	public function generate_config_file() {
+	public function generate_config_file( $val ) {
 		rocket_generate_config_file();
 	}
 
