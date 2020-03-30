@@ -538,7 +538,7 @@ function do_admin_post_rocket_purge_cache() { // phpcs:ignore WordPress.NamingCo
 
 			default:
 				wp_nonce_ays( '' );
-				break;
+				return;
 		}
 
 		/**

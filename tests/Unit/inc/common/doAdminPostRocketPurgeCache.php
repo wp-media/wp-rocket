@@ -52,12 +52,15 @@ class Test_DoAdminPostRocketPurgeCache extends TestCase {
 		Functions\when( 'wp_get_referer' )->justReturn( 'http://example.org' );
 		Functions\when( 'esc_url_raw' )->returnArg();
 		Functions\when( 'wp_safe_redirect' )->justReturn( null );
-		Functions\expect( 'wp_die' )->once();
+		Functions\when( 'wp_nonce_ays' )->justReturn( null );
 
 		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/common/purge.php';
 	}
 
 	public function testShouldTriggerHook() {
+		Functions\expect( 'wp_die' )->twice();
+
+		// Post.
 		$_GET['type']     = 'post-123';
 		$_GET['_wpnonce'] = 'whatever';
 
@@ -65,6 +68,35 @@ class Test_DoAdminPostRocketPurgeCache extends TestCase {
 		Actions\expectDone( 'rocket_purge_cache' )
 			->once()
 			->with( 'post', 123, '', '' );
+
+		do_admin_post_rocket_purge_cache();
+
+		// All.
+		$_GET['type']     = 'all';
+		$_GET['_wpnonce'] = 'whatever';
+		$_GET['lang']     = 'en';
+
+		Functions\when( 'rocket_clean_domain' )->justReturn( null );
+		Functions\when( 'get_rocket_option' )->justReturn( false );
+		Functions\when( 'rocket_dismiss_box' )->justReturn( null );
+
+		Actions\expectDone( 'rocket_purge_cache' )
+			->once()
+			->with( 'all', 0, '', '' );
+
+		do_admin_post_rocket_purge_cache();
+	}
+
+	public function testShouldNotTriggerHook() {
+		Functions\expect( 'wp_die' )->never();
+
+		// Invalid type.
+		$_GET['type']     = 'invalid';
+		$_GET['_wpnonce'] = 'whatever';
+
+		Functions\when( 'rocket_clean_post' )->justReturn( null );
+		Actions\expectDone( 'rocket_purge_cache' )
+			->never();
 
 		do_admin_post_rocket_purge_cache();
 	}
