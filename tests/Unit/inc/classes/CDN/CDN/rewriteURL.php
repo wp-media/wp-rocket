@@ -10,6 +10,7 @@ use WP_Rocket\CDN\CDN;
  * @group  CDN
  */
 class Test_RewriteURL extends TestCase {
+
 	/**
 	 * @dataProvider rewriteURLProvider
 	 */

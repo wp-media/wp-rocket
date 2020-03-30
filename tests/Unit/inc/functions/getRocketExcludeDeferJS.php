@@ -11,12 +11,6 @@ use WPMedia\PHPUnit\Unit\TestCase;
  */
 class Test_GetRocketExcludeDeferJS extends TestCase {
 
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
-
-        require_once WP_ROCKET_PLUGIN_ROOT . 'inc/functions/options.php';
-    }
-
     public function testShouldReturnExcludeDeferJSArray() {
         Functions\when( 'get_rocket_option' )->justReturn(0);
 
