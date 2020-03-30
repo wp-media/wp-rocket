@@ -76,7 +76,7 @@ function rocket_is_plugin_active_for_network( $plugin ) {
 	}
 
 	$plugins = get_site_option( 'active_sitewide_plugins' );
-	return ( isset( $plugins[ $plugin ] ) );
+	return isset( $plugins[ $plugin ] );
 }
 
 /**
