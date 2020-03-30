@@ -429,7 +429,7 @@ function set_rocket_wp_cache_define( $turn_it_on ) { // phpcs:ignore WordPress.N
  * @return void
  */
 function rocket_clean_minify( $extensions = [ 'js', 'css' ] ) {
-	$extensions  = is_string( $extensions ) ? (array) $extensions : $extensions;
+	$extensions = is_string( $extensions ) ? (array) $extensions : $extensions;
 
 	try {
 		$dir = new RecursiveDirectoryIterator( WP_ROCKET_MINIFY_CACHE_PATH . get_current_blog_id(), FilesystemIterator::SKIP_DOTS );
@@ -818,10 +818,8 @@ function rocket_clean_domain( $lang = '' ) {
 	$urls = apply_filters( 'rocket_clean_domain_urls', $urls, $lang );
 	$urls = array_filter( $urls );
 
-	$cache_path = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' );
-
 	try {
-		$cache = new RecursiveDirectoryIterator( $cache_path, FilesystemIterator::SKIP_DOTS );
+		$cache = new RecursiveDirectoryIterator( WP_ROCKET_CACHE_PATH, FilesystemIterator::SKIP_DOTS );
 	} catch ( UnexpectedValueException $e ) {
 		// No logging yet.
 		return;
@@ -842,7 +840,7 @@ function rocket_clean_domain( $lang = '' ) {
 			$file['host'] = str_replace( '.', '_', $file['host'] );
 		}
 
-		$root = $cache_path . $file['host'] . $file['path'];
+		$root = WP_ROCKET_CACHE_PATH . $file['host'] . $file['path'];
 
 		/**
 		 * Fires before all cache files are deleted
