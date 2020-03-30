@@ -1,11 +1,11 @@
 <?php
 
-namespace WP_Rocket\Traits;
+namespace WP_Rocket\deprecated;
 
 /**
  * Trait to use in a deprecated class, or a class containing deprecated methods.
  */
-trait DeprecatedClass {
+trait DeprecatedClassTrait {
 	/**
 	 * Marks a class as deprecated and informs when it has been used.
 	 * Similar to _deprecated_constructor(), but with different strings.

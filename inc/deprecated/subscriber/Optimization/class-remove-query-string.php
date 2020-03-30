@@ -1,10 +1,10 @@
 <?php
 namespace WP_Rocket\Optimization;
 
+use WP_Rocket\deprecated\DeprecatedClassTrait;
 use WP_Rocket\Admin\Options_Data as Options;
 use WP_Rocket\Optimization\Abstract_Optimization;
 use WP_Rocket\Optimization\CSS\Path_Rewriter;
-use WP_Rocket\Traits\DeprecatedClass;
 
 /**
  * Remove query string from static resources.
@@ -15,7 +15,7 @@ use WP_Rocket\Traits\DeprecatedClass;
  * @deprecated
  */
 class Remove_Query_String extends Abstract_Optimization {
-	use DeprecatedClass;
+	use DeprecatedClassTrait;
 	use Path_Rewriter;
 
 	/**
