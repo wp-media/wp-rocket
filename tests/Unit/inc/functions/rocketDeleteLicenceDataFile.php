@@ -9,13 +9,10 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
  * @covers ::rocket_delete_licence_data_file
  * @group Functions
  * @group Options
+ * @group vfs
  */
 class Test_RocketDeleteLicenceDataFile extends FilesystemTestCase {
-	protected $structure = [
-		'wp-rocket' => [
-			'licence-data.php' => '',
-		],
-	];
+	protected $path_to_test_data = '/inc/functions/rocketDeleteLicenceDataFile.php';
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
@@ -24,15 +21,26 @@ class Test_RocketDeleteLicenceDataFile extends FilesystemTestCase {
 	}
 
 	public function testShouldDeleteLicenceDataFileWhenExists() {
+		Functions\when( 'is_multisite' )->justReturn( false );
 		Functions\expect( 'rocket_get_constant' )
 			->once()
 			->with( 'WP_ROCKET_PATH' )
-			->andReturn( $this->filesystem->getUrl( 'wp-rocket/' ) );
+			->andReturn( $this->filesystem->getUrl( $this->config['vfs_dir'] ) );
 
-		$this->assertTrue( $this->filesystem->exists( 'wp-rocket/licence-data.php' ) );
+		$this->assertTrue( $this->filesystem->exists( 'wp-content/plugins/wp-rocket/licence-data.php' ) );
 
 		rocket_delete_licence_data_file();
 
-		$this->assertFalse( $this->filesystem->exists( 'wp-rocket/licence-data.php' ) );
+		$this->assertFalse( $this->filesystem->exists( 'wp-content/plugins/wp-rocket/licence-data.php' ) );
+	}
+
+	public function testShouldDoNothingWhenMultisite() {
+		Functions\when( 'is_multisite' )->justReturn( true );
+
+		$this->assertTrue( $this->filesystem->exists( 'wp-content/plugins/wp-rocket/licence-data.php' ) );
+
+		rocket_delete_licence_data_file();
+
+		$this->assertTrue( $this->filesystem->exists( 'wp-content/plugins/wp-rocket/licence-data.php' ) );
 	}
 }

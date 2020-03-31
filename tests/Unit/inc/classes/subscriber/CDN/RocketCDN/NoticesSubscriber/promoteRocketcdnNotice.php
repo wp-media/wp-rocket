@@ -1,115 +1,109 @@
 <?php
+
 namespace WP_Rocket\Tests\Unit\inc\classes\subscriber\CDN\RocketCDN;
 
 use Brain\Monkey\Functions;
+use Mockery;
 use WP_Rocket\CDN\RocketCDN\APIClient;
 use WP_Rocket\Subscriber\CDN\RocketCDN\NoticesSubscriber;
-use WP_Rocket\Tests\Unit\FilesystemTestCase;
+use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\NoticesSubscriber::promote_rocketcdn_notice
- * @group RocketCDN
+ * @group  RocketCDN
  */
-class Test_PromoteRocketcdnNotice extends FilesystemTestCase {
+class Test_PromoteRocketcdnNotice extends TestCase {
 	protected static $mockCommonWpFunctionsInSetUp = true;
 	private $api_client;
 	private $notices;
-	protected $structure = [
-		'views' => [
-			'settings' => [
-				'rocketcdn' => [
-					'promote-notice.php' => '',
-				],
-			],
-		],
-	];
 
 	public function setUp() {
 		parent::setUp();
 
-		$this->api_client = $this->createMock( APIClient::class );
-		$this->notices    = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn' );
-
-		Functions\when( 'rocket_direct_filesystem' )->justReturn( $this->filesystem );
+		$this->api_client = Mockery::mock( APIClient::class );
+		$this->notices    = Mockery::mock(
+			NoticesSubscriber::class . '[generate]',
+			[
+				$this->api_client,
+				'views/settings/rocketcdn',
+			]
+		);
 	}
 
 	public function testShouldDisplayNothingWhenNotLiveSite() {
-		Functions\when( 'rocket_is_live_site' )->justReturn( false );
+		Functions\expect( 'rocket_is_live_site' )->once()->andReturn( false );
+		Functions\expect( 'current_user_can' )->with( 'rocket_manage_options' )->never();
+		$this->api_client->shouldReceive( 'get_subscription_data' )->never();
+		$this->notices->shouldReceive( 'generate' )->never();
 
 		$this->assertNull( $this->notices->promote_rocketcdn_notice() );
 	}
 
 	public function testShouldReturnNullWhenNoCapability() {
-		Functions\when( 'rocket_is_live_site' )->justReturn( true );
-		Functions\when( 'current_user_can' )->justReturn( false );
+		Functions\expect( 'rocket_is_live_site' )->once()->andReturn( true );
+		Functions\expect( 'current_user_can' )->once()->with( 'rocket_manage_options' )->andReturn( false );
+		Functions\expect( 'get_current_screen' )->never();
+		$this->api_client->shouldReceive( 'get_subscription_data' )->never();
+		$this->notices->shouldReceive( 'generate' )->never();
 
 		$this->assertNull( $this->notices->promote_rocketcdn_notice() );
 	}
 
 	public function testShouldReturnNullWhenNotRocketPage() {
-		Functions\when( 'rocket_is_live_site' )->justReturn( true );
-		Functions\when( 'current_user_can' )->justReturn( true );
-		Functions\when( 'get_current_screen' )->alias(
-			function() {
+		Functions\expect( 'rocket_is_live_site' )->once()->andReturn( true );
+		Functions\expect( 'current_user_can' )->once()->with( 'rocket_manage_options' )->andReturn( true );
+		Functions\expect( 'get_current_screen' )->once()->andReturnUsing(
+			function () {
 				return (object) [ 'id' => 'general' ];
 			}
 		);
+		$this->api_client->shouldReceive( 'get_subscription_data' )->never();
+		$this->notices->shouldReceive( 'generate' )->never();
 
 		$this->assertNull( $this->notices->promote_rocketcdn_notice() );
 	}
 
-	public function testShouldReturNullWhenDismissed() {
-		Functions\when( 'rocket_is_live_site' )->justReturn( true );
-		Functions\when( 'current_user_can' )->justReturn( true );
-		Functions\when( 'get_current_screen' )->alias(
-			function() {
-				return (object) [ 'id' => 'settings_page_wprocket' ];
-			}
-		);
-		Functions\when( 'get_current_user_id' )->justReturn( 1 );
-		Functions\when( 'get_user_meta' )->justReturn( true );
+	public function testShouldReturnNullWhenDismissed() {
+		$this->setUpExpects( true );
+		$this->api_client->shouldReceive( 'get_subscription_data' )->never();
+		$this->notices->shouldReceive( 'generate' )->never();
 
 		$this->assertNull( $this->notices->promote_rocketcdn_notice() );
 	}
 
 	public function testShouldReturnNullWhenActive() {
-		Functions\when( 'rocket_is_live_site' )->justReturn( true );
-		Functions\when( 'current_user_can' )->justReturn( true );
-		Functions\when( 'get_current_screen' )->alias(
-			function() {
-				return (object) [ 'id' => 'settings_page_wprocket' ];
-			}
-		);
-		Functions\when( 'get_current_user_id' )->justReturn( 1 );
-		Functions\when( 'get_user_meta' )->justReturn( false );
+		$this->setUpExpects( false );
 
-		$this->api_client->method( 'get_subscription_data' )
-			->willReturn( [ 'subscription_status' => 'running' ] );
+		$this->api_client->shouldReceive( 'get_subscription_data' )
+		                 ->once()
+		                 ->andReturn( [ 'subscription_status' => 'running' ] );
+		$this->notices->shouldReceive( 'generate' )->never();
 
 		$this->assertNull( $this->notices->promote_rocketcdn_notice() );
 	}
 
 	public function testShoulDisplayNoticeWhenNotActive() {
-		Functions\when( 'rocket_is_live_site' )->justReturn( true );
-		Functions\when( 'current_user_can' )->justReturn( true );
-		Functions\when( 'get_current_screen' )->alias(
-			function() {
-				return (object) [ 'id' => 'settings_page_wprocket' ];
-			}
-		);
-		Functions\when( 'get_current_user_id' )->justReturn( 1 );
-		Functions\when( 'get_user_meta' )->justReturn( false );
+		$this->setUpExpects( false );
 
-		$this->api_client->method( 'get_subscription_data' )
-			->willReturn( [ 'subscription_status' => 'cancelled' ] );
+		$this->api_client->shouldReceive( 'get_subscription_data' )
+		                 ->once()
+		                 ->andReturn( [ 'subscription_status' => 'cancelled' ] );
 
-		$this->expectOutputString(
-			'<div class="notice notice-alt notice-warning is-dismissible" id="rocketcdn-promote-notice">
-	<h2 class="notice-title">New!</h2>
-	<p>Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network!</p>
-	<p><a href="#page_cdn" class="wpr-button" id="rocketcdn-learn-more-dismiss">Learn More</a></p>
-</div>'
-			);
+		$this->expectOutputString( '' );
+		$this->notices->shouldReceive( 'generate' )->once()->with( 'promote-notice' )->andReturnNull();
+
 		$this->notices->promote_rocketcdn_notice();
+	}
+
+	private function setUpExpects( $rocket_dismiss_notice ) {
+		Functions\expect( 'rocket_is_live_site' )->once()->andReturn( true );
+		Functions\expect( 'current_user_can' )->once()->with( 'rocket_manage_options' )->andReturn( true );
+		$screen = (object) [ 'id' => 'settings_page_wprocket' ];
+		Functions\expect( 'get_current_screen' )->once()->andReturn( $screen );
+		Functions\expect( 'get_current_user_id' )->once()->andReturn( 1 );
+		Functions\expect( 'get_user_meta' )
+			->once()
+			->with( 1, 'rocketcdn_dismiss_notice', true )
+			->andReturn( $rocket_dismiss_notice );
 	}
 }

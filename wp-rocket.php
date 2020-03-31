@@ -3,7 +3,7 @@
  * Plugin Name: WP Rocket
  * Plugin URI: https://wp-rocket.me
  * Description: The best WordPress performance plugin.
- * Version: 3.5-alpha6
+ * Version: 3.5.2
  * Code Name: Coruscant
  * Author: WP Media
  * Author URI: https://wp-media.me
@@ -18,7 +18,7 @@
 defined( 'ABSPATH' ) || exit;
 
 // Rocket defines.
-define( 'WP_ROCKET_VERSION',               '3.5-alpha6' );
+define( 'WP_ROCKET_VERSION',               '3.5.2' );
 define( 'WP_ROCKET_WP_VERSION',            '4.9' );
 define( 'WP_ROCKET_WP_VERSION_TESTED',     '5.3.2' );
 define( 'WP_ROCKET_PHP_VERSION',           '5.6' );
@@ -77,14 +77,12 @@ if ( ! defined( 'WP_ROCKET_LASTVERSION' ) ) {
 	define( 'WP_ROCKET_LASTVERSION', '3.4.4' );
 }
 
-if ( ! function_exists( 'WP_Filesystem' ) ) {
-	require ABSPATH . 'wp-admin/includes/file.php';
-}
-
-WP_Filesystem();
-global $wp_filesystem;
-
-if ( $wp_filesystem->exists( WP_ROCKET_PATH . 'licence-data.php' ) ) {
+/**
+ * We use is_readable() with @ silencing as WP_Filesystem() can use different methods to access the filesystem.
+ *
+ * This is more performant and more compatible. It allows us to work around file permissions and missing credentials.
+ */
+if ( @is_readable( WP_ROCKET_PATH . 'licence-data.php' ) ) { //phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 	require WP_ROCKET_PATH . 'licence-data.php';
 }
 

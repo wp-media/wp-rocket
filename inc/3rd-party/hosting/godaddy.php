@@ -2,10 +2,6 @@
 
 defined( 'ABSPATH' ) || exit;
 
-if ( ! class_exists( 'WPaaS\Plugin' ) ) {
-	return;
-}
-
 /**
  * Changes the text on the Varnish one-click block.
  *
@@ -105,9 +101,14 @@ add_action( 'before_rocket_clean_home', 'rocket_clean_home_godaddy', 10, 2 );
  * @return void
  */
 function rocket_godaddy_request( $method, $url = null ) {
+	if ( ! method_exists( 'WPass\Plugin', 'vip' ) ) {
+		return;
+	}
+
 	if ( empty( $url ) ) {
 		$url = home_url();
 	}
+
 	$host = rocket_extract_url_component( $url, PHP_URL_HOST );
 	$url  = set_url_scheme( str_replace( $host, WPaas\Plugin::vip(), $url ), 'http' );
 
