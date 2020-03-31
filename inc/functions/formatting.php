@@ -391,6 +391,13 @@ function rocket_get_cache_busting_paths( $filename, $extension ) {
  * @return string Resolved file path
  */
 function rocket_realpath( $file ) {
+	$wrapper = null;
+ 
+    // Strip the protocol.
+    if ( wp_is_stream( $file ) ) {
+        list( $wrapper, $file ) = explode( '://', $file, 2 );
+	}
+
 	$path = [];
 
 	foreach ( explode( '/', $file ) as $part ) {
@@ -406,9 +413,15 @@ function rocket_realpath( $file ) {
 		}
 	}
 
+	$file = join( '/', $path );
+
+	if ( null !== $wrapper ) {
+		return $wrapper . '://' . $file;
+	}
+
 	$prefix = 'WIN' === strtoupper( substr( PHP_OS, 0, 3 ) ) ? '' : '/';
 
-	return $prefix . join( '/', $path );
+	return $prefix . $file;
 }
 
 /**
