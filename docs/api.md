@@ -152,7 +152,7 @@ Cancel all occurrences of a scheduled action.
 ### Usage
 
 ```php
-as_unschedule_action( $hook, $args, $group )
+as_unschedule_all_actions( $hook, $args, $group )
 ````
 
 ### Parameters
