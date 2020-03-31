@@ -1137,8 +1137,19 @@ function rocket_mkdir( $dir ) {
  * @return bool True if directory is created/exists, false otherwise
  */
 function rocket_mkdir_p( $target ) {
+	$wrapper = null;
+
+	if ( false !== strpos( $target, '://' ) ) {
+		list( $wrapper, $target ) = explode( '://', $target, 2 );
+	}
+
 	// from php.net/mkdir user contributed notes.
 	$target = str_replace( '//', '/', $target );
+
+	// Put the wrapper back on the target.
+    if ( $wrapper !== null ) {
+        $target = $wrapper . '://' . $target;
+	}
 
 	// safe mode fails with a trailing slash under certain PHP versions.
 	$target = untrailingslashit( $target );
