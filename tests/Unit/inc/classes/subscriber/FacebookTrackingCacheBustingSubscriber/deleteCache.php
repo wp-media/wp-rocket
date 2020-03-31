@@ -1,13 +1,13 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\classes\subscriber\Facebook_Tracking_Cache_Busting_Subscriber;
+namespace WP_Rocket\Tests\Unit\inc\classes\subscriber\FacebookTrackingCacheBustingSubscriber;
 
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Busting\Busting_Factory;
 use WP_Rocket\Busting\Facebook_Pickles;
 use WP_Rocket\Busting\Facebook_DSK;
-use WP_Rocket\Subscriber\Facebook_Tracking_Cache_Busting_Subscriber;
+use WP_Rocket\Subscriber\FacebookTrackingCacheBustingSubscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**

@@ -1,12 +1,12 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\classes\subscriber\Google_Tracking_Cache_Busting_Subscriber;
+namespace WP_Rocket\Tests\Unit\inc\classes\subscriber\GoogleTrackingCacheBustingSubscriber;
 
 use \Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Busting\Busting_Factory;
 use WP_Rocket\Busting\Google_Analytics;
-use WP_Rocket\Subscriber\Google_Tracking_Cache_Busting_Subscriber;
+use WP_Rocket\Subscriber\GoogleTrackingCacheBustingSubscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
