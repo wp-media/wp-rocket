@@ -137,31 +137,29 @@ abstract class ActionScheduler {
 		 */
 		do_action( 'action_scheduler_pre_init' );
 
-		require_once( self::plugin_path('functions.php') );
+		require_once( self::plugin_path( 'functions.php' ) );
 		ActionScheduler_DataController::init();
 
-		$store = self::store();
-		add_action( 'init', array( $store, 'init' ), 1, 0 );
-
-		$logger = self::logger();
-		add_action( 'init', array( $logger, 'init' ), 1, 0 );
-
-		$runner = self::runner();
-		add_action( 'init', array( $runner, 'init' ), 1, 0 );
-
+		$store      = self::store();
+		$logger     = self::logger();
+		$runner     = self::runner();
 		$admin_view = self::admin_view();
-		add_action( 'init', array( $admin_view, 'init' ), 0, 0 ); // run before $store::init()
 
 		// Ensure initialization on plugin activation.
-		if ( did_action( 'init' ) ) {
+		if ( ! did_action( 'init' ) ) {
+			add_action( 'init', array( $admin_view, 'init' ), 0, 0 ); // run before $store::init()
+			add_action( 'init', array( $store, 'init' ), 1, 0 );
+			add_action( 'init', array( $logger, 'init' ), 1, 0 );
+			add_action( 'init', array( $runner, 'init' ), 1, 0 );
+		} else {
+			$admin_view->init();
 			$store->init();
 			$logger->init();
 			$runner->init();
-			$admin_view->init();
 		}
 
 		if ( apply_filters( 'action_scheduler_load_deprecated_functions', true ) ) {
-			require_once( self::plugin_path('deprecated/functions.php') );
+			require_once( self::plugin_path( 'deprecated/functions.php' ) );
 		}
 
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {

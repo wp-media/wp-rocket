@@ -10,7 +10,7 @@
  * @param string $hook The hook to trigger.
  * @param array  $args Arguments to pass when the hook triggers.
  * @param string $group The group to assign this job to.
- * @return string The action ID.
+ * @return int The action ID.
  */
 function as_enqueue_async_action( $hook, $args = array(), $group = '' ) {
 	return ActionScheduler::factory()->async( $hook, $args, $group );
@@ -19,12 +19,12 @@ function as_enqueue_async_action( $hook, $args = array(), $group = '' ) {
 /**
  * Schedule an action to run one time
  *
- * @param int $timestamp When the job will run
- * @param string $hook The hook to trigger
- * @param array $args Arguments to pass when the hook triggers
- * @param string $group The group to assign this job to
+ * @param int $timestamp When the job will run.
+ * @param string $hook The hook to trigger.
+ * @param array $args Arguments to pass when the hook triggers.
+ * @param string $group The group to assign this job to.
  *
- * @return string The job ID
+ * @return int The action ID.
  */
 function as_schedule_single_action( $timestamp, $hook, $args = array(), $group = '' ) {
 	return ActionScheduler::factory()->single( $hook, $args, $timestamp, $group );
@@ -33,13 +33,13 @@ function as_schedule_single_action( $timestamp, $hook, $args = array(), $group =
 /**
  * Schedule a recurring action
  *
- * @param int $timestamp When the first instance of the job will run
- * @param int $interval_in_seconds How long to wait between runs
- * @param string $hook The hook to trigger
- * @param array $args Arguments to pass when the hook triggers
- * @param string $group The group to assign this job to
+ * @param int $timestamp When the first instance of the job will run.
+ * @param int $interval_in_seconds How long to wait between runs.
+ * @param string $hook The hook to trigger.
+ * @param array $args Arguments to pass when the hook triggers.
+ * @param string $group The group to assign this job to.
  *
- * @return string The job ID
+ * @return int The action ID.
  */
 function as_schedule_recurring_action( $timestamp, $interval_in_seconds, $hook, $args = array(), $group = '' ) {
 	return ActionScheduler::factory()->recurring( $hook, $args, $timestamp, $interval_in_seconds, $group );
@@ -62,11 +62,11 @@ function as_schedule_recurring_action( $timestamp, $interval_in_seconds, $hook, 
  *   |    |    +--------------- day of month (1 - 31)
  *   |    +-------------------- hour (0 - 23)
  *   +------------------------- min (0 - 59)
- * @param string $hook The hook to trigger
- * @param array $args Arguments to pass when the hook triggers
- * @param string $group The group to assign this job to
+ * @param string $hook The hook to trigger.
+ * @param array $args Arguments to pass when the hook triggers.
+ * @param string $group The group to assign this job to.
  *
- * @return string The job ID
+ * @return int The action ID.
  */
 function as_schedule_cron_action( $timestamp, $schedule, $hook, $args = array(), $group = '' ) {
 	return ActionScheduler::factory()->cron( $hook, $args, $timestamp, $schedule, $group );
@@ -82,11 +82,11 @@ function as_schedule_cron_action( $timestamp, $schedule, $hook, $args = array(),
  * then the following instance will never be scheduled (or exist), which is effectively the same as being unscheduled
  * by this method also.
  *
- * @param string $hook The hook that the job will trigger
- * @param array $args Args that would have been passed to the job
- * @param string $group
+ * @param string $hook The hook that the job will trigger.
+ * @param array $args Args that would have been passed to the job.
+ * @param string $group The group the job is assigned to.
  *
- * @return string The scheduled action ID if a scheduled action was found, or empty string if no matching action found.
+ * @return string|null The scheduled action ID if a scheduled action was found, or null if no matching action found.
  */
 function as_unschedule_action( $hook, $args = array(), $group = '' ) {
 	$params = array();
@@ -108,9 +108,9 @@ function as_unschedule_action( $hook, $args = array(), $group = '' ) {
 /**
  * Cancel all occurrences of a scheduled action.
  *
- * @param string $hook The hook that the job will trigger
- * @param array $args Args that would have been passed to the job
- * @param string $group
+ * @param string $hook The hook that the job will trigger.
+ * @param array $args Args that would have been passed to the job.
+ * @param string $group The group the job is assigned to.
  */
 function as_unschedule_all_actions( $hook, $args = array(), $group = '' ) {
 	if ( empty( $args ) ) {
@@ -131,7 +131,7 @@ function as_unschedule_all_actions( $hook, $args = array(), $group = '' ) {
 /**
  * Check if there is an existing action in the queue with a given hook, args and group combination.
  *
- * An action in the queue could be pending, in-progress or aysnc. If the is pending for a time in
+ * An action in the queue could be pending, in-progress or async. If the is pending for a time in
  * future, its scheduled date will be returned as a timestamp. If it is currently being run, or an
  * async action sitting in the queue waiting to be processed, in which case boolean true will be
  * returned. Or there may be no async, in-progress or pending action for this hook, in which case,
@@ -191,7 +191,7 @@ function as_next_scheduled_action( $hook, $args = NULL, $group = '' ) {
  *        'orderby' => 'date' - accepted values are 'hook', 'group', 'modified', or 'date'
  *        'order' => 'ASC'
  *
- * @param string $return_format OBJECT, ARRAY_A, or ids
+ * @param string $return_format OBJECT, ARRAY_A, or ids.
  *
  * @return array
  */
@@ -234,8 +234,8 @@ function as_get_scheduled_actions( $args = array(), $return_format = OBJECT ) {
  * timezone when instantiating datetimes rather than leaving it up to
  * the PHP default.
  *
- * @param mixed $date_string A date/time string. Valid formats are explained in http://php.net/manual/en/datetime.formats.php
- * @param string $timezone A timezone identifier, like UTC or Europe/Lisbon. The list of valid identifiers is available http://php.net/manual/en/timezones.php
+ * @param mixed $date_string A date/time string. Valid formats are explained in http://php.net/manual/en/datetime.formats.php.
+ * @param string $timezone A timezone identifier, like UTC or Europe/Lisbon. The list of valid identifiers is available http://php.net/manual/en/timezones.php.
  *
  * @return ActionScheduler_DateTime
  */

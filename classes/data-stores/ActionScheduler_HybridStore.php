@@ -220,6 +220,8 @@ class ActionScheduler_HybridStore extends Store {
 	 *
 	 * @param ActionScheduler_Action $action Action object to be saved.
 	 * @param DateTime               $date Optional. Schedule date. Default null.
+	 *
+	 * @return int The action ID
 	 */
 	public function save_action( ActionScheduler_Action $action, DateTime $date = null ) {
 		return $this->primary_store->save_action( $action, $date );
