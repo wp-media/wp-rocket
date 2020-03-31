@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\classes\subscriber\Google_Tracking_Cache_Busting_Subscribers;
+namespace WP_Rocket\Tests\Unit\inc\classes\subscriber\Google_Tracking_Cache_Busting_Subscriber;
 
 use \Mockery;
 use WP_Rocket\Admin\Options_Data;

@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\classes\subscriber\Facebook_Tracking_Cache_Busting_Subscriber;
 
-use \Mockery;
+use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Busting\Busting_Factory;
 use WP_Rocket\Busting\Facebook_Pickles;
