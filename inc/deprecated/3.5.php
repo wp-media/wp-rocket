@@ -18,6 +18,90 @@ class_alias( '\\WP_Rocket\\Engine\\Preload\\Sitemap', '\\WP_Rocket\\Preload\\Sit
 class_alias( '\\WP_Rocket\\Engine\\Preload\\SitemapPreloadSubscriber', '\\WP_Rocket\\Subscriber\\Preload\\Sitemap_Preload_Subscriber' );
 
 /**
+ * Caches SCCSS code & remove the default enqueued URL
+ *
+ * @since 2.9
+ * @deprecated 3.5.3
+ *
+ * @author Remy Perona
+ */
+function rocket_cache_sccss() {
+	_deprecated_function( __FUNCTION__ . '()', '3.5.3', '\WP_Rocket\ThirdParty\Plugins\SimpleCustomCss::cache_sccss()' );
+	$sccss = rocket_get_cache_busting_paths( 'sccss.css', 'css' );
+
+	if ( ! file_exists( $sccss['filepath'] ) ) {
+		rocket_sccss_create_cache_file( $sccss['bustingpath'], $sccss['filepath'] );
+	}
+
+	if ( file_exists( $sccss['filepath'] ) ) {
+		wp_enqueue_style( 'scss', $sccss['url'], '', filemtime( $sccss['filepath'] ) );
+		remove_action( 'wp_enqueue_scripts', 'sccss_register_style', 99 );
+	}
+}
+
+/**
+ * Deletes & recreates cache for SCCSS code
+ *
+ * @since 2.9
+ * @deprecated 3.5.3
+ *
+ * @author Remy Perona
+ */
+function rocket_delete_sccss_cache_file() {
+	_deprecated_function( __FUNCTION__ . '()', '3.5.3', '\WP_Rocket\ThirdParty\Plugins\SimpleCustomCss::delete_cache_file()' );
+	$sccss = rocket_get_cache_busting_paths( 'sccss.css', 'css' );
+
+	array_map( 'unlink', glob( $sccss['bustingpath'] . 'sccss*.css' ) );
+	rocket_clean_domain();
+	rocket_sccss_create_cache_file( $sccss['bustingpath'], $sccss['filepath'] );
+}
+
+/**
+ * Returns the filename for SCSSS cache file
+ *
+ * @since 2.9
+ * @deprecated 3.5.3
+ *
+ * @author Remy Perona
+ *
+ * @param string $filename filename.
+ * @return string filename
+ */
+function rocket_sccss_cache_busting_filename( $filename ) {
+	_deprecated_function( __FUNCTION__ . '()', '3.5.3', '\WP_Rocket\ThirdParty\Plugins\SimpleCustomCss::cache_busting_filename()' );
+	if ( false !== strpos( $filename, 'sccss' ) ) {
+		return preg_replace( '/(?:.*)(sccss(?:.*))/i', '$1', $filename );
+	}
+
+	return $filename;
+}
+
+/**
+ * Creates the cache file for SCCSS code
+ *
+ * @since 2.9
+ * @deprecated 3.5.3
+ *
+ * @author Remy Perona
+ *
+ * @param string $cache_busting_path Path to the cache busting directory.
+ * @param string $cache_sccss_filepath Path to the sccss cache file.
+ */
+function rocket_sccss_create_cache_file( $cache_busting_path, $cache_sccss_filepath ) {
+	_deprecated_function( __FUNCTION__ . '()', '3.5.3', '\WP_Rocket\ThirdParty\Plugins\SimpleCustomCss::create_cache_file()' );
+	$options     = get_option( 'sccss_settings' );
+	$raw_content = isset( $options['sccss-content'] ) ? $options['sccss-content'] : '';
+	$content     = wp_kses( $raw_content, [ '\'', '\"' ] );
+	$content     = str_replace( '&gt;', '>', $content );
+
+	if ( ! rocket_direct_filesystem()->is_dir( $cache_busting_path ) ) {
+		rocket_mkdir_p( $cache_busting_path );
+	}
+
+	rocket_put_content( $cache_sccss_filepath, $content );
+}
+
+/**
  * Removes Minification, DNS Prefetch, LazyLoad, Defer JS when on an AMP version of a post with the AMP for WordPress plugin from Auttomatic
  *
  * @since 2.8.10 Compatibility with wp_resource_hints in WP 4.6
