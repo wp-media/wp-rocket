@@ -91,10 +91,6 @@ class Cloudflare {
 	 * @return stdClass true if credentials are ok, WP_Error otherwise.
 	 */
 	public function is_api_keys_valid( $cf_email, $cf_api_key, $cf_zone_id ) {
-		if ( ! function_exists( 'curl_init' ) || ! function_exists( 'curl_exec' ) ) {
-			return new WP_Error( 'curl_disabled', __( 'Curl is disabled on your server. Please ask your host to enable it. This is required for the Cloudflare Add-on to work correctly.', 'rocket' ) );
-		}
-
 		if ( empty( $cf_email ) || empty( $cf_api_key ) ) {
 			return new WP_Error(
 				'cloudflare_credentials_empty',
@@ -125,38 +121,7 @@ class Cloudflare {
 		try {
 			$this->api->set_api_credentials( $cf_email, $cf_api_key, $cf_zone_id );
 
-			$cf_zone = $this->api->get_zones();
-
-			if ( empty( $cf_zone->success ) ) {
-				foreach ( $cf_zone->errors as $error ) {
-					if ( 6003 === $error->code ) {
-						$msg = __( 'Incorrect Cloudflare email address or API key.', 'rocket' );
-
-						$msg .= ' ' . sprintf(
-							/* translators: %1$s = opening link; %2$s = closing link */
-							__( 'Read the %1$sdocumentation%2$s for further guidance.', 'rocket' ),
-							// translators: Documentation exists in EN, FR; use localized URL if applicable.
-							'<a href="' . esc_url( __( 'https://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket#add-on', 'rocket' ) ) . '" rel="noopener noreferrer" target="_blank">',
-							'</a>'
-						);
-
-						return new WP_Error( 'cloudflare_invalid_auth', $msg );
-					}
-				}
-
-				$msg = __( 'Incorrect Cloudflare Zone ID.', 'rocket' );
-
-				$msg .= ' ' . sprintf(
-					/* translators: %1$s = opening link; %2$s = closing link */
-					__( 'Read the %1$sdocumentation%2$s for further guidance.', 'rocket' ),
-					// translators: Documentation exists in EN, FR; use localized URL if applicable.
-					'<a href="' . esc_url( __( 'https://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket#add-on', 'rocket' ) ) . '" rel="noopener noreferrer" target="_blank">',
-					'</a>'
-				);
-
-				return new WP_Error( 'cloudflare_invalid_auth', $msg );
-			}
-
+			$cf_zone    = $this->api->get_zones();
 			$zone_found = false;
 			$site_url   = get_site_url();
 
@@ -188,16 +153,7 @@ class Cloudflare {
 			$this->cloudflare_api_error = null;
 			return true;
 		} catch ( Exception $e ) {
-			$msg  = __( 'Incorrect Cloudflare email address or API key.', 'rocket' );
-			$msg .= ' ' . sprintf(
-				/* translators: %1$s = opening link; %2$s = closing link */
-				__( 'Read the %1$sdocumentation%2$s for further guidance.', 'rocket' ),
-				// translators: Documentation exists in EN, FR; use localized URL if applicable.
-				'<a href="' . esc_url( __( 'https://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket#add-on', 'rocket' ) ) . '" rel="noopener noreferrer" target="_blank">',
-				'</a>'
-			);
-
-			return new WP_Error( 'cloudflare_invalid_auth', $msg );
+			return new WP_Error( 'cloudflare_invalid_auth', $e->getMessage() );
 		}
 	}
 
@@ -216,18 +172,7 @@ class Cloudflare {
 		}
 
 		try {
-			$cf_page_rule = $this->api->list_pagerules();
-
-			if ( empty( $cf_page_rule->success ) ) {
-				foreach ( $cf_page_rule->errors as $error ) {
-					$errors[] = $error->message;
-				}
-
-				$errors = wp_sprintf_l( '%l ', $errors );
-
-				return new WP_Error( 'cloudflare_page_rule_failed', $errors );
-			}
-
+			$cf_page_rule     = $this->api->list_pagerules();
 			$cf_page_rule_arr = wp_json_encode( $cf_page_rule );
 
 			return preg_match( '/' . $action_value . '/', $cf_page_rule_arr );
@@ -250,17 +195,6 @@ class Cloudflare {
 
 		try {
 			$cf_purge = $this->api->purge();
-
-			if ( empty( $cf_purge->success ) ) {
-				foreach ( $cf_purge->errors as $error ) {
-					$errors[] = $error->message;
-				}
-
-				$errors = wp_sprintf_l( '%l ', $errors );
-
-				return new WP_Error( 'cloudflare_purge_failed', $errors );
-			}
-
 			return true;
 		} catch ( Exception $e ) {
 			return new WP_Error( 'cloudflare_purge_failed', $e->getMessage() );
@@ -285,19 +219,7 @@ class Cloudflare {
 
 		try {
 			$cf_purge = $this->api->purge_files( $purge_urls );
-
-			if ( empty( $cf_purge->success ) ) {
-				foreach ( $cf_purge->errors as $error ) {
-					$errors[] = $error->message;
-				}
-
-				$errors = wp_sprintf_l( '%l ', $errors );
-
-				return new WP_Error( 'cloudflare_purge_failed', $errors );
-			}
-
 			return true;
-
 		} catch ( Exception $e ) {
 			return new WP_Error( 'cloudflare_purge_failed', $e->getMessage() );
 		}
@@ -319,17 +241,6 @@ class Cloudflare {
 
 		try {
 			$cf_return = $this->api->change_browser_cache_ttl( (int) $mode );
-
-			if ( empty( $cf_return->success ) ) {
-				foreach ( $cf_return->errors as $error ) {
-					$errors[] = $error->message;
-				}
-
-				$errors = wp_sprintf_l( '%l ', $errors );
-
-				return new WP_Error( 'cloudflare_browser_cache', $errors );
-			}
-
 			return $mode;
 		} catch ( Exception $e ) {
 			return new WP_Error( 'cloudflare_browser_cache', $e->getMessage() );
@@ -352,17 +263,6 @@ class Cloudflare {
 
 		try {
 			$cf_return = $this->api->change_rocket_loader( $mode );
-
-			if ( empty( $cf_return->success ) ) {
-				foreach ( $cf_return->errors as $error ) {
-					$errors[] = $error->message;
-				}
-
-				$errors = wp_sprintf_l( '%l ', $errors );
-
-				return new WP_Error( 'cloudflare_rocket_loader', $errors );
-			}
-
 			return $mode;
 		} catch ( Exception $e ) {
 			return new WP_Error( 'cloudflare_rocket_loader', $e->getMessage() );
@@ -391,17 +291,6 @@ class Cloudflare {
 
 		try {
 			$cf_return = $this->api->change_minify( $cf_minify_settings );
-
-			if ( empty( $cf_return->success ) ) {
-				foreach ( $cf_return->errors as $error ) {
-					$errors[] = $error->message;
-				}
-
-				$errors = wp_sprintf_l( '%l ', $errors );
-
-				return new WP_Error( 'cloudflare_minification', $errors );
-			}
-
 			return $mode;
 		} catch ( Exception $e ) {
 			return new WP_Error( 'cloudflare_minification', $e->getMessage() );
@@ -424,17 +313,6 @@ class Cloudflare {
 
 		try {
 			$cf_return = $this->api->change_cache_level( $mode );
-
-			if ( empty( $cf_return->success ) ) {
-				foreach ( $cf_return->errors as $error ) {
-					$errors[] = $error->message;
-				}
-
-				$errors = wp_sprintf_l( '%l ', $errors );
-
-				return new WP_Error( 'cloudflare_cache_level', $errors );
-			}
-
 			return $mode;
 		} catch ( Exception $e ) {
 			return new WP_Error( 'cloudflare_cache_level', $e->getMessage() );
@@ -464,16 +342,6 @@ class Cloudflare {
 		try {
 			$cf_return = $this->api->change_development_mode( $value );
 
-			if ( empty( $cf_return->success ) ) {
-				foreach ( $cf_return->errors as $error ) {
-					$errors[] = $error->message;
-				}
-
-				$errors = wp_sprintf_l( '%l ', $errors );
-
-				return new WP_Error( 'cloudflare_dev_mode', $errors );
-			}
-
 			if ( 'on' === $value ) {
 				wp_schedule_single_event( time() + 3 * HOUR_IN_SECONDS, 'rocket_cron_deactivate_cloudflare_devmode' );
 			}
@@ -498,16 +366,6 @@ class Cloudflare {
 
 		try {
 			$cf_settings = $this->api->get_settings();
-
-			if ( empty( $cf_settings->success ) ) {
-				foreach ( $cf_settings->errors as $error ) {
-					$errors[] = $error->message;
-				}
-
-				$errors = wp_sprintf_l( '%l ', $errors );
-
-				return new WP_Error( 'cloudflare_dev_mode', $errors );
-			}
 
 			foreach ( $cf_settings->result as $cloudflare_option ) {
 				switch ( $cloudflare_option->id ) {

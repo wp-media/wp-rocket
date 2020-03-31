@@ -24,7 +24,7 @@ function load_original_functions_before_mocking() {
 		'rocket_direct_filesystem'   => WP_ROCKET_PLUGIN_ROOT . 'inc/functions/files.php',
 		'rocket_add_url_protocol'    => WP_ROCKET_PLUGIN_ROOT . 'inc/functions/formatting.php',
 		'get_rocket_option'          => WP_ROCKET_PLUGIN_ROOT . 'inc/functions/options.php',
-		'get_rocket_post_terms_urls' => WP_ROCKET_PLUGIN_ROOT . 'inc/functions/posts.php',
+		'get_rocket_post_dates_urls' => WP_ROCKET_PLUGIN_ROOT . 'inc/functions/posts.php',
 	];
 
 	foreach ( $originals as $function_name => $file ) {
