@@ -10,28 +10,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group  CacheDynamicResource
  */
 class Test_CacheDynamicResource extends FilesystemTestCase {
-	protected $rootVirtualDir = 'wp-content';
-	protected $structure = [
-		'cache'   => [
-			'busting' => [
-				'1' => [],
-			],
-		],
-		'themes'  => [
-			'twentytwenty' => [
-				'style.php' => 'test',
-				'assets'    => [
-					'script.php' => 'test',
-				],
-			],
-		],
-		'plugins' => [
-			'hello-dolly' => [
-				'style.php'  => '',
-				'script.php' => '',
-			],
-		],
-	];
+	protected $path_to_test_data = '/inc/classes/subscriber/Optimization/Cache_Dynamic_Resource_Subscriber/cacheDynamicResource.php';
 	private $cdnCname = 'https://123456.rocketcdn.me';
 	private $cdnZone;
 	private $isCDNTestData;
@@ -41,7 +20,6 @@ class Test_CacheDynamicResource extends FilesystemTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		Functions\expect( 'rocket_get_constant' )->atLeast( 1 )->with( 'WP_ROCKET_CACHE_BUSTING_PATH' )->andReturn( $this->filesystem->getUrl( '/cache/busting/' ) );
 		$this->isCSSTestData = false;
 		$this->isCDNTestData = false;
 		$this->cdnZone       = '';
@@ -61,7 +39,7 @@ class Test_CacheDynamicResource extends FilesystemTestCase {
 	}
 
 	/**
-	 * @dataProvider addDataProvider
+	 * @dataProvider providerTestData
 	 */
 	public function testCacheDynamicResource( $event, $src, $expected ) {
 		// Set up the test.
@@ -92,10 +70,6 @@ class Test_CacheDynamicResource extends FilesystemTestCase {
 		} else {
 			wp_dequeue_script( $src );
 		}
-	}
-
-	public function addDataProvider() {
-		return $this->getTestData( dirname( __DIR__ ), 'cacheDynamicResource' );
 	}
 
 	public function getMinifyKey() {
