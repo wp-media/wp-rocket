@@ -233,7 +233,7 @@ class ActionScheduler_HybridStore extends Store {
 	 * @param int $action_id Action ID.
 	 */
 	public function fetch_action( $action_id ) {
-		$store = $this->get_store_from_action_id( $action_id );
+		$store = $this->get_store_from_action_id( $action_id, true );
 		if ( $store ) {
 			return $store->fetch_action( $action_id );
 		} else {
@@ -331,11 +331,17 @@ class ActionScheduler_HybridStore extends Store {
 	/**
 	 * Return which store an action is stored in.
 	 *
-	 * @param int $action_id ID of the action.
+	 * @param int  $action_id ID of the action.
+	 * @param bool $primary_first Optional flag indicating search the primary store first.
 	 * @return ActionScheduler_Store
 	 */
-	protected function get_store_from_action_id( $action_id ) {
-		if ( $action_id < $this->demarkation_id ) {
+	protected function get_store_from_action_id( $action_id, $primary_first = false ) {
+		if ( $primary_first ) {
+			$stores = [
+				$this->primary_store,
+				$this->secondary_store,
+			];
+		} elseif ( $action_id < $this->demarkation_id ) {
 			$stores = [
 				$this->secondary_store,
 				$this->primary_store,
@@ -343,7 +349,6 @@ class ActionScheduler_HybridStore extends Store {
 		} else {
 			$stores = [
 				$this->primary_store,
-				$this->secondary_store,
 			];
 		}
 
