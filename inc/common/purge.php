@@ -431,6 +431,7 @@ function do_admin_post_rocket_purge_cache() { // phpcs:ignore WordPress.NamingCo
 
 		if ( ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'purge_cache_' . $type ) ) {
 			wp_nonce_ays( '' );
+			return;
 		}
 
 		if ( ! current_user_can( 'rocket_purge_cache' ) ) {
