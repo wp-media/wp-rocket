@@ -61,7 +61,7 @@ class ActionScheduler_ActionFactory {
 	 * @param array $args Args to pass when the hook is triggered
 	 * @param string $group A group to put the action in
 	 *
-	 * @return string The ID of the stored action
+	 * @return int The ID of the stored action
 	 */
 	public function async( $hook, $args = array(), $group = '' ) {
 		$schedule = new ActionScheduler_NullSchedule();
@@ -75,7 +75,7 @@ class ActionScheduler_ActionFactory {
 	 * @param int $when Unix timestamp when the action will run
 	 * @param string $group A group to put the action in
 	 *
-	 * @return string The ID of the stored action
+	 * @return int The ID of the stored action
 	 */
 	public function single( $hook, $args = array(), $when = null, $group = '' ) {
 		$date = as_get_datetime_object( $when );
@@ -93,7 +93,7 @@ class ActionScheduler_ActionFactory {
 	 * @param int $interval Seconds between runs
 	 * @param string $group A group to put the action in
 	 *
-	 * @return string The ID of the stored action
+	 * @return int The ID of the stored action
 	 */
 	public function recurring( $hook, $args = array(), $first = null, $interval = null, $group = '' ) {
 		if ( empty($interval) ) {
@@ -116,7 +116,7 @@ class ActionScheduler_ActionFactory {
 	 * @param int $schedule A cron definition string
 	 * @param string $group A group to put the action in
 	 *
-	 * @return string The ID of the stored action
+	 * @return int The ID of the stored action
 	 */
 	public function cron( $hook, $args = array(), $base_timestamp = null, $schedule = null, $group = '' ) {
 		if ( empty($schedule) ) {
@@ -170,7 +170,7 @@ class ActionScheduler_ActionFactory {
 	/**
 	 * @param ActionScheduler_Action $action
 	 *
-	 * @return string The ID of the stored action
+	 * @return int The ID of the stored action
 	 */
 	protected function store( ActionScheduler_Action $action ) {
 		$store = ActionScheduler_Store::instance();

@@ -137,7 +137,7 @@ as_unschedule_action( $hook, $args, $group );
 
 - **$hook** (string)(required) Name of the action hook.
 - **$args** (array) Arguments passed to callbacks when the hook triggers. Default: _`array()`_.
-- **$group** (string) The group job was assigned to. Default: _''_.
+- **$group** (string) The group the job is assigned to. Default: _''_.
 
 ### Return value
 
@@ -152,18 +152,18 @@ Cancel all occurrences of a scheduled action.
 ### Usage
 
 ```php
-as_unschedule_action( $hook, $args, $group );
+as_unschedule_all_actions( $hook, $args, $group )
 ```
 
 ### Parameters
 
 - **$hook** (string)(required) Name of the action hook.
-- **$args** (array) Arguments to pass to callbacks when the hook triggers. Default: _`array()`_.
-- **$group** (string) The group to assign this job to. Default: _''_.
+- **$args** (array) Arguments passed to callbacks when the hook triggers. Default: _`array()`_.
+- **$group** (string) The group the job is assigned to. Default: _''_.
 
 ### Return value
 
-(null)
+(string|null) The scheduled action ID if a scheduled action was found, or null if no matching action found.
 
 
 ## Function Reference / `as_next_scheduled_action()`
@@ -180,9 +180,9 @@ as_next_scheduled_action( $hook, $args, $group );
 
 ### Parameters
 
-- **$hook** (string)(required) Name of the action hook.
-- **$args** (array) Arguments to pass to callbacks when the hook triggers. Default: _`array()`_.
-- **$group** (string) The group to assign this job to. Default: _''_.
+- **$hook** (string)(required) Name of the action hook. Default: _none_.
+- **$args** (array) Arguments passed to callbacks when the hook triggers. Default: _`array()`_.
+- **$group** (string) The group the job is assigned to. Default: _''_.
 
 ### Return value
 

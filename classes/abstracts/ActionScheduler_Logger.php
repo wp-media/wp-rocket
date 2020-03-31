@@ -130,7 +130,7 @@ abstract class ActionScheduler_Logger {
 		} else {
 			$message = __( 'action ignored', 'action-scheduler' );
 		}
-		$this->log( $action_id, __( 'action ignored', 'action-scheduler' ) );
+		$this->log( $action_id, $message );
 	}
 
 	/**

@@ -1,7 +1,7 @@
 {
   "name": "action-scheduler",
   "title": "Action Scheduler",
-  "version": "3.1.1",
+  "version": "3.1.4",
   "homepage": "https://actionscheduler.org/",
   "repository": {
     "type": "git",
