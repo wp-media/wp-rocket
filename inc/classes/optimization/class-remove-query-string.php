@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Optimization;
 
-use WP_Rocket\Admin\Options_Data as Options;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Optimization\Abstract_Optimization;
 use WP_Rocket\Optimization\CSS\Path_Rewriter;
 
@@ -20,7 +20,7 @@ class Remove_Query_String extends Abstract_Optimization {
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
-	 * @var Options
+	 * @var Options_Data
 	 */
 	protected $options;
 
@@ -60,11 +60,11 @@ class Remove_Query_String extends Abstract_Optimization {
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
-	 * @param Options $options      Plugin options instance.
-	 * @param string  $busting_path Base cache busting files path.
-	 * @param string  $busting_url  Base cache busting files URL.
+	 * @param Options_Data $options      Plugin options instance.
+	 * @param string       $busting_path Base cache busting files path.
+	 * @param string       $busting_url  Base cache busting files URL.
 	 */
-	public function __construct( Options $options, $busting_path, $busting_url ) {
+	public function __construct( Options_Data $options, $busting_path, $busting_url ) {
 		$this->options      = $options;
 		$this->busting_path = $busting_path . get_current_blog_id() . '/';
 		$this->busting_url  = $busting_url . get_current_blog_id() . '/';
