@@ -24,7 +24,7 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 	 *        to store. Otherwise uses the first date of the action's
 	 *        schedule.
 	 *
-	 * @return string The action ID
+	 * @return int The action ID
 	 */
 	abstract public function save_action( ActionScheduler_Action $action, DateTime $scheduled_date = NULL );
 
