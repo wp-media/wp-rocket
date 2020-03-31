@@ -10,7 +10,6 @@ use WPMedia\PHPUnit\Unit\TestCase;
  * @covers ::get_rocket_post_terms_urls
  * @group  Functions
  * @group  Posts
- * @group  thisone
  */
 class Test_GetRocketPostTermsUrls extends TestCase {
 
