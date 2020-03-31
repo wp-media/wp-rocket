@@ -11,10 +11,7 @@
 	<!-- Ignoring Files and Folders: https://github.com/squizlabs/PHP_CodeSniffer/wiki/Advanced-Usage#ignoring-files-and-folders -->
 	<exclude-pattern>/inc/deprecated/*</exclude-pattern>
 	<exclude-pattern>/inc/vendors/*</exclude-pattern>
-	<exclude-pattern>/tests/Fixtures/*</exclude-pattern>
-	<exclude-pattern>/tests/Integration/*</exclude-pattern>
-	<exclude-pattern>/tests/Unit/*</exclude-pattern>
-	<exclude-pattern>/tests/phpstan/*</exclude-pattern>
+	<exclude-pattern>/tests/*</exclude-pattern>
 	<exclude-pattern>/vendor/*</exclude-pattern>
 
 	<!-- ** HOW TO SCAN ** -->
@@ -55,7 +52,7 @@
     </rule>
     <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
         <properties>
-            <property name="prefixes" type="array" value="rocket,wp_rocket,WPMedia" />
+            <property name="prefixes" type="array" value="rocket,wp_rocket,WPMedia,WPRocket" />
         </properties>
     </rule>
     <rule ref="WordPress.Files.FileName">
@@ -69,7 +66,6 @@
 	<rule ref="WordPress.PHP.NoSilencedErrors.Discouraged">
 		<exclude-pattern>inc/admin/admin.php</exclude-pattern>
 		<exclude-pattern>inc/front/process.php</exclude-pattern>
-		<exclude-pattern>uninstall.php</exclude-pattern>
 		<exclude-pattern>inc/classes/buffer/class-cache.php</exclude-pattern>
 		<exclude-pattern>inc/classes/admin/class-logs.php</exclude-pattern>
 		<exclude-pattern>inc/classes/logger/class-stream-handler.php</exclude-pattern>
