@@ -129,7 +129,7 @@ abstract class Abstract_Optimization {
 	 */
 	protected function get_file_path( $url ) {
 		$url            = strtok( $url, '?' );
-		$wp_content_dir = rocket_get_constant( 'WP_CONTENT_DIR' );
+		$wp_content_dir = apply_filters( 'rocket_wp_content_dir', rocket_get_constant( 'WP_CONTENT_DIR' ) );
 		$root_dir       = trailingslashit( dirname( $wp_content_dir ) );
 		$root_url       = str_replace( wp_basename( $wp_content_dir ), '', content_url() );
 		$url_host       = wp_parse_url( $url, PHP_URL_HOST );
