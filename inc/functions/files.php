@@ -1147,8 +1147,8 @@ function rocket_mkdir_p( $target ) {
 	$target = str_replace( '//', '/', $target );
 
 	// Put the wrapper back on the target.
-    if ( $wrapper !== null ) {
-        $target = $wrapper . '://' . $target;
+	if ( null !== $wrapper ) {
+		$target = $wrapper . '://' . $target;
 	}
 
 	// safe mode fails with a trailing slash under certain PHP versions.
