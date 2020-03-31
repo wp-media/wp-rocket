@@ -89,8 +89,7 @@ class Cache_Dir_Size_Check_Subscriber implements Subscriber_Interface {
 		$current_blog_id = get_current_blog_id();
 
 		$checks = [
-			'min'     => WP_ROCKET_MINIFY_CACHE_PATH . $current_blog_id,
-			'busting' => WP_ROCKET_CACHE_BUSTING_PATH . $current_blog_id,
+			'min' => WP_ROCKET_MINIFY_CACHE_PATH . $current_blog_id,
 		];
 
 		foreach ( $checks as $type => $path ) {
