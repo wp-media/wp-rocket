@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Unit\inc\classes\subscriber\CDN\CDNSubscriber;
 
 use Brain\Monkey\Functions;
+use Mockery;
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\CDN\CDN;
@@ -19,9 +20,9 @@ class Test_GetCdnHosts extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->cdn        = $this->createMock( CDN::class );
+		$this->cdn        = Mockery::mock( CDN::class );
 		$this->subscriber = new CDNSubscriber(
-			$this->createMock( Options_Data::class ),
+			Mockery::mock( Options_Data::class ),
 			$this->cdn
 		);
 
@@ -63,9 +64,9 @@ class Test_GetCdnHosts extends TestCase {
 	 * @dataProvider addDataProvider
 	 */
 	public function testShouldReturnCdnArray( $original, $zones, $cdn_urls, $expected ) {
-		$this->cdn->expects( $this->once() )
-			->method( 'get_cdn_urls' )
-			->willReturn( $cdn_urls );
+		$this->cdn->shouldReceive( 'get_cdn_urls' )
+			->once()
+			->andReturn( $cdn_urls );
 
 		$this->assertSame(
 			$expected,

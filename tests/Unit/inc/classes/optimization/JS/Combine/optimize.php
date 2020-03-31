@@ -4,83 +4,30 @@ namespace WP_Rocket\Tests\Unit\inc\optimization\JS\Combine;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 use MatthiasMullie\Minify;
-use WPMedia\PHPUnit\Unit\TestCase;
-use WP_Rocket\Admin\Options_Data;
+use Mockery;
 use WP_Rocket\Optimization\Assets_Local_Cache;
 use WP_Rocket\Optimization\JS\Combine;
-use WP_Rocket\Tests\Unit\FilesystemTestCase;
+use WP_Rocket\Tests\Unit\inc\classes\optimization\TestCase;
 
 /**
  * @covers \WP_Rocket\Optimization\JS\Combine::optimize
  * @group Optimize
  * @group CombineJS
  */
-class Test_Optimize extends FilesystemTestCase {
-	private   $combine;
-	protected $rootVirtualDir = 'wordpress';
-	protected $structure      = [
-        'wp-includes' => [
-            'js' => [
-                'jquery' => [
-                    'jquery.js' => 'jquery',
-                ],
-            ],
-            'css' => [
-                'dashicons.min.css' => 'body { font-family: Helvetica, Arial, sans-serif; text-align: center;}',
-            ],
-        ],
-        'wp-content' => [
-            'cache' => [
-                'min' => [
-                    '1' => [
-						'c31414824a105f4f0a484a3c235b884e.js' => 'combined js',
-						'0d6f19b3f50bd8bae278ac5c7e41846d.js' => 'combined js',
-						'40aa0e42de6db86591cbab276ebb3586.js' => 'combined js',
-					],
-                ],
-            ],
-            'themes' => [
-                'twentytwenty' => [
-                    'style.css' => 'body { font-family: Helvetica, Arial, sans-serif; text-align: center;}',
-                    'assets'    => [
-                        'script.js' => 'test',
-                    ]
-                ]
-            ],
-            'plugins' => [
-                'hello-dolly' => [
-                    'style.css'  => 'body { font-family: Helvetica, Arial, sans-serif; text-align: center;}',
-                    'script.js' => 'test',
-                ]
-            ],
-        ],
-	];
-
+class Test_Optimize extends TestCase {
+	protected $path_to_test_data = '/inc/classes/optimization/JS/Combine/combine.php';
+	private $combine;
+	private $minify;
 
 	public function setUp() {
 		parent::setUp();
 
-		Functions\expect( 'rocket_get_constant' )
-			->once()
-			->with( 'WP_ROCKET_MINIFY_CACHE_PATH' )
-			->andReturn( 'wp-content/cache/min/' )
-			->andAlsoExpectIt()
-			->once()
-			->with( 'WP_ROCKET_MINIFY_CACHE_URL' )
-			->andReturn( 'http://example.org/wp-content/cache/min/' );
+		$this->minify = Mockery::mock( Minify\JS::class );
+		$this->minify->shouldReceive( 'add' );
+		$this->minify->shouldReceive( 'minify' )
+			->andReturn( 'minified JS' );
 
-		Functions\expect( 'rocket_get_constant' )
-			->zeroOrMoreTimes()
-			->with( 'WP_CONTENT_DIR' )
-			->andReturn( $this->filesystem->getUrl( 'wordpress/wp-content/' ) );
-
-		Functions\when( 'get_current_blog_id' )->justReturn( 1 );
-		Functions\when( 'create_rocket_uniqid' )->justReturn( 'rocket_uniqid' );
-
-		Functions\when( 'esc_url' )->alias( function( $url ) {
-			return $url;
-		} );
-
+		Functions\when( 'esc_url' )->returnArg();
 		Functions\when('wp_scripts')->alias(function() {
             $wp_scripts = new \stdClass();
             $jquery = new \stdClass();
@@ -88,78 +35,22 @@ class Test_Optimize extends FilesystemTestCase {
             $wp_scripts->queue = [];
 
             return $wp_scripts;
-        });
+		});
 
-		Functions\when( 'get_rocket_parse_url' )->alias( function( $url ) {
-			$parsed = parse_url( $url );
+		Functions\expect( 'rocket_get_constant' )
+			->once()
+			->with( 'WP_ROCKET_MINIFY_CACHE_PATH' )
+			->andReturn( $this->filesystem->getUrl( 'wordpress/wp-content/cache/min/' ) )
+			->andAlsoExpectIt()
+			->once()
+			->with( 'WP_ROCKET_MINIFY_CACHE_URL' )
+			->andReturn( 'http://example.org/wp-content/cache/min/' );
 
-			$host     = isset( $parsed['host'] ) ? strtolower( urldecode( $parsed['host'] ) ) : '';
-			$path     = isset( $parsed['path'] ) ? urldecode( $parsed['path'] ) : '';
-			$scheme   = isset( $parsed['scheme'] ) ? urldecode( $parsed['scheme'] ) : '';
-			$query    = isset( $parsed['query'] ) ? urldecode( $parsed['query'] ) : '';
-			$fragment = isset( $parsed['fragment'] ) ? urldecode( $parsed['fragment'] ) : '';
-
-			return [
-				'host'     => $host,
-				'path'     => $path,
-				'scheme'   => $scheme,
-				'query'    => $query,
-				'fragment' => $fragment,
-			];
-		} );
-
-		Functions\when( 'content_url' )->justReturn( 'http://example.org/wp-content' );
-		Functions\when( 'get_rocket_i18n_uri' )->justReturn( [
-			'http://en.example.org',
-			'https://example.de',
-		] );
-		Functions\when( 'wp_parse_url' )->alias( function( $url, $component ) {
-			return parse_url( $url, $component );
-        } );
-        Functions\when( 'home_url' )->justReturn( 'http://example.org' );
-        Functions\when( 'wp_basename' )->alias( function( $path, $suffix = '' ) {
-			return urldecode( basename( str_replace( array( '%2F', '%5C' ), '/', urlencode( $path ) ), $suffix ) );
-		} );
-
-		Functions\when( 'rocket_get_filesystem_perms' )->justReturn( 0644 );
-
-		Functions\when( 'rocket_realpath' )->alias( function( $file ) {
-			$path = [];
-
-			foreach ( explode( '/', $file ) as $part ) {
-				if ( '' === $part || '.' === $part ) {
-					continue;
-				}
-
-				if ( '..' !== $part ) {
-					array_push( $path, $part );
-				}
-				elseif ( count( $path ) > 0 ) {
-					array_pop( $path );
-				}
-			}
-
-			$prefix = 'WIN' === strtoupper( substr( PHP_OS, 0, 3 ) ) ? '' : '/';
-
-			return $prefix . join( '/', $path );
-		} );
-
-		Filters\expectApplied( 'rocket_url_to_path' )
-			->andReturnUsing( function( $file ) {
-				return str_replace( '/vfs:/', 'vfs://', $file );
-			} );
-
-		$options =  $this->createMock( Options_Data::class );
-		$map     = [
-			[ 'exclude_inline_js', [], [] ],
-			[ 'exclude_js', [], [] ],
-		];
-		$options->method( 'get' )->will( $this->returnValueMap( $map ) );
-		$this->combine = new Combine( $options, $this->createMock( Minify\JS::class ), $this->createMock( Assets_Local_Cache::class ) );
+		$this->combine = new Combine( $this->options, $this->minify, Mockery::mock( Assets_Local_Cache::class ) );
 	}
 
 	/**
-	 * @dataProvider addDataProvider
+	 * @dataProvider providerTestData
 	 */
     public function testShouldMinifyJS( $original, $minified, $cdn_hosts, $cdn_url, $site_url ) {
 		Filters\expectApplied( 'rocket_cdn_hosts' )
@@ -180,12 +71,8 @@ class Test_Optimize extends FilesystemTestCase {
 			} );
 
         $this->assertSame(
-            $minified,
-            $this->combine->optimize( $original )
+            $this->format_the_html( $minified ),
+            $this->format_the_html( $this->combine->optimize( $original ) )
         );
     }
-
-	public function addDataProvider() {
-		return $this->getTestData( __DIR__, 'combine' );
-	}
 }
