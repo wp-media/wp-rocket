@@ -12,7 +12,7 @@ Yes! The Action Scheduler Custom Tables plugin code is now part of Action Schedu
 
 By default, Action Scheduler will only initiate a migration from the internal `WPPostStore` data store. To enable migration from any custom datastore add the following filter `add_filter( 'action_scheduler_migrate_data_store', '__return_true' );`.
 
-### I'm currently on PHP >=5.5. When I update PHP will the migration start automatically?
+### I'm currently on PHP <5.5. When I update PHP will the migration start automatically?
 
 Yes! The migration is initiated as soon as all dependencies are met.
 
