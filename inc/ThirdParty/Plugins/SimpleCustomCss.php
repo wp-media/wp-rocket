@@ -24,9 +24,8 @@ class SimpleCustomCss implements Subscriber_Interface {
 			return $events;
 		}
 
-		$events['wp_enqueue_scripts']            = [ 'cache_sccss', 98 ];
-		$events['update_option_sccss_settings']  = 'delete_cache_file';
-		$events['rocket_cache_busting_filename'] = 'cache_busting_filename';
+		$events['wp_enqueue_scripts']           = [ 'cache_sccss', 98 ];
+		$events['update_option_sccss_settings'] = 'delete_cache_file';
 
 		return $events;
 	}
@@ -65,23 +64,6 @@ class SimpleCustomCss implements Subscriber_Interface {
 		array_map( 'unlink', glob( $sccss['bustingpath'] . 'sccss*.css' ) );
 		rocket_clean_domain();
 		$this->create_cache_file( $sccss['bustingpath'], $sccss['filepath'] );
-	}
-
-	/**
-	 * Returns the filename for SCSSS cache file
-	 *
-	 * @since 2.9
-	 * @author Remy Perona
-	 *
-	 * @param string $filename filename.
-	 * @return string filename
-	 */
-	public function cache_busting_filename( $filename ) {
-		if ( false !== strpos( $filename, 'sccss' ) ) {
-			return preg_replace( '/(?:.*)(sccss(?:.*))/i', '$1', $filename );
-		}
-
-		return $filename;
 	}
 
 	/**
