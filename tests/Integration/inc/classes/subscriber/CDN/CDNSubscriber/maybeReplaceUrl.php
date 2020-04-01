@@ -31,7 +31,7 @@ class Test_MaybeReplaceUrl extends TestCase {
 
 		$this->assertSame(
 			$expected,
-			apply_filters( 'rocket_before_url_to_path', $original, $zones )
+			apply_filters( 'rocket_asset_url', $original, $zones )
 		);
 
 		remove_filter( 'pre_get_rocket_option_cdn', [ $this, 'return_true'] );

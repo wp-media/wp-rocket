@@ -143,13 +143,13 @@ abstract class Abstract_Optimization {
 		/**
 		 * Filters the URL before converting it to a path
 		 *
-		 * @since 3.5.1
+		 * @since 3.5.3
 		 * @author Remy Perona
 		 *
 		 * @param string $url   URL of the asset.
 		 * @param array  $zones CDN zones corresponding to the current assets type.
 		 */
-		$url = apply_filters( 'rocket_before_url_to_path', $url, $this->get_zones() );
+		$url = apply_filters( 'rocket_asset_url', $url, $this->get_zones() );
 
 		$root_url = preg_replace( '/^https?:/', '', $root_url );
 		$url      = preg_replace( '/^https?:/', '', $url );

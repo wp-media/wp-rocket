@@ -47,7 +47,7 @@ class Test_Optimize extends TestCase {
 			->with( [], [ 'all', 'css_and_js', 'js' ] )
 			->andReturn( $cdn_hosts );
 
-		Filters\expectApplied( 'rocket_before_url_to_path' )
+		Filters\expectApplied( 'rocket_asset_url' )
 			->zeroOrMoreTimes()
 			->andReturnUsing( function( $url ) use ( $cdn_url, $site_url ) {
 				return str_replace( $cdn_url, $site_url, $url );

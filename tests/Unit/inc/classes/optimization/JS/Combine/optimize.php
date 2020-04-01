@@ -52,13 +52,13 @@ class Test_Optimize extends TestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-    public function testShouldMinifyJS( $original, $minified, $cdn_hosts, $cdn_url, $site_url ) {
+    public function testShouldCombineJS( $original, $minified, $cdn_hosts, $cdn_url, $site_url ) {
 		Filters\expectApplied( 'rocket_cdn_hosts' )
 			->zeroOrMoreTimes()
 			->with( [], [ 'all', 'css_and_js', 'js' ] )
 			->andReturn( $cdn_hosts );
 
-		Filters\expectApplied( 'rocket_before_url_to_path' )
+		Filters\expectApplied( 'rocket_asset_url' )
 			->zeroOrMoreTimes()
 			->andReturnUsing( function( $url ) use ( $cdn_url, $site_url ) {
                 return str_replace( $cdn_url, $site_url, $url );

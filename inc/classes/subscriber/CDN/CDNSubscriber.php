@@ -57,7 +57,7 @@ class CDNSubscriber implements Subscriber_Interface {
 			'rocket_facebook_sdk_url'   => 'add_cdn_url',
 			'rocket_css_url'            => [ 'add_cdn_url', 10, 2 ],
 			'rocket_js_url'             => [ 'add_cdn_url', 10, 2 ],
-			'rocket_before_url_to_path' => [ 'maybe_replace_url', 10, 2 ],
+			'rocket_asset_url' => [ 'maybe_replace_url', 10, 2 ],
 		];
 	}
 
