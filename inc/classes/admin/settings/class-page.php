@@ -562,7 +562,6 @@ class Page {
 	 * @return void
 	 */
 	private function assets_section() {
-		$remove_qs_beacon      = $this->beacon->get_suggest( 'remove_query_strings' );
 		$combine_beacon        = $this->beacon->get_suggest( 'combine' );
 		$defer_js_beacon       = $this->beacon->get_suggest( 'defer_js' );
 		$async_beacon          = $this->beacon->get_suggest( 'async' );
@@ -583,10 +582,6 @@ class Page {
 			[
 				'basic' => [
 					'title'  => __( 'Basic Settings', 'rocket' ),
-					'help'   => [
-						'url' => $remove_qs_beacon['url'],
-						'id'  => $this->beacon->get_suggest( 'basic_section' ),
-					],
 					'page'   => 'file_optimization',
 					// translators: %1$s = type of minification (HTML, CSS or JS), %2$s = “WP Rocket”.
 					'helper' => rocket_maybe_disable_minify_html() ? sprintf( __( '%1$s Minification is currently activated in <strong>Autoptimize</strong>. If you want to use %2$s’s minification, disable those options in Autoptimize.', 'rocket' ), 'HTML', WP_ROCKET_PLUGIN_NAME ) : '',
@@ -635,16 +630,6 @@ class Page {
 					'type'              => 'checkbox',
 					'label'             => __( 'Combine Google Fonts files', 'rocket' ),
 					'description'       => __( 'Combining Google Fonts will reduce the number of HTTP requests.', 'rocket' ),
-					'section'           => 'basic',
-					'page'              => 'file_optimization',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
-				],
-				'remove_query_strings'   => [
-					'type'              => 'checkbox',
-					'label'             => __( 'Remove query strings from static resources', 'rocket' ),
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'Removes the version query string from static files (e.g. style.css?ver=1.0) and encodes it into the filename instead (e.g. style-1.0.css). Can improve your GTMetrix score. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $remove_qs_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $remove_qs_beacon['id'] ) . '" target="_blank">', '</a>' ),
 					'section'           => 'basic',
 					'page'              => 'file_optimization',
 					'default'           => 0,
