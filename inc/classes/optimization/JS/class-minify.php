@@ -131,6 +131,7 @@ class Minify extends Abstract_JS_Optimization {
 			return false;
 		}
 
+		// This filter is documented in /inc/classes/optimization/class-abstract-optimization.php.
 		$url       = apply_filters( 'rocket_asset_url', $url, $this->get_zones() );
 		$unique_id = md5( $url . $this->minify_key );
 		$filename  = preg_replace( '/\.js$/', '-' . $unique_id . '.js', ltrim( rocket_realpath( wp_parse_url( $url, PHP_URL_PATH ) ), '/' ) );
