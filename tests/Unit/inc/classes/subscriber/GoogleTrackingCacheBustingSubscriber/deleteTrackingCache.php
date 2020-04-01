@@ -6,7 +6,7 @@ use \Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Busting\Busting_Factory;
 use WP_Rocket\Busting\Google_Analytics;
-use WP_Rocket\Subscriber\GoogleTrackingCacheBustingSubscriber;
+use WP_Rocket\Subscriber\Google_Tracking_Cache_Busting_Subscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
