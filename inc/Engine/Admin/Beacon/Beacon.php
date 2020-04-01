@@ -81,7 +81,7 @@ class Beacon implements Subscriber_Interface {
 		}
 
 		echo '<script type="text/javascript">!function(e,t,n){function a(){var e=t.getElementsByTagName("script")[0],n=t.createElement("script");n.type="text/javascript",n.async=!0,n.src="https://beacon-v2.helpscout.net",e.parentNode.insertBefore(n,e)}if(e.Beacon=n=function(t,n,a){e.Beacon.readyQueue.push({method:t,options:n,data:a})},n.readyQueue=[],"complete"===t.readyState)return a();e.attachEvent?e.attachEvent("onload",a):e.addEventListener("load",a,!1)}(window,document,window.Beacon||function(){});</script>
-			<script type="text/javascript">window.Beacon(\'init\', \'' . $form_id . '\')</script>
+			<script type="text/javascript">window.Beacon(\'init\', \'' . esc_js( $form_id ) . '\')</script>
 			<script>window.Beacon("identify", ' . wp_json_encode( $this->identify_data() ) . ');</script>
 			<script>window.Beacon("session-data", ' . wp_json_encode( $this->session_data() ) . ');</script>
 			<script>window.addEventListener("hashchange", function () {
