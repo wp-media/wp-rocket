@@ -317,16 +317,6 @@ class Beacon implements Subscriber_Interface {
 				'en' => '54205957e4b099def9b55df0,5419ec47e4b099def9b5565f,5578cfbbe4b027e1978e6bb1,587904cf90336009736c678e,54b9509de4b07997ea3f27c7,59236dfb0428634b4a3358f9',
 				'fr' => '56967d73c69791436155e637,56967e80c69791436155e646,56957209c69791436155e0f6,58a337c12c7d3a576d352cde,56967eebc69791436155e649,593fe9882c7d3a0747cddb77',
 			],
-			'remove_query_strings'       => [
-				'en' => [
-					'id'  => '55231415e4b0221aadf25676',
-					'url' => 'https://docs.wp-rocket.me/article/56-remove-query-string-from-static-resources/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-				'fr' => [
-					'id'  => '569568269033603f7da30334',
-					'url' => 'https://fr.docs.wp-rocket.me/article/219-supprimer-les-chaines-de-requetes-sur-les-ressources-statiques/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-			],
 			'file_optimization'          => [
 				'en' => [
 					'id'  => '54205957e4b099def9b55df0',
