@@ -57,7 +57,7 @@ class CDNSubscriber implements Subscriber_Interface {
 			'rocket_facebook_sdk_url'   => 'add_cdn_url',
 			'rocket_css_url'            => [ 'add_cdn_url', 10, 2 ],
 			'rocket_js_url'             => [ 'add_cdn_url', 10, 2 ],
-			'rocket_asset_url' => [ 'maybe_replace_url', 10, 2 ],
+			'rocket_asset_url'          => [ 'maybe_replace_url', 10, 2 ],
 		];
 	}
 
@@ -211,12 +211,6 @@ class CDNSubscriber implements Subscriber_Interface {
 			return $url;
 		}
 
-		$cdn_urls = $this->cdn->get_cdn_urls( $zones );
-
-		if ( empty( $cdn_urls ) ) {
-			return $url;
-		}
-
 		$url_parts = get_rocket_parse_url( $url );
 
 		if ( empty( $url_parts['host'] ) ) {
@@ -226,6 +220,16 @@ class CDNSubscriber implements Subscriber_Interface {
 		$site_url_parts = get_rocket_parse_url( site_url() );
 
 		if ( empty( $site_url_parts['host'] ) ) {
+			return $url;
+		}
+
+		if ( $url_parts['host'] === $site_url_parts['host'] ) {
+			return $url;
+		}
+
+		$cdn_urls = $this->cdn->get_cdn_urls( $zones );
+
+		if ( empty( $cdn_urls ) ) {
 			return $url;
 		}
 
