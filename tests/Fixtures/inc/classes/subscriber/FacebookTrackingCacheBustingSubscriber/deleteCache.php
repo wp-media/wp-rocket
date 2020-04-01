@@ -10,11 +10,11 @@ return [
 			'cache' => [
 				'busting' => [
 					'facebook-tracking' => [
-						'fbsdk-en.js',
-						'fbsdk-fr.js',
-						'fbsdk-it.js',
-						'fbpix-events-en-2.0.js',
-						'fbpix-events-fr-1.0.js',
+						'fbsdk-en.js'            => '',
+						'fbsdk-fr.js'            => '',
+						'fbsdk-it.js'            => '',
+						'fbpix-events-en-2.0.js' => '',
+						'fbpix-events-fr-1.0.js' => '',
 					],
 				],
 			],
