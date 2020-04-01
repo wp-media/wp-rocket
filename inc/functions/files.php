@@ -509,7 +509,7 @@ function rocket_clean_minify( $extensions = [ 'js', 'css' ] ) {
 function rocket_clean_cache_busting( $extensions = [ 'js', 'css' ] ) {
 	$extensions = is_string( $extensions ) ? (array) $extensions : $extensions;
 
-	$cache_busting_path = rocket_get_constant( 'WP_ROCKET_CACHE_BUSTING_PATH' ) . get_current_blog_id();
+	$cache_busting_path = WP_ROCKET_CACHE_BUSTING_PATH . get_current_blog_id();
 
 	if ( ! rocket_direct_filesystem()->is_dir( $cache_busting_path ) ) {
 		rocket_mkdir_p( $cache_busting_path );
@@ -550,7 +550,7 @@ function rocket_clean_cache_busting( $extensions = [ 'js', 'css' ] ) {
 		do_action( 'before_rocket_clean_busting', $ext ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 		try {
-			$files = new RegexIterator( $iterator, '#.*\.' . $ext . '(?:\.gz)?$#', RegexIterator::GET_MATCH );
+			$files = new RegexIterator( $iterator, '#.*\.' . $ext . '#', RegexIterator::GET_MATCH );
 			foreach ( $files as $file ) {
 				rocket_direct_filesystem()->delete( $file[0] );
 			}
