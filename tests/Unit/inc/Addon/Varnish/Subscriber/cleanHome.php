@@ -16,6 +16,12 @@ use WP_Rocket\Addon\Varnish\Varnish;
  */
 class Test_CleanHome extends TestCase {
 
+	public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
+
+		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/functions/i18n.php';
+	}
+
 	public function testShouldDoNothingWhenVarnishDisabled() {
 		$options = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
 		$map     = [

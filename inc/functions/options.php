@@ -48,9 +48,15 @@ function update_rocket_option( $key, $value ) { // phpcs:ignore WordPress.Naming
  * @source wp-admin/includes/plugin.php
  *
  * @param string $plugin Plugin folder/main file.
+ *
+ * @return boolean true when plugin is active; else false.
  */
 function rocket_is_plugin_active( $plugin ) {
-	return in_array( $plugin, (array) get_option( 'active_plugins', [] ), true ) || rocket_is_plugin_active_for_network( $plugin );
+	return (
+		in_array( $plugin, (array) get_option( 'active_plugins', [] ), true )
+		||
+		rocket_is_plugin_active_for_network( $plugin )
+	);
 }
 
 /**
@@ -61,6 +67,8 @@ function rocket_is_plugin_active( $plugin ) {
  * @source wp-admin/includes/plugin.php
  *
  * @param string $plugin Plugin folder/main file.
+ *
+ * @return bool true if multisite and plugin is active for network; else, false.
  */
 function rocket_is_plugin_active_for_network( $plugin ) {
 	if ( ! is_multisite() ) {
@@ -68,11 +76,7 @@ function rocket_is_plugin_active_for_network( $plugin ) {
 	}
 
 	$plugins = get_site_option( 'active_sitewide_plugins' );
-	if ( isset( $plugins[ $plugin ] ) ) {
-		return true;
-	}
-
-	return false;
+	return isset( $plugins[ $plugin ] );
 }
 
 /**

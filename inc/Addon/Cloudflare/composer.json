@@ -37,7 +37,7 @@
 		"exclude-from-classmap": [ "/Tests/" ]
 	},
 	"autoload-dev": {
-		"psr-4": { "WPMedia\\Cloudflare\\Tests\\": "Tests/"	}
+		"psr-4": { "WPMedia\\Cloudflare\\Tests\\": "Tests/" }
 	},
 	"scripts": {
 		"test-unit": "\"vendor/bin/wpmedia-phpunit\" unit path=Tests/Unit",
