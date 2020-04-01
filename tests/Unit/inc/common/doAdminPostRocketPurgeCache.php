@@ -15,12 +15,6 @@ class Test_DoAdminPostRocketPurgeCache extends TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		Functions\when( 'get_option' )->alias(
-			function( $option ) {
-				return 'stylesheet' === $option ? 'twenty-foobar' : false;
-			}
-		);
-
 		Functions\when( 'sanitize_key' )->alias(
 			function( $key ) {
 				$key = strtolower( $key );
@@ -46,6 +40,7 @@ class Test_DoAdminPostRocketPurgeCache extends TestCase {
 			}
 		);
 
+		Functions\when( 'get_option' )->justReturn( '' );
 		Functions\when( 'wp_verify_nonce' )->justReturn( true );
 		Functions\when( 'current_user_can' )->justReturn( true );
 		Functions\when( 'set_transient' )->justReturn( null );
@@ -55,6 +50,9 @@ class Test_DoAdminPostRocketPurgeCache extends TestCase {
 		Functions\when( 'wp_nonce_ays' )->justReturn( null );
 
 		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/common/purge.php';
+
+		Functions\when( 'rocket_clean_post' )->justReturn( null );
+		Functions\when( 'rocket_clean_domain' )->justReturn( null );
 	}
 
 	public function testShouldTriggerHook() {
@@ -64,7 +62,6 @@ class Test_DoAdminPostRocketPurgeCache extends TestCase {
 		$_GET['type']     = 'post-123';
 		$_GET['_wpnonce'] = 'whatever';
 
-		Functions\when( 'rocket_clean_post' )->justReturn( null );
 		Actions\expectDone( 'rocket_purge_cache' )
 			->once()
 			->with( 'post', 123, '', '' );
@@ -76,7 +73,6 @@ class Test_DoAdminPostRocketPurgeCache extends TestCase {
 		$_GET['_wpnonce'] = 'whatever';
 		$_GET['lang']     = 'en';
 
-		Functions\when( 'rocket_clean_domain' )->justReturn( null );
 		Functions\when( 'get_rocket_option' )->justReturn( false );
 		Functions\when( 'rocket_dismiss_box' )->justReturn( null );
 
@@ -94,7 +90,6 @@ class Test_DoAdminPostRocketPurgeCache extends TestCase {
 		$_GET['type']     = 'invalid';
 		$_GET['_wpnonce'] = 'whatever';
 
-		Functions\when( 'rocket_clean_post' )->justReturn( null );
 		Actions\expectDone( 'rocket_purge_cache' )
 			->never();
 
