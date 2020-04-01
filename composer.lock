@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d24799970180cc70de7382178a492555",
+    "content-hash": "155b861fa41637edebd8f6e581bc9528",
     "packages": [
         {
             "name": "composer/installers",
@@ -3420,6 +3420,24 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/amp/"
+        },
+        {
+            "name": "wpackagist-plugin/simple-custom-css",
+            "version": "4.0.3",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/simple-custom-css/",
+                "reference": "trunk"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/simple-custom-css.zip?timestamp=1571931333"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/simple-custom-css/"
         }
     ],
     "aliases": [],
