@@ -330,6 +330,19 @@ function rocket_admin_bar( $wp_admin_bar ) {
 	}
 
 	if ( current_user_can( 'rocket_manage_options' ) ) {
+		$rocketcdn_status = get_transient( 'rocketcdn_status' );
+
+		if ( isset( $rocketcdn_status['subscription_active'] ) && 'running' === $rocketcdn_status['subscription_active'] ) {
+			$wp_admin_bar->add_menu(
+				[
+					'parent' => 'wp-rocket',
+					'id'     => 'purge-cdn-cache',
+					'title'  => __( 'Purge RocketCDN cache', 'rocket' ),
+					'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=rocket_purge_rocketcdn' . $referer ), 'rocket_purge_rocketcdn' ),
+				]
+			);
+		}
+
 		/**
 		 * Go to WP Rocket Documentation.
 		 */

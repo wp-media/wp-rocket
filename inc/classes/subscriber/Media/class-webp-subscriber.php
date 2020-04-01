@@ -96,13 +96,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Returns an array of events that this subscriber wants to listen to.
-	 *
-	 * @since  3.4
-	 * @access public
-	 * @author Remy Perona
-	 *
-	 * @return array
+	 * {@inheritdoc}
 	 */
 	public static function get_subscribed_events() {
 		return [
@@ -154,21 +148,29 @@ class Webp_Subscriber implements Subscriber_Interface {
 		}
 
 		if ( ! $http_accept || false === strpos( $http_accept, 'webp' ) ) {
-			return $html;
+			$user_agent = isset( $this->server['HTTP_USER_AGENT'] ) ? $this->server['HTTP_USER_AGENT'] : '';
+
+			if ( $user_agent && preg_match( '#Firefox/(?<version>[0-9]{2,})#i', $this->server['HTTP_USER_AGENT'], $matches ) ) {
+				if ( 66 >= (int) $matches['version'] ) {
+					return $html;
+				}
+			} else {
+				return $html;
+			}
 		}
 
 		$extensions      = $this->get_extensions();
 		$attribute_names = $this->get_attribute_names();
 
 		if ( ! $extensions || ! $attribute_names ) {
-			return $html;
+			return $html . '<!-- Rocket no webp -->';
 		}
 
 		$extensions      = implode( '|', $extensions );
 		$attribute_names = implode( '|', $attribute_names );
 
 		if ( ! preg_match_all( '@["\'\s](?<name>(?:data-(?:[a-z0-9_-]+-)?)?(?:' . $attribute_names . '))\s*=\s*["\']\s*(?<value>(?:https?:/)?/[^"\']+\.(?:' . $extensions . ')[^"\']*?)\s*["\']@is', $html, $attributes, PREG_SET_ORDER ) ) {
-			return $html;
+			return $html . '<!-- Rocket no webp -->';
 		}
 
 		if ( ! isset( $this->filesystem ) ) {

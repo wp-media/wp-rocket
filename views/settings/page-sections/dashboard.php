@@ -93,7 +93,14 @@ defined( 'ABSPATH' ) || exit;
 				</div>
 			</div>
 			<?php endif; ?>
-
+			<?php
+			/**
+			 * Fires after the account data section on the WP Rocket settings dashboard
+			 *
+			 * @since 3.5
+			 */
+			do_action( 'rocket_dashboard_after_account_data' );
+			?>
 			<?php
 				$this->render_settings_sections( $data['id'] );
 			?>

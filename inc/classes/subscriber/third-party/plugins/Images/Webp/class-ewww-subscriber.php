@@ -45,13 +45,7 @@ class EWWW_Subscriber implements Webp_Interface, Subscriber_Interface {
 	}
 
 	/**
-	 * Returns an array of events that this subscriber wants to listen to.
-	 *
-	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
-	 *
-	 * @return array
+	 * {@inheritdoc}
 	 */
 	public static function get_subscribed_events() {
 		return [

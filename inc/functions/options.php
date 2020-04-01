@@ -48,9 +48,15 @@ function update_rocket_option( $key, $value ) { // phpcs:ignore WordPress.Naming
  * @source wp-admin/includes/plugin.php
  *
  * @param string $plugin Plugin folder/main file.
+ *
+ * @return boolean true when plugin is active; else false.
  */
 function rocket_is_plugin_active( $plugin ) {
-	return in_array( $plugin, (array) get_option( 'active_plugins', [] ), true ) || rocket_is_plugin_active_for_network( $plugin );
+	return (
+		in_array( $plugin, (array) get_option( 'active_plugins', [] ), true )
+		||
+		rocket_is_plugin_active_for_network( $plugin )
+	);
 }
 
 /**
@@ -61,6 +67,8 @@ function rocket_is_plugin_active( $plugin ) {
  * @source wp-admin/includes/plugin.php
  *
  * @param string $plugin Plugin folder/main file.
+ *
+ * @return bool true if multisite and plugin is active for network; else, false.
  */
 function rocket_is_plugin_active_for_network( $plugin ) {
 	if ( ! is_multisite() ) {
@@ -68,11 +76,7 @@ function rocket_is_plugin_active_for_network( $plugin ) {
 	}
 
 	$plugins = get_site_option( 'active_sitewide_plugins' );
-	if ( isset( $plugins[ $plugin ] ) ) {
-		return true;
-	}
-
-	return false;
+	return isset( $plugins[ $plugin ] );
 }
 
 /**
@@ -203,9 +207,10 @@ function get_rocket_cache_reject_uri() { // phpcs:ignore WordPress.NamingConvent
 	}
 
 	$uris      = get_rocket_option( 'cache_reject_uri', [] );
+	$uris      = is_array( $uris ) ? $uris : [];
 	$home_root = rocket_get_home_dirname();
 
-	if ( '' !== $home_root ) {
+	if ( '' !== $home_root && $uris ) {
 		// The site is not at the domain root, it's in a folder.
 		$home_root_escaped = preg_quote( $home_root, '/' );
 		$home_root_len     = strlen( $home_root );
@@ -427,7 +432,6 @@ function get_rocket_exclude_defer_js() { // phpcs:ignore WordPress.NamingConvent
 		$exclude_defer_js[] = $jetpack_jquery;
 		$exclude_defer_js[] = $googleapis_jquery;
 		$exclude_defer_js[] = $cdnjs_jquery;
-
 	}
 
 	/**
@@ -502,13 +506,15 @@ function rocket_check_key() {
 	$return = rocket_valid_key();
 
 	if ( $return ) {
+		rocket_delete_licence_data_file();
+
 		return $return;
 	}
 
 	Logger::info( 'LICENSE VALIDATION PROCESS STARTED.', [ 'license validation process' ] );
 
 	$response = wp_remote_get(
-		WP_ROCKET_WEB_VALID,
+		rocket_get_constant( 'WP_ROCKET_WEB_VALID' ),
 		[
 			'timeout' => 30,
 		]
@@ -609,7 +615,7 @@ function rocket_check_key() {
 			]
 		);
 
-		set_transient( WP_ROCKET_SLUG, $rocket_options );
+		set_transient( rocket_get_constant( 'WP_ROCKET_SLUG' ), $rocket_options );
 		return $rocket_options;
 	}
 
@@ -619,12 +625,35 @@ function rocket_check_key() {
 		$rocket_options['license'] = '1';
 	}
 
-	Logger::info( 'License validation succeeded.', [ 'license validation process' ] );
+	Logger::info( 'License validation successful.', [ 'license validation process' ] );
 
-	set_transient( WP_ROCKET_SLUG, $rocket_options );
+	set_transient( rocket_get_constant( 'WP_ROCKET_SLUG' ), $rocket_options );
 	delete_transient( 'rocket_check_key_errors' );
+	rocket_delete_licence_data_file();
 
 	return $rocket_options;
+}
+
+/**
+ * Deletes the licence-data.php file if it exists
+ *
+ * @since 3.5
+ * @author Remy Perona
+ *
+ * @return void
+ */
+function rocket_delete_licence_data_file() {
+	if ( is_multisite() ) {
+		return;
+	}
+
+	$rocket_path = rocket_get_constant( 'WP_ROCKET_PATH' );
+
+	if ( ! rocket_direct_filesystem()->exists( $rocket_path . 'licence-data.php' ) ) {
+		return;
+	}
+
+	rocket_direct_filesystem()->delete( $rocket_path . 'licence-data.php' );
 }
 
 /**

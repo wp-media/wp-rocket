@@ -4,9 +4,6 @@ defined( 'ABSPATH' ) || exit;
 
 // Launch hooks that deletes all the cache domain.
 add_action( 'switch_theme', 'rocket_clean_domain' );  // When user change theme.
-add_action( 'user_register', 'rocket_clean_domain' );  // When a user is added.
-add_action( 'profile_update', 'rocket_clean_domain' );  // When a user is updated.
-add_action( 'deleted_user', 'rocket_clean_domain' );  // When a user is deleted.
 add_action( 'wp_update_nav_menu', 'rocket_clean_domain' );  // When a custom menu is update.
 add_action( 'update_option_sidebars_widgets', 'rocket_clean_domain' );  // When you change the order of widgets.
 add_action( 'update_option_category_base', 'rocket_clean_domain' );  // When category permalink is updated.
@@ -465,6 +462,8 @@ function do_admin_post_rocket_purge_cache() { // phpcs:ignore WordPress.NamingCo
 				}
 
 				if ( get_rocket_option( 'manual_preload' ) && ( ! defined( 'WP_ROCKET_DEBUG' ) || ! WP_ROCKET_DEBUG ) ) {
+					$home_url = get_rocket_i18n_home_url( $lang );
+
 					/**
 					 * Filters the arguments for the preload request being triggered after clearing the cache.
 					 *
@@ -473,7 +472,7 @@ function do_admin_post_rocket_purge_cache() { // phpcs:ignore WordPress.NamingCo
 					 *
 					 * @param array $args Request arguments.
 					 */
-					$args = apply_filters(
+					$args = (array) apply_filters(
 						'rocket_preload_after_purge_cache_request_args',
 						[
 							'blocking'   => false,
@@ -482,10 +481,20 @@ function do_admin_post_rocket_purge_cache() { // phpcs:ignore WordPress.NamingCo
 							'sslverify'  => apply_filters( 'https_local_ssl_verify', false ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 						]
 					);
-					wp_safe_remote_get(
-						home_url( $lang ),
-						$args
-					);
+
+					wp_safe_remote_get( $home_url, $args );
+
+					/**
+					 * Fires after automatically preloading the homepage, which occurs after purging the cache.
+					 *
+					 * @since  3.5
+					 * @author Grégory Viguier
+					 *
+					 * @param string $home_url URL to the homepage being preloaded.
+					 * @param string $lang     The lang of the homepage.
+					 * @param array  $args     Arguments used for the preload request.
+					 */
+					do_action( 'rocket_after_preload_after_purge_cache', $home_url, $lang, $args );
 				}
 
 				rocket_dismiss_box( 'rocket_warning_plugin_modification' );
@@ -573,48 +582,10 @@ function do_admin_post_rocket_purge_opcache() { // phpcs:ignore WordPress.Naming
 add_action( 'admin_post_rocket_purge_opcache', 'do_admin_post_rocket_purge_opcache' );
 
 /**
- * Purge CloudFlare cache
- *
- * @since 2.5
- */
-function do_admin_post_rocket_purge_cloudflare() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
-	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'rocket_purge_cloudflare' ) ) {
-		wp_nonce_ays( '' );
-	}
-
-	if ( ! current_user_can( 'rocket_purge_cloudflare_cache' ) ) {
-		return;
-	}
-
-	// Purge CloudFlare.
-	$cf_purge = rocket_purge_cloudflare();
-
-	if ( is_wp_error( $cf_purge ) ) {
-		$cf_purge_result = [
-			'result'  => 'error',
-			// translators: %s = CloudFare API return message.
-			'message' => sprintf( __( '<strong>WP Rocket:</strong> %s', 'rocket' ), $cf_purge->get_error_message() ),
-		];
-	} else {
-		$cf_purge_result = [
-			'result'  => 'success',
-			'message' => __( '<strong>WP Rocket:</strong> Cloudflare cache successfully purged.', 'rocket' ),
-		];
-	}
-
-	set_transient( get_current_user_id() . '_cloudflare_purge_result', $cf_purge_result );
-
-	wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
-	die();
-}
-add_action( 'admin_post_rocket_purge_cloudflare', 'do_admin_post_rocket_purge_cloudflare' );
-
-/**
  * Clean the cache when the current theme is updated
  *
  * @param WP_Upgrader $wp_upgrader WP_Upgrader instance.
  * @param array       $hook_extra  Array of bulk item update data.
- * @return void
  */
 function rocket_clean_cache_theme_update( $wp_upgrader, $hook_extra ) {
 	if ( 'update' !== $hook_extra['action'] ) {

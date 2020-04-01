@@ -164,7 +164,6 @@ function rocket_sanitize_textarea_field( $field, $value ) {
 		'cache_reject_uri'     => [ 'esc_url', 'rocket_clean_exclude_file', 'rocket_clean_wildcards' ], // Pattern.
 		'cache_query_strings'  => [ 'rocket_sanitize_key' ],
 		'cdn_reject_files'     => [ 'rocket_clean_exclude_file', 'rocket_clean_wildcards' ], // Pattern.
-		'dns_prefetch'         => [ 'esc_url' ],
 		'exclude_css'          => [ 'rocket_clean_exclude_file', 'rocket_sanitize_css', 'rocket_clean_wildcards' ], // Pattern.
 		'exclude_inline_js'    => [ 'sanitize_text_field' ], // Pattern.
 		'exclude_js'           => [ 'rocket_validate_js', 'rocket_clean_wildcards' ], // Pattern.

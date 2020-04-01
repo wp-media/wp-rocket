@@ -2,10 +2,6 @@
 
 defined( 'ABSPATH' ) || exit;
 
-if ( ! ( class_exists( 'WpeCommon' ) && function_exists( 'wpe_param' ) ) ) {
-	return;
-}
-
 /**
  * Changes the text on the Varnish one-click block.
  *
