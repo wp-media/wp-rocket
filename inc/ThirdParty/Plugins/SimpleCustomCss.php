@@ -39,15 +39,16 @@ class SimpleCustomCss implements Subscriber_Interface {
 	public function cache_sccss() {
 		$sccss = rocket_get_cache_busting_paths( 'sccss.css', 'css' );
 
-		if ( ! file_exists( $sccss['filepath'] ) ) {
+		if ( ! rocket_direct_filesystem()->exists( $sccss['filepath'] ) ) {
 			$this->create_cache_file( $sccss['bustingpath'], $sccss['filepath'] );
 		}
 
 		// Bailout if the SCCSS file could not be created.
-		if ( ! file_exists( $sccss['filepath'] ) ) {
+		if ( ! rocket_direct_filesystem()->exists( $sccss['filepath'] ) ) {
 			return;
 		}
 
+		// @Tonya: filemtime( $sccss['filepath'] ) should be changed into rocket_direct_filesystem()->mtime( $sccss['filepath'] ); ?
 		wp_enqueue_style( 'scss', $sccss['url'], '', filemtime( $sccss['filepath'] ) );
 		remove_action( 'wp_enqueue_scripts', 'sccss_register_style', 99 );
 	}
@@ -75,7 +76,7 @@ class SimpleCustomCss implements Subscriber_Interface {
 	 * @param string $cache_busting_path Path to the cache busting directory.
 	 * @param string $cache_sccss_filepath Path to the sccss cache file.
 	 */
-	public function create_cache_file( $cache_busting_path, $cache_sccss_filepath ) {
+	private function create_cache_file( $cache_busting_path, $cache_sccss_filepath ) {
 		$options     = get_option( 'sccss_settings' );
 		$raw_content = isset( $options['sccss-content'] ) ? $options['sccss-content'] : '';
 		$content     = wp_kses( $raw_content, [ '\'', '\"' ] );
