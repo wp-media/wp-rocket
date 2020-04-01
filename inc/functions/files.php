@@ -1228,18 +1228,18 @@ function rocket_get_filesystem_perms( $type ) {
 	// If the constants are not defined, use fileperms() like WordPress does.
 	switch ( $type ) {
 		case 'dir':
-			if ( defined( 'FS_CHMOD_DIR' ) ) {
-				$perms[ $type ] = FS_CHMOD_DIR;
+			if ( rocket_has_constant( 'FS_CHMOD_DIR' ) ) {
+				$perms[ $type ] = rocket_get_constant( 'FS_CHMOD_DIR' );
 			} else {
-				$perms[ $type ] = fileperms( ABSPATH ) & 0777 | 0755;
+				$perms[ $type ] = fileperms( rocket_get_constant( 'ABSPATH' ) ) & 0777 | 0755;
 			}
 			break;
 
 		case 'file':
-			if ( defined( 'FS_CHMOD_FILE' ) ) {
-				$perms[ $type ] = FS_CHMOD_FILE;
+			if ( rocket_has_constant( 'FS_CHMOD_FILE' ) ) {
+				$perms[ $type ] = rocket_get_constant( 'FS_CHMOD_DIR' );
 			} else {
-				$perms[ $type ] = fileperms( ABSPATH . 'index.php' ) & 0777 | 0644;
+				$perms[ $type ] = fileperms( rocket_get_constant( 'ABSPATH' ) . 'index.php' ) & 0777 | 0644;
 			}
 	}
 

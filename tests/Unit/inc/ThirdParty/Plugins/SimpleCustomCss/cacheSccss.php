@@ -18,9 +18,9 @@ class Test_CacheSccss extends FilesystemTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->sccss = new SimpleCustomCss();
-		if ( ! defined('FS_CHMOD_FILE')) {
-			define( 'FS_CHMOD_FILE', ( 0644 & ~ umask() ) );
-		}
+
+		Functions\expect( 'rocket_has_constant' )->with( 'FS_CHMOD_DIR' )->andReturn( true );
+		Functions\expect( 'rocket_get_constant' )->with( 'FS_CHMOD_DIR' )->andReturn( 0755 & ~ umask() );
 	}
 
 	public function testFileExistsShouldEnqueueAndRemoveOriginalWhenFileExists() {

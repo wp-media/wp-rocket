@@ -48,8 +48,7 @@ class SimpleCustomCss implements Subscriber_Interface {
 			return;
 		}
 
-		// @Tonya: filemtime( $sccss['filepath'] ) should be changed into rocket_direct_filesystem()->mtime( $sccss['filepath'] ); ?
-		wp_enqueue_style( 'scss', $sccss['url'], '', filemtime( $sccss['filepath'] ) );
+		wp_enqueue_style( 'scss', $sccss['url'], '', rocket_direct_filesystem()->mtime( $sccss['filepath'] ) );
 		remove_action( 'wp_enqueue_scripts', 'sccss_register_style', 99 );
 	}
 

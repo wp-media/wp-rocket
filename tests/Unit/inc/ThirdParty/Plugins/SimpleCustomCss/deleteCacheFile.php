@@ -12,7 +12,7 @@ use WP_Rocket\ThirdParty\Plugins\SimpleCustomCss;
  * @group  WithSCCSS
  */
 class Test_DeleteCacheFile extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/ThirdParty/Plugins/SimpleCustomCss/cacheSccss.php';
+	protected $path_to_test_data = '/inc/ThirdParty/Plugins/SimpleCustomCss/deleteCacheFile.php';
 	private $sccss;
 
 	public function setUp() {
@@ -22,16 +22,20 @@ class Test_DeleteCacheFile extends FilesystemTestCase {
 		Functions\expect( 'rocket_clean_domain' );
 		Functions\expect( 'wp_kses' )->andReturnFirstArg();
 
-		if ( ! defined('FS_CHMOD_FILE')) {
-			define( 'FS_CHMOD_FILE', ( 0644 & ~ umask() ) );
-		}
+		Functions\expect( 'get_option' )
+			->with( 'sccss_settings' )
+			->andReturn( [
+				'sccss-content' => '.simple-custom-css { color: red; }',
+			] );
+
+		Functions\expect( 'rocket_has_constant' )->with( 'FS_CHMOD_DIR' )->andReturn( true );
+		Functions\expect( 'rocket_get_constant' )->with( 'FS_CHMOD_DIR' )->andReturn( 0755 & ~ umask() );
 	}
 
-	public function testShouldDeleteTheFileAndRecreateIt() {
-		$bustingpath = 'wp-content/cache/busting/1/';
-		$filepath    = 'wp-content/cache/busting/1/sccss.css';
-		$url         = 'http://example.org/wp-content/cache/busting/1/sccss.css';
-
+	/**
+	 * @dataProvider providerTestData
+	 */
+	public function testShouldDeleteTheFileAndRecreateIt( $bustingpath, $filepath, $url ) {
 		$this->filesystem->setFilemtime( $filepath, strtotime( '11 hours ago' ) );
 
 		Functions\expect( 'rocket_get_cache_busting_paths' )
@@ -42,11 +46,8 @@ class Test_DeleteCacheFile extends FilesystemTestCase {
 				'url'         => $url,
 			] );
 
-		$this->assertTrue( $this->filesystem->exists( $filepath ) );
-
 		$this->sccss->delete_cache_file();
 		$this->assertTrue( $this->filesystem->exists( $filepath ) );
 	}
-
 
 }
