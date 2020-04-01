@@ -24,7 +24,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		'settings_page_subscriber',
 		'deactivation_intent_render',
 		'deactivation_intent_subscriber',
-		'beacon_subscriber',
 		'hummingbird_subscriber',
 	];
 

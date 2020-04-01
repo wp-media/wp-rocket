@@ -89,7 +89,7 @@ class Plugin {
 			$this->container->addServiceProvider( 'WP_Rocket\Engine\Admin\ServiceProvider' );
 
 			$subscribers = [
-				'beacon_subscriber',
+				'beacon',
 				'settings_page_subscriber',
 				'deactivation_intent_subscriber',
 				'hummingbird_subscriber',
