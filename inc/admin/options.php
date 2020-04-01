@@ -86,12 +86,6 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		rocket_clean_minify( 'js' );
 	}
 
-	// Purge all cache busting files.
-	// phpcs:ignore WordPress.Security.NonceVerification.Missing
-	if ( ! empty( $_POST ) && ( $oldvalue['remove_query_strings'] !== $value['remove_query_strings'] ) ) {
-		rocket_clean_cache_busting();
-	}
-
 	// Regenerate advanced-cache.php file.
 	// phpcs:ignore WordPress.Security.NonceVerification.Missing
 	if ( ! empty( $_POST ) && ( ( isset( $oldvalue['do_caching_mobile_files'] ) && ! isset( $value['do_caching_mobile_files'] ) ) || ( ! isset( $oldvalue['do_caching_mobile_files'] ) && isset( $value['do_caching_mobile_files'] ) ) || ( isset( $oldvalue['do_caching_mobile_files'], $value['do_caching_mobile_files'] ) ) && $oldvalue['do_caching_mobile_files'] !== $value['do_caching_mobile_files'] ) ) {
