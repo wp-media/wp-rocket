@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\ServiceProvider;
+namespace WP_Rocket\Engine\Admin\Beacon;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
 
@@ -9,7 +9,7 @@ use League\Container\ServiceProvider\AbstractServiceProvider;
  * @since 3.3
  * @author Remy Perona
  */
-class Beacon extends AbstractServiceProvider {
+class ServiceProvider extends AbstractServiceProvider {
 
 	/**
 	 * The provides array is a way to let the container
@@ -33,7 +33,7 @@ class Beacon extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-		$this->getContainer()->add( 'beacon', 'WP_Rocket\Admin\Settings\Beacon' )
+		$this->getContainer()->add( 'beacon', 'WP_Rocket\Engine\Admin\Beacon\Beacon' )
 			->withArgument( $this->getContainer()->get( 'options' ) );
 	}
 }

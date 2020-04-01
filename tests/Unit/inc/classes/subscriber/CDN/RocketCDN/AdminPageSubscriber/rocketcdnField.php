@@ -21,7 +21,7 @@ class Test_RocketcdnField extends TestCase {
 
 		$this->api_client = $this->createMock( 'WP_Rocket\CDN\RocketCDN\APIClient' );
 		$this->options    = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
-		$this->beacon     = $this->createMock( 'WP_Rocket\Admin\Settings\Beacon' );
+		$this->beacon     = $this->createMock( 'WP_Rocket\Engine\Admin\Beacon\Beacon' );
 		$this->page       = new AdminPageSubscriber(
 			$this->api_client,
 			$this->options,
