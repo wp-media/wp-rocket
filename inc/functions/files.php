@@ -1152,7 +1152,7 @@ function rocket_mkdir_p( $target ) {
 	}
 
 	// safe mode fails with a trailing slash under certain PHP versions.
-	$target = untrailingslashit( $target );
+	$target = rtrim( $target, '/\\' );
 	if ( empty( $target ) ) {
 		$target = '/';
 	}
