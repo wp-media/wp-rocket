@@ -151,11 +151,11 @@ class Facebook_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface
 	 * @access public
 	 * @author Grégory Viguier
 	 *
-	 * @param  string $_type Type of cache clearance: 'all', 'post', 'term', 'user', 'url'.
+	 * @param  string $type Type of cache clearance: 'all', 'post', 'term', 'user', 'url'.
 	 * @return bool
 	 */
-	public function delete_cache( $_type ) {
-		if ( 'all' !== $_type || ! $this->is_busting_active() ) {
+	public function delete_cache( $type ) {
+		if ( 'all' !== $type || ! $this->is_busting_active() ) {
 			return false;
 		}
 
