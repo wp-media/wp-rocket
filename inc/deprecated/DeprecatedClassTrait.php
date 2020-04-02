@@ -52,60 +52,45 @@ trait DeprecatedClassTrait {
 				/**
 				 * With replacement.
 				 */
-				call_user_func(
-					'trigger_error',
-					sprintf(
-						/* translators: 1: PHP class name, 2: version number, 3: replacement class name. */
-						__( 'The called class %1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead.', 'rocket' ),
-						'<code>' . self::class . '</code>',
-						'<strong>' . $version . '</strong>',
-						'<code>' . $replacement . '</code>'
-					)
+				$message = sprintf(
+					/* translators: 1: PHP class name, 2: version number, 3: replacement class name. */
+					__( 'The called class %1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead.', 'rocket' ),
+					'<code>' . self::class . '</code>',
+					'<strong>' . $version . '</strong>',
+					'<code>' . $replacement . '</code>'
 				);
-				return;
-			}
-
-			/**
-			 * Without replacement.
-			 */
-			call_user_func(
-				'trigger_error',
-				sprintf(
+			} else {
+				/**
+				 * Without replacement.
+				 */
+				$message = sprintf(
 					/* translators: 1: PHP class name, 2: version number. */
 					__( 'The called class %1$s is <strong>deprecated</strong> since version %2$s!', 'rocket' ),
 					'<code>' . self::class . '</code>',
 					'<strong>' . $version . '</strong>'
-				)
-			);
-			return;
-		}
-
-		if ( ! empty( $replacement ) ) {
+				);
+			}
+		} elseif ( ! empty( $replacement ) ) {
 			/**
 			 * With replacement.
 			 */
-			call_user_func(
-				'trigger_error',
-				sprintf(
-					'The called class %1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead.',
-					'<code>' . self::class . '</code>',
-					'<strong>' . $version . '</strong>',
-					'<code>' . $replacement . '</code>'
-				)
+			$message = sprintf(
+				'The called class %1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead.',
+				'<code>' . self::class . '</code>',
+				'<strong>' . $version . '</strong>',
+				'<code>' . $replacement . '</code>'
 			);
-			return;
-		}
-
-		/**
-		 * Without replacement.
-		 */
-		call_user_func(
-			'trigger_error',
-			sprintf(
+		} else {
+			/**
+			 * Without replacement.
+			 */
+			$message = sprintf(
 				'The called class %1$s is <strong>deprecated</strong> since version %2$s!',
 				'<code>' . self::class . '</code>',
 				'<strong>' . $version . '</strong>'
-			)
-		);
+			);
+		}
+
+		call_user_func( 'trigger_error', $message );
 	}
 }
