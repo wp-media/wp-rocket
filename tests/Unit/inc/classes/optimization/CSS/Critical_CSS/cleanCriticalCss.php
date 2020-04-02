@@ -38,11 +38,11 @@ class Test_CleanCriticalCSS extends FilesystemTestCase {
 		$critical_css_path = $this->critical_css_path . $blog_id . '/';
 
 		// Test that deleted Files are available.
-		foreach ( $deleted_files as $file => $content ) {
+		foreach ( $deleted_files as $file ) {
 			$this->assertTrue( $this->filesystem->exists( $critical_css_path . $file ) );
 		}
 		// Test that Subfolders are available.
-		foreach ( $available_folders as $folder => $content ) {
+		foreach ( $available_folders as $folder ) {
 			$this->assertTrue( $this->filesystem->exists( $critical_css_path . $folder ) );
 		}
 
@@ -50,11 +50,11 @@ class Test_CleanCriticalCSS extends FilesystemTestCase {
 		$this->critical_css->clean_critical_css();
 
 		// Test that root files are deleted now.
-		foreach ( $deleted_files as $file => $content ) {
+		foreach ( $deleted_files as $file ) {
 			$this->assertFalse( $this->filesystem->exists( $critical_css_path . $file ) );
 		}
 		// Test that Subfolders are still available.
-		foreach ( $available_folders as $folder => $content ) {
+		foreach ( $available_folders as $folder ) {
 			$this->assertTrue( $this->filesystem->exists( $critical_css_path . $folder ) );
 		}
 	}
