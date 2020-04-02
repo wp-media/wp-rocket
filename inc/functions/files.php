@@ -834,11 +834,14 @@ function rocket_clean_domain( $lang = '' ) {
 		return;
 	}
 
+	$dirs_to_preserve = get_rocket_i18n_to_preserve( $lang );
+	/** This filter is documented in inc/front/htaccess.php */
+	$url_no_dots = apply_filters( 'rocket_url_no_dots', false );
+
 	foreach ( $urls as $url ) {
 		$file = get_rocket_parse_url( $url );
 
-		/** This filter is documented in inc/front/htaccess.php */
-		if ( apply_filters( 'rocket_url_no_dots', false ) ) {
+		if ( $url_no_dots ) {
 			$file['host'] = str_replace( '.', '_', $file['host'] );
 		}
 
@@ -859,7 +862,7 @@ function rocket_clean_domain( $lang = '' ) {
 			$files = new RegexIterator( $iterator, "/{$file['host']}*{$file['path']}/i" );
 
 			foreach ( $files as $file ) {
-				rocket_rrmdir( $file, get_rocket_i18n_to_preserve( $lang ) );
+				rocket_rrmdir( $file, $dirs_to_preserve );
 			}
 		} catch ( InvalidArgumentException $e ) {
 			// No logging yet.
