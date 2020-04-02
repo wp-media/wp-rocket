@@ -24,16 +24,30 @@ return [
 	// Test data.
 	'test_data' => [
 		'non_multisite' => [
-			'testShouldBailOutWhenCriticalCSSOptionIsFalse'  => [
+			[
 				'values'         => [
 					'old' => [ 'async_css' => 0 ],
 					'new' => [ 'async_css' => 0 ],
 				],
 				'shouldGenerate' => false,
 			],
-			'testShouldBailOutWhenCriticalCssPathIsNotEmpty' => [
+			[
+				'values'         => [
+					'old' => [ 'async_css' => 1 ],
+					'new' => [ 'async_css' => 0 ],
+				],
+				'shouldGenerate' => false,
+			],
+			[
 				'values'         => [
 					'old' => [ 'async_css' => 0 ],
+					'new' => [ 'async_css' => 1 ],
+				],
+				'shouldGenerate' => false,
+			],
+			[
+				'values'         => [
+					'old' => [ 'async_css' => 1 ],
 					'new' => [ 'async_css' => 1 ],
 				],
 				'shouldGenerate' => false,
@@ -62,7 +76,31 @@ return [
 					'old' => [ 'async_css' => 0 ],
 					'new' => [ 'async_css' => 1 ],
 				],
+				'blog_id'         => 2,
+				'should_generate' => false,
+			],
+			[
+				'values'          => [
+					'old' => [ 'async_css' => 1 ],
+					'new' => [ 'async_css' => 1 ],
+				],
+				'blog_id'         => 2,
+				'should_generate' => false,
+			],
+			[
+				'values'          => [
+					'old' => [ 'async_css' => 0 ],
+					'new' => [ 'async_css' => 1 ],
+				],
 				'site_id'         => 3,
+				'should_generate' => true,
+			],
+			[
+				'values'          => [
+					'old' => [ 'async_css' => 0 ],
+					'new' => [ 'async_css' => 1 ],
+				],
+				'site_id'         => 4,
 				'should_generate' => true,
 			],
 		],
