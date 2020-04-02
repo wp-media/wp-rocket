@@ -1,15 +1,17 @@
 <?php
-namespace WP_Rocket\ServiceProvider;
+
+namespace WP_Rocket\Optimization;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
 
 /**
  * Service provider for the WP Rocket optimizations
  *
- * @since 3.3
+ * @since  3.3
+ * @since  3.6 Renamed and moved into this module.
  * @author Remy Perona
  */
-class Optimization_Subscribers extends AbstractServiceProvider {
+class ServiceProvider extends AbstractServiceProvider {
 
 	/**
 	 * The provides array is a way to let the container
@@ -38,14 +40,14 @@ class Optimization_Subscribers extends AbstractServiceProvider {
 	/**
 	 * Registers the option array in the container
 	 *
-	 * @since 3.3
+	 * @since  3.3
 	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
 	public function register() {
 		$this->getContainer()->add( 'config', 'WP_Rocket\Buffer\Config' )
-			->withArgument( [ 'config_dir_path' => WP_ROCKET_CONFIG_PATH ] );
+			->withArgument( [ 'config_dir_path' => rocket_get_constant( 'WP_ROCKET_CONFIG_PATH' ) ] );
 		$this->getContainer()->add( 'tests', 'WP_Rocket\Buffer\Tests' )
 			->withArgument( $this->getContainer()->get( 'config' ) );
 		$this->getContainer()->add( 'buffer_optimization', 'WP_Rocket\Buffer\Optimization' )
@@ -54,8 +56,8 @@ class Optimization_Subscribers extends AbstractServiceProvider {
 			->withArgument( $this->getContainer()->get( 'buffer_optimization' ) );
 		$this->getContainer()->add( 'cache_dynamic_resource', 'WP_Rocket\Optimization\Cache_Dynamic_Resource' )
 			->withArgument( $this->getContainer()->get( 'options' ) )
-			->withArgument( WP_ROCKET_CACHE_BUSTING_PATH )
-			->withArgument( WP_ROCKET_CACHE_BUSTING_URL );
+			->withArgument( rocket_get_constant( 'WP_ROCKET_CACHE_BUSTING_PATH' ) )
+			->withArgument( rocket_get_constant( 'WP_ROCKET_CACHE_BUSTING_URL' ) );
 		$this->getContainer()->share( 'ie_conditionals_subscriber', 'WP_Rocket\Subscriber\Optimization\IE_Conditionals_Subscriber' );
 		$this->getContainer()->share( 'minify_html_subscriber', 'WP_Rocket\Subscriber\Optimization\Minify_HTML_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'options' ) );

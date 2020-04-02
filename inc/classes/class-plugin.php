@@ -98,7 +98,7 @@ class Plugin {
 				'rocketcdn_data_manager_subscriber',
 			];
 		} elseif ( \rocket_valid_key() ) {
-			$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Optimization_Subscribers' );
+			$this->container->addServiceProvider( 'WP_Rocket\Optimization\ServiceProvider' );
 
 			$subscribers = [
 				'buffer_subscriber',
