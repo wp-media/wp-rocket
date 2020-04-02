@@ -84,19 +84,6 @@ class Test_GenerateCriticalCssOnActivation extends FilesystemTestCase {
 			$this->assertFalse( $this->filesystem->is_dir( $critical_css_path ) );
 		}
 
-		// Temporary hack until we make `rocket_mkdir_p()` work with `vfs://`.
-		Functions\expect( 'rocket_mkdir_p' )
-			->with( $critical_css_path )
-			->andReturnUsing(
-				function ( $target ) {
-					if ( ! $this->filesystem->exists( $target ) ) {
-						$this->filesystem->mkdir( $target );
-					}
-
-					return $this->filesystem->is_dir( $target );
-				}
-			);
-
 		$this->assertFalse( get_transient( 'rocket_critical_css_generation_process_running' ) );
 
 		// Run it.
