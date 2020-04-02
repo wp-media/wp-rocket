@@ -6,6 +6,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
  * @covers ::rocket_mkdir_p
+ * @uses  ::rocket_is_stream
  * @group Functions
  * @group Files
  * @group vfs
@@ -27,7 +28,7 @@ class Test_RocketMkdirP extends FilesystemTestCase {
 			$this->assertTrue( $this->filesystem->exists( $target ) );
 		}
 
-		 $this->assertTrue( rocket_mkdir_p( $target ) );
+		$this->assertTrue( rocket_mkdir_p( $target ) );
 
 		$dir = ! empty( $new_path ) ? $new_path : $target;
 		$this->assertTrue( $this->filesystem->is_dir( $dir ) );
