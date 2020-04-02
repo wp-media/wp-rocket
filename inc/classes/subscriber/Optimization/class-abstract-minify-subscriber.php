@@ -1,11 +1,11 @@
 <?php
 namespace WP_Rocket\Subscriber\Optimization;
 
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Rocket\Admin\Options_Data as Options;
 
 /**
- * Undocumented class
+ * Parent class for minify subscribers.
  */
 abstract class Minify_Subscriber implements Subscriber_Interface {
 	/**
@@ -14,7 +14,7 @@ abstract class Minify_Subscriber implements Subscriber_Interface {
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
-	 * @var Options
+	 * @var Options_Data
 	 */
 	protected $options;
 
@@ -34,9 +34,9 @@ abstract class Minify_Subscriber implements Subscriber_Interface {
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
-	 * @param Options $options Plugin options.
+	 * @param Options_Data $options Plugin options.
 	 */
-	public function __construct( Options $options ) {
+	public function __construct( Options_Data $options ) {
 		$this->options = $options;
 	}
 

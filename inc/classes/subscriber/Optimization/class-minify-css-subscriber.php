@@ -1,9 +1,9 @@
 <?php
 namespace WP_Rocket\Subscriber\Optimization;
 
-use WP_Rocket\Admin\Options_Data as Options;
-use WP_Rocket\Optimization\CSS;
-use \MatthiasMullie\Minify;
+use MatthiasMullie\Minify\CSS as MinifyCSS;
+use WP_Rocket\Optimization\CSS\Combine;
+use WP_Rocket\Optimization\CSS\Minify;
 
 /**
  * Minify/Combine CSS subscriber
@@ -47,9 +47,9 @@ class Minify_CSS_Subscriber extends Minify_Subscriber {
 		}
 
 		if ( $this->options->get( 'minify_css' ) && $this->options->get( 'minify_concatenate_css' ) ) {
-			$this->set_optimization_type( new CSS\Combine( $this->options, new Minify\CSS() ) );
+			$this->set_optimization_type( new Combine( $this->options, new MinifyCSS() ) );
 		} elseif ( $this->options->get( 'minify_css' ) && ! $this->options->get( 'minify_concatenate_css' ) ) {
-			$this->set_optimization_type( new CSS\Minify( $this->options ) );
+			$this->set_optimization_type( new Minify( $this->options ) );
 		}
 
 		return $this->optimize( $html );

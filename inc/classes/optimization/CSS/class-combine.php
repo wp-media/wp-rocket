@@ -1,11 +1,9 @@
 <?php
 namespace WP_Rocket\Optimization\CSS;
 
-use WP_Rocket\Admin\Options_Data as Options;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Logger\Logger;
-use MatthiasMullie\Minify;
-
-defined( 'ABSPATH' ) || exit;
+use MatthiasMullie\Minify\CSS as MinifyCSS;
 
 /**
  * Minify & Combine CSS files
@@ -22,7 +20,7 @@ class Combine extends Abstract_CSS_Optimization {
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
-	 * @var Minify\CSS
+	 * @var MinifyCSS
 	 */
 	private $minifier;
 
@@ -32,10 +30,10 @@ class Combine extends Abstract_CSS_Optimization {
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
-	 * @param Options    $options  Options instance.
-	 * @param Minify\CSS $minifier Minifier instance.
+	 * @param Options_Data $options  Options instance.
+	 * @param MinifyCSS    $minifier Minifier instance.
 	 */
-	public function __construct( Options $options, Minify\CSS $minifier ) {
+	public function __construct( Options_Data $options, MinifyCSS $minifier ) {
 		parent::__construct( $options );
 
 		$this->minifier = $minifier;
