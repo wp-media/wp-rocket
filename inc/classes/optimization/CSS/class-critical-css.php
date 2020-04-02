@@ -129,26 +129,19 @@ class Critical_CSS {
 	 * @author Remy Perona
 	 */
 	public function clean_critical_css() {
-		try {
-			$directory = new \RecursiveDirectoryIterator( $this->critical_css_path, \FilesystemIterator::SKIP_DOTS );
-		} catch ( \UnexpectedValueException $e ) {
-			// no logging yet.
+		$filesystem = rocket_direct_filesystem();
+		$dir        = $filesystem->dirlist( $this->critical_css_path );
+
+		// Bailout if could not get the directory contents.
+		if ( false === $dir || ! $dir ) {
 			return;
 		}
 
-		try {
-			$files = new \RecursiveIteratorIterator( $directory, \RecursiveIteratorIterator::CHILD_FIRST );
-		} catch ( \Exception $e ) {
-			// no logging yet.
-			return;
-		}
-
-		if ( ! $files ) {
-			return;
-		}
-
-		foreach ( $files as $file ) {
-			rocket_direct_filesystem()->delete( $file );
+		foreach ( $dir as $file ) {
+			if ( 'f' !== $file['type'] ) {
+				continue;
+			}
+			$filesystem->delete( $this->critical_css_path . $file['name'] );
 		}
 	}
 
