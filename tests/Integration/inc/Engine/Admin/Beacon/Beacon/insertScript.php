@@ -31,6 +31,9 @@ class Test_InsertScript extends TestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldReturnBeaconScript( $locale, $expected ) {
+		$admin = get_role( 'administrator' );
+		$admin->add_cap( 'rocket_manage_options' );
+
 		$user = $this->factory->user->create( [ 'role' => 'administrator' ] );
 		wp_set_current_user( $user );
 
