@@ -47,17 +47,17 @@ class CDNSubscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_buffer'             => [
+			'rocket_buffer'           => [
 				[ 'rewrite', 20 ],
 				[ 'rewrite_srcset', 21 ],
 			],
-			'rocket_css_content'        => 'rewrite_css_properties',
-			'rocket_cdn_hosts'          => [ 'get_cdn_hosts', 10, 2 ],
-			'rocket_dns_prefetch'       => 'add_dns_prefetch_cdn',
-			'rocket_facebook_sdk_url'   => 'add_cdn_url',
-			'rocket_css_url'            => [ 'add_cdn_url', 10, 2 ],
-			'rocket_js_url'             => [ 'add_cdn_url', 10, 2 ],
-			'rocket_asset_url'          => [ 'maybe_replace_url', 10, 2 ],
+			'rocket_css_content'      => 'rewrite_css_properties',
+			'rocket_cdn_hosts'        => [ 'get_cdn_hosts', 10, 2 ],
+			'rocket_dns_prefetch'     => 'add_dns_prefetch_cdn',
+			'rocket_facebook_sdk_url' => 'add_cdn_url',
+			'rocket_css_url'          => [ 'add_cdn_url', 10, 2 ],
+			'rocket_js_url'           => [ 'add_cdn_url', 10, 2 ],
+			'rocket_asset_url'        => [ 'maybe_replace_url', 10, 2 ],
 		];
 	}
 
