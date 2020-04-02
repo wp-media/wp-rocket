@@ -17,8 +17,23 @@ defined( 'ABSPATH' ) || exit;
  * @author Remy Perona
  */
 class Critical_CSS_Subscriber implements Subscriber_Interface {
+
 	/**
-	 * Constructor
+	 * Instance of Critical CSS.
+	 *
+	 * @var Critical_CSS
+	 */
+	protected $critical_css;
+
+	/**
+	 * Instance of options.
+	 *
+	 * @var Options_Data
+	 */
+	protected $options;
+
+	/**
+	 * Creates an instance of the Critical CSS Subscriber.
 	 *
 	 * @param Critical_CSS $critical_css Critical CSS instance.
 	 * @param Options_Data $options      WP Rocket options.
