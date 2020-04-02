@@ -1137,11 +1137,22 @@ function rocket_mkdir( $dir ) {
  * @return bool True if directory is created/exists, false otherwise
  */
 function rocket_mkdir_p( $target ) {
+	$wrapper = null;
+
+	if ( rocket_is_stream( $target ) ) {
+		list( $wrapper, $target ) = explode( '://', $target, 2 );
+	}
+
 	// from php.net/mkdir user contributed notes.
 	$target = str_replace( '//', '/', $target );
 
+	// Put the wrapper back on the target.
+	if ( null !== $wrapper ) {
+		$target = $wrapper . '://' . $target;
+	}
+
 	// safe mode fails with a trailing slash under certain PHP versions.
-	$target = untrailingslashit( $target );
+	$target = rtrim( $target, '/\\' );
 	if ( empty( $target ) ) {
 		$target = '/';
 	}
@@ -1163,6 +1174,30 @@ function rocket_mkdir_p( $target ) {
 	}
 
 	return false;
+}
+
+/**
+ * Test if a given path is a stream URL.
+ *
+ * @since 3.5.3
+ *
+ * @source wp_is_stream() in /wp-includes/functions.php
+ *
+ * @param string $path The resource path or URL.
+ *
+ * @return bool true if the path is a stream URL; else false.
+ */
+function rocket_is_stream( $path ) {
+	$scheme_separator = strpos( $path, '://' );
+
+	if ( false === $scheme_separator ) {
+		// $path isn't a stream.
+		return false;
+	}
+
+	$stream = substr( $path, 0, $scheme_separator );
+
+	return in_array( $stream, stream_get_wrappers(), true );
 }
 
 /**
