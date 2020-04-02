@@ -818,6 +818,22 @@ function rocket_clean_domain( $lang = '' ) {
 	$urls = apply_filters( 'rocket_clean_domain_urls', $urls, $lang );
 	$urls = array_filter( $urls );
 
+	$cache_path = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' );
+
+	try {
+		$cache = new RecursiveDirectoryIterator( $cache_path, FilesystemIterator::SKIP_DOTS );
+	} catch ( UnexpectedValueException $e ) {
+		// No logging yet.
+		return;
+	}
+
+	try {
+		$iterator = new RecursiveIteratorIterator( $cache, RecursiveIteratorIterator::CHILD_FIRST );
+	} catch ( Exception $e ) {
+		// No logging yet.
+		return;
+	}
+
 	foreach ( $urls as $url ) {
 		$file = get_rocket_parse_url( $url );
 
@@ -826,7 +842,7 @@ function rocket_clean_domain( $lang = '' ) {
 			$file['host'] = str_replace( '.', '_', $file['host'] );
 		}
 
-		$root = WP_ROCKET_CACHE_PATH . $file['host'] . '*' . $file['path'];
+		$root = $cache_path . $file['host'] . $file['path'];
 
 		/**
 		 * Fires before all cache files are deleted
@@ -839,12 +855,15 @@ function rocket_clean_domain( $lang = '' ) {
 		*/
 		do_action( 'before_rocket_clean_domain', $root, $lang, $url ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
-		// Delete cache domain files.
-		$dirs = glob( $root . '*', GLOB_NOSORT );
-		if ( $dirs ) {
-			foreach ( $dirs as $dir ) {
-				rocket_rrmdir( $dir, get_rocket_i18n_to_preserve( $lang ) );
+		try {
+			$files = new RegexIterator( $iterator, "/{$file['host']}*{$file['path']}/i" );
+
+			foreach ( $files as $file ) {
+				rocket_rrmdir( $file, get_rocket_i18n_to_preserve( $lang ) );
 			}
+		} catch ( InvalidArgumentException $e ) {
+			// No logging yet.
+			return;
 		}
 
 		/**
