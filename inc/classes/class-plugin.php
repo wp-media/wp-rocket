@@ -67,6 +67,7 @@ class Plugin {
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Database' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Beacon' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\RocketCDN' );
+		$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\CSS\CriticalPath\ServiceProvider' );
 
 		$subscribers = [];
 
@@ -158,6 +159,7 @@ class Plugin {
 			'detect_missing_tags_subscriber',
 			'purge_actions_subscriber',
 			'amp_subscriber',
+			'rest_generate_post_cpcss',
 		];
 
 		if ( get_rocket_option( 'do_cloudflare' ) ) {
