@@ -81,12 +81,12 @@ class Beacon implements Subscriber_Interface {
 		}
 
 		echo '<script type="text/javascript">!function(e,t,n){function a(){var e=t.getElementsByTagName("script")[0],n=t.createElement("script");n.type="text/javascript",n.async=!0,n.src="https://beacon-v2.helpscout.net",e.parentNode.insertBefore(n,e)}if(e.Beacon=n=function(t,n,a){e.Beacon.readyQueue.push({method:t,options:n,data:a})},n.readyQueue=[],"complete"===t.readyState)return a();e.attachEvent?e.attachEvent("onload",a):e.addEventListener("load",a,!1)}(window,document,window.Beacon||function(){});</script>
-			<script type="text/javascript">window.Beacon(\'init\', \'' . esc_js( $form_id ) . '\')</script>
-			<script>window.Beacon("identify", ' . wp_json_encode( $this->identify_data() ) . ');</script>
-			<script>window.Beacon("session-data", ' . wp_json_encode( $this->session_data() ) . ');</script>
-			<script>window.addEventListener("hashchange", function () {
-				window.Beacon("suggest");
-			  }, false);</script>';
+		<script type="text/javascript">window.Beacon(\'init\', \'' . esc_js( $form_id ) . '\')</script>
+		<script>window.Beacon("identify", ' . wp_json_encode( $this->identify_data() ) . ');</script>
+		<script>window.Beacon("session-data", ' . wp_json_encode( $this->session_data() ) . ');</script>
+		<script>window.addEventListener("hashchange", function () {
+			window.Beacon("suggest");
+		}, false);</script>';
 	}
 
 	/**
@@ -99,12 +99,20 @@ class Beacon implements Subscriber_Interface {
 	 */
 	private function get_user_locale() {
 		if ( isset( $this->locale ) ) {
-			return $this->locale;
+			/**
+			 * Filters the locale ID for Beacon
+			 *
+			 * @since 3.6
+			 *
+			 * @param string $locale The locale ID.
+			 */
+			return apply_filters( 'rocket_beacon_locale', $this->locale );
 		}
 
 		$this->locale = current( array_slice( explode( '_', get_user_locale() ), 0, 1 ) );
 
-		return $this->locale;
+		// This filter is documented in inc/Engine/Admin/Beacon/Beacon.php.
+		return apply_filters( 'rocket_beacon_locale', $this->locale );
 	}
 
 	/**
@@ -116,8 +124,6 @@ class Beacon implements Subscriber_Interface {
 	 * @return array
 	 */
 	private function session_data() {
-		global $wp_version;
-
 		$options_to_send = [
 			'cache_mobile'            => 'Mobile Cache',
 			'do_caching_mobile_files' => 'Specific Cache for Mobile',
@@ -139,7 +145,6 @@ class Beacon implements Subscriber_Interface {
 			'minify_html'             => 'Minify HTML',
 			'manual_preload'          => 'Preload',
 			'sitemap_preload'         => 'Sitemap Preload',
-			'remove_query_strings'    => 'Remove Query Strings',
 			'cdn'                     => 'CDN Enabled',
 			'do_cloudflare'           => 'Cloudflare Enabled',
 			'varnish_auto_purge'      => 'Varnish Purge Enabled',
@@ -155,8 +160,8 @@ class Beacon implements Subscriber_Interface {
 
 		return [
 			'Website'                  => home_url(),
-			'WordPress Version'        => $wp_version,
-			'WP Rocket Version'        => WP_ROCKET_VERSION,
+			'WordPress Version'        => get_bloginfo( 'version' ),
+			'WP Rocket Version'        => rocket_get_constant( 'WP_ROCKET_VERSION' ),
 			'Theme'                    => $theme->get( 'Name' ),
 			'Plugins Enabled'          => implode( ' - ', rocket_get_active_plugins() ),
 			'WP Rocket Active Options' => implode( ' - ', $active_options ),
