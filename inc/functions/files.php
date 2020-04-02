@@ -1181,6 +1181,8 @@ function rocket_mkdir_p( $target ) {
  *
  * @since 3.5.3
  *
+ * @source wp_is_stream() in /wp-includes/functions.php
+ *
  * @param string $path The resource path or URL.
  *
  * @return bool true if the path is a stream URL; else false.
