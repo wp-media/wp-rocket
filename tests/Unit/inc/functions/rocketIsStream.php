@@ -10,7 +10,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
  * @group Files
  * @group vfs
  */
-class Test_RocketMkdirP extends FilesystemTestCase {
+class Test_RocketIsStream extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/functions/rocketIsStream.php';
 
 	/**
