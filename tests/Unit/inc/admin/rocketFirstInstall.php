@@ -10,6 +10,7 @@ use WPMedia\PHPUnit\Unit\TestCase;
  * @covers ::rocket_first_install
  * @group admin
  * @group upgrade
+ * @group AdminOnly
  */
 class Test_RocketFirstInstall extends TestCase {
 	public function setUp() {
