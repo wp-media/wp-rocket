@@ -13,11 +13,9 @@ use WP_Rocket\ThirdParty\Plugins\SimpleCustomCss;
  */
 class Test_DeleteCacheFile extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/ThirdParty/Plugins/SimpleCustomCss/updateCacheFile.php';
-	private $sccss;
 
 	public function setUp() {
 		parent::setUp();
-		$this->sccss = new SimpleCustomCss();
 
 		Functions\expect( 'rocket_get_constant' )
 			->with( 'WP_ROCKET_CACHE_BUSTING_PATH' )
@@ -46,7 +44,8 @@ class Test_DeleteCacheFile extends FilesystemTestCase {
 		$this->filesystem->setFilemtime( $filepath, strtotime( '11 hours ago' ) );
 		Functions\expect( 'get_current_blog_id' )->andReturn( $blog_id );
 
-		$this->sccss->update_cache_file();
+		$sccss = new SimpleCustomCss();
+		$sccss->update_cache_file();
 		$this->assertTrue( $this->filesystem->exists( $filepath ) );
 	}
 
