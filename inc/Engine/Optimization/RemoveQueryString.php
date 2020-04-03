@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Optimization;
+namespace WP_Rocket\Engine\Optimization;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\AbstractOptimization;
@@ -11,7 +11,7 @@ use WP_Rocket\Optimization\CSS\Path_Rewriter;
  * @since 3.1
  * @author Remy Perona
  */
-class Remove_Query_String extends AbstractOptimization {
+class RemoveQueryString extends AbstractOptimization {
 	use Path_Rewriter;
 
 	/**

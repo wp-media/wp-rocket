@@ -1,21 +1,21 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\optimization\Remove_Query_String;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\RemoveQueryString;
 
 use Brain\Monkey\Filters;
 
 /**
- * @covers \WP_Rocket\Optimization\Remove_Query_String::remove_query_strings_js
+ * @covers \WP_Rocket\Engine\Optimization\RemoveQueryString::remove_query_strings_css
  * @group  Optimize
  * @group  RemoveQueryStrings
  */
-class Test_RemoveQueryStringsJS extends TestCase {
-    protected $path_to_test_data = '/inc/classes/optimization/Remove_Query_String/js/remove-query-strings.php';
+class Test_RemoveQueryStringsCSS extends TestCase {
+    protected $path_to_test_data = '/inc/Engine/Optimization/RemoveQueryString/css/remove-query-strings.php';
 
     /**
      * @dataProvider providerTestData
      */
-    public function testShouldRemoveQueryStringsWhenJSURL( $original, $expected, $cdn_host, $cdn_url, $site_url ) {
+    public function testShouldRemoveQueryStringsWhenCSSURL( $original, $expected, $cdn_host, $cdn_url, $site_url ) {
         Filters\expectApplied( 'rocket_cdn_hosts' )
 			->zeroOrMoreTimes()
 			->with( [], [ 'all', 'css_and_js', 'css', 'js' ] )
@@ -27,7 +27,7 @@ class Test_RemoveQueryStringsJS extends TestCase {
                 return str_replace( $cdn_url, $site_url, $url );
             } );
 
-        Filters\expectApplied( 'rocket_js_url' )
+        Filters\expectApplied( 'rocket_css_url' )
             ->zeroOrMoreTimes()
             ->andReturnUsing( function( $url, $original_url ) use ( $cdn_url ) {
                 return str_replace( 'http://example.org', $cdn_url, $url );
@@ -35,7 +35,7 @@ class Test_RemoveQueryStringsJS extends TestCase {
 
         $this->assertSame(
             $expected,
-            $this->rqs->remove_query_strings_js( $original )
+            $this->rqs->remove_query_strings_css( $original )
         );
     }
 }

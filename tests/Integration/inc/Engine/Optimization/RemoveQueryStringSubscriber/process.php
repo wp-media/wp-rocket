@@ -1,16 +1,16 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\classes\subscriber\Optimization\Remove_Query_String_Subscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\RemoveQueryStringSubscriber;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Subscriber\Optimization\Remove_Query_String_Subscriber::process
+ * @covers \WP_Rocket\Engine\Optimization\RemoveQueryStringSubscriber::process
  * @group  RemoveQueryString
  */
 class Test_Process extends FilesystemTestCase {
-    protected $path_to_test_data = '/inc/classes/subscriber/Optimization/Remove_Query_String_Subscriber/remove-query-strings.php';
+    protected $path_to_test_data = '/inc/Engine/Optimization/RemoveQueryStringSubscriber/remove-query-strings.php';
     protected $cnames;
     protected $zones;
 
