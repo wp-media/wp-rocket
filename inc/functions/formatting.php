@@ -394,7 +394,7 @@ function rocket_realpath( $file ) {
 	$wrapper = null;
 
 	// Strip the protocol.
-	if ( wp_is_stream( $file ) ) {
+	if ( rocket_is_stream( $file ) ) {
 		list( $wrapper, $file ) = explode( '://', $file, 2 );
 	}
 
