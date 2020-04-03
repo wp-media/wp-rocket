@@ -102,10 +102,14 @@ abstract class Abstract_CSS_Optimization extends Abstract_Optimization {
 	 * @since 2.11
 	 * @author Remy Perona
 	 *
-	 * @param Array $tag Tag corresponding to a CSS file.
+	 * @param array $tag Tag corresponding to a CSS file.
 	 * @return bool True if it is a file excluded, false otherwise
 	 */
-	protected function is_minify_excluded_file( $tag ) {
+	protected function is_minify_excluded_file( array $tag ) {
+		if ( ! isset( $tag[0], $tag['url'] ) ) {
+			return true;
+		}
+
 		// File should not be minified.
 		if ( false !== strpos( $tag[0], 'data-minify=' ) || false !== strpos( $tag[0], 'data-no-minify=' ) ) {
 			return true;
@@ -119,7 +123,7 @@ abstract class Abstract_CSS_Optimization extends Abstract_Optimization {
 			return true;
 		}
 
-		$file_path = wp_parse_url( $tag[2], PHP_URL_PATH );
+		$file_path = wp_parse_url( $tag['url'], PHP_URL_PATH );
 
 		// File extension is not css.
 		if ( pathinfo( $file_path, PATHINFO_EXTENSION ) !== self::FILE_TYPE ) {
