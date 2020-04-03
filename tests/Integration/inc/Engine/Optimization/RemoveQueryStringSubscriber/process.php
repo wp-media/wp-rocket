@@ -40,7 +40,7 @@ class Test_Process extends FilesystemTestCase {
         foreach ( $settings as $key => $value ) {
 
             if ( 'cdn' === $key ) {
-                $callback = $value === 0 ? 'return_false' : 'return_true';
+                $callback = 0 === $value ? 'return_false' : 'return_true';
                 add_filter( 'pre_get_rocket_option_cdn', [ $this, $callback ] );
                 continue;
             }
@@ -63,7 +63,7 @@ class Test_Process extends FilesystemTestCase {
         foreach ( $settings as $key => $value ) {
 
             if ( 'cdn' === $key ) {
-                $callback = $value === 0 ? 'return_false' : 'return_true';
+                $callback = 0 === $value ? 'return_false' : 'return_true';
                 remove_filter( 'pre_get_rocket_option_cdn', [ $this, $callback ] );
                 continue;
             }
