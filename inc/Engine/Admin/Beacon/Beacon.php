@@ -98,20 +98,17 @@ class Beacon implements Subscriber_Interface {
 	 * @return string
 	 */
 	private function get_user_locale() {
-		if ( isset( $this->locale ) ) {
-			/**
-			 * Filters the locale ID for Beacon
-			 *
-			 * @since 3.6
-			 *
-			 * @param string $locale The locale ID.
-			 */
-			return apply_filters( 'rocket_beacon_locale', $this->locale );
+		if ( ! isset( $this->locale ) ) {
+			$this->locale = current( array_slice( explode( '_', get_user_locale() ), 0, 1 ) );
 		}
 
-		$this->locale = current( array_slice( explode( '_', get_user_locale() ), 0, 1 ) );
-
-		// This filter is documented in inc/Engine/Admin/Beacon/Beacon.php.
+		/**
+		 * Filters the locale ID for Beacon
+		 *
+		 * @since 3.6
+		 *
+		 * @param string $locale The locale ID.
+		 */
 		return apply_filters( 'rocket_beacon_locale', $this->locale );
 	}
 
