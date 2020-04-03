@@ -202,6 +202,8 @@ class CDNSubscriber implements Subscriber_Interface {
 	/**
 	 * Replace CDN URL with site URL on the provided asset URL.
 	 *
+	 * @since 3.5.3
+	 *
 	 * @param string $url URL of the asset.
 	 * @param array  $zones Array of corresponding zones for the asset.
 	 * @return string
