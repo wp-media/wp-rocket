@@ -38,10 +38,7 @@ class SimpleCustomCss implements Subscriber_Interface {
 		$blog_id                  = get_current_blog_id();
 		$this->cache_busting_path = rocket_get_constant( 'WP_ROCKET_CACHE_BUSTING_PATH' ) . $blog_id . '/';
 		$this->filepath           = $this->cache_busting_path . 'sccss.css';
-		$cache_busting_url        = rocket_get_constant( 'WP_ROCKET_CACHE_BUSTING_URL' ) . $blog_id . 'sccss.css';
-
-		/** This filter is documented in inc/functions/minify.php */
-		$this->cache_busting_url = apply_filters( 'rocket_css_url', $cache_busting_url );
+		$this->cache_busting_url  = rocket_get_constant( 'WP_ROCKET_CACHE_BUSTING_URL' ) . $blog_id . '/sccss.css';
 	}
 	/**
 	 * Subscribed events for AMP.
@@ -74,7 +71,8 @@ class SimpleCustomCss implements Subscriber_Interface {
 			return;
 		}
 
-		wp_enqueue_style( 'scss', $this->cache_busting_url, '', rocket_direct_filesystem()->mtime( $this->filepath ) );
+		/** This filter is documented in inc/functions/minify.php */
+		wp_enqueue_style( 'scss', apply_filters( 'rocket_css_url', $this->cache_busting_url ), '', rocket_direct_filesystem()->mtime( $this->filepath ) );
 		remove_action( 'wp_enqueue_scripts', 'sccss_register_style', 99 );
 	}
 
