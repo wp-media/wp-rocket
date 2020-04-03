@@ -19,8 +19,13 @@ class Test_CacheSccss extends FilesystemTestCase {
 		parent::setUp();
 		$this->sccss = new SimpleCustomCss();
 
-		Functions\expect( 'rocket_get_constant' )->with( 'WP_ROCKET_CACHE_BUSTING_PATH' )->andReturn( 'wp-content/cache/busting/' );
-		Functions\expect( 'rocket_get_constant' )->with( 'WP_ROCKET_CACHE_BUSTING_URL' )->andReturn( 'http://example.org/wp-content/cache/busting/' );
+		Functions\expect( 'rocket_get_constant' )
+			->with( 'WP_ROCKET_CACHE_BUSTING_PATH' )
+			->andReturn( 'wp-content/cache/busting/' )
+			->andAlsoExpectIt()
+			->with( 'WP_ROCKET_CACHE_BUSTING_URL' )
+			->andReturn( 'http://example.org/wp-content/cache/busting/' );
+
 		$this->filesystem->chmod(  'wp-content/cache/busting/index.php', 0644 );
 		$this->filesystem->chmod(  'wp-content/cache/busting/', 0755 );
 	}

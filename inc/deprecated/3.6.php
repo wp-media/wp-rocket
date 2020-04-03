@@ -72,7 +72,7 @@ function rocket_cache_sccss() {
  * @author Remy Perona
  */
 function rocket_delete_sccss_cache_file() {
-	_deprecated_function( __FUNCTION__ . '()', '3.6', '\WP_Rocket\ThirdParty\Plugins\SimpleCustomCss::delete_cache_file()' );
+	_deprecated_function( __FUNCTION__ . '()', '3.6', '\WP_Rocket\ThirdParty\Plugins\SimpleCustomCss::update_cache_file()' );
 	$sccss = rocket_get_cache_busting_paths( 'sccss.css', 'css' );
 
 	array_map( 'unlink', glob( $sccss['bustingpath'] . 'sccss*.css' ) );
