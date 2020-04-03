@@ -49,7 +49,7 @@ abstract class TestCase extends FilesystemTestCase {
 			'http://en.example.org',
 			'https://example.de',
 		] );
-		Functions\when( 'wp_parse_url' )->alias( function( $url, $component ) {
+		Functions\when( 'wp_parse_url' )->alias( function( $url, $component = -1 ) {
 			return parse_url( $url, $component );
 		} );
 
