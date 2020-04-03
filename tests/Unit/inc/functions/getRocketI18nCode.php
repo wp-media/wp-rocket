@@ -17,7 +17,6 @@ class Test_GetRocketI18nCode extends TestCase {
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
 
-		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/functions/i18n.php';
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/SitePress.php';
 	}
 
