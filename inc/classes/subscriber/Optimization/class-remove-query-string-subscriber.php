@@ -2,7 +2,7 @@
 namespace WP_Rocket\Subscriber\Optimization;
 
 use WP_Rocket\Optimization\Remove_Query_String;
-use WP_Rocket\Subscriber\Optimization\Minify_Subscriber;
+use WP_Rocket\Engine\Optimization\AbstractMinifySubscriber;
 
 /**
  * Hooks into WordPress to remove query strings for static files
@@ -10,7 +10,7 @@ use WP_Rocket\Subscriber\Optimization\Minify_Subscriber;
  * @since 3.1
  * @author Remy Perona
  */
-class Remove_Query_String_Subscriber extends Minify_Subscriber {
+class Remove_Query_String_Subscriber extends AbstractMinifySubscriber {
 	/**
 	 * Remove Query String instance.
 	 *

@@ -4,7 +4,7 @@ namespace WP_Rocket\Tests\Unit\inc\optimization\Remove_Query_String;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\Optimization\Remove_Query_String;
-use WP_Rocket\Tests\Unit\inc\classes\optimization\TestCase as OptimizationTestCase;
+use WP_Rocket\Tests\Unit\inc\Engine\Optimization\TestCase as OptimizationTestCase;
 
 abstract class TestCase extends OptimizationTestCase {
 	protected $rqs;
