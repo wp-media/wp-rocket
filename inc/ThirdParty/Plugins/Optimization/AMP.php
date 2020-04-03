@@ -78,7 +78,7 @@ class AMP implements Subscriber_Interface {
 			return $query_strings;
 		}
 
-		if ( 'transitional' === $options['theme_support'] ) {
+		if ( in_array( $options['theme_support'], [ 'transitional', 'reader' ], true ) ) {
 			$query_strings[] = static::QUERY;
 		}
 

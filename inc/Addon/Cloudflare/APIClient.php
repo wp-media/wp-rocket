@@ -3,6 +3,7 @@
 namespace WPMedia\Cloudflare;
 
 use stdClass;
+use Exception;
 
 /**
  * Cloudflare API Client.
@@ -34,11 +35,11 @@ class APIClient {
 	protected $zone_id;
 
 	/**
-	 * An array of curl options.
+	 * An array of arguments for wp_remote_get.
 	 *
 	 * @var array
 	 */
-	protected $curl_options = [];
+	protected $args = [];
 
 	/**
 	 * HTTP headers.
@@ -55,21 +56,16 @@ class APIClient {
 	 * @param string $useragent The user agent for this plugin or package. For example, "wp-rocket/3.5".
 	 */
 	public function __construct( $useragent ) {
-		$this->curl_options = [
-			CURLOPT_VERBOSE        => false,
-			CURLOPT_FORBID_REUSE   => true,
-			CURLOPT_RETURNTRANSFER => 1,
-			CURLOPT_HEADER         => false,
-			CURLOPT_TIMEOUT        => 30,
-			CURLOPT_SSL_VERIFYPEER => true,
-			CURLOPT_USERAGENT      => $useragent,
+		$this->args    = [
+			'timeout'   => 30, // Increase from default of 5 to give extra time for the plugin to process story for exporting.
+			'sslverify' => true,
+			'body'      => [],
 		];
-
 		$this->headers = [
-			'X-Auth-Email: ',
-			'X-Auth-Key: ',
-			"User-Agent: {$useragent}",
-			'Content-type: application/json',
+			'X-Auth-Email' => '',
+			'X-Auth-Key'   => '',
+			'User-Agent'   => $useragent,
+			'Content-type' => 'application/json',
 		];
 	}
 
@@ -87,8 +83,8 @@ class APIClient {
 		$this->api_key = $api_key;
 		$this->zone_id = $zone_id;
 
-		$this->headers[0] = "X-Auth-Email: {$email}";
-		$this->headers[1] = "X-Auth-Key: {$api_key}";
+		$this->headers['X-Auth-Email'] = $email;
+		$this->headers['X-Auth-Key']   = $api_key;
 	}
 
 	/**
@@ -110,7 +106,7 @@ class APIClient {
 	 * @return stdClass Cloudflare response packet.
 	 */
 	public function list_pagerules() {
-		return $this->get( "zones/{$this->zone_id}/pagerules", [ 'status' => 'active' ] );
+		return $this->get( "zones/{$this->zone_id}/pagerules?status=active" );
 	}
 
 	/**
@@ -301,26 +297,55 @@ class APIClient {
 			throw new AuthenticationException( 'Authentication information must be provided.' );
 		}
 
-		list( $http_result, $error, $information, $http_code ) = $this->do_remote_request( $path, $data, $method );
+		$response = $this->do_remote_request( $path, $data, $method );
 
-		if ( in_array( $http_code, [ 401, 403 ], true ) ) {
-			throw new UnauthorizedException( 'You do not have permission to perform this request.' );
+		if ( is_wp_error( $response ) ) {
+			throw new Exception( $response->get_error_message() );
 		}
 
-		$response = json_decode( $http_result );
-		if ( ! $response ) {
-			$response          = new stdClass();
-			$response->success = false;
+		$data = wp_remote_retrieve_body( $response );
+
+		if ( empty( $data ) ) {
+			throw new Exception( __( 'Ops Cloudflare did not provide any reply. Please try again later.', 'rocket' ) );
 		}
 
-		if ( true !== $response->success ) {
-			$response->error       = $error;
-			$response->http_code   = $http_code;
-			$response->method      = $method;
-			$response->information = $information;
+		$data = json_decode( $data );
+
+		if ( empty( $data->success ) ) {
+			$errors = [];
+			foreach ( $data->errors as $error ) {
+				if ( 6003 === $error->code || 9103 === $error->code ) {
+					$msg = __( 'Incorrect Cloudflare email address or API key.', 'rocket' );
+
+					$msg .= ' ' . sprintf(
+						/* translators: %1$s = opening link; %2$s = closing link */
+						__( 'Read the %1$sdocumentation%2$s for further guidance.', 'rocket' ),
+						// translators: Documentation exists in EN, FR; use localized URL if applicable.
+						'<a href="' . esc_url( __( 'https://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket#add-on', 'rocket' ) ) . '" rel="noopener noreferrer" target="_blank">',
+						'</a>'
+					);
+
+					throw new Exception( $msg );
+				}
+				if ( 7003 === $error->code ) {
+					$msg = __( 'Incorrect Cloudflare Zone ID.', 'rocket' );
+
+					$msg .= ' ' . sprintf(
+						/* translators: %1$s = opening link; %2$s = closing link */
+						__( 'Read the %1$sdocumentation%2$s for further guidance.', 'rocket' ),
+						// translators: Documentation exists in EN, FR; use localized URL if applicable.
+						'<a href="' . esc_url( __( 'https://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket#add-on', 'rocket' ) ) . '" rel="noopener noreferrer" target="_blank">',
+						'</a>'
+					);
+
+					throw new Exception( $msg );
+				}
+				$errors[] = $error->message;
+			}
+			throw new Exception( wp_sprintf_l( '%l ', $errors ) );
 		}
 
-		return $response;
+		return $data;
 	}
 
 	/**
@@ -350,85 +375,20 @@ class APIClient {
 	 * @return array curl response packet.
 	 */
 	private function do_remote_request( $path, array $data, $method ) {
-		$ch = curl_init();
+		$this->args['method'] = isset( $method ) ? strtoupper( $method ) : 'GET';
 
-		$this->set_curl_options(
-			$ch,
-			self::CLOUDFLARE_API . $path,
-			$data,
-			$method
-		);
-
-		$packet = [
-			curl_exec( $ch ),
-			curl_error( $ch ),
-			curl_getinfo( $ch ),
-			curl_getinfo( $ch, CURLINFO_HTTP_CODE ),
-		];
-
-		curl_close( $ch );
-
-		return $packet;
-	}
-
-	/**
-	 * Sets the cURL options.
-	 *
-	 * @since 1.0
-	 *
-	 * @param resource $ch     cURL handle.
-	 * @param string   $url    Request route.
-	 * @param array    $data   Data to be sent along with the request.
-	 * @param string   $method Type of method that should be used ('GET', 'DELETE', 'PATCH').
-	 */
-	private function set_curl_options( $ch, $url, array $data, $method ) {
-		curl_setopt_array( $ch, $this->curl_options );
-
-		if ( 'get' === $method ) {
-			$url .= '?' . http_build_query( $data );
-		} else {
-			curl_setopt( $ch, CURLOPT_POSTFIELDS, wp_json_encode( $data ) );
-			curl_setopt( $ch, CURLOPT_CUSTOMREQUEST, strtoupper( $method ) );
+		if ( '/ips' !== $path ) {
+			$this->args['headers'] = $this->headers;
 		}
 
-		// Set up the headers.
-		curl_setopt( $ch, CURLOPT_HTTPHEADER, $this->get_headers( $url ) );
+		$this->args['body'] = [];
 
-		// Set up the URL.
-		curl_setopt( $ch, CURLOPT_URL, $url );
-	}
-
-	/**
-	 * Gets the request headers.
-	 *
-	 * @since 1.0
-	 *
-	 * @param string $url Request route.
-	 *
-	 * @return array array of headers.
-	 */
-	private function get_headers( $url ) {
-		if ( $this->are_credentials_needed( $url ) ) {
-			return $this->headers;
+		if ( ! empty( $data ) ) {
+			$this->args['body'] = wp_json_encode( $data );
 		}
 
-		// Credentials are not needed. Remove them from the headers.
-		$headers = $this->headers;
-		unset( $headers[0], $headers[1] );
+		$response = wp_remote_request( self::CLOUDFLARE_API . $path, $this->args );
 
-		return $headers;
-	}
-
-	/**
-	 * Checks if this request needs API credentials.
-	 *
-	 * @since 1.0
-	 *
-	 * @param string $url Request route.
-	 *
-	 * @return bool true when API credentials are needed; else false.
-	 */
-	private function are_credentials_needed( $url ) {
-		return ( substr( $url, -4 ) !== '/ips' );
+		return $response;
 	}
 }
