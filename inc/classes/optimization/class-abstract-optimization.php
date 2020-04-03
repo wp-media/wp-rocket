@@ -44,6 +44,12 @@ abstract class Abstract_Optimization {
 			return true;
 		}
 
+		$wp_content = wp_parse_url( content_url() );
+
+		if ( ! $wp_content || empty( $wp_content['host'] ) || empty( $wp_content['path'] ) ) {
+			return true;
+		}
+
 		/**
 		 * Filters the allowed hosts for optimization
 		 *
@@ -53,10 +59,9 @@ abstract class Abstract_Optimization {
 		 * @param array $hosts Allowed hosts.
 		 * @param array $zones Zones to check available hosts.
 		 */
-		$hosts      = apply_filters( 'rocket_cdn_hosts', [], $this->get_zones() );
-		$wp_content = get_rocket_parse_url( content_url() );
-		$hosts[]    = $wp_content['host'];
-		$langs      = get_rocket_i18n_uri();
+		$hosts   = apply_filters( 'rocket_cdn_hosts', [], $this->get_zones() );
+		$hosts[] = $wp_content['host'];
+		$langs   = get_rocket_i18n_uri();
 
 		// Get host for all langs.
 		if ( ! empty( $langs ) ) {
