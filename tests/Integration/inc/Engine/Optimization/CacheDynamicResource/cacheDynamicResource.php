@@ -1,16 +1,16 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\classes\subscriber\Optimization\Cache_Dynamic_Resource_Subscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\CacheDynamicResource;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Subscriber\Optimization\Cache_Dynamic_Resource_Subscriber::cache_dynamic_resource
+ * @covers \WP_Rocket\Engine\Optimization\CacheDynamicResource::cache_dynamic_resource
  * @group  CacheDynamicResource
  */
 class Test_CacheDynamicResource extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/classes/subscriber/Optimization/Cache_Dynamic_Resource_Subscriber/cacheDynamicResource.php';
+	protected $path_to_test_data = '/inc/Engine/Optimization/CacheDynamicResource/cacheDynamicResource.php';
 	protected $cnames;
 	protected $zones;
 	private $isCSSTestData;

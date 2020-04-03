@@ -1,7 +1,8 @@
 <?php
-namespace WP_Rocket\Optimization;
+namespace WP_Rocket\Engine\Optimization;
 
-use WP_Rocket\Admin\Options_Data as Options;
+use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Optimization\CSS\Path_Rewriter;
 
 /**
@@ -10,7 +11,7 @@ use WP_Rocket\Optimization\CSS\Path_Rewriter;
  * @since 3.1
  * @author Remy Perona
  */
-class Cache_Dynamic_Resource extends Abstract_Optimization {
+class CacheDynamicResource extends AbstractOptimization implements Subscriber_Interface {
 	use Path_Rewriter;
 
 	/**
@@ -19,7 +20,7 @@ class Cache_Dynamic_Resource extends Abstract_Optimization {
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
-	 * @var Options
+	 * @var Options_Data
 	 */
 	protected $options;
 
@@ -66,11 +67,11 @@ class Cache_Dynamic_Resource extends Abstract_Optimization {
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
-	 * @param Options $options      Plugin options instance.
-	 * @param string  $busting_path Base cache busting files path.
-	 * @param string  $busting_url  Base cache busting files URL.
+	 * @param Options_Data $options      Plugin options instance.
+	 * @param string       $busting_path Base cache busting files path.
+	 * @param string       $busting_url  Base cache busting files URL.
 	 */
-	public function __construct( Options $options, $busting_path, $busting_url ) {
+	public function __construct( Options_Data $options, $busting_path, $busting_url ) {
 		$this->options      = $options;
 		$this->busting_path = $busting_path . get_current_blog_id() . '/';
 		$this->busting_url  = $busting_url . get_current_blog_id() . '/';
@@ -92,6 +93,51 @@ class Cache_Dynamic_Resource extends Abstract_Optimization {
 		}
 
 		$this->excluded_files = implode( '|', $this->excluded_files );
+	}
+
+	/**
+	 * Return an array of events that this subscriber wants to listen to.
+	 *
+	 * @since  3.1
+	 * @author Remy Perona
+	 *
+	 * @return array
+	 */
+	public static function get_subscribed_events() {
+		return [
+			'style_loader_src'  => [ 'cache_dynamic_resource', 16 ],
+			'script_loader_src' => [ 'cache_dynamic_resource', 16 ],
+		];
+	}
+
+	/**
+	 * Filters the source dynamic php file to replace it with a static file
+	 *
+	 * @since 3.1
+	 * @author Remy Perona
+	 *
+	 * @param string $src source URL.
+	 * @return string
+	 */
+	public function cache_dynamic_resource( $src ) {
+		if ( ! $this->is_allowed() ) {
+			return $src;
+		}
+
+		switch ( current_filter() ) {
+			case 'script_loader_src':
+				$this->set_extension( 'js' );
+				break;
+			case 'style_loader_src':
+				$this->set_extension( 'css' );
+				break;
+		}
+
+		if ( $this->is_excluded_file( $src ) ) {
+			return $src;
+		}
+
+		return $this->replace_url( $src );
 	}
 
 	/**

@@ -32,7 +32,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		'combine_google_fonts_subscriber',
 		'minify_css_subscriber',
 		'minify_js_subscriber',
-		'cache_dynamic_resource_subscriber',
 		'remove_query_string_subscriber',
 		'dequeue_jquery_migrate_subscriber',
 	];
@@ -56,7 +55,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->withArgument( $this->getContainer()->get( 'tests' ) );
 		$this->getContainer()->share( 'buffer_subscriber', 'WP_Rocket\Subscriber\Optimization\Buffer_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'buffer_optimization' ) );
-		$this->getContainer()->add( 'cache_dynamic_resource', 'WP_Rocket\Engine\Optimization\CacheDynamicResource' )
+		$this->getContainer()->share( 'cache_dynamic_resource', 'WP_Rocket\Engine\Optimization\CacheDynamicResource' )
 			->withArgument( $options )
 			->withArgument( WP_ROCKET_CACHE_BUSTING_PATH )
 			->withArgument( WP_ROCKET_CACHE_BUSTING_URL );
@@ -73,8 +72,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->withArgument( $options );
 		$this->getContainer()->share( 'minify_js_subscriber', 'WP_Rocket\Engine\Optimization\JS\Subscriber' )
 			->withArgument( $options );
-		$this->getContainer()->share( 'cache_dynamic_resource_subscriber', 'WP_Rocket\Subscriber\Optimization\Cache_Dynamic_Resource_Subscriber' )
-			->withArgument( $this->getContainer()->get( 'cache_dynamic_resource' ) );
 		$this->getContainer()->share( 'remove_query_string_subscriber', 'WP_Rocket\Subscriber\Optimization\Remove_Query_String_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'remove_query_string' ) );
 		$this->getContainer()->share( 'dequeue_jquery_migrate_subscriber', 'WP_Rocket\Subscriber\Optimization\Dequeue_JQuery_Migrate_Subscriber' )
