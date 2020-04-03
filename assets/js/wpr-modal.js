@@ -17,7 +17,7 @@ $(document).ready(function(){
 			ajaxurl,
 			{
 				action: 'rocket_safe_mode',
-				_ajax_nonce: rocket_ajax_data.nonce,
+				nonce: rocket_ajax_data.nonce,
 			},
 			function(response) {
 				if ( true === response.success ) {
