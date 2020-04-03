@@ -13,18 +13,14 @@ use WP_Rocket\ThirdParty\Plugins\SimpleCustomCss;
  */
 class Test_DeleteCacheFile extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/ThirdParty/Plugins/SimpleCustomCss/updateCacheFile.php';
+	private $busting_path;
+	private $busting_url = 'http://example.org/wp-content/cache/busting/';
 
 	public function setUp() {
 		parent::setUp();
 
-		Functions\expect( 'rocket_get_constant' )
-			->with( 'WP_ROCKET_CACHE_BUSTING_PATH' )
-			->andReturn( 'wp-content/cache/busting/' )
-			->andAlsoExpectIt()
-			->with( 'WP_ROCKET_CACHE_BUSTING_URL' )
-			->andReturn( 'http://example.org/wp-content/cache/busting/' );
-
-		Functions\expect( 'rocket_clean_domain' );
+		Functions\expect( 'rocket_clean_domain' )
+			->once();
 		Functions\expect( 'wp_kses' )->andReturnFirstArg();
 
 		Functions\expect( 'get_option' )
@@ -42,9 +38,9 @@ class Test_DeleteCacheFile extends FilesystemTestCase {
 	 */
 	public function testShouldDeleteTheFileAndRecreateIt( $blog_id, $filepath ) {
 		$this->filesystem->setFilemtime( $filepath, strtotime( '11 hours ago' ) );
-		Functions\expect( 'get_current_blog_id' )->andReturn( $blog_id );
+		Functions\when( 'get_current_blog_id' )->justReturn( $blog_id );
 
-		$sccss = new SimpleCustomCss();
+		$sccss = new SimpleCustomCss( $this->busting_path, $this->busting_url );
 		$sccss->update_cache_file();
 		$this->assertTrue( $this->filesystem->exists( $filepath ) );
 	}

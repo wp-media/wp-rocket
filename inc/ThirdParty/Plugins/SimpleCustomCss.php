@@ -10,35 +10,41 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * @author Soponar Cristina
  */
 class SimpleCustomCss implements Subscriber_Interface {
+	const FILENAME = 'sccss.css';
+
 	/**
-	 * Cache Busting folder path
+	 * Base cache busting folder path
 	 *
 	 * @var string
 	 */
 	private $cache_busting_path;
 
 	/**
-	 * File path
+	 * SCCSS cache busting file path
 	 *
 	 * @var string
 	 */
 	private $filepath;
 
 	/**
-	 * File URL
+	 * SCCSS cache busting file URL
 	 *
 	 * @var string
 	 */
-	private $cache_busting_url;
+	private $file_url;
 
 	/**
 	 * Constructor
+	 *
+	 * @param string $cache_busting_path Base cache busting folder path.
+	 * @param string $cache_busting_url  Base cache busting URL.
 	 */
-	public function __construct() {
+	public function __construct( $cache_busting_path, $cache_busting_url ) {
 		$blog_id                  = get_current_blog_id();
-		$this->cache_busting_path = rocket_get_constant( 'WP_ROCKET_CACHE_BUSTING_PATH' ) . $blog_id . '/';
-		$this->filepath           = $this->cache_busting_path . 'sccss.css';
-		$this->cache_busting_url  = rocket_get_constant( 'WP_ROCKET_CACHE_BUSTING_URL' ) . $blog_id . '/sccss.css';
+		$this->cache_busting_path = $cache_busting_path . $blog_id . '/';
+		$this->filepath           = $this->cache_busting_path . self::FILENAME;
+		$this->file_url           = $cache_busting_url . $blog_id . self::FILENAME;
+
 	}
 	/**
 	 * Subscribed events for AMP.
@@ -67,12 +73,12 @@ class SimpleCustomCss implements Subscriber_Interface {
 	 * @author Remy Perona
 	 */
 	public function cache_sccss() {
-		if ( ! $this->create_cache_file( false ) ) {
-			return;
+		if ( ! rocket_direct_filesystem()->exists( $this->filepath ) ) {
+			$this->create_cache_file();
 		}
 
-		/** This filter is documented in inc/functions/minify.php */
-		wp_enqueue_style( 'scss', apply_filters( 'rocket_css_url', $this->cache_busting_url ), '', rocket_direct_filesystem()->mtime( $this->filepath ) );
+		// This filter is documented in inc/Engine/Optimization/CSS/AbstractCSSOptimization.php.
+		wp_enqueue_style( 'scss', apply_filters( 'rocket_css_url', $this->file_url ), '', rocket_direct_filesystem()->mtime( $this->filepath ) );
 		remove_action( 'wp_enqueue_scripts', 'sccss_register_style', 99 );
 	}
 
@@ -84,7 +90,7 @@ class SimpleCustomCss implements Subscriber_Interface {
 	 */
 	public function update_cache_file() {
 		rocket_clean_domain();
-		$this->create_cache_file( true );
+		$this->create_cache_file();
 	}
 
 	/**
@@ -93,23 +99,15 @@ class SimpleCustomCss implements Subscriber_Interface {
 	 * @since 2.9
 	 * @author Remy Perona
 	 *
-	 * @param bool $allow_update Allow to update the file.
-	 *
 	 * @return bool  Returns bool if the files exists or could not be created.
 	 */
-	private function create_cache_file( $allow_update ) {
-		$filesystem = rocket_direct_filesystem();
-		// File exists. Do not recreate it.
-		if ( $filesystem->exists( $this->filepath ) && ! $allow_update ) {
-			return true;
-		}
-
+	private function create_cache_file() {
 		$options     = get_option( 'sccss_settings' );
 		$raw_content = isset( $options['sccss-content'] ) ? $options['sccss-content'] : '';
 		$content     = wp_kses( $raw_content, [ '\'', '\"' ] );
 		$content     = str_replace( '&gt;', '>', $content );
 
-		if ( ! $filesystem->is_dir( $this->cache_busting_path ) ) {
+		if ( ! rocket_direct_filesystem()->is_dir( $this->cache_busting_path ) ) {
 			rocket_mkdir_p( $this->cache_busting_path );
 		}
 

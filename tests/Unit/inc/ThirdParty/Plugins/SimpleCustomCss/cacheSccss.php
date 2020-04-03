@@ -13,16 +13,14 @@ use WP_Rocket\ThirdParty\Plugins\SimpleCustomCss;
  */
 class Test_CacheSccss extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/ThirdParty/Plugins/SimpleCustomCss/cacheSccss.php';
+	private $scss;
+	private $busting_path;
+	private $busting_url = 'http://example.org/wp-content/cache/busting/';
 
 	public function setUp() {
 		parent::setUp();
 
-		Functions\expect( 'rocket_get_constant' )
-			->with( 'WP_ROCKET_CACHE_BUSTING_PATH' )
-			->andReturn( 'wp-content/cache/busting/' )
-			->andAlsoExpectIt()
-			->with( 'WP_ROCKET_CACHE_BUSTING_URL' )
-			->andReturn( 'http://example.org/wp-content/cache/busting/' );
+		$this->busting_path = $this->filesystem->getUrl( 'wp-content/cache/busting/' );
 
 		$this->filesystem->chmod(  'wp-content/cache/busting/index.php', 0644 );
 		$this->filesystem->chmod(  'wp-content/cache/busting/', 0755 );
@@ -30,7 +28,7 @@ class Test_CacheSccss extends FilesystemTestCase {
 
 	public function testFileExistsShouldEnqueueAndRemoveOriginalWhenFileExists() {
 		$filepath = 'wp-content/cache/busting/1/sccss.css';
-		Functions\expect( 'get_current_blog_id' )->andReturn( 1 );
+		Functions\when( 'get_current_blog_id' )->justReturn( 1 );
 
 		$this->filesystem->setFilemtime( $filepath, strtotime( '11 hours ago' ) );
 
@@ -39,15 +37,15 @@ class Test_CacheSccss extends FilesystemTestCase {
 
 		$this->assertTrue( $this->filesystem->exists( $filepath ) );
 
-		$sccss = new SimpleCustomCss();
-		$sccss->cache_sccss();
+		$scss = new SimpleCustomCss( $this->busting_path, $this->busting_url );
+		$scss->cache_sccss();
 	}
 
 	/**
 	 * @dataProvider providerTestData
 	 */
 	public function testCreateFileAndBustingFolderAndEnqueue( $blog_id, $filepath ) {
-		Functions\expect( 'get_current_blog_id' )->andReturn( $blog_id );
+		Functions\when( 'get_current_blog_id' )->justReturn( $blog_id );
 
 		$this->filesystem->setFilemtime( $filepath, strtotime( '11 hours ago' ) );
 
@@ -63,8 +61,8 @@ class Test_CacheSccss extends FilesystemTestCase {
 
 		$this->assertFalse( $this->filesystem->exists( $filepath ) );
 
-		$sccss = new SimpleCustomCss();
-		$sccss->cache_sccss();
+		$scss = new SimpleCustomCss( $this->busting_path, $this->busting_url );
+		$scss->cache_sccss();
 
 		$this->assertTrue( $this->filesystem->exists( $filepath ) );
 	}
