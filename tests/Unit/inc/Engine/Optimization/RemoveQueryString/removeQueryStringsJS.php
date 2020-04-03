@@ -19,7 +19,7 @@ class Test_RemoveQueryStringsJS extends TestCase {
 		Filters\expectApplied( 'rocket_cdn_hosts' )
 			->zeroOrMoreTimes()
 			->with( [], [ 'all', 'css_and_js', 'css', 'js' ] )
-			>andReturn( $cdn_host );
+			->andReturn( $cdn_host );
 
 		Filters\expectApplied( 'rocket_asset_url' )
 			->zeroOrMoreTimes()
@@ -29,7 +29,7 @@ class Test_RemoveQueryStringsJS extends TestCase {
 
 		Filters\expectApplied( 'rocket_js_url' )
 			->zeroOrMoreTimes()
-			>andReturnUsing( function( $url, $original_url ) use ( $cdn_url ) {
+			->andReturnUsing( function( $url, $original_url ) use ( $cdn_url ) {
 				return str_replace( 'http://example.org', $cdn_url, $url );
 			} );
 
