@@ -28,7 +28,7 @@ trait DeprecatedClassTrait {
 		 * @param string $version     The version of WordPress that deprecated the class.
 		 * @param string $replacement Optional. The method that should have been called.
 		 */
-		do_action( 'rocket_deprecated_class_run', self::class, $version, $replacement );
+		do_action( 'rocket_deprecated_class_run', static::class, $version, $replacement );
 
 		if ( ! WP_DEBUG ) {
 			return;
@@ -55,7 +55,7 @@ trait DeprecatedClassTrait {
 				$message = sprintf(
 					/* translators: 1: PHP class name, 2: version number, 3: replacement class name. */
 					__( 'The called class %1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead.', 'rocket' ),
-					'<code>' . self::class . '</code>',
+					'<code>' . static::class . '</code>',
 					'<strong>' . $version . '</strong>',
 					'<code>' . $replacement . '</code>'
 				);
@@ -66,7 +66,7 @@ trait DeprecatedClassTrait {
 				$message = sprintf(
 					/* translators: 1: PHP class name, 2: version number. */
 					__( 'The called class %1$s is <strong>deprecated</strong> since version %2$s!', 'rocket' ),
-					'<code>' . self::class . '</code>',
+					'<code>' . static::class . '</code>',
 					'<strong>' . $version . '</strong>'
 				);
 			}
@@ -76,7 +76,7 @@ trait DeprecatedClassTrait {
 			 */
 			$message = sprintf(
 				'The called class %1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead.',
-				'<code>' . self::class . '</code>',
+				'<code>' . static::class . '</code>',
 				'<strong>' . $version . '</strong>',
 				'<code>' . $replacement . '</code>'
 			);
@@ -86,7 +86,7 @@ trait DeprecatedClassTrait {
 			 */
 			$message = sprintf(
 				'The called class %1$s is <strong>deprecated</strong> since version %2$s!',
-				'<code>' . self::class . '</code>',
+				'<code>' . static::class . '</code>',
 				'<strong>' . $version . '</strong>'
 			);
 		}
