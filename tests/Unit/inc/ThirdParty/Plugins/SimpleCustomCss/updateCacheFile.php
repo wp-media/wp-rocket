@@ -11,13 +11,15 @@ use WP_Rocket\ThirdParty\Plugins\SimpleCustomCss;
  * @group  ThirdParty
  * @group  WithSCCSS
  */
-class Test_DeleteCacheFile extends FilesystemTestCase {
+class Test_UpdateCacheFile extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/ThirdParty/Plugins/SimpleCustomCss/updateCacheFile.php';
 	private $busting_path;
 	private $busting_url = 'http://example.org/wp-content/cache/busting/';
 
 	public function setUp() {
 		parent::setUp();
+
+		$this->busting_path = $this->filesystem->getUrl( 'wp-content/cache/busting/' );
 
 		Functions\expect( 'rocket_clean_domain' )
 			->once();
