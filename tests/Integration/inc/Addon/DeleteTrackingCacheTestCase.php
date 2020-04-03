@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\classes\subscriber;
+namespace WP_Rocket\Tests\Integration\inc\Addon;
 
 use Mockery;
 use WP_Rocket\Busting\Busting_Factory;

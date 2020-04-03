@@ -1,36 +1,36 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\classes\subscriber\FacebookTrackingCacheBustingSubscriber;
+namespace WP_Rocket\Tests\Unit\inc\Addon\FacebookTracking\Subscriber;
 
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Busting\Busting_Factory;
 use WP_Rocket\Busting\Facebook_Pickles;
 use WP_Rocket\Busting\Facebook_SDK;
-use WP_Rocket\Subscriber\Facebook_Tracking_Cache_Busting_Subscriber;
+use WP_Rocket\Addon\FacebookTracking\Subscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Subscriber\Facebook_Tracking_Cache_Busting_Subscriber::delete_cache
- * @group  ThirdParty
+ * @covers \WP_Rocket\Addon\FacebookTracking\Subscriber::delete_cache
+ * @group  Addon
  * @group  FacebookTracking
  */
 class Test_DeleteCache extends TestCase {
 
 	public function testShouldNotDeleteBustingFilesWhenNotClearingAllCache() {
-		$subscriber = new Facebook_Tracking_Cache_Busting_Subscriber( $this->getFactory( false ), $this->getOptionsData( true ) );
+		$subscriber = new Subscriber( $this->getFactory( false ), $this->getOptionsData( true ) );
 		$deleted    = $subscriber->delete_cache( 'post' );
 		$this->assertFalse( $deleted );
 	}
 
 	public function testShouldNotDeleteBustingFilesWhenNotEnabled() {
-		$subscriber = new Facebook_Tracking_Cache_Busting_Subscriber( $this->getFactory( false ), $this->getOptionsData( false ) );
+		$subscriber = new Subscriber( $this->getFactory( false ), $this->getOptionsData( false ) );
 		$deleted    = $subscriber->delete_cache( 'all' );
 		$this->assertFalse( $deleted );
 	}
 
 	public function testShouldDeleteBustingFilesWhenClearingAllCacheAndEnabled() {
-		$subscriber = new Facebook_Tracking_Cache_Busting_Subscriber( $this->getFactory( true ), $this->getOptionsData( true ) );
+		$subscriber = new Subscriber( $this->getFactory( true ), $this->getOptionsData( true ) );
 		$deleted    = $subscriber->delete_cache( 'all' );
 		$this->assertTrue( $deleted );
 	}

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "26a1b39f36a5e1deddcad96ecb788483",
+    "content-hash": "d24799970180cc70de7382178a492555",
     "packages": [
         {
             "name": "composer/installers",
@@ -1690,20 +1690,6 @@
                 "MIT"
             ],
             "description": "PHPStan - PHP Static Analysis Tool",
-            "funding": [
-                {
-                    "url": "https://github.com/ondrejmirtes",
-                    "type": "github"
-                },
-                {
-                    "url": "https://www.patreon.com/phpstan",
-                    "type": "patreon"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/phpstan/phpstan",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-03-22T16:51:47+00:00"
         },
         {
@@ -2048,12 +2034,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "b81a572cb1acffadea621e55c95af4ba94a91624"
+                "reference": "0f73cf4b4b9227eb8845723bc2a8869bc4dd6e8f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/b81a572cb1acffadea621e55c95af4ba94a91624",
-                "reference": "b81a572cb1acffadea621e55c95af4ba94a91624",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/0f73cf4b4b9227eb8845723bc2a8869bc4dd6e8f",
+                "reference": "0f73cf4b4b9227eb8845723bc2a8869bc4dd6e8f",
                 "shasum": ""
             },
             "conflict": {
@@ -2304,17 +2290,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "funding": [
-                {
-                    "url": "https://github.com/Ocramius",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/roave/security-advisories",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2020-03-15T11:13:32+00:00"
+            "time": "2020-03-31T14:30:16+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -3385,16 +3361,16 @@
         },
         {
             "name": "wp-media/phpunit",
-            "version": "dev-master",
+            "version": "v1.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-media/phpunit.git",
-                "reference": "c380b40d9a087792712460d6a46b2b02d6da6005"
+                "reference": "5ac5b8a0966960dc77b8780bc33a07b7388c8b6a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-media/phpunit/zipball/c380b40d9a087792712460d6a46b2b02d6da6005",
-                "reference": "c380b40d9a087792712460d6a46b2b02d6da6005",
+                "url": "https://api.github.com/repos/wp-media/phpunit/zipball/5ac5b8a0966960dc77b8780bc33a07b7388c8b6a",
+                "reference": "5ac5b8a0966960dc77b8780bc33a07b7388c8b6a",
                 "shasum": ""
             },
             "require": {
@@ -3425,19 +3401,19 @@
             ],
             "description": "PHPUnit extender for bootstrapping unit and WordPress integration test suites.",
             "homepage": "https://github.com/wp-media/phpunit",
-            "time": "2020-03-12T15:17:07+00:00"
+            "time": "2020-03-31T23:45:29+00:00"
         },
         {
             "name": "wpackagist-plugin/amp",
-            "version": "1.4.4",
+            "version": "1.5.2",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/amp/",
-                "reference": "tags/1.4.4"
+                "reference": "tags/1.5.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/amp.1.4.4.zip"
+                "url": "https://downloads.wordpress.org/plugin/amp.1.5.2.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -3449,8 +3425,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "roave/security-advisories": 20,
-        "wp-media/phpunit": 20
+        "roave/security-advisories": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
@@ -3459,6 +3434,5 @@
     },
     "platform-dev": {
         "php": "^5.6 || ^7"
-    },
-    "plugin-api-version": "1.1.0"
+    }
 }

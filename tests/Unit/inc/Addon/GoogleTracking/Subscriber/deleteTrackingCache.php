@@ -1,35 +1,35 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\classes\subscriber\GoogleTrackingCacheBustingSubscriber;
+namespace WP_Rocket\Tests\Unit\inc\Addon\GoogleTracking\Subscriber;
 
 use \Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Busting\Busting_Factory;
 use WP_Rocket\Busting\Google_Analytics;
-use WP_Rocket\Subscriber\Google_Tracking_Cache_Busting_Subscriber;
+use WP_Rocket\Addon\GoogleTracking\Subscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Subscriber\Google_Tracking_Cache_Busting_Subscriber::delete_tracking_cache
- * @group  ThirdParty
+ * @covers \WP_Rocket\Addon\GoogleTracking\Subscriber::delete_tracking_cache
+ * @group  Addon
  * @group  GoogleTracking
  */
 class Test_DeleteTrackingCache extends TestCase {
 
 	public function testShouldNotDeleteBustingFilesWhenNotClearingAllCache() {
-		$subscriber = new Google_Tracking_Cache_Busting_Subscriber( $this->getFactory( false ), $this->getOptionsData( true ) );
+		$subscriber = new Subscriber( $this->getFactory( false ), $this->getOptionsData( true ) );
 		$deleted    = $subscriber->delete_tracking_cache( 'post' );
 		$this->assertFalse( $deleted );
 	}
 
 	public function testShouldNotDeleteBustingFilesWhenNotEnabled() {
-		$subscriber = new Google_Tracking_Cache_Busting_Subscriber( $this->getFactory( false ), $this->getOptionsData( false ) );
+		$subscriber = new Subscriber( $this->getFactory( false ), $this->getOptionsData( false ) );
 		$deleted    = $subscriber->delete_tracking_cache( 'all' );
 		$this->assertFalse( $deleted );
 	}
 
 	public function testShouldDeleteBustingFilesWhenClearingAllCacheAndEnabled() {
-		$subscriber = new Google_Tracking_Cache_Busting_Subscriber( $this->getFactory( true ), $this->getOptionsData( true ) );
+		$subscriber = new Subscriber( $this->getFactory( true ), $this->getOptionsData( true ) );
 		$deleted    = $subscriber->delete_tracking_cache( 'all' );
 		$this->assertTrue( $deleted );
 	}

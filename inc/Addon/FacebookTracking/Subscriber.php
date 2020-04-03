@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Subscriber;
+namespace WP_Rocket\Addon\FacebookTracking;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Busting\Busting_Factory;
@@ -12,7 +12,7 @@ use WP_Rocket\Admin\Options_Data as Options;
  * @since  3.2
  * @author Grégory Viguier
  */
-class Facebook_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface {
+class Subscriber implements Subscriber_Interface {
 
 	/**
 	 * Name of the cron.

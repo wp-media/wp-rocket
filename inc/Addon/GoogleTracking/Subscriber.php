@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Subscriber;
+namespace WP_Rocket\Addon\GoogleTracking;
 
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Event_Management\Subscriber_Interface;
@@ -13,7 +13,7 @@ use WP_Rocket\Logger\Logger;
  * @since 3.1
  * @author Remy Perona
  */
-class Google_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface {
+class Subscriber implements Subscriber_Interface {
 
 	/**
 	 * Instance of the Busting Factory class
