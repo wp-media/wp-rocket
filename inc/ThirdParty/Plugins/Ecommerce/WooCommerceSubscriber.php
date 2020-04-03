@@ -1,12 +1,10 @@
 <?php
-namespace WP_Rocket\Subscriber\Third_Party\Plugins\Ecommerce;
+namespace WP_Rocket\ThirdParty\Plugins\Ecommerce;
 
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Event_Management\Event_Manager_Aware_Subscriber_Interface;
 use WooCommerce;
 use WC_API;
-
-defined( 'ABSPATH' ) || exit;
 
 /**
  * WooCommerce compatibility
@@ -14,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
  * @since 3.1
  * @author Remy Perona
  */
-class WooCommerce_Subscriber implements Event_Manager_Aware_Subscriber_Interface {
+class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	use \WP_Rocket\Traits\Config_Updater;
 
 	/**
