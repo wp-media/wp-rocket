@@ -9,6 +9,7 @@ use WPMedia\PHPUnit\Unit\TestCase;
 /**
  * @covers ::do_admin_post_rocket_purge_cache
  * @group Common
+ * @runTestsInSeparateProcesses
  */
 class Test_DoAdminPostRocketPurgeCache extends TestCase {
 
