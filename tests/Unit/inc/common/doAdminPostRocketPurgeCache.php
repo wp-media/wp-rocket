@@ -4,95 +4,119 @@ namespace WP_Rocket\Tests\Unit\Inc\Common;
 
 use Brain\Monkey\Actions;
 use Brain\Monkey\Functions;
-use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
  * @covers ::do_admin_post_rocket_purge_cache
  * @group Common
+ * @group vfs
+ * @runTestsInSeparateProcesses
  */
-class Test_DoAdminPostRocketPurgeCache extends TestCase {
+class Test_DoAdminPostRocketPurgeCache extends FilesystemTestCase {
+	protected $path_to_test_data = '/inc/common/doAdminPostRocketPurgeCache.php';
 
-	protected function setUp() {
+	public function setUp() {
 		parent::setUp();
 
+		// Load the file once.
+		if ( ! function_exists( 'do_admin_post_rocket_purge_cache' ) ) {
+			Functions\expect( 'get_option' )->with( 'stylesheet' )->andReturn( 'twentytwelve' );
+			require_once WP_ROCKET_PLUGIN_ROOT . 'inc/common/purge.php';
+		}
+
 		Functions\when( 'sanitize_key' )->alias(
-			function( $key ) {
+			function ( $key ) {
 				$key = strtolower( $key );
+
 				return preg_replace( '/[^a-z0-9_\-]/', '', $key );
 			}
 		);
 
 		Functions\when( 'absint' )->alias(
-			function( $maybeint ) {
+			function ( $maybeint ) {
 				return abs( intval( $maybeint ) );
 			}
 		);
 
 		Functions\when( 'wp_unslash' )->alias(
-			function( $value ) {
+			function ( $value ) {
 				return stripslashes( $value );
 			}
 		);
 
 		Functions\when( 'sanitize_title' )->alias(
-			function( $value ) {
+			function ( $value ) {
 				return strtolower( $value );
 			}
 		);
+	}
 
-		Functions\when( 'get_option' )->justReturn( '' );
+	/**
+	 * @dataProvider purgeTestData
+	 */
+	public function testShouldPurge( $_get, array $config ) {
+		foreach ( $_get as $key => $value ) {
+			$_GET[ $key ] = $value;
+		}
+
 		Functions\when( 'wp_verify_nonce' )->justReturn( true );
-		Functions\when( 'current_user_can' )->justReturn( true );
-		Functions\when( 'set_transient' )->justReturn( null );
-		Functions\when( 'wp_get_referer' )->justReturn( 'http://example.org' );
-		Functions\when( 'esc_url_raw' )->returnArg();
-		Functions\when( 'wp_safe_redirect' )->justReturn( null );
-		Functions\when( 'wp_nonce_ays' )->justReturn( null );
+		Functions\expect( 'current_user_can' )->once()->with( 'rocket_purge_cache' )->andReturn( true );
 
-		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/common/purge.php';
+		switch ( $config['type'] ) {
+			case 'all':
+				Functions\expect( 'set_transient' )->once()->with( 'rocket_clear_cache', 'all', HOUR_IN_SECONDS )->andReturnNull();
+				Functions\expect( 'rocket_clean_domain' )->once()->with( $config['lang'] )->andReturnNull();
+				Functions\expect( 'rocket_dismiss_box' )->once()->with( 'rocket_warning_plugin_modification' )->andReturnNull();
+				break;
+			case 'post':
+				Functions\expect( 'set_transient' )->once()->with( 'rocket_clear_cache', 'post', HOUR_IN_SECONDS )->andReturnNull();
+				Functions\expect( 'rocket_clean_post' )->once()->with( $config['post_id'] )->andReturnNull();
+				break;
+		}
 
-		Functions\when( 'rocket_clean_post' )->justReturn( null );
-		Functions\when( 'rocket_clean_domain' )->justReturn( null );
-	}
+		Actions\expectDone( 'rocket_purge_cache' )->once()->withAnyArgs( $config['type'] );
 
-	public function testShouldTriggerHook() {
-		Functions\expect( 'wp_die' )->twice();
-
-		// Post.
-		$_GET['type']     = 'post-123';
-		$_GET['_wpnonce'] = 'whatever';
-
-		Actions\expectDone( 'rocket_purge_cache' )
-			->once()
-			->with( 'post', 123, '', '' );
-
-		do_admin_post_rocket_purge_cache();
-
-		// All.
-		$_GET['type']     = 'all';
-		$_GET['_wpnonce'] = 'whatever';
-		$_GET['lang']     = 'en';
-
-		Functions\when( 'get_rocket_option' )->justReturn( false );
-		Functions\when( 'rocket_dismiss_box' )->justReturn( null );
-
-		Actions\expectDone( 'rocket_purge_cache' )
-			->once()
-			->with( 'all', 0, '', '' );
+		Functions\expect( 'wp_get_referer' )->once()->andReturn( 'http://example.org' );
+		Functions\expect( 'esc_url_raw' )->once()->with( 'http://example.org' )->andReturnFirstArg();
+		Functions\expect( 'wp_safe_redirect' )->once();
+		Functions\expect( 'wp_die' )->once();
 
 		do_admin_post_rocket_purge_cache();
 	}
 
-	public function testShouldNotTriggerHook() {
+	/**
+	 * @dataProvider wontPurgeTestData
+	 */
+	public function testShouldWontPurge( $_get, array $config ) {
+		foreach ( $_get as $key => $value ) {
+			$_GET[ $key ] = $value;
+		}
+
+		if ( empty( $_get['_wpnonce'] ) ) {
+			Functions\expect( 'wp_verify_nonce' )->once()->andReturn( false );
+			Functions\expect( 'current_user_can' )->never();
+		} else {
+			Functions\when( 'wp_verify_nonce' )->justReturn( true );
+			Functions\expect( 'current_user_can' )->once()->with( 'rocket_purge_cache' )->andReturn( $config['current_user_can'] );
+		}
+
+		Functions\expect( 'wp_nonce_ays' )->once()->with( '' )->andReturnNull();
+		Actions\expectDone( 'rocket_purge_cache' )->never();
+		Functions\expect( 'wp_safe_redirect' )->never();
 		Functions\expect( 'wp_die' )->never();
 
-		// Invalid type.
-		$_GET['type']     = 'invalid';
-		$_GET['_wpnonce'] = 'whatever';
-
-		Actions\expectDone( 'rocket_purge_cache' )
-			->never();
-
 		do_admin_post_rocket_purge_cache();
+	}
+
+	public function purgeTestData() {
+		$this->loadConfig();
+
+		return $this->config['test_data']['purge'];
+	}
+
+	public function wontPurgeTestData() {
+		$this->loadConfig();
+
+		return $this->config['test_data']['wontpurge'];
 	}
 }

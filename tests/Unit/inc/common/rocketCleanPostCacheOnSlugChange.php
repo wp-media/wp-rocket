@@ -14,9 +14,10 @@ class Test_RocketCleanPostCacheOnSlugChange extends TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		Functions\when( 'get_option' )->justReturn( '' );
-
-		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/common/purge.php';
+		if ( ! function_exists( 'rocket_clean_post_cache_on_slug_change' ) ) {
+			Functions\expect( 'get_option' )->with( 'stylesheet' )->andReturn( 'twentytwelve' );
+			require_once WP_ROCKET_PLUGIN_ROOT . 'inc/common/purge.php';
+		}
 	}
 
 	public function testShouldBailOutWhenPostStatusIsNotCorrect() {
