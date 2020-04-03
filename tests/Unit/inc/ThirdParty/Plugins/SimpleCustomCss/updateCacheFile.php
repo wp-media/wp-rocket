@@ -7,17 +7,20 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use WP_Rocket\ThirdParty\Plugins\SimpleCustomCss;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\SimpleCustomCss::delete_cache_file
+ * @covers \WP_Rocket\ThirdParty\Plugins\SimpleCustomCss::update_cache_file
  * @group  ThirdParty
  * @group  WithSCCSS
  */
 class Test_DeleteCacheFile extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/ThirdParty/Plugins/SimpleCustomCss/deleteCacheFile.php';
+	protected $path_to_test_data = '/inc/ThirdParty/Plugins/SimpleCustomCss/updateCacheFile.php';
 	private $sccss;
 
 	public function setUp() {
 		parent::setUp();
 		$this->sccss = new SimpleCustomCss();
+
+		Functions\expect( 'rocket_get_constant' )->with( 'WP_ROCKET_CACHE_BUSTING_PATH' )->andReturn( 'wp-content/cache/busting/' );
+		Functions\expect( 'rocket_get_constant' )->with( 'WP_ROCKET_CACHE_BUSTING_URL' )->andReturn( 'http://example.org/wp-content/cache/busting/' );
 
 		Functions\expect( 'rocket_clean_domain' );
 		Functions\expect( 'wp_kses' )->andReturnFirstArg();
@@ -28,25 +31,18 @@ class Test_DeleteCacheFile extends FilesystemTestCase {
 				'sccss-content' => '.simple-custom-css { color: red; }',
 			] );
 
-		Functions\expect( 'rocket_has_constant' )->with( 'FS_CHMOD_DIR' )->andReturn( true );
-		Functions\expect( 'rocket_get_constant' )->with( 'FS_CHMOD_DIR' )->andReturn( 0755 & ~ umask() );
+		$this->filesystem->chmod(  'wp-content/cache/busting/index.php', 0644 );
+		$this->filesystem->chmod(  'wp-content/cache/busting/', 0755 );
 	}
 
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldDeleteTheFileAndRecreateIt( $bustingpath, $filepath, $url ) {
+	public function testShouldDeleteTheFileAndRecreateIt( $blog_id, $filepath ) {
 		$this->filesystem->setFilemtime( $filepath, strtotime( '11 hours ago' ) );
+		Functions\expect( 'get_current_blog_id' )->andReturn( $blog_id );
 
-		Functions\expect( 'rocket_get_cache_busting_paths' )
-			->with( 'sccss.css', 'css' )
-			->andReturn( [
-				'bustingpath' => $bustingpath,
-				'filepath'    => $filepath,
-				'url'         => $url,
-			] );
-
-		$this->sccss->delete_cache_file();
+		$this->sccss->update_cache_file();
 		$this->assertTrue( $this->filesystem->exists( $filepath ) );
 	}
 

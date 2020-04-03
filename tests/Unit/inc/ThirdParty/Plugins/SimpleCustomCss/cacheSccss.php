@@ -19,24 +19,16 @@ class Test_CacheSccss extends FilesystemTestCase {
 		parent::setUp();
 		$this->sccss = new SimpleCustomCss();
 
-		Functions\expect( 'rocket_has_constant' )->with( 'FS_CHMOD_DIR' )->andReturn( true );
-		Functions\expect( 'rocket_get_constant' )->with( 'FS_CHMOD_DIR' )->andReturn( 0755 & ~ umask() );
+		Functions\expect( 'rocket_get_constant' )->with( 'WP_ROCKET_CACHE_BUSTING_PATH' )->andReturn( 'wp-content/cache/busting/' );
+		Functions\expect( 'rocket_get_constant' )->with( 'WP_ROCKET_CACHE_BUSTING_URL' )->andReturn( 'http://example.org/wp-content/cache/busting/' );
+		$this->filesystem->chmod(  'wp-content/cache/busting/index.php', 0644 );
+		$this->filesystem->chmod(  'wp-content/cache/busting/', 0755 );
 	}
 
 	public function testFileExistsShouldEnqueueAndRemoveOriginalWhenFileExists() {
-		$bustingpath = 'wp-content/cache/busting/1/';
-		$filepath    = 'wp-content/cache/busting/1/sccss.css';
-		$url         = 'http://example.org/wp-content/cache/busting/1/sccss.css';
-
+		$filepath = 'wp-content/cache/busting/1/sccss.css';
+		Functions\expect( 'get_current_blog_id' )->andReturn( 1 );
 		$this->filesystem->setFilemtime( $filepath, strtotime( '11 hours ago' ) );
-
-		Functions\expect( 'rocket_get_cache_busting_paths' )
-			->with( 'sccss.css', 'css' )
-			->andReturn( [
-				'bustingpath' => $bustingpath,
-				'filepath'    => $filepath,
-				'url'         => $url,
-			] );
 
 		Functions\expect( 'wp_enqueue_style' )->once();
 		Functions\expect( 'remove_action' )->once();
@@ -49,16 +41,10 @@ class Test_CacheSccss extends FilesystemTestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testCreateFileAndBustingFolderAndEnqueue( $bustingpath, $filepath, $url ) {
-		$this->filesystem->setFilemtime( $filepath, strtotime( '11 hours ago' ) );
+	public function testCreateFileAndBustingFolderAndEnqueue( $blog_id, $filepath ) {
+		Functions\expect( 'get_current_blog_id' )->andReturn( $blog_id );
 
-		Functions\expect( 'rocket_get_cache_busting_paths' )
-			->with( 'sccss.css', 'css' )
-			->andReturn( [
-				'bustingpath' => $bustingpath,
-				'filepath'    => $filepath,
-				'url'         => $url,
-			] );
+		$this->filesystem->setFilemtime( $filepath, strtotime( '11 hours ago' ) );
 
 		Functions\expect( 'wp_enqueue_style' )->once();
 		Functions\expect( 'remove_action' )->once();

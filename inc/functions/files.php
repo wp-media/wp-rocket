@@ -1231,15 +1231,15 @@ function rocket_get_filesystem_perms( $type ) {
 			if ( rocket_has_constant( 'FS_CHMOD_DIR' ) ) {
 				$perms[ $type ] = rocket_get_constant( 'FS_CHMOD_DIR' );
 			} else {
-				$perms[ $type ] = fileperms( rocket_get_constant( 'ABSPATH' ) ) & 0777 | 0755;
+				$perms[ $type ] = rocket_direct_filesystem()->getchmod( rocket_get_constant( 'ABSPATH' ) ) & 0777 | 0755;
 			}
 			break;
 
 		case 'file':
 			if ( rocket_has_constant( 'FS_CHMOD_FILE' ) ) {
-				$perms[ $type ] = rocket_get_constant( 'FS_CHMOD_DIR' );
+				$perms[ $type ] = rocket_get_constant( 'FS_CHMOD_FILE' );
 			} else {
-				$perms[ $type ] = fileperms( rocket_get_constant( 'ABSPATH' ) . 'index.php' ) & 0777 | 0644;
+				$perms[ $type ] = rocket_direct_filesystem()->getchmod( rocket_get_constant( 'ABSPATH' ) . 'index.php' ) & 0777 | 0644;
 			}
 	}
 

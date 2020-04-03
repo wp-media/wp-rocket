@@ -9,12 +9,13 @@ return [
 		'wp-content' => [
 			'cache' => [
 				'busting' => [
-					'1' => [
+					'index.php' => '<?php',
+					'1'         => [
 						'.'         => '',
 						'..'        => '',
 						'sccss.css' => '.simple-custom-css { color: red; }',
 					],
-					'2' => [
+					'2'         => [
 						'.'         => '',
 						'..'        => '',
 					],
@@ -26,28 +27,22 @@ return [
 	// Test data.
 	'test_data' => [
 		'testShouldDeleteTheFileAndRecreateIt' => [
-			// Busting Folder Path
-			'wp-content/cache/busting/1/',
+			// get_current_blog_id()
+			1,
 			// Path
 			'wp-content/cache/busting/1/sccss.css',
-			// URL
-			'http://example.org/wp-content/cache/busting/1/sccss.css',
 		],
 		'testShouldCreateTheFile' => [
-			// Busting Folder Path
-			'wp-content/cache/busting/2/',
+			// get_current_blog_id()
+			2,
 			// Path
 			'wp-content/cache/busting/2/sccss.css',
-			// URL
-			'http://example.org/wp-content/cache/busting/2/sccss.css',
 		],
 		'testShouldCreateBustingFolderAndFile' => [
-			// Busting Folder Path
-			'wp-content/cache/busting/3/',
+			// get_current_blog_id()
+			3,
 			// Path
 			'wp-content/cache/busting/3/sccss.css',
-			// URL
-			'http://example.org/wp-content/cache/busting/3/sccss.css',
 		],
 	],
 ];

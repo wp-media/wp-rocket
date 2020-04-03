@@ -2,7 +2,6 @@
 
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\SimpleCustomCss;
 
-use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**

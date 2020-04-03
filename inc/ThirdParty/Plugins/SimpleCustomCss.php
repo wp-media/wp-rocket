@@ -25,7 +25,7 @@ class SimpleCustomCss implements Subscriber_Interface {
 		}
 
 		$events['wp_enqueue_scripts']           = [ 'cache_sccss', 98 ];
-		$events['update_option_sccss_settings'] = 'delete_cache_file';
+		$events['update_option_sccss_settings'] = 'update_cache_file';
 
 		return $events;
 	}
@@ -37,14 +37,9 @@ class SimpleCustomCss implements Subscriber_Interface {
 	 * @author Remy Perona
 	 */
 	public function cache_sccss() {
-		$sccss = rocket_get_cache_busting_paths( 'sccss.css', 'css' );
+		$sccss = $this->get_cache_busting_paths( 'sccss.css' );
 
-		if ( ! rocket_direct_filesystem()->exists( $sccss['filepath'] ) ) {
-			$this->create_cache_file( $sccss['bustingpath'], $sccss['filepath'] );
-		}
-
-		// Bailout if the SCCSS file could not be created.
-		if ( ! rocket_direct_filesystem()->exists( $sccss['filepath'] ) ) {
+		if ( ! $this->create_cache_file( $sccss['bustingpath'], $sccss['filepath'], false ) ) {
 			return;
 		}
 
@@ -58,33 +53,66 @@ class SimpleCustomCss implements Subscriber_Interface {
 	 * @since 2.9
 	 * @author Remy Perona
 	 */
-	public function delete_cache_file() {
-		$sccss = rocket_get_cache_busting_paths( 'sccss.css', 'css' );
-
-		array_map( 'unlink', glob( $sccss['bustingpath'] . 'sccss*.css' ) );
+	public function update_cache_file() {
+		$sccss = $this->get_cache_busting_paths( 'sccss.css' );
 		rocket_clean_domain();
-		$this->create_cache_file( $sccss['bustingpath'], $sccss['filepath'] );
+		$this->create_cache_file( $sccss['bustingpath'], $sccss['filepath'], true );
 	}
 
 	/**
-	 * Creates the cache file for SCCSS code
+	 * Creates cache file for SCCSS code if it does not exist.
 	 *
 	 * @since 2.9
 	 * @author Remy Perona
 	 *
-	 * @param string $cache_busting_path Path to the cache busting directory.
+	 * @param string $cache_busting_path   Path to the cache busting directory.
 	 * @param string $cache_sccss_filepath Path to the sccss cache file.
+	 * @param bool   $allow_update         Allow to update the file.
+	 *
+	 * @return bool  Returns bool if the files exists or could not be created.
 	 */
-	private function create_cache_file( $cache_busting_path, $cache_sccss_filepath ) {
+	private function create_cache_file( $cache_busting_path, $cache_sccss_filepath, $allow_update ) {
+		$filesystem = rocket_direct_filesystem();
+		// File exists. Do not recreate it.
+		if ( $filesystem->exists( $cache_sccss_filepath ) && ! $allow_update ) {
+			return true;
+		}
+
 		$options     = get_option( 'sccss_settings' );
 		$raw_content = isset( $options['sccss-content'] ) ? $options['sccss-content'] : '';
 		$content     = wp_kses( $raw_content, [ '\'', '\"' ] );
 		$content     = str_replace( '&gt;', '>', $content );
 
-		if ( ! rocket_direct_filesystem()->is_dir( $cache_busting_path ) ) {
+		if ( ! $filesystem->is_dir( $cache_busting_path ) ) {
 			rocket_mkdir_p( $cache_busting_path );
 		}
 
-		rocket_put_content( $cache_sccss_filepath, $content );
+		return rocket_put_content( $cache_sccss_filepath, $content );
+	}
+
+	/**
+	 * Returns paths used for cache busting
+	 *
+	 * @since 2.9
+	 * @author Remy Perona
+	 *
+	 * @param string $filename name of the cache busting file.
+	 * @return array Array of paths used for cache busting
+	 */
+	private function get_cache_busting_paths( $filename ) {
+		$blog_id                = get_current_blog_id();
+		$cache_busting_path     = rocket_get_constant( 'WP_ROCKET_CACHE_BUSTING_PATH' ) . $blog_id;
+		$filename               = rocket_realpath( rtrim( str_replace( [ ' ', '%20' ], '-', $filename ) ) );
+		$cache_busting_filepath = $cache_busting_path . $filename;
+		$cache_busting_url      = rocket_get_constant( 'WP_ROCKET_CACHE_BUSTING_URL' ) . $blog_id . $filename;
+
+		/** This filter is documented in inc/functions/minify.php */
+		$cache_busting_url = apply_filters( 'rocket_css_url', $cache_busting_url );
+
+		return [
+			'bustingpath' => $cache_busting_path,
+			'filepath'    => $cache_busting_filepath,
+			'url'         => $cache_busting_url,
+		];
 	}
 }
