@@ -43,7 +43,7 @@ return [
 	[
 		'i18n_plugin' => 'polylang',
 		'codes'       => [],
-		'expected'    => [],
+		'expected'    => false,
 	],
 	[
 		'i18n_plugin' => 'polylang',

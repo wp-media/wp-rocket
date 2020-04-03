@@ -3,7 +3,7 @@
 require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/SitePress.php';
 
 return [
-	'testShouldReturnFalseWhenNoneFound' => [
+	[
 		'globals'     => [],
 		'expected'    => false,
 	],
