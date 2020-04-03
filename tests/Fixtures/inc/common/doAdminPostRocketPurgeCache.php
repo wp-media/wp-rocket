@@ -2,7 +2,7 @@
 
 return [
 
-	'vfs_dir'   => 'wp-content/cache/wp-rocket/',
+	'vfs_dir'   => 'wp-content/cache/wp-rocket/example.org/',
 
 	// Virtual filesystem structure.
 	'structure' => [
@@ -10,17 +10,21 @@ return [
 			'cache' => [
 				'wp-rocket' => [
 					'example.org' => [
-						'index.html'      => '',
-						'index.html_gzip' => '',
-						'en'              => [
+						'index.html'        => '',
+						'index.html_gzip'   => '',
+						'lorem-ipsum-dolor' => [
 							'index.html'      => '',
 							'index.html_gzip' => '',
 						],
-						'de'              => [
+						'en'                => [
 							'index.html'      => '',
 							'index.html_gzip' => '',
 						],
-						'fr'              => [
+						'de'                => [
+							'index.html'      => '',
+							'index.html_gzip' => '',
+						],
+						'fr'                => [
 							'index.html'      => '',
 							'index.html_gzip' => '',
 						],
@@ -32,27 +36,47 @@ return [
 
 	// Test data.
 	'test_data' => [
-		'purge'     => [
+
+		'purge' => [
 			[
 				'$_GET'  => [
 					'type'     => 'post-123',
-					'_wpnonce' => 'whatever',
+					'_wpnonce' => 'post-123',
 					'lang'     => 'en',
 				],
 				'config' => [
-					'type'    => 'post',
-					'post_id' => 123,
+					'type'      => 'post',
+					'post_id'   => 123, // Auto populated in integration tests.
+					'lang'      => 'en',
+					'file'      => 'lorem-ipsum-dolor',
+					'post_data' => [
+						'post_name'  => 'lorem-ipsum-dolor',
+						'post_title' => 'Lorem ipsum dolor',
+					],
+				],
+			],
+			[
+				'$_GET'  => [
+					'type'     => 'all',
+					'_wpnonce' => 'all',
+					'lang'     => 'en',
+				],
+				'config' => [
+					'type'    => 'all',
 					'lang'    => 'en',
 				],
 			],
 		],
+
 		'wontpurge' => [
 			[
 				'$_GET'  => [
 					'type'     => 'invalid',
 					'_wpnonce' => '',
 				],
-				'config' => [],
+				'config' => [
+					'current_user_can' => true,
+				],
 			],
 			[
 				'$_GET'  => [
@@ -66,12 +90,10 @@ return [
 			[
 				'$_GET'  => [
 					'type'     => 'invalid',
-					'_wpnonce' => 'whatever',
+					'_wpnonce' => 'invalid',
 				],
 				'config' => [
 					'current_user_can' => true,
-					'type'    => 'post',
-					'post_id' => 123,
 				],
 			],
 		],
