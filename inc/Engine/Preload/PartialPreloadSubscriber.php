@@ -201,16 +201,27 @@ class PartialPreloadSubscriber implements Subscriber_Interface {
 		 *
 		 * @param int $limit Maximum number of URLs to preload at once.
 		 */
-		$limit = (int) apply_filters( 'rocket_preload_limit_number', 100 );
-		$count = 0;
+		$limit  = (int) apply_filters( 'rocket_preload_limit_number', 100 );
+		$count  = 0;
+		$mobile = $this->partial_preload->is_mobile_preload_enabled();
 
 		foreach ( $this->urls as $url ) {
 			$path = wp_parse_url( $url, PHP_URL_PATH );
+
 			if ( isset( $path ) && preg_match( '#^(' . \get_rocket_cache_reject_uri() . ')$#', $path ) ) {
 				continue;
 			}
 
 			$this->partial_preload->push_to_queue( $url );
+
+			if ( $mobile ) {
+				$this->partial_preload->push_to_queue(
+					[
+						'url'    => $url,
+						'mobile' => true,
+					]
+				);
+			}
 
 			++$count;
 
