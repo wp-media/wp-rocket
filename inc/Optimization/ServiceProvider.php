@@ -46,6 +46,8 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
+		$options = $this->getContainer()->get( 'options' );
+
 		$this->getContainer()->add( 'config', 'WP_Rocket\Buffer\Config' )
 			->withArgument( [ 'config_dir_path' => rocket_get_constant( 'WP_ROCKET_CONFIG_PATH' ) ] );
 		$this->getContainer()->add( 'tests', 'WP_Rocket\Buffer\Tests' )
@@ -55,21 +57,21 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'buffer_subscriber', 'WP_Rocket\Subscriber\Optimization\Buffer_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'buffer_optimization' ) );
 		$this->getContainer()->add( 'cache_dynamic_resource', 'WP_Rocket\Optimization\Cache_Dynamic_Resource' )
-			->withArgument( $this->getContainer()->get( 'options' ) )
+			->withArgument( $options )
 			->withArgument( rocket_get_constant( 'WP_ROCKET_CACHE_BUSTING_PATH' ) )
 			->withArgument( rocket_get_constant( 'WP_ROCKET_CACHE_BUSTING_URL' ) );
 		$this->getContainer()->share( 'ie_conditionals_subscriber', 'WP_Rocket\Subscriber\Optimization\IE_Conditionals_Subscriber' );
 		$this->getContainer()->share( 'minify_html_subscriber', 'WP_Rocket\Subscriber\Optimization\Minify_HTML_Subscriber' )
-			->withArgument( $this->getContainer()->get( 'options' ) );
+			->withArgument( $options );
 		$this->getContainer()->share( 'combine_google_fonts_subscriber', 'WP_Rocket\Subscriber\Optimization\Combine_Google_Fonts_Subscriber' )
-			->withArgument( $this->getContainer()->get( 'options' ) );
+			->withArgument( $options );
 		$this->getContainer()->share( 'minify_css_subscriber', 'WP_Rocket\Subscriber\Optimization\Minify_CSS_Subscriber' )
-			->withArgument( $this->getContainer()->get( 'options' ) );
+			->withArgument( $options );
 		$this->getContainer()->share( 'minify_js_subscriber', 'WP_Rocket\Subscriber\Optimization\Minify_JS_Subscriber' )
-			->withArgument( $this->getContainer()->get( 'options' ) );
+			->withArgument( $options );
 		$this->getContainer()->share( 'cache_dynamic_resource_subscriber', 'WP_Rocket\Subscriber\Optimization\Cache_Dynamic_Resource_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'cache_dynamic_resource' ) );
 		$this->getContainer()->share( 'dequeue_jquery_migrate_subscriber', 'WP_Rocket\Subscriber\Optimization\Dequeue_JQuery_Migrate_Subscriber' )
-			->withArgument( $this->getContainer()->get( 'options' ) );
+			->withArgument( $options );
 	}
 }
