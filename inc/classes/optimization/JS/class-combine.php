@@ -177,12 +177,12 @@ class Combine extends Abstract_JS_Optimization {
 	protected function parse( $scripts ) {
 		$scripts = array_map(
 			function( $script ) {
-				preg_match( '/<script\s+([^>]+[\s\'"])?src\s*=\s*[\'"]\s*?([^\'"]+\.js(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>/Umsi', $script[0], $matches );
+				preg_match( '/<script\s+([^>]+[\s\'"])?src\s*=\s*[\'"]\s*?(?<url>[^\'"]+\.js(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>/Umsi', $script[0], $matches );
 
-				if ( isset( $matches[2] ) ) {
-					if ( $this->is_external_file( $matches[2] ) ) {
+				if ( isset( $matches['url'] ) ) {
+					if ( $this->is_external_file( $matches['url'] ) ) {
 						foreach ( $this->get_excluded_external_file_path() as $excluded_file ) {
-							if ( false !== strpos( $matches[2], $excluded_file ) ) {
+							if ( false !== strpos( $matches['url'], $excluded_file ) ) {
 								Logger::debug(
 									'Script is external.',
 									[
@@ -196,7 +196,7 @@ class Combine extends Abstract_JS_Optimization {
 
 						$this->scripts[] = [
 							'type'    => 'url',
-							'content' => $matches[2],
+							'content' => $matches['url'],
 						];
 
 						return $script;
@@ -213,7 +213,7 @@ class Combine extends Abstract_JS_Optimization {
 						return;
 					}
 
-					if ( $this->jquery_url && false !== strpos( $matches[2], $this->jquery_url ) ) {
+					if ( $this->jquery_url && false !== strpos( $matches['url'], $this->jquery_url ) ) {
 						Logger::debug(
 							'Script is jQuery.',
 							[
@@ -224,7 +224,7 @@ class Combine extends Abstract_JS_Optimization {
 						return;
 					}
 
-					$file_path = $this->get_file_path( $matches[2] );
+					$file_path = $this->get_file_path( $matches['url'] );
 
 					if ( ! $file_path ) {
 						return;
