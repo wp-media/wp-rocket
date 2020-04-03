@@ -16,6 +16,12 @@ class Test_DoAdminPostRocketPurgeCache extends TestCase {
 	protected function setUp() {
 		parent::setUp();
 
+		// Load the file once.
+		if ( ! function_exists( 'do_admin_post_rocket_purge_cache' ) ) {
+			Functions\expect( 'get_option' )->with( 'stylesheet' )->andReturn( 'twentytwelve' );
+			require_once WP_ROCKET_PLUGIN_ROOT . 'inc/common/purge.php';
+		}
+
 		Functions\when( 'sanitize_key' )->alias(
 			function( $key ) {
 				$key = strtolower( $key );
@@ -41,7 +47,6 @@ class Test_DoAdminPostRocketPurgeCache extends TestCase {
 			}
 		);
 
-		Functions\when( 'get_option' )->justReturn( '' );
 		Functions\when( 'wp_verify_nonce' )->justReturn( true );
 		Functions\when( 'current_user_can' )->justReturn( true );
 		Functions\when( 'set_transient' )->justReturn( null );
@@ -49,8 +54,6 @@ class Test_DoAdminPostRocketPurgeCache extends TestCase {
 		Functions\when( 'esc_url_raw' )->returnArg();
 		Functions\when( 'wp_safe_redirect' )->justReturn( null );
 		Functions\when( 'wp_nonce_ays' )->justReturn( null );
-
-		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/common/purge.php';
 
 		Functions\when( 'rocket_clean_post' )->justReturn( null );
 		Functions\when( 'rocket_clean_domain' )->justReturn( null );
