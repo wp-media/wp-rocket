@@ -99,7 +99,7 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	rocket_generate_config_file();
 
 	// Set WP_CACHE constant in wp-config.php.
-	if ( ! defined( 'WP_CACHE' ) || ! WP_CACHE ) {
+	if ( ! rocket_get_constant( 'WP_CACHE' ) ) {
 		set_rocket_wp_cache_define( true );
 	}
 
@@ -107,7 +107,7 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		set_transient( 'rocket_analytics_optin', 1 );
 	}
 }
-add_action( 'update_option_' . WP_ROCKET_SLUG, 'rocket_after_save_options', 10, 2 );
+add_action( 'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ), 'rocket_after_save_options', 10, 2 );
 
 /**
  * Perform actions when settings are saved.
@@ -231,7 +231,7 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 
 	return $newvalue;
 }
-add_filter( 'pre_update_option_' . WP_ROCKET_SLUG, 'rocket_pre_main_option', 10, 2 );
+add_filter( 'pre_update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ), 'rocket_pre_main_option', 10, 2 );
 
 /**
  * Auto-activate the SSL cache if the website URL is updated with https protocol
