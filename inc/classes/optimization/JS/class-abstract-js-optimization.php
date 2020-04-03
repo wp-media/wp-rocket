@@ -87,13 +87,17 @@ class Abstract_JS_Optimization extends Abstract_Optimization {
 	 * @param Array $tag Tag corresponding to a JS file.
 	 * @return bool True if it is a file excluded, false otherwise
 	 */
-	protected function is_minify_excluded_file( $tag ) {
+	protected function is_minify_excluded_file( array $tag ) {
+		if ( ! isset( $tag[0], $tag['url'] ) ) {
+			return true;
+		}
+
 		// File should not be minified.
 		if ( false !== strpos( $tag[0], 'data-minify=' ) || false !== strpos( $tag[0], 'data-no-minify=' ) ) {
 			return true;
 		}
 
-		$file_path = wp_parse_url( $tag[2], PHP_URL_PATH );
+		$file_path = wp_parse_url( $tag['url'], PHP_URL_PATH );
 
 		// File extension is not js.
 		if ( pathinfo( $file_path, PATHINFO_EXTENSION ) !== self::FILE_TYPE ) {
