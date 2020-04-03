@@ -23,8 +23,6 @@ class Test_DoAdminPostRocketPurgeCache extends TestCase {
 
 		Functions\when( 'wp_safe_redirect' )->justReturn( null );
 		Functions\when( 'wp_die' )->justReturn( null );
-
-		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/common/purge.php';
 	}
 
 	public function testShouldTriggerHook() {
