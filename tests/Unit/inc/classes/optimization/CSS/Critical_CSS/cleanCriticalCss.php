@@ -26,7 +26,7 @@ class Test_CleanCriticalCSS extends FilesystemTestCase {
 		$this->critical_css_generation = Mockery::mock( Critical_CSS_Generation::class );
 
 		Functions\expect( 'rocket_get_constant' )->with( 'WP_ROCKET_CRITICAL_CSS_PATH' )->andReturn( $this->filesystem->getUrl( $this->critical_css_path ) );
-		Functions\expect( 'home_url' )->with( '/' )->andReturn( 'http://example.org' );
+		Functions\expect( 'home_url' )->with( '/' )->andReturn( 'http://example.org/' );
 	}
 
 	/**

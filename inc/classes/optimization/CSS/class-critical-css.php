@@ -133,7 +133,7 @@ class Critical_CSS {
 		$dir        = $filesystem->dirlist( $this->critical_css_path );
 
 		// Bailout if could not get the directory contents.
-		if ( false === $dir || ! $dir ) {
+		if ( empty( $dir ) ) {
 			return;
 		}
 
