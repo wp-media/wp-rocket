@@ -150,11 +150,11 @@ class Google_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface {
 	 * @since  3.6 Argument replacement.
 	 * @author Remy Perona
 	 *
-	 * @param  string $_type Type of cache clearance: 'all', 'post', 'term', 'user', 'url'.
+	 * @param  string $type Type of cache clearance: 'all', 'post', 'term', 'user', 'url'.
 	 * @return bool
 	 */
-	public function delete_tracking_cache( $_type ) {
-		if ( 'all' !== $_type || ! $this->is_busting_active() ) {
+	public function delete_tracking_cache( $type ) {
+		if ( 'all' !== $type || ! $this->is_busting_active() ) {
 			return false;
 		}
 
@@ -170,7 +170,7 @@ class Google_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface {
 	 * @return boolean
 	 */
 	private function is_allowed() {
-		if ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
+		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
 			return false;
 		}
 
