@@ -1,8 +1,8 @@
 <?php
 namespace WP_Rocket\Subscriber\Optimization;
 
-use WP_Rocket\Admin\Options_Data as Options;
-use WP_Rocket\Optimization\CSS;
+use WP_Rocket\Engine\Optimization\AbstractMinifySubscriber;
+use WP_Rocket\Optimization\CSS\Combine_Google_Fonts;
 
 /**
  * Combine Google Fonts subscriber
@@ -10,7 +10,7 @@ use WP_Rocket\Optimization\CSS;
  * @since 3.1
  * @author Remy Perona
  */
-class Combine_Google_Fonts_Subscriber extends Minify_Subscriber {
+class Combine_Google_Fonts_Subscriber extends AbstractMinifySubscriber {
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
@@ -39,7 +39,7 @@ class Combine_Google_Fonts_Subscriber extends Minify_Subscriber {
 			return $html;
 		}
 
-		$this->set_optimization_type( new CSS\Combine_Google_Fonts() );
+		$this->set_optimization_type( new Combine_Google_Fonts() );
 
 		return $this->optimize( $html );
 	}
