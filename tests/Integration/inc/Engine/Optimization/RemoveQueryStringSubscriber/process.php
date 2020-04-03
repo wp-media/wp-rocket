@@ -18,19 +18,19 @@ class Test_Process extends FilesystemTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldRemoveQueryStrings( $original, $expected, $settings ) {
-        add_filter( 'pre_get_rocket_option_remove_query_strings', [ $this, 'return_true' ] );
-        add_filter( 'rocket_wp_content_dir', [ $this, 'virtual_wp_content_dir' ] );
-        $this->set_settings( $settings );
+		add_filter( 'pre_get_rocket_option_remove_query_strings', [ $this, 'return_true' ] );
+		add_filter( 'rocket_wp_content_dir', [ $this, 'virtual_wp_content_dir' ] );
+		$this->set_settings( $settings );
 
 		$this->assertSame(
 			$expected,
 			apply_filters( 'rocket_buffer', $original )
 		);
 
-        $this->unset_settings( $settings );
-        remove_filter( 'pre_get_rocket_option_remove_query_strings', [ $this, 'return_true' ] );
-        remove_filter( 'rocket_wp_content_dir', [ $this, 'virtual_wp_content_dir' ] );
-    }
+		$this->unset_settings( $settings );
+		remove_filter( 'pre_get_rocket_option_remove_query_strings', [ $this, 'return_true' ] );
+		remove_filter( 'rocket_wp_content_dir', [ $this, 'virtual_wp_content_dir' ] );
+	}
 
     public function virtual_wp_content_dir() {
         return $this->filesystem->getUrl( 'wp-content' );

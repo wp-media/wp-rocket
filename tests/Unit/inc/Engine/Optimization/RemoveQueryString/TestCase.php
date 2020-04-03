@@ -18,6 +18,6 @@ abstract class TestCase extends OptimizationTestCase {
 			'http://example.org/wp-content/cache/busting/'
 		);
 
-        Functions\when( 'get_bloginfo' )->justReturn( '5.3' );
-    }
+		Functions\when( 'get_bloginfo' )->justReturn( '5.3' );
+	}
 }

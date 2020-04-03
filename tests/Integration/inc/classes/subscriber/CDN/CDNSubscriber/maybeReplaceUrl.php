@@ -10,7 +10,7 @@ namespace WP_Rocket\Tests\Integration\inc\classes\subscriber\CDN\CDNSubscriber;
  */
 class Test_MaybeReplaceUrl extends TestCase {
 	public function addDataProvider() {
-        return $this->getTestData( __DIR__, 'maybe-replace-url' );
+		return $this->getTestData( __DIR__, 'maybe-replace-url' );
 	}
 
 	/**

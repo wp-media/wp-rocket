@@ -57,8 +57,8 @@ class Test_GetCdnHosts extends TestCase {
 	}
 
 	public function addDataProvider() {
-        return $this->getTestData( __DIR__, 'get-cdn-hosts' );
-    }
+		return $this->getTestData( __DIR__, 'get-cdn-hosts' );
+	}
 
 	/**
 	 * @dataProvider addDataProvider

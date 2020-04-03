@@ -2,7 +2,7 @@
 return [
 	'vfs_dir' => 'public/',
 	'structure' => [
-        'wordpress' => [
+		'wordpress' => [
 			'wp-includes' => [
 				'js' => [
 					'jquery' => [

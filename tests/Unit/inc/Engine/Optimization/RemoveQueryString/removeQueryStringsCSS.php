@@ -16,26 +16,26 @@ class Test_RemoveQueryStringsCSS extends TestCase {
      * @dataProvider providerTestData
      */
     public function testShouldRemoveQueryStringsWhenCSSURL( $original, $expected, $cdn_host, $cdn_url, $site_url ) {
-        Filters\expectApplied( 'rocket_cdn_hosts' )
+		Filters\expectApplied( 'rocket_cdn_hosts' )
 			->zeroOrMoreTimes()
 			->with( [], [ 'all', 'css_and_js', 'css', 'js' ] )
-            ->andReturn( $cdn_host );
+			->andReturn( $cdn_host );
 
-        Filters\expectApplied( 'rocket_asset_url' )
+		Filters\expectApplied( 'rocket_asset_url' )
 			->zeroOrMoreTimes()
 			->andReturnUsing( function( $url ) use ( $cdn_url, $site_url ) {
-                return str_replace( $cdn_url, $site_url, $url );
-            } );
+				return str_replace( $cdn_url, $site_url, $url );
+			} );
 
-        Filters\expectApplied( 'rocket_css_url' )
-            ->zeroOrMoreTimes()
-            ->andReturnUsing( function( $url, $original_url ) use ( $cdn_url ) {
-                return str_replace( 'http://example.org', $cdn_url, $url );
-            } );
+		Filters\expectApplied( 'rocket_css_url' )
+			->zeroOrMoreTimes()
+			->andReturnUsing( function( $url, $original_url ) use ( $cdn_url ) {
+				return str_replace( 'http://example.org', $cdn_url, $url );
+			} );
 
-        $this->assertSame(
-            $expected,
-            $this->rqs->remove_query_strings_css( $original )
-        );
-    }
+		$this->assertSame(
+			$expected,
+			$this->rqs->remove_query_strings_css( $original )
+		);
+	}
 }

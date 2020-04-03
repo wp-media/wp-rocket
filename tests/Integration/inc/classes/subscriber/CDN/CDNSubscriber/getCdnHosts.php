@@ -11,7 +11,7 @@ namespace WP_Rocket\Tests\Integration\inc\classes\subscriber\CDN\CDNSubscriber;
  */
 class Test_GetCdnHosts extends TestCase {
 	public function addDataProvider() {
-        return $this->getTestData( __DIR__, 'get-cdn-hosts' );
+		return $this->getTestData( __DIR__, 'get-cdn-hosts' );
 	}
 
 	/**

@@ -18,21 +18,21 @@ class Test_Process extends FilesystemTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldMinifyCSS( $original, $expected, $settings ) {
-        add_filter( 'pre_get_rocket_option_minify_css', [ $this, 'return_true' ] );
-        add_filter( 'pre_get_rocket_option_minify_css_key', [ $this, 'return_key' ] );
-        add_filter( 'rocket_wp_content_dir', [ $this, 'virtual_wp_content_dir' ] );
-        $this->set_settings( $settings );
+		add_filter( 'pre_get_rocket_option_minify_css', [ $this, 'return_true' ] );
+		add_filter( 'pre_get_rocket_option_minify_css_key', [ $this, 'return_key' ] );
+		add_filter( 'rocket_wp_content_dir', [ $this, 'virtual_wp_content_dir' ] );
+		$this->set_settings( $settings );
 
 		$this->assertSame(
 			$this->format_the_html( $expected ),
 			$this->format_the_html( apply_filters( 'rocket_buffer', $original ) )
 		);
 
-        $this->unset_settings( $settings );
-        remove_filter( 'pre_get_rocket_option_minify_css', [ $this, 'return_true' ] );
-        remove_filter( 'pre_get_rocket_option_minify_css_key', [ $this, 'return_key' ] );
-        remove_filter( 'rocket_wp_content_dir', [ $this, 'virtual_wp_content_dir' ] );
-    }
+		$this->unset_settings( $settings );
+		remove_filter( 'pre_get_rocket_option_minify_css', [ $this, 'return_true' ] );
+		remove_filter( 'pre_get_rocket_option_minify_css_key', [ $this, 'return_key' ] );
+		remove_filter( 'rocket_wp_content_dir', [ $this, 'virtual_wp_content_dir' ] );
+	}
 
     public function virtual_wp_content_dir() {
         return $this->filesystem->getUrl( 'wordpress/wp-content' );

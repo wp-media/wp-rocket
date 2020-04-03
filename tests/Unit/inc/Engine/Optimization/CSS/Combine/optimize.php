@@ -41,7 +41,7 @@ class Test_Optimize extends TestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-    public function testShouldCombineCSS( $original, $combined, $cdn_host, $cdn_url, $site_url ) {
+	public function testShouldCombineCSS( $original, $combined, $cdn_host, $cdn_url, $site_url ) {
 		Filters\expectApplied( 'rocket_cdn_hosts' )
 			->zeroOrMoreTimes()
 			->with( [], [ 'all', 'css_and_js', 'css' ] )
@@ -50,18 +50,18 @@ class Test_Optimize extends TestCase {
 		Filters\expectApplied( 'rocket_asset_url' )
 			->zeroOrMoreTimes()
 			->andReturnUsing( function( $url ) use ( $cdn_url, $site_url ) {
-                return str_replace( $cdn_url, $site_url, $url );
-            } );
-
-        Filters\expectApplied( 'rocket_css_url' )
-			->zeroOrMoreTimes()
-            ->andReturnUsing( function( $url, $original_url ) use ( $cdn_url ) {
-                return str_replace( 'http://example.org', $cdn_url, $url );
+				return str_replace( $cdn_url, $site_url, $url );
 			} );
 
-        $this->assertSame(
-            $combined,
-            $this->combine->optimize( $original )
-        );
-    }
+		Filters\expectApplied( 'rocket_css_url' )
+			->zeroOrMoreTimes()
+			->andReturnUsing( function( $url, $original_url ) use ( $cdn_url ) {
+				return str_replace( 'http://example.org', $cdn_url, $url );
+			} );
+
+		$this->assertSame(
+			$combined,
+			$this->combine->optimize( $original )
+		);
+	}
 }

@@ -28,14 +28,14 @@ class Test_Optimize extends TestCase {
 			->andReturn( 'minified JS' );
 
 		Functions\when( 'esc_url' )->returnArg();
-		Functions\when('wp_scripts')->alias(function() {
-            $wp_scripts = new \stdClass();
-            $jquery = new \stdClass();
-            $jquery->src = '/wp-includes/js/jquery/jquery.js';
-            $wp_scripts->queue = [];
+		Functions\when('wp_scripts')->alias( function() {
+			$wp_scripts = new \stdClass();
+			$jquery = new \stdClass();
+			$jquery->src = '/wp-includes/js/jquery/jquery.js';
+			$wp_scripts->queue = [];
 
-            return $wp_scripts;
-		});
+			return $wp_scripts;
+		} );
 
 		Functions\expect( 'rocket_get_constant' )
 			->once()
@@ -61,18 +61,18 @@ class Test_Optimize extends TestCase {
 		Filters\expectApplied( 'rocket_asset_url' )
 			->zeroOrMoreTimes()
 			->andReturnUsing( function( $url ) use ( $cdn_url, $site_url ) {
-                return str_replace( $cdn_url, $site_url, $url );
-            } );
-
-        Filters\expectApplied( 'rocket_js_url' )
-			->zeroOrMoreTimes()
-            ->andReturnUsing( function( $url, $original_url ) use ( $cdn_url ) {
-                return str_replace( 'http://example.org', $cdn_url, $url );
+				return str_replace( $cdn_url, $site_url, $url );
 			} );
 
-        $this->assertSame(
-            $this->format_the_html( $minified ),
-            $this->format_the_html( $this->combine->optimize( $original ) )
-        );
-    }
+		Filters\expectApplied( 'rocket_js_url' )
+			->zeroOrMoreTimes()
+			->andReturnUsing( function( $url, $original_url ) use ( $cdn_url ) {
+				return str_replace( 'http://example.org', $cdn_url, $url );
+			} );
+
+		$this->assertSame(
+			$this->format_the_html( $minified ),
+			$this->format_the_html( $this->combine->optimize( $original ) )
+		);
+	}
 }
