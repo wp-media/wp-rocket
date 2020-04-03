@@ -26,7 +26,7 @@ class Minify extends Abstract_CSS_Optimization {
 		Logger::info( 'CSS MINIFICATION PROCESS STARTED.', [ 'css minification process' ] );
 
 		$html_nocomments = $this->hide_comments( $html );
-		$styles          = $this->find( '<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?([^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html_nocomments );
+		$styles          = $this->find( '<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?(?<url>[^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html_nocomments );
 
 		if ( ! $styles ) {
 			Logger::debug( 'No `<link>` tags found.', [ 'css minification process' ] );
@@ -42,7 +42,7 @@ class Minify extends Abstract_CSS_Optimization {
 		);
 
 		foreach ( $styles as $style ) {
-			if ( preg_match( '/(?:-|\.)min.css/iU', $style[2] ) ) {
+			if ( preg_match( '/(?:-|\.)min.css/iU', $style['url'] ) ) {
 				Logger::debug(
 					'Style is already minified.',
 					[
@@ -53,7 +53,7 @@ class Minify extends Abstract_CSS_Optimization {
 				continue;
 			}
 
-			if ( $this->is_external_file( $style[2] ) ) {
+			if ( $this->is_external_file( $style['url'] ) ) {
 				Logger::debug(
 					'Style is external.',
 					[
@@ -75,7 +75,7 @@ class Minify extends Abstract_CSS_Optimization {
 				continue;
 			}
 
-			$minify_url = $this->replace_url( $style[2] );
+			$minify_url = $this->replace_url( $style['url'] );
 
 			if ( ! $minify_url ) {
 				Logger::error(
@@ -88,7 +88,7 @@ class Minify extends Abstract_CSS_Optimization {
 				continue;
 			}
 
-			$replace_style = str_replace( $style[2], $minify_url, $style[0] );
+			$replace_style = str_replace( $style['url'], $minify_url, $style[0] );
 			$replace_style = str_replace( '<link', '<link data-minify="1"', $replace_style );
 			$html          = str_replace( $style[0], $replace_style, $html );
 

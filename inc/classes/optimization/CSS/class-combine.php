@@ -52,7 +52,7 @@ class Combine extends Abstract_CSS_Optimization {
 		Logger::info( 'CSS COMBINE PROCESS STARTED.', [ 'css combine process' ] );
 
 		$html_nocomments = $this->hide_comments( $html );
-		$styles          = $this->find( '<link\s+([^>]+[\s\'"])?href\s*=\s*[\'"]\s*?([^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html_nocomments );
+		$styles          = $this->find( '<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?(?<url>[^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html_nocomments );
 
 		if ( ! $styles ) {
 			Logger::debug( 'No `<link>` tags found.', [ 'css combine process' ] );
@@ -70,7 +70,7 @@ class Combine extends Abstract_CSS_Optimization {
 		$files  = [];
 		$styles = array_map(
 				function( $style ) use ( &$files ) {
-					if ( $this->is_external_file( $style[2] ) ) {
+					if ( $this->is_external_file( $style['url'] ) ) {
 						Logger::debug(
 							'Style is external.',
 							[
@@ -92,7 +92,7 @@ class Combine extends Abstract_CSS_Optimization {
 						return;
 					}
 
-					$style_filepath = $this->get_file_path( $style[2] );
+					$style_filepath = $this->get_file_path( $style['url'] );
 
 					if ( ! $style_filepath ) {
 						return;
