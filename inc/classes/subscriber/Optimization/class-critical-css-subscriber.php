@@ -20,7 +20,7 @@ class Critical_CSS_Subscriber implements Subscriber_Interface {
 	/**
 	 * Constructor
 	 *
-	 * @param Critical_CSS $critical_css Critical CSS instance.
+	 * @param CriticalCSS  $critical_css Critical CSS instance.
 	 * @param Options_Data $options      WP Rocket options.
 	 */
 	public function __construct( CriticalCSS $critical_css, Options_Data $options ) {
