@@ -103,6 +103,52 @@ function rocket_validate_js( $file ) {
 }
 
 /**
+ * Check if the passed value is an internal URL (default domain or CDN/Multilingual).
+ *
+ * @since  3.3.7
+ * @author Remy Perona
+ * @author Grégory Viguier
+ *
+ * @param  string $file string to test.
+ * @return bool
+ */
+function rocket_is_internal_file( $file ) {
+	$file_host = wp_parse_url( $file, PHP_URL_HOST );
+
+	if ( empty( $file_host ) ) {
+		return false;
+	}
+
+	/**
+	 * Filters the allowed hosts for optimization
+	 *
+	 * @since  3.4
+	 * @author Remy Perona
+	 *
+	 * @param array $hosts Allowed hosts.
+	 * @param array $zones Zones to check available hosts.
+	 */
+	$hosts   = apply_filters( 'rocket_cdn_hosts', [], [ 'all', 'css_and_js', 'css', 'js' ] );
+	$hosts[] = wp_parse_url( content_url(), PHP_URL_HOST );
+	$langs   = get_rocket_i18n_uri();
+
+	// Get host for all langs.
+	if ( ! empty( $langs ) ) {
+		foreach ( $langs as $lang ) {
+			$hosts[] = wp_parse_url( $lang, PHP_URL_HOST );
+		}
+	}
+
+	$hosts = array_unique( $hosts );
+
+	if ( empty( $hosts ) ) {
+		return false;
+	}
+
+	return in_array( $file_host, $hosts, true );
+}
+
+/**
  * Sanitize a setting value meant for a textarea.
  *
  * @since  3.3.7
