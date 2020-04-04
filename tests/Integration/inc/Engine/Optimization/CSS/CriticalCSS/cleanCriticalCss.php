@@ -2,8 +2,6 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\CSS\CriticalCSS;
 
-use Mockery;
-use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
@@ -25,6 +23,12 @@ class Test_CleanCriticalCSS extends FilesystemTestCase {
 		'folder',
 		'folder/file.css',
 	];
+
+	public function tearDown() {
+		parent::tearDown();
+
+		remove_filter( 'pre_get_rocket_option_async_css', '__return_true' );
+	}
 
 	public function testShouldDeleteFilesFromRootFolder() {
 		add_filter( 'pre_get_rocket_option_async_css', '__return_true' );
@@ -53,7 +57,5 @@ class Test_CleanCriticalCSS extends FilesystemTestCase {
 		foreach ( $this->available_folders as $folder ) {
 			$this->assertTrue( $this->filesystem->exists( $critical_css_path . $folder ) );
 		}
-
-		remove_filter( 'pre_get_rocket_option_async_css', '__return_true' );
 	}
 }
