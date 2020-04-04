@@ -3,22 +3,16 @@
 $i18n_plugins = require WP_ROCKET_TESTS_FIXTURES_DIR . '/data/i18nPlugins.php';
 
 return [
-	[
+	'false_ShouldReturnHomeUrl' => [
 		'i18n_plugin' => false,
 		'config'      => [],
 		'expected'    => [ 'http://example.org' ],
 	],
-	[
+	'baz_ShouldReturnHomeUrl' => [
 		'i18n_plugin' => 'baz',
 		'config'      => [
 			'codes' => [ 'de', 'en', 'fr' ],
-		],
-		'expected'    => [ 'http://example.org' ],
-	],
-	[
-		'i18n_plugin' => 'bar',
-		'config'      => [
-			'codes' => [ 'de', 'en', 'fr' ],
+			'langs' => [ 'de', 'en', 'fr' ],
 		],
 		'expected'    => [ 'http://example.org' ],
 	],

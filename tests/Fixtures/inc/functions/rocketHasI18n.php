@@ -53,18 +53,6 @@ return [
 		'globals'  => [
 			'q_config' => [ 'en' ],
 		],
-		'expected' => false,
-	],
-	[
-		'globals'  => [
-			'q_config' => [ 'en' ],
-		],
-		'expected' => 'qtranslate',
-	],
-	[
-		'globals'  => [
-			'q_config' => [ 'en' ],
-		],
 		'expected' => 'qtranslate-x',
 	],
 ];

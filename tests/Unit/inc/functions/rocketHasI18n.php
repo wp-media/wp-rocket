@@ -31,14 +31,23 @@ class Test_RocketHasI18n extends TestCase {
 		}
 
 		if ( array_key_exists( 'q_config', $globals ) ) {
-			if ( 'qtranslate' === $expected ) {
-				Functions\expect( 'qtrans_convertURL' )->never();
-			} elseif ( 'qtranslate-x' === $expected ) {
-				Functions\expect( 'qtranxf_convertURL' )->never();
-			}
+			Functions\when( 'qtranxf_convertURL' )->justReturn();
 		}
 
 		$this->assertSame( $expected, rocket_has_i18n() );
+	}
+
+	/**
+	 * @runInSeparateProcess
+	 */
+	public function testShouldReturnQtranslate() {
+		$GLOBALS['q_config'] = [ 'qtranslate' ];
+
+		$this->assertFalse( function_exists( 'qtranxf_convertURL' ) );
+		Functions\when( 'qtrans_convertURL' )->justReturn();
+		$this->assertTrue( function_exists( 'qtrans_convertURL' ) );
+
+		$this->assertSame( 'qtranslate', rocket_has_i18n() );
 	}
 
 	public function providerTestData() {

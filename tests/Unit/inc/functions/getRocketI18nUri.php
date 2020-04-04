@@ -21,32 +21,66 @@ class Test_GetRocketI18nUri extends TestCase {
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/SitePress.php';
 	}
 
-	public function tearDown() {
+	protected function setUp() {
+		parent::setUp();
+
+		Functions\when( 'home_url' )->justReturn( 'http://example.org' );
+	}
+
+	protected function tearDown() {
 		parent::tearDown();
 
-		unset( $GLOBALS['sitepress'], $GLOBALS['q_config'] );
+		unset( $GLOBALS['sitepress'], $GLOBALS['q_config'], $GLOBALS['polylang'] );
 	}
 
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldReturnExpected( $i18n_plugin, $codes, $expected ) {
+	public function testShouldReturnExpected( $i18n_plugin, $config, $expected ) {
 		Functions\expect( 'rocket_has_i18n' )->once()->andReturn( $i18n_plugin );
+		$this->setUpI18nPlugin( $i18n_plugin, $config );
+		$this->assertSame( $expected, get_rocket_i18n_uri() );
+	}
+
+	private function setUpI18nPlugin( $i18n_plugin, $config ) {
+		$config = array_merge(
+			[
+				'codes' => [],
+				'langs' => [],
+			],
+			$config
+		);
 
 		switch ( $i18n_plugin ) {
 			case 'wpml':
 				$GLOBALS['sitepress']                   = new SitePress();
-				$GLOBALS['sitepress']->active_languages = $codes;
+				$GLOBALS['sitepress']->active_languages = $config['codes'];
+				$GLOBALS['sitepress']->home_root        = 'http://example.org';
+				$GLOBALS['sitepress']->uris_config      = $config['uris'];
+
+				Functions\expect( 'get_rocket_i18n_code' )
+					->once()
+					->andReturn( $config['langs'] );
 				break;
+
 			case 'qtranslate':
 			case 'qtranslate-x':
-				$GLOBALS['q_config'] = [ 'enabled_languages' => $codes ];
-				break;
-			case 'polylang':
-				Functions\expect( 'pll_languages_list' )->once()->andReturn( $codes );
-		}
+				$GLOBALS['q_config'] = [ 'enabled_languages' => $config['codes'] ];
 
-		$this->assertSame( $expected, get_rocket_i18n_code() );
+				Functions\expect( 'get_rocket_i18n_code' )
+					->once()
+					->andReturn( $config['langs'] );
+				Functions\expect( ( 'qtranslate' === $i18n_plugin ) ? 'qtrans_convertURL' : 'qtranxf_convertURL' )
+					->times( count( $config['codes'] ) )
+					->andReturnUsing( function ( $home_url, $lang ) {
+						return rtrim( $home_url ) . "/{$lang}";
+					} );
+				break;
+
+			case 'polylang':
+				$GLOBALS['polylang'] = 'polylang';
+				Functions\expect( 'pll_languages_list' )->atLeast( 1 )->andReturn( $config['codes'] );
+		}
 	}
 
 	public function providerTestData() {

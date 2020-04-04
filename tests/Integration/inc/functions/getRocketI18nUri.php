@@ -36,21 +36,27 @@ class Test_GetRocketI18nUri extends TestCase {
 	}
 
 	private function setUpI18nPlugin( $i18n_plugin, $config ) {
-		$codes = isset( $config['codes'] ) ? $config['codes'] : [];
+		$config = array_merge(
+			[
+				'codes' => [],
+				'langs' => [],
+			],
+			$config
+		);
 
 		switch ( $i18n_plugin ) {
 			case 'wpml':
 				$GLOBALS['sitepress']                   = new SitePress();
-				$GLOBALS['sitepress']->active_languages = $codes;
+				$GLOBALS['sitepress']->active_languages = $config['codes'];
 				$GLOBALS['sitepress']->home_root        = home_url();
 				$GLOBALS['sitepress']->uris_config      = $config['uris'];
 				break;
 
 			case 'qtranslate':
 			case 'qtranslate-x':
-				$GLOBALS['q_config'] = [ 'enabled_languages' => $codes ];
+				$GLOBALS['q_config'] = [ 'enabled_languages' => $config['codes'] ];
 				Functions\expect( 'qtranxf_convertURL' )
-					->times( count( $codes ) )
+					->times( count( $config['codes'] ) )
 					->andReturnUsing( function ( $home_url, $lang ) {
 						return rtrim( $home_url ) . "/{$lang}";
 					} );
@@ -58,7 +64,7 @@ class Test_GetRocketI18nUri extends TestCase {
 
 			case 'polylang':
 				$GLOBALS['polylang'] = 'polylang';
-				Functions\expect( 'pll_languages_list' )->atLeast( 1 )->andReturn( $codes );
+				Functions\expect( 'pll_languages_list' )->atLeast( 1 )->andReturn( $config['codes'] );
 		}
 	}
 
