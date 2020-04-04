@@ -1,19 +1,19 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\classes\optimization\CSS\Critical_CSS;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\CSS\CriticalCSS;
 
 use Mockery;
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
-use WP_Rocket\Optimization\CSS\Critical_CSS;
+use WP_Rocket\Engine\Optimization\CSS\CriticalCSS;
 use WP_Rocket\Optimization\CSS\Critical_CSS_Generation;
 
 /**
- * @covers \WP_Rocket\Optimization\CSS\Critical_CSS::clean_critical_css
+ * @covers \WP_Rocket\Engine\Optimization\CSS\CriticalCSS::clean_critical_css
  * @group  CPCSS
  */
 class Test_CleanCriticalCSS extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/classes/optimization/CSS/Critical_CSS/cleanCriticalCss.php';
+	protected $path_to_test_data = '/inc/Engine/Optimization/CSS/CriticalCSS/cleanCriticalCss.php';
 
 	private $critical_css;
 	private $critical_css_path;
@@ -46,7 +46,7 @@ class Test_CleanCriticalCSS extends FilesystemTestCase {
 			$this->assertTrue( $this->filesystem->exists( $critical_css_path . $folder ) );
 		}
 
-		$this->critical_css = new Critical_CSS( $this->critical_css_generation );
+		$this->critical_css = new CriticalCSS( $this->critical_css_generation );
 		$this->critical_css->clean_critical_css();
 
 		// Test that root files are deleted now.

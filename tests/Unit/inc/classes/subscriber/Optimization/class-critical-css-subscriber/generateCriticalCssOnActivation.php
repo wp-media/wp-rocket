@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\classes\subscriber\Optimization\Critical_CSS_
 use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Optimization\CSS\Critical_CSS;
+use WP_Rocket\Engine\Optimization\CSS\CriticalCSS;
 use WP_Rocket\Optimization\CSS\Critical_CSS_Generation;
 use WP_Rocket\Subscriber\Optimization\Critical_CSS_Subscriber;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
@@ -28,7 +28,7 @@ class Test_GenerateCriticalCssOnActivation extends FilesystemTestCase {
 		Functions\when( 'get_current_blog_id' )->justReturn( 1 );
 		Functions\expect( 'home_url' )->once()->with( '/' )->andReturn( 'http://example.com' );
 
-		$this->critical_css = Mockery::mock( Critical_CSS::class, [ $this->createMock( Critical_CSS_Generation::class ) ] );
+		$this->critical_css = Mockery::mock( CriticalCSS::class, [ $this->createMock( Critical_CSS_Generation::class ) ] );
 		$this->subscriber   = new Critical_CSS_Subscriber(
 			$this->critical_css,
 			$this->createMock( Options_Data::class )

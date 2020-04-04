@@ -1,5 +1,9 @@
 <?php
-namespace WP_Rocket\Optimization\CSS;
+namespace WP_Rocket\Engine\Optimization\CSS;
+
+use FilesystemIterator;
+use UnexpectedValueException;
+use WP_Rocket\Optimization\CSS\Critical_CSS_Generation;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -9,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
  * @since 2.11
  * @author Remy Perona
  */
-class Critical_CSS {
+class CriticalCSS {
 	/**
 	 * Background Process instance
 	 *
@@ -130,18 +134,18 @@ class Critical_CSS {
 	 */
 	public function clean_critical_css() {
 		$filesystem = rocket_direct_filesystem();
-		$dir        = $filesystem->dirlist( $this->critical_css_path );
 
-		// Bailout if could not get the directory contents.
-		if ( empty( $dir ) ) {
-			return;
-		}
+		try {
+			$files = new FilesystemIterator( $this->critical_css_path );
 
-		foreach ( $dir as $file ) {
-			if ( 'f' !== $file['type'] ) {
-				continue;
+			foreach ( $files as $file ) {
+				if ( rocket_direct_filesystem()->is_file( $file ) ) {
+					rocket_direct_filesystem()->delete( $file );
+				}
 			}
-			$filesystem->delete( $this->critical_css_path . $file['name'] );
+		} catch ( UnexpectedValueException $e ) {
+			// No logging yet.
+			return;
 		}
 	}
 

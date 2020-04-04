@@ -2,7 +2,7 @@
 namespace WP_Rocket\Subscriber\Optimization;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Rocket\Optimization\CSS\Critical_CSS;
+use WP_Rocket\Engine\Optimization\CSS\CriticalCSS;
 use WP_Rocket\Admin\Options_Data;
 use FilesystemIterator;
 use UnexpectedValueException;
@@ -23,7 +23,7 @@ class Critical_CSS_Subscriber implements Subscriber_Interface {
 	 * @param Critical_CSS $critical_css Critical CSS instance.
 	 * @param Options_Data $options      WP Rocket options.
 	 */
-	public function __construct( Critical_CSS $critical_css, Options_Data $options ) {
+	public function __construct( CriticalCSS $critical_css, Options_Data $options ) {
 		$this->critical_css = $critical_css;
 		$this->options      = $options;
 	}
