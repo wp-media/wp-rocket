@@ -59,7 +59,24 @@ return [
 	],
 
 	'polylang' => [
-		'codes' => [ 'en', 'fr', 'de' ],
-		'langs' => [ 'en', 'fr', 'de' ],
+		'options' => [
+			[
+				'slug'   => 'en',
+				'locale' => 'en_US',
+				'url'    => 'http://example.org',
+			],
+			[
+				'slug'   => 'fr',
+				'locale' => 'fr_FR',
+				'url'    => 'http://example.org/fr',
+			],
+			[
+				'slug'   => 'de',
+				'locale' => 'de_DE',
+				'url'    => 'http://example.org/de',
+			],
+		],
+		'codes'   => [ 'en', 'fr', 'de' ],
+		'langs'   => [ 'en', 'fr', 'de' ],
 	],
 ];

@@ -1,6 +1,6 @@
 <?php
 
-$i18n_plugins = require WP_ROCKET_TESTS_FIXTURES_DIR . '/data/i18nPlugins.php';
+$i18n_plugins = require WP_ROCKET_TESTS_FIXTURES_DIR . '/i18n/pluginsData.php';
 
 return [
 	'shouldReturnFalseWhenNoI18nPlugin'                => [

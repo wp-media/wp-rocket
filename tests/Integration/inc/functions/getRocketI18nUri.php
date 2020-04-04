@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Unit\inc\functions;
 
 use Brain\Monkey\Functions;
+use PLL_Frontend;
 use SitePress;
 use WPMedia\PHPUnit\Unit\TestCase;
 
@@ -18,7 +19,8 @@ class Test_GetRocketI18nUri extends TestCase {
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
 
-		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/SitePress.php';
+		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/i18n/SitePress.php';
+		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/i18n/PLL_Frontend.php';
 	}
 
 	public function tearDown() {
@@ -30,7 +32,7 @@ class Test_GetRocketI18nUri extends TestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldReturnExpected( $i18n_plugin, $config, $expected ) {
+	public function testShouldReturnExpected( $i18n_plugin, $rocket_has_i18n, $config, $expected ) {
 		$this->setUpI18nPlugin( $i18n_plugin, $config );
 		$this->assertSame( $expected, get_rocket_i18n_uri() );
 	}
@@ -63,8 +65,15 @@ class Test_GetRocketI18nUri extends TestCase {
 				break;
 
 			case 'polylang':
-				$GLOBALS['polylang'] = 'polylang';
-				Functions\expect( 'pll_languages_list' )->atLeast( 1 )->andReturn( $config['codes'] );
+				if ( ! empty( $config['codes'] ) ) {
+					$GLOBALS['polylang'] = new PLL_Frontend( $config['options'] );
+					Functions\expect( 'PLL' )->once()->andReturn( $GLOBALS['polylang'] );
+				} else {
+					$GLOBALS['polylang'] = 'not-empty';
+					Functions\expect( 'PLL' )->never();
+				}
+
+				Functions\expect( 'pll_languages_list' )->once()->andReturn( $config['codes'] );
 		}
 	}
 

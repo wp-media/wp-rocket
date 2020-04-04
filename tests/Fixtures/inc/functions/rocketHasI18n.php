@@ -1,6 +1,6 @@
 <?php
 
-require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/SitePress.php';
+require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/i18n/SitePress.php';
 
 return [
 	[
