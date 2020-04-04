@@ -1,53 +1,51 @@
 <?php
 
+$i18n_plugins = require WP_ROCKET_TESTS_FIXTURES_DIR . '/data/i18nPlugins.php';
+
 return [
-	[
+	'shouldReturnFalseWhenNoI18nPlugin'                => [
 		'i18n_plugin' => false,
 		'codes'       => [],
 		'expected'    => false,
 	],
-	[
+	'shouldReturnFalseWhenNotWpmlQTranslateOrPolyLang' => [
 		'i18n_plugin' => 'baz',
 		'codes'       => [ 'de', 'en', 'fr' ],
 		'expected'    => false,
 	],
-	[
-		'i18n_plugin' => 'bar',
-		'codes'       => [ 'de', 'en', 'fr' ],
-		'expected'    => false,
-	],
-	[
+	'wpml_ShouldReturnLangCodes'                       => [
 		'i18n_plugin' => 'wpml',
-		'codes'       => [
-			'de' => 'de_DE',
-			'en' => 'en_US',
-			'fr' => 'fr_FR',
-		],
-		'expected'    => [ 'de', 'en', 'fr' ],
+		'codes'       => $i18n_plugins['wpml']['codes'],
+		'expected'    => $i18n_plugins['wpml']['langs'],
 	],
-	[
+	'qtranslate_ShouldReturnLangCodes'                 => [
 		'i18n_plugin' => 'qtranslate',
-		'codes'       => [ 'de', 'en', 'fr' ],
-		'expected'    => [ 'de', 'en', 'fr' ],
+		'codes'       => $i18n_plugins['qtranslate']['codes'],
+		'expected'    => $i18n_plugins['qtranslate']['langs'],
 	],
-	[
+	'qtranslate_ShouldReturnEmptyArrayWhenNoCodes'     => [
 		'i18n_plugin' => 'qtranslate',
 		'codes'       => [],
 		'expected'    => [],
 	],
-	[
+	'qtranslate-x_ShouldReturnLangCodes'               => [
 		'i18n_plugin' => 'qtranslate-x',
-		'codes'       => [ 'de', 'en', 'fr' ],
-		'expected'    => [ 'de', 'en', 'fr' ],
+		'codes'       => $i18n_plugins['qtranslate-x']['codes'],
+		'expected'    => $i18n_plugins['qtranslate-x']['langs'],
 	],
-	[
+	'qtranslate-X_ShouldReturnEmptyArrayWhenNoCodes'   => [
+		'i18n_plugin' => 'qtranslate',
+		'codes'       => [],
+		'expected'    => [],
+	],
+	'polylang_ShouldReturnEmptyArrayWhenNoCodes'       => [
 		'i18n_plugin' => 'polylang',
 		'codes'       => [],
 		'expected'    => false,
 	],
-	[
+	'polylang_ShouldReturnLangCodes'                   => [
 		'i18n_plugin' => 'polylang',
-		'codes'       => [ 'de', 'en', 'fr' ],
-		'expected'    => [ 'de', 'en', 'fr' ],
+		'codes'       => $i18n_plugins['polylang']['codes'],
+		'expected'    => $i18n_plugins['polylang']['langs'],
 	],
 ];
