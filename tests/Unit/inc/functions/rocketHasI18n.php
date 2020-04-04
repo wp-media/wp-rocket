@@ -37,19 +37,6 @@ class Test_RocketHasI18n extends TestCase {
 		$this->assertSame( $expected, rocket_has_i18n() );
 	}
 
-	/**
-	 * @runInSeparateProcess
-	 */
-	public function testShouldReturnQtranslate() {
-		$GLOBALS['q_config'] = [ 'qtranslate' ];
-
-		$this->assertFalse( function_exists( 'qtranxf_convertURL' ) );
-		Functions\when( 'qtrans_convertURL' )->justReturn();
-		$this->assertTrue( function_exists( 'qtrans_convertURL' ) );
-
-		$this->assertSame( 'qtranslate', rocket_has_i18n() );
-	}
-
 	public function providerTestData() {
 		return $this->getTestData( __DIR__, basename( __FILE__, '.php' ) );
 	}
