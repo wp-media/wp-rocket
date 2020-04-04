@@ -19,7 +19,6 @@ class CriticalCSS {
 	 *
 	 * @since 2.11
 	 * @var object $process Background Process instance.
-	 * @access public
 	 */
 	public $process;
 
@@ -28,7 +27,6 @@ class CriticalCSS {
 	 *
 	 * @since 2.11
 	 * @var array $items An array of items.
-	 * @access public
 	 */
 	public $items = [];
 
@@ -37,7 +35,6 @@ class CriticalCSS {
 	 *
 	 * @since 2.11
 	 * @var string path to the critical css directory
-	 * @access private
 	 */
 	private $critical_css_path;
 
@@ -130,6 +127,7 @@ class CriticalCSS {
 	 * Deletes critical CSS files
 	 *
 	 * @since 2.11
+	 * @since 3.6 Replaced glob().
 	 * @author Remy Perona
 	 */
 	public function clean_critical_css() {
@@ -139,8 +137,8 @@ class CriticalCSS {
 			$files = new FilesystemIterator( $this->critical_css_path );
 
 			foreach ( $files as $file ) {
-				if ( rocket_direct_filesystem()->is_file( $file ) ) {
-					rocket_direct_filesystem()->delete( $file );
+				if ( $filesystem->is_file( $file ) ) {
+					$filesystem->delete( $file );
 				}
 			}
 		} catch ( UnexpectedValueException $e ) {
