@@ -27,11 +27,11 @@ class Test_CleanCriticalCSS extends FilesystemTestCase {
 	public function tearDown() {
 		parent::tearDown();
 
-		remove_filter( 'pre_get_rocket_option_async_css', '__return_true' );
+		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'return_true' ] );
 	}
 
 	public function testShouldDeleteFilesFromRootFolder() {
-		add_filter( 'pre_get_rocket_option_async_css', '__return_true' );
+		add_filter( 'pre_get_rocket_option_async_css', [ $this, 'return_true' ] );
 
 		$critical_css_path = rocket_get_constant( 'WP_ROCKET_CRITICAL_CSS_PATH' ) . get_current_blog_id() . '/';
 		// Test that deleted Files are available.
