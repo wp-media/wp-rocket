@@ -821,14 +821,7 @@ function rocket_clean_domain( $lang = '' ) {
 	$cache_path = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' );
 
 	try {
-		$cache = new RecursiveDirectoryIterator( $cache_path, FilesystemIterator::SKIP_DOTS );
-	} catch ( UnexpectedValueException $e ) {
-		// No logging yet.
-		return;
-	}
-
-	try {
-		$iterator = new RecursiveIteratorIterator( $cache, RecursiveIteratorIterator::CHILD_FIRST );
+		$iterator = new FilesystemIterator( $cache_path, FilesystemIterator::SKIP_DOTS );
 	} catch ( Exception $e ) {
 		// No logging yet.
 		return;
