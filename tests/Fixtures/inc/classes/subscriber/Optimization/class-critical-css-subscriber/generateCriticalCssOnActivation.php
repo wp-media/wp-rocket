@@ -8,9 +8,12 @@ return [
 		'wp-content' => [
 			'cache' => [
 				'critical-css' => [
-					'2' => [
+					'1' => [
 						'.'            => '',
 						'..'           => '',
+						'critical.css' => 'body { font-family: Helvetica, Arial, sans-serif; text-align: center;}',
+					],
+					'2' => [
 						'critical.css' => 'body { font-family: Helvetica, Arial, sans-serif; text-align: center;}',
 					],
 				],
@@ -20,23 +23,86 @@ return [
 
 	// Test data.
 	'test_data' => [
-		'testShouldBailOutWhenCriticalCssPathIsNotEmpty'           => [
+		'non_multisite' => [
 			[
-				'path' => 'wp-content/cache/critical-css/2/',
+				'values'         => [
+					'old' => [ 'async_css' => 0 ],
+					'new' => [ 'async_css' => 0 ],
+				],
+				'shouldGenerate' => false,
 			],
-			// Old Value.
-			[ 'async_css' => 0 ],
-			// New Value.
-			[ 'async_css' => 1 ],
+			[
+				'values'         => [
+					'old' => [ 'async_css' => 1 ],
+					'new' => [ 'async_css' => 0 ],
+				],
+				'shouldGenerate' => false,
+			],
+			[
+				'values'         => [
+					'old' => [ 'async_css' => 0 ],
+					'new' => [ 'async_css' => 1 ],
+				],
+				'shouldGenerate' => false,
+			],
+			[
+				'values'         => [
+					'old' => [ 'async_css' => 1 ],
+					'new' => [ 'async_css' => 1 ],
+				],
+				'shouldGenerate' => false,
+			],
 		],
-		'testShouldInvokeProcessHandlerWhenCriticalCssPathIsEmpty' => [
+
+		'multisite' => [
 			[
-				'path' => 'wp-content/cache/critical-css/1/',
+				'values'          => [
+					'old' => [ 'async_css' => 0 ],
+					'new' => [ 'async_css' => 0 ],
+				],
+				'blog_id'         => 2,
+				'should_generate' => false,
 			],
-			// Old Value.
-			[ 'async_css' => 0 ],
-			// New Value.
-			[ 'async_css' => 1 ],
+			[
+				'values'          => [
+					'old' => [ 'async_css' => 0 ],
+					'new' => [ 'async_css' => 1 ],
+				],
+				'blog_id'         => 2,
+				'should_generate' => false,
+			],
+			[
+				'values'          => [
+					'old' => [ 'async_css' => 0 ],
+					'new' => [ 'async_css' => 1 ],
+				],
+				'blog_id'         => 2,
+				'should_generate' => false,
+			],
+			[
+				'values'          => [
+					'old' => [ 'async_css' => 1 ],
+					'new' => [ 'async_css' => 1 ],
+				],
+				'blog_id'         => 2,
+				'should_generate' => false,
+			],
+			[
+				'values'          => [
+					'old' => [ 'async_css' => 0 ],
+					'new' => [ 'async_css' => 1 ],
+				],
+				'site_id'         => 3,
+				'should_generate' => true,
+			],
+			[
+				'values'          => [
+					'old' => [ 'async_css' => 0 ],
+					'new' => [ 'async_css' => 1 ],
+				],
+				'site_id'         => 4,
+				'should_generate' => true,
+			],
 		],
 	],
 ];

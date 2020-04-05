@@ -52,7 +52,7 @@
     </rule>
     <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
         <properties>
-            <property name="prefixes" type="array" value="rocket,wp_rocket,WPMedia" />
+            <property name="prefixes" type="array" value="rocket,wp_rocket,WPMedia,WPRocket" />
         </properties>
     </rule>
     <rule ref="WordPress.Files.FileName">
@@ -66,7 +66,6 @@
 	<rule ref="WordPress.PHP.NoSilencedErrors.Discouraged">
 		<exclude-pattern>inc/admin/admin.php</exclude-pattern>
 		<exclude-pattern>inc/front/process.php</exclude-pattern>
-		<exclude-pattern>uninstall.php</exclude-pattern>
 		<exclude-pattern>inc/classes/buffer/class-cache.php</exclude-pattern>
 		<exclude-pattern>inc/classes/admin/class-logs.php</exclude-pattern>
 		<exclude-pattern>inc/classes/logger/class-stream-handler.php</exclude-pattern>
