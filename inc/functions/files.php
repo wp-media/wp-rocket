@@ -860,13 +860,13 @@ function rocket_clean_domain( $lang = '' ) {
 
 		try {
 			$files = new RegexIterator( $iterator, "/{$file['host']}*{$file['path']}/i" );
-
-			foreach ( $files as $file ) {
-				rocket_rrmdir( $file, $dirs_to_preserve );
-			}
 		} catch ( InvalidArgumentException $e ) {
 			// No logging yet.
 			return;
+		}
+
+		foreach ( $files as $file ) {
+			rocket_rrmdir( $file, $dirs_to_preserve );
 		}
 
 		/**
