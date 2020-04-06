@@ -1,19 +1,19 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\CSS\CriticalCSS;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\CSS\CriticalPath\CriticalCSS;
 
 use Mockery;
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
-use WP_Rocket\Engine\Optimization\CSS\CriticalCSS;
-use WP_Rocket\Optimization\CSS\Critical_CSS_Generation;
+use WP_Rocket\Engine\Optimization\CSS\CriticalPath\CriticalCSS;
+use WP_Rocket\Engine\Optimization\CSS\CriticalPath\CriticalCSSGeneration;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\CSS\CriticalCSS::clean_critical_css
- * @group  CPCSS
+ * @covers \WP_Rocket\Engine\Optimization\CSS\CriticalPath\CriticalCSS::clean_critical_css
+ * @group  CriticalCss
  */
 class Test_CleanCriticalCSS extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/Engine/Optimization/CSS/CriticalCSS/cleanCriticalCss.php';
+	protected $path_to_test_data = '/inc/Engine/Optimization/CSS/CriticalPath/CriticalCSS/cleanCriticalCss.php';
 
 	private $critical_css;
 	private $critical_css_path;
@@ -23,7 +23,7 @@ class Test_CleanCriticalCSS extends FilesystemTestCase {
 		parent::setUp();
 
 		$this->critical_css_path       = 'wp-content/cache/critical-css/';
-		$this->critical_css_generation = Mockery::mock( Critical_CSS_Generation::class );
+		$this->critical_css_generation = Mockery::mock( CriticalCSSGeneration::class );
 
 		Functions\expect( 'rocket_get_constant' )->with( 'WP_ROCKET_CRITICAL_CSS_PATH' )->andReturn( $this->filesystem->getUrl( $this->critical_css_path ) );
 		Functions\expect( 'home_url' )->with( '/' )->andReturn( 'http://example.org/' );

@@ -51,10 +51,10 @@ class Common_Subscribers extends AbstractServiceProvider {
 		$this->getContainer()->share( 'db_optimization_subscriber', 'WP_Rocket\Subscriber\Admin\Database\Optimization_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'db_optimization' ) )
 			->withArgument( $this->getContainer()->get( 'options' ) );
-		$this->getContainer()->add( 'critical_css_generation', 'WP_Rocket\Optimization\CSS\Critical_CSS_Generation' );
-		$this->getContainer()->add( 'critical_css', 'WP_Rocket\Engine\Optimization\CSS\CriticalCSS' )
+		$this->getContainer()->add( 'critical_css_generation', 'WP_Rocket\Engine\Optimization\CSS\CriticalPath\CriticalCSSGeneration' );
+		$this->getContainer()->add( 'critical_css', 'WP_Rocket\Engine\Optimization\CSS\CriticalPath\CriticalCSS' )
 			->withArgument( $this->getContainer()->get( 'critical_css_generation' ) );
-		$this->getContainer()->share( 'critical_css_subscriber', 'WP_Rocket\Subscriber\Optimization\Critical_CSS_Subscriber' )
+		$this->getContainer()->share( 'critical_css_subscriber', 'WP_Rocket\Engine\Optimization\CSS\CriticalPath\CriticalCSSSubscriber' )
 			->withArgument( $this->getContainer()->get( 'critical_css' ) )
 			->withArgument( $this->getContainer()->get( 'options' ) );
 		$this->getContainer()->add( 'expired_cache_purge', 'WP_Rocket\Cache\Expired_Cache_Purge' )

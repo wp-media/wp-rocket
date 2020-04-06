@@ -1,11 +1,8 @@
 <?php
-namespace WP_Rocket\Engine\Optimization\CSS;
+namespace WP_Rocket\Engine\Optimization\CSS\CriticalPath;
 
 use FilesystemIterator;
 use UnexpectedValueException;
-use WP_Rocket\Optimization\CSS\Critical_CSS_Generation;
-
-defined( 'ABSPATH' ) || exit;
 
 /**
  * Handles the critical CSS generation process.
@@ -44,9 +41,9 @@ class CriticalCSS {
 	 * @since 2.11
 	 * @author Remy Perona
 	 *
-	 * @param Critical_CSS_Generation $process Background process instance.
+	 * @param CriticalCSSGeneration $process Background process instance.
 	 */
-	public function __construct( Critical_CSS_Generation $process ) {
+	public function __construct( CriticalCSSGeneration $process ) {
 		$this->process = $process;
 		$this->items[] = [
 			'type' => 'front_page',

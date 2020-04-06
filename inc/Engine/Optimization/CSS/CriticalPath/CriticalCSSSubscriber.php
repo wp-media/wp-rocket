@@ -1,8 +1,7 @@
 <?php
-namespace WP_Rocket\Subscriber\Optimization;
+namespace WP_Rocket\Engine\Optimization\CSS\CriticalPath;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Rocket\Engine\Optimization\CSS\CriticalCSS;
 use WP_Rocket\Admin\Options_Data;
 use FilesystemIterator;
 use UnexpectedValueException;
@@ -16,7 +15,7 @@ defined( 'ABSPATH' ) || exit;
  * @since 3.3
  * @author Remy Perona
  */
-class Critical_CSS_Subscriber implements Subscriber_Interface {
+class CriticalCSSSubscriber implements Subscriber_Interface {
 	/**
 	 * Constructor
 	 *
