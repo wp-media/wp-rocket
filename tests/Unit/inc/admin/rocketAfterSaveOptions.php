@@ -9,7 +9,6 @@ use WPMedia\PHPUnit\Unit\TestCase;
 /**
  * @covers ::rocket_after_save_options
  * @group admin
- * @group upgrade
  */
 class Test_RocketAfterSaveOptions extends TestCase {
 	public function setUp() {
