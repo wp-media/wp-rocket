@@ -119,6 +119,8 @@ class Plugin {
 			}
 		}
 
+		$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\ServiceProvider' );
+
 		$this->container->addServiceProvider( 'WP_Rocket\Addon\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Preload\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Common_Subscribers' );
