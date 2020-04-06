@@ -15,7 +15,6 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
  */
 class Test_RocketRrmdir extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/functions/rocketRrmdir.php';
-	private $to_preserve;
 
 	public function setUp() {
 		parent::setUp();
@@ -28,41 +27,28 @@ class Test_RocketRrmdir extends FilesystemTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldRecursivelyRemoveFilesAndDirectories( $to_delete, $to_preserve, $expected ) {
-		$to_delete      = rtrim( $to_delete, '/\\' );
+		$to_delete      = untrailingslashit( $to_delete );
 		$to_delete_path = $this->config['vfs_dir'] . $to_delete;
 		$to_delete      = $this->filesystem->getUrl( $to_delete_path );
-		$is_file        = $this->filesystem->is_file( $to_delete );
 		$this->initPreserve( $to_preserve );
 
 		// Check the action events.
 		Actions\expectDone( 'before_rocket_rrmdir' )->times( $expected['before_rocket_rrmdir'] );
 		Actions\expectDone( 'after_rocket_rrmdir' )->times( $expected['after_rocket_rrmdir'] );
 
+		// Run it.
 		rocket_rrmdir( $to_delete, $to_preserve );
 
-		foreach ( $this->original_entries as $entry ) {
-			if ( $is_file ) {
-				$exists = $entry !== $to_delete_path;
-				$this->assertSame( $exists, $this->filesystem->exists( $entry ) );
-				continue;
-			}
-
-			$exists = ! (
-				$this->startsWith( $entry, $to_delete_path )
-				&&
-				! $this->shouldPreserve( $entry )
-			);
-
-			$this->assertSame( $exists, $this->filesystem->exists( $entry ) );
+		// Check the "deleted" files/directories no longer exist, i.e. were deleted.
+		foreach( $expected['deleted'] as $entry ) {
+			$this->assertFalse( $this->filesystem->exists( $entry ));
 		}
-	}
 
-	private function shouldPreserve( $entry ) {
-		return (
-			! empty( $to_preserve )
-			&&
-			in_array( $entry, $to_preserve, true )
-		);
+		// Check the non-deleted files/directories still exist, i.e. were not deleted.
+		$should_exist = array_diff( $this->original_entries, $expected['deleted'] );
+		foreach( $should_exist as $entry ) {
+			$this->assertTrue( $this->filesystem->exists( $entry ) );
+		}
 	}
 
 	private function initPreserve( $to_preserve ) {

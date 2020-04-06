@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration;
 
 use Brain\Monkey\Functions;
+use org\bovigo\vfs\vfsStream;
 use WPMedia\PHPUnit\Integration\VirtualFilesystemTestCase;
 
 abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
@@ -54,11 +55,10 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 		sort( $this->original_entries );
 	}
 
-	protected function startsWith( $string, $match ) {
-		return substr( $string, 0, strlen( $match ) ) === $match;
-	}
-
 	protected function stripVfsRoot( $path ) {
-		return str_replace( vfsStream::SCHEME . "://{$this->rootVirtualDir}", '', $path );
+		$search = vfsStream::SCHEME . "://{$this->rootVirtualDir}";
+		$search = rtrim( $search, '/\\' ) . '/';
+
+		return str_replace( $search, '', $path );
 	}
 }
