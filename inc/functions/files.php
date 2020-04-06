@@ -1037,7 +1037,8 @@ function rocket_clean_cache_dir() {
  * @return void
  */
 function rocket_rrmdir( $dir, $dirs_to_preserve = [] ) {
-	$dir = untrailingslashit( $dir );
+	$dir        = untrailingslashit( $dir );
+	$filesystem = rocket_direct_filesystem();
 
 	/**
 	 * Fires before a file/directory cache is deleted
@@ -1052,19 +1053,19 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = [] ) {
 	// Remove the hidden empty file for mobile detection on NGINX with the Rocket NGINX configuration.
 	$nginx_mobile_detect_file = $dir . '/.mobile-active';
 
-	if ( rocket_direct_filesystem()->is_dir( $dir ) && rocket_direct_filesystem()->exists( $nginx_mobile_detect_file ) ) {
-		rocket_direct_filesystem()->delete( $nginx_mobile_detect_file );
+	if ( $filesystem->is_dir( $dir ) && $filesystem->exists( $nginx_mobile_detect_file ) ) {
+		$filesystem->delete( $nginx_mobile_detect_file );
 	}
 
 	// Remove the hidden empty file for webp.
 	$nowebp_detect_file = $dir . '/.no-webp';
 
-	if ( rocket_direct_filesystem()->is_dir( $dir ) && rocket_direct_filesystem()->exists( $nowebp_detect_file ) ) {
-		rocket_direct_filesystem()->delete( $nowebp_detect_file );
+	if ( $filesystem->is_dir( $dir ) && $filesystem->exists( $nowebp_detect_file ) ) {
+		$filesystem->delete( $nowebp_detect_file );
 	}
 
-	if ( ! rocket_direct_filesystem()->is_dir( $dir ) ) {
-		rocket_direct_filesystem()->delete( $dir );
+	if ( ! $filesystem->is_dir( $dir ) ) {
+		$filesystem->delete( $dir );
 		return;
 	};
 
@@ -1079,15 +1080,15 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = [] ) {
 
 		$dirs = array_diff( $dirs, array_filter( $keys ) );
 		foreach ( $dirs as $dir ) {
-			if ( rocket_direct_filesystem()->is_dir( $dir ) ) {
+			if ( $filesystem->is_dir( $dir ) ) {
 				rocket_rrmdir( $dir, $dirs_to_preserve );
 			} else {
-				rocket_direct_filesystem()->delete( $dir );
+				$filesystem->delete( $dir );
 			}
 		}
 	}
 
-	rocket_direct_filesystem()->delete( $dir );
+	$filesystem->delete( $dir );
 
 	/**
 	 * Fires after a file/directory cache was deleted
