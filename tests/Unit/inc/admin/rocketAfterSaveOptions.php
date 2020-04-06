@@ -41,8 +41,7 @@ class Test_RocketAfterSaveOptions extends TestCase {
 		Functions\expect( 'set_rocket_wp_cache_define' )->never();
 		Functions\expect( 'set_transient' )->never();
 
-		$_POST['foo'] = 1;
-		$oldvalue     = [
+		$oldvalue = [
 			'cache_mobile'        => true,
 			'purge_cron_interval' => true,
 			'purge_cron_unit'     => true,
@@ -51,7 +50,7 @@ class Test_RocketAfterSaveOptions extends TestCase {
 			'minify_js'           => false,
 			'exclude_js'          => '',
 		];
-		$newvalue     = [
+		$newvalue = [
 			'cache_mobile'        => true,
 			'purge_cron_interval' => true,
 			'purge_cron_unit'     => false,
@@ -65,7 +64,177 @@ class Test_RocketAfterSaveOptions extends TestCase {
 		rocket_after_save_options( $oldvalue, $newvalue );
 	}
 
-	private function commonMocks() {
+	public function testShouldCleanMinifyCSSWhenOptionChanges() {
+		$this->commonMocks( 2 );
+
+		Functions\expect( 'rocket_clean_minify' )
+			->times( 2 )
+			->with( 'css' )
+			->andAlsoExpectIt()
+			->with( 'js' )
+			->never();
+		Functions\expect( 'rocket_generate_advanced_cache_file' )->never();
+		Functions\expect( 'set_rocket_wp_cache_define' )->never();
+		Functions\expect( 'set_transient' )->never();
+
+		$_POST['foo'] = 1;
+		$oldvalue     = [
+			'minify_css'  => false,
+			'exclude_css' => '',
+			'minify_js'   => false,
+			'exclude_js'  => '',
+		];
+		$newvalue     = [
+			'minify_css'  => true,
+			'exclude_css' => '',
+			'minify_js'   => false,
+			'exclude_js'  => '',
+		];
+
+		rocket_after_save_options( $oldvalue, $newvalue );
+
+		$newvalue = [
+			'minify_css'  => false,
+			'exclude_css' => 'foobar',
+			'minify_js'   => false,
+			'exclude_js'  => '',
+		];
+
+		rocket_after_save_options( $oldvalue, $newvalue );
+
+		unset( $_POST['foo'] );
+	}
+
+	public function testShouldCleanMinifyJSWhenOptionChanges() {
+		$this->commonMocks( 2 );
+
+		Functions\expect( 'rocket_clean_minify' )
+			->never()
+			->with( 'css' )
+			->andAlsoExpectIt()
+			->with( 'js' )
+			->times( 2 );
+		Functions\expect( 'rocket_generate_advanced_cache_file' )->never();
+		Functions\expect( 'set_rocket_wp_cache_define' )->never();
+		Functions\expect( 'set_transient' )->never();
+
+		$_POST['foo'] = 1;
+		$oldvalue     = [
+			'minify_css'  => false,
+			'exclude_css' => '',
+			'minify_js'   => false,
+			'exclude_js'  => '',
+		];
+		$newvalue     = [
+			'minify_css'  => false,
+			'exclude_css' => '',
+			'minify_js'   => true,
+			'exclude_js'  => '',
+		];
+
+		rocket_after_save_options( $oldvalue, $newvalue );
+
+		$newvalue = [
+			'minify_css'  => false,
+			'exclude_css' => '',
+			'minify_js'   => false,
+			'exclude_js'  => 'foobar',
+		];
+
+		rocket_after_save_options( $oldvalue, $newvalue );
+
+		unset( $_POST['foo'] );
+	}
+
+	public function testShouldCleanMinifyWhenCDNOptionChanges() {
+		$this->commonMocks( 2 );
+
+		Functions\expect( 'rocket_clean_minify' )
+			->times( 2 )
+			->with( 'css' )
+			->andAlsoExpectIt()
+			->with( 'js' )
+			->times( 2 );
+		Functions\expect( 'rocket_generate_advanced_cache_file' )->never();
+		Functions\expect( 'set_rocket_wp_cache_define' )->never();
+		Functions\expect( 'set_transient' )->never();
+
+		$oldvalue = [
+			'minify_css'  => false,
+			'exclude_css' => '',
+			'minify_js'   => false,
+			'exclude_js'  => '',
+		];
+		$newvalue = $oldvalue;
+		$newvalue['cdn'] = 0;
+
+		rocket_after_save_options( $oldvalue, $newvalue );
+
+		$oldvalue['cdn'] = 0;
+		unset( $newvalue['cdn'] );
+
+		rocket_after_save_options( $oldvalue, $newvalue );
+	}
+
+	public function testShouldGenerateAdvancedCacheFileWhenOptionChanges() {
+		$this->commonMocks( 3 );
+
+		Functions\expect( 'rocket_clean_minify' )->never();
+		Functions\expect( 'rocket_generate_advanced_cache_file' )->times( 3 );
+		Functions\expect( 'set_rocket_wp_cache_define' )->never();
+		Functions\expect( 'set_transient' )->never();
+
+		$_POST['foo'] = 1;
+		$oldvalue     = [
+			'minify_css'  => false,
+			'exclude_css' => '',
+			'minify_js'   => false,
+			'exclude_js'  => '',
+		];
+		$newvalue     = $oldvalue;
+		$newvalue['do_caching_mobile_files'] = 0;
+
+		rocket_after_save_options( $oldvalue, $newvalue );
+
+		$oldvalue['do_caching_mobile_files'] = 0;
+		unset( $newvalue['do_caching_mobile_files'] );
+
+		rocket_after_save_options( $oldvalue, $newvalue );
+
+		$newvalue['do_caching_mobile_files'] = 2;
+
+		rocket_after_save_options( $oldvalue, $newvalue );
+
+		unset( $_POST['foo'] );
+	}
+
+	public function testShouldEnableAnalyticsWhenOptionIsEnabled() {
+		$this->commonMocks( 1, 0 );
+
+		Functions\expect( 'rocket_clean_minify' )->never();
+		Functions\expect( 'rocket_generate_advanced_cache_file' )->never();
+		Functions\expect( 'set_rocket_wp_cache_define' )->never();
+		Functions\expect( 'set_transient' )
+			->once()
+			->with( 'rocket_analytics_optin', 1 );
+
+		$oldvalue = [
+			'minify_css'        => false,
+			'exclude_css'       => '',
+			'minify_js'         => false,
+			'exclude_js'        => '',
+			'analytics_enabled' => '0',
+		];
+		$newvalue     = $oldvalue;
+		$newvalue['analytics_enabled'] = '1';
+
+		rocket_after_save_options( $oldvalue, $newvalue );
+	}
+
+	private function commonMocks( $times = 1, $clean_domain_times = null ) {
+		if ( ! isset( $clean_domain_times ) ) {
+			$clean_domain_times = $times;
+		}
 		Functions\when( 'wp_json_encode' )->alias(
 			function ( $data, $options = 0, $depth = 512 ) {
 				return json_encode( $data, $options, $depth );
@@ -76,10 +245,10 @@ class Test_RocketAfterSaveOptions extends TestCase {
 				return 'http://example.org' . $path;
 			}
 		);
-		Functions\expect( 'rocket_clean_domain' )->once();
-		Functions\expect( 'wp_remote_get' )->once();
-		Functions\expect( 'rocket_valid_key' )->once()->andReturn( true );
-		Functions\expect( 'flush_rocket_htaccess' )->once();
-		Functions\expect( 'rocket_generate_config_file' )->once();
+		Functions\expect( 'rocket_clean_domain' )->times( $clean_domain_times );
+		Functions\expect( 'wp_remote_get' )->times( $clean_domain_times );
+		Functions\expect( 'rocket_valid_key' )->times( $times )->andReturn( true );
+		Functions\expect( 'flush_rocket_htaccess' )->times( $times );
+		Functions\expect( 'rocket_generate_config_file' )->times( $times );
 	}
 }
