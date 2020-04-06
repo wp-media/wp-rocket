@@ -83,57 +83,58 @@ return [
 
 	// Test data.
 	'test_data' => [
-		'shouldHandleSingleFile'                      => [
-			'to_delete'   => 'example.org/hidden-files/',
+		'shouldHandleSingleFile'  => [
+			'to_delete'   => 'example.org/lorem-ipsum/index.html',
 			'to_preserve' => [],
 			'expected'    => [
 				'before_rocket_rrmdir' => 1,
-				'after_rocket_rrmdir'  => 1,
-				'deleted'              => [
-					'example.org/hidden-files/.mobile-active',
-					'example.org/hidden-files/.no-webp',
-					'example.org/hidden-files/',
-				],
-			],
-		],
-		'shouldDeleteHiddenFiles'                     => [
-			'to_delete'   => 'example.org/hidden-files/',
-			'to_preserve' => [],
-			'expected'    => [
-				'before_rocket_rrmdir' => 1,
-				'after_rocket_rrmdir'  => 1,
-				'deleted'              => [
-					'example.org/hidden-files/.mobile-active',
-					'example.org/hidden-files/.no-webp',
-					'example.org/hidden-files/',
-				],
-			],
-		],
-		'shouldBailOutWhenDirectoryShouldBePreserved' => [
-			'to_delete'   => 'example.org/fr',
-			'to_preserve' => [
-				'vfs://public/wp-content/cache/wp-rocket/example.org/de',
-				'vfs://public/wp-content/cache/wp-rocket/example.org/fr',
-			],
-			'expected'    => [
-				'before_rocket_rrmdir' => 0,
 				'after_rocket_rrmdir'  => 0,
-				'deleted'              => [],
 			],
 		],
-
-//		[
-//			'to_delete'   => 'example.org/lorem-ipsum/',
-//			'to_preserve' => [],
+		'shouldDeleteHiddenFiles' => [
+			'to_delete'   => 'example.org/hidden-files/',
+			'to_preserve' => [],
+			'expected'    => [
+				'before_rocket_rrmdir' => 1,
+				'after_rocket_rrmdir'  => 1,
+			],
+		],
+//		'shouldBailOutWhenDirectoryShouldBePreserved' => [
+//			'to_delete'   => 'example.org/fr',
+//			'to_preserve' => [
+//				'vfs://public/wp-content/cache/wp-rocket/example.org/de',
+//				'vfs://public/wp-content/cache/wp-rocket/example.org/fr',
+//			],
 //			'expected'    => [
-//				'before_rocket_rrmdir' => 1,
-//				'after_rocket_rrmdir'  => 1,
-//				'deleted'              => [
-//					'example.org/lorem-ipsum/index.html',
-//					'example.org/lorem-ipsum/index.html_gzip',
-//					'example.org/lorem-ipsum/',
-//				],
+//				'before_rocket_rrmdir' => 0,
+//				'after_rocket_rrmdir'  => 0,
 //			],
 //		],
+
+		// Should delete the directory and all of its entries.
+		'shouldDeleteSingleDir'   => [
+			'to_delete'   => 'example.org/lorem-ipsum/',
+			'to_preserve' => [],
+			'expected'    => [
+				'before_rocket_rrmdir' => 1,
+				'after_rocket_rrmdir'  => 1,
+			],
+		],
+		[
+			'to_delete'   => 'example.org/nec-ullamcorper/',
+			'to_preserve' => [],
+			'expected'    => [
+				'before_rocket_rrmdir' => 2,
+				'after_rocket_rrmdir'  => 2,
+			],
+		],
+		[
+			'to_delete'   => 'example.org-wpmedia1-123456',
+			'to_preserve' => [],
+			'expected'    => [
+				'before_rocket_rrmdir' => 3,
+				'after_rocket_rrmdir'  => 3,
+			],
+		],
 	],
 ];

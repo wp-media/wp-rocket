@@ -1031,6 +1031,7 @@ function rocket_clean_cache_dir() {
  * Remove a single file or a folder recursively
  *
  * @since 1.0
+ * @since 3.5.3 Bails if given dir should be preserved; replaces glob; optimizes.
  *
  * @param string $dir File/Directory to delete.
  * @param array  $dirs_to_preserve (default: array()) Dirs that should not be deleted.
@@ -1072,24 +1073,27 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = [] ) {
 	if ( ! $filesystem->is_dir( $dir ) ) {
 		$filesystem->delete( $dir );
 		return;
-	};
+	}
 
-	$dirs = glob( $dir . '/*', GLOB_NOSORT );
-	if ( $dirs ) {
+	// Get the directory entries.
+	try {
+		$entries = new FilesystemIterator( $dir, FilesystemIterator::SKIP_DOTS );
+	} catch( Exception $e ) {
+		$entries = [];
+	}
 
-		$keys = [];
-		foreach ( $dirs_to_preserve as $dir_to_preserve ) {
-			$matches = preg_grep( "#^$dir_to_preserve$#", $dirs );
-			$keys[]  = reset( $matches );
+	foreach( $entries as $entry ) {
+		$path = $entry->getPathname();
+
+		// If not a directory, delete it.
+		if ( ! $entry->isDir() ) {
+			$filesystem->delete( $path );
+			continue;
 		}
 
-		$dirs = array_diff( $dirs, array_filter( $keys ) );
-		foreach ( $dirs as $dir ) {
-			if ( $filesystem->is_dir( $dir ) ) {
-				rocket_rrmdir( $dir, $dirs_to_preserve );
-			} else {
-				$filesystem->delete( $dir );
-			}
+		// If not a directory to preserve, invoke rocket_rrmdir() again to process.
+		if ( ! in_array( $path, $dirs_to_preserve, true ) ) {
+			rocket_rrmdir( $path, $dirs_to_preserve );
 		}
 	}
 
