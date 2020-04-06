@@ -1040,6 +1040,11 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = [] ) {
 	$dir        = untrailingslashit( $dir );
 	$filesystem = rocket_direct_filesystem();
 
+	// Bail out if the given directory is in the list of directories to preserve.
+	if ( ! empty( $dirs_to_preserve ) && $filesystem->is_dir( $dir ) ) {
+		return;
+	}
+
 	/**
 	 * Fires before a file/directory cache is deleted
 	 *

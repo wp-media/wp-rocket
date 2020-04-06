@@ -37,5 +37,31 @@ class Test_RocketRrmdir extends FilesystemTestCase {
 		foreach ( $expected['deleted'] as $path ) {
 			$this->assertFalse( $this->filesystem->exists( $this->config['vfs_dir'] . $path ) );
 		}
+
+		if ( empty( $to_preserve ) ) {
+			return;
+		}
+
+		foreach( $this->getOriginalPreservedFiles( $to_preserve ) as $path ) {
+			$this->assertTrue( $this->filesystem->exists( $path ) );
+		}
+	}
+
+	private function getOriginalPreservedFiles( $to_preserve ) {
+		$preserves = [];
+		foreach( $to_preserve as $dir ) {
+			$preserves[] = str_replace( 'vfs://public/', '', $dir );
+		}
+
+		$preserve_files = [];
+		foreach( $this->original_files as $file ) {
+			foreach( $preserves as $dir ) {
+				if ( substr( $file, 0, strlen( $dir ) ) === $dir ) {
+					$preserve_files[] = $file;
+				}
+			}
+		}
+
+		return $preserve_files;
 	}
 }

@@ -11,9 +11,17 @@ return [
 					'example.org'                 => [
 						'index.html'      => '',
 						'index.html_gzip' => '',
+						'de'              => [
+							'index.html'      => '',
+							'index.html_gzip' => '',
+						],
+						'fr'              => [
+							'index.html'      => '',
+							'index.html_gzip' => '',
+						],
 						'hidden-files'    => [
-							'.mobile-active'  => '',
-							'.no-webp'        => '',
+							'.mobile-active' => '',
+							'.no-webp'       => '',
 						],
 						'lorem-ipsum'     => [
 							'index.html'      => '',
@@ -75,18 +83,7 @@ return [
 
 	// Test data.
 	'test_data' => [
-		'shouldHandleSingleFile' => [
-			'to_delete'   => 'example.org/lorem-ipsum/index.html',
-			'to_preserve' => [],
-			'expected'    => [
-				'before_rocket_rrmdir' => 1,
-				'after_rocket_rrmdir'  => 0,
-				'deleted'              => [
-					'example.org/lorem-ipsum/index.html',
-				],
-			],
-		],
-		'shouldDeleteHiddenFiles' => [
+		'shouldHandleSingleFile'                      => [
 			'to_delete'   => 'example.org/hidden-files/',
 			'to_preserve' => [],
 			'expected'    => [
@@ -97,6 +94,31 @@ return [
 					'example.org/hidden-files/.no-webp',
 					'example.org/hidden-files/',
 				],
+			],
+		],
+		'shouldDeleteHiddenFiles'                     => [
+			'to_delete'   => 'example.org/hidden-files/',
+			'to_preserve' => [],
+			'expected'    => [
+				'before_rocket_rrmdir' => 1,
+				'after_rocket_rrmdir'  => 1,
+				'deleted'              => [
+					'example.org/hidden-files/.mobile-active',
+					'example.org/hidden-files/.no-webp',
+					'example.org/hidden-files/',
+				],
+			],
+		],
+		'shouldBailOutWhenDirectoryShouldBePreserved' => [
+			'to_delete'   => 'example.org/fr',
+			'to_preserve' => [
+				'vfs://public/wp-content/cache/wp-rocket/example.org/de',
+				'vfs://public/wp-content/cache/wp-rocket/example.org/fr',
+			],
+			'expected'    => [
+				'before_rocket_rrmdir' => 0,
+				'after_rocket_rrmdir'  => 0,
+				'deleted'              => [],
 			],
 		],
 
