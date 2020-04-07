@@ -10,7 +10,6 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group Functions
  * @group Files
  * @group vfs
- * @group thisone
  */
 class Test_RocketRrmdir extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/functions/rocketRrmdir.php';
@@ -19,7 +18,7 @@ class Test_RocketRrmdir extends FilesystemTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->stats       = [
+		$this->stats = [
 			'before_rocket_rrmdir' => did_action( 'before_rocket_rrmdir' ),
 			'after_rocket_rrmdir'  => did_action( 'after_rocket_rrmdir' ),
 		];
@@ -31,9 +30,7 @@ class Test_RocketRrmdir extends FilesystemTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldRecursivelyRemoveFilesAndDirectories( $to_delete, $to_preserve, $expected ) {
-		$to_delete      = rtrim( $to_delete, '/\\' );
-		$to_delete_path = $this->config['vfs_dir'] . $to_delete;
-		$to_delete      = $this->filesystem->getUrl( $to_delete_path );
+		$to_delete = $this->filesystem->getUrl( untrailingslashit( $to_delete ) );
 
 		// Run it.
 		rocket_rrmdir( $to_delete, $to_preserve );
@@ -49,13 +46,13 @@ class Test_RocketRrmdir extends FilesystemTestCase {
 		);
 
 		// Check the "deleted" files/directories no longer exist, i.e. were deleted.
-		foreach( $expected['deleted'] as $entry ) {
-			$this->assertFalse( $this->filesystem->exists( $entry ));
+		foreach ( $expected['deleted'] as $entry ) {
+			$this->assertFalse( $this->filesystem->exists( $entry ) );
 		}
 
 		// Check the non-deleted files/directories still exist, i.e. were not deleted.
 		$should_exist = array_diff( $this->original_entries, $expected['deleted'] );
-		foreach( $should_exist as $entry ) {
+		foreach ( $should_exist as $entry ) {
 			$this->assertTrue( $this->filesystem->exists( $entry ) );
 		}
 	}

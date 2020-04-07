@@ -1042,7 +1042,7 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = [] ) {
 	$filesystem = rocket_direct_filesystem();
 
 	// Bail out if the given directory is in the list of directories to preserve.
-	if ( ! empty( $dirs_to_preserve ) && $filesystem->is_dir( $dir ) ) {
+	if ( ! empty( $dirs_to_preserve ) && $filesystem->is_dir( $dir ) && in_array( $dir, $dirs_to_preserve, true ) ) {
 		return;
 	}
 
