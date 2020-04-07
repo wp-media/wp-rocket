@@ -1033,11 +1033,10 @@ function rocket_clean_cache_dir() {
  * @since 1.0
  * @since 3.5.3 Bails if given dir should be preserved; replaces glob; optimizes.
  *
- * @param string $dir File/Directory to delete.
+ * @param string $dir              File/Directory to delete.
  * @param array  $dirs_to_preserve (default: array()) Dirs that should not be deleted.
- * @return void
  */
-function rocket_rrmdir( $dir, $dirs_to_preserve = [] ) {
+function rocket_rrmdir( $dir, array $dirs_to_preserve = [] ) {
 	$dir        = untrailingslashit( $dir );
 	$filesystem = rocket_direct_filesystem();
 
@@ -1051,9 +1050,9 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = [] ) {
 	 *
 	 * @since 1.1.0
 	 *
-	 * @param string $dir File/Directory to delete.
-	 * @param array $dirs_to_preserve Directories that should not be deleted.
-	*/
+	 * @param string $dir              File/Directory to delete.
+	 * @param array  $dirs_to_preserve Directories that should not be deleted.
+	 */
 	do_action( 'before_rocket_rrmdir', $dir, $dirs_to_preserve ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 	// Remove the hidden empty file for mobile detection on NGINX with the Rocket NGINX configuration.
@@ -1072,17 +1071,18 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = [] ) {
 
 	if ( ! $filesystem->is_dir( $dir ) ) {
 		$filesystem->delete( $dir );
+
 		return;
 	}
 
 	// Get the directory entries.
 	try {
 		$entries = new FilesystemIterator( $dir, FilesystemIterator::SKIP_DOTS );
-	} catch( Exception $e ) {
+	} catch ( Exception $e ) {
 		$entries = [];
 	}
 
-	foreach( $entries as $entry ) {
+	foreach ( $entries as $entry ) {
 		$path = $entry->getPathname();
 
 		// If not a directory, delete it.
@@ -1104,9 +1104,9 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = [] ) {
 	 *
 	 * @since 1.1.0
 	 *
-	 * @param string $dir File/Directory to delete.
-	 * @param array $dirs_to_preserve Dirs that should not be deleted.
-	*/
+	 * @param string $dir              File/Directory to delete.
+	 * @param array  $dirs_to_preserve Dirs that should not be deleted.
+	 */
 	do_action( 'after_rocket_rrmdir', $dir, $dirs_to_preserve ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 }
 

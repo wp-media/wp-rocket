@@ -25,7 +25,7 @@ class Test_RocketRrmdir extends FilesystemTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldRecursivelyRemoveFilesAndDirectories( $to_delete, $to_preserve, $expected ) {
-		$to_delete      = $this->filesystem->getUrl( untrailingslashit( $to_delete ) );
+		$to_delete = $this->filesystem->getUrl( untrailingslashit( $to_delete ) );
 
 		// Check the action events.
 		Actions\expectDone( 'before_rocket_rrmdir' )->times( $expected['before_rocket_rrmdir'] );
@@ -35,13 +35,13 @@ class Test_RocketRrmdir extends FilesystemTestCase {
 		rocket_rrmdir( $to_delete, $to_preserve );
 
 		// Check the "deleted" files/directories no longer exist, i.e. were deleted.
-		foreach( $expected['deleted'] as $entry ) {
-			$this->assertFalse( $this->filesystem->exists( $entry ));
+		foreach ( $expected['deleted'] as $entry ) {
+			$this->assertFalse( $this->filesystem->exists( $entry ) );
 		}
 
 		// Check the non-deleted files/directories still exist, i.e. were not deleted.
 		$should_exist = array_diff( $this->original_entries, $expected['deleted'] );
-		foreach( $should_exist as $entry ) {
+		foreach ( $should_exist as $entry ) {
 			$this->assertTrue( $this->filesystem->exists( $entry ) );
 		}
 	}
