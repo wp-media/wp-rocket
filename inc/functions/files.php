@@ -805,8 +805,9 @@ function rocket_clean_home_feeds() {
  * @param string $lang Optional. The language code. Default: empty string.
  */
 function rocket_clean_domain( $lang = '' ) {
-	$urls = ( ! $lang || is_object( $lang ) || is_array( $lang ) || is_int( $lang ) ) ? get_rocket_i18n_uri() : get_rocket_i18n_home_url( $lang );
-	$urls = (array) $urls;
+	$urls = ( ! $lang || is_object( $lang ) || is_array( $lang ) || is_int( $lang ) )
+		? (array) get_rocket_i18n_uri()
+		: (array) get_rocket_i18n_home_url( $lang );
 
 	/**
 	 * Filter URLs to delete all caching files from a domain.
@@ -816,7 +817,7 @@ function rocket_clean_domain( $lang = '' ) {
 	 * @param array     URLs that will be returned.
 	 * @param string    The language code.
 	 */
-	$urls = apply_filters( 'rocket_clean_domain_urls', $urls, $lang );
+	$urls = (array) apply_filters( 'rocket_clean_domain_urls', $urls, $lang );
 	$urls = array_filter( $urls );
 
 	$cache_path = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' );
@@ -830,7 +831,7 @@ function rocket_clean_domain( $lang = '' ) {
 
 	$dirs_to_preserve = get_rocket_i18n_to_preserve( $lang );
 	/** This filter is documented in inc/front/htaccess.php */
-	$url_no_dots = apply_filters( 'rocket_url_no_dots', false );
+	$url_no_dots = (bool) apply_filters( 'rocket_url_no_dots', false );
 
 	foreach ( $urls as $url ) {
 		$file = get_rocket_parse_url( $url );
