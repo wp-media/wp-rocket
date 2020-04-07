@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Engine\Optimization\CSS\CriticalPath;
+namespace WP_Rocket\Engine\CriticalPath;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
 
@@ -28,6 +28,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-		$this->getContainer()->share( 'rest_delete_post_cpcss', 'WP_Rocket\Engine\Optimization\CSS\CriticalPath\RESTDelete' );
+		$this->getContainer()->share( 'rest_delete_post_cpcss', 'WP_Rocket\Engine\CriticalPath\RESTDelete' );
 	}
 }

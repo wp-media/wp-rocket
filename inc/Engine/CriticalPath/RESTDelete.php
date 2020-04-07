@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Engine\Optimization\CSS\CriticalPath;
+namespace WP_Rocket\Engine\CriticalPath;
 
 use WP_REST_Request;
 use WP_Rocket\Event_Management\Subscriber_Interface;
@@ -54,7 +54,7 @@ class RESTDelete implements Subscriber_Interface {
 	public function delete( WP_REST_Request $request ) {
 		$post_id                = $request['id'];
 		$post_url               = get_permalink( $post_id );
-		$critical_css_file_path = rocket_get_constant( 'WP_ROCKET_CRITICAL_CSS_PATH' ) . get_current_blog_id() . '/unique/post-type-' . $post_id . '.css';
+		$critical_css_file_path = rocket_get_constant( 'WP_ROCKET_CRITICAL_CSS_PATH' ) . get_current_blog_id() . '/posts/post-type-' . $post_id . '.css';
 
 		if ( ! $post_url ) {
 			return rest_ensure_response(
