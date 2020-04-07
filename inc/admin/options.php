@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) || exit;
  * @param array $value An array of submitted values for the settings.
  */
 function rocket_after_save_options( $oldvalue, $value ) {
-	if ( ! ( is_array( $oldvalue ) && is_array( $value ) ) ) {
+	if ( ! is_array( $oldvalue ) || ! is_array( $value ) ) {
 		return;
 	}
 

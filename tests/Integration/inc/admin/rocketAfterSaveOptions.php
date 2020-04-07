@@ -2,16 +2,21 @@
 
 namespace WP_Rocket\Tests\Integration\inc\admin;
 
+//use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
-use WPMedia\PHPUnit\Integration\TestCase;
+use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
  * @covers ::rocket_after_save_options
  * @group admin
+ * @group AdminOnly
+ * @group Options
  */
-class Test_RocketAfterSaveOptions extends TestCase {
+class Test_RocketAfterSaveOptions extends FilesystemTestCase {
+	protected $path_to_test_data = '/inc/admin/rocketAfterSaveOptions.php';
 	private $option_name;
 	private $options;
+	private $hooks = [];
 
 	public function setUp() {
 		parent::setUp();
@@ -27,38 +32,69 @@ class Test_RocketAfterSaveOptions extends TestCase {
 	}
 
 	private function silently_update_option( $new_value ) {
-		$hook_name     = "update_option_{$this->option_name}";
-		$pre_hook_name = "pre_update_option_{$this->option_name}";
+		global $wp_filter;
 
-		// F "pre_update_option_{$option}"
-		// F 'pre_update_option'
-		// A 'update_option'
-		// A "update_option_{$option}"
-		// A 'updated_option'
-		remove_action( $hook_name, 'rocket_after_save_options' );
-		remove_filter( $pre_hook_name, 'rocket_pre_main_option' );
+		$hooks = [
+			"pre_update_option_{$this->option_name}",
+			"update_option_{$this->option_name}",
+			'update_option',
+			"update_option_{$this->option_name}",
+			'updated_option',
+		];
+
+		foreach ( $hooks as $hook ) {
+			if ( ! empty( $wp_filter[ $hook ] ) ) {
+				$this->hooks[ $hook ] = $wp_filter[ $hook ];
+				unset( $wp_filter[ $hook ] );
+			}
+			$this->assertFalse( has_filter( $hook ) );
+		}
+
 		update_option( $this->option_name, $new_value );
-		add_action( $hook_name, 'rocket_after_save_options', 10, 2 );
-		add_filter( $pre_hook_name, 'rocket_pre_main_option', 10, 2 );
+
+		if ( $this->hooks ) {
+			$wp_filter = array_merge( $wp_filter, $this->hooks );
+		}
 	}
 
-	public function testShouldNotTriggerCallbacksWhenInvalidValues() {
-		Functions\expect( 'wp_json_encode' )->never();
+	public function testShouldTriggerCleaningsWhenOptionsChange() {
+		Functions\expect( 'wp_remote_get' )->once();
 
-		$this->silently_update_option( 'foo' );
+		$this->silently_update_option(
+			[
+				'cache_mobile'        => true,
+				'purge_cron_interval' => true,
+				'purge_cron_unit'     => true,
+				'minify_css'          => false,
+				'exclude_css'         => '',
+				'minify_js'           => false,
+				'exclude_js'          => '',
+			]
+		);
 
-		$this->assertTrue( 'foo' === get_option( $this->option_name ) );
+		$this->assertNotFalse( has_action( 'update_option_' . $this->option_name, 'rocket_after_save_options' ) );
 
-		update_option( $this->option_name, 'bar' );
+		update_option(
+			$this->option_name,
+			[
+				'cache_mobile'        => true,
+				'purge_cron_interval' => true,
+				'purge_cron_unit'     => false,
+				'minify_css'          => false,
+				'exclude_css'         => '',
+				'minify_js'           => false,
+				'exclude_js'          => '',
+				'foobar'              => 'barbaz', // This one will trigger cleaning and preload.
+			]
+		);
 
-		$this->assertTrue( 'bar' === get_option( $this->option_name ) );
+		foreach ( $this->original_files as $file ) {
+			$this->assertFalse( $this->filesystem->exists( $file ), "The file $file exists." );
+		}
 
-		update_option( $this->option_name, [] );
-
-		$this->assertTrue( [] === get_option( $this->option_name ) );
-
-		update_option( $this->option_name, 'bar' );
-
-		$this->assertTrue( 'bar' === get_option( $this->option_name ) );
+		$config_path = 'wp-content/wp-rocket-config/example.org.php';
+		$this->assertTrue( $this->filesystem->exists( $config_path ), "The config file $config_path does not exist." );
+		$config_contents = $this->filesystem->get_contents( $config_path );
+		$this->assertContains( 'WP_ROCKET_CONFIG_PATH', $config_contents, "The config file $config_path does not contain WP_ROCKET_CONFIG_PATH." );
 	}
 }
