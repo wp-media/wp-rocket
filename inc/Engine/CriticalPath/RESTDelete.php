@@ -17,9 +17,7 @@ class RESTDelete implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rest_api_init' => [
-				[ 'register_delete_route' ],
-			],
+			'rest_api_init' => [ 'register_delete_route' ],
 		];
 	}
 
@@ -27,8 +25,6 @@ class RESTDelete implements Subscriber_Interface {
 	 * Register Delete CPCSS route in the WP REST API.
 	 *
 	 * @since  3.6
-	 *
-	 * @return void
 	 */
 	public function register_delete_route() {
 		register_rest_route(
@@ -49,14 +45,14 @@ class RESTDelete implements Subscriber_Interface {
 	 * @since 3.6
 	 *
 	 * @param  WP_REST_Request $request the WP Rest Request object.
+	 *
 	 * @return WP_REST_Response
 	 */
 	public function delete( WP_REST_Request $request ) {
 		$post_id                = $request['id'];
-		$post_url               = get_permalink( $post_id );
-		$critical_css_file_path = rocket_get_constant( 'WP_ROCKET_CRITICAL_CSS_PATH' ) . get_current_blog_id() . '/posts/post-type-' . $post_id . '.css';
+		$critical_css_file_path = rocket_get_constant( 'WP_ROCKET_CRITICAL_CSS_PATH' ) . get_current_blog_id() . "/posts/post-type-{$post_id}.css";
 
-		if ( ! $post_url ) {
+		if ( empty( get_permalink( $post_id ) ) ) {
 			return rest_ensure_response(
 				[
 					'code'    => 'post_not_exists',
@@ -82,14 +78,14 @@ class RESTDelete implements Subscriber_Interface {
 
 		rocket_direct_filesystem()->delete( $critical_css_file_path );
 
-		$response = [
-			'code'    => 'success',
-			'message' => __( 'Critical CSS file deleted successfully.', 'rocket' ),
-			'data'    => [
-				'status' => 200,
-			],
-		];
-
-		return rest_ensure_response( $response );
+		return rest_ensure_response(
+			[
+				'code'    => 'success',
+				'message' => __( 'Critical CSS file deleted successfully.', 'rocket' ),
+				'data'    => [
+					'status' => 200,
+				],
+			]
+		);
 	}
 }
