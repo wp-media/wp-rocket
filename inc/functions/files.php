@@ -796,25 +796,26 @@ function rocket_clean_home_feeds() {
 }
 
 /**
- * Remove all cache files of the domain
+ * Remove all cache files for the domain.
  *
- * @since 2.0 Delete domain cache files for all users
+ * @since 3.5.3 Replaces glob with SPL.
+ * @since 2.0   Delete domain cache files for all users
  * @since 1.0
  *
- * @param string $lang (default: '') The language code.
- * @return void
+ * @param string $lang Optional. The language code. Default: empty string.
  */
 function rocket_clean_domain( $lang = '' ) {
 	$urls = ( ! $lang || is_object( $lang ) || is_array( $lang ) || is_int( $lang ) ) ? get_rocket_i18n_uri() : get_rocket_i18n_home_url( $lang );
 	$urls = (array) $urls;
 
 	/**
-	 * Filter URLs to delete all caching files from a domain
+	 * Filter URLs to delete all caching files from a domain.
 	 *
 	 * @since 2.6.4
+	 *
 	 * @param array     URLs that will be returned.
 	 * @param string    The language code.
-	*/
+	 */
 	$urls = apply_filters( 'rocket_clean_domain_urls', $urls, $lang );
 	$urls = array_filter( $urls );
 
@@ -841,14 +842,14 @@ function rocket_clean_domain( $lang = '' ) {
 		$root = $cache_path . $file['host'] . $file['path'];
 
 		/**
-		 * Fires before all cache files are deleted
+		 * Fires before all cache files are deleted.
 		 *
 		 * @since 1.0
 		 *
 		 * @param string $root The path of home cache file.
 		 * @param string $lang The current lang to purge.
 		 * @param string $url  The home url.
-		*/
+		 */
 		do_action( 'before_rocket_clean_domain', $root, $lang, $url ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 		try {
@@ -863,14 +864,14 @@ function rocket_clean_domain( $lang = '' ) {
 		}
 
 		/**
-		 * Fires after all cache files was deleted
+		 * Fires after all cache files was deleted.
 		 *
 		 * @since 1.0
 		 *
 		 * @param string $root The path of home cache file.
 		 * @param string $lang The current lang to purge.
 		 * @param string $url  The home url.
-		*/
+		 */
 		do_action( 'after_rocket_clean_domain', $root, $lang, $url ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	}
 }
