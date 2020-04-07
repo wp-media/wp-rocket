@@ -28,6 +28,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-		$this->getContainer()->share( 'rest_generate_post_cpcss', 'WP_Rocket\Engine\Optimization\CSS\CriticalPath\RESTGenerate' );
+		$this->getContainer()->share( 'rest_generate_post_cpcss', 'WP_Rocket\Engine\CriticalPath\RESTGenerate' );
 	}
 }
