@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Subscriber\Optimization;
 
-use WP_Rocket\Engine\Optimization\AbstractMinifySubscriber;
+use WP_Rocket\Engine\Optimization\Minify\AbstractMinifySubscriber;
 use WP_Rocket\Optimization\CSS\Combine_Google_Fonts;
 
 /**

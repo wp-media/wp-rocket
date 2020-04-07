@@ -59,7 +59,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->withArgument( $options )
 			->withArgument( WP_ROCKET_CACHE_BUSTING_PATH )
 			->withArgument( WP_ROCKET_CACHE_BUSTING_URL );
-		$this->getContainer()->add( 'remove_query_string', 'WP_Rocket\Engine\Optimization\RemoveQueryString' )
+		$this->getContainer()->add( 'remove_query_string', 'WP_Rocket\Engine\Optimization\QueryString\Remove' )
 			->withArgument( $options )
 			->withArgument( WP_ROCKET_CACHE_BUSTING_PATH )
 			->withArgument( WP_ROCKET_CACHE_BUSTING_URL );
@@ -68,11 +68,11 @@ class ServiceProvider extends AbstractServiceProvider {
 			->withArgument( $options );
 		$this->getContainer()->share( 'combine_google_fonts_subscriber', 'WP_Rocket\Subscriber\Optimization\Combine_Google_Fonts_Subscriber' )
 			->withArgument( $options );
-		$this->getContainer()->share( 'minify_css_subscriber', 'WP_Rocket\Engine\Optimization\CSS\Subscriber' )
+		$this->getContainer()->share( 'minify_css_subscriber', 'WP_Rocket\Engine\Optimization\Minify\CSS\Subscriber' )
 			->withArgument( $options );
-		$this->getContainer()->share( 'minify_js_subscriber', 'WP_Rocket\Engine\Optimization\JS\Subscriber' )
+		$this->getContainer()->share( 'minify_js_subscriber', 'WP_Rocket\Engine\Optimization\Minify\JS\Subscriber' )
 			->withArgument( $options );
-		$this->getContainer()->share( 'remove_query_string_subscriber', 'WP_Rocket\Engine\Optimization\RemoveQueryStringSubscriber' )
+		$this->getContainer()->share( 'remove_query_string_subscriber', 'WP_Rocket\Engine\Optimization\QueryString\RemoveSubscriber' )
 			->withArgument( $this->getContainer()->get( 'remove_query_string' ) );
 		$this->getContainer()->share( 'dequeue_jquery_migrate_subscriber', 'WP_Rocket\Subscriber\Optimization\Dequeue_JQuery_Migrate_Subscriber' )
 			->withArgument( $options );
