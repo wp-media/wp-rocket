@@ -67,6 +67,7 @@ class RESTDelete implements Subscriber_Interface {
 		$post_id                = $request['id'];
 		$critical_css_file_path = $this->critical_css_path . "/post-type-{$post_id}.css";
 		$filesystem             = rocket_direct_filesystem();
+
 		if ( empty( get_permalink( $post_id ) ) ) {
 			return rest_ensure_response(
 				[
