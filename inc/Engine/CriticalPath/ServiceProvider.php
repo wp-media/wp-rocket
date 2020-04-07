@@ -23,9 +23,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	];
 
 	/**
-	 * Registers in the container
-	 *
-	 * @return void
+	 * Registers in the container.
 	 */
 	public function register() {
 		$this->getContainer()->share( 'rest_delete_post_cpcss', 'WP_Rocket\Engine\CriticalPath\RESTDelete' );
