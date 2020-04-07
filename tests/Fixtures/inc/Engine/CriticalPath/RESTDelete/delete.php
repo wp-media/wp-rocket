@@ -29,7 +29,6 @@ return [
 	],
 
 	'test_data' => [
-
 		'testShouldBailoutWithNoCapabilities' => [
 			'config'   => [
 				'cpcss_exists_before' => true,
@@ -43,7 +42,6 @@ return [
 				'data'    => [ 'status' => 401 ],
 			],
 		],
-
 		'testShouldBailoutIfPostDoesNotExist' => [
 			'config'   => [
 				'cpcss_exists_before' => false,
@@ -57,7 +55,6 @@ return [
 				'data'    => [ 'status' => 400 ],
 			],
 		],
-
 		'testShouldBailoutIfPostCPCSSNotExist' => [
 			'config'   => [
 				'cpcss_exists_before' => false,
@@ -72,7 +69,6 @@ return [
 
 			],
 		],
-
 		'testShouldReturnSuccessWhenEndpointRequest' => [
 			'config'   => [
 				'cpcss_exists_before' => true,

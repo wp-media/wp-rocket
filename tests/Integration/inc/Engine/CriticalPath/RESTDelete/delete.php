@@ -6,9 +6,9 @@ use WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\RestTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\RESTDelete::delete
+ * @uses   ::rocket_get_constant
  * @group  CriticalPath
  * @group  vfs
- * @group thisone
  */
 class Test_Delete extends RestTestCase {
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/RESTDelete/delete.php';
@@ -29,6 +29,6 @@ class Test_Delete extends RestTestCase {
 
 		$this->assertSame( $config['cpcss_exists_before'], $this->filesystem->exists( $file ) );
 		$this->assertSame( $expected, $this->requestDeleteCriticalPath( $post_id ) );
-		$this->assertSame( $config['cpcss_exists_after'],  $this->filesystem->exists( $file ) );
+		$this->assertSame( $config['cpcss_exists_after'], $this->filesystem->exists( $file ) );
 	}
 }
