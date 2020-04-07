@@ -38,7 +38,7 @@ class Subscriber extends Minify_Subscriber {
 		if ( ! $this->is_allowed() ) {
 			return $urls;
 		}
-	
+
 		if ( 'preconnect' !== $relation_type ) {
 			return $urls;
 		}
