@@ -1,16 +1,16 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\CSS\CriticalPath\CriticalCSS;
+namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\CriticalCSS;
 
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\CSS\CriticalPath\CriticalCSS::clean_critical_css
+ * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSS::clean_critical_css
  * @group  AdminOnly
  * @group  CriticalCss
  */
 class Test_CleanCriticalCSS extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/Engine/Optimization/CSS/CriticalPath/CriticalCSS/cleanCriticalCss.php';
+	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSS/cleanCriticalCss.php';
 
 	private $deleted_files = [
 		'home.css',

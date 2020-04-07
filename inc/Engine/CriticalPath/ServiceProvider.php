@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Engine\Optimization;
+namespace WP_Rocket\Engine\CriticalPath;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Admin\Options_Data;
@@ -46,10 +46,10 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @param Options_Data $options Instance of options.
 	 */
 	protected function critical_css( Options_Data $options ) {
-		$this->getContainer()->add( 'critical_css_generation', 'WP_Rocket\Engine\Optimization\CSS\CriticalPath\CriticalCSSGeneration' );
-		$this->getContainer()->add( 'critical_css', 'WP_Rocket\Engine\Optimization\CSS\CriticalPath\CriticalCSS' )
+		$this->getContainer()->add( 'critical_css_generation', 'WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration' );
+		$this->getContainer()->add( 'critical_css', 'WP_Rocket\Engine\CriticalPath\CriticalCSS' )
 			->withArgument( $this->getContainer()->get( 'critical_css_generation' ) );
-		$this->getContainer()->share( 'critical_css_subscriber', 'WP_Rocket\Engine\Optimization\CSS\CriticalPath\CriticalCSSSubscriber' )
+		$this->getContainer()->share( 'critical_css_subscriber', 'WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber' )
 			->withArgument( $this->getContainer()->get( 'critical_css' ) )
 			->withArgument( $this->getContainer()->get( 'options' ) );
 	}

@@ -1,23 +1,23 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\CSS\CriticalPath\CriticalCSSSubscriber;
+namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\CriticalCSSSubscriber;
 
 use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\Optimization\CSS\CriticalPath\CriticalCSS;
-use WP_Rocket\Engine\Optimization\CSS\CriticalPath\CriticalCSSGeneration;
-use WP_Rocket\Engine\Optimization\CSS\CriticalPath\CriticalCSSSubscriber;
+use WP_Rocket\Engine\CriticalPath\CriticalCSS;
+use WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration;
+use WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\CSS\CriticalPath\CriticalCSSSubscriber::generate_critical_css_on_activation
+ * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::generate_critical_css_on_activation
  * @group  Subscribers
  * @group  CriticalCss
  * @group  vfs
  */
 class Test_GenerateCriticalCssOnActivation extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/Engine/Optimization/CSS/CriticalPath/CriticalCSSSubscriber/generateCriticalCssOnActivation.php';
+	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSSSubscriber/generateCriticalCssOnActivation.php';
 	private $critical_css;
 	private $subscriber;
 

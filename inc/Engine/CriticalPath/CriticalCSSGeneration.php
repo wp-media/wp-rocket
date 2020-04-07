@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Engine\Optimization\CSS\CriticalPath;
+namespace WP_Rocket\Engine\CriticalPath;
 
 /**
  * Extends the background process class for the critical CSS generation process.

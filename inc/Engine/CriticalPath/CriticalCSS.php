@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Engine\Optimization\CSS\CriticalPath;
+namespace WP_Rocket\Engine\CriticalPath;
 
 use FilesystemIterator;
 use UnexpectedValueException;

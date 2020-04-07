@@ -1,18 +1,18 @@
 <?php
-namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\CSS\CriticalPath\CriticalCSSSubscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\CriticalCSSSubscriber;
 
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\CSS\CriticalPath\CriticalCSSSubscriber::generate_critical_css_on_activation
+ * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::generate_critical_css_on_activation
  * @group  Subscribers
  * @group  CriticalCss
  * @group  vfs
  */
 class Test_GenerateCriticalCssOnActivation extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/Engine/Optimization/CSS/CriticalPath/CriticalCSSSubscriber/generateCriticalCssOnActivation.php';
+	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSSSubscriber/generateCriticalCssOnActivation.php';
 	private static $container;
 	private $subscriber;
 
