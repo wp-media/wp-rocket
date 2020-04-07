@@ -12,7 +12,6 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
  * @uses   ::rocket_get_constant
  * @group  CriticalPath
  * @group  vfs
- * @group  thisone
  */
 class Test_Delete extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/RESTDelete/delete.php';

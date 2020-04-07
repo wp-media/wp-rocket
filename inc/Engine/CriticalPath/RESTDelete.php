@@ -9,6 +9,22 @@ class RESTDelete implements Subscriber_Interface {
 	const ROUTE_NAMESPACE = 'wp-rocket/v1';
 
 	/**
+	 * Critical CSS path.
+	 *
+	 * @var string
+	 */
+	protected $critical_css_path;
+
+	/**
+	 * Creates an instance.
+	 *
+	 * @since 3.6
+	 */
+	public function __construct() {
+		$this->critical_css_path = rocket_get_constant( 'WP_ROCKET_CRITICAL_CSS_PATH' ) . get_current_blog_id() . '/posts';
+	}
+
+	/**
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
 	 * @since  3.6
@@ -33,25 +49,24 @@ class RESTDelete implements Subscriber_Interface {
 			[
 				'methods'             => 'DELETE',
 				'callback'            => [ $this, 'delete' ],
-				'permission_callback' => function() {
-					return current_user_can( 'rocket_regenerate_critical_css' );
-				},
+				'permission_callback' => [ $this, 'check_permissions' ],
 			]
 		);
 	}
+
 	/**
 	 * Delete Post ID CPCSS file.
 	 *
 	 * @since 3.6
 	 *
-	 * @param  WP_REST_Request $request the WP Rest Request object.
+	 * @param WP_REST_Request $request the WP Rest Request object.
 	 *
 	 * @return WP_REST_Response
 	 */
 	public function delete( WP_REST_Request $request ) {
 		$post_id                = $request['id'];
-		$critical_css_file_path = rocket_get_constant( 'WP_ROCKET_CRITICAL_CSS_PATH' ) . get_current_blog_id() . "/posts/post-type-{$post_id}.css";
-
+		$critical_css_file_path = $this->critical_css_path . "/post-type-{$post_id}.css";
+		$filesystem             = rocket_direct_filesystem();
 		if ( empty( get_permalink( $post_id ) ) ) {
 			return rest_ensure_response(
 				[
@@ -64,7 +79,7 @@ class RESTDelete implements Subscriber_Interface {
 			);
 		}
 
-		if ( ! rocket_direct_filesystem()->exists( $critical_css_file_path ) ) {
+		if ( ! $filesystem->exists( $critical_css_file_path ) ) {
 			return rest_ensure_response(
 				[
 					'code'    => 'cpcss_not_exists',
@@ -76,7 +91,7 @@ class RESTDelete implements Subscriber_Interface {
 			);
 		}
 
-		rocket_direct_filesystem()->delete( $critical_css_file_path );
+		$filesystem->delete( $critical_css_file_path );
 
 		return rest_ensure_response(
 			[
@@ -87,5 +102,16 @@ class RESTDelete implements Subscriber_Interface {
 				],
 			]
 		);
+	}
+
+	/**
+	 * Checks user's permissions. This is a callback registered to REST route's "permission_callback" parameter.
+	 *
+	 * @since 3.6
+	 *
+	 * @return bool true if the user has permission; else false.
+	 */
+	public function check_permissions() {
+		return current_user_can( 'rocket_regenerate_critical_css' );
 	}
 }

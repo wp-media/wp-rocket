@@ -13,6 +13,12 @@ use WPMedia\PHPUnit\Unit\TestCase;
 class Test_RegisterDeleteRouter extends TestCase {
 
 	public function testShouldRegisterRoute() {
+		Functions\expect( 'rocket_get_constant' )
+			->once()
+			->with( 'WP_ROCKET_CRITICAL_CSS_PATH' )
+			->andReturn( '' );
+		Functions\expect( 'get_current_blog_id' )->once()->andReturn( 1 );
+
 		$instance = new RESTDelete();
 
 		Functions\expect( 'register_rest_route' )
