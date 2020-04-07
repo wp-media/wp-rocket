@@ -12,6 +12,7 @@ branches:
   - master
   - develop
   - /branch-.*$/
+  - /fix\/part3-rest-api-deletion-endpoint$/
 cache:
   directories:
   - vendor
