@@ -7,7 +7,7 @@ use WP_REST_Response;
 use WP_REST_Server;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
-class RestTestCase extends FilesystemTestCase {
+abstract class RestTestCase extends FilesystemTestCase {
 	/**
 	 * Instance of the WordPress REST Server.
 	 * @var WP_REST_Server
