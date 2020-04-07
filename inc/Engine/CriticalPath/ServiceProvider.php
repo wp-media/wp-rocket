@@ -34,18 +34,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register() {
 		$options = $this->getContainer()->get( 'options' );
 
-		// Critical CSS.
-		$this->critical_css( $options );
-	}
-
-	/**
-	 * Adds Critical CSS into the Container.
-	 *
-	 * @since 3.6
-	 *
-	 * @param Options_Data $options Instance of options.
-	 */
-	protected function critical_css( Options_Data $options ) {
 		$this->getContainer()->add( 'critical_css_generation', 'WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration' );
 		$this->getContainer()->add( 'critical_css', 'WP_Rocket\Engine\CriticalPath\CriticalCSS' )
 			->withArgument( $this->getContainer()->get( 'critical_css_generation' ) );
