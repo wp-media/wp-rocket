@@ -23,7 +23,7 @@ class Test_Delete extends FilesystemTestCase {
 	}
 
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider nonMultisiteTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ) {
 		$post_id   = ! isset( $config['post_data']['post_id'] )
@@ -64,5 +64,13 @@ class Test_Delete extends FilesystemTestCase {
 		$this->assertSame( $config['cpcss_exists_before'], $this->filesystem->exists( $file ) );
 		$this->assertSame( $expected, $instance->delete( $request ) );
 		$this->assertSame( $config['cpcss_exists_after'], $this->filesystem->exists( $file ) );
+	}
+
+	public function nonMultisiteTestData() {
+		if ( empty( $this->config ) ) {
+			$this->loadConfig();
+		}
+
+		return $this->config['test_data']['non_multisite'];
 	}
 }

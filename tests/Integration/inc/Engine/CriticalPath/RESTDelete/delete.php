@@ -80,10 +80,6 @@ class Test_Delete extends RESTVfsTestCase {
 		return $this->config['test_data']['multisite'];
 	}
 
-	protected function loadConfig() {
-		$this->config = $this->getTestData( __DIR__, basename( __FILE__, '.php' ) );
-	}
-
 	protected function addCriticalPathUserCapabilities() {
 		$admin = get_role( 'administrator' );
 		$admin->add_cap( 'rocket_regenerate_critical_css' );
