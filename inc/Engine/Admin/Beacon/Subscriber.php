@@ -1,8 +1,7 @@
 <?php
-namespace WP_Rocket\Subscriber\Admin\Settings;
+namespace WP_Rocket\Engine\Admin\Beacon;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Rocket\Admin\Settings\Beacon;
 
 /**
  * Beacon Subscriber to WordPress
@@ -10,7 +9,7 @@ use WP_Rocket\Admin\Settings\Beacon;
  * @since 3.2
  * @author Remy Perona
  */
-class Beacon_Subscriber implements Subscriber_Interface {
+class Subscriber implements Subscriber_Interface {
 	/**
 	 * Beacon instance
 	 *

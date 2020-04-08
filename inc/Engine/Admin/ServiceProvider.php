@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\ServiceProvider;
+namespace WP_Rocket\Engine\Admin;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
 
@@ -9,7 +9,7 @@ use League\Container\ServiceProvider\AbstractServiceProvider;
  * @since 3.3
  * @author Remy Perona
  */
-class Admin_Subscribers extends AbstractServiceProvider {
+class ServiceProvider extends AbstractServiceProvider {
 
 	/**
 	 * The provides array is a way to let the container
@@ -37,6 +37,8 @@ class Admin_Subscribers extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
+		$options = $this->getContainer()->get( 'options' );
+
 		$this->getContainer()->share( 'settings_page_subscriber', 'WP_Rocket\Subscriber\Admin\Settings\Page_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'settings_page' ) );
 		$this->getContainer()->add( 'deactivation_intent_render', 'WP_Rocket\Admin\Deactivation\Render' )
@@ -44,10 +46,10 @@ class Admin_Subscribers extends AbstractServiceProvider {
 		$this->getContainer()->share( 'deactivation_intent_subscriber', 'WP_Rocket\Subscriber\Admin\Deactivation\Deactivation_Intent_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'deactivation_intent_render' ) )
 			->withArgument( $this->getContainer()->get( 'options_api' ) )
-			->withArgument( $this->getContainer()->get( 'options' ) );
-		$this->getContainer()->share( 'beacon_subscriber', 'WP_Rocket\Subscriber\Admin\Settings\Beacon_Subscriber' )
+			->withArgument( $options );
+		$this->getContainer()->share( 'beacon_subscriber', 'WP_Rocket\Engine\Admin\Beacon\Subscriber' )
 			->withArgument( $this->getContainer()->get( 'beacon' ) );
 		$this->getContainer()->share( 'hummingbird_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Optimization\Hummingbird_Subscriber' )
-			->withArgument( $this->getContainer()->get( 'options' ) );
+			->withArgument( $options );
 	}
 }

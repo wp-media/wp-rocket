@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Admin\Settings;
+namespace WP_Rocket\Engine\Admin\Beacon;
 
 use WP_Rocket\Admin\Options_Data;
 

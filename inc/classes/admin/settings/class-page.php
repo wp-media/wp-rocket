@@ -1,7 +1,8 @@
 <?php
 namespace WP_Rocket\Admin\Settings;
 
-use \WP_Rocket\Interfaces\Render_Interface;
+use WP_Rocket\Engine\Admin\Beacon\Beacon;
+use WP_Rocket\Interfaces\Render_Interface;
 use WP_Rocket\Admin\Database\Optimization;
 
 defined( 'ABSPATH' ) || exit;
