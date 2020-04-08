@@ -361,7 +361,7 @@ function get_rocket_parse_url( $url ) { // phpcs:ignore WordPress.NamingConventi
 	 *
 	 * @param array Components of an URL
 	*/
-	return apply_filters(
+	return (array) apply_filters(
 		'rocket_parse_url',
 		[
 			'host'     => $host,
