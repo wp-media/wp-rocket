@@ -29,6 +29,6 @@ class Test_RegisterGenerateRoute extends TestCase {
 				]
 			);
 
-		$instance->register_delete_route();
+		$instance->register_generate_route();
 	}
 }
