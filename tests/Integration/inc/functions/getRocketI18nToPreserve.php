@@ -55,7 +55,7 @@ class Test_GetRocketI18nToPreserve extends TestCase {
 		switch ( $config['i18n_plugin'] ) {
 			case 'wpml':
 				$GLOBALS['sitepress']                   = new SitePress();
-				$GLOBALS['sitepress']->active_languages = $langs;
+				$GLOBALS['sitepress']->active_languages = $data['codes'];
 				$GLOBALS['sitepress']->home_root        = $home_url;
 				$GLOBALS['sitepress']->uris_config      = $data['uris'];
 				break;
