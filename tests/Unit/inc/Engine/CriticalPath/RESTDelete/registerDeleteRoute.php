@@ -10,16 +10,12 @@ use WPMedia\PHPUnit\Unit\TestCase;
  * @covers \WP_Rocket\Engine\CriticalPath\RESTDelete::register_delete_route
  * @group  CriticalPath
  */
-class Test_RegisterDeleteRouter extends TestCase {
+class Test_RegisterDeleteRoute extends TestCase {
 
 	public function testShouldRegisterRoute() {
-		Functions\expect( 'rocket_get_constant' )
-			->once()
-			->with( 'WP_ROCKET_CRITICAL_CSS_PATH' )
-			->andReturn( '' );
 		Functions\expect( 'get_current_blog_id' )->once()->andReturn( 1 );
 
-		$instance = new RESTDelete();
+		$instance = new RESTDelete( 'wp-content/cache/critical-css/' );
 
 		Functions\expect( 'register_rest_route' )
 			->once()

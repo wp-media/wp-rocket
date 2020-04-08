@@ -15,7 +15,7 @@ return [
 						'posts'          => [
 							'.'               => '',
 							'..'              => '',
-							'post-type-1.css' => '.p { color: red; }',
+							'post-1.css' => '.p { color: red; }',
 						],
 						'home.css'       => '.p { color: red; }',
 						'front_page.css' => '.p { color: red; }',
@@ -33,7 +33,7 @@ return [
 			'config'   => [
 				'cpcss_exists_before' => true,
 				'current_user_can'    => false,
-				'post_data'           => [ 'post_id' => 1 ],
+				'post_data'           => [ 'post_id' => 1, 'post_type' => 'post' ],
 				'cpcss_exists_after'  => true,
 			],
 			'expected' => [
@@ -46,7 +46,7 @@ return [
 			'config'   => [
 				'cpcss_exists_before' => false,
 				'current_user_can'    => true,
-				'post_data'           => [ 'post_id' => 2 ],
+				'post_data'           => [ 'post_id' => 2, 'post_type' => 'post' ],
 				'cpcss_exists_after'  => false,
 			],
 			'expected' => [
@@ -59,7 +59,7 @@ return [
 			'config'   => [
 				'cpcss_exists_before' => false,
 				'current_user_can'    => true,
-				'post_data'           => [ 'import_id' => 3 ],
+				'post_data'           => [ 'import_id' => 3, 'post_type' => 'post' ],
 				'cpcss_exists_after'  => false,
 			],
 			'expected' => [
@@ -73,7 +73,7 @@ return [
 			'config'   => [
 				'cpcss_exists_before' => true,
 				'current_user_can'    => true,
-				'post_data'           => [ 'import_id' => 1 ],
+				'post_data'           => [ 'import_id' => 1, 'post_type' => 'post' ],
 				'cpcss_exists_after'  => false,
 			],
 			'expected' => [

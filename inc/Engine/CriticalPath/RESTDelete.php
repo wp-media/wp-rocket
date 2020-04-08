@@ -16,12 +16,12 @@ class RESTDelete implements Subscriber_Interface {
 	protected $critical_css_path;
 
 	/**
-	 * Creates an instance.
+	 * Constructor
 	 *
-	 * @since 3.6
+	 * @param string $critical_css_path Base critical CSS path.
 	 */
-	public function __construct() {
-		$this->critical_css_path = rocket_get_constant( 'WP_ROCKET_CRITICAL_CSS_PATH' ) . get_current_blog_id() . '/posts';
+	public function __construct( $critical_css_path ) {
+		$this->critical_css_path = $critical_css_path . get_current_blog_id() . '/posts/';
 	}
 
 	/**
@@ -65,7 +65,8 @@ class RESTDelete implements Subscriber_Interface {
 	 */
 	public function delete( WP_REST_Request $request ) {
 		$post_id                = $request['id'];
-		$critical_css_file_path = $this->critical_css_path . "/post-type-{$post_id}.css";
+		$post_type              = get_post_type( $request['id'] );
+		$critical_css_file_path = $this->critical_css_path . "{$post_type}-{$post_id}.css";
 		$filesystem             = rocket_direct_filesystem();
 
 		if ( empty( get_permalink( $post_id ) ) ) {
@@ -92,7 +93,17 @@ class RESTDelete implements Subscriber_Interface {
 			);
 		}
 
-		$filesystem->delete( $critical_css_file_path );
+		if ( ! $filesystem->delete( $critical_css_file_path ) ) {
+			return rest_ensure_response(
+				[
+					'code'    => 'cpcss_deleted_failed',
+					'message' => __( 'Critical CSS file cannot be deleted.', 'rocket' ),
+					'data'    => [
+						'status' => 400,
+					],
+				]
+			);
+		}
 
 		return rest_ensure_response(
 			[

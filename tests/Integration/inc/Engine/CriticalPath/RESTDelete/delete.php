@@ -6,7 +6,6 @@ use WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\RestTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\RESTDelete::delete
- * @uses   ::rocket_get_constant
  * @group  CriticalPath
  * @group  vfs
  */
@@ -20,12 +19,15 @@ class Test_Delete extends RestTestCase {
 		$post_id = ! isset( $config['post_data']['post_id'] )
 			? $this->factory->post->create( $config['post_data'] )
 			: $config['post_data']['post_id'];
+		$post_type = ! isset( $config['post_data']['post_type'] )
+			? 'post'
+			: $config['post_data']['post_type'];
 
 		if ( $config['current_user_can'] ) {
 			$this->addCriticalPathUserCapabilities();
 		}
 
-		$file = $this->config['vfs_dir'] . "1/posts/post-type-{$post_id}.css";
+		$file = $this->config['vfs_dir'] . "1/posts/{$post_type}-{$post_id}.css";
 
 		$this->assertSame( $config['cpcss_exists_before'], $this->filesystem->exists( $file ) );
 		$this->assertSame( $expected, $this->requestDeleteCriticalPath( $post_id ) );

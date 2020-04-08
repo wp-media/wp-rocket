@@ -9,7 +9,6 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\RESTDelete::delete
- * @uses   ::rocket_get_constant
  * @group  CriticalPath
  * @group  vfs
  */
@@ -27,21 +26,24 @@ class Test_Delete extends FilesystemTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ) {
-		$post_id = ! isset( $config['post_data']['post_id'] )
+		$post_id   = ! isset( $config['post_data']['post_id'] )
 			? $config['post_data']['import_id']
 			: $config['post_data']['post_id'];
+		$post_type = ! isset( $config['post_data']['post_type'] )
+			? 'post'
+			: $config['post_data']['post_type'];
 
-		$file = $this->config['vfs_dir'] . "1/posts/post-type-{$post_id}.css";
+		$file = $this->config['vfs_dir'] . "1/posts/{$post_type}-{$post_id}.css";
 
 		if ( 'rest_forbidden' === $expected['code'] ) {
 			$this->assertSame( $config['cpcss_exists_before'], $this->filesystem->exists( $file ) );
 			return;
 		}
 
-		Functions\expect( 'rocket_get_constant' )
+		Functions\expect( 'get_post_type' )
 			->once()
-			->with( 'WP_ROCKET_CRITICAL_CSS_PATH' )
-			->andReturn( $this->config['vfs_dir'] );
+			->andReturn( $post_type );
+
 		Functions\expect( 'get_current_blog_id' )
 			->once()
 			->andReturn( 1 );
@@ -56,10 +58,9 @@ class Test_Delete extends FilesystemTestCase {
 
 		Functions\expect( 'rest_ensure_response' )->once()->andReturn( $expected );
 
-		$instance      = new RESTDelete();
+		$instance      = new RESTDelete( 'wp-content/cache/critical-css/' );
 		$request       = new WP_REST_Request();
 		$request['id'] = $post_id;
-
 		$this->assertSame( $config['cpcss_exists_before'], $this->filesystem->exists( $file ) );
 		$this->assertSame( $expected, $instance->delete( $request ) );
 		$this->assertSame( $config['cpcss_exists_after'], $this->filesystem->exists( $file ) );
