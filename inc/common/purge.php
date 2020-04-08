@@ -499,7 +499,6 @@ function do_admin_post_rocket_purge_cache() { // phpcs:ignore WordPress.NamingCo
 				}
 
 				rocket_dismiss_box( 'rocket_warning_plugin_modification' );
-
 				break;
 
 			// Clear terms, homepage and other files associated at current post in back-end.
@@ -555,8 +554,7 @@ function do_admin_post_rocket_purge_cache() { // phpcs:ignore WordPress.NamingCo
 		do_action( 'rocket_purge_cache', $type, $id, $taxonomy, $url );
 
 		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
-		wp_die();
-		return;
+		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
 	}
 }
 add_action( 'admin_post_purge_cache', 'do_admin_post_rocket_purge_cache' );
