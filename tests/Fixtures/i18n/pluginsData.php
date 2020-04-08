@@ -60,21 +60,24 @@ return [
 
 	'polylang' => [
 		'options' => [
-			[
-				'slug'   => 'en',
-				'locale' => 'en_US',
-				'url'    => 'http://example.org',
+			'model'      => [
+				[
+					'slug'   => 'en',
+					'locale' => 'en_US',
+					'url'    => 'http://example.org',
+				],
+				[
+					'slug'   => 'fr',
+					'locale' => 'fr_FR',
+					'url'    => 'http://example.org/fr',
+				],
+				[
+					'slug'   => 'de',
+					'locale' => 'de_DE',
+					'url'    => 'http://example.org/de',
+				],
 			],
-			[
-				'slug'   => 'fr',
-				'locale' => 'fr_FR',
-				'url'    => 'http://example.org/fr',
-			],
-			[
-				'slug'   => 'de',
-				'locale' => 'de_DE',
-				'url'    => 'http://example.org/de',
-			],
+			'force_lang' => true,
 		],
 		'codes'   => [ 'en', 'fr', 'de' ],
 		'langs'   => [ 'en', 'fr', 'de' ],
