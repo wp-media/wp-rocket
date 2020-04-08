@@ -592,7 +592,7 @@ class Beacon {
 					'url' => 'https://fr.docs.wp-rocket.me/article/1123-add-on-facebook-pixel/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
-			'google_fonts'                       => [
+			'google_fonts'               => [
 				'en' => [
 					'id'  => '5e8687c22c7d3a7e9aea4c4a',
 					'url' => 'https://docs.wp-rocket.me/article/1312-optimize-google-fonts',
