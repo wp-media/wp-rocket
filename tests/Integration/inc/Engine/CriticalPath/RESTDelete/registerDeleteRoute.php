@@ -2,13 +2,13 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\RESTDelete;
 
-use WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\RestTestCase;
+use WP_Rocket\Tests\Integration\RESTVfsTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\RESTDelete::register_delete_route
  * @group  CriticalPath
  */
-class Test_RegisterDeleteRouter extends RestTestCase {
+class Test_RegisterDeleteRouter extends RESTVfsTestCase {
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/RESTDelete/delete.php';
 
 	/**

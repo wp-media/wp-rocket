@@ -2,14 +2,14 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\RESTDelete;
 
-use WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\RestTestCase;
+use WP_Rocket\Tests\Integration\RESTVfsTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\RESTDelete::delete
  * @group  CriticalPath
  * @group  vfs
  */
-class Test_Delete extends RestTestCase {
+class Test_Delete extends RESTVfsTestCase {
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/RESTDelete/delete.php';
 
 	/**
@@ -30,7 +30,15 @@ class Test_Delete extends RestTestCase {
 		$file = $this->config['vfs_dir'] . "1/posts/{$post_type}-{$post_id}.css";
 
 		$this->assertSame( $config['cpcss_exists_before'], $this->filesystem->exists( $file ) );
-		$this->assertSame( $expected, $this->requestDeleteCriticalPath( $post_id ) );
+		$this->assertSame( $expected, $this->doRestDelete( "/wp-rocket/v1/cpcss/post/{$post_id}" ) );
 		$this->assertSame( $config['cpcss_exists_after'], $this->filesystem->exists( $file ) );
+	}
+
+	protected function addCriticalPathUserCapabilities() {
+		$admin = get_role( 'administrator' );
+		$admin->add_cap( 'rocket_regenerate_critical_css' );
+
+		$user = $this->factory->user->create( [ 'role' => 'administrator' ] );
+		wp_set_current_user( $user );
 	}
 }

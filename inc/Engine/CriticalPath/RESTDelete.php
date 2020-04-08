@@ -65,8 +65,8 @@ class RESTDelete implements Subscriber_Interface {
 	 */
 	public function delete( WP_REST_Request $request ) {
 		$post_id                = $request['id'];
-		$post_type              = get_post_type( $request['id'] );
-		$critical_css_file_path = $this->critical_css_path . "{$post_type}-{$post_id}.css";
+		$post_type              = get_post_type( $post_id );
+		$critical_css_file_path = "{$this->critical_css_path}{$post_type}-{$post_id}.css";
 		$filesystem             = rocket_direct_filesystem();
 
 		if ( empty( get_permalink( $post_id ) ) ) {
