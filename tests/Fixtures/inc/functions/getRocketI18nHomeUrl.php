@@ -7,7 +7,6 @@ return [
 		'lang'     => '',
 		'config'   => [
 			'i18n_plugin'     => false,
-			'rocket_has_i18n' => false,
 			'data'            => [],
 		],
 		'expected' => 'http://example.org',
@@ -16,7 +15,6 @@ return [
 		'lang'     => '',
 		'config'   => [
 			'i18n_plugin'     => 'baz',
-			'rocket_has_i18n' => false,
 			'data'            => [
 				'codes' => [ 'de', 'en', 'fr' ],
 				'langs' => [ 'de', 'en', 'fr' ],
@@ -32,7 +30,6 @@ return [
 		'lang'     => '',
 		'config'   => [
 			'i18n_plugin'     => 'wpml',
-			'rocket_has_i18n' => 'wpml',
 			'data'            => $i18n_plugins['wpml'],
 		],
 		'expected' => 'http://example.org',
@@ -41,7 +38,6 @@ return [
 		'lang'     => 'fr',
 		'config'   => [
 			'i18n_plugin'     => 'wpml',
-			'rocket_has_i18n' => 'wpml',
 			'data'            => $i18n_plugins['wpml'],
 		],
 		'expected' => 'http://example.org?lang=fr',
@@ -50,7 +46,6 @@ return [
 		'lang'     => 'de',
 		'config'   => [
 			'i18n_plugin'     => 'wpml',
-			'rocket_has_i18n' => 'wpml',
 			'data'            => $i18n_plugins['wpml'],
 		],
 		'expected' => 'http://example.org?lang=de',
@@ -63,7 +58,6 @@ return [
 		'lang'     => '',
 		'config'   => [
 			'i18n_plugin'     => 'qtranslate',
-			'rocket_has_i18n' => 'qtranslate',
 			'data'            => $i18n_plugins['qtranslate'],
 		],
 		'expected' => 'http://example.org',
@@ -72,7 +66,6 @@ return [
 		'lang'     => 'de',
 		'config'   => [
 			'i18n_plugin'     => 'qtranslate',
-			'rocket_has_i18n' => 'qtranslate',
 			'data'            => [
 				'codes' => [],
 			],
@@ -83,7 +76,6 @@ return [
 		'lang'     => 'en',
 		'config'   => [
 			'i18n_plugin'     => 'qtranslate',
-			'rocket_has_i18n' => 'qtranslate',
 			'data'            => $i18n_plugins['qtranslate'],
 		],
 		'expected' => 'http://example.org/en',
@@ -92,7 +84,6 @@ return [
 		'lang'     => 'fr',
 		'config'   => [
 			'i18n_plugin'     => 'qtranslate',
-			'rocket_has_i18n' => 'qtranslate',
 			'data'            => $i18n_plugins['qtranslate'],
 		],
 		'expected' => 'http://example.org/fr',
@@ -101,7 +92,6 @@ return [
 		'lang'     => 'de',
 		'config'   => [
 			'i18n_plugin'     => 'qtranslate',
-			'rocket_has_i18n' => 'qtranslate',
 			'data'            => $i18n_plugins['qtranslate'],
 		],
 		'expected' => 'http://example.org/de',
@@ -114,7 +104,6 @@ return [
 		'lang'     => '',
 		'config'   => [
 			'i18n_plugin'     => 'polylang',
-			'rocket_has_i18n' => false,
 			'data'            => [
 				'codes'   => [],
 				'langs'   => [],
@@ -127,7 +116,6 @@ return [
 		'lang'     => '',
 		'config'   => [
 			'i18n_plugin'     => 'polylang',
-			'rocket_has_i18n' => 'polylang',
 			'data'            => $i18n_plugins['polylang'],
 		],
 		'expected' => 'http://example.org',
@@ -136,7 +124,6 @@ return [
 		'lang'     => 'en',
 		'config'   => [
 			'i18n_plugin'     => 'polylang',
-			'rocket_has_i18n' => 'polylang',
 			'data'            => $i18n_plugins['polylang'],
 		],
 		'expected' => 'http://example.org/en',
@@ -145,7 +132,6 @@ return [
 		'lang'     => 'de',
 		'config'   => [
 			'i18n_plugin'     => 'polylang',
-			'rocket_has_i18n' => 'polylang',
 			'data'            => $i18n_plugins['polylang'],
 		],
 		'expected' => 'http://example.org/de',
@@ -154,7 +140,6 @@ return [
 		'lang'     => 'fr',
 		'config'   => [
 			'i18n_plugin'     => 'polylang',
-			'rocket_has_i18n' => 'polylang',
 			'data'            => $i18n_plugins['polylang'],
 		],
 		'expected' => 'http://example.org/fr',

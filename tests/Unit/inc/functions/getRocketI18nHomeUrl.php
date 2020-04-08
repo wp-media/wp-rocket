@@ -38,6 +38,8 @@ class Test_GetRocketI18nHomeUrl extends TestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldReturnExpected( $lang, $config, $expected ) {
+		Functions\expect( 'rocket_has_i18n' )->once()->andReturn( $config['i18n_plugin'] );
+
 		$this->setUpI18nPlugin( $lang, $config );
 		$this->assertSame( $expected, get_rocket_i18n_home_url( $lang ) );
 	}
@@ -62,10 +64,24 @@ class Test_GetRocketI18nHomeUrl extends TestCase {
 				break;
 
 			case 'qtranslate':
+				$GLOBALS['q_config'] = [ 'enabled_languages' => $data['codes'] ];
+				Functions\expect( 'qtrans_convertURL' )
+					->with( $home_url, $lang, true )
+					->andReturnUsing( function ( $home_url, $lang ) use ( $data ) {
+						if ( empty( $lang ) ) {
+							return $home_url;
+						}
+
+						if ( empty( $data['codes'] ) ) {
+							return $home_url;
+						}
+
+						return trailingslashit( $home_url ) . $lang;
+					} );
+
 			case 'qtranslate-x':
 				$GLOBALS['q_config'] = [ 'enabled_languages' => $data['codes'] ];
 				Functions\expect( 'qtranxf_convertURL' )
-					->once()
 					->with( $home_url, $lang, true )
 					->andReturnUsing( function ( $home_url, $lang ) use ( $data ) {
 						if ( empty( $lang ) ) {
@@ -82,8 +98,7 @@ class Test_GetRocketI18nHomeUrl extends TestCase {
 
 			case 'polylang':
 				if ( ! empty( $data['codes'] ) ) {
-					$GLOBALS['polylang']        = new PLL_Frontend( $data['options'] );
-					Functions\expect( 'PLL' )->once()->andReturn( $GLOBALS['polylang'] );
+					$GLOBALS['polylang'] = new PLL_Frontend( $data['options'] );
 					Functions\expect( 'pll_home_url' )
 						->once()
 						->with( $lang )
@@ -103,7 +118,7 @@ class Test_GetRocketI18nHomeUrl extends TestCase {
 					Functions\expect( 'PLL' )->never();
 				}
 
-				Functions\expect( 'pll_languages_list' )->once()->andReturn( $data['codes'] );
+				Functions\expect( 'PLL' )->once()->andReturn( $GLOBALS['polylang'] );
 		}
 	}
 
