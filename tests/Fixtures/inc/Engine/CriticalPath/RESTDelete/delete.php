@@ -32,7 +32,7 @@ return [
 							'.'           => '',
 							'..'          => '',
 							'post-1.css'  => '.p { color: red; }',
-							'post-10.css' => '.p { color: red; }',
+							'post-3.css'  => '.p { color: red; }',
 							'page-20.css' => '.p { color: red; }',
 						],
 						'home.css'       => '.p { color: red; }',
@@ -180,7 +180,7 @@ return [
 					'cpcss_exists_before' => false,
 					'current_user_can'    => true,
 					'post_data'           => [
-						'import_id' => 3,
+						'import_id' => 999,
 						'post_type' => 'post',
 					],
 					'cpcss_exists_after'  => false,
@@ -198,7 +198,7 @@ return [
 					'cpcss_exists_before' => true,
 					'current_user_can'    => true,
 					'post_data'           => [
-						'import_id' => 1,
+						'import_id' => 3,
 						'post_type' => 'post',
 					],
 					'cpcss_exists_after'  => false,
