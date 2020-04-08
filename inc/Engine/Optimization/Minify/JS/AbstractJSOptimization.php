@@ -23,10 +23,10 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 	 * @param Options_Data $options Options instance.
 	 */
 	public function __construct( Options_Data $options ) {
-		$this->options          = $options;
-		$this->minify_key       = $this->options->get( 'minify_js_key', create_rocket_uniqid() );
-		$this->excluded_files   = $this->get_excluded_files();
-		$this->initBasePathAndUrl();
+		$this->options        = $options;
+		$this->minify_key     = $this->options->get( 'minify_js_key', create_rocket_uniqid() );
+		$this->excluded_files = $this->get_excluded_files();
+		$this->init_base_path_and_url();
 	}
 
 	/**

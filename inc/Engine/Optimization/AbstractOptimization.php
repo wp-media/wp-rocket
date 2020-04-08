@@ -49,7 +49,7 @@ abstract class AbstractOptimization {
 	/**
 	 * Initializes the minify base path and URL.
 	 */
-	protected function initBasePathAndUrl() {
+	protected function init_base_path_and_url() {
 		$site_id                = get_current_blog_id() . '/';
 		$this->minify_base_path = rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' ) . $site_id;
 		$this->minify_base_url  = rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_URL' ) . $site_id;
