@@ -16,6 +16,8 @@ return [
 							'.'               => '',
 							'..'              => '',
 							'post-1.css' => '.p { color: red; }',
+							'post-10.css' => '.p { color: red; }',
+							'page-20.css' => '.p { color: red; }',
 						],
 						'home.css'       => '.p { color: red; }',
 						'front_page.css' => '.p { color: red; }',
@@ -59,7 +61,10 @@ return [
 			'config'   => [
 				'cpcss_exists_before' => false,
 				'current_user_can'    => true,
-				'post_data'           => [ 'import_id' => 3, 'post_type' => 'post' ],
+				'post_data'           => [
+					'import_id' => 3,
+					'post_type' => 'post'
+				],
 				'cpcss_exists_after'  => false,
 			],
 			'expected' => [
@@ -69,11 +74,46 @@ return [
 
 			],
 		],
-		'testShouldReturnSuccessWhenEndpointRequest' => [
+		'testShouldReturnSuccessWhenCPCSSExist_post' => [
 			'config'   => [
 				'cpcss_exists_before' => true,
 				'current_user_can'    => true,
-				'post_data'           => [ 'import_id' => 1, 'post_type' => 'post' ],
+				'post_data'           => [
+					'import_id' => 1,
+					'post_type' => 'post'
+				],
+				'cpcss_exists_after'  => false,
+			],
+			'expected' => [
+				'code'    => 'success',
+				'message' => 'Critical CSS file deleted successfully.',
+				'data'    => [ 'status' => 200 ],
+			],
+		],
+		'testShouldReturnSuccessWhenCPCSSExist_post10' => [
+			'config'   => [
+				'cpcss_exists_before' => true,
+				'current_user_can'    => true,
+				'post_data'           => [
+					'import_id' => 10,
+					'post_type' => 'post'
+				],
+				'cpcss_exists_after'  => false,
+			],
+			'expected' => [
+				'code'    => 'success',
+				'message' => 'Critical CSS file deleted successfully.',
+				'data'    => [ 'status' => 200 ],
+			],
+		],
+		'testShouldReturnSuccessWhenCPCSSExist_page' => [
+			'config'   => [
+				'cpcss_exists_before' => true,
+				'current_user_can'    => true,
+				'post_data'           => [
+					'import_id' => 20,
+					'post_type' => 'page'
+				],
 				'cpcss_exists_after'  => false,
 			],
 			'expected' => [
