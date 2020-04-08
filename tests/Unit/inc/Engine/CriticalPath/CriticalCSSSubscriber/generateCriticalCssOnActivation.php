@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\CriticalCSSSubscriber;
 
 use Brain\Monkey\Functions;
+use FilesystemIterator;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CriticalPath\CriticalCSS;
@@ -35,32 +36,83 @@ class Test_GenerateCriticalCssOnActivation extends FilesystemTestCase {
 		);
 	}
 
-	public function testShouldBailOutWhenCriticalCSSOptionIsFalse() {
+	/**
+	 * @dataProvider nonMultisiteTestData
+	 */
+	public function testShouldGenerateCriticalCss( $values ) {
+		$critical_css_path = $this->config['vfs_dir'] . '1/';
+
+		$this->assertTrue( $this->filesystem->is_dir( $critical_css_path ) );
+		Functions\expect( 'rocket_mkdir_p' )->with( $critical_css_path )->never();
 		$this->critical_css->shouldReceive( 'process_handler' )->never();
 
-		$this->subscriber->generate_critical_css_on_activation( [ 'async_css' => 0 ], [ 'async_css' => 0 ] );
-	}
+		if ( $values['old']['async_css'] !== $values['new']['async_css'] && 1 === (int) $values['new']['async_css'] ) {
+			$this->critical_css->shouldReceive( 'get_critical_css_path' )->once()->andReturn( $critical_css_path );
+		} else {
+			$this->critical_css->shouldReceive( 'get_critical_css_path' )->never();
+		}
 
-	public function testShouldBailOutWhenCriticalCssPathIsInvalid() {
-		$this->critical_css->shouldReceive( 'process_handler' )->never();
-		$this->critical_css->shouldReceive( 'get_critical_css_path' )->once()->andReturn( 'invalid' );
-
-		$this->subscriber->generate_critical_css_on_activation( [ 'async_css' => 0 ], [ 'async_css' => 1 ] );
+		// Run it.
+		$this->subscriber->generate_critical_css_on_activation( $values['old'], $values['new'] );
 	}
 
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider multisiteTestData
 	 */
-	public function testShouldGenerateCriticalCss( $critical_css_path, $old_value, $new_value ) {
-		$dirs = $this->filesystem->getDirsListing( $this->config['vfs_dir'] );
-		if ( ! in_array( $critical_css_path['path'], $dirs, true ) ) {
+	public function testShouldProcessMultisite( $values, $site_id, $should_generate ) {
+		$critical_css_path = $this->filesystem->getUrl( $this->config['vfs_dir'] . "{$site_id}/" );
+
+		$will_bailout = (
+			$values['old']['async_css'] === $values['new']['async_css']
+			||
+			1 !== (int) $values['new']['async_css']
+		);
+
+		if ( $will_bailout ) {
+			$this->critical_css->shouldReceive( 'get_critical_css_path' )->never();
 			$this->critical_css->shouldReceive( 'process_handler' )->never();
 		} else {
-			$this->critical_css->shouldReceive( 'process_handler' )->once()->andReturn();
+			$this->critical_css->shouldReceive( 'get_critical_css_path' )->once()->andReturn( $critical_css_path );
+
+			if ( $should_generate ) {
+				$this->assertFalse( $this->filesystem->is_dir( $critical_css_path ) );
+				Functions\expect( 'rocket_mkdir_p' )
+					->with( $critical_css_path )
+					->andReturnUsing(
+						function ( $target ) {
+							$this->filesystem->mkdir( $target );
+							$this->assertTrue( $this->filesystem->is_dir( $target ) );
+
+							return true;
+						}
+					);
+				$this->critical_css->shouldReceive( 'process_handler' )->once()->andReturn();
+
+			} else {
+				$this->critical_css->shouldReceive( 'process_handler' )->never();
+				Functions\expect( 'rocket_mkdir_p' )->with( $critical_css_path )->never();
+			}
 		}
 
-		$this->critical_css->shouldReceive( 'get_critical_css_path' )->once()->andReturn( $critical_css_path['path'] );
+		// Run it.
+		$this->subscriber->generate_critical_css_on_activation( $values['old'], $values['new'] );
 
-		$this->subscriber->generate_critical_css_on_activation( $old_value, $new_value );
+		$this->assertTrue( $this->filesystem->is_dir( $critical_css_path ) );
+	}
+
+	public function nonMultisiteTestData() {
+		if ( empty( $this->config ) ) {
+			$this->loadConfig();
+		}
+
+		return $this->config['test_data']['non_multisite'];
+	}
+
+	public function multisiteTestData() {
+		if ( empty( $this->config ) ) {
+			$this->loadConfig();
+		}
+
+		return $this->config['test_data']['multisite'];
 	}
 }
