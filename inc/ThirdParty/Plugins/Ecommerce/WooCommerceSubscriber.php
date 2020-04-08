@@ -1,12 +1,10 @@
 <?php
-namespace WP_Rocket\Subscriber\Third_Party\Plugins\Ecommerce;
+namespace WP_Rocket\ThirdParty\Plugins\Ecommerce;
 
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Event_Management\Event_Manager_Aware_Subscriber_Interface;
 use WooCommerce;
 use WC_API;
-
-defined( 'ABSPATH' ) || exit;
 
 /**
  * WooCommerce compatibility
@@ -14,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
  * @since 3.1
  * @author Remy Perona
  */
-class WooCommerce_Subscriber implements Event_Manager_Aware_Subscriber_Interface {
+class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	use \WP_Rocket\Traits\Config_Updater;
 
 	/**
@@ -288,7 +286,7 @@ class WooCommerce_Subscriber implements Event_Manager_Aware_Subscriber_Interface
 		$cart = $this->get_cache_empty_cart();
 
 		if ( false !== $cart ) {
-			@header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
+			@header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 			echo $cart; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 			die();
 		}
@@ -465,6 +463,11 @@ class WooCommerce_Subscriber implements Event_Manager_Aware_Subscriber_Interface
 		return [
 			'wcmd-subscribe-secret', // WooCommerce MailChimp Discount.
 			'td-block', // "Load more" AJAX functionality of the Newspaper theme.
+			'codevz_selective_refresh', // xtra theme.
+			'xtra_quick_view', // xtra theme quick view.
+			'ajax_search_nonce', // xtra theme AJAX search.
+			'xtra_wishlist_content', // xtra theme wishlist feature.
+			'ajax-login-security', // OneSocial theme pop-up login.
 		];
 	}
 }
