@@ -30,7 +30,7 @@ class RESTGenerate implements Subscriber_Interface {
 	 *
 	 * @since 3.6
 	 *
-	 * @return void
+	 * @return array
 	 */
 	public static function get_subscribed_events() {
 		return [
@@ -139,15 +139,17 @@ class RESTGenerate implements Subscriber_Interface {
 					);
 				}
 
-				return rest_ensure_response( [
-					'success' => true,
-					'code'    => 'cpcss_generation_successful',
-					// translators: %s = post URL.
-					'message' => sprintf( __( 'Critical CSS for %s generated.', 'rocket' ), $post_url ),
-					'data'    => [
-						'status' => 200,
-					],
-				] );
+				return rest_ensure_response(
+					[
+						'success' => true,
+						'code'    => 'cpcss_generation_successful',
+						// translators: %s = post URL.
+						'message' => sprintf( __( 'Critical CSS for %s generated.', 'rocket' ), $post_url ),
+						'data'    => [
+							'status' => 200,
+						],
+					]
+				);
 			}
 
 			sleep( 2 );
