@@ -1,11 +1,11 @@
 <?php
 
-namespace WP_Rocket\Engine\Optimization\CriticalPath;
+namespace WP_Rocket\Engine\CriticalPath;
 
 use WP_REST_Request;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
-class RestGenerate implements Subscriber_Interface {
+class RESTGenerate implements Subscriber_Interface {
 	const ROUTE_NAMESPACE = 'wp-rocket/v1';
 	const API_URL         = 'https://cpcss.wp-rocket.me/api/job/';
 
@@ -68,9 +68,7 @@ class RestGenerate implements Subscriber_Interface {
 	 * @return WP_REST_Response
 	 */
 	public function generate( WP_REST_Request $request ) {
-		$params = $request->get_body_params();
-
-		if ( 'publish' !== get_post_status( $params['id'] ) ) {
+		if ( 'publish' !== get_post_status( $request['id'] ) ) {
 			return rest_ensure_response(
 				[
 					'code'    => 'post_not_published',
@@ -82,8 +80,8 @@ class RestGenerate implements Subscriber_Interface {
 			);
 		}
 
-		$post_url  = get_permalink( $params['id'] );
-		$post_type = get_post_type( $params['id'] );
+		$post_url  = get_permalink( $request['id'] );
+		$post_type = get_post_type( $request['id'] );
 
 		if ( ! $post_url ) {
 			return rest_ensure_response(
@@ -99,14 +97,15 @@ class RestGenerate implements Subscriber_Interface {
 
 		$response = $this->send_generation_request( $post_url, $post_type );
 
-		if ( false === $response->success ) {
+		if ( false === $response['success'] ) {
 			return rest_ensure_response( $response );
 		}
 
-		while ( $job_data = $this->get_critical_path( $response->data->id ) ) { // phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
+		while ( $job_data = $this->get_critical_path( $response['data']['id'] ) ) { // phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
 			if ( 400 === (int) $job_data->status ) {
 				return rest_ensure_response(
 					[
+						'success' => false,
 						'code'    => 'cpcss_generation_failed',
 						// translators: %1$s = post URL, %2$s = error message.
 						'message' => sprintf( __( 'Critical CSS for %1$s not generated. Error: %2$s', 'rocket' ), $post_url, $job_data->message ),
@@ -118,11 +117,12 @@ class RestGenerate implements Subscriber_Interface {
 			}
 
 			if ( isset( $job_data->data->state, $job_data->data->critical_path ) && 'complete' === $job_data->data->state ) {
-				$result = $this->save_post_cpcss( $params['id'], $post_type, $job_data->data->critical_path );
+				$result = $this->save_post_cpcss( $request['id'], $post_type, $job_data->data->critical_path );
 
 				if ( ! $result ) {
 					return rest_ensure_response(
 						[
+							'success' => false,
 							'code'    => 'cpcss_generation_failed',
 							// translators: %1$s = post URL, %2$s = error message.
 							'message' => sprintf(
@@ -140,7 +140,8 @@ class RestGenerate implements Subscriber_Interface {
 				}
 
 				return rest_ensure_response( [
-					'code'    => 'success',
+					'success' => true,
+					'code'    => 'cpcss_generation_successful',
 					// translators: %s = post URL.
 					'message' => sprintf( __( 'Critical CSS for %s generated.', 'rocket' ), $post_url ),
 					'data'    => [
@@ -160,7 +161,7 @@ class RestGenerate implements Subscriber_Interface {
 	 *
 	 * @param string $post_url  The post URL.
 	 * @param string $post_type The post type.
-	 * @return object
+	 * @return array
 	 */
 	protected function send_generation_request( $post_url, $post_type ) {
 		$response = wp_remote_post(
@@ -180,7 +181,9 @@ class RestGenerate implements Subscriber_Interface {
 			]
 		);
 
-		if ( 400 === wp_remote_retrieve_response_code( $response ) ) {
+		$response_code = wp_remote_retrieve_response_code( $response );
+
+		if ( 400 === $response_code ) {
 			$data = json_decode( wp_remote_retrieve_body( $response ) );
 
 			// translators: %1$s = post URL.
@@ -191,7 +194,7 @@ class RestGenerate implements Subscriber_Interface {
 				$error .= ' ' . sprintf( __( 'Error: %1$s', 'rocket' ), $data->message );
 			}
 
-			return (object) [
+			return [
 				'success' => false,
 				'code'    => 'cpcss_generation_failed',
 				'message' => $error,
@@ -201,22 +204,22 @@ class RestGenerate implements Subscriber_Interface {
 			];
 		}
 
-		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
-			return (object) [
+		if ( 200 !== $response_code ) {
+			return [
 				'success' => false,
 				'code'    => 'cpcss_generation_failed',
 				// translators: %1$s = post URL.
 				'message' => sprintf( __( 'Critical CSS for %1$s not generated. Error: The API returned an invalid response code.', 'rocket' ), $post_url ),
 				'data'    => [
-					'status' => 400,
+					'status' => $response_code,
 				],
 			];
 		}
 
-		$data = json_decode( wp_remote_retrieve_body( $response ) );
+		$data = json_decode( wp_remote_retrieve_body( $response ), true );
 
-		if ( ! isset( $data->data, $data->data->id ) ) {
-			return (object) [
+		if ( ! isset( $data['data']['id'] ) ) {
+			return [
 				'success' => false,
 				'code'    => 'cpcss_generation_failed',
 				// translators: %1$s = post URL.
@@ -260,7 +263,7 @@ class RestGenerate implements Subscriber_Interface {
 			rocket_mkdir_p( $this->critical_css_path );
 		}
 
-		$filepath = "{$this->critical_css_path}/{$post_type}-{$post_id}.css";
+		$filepath = "{$this->critical_css_path}{$post_type}-{$post_id}.css";
 
 		return rocket_put_content( $filepath, wp_strip_all_tags( $cpcss, true ) );
 	}
