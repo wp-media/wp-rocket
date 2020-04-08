@@ -3,9 +3,11 @@
 namespace WP_Rocket\Tests\Integration;
 
 use Brain\Monkey\Functions;
+use org\bovigo\vfs\vfsStream;
 use WPMedia\PHPUnit\Integration\VirtualFilesystemTestCase;
 
 abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
+	protected $original_entries = [];
 
 	public function setUp() {
 		parent::setUp();
@@ -45,5 +47,18 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 			'wp-includes'   => [],
 			'wp-config.php' => '',
 		];
+	}
+
+	protected function setUpOriginalEntries() {
+		$this->original_entries = array_merge( $this->original_files, $this->original_dirs );
+		$this->original_entries = array_filter( $this->original_entries );
+		sort( $this->original_entries );
+	}
+
+	protected function stripVfsRoot( $path ) {
+		$search = vfsStream::SCHEME . "://{$this->rootVirtualDir}";
+		$search = rtrim( $search, '/\\' ) . '/';
+
+		return str_replace( $search, '', $path );
 	}
 }

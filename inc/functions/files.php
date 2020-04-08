@@ -1031,72 +1031,82 @@ function rocket_clean_cache_dir() {
  * Remove a single file or a folder recursively
  *
  * @since 1.0
+ * @since 3.5.3 Bails if given dir should be preserved; replaces glob; optimizes.
  *
- * @param string $dir File/Directory to delete.
+ * @param string $dir              File/Directory to delete.
  * @param array  $dirs_to_preserve (default: array()) Dirs that should not be deleted.
- * @return void
  */
-function rocket_rrmdir( $dir, $dirs_to_preserve = [] ) {
-	$dir = untrailingslashit( $dir );
+function rocket_rrmdir( $dir, array $dirs_to_preserve = [] ) {
+	$dir        = untrailingslashit( $dir );
+	$filesystem = rocket_direct_filesystem();
+
+	// Bail out if the given directory is in the list of directories to preserve.
+	if ( ! empty( $dirs_to_preserve ) && $filesystem->is_dir( $dir ) && in_array( $dir, $dirs_to_preserve, true ) ) {
+		return;
+	}
 
 	/**
 	 * Fires before a file/directory cache is deleted
 	 *
 	 * @since 1.1.0
 	 *
-	 * @param string $dir File/Directory to delete.
-	 * @param array $dirs_to_preserve Directories that should not be deleted.
-	*/
+	 * @param string $dir              File/Directory to delete.
+	 * @param array  $dirs_to_preserve Directories that should not be deleted.
+	 */
 	do_action( 'before_rocket_rrmdir', $dir, $dirs_to_preserve ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 	// Remove the hidden empty file for mobile detection on NGINX with the Rocket NGINX configuration.
 	$nginx_mobile_detect_file = $dir . '/.mobile-active';
 
-	if ( rocket_direct_filesystem()->is_dir( $dir ) && rocket_direct_filesystem()->exists( $nginx_mobile_detect_file ) ) {
-		rocket_direct_filesystem()->delete( $nginx_mobile_detect_file );
+	if ( $filesystem->is_dir( $dir ) && $filesystem->exists( $nginx_mobile_detect_file ) ) {
+		$filesystem->delete( $nginx_mobile_detect_file );
 	}
 
 	// Remove the hidden empty file for webp.
 	$nowebp_detect_file = $dir . '/.no-webp';
 
-	if ( rocket_direct_filesystem()->is_dir( $dir ) && rocket_direct_filesystem()->exists( $nowebp_detect_file ) ) {
-		rocket_direct_filesystem()->delete( $nowebp_detect_file );
+	if ( $filesystem->is_dir( $dir ) && $filesystem->exists( $nowebp_detect_file ) ) {
+		$filesystem->delete( $nowebp_detect_file );
 	}
 
-	if ( ! rocket_direct_filesystem()->is_dir( $dir ) ) {
-		rocket_direct_filesystem()->delete( $dir );
+	if ( ! $filesystem->is_dir( $dir ) ) {
+		$filesystem->delete( $dir );
+
 		return;
-	};
+	}
 
-	$dirs = glob( $dir . '/*', GLOB_NOSORT );
-	if ( $dirs ) {
+	// Get the directory entries.
+	try {
+		$entries = new FilesystemIterator( $dir, FilesystemIterator::SKIP_DOTS );
+	} catch ( Exception $e ) {
+		$entries = [];
+	}
 
-		$keys = [];
-		foreach ( $dirs_to_preserve as $dir_to_preserve ) {
-			$matches = preg_grep( "#^$dir_to_preserve$#", $dirs );
-			$keys[]  = reset( $matches );
+	foreach ( $entries as $entry ) {
+		$path = $entry->getPathname();
+
+		// If not a directory, delete it.
+		if ( ! $entry->isDir() ) {
+			$filesystem->delete( $path );
+			continue;
 		}
 
-		$dirs = array_diff( $dirs, array_filter( $keys ) );
-		foreach ( $dirs as $dir ) {
-			if ( rocket_direct_filesystem()->is_dir( $dir ) ) {
-				rocket_rrmdir( $dir, $dirs_to_preserve );
-			} else {
-				rocket_direct_filesystem()->delete( $dir );
-			}
+		// If not a directory to preserve, invoke rocket_rrmdir() again to process.
+		if ( ! in_array( $path, $dirs_to_preserve, true ) ) {
+			rocket_rrmdir( $path, $dirs_to_preserve );
 		}
 	}
 
-	rocket_direct_filesystem()->delete( $dir );
+	$filesystem->delete( $dir );
 
 	/**
 	 * Fires after a file/directory cache was deleted
 	 *
 	 * @since 1.1.0
 	 *
-	 * @param string $dir File/Directory to delete.
-	 * @param array $dirs_to_preserve Dirs that should not be deleted.
-	*/
+	 * @param string $dir              File/Directory to delete.
+	 * @param array  $dirs_to_preserve Dirs that should not be deleted.
+	 */
 	do_action( 'after_rocket_rrmdir', $dir, $dirs_to_preserve ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 }
 
