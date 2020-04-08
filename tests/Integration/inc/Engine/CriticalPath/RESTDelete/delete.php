@@ -16,7 +16,7 @@ class Test_Delete extends RESTVfsTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ) {
-		$post_id = ! isset( $config['post_data']['post_id'] )
+		$post_id   = ! isset( $config['post_data']['post_id'] )
 			? $this->factory->post->create( $config['post_data'] )
 			: $config['post_data']['post_id'];
 		$post_type = ! isset( $config['post_data']['post_type'] )
@@ -27,11 +27,18 @@ class Test_Delete extends RESTVfsTestCase {
 			$this->addCriticalPathUserCapabilities();
 		}
 
-		$file = $this->config['vfs_dir'] . "1/posts/{$post_type}-{$post_id}.css";
+		$file          = $this->config['vfs_dir'] . "1/posts/{$post_type}-{$post_id}.css";
+		$cspcss_before = $this->filesystem->getListing( $this->filesystem->getUrl( $this->config['vfs_dir'] . '1/' ) );
 
 		$this->assertSame( $config['cpcss_exists_before'], $this->filesystem->exists( $file ) );
 		$this->assertSame( $expected, $this->doRestDelete( "/wp-rocket/v1/cpcss/post/{$post_id}" ) );
 		$this->assertSame( $config['cpcss_exists_after'], $this->filesystem->exists( $file ) );
+
+		// Check that only the specific file is deleted, but all others remain.
+		if ( $config['cpcss_exists_before'] && false === $config['cpcss_exists_after'] ) {
+			$cspcss_after = array_diff( $cspcss_before, $this->filesystem->getListing( $this->filesystem->getUrl( $this->config['vfs_dir'] . '1/' ) ) );
+			$this->assertSame( [ $this->filesystem->getUrl( $file ) ], array_values( $cspcss_after ) );
+		}
 	}
 
 	protected function addCriticalPathUserCapabilities() {
