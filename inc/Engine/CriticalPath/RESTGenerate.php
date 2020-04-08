@@ -54,9 +54,7 @@ class RestGenerate implements Subscriber_Interface {
 			[
 				'methods'             => 'POST',
 				'callback'            => [ $this, 'generate' ],
-				'permission_callback' => function() {
-					return current_user_can( 'rocket_regenerate_critical_css' );
-				},
+				'permission_callback' => [ $this, 'check_permissions' ],
 			]
 		);
 	}
@@ -265,5 +263,16 @@ class RestGenerate implements Subscriber_Interface {
 		$filepath = "{$this->critical_css_path}/{$post_type}-{$post_id}.css";
 
 		return rocket_put_content( $filepath, wp_strip_all_tags( $cpcss, true ) );
+	}
+
+	/**
+	 * Checks user's permissions. This is a callback registered to REST route's "permission_callback" parameter.
+	 *
+	 * @since 3.6
+	 *
+	 * @return bool true if the user has permission; else false.
+	 */
+	public function check_permissions() {
+		return current_user_can( 'rocket_regenerate_critical_css' );
 	}
 }
