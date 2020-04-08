@@ -83,7 +83,7 @@ class SimpleCustomCss implements Subscriber_Interface {
 	/**
 	 * Deletes & recreates cache for SCCSS code
 	 *
-	 * @since 2.9
+	 * @since  3.6
 	 * @author Remy Perona
 	 */
 	public function update_cache_file() {
