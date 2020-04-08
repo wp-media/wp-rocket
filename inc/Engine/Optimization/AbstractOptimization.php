@@ -46,7 +46,7 @@ abstract class AbstractOptimization {
 
 		$wp_content = wp_parse_url( content_url() );
 
-		if ( ! $wp_content || empty( $wp_content['host'] ) || empty( $wp_content['path'] ) ) {
+		if ( empty( $wp_content['host'] ) || empty( $wp_content['path'] ) ) {
 			return true;
 		}
 
@@ -59,21 +59,19 @@ abstract class AbstractOptimization {
 		 * @param array $hosts Allowed hosts.
 		 * @param array $zones Zones to check available hosts.
 		 */
-		$hosts   = apply_filters( 'rocket_cdn_hosts', [], $this->get_zones() );
+		$hosts   = (array) apply_filters( 'rocket_cdn_hosts', [], $this->get_zones() );
 		$hosts[] = $wp_content['host'];
 		$langs   = get_rocket_i18n_uri();
 
 		// Get host for all langs.
-		if ( ! empty( $langs ) ) {
-			foreach ( $langs as $lang ) {
-				$url_host = wp_parse_url( $lang, PHP_URL_HOST );
+		foreach ( $langs as $lang ) {
+			$url_host = wp_parse_url( $lang, PHP_URL_HOST );
 
-				if ( ! isset( $url_host ) ) {
-					continue;
-				}
-
-				$hosts[] = $url_host;
+			if ( ! isset( $url_host ) ) {
+				continue;
 			}
+
+			$hosts[] = $url_host;
 		}
 
 		$hosts = array_unique( $hosts );
@@ -94,11 +92,7 @@ abstract class AbstractOptimization {
 		}
 
 		// URL has no domain and doesn't contain the WP_CONTENT path or wp-includes.
-		if ( ! preg_match( '#(' . $wp_content['path'] . '|wp-includes)#', $file['path'] ) ) {
-			return true;
-		}
-
-		return false;
+		return ! preg_match( '#(' . $wp_content['path'] . '|wp-includes)#', $file['path'] );
 	}
 
 	/**
