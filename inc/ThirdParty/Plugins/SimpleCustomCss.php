@@ -54,16 +54,14 @@ class SimpleCustomCss implements Subscriber_Interface {
 	 * @inheritDoc
 	 */
 	public static function get_subscribed_events() {
-		$events = [];
-
 		if ( ! defined( 'SCCSS_FILE' ) ) {
-			return $events;
+			return [];
 		}
 
-		$events['wp_enqueue_scripts']           = [ 'cache_sccss', 98 ];
-		$events['update_option_sccss_settings'] = 'update_cache_file';
-
-		return $events;
+		return [
+			'wp_enqueue_scripts'           => [ 'cache_sccss', 98 ],
+			'update_option_sccss_settings' => 'update_cache_file',
+		];
 	}
 
 	/**
