@@ -14,7 +14,7 @@ abstract class AbstractCSSOptimization extends AbstractOptimization {
 	const FILE_TYPE = 'css';
 
 	/**
-	 * Constructor
+	 * Creates an instance of inheriting class.
 	 *
 	 * @since 3.1
 	 * @author Remy Perona
@@ -25,8 +25,7 @@ abstract class AbstractCSSOptimization extends AbstractOptimization {
 		$this->options          = $options;
 		$this->minify_key       = $this->options->get( 'minify_css_key', create_rocket_uniqid() );
 		$this->excluded_files   = $this->get_excluded_files();
-		$this->minify_base_path = rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' ) . get_current_blog_id() . '/';
-		$this->minify_base_url  = rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_URL' ) . get_current_blog_id() . '/';
+		$this->initBasePathAndUrl();
 	}
 
 	/**
@@ -47,7 +46,7 @@ abstract class AbstractCSSOptimization extends AbstractOptimization {
 		 *
 		 * @param array $excluded_files List of excluded CSS files.
 		*/
-		$excluded_files = apply_filters( 'rocket_exclude_css', $excluded_files );
+		$excluded_files = (array) apply_filters( 'rocket_exclude_css', $excluded_files );
 
 		if ( empty( $excluded_files ) ) {
 			return '';

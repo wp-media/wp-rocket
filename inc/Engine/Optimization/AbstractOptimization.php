@@ -1,6 +1,8 @@
 <?php
 namespace WP_Rocket\Engine\Optimization;
 
+use WP_Rocket\Admin\Options_Data;
+
 /**
  * Base abstract class for files optimization
  *
@@ -8,8 +10,53 @@ namespace WP_Rocket\Engine\Optimization;
  * @author Remy Perona
  */
 abstract class AbstractOptimization {
+
 	/**
-	 * Finds nodes matching the pattern in the HTML
+	 * Plugin options.
+	 *
+	 * @var Options_Data
+	 */
+	protected $options;
+
+	/**
+	 * Minify key.
+	 *
+	 * @var mixed
+	 */
+	protected $minify_key;
+
+	/**
+	 * Concatenated list of excluded files.
+	 *
+	 * @var string
+	 */
+	protected $excluded_files;
+
+	/**
+	 * Minify base path.
+	 *
+	 * @var string
+	 */
+	protected $minify_base_path;
+
+	/**
+	 * Minify base URL.
+	 *
+	 * @var string
+	 */
+	protected $minify_base_url;
+
+	/**
+	 * Initializes the minify base path and URL.
+	 */
+	protected function initBasePathAndUrl() {
+		$site_id                = get_current_blog_id() . '/';
+		$this->minify_base_path = rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' ) . $site_id;
+		$this->minify_base_url  = rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_URL' ) . $site_id;
+	}
+
+	/**
+	 * Finds nodes matching the pattern in the HTML.
 	 *
 	 * @since 3.1
 	 * @author Remy Perona
@@ -29,7 +76,7 @@ abstract class AbstractOptimization {
 	}
 
 	/**
-	 * Determines if the file is external
+	 * Determines if the file is external.
 	 *
 	 * @since 2.11
 	 * @author Remy Perona

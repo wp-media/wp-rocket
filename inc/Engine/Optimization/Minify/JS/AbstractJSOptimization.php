@@ -26,9 +26,7 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 		$this->options          = $options;
 		$this->minify_key       = $this->options->get( 'minify_js_key', create_rocket_uniqid() );
 		$this->excluded_files   = $this->get_excluded_files();
-		$site_id                = get_current_blog_id() . '/';
-		$this->minify_base_path = rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' ) . $site_id;
-		$this->minify_base_url  = rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_URL' ) . $site_id;
+		$this->initBasePathAndUrl();
 	}
 
 	/**

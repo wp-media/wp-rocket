@@ -9,27 +9,21 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  */
 abstract class AbstractMinifySubscriber implements Subscriber_Interface {
 	/**
-	 * Plugin options
-	 *
-	 * @since 3.1
-	 * @author Remy Perona
+	 * Plugin options.
 	 *
 	 * @var Options_Data
 	 */
 	protected $options;
 
 	/**
-	 * Optimizer instance
-	 *
-	 * @since 3.1
-	 * @author Remy Perona
+	 * Optimizer instance.
 	 *
 	 * @var Optimizer_Interface
 	 */
 	protected $optimizer;
 
 	/**
-	 * Constructor
+	 * Creates an instance of inheriting class.
 	 *
 	 * @since 3.1
 	 * @author Remy Perona
