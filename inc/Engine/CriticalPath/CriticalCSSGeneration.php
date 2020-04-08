@@ -1,6 +1,8 @@
 <?php
 namespace WP_Rocket\Engine\CriticalPath;
 
+use WP_Background_Process;
+
 /**
  * Extends the background process class for the critical CSS generation process.
  *
@@ -9,7 +11,7 @@ namespace WP_Rocket\Engine\CriticalPath;
  *
  * @see WP_Background_Process
  */
-class CriticalCSSGeneration extends \WP_Background_Process {
+class CriticalCSSGeneration extends WP_Background_Process {
 	/**
 	 * Process prefix
 	 *

@@ -2,7 +2,6 @@
 namespace WP_Rocket\Engine\CriticalPath;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Admin\Options_Data;
 
 /**
  * Service provider for WP Rocket Optimization.
@@ -32,8 +31,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @since 3.6
 	 */
 	public function register() {
-		$options = $this->getContainer()->get( 'options' );
-
 		$this->getContainer()->add( 'critical_css_generation', 'WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration' );
 		$this->getContainer()->add( 'critical_css', 'WP_Rocket\Engine\CriticalPath\CriticalCSS' )
 			->withArgument( $this->getContainer()->get( 'critical_css_generation' ) );
