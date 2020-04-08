@@ -56,7 +56,7 @@ class Test_Delete extends FilesystemTestCase {
 					: "http://example.org/?p={$post_id}";
 			} );
 
-		Functions\expect( 'rest_ensure_response' )->once()->andReturn( $expected );
+		Functions\expect( 'rest_ensure_response' )->once()->andReturnFirstArg();
 
 		$instance      = new RESTDelete( 'wp-content/cache/critical-css/' );
 		$request       = new WP_REST_Request();
