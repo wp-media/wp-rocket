@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\RESTDelete;
 
+use WP_Site;
 use WP_Rocket\Tests\Integration\RESTVfsTestCase;
 
 /**
@@ -50,7 +51,17 @@ class Test_Delete extends RESTVfsTestCase {
 	 * @group        Multisite
 	 */
 	public function testShouldDoExpectedWhenMultisite( $config, $expected ) {
-		$this->assertTrue( true );
+		$site_id = $config['site_id'];
+		if ( get_site( $site_id ) instanceof WP_Site ) {
+			$this->factory->blog->create(
+				[
+					'network_id' => 2,
+				]
+			);
+		}
+
+		switch_to_blog( $site_id );
+		$this->doTest( $site_id, $config, $expected );
 	}
 
 	public function nonMultisiteTestData() {
