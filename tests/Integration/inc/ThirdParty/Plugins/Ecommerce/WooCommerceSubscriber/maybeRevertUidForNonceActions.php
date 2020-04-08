@@ -1,12 +1,12 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\classes\subscriber\third_party\plugins\ecommerce\WooCommerce_Subscriber;
+namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber;
 
 use WC_Session_Handler;
 use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
- * @covers  \WP_Rocket\Subscriber\Third_Party\Plugins\Ecommerce\WooCommerce_Subscriber::maybe_revert_uid_for_nonce_actions
+ * @covers  \WP_Rocket\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber::maybe_revert_uid_for_nonce_actions
  * @group   WithWoo
  */
 class Test_MaybeRevertUidForNonceActions extends TestCase {
@@ -25,15 +25,17 @@ class Test_MaybeRevertUidForNonceActions extends TestCase {
 		$count                   = did_action( 'wp_verify_nonce_failed' );
 		// Create WOO Session and set cookie when the form is submited and the nonce is validated.
 		$this->create_session();
-		$result = check_ajax_referer( $action, false, false );
+		check_ajax_referer( $action, false, false );
 
 		$this->assertEquals( $count + 1, did_action( 'wp_verify_nonce_failed' ) );
 	}
 
-	public function testShouldValidateNonce() {
+	/**
+	 * @dataProvider providerTestData
+	 */
+	public function testShouldValidateNonce( $action ) {
 		// Create Woo Session and set cookie when WPR caches the page.
 		$this->create_session();
-		$action                  = 'wcmd-subscribe-secret';
 		$_REQUEST['_ajax_nonce'] = wp_create_nonce( $action );
 		$count                   = did_action( 'wp_verify_nonce_failed' );
 		// Create WOO Session and set cookie when the form is submited and the nonce is validated.
@@ -41,6 +43,18 @@ class Test_MaybeRevertUidForNonceActions extends TestCase {
 		check_ajax_referer( $action, false, false );
 
 		$this->assertEquals( $count, did_action( 'wp_verify_nonce_failed' ) );
+	}
+
+	public function providerTestData() {
+		return [
+			[ 'wcmd-subscribe-secret' ],
+			[ 'td-block' ],
+			[ 'codevz_selective_refresh' ],
+			[ 'xtra_quick_view' ],
+			[ 'ajax_search_nonce' ],
+			[ 'xtra_wishlist_content' ],
+			[ 'ajax-login-security' ],
+		];
 	}
 
 	public function testShouldReturnGivenUserIdWhenActionNotInList() {
