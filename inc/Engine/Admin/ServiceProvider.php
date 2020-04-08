@@ -46,8 +46,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->withArgument( $this->getContainer()->get( 'deactivation_intent_render' ) )
 			->withArgument( $this->getContainer()->get( 'options_api' ) )
 			->withArgument( $options );
-		$this->getContainer()->share( 'beacon_subscriber', 'WP_Rocket\Engine\Admin\Beacon\Subscriber' )
-			->withArgument( $this->getContainer()->get( 'beacon' ) );
 		$this->getContainer()->share( 'hummingbird_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Optimization\Hummingbird_Subscriber' )
 			->withArgument( $options );
 	}
