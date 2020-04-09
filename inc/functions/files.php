@@ -854,7 +854,12 @@ function rocket_clean_domain( $lang = '' ) {
 		do_action( 'before_rocket_clean_domain', $root, $lang, $url ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 		try {
-			$files = new RegexIterator( $iterator, "/{$file['host']}*{$file['path']}/i" );
+			$regex = sprintf( "/{$file['host']}*%s/i",
+				empty( $file['path'] )
+					? '\/' . ltrim( $file['path'], '/\\' )
+					: ''
+			);
+			$files = new RegexIterator( $iterator, $regex );
 		} catch ( InvalidArgumentException $e ) {
 			// No logging yet.
 			return;
