@@ -1,37 +1,17 @@
 <?php
+
 namespace WP_Rocket\Tests\Integration\inc\Functions;
 
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
-use Brain\Monkey\Functions;
 
 /**
- * @covers rocket_clean_minify()
+ * @covers ::rocket_clean_minify
  * @group Functions
- * @group AdminOnly
+ * @group Files
+ * @group vfs
  */
 class Test_RocketCleanMinify extends FilesystemTestCase {
-	protected $structure = [
-		'min' => [
-			'1' => [
-				'5c795b0e3a1884eec34a989485f863ff.js'     => '',
-				'5c795b0e3a1884eec34a989485f863ff.js.gz'  => '',
-				'fa2965d41f1515951de523cecb81f85e.css'    => '',
-				'fa2965d41f1515951de523cecb81f85e.css.gz' => '',
-			],
-		],
-	];
-
-	public function setUp() {
-		parent::setUp();
-
-		add_option( 'wp_rocket_settings', [
-			'minify_css' => 0,
-			'minify_js' => 0,
-			'exclude_css' => [],
-			'exclude_js' => [],
-			'remove_query_strings' => 0,
-		] );
-	}
+	protected $path_to_test_data = '/inc/functions/rocketCleanMinify.php';
 
 	public function tearDown() {
 		delete_option( 'wp_rocket_settings' );
@@ -39,59 +19,52 @@ class Test_RocketCleanMinify extends FilesystemTestCase {
 		parent::tearDown();
 	}
 
-	public function testShouldCleanMinifiedCSS() {
-		Functions\expect( 'rocket_get_constant' )
-			->twice()
-			->with( 'WP_ROCKET_MINIFY_CACHE_PATH' )
-			->andReturn( 'vfs://cache/min/' );
-
-		update_option( 'wp_rocket_settings', [
-			'minify_css' => 1,
-			'minify_js' => 0,
-			'exclude_css' => [],
-			'exclude_js' => [],
-			'remove_query_strings' => 0,
-		] );
-
-		$this->assertFalse( $this->filesystem->exists( 'min/1/fa2965d41f1515951de523cecb81f85e.css' ) );
-		$this->assertFalse( $this->filesystem->exists( 'min/1/fa2965d41f1515951de523cecb81f85e.css.gz' ) );
+	public function testPath() {
+		$this->assertSame( 'vfs://public/wp-content/cache/min/', WP_ROCKET_MINIFY_CACHE_PATH );
 	}
 
-	public function testShouldCleanMinifiedJS() {
-		Functions\expect( 'rocket_get_constant' )
-			->twice()
-			->with( 'WP_ROCKET_MINIFY_CACHE_PATH' )
-			->andReturn( 'vfs://cache/min/' );
+	public function testShouldFireEventsForEachExt() {
+		rocket_clean_minify( [ 'css' ] );
 
-		update_option( 'wp_rocket_settings', [
-			'minify_css' => 0,
-			'minify_js' => 1,
-			'exclude_css' => [],
-			'exclude_js' => [],
-			'remove_query_strings' => 0,
-		] );
+		$expected = 1;
+		$this->assertEquals( $expected, did_action( 'before_rocket_clean_minify' ) );
+		$this->assertEquals( $expected, did_action( 'after_rocket_clean_minify' ) );
 
-		$this->assertFalse( $this->filesystem->exists( 'min/1/5c795b0e3a1884eec34a989485f863ff.js' ) );
-		$this->assertFalse( $this->filesystem->exists( 'min/1/5c795b0e3a1884eec34a989485f863ff.js.gz' ) );
+		rocket_clean_minify( [ 'css', 'js' ] );
+
+		$expected += 2;
+		$this->assertEquals( $expected, did_action( 'before_rocket_clean_minify' ) );
+		$this->assertEquals( $expected, did_action( 'after_rocket_clean_minify' ) );
 	}
 
-	public function testShouldCleanAllMinified() {
-		Functions\expect( 'rocket_get_constant' )
-			->times(4)
-			->with( 'WP_ROCKET_MINIFY_CACHE_PATH' )
-			->andReturn( 'vfs://cache/min/' );
+	/**
+	 * @dataProvider providerTestData
+	 */
+	public function testShouldCleanMinified( $config, $filesToClean ) {
+		$cache = $this->stripRoot( $this->filesystem->getFilesListing( 'wp-content/cache/min' ) );
 
-		update_option( 'wp_rocket_settings', [
-			'minify_css' => 1,
-			'minify_js' => 1,
-			'exclude_css' => [],
-			'exclude_js' => [],
-			'remove_query_strings' => 0,
-		] );
+		// Check files before cleaning.
+		$this->assertSame( $this->original_files, $cache );
 
-		$this->assertFalse( $this->filesystem->exists( 'min/1/fa2965d41f1515951de523cecb81f85e.css' ) );
-		$this->assertFalse( $this->filesystem->exists( 'min/1/fa2965d41f1515951de523cecb81f85e.css.gz' ) );
-		$this->assertFalse( $this->filesystem->exists( 'min/1/5c795b0e3a1884eec34a989485f863ff.js' ) );
-		$this->assertFalse( $this->filesystem->exists( 'min/1/5c795b0e3a1884eec34a989485f863ff.js.gz' ) );
+		rocket_clean_minify( $config );
+
+		$after_cache = $this->stripRoot( $this->filesystem->getFilesListing( 'wp-content/cache/min' ) );
+
+		// Check the "cleaned" files were deleted.
+		$this->assertEquals( $filesToClean, array_intersect( $filesToClean, $cache ) );
+		$this->assertEquals( $filesToClean, array_diff( $filesToClean, $after_cache ) );
+		$this->assertNotContains( $filesToClean, $after_cache );
+
+		// Check that non-cleaned files still exists, i.e. were not deleted.
+		$this->assertEquals( $after_cache, array_intersect( $after_cache, $cache ) );
+	}
+
+	private function stripRoot( $files ) {
+		return array_map(
+			function( $file ) {
+				return str_replace( 'vfs://public/', '', $file );
+			},
+			$files
+		);
 	}
 }
