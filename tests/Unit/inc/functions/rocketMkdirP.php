@@ -8,6 +8,8 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 /**
  * @covers ::rocket_mkdir_p
  * @uses  ::rocket_is_stream
+ * @uses  ::rocket_direct_filesystem
+ *
  * @group Functions
  * @group Files
  * @group vfs
