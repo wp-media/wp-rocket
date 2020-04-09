@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Subscriber;
+namespace WP_Rocket\Addon\GoogleTracking;
 
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Event_Management\Subscriber_Interface;
@@ -13,7 +13,8 @@ use WP_Rocket\Logger\Logger;
  * @since 3.1
  * @author Remy Perona
  */
-class Google_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface {
+class Subscriber implements Subscriber_Interface {
+
 	/**
 	 * Instance of the Busting Factory class
 	 *
@@ -52,31 +53,11 @@ class Google_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface {
 			'cron_schedules'                      => 'add_schedule',
 			'init'                                => 'schedule_tracking_cache_update',
 			'rocket_google_tracking_cache_update' => 'update_tracking_cache',
-			'after_rocket_clean_cache_busting'    => 'delete_tracking_cache',
+			'rocket_purge_cache'                  => 'delete_tracking_cache',
 			'rocket_buffer'                       => 'cache_busting_google_tracking',
 		];
 
 		return $events;
-	}
-
-	/**
-	 * Checks if the cache busting should happen
-	 *
-	 * @since 3.1
-	 * @author Remy Perona
-	 *
-	 * @return boolean
-	 */
-	private function is_allowed() {
-		if ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
-			return false;
-		}
-
-		if ( ! $this->options->get( 'google_analytics_cache', 0 ) ) {
-			return false;
-		}
-
-		return true;
 	}
 
 	/**
@@ -113,7 +94,7 @@ class Google_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function schedule_tracking_cache_update() {
-		if ( ! $this->options->get( 'google_analytics_cache', 0 ) ) {
+		if ( ! $this->is_busting_active() ) {
 			return;
 		}
 
@@ -131,7 +112,7 @@ class Google_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface {
 	 * @return bool
 	 */
 	public function update_tracking_cache() {
-		if ( ! $this->options->get( 'google_analytics_cache', 0 ) ) {
+		if ( ! $this->is_busting_active() ) {
 			return false;
 		}
 
@@ -150,7 +131,7 @@ class Google_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface {
 	 * @return Array
 	 */
 	public function add_schedule( $schedules ) {
-		if ( ! $this->options->get( 'google_analytics_cache', 0 ) ) {
+		if ( ! $this->is_busting_active() ) {
 			return $schedules;
 		}
 
@@ -165,23 +146,46 @@ class Google_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface {
 	/**
 	 * Deletes the GA busting file.
 	 *
+	 * @since  3.1
+	 * @since  3.6 Argument replacement.
+	 * @author Remy Perona
+	 *
+	 * @param  string $type Type of cache clearance: 'all', 'post', 'term', 'user', 'url'.
+	 * @return bool
+	 */
+	public function delete_tracking_cache( $type ) {
+		if ( 'all' !== $type || ! $this->is_busting_active() ) {
+			return false;
+		}
+
+		return $this->busting_factory->type( 'ga' )->delete();
+	}
+
+	/**
+	 * Checks if the cache busting should happen
+	 *
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
-	 * @param string $ext File extension type.
+	 * @return boolean
+	 */
+	private function is_allowed() {
+		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
+			return false;
+		}
+
+		return $this->is_busting_active();
+	}
+
+	/**
+	 * Tell if the cache busting option is active.
+	 *
+	 * @since  3.6
+	 * @author Grégory Viguier
+	 *
 	 * @return bool
 	 */
-	public function delete_tracking_cache( $ext ) {
-		if ( 'js' !== $ext ) {
-			return false;
-		}
-
-		if ( ! $this->options->get( 'google_analytics_cache', 0 ) ) {
-			return false;
-		}
-
-		$processor = $this->busting_factory->type( 'ga' );
-
-		return $processor->delete();
+	private function is_busting_active() {
+		return (bool) $this->options->get( 'google_analytics_cache', 0 );
 	}
 }

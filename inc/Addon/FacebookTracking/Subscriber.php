@@ -1,5 +1,6 @@
 <?php
-namespace WP_Rocket\Subscriber;
+
+namespace WP_Rocket\Addon\FacebookTracking;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Busting\Busting_Factory;
@@ -11,7 +12,7 @@ use WP_Rocket\Admin\Options_Data as Options;
  * @since  3.2
  * @author Grégory Viguier
  */
-class Facebook_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface {
+class Subscriber implements Subscriber_Interface {
 
 	/**
 	 * Name of the cron.
@@ -21,6 +22,7 @@ class Facebook_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface
 	 * @author Grégory Viguier
 	 */
 	const CRON_NAME = 'rocket_facebook_tracking_cache_update';
+
 	/**
 	 * Instance of the Busting Factory class.
 	 *
@@ -67,11 +69,11 @@ class Facebook_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface
 	 */
 	public static function get_subscribed_events() {
 		$events = [
-			'cron_schedules'                   => 'add_schedule',
-			'init'                             => 'schedule_cache_update',
-			self::CRON_NAME                    => 'update_cache',
-			'after_rocket_clean_cache_busting' => 'delete_cache',
-			'rocket_buffer'                    => 'cache_busting_facebook_tracking',
+			'cron_schedules'     => 'add_schedule',
+			'init'               => 'schedule_cache_update',
+			self::CRON_NAME      => 'update_cache',
+			'rocket_purge_cache' => 'delete_cache',
+			'rocket_buffer'      => 'cache_busting_facebook_tracking',
 		];
 
 		return $events;
@@ -145,14 +147,15 @@ class Facebook_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface
 	 * Delete Facebook Pixel cache busting files.
 	 *
 	 * @since  3.2
+	 * @since  3.6 Argument replacement.
 	 * @access public
 	 * @author Grégory Viguier
 	 *
-	 * @param  string $ext File extension type.
+	 * @param  string $type Type of cache clearance: 'all', 'post', 'term', 'user', 'url'.
 	 * @return bool
 	 */
-	public function delete_cache( $ext ) {
-		if ( 'js' !== $ext || ! $this->is_busting_active() ) {
+	public function delete_cache( $type ) {
+		if ( 'all' !== $type || ! $this->is_busting_active() ) {
 			return false;
 		}
 

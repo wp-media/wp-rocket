@@ -40,9 +40,7 @@ function get_rocket_post_terms_urls( $post_id ) { // phpcs:ignore WordPress.Nami
 	 *
 	 * @param array $urls List of taxonomies URLs
 	*/
-	$urls = apply_filters( 'rocket_post_terms_urls', $urls );
-
-	return $urls;
+	return apply_filters( 'rocket_post_terms_urls', $urls );
 }
 
 /**
