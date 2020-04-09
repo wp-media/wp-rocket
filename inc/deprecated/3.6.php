@@ -16,7 +16,7 @@ defined( 'ABSPATH' ) || exit;
  * @return array Array of paths used for cache busting
  */
 function rocket_get_cache_busting_paths( $filename, $extension ) {
-	_deprecated_function( __FUNCTION__ . '()', '3.6', '\WP_Rocket\ThirdParty\Plugins\SimpleCustomCss::get_cache_busting_paths()' );
+	_deprecated_function( __FUNCTION__ . '()', '3.6' );
 	$blog_id                = get_current_blog_id();
 	$cache_busting_path     = WP_ROCKET_CACHE_BUSTING_PATH . $blog_id;
 	$filename               = rocket_realpath( rtrim( str_replace( [ ' ', '%20' ], '-', $filename ) ) );
@@ -92,7 +92,7 @@ function rocket_delete_sccss_cache_file() {
  * @return string filename
  */
 function rocket_sccss_cache_busting_filename( $filename ) {
-	_deprecated_function( __FUNCTION__ . '()', '3.6', '\WP_Rocket\ThirdParty\Plugins\SimpleCustomCss::cache_busting_filename()' );
+	_deprecated_function( __FUNCTION__ . '()', '3.6' );
 	if ( false !== strpos( $filename, 'sccss' ) ) {
 		return preg_replace( '/(?:.*)(sccss(?:.*))/i', '$1', $filename );
 	}
