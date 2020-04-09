@@ -102,10 +102,10 @@ class Test_MaybeReplaceUrl extends TestCase {
 				}
 	
 				if ( substr( $url, 0, 2 ) === '//' ) {
-					return 'https:' . $url;
+					return 'http:' . $url;
 				}
 	
-				return 'https://' . $url;
+				return 'http://' . $url;
 			} );
 		Functions\when( 'site_url' )->justReturn( $site_url );
 

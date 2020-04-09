@@ -50,7 +50,7 @@ return [
 	],
 	// CDN URL with corresponding cnames in option, no protocol, site_url = home_url.
 	[
-		'https://123456.rocketcdn.me/wp-content/plugins/hello-dolly/style.css',
+		'http://123456.rocketcdn.me/wp-content/plugins/hello-dolly/style.css',
 		[
 			'all',
 			'css',
