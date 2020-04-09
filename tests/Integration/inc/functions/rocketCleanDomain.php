@@ -19,10 +19,10 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group Functions
  * @group Files
  * @group vfs
+ * @group thisone
  */
 class Test_RocketCleanDomain extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/functions/rocketCleanDomain.php';
-	private $stats;
 	private $urlsToClean;
 	private $toPreserve;
 	private $dirsToClean;
@@ -37,13 +37,11 @@ class Test_RocketCleanDomain extends FilesystemTestCase {
 	public function setUp() {
 		parent::setUp();
 
+		Functions\expect( 'rocket_get_constant' )->with( 'WP_ROCKET_CACHE_PATH' )->andReturn( WP_ROCKET_CACHE_PATH );
+
 		$this->urlsToClean = [];
 		$this->toPreserve  = [];
 		$this->dirsToClean = [];
-		$this->stats       = [
-			'before_rocket_clean_domain' => did_action( 'before_rocket_clean_domain' ),
-			'after_rocket_clean_domain'  => did_action( 'after_rocket_clean_domain' ),
-		];
 
 		$this->original_dirs = array_map(
 			function ( $dir ) {
@@ -57,7 +55,6 @@ class Test_RocketCleanDomain extends FilesystemTestCase {
 		parent::tearDown();
 
 		remove_filter( 'rocket_clean_domain_urls', [ $this, 'checkRocketCleaDomainUrls' ], PHP_INT_MIN );
-		remove_action( 'rocket_check_file_to_clean', [ $this, 'checkFilesToClean' ], PHP_INT_MIN, 2 );
 	}
 
 	/**
@@ -72,20 +69,9 @@ class Test_RocketCleanDomain extends FilesystemTestCase {
 		$this->setUpI18nPlugin( $i18n['lang'], $i18n );
 
 		add_filter( 'rocket_clean_domain_urls', [ $this, 'checkRocketCleaDomainUrls' ], PHP_INT_MIN );
-		add_action( 'rocket_check_file_to_clean', [ $this, 'checkFilesToClean' ], PHP_INT_MIN, 2 );
 
 		// Run it.
 		rocket_clean_domain( $i18n['lang'] );
-
-		// Check the action events.
-		$this->assertEquals(
-			$expected['before_rocket_clean_domain'],
-			did_action( 'before_rocket_clean_domain' ) - $this->stats['before_rocket_clean_domain']
-		);
-		$this->assertEquals(
-			$expected['after_rocket_clean_domain'],
-			did_action( 'after_rocket_clean_domain' ) - $this->stats['after_rocket_clean_domain']
-		);
 
 		// Check the "cleaned" directories.
 		foreach ( $expected['cleaned'] as $dir => $contents ) {
@@ -101,7 +87,7 @@ class Test_RocketCleanDomain extends FilesystemTestCase {
 
 		// Check the non-cleaned files/directories still exist.
 		$entriesAfterCleaning = $this->filesystem->getListing( $this->filesystem->getUrl( $this->config['vfs_dir'] ) );
-		$this->assertSame( sort( $shouldNotClean ), sort( $entriesAfterCleaning ) );
+		$this->assertEmpty( array_diff( $entriesAfterCleaning, $shouldNotClean ) );
 	}
 
 	private function getNonCleaned( $config ) {
@@ -119,11 +105,6 @@ class Test_RocketCleanDomain extends FilesystemTestCase {
 		$this->assertSame( $this->urlsToClean, $urls );
 
 		return $urls;
-	}
-
-	public function checkFilesToClean( $file, $toPreserve ) {
-		$this->assertArrayHasKey( $file, $this->dirsToClean );
-		$this->assertSame( $this->toPreserve, $toPreserve );
 	}
 
 	private function setUpI18nPlugin( $lang, $config ) {

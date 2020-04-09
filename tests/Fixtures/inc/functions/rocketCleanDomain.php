@@ -92,6 +92,7 @@ return [
 
 	// Test data.
 	'test_data' => [
+
 		'shouldDeleteAll_example.org*_whenNoLangGiven' => [
 			'i18n' => [
 				'lang'                        => '',
@@ -105,22 +106,21 @@ return [
 
 			'expected' => [
 				'rocket_clean_domain_urls'   => [ 'http://example.org' ],
-				'before_rocket_clean_domain' => 1,
-				'after_rocket_clean_domain'  => 1,
 				'cleaned'                    => [
 					'vfs://public/wp-content/cache/wp-rocket/example.org'                => null,
 					'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456' => null,
 					'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654'  => null,
-					'vfs://public/wp-content/cache/wp-rocket/dots.example.org'           => [], // dots prevent it from being deleted. Why?
+					'vfs://public/wp-content/cache/wp-rocket/dots.example.org'           => [],
+					// dots prevent it from being deleted. Why?
 				],
-				'non_cleaned' => [
+				'non_cleaned'                => [
 					// fs entry => should scan the directory and get the file listings.
-					'vfs://public/wp-content/cache/min/' => true,
-					'vfs://public/wp-content/cache/busting/' => true,
-					'vfs://public/wp-content/cache/critical-css/' => true,
-					'vfs://public/wp-content/cache/wp-rocket/' => false,
+					'vfs://public/wp-content/cache/min/'                 => true,
+					'vfs://public/wp-content/cache/busting/'             => true,
+					'vfs://public/wp-content/cache/critical-css/'        => true,
+					'vfs://public/wp-content/cache/wp-rocket/'           => false,
 					'vfs://public/wp-content/cache/wp-rocket/index.html' => false,
-				]
+				],
 			],
 		],
 
@@ -137,22 +137,21 @@ return [
 
 			'expected' => [
 				'rocket_clean_domain_urls'   => [ 'http://example.org' ],
-				'before_rocket_clean_domain' => 1,
-				'after_rocket_clean_domain'  => 1,
 				'cleaned'                    => [
 					'vfs://public/wp-content/cache/wp-rocket/example.org'                => null,
 					'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456' => null,
 					'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654'  => null,
-					'vfs://public/wp-content/cache/wp-rocket/dots.example.org'           => [], // dots prevent it from being deleted. Why?
+					'vfs://public/wp-content/cache/wp-rocket/dots.example.org'           => [],
+					// dots prevent it from being deleted. Why?
 				],
-				'non_cleaned' => [
+				'non_cleaned'                => [
 					// fs entry => should scan the directory and get the file listings.
-					'vfs://public/wp-content/cache/min/' => true,
-					'vfs://public/wp-content/cache/busting/' => true,
-					'vfs://public/wp-content/cache/critical-css/' => true,
-					'vfs://public/wp-content/cache/wp-rocket/' => false,
+					'vfs://public/wp-content/cache/min/'                 => true,
+					'vfs://public/wp-content/cache/busting/'             => true,
+					'vfs://public/wp-content/cache/critical-css/'        => true,
+					'vfs://public/wp-content/cache/wp-rocket/'           => false,
 					'vfs://public/wp-content/cache/wp-rocket/index.html' => false,
-				]
+				],
 			],
 		],
 
@@ -175,31 +174,22 @@ return [
 
 			'expected' => [
 				'rocket_clean_domain_urls'   => [ 'http://example.org/fr' ],
-				'before_rocket_clean_domain' => 1,
-				'after_rocket_clean_domain'  => 1,
 				'cleaned'                    => [
-					'vfs://public/wp-content/cache/wp-rocket/example.org'                => [
-						'vfs://public/wp-content/cache/wp-rocket/example.org/de/',
-						'vfs://public/wp-content/cache/wp-rocket/example.org/de/index.html',
-						'vfs://public/wp-content/cache/wp-rocket/example.org/de/index.html_gzip',
-					],
-					'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456' => null,
-					'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654'  => null,
-					// dots prevent it from being deleted. Why?
-					'vfs://public/wp-content/cache/wp-rocket/dots.example.org'           => [],
+					'vfs://public/wp-content/cache/wp-rocket/example.org/fr' => [],
 				],
 				'non_cleaned'                => [
 					// fs entry => should scan the directory and get the file listings.
-					'vfs://public/wp-content/cache/min/'                     => true,
-					'vfs://public/wp-content/cache/busting/'                 => true,
-					'vfs://public/wp-content/cache/critical-css/'            => true,
-					'vfs://public/wp-content/cache/wp-rocket/'               => false,
-					'vfs://public/wp-content/cache/wp-rocket/index.html'     => false,
-					'vfs://public/wp-content/cache/wp-rocket/example.org/de' => true,
+					'vfs://public/wp-content/cache/min/'                                 => true,
+					'vfs://public/wp-content/cache/busting/'                             => true,
+					'vfs://public/wp-content/cache/critical-css/'                        => true,
+					'vfs://public/wp-content/cache/wp-rocket/'                           => false,
+					'vfs://public/wp-content/cache/wp-rocket/index.html'                 => false,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/'               => true,
+					'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456/' => true,
+					'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654/'  => true,
+					'vfs://public/wp-content/cache/wp-rocket/dots.example.org/'           => true,
 				],
 			],
 		],
-
-
 	],
 ];

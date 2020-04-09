@@ -820,18 +820,20 @@ function rocket_clean_domain( $lang = '' ) {
 	$urls = (array) apply_filters( 'rocket_clean_domain_urls', $urls, $lang );
 	$urls = array_filter( $urls );
 
-	$cache_path = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' );
+	$cache_path       = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' );
+	$dirs_to_preserve = get_rocket_i18n_to_preserve( $lang );
+	/** This filter is documented in inc/front/htaccess.php */
+	$url_no_dots = (bool) apply_filters( 'rocket_url_no_dots', false );
 
 	try {
-		$iterator = new FilesystemIterator( $cache_path, FilesystemIterator::SKIP_DOTS );
+		$iterator = new RecursiveIteratorIterator(
+			new RecursiveDirectoryIterator( $cache_path, FilesystemIterator::SKIP_DOTS ),
+			RecursiveIteratorIterator::SELF_FIRST
+		);
 	} catch ( Exception $e ) {
 		// No logging yet.
 		return;
 	}
-
-	$dirs_to_preserve = get_rocket_i18n_to_preserve( $lang );
-	/** This filter is documented in inc/front/htaccess.php */
-	$url_no_dots = (bool) apply_filters( 'rocket_url_no_dots', false );
 
 	foreach ( $urls as $url ) {
 		$file = get_rocket_parse_url( $url );
@@ -853,12 +855,16 @@ function rocket_clean_domain( $lang = '' ) {
 		 */
 		do_action( 'before_rocket_clean_domain', $root, $lang, $url ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
+		if ( ! empty( $file['path'] ) ) {
+			$depth = substr_count( $file['path'], '/' ) + 1;
+			$regex = "/{$file['host']}*\/" . trim( $file['path'], '/' ) . "\/+/i";
+		} else {
+			$depth = 1;
+			$regex = "/{$file['host']}*/i";
+		}
+
 		try {
-			$regex = sprintf( "/{$file['host']}*%s/i",
-				empty( $file['path'] )
-					? '\/' . ltrim( $file['path'], '/\\' )
-					: ''
-			);
+			$iterator->setMaxDepth( $depth );
 			$files = new RegexIterator( $iterator, $regex );
 		} catch ( InvalidArgumentException $e ) {
 			// No logging yet.
