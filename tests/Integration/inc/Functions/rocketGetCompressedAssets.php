@@ -8,7 +8,6 @@ use Brain\Monkey\Functions;
  * @covers rocket_get_compressed_assets_rules
  * @group Functions
  * @group Htaccess
- * @group AdminOnly
  */
 class Test_RocketGetCompressedAssetsRules extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/functions/rocketGetCompressedAssets.php';
@@ -19,65 +18,27 @@ class Test_RocketGetCompressedAssetsRules extends FilesystemTestCase {
 		global $is_apache;
 
 		$is_apache = true;
-
-		Functions\when( 'rocket_valid_key' )->justReturn( true );
-
-		add_option( 'wp_rocket_settings', [
-			'minify_css'           => 0,
-			'minify_js'            => 0,
-			'exclude_css'          => [],
-			'exclude_js'           => [],
-			'remove_query_strings' => 0,
-		] );
 	}
 
-	public function tearDown() {
-		delete_option( 'wp_rocket_settings' );
-
-		parent::tearDown();
-	}
-
-	public function testShouldContainHtaccessRules() {
-		Functions\expect( 'rocket_get_constant' )
-			->once()
-			->with( 'WP_CONTENT_DIR' )
-			->andReturn( $this->filesystem->getUrl( 'wp-content' ) );
-
+	/**
+	 * @dataProvider providerTestData
+	 */
+	public function testShouldContainHtaccessRules( $expected ) {
 		Functions\expect( 'get_home_path' )
 			->once()
 			->andReturn( $this->filesystem->getUrl( 'public/' ) );
 
-		update_option( 'wp_rocket_settings', [
-			'minify_css' => 1,
-			'minify_js' => 0,
-			'exclude_css' => [],
-			'exclude_js' => [],
-			'remove_query_strings' => 0,
-		] );
+		flush_rocket_htaccess();
 
-		$expected = <<<HTACCESS
-		<IfModule mod_headers.c>
-			# Serve gzip compressed CSS and JS files if they exist
-			# and the client accepts gzip.
-			RewriteCond "%{HTTP:Accept-encoding}" "gzip"
-			RewriteCond "%{REQUEST_FILENAME}\.gz" -s
-			RewriteRule "^(.*)\.(css|js)"         "$1\.$2\.gz" [QSA]
-			# Serve correct content types, and prevent mod_deflate double gzip.
-			RewriteRule "\.css\.gz$" "-" [T=text/css,E=no-gzip:1]
-			RewriteRule "\.js\.gz$"  "-" [T=text/javascript,E=no-gzip:1]
-			<FilesMatch "(\.js\.gz|\.css\.gz)$">
-				# Serve correct encoding type.
-				Header append Content-Encoding gzip
-				# Force proxies to cache gzipped &
-				# non-gzipped css/js files separately.
-				Header append Vary Accept-Encoding
-			</FilesMatch>
-		</IfModule>
-		HTACCESS;
-
-		$this->assertContains(
-			$expected,
-			$this->filesystem->get_contents( '.htaccess' )
+		$this->assertStringContainsString(
+			$this->format_htaccess( $expected ),
+			$this->format_htaccess( $this->filesystem->get_contents( '.htaccess' ) )
 		);
+	}
+
+	private function format_htaccess( $string ) {
+		$string = trim( $string );
+
+		return preg_replace( '/^\s*/m', '', $string );
 	}
 }
