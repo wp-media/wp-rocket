@@ -1100,7 +1100,7 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = '' ) {
 		if ( ! $entry->isDir() ) {
 			$filesystem->delete( $path );
 		} else {
-			\WP_Rocket\Tests\Integration\inc\functions\rocket_rrmdir( $path, $dirs_to_preserve );
+			rocket_rrmdir( $path, $dirs_to_preserve );
 		}
 	}
 
