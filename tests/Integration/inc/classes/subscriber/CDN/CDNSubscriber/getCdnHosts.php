@@ -7,24 +7,28 @@ namespace WP_Rocket\Tests\Integration\inc\classes\subscriber\CDN\CDNSubscriber;
  * @uses   \WP_Rocket\CDN\CDN::get_cdn_urls
  * @uses   ::rocket_add_url_protocol
  * @group  Subscriber
+ * @group  CDN
  */
 class Test_GetCdnHosts extends TestCase {
+	public function addDataProvider() {
+		return $this->getTestData( __DIR__, 'get-cdn-hosts' );
+	}
 
-	public function testShouldReturnCDNHosts() {
-		update_option(
-			'wp_rocket_settings',
-			[
-				'cdn'              => '1',
-				'cdn_cnames'       => [ 'cdn.example.org' ],
-				'cdn_zone'         => [ 'all' ],
-				'cdn_reject_files' => [],
-			]
-		);
-		$hosts = [ 'example.org' ];
+	/**
+	 * @dataProvider addDataProvider
+	 */
+	public function testShouldReturnCdnArray( $original, $zones, $cdn_urls, $expected ) {
+		$callback = function( $original ) use ( $cdn_urls ) {
+			return array_merge( $original, $cdn_urls );
+		};
+
+		add_filter( 'rocket_cdn_cnames', $callback );
 
 		$this->assertSame(
-			[ 'example.org', 'cdn.example.org' ],
-			$this->getSubscriberInstance()->get_cdn_hosts( $hosts, 'all' )
+			$expected,
+			array_values( apply_filters( 'rocket_cdn_hosts', $original, $zones ) )
 		);
+
+		remove_filter( 'rocket_cdn_cnames', $callback );
 	}
 }

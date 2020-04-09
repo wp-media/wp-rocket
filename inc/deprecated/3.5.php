@@ -789,3 +789,4 @@ function rocket_varnish_http_purge( $url ) {
 		)
 	);
 }
+
