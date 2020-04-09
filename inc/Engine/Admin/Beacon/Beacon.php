@@ -1,8 +1,9 @@
 <?php
 
-namespace WP_Rocket\Admin\Settings;
+namespace WP_Rocket\Engine\Admin\Beacon;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
  * Helpscout Beacon integration
@@ -10,7 +11,7 @@ use WP_Rocket\Admin\Options_Data;
  * @since  3.2
  * @author Remy Perona
  */
-class Beacon {
+class Beacon implements Subscriber_Interface {
 	/**
 	 * Options_Data instance
 	 *
@@ -44,12 +45,26 @@ class Beacon {
 	}
 
 	/**
+	 * Return an array of events that this subscriber wants to listen to.
+	 *
+	 * @since  3.2
+	 * @author Remy Perona
+	 *
+	 * @return array
+	 */
+	public static function get_subscribed_events() {
+		return [
+			'admin_print_footer_scripts-settings_page_wprocket' => 'insert_script',
+		];
+	}
+
+	/**
 	 * Configures and returns beacon javascript
 	 *
 	 * @since  3.2
 	 * @author Remy Perona
 	 *
-	 * @return string|void
+	 * @return void
 	 */
 	public function insert_script() {
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
@@ -65,8 +80,8 @@ class Beacon {
 				break;
 		}
 
-		return '<script type="text/javascript">!function(e,t,n){function a(){var e=t.getElementsByTagName("script")[0],n=t.createElement("script");n.type="text/javascript",n.async=!0,n.src="https://beacon-v2.helpscout.net",e.parentNode.insertBefore(n,e)}if(e.Beacon=n=function(t,n,a){e.Beacon.readyQueue.push({method:t,options:n,data:a})},n.readyQueue=[],"complete"===t.readyState)return a();e.attachEvent?e.attachEvent("onload",a):e.addEventListener("load",a,!1)}(window,document,window.Beacon||function(){});</script>
-			<script type="text/javascript">window.Beacon(\'init\', \'' . $form_id . '\')</script>
+		echo '<script type="text/javascript">!function(e,t,n){function a(){var e=t.getElementsByTagName("script")[0],n=t.createElement("script");n.type="text/javascript",n.async=!0,n.src="https://beacon-v2.helpscout.net",e.parentNode.insertBefore(n,e)}if(e.Beacon=n=function(t,n,a){e.Beacon.readyQueue.push({method:t,options:n,data:a})},n.readyQueue=[],"complete"===t.readyState)return a();e.attachEvent?e.attachEvent("onload",a):e.addEventListener("load",a,!1)}(window,document,window.Beacon||function(){});</script>
+			<script type="text/javascript">window.Beacon(\'init\', \'' . esc_js( $form_id ) . '\')</script>
 			<script>window.Beacon("identify", ' . wp_json_encode( $this->identify_data() ) . ');</script>
 			<script>window.Beacon("session-data", ' . wp_json_encode( $this->session_data() ) . ');</script>
 			<script>window.addEventListener("hashchange", function () {
@@ -590,6 +605,12 @@ class Beacon {
 				'fr' => [
 					'id'  => '5bcf3d35042863215a46bb7f',
 					'url' => 'https://fr.docs.wp-rocket.me/article/1123-add-on-facebook-pixel/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
+			'google_fonts'               => [
+				'en' => [
+					'id'  => '5e8687c22c7d3a7e9aea4c4a',
+					'url' => 'https://docs.wp-rocket.me/article/1312-optimize-google-fonts',
 				],
 			],
 		];

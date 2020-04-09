@@ -65,7 +65,7 @@ class Plugin {
 
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Options' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Database' );
-		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Beacon' );
+		$this->container->addServiceProvider( 'WP_Rocket\Engine\Admin\Beacon\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\RocketCDN' );
 
 		$subscribers = [];
@@ -86,10 +86,10 @@ class Plugin {
 				]
 			);
 			$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Settings' );
-			$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Admin_Subscribers' );
+			$this->container->addServiceProvider( 'WP_Rocket\Engine\Admin\ServiceProvider' );
 
 			$subscribers = [
-				'beacon_subscriber',
+				'beacon',
 				'settings_page_subscriber',
 				'deactivation_intent_subscriber',
 				'hummingbird_subscriber',
