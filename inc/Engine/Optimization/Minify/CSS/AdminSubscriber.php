@@ -35,13 +35,13 @@ class AdminSubscriber implements Subscriber_Interface  {
 	 */
 	public function clean_minify( $old_value, $value ) {
 		// Purge all minify cache files.
-		if ( $old_value['minify_css'] !== $value['minify_css']
+		if ( ( isset( $old_value['minify_css'], $value['minify_css'] ) && $old_value['minify_css'] !== $value['minify_css'] )
 			||
-			$old_value['exclude_css'] !== $value['exclude_css']
+			( isset( $old_value['exclude_css'], $value['exclude_css'] ) && $old_value['exclude_css'] !== $value['exclude_css'] )
 			||
-			$old_value['cdn'] !== $value['cdn']
+			( isset( $old_value['cdn'], $value['cdn'] ) && $old_value['cdn'] !== $value['cdn'] )
 			||
-			$old_value['cdn_cnames'] !== $value['cdn_cnames']
+			( isset( $old_value['cdn_cnames'], $value['cdn_cnames'] ) && $old_value['cdn_cnames'] !== $value['cdn_cnames'] )
 		) {
 			rocket_clean_minify( 'css' );
 		}
