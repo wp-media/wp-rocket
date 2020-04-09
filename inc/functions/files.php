@@ -1033,22 +1033,30 @@ function rocket_clean_cache_dir() {
  * @since 3.5.3 Bails if given dir should be preserved; replaces glob; optimizes.
  * @since 1.0
  *
- * @param string       $dir              File/Directory to delete.
- * @param array|string $dirs_to_preserve Optional. Dirs that should not be deleted.
+ * @param string      $dir              File/Directory to delete.
+ * @param array       $dirs_to_preserve Optional. Dirs that should not be deleted.
+ * @param string|null $preserve_pattern Optional. Regex pattern for directories to preserve.
  */
-function rocket_rrmdir( $dir, $dirs_to_preserve = '' ) {
+function rocket_rrmdir( $dir, array $dirs_to_preserve = [], $preserve_pattern = null ) {
 	$dir        = untrailingslashit( $dir );
 	$filesystem = rocket_direct_filesystem();
 
-	if ( empty( $dirs_to_preserve ) ) {
-		$dirs_to_preserve = '';
-	} elseif ( is_array( $dirs_to_preserve ) ) {
-		$dirs_to_preserve = implode( '|', $dirs_to_preserve );
-		$dirs_to_preserve = str_replace( '/', '\/', $dirs_to_preserve );
+	// Build the "to preserve" regex pattern.
+	if ( is_null( $preserve_pattern ) ) {
+		if ( empty( $dirs_to_preserve ) ) {
+			$preserve_pattern = '';
+		} else {
+			$preserve_pattern = str_replace(
+				'/',
+				'\/',
+				implode( '|', $dirs_to_preserve )
+			);
+			$preserve_pattern = "/^{$preserve_pattern}$/";
+		}
 	}
 
 	// Bail out if the given directory is in the list of directories to preserve.
-	if ( _rocket_preserve_directory( $dir, $dirs_to_preserve ) ) {
+	if ( _rocket_preserve_directory( $dir, $preserve_pattern ) ) {
 		return;
 	}
 
@@ -1057,8 +1065,8 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = '' ) {
 	 *
 	 * @since 1.1.0
 	 *
-	 * @param string       $dir              File/Directory to delete.
-	 * @param array|string $dirs_to_preserve Directories that should not be deleted.
+	 * @param string $dir              File/Directory to delete.
+	 * @param array  $dirs_to_preserve Directories that should not be deleted.
 	 */
 	do_action( 'before_rocket_rrmdir', $dir, $dirs_to_preserve ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
@@ -1092,7 +1100,7 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = '' ) {
 	foreach ( $entries as $entry ) {
 		$path = $entry->getPathname();
 
-		if ( _rocket_preserve_directory( $path, $dirs_to_preserve ) ) {
+		if ( _rocket_preserve_directory( $path, $preserve_pattern ) ) {
 			continue;
 		}
 
@@ -1100,7 +1108,7 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = '' ) {
 		if ( ! $entry->isDir() ) {
 			$filesystem->delete( $path );
 		} else {
-			rocket_rrmdir( $path, $dirs_to_preserve );
+			rocket_rrmdir( $path, $dirs_to_preserve, $preserve_pattern );
 		}
 	}
 
@@ -1123,17 +1131,17 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = '' ) {
  * @since  3.5.3
  * @access private
  *
- * @param string       $entry       File/directory to check.
- * @param array|string $to_preserve Optional. Dirs that should not be deleted.
+ * @param string $entry       File/directory to check.
+ * @param string $to_preserve Optional. Dirs that should not be deleted.
  *
- * @return bool
+ * @return bool returns true when should be preserved; else, false.
  */
 function _rocket_preserve_directory( $entry, $to_preserve ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 	if ( empty( $to_preserve ) ) {
 		return false;
 	}
 
-	return preg_match( "/^{$to_preserve}$/", $entry ) === 1;
+	return preg_match( $to_preserve, $entry ) === 1;
 }
 
 /**
