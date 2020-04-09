@@ -98,7 +98,7 @@ class Plugin {
 				'rocketcdn_data_manager_subscriber',
 			];
 		} elseif ( \rocket_valid_key() ) {
-			$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Optimization_Subscribers' );
+			$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\ServiceProvider' );
 
 			$subscribers = [
 				'buffer_subscriber',
@@ -107,7 +107,7 @@ class Plugin {
 				'combine_google_fonts_subscriber',
 				'minify_css_subscriber',
 				'minify_js_subscriber',
-				'cache_dynamic_resource_subscriber',
+				'cache_dynamic_resource',
 				'remove_query_string_subscriber',
 				'dequeue_jquery_migrate_subscriber',
 			];

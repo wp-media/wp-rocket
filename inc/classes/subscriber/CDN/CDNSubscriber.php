@@ -1,9 +1,9 @@
 <?php
 namespace WP_Rocket\Subscriber\CDN;
 
-use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Rocket\CDN\CDN;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\CDN\CDN;
+use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
  * Subscriber for the CDN feature
@@ -57,6 +57,7 @@ class CDNSubscriber implements Subscriber_Interface {
 			'rocket_facebook_sdk_url' => 'add_cdn_url',
 			'rocket_css_url'          => [ 'add_cdn_url', 10, 2 ],
 			'rocket_js_url'           => [ 'add_cdn_url', 10, 2 ],
+			'rocket_asset_url'        => [ 'maybe_replace_url', 10, 2 ],
 		];
 	}
 
@@ -132,22 +133,27 @@ class CDNSubscriber implements Subscriber_Interface {
 	 *
 	 * @param array $hosts Base hosts.
 	 * @param array $zones Zones to get the CND URLs associated with.
+	 *
+	 * @return array
 	 */
-	public function get_cdn_hosts( $hosts, $zones ) {
+	public function get_cdn_hosts( array $hosts = [], array $zones = [ 'all' ] ) {
 		$cdn_urls = $this->cdn->get_cdn_urls( $zones );
 
-		if ( ! $cdn_urls ) {
+		if ( empty( $cdn_urls ) ) {
 			return $hosts;
 		}
 
-		$cdn_hosts = array_map(
-			function( $url ) {
-				return wp_parse_url( rocket_add_url_protocol( $url ), PHP_URL_HOST );
-			},
-			$cdn_urls
-		);
+		foreach ( $cdn_urls as $cdn_url ) {
+			$parsed = get_rocket_parse_url( rocket_add_url_protocol( $cdn_url ) );
 
-		return array_merge( $hosts, $cdn_hosts );
+			if ( empty( $parsed['host'] ) ) {
+				continue;
+			}
+
+			$hosts[] = untrailingslashit( $parsed['host'] . $parsed['path'] );
+		}
+
+		return array_unique( $hosts );
 	}
 
 	/**
@@ -194,6 +200,57 @@ class CDNSubscriber implements Subscriber_Interface {
 	}
 
 	/**
+	 * Replace CDN URL with site URL on the provided asset URL.
+	 *
+	 * @since 3.5.3
+	 *
+	 * @param string $url URL of the asset.
+	 * @param array  $zones Array of corresponding zones for the asset.
+	 * @return string
+	 */
+	public function maybe_replace_url( $url, array $zones = [ 'all' ] ) {
+		if ( ! $this->is_allowed() ) {
+			return $url;
+		}
+
+		$url_parts = get_rocket_parse_url( $url );
+
+		if ( empty( $url_parts['host'] ) ) {
+			return $url;
+		}
+
+		$site_url_parts = get_rocket_parse_url( site_url() );
+
+		if ( empty( $site_url_parts['host'] ) ) {
+			return $url;
+		}
+
+		if ( $url_parts['host'] === $site_url_parts['host'] ) {
+			return $url;
+		}
+
+		$cdn_urls = $this->cdn->get_cdn_urls( $zones );
+
+		if ( empty( $cdn_urls ) ) {
+			return $url;
+		}
+
+		$cdn_urls = array_map( 'rocket_add_url_protocol', $cdn_urls );
+
+		$site_url = $site_url_parts['scheme'] . '://' . $site_url_parts['host'];
+
+		foreach ( $cdn_urls as $cdn_url ) {
+			if ( false === strpos( $url, $cdn_url ) ) {
+				continue;
+			}
+
+			return str_replace( $cdn_url, $site_url, $url );
+		}
+
+		return $url;
+	}
+
+	/**
 	 * Checks if CDN can be applied
 	 *
 	 * @since 3.4
@@ -202,7 +259,7 @@ class CDNSubscriber implements Subscriber_Interface {
 	 * @return boolean
 	 */
 	private function is_allowed() {
-		if ( rocket_has_constant( 'DONOTROCKETOPTIMIZE' ) && rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
+		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
 			return false;
 		}
 
