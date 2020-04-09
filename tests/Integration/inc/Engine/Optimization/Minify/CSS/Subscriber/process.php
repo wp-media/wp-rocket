@@ -8,6 +8,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 /**
  * @covers \WP_Rocket\Engine\Optimization\Minify\CSS\Subscriber::process
  * @group  MinifyCSS
+ * @group  Minify
  */
 class Test_Process extends FilesystemTestCase {
     protected $path_to_test_data = '/inc/Engine/Optimization/Minify/CSS/Subscriber/process.php';
@@ -24,9 +25,13 @@ class Test_Process extends FilesystemTestCase {
 		$this->set_settings( $settings );
 
 		$this->assertSame(
-			$this->format_the_html( $expected ),
+			$this->format_the_html( $expected['html'] ),
 			$this->format_the_html( apply_filters( 'rocket_buffer', $original ) )
-		);
+        );
+
+        foreach( $expected['files'] as $file ) {
+            $this->assertTrue( $this->filesystem->exists( $file ) );
+        }
 
 		$this->unset_settings( $settings );
 		remove_filter( 'pre_get_rocket_option_minify_css', [ $this, 'return_true' ] );
@@ -35,7 +40,7 @@ class Test_Process extends FilesystemTestCase {
 	}
 
     public function virtual_wp_content_dir() {
-        return $this->filesystem->getUrl( 'wordpress/wp-content' );
+        return $this->filesystem->getUrl( 'wp-content' );
     }
 
     public function return_key() {

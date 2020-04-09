@@ -55,5 +55,10 @@ class Test_Optimize extends TestCase {
 			$minified,
 			$this->minify->optimize( $original )
 		);
+
+		$this->assertTrue( $this->filesystem->exists( 'wordpress/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-dcd1a95e5d432b5d300d7c2f216d7150.css' ) );
+		$this->assertTrue( $this->filesystem->exists( 'wordpress/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-dcd1a95e5d432b5d300d7c2f216d7150.css.gz' ) );
+		$this->assertTrue( $this->filesystem->exists( 'wordpress/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style-b35546733b0295036e79cc1f700b1efd.css' ) );
+		$this->assertTrue( $this->filesystem->exists( 'wordpress/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style-b35546733b0295036e79cc1f700b1efd.css.gz' ) );
 	}
 }

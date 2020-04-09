@@ -74,5 +74,8 @@ class Test_Optimize extends TestCase {
 			$this->format_the_html( $minified ),
 			$this->format_the_html( $this->combine->optimize( $original ) )
 		);
+
+		$this->assertTrue( $this->filesystem->exists( 'wordpress/wp-content/cache/min/1/900b339c19ff5a927b3311bf5ddb4dfd.js' ) );
+		$this->assertTrue( $this->filesystem->exists( 'wordpress/wp-content/cache/min/1/900b339c19ff5a927b3311bf5ddb4dfd.js.gz' ) );
 	}
 }
