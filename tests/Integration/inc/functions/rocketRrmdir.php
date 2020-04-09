@@ -6,7 +6,10 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
  * @covers ::rocket_rrmdir
+ * @uses  ::rocket_is_stream
  * @uses  ::rocket_direct_filesystem
+ * @uses  ::_rocket_preserve_directory
+ *
  * @group Functions
  * @group Files
  * @group vfs
