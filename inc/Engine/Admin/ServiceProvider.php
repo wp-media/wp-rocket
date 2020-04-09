@@ -24,7 +24,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		'settings_page_subscriber',
 		'deactivation_intent_render',
 		'deactivation_intent_subscriber',
-		'beacon_subscriber',
 		'hummingbird_subscriber',
 	];
 
@@ -37,6 +36,8 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
+		$options = $this->getContainer()->get( 'options' );
+
 		$this->getContainer()->share( 'settings_page_subscriber', 'WP_Rocket\Subscriber\Admin\Settings\Page_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'settings_page' ) );
 		$this->getContainer()->add( 'deactivation_intent_render', 'WP_Rocket\Admin\Deactivation\Render' )
@@ -44,10 +45,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'deactivation_intent_subscriber', 'WP_Rocket\Engine\Admin\Deactivation\DeactivationIntent' )
 			->withArgument( $this->getContainer()->get( 'deactivation_intent_render' ) )
 			->withArgument( $this->getContainer()->get( 'options_api' ) )
-			->withArgument( $this->getContainer()->get( 'options' ) );
-		$this->getContainer()->share( 'beacon_subscriber', 'WP_Rocket\Subscriber\Admin\Settings\Beacon_Subscriber' )
-			->withArgument( $this->getContainer()->get( 'beacon' ) );
+			->withArgument( $options );
 		$this->getContainer()->share( 'hummingbird_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Optimization\Hummingbird_Subscriber' )
-			->withArgument( $this->getContainer()->get( 'options' ) );
+			->withArgument( $options );
 	}
 }

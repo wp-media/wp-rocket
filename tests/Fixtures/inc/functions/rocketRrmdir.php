@@ -195,8 +195,8 @@ return [
 		'shouldBailOutWhenRootDirIsPreserved_fr' => [
 			'to_delete'   => 'wp-content/cache/wp-rocket/example.org/fr',
 			'to_preserve' => [
-				'vfs://public/wp-content/cache/wp-rocket/example.org/de',
-				'vfs://public/wp-content/cache/wp-rocket/example.org/fr',
+				'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/de',
+				'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/fr',
 			],
 			'expected'    => [
 				'before_rocket_rrmdir' => 0,
@@ -207,8 +207,8 @@ return [
 		'shouldBailOutWhenRootDirIsPreserved_de' => [
 			'to_delete'   => 'wp-content/cache/wp-rocket/example.org/de',
 			'to_preserve' => [
-				'vfs://public/wp-content/cache/wp-rocket/example.org/de',
-				'vfs://public/wp-content/cache/wp-rocket/example.org/fr',
+				'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/de',
+				'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/fr',
 			],
 			'expected'    => [
 				'before_rocket_rrmdir' => 0,
@@ -220,7 +220,7 @@ return [
 		'shouldDeleteAllExceptDEentries'                => [
 			'to_delete'   => 'wp-content/cache/wp-rocket/example.org',
 			'to_preserve' => [
-				'vfs://public/wp-content/cache/wp-rocket/example.org/de',
+				'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/de',
 			],
 			'expected'    => [
 				'before_rocket_rrmdir' => 6,
@@ -250,8 +250,8 @@ return [
 		'shouldDeleteAllExceptFEandDE'                  => [
 			'to_delete'                           => 'wp-content/cache/wp-rocket/example.org',
 			'to_preserve'                         => [
-				'vfs://public/wp-content/cache/wp-rocket/example.org/de',
-				'vfs://public/wp-content/cache/wp-rocket/example.org/fr',
+				'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/de',
+				'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/fr',
 			],
 			'expected'                            => [
 				'before_rocket_rrmdir' => 5,
@@ -277,7 +277,7 @@ return [
 			'shouldDeleteAllWhenLangNotPreserved' => [
 				'to_delete'   => 'wp-content/cache/wp-rocket/example.org/',
 				'to_preserve' => [
-					'vfs://public/wp-content/cache/wp-rocket/example.org/nl', // doesn't have files in the cache.
+					'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/nl', // doesn't have files in the cache.
 				],
 				'expected'    => [
 					'before_rocket_rrmdir' => 7,
@@ -312,8 +312,8 @@ return [
 			'shouldDeleteAllWhenLangNotPreserved' => [
 				'to_delete'   => 'wp-content/cache/wp-rocket/',
 				'to_preserve' => [
-					'vfs://public/wp-content/cache/wp-rocket/example.org/de',
-					'vfs://public/wp-content/cache/wp-rocket/example.org/fr',
+					'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/de',
+					'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/fr',
 				],
 				'expected'    => [
 					'before_rocket_rrmdir' => 7,
