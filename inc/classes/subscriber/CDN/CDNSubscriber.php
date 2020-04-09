@@ -235,6 +235,8 @@ class CDNSubscriber implements Subscriber_Interface {
 			return $url;
 		}
 
+		$cdn_urls = array_map( 'rocket_add_url_protocol', $cdn_urls );
+
 		$site_url = $site_url_parts['scheme'] . '://' . $site_url_parts['host'];
 
 		foreach ( $cdn_urls as $cdn_url ) {

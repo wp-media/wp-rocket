@@ -48,6 +48,20 @@ return [
 		'http://example.org',
 		'http://example.org/wp-content/plugins/hello-dolly/style.css',
 	],
+	// CDN URL with corresponding cnames in option, no protocol, site_url = home_url.
+	[
+		'https://123456.rocketcdn.me/wp-content/plugins/hello-dolly/style.css',
+		[
+			'all',
+			'css',
+			'css_and_js',
+		],
+		[
+			'123456.rocketcdn.me',
+		],
+		'http://example.org',
+		'http://example.org/wp-content/plugins/hello-dolly/style.css',
+	],
 	// CDN URL with corresponding cnames in option, site_url != home_url.
 	[
 		'https://123456.rocketcdn.me/wordpress/wp-content/plugins/hello-dolly/style.css',

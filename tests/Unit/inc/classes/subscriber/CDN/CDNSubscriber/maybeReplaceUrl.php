@@ -96,6 +96,17 @@ class Test_MaybeReplaceUrl extends TestCase {
 			->zeroOrMoreTimes()
 			->andReturn( $cdn_urls );
 
+			Functions\when( 'rocket_add_url_protocol' )->alias( function( $url ) {
+				if ( strpos( $url, 'http://' ) !== false || strpos( $url, 'https://' ) !== false ) {
+					return $url;
+				}
+	
+				if ( substr( $url, 0, 2 ) === '//' ) {
+					return 'https:' . $url;
+				}
+	
+				return 'https://' . $url;
+			} );
 		Functions\when( 'site_url' )->justReturn( $site_url );
 
 		$this->assertSame(
