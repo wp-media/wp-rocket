@@ -1,10 +1,9 @@
 <?php
 namespace WP_Rocket\Admin\Settings;
 
-use \WP_Rocket\Interfaces\Render_Interface;
 use WP_Rocket\Admin\Database\Optimization;
-
-defined( 'ABSPATH' ) || exit;
+use WP_Rocket\Engine\Admin\Beacon\Beacon;
+use WP_Rocket\Interfaces\Render_Interface;
 
 /**
  * Registers the admin page and WP Rocket settings
@@ -571,6 +570,7 @@ class Page {
 		$inline_js_beacon      = $this->beacon->get_suggest( 'exclude_inline_js' );
 		$exclude_js_beacon     = $this->beacon->get_suggest( 'exclude_js' );
 		$jquery_migrate_beacon = $this->beacon->get_suggest( 'jquery_migrate' );
+		$google_fonts_beacon   = $this->beacon->get_suggest( 'google_fonts' );
 
 		$this->settings->add_page_section(
 			'file_optimization',
@@ -634,8 +634,9 @@ class Page {
 				],
 				'minify_google_fonts'    => [
 					'type'              => 'checkbox',
-					'label'             => __( 'Combine Google Fonts files', 'rocket' ),
-					'description'       => __( 'Combining Google Fonts will reduce the number of HTTP requests.', 'rocket' ),
+					'label'             => __( 'Optimize Google Fonts', 'rocket' ),
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description'       => sprintf( __( 'Improves font performance and combines multiple font requests to reduce the number of HTTP requests. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $google_fonts_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $google_fonts_beacon['id'] ) . '" target="_blank">', '</a>' ),
 					'section'           => 'basic',
 					'page'              => 'file_optimization',
 					'default'           => 0,
