@@ -9,25 +9,39 @@ use WPMedia\PHPUnit\Integration\TestCase;
  * @group CombineGoogleFonts
  */
 class Test_Preconnect extends TestCase {
+	private $option_value;
+
+	public function setUp() {
+		parent::setUp();
+
+		$this->option_value = null;
+	}
+
+	public function tearDown() {
+		remove_filter( 'pre_get_rocket_option_minify_google_fonts', [ $this, 'set_option' ] );
+
+		parent::tearDown();
+	}
+
     /**
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldReturnExpectedArray( $option_value, $urls, $relation_type, $expected ) {
-        $callback = function() use ( $option_value ) {
-            return $option_value;
-        };
+		$this->option_value = $option_value;
 
-		add_filter( 'pre_get_rocket_option_minify_google_fonts', $callback );
+		add_filter( 'pre_get_rocket_option_minify_google_fonts', [ $this, 'set_option' ] );
 
 		$this->assertSame(
 			$expected,
 			apply_filters( 'wp_resource_hints', $urls, $relation_type )
-        );
-
-        remove_filter( 'pre_get_rocket_option_minify_google_fonts', $callback );
+        );   
 	}
 
 	public function providerTestData() {
 		return $this->getTestData( __DIR__, 'preconnect' );
+	}
+
+	public function set_option() {
+		return $this->option_value;
 	}
 }
