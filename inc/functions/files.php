@@ -429,18 +429,20 @@ function set_rocket_wp_cache_define( $turn_it_on ) { // phpcs:ignore WordPress.N
  * @return void
  */
 function rocket_clean_minify( $extensions = [ 'js', 'css' ] ) {
-	$extensions = is_string( $extensions ) ? (array) $extensions : $extensions;
+	$extensions  = is_string( $extensions ) ? (array) $extensions : $extensions;
+	$minify_path = rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' );
+	$filesystem  = rocket_direct_filesystem();
 
 	try {
-		$dir = new RecursiveDirectoryIterator( rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' ) . get_current_blog_id(), FilesystemIterator::SKIP_DOTS );
-	} catch ( \UnexpectedValueException $e ) {
+		$dir = new RecursiveDirectoryIterator( $minify_path . get_current_blog_id(), FilesystemIterator::SKIP_DOTS );
+	} catch ( UnexpectedValueException $e ) {
 		// No logging yet.
 		return;
 	}
 
 	try {
 		$iterator = new RecursiveIteratorIterator( $dir, RecursiveIteratorIterator::CHILD_FIRST );
-	} catch ( \Exception $e ) {
+	} catch ( Exception $e ) {
 		// No logging yet.
 		return;
 	}
@@ -458,9 +460,9 @@ function rocket_clean_minify( $extensions = [ 'js', 'css' ] ) {
 		try {
 			$files = new RegexIterator( $iterator, '#.*\.' . $ext . '(?:\.gz)?$#', RegexIterator::GET_MATCH );
 			foreach ( $files as $file ) {
-				rocket_direct_filesystem()->delete( $file[0] );
+				$filesystem->delete( $file[0] );
 			}
-		} catch ( \InvalidArgumentException $e ) {
+		} catch ( InvalidArgumentException $e ) {
 			// No logging yet.
 			return;
 		}
@@ -476,22 +478,22 @@ function rocket_clean_minify( $extensions = [ 'js', 'css' ] ) {
 	}
 
 	foreach ( $iterator as $item ) {
-		if ( rocket_direct_filesystem()->is_dir( $item ) ) {
-			rocket_direct_filesystem()->delete( $item );
+		if ( $filesystem->is_dir( $item ) ) {
+			$filesystem->delete( $item );
 		}
 	}
 
-	$third_party = rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' ) . '3rd-party';
+	$third_party = $minify_path . '3rd-party';
 
 	try {
 		$files = new FilesystemIterator( $third_party );
 
 		foreach ( $files as $file ) {
-			if ( rocket_direct_filesystem()->is_file( $file ) ) {
-				rocket_direct_filesystem()->delete( $file );
+			if ( $filesystem->is_file( $file ) ) {
+				$filesystem->delete( $file );
 			}
 		}
-	} catch ( \UnexpectedValueException $e ) {
+	} catch ( UnexpectedValueException $e ) {
 		// No logging yet.
 		return;
 	}
