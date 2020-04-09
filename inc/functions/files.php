@@ -1120,7 +1120,7 @@ function rocket_rrmdir( $dir, array $dirs_to_preserve = [], $preserve_pattern = 
 
 	// Get the directory entries.
 	try {
-		$entries = new FilesystemIterator( $dir, FilesystemIterator::SKIP_DOTS );
+		$entries = new FilesystemIterator( $dir );
 	} catch ( Exception $e ) {
 		$entries = [];
 	}
