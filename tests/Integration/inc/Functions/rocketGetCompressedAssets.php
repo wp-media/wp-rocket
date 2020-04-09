@@ -30,7 +30,7 @@ class Test_RocketGetCompressedAssetsRules extends FilesystemTestCase {
 
 		flush_rocket_htaccess();
 
-		$this->assertStringContainsString(
+		$this->assertContains(
 			$this->format_htaccess( $expected ),
 			$this->format_htaccess( $this->filesystem->get_contents( '.htaccess' ) )
 		);
