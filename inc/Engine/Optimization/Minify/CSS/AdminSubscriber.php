@@ -8,7 +8,7 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  *
  * @since 3.5.3
  */
-class AdminSubscriber implements Subscriber_Interface  {
+class AdminSubscriber implements Subscriber_Interface {
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
