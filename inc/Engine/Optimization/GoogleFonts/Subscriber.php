@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Optimization\GoogleFonts;
 
-use WP_Rocket\Subscriber\Optimization\Minify_Subscriber;
+use WP_Rocket\Engine\Optimization\Minify\AbstractMinifySubscriber;
 
 /**
  * Combine Google Fonts subscriber
@@ -9,7 +9,7 @@ use WP_Rocket\Subscriber\Optimization\Minify_Subscriber;
  * @since 3.1
  * @author Remy Perona
  */
-class Subscriber extends Minify_Subscriber {
+class Subscriber extends AbstractMinifySubscriber {
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
