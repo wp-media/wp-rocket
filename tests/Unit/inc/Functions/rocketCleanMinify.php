@@ -5,52 +5,52 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers rocket_clean_minify()
+ * @covers rocket_clean_minify
  * @group Functions
  * @group Files
+ * @group vfs
  */
 class Test_RocketCleanMinify extends FilesystemTestCase {
-	protected $structure = [
-		'min' => [
-			'1' => [
-				'5c795b0e3a1884eec34a989485f863ff.js'     => '',
-				'5c795b0e3a1884eec34a989485f863ff.js.gz'  => '',
-				'fa2965d41f1515951de523cecb81f85e.css'    => '',
-				'fa2965d41f1515951de523cecb81f85e.css.gz' => '',
-			],
-		],
-	];
+	protected $path_to_test_data = '/inc/functions/rocketCleanMinify.php';
 
 	public function setUp() {
 		parent::setUp();
 
 		Functions\expect( 'rocket_get_constant' )
-			->twice()
+			->once()
 			->with( 'WP_ROCKET_MINIFY_CACHE_PATH' )
-			->andReturn( 'vfs://cache/min/' );
+			->andReturn( $this->filesystem->getUrl( 'wp-content/cache/min/' ) );
 		Functions\when( 'get_current_blog_id' )->justReturn( '1' );
 	}
 
-	public function testShouldCleanMinifiedCSS() {
-		rocket_clean_minify( 'css' );
+	/**
+	 * @dataProvider providerTestData
+	 */
+	public function testShouldCleanMinified( $config, $filesToClean ) {
+		$cache = $this->stripRoot( $this->filesystem->getFilesListing( 'wp-content/cache/min' ) );
 
-		$this->assertFalse( $this->filesystem->exists( 'min/1/fa2965d41f1515951de523cecb81f85e.css' ) );
-		$this->assertFalse( $this->filesystem->exists( 'min/1/fa2965d41f1515951de523cecb81f85e.css.gz' ) );
+		// Check files before cleaning.
+		$this->assertSame( $this->original_files, $cache );
+
+		rocket_clean_minify( $config );
+
+		$after_cache = $this->stripRoot( $this->filesystem->getFilesListing( 'wp-content/cache/min' ) );
+
+		// Check the "cleaned" files were deleted.
+		$this->assertEquals( $filesToClean, array_intersect( $filesToClean, $cache ) );
+		$this->assertEquals( $filesToClean, array_diff( $filesToClean, $after_cache ) );
+		$this->assertNotContains( $filesToClean, $after_cache );
+
+		// Check that non-cleaned files still exists, i.e. were not deleted.
+		$this->assertEquals( $after_cache, array_intersect( $after_cache, $cache ) );
 	}
 
-	public function testShouldCleanMinifiedJS() {
-		rocket_clean_minify( 'js' );
-
-		$this->assertFalse( $this->filesystem->exists( 'min/1/5c795b0e3a1884eec34a989485f863ff.js' ) );
-		$this->assertFalse( $this->filesystem->exists( 'min/1/5c795b0e3a1884eec34a989485f863ff.js.gz' ) );
-	}
-
-	public function testShouldCleanAllMinified() {
-		rocket_clean_minify();
-
-		$this->assertFalse( $this->filesystem->exists( 'min/1/fa2965d41f1515951de523cecb81f85e.css' ) );
-		$this->assertFalse( $this->filesystem->exists( 'min/1/fa2965d41f1515951de523cecb81f85e.css.gz' ) );
-		$this->assertFalse( $this->filesystem->exists( 'min/1/5c795b0e3a1884eec34a989485f863ff.js' ) );
-		$this->assertFalse( $this->filesystem->exists( 'min/1/5c795b0e3a1884eec34a989485f863ff.js.gz' ) );
+	private function stripRoot( $files ) {
+		return array_map(
+			function( $file ) {
+				return str_replace( 'vfs://public/', '', $file );
+			},
+			$files
+		);
 	}
 }
