@@ -42,36 +42,6 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 		}
 	}
 
-	private function silently_update_option( $new_value ) {
-		global $wp_filter;
-
-		$hooks = [
-			"pre_update_option_{$this->option_name}",
-			"update_option_{$this->option_name}",
-			'update_option',
-			"update_option_{$this->option_name}",
-			'updated_option',
-		];
-
-		foreach ( $hooks as $hook ) {
-			if ( ! empty( $wp_filter[ $hook ] ) ) {
-				$this->hooks[ $hook ] = $wp_filter[ $hook ];
-				unset( $wp_filter[ $hook ] );
-			}
-			$this->assertFalse( has_filter( $hook ) );
-		}
-
-		$this->assertFalse( has_action( 'update_option_' . $this->option_name, 'rocket_after_save_options' ) );
-
-		update_option( $this->option_name, $new_value );
-
-		if ( $this->hooks ) {
-			$wp_filter = array_merge( $wp_filter, $this->hooks );
-		}
-
-		$this->assertNotFalse( has_action( 'update_option_' . $this->option_name, 'rocket_after_save_options' ) );
-	}
-
 	/**
 	 * @dataProvider providerTestData
 	 */
@@ -502,6 +472,36 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 		$this->assertFilesDeleted( $data['rocket_clean_minify_js'] );
 	}
 
+	private function silently_update_option( $new_value ) {
+		global $wp_filter;
+
+		$hooks = [
+			"pre_update_option_{$this->option_name}",
+			"update_option_{$this->option_name}",
+			'update_option',
+			"update_option_{$this->option_name}",
+			'updated_option',
+		];
+
+		foreach ( $hooks as $hook ) {
+			if ( ! empty( $wp_filter[ $hook ] ) ) {
+				$this->hooks[ $hook ] = $wp_filter[ $hook ];
+				unset( $wp_filter[ $hook ] );
+			}
+			$this->assertFalse( has_filter( $hook ) );
+		}
+
+		$this->assertFalse( has_action( 'update_option_' . $this->option_name, 'rocket_after_save_options' ) );
+
+		update_option( $this->option_name, $new_value );
+
+		if ( $this->hooks ) {
+			$wp_filter = array_merge( $wp_filter, $this->hooks );
+		}
+
+		$this->assertNotFalse( has_action( 'update_option_' . $this->option_name, 'rocket_after_save_options' ) );
+	}
+
 	private function assertFilesDeleted( $paths ) {
 		foreach ( $paths as $file ) {
 			$this->assertFalse( $this->filesystem->getUrl( $file ), "The file $file exists." );
@@ -539,9 +539,5 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 			$contents = $this->filesystem->get_contents( $path );
 			$this->assertContains( 'WP_ROCKET_ADVANCED_CACHE', $contents, "No WP Rocket contents in file $path." );
 		}
-	}
-
-	public function providerTestData() {
-		return $this->getTestData( __DIR__, 'rocketAfterSaveOptions' );
 	}
 }
