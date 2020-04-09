@@ -23,8 +23,8 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	protected $provides = [
 		'busting_factory',
-		'facebook_tracking_subscriber',
-		'google_tracking_subscriber',
+		'facebook_tracking',
+		'google_tracking',
 		'sucuri_subscriber',
 		'varnish',
 		'varnish_subscriber',
@@ -44,12 +44,12 @@ class ServiceProvider extends AbstractServiceProvider {
 			->withArgument( rocket_get_constant( 'WP_ROCKET_CACHE_BUSTING_URL' ) );
 
 		// Facebook Tracking Subscriber.
-		$this->getContainer()->share( 'facebook_tracking_subscriber', 'WP_Rocket\Subscriber\Facebook_Tracking_Cache_Busting_Subscriber' )
+		$this->getContainer()->share( 'facebook_tracking', 'WP_Rocket\Addon\FacebookTracking\Subscriber' )
 			->withArgument( $this->getContainer()->get( 'busting_factory' ) )
 			->withArgument( $options );
 
 		// Google Tracking Subscriber.
-		$this->getContainer()->share( 'google_tracking_subscriber', 'WP_Rocket\Subscriber\Google_Tracking_Cache_Busting_Subscriber' )
+		$this->getContainer()->share( 'google_tracking', 'WP_Rocket\Addon\GoogleTracking\Subscriber' )
 			->withArgument( $this->getContainer()->get( 'busting_factory' ) )
 			->withArgument( $options );
 

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "155b861fa41637edebd8f6e581bc9528",
+    "content-hash": "d24799970180cc70de7382178a492555",
     "packages": [
         {
             "name": "composer/installers",
@@ -3405,15 +3405,15 @@
         },
         {
             "name": "wpackagist-plugin/amp",
-            "version": "1.5.1",
+            "version": "1.5.2",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/amp/",
-                "reference": "tags/1.5.1"
+                "reference": "tags/1.5.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/amp.1.5.1.zip"
+                "url": "https://downloads.wordpress.org/plugin/amp.1.5.2.zip"
             },
             "require": {
                 "composer/installers": "~1.0"

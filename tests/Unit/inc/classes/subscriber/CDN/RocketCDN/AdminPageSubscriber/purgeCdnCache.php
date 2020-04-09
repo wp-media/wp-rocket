@@ -31,7 +31,7 @@ class Test_PurgeCdnCache extends TestCase {
 		$this->page       = new AdminPageSubscriber(
 			$this->api_client,
 			$this->createMock( 'WP_Rocket\Admin\Options_Data' ),
-			$this->createMock( 'WP_Rocket\Admin\Settings\Beacon' ),
+			$this->createMock( 'WP_Rocket\Engine\Admin\Beacon\Beacon' ),
 			''
 		);
 	}
