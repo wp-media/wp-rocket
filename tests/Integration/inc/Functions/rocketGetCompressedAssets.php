@@ -5,15 +5,13 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers rocket_get_compressed_assets_rules()
+ * @covers rocket_get_compressed_assets_rules
  * @group Functions
  * @group Htaccess
  * @group AdminOnly
  */
 class Test_RocketGetCompressedAssetsRules extends FilesystemTestCase {
-	protected $structure = [
-		'.htaccess' => '',
-	];
+	protected $path_to_test_data = '/inc/functions/rocketGetCompressedAssets.php';
 
 	public function setUp() {
 		parent::setUp();
@@ -25,10 +23,10 @@ class Test_RocketGetCompressedAssetsRules extends FilesystemTestCase {
 		Functions\when( 'rocket_valid_key' )->justReturn( true );
 
 		add_option( 'wp_rocket_settings', [
-			'minify_css' => 0,
-			'minify_js' => 0,
-			'exclude_css' => [],
-			'exclude_js' => [],
+			'minify_css'           => 0,
+			'minify_js'            => 0,
+			'exclude_css'          => [],
+			'exclude_js'           => [],
 			'remove_query_strings' => 0,
 		] );
 	}
@@ -40,9 +38,14 @@ class Test_RocketGetCompressedAssetsRules extends FilesystemTestCase {
 	}
 
 	public function testShouldContainHtaccessRules() {
+		Functions\expect( 'rocket_get_constant' )
+			->once()
+			->with( 'WP_CONTENT_DIR' )
+			->andReturn( $this->filesystem->getUrl( 'wp-content' ) );
+
 		Functions\expect( 'get_home_path' )
 			->once()
-			->andReturn( 'vfs://cache/' );
+			->andReturn( $this->filesystem->getUrl( 'public/' ) );
 
 		update_option( 'wp_rocket_settings', [
 			'minify_css' => 1,
@@ -72,8 +75,9 @@ class Test_RocketGetCompressedAssetsRules extends FilesystemTestCase {
 		</IfModule>
 		HTACCESS;
 
-		$htaccess = $this->filesystem->get_contents( '.htaccess' );
-
-		$this->assertContains( $expected, $htaccess );
+		$this->assertContains(
+			$expected,
+			$this->filesystem->get_contents( '.htaccess' )
+		);
 	}
 }
