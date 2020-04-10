@@ -27,8 +27,8 @@ class Test_CleanMinify extends TestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testCleanMinify( $value, $shouldRun ) {
-		if ( $shouldRun ) {
+	public function testCleanMinify( $value, $should_run ) {
+		if ( $should_run ) {
 			Functions\expect( 'rocket_clean_minify' )
 				->once()
 				->with( 'css' );

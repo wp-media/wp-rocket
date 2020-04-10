@@ -2,32 +2,40 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\Minify\CSS\AdminSubscriber;
 
-use Brain\Monkey\Functions;
-use WPMedia\PHPUnit\Integration\TestCase;
+use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\Minify\CSS\AdminSubscriber::clean_minify
+ * @uses ::rocket_clean_minify
  * @group  Optimize
  * @group  AdminSubscriber
  * @group  AdminOnly
  */
-class Test_CleanMinify extends TestCase {
-	private $config;
+class Test_CleanMinify extends FilesystemTestCase {
+	protected $path_to_test_data = '/inc/Engine/Optimization/Minify/CSS/AdminSubscriber/cleanMinify.php';
 	private $original_settings;
+
+	public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
+
+		update_option(
+			'wp_rocket_settings',
+			array_merge(
+				get_option( 'wp_rocket_settings', [] ),
+				[
+					'minify_css'  => false,
+					'exclude_css' => [],
+					'cdn'         => false,
+					'cdn_cnames'  => [],
+				]
+			)
+		);
+	}
 
 	public function setUp() {
 		parent::setUp();
 
-		if ( empty( $this->config ) ) {
-			$this->loadConfig();
-		}
-
 		$this->original_settings = get_option( 'wp_rocket_settings', [] );
-
-		update_option(
-			'wp_rocket_settings',
-			array_merge( $this->original_settings, $this->config['settings'] )
-		);
 	}
 
 	public function tearDown() {
@@ -43,30 +51,20 @@ class Test_CleanMinify extends TestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testCleanMinify( $value, $shouldRun ) {
-		if ( $shouldRun ) {
-			Functions\expect( 'rocket_clean_minify' )
-				->once()
-				->with( 'css' );
-		} else {
-			Functions\expect( 'rocket_clean_minify' )->never();
-		}
+	public function testCleanMinify( $value, $should_run ) {
+		$cache_files = $this->filesystem->getFilesListing( 'wp-content/cache/min' );
 
 		update_option(
 			'wp_rocket_settings',
 			array_merge( $this->original_settings, $value )
 		);
-	}
 
-	public function providerTestData() {
-		if ( empty( $this->config ) ) {
-			$this->loadConfig();
+		$after_cache = $this->filesystem->getFilesListing( 'wp-content/cache/min' );
+
+		if ( $should_run ) {
+			$this->assertEmpty( $after_cache );
+		} else {
+			$this->assertEquals( $cache_files, $after_cache );
 		}
-
-		return $this->config['test_data'];
-	}
-
-	private function loadConfig() {
-		$this->config = $this->getTestData( __DIR__, 'cleanMinify' );
 	}
 }

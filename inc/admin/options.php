@@ -76,13 +76,22 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	}
 
 	// phpcs:ignore WordPress.Security.NonceVerification.Missing
-	if ( ! empty( $_POST ) && ( $oldvalue['minify_js'] !== $value['minify_js'] || $oldvalue['exclude_js'] !== $value['exclude_js'] ) || ( isset( $oldvalue['cdn'] ) && ! isset( $value['cdn'] ) || ! isset( $oldvalue['cdn'] ) && isset( $value['cdn'] ) ) ) {
+	if ( ! empty( $_POST )
+		&&
+		( isset( $oldvalue['minify_js'], $value['minify_js'] ) && $oldvalue['minify_js'] !== $value['minify_js'] )
+		||
+		( isset( $oldvalue['exclude_js'], $value['exclude_js'] ) && $oldvalue['exclude_js'] !== $value['exclude_js'] )
+		||
+		( isset( $oldvalue['cdn'] ) && ! isset( $value['cdn'] ) )
+		||
+		( ! isset( $oldvalue['cdn'] ) && isset( $value['cdn'] ) )
+	) {
 		rocket_clean_minify( 'js' );
 	}
 
 	// Purge all cache busting files.
 	// phpcs:ignore WordPress.Security.NonceVerification.Missing
-	if ( ! empty( $_POST ) && ( $oldvalue['remove_query_strings'] !== $value['remove_query_strings'] ) ) {
+	if ( ! empty( $_POST ) && ( isset( $oldvalue['remove_query_strings'], $value['remove_query_strings'] ) && $oldvalue['remove_query_strings'] !== $value['remove_query_strings'] ) ) {
 		rocket_clean_cache_busting();
 	}
 
