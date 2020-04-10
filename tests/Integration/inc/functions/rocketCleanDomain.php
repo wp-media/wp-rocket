@@ -47,7 +47,7 @@ class Test_RocketCleanDomain extends FilesystemTestCase {
 		parent::tearDown();
 
 		unset( $GLOBALS['sitepress'], $GLOBALS['q_config'], $GLOBALS['polylang'] );
-		remove_filter( 'rocket_clean_domain_urls', [ $this, 'checkRocketCleaDomainUrls' ], PHP_INT_MIN );
+		remove_filter( 'rocket_clean_domain_urls', [ $this, 'checkRocketCleaDomainUrls' ], PHP_INT_MAX );
 	}
 
 	/**
@@ -61,7 +61,7 @@ class Test_RocketCleanDomain extends FilesystemTestCase {
 		$shouldNotClean = $this->getNonCleaned( $expected['non_cleaned'] );
 		$this->setUpI18nPlugin( $i18n['lang'], $i18n );
 
-		add_filter( 'rocket_clean_domain_urls', [ $this, 'checkRocketCleaDomainUrls' ], PHP_INT_MIN );
+		add_filter( 'rocket_clean_domain_urls', [ $this, 'checkRocketCleaDomainUrls' ], PHP_INT_MAX );
 
 		// Run it.
 		rocket_clean_domain( $i18n['lang'] );
