@@ -6,7 +6,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Class aliases.
  */
-class_alias( '\WP_Rocket\Optimization\ServiceProvider', '\WP_Rocket\ServiceProvider\Optimization_Subscribers' );
+class_alias( '\WP_Rocket\Engine\Optimization\ServiceProvider', '\WP_Rocket\ServiceProvider\Optimization_Subscribers' );
 
 /**
  * This warning is displayed when the busting cache dir isn't writeable
