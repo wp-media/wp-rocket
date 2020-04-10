@@ -420,23 +420,24 @@ add_filter( 'rocket_post_purge_urls', 'rocket_post_purge_urls_for_qtranslate' );
  */
 function do_admin_post_rocket_purge_cache() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	if ( isset( $_GET['type'], $_GET['_wpnonce'] ) ) {
-		$type = sanitize_key( $_GET['type'] );
+		$type_raw   = sanitize_key( $_GET['type'] );
+		$type_array = explode( '-', $type_raw );
 
-		$_type     = explode( '-', $type );
-		$_type     = reset( $_type );
-		$_id       = explode( '-', $type );
-		$_id       = end( $_id );
-		$_taxonomy = isset( $_GET['taxonomy'] ) ? sanitize_title( wp_unslash( $_GET['taxonomy'] ) ) : false;
+		$type     = reset( $type_array );
+		$id       = isset( $type_array[1] ) && is_numeric( $type_array[1] ) ? absint( $type_array[1] ) : 0;
+		$taxonomy = isset( $_GET['taxonomy'] ) ? sanitize_title( wp_unslash( $_GET['taxonomy'] ) ) : '';
+		$url      = '';
 
-		if ( ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'purge_cache_' . $type ) ) {
+		if ( ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'purge_cache_' . $type_raw ) ) {
 			wp_nonce_ays( '' );
+			return;
 		}
 
 		if ( ! current_user_can( 'rocket_purge_cache' ) ) {
 			return;
 		}
 
-		switch ( $_type ) {
+		switch ( $type ) {
 
 			// Clear all cache domain.
 			case 'all':
@@ -495,50 +496,62 @@ function do_admin_post_rocket_purge_cache() { // phpcs:ignore WordPress.NamingCo
 				}
 
 				rocket_dismiss_box( 'rocket_warning_plugin_modification' );
-
 				break;
 
 			// Clear terms, homepage and other files associated at current post in back-end.
 			case 'post':
-				rocket_clean_post( $_id );
+				rocket_clean_post( $id );
 				set_transient( 'rocket_clear_cache', 'post', HOUR_IN_SECONDS );
 				break;
 
 			// Clear a specific term.
 			case 'term':
-				rocket_clean_term( $_id, $_taxonomy );
+				rocket_clean_term( $id, $taxonomy );
 				set_transient( 'rocket_clear_cache', 'term', HOUR_IN_SECONDS );
 				break;
 
 			// Clear a specific user.
 			case 'user':
-				rocket_clean_user( $_id );
+				rocket_clean_user( $id );
 				set_transient( 'rocket_clear_cache', 'user', HOUR_IN_SECONDS );
 				break;
 
 			// Clear cache file of the current page in front-end.
 			case 'url':
-				$referer = wp_get_referer();
+				$url = wp_get_referer();
 
-				if ( 0 !== strpos( $referer, 'http' ) ) {
+				if ( 0 !== strpos( $url, 'http' ) ) {
 					$parse_url = get_rocket_parse_url( untrailingslashit( home_url() ) );
-					$referer   = $parse_url['scheme'] . '://' . $parse_url['host'] . $referer;
+					$url       = $parse_url['scheme'] . '://' . $parse_url['host'] . $url;
 				}
 
-				if ( home_url( '/' ) === $referer ) {
+				if ( home_url( '/' ) === $url ) {
 					rocket_clean_home();
 				} else {
-					rocket_clean_files( $referer );
+					rocket_clean_files( $url );
 				}
 				break;
 
 			default:
 				wp_nonce_ays( '' );
-				break;
+				return;
 		}
 
+		/**
+		 * Fires after the cache is cleared.
+		 *
+		 * @since  3.6
+		 * @author Grégory Viguier
+		 *
+		 * @param string $type     Type of cache clearance: 'all', 'post', 'term', 'user', 'url'.
+		 * @param int    $id       The post ID, term ID, or user ID being cleared. 0 when $type is not 'post', 'term', or 'user'.
+		 * @param string $taxonomy The taxonomy the term being cleared belong to. '' when $type is not 'term'.
+		 * @param string $url      The URL being cleared. '' when $type is not 'url'.
+		 */
+		do_action( 'rocket_purge_cache', $type, $id, $taxonomy, $url );
+
 		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
-		die();
+		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
 	}
 }
 add_action( 'admin_post_purge_cache', 'do_admin_post_rocket_purge_cache' );
