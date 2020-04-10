@@ -12,12 +12,12 @@ use WP_Rocket\Engine\Optimization\Minify\CSS\AdminSubscriber;
  * @group  AdminSubscriber
  */
 class Test_CleanMinify extends TestCase {
-	private $admin_susbcriber;
+	private $admin_subcriber;
 	private $config;
 
 	public function setUp() {
 		parent::setUp();
-		$this->admin_susbcriber = new AdminSubscriber();
+		$this->admin_subcriber = new AdminSubscriber();
 
 		if ( empty( $this->config ) ) {
 			$this->loadConfig();
@@ -27,7 +27,7 @@ class Test_CleanMinify extends TestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testCleanMinify( $old_value, $value, $shouldRun ) {
+	public function testCleanMinify( $value, $shouldRun ) {
 		if ( $shouldRun ) {
 			Functions\expect( 'rocket_clean_minify' )
 				->once()
@@ -35,7 +35,7 @@ class Test_CleanMinify extends TestCase {
 		} else {
 			Functions\expect( 'rocket_clean_minify' )->never();
 		}
-		$this->admin_susbcriber->clean_minify( $old_value, $value );
+		$this->admin_subcriber->clean_minify( $this->config['settings'], $value );
 	}
 
 	public function providerTestData() {

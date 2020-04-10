@@ -8,12 +8,6 @@ return [
 	],
 	'test_data' => [
 		'shouldNotCleanMinify'             => [
-			'old_value' => [
-				'minify_css'  => false,
-				'exclude_css' => [],
-				'cdn'         => false,
-				'cdn_cnames'  => [],
-			],
 			'value'     => [
 				'minify_css'  => false,
 				'exclude_css' => [],
@@ -23,12 +17,6 @@ return [
 			'shouldRun' => false,
 		],
 		'shouldCleanMinifyCSS'             => [
-			'old_value' => [
-				'minify_css'  => false,
-				'exclude_css' => [],
-				'cdn'         => false,
-				'cdn_cnames'  => [],
-			],
 			'value'     => [
 				'minify_css'  => true,
 				'exclude_css' => [],
@@ -38,12 +26,6 @@ return [
 			'shouldRun' => true,
 		],
 		'shouldCleanMinifyExcludeCSS'      => [
-			'old_value' => [
-				'minify_css'  => false,
-				'exclude_css' => [],
-				'cdn'         => false,
-				'cdn_cnames'  => [],
-			],
 			'value'     => [
 				'minify_css'  => true,
 				'exclude_css' => [ '.css_to_exclude' ],
@@ -53,29 +35,17 @@ return [
 			'shouldRun' => true,
 		],
 		'shouldCleanMinifyCDN'             => [
-			'old_value' => [
+			'value'     => [
 				'minify_css'  => false,
 				'exclude_css' => [],
-				'cdn'         => false,
-				'cdn_cnames'  => [],
-			],
-			'value'     => [
-				'minify_css'  => true,
-				'exclude_css' => [],
-				'cdn'         => false,
+				'cdn'         => true,
 				'cdn_cnames'  => [],
 			],
 			'shouldRun' => true,
 		],
 		'shouldCleanMinifyCDNCname'        => [
-			'old_value' => [
-				'minify_css'  => false,
-				'exclude_css' => [],
-				'cdn'         => false,
-				'cdn_cnames'  => [],
-			],
 			'value'     => [
-				'minify_css'  => true,
+				'minify_css'  => false,
 				'exclude_css' => [],
 				'cdn'         => false,
 				'cdn_cnames'  => [ 'cname' ],

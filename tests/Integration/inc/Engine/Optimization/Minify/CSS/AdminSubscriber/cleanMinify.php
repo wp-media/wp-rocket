@@ -43,7 +43,7 @@ class Test_CleanMinify extends TestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testCleanMinify( $old_value, $value, $shouldRun ) {
+	public function testCleanMinify( $value, $shouldRun ) {
 		if ( $shouldRun ) {
 			Functions\expect( 'rocket_clean_minify' )
 				->once()
