@@ -115,7 +115,7 @@ function rocket_validate_js( $file ) {
 function rocket_is_internal_file( $file ) {
 	$file_host = wp_parse_url( $file, PHP_URL_HOST );
 
-	if ( ! $file_host ) {
+	if ( empty( $file_host ) ) {
 		return false;
 	}
 
@@ -129,19 +129,23 @@ function rocket_is_internal_file( $file ) {
 	 * @param array $zones Zones to check available hosts.
 	 */
 	$hosts   = apply_filters( 'rocket_cdn_hosts', [], [ 'all', 'css_and_js', 'css', 'js' ] );
-	$hosts[] = wp_parse_url( WP_CONTENT_URL, PHP_URL_HOST );
+	$hosts[] = wp_parse_url( content_url(), PHP_URL_HOST );
 	$langs   = get_rocket_i18n_uri();
 
 	// Get host for all langs.
-	if ( $langs ) {
+	if ( ! empty( $langs ) ) {
 		foreach ( $langs as $lang ) {
 			$hosts[] = wp_parse_url( $lang, PHP_URL_HOST );
 		}
 	}
 
-	$hosts_index = array_flip( array_unique( $hosts ) );
+	$hosts = array_unique( $hosts );
 
-	return isset( $hosts_index[ $file_host ] );
+	if ( empty( $hosts ) ) {
+		return false;
+	}
+
+	return in_array( $file_host, $hosts, true );
 }
 
 /**
@@ -361,7 +365,7 @@ function get_rocket_parse_url( $url ) { // phpcs:ignore WordPress.NamingConventi
 	 *
 	 * @param array Components of an URL
 	*/
-	return apply_filters(
+	return (array) apply_filters(
 		'rocket_parse_url',
 		[
 			'host'     => $host,
@@ -433,6 +437,13 @@ function rocket_get_cache_busting_paths( $filename, $extension ) {
  * @return string Resolved file path
  */
 function rocket_realpath( $file ) {
+	$wrapper = null;
+
+	// Strip the protocol.
+	if ( rocket_is_stream( $file ) ) {
+		list( $wrapper, $file ) = explode( '://', $file, 2 );
+	}
+
 	$path = [];
 
 	foreach ( explode( '/', $file ) as $part ) {
@@ -448,9 +459,15 @@ function rocket_realpath( $file ) {
 		}
 	}
 
+	$file = join( '/', $path );
+
+	if ( null !== $wrapper ) {
+		return $wrapper . '://' . $file;
+	}
+
 	$prefix = 'WIN' === strtoupper( substr( PHP_OS, 0, 3 ) ) ? '' : '/';
 
-	return $prefix . join( '/', $path );
+	return $prefix . $file;
 }
 
 /**
@@ -460,13 +477,21 @@ function rocket_realpath( $file ) {
  * @author Remy Perona
  *
  * @param string $url   URL to convert.
- * @param array  $hosts An array of possible hosts for the URL.
+ * @param array  $zones Zones to check available hosts.
  * @return string|bool
  */
-function rocket_url_to_path( $url, $hosts = '' ) {
-	$root_dir = trailingslashit( dirname( WP_CONTENT_DIR ) );
-	$root_url = str_replace( wp_basename( WP_CONTENT_DIR ), '', content_url() );
-	$url_host = wp_parse_url( $url, PHP_URL_HOST );
+function rocket_url_to_path( $url, array $zones = [ 'all' ] ) {
+	/**
+	 * Filters the filepath to the WP content directory
+	 *
+	 * @since 3.5.3
+	 *
+	 * @param string $filepath wp-content directory filepath.
+	 */
+	$wp_content_dir = apply_filters( 'rocket_wp_content_dir', rocket_get_constant( 'WP_CONTENT_DIR' ) );
+	$root_dir       = trailingslashit( dirname( $wp_content_dir ) );
+	$root_url       = str_replace( wp_basename( $wp_content_dir ), '', content_url() );
+	$url_host       = wp_parse_url( $url, PHP_URL_HOST );
 
 	// relative path.
 	if ( null === $url_host ) {
@@ -474,15 +499,22 @@ function rocket_url_to_path( $url, $hosts = '' ) {
 		$url           = trailingslashit( site_url() . str_repeat( '/..', $subdir_levels ) ) . ltrim( $url, '/' );
 	}
 
-	// CDN.
-	if ( get_rocket_option( 'cdn' ) && isset( $hosts[ $url_host ] ) && 'home' !== $hosts[ $url_host ] ) {
-		$url = str_replace( $url_host, wp_parse_url( site_url(), PHP_URL_HOST ), $url );
-	}
+	/**
+	 * Filters the URL before converting it to a path
+	 *
+	 * @since 3.5.3
+	 * @author Remy Perona
+	 *
+	 * @param string $url   URL of the asset.
+	 * @param array  $zones CDN zones corresponding to the current assets type.
+	 */
+	$url = apply_filters( 'rocket_asset_url', $url, $zones );
 
 	$root_url = preg_replace( '/^https?:/', '', $root_url );
 	$url      = preg_replace( '/^https?:/', '', $url );
 	$file     = str_replace( $root_url, $root_dir, $url );
 	$file     = rocket_realpath( $file );
+
 	/**
 	 * Filters the absolute path to the asset file
 	 *

@@ -1028,76 +1028,121 @@ function rocket_clean_cache_dir() {
 }
 
 /**
- * Remove a single file or a folder recursively
+ * Remove a single file or a folder recursively.
  *
+ * @since 3.5.3 Bails if given dir should be preserved; replaces glob; optimizes.
  * @since 1.0
+ * @since 3.5.3 Bails if given dir should be preserved; replaces glob; optimizes.
  *
- * @param string $dir File/Directory to delete.
- * @param array  $dirs_to_preserve (default: array()) Dirs that should not be deleted.
- * @return void
+ * @param string      $dir              File/Directory to delete.
+ * @param array       $dirs_to_preserve Optional. Dirs that should not be deleted.
+ * @param string|null $preserve_pattern Optional. Regex pattern for directories to preserve.
  */
-function rocket_rrmdir( $dir, $dirs_to_preserve = [] ) {
-	$dir = untrailingslashit( $dir );
+function rocket_rrmdir( $dir, array $dirs_to_preserve = [], $preserve_pattern = null ) {
+	$dir        = untrailingslashit( $dir );
+	$filesystem = rocket_direct_filesystem();
+
+	// Build the "to preserve" regex pattern.
+	if ( is_null( $preserve_pattern ) ) {
+		if ( empty( $dirs_to_preserve ) ) {
+			$preserve_pattern = '';
+		} else {
+			$preserve_pattern = str_replace(
+				'/',
+				'\/',
+				implode( '|', $dirs_to_preserve )
+			);
+			$preserve_pattern = "/^{$preserve_pattern}$/";
+		}
+	}
+
+	// Bail out if the given directory is in the list of directories to preserve.
+	if ( _rocket_preserve_directory( $dir, $preserve_pattern ) ) {
+		return;
+	}
 
 	/**
 	 * Fires before a file/directory cache is deleted
 	 *
 	 * @since 1.1.0
 	 *
-	 * @param string $dir File/Directory to delete.
-	 * @param array $dirs_to_preserve Directories that should not be deleted.
-	*/
+	 * @param string $dir              File/Directory to delete.
+	 * @param array  $dirs_to_preserve Directories that should not be deleted.
+	 */
 	do_action( 'before_rocket_rrmdir', $dir, $dirs_to_preserve ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 	// Remove the hidden empty file for mobile detection on NGINX with the Rocket NGINX configuration.
 	$nginx_mobile_detect_file = $dir . '/.mobile-active';
 
-	if ( rocket_direct_filesystem()->is_dir( $dir ) && rocket_direct_filesystem()->exists( $nginx_mobile_detect_file ) ) {
-		rocket_direct_filesystem()->delete( $nginx_mobile_detect_file );
+	if ( $filesystem->is_dir( $dir ) && $filesystem->exists( $nginx_mobile_detect_file ) ) {
+		$filesystem->delete( $nginx_mobile_detect_file );
 	}
 
 	// Remove the hidden empty file for webp.
 	$nowebp_detect_file = $dir . '/.no-webp';
 
-	if ( rocket_direct_filesystem()->is_dir( $dir ) && rocket_direct_filesystem()->exists( $nowebp_detect_file ) ) {
-		rocket_direct_filesystem()->delete( $nowebp_detect_file );
+	if ( $filesystem->is_dir( $dir ) && $filesystem->exists( $nowebp_detect_file ) ) {
+		$filesystem->delete( $nowebp_detect_file );
 	}
 
-	if ( ! rocket_direct_filesystem()->is_dir( $dir ) ) {
-		rocket_direct_filesystem()->delete( $dir );
+	if ( ! $filesystem->is_dir( $dir ) ) {
+		$filesystem->delete( $dir );
+
 		return;
-	};
+	}
 
-	$dirs = glob( $dir . '/*', GLOB_NOSORT );
-	if ( $dirs ) {
+	// Get the directory entries.
+	try {
+		$entries = new FilesystemIterator( $dir, FilesystemIterator::SKIP_DOTS );
+	} catch ( Exception $e ) {
+		$entries = [];
+	}
 
-		$keys = [];
-		foreach ( $dirs_to_preserve as $dir_to_preserve ) {
-			$matches = preg_grep( "#^$dir_to_preserve$#", $dirs );
-			$keys[]  = reset( $matches );
+	foreach ( $entries as $entry ) {
+		$path = $entry->getPathname();
+
+		if ( _rocket_preserve_directory( $path, $preserve_pattern ) ) {
+			continue;
 		}
 
-		$dirs = array_diff( $dirs, array_filter( $keys ) );
-		foreach ( $dirs as $dir ) {
-			if ( rocket_direct_filesystem()->is_dir( $dir ) ) {
-				rocket_rrmdir( $dir, $dirs_to_preserve );
-			} else {
-				rocket_direct_filesystem()->delete( $dir );
-			}
+		// If not a directory, delete it.
+		if ( ! $entry->isDir() ) {
+			$filesystem->delete( $path );
+		} else {
+			rocket_rrmdir( $path, $dirs_to_preserve, $preserve_pattern );
 		}
 	}
 
-	rocket_direct_filesystem()->delete( $dir );
+	$filesystem->delete( $dir );
 
 	/**
 	 * Fires after a file/directory cache was deleted
 	 *
 	 * @since 1.1.0
 	 *
-	 * @param string $dir File/Directory to delete.
-	 * @param array $dirs_to_preserve Dirs that should not be deleted.
-	*/
+	 * @param string $dir              File/Directory to delete.
+	 * @param array  $dirs_to_preserve Dirs that should not be deleted.
+	 */
 	do_action( 'after_rocket_rrmdir', $dir, $dirs_to_preserve ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+}
+
+/**
+ * Checks if the given file or directory should be preserved.
+ *
+ * @since  3.5.3
+ * @access private
+ *
+ * @param string $entry       File/directory to check.
+ * @param string $to_preserve Optional. Dirs that should not be deleted.
+ *
+ * @return bool returns true when should be preserved; else, false.
+ */
+function _rocket_preserve_directory( $entry, $to_preserve ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
+	if ( empty( $to_preserve ) ) {
+		return false;
+	}
+
+	return preg_match( $to_preserve, $entry ) === 1;
 }
 
 /**
@@ -1137,11 +1182,22 @@ function rocket_mkdir( $dir ) {
  * @return bool True if directory is created/exists, false otherwise
  */
 function rocket_mkdir_p( $target ) {
+	$wrapper = null;
+
+	if ( rocket_is_stream( $target ) ) {
+		list( $wrapper, $target ) = explode( '://', $target, 2 );
+	}
+
 	// from php.net/mkdir user contributed notes.
 	$target = str_replace( '//', '/', $target );
 
+	// Put the wrapper back on the target.
+	if ( null !== $wrapper ) {
+		$target = $wrapper . '://' . $target;
+	}
+
 	// safe mode fails with a trailing slash under certain PHP versions.
-	$target = untrailingslashit( $target );
+	$target = rtrim( $target, '/\\' );
 	if ( empty( $target ) ) {
 		$target = '/';
 	}
@@ -1163,6 +1219,30 @@ function rocket_mkdir_p( $target ) {
 	}
 
 	return false;
+}
+
+/**
+ * Test if a given path is a stream URL.
+ *
+ * @since 3.5.3
+ *
+ * @source wp_is_stream() in /wp-includes/functions.php
+ *
+ * @param string $path The resource path or URL.
+ *
+ * @return bool true if the path is a stream URL; else false.
+ */
+function rocket_is_stream( $path ) {
+	$scheme_separator = strpos( $path, '://' );
+
+	if ( false === $scheme_separator ) {
+		// $path isn't a stream.
+		return false;
+	}
+
+	$stream = substr( $path, 0, $scheme_separator );
+
+	return in_array( $stream, stream_get_wrappers(), true );
 }
 
 /**
