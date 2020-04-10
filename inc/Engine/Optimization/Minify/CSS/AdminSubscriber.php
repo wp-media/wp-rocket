@@ -28,7 +28,6 @@ class AdminSubscriber implements Subscriber_Interface {
 	 * Clean minify CSS files when options change.
 	 *
 	 * @since  3.5.3
-	 * @author Soponar Cristina
 	 *
 	 * @param array $old_value An array of previous values for the settings.
 	 * @param array $value     An array of submitted values for the settings.
