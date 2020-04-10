@@ -1104,12 +1104,23 @@ function rocket_rrmdir( $dir, array $dirs_to_preserve = [] ) {
 	} catch ( Exception $e ) {
 	}
 
-	$keys = [];
-	foreach ( $dirs_to_preserve as $dir_to_preserve ) {
-		$keys[] = preg_grep( "#^$dir_to_preserve$#", $entries );
+	// Exclude directories to preserve from the entries.
+	if ( ! empty( $dirs_to_preserve ) && ! empty( $entries ) ) {
+		$keys = [];
+		foreach ( $dirs_to_preserve as $dir_to_preserve ) {
+			$matches = preg_grep( "#^$dir_to_preserve$#", $entries );
+			$keys[] = reset( $matches );
+		}
+
+		if ( ! empty( $keys ) ) {
+			$keys = array_filter( $keys );
+			if ( ! empty( $keys ) ) {
+				$entries = array_diff( $entries, $keys );
+			}
+		}
 	}
 
-	foreach ( array_diff( $entries, array_filter( $keys ) ) as $entry ) {
+	foreach ( $entries as $entry ) {
 		// If not a directory, delete it.
 		if ( ! $filesystem->is_dir( $entry ) ) {
 			$filesystem->delete( $entry );
