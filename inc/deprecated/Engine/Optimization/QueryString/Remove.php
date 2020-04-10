@@ -2,6 +2,7 @@
 namespace WP_Rocket\Engine\Optimization\QueryString;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\deprecated\DeprecatedClassTrait;
 use WP_Rocket\Engine\Optimization\AbstractOptimization;
 use WP_Rocket\Optimization\CSS\Path_Rewriter;
 

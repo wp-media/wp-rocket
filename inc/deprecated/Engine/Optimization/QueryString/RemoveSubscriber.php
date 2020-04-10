@@ -1,6 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Optimization\QueryString;
 
+use WP_Rocket\deprecated\DeprecatedClassTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
