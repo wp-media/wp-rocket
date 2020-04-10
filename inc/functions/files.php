@@ -827,10 +827,11 @@ function rocket_clean_domain( $lang = '' ) {
 
 	try {
 		$iterator = new RecursiveIteratorIterator(
-			new RecursiveDirectoryIterator( $cache_path, FilesystemIterator::SKIP_DOTS ),
+			new RecursiveDirectoryIterator( $cache_path ),
 			RecursiveIteratorIterator::SELF_FIRST,
 			RecursiveIteratorIterator::CATCH_GET_CHILD
 		);
+		$iterator->setMaxDepth( 1 );
 	} catch ( Exception $e ) {
 		// No logging yet.
 		return;
@@ -856,16 +857,11 @@ function rocket_clean_domain( $lang = '' ) {
 		 */
 		do_action( 'before_rocket_clean_domain', $root, $lang, $url ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
-		if ( ! empty( $file['path'] ) ) {
-			$depth = substr_count( $file['path'], '/' ) + 1;
-			$regex = "/{$file['host']}*\/" . trim( $file['path'], '/' ) . "\/+/i";
-		} else {
-			$depth = 1;
-			$regex = "/{$file['host']}*/i";
-		}
+		$regex = ! empty( $file['path'] )
+			? "/({$file['host']})*\/" . trim( $file['path'], '/' ) . "/i"
+			: "/{$file['host']}*/i";
 
 		try {
-			$iterator->setMaxDepth( $depth );
 			$files = new RegexIterator( $iterator, $regex );
 		} catch ( InvalidArgumentException $e ) {
 			// No logging yet.
@@ -873,7 +869,7 @@ function rocket_clean_domain( $lang = '' ) {
 		}
 
 		foreach ( $files as $file ) {
-			rocket_rrmdir( $file, $dirs_to_preserve );
+			rocket_rrmdir( $file->getPathname(), $dirs_to_preserve );
 		}
 
 		/**
@@ -1059,35 +1055,15 @@ function rocket_clean_cache_dir() {
 /**
  * Remove a single file or a folder recursively.
  *
- * @since 3.5.3 Bails if given dir should be preserved; replaces glob; optimizes.
+ * @since 3.5.3 Replaces glob and optimizes.
  * @since 1.0
  *
  * @param string      $dir              File/Directory to delete.
  * @param array       $dirs_to_preserve Optional. Dirs that should not be deleted.
- * @param string|null $preserve_pattern Optional. Regex pattern for directories to preserve.
  */
-function rocket_rrmdir( $dir, array $dirs_to_preserve = [], $preserve_pattern = null ) {
+function rocket_rrmdir( $dir, array $dirs_to_preserve = [] ) {
 	$dir        = untrailingslashit( $dir );
 	$filesystem = rocket_direct_filesystem();
-
-	// Build the "to preserve" regex pattern.
-	if ( is_null( $preserve_pattern ) ) {
-		if ( empty( $dirs_to_preserve ) ) {
-			$preserve_pattern = '';
-		} else {
-			$preserve_pattern = str_replace(
-				'/',
-				'\/',
-				implode( '|', $dirs_to_preserve )
-			);
-			$preserve_pattern = "/^{$preserve_pattern}$/";
-		}
-	}
-
-	// Bail out if the given directory is in the list of directories to preserve.
-	if ( _rocket_preserve_directory( $dir, $preserve_pattern ) ) {
-		return;
-	}
 
 	/**
 	 * Fires before a file/directory cache is deleted
@@ -1120,24 +1096,25 @@ function rocket_rrmdir( $dir, array $dirs_to_preserve = [], $preserve_pattern = 
 	}
 
 	// Get the directory entries.
+	$entries = [];
 	try {
-		$entries = new FilesystemIterator( $dir );
+		foreach ( new FilesystemIterator( $dir ) as $entry ) {
+			$entries[] = $entry->getPathname();
+		}
 	} catch ( Exception $e ) {
-		$entries = [];
 	}
 
-	foreach ( $entries as $entry ) {
-		$path = $entry->getPathname();
+	$keys = [];
+	foreach ( $dirs_to_preserve as $dir_to_preserve ) {
+		$keys[] = preg_grep( "#^$dir_to_preserve$#", $entries );
+	}
 
-		if ( _rocket_preserve_directory( $path, $preserve_pattern ) ) {
-			continue;
-		}
-
+	foreach ( array_diff( $entries, array_filter( $keys ) ) as $entry ) {
 		// If not a directory, delete it.
-		if ( ! $entry->isDir() ) {
-			$filesystem->delete( $path );
+		if ( ! $filesystem->is_dir( $entry ) ) {
+			$filesystem->delete( $entry );
 		} else {
-			rocket_rrmdir( $path, $dirs_to_preserve, $preserve_pattern );
+			rocket_rrmdir( $entry, $dirs_to_preserve );
 		}
 	}
 
@@ -1152,25 +1129,6 @@ function rocket_rrmdir( $dir, array $dirs_to_preserve = [], $preserve_pattern = 
 	 * @param array  $dirs_to_preserve Dirs that should not be deleted.
 	 */
 	do_action( 'after_rocket_rrmdir', $dir, $dirs_to_preserve ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
-}
-
-/**
- * Checks if the given file or directory should be preserved.
- *
- * @since  3.5.3
- * @access private
- *
- * @param string $entry       File/directory to check.
- * @param string $to_preserve Optional. Dirs that should not be deleted.
- *
- * @return bool returns true when should be preserved; else, false.
- */
-function _rocket_preserve_directory( $entry, $to_preserve ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
-	if ( empty( $to_preserve ) ) {
-		return false;
-	}
-
-	return preg_match( $to_preserve, $entry ) === 1;
 }
 
 /**

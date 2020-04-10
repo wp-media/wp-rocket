@@ -19,6 +19,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group Functions
  * @group Files
  * @group vfs
+ * @group thisone
  */
 class Test_RocketCleanDomain extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/functions/rocketCleanDomain.php';
