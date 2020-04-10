@@ -41,18 +41,12 @@ class Test_RocketCleanDomain extends FilesystemTestCase {
 		$this->urlsToClean = [];
 		$this->toPreserve  = [];
 		$this->dirsToClean = [];
-
-		$this->original_dirs = array_map(
-			function ( $dir ) {
-				return $this->filesystem->getUrl( $dir );
-			},
-			$this->original_dirs
-		);
 	}
 
 	public function tearDown() {
 		parent::tearDown();
 
+		unset( $GLOBALS['sitepress'], $GLOBALS['q_config'], $GLOBALS['polylang'] );
 		remove_filter( 'rocket_clean_domain_urls', [ $this, 'checkRocketCleaDomainUrls' ], PHP_INT_MIN );
 	}
 
