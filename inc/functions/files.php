@@ -858,7 +858,7 @@ function rocket_clean_domain( $lang = '' ) {
 		do_action( 'before_rocket_clean_domain', $root, $lang, $url ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 		$regex = ! empty( $file['path'] )
-			? "/({$file['host']})*\/" . trim( $file['path'], '/' ) . "/i"
+			? "/({$file['host']})*\/" . trim( $file['path'], '/' ) . '/i'
 			: "/{$file['host']}*/i";
 
 		try {
@@ -1057,8 +1057,8 @@ function rocket_clean_cache_dir() {
  * @since 3.5.3 Replaces glob and optimizes.
  * @since 1.0
  *
- * @param string      $dir              File/Directory to delete.
- * @param array       $dirs_to_preserve Optional. Dirs that should not be deleted.
+ * @param string $dir              File/Directory to delete.
+ * @param array  $dirs_to_preserve Optional. Dirs that should not be deleted.
  */
 function rocket_rrmdir( $dir, array $dirs_to_preserve = [] ) {
 	$dir        = untrailingslashit( $dir );
@@ -1100,7 +1100,8 @@ function rocket_rrmdir( $dir, array $dirs_to_preserve = [] ) {
 		foreach ( new FilesystemIterator( $dir ) as $entry ) {
 			$entries[] = $entry->getPathname();
 		}
-	} catch ( Exception $e ) {
+	} catch ( Exception $e ) { // phpcs:disable Generic.CodeAnalysis.EmptyStatement.DetectedCatch
+		// No action required, as logging not enabled.
 	}
 
 	// Exclude directories to preserve from the entries.
@@ -1108,7 +1109,7 @@ function rocket_rrmdir( $dir, array $dirs_to_preserve = [] ) {
 		$keys = [];
 		foreach ( $dirs_to_preserve as $dir_to_preserve ) {
 			$matches = preg_grep( "#^$dir_to_preserve$#", $entries );
-			$keys[] = reset( $matches );
+			$keys[]  = reset( $matches );
 		}
 
 		if ( ! empty( $keys ) ) {
