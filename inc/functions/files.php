@@ -828,7 +828,8 @@ function rocket_clean_domain( $lang = '' ) {
 	try {
 		$iterator = new RecursiveIteratorIterator(
 			new RecursiveDirectoryIterator( $cache_path, FilesystemIterator::SKIP_DOTS ),
-			RecursiveIteratorIterator::SELF_FIRST
+			RecursiveIteratorIterator::SELF_FIRST,
+			RecursiveIteratorIterator::CATCH_GET_CHILD
 		);
 	} catch ( Exception $e ) {
 		// No logging yet.
