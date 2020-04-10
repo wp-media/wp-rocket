@@ -4,7 +4,7 @@ namespace WP_Rocket\Engine\CriticalPath;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 
 /**
- * Service provider for WP Rocket Optimization.
+ * Service provider for the Critical CSS classes
  *
  * @since 3.6
  */
@@ -23,6 +23,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'critical_css_generation',
 		'critical_css',
 		'critical_css_subscriber',
+		'rest_delete_post_cpcss',
 	];
 
 	/**
@@ -37,5 +38,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'critical_css_subscriber', 'WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber' )
 			->withArgument( $this->getContainer()->get( 'critical_css' ) )
 			->withArgument( $this->getContainer()->get( 'options' ) );
+		$this->getContainer()->share( 'rest_delete_post_cpcss', 'WP_Rocket\Engine\CriticalPath\RESTDelete' )
+			->withArgument( rocket_get_constant( 'WP_ROCKET_CRITICAL_CSS_PATH' ) );
 	}
 }
