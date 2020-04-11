@@ -65,7 +65,7 @@ trait i18nTrait {
 				->with( $homeUrl, $lang, true )
 				->andReturnUsing(
 					function ( $homeUrl, $lang ) use ( $data ) {
-						return $this->qtransConvertURL( $homeUrl, $lang, $data );
+						return $this->buildUrl( $homeUrl, $lang, $data );
 					}
 				);
 		} else {
@@ -73,13 +73,34 @@ trait i18nTrait {
 				->with( $homeUrl, $lang, true )
 				->andReturnUsing(
 					function ( $homeUrl, $lang ) use ( $data ) {
-						return $this->qtransConvertURL( $homeUrl, $lang, $data );
+						return $this->buildUrl( $homeUrl, $lang, $data );
 					}
 				);
 		}
 	}
 
-	protected function qtransConvertURL( $homeUrl, $lang, $data ) {
+	protected function setUpPolylang( $lang, $data, $homeUrl ) {
+//		$langs = $data['langs'];
+
+		if ( empty( $data['langs'] ) ) {
+			$GLOBALS['polylang'] = 'not-empty';
+		} else {
+			$GLOBALS['polylang'] = new PLL_Frontend( $data['options'] );
+
+			Functions\expect( 'PLL' )->andReturn( $GLOBALS['polylang'] );
+			Functions\expect( 'pll_home_url' )
+				->with( $lang )
+				->andReturnUsing(
+					function ( $lang ) use ( $data, $homeUrl ) {
+						return $this->buildUrl( $homeUrl, $lang, $data );
+					}
+				);
+		}
+
+		Functions\expect( 'pll_languages_list' )->andReturn( $data['langs'] );
+	}
+
+	protected function buildUrl( $homeUrl, $lang, $data ) {
 		if ( empty( $lang ) ) {
 			return $homeUrl;
 		}
@@ -93,34 +114,5 @@ trait i18nTrait {
 		}
 
 		return trailingslashit( $homeUrl ) . $lang;
-	}
-
-	protected function setUpPolylang( $lang, $data, $homeUrl ) {
-		$langs = $data['langs'];
-
-		if ( empty( $langs ) ) {
-			$GLOBALS['polylang'] = 'not-empty';
-		} else {
-			$GLOBALS['polylang'] = new PLL_Frontend( $data['options'] );
-
-			Functions\expect( 'PLL' )->andReturn( $GLOBALS['polylang'] );
-			Functions\expect( 'pll_home_url' )
-				->with( $lang )
-				->andReturnUsing(
-					function ( $lang ) use ( $langs, $homeUrl ) {
-						if ( empty( $lang ) ) {
-							return $homeUrl;
-						}
-
-						if ( in_array( $lang, $langs, true ) ) {
-							return trailingslashit( $homeUrl ) . $lang;
-						}
-
-						return $homeUrl;
-					}
-				);
-		}
-
-		Functions\expect( 'pll_languages_list' )->andReturn( $langs );
 	}
 }
