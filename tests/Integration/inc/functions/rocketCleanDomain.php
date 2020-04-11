@@ -18,6 +18,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group Functions
  * @group Files
  * @group vfs
+ * @group thisone
  */
 class Test_RocketCleanDomain extends FilesystemTestCase {
 	use i18nTrait;
@@ -49,7 +50,7 @@ class Test_RocketCleanDomain extends FilesystemTestCase {
 	 */
 	public function testShouldCleanSingleDomain( $i18n, $expected ) {
 		$this->urlsToClean = $expected['rocket_clean_domain_urls'];
-		$this->toPreserve  = $i18n['get_rocket_i18n_to_preserve'];
+		$this->toPreserve  = $i18n['dirs_to_preserve'];
 		$this->dirsToClean = $expected['cleaned'];
 
 		$shouldNotClean = $this->getNonCleaned( $expected['non_cleaned'] );
