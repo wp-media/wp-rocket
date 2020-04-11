@@ -856,7 +856,7 @@ function rocket_clean_domain( $lang = '' ) {
 		 */
 		do_action( 'before_rocket_clean_domain', $root, $lang, $url ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
-		if ( ! empty( $file['path'] )) {
+		if ( ! empty( $file['path'] ) ) {
 			$regex = "/({$file['host']})*\/" . trim( $file['path'], '/' ) . '/i';
 			$depth = 1;
 		} else {
