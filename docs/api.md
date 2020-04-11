@@ -111,7 +111,7 @@ as_schedule_cron_action( $timestamp, $schedule, $hook, $args, $group )
 ### Parameters
 
 - **$timestamp** (integer)(required) The Unix timestamp representing the date you want the action to run. Default: _none_.
-- **$schedule** (string)(required) $schedule A cron-link schedule string, see http://en.wikipedia.org/wiki/Cron. Default: _none_.
+- **$schedule** (string)(required) $schedule A cron-like schedule string, see http://en.wikipedia.org/wiki/Cron. Default: _none_.
 - **$hook** (string)(required) Name of the action hook. Default: _none_.
 - **$args** (array) Arguments to pass to callbacks when the hook triggers. Default: _`array()`_.
 - **$group** (array) The group to assign this job to. Default: _''_.
