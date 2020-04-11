@@ -32,7 +32,7 @@ trait i18nTrait {
 
 			case 'qtranslate':
 			case 'qtranslate-x':
-				return $this->setUpQTranslate( $lang, $data['langs'], $homeUrl );
+				return $this->setUpQTranslate( $lang, $data, $homeUrl );
 
 			case 'polylang':
 				return $this->setUpPolylang( $lang, $data, $homeUrl );
@@ -49,7 +49,8 @@ trait i18nTrait {
 		$GLOBALS['sitepress']->uris_config      = $data['uris'];
 	}
 
-	protected function setUpQTranslate( $lang, $langs, $homeUrl ) {
+	protected function setUpQTranslate( $lang, $data, $homeUrl ) {
+		$langs               = $data['langs'];
 		$GLOBALS['q_config'] = [ 'enabled_languages' => $langs ];
 
 		if ( ! $this->always_qtranxf_convertURL && ( empty( $lang ) || empty( $langs ) ) ) {
@@ -63,27 +64,31 @@ trait i18nTrait {
 			Functions\expect( 'qtrans_convertURL' )
 				->with( $homeUrl, $lang, true )
 				->andReturnUsing(
-					function ( $homeUrl, $lang ) use ( $langs ) {
-						return $this->qtransConvertURL( $homeUrl, $lang, $langs );
+					function ( $homeUrl, $lang ) use ( $data ) {
+						return $this->qtransConvertURL( $homeUrl, $lang, $data );
 					}
 				);
 		} else {
 			Functions\expect( 'qtranxf_convertURL' )
 				->with( $homeUrl, $lang, true )
 				->andReturnUsing(
-					function ( $homeUrl, $lang ) use ( $langs ) {
-						return $this->qtransConvertURL( $homeUrl, $lang, $langs );
+					function ( $homeUrl, $lang ) use ( $data ) {
+						return $this->qtransConvertURL( $homeUrl, $lang, $data );
 					}
 				);
 		}
 	}
 
-	protected function qtransConvertURL( $homeUrl, $lang, $langs ) {
+	protected function qtransConvertURL( $homeUrl, $lang, $data ) {
 		if ( empty( $lang ) ) {
 			return $homeUrl;
 		}
 
-		if ( empty( $langs ) ) {
+		if ( empty( $data['langs'] ) ) {
+			return $homeUrl;
+		}
+
+		if ( $lang === $data['default_lang'] ) {
 			return $homeUrl;
 		}
 

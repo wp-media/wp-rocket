@@ -831,7 +831,6 @@ function rocket_clean_domain( $lang = '' ) {
 			RecursiveIteratorIterator::SELF_FIRST,
 			RecursiveIteratorIterator::CATCH_GET_CHILD
 		);
-		$iterator->setMaxDepth( 1 );
 	} catch ( Exception $e ) {
 		// No logging yet.
 		return;
@@ -857,11 +856,16 @@ function rocket_clean_domain( $lang = '' ) {
 		 */
 		do_action( 'before_rocket_clean_domain', $root, $lang, $url ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
-		$regex = ! empty( $file['path'] )
-			? "/({$file['host']})*\/" . trim( $file['path'], '/' ) . '/i'
-			: "/{$file['host']}*/i";
+		if ( ! empty( $file['path'] )) {
+			$regex = "/({$file['host']})*\/" . trim( $file['path'], '/' ) . '/i';
+			$depth = 1;
+		} else {
+			$regex = "/{$file['host']}*/i";
+			$depth = 0;
+		}
 
 		try {
+			$iterator->setMaxDepth( $depth );
 			$files = new RegexIterator( $iterator, $regex );
 		} catch ( InvalidArgumentException $e ) {
 			// No logging yet.

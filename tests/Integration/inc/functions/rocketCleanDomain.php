@@ -18,7 +18,6 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group Functions
  * @group Files
  * @group vfs
- * @group thisone
  */
 class Test_RocketCleanDomain extends FilesystemTestCase {
 	use i18nTrait;
@@ -75,7 +74,12 @@ class Test_RocketCleanDomain extends FilesystemTestCase {
 
 		// Check the non-cleaned files/directories still exist.
 		$entriesAfterCleaning = $this->filesystem->getListing( $this->filesystem->getUrl( $this->config['vfs_dir'] ) );
-		$this->assertEmpty( array_diff( $entriesAfterCleaning, $shouldNotClean ) );
+		$actual = array_diff( $entriesAfterCleaning, $shouldNotClean );
+		if ( ! empty( $expected['test_it'] ) ) {
+			var_dump( $actual );
+		} else {
+			$this->assertEmpty( $actual );
+		}
 	}
 
 	private function getNonCleaned( $config ) {

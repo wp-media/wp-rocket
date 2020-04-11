@@ -19,7 +19,6 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
  * @group Functions
  * @group Files
  * @group vfs
- * @group thisone
  */
 class Test_RocketCleanDomain extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/functions/rocketCleanDomain.php';
@@ -74,7 +73,7 @@ class Test_RocketCleanDomain extends FilesystemTestCase {
 				}
 			);
 
-		foreach ( array_keys( $expected['cleaned'] ) as $entry ) {
+		foreach ( $config['rocket_rrmdir'] as $entry ) {
 			Functions\expect( 'rocket_rrmdir' )
 				->once()
 				->with( $entry, $dirsToPreserve )
