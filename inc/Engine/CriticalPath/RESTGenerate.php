@@ -68,9 +68,25 @@ class RESTGenerate implements Subscriber_Interface {
 	 * @return WP_REST_Response
 	 */
 	public function generate( WP_REST_Request $request ) {
-		if ( 'publish' !== get_post_status( $request['id'] ) ) {
+		$status = get_post_status( $request['id'] );
+
+		if ( ! $status ) {
 			return rest_ensure_response(
 				[
+					'success' => false,
+					'code'    => 'post_not_exists',
+					'message' => __( 'Requested post does not exist', 'rocket' ),
+					'data'    => [
+						'status' => 400,
+					],
+				]
+			);
+		}
+
+		if ( 'publish' !== $status ) {
+			return rest_ensure_response(
+				[
+					'success' => false,
 					'code'    => 'post_not_published',
 					'message' => __( 'Cannot generate CPCSS for unpublished post', 'rocket' ),
 					'data'    => [
@@ -82,18 +98,6 @@ class RESTGenerate implements Subscriber_Interface {
 
 		$post_url  = get_permalink( $request['id'] );
 		$post_type = get_post_type( $request['id'] );
-
-		if ( ! $post_url ) {
-			return rest_ensure_response(
-				[
-					'code'    => 'post_not_exists',
-					'message' => __( 'Requested post does not exist', 'rocket' ),
-					'data'    => [
-						'status' => 400,
-					],
-				]
-			);
-		}
 
 		$response = $this->send_generation_request( $post_url, $post_type );
 
