@@ -27,11 +27,11 @@ class Test_Process extends FilesystemTestCase {
 		$this->assertSame(
 			$this->format_the_html( $expected['html'] ),
 			$this->format_the_html( apply_filters( 'rocket_buffer', $original ) )
-        );
+		);
 
-        foreach( $expected['files'] as $file ) {
-            $this->assertTrue( $this->filesystem->exists( $file ) );
-        }
+		foreach( $expected['files'] as $file ) {
+			$this->assertTrue( $this->filesystem->exists( $file ) );
+		}
 
 		$this->unset_settings( $settings );
 		remove_filter( 'pre_get_rocket_option_minify_css', [ $this, 'return_true' ] );
