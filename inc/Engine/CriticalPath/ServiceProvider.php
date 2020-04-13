@@ -20,15 +20,16 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	protected $provides = [
 		'rest_generate_post_cpcss',
+		'rest_delete_post_cpcss',
 	];
 
 	/**
-	 * Registers in the container
-	 *
-	 * @return void
+	 * Registers in the container.
 	 */
 	public function register() {
 		$this->getContainer()->share( 'rest_generate_post_cpcss', 'WP_Rocket\Engine\CriticalPath\RESTGenerate' )
-			->withArgument( WP_ROCKET_CRITICAL_CSS_PATH );
+			->withArgument( rocket_get_constant( 'WP_ROCKET_CRITICAL_CSS_PATH' ) );
+		$this->getContainer()->share( 'rest_delete_post_cpcss', 'WP_Rocket\Engine\CriticalPath\RESTDelete' )
+			->withArgument( rocket_get_constant( 'WP_ROCKET_CRITICAL_CSS_PATH' ) );
 	}
 }

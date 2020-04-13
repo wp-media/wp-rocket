@@ -160,6 +160,7 @@ class Plugin {
 			'purge_actions_subscriber',
 			'amp_subscriber',
 			'rest_generate_post_cpcss',
+			'rest_delete_post_cpcss',
 		];
 
 		if ( get_rocket_option( 'do_cloudflare' ) ) {
