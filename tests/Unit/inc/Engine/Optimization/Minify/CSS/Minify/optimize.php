@@ -33,7 +33,7 @@ class Test_Optimize extends TestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldMinifyCSS( $original, $minified, $cdn_host, $cdn_url, $site_url ) {
+	public function testShouldMinifyCSS( $original, $expected, $cdn_host, $cdn_url, $site_url ) {
 		Filters\expectApplied( 'rocket_cdn_hosts' )
 			->zeroOrMoreTimes()
 			->with( [], [ 'all', 'css_and_js', 'css' ] )
@@ -52,13 +52,12 @@ class Test_Optimize extends TestCase {
 			} );
 
 		$this->assertSame(
-			$minified,
-			$this->minify->optimize( $original )
+			$this->format_the_html( $expected['html'] ),
+			$this->format_the_html( $this->minify->optimize( $original ) )
 		);
 
-		$this->assertTrue( $this->filesystem->exists( 'wordpress/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-dcd1a95e5d432b5d300d7c2f216d7150.css' ) );
-		$this->assertTrue( $this->filesystem->exists( 'wordpress/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-dcd1a95e5d432b5d300d7c2f216d7150.css.gz' ) );
-		$this->assertTrue( $this->filesystem->exists( 'wordpress/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style-b35546733b0295036e79cc1f700b1efd.css' ) );
-		$this->assertTrue( $this->filesystem->exists( 'wordpress/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style-b35546733b0295036e79cc1f700b1efd.css.gz' ) );
+		foreach ( $expected['files'] as $file ) {
+			$this->assertTrue( $this->filesystem->exists( $file ) );
+		}
 	}
 }
