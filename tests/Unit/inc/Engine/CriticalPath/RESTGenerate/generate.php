@@ -13,7 +13,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
  * @group  vfs
  */
 class Test_Generate extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/Engine/CriticalPath/RESTGenerate/generate.php';
+	protected $path_to_test_data                   = '/inc/Engine/CriticalPath/RESTGenerate/generate.php';
 	protected static $mockCommonWpFunctionsInSetUp = true;
 
 	public static function setUpBeforeClass() {
@@ -25,21 +25,21 @@ class Test_Generate extends FilesystemTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->filesystem->chmod(  'wp-content/cache/critical-css/index.php', 0644 );
-		$this->filesystem->chmod(  'wp-content/cache/critical-css/', 0755 );
+		$this->filesystem->chmod( 'wp-content/cache/critical-css/index.php', 0644 );
+		$this->filesystem->chmod( 'wp-content/cache/critical-css/', 0755 );
 	}
 
 	/**
 	 * @dataProvider nonMultisiteTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ) {
-		$post_id   = isset( $config['post_data'] )
+		$post_id                    = isset( $config['post_data'] )
 			? $config['post_data']['ID']
 			: 0;
-		$post_type = ! isset( $config['post_data']['post_type'] )
+		$post_type                  = ! isset( $config['post_data']['post_type'] )
 			? 'post'
 			: $config['post_data']['post_type'];
-		$post_status = isset( $config['post_data']['post_status'] )
+		$post_status                = isset( $config['post_data']['post_status'] )
 			? $config['post_data']['post_status']
 			: false;
 		$post_request_response_code = ! isset( $config['generate_post_request_data']['code'] )
@@ -48,7 +48,7 @@ class Test_Generate extends FilesystemTestCase {
 		$post_request_response_body = ! isset( $config['generate_post_request_data']['body'] )
 			? ''
 			: $config['generate_post_request_data']['body'];
-		$get_request_response_body = ! isset( $config['generate_get_request_data']['body'] )
+		$get_request_response_body  = ! isset( $config['generate_get_request_data']['body'] )
 			? ''
 			: $config['generate_get_request_data']['body'];
 
@@ -68,13 +68,15 @@ class Test_Generate extends FilesystemTestCase {
 			->andReturn( 1 );
 		Functions\expect( 'get_permalink' )
 			->atMost()
-			->times(1)
+			->times( 1 )
 			->with( $post_id )
-			->andReturnUsing( function ( $post_id ) use ( $expected ) {
-				return 'post_not_exists' === $expected['code']
-					? false
-					: "http://example.org/?p={$post_id}";
-			} );
+			->andReturnUsing(
+					function ( $post_id ) use ( $expected ) {
+						return 'post_not_exists' === $expected['code']
+						? false
+						: "http://example.org/?p={$post_id}";
+					}
+				);
 
 		Functions\expect( 'wp_remote_post' )
 			->atMost()
@@ -91,29 +93,29 @@ class Test_Generate extends FilesystemTestCase {
 
 		Functions\expect( 'wp_remote_retrieve_response_code' )
 			->atMost()
-			->times(1)
+			->times( 1 )
 			->andReturn( $post_request_response_code );
 
 		Functions\expect( 'wp_remote_retrieve_body' )
 			->ordered()
 			->atMost()
-			->times(1)
+			->times( 1 )
 			->with( 'postRequest' )
 			->andReturn( $post_request_response_body )
 			->andAlsoExpectIt()
 			->atMost()
-			->times(1)
+			->times( 1 )
 			->with( 'getRequest' )
 			->andReturn( $get_request_response_body );
 
 		Functions\expect( 'wp_remote_get' )
 			->atMost()
-			->times(1)
+			->times( 1 )
 			->andReturn( 'getRequest' );
 
 		Functions\when( 'wp_strip_all_tags' )->returnArg();
 
-		Functions\expect( 'rest_ensure_response' )->once()->andReturnArg(0);
+		Functions\expect( 'rest_ensure_response' )->once()->andReturnArg( 0 );
 
 		$instance      = new RESTGenerate( $this->filesystem->getUrl( 'wp-content/cache/critical-css/' ) );
 		$request       = new WP_REST_Request();

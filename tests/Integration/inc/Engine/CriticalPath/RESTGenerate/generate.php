@@ -38,13 +38,13 @@ class Test_Generate extends RESTVfsTestCase {
 		$post_request_response_body = ! isset( $config['generate_post_request_data']['body'] )
 			? ''
 			: $config['generate_post_request_data']['body'];
-		$get_request_response_body = ! isset( $config['generate_get_request_data']['body'] )
+		$get_request_response_body  = ! isset( $config['generate_get_request_data']['body'] )
 			? ''
 			: $config['generate_get_request_data']['body'];
 
 		Functions\expect( 'wp_remote_post' )
 			->atMost()
-			->times(1)
+			->times( 1 )
 			->with(
 				'https://cpcss.wp-rocket.me/api/job/',
 				[
@@ -57,28 +57,28 @@ class Test_Generate extends RESTVfsTestCase {
 
 		Functions\expect( 'wp_remote_get' )
 			->atMost()
-			->times(1)
+			->times( 1 )
 			->andReturn( 'getRequest' );
 
 		Functions\expect( 'wp_remote_retrieve_response_code' )
 			->atMost()
-			->times(1)
+			->times( 1 )
 			->andReturn( $post_request_response_code );
 
 		Functions\expect( 'wp_remote_retrieve_body' )
 			->ordered()
 			->atMost()
-			->times(1)
+			->times( 1 )
 			->with( 'postRequest' )
 			->andReturn( $post_request_response_body )
 			->andAlsoExpectIt()
 			->atMost()
-			->times(1)
+			->times( 1 )
 			->with( 'getRequest' )
 			->andReturn( $get_request_response_body );
 
 		$file = $this->config['vfs_dir'] . "{$site_id}/posts/{$post_type}-{$post_id}.css";
-	
+
 		$this->assertSame( $expected, $this->doRestRequest( 'POST', "/wp-rocket/v1/cpcss/post/{$post_id}" ) );
 		$this->assertSame( $config['cpcss_exists_after'], $this->filesystem->exists( $file ) );
 	}
