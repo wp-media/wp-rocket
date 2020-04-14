@@ -4,6 +4,13 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
+ * Require deprecated classes.
+ */
+require WP_ROCKET_DEPRECATED_PATH . 'DeprecatedClassTrait.php';
+require WP_ROCKET_DEPRECATED_PATH . 'Engine/Optimization/QueryString/Remove.php';
+require WP_ROCKET_DEPRECATED_PATH . 'Engine/Optimization/QueryString/RemoveSubscriber.php';
+
+/**
  * Class aliases.
  */
 class_alias( '\WP_Rocket\Engine\Optimization\ServiceProvider', '\WP_Rocket\ServiceProvider\Optimization_Subscribers' );
