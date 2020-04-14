@@ -6,9 +6,9 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Require deprecated classes.
  */
-require WP_ROCKET_DEPRECATED_PATH . 'DeprecatedClassTrait.php';
-require WP_ROCKET_DEPRECATED_PATH . 'Engine/Optimization/QueryString/Remove.php';
-require WP_ROCKET_DEPRECATED_PATH . 'Engine/Optimization/QueryString/RemoveSubscriber.php';
+require_once __DIR__ . '/DeprecatedClassTrait.php';
+require_once __DIR__ . '/Engine/Optimization/QueryString/Remove.php';
+require_once __DIR__ . '/Engine/Optimization/QueryString/RemoveSubscriber.php';
 
 /**
  * Class aliases.
