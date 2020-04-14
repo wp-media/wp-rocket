@@ -22,7 +22,7 @@ abstract class ApiTestCase extends WPMediaRESTfulTestCase {
 			];
 		}
 
-		return $this->doRestRequest( $body_params, '/wp-rocket/v1/rocketcdn/disable' );
+		return $this->doRestPut( '/wp-rocket/v1/rocketcdn/disable', $body_params );
 	}
 
 	/**
@@ -41,6 +41,6 @@ abstract class ApiTestCase extends WPMediaRESTfulTestCase {
 			];
 		}
 
-		return $this->doRestRequest( $body_params, '/wp-rocket/v1/rocketcdn/enable' );
+		return $this->doRestPut( '/wp-rocket/v1/rocketcdn/enable', $body_params );
 	}
 }
