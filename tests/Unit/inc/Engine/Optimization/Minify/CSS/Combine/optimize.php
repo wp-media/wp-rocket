@@ -67,8 +67,5 @@ class Test_Optimize extends TestCase {
 		foreach ( $expected['files'] as $file ) {
 			$this->assertTrue( $this->filesystem->exists( $file ) );
 		}
-
-		$this->assertTrue( $this->filesystem->exists( 'wordpress/wp-content/cache/min/1/0bca286481748a69cdbe9a6695015ec9.css' ) );
-		$this->assertTrue( $this->filesystem->exists( 'wordpress/wp-content/cache/min/1/0bca286481748a69cdbe9a6695015ec9.css.gz' ) );
 	}
 }
