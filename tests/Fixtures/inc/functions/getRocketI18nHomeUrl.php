@@ -6,16 +6,16 @@ return [
 	'false_ShouldReturnHomeUrl'                 => [
 		'lang'     => '',
 		'config'   => [
-			'i18n_plugin'     => false,
-			'data'            => [],
+			'i18n_plugin' => false,
+			'data'        => [],
 		],
 		'expected' => 'http://example.org',
 	],
 	'baz_ShouldReturnHomeUrl'                   => [
 		'lang'     => '',
 		'config'   => [
-			'i18n_plugin'     => 'baz',
-			'data'            => [
+			'i18n_plugin' => 'baz',
+			'data'        => [
 				'codes' => [ 'de', 'en', 'fr' ],
 				'langs' => [ 'de', 'en', 'fr' ],
 			],
@@ -29,24 +29,24 @@ return [
 	'wpml_ShouldReturnDefault'                  => [
 		'lang'     => '',
 		'config'   => [
-			'i18n_plugin'     => 'wpml',
-			'data'            => $i18n_plugins['wpml'],
+			'i18n_plugin' => 'wpml',
+			'data'        => $i18n_plugins['wpml'],
 		],
 		'expected' => 'http://example.org',
 	],
 	'wpml_ShouldReturnFr'                       => [
 		'lang'     => 'fr',
 		'config'   => [
-			'i18n_plugin'     => 'wpml',
-			'data'            => $i18n_plugins['wpml'],
+			'i18n_plugin' => 'wpml',
+			'data'        => $i18n_plugins['wpml'],
 		],
 		'expected' => 'http://example.org?lang=fr',
 	],
 	'wpml_ShouldReturnDe'                       => [
 		'lang'     => 'de',
 		'config'   => [
-			'i18n_plugin'     => 'wpml',
-			'data'            => $i18n_plugins['wpml'],
+			'i18n_plugin' => 'wpml',
+			'data'        => $i18n_plugins['wpml'],
 		],
 		'expected' => 'http://example.org?lang=de',
 	],
@@ -57,16 +57,16 @@ return [
 	'qtranslate_ShouldReturnDefault'            => [
 		'lang'     => '',
 		'config'   => [
-			'i18n_plugin'     => 'qtranslate',
-			'data'            => $i18n_plugins['qtranslate'],
+			'i18n_plugin' => 'qtranslate',
+			'data'        => $i18n_plugins['qtranslate'],
 		],
 		'expected' => 'http://example.org',
 	],
 	'qtranslate_ShouldReturnHomeUrlWhenNoCodes' => [
 		'lang'     => 'de',
 		'config'   => [
-			'i18n_plugin'     => 'qtranslate',
-			'data'            => [
+			'i18n_plugin' => 'qtranslate',
+			'data'        => [
 				'codes' => [],
 			],
 		],
@@ -75,24 +75,24 @@ return [
 	'qtranslate_ShouldReturnEn'                 => [
 		'lang'     => 'en',
 		'config'   => [
-			'i18n_plugin'     => 'qtranslate',
-			'data'            => $i18n_plugins['qtranslate'],
+			'i18n_plugin' => 'qtranslate',
+			'data'        => $i18n_plugins['qtranslate'],
 		],
-		'expected' => 'http://example.org/en',
+		'expected' => 'http://example.org',
 	],
 	'qtranslate_ShouldReturnFr'                 => [
 		'lang'     => 'fr',
 		'config'   => [
-			'i18n_plugin'     => 'qtranslate',
-			'data'            => $i18n_plugins['qtranslate'],
+			'i18n_plugin' => 'qtranslate',
+			'data'        => $i18n_plugins['qtranslate'],
 		],
 		'expected' => 'http://example.org/fr',
 	],
 	'qtranslate_ShouldReturnDe'                 => [
 		'lang'     => 'de',
 		'config'   => [
-			'i18n_plugin'     => 'qtranslate',
-			'data'            => $i18n_plugins['qtranslate'],
+			'i18n_plugin' => 'qtranslate',
+			'data'        => $i18n_plugins['qtranslate'],
 		],
 		'expected' => 'http://example.org/de',
 	],
@@ -103,8 +103,8 @@ return [
 	'polylang_ShouldReturnHomeUrlWhenNoCodes'   => [
 		'lang'     => '',
 		'config'   => [
-			'i18n_plugin'     => 'polylang',
-			'data'            => [
+			'i18n_plugin' => 'polylang',
+			'data'        => [
 				'codes'   => [],
 				'langs'   => [],
 				'options' => [],
@@ -115,32 +115,32 @@ return [
 	'polylang_shouldReturnDefault'              => [
 		'lang'     => '',
 		'config'   => [
-			'i18n_plugin'     => 'polylang',
-			'data'            => $i18n_plugins['polylang'],
+			'i18n_plugin' => 'polylang',
+			'data'        => $i18n_plugins['polylang'],
 		],
 		'expected' => 'http://example.org',
 	],
-	'polylang_shouldReturnDefaultWhenEn'              => [
+	'polylang_shouldReturnDefaultWhenEn'        => [
 		'lang'     => 'en',
 		'config'   => [
-			'i18n_plugin'     => 'polylang',
-			'data'            => $i18n_plugins['polylang'],
+			'i18n_plugin' => 'polylang',
+			'data'        => $i18n_plugins['polylang'],
 		],
-		'expected' => 'http://example.org/en',
+		'expected' => 'http://example.org',
 	],
 	'polylang_shouldReturnDe'                   => [
 		'lang'     => 'de',
 		'config'   => [
-			'i18n_plugin'     => 'polylang',
-			'data'            => $i18n_plugins['polylang'],
+			'i18n_plugin' => 'polylang',
+			'data'        => $i18n_plugins['polylang'],
 		],
 		'expected' => 'http://example.org/de',
 	],
 	'polylang_shouldReturnFr'                   => [
 		'lang'     => 'fr',
 		'config'   => [
-			'i18n_plugin'     => 'polylang',
-			'data'            => $i18n_plugins['polylang'],
+			'i18n_plugin' => 'polylang',
+			'data'        => $i18n_plugins['polylang'],
 		],
 		'expected' => 'http://example.org/fr',
 	],
