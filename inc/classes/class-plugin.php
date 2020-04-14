@@ -130,8 +130,8 @@ class Plugin {
 			'cdn_subscriber',
 			'critical_css_subscriber',
 			'sucuri_subscriber',
-			'facebook_tracking_subscriber',
-			'google_tracking_subscriber',
+			'facebook_tracking',
+			'google_tracking',
 			'expired_cache_purge_subscriber',
 			'preload_subscriber',
 			'sitemap_preload_subscriber',
@@ -159,6 +159,7 @@ class Plugin {
 			'purge_actions_subscriber',
 			'beaverbuilder_subscriber',
 			'amp_subscriber',
+			'simple_custom_css',
 		];
 
 		if ( get_rocket_option( 'do_cloudflare' ) ) {

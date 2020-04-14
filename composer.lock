@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7d01a78e491cb90d5bb1f8be79dcfbb9",
+    "content-hash": "d24799970180cc70de7382178a492555",
     "packages": [
         {
             "name": "composer/installers",
@@ -1241,16 +1241,16 @@
         },
         {
             "name": "php-stubs/wordpress-stubs",
-            "version": "v5.3.2",
+            "version": "v5.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-stubs/wordpress-stubs.git",
-                "reference": "b05e2ea95ae2ae8bc9e9fdfaaad43475bcf3e16b"
+                "reference": "baab62405f6a6ac9b25ed3fe6df371d090f9bc0c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-stubs/wordpress-stubs/zipball/b05e2ea95ae2ae8bc9e9fdfaaad43475bcf3e16b",
-                "reference": "b05e2ea95ae2ae8bc9e9fdfaaad43475bcf3e16b",
+                "url": "https://api.github.com/repos/php-stubs/wordpress-stubs/zipball/baab62405f6a6ac9b25ed3fe6df371d090f9bc0c",
+                "reference": "baab62405f6a6ac9b25ed3fe6df371d090f9bc0c",
                 "shasum": ""
             },
             "replace": {
@@ -1277,7 +1277,7 @@
                 "static analysis",
                 "wordpress"
             ],
-            "time": "2019-12-19T00:20:48+00:00"
+            "time": "2020-03-31T21:58:11+00:00"
         },
         {
             "name": "phpcompatibility/php-compatibility",
@@ -2034,12 +2034,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "abf855b59c93a92efbebc39107e2a5a6215a0488"
+                "reference": "0f73cf4b4b9227eb8845723bc2a8869bc4dd6e8f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/abf855b59c93a92efbebc39107e2a5a6215a0488",
-                "reference": "abf855b59c93a92efbebc39107e2a5a6215a0488",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/0f73cf4b4b9227eb8845723bc2a8869bc4dd6e8f",
+                "reference": "0f73cf4b4b9227eb8845723bc2a8869bc4dd6e8f",
                 "shasum": ""
             },
             "conflict": {
@@ -2080,8 +2080,8 @@
                 "doctrine/orm": ">=2,<2.4.8|>=2.5,<2.5.1",
                 "dolibarr/dolibarr": "<=10.0.6",
                 "dompdf/dompdf": ">=0.6,<0.6.2",
-                "drupal/core": ">=7,<7.69|>=8,<8.7.11|>=8.8,<8.8.1",
-                "drupal/drupal": ">=7,<7.69|>=8,<8.7.11|>=8.8,<8.8.1",
+                "drupal/core": ">=7,<7.69|>=8,<8.7.12|>=8.8,<8.8.4",
+                "drupal/drupal": ">=7,<7.69|>=8,<8.7.12|>=8.8,<8.8.4",
                 "endroid/qr-code-bundle": "<3.4.2",
                 "enshrined/svg-sanitize": "<0.13.1",
                 "erusev/parsedown": "<1.7.2",
@@ -2290,7 +2290,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2020-03-30T15:16:05+00:00"
+            "time": "2020-03-31T14:30:16+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -3361,16 +3361,16 @@
         },
         {
             "name": "wp-media/phpunit",
-            "version": "v1.1.4",
+            "version": "v1.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-media/phpunit.git",
-                "reference": "202a7e08ac22a77ff218691e8c77ad3a1db891a0"
+                "reference": "5ac5b8a0966960dc77b8780bc33a07b7388c8b6a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-media/phpunit/zipball/202a7e08ac22a77ff218691e8c77ad3a1db891a0",
-                "reference": "202a7e08ac22a77ff218691e8c77ad3a1db891a0",
+                "url": "https://api.github.com/repos/wp-media/phpunit/zipball/5ac5b8a0966960dc77b8780bc33a07b7388c8b6a",
+                "reference": "5ac5b8a0966960dc77b8780bc33a07b7388c8b6a",
                 "shasum": ""
             },
             "require": {
@@ -3401,19 +3401,19 @@
             ],
             "description": "PHPUnit extender for bootstrapping unit and WordPress integration test suites.",
             "homepage": "https://github.com/wp-media/phpunit",
-            "time": "2020-03-29T13:35:19+00:00"
+            "time": "2020-03-31T23:45:29+00:00"
         },
         {
             "name": "wpackagist-plugin/amp",
-            "version": "1.4.4",
+            "version": "1.5.2",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/amp/",
-                "reference": "tags/1.4.4"
+                "reference": "tags/1.5.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/amp.1.4.4.zip"
+                "url": "https://downloads.wordpress.org/plugin/amp.1.5.2.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -3422,22 +3422,22 @@
             "homepage": "https://wordpress.org/plugins/amp/"
         },
         {
-            "name": "wpackagist-plugin/hummingbird-performance",
-            "version": "2.0.1",
+            "name": "wpackagist-plugin/simple-custom-css",
+            "version": "4.0.3",
             "source": {
                 "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/hummingbird-performance/",
-                "reference": "tags/2.0.1"
+                "url": "https://plugins.svn.wordpress.org/simple-custom-css/",
+                "reference": "trunk"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/hummingbird-performance.2.0.1.zip"
+                "url": "https://downloads.wordpress.org/plugin/simple-custom-css.zip?timestamp=1571931333"
             },
             "require": {
                 "composer/installers": "~1.0"
             },
             "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/hummingbird-performance/"
+            "homepage": "https://wordpress.org/plugins/simple-custom-css/"
         }
     ],
     "aliases": [],

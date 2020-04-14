@@ -35,6 +35,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'bigcommerce_subscriber',
 		'beaverbuilder_subscriber',
 		'amp_subscriber',
+		'simple_custom_css',
 	];
 
 	/**
@@ -73,5 +74,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'beaverbuilder_subscriber', 'WP_Rocket\ThirdParty\Plugins\PageBuilder\BeaverBuilder' );
 		$this->getContainer()->share( 'amp_subscriber', 'WP_Rocket\ThirdParty\Plugins\Optimization\AMP' )
 			->withArgument( $options );
+		$this->getContainer()->share( 'simple_custom_css', 'WP_Rocket\ThirdParty\Plugins\SimpleCustomCss' )
+			->withArgument( WP_ROCKET_CACHE_BUSTING_PATH )
+			->withArgument( WP_ROCKET_CACHE_BUSTING_URL );
 	}
 }
