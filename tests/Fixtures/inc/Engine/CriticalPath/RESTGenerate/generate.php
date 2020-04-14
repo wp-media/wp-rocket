@@ -16,7 +16,6 @@ return [
 						'posts'          => [
 							'.'           => '',
 							'..'          => '',
-							'page-20.css' => '.p { color: red; }',
 						],
 						'home.css'       => '.p { color: red; }',
 						'front_page.css' => '.p { color: red; }',
@@ -45,13 +44,26 @@ return [
 
 	'test_data' => [
 		'non_multisite' => [
-            'testShouldBailoutWhenNotPublished'          => [
+			'testShouldBailoutIfPostDoesNotExist'          => [
 				'config'   => [
 					'current_user_can'    => true,
-					'post_data'           => [ 'post_id' => 1, 'post_type' => 'post', 'post_status' => 'draft' ],
 					'cpcss_exists_after'  => false,
 				],
 				'expected' => [
+					'success' => false,
+					'code'    => 'post_not_exists',
+					'message' => 'Requested post does not exist',
+					'data'    => [ 'status' => 400 ],
+				],
+            ],
+            'testShouldBailoutWhenNotPublished'          => [
+				'config'   => [
+					'current_user_can'    => true,
+					'post_data'           => [ 'ID' => 1, 'post_type' => 'post', 'post_status' => 'draft', 'post_title' => 'CPCSS title', 'post_content' => 'content' ],
+					'cpcss_exists_after'  => false,
+				],
+				'expected' => [
+					'success' => false,
 					'code'    => 'post_not_published',
 					'message' => 'Cannot generate CPCSS for unpublished post',
 					'data'    => [
@@ -59,22 +71,10 @@ return [
 					],
 				],
 			],
-			'testShouldBailoutIfPostDoesNotExist'          => [
-				'config'   => [
-					'current_user_can'    => true,
-					'post_data'           => [ 'post_id' => 2, 'post_type' => 'post', 'post_status' => 'publish' ],
-					'cpcss_exists_after'  => false,
-				],
-				'expected' => [
-					'code'    => 'post_not_exists',
-					'message' => 'Requested post does not exist',
-					'data'    => [ 'status' => 400 ],
-				],
-            ],
             'testShouldBailoutIfPostRequest400' => [
 				'config'   => [
 					'current_user_can'    => true,
-                    'post_data'           => [ 'post_id' => 1, 'post_type' => 'post', 'post_status' => 'publish' ],
+                    'post_data'           => [ 'ID' => 1, 'post_type' => 'post', 'post_status' => 'publish', 'post_title' => 'CPCSS title', 'post_content' => 'content' ],
                     'generate_post_request_data' => [ 'code' => 400, 'body' => '{}' ],
 					'cpcss_exists_after'  => false,
 				],
@@ -90,7 +90,7 @@ return [
             'testShouldBailoutIfPostRequestNot200' => [
 				'config'   => [
 					'current_user_can'    => true,
-                    'post_data'           => [ 'post_id' => 1, 'post_type' => 'post', 'post_status' => 'publish' ],
+                    'post_data'           => [ 'ID' => 1, 'post_type' => 'post', 'post_status' => 'publish' ],
                     'generate_post_request_data' => [ 'code' => 404, 'body' => '{}' ],
 					'cpcss_exists_after'  => false,
 				],
@@ -106,7 +106,7 @@ return [
             'testShouldBailoutIfPostRequestBodyEmpty' => [
 				'config'   => [
 					'current_user_can'    => true,
-                    'post_data'           => [ 'post_id' => 1, 'post_type' => 'post', 'post_status' => 'publish' ],
+                    'post_data'           => [ 'ID' => 1, 'post_type' => 'post', 'post_status' => 'publish' ],
                     'generate_post_request_data' => [ 'code' => 200, 'body' => '{}' ],
 					'cpcss_exists_after'  => false,
 				],
@@ -122,7 +122,7 @@ return [
             'testShouldBailoutIfGetRequestCode400' => [
 				'config'   => [
 					'current_user_can'    => true,
-                    'post_data'           => [ 'post_id' => 1, 'post_type' => 'post', 'post_status' => 'publish' ],
+                    'post_data'           => [ 'ID' => 1, 'post_type' => 'post', 'post_status' => 'publish' ],
                     'generate_post_request_data' => [ 'code' => 200, 'body' => '{"success":true,"data":{"id":1}}' ],
                     'generate_get_request_data'  => [ 'code' => 400, 'body' => '{"status":400,"message":"error happened"}' ],
 					'cpcss_exists_after'  => false,
@@ -139,7 +139,7 @@ return [
             'testShouldSaveCPCSSForPost' => [
 				'config'   => [
 					'current_user_can'    => true,
-                    'post_data'           => [ 'post_id' => 1, 'post_type' => 'post', 'post_status' => 'publish' ],
+                    'post_data'           => [ 'ID' => 1, 'post_type' => 'post', 'post_status' => 'publish' ],
                     'generate_post_request_data' => [ 'code' => 200, 'body' => '{"success":true,"data":{"id":1}}' ],
                     'generate_get_request_data'  => [ 'code' => 200, 'body' => '{"status":200,"data":{"state":"complete","critical_path":"body{color:#000}"}}' ],
 					'cpcss_exists_after'  => true,
