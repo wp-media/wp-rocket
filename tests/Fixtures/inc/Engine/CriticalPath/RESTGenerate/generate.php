@@ -59,7 +59,7 @@ return [
             'testShouldBailoutWhenNotPublished'          => [
 				'config'   => [
 					'current_user_can'    => true,
-					'post_data'           => [ 'ID' => 1, 'post_type' => 'post', 'post_status' => 'draft', 'post_title' => 'CPCSS title', 'post_content' => 'content' ],
+					'post_data'           => [ 'ID' => 21, 'post_type' => 'post', 'post_status' => 'draft', 'post_title' => 'CPCSS title', 'post_content' => 'content' ],
 					'cpcss_exists_after'  => false,
 				],
 				'expected' => [
@@ -74,14 +74,14 @@ return [
             'testShouldBailoutIfPostRequest400' => [
 				'config'   => [
 					'current_user_can'    => true,
-                    'post_data'           => [ 'ID' => 1, 'post_type' => 'post', 'post_status' => 'publish', 'post_title' => 'CPCSS title', 'post_content' => 'content' ],
+                    'post_data'           => [ 'ID' => 21, 'post_type' => 'post', 'post_status' => 'publish', 'post_title' => 'CPCSS title', 'post_content' => 'content' ],
                     'generate_post_request_data' => [ 'code' => 400, 'body' => '{}' ],
 					'cpcss_exists_after'  => false,
 				],
 				'expected' => [
                     'success' => false,
                     'code'    => 'cpcss_generation_failed',
-                    'message' => 'Critical CSS for http://example.org/?p=1 not generated.',
+                    'message' => 'Critical CSS for http://example.org/?p=21 not generated.',
                     'data'    => [
                         'status' => 400,
                     ],
@@ -90,14 +90,14 @@ return [
             'testShouldBailoutIfPostRequestNot200' => [
 				'config'   => [
 					'current_user_can'    => true,
-                    'post_data'           => [ 'ID' => 1, 'post_type' => 'post', 'post_status' => 'publish' ],
+                    'post_data'           => [ 'ID' => 21, 'post_type' => 'post', 'post_status' => 'publish' ],
                     'generate_post_request_data' => [ 'code' => 404, 'body' => '{}' ],
 					'cpcss_exists_after'  => false,
 				],
 				'expected' => [
                     'success' => false,
                     'code'    => 'cpcss_generation_failed',
-                    'message' => 'Critical CSS for http://example.org/?p=1 not generated. Error: The API returned an invalid response code.',
+                    'message' => 'Critical CSS for http://example.org/?p=21 not generated. Error: The API returned an invalid response code.',
                     'data'    => [
                         'status' => 404,
                     ],
@@ -106,14 +106,14 @@ return [
             'testShouldBailoutIfPostRequestBodyEmpty' => [
 				'config'   => [
 					'current_user_can'    => true,
-                    'post_data'           => [ 'ID' => 1, 'post_type' => 'post', 'post_status' => 'publish' ],
+                    'post_data'           => [ 'ID' => 21, 'post_type' => 'post', 'post_status' => 'publish' ],
                     'generate_post_request_data' => [ 'code' => 200, 'body' => '{}' ],
 					'cpcss_exists_after'  => false,
 				],
 				'expected' => [
                     'success' => false,
                     'code'    => 'cpcss_generation_failed',
-                    'message' => 'Critical CSS for http://example.org/?p=1 not generated. Error: The API returned an empty response.',
+                    'message' => 'Critical CSS for http://example.org/?p=21 not generated. Error: The API returned an empty response.',
                     'data'    => [
                         'status' => 400,
                     ],
@@ -122,7 +122,7 @@ return [
             'testShouldBailoutIfGetRequestCode400' => [
 				'config'   => [
 					'current_user_can'    => true,
-                    'post_data'           => [ 'ID' => 1, 'post_type' => 'post', 'post_status' => 'publish' ],
+                    'post_data'           => [ 'ID' => 21, 'post_type' => 'post', 'post_status' => 'publish' ],
                     'generate_post_request_data' => [ 'code' => 200, 'body' => '{"success":true,"data":{"id":1}}' ],
                     'generate_get_request_data'  => [ 'code' => 400, 'body' => '{"status":400,"message":"error happened"}' ],
 					'cpcss_exists_after'  => false,
@@ -130,7 +130,7 @@ return [
 				'expected' => [
                     'success' => false,
                     'code'    => 'cpcss_generation_failed',
-                    'message' => 'Critical CSS for http://example.org/?p=1 not generated. Error: error happened',
+                    'message' => 'Critical CSS for http://example.org/?p=21 not generated. Error: error happened',
                     'data'    => [
                         'status' => 400,
                     ],
@@ -139,7 +139,7 @@ return [
             'testShouldSaveCPCSSForPost' => [
 				'config'   => [
 					'current_user_can'    => true,
-                    'post_data'           => [ 'ID' => 1, 'post_type' => 'post', 'post_status' => 'publish' ],
+                    'post_data'           => [ 'ID' => 21, 'post_type' => 'post', 'post_status' => 'publish' ],
                     'generate_post_request_data' => [ 'code' => 200, 'body' => '{"success":true,"data":{"id":1}}' ],
                     'generate_get_request_data'  => [ 'code' => 200, 'body' => '{"status":200,"data":{"state":"complete","critical_path":"body{color:#000}"}}' ],
 					'cpcss_exists_after'  => true,
@@ -147,7 +147,7 @@ return [
 				'expected' => [
 					'success' => true,
 					'code'    => 'cpcss_generation_successful',
-					'message' => 'Critical CSS for http://example.org/?p=1 generated.',
+					'message' => 'Critical CSS for http://example.org/?p=21 generated.',
 					'data'    => [
 						'status' => 200,
 					],
