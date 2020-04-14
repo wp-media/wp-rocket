@@ -42,16 +42,13 @@ class Test_Generate extends FilesystemTestCase {
 		$post_status = isset( $config['post_data']['post_status'] )
 			? $config['post_data']['post_status']
 			: false;
-		$generate_post_request_response_code = ! isset( $config['generate_post_request_data']['code'] )
+		$post_request_response_code = ! isset( $config['generate_post_request_data']['code'] )
 			? 200
 			: $config['generate_post_request_data']['code'];
-		$generate_post_request_response_body = ! isset( $config['generate_post_request_data']['body'] )
+		$post_request_response_body = ! isset( $config['generate_post_request_data']['body'] )
 			? ''
 			: $config['generate_post_request_data']['body'];
-		$generate_get_request_response_code = ! isset( $config['generate_get_request_data']['code'] )
-			? 200
-			: $config['generate_get_request_data']['code'];
-		$generate_get_request_response_body = ! isset( $config['generate_get_request_data']['body'] )
+		$get_request_response_body = ! isset( $config['generate_get_request_data']['body'] )
 			? ''
 			: $config['generate_get_request_data']['body'];
 
@@ -63,7 +60,7 @@ class Test_Generate extends FilesystemTestCase {
 
 		Functions\expect( 'get_post_type' )
 			->atMost()
-			->times(1)
+			->times( 1 )
 			->andReturn( $post_type );
 
 		Functions\expect( 'get_current_blog_id' )
@@ -81,7 +78,7 @@ class Test_Generate extends FilesystemTestCase {
 
 		Functions\expect( 'wp_remote_post' )
 			->atMost()
-			->times(1)
+			->times( 1 )
 			->with(
 				'https://cpcss.wp-rocket.me/api/job/',
 				[
@@ -95,25 +92,24 @@ class Test_Generate extends FilesystemTestCase {
 		Functions\expect( 'wp_remote_retrieve_response_code' )
 			->atMost()
 			->times(1)
-			->andReturn( $generate_post_request_response_code );
+			->andReturn( $post_request_response_code );
 
 		Functions\expect( 'wp_remote_retrieve_body' )
 			->ordered()
 			->atMost()
 			->times(1)
 			->with( 'postRequest' )
-			->andReturn( $generate_post_request_response_body )
+			->andReturn( $post_request_response_body )
 			->andAlsoExpectIt()
 			->atMost()
 			->times(1)
 			->with( 'getRequest' )
-			->andReturn( $generate_get_request_response_body );
+			->andReturn( $get_request_response_body );
 
 		Functions\expect( 'wp_remote_get' )
 			->atMost()
 			->times(1)
-			->andReturn( $generate_get_request_response_code )
-			->andReturn( 'getRequest');
+			->andReturn( 'getRequest' );
 
 		Functions\when( 'wp_strip_all_tags' )->returnArg();
 
