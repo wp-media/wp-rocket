@@ -76,22 +76,20 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	}
 
 	// phpcs:ignore WordPress.Security.NonceVerification.Missing
-	if ( ! empty( $_POST )
-		&&
-		( isset( $oldvalue['minify_js'], $value['minify_js'] ) && $oldvalue['minify_js'] !== $value['minify_js'] )
+	if ( ( array_key_exists( 'minify_js', $oldvalue ) && array_key_exists( 'minify_js', $value ) && $oldvalue['minify_js'] !== $value['minify_js'] )
 		||
-		( isset( $oldvalue['exclude_js'], $value['exclude_js'] ) && $oldvalue['exclude_js'] !== $value['exclude_js'] )
+		( array_key_exists( 'exclude_js', $oldvalue ) && array_key_exists( 'exclude_js', $value ) && $oldvalue['exclude_js'] !== $value['exclude_js'] )
 		||
-		( isset( $oldvalue['cdn'] ) && ! isset( $value['cdn'] ) )
+		( array_key_exists( 'cdn', $oldvalue ) && array_key_exists( 'cdn', $value ) && $oldvalue['cdn'] !== $value['cdn'] )
 		||
-		( ! isset( $oldvalue['cdn'] ) && isset( $value['cdn'] ) )
+		( array_key_exists( 'cdn_cnames', $oldvalue ) && array_key_exists( 'cdn_cnames', $value ) && $oldvalue['cdn_cnames'] !== $value['cdn_cnames'] )
 	) {
 		rocket_clean_minify( 'js' );
 	}
 
 	// Purge all cache busting files.
 	// phpcs:ignore WordPress.Security.NonceVerification.Missing
-	if ( ! empty( $_POST ) && ( isset( $oldvalue['remove_query_strings'], $value['remove_query_strings'] ) && $oldvalue['remove_query_strings'] !== $value['remove_query_strings'] ) ) {
+	if ( array_key_exists( 'remove_query_strings', $oldvalue ) && array_key_exists( 'remove_query_strings', $value ) && $oldvalue['remove_query_strings'] !== $value['remove_query_strings'] ) {
 		rocket_clean_cache_busting();
 	}
 

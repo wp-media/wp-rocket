@@ -33,14 +33,17 @@ class AdminSubscriber implements Subscriber_Interface {
 	 * @param array $value     An array of submitted values for the settings.
 	 */
 	public function clean_minify( $old_value, $value ) {
+		if ( ! is_array( $old_value ) || ! is_array( $value ) ) {
+			return;
+		}
 		// Purge all minify cache files.
-		if ( ( isset( $old_value['minify_css'], $value['minify_css'] ) && $old_value['minify_css'] !== $value['minify_css'] )
+		if ( ( array_key_exists( 'minify_css', $old_value ) && array_key_exists( 'minify_css', $value ) && $old_value['minify_css'] !== $value['minify_css'] )
 			||
-			( isset( $old_value['exclude_css'], $value['exclude_css'] ) && $old_value['exclude_css'] !== $value['exclude_css'] )
+			( array_key_exists( 'exclude_css', $old_value ) && array_key_exists( 'exclude_css', $value ) && $old_value['exclude_css'] !== $value['exclude_css'] )
 			||
-			( isset( $old_value['cdn'], $value['cdn'] ) && $old_value['cdn'] !== $value['cdn'] )
+			( array_key_exists( 'cdn', $old_value ) && array_key_exists( 'cdn', $value ) && $old_value['cdn'] !== $value['cdn'] )
 			||
-			( isset( $old_value['cdn_cnames'], $value['cdn_cnames'] ) && $old_value['cdn_cnames'] !== $value['cdn_cnames'] )
+			( array_key_exists( 'cdn_cnames', $old_value ) && array_key_exists( 'cdn_cnames', $value ) && $old_value['cdn_cnames'] !== $value['cdn_cnames'] )
 		) {
 			rocket_clean_minify( 'css' );
 		}
