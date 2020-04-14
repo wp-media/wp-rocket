@@ -105,7 +105,6 @@
 			"@test-integration-adminonly",
 			"@test-integration-docloudflare",
 			"@test-integration-withwoo",
-			"@test-integration-multisite",
 			"@test-integration-bb",
 			"@test-integration-elementor",
 			"@test-integration-hummingbird",
