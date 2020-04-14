@@ -1,0 +1,77 @@
+<?php
+
+namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\Beacon\Beacon;
+
+use Mockery;
+use Brain\Monkey\Functions;
+use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Admin\Beacon\Beacon;
+
+/**
+ * @covers \WP_Rocket\Engine\Admin\Beacon\Beacon::insert_script
+ * @group  Beacon
+ */
+class Test_InsertScript extends TestCase {
+	private $beacon;
+	private $options;
+
+	public function setUp() {
+		parent::setUp();
+
+		$this->options = Mockery::mock( Options_Data::class );
+		$this->beacon  = new Beacon( $this->options );
+	}
+
+	private function getActualHtml() {
+		ob_start();
+		$this->beacon->insert_script();
+
+		return $this->format_the_html( ob_get_clean() );
+	}
+
+	public function testShouldReturNullWhenNoCapacity() {
+		Functions\when( 'current_user_can' )->justReturn( false );
+
+		$this->assertNull( $this->beacon->insert_script() );
+	}
+
+	/**
+	 * @dataProvider providerTestData
+	 */
+	public function testShouldReturnBeaconScript( $locale, $expected ) {
+		Functions\when( 'current_user_can' )->justReturn( true );
+		Functions\when( 'get_user_locale' )->justReturn( $locale );
+		Functions\when( 'esc_js' )->returnArg();
+		Functions\when( 'wp_json_encode' )->alias( 'json_encode' );
+		Functions\when( 'home_url' )->justReturn( 'http://example.org' );
+		Functions\when( 'get_transient' )->justReturn( false );
+		Functions\when( 'wp_get_theme' )->alias( function() {
+			$wp_theme = Mockery::Mock( 'WP_Theme' );
+			$wp_theme->shouldReceive( 'get' )
+				->with( 'Name' )
+				->andReturn( 'WordPress Default' );
+
+			return $wp_theme;
+		} );
+		Functions\when( 'get_bloginfo' )->justReturn( '5.4' );
+		Functions\when( 'rocket_get_constant' )->justReturn( '3.6' );
+		Functions\when( 'rocket_get_active_plugins' )->justReturn( [] );
+
+		$this->options->shouldReceive( 'get' )
+			->with( 'consumer_email' )
+			->andReturn( 'dummy@wp-rocket.me' );
+
+		$this->options->shouldReceive( 'get_options' )
+			->andReturn( [] );
+
+		$this->assertSame(
+			$this->format_the_html( $expected ),
+			$this->getActualHtml()
+		);
+	}
+
+	public function providerTestData() {
+		return $this->getTestData( __DIR__, 'insert-script' );
+	}
+}

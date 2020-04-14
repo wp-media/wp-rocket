@@ -4,6 +4,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
+class_alias( '\\WP_Rocket\\Engine\\Admin\\Beacon\\ServiceProvider', '\\WP_Rocket\\ServiceProvider\\Beacon' );
+
 /**
  * This warning is displayed when the busting cache dir isn't writeable
  *
