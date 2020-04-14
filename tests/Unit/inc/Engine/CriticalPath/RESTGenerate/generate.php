@@ -33,15 +33,15 @@ class Test_Generate extends FilesystemTestCase {
 	 * @dataProvider nonMultisiteTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ) {
-		$post_id   = ! isset( $config['post_data']['post_id'] )
-			? $config['post_data']['import_id']
-			: $config['post_data']['post_id'];
+		$post_id   = isset( $config['post_data'] )
+			? $config['post_data']['ID']
+			: 0;
 		$post_type = ! isset( $config['post_data']['post_type'] )
 			? 'post'
 			: $config['post_data']['post_type'];
-		$post_status = ! isset( $config['post_data']['post_status'] )
-			? 'publish'
-			: $config['post_data']['post_status'];
+		$post_status = isset( $config['post_data']['post_status'] )
+			? $config['post_data']['post_status']
+			: false;
 		$generate_post_request_response_code = ! isset( $config['generate_post_request_data']['code'] )
 			? 200
 			: $config['generate_post_request_data']['code'];
