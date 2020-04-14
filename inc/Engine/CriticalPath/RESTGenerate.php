@@ -26,9 +26,9 @@ class RESTGenerate implements Subscriber_Interface {
 	}
 
 	/**
-	 * Events
+	 * Return an array of events that this subscriber wants to listen to.
 	 *
-	 * @since 3.6
+	 * @since  3.6
 	 *
 	 * @return array
 	 */
@@ -75,7 +75,7 @@ class RESTGenerate implements Subscriber_Interface {
 				[
 					'success' => false,
 					'code'    => 'post_not_exists',
-					'message' => __( 'Requested post does not exist', 'rocket' ),
+					'message' => __( 'Requested post does not exist.', 'rocket' ),
 					'data'    => [
 						'status' => 400,
 					],
@@ -88,7 +88,7 @@ class RESTGenerate implements Subscriber_Interface {
 				[
 					'success' => false,
 					'code'    => 'post_not_published',
-					'message' => __( 'Cannot generate CPCSS for unpublished post', 'rocket' ),
+					'message' => __( 'Cannot generate CPCSS for unpublished post.', 'rocket' ),
 					'data'    => [
 						'status' => 400,
 					],
@@ -106,13 +106,20 @@ class RESTGenerate implements Subscriber_Interface {
 		}
 
 		while ( $job_data = $this->get_critical_path( $response['data']['id'] ) ) { // phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
-			if ( 400 === (int) $job_data->status ) {
+			if ( in_array( (int) $job_data->status, [ 400, 404 ], true ) ) {
+				// translators: %1$s = post URL.
+				$error = sprintf( __( 'Critical CSS for %1$s not generated.', 'rocket' ), $post_url );
+
+				if ( isset( $job_data->message ) ) {
+					// translators: %1$s = error message.
+					$error .= ' ' . sprintf( __( 'Error: %1$s', 'rocket' ), $job_data->message );
+				}
+
 				return rest_ensure_response(
 					[
 						'success' => false,
 						'code'    => 'cpcss_generation_failed',
-						// translators: %1$s = post URL, %2$s = error message.
-						'message' => sprintf( __( 'Critical CSS for %1$s not generated. Error: %2$s', 'rocket' ), $post_url, $job_data->message ),
+						'message' => $error,
 						'data'    => [
 							'status' => 400,
 						],
@@ -121,14 +128,11 @@ class RESTGenerate implements Subscriber_Interface {
 			}
 
 			if ( isset( $job_data->data->state, $job_data->data->critical_path ) && 'complete' === $job_data->data->state ) {
-				$result = $this->save_post_cpcss( $request['id'], $post_type, $job_data->data->critical_path );
-
-				if ( ! $result ) {
+				if ( ! $this->save_post_cpcss( $request['id'], $post_type, $job_data->data->critical_path ) ) {
 					return rest_ensure_response(
 						[
 							'success' => false,
 							'code'    => 'cpcss_generation_failed',
-							// translators: %1$s = post URL, %2$s = error message.
 							'message' => sprintf(
 								// translators: %1$s = post URL, %2$s = error message.
 								__( 'Critical CSS for %1$s not generated. Error: %2$s', 'rocket' ),
@@ -189,7 +193,7 @@ class RESTGenerate implements Subscriber_Interface {
 
 		$response_code = wp_remote_retrieve_response_code( $response );
 
-		if ( 400 === $response_code ) {
+		if ( in_array( $response_code, [ 400, 404 ], true ) ) {
 			$data = json_decode( wp_remote_retrieve_body( $response ) );
 
 			// translators: %1$s = post URL.
@@ -242,8 +246,7 @@ class RESTGenerate implements Subscriber_Interface {
 	/**
 	 * Gets the returned body of a request to a specific job from the Critical CSS generator API
 	 *
-	 * @since 2.11
-	 * @author Remy Perona
+	 * @since 3.6
 	 *
 	 * @param string $job_id Job identifier.
 	 * @return object JSON decoded body of the request's response
@@ -253,11 +256,23 @@ class RESTGenerate implements Subscriber_Interface {
 			self::API_URL . $job_id . '/'
 		);
 
-		return json_decode( wp_remote_retrieve_body( $response ) );
+		$data = json_decode( wp_remote_retrieve_body( $response ) );
+
+		if ( ! isset( $data->status ) ) {
+			return (object) [
+				'success' => false,
+				'status'  => wp_remote_retrieve_response_code( $response ),
+				'message' => __( 'The API returned an unexpected response.', 'rocket' ),
+			];
+		}
+
+		return $data;
 	}
 
 	/**
 	 * Saves the CPCSS for the post
+	 *
+	 * @since 3.6
 	 *
 	 * @param int    $post_id   The post ID.
 	 * @param string $post_type The post type.
