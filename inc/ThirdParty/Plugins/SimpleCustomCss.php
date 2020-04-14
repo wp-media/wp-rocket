@@ -43,8 +43,7 @@ class SimpleCustomCss implements Subscriber_Interface {
 		$blog_id                  = get_current_blog_id();
 		$this->cache_busting_path = $cache_busting_path . $blog_id . '/';
 		$this->filepath           = $this->cache_busting_path . self::FILENAME;
-		$this->file_url           = $cache_busting_url . $blog_id . self::FILENAME;
-
+		$this->file_url           = $cache_busting_url . $blog_id . '/' . self::FILENAME;
 	}
 	/**
 	 * Subscribed events for AMP.
