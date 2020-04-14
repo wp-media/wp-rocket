@@ -215,19 +215,19 @@ return [
 			'get_rocket_i18n_code' => $i18n_plugins['polylang']['codes'],
 		],
 		'expected'     => [
-			'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/en',
+			'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/',
 			'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/de',
 		],
 		'mocks'        => [
 			'get_rocket_i18n_code'     => $i18n_plugins['wpml']['langs'],
 			'get_rocket_i18n_home_url' => [
-				'en' => 'http://example.org/en',
+				'en' => 'http://example.org',
 				'de' => 'http://example.org/de',
 			],
 			'get_rocket_parse_url'     => [
-				'http://example.org/en' => [
+				'http://example.org'    => [
 					'host'     => 'example.org',
-					'path'     => '/en',
+					'path'     => '',
 					'scheme'   => 'http',
 					'query'    => '',
 					'fragment' => '',
@@ -287,19 +287,19 @@ return [
 			'get_rocket_i18n_code' => $i18n_plugins['polylang']['codes'],
 		],
 		'expected'     => [
-			'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/en',
+			'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/',
 			'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/fr',
 		],
 		'mocks'        => [
 			'get_rocket_i18n_code'     => $i18n_plugins['wpml']['langs'],
 			'get_rocket_i18n_home_url' => [
-				'en' => 'http://example.org/en',
+				'en' => 'http://example.org',
 				'fr' => 'http://example.org/fr',
 			],
 			'get_rocket_parse_url'     => [
-				'http://example.org/en' => [
+				'http://example.org'    => [
 					'host'     => 'example.org',
-					'path'     => '/en',
+					'path'     => '',
 					'scheme'   => 'http',
 					'query'    => '',
 					'fragment' => '',
@@ -401,19 +401,19 @@ return [
 			'get_rocket_i18n_code' => $i18n_plugins['polylang']['codes'],
 		],
 		'expected'     => [
-			'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/en',
+			'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/',
 			'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/fr',
 		],
 		'mocks'        => [
 			'get_rocket_i18n_code'     => $i18n_plugins['polylang']['codes'],
 			'get_rocket_i18n_home_url' => [
-				'en' => 'http://example.org/en',
+				'en' => 'http://example.org',
 				'fr' => 'http://example.org/fr',
 			],
 			'get_rocket_parse_url'     => [
-				'http://example.org/en' => [
+				'http://example.org'    => [
 					'host'     => 'example.org',
-					'path'     => '/en',
+					'path'     => '',
 					'scheme'   => 'http',
 					'query'    => '',
 					'fragment' => '',
@@ -436,19 +436,19 @@ return [
 			'data'            => $i18n_plugins['polylang'],
 		],
 		'expected'     => [
-			'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/en',
+			'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/',
 			'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/de',
 		],
 		'mocks'        => [
 			'get_rocket_i18n_code'     => $i18n_plugins['polylang']['codes'],
 			'get_rocket_i18n_home_url' => [
-				'en' => 'http://example.org/en',
+				'en' => 'http://example.org',
 				'de' => 'http://example.org/de',
 			],
 			'get_rocket_parse_url'     => [
-				'http://example.org/en' => [
+				'http://example.org'    => [
 					'host'     => 'example.org',
-					'path'     => '/en',
+					'path'     => '',
 					'scheme'   => 'http',
 					'query'    => '',
 					'fragment' => '',
