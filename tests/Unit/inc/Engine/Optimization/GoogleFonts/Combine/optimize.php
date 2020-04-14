@@ -1,13 +1,13 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\optimization\CSS\Combine_Google_Fonts;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\GoogleFonts;
 
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
-use WP_Rocket\Optimization\CSS\Combine_Google_Fonts;
+use WP_Rocket\Engine\Optimization\GoogleFonts\Combine;
 
 /**
- * @covers \WP_Rocket\Optimization\CSS\Combine_Google_Fonts::optimize
+ * @covers \ WP_Rocket\Engine\Optimization\GoogleFonts\Combine::optimize
  * @group  Optimize
  */
 class Test_Optimize extends TestCase {
@@ -28,7 +28,7 @@ class Test_Optimize extends TestCase {
 			return str_replace( [ '&amp;', '&' ], '&#038;', $url );
 		} );
 
-		$combine = new Combine_Google_Fonts();
+		$combine = new Combine();
 
 		$this->assertSame(
 			$combined,

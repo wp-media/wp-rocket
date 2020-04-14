@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Optimization\CSS;
+namespace WP_Rocket\Engine\Optimization\GoogleFonts;
 
 use WP_Rocket\Logger\Logger;
 use WP_Rocket\Engine\Optimization\AbstractOptimization;
@@ -11,7 +11,7 @@ use WP_Rocket\Engine\Optimization\AbstractOptimization;
  * @since  3.1
  * @author Remy Perona
  */
-class Combine_Google_Fonts extends AbstractOptimization {
+class Combine extends AbstractOptimization {
 	/**
 	 * Found fonts
 	 *
