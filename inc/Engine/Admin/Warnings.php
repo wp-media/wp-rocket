@@ -18,14 +18,14 @@ class Warnings implements Subscriber_Interface {
 	 *
 	 * @param Options_Data $options Options_Data instance.
 	 */
-	public function __construct ( Options_Data $options ) {
+	public function __construct( Options_Data $options ) {
 		$this->options = $options;
 	}
 
 	/**
 	 * Returns an array of events that this subscriber wants to listen to.
 	 *
-	 * @return void
+	 * @return array
 	 */
 	public static function get_subscribed_events() {
 		return [
