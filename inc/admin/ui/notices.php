@@ -851,24 +851,27 @@ add_action( 'admin_notices', 'rocket_clear_cache_notice' );
  * @return void
  */
 function rocket_warning_cron() {
-	$screen = get_current_screen();
-
 	// This filter is documented in inc/admin-bar.php.
 	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
 		return;
 	}
 
-	if ( 'settings_page_wprocket' !== $screen->id ) {
+	if ( 'settings_page_wprocket' !== get_current_screen()->id ) {
 		return;
 	}
 
-	$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
+	$dismissed = (array) get_user_meta( get_current_user_id(), 'rocket_boxes', true );
 
-	if ( in_array( __FUNCTION__, (array) $boxes, true ) ) {
+	if ( in_array( __FUNCTION__, $dismissed, true ) ) {
 		return;
 	}
 
-	if ( 0 === (int) get_rocket_option( 'purge_cron_interval' ) && 0 === get_rocket_option( 'async_css' ) && 0 === get_rocket_option( 'manual_preload' ) && 0 === get_rocket_option( 'schedule_automatic_cleanup' ) ) {
+	if (
+			0 === (int) get_rocket_option( 'purge_cron_interval', 0 )
+			&& 0 === (int) get_rocket_option( 'async_css', 0 )
+			&& 0 === (int) get_rocket_option( 'manual_preload', 0 )
+			&& 0 === (int) get_rocket_option( 'schedule_automatic_cleanup', 0 )
+		) {
 		return;
 	}
 
@@ -880,7 +883,7 @@ function rocket_warning_cron() {
 		'rocket_critical_css_generation_cron_interval' => 'Critical Path CSS Generation Process',
 	];
 
-	foreach ( $events as $event => $description ) {
+	foreach ( array_keys( $events ) as $event ) {
 		$timestamp = wp_next_scheduled( $event );
 
 		if ( false === $timestamp ) {
@@ -898,16 +901,19 @@ function rocket_warning_cron() {
 		return;
 	}
 
-	$message = '<p>' . _n( 'The following scheduled event failed to run. This may indicate the CRON system is not running properly, which can prevent some WP Rocket features from working as intended:', 'The following scheduled events failed to run. This may indicate the CRON system is not running properly, which can prevent some WP Rocket features from working as intended:', count( $events ), 'rocket' ) . '</p>';
-
-	$message .= '<ul>';
-
-	foreach ( $events as $description ) {
-		$message .= '<li>' . $description . '</li>';
-	}
-
-	$message .= '</ul>';
-	$message .= '<p>' . __( 'Please contact your host to check if CRON is working.', 'rocket' ) . '</p>';
+	$message = sprintf(
+		'<p>%1$s</p>
+		<ul>%2$s</ul>
+		<p>%3$s</p>',
+		_n(
+			'The following scheduled event failed to run. This may indicate the CRON system is not running properly, which can prevent some WP Rocket features from working as intended:',
+			'The following scheduled events failed to run. This may indicate the CRON system is not running properly, which can prevent some WP Rocket features from working as intended:',
+			count( $events ),
+			'rocket'
+		),
+		vsprintf( '<li>%s</li>', $events ),
+		__( 'Please contact your host to check if CRON is working.', 'rocket' )
+	);
 
 	rocket_notice_html(
 		[
