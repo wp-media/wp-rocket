@@ -64,7 +64,7 @@ class RESTGenerate implements Subscriber_Interface {
 	 *
 	 * @since 3.6
 	 *
-	 * @param WP_REST_Request $request WP REST request response.
+	 * @param  WP_REST_Request $request WP REST request response.
 	 * @return WP_REST_Response
 	 */
 	public function generate( WP_REST_Request $request ) {
@@ -169,8 +169,8 @@ class RESTGenerate implements Subscriber_Interface {
 	 *
 	 * @since 3.6
 	 *
-	 * @param string $post_url  The post URL.
-	 * @param string $post_type The post type.
+	 * @param  string $post_url  The post URL.
+	 * @param  string $post_type The post type.
 	 * @return array
 	 */
 	protected function send_generation_request( $post_url, $post_type ) {
@@ -248,8 +248,8 @@ class RESTGenerate implements Subscriber_Interface {
 	 *
 	 * @since 3.6
 	 *
-	 * @param string $job_id Job identifier.
-	 * @return object JSON decoded body of the request's response
+	 * @param  string $job_id Job identifier.
+	 * @return object         JSON decoded body of the request's response
 	 */
 	protected function get_critical_path( $job_id ) {
 		$response = wp_remote_get(
@@ -274,9 +274,9 @@ class RESTGenerate implements Subscriber_Interface {
 	 *
 	 * @since 3.6
 	 *
-	 * @param int    $post_id   The post ID.
-	 * @param string $post_type The post type.
-	 * @param string $cpcss     The generated CPCSS.
+	 * @param  int    $post_id   The post ID.
+	 * @param  string $post_type The post type.
+	 * @param  string $cpcss     The generated CPCSS.
 	 * @return bool
 	 */
 	protected function save_post_cpcss( $post_id, $post_type, $cpcss ) {
