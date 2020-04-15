@@ -1,8 +1,7 @@
 <?php
-namespace WP_Rocket\Subscriber\Optimization;
+namespace WP_Rocket\Engine\CriticalPath;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Rocket\Optimization\CSS\Critical_CSS;
 use WP_Rocket\Admin\Options_Data;
 use FilesystemIterator;
 use UnexpectedValueException;
@@ -16,7 +15,7 @@ defined( 'ABSPATH' ) || exit;
  * @since 3.3
  * @author Remy Perona
  */
-class Critical_CSS_Subscriber implements Subscriber_Interface {
+class CriticalCSSSubscriber implements Subscriber_Interface {
 
 	/**
 	 * Instance of Critical CSS.
@@ -35,10 +34,10 @@ class Critical_CSS_Subscriber implements Subscriber_Interface {
 	/**
 	 * Creates an instance of the Critical CSS Subscriber.
 	 *
-	 * @param Critical_CSS $critical_css Critical CSS instance.
+	 * @param CriticalCSS  $critical_css Critical CSS instance.
 	 * @param Options_Data $options      WP Rocket options.
 	 */
-	public function __construct( Critical_CSS $critical_css, Options_Data $options ) {
+	public function __construct( CriticalCSS $critical_css, Options_Data $options ) {
 		$this->critical_css = $critical_css;
 		$this->options      = $options;
 	}

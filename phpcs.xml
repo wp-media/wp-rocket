@@ -78,13 +78,13 @@
 	<rule ref="WordPress.DB.DirectDatabaseQuery.DirectQuery">
 		<exclude-pattern>inc/classes/admin/Database/class-optimization-process.php</exclude-pattern>
 		<exclude-pattern>inc/classes/admin/Database/class-optimization.php</exclude-pattern>
-		<exclude-pattern>inc/classes/optimization/CSS/class-critical-css.php</exclude-pattern>
+		<exclude-pattern>inc/Engine/CriticalPath/CriticalCSS.php</exclude-pattern>
 	</rule>
 
 	<rule ref="WordPress.DB.DirectDatabaseQuery.NoCaching">
 		<exclude-pattern>inc/classes/admin/Database/class-optimization-process.php</exclude-pattern>
 		<exclude-pattern>inc/classes/admin/Database/class-optimization.php</exclude-pattern>
-		<exclude-pattern>inc/classes/optimization/CSS/class-critical-css.php</exclude-pattern>
+		<exclude-pattern>inc/Engine/CriticalPath/CriticalCSS.php</exclude-pattern>
 	</rule>
 
 	<rule ref="WordPress.DB.PreparedSQL.NotPrepared">
@@ -94,7 +94,7 @@
 
 	<rule ref="WordPress.DB.PreparedSQL.InterpolatedNotPrepared">
 		<exclude-pattern>inc/classes/admin/Database/class-optimization-process.php</exclude-pattern>
-		<exclude-pattern>inc/classes/optimization/CSS/class-critical-css.php</exclude-pattern>
+		<exclude-pattern>inc/Engine/CriticalPath/CriticalCSS.php</exclude-pattern>
 	</rule>
 
 	<rule ref="WordPress-Docs">
