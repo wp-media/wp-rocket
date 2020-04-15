@@ -54,7 +54,7 @@ function rocket_exclude_busting_uncode( $exclude_busting ) {
  * @since 2.8.6
  */
 function rocket_beaver_builder_clean_domain() {
-    _deprecated_function( __FUNCTION__ . '()', '3.6', 'WP_Rocket\ThirdParty\Plugins\PageBuilder\BeaverBuilder::purge_cache' );
+	_deprecated_function( __FUNCTION__ . '()', '3.6', 'WP_Rocket\ThirdParty\Plugins\PageBuilder\BeaverBuilder::purge_cache' );
 	rocket_clean_minify();
 	rocket_clean_domain();
 }
