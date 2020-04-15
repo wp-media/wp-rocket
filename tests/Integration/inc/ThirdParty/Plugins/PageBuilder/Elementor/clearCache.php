@@ -17,55 +17,23 @@ class Test_ClearCache extends FilesystemTestCase {
 		delete_option( 'elementor_css_print_method' );
 
 		parent::tearDown();
-    }
-
-    public function testShouldDoNothingWhenNotExternal() {
-        add_option( 'elementor_css_print_method', 'internal' );
-
-        do_action( 'elementor/core/files/clear_cache' );
-        do_action( 'update_option__elementor_global_css' );
-        do_action( 'delete_option__elementor_global_css' );
-
-        $this->assertNotNull( $this->filesystem->getFile( 'wp-content/cache/wp-rocket/example.org/index.html' ) );
-		$this->assertNotNull( $this->filesystem->getFile( 'wp-content/cache/wp-rocket/example.org/index.html_gzip' ) );
-		$this->assertNotNull( $this->filesystem->getFile( 'wp-content/cache/wp-rocket/example.org-wpmedia-594d03f6ae698691165999/about/index.html' ) );
-		$this->assertNotNull( $this->filesystem->getFile( 'wp-content/cache/wp-rocket/example.org-wpmedia-594d03f6ae698691165999/about/index.html_gzip' ) );
-        $this->assertNotNull( $this->filesystem->getFile( 'wp-content/cache/min/1/fa2965d41f1515951de523cecb81f85e.css' ) );
-    }
-
-	public function testShouldCleanRocketCacheDirectoriesWhenElementorClearCache() {
-        add_option( 'elementor_css_print_method', 'external' );
-
-		do_action( 'elementor/core/files/clear_cache' );
-
-		$this->assertNull( $this->filesystem->getFile( 'wp-content/cache/wp-rocket/example.org/index.html' ) );
-		$this->assertNull( $this->filesystem->getFile( 'wp-content/cache/wp-rocket/example.org/index.html_gzip' ) );
-		$this->assertNull( $this->filesystem->getFile( 'wp-content/cache/wp-rocket/example.org-wpmedia-594d03f6ae698691165999/about/index.html' ) );
-		$this->assertNull( $this->filesystem->getFile( 'wp-content/cache/wp-rocket/example.org-wpmedia-594d03f6ae698691165999/about/index.html_gzip' ) );
-        $this->assertNull( $this->filesystem->getFile( 'wp-content/cache/min/1/fa2965d41f1515951de523cecb81f85e.css' ) );
 	}
 
-	public function testShouldCleanRocketCacheDirectoriesWhenElementorUpdateOption() {
-        add_option( 'elementor_css_print_method', 'external' );
-
-		do_action( 'update_option__elementor_global_css' );
-
-		$this->assertNull( $this->filesystem->getFile( 'wp-content/cache/wp-rocket/example.org/index.html' ) );
-		$this->assertNull( $this->filesystem->getFile( 'wp-content/cache/wp-rocket/example.org/index.html_gzip' ) );
-		$this->assertNull( $this->filesystem->getFile( 'wp-content/cache/wp-rocket/example.org-wpmedia-594d03f6ae698691165999/about/index.html' ) );
-		$this->assertNull( $this->filesystem->getFile( 'wp-content/cache/wp-rocket/example.org-wpmedia-594d03f6ae698691165999/about/index.html_gzip' ) );
-        $this->assertNull( $this->filesystem->getFile( 'wp-content/cache/min/1/fa2965d41f1515951de523cecb81f85e.css' ) );
-    }
-
-    public function testShouldCleanRocketCacheDirectoriesWhenElementorDeleteOption() {
-        add_option( 'elementor_css_print_method', 'external' );
-
-		do_action( 'delete_option__elementor_global_css' );
-
-		$this->assertNull( $this->filesystem->getFile( 'wp-content/cache/wp-rocket/example.org/index.html' ) );
-		$this->assertNull( $this->filesystem->getFile( 'wp-content/cache/wp-rocket/example.org/index.html_gzip' ) );
-		$this->assertNull( $this->filesystem->getFile( 'wp-content/cache/wp-rocket/example.org-wpmedia-594d03f6ae698691165999/about/index.html' ) );
-		$this->assertNull( $this->filesystem->getFile( 'wp-content/cache/wp-rocket/example.org-wpmedia-594d03f6ae698691165999/about/index.html_gzip' ) );
-        $this->assertNull( $this->filesystem->getFile( 'wp-content/cache/min/1/fa2965d41f1515951de523cecb81f85e.css' ) );
+	/**
+	 * @dataProvider providerTestData
+	 */
+	public function testShouldCleanCache( $files, $elementor_css_print_method, $actions, $after ) {
+		foreach ( $files as $file ) {
+			 $this->assertTrue( $this->filesystem->exists( $file ) );
+		}
+		
+		add_option( 'elementor_css_print_method',  $elementor_css_print_method );
+		foreach ( $actions as $action ) {
+			 do_action( $action );
+		}
+		
+		foreach ( $files as $file ) {
+			 $this->assertSame( $after, $this->filesystem->exists( $file ) );
+		}
 	}
 }
