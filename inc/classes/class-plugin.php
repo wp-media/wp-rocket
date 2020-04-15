@@ -108,7 +108,6 @@ class Plugin {
 				'minify_css_subscriber',
 				'minify_js_subscriber',
 				'cache_dynamic_resource',
-				'remove_query_string_subscriber',
 				'dequeue_jquery_migrate_subscriber',
 			];
 
@@ -158,6 +157,7 @@ class Plugin {
 			'detect_missing_tags_subscriber',
 			'purge_actions_subscriber',
 			'amp_subscriber',
+			'simple_custom_css',
 		];
 
 		if ( get_rocket_option( 'do_cloudflare' ) ) {
