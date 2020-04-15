@@ -6,7 +6,7 @@ return [
 	// Virtual filesystem structure.
 	'structure' => [
 		'wp-content' => [
-			'cache'            => [
+			'cache'              => [
 				'wp-rocket' => [
 					'example.org'                                => [
 						'index.html'      => '',
@@ -70,10 +70,12 @@ return [
 					],
 				],
 			],
-			'wp-rocket-config' => [
+			'wp-rocket-config'   => [
 				'example.org.php' => '<?php $var = "Some contents.";',
 			],
+			'advanced-cache.php' => '<?php $var = "Some contents.";',
 		],
+		'.htaccess'  => "# Random\n# add a trailing slash to /wp-admin# BEGIN WordPress\n\n# BEGIN WP Rocket\nPrevious rules.\n# END WP Rocket\n",
 	],
 
 	// Test data.
@@ -100,7 +102,7 @@ return [
 					'.htaccess',
 				],
 				'rocket_generate_config_file'         => [
-					'wp-content/wp-rocket-config/wp-rocket-config/example.org.php',
+					'wp-content/wp-rocket-config/example.org.php',
 				],
 				'rocket_clean_minify_css'             => [
 					'wp-content/min/1/wp-content/plugins/imagify/assets/css/admin-bar-924d9d45c4af91c09efb7ad055662025.css',

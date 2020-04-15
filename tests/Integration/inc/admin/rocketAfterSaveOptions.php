@@ -13,14 +13,24 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  */
 class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/admin/rocketAfterSaveOptions.php';
+	private $is_apache;
 	private $option_name;
 	private $options;
 	private $analytics_transient_value;
 	private $hooks = [];
 
+	/*public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
+
+		Functions\when( 'rocket_valid_key' )->justReturn( true );
+	}*/
+
 	public function setUp() {
+		global $is_apache;
+
 		parent::setUp();
 
+		$this->is_apache                 = $is_apache;
 		$this->option_name               = rocket_get_constant( 'WP_ROCKET_SLUG' );
 		$this->options                   = get_option( $this->option_name );
 		$this->analytics_transient_value = get_transient( 'rocket_analytics_optin' );
@@ -28,9 +38,31 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 		if ( false !== $this->analytics_transient_value ) {
 			delete_transient( 'rocket_analytics_optin' );
 		}
+
+		$is_apache = true;
+		Functions\when( 'get_home_path' )->justReturn( $this->rootVirtualUrl );
+		Functions\expect( 'rocket_get_constant' )
+			->with( 'WP_CONTENT_DIR' )
+			->andReturn( $this->filesystem->getUrl( '/wp-content' ) )
+			->andAlsoExpectIt()
+			->with( 'WP_CACHE' )
+			->andReturn( true )
+			->andAlsoExpectIt()
+			->with( 'WP_ROCKET_SLUG' )
+			->andReturn( WP_ROCKET_SLUG )
+			->andAlsoExpectIt()
+			->with( 'WP_ROCKET_CACHE_PATH' )
+			->andReturn( WP_ROCKET_CACHE_PATH )
+			->andAlsoExpectIt()
+			->with( 'ABSPATH' )
+			->andReturn( $this->filesystem->getUrl( '/' ) );
+
+		add_filter( 'rocket_config_files_path', [ $this, 'set_config_files_path' ] );
 	}
 
 	public function tearDown() {
+		global $is_apache;
+
 		parent::tearDown();
 
 		$this->silently_update_option( $this->options );
@@ -40,6 +72,14 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 		} else {
 			delete_transient( 'rocket_analytics_optin' );
 		}
+
+		$is_apache = $this->is_apache;
+
+		remove_filter( 'rocket_config_files_path', [ $this, 'set_config_files_path' ] );
+	}
+
+	public function set_config_files_path() {
+		return [ $this->filesystem->getUrl( '/wp-content/wp-rocket-config/example.org.php' ) ];
 	}
 
 	/**
