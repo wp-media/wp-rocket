@@ -3361,16 +3361,16 @@
         },
         {
             "name": "wp-media/phpunit",
-            "version": "v1.1.5",
+            "version": "v1.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-media/phpunit.git",
-                "reference": "5ac5b8a0966960dc77b8780bc33a07b7388c8b6a"
+                "reference": "5ea013e3a573c4211512248971145496193d9535"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-media/phpunit/zipball/5ac5b8a0966960dc77b8780bc33a07b7388c8b6a",
-                "reference": "5ac5b8a0966960dc77b8780bc33a07b7388c8b6a",
+                "url": "https://api.github.com/repos/wp-media/phpunit/zipball/5ea013e3a573c4211512248971145496193d9535",
+                "reference": "5ea013e3a573c4211512248971145496193d9535",
                 "shasum": ""
             },
             "require": {
@@ -3401,7 +3401,7 @@
             ],
             "description": "PHPUnit extender for bootstrapping unit and WordPress integration test suites.",
             "homepage": "https://github.com/wp-media/phpunit",
-            "time": "2020-03-31T23:45:29+00:00"
+            "time": "2020-04-08T10:44:10+00:00"
         },
         {
             "name": "wpackagist-plugin/amp",

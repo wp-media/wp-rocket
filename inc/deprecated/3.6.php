@@ -1,4 +1,3 @@
-
 <?php
 // phpcs:ignoreFile
 
@@ -126,6 +125,18 @@ function rocket_sccss_create_cache_file( $cache_busting_path, $cache_sccss_filep
 
 	rocket_put_content( $cache_sccss_filepath, $content );
 }
+
+/**
+ * Require deprecated classes.
+ */
+require_once __DIR__ . '/DeprecatedClassTrait.php';
+require_once __DIR__ . '/Engine/Optimization/QueryString/Remove.php';
+require_once __DIR__ . '/Engine/Optimization/QueryString/RemoveSubscriber.php';
+
+/**
+ * Class aliases.
+ */
+class_alias( '\WP_Rocket\Engine\Optimization\ServiceProvider', '\WP_Rocket\ServiceProvider\Optimization_Subscribers' );
 
 /**
  * This warning is displayed when the busting cache dir isn't writeable
