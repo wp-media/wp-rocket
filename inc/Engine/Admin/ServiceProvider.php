@@ -25,6 +25,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'deactivation_intent_render',
 		'deactivation_intent_subscriber',
 		'hummingbird_subscriber',
+		'warnings',
 	];
 
 	/**
@@ -47,6 +48,8 @@ class ServiceProvider extends AbstractServiceProvider {
 			->withArgument( $this->getContainer()->get( 'options_api' ) )
 			->withArgument( $options );
 		$this->getContainer()->share( 'hummingbird_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Optimization\Hummingbird_Subscriber' )
+			->withArgument( $options );
+		$this->getContainer()->share( 'warnings', 'WP_Rocket\Engine\Admin\Warnings' )
 			->withArgument( $options );
 	}
 }
