@@ -19,12 +19,6 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 	private $analytics_transient_value;
 	private $hooks = [];
 
-	/*public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
-
-		Functions\when( 'rocket_valid_key' )->justReturn( true );
-	}*/
-
 	public function setUp() {
 		global $is_apache;
 
