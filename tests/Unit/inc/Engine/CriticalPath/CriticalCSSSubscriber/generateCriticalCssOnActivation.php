@@ -1,24 +1,24 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\classes\subscriber\Optimization\Critical_CSS_Subscriber;
+namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\CriticalCSSSubscriber;
 
 use Brain\Monkey\Functions;
 use FilesystemIterator;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Optimization\CSS\Critical_CSS;
-use WP_Rocket\Optimization\CSS\Critical_CSS_Generation;
-use WP_Rocket\Subscriber\Optimization\Critical_CSS_Subscriber;
+use WP_Rocket\Engine\CriticalPath\CriticalCSS;
+use WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration;
+use WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Subscriber\Optimization\Critical_CSS_Subscriber::generate_critical_css_on_activation
+ * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::generate_critical_css_on_activation
  * @group  Subscribers
  * @group  CriticalCss
  * @group  vfs
  */
 class Test_GenerateCriticalCssOnActivation extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/classes/subscriber/Optimization/class-critical-css-subscriber/generateCriticalCssOnActivation.php';
+	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSSSubscriber/generateCriticalCssOnActivation.php';
 	private $critical_css;
 	private $subscriber;
 
@@ -29,8 +29,8 @@ class Test_GenerateCriticalCssOnActivation extends FilesystemTestCase {
 		Functions\when( 'get_current_blog_id' )->justReturn( 1 );
 		Functions\expect( 'home_url' )->once()->with( '/' )->andReturn( 'http://example.com' );
 
-		$this->critical_css = Mockery::mock( Critical_CSS::class, [ $this->createMock( Critical_CSS_Generation::class ) ] );
-		$this->subscriber   = new Critical_CSS_Subscriber(
+		$this->critical_css = Mockery::mock( CriticalCSS::class, [ $this->createMock( CriticalCSSGeneration::class ) ] );
+		$this->subscriber   = new CriticalCSSSubscriber(
 			$this->critical_css,
 			$this->createMock( Options_Data::class )
 		);

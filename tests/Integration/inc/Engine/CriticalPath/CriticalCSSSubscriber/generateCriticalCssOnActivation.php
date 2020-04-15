@@ -1,20 +1,19 @@
 <?php
-
-namespace WP_Rocket\Tests\Integration\inc\classes\subscriber\Optimization\Critical_CSS_Subscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\CriticalCSSSubscriber;
 
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
-use WP_Rocket\Subscriber\Optimization\Critical_CSS_Subscriber;
+use WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Subscriber\Optimization\Critical_CSS_Subscriber::generate_critical_css_on_activation
+ * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::generate_critical_css_on_activation
  * @group  Subscribers
  * @group  CriticalCss
  * @group  vfs
  */
 class Test_GenerateCriticalCssOnActivation extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/classes/subscriber/Optimization/class-critical-css-subscriber/generateCriticalCssOnActivation.php';
+	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSSSubscriber/generateCriticalCssOnActivation.php';
 	private static $container;
 	private static $user_id;
 	private $subscriber;
@@ -132,7 +131,7 @@ class Test_GenerateCriticalCssOnActivation extends FilesystemTestCase {
 	}
 
 	private function setCriticalCssPath( $site_id ) {
-		$property     = $this->get_reflective_property( 'critical_css', Critical_CSS_Subscriber::class );
+		$property     = $this->get_reflective_property( 'critical_css', CriticalCSSSubscriber::class );
 		$critical_css = $property->getValue( $this->subscriber );
 
 		$this->set_reflective_property(

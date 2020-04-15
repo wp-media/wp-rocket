@@ -1,7 +1,8 @@
 <?php
-namespace WP_Rocket\Optimization\CSS;
+namespace WP_Rocket\Engine\CriticalPath;
 
-defined( 'ABSPATH' ) || exit;
+use FilesystemIterator;
+use UnexpectedValueException;
 
 /**
  * Handles the critical CSS generation process.
@@ -9,13 +10,12 @@ defined( 'ABSPATH' ) || exit;
  * @since 2.11
  * @author Remy Perona
  */
-class Critical_CSS {
+class CriticalCSS {
 	/**
 	 * Background Process instance
 	 *
 	 * @since 2.11
 	 * @var object $process Background Process instance.
-	 * @access public
 	 */
 	public $process;
 
@@ -24,7 +24,6 @@ class Critical_CSS {
 	 *
 	 * @since 2.11
 	 * @var array $items An array of items.
-	 * @access public
 	 */
 	public $items = [];
 
@@ -33,7 +32,6 @@ class Critical_CSS {
 	 *
 	 * @since 2.11
 	 * @var string path to the critical css directory
-	 * @access private
 	 */
 	private $critical_css_path;
 
@@ -43,9 +41,9 @@ class Critical_CSS {
 	 * @since 2.11
 	 * @author Remy Perona
 	 *
-	 * @param Critical_CSS_Generation $process Background process instance.
+	 * @param CriticalCSSGeneration $process Background process instance.
 	 */
-	public function __construct( Critical_CSS_Generation $process ) {
+	public function __construct( CriticalCSSGeneration $process ) {
 		$this->process = $process;
 		$this->items[] = [
 			'type' => 'front_page',
@@ -126,29 +124,23 @@ class Critical_CSS {
 	 * Deletes critical CSS files
 	 *
 	 * @since 2.11
+	 * @since 3.6 Replaced glob().
 	 * @author Remy Perona
 	 */
 	public function clean_critical_css() {
-		try {
-			$directory = new \RecursiveDirectoryIterator( $this->critical_css_path, \FilesystemIterator::SKIP_DOTS );
-		} catch ( \UnexpectedValueException $e ) {
-			// no logging yet.
-			return;
-		}
+		$filesystem = rocket_direct_filesystem();
 
 		try {
-			$files = new \RecursiveIteratorIterator( $directory, \RecursiveIteratorIterator::CHILD_FIRST );
-		} catch ( \Exception $e ) {
-			// no logging yet.
-			return;
-		}
+			$files = new FilesystemIterator( $this->critical_css_path );
 
-		if ( ! $files ) {
+			foreach ( $files as $file ) {
+				if ( $filesystem->is_file( $file ) ) {
+					$filesystem->delete( $file );
+				}
+			}
+		} catch ( UnexpectedValueException $e ) {
+			// No logging yet.
 			return;
-		}
-
-		foreach ( $files as $file ) {
-			rocket_direct_filesystem()->delete( $file );
 		}
 	}
 
