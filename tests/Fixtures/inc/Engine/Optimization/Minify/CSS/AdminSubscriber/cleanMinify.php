@@ -51,7 +51,7 @@ return [
 		'shouldCleanMinifyExcludeCSS'      => [
 			'value'     => [
 				'minify_css'  => true,
-				'exclude_css' => [ '.css_to_exclude' ],
+				'exclude_css' => [ '/wp-content/plugins/some-plugin/file.css' ],
 				'cdn'         => false,
 				'cdn_cnames'  => [],
 			],
