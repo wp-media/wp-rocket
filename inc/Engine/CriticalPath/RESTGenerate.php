@@ -34,9 +34,7 @@ class RESTGenerate implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rest_api_init' => [
-				[ 'register_generate_route' ],
-			],
+			'rest_api_init' => 'register_generate_route',
 		];
 	}
 
@@ -253,7 +251,7 @@ class RESTGenerate implements Subscriber_Interface {
 	 */
 	protected function get_critical_path( $job_id ) {
 		$response = wp_remote_get(
-			self::API_URL . $job_id . '/'
+			self::API_URL . "{$job_id}/"
 		);
 
 		$data = json_decode( wp_remote_retrieve_body( $response ) );
