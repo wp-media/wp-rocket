@@ -132,11 +132,10 @@ class RESTGenerate implements Subscriber_Interface {
 							'success' => false,
 							'code'    => 'cpcss_generation_failed',
 							'message' => sprintf(
-								// translators: %1$s = post URL, %2$s = error message.
-								__( 'Critical CSS for %1$s not generated. Error: %2$s', 'rocket' ),
+								// translators: %1$s = post URL, %2$s = critical CSS directory path.
+								__( 'Critical CSS for %1$s not generated. Error: The critical CSS content could not be saved as a file in %2$s', 'rocket' ),
 								$post_url,
-								// translators: %s = critical CSS directory path.
-								sprintf( __( 'The critical CSS content could not be saved as a file in %s.', 'rocket' ), $this->critical_css_path )
+								$this->critical_css_path
 							),
 							'data'    => [
 								'status' => 400,
