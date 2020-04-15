@@ -504,40 +504,41 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 
 	private function assertFilesDeleted( $paths ) {
 		foreach ( $paths as $file ) {
-			$this->assertFalse( $this->filesystem->getUrl( $file ), "The file $file exists." );
+			$path = $this->filesystem->getUrl( $file );
+			$this->assertFalse( $this->filesystem->exists( $path ), "The file $file exists." );
 		}
 	}
 
 	private function assertFlushRocketHtaccess( $paths ) {
 		foreach ( $paths as $file ) {
 			$path = $this->filesystem->getUrl( $file );
-			$this->assertTrue( $this->filesystem->exists( $path ), "The file $path does not exist." );
+			$this->assertTrue( $this->filesystem->exists( $path ), "The file $file does not exist." );
 
 			$contents = $this->filesystem->get_contents( $path );
 			$matching = preg_match( '/\s*# BEGIN WP Rocket(?<rules>.*)# END WP Rocket\s*?/isU', $contents, $matches );
-			$this->assertSame( 1, $matching, "No WP Rocket tags in file $path." );
+			$this->assertSame( 1, $matching, "No WP Rocket tags in file $file." );
 			$rules = trim( $matches['rules'] );
-			$this->assertTrue( ! empty( $rules ) && 'Some rules.' !== $rules, "No WP Rocket rewrite rules in file $path." );
+			$this->assertTrue( ! empty( $rules ) && 'Some rules.' !== $rules, "No WP Rocket rewrite rules in file $file." );
 		}
 	}
 
 	private function assertRocketGenerateConfigFile( $paths ) {
 		foreach ( $paths as $file ) {
 			$config_path = $this->filesystem->getUrl( $file );
-			$this->assertTrue( $this->filesystem->exists( $config_path ), "The config file $config_path does not exist." );
+			$this->assertTrue( $this->filesystem->exists( $config_path ), "The config file $file does not exist." );
 
 			$config_contents = $this->filesystem->get_contents( $config_path );
-			$this->assertContains( '$rocket_cookie_hash', $config_contents, "The config file $config_path does not contain `\$rocket_cookie_hash`." );
+			$this->assertContains( '$rocket_cookie_hash', $config_contents, "The config file $file does not contain `\$rocket_cookie_hash`." );
 		}
 	}
 
 	private function assertAdvancedCacheFile( $paths ) {
 		foreach ( $paths as $file ) {
 			$path = $this->filesystem->getUrl( $file );
-			$this->assertTrue( $this->filesystem->exists( $path ), "The file $path does not exist." );
+			$this->assertTrue( $this->filesystem->exists( $path ), "The file $file does not exist." );
 
 			$contents = $this->filesystem->get_contents( $path );
-			$this->assertContains( 'WP_ROCKET_ADVANCED_CACHE', $contents, "No WP Rocket contents in file $path." );
+			$this->assertContains( 'WP_ROCKET_ADVANCED_CACHE', $contents, "No WP Rocket contents in file $file." );
 		}
 	}
 }
