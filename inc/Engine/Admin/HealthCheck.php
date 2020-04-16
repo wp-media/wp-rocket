@@ -74,7 +74,9 @@ class HealthCheck implements Subscriber_Interface {
 
 		$delay = rocket_get_constant( 'DISABLE_WP_CRON' ) ? HOUR_IN_SECONDS : 5 * MINUTE_IN_SECONDS;
 
-		foreach ( array_keys( $events ) as $event ) {
+		$list = '';
+
+		foreach ( $events as $event => $description ) {
 			$timestamp = wp_next_scheduled( $event );
 
 			if (
@@ -84,6 +86,8 @@ class HealthCheck implements Subscriber_Interface {
 				unset( $events[ $event ] );
 				continue;
 			}
+
+			$list .= "<li>{$description}</li>";
 		}
 
 		if ( empty( $events ) ) {
@@ -100,7 +104,7 @@ class HealthCheck implements Subscriber_Interface {
 				count( $events ),
 				'rocket'
 			),
-			vsprintf( '<li>%s</li>', $events ),
+			$list,
 			__( 'Please contact your host to check if CRON is working.', 'rocket' )
 		);
 
