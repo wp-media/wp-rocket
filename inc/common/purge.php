@@ -595,18 +595,18 @@ function rocket_clean_cache_theme_update( $wp_upgrader, $hook_extra ) {
 		return;
 	}
 
-	$current_theme = wp_get_theme();
+	if ( ! is_array( $hook_extra['themes'] ) ) {
+		return;
+	}
 
+	$current_theme = wp_get_theme();
 	$themes = [
 		$current_theme->get_template(), // Parent theme.
 		$current_theme->get_stylesheet(), // Child theme.
 	];
 
-	if ( ! is_array( $hook_extra['themes'] ) ) {
-		return;
-	}
-
-	if ( ! array_intersect( $hook_extra['themes'], $themes ) ) {
+	// Bail out if the current theme or its parent is not updating.
+	if ( empty( array_intersect( $hook_extra['themes'], $themes ) ) ) {
 		return;
 	}
 

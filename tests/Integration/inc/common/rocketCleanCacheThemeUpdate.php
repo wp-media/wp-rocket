@@ -14,8 +14,8 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group  vfs
  */
 class Test_RocketCleanCacheThemeUpdate extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/common/rocketCleanCacheThemeUpdate.php';
-	protected static $registrations = [];
+	protected        $path_to_test_data = '/inc/common/rocketCleanCacheThemeUpdate.php';
+	protected static $registrations     = [];
 
 	public static function setUpBeforeClass() {
 		// Unregister all of the callbacks registered to the action event for these tests.
