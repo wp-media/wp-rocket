@@ -15,16 +15,16 @@ return [
 						'posts'          => [
 							'.'           => '',
 							'..'          => '',
-							'post-1.css'  => '.p { color: red; }',
-							'post-10.css' => '.p { color: red; }',
-							'page-20.css' => '.p { color: red; }',
+							'post-1.css'  => '.post-1 { color: red; }',
+							'post-10.css' => '.post-10 { color: red; }',
+							'page-20.css' => '.page-20 { color: red; }',
 						],
-						'home.css'       => '.p { color: red; }',
-						'front_page.css' => '.p { color: red; }',
-						'category.css'   => '.p { color: red; }',
-						'post_tag.css'   => '.p { color: red; }',
-						'page.css'       => '.p { color: red; }',
-						'taxonomy.css'   => '.p { color: red; }',
+						'home.css'         => '.home { color: red; }',
+						'front_page.css'   => '.front_page { color: red; }',
+						'category.css'     => '.category { color: red; }',
+						'post_tag.css'     => '.post_tag { color: red; }',
+						'page.css'         => '.page { color: red; }',
+						'wptests_tax1.css' => '.wptests_tax1 { color: red; }',
 					],
 					'2' => [
 						'.'              => '',
@@ -32,15 +32,15 @@ return [
 						'posts'          => [
 							'.'           => '',
 							'..'          => '',
-							'post-1.css'  => '.p { color: red; }',
-							'post-3.css'  => '.p { color: red; }',
-							'page-20.css' => '.p { color: red; }',
+							'post-1.css'  => '.post-1 { color: red; }',
+							'post-3.css'  => '.post-3 { color: red; }',
+							'page-20.css' => '.page-20 { color: red; }',
 						],
-						'home.css'       => '.p { color: red; }',
-						'front_page.css' => '.p { color: red; }',
-						'category.css'   => '.p { color: red; }',
-						'post_tag.css'   => '.p { color: red; }',
-						'page.css'       => '.p { color: red; }',
+						'home.css'       => '.home { color: red; }',
+						'front_page.css' => '.front_page { color: red; }',
+						'category.css'   => '.category { color: red; }',
+						'post_tag.css'   => '.post_tag { color: red; }',
+						'page.css'       => '.page { color: red; }',
 					],
 				],
 			],
@@ -51,6 +51,7 @@ return [
 			'testShouldReturnDefaultCSS'                            => [
 				'config'        => [
 					'blog_id'       => 1,
+					'type'          => 'front_page', // default
 					'expected_type' => [
 						[
 							'type'   => 'is_home',
@@ -90,6 +91,8 @@ return [
 			'testShouldReturnHomeCSS'                               => [
 				'config'        => [
 					'blog_id'       => 1,
+					'type'          => 'home', // is_home
+					'show_on_front' => 'page', // front default
 					'expected_type' => [
 						[
 							'type'   => 'is_home',
@@ -109,6 +112,8 @@ return [
 			'testShouldReturnFrontPageCSS'                          => [
 				'config'        => [
 					'blog_id'       => 1,
+					'type'          => 'home', // front default
+					'show_on_front' => 'front', // front default
 					'expected_type' => [
 						[
 							'type'   => 'is_home',
@@ -128,6 +133,7 @@ return [
 			'testShouldReturnCategoryPageCSS'                       => [
 				'config'        => [
 					'blog_id'       => 1,
+					'type'          => 'is_category', // category
 					'expected_type' => [
 						[
 							'type'   => 'is_home',
@@ -152,6 +158,7 @@ return [
 			'testShouldReturnTagCSS'                                => [
 				'config'        => [
 					'blog_id'       => 1,
+					'type'          => 'is_tag',
 					'expected_type' => [
 						[
 							'type'   => 'is_home',
@@ -181,6 +188,8 @@ return [
 			'testShouldReturnTaxCSS'                                => [
 				'config'        => [
 					'blog_id'       => 1,
+					'type'          => 'is_tax',
+					'taxonomy'      => 'wptests_tax1',
 					'expected_type' => [
 						[
 							'type'   => 'is_home',
@@ -209,17 +218,19 @@ return [
 						],
 						[
 							'type'   => 'get_queried_object',
-							'return' => (object) [ 'taxonomy' => 'taxonomy' ],
+							'return' => (object) [ 'taxonomy' => 'wptests_tax1' ],
 							'param'  => '',
 						],
 					],
 					'excluded_type' => [ 'is_singular' ],
 				],
-				'expected_file' => 'wp-content/cache/critical-css/1/taxonomy.css',
+				'expected_file' => 'wp-content/cache/critical-css/1/wptests_tax1.css',
 			],
 			'testShouldReturnTaxDoesNotExistReturnFalseFallbackCSS' => [
 				'config'        => [
 					'blog_id'       => 1,
+					'type'          => 'is_tax',
+					'taxonomy'      => 'wptests_tax2',
 					'expected_type' => [
 						[
 							'type'   => 'is_home',
@@ -248,7 +259,7 @@ return [
 						],
 						[
 							'type'   => 'get_queried_object',
-							'return' => (object) [ 'taxonomy' => 'taxonomy_does_not_exist' ],
+							'return' => (object) [ 'taxonomy' => 'wptests_tax2' ],
 							'param'  => '',
 						],
 						[
@@ -265,6 +276,9 @@ return [
 			'testShouldReturnTaxDoesNotExistReturnFallbackCSS'      => [
 				'config'        => [
 					'blog_id'       => 1,
+					'type'          => 'is_tax',
+					'taxonomy'      => 'wptests_tax3',
+					'fallback_css'  => '.fallback_css{ color: red; }',
 					'expected_type' => [
 						[
 							'type'   => 'is_home',
@@ -293,7 +307,7 @@ return [
 						],
 						[
 							'type'   => 'get_queried_object',
-							'return' => (object) [ 'taxonomy' => 'taxonomy_does_not_exist' ],
+							'return' => (object) [ 'taxonomy' => 'wptests_tax3' ],
 							'param'  => '',
 						],
 						[
@@ -310,6 +324,8 @@ return [
 			'testShouldReturnSingularCSS'                           => [
 				'config'        => [
 					'blog_id'       => 1,
+					'type'          => 'is_page',
+					'post_id'       => 2,
 					'expected_type' => [
 						[
 							'type'   => 'is_home',
@@ -359,6 +375,8 @@ return [
 			'testShouldReturnSingularCustomPostsCSS'                => [
 				'config'        => [
 					'blog_id'       => 1,
+					'type'          => 'is_post',
+					'post_id'       => 1,
 					'expected_type' => [
 						[
 							'type'   => 'is_home',
