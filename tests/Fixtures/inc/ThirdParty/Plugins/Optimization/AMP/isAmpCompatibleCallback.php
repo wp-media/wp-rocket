@@ -1,20 +1,24 @@
 <?php
 
 return [
-	'testShouldAddAmpWhenThemeSupportIsReader'             => [
-		'theme_support' => 'transitional',
-		'expected'      => [ 'amp' ],
+	'testShouldBailoutIfAmpThemeOptionsAreNull'      => [
+		'setting'  => null,
+		'expected' => [],
 	],
-	'testShouldAddAmpWhenThemeSupportIsReader'             => [
-		'theme_support' => 'reader',
-		'expected'      => [ 'amp' ],
+	'testShouldBailoutIfAmpThemeSupportIsNull'       => [
+		'setting'  => [ 'theme_support' => null ],
+		'expected' => [],
 	],
-	'testShouldNotAddAmpWhenThemeSupportIsNotTransitional' => [
-		'theme_support' => 'standard',
-		'expected'      => [],
+	'testShouldBailoutIfAmpIsNotTransitional'        => [
+		'setting'  => [ 'theme_support' => 'standard' ],
+		'expected' => [],
 	],
-	'testShouldNotAddAmpWhenThemeSupportIsNotSet'          => [
-		'theme_support' => null,
-		'expected'      => [],
+	'testShouldAddAmpWhenThemeSupportIsTransitional' => [
+		'setting'  => [ 'theme_support' => 'transitional' ],
+		'expected' => [ 'amp' ],
+	],
+	'testShouldAddAmpWhenThemeSupportIsReader'       => [
+		'setting'  => [ 'theme_support' => 'reader' ],
+		'expected' => [ 'amp' ],
 	],
 ];
