@@ -10,6 +10,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group admin
  * @group AdminOnly
  * @group Options
+ * @group SaveOptions
  */
 class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/admin/rocketAfterSaveOptions.php';
@@ -35,23 +36,9 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 
 		$is_apache = true;
 		Functions\when( 'get_home_path' )->justReturn( $this->rootVirtualUrl );
-		Functions\expect( 'rocket_get_constant' )
-			->with( 'WP_CONTENT_DIR' )
-			->andReturn( $this->filesystem->getUrl( '/wp-content' ) )
-			->andAlsoExpectIt()
-			->with( 'WP_CACHE' )
-			->andReturn( true )
-			->andAlsoExpectIt()
-			->with( 'WP_ROCKET_SLUG' )
-			->andReturn( WP_ROCKET_SLUG )
-			->andAlsoExpectIt()
-			->with( 'WP_ROCKET_CACHE_PATH' )
-			->andReturn( WP_ROCKET_CACHE_PATH )
-			->andAlsoExpectIt()
-			->with( 'ABSPATH' )
-			->andReturn( $this->filesystem->getUrl( '/' ) );
 
 		add_filter( 'rocket_config_files_path', [ $this, 'set_config_files_path' ] );
+		add_filter( 'rocket_wp_content_dir', [ $this, 'virtual_wp_content_dir' ] );
 	}
 
 	public function tearDown() {
@@ -70,11 +57,16 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 		$is_apache = $this->is_apache;
 
 		remove_filter( 'rocket_config_files_path', [ $this, 'set_config_files_path' ] );
+		remove_filter( 'rocket_wp_content_dir', [ $this, 'virtual_wp_content_dir' ] );
 	}
 
 	public function set_config_files_path() {
 		return [ $this->filesystem->getUrl( '/wp-content/wp-rocket-config/example.org.php' ) ];
 	}
+
+	public function virtual_wp_content_dir() {
+        return $this->filesystem->getUrl( 'wp-content' );
+    }
 
 	/**
 	 * @dataProvider providerTestData
