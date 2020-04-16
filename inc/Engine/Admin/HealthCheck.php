@@ -5,7 +5,7 @@ namespace WP_Rocket\Engine\Admin;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
-class Warnings implements Subscriber_Interface {
+class HealthCheck implements Subscriber_Interface {
 	/**
 	 * Options_Data instance
 	 *

@@ -96,7 +96,7 @@ class Plugin {
 				'rocketcdn_admin_subscriber',
 				'rocketcdn_notices_subscriber',
 				'rocketcdn_data_manager_subscriber',
-				'warnings',
+				'health_check',
 			];
 		} elseif ( \rocket_valid_key() ) {
 			$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\ServiceProvider' );

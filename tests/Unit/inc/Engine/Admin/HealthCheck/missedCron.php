@@ -1,32 +1,32 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\Warnings;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\HealthCheck;
 
 use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\Admin\Warnings;
+use WP_Rocket\Engine\Admin\HealthCheck;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Admin\Warnings::missed_cron
- * @group  Warnings
+ * @covers \WP_Rocket\Engine\Admin\HealthCheck::missed_cron
+ * @group  HealthCheck
  */
 class Test_MissedCron extends TestCase {
 	protected static $mockCommonWpFunctionsInSetUp = true;
 	protected $options;
-	private $warnings;
+	private $health;
 
 	public function setUp() {
 		parent::setUp();
 
 		$this->options  = Mockery::mock( Options_Data::class );
-		$this->warnings = new Warnings( $this->options );
+		$this->health = new HealthCheck( $this->options );
 	}
 
 	private function getActualHtml() {
 		ob_start();
-		$this->warnings->missed_cron();
+		$this->health->missed_cron();
 
 		return $this->format_the_html( ob_get_clean() );
 	}
@@ -59,7 +59,7 @@ class Test_MissedCron extends TestCase {
 		} );
 
 		if ( empty( $config['expected'] ) ) {
-			$this->assertNull( $this->warnings->missed_cron() );
+			$this->assertNull( $this->health->missed_cron() );
 		} else {
 			$this->assertSame(
 				$this->format_the_html( $config['expected'] ),
