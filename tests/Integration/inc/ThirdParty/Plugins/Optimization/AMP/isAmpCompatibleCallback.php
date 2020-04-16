@@ -3,36 +3,32 @@
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\Optimization\AMP;
 
 use Brain\Monkey\Functions;
+use AMP_Options_Manager;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Plugins\Optimization\AMP::is_amp_compatible_callback
- * @covers \WP_Rocket\ThirdParty\Plugins\Optimization\AMP::generate_config_file
- * @group ThirdParty
- * @group WithAmp
+ * @group  ThirdParty
+ * @group  WithAmp
  */
 class Test_IsAmpCompatibleCallback extends TestCase {
+	protected $path_to_test_data = 'isAmpCompatibleCallback.php';
 
-	public function testShouldAddAmpWhenThemeSupportIsTransitional() {
-		Functions\expect( 'rocket_generate_config_file' )->once();
-		$this->setSettings( 'theme_support', 'transitional' );
-		$this->assertContains( 'amp', apply_filters( 'rocket_cache_query_strings', [] ) );
+	public function setUp() {
+		parent::setUp();
+
+		// Updating the AMP settings will trigger this to run.
+		Functions\when( 'rocket_generate_config_file' )->justReturn();
 	}
 
-	public function testShouldAddAmpWhenThemeSupportIsReader() {
-		// Default value is reader, so rocket_generate_config_file will not be called because update_option is not called.
-		$this->setSettings( 'theme_support', 'reader' );
-		$this->assertContains( 'amp', apply_filters( 'rocket_cache_query_strings', [] ) );
-	}
+	/**
+	 * @dataProvider ampDataProvider
+	 */
+	public function testShouldReturnExpected( $theme_support, $expected ) {
+		// Set and then check the AMP theme support setting.
+		$this->setSettings( 'theme_support', $theme_support );
+		$options = get_option( AMP_Options_Manager::OPTION_NAME );
+		$this->assertEquals( $theme_support, $options['theme_support'] );
 
-	public function testShouldNotAddAmpWhenThemeSupportIsNotTransitional() {
-		Functions\expect( 'rocket_generate_config_file' )->once();
-		$this->setSettings( 'theme_support', 'standard' );
-		$this->assertEquals( [], apply_filters( 'rocket_cache_query_strings', [] ) );
-	}
-
-	public function testShouldNotAddAmpWhenThemeSupportIsNotSet() {
-		Functions\expect( 'rocket_generate_config_file' )->once();
-		$this->setSettings( 'theme_support', null );
-		$this->assertEquals( [], apply_filters( 'rocket_cache_query_strings', [] ) );
+		$this->assertSame( $expected, apply_filters( 'rocket_cache_query_strings', [] ) );
 	}
 }
