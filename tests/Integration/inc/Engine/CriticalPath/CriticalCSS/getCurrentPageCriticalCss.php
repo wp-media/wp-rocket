@@ -112,11 +112,11 @@ class Test_GetCurrentPageCriticalCSS extends FilesystemTestCase {
 		$html = apply_filters( 'rocket_buffer', '<html><head><title></title></head><body></body></html>' );
 
 		if ( ! empty( $expected_file ) ) {
-			$this->assertStringContainsStringIgnoringCase( $this->filesystem->get_contents( $expected_file ), $html );
+			$this->assertGreaterThan( 0, strpos( $html, $this->filesystem->get_contents( $expected_file ) ) );
 		}
 
 		if ( isset( $fallback ) && ! empty( $config[ 'fallback_css' ] ) ) {
-			$this->assertStringContainsStringIgnoringCase( $config[ 'fallback_css' ], $html );
+			$this->assertGreaterThan( 0, strpos( $html, $config[ 'fallback_css' ] ) );
 		}
 
 		if ( isset( $fallback ) && ! empty( $config[ 'fallback_css' ] ) ) {
