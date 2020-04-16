@@ -25,9 +25,13 @@ class Test_IsAmpCompatibleCallback extends TestCase {
 	 */
 	public function testShouldReturnExpected( $setting, $expected ) {
 		// Set and then check the AMP theme support setting.
-		$this->setSettings( 'theme_support', $setting['theme_support'] );
-		$options = get_option( AMP_Options_Manager::OPTION_NAME );
-		$this->assertEquals( $setting['theme_support'], $options['theme_support'] );
+		if ( ! is_null( $setting ) ) {
+			$this->setSettings( 'theme_support', $setting['theme_support'] );
+			$options = get_option( AMP_Options_Manager::OPTION_NAME );
+			$this->assertEquals( $setting['theme_support'], $options['theme_support'] );
+		} else {
+			delete_option( AMP_Options_Manager::OPTION_NAME );
+		}
 
 		$this->assertSame( $expected, apply_filters( 'rocket_cache_query_strings', [] ) );
 	}
