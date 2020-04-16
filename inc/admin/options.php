@@ -186,14 +186,6 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 		}
 	}
 
-	// Regenerate the minify key if CSS files have been modified.
-	if ( ( isset( $newvalue['minify_css'], $oldvalue['minify_css'] ) && $newvalue['minify_css'] !== $oldvalue['minify_css'] )
-		|| ( isset( $newvalue['exclude_css'], $oldvalue['exclude_css'] ) && $newvalue['exclude_css'] !== $oldvalue['exclude_css'] )
-		|| ( isset( $oldvalue['cdn'] ) && ! isset( $newvalue['cdn'] ) || ! isset( $oldvalue['cdn'] ) && isset( $newvalue['cdn'] ) )
-	) {
-		$newvalue['minify_css_key'] = create_rocket_uniqid();
-	}
-
 	// Regenerate the minify key if JS files have been modified.
 	if ( ( isset( $newvalue['minify_js'], $oldvalue['minify_js'] ) && $newvalue['minify_js'] !== $oldvalue['minify_js'] )
 		|| ( isset( $newvalue['exclude_js'], $oldvalue['exclude_js'] ) && $newvalue['exclude_js'] !== $oldvalue['exclude_js'] )
