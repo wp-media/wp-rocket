@@ -18,6 +18,8 @@ class Test_RocketCleanCacheThemeUpdate extends FilesystemTestCase {
 	protected static $registrations     = [];
 
 	public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
+
 		// Unregister all of the callbacks registered to the action event for these tests.
 		global $wp_filter;
 		self::$registrations = $wp_filter['upgrader_process_complete'];
@@ -26,6 +28,8 @@ class Test_RocketCleanCacheThemeUpdate extends FilesystemTestCase {
 	}
 
 	public static function tearDownAfterClass() {
+		parent::tearDownAfterClass();
+
 		// Restore the callbacks registered to the action event.
 		global $wp_filter;
 		$wp_filter['upgrader_process_complete'] = self::$registrations;
@@ -34,7 +38,7 @@ class Test_RocketCleanCacheThemeUpdate extends FilesystemTestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldInvokeRocketCleanDomainOnWidgetUpdate( $hook_extra, $expected ) {
+	public function testShouldDoExpected( $hook_extra, $expected ) {
 		if ( empty( $expected['cleaned'] ) ) {
 			Functions\expect( 'rocket_clean_domain' )->never();
 		}
