@@ -11,7 +11,6 @@ use WPMedia\PHPUnit\Unit\TestCase;
  *
  * @group  Common
  * @group  Purge
- * @group  vfs
  */
 class Test_RocketWidgetUpdateCallback extends TestCase {
 
