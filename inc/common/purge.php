@@ -20,12 +20,12 @@ add_action( 'update_option_theme_mods_' . get_option( 'stylesheet' ), 'rocket_cl
 add_action( 'upgrader_process_complete', 'rocket_clean_cache_theme_update', 10, 2 );  // When a theme is updated.
 
 /**
- * Purge cache When a widget is updated
+ * Purge cache When a widget is updated.
  *
  * @since 1.1.1
  *
  * @param object $instance Widget instance.
- * @return object Widget instance
+ * @return object Widget instance.
  */
 function rocket_widget_update_callback( $instance ) {
 	rocket_clean_domain();
