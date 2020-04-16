@@ -600,7 +600,7 @@ function rocket_clean_cache_theme_update( $wp_upgrader, $hook_extra ) {
 	}
 
 	$current_theme = wp_get_theme();
-	$themes = [
+	$themes        = [
 		$current_theme->get_template(), // Parent theme.
 		$current_theme->get_stylesheet(), // Child theme.
 	];

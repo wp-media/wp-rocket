@@ -14,25 +14,25 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group  vfs
  */
 class Test_RocketCleanCacheThemeUpdate extends FilesystemTestCase {
-	protected        $path_to_test_data = '/inc/common/rocketCleanCacheThemeUpdate.php';
-	protected static $registrations     = [];
+	protected $path_to_test_data = '/inc/common/rocketCleanCacheThemeUpdate.php';
+	protected $registrations     = [];
 
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
+	public function setUp() {
+		parent::setUp();
 
 		// Unregister all of the callbacks registered to the action event for these tests.
 		global $wp_filter;
-		self::$registrations = $wp_filter['upgrader_process_complete'];
+		$this->registrations = $wp_filter['upgrader_process_complete'];
 		remove_all_actions( 'upgrader_process_complete' );
 		add_action( 'upgrader_process_complete', 'rocket_clean_cache_theme_update', 10, 2 );
 	}
 
-	public static function tearDownAfterClass() {
-		parent::tearDownAfterClass();
+	public function tearDown() {
+		parent::tearDown();
 
 		// Restore the callbacks registered to the action event.
 		global $wp_filter;
-		$wp_filter['upgrader_process_complete'] = self::$registrations;
+		$wp_filter['upgrader_process_complete'] = $this->registrations;
 	}
 
 	/**
