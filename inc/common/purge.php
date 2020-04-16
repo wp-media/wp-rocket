@@ -17,7 +17,6 @@ add_action( 'edit_link', 'rocket_clean_domain' );  // When a link is updated.
 add_action( 'delete_link', 'rocket_clean_domain' );  // When a link is deleted.
 add_action( 'customize_save', 'rocket_clean_domain' );  // When customizer is saved.
 add_action( 'update_option_theme_mods_' . get_option( 'stylesheet' ), 'rocket_clean_domain' ); // When location of a menu is updated.
-add_action( 'upgrader_process_complete', 'rocket_clean_cache_theme_update', 10, 2 );  // When a theme is updated.
 
 /**
  * Purge cache When a widget is updated.
@@ -582,7 +581,7 @@ function do_admin_post_rocket_purge_opcache() { // phpcs:ignore WordPress.Naming
 add_action( 'admin_post_rocket_purge_opcache', 'do_admin_post_rocket_purge_opcache' );
 
 /**
- * Clean the cache when the current theme is updated
+ * Clean the cache when the current theme is updated.
  *
  * @param WP_Upgrader $wp_upgrader WP_Upgrader instance.
  * @param array       $hook_extra  Array of bulk item update data.
@@ -613,6 +612,7 @@ function rocket_clean_cache_theme_update( $wp_upgrader, $hook_extra ) {
 
 	rocket_clean_domain();
 }
+add_action( 'upgrader_process_complete', 'rocket_clean_cache_theme_update', 10, 2 );  // When a theme is updated.
 
 /**
  * Purge WP Rocket cache on Slug / Permalink change.

@@ -1,0 +1,53 @@
+<?php
+
+namespace WP_Rocket\Tests\Integration\inc\common;
+
+use Brain\Monkey\Functions;
+use WP_Rocket\Tests\Integration\FilesystemTestCase;
+
+/**
+ * @covers ::rocket_clean_cache_theme_update
+ * @uses   ::rocket_clean_domain
+ *
+ * @group  Common
+ * @group  Purge
+ * @group  vfs
+ */
+class Test_RocketCleanCacheThemeUpdate extends FilesystemTestCase {
+	protected $path_to_test_data = '/inc/common/rocketCleanCacheThemeUpdate.php';
+	protected static $registrations = [];
+
+	public static function setUpBeforeClass() {
+		// Unregister all of the callbacks registered to the action event for these tests.
+		global $wp_filter;
+		self::$registrations = $wp_filter['upgrader_process_complete'];
+		remove_all_actions( 'upgrader_process_complete' );
+		add_action( 'upgrader_process_complete', 'rocket_clean_cache_theme_update', 10, 2 );
+	}
+
+	public static function tearDownAfterClass() {
+		// Restore the callbacks registered to the action event.
+		global $wp_filter;
+		$wp_filter['upgrader_process_complete'] = self::$registrations;
+	}
+
+	/**
+	 * @dataProvider providerTestData
+	 */
+	public function testShouldInvokeRocketCleanDomainOnWidgetUpdate( $hook_extra, $expected ) {
+		if ( empty( $expected['cleaned'] ) ) {
+			Functions\expect( 'rocket_clean_domain' )->never();
+		}
+
+		$shouldNotClean = $this->getShouldNotCleanEntries( $expected['non_cleaned'] );
+
+		// Update it.
+		do_action( 'upgrader_process_complete', null, $hook_extra );
+
+		// Check the "cleaned" directories.
+		$this->checkCleanedIsDeleted( $expected['cleaned'] );
+
+		// Check the non-cleaned files/directories still exist.
+		$this->checkNonCleanedExist( $shouldNotClean );
+	}
+}
