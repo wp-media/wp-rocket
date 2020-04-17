@@ -21,6 +21,7 @@ return [
 					'vfs://public/wp-content/cache/critical-css/' => true,
 					'vfs://public/wp-content/cache/wp-rocket/'    => true,
 				],
+				'wp_get_theme' => null,
 			],
 		],
 		'shouldBailOutWhenTypeNotTheme'    => [
@@ -36,6 +37,7 @@ return [
 					'vfs://public/wp-content/cache/critical-css/' => true,
 					'vfs://public/wp-content/cache/wp-rocket/'    => true,
 				],
+				'wp_get_theme' => null,
 			],
 		],
 		'shouldBailOutWhenThemesNotArray'  => [
@@ -52,6 +54,7 @@ return [
 					'vfs://public/wp-content/cache/critical-css/' => true,
 					'vfs://public/wp-content/cache/wp-rocket/'    => true,
 				],
+				'wp_get_theme' => null,
 			],
 		],
 		'shouldCleanDomain' => [
@@ -76,6 +79,7 @@ return [
 					'vfs://public/wp-content/cache/wp-rocket/index.html'        => false,
 					'vfs://public/wp-content/cache/wp-rocket/dots.example.org/' => false,
 				],
+				'wp_get_theme' => true,
 			],
 		],
 	],
