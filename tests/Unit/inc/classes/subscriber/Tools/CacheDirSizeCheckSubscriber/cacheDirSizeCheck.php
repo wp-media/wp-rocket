@@ -4,7 +4,7 @@ namespace WP_Rocket\Tests\Unit\inc\classes\subscriber\Tools\CacheDirSizeCheckSub
 use Brain\Monkey\Functions;
 use Mockery;
 use WPMedia\PHPUnit\Unit\TestCase;
-use WP_Rocket\Tests\Fixtures\inc\classes\subscriber\Tools\CacheDirSizeCheckSubscriber;
+use WP_Rocket\Subscriber\Tools\Cache_Dir_Size_Check_Subscriber;
 
 /**
  * @covers \WP_Rocket\Subscriber\Tools\Cache_Dir_Size_Check_Subscriber::cache_dir_size_check
@@ -16,7 +16,7 @@ class Test_CacheDirSizeCheck extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->subscriber = new CacheDirSizeCheckSubscriber();
+		$this->subscriber = new Cache_Dir_Size_Check_Subscriber();
 	}
 
 	public function testShouldNotCheckDirSizeWhenOptionIsEnabled() {
