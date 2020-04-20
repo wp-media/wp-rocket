@@ -307,7 +307,7 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 	 * @return string
 	 */
 	protected function maybe_render_actions( $row, $column_name ) {
-		if ( 'pending' === strtolower( $row['status'] ) ) {
+		if ( 'pending' === strtolower( $row[ 'status_name' ] ) ) {
 			return parent::maybe_render_actions( $row, $column_name );
 		}
 
@@ -577,6 +577,7 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 			$this->items[ $action_id ] = array(
 				'ID'          => $action_id,
 				'hook'        => $action->get_hook(),
+				'status_name' => $this->store->get_status( $action_id ),
 				'status'      => $status_labels[ $this->store->get_status( $action_id ) ],
 				'args'        => $action->get_args(),
 				'group'       => $action->get_group(),
