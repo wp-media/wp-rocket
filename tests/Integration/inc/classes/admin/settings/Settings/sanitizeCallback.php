@@ -24,6 +24,19 @@ class Test_SanitizeCallback extends AdminTestCase {
 	}
 
 	/**
+	 * @dataProvider addFontPreloadProvider
+	 */
+	public function testShouldSanitizeFontPreloadEntries( $input, $expected ) {
+		$output = apply_filters( 'sanitize_option_wp_rocket_settings', $input );
+
+		$this->assertArrayHasKey( 'preload_fonts', $output );
+		$this->assertSame(
+			$expected['preload_fonts'],
+			array_values( $output['preload_fonts'] )
+		);
+	}
+
+	/**
 	 * @dataProvider addCriticalCSSProvider
 	 */
 	public function testShouldSanitizeCriticalCss( $original, $sanitized ) {
@@ -36,6 +49,10 @@ class Test_SanitizeCallback extends AdminTestCase {
 
 	public function addDNSPrefetchProvider() {
 		return $this->getTestData( __DIR__, 'dns-prefetch' );
+	}
+
+	public function addFontPreloadProvider() {
+		return $this->getTestData( __DIR__, 'font-preload' );
 	}
 
 	public function addCriticalCSSProvider() {
