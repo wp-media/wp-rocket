@@ -608,10 +608,21 @@ function rocket_clean_files( $urls ) {
 	 *
 	 * @param array URLs that will be returned.
 	*/
-	$urls = apply_filters( 'rocket_clean_files', $urls );
-	$urls = array_filter( (array) $urls );
+	$urls = (array) apply_filters( 'rocket_clean_files', $urls );
+	$urls = array_filter( $urls );
+	if ( empty( $urls ) ) {
+		return;
+	}
 
-	if ( ! $urls ) {
+	$cache_path = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' );
+	try {
+		$iterator = new RecursiveIteratorIterator(
+			new RecursiveDirectoryIterator( $cache_path ),
+			RecursiveIteratorIterator::SELF_FIRST,
+			RecursiveIteratorIterator::CATCH_GET_CHILD
+		);
+	} catch ( Exception $e ) {
+		// No logging yet.
 		return;
 	}
 
@@ -640,12 +651,22 @@ function rocket_clean_files( $urls ) {
 			$url = str_replace( '.', '_', $url );
 		}
 
-		$dirs = glob( WP_ROCKET_CACHE_PATH . rocket_remove_url_protocol( $url ), GLOB_NOSORT );
+		$path = $cache_path . rocket_remove_url_protocol( $url );
+		$path = trim( $path, '/' );
+		$path = str_replace( '*', ')*', $path );
+		$path = str_replace( '/', '\/', $path );
+		$path = "/({$path}/i";
 
-		if ( $dirs ) {
-			foreach ( $dirs as $dir ) {
-				rocket_rrmdir( $dir );
-			}
+		try {
+			$iterator->setMaxDepth( 1 );
+			$files = new RegexIterator( $iterator, $path );
+		} catch ( Exception $e ) {
+			// No logging yet.
+			return;
+		}
+
+		foreach ( $files as $file ) {
+			rocket_rrmdir( $file->getPathname() );
 		}
 
 		/**
