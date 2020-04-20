@@ -1063,7 +1063,7 @@ class Page {
 		$this->settings->add_settings_sections(
 			[
 				'preload_section'      => [
-					'title'       => __( 'Preload', 'rocket' ),
+					'title'       => __( 'Preload Cache', 'rocket' ),
 					'type'        => 'fields_container',
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description' => sprintf( __( 'When you enable preloading WP Rocket will generate the cache starting with the links on your homepage followed by the sitemaps you specify. Preloading is automatically triggered when you add or update content and can also be manually triggered from the admin bar or from the %1$sWP Rocket Dashboard%2$s.', 'rocket' ), '<a href="#dashboard">', '</a>' ),
