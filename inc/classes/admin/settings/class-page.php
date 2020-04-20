@@ -1054,7 +1054,7 @@ class Page {
 			'preload',
 			[
 				'title'            => __( 'Preload', 'rocket' ),
-				'menu_description' => __( 'Generate cache files', 'rocket' ),
+				'menu_description' => __( 'Generate cache files, preload fonts', 'rocket' ),
 			]
 		);
 
