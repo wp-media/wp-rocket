@@ -38,6 +38,16 @@ class Settings {
 	private $hidden_settings;
 
 	/**
+	 * Host domain.
+	 *
+	 * @since 3.6
+	 * @see   $this->get_host()
+	 *
+	 * @var string|bool
+	 */
+	private $host;
+
+	/**
 	 * Constructor
 	 *
 	 * @since 3.0
@@ -350,6 +360,18 @@ class Settings {
 			$input['sitemaps'] = [];
 		}
 
+		// Option : fonts to preload.
+		if ( ! empty( $input['preload_fonts'] ) ) {
+			if ( ! is_array( $input['preload_fonts'] ) ) {
+				$input['preload_fonts'] = explode( "\n", $input['preload_fonts'] );
+			}
+			$input['preload_fonts'] = array_map( [ $this, 'sanitize_font' ], $input['preload_fonts'] );
+			$input['preload_fonts'] = array_filter( $input['preload_fonts'] );
+			$input['preload_fonts'] = array_unique( $input['preload_fonts'] );
+		} else {
+			$input['preload_fonts'] = [];
+		}
+
 		// Options : CloudFlare.
 		$input['do_cloudflare']               = ! empty( $input['do_cloudflare'] ) ? 1 : 0;
 		$input['cloudflare_email']            = isset( $input['cloudflare_email'] ) ? sanitize_email( $input['cloudflare_email'] ) : '';
@@ -542,5 +564,75 @@ class Settings {
 				$urls
 			)
 		);
+	}
+
+	/**
+	 * Sanitize a font file path.
+	 *
+	 * @since 3.6
+	 *
+	 * @param  string $file Filepath to sanitize.
+	 * @return string|bool  Sanitized filepath. False if not a font file.
+	 */
+	private function sanitize_font( $file ) {
+		if ( ! is_string( $file ) ) {
+			return false;
+		}
+
+		$file = trim( $file );
+
+		if ( empty( $file ) ) {
+			return false;
+		}
+
+		$file = wp_parse_url( $file );
+
+		if ( ! empty( $file['host'] ) && $this->get_host() !== $file['host'] ) {
+			return false;
+		}
+
+		$file = '/' . trim( $file['path'], '/' );
+
+		$ext     = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
+		$formats = [
+			'dfont',
+			'eot',
+			'otc',
+			'otf',
+			'ott',
+			'ttc',
+			'tte',
+			'ttf',
+			'svg',
+			'woff',
+			'woff2',
+		];
+
+		if ( ! in_array( $ext, $formats, true ) ) {
+			return false;
+		}
+
+		return $file;
+	}
+
+	/**
+	 * Get site’s host domain.
+	 *
+	 * @since 3.6
+	 *
+	 * @return string|bool The host. False on failure.
+	 */
+	private function get_host() {
+		if ( isset( $this->host ) ) {
+			return $this->host;
+		}
+
+		$this->host = wp_parse_url( get_option( 'home' ), PHP_URL_HOST );
+
+		if ( empty( $this->host ) ) {
+			$this->host = false;
+		}
+
+		return $this->host;
 	}
 }
