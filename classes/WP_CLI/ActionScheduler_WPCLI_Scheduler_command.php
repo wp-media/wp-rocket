@@ -49,7 +49,7 @@ class ActionScheduler_WPCLI_Scheduler_command extends WP_CLI_Command {
 		$hooks   = array_filter( array_map( 'trim', $hooks ) );
 		$group   = \WP_CLI\Utils\get_flag_value( $assoc_args, 'group', '' );
 		$free_on = \WP_CLI\Utils\get_flag_value( $assoc_args, 'free-memory-on', 50 );
-		$sleep   = \WP_CLI\Utils\get_flag_value( $assoc_args, 'pause', '' );
+		$sleep   = \WP_CLI\Utils\get_flag_value( $assoc_args, 'pause', 0 );
 		$force   = \WP_CLI\Utils\get_flag_value( $assoc_args, 'force', false );
 
 		ActionScheduler_DataController::set_free_ticks( $free_on );
