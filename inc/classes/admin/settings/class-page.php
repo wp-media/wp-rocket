@@ -1062,7 +1062,7 @@ class Page {
 
 		$this->settings->add_settings_sections(
 			[
-				'preload_section'      => [
+				'preload_section'       => [
 					'title'       => __( 'Preload Cache', 'rocket' ),
 					'type'        => 'fields_container',
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
@@ -1073,12 +1073,23 @@ class Page {
 					],
 					'page'        => 'preload',
 				],
-				'dns_prefetch_section' => [
+				'dns_prefetch_section'  => [
 					'title'       => __( 'Prefetch DNS Requests', 'rocket' ),
 					'type'        => 'fields_container',
 					'description' => __( 'DNS prefetching can make external files load faster, especially on mobile networks', 'rocket' ),
 					'help'        => [
 						'id'  => $this->beacon->get_suggest( 'dns_prefetch' ),
+						'url' => $bot_beacon['url'],
+					],
+					'page'        => 'preload',
+				],
+				'preload_fonts_section' => [
+					'title'       => __( 'Preload Fonts', 'rocket' ),
+					'type'        => 'fields_container',
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description' => sprintf( __( 'Improves performance by helping browsers discover fonts in CSS files. %1$sMore info%2$s', 'rocket' ), '<a href="#">', '</a>' ),
+					'help'        => [
+						'id'  => $this->beacon->get_suggest( 'fonts_preload' ),
 						'url' => $bot_beacon['url'],
 					],
 					'page'        => 'preload',
@@ -1146,6 +1157,16 @@ class Page {
 					'description'       => __( 'Specify external hosts to be prefetched (no <code>http:</code>, one per line)', 'rocket' ),
 					'placeholder'       => '//example.com',
 					'section'           => 'dns_prefetch_section',
+					'page'              => 'preload',
+					'default'           => [],
+					'sanitize_callback' => 'sanitize_textarea',
+				],
+				'fonts'        => [
+					'type'              => 'textarea',
+					'label'             => __( 'Fonts to preload', 'rocket' ),
+					'description'       => __( 'Specify urls of the font files to be preloaded (one per line)', 'rocket' ),
+					'placeholder'       => '/wp-content/themes/your-theme/assets/fonts/font-file.woff',
+					'section'           => 'preload_fonts_section',
 					'page'              => 'preload',
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
