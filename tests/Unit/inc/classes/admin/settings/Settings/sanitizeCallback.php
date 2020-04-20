@@ -63,7 +63,7 @@ class Test_SanitizeCallback extends TestCase {
 
 			return filter_var( $url, FILTER_VALIDATE_URL );
 		} );
-		Functions\when( 'wp_parse_url' )->alias( function( $url, $component ) {
+		Functions\when( 'wp_parse_url' )->alias( function( $url, $component = -1 ) {
 			return parse_url( $url, $component );
 		} );
 		Functions\when( 'rocket_valid_key' )->justReturn( true );
@@ -77,8 +77,33 @@ class Test_SanitizeCallback extends TestCase {
 		);
 	}
 
+	/**
+	 * @dataProvider addFontPreloadProvider
+	 */
+	public function testShouldSanitizeFontPreloadEntries( $input, $expected ) {
+		Functions\when( 'rocket_valid_key' )->justReturn( true );
+		Functions\when( 'wp_parse_url' )->alias( function( $url, $component = -1 ) {
+			return parse_url( $url, $component );
+		} );
+		Functions\expect( 'get_option' )
+			->with( 'home' )
+			->andReturn( 'https://example.org/' );
+
+		$output = $this->settings->sanitize_callback( $input );
+
+		$this->assertArrayHasKey( 'preload_fonts', $output );
+		$this->assertSame(
+			$expected['preload_fonts'],
+			array_values( $output['preload_fonts'] )
+		);
+	}
+
 	public function addDNSPrefetchProvider() {
 		return $this->getTestData( __DIR__, 'dns-prefetch' );
+	}
+
+	public function addFontPreloadProvider() {
+		return $this->getTestData( __DIR__, 'font-preload' );
 	}
 
 	public function addCriticalCSSProvider() {
