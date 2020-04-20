@@ -591,6 +591,7 @@ function rocket_clean_cache_busting( $extensions = [ 'js', 'css' ] ) {
 /**
  * Delete one or several cache files.
  *
+ * @since 3.5.3 Replaces glob and optimizes.
  * @since 2.0   Delete cache files for all users.
  * @since 1.1.0 Add filter rocket_clean_files.
  * @since 1.0
@@ -620,6 +621,9 @@ function rocket_clean_files( $urls ) {
 		return;
 	}
 
+	/** This filter is documented in inc/front/htaccess.php */
+	$url_no_dots = (bool) apply_filters( 'rocket_url_no_dots', false );
+
 	/**
 	 * Fires before all cache files are deleted.
 	 *
@@ -640,8 +644,7 @@ function rocket_clean_files( $urls ) {
 		 */
 		do_action( 'before_rocket_clean_file', $url ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
-		/** This filter is documented in inc/front/htaccess.php */
-		if ( apply_filters( 'rocket_url_no_dots', false ) ) {
+		if ( $url_no_dots ) {
 			$url = str_replace( '.', '_', $url );
 		}
 
