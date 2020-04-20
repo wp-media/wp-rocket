@@ -607,7 +607,7 @@ function rocket_clean_files( $urls ) {
 	 * @since 1.1.0
 	 *
 	 * @param array URLs that will be returned.
-	*/
+	 */
 	$urls = (array) apply_filters( 'rocket_clean_files', $urls );
 	$urls = array_filter( $urls );
 	if ( empty( $urls ) ) {
@@ -615,14 +615,8 @@ function rocket_clean_files( $urls ) {
 	}
 
 	$cache_path = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' );
-	try {
-		$iterator = new RecursiveIteratorIterator(
-			new RecursiveDirectoryIterator( $cache_path ),
-			RecursiveIteratorIterator::SELF_FIRST,
-			RecursiveIteratorIterator::CATCH_GET_CHILD
-		);
-	} catch ( Exception $e ) {
-		// No logging yet.
+	$iterator   = _rocket_get_cache_path_iterator( $cache_path );
+	if ( false === $iterator ) {
 		return;
 	}
 
@@ -633,7 +627,7 @@ function rocket_clean_files( $urls ) {
 	 * @author Grégory Viguier
 	 *
 	 * @param array $urls The URLs corresponding to the deleted cache files.
-	*/
+	 */
 	do_action( 'before_rocket_clean_files', $urls ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 	foreach ( $urls as $url ) {
@@ -643,7 +637,7 @@ function rocket_clean_files( $urls ) {
 		 * @since 1.0
 		 *
 		 * @param string $url The URL that the cache file to be deleted.
-		*/
+		 */
 		do_action( 'before_rocket_clean_file', $url ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 		/** This filter is documented in inc/front/htaccess.php */
@@ -661,7 +655,7 @@ function rocket_clean_files( $urls ) {
 		 * @since 1.0
 		 *
 		 * @param string $url The URL that the cache file was deleted.
-		*/
+		 */
 		do_action( 'after_rocket_clean_file', $url ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	}
 
@@ -672,8 +666,31 @@ function rocket_clean_files( $urls ) {
 	 * @author Grégory Viguier
 	 *
 	 * @param array $urls The URLs corresponding to the deleted cache files.
-	*/
+	 */
 	do_action( 'after_rocket_clean_files', $urls ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+}
+
+/**
+ * Get the recursive iterator for the cache path.
+ *
+ * @since  3.5.3
+ * @access private
+ *
+ * @param string $cache_path Path to the cache directory.
+ *
+ * @return bool|RecursiveIteratorIterator Iterator on success; else false;
+ */
+function _rocket_get_cache_path_iterator( $cache_path ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
+	try {
+		return new RecursiveIteratorIterator(
+			new RecursiveDirectoryIterator( $cache_path ),
+			RecursiveIteratorIterator::SELF_FIRST,
+			RecursiveIteratorIterator::CATCH_GET_CHILD
+		);
+	} catch ( Exception $e ) {
+		// No logging yet.
+		return false;
+	}
 }
 
 /**
@@ -868,21 +885,15 @@ function rocket_clean_domain( $lang = '' ) {
 	$urls = (array) apply_filters( 'rocket_clean_domain_urls', $urls, $lang );
 	$urls = array_filter( $urls );
 
-	$cache_path       = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' );
+	$cache_path = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' );
+	$iterator   = _rocket_get_cache_path_iterator( $cache_path );
+	if ( false === $iterator ) {
+		return;
+	}
+
 	$dirs_to_preserve = get_rocket_i18n_to_preserve( $lang );
 	/** This filter is documented in inc/front/htaccess.php */
 	$url_no_dots = (bool) apply_filters( 'rocket_url_no_dots', false );
-
-	try {
-		$iterator = new RecursiveIteratorIterator(
-			new RecursiveDirectoryIterator( $cache_path ),
-			RecursiveIteratorIterator::SELF_FIRST,
-			RecursiveIteratorIterator::CATCH_GET_CHILD
-		);
-	} catch ( Exception $e ) {
-		// No logging yet.
-		return;
-	}
 
 	foreach ( $urls as $url ) {
 		$file = get_rocket_parse_url( $url );
