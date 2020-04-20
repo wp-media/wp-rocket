@@ -651,21 +651,7 @@ function rocket_clean_files( $urls ) {
 			$url = str_replace( '.', '_', $url );
 		}
 
-		$path = $cache_path . rocket_remove_url_protocol( $url );
-		$path = trim( $path, '/' );
-		$path = str_replace( '*', ')*', $path );
-		$path = str_replace( '/', '\/', $path );
-		$path = "/({$path}/i";
-
-		try {
-			$iterator->setMaxDepth( 1 );
-			$files = new RegexIterator( $iterator, $path );
-		} catch ( Exception $e ) {
-			// No logging yet.
-			return;
-		}
-
-		foreach ( $files as $file ) {
+		foreach ( _rocket_get_entries_regex( $iterator, $url ) as $file ) {
 			rocket_rrmdir( $file->getPathname() );
 		}
 
@@ -688,6 +674,44 @@ function rocket_clean_files( $urls ) {
 	 * @param array $urls The URLs corresponding to the deleted cache files.
 	*/
 	do_action( 'after_rocket_clean_files', $urls ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+}
+
+/**
+ * Gets the entries from the URL using RegexIterator.
+ *
+ * @since 3.5.3
+ * @access private
+ *
+ * @param RecursiveIteratorIterator $iterator Instance of the iterator.
+ * @param string $url URL to convert into filesystem path regex to get entries.
+ *
+ * @return array|RegexIterator when successful, returns iterator; else an empty array.
+ */
+function _rocket_get_entries_regex( $iterator, $url ) {
+	$parsed_url = get_rocket_parse_url( $url );
+	$host = rtrim( $parsed_url['host'], '*' );
+	if ( ! empty( $parsed_url['path'] ) ) {
+		$path  = trim( $parsed_url['path'], '/' );
+
+		// Count the hierarchy to determine the depth.
+		$depth = substr_count( $path, '/' ) + 1;
+		if ( $depth > 1 ) {
+			// Prepare the '/' for regex.
+			$path = str_replace( '/', '\/', $path );
+		}
+
+		$regex = "/({$host})*\/{$path}/i";
+	} else {
+		$regex = "/{$host}*/i";
+		$depth = 0;
+	}
+
+	try {
+		$iterator->setMaxDepth( $depth );
+		return new RegexIterator( $iterator, $regex );
+	} catch ( Exception $e ) {
+		return [];
+	}
 }
 
 /**
