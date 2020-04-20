@@ -679,19 +679,19 @@ function rocket_clean_files( $urls ) {
 /**
  * Gets the entries from the URL using RegexIterator.
  *
- * @since 3.5.3
+ * @since  3.5.3
  * @access private
  *
  * @param RecursiveIteratorIterator $iterator Instance of the iterator.
- * @param string $url URL to convert into filesystem path regex to get entries.
+ * @param string                    $url      URL to convert into filesystem path regex to get entries.
  *
  * @return array|RegexIterator when successful, returns iterator; else an empty array.
  */
 function _rocket_get_entries_regex( $iterator, $url ) {
 	$parsed_url = get_rocket_parse_url( $url );
-	$host = rtrim( $parsed_url['host'], '*' );
+	$host       = rtrim( $parsed_url['host'], '*' );
 	if ( ! empty( $parsed_url['path'] ) ) {
-		$path  = trim( $parsed_url['path'], '/' );
+		$path = trim( $parsed_url['path'], '/' );
 
 		// Count the hierarchy to determine the depth.
 		$depth = substr_count( $path, '/' ) + 1;
@@ -708,6 +708,7 @@ function _rocket_get_entries_regex( $iterator, $url ) {
 
 	try {
 		$iterator->setMaxDepth( $depth );
+
 		return new RegexIterator( $iterator, $regex );
 	} catch ( Exception $e ) {
 		return [];
