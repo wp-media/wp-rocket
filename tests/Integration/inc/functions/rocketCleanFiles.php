@@ -3,7 +3,6 @@
 namespace WP_Rocket\Tests\Integration\inc\functions;
 
 use Brain\Monkey\Functions;
-use WP_Rocket\Tests\GlobTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
@@ -31,7 +30,7 @@ class Test_RocketCleanFiles extends FilesystemTestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldCleanSingleDomain( $urls, $expected ) {
+	public function testShouldCleanExpectedFiles( $urls, $expected ) {
 		$this->dirsToClean    = $expected['cleaned'];
 		$this->getShouldNotCleanEntries( $expected['non_cleaned'] );
 

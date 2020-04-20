@@ -38,20 +38,17 @@ class Test_RocketCleanCacheThemeUpdate extends FilesystemTestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldDoExpected( $hook_extra, $expected ) {
+	public function testShouldCleanExpected( $hook_extra, $expected ) {
 		if ( empty( $expected['cleaned'] ) ) {
 			Functions\expect( 'rocket_clean_domain' )->never();
 		}
 
-		$shouldNotClean = $this->getShouldNotCleanEntries( $expected['non_cleaned'] );
+		$this->getShouldNotCleanEntries( $expected['non_cleaned'] );
 
 		// Update it.
 		do_action( 'upgrader_process_complete', null, $hook_extra );
 
-		// Check the "cleaned" directories.
 		$this->checkCleanedIsDeleted( $expected['cleaned'] );
-
-		// Check the non-cleaned files/directories still exist.
-		$this->checkNonCleanedExist( $shouldNotClean );
+		$this->checkNonCleanedExist();
 	}
 }
