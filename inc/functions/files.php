@@ -683,20 +683,22 @@ function rocket_clean_files( $urls ) {
  * @access private
  *
  * @param RecursiveIteratorIterator $iterator Instance of the iterator.
- * @param string                    $url      URL to convert into filesystem path regex to get entries.
+ * @param string|array              $url      URL or parsed URL to convert into filesystem path regex to get entries.
  *
  * @return array|RegexIterator when successful, returns iterator; else an empty array.
  */
-function _rocket_get_entries_regex( $iterator, $url ) {
-	$parsed_url = get_rocket_parse_url( $url );
+function _rocket_get_entries_regex( $iterator, $url ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
+	$parsed_url = is_array( $url ) ? $url : get_rocket_parse_url( $url );
 	$host       = rtrim( $parsed_url['host'], '*' );
+
 	if ( ! empty( $parsed_url['path'] ) ) {
 		$path = trim( $parsed_url['path'], '/' );
 
 		// Count the hierarchy to determine the depth.
 		$depth = substr_count( $path, '/' ) + 1;
+
+		// Prepare the paths' separator for regex.
 		if ( $depth > 1 ) {
-			// Prepare the '/' for regex.
 			$path = str_replace( '/', '\/', $path );
 		}
 
@@ -902,23 +904,7 @@ function rocket_clean_domain( $lang = '' ) {
 		 */
 		do_action( 'before_rocket_clean_domain', $root, $lang, $url ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
-		if ( ! empty( $file['path'] ) ) {
-			$regex = "/({$file['host']})*\/" . trim( $file['path'], '/' ) . '/i';
-			$depth = 1;
-		} else {
-			$regex = "/{$file['host']}*/i";
-			$depth = 0;
-		}
-
-		try {
-			$iterator->setMaxDepth( $depth );
-			$files = new RegexIterator( $iterator, $regex );
-		} catch ( InvalidArgumentException $e ) {
-			// No logging yet.
-			return;
-		}
-
-		foreach ( $files as $file ) {
+		foreach ( _rocket_get_entries_regex( $iterator, $file ) as $file ) {
 			rocket_rrmdir( $file->getPathname(), $dirs_to_preserve );
 		}
 
