@@ -1137,7 +1137,7 @@ class Page {
 
 		$this->settings->add_settings_fields(
 			[
-				'sitemaps'     => [
+				'sitemaps'      => [
 					'type'              => 'textarea',
 					'label'             => __( 'Sitemaps for preloading', 'rocket' ),
 					'container_class'   => [
@@ -1151,7 +1151,7 @@ class Page {
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
 				],
-				'dns_prefetch' => [
+				'dns_prefetch'  => [
 					'type'              => 'textarea',
 					'label'             => __( 'URLs to prefetch', 'rocket' ),
 					'description'       => __( 'Specify external hosts to be prefetched (no <code>http:</code>, one per line)', 'rocket' ),
@@ -1161,7 +1161,7 @@ class Page {
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
 				],
-				'fonts'        => [
+				'preload_fonts' => [
 					'type'              => 'textarea',
 					'label'             => __( 'Fonts to preload', 'rocket' ),
 					'description'       => __( 'Specify urls of the font files to be preloaded (one per line)', 'rocket' ),
