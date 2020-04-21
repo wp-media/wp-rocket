@@ -65,11 +65,11 @@ class HealthCheck implements Subscriber_Interface {
 		}
 
 		$events = [
-			'rocket_purge_time_event'                      => 'Scheduled Cache Purge',
-			'rocket_database_optimization_time_event'      => 'Scheduled Database Optimization',
-			'rocket_database_optimization_cron_interval'   => 'Database Optimization Process',
-			'rocket_preload_cron_interval'                 => 'Preload',
-			'rocket_critical_css_generation_cron_interval' => 'Critical Path CSS Generation Process',
+			'rocket_purge_time_event'                      => __( 'Scheduled Cache Purge', 'rocket' ),
+			'rocket_database_optimization_time_event'      => __( 'Scheduled Database Optimization', 'rocket' ),
+			'rocket_database_optimization_cron_interval'   => __( 'Database Optimization Process', 'rocket' ),
+			'rocket_preload_cron_interval'                 => _x( 'Preload', 'noun', 'rocket' ),
+			'rocket_critical_css_generation_cron_interval' => __( 'Critical Path CSS Generation Process', 'rocket' ),
 		];
 
 		$delay = rocket_get_constant( 'DISABLE_WP_CRON' ) ? HOUR_IN_SECONDS : 5 * MINUTE_IN_SECONDS;

@@ -802,7 +802,7 @@ function rocket_varnish_http_purge( $url ) {
  * @return void
  */
 function rocket_warning_cron() {
-	_deprecated_function( __FUNCTION__ . '()', '3.5.4', 'WP_Rocket\Admin\Warnings::missed_cron()' );
+	_deprecated_function( __FUNCTION__ . '()', '3.5.4', 'WP_Rocket\Engine\Admin\HealthCheck::missed_cron()' );
 	$screen = get_current_screen();
 
 	// This filter is documented in inc/admin-bar.php.
