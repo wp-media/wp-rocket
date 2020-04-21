@@ -37,7 +37,10 @@ before_install:
   # Unless we need XDebug, disable it for improved performance.
   - phpenv config-rm xdebug.ini || return 0
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
-  - rm composer.lock
+  - |
+    if [[ -f composer.lock ]] ; then
+      rm composer.lock
+    fi
   - composer remove --dev phpstan/phpstan szepeviktor/phpstan-wordpress
 install:
   - composer install --prefer-dist --no-interaction

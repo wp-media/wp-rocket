@@ -40,43 +40,47 @@ function get_rocket_post_terms_urls( $post_id ) { // phpcs:ignore WordPress.Nami
 	 *
 	 * @param array $urls List of taxonomies URLs
 	*/
-	$urls = apply_filters( 'rocket_post_terms_urls', $urls );
-
-	return $urls;
+	return apply_filters( 'rocket_post_terms_urls', $urls );
 }
 
 /**
- * Get all dates archives urls associated to a specific post
+ * Get all dates archives urls associated to a specific post.
  *
  * @since 1.0
  *
  * @param int $post_id The post ID.
- * @return array $urls List of dates URLs
+ *
+ * @return array $urls List of dates URLs on success; else, an empty [].
  */
 function get_rocket_post_dates_urls( $post_id ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
-	// Get the day and month of the post.
-	$date = explode( '-', get_the_time( 'Y-m-d', $post_id ) );
+	$time = get_the_time( 'Y-m-d', $post_id );
+	if ( empty( $time ) ) {
+		return [];
+	}
+
+	// Extract and prep the year, month, and day.
+	$date  = explode( '-', $time );
+	$year  = trailingslashit( get_year_link( $date[0] ) );
+	$month = trailingslashit( get_month_link( $date[0], $date[1] ) );
 
 	$urls = [
-		trailingslashit( get_year_link( $date[0] ) ) . 'index.html',
-		trailingslashit( get_year_link( $date[0] ) ) . 'index.html_gzip',
-		trailingslashit( get_year_link( $date[0] ) ) . $GLOBALS['wp_rewrite']->pagination_base,
-		trailingslashit( get_month_link( $date[0], $date[1] ) ) . 'index.html',
-		trailingslashit( get_month_link( $date[0], $date[1] ) ) . 'index.html_gzip',
-		trailingslashit( get_month_link( $date[0], $date[1] ) ) . $GLOBALS['wp_rewrite']->pagination_base,
+		"{$year}index.html",
+		"{$year}index.html_gzip",
+		$year . $GLOBALS['wp_rewrite']->pagination_base,
+		"{$month}index.html",
+		"{$month}index.html_gzip",
+		$month . $GLOBALS['wp_rewrite']->pagination_base,
 		get_day_link( $date[0], $date[1], $date[2] ),
 	];
 
 	/**
-	 * Filter the list of dates URLs
+	 * Filter the list of dates URLs.
 	 *
 	 * @since 1.1.0
 	 *
-	 * @param array $urls List of dates URLs
+	 * @param array $urls List of dates URLs.
 	*/
-	$urls = apply_filters( 'rocket_post_dates_urls', $urls );
-
-	return $urls;
+	return (array) apply_filters( 'rocket_post_dates_urls', $urls );
 }
 
 /**
