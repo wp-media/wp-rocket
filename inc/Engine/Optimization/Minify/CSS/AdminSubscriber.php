@@ -31,15 +31,15 @@ class AdminSubscriber implements Subscriber_Interface {
 	 *
 	 * @since  3.5.4
 	 *
-	 * @param array $old_value An array of previous values for the settings.
-	 * @param array $value     An array of submitted values for the settings.
+	 * @param array $old An array of previous settings.
+	 * @param array $new An array of submitted settings.
 	 */
-	public function clean_minify( $old_value, $value ) {
-		if ( ! is_array( $old_value ) || ! is_array( $value ) ) {
+	public function clean_minify( $old, $new ) {
+		if ( ! is_array( $old ) || ! is_array( $new ) ) {
 			return;
 		}
 
-		if ( ! $this->maybe_minify_regenerate( $value, $old_value ) ) {
+		if ( ! $this->maybe_minify_regenerate( $new, $old ) ) {
 			return;
 		}
 		// Purge all minify cache files.
@@ -51,23 +51,23 @@ class AdminSubscriber implements Subscriber_Interface {
 	 *
 	 * @since  3.5.4
 	 *
-	 * @param array $value     An array of submitted values for the settings.
-	 * @param array $old_value An array of previous values for the settings.
+	 * @param array $new An array of submitted settings.
+	 * @param array $old An array of previous settings.
 	 *
 	 * @return array Updates 'minify_css_key' setting when regenerated; else, original submitted settings.
 	 */
-	public function regenerate_minify_css_key( $value, $old_value ) {
-		if ( ! is_array( $old_value ) || ! is_array( $value ) ) {
-			return $value;
+	public function regenerate_minify_css_key( $new, $old ) {
+		if ( ! is_array( $old ) || ! is_array( $new ) ) {
+			return $new;
 		}
 
-		if ( ! $this->maybe_minify_regenerate( $value, $old_value ) ) {
-			return $value;
+		if ( ! $this->maybe_minify_regenerate( $new, $old ) ) {
+			return $new;
 		}
 
-		$value['minify_css_key'] = create_rocket_uniqid();
+		$new['minify_css_key'] = create_rocket_uniqid();
 
-		return $value;
+		return $new;
 	}
 
 	/**
