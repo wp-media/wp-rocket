@@ -595,13 +595,8 @@ class Settings {
 
 		$ext     = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
 		$formats = [
-			'dfont',
 			'eot',
-			'otc',
 			'otf',
-			'ott',
-			'ttc',
-			'tte',
 			'ttf',
 			'svg',
 			'woff',
