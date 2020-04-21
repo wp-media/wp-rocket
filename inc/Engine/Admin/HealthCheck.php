@@ -34,33 +34,12 @@ class HealthCheck implements Subscriber_Interface {
 	}
 
 	/**
-	 * Display a warning notice if WP Rocket scheduled events are not running properly
+	 * Display a warning notice if WP Rocket scheduled events are not running properly.
 	 *
 	 * @since 3.5.4
-	 *
-	 * @return void
 	 */
 	public function missed_cron() {
-		if ( ! current_user_can( 'rocket_manage_options' ) ) {
-			return;
-		}
-
-		if ( 'settings_page_wprocket' !== get_current_screen()->id ) {
-			return;
-		}
-
-		$dismissed = (array) get_user_meta( get_current_user_id(), 'rocket_boxes', true );
-
-		if ( in_array( 'rocket_warning_cron', $dismissed, true ) ) {
-			return;
-		}
-
-		if (
-				0 === (int) $this->options->get( 'purge_cron_interval', 0 )
-				&& 0 === (int) $this->options->get( 'async_css', 0 )
-				&& 0 === (int) $this->options->get( 'manual_preload', 0 )
-				&& 0 === (int) $this->options->get( 'schedule_automatic_cleanup', 0 )
-			) {
+		if ( $this->do_not_check() ) {
 			return;
 		}
 
@@ -115,6 +94,38 @@ class HealthCheck implements Subscriber_Interface {
 				'message'        => $message,
 				'dismiss_button' => 'rocket_warning_cron',
 			]
+		);
+	}
+
+	/**
+	 * Checks if health check should not run.
+	 *
+	 * @since 3.5.4
+	 *
+	 * @return bool true when should not do health check; else, false.
+	 */
+	protected function do_not_check() {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return true;
+		}
+
+		if ( 'settings_page_wprocket' !== get_current_screen()->id ) {
+			return true;
+		}
+
+		$dismissed = (array) get_user_meta( get_current_user_id(), 'rocket_boxes', true );
+		if ( in_array( 'rocket_warning_cron', $dismissed, true ) ) {
+			return true;
+		}
+
+		return (
+			0 === (int) $this->options->get( 'purge_cron_interval', 0 )
+			&&
+			0 === (int) $this->options->get( 'async_css', 0 )
+			&&
+			0 === (int) $this->options->get( 'manual_preload', 0 )
+			&&
+			0 === (int) $this->options->get( 'schedule_automatic_cleanup', 0 )
 		);
 	}
 }
