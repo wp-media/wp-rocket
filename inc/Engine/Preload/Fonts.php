@@ -40,6 +40,68 @@ class Fonts implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		return [];
+		return [
+			'wp_head' => [ 'preload_fonts' ],
+		];
+	}
+
+	/**
+	 * Add the required <link/> tags used to preload fonts.
+	 *
+	 * @since 3.6
+	 */
+	public function preload_fonts() {
+		$fonts = $this->options->get( 'preload_fonts', [] );
+		$fonts = array_map( [ $this, 'sanitize_font' ], $fonts );
+		$fonts = array_filter( $fonts );
+
+		if ( empty( $fonts ) ) {
+			return;
+		}
+
+		$home = untrailingslashit( get_option( 'home' ) );
+
+		foreach ( array_unique( $fonts ) as $font ) {
+			printf(
+				"\n<link rel=\"preload\" as=\"font\" href=\"%s\" crossorigin>",
+				esc_url( $home . $font )
+			);
+		}
+	}
+
+	/**
+	 * Sanitize a font file path.
+	 *
+	 * @since 3.6
+	 *
+	 * @param  string $file Filepath to sanitize.
+	 * @return string|bool  Sanitized filepath. False if not a font file.
+	 */
+	private function sanitize_font( $file ) {
+		if ( ! is_string( $file ) ) {
+			return false;
+		}
+
+		$file = trim( $file );
+
+		if ( empty( $file ) ) {
+			return false;
+		}
+
+		$ext     = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
+		$formats = [
+			'eot',
+			'otf',
+			'ttf',
+			'svg',
+			'woff',
+			'woff2',
+		];
+
+		if ( ! in_array( $ext, $formats, true ) ) {
+			return false;
+		}
+
+		return $file;
 	}
 }
