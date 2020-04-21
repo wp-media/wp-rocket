@@ -2,16 +2,20 @@
 namespace WP_Rocket\Engine\Optimization\QueryString;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\deprecated\DeprecatedClassTrait;
 use WP_Rocket\Engine\Optimization\AbstractOptimization;
 use WP_Rocket\Optimization\CSS\Path_Rewriter;
 
 /**
- * Remove query string from static resources
+ * Remove query string from static resources.
  *
- * @since 3.1
+ * @since  3.1
+ * @since  3.6 Deprecated.
  * @author Remy Perona
+ * @deprecated
  */
 class Remove extends AbstractOptimization {
+	use DeprecatedClassTrait;
 	use Path_Rewriter;
 
 	/**
@@ -65,6 +69,7 @@ class Remove extends AbstractOptimization {
 	 * @param string       $busting_url  Base cache busting files URL.
 	 */
 	public function __construct( Options_Data $options, $busting_path, $busting_url ) {
+		self::deprecated_class( '3.6' );
 		$this->options      = $options;
 		$this->busting_path = $busting_path . get_current_blog_id() . '/';
 		$this->busting_url  = $busting_url . get_current_blog_id() . '/';

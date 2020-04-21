@@ -108,7 +108,6 @@ class Plugin {
 				'minify_css_subscriber',
 				'minify_js_subscriber',
 				'cache_dynamic_resource',
-				'remove_query_string_subscriber',
 				'dequeue_jquery_migrate_subscriber',
 			];
 
@@ -157,6 +156,7 @@ class Plugin {
 			'rocketcdn_rest_subscriber',
 			'detect_missing_tags_subscriber',
 			'purge_actions_subscriber',
+			'beaverbuilder_subscriber',
 			'amp_subscriber',
 			'simple_custom_css',
 		];

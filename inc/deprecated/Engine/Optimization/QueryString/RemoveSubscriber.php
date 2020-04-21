@@ -1,15 +1,20 @@
 <?php
 namespace WP_Rocket\Engine\Optimization\QueryString;
 
+use WP_Rocket\deprecated\DeprecatedClassTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
- * Hooks into WordPress to remove query strings for static files
+ * Hooks into WordPress to remove query strings for static files.
  *
- * @since 3.1
+ * @since  3.1
+ * @since  3.6 Deprecated.
  * @author Remy Perona
+ * @deprecated
  */
 class RemoveSubscriber implements Subscriber_Interface {
+	use DeprecatedClassTrait;
+
 	/**
 	 * Remove Query String instance.
 	 *
@@ -29,6 +34,7 @@ class RemoveSubscriber implements Subscriber_Interface {
 	 * @param Remove $remove_query_string Remove Query String instance.
 	 */
 	public function __construct( Remove $remove_query_string ) {
+		self::deprecated_class( '3.6' );
 		$this->remove_query_string = $remove_query_string;
 	}
 
