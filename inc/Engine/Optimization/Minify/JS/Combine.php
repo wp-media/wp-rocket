@@ -722,6 +722,7 @@ class Combine extends AbstractJSOptimization {
 			'cdn.jsdelivr.net/gh/AmauriC/',
 			'static.klaviyo.com/onsite/js/klaviyo.js',
 			'a.omappapi.com/app/js/api.min.js',
+			'static.zdassets.com',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
