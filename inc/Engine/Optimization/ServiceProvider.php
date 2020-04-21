@@ -66,7 +66,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'ie_conditionals_subscriber', 'WP_Rocket\Subscriber\Optimization\IE_Conditionals_Subscriber' );
 		$this->getContainer()->share( 'minify_html_subscriber', 'WP_Rocket\Subscriber\Optimization\Minify_HTML_Subscriber' )
 			->withArgument( $options );
-		$this->getContainer()->share( 'combine_google_fonts_subscriber', 'WP_Rocket\Subscriber\Optimization\Combine_Google_Fonts_Subscriber' )
+		$this->getContainer()->share( 'combine_google_fonts_subscriber', 'WP_Rocket\Engine\Optimization\GoogleFonts\Subscriber' )
 			->withArgument( $options );
 		$this->getContainer()->share( 'minify_css_subscriber', 'WP_Rocket\Engine\Optimization\Minify\CSS\Subscriber' )
 			->withArgument( $options );

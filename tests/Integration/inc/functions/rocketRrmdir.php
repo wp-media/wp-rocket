@@ -7,6 +7,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 /**
  * @covers ::rocket_rrmdir
  * @uses  ::rocket_direct_filesystem
+ *
  * @group Functions
  * @group Files
  * @group vfs
@@ -30,7 +31,10 @@ class Test_RocketRrmdir extends FilesystemTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldRecursivelyRemoveFilesAndDirectories( $to_delete, $to_preserve, $expected ) {
-		$to_delete = $this->filesystem->getUrl( untrailingslashit( $to_delete ) );
+		$to_delete       = $this->filesystem->getUrl( untrailingslashit( $to_delete ) );
+		$shouldNotRemove = empty( $expected['removed'] )
+			? $this->filesystem->getListing( $this->filesystem->getUrl( $this->config['vfs_dir'] ) )
+			: $this->getNonCleaned( $expected['not_removed'] );
 
 		// Run it.
 		rocket_rrmdir( $to_delete, $to_preserve );
@@ -45,15 +49,32 @@ class Test_RocketRrmdir extends FilesystemTestCase {
 			did_action( 'after_rocket_rrmdir' ) - $this->stats['after_rocket_rrmdir']
 		);
 
-		// Check the "deleted" files/directories no longer exist, i.e. were deleted.
-		foreach ( $expected['deleted'] as $entry ) {
-			$this->assertFalse( $this->filesystem->exists( $entry ) );
+		// Check the "removed" files and directories.
+		foreach ( $expected['removed'] as $dir => $contents ) {
+			// Deleted.
+			if ( is_null( $contents ) ) {
+				$this->assertFalse( $this->filesystem->exists( $dir ) );
+			} else {
+				$shouldNotRemove[] = trailingslashit( $dir );
+				// Emptied, but not deleted.
+				$this->assertSame( $contents, $this->filesystem->getFilesListing( $dir ) );
+			}
 		}
 
-		// Check the non-deleted files/directories still exist, i.e. were not deleted.
-		$should_exist = array_diff( $this->original_entries, $expected['deleted'] );
-		foreach ( $should_exist as $entry ) {
-			$this->assertTrue( $this->filesystem->exists( $entry ) );
+		// Check the "not-removed" files/directories still exist, i.e. were not deleted.
+		$entriesAfterCleaning = $this->filesystem->getListing( $this->filesystem->getUrl( $this->config['vfs_dir'] ) );
+		$this->assertEmpty( array_diff( $entriesAfterCleaning, $shouldNotRemove ) );
+	}
+
+	private function getNonCleaned( $config ) {
+		$entries = [];
+		foreach ( $config as $entry => $scanDir ) {
+			$entries[] = $entry;
+			if ( $scanDir && $this->filesystem->is_dir( $entry ) ) {
+				$entries = array_merge( $entries, $this->filesystem->getListing( $entry ) );
+			}
 		}
+
+		return $entries;
 	}
 }
