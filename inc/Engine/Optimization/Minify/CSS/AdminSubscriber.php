@@ -7,13 +7,13 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
 /**
  * Minify/Combine CSS Admin subscriber
  *
- * @since 3.5.3
+ * @since 3.5.4
  */
 class AdminSubscriber implements Subscriber_Interface {
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
-	 * @since 3.5.3
+	 * @since 3.5.4
 	 *
 	 * @return array
 	 */
@@ -29,7 +29,7 @@ class AdminSubscriber implements Subscriber_Interface {
 	/**
 	 * Clean minify CSS files when options change.
 	 *
-	 * @since  3.5.3
+	 * @since  3.5.4
 	 *
 	 * @param array $old_value An array of previous values for the settings.
 	 * @param array $value     An array of submitted values for the settings.
@@ -49,7 +49,7 @@ class AdminSubscriber implements Subscriber_Interface {
 	/**
 	 * Regenerate the minify key if CSS files have been modified.
 	 *
-	 * @since  3.5.3
+	 * @since  3.5.4
 	 *
 	 * @param array $value     An array of submitted values for the settings.
 	 * @param array $old_value An array of previous values for the settings.
