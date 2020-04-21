@@ -101,7 +101,7 @@ class ActionScheduler_DataController {
 	 * @param integer $sleep_time The number of seconds to pause before resuming operation.
 	 */
 	public static function set_sleep_time( $sleep_time ) {
-		self::$sleep_time = $sleep_time;
+		self::$sleep_time = (int) $sleep_time;
 	}
 
 	/**
@@ -110,7 +110,7 @@ class ActionScheduler_DataController {
 	 * @param integer $free_ticks The number of ticks to free memory on.
 	 */
 	public static function set_free_ticks( $free_ticks ) {
-		self::$free_ticks = $free_ticks;
+		self::$free_ticks = (int) $free_ticks;
 	}
 
 	/**
