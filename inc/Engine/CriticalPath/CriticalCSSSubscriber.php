@@ -406,7 +406,7 @@ JS;
 	 * @return string Updated HTML output
 	 */
 	public function insert_critical_css_buffer( $buffer ) {
-		if ( ( rocket_has_constant( 'DONOTROCKETOPTIMIZE' ) && rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) || ( rocket_has_constant( 'DONOTASYNCCSS' ) && rocket_get_constant( 'DONOTASYNCCSS' ) ) ) {
+		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) || rocket_get_constant( 'DONOTASYNCCSS' ) ) {
 			return;
 		}
 
