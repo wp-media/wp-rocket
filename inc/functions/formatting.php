@@ -259,7 +259,7 @@ function rocket_remove_url_protocol( $url, $no_dots = false ) {
 }
 
 /**
- * Add HTTP protocol to an url that does not have.
+ * Add HTTP protocol to an url that does not have it.
  *
  * @since 2.2.1
  *
