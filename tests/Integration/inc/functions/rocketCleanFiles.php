@@ -8,7 +8,8 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 /**
  * @covers ::rocket_clean_files
  * @uses  ::rocket_rrmdir
- * @uses  ::rocket_remove_url_protocol
+ * @uses  ::_rocket_get_cache_path_iterator
+ * @uses  ::_rocket_get_entries_regex
  *
  * @group Functions
  * @group Files
