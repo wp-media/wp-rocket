@@ -1165,6 +1165,7 @@ class Page {
 					'type'              => 'textarea',
 					'label'             => __( 'Fonts to preload', 'rocket' ),
 					'description'       => __( 'Specify urls of the font files to be preloaded (one per line)', 'rocket' ),
+					'helper'            => __( 'The domain part of the URL will be stripped automatically.<br/>Allowed fonts extension: eot, otf, ttf, svg, woff, woff2.', 'rocket' ),
 					'placeholder'       => '/wp-content/themes/your-theme/assets/fonts/font-file.woff',
 					'section'           => 'preload_fonts_section',
 					'page'              => 'preload',
