@@ -50,16 +50,15 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 
 		add_filter( 'cron_schedules', array( self::instance(), 'add_wp_cron_schedule' ) );
 
+		// Check for and remove any WP Cron hook scheduled by Action Scheduler < 3.0.0, which didn't include the $context param
+		$next_timestamp = wp_next_scheduled( self::WP_CRON_HOOK );
+		if ( $next_timestamp ) {
+			wp_unschedule_event( $next_timestamp, self::WP_CRON_HOOK );
+		}
+
 		$cron_context = array( 'WP Cron' );
 
 		if ( ! wp_next_scheduled( self::WP_CRON_HOOK, $cron_context ) ) {
-
-			// Check for and remove any WP Cron hook scheduled by Action Scheduler < 3.0.0, which didn't include the $context param
-			$next_timestamp = wp_next_scheduled( self::WP_CRON_HOOK );
-			if ( $next_timestamp ) {
-				wp_unschedule_event( $next_timestamp, self::WP_CRON_HOOK );
-			}
-
 			$schedule = apply_filters( 'action_scheduler_run_schedule', self::WP_CRON_SCHEDULE );
 			wp_schedule_event( time(), $schedule, self::WP_CRON_HOOK, $cron_context );
 		}
