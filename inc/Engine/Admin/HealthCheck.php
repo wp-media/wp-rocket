@@ -47,7 +47,7 @@ class HealthCheck implements Subscriber_Interface {
 	 * @since 3.5.4
 	 */
 	public function missed_cron() {
-		if ( $this->do_not_check() ) {
+		if ( ! $this->should_check() ) {
 			return;
 		}
 
@@ -99,27 +99,27 @@ class HealthCheck implements Subscriber_Interface {
 	}
 
 	/**
-	 * Checks if health check should not run.
+	 * Checks if health check should run.
 	 *
 	 * @since 3.5.4
 	 *
-	 * @return bool true when should not do health check; else, false.
+	 * @return bool true when should do health check; else, false.
 	 */
-	protected function do_not_check() {
+	protected function should_check() {
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
-			return true;
+			return false;
 		}
 
 		if ( 'settings_page_wprocket' !== get_current_screen()->id ) {
-			return true;
+			return false;
 		}
 
 		$dismissed = (array) get_user_meta( get_current_user_id(), 'rocket_boxes', true );
 		if ( in_array( 'rocket_warning_cron', $dismissed, true ) ) {
-			return true;
+			return false;
 		}
 
-		return (
+		return ! (
 			0 === (int) $this->options->get( 'purge_cron_interval', 0 )
 			&&
 			0 === (int) $this->options->get( 'async_css', 0 )
