@@ -53,6 +53,8 @@ class AdminSubscriber implements Subscriber_Interface {
 	 *
 	 * @param array $value     An array of submitted values for the settings.
 	 * @param array $old_value An array of previous values for the settings.
+	 *
+	 * @return array Updates 'minify_css_key' setting when regenerated; else, original submitted settings.
 	 */
 	public function regenerate_minify_css_key( $value, $old_value ) {
 		if ( ! is_array( $old_value ) || ! is_array( $value ) ) {
@@ -75,6 +77,8 @@ class AdminSubscriber implements Subscriber_Interface {
 	 *
 	 * @param array $value     An array of submitted values for the settings.
 	 * @param array $old_value An array of previous values for the settings.
+	 *
+	 * @return bool true when should regenerate; else false.
 	 */
 	protected function maybe_minify_regenerate( $value, $old_value ) {
 		if ( ( array_key_exists( 'minify_css', $old_value ) && array_key_exists( 'minify_css', $value ) && $old_value['minify_css'] !== $value['minify_css'] )
