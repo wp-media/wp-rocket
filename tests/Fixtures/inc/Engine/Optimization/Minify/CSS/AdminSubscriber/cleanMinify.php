@@ -1,7 +1,4 @@
 <?php
-/**
- * Test Data for Cache Dynamic Resource.
- */
 
 return [
 	'vfs_dir'   => 'wp-content/cache/min/',
