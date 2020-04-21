@@ -54,6 +54,19 @@ tests_add_filter(
 			require WP_ROCKET_PLUGIN_ROOT . '/vendor/woocommerce/woocommerce/woocommerce.php';
 		}
 
+		if ( BootstrapManager::isGroup( 'BeaverBuilder' ) ) {
+			define( 'FL_BUILDER_VERSION', '5.3' );
+		}
+
+		if ( BootstrapManager::isGroup( 'Elementor' ) ) {
+			define( 'ELEMENTOR_VERSION', '2.0' );
+		}
+
+		if ( BootstrapManager::isGroup( 'Hummingbird' ) ) {
+			define( 'WP_ADMIN',  true );
+			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/hummingbird-performance/wp-hummingbird.php';
+		}
+
 		// Overload the license key for testing.
 		redefine( 'rocket_valid_key', '__return_true' );
 
