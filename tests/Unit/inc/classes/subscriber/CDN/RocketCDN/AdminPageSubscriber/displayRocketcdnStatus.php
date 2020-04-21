@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\classes\subscriber\CDN\RocketCDN\AdminPageSub
 use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Admin\Settings\Beacon;
+use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\CDN\RocketCDN\APIClient;
 use WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber;
 use WPMedia\PHPUnit\Unit\TestCase;

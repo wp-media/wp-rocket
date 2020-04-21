@@ -796,66 +796,95 @@ function rocket_clean_home_feeds() {
 }
 
 /**
- * Remove all cache files of the domain
+ * Remove all cache files for the domain.
  *
- * @since 2.0 Delete domain cache files for all users
+ * @since 3.5.3 Replaces glob with SPL.
+ * @since 2.0   Delete domain cache files for all users
  * @since 1.0
  *
- * @param string $lang (default: '') The language code.
- * @return void
+ * @param string $lang Optional. The language code. Default: empty string.
  */
 function rocket_clean_domain( $lang = '' ) {
-	$urls = ( ! $lang || is_object( $lang ) || is_array( $lang ) || is_int( $lang ) ) ? get_rocket_i18n_uri() : get_rocket_i18n_home_url( $lang );
-	$urls = (array) $urls;
+	$urls = ( ! $lang || is_object( $lang ) || is_array( $lang ) || is_int( $lang ) )
+		? (array) get_rocket_i18n_uri()
+		: (array) get_rocket_i18n_home_url( $lang );
 
 	/**
-	 * Filter URLs to delete all caching files from a domain
+	 * Filter URLs to delete all caching files from a domain.
 	 *
 	 * @since 2.6.4
+	 *
 	 * @param array     URLs that will be returned.
 	 * @param string    The language code.
-	*/
-	$urls = apply_filters( 'rocket_clean_domain_urls', $urls, $lang );
+	 */
+	$urls = (array) apply_filters( 'rocket_clean_domain_urls', $urls, $lang );
 	$urls = array_filter( $urls );
+
+	$cache_path       = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' );
+	$dirs_to_preserve = get_rocket_i18n_to_preserve( $lang );
+	/** This filter is documented in inc/front/htaccess.php */
+	$url_no_dots = (bool) apply_filters( 'rocket_url_no_dots', false );
+
+	try {
+		$iterator = new RecursiveIteratorIterator(
+			new RecursiveDirectoryIterator( $cache_path ),
+			RecursiveIteratorIterator::SELF_FIRST,
+			RecursiveIteratorIterator::CATCH_GET_CHILD
+		);
+	} catch ( Exception $e ) {
+		// No logging yet.
+		return;
+	}
 
 	foreach ( $urls as $url ) {
 		$file = get_rocket_parse_url( $url );
 
-		/** This filter is documented in inc/front/htaccess.php */
-		if ( apply_filters( 'rocket_url_no_dots', false ) ) {
+		if ( $url_no_dots ) {
 			$file['host'] = str_replace( '.', '_', $file['host'] );
 		}
 
-		$root = WP_ROCKET_CACHE_PATH . $file['host'] . '*' . $file['path'];
+		$root = $cache_path . $file['host'] . $file['path'];
 
 		/**
-		 * Fires before all cache files are deleted
+		 * Fires before all cache files are deleted.
 		 *
 		 * @since 1.0
 		 *
 		 * @param string $root The path of home cache file.
 		 * @param string $lang The current lang to purge.
 		 * @param string $url  The home url.
-		*/
+		 */
 		do_action( 'before_rocket_clean_domain', $root, $lang, $url ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
-		// Delete cache domain files.
-		$dirs = glob( $root . '*', GLOB_NOSORT );
-		if ( $dirs ) {
-			foreach ( $dirs as $dir ) {
-				rocket_rrmdir( $dir, get_rocket_i18n_to_preserve( $lang ) );
-			}
+		if ( ! empty( $file['path'] ) ) {
+			$regex = "/({$file['host']})*\/" . trim( $file['path'], '/' ) . '/i';
+			$depth = 1;
+		} else {
+			$regex = "/{$file['host']}*/i";
+			$depth = 0;
+		}
+
+		try {
+			$iterator->setMaxDepth( $depth );
+			$files = new RegexIterator( $iterator, $regex );
+		} catch ( InvalidArgumentException $e ) {
+			// No logging yet.
+			return;
+		}
+
+		foreach ( $files as $file ) {
+			rocket_rrmdir( $file->getPathname(), $dirs_to_preserve );
 		}
 
 		/**
-		 * Fires after all cache files was deleted
+		 * Fires after all cache files was deleted.
 		 *
 		 * @since 1.0
 		 *
 		 * @param string $root The path of home cache file.
 		 * @param string $lang The current lang to purge.
 		 * @param string $url  The home url.
-		*/
+		 */
 		do_action( 'after_rocket_clean_domain', $root, $lang, $url ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	}
 }
@@ -1028,75 +1057,93 @@ function rocket_clean_cache_dir() {
 }
 
 /**
- * Remove a single file or a folder recursively
+ * Remove a single file or a folder recursively.
  *
+ * @since 3.5.3 Replaces glob and optimizes.
  * @since 1.0
  *
- * @param string $dir File/Directory to delete.
- * @param array  $dirs_to_preserve (default: array()) Dirs that should not be deleted.
- * @return void
+ * @param string $dir              File/Directory to delete.
+ * @param array  $dirs_to_preserve Optional. Dirs that should not be deleted.
  */
-function rocket_rrmdir( $dir, $dirs_to_preserve = [] ) {
-	$dir = untrailingslashit( $dir );
+function rocket_rrmdir( $dir, array $dirs_to_preserve = [] ) {
+	$dir        = untrailingslashit( $dir );
+	$filesystem = rocket_direct_filesystem();
 
 	/**
 	 * Fires before a file/directory cache is deleted
 	 *
 	 * @since 1.1.0
 	 *
-	 * @param string $dir File/Directory to delete.
-	 * @param array $dirs_to_preserve Directories that should not be deleted.
-	*/
+	 * @param string $dir              File/Directory to delete.
+	 * @param array  $dirs_to_preserve Directories that should not be deleted.
+	 */
 	do_action( 'before_rocket_rrmdir', $dir, $dirs_to_preserve ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 	// Remove the hidden empty file for mobile detection on NGINX with the Rocket NGINX configuration.
 	$nginx_mobile_detect_file = $dir . '/.mobile-active';
 
-	if ( rocket_direct_filesystem()->is_dir( $dir ) && rocket_direct_filesystem()->exists( $nginx_mobile_detect_file ) ) {
-		rocket_direct_filesystem()->delete( $nginx_mobile_detect_file );
+	if ( $filesystem->is_dir( $dir ) && $filesystem->exists( $nginx_mobile_detect_file ) ) {
+		$filesystem->delete( $nginx_mobile_detect_file );
 	}
 
 	// Remove the hidden empty file for webp.
 	$nowebp_detect_file = $dir . '/.no-webp';
 
-	if ( rocket_direct_filesystem()->is_dir( $dir ) && rocket_direct_filesystem()->exists( $nowebp_detect_file ) ) {
-		rocket_direct_filesystem()->delete( $nowebp_detect_file );
+	if ( $filesystem->is_dir( $dir ) && $filesystem->exists( $nowebp_detect_file ) ) {
+		$filesystem->delete( $nowebp_detect_file );
 	}
 
-	if ( ! rocket_direct_filesystem()->is_dir( $dir ) ) {
-		rocket_direct_filesystem()->delete( $dir );
+	if ( ! $filesystem->is_dir( $dir ) ) {
+		$filesystem->delete( $dir );
+
 		return;
-	};
+	}
 
-	$dirs = glob( $dir . '/*', GLOB_NOSORT );
-	if ( $dirs ) {
+	// Get the directory entries.
+	$entries = [];
+	try {
+		foreach ( new FilesystemIterator( $dir ) as $entry ) {
+			$entries[] = $entry->getPathname();
+		}
+	} catch ( Exception $e ) { // phpcs:disable Generic.CodeAnalysis.EmptyStatement.DetectedCatch
+		// No action required, as logging not enabled.
+	}
 
+	// Exclude directories to preserve from the entries.
+	if ( ! empty( $dirs_to_preserve ) && ! empty( $entries ) ) {
 		$keys = [];
 		foreach ( $dirs_to_preserve as $dir_to_preserve ) {
-			$matches = preg_grep( "#^$dir_to_preserve$#", $dirs );
+			$matches = preg_grep( "#^$dir_to_preserve$#", $entries );
 			$keys[]  = reset( $matches );
 		}
 
-		$dirs = array_diff( $dirs, array_filter( $keys ) );
-		foreach ( $dirs as $dir ) {
-			if ( rocket_direct_filesystem()->is_dir( $dir ) ) {
-				rocket_rrmdir( $dir, $dirs_to_preserve );
-			} else {
-				rocket_direct_filesystem()->delete( $dir );
+		if ( ! empty( $keys ) ) {
+			$keys = array_filter( $keys );
+			if ( ! empty( $keys ) ) {
+				$entries = array_diff( $entries, $keys );
 			}
 		}
 	}
 
-	rocket_direct_filesystem()->delete( $dir );
+	foreach ( $entries as $entry ) {
+		// If not a directory, delete it.
+		if ( ! $filesystem->is_dir( $entry ) ) {
+			$filesystem->delete( $entry );
+		} else {
+			rocket_rrmdir( $entry, $dirs_to_preserve );
+		}
+	}
+
+	$filesystem->delete( $dir );
 
 	/**
 	 * Fires after a file/directory cache was deleted
 	 *
 	 * @since 1.1.0
 	 *
-	 * @param string $dir File/Directory to delete.
-	 * @param array $dirs_to_preserve Dirs that should not be deleted.
-	*/
+	 * @param string $dir              File/Directory to delete.
+	 * @param array  $dirs_to_preserve Dirs that should not be deleted.
+	 */
 	do_action( 'after_rocket_rrmdir', $dir, $dirs_to_preserve ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 }
 
@@ -1137,11 +1184,22 @@ function rocket_mkdir( $dir ) {
  * @return bool True if directory is created/exists, false otherwise
  */
 function rocket_mkdir_p( $target ) {
+	$wrapper = null;
+
+	if ( rocket_is_stream( $target ) ) {
+		list( $wrapper, $target ) = explode( '://', $target, 2 );
+	}
+
 	// from php.net/mkdir user contributed notes.
 	$target = str_replace( '//', '/', $target );
 
+	// Put the wrapper back on the target.
+	if ( null !== $wrapper ) {
+		$target = $wrapper . '://' . $target;
+	}
+
 	// safe mode fails with a trailing slash under certain PHP versions.
-	$target = untrailingslashit( $target );
+	$target = rtrim( $target, '/\\' );
 	if ( empty( $target ) ) {
 		$target = '/';
 	}
@@ -1163,6 +1221,30 @@ function rocket_mkdir_p( $target ) {
 	}
 
 	return false;
+}
+
+/**
+ * Test if a given path is a stream URL.
+ *
+ * @since 3.5.3
+ *
+ * @source wp_is_stream() in /wp-includes/functions.php
+ *
+ * @param string $path The resource path or URL.
+ *
+ * @return bool true if the path is a stream URL; else false.
+ */
+function rocket_is_stream( $path ) {
+	$scheme_separator = strpos( $path, '://' );
+
+	if ( false === $scheme_separator ) {
+		// $path isn't a stream.
+		return false;
+	}
+
+	$stream = substr( $path, 0, $scheme_separator );
+
+	return in_array( $stream, stream_get_wrappers(), true );
 }
 
 /**
