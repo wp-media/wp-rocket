@@ -80,8 +80,14 @@ class AdminSubscriber implements Subscriber_Interface {
 			( array_key_exists( 'exclude_css', $old_value ) && array_key_exists( 'exclude_css', $value ) && $old_value['exclude_css'] !== $value['exclude_css'] )
 			||
 			( array_key_exists( 'cdn', $old_value ) && array_key_exists( 'cdn', $value ) && $old_value['cdn'] !== $value['cdn'] )
-			||
-			( array_key_exists( 'cdn_cnames', $old_value ) && array_key_exists( 'cdn_cnames', $value ) && $old_value['cdn_cnames'] !== $value['cdn_cnames'] )
+		) {
+			return true;
+		}
+
+		if (
+			array_key_exists( 'cdn', $value )
+			&& 1 === (int) $value['cdn']
+			&& ( array_key_exists( 'cdn_cnames', $old_value ) && array_key_exists( 'cdn_cnames', $value ) && $old_value['cdn_cnames'] !== $value['cdn_cnames'] )
 		) {
 			return true;
 		}

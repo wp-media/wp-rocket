@@ -8,12 +8,8 @@ return [
 			'cache' => [
 				'min' => [
 					'1'         => [
-						'fa2965d41f1515951de523cecb81f85e.css' => '',
-						'2n7x3vd41f1515951de523cecb81f85e.css' => '',
-					],
-					'3rd-party' => [
-						'2n7x3vd41f1515951de523cecb81f85e.css' => '',
-						'fa2965d41f1515951de523cecb81f85e.css' => '',
+						'combined1.css' => '',
+						'combined2.css' => '',
 					],
 				],
 			],
@@ -33,6 +29,15 @@ return [
 				'exclude_css' => [],
 				'cdn'         => false,
 				'cdn_cnames'  => [],
+			],
+			'should_run' => false,
+		],
+		'shouldNotCleanMinifyNewCname'     => [
+			'value'     => [
+				'minify_css'  => false,
+				'exclude_css' => [],
+				'cdn'         => false,
+				'cdn_cnames'  => [ 'cname' ],
 			],
 			'should_run' => false,
 		],
@@ -67,7 +72,7 @@ return [
 			'value'     => [
 				'minify_css'  => false,
 				'exclude_css' => [],
-				'cdn'         => false,
+				'cdn'         => true,
 				'cdn_cnames'  => [ 'cname' ],
 			],
 			'should_run' => true,

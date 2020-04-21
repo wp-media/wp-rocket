@@ -23,6 +23,21 @@ return [
 				'cdn'         => false,
 				'cdn_cnames'  => [],
 			],
+        ],
+        'shouldNotRegenerateKeyNewCname'      => [
+			'value'     => [
+				'minify_css'  => false,
+				'exclude_css' => [],
+				'cdn'         => false,
+				'cdn_cnames'  => [ 'cname' ],
+			],
+            'should_run' => false,
+            'expected' => [
+				'minify_css'  => false,
+				'exclude_css' => [],
+				'cdn'         => false,
+				'cdn_cnames'  => [ 'cname' ],
+			],
 		],
 		'shouldRegenerateKey'             => [
 			'value'     => [
@@ -76,14 +91,14 @@ return [
 			'value'     => [
 				'minify_css'  => false,
 				'exclude_css' => [],
-				'cdn'         => false,
+				'cdn'         => true,
 				'cdn_cnames'  => [ 'cname' ],
 			],
             'should_run' => true,
             'expected' => [
 				'minify_css'  => false,
 				'exclude_css' => [],
-				'cdn'         => false,
+				'cdn'         => true,
                 'cdn_cnames'  => [ 'cname' ],
                 'minify_css_key' => 'minify_css_key',
 			],
