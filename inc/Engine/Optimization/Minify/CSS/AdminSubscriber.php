@@ -73,31 +73,53 @@ class AdminSubscriber implements Subscriber_Interface {
 	/**
 	 * Checks minify CSS condition when options change.
 	 *
-	 * @since  3.5.3
+	 * @since  3.5.4
 	 *
-	 * @param array $value     An array of submitted values for the settings.
-	 * @param array $old_value An array of previous values for the settings.
+	 * @param array $new An array of submitted settings.
+	 * @param array $old An array of previous settings.
 	 *
 	 * @return bool true when should regenerate; else false.
 	 */
-	protected function maybe_minify_regenerate( $value, $old_value ) {
-		if ( ( array_key_exists( 'minify_css', $old_value ) && array_key_exists( 'minify_css', $value ) && $old_value['minify_css'] !== $value['minify_css'] )
-		     ||
-		     ( array_key_exists( 'exclude_css', $old_value ) && array_key_exists( 'exclude_css', $value ) && $old_value['exclude_css'] !== $value['exclude_css'] )
-		     ||
-		     ( array_key_exists( 'cdn', $old_value ) && array_key_exists( 'cdn', $value ) && $old_value['cdn'] !== $value['cdn'] )
-		) {
-			return true;
+	protected function maybe_minify_regenerate( array $new, array $old ) {
+		$settings_to_check = [
+			'minify_css',
+			'exclude_css',
+			'cdn',
+		];
+
+		foreach ( $settings_to_check as $setting ) {
+			if ( $this->did_setting_change( $setting, $new, $old ) ) {
+				return true;
+			}
 		}
 
-		if (
-			array_key_exists( 'cdn', $value )
-			&& 1 === (int) $value['cdn']
-			&& ( array_key_exists( 'cdn_cnames', $old_value ) && array_key_exists( 'cdn_cnames', $value ) && $old_value['cdn_cnames'] !== $value['cdn_cnames'] )
-		) {
-			return true;
-		}
+		return (
+			array_key_exists( 'cdn', $new )
+			&&
+			1 === (int) $new['cdn']
+			&&
+			$this->did_setting_change( 'cdn_cnames', $new, $old )
+		);
+	}
 
-		return false;
+	/**
+	 * Checks if the given setting's value changed.
+	 *
+	 * @since 3.5.4
+	 *
+	 * @param string $setting The settings's value to check in the old and new values.
+	 * @param array  $new     An array of submitted settings.
+	 * @param array  $old     An array of previous settings.
+	 *
+	 * @return bool
+	 */
+	protected function did_setting_change( $setting, array $new, array $old ) {
+		return (
+			array_key_exists( $setting, $old )
+			&&
+			array_key_exists( $setting, $new )
+			&&
+			$old[ $setting ] !== $new[ $setting ]
+		);
 	}
 }
