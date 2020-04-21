@@ -1,16 +1,16 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\CriticalCSS;
+namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\CriticalCSSSubscriber;
 
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSS::get_current_page_critical_css
+ * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSS::insert_critical_css_buffer
  * @group  CriticalPath
  * @group  vfs
  */
-class Test_GetCurrentPageCriticalCSS extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSS/getCurrentPageCriticalCss.php';
+class Test_InsertCriticalCssBuffer extends FilesystemTestCase {
+	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSSSubscriber/insertCriticalCssBuffer.php';
 
 	private static $fallback_css;
 	private static $user_id;
