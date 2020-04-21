@@ -1,4 +1,5 @@
 <?php
+
 namespace WP_Rocket\Engine\Optimization\Minify\CSS;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
@@ -20,8 +21,8 @@ class AdminSubscriber implements Subscriber_Interface {
 		$slug = rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' );
 
 		return [
-			'update_option_' . $slug     => [ 'clean_minify', 10, 2 ],
-			'pre_update_option_' . $slug => [ 'regenerate_minify_css_key', 10, 2 ],
+			"update_option_{$slug}"     => [ 'clean_minify', 10, 2 ],
+			"pre_update_option_{$slug}" => [ 'regenerate_minify_css_key', 10, 2 ],
 		];
 	}
 
@@ -63,6 +64,7 @@ class AdminSubscriber implements Subscriber_Interface {
 		}
 
 		$value['minify_css_key'] = create_rocket_uniqid();
+
 		return $value;
 	}
 
@@ -76,10 +78,10 @@ class AdminSubscriber implements Subscriber_Interface {
 	 */
 	protected function maybe_minify_regenerate( $value, $old_value ) {
 		if ( ( array_key_exists( 'minify_css', $old_value ) && array_key_exists( 'minify_css', $value ) && $old_value['minify_css'] !== $value['minify_css'] )
-			||
-			( array_key_exists( 'exclude_css', $old_value ) && array_key_exists( 'exclude_css', $value ) && $old_value['exclude_css'] !== $value['exclude_css'] )
-			||
-			( array_key_exists( 'cdn', $old_value ) && array_key_exists( 'cdn', $value ) && $old_value['cdn'] !== $value['cdn'] )
+		     ||
+		     ( array_key_exists( 'exclude_css', $old_value ) && array_key_exists( 'exclude_css', $value ) && $old_value['exclude_css'] !== $value['exclude_css'] )
+		     ||
+		     ( array_key_exists( 'cdn', $old_value ) && array_key_exists( 'cdn', $value ) && $old_value['cdn'] !== $value['cdn'] )
 		) {
 			return true;
 		}
