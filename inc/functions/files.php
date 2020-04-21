@@ -1369,12 +1369,12 @@ function _rocket_get_cache_path_iterator( $cache_path ) { // phpcs:ignore WordPr
  * @since  3.5.3
  * @access private
  *
- * @param RecursiveIteratorIterator $iterator Instance of the iterator.
- * @param string|array              $url      URL or parsed URL to convert into filesystem path regex to get entries.
+ * @param Iterator     $iterator Instance of the iterator.
+ * @param string|array $url      URL or parsed URL to convert into filesystem path regex to get entries.
  *
  * @return array|RegexIterator when successful, returns iterator; else an empty array.
  */
-function _rocket_get_entries_regex( $iterator, $url ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
+function _rocket_get_entries_regex( Iterator $iterator, $url ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 	$parsed_url = is_array( $url ) ? $url : get_rocket_parse_url( $url );
 	$host       = rtrim( $parsed_url['host'], '*' );
 
@@ -1391,7 +1391,7 @@ function _rocket_get_entries_regex( $iterator, $url ) { // phpcs:ignore WordPres
 
 		$regex = "/({$host})*\/{$path}/i";
 	} else {
-		$regex = "/{$host}*/i";
+		$regex = "/({$host})*/i";
 		$depth = 0;
 	}
 
