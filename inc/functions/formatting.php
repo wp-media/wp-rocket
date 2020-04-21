@@ -259,22 +259,29 @@ function rocket_remove_url_protocol( $url, $no_dots = false ) {
 }
 
 /**
- * Add HTTP protocol to an url that does not have
+ * Add HTTP protocol to an url that does not have.
  *
  * @since 2.2.1
  *
  * @param string $url The URL to parse.
- * @return string $url The URL with protocol
+ *
+ * @return string $url The URL with protocol.
  */
 function rocket_add_url_protocol( $url ) {
-
-	if ( strpos( $url, 'http://' ) === false && strpos( $url, 'https://' ) === false ) {
-		if ( substr( $url, 0, 2 ) !== '//' ) {
-			$url = '//' . $url;
-		}
-		$url = set_url_scheme( $url );
+	// Bail out if the URL starts with http:// or https://.
+	if (
+		strpos( $url, 'http://' ) !== false
+		||
+		strpos( $url, 'https://' ) !== false
+	) {
+		return $url;
 	}
-	return $url;
+
+	if ( substr( $url, 0, 2 ) !== '//' ) {
+		$url = '//' . $url;
+	}
+
+	return set_url_scheme( $url );
 }
 
 /**
