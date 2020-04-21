@@ -591,7 +591,7 @@ function rocket_clean_cache_busting( $extensions = [ 'js', 'css' ] ) {
 /**
  * Delete one or several cache files.
  *
- * @since 3.5.3 Replaces glob and optimizes.
+ * @since 3.5.4 Replaces glob and optimizes.
  * @since 2.0   Delete cache files for all users.
  * @since 1.1.0 Add filter rocket_clean_files.
  * @since 1.0
@@ -628,7 +628,6 @@ function rocket_clean_files( $urls ) {
 	 * Fires before all cache files are deleted.
 	 *
 	 * @since  3.2.2
-	 * @author Grégory Viguier
 	 *
 	 * @param array $urls The URLs corresponding to the deleted cache files.
 	 */
@@ -666,7 +665,6 @@ function rocket_clean_files( $urls ) {
 	 * Fires after all cache files are deleted.
 	 *
 	 * @since  3.2.2
-	 * @author Grégory Viguier
 	 *
 	 * @param array $urls The URLs corresponding to the deleted cache files.
 	 */
@@ -1343,7 +1341,7 @@ function rocket_find_wpconfig_path() {
 /**
  * Get the recursive iterator for the cache path.
  *
- * @since  3.5.3
+ * @since  3.5.4
  * @access private
  *
  * @param string $cache_path Path to the cache directory.
@@ -1366,7 +1364,7 @@ function _rocket_get_cache_path_iterator( $cache_path ) { // phpcs:ignore WordPr
 /**
  * Gets the entries from the URL using RegexIterator.
  *
- * @since  3.5.3
+ * @since  3.5.4
  * @access private
  *
  * @param Iterator     $iterator Instance of the iterator.
