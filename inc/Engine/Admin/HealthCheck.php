@@ -14,12 +14,20 @@ class HealthCheck implements Subscriber_Interface {
 	private $options;
 
 	/**
+	 * Array of events with their descriptions.
+	 *
+	 * @var array
+	 */
+	private $events;
+
+	/**
 	 * Creates an instance of the health checker.
 	 *
 	 * @param Options_Data $options Options_Data instance.
 	 */
 	public function __construct( Options_Data $options ) {
 		$this->options = $options;
+		$this->events  = $this->get_events();
 	}
 
 	/**
@@ -45,9 +53,9 @@ class HealthCheck implements Subscriber_Interface {
 
 		$delay  = rocket_get_constant( 'DISABLE_WP_CRON' ) ? HOUR_IN_SECONDS : 5 * MINUTE_IN_SECONDS;
 		$list   = '';
-		$events = $this->get_events();
+		$events = $this->events;
 
-		foreach ( $events as $event => $description ) {
+		foreach ( $this->events as $event => $description ) {
 			$timestamp = wp_next_scheduled( $event );
 
 			if (
