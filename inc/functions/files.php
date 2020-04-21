@@ -674,70 +674,6 @@ function rocket_clean_files( $urls ) {
 }
 
 /**
- * Get the recursive iterator for the cache path.
- *
- * @since  3.5.3
- * @access private
- *
- * @param string $cache_path Path to the cache directory.
- *
- * @return bool|RecursiveIteratorIterator Iterator on success; else false;
- */
-function _rocket_get_cache_path_iterator( $cache_path ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
-	try {
-		return new RecursiveIteratorIterator(
-			new RecursiveDirectoryIterator( $cache_path ),
-			RecursiveIteratorIterator::SELF_FIRST,
-			RecursiveIteratorIterator::CATCH_GET_CHILD
-		);
-	} catch ( Exception $e ) {
-		// No logging yet.
-		return false;
-	}
-}
-
-/**
- * Gets the entries from the URL using RegexIterator.
- *
- * @since  3.5.3
- * @access private
- *
- * @param RecursiveIteratorIterator $iterator Instance of the iterator.
- * @param string|array              $url      URL or parsed URL to convert into filesystem path regex to get entries.
- *
- * @return array|RegexIterator when successful, returns iterator; else an empty array.
- */
-function _rocket_get_entries_regex( $iterator, $url ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
-	$parsed_url = is_array( $url ) ? $url : get_rocket_parse_url( $url );
-	$host       = rtrim( $parsed_url['host'], '*' );
-
-	if ( ! empty( $parsed_url['path'] ) ) {
-		$path = trim( $parsed_url['path'], '/' );
-
-		// Count the hierarchy to determine the depth.
-		$depth = substr_count( $path, '/' ) + 1;
-
-		// Prepare the paths' separator for regex.
-		if ( $depth > 1 ) {
-			$path = str_replace( '/', '\/', $path );
-		}
-
-		$regex = "/({$host})*\/{$path}/i";
-	} else {
-		$regex = "/{$host}*/i";
-		$depth = 0;
-	}
-
-	try {
-		$iterator->setMaxDepth( $depth );
-
-		return new RegexIterator( $iterator, $regex );
-	} catch ( Exception $e ) {
-		return [];
-	}
-}
-
-/**
  * Remove the home cache file and pagination
  *
  * $since 2.2 Add $lang argument
@@ -1402,4 +1338,68 @@ function rocket_find_wpconfig_path() {
 
 	// No writable file found.
 	return false;
+}
+
+/**
+ * Get the recursive iterator for the cache path.
+ *
+ * @since  3.5.3
+ * @access private
+ *
+ * @param string $cache_path Path to the cache directory.
+ *
+ * @return bool|RecursiveIteratorIterator Iterator on success; else false;
+ */
+function _rocket_get_cache_path_iterator( $cache_path ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
+	try {
+		return new RecursiveIteratorIterator(
+			new RecursiveDirectoryIterator( $cache_path ),
+			RecursiveIteratorIterator::SELF_FIRST,
+			RecursiveIteratorIterator::CATCH_GET_CHILD
+		);
+	} catch ( Exception $e ) {
+		// No logging yet.
+		return false;
+	}
+}
+
+/**
+ * Gets the entries from the URL using RegexIterator.
+ *
+ * @since  3.5.3
+ * @access private
+ *
+ * @param RecursiveIteratorIterator $iterator Instance of the iterator.
+ * @param string|array              $url      URL or parsed URL to convert into filesystem path regex to get entries.
+ *
+ * @return array|RegexIterator when successful, returns iterator; else an empty array.
+ */
+function _rocket_get_entries_regex( $iterator, $url ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
+	$parsed_url = is_array( $url ) ? $url : get_rocket_parse_url( $url );
+	$host       = rtrim( $parsed_url['host'], '*' );
+
+	if ( ! empty( $parsed_url['path'] ) ) {
+		$path = trim( $parsed_url['path'], '/' );
+
+		// Count the hierarchy to determine the depth.
+		$depth = substr_count( $path, '/' ) + 1;
+
+		// Prepare the paths' separator for regex.
+		if ( $depth > 1 ) {
+			$path = str_replace( '/', '\/', $path );
+		}
+
+		$regex = "/({$host})*\/{$path}/i";
+	} else {
+		$regex = "/{$host}*/i";
+		$depth = 0;
+	}
+
+	try {
+		$iterator->setMaxDepth( $depth );
+
+		return new RegexIterator( $iterator, $regex );
+	} catch ( Exception $e ) {
+		return [];
+	}
 }
