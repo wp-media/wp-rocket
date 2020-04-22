@@ -7,40 +7,6 @@ Using Action Scheduler requires:
 
 1. installing the library
 1. scheduling an action
-1. attaching a callback to that action
-
-## Scheduling an Action
-
-To schedule an action, call the [API function](/api/) for the desired schedule type passing in the required parameters.
-
-The example code below shows everything needed to schedule a function to run at midnight, if it's not already scheduled:
-
-```php
-require_once( plugin_dir_path( __FILE__ ) . '/libraries/action-scheduler/action-scheduler.php' );
-
-/**
- * Schedule an action with the hook 'eg_midnight_log' to run at midnight each day
- * so that our callback is run then.
- */
-function eg_schedule_midnight_log() {
-	if ( false === as_next_scheduled_action( 'eg_midnight_log' ) ) {
-		as_schedule_recurring_action( strtotime( 'tomorrow' ), DAY_IN_SECONDS, 'eg_midnight_log' );
-	}
-}
-add_action( 'init', 'eg_schedule_midnight_log' );
-
-/**
- * A callback to run when the 'eg_midnight_log' scheduled action is run.
- */
-function eg_log_action_data() {
-	error_log( 'It is just after midnight on ' . date( 'Y-m-d' ) );
-}
-add_action( 'eg_midnight_log', 'eg_log_action_data' );
-```
-
-For more details on all available API functions, and the data they accept, refer to the [API Reference](/api/).
-
-_Note:_ You should ensure that your callbacks are attached to the relevant hook before priority 10 of WordPress' `init` hook is fired. 
 
 ## Installation
 
@@ -127,3 +93,34 @@ Action Scheduler will later initialize itself on `'init'` with priority `1`.  Ac
 ### Usage in Themes
 
 When using Action Scheduler in themes, it's important to note that if Action Scheduler has been registered by a plugin, then the latest version registered by a plugin will be used, rather than the version included in the theme. This is because of the version dependency handling code using `'plugins_loaded'` since version 1.0.
+
+## Scheduling an Action
+
+To schedule an action, call the [API function](/api/) for the desired schedule type passing in the required parameters.
+
+The example code below shows everything needed to schedule a function to run at midnight, if it's not already scheduled:
+
+```php
+require_once( plugin_dir_path( __FILE__ ) . '/libraries/action-scheduler/action-scheduler.php' );
+
+/**
+ * Schedule an action with the hook 'eg_midnight_log' to run at midnight each day
+ * so that our callback is run then.
+ */
+function eg_schedule_midnight_log() {
+	if ( false === as_next_scheduled_action( 'eg_midnight_log' ) ) {
+		as_schedule_recurring_action( strtotime( 'tomorrow' ), DAY_IN_SECONDS, 'eg_midnight_log' );
+	}
+}
+add_action( 'init', 'eg_schedule_midnight_log' );
+
+/**
+ * A callback to run when the 'eg_midnight_log' scheduled action is run.
+ */
+function eg_log_action_data() {
+	error_log( 'It is just after midnight on ' . date( 'Y-m-d' ) );
+}
+add_action( 'eg_midnight_log', 'eg_log_action_data' );
+```
+
+For more details on all available API functions, and the data they accept, refer to the [API Reference](/api/).
