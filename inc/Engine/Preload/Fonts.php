@@ -59,12 +59,13 @@ class Fonts implements Subscriber_Interface {
 			return;
 		}
 
-		$home = untrailingslashit( get_option( 'home' ) );
+		$base_url = get_rocket_parse_url( site_url() );
+		$base_url = "{$base_url['scheme']}://{$base_url['host']}";
 
 		foreach ( array_unique( $fonts ) as $font ) {
 			printf(
 				"\n<link rel=\"preload\" as=\"font\" href=\"%s\" crossorigin>",
-				esc_url( get_rocket_cdn_url( $home . $font ) )
+				esc_url( get_rocket_cdn_url( $base_url . $font ) )
 			);
 		}
 	}

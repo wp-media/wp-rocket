@@ -52,9 +52,7 @@ class Test_PreloadFonts extends TestCase {
 			return str_replace( '//example.org', '//cdn.example.org', $thing );
 		} );
 		Functions\when( 'esc_url' )->returnArg();
-		Functions\expect( 'get_option' )
-			->with( 'home' )
-			->andReturn( 'http://example.org' );
+		Functions\when( 'site_url' )->justReturn( 'http://example.org' );
 
 		$options = $this->createMock( Options_Data::class );
 		$options->method( 'get' )
