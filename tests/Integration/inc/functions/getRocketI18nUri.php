@@ -1,11 +1,11 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\functions;
+namespace WP_Rocket\Tests\Integration\inc\functions;
 
 use Brain\Monkey\Functions;
 use PLL_Frontend;
 use SitePress;
-use WPMedia\PHPUnit\Unit\TestCase;
+use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
  * @covers ::get_rocket_i18n_uri

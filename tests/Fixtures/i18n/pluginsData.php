@@ -2,7 +2,7 @@
 
 return [
 	'wpml' => [
-		'codes' => [
+		'codes'        => [
 			'en' => [
 				'code'           => 'en',
 				'id'             => '1',
@@ -40,8 +40,9 @@ return [
 				'display_name'   => 'German',
 			],
 		],
-		'langs' => [ 'en', 'fr', 'de' ],
-		'uris'  => [
+		'default_lang' => 'en',
+		'langs'        => [ 'en', 'fr', 'de' ],
+		'uris'         => [
 			'en' => '',
 			'fr' => '?lang=fr',
 			'de' => '?lang=de',
@@ -49,34 +50,40 @@ return [
 	],
 
 	'qtranslate' => [
-		'codes' => [ 'en', 'fr', 'de' ],
-		'langs' => [ 'en', 'fr', 'de' ],
+		'default_lang' => 'en',
+		'codes'        => [ 'en', 'fr', 'de' ],
+		'langs'        => [ 'en', 'fr', 'de' ],
 	],
 
 	'qtranslate-x' => [
-		'codes' => [ 'en', 'fr', 'de' ],
-		'langs' => [ 'en', 'fr', 'de' ],
+		'default_lang' => 'en',
+		'codes'        => [ 'en', 'fr', 'de' ],
+		'langs'        => [ 'en', 'fr', 'de' ],
 	],
 
 	'polylang' => [
-		'options' => [
-			[
-				'slug'   => 'en',
-				'locale' => 'en_US',
-				'url'    => 'http://example.org',
+		'options'      => [
+			'model'      => [
+				[
+					'slug'   => 'en',
+					'locale' => 'en_US',
+					'url'    => 'http://example.org',
+				],
+				[
+					'slug'   => 'fr',
+					'locale' => 'fr_FR',
+					'url'    => 'http://example.org/fr',
+				],
+				[
+					'slug'   => 'de',
+					'locale' => 'de_DE',
+					'url'    => 'http://example.org/de',
+				],
 			],
-			[
-				'slug'   => 'fr',
-				'locale' => 'fr_FR',
-				'url'    => 'http://example.org/fr',
-			],
-			[
-				'slug'   => 'de',
-				'locale' => 'de_DE',
-				'url'    => 'http://example.org/de',
-			],
+			'force_lang' => true,
 		],
-		'codes'   => [ 'en', 'fr', 'de' ],
-		'langs'   => [ 'en', 'fr', 'de' ],
+		'default_lang' => 'en',
+		'codes'        => [ 'en', 'fr', 'de' ],
+		'langs'        => [ 'en', 'fr', 'de' ],
 	],
 ];

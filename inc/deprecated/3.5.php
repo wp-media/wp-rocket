@@ -16,6 +16,8 @@ class_alias( '\\WP_Rocket\\Engine\\Preload\\PreloadSubscriber', '\\WP_Rocket\\Su
 class_alias( '\\WP_Rocket\\Engine\\Preload\\ServiceProvider', '\\WP_Rocket\\ServiceProvider\\Preload_Subscribers' );
 class_alias( '\\WP_Rocket\\Engine\\Preload\\Sitemap', '\\WP_Rocket\\Preload\\Sitemap' );
 class_alias( '\\WP_Rocket\\Engine\\Preload\\SitemapPreloadSubscriber', '\\WP_Rocket\\Subscriber\\Preload\\Sitemap_Preload_Subscriber' );
+class_alias( '\\WP_Rocket\\Engine\\Optimization\\GoogleFonts\\Combine','\\WP_Rocket\\Optimization\\CSS\\Combine_Google_Fonts' );
+class_alias( 'WP_Rocket\\Engine\\Optimization\\GoogleFonts\\Subscriber', '\\WP_Rocket\\Subscriber\\Optimization\\Combine_Google_Fonts_Subscriber' );
 
 /**
  * Removes Minification, DNS Prefetch, LazyLoad, Defer JS when on an AMP version of a post with the AMP for WordPress plugin from Auttomatic
@@ -789,3 +791,4 @@ function rocket_varnish_http_purge( $url ) {
 		)
 	);
 }
+
