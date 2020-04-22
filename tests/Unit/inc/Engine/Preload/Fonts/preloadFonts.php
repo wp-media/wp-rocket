@@ -48,6 +48,9 @@ class Test_PreloadFonts extends TestCase {
 		Functions\when( 'untrailingslashit' )->alias( function( $thing ) {
 			return rtrim( $thing, '\/' );
 		} );
+		Functions\when( 'get_rocket_cdn_url' )->alias( function( $thing ) {
+			return str_replace( '//example.org', '//cdn.example.org', $thing );
+		} );
 		Functions\when( 'esc_url' )->returnArg();
 		Functions\expect( 'get_option' )
 			->with( 'home' )
@@ -100,7 +103,7 @@ class Test_PreloadFonts extends TestCase {
 
 		foreach ( $expected_array as $font ) {
 			$out['expected'] .= sprintf(
-				"\n<link rel=\"preload\" as=\"font\" href=\"http://example.org%s\" crossorigin>",
+				"\n<link rel=\"preload\" as=\"font\" href=\"http://cdn.example.org%s\" crossorigin>",
 				$font
 			);
 		}

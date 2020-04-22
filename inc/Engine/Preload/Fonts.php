@@ -64,7 +64,7 @@ class Fonts implements Subscriber_Interface {
 		foreach ( array_unique( $fonts ) as $font ) {
 			printf(
 				"\n<link rel=\"preload\" as=\"font\" href=\"%s\" crossorigin>",
-				esc_url( $home . $font )
+				esc_url( get_rocket_cdn_url( $home . $font ) )
 			);
 		}
 	}

@@ -17,6 +17,9 @@ class Test_PreloadFonts extends TestCase {
 
 		remove_filter( 'pre_get_rocket_option_preload_fonts', [ $this, 'return_empty_array' ] );
 		remove_filter( 'pre_get_rocket_option_preload_fonts', [ $this, 'return_option_data' ] );
+		remove_filter( 'pre_get_rocket_option_cdn', [ $this, 'return_1' ] );
+		remove_filter( 'pre_get_rocket_option_cdn_cnames', [ $this, 'return_cdn_cnames' ] );
+		remove_filter( 'pre_get_rocket_option_cdn_zone', [ $this, 'return_cdn_zones' ] );
 	}
 
 	public function testShouldNotAddPreloadTagsWhenInvalidFonts() {
@@ -41,6 +44,9 @@ class Test_PreloadFonts extends TestCase {
 
 	public function testShouldAddPreloadTagsWhenValidFonts() {
 		add_filter( 'pre_get_rocket_option_preload_fonts', [ $this, 'return_option_data' ] );
+		add_filter( 'pre_get_rocket_option_cdn', [ $this, 'return_1' ] );
+		add_filter( 'pre_get_rocket_option_cdn_cnames', [ $this, 'return_cdn_cnames' ] );
+		add_filter( 'pre_get_rocket_option_cdn_zone', [ $this, 'return_cdn_zones' ] );
 
 		ob_start();
 		do_action( 'wp_head' );
@@ -74,6 +80,24 @@ class Test_PreloadFonts extends TestCase {
 		];
 	}
 
+	public function return_cdn_cnames() {
+		return [
+			'js.example.org',
+			'images.example.org',
+			'css.example.org',
+			'cdn.example.org',
+		];
+	}
+
+	public function return_cdn_zones() {
+		return [
+			'js',
+			'images',
+			'css',
+			'all',
+		];
+	}
+
 	private function getExpected() {
 		$expected       = '';
 		$expected_array = [
@@ -86,7 +110,7 @@ class Test_PreloadFonts extends TestCase {
 
 		foreach ( $expected_array as $font ) {
 			$expected .= sprintf(
-				"\n<link rel=\"preload\" as=\"font\" href=\"http://example.org%s\" crossorigin>",
+				"\n<link rel=\"preload\" as=\"font\" href=\"http://cdn.example.org%s\" crossorigin>",
 				$font
 			);
 		}
