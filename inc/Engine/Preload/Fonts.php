@@ -90,7 +90,6 @@ class Fonts implements Subscriber_Interface {
 
 		$ext     = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
 		$formats = [
-			'eot',
 			'otf',
 			'ttf',
 			'svg',

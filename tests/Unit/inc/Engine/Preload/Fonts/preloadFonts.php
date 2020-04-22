@@ -91,7 +91,6 @@ class Test_PreloadFonts extends TestCase {
 		];
 
 		$expected_array = [
-			'/wp-content/file.eot',
 			'/wp-content/file.otf',
 			'/wp-content/file.ttf',
 			'/wp-content/file.svg',
