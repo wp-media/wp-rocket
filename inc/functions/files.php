@@ -858,7 +858,7 @@ function rocket_clean_domain( $lang = '' ) {
 
 		$host = '\/cache\/wp-rocket\/' . $parsed_url['host'];
 		if ( ! empty( $parsed_url['path'] ) ) {
-			$regex = "/({$host})+\/" . trim( $parsed_url['path'], '/' ) . '/i';
+			$regex = "/{$host}(.*)\/" . trim( $parsed_url['path'], '/' ) . '/i';
 			$depth = 1;
 		} else {
 			$regex = "/({$host})+/i";
