@@ -65,7 +65,7 @@ class Plugin {
 
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Options' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Database' );
-		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Beacon' );
+		$this->container->addServiceProvider( 'WP_Rocket\Engine\Admin\Beacon\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\RocketCDN' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\CriticalPath\ServiceProvider' );
 
@@ -87,10 +87,11 @@ class Plugin {
 				]
 			);
 			$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Settings' );
-			$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Admin_Subscribers' );
+			$this->container->addServiceProvider( 'WP_Rocket\Engine\Admin\ServiceProvider' );
+			$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\AdminServiceProvider' );
 
 			$subscribers = [
-				'beacon_subscriber',
+				'beacon',
 				'settings_page_subscriber',
 				'deactivation_intent_subscriber',
 				'hummingbird_subscriber',
@@ -98,9 +99,10 @@ class Plugin {
 				'rocketcdn_notices_subscriber',
 				'rocketcdn_data_manager_subscriber',
 				'critical_css_admin_subscriber',
+				'minify_css_admin_subscriber',
 			];
 		} elseif ( \rocket_valid_key() ) {
-			$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Optimization_Subscribers' );
+			$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\ServiceProvider' );
 
 			$subscribers = [
 				'buffer_subscriber',
@@ -109,7 +111,7 @@ class Plugin {
 				'combine_google_fonts_subscriber',
 				'minify_css_subscriber',
 				'minify_js_subscriber',
-				'cache_dynamic_resource_subscriber',
+				'cache_dynamic_resource',
 				'remove_query_string_subscriber',
 				'dequeue_jquery_migrate_subscriber',
 			];
