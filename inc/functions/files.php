@@ -841,7 +841,7 @@ function rocket_clean_domain( $lang = '' ) {
 		$parsed_url = get_rocket_parse_url( $url );
 
 		if ( $url_no_dots ) {
-			$parsed_url['host'] = str_replace( '.', '_', $file['host'] );
+			$parsed_url['host'] = str_replace( '.', '_', $parsed_url['host'] );
 		}
 
 		$root = $cache_path . $parsed_url['host'] . $parsed_url['path'];
