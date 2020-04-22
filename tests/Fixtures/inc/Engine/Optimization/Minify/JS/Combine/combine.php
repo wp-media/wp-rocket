@@ -57,17 +57,23 @@ return [
 				</body>
 			</html>',
 			// Expected: Combined JS files.
-			'<html>
-				<head>
-					<title>Sample Page</title>
-					<script>
-					nonce = "nonce";
-					</script>
-				</head>
-				<body>
-					<script src="http://example.org/wp-content/cache/min/1/900b339c19ff5a927b3311bf5ddb4dfd.js" data-minify="1"></script>
-				</body>
-			</html>',
+			[
+				'html' => '<html>
+					<head>
+						<title>Sample Page</title>
+						<script>
+						nonce = "nonce";
+						</script>
+					</head>
+					<body>
+						<script src="http://example.org/wp-content/cache/min/1/900b339c19ff5a927b3311bf5ddb4dfd.js" data-minify="1"></script>
+					</body>
+				</html>',
+				'files' => [
+					'wordpress/wp-content/cache/min/1/900b339c19ff5a927b3311bf5ddb4dfd.js',
+					'wordpress/wp-content/cache/min/1/900b339c19ff5a927b3311bf5ddb4dfd.js.gz',
+				],
+			],
 			[],
 			'http://example.org',
 			'http://example.org',
@@ -92,17 +98,23 @@ return [
 				</body>
 			</html>',
 			// Expected: Combined JS files.
-			'<html>
-				<head>
-					<title>Sample Page</title>
-					<script>
-					nonce = "nonce";
-					</script>
-				</head>
-				<body>
-					<script src="https://123456.rocketcdn.me/wp-content/cache/min/1/900b339c19ff5a927b3311bf5ddb4dfd.js" data-minify="1"></script>
-				</body>
-			</html>',
+			[
+				'html' => '<html>
+					<head>
+						<title>Sample Page</title>
+						<script>
+						nonce = "nonce";
+						</script>
+					</head>
+					<body>
+						<script src="https://123456.rocketcdn.me/wp-content/cache/min/1/900b339c19ff5a927b3311bf5ddb4dfd.js" data-minify="1"></script>
+					</body>
+				</html>',
+				'files' => [
+					'wordpress/wp-content/cache/min/1/900b339c19ff5a927b3311bf5ddb4dfd.js',
+					'wordpress/wp-content/cache/min/1/900b339c19ff5a927b3311bf5ddb4dfd.js.gz',
+				],
+			],
 			[
 				'123456.rocketcdn.me',
 			],
@@ -129,17 +141,23 @@ return [
 				</body>
 			</html>',
 			// Expected: Combined JS files.
-			'<html>
-				<head>
-					<title>Sample Page</title>
-					<script>
-					nonce = "nonce";
-					</script>
-				</head>
-				<body>
-					<script src="https://123456.rocketcdn.me/wp-content/cache/min/1/900b339c19ff5a927b3311bf5ddb4dfd.js" data-minify="1"></script>
-				</body>
-			</html>',
+			[
+				'html' => '<html>
+					<head>
+						<title>Sample Page</title>
+						<script>
+						nonce = "nonce";
+						</script>
+					</head>
+					<body>
+						<script src="https://123456.rocketcdn.me/wp-content/cache/min/1/900b339c19ff5a927b3311bf5ddb4dfd.js" data-minify="1"></script>
+					</body>
+				</html>',
+				'files' => [
+					'wordpress/wp-content/cache/min/1/900b339c19ff5a927b3311bf5ddb4dfd.js',
+					'wordpress/wp-content/cache/min/1/900b339c19ff5a927b3311bf5ddb4dfd.js.gz',
+				],
+			],
 			[
 				'123456.rocketcdn.me',
 			],
@@ -166,17 +184,23 @@ return [
 				</body>
 			</html>',
 			// Expected: Combined JS files.
-			'<html>
-				<head>
-					<title>Sample Page</title>
-					<script>
-					nonce = "nonce";
-					</script>
-				</head>
-				<body>
-					<script src="https://123456.rocketcdn.me/cdnpath/wp-content/cache/min/1/900b339c19ff5a927b3311bf5ddb4dfd.js" data-minify="1"></script>
-				</body>
-			</html>',
+			[
+				'html' => '<html>
+					<head>
+						<title>Sample Page</title>
+						<script>
+						nonce = "nonce";
+						</script>
+					</head>
+					<body>
+						<script src="https://123456.rocketcdn.me/cdnpath/wp-content/cache/min/1/900b339c19ff5a927b3311bf5ddb4dfd.js" data-minify="1"></script>
+					</body>
+				</html>',
+				'files' => [
+					'wordpress/wp-content/cache/min/1/900b339c19ff5a927b3311bf5ddb4dfd.js',
+					'wordpress/wp-content/cache/min/1/900b339c19ff5a927b3311bf5ddb4dfd.js.gz',
+				],
+			],
 			[
 				'123456.rocketcdn.me/cdnpath',
 			],

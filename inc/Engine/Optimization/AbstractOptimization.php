@@ -161,6 +161,13 @@ abstract class AbstractOptimization {
 			return false;
 		}
 
+		// This filter is documented in inc/classes/Buffer/class-cache.php.
+		$gzip_content = gzencode( $content, apply_filters( 'rocket_gzencode_level_compression', 6 ) );
+
+		if ( $gzip_content ) {
+			rocket_put_content( $file . '.gz', $gzip_content );
+		}
+
 		return rocket_put_content( $file, $content );
 	}
 
