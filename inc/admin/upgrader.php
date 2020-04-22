@@ -155,7 +155,7 @@ function rocket_first_install() {
 
 	// Create Option.
 	add_option(
-		WP_ROCKET_SLUG,
+		rocket_get_constant( 'WP_ROCKET_SLUG' ),
 		/**
 		 * Filters the default rocket options array
 		 *
