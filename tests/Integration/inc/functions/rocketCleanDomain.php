@@ -61,7 +61,7 @@ class Test_RocketCleanDomain extends FilesystemTestCase {
 		rocket_clean_domain( $i18n['lang'] );
 
 		$this->checkCleanedIsDeleted( $expected['cleaned'] );
-		$this->checkNonCleanedExist();
+		$this->checkNonCleanedExist( isset( $expected['dump_results'] ) );
 	}
 
 	public function checkRocketCleaDomainUrls( $urls ) {

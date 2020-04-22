@@ -49,6 +49,6 @@ class Test_RocketCleanCacheThemeUpdate extends FilesystemTestCase {
 		do_action( 'upgrader_process_complete', null, $hook_extra );
 
 		$this->checkCleanedIsDeleted( $expected['cleaned'] );
-		$this->checkNonCleanedExist();
+		$this->checkNonCleanedExist( isset( $expected['dump_results'] ) );
 	}
 }
