@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Engine\Settings;
+namespace WP_Rocket\Engine\Admin\Settings;
 
 use WP_Rocket\Admin\Database\Optimization;
 use WP_Rocket\Admin\Settings\Settings;
