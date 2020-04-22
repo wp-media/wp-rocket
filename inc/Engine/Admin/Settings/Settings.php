@@ -41,7 +41,7 @@ class Settings {
 	 * Font formats allowed to be preloaded.
 	 *
 	 * @since 3.6
-	 * @see   $this->sanitize_font()
+	 * @see   $this->sanitize_fonts()
 	 *
 	 * @var string|bool
 	 */
@@ -377,16 +377,7 @@ class Settings {
 		}
 
 		// Option : fonts to preload.
-		if ( ! empty( $input['preload_fonts'] ) ) {
-			if ( ! is_array( $input['preload_fonts'] ) ) {
-				$input['preload_fonts'] = explode( "\n", $input['preload_fonts'] );
-			}
-			$input['preload_fonts'] = array_map( [ $this, 'sanitize_font' ], $input['preload_fonts'] );
-			$input['preload_fonts'] = array_filter( $input['preload_fonts'] );
-			$input['preload_fonts'] = array_unique( $input['preload_fonts'] );
-		} else {
-			$input['preload_fonts'] = [];
-		}
+		$input['preload_fonts'] = ! empty( $input['preload_fonts'] ) ? $this->sanitize_fonts( $input['preload_fonts'] ) : [];
 
 		// Options : CloudFlare.
 		$input['do_cloudflare']               = ! empty( $input['do_cloudflare'] ) ? 1 : 0;
@@ -583,38 +574,51 @@ class Settings {
 	}
 
 	/**
-	 * Sanitize a font file path.
+	 * Sanitize a list of font file paths.
 	 *
 	 * @since 3.6
 	 *
-	 * @param  string $file Filepath to sanitize.
-	 * @return string|bool  Sanitized filepath. False if not a font file.
+	 * @param  array|string $files List of filepaths to sanitize. Can be an array of strings or a string listing paths separated by "\n".
+	 * @return array               Sanitized filepaths.
 	 */
-	private function sanitize_font( $file ) {
-		if ( ! is_string( $file ) ) {
-			return false;
+	private function sanitize_fonts( $files ) {
+		if ( ! is_array( $files ) ) {
+			$files = explode( "\n", trim( $files ) );
 		}
 
-		$file = trim( $file );
+		$files = array_map(
+			function ( $file ) {
+				if ( ! is_string( $file ) ) {
+					return false;
+				}
 
-		if ( empty( $file ) ) {
-			return false;
-		}
+				$file = trim( $file );
 
-		$file = wp_parse_url( $file );
+				if ( empty( $file ) ) {
+					return false;
+				}
 
-		if ( ! empty( $file['host'] ) && $this->get_host() !== $file['host'] ) {
-			return false;
-		}
+				$file = wp_parse_url( $file );
 
-		$file = '/' . trim( $file['path'], '/' );
-		$ext  = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
+				if ( ! empty( $file['host'] ) && $this->get_host() !== $file['host'] ) {
+					return false;
+				}
 
-		if ( ! in_array( $ext, $this->font_formats, true ) ) {
-			return false;
-		}
+				$file = '/' . trim( $file['path'], '/' );
+				$ext  = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
 
-		return $file;
+				if ( ! in_array( $ext, $this->font_formats, true ) ) {
+					return false;
+				}
+
+				return $file;
+			},
+			$files
+		);
+
+		$files = array_filter( $files );
+
+		return array_unique( $files );
 	}
 
 	/**
