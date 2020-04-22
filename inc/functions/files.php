@@ -821,6 +821,7 @@ function rocket_clean_domain( $lang = '' ) {
 	$urls = array_filter( $urls );
 
 	$cache_path       = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' );
+	$cache_path_regex = str_replace( '/', '\/', $cache_path );
 	$dirs_to_preserve = get_rocket_i18n_to_preserve( $lang );
 	/** This filter is documented in inc/front/htaccess.php */
 	$url_no_dots = (bool) apply_filters( 'rocket_url_no_dots', false );
@@ -856,7 +857,7 @@ function rocket_clean_domain( $lang = '' ) {
 		 */
 		do_action( 'before_rocket_clean_domain', $root, $lang, $url ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
-		$host = '\/cache\/wp-rocket\/' . $parsed_url['host'];
+		$host = $cache_path_regex . $parsed_url['host'];
 		if ( ! empty( $parsed_url['path'] ) ) {
 			$regex = "/{$host}(.*)\/" . trim( $parsed_url['path'], '/' ) . '/i';
 			$depth = 1;
