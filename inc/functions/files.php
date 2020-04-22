@@ -837,13 +837,13 @@ function rocket_clean_domain( $lang = '' ) {
 	}
 
 	foreach ( $urls as $url ) {
-		$file = get_rocket_parse_url( $url );
+		$parsed_url = get_rocket_parse_url( $url );
 
 		if ( $url_no_dots ) {
-			$file['host'] = str_replace( '.', '_', $file['host'] );
+			$parsed_url['host'] = str_replace( '.', '_', $file['host'] );
 		}
 
-		$root = $cache_path . $file['host'] . $file['path'];
+		$root = $cache_path . $parsed_url['host'] . $parsed_url['path'];
 
 		/**
 		 * Fires before all cache files are deleted.
@@ -856,11 +856,12 @@ function rocket_clean_domain( $lang = '' ) {
 		 */
 		do_action( 'before_rocket_clean_domain', $root, $lang, $url ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
-		if ( ! empty( $file['path'] ) ) {
-			$regex = "/({$file['host']})*\/" . trim( $file['path'], '/' ) . '/i';
+		$host = '\/cache\/wp-rocket\/' . $parsed_url['host'];
+		if ( ! empty( $parsed_url['path'] ) ) {
+			$regex = "/({$host})*\/" . trim( $parsed_url['path'], '/' ) . '/i';
 			$depth = 1;
 		} else {
-			$regex = "/{$file['host']}*/i";
+			$regex = "/{$host}*/i";
 			$depth = 0;
 		}
 
@@ -872,8 +873,8 @@ function rocket_clean_domain( $lang = '' ) {
 			return;
 		}
 
-		foreach ( $files as $file ) {
-			rocket_rrmdir( $file->getPathname(), $dirs_to_preserve );
+		foreach ( $files as $entry ) {
+			rocket_rrmdir( $entry->getPathname(), $dirs_to_preserve );
 		}
 
 		/**
