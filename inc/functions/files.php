@@ -622,7 +622,8 @@ function rocket_clean_files( $urls ) {
 	}
 
 	/** This filter is documented in inc/front/htaccess.php */
-	$url_no_dots = (bool) apply_filters( 'rocket_url_no_dots', false );
+	$url_no_dots      = (bool) apply_filters( 'rocket_url_no_dots', false );
+	$cache_path_regex = str_replace( '/', '\/', $cache_path );
 
 	/**
 	 * Fires before all cache files are deleted.
@@ -647,8 +648,8 @@ function rocket_clean_files( $urls ) {
 			$url = str_replace( '.', '_', $url );
 		}
 
-		foreach ( _rocket_get_entries_regex( $iterator, $url ) as $file ) {
-			rocket_rrmdir( $file->getPathname() );
+		foreach ( _rocket_get_entries_regex( $iterator, $url, $cache_path_regex ) as $entry ) {
+			rocket_rrmdir( $entry->getPathname() );
 		}
 
 		/**
@@ -1382,7 +1383,7 @@ function _rocket_get_entries_regex( Iterator $iterator, $url, $cache_path = '' )
 	$parsed_url = is_array( $url ) ? $url : get_rocket_parse_url( $url );
 	$host       = $cache_path . rtrim( $parsed_url['host'], '*' );
 
-	if ( ! empty( $parsed_url['path'] ) ) {
+	if ( '' !== $parsed_url['path'] && '/' !== $parsed_url['path'] ) {
 		$path = trim( $parsed_url['path'], '/' );
 
 		// Count the hierarchy to determine the depth.

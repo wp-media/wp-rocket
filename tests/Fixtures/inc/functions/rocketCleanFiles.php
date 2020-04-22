@@ -37,6 +37,7 @@ return [
 				'http://dots.example.org/',
 			],
 			'expected' => [
+				'dump_results' => true,
 				'cleaned'     => [
 					'vfs://public/wp-content/cache/wp-rocket/dots.example.org/' => [],
 				],
@@ -190,7 +191,6 @@ return [
 					'vfs://public/wp-content/cache/wp-rocket/example.org/'                => null,
 					'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456/' => null,
 					'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654/'  => null,
-					'vfs://public/wp-content/cache/wp-rocket/dots.example.org/'           => [],
 				],
 				'non_cleaned' => [
 					// fs entry => should scan the directory and get the file listings.
@@ -201,6 +201,8 @@ return [
 					'vfs://public/wp-content/cache/wp-rocket/' => false,
 
 					'vfs://public/wp-content/cache/wp-rocket/index.html' => false,
+
+					'vfs://public/wp-content/cache/wp-rocket/dots.example.org/' => true,
 				],
 			],
 		],
