@@ -1,11 +1,11 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\Settings\Settings;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\Settings\Settings;
 
 use WPMedia\PHPUnit\Integration\AdminTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Settings\Settings::sanitize_callback
+ * @covers \WP_Rocket\Engine\Admin\Settings\Settings::sanitize_callback
  * @group  AdminOnly
  * @group  Settings
  */
