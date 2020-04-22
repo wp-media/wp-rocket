@@ -52,7 +52,7 @@ class Test_RocketCleanDomain extends FilesystemTestCase {
 		$this->toPreserve  = $i18n['dirs_to_preserve'];
 		$this->dirsToClean = $expected['cleaned'];
 
-		$shouldNotClean = $this->getShouldNotCleanEntries( $expected['non_cleaned'] );
+		$this->getShouldNotCleanEntries( $expected['non_cleaned'] );
 		$this->setUpI18nPlugin( $i18n['lang'], $i18n );
 
 		add_filter( 'rocket_clean_domain_urls', [ $this, 'checkRocketCleaDomainUrls' ], PHP_INT_MAX );
@@ -60,8 +60,8 @@ class Test_RocketCleanDomain extends FilesystemTestCase {
 		// Run it.
 		rocket_clean_domain( $i18n['lang'] );
 
-		$this->checkCleanedIsDeleted( $expected['cleaned']);
-		$this->checkNonCleanedExist( $shouldNotClean, isset( $expected['dump_results'] ) );
+		$this->checkCleanedIsDeleted( $expected['cleaned'] );
+		$this->checkNonCleanedExist( isset( $expected['dump_results'] ) );
 	}
 
 	public function checkRocketCleaDomainUrls( $urls ) {
