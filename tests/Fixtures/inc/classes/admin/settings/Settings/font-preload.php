@@ -71,7 +71,6 @@ return [
 		],
 		[
 			'preload_fonts' => [
-				'/wp-content/file.eot',
 				'/wp-content/file.otf',
 				'/wp-content/file.ttf',
 				'/wp-content/file.svg',

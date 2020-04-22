@@ -46,7 +46,6 @@ class Settings {
 	 * @var string|bool
 	 */
 	private $font_formats = [
-		'eot',
 		'otf',
 		'ttf',
 		'svg',
