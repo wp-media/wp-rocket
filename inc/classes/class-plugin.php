@@ -97,6 +97,7 @@ class Plugin {
 				'rocketcdn_admin_subscriber',
 				'rocketcdn_notices_subscriber',
 				'rocketcdn_data_manager_subscriber',
+				'critical_css_admin_subscriber',
 			];
 		} elseif ( \rocket_valid_key() ) {
 			$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Optimization_Subscribers' );
