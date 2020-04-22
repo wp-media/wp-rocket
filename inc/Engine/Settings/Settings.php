@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Admin\Settings;
+namespace WP_Rocket\Engine\Settings;
 
 use WP_Rocket\Subscriber\Third_Party\Plugins\Security\Sucuri_Subscriber;
 

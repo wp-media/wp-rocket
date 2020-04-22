@@ -929,7 +929,7 @@ if ( ! function_exists( 'rocket_settings_callback' ) ) {
 	 * @param array $inputs An array of values submitted by the settings form.
 	 */
 	function rocket_settings_callback( $inputs ) {
-		_deprecated_function( __FUNCTION__, '3.0', 'WP_Rocket\Admin\Settings\Settings->sanitize_callback()' );
+		_deprecated_function( __FUNCTION__, '3.0', 'WP_Rocket\Engine\Settings\Settings->sanitize_callback()' );
 		if ( isset( $_GET['action'] ) && 'purge_cache' === $_GET['action'] ) {
 			return $inputs;
 		}

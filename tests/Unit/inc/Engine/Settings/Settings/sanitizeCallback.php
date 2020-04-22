@@ -1,14 +1,14 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\classes\admin\settings\Settings;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Settings\Settings;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\Admin\Options;
-use WP_Rocket\Admin\Settings\Settings;
+use WP_Rocket\Engine\Settings\Settings;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Admin\Settings::sanitize_callback
+ * @covers \WP_Rocket\Engine\Settings\Settings::sanitize_callback
  * @group  Admin
  * @group  Settings
  */
