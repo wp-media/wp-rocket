@@ -48,10 +48,7 @@ class Test_RocketCleanCacheThemeUpdate extends FilesystemTestCase {
 		// Update it.
 		do_action( 'upgrader_process_complete', null, $hook_extra );
 
-		// Check the "cleaned" directories.
-		$this->checkCleanedIsDeleted( $expected['cleaned'] );
-
-		// Check the non-cleaned files/directories still exist.
-		$this->checkNonCleanedExist( $shouldNotClean );
+		$this->checkCleanedIsDeleted( $expected['cleaned']);
+		$this->checkNonCleanedExist( $shouldNotClean, isset( $expected['dump_results'] ) );
 	}
 }

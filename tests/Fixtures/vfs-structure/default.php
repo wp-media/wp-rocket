@@ -1,7 +1,7 @@
 <?php
 
 return [
-	'wp-content' => [
+	'wp-content'  => [
 		'cache'            => [
 			'wp-rocket'    => [
 				'index.html'                 => '',

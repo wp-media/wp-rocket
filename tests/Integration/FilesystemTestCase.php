@@ -87,9 +87,12 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 		}
 	}
 
-	protected function checkNonCleanedExist( $shouldNotClean ) {
+	protected function checkNonCleanedExist( $shouldNotClean, $dump_results = false ) {
 		$entriesAfterCleaning = $this->filesystem->getListing( $this->filesystem->getUrl( $this->config['vfs_dir'] ) );
 		$actual               = array_diff( $entriesAfterCleaning, $shouldNotClean );
+		if ( $dump_results ) {
+			var_dump( $actual );
+		}
 		$this->assertEmpty( $actual );
 	}
 }
