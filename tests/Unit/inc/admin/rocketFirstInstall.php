@@ -44,7 +44,7 @@ class Test_RocketFirstInstall extends TestCase {
 
 		rocket_first_install();
 
-		$this->assertTrue( Filters\applied( 'rocket_first_install_options' ) === 1 );
+		$this->assertSame( 1, Filters\applied( 'rocket_first_install_options' ) );
 	}
 
 	public function addProvider() {

@@ -94,7 +94,12 @@ class Test_RocketFirstInstall extends TestCase {
 		$options = get_option( $this->option_name );
 
 		$this->assertIsArray( $options );
-		$this->assertTrue( ! empty( $options['secret_cache_key'] ) && ! empty( $options['minify_css_key'] ) && ! empty( $options['minify_js_key'] ) );
+		$this->assertArrayHasKey( 'secret_cache_key', $options );
+		$this->assertNotEmpty( $options['secret_cache_key'] ); 
+		$this->assertArrayHasKey( 'minify_css_key', $options );
+		$this->assertNotEmpty( $options['minify_css_key'] ); 
+		$this->assertArrayHasKey( 'minify_js_key', $options );
+		$this->assertNotEmpty( $options['minify_js_key'] ); 
 
 		$expected = array_diff_key( $expected, $uniqids );
 		$options  = array_diff_key( $options, $uniqids );
