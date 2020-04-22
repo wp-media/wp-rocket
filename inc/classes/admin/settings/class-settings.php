@@ -38,6 +38,23 @@ class Settings {
 	private $hidden_settings;
 
 	/**
+	 * Font formats allowed to be preloaded.
+	 *
+	 * @since 3.6
+	 * @see   $this->sanitize_font()
+	 *
+	 * @var string|bool
+	 */
+	private $font_formats = [
+		'eot',
+		'otf',
+		'ttf',
+		'svg',
+		'woff',
+		'woff2',
+	];
+
+	/**
 	 * Host domain.
 	 *
 	 * @since 3.6
@@ -592,18 +609,9 @@ class Settings {
 		}
 
 		$file = '/' . trim( $file['path'], '/' );
+		$ext  = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
 
-		$ext     = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
-		$formats = [
-			'eot',
-			'otf',
-			'ttf',
-			'svg',
-			'woff',
-			'woff2',
-		];
-
-		if ( ! in_array( $ext, $formats, true ) ) {
+		if ( ! in_array( $ext, $this->font_formats, true ) ) {
 			return false;
 		}
 
