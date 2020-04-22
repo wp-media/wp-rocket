@@ -104,6 +104,7 @@ function rocket_display_cache_options_meta_boxes() {
 		</div>
 
 		<?php
+		do_action( 'rocket_after_options_metabox' );
 	}
 }
 
