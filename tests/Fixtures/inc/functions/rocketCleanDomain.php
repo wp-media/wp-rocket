@@ -24,12 +24,12 @@ return [
 				],
 				'non_cleaned'              => [
 					// fs entry => should scan the directory and get the file listings.
-					'vfs://public/wp-content/cache/min/'                        => true,
-					'vfs://public/wp-content/cache/busting/'                    => true,
-					'vfs://public/wp-content/cache/critical-css/'               => true,
-					'vfs://public/wp-content/cache/wp-rocket/'                  => false,
-					'vfs://public/wp-content/cache/wp-rocket/index.html'        => false,
-					'vfs://public/wp-content/cache/wp-rocket/dots.example.org/' => true,
+					'vfs://public/wp-content/cache/min/'                       => true,
+					'vfs://public/wp-content/cache/busting/'                   => true,
+					'vfs://public/wp-content/cache/critical-css/'              => true,
+					'vfs://public/wp-content/cache/wp-rocket/'                 => false,
+					'vfs://public/wp-content/cache/wp-rocket/index.html'       => false,
+					'vfs://public/wp-content/cache/wp-rocket/baz.example.org/' => true,
 				],
 			],
 			'unit_test' => [
@@ -61,12 +61,12 @@ return [
 				],
 				'non_cleaned'              => [
 					// fs entry => should scan the directory and get the file listings.
-					'vfs://public/wp-content/cache/min/'                        => true,
-					'vfs://public/wp-content/cache/busting/'                    => true,
-					'vfs://public/wp-content/cache/critical-css/'               => true,
-					'vfs://public/wp-content/cache/wp-rocket/'                  => false,
-					'vfs://public/wp-content/cache/wp-rocket/index.html'        => false,
-					'vfs://public/wp-content/cache/wp-rocket/dots.example.org/' => true,
+					'vfs://public/wp-content/cache/min/'                       => true,
+					'vfs://public/wp-content/cache/busting/'                   => true,
+					'vfs://public/wp-content/cache/critical-css/'              => true,
+					'vfs://public/wp-content/cache/wp-rocket/'                 => false,
+					'vfs://public/wp-content/cache/wp-rocket/index.html'       => false,
+					'vfs://public/wp-content/cache/wp-rocket/baz.example.org/' => true,
 				],
 			],
 			'unit_test' => [
@@ -105,9 +105,9 @@ return [
 					'vfs://public/wp-content/cache/busting/'      => true,
 					'vfs://public/wp-content/cache/critical-css/' => true,
 
-					'vfs://public/wp-content/cache/wp-rocket/'                  => false,
-					'vfs://public/wp-content/cache/wp-rocket/index.html'        => false,
-					'vfs://public/wp-content/cache/wp-rocket/dots.example.org/' => true,
+					'vfs://public/wp-content/cache/wp-rocket/'                 => false,
+					'vfs://public/wp-content/cache/wp-rocket/index.html'       => false,
+					'vfs://public/wp-content/cache/wp-rocket/baz.example.org/' => true,
 				],
 			],
 			'unit_test' => [
@@ -157,19 +157,21 @@ return [
 					'vfs://public/wp-content/cache/wp-rocket/'           => false,
 					'vfs://public/wp-content/cache/wp-rocket/index.html' => false,
 
-					'vfs://public/wp-content/cache/wp-rocket/example.org/'    => false,
-					'vfs://public/wp-content/cache/wp-rocket/example.org/fr/' => true,
-					'vfs://public/wp-content/cache/wp-rocket/example.org/de/' => true,
+					'vfs://public/wp-content/cache/wp-rocket/baz.example.org/' => true,
+
+					'vfs://public/wp-content/cache/wp-rocket/example.org/'          => false,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/blog/'     => true,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/category/' => true,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/de/'       => true,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/fr/'       => true,
 
 					'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456/'    => false,
 					'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456/de/' => true,
 					'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456/fr/' => true,
 
 					'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654/'    => false,
-					'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654/fr/' => true,
 					'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654/de/' => true,
-
-					'vfs://public/wp-content/cache/wp-rocket/dots.example.org/' => true,
+					'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654/fr/' => true,
 				],
 			],
 			'unit_test' => [
@@ -210,15 +212,21 @@ return [
 					'vfs://public/wp-content/cache/busting/'      => true,
 					'vfs://public/wp-content/cache/critical-css/' => true,
 
-					'vfs://public/wp-content/cache/wp-rocket/'                             => false,
-					'vfs://public/wp-content/cache/wp-rocket/index.html'                   => false,
-					'vfs://public/wp-content/cache/wp-rocket/example.org/'                 => false,
-					'vfs://public/wp-content/cache/wp-rocket/example.org/index.html'       => false,
-					'vfs://public/wp-content/cache/wp-rocket/example.org/index.html_gzip'  => false,
-					'vfs://public/wp-content/cache/wp-rocket/example.org/de/'              => true,
-					'vfs://public/wp-content/cache/wp-rocket/example.org/hidden-files/'    => true,
-					'vfs://public/wp-content/cache/wp-rocket/example.org/lorem-ipsum/'     => true,
-					'vfs://public/wp-content/cache/wp-rocket/example.org/nec-ullamcorper/' => true,
+					'vfs://public/wp-content/cache/wp-rocket/baz.example.org/' => true,
+
+					'vfs://public/wp-content/cache/wp-rocket/'                                   => false,
+					'vfs://public/wp-content/cache/wp-rocket/index.html'                         => false,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/'                       => false,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/index.html'             => false,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/index.html_gzip'        => false,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/index-mobile.html'      => false,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/index-mobile.html_gzip' => false,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/blog/'                  => true,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/category/'              => true,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/de/'                    => true,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/hidden-files/'          => true,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/lorem-ipsum/'           => true,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/nec-ullamcorper/'       => true,
 
 					'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456/'                => false,
 					'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456/index.html'      => false,
@@ -232,7 +240,7 @@ return [
 					'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654/de/'              => true,
 					'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654/nec-ullamcorper/' => true,
 
-					'vfs://public/wp-content/cache/wp-rocket/dots.example.org/' => true,
+
 				],
 			],
 			'unit_test' => [
@@ -274,13 +282,19 @@ return [
 					'vfs://public/wp-content/cache/wp-rocket/'           => false,
 					'vfs://public/wp-content/cache/wp-rocket/index.html' => false,
 
-					'vfs://public/wp-content/cache/wp-rocket/example.org/'                 => false,
-					'vfs://public/wp-content/cache/wp-rocket/example.org/index.html'       => false,
-					'vfs://public/wp-content/cache/wp-rocket/example.org/index.html_gzip'  => false,
-					'vfs://public/wp-content/cache/wp-rocket/example.org/fr/'              => true,
-					'vfs://public/wp-content/cache/wp-rocket/example.org/hidden-files/'    => true,
-					'vfs://public/wp-content/cache/wp-rocket/example.org/lorem-ipsum/'     => true,
-					'vfs://public/wp-content/cache/wp-rocket/example.org/nec-ullamcorper/' => true,
+					'vfs://public/wp-content/cache/wp-rocket/baz.example.org/' => true,
+
+					'vfs://public/wp-content/cache/wp-rocket/example.org/'                       => false,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/index.html'             => false,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/index.html_gzip'        => false,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/index-mobile.html'      => false,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/index-mobile.html_gzip' => false,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/blog/'                  => true,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/category/'              => true,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/fr/'                    => true,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/hidden-files/'          => true,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/lorem-ipsum/'           => true,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/nec-ullamcorper/'       => true,
 
 					'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456/'                => false,
 					'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456/index.html'      => false,
@@ -293,8 +307,6 @@ return [
 					'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654/index.html_gzip'  => false,
 					'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654/fr/'              => true,
 					'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654/nec-ullamcorper/' => true,
-
-					'vfs://public/wp-content/cache/wp-rocket/dots.example.org/' => true,
 				],
 			],
 			'unit_test' => [

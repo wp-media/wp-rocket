@@ -23,7 +23,7 @@ class Test_RocketCleanMinify extends FilesystemTestCase {
 
 		rocket_clean_minify( $extensions );
 
-		$this->checkCleanedIsDeleted( $expected['cleaned'] );
+		$this->checkCleanedIsDeleted( $expected['cleaned'], isset( $expected['dump_results'] ) );
 		$this->checkNonCleanedExist( isset( $expected['dump_results'] ) );
 	}
 }

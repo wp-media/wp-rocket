@@ -49,15 +49,23 @@ trait VirtualFilesystemTrait {
 		}
 	}
 
-	protected function checkCleanedIsDeleted( array $shouldClean ) {
+	protected function checkCleanedIsDeleted( array $shouldClean, $dump_results = false ) {
 		foreach ( $shouldClean as $dir => $contents ) {
 			// Deleted.
 			if ( is_null( $contents ) ) {
-				$this->assertFalse( $this->filesystem->exists( $dir ) );
+				$actual = $this->filesystem->exists( $dir );
+				if ( $dump_results && false !== $actual ) {
+					var_dump( $this->filesystem->getFilesListing( $dir ) );
+				}
+				$this->assertFalse( $actual );
 			} else {
 				$this->shouldNotClean[] = trailingslashit( $dir );
 				// Emptied, but not deleted.
-				$this->assertSame( $contents, $this->filesystem->getFilesListing( $dir ) );
+				$entries = $this->filesystem->getFilesListing( $dir );
+				if ( $dump_results ) {
+					var_dump( $entries );
+				}
+				$this->assertSame( $contents, $entries );
 			}
 		}
 	}

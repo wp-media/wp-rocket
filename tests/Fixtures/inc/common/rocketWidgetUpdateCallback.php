@@ -14,7 +14,7 @@ $expected = [
 		'vfs://public/wp-content/cache/critical-css/'               => true,
 		'vfs://public/wp-content/cache/wp-rocket/'                  => false,
 		'vfs://public/wp-content/cache/wp-rocket/index.html'        => false,
-		'vfs://public/wp-content/cache/wp-rocket/dots.example.org/' => true,
+		'vfs://public/wp-content/cache/wp-rocket/baz.example.org/' => true,
 	],
 ];
 

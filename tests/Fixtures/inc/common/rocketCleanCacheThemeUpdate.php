@@ -11,8 +11,8 @@ return [
 				'action' => 'install',
 			],
 			'expected'   => [
-				'cleaned'     => [],
-				'non_cleaned' => [
+				'cleaned'      => [],
+				'non_cleaned'  => [
 					'vfs://public/wp-content/cache/min/'          => true,
 					'vfs://public/wp-content/cache/busting/'      => true,
 					'vfs://public/wp-content/cache/critical-css/' => true,
@@ -27,8 +27,8 @@ return [
 				'type'   => 'plugin',
 			],
 			'expected'   => [
-				'cleaned'     => [],
-				'non_cleaned' => [
+				'cleaned'      => [],
+				'non_cleaned'  => [
 					'vfs://public/wp-content/cache/min/'          => true,
 					'vfs://public/wp-content/cache/busting/'      => true,
 					'vfs://public/wp-content/cache/critical-css/' => true,
@@ -44,8 +44,8 @@ return [
 				'themes' => '',
 			],
 			'expected'   => [
-				'cleaned'     => [],
-				'non_cleaned' => [
+				'cleaned'      => [],
+				'non_cleaned'  => [
 					'vfs://public/wp-content/cache/min/'          => true,
 					'vfs://public/wp-content/cache/busting/'      => true,
 					'vfs://public/wp-content/cache/critical-css/' => true,
@@ -54,26 +54,26 @@ return [
 				'wp_get_theme' => null,
 			],
 		],
-		'shouldCleanDomain' => [
+		'shouldCleanDomain'                => [
 			'hook_extra' => [
 				'action' => 'update',
 				'type'   => 'theme',
 				'themes' => [ 'default' ],
 			],
 			'expected'   => [
-				'cleaned'     => [
+				'cleaned'      => [
 					'vfs://public/wp-content/cache/wp-rocket/example.org'                => null,
 					'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456' => null,
 					'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654'  => null,
 				],
-				'non_cleaned' => [
+				'non_cleaned'  => [
 					// fs entry => should scan the directory and get the file listings.
-					'vfs://public/wp-content/cache/min/'                        => true,
-					'vfs://public/wp-content/cache/busting/'                    => true,
-					'vfs://public/wp-content/cache/critical-css/'               => true,
-					'vfs://public/wp-content/cache/wp-rocket/'                  => false,
-					'vfs://public/wp-content/cache/wp-rocket/index.html'        => false,
-					'vfs://public/wp-content/cache/wp-rocket/dots.example.org/' => true,
+					'vfs://public/wp-content/cache/min/'                       => true,
+					'vfs://public/wp-content/cache/busting/'                   => true,
+					'vfs://public/wp-content/cache/critical-css/'              => true,
+					'vfs://public/wp-content/cache/wp-rocket/'                 => false,
+					'vfs://public/wp-content/cache/wp-rocket/index.html'       => false,
+					'vfs://public/wp-content/cache/wp-rocket/baz.example.org/' => true,
 				],
 				'wp_get_theme' => true,
 			],
