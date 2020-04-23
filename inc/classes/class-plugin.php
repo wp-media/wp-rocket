@@ -67,6 +67,7 @@ class Plugin {
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Database' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Admin\Beacon\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\RocketCDN' );
+		$this->container->addServiceProvider( 'WP_Rocket\Engine\HealthCheck\ServiceProvider' );
 
 		$subscribers = [];
 
@@ -150,7 +151,7 @@ class Plugin {
 			'bridge_subscriber',
 			'ngg_subscriber',
 			'smush_subscriber',
-			'cache_dir_size_check_subscriber',
+			'cache_dir_size_check',
 			'plugin_updater_common_subscriber',
 			'plugin_information_subscriber',
 			'plugin_updater_subscriber',
