@@ -429,6 +429,11 @@ function set_rocket_wp_cache_define( $turn_it_on ) { // phpcs:ignore WordPress.N
  * @param  string|array $extensions Optional. File extensions to minify. Default: js and css.
  */
 function rocket_clean_minify( $extensions = [ 'js', 'css' ] ) {
+	// Bails out if there are no extensions to target.
+	if ( empty( $extensions ) ) {
+		return;
+	}
+
 	if ( is_string( $extensions ) ) {
 		$extensions = (array) $extensions;
 	}
