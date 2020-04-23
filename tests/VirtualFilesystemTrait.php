@@ -9,6 +9,18 @@ trait VirtualFilesystemTrait {
 	protected $original_entries = [];
 	protected $shouldNotClean   = [];
 
+	protected function initDefaultStructure() {
+		if ( empty( $this->config ) ) {
+			$this->loadConfig();
+		}
+
+		if ( array_key_exists( 'structure', $this->config ) ) {
+			return;
+		}
+
+		$this->config['structure'] = require WP_ROCKET_TESTS_FIXTURES_DIR . '/vfs-structure/default.php';
+	}
+
 	protected function redefineRocketDirectFilesystem() {
 		// Redefine rocket_direct_filesystem() to use the virtual filesystem.
 		Functions\when( 'rocket_direct_filesystem' )->justReturn( $this->filesystem );

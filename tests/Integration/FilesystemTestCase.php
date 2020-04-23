@@ -9,6 +9,8 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 	use VirtualFilesystemTrait;
 
 	public function setUp() {
+		$this->initDefaultStructure();
+
 		parent::setUp();
 
 		$this->redefineRocketDirectFilesystem();

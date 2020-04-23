@@ -7,7 +7,7 @@ return [
 	'vfs_dir'   => 'wp-content/cache/',
 
 	// Virtual filesystem structure.
-	'structure' => require WP_ROCKET_TESTS_FIXTURES_DIR . '/vfs-structure/default.php',
+//	'structure' => require WP_ROCKET_TESTS_FIXTURES_DIR . '/vfs-structure/default.php',
 
 	// Test data.
 	'test_data' => [
