@@ -17,39 +17,6 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 		Functions\when( 'rocket_direct_filesystem' )->justReturn( $this->filesystem );
 	}
 
-	public function getPathToFixturesDir() {
-		return WP_ROCKET_TESTS_FIXTURES_DIR;
-	}
-
-	public function getDefaultVfs() {
-		return [
-			'wp-admin'      => [],
-			'wp-content'    => [
-				'cache'            => [
-					'busting'      => [
-						1 => [],
-					],
-					'critical-css' => [],
-					'min'          => [],
-					'wp-rocket'    => [
-						'index.html' => '',
-					],
-				],
-				'mu-plugins'       => [],
-				'plugins'          => [
-					'wp-rocket' => [],
-				],
-				'themes'           => [
-					'twentytwenty' => [],
-				],
-				'uploads'          => [],
-				'wp-rocket-config' => [],
-			],
-			'wp-includes'   => [],
-			'wp-config.php' => '',
-		];
-	}
-
 	protected function setUpOriginalEntries() {
 		$this->original_entries = array_merge( $this->original_files, $this->original_dirs );
 		$this->original_entries = array_filter( $this->original_entries );
@@ -93,5 +60,38 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 			var_dump( $actual );
 		}
 		$this->assertEmpty( $actual );
+	}
+
+	public function getPathToFixturesDir() {
+		return WP_ROCKET_TESTS_FIXTURES_DIR;
+	}
+
+	public function getDefaultVfs() {
+		return [
+			'wp-admin'      => [],
+			'wp-content'    => [
+				'cache'            => [
+					'busting'      => [
+						1 => [],
+					],
+					'critical-css' => [],
+					'min'          => [],
+					'wp-rocket'    => [
+						'index.html' => '',
+					],
+				],
+				'mu-plugins'       => [],
+				'plugins'          => [
+					'wp-rocket' => [],
+				],
+				'themes'           => [
+					'twentytwenty' => [],
+				],
+				'uploads'          => [],
+				'wp-rocket-config' => [],
+			],
+			'wp-includes'   => [],
+			'wp-config.php' => '',
+		];
 	}
 }
