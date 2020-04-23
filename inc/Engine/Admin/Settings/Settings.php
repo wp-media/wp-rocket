@@ -586,39 +586,44 @@ class Settings {
 			$files = explode( "\n", trim( $files ) );
 		}
 
-		$files = array_map(
-			function ( $file ) {
-				if ( ! is_string( $file ) ) {
-					return false;
-				}
+		$files = array_map( [ $this, 'sanitize_font' ], $files );
 
-				$file = trim( $file );
+		return array_unique( array_filter( $files ) );
+	}
 
-				if ( empty( $file ) ) {
-					return false;
-				}
+	/**
+	 * Sanitize an entry for the preload fonts option.
+	 *
+	 * @since 3.6
+	 *
+	 * @param string $file URL or path to a font file.
+	 * @return string|bool
+	 */
+	private function sanitize_font( $file ) {
+		if ( ! is_string( $file ) ) {
+			return false;
+		}
 
-				$file = wp_parse_url( $file );
+		$file = trim( $file );
 
-				if ( ! empty( $file['host'] ) && $this->get_host() !== $file['host'] ) {
-					return false;
-				}
+		if ( empty( $file ) ) {
+			return false;
+		}
 
-				$file = '/' . trim( $file['path'], '/' );
-				$ext  = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
+		$parsed_url = wp_parse_url( $file );
 
-				if ( ! in_array( $ext, $this->font_formats, true ) ) {
-					return false;
-				}
+		if ( ! empty( $parsed_url['host'] ) && $this->get_host() !== $parsed_url['host'] ) {
+			return false;
+		}
 
-				return $file;
-			},
-			$files
-		);
+		$file = '/' . trim( $parsed_url['path'], '/' );
+		$ext  = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
 
-		$files = array_filter( $files );
+		if ( ! in_array( $ext, $this->font_formats, true ) ) {
+			return false;
+		}
 
-		return array_unique( $files );
+		return $file;
 	}
 
 	/**
