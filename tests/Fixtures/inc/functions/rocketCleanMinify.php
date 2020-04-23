@@ -3,8 +3,6 @@
 return [
 	'vfs_dir' => 'wp-content/cache/min/',
 
-	'structure' => require WP_ROCKET_TESTS_FIXTURES_DIR . '/vfs-structure/default.php',
-
 	// Test data.
 	'test_data' => [
 		'shouldNotCleanWhenNoExtensionsGiven'     => [

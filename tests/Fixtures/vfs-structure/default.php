@@ -112,6 +112,23 @@ return [
 				],
 			],
 		],
+		'themes'  => [
+			'twentytwenty' => [
+				'style.php' => 'test',
+				'assets'    => [
+					'script.php' => 'test',
+				],
+			],
+		],
+		'plugins' => [
+			'hello-dolly' => [
+				'style.php'  => '',
+				'script.php' => '',
+			],
+			'wp-rocket' => [
+				'licence-data.php' => '',
+			],
+		],
 		'wp-rocket-config' => [
 			'example.org.php' => 'test',
 		],

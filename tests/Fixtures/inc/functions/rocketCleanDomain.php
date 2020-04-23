@@ -6,9 +6,6 @@ return [
 	// Use in tests when the test data starts in this directory.
 	'vfs_dir'   => 'wp-content/cache/',
 
-	// Virtual filesystem structure.
-//	'structure' => require WP_ROCKET_TESTS_FIXTURES_DIR . '/vfs-structure/default.php',
-
 	// Test data.
 	'test_data' => [
 		'shouldDeleteAll_example.org*_whenNoLangGiven' => [
