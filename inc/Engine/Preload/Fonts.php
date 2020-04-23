@@ -3,6 +3,7 @@
 namespace WP_Rocket\Engine\Preload;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\CDN\CDN;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
@@ -22,14 +23,25 @@ class Fonts implements Subscriber_Interface {
 	private $options;
 
 	/**
+	 * WP Rocket CDN instance.
+	 *
+	 * @since 3.6
+	 *
+	 * @var CDN
+	 */
+	private $cdn;
+
+	/**
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
 	 * @since  3.6
 	 *
 	 * @param Options_Data $options WP Rocket Options instance.
+	 * @param CDN          $cdn     WP Rocket CDN instance.
 	 */
-	public function __construct( Options_Data $options ) {
+	public function __construct( Options_Data $options, CDN $cdn ) {
 		$this->options = $options;
+		$this->cdn     = $cdn;
 	}
 
 	/**
@@ -52,6 +64,14 @@ class Fonts implements Subscriber_Interface {
 	 */
 	public function preload_fonts() {
 		$fonts = $this->options->get( 'preload_fonts', [] );
+		/**
+		 * Filters the list of fonts to preload
+		 *
+		 * @since 3.6
+		 *
+		 * @param array $fonts Array of fonts paths.
+		 */
+		$fonts = (array) apply_filters( 'rocket_preload_fonts', $fonts );
 		$fonts = array_map( [ $this, 'sanitize_font' ], $fonts );
 		$fonts = array_filter( $fonts );
 
@@ -65,7 +85,7 @@ class Fonts implements Subscriber_Interface {
 		foreach ( array_unique( $fonts ) as $font ) {
 			printf(
 				"\n<link rel=\"preload\" as=\"font\" href=\"%s\" crossorigin>",
-				esc_url( get_rocket_cdn_url( $base_url . $font ) )
+				esc_url( $this->cdn->rewrite_url( $base_url . $font ) )
 			);
 		}
 	}
