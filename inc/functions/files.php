@@ -494,7 +494,7 @@ function rocket_clean_minify( $extensions = [ 'js', 'css' ] ) {
 				$filesystem->delete( $file );
 			}
 		}
-	} catch ( \UnexpectedValueException $e ) {
+	} catch ( UnexpectedValueException $e ) {
 		// No logging yet.
 		return;
 	}
