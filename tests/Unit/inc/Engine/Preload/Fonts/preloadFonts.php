@@ -5,6 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Fonts;
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\CDN\CDN;
 use WP_Rocket\Engine\Preload\Fonts;
 
 /**
@@ -12,27 +13,35 @@ use WP_Rocket\Engine\Preload\Fonts;
  * @group  Preload
  */
 class Test_PreloadFonts extends TestCase {
+	private $options;
+	private $cdn;
+	private $fonts;
+
+	public function setUp() {
+		parent::setUp();
+
+		$this->options = $this->createMock( Options_Data::class );
+		$this->cdn     = $this->createMock( CDN::class );
+		$this->fonts   = new Fonts( $this->options, $this->cdn );
+	}
 
 	public function testShouldNotAddPreloadTagsWhenInvalidFonts() {
-		$options = $this->createMock( Options_Data::class );
-		$options->method( 'get' )
+		$this->options->method( 'get' )
 			->with( 'preload_fonts', [] )
 			->willReturnOnConsecutiveCalls( [], [ '/wp-content/style.css', '/wp-content/style.js' ], [ '/test.eot' ] );
-
-		$preload = new Fonts( $options );
 
 		Functions\expect( 'untrailingslashit' )->never();
 		Functions\expect( 'get_option' )->never();
 
 		ob_start();
-		$preload->preload_fonts();
+		$this->fonts->preload_fonts();
 		$out = ob_get_contents();
 		ob_end_clean();
 
 		$this->assertEmpty( $out );
 
 		ob_start();
-		$preload->preload_fonts();
+		$this->fonts->preload_fonts();
 		$out = ob_get_contents();
 		ob_end_clean();
 
@@ -48,21 +57,15 @@ class Test_PreloadFonts extends TestCase {
 		Functions\when( 'untrailingslashit' )->alias( function( $thing ) {
 			return rtrim( $thing, '\/' );
 		} );
-		Functions\when( 'get_rocket_cdn_url' )->alias( function( $thing ) {
-			return str_replace( '//example.org', '//cdn.example.org', $thing );
-		} );
 		Functions\when( 'esc_url' )->returnArg();
 		Functions\when( 'site_url' )->justReturn( 'http://example.org' );
 
-		$options = $this->createMock( Options_Data::class );
-		$options->method( 'get' )
+		$this->options->method( 'get' )
 			->with( 'preload_fonts', [] )
 			->willReturn( $data['input'] );
 
-		$preload = new Fonts( $options );
-
 		ob_start();
-		$preload->preload_fonts();
+		$this->fonts->preload_fonts();
 		$out = ob_get_contents();
 		ob_end_clean();
 
