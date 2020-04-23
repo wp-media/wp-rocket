@@ -2,15 +2,17 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\HealthCheck\CacheDirSizeCheck;
 
 use Brain\Monkey\Functions;
-use Mockery;
-use WPMedia\PHPUnit\Unit\TestCase;
+use org\bovigo\vfs\content\LargeFileContent;
+use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use WP_Rocket\Engine\HealthCheck\CacheDirSizeCheck;
 
 /**
  * @covers \WP_Rocket\Engine\HealthCheck\CacheDirSizeCheck::cache_dir_size_check
  * @group Subscriber
+ * @group HealthCheck
  */
-class Test_CacheDirSizeCheck extends TestCase {
+class Test_CacheDirSizeCheck extends FilesystemTestCase {
+	protected $path_to_test_data = '/inc/Engine/HealthCheck/CacheDirSizeCheck/cacheDirSizeCheck.php';
 	private $subscriber;
 
 	public function setUp() {
@@ -19,33 +21,50 @@ class Test_CacheDirSizeCheck extends TestCase {
 		$this->subscriber = new CacheDirSizeCheck();
 	}
 
-	public function testShouldNotCheckDirSizeWhenOptionIsEnabled() {
-		Functions\expect( 'get_option' )
-			->once()
-			->with( 'rocket_cache_dir_size_check' )
-			->andReturn( true );
-		Functions\expect( 'get_current_blog_id' )
-			->never();
-		Functions\expect( 'update_option' )
-			->never();
+	/**
+	 * @dataProvider providerTestData
+	 */
+	public function testShouldCheckDirSizeWhenOptionIsDisabled( $option_value, $dir_size_excess ) {
+		Functions\when( 'get_option' )->justReturn( $option_value );
 
-		$this->subscriber->cache_dir_size_check();
-	}
+		if ( ! $option_value ) {
+			Functions\expect( 'get_current_blog_id' )
+				->once()
+				->andReturn( 1 );
+			Functions\expect( 'update_option' )
+				->once()
+				->with( 'rocket_cache_dir_size_check', 1 );
+			Functions\expect( 'rocket_get_constant' )
+				->once()
+				->with( 'WP_ROCKET_MINIFY_CACHE_PATH' )
+				->andReturn( $this->filesystem->getUrl( 'wp-content/cache/min/' ) );
+		} else {
+			Functions\expect( 'get_current_blog_id' )
+				->never();
+			Functions\expect( 'update_option' )
+				->never();
+		}
 
-	public function testShouldCheckDirSizeWhenOptionIsDisabled() {
-		Functions\expect( 'get_option' )
+		if ( $dir_size_excess ) {
+			$this->filesystem->put_contents( 'public/wp-content/cache/min/1/large.js', LargeFileContent::withGigabytes( 11 ) );
+
+			Functions\expect( 'rocket_get_constant' )
+				->once()
+				->with( 'WP_ROCKET_WEB_MAIN' )
+				->andReturn( 'https://wp-rocket.me' );
+
+			Functions\expect( 'wp_safe_remote_post' )
 			->once()
-			->with( 'rocket_cache_dir_size_check' )
-			->andReturn( false );
-		Functions\expect( 'rocket_get_constant' )
-			->once()
-			->with( 'WP_ROCKET_MINIFY_CACHE_PATH' )
-			->andReturn( 'wp-content/cache/' );
-		Functions\expect( 'get_current_blog_id' )
-			->once();
-		Functions\expect( 'update_option' )
-			->once()
-			->with( 'rocket_cache_dir_size_check', 1 );
+			->with(
+				'https://wp-rocket.me/api/wp-rocket/cache-dir-check.php',
+				[
+					'body' => 'cache_dir_type=min',
+				]
+			);
+		} else {
+			Functions\expect( 'wp_safe_remote_post' )
+			->never();
+		}
 
 		$this->subscriber->cache_dir_size_check();
 	}
