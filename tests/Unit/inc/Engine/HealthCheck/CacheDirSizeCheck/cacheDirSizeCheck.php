@@ -26,6 +26,8 @@ class Test_CacheDirSizeCheck extends TestCase {
 			->andReturn( true );
 		Functions\expect( 'get_current_blog_id' )
 			->never();
+		Functions\expect( 'update_option' )
+			->never();
 
 		$this->subscriber->cache_dir_size_check();
 	}
