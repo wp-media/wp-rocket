@@ -438,6 +438,7 @@ function rocket_clean_minify( $extensions = [ 'js', 'css' ] ) {
 		return;
 	}
 
+	$filesystem = rocket_direct_filesystem();
 	$min_path_regex = str_replace( '/', '\/', $min_path );
 	foreach ( $extensions as $ext ) {
 		/**
@@ -456,7 +457,7 @@ function rocket_clean_minify( $extensions = [ 'js', 'css' ] ) {
 		}
 
 		foreach ( $entries as $entry ) {
-			rocket_direct_filesystem()->delete( $entry->getPathname() );
+			$filesystem->delete( $entry->getPathname() );
 		}
 
 		/**
@@ -470,8 +471,8 @@ function rocket_clean_minify( $extensions = [ 'js', 'css' ] ) {
 	}
 
 	foreach ( $iterator as $item ) {
-		if ( rocket_direct_filesystem()->is_dir( $item ) ) {
-			rocket_direct_filesystem()->delete( $item );
+		if ( $filesystem->is_dir( $item ) ) {
+			$filesystem->delete( $item );
 		}
 	}
 
@@ -479,8 +480,8 @@ function rocket_clean_minify( $extensions = [ 'js', 'css' ] ) {
 		$files = new FilesystemIterator( "{$min_cache_path}3rd-party" );
 
 		foreach ( $files as $file ) {
-			if ( rocket_direct_filesystem()->is_file( $file ) ) {
-				rocket_direct_filesystem()->delete( $file );
+			if ( $filesystem->is_file( $file ) ) {
+				$filesystem->delete( $file );
 			}
 		}
 	} catch ( \UnexpectedValueException $e ) {
