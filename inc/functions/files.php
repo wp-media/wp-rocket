@@ -432,12 +432,13 @@ function rocket_clean_minify( $extensions = [ 'js', 'css' ] ) {
 	$extensions = is_string( $extensions ) ? (array) $extensions : $extensions;
 	$min_cache_path = rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' );
 
-	$min_path = $min_cache_path . get_current_blog_id();
+	$min_path = $min_cache_path . get_current_blog_id() . '/';
 	$iterator   = _rocket_get_cache_path_iterator( $min_path );
 	if ( false === $iterator ) {
 		return;
 	}
 
+	$min_path_regex = str_replace( '/', '\/', $min_path );
 	foreach ( $extensions as $ext ) {
 		/**
 		 * Fires before the minify cache files are deleted
@@ -449,9 +450,8 @@ function rocket_clean_minify( $extensions = [ 'js', 'css' ] ) {
 		do_action( 'before_rocket_clean_minify', $ext ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 		try {
-			$entries = new RegexIterator( $iterator, "/.*\.{$ext}/" );
-		} catch ( \InvalidArgumentException $e ) {
-			// No logging yet.
+			$entries = new RegexIterator( $iterator, "/{$min_path_regex}.*\.{$ext}/" );
+		} catch ( Exception $e ) {
 			return;
 		}
 
