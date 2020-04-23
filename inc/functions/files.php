@@ -456,13 +456,14 @@ function rocket_clean_minify( $extensions = [ 'js', 'css' ] ) {
 		do_action( 'before_rocket_clean_minify', $ext ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 		try {
-			$files = new RegexIterator( $iterator, '#.*\.' . $ext . '#', RegexIterator::GET_MATCH );
-			foreach ( $files as $file ) {
-				rocket_direct_filesystem()->delete( $file[0] );
-			}
+			$entries = new RegexIterator( $iterator, "/.*\.{$ext}/" );
 		} catch ( \InvalidArgumentException $e ) {
 			// No logging yet.
 			return;
+		}
+
+		foreach ( $entries as $entry ) {
+			rocket_direct_filesystem()->delete( $entry->getPathname() );
 		}
 
 		/**
