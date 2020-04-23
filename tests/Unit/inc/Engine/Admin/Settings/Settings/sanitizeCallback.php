@@ -87,7 +87,7 @@ class Test_SanitizeCallback extends TestCase {
 		} );
 		Functions\expect( 'get_option' )
 			->with( 'home' )
-			->andReturn( 'https://example.org/' );
+			->andReturn( 'http://example.org/' );
 
 		$output = $this->settings->sanitize_callback( $input );
 
