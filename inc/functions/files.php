@@ -423,10 +423,10 @@ function set_rocket_wp_cache_define( $turn_it_on ) { // phpcs:ignore WordPress.N
 /**
  * Delete all minify cache files.
  *
- * @since 3.5.4 Optimizes and replaces glob.
+ * @since 3.5.3 Replaces glob.
  * @since 2.1
  *
- * @param  string|array $extensions Optional. File extensions to minify. Default: js and css.
+ * @param string|array $extensions Optional. File extensions to minify. Default: js and css.
  */
 function rocket_clean_minify( $extensions = [ 'js', 'css' ] ) {
 	// Bails out if there are no extensions to target.
@@ -439,22 +439,23 @@ function rocket_clean_minify( $extensions = [ 'js', 'css' ] ) {
 	}
 
 	$min_cache_path = rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' );
-	$min_path = $min_cache_path . get_current_blog_id() . '/';
-	$iterator   = _rocket_get_cache_path_iterator( $min_path );
+	$min_path       = $min_cache_path . get_current_blog_id() . '/';
+	$iterator       = _rocket_get_cache_path_iterator( $min_path );
 	if ( false === $iterator ) {
 		return;
 	}
 
-	$filesystem = rocket_direct_filesystem();
+	$filesystem     = rocket_direct_filesystem();
 	$min_path_regex = str_replace( '/', '\/', $min_path );
+
 	foreach ( $extensions as $ext ) {
 		/**
-		 * Fires before the minify cache files are deleted
+		 * Fires before the minify cache files are deleted.
 		 *
 		 * @since 2.1
 		 *
 		 * @param string $ext File extensions to minify.
-		*/
+		 */
 		do_action( 'before_rocket_clean_minify', $ext ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 		try {
@@ -468,21 +469,23 @@ function rocket_clean_minify( $extensions = [ 'js', 'css' ] ) {
 		}
 
 		/**
-		 * Fires after the minify cache files was deleted
+		 * Fires after the minify cache files was deleted.
 		 *
 		 * @since 2.1
 		 *
 		 * @param string $ext File extensions to minify.
-		*/
+		 */
 		do_action( 'after_rocket_clean_minify', $ext ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	}
 
+	// Delete any directories.
 	foreach ( $iterator as $item ) {
 		if ( $filesystem->is_dir( $item ) ) {
 			$filesystem->delete( $item );
 		}
 	}
 
+	// Clean the cache/min/3rd-party items.
 	try {
 		$files = new FilesystemIterator( "{$min_cache_path}3rd-party" );
 

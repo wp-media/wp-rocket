@@ -13,7 +13,6 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
  * @group Functions
  * @group Files
  * @group vfs
- * @group thisone
  */
 class Test_RocketCleanMinify extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/functions/rocketCleanMinify.php';

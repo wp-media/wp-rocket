@@ -327,8 +327,8 @@ return [
 				'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/fr',
 			],
 			'expected'    => [
-				'before_rocket_rrmdir' => 19,
-				'after_rocket_rrmdir'  => 19,
+				'before_rocket_rrmdir' => 21,
+				'after_rocket_rrmdir'  => 21,
 				'removed'              => [
 					'vfs://public/wp-content/cache/min/'                                                 => null,
 					'vfs://public/wp-content/cache/busting'                                              => null,
