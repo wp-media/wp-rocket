@@ -421,17 +421,19 @@ function set_rocket_wp_cache_define( $turn_it_on ) { // phpcs:ignore WordPress.N
 }
 
 /**
- * Delete all minify cache files
+ * Delete all minify cache files.
  *
+ * @since 3.5.4 Optimizes and replaces glob.
  * @since 2.1
  *
- * @param  string|array $extensions (default: array('js','css') File extensions to minify.
- * @return void
+ * @param  string|array $extensions Optional. File extensions to minify. Default: js and css.
  */
 function rocket_clean_minify( $extensions = [ 'js', 'css' ] ) {
-	$extensions = is_string( $extensions ) ? (array) $extensions : $extensions;
-	$min_cache_path = rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' );
+	if ( is_string( $extensions ) ) {
+		$extensions = (array) $extensions;
+	}
 
+	$min_cache_path = rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' );
 	$min_path = $min_cache_path . get_current_blog_id() . '/';
 	$iterator   = _rocket_get_cache_path_iterator( $min_path );
 	if ( false === $iterator ) {
