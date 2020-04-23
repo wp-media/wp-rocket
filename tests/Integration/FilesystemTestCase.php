@@ -8,6 +8,7 @@ use WPMedia\PHPUnit\Integration\VirtualFilesystemTestCase;
 
 abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 	protected $original_entries = [];
+	protected $shouldNotClean   = [];
 
 	public function setUp() {
 		parent::setUp();
@@ -60,5 +61,37 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 		$search = rtrim( $search, '/\\' ) . '/';
 
 		return str_replace( $search, '', $path );
+	}
+
+	protected function getShouldNotCleanEntries( array $shouldNotClean ) {
+		$this->shouldNotClean = [];
+		foreach ( $shouldNotClean as $entry => $scanDir ) {
+			$this->shouldNotClean[] = $entry;
+			if ( $scanDir && $this->filesystem->is_dir( $entry ) ) {
+				$this->shouldNotClean = array_merge( $this->shouldNotClean, $this->filesystem->getListing( $entry ) );
+			}
+		}
+	}
+
+	protected function checkCleanedIsDeleted( array $shouldClean ) {
+		foreach ( $shouldClean as $dir => $contents ) {
+			// Deleted.
+			if ( is_null( $contents ) ) {
+				$this->assertFalse( $this->filesystem->exists( $dir ) );
+			} else {
+				$this->shouldNotClean[] = trailingslashit( $dir );
+				// Emptied, but not deleted.
+				$this->assertSame( $contents, $this->filesystem->getFilesListing( $dir ) );
+			}
+		}
+	}
+
+	protected function checkNonCleanedExist( $dump_results = false ) {
+		$entriesAfterCleaning = $this->filesystem->getListing( $this->filesystem->getUrl( $this->config['vfs_dir'] ) );
+		$actual               = array_diff( $entriesAfterCleaning, $this->shouldNotClean );
+		if ( $dump_results ) {
+			var_dump( $actual );
+		}
+		$this->assertEmpty( $actual );
 	}
 }

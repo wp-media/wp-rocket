@@ -87,6 +87,7 @@ class Plugin {
 			);
 			$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Settings' );
 			$this->container->addServiceProvider( 'WP_Rocket\Engine\Admin\ServiceProvider' );
+			$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\AdminServiceProvider' );
 
 			$subscribers = [
 				'beacon',
@@ -96,6 +97,8 @@ class Plugin {
 				'rocketcdn_admin_subscriber',
 				'rocketcdn_notices_subscriber',
 				'rocketcdn_data_manager_subscriber',
+				'health_check',
+				'minify_css_admin_subscriber',
 			];
 		} elseif ( \rocket_valid_key() ) {
 			$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\ServiceProvider' );
