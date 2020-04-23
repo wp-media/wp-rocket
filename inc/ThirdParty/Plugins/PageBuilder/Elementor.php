@@ -1,8 +1,8 @@
 <?php
-namespace WP_Rocket\Subscriber\Third_Party\Plugins\PageBuilder;
+namespace WP_Rocket\ThirdParty\Plugins\PageBuilder;
 
-use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
  * Compatibility file for Elementor plugin
@@ -10,7 +10,7 @@ use WP_Rocket\Admin\Options_Data;
  * @since 3.3.1
  * @author Remy Perona
  */
-class Elementor_Subscriber implements Subscriber_Interface {
+class Elementor implements Subscriber_Interface {
 	/**
 	 * WP Rocket options.
 	 *
@@ -101,9 +101,8 @@ class Elementor_Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		\rocket_clean_domain();
-		\rocket_clean_minify( 'css' );
-		\rocket_clean_cache_busting( 'css' );
+		rocket_clean_domain();
+		rocket_clean_minify( 'css' );
 	}
 
 	/**
