@@ -421,77 +421,80 @@ function set_rocket_wp_cache_define( $turn_it_on ) { // phpcs:ignore WordPress.N
 }
 
 /**
- * Delete all minify cache files
+ * Delete all minify cache files.
  *
+ * @since 3.5.3 Replaces glob.
  * @since 2.1
  *
- * @param  string|array $extensions (default: array('js','css') File extensions to minify.
- * @return void
+ * @param string|array $extensions Optional. File extensions to minify. Default: js and css.
  */
 function rocket_clean_minify( $extensions = [ 'js', 'css' ] ) {
-	$extensions = is_string( $extensions ) ? (array) $extensions : $extensions;
-
-	try {
-		$dir = new RecursiveDirectoryIterator( WP_ROCKET_MINIFY_CACHE_PATH . get_current_blog_id(), FilesystemIterator::SKIP_DOTS );
-	} catch ( \UnexpectedValueException $e ) {
-		// No logging yet.
+	// Bails out if there are no extensions to target.
+	if ( empty( $extensions ) ) {
 		return;
 	}
 
-	try {
-		$iterator = new RecursiveIteratorIterator( $dir, RecursiveIteratorIterator::CHILD_FIRST );
-	} catch ( \Exception $e ) {
-		// No logging yet.
+	if ( is_string( $extensions ) ) {
+		$extensions = (array) $extensions;
+	}
+
+	$min_cache_path = rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' );
+	$min_path       = $min_cache_path . get_current_blog_id() . '/';
+	$iterator       = _rocket_get_cache_path_iterator( $min_path );
+	if ( false === $iterator ) {
 		return;
 	}
+
+	$filesystem     = rocket_direct_filesystem();
+	$min_path_regex = str_replace( '/', '\/', $min_path );
 
 	foreach ( $extensions as $ext ) {
 		/**
-		 * Fires before the minify cache files are deleted
+		 * Fires before the minify cache files are deleted.
 		 *
 		 * @since 2.1
 		 *
 		 * @param string $ext File extensions to minify.
-		*/
+		 */
 		do_action( 'before_rocket_clean_minify', $ext ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 		try {
-			$files = new RegexIterator( $iterator, '#.*\.' . $ext . '#', RegexIterator::GET_MATCH );
-			foreach ( $files as $file ) {
-				rocket_direct_filesystem()->delete( $file[0] );
-			}
-		} catch ( \InvalidArgumentException $e ) {
-			// No logging yet.
+			$entries = new RegexIterator( $iterator, "/{$min_path_regex}.*\.{$ext}/" );
+		} catch ( Exception $e ) {
 			return;
 		}
 
+		foreach ( $entries as $entry ) {
+			$filesystem->delete( $entry->getPathname() );
+		}
+
 		/**
-		 * Fires after the minify cache files was deleted
+		 * Fires after the minify cache files was deleted.
 		 *
 		 * @since 2.1
 		 *
 		 * @param string $ext File extensions to minify.
-		*/
+		 */
 		do_action( 'after_rocket_clean_minify', $ext ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	}
 
+	// Delete any directories.
 	foreach ( $iterator as $item ) {
-		if ( rocket_direct_filesystem()->is_dir( $item ) ) {
-			rocket_direct_filesystem()->delete( $item );
+		if ( $filesystem->is_dir( $item ) ) {
+			$filesystem->delete( $item );
 		}
 	}
 
-	$third_party = WP_ROCKET_MINIFY_CACHE_PATH . '3rd-party';
-
+	// Clean the cache/min/3rd-party items.
 	try {
-		$files = new FilesystemIterator( $third_party );
+		$files = new FilesystemIterator( "{$min_cache_path}3rd-party" );
 
 		foreach ( $files as $file ) {
-			if ( rocket_direct_filesystem()->is_file( $file ) ) {
-				rocket_direct_filesystem()->delete( $file );
+			if ( $filesystem->is_file( $file ) ) {
+				$filesystem->delete( $file );
 			}
 		}
-	} catch ( \UnexpectedValueException $e ) {
+	} catch ( UnexpectedValueException $e ) {
 		// No logging yet.
 		return;
 	}
