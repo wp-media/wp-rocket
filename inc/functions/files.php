@@ -430,19 +430,11 @@ function set_rocket_wp_cache_define( $turn_it_on ) { // phpcs:ignore WordPress.N
  */
 function rocket_clean_minify( $extensions = [ 'js', 'css' ] ) {
 	$extensions = is_string( $extensions ) ? (array) $extensions : $extensions;
-	$cache_path = rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' );
+	$min_cache_path = rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' );
 
-	try {
-		$dir = new RecursiveDirectoryIterator( $cache_path . get_current_blog_id(), FilesystemIterator::SKIP_DOTS );
-	} catch ( \UnexpectedValueException $e ) {
-		// No logging yet.
-		return;
-	}
-
-	try {
-		$iterator = new RecursiveIteratorIterator( $dir, RecursiveIteratorIterator::CHILD_FIRST );
-	} catch ( \Exception $e ) {
-		// No logging yet.
+	$min_path = $min_cache_path . get_current_blog_id();
+	$iterator   = _rocket_get_cache_path_iterator( $min_path );
+	if ( false === $iterator ) {
 		return;
 	}
 
@@ -483,10 +475,8 @@ function rocket_clean_minify( $extensions = [ 'js', 'css' ] ) {
 		}
 	}
 
-	$third_party =  "{$cache_path}3rd-party";
-
 	try {
-		$files = new FilesystemIterator( $third_party );
+		$files = new FilesystemIterator( "{$min_cache_path}3rd-party" );
 
 		foreach ( $files as $file ) {
 			if ( rocket_direct_filesystem()->is_file( $file ) ) {
