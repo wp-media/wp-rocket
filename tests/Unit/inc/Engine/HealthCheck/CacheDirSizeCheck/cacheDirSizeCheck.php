@@ -1,13 +1,13 @@
 <?php
-namespace WP_Rocket\Tests\Unit\inc\classes\subscriber\Tools\CacheDirSizeCheckSubscriber;
+namespace WP_Rocket\Tests\Unit\inc\Engine\HealthCheck\CacheDirSizeCheck;
 
 use Brain\Monkey\Functions;
 use Mockery;
 use WPMedia\PHPUnit\Unit\TestCase;
-use WP_Rocket\Subscriber\Tools\Cache_Dir_Size_Check_Subscriber;
+use WP_Rocket\Engine\HealthCheck\CacheDirSizeCheck;
 
 /**
- * @covers \WP_Rocket\Subscriber\Tools\Cache_Dir_Size_Check_Subscriber::cache_dir_size_check
+ * @covers \WP_Rocket\Engine\HealthCheck\CacheDirSizeCheck::cache_dir_size_check
  * @group Subscriber
  */
 class Test_CacheDirSizeCheck extends TestCase {
@@ -16,7 +16,7 @@ class Test_CacheDirSizeCheck extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->subscriber = new Cache_Dir_Size_Check_Subscriber();
+		$this->subscriber = new CacheDirSizeCheck();
 	}
 
 	public function testShouldNotCheckDirSizeWhenOptionIsEnabled() {

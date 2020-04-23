@@ -1,12 +1,12 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\HealthCheck;
+namespace WP_Rocket\Tests\Integration\inc\Engine\HealthCheck\HealthCheck;
 
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Admin\HealthCheck::missed_cron
+ * @covers \WP_Rocket\Engine\HealthCheck\HealthCheck::missed_cron
  * @group  HealthCheck
  * @group  AdminOnly
  */
