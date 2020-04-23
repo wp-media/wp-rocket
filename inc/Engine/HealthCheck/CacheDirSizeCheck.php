@@ -148,7 +148,7 @@ class CacheDirSizeCheck implements Subscriber_Interface {
 	 */
 	private function send_notification( $dir_type ) {
 		wp_safe_remote_post(
-			WP_ROCKET_WEB_MAIN . '/api/wp-rocket/cache-dir-check.php',
+			rocket_get_constant( 'WP_ROCKET_WEB_MAIN' ) . 'api/wp-rocket/cache-dir-check.php',
 			[
 				'body' => 'cache_dir_type=' . $dir_type,
 			]
