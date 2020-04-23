@@ -51,7 +51,7 @@ class Test_CacheDirSizeCheck extends FilesystemTestCase {
 			Functions\expect( 'rocket_get_constant' )
 				->once()
 				->with( 'WP_ROCKET_WEB_MAIN' )
-				->andReturn( 'https://wp-rocket.me' );
+				->andReturn( 'https://wp-rocket.me/' );
 
 			Functions\expect( 'wp_safe_remote_post' )
 			->once()
