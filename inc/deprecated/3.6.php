@@ -4,6 +4,8 @@
 defined( 'ABSPATH' ) || exit;
 
 class_alias( '\\WP_Rocket\\Engine\\Admin\\Beacon\\ServiceProvider', '\\WP_Rocket\\ServiceProvider\\Beacon' );
+class_alias( '\\WP_Rocket\\Engine\\HealthCheck\\CacheDirSizeCheck', '\\WP_Rocket\\Subscriber\\Tools\\Cache_Dir_Size_Check_Subscriber' );
+class_alias( '\\WP_Rocket\\Engine\\HealthCheck\\HealthCheck', '\\WP_Rocket\\Engine\\Admin\\HealthCheck' );
 
 /**
  * Returns paths used for cache busting
