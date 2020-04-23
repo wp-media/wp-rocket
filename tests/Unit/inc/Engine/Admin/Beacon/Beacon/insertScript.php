@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\Beacon\Beacon;
 
 use Mockery;
+use WP_Theme;
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Admin\Options_Data;
@@ -15,6 +16,12 @@ use WP_Rocket\Engine\Admin\Beacon\Beacon;
 class Test_InsertScript extends TestCase {
 	private $beacon;
 	private $options;
+
+	public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
+
+		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/WP_Theme.php';
+	}
 
 	public function setUp() {
 		parent::setUp();
@@ -47,12 +54,7 @@ class Test_InsertScript extends TestCase {
 		Functions\when( 'home_url' )->justReturn( 'http://example.org' );
 		Functions\when( 'get_transient' )->justReturn( false );
 		Functions\when( 'wp_get_theme' )->alias( function() {
-			$wp_theme = Mockery::Mock( 'WP_Theme' );
-			$wp_theme->shouldReceive( 'get' )
-				->with( 'Name' )
-				->andReturn( 'WordPress Default' );
-
-			return $wp_theme;
+			return new WP_Theme( 'default', '/themes' );
 		} );
 		Functions\when( 'get_bloginfo' )->justReturn( '5.4' );
 		Functions\when( 'rocket_get_constant' )->justReturn( '3.6' );
