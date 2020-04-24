@@ -17,4 +17,3 @@ defined( 'ABSPATH' ) || exit;
 	</div>
 </div>
 <?php endif; ?>
-
