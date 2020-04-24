@@ -8,6 +8,8 @@ use org\bovigo\vfs\vfsStream;
 trait VirtualFilesystemTrait {
 	protected $original_entries = [];
 	protected $shouldNotClean   = [];
+	protected $entriesBefore    = [];
+	protected $dumpResults      = false;
 
 	protected function initDefaultStructure() {
 		if ( empty( $this->config ) ) {
@@ -39,6 +41,11 @@ trait VirtualFilesystemTrait {
 		return str_replace( $search, '', $path );
 	}
 
+	protected function getEntriesBefore() {
+		$dir                 = $this->filesystem->getUrl( $this->config['vfs_dir'] );
+		$this->entriesBefore = $this->filesystem->getListing( $dir );
+	}
+
 	protected function getShouldNotCleanEntries( array $shouldNotClean ) {
 		$this->shouldNotClean = [];
 		foreach ( $shouldNotClean as $entry => $scanDir ) {
@@ -49,20 +56,42 @@ trait VirtualFilesystemTrait {
 		}
 	}
 
-	protected function checkCleanedIsDeleted( array $shouldClean, $dump_results = false ) {
-		foreach ( $shouldClean as $dir => $contents ) {
+	protected function generateEntriesShouldExistAfter( array $shouldClean ) {
+		$this->getEntriesBefore();
+
+		$cleaned = [];
+		foreach ( $shouldClean as $entry => $contents ) {
+			if ( ! $this->filesystem->is_dir( $entry ) ) {
+				$cleaned[] = $entry;
+				continue;
+			}
+
+			// Directory should be deleted.
+			if ( is_null( $contents ) ) {
+				$cleaned[] = $entry;
+			}
+
+			$cleaned = array_merge( $cleaned, $this->filesystem->getListing( $entry ) );
+		}
+
+		$this->shouldNotClean = array_values( array_diff( $this->entriesBefore, $cleaned ) );
+	}
+
+	protected function checkEntriesDeleted( array $shouldClean ) {
+		foreach ( $shouldClean as $entry => $contents ) {
 			// Deleted.
 			if ( is_null( $contents ) ) {
-				$actual = $this->filesystem->exists( $dir );
-				if ( $dump_results && false !== $actual ) {
-					var_dump( $this->filesystem->getFilesListing( $dir ) );
+				if ( $this->dumpResults && false !== $this->filesystem->exists( $entry ) ) {
+					echo "\n Entry: {$entry} \n";
+					if ( $this->filesystem->is_dir( $entry ) ) {
+						var_dump( $this->filesystem->getFilesListing( $entry ) );
+					}
 				}
-				$this->assertFalse( $actual );
+				$this->assertFalse( $this->filesystem->exists( $entry ) );
 			} else {
-				$this->shouldNotClean[] = trailingslashit( $dir );
 				// Emptied, but not deleted.
-				$entries = $this->filesystem->getFilesListing( $dir );
-				if ( $dump_results ) {
+				$entries = $this->filesystem->getFilesListing( $entry );
+				if ( $this->dumpResults ) {
 					var_dump( $entries );
 				}
 				$this->assertSame( $contents, $entries );
@@ -70,10 +99,10 @@ trait VirtualFilesystemTrait {
 		}
 	}
 
-	protected function checkNonCleanedExist( $dump_results = false ) {
+	protected function checkShouldNotDeleteEntries() {
 		$entriesAfterCleaning = $this->filesystem->getListing( $this->filesystem->getUrl( $this->config['vfs_dir'] ) );
 		$actual               = array_diff( $entriesAfterCleaning, $this->shouldNotClean );
-		if ( $dump_results ) {
+		if ( $this->dumpResults ) {
 			var_dump( $actual );
 		}
 		$this->assertEmpty( $actual );

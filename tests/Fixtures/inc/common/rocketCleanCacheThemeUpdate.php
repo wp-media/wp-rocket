@@ -12,12 +12,6 @@ return [
 			],
 			'expected'   => [
 				'cleaned'      => [],
-				'non_cleaned'  => [
-					'vfs://public/wp-content/cache/min/'          => true,
-					'vfs://public/wp-content/cache/busting/'      => true,
-					'vfs://public/wp-content/cache/critical-css/' => true,
-					'vfs://public/wp-content/cache/wp-rocket/'    => true,
-				],
 				'wp_get_theme' => null,
 			],
 		],
@@ -28,12 +22,6 @@ return [
 			],
 			'expected'   => [
 				'cleaned'      => [],
-				'non_cleaned'  => [
-					'vfs://public/wp-content/cache/min/'          => true,
-					'vfs://public/wp-content/cache/busting/'      => true,
-					'vfs://public/wp-content/cache/critical-css/' => true,
-					'vfs://public/wp-content/cache/wp-rocket/'    => true,
-				],
 				'wp_get_theme' => null,
 			],
 		],
@@ -45,12 +33,6 @@ return [
 			],
 			'expected'   => [
 				'cleaned'      => [],
-				'non_cleaned'  => [
-					'vfs://public/wp-content/cache/min/'          => true,
-					'vfs://public/wp-content/cache/busting/'      => true,
-					'vfs://public/wp-content/cache/critical-css/' => true,
-					'vfs://public/wp-content/cache/wp-rocket/'    => true,
-				],
 				'wp_get_theme' => null,
 			],
 		],
@@ -62,18 +44,9 @@ return [
 			],
 			'expected'   => [
 				'cleaned'      => [
-					'vfs://public/wp-content/cache/wp-rocket/example.org'                => null,
-					'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456' => null,
-					'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654'  => null,
-				],
-				'non_cleaned'  => [
-					// fs entry => should scan the directory and get the file listings.
-					'vfs://public/wp-content/cache/min/'                       => true,
-					'vfs://public/wp-content/cache/busting/'                   => true,
-					'vfs://public/wp-content/cache/critical-css/'              => true,
-					'vfs://public/wp-content/cache/wp-rocket/'                 => false,
-					'vfs://public/wp-content/cache/wp-rocket/index.html'       => false,
-					'vfs://public/wp-content/cache/wp-rocket/baz.example.org/' => true,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/'                => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456/' => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654/'  => null,
 				],
 				'wp_get_theme' => true,
 			],
