@@ -5,9 +5,10 @@ use WP_Rocket\Logger\Logger;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Generate the content of advanced-cache.php file
+ * Generate the content of advanced-cache.php file.
  *
- * @since 2.1   Add filter rocket_advanced_cache_file
+ * @since 3.5.5 Uses rocket_get_constant() for constants.
+ * @since 2.1   Add filter rocket_advanced_cache_file.
  * @since 2.0.3
  *
  * @return  string  $buffer The content of avanced-cache.php file
@@ -26,6 +27,7 @@ function get_rocket_advanced_cache_file() { // phpcs:ignore WordPress.NamingConv
 	// Include the Mobile Detect class if we have to create a different caching file for mobile.
 	if ( is_rocket_generate_caching_mobile_files() ) {
 		$vendor_path = rocket_get_constant( 'WP_ROCKET_VENDORS_PATH' );
+
 		$buffer .= "if ( file_exists( '" . $vendor_path . "classes/class-rocket-mobile-detect.php' ) && ! class_exists( 'Rocket_Mobile_Detect' ) ) {\n";
 		$buffer .= "\tinclude_once '" . $vendor_path . "classes/class-rocket-mobile-detect.php';\n";
 		$buffer .= "}\n\n";
@@ -74,7 +76,7 @@ function get_rocket_advanced_cache_file() { // phpcs:ignore WordPress.NamingConv
 	$buffer .= "}\n";
 
 	/**
-	 * Filter the content of advanced-cache.php file
+	 * Filter the content of advanced-cache.php file.
 	 *
 	 * @since 2.1
 	 *
