@@ -1,9 +1,10 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\functions;
+namespace WP_Rocket\Tests\Unit\inc\functions;
 
 use Brain\Monkey\Functions;
-use WP_Rocket\Tests\Integration\FilesystemTestCase;
+use WP_Rocket\Tests\Unit\FilesystemTestCase;
+use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
  * @covers ::get_rocket_advanced_cache_file
@@ -15,32 +16,15 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  */
 class Test_GetRocketAdvancedCacheFile extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/functions/getRocketAdvancedCacheFile.php';
-	private $original_settings;
-
-	public function setUp() {
-		parent::setUp();
-
-		$this->original_settings = get_option( 'wp_rocket_settings', [] );
-	}
-
-	public function tearDown() {
-		parent::tearDown();
-
-		if ( empty( $this->original_settings ) ) {
-			delete_option( 'wp_rocket_settings' );
-		} else {
-			update_option( 'wp_rocket_settings', $this->original_settings );
-		}
-	}
 
 	/**
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldReturnExpectedContent( $settings, $expected, $is_rocket_generate_caching_mobile_files ) {
-		update_option(
-			'wp_rocket_settings',
-			array_merge( $this->original_settings, $this->config['settings'], $settings )
-		);
+
+		Functions\expect( 'is_rocket_generate_caching_mobile_files' )
+			->once()
+			->andReturn( $is_rocket_generate_caching_mobile_files );
 
 		Functions\expect( 'rocket_get_constant' )
 			->once()->with( 'WP_ROCKET_PHP_VERSION' )->andReturn( '5.6' )

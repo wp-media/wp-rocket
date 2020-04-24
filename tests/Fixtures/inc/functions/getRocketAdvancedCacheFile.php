@@ -14,8 +14,8 @@ if ( ! defined( 'WP_ROCKET_CONFIG_PATH' ) ) {
 STARTING_CONTENTS;
 
 $mobile = <<<MOBILE_CONTENTS
-if ( file_exists( 'classes/class-rocket-mobile-detect.php' ) && ! class_exists( 'Rocket_Mobile_Detect' ) ) {
-	include_once 'classes/class-rocket-mobile-detect.php';
+if ( file_exists( 'vfs://public/wp-content/plugins/wp-rocket/inc/vendors/classes/class-rocket-mobile-detect.php' ) && ! class_exists( 'Rocket_Mobile_Detect' ) ) {
+	include_once 'vfs://public/wp-content/plugins/wp-rocket/inc/vendors/classes/class-rocket-mobile-detect.php';
 }
 
 
@@ -85,6 +85,27 @@ ENDING_CONTENTS;
 $default = $starting . $ending;
 
 return [
+	// Use in tests when the test data starts in this directory.
+	'vfs_dir' => 'wp-content/',
+
+	'structure' => [
+		'wp-content'       => [
+			'plugins' => [
+				'wp-rocket' => [
+					'inc'              => [
+						'process-autoloader.php' => file_get_contents( WP_ROCKET_PLUGIN_ROOT . 'inc/process-autoloader.php' ),
+					],
+					'licence-data.php' => '',
+				],
+			],
+		],
+		'wp-rocket-config' => [
+			'example.org.php' => '<?php $var = "Some contents.";',
+		],
+
+		'advanced-cache.php' => '<?php $var = "Some contents.";',
+	],
+
 	'settings' => [
 		'cache_mobile'            => 0,
 		'do_caching_mobile_files' => 0,
@@ -92,27 +113,31 @@ return [
 
 	'test_data' => [
 		[
-			'settings' => [],
-			'expected' => $default,
+			'settings'                                => [],
+			'expected'                                => $default,
+			'is_rocket_generate_caching_mobile_files' => false,
 		],
 		[
-			'settings' => [
+			'settings'                                => [
 				'cache_mobile' => 1,
 			],
-			'expected' => $default,
+			'expected'                                => $default,
+			'is_rocket_generate_caching_mobile_files' => false,
 		],
 		[
-			'settings' => [
+			'settings'                                => [
 				'do_caching_mobile_files' => 1,
 			],
-			'expected' => $default,
+			'expected'                                => $default,
+			'is_rocket_generate_caching_mobile_files' => false,
 		],
 		[
-			'settings' => [
+			'settings'                                => [
 				'cache_mobile'            => 1,
 				'do_caching_mobile_files' => 1,
 			],
-			'expected' => $starting . $mobile . $ending,
+			'expected'                                => $starting . $mobile . $ending,
+			'is_rocket_generate_caching_mobile_files' => true,
 		],
 	],
 ];
