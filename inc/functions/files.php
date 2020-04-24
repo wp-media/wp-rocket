@@ -25,21 +25,22 @@ function get_rocket_advanced_cache_file() { // phpcs:ignore WordPress.NamingConv
 
 	// Include the Mobile Detect class if we have to create a different caching file for mobile.
 	if ( is_rocket_generate_caching_mobile_files() ) {
-		$buffer .= "if ( file_exists( '" . WP_ROCKET_VENDORS_PATH . "classes/class-rocket-mobile-detect.php' ) && ! class_exists( 'Rocket_Mobile_Detect' ) ) {\n";
-		$buffer .= "\tinclude_once '" . WP_ROCKET_VENDORS_PATH . "classes/class-rocket-mobile-detect.php';\n";
+		$vendor_path = rocket_get_constant( 'WP_ROCKET_VENDORS_PATH' );
+		$buffer .= "if ( file_exists( '" . $vendor_path . "classes/class-rocket-mobile-detect.php' ) && ! class_exists( 'Rocket_Mobile_Detect' ) ) {\n";
+		$buffer .= "\tinclude_once '" . $vendor_path . "classes/class-rocket-mobile-detect.php';\n";
 		$buffer .= "}\n\n";
 	}
 
 	// Register a class autoloader and include the process file.
-	$buffer .= "if ( version_compare( phpversion(), '" . WP_ROCKET_PHP_VERSION . "' ) >= 0 ) {\n\n";
+	$buffer .= "if ( version_compare( phpversion(), '" . rocket_get_constant( 'WP_ROCKET_PHP_VERSION' ) . "' ) >= 0 ) {\n\n";
 
 	// Class autoloader.
-	$autoloader = rocket_direct_filesystem()->get_contents( WP_ROCKET_INC_PATH . 'process-autoloader.php' );
+	$autoloader = rocket_direct_filesystem()->get_contents( rocket_get_constant( 'WP_ROCKET_INC_PATH' ) . 'process-autoloader.php' );
 
 	if ( $autoloader ) {
 		$autoloader = preg_replace( '@^<\?php\s*@', '', $autoloader );
 		$autoloader = str_replace( [ "\n", "\n\t\n" ], [ "\n\t", "\n\n" ], trim( $autoloader ) );
-		$autoloader = str_replace( 'WP_ROCKET_PATH', "'" . WP_ROCKET_PATH . "'", $autoloader );
+		$autoloader = str_replace( 'WP_ROCKET_PATH', "'" . rocket_get_constant( 'WP_ROCKET_PATH' ) . "'", $autoloader );
 
 		$buffer .= "\t$autoloader\n\n";
 	}
@@ -54,7 +55,7 @@ function get_rocket_advanced_cache_file() { // phpcs:ignore WordPress.NamingConv
 
 	$rocket_config_class = new \WP_Rocket\Buffer\Config(
 		[
-			\'config_dir_path\' => \'' . WP_ROCKET_CONFIG_PATH . '\',
+			\'config_dir_path\' => \'' . rocket_get_constant( 'WP_ROCKET_CONFIG_PATH' ) . '\',
 		]
 	);
 
@@ -64,7 +65,7 @@ function get_rocket_advanced_cache_file() { // phpcs:ignore WordPress.NamingConv
 		),
 		$rocket_config_class,
 		[
-			\'cache_dir_path\' => \'' . WP_ROCKET_CACHE_PATH . '\',
+			\'cache_dir_path\' => \'' . rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) . '\',
 		]
 	) )->maybe_init_process();' . "\n";
 	$buffer .= "} else {\n";
