@@ -29,7 +29,8 @@ class Test_RocketCleanMinify extends FilesystemTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldCleanMinified( $extensions, $expected ) {
-		$this->getShouldNotCleanEntries( $expected['non_cleaned'] );
+		$this->dumpResults = isset( $expected['dump_results'] ) ? $expected['dump_results'] : false;
+		$this->generateEntriesShouldExistAfter( $expected['cleaned'] );
 
 		foreach ( (array) $extensions as $ext ) {
 			if ( ! in_array( $ext, $this->valid_extensions, true ) ) {
@@ -39,9 +40,10 @@ class Test_RocketCleanMinify extends FilesystemTestCase {
 			Actions\expectDone( 'after_rocket_clean_minify' )->once()->with( $ext );
 		}
 
+		// Run it.
 		rocket_clean_minify( $extensions );
 
-		$this->checkCleanedIsDeleted( $expected['cleaned'] );
-		$this->checkNonCleanedExist( isset( $expected['dump_results'] ) );
+		$this->checkEntriesDeleted( $expected['cleaned'] );
+		$this->checkShouldNotDeleteEntries();
 	}
 }
