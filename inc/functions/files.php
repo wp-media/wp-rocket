@@ -80,9 +80,7 @@ function get_rocket_advanced_cache_file() { // phpcs:ignore WordPress.NamingConv
 	 *
 	 * @param string $buffer The content that will be printed in advanced-cache.php.
 	*/
-	$buffer = apply_filters( 'rocket_advanced_cache_file', $buffer );
-
-	return $buffer;
+	return (string) apply_filters( 'rocket_advanced_cache_file', $buffer );
 }
 
 /**
