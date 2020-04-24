@@ -85,7 +85,7 @@ class Plugin {
 					'capability' => 'rocket_manage_options',
 				]
 			);
-			$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Settings' );
+			$this->container->addServiceProvider( 'WP_Rocket\Engine\Admin\Settings\ServiceProvider' );
 			$this->container->addServiceProvider( 'WP_Rocket\Engine\Admin\ServiceProvider' );
 
 			$subscribers = [

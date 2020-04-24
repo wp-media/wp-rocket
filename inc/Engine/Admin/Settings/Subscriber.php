@@ -1,10 +1,7 @@
 <?php
-namespace WP_Rocket\Subscriber\Admin\Settings;
+namespace WP_Rocket\Engine\Admin\Settings;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Rocket\Admin\Settings\Page;
-
-defined( 'ABSPATH' ) || exit;
 
 /**
  * WP Rocket settings page subscriber
@@ -12,7 +9,7 @@ defined( 'ABSPATH' ) || exit;
  * @since 3.3
  * @author Remy Perona
  */
-class Page_Subscriber implements Subscriber_Interface {
+class Subscriber implements Subscriber_Interface {
 	/**
 	 * Page instance
 	 *
