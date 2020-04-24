@@ -25,21 +25,30 @@ class Test_PreloadFonts extends TestCase {
 	public function testShouldNotAddPreloadTagsWhenInvalidFonts() {
 		add_filter( 'pre_get_rocket_option_preload_fonts', [ $this, 'return_empty_array' ] );
 
-		$expected = $this->format_the_html( $this->getExpected() );
+		$expected      = $this->format_the_html( $this->getExpected() );
+		$assert_exists = method_exists( $this, 'assertStringNotContainsString' );
 
 		ob_start();
 		do_action( 'wp_head' );
 		$out = ob_get_contents();
 		ob_end_clean();
 
-		$this->assertStringNotContainsString( $expected, $this->format_the_html( $out ) );
+		if ( $assert_exists ) {
+			$this->assertStringNotContainsString( $expected, $this->format_the_html( $out ) );
+		} else {
+			$this->assertFalse( mb_strpos( $this->format_the_html( $out ), $expected ) );
+		}
 
 		ob_start();
 		do_action( 'wp_head' );
 		$out = ob_get_contents();
 		ob_end_clean();
 
-		$this->assertStringNotContainsString( $expected, $this->format_the_html( $out ) );
+		if ( $assert_exists ) {
+			$this->assertStringNotContainsString( $expected, $this->format_the_html( $out ) );
+		} else {
+			$this->assertFalse( mb_strpos( $this->format_the_html( $out ), $expected ) );
+		}
 	}
 
 	public function testShouldAddPreloadTagsWhenValidFonts() {
@@ -53,7 +62,11 @@ class Test_PreloadFonts extends TestCase {
 		$out = ob_get_contents();
 		ob_end_clean();
 
-		$this->assertStringContainsString( $this->format_the_html( $this->getExpected() ), $this->format_the_html( $out ) );
+		if ( method_exists( $this, 'assertStringContainsString' ) ) {
+			$this->assertStringContainsString( $this->format_the_html( $this->getExpected() ), $this->format_the_html( $out ) );
+		} else {
+			$this->assertNotFalse( mb_strpos( $this->format_the_html( $out ), $this->format_the_html( $this->getExpected() ) ) );
+		}
 	}
 
 	public function return_empty_array() {
