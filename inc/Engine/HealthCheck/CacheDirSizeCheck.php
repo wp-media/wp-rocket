@@ -1,15 +1,18 @@
 <?php
-namespace WP_Rocket\Subscriber\Tools;
+namespace WP_Rocket\Engine\HealthCheck;
 
+use FilesystemIterator;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use UnexpectedValueException;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
  * Add a weekly event to check for the cache directories sizes and send a notification if it's bigger thant the defined maximum size
  *
  * @since 3.3.5
- * @author Remy Perona
  */
-class Cache_Dir_Size_Check_Subscriber implements Subscriber_Interface {
+class CacheDirSizeCheck implements Subscriber_Interface {
 	/**
 	 * Event name
 	 */
@@ -24,7 +27,6 @@ class Cache_Dir_Size_Check_Subscriber implements Subscriber_Interface {
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
 	 * @since  3.3.5
-	 * @author Remy Perona
 	 *
 	 * @return array
 	 */
@@ -41,7 +43,6 @@ class Cache_Dir_Size_Check_Subscriber implements Subscriber_Interface {
 	 * Adds the weekly interval if it doesn't already exist
 	 *
 	 * @since 3.3.5
-	 * @author Remy Perona
 	 *
 	 * @param array $schedules Array of intervals.
 	 * @return array
@@ -63,7 +64,6 @@ class Cache_Dir_Size_Check_Subscriber implements Subscriber_Interface {
 	 * Schedules the cron event if not yet scheduled.
 	 *
 	 * @since 3.3.5
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
@@ -77,7 +77,6 @@ class Cache_Dir_Size_Check_Subscriber implements Subscriber_Interface {
 	 * Checks the cache dir size when the event is triggered and send a notification if the directory size is above the defined maximum size
 	 *
 	 * @since 3.3.5
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
@@ -89,8 +88,7 @@ class Cache_Dir_Size_Check_Subscriber implements Subscriber_Interface {
 		$current_blog_id = get_current_blog_id();
 
 		$checks = [
-			'min'     => WP_ROCKET_MINIFY_CACHE_PATH . $current_blog_id,
-			'busting' => WP_ROCKET_CACHE_BUSTING_PATH . $current_blog_id,
+			'min' => rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' ) . $current_blog_id,
 		];
 
 		foreach ( $checks as $type => $path ) {
@@ -108,7 +106,6 @@ class Cache_Dir_Size_Check_Subscriber implements Subscriber_Interface {
 	 * Deletes the check size option when updating the plugin
 	 *
 	 * @since 3.3.6
-	 * @author Remy Perona
 	 *
 	 * @param string $new_version       Latest WP Rocket version.
 	 * @param string $current_version   Installed WP Rocket version.
@@ -123,7 +120,6 @@ class Cache_Dir_Size_Check_Subscriber implements Subscriber_Interface {
 	 * Gets the size of the provided directory
 	 *
 	 * @since 3.3.5
-	 * @author Remy Perona
 	 *
 	 * @param string $dir Absolute path to the directory.
 	 * @return int
@@ -132,12 +128,12 @@ class Cache_Dir_Size_Check_Subscriber implements Subscriber_Interface {
 		$size = 0;
 
 		try {
-			foreach ( new \RecursiveIteratorIterator( new \RecursiveDirectoryIterator( $dir, \FilesystemIterator::SKIP_DOTS ) ) as $file ) {
+			foreach ( new RecursiveIteratorIterator( new RecursiveDirectoryIterator( $dir, FilesystemIterator::SKIP_DOTS ) ) as $file ) {
 				$size += $file->getSize();
 			}
 
 			return $size;
-		} catch ( \UnexpectedValueException $e ) {
+		} catch ( UnexpectedValueException $e ) {
 			return $size;
 		}
 	}
@@ -146,14 +142,13 @@ class Cache_Dir_Size_Check_Subscriber implements Subscriber_Interface {
 	 * Sends a notification to our endpoint with the type of directory
 	 *
 	 * @since 3.3.5
-	 * @author Remy Perona
 	 *
 	 * @param string $dir_type Type of directory.
 	 * @return void
 	 */
 	private function send_notification( $dir_type ) {
 		wp_safe_remote_post(
-			WP_ROCKET_WEB_MAIN . '/api/wp-rocket/cache-dir-check.php',
+			rocket_get_constant( 'WP_ROCKET_WEB_MAIN' ) . 'api/wp-rocket/cache-dir-check.php',
 			[
 				'body' => 'cache_dir_type=' . $dir_type,
 			]
