@@ -41,7 +41,7 @@ class Settings {
 	 * Font formats allowed to be preloaded.
 	 *
 	 * @since 3.6
-	 * @see   $this->sanitize_fonts()
+	 * @see   $this->sanitize_font()
 	 *
 	 * @var string|bool
 	 */
