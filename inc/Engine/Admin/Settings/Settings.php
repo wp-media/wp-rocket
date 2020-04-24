@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Admin\Settings;
+namespace WP_Rocket\Engine\Admin\Settings;
 
 use WP_Rocket\Subscriber\Third_Party\Plugins\Security\Sucuri_Subscriber;
 
@@ -36,6 +36,32 @@ class Settings {
 	 * @var array
 	 */
 	private $hidden_settings;
+
+	/**
+	 * Font formats allowed to be preloaded.
+	 *
+	 * @since 3.6
+	 * @see   $this->sanitize_fonts()
+	 *
+	 * @var string|bool
+	 */
+	private $font_formats = [
+		'otf',
+		'ttf',
+		'svg',
+		'woff',
+		'woff2',
+	];
+
+	/**
+	 * Host domain.
+	 *
+	 * @since 3.6
+	 * @see   $this->get_host()
+	 *
+	 * @var string|bool
+	 */
+	private $host;
 
 	/**
 	 * Constructor
@@ -350,6 +376,9 @@ class Settings {
 			$input['sitemaps'] = [];
 		}
 
+		// Option : fonts to preload.
+		$input['preload_fonts'] = ! empty( $input['preload_fonts'] ) ? $this->sanitize_fonts( $input['preload_fonts'] ) : [];
+
 		// Options : CloudFlare.
 		$input['do_cloudflare']               = ! empty( $input['do_cloudflare'] ) ? 1 : 0;
 		$input['cloudflare_email']            = isset( $input['cloudflare_email'] ) ? sanitize_email( $input['cloudflare_email'] ) : '';
@@ -542,5 +571,79 @@ class Settings {
 				$urls
 			)
 		);
+	}
+
+	/**
+	 * Sanitize a list of font file paths.
+	 *
+	 * @since 3.6
+	 *
+	 * @param  array|string $files List of filepaths to sanitize. Can be an array of strings or a string listing paths separated by "\n".
+	 * @return array               Sanitized filepaths.
+	 */
+	private function sanitize_fonts( $files ) {
+		if ( ! is_array( $files ) ) {
+			$files = explode( "\n", trim( $files ) );
+		}
+
+		$files = array_map( [ $this, 'sanitize_font' ], $files );
+
+		return array_unique( array_filter( $files ) );
+	}
+
+	/**
+	 * Sanitize an entry for the preload fonts option.
+	 *
+	 * @since 3.6
+	 *
+	 * @param string $file URL or path to a font file.
+	 * @return string|bool
+	 */
+	private function sanitize_font( $file ) {
+		if ( ! is_string( $file ) ) {
+			return false;
+		}
+
+		$file = trim( $file );
+
+		if ( empty( $file ) ) {
+			return false;
+		}
+
+		$parsed_url = wp_parse_url( $file );
+
+		if ( ! empty( $parsed_url['host'] ) && $this->get_host() !== $parsed_url['host'] ) {
+			return false;
+		}
+
+		$file = '/' . trim( $parsed_url['path'], '/' );
+		$ext  = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
+
+		if ( ! in_array( $ext, $this->font_formats, true ) ) {
+			return false;
+		}
+
+		return $file;
+	}
+
+	/**
+	 * Get site’s host domain.
+	 *
+	 * @since 3.6
+	 *
+	 * @return string|bool The host. False on failure.
+	 */
+	private function get_host() {
+		if ( isset( $this->host ) ) {
+			return $this->host;
+		}
+
+		$this->host = wp_parse_url( get_option( 'home' ), PHP_URL_HOST );
+
+		if ( empty( $this->host ) ) {
+			$this->host = false;
+		}
+
+		return $this->host;
 	}
 }
