@@ -22,6 +22,22 @@ class Fonts implements Subscriber_Interface {
 	private $options;
 
 	/**
+	 * Font formats allowed to be preloaded.
+	 *
+	 * @since 3.6
+	 * @see   $this->sanitize_font()
+	 *
+	 * @var string|bool
+	 */
+	private $font_formats = [
+		'otf',
+		'ttf',
+		'svg',
+		'woff',
+		'woff2',
+	];
+
+	/**
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
 	 * @since  3.6
@@ -89,16 +105,9 @@ class Fonts implements Subscriber_Interface {
 			return false;
 		}
 
-		$ext     = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
-		$formats = [
-			'otf',
-			'ttf',
-			'svg',
-			'woff',
-			'woff2',
-		];
+		$ext = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
 
-		if ( ! in_array( $ext, $formats, true ) ) {
+		if ( ! in_array( $ext, $this->font_formats, true ) ) {
 			return false;
 		}
 
