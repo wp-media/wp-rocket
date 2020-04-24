@@ -61,6 +61,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->withArgument( $this->getContainer()->get( 'partial_preload_process' ) )
 			->withArgument( $options );
 		$this->getContainer()->share( 'fonts_preload_subscriber', 'WP_Rocket\Engine\Preload\Fonts' )
-			->withArgument( $options );
+			->withArgument( $options )
+			->withArgument( $this->getContainer()->get( 'cdn' ) );
 	}
 }
