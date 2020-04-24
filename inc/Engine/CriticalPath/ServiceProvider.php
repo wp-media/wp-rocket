@@ -43,8 +43,8 @@ class ServiceProvider extends AbstractServiceProvider {
 			->withArgument( rocket_get_constant( 'WP_ROCKET_CRITICAL_CSS_PATH' ) );
 		$this->getContainer()->share( 'critical_css_admin_subscriber', 'WP_Rocket\Engine\CriticalPath\AdminSubscriber' )
 			->withArgument( $this->getContainer()->get( 'options' ) )
+			->withArgument( $this->getContainer()->get( 'beacon' ) )
 			->withArgument( rocket_get_constant( 'WP_ROCKET_CRITICAL_CSS_PATH' ) )
-			->withArgument( $this->getContainer()->get( 'template_path' ) . '/metabox/cpcss' )
-			->withArgument( $this->getContainer()->get( 'beacon' ) );
+			->withArgument( $this->getContainer()->get( 'template_path' ) . '/metabox/cpcss' );
 	}
 }
