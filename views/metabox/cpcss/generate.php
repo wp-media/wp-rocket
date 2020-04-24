@@ -9,9 +9,15 @@ $disabled = isset( $data['disabled'] ) ? $data['disabled'] : '';
 		'<a href="' . esc_url( $data['beacon'] ) . '" target="_blank" rel="noopener noreferrer">',
 		'</a>'
 		); ?></p>
-<button id="rocket-generate-post-cpss" class="components-button is-secondary" <?php echo esc_attr( $disabled ); ?>>
-	<?php esc_html_e( 'Generate Specific CPCSS', 'rocket' ); ?>
-</button>
+<div class="components-panel__row">
+	<button id="rocket-generate-post-cpss" class="button components-button is-secondary" <?php echo esc_attr( $disabled ); ?>>
+		<?php esc_html_e( 'Generate Specific CPCSS', 'rocket' ); ?>
+	</button>
+</div>
 <?php if ( ! empty( $disabled ) ) : ?>
-<p><?php echo esc_html( $data['disabled_description'] ); ?></p>
+<div class="components-notice is-notice is-warning">
+	<div class="components-notice__content">
+		<p><?php echo esc_html( $data['disabled_description'] ); ?></p>
+	</div>
+</div>
 <?php endif; ?>
