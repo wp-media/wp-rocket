@@ -60,7 +60,9 @@ return [
 				'/wp-content/file.woff2',
 			],
 			'cdn'           => true,
-			'cdn_cnames'    => [],
+			'cdn_cnames'    => [
+				'https://123456.rocketcdn.me',
+			],
 		],
 		'<link rel="preload" as="font" href="https://123456.rocketcdn.me/wp-content/file.otf" crossorigin>
 		<link rel="preload" as="font" href="https://123456.rocketcdn.me/wp-content/file.ttf" crossorigin>
