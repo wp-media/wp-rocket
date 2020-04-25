@@ -1263,13 +1263,16 @@ function rocket_put_content( $file, $content ) {
  * `substr( sprintf( '%o', $perm & 0777 ), -4 )` | string | '644'  | '755'  |
  *
  * @since  3.2.4
- * @author Grégory Viguier
  *
  * @param  string $type The type: 'dir' or 'file'.
  * @return int          Octal integer.
  */
 function rocket_get_filesystem_perms( $type ) {
 	static $perms = [];
+
+	if ( rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ) {
+		$perms = [];
+	}
 
 	// Allow variants.
 	switch ( $type ) {
@@ -1296,18 +1299,20 @@ function rocket_get_filesystem_perms( $type ) {
 	// If the constants are not defined, use fileperms() like WordPress does.
 	switch ( $type ) {
 		case 'dir':
-			if ( defined( 'FS_CHMOD_DIR' ) ) {
-				$perms[ $type ] = FS_CHMOD_DIR;
+			$fs_chmod_dir = (int) rocket_get_constant( 'FS_CHMOD_DIR', 0 );
+			if ( $fs_chmod_dir > 0 ) {
+				$perms[ $type ] = $fs_chmod_dir;
 			} else {
-				$perms[ $type ] = fileperms( ABSPATH ) & 0777 | 0755;
+				$perms[ $type ] = fileperms( rocket_get_constant( 'ABSPATH' ) ) & 0777 | 0755;
 			}
 			break;
 
 		case 'file':
-			if ( defined( 'FS_CHMOD_FILE' ) ) {
-				$perms[ $type ] = FS_CHMOD_FILE;
+			$fs_chmod_file = (int) rocket_get_constant( 'FS_CHMOD_FILE', 0 );
+			if ( $fs_chmod_file > 0 ) {
+				$perms[ $type ] = $fs_chmod_file;
 			} else {
-				$perms[ $type ] = fileperms( ABSPATH . 'index.php' ) & 0777 | 0644;
+				$perms[ $type ] = fileperms( rocket_get_constant( 'ABSPATH' ) . 'index.php' ) & 0777 | 0644;
 			}
 	}
 

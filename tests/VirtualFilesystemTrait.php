@@ -138,6 +138,7 @@ trait VirtualFilesystemTrait {
 			],
 			'wp-includes'   => [],
 			'wp-config.php' => '',
+			'index.php'     => '',
 		];
 	}
 }
