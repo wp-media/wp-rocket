@@ -1306,7 +1306,7 @@ function rocket_get_filesystem_perms( $type ) {
 	} else {
 		$fs_chmod_file  = (int) rocket_get_constant( 'FS_CHMOD_FILE', 0 );
 		$perms[ $type ] = $fs_chmod_file > 0
-			? $perms[ $type ] = $fs_chmod_file
+			? $fs_chmod_file
 			: fileperms( rocket_get_constant( 'ABSPATH' ) . 'index.php' ) & 0777 | 0644;
 	}
 
