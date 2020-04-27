@@ -334,8 +334,14 @@ class CriticalCSS {
 			$taxonomy = get_queried_object()->taxonomy;
 			$name     = $taxonomy . '.css';
 		} elseif ( is_singular() ) {
-			$post_type = get_post_type();
-			$name      = $post_type . '.css';
+			$post_type   = get_post_type();
+			$post_id     = get_the_ID();
+			$name        = $post_type . '.css';
+			$custom_name = "posts/{$post_type}-{$post_id}.css";
+
+			if ( rocket_direct_filesystem()->exists( $this->critical_css_path . $custom_name ) ) {
+				$name = $custom_name;
+			}
 		}
 
 		$file = $this->critical_css_path . $name;

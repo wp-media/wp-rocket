@@ -99,6 +99,7 @@ class Plugin {
 				'rocketcdn_notices_subscriber',
 				'rocketcdn_data_manager_subscriber',
 				'critical_css_admin_subscriber',
+				'health_check',
 				'minify_css_admin_subscriber',
 			];
 		} elseif ( \rocket_valid_key() ) {
