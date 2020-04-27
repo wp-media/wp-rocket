@@ -11,11 +11,13 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @uses   ::rocket_get_constant
  * @uses   ::rocket_direct_filesystem
  *
+ * @group  AdvancedCache
+ * @group  Functions
  * @group  Files
  */
 class Test_GetRocketAdvancedCacheFile extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/functions/getRocketAdvancedCacheFile.php';
-	private $original_settings;
+	private   $original_settings;
 
 	public function setUp() {
 		parent::setUp();
