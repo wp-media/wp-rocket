@@ -910,12 +910,7 @@ class Page {
 		 */
 		$disable_images_lazyload = apply_filters( 'rocket_maybe_disable_lazyload_helper', $disable_images_lazyload );
 		$disable_images_lazyload = array_unique( array_filter( (array) $disable_images_lazyload ) );
-
-		if ( $disable_images_lazyload ) {
-			foreach ( $disable_images_lazyload as $i => $plugin_name ) {
-				$disable_images_lazyload[ $i ] = sprintf( '<strong>%s</strong>', $plugin_name );
-			}
-		}
+		$disable_images_lazyload = array_map( 'sprintf', array_fill( 0, count( $disable_images_lazyload ), '<strong>%s</strong>' ), $disable_images_lazyload );
 
 		/**
 		 * Lazyload Helper filter which disables WPR lazyload functionality for iframes.
@@ -926,12 +921,7 @@ class Page {
 		 */
 		$disable_iframes_lazyload = apply_filters( 'rocket_maybe_disable_iframes_lazyload_helper', $disable_iframes_lazyload );
 		$disable_iframes_lazyload = array_unique( array_filter( (array) $disable_iframes_lazyload ) );
-
-		if ( $disable_iframes_lazyload ) {
-			foreach ( $disable_iframes_lazyload as $i => $plugin_name ) {
-				$disable_iframes_lazyload[ $i ] = sprintf( '<strong>%s</strong>', $plugin_name );
-			}
-		}
+		$disable_iframes_lazyload = array_map( 'sprintf', array_fill( 0, count( $disable_iframes_lazyload ), '<strong>%s</strong>' ), $disable_iframes_lazyload );
 
 		$disable_lazyload = array_merge( $disable_images_lazyload, $disable_iframes_lazyload );
 		$disable_lazyload = array_unique( $disable_lazyload );
