@@ -1234,13 +1234,14 @@ function rocket_is_stream( $path ) {
 }
 
 /**
- * File creation based on WordPress Filesystem
+ * File creation based on WordPress Filesystem.
  *
  * @since 1.3.5
  *
  * @param string $file    The path of file will be created.
  * @param string $content The content that will be printed in advanced-cache.php.
- * @return bool
+ *
+ * @return bool true on success; else, false on failure.
  */
 function rocket_put_content( $file, $content ) {
 	$chmod = rocket_get_filesystem_perms( 'file' );
