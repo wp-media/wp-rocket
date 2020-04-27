@@ -3,9 +3,9 @@ namespace WP_Rocket\Subscriber\Media;
 
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Admin\Settings\Beacon;
-use WP_Rocket\Subscriber\CDN\CDNSubscriber;
+use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Subscriber\CDN\CDNSubscriber;
 
 /**
  * Subscriber for the WebP support.

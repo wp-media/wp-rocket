@@ -1,0 +1,107 @@
+<?php
+return [
+	// Relative URL, nothing to do.
+	[
+		'/wp-content/plugins/hello-dolly/style.css',
+		[
+			'all',
+			'css',
+			'css_and_js',
+		],
+		[
+			'https://123456.rocketcdn.me',
+		],
+		'http://example.org',
+		'/wp-content/plugins/hello-dolly/style.css',
+	],
+	// CDN URL with no cname, site_url = home_url.
+	[
+		'https://123456.rocketcdn.me/wp-content/plugins/hello-dolly/style.css',
+		[],
+		[],
+		'http://example.org',
+		'https://123456.rocketcdn.me/wp-content/plugins/hello-dolly/style.css',
+	],
+	// CDN URL with cname not corresponding to the zones, site_url = home_url.
+	[
+		'https://123456.rocketcdn.me/wp-content/plugins/hello-dolly/style.css',
+		[
+			'all',
+			'css',
+			'css_and_js',
+		],
+		[],
+		'http://example.org',
+		'https://123456.rocketcdn.me/wp-content/plugins/hello-dolly/style.css',
+	],
+	// CDN URL with corresponding cnames in option, site_url = home_url.
+	[
+		'https://123456.rocketcdn.me/wp-content/plugins/hello-dolly/style.css',
+		[
+			'all',
+			'css',
+			'css_and_js',
+		],
+		[
+			'https://123456.rocketcdn.me',
+		],
+		'http://example.org',
+		'http://example.org/wp-content/plugins/hello-dolly/style.css',
+	],
+	// CDN URL with corresponding cnames in option, no protocol, site_url = home_url.
+	[
+		'http://123456.rocketcdn.me/wp-content/plugins/hello-dolly/style.css',
+		[
+			'all',
+			'css',
+			'css_and_js',
+		],
+		[
+			'123456.rocketcdn.me',
+		],
+		'http://example.org',
+		'http://example.org/wp-content/plugins/hello-dolly/style.css',
+	],
+	// CDN URL with corresponding cnames in option, site_url != home_url.
+	[
+		'https://123456.rocketcdn.me/wordpress/wp-content/plugins/hello-dolly/style.css',
+		[
+			'all',
+			'css',
+			'css_and_js',
+		],
+		[
+			'https://123456.rocketcdn.me',
+		],
+		'http://example.org/wordpress',
+		'http://example.org/wordpress/wp-content/plugins/hello-dolly/style.css',
+	],
+	// CDN URL with subdirectory, with corresponding cnames in option, site_url = home_url.
+	[
+		'https://123456.rocketcdn.me/cdnpath/wp-content/plugins/hello-dolly/style.css',
+		[
+			'all',
+			'css',
+			'css_and_js',
+		],
+		[
+			'https://123456.rocketcdn.me/cdnpath',
+		],
+		'http://example.org',
+		'http://example.org/wp-content/plugins/hello-dolly/style.css',
+	],
+	// CDN URL with subdirectory, with corresponding cnames in option, site_url != home_url.
+	[
+		'https://123456.rocketcdn.me/cdnpath/wordpress/wp-content/plugins/hello-dolly/style.css',
+		[
+			'all',
+			'css',
+			'css_and_js',
+		],
+		[
+			'https://123456.rocketcdn.me/cdnpath',
+		],
+		'http://example.org/wordpress',
+		'http://example.org/wordpress/wp-content/plugins/hello-dolly/style.css',
+	],
+];

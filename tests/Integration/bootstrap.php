@@ -34,11 +34,7 @@ tests_add_filter(
 
 		// Set the path and URL to our virtual filesystem.
 		define( 'WP_ROCKET_CACHE_ROOT_PATH', 'vfs://public/wp-content/cache/' );
-		define( 'WP_ROCKET_CACHE_ROOT_URL', 'vfs://public/wp-content/cache/' );
-
-		// Set the path and URL to our virtual filesystem.
-		define( 'WP_ROCKET_CACHE_ROOT_PATH', 'vfs://public/wp-content/cache/' );
-		define( 'WP_ROCKET_CACHE_ROOT_URL', 'vfs://public/wp-content/cache/' );
+		define( 'WP_ROCKET_CACHE_ROOT_URL', 'http://example.org/wp-content/cache/' );
 
 		if ( BootstrapManager::isGroup( 'WithSmush' ) ) {
 			// Load WP Smush.

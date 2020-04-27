@@ -305,24 +305,24 @@ function get_rocket_i18n_to_preserve( $current_lang ) { // phpcs:ignore WordPres
 	}
 
 	$i18n_plugin = rocket_has_i18n();
-
 	if ( ! $i18n_plugin ) {
 		return [];
 	}
 
 	$langs = get_rocket_i18n_code();
+	if ( empty( $langs ) ) {
+		return [];
+	}
 
 	// Remove current lang to the preserve dirs.
 	$langs = array_diff( $langs, [ $current_lang ] );
 
 	// Stock all URLs of langs to preserve.
 	$langs_to_preserve = [];
-
-	if ( $langs ) {
-		foreach ( $langs as $lang ) {
-			$parse_url           = get_rocket_parse_url( get_rocket_i18n_home_url( $lang ) );
-			$langs_to_preserve[] = WP_ROCKET_CACHE_PATH . $parse_url['host'] . '(.*)/' . trim( $parse_url['path'], '/' );
-		}
+	$cache_path        = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' );
+	foreach ( $langs as $lang ) {
+		$parse_url           = get_rocket_parse_url( get_rocket_i18n_home_url( $lang ) );
+		$langs_to_preserve[] = "{$cache_path}{$parse_url['host']}(.*)/" . trim( $parse_url['path'], '/' );
 	}
 
 	/**
@@ -332,7 +332,7 @@ function get_rocket_i18n_to_preserve( $current_lang ) { // phpcs:ignore WordPres
 	 *
 	 * @param array $langs_to_preserve List of directories path to preserve.
 	*/
-	return apply_filters( 'rocket_langs_to_preserve', $langs_to_preserve );
+	return (array) apply_filters( 'rocket_langs_to_preserve', $langs_to_preserve );
 }
 
 /**

@@ -19,16 +19,17 @@ define( 'WP_ROCKET_CACHE_ROOT_URL', 'vfs://public/wp-content/cache/' );
  */
 function load_original_functions_before_mocking() {
 	$originals = [
-		'rocket_get_constant'      => WP_ROCKET_PLUGIN_ROOT . 'inc/constants.php',
-		'rocket_is_live_site'      => WP_ROCKET_PLUGIN_ROOT . 'inc/functions/api.php',
-		'rocket_direct_filesystem' => WP_ROCKET_PLUGIN_ROOT . 'inc/functions/files.php',
-		'get_rocket_option'        => WP_ROCKET_PLUGIN_ROOT . 'inc/functions/options.php',
+		'inc/constants.php',
+		'inc/functions/api.php',
+		'inc/functions/files.php',
+		'inc/functions/formatting.php',
+		'inc/functions/i18n.php',
+		'inc/functions/options.php',
+		'inc/functions/posts.php',
 	];
 
-	foreach ( $originals as $function_name => $file ) {
-		if ( ! function_exists( $function_name ) ) {
-			require_once $file;
-		}
+	foreach ( $originals as $file ) {
+		require_once WP_ROCKET_PLUGIN_ROOT . $file;
 	}
 }
 

@@ -66,6 +66,11 @@ $(document).ready(function(){
         var name  = $(this).attr('id');
         var value = $(this).prop('checked') ? 1 : 0;
 
+		var excluded = [ 'cloudflare_auto_settings', 'cloudflare_devmode' ];
+		if ( excluded.indexOf( name ) >= 0 ) {
+			return;
+		}
+
         $.post(
             ajaxurl,
             {
