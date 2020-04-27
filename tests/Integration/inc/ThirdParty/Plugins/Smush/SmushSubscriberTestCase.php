@@ -1,9 +1,9 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\Smush\Subscriber;
+namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\Smush;
 
 use Smush\Core\Settings;
-use WP_Rocket\ThirdParty\Plugins\Smush\Subscriber;
+use WP_Rocket\ThirdParty\Plugins\Smush;
 use WPMedia\PHPUnit\Integration\TestCase;
 
 abstract class SmushSubscriberTestCase extends TestCase {

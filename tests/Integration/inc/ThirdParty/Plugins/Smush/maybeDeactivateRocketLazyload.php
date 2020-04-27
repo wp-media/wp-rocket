@@ -1,9 +1,9 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\Smush\Subscriber;
+namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\Smush;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\Smush\Subscriber::maybe_deactivate_rocket_lazyload
+ * @covers \WP_Rocket\ThirdParty\Plugins\Smush::maybe_deactivate_rocket_lazyload
  * @group ThirdParty
  * @group Smush
  * @group WithSmush

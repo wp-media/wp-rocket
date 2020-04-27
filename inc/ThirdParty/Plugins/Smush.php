@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\ThirdParty\Plugins\Smush;
+namespace WP_Rocket\ThirdParty\Plugins;
 
 use Smush\Core\Settings;
 use WP_Rocket\Admin\Options;
@@ -13,7 +13,7 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * @since  3.4.2
  * @author Soponar Cristina
  */
-class Subscriber implements Subscriber_Interface {
+class Smush implements Subscriber_Interface {
 	/**
 	 * WP Options API instance
 	 *
