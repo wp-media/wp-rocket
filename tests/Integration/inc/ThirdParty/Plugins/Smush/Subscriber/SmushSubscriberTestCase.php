@@ -19,6 +19,8 @@ abstract class SmushSubscriberTestCase extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
+		$this->assertTrue( class_exists( '\Smush\Core\Settings' ), 'Smush plugin not loaded' );
+
 		$container = apply_filters( 'rocket_container', null );
 
 		$this->subscriber   = $container->get( 'smush_subscriber' );

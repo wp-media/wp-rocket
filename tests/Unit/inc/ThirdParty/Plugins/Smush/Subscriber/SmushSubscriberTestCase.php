@@ -15,7 +15,7 @@ abstract class SmushSubscriberTestCase extends TestCase {
 			->with( 'WP_SMUSH_PREFIX' )
 			->andReturn( 'wp-smush-' );
 
-		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/Smush/SmushCoreSettings.php';
+		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/Smush/Subscriber/SmushCoreSettings.php';
 	}
 
 	protected function mock_is_smush_lazyload_enabled( $lazyload_enabled, array $lazyload_formats ) {
