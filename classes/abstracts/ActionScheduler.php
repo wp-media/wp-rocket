@@ -186,7 +186,7 @@ abstract class ActionScheduler {
 	 * @param string $function_name The name of the function being called.
 	 */
 	public static function check_shutdown_hook( $function_name ) {
-		if ( 'shutdown' == current_filter() ) {
+		if ( 'shutdown' === current_filter() ) {
 			$message = sprintf(
 				/* translators: $1: open code tag, $2: function name, $3: close code tag. */
 				__( 'Action Scheduler function %1$s%2$s%3$s should not be used within the WordPress %1$sshutdown%3$s hook.', 'action-scheduler' ),

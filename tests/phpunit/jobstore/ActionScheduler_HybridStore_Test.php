@@ -33,6 +33,7 @@ class ActionScheduler_HybridStore_Test extends ActionScheduler_UnitTestCase {
 		/** @var \wpdb $wpdb */
 		global $wpdb;
 		$wpdb->query( "TRUNCATE TABLE {$wpdb->actionscheduler_actions}" );
+		$wpdb->query( "TRUNCATE TABLE {$wpdb->actionscheduler_logs}" );
 		delete_option( ActionScheduler_HybridStore::DEMARKATION_OPTION );
 	}
 

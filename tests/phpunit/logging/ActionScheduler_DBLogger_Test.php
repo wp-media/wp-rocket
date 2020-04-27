@@ -23,13 +23,6 @@ class ActionScheduler_DBLogger_Test extends ActionScheduler_UnitTestCase {
 		$this->assertEquals( $message, $entry->get_message() );
 	}
 
-	public function test_null_log_entry() {
-		$logger = ActionScheduler::logger();
-		$entry = $logger->get_entry( 1 );
-		$this->assertEquals( '', $entry->get_action_id() );
-		$this->assertEquals( '', $entry->get_message() );
-	}
-
 	public function test_storage_logs() {
 		$action_id = as_schedule_single_action( time(), __METHOD__ );
 		$logger = ActionScheduler::logger();

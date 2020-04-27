@@ -61,30 +61,30 @@ class Runner_Test extends ActionScheduler_UnitTestCase {
 		$runner->run( 10 );
 
 		// due actions should migrate in the first batch
-		$migrated = $destination_store->query_actions( [ 'per_page' => 0 ] );
+		$migrated = $destination_store->query_actions( [ 'per_page' => 0, 'hook' => 'my_hook' ] );
 		$this->assertCount( 5, $migrated );
 
-		$remaining = $source_store->query_actions( [ 'per_page' => 0 ] );
+		$remaining = $source_store->query_actions( [ 'per_page' => 0, 'hook' => 'my_hook' ] );
 		$this->assertCount( 10, $remaining );
 
 
 		$runner->run( 10 );
 
 		// pending actions should migrate in the second batch
-		$migrated = $destination_store->query_actions( [ 'per_page' => 0 ] );
+		$migrated = $destination_store->query_actions( [ 'per_page' => 0, 'hook' => 'my_hook' ] );
 		$this->assertCount( 10, $migrated );
 
-		$remaining = $source_store->query_actions( [ 'per_page' => 0 ] );
+		$remaining = $source_store->query_actions( [ 'per_page' => 0, 'hook' => 'my_hook' ] );
 		$this->assertCount( 5, $remaining );
 
 
 		$runner->run( 10 );
 
 		// completed actions should migrate in the third batch
-		$migrated = $destination_store->query_actions( [ 'per_page' => 0 ] );
+		$migrated = $destination_store->query_actions( [ 'per_page' => 0, 'hook' => 'my_hook' ] );
 		$this->assertCount( 15, $migrated );
 
-		$remaining = $source_store->query_actions( [ 'per_page' => 0 ] );
+		$remaining = $source_store->query_actions( [ 'per_page' => 0, 'hook' => 'my_hook' ] );
 		$this->assertCount( 0, $remaining );
 
 	}
