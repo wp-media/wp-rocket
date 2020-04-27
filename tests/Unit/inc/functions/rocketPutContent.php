@@ -1,8 +1,9 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\functions;
+namespace WP_Rocket\Tests\Unit\inc\functions;
 
-use WP_Rocket\Tests\Integration\FilesystemTestCase;
+use Brain\Monkey\Functions;
+use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
  * @covers ::rocket_put_content
@@ -20,6 +21,10 @@ class Test_RocketPutContent extends FilesystemTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldPutContent( $file, $content ) {
+		Functions\expect( 'rocket_get_filesystem_perms' )
+			->once()
+			->with( 'file' )
+			->andReturn( 0666 );
 		$original_content = $this->filesystem->get_contents( $file );
 
 		$this->assertTrue( rocket_put_content( $file, $content ) );
