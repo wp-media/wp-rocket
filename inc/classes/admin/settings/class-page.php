@@ -888,21 +888,57 @@ class Page {
 			]
 		);
 
-		$rocket_maybe_disable_lazyload_plugins = [];
+		$disable_images_lazyload  = [];
+		$disable_iframes_lazyload = [];
+
+		if ( rocket_avada_maybe_disable_lazyload() ) {
+			$disable_images_lazyload[] = __( 'Avada', 'rocket' );
+		}
+
 		if ( rocket_maybe_disable_lazyload() ) {
-			$rocket_maybe_disable_lazyload_plugins[] = __( 'Autoptimize', 'rocket' );
+			$disable_images_lazyload[]  = __( 'Autoptimize', 'rocket' );
+			$disable_iframes_lazyload[] = __( 'Autoptimize', 'rocket' );
 		}
 
 		/**
-		 * Lazyload Helper filter which disables WPR lazyload functionality
+		 * Lazyload Helper filter which disables WPR lazyload functionality for images.
 		 *
 		 * @since  3.4.2
 		 * @author Soponar Cristina
 		 *
-		 * @param array Will return the array with all plugin names which should disable LazyLoad
+		 * @param array $disable_images_lazyload Will return the array with all plugin names which should disable LazyLoad
 		 */
-		$rocket_maybe_disable_lazyload_plugins = apply_filters( 'rocket_maybe_disable_lazyload_helper', $rocket_maybe_disable_lazyload_plugins );
-		$rocket_maybe_disable_lazyload_plugins = wp_sprintf_l( '%l', $rocket_maybe_disable_lazyload_plugins );
+		$disable_images_lazyload = apply_filters( 'rocket_maybe_disable_lazyload_helper', $disable_images_lazyload );
+		$disable_images_lazyload = array_unique( array_filter( (array) $disable_images_lazyload ) );
+
+		if ( $disable_images_lazyload ) {
+			foreach ( $disable_images_lazyload as $i => $plugin_name ) {
+				$disable_images_lazyload[ $i ] = sprintf( '<strong>%s</strong>', $plugin_name );
+			}
+		}
+
+		/**
+		 * Lazyload Helper filter which disables WPR lazyload functionality for iframes.
+		 *
+		 * @since 3.5.5
+		 *
+		 * @param array $disable_iframes_lazyload Will return the array with all plugin names which should disable LazyLoad
+		 */
+		$disable_iframes_lazyload = apply_filters( 'rocket_maybe_disable_iframes_lazyload_helper', $disable_iframes_lazyload );
+		$disable_iframes_lazyload = array_unique( array_filter( (array) $disable_iframes_lazyload ) );
+
+		if ( $disable_iframes_lazyload ) {
+			foreach ( $disable_iframes_lazyload as $i => $plugin_name ) {
+				$disable_iframes_lazyload[ $i ] = sprintf( '<strong>%s</strong>', $plugin_name );
+			}
+		}
+
+		$disable_lazyload = array_merge( $disable_images_lazyload, $disable_iframes_lazyload );
+		$disable_lazyload = array_unique( $disable_lazyload );
+
+		$disable_lazyload         = wp_sprintf_l( '%l', $disable_lazyload );
+		$disable_images_lazyload  = wp_sprintf_l( '%l', $disable_images_lazyload );
+		$disable_iframes_lazyload = wp_sprintf_l( '%l', $disable_iframes_lazyload );
 
 		$this->settings->add_settings_sections(
 			[
@@ -916,8 +952,8 @@ class Page {
 						'url' => $lazyload_beacon['url'],
 					],
 					'page'        => 'media',
-					// translators: %1$s = “WP Rocket”.
-					'helper'      => ! empty( $rocket_maybe_disable_lazyload_plugins ) ? sprintf( __( 'Lazyload is currently activated in <strong>%2$s</strong>. If you want to use %1$s’s lazyload, disable this option in %2$s.', 'rocket' ), WP_ROCKET_PLUGIN_NAME, $rocket_maybe_disable_lazyload_plugins ) : '',
+					// translators: %1$s = “WP Rocket”, %2$s = a list of plugin names.
+					'helper'      => ! empty( $disable_lazyload ) ? sprintf( __( 'LazyLoad is currently activated in %2$s. If you want to use WP Rocket’s LazyLoad, disable this option in %2$s.', 'rocket' ), WP_ROCKET_PLUGIN_NAME, $disable_lazyload ) : '',
 				],
 				'emoji_section'    => [
 					'title'       => __( 'Emoji 👻', 'rocket' ),
@@ -970,16 +1006,17 @@ class Page {
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 					'container_class'   => [
-						( rocket_avada_maybe_disable_lazyload() || ! empty( $rocket_maybe_disable_lazyload_plugins ) ) ? 'wpr-isDisabled' : '',
+						! empty( $disable_images_lazyload ) ? 'wpr-isDisabled' : '',
 					],
 					'input_attr'        => [
-						'disabled' => ( rocket_avada_maybe_disable_lazyload() || ! empty( $rocket_maybe_disable_lazyload_plugins ) ) ? 1 : 0,
+						'disabled' => ! empty( $disable_images_lazyload ) ? 1 : 0,
 					],
-					'description'       => rocket_avada_maybe_disable_lazyload() ? _x( 'Lazyload for images is currently activated in Avada. If you want to use WP Rocket’s LazyLoad, disable this option in Avada.', 'Avada', 'rocket' ) : '',
+					// translators: %1$s = “WP Rocket”, %2$s = a list of plugin names.
+					'description'       => ! empty( $disable_images_lazyload ) ? sprintf( __( 'LazyLoad for images is currently activated in %2$s. If you want to use %1$s’s LazyLoad, disable this option in %2$s.', 'rocket' ), WP_ROCKET_PLUGIN_NAME, $disable_images_lazyload ) : '',
 				],
 				'lazyload_iframes' => [
 					'container_class'   => [
-						rocket_maybe_disable_lazyload() ? 'wpr-isDisabled' : '',
+						! empty( $disable_iframes_lazyload ) ? 'wpr-isDisabled' : '',
 						'wpr-isParent',
 					],
 					'type'              => 'checkbox',
@@ -989,12 +1026,12 @@ class Page {
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 					'input_attr'        => [
-						'disabled' => rocket_maybe_disable_lazyload() ? 1 : 0,
+						'disabled' => ! empty( $disable_iframes_lazyload ) ? 1 : 0,
 					],
 				],
 				'lazyload_youtube' => [
 					'container_class'   => [
-						rocket_maybe_disable_lazyload() ? 'wpr-isDisabled' : '',
+						! empty( $disable_iframes_lazyload ) ? 'wpr-isDisabled' : '',
 						'wpr-field--children',
 					],
 					'type'              => 'checkbox',
@@ -1006,7 +1043,7 @@ class Page {
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 					'input_attr'        => [
-						'disabled' => rocket_maybe_disable_lazyload() ? 1 : 0,
+						'disabled' => ! empty( $disable_iframes_lazyload ) ? 1 : 0,
 					],
 				],
 				'emoji'            => [

@@ -45,19 +45,19 @@ class Subscriber implements Subscriber_Interface {
 		$prefix = rocket_get_constant( 'WP_SMUSH_PREFIX', 'wp-smush-' );
 
 		return [
-			"update_option_{$prefix}settings"       => [ 'maybe_deactivate_rocket_lazyload', 11 ],
-			"update_site_option_{$prefix}settings"  => [ 'maybe_deactivate_rocket_lazyload', 11 ],
-			"update_option_{$prefix}lazy_load"      => [ 'maybe_deactivate_rocket_lazyload', 11 ],
-			"update_site_option_{$prefix}lazy_load" => [ 'maybe_deactivate_rocket_lazyload', 11 ],
-			'rocket_maybe_disable_lazyload_helper'  => 'is_smush_lazyload_active',
+			"update_option_{$prefix}settings"              => [ 'maybe_deactivate_rocket_lazyload', 11 ],
+			"update_site_option_{$prefix}settings"         => [ 'maybe_deactivate_rocket_lazyload', 11 ],
+			"update_option_{$prefix}lazy_load"             => [ 'maybe_deactivate_rocket_lazyload', 11 ],
+			"update_site_option_{$prefix}lazy_load"        => [ 'maybe_deactivate_rocket_lazyload', 11 ],
+			'rocket_maybe_disable_lazyload_helper'         => 'is_smush_lazyload_active',
+			'rocket_maybe_disable_iframes_lazyload_helper' => 'is_smush_iframes_lazyload_active',
 		];
 	}
 
 	/**
 	 * Constructor.
 	 *
-	 * @since  3.6
-	 * @author Grégory Viguier
+	 * @since 3.5.5
 	 *
 	 * @param Options      $options_api WP Options API instance.
 	 * @param Options_Data $options     WP Rocket Options instance.
@@ -114,10 +114,27 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
+	 * Add "Smush" to the provided array if WP Smush lazyload is enabled for iframes.
+	 *
+	 * @since 3.5.5
+	 *
+	 * @param  array $disable_iframes_lazyload Array with plugins which disable lazyload functionality.
+	 * @return array                           A list of plugin names.
+	 */
+	public function is_smush_iframes_lazyload_active( $disable_iframes_lazyload ) {
+		$enabled = $this->is_smush_lazyload_enabled();
+
+		if ( $enabled['iframes'] ) {
+			$disable_iframes_lazyload[] = __( 'Smush', 'rocket' );
+		}
+
+		return $disable_iframes_lazyload;
+	}
+
+	/**
 	 * Tell if Smush’s lazyload is enabled for each type of content.
 	 *
-	 * @since  3.6
-	 * @author Grégory Viguier
+	 * @since 3.5.5
 	 *
 	 * @return array {
 	 *     @var bool $images  True when lazyload is enabled for images. False otherwise.
