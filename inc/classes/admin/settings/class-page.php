@@ -896,8 +896,7 @@ class Page {
 		}
 
 		if ( rocket_maybe_disable_lazyload() ) {
-			$disable_images_lazyload[]  = __( 'Autoptimize', 'rocket' );
-			$disable_iframes_lazyload[] = __( 'Autoptimize', 'rocket' );
+			$disable_images_lazyload[] = __( 'Autoptimize', 'rocket' );
 		}
 
 		/**
