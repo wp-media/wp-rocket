@@ -1,0 +1,73 @@
+<?php
+
+namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\AdminSubscriber;
+
+use Mockery;
+use Brain\Monkey\Functions;
+use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Admin\Beacon\Beacon;
+use WP_Rocket\Engine\CriticalPath\AdminSubscriber;
+use WP_Rocket\Tests\Unit\FilesystemTestCase;
+
+/**
+ * @covers \WP_Rocket\Engine\CriticalPath\AdminSubscriber::cpcss_actions
+ * @group  CriticalPath
+ */
+class Test_CpcssActions extends FilesystemTestCase {
+	protected $path_to_test_data = '/inc/Engine/CriticalPath/AdminSubscriber/cpcssActions.php';
+	protected static $mockCommonWpFunctionsInSetUp = true;
+
+	private $beacon;
+	private $options;
+	private $subscriber;
+
+	public function setUp() {
+		parent::setUp();
+
+		Functions\when( 'get_current_blog_id' )->justReturn( 1 );
+
+		$this->beacon     = Mockery::mock( Beacon::class );
+		$this->options    = Mockery::mock( Options_Data::class );
+		$this->subscriber = Mockery::mock(
+			AdminSubscriber::class . '[generate]',
+			[
+				$this->options,
+				$this->beacon,
+				'wp-content/cache/critical-css/',
+				'views/metabox/cpcss',
+			]
+		);
+	}
+
+	/**
+	 * @dataProvider providerTestData
+	 */
+	public function testShouldDisplayCPCSSSActions( $config, $expected ) {
+		$this->options->shouldReceive( 'get' )
+			->with( 'async_css', 0 )
+			->andReturn( $config['options']['async_css'] );
+
+		$GLOBALS['post'] = (object) [
+			'ID'          => $config['post']['ID'],
+			'post_status' => $config['post']['post_status'],
+			'post_type'   => $config['post']['post_type']
+		];
+
+		Functions\when( 'is_rocket_post_excluded_option' )->justReturn( $config['is_option_excluded'] );
+
+		$this->subscriber->shouldReceive( 'generate' )
+			->once()
+			->with(
+				$expected['template'],
+				[
+					'disabled' => $expected['disabled'],
+					'beacon'   => '',
+				]
+			)
+			->andReturn( '' );
+
+		$this->expectOutputString( '' );
+
+		$this->subscriber->cpcss_actions();
+	}
+}
