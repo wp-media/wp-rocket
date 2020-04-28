@@ -4,17 +4,19 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\AdminSubscriber;
 
 use Mockery;
 use Brain\Monkey\Functions;
-use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\CriticalPath\AdminSubscriber;
+use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\AdminSubscriber::cpcss_section
  * @group  CriticalPath
  */
-class Test_CpcssSection extends TestCase {
+class Test_CpcssSection extends FilesystemTestCase {
+	protected $path_to_test_data = '/inc/Engine/CriticalPath/AdminSubscriber/cpcssSection.php';
 	protected static $mockCommonWpFunctionsInSetUp = true;
+
 	private $beacon;
 	private $options;
 	private $subscriber;
@@ -26,15 +28,19 @@ class Test_CpcssSection extends TestCase {
 
 		$this->beacon     = Mockery::mock( Beacon::class );
 		$this->options    = Mockery::mock( Options_Data::class );
-		$this->subscriber = Mockery::mock(
-			AdminSubscriber::class . '[generate]',
-			[
-				$this->options,
-				$this->beacon,
-				'wp-content/cache/critical-css/',
-				'views/metabox/cpcss',
-			]
+		$this->subscriber = new AdminSubscriber(
+			$this->options,
+			$this->beacon,
+			'wp-content/cache/critical-css/',
+			$this->filesystem->getUrl( 'wp-content/plugins/wp-rocket/views/metabox/cpcss' ),
 		);
+	}
+
+	private function getActualHtml() {
+		ob_start();
+		$this->subscriber->cpcss_section();
+
+		return $this->format_the_html( ob_get_clean() );
 	}
 
 	/**
@@ -51,19 +57,10 @@ class Test_CpcssSection extends TestCase {
 
 		Functions\when( 'is_rocket_post_excluded_option' )->justReturn( $config['is_option_excluded'] );
 
-		$this->subscriber->shouldReceive( 'generate' )
-			->once()
-			->with( 'container', [
-				'disabled_description' => $expected,
-			] )
-			->andReturn( '' );
-
-		$this->expectOutputString( '' );
-
-		$this->subscriber->cpcss_section();
-	}
-
-	public function providerTestData() {
-		return $this->getTestData( __DIR__, 'cpcssSection' );
+		$this->assertSame(
+			$this->format_the_html( $expected ),
+			$this->getActualHtml()
+		);
+		$this->assertSame( 1, did_action( 'rocket_metabox_cpcss_content' ) );
 	}
 }

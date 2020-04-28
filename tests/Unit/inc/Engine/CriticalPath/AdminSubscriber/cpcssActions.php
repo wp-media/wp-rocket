@@ -28,15 +28,19 @@ class Test_CpcssActions extends FilesystemTestCase {
 
 		$this->beacon     = Mockery::mock( Beacon::class );
 		$this->options    = Mockery::mock( Options_Data::class );
-		$this->subscriber = Mockery::mock(
-			AdminSubscriber::class . '[generate]',
-			[
-				$this->options,
-				$this->beacon,
-				'wp-content/cache/critical-css/',
-				'views/metabox/cpcss',
-			]
+		$this->subscriber = new AdminSubscriber(
+			$this->options,
+			$this->beacon,
+			$this->filesystem->getUrl( 'wp-content/cache/critical-css/' ),
+			$this->filesystem->getUrl( 'wp-content/plugins/wp-rocket/views/metabox/cpcss' ),
 		);
+	}
+
+	private function getActualHtml() {
+		ob_start();
+		$this->subscriber->cpcss_actions();
+
+		return $this->format_the_html( ob_get_clean() );
 	}
 
 	/**
@@ -54,20 +58,15 @@ class Test_CpcssActions extends FilesystemTestCase {
 		];
 
 		Functions\when( 'is_rocket_post_excluded_option' )->justReturn( $config['is_option_excluded'] );
+		Functions\when( 'disabled' )->alias( function( $disabled ) {
+			if ( $disabled ) {
+				echo 'disabled="disabled"';
+			}
+		} );
 
-		$this->subscriber->shouldReceive( 'generate' )
-			->once()
-			->with(
-				$expected['template'],
-				[
-					'disabled' => $expected['disabled'],
-					'beacon'   => '',
-				]
-			)
-			->andReturn( '' );
-
-		$this->expectOutputString( '' );
-
-		$this->subscriber->cpcss_actions();
+		$this->assertSame(
+			$this->format_the_html( $expected ),
+			$this->getActualHtml()
+		);
 	}
 }
