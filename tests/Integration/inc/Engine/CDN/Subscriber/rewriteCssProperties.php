@@ -12,6 +12,7 @@ use WP_Rocket\Engine\CDN\Subscriber;
  * @uses   \WP_Rocket\Engine\CDN\CDN::rewrite_css_properties
  * @uses   \WP_Rocket\Admin\Options_Data::get
  * @group  Subscriber
+ * @group  CDN
  */
 class Test_RewriteCssProperties extends TestCase {
 
@@ -31,7 +32,7 @@ class Test_RewriteCssProperties extends TestCase {
 		);
 
 		$options        = new Options_Data( ( new Options( 'wp_rocket_' ) )->get( 'settings' ) );
-		$cdn_subscriber = new CDNSubscriber( $options, new CDN( $options ) );
+		$cdn_subscriber = new Subscriber( $options, new CDN( $options ) );
 
 		$original = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/CDN/original.css' );
 		$rewrite  = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/CDN/rewrite.css' );
@@ -58,7 +59,7 @@ class Test_RewriteCssProperties extends TestCase {
 		);
 
 		$options        = new Options_Data( ( new Options( 'wp_rocket_' ) )->get( 'settings' ) );
-		$cdn_subscriber = new CDNSubscriber( $options, new CDN( $options ) );
+		$cdn_subscriber = new Subscriber( $options, new CDN( $options ) );
 
 		add_filter( 'do_rocket_cdn_css_properties', '__return_false' );
 
