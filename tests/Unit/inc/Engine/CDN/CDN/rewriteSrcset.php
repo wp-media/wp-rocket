@@ -40,7 +40,7 @@ class Test_RewriteSrcset extends TestCase {
 		$rewrite  = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/CDN/srcset/rewrite.html' );
 
 		$map = [
-			[ 'cdn', '', 1 ],
+			[ 'cdn', 0, 1 ],
 			[ 'cdn_cnames', [], [ 'cdn.example.org' ] ],
 			[ 'cdn_reject_files', [], [] ],
 			[ 'cdn_zone', [], [ 'images' ] ],

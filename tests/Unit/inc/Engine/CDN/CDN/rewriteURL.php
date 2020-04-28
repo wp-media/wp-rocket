@@ -43,7 +43,7 @@ class Test_RewriteURL extends TestCase {
 		} );
 
 		$map = [
-			[ 'cdn', '', 1 ],
+			[ 'cdn', 0, 1 ],
 			[ 'cdn_cnames', [], [ 'https://cdn.example.org' ] ],
 			[ 'cdn_reject_files', [], [] ],
 			[ 'cdn_zone', [], [ 'all' ] ],
@@ -60,7 +60,7 @@ class Test_RewriteURL extends TestCase {
 		} );
 
 		$map = [
-			[ 'cdn', '', 1 ],
+			[ 'cdn', 0, 1 ],
 			[ 'cdn_cnames', [], [ 'https://cdn.example.org' ] ],
 			[ 'cdn_reject_files', [], [ '/wp-content/uploads/file.jpg', '/wp-content/(.*).css' ] ],
 			[ 'cdn_zone', [], [ 'css_and_js' ] ],
@@ -88,7 +88,7 @@ class Test_RewriteURL extends TestCase {
 
 	public function testShouldReturnDefaultURLWhenRejectedFiles() {
 		$map = [
-			[ 'cdn', '', 1 ],
+			[ 'cdn', 0, 1 ],
 			[ 'cdn_cnames', [], [ 'cdn.example.org' ] ],
 			[ 'cdn_reject_files', [], [ '/wp-content/uploads/file.jpg', '/wp-content/(.*).css' ] ],
 			[ 'cdn_zone', [], [ 'images', 'css_and_js' ] ],

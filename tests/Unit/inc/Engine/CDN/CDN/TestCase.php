@@ -20,7 +20,7 @@ abstract class TestCase extends BaseTestCase {
 
 		if ( empty( $map ) ) {
 			$map = [
-				[ 'cdn', '', 1 ],
+				[ 'cdn', 0, 1 ],
 				[ 'cdn_cnames', [], [ 'cdn.example.org' ] ],
 				[ 'cdn_reject_files', [], [] ],
 				[ 'cdn_zone', [], [ 'all' ] ],
