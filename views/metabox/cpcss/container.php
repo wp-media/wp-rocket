@@ -1,4 +1,15 @@
 <?php
+/**
+ * Critical path CSS section in WP Rocket metabox.
+ *
+ * @since 3.6
+ *
+ * @data array {
+ *     Data to populate the template.
+ *
+ *     @type string $disabled_description Description to explain why the buttons are disabled.
+ * }
+ */
 
 defined( 'ABSPATH' ) || exit;
 

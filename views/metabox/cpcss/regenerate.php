@@ -1,4 +1,16 @@
 <?php
+/**
+ * Critical path CSS generate template.
+ *
+ * @since 3.6
+ *
+ * @data array {
+ *     Data to populate the template.
+ *
+ *     @type string $beacon   Helpscout documentation link.
+ *     @type bool   $disabled True if button should be disabled, false otherwise.
+ * }
+ */
 
 defined( 'ABSPATH' ) || exit;
 
