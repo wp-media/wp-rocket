@@ -1,10 +1,10 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\classes\subscriber\CDN\CDNSubscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Subscriber;
 
 /**
- * @covers \WP_Rocket\Subscriber\CDN\CDNSubscriber::maybe_replace_url
- * @uses   \WP_Rocket\CDN\CDN::get_cdn_urls
+ * @covers \WP_Rocket\Engine\CDN\Subscriber::maybe_replace_url
+ * @uses   \WP_Rocket\Engine\CDN\CDN::get_cdn_urls
  * @group  Subscriber
  * @group  CDN
  */

@@ -1,15 +1,15 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\classes\subscriber\CDN\CDNSubscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Subscriber;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Admin\Options;
-use WP_Rocket\CDN\CDN;
-use WP_Rocket\Subscriber\CDN\CDNSubscriber;
+use WP_Rocket\Engine\CDN\CDN;
+use WP_Rocket\Engine\CDN\Subscriber;
 
 /**
- * @covers \WP_Rocket\Subscriber\CDN\CDNSubscriber::rewrite_css_properties
- * @uses   \WP_Rocket\CDN\CDN::rewrite_css_properties
+ * @covers \WP_Rocket\Engine\CDN\Subscriber::rewrite_css_properties
+ * @uses   \WP_Rocket\Engine\CDN\CDN::rewrite_css_properties
  * @uses   \WP_Rocket\Admin\Options_Data::get
  * @group  Subscriber
  */

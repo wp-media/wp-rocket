@@ -1,10 +1,10 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\classes\subscriber\CDN\CDNSubscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Subscriber;
 
 /**
- * @covers \WP_Rocket\Subscriber\CDN\CDNSubscriber::rewrite
- * @uses   \WP_Rocket\CDN\CDN::rewrite
+ * @covers \WP_Rocket\Engine\CDN\Subscriber::rewrite
+ * @uses   \WP_Rocket\Engine\CDN\CDN::rewrite
  * @group  Subscriber
  */
 class Test_Rewrite extends TestCase {
