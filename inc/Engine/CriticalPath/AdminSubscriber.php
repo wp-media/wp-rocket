@@ -100,21 +100,21 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 		if ( ! $this->options->get( 'async_css', 0 ) ) {
 			return [
 				'disabled'    => true,
-				'description' => __( 'Enable Optimize CSS delivery in WP Rocket settings to use this feature', 'rocket' )
+				'description' => __( 'Enable Optimize CSS delivery in WP Rocket settings to use this feature', 'rocket' ),
 			];
 		}
 
 		if ( 'publish' !== $post->post_status ) {
 			return [
 				'disabled'    => true,
-				'description' => __( 'Publish the post to use this feature', 'rocket' )
+				'description' => __( 'Publish the post to use this feature', 'rocket' ),
 			];
 		}
 
 		if ( is_rocket_post_excluded_option( 'async_css' ) ) {
 			return [
 				'disabled'    => true,
-				'description' => __( 'Enable Optimize CSS delivery in the options above to use this feature', 'rocket' )
+				'description' => __( 'Enable Optimize CSS delivery in the options above to use this feature', 'rocket' ),
 			];
 		}
 
