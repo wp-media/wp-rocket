@@ -15,10 +15,10 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group  Files
  */
 class Test_RocketGenerateAdvancedCacheFile extends FilesystemTestCase {
-	protected $path_to_test_data   = '/inc/functions/rocketGenerateAdvancedCacheFile.php';
-	private   $original_settings;
-	private $old_settings = [];
-	private   $advanced_cache_file = 'vfs://public/wp-content/advanced-cache.php';
+	protected      $path_to_test_data   = '/inc/functions/rocketGenerateAdvancedCacheFile.php';
+	private        $advanced_cache_file = 'vfs://public/wp-content/advanced-cache.php';
+	private static $original_settings   = [];
+	private        $old_settings        = [];
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
@@ -27,6 +27,7 @@ class Test_RocketGenerateAdvancedCacheFile extends FilesystemTestCase {
 
 	public static function tearDownAfterClass() {
 		parent::tearDownAfterClass();
+		// Restore the original settings before exiting.
 		update_option( 'wp_rocket_settings', self::$original_settings );
 	}
 
