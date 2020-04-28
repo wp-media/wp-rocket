@@ -2,8 +2,8 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\NoticesSubscriber;
 
-use WPMedia\PHPUnit\Integration\TestCase;
 use WP_Error;
+use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::display_rocketcdn_cta
@@ -16,7 +16,8 @@ use WP_Error;
  * @group  RocketCDN
  * @group  AdminOnly
  */
-class Test_DisplayRocketcdnCta extends TestCase {
+class Test_DisplayRocketcdnCta extends FilesystemTestCase {
+	protected $path_to_test_data = '/inc/classes/subscriber/CDN/RocketCDN/NoticesSubscriber/displayRocketcdnCta.php';
 
 	public function setUp() {
 		parent::setUp();
@@ -105,9 +106,5 @@ class Test_DisplayRocketcdnCta extends TestCase {
 		}
 
 		$this->assertContains( $this->format_the_html( $expected['integration'] ), $this->getActualHtml() );
-	}
-
-	public function providerTestData() {
-		return $this->getTestData( __DIR__, 'displayRocketcdnCta' );
 	}
 }

@@ -6,14 +6,16 @@ use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
 use WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber;
-use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::display_rocketcdn_cta
  * @group  RocketCDN
  */
-class Test_DisplayRocketcdnCta extends TestCase {
+class Test_DisplayRocketcdnCta extends FilesystemTestCase {
+	protected $path_to_test_data = '/inc/classes/subscriber/CDN/RocketCDN/NoticesSubscriber/displayRocketcdnCta.php';
 	protected static $mockCommonWpFunctionsInSetUp = true;
+
 	private $api_client;
 	private $notices;
 
@@ -100,9 +102,5 @@ class Test_DisplayRocketcdnCta extends TestCase {
 
 		$this->expectOutputString( '' );
 		$this->notices->display_rocketcdn_cta();
-	}
-
-	public function providerTestData() {
-		return $this->getTestData( __DIR__, 'displayRocketcdnCta' );
 	}
 }
