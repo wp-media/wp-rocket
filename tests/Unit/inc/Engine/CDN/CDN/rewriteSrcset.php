@@ -2,50 +2,61 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\CDN;
 
-use WP_Rocket\Engine\CDN\CDN;
+use Mockery;
 use Brain\Monkey\Functions;
+use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\CDN\CDN;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\CDN::rewrite_srcset
  * @group  CDN
  */
 class Test_RewriteSrcset extends TestCase {
+	private $options;
+	private $cdn;
+	private $config;
 
-	public function testShouldRewriteURLToCDN() {
-		Functions\when( 'content_url' )->justReturn( 'http://example.org/wp-content/' );
-		Functions\when( 'includes_url' )->justReturn( 'http://example.org/wp-includes/' );
-		Functions\when( 'wp_upload_dir' )->justReturn( 'http://example.org/wp-content/uploads/' );
+	public function setUp() {
+		parent::setUp();
+
+		if ( empty( $this->config ) ) {
+			$this->loadConfig();
+		}
+
 		Functions\when( 'site_url' )->justReturn( 'http://example.org' );
 		Functions\when( 'rocket_add_url_protocol' )->alias( function( $url ) {
 			return 'http://' . $url;
 		} );
 
-		$original = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/CDN/original.html' );
-		$rewrite  = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/CDN/srcset/rewrite.html' );
-
-		$cdn = new CDN( $this->getOptionsMock() );
-		$this->assertSame( $rewrite, $cdn->rewrite_srcset( $original ) );
+		$this->options = Mockery::mock( Options_Data::class );
+		$this->cdn     = new CDN( $this->options );
 	}
 
-	public function testShouldRewriteURLToCDNWhenZoneIsImages() {
-		Functions\when( 'content_url' )->justReturn( 'http://example.org/wp-content/' );
-		Functions\when( 'includes_url' )->justReturn( 'http://example.org/wp-includes/' );
-		Functions\when( 'wp_upload_dir' )->justReturn( 'http://example.org/wp-content/uploads/' );
-		Functions\when( 'site_url' )->justReturn( 'http://example.org' );
-		Functions\when( 'rocket_add_url_protocol' )->alias( function( $url ) {
-			return 'http://' . $url;
-		} );
+	/**
+	 * @dataProvider providerTestData
+	 */
+	public function testShouldRewriteURLToCDN( $options ) {
+		foreach ( $options as $key => $option ) {
+			$this->options->shouldReceive( 'get' )
+				->with( $key, $option['default'] )
+				->andReturn( $option['value'] );
+		}
 
-		$original = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/CDN/original.html' );
-		$rewrite  = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/CDN/srcset/rewrite.html' );
+		$this->assertSame(
+			$this->format_the_html( $this->config['expected'] ),
+			$this->format_the_html( $this->cdn->rewrite_srcset( $this->config['original'] ) )
+		);
+	}
 
-		$map = [
-			[ 'cdn', 0, 1 ],
-			[ 'cdn_cnames', [], [ 'cdn.example.org' ] ],
-			[ 'cdn_reject_files', [], [] ],
-			[ 'cdn_zone', [], [ 'images' ] ],
-		];
-		$cdn = new CDN( $this->getOptionsMock( $map ) );
-		$this->assertSame( $rewrite, $cdn->rewrite_srcset( $original ) );
+	public function providerTestData() {
+		if ( empty( $this->config ) ) {
+			$this->loadConfig();
+		}
+
+		return $this->config['test_data'];
+	}
+
+	private function loadConfig() {
+		$this->config = $this->getTestData( __DIR__, 'rewriteSrcset' );
 	}
 }

@@ -2,8 +2,8 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\CDN;
 
-use WP_Rocket\Engine\CDN\CDN;
 use Brain\Monkey\Functions;
+use WP_Rocket\Engine\CDN\CDN;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\CDN::rewrite
