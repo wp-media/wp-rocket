@@ -17,7 +17,18 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 class Test_RocketGenerateAdvancedCacheFile extends FilesystemTestCase {
 	protected $path_to_test_data   = '/inc/functions/rocketGenerateAdvancedCacheFile.php';
 	private   $original_settings;
+	private $old_settings = [];
 	private   $advanced_cache_file = 'vfs://public/wp-content/advanced-cache.php';
+
+	public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
+		self::$original_settings = get_option( 'wp_rocket_settings', [] );
+	}
+
+	public static function tearDownAfterClass() {
+		parent::tearDownAfterClass();
+		update_option( 'wp_rocket_settings', self::$original_settings );
+	}
 
 	public function setUp() {
 		parent::setUp();
@@ -25,17 +36,14 @@ class Test_RocketGenerateAdvancedCacheFile extends FilesystemTestCase {
 		// Mocks the various filesystem constants.
 		$this->whenRocketGetConstant();
 
-		$this->original_settings = get_option( 'wp_rocket_settings', [] );
+		$this->old_settings = array_merge( self::$original_settings, $this->config['settings'] );
+		update_option( 'wp_rocket_settings', $this->old_settings );
 	}
 
 	public function tearDown() {
 		parent::tearDown();
 
-		if ( empty( $this->original_settings ) ) {
-			delete_option( 'wp_rocket_settings' );
-		} else {
-			update_option( 'wp_rocket_settings', $this->original_settings );
-		}
+		delete_option( 'wp_rocket_settings' );
 	}
 
 	/**
@@ -44,7 +52,7 @@ class Test_RocketGenerateAdvancedCacheFile extends FilesystemTestCase {
 	public function testShouldGenerateAdvancedCacheFile( $settings, $expected_content, $when_file_not_exist = false ) {
 		update_option(
 			'wp_rocket_settings',
-			array_merge( $this->original_settings, $this->config['settings'], $settings )
+			array_merge( $this->old_settings, $settings )
 		);
 
 		if ( $when_file_not_exist ) {
