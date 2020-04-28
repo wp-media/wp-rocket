@@ -107,7 +107,7 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 		if ( 'publish' !== $post->post_status ) {
 			return [
 				'disabled'    => true,
-				'description' => __( 'publish the post to use this feature', 'rocket' )
+				'description' => __( 'Publish the post to use this feature', 'rocket' )
 			];
 		}
 
