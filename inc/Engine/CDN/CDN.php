@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\CDN;
+namespace WP_Rocket\Engine\CDN;
 
 use WP_Rocket\Admin\Options_Data;
 
@@ -7,7 +7,6 @@ use WP_Rocket\Admin\Options_Data;
  * CDN class
  *
  * @since 3.4
- * @author Remy Perona
  */
 class CDN {
 	/**
@@ -30,7 +29,6 @@ class CDN {
 	 * Search & Replace URLs with the CDN URLs in the provided content
 	 *
 	 * @since 3.4
-	 * @author Remy Perona
 	 *
 	 * @param string $html HTML content.
 	 * @return string
@@ -50,7 +48,6 @@ class CDN {
 	 * Rewrites URLs in a srcset attribute using the CDN URL
 	 *
 	 * @since 3.4.0.4
-	 * @author Remy Perona
 	 *
 	 * @param string $html HTML content.
 	 * @return string
@@ -66,7 +63,7 @@ class CDN {
 			$sources    = array_unique( array_map( 'trim', $sources ) );
 			$cdn_srcset = $srcset['sources'];
 			foreach ( $sources as $source ) {
-				$url        = \preg_split( '#\s+#', trim( $source ) );
+				$url        = preg_split( '#\s+#', trim( $source ) );
 				$cdn_srcset = str_replace( $url[0], $this->rewrite_url( $url[0] ), $cdn_srcset );
 			}
 
@@ -81,13 +78,12 @@ class CDN {
 	 * Rewrites an URL with the CDN URL
 	 *
 	 * @since 3.4
-	 * @author Remy Perona
 	 *
 	 * @param string $url Original URL.
 	 * @return string
 	 */
 	public function rewrite_url( $url ) {
-		if ( ! $this->options->get( 'cdn' ) ) {
+		if ( ! $this->options->get( 'cdn', 0 ) ) {
 			return $url;
 		}
 
@@ -108,14 +104,17 @@ class CDN {
 			return rocket_add_url_protocol( $cdn_url . '/' . ltrim( $url, '/' ) );
 		}
 
-		$home       = get_option( 'home' );
+		$home       = site_url();
 		$home_parts = wp_parse_url( $home );
 
 		if ( ! isset( $parsed_url['scheme'] ) ) {
 			return str_replace( $home_parts['host'], rocket_remove_url_protocol( $cdn_url ), $url );
 		}
 
-		$home_url = $home_parts['scheme'] . '://' . $home_parts['host'];
+		$home_url = [
+			'http://' . $home_parts['host'],
+			'https://' . $home_parts['host'],
+		];
 
 		return str_replace( $home_url, rocket_add_url_protocol( $cdn_url ), $url );
 	}
@@ -124,7 +123,6 @@ class CDN {
 	 * Rewrites URLs to CDN URLs in CSS content
 	 *
 	 * @since 3.4
-	 * @author Remy Perona
 	 *
 	 * @param string $content CSS content.
 	 * @return string
@@ -156,10 +154,10 @@ class CDN {
 	 * @since 2.1
 	 * @since 3.0 Don't check for WP Rocket CDN option activated to be able to use the function on Hosting with CDN auto-enabled.
 	 *
-	 * @param  string $zones List of zones. Default is 'all'.
+	 * @param  array $zones List of zones. Default is [ 'all' ].
 	 * @return array
 	 */
-	public function get_cdn_urls( $zones = 'all' ) {
+	public function get_cdn_urls( $zones = [ 'all' ] ) {
 		$hosts    = [];
 		$zones    = (array) $zones;
 		$cdn_urls = $this->options->get( 'cdn_cnames', [] );
@@ -207,7 +205,7 @@ class CDN {
 	 * @return string
 	 */
 	private function get_base_url() {
-		return '//' . wp_parse_url( get_option( 'home' ), PHP_URL_HOST );
+		return '//' . wp_parse_url( site_url(), PHP_URL_HOST );
 	}
 
 	/**

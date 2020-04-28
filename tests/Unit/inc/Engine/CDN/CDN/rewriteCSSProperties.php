@@ -1,18 +1,18 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\classes\CDN\CDN;
+namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\CDN;
 
-use WP_Rocket\CDN\CDN;
+use WP_Rocket\Engine\CDN\CDN;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\CDN\CDN::rewrite_css_properties
+ * @covers \WP_Rocket\Engine\CDN\CDN::rewrite_css_properties
  * @group  CDN
  */
 class TestRewriteCSSProperties extends TestCase {
 
 	public function testShouldRewriteCSSProperties() {
-		Functions\when( 'get_option' )->justReturn( 'http://example.org' );
+		Functions\when( 'site_url' )->justReturn( 'http://example.org' );
 		Functions\when( 'rocket_add_url_protocol' )->alias( function( $url ) {
 			return 'http://' . $url;
 		} );

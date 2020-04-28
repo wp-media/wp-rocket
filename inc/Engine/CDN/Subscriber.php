@@ -1,17 +1,15 @@
 <?php
-namespace WP_Rocket\Subscriber\CDN;
+namespace WP_Rocket\Engine\CDN;
 
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\CDN\CDN;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
  * Subscriber for the CDN feature
  *
  * @since 3.4
- * @author Remy Perona
  */
-class CDNSubscriber implements Subscriber_Interface {
+class Subscriber implements Subscriber_Interface {
 	/**
 	 * WP Rocket Options instance
 	 *
@@ -41,7 +39,6 @@ class CDNSubscriber implements Subscriber_Interface {
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
 	 * @since  3.4
-	 * @author Remy Perona
 	 *
 	 * @return array
 	 */
@@ -65,7 +62,6 @@ class CDNSubscriber implements Subscriber_Interface {
 	 * Rewrites URLs to the CDN URLs if allowed
 	 *
 	 * @since 3.4
-	 * @author Remy Perona
 	 *
 	 * @param string $html HTML content.
 	 * @return string
@@ -82,7 +78,6 @@ class CDNSubscriber implements Subscriber_Interface {
 	 * Rewrites URLs in srcset attributes to the CDN URLs if allowed
 	 *
 	 * @since 3.4.0.4
-	 * @author Remy Perona
 	 *
 	 * @param string $html HTML content.
 	 * @return string
@@ -99,7 +94,6 @@ class CDNSubscriber implements Subscriber_Interface {
 	 * Rewrites URLs to the CDN URLs in CSS files
 	 *
 	 * @since 3.4
-	 * @author Remy Perona
 	 *
 	 * @param string $content CSS content.
 	 * @return string
@@ -129,7 +123,6 @@ class CDNSubscriber implements Subscriber_Interface {
 	 * Gets the host value for each CDN URLs
 	 *
 	 * @since 3.4
-	 * @author Remy Perona
 	 *
 	 * @param array $hosts Base hosts.
 	 * @param array $zones Zones to get the CND URLs associated with.
@@ -160,7 +153,6 @@ class CDNSubscriber implements Subscriber_Interface {
 	 * Adds CDN URLs to the DNS prefetch links
 	 *
 	 * @since 3.4
-	 * @author Remy Perona
 	 *
 	 * @param array $domains Domain names to DNS prefetch.
 	 * @return array
@@ -183,7 +175,6 @@ class CDNSubscriber implements Subscriber_Interface {
 	 * Adds the CDN URL on the provided URL
 	 *
 	 * @since 3.4
-	 * @author Remy Perona
 	 *
 	 * @param string $url URL to rewrite.
 	 * @param string $original_url Original URL for this URL. Optional.
@@ -254,7 +245,6 @@ class CDNSubscriber implements Subscriber_Interface {
 	 * Checks if CDN can be applied
 	 *
 	 * @since 3.4
-	 * @author Remy Perona
 	 *
 	 * @return boolean
 	 */

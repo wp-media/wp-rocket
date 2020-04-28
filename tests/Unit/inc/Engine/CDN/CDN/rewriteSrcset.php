@@ -1,12 +1,12 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\classes\CDN\CDN;
+namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\CDN;
 
-use WP_Rocket\CDN\CDN;
+use WP_Rocket\Engine\CDN\CDN;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\CDN\CDN::rewrite_srcset
+ * @covers \WP_Rocket\Engine\CDN\CDN::rewrite_srcset
  * @group  CDN
  */
 class Test_RewriteSrcset extends TestCase {
@@ -15,7 +15,7 @@ class Test_RewriteSrcset extends TestCase {
 		Functions\when( 'content_url' )->justReturn( 'http://example.org/wp-content/' );
 		Functions\when( 'includes_url' )->justReturn( 'http://example.org/wp-includes/' );
 		Functions\when( 'wp_upload_dir' )->justReturn( 'http://example.org/wp-content/uploads/' );
-		Functions\when( 'get_option' )->justReturn( 'http://example.org' );
+		Functions\when( 'site_url' )->justReturn( 'http://example.org' );
 		Functions\when( 'rocket_add_url_protocol' )->alias( function( $url ) {
 			return 'http://' . $url;
 		} );
@@ -31,7 +31,7 @@ class Test_RewriteSrcset extends TestCase {
 		Functions\when( 'content_url' )->justReturn( 'http://example.org/wp-content/' );
 		Functions\when( 'includes_url' )->justReturn( 'http://example.org/wp-includes/' );
 		Functions\when( 'wp_upload_dir' )->justReturn( 'http://example.org/wp-content/uploads/' );
-		Functions\when( 'get_option' )->justReturn( 'http://example.org' );
+		Functions\when( 'site_url' )->justReturn( 'http://example.org' );
 		Functions\when( 'rocket_add_url_protocol' )->alias( function( $url ) {
 			return 'http://' . $url;
 		} );

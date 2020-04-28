@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\classes\CDN\CDN;
+namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\CDN;
 
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase as BaseTestCase;

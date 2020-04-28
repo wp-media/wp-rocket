@@ -1,16 +1,16 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\classes\subscriber\CDN\CDNSubscriber;
+namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\Subscriber;
 
 use Brain\Monkey\Functions;
 use Mockery;
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\CDN\CDN;
-use WP_Rocket\Subscriber\CDN\CDNSubscriber;
+use WP_Rocket\Engine\CDN\CDN;
+use WP_Rocket\Engine\CDN\Subscriber;
 
 /**
- * @covers \WP_Rocket\Subscriber\CDN\CDNSubscriber::maybe_replace_url
+ * @covers \WP_Rocket\Engine\CDN\Subscriber::maybe_replace_url
  * @group  CDN
  */
 class Test_MaybeReplaceUrl extends TestCase {
@@ -41,7 +41,7 @@ class Test_MaybeReplaceUrl extends TestCase {
 
 		$this->cdn        = Mockery::mock( CDN::class );
 		$this->options    = Mockery::mock( Options_Data::class );
-		$this->subscriber = new CDNSubscriber(
+		$this->subscriber = new Subscriber(
 			$this->options,
 			$this->cdn
 		);

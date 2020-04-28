@@ -1,12 +1,12 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\classes\CDN\CDN;
+namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\CDN;
 
 use Brain\Monkey\Functions;
-use WP_Rocket\CDN\CDN;
+use WP_Rocket\Engine\CDN\CDN;
 
 /**
- * @covers \WP_Rocket\CDN\CDN::rewrite_url
+ * @covers \WP_Rocket\Engine\CDN\CDN::rewrite_url
  * @group  CDN
  */
 class Test_RewriteURL extends TestCase {
@@ -15,7 +15,7 @@ class Test_RewriteURL extends TestCase {
 	 * @dataProvider rewriteURLProvider
 	 */
 	public function testShouldReturnURLWithCDN( $url, $expected ) {
-		Functions\when( 'get_option' )->justReturn( 'http://example.org' );
+		Functions\when( 'site_url' )->justReturn( 'http://example.org' );
 		Functions\when( 'rocket_add_url_protocol' )->alias( function( $url ) use ( $expected ) {
 			$scheme = parse_url( $expected, PHP_URL_SCHEME );
 			if ( ! $scheme ) {
@@ -36,7 +36,7 @@ class Test_RewriteURL extends TestCase {
 	 * @dataProvider rewriteURLWithSchemeProvider
 	 */
 	public function testShouldReturnURLWithCDNWhenCDNURLContainsScheme( $url, $expected ) {
-		Functions\when( 'get_option' )->justReturn( 'http://example.org' );
+		Functions\when( 'site_url' )->justReturn( 'http://example.org' );
 		Functions\when( 'rocket_add_url_protocol' )->returnArg();
 		Functions\when( 'rocket_remove_url_protocol' )->alias( function( $url ) {
 			return str_replace( [ 'http://', 'https://' ], '', $url );
@@ -53,7 +53,7 @@ class Test_RewriteURL extends TestCase {
 	}
 
 	public function testShouldReturnURLWithCDNWhenZoneIsCSSJS() {
-		Functions\when( 'get_option' )->justReturn( 'http://example.org' );
+		Functions\when( 'site_url' )->justReturn( 'http://example.org' );
 		Functions\when( 'rocket_add_url_protocol' )->returnArg();
 		Functions\when( 'rocket_remove_url_protocol' )->alias( function( $url ) {
 			return str_replace( [ 'http://', 'https://' ], '', $url );
