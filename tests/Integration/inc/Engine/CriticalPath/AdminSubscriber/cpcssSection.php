@@ -11,7 +11,6 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  *
  * @group  AdminOnly
  * @group  CriticalPath
- * @group  thisone
  */
 class Test_CpcssSection extends FilesystemTestCase {
 	protected      $path_to_test_data = '/inc/Engine/CriticalPath/AdminSubscriber/cpcssSectionIntegration.php';
@@ -33,6 +32,13 @@ class Test_CpcssSection extends FilesystemTestCase {
 		parent::tearDown();
 	}
 
+	private function getActualHtml() {
+		ob_start();
+		do_action( 'rocket_after_options_metabox' );
+
+		return $this->format_the_html( ob_get_clean() );
+	}
+
 	/**
 	 * @dataProvider providerTestData
 	 */
@@ -46,23 +52,19 @@ class Test_CpcssSection extends FilesystemTestCase {
 		add_filter( 'pre_get_rocket_option_async_css', [ $this, 'setCPCSSOption' ] );
 
 		if ( $config['is_option_excluded'] ) {
-			add_post_meta( $config['post']['ID'], '_rocket_exclude_async_css', $config['is_option_excluded'], true );
+			add_post_meta( $this->post_id, '_rocket_exclude_async_css', $config['is_option_excluded'], true );
 		}
 
 		$GLOBALS['post'] = (object) [
-			'ID'          => $config['post']['ID'],
+			'ID'          => $this->post_id,
 			'post_status' => $config['post']['post_status'],
 			'post_type'   => $config['post']['post_type'],
 		];
 
-		$this->assertTrue( $this->filesystem->exists( 'wp-content/cache/critical-css/1/posts/post-2.css' ) );
-		$this->assertTrue( $this->filesystem->exists( 'wp-content/plugins/wp-rocket/views/metabox/cpcss/container.php' ) );
-
-		ob_start();
-		do_action( 'rocket_after_options_metabox' );
-		$actual_html = ob_get_clean();
-
-		$this->assertContains( $this->format_the_html( $expected ), $this->format_the_html( $actual_html ) );
+		$this->assertContains(
+			$this->format_the_html( $expected ),
+			$this->getActualHtml()
+		);
 	}
 
 	public function setCPCSSOption() {
