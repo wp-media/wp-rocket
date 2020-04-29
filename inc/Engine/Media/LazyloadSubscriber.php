@@ -122,7 +122,7 @@ class LazyloadSubscriber implements Subscriber_Interface {
 		$polyfill = apply_filters( 'rocket_lazyload_polyfill', false );
 
 		$script_args = [
-			'base_url' => WP_ROCKET_ASSETS_JS_URL . 'lazyload/',
+			'base_url' => rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'lazyload/',
 			'version'  => self::SCRIPT_VERSION,
 			'polyfill' => $polyfill,
 		];
@@ -137,18 +137,18 @@ class LazyloadSubscriber implements Subscriber_Interface {
 			];
 		}
 
-		if ( $this->options->get( 'lazyload' ) || $this->options->get( 'lazyload_iframes' ) ) {
+		if ( $this->options->get( 'lazyload', 0 ) || $this->options->get( 'lazyload_iframes', 0 ) ) {
 			if ( apply_filters( 'rocket_use_native_lazyload', false ) ) {
 				$inline_args['elements']['loading'] = '[loading=lazy]';
 			}
 		}
 
-		if ( $this->options->get( 'lazyload' ) ) {
+		if ( $this->options->get( 'lazyload', 0 ) ) {
 			$inline_args['elements']['image']            = 'img[data-lazy-src]';
 			$inline_args['elements']['background_image'] = '.rocket-lazyload';
 		}
 
-		if ( $this->options->get( 'lazyload_iframes' ) ) {
+		if ( $this->options->get( 'lazyload_iframes', 0 ) ) {
 			$inline_args['elements']['iframe'] = 'iframe[data-lazy-src]';
 		}
 
@@ -164,7 +164,7 @@ class LazyloadSubscriber implements Subscriber_Interface {
 
 		$inline_script = $this->assets->getInlineLazyloadScript( $inline_args );
 
-		if ( ! defined( 'SCRIPT_DEBUG' ) || ! SCRIPT_DEBUG ) {
+		if ( ! rocket_get_constant( 'SCRIPT_DEBUG' ) ) {
 			$minify = new JS( $inline_script );
 
 			$inline_script = $minify->minify();
@@ -438,7 +438,7 @@ class LazyloadSubscriber implements Subscriber_Interface {
 	 * @return boolean
 	 */
 	private function can_lazyload_images() {
-		if ( ! $this->options->get( 'lazyload' ) ) {
+		if ( ! $this->options->get( 'lazyload', 0 ) ) {
 			return false;
 		}
 
@@ -461,7 +461,7 @@ class LazyloadSubscriber implements Subscriber_Interface {
 	 * @return boolean
 	 */
 	private function can_lazyload_iframes() {
-		if ( ! $this->options->get( 'lazyload_iframes' ) ) {
+		if ( ! $this->options->get( 'lazyload_iframes', 0 ) ) {
 			return false;
 		}
 
