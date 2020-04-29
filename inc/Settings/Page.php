@@ -1,7 +1,8 @@
 <?php
-namespace WP_Rocket\Admin\Settings;
+namespace WP_Rocket\Settings;
 
 use WP_Rocket\Admin\Database\Optimization;
+use WP_Rocket\Admin\Settings\Settings;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Interfaces\Render_Interface;
 

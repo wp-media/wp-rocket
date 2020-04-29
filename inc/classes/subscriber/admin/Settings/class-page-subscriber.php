@@ -2,7 +2,7 @@
 namespace WP_Rocket\Subscriber\Admin\Settings;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Rocket\Admin\Settings\Page;
+use WP_Rocket\Settings\Page;
 
 defined( 'ABSPATH' ) || exit;
 
