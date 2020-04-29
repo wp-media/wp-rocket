@@ -11,35 +11,35 @@ use WP_Rocket\Engine\CDN\CDN;
  */
 class Test_Rewrite extends TestCase {
 
-	public function testShouldRewriteURLToCDN() {
-		Functions\when( 'content_url' )->justReturn( 'http://example.org/wp-content/' );
-		Functions\when( 'includes_url' )->justReturn( 'http://example.org/wp-includes/' );
-		Functions\when( 'wp_upload_dir' )->justReturn( 'http://example.org/wp-content/uploads/' );
-		Functions\when( 'site_url' )->justReturn( 'http://example.org' );
+	/**
+	 * @dataProvider providerTestData
+	 */
+	public function testShouldRewriteURLToCDN( $site_url, $original, $expected ) {
+		Functions\when( 'content_url' )->justReturn( "{$site_url}/wp-content/" );
+		Functions\when( 'includes_url' )->justReturn( "{$site_url}/wp-includes/" );
+		Functions\when( 'wp_upload_dir' )->justReturn( "{$site_url}/wp-content/uploads/" );
+		Functions\when( 'site_url' )->justReturn( $site_url );
 		Functions\when( 'rocket_add_url_protocol' )->alias( function( $url ) {
+			if ( strpos( $url, 'http://' ) !== false || strpos( $url, 'https://' ) !== false ) {
+				return $url;
+			}
+
+			if ( substr( $url, 0, 2 ) === '//' ) {
+				return 'http:' . $url;
+			}
+
 			return 'http://' . $url;
 		} );
 
-		$original = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/CDN/original.html' );
-		$rewrite  = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/CDN/rewrite.html' );
-
 		$cdn = new CDN( $this->getOptionsMock() );
-		$this->assertSame( $rewrite, $cdn->rewrite( $original ) );
+
+		$this->assertSame(
+			$this->format_the_html( $expected ),
+			$this->format_the_html( $cdn->rewrite( $original ) )
+		);
 	}
 
-	public function testShouldRewriteURLToCDNWhenHomeContainsSubdir() {
-		Functions\when( 'content_url' )->justReturn( 'https://example.org/blog/wp-content/' );
-		Functions\when( 'includes_url' )->justReturn( 'https://example.org/blog/wp-includes/' );
-		Functions\when( 'wp_upload_dir' )->justReturn( 'https://example.org/blog/wp-content/uploads/' );
-		Functions\when( 'site_url' )->justReturn( 'https://example.org/blog' );
-		Functions\when( 'rocket_add_url_protocol' )->alias( function( $url ) {
-			return 'https://' . $url;
-		} );
-
-		$original = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/CDN/subdir/original.html' );
-		$rewrite  = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/CDN/subdir/rewrite.html' );
-
-		$cdn = new CDN( $this->getOptionsMock() );
-		$this->assertSame( $rewrite, $cdn->rewrite( $original ) );
+	public function providerTestData() {
+		return $this->getTestData( __DIR__, 'rewrite' );
 	}
 }

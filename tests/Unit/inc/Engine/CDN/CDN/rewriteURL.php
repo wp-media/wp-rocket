@@ -27,13 +27,16 @@ class Test_RewriteURL extends TestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldRewriteURLWithCDNURL( $url, $expected ) {
-		Functions\when( 'rocket_add_url_protocol' )->alias( function( $url ) use ( $expected ) {
-			$scheme = parse_url( $expected, PHP_URL_SCHEME );
-			if ( ! $scheme ) {
-				return 'http://' . $url;
+		Functions\when( 'rocket_add_url_protocol' )->alias( function( $url ) {
+			if ( strpos( $url, 'http://' ) !== false || strpos( $url, 'https://' ) !== false ) {
+				return $url;
 			}
 
-			return $url;
+			if ( substr( $url, 0, 2 ) === '//' ) {
+				return 'http:' . $url;
+			}
+
+			return 'http://' . $url;
 		} );
 		Functions\when( 'rocket_remove_url_protocol' )->alias( function( $url ) {
 			return str_replace( [ 'http://', 'https://' ], '', $url );
