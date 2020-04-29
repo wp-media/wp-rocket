@@ -149,7 +149,7 @@ class Controller {
 		add_filter( 'action_scheduler_store_class', array( $this, 'get_store_class' ), 100, 1 );
 		add_filter( 'action_scheduler_logger_class', array( $this, 'get_logger_class' ), 100, 1 );
 		add_action( 'init', array( $this, 'maybe_hook_migration' ) );
-		add_action( 'shutdown', array( $this, 'schedule_migration' ), 0, 0 );
+		add_action( 'wp_loaded', array( $this, 'schedule_migration' ) );
 
 		// Action Scheduler may be displayed as a Tools screen or WooCommerce > Status administration screen
 		add_action( 'load-tools_page_action-scheduler', array( $this, 'hook_admin_notices' ), 10, 0 );

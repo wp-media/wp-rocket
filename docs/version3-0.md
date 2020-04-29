@@ -2,7 +2,7 @@
 
 ### Do we need to wait for this to be bundled with WooCommerce?
 
-No. Action Scheduler can be run as a standalone plugin. Action Scheduler 3.0 is also part of WooCommerce Subscriptions 3.0, so when updating WooCommerce Subscriptions, Action Scheduler will also be updated.
+No. Action Scheduler can be run as a standalone plugin. Action Scheduler 3.X is also part of WooCommerce 4.0 and WooCommerce Subscriptions 3.0, so when updating WooCommerce or WooCommerce Subscriptions, Action Scheduler will also be updated.
 
 ### Can we safely switch to action scheduler version 3.0 and ditch the custom tables plugin?
 
@@ -35,6 +35,10 @@ The default value for this filter is `1` in versions 3.0.X and `5` in versions 3
 Alternatively, the async queue runner can be disabled while your migration is in process with `add_filter( 'action_scheduler_allow_async_request_runner', '__return_false' );`.
 
 Once the migration is complete, these filters should be removed.
+
+### Is it safe to use Action Scheduler function in the WordPress `shutdown` hook.
+
+No, you should avoid calls to Action Scheduler functions in the `shutdown` hook because the `shutdown` hook is still triggered after a fatal error. If this occurs while WordPress is loading, Action Scheduler is in an unknown state.
 
 ### Is there a strong likelihood of migration issues with any of the above?
 

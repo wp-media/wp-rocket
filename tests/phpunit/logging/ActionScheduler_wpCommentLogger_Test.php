@@ -47,13 +47,6 @@ class ActionScheduler_wpCommentLogger_Test extends ActionScheduler_UnitTestCase 
 		$this->assertEquals( $message, $entry->get_message() );
 	}
 
-	public function test_null_log_entry() {
-		$logger = ActionScheduler::logger();
-		$entry = $logger->get_entry( 1 );
-		$this->assertEquals( '', $entry->get_action_id() );
-		$this->assertEquals( '', $entry->get_message() );
-	}
-
 	public function test_erroneous_entry_id() {
 		$comment = wp_insert_comment(array(
 			'comment_post_ID' => 1,
