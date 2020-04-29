@@ -8,7 +8,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Handle rendering of HTML content for the settings page.
  *
- * @since 3.6 Moves into the new architecture.
+ * @since 3.5.5 Moves into the new architecture.
  * @since 3.0
  */
 class Render extends Abstract_render {
