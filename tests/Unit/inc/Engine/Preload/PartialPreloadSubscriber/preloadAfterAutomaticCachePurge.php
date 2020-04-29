@@ -11,7 +11,7 @@ use WP_Rocket\Engine\Preload\PartialProcess;
 
 /**
  * @covers \WP_Rocket\Engine\Preload\PartialPreloadSubscriber::preload_after_automatic_cache_purge
- * @group  PreloadQ
+ * @group  Preload
  */
 class Test_PreloadAfterAutomaticCachePurge extends TestCase {
 	private $urls = [];
