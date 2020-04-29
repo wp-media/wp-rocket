@@ -104,6 +104,11 @@ function rocket_display_cache_options_meta_boxes() {
 		</div>
 
 		<?php
+		/**
+		 * Fires after WP Rocket’s metabox.
+		 *
+		 * @since 3.6
+		 */
 		do_action( 'rocket_after_options_metabox' );
 	}
 }
