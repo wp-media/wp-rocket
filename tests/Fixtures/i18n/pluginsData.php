@@ -2,7 +2,7 @@
 
 return [
 	'wpml' => [
-		'codes' => [
+		'codes'        => [
 			'en' => [
 				'code'           => 'en',
 				'id'             => '1',
@@ -40,8 +40,9 @@ return [
 				'display_name'   => 'German',
 			],
 		],
-		'langs' => [ 'en', 'fr', 'de' ],
-		'uris'  => [
+		'default_lang' => 'en',
+		'langs'        => [ 'en', 'fr', 'de' ],
+		'uris'         => [
 			'en' => '',
 			'fr' => '?lang=fr',
 			'de' => '?lang=de',
@@ -49,17 +50,19 @@ return [
 	],
 
 	'qtranslate' => [
-		'codes' => [ 'en', 'fr', 'de' ],
-		'langs' => [ 'en', 'fr', 'de' ],
+		'default_lang' => 'en',
+		'codes'        => [ 'en', 'fr', 'de' ],
+		'langs'        => [ 'en', 'fr', 'de' ],
 	],
 
 	'qtranslate-x' => [
-		'codes' => [ 'en', 'fr', 'de' ],
-		'langs' => [ 'en', 'fr', 'de' ],
+		'default_lang' => 'en',
+		'codes'        => [ 'en', 'fr', 'de' ],
+		'langs'        => [ 'en', 'fr', 'de' ],
 	],
 
 	'polylang' => [
-		'options' => [
+		'options'      => [
 			'model'      => [
 				[
 					'slug'   => 'en',
@@ -79,7 +82,8 @@ return [
 			],
 			'force_lang' => true,
 		],
-		'codes'   => [ 'en', 'fr', 'de' ],
-		'langs'   => [ 'en', 'fr', 'de' ],
+		'default_lang' => 'en',
+		'codes'        => [ 'en', 'fr', 'de' ],
+		'langs'        => [ 'en', 'fr', 'de' ],
 	],
 ];

@@ -1,358 +1,224 @@
 <?php
 
-return [
-	'vfs_dir'   => 'wp-content/cache/wp-rocket/',
+$i18n_plugins = require WP_ROCKET_TESTS_FIXTURES_DIR . '/i18n/pluginsData.php';
 
-	// Virtual filesystem structure.
-	'structure' => [
-		'wp-content' => [
-			'cache'            => [
-				'wp-rocket'    => [
-					'example.org'                 => [
-						'index.html'      => '',
-						'index.html_gzip' => '',
-						'de'              => [
-							'index.html'      => '',
-							'index.html_gzip' => '',
-						],
-						'fr'              => [
-							'index.html'      => '',
-							'index.html_gzip' => '',
-						],
-						'hidden-files'    => [
-							'.mobile-active' => '',
-							'.no-webp'       => '',
-						],
-						'lorem-ipsum'     => [
-							'index.html'      => '',
-							'index.html_gzip' => '',
-						],
-						'nec-ullamcorper' => [
-							'enim-nunc-faucibus' => [
-								'index.html'      => '',
-								'index.html_gzip' => '',
-							],
-							'index.html'         => '',
-							'index.html_gzip'    => '',
-						],
-					],
-					'example.org-wpmedia-123456'  => [
-						'index.html'      => '',
-						'index.html_gzip' => '',
-						'lorem-ipsum'     => [
-							'index.html'      => '',
-							'index.html_gzip' => '',
-						],
-					],
-					'example.org-wpmedia1-123456' => [
-						'index.html'      => '',
-						'index.html_gzip' => '',
-						'nec-ullamcorper' => [
-							'enim-nunc-faucibus' => [
-								'index.html'      => '',
-								'index.html_gzip' => '',
-							],
-							'index.html'         => '',
-							'index.html_gzip'    => '',
-						],
-					],
-				],
-				'min'          => [
-					'1' => [
-						'123456.css' => '',
-						'123456.js'  => '',
-					],
-				],
-				'busting'      => [
-					'1' => [
-						'ga-123456.js' => '',
-					],
-				],
-				'critical-css' => [
-					'1' => [
-						'front-page.php' => '',
-						'blog.php'       => '',
-					],
-				],
-			],
-			'wp-rocket-config' => [
-				'example.org.php' => 'test',
-			],
-		],
-	],
+return [
+	'vfs_dir'   => 'wp-content/cache/',
 
 	// Test data.
 	'test_data' => [
-		'shouldDeleteOnlyASingleFile'                        => [
-			'to_delete'   => 'wp-content/cache/wp-rocket/example.org/lorem-ipsum/index.html',
+		'shouldDeleteOnlyASingleFile' => [
+			'to_delete'   => 'vfs://public/wp-content/cache/wp-rocket/index.html',
 			'to_preserve' => [],
 			'expected'    => [
+				'removed'              => [
+					'vfs://public/wp-content/cache/wp-rocket/index.html' => null,
+				],
 				'before_rocket_rrmdir' => 1,
 				'after_rocket_rrmdir'  => 0,
-				'deleted'              => [
-					'wp-content/cache/wp-rocket/example.org/lorem-ipsum/index.html',
-				],
 			],
 		],
-		'shouldDeleteHiddenFiles'                       => [
+
+		'shouldDeleteHiddenFiles'                                        => [
 			'to_delete'   => 'wp-content/cache/wp-rocket/example.org/hidden-files/',
 			'to_preserve' => [],
 			'expected'    => [
+				'removed'              => [
+					'vfs://public/wp-content/cache/wp-rocket/example.org/hidden-files/' => null,
+				],
 				'before_rocket_rrmdir' => 1,
 				'after_rocket_rrmdir'  => 1,
-				'deleted'              => [
-					'wp-content/cache/wp-rocket/example.org/hidden-files',
-					'wp-content/cache/wp-rocket/example.org/hidden-files/.mobile-active',
-					'wp-content/cache/wp-rocket/example.org/hidden-files/.no-webp',
-				],
 			],
 		],
 
 		// Should delete the directory and all of its entries.
-		'shouldDeleteSingleDir'                         => [
+		'example.org/lorem-ipsum_shouldDeleteSingleDir'                  => [
 			'to_delete'   => 'wp-content/cache/wp-rocket/example.org/lorem-ipsum/',
 			'to_preserve' => [],
 			'expected'    => [
+				'removed'              => [
+					'vfs://public/wp-content/cache/wp-rocket/example.org/lorem-ipsum/' => null,
+				],
 				'before_rocket_rrmdir' => 1,
 				'after_rocket_rrmdir'  => 1,
-				'deleted'              => [
-					'wp-content/cache/wp-rocket/example.org/lorem-ipsum',
-					'wp-content/cache/wp-rocket/example.org/lorem-ipsum/index.html',
-					'wp-content/cache/wp-rocket/example.org/lorem-ipsum/index.html_gzip',
-				],
 			],
 		],
-		'shouldDeleteSingleDirWithChildDirs' => [
+		'example.org/nec-ullamcorper_shouldDeleteSingleDirWithChildDirs' => [
 			'to_delete'   => 'wp-content/cache/wp-rocket/example.org/nec-ullamcorper/',
 			'to_preserve' => [],
 			'expected'    => [
+				'removed'              => [
+					'vfs://public/wp-content/cache/wp-rocket/example.org/nec-ullamcorper/' => null,
+				],
 				'before_rocket_rrmdir' => 2,
 				'after_rocket_rrmdir'  => 2,
-				'deleted'              => [
-					'wp-content/cache/wp-rocket/example.org/nec-ullamcorper',
-					'wp-content/cache/wp-rocket/example.org/nec-ullamcorper/enim-nunc-faucibus',
-					'wp-content/cache/wp-rocket/example.org/nec-ullamcorper/enim-nunc-faucibus/index.html',
-					'wp-content/cache/wp-rocket/example.org/nec-ullamcorper/enim-nunc-faucibus/index.html_gzip',
-					'wp-content/cache/wp-rocket/example.org/nec-ullamcorper/index.html',
-					'wp-content/cache/wp-rocket/example.org/nec-ullamcorper/index.html_gzip',
-				],
 			],
 		],
-		'shouldDeleteAllOf_example.org-wpmedia1-123456' => [
-			'to_delete'   => 'wp-content/cache/wp-rocket/example.org-wpmedia1-123456',
+		'example.org-wpmedia-123456_shouldDeleteAll'                     => [
+			'to_delete'   => 'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456/',
 			'to_preserve' => [],
 			'expected'    => [
-				'before_rocket_rrmdir' => 3,
-				'after_rocket_rrmdir'  => 3,
-				'deleted'              => [
-					'wp-content/cache/wp-rocket/example.org-wpmedia1-123456',
-					'wp-content/cache/wp-rocket/example.org-wpmedia1-123456/index.html',
-					'wp-content/cache/wp-rocket/example.org-wpmedia1-123456/index.html_gzip',
-					'wp-content/cache/wp-rocket/example.org-wpmedia1-123456/nec-ullamcorper',
-					'wp-content/cache/wp-rocket/example.org-wpmedia1-123456/nec-ullamcorper/enim-nunc-faucibus',
-					'wp-content/cache/wp-rocket/example.org-wpmedia1-123456/nec-ullamcorper/enim-nunc-faucibus/index.html',
-					'wp-content/cache/wp-rocket/example.org-wpmedia1-123456/nec-ullamcorper/enim-nunc-faucibus/index.html_gzip',
-					'wp-content/cache/wp-rocket/example.org-wpmedia1-123456/nec-ullamcorper/index.html',
-					'wp-content/cache/wp-rocket/example.org-wpmedia1-123456/nec-ullamcorper/index.html_gzip',
+				'removed'              => [
+					'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456/' => null,
 				],
+				'before_rocket_rrmdir' => 4,
+				'after_rocket_rrmdir'  => 4,
 			],
 		],
-		'shouldDeleteAllOf_example.org'                 => [
-			'to_delete'   => 'wp-content/cache/wp-rocket/example.org/',
+		'example.org_shouldDeleteAll'                                    => [
+			'to_delete'   => 'vfs://public/wp-content/cache/wp-rocket/example.org/',
 			'to_preserve' => [],
 			'expected'    => [
-				'before_rocket_rrmdir' => 7,
-				'after_rocket_rrmdir'  => 7,
-				'deleted'              => [
-					'wp-content/cache/wp-rocket/example.org',
-					'wp-content/cache/wp-rocket/example.org/index.html',
-					'wp-content/cache/wp-rocket/example.org/index.html_gzip',
-					'wp-content/cache/wp-rocket/example.org/de',
-					'wp-content/cache/wp-rocket/example.org/de/index.html',
-					'wp-content/cache/wp-rocket/example.org/de/index.html_gzip',
-					'wp-content/cache/wp-rocket/example.org/fr',
-					'wp-content/cache/wp-rocket/example.org/fr/index.html',
-					'wp-content/cache/wp-rocket/example.org/fr/index.html_gzip',
-					'wp-content/cache/wp-rocket/example.org/hidden-files',
-					'wp-content/cache/wp-rocket/example.org/hidden-files/.mobile-active',
-					'wp-content/cache/wp-rocket/example.org/hidden-files/.no-webp',
-					'wp-content/cache/wp-rocket/example.org/lorem-ipsum',
-					'wp-content/cache/wp-rocket/example.org/lorem-ipsum/index.html',
-					'wp-content/cache/wp-rocket/example.org/lorem-ipsum/index.html_gzip',
-					'wp-content/cache/wp-rocket/example.org/nec-ullamcorper',
-					'wp-content/cache/wp-rocket/example.org/nec-ullamcorper/enim-nunc-faucibus',
-					'wp-content/cache/wp-rocket/example.org/nec-ullamcorper/enim-nunc-faucibus/index.html',
-					'wp-content/cache/wp-rocket/example.org/nec-ullamcorper/enim-nunc-faucibus/index.html_gzip',
-					'wp-content/cache/wp-rocket/example.org/nec-ullamcorper/index.html',
-					'wp-content/cache/wp-rocket/example.org/nec-ullamcorper/index.html_gzip',
+				'removed'              => [
+					'vfs://public/wp-content/cache/wp-rocket/example.org/' => null,
 				],
+				'before_rocket_rrmdir' => 10,
+				'after_rocket_rrmdir'  => 10,
 			],
 		],
 
 		/**
 		 * Should not delete directories or its entries when marked as preserved.
 		 */
-		'shouldBailOutWhenRootDirIsPreserved_fr' => [
+		'example.org_shouldBailOutWhenRootDirIsPreserved_fr'             => [
 			'to_delete'   => 'wp-content/cache/wp-rocket/example.org/fr',
 			'to_preserve' => [
-				'vfs://public/wp-content/cache/wp-rocket/example.org/de',
-				'vfs://public/wp-content/cache/wp-rocket/example.org/fr',
+				'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/de',
+				'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/fr',
 			],
 			'expected'    => [
-				'before_rocket_rrmdir' => 0,
-				'after_rocket_rrmdir'  => 0,
-				'deleted'              => [],
+				'removed'              => [
+					'vfs://public/wp-content/cache/wp-rocket/example.org/fr/' => null,
+				],
+				'before_rocket_rrmdir' => 1,
+				'after_rocket_rrmdir'  => 1,
 			],
 		],
-		'shouldBailOutWhenRootDirIsPreserved_de' => [
+
+		'example.org_shouldBailOutWhenRootDirIsPreserved_de' => [
 			'to_delete'   => 'wp-content/cache/wp-rocket/example.org/de',
 			'to_preserve' => [
-				'vfs://public/wp-content/cache/wp-rocket/example.org/de',
-				'vfs://public/wp-content/cache/wp-rocket/example.org/fr',
+				'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/de',
+				'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/fr',
 			],
 			'expected'    => [
-				'before_rocket_rrmdir' => 0,
-				'after_rocket_rrmdir'  => 0,
-				'deleted'              => [],
+				'removed'              => [
+					'vfs://public/wp-content/cache/wp-rocket/example.org/de/' => null,
+				],
+				'before_rocket_rrmdir' => 1,
+				'after_rocket_rrmdir'  => 1,
 			],
 		],
 		// Delete all except the de directory/files.
-		'shouldDeleteAllExceptDEentries'                => [
+		'example.org_shouldDeleteAllExceptDEentries'         => [
 			'to_delete'   => 'wp-content/cache/wp-rocket/example.org',
 			'to_preserve' => [
-				'vfs://public/wp-content/cache/wp-rocket/example.org/de',
+				'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/de',
 			],
 			'expected'    => [
-				'before_rocket_rrmdir' => 6,
-				'after_rocket_rrmdir'  => 6,
-				'deleted'              => [
-					'wp-content/cache/wp-rocket/example.org/index.html',
-					'wp-content/cache/wp-rocket/example.org/index.html_gzip',
-					'wp-content/cache/wp-rocket/example.org/fr',
-					'wp-content/cache/wp-rocket/example.org/fr/index.html',
-					'wp-content/cache/wp-rocket/example.org/fr/index.html_gzip',
-					'wp-content/cache/wp-rocket/example.org/hidden-files',
-					'wp-content/cache/wp-rocket/example.org/hidden-files/.mobile-active',
-					'wp-content/cache/wp-rocket/example.org/hidden-files/.no-webp',
-					'wp-content/cache/wp-rocket/example.org/lorem-ipsum',
-					'wp-content/cache/wp-rocket/example.org/lorem-ipsum/index.html',
-					'wp-content/cache/wp-rocket/example.org/lorem-ipsum/index.html_gzip',
-					'wp-content/cache/wp-rocket/example.org/nec-ullamcorper',
-					'wp-content/cache/wp-rocket/example.org/nec-ullamcorper/enim-nunc-faucibus',
-					'wp-content/cache/wp-rocket/example.org/nec-ullamcorper/enim-nunc-faucibus/index.html',
-					'wp-content/cache/wp-rocket/example.org/nec-ullamcorper/enim-nunc-faucibus/index.html_gzip',
-					'wp-content/cache/wp-rocket/example.org/nec-ullamcorper/index.html',
-					'wp-content/cache/wp-rocket/example.org/nec-ullamcorper/index.html_gzip',
+				'removed'              => [
+					'vfs://public/wp-content/cache/wp-rocket/example.org/index.html'             => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/index.html_gzip'        => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/index-mobile.html'      => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/index-mobile.html_gzip' => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/blog/'                  => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/category/'              => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/fr/'                    => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/hidden-files/'          => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/lorem-ipsum/'           => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/nec-ullamcorper/'       => null,
 				],
+				'before_rocket_rrmdir' => 9,
+				'after_rocket_rrmdir'  => 9,
 			],
 		],
-		// Should delete all except fr and de directories and files.
-		'shouldDeleteAllExceptFEandDE'                  => [
-			'to_delete'                           => 'wp-content/cache/wp-rocket/example.org',
-			'to_preserve'                         => [
-				'vfs://public/wp-content/cache/wp-rocket/example.org/de',
-				'vfs://public/wp-content/cache/wp-rocket/example.org/fr',
+		'example.org_shouldDeleteAllExceptFEandDE'           => [
+			'to_delete'   => 'vfs://public/wp-content/cache/wp-rocket/example.org',
+			'to_preserve' => [
+				'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/de',
+				'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/fr',
 			],
-			'expected'                            => [
-				'before_rocket_rrmdir' => 5,
-				'after_rocket_rrmdir'  => 5,
-				'deleted'              => [
-					'wp-content/cache/wp-rocket/example.org/index.html',
-					'wp-content/cache/wp-rocket/example.org/index.html_gzip',
-					'wp-content/cache/wp-rocket/example.org/hidden-files',
-					'wp-content/cache/wp-rocket/example.org/hidden-files/.mobile-active',
-					'wp-content/cache/wp-rocket/example.org/hidden-files/.no-webp',
-					'wp-content/cache/wp-rocket/example.org/lorem-ipsum',
-					'wp-content/cache/wp-rocket/example.org/lorem-ipsum/index.html',
-					'wp-content/cache/wp-rocket/example.org/lorem-ipsum/index.html_gzip',
-					'wp-content/cache/wp-rocket/example.org/nec-ullamcorper',
-					'wp-content/cache/wp-rocket/example.org/nec-ullamcorper/enim-nunc-faucibus',
-					'wp-content/cache/wp-rocket/example.org/nec-ullamcorper/enim-nunc-faucibus/index.html',
-					'wp-content/cache/wp-rocket/example.org/nec-ullamcorper/enim-nunc-faucibus/index.html_gzip',
-					'wp-content/cache/wp-rocket/example.org/nec-ullamcorper/index.html',
-					'wp-content/cache/wp-rocket/example.org/nec-ullamcorper/index.html_gzip',
+			'expected'    => [
+				'removed'              => [
+					'vfs://public/wp-content/cache/wp-rocket/example.org/index.html'       => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/index.html_gzip'  => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/blog/'            => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/category/'        => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/hidden-files/'    => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/lorem-ipsum/'     => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/nec-ullamcorper/' => null,
 				],
+				'before_rocket_rrmdir' => 8,
+				'after_rocket_rrmdir'  => 8,
 			],
-			// Should delete all in the example.org directory _when_ the preserved language does not exist in the cache.
-			'shouldDeleteAllWhenLangNotPreserved' => [
-				'to_delete'   => 'wp-content/cache/wp-rocket/example.org/',
-				'to_preserve' => [
-					'vfs://public/wp-content/cache/wp-rocket/example.org/nl', // doesn't have files in the cache.
-				],
-				'expected'    => [
-					'before_rocket_rrmdir' => 7,
-					'after_rocket_rrmdir'  => 7,
-					'deleted'              => [
-						'wp-content/cache/wp-rocket/example.org',
-						'wp-content/cache/wp-rocket/example.org/index.html',
-						'wp-content/cache/wp-rocket/example.org/index.html_gzip',
-						'wp-content/cache/wp-rocket/example.org/de',
-						'wp-content/cache/wp-rocket/example.org/de/index.html',
-						'wp-content/cache/wp-rocket/example.org/de/index.html_gzip',
-						'wp-content/cache/wp-rocket/example.org/fr',
-						'wp-content/cache/wp-rocket/example.org/fr/index.html',
-						'wp-content/cache/wp-rocket/example.org/fr/index.html_gzip',
-						'wp-content/cache/wp-rocket/example.org/hidden-files',
-						'wp-content/cache/wp-rocket/example.org/hidden-files/.mobile-active',
-						'wp-content/cache/wp-rocket/example.org/hidden-files/.no-webp',
-						'wp-content/cache/wp-rocket/example.org/lorem-ipsum',
-						'wp-content/cache/wp-rocket/example.org/lorem-ipsum/index.html',
-						'wp-content/cache/wp-rocket/example.org/lorem-ipsum/index.html_gzip',
-						'wp-content/cache/wp-rocket/example.org/nec-ullamcorper',
-						'wp-content/cache/wp-rocket/example.org/nec-ullamcorper/enim-nunc-faucibus',
-						'wp-content/cache/wp-rocket/example.org/nec-ullamcorper/enim-nunc-faucibus/index.html',
-						'wp-content/cache/wp-rocket/example.org/nec-ullamcorper/enim-nunc-faucibus/index.html_gzip',
-						'wp-content/cache/wp-rocket/example.org/nec-ullamcorper/index.html',
-						'wp-content/cache/wp-rocket/example.org/nec-ullamcorper/index.html_gzip',
-					],
-				],
+		],
+		// Should delete all in the example.org directory _when_ the preserved language does not exist in the cache.
+		'example.org_shouldDeleteAllWhenLangNotPreserved'    => [
+			'to_delete'   => 'vfs://public/wp-content/cache/wp-rocket/example.org/',
+			'to_preserve' => [
+				'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/nl', // doesn't have files in the cache.
 			],
+			'expected'    => [
+				'removed'              => [
+					'vfs://public/wp-content/cache/wp-rocket/example.org/' => null,
+				],
+				'before_rocket_rrmdir' => 10,
+				'after_rocket_rrmdir'  => 10,
+			],
+		],
 
-			// Should delete everything in the wp-content/cache/wp-rocket/ directory except for example.org/de and example.org/fr
-			'shouldDeleteAllWhenLangNotPreserved' => [
-				'to_delete'   => 'wp-content/cache/wp-rocket/',
-				'to_preserve' => [
-					'vfs://public/wp-content/cache/wp-rocket/example.org/de',
-					'vfs://public/wp-content/cache/wp-rocket/example.org/fr',
+		'example.org-wpmedia-123456_shouldDeleteAllExceptFEandDE' => [
+			'to_delete'   => 'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456/',
+			'to_preserve' => [
+				'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/de',
+				'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/fr',
+			],
+			'expected'    => [
+				'removed'              => [
+					'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456/index.html'      => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456/index.html_gzip' => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456/lorem-ipsum/'    => null,
 				],
-				'expected'    => [
-					'before_rocket_rrmdir' => 7,
-					'after_rocket_rrmdir'  => 7,
-					'deleted'              => [
-						// example.org
-						'wp-content/cache/wp-rocket/example.org/index.html',
-						'wp-content/cache/wp-rocket/example.org/index.html_gzip',
-						'wp-content/cache/wp-rocket/example.org/hidden-files',
-						'wp-content/cache/wp-rocket/example.org/hidden-files/.mobile-active',
-						'wp-content/cache/wp-rocket/example.org/hidden-files/.no-webp',
-						'wp-content/cache/wp-rocket/example.org/lorem-ipsum',
-						'wp-content/cache/wp-rocket/example.org/lorem-ipsum/index.html',
-						'wp-content/cache/wp-rocket/example.org/lorem-ipsum/index.html_gzip',
-						'wp-content/cache/wp-rocket/example.org/nec-ullamcorper',
-						'wp-content/cache/wp-rocket/example.org/nec-ullamcorper/enim-nunc-faucibus',
-						'wp-content/cache/wp-rocket/example.org/nec-ullamcorper/enim-nunc-faucibus/index.html',
-						'wp-content/cache/wp-rocket/example.org/nec-ullamcorper/enim-nunc-faucibus/index.html_gzip',
-						'wp-content/cache/wp-rocket/example.org/nec-ullamcorper/index.html',
-						'wp-content/cache/wp-rocket/example.org/nec-ullamcorper/index.html_gzip',
-						// example.org-wpmedia-123456
-						'wp-content/cache/wp-rocket/example.org-wpmedia-123456',
-						'wp-content/cache/wp-rocket/example.org-wpmedia-123456/index.html',
-						'wp-content/cache/wp-rocket/example.org-wpmedia-123456/index.html_gzip',
-						'wp-content/cache/wp-rocket/example.org-wpmedia-123456/lorem-ipsum',
-						'wp-content/cache/wp-rocket/example.org-wpmedia-123456/lorem-ipsum/index.html',
-						'wp-content/cache/wp-rocket/example.org-wpmedia-123456/lorem-ipsum/index.html_gzip',
-						// example.org-wpmedia1-123456
-						'wp-content/cache/wp-rocket/example.org-wpmedia1-123456',
-						'wp-content/cache/wp-rocket/example.org-wpmedia1-123456/index.html',
-						'wp-content/cache/wp-rocket/example.org-wpmedia1-123456/index.html_gzip',
-						'wp-content/cache/wp-rocket/example.org-wpmedia1-123456/nec-ullamcorper',
-						'wp-content/cache/wp-rocket/example.org-wpmedia1-123456/nec-ullamcorper/enim-nunc-faucibus',
-						'wp-content/cache/wp-rocket/example.org-wpmedia1-123456/nec-ullamcorper/enim-nunc-faucibus/index.html',
-						'wp-content/cache/wp-rocket/example.org-wpmedia1-123456/nec-ullamcorper/enim-nunc-faucibus/index.html_gzip',
-						'wp-content/cache/wp-rocket/example.org-wpmedia1-123456/nec-ullamcorper/index.html',
-						'wp-content/cache/wp-rocket/example.org-wpmedia1-123456/nec-ullamcorper/index.html_gzip',
-					],
+				'before_rocket_rrmdir' => 2,
+				'after_rocket_rrmdir'  => 2,
+			],
+		],
+
+		'shouldDeleteAllWhenLangNotPreserved' => [
+			'to_delete'   => 'vfs://public/wp-content/cache/',
+			'to_preserve' => [
+				'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/de',
+				'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/fr',
+			],
+			'expected'    => [
+				'removed'              => [
+					'vfs://public/wp-content/cache/min/'                 => null,
+					'vfs://public/wp-content/cache/busting/'             => null,
+					'vfs://public/wp-content/cache/critical-css/'        => null,
+					'vfs://public/wp-content/cache/wp-rocket/index.html' => null,
+
+					'vfs://public/wp-content/cache/wp-rocket/baz.example.org/' => [],
+
+					'vfs://public/wp-content/cache/wp-rocket/example.org/index.html'             => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/index.html_gzip'        => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/index-mobile.html'      => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/index-mobile.html_gzip' => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/blog/'                  => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/category/'              => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/hidden-files/'          => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/lorem-ipsum/'           => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/nec-ullamcorper/'       => null,
+
+					'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456/index.html'      => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456/index.html_gzip' => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456/lorem-ipsum/'    => null,
+
+					'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654/index.html'       => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654/index.html_gzip'  => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654/nec-ullamcorper/' => null,
 				],
+				'before_rocket_rrmdir' => 34,
+				'after_rocket_rrmdir'  => 34,
 			],
 		],
 	],
