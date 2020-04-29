@@ -28,7 +28,6 @@ class Test_PreloadAfterAutomaticCachePurge extends TestCase {
 	public function tearDown() {
 		parent::tearDown();
 
-		$this->subscriber = null;
 		$this->property->setValue( $this->subscriber, [] );
 		$this->property->setAccessible( false );
 	}
