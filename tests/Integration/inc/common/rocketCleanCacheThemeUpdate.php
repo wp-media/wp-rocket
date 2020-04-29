@@ -43,12 +43,13 @@ class Test_RocketCleanCacheThemeUpdate extends FilesystemTestCase {
 			Functions\expect( 'rocket_clean_domain' )->never();
 		}
 
-		$this->getShouldNotCleanEntries( $expected['non_cleaned'] );
+		$this->dumpResults = isset( $expected['dump_results'] ) ? $expected['dump_results'] : false;
+		$this->generateEntriesShouldExistAfter( $expected['cleaned'] );
 
 		// Update it.
 		do_action( 'upgrader_process_complete', null, $hook_extra );
 
-		$this->checkCleanedIsDeleted( $expected['cleaned'] );
-		$this->checkNonCleanedExist( isset( $expected['dump_results'] ) );
+		$this->checkEntriesDeleted( $expected['cleaned'] );
+		$this->checkShouldNotDeleteEntries();
 	}
 }

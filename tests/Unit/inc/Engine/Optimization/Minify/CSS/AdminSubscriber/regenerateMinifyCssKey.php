@@ -8,16 +8,15 @@ use WP_Rocket\Engine\Optimization\Minify\CSS\AdminSubscriber;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\Minify\CSS\AdminSubscriber::regenerate_minify_css_key
+ *
  * @group  Optimize
  * @group  AdminSubscriber
  */
 class Test_RegenerateMinifyCssKey extends TestCase {
-	private $admin_subcriber;
 	private $config;
 
 	public function setUp() {
 		parent::setUp();
-		$this->admin_subcriber = new AdminSubscriber();
 
 		if ( empty( $this->config ) ) {
 			$this->loadConfig();
@@ -27,7 +26,7 @@ class Test_RegenerateMinifyCssKey extends TestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testRegenerateMinifyCssKey( $value, $should_run, $expected ) {
+	public function testRegenerateMinifyCssKey( $value, $expected, $should_run ) {
 		if ( $should_run ) {
 			Functions\expect( 'create_rocket_uniqid' )
 				->once()
@@ -36,9 +35,10 @@ class Test_RegenerateMinifyCssKey extends TestCase {
 			Functions\expect( 'create_rocket_uniqid' )->never();
 		}
 
+		$subcriber = new AdminSubscriber();
 		$this->assertSame(
 			$expected,
-			$this->admin_subcriber->regenerate_minify_css_key( $value, $this->config['settings'] )
+			$subcriber->regenerate_minify_css_key( $value, $this->config['settings'] )
 		);
 	}
 
