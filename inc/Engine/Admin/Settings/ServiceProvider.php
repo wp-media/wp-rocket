@@ -6,7 +6,7 @@ use League\Container\ServiceProvider\AbstractServiceProvider;
 /**
  * Service provider for the WP Rocket settings.
  *
- * @since 3.6 Moves into the new architecture.
+ * @since 3.5.5 Moves into the new architecture.
  * @since 3.3
  */
 class ServiceProvider extends AbstractServiceProvider {
