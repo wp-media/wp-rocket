@@ -924,9 +924,8 @@ class Page {
 		$disable_lazyload = array_merge( $disable_images_lazyload, $disable_iframes_lazyload );
 		$disable_lazyload = array_unique( $disable_lazyload );
 
-		$disable_lazyload         = wp_sprintf_l( '%l', $disable_lazyload );
-		$disable_images_lazyload  = wp_sprintf_l( '%l', $disable_images_lazyload );
-		$disable_iframes_lazyload = wp_sprintf_l( '%l', $disable_iframes_lazyload );
+		$disable_lazyload        = wp_sprintf_l( '%l', $disable_lazyload );
+		$disable_images_lazyload = wp_sprintf_l( '%l', $disable_images_lazyload );
 
 		$this->settings->add_settings_sections(
 			[
