@@ -112,7 +112,7 @@ class Subscriber implements Subscriber_Interface {
 			return $content;
 		}
 
-		if ( ! $this->options->get( 'cdn' ) ) {
+		if ( ! $this->options->get( 'cdn', 0 ) ) {
 			return $content;
 		}
 
@@ -253,7 +253,7 @@ class Subscriber implements Subscriber_Interface {
 			return false;
 		}
 
-		if ( ! $this->options->get( 'cdn' ) ) {
+		if ( ! $this->options->get( 'cdn', 0 ) ) {
 			return false;
 		}
 
