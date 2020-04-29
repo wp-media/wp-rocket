@@ -9,7 +9,7 @@ use League\Container\ServiceProvider\AbstractServiceProvider;
  * @since 3.6 Moves into the new architecture.
  * @since 3.3
  */
-class Settings extends AbstractServiceProvider {
+class ServiceProvider extends AbstractServiceProvider {
 
 	/**
 	 * The provides array is a way to let the container
@@ -44,6 +44,6 @@ class Settings extends AbstractServiceProvider {
 			->withArgument( $this->getContainer()->get( 'beacon' ) )
 			->withArgument( $this->getContainer()->get( 'db_optimization' ) );
 		$this->getContainer()->share( 'settings_page_subscriber', 'WP_Rocket\Engine\Admin\Settings\Subscriber' )
-		     ->withArgument( $this->getContainer()->get( 'settings_page' ) );
+			->withArgument( $this->getContainer()->get( 'settings_page' ) );
 	}
 }

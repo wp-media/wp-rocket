@@ -3,7 +3,6 @@ namespace WP_Rocket\Engine\Admin\Settings;
 
 use Imagify_Partner;
 use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Rocket\Engine\Settings\Page;
 
 defined( 'ABSPATH' ) || exit;
 
