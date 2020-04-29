@@ -6,6 +6,11 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Class aliases.
  */
+class_alias( '\WP_Rocket\Admin\Settings\Page', '\WP_Rocket\Engine\Admin\Settings\Page' );
+class_alias( '\WP_Rocket\Admin\Settings\Render', '\WP_Rocket\Engine\Admin\Settings\Render' );
+class_alias( '\WP_Rocket\Admin\Settings\Settings', '\WP_Rocket\Engine\Admin\Settings\Settings' );
+class_alias( '\WP_Rocket\ServiceProvider\Settings', '\WP_Rocket\Engine\Admin\Settings\ServiceProvider' );
+class_alias( '\WP_Rocket\Subscriber\Admin\Settings\Page_Subscriber', '\WP_Rocket\Engine\Admin\Settings\Subscriber' );
 class_alias( '\\WP_Rocket\\Engine\\Preload\\AbstractPreload', '\\WP_Rocket\\Preload\\Abstract_Preload' );
 class_alias( '\\WP_Rocket\\Engine\\Preload\\AbstractProcess', '\\WP_Rocket\\Preload\\Process' );
 class_alias( '\\WP_Rocket\\Engine\\Preload\\FullProcess', '\\WP_Rocket\\Preload\\Full_Process' );
