@@ -31,12 +31,13 @@ class Test_RocketWidgetUpdateCallback extends FilesystemTestCase {
 		$widget                             = new WP_Widget_Text();
 		$_POST["widget-{$widget->id_base}"] = $instance;
 
-		$shouldNotClean = $this->getShouldNotCleanEntries( $expected['non_cleaned'] );
+		$this->dumpResults = isset( $expected['dump_results'] ) ? $expected['dump_results'] : false;
+		$this->generateEntriesShouldExistAfter( $expected['cleaned'] );
 
 		// Update it.
 		$widget->update_callback();
 
-		$this->checkCleanedIsDeleted( $expected['cleaned']);
-		$this->checkNonCleanedExist( $shouldNotClean, isset( $expected['dump_results'] ) );
+		$this->checkEntriesDeleted( $expected['cleaned'] );
+		$this->checkShouldNotDeleteEntries();
 	}
 }
