@@ -53,9 +53,10 @@ class Test_CpcssSection extends FilesystemTestCase {
 
 		$GLOBALS['post'] = (object) [
 			'post_status' => $config['post']['post_status'],
+			'ID'          => $config['post']['ID'],
 		];
 
-		Functions\when( 'is_rocket_post_excluded_option' )->justReturn( $config['is_option_excluded'] );
+		Functions\when( 'get_post_meta' )->justReturn( $config['is_option_excluded'] );
 
 		$this->assertSame(
 			$this->format_the_html( $expected ),

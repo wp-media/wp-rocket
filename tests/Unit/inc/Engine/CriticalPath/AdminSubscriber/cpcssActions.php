@@ -57,7 +57,7 @@ class Test_CpcssActions extends FilesystemTestCase {
 			'post_type'   => $config['post']['post_type']
 		];
 
-		Functions\when( 'is_rocket_post_excluded_option' )->justReturn( $config['is_option_excluded'] );
+		Functions\when( 'get_post_meta' )->justReturn( $config['is_option_excluded'] );
 		Functions\when( 'disabled' )->alias( function( $disabled ) {
 			if ( $disabled ) {
 				echo 'disabled="disabled"';

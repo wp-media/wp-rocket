@@ -27,6 +27,7 @@ return [
 				],
 				'post' => [
 					'post_status' => 'draft',
+					'ID'          => 1,
 				],
 				'is_option_excluded' => true,
 			],
@@ -49,6 +50,7 @@ return [
 				],
 				'post' => [
 					'post_status' => 'draft',
+					'ID'          => 1,
 				],
 				'is_option_excluded' => true,
 			],
@@ -71,6 +73,7 @@ return [
 				],
 				'post' => [
 					'post_status' => 'publish',
+					'ID'          => 1,
 				],
 				'is_option_excluded' => true,
 			],
@@ -93,6 +96,7 @@ return [
 				],
 				'post' => [
 					'post_status' => 'publish',
+					'ID'          => 1,
 				],
 				'is_option_excluded' => false,
 			],

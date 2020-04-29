@@ -61,7 +61,7 @@ class Test_CpcssSection extends FilesystemTestCase {
 			'post_type'   => $config['post']['post_type'],
 		];
 
-		$this->assertContains(
+		$this->assertSame(
 			$this->format_the_html( $expected ),
 			$this->getActualHtml()
 		);
