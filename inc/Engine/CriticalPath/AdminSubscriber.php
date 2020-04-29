@@ -111,7 +111,7 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 			];
 		}
 
-		if ( is_rocket_post_excluded_option( 'async_css' ) ) {
+		if ( get_post_meta( $post->ID, '_rocket_exclude_async_css', true ) ) {
 			return [
 				'disabled'    => true,
 				'description' => __( 'Enable Optimize CSS delivery in the options above to use this feature', 'rocket' ),
