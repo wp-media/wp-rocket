@@ -2,67 +2,64 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Subscriber;
 
+use WPMedia\PHPUnit\Integration\TestCase;
+
 /**
  * @covers \WP_Rocket\Engine\CDN\Subscriber::rewrite_srcset
  * @uses   \WP_Rocket\Engine\CDN\CDN::rewrite_srcset
- * @group  Subscriber
+ * @group  CDN
  */
 class Test_RewriteSrcset extends TestCase {
+	public function setUp() {
+		parent::setUp();
 
-	public function testShouldRewriteSrcsetURLs() {
-		update_option(
-			'wp_rocket_settings',
-			[
-				'cdn'              => '1',
-				'cdn_cnames'       => [ 'cdn.example.org' ],
-				'cdn_zone'         => [ 'images' ],
-				'cdn_reject_files' => [],
-			]
-		);
+		if ( empty( $this->config ) ) {
+			$this->loadConfig();
+		}
+	}
 
-		$original = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/CDN/original.html' );
+	public function tearDown() {
+		remove_filter( 'pre_get_rocket_option_cdn', [ $this, 'return_true' ] );
+		remove_filter( 'pre_get_rocket_option_cdn_cnames', [ $this, 'setCnames' ] );
+		remove_filter( 'pre_get_rocket_option_cdn_zone', [ $this, 'setCDNZone' ] );
+
+		parent::tearDown();
+	}
+
+	/**
+	 * @dataProvider providerTestData
+	 */
+	public function testShouldRewriteSrcsetURLs( $options ) {
+		$this->cnames    = $options['cdn_cnames']['value'];
+		$this->cdn_zone  = $options['cdn_zone']['value'];
+
+		add_filter( 'pre_get_rocket_option_cdn', [ $this, 'return_true' ] );
+		add_filter( 'pre_get_rocket_option_cdn_cnames', [ $this, 'setCnames' ] );
+		add_filter( 'pre_get_rocket_option_cdn_zone', [ $this, 'setCDNZone' ] );
 
 		$this->assertSame(
-			file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/CDN/srcset/rewrite.html' ),
-			$this->getSubscriberInstance()->rewrite_srcset( $original )
+			$this->format_the_html( $this->config['expected'] ),
+			$this->format_the_html( apply_filters( 'rocket_buffer', $this->config['original'] ) )
 		);
 	}
 
-	public function testShouldReturnOriginalWhenCDNDisabled() {
-		update_option(
-			'wp_rocket_settings',
-			[
-				'cdn'              => '0',
-				'cdn_cnames'       => [ 'cdn.example.org' ],
-				'cdn_zone'         => [ 'all' ],
-				'cdn_reject_files' => [],
-			]
-		);
+	public function providerTestData() {
+		if ( empty( $this->config ) ) {
+			$this->loadConfig();
+		}
 
-		$original = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/CDN/original.html' );
-
-		$this->assertSame(
-			$original,
-			$this->getSubscriberInstance()->rewrite_srcset( $original )
-		);
+		return $this->config['test_data'];
 	}
 
-	public function testShouldReturnOriginalWhenNoCNAME() {
-		update_option(
-			'wp_rocket_settings',
-			[
-				'cdn'              => '1',
-				'cdn_cnames'       => [],
-				'cdn_zone'         => [],
-				'cdn_reject_files' => [],
-			]
-		);
+	private function loadConfig() {
+		$this->config = $this->getTestData( __DIR__, 'rewriteSrcset' );
+	}
 
-		$original = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/CDN/original.html' );
+	public function setCnames() {
+		return $this->cnames;
+	}
 
-		$this->assertSame(
-			$original,
-			$this->getSubscriberInstance()->rewrite_srcset( $original )
-		);
+	public function setCDNZone() {
+		return $this->cdn_zone;
 	}
 }
