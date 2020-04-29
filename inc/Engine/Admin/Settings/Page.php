@@ -868,7 +868,7 @@ class Page {
 		 *
 		 * @param array $disable_images_lazyload Will return the array with all plugin names which should disable LazyLoad
 		 */
-		$disable_images_lazyload = apply_filters( 'rocket_maybe_disable_lazyload_helper', $disable_images_lazyload );
+		$disable_images_lazyload = (array) apply_filters( 'rocket_maybe_disable_lazyload_helper', $disable_images_lazyload );
 		$disable_images_lazyload = $this->sanitize_and_format_list( $disable_images_lazyload );
 
 		/**
@@ -878,7 +878,7 @@ class Page {
 		 *
 		 * @param array $disable_iframes_lazyload Will return the array with all plugin names which should disable LazyLoad
 		 */
-		$disable_iframes_lazyload = apply_filters( 'rocket_maybe_disable_iframes_lazyload_helper', $disable_iframes_lazyload );
+		$disable_iframes_lazyload = (array) apply_filters( 'rocket_maybe_disable_iframes_lazyload_helper', $disable_iframes_lazyload );
 		$disable_iframes_lazyload = $this->sanitize_and_format_list( $disable_iframes_lazyload );
 
 		$disable_lazyload = array_merge( $disable_images_lazyload, $disable_iframes_lazyload );
