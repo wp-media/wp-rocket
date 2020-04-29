@@ -6,10 +6,10 @@ return [
 	// Virtual filesystem structure.
 	'structure' => [
 		'wp-content' => [
-			'cache' => [
+			'cache'   => [
 				'critical-css' => [
 					'1' => [
-						'posts'         => [
+						'posts' => [
 							'post-2.css' => '.p { color: red; }',
 						],
 					],
@@ -20,7 +20,7 @@ return [
 					'views' => [
 						'metabox' => [
 							'cpcss' => [
-								'generate.php' => file_get_contents( WP_ROCKET_PLUGIN_ROOT . 'views/metabox/cpcss/generate.php' ),
+								'generate.php'   => file_get_contents( WP_ROCKET_PLUGIN_ROOT . 'views/metabox/cpcss/generate.php' ),
 								'regenerate.php' => file_get_contents( WP_ROCKET_PLUGIN_ROOT . 'views/metabox/cpcss/regenerate.php' ),
 							],
 						],
@@ -32,11 +32,11 @@ return [
 	// Test Data
 	'test_data' => [
 		'testShouldDisplayGenerateTemplateOptionDisabled' => [
-				'config' => [
-				'options' => [
+			'config'   => [
+				'options'            => [
 					'async_css' => 0,
 				],
-				'post' => [
+				'post'               => [
 					'post_status' => 'draft',
 					'post_type'   => 'post',
 					'ID'          => 1,
@@ -51,11 +51,11 @@ return [
 			</div>',
 		],
 		'testShouldDisplayRegenerateTemplateOptionDisabled' => [
-				'config' => [
-				'options' => [
+			'config'   => [
+				'options'            => [
 					'async_css' => 0,
 				],
-				'post' => [
+				'post'               => [
 					'post_status' => 'draft',
 					'post_type'   => 'post',
 					'ID'          => 2,
@@ -75,11 +75,11 @@ return [
 			</div>',
 		],
 		'testShouldDisplayGenerateTemplatePostNotPublished' => [
-				'config' => [
-				'options' => [
+			'config'   => [
+				'options'            => [
 					'async_css' => 1,
 				],
-				'post' => [
+				'post'               => [
 					'post_status' => 'draft',
 					'post_type'   => 'post',
 					'ID'          => 1,
@@ -94,11 +94,11 @@ return [
 			</div>',
 		],
 		'testShouldDisplayReenerateTemplatePostNotPublished' => [
-				'config' => [
-				'options' => [
+			'config'   => [
+				'options'            => [
 					'async_css' => 1,
 				],
-				'post' => [
+				'post'               => [
 					'post_status' => 'draft',
 					'post_type'   => 'post',
 					'ID'          => 2,
@@ -118,11 +118,11 @@ return [
 			</div>',
 		],
 		'testShouldDisplayGenerateTemplateOptionExcludedFromPost' => [
-				'config' => [
-				'options' => [
+			'config'   => [
+				'options'            => [
 					'async_css' => 1,
 				],
-				'post' => [
+				'post'               => [
 					'post_status' => 'publish',
 					'post_type'   => 'post',
 					'ID'          => 1,
@@ -137,11 +137,11 @@ return [
 			</div>',
 		],
 		'testShouldDisplayRegenerateTemplateOptionExcludedFromPost' => [
-				'config' => [
-				'options' => [
+			'config'   => [
+				'options'            => [
 					'async_css' => 1,
 				],
-				'post' => [
+				'post'               => [
 					'post_status' => 'publish',
 					'post_type'   => 'post',
 					'ID'          => 2,
@@ -160,12 +160,12 @@ return [
 				</button>
 			</div>',
 		],
-		'testShouldDisplayGenerateTemplate' => [
-				'config' => [
-				'options' => [
+		'testShouldDisplayGenerateTemplate'               => [
+			'config'   => [
+				'options'            => [
 					'async_css' => 1,
 				],
-				'post' => [
+				'post'               => [
 					'post_status' => 'publish',
 					'post_type'   => 'post',
 					'ID'          => 1,
@@ -179,12 +179,12 @@ return [
 				</button>
 			</div>',
 		],
-		'testShouldDisplayRegenerateTemplate' => [
-				'config' => [
-				'options' => [
+		'testShouldDisplayRegenerateTemplate'             => [
+			'config'   => [
+				'options'            => [
 					'async_css' => 1,
 				],
-				'post' => [
+				'post'               => [
 					'post_status' => 'publish',
 					'post_type'   => 'post',
 					'ID'          => 2,

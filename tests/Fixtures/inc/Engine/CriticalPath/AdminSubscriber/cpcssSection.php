@@ -20,12 +20,12 @@ return [
 		],
 	],
 	'test_data' => [
-		'testShouldDisplayOptionDisabledWarning' => [
-				'config' => [
-				'options' => [
+		'testShouldDisplayOptionDisabledWarning'         => [
+			'config'   => [
+				'options'            => [
 					'async_css' => 0,
 				],
-				'post' => [
+				'post'               => [
 					'post_status' => 'draft',
 					'ID'          => 1,
 				],
@@ -43,12 +43,12 @@ return [
 				</div>
 			</div>',
 		],
-		'testShouldDisplayPostNotPublishedWarning' => [
-				'config' => [
-				'options' => [
+		'testShouldDisplayPostNotPublishedWarning'       => [
+			'config'   => [
+				'options'            => [
 					'async_css' => 1,
 				],
-				'post' => [
+				'post'               => [
 					'post_status' => 'draft',
 					'ID'          => 1,
 				],
@@ -67,11 +67,11 @@ return [
 			</div>',
 		],
 		'testShouldDisplayOptionExcludedFromPostWarning' => [
-				'config' => [
-				'options' => [
+			'config'   => [
+				'options'            => [
 					'async_css' => 1,
 				],
-				'post' => [
+				'post'               => [
 					'post_status' => 'publish',
 					'ID'          => 1,
 				],
@@ -89,12 +89,12 @@ return [
 				</div>
 			</div>',
 		],
-		'testShouldNoWarning' => [
-				'config' => [
-				'options' => [
+		'testShouldNoWarning'                            => [
+			'config'   => [
+				'options'            => [
 					'async_css' => 1,
 				],
-				'post' => [
+				'post'               => [
 					'post_status' => 'publish',
 					'ID'          => 1,
 				],
