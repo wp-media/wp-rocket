@@ -28,6 +28,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'preload_subscriber',
 		'sitemap_preload_subscriber',
 		'partial_preload_subscriber',
+		'fonts_preload_subscriber',
 	];
 
 	/**
@@ -59,5 +60,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'partial_preload_subscriber', 'WP_Rocket\Engine\Preload\PartialPreloadSubscriber' )
 			->withArgument( $this->getContainer()->get( 'partial_preload_process' ) )
 			->withArgument( $options );
+		$this->getContainer()->share( 'fonts_preload_subscriber', 'WP_Rocket\Engine\Preload\Fonts' )
+			->withArgument( $options )
+			->withArgument( $this->getContainer()->get( 'cdn' ) );
 	}
 }
