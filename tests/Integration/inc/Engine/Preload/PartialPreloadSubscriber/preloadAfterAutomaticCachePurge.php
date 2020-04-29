@@ -30,6 +30,9 @@ class Test_PreloadAfterAutomaticCachePurge extends TestCase {
 
 		$this->property->setValue( $this->subscriber, [] );
 		$this->property->setAccessible( false );
+
+		remove_filter( 'pre_get_rocket_option_manual_preload', [ $this, 'manual_preload_filter' ] );
+		remove_filter( 'pre_option_permalink_structure', [ $this, 'permalink_structure_filter' ] );
 	}
 
 	/**
@@ -54,9 +57,6 @@ class Test_PreloadAfterAutomaticCachePurge extends TestCase {
 		foreach ( $expected as $url ) {
 			$this->assertContains( $url, $this->urls );
 		}
-
-		remove_filter( 'pre_get_rocket_option_manual_preload', [ $this, 'manual_preload_filter' ] );
-		remove_filter( 'pre_option_permalink_structure', [ $this, 'permalink_structure_filter' ] );
 	}
 
 	public function manual_preload_filter() {
