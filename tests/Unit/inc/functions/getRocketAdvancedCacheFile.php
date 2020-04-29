@@ -12,6 +12,8 @@ use WPMedia\PHPUnit\Unit\TestCase;
  * @uses   ::rocket_get_constant
  * @uses   ::rocket_direct_filesystem
  *
+ * @group  AdvancedCache
+ * @group  Functions
  * @group  Files
  */
 class Test_GetRocketAdvancedCacheFile extends FilesystemTestCase {

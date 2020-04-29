@@ -86,21 +86,26 @@ function get_rocket_advanced_cache_file() { // phpcs:ignore WordPress.NamingConv
 }
 
 /**
- * Create advanced-cache.php file.
+ * Creates advanced-cache.php file.
  *
  * @since 2.0
- *
- * @return void
  */
 function rocket_generate_advanced_cache_file() {
 	static $done = false;
+
+	if ( rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ) {
+		$done = false;
+	}
 
 	if ( $done ) {
 		return;
 	}
 	$done = true;
 
-	rocket_put_content( WP_CONTENT_DIR . '/advanced-cache.php', get_rocket_advanced_cache_file() );
+	rocket_put_content(
+		rocket_get_constant( 'WP_CONTENT_DIR' ) . '/advanced-cache.php',
+		get_rocket_advanced_cache_file()
+	);
 }
 
 /**
