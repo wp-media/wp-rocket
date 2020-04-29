@@ -909,8 +909,7 @@ class Page {
 		 * @param array $disable_images_lazyload Will return the array with all plugin names which should disable LazyLoad
 		 */
 		$disable_images_lazyload = apply_filters( 'rocket_maybe_disable_lazyload_helper', $disable_images_lazyload );
-		$disable_images_lazyload = array_unique( array_filter( (array) $disable_images_lazyload ) );
-		$disable_images_lazyload = array_map( 'sprintf', array_fill( 0, count( $disable_images_lazyload ), '<strong>%s</strong>' ), $disable_images_lazyload );
+		$disable_images_lazyload = $this->sanitize_and_format_list( $disable_images_lazyload );
 
 		/**
 		 * Lazyload Helper filter which disables WPR lazyload functionality for iframes.
@@ -920,8 +919,7 @@ class Page {
 		 * @param array $disable_iframes_lazyload Will return the array with all plugin names which should disable LazyLoad
 		 */
 		$disable_iframes_lazyload = apply_filters( 'rocket_maybe_disable_iframes_lazyload_helper', $disable_iframes_lazyload );
-		$disable_iframes_lazyload = array_unique( array_filter( (array) $disable_iframes_lazyload ) );
-		$disable_iframes_lazyload = array_map( 'sprintf', array_fill( 0, count( $disable_iframes_lazyload ), '<strong>%s</strong>' ), $disable_iframes_lazyload );
+		$disable_iframes_lazyload = $this->sanitize_and_format_list( $disable_iframes_lazyload );
 
 		$disable_lazyload = array_merge( $disable_images_lazyload, $disable_iframes_lazyload );
 		$disable_lazyload = array_unique( $disable_lazyload );
@@ -2094,5 +2092,36 @@ class Page {
 				]
 			)
 		);
+	}
+
+	/**
+	 * Sanitize and format a list.
+	 *
+	 * @since 3.5.5
+	 *
+	 * @param  array  $list     A list of strings.
+	 * @param  string $tag_name Name of the HTML tag that will wrap each element of the list.
+	 * @return array
+	 */
+	private function sanitize_and_format_list( $list, $tag_name = 'strong' ) {
+		if ( ! is_array( $list ) || empty( $list ) ) {
+			return [];
+		}
+
+		$list = array_filter( $list );
+
+		if ( empty( $list ) ) {
+			return [];
+		}
+
+		$list = array_unique( $list );
+
+		if ( empty( $tag_name ) ) {
+			return $list;
+		}
+
+		$format = "<$tag_name>%s</$tag_name>";
+
+		return array_map( 'sprintf', array_fill( 0, count( $list ), $format ), $list );
 	}
 }
