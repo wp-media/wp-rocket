@@ -27,19 +27,16 @@ class Settings extends AbstractServiceProvider {
 	];
 
 	/**
-	 * Registers the option array in the container
+	 * Registers the option array in the container.
 	 *
 	 * @since 3.3
-	 * @author Remy Perona
-	 *
-	 * @return void
 	 */
 	public function register() {
 		$this->getContainer()->add( 'settings', 'WP_Rocket\Admin\Settings\Settings' )
 			->withArgument( $this->getContainer()->get( 'options' ) );
 		$this->getContainer()->add( 'settings_render', 'WP_Rocket\Admin\Settings\Render' )
 			->withArgument( $this->getContainer()->get( 'template_path' ) . '/settings' );
-		$this->getContainer()->add( 'settings_page', 'WP_Rocket\Settings\Page' )
+		$this->getContainer()->add( 'settings_page', 'WP_Rocket\Engine\Admin\Settings\Page' )
 			->withArgument( $this->getContainer()->get( 'settings_page_config' ) )
 			->withArgument( $this->getContainer()->get( 'settings' ) )
 			->withArgument( $this->getContainer()->get( 'settings_render' ) )
