@@ -22,6 +22,7 @@ class Test_PreloadAfterAutomaticCachePurge extends TestCase {
 		$this->subscriber = $container->get( 'partial_preload_subscriber' );
 		$this->property   = $this->get_reflective_property( 'urls', $this->subscriber );
 		$this->property->setAccessible( true );
+		$this->property->setValue( $this->subscriber, [] );
 	}
 
 	public function tearDown() {
@@ -29,6 +30,7 @@ class Test_PreloadAfterAutomaticCachePurge extends TestCase {
 
 		$this->subscriber = null;
 		$this->property->setAccessible( false );
+		$this->property->setValue( $this->subscriber, [] );
 	}
 
 	/**
