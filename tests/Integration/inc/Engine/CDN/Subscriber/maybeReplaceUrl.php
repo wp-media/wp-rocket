@@ -2,40 +2,51 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Subscriber;
 
+use WPMedia\PHPUnit\Integration\TestCase;
+
 /**
  * @covers \WP_Rocket\Engine\CDN\Subscriber::maybe_replace_url
  * @uses   \WP_Rocket\Engine\CDN\CDN::get_cdn_urls
- * @group  Subscriber
  * @group  CDN
  */
 class Test_MaybeReplaceUrl extends TestCase {
-	public function addDataProvider() {
-		return $this->getTestData( __DIR__, 'maybe-replace-url' );
+	private $cnames;
+	private $site_url;
+
+	public function tearDown() {
+		remove_filter( 'pre_get_rocket_option_cdn', [ $this, 'return_true' ] );
+		remove_filter( 'rocket_cdn_cnames', [ $this, 'setCnames' ] );
+		remove_filter( 'site_url', [ $this, 'setSiteURL' ] );
+
+		parent::tearDown();
 	}
 
 	/**
-	 * @dataProvider addDataProvider
+	 * @dataProvider providerTestData
 	 */
 	public function testShouldMaybeReplaceURL( $original, $zones, $cdn_urls, $site_url, $expected ) {
-		$callback_cnames = function( $original ) use ( $cdn_urls ) {
-			return array_merge( $original, $cdn_urls );
-		};
+		$this->cnames   = $cdn_urls;
+		$this->site_url = $site_url;
 
-		$callback_site_url = function() use ( $site_url ) {
-			return $site_url;
-		};
-
-		add_filter( 'rocket_cdn_cnames', $callback_cnames );
 		add_filter( 'pre_get_rocket_option_cdn', [ $this, 'return_true'] );
-		add_filter( 'site_url', $callback_site_url );
+		add_filter( 'rocket_cdn_cnames', [ $this, 'setCnames' ] );
+		add_filter( 'site_url', [ $this, 'setSiteURL' ] );
 
 		$this->assertSame(
 			$expected,
 			apply_filters( 'rocket_asset_url', $original, $zones )
 		);
+	}
 
-		remove_filter( 'pre_get_rocket_option_cdn', [ $this, 'return_true'] );
-		remove_filter( 'rocket_cdn_cnames', $callback_cnames );
-		remove_filter( 'site_url', $callback_site_url );
+	public function providerTestData() {
+		return $this->getTestData( __DIR__, 'maybe-replace-url' );
+	}
+
+	public function setCnames() {
+		return $this->cnames;
+	}
+
+	public function setSiteURL() {
+		return $this->site_url;
 	}
 }

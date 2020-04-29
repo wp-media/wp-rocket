@@ -2,33 +2,42 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Subscriber;
 
+use WPMedia\PHPUnit\Integration\TestCase;
+
 /**
  * @covers \WP_Rocket\Engine\CDN\Subscriber::get_cdn_hosts
  * @uses   \WP_Rocket\Engine\CDN\CDN::get_cdn_urls
  * @uses   ::rocket_add_url_protocol
- * @group  Subscriber
  * @group  CDN
  */
 class Test_GetCdnHosts extends TestCase {
-	public function addDataProvider() {
-		return $this->getTestData( __DIR__, 'get-cdn-hosts' );
+	private $cnames;
+
+	public function tearDown() {
+		remove_filter( 'rocket_cdn_cnames', [ $this, 'setCnames' ] );
+
+		parent::tearDown();
 	}
 
 	/**
-	 * @dataProvider addDataProvider
+	 * @dataProvider providerTestData
 	 */
 	public function testShouldReturnCdnArray( $original, $zones, $cdn_urls, $expected ) {
-		$callback = function( $original ) use ( $cdn_urls ) {
-			return array_merge( $original, $cdn_urls );
-		};
+		$this->cnames = array_merge( $original, $cdn_urls );
 
-		add_filter( 'rocket_cdn_cnames', $callback );
+		add_filter( 'rocket_cdn_cnames', [ $this, 'setCnames' ] );
 
 		$this->assertSame(
 			$expected,
 			array_values( apply_filters( 'rocket_cdn_hosts', $original, $zones ) )
 		);
+	}
 
-		remove_filter( 'rocket_cdn_cnames', $callback );
+	public function providerTestData() {
+		return $this->getTestData( __DIR__, 'get-cdn-hosts' );
+	}
+
+	public function setCnames() {
+		return $this->cnames;
 	}
 }
