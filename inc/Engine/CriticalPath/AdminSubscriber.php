@@ -80,11 +80,11 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 			'beacon'   => '',
 		];
 
-		if ( $this->cpcss_exists() ) {
-			echo $this->generate( 'regenerate', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		} else {
-			echo $this->generate( 'generate', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		}
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo $this->generate(
+			$this->cpcss_exists() ? 'regenerate' : 'generate',
+			$data // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		);
 	}
 
 	/**
