@@ -1,13 +1,12 @@
 <?php
-namespace WP_Rocket\ServiceProvider;
+namespace WP_Rocket\Engine\Admin\Settings;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
 
 /**
- * Service provider for the WP Rocket settings
+ * Service provider for the WP Rocket settings.
  *
  * @since 3.3
- * @author Remy Perona
  */
 class Settings extends AbstractServiceProvider {
 
@@ -32,9 +31,9 @@ class Settings extends AbstractServiceProvider {
 	 * @since 3.3
 	 */
 	public function register() {
-		$this->getContainer()->add( 'settings', 'WP_Rocket\Admin\Settings\Settings' )
+		$this->getContainer()->add( 'settings', 'WP_Rocket\Engine\Admin\Settings\Settings' )
 			->withArgument( $this->getContainer()->get( 'options' ) );
-		$this->getContainer()->add( 'settings_render', 'WP_Rocket\Admin\Settings\Render' )
+		$this->getContainer()->add( 'settings_render', 'WP_Rocket\Engine\Admin\Settings\Render' )
 			->withArgument( $this->getContainer()->get( 'template_path' ) . '/settings' );
 		$this->getContainer()->add( 'settings_page', 'WP_Rocket\Engine\Admin\Settings\Page' )
 			->withArgument( $this->getContainer()->get( 'settings_page_config' ) )

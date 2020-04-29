@@ -1,18 +1,19 @@
 <?php
-namespace WP_Rocket\Subscriber\Admin\Settings;
+namespace WP_Rocket\Engine\Admin\Settings;
 
+use Imagify_Partner;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Engine\Settings\Page;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * WP Rocket settings page subscriber
+ * WP Rocket settings page subscriber.
  *
+ * @since 3.6 Moves into new architecture.
  * @since 3.3
- * @author Remy Perona
  */
-class Page_Subscriber implements Subscriber_Interface {
+class Subscriber implements Subscriber_Interface {
 	/**
 	 * Page instance
 	 *
@@ -21,7 +22,7 @@ class Page_Subscriber implements Subscriber_Interface {
 	private $page;
 
 	/**
-	 * Constructor
+	 * Creates an instance of the object.
 	 *
 	 * @param Page $page Page instance.
 	 */
@@ -33,7 +34,6 @@ class Page_Subscriber implements Subscriber_Interface {
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
 	 * @since  3.3
-	 * @author Remy Perona
 	 *
 	 * @return array
 	 */
@@ -52,12 +52,9 @@ class Page_Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Adds plugin page to the Settings menu
+	 * Adds plugin page to the Settings menu.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
-	 *
-	 * @return void
 	 */
 	public function add_admin_page() {
 		add_options_page(
@@ -73,19 +70,15 @@ class Page_Subscriber implements Subscriber_Interface {
 	 * Registers the settings, page sections, fields sections and fields.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
-	 *
-	 * @return void
 	 */
 	public function configure() {
 		$this->page->configure();
 	}
 
 	/**
-	 * Gets customer data to refresh it on the dashboard with AJAX
+	 * Gets customer data to refresh it on the dashboard with AJAX.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @return string
 	 */
@@ -102,22 +95,18 @@ class Page_Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Toggle sliding checkboxes option value
+	 * Toggle sliding checkboxes option value.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
-	 *
-	 * @return void
 	 */
 	public function toggle_option() {
 		$this->page->toggle_option();
 	}
 
 	/**
-	 * Add Tools section to navigation
+	 * Add Tools section to navigation.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @param array $navigation Array of menu items.
 	 * @return array
@@ -133,16 +122,15 @@ class Page_Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Add Imagify section to navigation
+	 * Add Imagify section to navigation.
 	 *
 	 * @since 3.2
-	 * @author Remy Perona
 	 *
 	 * @param array $navigation Array of menu items.
 	 * @return array
 	 */
 	public function add_imagify_page( $navigation ) {
-		if ( \Imagify_Partner::has_imagify_api_key() ) {
+		if ( Imagify_Partner::has_imagify_api_key() ) {
 			return $navigation;
 		}
 
@@ -156,10 +144,9 @@ class Page_Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Add Tutorials section to navigation
+	 * Add Tutorials section to navigation.
 	 *
 	 * @since 3.4
-	 * @author Remy Perona
 	 *
 	 * @param array $navigation Array of menu items.
 	 * @return array

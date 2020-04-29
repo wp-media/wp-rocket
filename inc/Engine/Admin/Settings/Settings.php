@@ -1,17 +1,16 @@
 <?php
-namespace WP_Rocket\Admin\Settings;
+namespace WP_Rocket\Engine\Admin\Settings;
 
 use WP_Rocket\Subscriber\Third_Party\Plugins\Security\Sucuri_Subscriber;
 
 /**
- * Settings class
+ * Settings class.
  */
 class Settings {
 	/**
-	 * Settings data
+	 * Settings data.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @var Array
 	 */
@@ -21,7 +20,6 @@ class Settings {
 	 * Array of settings to build the settings page.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @var array
 	 */
@@ -31,7 +29,6 @@ class Settings {
 	 * Hidden settings on the settings page.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @var array
 	 */
@@ -41,7 +38,6 @@ class Settings {
 	 * Constructor
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @param Array $options Array containg the option data.
 	 */
@@ -55,7 +51,6 @@ class Settings {
 	 * A page section is a top-level block containing settings sections.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @param string $id Page section identifier.
 	 * @param array  $args {

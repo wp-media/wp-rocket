@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Admin\Settings;
+namespace WP_Rocket\Engine\Admin\Settings;
 
 use WP_Rocket\Abstract_Render;
 
@@ -8,35 +8,32 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Handle rendering of HTML content for the settings page.
  *
+ * @since 3.6 Moves into the new architecture.
  * @since 3.0
- * @author Remy Perona
  */
 class Render extends Abstract_render {
 	/**
-	 * Settings array
+	 * Settings array.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @var array
 	 */
 	private $settings = [];
 
 	/**
-	 * Hidden settings array
+	 * Hidden settings array.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @var array
 	 */
 	private $hidden_settings;
 
 	/**
-	 * Sets the settings value
+	 * Sets the settings value.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @param array $settings Array of settings.
 	 * @return void
@@ -46,32 +43,26 @@ class Render extends Abstract_render {
 	}
 
 	/**
-	 * Sets the hidden settings value
+	 * Sets the hidden settings value.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @param array $hidden_settings Array of hidden settings.
-	 * @return void
 	 */
 	public function set_hidden_settings( $hidden_settings ) {
 		$this->hidden_settings = $hidden_settings;
 	}
 
 	/**
-	 * Renders the page sections navigation
+	 * Renders the page sections navigation.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
-	 *
-	 * @return void
 	 */
 	public function render_navigation() {
 		/**
 		 * Filters WP Rocket settings page navigation items.
 		 *
 		 * @since 3.0
-		 * @author Remy Perona
 		 *
 		 * @param array $navigation {
 		 *     Items to populate the navigation.
@@ -82,7 +73,7 @@ class Render extends Abstract_render {
 		 *     @type string $class            Menu item classes
 		 * }
 		 */
-		$navigation = apply_filters( 'rocket_settings_menu_navigation', $this->settings );
+		$navigation = (array) apply_filters( 'rocket_settings_menu_navigation', $this->settings );
 
 		$default = [
 			'id'               => '',
@@ -112,7 +103,6 @@ class Render extends Abstract_render {
 	 * Render the page sections.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 */
 	public function render_form_sections() {
 		if ( ! isset( $this->settings ) ) {
@@ -137,7 +127,6 @@ class Render extends Abstract_render {
 	 * Render the Imagify page section.
 	 *
 	 * @since 3.2
-	 * @author Remy Perona
 	 */
 	public function render_imagify_section() {
 		echo $this->generate( 'page-sections/imagify' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
@@ -147,7 +136,6 @@ class Render extends Abstract_render {
 	 * Render the Tutorials page section.
 	 *
 	 * @since 3.4
-	 * @author Remy Perona
 	 */
 	public function render_tutorials_section() {
 		echo $this->generate( 'page-sections/tutorials' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
@@ -157,7 +145,6 @@ class Render extends Abstract_render {
 	 * Render the tools page section.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 */
 	public function render_tools_section() {
 		echo $this->generate( 'page-sections/tools' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
@@ -167,7 +154,6 @@ class Render extends Abstract_render {
 	 * Renders the settings sections for a page section.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @param string $page Page section identifier.
 	 * @return void
@@ -202,7 +188,6 @@ class Render extends Abstract_render {
 	 * Renders the settings fields for a setting section and page.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @param string $page    Page section identifier.
 	 * @param string $section Settings section identifier.
@@ -271,9 +256,6 @@ class Render extends Abstract_render {
 	 * Renders hidden fields in the form.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
-	 *
-	 * @return void
 	 */
 	public function render_hidden_fields() {
 		foreach ( $this->hidden_settings as $setting ) {
@@ -288,7 +270,6 @@ class Render extends Abstract_render {
 	 * @author Remy Perona
 	 *
 	 * @param array $args Array of arguments to populate the template.
-	 * @return void
 	 */
 	public function fields_container( $args ) {
 		echo $this->generate( 'sections/fields-container', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
@@ -298,10 +279,8 @@ class Render extends Abstract_render {
 	 * Displays the no container section template.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @param array $args Array of arguments to populate the template.
-	 * @return void
 	 */
 	public function nocontainer( $args ) {
 		echo $this->generate( 'sections/nocontainer', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
@@ -311,10 +290,8 @@ class Render extends Abstract_render {
 	 * Displays the add-ons container section template.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @param array $args Array of arguments to populate the template.
-	 * @return void
 	 */
 	public function addons_container( $args ) {
 		echo $this->generate( 'sections/addons-container', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
@@ -324,10 +301,8 @@ class Render extends Abstract_render {
 	 * Displays the text field template.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @param array $args Array of arguments to populate the template.
-	 * @return void
 	 */
 	public function text( $args ) {
 		echo $this->generate( 'fields/text', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
@@ -350,10 +325,8 @@ class Render extends Abstract_render {
 	 * Displays the textarea field template.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @param array $args Array of arguments to populate the template.
-	 * @return void
 	 */
 	public function textarea( $args ) {
 		if ( is_array( $args['value'] ) ) {
@@ -369,10 +342,8 @@ class Render extends Abstract_render {
 	 * Displays the sliding checkbox field template.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @param array $args Array of arguments to populate the template.
-	 * @return void
 	 */
 	public function sliding_checkbox( $args ) {
 		echo $this->generate( 'fields/sliding-checkbox', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
@@ -382,10 +353,8 @@ class Render extends Abstract_render {
 	 * Displays the number input field template.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @param array $args Array of arguments to populate the template.
-	 * @return void
 	 */
 	public function number( $args ) {
 		echo $this->generate( 'fields/number', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
@@ -395,10 +364,8 @@ class Render extends Abstract_render {
 	 * Displays the select field template.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @param array $args Array of arguments to populate the template.
-	 * @return void
 	 */
 	public function select( $args ) {
 		echo $this->generate( 'fields/select', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
@@ -408,10 +375,8 @@ class Render extends Abstract_render {
 	 * Displays the clear cache lifespan block template.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @param array $args Array of arguments to populate the template.
-	 * @return void
 	 */
 	public function cache_lifespan( $args ) {
 		echo $this->generate( 'fields/cache-lifespan', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
@@ -421,10 +386,8 @@ class Render extends Abstract_render {
 	 * Displays the hidden field template.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @param array $args Array of arguments to populate the template.
-	 * @return void
 	 */
 	public function hidden( $args ) {
 		echo $this->generate( 'fields/hidden', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
@@ -434,10 +397,8 @@ class Render extends Abstract_render {
 	 * Displays the CDN CNAMES template.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @param array $args Array of arguments to populate the template.
-	 * @return void
 	 */
 	public function cnames( $args ) {
 		echo $this->generate( 'fields/cnames', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
@@ -447,10 +408,8 @@ class Render extends Abstract_render {
 	 * Displays the RocketCDN template.
 	 *
 	 * @since 3.5
-	 * @author Remy Perona
 	 *
 	 * @param array $args Array of arguments to populate the template.
-	 * @return void
 	 */
 	public function rocket_cdn( $args ) {
 		echo $this->generate( 'fields/rocket-cdn', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
@@ -460,10 +419,8 @@ class Render extends Abstract_render {
 	 * Displays the one-click add-on field template.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @param array $args Array of arguments to populate the template.
-	 * @return void
 	 */
 	public function one_click_addon( $args ) {
 		echo $this->generate( 'fields/one-click-addon', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
@@ -473,10 +430,8 @@ class Render extends Abstract_render {
 	 * Displays the Rocket add-on field template.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @param array $args Array of arguments to populate the template.
-	 * @return void
 	 */
 	public function rocket_addon( $args ) {
 		echo $this->generate( 'fields/rocket-addon', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
@@ -486,9 +441,6 @@ class Render extends Abstract_render {
 	 * Displays the import form template.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
-	 *
-	 * @return void
 	 */
 	public function render_import_form() {
 		$args = [];
@@ -515,11 +467,8 @@ class Render extends Abstract_render {
 	 * Displays a partial template.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @param string $part Partial template name.
-	 *
-	 * @return void
 	 */
 	public function render_part( $part ) {
 		echo $this->generate( 'partials/' . $part ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.

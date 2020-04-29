@@ -39,7 +39,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register() {
 		$options = $this->getContainer()->get( 'options' );
 
-		$this->getContainer()->share( 'settings_page_subscriber', 'WP_Rocket\Subscriber\Admin\Settings\Page_Subscriber' )
+		$this->getContainer()->share( 'settings_page_subscriber', 'WP_Rocket\Engine\Admin\Settings\Subscriber' )
 			->withArgument( $this->getContainer()->get( 'settings_page' ) );
 		$this->getContainer()->add( 'deactivation_intent_render', 'WP_Rocket\Admin\Deactivation\Render' )
 			->withArgument( $this->getContainer()->get( 'template_path' ) . '/deactivation-intent' );
