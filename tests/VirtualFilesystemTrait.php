@@ -41,8 +41,11 @@ trait VirtualFilesystemTrait {
 		return str_replace( $search, '', $path );
 	}
 
-	protected function getEntriesBefore() {
-		$dir                 = $this->filesystem->getUrl( $this->config['vfs_dir'] );
+	protected function getEntriesBefore( $dir = '' ) {
+		if ( '' === $dir ) {
+			$dir = $this->filesystem->getUrl( $this->config['vfs_dir'] );
+		}
+
 		$this->entriesBefore = $this->filesystem->getListing( $dir );
 	}
 
@@ -56,8 +59,8 @@ trait VirtualFilesystemTrait {
 		}
 	}
 
-	protected function generateEntriesShouldExistAfter( array $shouldClean ) {
-		$this->getEntriesBefore();
+	protected function generateEntriesShouldExistAfter( array $shouldClean, $dir = '' ) {
+		$this->getEntriesBefore( $dir );
 
 		$cleaned = [];
 		foreach ( $shouldClean as $entry => $contents ) {
@@ -80,7 +83,7 @@ trait VirtualFilesystemTrait {
 	protected function checkEntriesDeleted( array $shouldClean ) {
 		foreach ( $shouldClean as $entry => $contents ) {
 			// Deleted.
-			if ( is_null( $contents ) ) {
+			if ( empty( $contents ) ) {
 				if ( $this->dumpResults && false !== $this->filesystem->exists( $entry ) ) {
 					echo "\n Entry: {$entry} \n";
 					if ( $this->filesystem->is_dir( $entry ) ) {
@@ -99,8 +102,12 @@ trait VirtualFilesystemTrait {
 		}
 	}
 
-	protected function checkShouldNotDeleteEntries() {
-		$entriesAfterCleaning = $this->filesystem->getListing( $this->filesystem->getUrl( $this->config['vfs_dir'] ) );
+	protected function checkShouldNotDeleteEntries( $dir = '' ) {
+		if ( '' === $dir ) {
+			$dir = $this->filesystem->getUrl( $this->config['vfs_dir'] );
+		}
+
+		$entriesAfterCleaning = $this->filesystem->getListing( $dir );
 		$actual               = array_diff( $entriesAfterCleaning, $this->shouldNotClean );
 		if ( $this->dumpResults ) {
 			var_dump( $actual );

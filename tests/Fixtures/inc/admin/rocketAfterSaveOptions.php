@@ -1,124 +1,217 @@
 <?php
 
-return [
-	'vfs_dir'   => 'wp-content/',
+$rocket_clean_domain = [
+	'vfs://public/wp-content/cache/wp-rocket/example.org/'                => null,
+	'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456/' => null,
+	'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654/'  => null,
+];
 
-	// Virtual filesystem structure.
-	'structure' => [
-		'wp-content' => [
-			'cache'              => [
-				'wp-rocket' => [
-					'example.org'                                => [
-						'index.html'      => '',
-						'index.html_gzip' => '',
-						'about'           => [
-							'index.html'             => '',
-							'index.html_gzip'        => '',
-							'index-mobile.html'      => '',
-							'index-mobile.html_gzip' => '',
-						],
-						'blog'            => [
-							'index.html'      => '',
-							'index.html_gzip' => '',
-						],
-						'category'        => [
-							'wordpress' => [
-								'index.html'      => '',
-								'index.html_gzip' => '',
-							],
-						],
-						'en'              => [
-							'index.html'      => '',
-							'index.html_gzip' => '',
-						],
-					],
-					'example.org-wpmedia-594d03f6ae698691165999' => [
-						'index.html'      => '',
-						'index.html_gzip' => '',
-					],
-				],
-				'min'       => [
-					'1' => [
-						'wp-content'  => [
-							'plugins' => [
-								'imagify' => [
-									'assets' => [
-										'css' => [
-											'admin-bar-924d9d45c4af91c09efb7ad055662025.css' => '',
-											'admin-bar-bce302f71910a4a126f7df01494bd6e0.css' => '',
-										],
-										'js'  => [
-											'admin-bar-171a2ef75c22c390780fe898f9d40c8d.js' => '',
-											'admin-bar-e4aa3c9df56ff024286f4df600f4c643.js' => '',
-										],
-									],
-								],
-							],
-						],
-						'wp-includes' => [
-							'css' => [
-								'admin-bar-85585a650224ba853d308137b9a13487.css' => '',
-								'dashicons-c2ba5f948753896932695bf9dad93d5e.css' => '',
-							],
-							'js'  => [
-								'jquery' => [
-									'jquery-migrate-ca635e318ab90a01a61933468e5a72de.js' => '',
-								],
-								'admin-bar-65d8267e813dff6d0059914a4bc252aa.js' => '',
-							],
-						],
-					],
-				],
-			],
-			'wp-rocket-config'   => [
-				'example.org.php' => '<?php $var = "Some contents.";',
-			],
-			'advanced-cache.php' => '<?php $var = "Some contents.";',
-		],
-		'.htaccess'  => "# Random\n# add a trailing slash to /wp-admin# BEGIN WordPress\n\n# BEGIN WP Rocket\nPrevious rules.\n# END WP Rocket\n",
+$rocket_generate_advanced_cache_file = require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/functions/advancedCacheContent.php';
+$flush_rocket_htaccess               = require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/functions/htaccessContent.php';
+
+return [
+	'vfs_dir' => 'wp-content/',
+
+	'settings'  => [
+		'cache_mobile'        => true,
+		'purge_cron_interval' => true,
+		'purge_cron_unit'     => true,
+		'minify_css'          => false,
+		'exclude_css'         => '',
+		'minify_js'           => false,
+		'exclude_js'          => '',
+		'analytics_enabled'   => '',
 	],
 
 	// Test data.
 	'test_data' => [
-		[
-			[
-				'rocket_clean_domain'                 => [
-					'wp-content/cache/wp-rocket/example.org/index.html',
-					'wp-content/cache/wp-rocket/example.org/index.html_gzip',
-					'wp-content/cache/wp-rocket/example.org/about/index.html',
-					'wp-content/cache/wp-rocket/example.org/about/index.html_gzip',
-					'wp-content/cache/wp-rocket/example.org/about/index-mobile.html',
-					'wp-content/cache/wp-rocket/example.org/about/index-mobile.html_gzip',
-					'wp-content/cache/wp-rocket/example.org/blog/index.html',
-					'wp-content/cache/wp-rocket/example.org/blog/index.html_gzip',
-					'wp-content/cache/wp-rocket/example.org/category/wordpress/index.html',
-					'wp-content/cache/wp-rocket/example.org/category/wordpress/index.html_gzip',
-					'wp-content/cache/wp-rocket/example.org/en/index.html',
-					'wp-content/cache/wp-rocket/example.org/en/index.html_gzip',
-					'wp-content/cache/wp-rocket/example.org-wpmedia-594d03f6ae698691165999/index.html',
-					'wp-content/cache/wp-rocket/example.org-wpmedia-594d03f6ae698691165999/index.html_gzip',
+
+		'testShouldTriggerCleaningsWhenOptionsChange' => [
+			'settings' => [
+				'cache_mobile'        => true,
+				'purge_cron_interval' => true,
+				'purge_cron_unit'     => false,
+				'minify_css'          => false,
+				'exclude_css'         => '',
+				'minify_js'           => false,
+				'exclude_js'          => '',
+				'foobar'              => 'barbaz', // This one will trigger cleaning and preload.
+			],
+			'expected' => [
+				'rocket_clean_domain'         => $rocket_clean_domain,
+				'flush_rocket_htaccess'       => $flush_rocket_htaccess['with_wp_rules'],
+				'rocket_generate_config_file' => '<?php $var = "Some contents.";',
+			],
+		],
+
+		'testShouldCleanMinifyCSSWhenMinifyOptionChanges' => [
+			'settings' => [
+				'cache_mobile'        => true,
+				'purge_cron_interval' => true,
+				'purge_cron_unit'     => true,
+				'minify_css'          => true,
+				'exclude_css'         => '',
+				'minify_js'           => false,
+				'exclude_js'          => '',
+			],
+			'expected' => [
+				'rocket_clean_domain'         => $rocket_clean_domain,
+				'rocket_clean_minify'         => [
+					'vfs://public/wp-content/cache/min/1/fa2965d41f1515951de523cecb81f85e.css'    => null,
+					'vfs://public/wp-content/cache/min/1/fa2965d41f1515951de523cecb81f85e.css.gz' => null,
+					'vfs://public/wp-content/cache/min/1/wp-content/css/'                         => null,
+					'vfs://public/wp-content/cache/min/1/wp-includes/plugins/imagify/assets/css/' => null,
+
+					'vfs://public/wp-content/cache/min/3rd-party/2n7x3vd41f1515951de523cecb81f85e.css'    => null,
+					'vfs://public/wp-content/cache/min/3rd-party/2n7x3vd41f1515951de523cecb81f85e.css.gz' => null,
 				],
-				'flush_rocket_htaccess'               => [
-					'.htaccess',
+				'flush_rocket_htaccess'       => $flush_rocket_htaccess['with_wp_rules'],
+				'rocket_generate_config_file' => '<?php $var = "Some contents.";',
+			],
+		],
+
+		'testShouldCleanMinifyCSSWhenExcludeOptionChanges' => [
+			'settings' => [
+				'cache_mobile'        => true,
+				'purge_cron_interval' => true,
+				'purge_cron_unit'     => true,
+				'minify_css'          => false,
+				'exclude_css'         => 'foobar',
+				'minify_js'           => false,
+				'exclude_js'          => '',
+			],
+			'expected' => [
+				'rocket_clean_domain'         => $rocket_clean_domain,
+				'rocket_clean_minify'         => [
+					'vfs://public/wp-content/cache/min/1/fa2965d41f1515951de523cecb81f85e.css'    => null,
+					'vfs://public/wp-content/cache/min/1/fa2965d41f1515951de523cecb81f85e.css.gz' => null,
+					'vfs://public/wp-content/cache/min/1/wp-content/css/'                         => null,
+					'vfs://public/wp-content/cache/min/1/wp-includes/plugins/imagify/assets/css/' => null,
+
+					'vfs://public/wp-content/cache/min/3rd-party/2n7x3vd41f1515951de523cecb81f85e.css'    => null,
+					'vfs://public/wp-content/cache/min/3rd-party/2n7x3vd41f1515951de523cecb81f85e.css.gz' => null,
 				],
-				'rocket_generate_config_file'         => [
-					'wp-content/wp-rocket-config/example.org.php',
+				'flush_rocket_htaccess'       => $flush_rocket_htaccess['with_wp_rules'],
+				'rocket_generate_config_file' => '<?php $var = "Some contents.";',
+			],
+		],
+
+		'testShouldCleanMinifyJSWhenMinifyOptionChanges' => [
+			'settings' => [
+				'cache_mobile'        => true,
+				'purge_cron_interval' => true,
+				'purge_cron_unit'     => true,
+				'minify_css'          => false,
+				'exclude_css'         => '',
+				'minify_js'           => true,
+				'exclude_js'          => '',
+			],
+			'expected' => [
+				'rocket_clean_domain'         => $rocket_clean_domain,
+				'rocket_clean_minify'         => [
+					'vfs://public/wp-content/cache/min/1/5c795b0e3a1884eec34a989485f863ff.js'    => null,
+					'vfs://public/wp-content/cache/min/1/5c795b0e3a1884eec34a989485f863ff.js.gz' => null,
+					'vfs://public/wp-content/cache/min/1/wp-content/plugins/imagify/assets/js/'  => null,
+					'vfs://public/wp-content/cache/min/1/wp-includes/js/'                        => [],
+
+					'vfs://public/wp-content/cache/min/3rd-party/bt937b0e3a1884eec34a989485f863ff.js'    => null,
+					'vfs://public/wp-content/cache/min/3rd-party/bt937b0e3a1884eec34a989485f863ff.js.gz' => null,
 				],
-				'rocket_clean_minify_css'             => [
-					'wp-content/min/1/wp-content/plugins/imagify/assets/css/admin-bar-924d9d45c4af91c09efb7ad055662025.css',
-					'wp-content/min/1/wp-content/plugins/imagify/assets/css/admin-bar-bce302f71910a4a126f7df01494bd6e0.css',
-					'wp-content/min/1/wp-includes/css/admin-bar-85585a650224ba853d308137b9a13487.css',
-					'wp-content/min/1/wp-includes/css/dashicons-c2ba5f948753896932695bf9dad93d5e.css',
+				'flush_rocket_htaccess'       => $flush_rocket_htaccess['with_wp_rules'],
+				'rocket_generate_config_file' => '<?php $var = "Some contents.";',
+			],
+		],
+
+		'testShouldCleanMinifyJSWhenExcludeOptionChanges' => [
+			'settings' => [
+				'cache_mobile'        => true,
+				'purge_cron_interval' => true,
+				'purge_cron_unit'     => true,
+				'minify_css'          => false,
+				'exclude_css'         => '',
+				'minify_js'           => false,
+				'exclude_js'          => 'foobar',
+			],
+			'expected' => [
+				'rocket_clean_domain'         => $rocket_clean_domain,
+				'rocket_clean_minify'         => [
+					'vfs://public/wp-content/cache/min/1/5c795b0e3a1884eec34a989485f863ff.js'    => null,
+					'vfs://public/wp-content/cache/min/1/5c795b0e3a1884eec34a989485f863ff.js.gz' => null,
+					'vfs://public/wp-content/cache/min/1/wp-content/plugins/imagify/assets/js/'  => null,
+					'vfs://public/wp-content/cache/min/1/wp-includes/js/'                        => [],
+
+					'vfs://public/wp-content/cache/min/3rd-party/bt937b0e3a1884eec34a989485f863ff.js'    => null,
+					'vfs://public/wp-content/cache/min/3rd-party/bt937b0e3a1884eec34a989485f863ff.js.gz' => null,
 				],
-				'rocket_clean_minify_js'              => [
-					'wp-content/min/1/wp-content/plugins/imagify/assets/js/admin-bar-171a2ef75c22c390780fe898f9d40c8d.js',
-					'wp-content/min/1/wp-content/plugins/imagify/assets/js/admin-bar-e4aa3c9df56ff024286f4df600f4c643.js',
-					'wp-content/min/1/wp-includes/js/jquery/jquery-migrate-ca635e318ab90a01a61933468e5a72de.js',
-					'wp-content/min/1/wp-includes/js/admin-bar-65d8267e813dff6d0059914a4bc252aa.js',
+				'flush_rocket_htaccess'       => $flush_rocket_htaccess['with_wp_rules'],
+				'rocket_generate_config_file' => '<?php $var = "Some contents.";',
+			],
+		],
+
+		'testShouldCleanMinifyCSSJSWhenCdnOptionIsDisabled' => [
+			'settings' => [
+				'cache_mobile'        => true,
+				'purge_cron_interval' => true,
+				'purge_cron_unit'     => true,
+				'minify_css'          => false,
+				'exclude_css'         => '',
+				'minify_js'           => false,
+				'exclude_js'          => '',
+				'cdn'                 => '',
+			],
+			'expected' => [
+				'rocket_clean_domain'         => $rocket_clean_domain,
+				'rocket_clean_minify'         => [
+					'vfs://public/wp-content/cache/min/1/5c795b0e3a1884eec34a989485f863ff.js'     => null,
+					'vfs://public/wp-content/cache/min/1/5c795b0e3a1884eec34a989485f863ff.js.gz'  => null,
+					'vfs://public/wp-content/cache/min/1/fa2965d41f1515951de523cecb81f85e.css'    => null,
+					'vfs://public/wp-content/cache/min/1/fa2965d41f1515951de523cecb81f85e.css.gz' => null,
+					'vfs://public/wp-content/cache/min/1/wp-content/plugins/imagify/assets/css/'  => null,
+					'vfs://public/wp-content/cache/min/1/wp-content/plugins/imagify/assets/js/'   => null,
+					'vfs://public/wp-content/cache/min/1/wp-includes/css/'                        => null,
+					'vfs://public/wp-content/cache/min/1/wp-includes/js/'                         => [],
+
+					'vfs://public/wp-content/cache/min/3rd-party/' => [],
 				],
-				'rocket_generate_advanced_cache_file' => [
-					'wp-content/advanced-cache.php',
-				],
+				'flush_rocket_htaccess'       => $flush_rocket_htaccess['with_wp_rules'],
+				'rocket_generate_config_file' => '<?php $var = "Some contents.";',
+			],
+		],
+
+		'testShouldGenerateAdvancedCacheFileWhenOptionIsDisabled' => [
+			'settings' => [
+				'cache_mobile'            => true,
+				'purge_cron_interval'     => true,
+				'purge_cron_unit'         => true,
+				'minify_css'              => false,
+				'exclude_css'             => '',
+				'minify_js'               => false,
+				'exclude_js'              => '',
+				'do_caching_mobile_files' => '',
+			],
+			'expected' => [
+				'rocket_clean_domain'                 => $rocket_clean_domain,
+				'flush_rocket_htaccess'               => $flush_rocket_htaccess['with_wp_rules'],
+				'rocket_generate_config_file'         => '<?php $var = "Some contents.";',
+				'rocket_generate_advanced_cache_file' => $rocket_generate_advanced_cache_file['starting'] . $rocket_generate_advanced_cache_file['ending'],
+			],
+		],
+
+		'testShouldEnableAnalyticsWhenOptionIsEnabled' => [
+			'settings' => [
+				'cache_mobile'        => true,
+				'purge_cron_interval' => true,
+				'purge_cron_unit'     => true,
+				'minify_css'          => false,
+				'exclude_css'         => '',
+				'minify_js'           => false,
+				'exclude_js'          => '',
+				'analytics_enabled'   => '1',
+			],
+			'expected' => [
+				'flush_rocket_htaccess'       => $flush_rocket_htaccess['with_wp_rules'],
+				'rocket_generate_config_file' => '<?php $var = "Some contents.";',
+				'set_transient'               => '1',
 			],
 		],
 	],

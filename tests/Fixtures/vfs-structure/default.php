@@ -192,6 +192,9 @@ return [
 				'script.php' => '',
 			],
 			'wp-rocket'   => [
+				'inc'              => [
+					'process-autoloader.php' => file_get_contents( WP_ROCKET_PLUGIN_ROOT . 'inc/process-autoloader.php' ),
+				],
 				'licence-data.php' => '',
 			],
 		],
@@ -205,4 +208,5 @@ return [
 		'advanced-cache.php' => '<?php $var = "Some contents.";',
 	],
 	'.htaccess'  => "# Random\n# add a trailing slash to /wp-admin# BEGIN WordPress\n\n# BEGIN WP Rocket\nPrevious rules.\n# END WP Rocket\n",
+	'wp-config.php' => "<?php\ndefine( 'DB_NAME', 'local' );\ndefine( 'DB_USER', 'root' );\n",
 ];

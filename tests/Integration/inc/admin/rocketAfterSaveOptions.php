@@ -7,495 +7,159 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
  * @covers ::rocket_after_save_options
+ * @uses  ::rocket_clean_domain
+ * @uses  ::rocket_clean_minify
+ * @uses  ::rocket_generate_advanced_cache_file
+ * @uses  ::rocket_valid_key
+ * @uses  ::flush_rocket_htaccess
+ * @uses  ::rocket_generate_config_file
+ * @uses  ::rocket_get_constant
+ * @uses  ::set_rocket_wp_cache_define
+ *
  * @group admin
  * @group AdminOnly
  * @group Options
  * @group SaveOptions
+ * @group thisone
  */
 class Test_RocketAfterSaveOptions extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/admin/rocketAfterSaveOptions.php';
-	private $is_apache;
-	private $option_name;
-	private $options;
-	private $analytics_transient_value;
-	private $hooks = [];
+	protected      $path_to_test_data = '/inc/admin/rocketAfterSaveOptions.php';
+	private        $is_apache;
+	private        $hooks             = [];
+	private static $original_settings = [];
+	private        $options           = [];
+	private static $transients        = [
+		'rocket_analytics_optin' => null,
+	];
+	private        $count             = 0;
+
+	public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
+		self::$original_settings = get_option( 'wp_rocket_settings', [] );
+		foreach ( array_keys( self::$transients ) as $transient ) {
+			self::$transients[ $transient ] = get_transient( $transient );
+		}
+	}
+
+	public static function tearDownAfterClass() {
+		parent::tearDownAfterClass();
+
+		// Restore the originals before exiting.
+		update_option( 'wp_rocket_settings', self::$original_settings );
+		self::resetTransitions();
+	}
+
+	private static function resetTransitions() {
+		foreach ( self::$transients as $transient => $value ) {
+			if ( ! empty( $transient ) ) {
+				set_transient( $transient, $value );
+			} else {
+				delete_transient( $transient );
+			}
+		}
+	}
 
 	public function setUp() {
-		global $is_apache;
-
 		parent::setUp();
 
-		$this->is_apache                 = $is_apache;
-		$this->option_name               = rocket_get_constant( 'WP_ROCKET_SLUG' );
-		$this->options                   = get_option( $this->option_name );
-		$this->analytics_transient_value = get_transient( 'rocket_analytics_optin' );
+		// Mocks the various filesystem constants.
+		$this->whenRocketGetConstant();
 
-		if ( false !== $this->analytics_transient_value ) {
-			delete_transient( 'rocket_analytics_optin' );
-		}
+		$this->is_apache = $GLOBALS['is_apache'];
+		$this->options   = array_merge( self::$original_settings, $this->config['settings'] );
+		update_option( 'wp_rocket_settings', $this->options );
 
-		$is_apache = true;
-		Functions\when( 'get_home_path' )->justReturn( $this->rootVirtualUrl );
-
-		add_filter( 'rocket_config_files_path', [ $this, 'set_config_files_path' ] );
-		add_filter( 'rocket_wp_content_dir', [ $this, 'virtual_wp_content_dir' ] );
+		$GLOBALS['is_apache'] = true;
+		Functions\when( 'wp_remote_get' )->justReturn();
+		$this->count ++;
 	}
 
 	public function tearDown() {
-		global $is_apache;
-
 		parent::tearDown();
 
-		$this->silently_update_option( $this->options );
+		unset( $_POST['foo'], $GLOBALS['sitepress'], $GLOBALS['q_config'], $GLOBALS['polylang'] );
 
-		if ( false !== $this->analytics_transient_value ) {
-			set_transient( 'rocket_analytics_optin', $this->analytics_transient_value );
-		} else {
-			delete_transient( 'rocket_analytics_optin' );
+		$GLOBALS['is_apache'] = $this->is_apache;
+	}
+
+	/**
+	 * @dataProvider providerTestData
+	 */
+	public function testShouldTriggerCleaningsWhenOptionsChange( $settings, $expected ) {
+		$this->dumpResults = isset( $expected['dump_results'] ) ? $expected['dump_results'] : false;
+
+		if ( isset( $expected['rocket_clean_domain'] ) ) {
+			$this->generateEntriesShouldExistAfter( $expected['rocket_clean_domain'], 'vfs://public/wp-content/cache/wp-rocket/' );
 		}
 
-		$is_apache = $this->is_apache;
-
-		remove_filter( 'rocket_config_files_path', [ $this, 'set_config_files_path' ] );
-		remove_filter( 'rocket_wp_content_dir', [ $this, 'virtual_wp_content_dir' ] );
-	}
-
-	public function set_config_files_path() {
-		return [ $this->filesystem->getUrl( '/wp-content/wp-rocket-config/example.org.php' ) ];
-	}
-
-	public function virtual_wp_content_dir() {
-        return $this->filesystem->getUrl( 'wp-content' );
-    }
-
-	/**
-	 * @dataProvider providerTestData
-	 */
-	public function testShouldTriggerCleaningsWhenOptionsChange( $data ) {
-		Functions\expect( 'wp_remote_get' )->once();
-
-		$this->silently_update_option(
-			[
-				'cache_mobile'        => true,
-				'purge_cron_interval' => true,
-				'purge_cron_unit'     => true,
-				'minify_css'          => false,
-				'exclude_css'         => '',
-				'minify_js'           => false,
-				'exclude_js'          => '',
-			]
-		);
-
-		update_option(
-			$this->option_name,
-			[
-				'cache_mobile'        => true,
-				'purge_cron_interval' => true,
-				'purge_cron_unit'     => false,
-				'minify_css'          => false,
-				'exclude_css'         => '',
-				'minify_js'           => false,
-				'exclude_js'          => '',
-				'foobar'              => 'barbaz', // This one will trigger cleaning and preload.
-			]
-		);
-
-		// `rocket_clean_domain()`.
-		$this->assertFilesDeleted( $data['rocket_clean_domain'] );
-
-		// `flush_rocket_htaccess()`.
-		$this->assertFlushRocketHtaccess( $data['flush_rocket_htaccess'] );
-
-		// `rocket_generate_config_file()`.
-		$this->assertRocketGenerateConfigFile( $data['rocket_generate_config_file'] );
-	}
-
-	/**
-	 * @dataProvider providerTestData
-	 */
-	public function testShouldCleanMinifyCSSWhenMinifyOptionChanges( $data ) {
-		Functions\expect( 'wp_remote_get' )->once();
-
-		$this->silently_update_option(
-			[
-				'cache_mobile'        => true,
-				'purge_cron_interval' => true,
-				'purge_cron_unit'     => true,
-				'minify_css'          => false,
-				'exclude_css'         => '',
-				'minify_js'           => false,
-				'exclude_js'          => '',
-			]
-		);
-
-		$_POST['foo'] = 1;
-
-		update_option(
-			$this->option_name,
-			[
-				'cache_mobile'        => true,
-				'purge_cron_interval' => true,
-				'purge_cron_unit'     => true,
-				'minify_css'          => true,
-				'exclude_css'         => '',
-				'minify_js'           => false,
-				'exclude_js'          => '',
-			]
-		);
-
-		// `rocket_clean_minify( 'css' )`
-		$this->assertFilesDeleted( $data['rocket_clean_minify_css'] );
-
-		unset( $_POST['foo'] );
-	}
-
-	/**
-	 * @dataProvider providerTestData
-	 */
-	public function testShouldCleanMinifyCSSWhenExcludeOptionChanges( $data ) {
-		Functions\expect( 'wp_remote_get' )->once();
-
-		$this->silently_update_option(
-			[
-				'cache_mobile'        => true,
-				'purge_cron_interval' => true,
-				'purge_cron_unit'     => true,
-				'minify_css'          => false,
-				'exclude_css'         => '',
-				'minify_js'           => false,
-				'exclude_js'          => '',
-			]
-		);
-
-		$_POST['foo'] = 1;
-
-		update_option(
-			$this->option_name,
-			[
-				'cache_mobile'        => true,
-				'purge_cron_interval' => true,
-				'purge_cron_unit'     => true,
-				'minify_css'          => false,
-				'exclude_css'         => 'foobar',
-				'minify_js'           => false,
-				'exclude_js'          => '',
-			]
-		);
-
-		// `rocket_clean_minify( 'css' )`
-		$this->assertFilesDeleted( $data['rocket_clean_minify_css'] );
-
-		unset( $_POST['foo'] );
-	}
-
-	/**
-	 * @dataProvider providerTestData
-	 */
-	public function testShouldCleanMinifyJSWhenMinifyOptionChanges( $data ) {
-		Functions\expect( 'wp_remote_get' )->once();
-
-		$this->silently_update_option(
-			[
-				'cache_mobile'        => true,
-				'purge_cron_interval' => true,
-				'purge_cron_unit'     => true,
-				'minify_css'          => false,
-				'exclude_css'         => '',
-				'minify_js'           => false,
-				'exclude_js'          => '',
-			]
-		);
-
-		$_POST['foo'] = 1;
-
-		update_option(
-			$this->option_name,
-			[
-				'cache_mobile'        => true,
-				'purge_cron_interval' => true,
-				'purge_cron_unit'     => true,
-				'minify_css'          => false,
-				'exclude_css'         => '',
-				'minify_js'           => true,
-				'exclude_js'          => '',
-			]
-		);
-
-		// `rocket_clean_minify( 'js' )`
-		$this->assertFilesDeleted( $data['rocket_clean_minify_js'] );
-
-		unset( $_POST['foo'] );
-	}
-
-	/**
-	 * @dataProvider providerTestData
-	 */
-	public function testShouldCleanMinifyJSWhenExcludeOptionChanges( $data ) {
-		Functions\expect( 'wp_remote_get' )->once();
-
-		$this->silently_update_option(
-			[
-				'cache_mobile'        => true,
-				'purge_cron_interval' => true,
-				'purge_cron_unit'     => true,
-				'minify_css'          => false,
-				'exclude_css'         => '',
-				'minify_js'           => false,
-				'exclude_js'          => '',
-			]
-		);
-
-		$_POST['foo'] = 1;
-
-		update_option(
-			$this->option_name,
-			[
-				'cache_mobile'        => true,
-				'purge_cron_interval' => true,
-				'purge_cron_unit'     => true,
-				'minify_css'          => false,
-				'exclude_css'         => '',
-				'minify_js'           => false,
-				'exclude_js'          => 'foobar',
-			]
-		);
-
-		// `rocket_clean_minify( 'js' )`
-		$this->assertFilesDeleted( $data['rocket_clean_minify_js'] );
-
-		unset( $_POST['foo'] );
-	}
-
-	/**
-	 * @dataProvider providerTestData
-	 */
-	public function testShouldCleanMinifyCSSJSWhenCdnOptionIsDisabled( $data ) {
-		Functions\expect( 'wp_remote_get' )->once();
-
-		$this->silently_update_option(
-			[
-				'cache_mobile'        => true,
-				'purge_cron_interval' => true,
-				'purge_cron_unit'     => true,
-				'minify_css'          => false,
-				'exclude_css'         => '',
-				'minify_js'           => false,
-				'exclude_js'          => '',
-				'cdn'                 => '',
-			]
-		);
-
-		update_option(
-			$this->option_name,
-			[
-				'cache_mobile'        => true,
-				'purge_cron_interval' => true,
-				'purge_cron_unit'     => true,
-				'minify_css'          => false,
-				'exclude_css'         => '',
-				'minify_js'           => false,
-				'exclude_js'          => '',
-			]
-		);
-
-		// `rocket_clean_minify( 'css' )`
-		$this->assertFilesDeleted( $data['rocket_clean_minify_css'] );
-
-		// `rocket_clean_minify( 'js' )`
-		$this->assertFilesDeleted( $data['rocket_clean_minify_js'] );
-	}
-
-	/**
-	 * @dataProvider providerTestData
-	 */
-	public function testShouldGenerateAdvancedCacheFileWhenOptionIsDisabled( $data ) {
-		Functions\expect( 'wp_remote_get' )->once();
-
-		$this->silently_update_option(
-			[
-				'cache_mobile'            => true,
-				'purge_cron_interval'     => true,
-				'purge_cron_unit'         => true,
-				'minify_css'              => false,
-				'exclude_css'             => '',
-				'minify_js'               => false,
-				'exclude_js'              => '',
-				'do_caching_mobile_files' => '',
-			]
-		);
-
-		$_POST['foo'] = 1;
-
-		update_option(
-			$this->option_name,
-			[
-				'cache_mobile'        => true,
-				'purge_cron_interval' => true,
-				'purge_cron_unit'     => true,
-				'minify_css'          => false,
-				'exclude_css'         => '',
-				'minify_js'           => false,
-				'exclude_js'          => '',
-			]
-		);
-
-		// `rocket_generate_advanced_cache_file()`
-		$this->assertAdvancedCacheFile( $data['rocket_generate_advanced_cache_file'] );
-
-		unset( $_POST['foo'] );
-	}
-
-	/**
-	 * @dataProvider providerTestData
-	 */
-	public function testShouldGenerateAdvancedCacheFileWhenOptionIsEnabled( $data ) {
-		Functions\expect( 'wp_remote_get' )->once();
-
-		$this->silently_update_option(
-			[
-				'cache_mobile'        => true,
-				'purge_cron_interval' => true,
-				'purge_cron_unit'     => true,
-				'minify_css'          => false,
-				'exclude_css'         => '',
-				'minify_js'           => false,
-				'exclude_js'          => '',
-			]
-		);
-
-		$_POST['foo'] = 1;
-
-		update_option(
-			$this->option_name,
-			[
-				'cache_mobile'            => true,
-				'purge_cron_interval'     => true,
-				'purge_cron_unit'         => true,
-				'minify_css'              => false,
-				'exclude_css'             => '',
-				'minify_js'               => false,
-				'exclude_js'              => '',
-				'do_caching_mobile_files' => '',
-			]
-		);
-
-		// `rocket_generate_advanced_cache_file()`
-		$this->assertAdvancedCacheFile( $data['rocket_generate_advanced_cache_file'] );
-
-		unset( $_POST['foo'] );
-	}
-
-	/**
-	 * @dataProvider providerTestData
-	 */
-	public function testShouldGenerateAdvancedCacheFileWhenOptionChanges( $data ) {
-		Functions\expect( 'wp_remote_get' )->once();
-
-		$this->silently_update_option(
-			[
-				'cache_mobile'            => true,
-				'purge_cron_interval'     => true,
-				'purge_cron_unit'         => true,
-				'minify_css'              => false,
-				'exclude_css'             => '',
-				'minify_js'               => false,
-				'exclude_js'              => '',
-				'do_caching_mobile_files' => 'foo',
-			]
-		);
-
-		$_POST['foo'] = 1;
-
-		update_option(
-			$this->option_name,
-			[
-				'cache_mobile'            => true,
-				'purge_cron_interval'     => true,
-				'purge_cron_unit'         => true,
-				'minify_css'              => false,
-				'exclude_css'             => '',
-				'minify_js'               => false,
-				'exclude_js'              => '',
-				'do_caching_mobile_files' => 'bar',
-			]
-		);
-
-		// `rocket_generate_advanced_cache_file()`
-		$this->assertAdvancedCacheFile( $data['rocket_generate_advanced_cache_file'] );
-
-		unset( $_POST['foo'] );
-	}
-
-	public function testShouldEnableAnalyticsWhenOptionIsEnabled() {
-		Functions\expect( 'wp_remote_get' )->never();
-
-		$this->silently_update_option(
-			[
-				'cache_mobile'        => true,
-				'purge_cron_interval' => true,
-				'purge_cron_unit'     => true,
-				'minify_css'          => false,
-				'exclude_css'         => '',
-				'minify_js'           => false,
-				'exclude_js'          => '',
-				'analytics_enabled'   => 'foo',
-			]
-		);
-
-		update_option(
-			$this->option_name,
-			[
-				'cache_mobile'        => true,
-				'purge_cron_interval' => true,
-				'purge_cron_unit'     => true,
-				'minify_css'          => false,
-				'exclude_css'         => '',
-				'minify_js'           => false,
-				'exclude_js'          => '',
-				'analytics_enabled'   => '1',
-			]
-		);
-
-		$this->assertSame( 1, get_transient( 'rocket_analytics_optin' ) );
-	}
-
-	/**
-	 * @dataProvider providerTestData
-	 */
-	public function testShouldCleanMinifyCSSWhenCdnOptionIsEnabled( $data ) {
-		Functions\expect( 'wp_remote_get' )->once();
-
-		$this->silently_update_option(
-			[
-				'cache_mobile'        => true,
-				'purge_cron_interval' => true,
-				'purge_cron_unit'     => true,
-				'minify_css'          => false,
-				'exclude_css'         => '',
-				'minify_js'           => false,
-				'exclude_js'          => '',
-			]
-		);
-
-		update_option(
-			$this->option_name,
-			[
-				'cache_mobile'        => true,
-				'purge_cron_interval' => true,
-				'purge_cron_unit'     => true,
-				'minify_css'          => false,
-				'exclude_css'         => '',
-				'minify_js'           => false,
-				'exclude_js'          => '',
-				'cdn'                 => '',
-			]
-		);
-
-		// `rocket_clean_minify( 'css' )`
-		$this->assertFilesDeleted( $data['rocket_clean_minify_css'] );
-
-		// `rocket_clean_minify( 'js' )`
-		$this->assertFilesDeleted( $data['rocket_clean_minify_js'] );
+		if ( isset( $expected['flush_rocket_htaccess'] ) ) {
+			Functions\expect( 'rocket_valid_key' )->andReturn( true );
+			Functions\expect( 'get_home_path' )->andReturn( 'vfs://public/' );
+		}
+
+		if ( isset( $expected['rocket_generate_advanced_cache_file'] ) ) {
+			$_POST['foo'] = 1;
+		}
+
+		// Run it.
+		update_option( 'wp_rocket_settings', $settings );
+
+		if ( isset( $expected['rocket_clean_minify'] ) ) {
+
+		} else {
+			Functions\expect( 'rocket_clean_minify' )->never();
+		}
+
+		if ( isset( $expected['rocket_clean_domain'] ) ) {
+			$this->checkEntriesDeleted( $expected['rocket_clean_domain'] );
+			$this->checkShouldNotDeleteEntries( 'vfs://public/wp-content/cache/wp-rocket/' );
+		} else {
+			Functions\expect( 'rocket_clean_domain' )->never();
+		}
+
+		if ( isset( $expected['rocket_generate_advanced_cache_file'] ) ) {
+			$this->assertSame(
+				$expected['rocket_generate_advanced_cache_file'],
+				$this->filesystem->get_contents( 'vfs://public/wp-content/advanced-cache.php' )
+			);
+		} else {
+			Functions\expect( 'rocket_generate_advanced_cache_file' )->never();
+		}
+
+		if ( isset( $expected['flush_rocket_htaccess'] ) ) {
+			$this->assertSame(
+				$expected['flush_rocket_htaccess'],
+				$this->filesystem->get_contents( 'vfs://public/.htaccess' )
+			);
+		} else {
+			Functions\expect( 'flush_rocket_htaccess' )->never();
+		}
+
+		if ( isset( $expected['rocket_generate_config_file'] ) ) {
+			$this->assertSame(
+				$expected['rocket_generate_config_file'],
+				$this->filesystem->get_contents( 'vfs://public/wp-content/wp-rocket-config/example.org.php' )
+			);
+		} else {
+			Functions\expect( 'rocket_generate_config_file' )->never();
+		}
+
+		if ( isset( $expected['set_rocket_wp_cache_define'] ) ) {
+			Functions\expect( 'rocket_get_constant' )->with( 'WP_CACHE' )->andReturn( true );
+			$this->assertSame(
+				$expected['set_rocket_wp_cache_define'],
+				$this->filesystem->get_contents( 'vfs://public/wp-config.php' )
+			);
+		} else {
+			Functions\expect( 'rocket_get_constant' )->with( 'WP_CACHE' )->andReturn( false );
+			Functions\expect( 'set_rocket_wp_cache_define' )->never();
+		}
+
+		if ( isset( $expected['set_transient'] ) ) {
+			$this->assertEquals( '1', get_transient( 'rocket_analytics_optin' ) );
+		} else {
+			Functions\expect( 'set_transient' )->with( 'rocket_analytics_optin', 1 )->never();
+		}
 	}
 
 	private function silently_update_option( $new_value ) {
@@ -526,45 +190,5 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 		}
 
 		$this->assertNotFalse( has_action( 'update_option_' . $this->option_name, 'rocket_after_save_options' ) );
-	}
-
-	private function assertFilesDeleted( $paths ) {
-		foreach ( $paths as $file ) {
-			$path = $this->filesystem->getUrl( $file );
-			$this->assertFalse( $this->filesystem->exists( $path ), "The file $file exists." );
-		}
-	}
-
-	private function assertFlushRocketHtaccess( $paths ) {
-		foreach ( $paths as $file ) {
-			$path = $this->filesystem->getUrl( $file );
-			$this->assertTrue( $this->filesystem->exists( $path ), "The file $file does not exist." );
-
-			$contents = $this->filesystem->get_contents( $path );
-			$matching = preg_match( '/\s*# BEGIN WP Rocket(?<rules>.*)# END WP Rocket\s*?/isU', $contents, $matches );
-			$this->assertSame( 1, $matching, "No WP Rocket tags in file $file." );
-			$rules = trim( $matches['rules'] );
-			$this->assertTrue( ! empty( $rules ) && 'Some rules.' !== $rules, "No WP Rocket rewrite rules in file $file." );
-		}
-	}
-
-	private function assertRocketGenerateConfigFile( $paths ) {
-		foreach ( $paths as $file ) {
-			$config_path = $this->filesystem->getUrl( $file );
-			$this->assertTrue( $this->filesystem->exists( $config_path ), "The config file $file does not exist." );
-
-			$config_contents = $this->filesystem->get_contents( $config_path );
-			$this->assertContains( '$rocket_cookie_hash', $config_contents, "The config file $file does not contain `\$rocket_cookie_hash`." );
-		}
-	}
-
-	private function assertAdvancedCacheFile( $paths ) {
-		foreach ( $paths as $file ) {
-			$path = $this->filesystem->getUrl( $file );
-			$this->assertTrue( $this->filesystem->exists( $path ), "The file $file does not exist." );
-
-			$contents = $this->filesystem->get_contents( $path );
-			$this->assertContains( 'WP_ROCKET_ADVANCED_CACHE', $contents, "No WP Rocket contents in file $file." );
-		}
 	}
 }
