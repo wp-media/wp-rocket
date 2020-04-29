@@ -5,6 +5,8 @@ use WP_Rocket\Subscriber\Third_Party\Plugins\Security\Sucuri_Subscriber;
 
 /**
  * Settings class.
+ *
+ * @since 3.6 Moves into the new architecture.
  */
 class Settings {
 	/**

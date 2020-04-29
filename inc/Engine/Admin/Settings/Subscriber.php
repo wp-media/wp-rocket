@@ -10,7 +10,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * WP Rocket settings page subscriber.
  *
- * @since 3.6 Moves into new architecture.
+ * @since 3.6 Moves into the new architecture.
  * @since 3.3
  */
 class Subscriber implements Subscriber_Interface {

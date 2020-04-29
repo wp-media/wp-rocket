@@ -4,10 +4,9 @@ namespace WP_Rocket\Engine\Admin;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 
 /**
- * Service Provider for admin subscribers
+ * Service Provider for admin subscribers.
  *
  * @since 3.3
- * @author Remy Perona
  */
 class ServiceProvider extends AbstractServiceProvider {
 
@@ -28,12 +27,9 @@ class ServiceProvider extends AbstractServiceProvider {
 	];
 
 	/**
-	 * Registers the option array in the container
+	 * Registers the option array in the container.
 	 *
 	 * @since 3.3
-	 * @author Remy Perona
-	 *
-	 * @return void
 	 */
 	public function register() {
 		$options = $this->getContainer()->get( 'options' );

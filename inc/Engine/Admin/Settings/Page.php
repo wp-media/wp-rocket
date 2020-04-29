@@ -2,92 +2,83 @@
 namespace WP_Rocket\Engine\Admin\Settings;
 
 use WP_Rocket\Admin\Database\Optimization;
-use WP_Rocket\Admin\Settings\Settings;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Interfaces\Render_Interface;
 
 /**
- * Registers the admin page and WP Rocket settings
+ * Registers the admin page and WP Rocket settings.
  *
+ * @since 3.6 Moves into the new architecture.
  * @since 3.0
- * @author Remy Perona
  */
 class Page {
 	/**
-	 * Plugin slug
+	 * Plugin slug.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @var string
 	 */
 	private $slug;
 
 	/**
-	 * Plugin page title
+	 * Plugin page title.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @var string
 	 */
 	private $title;
 
 	/**
-	 * Required capability to access the page
+	 * Required capability to access the page.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @var string
 	 */
 	private $capability;
 
 	/**
-	 * Settings instance
+	 * Settings instance.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @var Settings
 	 */
 	private $settings;
 
 	/**
-	 * Render implementation
+	 * Render implementation.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @var Render_Interface
 	 */
 	private $render;
 
 	/**
-	 * Beacon instance
+	 * Beacon instance.
 	 *
 	 * @since 3.2
-	 * @author Remy Perona
 	 *
 	 * @var Beacon
 	 */
 	private $beacon;
 
 	/**
-	 * Database optimization instance
+	 * Database optimization instance.
 	 *
 	 * @since 3.3
-	 * @author Remy Perona
 	 *
 	 * @var Optimization
 	 */
 	private $optimize;
 
 	/**
-	 * Constructor
+	 * Creates an instance of the Page object.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @param array            $args     Array of required arguments to add the admin page.
 	 * @param Settings         $settings Instance of Settings class.
@@ -106,10 +97,9 @@ class Page {
 	}
 
 	/**
-	 * Returns the settings page title
+	 * Returns the settings page title.
 	 *
 	 * @since 3.3
-	 * @author Remy Perona
 	 *
 	 * @return string
 	 */
@@ -118,10 +108,9 @@ class Page {
 	}
 
 	/**
-	 * Returns the settings page slug
+	 * Returns the settings page slug.
 	 *
 	 * @since 3.3
-	 * @author Remy Perona
 	 *
 	 * @return string
 	 */
@@ -130,10 +119,9 @@ class Page {
 	}
 
 	/**
-	 * Returns the settings page capability
+	 * Returns the settings page capability.
 	 *
 	 * @since 3.3
-	 * @author Remy Perona
 	 *
 	 * @return string
 	 */
@@ -145,21 +133,15 @@ class Page {
 	 * Registers the settings, page sections, fields sections and fields.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
-	 *
-	 * @return void
 	 */
 	public function configure() {
 		register_setting( $this->slug, WP_ROCKET_SLUG, [ $this->settings, 'sanitize_callback' ] );
 	}
 
 	/**
-	 * Renders the settings page
+	 * Renders the settings page.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
-	 *
-	 * @return void
 	 */
 	public function render_page() {
 		$rocket_valid_key = rocket_valid_key();
@@ -197,10 +179,9 @@ class Page {
 	}
 
 	/**
-	 * Gets customer data from WP Rocket website to display it in the dashboard
+	 * Gets customer data from WP Rocket website to display it in the dashboard.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @return object
 	 */
@@ -240,10 +221,9 @@ class Page {
 	}
 
 	/**
-	 * Returns customer data from transient or request and save it if not cached
+	 * Returns customer data from transient or request and save it if not cached.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @return object
 	 */
@@ -260,12 +240,9 @@ class Page {
 	}
 
 	/**
-	 * Toggle sliding checkboxes option value
+	 * Toggle sliding checkboxes option value.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
-	 *
-	 * @return void
 	 */
 	public function toggle_option() {
 		check_ajax_referer( 'rocket-ajax' );
@@ -304,7 +281,6 @@ class Page {
 	 * @since  3.0
 	 * @since  3.2 Not used anymore.
 	 * @see    \WP_Rocket\Subscriber\Third_Party\Plugins\Mobile_Subscriber::is_mobile_plugin_active_callback()
-	 * @author Remy Perona
 	 *
 	 * @param mixed $value Option value.
 	 *
@@ -319,12 +295,9 @@ class Page {
 	}
 
 	/**
-	 * Registers License section
+	 * Registers License section.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
-	 *
-	 * @return void
 	 */
 	private function license_section() {
 		$this->settings->add_page_section(
@@ -380,12 +353,9 @@ class Page {
 	}
 
 	/**
-	 * Registers Dashboard section
+	 * Registers Dashboard section.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
-	 *
-	 * @return void
 	 */
 	private function dashboard_section() {
 		$this->settings->add_page_section(
@@ -433,12 +403,9 @@ class Page {
 	}
 
 	/**
-	 * Registers Cache section
+	 * Registers Cache section.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
-	 *
-	 * @return void
 	 */
 	private function cache_section() {
 		$mobile_cache_beacon = $this->beacon->get_suggest( 'mobile_cache' );
@@ -555,12 +522,9 @@ class Page {
 	}
 
 	/**
-	 * Registers CSS & Javascript section
+	 * Registers CSS & Javascript section.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
-	 *
-	 * @return void
 	 */
 	private function assets_section() {
 		$remove_qs_beacon      = $this->beacon->get_suggest( 'remove_query_strings' );
@@ -864,12 +828,9 @@ class Page {
 	}
 
 	/**
-	 * Registers Media section
+	 * Registers Media section.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
-	 *
-	 * @return void
 	 */
 	private function media_section() {
 		$lazyload_beacon = $this->beacon->get_suggest( 'lazyload' );
@@ -904,7 +865,6 @@ class Page {
 		 * Lazyload Helper filter which disables WPR lazyload functionality for images.
 		 *
 		 * @since  3.4.2
-		 * @author Soponar Cristina
 		 *
 		 * @param array $disable_images_lazyload Will return the array with all plugin names which should disable LazyLoad
 		 */
@@ -977,7 +937,6 @@ class Page {
 		 * Add more content to the 'cache_webp' setting field.
 		 *
 		 * @since  3.4
-		 * @author Grégory Viguier
 		 *
 		 * @param array $cache_webp_field Data to be added to the setting field.
 		 */
@@ -1066,12 +1025,9 @@ class Page {
 	}
 
 	/**
-	 * Registers Preload section
+	 * Registers Preload section.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
-	 *
-	 * @return void
 	 */
 	private function preload_section() {
 		$this->settings->add_page_section(
@@ -1179,12 +1135,9 @@ class Page {
 	}
 
 	/**
-	 * Registers Advanced Cache section
+	 * Registers Advanced Cache section.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
-	 *
-	 * @return void
 	 */
 	private function advanced_cache_section() {
 		$this->settings->add_page_section(
@@ -1322,12 +1275,9 @@ class Page {
 	}
 
 	/**
-	 * Registers Database section
+	 * Registers Database section.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
-	 *
-	 * @return void
 	 */
 	private function database_section() {
 		$total = [];
@@ -1504,9 +1454,6 @@ class Page {
 	 * Registers CDN section
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
-	 *
-	 * @return void
 	 */
 	private function cdn_section() {
 		$this->settings->add_page_section(
@@ -1627,8 +1574,6 @@ class Page {
 	 * Registers Heartbeat section.
 	 *
 	 * @since  3.2
-	 * @access public
-	 * @author Grégory Viguier
 	 */
 	private function heartbeat_section() {
 		$heartbeat_beacon = $this->beacon->get_suggest( 'heartbeat_settings' );
@@ -1708,12 +1653,9 @@ class Page {
 	}
 
 	/**
-	 * Registers Add-ons section
+	 * Registers Add-ons section.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
-	 *
-	 * @return void
 	 */
 	private function addons_section() {
 		$this->settings->add_page_section(
@@ -1889,12 +1831,9 @@ class Page {
 	}
 
 	/**
-	 * Registers Cloudflare section
+	 * Registers Cloudflare section.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
-	 *
-	 * @return void
 	 */
 	private function cloudflare_section() {
 		$this->settings->add_page_section(
@@ -2006,9 +1945,6 @@ class Page {
 	 * Registers Sucuri cache section.
 	 *
 	 * @since  3.2
-	 * @access private
-	 *
-	 * @author Grégory Viguier
 	 */
 	private function sucuri_section() {
 		if ( defined( 'WP_ROCKET_SUCURI_API_KEY_HIDDEN' ) && WP_ROCKET_SUCURI_API_KEY_HIDDEN ) {
@@ -2057,12 +1993,9 @@ class Page {
 	}
 
 	/**
-	 * Sets hidden fields
+	 * Sets hidden fields.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
-	 *
-	 * @return void
 	 */
 	private function hidden_fields() {
 		$this->settings->add_hidden_settings_fields(
