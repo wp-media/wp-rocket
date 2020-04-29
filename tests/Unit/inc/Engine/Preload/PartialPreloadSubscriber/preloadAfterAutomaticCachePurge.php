@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\PartialPreloadSubscriber;
 
-
+use Mockery;
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Admin\Options_Data;
@@ -21,8 +21,8 @@ class Test_PreloadAfterAutomaticCachePurge extends TestCase {
 	private $property;
 
 	public function setUp() {
-		$this->options         = $this->createMock( Options_Data::class );
-		$this->partial_process = $this->createMock( PartialProcess::class );
+		$this->options         = Mockery::mock( Options_Data::class );
+		$this->partial_process = Mockery::mock( PartialProcess::class );
 		$this->subscriber      = new PartialPreloadSubscriber( $this->partial_process, $this->options );
 		$this->property        = $this->get_reflective_property( 'urls', $this->subscriber );
 		$this->property->setAccessible( true );
@@ -43,10 +43,7 @@ class Test_PreloadAfterAutomaticCachePurge extends TestCase {
 	 */
 	public function testShouldDoExpected( $permalink_structure, $option_value, $deleted, $expected ) {
 		if ( $deleted ) {
-			$this->options
-				->expects( $this->once() )
-				->method( 'get' )
-				->willReturn( $option_value );
+			$this->options->shouldReceive( 'get' )->andReturn( $option_value );
 		}
 
 		Functions\when( 'get_option' )->justReturn( $permalink_structure );
