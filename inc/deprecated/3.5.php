@@ -6,24 +6,23 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Class aliases.
  */
-
-class_alias( '\WP_Rocket\Admin\Settings\Page', '\WP_Rocket\Engine\Admin\Settings\Page' );
-class_alias( '\WP_Rocket\Admin\Settings\Render', '\WP_Rocket\Engine\Admin\Settings\Render' );
-class_alias( '\WP_Rocket\Admin\Settings\Settings', '\WP_Rocket\Engine\Admin\Settings\Settings' );
-class_alias( '\WP_Rocket\Optimization\CSS\Combine_Google_Fonts', '\WP_Rocket\Engine\Optimization\GoogleFonts\Combine' );
-class_alias( '\WP_Rocket\Preload\Abstract_Preload', '\WP_Rocket\Engine\Preload\AbstractPreload' );
-class_alias( '\WP_Rocket\Preload\Full_Process', '\WP_Rocket\Engine\Preload\FullProcess' );
-class_alias( '\WP_Rocket\Preload\Homepage', '\WP_Rocket\Engine\Preload\Homepage' );
-class_alias( '\WP_Rocket\Preload\Partial_Process', '\WP_Rocket\Engine\Preload\PartialProcess' );
-class_alias( '\WP_Rocket\Preload\Process', '\WP_Rocket\Engine\Preload\AbstractProcess' );
-class_alias( '\WP_Rocket\Preload\Sitemap', '\WP_Rocket\Engine\Preload\Sitemap' );
-class_alias( '\WP_Rocket\ServiceProvider\Preload_Subscribers', '\WP_Rocket\Engine\Preload\ServiceProvider' );
-class_alias( '\WP_Rocket\ServiceProvider\Settings', '\WP_Rocket\Engine\Admin\Settings\ServiceProvider' );
-class_alias( '\WP_Rocket\Subscriber\Admin\Settings\Page_Subscriber', '\WP_Rocket\Engine\Admin\Settings\Subscriber' );
-class_alias( '\WP_Rocket\Subscriber\Optimization\Combine_Google_Fonts_Subscriber', '\WP_Rocket\Engine\Optimization\GoogleFonts\Subscriber' );
-class_alias( '\WP_Rocket\Subscriber\Preload\Partial_Preload_Subscriber', '\WP_Rocket\Engine\Preload\PartialPreloadSubscriber' );
-class_alias( '\WP_Rocket\Subscriber\Preload\Preload_Subscriber', '\WP_Rocket\Engine\Preload\PreloadSubscriber' );
-class_alias( '\WP_Rocket\Subscriber\Preload\Sitemap_Preload_Subscriber', '\WP_Rocket\Engine\Preload\SitemapPreloadSubscriber' );
+class_alias( '\WP_Rocket\Engine\Admin\Settings\Page', '\WP_Rocket\Admin\Settings\Page' );
+class_alias( '\WP_Rocket\Engine\Admin\Settings\Render', '\WP_Rocket\Admin\Settings\Render' );
+class_alias( '\WP_Rocket\Engine\Admin\Settings\Settings', '\WP_Rocket\Admin\Settings\Settings' );
+class_alias( '\WP_Rocket\Engine\Admin\Settings\ServiceProvider', '\WP_Rocket\ServiceProvider\Settings' );
+class_alias( '\WP_Rocket\Engine\Admin\Settings\Subscriber', '\WP_Rocket\Subscriber\Admin\Settings\Page_Subscriber' );
+class_alias( '\WP_Rocket\Engine\Preload\AbstractPreload', '\WP_Rocket\Preload\Abstract_Preload' );
+class_alias( '\WP_Rocket\Engine\Preload\AbstractProcess', '\WP_Rocket\Preload\Process' );
+class_alias( '\WP_Rocket\Engine\Preload\FullProcess', '\WP_Rocket\Preload\Full_Process' );
+class_alias( '\WP_Rocket\Engine\Preload\Homepage', '\WP_Rocket\Preload\Homepage' );
+class_alias( '\WP_Rocket\Engine\Preload\PartialPreloadSubscriber', '\WP_Rocket\Subscriber\Preload\Partial_Preload_Subscriber' );
+class_alias( '\WP_Rocket\Engine\Preload\PartialProcess', '\WP_Rocket\Preload\Partial_Process' );
+class_alias( '\WP_Rocket\Engine\Preload\PreloadSubscriber', '\WP_Rocket\Subscriber\Preload\Preload_Subscriber' );
+class_alias( '\WP_Rocket\Engine\Preload\ServiceProvider', '\WP_Rocket\ServiceProvider\Preload_Subscribers' );
+class_alias( '\WP_Rocket\Engine\Preload\Sitemap', '\WP_Rocket\Preload\Sitemap' );
+class_alias( '\WP_Rocket\Engine\Preload\SitemapPreloadSubscriber', '\WP_Rocket\Subscriber\Preload\Sitemap_Preload_Subscriber' );
+class_alias( '\WP_Rocket\Engine\Optimization\GoogleFonts\Combine', '\WP_Rocket\Optimization\CSS\Combine_Google_Fonts' );
+class_alias( '\WP_Rocket\Engine\Optimization\GoogleFonts\Subscriber', '\WP_Rocket\Subscriber\Optimization\Combine_Google_Fonts_Subscriber' );
 
 /**
  * Removes Minification, DNS Prefetch, LazyLoad, Defer JS when on an AMP version of a post with the AMP for WordPress plugin from Auttomatic
