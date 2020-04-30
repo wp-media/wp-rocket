@@ -76,29 +76,6 @@ add_filter( 'page_row_actions', 'rocket_post_row_actions', 10, 2 );
 add_filter( 'post_row_actions', 'rocket_post_row_actions', 10, 2 );
 
 /**
- * Add a link "Purge this cache" in the taxonomy edit area
- *
- * @since 1.0
- *
- * @param array  $actions An array of row action links.
- * @param object $term The term object.
- * @return array Updated array of row action links
- */
-function rocket_tag_row_actions( $actions, $term ) {
-	global $taxnow;
-
-	if ( ! current_user_can( 'rocket_purge_terms' ) ) {
-		return $actions;
-	}
-
-	$url                     = wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=term-' . $term->term_id . '&taxonomy=' . $taxnow ), 'purge_cache_term-' . $term->term_id );
-	$actions['rocket_purge'] = sprintf( '<a href="%s">%s</a>', $url, __( 'Clear this cache', 'rocket' ) );
-
-	return $actions;
-}
-add_filter( 'tag_row_actions', 'rocket_tag_row_actions', 10, 2 );
-
-/**
  * Add a link "Purge this cache" in the user edit area
  *
  * @since 2.6.12
