@@ -10,6 +10,7 @@ trait VirtualFilesystemTrait {
 	protected $shouldNotClean   = [];
 	protected $entriesBefore    = [];
 	protected $dumpResults      = false;
+	protected $wp_cache         = true;
 
 	protected function initDefaultStructure() {
 		if ( empty( $this->config ) ) {
@@ -133,6 +134,9 @@ trait VirtualFilesystemTrait {
 
 			case 'FS_CHMOD_FILE':
 				return 0666;
+
+			case 'WP_CACHE':
+				return $this->wp_cache;
 
 			case 'WP_CONTENT_DIR':
 				return 'vfs://public/wp-content';

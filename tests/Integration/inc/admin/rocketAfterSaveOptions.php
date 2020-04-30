@@ -227,13 +227,13 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 
 	private function set_rocket_wp_cache_define() {
 		if ( isset( $this->expected['set_rocket_wp_cache_define'] ) ) {
-			Functions\expect( 'rocket_get_constant' )->with( 'WP_CACHE' )->andReturn( true );
+			Functions\expect( 'rocket_get_constant' )->with( 'WP_CACHE' )->andReturn( false );
 			$this->assertSame(
 				$this->expected['set_rocket_wp_cache_define'],
 				$this->filesystem->get_contents( 'vfs://public/wp-config.php' )
 			);
 		} else {
-			Functions\expect( 'rocket_get_constant' )->with( 'WP_CACHE' )->andReturn( false );
+			Functions\expect( 'rocket_get_constant' )->with( 'WP_CACHE' )->andReturn( true );
 			Functions\expect( 'set_rocket_wp_cache_define' )->never();
 		}
 	}

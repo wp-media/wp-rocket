@@ -3,7 +3,7 @@
 namespace WP_Rocket\Tests\Unit\inc\admin;
 
 use Brain\Monkey\Functions;
-use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
  * @covers ::rocket_after_save_options
@@ -12,15 +12,14 @@ use WPMedia\PHPUnit\Unit\TestCase;
  * @group Options
  * @group SaveOptions
  */
-class Test_RocketAfterSaveOptions extends TestCase {
-	private $config;
+class Test_RocketAfterSaveOptions extends FilesystemTestCase {
+	protected $path_to_test_data   = '/inc/admin/rocketAfterSaveOptions.php';
 
 	public function setUp() {
 		parent::setUp();
 
-		if ( empty( $this->config ) ) {
-			$this->loadConfig();
-		}
+		// Mocks the various filesystem constants.
+		$this->whenRocketGetConstant();
 
 		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/admin/options.php';
 
@@ -87,10 +86,10 @@ class Test_RocketAfterSaveOptions extends TestCase {
 		}
 
 		if ( isset( $expected['set_rocket_wp_cache_define'] ) ) {
-			Functions\expect( 'rocket_get_constant' )->once()->with( 'WP_CACHE' )->andReturn( false );
+			$this->wp_cache = false;
 			Functions\expect( 'set_rocket_wp_cache_define' )->once()->with( true )->andReturnNull();
 		} else {
-			Functions\expect( 'rocket_get_constant' )->with( 'WP_CACHE' )->andReturn( true );
+			$this->wp_cache = true;
 			Functions\expect( 'set_rocket_wp_cache_define' )->never();
 		}
 
@@ -102,17 +101,5 @@ class Test_RocketAfterSaveOptions extends TestCase {
 
 		// Run it.
 		rocket_after_save_options( $this->config['settings'], $settings );
-	}
-
-	public function providerTestData() {
-		if ( empty( $this->config ) ) {
-			$this->loadConfig();
-		}
-
-		return $this->config['test_data'];
-	}
-
-	private function loadConfig() {
-		$this->config = $this->getTestData( __DIR__, basename( __FILE__, '.php' ) );
 	}
 }
