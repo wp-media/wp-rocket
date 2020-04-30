@@ -102,7 +102,7 @@ class RESTGenerate implements Subscriber_Interface {
 		// Ajax call requested a timeout.
 		if ( ! empty( $request_timeout ) ) {
 			// Clean transient if the ajax call requested a timeout.
-			delete_transient( 'rocket_specific_cpcss_job_' . $request_id );
+			delete_transient( 'rocket_specific_cpcss_job_' . $request['id'] );
 			return rest_ensure_response(
 				[
 					'success' => false,
@@ -128,7 +128,7 @@ class RESTGenerate implements Subscriber_Interface {
 		}
 
 		// Check CPCSS job status.
-		return rest_ensure_response( $this->check_cpcss_job_status( $cpcss_job_id, $request['id'] ) );
+		return rest_ensure_response( $this->check_cpcss_job_status( $cpcss_job_id, $request['id'], $post_url, $post_type ) );
 	}
 
 	/**
@@ -138,10 +138,8 @@ class RESTGenerate implements Subscriber_Interface {
 	 * @param  int $request_id   - Request / Post ID.
 	 * @return array
 	 */
-	protected function check_cpcss_job_status( $cpcss_job_id, $request_id ) {
-		$job_data  = $this->get_critical_path( $cpcss_job_id );
-		$post_url  = get_permalink( $request_id );
-		$post_type = get_post_type( $request_id );
+	protected function check_cpcss_job_status( $cpcss_job_id, $request_id, $post_url, $post_type ) {
+		$job_data = $this->get_critical_path( $cpcss_job_id );
 
 		if ( in_array( (int) $job_data->status, [ 400, 404 ], true ) ) {
 			// Clean transient if there is an error.

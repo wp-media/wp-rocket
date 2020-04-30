@@ -33,31 +33,71 @@ class Test_Generate extends FilesystemTestCase {
 	 * @dataProvider nonMultisiteTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ) {
-		$post_id                    = isset( $config['post_data'] )
+		$post_id                      = isset( $config['post_data'] )
 			? $config['post_data']['ID']
 			: 0;
-		$post_type                  = ! isset( $config['post_data']['post_type'] )
+		$post_type                    = ! isset( $config['post_data']['post_type'] )
 			? 'post'
 			: $config['post_data']['post_type'];
-		$post_status                = isset( $config['post_data']['post_status'] )
+		$post_status                  = isset( $config['post_data']['post_status'] )
 			? $config['post_data']['post_status']
 			: false;
-		$post_request_response_code = ! isset( $config['generate_post_request_data']['code'] )
+		$post_request_response_code   = ! isset( $config['generate_post_request_data']['code'] )
 			? 200
 			: $config['generate_post_request_data']['code'];
-		$post_request_response_body = ! isset( $config['generate_post_request_data']['body'] )
+		$post_request_response_body   = ! isset( $config['generate_post_request_data']['body'] )
 			? ''
 			: $config['generate_post_request_data']['body'];
-		$get_request_response_body  = ! isset( $config['generate_get_request_data']['body'] )
+		$get_request_response_body    = ! isset( $config['generate_get_request_data']['body'] )
 			? ''
 			: $config['generate_get_request_data']['body'];
-
+		$saved_cpcss_job_id           = isset( $config['cpcss_job_id'] )
+			? $config['cpcss_job_id']
+			: false;
+		$cpcss_post_job_body          = ! isset( $config['generate_post_request_data']['body'] )
+			? ''
+			: json_decode( $config['generate_post_request_data']['body'] );
+		$cpcss_post_job_id            = ! isset( $cpcss_post_job_body->data->id )
+			? false
+			: $cpcss_post_job_body->data->id;
+		$get_request_response_code    = ! isset( $config['generate_get_request_data']['code'] )
+			? 200
+			: $config['generate_get_request_data']['code'];
+		$get_request_response_decoded = ! isset( $config['generate_get_request_data']['body'] )
+			? ''
+			: json_decode( $config['generate_get_request_data']['body'] );
+		$get_request_response_state   = ! isset( $get_request_response_decoded->data->state )
+			? false
+			: $get_request_response_decoded->data->state;
+		$request_timeout              = isset( $config['request_timeout'] )
+			? $config['request_timeout']
+			: false;
 		$file = $this->config['vfs_dir'] . "1/posts/{$post_type}-{$post_id}.css";
 
 		Functions\expect( 'get_post_status' )
 			->once()
 			->andReturn( $post_status );
 
+		if ( $post_id > 0 && 'publish' === $post_status ) {
+			Functions\expect( 'get_transient' )
+				->once()
+				->with( 'rocket_specific_cpcss_job_' . $post_id )
+				->andReturn( $saved_cpcss_job_id );
+		}
+
+		if ( $post_id > 0 && 'publish' === $post_status && $cpcss_post_job_id ) {
+			Functions\expect( 'set_transient' )
+				->once()
+				->with( 'rocket_specific_cpcss_job_' . $post_id, $cpcss_post_job_id );
+		}
+
+		if ( in_array( (int) $get_request_response_code, [ 400, 404 ], true )
+			|| ( 200 === $get_request_response_code && 'complete' === $get_request_response_state )
+			|| $request_timeout ) {
+			Functions\expect( 'delete_transient' )
+				->once()
+				->with( 'rocket_specific_cpcss_job_' . $post_id );
+		}
 		Functions\expect( 'get_post_type' )
 			->atMost()
 			->times( 1 )
@@ -120,6 +160,10 @@ class Test_Generate extends FilesystemTestCase {
 		$instance      = new RESTGenerate( $this->filesystem->getUrl( 'wp-content/cache/critical-css/' ) );
 		$request       = new WP_REST_Request();
 		$request['id'] = $post_id;
+
+		if ( $request_timeout ) {
+			$request['timeout'] = $request_timeout;
+		}
 
 		$this->assertSame( $expected, $instance->generate( $request ) );
 		$this->assertSame( $config['cpcss_exists_after'], $this->filesystem->exists( $file ) );
