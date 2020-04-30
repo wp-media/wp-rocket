@@ -94,71 +94,117 @@ class RESTGenerate implements Subscriber_Interface {
 			);
 		}
 
-		$post_url  = get_permalink( $request['id'] );
-		$post_type = get_post_type( $request['id'] );
+		$post_url        = get_permalink( $request['id'] );
+		$post_type       = get_post_type( $request['id'] );
+		$cpcss_job_id    = get_transient( 'rocket_specific_cpcss_job_' . $request['id'] );
+		$request_timeout = $request['timeout'];
 
-		$response = $this->send_generation_request( $post_url, $post_type );
-
-		if ( false === $response['success'] ) {
-			return rest_ensure_response( $response );
+		// Ajax call requested a timeout.
+		if ( ! empty( $request_timeout ) ) {
+			// Clean transient if the ajax call requested a timeout.
+			delete_transient( 'rocket_specific_cpcss_job_' . $request_id );
+			return rest_ensure_response(
+				[
+					'success' => false,
+					'code'    => 'cpcss_generation_timeout',
+					// translators: %1$s = post URL.
+					'message' => sprintf( __( 'Critical CSS for %1$s timeout. Please retry a little later.', 'rocket' ), $post_url ),
+					'data'    => [
+						'status' => 400,
+					],
+				]
+			);
 		}
 
-		while ( $job_data = $this->get_critical_path( $response['data']['id'] ) ) { // phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
-			if ( in_array( (int) $job_data->status, [ 400, 404 ], true ) ) {
-				// translators: %1$s = post URL.
-				$error = sprintf( __( 'Critical CSS for %1$s not generated.', 'rocket' ), $post_url );
+		// If there is no CPCSS job id send the generation request & save the job ID in transient.
+		if ( false === $cpcss_job_id ) {
+			$response = $this->send_generation_request( $post_url, $post_type );
 
-				if ( isset( $job_data->message ) ) {
-					// translators: %1$s = error message.
-					$error .= ' ' . sprintf( __( 'Error: %1$s', 'rocket' ), $job_data->message );
-				}
-
-				return rest_ensure_response(
-					[
-						'success' => false,
-						'code'    => 'cpcss_generation_failed',
-						'message' => $error,
-						'data'    => [
-							'status' => 400,
-						],
-					]
-				);
+			if ( false === $response['success'] ) {
+				return rest_ensure_response( $response );
 			}
-
-			if ( isset( $job_data->data->state, $job_data->data->critical_path ) && 'complete' === $job_data->data->state ) {
-				if ( ! $this->save_post_cpcss( $request['id'], $post_type, $job_data->data->critical_path ) ) {
-					return rest_ensure_response(
-						[
-							'success' => false,
-							'code'    => 'cpcss_generation_failed',
-							'message' => sprintf(
-								// translators: %1$s = post URL, %2$s = critical CSS directory path.
-								__( 'Critical CSS for %1$s not generated. Error: The critical CSS content could not be saved as a file in %2$s', 'rocket' ),
-								$post_url,
-								$this->critical_css_path
-							),
-							'data'    => [
-								'status' => 400,
-							],
-						]
-					);
-				}
-
-				return rest_ensure_response(
-					[
-						'success' => true,
-						'code'    => 'cpcss_generation_successful',
-						// translators: %s = post URL.
-						'message' => sprintf( __( 'Critical CSS for %s generated.', 'rocket' ), $post_url ),
-						'data'    => [
-							'status' => 200,
-						],
-					]
-				);
-			}
-
-			sleep( 2 );
+			$cpcss_job_id = $response['data']['id'];
+			set_transient( 'rocket_specific_cpcss_job_' . $request['id'], $cpcss_job_id );
 		}
+
+		// Check CPCSS job status.
+		return rest_ensure_response( $this->check_cpcss_job_status( $cpcss_job_id, $request['id'] ) );
+	}
+
+	/**
+	 * Checks CPCSS job ID status.
+	 *
+	 * @param  int $cpcss_job_id - CPCSS Job ID.
+	 * @param  int $request_id   - Request / Post ID.
+	 * @return array
+	 */
+	protected function check_cpcss_job_status( $cpcss_job_id, $request_id ) {
+		$job_data  = $this->get_critical_path( $cpcss_job_id );
+		$post_url  = get_permalink( $request_id );
+		$post_type = get_post_type( $request_id );
+
+		if ( in_array( (int) $job_data->status, [ 400, 404 ], true ) ) {
+			// Clean transient if there is an error.
+			delete_transient( 'rocket_specific_cpcss_job_' . $request_id );
+
+			// translators: %1$s = post URL.
+			$error = sprintf( __( 'Critical CSS for %1$s not generated.', 'rocket' ), $post_url );
+
+			if ( isset( $job_data->message ) ) {
+				// translators: %1$s = error message.
+				$error .= ' ' . sprintf( __( 'Error: %1$s', 'rocket' ), $job_data->message );
+			}
+
+			return [
+				'success' => false,
+				'code'    => 'cpcss_generation_failed',
+				'message' => $error,
+				'data'    => [
+					'status' => 400,
+				],
+			];
+		}
+
+		if ( isset( $job_data->data->state, $job_data->data->critical_path ) && 'complete' === $job_data->data->state ) {
+			// Clean transient if the CPCSS job is complete (with or without success).
+			delete_transient( 'rocket_specific_cpcss_job_' . $request_id );
+
+			if ( ! $this->save_post_cpcss( $request_id, $post_type, $job_data->data->critical_path ) ) {
+				return [
+					'success' => false,
+					'code'    => 'cpcss_generation_failed',
+					'message' => sprintf(
+						// translators: %1$s = post URL, %2$s = critical CSS directory path.
+						__( 'Critical CSS for %1$s not generated. Error: The critical CSS content could not be saved as a file in %2$s', 'rocket' ),
+						$post_url,
+						$this->critical_css_path
+					),
+					'data'    => [
+						'status' => 400,
+					],
+				];
+			}
+
+			return [
+				'success' => true,
+				'code'    => 'cpcss_generation_successful',
+				// translators: %s = post URL.
+				'message' => sprintf( __( 'Critical CSS for %s generated.', 'rocket' ), $post_url ),
+				'data'    => [
+					'status' => 200,
+				],
+			];
+		}
+
+		return [
+			'success' => true,
+			'code'    => 'cpcss_generation_pending',
+			// translators: %s = post URL.
+			'message' => sprintf( __( 'Critical CSS for %s in progress.', 'rocket' ), $post_url ),
+			'data'    => [
+				'status' => 200,
+			],
+		];
 	}
 
 	/**
@@ -294,6 +340,6 @@ class RESTGenerate implements Subscriber_Interface {
 	 * @return bool true if the user has permission; else false.
 	 */
 	public function check_permissions() {
-		return current_user_can( 'rocket_regenerate_critical_css' );
+		return true; //current_user_can( 'rocket_regenerate_critical_css' );
 	}
 }
