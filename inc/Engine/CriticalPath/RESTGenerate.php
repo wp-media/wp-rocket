@@ -134,8 +134,10 @@ class RESTGenerate implements Subscriber_Interface {
 	/**
 	 * Checks CPCSS job ID status.
 	 *
-	 * @param  int $cpcss_job_id - CPCSS Job ID.
-	 * @param  int $request_id   - Request / Post ID.
+	 * @param  int    $cpcss_job_id - CPCSS Job ID.
+	 * @param  int    $request_id   - Request / Post ID.
+	 * @param  string $post_url     - Post Url.
+	 * @param  string $post_type    - Post type.
 	 * @return array
 	 */
 	protected function check_cpcss_job_status( $cpcss_job_id, $request_id, $post_url, $post_type ) {
@@ -338,6 +340,6 @@ class RESTGenerate implements Subscriber_Interface {
 	 * @return bool true if the user has permission; else false.
 	 */
 	public function check_permissions() {
-		return true; //current_user_can( 'rocket_regenerate_critical_css' );
+		return current_user_can( 'rocket_regenerate_critical_css' );
 	}
 }
