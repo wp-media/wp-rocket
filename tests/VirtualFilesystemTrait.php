@@ -83,7 +83,7 @@ trait VirtualFilesystemTrait {
 	protected function checkEntriesDeleted( array $shouldClean ) {
 		foreach ( $shouldClean as $entry => $contents ) {
 			// Deleted.
-			if ( empty( $contents ) ) {
+			if ( is_null( $contents ) ) {
 				if ( $this->dumpResults && false !== $this->filesystem->exists( $entry ) ) {
 					echo "\n Entry: {$entry} \n";
 					if ( $this->filesystem->is_dir( $entry ) ) {

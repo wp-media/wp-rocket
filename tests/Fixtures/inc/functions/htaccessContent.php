@@ -1,7 +1,6 @@
 <?php
 
-return [
-	'with_wp_rules' => <<<HTACCESS
+$start = <<<HTACCESS
 # BEGIN WP Rocket v3.5.4
 # Use UTF-8 encoding for anything served text/plain or text/html
 AddDefaultCharset UTF-8
@@ -13,11 +12,44 @@ AddCharset UTF-8 .atom .css .js .json .rss .vtt .xml
 <IfModule mod_headers.c>
 Header unset ETag
 </IfModule>
+
+HTACCESS;
+
+$fileETag = <<<HTACCESS
+# Since we’re sending far-future expires, we don’t need ETags for static content.
+# developer.yahoo.com/performance/rules.html#etags
+FileETag None
+# Send CORS headers if browsers request them; enabled by default for images.
+<IfModule mod_setenvif.c>
+<IfModule mod_headers.c>
+# mod_headers, y u no match by Content-Type?!
+<FilesMatch "\.(cur|gif|png|jpe?g|svgz?|ico|webp)$">
+SetEnvIf Origin ":" IS_CORS
+Header set Access-Control-Allow-Origin "*" env=IS_CORS
+</FilesMatch>
+</IfModule>
+</IfModule>
+# Allow access to web fonts from all domains.
+<FilesMatch "\.(eot|otf|tt[cf]|woff2?)$">
+<IfModule mod_headers.c>
+Header set Access-Control-Allow-Origin "*"
+</IfModule>
+</FilesMatch>
+<IfModule mod_alias.c>
+<FilesMatch "\.(html|htm|rtf|rtx|txt|xsd|xsl|xml)$">
+
+HTACCESS;
+
+$fileETag_none = <<<HTACCESS
 # Since we’re sending far-future expires, we don’t need ETags for static content.
 # developer.yahoo.com/performance/rules.html#etags
 FileETag None
 <IfModule mod_alias.c>
 <FilesMatch "\.(html|htm|rtf|rtx|txt|xsd|xsl|xml)$">
+
+HTACCESS;
+
+$middle = <<<HTACCESS
 <IfModule mod_headers.c>
 Header set X-Powered-By "WP Rocket/3.5.4"
 Header unset Pragma
@@ -109,6 +141,10 @@ AddOutputFilterByType DEFLATE application/atom+xml \
 Header append Vary: Accept-Encoding
 </IfModule>
 </IfModule>
+
+HTACCESS;
+
+$wp_rules = <<<HTACCESS
 <IfModule mod_rewrite.c>
 RewriteEngine On
 RewriteBase /
@@ -124,10 +160,20 @@ RewriteCond %{HTTP_USER_AGENT} !^(facebookexternalhit).* [NC]
 RewriteCond "%{DOCUMENT_ROOT}/vfs://public/wp-content/cache/wp-rocket/%{HTTP_HOST}%{REQUEST_URI}/index%{ENV:WPR_SSL}%{ENV:WPR_WEBP}.html" -f
 RewriteRule .* "vfs://public/wp-content/cache/wp-rocket/%{HTTP_HOST}%{REQUEST_URI}/index%{ENV:WPR_SSL}%{ENV:WPR_WEBP}.html" [L]
 </IfModule>
+
+HTACCESS;
+
+$end = <<<HTACCESS
 # END WP Rocket
 # Random
 # add a trailing slash to /wp-admin# BEGIN WordPress
 
-HTACCESS
-	,
+HTACCESS;
+
+return [
+	'FileETag_none'         => "{$start}{$fileETag_none}{$middle}{$end}",
+	'FileETag_none_wprules' => "{$start}{$fileETag_none}{$middle}{$wp_rules}{$end}",
+
+	'FileETag'         => "{$start}{$fileETag}{$middle}{$end}",
+	'FileETag_wprules' => "{$start}{$fileETag}{$middle}{$wp_rules}{$end}",
 ];
