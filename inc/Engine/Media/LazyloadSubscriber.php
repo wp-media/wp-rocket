@@ -160,7 +160,7 @@ class LazyloadSubscriber implements Subscriber_Interface {
 		 * @param bool $use_native True to use native lazyload, false otherwise.
 		 */
 		if ( (bool) apply_filters( 'rocket_use_native_lazyload', false ) ) {
-			$inline_args['options'] = [
+			$inline_args['options']             = [
 				'use_native' => 'true',
 			];
 			$inline_args['elements']['loading'] = '[loading=lazy]';
