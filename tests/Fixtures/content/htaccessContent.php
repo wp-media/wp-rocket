@@ -19,6 +19,10 @@ $fileETag = <<<HTACCESS
 # Since we’re sending far-future expires, we don’t need ETags for static content.
 # developer.yahoo.com/performance/rules.html#etags
 FileETag None
+
+HTACCESS;
+
+$cors = <<<HTACCESS
 # Send CORS headers if browsers request them; enabled by default for images.
 <IfModule mod_setenvif.c>
 <IfModule mod_headers.c>
@@ -35,15 +39,10 @@ Header set Access-Control-Allow-Origin "*" env=IS_CORS
 Header set Access-Control-Allow-Origin "*"
 </IfModule>
 </FilesMatch>
-<IfModule mod_alias.c>
-<FilesMatch "\.(html|htm|rtf|rtx|txt|xsd|xsl|xml)$">
 
 HTACCESS;
 
-$fileETag_none = <<<HTACCESS
-# Since we’re sending far-future expires, we don’t need ETags for static content.
-# developer.yahoo.com/performance/rules.html#etags
-FileETag None
+$mod_alias = <<<HTACCESS
 <IfModule mod_alias.c>
 <FilesMatch "\.(html|htm|rtf|rtx|txt|xsd|xsl|xml)$">
 
@@ -144,7 +143,18 @@ Header append Vary: Accept-Encoding
 
 HTACCESS;
 
-$wp_rules = <<<HTACCESS
+$gzip = <<<HTACCESS
+<IfModule mod_mime.c>
+AddType text/html .html_gzip
+AddEncoding gzip .html_gzip
+</IfModule>
+<IfModule mod_setenvif.c>
+SetEnvIfNoCase Request_URI \.html_gzip$ no-gzip
+</IfModule>
+
+HTACCESS;
+
+$wp_rules_start = <<<HTACCESS
 <IfModule mod_rewrite.c>
 RewriteEngine On
 RewriteBase /
@@ -152,6 +162,9 @@ RewriteCond %{HTTPS} on [OR]
 RewriteCond %{SERVER_PORT} ^443$ [OR]
 RewriteCond %{HTTP:X-Forwarded-Proto} https
 RewriteRule .* - [E=WPR_SSL:-https]
+HTACCESS;
+
+$wp_rules_end = <<<HTACCESS
 RewriteCond %{REQUEST_METHOD} GET
 RewriteCond %{QUERY_STRING} =""
 RewriteCond %{HTTP:Cookie} !(wordpress_logged_in_.+|wp-postpass_|wptouch_switch_toggle|comment_author_|comment_author_email_) [NC]
@@ -171,9 +184,19 @@ $end = <<<HTACCESS
 HTACCESS;
 
 return [
-	'FileETag_none'         => "{$start}{$fileETag_none}{$middle}{$end}",
-	'FileETag_none_wprules' => "{$start}{$fileETag_none}{$middle}{$wp_rules}{$end}",
+	'no_cors'         => "{$start}{$fileETag}{$mod_alias}{$middle}{$end}",
+	'no_cors_wprules' => "{$start}{$fileETag}{$mod_alias}{$middle}{$wp_rules_start}{$wp_rules_end}{$end}",
 
-	'FileETag'         => "{$start}{$fileETag}{$middle}{$end}",
-	'FileETag_wprules' => "{$start}{$fileETag}{$middle}{$wp_rules}{$end}",
+	'with_cors'         => "{$start}{$fileETag}{$cors}{$mod_alias}{$middle}{$end}",
+	'with_cors_wprules' => "{$start}{$fileETag}{$cors}{$mod_alias}{$middle}{$wp_rules_start}{$wp_rules_end}{$end}",
+
+	'start'          => $start,
+	'FileETag'       => $fileETag,
+	'CORS'           => $cors,
+	'mod_alias'      => $mod_alias,
+	'middle'         => $middle,
+	'gzip'           => $gzip,
+	'wp_rules_start' => $wp_rules_start,
+	'wp_rules_end'   => $wp_rules_end,
+	'end'            => $end,
 ];

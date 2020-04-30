@@ -55,7 +55,13 @@ return [
 			],
 			'expected' => [
 				'rocket_clean_domain'         => $rocket_clean_domain,
-				'flush_rocket_htaccess'       => $htaccess['FileETag_none_wprules'],
+				'flush_rocket_htaccess'       => [
+					$htaccess['start'],
+					$htaccess['FileETag'],
+					$htaccess['mod_alias'],
+					$htaccess['wp_rules_start'],
+					$htaccess['end'],
+				],
 				'rocket_generate_config_file' => '<?php $var = "Some contents.";',
 			],
 		],
@@ -72,7 +78,13 @@ return [
 			],
 			'expected' => [
 				'rocket_clean_domain'         => $rocket_clean_domain,
-				'flush_rocket_htaccess'       => $htaccess['FileETag_none_wprules'],
+				'flush_rocket_htaccess'       => [
+					$htaccess['start'],
+					$htaccess['FileETag'],
+					$htaccess['mod_alias'],
+					$htaccess['wp_rules_start'],
+					$htaccess['end'],
+				],
 				'rocket_generate_config_file' => '<?php $var = "Some contents.";',
 			],
 		],
@@ -89,7 +101,13 @@ return [
 			],
 			'expected' => [
 				'rocket_clean_domain'         => $rocket_clean_domain,
-				'flush_rocket_htaccess'       => $htaccess['FileETag_none_wprules'],
+				'flush_rocket_htaccess'       => [
+					$htaccess['start'],
+					$htaccess['FileETag'],
+					$htaccess['mod_alias'],
+					$htaccess['wp_rules_start'],
+					$htaccess['end'],
+				],
 				'rocket_generate_config_file' => '<?php $var = "Some contents.";',
 			],
 		],
@@ -107,7 +125,13 @@ return [
 			'expected' => [
 				'rocket_clean_domain'         => $rocket_clean_domain,
 				'rocket_clean_minify'         => $rocket_clean_minify,
-				'flush_rocket_htaccess'       => $htaccess['FileETag_none_wprules'],
+				'flush_rocket_htaccess'       => [
+					$htaccess['start'],
+					$htaccess['FileETag'],
+					$htaccess['mod_alias'],
+					$htaccess['wp_rules_start'],
+					$htaccess['end'],
+				],
 				'rocket_generate_config_file' => '<?php $var = "Some contents.";',
 			],
 		],
@@ -125,7 +149,13 @@ return [
 			'expected' => [
 				'rocket_clean_domain'         => $rocket_clean_domain,
 				'rocket_clean_minify'         => $rocket_clean_minify,
-				'flush_rocket_htaccess'       => $htaccess['FileETag_none_wprules'],
+				'flush_rocket_htaccess'       => [
+					$htaccess['start'],
+					$htaccess['FileETag'],
+					$htaccess['mod_alias'],
+					$htaccess['wp_rules_start'],
+					$htaccess['end'],
+				],
 				'rocket_generate_config_file' => '<?php $var = "Some contents.";',
 			],
 		],
@@ -144,7 +174,14 @@ return [
 			'expected' => [
 				'rocket_clean_domain'         => $rocket_clean_domain,
 				'rocket_clean_minify'         => $rocket_clean_minify,
-				'flush_rocket_htaccess'       => $htaccess['FileETag_wprules'],
+				'flush_rocket_htaccess'       => [
+					$htaccess['start'],
+					$htaccess['FileETag'],
+					$htaccess['CORS'],
+					$htaccess['mod_alias'],
+					$htaccess['wp_rules_start'],
+					$htaccess['end'],
+				],
 				'rocket_generate_config_file' => '<?php $var = "Some contents.";',
 			],
 		],
@@ -162,7 +199,12 @@ return [
 			],
 			'expected' => [
 				'rocket_clean_domain'                 => $rocket_clean_domain,
-				'flush_rocket_htaccess'               => $htaccess['FileETag_none'],
+				'flush_rocket_htaccess'               => [
+					$htaccess['start'],
+					$htaccess['FileETag'],
+					$htaccess['mod_alias'],
+					$htaccess['end'],
+				],
 				'rocket_generate_config_file'         => '<?php $var = "Some contents.";',
 				'rocket_generate_advanced_cache_file' => $advanced_cache['mobile'],
 			],
@@ -181,7 +223,13 @@ return [
 			],
 			'expected' => [
 				'rocket_clean_domain'         => $rocket_clean_domain,
-				'flush_rocket_htaccess'       => $htaccess['FileETag_none_wprules'],
+				'flush_rocket_htaccess'       => [
+					$htaccess['start'],
+					$htaccess['FileETag'],
+					$htaccess['mod_alias'],
+					$htaccess['wp_rules_start'],
+					$htaccess['end'],
+				],
 				'rocket_generate_config_file' => '<?php $var = "Some contents.";',
 				'set_transient'               => '1',
 			],

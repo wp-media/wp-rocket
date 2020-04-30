@@ -183,13 +183,15 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 		}
 
 		// Checks after updating.
-		if ( isset( $this->expected['flush_rocket_htaccess'] ) ) {
-			$this->assertSame(
-				$this->expected['flush_rocket_htaccess'],
-				$this->filesystem->get_contents( 'vfs://public/.htaccess' )
-			);
-		} else {
+		if ( ! isset( $this->expected['flush_rocket_htaccess'] ) ) {
 			Functions\expect( 'flush_rocket_htaccess' )->never();
+
+			return;
+		}
+
+		$actual = $this->filesystem->get_contents( 'vfs://public/.htaccess' );
+		foreach ( (array) $this->expected['flush_rocket_htaccess'] as $content ) {
+			$this->assertContains( $content, $actual );
 		}
 	}
 
