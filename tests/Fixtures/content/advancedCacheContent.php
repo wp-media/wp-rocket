@@ -1,7 +1,6 @@
 <?php
 
-return [
-	'starting' => <<<STARTING_CONTENTS
+$start = <<<STARTING_CONTENTS
 <?php
 defined( 'ABSPATH' ) || exit;
 
@@ -12,17 +11,17 @@ if ( ! defined( 'WP_ROCKET_CONFIG_PATH' ) ) {
 }
 
 
-STARTING_CONTENTS
-	,
-	'mobile'   => <<<MOBILE_CONTENTS
+STARTING_CONTENTS;
+
+$mobile = <<<MOBILE_CONTENTS
 if ( file_exists( 'vfs://public/wp-content/plugins/wp-rocket/inc/vendors/classes/class-rocket-mobile-detect.php' ) && ! class_exists( 'Rocket_Mobile_Detect' ) ) {
 	include_once 'vfs://public/wp-content/plugins/wp-rocket/inc/vendors/classes/class-rocket-mobile-detect.php';
 }
 
 
-MOBILE_CONTENTS
-	,
-	'ending'   => <<<ENDING_CONTENTS
+MOBILE_CONTENTS;
+
+$end = <<<ENDING_CONTENTS
 if ( version_compare( phpversion(), '5.6' ) >= 0 ) {
 
 	spl_autoload_register(
@@ -81,6 +80,9 @@ if ( version_compare( phpversion(), '5.6' ) >= 0 ) {
 	define( 'WP_ROCKET_ADVANCED_CACHE_PROBLEM', true );
 }
 
-ENDING_CONTENTS
-	,
+ENDING_CONTENTS;
+
+return [
+	'non_mobile' => "{$start}{$end}",
+	'mobile'     => "{$start}{$mobile}{$end}",
 ];
