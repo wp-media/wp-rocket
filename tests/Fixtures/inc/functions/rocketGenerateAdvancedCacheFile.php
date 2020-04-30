@@ -5,20 +5,6 @@ $content = require WP_ROCKET_TESTS_FIXTURES_DIR . '/content/advancedCacheContent
 return [
 	'vfs_dir' => 'wp-content/',
 
-	'structure' => [
-		'wp-content' => [
-			'plugins'            => [
-				'wp-rocket' => [
-					'inc'              => [
-						'process-autoloader.php' => file_get_contents( WP_ROCKET_PLUGIN_ROOT . 'inc/process-autoloader.php' ),
-					],
-					'licence-data.php' => '',
-				],
-			],
-			'advanced-cache.php' => '',
-		],
-	],
-
 	'settings' => [
 		'cache_mobile'            => 0,
 		'do_caching_mobile_files' => 0,
