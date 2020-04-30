@@ -43,11 +43,7 @@ trait VirtualFilesystemTrait {
 	}
 
 	protected function getEntriesBefore( $dir = '' ) {
-		if ( '' === $dir ) {
-			$dir = $this->filesystem->getUrl( $this->config['vfs_dir'] );
-		}
-
-		$this->entriesBefore = $this->filesystem->getListing( $dir );
+		$this->entriesBefore = $this->filesystem->getListing( $this->getDirUrl( $dir ) );
 	}
 
 	protected function getShouldNotCleanEntries( array $shouldNotClean ) {
@@ -104,11 +100,7 @@ trait VirtualFilesystemTrait {
 	}
 
 	protected function checkShouldNotDeleteEntries( $dir = '' ) {
-		if ( '' === $dir ) {
-			$dir = $this->filesystem->getUrl( $this->config['vfs_dir'] );
-		}
-
-		$entriesAfterCleaning = $this->filesystem->getListing( $dir );
+		$entriesAfterCleaning = $this->filesystem->getListing( $this->getDirUrl( $dir ) );
 		$actual               = array_diff( $entriesAfterCleaning, $this->shouldNotClean );
 		if ( $this->dumpResults ) {
 			var_dump( $actual );
@@ -122,6 +114,14 @@ trait VirtualFilesystemTrait {
 				return $this->getConstant( $constant_name, $default );
 			}
 		);
+	}
+
+	protected function getDirUrl( $dir ) {
+		if ( empty( $dir ) ) {
+			return $this->filesystem->getUrl( $this->config['vfs_dir'] );
+		}
+
+		return $dir;
 	}
 
 	protected function getConstant( $constant_name, $default = null ) {
