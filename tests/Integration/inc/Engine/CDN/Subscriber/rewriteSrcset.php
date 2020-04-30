@@ -2,8 +2,6 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Subscriber;
 
-use WPMedia\PHPUnit\Integration\TestCase;
-
 /**
  * @covers \WP_Rocket\Engine\CDN\Subscriber::rewrite_srcset
  * @uses   \WP_Rocket\Engine\CDN\CDN::rewrite_srcset
@@ -16,14 +14,6 @@ class Test_RewriteSrcset extends TestCase {
 		if ( empty( $this->config ) ) {
 			$this->loadConfig();
 		}
-	}
-
-	public function tearDown() {
-		remove_filter( 'pre_get_rocket_option_cdn', [ $this, 'return_true' ] );
-		remove_filter( 'pre_get_rocket_option_cdn_cnames', [ $this, 'setCnames' ] );
-		remove_filter( 'pre_get_rocket_option_cdn_zone', [ $this, 'setCDNZone' ] );
-
-		parent::tearDown();
 	}
 
 	/**
@@ -53,13 +43,5 @@ class Test_RewriteSrcset extends TestCase {
 
 	private function loadConfig() {
 		$this->config = $this->getTestData( __DIR__, 'rewriteSrcset' );
-	}
-
-	public function setCnames() {
-		return $this->cnames;
-	}
-
-	public function setCDNZone() {
-		return $this->cdn_zone;
 	}
 }

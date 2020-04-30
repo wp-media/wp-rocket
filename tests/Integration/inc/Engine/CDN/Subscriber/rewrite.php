@@ -2,8 +2,6 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Subscriber;
 
-use WPMedia\PHPUnit\Integration\TestCase;
-
 /**
  * @covers \WP_Rocket\Engine\CDN\Subscriber::rewrite
  * @uses   \WP_Rocket\Engine\CDN\CDN::rewrite
@@ -11,17 +9,10 @@ use WPMedia\PHPUnit\Integration\TestCase;
  * @group  rewrite
  */
 class Test_Rewrite extends TestCase {
-	private $cnames;
-	private $cdn_zone;
-	private $site_url;
 	private $content_url;
 	private $includes_url;
 
 	public function tearDown() {
-		remove_filter( 'pre_get_rocket_option_cdn', [ $this, 'return_true' ] );
-		remove_filter( 'pre_get_rocket_option_cdn_cnames', [ $this, 'setCnames' ] );
-		remove_filter( 'pre_get_rocket_option_cdn_zone', [ $this, 'setCDNZone' ] );
-		remove_filter( 'site_url', [ $this, 'setSiteURL' ] );
 		remove_filter( 'content_url', [ $this, 'setContentURL' ] );
 		remove_filter( 'includes_url', [ $this, 'setIncludesURL' ] );
 
@@ -57,18 +48,6 @@ class Test_Rewrite extends TestCase {
 
 	public function providerTestData() {
 		return $this->getTestData( __DIR__, 'rewrite' );
-	}
-
-	public function setCnames() {
-		return $this->cnames;
-	}
-
-	public function setCDNZone() {
-		return $this->cdn_zone;
-	}
-
-	public function setSiteURL() {
-		return $this->site_url;
 	}
 
 	public function setContentURL() {

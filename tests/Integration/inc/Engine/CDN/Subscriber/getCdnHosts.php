@@ -2,8 +2,6 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Subscriber;
 
-use WPMedia\PHPUnit\Integration\TestCase;
-
 /**
  * @covers \WP_Rocket\Engine\CDN\Subscriber::get_cdn_hosts
  * @uses   \WP_Rocket\Engine\CDN\CDN::get_cdn_urls
@@ -11,14 +9,6 @@ use WPMedia\PHPUnit\Integration\TestCase;
  * @group  CDN
  */
 class Test_GetCdnHosts extends TestCase {
-	private $cnames;
-
-	public function tearDown() {
-		remove_filter( 'rocket_cdn_cnames', [ $this, 'setCnames' ] );
-
-		parent::tearDown();
-	}
-
 	/**
 	 * @dataProvider providerTestData
 	 */
@@ -35,9 +25,5 @@ class Test_GetCdnHosts extends TestCase {
 
 	public function providerTestData() {
 		return $this->getTestData( __DIR__, 'get-cdn-hosts' );
-	}
-
-	public function setCnames() {
-		return $this->cnames;
 	}
 }
