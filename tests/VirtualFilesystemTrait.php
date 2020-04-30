@@ -6,10 +6,11 @@ use Brain\Monkey\Functions;
 use org\bovigo\vfs\vfsStream;
 
 trait VirtualFilesystemTrait {
-	protected $original_entries = [];
-	protected $shouldNotClean   = [];
-	protected $entriesBefore    = [];
-	protected $dumpResults      = false;
+	protected $original_entries  = [];
+	protected $shouldNotClean    = [];
+	protected $entriesBefore     = [];
+	protected $dumpResults       = false;
+	protected $wp_cache_constant = false;
 
 	protected function initDefaultStructure() {
 		if ( empty( $this->config ) ) {
@@ -133,6 +134,9 @@ trait VirtualFilesystemTrait {
 
 			case 'FS_CHMOD_FILE':
 				return 0666;
+
+			case 'WP_CACHE':
+				return $this->wp_cache_constant;
 
 			case 'WP_CONTENT_DIR':
 				return 'vfs://public/wp-content';
