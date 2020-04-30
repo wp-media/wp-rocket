@@ -102,16 +102,6 @@ class LazyloadSubscriber implements Subscriber_Interface {
 		}
 
 		/**
-		 * Filters the threshold at which lazyload is triggered
-		 *
-		 * @since 1.2
-		 * @author Remy Perona
-		 *
-		 * @param int $threshold Threshold value.
-		 */
-		$threshold = apply_filters( 'rocket_lazyload_threshold', 300 );
-
-		/**
 		 * Filters the use of the polyfill for intersectionObserver
 		 *
 		 * @since 3.3
@@ -119,7 +109,7 @@ class LazyloadSubscriber implements Subscriber_Interface {
 		 *
 		 * @param bool $polyfill True to use the polyfill, false otherwise.
 		 */
-		$polyfill = apply_filters( 'rocket_lazyload_polyfill', false );
+		$polyfill = (bool) apply_filters( 'rocket_lazyload_polyfill', false );
 
 		$script_args = [
 			'base_url' => rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'lazyload/',
@@ -127,20 +117,53 @@ class LazyloadSubscriber implements Subscriber_Interface {
 			'polyfill' => $polyfill,
 		];
 
+		$inline_script = $this->assets->getInlineLazyloadScript( $this->set_inline_script_args() );
+
+		if ( ! rocket_get_constant( 'SCRIPT_DEBUG' ) ) {
+			$minify = new JS( $inline_script );
+
+			$inline_script = $minify->minify();
+		}
+
+		echo '<script>' . $inline_script . '</script>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+		$this->assets->insertLazyloadScript( $script_args );
+	}
+
+	/**
+	 * Sets the arguments array for the inline lazyload script
+	 *
+	 * @since 3.6
+	 *
+	 * @return array
+	 */
+	private function set_inline_script_args() {
+		/**
+		 * Filters the threshold at which lazyload is triggered
+		 *
+		 * @since 1.2
+		 * @author Remy Perona
+		 *
+		 * @param int $threshold Threshold value.
+		 */
+		$threshold = (int) apply_filters( 'rocket_lazyload_threshold', 300 );
+
 		$inline_args = [
 			'threshold' => $threshold,
 		];
 
-		if ( apply_filters( 'rocket_use_native_lazyload', false ) ) {
+		/**
+		 * Filters the use of native lazyload
+		 *
+		 * @since 3.4
+		 * @author Remy Perona
+		 *
+		 * @param bool $use_native True to use native lazyload, false otherwise.
+		 */
+		if ( (bool) apply_filters( 'rocket_use_native_lazyload', false ) ) {
 			$inline_args['options'] = [
 				'use_native' => 'true',
 			];
-		}
-
-		if ( $this->options->get( 'lazyload', 0 ) || $this->options->get( 'lazyload_iframes', 0 ) ) {
-			if ( apply_filters( 'rocket_use_native_lazyload', false ) ) {
-				$inline_args['elements']['loading'] = '[loading=lazy]';
-			}
+			$inline_args['elements']['loading'] = '[loading=lazy]';
 		}
 
 		if ( $this->options->get( 'lazyload', 0 ) ) {
@@ -160,18 +183,7 @@ class LazyloadSubscriber implements Subscriber_Interface {
 		 *
 		 * @param array $inline_args Arguments used for the lazyload script options.
 		 */
-		$inline_args = apply_filters( 'rocket_lazyload_script_args', $inline_args );
-
-		$inline_script = $this->assets->getInlineLazyloadScript( $inline_args );
-
-		if ( ! rocket_get_constant( 'SCRIPT_DEBUG' ) ) {
-			$minify = new JS( $inline_script );
-
-			$inline_script = $minify->minify();
-		}
-
-		echo '<script>' . $inline_script . '</script>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
-		$this->assets->insertLazyloadScript( $script_args );
+		return (array) apply_filters( 'rocket_lazyload_script_args', $inline_args );
 	}
 
 	/**
