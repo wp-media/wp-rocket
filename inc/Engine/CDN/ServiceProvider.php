@@ -30,7 +30,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	public function register() {
 		$options = $this->getContainer()->get( 'options' );
-		
+
 		$this->getContainer()->share( 'cdn', 'WP_Rocket\Engine\CDN\CDN' )
 			->withArgument( $options );
 		$this->getContainer()->share( 'cdn_subscriber', 'WP_Rocket\Engine\CDN\Subscriber' )
