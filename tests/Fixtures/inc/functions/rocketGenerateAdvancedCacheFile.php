@@ -1,6 +1,6 @@
 <?php
 
-$content = require __DIR__ . '/advancedCacheContent.php';
+$content = require WP_ROCKET_TESTS_FIXTURES_DIR . '/content/advancedCacheContent.php';
 
 return [
 	'vfs_dir' => 'wp-content/',
@@ -27,26 +27,26 @@ return [
 	'test_data' => [
 		[
 			'settings' => [],
-			'content'  => $content['starting'] . $content['ending'],
+			'content'  => $content['non_mobile'],
 		],
 		[
 			'settings' => [
 				'cache_mobile' => 1,
 			],
-			'content'  => $content['starting'] . $content['ending'],
+			'content'  => $content['non_mobile'],
 		],
 		[
 			'settings' => [
 				'do_caching_mobile_files' => 1,
 			],
-			'content'  => $content['starting'] . $content['ending'],
+			'content'  => $content['non_mobile'],
 		],
 		[
 			'settings' => [
 				'cache_mobile'            => 1,
 				'do_caching_mobile_files' => 1,
 			],
-			'content'  => $content['starting'] . $content['mobile'] . $content['ending'],
+			'content'  => $content['mobile'],
 		],
 
 		// When the file doesn't exist.
@@ -55,7 +55,7 @@ return [
 				'cache_mobile'            => 1,
 				'do_caching_mobile_files' => 1,
 			],
-			'content'  => $content['starting'] . $content['mobile'] . $content['ending'],
+			'content'  => $content['mobile'],
 			true,
 		],
 	],

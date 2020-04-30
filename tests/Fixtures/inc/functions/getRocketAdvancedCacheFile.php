@@ -1,6 +1,6 @@
 <?php
 
-$content = require __DIR__ . '/advancedCacheContent.php';
+$content = require WP_ROCKET_TESTS_FIXTURES_DIR . '/content/advancedCacheContent.php';
 
 return [
 	// Use in tests when the test data starts in this directory.
@@ -32,21 +32,21 @@ return [
 	'test_data' => [
 		[
 			'settings'                                => [],
-			'expected'                                => $content['starting'] . $content['ending'],
+			'expected'                                => $content['non_mobile'],
 			'is_rocket_generate_caching_mobile_files' => false,
 		],
 		[
 			'settings'                                => [
 				'cache_mobile' => 1,
 			],
-			'expected'                                => $content['starting'] . $content['ending'],
+			'expected'                                => $content['non_mobile'],
 			'is_rocket_generate_caching_mobile_files' => false,
 		],
 		[
 			'settings'                                => [
 				'do_caching_mobile_files' => 1,
 			],
-			'expected'                                => $content['starting'] . $content['ending'],
+			'expected'                                => $content['non_mobile'],
 			'is_rocket_generate_caching_mobile_files' => false,
 		],
 		[
@@ -54,7 +54,7 @@ return [
 				'cache_mobile'            => 1,
 				'do_caching_mobile_files' => 1,
 			],
-			'expected'                                => $content['starting'] . $content['mobile'] . $content['ending'],
+			'expected'                                => $content['mobile'],
 			'is_rocket_generate_caching_mobile_files' => true,
 		],
 	],
