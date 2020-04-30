@@ -43,7 +43,7 @@ return [
 				</div>
 			</div>',
 		],
-		'testShouldDisplayPostNotPublishedWarning'       => [
+		'testShouldDisplayPostNotPublishedAndOptionExcludedWarning'       => [
 			'config'   => [
 				'options'            => [
 					'async_css' => 1,
@@ -53,6 +53,29 @@ return [
 					'ID'          => 1,
 				],
 				'is_option_excluded' => true,
+			],
+			'expected' => '<div class="inside">
+				<h3>Critical Path CSS</h3>
+				<div id="rocket-metabox-cpcss-notice"></div>
+				<div id="rocket-metabox-cpcss-content">
+				</div>
+			</div>
+			<div class="components-notice is-notice is-warning">
+				<div class="components-notice__content">
+					<p>Publish the post and enable Optimize CSS delivery in the options above to use this feature</p>
+				</div>
+			</div>',
+		],
+		'testShouldDisplayPostNotPublishedWarning'       => [
+			'config'   => [
+				'options'            => [
+					'async_css' => 1,
+				],
+				'post'               => [
+					'post_status' => 'draft',
+					'ID'          => 1,
+				],
+				'is_option_excluded' => false,
 			],
 			'expected' => '<div class="inside">
 				<h3>Critical Path CSS</h3>

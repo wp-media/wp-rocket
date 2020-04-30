@@ -104,6 +104,15 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 			];
 		}
 
+		$excluded_async_css = get_post_meta( $post->ID, '_rocket_exclude_async_css', true );
+
+		if ( 'publish' !== $post->post_status && $excluded_async_css ) {
+			return [
+				'disabled'    => true,
+				'description' => __( 'Publish the post and enable Optimize CSS delivery in the options above to use this feature', 'rocket' ),
+			];
+		}
+
 		if ( 'publish' !== $post->post_status ) {
 			return [
 				'disabled'    => true,
@@ -111,7 +120,7 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 			];
 		}
 
-		if ( get_post_meta( $post->ID, '_rocket_exclude_async_css', true ) ) {
+		if ( $excluded_async_css ) {
 			return [
 				'disabled'    => true,
 				'description' => __( 'Enable Optimize CSS delivery in the options above to use this feature', 'rocket' ),
