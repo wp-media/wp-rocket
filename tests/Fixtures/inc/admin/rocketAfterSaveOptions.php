@@ -21,10 +21,17 @@ return [
 		'minify_js'           => false,
 		'exclude_js'          => '',
 		'analytics_enabled'   => '',
+		'cdn'                 => false,
+		'cdn_cnames'          => false,
 	],
 
 	// Test data.
 	'test_data' => [
+
+		'testShouldBailOutWhenSettingsNotAndArray' => [
+			'settings' => 'not an array',
+			'expected' => [],
+		],
 
 		'testShouldTriggerCleaningsWhenOptionsChange' => [
 			'settings' => [
@@ -44,7 +51,7 @@ return [
 			],
 		],
 
-		'testShouldCleanMinifyCSSWhenMinifyOptionChanges' => [
+		'testShouldNotCleanMinifyCSSWhenMinifyOptionChanges' => [
 			'settings' => [
 				'cache_mobile'        => true,
 				'purge_cron_interval' => true,
@@ -56,21 +63,12 @@ return [
 			],
 			'expected' => [
 				'rocket_clean_domain'         => $rocket_clean_domain,
-				'rocket_clean_minify'         => [
-					'vfs://public/wp-content/cache/min/1/fa2965d41f1515951de523cecb81f85e.css'    => null,
-					'vfs://public/wp-content/cache/min/1/fa2965d41f1515951de523cecb81f85e.css.gz' => null,
-					'vfs://public/wp-content/cache/min/1/wp-content/css/'                         => null,
-					'vfs://public/wp-content/cache/min/1/wp-includes/plugins/imagify/assets/css/' => null,
-
-					'vfs://public/wp-content/cache/min/3rd-party/2n7x3vd41f1515951de523cecb81f85e.css'    => null,
-					'vfs://public/wp-content/cache/min/3rd-party/2n7x3vd41f1515951de523cecb81f85e.css.gz' => null,
-				],
 				'flush_rocket_htaccess'       => $flush_rocket_htaccess['with_wp_rules'],
 				'rocket_generate_config_file' => '<?php $var = "Some contents.";',
 			],
 		],
 
-		'testShouldCleanMinifyCSSWhenExcludeOptionChanges' => [
+		'testShouldNotCleanMinifyCSSWhenExcludeOptionChanges' => [
 			'settings' => [
 				'cache_mobile'        => true,
 				'purge_cron_interval' => true,
@@ -82,15 +80,6 @@ return [
 			],
 			'expected' => [
 				'rocket_clean_domain'         => $rocket_clean_domain,
-				'rocket_clean_minify'         => [
-					'vfs://public/wp-content/cache/min/1/fa2965d41f1515951de523cecb81f85e.css'    => null,
-					'vfs://public/wp-content/cache/min/1/fa2965d41f1515951de523cecb81f85e.css.gz' => null,
-					'vfs://public/wp-content/cache/min/1/wp-content/css/'                         => null,
-					'vfs://public/wp-content/cache/min/1/wp-includes/plugins/imagify/assets/css/' => null,
-
-					'vfs://public/wp-content/cache/min/3rd-party/2n7x3vd41f1515951de523cecb81f85e.css'    => null,
-					'vfs://public/wp-content/cache/min/3rd-party/2n7x3vd41f1515951de523cecb81f85e.css.gz' => null,
-				],
 				'flush_rocket_htaccess'       => $flush_rocket_htaccess['with_wp_rules'],
 				'rocket_generate_config_file' => '<?php $var = "Some contents.";',
 			],
@@ -148,7 +137,7 @@ return [
 			],
 		],
 
-		'testShouldCleanMinifyCSSJSWhenCdnOptionIsDisabled' => [
+		'testShouldCleanMinifyJSWhenCdnOptionIsEnabled' => [
 			'settings' => [
 				'cache_mobile'        => true,
 				'purge_cron_interval' => true,
@@ -157,7 +146,7 @@ return [
 				'exclude_css'         => '',
 				'minify_js'           => false,
 				'exclude_js'          => '',
-				'cdn'                 => '',
+				'cdn'                 => true,
 			],
 			'expected' => [
 				'rocket_clean_domain'         => $rocket_clean_domain,
@@ -178,7 +167,7 @@ return [
 			],
 		],
 
-		'testShouldGenerateAdvancedCacheFileWhenOptionIsDisabled' => [
+		'testShouldGenerateAdvancedCacheFileWhenOptionIsEnabled' => [
 			'settings' => [
 				'cache_mobile'            => true,
 				'purge_cron_interval'     => true,
@@ -187,7 +176,7 @@ return [
 				'exclude_css'             => '',
 				'minify_js'               => false,
 				'exclude_js'              => '',
-				'do_caching_mobile_files' => '',
+				'do_caching_mobile_files' => true,
 			],
 			'expected' => [
 				'rocket_clean_domain'                 => $rocket_clean_domain,
@@ -206,9 +195,10 @@ return [
 				'exclude_css'         => '',
 				'minify_js'           => false,
 				'exclude_js'          => '',
-				'analytics_enabled'   => '1',
+				'analytics_enabled'   => true,
 			],
 			'expected' => [
+				'rocket_clean_domain'         => $rocket_clean_domain,
 				'flush_rocket_htaccess'       => $flush_rocket_htaccess['with_wp_rules'],
 				'rocket_generate_config_file' => '<?php $var = "Some contents.";',
 				'set_transient'               => '1',
