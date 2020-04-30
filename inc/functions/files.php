@@ -86,21 +86,26 @@ function get_rocket_advanced_cache_file() { // phpcs:ignore WordPress.NamingConv
 }
 
 /**
- * Create advanced-cache.php file.
+ * Creates advanced-cache.php file.
  *
  * @since 2.0
- *
- * @return void
  */
 function rocket_generate_advanced_cache_file() {
 	static $done = false;
+
+	if ( rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ) {
+		$done = false;
+	}
 
 	if ( $done ) {
 		return;
 	}
 	$done = true;
 
-	rocket_put_content( WP_CONTENT_DIR . '/advanced-cache.php', get_rocket_advanced_cache_file() );
+	rocket_put_content(
+		rocket_get_constant( 'WP_CONTENT_DIR' ) . '/advanced-cache.php',
+		get_rocket_advanced_cache_file()
+	);
 }
 
 /**
@@ -1234,13 +1239,14 @@ function rocket_is_stream( $path ) {
 }
 
 /**
- * File creation based on WordPress Filesystem
+ * File creation based on WordPress Filesystem.
  *
  * @since 1.3.5
  *
  * @param string $file    The path of file will be created.
  * @param string $content The content that will be printed in advanced-cache.php.
- * @return bool
+ *
+ * @return bool true on success; else, false on failure.
  */
 function rocket_put_content( $file, $content ) {
 	$chmod = rocket_get_filesystem_perms( 'file' );
@@ -1263,13 +1269,17 @@ function rocket_put_content( $file, $content ) {
  * `substr( sprintf( '%o', $perm & 0777 ), -4 )` | string | '644'  | '755'  |
  *
  * @since  3.2.4
- * @author Grégory Viguier
  *
  * @param  string $type The type: 'dir' or 'file'.
+ *
  * @return int          Octal integer.
  */
 function rocket_get_filesystem_perms( $type ) {
 	static $perms = [];
+
+	if ( rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ) {
+		$perms = [];
+	}
 
 	// Allow variants.
 	switch ( $type ) {
@@ -1294,21 +1304,16 @@ function rocket_get_filesystem_perms( $type ) {
 	}
 
 	// If the constants are not defined, use fileperms() like WordPress does.
-	switch ( $type ) {
-		case 'dir':
-			if ( defined( 'FS_CHMOD_DIR' ) ) {
-				$perms[ $type ] = FS_CHMOD_DIR;
-			} else {
-				$perms[ $type ] = fileperms( ABSPATH ) & 0777 | 0755;
-			}
-			break;
-
-		case 'file':
-			if ( defined( 'FS_CHMOD_FILE' ) ) {
-				$perms[ $type ] = FS_CHMOD_FILE;
-			} else {
-				$perms[ $type ] = fileperms( ABSPATH . 'index.php' ) & 0777 | 0644;
-			}
+	if ( 'dir' === $type ) {
+		$fs_chmod_dir   = (int) rocket_get_constant( 'FS_CHMOD_DIR', 0 );
+		$perms[ $type ] = $fs_chmod_dir > 0
+			? $fs_chmod_dir
+			: fileperms( rocket_get_constant( 'ABSPATH' ) ) & 0777 | 0755;
+	} else {
+		$fs_chmod_file  = (int) rocket_get_constant( 'FS_CHMOD_FILE', 0 );
+		$perms[ $type ] = $fs_chmod_file > 0
+			? $fs_chmod_file
+			: fileperms( rocket_get_constant( 'ABSPATH' ) . 'index.php' ) & 0777 | 0644;
 	}
 
 	return $perms[ $type ];

@@ -108,6 +108,52 @@ trait VirtualFilesystemTrait {
 		$this->assertEmpty( $actual );
 	}
 
+	protected function whenRocketGetConstant() {
+		Functions\when( 'rocket_get_constant' )->alias(
+			function ( $constant_name, $default = null ) {
+				return $this->getConstant( $constant_name, $default );
+			}
+		);
+	}
+
+	protected function getConstant( $constant_name, $default = null ) {
+		switch ( $constant_name ) {
+			case 'ABSPATH':
+				return 'vfs://public/';
+
+			case 'FS_CHMOD_DIR':
+				return 0777;
+
+			case 'FS_CHMOD_FILE':
+				return 0666;
+
+			case 'WP_CONTENT_DIR':
+				return 'vfs://public/wp-content';
+
+			case 'WP_ROCKET_CONFIG_PATH':
+				return 'vfs://public/wp-content/wp-rocket-config/';
+
+			case 'WP_ROCKET_INC_PATH':
+				return 'vfs://public/wp-content/plugins/wp-rocket/inc/';
+
+			case 'WP_ROCKET_PATH':
+				return 'vfs://public/wp-content/plugins/wp-rocket/';
+
+			case 'WP_ROCKET_PHP_VERSION':
+				return '5.6';
+
+			case 'WP_ROCKET_VENDORS_PATH':
+				return 'vfs://public/wp-content/plugins/wp-rocket/inc/vendors/';
+
+			default:
+				if ( ! rocket_has_constant( $constant_name ) ) {
+					return $default;
+				}
+
+				return constant( $constant_name );
+		}
+	}
+
 	public function getPathToFixturesDir() {
 		return WP_ROCKET_TESTS_FIXTURES_DIR;
 	}
@@ -138,6 +184,7 @@ trait VirtualFilesystemTrait {
 			],
 			'wp-includes'   => [],
 			'wp-config.php' => '',
+			'index.php'     => '',
 		];
 	}
 }
