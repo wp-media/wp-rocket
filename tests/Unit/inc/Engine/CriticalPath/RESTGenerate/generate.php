@@ -27,6 +27,8 @@ class Test_Generate extends FilesystemTestCase {
 
 		$this->filesystem->chmod( 'wp-content/cache/critical-css/index.php', 0644 );
 		$this->filesystem->chmod( 'wp-content/cache/critical-css/', 0755 );
+
+		Functions\expect( 'rocket_get_constant' )->with( 'FS_CHMOD_FILE' )->andReturn( 0644 );
 	}
 
 	/**
