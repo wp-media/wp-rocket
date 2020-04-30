@@ -41,7 +41,9 @@ class Test_Generate extends RESTVfsTestCase {
 		$get_request_response_body  = ! isset( $config['generate_get_request_data']['body'] )
 			? ''
 			: $config['generate_get_request_data']['body'];
-
+		$request_timeout            = isset( $config['request_timeout'] )
+			? $config['request_timeout']
+			: false;
 		Functions\expect( 'wp_remote_post' )
 			->atMost()
 			->times( 1 )
@@ -79,7 +81,11 @@ class Test_Generate extends RESTVfsTestCase {
 
 		$file = $this->config['vfs_dir'] . "{$site_id}/posts/{$post_type}-{$post_id}.css";
 
-		$this->assertSame( $expected, $this->doRestRequest( 'POST', "/wp-rocket/v1/cpcss/post/{$post_id}" ) );
+		$body_param = [];
+		if ( $request_timeout ) {
+			$body_param = [ 'timeout' => true ];
+		}
+		$this->assertSame( $expected, $this->doRestRequest( 'POST', "/wp-rocket/v1/cpcss/post/{$post_id}", $body_param ) );
 		$this->assertSame( $config['cpcss_exists_after'], $this->filesystem->exists( $file ) );
 	}
 
