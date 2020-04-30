@@ -93,7 +93,7 @@ class Test_RocketFirstInstall extends TestCase {
 
 		$options = get_option( $this->option_name );
 
-		$this->assertIsArray( $options );
+		$this->assertTrue( is_array( $options ) );
 		$this->assertTrue( ! empty( $options['secret_cache_key'] ) && ! empty( $options['minify_css_key'] ) && ! empty( $options['minify_js_key'] ) );
 
 		$expected = array_diff_key( $expected, $uniqids );
@@ -103,7 +103,7 @@ class Test_RocketFirstInstall extends TestCase {
 
 		$user_boxes = get_user_meta( self::$user_id, 'rocket_boxes', true );
 
-		$this->assertIsArray( $user_boxes );
+		$this->assertTrue( is_array( $user_boxes ) );
 		$this->assertContains( $this->box_name, $user_boxes );
 		$this->assertNotSame( 'foobar', get_transient( $this->box_name ) );
 	}
