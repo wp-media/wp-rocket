@@ -13,7 +13,8 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
  * @group SaveOptions
  */
 class Test_RocketAfterSaveOptions extends FilesystemTestCase {
-	protected $path_to_test_data   = '/inc/admin/rocketAfterSaveOptions.php';
+	protected $path_to_test_data = '/inc/admin/rocketAfterSaveOptions.php';
+	private $expected;
 
 	public function setUp() {
 		parent::setUp();
@@ -34,13 +35,28 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 		parent::tearDown();
 
 		unset( $_POST['rocket_after_save_options'] );
+		$this->expected = [];
 	}
 
 	/**
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldTriggerCleaningsWhenOptionsChange( $settings, $expected ) {
-		if ( isset( $expected['rocket_clean_domain'] ) ) {
+		$this->expected = $expected;
+		$this->rocket_clean_domain();
+		$this->rocket_clean_minify();
+		$this->flush_rocket_htaccess();
+		$this->rocket_generate_advanced_cache_file();
+		$this->rocket_generate_config_file();
+		$this->set_rocket_wp_cache_define();
+		$this->set_transient();
+
+		// Run it.
+		rocket_after_save_options( $this->config['settings'], $settings );
+	}
+
+	private function rocket_clean_domain() {
+		if ( isset( $this->expected['rocket_clean_domain'] ) ) {
 			Functions\expect( 'rocket_clean_domain' )->once()->andReturnNull();
 			Functions\expect( 'home_url' )->andReturn( 'http://example.org' );
 			Functions\expect( 'wp_remote_get' )
@@ -58,48 +74,57 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 		} else {
 			Functions\expect( 'rocket_clean_domain' )->never();
 		}
+	}
 
-		if ( isset( $expected['rocket_clean_minify'] ) ) {
+	private function rocket_clean_minify() {
+		if ( isset( $this->expected['rocket_clean_minify'] ) ) {
 			Functions\expect( 'rocket_clean_minify' )->once()->with( 'js' )->andReturnNull();
 		} else {
 			Functions\expect( 'rocket_clean_minify' )->never();
 		}
+	}
 
-		if ( isset( $expected['rocket_generate_advanced_cache_file'] ) ) {
-			$_POST['rocket_after_save_options'] = true;
-			Functions\expect( 'rocket_generate_advanced_cache_file' )->once()->andReturnNull();
-		} else {
-			Functions\expect( 'rocket_generate_advanced_cache_file' )->never();
-		}
-
-		if ( isset( $expected['flush_rocket_htaccess'] ) ) {
+	private function flush_rocket_htaccess() {
+		if ( isset( $this->expected['flush_rocket_htaccess'] ) ) {
 			Functions\expect( 'rocket_valid_key' )->andReturn( true );
 			Functions\expect( 'flush_rocket_htaccess' )->once()->with( false )->andReturnNull();
 		} else {
 			Functions\expect( 'flush_rocket_htaccess' )->never();
 		}
+	}
 
-		if ( isset( $expected['rocket_generate_config_file'] ) ) {
+	private function rocket_generate_advanced_cache_file() {
+		if ( isset( $this->expected['rocket_generate_advanced_cache_file'] ) ) {
+			$_POST['rocket_after_save_options'] = true;
+			Functions\expect( 'rocket_generate_advanced_cache_file' )->once()->andReturnNull();
+		} else {
+			Functions\expect( 'rocket_generate_advanced_cache_file' )->never();
+		}
+	}
+
+	private function rocket_generate_config_file() {
+		if ( isset( $this->expected['rocket_generate_config_file'] ) ) {
 			Functions\expect( 'rocket_generate_config_file' )->once()->andReturnNull();
 		} else {
 			Functions\expect( 'rocket_generate_config_file' )->never();
 		}
+	}
 
-		if ( isset( $expected['set_rocket_wp_cache_define'] ) ) {
-			$this->wp_cache = false;
+	private function set_rocket_wp_cache_define() {
+		if ( isset( $this->expected['set_rocket_wp_cache_define'] ) ) {
+			$this->wp_cache_constant = false;
 			Functions\expect( 'set_rocket_wp_cache_define' )->once()->with( true )->andReturnNull();
 		} else {
-			$this->wp_cache = true;
+			$this->wp_cache_constant = true;
 			Functions\expect( 'set_rocket_wp_cache_define' )->never();
 		}
+	}
 
-		if ( isset( $expected['set_transient'] ) ) {
+	private function set_transient() {
+		if ( isset( $this->expected['set_transient'] ) ) {
 			Functions\expect( 'set_transient' )->with( 'rocket_analytics_optin', 1 )->andReturnNull();
 		} else {
 			Functions\expect( 'set_transient' )->with( 'rocket_analytics_optin', 1 )->never();
 		}
-
-		// Run it.
-		rocket_after_save_options( $this->config['settings'], $settings );
 	}
 }
