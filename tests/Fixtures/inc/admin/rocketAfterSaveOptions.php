@@ -15,8 +15,8 @@ $rocket_clean_minify = [
 	'vfs://public/wp-content/cache/min/3rd-party/bt937b0e3a1884eec34a989485f863ff.js.gz' => null,
 ];
 
-$advanced_cache = require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/functions/advancedCacheContent.php';
-$htaccess       = require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/functions/htaccessContent.php';
+$advanced_cache = require WP_ROCKET_TESTS_FIXTURES_DIR . '/content/advancedCacheContent.php';
+$htaccess       = require WP_ROCKET_TESTS_FIXTURES_DIR . '/content/htaccessContent.php';
 
 return [
 	'vfs_dir' => 'wp-content/',
@@ -164,7 +164,7 @@ return [
 				'rocket_clean_domain'                 => $rocket_clean_domain,
 				'flush_rocket_htaccess'               => $htaccess['FileETag_none'],
 				'rocket_generate_config_file'         => '<?php $var = "Some contents.";',
-				'rocket_generate_advanced_cache_file' => $advanced_cache['starting'] . $advanced_cache['mobile'] . $advanced_cache['ending'],
+				'rocket_generate_advanced_cache_file' => $advanced_cache['mobile'],
 			],
 		],
 
