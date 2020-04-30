@@ -141,6 +141,9 @@ trait VirtualFilesystemTrait {
 			case 'WP_CONTENT_DIR':
 				return 'vfs://public/wp-content';
 
+			case 'WP_ROCKET_CACHE_PATH':
+				return 'vfs://public/wp-content/cache/wp-rocket/';
+
 			case 'WP_ROCKET_CONFIG_PATH':
 				return 'vfs://public/wp-content/wp-rocket-config/';
 
