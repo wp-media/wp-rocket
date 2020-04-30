@@ -75,11 +75,11 @@ class Test_InsertLazyloadScript extends TestCase {
 		return $this->getTestData( __DIR__, 'insertLazyloadScript' );
 	}
 
-	private getInlineLazyloadScript( $args ) {
+	private function getInlineLazyloadScript( $args ) {
 
 	}
 
-	private insertLazyloadScript( $args ) {
+	private function insertLazyloadScript( $args ) {
 		
 	}
 }
