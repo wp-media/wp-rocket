@@ -112,7 +112,7 @@ class Subscriber implements Subscriber_Interface {
 			return $content;
 		}
 
-		if ( ! $this->options->get( 'cdn', 0 ) ) {
+		if ( ! $this->is_cdn_enabled() ) {
 			return $content;
 		}
 
@@ -253,7 +253,7 @@ class Subscriber implements Subscriber_Interface {
 			return false;
 		}
 
-		if ( ! $this->options->get( 'cdn', 0 ) ) {
+		if ( ! $this->is_cdn_enabled() ) {
 			return false;
 		}
 
@@ -262,5 +262,16 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Checks if the CDN option is enabled
+	 *
+	 * @since 3.5.5
+	 *
+	 * @return bool
+	 */
+	private function is_cdn_enabled() {
+		return (bool) $this->options->get( 'cdn', 0 );
 	}
 }
