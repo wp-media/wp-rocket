@@ -93,6 +93,7 @@
 		"test-integration-withamp": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group WithAmp",
 		"test-integration-withampcloudflare": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group WithAmpAndCloudflare",
 		"test-integration-multisite": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group Multisite",
+	  	"run-benchmarks": "\"vendor/bin/phpunit\" --testsuite benchmark --colors=always --configuration tests/Integration/phpunit-benchmark.xml",
 		"run-tests": [
 			"@test-unit",
 			"@test-integration",
