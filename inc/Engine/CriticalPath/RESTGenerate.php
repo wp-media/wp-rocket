@@ -69,21 +69,25 @@ class RESTGenerate implements Subscriber_Interface {
 		$status = get_post_status( $request['id'] );
 
 		if ( ! $status ) {
-			return rest_ensure_response( $this->return_array_response(
-				false,
-				'post_not_exists',
-				__( 'Requested post does not exist.', 'rocket' ),
-				400
-			) );
+			return rest_ensure_response(
+				$this->return_array_response(
+					false,
+					'post_not_exists',
+					__( 'Requested post does not exist.', 'rocket' ),
+					400
+				)
+			);
 		}
 
 		if ( 'publish' !== $status ) {
-			return rest_ensure_response( $this->return_array_response(
-				false,
-				'post_not_published',
-				__( 'Cannot generate CPCSS for unpublished post.', 'rocket' ),
-				400
-			) );
+			return rest_ensure_response(
+				$this->return_array_response(
+					false,
+					'post_not_published',
+					__( 'Cannot generate CPCSS for unpublished post.', 'rocket' ),
+					400
+				)
+			);
 		}
 
 		$post_url        = get_permalink( $request['id'] );
@@ -96,13 +100,15 @@ class RESTGenerate implements Subscriber_Interface {
 			// Clean transient if the ajax call requested a timeout.
 			$this->delete_job_id_cache( $request['id'] );
 
-			return rest_ensure_response( $this->return_array_response(
-				false,
-				'cpcss_generation_timeout',
-				// translators: %1$s = post URL.
-				sprintf( __( 'Critical CSS for %1$s timeout. Please retry a little later.', 'rocket' ), $post_url ),
-				400
-			) );
+			return rest_ensure_response(
+				$this->return_array_response(
+					false,
+					'cpcss_generation_timeout',
+					// translators: %1$s = post URL.
+					sprintf( __( 'Critical CSS for %1$s timeout. Please retry a little later.', 'rocket' ), $post_url ),
+					400
+				)
+			);
 		}
 
 		if ( false !== $cpcss_job_id ) {
@@ -223,7 +229,7 @@ class RESTGenerate implements Subscriber_Interface {
 			return $this->on_job_error( $post_id, $post_url, $job_data );
 		}
 
-		if ( isset( $job_data->data->state )  && 'complete' !== $job_data->data->state ) {
+		if ( isset( $job_data->data->state ) && 'complete' !== $job_data->data->state ) {
 			return $this->return_array_response(
 				true,
 				'cpcss_generation_pending',
@@ -298,7 +304,7 @@ class RESTGenerate implements Subscriber_Interface {
 	 *
 	 * @since 3.6
 	 *
-	 * @param int    $post_id           The post ID
+	 * @param int    $post_id           The post ID.
 	 * @param string $post_url          The post URL.
 	 * @param string $post_type         The post type.
 	 * @param string $critical_path_css The critical CSS.
