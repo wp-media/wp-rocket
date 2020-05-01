@@ -2,18 +2,23 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\QueryString\RemoveSubscriber;
 
-use WP_Rocket\Tests\Integration\FilesystemTestCase;
+use WP_Rocket\Tests\Integration\inc\Engine\Optimization\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\QueryString\RemoveSubscriber::process
+ * @uses   \WP_Rocket\Engine\Optimization\QueryString\Remove::remove_query_strings_css
+ * @uses   \WP_Rocket\Engine\Optimization\QueryString\Remove::remove_query_strings_js
+ * @uses   ::get_rocket_parse_url
+ * @uses   ::rocket_direct_filesystem
+ * @uses   ::get_rocket_i18n_uri
+ * @uses   ::rocket_url_to_path
+ * @uses   ::rocket_mkdir_p
+ * @uses   ::rocket_put_content
  *
  * @group  RemoveQueryStrings
  */
-class Test_Process extends FilesystemTestCase {
-    protected $path_to_test_data = '/inc/Engine/Optimization/QueryString/RemoveSubscriber/remove-query-strings.php';
-    protected $cnames;
-    protected $zones;
-    private $settings;
+class Test_Process extends TestCase {
+	protected $path_to_test_data = '/inc/Engine/Optimization/QueryString/RemoveSubscriber/remove-query-strings.php';
 
 	public function setUp() {
 		parent::setUp();
@@ -25,7 +30,7 @@ class Test_Process extends FilesystemTestCase {
 	public function tearDown() {
 		parent::tearDown();
 
-		$this->unset_settings();
+		$this->unsetSettings();
 		remove_filter( 'pre_get_rocket_option_remove_query_strings', [ $this, 'return_true' ] );
 	}
 
@@ -36,50 +41,11 @@ class Test_Process extends FilesystemTestCase {
 		add_filter( 'pre_get_rocket_option_remove_query_strings', [ $this, 'return_true' ] );
 
 		$this->settings = $settings;
-		$this->set_settings();
+		$this->setSettings();
 
 		$this->assertSame(
 			$expected,
 			apply_filters( 'rocket_buffer', $original )
 		);
 	}
-
-    private function set_settings() {
-        foreach ( (array) $this->settings as $key => $value ) {
-	        $this->handleSetting( $key, $value );
-        }
-    }
-
-    private function unset_settings() {
-        foreach ( (array) $this->settings as $key => $value ) {
-        	$this->handleSetting( $key, $value, false );
-        }
-    }
-
-    private function handleSetting( $key, $value, $set = true ) {
-		$func = $set ? 'add_filter' : 'remove_filter';
-
-		switch( $key ) {
-		    case 'cdn':
-			    $callback = 0 === $value ? 'return_false' : 'return_true';
-			    $func( 'pre_get_rocket_option_cdn', [ $this, $callback ] );
-
-			    break;
-		    case 'cdn_cnames':
-			    $this->cnames = $value;
-			    $func( 'pre_get_rocket_option_cdn_cnames', [ $this, 'set_cnames'] );
-			    break;
-		    case 'cdn_zone':
-			    $this->zones = $value;
-			    $func( 'pre_get_rocket_option_cdn_zone', [ $this, 'set_zones'] );
-	    }
-    }
-
-    public function set_cnames() {
-        return $this->cnames;
-    }
-
-    public function set_zones() {
-        return $this->zones;
-    }
 }
