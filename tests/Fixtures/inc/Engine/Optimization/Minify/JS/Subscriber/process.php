@@ -1,6 +1,7 @@
 <?php
 return [
-	'vfs_dir'   => 'public/',
+	'vfs_dir'   => 'wordpress/',
+
 	'structure' => [
 		'wordpress' => [
 			'wp-includes' => [
@@ -36,6 +37,7 @@ return [
 			],
 		],
 	],
+
 	'test_data' => [
 		// Minify JS files
 		[
@@ -61,7 +63,7 @@ return [
 				<body>
 				</body>
 			</html>',
-			[
+			'settings' => [
 				'minify_concatenate_js' => 0,
 				'cdn'                   => 0,
 				'cdn_cnames'            => [],
@@ -92,7 +94,7 @@ return [
 				<body>
 				</body>
             </html>',
-            [
+            'settings' => [
 				'minify_concatenate_js' => 0,
 				'cdn'                   => 1,
 				'cdn_cnames'            => [
@@ -127,7 +129,7 @@ return [
 				<body>
 				</body>
 			</html>',
-			[
+			'settings' => [
 				'minify_concatenate_js' => 0,
 				'cdn'                   => 1,
 				'cdn_cnames'            => [
@@ -162,7 +164,7 @@ return [
 				<body>
 				</body>
 			</html>',
-			[
+			'settings' => [
 				'minify_concatenate_js' => 0,
 				'cdn'                   => 1,
 				'cdn_cnames'            => [
@@ -204,7 +206,7 @@ return [
 					<script src="http://example.org/wp-content/cache/min/1/f819bcaed244d53d3b4ffc4c5cc0efdc.js" data-minify="1"></script>
 				</body>
 			</html>',
-			[
+			'settings' => [
 				'minify_concatenate_js' => 1,
 				'cdn'                   => 0,
 				'cdn_cnames'            => [],
@@ -242,7 +244,7 @@ return [
 					<script src="https://123456.rocketcdn.me/wp-content/cache/min/1/f819bcaed244d53d3b4ffc4c5cc0efdc.js" data-minify="1"></script>
 				</body>
 			</html>',
-			[
+			'settings' => [
 				'minify_concatenate_js' => 1,
 				'cdn'                   => 1,
 				'cdn_cnames'            => [
@@ -284,7 +286,7 @@ return [
 					<script src="https://123456.rocketcdn.me/wp-content/cache/min/1/f819bcaed244d53d3b4ffc4c5cc0efdc.js" data-minify="1"></script>
 				</body>
 			</html>',
-			[
+			'settings' => [
 				'minify_concatenate_js' => 1,
 				'cdn'                   => 1,
 				'cdn_cnames'            => [
@@ -326,7 +328,7 @@ return [
 					<script src="https://123456.rocketcdn.me/cdnpath/wp-content/cache/min/1/f819bcaed244d53d3b4ffc4c5cc0efdc.js" data-minify="1"></script>
 				</body>
 			</html>',
-			[
+			'settings' => [
 				'minify_concatenate_js' => 1,
 				'cdn'                   => 1,
 				'cdn_cnames'            => [
