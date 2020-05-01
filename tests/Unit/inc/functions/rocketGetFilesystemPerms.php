@@ -10,7 +10,6 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
  *
  * @group  Files
  * @group  Functions
- * @group  thisone
  */
 class Test_RocketGetFilesystemPerms extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/functions/rocketGetFilesystemPerms.php';
