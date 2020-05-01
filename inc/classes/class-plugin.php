@@ -67,6 +67,7 @@ class Plugin {
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Database' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Admin\Beacon\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\RocketCDN' );
+		$this->container->addServiceProvider( 'WP_Rocket\Engine\Cache\ServiceProvider' );
 
 		$subscribers = [];
 
