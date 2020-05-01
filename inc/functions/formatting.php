@@ -488,14 +488,7 @@ function rocket_realpath( $file ) {
  * @return string|bool
  */
 function rocket_url_to_path( $url, array $zones = [ 'all' ] ) {
-	/**
-	 * Filters the filepath to the WP content directory
-	 *
-	 * @since 3.5.3
-	 *
-	 * @param string $filepath wp-content directory filepath.
-	 */
-	$wp_content_dir = apply_filters( 'rocket_wp_content_dir', rocket_get_constant( 'WP_CONTENT_DIR' ) );
+	$wp_content_dir = rocket_get_constant( 'WP_CONTENT_DIR' );
 	$root_dir       = trailingslashit( dirname( $wp_content_dir ) );
 	$root_url       = str_replace( wp_basename( $wp_content_dir ), '', content_url() );
 	$url_host       = wp_parse_url( $url, PHP_URL_HOST );
