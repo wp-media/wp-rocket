@@ -69,29 +69,21 @@ class RESTGenerate implements Subscriber_Interface {
 		$status = get_post_status( $request['id'] );
 
 		if ( ! $status ) {
-			return rest_ensure_response(
-				[
-					'success' => false,
-					'code'    => 'post_not_exists',
-					'message' => __( 'Requested post does not exist.', 'rocket' ),
-					'data'    => [
-						'status' => 400,
-					],
-				]
-			);
+			return rest_ensure_response( $this->return_array_response(
+				false,
+				'post_not_exists',
+				__( 'Requested post does not exist.', 'rocket' ),
+				400
+			) );
 		}
 
 		if ( 'publish' !== $status ) {
-			return rest_ensure_response(
-				[
-					'success' => false,
-					'code'    => 'post_not_published',
-					'message' => __( 'Cannot generate CPCSS for unpublished post.', 'rocket' ),
-					'data'    => [
-						'status' => 400,
-					],
-				]
-			);
+			return rest_ensure_response( $this->return_array_response(
+				false,
+				'post_not_published',
+				__( 'Cannot generate CPCSS for unpublished post.', 'rocket' ),
+				400
+			) );
 		}
 
 		$post_url        = get_permalink( $request['id'] );
@@ -103,17 +95,14 @@ class RESTGenerate implements Subscriber_Interface {
 		if ( ! empty( $request_timeout ) ) {
 			// Clean transient if the ajax call requested a timeout.
 			delete_transient( 'rocket_specific_cpcss_job_' . $request['id'] );
-			return rest_ensure_response(
-				[
-					'success' => false,
-					'code'    => 'cpcss_generation_timeout',
-					// translators: %1$s = post URL.
-					'message' => sprintf( __( 'Critical CSS for %1$s timeout. Please retry a little later.', 'rocket' ), $post_url ),
-					'data'    => [
-						'status' => 400,
-					],
-				]
-			);
+
+			return rest_ensure_response( $this->return_array_response(
+				false,
+				'cpcss_generation_timeout',
+				// translators: %1$s = post URL.
+				sprintf( __( 'Critical CSS for %1$s timeout. Please retry a little later.', 'rocket' ), $post_url ),
+				400
+			) );
 		}
 
 		// If there is no CPCSS job id send the generation request & save the job ID in transient.
@@ -123,6 +112,7 @@ class RESTGenerate implements Subscriber_Interface {
 			if ( false === $response['success'] ) {
 				return rest_ensure_response( $response );
 			}
+
 			$cpcss_job_id = $response['data']['id'];
 			set_transient( 'rocket_specific_cpcss_job_' . $request['id'], $cpcss_job_id );
 		}
@@ -155,14 +145,12 @@ class RESTGenerate implements Subscriber_Interface {
 				$error .= ' ' . sprintf( __( 'Error: %1$s', 'rocket' ), $job_data->message );
 			}
 
-			return [
-				'success' => false,
-				'code'    => 'cpcss_generation_failed',
-				'message' => $error,
-				'data'    => [
-					'status' => 400,
-				],
-			];
+			return $this->return_array_response(
+				false,
+				'cpcss_generation_failed',
+				$error,
+				400
+			);
 		}
 
 		if ( isset( $job_data->data->state, $job_data->data->critical_path ) && 'complete' === $job_data->data->state ) {
@@ -170,41 +158,37 @@ class RESTGenerate implements Subscriber_Interface {
 			delete_transient( 'rocket_specific_cpcss_job_' . $request_id );
 
 			if ( ! $this->save_post_cpcss( $request_id, $post_type, $job_data->data->critical_path ) ) {
-				return [
-					'success' => false,
-					'code'    => 'cpcss_generation_failed',
-					'message' => sprintf(
-						// translators: %1$s = post URL, %2$s = critical CSS directory path.
-						__( 'Critical CSS for %1$s not generated. Error: The critical CSS content could not be saved as a file in %2$s', 'rocket' ),
-						$post_url,
-						$this->critical_css_path
-					),
-					'data'    => [
-						'status' => 400,
-					],
-				];
+				$error = sprintf(
+					// translators: %1$s = post URL, %2$s = critical CSS directory path.
+					__( 'Critical CSS for %1$s not generated. Error: The critical CSS content could not be saved as a file in %2$s', 'rocket' ),
+					$post_url,
+					$this->critical_css_path
+				);
+
+				return $this->return_array_response(
+					false,
+					'cpcss_generation_failed',
+					$error,
+					400
+				);
 			}
 
-			return [
-				'success' => true,
-				'code'    => 'cpcss_generation_successful',
+			return $this->return_array_response(
+				true,
+				'cpcss_generation_successful',
 				// translators: %s = post URL.
-				'message' => sprintf( __( 'Critical CSS for %s generated.', 'rocket' ), $post_url ),
-				'data'    => [
-					'status' => 200,
-				],
-			];
+				sprintf( __( 'Critical CSS for %s generated.', 'rocket' ), $post_url ),
+				200
+			);
 		}
 
-		return [
-			'success' => true,
-			'code'    => 'cpcss_generation_pending',
+		return $this->return_array_response(
+			true,
+			'cpcss_generation_pending',
 			// translators: %s = post URL.
-			'message' => sprintf( __( 'Critical CSS for %s in progress.', 'rocket' ), $post_url ),
-			'data'    => [
-				'status' => 200,
-			],
-		];
+			sprintf( __( 'Critical CSS for %s in progress.', 'rocket' ), $post_url ),
+			200
+		);
 	}
 
 	/**
@@ -247,40 +231,35 @@ class RESTGenerate implements Subscriber_Interface {
 				$error .= ' ' . sprintf( __( 'Error: %1$s', 'rocket' ), $data->message );
 			}
 
-			return [
-				'success' => false,
-				'code'    => 'cpcss_generation_failed',
-				'message' => $error,
-				'data'    => [
-					'status' => 400,
-				],
-			];
+			return $this->return_array_response(
+				false,
+				'cpcss_generation_failed',
+				// translators: %s = post URL.
+				$error,
+				400
+			);
 		}
 
 		if ( 200 !== $response_code ) {
-			return [
-				'success' => false,
-				'code'    => 'cpcss_generation_failed',
-				// translators: %1$s = post URL.
-				'message' => sprintf( __( 'Critical CSS for %1$s not generated. Error: The API returned an invalid response code.', 'rocket' ), $post_url ),
-				'data'    => [
-					'status' => $response_code,
-				],
-			];
+			return $this->return_array_response(
+				false,
+				'cpcss_generation_failed',
+				// translators: %s = post URL.
+				sprintf( __( 'Critical CSS for %1$s not generated. Error: The API returned an invalid response code.', 'rocket' ), $post_url ),
+				$response_code
+			);
 		}
 
 		$data = json_decode( wp_remote_retrieve_body( $response ), true );
 
 		if ( ! isset( $data['data']['id'] ) ) {
-			return [
-				'success' => false,
-				'code'    => 'cpcss_generation_failed',
-				// translators: %1$s = post URL.
-				'message' => sprintf( __( 'Critical CSS for %1$s not generated. Error: The API returned an empty response.', 'rocket' ), $post_url ),
-				'data'    => [
-					'status' => 400,
-				],
-			];
+			return $this->return_array_response(
+				false,
+				'cpcss_generation_failed',
+				// translators: %s = post URL.
+				sprintf( __( 'Critical CSS for %1$s not generated. Error: The API returned an empty response.', 'rocket' ), $post_url ),
+				400
+			);
 		}
 
 		return $data;
@@ -310,6 +289,28 @@ class RESTGenerate implements Subscriber_Interface {
 		}
 
 		return $data;
+	}
+
+	/**
+	 * Returns the formatted array response
+	 *
+	 * @since 3.6
+	 *
+	 * @param bool   $success True for success, false otherwise.
+	 * @param string $code    The code to use for the response.
+	 * @param string $message The message to send in the response.
+	 * @param int    $status  The status code to send for the response.
+	 * @return array
+	 */
+	protected function return_array_response( $success = false, $code = '', $message = '', $status = 200 ) {
+		return [
+			'success' => $success,
+			'code'    => $code,
+			'message' => $message,
+			'data'    => [
+				'status' => $status,
+			],
+		];
 	}
 
 	/**
