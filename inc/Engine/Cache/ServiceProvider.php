@@ -20,7 +20,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
-        'purge_actions_subscriber',
+		'purge_actions_subscriber',
 	];
 
 	/**

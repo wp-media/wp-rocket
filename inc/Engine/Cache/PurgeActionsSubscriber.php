@@ -31,11 +31,11 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'profile_update'   => 'purge_user_cache',
-			'delete_user'      => 'purge_user_cache',
-			'create_term'      => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
-			'edit_term'        => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
-			'pre_delete_term'  => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
+			'profile_update'  => 'purge_user_cache',
+			'delete_user'     => 'purge_user_cache',
+			'create_term'     => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
+			'edit_term'       => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
+			'pre_delete_term' => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
 		];
 	}
 
@@ -60,9 +60,9 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.5.5
 	 *
-	 * @param int     $term     Term ID.
-	 * @param int     $tt_id    Term taxonomy ID.
-	 * @param string  $taxonomy Taxonomy slug.
+	 * @param int    $term_id  Term ID.
+	 * @param int    $tt_id    Term taxonomy ID.
+	 * @param string $taxonomy Taxonomy slug.
 	 * @return void
 	 */
 	public function maybe_purge_cache_on_term_change( $term_id, $tt_id, $taxonomy ) {
