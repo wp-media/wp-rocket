@@ -1,14 +1,14 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\classes\subscriber\Cache\PurgeActionsSubscriber;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Cache\PurgeActionsSubscriber;
 
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
-use WP_Rocket\Subscriber\Cache\PurgeActionsSubscriber;
+use WP_Rocket\Engine\Cache\PurgeActionsSubscriber;
 
 /**
- * @covers \WP_Rocket\Subscriber\Cache\PurgeActionsSubscriber:purge_user_cache
+ * @covers \WP_Rocket\Engine\Cache\PurgeActionsSubscriber:purge_user_cache
  * @group  purge_actions
  */
 class Test_PurgeUserCache extends TestCase {
