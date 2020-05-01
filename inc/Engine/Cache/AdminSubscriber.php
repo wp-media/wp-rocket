@@ -72,7 +72,7 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 		}
 
 		$url = wp_nonce_url(
-			admin_url( "admin-post.php?action=purge_cache&type=term-{$term->term_id}&taxonomy={$term->name}" ),
+			admin_url( "admin-post.php?action=purge_cache&type=term-{$term->term_id}&taxonomy={$term->taxonomy}" ),
 			"purge_cache_term-{$term->term_id}"
 		);
 
