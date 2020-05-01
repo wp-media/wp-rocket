@@ -25,7 +25,7 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'admin_init' => 'add_terms_purge_links',
+			'admin_init' => 'register_terms_row_action',
 		];
 	}
 
@@ -45,7 +45,7 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 *
 	 * @return void
 	 */
-	public function add_terms_purge_links() {
+	public function register_terms_row_action() {
 		$taxonomies = get_taxonomies(
 			[
 				'public'             => true,
