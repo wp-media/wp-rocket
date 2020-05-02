@@ -1403,7 +1403,7 @@ function _rocket_get_entries_regex( Iterator $iterator, $url, $cache_path = '' )
 			$path = str_replace( '/', '\/', $path );
 		}
 
-		$regex = "/{$host}(.*)\/{$path}/i";
+		$regex = "/{$host}(.*)\/{$path}\b/i";
 	} else {
 		$regex = "/{$host}(.*)/i";
 		$depth = 0;
