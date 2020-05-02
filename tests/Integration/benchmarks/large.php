@@ -5,8 +5,7 @@ $file_entries = [
 	'index.html_gzip' => '',
 ];
 
-$files   = [];
-$files[] = $file_entries;
+$files   = $file_entries;
 for ( $post_id = 1; $post_id < 10; $post_id ++ ) {
 	$files["post{$post_id}"] = $file_entries;
 }
