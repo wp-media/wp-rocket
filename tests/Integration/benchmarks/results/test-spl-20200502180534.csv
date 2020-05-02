@@ -1,0 +1,33 @@
+"Number of URLs",30
+"Total time (secs)",1.24417700
+http://example.org*/post1/,341,0.08,371.94,372.03
+http://example.org*/post2/,341,0.10,297.92,298.02
+http://example.org*/post3/,62,0.07,89.14,89.20
+http://example.org*/post4/,31,0.10,48.84,48.93
+http://example.org*/post5/,31,0.10,43.92,44.02
+http://example.org*/post6/,31,0.09,70.07,70.17
+http://example.org*/post7/,31,0.10,50.48,50.58
+http://example.org*/post8/,31,0.09,49.55,49.65
+http://example.org*/post9/,31,0.07,48.92,48.99
+http://example.org*/post10/,0,0.08,10.20,10.28
+http://example.org*/post11/,0,0.09,10.54,10.63
+http://example.org*/post12/,0,0.06,7.04,7.11
+http://example.org*/post13/,0,0.06,8.99,9.05
+http://example.org*/post14/,0,0.09,10.29,10.39
+http://example.org*/post15/,0,0.06,7.34,7.40
+http://example.org*/post16/,0,0.08,8.38,8.46
+http://example.org*/post17/,0,0.10,7.22,7.32
+http://example.org*/post18/,0,0.06,6.60,6.67
+http://example.org*/post19/,0,0.06,6.68,6.74
+http://example.org*/post20/,0,0.06,6.18,6.24
+http://example.org*/post21/,0,0.06,7.21,7.26
+http://example.org*/post22/,0,0.06,7.78,7.84
+http://example.org*/post23/,0,0.06,16.67,16.73
+http://example.org*/post24/,0,0.08,7.90,7.98
+http://example.org*/post25/,0,0.06,6.62,6.68
+http://example.org*/post26/,0,0.06,6.92,6.98
+http://example.org*/post27/,0,0.06,6.53,6.59
+http://example.org*/post28/,0,0.08,7.39,7.47
+http://example.org*/post29/,0,0.06,6.98,7.04
+http://example.org*/post30/,0,0.06,6.21,6.27
+Averages,,0.08,41.35,41.42
