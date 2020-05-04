@@ -1058,7 +1058,8 @@ class Page {
 			]
 		);
 
-		$bot_beacon = $this->beacon->get_suggest( 'bot' );
+		$bot_beacon    = $this->beacon->get_suggest( 'bot' );
+		$fonts_preload = $this->beacon->get_suggest( 'fonts_preload' );
 
 		$this->settings->add_settings_sections(
 			[
@@ -1089,8 +1090,8 @@ class Page {
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description' => sprintf( __( 'Improves performance by helping browsers discover fonts in CSS files. %1$sMore info%2$s', 'rocket' ), '<a href="#">', '</a>' ),
 					'help'        => [
-						'id'  => $this->beacon->get_suggest( 'fonts_preload' ),
-						'url' => $bot_beacon['url'],
+						'id'  => $fonts_preload['id'],
+						'url' => $fonts_preload['url'],
 					],
 					'page'        => 'preload',
 				],

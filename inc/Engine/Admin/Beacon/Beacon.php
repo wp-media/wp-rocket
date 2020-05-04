@@ -432,8 +432,14 @@ class Beacon implements Subscriber_Interface {
 				'fr' => '5693d582c69791436155d645',
 			],
 			'fonts_preload'              => [
-				'en' => '',
-				'fr' => '',
+				'en' => [
+					'id'  => '5eab7729042863474d19f647',
+					'url' => 'https://docs.wp-rocket.me/article/1317-preload-fonts/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '',
+					'url' => '',
+				],
 			],
 			'never_cache'                => [
 				'en' => '5519ab03e4b061031402119f,559110d0e4b027e1978eba09,56b55ba49033600da1c0b687,553ac7bfe4b0eb143c62af44,587920b5c697915403a0e1f4,5569b671e4b027e1978e3c51',
