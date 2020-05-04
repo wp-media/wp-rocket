@@ -6,7 +6,7 @@ use WPMedia\PHPUnit\Integration\TestCase;
 use WP_Error;
 
 /**
- * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\NoticesSubscriber::display_rocketcdn_cta
+ * @covers \WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::display_rocketcdn_cta
  * @group  RocketCDN
  * @group  AdminOnly
  */

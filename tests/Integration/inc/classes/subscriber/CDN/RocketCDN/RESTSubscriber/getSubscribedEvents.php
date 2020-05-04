@@ -2,10 +2,10 @@
 namespace WP_Rocket\Tests\Integration\inc\classes\subscriber\CDN\RocketCDN\RESTSubscriber;
 
 use WPMedia\PHPUnit\Integration\TestCase;
-use WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber;
+use WP_Rocket\Engine\CDN\RocketCDN\RESTSubscriber;
 
 /**
- * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber::get_subscribed_events
+ * @covers \WP_Rocket\Engine\CDN\RocketCDN\RESTSubscriber::get_subscribed_events
  * @group RocketCDN
  */
 class Test_GetSubscribedEvents extends TestCase {

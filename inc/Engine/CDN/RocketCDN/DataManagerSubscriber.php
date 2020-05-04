@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Subscriber\CDN\RocketCDN;
+namespace WP_Rocket\Engine\CDN\RocketCDN;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Engine\CDN\RocketCDN\APIClient;

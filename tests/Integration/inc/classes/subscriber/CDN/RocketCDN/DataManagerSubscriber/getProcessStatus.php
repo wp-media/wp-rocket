@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\classes\subscriber\CDN\RocketCDN\DataM
 use WPMedia\PHPUnit\Integration\AjaxTestCase;
 
 /**
- * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\DataManagerSubscriber::get_process_status
+ * @covers \WP_Rocket\Engine\CDN\RocketCDN\DataManagerSubscriber::get_process_status
  * @group  RocketCDN
  * @group  AdminOnly
  */

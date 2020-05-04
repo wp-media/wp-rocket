@@ -2,11 +2,11 @@
 namespace WP_Rocket\Tests\Unit\inc\classes\subscriber\CDN\RocketCDN;
 
 use WPMedia\PHPUnit\Unit\TestCase;
-use WP_Rocket\Subscriber\CDN\RocketCDN\NoticesSubscriber;
+use WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\NoticesSubscriber::toggle_cta
+ * @covers \WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::toggle_cta
  * @group RocketCDN
  */
 class Test_ToggleCTA extends TestCase {

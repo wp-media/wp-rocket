@@ -4,12 +4,12 @@ namespace WP_Rocket\Tests\Unit\inc\classes\subscriber\CDN\RocketCDN;
 
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
-use WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber;
+use WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber;
 use WPDieException;
 use function WP_Rocket\Tests\getTestsRootDir;
 
 /**
- * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber::purge_cdn_cache
+ * @covers \WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber::purge_cdn_cache
  * @group  RocketCDN
  */
 class Test_PurgeCdnCache extends TestCase {

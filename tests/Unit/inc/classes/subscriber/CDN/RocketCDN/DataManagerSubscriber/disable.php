@@ -6,10 +6,10 @@ use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
 use WP_Rocket\Engine\CDN\RocketCDN\CDNOptionsManager;
-use WP_Rocket\Subscriber\CDN\RocketCDN\DataManagerSubscriber;
+use WP_Rocket\Engine\CDN\RocketCDN\DataManagerSubscriber;
 
 /**
- * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\DataManagerSubscriber::disable
+ * @covers \WP_Rocket\Engine\CDN\RocketCDN\DataManagerSubscriber::disable
  * @group  RocketCDN
  */
 class Test_Disable extends TestCase {

@@ -7,7 +7,7 @@ use WPMedia\PHPUnit\Integration\ApiTrait;
 use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
 
 /**
- * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\APIClient::purge_cache_request
+ * @covers \WP_Rocket\Engine\CDN\RocketCDN\APIClient::purge_cache_request
  * @group  RocketCDN
  * @group  RocketCDNAPI
  */

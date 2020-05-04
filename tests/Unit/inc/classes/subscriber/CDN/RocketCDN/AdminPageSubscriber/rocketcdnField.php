@@ -3,10 +3,10 @@
 namespace WP_Rocket\Tests\Unit\inc\classes\subscriber\CDN\RocketCDN;
 
 use WPMedia\PHPUnit\Unit\TestCase;
-use WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber;
+use WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber;
 
 /**
- * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber::rocketcdn_field
+ * @covers \WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber::rocketcdn_field
  * @group  RocketCDN
  */
 class Test_RocketcdnField extends TestCase {

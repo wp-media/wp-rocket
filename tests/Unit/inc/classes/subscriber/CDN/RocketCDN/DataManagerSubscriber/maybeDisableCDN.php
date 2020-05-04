@@ -4,10 +4,10 @@ namespace WP_Rocket\Tests\Unit\inc\classes\subscriber\CDN\RocketCDN\DataManagerS
 
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
-use WP_Rocket\Subscriber\CDN\RocketCDN\DataManagerSubscriber;
+use WP_Rocket\Engine\CDN\RocketCDN\DataManagerSubscriber;
 
 /**
- * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\DataManagerSubscriber::maybe_disable_cdn
+ * @covers \WP_Rocket\Engine\CDN\RocketCDN\DataManagerSubscriber::maybe_disable_cdn
  * @group  RocketCDN
  */
 class Test_MaybeDisableCDN extends TestCase {

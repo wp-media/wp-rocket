@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\classes\subscriber\CDN\RocketCDN\RESTS
 use WP_Rocket\Tests\Integration\ApiTestCase;
 
 /**
- * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber::enable
+ * @covers \WP_Rocket\Engine\CDN\RocketCDN\RESTSubscriber::enable
  * @group  RocketCDN
  */
 class Test_Enable extends ApiTestCase {

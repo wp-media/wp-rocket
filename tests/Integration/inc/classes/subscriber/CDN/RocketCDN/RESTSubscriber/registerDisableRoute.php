@@ -5,9 +5,9 @@ namespace WP_Rocket\Tests\Integration\inc\classes\subscriber\CDN\RocketCDN\RESTS
 use WP_Rocket\Tests\Integration\ApiTestCase;
 
 /**
- * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber::register_disable_route
- * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber::validateEmail
- * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber::validateKey
+ * @covers \WP_Rocket\Engine\CDN\RocketCDN\RESTSubscriber::register_disable_route
+ * @covers \WP_Rocket\Engine\CDN\RocketCDN\RESTSubscriber::validateEmail
+ * @covers \WP_Rocket\Engine\CDN\RocketCDN\RESTSubscriber::validateKey
  * @group  RocketCDN
  */
 class Test_RegisterDisableRoute extends ApiTestCase {

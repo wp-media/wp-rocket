@@ -8,7 +8,7 @@ use WP_Rocket\Subscriber\Plugin\Capabilities_Subscriber;
 use WPDieException;
 
 /**
- * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber::purge_cdn_cache
+ * @covers \WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber::purge_cdn_cache
  * @group  RocketCDN
  * @group  AdminOnly
  */

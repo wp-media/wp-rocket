@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Subscriber\CDN\RocketCDN;
+namespace WP_Rocket\Engine\CDN\RocketCDN;
 
 use WP_Rocket\Abstract_Render;
 use WP_Rocket\Admin\Options_Data;

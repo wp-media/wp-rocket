@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\classes\subscriber\CDN\RocketCDN;
 use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber::rocketcdn_field
+ * @covers \WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber::rocketcdn_field
  * @group  RocketCDN
  * @group  AdminOnly
  */

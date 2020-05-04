@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\classes\subscriber\CDN\RocketCDN;
 use WPMedia\PHPUnit\Integration\AjaxTestCase;
 
 /**
- * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\NoticesSubscriber::dismiss_notice
+ * @covers \WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::dismiss_notice
  * @group  RocketCDN
  * @group  AdminOnly
  */

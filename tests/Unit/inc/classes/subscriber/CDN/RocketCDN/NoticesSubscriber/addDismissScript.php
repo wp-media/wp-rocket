@@ -4,10 +4,10 @@ namespace WP_Rocket\Tests\Unit\inc\classes\subscriber\CDN\RocketCDN;
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
-use WP_Rocket\Subscriber\CDN\RocketCDN\NoticesSubscriber;
+use WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber;
 
 /**
- * @covers\WP_Rocket\Subscriber\CDN\RocketCDN\NoticesSubscriber::add_dismiss_script
+ * @covers\WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::add_dismiss_script
  * @group RocketCDN
  */
 class Test_AddDismissScript extends TestCase {

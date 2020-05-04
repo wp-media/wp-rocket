@@ -6,7 +6,7 @@ use WPMedia\PHPUnit\Integration\TestCase;
 use WPMedia\PHPUnit\Integration\ApiTrait;
 
 /**
- * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\DataManagerSubscriber::maybe_disable_cdn
+ * @covers \WP_Rocket\Engine\CDN\RocketCDN\DataManagerSubscriber::maybe_disable_cdn
  * @group  RocketCDN
  * @group  AdminOnly
  */

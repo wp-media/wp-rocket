@@ -8,7 +8,7 @@ use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\APIClient::get_subscription_data
+ * @covers \WP_Rocket\Engine\CDN\RocketCDN\APIClient::get_subscription_data
  * @group  RocketCDN
  * @group  RocketCDNAPI
  */

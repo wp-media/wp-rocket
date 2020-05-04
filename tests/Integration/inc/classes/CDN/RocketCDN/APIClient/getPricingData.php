@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Integration\ApiTestCase;
 use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
 
 /**
- * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber::get_pricing_data
+ * @covers \WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber::get_pricing_data
  * @group  RocketCDN
  * @group  RocketCDNAPI
  */
