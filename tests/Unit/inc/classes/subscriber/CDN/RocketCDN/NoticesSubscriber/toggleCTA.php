@@ -16,7 +16,7 @@ class Test_ToggleCTA extends TestCase {
 		parent::setUp();
 
 		$this->notices = new NoticesSubscriber(
-			$this->createMock( 'WP_Rocket\CDN\RocketCDN\APIClient' ),
+			$this->createMock( 'WP_Rocket\Engine\CDN\RocketCDN\APIClient' ),
 			'views/settings/rocketcdn'
 		);
 	}

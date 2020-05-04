@@ -15,7 +15,7 @@ class Test_PurgeCacheNotice extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-        $this->api_client = $this->createMock( 'WP_Rocket\CDN\RocketCDN\APIClient' );
+        $this->api_client = $this->createMock( 'WP_Rocket\Engine\CDN\RocketCDN\APIClient' );
     }
 
 	/**

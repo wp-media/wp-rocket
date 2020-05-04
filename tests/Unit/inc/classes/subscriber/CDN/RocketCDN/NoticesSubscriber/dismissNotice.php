@@ -16,7 +16,7 @@ class Test_DismissNotice extends TestCase {
 
 		$_POST['action'] = 'rocketcdn_dismiss_notice';
 
-		$notices = new NoticesSubscriber( $this->createMock( 'WP_Rocket\CDN\RocketCDN\APIClient' ), 'views/settings/rocketcdn');
+		$notices = new NoticesSubscriber( $this->createMock( 'WP_Rocket\Engine\CDN\RocketCDN\APIClient' ), 'views/settings/rocketcdn');
 		$this->assertNull( $notices->dismiss_notice() );
 	}
 
@@ -30,7 +30,7 @@ class Test_DismissNotice extends TestCase {
 
 		$_POST['action'] = 'rocketcdn_dismiss_notice';
 
-		$notices = new NoticesSubscriber( $this->createMock( 'WP_Rocket\CDN\RocketCDN\APIClient' ), 'views/settings/rocketcdn');
+		$notices = new NoticesSubscriber( $this->createMock( 'WP_Rocket\Engine\CDN\RocketCDN\APIClient' ), 'views/settings/rocketcdn');
 		$notices->dismiss_notice();
 	}
 }

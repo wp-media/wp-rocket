@@ -2,8 +2,8 @@
 namespace WP_Rocket\Subscriber\CDN\RocketCDN;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Rocket\CDN\RocketCDN\APIClient;
-use WP_Rocket\CDN\RocketCDN\CDNOptionsManager;
+use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
+use WP_Rocket\Engine\CDN\RocketCDN\CDNOptionsManager;
 
 /**
  * Subscriber for the RocketCDN integration in WP Rocket settings page

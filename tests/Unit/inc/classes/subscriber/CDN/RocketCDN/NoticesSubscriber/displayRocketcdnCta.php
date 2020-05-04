@@ -4,7 +4,7 @@ namespace WP_Rocket\Tests\Unit\inc\classes\subscriber\CDN\RocketCDN;
 
 use Brain\Monkey\Functions;
 use Mockery;
-use WP_Rocket\CDN\RocketCDN\APIClient;
+use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
 use WP_Rocket\Subscriber\CDN\RocketCDN\NoticesSubscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
 

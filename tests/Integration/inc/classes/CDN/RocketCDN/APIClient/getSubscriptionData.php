@@ -4,7 +4,7 @@ namespace WP_Rocket\Tests\Integration\inc\classes\CDN\RocketCDN\APIClient;
 
 use WPMedia\PHPUnit\Integration\TestCase;
 use WPMedia\PHPUnit\Integration\ApiTrait;
-use WP_Rocket\CDN\RocketCDN\APIClient;
+use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
 use Brain\Monkey\Functions;
 
 /**

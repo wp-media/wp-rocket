@@ -23,7 +23,7 @@ class Test_MaybeDisableCDN extends TestCase {
 		Functions\expect( 'wp_schedule_single_event' )
 			->once();
 
-		$api = $this->createMock( \WP_Rocket\CDN\RocketCDN\APIClient::class );
+		$api = $this->createMock( \WP_Rocket\Engine\CDN\RocketCDN\APIClient::class );
 		$api->expects( $this->once() )
 		    ->method( 'get_subscription_data' )
 		    ->willReturn( [
@@ -33,7 +33,7 @@ class Test_MaybeDisableCDN extends TestCase {
 
 		$data_manager = new DataManagerSubscriber(
 			$api,
-			$this->createMock( 'WP_Rocket\CDN\RocketCDN\CDNOptionsManager' )
+			$this->createMock( 'WP_Rocket\Engine\CDN\RocketCDN\CDNOptionsManager' )
 		);
 
 		$this->assertNull( $data_manager->maybe_disable_cdn() );
@@ -44,7 +44,7 @@ class Test_MaybeDisableCDN extends TestCase {
 			->once()
 			->with( 'rocketcdn_status' );
 
-		$api = $this->createMock( \WP_Rocket\CDN\RocketCDN\APIClient::class );
+		$api = $this->createMock( \WP_Rocket\Engine\CDN\RocketCDN\APIClient::class );
 		$api->expects( $this->once() )
 		    ->method( 'get_subscription_data' )
 		    ->willReturn( [
@@ -52,7 +52,7 @@ class Test_MaybeDisableCDN extends TestCase {
 			    'subscription_next_date_update' => time(),
 		    ] );
 
-		$options = $this->createMock( \WP_Rocket\CDN\RocketCDN\CDNOptionsManager::class );
+		$options = $this->createMock( \WP_Rocket\Engine\CDN\RocketCDN\CDNOptionsManager::class );
 		$options->expects( $this->once() )
 		        ->method( 'disable' );
 

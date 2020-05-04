@@ -19,7 +19,7 @@ class Test_RocketcdnField extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->api_client = $this->createMock( 'WP_Rocket\CDN\RocketCDN\APIClient' );
+		$this->api_client = $this->createMock( 'WP_Rocket\Engine\CDN\RocketCDN\APIClient' );
 		$this->options    = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
 		$this->beacon     = $this->createMock( 'WP_Rocket\Engine\Admin\Beacon\Beacon' );
 		$this->page       = new AdminPageSubscriber(

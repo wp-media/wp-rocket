@@ -27,7 +27,7 @@ class Test_PurgeCdnCache extends TestCase {
 
 		unset( $_GET['_wpnonce'] );
 
-		$this->api_client = $this->createMock( 'WP_Rocket\CDN\RocketCDN\APIClient' );
+		$this->api_client = $this->createMock( 'WP_Rocket\Engine\CDN\RocketCDN\APIClient' );
 		$this->page       = new AdminPageSubscriber(
 			$this->api_client,
 			$this->createMock( 'WP_Rocket\Admin\Options_Data' ),

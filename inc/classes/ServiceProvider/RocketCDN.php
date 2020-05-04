@@ -38,9 +38,9 @@ class RocketCDN extends AbstractServiceProvider {
 	 */
 	public function register() {
 		// RocketCDN API Client.
-		$this->getContainer()->add( 'rocketcdn_api_client', 'WP_Rocket\CDN\RocketCDN\APIClient' );
+		$this->getContainer()->add( 'rocketcdn_api_client', 'WP_Rocket\Engine\CDN\RocketCDN\APIClient' );
 		// RocketCDN CDN options manager.
-		$this->getContainer()->add( 'rocketcdn_options_manager', 'WP_Rocket\CDN\RocketCDN\CDNOptionsManager' )
+		$this->getContainer()->add( 'rocketcdn_options_manager', 'WP_Rocket\Engine\CDN\RocketCDN\CDNOptionsManager' )
 			->withArgument( $this->getContainer()->get( 'options_api' ) )
 			->withArgument( $this->getContainer()->get( 'options' ) );
 		// RocketCDN Data manager subscriber.

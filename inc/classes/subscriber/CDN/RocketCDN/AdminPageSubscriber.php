@@ -6,7 +6,7 @@ use WP_Rocket\Abstract_Render;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Rocket\CDN\RocketCDN\APIClient;
+use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
 
 /**
  * Subscriber for the RocketCDN integration in WP Rocket settings page

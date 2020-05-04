@@ -3,12 +3,12 @@
 namespace WP_Rocket\Tests\Integration\inc\classes\CDN\RocketCDN\CDNOptionsManager;
 
 use WPMedia\PHPUnit\Integration\TestCase;
-use WP_Rocket\CDN\RocketCDN\CDNOptionsManager;
+use WP_Rocket\Engine\CDN\RocketCDN\CDNOptionsManager;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 
 /**
- * @covers \WP_Rocket\CDN\RocketCDN\CDNOptionsManager::disable
+ * @covers \WP_Rocket\Engine\CDN\RocketCDN\CDNOptionsManager::disable
  * @group RocketCDN
  */
 class Test_Disable extends TestCase {

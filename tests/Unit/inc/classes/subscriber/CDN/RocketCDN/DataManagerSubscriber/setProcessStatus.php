@@ -4,8 +4,8 @@ namespace WP_Rocket\Tests\Unit\inc\classes\subscriber\CDN\RocketCDN\DataManagerS
 
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
-use WP_Rocket\CDN\RocketCDN\APIClient;
-use WP_Rocket\CDN\RocketCDN\CDNOptionsManager;
+use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
+use WP_Rocket\Engine\CDN\RocketCDN\CDNOptionsManager;
 use WP_Rocket\Subscriber\CDN\RocketCDN\DataManagerSubscriber;
 
 /**

@@ -6,10 +6,10 @@ use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\CDN\RocketCDN\CDNOptionsManager;
+use WP_Rocket\Engine\CDN\RocketCDN\CDNOptionsManager;
 
 /**
- * @covers\WP_Rocket\CDN\RocketCDN\CDNOptionsManager::disable
+ * @covers\WP_Rocket\Engine\CDN\RocketCDN\CDNOptionsManager::disable
  * @group RocketCDN
  */
 class Test_Disable extends TestCase {

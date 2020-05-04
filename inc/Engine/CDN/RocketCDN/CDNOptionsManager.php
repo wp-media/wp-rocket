@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\CDN\RocketCDN;
+namespace WP_Rocket\Engine\CDN\RocketCDN;
 
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;

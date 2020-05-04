@@ -3,7 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\classes\CDN\RocketCDN\APIClient;
 
 use WP_Rocket\Tests\Integration\ApiTestCase;
-use WP_Rocket\CDN\RocketCDN\APIClient;
+use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
 
 /**
  * @covers \WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber::get_pricing_data
