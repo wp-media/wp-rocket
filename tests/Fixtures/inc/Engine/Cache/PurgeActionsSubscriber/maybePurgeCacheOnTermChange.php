@@ -1,41 +1,62 @@
 <?php
 
 return [
-	'testTaxonomyReturnFalse' => [
-		'name'     => 'foo',
-		'taxonomy' => false,
-		'clean'    => false,
-	],
-	'testTaxonomyNotPublicAndNotPubliclyQueryable' => [
-		'name'     => 'category',
-		'taxonomy' => (object) [
-			'public'             => false,
-			'publicly_queryable' => false,
+	'vfs_dir'   => 'wp-content/cache/wp-rocket/',
+
+	// Virtual filesystem structure.
+	'structure' => [
+		'wp-content' => [
+			'cache' => [
+				'wp-rocket' => [
+					'example.org'                                => [
+						'index.html'      => '',
+						'index.html_gzip' => '',
+					],
+					'example.org-wpmedia-594d03f6ae698691165999' => [
+						'index.html'      => '',
+						'index.html_gzip' => '',
+					],
+				],
+			],
 		],
-		'clean'    => false,
 	],
-	'testTaxonomyNotPublic' => [
-		'name'     => 'category',
-		'taxonomy' => (object) [
-			'public'             => false,
-			'publicly_queryable' => true,
+	'test_data' => [
+		'testTaxonomyReturnFalse' => [
+			'name'     => 'foo',
+			'taxonomy' => false,
+			'clean'    => false,
 		],
-		'clean'    => false,
-	],
-	'testTaxonomyNotPubliclyQueryable' => [
-		'name'     => 'category',
-		'taxonomy' => (object) [
-			'public'             => true,
-			'publicly_queryable' => false,
+		'testTaxonomyNotPublicAndNotPubliclyQueryable' => [
+			'name'     => 'not_public',
+			'taxonomy' => (object) [
+				'public'             => false,
+				'publicly_queryable' => false,
+			],
+			'clean'    => false,
 		],
-		'clean'    => false,
-	],
-	'testTaxonomyPublic' => [
-		'name'     => 'category',
-		'taxonomy' => (object) [
-			'public'             => true,
-			'publicly_queryable' => true,
+		'testTaxonomyNotPublic' => [
+			'name'     => 'category',
+			'taxonomy' => (object) [
+				'public'             => false,
+				'publicly_queryable' => true,
+			],
+			'clean'    => false,
 		],
-		'clean'    => true,
+		'testTaxonomyNotPubliclyQueryable' => [
+			'name'     => 'category',
+			'taxonomy' => (object) [
+				'public'             => true,
+				'publicly_queryable' => false,
+			],
+			'clean'    => false,
+		],
+		'testTaxonomyPublic' => [
+			'name'     => 'category',
+			'taxonomy' => (object) [
+				'public'             => true,
+				'publicly_queryable' => true,
+			],
+			'clean'    => true,
+		],
 	],
 ];

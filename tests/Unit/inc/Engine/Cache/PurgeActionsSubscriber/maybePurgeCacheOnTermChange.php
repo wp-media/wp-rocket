@@ -39,6 +39,8 @@ class Test_MaybePurgeCacheOnTermChange extends TestCase {
 	}
 
 	public function providerTestData() {
-		return $this->getTestData( __DIR__, 'maybePurgeCacheOnTermChange' );
+		$data = $this->getTestData( __DIR__, 'maybePurgeCacheOnTermChange' );
+
+		return $data['test_data'];
 	}
 }
