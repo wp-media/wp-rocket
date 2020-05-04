@@ -192,6 +192,9 @@ return [
 				'script.php' => '',
 			],
 			'wp-rocket'   => [
+				'inc'              => [
+					'process-autoloader.php' => file_get_contents( WP_ROCKET_PLUGIN_ROOT . 'inc/process-autoloader.php' ),
+				],
 				'licence-data.php' => '',
 			],
 		],

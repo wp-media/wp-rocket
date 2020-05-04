@@ -37,6 +37,11 @@ tests_add_filter(
 		define( 'WP_ROCKET_CACHE_ROOT_URL', 'http://example.org/wp-content/cache/' );
 		define( 'WP_ROCKET_VIEWS', 'vfs://public/wp-content/plugins/wp-rocket/views' );
 
+		if ( BootstrapManager::isGroup( 'WithSmush' ) ) {
+			// Load WP Smush.
+			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/wp-smushit/wp-smush.php';
+		}
+
 		if ( BootstrapManager::isGroup( 'WithWoo' ) ) {
 			// Load WooCommerce.
 			define( 'WC_TAX_ROUNDING_MODE', 'auto' );

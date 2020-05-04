@@ -2,106 +2,107 @@
 
 return [
 	// Default settings.
-	'settings'  => [
+	'settings' => [
 		'minify_css'  => false,
 		'exclude_css' => [],
 		'cdn'         => false,
 		'cdn_cnames'  => [],
 	],
+
 	'test_data' => [
-		'shouldNotRegenerateKey'             => [
-			'value'     => [
+		'shouldNotRegenerateKey'         => [
+			'settings'   => [
 				'minify_css'  => false,
 				'exclude_css' => [],
 				'cdn'         => false,
 				'cdn_cnames'  => [],
 			],
-            'should_run' => false,
-            'expected' => [
+			'expected'   => [
 				'minify_css'  => false,
 				'exclude_css' => [],
 				'cdn'         => false,
 				'cdn_cnames'  => [],
 			],
-        ],
-        'shouldNotRegenerateKeyNewCname'      => [
-			'value'     => [
+			'should_run' => false,
+		],
+		'shouldNotRegenerateKeyNewCname' => [
+			'settings'   => [
 				'minify_css'  => false,
 				'exclude_css' => [],
 				'cdn'         => false,
 				'cdn_cnames'  => [ 'cname' ],
 			],
-            'should_run' => false,
-            'expected' => [
+			'expected'   => [
 				'minify_css'  => false,
 				'exclude_css' => [],
 				'cdn'         => false,
 				'cdn_cnames'  => [ 'cname' ],
 			],
+			'should_run' => false,
 		],
-		'shouldRegenerateKey'             => [
-			'value'     => [
+		'shouldRegenerateKey'            => [
+			'settings'   => [
 				'minify_css'  => true,
 				'exclude_css' => [],
 				'cdn'         => false,
 				'cdn_cnames'  => [],
 			],
-            'should_run' => true,
-            'expected' => [
-				'minify_css'  => true,
-				'exclude_css' => [],
-				'cdn'         => false,
-                'cdn_cnames'  => [],
-                'minify_css_key' => 'minify_css_key',
+			'expected'   => [
+				'minify_css'     => true,
+				'exclude_css'    => [],
+				'cdn'            => false,
+				'cdn_cnames'     => [],
+				'minify_css_key' => 'minify_css_key',
 			],
+			'should_run' => true,
 		],
-		'shouldRegenerateKeyExcludeCSS'      => [
-			'value'     => [
+		'shouldRegenerateKeyExcludeCSS'  => [
+			'settings'   => [
 				'minify_css'  => true,
 				'exclude_css' => [ '/wp-content/plugins/some-plugin/file.css' ],
 				'cdn'         => false,
 				'cdn_cnames'  => [],
 			],
-            'should_run' => true,
-            'expected' => [
-				'minify_css'  => true,
-				'exclude_css' => [ '/wp-content/plugins/some-plugin/file.css' ],
-				'cdn'         => false,
-                'cdn_cnames'  => [],
-                'minify_css_key' => 'minify_css_key',
+			'expected'   => [
+				'minify_css'     => true,
+				'exclude_css'    => [ '/wp-content/plugins/some-plugin/file.css' ],
+				'cdn'            => false,
+				'cdn_cnames'     => [],
+				'minify_css_key' => 'minify_css_key',
 			],
+			'should_run' => true,
 		],
-		'shouldRegenerateKeyCDN'             => [
-			'value'     => [
+		'shouldRegenerateKeyCDN'         => [
+			'settings'   => [
 				'minify_css'  => false,
 				'exclude_css' => [],
 				'cdn'         => true,
 				'cdn_cnames'  => [],
 			],
-            'should_run' => true,
-            'expected' => [
-				'minify_css'  => false,
-				'exclude_css' => [],
-				'cdn'         => true,
-                'cdn_cnames'  => [],
-                'minify_css_key' => 'minify_css_key',
+			'expected'   => [
+				'minify_css'     => false,
+				'exclude_css'    => [],
+				'cdn'            => true,
+				'cdn_cnames'     => [],
+				'minify_css_key' => 'minify_css_key',
 			],
+			'should_run' => true,
 		],
-		'shouldRegenerateKeyCDNCname'        => [
-			'value'     => [
+		'shouldRegenerateKeyCDNCname'    => [
+			'settings'   => [
 				'minify_css'  => false,
 				'exclude_css' => [],
 				'cdn'         => true,
 				'cdn_cnames'  => [ 'cname' ],
 			],
-            'should_run' => true,
-            'expected' => [
-				'minify_css'  => false,
-				'exclude_css' => [],
-				'cdn'         => true,
-                'cdn_cnames'  => [ 'cname' ],
-                'minify_css_key' => 'minify_css_key',
+			'expected'   => [
+				'minify_css'     => false,
+				'exclude_css'    => [],
+				'cdn'            => true,
+				'cdn_cnames'     => [ 'cname' ],
+				'minify_css_key' => 'minify_css_key',
 			],
+			'should_run' => true,
 		],
 	],
 ];

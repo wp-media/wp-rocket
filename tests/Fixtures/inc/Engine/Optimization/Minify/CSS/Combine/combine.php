@@ -1,6 +1,7 @@
 <?php
 return [
-	'vfs_dir'   => 'public/',
+	'vfs_dir'   => 'wordpress/',
+
 	'structure' => [
 		'wordpress' => [
 			'wp-includes' => [
@@ -36,6 +37,7 @@ return [
 			],
 		],
 	],
+
 	'test_data' => [
 		// Combine CSS files.
 		[
