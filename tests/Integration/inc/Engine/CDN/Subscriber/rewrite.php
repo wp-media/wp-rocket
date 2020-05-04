@@ -9,9 +9,6 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Subscriber;
  * @group  rewrite
  */
 class Test_Rewrite extends TestCase {
-	private $content_url;
-	private $includes_url;
-
 	public function tearDown() {
 		remove_filter( 'content_url', [ $this, 'setContentURL' ] );
 		remove_filter( 'includes_url', [ $this, 'setIncludesURL' ] );
@@ -48,13 +45,5 @@ class Test_Rewrite extends TestCase {
 
 	public function providerTestData() {
 		return $this->getTestData( __DIR__, 'rewrite' );
-	}
-
-	public function setContentURL() {
-		return $this->content_url;
-	}
-
-	public function setIncludesURL() {
-		return $this->includes_url;
 	}
 }

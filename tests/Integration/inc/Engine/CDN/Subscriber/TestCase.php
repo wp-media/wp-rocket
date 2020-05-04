@@ -4,10 +4,12 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Subscriber;
 
 use WPMedia\PHPUnit\Integration\TestCase as BaseTestCase;
 
-class TestCase extends BaseTestCase {
+abstract class TestCase extends BaseTestCase {
 	protected $cnames;
 	protected $cdn_zone;
 	protected $home_url;
+	protected $content_url;
+	protected $includes_url;
 
 	public function tearDown() {
 		remove_filter( 'pre_get_rocket_option_cdn', [ $this, 'return_true' ] );
@@ -28,5 +30,13 @@ class TestCase extends BaseTestCase {
 
 	public function setHomeURL() {
 		return $this->home_url;
+	}
+
+	public function setContentURL() {
+		return $this->content_url;
+	}
+
+	public function setIncludesURL() {
+		return $this->includes_url;
 	}
 }
