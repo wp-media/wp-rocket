@@ -1,6 +1,6 @@
 <?php
 
-if ( ! class_exists('WP_REST_Request')) {
+if ( ! class_exists( 'WP_REST_Request' ) ) {
 
 	class WP_REST_Request implements ArrayAccess {
 		public $params = [];
