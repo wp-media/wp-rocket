@@ -37,12 +37,13 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
+		$options = $this->getContainer()->get( 'options' );
 		// RocketCDN API Client.
 		$this->getContainer()->add( 'rocketcdn_api_client', 'WP_Rocket\Engine\CDN\RocketCDN\APIClient' );
 		// RocketCDN CDN options manager.
 		$this->getContainer()->add( 'rocketcdn_options_manager', 'WP_Rocket\Engine\CDN\RocketCDN\CDNOptionsManager' )
 			->withArgument( $this->getContainer()->get( 'options_api' ) )
-			->withArgument( $this->getContainer()->get( 'options' ) );
+			->withArgument( $options );
 		// RocketCDN Data manager subscriber.
 		$this->getContainer()->share( 'rocketcdn_data_manager_subscriber', 'WP_Rocket\Engine\CDN\RocketCDN\DataManagerSubscriber' )
 			->withArgument( $this->getContainer()->get( 'rocketcdn_api_client' ) )
@@ -50,7 +51,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		// RocketCDN REST API Subscriber.
 		$this->getContainer()->share( 'rocketcdn_rest_subscriber', 'WP_Rocket\Engine\CDN\RocketCDN\RESTSubscriber' )
 			->withArgument( $this->getContainer()->get( 'rocketcdn_options_manager' ) )
-			->withArgument( $this->getContainer()->get( 'options' ) );
+			->withArgument( $options );
 		// RocketCDN Notices Subscriber.
 		$this->getContainer()->share( 'rocketcdn_notices_subscriber', 'WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber' )
 			->withArgument( $this->getContainer()->get( 'rocketcdn_api_client' ) )
@@ -58,7 +59,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		// RocketCDN settings page subscriber.
 		$this->getContainer()->share( 'rocketcdn_admin_subscriber', 'WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber' )
 			->withArgument( $this->getContainer()->get( 'rocketcdn_api_client' ) )
-			->withArgument( $this->getContainer()->get( 'options' ) )
+			->withArgument( $options )
 			->withArgument( $this->getContainer()->get( 'beacon' ) )
 			->withArgument( $this->getContainer()->get( 'template_path' ) . '/settings/rocketcdn' );
 	}
