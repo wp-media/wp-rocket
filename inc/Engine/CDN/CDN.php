@@ -17,6 +17,13 @@ class CDN {
 	private $options;
 
 	/**
+	 * Home URL host
+	 *
+	 * @var string
+	 */
+	private $home_host;
+
+	/**
 	 * Constructor
 	 *
 	 * @param Options_Data $options WP Rocket Options instance.
@@ -104,16 +111,15 @@ class CDN {
 			return rocket_add_url_protocol( $cdn_url . '/' . ltrim( $url, '/' ) );
 		}
 
-		$home       = home_url();
-		$home_parts = wp_parse_url( $home );
+		$home_host = $this->get_home_host();
 
 		if ( ! isset( $parsed_url['scheme'] ) ) {
-			return str_replace( $home_parts['host'], rocket_remove_url_protocol( $cdn_url ), $url );
+			return str_replace( $home_host, rocket_remove_url_protocol( $cdn_url ), $url );
 		}
 
 		$home_url = [
-			'http://' . $home_parts['host'],
-			'https://' . $home_parts['host'],
+			'http://' . $home_host,
+			'https://' . $home_host,
 		];
 
 		return str_replace( $home_url, rocket_add_url_protocol( $cdn_url ), $url );
@@ -205,7 +211,7 @@ class CDN {
 	 * @return string
 	 */
 	private function get_base_url() {
-		return '//' . wp_parse_url( home_url(), PHP_URL_HOST );
+		return '//' . $this->get_home_host();
 	}
 
 	/**
@@ -265,6 +271,21 @@ class CDN {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Gets the home URL host
+	 *
+	 * @since 3.5.5
+	 *
+	 * @return string
+	 */
+	private function get_home_host() {
+		if ( empty( $this->home_host ) ) {
+			$this->home_host = wp_parse_url( home_url(), PHP_URL_HOST );
+		}
+
+		return $this->home_host;
 	}
 
 	/**
