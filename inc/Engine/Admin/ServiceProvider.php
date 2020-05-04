@@ -4,10 +4,9 @@ namespace WP_Rocket\Engine\Admin;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 
 /**
- * Service Provider for admin subscribers
+ * Service Provider for admin subscribers.
  *
  * @since 3.3
- * @author Remy Perona
  */
 class ServiceProvider extends AbstractServiceProvider {
 
@@ -21,7 +20,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
-		'settings_page_subscriber',
 		'deactivation_intent_render',
 		'deactivation_intent_subscriber',
 		'hummingbird_subscriber',
@@ -29,18 +27,13 @@ class ServiceProvider extends AbstractServiceProvider {
 	];
 
 	/**
-	 * Registers the option array in the container
+	 * Registers the option array in the container.
 	 *
 	 * @since 3.3
-	 * @author Remy Perona
-	 *
-	 * @return void
 	 */
 	public function register() {
 		$options = $this->getContainer()->get( 'options' );
 
-		$this->getContainer()->share( 'settings_page_subscriber', 'WP_Rocket\Subscriber\Admin\Settings\Page_Subscriber' )
-			->withArgument( $this->getContainer()->get( 'settings_page' ) );
 		$this->getContainer()->add( 'deactivation_intent_render', 'WP_Rocket\Admin\Deactivation\Render' )
 			->withArgument( $this->getContainer()->get( 'template_path' ) . '/deactivation-intent' );
 		$this->getContainer()->share( 'deactivation_intent_subscriber', 'WP_Rocket\Subscriber\Admin\Deactivation\Deactivation_Intent_Subscriber' )

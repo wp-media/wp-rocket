@@ -2,33 +2,29 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\Minify\CSS\AdminSubscriber;
 
-use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\Minify\CSS\AdminSubscriber::regenerate_minify_css_key
+ * @uses   ::create_rocket_uniqid
+ *
  * @group  Optimize
  * @group  AdminSubscriber
  * @group  AdminOnly
  */
 class Test_RegenerateMinifyCssKey extends TestCase {
-	private $original_settings;
+	private static $original_settings;
+	private        $old_settings = [];
+	private        $config       = [];
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
+		self::$original_settings = get_option( 'wp_rocket_settings', [] );
+	}
 
-		update_option(
-			'wp_rocket_settings',
-			array_merge(
-				get_option( 'wp_rocket_settings', [] ),
-				[
-					'minify_css'  => false,
-					'exclude_css' => [],
-					'cdn'         => false,
-					'cdn_cnames'  => [],
-				]
-			)
-		);
+	public static function tearDownAfterClass() {
+		parent::tearDownAfterClass();
+		update_option( 'wp_rocket_settings', self::$original_settings );
 	}
 
 	public function setUp() {
@@ -38,43 +34,35 @@ class Test_RegenerateMinifyCssKey extends TestCase {
 			$this->loadConfig();
 		}
 
-		$this->original_settings = get_option( 'wp_rocket_settings', [] );
+		$this->old_settings = array_merge( self::$original_settings, $this->config['settings'] );
+		update_option( 'wp_rocket_settings', $this->old_settings );
 	}
 
 	public function tearDown() {
 		parent::tearDown();
 
-		if ( empty( $this->original_settings ) ) {
-			delete_option( 'wp_rocket_settings' );
-		} else {
-			update_option( 'wp_rocket_settings', $this->original_settings );
-		}
+		delete_option( 'wp_rocket_settings' );
 	}
 
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testRegenerateMinifyCssKey( $new_value, $should_run, $expected ) {
-		if ( $should_run ) {
-			Functions\expect( 'create_rocket_uniqid' )
-				->once()
-				->andReturn( 'minify_css_key' );
-		} else {
-			Functions\expect( 'create_rocket_uniqid' )->never();
-		}
-
+	public function testRegenerateMinifyCssKey( $settings, $expected, $should_run ) {
 		update_option(
 			'wp_rocket_settings',
-			array_merge( $this->original_settings, $new_value )
+			array_merge( $this->old_settings, $settings )
 		);
 
 		$options = get_option( 'wp_rocket_settings', [] );
 
-		foreach ( $expected as $expected_key => $expected_value ) {
-			$this->assertSame(
-				$expected_value,
-				$options[ $expected_key ]
-			);
+		if ( $should_run ) {
+			$this->assertArrayHasKey( 'minify_css_key', $options );
+			$this->assertEquals( strlen( '5ea8b0bf1b875099188739' ), strlen( $options['minify_css_key'] ) );
+			unset( $expected['minify_css_key'] );
+		}
+
+		foreach ( $expected as $key => $value ) {
+			$this->assertSame( $value, $options[ $key ] );
 		}
 	}
 
