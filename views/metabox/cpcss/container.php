@@ -32,8 +32,8 @@ defined( 'ABSPATH' ) || exit;
 </div>
 <?php endif; ?>
 <script>
-	let cpcss_rest_url       = '<?php echo esc_url( $data['cpcss_rest_url'] ); ?>';
-	let cpcss_rest_nonce     = '<?php echo esc_html( $data['cpcss_rest_nonce'] ); ?>';
-	let cpcss_generate_btn   = '<?php esc_html_e( 'Generate Specific CPCSS', 'rocket' ); ?>';
-	let cpcss_regenerate_btn = '<?php esc_html_e( 'Regenerate specific CPCSS', 'rocket' ); ?>';
+	var cpcss_rest_url       = '<?php echo esc_url( $data['cpcss_rest_url'] ); ?>';
+	var cpcss_rest_nonce     = '<?php echo esc_html( $data['cpcss_rest_nonce'] ); ?>';
+	var cpcss_generate_btn   = '<?php esc_html_e( 'Generate Specific CPCSS', 'rocket' ); ?>';
+	var cpcss_regenerate_btn = '<?php esc_html_e( 'Regenerate specific CPCSS', 'rocket' ); ?>';
 </script>
