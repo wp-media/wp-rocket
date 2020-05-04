@@ -15,12 +15,6 @@ class Test_MaybePurgeCacheOnTermChange extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/Cache/PurgeActionsSubscriber/maybePurgeCacheOnTermChange.php';
 	protected static $not_public_term;
 	protected static $public_term;
-	protected $deleted_files = [
-		'wp-content/cache/wp-rocket/example.org/index.html',
-		'wp-content/cache/wp-rocket/example.org/index.html_gzip',
-		'wp-content/cache/wp-rocket/example.org-wpmedia-594d03f6ae698691165999/index.html',
-		'wp-content/cache/wp-rocket/example.org-wpmedia-594d03f6ae698691165999/index.html_gzip',
-	];
 
 	public static function wpSetUpBeforeClass( $factory ) {
 		register_taxonomy(
@@ -58,45 +52,15 @@ class Test_MaybePurgeCacheOnTermChange extends FilesystemTestCase {
 		}
 	}
 
-	public function testShouldPurgeCacheWhenTaxonomyPublicWhenEditing() {
-		do_action( 'edit_term', self::$public_term->term_id, self::$public_term->term_taxonomy_id, self::$public_term->taxonomy );
+	/**
+	 * @dataProvider providerTestData
+	 */
+	public function testShouldPurgeCacheWhenTaxonomyPublicWhenEditing( $action ) {
+		$this->generateEntriesShouldExistAfter( $this->config['cleaned'] );
 
-		// Check no files were deleted.
-		foreach( $this->deleted_files as $file ) {
-			$this->assertFalse( $this->filesystem->exists( $file ) );
-		}
+		do_action( $action, self::$public_term->term_id, self::$public_term->term_taxonomy_id, self::$public_term->taxonomy );
 
-		// Check no files were deleted.
-		foreach( array_diff( $this->deleted_files, $this->original_files ) as $file ) {
-			$this->assertTrue( $this->filesystem->exists( $file ) );
-		}
-	}
-
-	public function testShouldPurgeCacheWhenTaxonomyPublicWhenCreating() {
-		do_action( 'create_term', self::$public_term->term_id, self::$public_term->term_taxonomy_id, self::$public_term->taxonomy );
-
-		// Check no files were deleted.
-		foreach( $this->deleted_files as $file ) {
-			$this->assertFalse( $this->filesystem->exists( $file ) );
-		}
-
-		// Check no files were deleted.
-		foreach( array_diff( $this->deleted_files, $this->original_files ) as $file ) {
-			$this->assertTrue( $this->filesystem->exists( $file ) );
-		}
-	}
-
-	public function testShouldPurgeCacheWhenTaxonomyPublicWhenDeleting() {
-		do_action( 'pre_delete_term', self::$public_term->term_id, self::$public_term->term_taxonomy_id, self::$public_term->taxonomy );
-
-		// Check no files were deleted.
-		foreach( $this->deleted_files as $file ) {
-			$this->assertFalse( $this->filesystem->exists( $file ) );
-		}
-
-		// Check no files were deleted.
-		foreach( array_diff( $this->deleted_files, $this->original_files ) as $file ) {
-			$this->assertTrue( $this->filesystem->exists( $file ) );
-		}
+		$this->checkEntriesDeleted( $this->config['cleaned'] );
+		$this->checkShouldNotDeleteEntries();
 	}
 }

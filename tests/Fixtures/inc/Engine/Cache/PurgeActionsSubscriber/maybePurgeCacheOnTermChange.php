@@ -2,25 +2,23 @@
 
 return [
 	'vfs_dir'   => 'wp-content/cache/wp-rocket/',
-
-	// Virtual filesystem structure.
-	'structure' => [
-		'wp-content' => [
-			'cache' => [
-				'wp-rocket' => [
-					'example.org'                                => [
-						'index.html'      => '',
-						'index.html_gzip' => '',
-					],
-					'example.org-wpmedia-594d03f6ae698691165999' => [
-						'index.html'      => '',
-						'index.html_gzip' => '',
-					],
-				],
-			],
-		],
+	'cleaned'   => [
+		'vfs://public/wp-content/cache/wp-rocket/example.org' => null,
+		'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456' => null,
+		'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654' => null,
 	],
 	'test_data' => [
+		'testCreateTerm' => [
+			'action' => 'create_term',
+		],
+		'testUpdateTerm' => [
+			'action' => 'edit_term',
+		],
+		'testDeleteTerm' => [
+			'action' => 'pre_delete_term',
+		],
+	],
+	'unit_test_data' => [
 		'testTaxonomyReturnFalse' => [
 			'name'     => 'foo',
 			'taxonomy' => false,

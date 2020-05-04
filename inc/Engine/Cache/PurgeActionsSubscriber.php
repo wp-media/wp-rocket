@@ -82,11 +82,11 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 	private function is_taxonomy_public( $name ) {
 		$taxonomy = get_taxonomy( $name );
 
-		if ( ! $taxonomy ) {
+		if ( false === $taxonomy ) {
 			return false;
 		}
 
-		return (bool) ( $taxonomy->public && $taxonomy->publicly_queryable );
+		return ( $taxonomy->public && $taxonomy->publicly_queryable );
 	}
 
 	/**
