@@ -58,7 +58,7 @@ class Common_Subscribers extends AbstractServiceProvider {
 			->withArgument( $this->getContainer()->get( 'critical_css' ) )
 			->withArgument( $options );
 		$this->getContainer()->add( 'expired_cache_purge', 'WP_Rocket\Cache\Expired_Cache_Purge' )
-			->withArgument( WP_ROCKET_CACHE_PATH );
+			->withArgument( rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) );
 		$this->getContainer()->share( 'cache_dir_size_check_subscriber', 'WP_Rocket\Subscriber\Tools\Cache_Dir_Size_Check_Subscriber' );
 		$this->getContainer()->share( 'expired_cache_purge_subscriber', 'WP_Rocket\Subscriber\Cache\Expired_Cache_Purge_Subscriber' )
 			->withArgument( $options )
