@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\classes\CDN\RocketCDN\APIClient;
+namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\RocketCDN\APIClient;
 
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Engine\CDN\RocketCDN\APIClient;

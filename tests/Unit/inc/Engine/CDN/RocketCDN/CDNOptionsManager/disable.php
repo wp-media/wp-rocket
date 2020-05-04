@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\classes\CDN\RocketCDN\CDNOptionsManager;
+namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\RocketCDN\CDNOptionsManager;
 
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
