@@ -6,6 +6,7 @@ use WP_Rocket\Tests\Integration\RESTVfsTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\RESTGenerate::register_generate_route
+ *
  * @group  CriticalPath
  */
 class Test_RegisterGenerateRoute extends RESTVfsTestCase {

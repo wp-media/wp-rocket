@@ -3,11 +3,10 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\RESTGenerate;
 
 use Brain\Monkey\Functions;
-use WP_Site;
 use WP_Rocket\Tests\Integration\RESTVfsTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\RESTGenerate::delete
+ * @covers \WP_Rocket\Engine\CriticalPath\RESTGenerate::generate
  * @group  CriticalPath
  * @group  vfs
  */
@@ -17,6 +16,13 @@ class Test_Generate extends RESTVfsTestCase {
 
 	public static function wpSetUpBeforeClass( $factory ) {
 		self::$post_id = $factory->post->create();
+	}
+
+	public function setUp() {
+		parent::setUp();
+
+		// Mocks the various filesystem constants.
+		$this->whenRocketGetConstant();
 	}
 
 	protected function doTest( $site_id, $config, $expected ) {

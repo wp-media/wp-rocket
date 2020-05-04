@@ -9,11 +9,12 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\RESTGenerate::generate
+ *
  * @group  CriticalPath
  * @group  vfs
  */
 class Test_Generate extends FilesystemTestCase {
-	protected $path_to_test_data                   = '/inc/Engine/CriticalPath/RESTGenerate/generate.php';
+	protected $path_to_test_data = '/inc/Engine/CriticalPath/RESTGenerate/generate.php';
 	protected static $mockCommonWpFunctionsInSetUp = true;
 
 	public static function setUpBeforeClass() {
@@ -25,10 +26,8 @@ class Test_Generate extends FilesystemTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->filesystem->chmod( 'wp-content/cache/critical-css/index.php', 0644 );
-		$this->filesystem->chmod( 'wp-content/cache/critical-css/', 0755 );
-
-		Functions\expect( 'rocket_get_constant' )->with( 'FS_CHMOD_FILE' )->andReturn( 0644 );
+		// Mocks the various filesystem constants.
+		$this->whenRocketGetConstant();
 	}
 
 	/**
@@ -74,7 +73,7 @@ class Test_Generate extends FilesystemTestCase {
 		$request_timeout              = isset( $config['request_timeout'] )
 			? $config['request_timeout']
 			: false;
-		$file = $this->config['vfs_dir'] . "1/posts/{$post_type}-{$post_id}.css";
+		$file                         = $this->config['vfs_dir'] . "1/posts/{$post_type}-{$post_id}.css";
 
 		Functions\expect( 'get_post_status' )
 			->once()
@@ -94,8 +93,8 @@ class Test_Generate extends FilesystemTestCase {
 		}
 
 		if ( in_array( (int) $get_request_response_code, [ 400, 404 ], true )
-			|| ( 200 === $get_request_response_code && 'complete' === $get_request_response_state )
-			|| $request_timeout ) {
+		     || ( 200 === $get_request_response_code && 'complete' === $get_request_response_state )
+		     || $request_timeout ) {
 			Functions\expect( 'delete_transient' )
 				->once()
 				->with( 'rocket_specific_cpcss_job_' . $post_id );
@@ -113,12 +112,12 @@ class Test_Generate extends FilesystemTestCase {
 			->times( 1 )
 			->with( $post_id )
 			->andReturnUsing(
-					function ( $post_id ) use ( $expected ) {
-						return 'post_not_exists' === $expected['code']
+				function( $post_id ) use ( $expected ) {
+					return 'post_not_exists' === $expected['code']
 						? false
 						: "http://example.org/?p={$post_id}";
-					}
-				);
+				}
+			);
 
 		Functions\expect( 'wp_remote_post' )
 			->atMost()

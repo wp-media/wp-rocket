@@ -19,14 +19,14 @@ class Test_RocketRrmdir extends FilesystemTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldRecursivelyRemoveFilesAndDirectories( $to_delete, $to_preserve, $expected ) {
-		$to_delete = $this->filesystem->getUrl( $to_delete );
+		$to_delete         = $this->filesystem->getUrl( $to_delete );
+		$this->dumpResults = isset( $expected['dump_results'] ) ? $expected['dump_results'] : false;
 		$this->generateEntriesShouldExistAfter( $expected['removed'] );
 
 		// Run it.
 		rocket_rrmdir( $to_delete, $to_preserve );
 
-		$dump_results = isset( $expected['dump_ results'] );
-		$this->checkEntriesDeleted( $expected['removed'], $dump_results );
-		$this->checkShouldNotDeleteEntries( $dump_results );
+		$this->checkEntriesDeleted( $expected['removed'] );
+		$this->checkShouldNotDeleteEntries();
 	}
 }

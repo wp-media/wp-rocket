@@ -12,9 +12,31 @@ return [
 			],
 			// CPCSS cache.
 			'critical-css' => [
-				'1' => [
-					'front-page.php' => '',
-					'blog.php'       => '',
+				'index.php' => '<?php',
+				'1'         => [
+					'.'              => '',
+					'..'             => '',
+					'posts'          => [
+						'.'  => '',
+						'..' => '',
+					],
+					'home.css'       => '.p { color: red; }',
+					'front_page.css' => '.p { color: red; }',
+					'category.css'   => '.p { color: red; }',
+					'post_tag.css'   => '.p { color: red; }',
+					'page.css'       => '.p { color: red; }',
+				],
+				'2'         => [
+					'posts'          => [
+						'.'           => '',
+						'..'          => '',
+						'page-20.css' => '.p { color: red; }',
+					],
+					'home.css'       => '.p { color: red; }',
+					'front_page.css' => '.p { color: red; }',
+					'category.css'   => '.p { color: red; }',
+					'post_tag.css'   => '.p { color: red; }',
+					'page.css'       => '.p { color: red; }',
 				],
 			],
 			// Minify cache.
@@ -36,7 +58,7 @@ return [
 										'admin-bar-171a2ef75c22c390780fe898f9d40c8d.js' => '',
 										'admin-bar-e4aa3c9df56ff024286f4df600f4c643.js' => '',
 									],
-								]
+								],
 							],
 						],
 					],
