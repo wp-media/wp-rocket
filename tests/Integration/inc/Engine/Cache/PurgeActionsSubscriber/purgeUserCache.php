@@ -1,12 +1,12 @@
 <?php
-namespace WP_Rocket\Tests\Integration\inc\classes\subscriber\Cache\PurgeActionsSubscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Cache\PurgeActionsSubscriber;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\GlobTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Subscriber\Cache\PurgeActionsSubscriber:purge_user_cache
+ * @covers \WP_Rocket\Engine\Cache\PurgeActionsSubscriber:purge_user_cache
  * @uses ::rocket_clean_user
  * @uses ::get_rocket_parse_url
  * @uses ::get_rocket_i18n_uri
@@ -18,7 +18,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 class Test_PurgeUserCache extends FilesystemTestCase {
 	use GlobTrait;
 
-	protected $path_to_test_data = '/inc/classes/subscriber/Cache/PurgeActionsSubscriber/purgeUserCache.php';
+	protected $path_to_test_data = '/inc/Engine/Cache/PurgeActionsSubscriber/purgeUserCache.php';
 	private $settings;
 
 	public function setUp() {
