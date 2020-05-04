@@ -15,7 +15,7 @@ class TestRewriteCSSProperties extends TestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldRewriteCSSProperties( $original, $expected ) {
-		Functions\when( 'site_url' )->justReturn( 'http://example.org' );
+		Functions\when( 'home_url' )->justReturn( 'http://example.org' );
 		Functions\when( 'rocket_add_url_protocol' )->alias( function( $url ) {
 			return 'http://' . $url;
 		} );

@@ -18,7 +18,7 @@ class Test_RewriteURL extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		Functions\when( 'site_url' )->justReturn( 'http://example.org' );
+		Functions\when( 'home_url' )->justReturn( 'http://example.org' );
 
 		$this->options = Mockery::mock( Options_Data::class );
 		$this->cdn     = new CDN( $this->options );

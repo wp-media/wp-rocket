@@ -104,7 +104,7 @@ class CDN {
 			return rocket_add_url_protocol( $cdn_url . '/' . ltrim( $url, '/' ) );
 		}
 
-		$home       = site_url();
+		$home       = home_url();
 		$home_parts = wp_parse_url( $home );
 
 		if ( ! isset( $parsed_url['scheme'] ) ) {
@@ -205,7 +205,7 @@ class CDN {
 	 * @return string
 	 */
 	private function get_base_url() {
-		return '//' . wp_parse_url( site_url(), PHP_URL_HOST );
+		return '//' . wp_parse_url( home_url(), PHP_URL_HOST );
 	}
 
 	/**

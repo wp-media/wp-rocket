@@ -22,21 +22,21 @@ class Test_Rewrite extends TestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldRewriteURL( $site_url, $original, $expected ) {
+	public function testShouldRewriteURL( $home_url, $original, $expected ) {
 		$this->cnames = [
 			'cdn.example.org',
 		];
 		$this->cdn_zone = [
 			'all'
 		];
-		$this->site_url = $site_url;
-		$this->content_url = "{$site_url}/wp-content/";
-		$this->includes_url = "{$site_url}/wp-includes/";
+		$this->home_url = $home_url;
+		$this->content_url = "{$home_url}/wp-content/";
+		$this->includes_url = "{$home_url}/wp-includes/";
 
 		add_filter( 'pre_get_rocket_option_cdn', [ $this, 'return_true' ] );
 		add_filter( 'pre_get_rocket_option_cdn_cnames', [ $this, 'setCnames' ] );
 		add_filter( 'pre_get_rocket_option_cdn_zone', [ $this, 'setCDNZone' ] );
-		add_filter( 'site_url', [ $this, 'setSiteURL' ] );
+		add_filter( 'home_url', [ $this, 'setHomeURL' ] );
 		add_filter( 'content_url', [ $this, 'setContentURL' ] );
 		add_filter( 'includes_url', [ $this, 'setIncludesURL' ] );
 
