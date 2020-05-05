@@ -34,6 +34,7 @@ return [
 				],
 				'post'               => [
 					'post_status' => 'draft',
+					'post_type'   => 'post',
 					'ID'          => 1,
 				],
 				'is_option_excluded' => true,
@@ -48,6 +49,7 @@ return [
 				],
 				'post'               => [
 					'post_status' => 'draft',
+					'post_type'   => 'post',
 					'ID'          => 1,
 				],
 				'is_option_excluded' => true,
@@ -62,6 +64,7 @@ return [
 				],
 				'post'               => [
 					'post_status' => 'draft',
+					'post_type'   => 'post',
 					'ID'          => 1,
 				],
 				'is_option_excluded' => false,
@@ -76,6 +79,7 @@ return [
 				],
 				'post'               => [
 					'post_status' => 'publish',
+					'post_type'   => 'post',
 					'ID'          => 1,
 				],
 				'is_option_excluded' => true,
@@ -90,6 +94,7 @@ return [
 				],
 				'post'               => [
 					'post_status' => 'publish',
+					'post_type'   => 'post',
 					'ID'          => 1,
 				],
 				'is_option_excluded' => false,
