@@ -53,14 +53,14 @@ class Test_InsertLazyloadScript extends TestCase {
 			add_filter( 'rocket_use_native_lazyload', [ $this, 'return_true' ] );
 		}
 
-		if ( empty( $expected ) ) {
+		if ( empty( $expected['integration'] ) ) {
 			$this->assertNotContains(
 				'http://example.org/wp-content/plugins/wp-rocket/assets/js/lazyload',
 				$this->getActualHtml()
 			);
 		} else {
 			$this->assertContains(
-				$this->format_the_html( $expected ),
+				$this->format_the_html( $expected['integration'] ),
 				$this->getActualHtml()
 			);
 		}

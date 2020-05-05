@@ -4,6 +4,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Media\LazyloadSubscriber;
 
 use Mockery;
 use Brain\Monkey\Functions;
+use Brain\Monkey\Filters;
 use RocketLazyload\Assets;
 use RocketLazyload\Image;
 use RocketLazyload\Iframe;
@@ -57,31 +58,41 @@ class Test_InsertLazyloadScript extends TestCase {
 				->andReturn( $value );
 		}
 
-		/**
 		$this->assets->shouldReceive( 'getInlineLazyloadScript' )
 			->zeroOrMoreTimes()
-			->andReturn( $inline_script );
+			->andReturn( $expected['unit']['inline_script'] );
 
 		$this->assets->shouldReceive( 'insertLazyloadScript' )
 			->zeroOrMoreTimes()
-			->andReturn( $script );
+			->andReturnUsing( function() use ( $expected ) {
+				echo $expected['unit']['script'];
+			} );
+
+		if ( isset( $options['threshold'] ) ) {
+			Filters\expectApplied( 'rocket_lazyload_threshold' )
+				->once()
+				->andReturn( $options['threshold'] );
+		}
+
+		if ( isset( $options['use_native'] ) ) {
+			Filters\expectApplied( 'rocket_use_native_lazyload' )
+				->once()
+				->andReturn( $options['use_native'] );
+		}
+
+		if ( isset( $options['polyfill'] ) ) {
+			Filters\expectApplied( 'rocket_lazyload_polyfill' )
+				->once()
+				->andReturn( $options['polyfill'] );
+		}
 
 		$this->assertSame(
-			$this->format_the_html( $expected ),
+			$this->format_the_html( $expected['unit']['result'] ),
 			$this->getActualHtml()
 		);
-		*/
 	}
 
 	public function providerTestData() {
 		return $this->getTestData( __DIR__, 'insertLazyloadScript' );
-	}
-
-	private function getInlineLazyloadScript( $args ) {
-
-	}
-
-	private function insertLazyloadScript( $args ) {
-		
 	}
 }
