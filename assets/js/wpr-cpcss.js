@@ -1,104 +1,116 @@
-var $ = jQuery;
 var checkCPCSSGenerationCall;
 var cpcsssGenerationPending = 0;
+var rocketDeleteCPCSSbtn    = document.getElementById( 'rocket-delete-post-cpss' );
+var rocketGenerateCPCSSbtn  = document.getElementById( 'rocket-generate-post-cpss' );
+var rocketCPCSSGenerate     = document.querySelectorAll( '.cpcss_generate' );
+var rocketCPCSSReGenerate   = document.querySelectorAll( '.cpcss_regenerate' );
 
-$( document ).ready( function() {
-	$( '#rocket-delete-post-cpss' ).on( 'click', function( e ) {
-		e.preventDefault();
-		deleteCPCSS();
-	});
+rocketDeleteCPCSSbtn.addEventListener( 'click', function( e ) {
+	e.preventDefault();
+	deleteCPCSS();
+});
 
-	$( '#rocket-generate-post-cpss' ).on( 'click', function( e ) {
-		e.preventDefault();
-		checkCPCSSGeneration();
-	});
+rocketGenerateCPCSSbtn.addEventListener( 'click', function( e ) {
+	e.preventDefault();
+	checkCPCSSGeneration();
 });
 
 function checkCPCSSGeneration( timeout = null ) {
-	var spinner = $( '#rocket-generate-post-cpss' ).find( '.spinner' );
-	spinner.show();
-	spinner.css( 'visibility', 'visible' );
+	var spinner              = rocketGenerateCPCSSbtn.querySelector( '.spinner' );
+	spinner.style.display    = 'block';
+	spinner.style.visibility = 'visible';
 
-	$.ajax( {
-		url: cpcss_rest_url,
-		method: 'POST',
-		data: { 'timeout': timeout },
-		dataType: 'JSON',
-		beforeSend: function ( xhr ) {
-			xhr.setRequestHeader( 'X-WP-Nonce', cpcss_rest_nonce );
-		},
-	} ).done( function ( cpcss_response ) {
-		if ( cpcss_response.data.status !== 200 ) {
-			stopCPCSSGeneration( spinner );
-			cpcssNotice( cpcss_response.message, 'error' );
-			return;
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if ( this.readyState == 4 && this.status == 200 ) {
+			var cpcss_response = JSON.parse( this.responseText );
+			if ( cpcss_response.data.status !== 200 ) {
+				stopCPCSSGeneration( spinner );
+				cpcssNotice( cpcss_response.message, 'error' );
+				return;
+			}
+
+			if ( cpcss_response.data.status === 200 && cpcss_response.code !== 'cpcss_generation_pending') {
+				stopCPCSSGeneration( spinner );
+				cpcssNotice( cpcss_response.message, 'success' );
+				// Revert view to Regenerate.
+				rocketGenerateCPCSSbtn.querySelector( '.rocket-generate-post-cpss-btn-txt' ).innerHTML = cpcss_regenerate_btn;
+				rocketDeleteCPCSSbtn.style.display                                                     = 'block';
+				rocketCPCSSGenerate.forEach( function( item ) {
+					item.style.display = 'none';
+				});
+				rocketCPCSSReGenerate.forEach( function( item ) {
+					item.style.display = 'block';
+				});
+				return;
+			}
+
+			cpcsssGenerationPending++;
+
+			if ( cpcsssGenerationPending > 10 ) {
+				stopCPCSSGeneration( spinner );
+				cpcsssGenerationPending = 0;
+				checkCPCSSGeneration( true );
+				return;
+			}
+
+			checkCPCSSGenerationCall = setTimeout(function () {
+				checkCPCSSGeneration();
+			}, 3000);
 		}
+	};
 
-		if ( cpcss_response.data.status === 200 && cpcss_response.code !== 'cpcss_generation_pending') {
-			stopCPCSSGeneration( spinner );
-			cpcssNotice( cpcss_response.message, 'success' );
-			// Revert view to Regenerate.
-			$( '.rocket-generate-post-cpss-btn-txt' ).html( cpcss_regenerate_btn );
-			$( '.cpcss_generate' ).hide();
-			$( '.cpcss_regenerate' ).show();
-			$( '#rocket-delete-post-cpss' ).show();
-			return;
-		}
-
-		cpcsssGenerationPending++;
-
-		if ( cpcsssGenerationPending > 10 ) {
-			stopCPCSSGeneration( spinner );
-			cpcsssGenerationPending = 0;
-			checkCPCSSGeneration( true );
-			return;
-		}
-
-		checkCPCSSGenerationCall = setTimeout(function () {
-			checkCPCSSGeneration();
-		}, 3000);
-	} );
+	xhttp.open( 'POST', cpcss_rest_url, true );
+	xhttp.setRequestHeader( 'Content-Type', 'application/json;charset=UTF-8' );
+	xhttp.setRequestHeader( 'X-WP-Nonce', cpcss_rest_nonce );
+	xhttp.send( JSON.stringify( { timeout: timeout } ) );
 }
 
 function stopCPCSSGeneration( spinner ) {
-	spinner.hide();
+	spinner.style.display = 'none';
 	clearTimeout( checkCPCSSGenerationCall );
 }
 
 function deleteCPCSS() {
-	$.ajax( {
-		url: cpcss_rest_url,
-		method: 'DELETE',
-		dataType: 'JSON',
-		beforeSend: function ( xhr ) {
-			xhr.setRequestHeader( 'X-WP-Nonce', cpcss_rest_nonce );
-		},
-	} ).done( function ( cpcss_response ) {
-		if ( cpcss_response.data.status !== 200 ) {
-			cpcssNotice( cpcss_response.message, 'error' );
-			return;
-		}
-		cpcssNotice( cpcss_response.message, 'success' );
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if ( this.readyState == 4 && this.status == 200 ) {
+			var cpcss_response = JSON.parse( this.responseText );
+			if ( cpcss_response.data.status !== 200 ) {
+				cpcssNotice( cpcss_response.message, 'error' );
+				return;
+			}
+			cpcssNotice( cpcss_response.message, 'success' );
 
-		// Revert view to Generate.
-		$( '.rocket-generate-post-cpss-btn-txt' ).html( cpcss_generate_btn );
-		$( '.cpcss_regenerate' ).hide();
-		$( '.cpcss_generate' ).show();
-		$( '#rocket-delete-post-cpss' ).hide();
-	} );
+			// Revert view to Generate.
+			rocketGenerateCPCSSbtn.querySelector( '.rocket-generate-post-cpss-btn-txt' ).innerHTML = cpcss_generate_btn;
+			rocketDeleteCPCSSbtn.style.display                                                     = 'none';
+			rocketCPCSSReGenerate.forEach( function( item ) {
+				item.style.display = 'none';
+			});
+			rocketCPCSSGenerate.forEach( function( item ) {
+				item.style.display = 'block';
+			});
+		}
+	};
+
+	xhttp.open( 'DELETE', cpcss_rest_url, true );
+	xhttp.setRequestHeader( 'Content-Type', 'application/json;charset=UTF-8' );
+	xhttp.setRequestHeader( 'X-WP-Nonce', cpcss_rest_nonce );
+	xhttp.send();
 }
 
 function cpcssNotice( msg, type ) {
-    /* Add notice class */
+	/* Add notice class */
 	var cpcssNotice = document.getElementById( 'cpcss_response_notice' );
 	cpcssNotice.innerHTML = '';
 	cpcssNotice.classList.remove( 'notice', 'notice-error', 'notice-success');
-    cpcssNotice.classList.add( 'notice', 'notice-' + type );
+	cpcssNotice.classList.add( 'notice', 'notice-' + type );
 
-    /* create paragraph element to hold message */
-    var p = document.createElement( 'p' );
-    p.appendChild( document.createTextNode( msg ) );
+	/* create paragraph element to hold message */
+	var p = document.createElement( 'p' );
+	p.appendChild( document.createTextNode( msg ) );
 
-    /* Add the whole message to notice div */
-    cpcssNotice.appendChild( p );
+	/* Add the whole message to notice div */
+	cpcssNotice.appendChild( p );
 }
