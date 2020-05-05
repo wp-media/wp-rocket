@@ -38,7 +38,11 @@ class Test_GetRocketPostTermsUrls extends TestCase {
 		$this->setCategories( $post_id, $terms['category'], $expected );
 		$this->setCustomTerms( $post_id, $terms['custom'] );
 
-		$this->assertSame( $expected, get_rocket_post_terms_urls( $post_id ) );
+		$expected = sort( $expected );
+		$urls     = get_rocket_post_terms_urls( $post_id );
+		$urls     = sort( $urls );
+
+		$this->assertSame( $expected, $urls );
 	}
 
 	public function providerTestData() {

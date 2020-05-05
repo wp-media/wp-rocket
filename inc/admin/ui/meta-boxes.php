@@ -54,7 +54,7 @@ function rocket_display_cache_options_meta_boxes() {
 			<?php
 				$reject_current_uri = false;
 			if ( 'post-new.php' !== $pagenow ) {
-				$rejected_uris = array_flip( get_rocket_option( 'cache_reject_uri' ) );
+				$rejected_uris = array_flip( get_rocket_option( 'cache_reject_uri', [] ) );
 				$path          = rocket_clean_exclude_file( get_permalink( $post->ID ) );
 
 				if ( isset( $rejected_uris[ $path ] ) ) {
@@ -104,6 +104,12 @@ function rocket_display_cache_options_meta_boxes() {
 		</div>
 
 		<?php
+		/**
+		 * Fires after WP Rocket’s metabox.
+		 *
+		 * @since 3.6
+		 */
+		do_action( 'rocket_after_options_metabox' );
 	}
 }
 
