@@ -63,12 +63,8 @@ return [
 						<button id="rocket-delete-post-cpss" class="components-button is-link is-destructive"  disabled=\'disabled\'>Revert back to the default CPCSS</button>
 					</div>
 				</div>
-				<div id="cpcss_response_notice" class="components-notice is-notice">
-					<div class="components-notice__content">
-					</div>
-				</div>
 			</div>
-			<div class="components-notice is-notice is-warning">
+			<div id="cpcss_response_notice" class="components-notice is-notice is-warning">
 				<div class="components-notice__content">
 					<p>Enable Optimize CSS delivery in WP Rocket settings to use this feature</p>
 				</div>
@@ -111,11 +107,8 @@ return [
 						<button id="rocket-delete-post-cpss" class="components-button is-link is-destructive"  disabled=\'disabled\'>Revert back to the default CPCSS</button>
 					</div>
 				</div>
-				<div id="cpcss_response_notice" class="components-notice is-notice">
-					<div class="components-notice__content"></div>
-				</div>
 			</div>
-			<div class="components-notice is-notice is-warning">
+			<div id="cpcss_response_notice" class="components-notice is-notice is-warning">
 				<div class="components-notice__content">
 					<p>Enable Optimize CSS delivery in WP Rocket settings to use this feature</p>
 				</div>
@@ -158,11 +151,8 @@ return [
 						<button id="rocket-delete-post-cpss" class="components-button is-link is-destructive"  disabled=\'disabled\'>Revert back to the default CPCSS</button>
 					</div>
 				</div>
-				<div id="cpcss_response_notice" class="components-notice is-notice">
-					<div class="components-notice__content"></div>
-				</div>
 			</div>
-			<div class="components-notice is-notice is-warning">
+			<div id="cpcss_response_notice" class="components-notice is-notice is-warning">
 				<div class="components-notice__content">
 					<p>Publish the post to use this feature</p>
 				</div>
@@ -205,11 +195,8 @@ return [
 						<button id="rocket-delete-post-cpss" class="components-button is-link is-destructive"  disabled=\'disabled\'>Revert back to the default CPCSS</button>
 					</div>
 				</div>
-				<div id="cpcss_response_notice" class="components-notice is-notice">
-					<div class="components-notice__content"></div>
-				</div>
 			</div>
-			<div class="components-notice is-notice is-warning">
+			<div id="cpcss_response_notice" class="components-notice is-notice is-warning">
 				<div class="components-notice__content">
 					<p>Publish the post to use this feature</p>
 				</div>
@@ -252,11 +239,8 @@ return [
 						<button id="rocket-delete-post-cpss" class="components-button is-link is-destructive"  disabled=\'disabled\'>Revert back to the default CPCSS</button>
 					</div>
 				</div>
-				<div id="cpcss_response_notice" class="components-notice is-notice">
-					<div class="components-notice__content"></div>
-				</div>
 			</div>
-			<div class="components-notice is-notice is-warning">
+			<div id="cpcss_response_notice" class="components-notice is-notice is-warning">
 				<div class="components-notice__content">
 					<p>Publish the post and enable Optimize CSS delivery in the options above to use this feature</p>
 				</div>
@@ -299,11 +283,8 @@ return [
 						<button id="rocket-delete-post-cpss" class="components-button is-link is-destructive"  disabled=\'disabled\'>Revert back to the default CPCSS</button>
 					</div>
 				</div>
-				<div id="cpcss_response_notice" class="components-notice is-notice">
-					<div class="components-notice__content"></div>
-				</div>
 			</div>
-			<div class="components-notice is-notice is-warning">
+			<div id="cpcss_response_notice" class="components-notice is-notice is-warning">
 				<div class="components-notice__content">
 					<p>Publish the post and enable Optimize CSS delivery in the options above to use this feature</p>
 				</div>
@@ -346,11 +327,8 @@ return [
 						<button id="rocket-delete-post-cpss" class="components-button is-link is-destructive"  disabled=\'disabled\'>Revert back to the default CPCSS</button>
 					</div>
 				</div>
-				<div id="cpcss_response_notice" class="components-notice is-notice">
-					<div class="components-notice__content"></div>
-				</div>
 			</div>
-			<div class="components-notice is-notice is-warning">
+			<div id="cpcss_response_notice" class="components-notice is-notice is-warning">
 				<div class="components-notice__content">
 					<p>Enable Optimize CSS delivery in the options above to use this feature</p>
 				</div>
@@ -394,11 +372,8 @@ return [
 						<button id="rocket-delete-post-cpss" class="components-button is-link is-destructive"  disabled=\'disabled\'>Revert back to the default CPCSS</button>
 					</div>
 				</div>
-				<div id="cpcss_response_notice" class="components-notice is-notice">
-					<div class="components-notice__content"></div>
-				</div>
 			</div>
-			<div class="components-notice is-notice is-warning">
+			<div id="cpcss_response_notice" class="components-notice is-notice is-warning">
 				<div class="components-notice__content">
 					<p>Enable Optimize CSS delivery in the options above to use this feature</p>
 				</div>
@@ -441,9 +416,9 @@ return [
 						<button id="rocket-delete-post-cpss" class="components-button is-link is-destructive" >Revert back to the default CPCSS</button>
 					</div>
 				</div>
-				<div id="cpcss_response_notice" class="components-notice is-notice">
-					<div class="components-notice__content"></div>
-				</div>
+			</div>
+			<div id="cpcss_response_notice" class="components-notice is-notice is-warning">
+				<div class="components-notice__content"></div>
 			</div>
 			<script>
 	var cpcss_rest_url       = \'http://example.org/index.php?rest_route=/wp-rocket/v1/cpcss/post/1\';
@@ -483,9 +458,9 @@ return [
 						<button id="rocket-delete-post-cpss" class="components-button is-link is-destructive" >Revert back to the default CPCSS</button>
 					</div>
 				</div>
-				<div id="cpcss_response_notice" class="components-notice is-notice">
-					<div class="components-notice__content"></div>
-				</div>
+			</div>
+			<div id="cpcss_response_notice" class="components-notice is-notice is-warning">
+				<div class="components-notice__content"></div>
 			</div>
 			<script>
 	var cpcss_rest_url       = \'http://example.org/index.php?rest_route=/wp-rocket/v1/cpcss/post/2\';
