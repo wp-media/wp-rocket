@@ -22,6 +22,9 @@ class Test_GetRocketAdvancedCacheFile extends FilesystemTestCase {
 	public function setUp() {
 		parent::setUp();
 
+		// Mocks the various filesystem constants.
+		$this->whenRocketGetConstant();
+
 		$this->original_settings = get_option( 'wp_rocket_settings', [] );
 	}
 
@@ -38,27 +41,11 @@ class Test_GetRocketAdvancedCacheFile extends FilesystemTestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldReturnExpectedContent( $settings, $expected, $is_rocket_generate_caching_mobile_files ) {
+	public function testShouldReturnExpectedContent( $settings, $expected ) {
 		update_option(
 			'wp_rocket_settings',
 			array_merge( $this->original_settings, $this->config['settings'], $settings )
 		);
-
-		Functions\expect( 'rocket_get_constant' )
-			->once()->with( 'WP_ROCKET_PHP_VERSION' )->andReturn( '5.6' )
-			->andAlsoExpectIt()
-			->once()->with( 'WP_ROCKET_INC_PATH' )->andReturn( 'vfs://public/wp-content/plugins/wp-rocket/inc/' )
-			->andAlsoExpectIt()
-			->once()->with( 'WP_ROCKET_PATH' )->andReturn( 'vfs://public/wp-content/plugins/wp-rocket/' )
-			->andAlsoExpectIt()
-			->once()->with( 'WP_ROCKET_CONFIG_PATH' )->andReturn( 'vfs://public/wp-content/wp-rocket-config/' )
-			->andAlsoExpectIt()
-			->once()->with( 'WP_ROCKET_CACHE_PATH' )->andReturn( 'vfs://public/wp-content/cache/wp-rocket/' );
-
-		if ( $is_rocket_generate_caching_mobile_files ) {
-			Functions\expect( 'rocket_get_constant' )
-				->once()->with( 'WP_ROCKET_VENDORS_PATH' )->andReturn( 'vfs://public/wp-content/plugins/wp-rocket/inc/vendors/' );
-		}
 
 		$this->assertSame( $expected, get_rocket_advanced_cache_file() );
 	}

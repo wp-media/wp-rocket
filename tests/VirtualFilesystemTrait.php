@@ -6,10 +6,13 @@ use Brain\Monkey\Functions;
 use org\bovigo\vfs\vfsStream;
 
 trait VirtualFilesystemTrait {
-	protected $original_entries = [];
-	protected $shouldNotClean   = [];
-	protected $entriesBefore    = [];
-	protected $dumpResults      = false;
+	protected $original_entries  = [];
+	protected $shouldNotClean    = [];
+	protected $entriesBefore     = [];
+	protected $dumpResults       = false;
+	protected $abspath           = 'vfs://public/';
+	protected $wp_cache_constant = false;
+	protected $wp_content_dir    = 'vfs://public/wp-content';
 
 	protected function initDefaultStructure() {
 		if ( empty( $this->config ) ) {
@@ -41,9 +44,8 @@ trait VirtualFilesystemTrait {
 		return str_replace( $search, '', $path );
 	}
 
-	protected function getEntriesBefore() {
-		$dir                 = $this->filesystem->getUrl( $this->config['vfs_dir'] );
-		$this->entriesBefore = $this->filesystem->getListing( $dir );
+	protected function getEntriesBefore( $dir = '' ) {
+		$this->entriesBefore = $this->filesystem->getListing( $this->getDirUrl( $dir ) );
 	}
 
 	protected function getShouldNotCleanEntries( array $shouldNotClean ) {
@@ -56,8 +58,8 @@ trait VirtualFilesystemTrait {
 		}
 	}
 
-	protected function generateEntriesShouldExistAfter( array $shouldClean ) {
-		$this->getEntriesBefore();
+	protected function generateEntriesShouldExistAfter( array $shouldClean, $dir = '' ) {
+		$this->getEntriesBefore( $dir );
 
 		$cleaned = [];
 		foreach ( $shouldClean as $entry => $contents ) {
@@ -99,8 +101,8 @@ trait VirtualFilesystemTrait {
 		}
 	}
 
-	protected function checkShouldNotDeleteEntries() {
-		$entriesAfterCleaning = $this->filesystem->getListing( $this->filesystem->getUrl( $this->config['vfs_dir'] ) );
+	protected function checkShouldNotDeleteEntries( $dir = '' ) {
+		$entriesAfterCleaning = $this->filesystem->getListing( $this->getDirUrl( $dir ) );
 		$actual               = array_diff( $entriesAfterCleaning, $this->shouldNotClean );
 		if ( $this->dumpResults ) {
 			var_dump( $actual );
@@ -116,10 +118,18 @@ trait VirtualFilesystemTrait {
 		);
 	}
 
+	protected function getDirUrl( $dir ) {
+		if ( empty( $dir ) ) {
+			return $this->filesystem->getUrl( $this->config['vfs_dir'] );
+		}
+
+		return $dir;
+	}
+
 	protected function getConstant( $constant_name, $default = null ) {
 		switch ( $constant_name ) {
 			case 'ABSPATH':
-				return 'vfs://public/';
+				return $this->abspath;
 
 			case 'FS_CHMOD_DIR':
 				return 0777;
@@ -127,23 +137,29 @@ trait VirtualFilesystemTrait {
 			case 'FS_CHMOD_FILE':
 				return 0666;
 
+			case 'WP_CACHE':
+				return $this->wp_cache_constant;
+
 			case 'WP_CONTENT_DIR':
-				return 'vfs://public/wp-content';
+				return $this->wp_content_dir;
+
+			case 'WP_ROCKET_CACHE_PATH':
+				return "{$this->wp_content_dir}/cache/wp-rocket/";
 
 			case 'WP_ROCKET_CONFIG_PATH':
-				return 'vfs://public/wp-content/wp-rocket-config/';
+				return "{$this->wp_content_dir}/wp-rocket-config/";
 
 			case 'WP_ROCKET_INC_PATH':
-				return 'vfs://public/wp-content/plugins/wp-rocket/inc/';
+				return "{$this->wp_content_dir}/plugins/wp-rocket/inc/";
 
 			case 'WP_ROCKET_PATH':
-				return 'vfs://public/wp-content/plugins/wp-rocket/';
+				return "{$this->wp_content_dir}/plugins/wp-rocket/";
 
 			case 'WP_ROCKET_PHP_VERSION':
 				return '5.6';
 
 			case 'WP_ROCKET_VENDORS_PATH':
-				return 'vfs://public/wp-content/plugins/wp-rocket/inc/vendors/';
+				return "{$this->wp_content_dir}/plugins/wp-rocket/inc/vendors/";
 
 			default:
 				if ( ! rocket_has_constant( $constant_name ) ) {

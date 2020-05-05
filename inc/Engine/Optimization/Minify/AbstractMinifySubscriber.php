@@ -96,7 +96,7 @@ abstract class AbstractMinifySubscriber implements Subscriber_Interface {
 			return $url;
 		}
 
-		// This filter is documented in inc/classes/admin/settings/class-settings.php.
+		// This filter is documented in inc/Engine/Admin/Settings/Settings.php.
 		if ( in_array( rocket_extract_url_component( $url, PHP_URL_HOST ), apply_filters( 'rocket_cdn_hosts', [], ( $this->get_zones() ) ), true ) ) {
 			return $url;
 		}
@@ -128,7 +128,7 @@ abstract class AbstractMinifySubscriber implements Subscriber_Interface {
 			return $url;
 		}
 
-		// This filter is documented in inc/classes/admin/settings/class-settings.php.
+		// This filter is documented in inc/Engine/Admin/Settings/Settings.php.
 		$cdn_hosts = apply_filters( 'rocket_cdn_hosts', [], ( $this->get_zones() ) );
 
 		if ( in_array( $url_host, $cdn_hosts, true ) ) {
