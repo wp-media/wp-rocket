@@ -88,7 +88,7 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 	public function cpcss_section() {
 		global $post, $pagenow;
 
-		$data   = [
+		$data = [
 			'disabled_description' => $this->get_disabled_description(),
 			'cpcss_rest_url'       => rest_url( 'wp-rocket/v1/cpcss/post/' . ( 'post-new.php' !== $pagenow ? $post->ID : '' ) ),
 			'cpcss_rest_nonce'     => wp_create_nonce( 'wp_rest' ),
@@ -105,7 +105,7 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function cpcss_actions() {
-		$data   = [
+		$data = [
 			'disabled'     => $this->is_enabled(),
 			'beacon'       => '',
 			'cpcss_exists' => $this->cpcss_exists(),
