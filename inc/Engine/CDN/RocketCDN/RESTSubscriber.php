@@ -3,7 +3,6 @@ namespace WP_Rocket\Engine\CDN\RocketCDN;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\CDN\RocketCDN\CDNOptionsManager;
 
 /**
  * Subscriber for RocketCDN REST API Integration
