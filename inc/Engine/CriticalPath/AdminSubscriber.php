@@ -75,7 +75,7 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 		if ( $this->is_enabled() ) {
 			return;
 		}
-		wp_enqueue_script( 'wpr-edit-cpcss-script', rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'wpr-cpcss.js', [ 'jquery' ], rocket_get_constant( 'WP_ROCKET_VERSION' ), true );
+		wp_enqueue_script( 'wpr-edit-cpcss-script', rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'wpr-cpcss.js', [], rocket_get_constant( 'WP_ROCKET_VERSION' ), true );
 	}
 
 	/**
