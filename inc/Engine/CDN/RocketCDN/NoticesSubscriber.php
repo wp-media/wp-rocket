@@ -3,7 +3,6 @@ namespace WP_Rocket\Engine\CDN\RocketCDN;
 
 use WP_Rocket\Abstract_Render;
 use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
 
 /**
  * Subscriber for the RocketCDN notices on WP Rocket settings page
