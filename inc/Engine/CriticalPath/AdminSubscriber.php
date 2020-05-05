@@ -23,6 +23,13 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 	private $options;
 
 	/**
+	 * Array of reasons to disable actions
+	 *
+	 * @var array
+	 */
+	private $disabled_data;
+
+	/**
 	 * Constructor
 	 *
 	 * @param Options_Data $options WP Rocket Options instance.
@@ -58,9 +65,8 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function cpcss_section() {
-		$status = $this->is_enabled();
-		$data   = [
-			'disabled_description' => $status['description'],
+		$data = [
+			'disabled_description' => $this->get_disabled_description(),
 		];
 
 		echo $this->generate( 'container', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -74,9 +80,8 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function cpcss_actions() {
-		$status = $this->is_enabled();
-		$data   = [
-			'disabled' => $status['disabled'],
+		$data = [
+			'disabled' => $this->is_enabled(),
 			'beacon'   => '',
 		];
 
@@ -88,49 +93,72 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 	}
 
 	/**
-	 * Checks if critical CSS generation is enabled for the current post
+	 * Gets data for the disabled checks
 	 *
 	 * @since 3.6
 	 *
 	 * @return array
 	 */
-	private function is_enabled() {
+	private function get_disabled_data() {
 		global $post;
 
-		if ( ! $this->options->get( 'async_css', 0 ) ) {
-			return [
-				'disabled'    => true,
-				'description' => __( 'Enable Optimize CSS delivery in WP Rocket settings to use this feature', 'rocket' ),
-			];
+		if ( rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ) {
+			$this->disabled_data = null;
 		}
 
-		$excluded_async_css = get_post_meta( $post->ID, '_rocket_exclude_async_css', true );
+		if ( ! isset( $this->disabled_data ) ) {
+			if ( 'publish' !== $post->post_status ) {
+				$this->disabled_data['not_published'] = 1;
+			}
 
-		if ( 'publish' !== $post->post_status && $excluded_async_css ) {
-			return [
-				'disabled'    => true,
-				'description' => __( 'Publish the post and enable Optimize CSS delivery in the options above to use this feature', 'rocket' ),
-			];
+			if ( ! $this->options->get( 'async_css', 0 ) ) {
+				$this->disabled_data['option_disabled'] = 1;
+			}
+
+			if ( get_post_meta( $post->ID, '_rocket_exclude_async_css', true ) ) {
+				$this->disabled_data['option_excluded'] = 1;
+			}
 		}
 
-		if ( 'publish' !== $post->post_status ) {
-			return [
-				'disabled'    => true,
-				'description' => __( 'Publish the post to use this feature', 'rocket' ),
-			];
+		return $this->disabled_data;
+	}
+
+	/**
+	 * Checks if critical CSS generation is enabled for the current post
+	 *
+	 * @since 3.6
+	 *
+	 * @return bool
+	 */
+	private function is_enabled() {
+		return ! empty( $this->get_disabled_data() );
+	}
+
+	/**
+	 * Returns the reason why actions are disabled
+	 *
+	 * @since 3.6
+	 *
+	 * @return string
+	 */
+	private function get_disabled_description() {
+		global $post;
+
+		$disabled_data = $this->get_disabled_data();
+
+		if ( empty( $disabled_data ) ) {
+			return '';
 		}
 
-		if ( $excluded_async_css ) {
-			return [
-				'disabled'    => true,
-				'description' => __( 'Enable Optimize CSS delivery in the options above to use this feature', 'rocket' ),
-			];
-		}
-
-		return [
-			'disabled'    => false,
-			'description' => '',
+		$notice = __( '%l to use this feature.', 'rocket' );
+		$list   = [
+			// translators: %s = post type.
+			'not_published'   => sprintf( __( 'Publish the %s', 'rocket' ), $post->post_type ),
+			'option_disabled' => __( 'Enable Optimize CSS delivery in WP Rocket settings', 'rocket' ),
+			'option_excluded' => __( 'Enable Optimize CSS delivery in the options above', 'rocket' ),
 		];
+
+		return wp_sprintf_l( $notice, array_intersect_key( $list, $disabled_data ) );
 	}
 
 	/**

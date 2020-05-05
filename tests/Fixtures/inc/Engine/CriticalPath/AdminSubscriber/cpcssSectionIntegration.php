@@ -39,11 +39,11 @@ return [
 					'async_css' => 0,
 				],
 				'post'               => [
-					'post_status' => 'draft',
+					'post_status' => 'publish',
 					'post_type'   => 'post',
 					'ID'          => 1,
 				],
-				'is_option_excluded' => true,
+				'is_option_excluded' => false,
 			],
 			'expected' => '<div class="inside">
 			<h3>Critical Path CSS</h3>
@@ -59,7 +59,7 @@ return [
 			</div>
 			<div class="components-notice is-notice is-warning">
 			<div class="components-notice__content">
-			<p>Enable Optimize CSS delivery in WP Rocket settings to use this feature</p>
+			<p>Enable Optimize CSS delivery in WP Rocket settings to use this feature.</p>
 			</div>
 			</div>',
 		],
@@ -69,11 +69,11 @@ return [
 					'async_css' => 0,
 				],
 				'post'               => [
-					'post_status' => 'draft',
+					'post_status' => 'publish',
 					'post_type'   => 'post',
 					'ID'          => 2,
 				],
-				'is_option_excluded' => true,
+				'is_option_excluded' => false,
 			],
 			'expected' => '<div class="inside">
 			<h3>
@@ -98,7 +98,7 @@ return [
 			<div class="components-notice is-notice is-warning">
 			<div class="components-notice__content">
 			<p>
-			Enable Optimize CSS delivery in WP Rocket settings to use this feature</p>
+			Enable Optimize CSS delivery in WP Rocket settings to use this feature.</p>
 			</div>
 			</div>',
 		],
@@ -128,7 +128,7 @@ return [
 			</div>
 			<div class="components-notice is-notice is-warning">
 			<div class="components-notice__content">
-			<p>Publish the post to use this feature</p>
+			<p>Publish the post to use this feature.</p>
 			</div>
 			</div>',
 		],
@@ -162,7 +162,7 @@ return [
 			</div>
 			<div class="components-notice is-notice is-warning">
 			<div class="components-notice__content">
-			<p>Publish the post to use this feature</p>
+			<p>Publish the post to use this feature.</p>
 			</div>
 			</div>',
 		],
@@ -192,7 +192,7 @@ return [
 			</div>
 			<div class="components-notice is-notice is-warning">
 			<div class="components-notice__content">
-			<p>Publish the post and enable Optimize CSS delivery in the options above to use this feature</p>
+			<p>Publish the post and Enable Optimize CSS delivery in the options above to use this feature.</p>
 			</div>
 			</div>',
 		],
@@ -226,7 +226,7 @@ return [
 			</div>
 			<div class="components-notice is-notice is-warning">
 			<div class="components-notice__content">
-			<p>Publish the post and enable Optimize CSS delivery in the options above to use this feature</p>
+			<p>Publish the post and Enable Optimize CSS delivery in the options above to use this feature.</p>
 			</div>
 			</div>',
 		],
@@ -256,7 +256,7 @@ return [
 			</div>
 			<div class="components-notice is-notice is-warning">
 			<div class="components-notice__content">
-			<p>Enable Optimize CSS delivery in the options above to use this feature</p>
+			<p>Enable Optimize CSS delivery in the options above to use this feature.</p>
 			</div>
 			</div>',
 		],
@@ -290,7 +290,7 @@ return [
 			</div>
 			<div class="components-notice is-notice is-warning">
 			<div class="components-notice__content">
-			<p>Enable Optimize CSS delivery in the options above to use this feature</p>
+			<p>Enable Optimize CSS delivery in the options above to use this feature.</p>
 			</div>
 			</div>',
 		],
