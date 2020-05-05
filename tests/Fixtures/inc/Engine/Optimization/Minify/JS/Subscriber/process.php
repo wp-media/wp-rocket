@@ -1,6 +1,7 @@
 <?php
 return [
-	'vfs_dir'   => 'public/',
+	'vfs_dir'   => 'wordpress/',
+
 	'structure' => [
 		'wp-includes' => [
 			'js' => [
@@ -34,6 +35,7 @@ return [
 			],
 		],
 	],
+
 	'test_data' => [
 		// Minify JS files
 		[
