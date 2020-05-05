@@ -20,14 +20,15 @@ return [
 		],
 	],
 	'test_data' => [
-		'testShouldDisplayOptionDisabledWarning'         => [
+		'testShouldDisplayAllWarnings'         => [
 			'config'   => [
 				'options'            => [
 					'async_css' => 0,
 				],
 				'post'               => [
-					'post_status' => 'draft',
 					'ID'          => 1,
+					'post_status' => 'draft',
+					'post_type'   => 'post',
 				],
 				'is_option_excluded' => true,
 			],
@@ -37,7 +38,7 @@ return [
 			</div>
 			<div id="cpcss_response_notice" class="components-notice is-notice is-warning">
 				<div class="components-notice__content">
-					<p>Enable Optimize CSS delivery in WP Rocket settings to use this feature</p>
+				<p>Publish the post, Enable Optimize CSS delivery in WP Rocket settings, and Enable Optimize CSS delivery in the options above to use this feature.</p>
 				</div>
 			</div>
 			<script>
@@ -53,8 +54,9 @@ return [
 					'async_css' => 1,
 				],
 				'post'               => [
-					'post_status' => 'draft',
 					'ID'          => 1,
+					'post_status' => 'draft',
+					'post_type'   => 'post',
 				],
 				'is_option_excluded' => true,
 			],
@@ -64,7 +66,7 @@ return [
 			</div>
 			<div id="cpcss_response_notice" class="components-notice is-notice is-warning">
 				<div class="components-notice__content">
-					<p>Publish the post and enable Optimize CSS delivery in the options above to use this feature</p>
+				<p>Publish the post and Enable Optimize CSS delivery in the options above to use this feature.</p>
 				</div>
 			</div>
 			<script>
@@ -80,8 +82,9 @@ return [
 					'async_css' => 1,
 				],
 				'post'               => [
-					'post_status' => 'draft',
 					'ID'          => 1,
+					'post_status' => 'draft',
+					'post_type'   => 'post',
 				],
 				'is_option_excluded' => false,
 			],
@@ -91,7 +94,7 @@ return [
 			</div>
 			<div id="cpcss_response_notice" class="components-notice is-notice is-warning">
 				<div class="components-notice__content">
-				<p>Publish the post to use this feature</p>
+				<p>Publish the post to use this feature.</p>
 				</div>
 			</div>
 			<script>
@@ -107,8 +110,9 @@ return [
 					'async_css' => 1,
 				],
 				'post'               => [
-					'post_status' => 'publish',
 					'ID'          => 1,
+					'post_status' => 'publish',
+					'post_type'   => 'post',
 				],
 				'is_option_excluded' => true,
 			],
@@ -118,7 +122,7 @@ return [
 			</div>
 			<div id="cpcss_response_notice" class="components-notice is-notice is-warning">
 				<div class="components-notice__content">
-				<p>Enable Optimize CSS delivery in the options above to use this feature</p>
+				<p>Enable Optimize CSS delivery in the options above to use this feature.</p>
 				</div>
 			</div>
 			<script>
@@ -134,8 +138,9 @@ return [
 					'async_css' => 1,
 				],
 				'post'               => [
-					'post_status' => 'publish',
 					'ID'          => 1,
+					'post_status' => 'publish',
+					'post_type'   => 'post',
 				],
 				'is_option_excluded' => false,
 			],

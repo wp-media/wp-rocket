@@ -51,9 +51,45 @@ class Test_CpcssSection extends FilesystemTestCase {
 			->with( 'async_css', 0 )
 			->andReturn( $config['options']['async_css'] );
 
+		Functions\when( 'wp_sprintf_l' )->alias( function ( $pattern, $args ) {
+			if ( substr( $pattern, 0, 2 ) != '%l' ) {
+				return $pattern;
+			}
+
+			if ( empty( $args ) ) {
+				return '';
+			}
+
+			$l = [
+				'between'          => sprintf( '%1$s, %2$s', '', '' ),
+				'between_last_two' => sprintf( '%1$s, and %2$s', '', '' ),
+				'between_only_two' => sprintf( '%1$s and %2$s', '', '' ),
+			];
+
+			$args   = (array) $args;
+			$result = array_shift( $args );
+			if ( count( $args ) == 1 ) {
+				$result .= $l['between_only_two'] . array_shift( $args );
+			}
+
+			$i = count( $args );
+			while ( $i ) {
+				$arg = array_shift( $args );
+				$i--;
+				if ( 0 == $i ) {
+					$result .= $l['between_last_two'] . $arg;
+				} else {
+					$result .= $l['between'] . $arg;
+				}
+			}
+
+			return $result . substr( $pattern, 2 );
+		} );
+
 		$GLOBALS['post'] = (object) [
-			'post_status' => $config['post']['post_status'],
 			'ID'          => $config['post']['ID'],
+			'post_status' => $config['post']['post_status'],
+			'post_type'   => $config['post']['post_type'],
 		];
 
 		Functions\when( 'get_post_meta' )->justReturn( $config['is_option_excluded'] );
