@@ -1,6 +1,6 @@
 <?php
 return [
-	'vfs_dir'   => 'wordpress/',
+	'vfs_dir'   => 'public/',
 
 	'structure' => [
 		'wp-includes' => [
