@@ -11,7 +11,6 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * Subscriber for the RocketCDN integration in WP Rocket settings page
  *
  * @since  3.5
- * @author Remy Perona
  */
 class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interface {
 	/**
@@ -69,7 +68,6 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 * Displays the RocketCDN section on the dashboard tab
 	 *
 	 * @since  3.5
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
@@ -106,7 +104,6 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 * Adds the RocketCDN fields to the CDN section
 	 *
 	 * @since  3.5
-	 * @author Remy Perona
 	 *
 	 * @param array $fields CDN settings fields.
 	 *
@@ -162,7 +159,6 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 * Displays the button to open the subscription modal
 	 *
 	 * @since  3.5
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
@@ -188,7 +184,6 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 * Purges the CDN cache and store the response in a transient.
 	 *
 	 * @since  3.5
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
@@ -211,7 +206,6 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 * Adds the subscription modal on the WP Rocket settings page
 	 *
 	 * @since  3.5
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
@@ -245,7 +239,6 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 * by some other plugin.
 	 *
 	 * @since  3.5
-	 * @author Rémy Peorna
 	 *
 	 * @param  array  $args An array of HTTP request arguments.
 	 * @param  string $url  The request URL.

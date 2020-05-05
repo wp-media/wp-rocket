@@ -15,7 +15,6 @@ class APIClient {
 	 * Else do a request to the API to get fresh data
 	 *
 	 * @since 3.5
-	 * @author Remy Perona
 	 *
 	 * @return array
 	 */
@@ -33,7 +32,6 @@ class APIClient {
 	 * Gets fresh RocketCDN subscription data from the API
 	 *
 	 * @since 3.5
-	 * @author Remy Perona
 	 *
 	 * @return array
 	 */
@@ -90,7 +88,6 @@ class APIClient {
 	 * Sets the RocketCDN status transient with the provided value
 	 *
 	 * @since 3.5
-	 * @author Remy Perona
 	 *
 	 * @param array $value Transient value.
 	 * @param int   $duration Transient duration.
@@ -106,7 +103,6 @@ class APIClient {
 	 * Else do a request to the API to get fresh data
 	 *
 	 * @since 3.5
-	 * @author Remy Perona
 	 *
 	 * @return array
 	 */
@@ -124,7 +120,6 @@ class APIClient {
 	 * Gets fresh pricing & promotion data for RocketCDN
 	 *
 	 * @since 3.5
-	 * @author Remy Perona
 	 *
 	 * @return array|WP_Error
 	 */
@@ -152,7 +147,6 @@ class APIClient {
 	 * Gets a new WP_Error instance
 	 *
 	 * @since 3.5
-	 * @author Remy Perona
 	 *
 	 * @return WP_Error
 	 */
@@ -164,7 +158,6 @@ class APIClient {
 	 * Sends a request to the API to purge the CDN cache
 	 *
 	 * @since 3.5
-	 * @author Remy Perona
 	 *
 	 * @return array
 	 */
@@ -247,7 +240,6 @@ class APIClient {
 	 * by some other plugin.
 	 *
 	 * @since  3.5
-	 * @author Rémy Peorna
 	 *
 	 * @param  array  $args An array of HTTP request arguments.
 	 * @param  string $url  The request URL.

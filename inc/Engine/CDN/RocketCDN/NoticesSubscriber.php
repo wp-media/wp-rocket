@@ -8,7 +8,6 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * Subscriber for the RocketCDN notices on WP Rocket settings page
  *
  * @since 3.5
- * @author Remy Perona
  */
 class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface {
 	/**
@@ -50,7 +49,6 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 * Adds notice to promote RocketCDN on settings page
 	 *
 	 * @since 3.5
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
@@ -70,7 +68,6 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 * Adds inline script to permanently dismissing the RocketCDN promotion notice
 	 *
 	 * @since 3.5
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
@@ -110,7 +107,6 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 * Checks if the promotion notice should be displayed
 	 *
 	 * @since 3.5
-	 * @author Remy Perona
 	 *
 	 * @return boolean
 	 */
@@ -136,7 +132,6 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 * Ajax callback to save the dismiss as a user meta
 	 *
 	 * @since 3.5
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
@@ -154,7 +149,6 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 * Displays the RocketCDN Call to Action on the CDN tab of WP Rocket settings page
 	 *
 	 * @since 3.5
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
@@ -221,7 +215,6 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 * Toggles display of the RocketCDN CTAs on the settings page
 	 *
 	 * @since 3.5
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
@@ -247,7 +240,6 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 * Displays a notice after purging the RocketCDN cache.
 	 *
 	 * @since 3.5
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */

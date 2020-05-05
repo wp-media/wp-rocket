@@ -9,7 +9,6 @@ use WP_Rocket\Engine\CDN\RocketCDN\CDNOptionsManager;
  * Subscriber for RocketCDN REST API Integration
  *
  * @since 3.5
- * @author Remy Perona
  */
 class RESTSubscriber implements Subscriber_Interface {
 	const ROUTE_NAMESPACE = 'wp-rocket/v1';
@@ -55,7 +54,6 @@ class RESTSubscriber implements Subscriber_Interface {
 	 * Register Enable route in the WP REST API
 	 *
 	 * @since 3.5
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
@@ -95,7 +93,6 @@ class RESTSubscriber implements Subscriber_Interface {
 	 * Register Disable route in the WP REST API
 	 *
 	 * @since 3.5
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
@@ -124,7 +121,6 @@ class RESTSubscriber implements Subscriber_Interface {
 	 * Enable CDN and add RocketCDN URL to WP Rocket options
 	 *
 	 * @since 3.5
-	 * @author Remy Perona
 	 *
 	 * @param \WP_REST_Request $request the WP REST Request object.
 	 * @return string
@@ -149,7 +145,6 @@ class RESTSubscriber implements Subscriber_Interface {
 	 * Disable the CDN and remove the RocketCDN URL from WP Rocket options
 	 *
 	 * @since 3.5
-	 * @author Remy Perona
 	 *
 	 * @param \WP_REST_Request $request the WP Rest Request object.
 	 * @return string
@@ -172,7 +167,6 @@ class RESTSubscriber implements Subscriber_Interface {
 	 * Checks that the email sent along the request corresponds to the one saved in the DB
 	 *
 	 * @since 3.5
-	 * @author Remy Perona
 	 *
 	 * @param string $param Parameter value to validate.
 	 * @return bool
@@ -185,7 +179,6 @@ class RESTSubscriber implements Subscriber_Interface {
 	 * Checks that the key sent along the request corresponds to the one saved in the DB
 	 *
 	 * @since 3.5
-	 * @author Remy Perona
 	 *
 	 * @param string $param Parameter value to validate.
 	 * @return bool

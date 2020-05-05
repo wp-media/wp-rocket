@@ -8,7 +8,6 @@ use WP_Rocket\Admin\Options_Data;
  * Manager for WP Rocket CDN options
  *
  * @since 3.5
- * @author Remy Perona
  */
 class CDNOptionsManager {
 	/**
@@ -40,7 +39,6 @@ class CDNOptionsManager {
 	 * Enable CDN option, save CDN URL & delete RocketCDN status transient
 	 *
 	 * @since 3.5
-	 * @author Remy Perona
 	 *
 	 * @param string $cdn_url CDN URL.
 	 * @return void
@@ -59,7 +57,6 @@ class CDNOptionsManager {
 	 * Disable CDN option, remove CDN URL & user token, delete RocketCDN status transient
 	 *
 	 * @since 3.5
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */

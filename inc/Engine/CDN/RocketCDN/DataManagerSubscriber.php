@@ -7,7 +7,6 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * Subscriber for the RocketCDN integration in WP Rocket settings page
  *
  * @since  3.5
- * @author Remy Perona
  */
 class DataManagerSubscriber implements Subscriber_Interface {
 	const CRON_EVENT = 'rocketcdn_check_subscription_status_event';
@@ -55,7 +54,6 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	 * Updates the RocketCDN user token value
 	 *
 	 * @since  3.5
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
@@ -99,7 +97,6 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	 * Ajax callback to enable RocketCDN
 	 *
 	 * @since 3.5
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
@@ -152,7 +149,6 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	 * AJAX callback to disable RocketCDN
 	 *
 	 * @since 3.5
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
@@ -190,7 +186,6 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	 * Delete the option tracking the RocketCDN process state
 	 *
 	 * @since 3.5
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
@@ -202,7 +197,6 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	 * Set the RocketCDN subscription process status
 	 *
 	 * @since 3.5
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
@@ -231,7 +225,6 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	 * Check for RocketCDN subscription process status
 	 *
 	 * @since 3.5
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
@@ -257,7 +250,6 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	 * Cron job to disable CDN if the subscription expired
 	 *
 	 * @since 3.5
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
@@ -283,7 +275,6 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	 * Schedule the next cron subscription check
 	 *
 	 * @since 3.5
-	 * @author Remy Perona
 	 *
 	 * @param array $subscription Array containing the subscription data.
 	 * @return void

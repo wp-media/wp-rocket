@@ -7,7 +7,6 @@ use League\Container\ServiceProvider\AbstractServiceProvider;
  * Service provider for RocketCDN
  *
  * @since 3.5
- * @author Remy Perona
  */
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -32,7 +31,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * Registers the RocketCDN classes in the container
 	 *
 	 * @since 3.5
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
