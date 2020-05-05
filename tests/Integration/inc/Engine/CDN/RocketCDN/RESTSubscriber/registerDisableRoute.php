@@ -6,8 +6,12 @@ use WP_Rocket\Tests\Integration\ApiTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\RESTSubscriber::register_disable_route
- * @covers \WP_Rocket\Engine\CDN\RocketCDN\RESTSubscriber::validateEmail
- * @covers \WP_Rocket\Engine\CDN\RocketCDN\RESTSubscriber::validateKey
+ * @covers \WP_Rocket\Engine\CDN\RocketCDN\RESTSubscriber::validate_email
+ * @covers \WP_Rocket\Engine\CDN\RocketCDN\RESTSubscriber::validate_key
+ *
+ * @uses \WP_Rocket\Admin\Options_Data::get
+ * @uses ::rocket_has_constant
+ *
  * @group  RocketCDN
  */
 class Test_RegisterDisableRoute extends ApiTestCase {

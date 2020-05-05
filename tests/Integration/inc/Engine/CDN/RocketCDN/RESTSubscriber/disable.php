@@ -6,6 +6,8 @@ use WP_Rocket\Tests\Integration\ApiTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\RESTSubscriber::disable
+ * @uses \WP_Rocket\Engine\CDN\RocketCDN\CDNOptionsManager::disable
+ *
  * @group  RocketCDN
  */
 class Test_Disable extends ApiTestCase {

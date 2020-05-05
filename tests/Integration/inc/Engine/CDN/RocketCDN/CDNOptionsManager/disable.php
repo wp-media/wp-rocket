@@ -9,6 +9,10 @@ use WP_Rocket\Admin\Options_Data;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\CDNOptionsManager::disable
+ * @uses \WP_Rocket\Admin\Options_Data::set
+ * @uses \WP_Rocket\Admin\Options::set
+ * @uses \WP_Rocket\Admin\Options::get_option_name
+ *
  * @group RocketCDN
  */
 class Test_Disable extends TestCase {

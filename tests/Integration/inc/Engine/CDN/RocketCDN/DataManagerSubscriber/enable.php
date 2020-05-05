@@ -6,6 +6,13 @@ use WPMedia\PHPUnit\Integration\AjaxTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\DataManagerSubscriber::enable
+ *
+ * @uses \WP_Rocket\Engine\CDN\RocketCDN\CDNOptionsManager::enable
+ * @uses \WP_Rocket\Admin\Options_Data::set
+ * @uses \WP_Rocket\Admin\Options::set
+ * @uses \WP_Rocket\Admin\Options::get_option_name
+ * @uses \WP_Rocket\Engine\CDN\RocketCDN\APIClient::get_subscription_data
+ *
  * @group  RocketCDN
  * @group  AdminOnly
  */

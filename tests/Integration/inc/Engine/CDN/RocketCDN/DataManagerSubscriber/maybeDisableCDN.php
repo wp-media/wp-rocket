@@ -7,6 +7,9 @@ use WPMedia\PHPUnit\Integration\ApiTrait;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\DataManagerSubscriber::maybe_disable_cdn
+ * @uses \WP_Rocket\Engine\CDN\RocketCDN\APIClient::get_subscription_data
+ * @uses ::rocket_get_constant
+ *
  * @group  RocketCDN
  * @group  AdminOnly
  */

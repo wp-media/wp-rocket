@@ -8,6 +8,8 @@ use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\APIClient::purge_cache_request
+ * @uses \WP_Rocket\Engine\CDN\RocketCDN\APIClient::get_subscription_data
+ *
  * @group  RocketCDN
  * @group  RocketCDNAPI
  */

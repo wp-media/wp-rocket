@@ -7,8 +7,11 @@ use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\RESTSubscriber::register_enable_route
- * @covers \WP_Rocket\Engine\CDN\RocketCDN\RESTSubscriber::validateEmail
- * @covers \WP_Rocket\Engine\CDN\RocketCDN\RESTSubscriber::validateKey
+ * @covers \WP_Rocket\Engine\CDN\RocketCDN\RESTSubscriber::validate_email
+ * @covers \WP_Rocket\Engine\CDN\RocketCDN\RESTSubscriber::validate_key
+ *
+ * @uses \WP_Rocket\Admin\Options_Data::get
+ *
  * @group  RocketCDN
  */
 class Test_RegisterEnableRoute extends ApiTestCase {

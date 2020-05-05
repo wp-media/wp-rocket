@@ -7,6 +7,12 @@ use WP_Error;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::display_rocketcdn_cta
+ * @uses ::rocket_is_live_site
+ * @uses \WP_Rocket\Engine\CDN\RocketCDN\APIClient::get_subscription_data
+ * @uses \WP_Rocket\Engine\CDN\RocketCDN\APIClient::get_pricing_data
+ * @uses \WP_Rocket\Abstract_Render::generate
+ * @uses ::rocket_direct_filesystem
+ *
  * @group  RocketCDN
  * @group  AdminOnly
  */

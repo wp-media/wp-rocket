@@ -6,6 +6,10 @@ use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::promote_rocketcdn_notice
+ * @uses ::rocket_is_live_site
+ * @uses \WP_Rocket\Abstract_Render::generate
+ * @uses ::rocket_direct_filesystem
+ *
  * @group  RocketCDN
  * @group  AdminOnly
  */

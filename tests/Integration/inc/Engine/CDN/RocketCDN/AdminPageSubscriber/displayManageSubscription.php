@@ -6,6 +6,11 @@ use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber::display_manage_subscription
+ *
+ * @uses ::rocket_is_live_site
+ * @uses ::rocket_get_constant
+ * @uses \WP_Rocket\Engine\CDN\RocketCDN\APIClient::get_subscription_data
+ *
  * @group  RocketCDN
  * @group  AdminOnly
  */
