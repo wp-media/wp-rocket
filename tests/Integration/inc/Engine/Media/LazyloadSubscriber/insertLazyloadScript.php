@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Media\LazyloadSubscriber;
 
+use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
@@ -36,6 +37,17 @@ class Test_InsertLazyloadScript extends TestCase {
 		$this->lazyload = $options['lazyload'];
 		$this->iframes  = $options['lazyload_iframes'];
 
+		Functions\expect( 'rocket_get_constant' )
+			->atMost()
+			->times( 1 )
+			->with( 'WP_ROCKET_ASSETS_JS_URL' )
+			->andReturn( 'http://example.org/wp-content/plugins/wp-rocket/assets/js/' )
+			->andAlsoExpectIt()
+			->atMost()
+			->times( 1 )
+			->with( 'SCRIPT_DEBUG')
+			->andReturn( false );
+
 		add_filter( 'pre_get_rocket_option_lazyload', [ $this, 'setLazyload' ] );
 		add_filter( 'pre_get_rocket_option_lazyload_iframes', [ $this, 'setIframes' ] );
 
@@ -59,7 +71,7 @@ class Test_InsertLazyloadScript extends TestCase {
 				$this->getActualHtml()
 			);
 		} else {
-			$this->assertContains(
+			$this->assertSame(
 				$this->format_the_html( $expected['integration'] ),
 				$this->getActualHtml()
 			);
