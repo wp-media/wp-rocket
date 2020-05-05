@@ -2,54 +2,58 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Cache\AdminSubscriber;
 
-use WPMedia\PHPUnit\Integration\TestCase;
+use Brain\Monkey\Functions;
+use WP_Rocket\Engine\Cache\AdminSubscriber;
+use WP_Rocket\Tests\Integration\AdminTestCase;
 
 /**
  * @covers WP_Rocket\Engine\Cache\AdminSubscriber::add_purge_term_link
  *
- * @group AdminOnly
- * @group Cache
+ * @group  AdminOnly
+ * @group  Cache
  */
-class Test_AddPurgeTermLink extends TestCase {
-    /**
+class Test_AddPurgeTermLink extends AdminTestCase {
+	private $tag;
+
+	public function tearDown() {
+		parent::tearDown();
+
+		wp_delete_term( $this->tag->term_id, 'post_tag' );
+	}
+
+	/**
 	 * @dataProvider providerTestData
 	 */
-    public function testShouldAddCallbackForEachTerm( $config, $expected ) {
-        set_current_screen( 'edit-tags' );
+	public function testShouldAddCallbackForEachTerm( $config, $expected ) {
+		$this->tag = $this->factory->tag->create_and_get( [ 'name' => 'Ipseum' ] );
 
-        $term = (object) [
-			'term_id'  => 1,
-			'taxonomy' => 'post_tag'
-		];
+		if ( $config['cap'] ) {
+			$this->setRoleCap( 'administrator', 'rocket_purge_terms' );
+			$this->setCurrentUser( 'administrator' );
+			Functions\expect( 'wp_create_nonce' )
+				->once()
+				->with( "purge_cache_term-{$this->tag->term_id}" )
+				->andReturn( $config['nonce'] );
+		}
+		$this->setEditTagsAsCurrentScreen( 'post_tag' );
+		$this->fireAdminInit();
 
-        if ( ! $config['cap'] ) {
-            $this->assertArrayNotHasKey(
-                'rocket_purge',
-                apply_filters( 'post_tag_row_actions', [], $term )
-            );
-        } else {
-            $admin = get_role( 'administrator' );
-            $admin->add_cap( 'rocket_purge_terms' );
+		$this->hasCallbackRegistered( 'post_tag_row_actions', AdminSubscriber::class, 'add_purge_term_link' );
 
-            $user_id = self::factory()->user->create( [ 'role' => 'administrator' ] );
-            wp_set_current_user( $user_id );
-            
+		$actions = apply_filters( 'post_tag_row_actions', [], $this->tag );
 
-            $actions = apply_filters( 'post_tag_row_actions', [], $term );
+		if ( $config['cap'] ) {
+			$this->assertArrayHasKey( 'rocket_purge', $actions );
 
-            $this->assertArrayHasKey(
-                'rocket_purge',
-                $actions
-            );
+			// Populate the term's ID.
+			$expected = str_replace( 'term-1', "term-{$this->tag->term_id}", $expected );
+			$this->assertSame( $expected, $actions['rocket_purge'] );
+		} else {
+			$this->assertArrayNotHasKey( 'rocket_purge', $actions );
+		}
+	}
 
-            $this->assertContains(
-                $expected,
-                $actions
-            );
-        }
-    }
-
-    public function providerTestData() {
+	public function providerTestData() {
 		return $this->getTestData( __DIR__, 'addPurgeTermLink' );
 	}
 }
