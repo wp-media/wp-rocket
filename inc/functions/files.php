@@ -1375,6 +1375,7 @@ function _rocket_get_cache_path_iterator( $cache_path ) { // phpcs:ignore WordPr
 /**
  * Gets the entries from the URL using RegexIterator.
  *
+ * @since  3.5.5 Limited regex search to exact "path" matches.
  * @since  3.5.4
  * @access private
  *
@@ -1403,7 +1404,7 @@ function _rocket_get_entries_regex( Iterator $iterator, $url, $cache_path = '' )
 			$path = str_replace( '/', '\/', $path );
 		}
 
-		$regex = "/{$host}(.*)\/{$path}/i";
+		$regex = "/{$host}(.*)\/{$path}\b/i";
 	} else {
 		$regex = "/{$host}(.*)/i";
 		$depth = 0;
