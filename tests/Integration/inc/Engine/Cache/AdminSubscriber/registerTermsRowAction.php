@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Cache\AdminSubscriber;
 
-use WPMedia\PHPUnit\Integration\TestCase;
+use WP_Rocket\Tests\Integration\AdminTestCase;
 
 /**
  * @covers WP_Rocket\Engine\Cache\AdminSubscriber::register_terms_row_action
@@ -10,7 +10,7 @@ use WPMedia\PHPUnit\Integration\TestCase;
  * @group AdminOnly
  * @group Cache
  */
-class Test_RegisterTermsRowAction extends TestCase {
+class Test_RegisterTermsRowAction extends AdminTestCase {
 	private static $container;
 
 	public static function setUpBeforeClass() {
@@ -20,9 +20,10 @@ class Test_RegisterTermsRowAction extends TestCase {
 	}
 
 	public function testShouldAddCallbackForEachTerm() {
-		$user_id = self::factory()->user->create( [ 'role' => 'administrator' ] );
-		wp_set_current_user( $user_id );
-		set_current_screen( 'edit-tags' );
+		$this->setRoleCap( 'administrator', 'rocket_purge_terms' );
+		$this->setCurrentUser( 'administrator' );
+		$this->setEditTagsAsCurrentScreen( 'post_tag' );
+		$this->fireAdminInit();
 
 		$taxonomies = get_taxonomies(
 			[
@@ -34,7 +35,8 @@ class Test_RegisterTermsRowAction extends TestCase {
 		$subscriber = self::$container->get( 'admin_cache_subscriber' );
 
 		foreach( $taxonomies as $taxonomy ) {
-			$this->assertTrue(
+			$this->assertSame(
+				10,
 				has_action( "{$taxonomy}_row_actions", [ $subscriber, 'add_purge_term_link' ] )
 			);
 		}

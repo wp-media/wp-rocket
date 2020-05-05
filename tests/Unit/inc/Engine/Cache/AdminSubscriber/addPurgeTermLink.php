@@ -34,16 +34,21 @@ class Test_AddPurgeTermLink extends TestCase {
 
 		Functions\when( 'current_user_can' )->justReturn( $config['cap'] );
 		Functions\when( 'wp_nonce_url' )->alias( function( $url ) {
-			return "{$url}&amp;_wpnonce=123456";
+			return str_replace( '&', '&amp;', "{$url}&_wpnonce=123456" );
 		} );
 		Functions\when( 'admin_url' )->alias( function( $path ) {
 			return "http://example.org/wp-admin/{$path}";
 		} );
 
-		$this->assertSame(
-			$expected,
-			$this->subscriber->add_purge_term_link( $actions, $term )
-		);
+		$actions = $this->subscriber->add_purge_term_link( $actions, $term );
+
+		if ( $config['cap'] ) {
+			$this->assertArrayHasKey( 'rocket_purge', $actions );
+
+			$this->assertSame( $expected, $actions['rocket_purge'] );
+		} else {
+			$this->assertArrayNotHasKey( 'rocket_purge', $actions );
+		}
 	}
 
 	public function providerTestData() {
