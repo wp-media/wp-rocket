@@ -1,4 +1,22 @@
 <?php
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Require deprecated classes.
+ */
+require_once __DIR__ . '/DeprecatedClassTrait.php';
+require_once __DIR__ . '/Engine/Optimization/QueryString/Remove.php';
+require_once __DIR__ . '/Engine/Optimization/QueryString/RemoveSubscriber.php';
+
+/**
+ * Class aliases.
+ */
+class_alias( '\WP_Rocket\Engine\Admin\Beacon\ServiceProvider', '\WP_Rocket\ServiceProvider\Beacon' );
+class_alias( '\WP_Rocket\Engine\HealthCheck\CacheDirSizeCheck', '\WP_Rocket\Subscriber\Tools\Cache_Dir_Size_Check_Subscriber' );
+class_alias( '\WP_Rocket\Engine\HealthCheck\HealthCheck', '\WP_Rocket\Engine\Admin\HealthCheck' );
+class_alias( '\WP_Rocket\Engine\Optimization\ServiceProvider', '\WP_Rocket\ServiceProvider\Optimization_Subscribers' );
+class_alias( '\WP_Rocket\ThirdParty\Plugins\Smush', '\WP_Rocket\Subscriber\Third_Party\Plugins\Smush_Subscriber' );
+
 /**
  * Exclude fusion styles from cache busting to prevent cache dir issues
  *
@@ -58,10 +76,6 @@ function rocket_beaver_builder_clean_domain() {
 	rocket_clean_minify();
 	rocket_clean_domain();
 }
-
-class_alias( '\\WP_Rocket\\Engine\\Admin\\Beacon\\ServiceProvider', '\\WP_Rocket\\ServiceProvider\\Beacon' );
-class_alias( '\\WP_Rocket\\Engine\\HealthCheck\\CacheDirSizeCheck', '\\WP_Rocket\\Subscriber\\Tools\\Cache_Dir_Size_Check_Subscriber' );
-class_alias( '\\WP_Rocket\\Engine\\HealthCheck\\HealthCheck', '\\WP_Rocket\\Engine\\Admin\\HealthCheck' );
 
 /**
  * Returns paths used for cache busting
@@ -183,18 +197,6 @@ function rocket_sccss_create_cache_file( $cache_busting_path, $cache_sccss_filep
 
 	rocket_put_content( $cache_sccss_filepath, $content );
 }
-
-/**
- * Require deprecated classes.
- */
-require_once __DIR__ . '/DeprecatedClassTrait.php';
-require_once __DIR__ . '/Engine/Optimization/QueryString/Remove.php';
-require_once __DIR__ . '/Engine/Optimization/QueryString/RemoveSubscriber.php';
-
-/**
- * Class aliases.
- */
-class_alias( '\WP_Rocket\Engine\Optimization\ServiceProvider', '\WP_Rocket\ServiceProvider\Optimization_Subscribers' );
 
 /**
  * This warning is displayed when the busting cache dir isn't writeable
@@ -321,3 +323,4 @@ function rocket_clean_cache_busting( $extensions = [ 'js', 'css' ] ) {
 		);
 	}
 }
+

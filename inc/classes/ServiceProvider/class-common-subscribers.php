@@ -26,8 +26,6 @@ class Common_Subscribers extends AbstractServiceProvider {
 		'critical_css_generation',
 		'critical_css',
 		'critical_css_subscriber',
-		'cdn',
-		'cdn_subscriber',
 		'capabilities_subscriber',
 		'webp_subscriber',
 		'expired_cache_purge',
@@ -45,35 +43,32 @@ class Common_Subscribers extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
+		$options = $this->getContainer()->get( 'options' );
+
 		$this->getContainer()->share( 'heartbeat_subscriber', 'WP_Rocket\Subscriber\Heartbeat_Subscriber' )
-			->withArgument( $this->getContainer()->get( 'options' ) );
+			->withArgument( $options );
 		$this->getContainer()->share( 'db_optimization_subscriber', 'WP_Rocket\Subscriber\Admin\Database\Optimization_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'db_optimization' ) )
-			->withArgument( $this->getContainer()->get( 'options' ) );
+			->withArgument( $options );
 		$this->getContainer()->add( 'critical_css_generation', 'WP_Rocket\Optimization\CSS\Critical_CSS_Generation' );
 		$this->getContainer()->add( 'critical_css', 'WP_Rocket\Optimization\CSS\Critical_CSS' )
 			->withArgument( $this->getContainer()->get( 'critical_css_generation' ) );
 		$this->getContainer()->share( 'critical_css_subscriber', 'WP_Rocket\Subscriber\Optimization\Critical_CSS_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'critical_css' ) )
-			->withArgument( $this->getContainer()->get( 'options' ) );
+			->withArgument( $options );
 		$this->getContainer()->add( 'expired_cache_purge', 'WP_Rocket\Cache\Expired_Cache_Purge' )
-			->withArgument( WP_ROCKET_CACHE_PATH );
+			->withArgument( rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) );
 		$this->getContainer()->share( 'expired_cache_purge_subscriber', 'WP_Rocket\Subscriber\Cache\Expired_Cache_Purge_Subscriber' )
-			->withArgument( $this->getContainer()->get( 'options' ) )
+			->withArgument( $options )
 			->withArgument( $this->getContainer()->get( 'expired_cache_purge' ) );
-		$this->getContainer()->share( 'cdn', 'WP_Rocket\CDN\CDN' )
-			->withArgument( $this->getContainer()->get( 'options' ) );
-		$this->getContainer()->share( 'cdn_subscriber', 'WP_Rocket\Subscriber\CDN\CDNSubscriber' )
-			->withArgument( $this->getContainer()->get( 'options' ) )
-			->withArgument( $this->getContainer()->get( 'cdn' ) );
 		$this->getContainer()->share( 'capabilities_subscriber', 'WP_Rocket\Subscriber\Plugin\Capabilities_Subscriber' );
 		$this->getContainer()->share( 'webp_subscriber', 'WP_Rocket\Subscriber\Media\Webp_Subscriber' )
-			->withArgument( $this->getContainer()->get( 'options' ) )
+			->withArgument( $options )
 			->withArgument( $this->getContainer()->get( 'options_api' ) )
 			->withArgument( $this->getContainer()->get( 'cdn_subscriber' ) )
 			->withArgument( $this->getContainer()->get( 'beacon' ) );
 		$this->getContainer()->share( 'detect_missing_tags_subscriber', 'WP_Rocket\Subscriber\Tools\Detect_Missing_Tags_Subscriber' );
 		$this->getContainer()->share( 'purge_actions_subscriber', 'WP_Rocket\Subscriber\Cache\PurgeActionsSubscriber' )
-			->withArgument( $this->getContainer()->get( 'options' ) );
+			->withArgument( $options );
 	}
 }

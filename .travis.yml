@@ -12,7 +12,7 @@ branches:
   - master
   - develop
   - /branch-.*$/
-  - /feature-.*$/
+  - /feature.*$/
 cache:
   directories:
   - vendor
