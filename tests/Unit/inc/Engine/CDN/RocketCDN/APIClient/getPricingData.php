@@ -5,6 +5,8 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\RocketCDN\APIClient;
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
 use Brain\Monkey\Functions;
+use Mockery;
+use WP_Error;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\APIClient::get_pricing_data
@@ -43,11 +45,11 @@ class Test_GetPricingData extends TestCase {
 
 		Functions\when( 'wp_remote_retrieve_response_code' )->justReturn( 400 );
 
-		$wp_error = \Mockery::mock( \WP_Error::class );
+		$wp_error = Mockery::mock( WP_Error::class );
 		$wp_error->shouldReceive( 'get_error_message' )->andReturn( 'RocketCDN is not available at the moment. Plese retry later' );
 
 		$client = new APIClient();
-		$this->assertInstanceOf( \WP_Error::class, $client->get_pricing_data() );
+		$this->assertInstanceOf( WP_Error::class, $client->get_pricing_data() );
 	}
 
 	public function testShouldReturnWPErrorWhenReponseDataIsEmpty() {
@@ -63,11 +65,11 @@ class Test_GetPricingData extends TestCase {
 		Functions\when( 'wp_remote_retrieve_response_code' )->justReturn( 200 );
 		Functions\when( 'wp_remote_retrieve_body' )->justReturn( '' );
 
-		$wp_error = \Mockery::mock( \WP_Error::class );
+		$wp_error = Mockery::mock( WP_Error::class );
 		$wp_error->shouldReceive( 'get_error_message' )->andReturn( 'RocketCDN is not available at the moment. Plese retry later' );
 
 		$client = new APIClient();
-		$this->assertInstanceOf( \WP_Error::class, $client->get_pricing_data() );
+		$this->assertInstanceOf( WP_Error::class, $client->get_pricing_data() );
 	}
 
 	public function testShouldReturnPricingArrayWhenSuccessful() {

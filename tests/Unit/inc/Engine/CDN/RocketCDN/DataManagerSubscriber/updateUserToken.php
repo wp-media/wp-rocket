@@ -7,6 +7,7 @@ use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
 use WP_Rocket\Engine\CDN\RocketCDN\CDNOptionsManager;
 use WP_Rocket\Engine\CDN\RocketCDN\DataManagerSubscriber;
+use Mockery;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\DataManagerSubscriber::update_user_token
@@ -19,8 +20,8 @@ class Test_UpdateUserToken extends TestCase {
 		parent::setUp();
 
 		$this->data_manager = new DataManagerSubscriber(
-			$this->createMock( APIClient::class ),
-			$this->createMock( CDNOptionsManager::class )
+			Mockery::mock( APIClient::class ),
+			Mockery::mock( CDNOptionsManager::class )
 		);
 
 		Functions\when( 'check_ajax_referer' )->justReturn( true );

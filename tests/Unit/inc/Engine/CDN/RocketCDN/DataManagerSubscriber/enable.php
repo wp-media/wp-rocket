@@ -7,6 +7,7 @@ use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
 use WP_Rocket\Engine\CDN\RocketCDN\CDNOptionsManager;
 use WP_Rocket\Engine\CDN\RocketCDN\DataManagerSubscriber;
+use Mockery;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\DataManagerSubscriber::enable
@@ -25,8 +26,8 @@ class Test_Enable extends TestCase {
 			] );
 
 		$data_manager = new DataManagerSubscriber(
-			$this->createMock( APIClient::class ),
-			$this->createMock( CDNOptionsManager::class )
+			Mockery::mock( APIClient::class ),
+			Mockery::mock( CDNOptionsManager::class )
 		);
 
 		$data_manager->enable();
@@ -44,8 +45,8 @@ class Test_Enable extends TestCase {
 			] );
 
 		$data_manager = new DataManagerSubscriber(
-			$this->createMock( APIClient::class ),
-			$this->createMock( CDNOptionsManager::class )
+			Mockery::mock( APIClient::class ),
+			Mockery::mock( CDNOptionsManager::class )
 		);
 
 		$data_manager->enable();
@@ -67,8 +68,8 @@ class Test_Enable extends TestCase {
 			] );
 
 		$data_manager = new DataManagerSubscriber(
-			$this->createMock( APIClient::class ),
-			$this->createMock( CDNOptionsManager::class )
+			Mockery::mock( APIClient::class ),
+			Mockery::mock( CDNOptionsManager::class )
 		);
 
 		$data_manager->enable();
@@ -98,16 +99,16 @@ class Test_Enable extends TestCase {
 				'message' => 'rocketcdn_enabled',
 			] );
 
-		$api = $this->createMock( APIClient::class );
-		$api->expects( $this->once() )
-		    ->method( 'get_subscription_data' )
-		    ->willReturn( [
+		$api = Mockery::mock( APIClient::class );
+		$api->shouldReceive( 'get_subscription_data' )
+			->once()
+		    ->andReturn( [
 			    'subscription_next_date_update' => time(),
 		    ] );
 
-		$options = $this->createMock( CDNOptionsManager::class );
-		$options->expects( $this->once() )
-		        ->method( 'enable' )
+		$options = Mockery::mock( CDNOptionsManager::class );
+		$options->shouldReceive( 'enable' )
+				->once()
 		        ->with( 'https://rocketcdn.me' );
 
 		$data_manager = new DataManagerSubscriber(

@@ -4,6 +4,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\RocketCDN\AdminPageSubscriber;
 
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber;
+use Mockery;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber::rocketcdn_field
@@ -19,9 +20,9 @@ class Test_RocketcdnField extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->api_client = $this->createMock( 'WP_Rocket\Engine\CDN\RocketCDN\APIClient' );
-		$this->options    = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
-		$this->beacon     = $this->createMock( 'WP_Rocket\Engine\Admin\Beacon\Beacon' );
+		$this->api_client = Mockery::mock( 'WP_Rocket\Engine\CDN\RocketCDN\APIClient' );
+		$this->options    = Mockery::mock( 'WP_Rocket\Admin\Options_Data' );
+		$this->beacon     = Mockery::mock( 'WP_Rocket\Engine\Admin\Beacon\Beacon' );
 		$this->page       = new AdminPageSubscriber(
 			$this->api_client,
 			$this->options,
@@ -34,10 +35,10 @@ class Test_RocketcdnField extends TestCase {
 	 * Test should return default array for the field when RocketCDN is not active
 	 */
 	public function testShouldReturnDefaultFieldWhenRocketCDNNotActive() {
-		$this->api_client->expects( $this->once() )
-		                 ->method( 'get_subscription_data' )
-		                 ->willReturn( [ 'subscription_status' => 'cancelled' ] );
-		$this->options->expects( $this->never() )->method( 'get' );
+		$this->api_client->shouldReceive( 'get_subscription_data' )
+						 ->once()
+						 ->andReturn( [ 'subscription_status' => 'cancelled' ] );
+		$this->options->shouldReceive( 'get' )->never();
 
 		$fields = [ 'cdn_cnames' => [] ];
 		$this->assertSame( $fields, $this->page->rocketcdn_field( $fields ) );
@@ -47,19 +48,19 @@ class Test_RocketcdnField extends TestCase {
 	 * Test should return the special array for the field when RocketCDN is active.
 	 */
 	public function testShouldReturnRocketCDNFieldWhenRocketCDNActive() {
-		$this->api_client->expects( $this->once() )
-		                 ->method( 'get_subscription_data' )
-		                 ->willReturn( [ 'subscription_status' => 'running', 'cdn_url' => 'example1.org' ] );
-		$this->options->expects( $this->once() )
-		              ->method( 'get' )
-		              ->with( 'cdn_cnames', [] )
-					  ->willReturn( [ 'example1.org' ] );
-		$this->beacon->expects( $this->once() )
-					  ->method( 'get_suggest' )
-					  ->willReturn( [
+		$this->api_client->shouldReceive( 'get_subscription_data' )
+						 ->once()
+						 ->andReturn( [ 'subscription_status' => 'running', 'cdn_url' => 'example1.org' ] );
+		$this->options->shouldReceive( 'get' )
+					  ->once()
+					  ->with( 'cdn_cnames', [] )
+					  ->andReturn( [ 'example1.org' ] );
+		$this->beacon->shouldReceive( 'get_suggest' )
+					 ->once()
+					 ->andReturn( [
 						'url' => 'https://docs.wp-rocket.me/article/1307-rocketcdn',
 						'id'  => '5e4c84bd04286364bc958833',
-		] );
+					 ] );
 
 		$expected = [
 			'cdn_cnames' => [
@@ -84,19 +85,19 @@ class Test_RocketcdnField extends TestCase {
 	 * Test should return the special array with CNAME for the field when RocketCDN is active and the field is empty.
 	 */
 	public function testShouldReturnRocketCDNFieldWithCNAMEWhenRocketCDNActiveAndCNamesEmpty() {
-		$this->api_client->expects( $this->once() )
-		                 ->method( 'get_subscription_data' )
-		                 ->willReturn( [ 'subscription_status' => 'running', 'cdn_url' => 'example1.org' ] );
-		$this->options->expects( $this->once() )
-		              ->method( 'get' )
+		$this->api_client->shouldReceive( 'get_subscription_data' )
+						 ->once()
+		                 ->andReturn( [ 'subscription_status' => 'running', 'cdn_url' => 'example1.org' ] );
+		$this->options->shouldReceive( 'get' )
+					  ->once()
 		              ->with( 'cdn_cnames', [] )
-					  ->willReturn( [] );
-		$this->beacon->expects( $this->once() )
-					  ->method( 'get_suggest' )
-					  ->willReturn( [
+					  ->andReturn( [] );
+		$this->beacon->shouldReceive( 'get_suggest' )
+					  ->once()
+					  ->andReturn( [
 						'url' => 'https://docs.wp-rocket.me/article/1307-rocketcdn',
 						'id'  => '5e4c84bd04286364bc958833',
-		] );
+					  ] );
 
 		$expected = [
 			'cdn_cnames' => [
@@ -122,19 +123,19 @@ class Test_RocketcdnField extends TestCase {
 	 * different CDN CNAME(s).
 	 */
 	public function testShouldReturnRocketCDNFieldWithCNAMEWhenRocketCDNActiveAndCNames() {
-		$this->api_client->expects( $this->once() )
-		                 ->method( 'get_subscription_data' )
-		                 ->willReturn( [ 'subscription_status' => 'running', 'cdn_url' => 'example1.org' ] );
-		$this->options->expects( $this->once() )
-		              ->method( 'get' )
+		$this->api_client->shouldReceive( 'get_subscription_data' )
+						 ->once()
+		                 ->andReturn( [ 'subscription_status' => 'running', 'cdn_url' => 'example1.org' ] );
+		$this->options->shouldReceive( 'get' )
+					  ->once()
 		              ->with( 'cdn_cnames', [] )
-					  ->willReturn( [ 'example2.com' ] );
-		$this->beacon->expects( $this->once() )
-					  ->method( 'get_suggest' )
-					  ->willReturn( [
+					  ->andReturn( [ 'example2.com' ] );
+		$this->beacon->shouldReceive( 'get_suggest' )
+					  ->once()
+					  ->andReturn( [
 						'url' => 'https://docs.wp-rocket.me/article/1307-rocketcdn',
 						'id'  => '5e4c84bd04286364bc958833',
-		] );
+					  ] );
 
 		$expected = [
 			'cdn_cnames' => [

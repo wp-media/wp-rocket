@@ -4,6 +4,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\RocketCDN\NoticesSubscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber;
 use Brain\Monkey\Functions;
+use Mockery;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::dismiss_notice
@@ -16,7 +17,7 @@ class Test_DismissNotice extends TestCase {
 
 		$_POST['action'] = 'rocketcdn_dismiss_notice';
 
-		$notices = new NoticesSubscriber( $this->createMock( 'WP_Rocket\Engine\CDN\RocketCDN\APIClient' ), 'views/settings/rocketcdn');
+		$notices = new NoticesSubscriber( Mockery::mock( 'WP_Rocket\Engine\CDN\RocketCDN\APIClient' ), 'views/settings/rocketcdn');
 		$this->assertNull( $notices->dismiss_notice() );
 	}
 
@@ -30,7 +31,7 @@ class Test_DismissNotice extends TestCase {
 
 		$_POST['action'] = 'rocketcdn_dismiss_notice';
 
-		$notices = new NoticesSubscriber( $this->createMock( 'WP_Rocket\Engine\CDN\RocketCDN\APIClient' ), 'views/settings/rocketcdn');
+		$notices = new NoticesSubscriber( Mockery::mock( 'WP_Rocket\Engine\CDN\RocketCDN\APIClient' ), 'views/settings/rocketcdn');
 		$notices->dismiss_notice();
 	}
 }

@@ -7,6 +7,7 @@ use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
 use WP_Rocket\Engine\CDN\RocketCDN\CDNOptionsManager;
 use WP_Rocket\Engine\CDN\RocketCDN\DataManagerSubscriber;
+use Mockery;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\DataManagerSubscriber::disable
@@ -26,8 +27,8 @@ class Test_Disable extends TestCase {
 			] );
 
 			$data_manager = new DataManagerSubscriber(
-				$this->createMock( APIClient::class ),
-				$this->createMock( CDNOptionsManager::class )
+				Mockery::mock( APIClient::class ),
+				Mockery::mock( CDNOptionsManager::class )
 			);
 
 			$data_manager->disable();
@@ -56,12 +57,11 @@ class Test_Disable extends TestCase {
 				'message' => 'rocketcdn_disabled',
 			] );
 
-		$options = $this->createMock( CDNOptionsManager::class );
-		$options->expects( $this->once() )
-		        ->method( 'disable' );
+		$options = Mockery::mock( CDNOptionsManager::class );
+		$options->shouldReceive( 'disable' )->once();
 
 		$data_manager = new DataManagerSubscriber(
-			$this->createMock( APIClient::class ),
+			Mockery::mock( APIClient::class ),
 			$options
 		);
 

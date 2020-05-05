@@ -8,6 +8,7 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
 use WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber;
+use Mockery;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber::display_manage_subscription
@@ -21,11 +22,11 @@ class Test_DisplayManageSubscription extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->api_client = $this->createMock( APIClient::class );
+		$this->api_client = Mockery::mock( APIClient::class );
 		$this->page       = new AdminPageSubscriber(
 			$this->api_client,
-			$this->createMock( Options_Data::class ),
-			$this->createMock( Beacon::class ),
+			Mockery::mock( Options_Data::class ),
+			Mockery::mock( Beacon::class ),
 			'views/settings/rocketcdn'
 		);
 	}
@@ -45,9 +46,9 @@ class Test_DisplayManageSubscription extends TestCase {
 	public function testShouldNotRenderButtonHTMLWhenSubscriptionInactive() {
 		Functions\when( 'rocket_is_live_site' )->justReturn( true );
 
-		$this->api_client->expects( $this->once() )
-			->method( 'get_subscription_data' )
-			->willReturn( [ 'subscription_status' => 'cancelled' ] );
+		$this->api_client->shouldReceive( 'get_subscription_data' )
+			 ->once()
+			 ->andReturn( [ 'subscription_status' => 'cancelled' ] );
 
 		$this->assertEmpty( $this->getActualHtml() );
 	}
@@ -55,9 +56,9 @@ class Test_DisplayManageSubscription extends TestCase {
 	public function testShouldRenderButtonHTMLWhenSubscriptionActive() {
 		Functions\when( 'rocket_is_live_site' )->justReturn( true );
 
-		$this->api_client->expects( $this->once() )
-			->method( 'get_subscription_data' )
-			->willReturn( [ 'subscription_status' => 'running' ] );
+		$this->api_client->shouldReceive( 'get_subscription_data' )
+			 ->once()
+			 ->andReturn( [ 'subscription_status' => 'running' ] );
 
 		$expected = <<<HTML
 <p class="wpr-rocketcdn-subscription">

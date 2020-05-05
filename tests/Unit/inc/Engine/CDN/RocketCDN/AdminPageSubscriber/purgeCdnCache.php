@@ -7,6 +7,7 @@ use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber;
 use WPDieException;
 use function WP_Rocket\Tests\getTestsRootDir;
+use Mockery;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber::purge_cdn_cache
@@ -27,11 +28,11 @@ class Test_PurgeCdnCache extends TestCase {
 
 		unset( $_GET['_wpnonce'] );
 
-		$this->api_client = $this->createMock( 'WP_Rocket\Engine\CDN\RocketCDN\APIClient' );
+		$this->api_client = Mockery::mock( 'WP_Rocket\Engine\CDN\RocketCDN\APIClient' );
 		$this->page       = new AdminPageSubscriber(
 			$this->api_client,
-			$this->createMock( 'WP_Rocket\Admin\Options_Data' ),
-			$this->createMock( 'WP_Rocket\Engine\Admin\Beacon\Beacon' ),
+			Mockery::mock( 'WP_Rocket\Admin\Options_Data' ),
+			Mockery::mock( 'WP_Rocket\Engine\Admin\Beacon\Beacon' ),
 			''
 		);
 	}
@@ -95,9 +96,8 @@ class Test_PurgeCdnCache extends TestCase {
 			'status'  => 'success',
 			'message' => 'RocketCDN cache purge successful.',
 		];
-		$this->api_client->expects( $this->once() )
-		                 ->method( 'purge_cache_request' )
-		                 ->willReturn( $response );
+		$this->api_client->shouldReceive( 'purge_cache_request' )
+		                 ->andReturn( $response );
 
 		Functions\expect( 'set_transient' )
 			->once()

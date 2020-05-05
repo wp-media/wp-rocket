@@ -7,6 +7,7 @@ use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\RocketCDN\CDNOptionsManager;
+use Mockery;
 
 /**
  * @covers\WP_Rocket\Engine\CDN\RocketCDN\CDNOptionsManager::enable
@@ -28,20 +29,19 @@ class Test_Enable extends TestCase {
 			->once()
 			->with( 'rocketcdn_status' );
 
-		$options_array = $this->createMock( Options_Data::class );
-		$options_array->expects( $this->exactly( 3 ) )
-		              ->method( 'set' )
-		              ->withConsecutive(
-			              [ 'cdn', 1 ],
-			              [ 'cdn_cnames', [ 'https://rocketcdn.me' ] ],
-			              [ 'cdn_zone', [ 'all' ] ]
-		              );
-		$options_array->method( 'get_options' )
-		              ->willReturn( $expected );
+		$options_array = Mockery::mock( Options_Data::class );
+		foreach ($expected as $option_key => $option_value) {
+			$options_array->shouldReceive( 'set' )
+				->once()
+				->with( $option_key, $option_value )
+				->andReturn();
+		}
 
-		$options = $this->createMock( Options::class );
-		$options->expects( $this->once() )
-		        ->method( 'set' )
+		$options_array->shouldReceive( 'get_options' )
+		              ->andReturn( $expected );
+
+		$options = Mockery::mock( Options::class );
+		$options->shouldReceive( 'set' )
 		        ->with( 'settings', $expected );
 
 		( new CDNOptionsManager(

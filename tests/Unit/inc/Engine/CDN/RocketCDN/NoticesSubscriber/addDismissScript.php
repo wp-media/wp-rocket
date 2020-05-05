@@ -5,6 +5,7 @@ use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
 use WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber;
+use Mockery;
 
 /**
  * @covers\WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::add_dismiss_script
@@ -18,7 +19,7 @@ class Test_AddDismissScript extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->api_client = $this->createMock( APIClient::class );
+		$this->api_client = Mockery::mock( APIClient::class );
 		$this->notices    = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn' );
 	}
 
@@ -72,8 +73,8 @@ class Test_AddDismissScript extends TestCase {
 		Functions\when( 'get_current_user_id' )->justReturn( 1 );
 		Functions\when( 'get_user_meta' )->justReturn( false );
 
-		$this->api_client->method( 'get_subscription_data' )
-			->willReturn( [ 'subscription_status' => 'running' ] );
+		$this->api_client->shouldReceive( 'get_subscription_data' )
+			->andReturn( [ 'subscription_status' => 'running' ] );
 
 		$this->assertNull( $this->notices->add_dismiss_script() );
 	}
@@ -92,8 +93,8 @@ class Test_AddDismissScript extends TestCase {
 		Functions\when( 'wp_create_nonce' )->justReturn( '123456' );
 		Functions\when( 'admin_url' )->justReturn( 'https://example.org/wp-admin/admin-ajax.php' );
 
-		$this->api_client->method( 'get_subscription_data' )
-			->willReturn( [ 'subscription_status' => 'cancelled' ] );
+		$this->api_client->shouldReceive( 'get_subscription_data' )
+			->andReturn( [ 'subscription_status' => 'cancelled' ] );
 
 		$this->setOutputCallback(
 			function( $output ) {
