@@ -19,7 +19,7 @@ abstract class TestCase extends BaseTestCase {
 		$mocks = [
 			'optionsData' => $this->createMock( 'WP_Rocket\Admin\Options_Data' ),
 			'optionsApi'  => $this->createMock( 'WP_Rocket\Admin\Options' ),
-			'cdn'         => $this->createMock( 'WP_Rocket\Subscriber\CDN\CDNSubscriber' ),
+			'cdn'         => $this->createMock( 'WP_Rocket\Engine\CDN\Subscriber' ),
 			'beacon'      => $this->createMock( 'WP_Rocket\Engine\Admin\Beacon\Beacon' ),
 		];
 
