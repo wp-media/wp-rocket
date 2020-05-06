@@ -1,6 +1,7 @@
 <?php
 namespace WP_Rocket\Subscriber\Admin\Settings;
 
+use WP_Rocket\deprecated\DeprecatedClassTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Admin\Settings\Beacon;
 
@@ -11,6 +12,7 @@ use WP_Rocket\Admin\Settings\Beacon;
  * @author Remy Perona
  */
 class Beacon_Subscriber implements Subscriber_Interface {
+	use DeprecatedClassTrait;
 	/**
 	 * Beacon instance
 	 *
@@ -24,6 +26,7 @@ class Beacon_Subscriber implements Subscriber_Interface {
 	 * @param Beacon $beacon Beacon instance.
 	 */
 	public function __construct( Beacon $beacon ) {
+		self::deprecated_class( '3.6' );
 		$this->beacon = $beacon;
 	}
 
