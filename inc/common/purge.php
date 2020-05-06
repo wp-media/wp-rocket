@@ -420,7 +420,7 @@ function do_admin_post_rocket_purge_cache() { // phpcs:ignore WordPress.NamingCo
 		$type_raw   = sanitize_key( $_GET['type'] );
 		$type_array = explode( '-', $type_raw );
 
-		$type     = reset( $type_array );
+		$type     = $type_array[0];
 		$id       = isset( $type_array[1] ) && is_numeric( $type_array[1] ) ? absint( $type_array[1] ) : 0;
 		$taxonomy = isset( $_GET['taxonomy'] ) ? sanitize_title( wp_unslash( $_GET['taxonomy'] ) ) : '';
 		$url      = '';
