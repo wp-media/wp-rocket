@@ -100,6 +100,7 @@ class Plugin {
 				'rocketcdn_data_manager_subscriber',
 				'health_check',
 				'minify_css_admin_subscriber',
+				'admin_cache_subscriber',
 			];
 		} elseif ( \rocket_valid_key() ) {
 			$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\ServiceProvider' );
