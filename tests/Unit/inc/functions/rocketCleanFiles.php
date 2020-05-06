@@ -104,7 +104,7 @@ class Test_RocketCleanFiles extends FilesystemTestCase {
 			if ( $this->filesystem->is_dir( $file ) ) {
 				Functions\expect( 'rocket_rrmdir' )
 					->once()
-					->with( $file, [] )
+					->with( $file, [], $this->filesystem )
 					->andReturnNull();
 			} else {
 				Functions\expect( 'rocket_rrmdir' )->with( $file )->never();
