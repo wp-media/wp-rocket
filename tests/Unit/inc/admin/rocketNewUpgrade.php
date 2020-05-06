@@ -21,6 +21,8 @@ class Test_RocketNewUpgrade extends TestCase {
 		Functions\when( 'rocket_is_ssl_website' )->justReturn( false );
 		Functions\expect( 'rocket_generate_advanced_cache_file' )
 			->once();
+		Functions\expect( 'rocket_clean_cache_busting' )
+			->once();
 
 		rocket_new_upgrade( '3.5.1', '3.4.4' );
 	}
