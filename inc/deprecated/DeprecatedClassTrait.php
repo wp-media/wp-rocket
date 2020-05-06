@@ -12,7 +12,6 @@ trait DeprecatedClassTrait {
 	 * The current behavior is to trigger a user error if `WP_DEBUG` is true.
 	 *
 	 * @since  3.6
-	 * @author Grégory Viguier
 	 *
 	 * @param string $version     The version of WordPress that deprecated the class.
 	 * @param string $replacement Optional. The method that should have been called. Default null.
@@ -22,7 +21,6 @@ trait DeprecatedClassTrait {
 		 * Fires when a deprecated class is called.
 		 *
 		 * @since  3.6
-		 * @author Grégory Viguier
 		 *
 		 * @param string $class       The class containing the deprecated constructor.
 		 * @param string $version     The version of WordPress that deprecated the class.
@@ -39,7 +37,6 @@ trait DeprecatedClassTrait {
 		 * `WP_DEBUG` must be true in addition to the filter evaluating to true.
 		 *
 		 * @since  3.6
-		 * @author Grégory Viguier
 		 *
 		 * @param bool $trigger Whether to trigger the error for deprecated classes. Default true.
 		 */

@@ -9,46 +9,38 @@ use WP_Rocket\Admin\Options_Data as Options;
 /**
  * Event subscriber for Facebook tracking cache busting.
  *
- * @since  3.2
- * @author Grégory Viguier
+ * @since 3.2
  */
 class Subscriber implements Subscriber_Interface {
 
 	/**
 	 * Name of the cron.
 	 *
-	 * @var    string
-	 * @since  3.2
-	 * @author Grégory Viguier
+	 * @var   string
+	 * @since 3.2
 	 */
 	const CRON_NAME = 'rocket_facebook_tracking_cache_update';
 
 	/**
 	 * Instance of the Busting Factory class.
 	 *
-	 * @var    Busting_Factory
-	 * @since  3.2
-	 * @access private
-	 * @author Grégory Viguier
+	 * @var   Busting_Factory
+	 * @since 3.2
 	 */
 	private $busting_factory;
 
 	/**
 	 * Instance of the Option_Data class.
 	 *
-	 * @var    Options
-	 * @since  3.2
-	 * @access private
-	 * @author Grégory Viguier
+	 * @var   Options
+	 * @since 3.2
 	 */
 	private $options;
 
 	/**
 	 * Constructor.
 	 *
-	 * @since  3.2
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.2
 	 *
 	 * @param Busting_Factory $busting_factory Instance of the Busting Factory class.
 	 * @param Options         $options         Instance of the Options_Data class.
@@ -61,9 +53,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
-	 * @since  3.2
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.2
 	 *
 	 * @return array
 	 */
@@ -82,9 +72,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Add weekly interval to cron schedules.
 	 *
-	 * @since  3.2
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.2
 	 *
 	 * @param  array $schedules An array of intervals used by cron jobs.
 	 * @return array
@@ -105,9 +93,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * (Un)Schedule the auto-update of the cache busting files.
 	 *
-	 * @since  3.2
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.2
 	 */
 	public function schedule_cache_update() {
 		$scheduled = wp_next_scheduled( self::CRON_NAME );
@@ -127,9 +113,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Update the Facebook Pixel cache busting files.
 	 *
-	 * @since  3.2
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.2
 	 *
 	 * @return bool
 	 */
@@ -146,10 +130,8 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Delete Facebook Pixel cache busting files.
 	 *
-	 * @since  3.2
-	 * @since  3.6 Argument replacement.
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.2
+	 * @since 3.6 Argument replacement.
 	 *
 	 * @param  string $type Type of cache clearance: 'all', 'post', 'term', 'user', 'url'.
 	 * @return bool
@@ -167,9 +149,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Process the cache busting on the HTML contents.
 	 *
-	 * @since  3.2
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.2
 	 *
 	 * @param  string $html HTML contents.
 	 * @return string
@@ -187,9 +167,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Tell if the cache busting should happen.
 	 *
-	 * @since  3.2
-	 * @access private
-	 * @author Grégory Viguier
+	 * @since 3.2
 	 *
 	 * @return bool
 	 */
@@ -204,9 +182,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Tell if the cache busting option is active.
 	 *
-	 * @since  3.2
-	 * @access private
-	 * @author Grégory Viguier
+	 * @since 3.2
 	 *
 	 * @return bool
 	 */

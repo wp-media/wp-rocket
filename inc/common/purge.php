@@ -36,7 +36,6 @@ add_filter( 'widget_update_callback', 'rocket_widget_update_callback' );
  * Get post purge urls.
  *
  * @since 3.4.3
- * @author Soponar Cristina
  *
  * @param int     $post_id The post ID.
  * @param WP_Post $post    WP_Post object.
@@ -277,7 +276,6 @@ add_action( 'wp_update_comment_count', 'rocket_clean_post' );
  * Purge WP Rocket cache when post status is changed from publish to draft.
  *
  * @since  3.4.3
- * @author Soponar Cristina
  *
  * @param int   $post_id   The post ID.
  * @param array $post_data Array of unslashed post data.
@@ -465,7 +463,6 @@ function do_admin_post_rocket_purge_cache() { // phpcs:ignore WordPress.NamingCo
 					 * Filters the arguments for the preload request being triggered after clearing the cache.
 					 *
 					 * @since  3.4
-					 * @author Grégory Viguier
 					 *
 					 * @param array $args Request arguments.
 					 */
@@ -485,7 +482,6 @@ function do_admin_post_rocket_purge_cache() { // phpcs:ignore WordPress.NamingCo
 					 * Fires after automatically preloading the homepage, which occurs after purging the cache.
 					 *
 					 * @since  3.5
-					 * @author Grégory Viguier
 					 *
 					 * @param string $home_url URL to the homepage being preloaded.
 					 * @param string $lang     The lang of the homepage.
@@ -540,7 +536,6 @@ function do_admin_post_rocket_purge_cache() { // phpcs:ignore WordPress.NamingCo
 		 * Fires after the cache is cleared.
 		 *
 		 * @since  3.6
-		 * @author Grégory Viguier
 		 *
 		 * @param string $type     Type of cache clearance: 'all', 'post', 'term', 'user', 'url'.
 		 * @param int    $id       The post ID, term ID, or user ID being cleared. 0 when $type is not 'post', 'term', or 'user'.
@@ -628,7 +623,6 @@ add_action( 'upgrader_process_complete', 'rocket_clean_cache_theme_update', 10, 
  * Purge WP Rocket cache on Slug / Permalink change.
  *
  * @since  3.4.2
- * @author Soponar Cristina
  *
  * @param int   $post_id   The post ID.
  * @param array $post_data Array of unslashed post data.

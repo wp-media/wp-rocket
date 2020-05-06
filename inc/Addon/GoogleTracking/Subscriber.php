@@ -11,7 +11,6 @@ use WP_Rocket\Logger\Logger;
  * Event subscriber for Google tracking cache busting
  *
  * @since 3.1
- * @author Remy Perona
  */
 class Subscriber implements Subscriber_Interface {
 
@@ -43,8 +42,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
-	 * @since  3.1
-	 * @author Remy Perona
+	 * @since 3.1
 	 *
 	 * @return array
 	 */
@@ -66,7 +64,6 @@ class Subscriber implements Subscriber_Interface {
 	 * Google Analytics replacement is performed first, and if no replacement occured, Google Tag Manager replacement is performed.
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @param string $html HTML content.
 	 * @return string
@@ -89,7 +86,6 @@ class Subscriber implements Subscriber_Interface {
 	 * Schedules the auto-update of Google Analytics cache busting file
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
@@ -107,7 +103,6 @@ class Subscriber implements Subscriber_Interface {
 	 * Updates Google Analytics cache busting file
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @return bool
 	 */
@@ -125,7 +120,6 @@ class Subscriber implements Subscriber_Interface {
 	 * Adds weekly interval to cron schedules
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @param Array $schedules An array of intervals used by cron jobs.
 	 * @return Array
@@ -146,9 +140,8 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Deletes the GA busting file.
 	 *
-	 * @since  3.1
-	 * @since  3.6 Argument replacement.
-	 * @author Remy Perona
+	 * @since 3.1
+	 * @since 3.6 Argument replacement.
 	 *
 	 * @param  string $type Type of cache clearance: 'all', 'post', 'term', 'user', 'url'.
 	 * @return bool
@@ -165,7 +158,6 @@ class Subscriber implements Subscriber_Interface {
 	 * Checks if the cache busting should happen
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @return boolean
 	 */
@@ -180,8 +172,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Tell if the cache busting option is active.
 	 *
-	 * @since  3.6
-	 * @author Grégory Viguier
+	 * @since 3.6
 	 *
 	 * @return bool
 	 */
