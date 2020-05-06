@@ -32,7 +32,6 @@ class Common_Subscribers extends AbstractServiceProvider {
 		'expired_cache_purge',
 		'expired_cache_purge_subscriber',
 		'detect_missing_tags',
-		'purge_actions_subscriber',
 	];
 
 	/**
@@ -70,7 +69,5 @@ class Common_Subscribers extends AbstractServiceProvider {
 			->withArgument( $this->getContainer()->get( 'cdn_subscriber' ) )
 			->withArgument( $this->getContainer()->get( 'beacon' ) );
 		$this->getContainer()->share( 'detect_missing_tags_subscriber', 'WP_Rocket\Subscriber\Tools\Detect_Missing_Tags_Subscriber' );
-		$this->getContainer()->share( 'purge_actions_subscriber', 'WP_Rocket\Subscriber\Cache\PurgeActionsSubscriber' )
-			->withArgument( $options );
 	}
 }
