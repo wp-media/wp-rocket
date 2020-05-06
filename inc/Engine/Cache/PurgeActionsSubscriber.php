@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Subscriber\Cache;
+namespace WP_Rocket\Engine\Cache;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Admin\Options_Data;
@@ -8,7 +8,6 @@ use WP_Rocket\Admin\Options_Data;
  * Subscriber for the cache purge actions
  *
  * @since 3.5
- * @author Remy Perona
  */
 class PurgeActionsSubscriber implements Subscriber_Interface {
 	/**
@@ -32,8 +31,11 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'profile_update' => 'purge_user_cache',
-			'delete_user'    => 'purge_user_cache',
+			'profile_update'  => 'purge_user_cache',
+			'delete_user'     => 'purge_user_cache',
+			'create_term'     => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
+			'edit_term'       => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
+			'pre_delete_term' => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
 		];
 	}
 
@@ -41,7 +43,6 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 	 * Purges the cache of the corresponding user
 	 *
 	 * @since 3.5
-	 * @author Remy Perona
 	 *
 	 * @param int $user_id User ID.
 	 * @return void
@@ -55,10 +56,43 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 	}
 
 	/**
+	 * Purges the cache when a public term is created|updated|deleted
+	 *
+	 * @since 3.5.5
+	 *
+	 * @param int    $term_id  Term ID.
+	 * @param int    $tt_id    Term taxonomy ID.
+	 * @param string $taxonomy Taxonomy slug.
+	 * @return void
+	 */
+	public function maybe_purge_cache_on_term_change( $term_id, $tt_id, $taxonomy ) {
+		if ( ! $this->is_taxonomy_public( $taxonomy ) ) {
+			return;
+		}
+
+		rocket_clean_domain();
+	}
+
+	/**
+	 * Checks if the given taxonomy is public
+	 *
+	 * @param string $name Taxonomy name.
+	 * @return bool
+	 */
+	private function is_taxonomy_public( $name ) {
+		$taxonomy = get_taxonomy( $name );
+
+		if ( false === $taxonomy ) {
+			return false;
+		}
+
+		return ( $taxonomy->public && $taxonomy->publicly_queryable );
+	}
+
+	/**
 	 * Checks if the user cache should be purged
 	 *
 	 * @since 3.5
-	 * @author Remy Perona
 	 *
 	 * @return boolean
 	 */
