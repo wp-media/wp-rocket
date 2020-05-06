@@ -84,14 +84,12 @@ function rocket_renew_box( $function, $uid = 0 ) {
  * @param string $function Function (box) name.
  */
 function rocket_dismiss_box( $function ) {
-	global $current_user;
-
-	$actual = get_user_meta( $current_user->ID, 'rocket_boxes', true );
+	$actual = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
 	$actual = array_merge( (array) $actual, [ $function ] );
 	$actual = array_filter( $actual );
 	$actual = array_unique( $actual );
 
-	update_user_meta( $current_user->ID, 'rocket_boxes', $actual );
+	update_user_meta( get_current_user_id(), 'rocket_boxes', $actual );
 	delete_transient( $function );
 }
 
