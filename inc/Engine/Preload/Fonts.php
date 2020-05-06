@@ -95,7 +95,7 @@ class Fonts implements Subscriber_Interface {
 			return;
 		}
 
-		$base_url = get_rocket_parse_url( site_url() );
+		$base_url = get_rocket_parse_url( home_url() );
 		$base_url = "{$base_url['scheme']}://{$base_url['host']}";
 
 		foreach ( array_unique( $fonts ) as $font ) {
@@ -125,7 +125,7 @@ class Fonts implements Subscriber_Interface {
 			return false;
 		}
 
-		$ext = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
+		$ext = strtolower( pathinfo( strtok( $file, '?' ), PATHINFO_EXTENSION ) );
 
 		if ( ! in_array( $ext, $this->font_formats, true ) ) {
 			return false;
