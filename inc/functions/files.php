@@ -596,19 +596,20 @@ function rocket_clean_cache_busting( $extensions = [ 'js', 'css' ] ) {
 	}
 }
 
-
 /**
  * Delete one or several cache files.
  *
+ * @since 3.5.5 Optimizes by grabbing root cache dirs once, bailing out when file/dir doesn't exist, & directly
+ *        deleting files.
  * @since 3.5.4 Replaces glob and optimizes.
  * @since 2.0   Delete cache files for all users.
  * @since 1.1.0 Add filter rocket_clean_files.
  * @since 1.0
  *
- * @param  string|array $urls URLs of cache files to be deleted.
- * @return void
+ * @param string|array              $urls       URLs of cache files to be deleted.
+ * @param WP_Filesystem_Direct|null $filesystem Optional. Instance of filesystem handler.
  */
-function rocket_clean_files( $urls ) {
+function rocket_clean_files( $urls, $filesystem = null ) {
 	$urls = (array) $urls;
 	if ( empty( $urls ) ) {
 		return;
@@ -629,8 +630,11 @@ function rocket_clean_files( $urls ) {
 
 	/** This filter is documented in inc/front/htaccess.php */
 	$url_no_dots = (bool) apply_filters( 'rocket_url_no_dots', false );
-	$filesystem  = rocket_direct_filesystem();
 	$cache_path  = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' );
+
+	if ( empty( $filesystem ) ) {
+		$filesystem = rocket_direct_filesystem();
+	}
 
 	/**
 	 * Fires before all cache files are deleted.
@@ -666,7 +670,7 @@ function rocket_clean_files( $urls ) {
 			}
 
 			if ( $filesystem->is_dir( $entry ) ) {
-				rocket_rrmdir( $entry, [] );
+				rocket_rrmdir( $entry, [], $filesystem );
 			} else {
 				$filesystem->delete( $entry );
 			}
@@ -1064,12 +1068,16 @@ function rocket_clean_cache_dir() {
  * @since 3.5.3 Replaces glob and optimizes.
  * @since 1.0
  *
- * @param string $dir              File/Directory to delete.
- * @param array  $dirs_to_preserve Optional. Dirs that should not be deleted.
+ * @param string                    $dir              File/Directory to delete.
+ * @param array                     $dirs_to_preserve Optional. Dirs that should not be deleted.
+ * @param WP_Filesystem_Direct|null $filesystem       Optional. Instance of filesystem handler.
  */
-function rocket_rrmdir( $dir, array $dirs_to_preserve = [] ) {
-	$dir        = untrailingslashit( $dir );
-	$filesystem = rocket_direct_filesystem();
+function rocket_rrmdir( $dir, array $dirs_to_preserve = [], $filesystem = null ) {
+	$dir = untrailingslashit( $dir );
+
+	if ( empty( $filesystem ) ) {
+		$filesystem = rocket_direct_filesystem();
+	}
 
 	/**
 	 * Fires before a file/directory cache is deleted
