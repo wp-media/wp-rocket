@@ -3,7 +3,7 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\Settings\Settings;
 
 use Brain\Monkey\Functions;
-use WP_Rocket\Admin\Options;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Settings\Settings;
 use WPMedia\PHPUnit\Unit\TestCase;
 
@@ -19,7 +19,7 @@ class Test_SanitizeCallback extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->options  = $this->createMock( Options::class );
+		$this->options  = $this->createMock( Options_Data::class );
 		$this->settings = new Settings( $this->options );
 	}
 
@@ -85,8 +85,7 @@ class Test_SanitizeCallback extends TestCase {
 		Functions\when( 'wp_parse_url' )->alias( function( $url, $component = -1 ) {
 			return parse_url( $url, $component );
 		} );
-		Functions\expect( 'get_option' )
-			->with( 'home' )
+		Functions\expect( 'home_url' )
 			->andReturn( 'http://example.org/' );
 
 		$output = $this->settings->sanitize_callback( $input );

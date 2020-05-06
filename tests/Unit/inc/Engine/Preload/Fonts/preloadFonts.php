@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use Mockery;
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\CDN\CDN;
+use WP_Rocket\Engine\CDN\CDN;
 use WP_Rocket\Engine\Preload\Fonts;
 
 /**
@@ -38,7 +38,7 @@ class Test_PreloadFonts extends TestCase {
 			return rtrim( $thing, '\/' );
 		} );
 		Functions\when( 'esc_url' )->returnArg();
-		Functions\when( 'site_url' )->justReturn( 'http://example.org' );
+		Functions\when( 'home_url' )->justReturn( 'http://example.org' );
 
 		$this->options->shouldReceive( 'get' )
 			->with( 'preload_fonts', [] )

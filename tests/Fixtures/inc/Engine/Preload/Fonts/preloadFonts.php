@@ -34,7 +34,7 @@ return [
 				'/wp-content/file.tte',
 				'/wp-content/file.ttf',
 				'/wp-content/file.svg',
-				'/wp-content/file.woff',
+				'/wp-content/file.woff?v=4.4.0',
 				'/wp-content/file.woff2',
 				'/wp-content/file.woff2',
 				'/wp-content/file.css',
@@ -46,7 +46,7 @@ return [
 		'<link rel="preload" as="font" href="http://example.org/wp-content/file.otf" crossorigin>
 		<link rel="preload" as="font" href="http://example.org/wp-content/file.ttf" crossorigin>
 		<link rel="preload" as="font" href="http://example.org/wp-content/file.svg" crossorigin>
-		<link rel="preload" as="font" href="http://example.org/wp-content/file.woff" crossorigin>
+		<link rel="preload" as="font" href="http://example.org/wp-content/file.woff?v=4.4.0" crossorigin>
 		<link rel="preload" as="font" href="http://example.org/wp-content/file.woff2" crossorigin>'
 	],
 	'validPreloadFontsOptionsWithCDN' => [

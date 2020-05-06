@@ -1,7 +1,7 @@
 <?php
 return [
 	// Empty WP Rocket options array.
-	[
+	'testEmptyOptionsArray' => [
 		[
 		],
 		[
@@ -9,7 +9,7 @@ return [
 		],
 	],
 	// Empty textarea for preload fonts.
-	[
+	'testEmptyTextarea' => [
 		[
 			'preload_fonts' => '',
 		],
@@ -18,19 +18,20 @@ return [
 		],
 	],
 	// Textarea with various values as a string and duplicates.
-	[
+	'testStringInput' => [
 		[
 			'preload_fonts' => "http://example.org/wp-content/file.ttf?foo=bar \nhttps://example.org/wp-content/file.ttf?foo=bar\n//example.org/wp-content/file.ttf?foo=bar\n \n/wp-content/file.ttf?foo=bar\n/wp-content/file.ttf?bar=baz\nhttp://example.org/wp-content/themes/this-theme/assets/font.svg\n//google.com/font.eot",
 		],
 		[
 			'preload_fonts' => [
-				'/wp-content/file.ttf',
+				'/wp-content/file.ttf?foo=bar',
+				'/wp-content/file.ttf?bar=baz',
 				'/wp-content/themes/this-theme/assets/font.svg',
 			],
 		],
 	],
 	// Input as an array with duplicates.
-	[
+	'testArrayInput' => [
 		[
 			'preload_fonts' => [
 				'http://example.org/wp-content/file.ttf?foo=bar',
@@ -45,13 +46,14 @@ return [
 		],
 		[
 			'preload_fonts' => [
-				'/wp-content/file.ttf',
+				'/wp-content/file.ttf?foo=bar',
+				'/wp-content/file.ttf?bar=baz',
 				'/wp-content/themes/this-theme/assets/font.svg',
 			],
 		],
 	],
 	// Only valid font formats.
-	[
+	'testValidFormats' => [
 		[
 			'preload_fonts' => [
 				'http://example.org/wp-content/file.dfont',
