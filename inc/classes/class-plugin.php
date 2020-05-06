@@ -67,6 +67,7 @@ class Plugin {
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Database' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Admin\Beacon\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\RocketCDN' );
+		$this->container->addServiceProvider( 'WP_Rocket\Engine\Cache\ServiceProvider' );
 
 		$subscribers = [];
 
@@ -99,6 +100,7 @@ class Plugin {
 				'rocketcdn_data_manager_subscriber',
 				'health_check',
 				'minify_css_admin_subscriber',
+				'admin_cache_subscriber',
 			];
 		} elseif ( \rocket_valid_key() ) {
 			$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\ServiceProvider' );
