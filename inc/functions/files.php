@@ -615,14 +615,6 @@ function rocket_clean_files( $urls, $filesystem = null ) {
 		return;
 	}
 
-	/**
-	 * Filter URLs that the cache file to be deleted.
-	 *
-	 * @since 1.1.0
-	 *
-	 * @param array URLs that will be returned.
-	 */
-	$urls = (array) apply_filters( 'rocket_clean_files', $urls );
 	$urls = array_filter( $urls );
 	if ( empty( $urls ) ) {
 		return;
@@ -1461,8 +1453,6 @@ function _rocket_get_cache_dirs( $url_host, $cache_path = '', $hard_reset = fals
 	if ( isset( $domain_dirs[ $url_host ] ) ) {
 		return $domain_dirs[ $url_host ];
 	}
-
-	$url_host = rtrim( $url_host, '*' );
 
 	if ( empty( $cache_path ) ) {
 		$cache_path = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' );

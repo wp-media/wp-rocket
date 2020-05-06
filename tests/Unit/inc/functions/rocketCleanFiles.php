@@ -44,7 +44,7 @@ class Test_RocketCleanFiles extends FilesystemTestCase {
 		}
 
 		if ( empty( $urls ) ) {
-			$this->doBailOutTest( $urls );
+			$this->doBailOutTest();
 		} else {
 			$this->doCleanFilesTest( $urls, $expected );
 		}
@@ -53,8 +53,7 @@ class Test_RocketCleanFiles extends FilesystemTestCase {
 		rocket_clean_files( $urls );
 	}
 
-	private function doBailOutTest( $urls ) {
-		Filters\expectApplied( 'rocket_clean_files' )->never();
+	private function doBailOutTest() {
 		Filters\expectApplied( 'rocket_url_no_dots' )->never();
 		Actions\expectDone( 'before_rocket_clean_files' )->never();
 		Actions\expectDone( 'before_rocket_clean_file' )->never();
@@ -64,22 +63,13 @@ class Test_RocketCleanFiles extends FilesystemTestCase {
 	}
 
 	private function doCleanFilesTest( $urls, $expected ) {
-		$regex_urls = [];
-		foreach ( $urls as $url ) {
-			$host         = parse_url( $url, PHP_URL_HOST );
-			$regex_urls[] = str_replace( $host, "{$host}*", $url );
-		}
-
-		Filters\expectApplied( 'rocket_clean_files' )
-			->once()
-			->with( $urls )
-			->andReturn( $regex_urls );
 		Filters\expectApplied( 'rocket_url_no_dots' )
 			->once()
 			->with( false )
 			->andReturnFirstArg();
-		Actions\expectDone( 'before_rocket_clean_files' )->once()->with( $regex_urls );
-		foreach ( $regex_urls as $url ) {
+		Actions\expectDone( 'before_rocket_clean_files' )->once()->with( $urls );
+
+		foreach ( $urls as $url ) {
 			Actions\expectDone( 'before_rocket_clean_file' )->once()->with( $url );
 			Functions\expect( 'get_rocket_parse_url' )
 				->once()
