@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Engine\Admin\Beacon;
 
+use WP_Rocket\Abstract_Render;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
@@ -9,14 +10,12 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * Helpscout Beacon integration
  *
  * @since  3.2
- * @author Remy Perona
  */
-class Beacon implements Subscriber_Interface {
+class Beacon extends Abstract_Render implements Subscriber_Interface {
 	/**
 	 * Options_Data instance
 	 *
 	 * @since  3.2
-	 * @author Remy Perona
 	 *
 	 * @var Options_Data $options
 	 */
@@ -26,7 +25,6 @@ class Beacon implements Subscriber_Interface {
 	 * Current user locale
 	 *
 	 * @since  3.2
-	 * @author Remy Perona
 	 *
 	 * @var string $locale
 	 */
@@ -36,11 +34,13 @@ class Beacon implements Subscriber_Interface {
 	 * Constructor
 	 *
 	 * @since  3.2
-	 * @author Remy Perona
 	 *
-	 * @param Options_Data $options Options instance.
+	 * @param Options_Data $options       Options instance.
+	 * @param string       $template_path Absolute path to the views/settings.
 	 */
-	public function __construct( Options_Data $options ) {
+	public function __construct( Options_Data $options, $template_path ) {
+		parent::__construct( $template_path );
+
 		$this->options = $options;
 	}
 
@@ -48,7 +48,6 @@ class Beacon implements Subscriber_Interface {
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
 	 * @since  3.2
-	 * @author Remy Perona
 	 *
 	 * @return array
 	 */
@@ -62,7 +61,6 @@ class Beacon implements Subscriber_Interface {
 	 * Configures and returns beacon javascript
 	 *
 	 * @since  3.2
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
@@ -80,20 +78,19 @@ class Beacon implements Subscriber_Interface {
 				break;
 		}
 
-		echo '<script type="text/javascript">!function(e,t,n){function a(){var e=t.getElementsByTagName("script")[0],n=t.createElement("script");n.type="text/javascript",n.async=!0,n.src="https://beacon-v2.helpscout.net",e.parentNode.insertBefore(n,e)}if(e.Beacon=n=function(t,n,a){e.Beacon.readyQueue.push({method:t,options:n,data:a})},n.readyQueue=[],"complete"===t.readyState)return a();e.attachEvent?e.attachEvent("onload",a):e.addEventListener("load",a,!1)}(window,document,window.Beacon||function(){});</script>
-		<script type="text/javascript">window.Beacon(\'init\', \'' . esc_js( $form_id ) . '\')</script>
-		<script>window.Beacon("identify", ' . wp_json_encode( $this->identify_data() ) . ');</script>
-		<script>window.Beacon("session-data", ' . wp_json_encode( $this->session_data() ) . ');</script>
-		<script>window.addEventListener("hashchange", function () {
-			window.Beacon("suggest");
-		}, false);</script>';
+		$data = [
+			'form_id'  => $form_id,
+			'identify' => wp_json_encode( $this->identify_data() ),
+			'session'  => wp_json_encode( $this->session_data() ),
+		];
+
+		echo $this->generate( 'beacon', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**
 	 * Sets the locale property with the current user locale if not set yet
 	 *
 	 * @since  3.5
-	 * @author Remy Perona
 	 *
 	 * @return string
 	 */
@@ -116,7 +113,6 @@ class Beacon implements Subscriber_Interface {
 	 * Returns Session specific data to pass to Beacon
 	 *
 	 * @since  3.3.3
-	 * @author Remy Perona
 	 *
 	 * @return array
 	 */
@@ -169,7 +165,6 @@ class Beacon implements Subscriber_Interface {
 	 * Returns Identify data to pass to Beacon
 	 *
 	 * @since  3.0
-	 * @author Remy Perona
 	 *
 	 * @return array
 	 */
@@ -191,7 +186,6 @@ class Beacon implements Subscriber_Interface {
 	 * Returns the IDs for the HelpScout docs for the corresponding section and language.
 	 *
 	 * @since  3.0
-	 * @author Remy Perona
 	 *
 	 * @param string $doc_id Section identifier.
 	 *

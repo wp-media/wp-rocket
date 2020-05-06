@@ -20,7 +20,7 @@ class Test_GetSuggest extends TestCase {
 		parent::setUp();
 
 		$this->options = Mockery::mock( Options_Data::class );
-		$this->beacon  = new Beacon( $this->options );
+		$this->beacon  = new Beacon( $this->options, 'views/settings' );
 	}
 
 	/**

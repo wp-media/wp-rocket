@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\Beacon\Beacon;
 use Mockery;
 use WP_Theme;
 use Brain\Monkey\Functions;
-use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 
@@ -13,7 +13,8 @@ use WP_Rocket\Engine\Admin\Beacon\Beacon;
  * @covers \WP_Rocket\Engine\Admin\Beacon\Beacon::insert_script
  * @group  Beacon
  */
-class Test_InsertScript extends TestCase {
+class Test_InsertScript extends FilesystemTestCase {
+	protected $path_to_test_data = '/inc/Engine/Admin/Beacon/Beacon/insert-script.php';
 	private $beacon;
 	private $options;
 
@@ -27,7 +28,7 @@ class Test_InsertScript extends TestCase {
 		parent::setUp();
 
 		$this->options = Mockery::mock( Options_Data::class );
-		$this->beacon  = new Beacon( $this->options );
+		$this->beacon  = new Beacon( $this->options, $this->filesystem->getUrl( 'wp-content/plugins/wp-rocket/views/settings' ) );
 	}
 
 	private function getActualHtml() {
@@ -71,9 +72,5 @@ class Test_InsertScript extends TestCase {
 			$this->format_the_html( $expected ),
 			$this->getActualHtml()
 		);
-	}
-
-	public function providerTestData() {
-		return $this->getTestData( __DIR__, 'insert-script' );
 	}
 }
