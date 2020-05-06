@@ -1053,12 +1053,15 @@ function rocket_clean_cache_dir() {
  * @since 3.5.3 Replaces glob and optimizes.
  * @since 1.0
  *
- * @param string $dir              File/Directory to delete.
- * @param array  $dirs_to_preserve Optional. Dirs that should not be deleted.
+ * @param string                    $dir              File/Directory to delete.
+ * @param array                     $dirs_to_preserve Optional. Dirs that should not be deleted.
+ * @param WP_Filesystem_Direct|null $filesystem       Optional. Instance of the filesystem.
  */
-function rocket_rrmdir( $dir, array $dirs_to_preserve = [] ) {
+function rocket_rrmdir( $dir, array $dirs_to_preserve = [], $filesystem = null ) {
 	$dir        = untrailingslashit( $dir );
-	$filesystem = rocket_direct_filesystem();
+	if ( ! $filesystem ) {
+		$filesystem = rocket_direct_filesystem();
+	}
 
 	/**
 	 * Fires before a file/directory cache is deleted
