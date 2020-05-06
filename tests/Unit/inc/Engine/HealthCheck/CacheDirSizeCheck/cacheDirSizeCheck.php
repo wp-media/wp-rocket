@@ -24,7 +24,7 @@ class Test_CacheDirSizeCheck extends FilesystemTestCase {
 
 		$this->subscriber = new CacheDirSizeCheck(
 			$this->filesystem->getUrl( 'wp-content/cache/min/' ),
-			'https://wp-rocket.me/',
+			'https://wp-rocket.me/'
 		);
 	}
 
