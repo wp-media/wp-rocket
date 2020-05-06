@@ -24,6 +24,16 @@ class_alias( '\WP_Rocket\Engine\Preload\SitemapPreloadSubscriber', '\WP_Rocket\S
 class_alias( '\WP_Rocket\Engine\Optimization\GoogleFonts\Combine', '\WP_Rocket\Optimization\CSS\Combine_Google_Fonts' );
 class_alias( '\WP_Rocket\Engine\Optimization\GoogleFonts\Subscriber', '\WP_Rocket\Subscriber\Optimization\Combine_Google_Fonts_Subscriber' );
 
+//RocketCDN Start
+class_alias('\WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber', '\WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber');
+class_alias('\WP_Rocket\Engine\CDN\RocketCDN\APIClient', '\WP_Rocket\CDN\RocketCDN\APIClient');
+class_alias('\WP_Rocket\Engine\CDN\RocketCDN\CDNOptionsManager', '\WP_Rocket\CDN\RocketCDN\CDNOptionsManager');
+class_alias('\WP_Rocket\Engine\CDN\RocketCDN\DataManagerSubscriber', '\WP_Rocket\Subscriber\CDN\RocketCDN\DataManagerSubscriber');
+class_alias('\WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber', '\WP_Rocket\Subscriber\CDN\RocketCDN\NoticesSubscriber');
+class_alias('\WP_Rocket\Engine\CDN\RocketCDN\RESTSubscriber', '\WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber');
+class_alias('\WP_Rocket\Engine\CDN\RocketCDN\ServiceProvider', '\WP_Rocket\ServiceProvider\RocketCDN');
+//RocketCDN End
+
 /**
  * Removes Minification, DNS Prefetch, LazyLoad, Defer JS when on an AMP version of a post with the AMP for WordPress plugin from Auttomatic
  *
