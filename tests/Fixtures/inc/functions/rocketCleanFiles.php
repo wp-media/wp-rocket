@@ -12,12 +12,12 @@ return [
 				'cleaned' => [],
 			],
 		],
-		'shouldDeleteSingleDirUrl'                              => [
+		'shouldDeleteSingleDirUrl' => [
 			'urls'     => [
 				'http://baz.example.org/',
 			],
 			'expected' => [
-				'cleaned' => [
+				'cleaned'      => [
 					'vfs://public/wp-content/cache/wp-rocket/baz.example.org/' => [],
 				],
 			],

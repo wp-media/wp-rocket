@@ -20,7 +20,7 @@ class Test_RocketCleanFiles extends FilesystemTestCase {
 	public function tearDown() {
 		parent::tearDown();
 
-		unset( $GLOBALS['tonya'] );
+		unset( $GLOBALS['debug_fs'] );
 	}
 
 	/**
@@ -31,7 +31,7 @@ class Test_RocketCleanFiles extends FilesystemTestCase {
 		$this->generateEntriesShouldExistAfter( $expected['cleaned'] );
 
 		if ( isset( $expected['debug'] ) && $expected['debug'] ) {
-			$GLOBALS['tonya'] = true;
+			$GLOBALS['debug_fs'] = true;
 		}
 
 		// Run it.

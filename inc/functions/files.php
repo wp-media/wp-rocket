@@ -1432,7 +1432,7 @@ function _rocket_get_entries_regex( Iterator $iterator, $url, $cache_path = '' )
 /**
  * Gets the directories for the given URL host from the cache/wp-rocket/ directory or stored memory.
  *
- * @since 3.5.5
+ * @since  3.5.5
  * @access private
  *
  * @param string $url_host   The URL's host.
@@ -1441,7 +1441,7 @@ function _rocket_get_entries_regex( Iterator $iterator, $url, $cache_path = '' )
  *
  * @return array
  */
-function _rocket_get_cache_dirs( $url_host, $cache_path = '', $hard_reset = false ) {
+function _rocket_get_cache_dirs( $url_host, $cache_path = '', $hard_reset = false ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 	static $domain_dirs = [];
 
 	if ( true === $hard_reset ) {
@@ -1454,36 +1454,44 @@ function _rocket_get_cache_dirs( $url_host, $cache_path = '', $hard_reset = fals
 		return $domain_dirs[ $url_host ];
 	}
 
+	$url_host = rtrim( $url_host, '*' );
+
 	if ( empty( $cache_path ) ) {
 		$cache_path = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' );
 	}
 
 	try {
-		$iterator = new RecursiveIteratorIterator(
-			new RecursiveDirectoryIterator( $cache_path ),
-			RecursiveIteratorIterator::SELF_FIRST,
-			RecursiveIteratorIterator::CATCH_GET_CHILD
+		$iterator = new IteratorIterator(
+			new FilesystemIterator( $cache_path )
 		);
 	} catch ( Exception $e ) {
+		if ( isset( $GLOBALS['debug_fs'] ) ) {
+			echo "\n Iterator error: {$e->getMessage()} \n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		}
+
 		// No logging yet.
 		return [];
 	}
 
-	$regex = sprintf( '/%s%s(.*)/i',
-		str_replace( '/', '\/', $cache_path ),
-		$url_host
-	);
-	$iterator->setMaxDepth( 0 );
+	$regex = sprintf( '/%s%s(.*)/i', str_replace( '/', '\/', $cache_path ), $url_host );
 
 	try {
 		$entries = new RegexIterator( $iterator, $regex );
 	} catch ( Exception $e ) {
+		if ( isset( $GLOBALS['debug_fs'] ) ) {
+			echo "\n RegexIterator error: {$e->getMessage()} \n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		}
+
 		return [];
 	}
 
 	$domain_dirs[ $url_host ] = [];
 	foreach ( $entries as $entry ) {
 		$domain_dirs[ $url_host ][] = $entry->getPathname();
+	}
+
+	if ( isset( $GLOBALS['debug_fs'] ) ) {
+		var_dump( $domain_dirs ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.PHP.DevelopmentFunctions.error_log_var_dump
 	}
 
 	return $domain_dirs[ $url_host ];

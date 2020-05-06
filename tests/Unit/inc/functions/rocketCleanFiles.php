@@ -29,10 +29,20 @@ class Test_RocketCleanFiles extends FilesystemTestCase {
 			->andReturn( 'vfs://public/wp-content/cache/wp-rocket/' );
 	}
 
+	public function tearDown() {
+		parent::tearDown();
+
+		unset( $GLOBALS['debug_fs'] );
+	}
+
 	/**
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldCleanExpectedFiles( $urls, $expected ) {
+		if ( isset( $expected['debug'] ) && $expected['debug'] ) {
+			$GLOBALS['debug_fs'] = true;
+		}
+
 		if ( empty( $urls ) ) {
 			$this->doBailOutTest( $urls );
 		} else {
