@@ -165,6 +165,7 @@ class Plugin {
 			'detect_missing_tags_subscriber',
 			'purge_actions_subscriber',
 			'amp_subscriber',
+			'rest_generate_post_cpcss',
 			'rest_delete_post_cpcss',
 		];
 
