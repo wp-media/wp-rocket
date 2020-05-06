@@ -2,11 +2,15 @@
 
 namespace WP_Rocket\Tests\Integration\benchmarks;
 
+use Exception;
+use RegexIterator;
+
 /**
  * @group benchmarks
  * @group rocket_clean_files
  */
 class Test_RocketCleanFiles extends TestCase {
+	private $domain_dirs = [];
 
 	/**
 	 * @group spl
@@ -77,6 +81,10 @@ class Test_RocketCleanFiles extends TestCase {
 	}
 
 	private function getCacheRootDirs( $url_host ) {
+		if ( isset( $this->domain_dirs[ $url_host ] ) ) {
+			return $this->domain_dirs[ $url_host ];
+		}
+
 		$iterator = _rocket_get_cache_path_iterator( self::$cache_path );
 		if ( false === $iterator ) {
 			return [];
@@ -88,7 +96,7 @@ class Test_RocketCleanFiles extends TestCase {
 		$iterator->setMaxDepth( 0 );
 
 		try {
-			$entries = RegexIterator( $iterator, $regex );
+			$entries = new RegexIterator( $iterator, $regex );
 		} catch ( Exception $e ) {
 			return [];
 		}
@@ -97,6 +105,8 @@ class Test_RocketCleanFiles extends TestCase {
 		foreach ( $entries as $entry ) {
 			$dirs[] = $entry->getPathname();
 		}
+
+		$this->domain_dirs[ $url_host ] = $dirs;
 
 		return $dirs;
 	}
