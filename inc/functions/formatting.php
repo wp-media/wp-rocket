@@ -259,22 +259,29 @@ function rocket_remove_url_protocol( $url, $no_dots = false ) {
 }
 
 /**
- * Add HTTP protocol to an url that does not have
+ * Add HTTP protocol to an url that does not have it.
  *
  * @since 2.2.1
  *
  * @param string $url The URL to parse.
- * @return string $url The URL with protocol
+ *
+ * @return string $url The URL with protocol.
  */
 function rocket_add_url_protocol( $url ) {
-
-	if ( strpos( $url, 'http://' ) === false && strpos( $url, 'https://' ) === false ) {
-		if ( substr( $url, 0, 2 ) !== '//' ) {
-			$url = '//' . $url;
-		}
-		$url = set_url_scheme( $url );
+	// Bail out if the URL starts with http:// or https://.
+	if (
+		strpos( $url, 'http://' ) !== false
+		||
+		strpos( $url, 'https://' ) !== false
+	) {
+		return $url;
 	}
-	return $url;
+
+	if ( substr( $url, 0, 2 ) !== '//' ) {
+		$url = '//' . $url;
+	}
+
+	return set_url_scheme( $url );
 }
 
 /**
@@ -481,14 +488,7 @@ function rocket_realpath( $file ) {
  * @return string|bool
  */
 function rocket_url_to_path( $url, array $zones = [ 'all' ] ) {
-	/**
-	 * Filters the filepath to the WP content directory
-	 *
-	 * @since 3.5.3
-	 *
-	 * @param string $filepath wp-content directory filepath.
-	 */
-	$wp_content_dir = apply_filters( 'rocket_wp_content_dir', rocket_get_constant( 'WP_CONTENT_DIR' ) );
+	$wp_content_dir = rocket_get_constant( 'WP_CONTENT_DIR' );
 	$root_dir       = trailingslashit( dirname( $wp_content_dir ) );
 	$root_url       = str_replace( wp_basename( $wp_content_dir ), '', content_url() );
 	$url_host       = wp_parse_url( $url, PHP_URL_HOST );

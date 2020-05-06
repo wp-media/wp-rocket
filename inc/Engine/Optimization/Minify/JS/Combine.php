@@ -634,6 +634,11 @@ class Combine extends AbstractJSOptimization {
 			'tarteaucitron',
 			'pw_brand_product_list',
 			'tminusCountDown',
+			'pysWooSelectContentData',
+			'wpvq_ans89733',
+			'_isp_version',
+			'price_range_data',
+			'window.FeedbackCompanyWidgets',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
@@ -722,6 +727,8 @@ class Combine extends AbstractJSOptimization {
 			'cdn.jsdelivr.net/gh/AmauriC/',
 			'static.klaviyo.com/onsite/js/klaviyo.js',
 			'a.omappapi.com/app/js/api.min.js',
+			'static.zdassets.com',
+			'feedbackcompany.com/widgets/feedback-company-widget.min.js',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
@@ -841,6 +848,7 @@ class Combine extends AbstractJSOptimization {
 			'tdbMenuItem',
 			'tdbSearchItem',
 			'best_seller_badge',
+			'jQuery(\'#product-top-bar',
 		];
 
 		/**

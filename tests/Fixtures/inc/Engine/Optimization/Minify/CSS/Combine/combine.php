@@ -1,6 +1,7 @@
 <?php
 return [
-	'vfs_dir'   => 'public/',
+	'vfs_dir'   => 'wordpress/',
+
 	'structure' => [
 		'wordpress' => [
 			'wp-includes' => [
@@ -36,6 +37,7 @@ return [
 			],
 		],
 	],
+
 	'test_data' => [
 		// Combine CSS files.
 		[
@@ -51,14 +53,20 @@ return [
 				'</body>' .
 			'</html>',
 			// Expected: Combined CSS files.
-			'<html>' .
-				'<head>' .
-					'<title>Sample Page</title>' .
-					'<link rel="stylesheet" href="http://example.org/wp-content/cache/min/1/0bca286481748a69cdbe9a6695015ec9.css" data-minify="1" />' .
-				'</head>' .
-				'<body>' .
-				'</body>' .
-			'</html>',
+			[
+				'html' => '<html>' .
+					'<head>' .
+						'<title>Sample Page</title>' .
+						'<link rel="stylesheet" href="http://example.org/wp-content/cache/min/1/0bca286481748a69cdbe9a6695015ec9.css" data-minify="1" />' .
+					'</head>' .
+					'<body>' .
+					'</body>' .
+				'</html>',
+				'files' => [
+					'wordpress/wp-content/cache/min/1/0bca286481748a69cdbe9a6695015ec9.css',
+					'wordpress/wp-content/cache/min/1/0bca286481748a69cdbe9a6695015ec9.css.gz'
+				],
+			],
 			[],
 			'http://example.org',
 			'http://example.org',
@@ -77,14 +85,20 @@ return [
 				'</body>' .
 			'</html>',
 			// Expected: Combined CSS files.
-			'<html>' .
-				'<head>' .
-					'<title>Sample Page</title>' .
-					'<link rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/0bca286481748a69cdbe9a6695015ec9.css" data-minify="1" />' .
-				'</head>' .
-				'<body>' .
-				'</body>' .
-			'</html>',
+			[
+				'html' => '<html>' .
+					'<head>' .
+						'<title>Sample Page</title>' .
+						'<link rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/0bca286481748a69cdbe9a6695015ec9.css" data-minify="1" />' .
+					'</head>' .
+					'<body>' .
+					'</body>' .
+				'</html>',
+				'files' => [
+					'wordpress/wp-content/cache/min/1/0bca286481748a69cdbe9a6695015ec9.css',
+					'wordpress/wp-content/cache/min/1/0bca286481748a69cdbe9a6695015ec9.css.gz'
+				],
+			],
 			[
 				'123456.rocketcdn.me'
 			],
@@ -105,14 +119,20 @@ return [
 				'</body>' .
 			'</html>',
 			// Expected: Combined CSS files.
-			'<html>' .
-				'<head>' .
-					'<title>Sample Page</title>' .
-					'<link rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/0bca286481748a69cdbe9a6695015ec9.css" data-minify="1" />' .
-				'</head>' .
-				'<body>' .
-				'</body>' .
-			'</html>',
+			[
+				'html' => '<html>' .
+					'<head>' .
+						'<title>Sample Page</title>' .
+						'<link rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/0bca286481748a69cdbe9a6695015ec9.css" data-minify="1" />' .
+					'</head>' .
+					'<body>' .
+					'</body>' .
+				'</html>',
+				'files' => [
+					'wordpress/wp-content/cache/min/1/0bca286481748a69cdbe9a6695015ec9.css',
+					'wordpress/wp-content/cache/min/1/0bca286481748a69cdbe9a6695015ec9.css.gz'
+				],
+			],
 			[
 				'123456.rocketcdn.me'
 			],
@@ -133,14 +153,20 @@ return [
 				'</body>' .
 			'</html>',
 			// Expected: Combined CSS files.
-			'<html>' .
-				'<head>' .
-					'<title>Sample Page</title>' .
-					'<link rel="stylesheet" href="https://123456.rocketcdn.me/cdnpath/wp-content/cache/min/1/0bca286481748a69cdbe9a6695015ec9.css" data-minify="1" />' .
-				'</head>' .
-				'<body>' .
-				'</body>' .
-			'</html>',
+			[
+				'html' => '<html>' .
+					'<head>' .
+						'<title>Sample Page</title>' .
+						'<link rel="stylesheet" href="https://123456.rocketcdn.me/cdnpath/wp-content/cache/min/1/0bca286481748a69cdbe9a6695015ec9.css" data-minify="1" />' .
+					'</head>' .
+					'<body>' .
+					'</body>' .
+				'</html>',
+				'files' => [
+					'wordpress/wp-content/cache/min/1/0bca286481748a69cdbe9a6695015ec9.css',
+					'wordpress/wp-content/cache/min/1/0bca286481748a69cdbe9a6695015ec9.css.gz'
+				],
+			],
 			[
 				'123456.rocketcdn.me/cdnpath'
 			],

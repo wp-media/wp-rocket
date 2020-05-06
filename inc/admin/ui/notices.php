@@ -843,84 +843,6 @@ function rocket_clear_cache_notice() {
 add_action( 'admin_notices', 'rocket_clear_cache_notice' );
 
 /**
- * Display a warning notice if WP Rocket scheduled events are not running properly
- *
- * @since 3.3.7
- * @author Remy Perona
- *
- * @return void
- */
-function rocket_warning_cron() {
-	$screen = get_current_screen();
-
-	// This filter is documented in inc/admin-bar.php.
-	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
-		return;
-	}
-
-	if ( 'settings_page_wprocket' !== $screen->id ) {
-		return;
-	}
-
-	$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
-
-	if ( in_array( __FUNCTION__, (array) $boxes, true ) ) {
-		return;
-	}
-
-	if ( 0 === (int) get_rocket_option( 'purge_cron_interval' ) && 0 === get_rocket_option( 'async_css' ) && 0 === get_rocket_option( 'manual_preload' ) && 0 === get_rocket_option( 'schedule_automatic_cleanup' ) ) {
-		return;
-	}
-
-	$events = [
-		'rocket_purge_time_event'                      => 'Scheduled Cache Purge',
-		'rocket_database_optimization_time_event'      => 'Scheduled Database Optimization',
-		'rocket_database_optimization_cron_interval'   => 'Database Optimization Process',
-		'rocket_preload_cron_interval'                 => 'Preload',
-		'rocket_critical_css_generation_cron_interval' => 'Critical Path CSS Generation Process',
-	];
-
-	foreach ( $events as $event => $description ) {
-		$timestamp = wp_next_scheduled( $event );
-
-		if ( false === $timestamp ) {
-			unset( $events[ $event ] );
-			continue;
-		}
-
-		if ( $timestamp - time() > 0 ) {
-			unset( $events[ $event ] );
-			continue;
-		}
-	}
-
-	if ( empty( $events ) ) {
-		return;
-	}
-
-	$message = '<p>' . _n( 'The following scheduled event failed to run. This may indicate the CRON system is not running properly, which can prevent some WP Rocket features from working as intended:', 'The following scheduled events failed to run. This may indicate the CRON system is not running properly, which can prevent some WP Rocket features from working as intended:', count( $events ), 'rocket' ) . '</p>';
-
-	$message .= '<ul>';
-
-	foreach ( $events as $description ) {
-		$message .= '<li>' . $description . '</li>';
-	}
-
-	$message .= '</ul>';
-	$message .= '<p>' . __( 'Please contact your host to check if CRON is working.', 'rocket' ) . '</p>';
-
-	rocket_notice_html(
-		[
-			'status'         => 'warning',
-			'dismissible'    => '',
-			'message'        => $message,
-			'dismiss_button' => __FUNCTION__,
-		]
-	);
-}
-add_action( 'admin_notices', 'rocket_warning_cron' );
-
-/**
  * Outputs notice HTML
  *
  * @since 2.11
@@ -987,7 +909,7 @@ function rocket_notice_html( $args ) {
 		<p>
 			<?php echo $args['action']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			<?php if ( $args['dismiss_button'] ) : ?>
-			<a class="rocket-dismiss" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=' . $args['dismiss_button'] ), 'rocket_ignore_' . $args['dismiss_button'] ) ); ?>"><?php esc_html_e( 'Dismiss this notice.', 'rocket' ); ?></a>
+			<a class="rocket-dismiss" href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=' . $args['dismiss_button'] ), 'rocket_ignore_' . $args['dismiss_button'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>"><?php esc_html_e( 'Dismiss this notice.', 'rocket' ); ?></a>
 			<?php endif; ?>
 		</p>
 		<?php endif; ?>

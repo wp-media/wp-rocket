@@ -1,6 +1,7 @@
 <?php
 return [
 	'vfs_dir' => 'public/',
+
 	'structure' => [
         'wp-includes' => [
             'js' => [
@@ -34,6 +35,7 @@ return [
             ],
         ],
 	],
+
 	'test_data' => [
 		[
 			// Scripts & styles are commented in HTML comments = ignored.
@@ -59,7 +61,7 @@ return [
 				<!-- <script src="http://example.org/wp-content/plugins/hello-dolly/script.js?ver=3.5"></script> -->
 				</body>
 			</html>',
-			[
+			'settings' => [
 				'cdn'        => 0,
 				'cdn_cnames' => [],
 				'cdn_zone'   => [],
@@ -97,7 +99,7 @@ return [
 					<script src="https://maps.google.com/map.js"></script>
 				</body>
 			</html>',
-			[
+			'settings' => [
 				'cdn'        => 0,
 				'cdn_cnames' => [],
 				'cdn_zone'   => [],
@@ -135,7 +137,7 @@ return [
 					<script src="https://maps.google.com/map.js"></script>
 				</body>
 			</html>',
-			[
+			'settings' => [
 				'cdn'        => 1,
 				'cdn_cnames' => [
 					'https://123456.rocketcdn.me',
@@ -177,7 +179,7 @@ return [
 					<script src="https://maps.google.com/map.js"></script>
 				</body>
 			</html>',
-			[
+			'settings' => [
 				'cdn'        => 1,
 				'cdn_cnames' => [
 					'https://123456.rocketcdn.me/cdnpath',

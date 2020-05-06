@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.4\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2020-03-02 09:37-0500\n"
+"POT-Creation-Date: 2020-04-16 16:26-0400\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: BouRock, 2020\n"
 "Language-Team: Turkish (Turkey) (https://www.transifex.com/wp-media/teams/18133/tr_TR/)\n"
@@ -30,11 +30,11 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Textdomain-Support: yes\n"
 
-#: inc/3rd-party/hosting/flywheel.php:19 inc/3rd-party/hosting/godaddy.php:22
-#: inc/3rd-party/hosting/o2switch.php:21
-#: inc/3rd-party/hosting/pressidium.php:18 inc/3rd-party/hosting/savvii.php:22
-#: inc/3rd-party/hosting/wp-serveur.php:31
-#: inc/3rd-party/hosting/wpengine.php:22
+#: inc/3rd-party/hosting/flywheel.php:18 inc/3rd-party/hosting/godaddy.php:18
+#: inc/3rd-party/hosting/o2switch.php:17
+#: inc/3rd-party/hosting/pressidium.php:18 inc/3rd-party/hosting/savvii.php:18
+#: inc/3rd-party/hosting/wp-serveur.php:27
+#: inc/3rd-party/hosting/wpengine.php:18
 #, php-format
 msgid ""
 "Your site is hosted on %s, we have enabled Varnish auto-purge for "
@@ -43,7 +43,7 @@ msgstr ""
 "Siteniz %s üzerinde barındırılıyor, uyumluluk için Varnish oto-temizle’yi "
 "etkinleştirdik."
 
-#: inc/3rd-party/hosting/kinsta.php:165
+#: inc/3rd-party/hosting/kinsta.php:161
 #, php-format
 msgid ""
 "Your installation seems to be missing core Kinsta files managing Cache "
@@ -98,17 +98,49 @@ msgstr "SEO Framework XML site haritası"
 msgid "Yoast SEO XML sitemap"
 msgstr "Yoast SEO XML site haritası"
 
-#: inc/Addon/Cloudflare/Cloudflare.php:95 inc/deprecated/3.5.php:22
-#: inc/deprecated/3.5.php:146
-msgid ""
-"Curl is disabled on your server. Please ask your host to enable it. This is "
-"required for the Cloudflare Add-on to work correctly."
+#: inc/Addon/Cloudflare/APIClient.php:309
+msgid "Ops Cloudflare did not provide any reply. Please try again later."
 msgstr ""
-"Curl, sunucunuzda etkisizleştirilmiş. Lütfen barındırıcınızdan bunu "
-"etkinleştirmesini isteyin. Bu, Cloudflare Eklentisinin doğru çalışması için "
-"gereklidir."
+"Eyvah Cloudflare herhangi bir yanıt vermedi. Lütfen daha sonra tekrar "
+"deneyin."
 
-#: inc/Addon/Cloudflare/Cloudflare.php:103
+#: inc/Addon/Cloudflare/APIClient.php:318 inc/deprecated/3.5.php:107
+#: inc/deprecated/3.5.php:164
+msgid "Incorrect Cloudflare email address or API key."
+msgstr "Yanlış Cloudflare e-posta adresi veya API anahtarı."
+
+#: inc/Addon/Cloudflare/APIClient.php:322
+#: inc/Addon/Cloudflare/APIClient.php:335
+#: inc/Addon/Cloudflare/Cloudflare.php:112
+#: inc/Addon/Cloudflare/Cloudflare.php:144
+#: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:157
+#: inc/deprecated/3.5.php:87 inc/deprecated/3.5.php:111
+#: inc/deprecated/3.5.php:124 inc/deprecated/3.5.php:152
+#: inc/deprecated/3.5.php:168
+#, php-format
+msgid "Read the %1$sdocumentation%2$s for further guidance."
+msgstr "İleriki rehberlik için %1$sbelgeleri%2$s okuyun."
+
+#: inc/Addon/Cloudflare/APIClient.php:324
+#: inc/Addon/Cloudflare/APIClient.php:337
+#: inc/Addon/Cloudflare/Cloudflare.php:101
+#: inc/Addon/Cloudflare/Cloudflare.php:114
+#: inc/Addon/Cloudflare/Cloudflare.php:146 inc/deprecated/3.5.php:76
+#: inc/deprecated/3.5.php:89 inc/deprecated/3.5.php:113
+#: inc/deprecated/3.5.php:126 inc/deprecated/3.5.php:154
+#: inc/deprecated/3.5.php:170 inc/deprecated/3.5.php:203
+msgid ""
+"https://docs.wp-rocket.me/article/18-using-wp-rocket-with-"
+"cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket#add-on"
+msgstr ""
+"https://docs.wp-rocket.me/article/18-using-wp-rocket-with-"
+"cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket#add-on"
+
+#: inc/Addon/Cloudflare/APIClient.php:331 inc/deprecated/3.5.php:120
+msgid "Incorrect Cloudflare Zone ID."
+msgstr "Yanlış Cloudflare Bölge Kimliği."
+
+#: inc/Addon/Cloudflare/Cloudflare.php:99
 #, php-format
 msgid ""
 "Cloudflare email and/or API key are not set. Read the %1$sdocumentation%2$s "
@@ -117,132 +149,265 @@ msgstr ""
 "Cloudflare e-posta adresi ve/veya API anahtarı ayarlı değil. Daha fazla "
 "rehberlik için %1$sbelgeleri%2$s okuyun."
 
-#: inc/Addon/Cloudflare/Cloudflare.php:105
-#: inc/Addon/Cloudflare/Cloudflare.php:118
-#: inc/Addon/Cloudflare/Cloudflare.php:139
-#: inc/Addon/Cloudflare/Cloudflare.php:153
-#: inc/Addon/Cloudflare/Cloudflare.php:181
-#: inc/Addon/Cloudflare/Cloudflare.php:195 inc/deprecated/3.5.php:32
-#: inc/deprecated/3.5.php:45 inc/deprecated/3.5.php:69
-#: inc/deprecated/3.5.php:82 inc/deprecated/3.5.php:110
-#: inc/deprecated/3.5.php:126 inc/deprecated/3.5.php:159
-msgid ""
-"https://docs.wp-rocket.me/article/18-using-wp-rocket-with-"
-"cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket#add-on"
-msgstr ""
-"https://docs.wp-rocket.me/article/18-using-wp-rocket-with-"
-"cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket#add-on"
-
-#: inc/Addon/Cloudflare/Cloudflare.php:112 inc/deprecated/3.5.php:39
+#: inc/Addon/Cloudflare/Cloudflare.php:108 inc/deprecated/3.5.php:83
 msgid "Missing Cloudflare Zone ID."
 msgstr "Eksik Cloudflare Bölge Kimliği."
 
-#: inc/Addon/Cloudflare/Cloudflare.php:116
-#: inc/Addon/Cloudflare/Cloudflare.php:137
-#: inc/Addon/Cloudflare/Cloudflare.php:151
-#: inc/Addon/Cloudflare/Cloudflare.php:179
-#: inc/Addon/Cloudflare/Cloudflare.php:193
-#: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:157
-#: inc/deprecated/3.5.php:43 inc/deprecated/3.5.php:67
-#: inc/deprecated/3.5.php:80 inc/deprecated/3.5.php:108
-#: inc/deprecated/3.5.php:124
-#, php-format
-msgid "Read the %1$sdocumentation%2$s for further guidance."
-msgstr "İleriki rehberlik için %1$sbelgeleri%2$s okuyun."
-
-#: inc/Addon/Cloudflare/Cloudflare.php:133
-#: inc/Addon/Cloudflare/Cloudflare.php:190 inc/deprecated/3.5.php:63
-#: inc/deprecated/3.5.php:120
-msgid "Incorrect Cloudflare email address or API key."
-msgstr "Yanlış Cloudflare e-posta adresi veya API anahtarı."
-
-#: inc/Addon/Cloudflare/Cloudflare.php:147 inc/deprecated/3.5.php:76
-msgid "Incorrect Cloudflare Zone ID."
-msgstr "Yanlış Cloudflare Bölge Kimliği."
-
-#: inc/Addon/Cloudflare/Cloudflare.php:175 inc/deprecated/3.5.php:104
+#: inc/Addon/Cloudflare/Cloudflare.php:140 inc/deprecated/3.5.php:148
 msgid "It looks like your domain is not set up on Cloudflare."
 msgstr "Etki alanınız Cloudflare'de ayarlanmamış gibi görünüyor."
 
-#: inc/Addon/Cloudflare/Subscriber.php:215 inc/deprecated/3.5.php:538
+#: inc/Addon/Cloudflare/Subscriber.php:215 inc/deprecated/3.5.php:582
 #, php-format
 msgid "<strong>WP Rocket:</strong> %s"
 msgstr "<strong>WP Rocket:</strong> %s"
 
-#: inc/Addon/Cloudflare/Subscriber.php:220 inc/deprecated/3.5.php:543
+#: inc/Addon/Cloudflare/Subscriber.php:220 inc/deprecated/3.5.php:587
 msgid "<strong>WP Rocket:</strong> Cloudflare cache successfully purged."
 msgstr ""
 "<strong>WP Rocket:</strong> Cloudflare önbelleği başarılı olarak temizlendi."
 
-#: inc/Addon/Cloudflare/Subscriber.php:375
-#: inc/Addon/Cloudflare/Subscriber.php:388
-#: inc/Addon/Cloudflare/Subscriber.php:394
-#: inc/Addon/Cloudflare/Subscriber.php:411
-#: inc/Addon/Cloudflare/Subscriber.php:421
-#: inc/Addon/Cloudflare/Subscriber.php:433
-#: inc/Addon/Cloudflare/Subscriber.php:439
+#: inc/Addon/Cloudflare/Subscriber.php:364
+#: inc/Addon/Cloudflare/Subscriber.php:370
+#: inc/Addon/Cloudflare/Subscriber.php:390
+#: inc/Addon/Cloudflare/Subscriber.php:401
+#: inc/Addon/Cloudflare/Subscriber.php:420
+#: inc/Addon/Cloudflare/Subscriber.php:426
+#: inc/Addon/Cloudflare/Subscriber.php:445
 #: inc/Addon/Cloudflare/Subscriber.php:451
-#: inc/Addon/Cloudflare/Subscriber.php:457
-#: inc/Addon/Cloudflare/Subscriber.php:469
-#: inc/Addon/Cloudflare/Subscriber.php:475 inc/admin/options.php:176
+#: inc/Addon/Cloudflare/Subscriber.php:470
+#: inc/Addon/Cloudflare/Subscriber.php:476
+#: inc/Addon/Cloudflare/Subscriber.php:558 inc/admin/options.php:176
 #: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:148
 msgid "WP Rocket: "
 msgstr "WP Rocket: "
 
-#: inc/Addon/Cloudflare/Subscriber.php:388
+#: inc/Addon/Cloudflare/Subscriber.php:364
 #, php-format
 msgid "Cloudflare development mode error: %s"
 msgstr "Cloudflare geliştirme kipi hatası: %s"
 
-#: inc/Addon/Cloudflare/Subscriber.php:394
+#: inc/Addon/Cloudflare/Subscriber.php:370
 #, php-format
 msgid "Cloudflare development mode %s"
 msgstr "Cloudflare geliştirme kipi %s"
 
-#: inc/Addon/Cloudflare/Subscriber.php:411
+#: inc/Addon/Cloudflare/Subscriber.php:390
 #, php-format
 msgid "Cloudflare cache level error: %s"
 msgstr "Cloudflare önbellek seviyesi hatası: %s"
 
-#: inc/Addon/Cloudflare/Subscriber.php:415
+#: inc/Addon/Cloudflare/Subscriber.php:395
 msgctxt "Cloudflare caching level"
 msgid "Standard"
 msgstr "Standart"
 
-#: inc/Addon/Cloudflare/Subscriber.php:421
+#: inc/Addon/Cloudflare/Subscriber.php:401
 #, php-format
 msgid "Cloudflare cache level set to %s"
 msgstr "Cloudflare önbellek seviyesi %s olarak ayarlandı"
 
-#: inc/Addon/Cloudflare/Subscriber.php:433
+#: inc/Addon/Cloudflare/Subscriber.php:420
 #, php-format
 msgid "Cloudflare minification error: %s"
 msgstr "Cloudflare küçültme hatası: %s"
 
-#: inc/Addon/Cloudflare/Subscriber.php:439
+#: inc/Addon/Cloudflare/Subscriber.php:426
 #, php-format
 msgid "Cloudflare minification %s"
 msgstr "Cloudflare küçültme %s"
 
-#: inc/Addon/Cloudflare/Subscriber.php:451
+#: inc/Addon/Cloudflare/Subscriber.php:445
 #, php-format
 msgid "Cloudflare rocket loader error: %s"
 msgstr "Cloudflare rocket yükleyici hatası: %s"
 
-#: inc/Addon/Cloudflare/Subscriber.php:457
+#: inc/Addon/Cloudflare/Subscriber.php:451
 #, php-format
 msgid "Cloudflare rocket loader %s"
 msgstr "Cloudflare rocket yükleyici %s"
 
-#: inc/Addon/Cloudflare/Subscriber.php:469
+#: inc/Addon/Cloudflare/Subscriber.php:470
 #, php-format
 msgid "Cloudflare browser cache error: %s"
 msgstr "Cloudflare tarayıcı önbelleği hatası: %s"
 
-#: inc/Addon/Cloudflare/Subscriber.php:475
+#: inc/Addon/Cloudflare/Subscriber.php:476
 #, php-format
 msgid "Cloudflare browser cache set to %s seconds"
 msgstr "Cloudflare tarayıcı önbelleği %s saniyeye ayarlandı"
+
+#: inc/Engine/Preload/Homepage.php:153
+#, php-format
+msgid ""
+"Preload encountered an error. Could not gather links on %1$s because of the "
+"following error: %2$s. %3$sLearn more%4$s."
+msgstr ""
+"Önyükleme bir hatayla karşılaştı. Şu hatadan dolayı, %1$s üzerindeki "
+"bağlantılar toplanamadı: %2$s. %3$sDaha fazla bilgi edinin%4$s."
+
+#: inc/Engine/Preload/Homepage.php:166
+#, php-format
+msgid ""
+"Preload encountered an error. %1$s is not accessible to due to the following"
+" response code: %2$s. Security measures could be preventing access. "
+"%3$sLearn more%4$s."
+msgstr ""
+"Önyükleme bir hatayla karşılaştı. %1$s, şu yanıt kodundan dolayı "
+"erişilebilir değil: %2$s. Güvenlik önlemleri erişimi engelliyor olabilir. "
+"%3$sDaha fazla bilgi edinin%4$s."
+
+#: inc/Engine/Preload/Homepage.php:172
+#, php-format
+msgid ""
+"Preload encountered an error. %1$s is not accessible to due to the following"
+" response code: 404. Please make sure your homepage is accessible in your "
+"browser. %2$sLearn more%3$s."
+msgstr ""
+"Önyükleme bir hatayla karşılaştı. %1$s, şu yanıt kodundan dolayı "
+"erişilebilir değil: 404. Lütfen ana sayfanızın tarayıcınızda erişilebilir "
+"olduğundan emin olun. %2$sDaha fazla bilgi edinin%3$s."
+
+#: inc/Engine/Preload/Homepage.php:178
+#, php-format
+msgid ""
+"Preload encountered an error. %1$s is not accessible to due to the following"
+" response code: 500. Please check with your web host about server access. "
+"%2$sLearn more%3$s."
+msgstr ""
+"Önyükleme bir hatayla karşılaştı. %1$s, şu yanıt kodundan dolayı "
+"erişilebilir değil: 500. Lütfen sunucu erişimi ile ilgili olarak web "
+"barındırıcınızı gözden geçirin. %2$sDaha fazla bilgi edinin%3$s."
+
+#: inc/Engine/Preload/Homepage.php:184
+#, php-format
+msgid ""
+"Preload encountered an error. Could not gather links on %1$s because it "
+"returned the following response code: %2$s. %3$sLearn more%4$s."
+msgstr ""
+"Önyükleme bir hatayla karşılaştı. Şu yanıt kodunu döndürdüğünden, %1$s "
+"üzerindeki bağlantılar toplanamadı: %2$s. %3$sDaha fazla bilgi edinin%4$s."
+
+#: inc/Engine/Preload/PreloadSubscriber.php:237
+msgid "Preload: WP Rocket has started preloading your website."
+msgstr "Önyükleme: WP Rocket, web sitenizi önyüklemeye başladı."
+
+#: inc/Engine/Preload/PreloadSubscriber.php:242
+#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:107
+#, php-format
+msgid "Go to the %1$sWP Rocket settings%2$s page to track progress."
+msgstr "İlerlemeyi izlemek için %1$sWP Rocket ayarları%2$s sayfasına gidin."
+
+#: inc/Engine/Preload/PreloadSubscriber.php:283
+#, php-format
+msgid ""
+"Preload: %1$s uncached page has now been preloaded. (refresh to see "
+"progress)"
+msgid_plural ""
+"Preload: %1$s uncached pages have now been preloaded. (refresh to see "
+"progress)"
+msgstr[0] ""
+"Önyükleme: %1$s önbelleklenmeyen sayfanın şimdi önyüklemesi yapıldı. "
+"(ilerlemeyi görmek için yenileyin)"
+msgstr[1] ""
+"Önyükleme: %1$s önbelleklenmeyen sayfanın şimdi önyüklemesi yapıldı. "
+"(ilerlemeyi görmek için yenileyin)"
+
+#: inc/Engine/Preload/PreloadSubscriber.php:292
+msgid "The following error happened during gathering of the URLs to preload:"
+msgid_plural ""
+"The following errors happened during gathering of the URLs to preload:"
+msgstr[0] "Önyükleme için URL'lerin toplanması sırasında aşağıdaki hata oldu:"
+msgstr[1] ""
+"Önyükleme için URL’lerin toplanması sırasında aşağıdaki hatalar oldu:"
+
+#: inc/Engine/Preload/PreloadSubscriber.php:344
+#, php-format
+msgid "Preload complete: %d pages have been cached."
+msgstr "Önyükleme tamamlandı: %d sayfa önbelleklendi."
+
+#: inc/Engine/Preload/Sitemap.php:150
+#, php-format
+msgid ""
+"Sitemap preload encountered an error. Could not gather links on %1$s because"
+" of the following error: %2$s. %3$sLearn more%4$s."
+msgstr ""
+"Site haritası önyüklemesi bir hatayla karşılaştı. Şu hatadan dolayı, %1$s "
+"üzerindeki bağlantılar toplanamadı: %2$s. %3$sDaha fazla bilgi edinin%4$s."
+
+#: inc/Engine/Preload/Sitemap.php:165
+#, php-format
+msgid ""
+"Sitemap preload encountered an error. %1$s is not accessible to due to the "
+"following response code: %2$s. Security measures could be preventing access."
+" %3$sLearn more%4$s."
+msgstr ""
+"Site haritası önyüklemesi bir hatayla karşılaştı. %1$s, şu yanıt kodundan "
+"dolayı erişilebilir değil: %2$s. Güvenlik önlemleri erişimi engelliyor "
+"olabilir. %3$sDaha fazla bilgi edinin%4$s."
+
+#: inc/Engine/Preload/Sitemap.php:170
+#, php-format
+msgid ""
+"Sitemap preload encountered an error. %1$s is not accessible to due to the "
+"following response code: 404. Please make sure you entered the correct "
+"sitemap URL and it is accessible in your browser. %2$sLearn more%3$s."
+msgstr ""
+"Site haritası önyüklemesi bir hatayla karşılaştı. %1$s, şu yanıt kodundan "
+"dolayı erişilebilir değil: 404. Lütfen doğru site haritası URL’si "
+"girdiğinizden ve tarayıcınızda erişilebilir olduğundan emin olun. %2$sDaha "
+"fazla bilgi edinin%3$s."
+
+#: inc/Engine/Preload/Sitemap.php:175
+#, php-format
+msgid ""
+"Sitemap preload encountered an error. %1$s is not accessible to due to the "
+"following response code: 500. Please check with your web host about server "
+"access. %2$sLearn more%3$s."
+msgstr ""
+"Site haritası önyüklemesi bir hatayla karşılaştı. %1$s, şu yanıt kodundan "
+"dolayı erişilebilir değil: 500. Lütfen sunucu erişimi ile ilgili olarak web "
+"barındırıcınızı gözden geçirin. %2$sDaha fazla bilgi edinin%3$s."
+
+#: inc/Engine/Preload/Sitemap.php:180
+#, php-format
+msgid ""
+"Sitemap preload encountered an error. Could not gather links on %1$s because"
+" it returned the following response code: %2$s. %3$sLearn more%4$s."
+msgstr ""
+"Site haritası önyüklemesi bir hatayla karşılaştı. Şu yanıt kodunu "
+"döndürdüğünden, %1$s üzerindeki bağlantılar toplanamadı: %2$s. %3$sDaha "
+"fazla bilgi edinin%4$s."
+
+#: inc/Engine/Preload/Sitemap.php:196
+#, php-format
+msgid ""
+"Sitemap preload encountered an error. Could not collect links from %1$s "
+"because the file is empty. %2$sLearn more%3$s."
+msgstr ""
+"Site haritası önyüklemesi bir hatayla karşılaştı. Dosya boş olduğundan, %1$s"
+" adresinden gelen bağlantılar toplanamadı. %2$sDaha fazla bilgi edinin%3$s."
+
+#: inc/Engine/Preload/Sitemap.php:217
+#, php-format
+msgid ""
+"Sitemap preload encountered an error. Could not collect links from %1$s "
+"because of an error during the XML sitemap parsing. %2$sLearn more%3$s."
+msgstr ""
+"Site haritası önyüklemesi bir hatayla karşılaştı. XML site haritası "
+"ayrıştırması sırasında bir hata olduğundan, %1$s adresinden gelen "
+"bağlantılar toplanamadı. %2$sDaha fazla bilgi edinin%3$s."
+
+#: inc/Engine/Preload/SitemapPreloadSubscriber.php:120
+#, php-format
+msgid ""
+"%1$sSimpleXML PHP extension%2$s is not enabled on your server. Please "
+"contact your host to enable it before running sitemap-based cache "
+"preloading."
+msgstr ""
+"%1$sSimpleXML PHP uzantısı%2$s sunucunuzda etkinleştirilmedi. Site haritası "
+"tabanlı önbellek önyüklemesini çalıştırmadan önce etkinleştirmek için lütfen"
+" barındırıcınıza başvurun."
 
 #: inc/admin/admin.php:18 inc/common/admin-bar.php:377
 #: inc/deprecated/deprecated.php:1787
@@ -306,31 +471,31 @@ msgstr "Ayarları içe aktarma başarısız oldu: beklenmeyen dosya içeriği."
 msgid "Settings imported and saved."
 msgstr "Ayarlar içe aktarıldı ve kaydedildi."
 
-#: inc/admin/options.php:135 inc/classes/admin/settings/class-page.php:701
+#: inc/admin/options.php:135 inc/classes/admin/settings/class-page.php:700
 msgid "Excluded CSS Files"
 msgstr "Hariç Tutulan CSS Dosyaları"
 
-#: inc/admin/options.php:136 inc/classes/admin/settings/class-page.php:803
+#: inc/admin/options.php:136 inc/classes/admin/settings/class-page.php:802
 msgid "Excluded Inline JavaScript"
 msgstr "Hariç Tutulan Satır İçi JavaScript"
 
-#: inc/admin/options.php:137 inc/classes/admin/settings/class-page.php:821
+#: inc/admin/options.php:137 inc/classes/admin/settings/class-page.php:820
 msgid "Excluded JavaScript Files"
 msgstr "Hariç Tutulan JavaScript Dosyaları"
 
-#: inc/admin/options.php:138 inc/classes/admin/settings/class-page.php:1207
+#: inc/admin/options.php:138 inc/classes/admin/settings/class-page.php:1206
 msgid "Never Cache URL(s)"
 msgstr "Asla Önbelleklenmeyen URL(ler)"
 
-#: inc/admin/options.php:139 inc/classes/admin/settings/class-page.php:1223
+#: inc/admin/options.php:139 inc/classes/admin/settings/class-page.php:1222
 msgid "Never Cache User Agent(s)"
 msgstr "Asla Önbelleklenmeyen Kullanıcı Tanıtıcı(ları)sı"
 
-#: inc/admin/options.php:140 inc/classes/admin/settings/class-page.php:1228
+#: inc/admin/options.php:140 inc/classes/admin/settings/class-page.php:1227
 msgid "Always Purge URL(s)"
 msgstr "Her Zaman Temizlenen URL(ler)"
 
-#: inc/admin/options.php:141 inc/classes/admin/settings/class-page.php:1522
+#: inc/admin/options.php:141 inc/classes/admin/settings/class-page.php:1521
 msgid "Exclude files from CDN"
 msgstr "CDN’den hariç tutulan dosyalar"
 
@@ -372,7 +537,7 @@ msgid "LazyLoad for iframes/videos"
 msgstr "Iframe’ler ve görüntüler için LazyLoad"
 
 #: inc/admin/ui/meta-boxes.php:74
-#: inc/classes/admin/settings/class-page.php:624
+#: inc/classes/admin/settings/class-page.php:622
 msgid "Minify HTML"
 msgstr "HTML’i küçült"
 
@@ -385,8 +550,8 @@ msgid "Minify/combine JS"
 msgstr "JS’yi küçült/birleştir"
 
 #: inc/admin/ui/meta-boxes.php:77
-#: inc/classes/admin/settings/class-page.php:1492
-#: inc/classes/admin/settings/class-page.php:1503
+#: inc/classes/admin/settings/class-page.php:1491
+#: inc/classes/admin/settings/class-page.php:1502
 #: inc/deprecated/deprecated.php:1773
 msgid "CDN"
 msgstr "CDN"
@@ -686,32 +851,32 @@ msgid "RocketCDN cache purge successful."
 msgstr "RocketCDN önbellek temizleme başarılı."
 
 #: inc/classes/admin/Database/class-optimization.php:41
-#: inc/classes/admin/settings/class-page.php:1368
+#: inc/classes/admin/settings/class-page.php:1367
 msgid "Revisions"
 msgstr "Düzeltmeler"
 
 #: inc/classes/admin/Database/class-optimization.php:42
-#: inc/classes/admin/settings/class-page.php:1378
+#: inc/classes/admin/settings/class-page.php:1377
 msgid "Auto Drafts"
 msgstr "Otomatik Taslaklar"
 
 #: inc/classes/admin/Database/class-optimization.php:43
-#: inc/classes/admin/settings/class-page.php:1388
+#: inc/classes/admin/settings/class-page.php:1387
 msgid "Trashed Posts"
 msgstr "Çöpe Atılmış Yazılar"
 
 #: inc/classes/admin/Database/class-optimization.php:44
-#: inc/classes/admin/settings/class-page.php:1398
+#: inc/classes/admin/settings/class-page.php:1397
 msgid "Spam Comments"
 msgstr "İstenmeyen Yorumlar"
 
 #: inc/classes/admin/Database/class-optimization.php:45
-#: inc/classes/admin/settings/class-page.php:1408
+#: inc/classes/admin/settings/class-page.php:1407
 msgid "Trashed Comments"
 msgstr "Çöpe Atılmış Yorumlar"
 
 #: inc/classes/admin/Database/class-optimization.php:46
-#: inc/classes/admin/settings/class-page.php:1418
+#: inc/classes/admin/settings/class-page.php:1417
 msgid "Expired transients"
 msgstr "Süresi dolan geçiciler"
 
@@ -727,58 +892,58 @@ msgstr "Tablolar"
 msgid "The debug file could not be deleted."
 msgstr "Hata ayıklama dosyası silinemedi."
 
-#: inc/classes/admin/settings/class-page.php:189
+#: inc/classes/admin/settings/class-page.php:188
 msgid "Save Changes"
 msgstr "Değişiklikleri Kaydet"
 
-#: inc/classes/admin/settings/class-page.php:189
+#: inc/classes/admin/settings/class-page.php:188
 msgid "Validate License"
 msgstr "Lisansı Doğrula"
 
+#: inc/classes/admin/settings/class-page.php:219
 #: inc/classes/admin/settings/class-page.php:220
-#: inc/classes/admin/settings/class-page.php:221
 msgid "Unavailable"
 msgstr "Mevcut değil"
 
-#: inc/classes/admin/settings/class-page.php:335
+#: inc/classes/admin/settings/class-page.php:332
 #: inc/deprecated/deprecated.php:1789
 #: views/settings/page-sections/dashboard.php:73
 msgid "License"
 msgstr "Lisans"
 
-#: inc/classes/admin/settings/class-page.php:352
+#: inc/classes/admin/settings/class-page.php:349
 msgid "API key"
 msgstr "API anahtarı"
 
-#: inc/classes/admin/settings/class-page.php:367
+#: inc/classes/admin/settings/class-page.php:364
 msgid "Email address"
 msgstr "E-posta adresi"
 
-#: inc/classes/admin/settings/class-page.php:396
+#: inc/classes/admin/settings/class-page.php:393
 msgid "Dashboard"
 msgstr "Panel"
 
-#: inc/classes/admin/settings/class-page.php:397
+#: inc/classes/admin/settings/class-page.php:394
 msgid "Get help, account info"
 msgstr "Yardım alın, hesap bilgisi"
 
-#: inc/classes/admin/settings/class-page.php:406
+#: inc/classes/admin/settings/class-page.php:403
 msgid "My Status"
 msgstr "Durumum"
 
-#: inc/classes/admin/settings/class-page.php:416 views/settings/page.php:71
+#: inc/classes/admin/settings/class-page.php:413 views/settings/page.php:72
 msgid "Rocket Tester"
 msgstr "Rocket Deneyicisi"
 
-#: inc/classes/admin/settings/class-page.php:417
+#: inc/classes/admin/settings/class-page.php:414
 msgid "I am part of the WP Rocket Beta Testing Program."
 msgstr "WP Rocket Beta Deneme Programının bir parçasıyım."
 
-#: inc/classes/admin/settings/class-page.php:425 views/settings/page.php:89
+#: inc/classes/admin/settings/class-page.php:422 views/settings/page.php:90
 msgid "Rocket Analytics"
 msgstr "Rocket Çözümsel"
 
-#: inc/classes/admin/settings/class-page.php:427
+#: inc/classes/admin/settings/class-page.php:424
 #, php-format
 msgid ""
 "I agree to share anonymous data with the development team to help improve WP"
@@ -787,23 +952,23 @@ msgstr ""
 "WP Rocket’i iyileştirmemize yardımcı olmak için geliştirme ekibi ile isimsiz"
 " verileri paylaşmayı kabul ediyorum. %1$sNe tür bilgi toplayacağız?%2$s"
 
-#: inc/classes/admin/settings/class-page.php:454
+#: inc/classes/admin/settings/class-page.php:451
 msgid "Cache"
 msgstr "Önbellek"
 
-#: inc/classes/admin/settings/class-page.php:455
+#: inc/classes/admin/settings/class-page.php:452
 msgid "Basic cache options"
 msgstr "Temel önbellek seçenekleri"
 
-#: inc/classes/admin/settings/class-page.php:462
+#: inc/classes/admin/settings/class-page.php:459
 msgid "Mobile Cache"
 msgstr "Mobil Önbelleği"
 
-#: inc/classes/admin/settings/class-page.php:464
+#: inc/classes/admin/settings/class-page.php:461
 msgid "Speed up your site for mobile visitors."
 msgstr "Mobil ziyaretçiler için sitenizi hızlandırın."
 
-#: inc/classes/admin/settings/class-page.php:469
+#: inc/classes/admin/settings/class-page.php:466
 msgid ""
 "We detected you use a plugin that requires a separate cache for mobile, and "
 "automatically enabled this option for compatibility."
@@ -811,11 +976,11 @@ msgstr ""
 "Mobil için ayrı önbellek gerektiren bir eklenti kullandığınızı saptadık ve "
 "uyumluluk için bu seçeneği otomatik olarak etkinleştirdik."
 
-#: inc/classes/admin/settings/class-page.php:473
+#: inc/classes/admin/settings/class-page.php:470
 msgid "User Cache"
 msgstr "Kullanıcı Önbelleği"
 
-#: inc/classes/admin/settings/class-page.php:476
+#: inc/classes/admin/settings/class-page.php:473
 #, php-format
 msgid ""
 "%1$sUser cache%2$s is great when you have user-specific or restricted "
@@ -824,11 +989,11 @@ msgstr ""
 "Web sitenizde kullanıcıya özgü ya da kısıtlı içeriğe sahip olduğunuzda "
 "%1$skullanıcı önbelleği%2$s mükemmeldir."
 
-#: inc/classes/admin/settings/class-page.php:484
+#: inc/classes/admin/settings/class-page.php:481
 msgid "Cache Lifespan"
 msgstr "Önbellek Geçerlilik Süresi"
 
-#: inc/classes/admin/settings/class-page.php:487
+#: inc/classes/admin/settings/class-page.php:484
 #, php-format
 msgid ""
 "Cache files older than the specified lifespan will be deleted.<br>Enable "
@@ -839,19 +1004,19 @@ msgstr ""
 "silinecektir.<br>Geçerlilik süresi sona erdikten sonra otomatik olarak "
 "yeniden oluşturulması için önbellek %1$sönyüklemeyi%2$s etkinleştirin."
 
-#: inc/classes/admin/settings/class-page.php:501
+#: inc/classes/admin/settings/class-page.php:498
 msgid "Enable caching for logged-in WordPress users"
 msgstr "Oturum açmış WordPress kullanıcıları için önbelleklemeyi etkinleştir"
 
-#: inc/classes/admin/settings/class-page.php:509
+#: inc/classes/admin/settings/class-page.php:506
 msgid "Enable caching for mobile devices"
 msgstr "Mobil cihazlar için önbelleklemeyi etkinleştir"
 
-#: inc/classes/admin/settings/class-page.php:524
+#: inc/classes/admin/settings/class-page.php:521
 msgid "Separate cache files for mobile devices"
 msgstr "Mobil cihazlar için önbellek dosyalarını ayır"
 
-#: inc/classes/admin/settings/class-page.php:526
+#: inc/classes/admin/settings/class-page.php:523
 #, php-format
 msgid ""
 "Most modern themes are responsive and should work without a separate cache. "
@@ -862,14 +1027,14 @@ msgstr ""
 "Bunu sadece tahsis edilmiş bir mobil temanız veya eklentiniz varsa "
 "etkinleştirin. %1$sDaha fazla bilgi%2$s"
 
-#: inc/classes/admin/settings/class-page.php:542
+#: inc/classes/admin/settings/class-page.php:539
 msgid ""
 "Specify time after which the global cache is cleared<br>(0 = unlimited )"
 msgstr ""
 "Genel önbelleğin ne kadar süre sonra temizleneceği zamanı belirtin<br>(0 = "
 "sınırsız)"
 
-#: inc/classes/admin/settings/class-page.php:544
+#: inc/classes/admin/settings/class-page.php:541
 #, php-format
 msgid ""
 "Reduce lifespan to 10 hours or less if you notice issues that seem to appear"
@@ -878,34 +1043,34 @@ msgstr ""
 "Eğer belirli aralıklarla görünen sorunları fark ederseniz geçerlilik "
 "süresini 10 saat veya daha azına düşürün. %1$sNeden?%2$s"
 
-#: inc/classes/admin/settings/class-page.php:550
+#: inc/classes/admin/settings/class-page.php:547
 msgid "Minutes"
 msgstr "Dakika"
 
-#: inc/classes/admin/settings/class-page.php:551
+#: inc/classes/admin/settings/class-page.php:548
 msgid "Hours"
 msgstr "Saat"
 
-#: inc/classes/admin/settings/class-page.php:552
+#: inc/classes/admin/settings/class-page.php:549
 msgid "Days"
 msgstr "Gün"
 
-#: inc/classes/admin/settings/class-page.php:580
+#: inc/classes/admin/settings/class-page.php:578
 #: views/settings/page-sections/tutorials.php:22
 msgid "File Optimization"
 msgstr "Dosyaları İyileştirme"
 
-#: inc/classes/admin/settings/class-page.php:581
+#: inc/classes/admin/settings/class-page.php:579
 msgid "Optimize CSS & JS"
 msgstr "CSS ve JS kodlarını iyileştirin"
 
-#: inc/classes/admin/settings/class-page.php:588
+#: inc/classes/admin/settings/class-page.php:586
 msgid "Basic Settings"
 msgstr "Temel Ayarlar"
 
-#: inc/classes/admin/settings/class-page.php:595
-#: inc/classes/admin/settings/class-page.php:605
-#: inc/classes/admin/settings/class-page.php:615
+#: inc/classes/admin/settings/class-page.php:593
+#: inc/classes/admin/settings/class-page.php:603
+#: inc/classes/admin/settings/class-page.php:613
 #, php-format
 msgid ""
 "%1$s Minification is currently activated in <strong>Autoptimize</strong>. If"
@@ -915,33 +1080,37 @@ msgstr ""
 " %2$s’in küçültmesini kullanmak istiyorsanız, Autoptimize içindeki bu "
 "seçenekleri etkisizleştirin."
 
-#: inc/classes/admin/settings/class-page.php:598
+#: inc/classes/admin/settings/class-page.php:596
 msgid "CSS Files"
 msgstr "CSS Dosyaları"
 
-#: inc/classes/admin/settings/class-page.php:608
+#: inc/classes/admin/settings/class-page.php:606
 msgid "JavaScript Files"
 msgstr "JavaScript Dosyaları"
 
-#: inc/classes/admin/settings/class-page.php:628
+#: inc/classes/admin/settings/class-page.php:626
 msgid "Minifying HTML removes whitespace and comments to reduce the size."
 msgstr ""
 "HTML’i küçültme, boyutu düşürmek için boşlukları ve açıklamaları kaldırır."
 
+#: inc/classes/admin/settings/class-page.php:637
+msgid "Optimize Google Fonts"
+msgstr "Google Yazı Tiplerini iyileştir"
+
 #: inc/classes/admin/settings/class-page.php:639
-msgid "Combine Google Fonts files"
-msgstr "Google Yazı Tipleri dosyalarını birleştir"
-
-#: inc/classes/admin/settings/class-page.php:640
-msgid "Combining Google Fonts will reduce the number of HTTP requests."
+#, php-format
+msgid ""
+"Improves font performance and combines multiple font requests to reduce the "
+"number of HTTP requests. %1$sMore info%2$s"
 msgstr ""
-"Google Yazı Tiplerini birleştirme, HTTP isteklerinin sayısını azaltacak."
+"Yazı tipi performansını artırır ve HTTP isteklerinin sayısını azaltmak için "
+"birden çok yazı tipi isteklerini birleştirir. %1$sDaha fazla bilgi%2$s"
 
-#: inc/classes/admin/settings/class-page.php:648
+#: inc/classes/admin/settings/class-page.php:647
 msgid "Remove query strings from static resources"
 msgstr "Sorgu dizgilerini sabit kaynaklardan kaldır"
 
-#: inc/classes/admin/settings/class-page.php:650
+#: inc/classes/admin/settings/class-page.php:649
 #, php-format
 msgid ""
 "Removes the version query string from static files (e.g. style.css?ver=1.0) "
@@ -952,27 +1121,27 @@ msgstr ""
 " bunun yerine dosya adı içine bunu kodlar (örn. style-1.0.css). GTMetrix "
 "puanınızı iyileştirebilir. %1$sDaha fazla bilgi%2$s"
 
-#: inc/classes/admin/settings/class-page.php:658
+#: inc/classes/admin/settings/class-page.php:657
 msgid "Minify CSS files"
 msgstr "CSS dosyalarını küçült"
 
-#: inc/classes/admin/settings/class-page.php:659
+#: inc/classes/admin/settings/class-page.php:658
 msgid "Minify CSS removes whitespace and comments to reduce the file size."
 msgstr ""
 "CSS’yi küçültme, dosya boyutunu düşürmek için boşlukları ve açıklamaları "
 "kaldırır."
 
+#: inc/classes/admin/settings/class-page.php:671
+#: inc/classes/admin/settings/class-page.php:693
+#: inc/classes/admin/settings/class-page.php:773
+#: inc/classes/admin/settings/class-page.php:795
+msgid "This could break things!"
+msgstr "Bu birşeyleri bozabilir!"
+
 #: inc/classes/admin/settings/class-page.php:672
 #: inc/classes/admin/settings/class-page.php:694
 #: inc/classes/admin/settings/class-page.php:774
 #: inc/classes/admin/settings/class-page.php:796
-msgid "This could break things!"
-msgstr "Bu birşeyleri bozabilir!"
-
-#: inc/classes/admin/settings/class-page.php:673
-#: inc/classes/admin/settings/class-page.php:695
-#: inc/classes/admin/settings/class-page.php:775
-#: inc/classes/admin/settings/class-page.php:797
 msgid ""
 "If you notice any errors on your website after having activated this "
 "setting, just deactivate it again, and your site will be back to normal."
@@ -980,17 +1149,17 @@ msgstr ""
 "Bu ayarı aktif ettikten sonra web sitenizde herhangi bir hata fark "
 "ederseniz, sadece tekrar devre dışı bırakın, ve siteniz normale dönecektir."
 
-#: inc/classes/admin/settings/class-page.php:674
+#: inc/classes/admin/settings/class-page.php:673
 msgid "Activate minify CSS"
 msgstr "CSS küçültmeyi aktif et"
 
-#: inc/classes/admin/settings/class-page.php:679
+#: inc/classes/admin/settings/class-page.php:678
 msgid "Combine CSS files <em>(Enable Minify CSS files to select)</em>"
 msgstr ""
 "CSS dosyalarını birleştir <em>(Seçmek için CSS dosyalarını küçült’ü "
 "etkinleştirin)</em>"
 
-#: inc/classes/admin/settings/class-page.php:681
+#: inc/classes/admin/settings/class-page.php:680
 #, php-format
 msgid ""
 "Combine CSS merges all your files into 1, reducing HTTP requests. Not "
@@ -1000,11 +1169,11 @@ msgstr ""
 "HTTP isteklerini azaltır. Siteniz HTTP/2 kullanıyorsa önerilemez. %1$sDaha "
 "fazla bilgi%2$s"
 
-#: inc/classes/admin/settings/class-page.php:696
+#: inc/classes/admin/settings/class-page.php:695
 msgid "Activate combine CSS"
 msgstr "CSS birleştirmeyi aktif et"
 
-#: inc/classes/admin/settings/class-page.php:702
+#: inc/classes/admin/settings/class-page.php:701
 msgid ""
 "Specify URLs of CSS files to be excluded from minification and concatenation"
 " (one per line)."
@@ -1012,7 +1181,7 @@ msgstr ""
 "Küçültmeden ve birleştirmeden hariç tutulacak CSS dosyalarının URL’lerini "
 "belirtin (satır başına bir tane)."
 
-#: inc/classes/admin/settings/class-page.php:703
+#: inc/classes/admin/settings/class-page.php:702
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use (.*).css "
 "wildcards to exclude all CSS files located at a specific path."
@@ -1021,11 +1190,11 @@ msgstr ""
 " yolda bulunan tüm CSS dosyalarını hariç tutmak için (.*).css joker "
 "karakterlerini kullanın."
 
-#: inc/classes/admin/settings/class-page.php:716
+#: inc/classes/admin/settings/class-page.php:715
 msgid "Optimize CSS delivery"
 msgstr "CSS teslimini iyileştir"
 
-#: inc/classes/admin/settings/class-page.php:723
+#: inc/classes/admin/settings/class-page.php:722
 #, php-format
 msgctxt "WP Critical CSS compatibility"
 msgid ""
@@ -1036,7 +1205,7 @@ msgstr ""
 "WP Rocket’in CSS Teslimini İyileştir seçeneğini kullanmak istiyorsanız, %1$s"
 " eklentisini etkisizleştirin."
 
-#: inc/classes/admin/settings/class-page.php:725
+#: inc/classes/admin/settings/class-page.php:724
 #, php-format
 msgid ""
 "Optimize CSS delivery eliminates render-blocking CSS on your website for "
@@ -1046,11 +1215,11 @@ msgstr ""
 "sitenizdeki işleyişi engelleyen CSS’yi aradan kaldırır. %1$sDaha fazla "
 "bilgi%2$s"
 
-#: inc/classes/admin/settings/class-page.php:736
+#: inc/classes/admin/settings/class-page.php:735
 msgid "Fallback critical CSS"
 msgstr "Son çare önemli CSS"
 
-#: inc/classes/admin/settings/class-page.php:741
+#: inc/classes/admin/settings/class-page.php:740
 #, php-format
 msgid ""
 "Provides a fallback if auto-generated critical path CSS is incomplete. "
@@ -1059,11 +1228,11 @@ msgstr ""
 "Otomatik oluşturulmuş önemli yol CSS’si tamamlanmazsa son bir çare sağlar. "
 "%1$sDaha fazla bilgi%2$s"
 
-#: inc/classes/admin/settings/class-page.php:750
+#: inc/classes/admin/settings/class-page.php:749
 msgid "Remove jQuery Migrate"
 msgstr "jQuery Migrate’i Kaldır"
 
-#: inc/classes/admin/settings/class-page.php:752
+#: inc/classes/admin/settings/class-page.php:751
 #, php-format
 msgid ""
 "Remove jQuery Migrate eliminates a JS file and can improve load time. "
@@ -1072,29 +1241,29 @@ msgstr ""
 "jQuery Migrate’i kaldırmak, JS dosyasını ortadan kaldırır ve yükleme "
 "süresini iyileştirebilir. %1$sDaha fazla bilgi%2$s"
 
-#: inc/classes/admin/settings/class-page.php:760
+#: inc/classes/admin/settings/class-page.php:759
 msgid "Minify JavaScript files"
 msgstr "JavaScript dosyalarını küçült"
 
-#: inc/classes/admin/settings/class-page.php:761
+#: inc/classes/admin/settings/class-page.php:760
 msgid ""
 "Minify JavaScript removes whitespace and comments to reduce the file size."
 msgstr ""
 "JavaScript’i küçültme, dosya boyutunu düşürmek için boşlukları ve "
 "açıklamaları kaldırır."
 
-#: inc/classes/admin/settings/class-page.php:776
+#: inc/classes/admin/settings/class-page.php:775
 msgid "Activate minify JavaScript"
 msgstr "JavaScript küçültmeyi aktif et"
 
-#: inc/classes/admin/settings/class-page.php:781
+#: inc/classes/admin/settings/class-page.php:780
 msgid ""
 "Combine JavaScript files <em>(Enable Minify JavaScript files to select)</em>"
 msgstr ""
 "JavaScript dosyalarını birleştir <em>(Seçmek için JavaScript dosyalarını "
 "küçült’ü etkinleştirin)</em>"
 
-#: inc/classes/admin/settings/class-page.php:783
+#: inc/classes/admin/settings/class-page.php:782
 #, php-format
 msgid ""
 "Combine JavaScript files combines your site’s internal, 3rd party and inline"
@@ -1105,11 +1274,11 @@ msgstr ""
 "JS dosyalarını birleştirir, HTTP isteklerini azaltır. Siteniz HTTP/2 "
 "kullanıyorsa önerilmez. %1$sDaha fazla bilgi%2$s"
 
-#: inc/classes/admin/settings/class-page.php:798
+#: inc/classes/admin/settings/class-page.php:797
 msgid "Activate combine JavaScript"
 msgstr "JavaScript birleştirmeyi aktif et"
 
-#: inc/classes/admin/settings/class-page.php:805
+#: inc/classes/admin/settings/class-page.php:804
 #, php-format
 msgid ""
 "Specify patterns of inline JavaScript to be excluded from concatenation (one"
@@ -1118,7 +1287,7 @@ msgstr ""
 "Birleştirmeden hariç tutulacak satır içi JavaScript dosyalarının örneklerini"
 " belirtin (satır başına bir tane). %1$sDaha fazla bilgi%2$s"
 
-#: inc/classes/admin/settings/class-page.php:822
+#: inc/classes/admin/settings/class-page.php:821
 msgid ""
 "Specify URLs of JavaScript files to be excluded from minification and "
 "concatenation (one per line)."
@@ -1126,7 +1295,7 @@ msgstr ""
 "Küçültmeden ve birleştirmeden hariç tutulacak JavaScript dosyalarının "
 "URL’lerini belirtin (satır başına bir tane)."
 
-#: inc/classes/admin/settings/class-page.php:823
+#: inc/classes/admin/settings/class-page.php:822
 msgid ""
 "<strong>Internal:</strong> The domain part of the URL will be stripped "
 "automatically. Use (.*).js wildcards to exclude all JS files located at a "
@@ -1136,7 +1305,7 @@ msgstr ""
 "sadeleştirilecektir. Belirli bir yolda bulunan tüm JS dosyalarını hariç "
 "tutmak için (.*).js joker karakterlerini kullanın."
 
-#: inc/classes/admin/settings/class-page.php:825
+#: inc/classes/admin/settings/class-page.php:824
 #, php-format
 msgid ""
 "<strong>3rd Party:</strong> Use either the full URL path or only the domain "
@@ -1145,11 +1314,11 @@ msgstr ""
 "<strong>3. Taraf:</strong> Harici JS dosyalarını dahil etmemek için ya URL "
 "tam yolunu ya da sadece etki alanı adını kullanın. %1$sDaha fazla bilgi%2$s"
 
-#: inc/classes/admin/settings/class-page.php:841
+#: inc/classes/admin/settings/class-page.php:840
 msgid "Load JavaScript deferred"
 msgstr "Ertelenmiş JavaScript yükle"
 
-#: inc/classes/admin/settings/class-page.php:843
+#: inc/classes/admin/settings/class-page.php:842
 #, php-format
 msgid ""
 "Load JavaScript deferred eliminates render-blocking JS on your site and can "
@@ -1159,11 +1328,11 @@ msgstr ""
 "sitenizdeki işleyişi engelleyen JS’yi aradan kaldırır. %1$sDaha fazla "
 "bilgi%2$s"
 
-#: inc/classes/admin/settings/class-page.php:854
+#: inc/classes/admin/settings/class-page.php:853
 msgid "Safe Mode for jQuery (recommended)"
 msgstr "jQuery için Güvenli Kip (önerilir)"
 
-#: inc/classes/admin/settings/class-page.php:855
+#: inc/classes/admin/settings/class-page.php:854
 msgid ""
 "Safe mode for jQuery for deferred JS ensures support for inline jQuery "
 "references from themes and plugins by loading jQuery at the top of the "
@@ -1175,23 +1344,23 @@ msgstr ""
 "gelen satır içi jQuery kaynakları için desteği sağlama alır.<br><em> Devre "
 "dışı bırakmak işlevselliğin bozulmasıyla sonuçlanabilir, iyice deneyin!</em>"
 
-#: inc/classes/admin/settings/class-page.php:887
+#: inc/classes/admin/settings/class-page.php:886
 msgid "Media"
 msgstr "Ortam"
 
-#: inc/classes/admin/settings/class-page.php:888
+#: inc/classes/admin/settings/class-page.php:887
 msgid "LazyLoad, emojis, embeds, WebP"
 msgstr "LazyLoad, emojiler, gömülüler, WebP"
 
-#: inc/classes/admin/settings/class-page.php:894
+#: inc/classes/admin/settings/class-page.php:893
 msgid "Autoptimize"
 msgstr "Autoptimize"
 
-#: inc/classes/admin/settings/class-page.php:911
+#: inc/classes/admin/settings/class-page.php:910
 msgid "LazyLoad"
 msgstr "LazyLoad"
 
-#: inc/classes/admin/settings/class-page.php:914
+#: inc/classes/admin/settings/class-page.php:913
 #, php-format
 msgid ""
 "It can improve actual and perceived loading time as images, iframes, and "
@@ -1203,7 +1372,7 @@ msgstr ""
 "süresini iyileştirebilir ve HTTP isteklerinin sayısını azaltır. %1$sDaha "
 "Fazla Bilgi%2$s"
 
-#: inc/classes/admin/settings/class-page.php:921
+#: inc/classes/admin/settings/class-page.php:920
 #, php-format
 msgid ""
 "Lazyload is currently activated in <strong>%2$s</strong>. If you want to use"
@@ -1213,11 +1382,11 @@ msgstr ""
 "LazyLoad'ını kullanmak istiyorsanız, %2$s içindeki bu seçeneği "
 "etkisizleştirin."
 
-#: inc/classes/admin/settings/class-page.php:924
+#: inc/classes/admin/settings/class-page.php:923
 msgid "Emoji 👻"
 msgstr "Emoji 👻"
 
-#: inc/classes/admin/settings/class-page.php:926
+#: inc/classes/admin/settings/class-page.php:925
 msgid ""
 "Use default emoji of visitor's browser instead of loading emoji from "
 "WordPress.org"
@@ -1225,11 +1394,11 @@ msgstr ""
 "WordPress.org adresinden emoji yüklemek yerine ziyaretçinin tarayıcısının "
 "varsayılan emoji’sini kullansın"
 
-#: inc/classes/admin/settings/class-page.php:930
+#: inc/classes/admin/settings/class-page.php:929
 msgid "Embeds"
 msgstr "Gömülüler"
 
-#: inc/classes/admin/settings/class-page.php:932
+#: inc/classes/admin/settings/class-page.php:931
 msgid ""
 "Prevents others from embedding content from your site, prevents you from "
 "embedding content from other (non-whitelisted) sites, and removes JavaScript"
@@ -1239,11 +1408,11 @@ msgstr ""
 "alınmamış) sitelerden gömülü içerikten sizi korur, ve WordPress gömülüleri "
 "ile ilgili JavaScript isteklerini kaldırır."
 
-#: inc/classes/admin/settings/class-page.php:936
+#: inc/classes/admin/settings/class-page.php:935
 msgid "WebP compatibility"
 msgstr "WebP uyumluluğu"
 
-#: inc/classes/admin/settings/class-page.php:940
+#: inc/classes/admin/settings/class-page.php:939
 #, php-format
 msgid ""
 "Enable this option if you would like WP Rocket to serve WebP images to "
@@ -1256,11 +1425,11 @@ msgstr ""
 "oluşturamayacağını lütfen unutmayın. WebP resimleri oluşturmak için "
 "%1$sImagify%2$s öneriyoruz. %3$sDaha fazla bilgi%2$s"
 
-#: inc/classes/admin/settings/class-page.php:968
+#: inc/classes/admin/settings/class-page.php:967
 msgid "Enable for images"
 msgstr "Resimler için etkinleştir"
 
-#: inc/classes/admin/settings/class-page.php:979
+#: inc/classes/admin/settings/class-page.php:978
 msgctxt "Avada"
 msgid ""
 "Lazyload for images is currently activated in Avada. If you want to use WP "
@@ -1270,15 +1439,15 @@ msgstr ""
 "LazyLoad’ını kullanmak istiyorsanız, Avada içindeki bu seçeneği "
 "etkisizleştirin."
 
-#: inc/classes/admin/settings/class-page.php:987
+#: inc/classes/admin/settings/class-page.php:986
 msgid "Enable for iframes and videos"
 msgstr "Iframe’ler ve görüntüler için etkinleştir"
 
-#: inc/classes/admin/settings/class-page.php:1002
+#: inc/classes/admin/settings/class-page.php:1001
 msgid "Replace YouTube iframe with preview image"
 msgstr "Önizleme resmi ile YouTube iframe’ini değiştir"
 
-#: inc/classes/admin/settings/class-page.php:1003
+#: inc/classes/admin/settings/class-page.php:1002
 msgid ""
 "This can significantly improve your loading time if you have a lot of "
 "YouTube videos on a page."
@@ -1286,36 +1455,36 @@ msgstr ""
 "Bir sayfada çok sayıda YouTube görüntüsüne sahipseniz bu önemli ölçüde "
 "yükleme sürenizi iyileştirebilir."
 
-#: inc/classes/admin/settings/class-page.php:1015
+#: inc/classes/admin/settings/class-page.php:1014
 msgid "Disable Emoji"
 msgstr "Emoji’yi etkisizleştir"
 
-#: inc/classes/admin/settings/class-page.php:1016
+#: inc/classes/admin/settings/class-page.php:1015
 msgid "Disable Emoji will reduce the number of external HTTP requests."
 msgstr ""
 "Emoji’yi etkisizleştirmek, harici HTTP isteklerinin sayısını azaltacak."
 
-#: inc/classes/admin/settings/class-page.php:1024
+#: inc/classes/admin/settings/class-page.php:1023
 msgid "Disable WordPress embeds"
 msgstr "WordPress gömülülerini etkisizleştir"
 
-#: inc/classes/admin/settings/class-page.php:1034
+#: inc/classes/admin/settings/class-page.php:1033
 #: inc/classes/subscriber/Media/class-webp-subscriber.php:362
 msgid "Enable WebP caching"
 msgstr "WebP önbelleklemesini etkinleştir"
 
-#: inc/classes/admin/settings/class-page.php:1057
-#: inc/classes/admin/settings/class-page.php:1067
+#: inc/classes/admin/settings/class-page.php:1056
+#: inc/classes/admin/settings/class-page.php:1066
 #: inc/deprecated/deprecated.php:1776
 #: views/settings/page-sections/tutorials.php:30
 msgid "Preload"
 msgstr "Önyükleme"
 
-#: inc/classes/admin/settings/class-page.php:1058
+#: inc/classes/admin/settings/class-page.php:1057
 msgid "Generate cache files"
 msgstr "Önbellek dosyalarını oluşturun"
 
-#: inc/classes/admin/settings/class-page.php:1070
+#: inc/classes/admin/settings/class-page.php:1069
 #, php-format
 msgid ""
 "When you enable preloading WP Rocket will generate the cache starting with "
@@ -1330,11 +1499,11 @@ msgstr ""
 "güncellediğinizde otomatik olarak tetiklenir ve ayrıca yönetici çubuğundan "
 "veya %1$sWP Rocket Paneli%2$s’nden el ile tetiklenebilir."
 
-#: inc/classes/admin/settings/class-page.php:1078
+#: inc/classes/admin/settings/class-page.php:1077
 msgid "Prefetch DNS Requests"
 msgstr "DNS İsteklerini Önceden Getirme"
 
-#: inc/classes/admin/settings/class-page.php:1080
+#: inc/classes/admin/settings/class-page.php:1079
 msgid ""
 "DNS prefetching can make external files load faster, especially on mobile "
 "networks"
@@ -1342,27 +1511,27 @@ msgstr ""
 "Önceden DNS getirme, harici dosyaları daha hızlı yüklemeyi sağlayabilir, "
 "özellikle de mobil ağlarda"
 
-#: inc/classes/admin/settings/class-page.php:1094
+#: inc/classes/admin/settings/class-page.php:1093
 msgid "Activate Preloading"
 msgstr "Önyüklemeyi aktif et"
 
-#: inc/classes/admin/settings/class-page.php:1113
+#: inc/classes/admin/settings/class-page.php:1112
 msgid "Activate sitemap-based cache preloading"
 msgstr "Site haritası tabanlı önbellek önyüklemesini aktif et"
 
-#: inc/classes/admin/settings/class-page.php:1132
+#: inc/classes/admin/settings/class-page.php:1131
 msgid "Sitemaps for preloading"
 msgstr "Önyükleme için site haritaları"
 
-#: inc/classes/admin/settings/class-page.php:1136
+#: inc/classes/admin/settings/class-page.php:1135
 msgid "Specify XML sitemap(s) to be used for preloading"
 msgstr "Önyükleme için kullanılacak XML site harita(larını)sını belirtin"
 
-#: inc/classes/admin/settings/class-page.php:1146
+#: inc/classes/admin/settings/class-page.php:1145
 msgid "URLs to prefetch"
 msgstr "Önceden gertirmek için URL’ler"
 
-#: inc/classes/admin/settings/class-page.php:1147
+#: inc/classes/admin/settings/class-page.php:1146
 msgid ""
 "Specify external hosts to be prefetched (no <code>http:</code>, one per "
 "line)"
@@ -1370,47 +1539,47 @@ msgstr ""
 "Önceden getirilecek olan harici anamakineleri belirtin (<code>http:</code> "
 "olmadan, satır başına bir tane)"
 
-#: inc/classes/admin/settings/class-page.php:1170
+#: inc/classes/admin/settings/class-page.php:1169
 msgid "Advanced Rules"
 msgstr "Gelişmiş Kurallar"
 
-#: inc/classes/admin/settings/class-page.php:1171
+#: inc/classes/admin/settings/class-page.php:1170
 msgid "Fine-tune cache rules"
 msgstr "Önbellek kurallarına ince ayar yapın"
 
-#: inc/classes/admin/settings/class-page.php:1180
+#: inc/classes/admin/settings/class-page.php:1179
 msgid ""
 "Sensitive pages like custom login/logout URLs should be excluded from cache."
 msgstr ""
 "Özel oturum açma/oturum kapatma URL’leri gibi hassas sayfalar önbellekten "
 "hariç tutulmalıdır."
 
-#: inc/classes/admin/settings/class-page.php:1183
+#: inc/classes/admin/settings/class-page.php:1182
 msgctxt "plugin name"
 msgid "WooCommerce"
 msgstr "WooCommerce"
 
-#: inc/classes/admin/settings/class-page.php:1185
+#: inc/classes/admin/settings/class-page.php:1184
 msgctxt "plugin name"
 msgid "Easy Digital Downloads"
 msgstr "Easy Digital Downloads"
 
-#: inc/classes/admin/settings/class-page.php:1187
+#: inc/classes/admin/settings/class-page.php:1186
 msgctxt "plugin name"
 msgid "iThemes Exchange"
 msgstr "iThemes Exchange"
 
-#: inc/classes/admin/settings/class-page.php:1189
+#: inc/classes/admin/settings/class-page.php:1188
 msgctxt "plugin name"
 msgid "Jigoshop"
 msgstr "Jigoshop"
 
-#: inc/classes/admin/settings/class-page.php:1191
+#: inc/classes/admin/settings/class-page.php:1190
 msgctxt "plugin name"
 msgid "WP-Shop"
 msgstr "WP-Shop"
 
-#: inc/classes/admin/settings/class-page.php:1197
+#: inc/classes/admin/settings/class-page.php:1196
 #, php-format
 msgid ""
 "<br>Cart, checkout and \"my account\" pages set in "
@@ -1420,15 +1589,15 @@ msgstr ""
 "\"hesabım\" sayfaları algılanacak ve varsayılan olarak asla "
 "önbelleklenmeyecektir."
 
-#: inc/classes/admin/settings/class-page.php:1218
+#: inc/classes/admin/settings/class-page.php:1217
 msgid "Never Cache Cookies"
 msgstr "Asla Önbelleklenmeyen Tanımlama Bilgileri"
 
-#: inc/classes/admin/settings/class-page.php:1237
+#: inc/classes/admin/settings/class-page.php:1236
 msgid "Cache Query String(s)"
 msgstr "Önbelleklenen Sorgu Dizgi(leri)si"
 
-#: inc/classes/admin/settings/class-page.php:1240
+#: inc/classes/admin/settings/class-page.php:1239
 #, php-format
 msgid ""
 "%1$sCache for query strings%2$s enables you to force caching for specific "
@@ -1437,15 +1606,15 @@ msgstr ""
 "%1$sSorgu dizgilerini önbelleklemek%2$s belirli GET parametreleri için "
 "önbelleklemeye zorlamanızı etkinleştirir."
 
-#: inc/classes/admin/settings/class-page.php:1254
+#: inc/classes/admin/settings/class-page.php:1253
 msgid ""
 "Specify URLs of pages or posts that should never be cached (one per line)"
 msgstr ""
 "Asla önbelleklenmemesi gereken sayfa ve yazıların URL’lerini belirtin (satır"
 " başına bir tane)"
 
-#: inc/classes/admin/settings/class-page.php:1255
-#: inc/classes/admin/settings/class-page.php:1283
+#: inc/classes/admin/settings/class-page.php:1254
+#: inc/classes/admin/settings/class-page.php:1282
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use (.*) "
 "wildcards to address multiple URLs under a given path."
@@ -1453,7 +1622,7 @@ msgstr ""
 "URL’nin etki alanı kısmı otomatik olarak sadeleştirilecektir.<br>Verilen yol"
 " altında çoklu URL’leri adreslemek için (.*) joker karakterlerini kullanın."
 
-#: inc/classes/admin/settings/class-page.php:1264
+#: inc/classes/admin/settings/class-page.php:1263
 msgid ""
 "Specify the IDs of cookies that, when set in the visitor's browser, should "
 "prevent a page from getting cached (one per line)"
@@ -1462,20 +1631,20 @@ msgstr ""
 "engel olması gereken, tanımlama bilgilerinin Kimliklerini belirtin (satır "
 "başına bir tane)"
 
-#: inc/classes/admin/settings/class-page.php:1272
+#: inc/classes/admin/settings/class-page.php:1271
 msgid ""
 "Specify user agent strings that should never see cached pages (one per line)"
 msgstr ""
 "Önbelleklenmiş sayfaları asla görmemesi gereken kullanıcı tanıtıcı dizgisini"
 " belirtin (satır başına bir tane)"
 
-#: inc/classes/admin/settings/class-page.php:1273
+#: inc/classes/admin/settings/class-page.php:1272
 msgid "Use (.*) wildcards to detect parts of UA strings."
 msgstr ""
 "UA dizgilerinin parçalarını algılamak için (.*) joker karakterlerini "
 "kullanın."
 
-#: inc/classes/admin/settings/class-page.php:1282
+#: inc/classes/admin/settings/class-page.php:1281
 msgid ""
 "Specify URLs you always want purged from cache whenever you update any post "
 "or page (one per line)"
@@ -1483,24 +1652,24 @@ msgstr ""
 "Herhangi bir yazıyı veya sayfayı her güncellediğinizde daima önbellekten "
 "temizlenmesini istediğiniz URL’leri belirtin (satır başına bir tane)"
 
-#: inc/classes/admin/settings/class-page.php:1291
+#: inc/classes/admin/settings/class-page.php:1290
 msgid "Specify query strings for caching (one per line)"
 msgstr "Önbellekleme için sorgu dizgilerini belirtin (satır başına bir tane)"
 
-#: inc/classes/admin/settings/class-page.php:1319
+#: inc/classes/admin/settings/class-page.php:1318
 #: inc/deprecated/deprecated.php:1775
 msgid "Database"
 msgstr "Veritabanı"
 
-#: inc/classes/admin/settings/class-page.php:1320
+#: inc/classes/admin/settings/class-page.php:1319
 msgid "Optimize, reduce bloat"
 msgstr "İyileştirin, şişmeyi azaltın"
 
-#: inc/classes/admin/settings/class-page.php:1329
+#: inc/classes/admin/settings/class-page.php:1328
 msgid "Post Cleanup"
 msgstr "Yazı Temizleme"
 
-#: inc/classes/admin/settings/class-page.php:1331
+#: inc/classes/admin/settings/class-page.php:1330
 msgid ""
 "Post revisions and drafts will be permanently deleted. Do not use this "
 "option if you need to retain revisions or drafts."
@@ -1508,19 +1677,19 @@ msgstr ""
 "Yazı incelemeleri ve taslaklar kalıcı olarak silinecektir. İncelemeleri ya "
 "da taslakları tutmanız gerekiyorsa bu seçeneği kullanmayın."
 
-#: inc/classes/admin/settings/class-page.php:1339
+#: inc/classes/admin/settings/class-page.php:1338
 msgid "Comments Cleanup"
 msgstr "Yorumları Temizleme"
 
-#: inc/classes/admin/settings/class-page.php:1341
+#: inc/classes/admin/settings/class-page.php:1340
 msgid "Spam and trashed comments will be permanently deleted."
 msgstr "İstenmeyen mesaj ve çöpe atılmış yorumlar kalıcı olarak silinecektir."
 
-#: inc/classes/admin/settings/class-page.php:1345
+#: inc/classes/admin/settings/class-page.php:1344
 msgid "Transients Cleanup"
 msgstr "Geçicileri Temizleme"
 
-#: inc/classes/admin/settings/class-page.php:1347
+#: inc/classes/admin/settings/class-page.php:1346
 msgid ""
 "Transients are temporary options; they are safe to remove. They will be "
 "automatically regenerated as your plugins require them."
@@ -1528,107 +1697,107 @@ msgstr ""
 "Geçiciler geçici seçeneklerdir; kaldırması güvenlidir. Eklentilerinizin "
 "gerektirdiklerini otomatik olarak oluşturacaklardır."
 
-#: inc/classes/admin/settings/class-page.php:1351
+#: inc/classes/admin/settings/class-page.php:1350
 msgid "Database Cleanup"
 msgstr "Veritabanı Temizleme"
 
-#: inc/classes/admin/settings/class-page.php:1353
+#: inc/classes/admin/settings/class-page.php:1352
 msgid "Reduces overhead of database tables"
 msgstr "Veritabanı tablolarının ek yükünü azaltır"
 
-#: inc/classes/admin/settings/class-page.php:1357
+#: inc/classes/admin/settings/class-page.php:1356
 msgid "Automatic cleanup"
 msgstr "Otomatik Temizleme"
 
-#: inc/classes/admin/settings/class-page.php:1370
+#: inc/classes/admin/settings/class-page.php:1369
 #, php-format
 msgid "%s revision in your database."
 msgid_plural "%s revisions in your database."
 msgstr[0] "Veritabanınızda %s düzeltme."
 msgstr[1] "Veritabanınızda %s düzeltme."
 
-#: inc/classes/admin/settings/class-page.php:1380
+#: inc/classes/admin/settings/class-page.php:1379
 #, php-format
 msgid "%s draft in your database."
 msgid_plural "%s drafts in your database."
 msgstr[0] "Veritabanınızda %s taslak."
 msgstr[1] "Veritabanınızda %s taslak."
 
-#: inc/classes/admin/settings/class-page.php:1390
+#: inc/classes/admin/settings/class-page.php:1389
 #, php-format
 msgid "%s trashed post in your database."
 msgid_plural "%s trashed posts in your database."
 msgstr[0] "Veritabanınızda %s çöpe atılmış yazı."
 msgstr[1] "Veritabanınızda %s çöpe atılmış yazı."
 
-#: inc/classes/admin/settings/class-page.php:1400
+#: inc/classes/admin/settings/class-page.php:1399
 #, php-format
 msgid "%s spam comment in your database."
 msgid_plural "%s spam comments in your database."
 msgstr[0] "Veritabanınızda %s istenmeyen yorum."
 msgstr[1] "Veritabanınızda %s istenmeyen yorum."
 
-#: inc/classes/admin/settings/class-page.php:1410
+#: inc/classes/admin/settings/class-page.php:1409
 #, php-format
 msgid "%s trashed comment in your database."
 msgid_plural "%s trashed comments in your database."
 msgstr[0] "Veritabanınızda %s çöpe atılmış yorum."
 msgstr[1] "Veritabanınızda %s çöpe atılmış yorum."
 
-#: inc/classes/admin/settings/class-page.php:1420
+#: inc/classes/admin/settings/class-page.php:1419
 #, php-format
 msgid "%s expired transient in your database."
 msgid_plural "%s expired transients in your database."
 msgstr[0] "Veritabanınızda süresi dolan %s geçici."
 msgstr[1] "Veritabanınızda süresi dolan %s geçici."
 
-#: inc/classes/admin/settings/class-page.php:1428
+#: inc/classes/admin/settings/class-page.php:1427
 msgid "All transients"
 msgstr "Tüm geçiciler"
 
-#: inc/classes/admin/settings/class-page.php:1430
+#: inc/classes/admin/settings/class-page.php:1429
 #, php-format
 msgid "%s transient in your database."
 msgid_plural "%s transients in your database."
 msgstr[0] "Veritabanınızda %s geçici."
 msgstr[1] "Veritabanınızda %s geçici."
 
-#: inc/classes/admin/settings/class-page.php:1438
+#: inc/classes/admin/settings/class-page.php:1437
 msgid "Optimize Tables"
 msgstr "Tabloları iyileştir"
 
-#: inc/classes/admin/settings/class-page.php:1440
+#: inc/classes/admin/settings/class-page.php:1439
 #, php-format
 msgid "%s table to optimize in your database."
 msgid_plural "%s tables to optimize in your database."
 msgstr[0] "Veritabanınızda iyileştirmek için %s tablo."
 msgstr[1] "Veritabanınızda iyileştirmek için %s tablo."
 
-#: inc/classes/admin/settings/class-page.php:1451
+#: inc/classes/admin/settings/class-page.php:1450
 msgid "Schedule Automatic Cleanup"
 msgstr "Otomatik Temizlemeyi Zamanla"
 
-#: inc/classes/admin/settings/class-page.php:1463
+#: inc/classes/admin/settings/class-page.php:1462
 msgid "Frequency"
 msgstr "Sıklıkla"
 
-#: inc/classes/admin/settings/class-page.php:1471
+#: inc/classes/admin/settings/class-page.php:1470
 msgid "Daily"
 msgstr "Günlük"
 
-#: inc/classes/admin/settings/class-page.php:1472
+#: inc/classes/admin/settings/class-page.php:1471
 msgid "Weekly"
 msgstr "Haftalık"
 
-#: inc/classes/admin/settings/class-page.php:1473
+#: inc/classes/admin/settings/class-page.php:1472
 msgid "Monthly"
 msgstr "Aylık"
 
-#: inc/classes/admin/settings/class-page.php:1493
+#: inc/classes/admin/settings/class-page.php:1492
 msgid "Integrate your CDN"
 msgstr "CDN’nizi bütünleştirin"
 
-#: inc/classes/admin/settings/class-page.php:1505
+#: inc/classes/admin/settings/class-page.php:1504
 msgid ""
 "All URLs of static files (CSS, JS, images) will be rewritten to the CNAME(s)"
 " you provide."
@@ -1636,7 +1805,7 @@ msgstr ""
 "Sabit dosyaların (CSS, JS, resimler) tüm URL’leri, verdiğiniz CNAME(lere)e "
 "yeniden yazılacaktır."
 
-#: inc/classes/admin/settings/class-page.php:1507
+#: inc/classes/admin/settings/class-page.php:1506
 #, php-format
 msgid ""
 "Not required for services like Cloudflare and Sucuri. Please see our "
@@ -1645,7 +1814,7 @@ msgstr ""
 "Cloudflare ve Sucuri gibi hizmetler için gerekmez. Lütfen mevcut "
 "%1$sEklentilerimize%2$s bakın."
 
-#: inc/classes/admin/settings/class-page.php:1548
+#: inc/classes/admin/settings/class-page.php:1547
 #, php-format
 msgid ""
 "%1$s%2$s Add-on%3$s is currently enabled. Configuration of the CDN settings "
@@ -1660,28 +1829,28 @@ msgstr[1] ""
 "%1$s%2$s Eklenti%3$s şu anda etkinleştirildi. CDN ayarları yapılandırması, "
 "sitenizde çalışması için %2$s gerektirmez."
 
-#: inc/classes/admin/settings/class-page.php:1573
+#: inc/classes/admin/settings/class-page.php:1572
 msgid "Enable Content Delivery Network"
 msgstr "İçerik Dağıtım Ağını (CDN) etkinleştir"
 
-#: inc/classes/admin/settings/class-page.php:1582
+#: inc/classes/admin/settings/class-page.php:1581
 #: inc/classes/subscriber/CDN/RocketCDN/AdminPageSubscriber.php:147
 msgid "CDN CNAME(s)"
 msgstr "CDN CNAME(ler)"
 
-#: inc/classes/admin/settings/class-page.php:1583
+#: inc/classes/admin/settings/class-page.php:1582
 #: inc/classes/subscriber/CDN/RocketCDN/AdminPageSubscriber.php:148
 msgid "Specify the CNAME(s) below"
 msgstr "Aşağıda CNAME(leri) belirtin"
 
-#: inc/classes/admin/settings/class-page.php:1590
+#: inc/classes/admin/settings/class-page.php:1589
 msgid ""
 "Specify URL(s) of files that should not get served via CDN (one per line)."
 msgstr ""
 "CDN aracılığıyla sunulmaması gereken dosyaların URL(lerini)sini belirtin "
 "(satır başına bir tane)."
 
-#: inc/classes/admin/settings/class-page.php:1591
+#: inc/classes/admin/settings/class-page.php:1590
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use (.*) "
 "wildcards to exclude all files of a given file type located at a specific "
@@ -1691,16 +1860,16 @@ msgstr ""
 " yolda bulunan verilen bir dosya türünün tüm dosyalarını hariç tutmak için "
 "(.*) joker karakterlerini kullanın."
 
-#: inc/classes/admin/settings/class-page.php:1615
-#: inc/classes/admin/settings/class-page.php:1623
+#: inc/classes/admin/settings/class-page.php:1614
+#: inc/classes/admin/settings/class-page.php:1622
 msgid "Heartbeat"
 msgstr "Kalp Atışı"
 
-#: inc/classes/admin/settings/class-page.php:1616
+#: inc/classes/admin/settings/class-page.php:1615
 msgid "Control WordPress Heartbeat API"
 msgstr "WordPress Kalp Atışı API’sini denetleyin"
 
-#: inc/classes/admin/settings/class-page.php:1624
+#: inc/classes/admin/settings/class-page.php:1623
 msgid ""
 "Reducing or disabling the Heartbeat API’s activity can help save some of "
 "your server’s resources."
@@ -1708,11 +1877,11 @@ msgstr ""
 "Kalp Atışı API’si etkinliğini azaltmak veya etkisizleştirmek, sunucunuzun "
 "kaynaklarının bazılarını kurtarmasına yardımcı olabilir."
 
-#: inc/classes/admin/settings/class-page.php:1633
+#: inc/classes/admin/settings/class-page.php:1632
 msgid "Reduce or disable Heartbeat activity"
 msgstr "Kalp Atışı etkinliğini azaltma veya etkisizleştirme"
 
-#: inc/classes/admin/settings/class-page.php:1634
+#: inc/classes/admin/settings/class-page.php:1633
 msgid ""
 "Reducing activity will change Heartbeat frequency from one hit each minute "
 "to one hit every 2 minutes."
@@ -1720,55 +1889,55 @@ msgstr ""
 "Etkinliği azaltmak Kalp Atışı sıklığını, her dakikada bir vuruştan her 2 "
 "dakikada bir vuruşa değiştirecektir."
 
-#: inc/classes/admin/settings/class-page.php:1634
+#: inc/classes/admin/settings/class-page.php:1633
 msgid ""
 "Disabling Heartbeat entirely may break plugins and themes using this API."
 msgstr ""
 "Kalp Atışı’nın tamamen etkisizleştirilmesi bu API’yi kullanan eklentileri ve"
 " temaları bozabilir."
 
-#: inc/classes/admin/settings/class-page.php:1648
+#: inc/classes/admin/settings/class-page.php:1647
 msgid "Do not limit"
 msgstr "Sınırlandırma"
 
-#: inc/classes/admin/settings/class-page.php:1649
+#: inc/classes/admin/settings/class-page.php:1648
 msgid "Reduce activity"
 msgstr "Etkinliği azalt"
 
-#: inc/classes/admin/settings/class-page.php:1650
+#: inc/classes/admin/settings/class-page.php:1649
 msgid "Disable"
 msgstr "Etkisizleştir"
 
-#: inc/classes/admin/settings/class-page.php:1658
+#: inc/classes/admin/settings/class-page.php:1657
 msgid "Control Heartbeat"
 msgstr "Kalp Atışı’nı denetle"
 
-#: inc/classes/admin/settings/class-page.php:1667
+#: inc/classes/admin/settings/class-page.php:1666
 msgid "Behavior in backend"
 msgstr "Arka uçtaki davranış"
 
-#: inc/classes/admin/settings/class-page.php:1674
+#: inc/classes/admin/settings/class-page.php:1673
 msgid "Behavior in post editor"
 msgstr "Yazı düzenleyicideki davranış"
 
-#: inc/classes/admin/settings/class-page.php:1680
+#: inc/classes/admin/settings/class-page.php:1679
 msgid "Behavior in frontend"
 msgstr "Ön uçtaki davranış"
 
-#: inc/classes/admin/settings/class-page.php:1699
+#: inc/classes/admin/settings/class-page.php:1698
 #: views/settings/page-sections/tutorials.php:36
 msgid "Add-ons"
 msgstr "Eklentiler"
 
-#: inc/classes/admin/settings/class-page.php:1700
+#: inc/classes/admin/settings/class-page.php:1699
 msgid "Add more features"
 msgstr "Daha fazla özellik ekleyin"
 
-#: inc/classes/admin/settings/class-page.php:1707
+#: inc/classes/admin/settings/class-page.php:1706
 msgid "One-click Rocket Add-ons"
 msgstr "Tek Tık Rocket Eklentileri"
 
-#: inc/classes/admin/settings/class-page.php:1708
+#: inc/classes/admin/settings/class-page.php:1707
 msgid ""
 "One-Click Add-ons are features extending available options without "
 "configuration needed. Switch the option \"on\" to enable from this screen."
@@ -1777,24 +1946,24 @@ msgstr ""
 "özelliklerdir. Etkinleştirmek için seçeneği bu ekrandan \"açık\" olarak "
 "değiştirin."
 
-#: inc/classes/admin/settings/class-page.php:1718
+#: inc/classes/admin/settings/class-page.php:1717
 msgid "Rocket Add-ons"
 msgstr "Rocket Eklentileri"
 
-#: inc/classes/admin/settings/class-page.php:1719
+#: inc/classes/admin/settings/class-page.php:1718
 msgid "Rocket Add-ons are complementary features extending available options."
 msgstr ""
 "Rocket Eklentileri mevcut seçenekleri genişleten tamamlayıcı özelliklerdir."
 
-#: inc/classes/admin/settings/class-page.php:1732
+#: inc/classes/admin/settings/class-page.php:1731
 msgid "Google Tracking"
 msgstr "Google İzleme"
 
-#: inc/classes/admin/settings/class-page.php:1738
+#: inc/classes/admin/settings/class-page.php:1737
 msgid "Improve browser caching for Google Analytics"
 msgstr "Google Analytics için tarayıcı önbelleklemesini iyileştirin"
 
-#: inc/classes/admin/settings/class-page.php:1740
+#: inc/classes/admin/settings/class-page.php:1739
 #, php-format
 msgid ""
 "WP Rocket will host these Google scripts locally on your server to help "
@@ -1805,15 +1974,15 @@ msgstr ""
 " karşılamaya yardım etmede bu Google betiklerini sunucunuzda yerel olarak "
 "barındıracak.<br>%1$sDaha fazla bilgi edinin%2$s"
 
-#: inc/classes/admin/settings/class-page.php:1755
+#: inc/classes/admin/settings/class-page.php:1754
 msgid "Facebook Pixel"
 msgstr "Facebook Piksel"
 
-#: inc/classes/admin/settings/class-page.php:1761
+#: inc/classes/admin/settings/class-page.php:1760
 msgid "Improve browser caching for Facebook Pixel"
 msgstr "Facebook Piksel için tarayıcı önbelleklemesini iyileştirin"
 
-#: inc/classes/admin/settings/class-page.php:1763
+#: inc/classes/admin/settings/class-page.php:1762
 #, php-format
 msgid ""
 "WP Rocket will host these Facebook Pixels locally on your server to help "
@@ -1824,16 +1993,16 @@ msgstr ""
 " karşılamaya yardım etmede bu Facebook Piksel’leri sunucunuzda yerel olarak "
 "barındıracak.<br>%1$sDaha fazla bilgi edinin%2$s"
 
-#: inc/classes/admin/settings/class-page.php:1776
-#: inc/classes/admin/settings/class-page.php:1880
+#: inc/classes/admin/settings/class-page.php:1775
+#: inc/classes/admin/settings/class-page.php:1879
 msgid "Cloudflare"
 msgstr "Cloudflare"
 
-#: inc/classes/admin/settings/class-page.php:1782
+#: inc/classes/admin/settings/class-page.php:1781
 msgid "Integrate your Cloudflare account with this add-on."
 msgstr "Bu eklenti ile Cloudflare hesabınızı bütünleştirin."
 
-#: inc/classes/admin/settings/class-page.php:1783
+#: inc/classes/admin/settings/class-page.php:1782
 msgid ""
 "Provide your account email, global API key, and domain to use options such "
 "as clearing the Cloudflare cache and enabling optimal settings with WP "
@@ -1843,16 +2012,16 @@ msgstr ""
 "etkinleştirmek gibi seçenekleri kullanmak için hesap e-postanızı, genel API "
 "anahtarını ve etki alanını sağlar."
 
-#: inc/classes/admin/settings/class-page.php:1817
+#: inc/classes/admin/settings/class-page.php:1816
 msgid "Varnish"
 msgstr "Varnish"
 
-#: inc/classes/admin/settings/class-page.php:1823
+#: inc/classes/admin/settings/class-page.php:1822
 msgid "If Varnish runs on your server, you must activate this add-on."
 msgstr ""
 "Varnish sunucunuzda çalışıyorsa, bu eklentiyi aktif etmek zorundasınız."
 
-#: inc/classes/admin/settings/class-page.php:1825
+#: inc/classes/admin/settings/class-page.php:1824
 #, php-format
 msgid ""
 "Varnish cache will be purged each time WP Rocket clears its cache to ensure "
@@ -1862,11 +2031,11 @@ msgstr ""
 "zaman güncel olduğunu garantilemek için temizlenecektir.<br>%1$sDaha fazla "
 "bilgi edinin%2$s"
 
-#: inc/classes/admin/settings/class-page.php:1839
+#: inc/classes/admin/settings/class-page.php:1838
 msgid "Clear the Sucuri cache when WP Rocket’s cache is cleared."
 msgstr "WP Rocket’in önbelleği temizlendiğinde Sucuri önbelleğini temizler."
 
-#: inc/classes/admin/settings/class-page.php:1842
+#: inc/classes/admin/settings/class-page.php:1841
 msgid ""
 "Provide your API key to clear the Sucuri cache when WP Rocket’s cache is "
 "cleared."
@@ -1874,48 +2043,48 @@ msgstr ""
 "WP Rocket’in önbelleği temizlendiğinde Sucuri önbelleğini temizlemek için "
 "API anahtarınızı verin."
 
-#: inc/classes/admin/settings/class-page.php:1850
-#: inc/classes/admin/settings/class-page.php:2000
+#: inc/classes/admin/settings/class-page.php:1849
+#: inc/classes/admin/settings/class-page.php:1999
 msgid "Sucuri"
 msgstr "Sucuri"
 
-#: inc/classes/admin/settings/class-page.php:1856
+#: inc/classes/admin/settings/class-page.php:1855
 msgid "Synchronize Sucuri cache with this add-on."
 msgstr "Bu eklenti ile Sucuri önbelleğini eşitleyin."
 
-#: inc/classes/admin/settings/class-page.php:1897
+#: inc/classes/admin/settings/class-page.php:1896
 msgid "Cloudflare credentials"
 msgstr "Cloudflare kimlik bilgileri"
 
-#: inc/classes/admin/settings/class-page.php:1906
+#: inc/classes/admin/settings/class-page.php:1905
 msgid "Cloudflare settings"
 msgstr "Cloudflare ayarları"
 
-#: inc/classes/admin/settings/class-page.php:1920
+#: inc/classes/admin/settings/class-page.php:1919
 msgctxt "Cloudflare"
 msgid "Global API key:"
 msgstr "Genel API anahtarı"
 
-#: inc/classes/admin/settings/class-page.php:1921
+#: inc/classes/admin/settings/class-page.php:1920
 msgctxt "Cloudflare"
 msgid "Find your API key"
 msgstr "API anahtarınızı bulun"
 
-#: inc/classes/admin/settings/class-page.php:1933
+#: inc/classes/admin/settings/class-page.php:1932
 msgctxt "Cloudflare"
 msgid "Account email"
 msgstr "Hesap e-postası"
 
-#: inc/classes/admin/settings/class-page.php:1942
+#: inc/classes/admin/settings/class-page.php:1941
 msgctxt "Cloudflare"
 msgid "Zone ID"
 msgstr "Bölge Kimliği - Zone ID"
 
-#: inc/classes/admin/settings/class-page.php:1952
+#: inc/classes/admin/settings/class-page.php:1951
 msgid "Development mode"
 msgstr "Geliştirme kipi"
 
-#: inc/classes/admin/settings/class-page.php:1954
+#: inc/classes/admin/settings/class-page.php:1953
 #, php-format
 msgid ""
 "Temporarily activate development mode on your website. This setting will "
@@ -1924,11 +2093,11 @@ msgstr ""
 "Web sitenizde geçici olarak geliştirme kipini aktif edin. Bu ayar otomatik "
 "olarak 3 saat sonra kapanacak. %1$sDaha fazla bilgi edinin%2$s"
 
-#: inc/classes/admin/settings/class-page.php:1962
+#: inc/classes/admin/settings/class-page.php:1961
 msgid "Optimal settings"
 msgstr "En uygun ayarlar"
 
-#: inc/classes/admin/settings/class-page.php:1963
+#: inc/classes/admin/settings/class-page.php:1962
 msgid ""
 "Automatically enhances your Cloudflare configuration for speed, performance "
 "grade and compatibility."
@@ -1936,11 +2105,11 @@ msgstr ""
 "Hız, performans puanı ve uyumluluk için Cloudflare yapılandırmanızı otomatik"
 " olarak iyileştirir."
 
-#: inc/classes/admin/settings/class-page.php:1971
+#: inc/classes/admin/settings/class-page.php:1970
 msgid "Relative protocol"
 msgstr "Göreli protokol"
 
-#: inc/classes/admin/settings/class-page.php:1972
+#: inc/classes/admin/settings/class-page.php:1971
 msgid ""
 "Should only be used with Cloudflare's flexible SSL feature. URLs of static "
 "files (CSS, JS, images) will be rewritten to use // instead of http:// or "
@@ -1950,11 +2119,11 @@ msgstr ""
 "dosyaların (CSS, JS, resimler) URL’leri, http:// veya https:// yerine // "
 "kullanmak için yeniden yazılacaktır."
 
-#: inc/classes/admin/settings/class-page.php:2013
+#: inc/classes/admin/settings/class-page.php:2012
 msgid "Sucuri credentials"
 msgstr "Sucuri kimlik bilgileri"
 
-#: inc/classes/admin/settings/class-page.php:2026
+#: inc/classes/admin/settings/class-page.php:2025
 msgctxt "Sucuri"
 msgid ""
 "Firewall API key (for plugin), must be in format <code>{32 characters}/{32 "
@@ -1963,7 +2132,7 @@ msgstr ""
 "Güvenlik Duvarı API anahtarı (eklenti için), <code>{32 karakter}/{32 "
 "karakter}</code> biçiminde olmak zorundadır:"
 
-#: inc/classes/admin/settings/class-page.php:2027
+#: inc/classes/admin/settings/class-page.php:2026
 msgctxt "Sucuri"
 msgid "Find your API key"
 msgstr "API anahtarınızı bulun"
@@ -1973,7 +2142,7 @@ msgstr "API anahtarınızı bulun"
 msgid "Upload file and import settings"
 msgstr "Dosyayı gönder ve ayarları içe aktar"
 
-#: inc/classes/admin/settings/class-settings.php:387
+#: inc/classes/admin/settings/class-settings.php:381
 msgid ""
 "Sucuri Add-on: The API key for the Sucuri firewall must be in format "
 "<code>{32 characters}/{32 characters}</code>."
@@ -1981,7 +2150,7 @@ msgstr ""
 "Sucuri Eklentisi: Sucuri güvenlik duvarı için API anahtarı, <code>{32 "
 "karakter}/{32 karakter}</code> biçiminde olmak zorundadır."
 
-#: inc/classes/admin/settings/class-settings.php:478
+#: inc/classes/admin/settings/class-settings.php:472
 #: inc/deprecated/deprecated.php:1245
 msgid "Settings saved."
 msgstr "Ayarlar kaydedildi."
@@ -2063,129 +2232,6 @@ msgstr "Önemli CSS içeriği %s içine bir dosya olarak kaydedilemedi."
 #, php-format
 msgid "Critical CSS for %s generated."
 msgstr "%s için Önemli CSS oluşturuldu."
-
-#: inc/classes/preload/class-homepage.php:152
-#, php-format
-msgid ""
-"Preload encountered an error. Could not gather links on %1$s because of the "
-"following error: %2$s. %3$sLearn more%4$s."
-msgstr ""
-"Önyükleme bir hatayla karşılaştı. Şu hatadan dolayı, %1$s üzerindeki "
-"bağlantılar toplanamadı: %2$s. %3$sDaha fazla bilgi edinin%4$s."
-
-#: inc/classes/preload/class-homepage.php:165
-#, php-format
-msgid ""
-"Preload encountered an error. %1$s is not accessible to due to the following"
-" response code: %2$s. Security measures could be preventing access. "
-"%3$sLearn more%4$s."
-msgstr ""
-"Önyükleme bir hatayla karşılaştı. %1$s, şu yanıt kodundan dolayı "
-"erişilebilir değil: %2$s. Güvenlik önlemleri erişimi engelliyor olabilir. "
-"%3$sDaha fazla bilgi edinin%4$s."
-
-#: inc/classes/preload/class-homepage.php:171
-#, php-format
-msgid ""
-"Preload encountered an error. %1$s is not accessible to due to the following"
-" response code: 404. Please make sure your homepage is accessible in your "
-"browser. %2$sLearn more%3$s."
-msgstr ""
-"Önyükleme bir hatayla karşılaştı. %1$s, şu yanıt kodundan dolayı "
-"erişilebilir değil: 404. Lütfen ana sayfanızın tarayıcınızda erişilebilir "
-"olduğundan emin olun. %2$sDaha fazla bilgi edinin%3$s."
-
-#: inc/classes/preload/class-homepage.php:177
-#, php-format
-msgid ""
-"Preload encountered an error. %1$s is not accessible to due to the following"
-" response code: 500. Please check with your web host about server access. "
-"%2$sLearn more%3$s."
-msgstr ""
-"Önyükleme bir hatayla karşılaştı. %1$s, şu yanıt kodundan dolayı "
-"erişilebilir değil: 500. Lütfen sunucu erişimi ile ilgili olarak web "
-"barındırıcınızı gözden geçirin. %2$sDaha fazla bilgi edinin%3$s."
-
-#: inc/classes/preload/class-homepage.php:183
-#, php-format
-msgid ""
-"Preload encountered an error. Could not gather links on %1$s because it "
-"returned the following response code: %2$s. %3$sLearn more%4$s."
-msgstr ""
-"Önyükleme bir hatayla karşılaştı. Şu yanıt kodunu döndürdüğünden, %1$s "
-"üzerindeki bağlantılar toplanamadı: %2$s. %3$sDaha fazla bilgi edinin%4$s."
-
-#: inc/classes/preload/class-sitemap.php:149
-#, php-format
-msgid ""
-"Sitemap preload encountered an error. Could not gather links on %1$s because"
-" of the following error: %2$s. %3$sLearn more%4$s."
-msgstr ""
-"Site haritası önyüklemesi bir hatayla karşılaştı. Şu hatadan dolayı, %1$s "
-"üzerindeki bağlantılar toplanamadı: %2$s. %3$sDaha fazla bilgi edinin%4$s."
-
-#: inc/classes/preload/class-sitemap.php:164
-#, php-format
-msgid ""
-"Sitemap preload encountered an error. %1$s is not accessible to due to the "
-"following response code: %2$s. Security measures could be preventing access."
-" %3$sLearn more%4$s."
-msgstr ""
-"Site haritası önyüklemesi bir hatayla karşılaştı. %1$s, şu yanıt kodundan "
-"dolayı erişilebilir değil: %2$s. Güvenlik önlemleri erişimi engelliyor "
-"olabilir. %3$sDaha fazla bilgi edinin%4$s."
-
-#: inc/classes/preload/class-sitemap.php:169
-#, php-format
-msgid ""
-"Sitemap preload encountered an error. %1$s is not accessible to due to the "
-"following response code: 404. Please make sure you entered the correct "
-"sitemap URL and it is accessible in your browser. %2$sLearn more%3$s."
-msgstr ""
-"Site haritası önyüklemesi bir hatayla karşılaştı. %1$s, şu yanıt kodundan "
-"dolayı erişilebilir değil: 404. Lütfen doğru site haritası URL’si "
-"girdiğinizden ve tarayıcınızda erişilebilir olduğundan emin olun. %2$sDaha "
-"fazla bilgi edinin%3$s."
-
-#: inc/classes/preload/class-sitemap.php:174
-#, php-format
-msgid ""
-"Sitemap preload encountered an error. %1$s is not accessible to due to the "
-"following response code: 500. Please check with your web host about server "
-"access. %2$sLearn more%3$s."
-msgstr ""
-"Site haritası önyüklemesi bir hatayla karşılaştı. %1$s, şu yanıt kodundan "
-"dolayı erişilebilir değil: 500. Lütfen sunucu erişimi ile ilgili olarak web "
-"barındırıcınızı gözden geçirin. %2$sDaha fazla bilgi edinin%3$s."
-
-#: inc/classes/preload/class-sitemap.php:179
-#, php-format
-msgid ""
-"Sitemap preload encountered an error. Could not gather links on %1$s because"
-" it returned the following response code: %2$s. %3$sLearn more%4$s."
-msgstr ""
-"Site haritası önyüklemesi bir hatayla karşılaştı. Şu yanıt kodunu "
-"döndürdüğünden, %1$s üzerindeki bağlantılar toplanamadı: %2$s. %3$sDaha "
-"fazla bilgi edinin%4$s."
-
-#: inc/classes/preload/class-sitemap.php:195
-#, php-format
-msgid ""
-"Sitemap preload encountered an error. Could not collect links from %1$s "
-"because the file is empty. %2$sLearn more%3$s."
-msgstr ""
-"Site haritası önyüklemesi bir hatayla karşılaştı. Dosya boş olduğundan, %1$s"
-" adresinden gelen bağlantılar toplanamadı. %2$sDaha fazla bilgi edinin%3$s."
-
-#: inc/classes/preload/class-sitemap.php:216
-#, php-format
-msgid ""
-"Sitemap preload encountered an error. Could not collect links from %1$s "
-"because of an error during the XML sitemap parsing. %2$sLearn more%3$s."
-msgstr ""
-"Site haritası önyüklemesi bir hatayla karşılaştı. XML site haritası "
-"ayrıştırması sırasında bir hata olduğundan, %1$s adresinden gelen "
-"bağlantılar toplanamadı. %2$sDaha fazla bilgi edinin%3$s."
 
 #: inc/classes/subscriber/CDN/RocketCDN/AdminPageSubscriber.php:81
 msgid "Next Billing Date"
@@ -2322,17 +2368,11 @@ msgstr ""
 "WP Rocket, WebP resimlerinizi sunmak için ayrı önbellek dosyaları "
 "oluşturacak."
 
-#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:82
+#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:102
 msgid "Critical CSS generation is currently running."
 msgstr "Önemli CSS üretimi şu anda çalışıyor."
 
-#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:87
-#: inc/classes/subscriber/preload/class-preload-subscriber.php:242
-#, php-format
-msgid "Go to the %1$sWP Rocket settings%2$s page to track progress."
-msgstr "İlerlemeyi izlemek için %1$sWP Rocket ayarları%2$s sayfasına gidin."
-
-#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:191
+#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:223
 #, php-format
 msgid ""
 "Critical CSS generation is currently running: %1$d of %2$d page types "
@@ -2341,16 +2381,16 @@ msgstr ""
 "Önemli CSS oluşturma şu anda çalışıyor: %1$d / %2$d sayfa türü tamamlandı. "
 "(İlerlemeyi görmek için bu sayfayı yenileyin)"
 
-#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:242
+#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:274
 #, php-format
 msgid "Critical CSS generation finished for %1$d of %2$d page types."
 msgstr "Önemli CSS oluşturma, %1$d / %2$d sayfa türü için bitti."
 
-#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:256
+#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:288
 msgid "Critical CSS generation encountered one or more errors."
 msgstr "Önemli CSS oluşturma, bir ya da daha fazla hata ile karşılaştı."
 
-#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:256
+#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:288
 msgid "Learn more."
 msgstr "Daha fazla bilgi edinin."
 
@@ -2434,49 +2474,6 @@ msgstr "Eğitimler"
 #: inc/classes/subscriber/admin/Settings/class-page-subscriber.php:171
 msgid "Getting started and how to videos"
 msgstr "Başlarken ve nasıl yapılır videoları"
-
-#: inc/classes/subscriber/preload/class-preload-subscriber.php:237
-msgid "Preload: WP Rocket has started preloading your website."
-msgstr "Önyükleme: WP Rocket, web sitenizi önyüklemeye başladı."
-
-#: inc/classes/subscriber/preload/class-preload-subscriber.php:281
-#, php-format
-msgid ""
-"Preload: %1$s uncached page has now been preloaded. (refresh to see "
-"progress)"
-msgid_plural ""
-"Preload: %1$s uncached pages have now been preloaded. (refresh to see "
-"progress)"
-msgstr[0] ""
-"Önyükleme: %1$s önbelleklenmeyen sayfanın şimdi önyüklemesi yapıldı. "
-"(ilerlemeyi görmek için yenileyin)"
-msgstr[1] ""
-"Önyükleme: %1$s önbelleklenmeyen sayfanın şimdi önyüklemesi yapıldı. "
-"(ilerlemeyi görmek için yenileyin)"
-
-#: inc/classes/subscriber/preload/class-preload-subscriber.php:290
-msgid "The following error happened during gathering of the URLs to preload:"
-msgid_plural ""
-"The following errors happened during gathering of the URLs to preload:"
-msgstr[0] "Önyükleme için URL'lerin toplanması sırasında aşağıdaki hata oldu:"
-msgstr[1] ""
-"Önyükleme için URL’lerin toplanması sırasında aşağıdaki hatalar oldu:"
-
-#: inc/classes/subscriber/preload/class-preload-subscriber.php:342
-#, php-format
-msgid "Preload complete: %d pages have been cached."
-msgstr "Önyükleme tamamlandı: %d sayfa önbelleklendi."
-
-#: inc/classes/subscriber/preload/class-sitemap-preload-subscriber.php:119
-#, php-format
-msgid ""
-"%1$sSimpleXML PHP extension%2$s is not enabled on your server. Please "
-"contact your host to enable it before running sitemap-based cache "
-"preloading."
-msgstr ""
-"%1$sSimpleXML PHP uzantısı%2$s sunucunuzda etkinleştirilmedi. Site haritası "
-"tabanlı önbellek önyüklemesini çalıştırmadan önce etkinleştirmek için lütfen"
-" barındırıcınıza başvurun."
 
 #: inc/classes/subscriber/third-party/plugins/Optimization/class-hummingbird-subscriber.php:77
 #, php-format
@@ -2713,7 +2710,16 @@ msgstr "Listeden bir etki alanı seçin"
 msgid "No domain available in your Cloudflare account"
 msgstr "Cloudflare hesabınızda hiç etki alanı mevcut değil"
 
-#: inc/deprecated/3.5.php:30
+#: inc/deprecated/3.5.php:66 inc/deprecated/3.5.php:190
+msgid ""
+"Curl is disabled on your server. Please ask your host to enable it. This is "
+"required for the Cloudflare Add-on to work correctly."
+msgstr ""
+"Curl, sunucunuzda etkisizleştirilmiş. Lütfen barındırıcınızdan bunu "
+"etkinleştirmesini isteyin. Bu, Cloudflare Eklentisinin doğru çalışması için "
+"gereklidir."
+
+#: inc/deprecated/3.5.php:74
 #, php-format
 msgid ""
 "Cloudflare email, API key and Zone ID are not set. Read the "
@@ -2722,7 +2728,7 @@ msgstr ""
 "Cloudflare e-posta adresi, API anahtarı ve Bölge Kimliği ayarlı değil. Daha "
 "fazla rehberlik için %1$sbelgeleri%2$s okuyun."
 
-#: inc/deprecated/3.5.php:157
+#: inc/deprecated/3.5.php:201
 #, php-format
 msgid ""
 "Cloudflare email and API key are not set. Read the %1$sdocumentation%2$s for"
@@ -2731,7 +2737,7 @@ msgstr ""
 "Cloudflare e-posta adresi ve API anahtarı ayarlı değil. Daha fazla rehberlik"
 " için %1$sbelgeleri%2$s okuyun."
 
-#: inc/deprecated/3.5.php:222
+#: inc/deprecated/3.5.php:266
 msgid "Connection to Cloudflare failed"
 msgstr "Cloudflare’a bağlantı başarısız oldu"
 
@@ -2907,7 +2913,7 @@ msgstr "İsimsizleştirilmiş WP Rocket ayarları:"
 msgid "Which WP Rocket settings are active"
 msgstr "Hangi WP Rocket ayarları aktif"
 
-#: inc/functions/options.php:540 inc/functions/options.php:579
+#: inc/functions/options.php:544 inc/functions/options.php:583
 msgid ""
 "License validation failed. Our server could not resolve the request from "
 "your website."
@@ -2915,7 +2921,7 @@ msgstr ""
 "Lisans doğrulama başarısız oldu. Sunucumuz web sitenizden gelen isteği "
 "çözemedi."
 
-#: inc/functions/options.php:540 inc/functions/options.php:579
+#: inc/functions/options.php:544 inc/functions/options.php:583
 #, php-format
 msgid ""
 "Try clicking %1$sSave Changes%2$s below. If the error persists, follow "
@@ -2924,7 +2930,7 @@ msgstr ""
 "Aşağıda %1$sDeğişiklikleri Kaydet%2$s düğmesine tıklamaya çalışın. Eğer hata"
 " devam ederse, %3$sbu kılavuzu%4$s takip edin."
 
-#: inc/functions/options.php:556
+#: inc/functions/options.php:560
 msgid ""
 "License validation failed. You may be using a nulled version of the plugin. "
 "Please do the following:"
@@ -2932,60 +2938,60 @@ msgstr ""
 "Lisans doğrulama başarısız oldu. Eklentinin nulled sürümünü kullanıyorsunuz."
 " Lütfen aşağıdakini yapın:"
 
-#: inc/functions/options.php:556 inc/functions/options.php:598
+#: inc/functions/options.php:560 inc/functions/options.php:602
 #, php-format
 msgid "Login to your WP Rocket %1$saccount%2$s"
 msgstr "WP Rocket %1$shesabınıza%2$s oturum açın"
 
-#: inc/functions/options.php:556 inc/functions/options.php:598
+#: inc/functions/options.php:560 inc/functions/options.php:602
 msgid "Download the zip file"
 msgstr "Zip dosyasını indir"
 
-#: inc/functions/options.php:556 inc/functions/options.php:598
+#: inc/functions/options.php:560 inc/functions/options.php:602
 msgid "Reinstall"
 msgstr "Yeniden Yükle"
 
-#: inc/functions/options.php:556
+#: inc/functions/options.php:560
 #, php-format
 msgid ""
 "If you do not have a WP Rocket account, please %1$spurchase a license%2$s."
 msgstr ""
 "Eğer bir WP Rocket hesabınız yoksa, lütfen %1$sbir lisans satın alın%2$s."
 
-#: inc/functions/options.php:564
+#: inc/functions/options.php:568
 msgid ""
 "License validation failed. This user account does not exist in our database."
 msgstr ""
 "Lisans doğrulama başarısız oldu. Bu kullanıcı veritabanımızda mevcut değil."
 
-#: inc/functions/options.php:564
+#: inc/functions/options.php:568
 msgid "To resolve, please contact support."
 msgstr "Çözmek için lütfen destek ile iletişime geçin."
 
-#: inc/functions/options.php:572
+#: inc/functions/options.php:576
 msgid "License validation failed. This user account is blacklisted."
 msgstr ""
 "Lisans doğrulama başarısız oldu. Bu kullanıcı hesabı kara listeye alınmış."
 
-#: inc/functions/options.php:572
+#: inc/functions/options.php:576
 #, php-format
 msgid "Please see %1$sthis guide%2$s for more info."
 msgstr "Daha fazla bilgi için lütfen %1$sbu kılavuza%2$s bakın."
 
-#: inc/functions/options.php:592
+#: inc/functions/options.php:596
 msgid "Your license is not valid."
 msgstr "Lisansınız geçerli değil."
 
-#: inc/functions/options.php:592
+#: inc/functions/options.php:596
 #, php-format
 msgid "Make sure you have an active %1$sWP Rocket license%2$s."
 msgstr "Aktif bir %1$sWP Rocket lisansına%2$s sahip olduğunuzdan emin olun."
 
-#: inc/functions/options.php:594
+#: inc/functions/options.php:598
 msgid "You have added as many sites as your current license allows."
 msgstr "Şu anki lisansınızın izin verdiği kadar çok site eklediniz."
 
-#: inc/functions/options.php:594
+#: inc/functions/options.php:598
 #, php-format
 msgid ""
 "Upgrade your %1$saccount%2$s or %3$stransfer your license%2$s to this "
@@ -2994,25 +3000,25 @@ msgstr ""
 "%1$sHesabınızı%2$s yükseltin ya da %3$slisansınızı bu etki alanına "
 "aktarın%2$s."
 
-#: inc/functions/options.php:596
+#: inc/functions/options.php:600
 msgid "This website is not allowed."
 msgstr "Bu web sitesine izin verilmedi."
 
-#: inc/functions/options.php:596
+#: inc/functions/options.php:600
 #, php-format
 msgid "Please %1$scontact support%2$s."
 msgstr "Lütfen %1$sdestek ile iletişime geçin%2$s."
 
-#: inc/functions/options.php:598
+#: inc/functions/options.php:602
 msgid "This license key is not recognized."
 msgstr "Bu lisans anahtarı tanınmadı."
 
-#: inc/functions/options.php:598
+#: inc/functions/options.php:602
 #, php-format
 msgid "If the issue persists, please %1$scontact support%2$s."
 msgstr "Eğer sorun devam ederse, lütfen %1$sdestek ile iletişime geçin%2$s."
 
-#: inc/functions/options.php:604
+#: inc/functions/options.php:608
 #, php-format
 msgid "License validation failed: %s"
 msgstr "Lisans doğrulama başarısız oldu: %s"
@@ -3300,7 +3306,7 @@ msgstr "Açık"
 
 #: views/settings/fields/one-click-addon.php:41
 #: views/settings/fields/rocket-addon.php:32
-#: views/settings/fields/sliding-checkbox.php:26 views/settings/page.php:55
+#: views/settings/fields/sliding-checkbox.php:26 views/settings/page.php:56
 msgctxt "Inactive state of checkbox"
 msgid "Off"
 msgstr "Kapalı"
@@ -3634,15 +3640,15 @@ msgstr "WP Rocket Ayarları"
 msgid "version %s"
 msgstr "sürüm %s"
 
-#: views/settings/page.php:56
+#: views/settings/page.php:57
 msgid "Show Sidebar"
 msgstr "Kenar Çubuğunu Göster"
 
-#: views/settings/page.php:75
+#: views/settings/page.php:76
 msgid "Thanks for choosing to participate in the WP Rocket beta program!"
 msgstr "WP Rocket beta programına katılmayı seçtiğiniz için teşekkür ederiz!"
 
-#: views/settings/page.php:76
+#: views/settings/page.php:77
 msgid ""
 "A beta version is usually one that has new features and improvements, but we"
 " want to test it a little more before full launch."
@@ -3650,7 +3656,7 @@ msgstr ""
 "Beta sürümü genellikle yeni özellikleri ve iyileştirmeleri olandır, ancak "
 "biz tam çıkarmadan önce biraz daha denemek istiyoruz."
 
-#: views/settings/page.php:77
+#: views/settings/page.php:78
 msgid ""
 "We’d love it if you took our beta versions for a ride, but please keep in "
 "mind that it might be less stable than our other releases. Don’t worry, you "
@@ -3660,7 +3666,7 @@ msgstr ""
 "yayımlarımızdan daha az istikrarlı olabileceği lütfen aklınızda olsun. "
 "Endişelenmeyin, istediğiniz zaman tam yayım sürümüne geri dönebilirsiniz."
 
-#: views/settings/page.php:78
+#: views/settings/page.php:79
 msgid ""
 "Your mission: please send all feedback about our beta versions, including "
 "bug reports, to support@wp-rocket.me"
@@ -3668,16 +3674,16 @@ msgstr ""
 "Göreviniz: lütfen support@wp-rocket.me adresine hata raporları dahil olmak "
 "üzere beta sürümlerimiz hakkında tüm geri bildirimi gönderin"
 
-#: views/settings/page.php:80
+#: views/settings/page.php:81
 msgid "If you don’t want to join the beta program, simply close this window."
 msgstr ""
 "Eğer beta programına katılmak istemiyorsanız, basitçe bu pencereyi kapatın."
 
-#: views/settings/page.php:82
+#: views/settings/page.php:83
 msgid "Activate Rocket Tester"
 msgstr "Rocket Deneyicisini aktif et"
 
-#: views/settings/page.php:93
+#: views/settings/page.php:94
 msgid ""
 "Below is a detailed view of all data WP Rocket will collect <strong>if "
 "granted permission.</strong>"
@@ -3685,7 +3691,7 @@ msgstr ""
 "Aşağıdakiler, <strong>izin verildiği takdirde</strong> WP Rocket’in "
 "toplayacağı tüm verilerin ayrıntılı bir görünümüdür."
 
-#: views/settings/page.php:96
+#: views/settings/page.php:97
 msgid ""
 "WP Rocket will never transmit any domain names or email addresses (except "
 "for license validation), IP addresses, or third-party API keys."
@@ -3694,7 +3700,7 @@ msgstr ""
 "doğrulaması hariç), IP adreslerini, ya da üçüncü taraf API anahtarlarını "
 "iletmeyecek."
 
-#: views/settings/page.php:98
+#: views/settings/page.php:99
 msgid "Activate Rocket analytics"
 msgstr "Rocket çözümseli aktif et"
 
@@ -3771,7 +3777,7 @@ msgstr ""
 #: views/settings/rocketcdn/cta-big.php:27
 #, php-format
 msgid "Valid until %s only!"
-msgstr "Sadece %s kadar geçerli!"
+msgstr "Sadece %s tarihine kadar geçerli!"
 
 #: views/settings/rocketcdn/cta-big.php:36
 msgid "Speed up your website thanks to:"
@@ -3846,7 +3852,7 @@ msgstr ""
 
 #: views/settings/rocketcdn/dashboard-status.php:32
 msgid "Get RocketCDN"
-msgstr "RocketCDN’yi Alın"
+msgstr "RocketCDN’yi Al"
 
 #: views/settings/rocketcdn/promote-notice.php:11
 msgid "New!"
