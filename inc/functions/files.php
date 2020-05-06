@@ -1058,7 +1058,7 @@ function rocket_clean_cache_dir() {
  * @param WP_Filesystem_Direct|null $filesystem       Optional. Instance of the filesystem.
  */
 function rocket_rrmdir( $dir, array $dirs_to_preserve = [], $filesystem = null ) {
-	$dir        = untrailingslashit( $dir );
+	$dir = untrailingslashit( $dir );
 	if ( ! $filesystem ) {
 		$filesystem = rocket_direct_filesystem();
 	}
