@@ -171,7 +171,7 @@ class LazyloadSubscriber implements Subscriber_Interface {
 			$inline_args['elements']['background_image'] = '.rocket-lazyload';
 		}
 
-		if ( $this->options->get( 'lazyload_iframes', 0 ) ) {
+		if ( (bool) $this->options->get( 'lazyload_iframes', 0 ) ) {
 			$inline_args['elements']['iframe'] = 'iframe[data-lazy-src]';
 		}
 
