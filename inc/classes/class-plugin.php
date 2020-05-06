@@ -67,6 +67,7 @@ class Plugin {
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Database' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Admin\Beacon\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\CDN\RocketCDN\ServiceProvider' );
+		$this->container->addServiceProvider( 'WP_Rocket\Engine\Cache\ServiceProvider' );
 
 		$subscribers = [];
 
@@ -85,7 +86,7 @@ class Plugin {
 					'capability' => 'rocket_manage_options',
 				]
 			);
-			$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Settings' );
+			$this->container->addServiceProvider( 'WP_Rocket\Engine\Admin\Settings\ServiceProvider' );
 			$this->container->addServiceProvider( 'WP_Rocket\Engine\Admin\ServiceProvider' );
 			$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\AdminServiceProvider' );
 
@@ -99,6 +100,7 @@ class Plugin {
 				'rocketcdn_data_manager_subscriber',
 				'health_check',
 				'minify_css_admin_subscriber',
+				'admin_cache_subscriber',
 			];
 		} elseif ( \rocket_valid_key() ) {
 			$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\ServiceProvider' );
@@ -124,6 +126,7 @@ class Plugin {
 
 		$this->container->addServiceProvider( 'WP_Rocket\Addon\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Preload\ServiceProvider' );
+		$this->container->addServiceProvider( 'WP_Rocket\Engine\CDN\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Common_Subscribers' );
 		$this->container->addServiceProvider( 'WP_Rocket\ThirdParty\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Hostings_Subscribers' );
