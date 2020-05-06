@@ -1,6 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Admin\Settings;
 
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Security\Sucuri_Subscriber;
 
 /**
@@ -10,11 +11,11 @@ use WP_Rocket\Subscriber\Third_Party\Plugins\Security\Sucuri_Subscriber;
  */
 class Settings {
 	/**
-	 * Settings data.
+	 * Options_Data instance.
 	 *
 	 * @since 3.0
 	 *
-	 * @var Array
+	 * @var Options_Data
 	 */
 	private $options;
 
@@ -53,23 +54,23 @@ class Settings {
 	];
 
 	/**
-	 * Host domain.
+	 * Array of valid hosts.
 	 *
 	 * @since 3.6
-	 * @see   $this->get_host()
+	 * @see   $this->get_hosts()
 	 *
-	 * @var string|bool
+	 * @var array
 	 */
-	private $host;
+	private $hosts;
 
 	/**
 	 * Constructor
 	 *
 	 * @since 3.0
 	 *
-	 * @param Array $options Array containg the option data.
+	 * @param Options_Data $options Options_Data instance.
 	 */
-	public function __construct( $options ) {
+	public function __construct( Options_Data $options ) {
 		$this->options = $options;
 	}
 
@@ -609,12 +610,21 @@ class Settings {
 
 		$parsed_url = wp_parse_url( $file );
 
-		if ( ! empty( $parsed_url['host'] ) && $this->get_host() !== $parsed_url['host'] ) {
+		if ( ! empty( $parsed_url['host'] ) && ! in_array( $parsed_url['host'], $this->get_hosts(), true ) ) {
 			return false;
 		}
 
 		$file = '/' . trim( $parsed_url['path'], '/' );
-		$ext  = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
+
+		if ( ! empty( $parsed_url['query'] ) ) {
+			$file .= '?' . $parsed_url['query'];
+		}
+
+		if ( ! empty( $parsed_url['fragment'] ) ) {
+			$file .= '#' . $parsed_url['fragment'];
+		}
+
+		$ext = strtolower( pathinfo( $parsed_url['path'], PATHINFO_EXTENSION ) );
 
 		if ( ! in_array( $ext, $this->font_formats, true ) ) {
 			return false;
@@ -624,23 +634,35 @@ class Settings {
 	}
 
 	/**
-	 * Get site’s host domain.
+	 * Gets an array of valid hosts.
 	 *
 	 * @since 3.6
 	 *
-	 * @return string|bool The host. False on failure.
+	 * @return array
 	 */
-	private function get_host() {
-		if ( isset( $this->host ) ) {
-			return $this->host;
+	private function get_hosts() {
+		if ( isset( $this->hosts ) ) {
+			return $this->hosts;
 		}
 
-		$this->host = wp_parse_url( get_option( 'home' ), PHP_URL_HOST );
+		$urls   = (array) $this->options->get( 'cdn_cnames', [] );
+		$urls[] = home_url();
+		$urls   = array_map( 'rocket_add_url_protocol', $urls );
 
-		if ( empty( $this->host ) ) {
-			$this->host = false;
+		foreach ( $urls as $url ) {
+			$host = wp_parse_url( $url, PHP_URL_HOST );
+
+			if ( empty( $host ) ) {
+				continue;
+			}
+
+			$this->hosts[] = $host;
 		}
 
-		return $this->host;
+		if ( empty( $this->hosts ) ) {
+			$this->hosts = [];
+		}
+
+		return $this->hosts;
 	}
 }
