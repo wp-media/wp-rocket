@@ -16,6 +16,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
  * @group Functions
  * @group Files
  * @group vfs
+ * @group rocket_clean_files
  */
 class Test_RocketCleanFiles extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/functions/rocketCleanFiles.php';
@@ -43,10 +44,7 @@ class Test_RocketCleanFiles extends FilesystemTestCase {
 	}
 
 	private function doBailOutTest( $urls ) {
-		Filters\expectApplied( 'rocket_clean_files' )
-			->once()
-			->with( $urls )
-			->andReturn( [] );
+		Filters\expectApplied( 'rocket_clean_files' )->never();
 		Filters\expectApplied( 'rocket_url_no_dots' )->never();
 		Actions\expectDone( 'before_rocket_clean_files' )->never();
 		Actions\expectDone( 'before_rocket_clean_file' )->never();
@@ -93,11 +91,14 @@ class Test_RocketCleanFiles extends FilesystemTestCase {
 		}
 
 		foreach ( array_keys( $expected['cleaned'] ) as $file ) {
-			$file = rtrim( $file, '/\\' );
-			Functions\expect( 'rocket_rrmdir' )
-				->once()
-				->with( $file )
-				->andReturnNull();
+			if ( $this->filesystem->is_dir( $file ) ) {
+				Functions\expect( 'rocket_rrmdir' )
+					->once()
+					->with( $file, [] )
+					->andReturnNull();
+			} else {
+				Functions\expect( 'rocket_rrmdir' )->with( $file )->never();
+			}
 		}
 	}
 }
