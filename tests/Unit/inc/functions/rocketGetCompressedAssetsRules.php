@@ -10,12 +10,6 @@ use Brain\Monkey\Functions;
  * @group Htaccess
  */
 class Test_RocketGetCompressedAssetsRules extends TestCase {
-	public function setUp() {
-		parent::setUp();
-
-		require_once( WP_ROCKET_PLUGIN_ROOT . 'inc/functions/htaccess.php' );
-	}
-
 	public function testShouldReturnCompressedAssetsRules() {
 		$expected = '<IfModule mod_headers.c>
 			# Serve gzip compressed CSS and JS files if they exist
