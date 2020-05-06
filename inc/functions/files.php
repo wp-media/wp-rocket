@@ -1463,11 +1463,6 @@ function _rocket_get_cache_dirs( $url_host, $cache_path = '', $hard_reset = fals
 			new FilesystemIterator( $cache_path )
 		);
 	} catch ( Exception $e ) {
-		if ( isset( $GLOBALS['debug_fs'] ) ) {
-			echo "\n Iterator error: {$e->getMessage()} \n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		}
-
-		// No logging yet.
 		return [];
 	}
 
@@ -1476,20 +1471,12 @@ function _rocket_get_cache_dirs( $url_host, $cache_path = '', $hard_reset = fals
 	try {
 		$entries = new RegexIterator( $iterator, $regex );
 	} catch ( Exception $e ) {
-		if ( isset( $GLOBALS['debug_fs'] ) ) {
-			echo "\n RegexIterator error: {$e->getMessage()} \n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		}
-
 		return [];
 	}
 
 	$domain_dirs[ $url_host ] = [];
 	foreach ( $entries as $entry ) {
 		$domain_dirs[ $url_host ][] = $entry->getPathname();
-	}
-
-	if ( isset( $GLOBALS['debug_fs'] ) ) {
-		var_dump( $domain_dirs ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.PHP.DevelopmentFunctions.error_log_var_dump
 	}
 
 	return $domain_dirs[ $url_host ];
