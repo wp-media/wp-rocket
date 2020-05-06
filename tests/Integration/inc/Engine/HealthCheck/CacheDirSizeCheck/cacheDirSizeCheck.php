@@ -13,7 +13,6 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  */
 class Test_CacheDirSizeCheck extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/HealthCheck/CacheDirSizeCheck/cacheDirSizeCheck.php';
-	private $cron_option;
 
 	public function tearDown() {
 		parent::tearDown();

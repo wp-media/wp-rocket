@@ -18,7 +18,14 @@ class Test_CacheDirSizeCheck extends FilesystemTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->subscriber = new CacheDirSizeCheck();
+		Functions\expect( 'get_current_blog_id' )
+			->once()
+			->andReturn( 1 );
+
+		$this->subscriber = new CacheDirSizeCheck(
+			$this->filesystem->getUrl( 'wp-content/cache/min/' ),
+			'https://wp-rocket.me/',
+		);
 	}
 
 	/**
@@ -28,16 +35,9 @@ class Test_CacheDirSizeCheck extends FilesystemTestCase {
 		Functions\when( 'get_option' )->justReturn( $option_value );
 
 		if ( ! $option_value ) {
-			Functions\expect( 'get_current_blog_id' )
-				->once()
-				->andReturn( 1 );
 			Functions\expect( 'update_option' )
 				->once()
 				->with( 'rocket_cache_dir_size_check', 1 );
-			Functions\expect( 'rocket_get_constant' )
-				->once()
-				->with( 'WP_ROCKET_MINIFY_CACHE_PATH' )
-				->andReturn( $this->filesystem->getUrl( 'wp-content/cache/min/' ) );
 		} else {
 			Functions\expect( 'get_current_blog_id' )
 				->never();
@@ -47,11 +47,6 @@ class Test_CacheDirSizeCheck extends FilesystemTestCase {
 
 		if ( $dir_size_excess ) {
 			$this->filesystem->put_contents( 'public/wp-content/cache/min/1/large.js', LargeFileContent::withGigabytes( 11 ) );
-
-			Functions\expect( 'rocket_get_constant' )
-				->once()
-				->with( 'WP_ROCKET_WEB_MAIN' )
-				->andReturn( 'https://wp-rocket.me/' );
 
 			Functions\expect( 'wp_safe_remote_post' )
 			->once()

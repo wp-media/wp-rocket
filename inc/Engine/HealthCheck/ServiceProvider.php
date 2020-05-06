@@ -35,6 +35,8 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register() {
 		$this->getContainer()->share( 'health_check', 'WP_Rocket\Engine\HealthCheck\HealthCheck' )
 			->withArgument( $this->getContainer()->get( 'options' ) );
-		$this->getContainer()->share( 'cache_dir_size_check', 'WP_Rocket\Engine\HealthCheck\CacheDirSizeCheck' );
+		$this->getContainer()->share( 'cache_dir_size_check', 'WP_Rocket\Engine\HealthCheck\CacheDirSizeCheck' )
+		->withArgument( rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' ) )
+		->withArgument( rocket_get_constant( 'WP_ROCKET_WEB_MAIN' ) );
 	}
 }

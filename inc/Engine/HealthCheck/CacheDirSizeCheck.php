@@ -8,7 +8,8 @@ use UnexpectedValueException;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
- * Add a weekly event to check for the cache directories sizes and send a notification if it's bigger thant the defined maximum size
+ * Add a weekly event to check for the cache directories sizes
+ * and send a notification if it's bigger thant the defined maximum size
  *
  * @since 3.3.5
  */
@@ -22,6 +23,36 @@ class CacheDirSizeCheck implements Subscriber_Interface {
 	 * Maximum allowed size
 	 */
 	const MAX_SIZE = 10737418240;
+
+	/**
+	 * ROUTE endpoint to request
+	 */
+	const ROUTE = 'api/wp-rocket/cache-dir-check.php';
+
+	/**
+	 * Absolute path to the minify directory
+	 *
+	 * @var string
+	 */
+	private $minify_path;
+
+	/**
+	 * Full URL to the API endpoint
+	 *
+	 * @var string
+	 */
+	private $api_endpoint;
+
+	/**
+	 * Instantiate the class
+	 *
+	 * @param string $minify_path Absolute path to the minify directory.
+	 * @param string $rocket_url  WP Rocket website URL.
+	 */
+	public function __construct( $minify_path, $rocket_url ) {
+		$this->minify_path  = $minify_path . get_current_blog_id();
+		$this->api_endpoint = $rocket_url . self::ROUTE;
+	}
 
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
@@ -74,7 +105,8 @@ class CacheDirSizeCheck implements Subscriber_Interface {
 	}
 
 	/**
-	 * Checks the cache dir size when the event is triggered and send a notification if the directory size is above the defined maximum size
+	 * Checks the cache dir size when the event is triggered
+	 * and send a notification if the directory size is above the defined maximum size
 	 *
 	 * @since 3.3.5
 	 *
@@ -85,10 +117,8 @@ class CacheDirSizeCheck implements Subscriber_Interface {
 			return;
 		}
 
-		$current_blog_id = get_current_blog_id();
-
 		$checks = [
-			'min' => rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' ) . $current_blog_id,
+			'min' => $this->minify_path,
 		];
 
 		foreach ( $checks as $type => $path ) {
@@ -148,7 +178,7 @@ class CacheDirSizeCheck implements Subscriber_Interface {
 	 */
 	private function send_notification( $dir_type ) {
 		wp_safe_remote_post(
-			rocket_get_constant( 'WP_ROCKET_WEB_MAIN' ) . 'api/wp-rocket/cache-dir-check.php',
+			$this->api_endpoint,
 			[
 				'body' => 'cache_dir_type=' . $dir_type,
 			]
