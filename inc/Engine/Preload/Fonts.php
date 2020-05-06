@@ -3,7 +3,7 @@
 namespace WP_Rocket\Engine\Preload;
 
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\CDN\CDN;
+use WP_Rocket\Engine\CDN\CDN;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
