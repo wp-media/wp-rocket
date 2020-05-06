@@ -1,0 +1,33 @@
+"Number of URLs",30
+"Total time (secs)",0.63571411
+http://example.org*/child-1/grandchild-1/,31,0.29,23.32,23.60
+http://example.org*/child-2/grandchild-1/,31,0.28,20.70,20.98
+http://example.org*/child-3/grandchild-1/,31,0.39,19.97,20.37
+http://example.org*/child-4/grandchild-1/,31,0.25,20.14,20.38
+http://example.org*/child-5/grandchild-1/,31,0.27,21.99,22.26
+http://example.org*/child-6/grandchild-1/,31,0.27,22.77,23.04
+http://example.org*/child-7/grandchild-1/,31,0.31,20.77,21.08
+http://example.org*/child-8/grandchild-1/,31,0.29,20.67,20.97
+http://example.org*/child-9/grandchild-1/,31,0.36,20.39,20.76
+http://example.org*/child-10/grandchild-1/,31,0.25,20.79,21.04
+http://example.org*/child-11/grandchild-1/,31,0.25,19.65,19.90
+http://example.org*/child-12/grandchild-1/,31,0.44,20.14,20.57
+http://example.org*/child-13/grandchild-1/,31,0.24,19.83,20.07
+http://example.org*/child-14/grandchild-1/,31,0.26,20.03,20.29
+http://example.org*/child-15/grandchild-1/,31,0.31,19.94,20.25
+http://example.org*/child-16/grandchild-1/,31,0.26,19.89,20.14
+http://example.org*/child-17/grandchild-1/,31,0.24,20.56,20.80
+http://example.org*/child-18/grandchild-1/,31,0.28,20.63,20.91
+http://example.org*/child-19/grandchild-1/,31,0.27,21.71,21.98
+http://example.org*/child-20/grandchild-1/,31,0.28,22.12,22.40
+http://example.org*/child-21/grandchild-1/,31,0.32,22.01,22.33
+http://example.org*/child-22/grandchild-1/,31,0.28,21.98,22.26
+http://example.org*/child-23/grandchild-1/,31,0.31,22.28,22.59
+http://example.org*/child-24/grandchild-1/,31,0.26,21.22,21.48
+http://example.org*/child-25/grandchild-1/,31,0.26,23.17,23.43
+http://example.org*/child-26/grandchild-1/,31,0.24,19.72,19.97
+http://example.org*/child-27/grandchild-1/,31,0.26,19.66,19.92
+http://example.org*/child-28/grandchild-1/,31,0.24,19.57,19.81
+http://example.org*/child-29/grandchild-1/,31,0.27,20.21,20.48
+http://example.org*/child-30/grandchild-1/,31,0.25,20.24,20.48
+Averages,,0.28,20.87,21.15

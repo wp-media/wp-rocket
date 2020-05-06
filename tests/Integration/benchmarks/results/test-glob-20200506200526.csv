@@ -1,0 +1,33 @@
+"Number of URLs",30
+"Total time (secs)",2.22240405
+http://example.org*/child-1/,31,0.41,57.47,57.89
+http://example.org*/child-2/,31,0.25,58.36,58.61
+http://example.org*/child-3/,31,0.29,60.71,61.00
+http://example.org*/child-4/,31,0.36,60.10,60.46
+http://example.org*/child-5/,31,0.24,60.27,60.51
+http://example.org*/child-6/,31,0.27,60.89,61.16
+http://example.org*/child-7/,31,0.26,72.26,72.53
+http://example.org*/child-8/,31,0.25,58.81,59.05
+http://example.org*/child-9/,31,0.25,61.75,62.00
+http://example.org*/child-10/,31,0.45,91.08,91.53
+http://example.org*/child-11/,31,0.42,91.67,92.09
+http://example.org*/child-12/,31,0.40,94.49,94.89
+http://example.org*/child-13/,31,0.40,74.27,74.67
+http://example.org*/child-14/,31,0.29,61.01,61.30
+http://example.org*/child-15/,31,0.34,64.54,64.88
+http://example.org*/child-16/,31,0.42,66.63,67.05
+http://example.org*/child-17/,31,0.27,70.44,70.71
+http://example.org*/child-18/,31,0.43,98.25,98.68
+http://example.org*/child-19/,31,0.46,106.65,107.11
+http://example.org*/child-20/,31,0.42,110.41,110.83
+http://example.org*/child-21/,31,0.40,97.97,98.37
+http://example.org*/child-22/,31,0.42,87.96,88.38
+http://example.org*/child-23/,31,0.24,60.16,60.41
+http://example.org*/child-24/,31,0.24,58.81,59.05
+http://example.org*/child-25/,31,0.24,61.71,61.94
+http://example.org*/child-26/,31,0.25,57.74,57.98
+http://example.org*/child-27/,31,0.27,58.52,58.79
+http://example.org*/child-28/,31,0.25,60.44,60.69
+http://example.org*/child-29/,31,0.29,57.00,57.29
+http://example.org*/child-30/,31,0.24,131.42,131.66
+Averages,,0.32,73.73,74.05
