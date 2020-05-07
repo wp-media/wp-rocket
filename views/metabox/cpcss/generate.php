@@ -41,7 +41,7 @@ $rocket_cpcss_exists = empty( $data['cpcss_exists'] );
 		<span class="spinner"></span>
 		<span class="rocket-generate-post-cpss-btn-txt">
 			<?php
-			if ( ! empty( $data['cpcss_exists'] ) ) {
+			if ( ! $rocket_cpcss_exists ) {
 				esc_html_e( 'Regenerate specific CPCSS', 'rocket' );
 			} else {
 				esc_html_e( 'Generate Specific CPCSS', 'rocket' );
