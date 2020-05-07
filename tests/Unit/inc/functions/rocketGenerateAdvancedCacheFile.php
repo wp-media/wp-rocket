@@ -2,12 +2,15 @@
 
 namespace WP_Rocket\Tests\Unit\inc\functions;
 
+use Mockery;
+use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
+use WP_Rocket\Engine\Cache\AdvancedCache;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
  * @covers ::rocket_generate_advanced_cache_file
- * @uses   ::get_rocket_advanced_cache_file
+ * @uses   WP_Rocket\Engine\Cache\AdvancedCache::get_advanced_cache_content
  * @uses   ::rocket_put_content
  * @uses   ::rocket_get_constant
  *
@@ -22,6 +25,8 @@ class Test_RocketGenerateAdvancedCacheFile extends FilesystemTestCase {
 	public function setUp() {
 		parent::setUp();
 
+		$this->container      = Mockery::mock( 'container' );
+		$this->advanced_cache = Mockery::mock( AdvancedCache::class );
 		// Mocks the various filesystem constants.
 		$this->whenRocketGetConstant();
 	}
@@ -34,7 +39,15 @@ class Test_RocketGenerateAdvancedCacheFile extends FilesystemTestCase {
 			$this->filesystem->delete( $this->advanced_cache_file );
 		}
 
-		Functions\expect( 'get_rocket_advanced_cache_file' )->once()->andReturn( $expected_content );
+		Filters\expectApplied( 'rocket_container' )
+			->andReturn( $this->container );
+
+		$this->container->shouldReceive( 'get' )
+			->with( 'advanced_cache' )
+			->andReturn( $this->advanced_cache );
+
+		$this->advanced_cache->shouldReceive( 'get_advanced_cache_content' )
+			->andReturn( $expected_content );
 
 		// Run it.
 		rocket_generate_advanced_cache_file();
