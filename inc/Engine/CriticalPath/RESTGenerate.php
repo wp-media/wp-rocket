@@ -115,7 +115,7 @@ class RESTGenerate implements Subscriber_Interface {
 			return rest_ensure_response( $this->check_cpcss_job_status( $cpcss_job_id, $request['id'], $post_url, $post_type ) );
 		}
 
-		$job_creation = $this->send_generation_request( $post_url, $post_type );
+		$job_creation = $this->send_generation_request( $post_url );
 
 		if ( false === $job_creation['success'] ) {
 			return rest_ensure_response( $job_creation );
@@ -142,11 +142,10 @@ class RESTGenerate implements Subscriber_Interface {
 	 *
 	 * @since 3.6
 	 *
-	 * @param  string $post_url  The post URL.
-	 * @param  string $post_type The post type.
+	 * @param string $post_url The post URL.
 	 * @return array
 	 */
-	protected function send_generation_request( $post_url, $post_type ) {
+	protected function send_generation_request( $post_url ) {
 		$response = wp_remote_post(
 			self::API_URL,
 			[
@@ -155,10 +154,6 @@ class RESTGenerate implements Subscriber_Interface {
 					'rocket_cpcss_job_request',
 					[
 						'url' => $post_url,
-					],
-					[
-						'url'  => $post_url,
-						'type' => $post_type,
 					]
 				),
 			]

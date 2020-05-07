@@ -24,6 +24,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'critical_css',
 		'critical_css_subscriber',
 		'rest_delete_post_cpcss',
+		'rest_generate_post_cpcss',
 		'critical_css_admin_subscriber',
 		'rest_generate_post_cpcss',
 	];
@@ -45,12 +46,12 @@ class ServiceProvider extends AbstractServiceProvider {
 			->withArgument( $options );
 		$this->getContainer()->share( 'rest_delete_post_cpcss', 'WP_Rocket\Engine\CriticalPath\RESTDelete' )
 			->withArgument( $critical_css_path );
+		$this->getContainer()->share( 'rest_generate_post_cpcss', 'WP_Rocket\Engine\CriticalPath\RESTGenerate' )
+			->withArgument( $critical_css_path );
 		$this->getContainer()->share( 'critical_css_admin_subscriber', 'WP_Rocket\Engine\CriticalPath\AdminSubscriber' )
 			->withArgument( $options )
 			->withArgument( $this->getContainer()->get( 'beacon' ) )
 			->withArgument( $critical_css_path )
 			->withArgument( $this->getContainer()->get( 'template_path' ) . '/metabox/cpcss' );
-		$this->getContainer()->share( 'rest_generate_post_cpcss', 'WP_Rocket\Engine\CriticalPath\RESTGenerate' )
-			->withArgument( $critical_css_path );
 	}
 }

@@ -8,6 +8,7 @@ use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\RESTGenerate::register_generate_route
+ *
  * @group  CriticalPath
  */
 class Test_RegisterGenerateRoute extends TestCase {
