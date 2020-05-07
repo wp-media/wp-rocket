@@ -26,7 +26,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		'rest_delete_post_cpcss',
 		'rest_generate_post_cpcss',
 		'critical_css_admin_subscriber',
-		'rest_generate_post_cpcss',
 	];
 
 	/**
