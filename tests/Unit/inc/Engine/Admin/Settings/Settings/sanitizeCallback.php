@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\Settings\Settings;
 
+use Mockery;
 use Brain\Monkey\Functions;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Settings\Settings;
@@ -19,7 +20,10 @@ class Test_SanitizeCallback extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->options  = $this->createMock( Options_Data::class );
+		$this->options = Mockery::mock( Options_Data::class );
+		$this->options->shouldReceive( 'get' )
+			->withAnyArgs();
+
 		$this->settings = new Settings( $this->options );
 	}
 
