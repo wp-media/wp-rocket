@@ -12,34 +12,38 @@ rocketDeleteCPCSSbtn.addEventListener( 'click', e => {
 
 rocketGenerateCPCSSbtn.addEventListener( 'click', e => {
 	e.preventDefault();
+	rocketGenerateCPCSSbtn.disabled = true;
 	checkCPCSSGeneration();
 } );
 
 const checkCPCSSGeneration = ( timeout = null ) => {
-	const spinner            = rocketGenerateCPCSSbtn.querySelector( '.spinner' );
-	spinner.style.display    = 'block';
-	spinner.style.visibility = 'visible';
+	const spinner                   = rocketGenerateCPCSSbtn.querySelector( '.spinner' );
+	spinner.style.display           = 'block';
+	spinner.style.visibility        = 'visible';
 
-	const xhttp              = new XMLHttpRequest();
-	xhttp.onreadystatechange = () => {
-		if ( this.readyState !== 4 || this.status !== 200 ) {
+	const xhttp  = new XMLHttpRequest();
+	xhttp.onload = () => {
+		if ( 200 !== xhttp.status ) {
 			return;
 		}
 
-		const cpcss_response = JSON.parse( this.responseText );
-		if ( cpcss_response.data.status !== 200 ) {
+		const cpcss_response = JSON.parse( xhttp.response );
+		if ( 200 !== cpcss_response.data.status ) {
 			stopCPCSSGeneration( spinner );
 			cpcssNotice( cpcss_response.message, 'error' );
+			rocketGenerateCPCSSbtn.disabled = false;
 			return;
 		}
 
-		if ( cpcss_response.data.status === 200 && cpcss_response.code !== 'cpcss_generation_pending' ) {
+		if ( 200 === cpcss_response.data.status &&
+			'cpcss_generation_pending' !== cpcss_response.code ) {
 			stopCPCSSGeneration( spinner );
 			cpcssNotice( cpcss_response.message, 'success' );
 
 			// Revert view to Regenerate.
 			rocketGenerateCPCSSbtn.querySelector( '.rocket-generate-post-cpss-btn-txt' ).innerHTML = cpcss_regenerate_btn;
 			rocketDeleteCPCSSbtn.style.display                                                     = 'block';
+			rocketGenerateCPCSSbtn.disabled                                                        = false;
 			rocketCPCSSGenerate.forEach( item => item.style.display = 'none' );
 			rocketCPCSSReGenerate.forEach( item => item.style.display = 'block' );
 			return;
@@ -71,13 +75,13 @@ const stopCPCSSGeneration = ( spinner ) => {
 }
 
 const deleteCPCSS = () => {
-	const xhttp              = new XMLHttpRequest();
-	xhttp.onreadystatechange = () => {
-		if ( this.readyState !== 4 | this.status !== 200 ) {
+	const xhttp  = new XMLHttpRequest();
+	xhttp.onload = () => {
+		if ( 200 !== xhttp.status ) {
 			return;
 		}
-		const cpcss_response = JSON.parse( this.responseText );
-		if ( cpcss_response.data.status !== 200 ) {
+		const cpcss_response = JSON.parse( xhttp.response );
+		if ( 200 !== cpcss_response.data.status ) {
 			cpcssNotice( cpcss_response.message, 'error' );
 			return;
 		}
