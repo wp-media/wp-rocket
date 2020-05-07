@@ -468,6 +468,8 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 			'ajax_search_nonce', // xtra theme AJAX search.
 			'xtra_wishlist_content', // xtra theme wishlist feature.
 			'ajax-login-security', // OneSocial theme pop-up login.
+			'dokan_pageview', // Dokan related pageview.
+			'dokan_report_abuse', // Dokan report abuse popup.
 		];
 	}
 }
