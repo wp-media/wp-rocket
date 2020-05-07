@@ -1466,7 +1466,7 @@ function _rocket_get_cache_dirs( $url_host, $cache_path = '', $hard_reset = fals
 		return [];
 	}
 
-	$regex = sprintf( '/%s%s(.*)/i', str_replace( '/', '\/', $cache_path ), $url_host );
+	$regex = sprintf( '/%1$s%2$s(.*)/i', str_replace( '/', '\/', $cache_path ), $url_host );
 
 	try {
 		$entries = new RegexIterator( $iterator, $regex );
