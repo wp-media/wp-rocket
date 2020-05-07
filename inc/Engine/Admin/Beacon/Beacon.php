@@ -437,8 +437,8 @@ class Beacon implements Subscriber_Interface {
 					'url' => 'https://docs.wp-rocket.me/article/1317-preload-fonts/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 				'fr' => [
-					'id'  => '',
-					'url' => '',
+					'id'  => '5eb3add02c7d3a5ea54aa66d',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1319-prechargement-fonts/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'never_cache'                => [
