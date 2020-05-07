@@ -348,7 +348,7 @@ class RESTGenerate implements Subscriber_Interface {
 		return [
 			'success' => $success,
 			'code'    => $code,
-			'message' => $message,
+			'message' => wp_strip_all_tags( $message ),
 			'data'    => [
 				'status' => $status,
 			],

@@ -15,7 +15,7 @@
 defined( 'ABSPATH' ) || exit;
 
 ?>
-<p class="cpcss_generate <?php echo ( $data['cpcss_exists'] ? 'hidden' : '' ); ?>">
+<p class="cpcss_generate <?php echo ! empty( $data['cpcss_exists'] ) ? 'hidden' : ''; ?>">
 <?php
 	printf(
 		// translators: %1$s = opening link tag, %2$s = closing link tag.
@@ -25,7 +25,7 @@ defined( 'ABSPATH' ) || exit;
 		);
 	?>
 </p>
-<p class="cpcss_regenerate <?php echo ( ! $data['cpcss_exists'] ? 'hidden' : '' ); ?>">
+<p class="cpcss_regenerate <?php echo empty( $data['cpcss_exists'] ) ? 'hidden' : ''; ?>">
 <?php
 	printf(
 		// translators: %1$s = opening link tag, %2$s = closing link tag.
@@ -40,7 +40,7 @@ defined( 'ABSPATH' ) || exit;
 		<span class="spinner"></span>
 		<span class="rocket-generate-post-cpss-btn-txt">
 			<?php
-			if ( $data['cpcss_exists'] ) {
+			if ( ! empty( $data['cpcss_exists'] ) ) {
 				esc_html_e( 'Regenerate specific CPCSS', 'rocket' );
 			} else {
 				esc_html_e( 'Generate Specific CPCSS', 'rocket' );
@@ -49,7 +49,7 @@ defined( 'ABSPATH' ) || exit;
 		</span>
 	</button>
 </div>
-<div class="components-panel__row cpcss_regenerate <?php echo ( ! $data['cpcss_exists'] ? 'hidden' : '' ); ?>">
+<div class="components-panel__row cpcss_regenerate <?php echo empty( $data['cpcss_exists'] ) ? 'hidden' : ''; ?>">
 	<button id="rocket-delete-post-cpss" class="components-button is-link is-destructive" <?php disabled( $data['disabled'] ); ?>>
 		<?php esc_html_e( 'Revert back to the default CPCSS', 'rocket' ); ?>
 	</button>
