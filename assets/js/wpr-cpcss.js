@@ -75,12 +75,17 @@ const stopCPCSSGeneration = ( spinner ) => {
 }
 
 const deleteCPCSS = () => {
+	rocketDeleteCPCSSbtn.disabled = true;
+
 	const xhttp  = new XMLHttpRequest();
 	xhttp.onload = () => {
 		if ( 200 !== xhttp.status ) {
 			return;
 		}
-		const cpcss_response = JSON.parse( xhttp.response );
+
+		rocketDeleteCPCSSbtn.disabled = false;
+		const cpcss_response          = JSON.parse( xhttp.response );
+
 		if ( 200 !== cpcss_response.data.status ) {
 			cpcssNotice( cpcss_response.message, 'error' );
 			return;
