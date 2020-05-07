@@ -224,7 +224,7 @@ class RESTGenerate implements Subscriber_Interface {
 			return $this->on_job_error( $post_id, $post_url, $job_data );
 		}
 
-		if ( isset( $job_data->data->state ) && 'complete' !== $job_data->data->state ) {
+		if ( 'complete' !== $job_data->data->state ) {
 			return $this->return_array_response(
 				true,
 				'cpcss_generation_pending',
@@ -234,9 +234,7 @@ class RESTGenerate implements Subscriber_Interface {
 			);
 		}
 
-		if ( isset( $job_data->data->state, $job_data->data->critical_path ) && 'complete' === $job_data->data->state ) {
-			return $this->on_job_success( $post_id, $post_url, $post_type, $job_data->data->critical_path );
-		}
+		return $this->on_job_success( $post_id, $post_url, $post_type, $job_data->data->critical_path );
 	}
 
 	/**
