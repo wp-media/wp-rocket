@@ -22,7 +22,7 @@ class Test_Process extends TestCase {
 	protected $path_to_test_data = '/inc/Engine/Optimization/Minify/CSS/Subscriber/process.php';
 
 	public function setUp() {
-		$this->wp_content_dir = 'vfs://public/wordpress/wp-content';
+		$this->wp_content_dir = 'vfs://public/wp-content';
 
 		parent::setUp();
 
