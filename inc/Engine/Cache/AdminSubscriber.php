@@ -18,6 +18,12 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 */
 	protected $event_manager;
 
+	private $advanced_cache;
+
+	public function __construct( AdvancedCache $advanced_cache ) {
+		$this->advanced_cache = $advanced_cache;
+	}
+
 	/**
 	 * Returns an array of events that this subscriber wants to listen to.
 	 *
@@ -26,6 +32,10 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	public static function get_subscribed_events() {
 		return [
 			'admin_init' => 'register_terms_row_action',
+			'admin_notices' => [
+				'notice_advanced_cache_permissions',
+				'notice_advanced_cache_content_not_ours',
+			],
 		];
 	}
 
@@ -83,5 +93,13 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 		);
 
 		return $actions;
+	}
+
+	public function notice_advanced_cache_permissions() {
+		$this->advanced_cache->notice_permissions();
+	}
+
+	public function notice_advanced_cache_content_not_ours() {
+		$this->advanced_cache->notice_content_not_ours();
 	}
 }
