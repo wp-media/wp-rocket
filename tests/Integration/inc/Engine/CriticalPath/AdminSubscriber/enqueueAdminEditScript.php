@@ -22,6 +22,12 @@ class Test_EnqueueAdminEditScript extends FilesystemTestCase {
 		self::$user_id = $factory->user->create( [ 'role' => 'administrator' ] );
 	}
 
+	public static function tearDownAfterClass() {
+		parent::tearDownAfterClass();
+		$admin = get_role( 'administrator' );
+		$admin->remove_cap( 'rocket_manage_options' );
+	}
+
 	public function tearDown() {
 		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'setCPCSSOption' ] );
 		delete_post_meta( $this->post_id, '_rocket_exclude_async_css' );
