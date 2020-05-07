@@ -51,6 +51,8 @@ class Test_CpcssSection extends FilesystemTestCase {
 			->with( 'async_css', 0 )
 			->andReturn( $config['options']['async_css'] );
 
+		Functions\when('esc_js')->returnArg();
+
 		Functions\when( 'wp_sprintf_l' )->alias( function ( $pattern, $args ) {
 			if ( substr( $pattern, 0, 2 ) != '%l' ) {
 				return $pattern;
