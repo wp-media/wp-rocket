@@ -20,6 +20,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
+		'advanced_cache',
 		'purge_actions_subscriber',
 		'admin_cache_subscriber',
 	];
@@ -30,6 +31,8 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
+		$this->getContainer()->add( 'advanced_cache', 'WP_Rocket\Engine\Cache\AdvancedCache' )
+			->withArgument( WP_ROCKET_PATH . 'views/cache' );
 		$this->getContainer()->share( 'purge_actions_subscriber', 'WP_Rocket\Engine\Cache\PurgeActionsSubscriber' )
 			->withArgument( $this->getContainer()->get( 'options' ) );
 		$this->getContainer()->share( 'admin_cache_subscriber', 'WP_Rocket\Engine\Cache\AdminSubscriber' );
