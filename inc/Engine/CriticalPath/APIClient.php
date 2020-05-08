@@ -182,22 +182,6 @@ class APIClient {
 	}
 
 	/**
-	 * Get status of Job details response.
-	 *
-	 * @since 3.6
-	 *
-	 * @param array|WP_Error $response The response or WP_Error on failure.
-	 * @return bool
-	 */
-	private function get_job_details_success( $response ) {
-		$response_data = $this->get_response_data( $response );
-		return (
-			$this->get_response_success( $response ) &&
-			isset( $response_data->data->state ) && 'complete' !== $response_data->data->state
-		);
-	}
-
-	/**
 	 * Prepares Job details response to be returned.
 	 *
 	 * @since 3.6
@@ -207,9 +191,11 @@ class APIClient {
 	 * @return mixed|WP_Error
 	 */
 	private function prepare_job_details_response( $response, $item_url ) {
-		$succeeded = $this->get_job_details_success( $response );
+		$succeeded = $this->get_response_success( $response );
 		if ( $succeeded ) {
-			return $this->get_response_data( $response );
+			$response_data = $this->get_response_data( $response );
+
+			return $response_data;
 		}else {
 			return new WP_Error(
 				$this->get_response_code( $response ),

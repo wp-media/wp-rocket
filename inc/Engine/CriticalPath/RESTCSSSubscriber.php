@@ -9,7 +9,7 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  *
  * @package WP_Rocket\Engine\CriticalPath
  */
-abstract class RESTCSSSubscriber implements Subscriber_Interface {
+class RESTCSSSubscriber implements Subscriber_Interface {
 
 	/**
 	 * REST Post manager that has generate and delete methods.

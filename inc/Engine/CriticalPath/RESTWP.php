@@ -140,6 +140,7 @@ abstract class RESTWP {
 				}else {
 					// job_id is found and we need to check status for it.
 					$output = $this->get_cpcss_job_details( $cpcss_job_id, $item_url );
+
 				}
 			}
 		}else {

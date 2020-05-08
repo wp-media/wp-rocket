@@ -12,6 +12,13 @@ use WP_Error;
 class RESTWPPost extends RESTWP {
 
 	/**
+	 * Part of route namespace for this inherited class item type.
+	 *
+	 * @var string $route_namespace to be set with like post, term.
+	 */
+	protected $route_namespace = 'post';
+
+	/**
 	 * Validate the item to be sent to generate CPCSS.
 	 *
 	 * @since 3.6
