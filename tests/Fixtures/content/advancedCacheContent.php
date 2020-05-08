@@ -16,7 +16,7 @@ define( 'WP_ROCKET_ADVANCED_CACHE', true );
 \$rocket_cache_path  = 'vfs://public/wp-content/cache/wp-rocket/';
 
 if (
-	version_compare( phpversion(), '5.6', '<'  )
+	version_compare( phpversion(), '5.6', '<' )
 	|| ! file_exists( \$rocket_path )
 	|| ! file_exists( \$rocket_config_path )
 	|| ! file_exists( \$rocket_cache_path )
@@ -70,7 +70,7 @@ spl_autoload_register(
 
 if ( ! class_exists( '\WP_Rocket\Buffer\Cache' ) ) {
 	if ( ! defined( 'DONOTROCKETOPTIMIZE' ) ) {
-		define( 'DONOTROCKETOPTIMIZE', true ); // WPCS: prefix ok.
+		define( 'DONOTROCKETOPTIMIZE', true ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
 	}
 	return;
 }

@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Engine\Cache;
 
-class AdvancedCache  {
+class AdvancedCache {
 	/**
 	 * Absolute path to template files
 	 *
@@ -37,7 +37,7 @@ class AdvancedCache  {
 	public function get_advanced_cache_content() {
 		$content = rocket_direct_filesystem()->get_contents( $this->template_path . '/advanced-cache.php' );
 		$mobile  = is_rocket_generate_caching_mobile_files() ? '$2' : '';
-		$content = preg_replace( '/("{{MOBILE_CACHE}}";)(\X*)("{{\/MOBILE_CACHE}}";)/', $mobile, $content );
+		$content = preg_replace( "/('{{MOBILE_CACHE}}';)(\X*)('{{\/MOBILE_CACHE}}';)/", $mobile, $content );
 
 		$replacements = [
 			'{{WP_ROCKET_PHP_VERSION}}' => rocket_get_constant( 'WP_ROCKET_PHP_VERSION' ),
@@ -84,11 +84,11 @@ class AdvancedCache  {
 		$notice_name = 'rocket_warning_advanced_cache_permissions';
 
 		if (
-			in_array( 
+			in_array(
 				$notice_name,
 				(array) get_user_meta( get_current_user_id(), 'rocket_boxes', true ),
 				true
-			) 
+			)
 		) {
 			return;
 		}

@@ -13,7 +13,7 @@ $rocket_config_path = '{{WP_ROCKET_CONFIG_PATH}}';
 $rocket_cache_path  = '{{WP_ROCKET_CACHE_PATH}}';
 
 if (
-	version_compare( phpversion(), '{{WP_ROCKET_PHP_VERSION}}', '<'  )
+	version_compare( phpversion(), '{{WP_ROCKET_PHP_VERSION}}', '<' )
 	|| ! file_exists( $rocket_path )
 	|| ! file_exists( $rocket_config_path )
 	|| ! file_exists( $rocket_cache_path )
@@ -22,11 +22,11 @@ if (
 	return;
 }
 
-"{{MOBILE_CACHE}}";
+'{{MOBILE_CACHE}}';
 if ( file_exists( '{{VENDOR_PATH}}classes/class-rocket-mobile-detect.php' ) && ! class_exists( 'Rocket_Mobile_Detect' ) ) {
 	include_once '{{VENDOR_PATH}}classes/class-rocket-mobile-detect.php';
 }
-"{{/MOBILE_CACHE}}";
+'{{/MOBILE_CACHE}}';
 
 spl_autoload_register(
 	function( $class ) use ( $rocket_path ) {
@@ -59,7 +59,7 @@ spl_autoload_register(
 
 if ( ! class_exists( '\WP_Rocket\Buffer\Cache' ) ) {
 	if ( ! defined( 'DONOTROCKETOPTIMIZE' ) ) {
-		define( 'DONOTROCKETOPTIMIZE', true ); // WPCS: prefix ok.
+		define( 'DONOTROCKETOPTIMIZE', true ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
 	}
 	return;
 }
