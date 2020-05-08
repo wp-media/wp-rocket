@@ -18,6 +18,13 @@ class AdvancedCache {
 	private $content_dir;
 
 	/**
+	 * WP Filesystem Direct instance
+	 *
+	 * @var WP_Filesystem_Direct
+	 */
+	private $filesystem;
+
+	/**
 	 * Instantiate the class
 	 *
 	 * @param string $template_path Absolute path to template files.
@@ -25,6 +32,7 @@ class AdvancedCache {
 	public function __construct( $template_path ) {
 		$this->template_path = $template_path;
 		$this->content_dir   = rocket_get_constant( 'WP_CONTENT_DIR' );
+		$this->filesystem    = rocket_direct_filesystem();
 	}
 
 	/**
@@ -35,7 +43,7 @@ class AdvancedCache {
 	 * @return string
 	 */
 	public function get_advanced_cache_content() {
-		$content = rocket_direct_filesystem()->get_contents( $this->template_path . '/advanced-cache.php' );
+		$content = $this->filesystem->get_contents( $this->template_path . '/advanced-cache.php' );
 		$mobile  = is_rocket_generate_caching_mobile_files() ? '$2' : '';
 		$content = preg_replace( "/('{{MOBILE_CACHE}}';)(\X*)('{{\/MOBILE_CACHE}}';)/", $mobile, $content );
 
@@ -75,8 +83,8 @@ class AdvancedCache {
 		}
 
 		if (
-			rocket_direct_filesystem()->is_writable( "{$this->content_dir}/advanced-cache.php" )
-			&& rocket_get_constant( 'WP_ROCKET_ADVANCED_CACHE' )
+			$this->filesystem->is_writable( "{$this->content_dir}/advanced-cache.php" )
+			|| rocket_get_constant( 'WP_ROCKET_ADVANCED_CACHE' )
 		) {
 			return;
 		}
