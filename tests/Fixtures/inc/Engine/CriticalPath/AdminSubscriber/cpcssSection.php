@@ -148,7 +148,7 @@ return [
 				<h3>Critical Path CSS</h3>
 				<div id="rocket-metabox-cpcss-content"></div>
 			</div>
-			<div id="cpcss_response_notice" class="components-notice is-notice is-warning">
+			<div id="cpcss_response_notice" class="components-notice is-notice is-warning hidden">
 				<div class="components-notice__content"></div>
 			</div>
 			<script>

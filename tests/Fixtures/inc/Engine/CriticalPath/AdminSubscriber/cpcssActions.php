@@ -50,12 +50,12 @@ return [
 			</p>
 			<div class="components-panel__row cpcss_generate cpcss_regenerate">
 				<button id="rocket-generate-post-cpss" class="button components-button is-secondary" disabled="disabled">
-					<span class="spinner"></span>
+					<span style="display: none;" class="spinner"></span>
 					<span class="rocket-generate-post-cpss-btn-txt">Generate Specific CPCSS</span>
 				</button>
 			</div>
 			<div class="components-panel__row cpcss_regenerate hidden">
-				<button id="rocket-delete-post-cpss" class="components-button is-link is-destructive" disabled="disabled">Revert back to the default CPCSS</button>
+				<button id="rocket-delete-post-cpss" class="button components-button is-secondary" disabled="disabled"><span>Revert back to the default CPCSS</span></button>
 			</div>',
 		],
 		'testShouldDisplayRegenerateTemplateOptionDisabled' => [
@@ -78,12 +78,12 @@ return [
 			</p>
 			<div class="components-panel__row cpcss_generate cpcss_regenerate">
 				<button id="rocket-generate-post-cpss" class="button components-button is-secondary" disabled="disabled">
-					<span class="spinner"></span>
+					<span style="display: none;" class="spinner"></span>
 					<span class="rocket-generate-post-cpss-btn-txt">Regenerate specific CPCSS</span>
 				</button>
 			</div>
 			<div class="components-panel__row cpcss_regenerate ">
-				<button id="rocket-delete-post-cpss" class="components-button is-link is-destructive" disabled="disabled">Revert back to the default CPCSS</button>
+				<button id="rocket-delete-post-cpss" class="button components-button is-secondary" disabled="disabled"><span>Revert back to the default CPCSS</span></button>
 			</div>',
 		],
 		'testShouldDisplayGenerateTemplatePostNotPublished' => [
@@ -106,12 +106,12 @@ return [
 			</p>
 			<div class="components-panel__row cpcss_generate cpcss_regenerate">
 				<button id="rocket-generate-post-cpss" class="button components-button is-secondary" disabled="disabled">
-					<span class="spinner"></span>
+					<span style="display: none;" class="spinner"></span>
 					<span class="rocket-generate-post-cpss-btn-txt">Generate Specific CPCSS</span>
 				</button>
 			</div>
 			<div class="components-panel__row cpcss_regenerate hidden">
-				<button id="rocket-delete-post-cpss" class="components-button is-link is-destructive" disabled="disabled">Revert back to the default CPCSS</button>
+				<button id="rocket-delete-post-cpss" class="button components-button is-secondary" disabled="disabled"><span>Revert back to the default CPCSS</span></button>
 			</div>',
 		],
 		'testShouldDisplayReenerateTemplatePostNotPublished' => [
@@ -134,12 +134,12 @@ return [
 			</p>
 			<div class="components-panel__row cpcss_generate cpcss_regenerate">
 				<button id="rocket-generate-post-cpss" class="button components-button is-secondary" disabled="disabled">
-					<span class="spinner"></span>
+					<span style="display: none;" class="spinner"></span>
 					<span class="rocket-generate-post-cpss-btn-txt">Regenerate specific CPCSS</span>
 				</button>
 			</div>
 			<div class="components-panel__row cpcss_regenerate ">
-				<button id="rocket-delete-post-cpss" class="components-button is-link is-destructive" disabled="disabled">Revert back to the default CPCSS</button>
+				<button id="rocket-delete-post-cpss" class="button components-button is-secondary" disabled="disabled"><span>Revert back to the default CPCSS</span></button>
 			</div>',
 		],
 		'testShouldDisplayGenerateTemplateOptionExcludedFromPost' => [
@@ -162,12 +162,12 @@ return [
 			</p>
 			<div class="components-panel__row cpcss_generate cpcss_regenerate">
 				<button id="rocket-generate-post-cpss" class="button components-button is-secondary" disabled="disabled">
-					<span class="spinner"></span>
+					<span style="display: none;" class="spinner"></span>
 					<span class="rocket-generate-post-cpss-btn-txt">Generate Specific CPCSS</span>
 				</button>
 			</div>
 			<div class="components-panel__row cpcss_regenerate hidden">
-				<button id="rocket-delete-post-cpss" class="components-button is-link is-destructive" disabled="disabled">Revert back to the default CPCSS</button>
+				<button id="rocket-delete-post-cpss" class="button components-button is-secondary" disabled="disabled"><span>Revert back to the default CPCSS</span></button>
 			</div>',
 		],
 		'testShouldDisplayRegenerateTemplateOptionExcludedFromPost' => [
@@ -190,12 +190,12 @@ return [
 			</p>
 			<div class="components-panel__row cpcss_generate cpcss_regenerate">
 				<button id="rocket-generate-post-cpss" class="button components-button is-secondary" disabled="disabled">
-					<span class="spinner"></span>
+					<span style="display: none;" class="spinner"></span>
 					<span class="rocket-generate-post-cpss-btn-txt">Regenerate specific CPCSS</span>
 				</button>
 			</div>
 			<div class="components-panel__row cpcss_regenerate ">
-				<button id="rocket-delete-post-cpss" class="components-button is-link is-destructive" disabled="disabled">Revert back to the default CPCSS</button>
+				<button id="rocket-delete-post-cpss" class="button components-button is-secondary" disabled="disabled"><span>Revert back to the default CPCSS</span></button>
 			</div>',
 		],
 		'testShouldDisplayGenerateTemplate'               => [
@@ -218,12 +218,12 @@ return [
 			</p>
 			<div class="components-panel__row cpcss_generate cpcss_regenerate">
 				<button id="rocket-generate-post-cpss" class="button components-button is-secondary" >
-					<span class="spinner"></span>
+					<span style="display: none;" class="spinner"></span>
 					<span class="rocket-generate-post-cpss-btn-txt">Generate Specific CPCSS</span>
 				</button>
 			</div>
 			<div class="components-panel__row cpcss_regenerate hidden">
-				<button id="rocket-delete-post-cpss" class="components-button is-link is-destructive" >Revert back to the default CPCSS</button>
+				<button id="rocket-delete-post-cpss" class="button components-button is-secondary" ><span>Revert back to the default CPCSS</span></button>
 			</div>',
 		],
 		'testShouldDisplayRegenerateTemplate'             => [
@@ -246,12 +246,12 @@ return [
 			</p>
 			<div class="components-panel__row cpcss_generate cpcss_regenerate">
 				<button id="rocket-generate-post-cpss" class="button components-button is-secondary" >
-					<span class="spinner"></span>
+					<span style="display: none;" class="spinner"></span>
 					<span class="rocket-generate-post-cpss-btn-txt">Regenerate specific CPCSS</span>
 				</button>
 			</div>
 			<div class="components-panel__row cpcss_regenerate ">
-				<button id="rocket-delete-post-cpss" class="components-button is-link is-destructive" >Revert back to the default CPCSS</button>
+				<button id="rocket-delete-post-cpss" class="button components-button is-secondary" ><span>Revert back to the default CPCSS</span></button>
 			</div>',
 		],
 	],
