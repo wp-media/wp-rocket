@@ -609,20 +609,14 @@ class Settings {
 		}
 
 		$parsed_url = wp_parse_url( $file );
+		$hosts      = $this->get_hosts();
 
-		if ( ! empty( $parsed_url['host'] ) && ! in_array( $parsed_url['host'], $this->get_hosts(), true ) ) {
+		if ( ! empty( $parsed_url['host'] ) && ! isset( $hosts[ $parsed_url['host'] ] ) ) {
 			return false;
 		}
 
-		$file = '/' . trim( $parsed_url['path'], '/' );
-
-		if ( ! empty( $parsed_url['query'] ) ) {
-			$file .= '?' . $parsed_url['query'];
-		}
-
-		if ( ! empty( $parsed_url['fragment'] ) ) {
-			$file .= '#' . $parsed_url['fragment'];
-		}
+		$file = str_replace( [ 'http:', 'https:' ], '', $file );
+		$file = str_replace( $hosts, '', $file );
 
 		$ext = strtolower( pathinfo( $parsed_url['path'], PATHINFO_EXTENSION ) );
 
@@ -650,13 +644,15 @@ class Settings {
 		$urls   = array_map( 'rocket_add_url_protocol', $urls );
 
 		foreach ( $urls as $url ) {
-			$host = wp_parse_url( $url, PHP_URL_HOST );
+			$parsed_url = get_rocket_parse_url( $url );
 
-			if ( empty( $host ) ) {
+			if ( empty( $parsed_url['host'] ) ) {
 				continue;
 			}
 
-			$this->hosts[] = $host;
+			$parsed_url['path'] = ( '/' === $parsed_url['path'] ) ? '' : $parsed_url['path'];
+
+			$this->hosts[ $parsed_url['host'] ] = "//{$parsed_url['host']}{$parsed_url['path']}";
 		}
 
 		if ( empty( $this->hosts ) ) {
