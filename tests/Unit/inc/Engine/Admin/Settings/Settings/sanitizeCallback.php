@@ -90,7 +90,7 @@ class Test_SanitizeCallback extends TestCase {
 			return parse_url( $url, $component );
 		} );
 		Functions\expect( 'home_url' )
-			->andReturn( 'http://example.org/' );
+			->andReturn( 'http://example.org' );
 
 		$output = $this->settings->sanitize_callback( $input );
 
