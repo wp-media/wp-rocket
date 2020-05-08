@@ -17,7 +17,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group  AdminOnly
  */
 class Test_DisplayRocketcdnCta extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/classes/subscriber/CDN/RocketCDN/NoticesSubscriber/displayRocketcdnCta.php';
+	protected $path_to_test_data = '/inc/Engine/CDN/RocketCDN/NoticesSubscriber/displayRocketcdnCta.php';
 
 	public function setUp() {
 		parent::setUp();
