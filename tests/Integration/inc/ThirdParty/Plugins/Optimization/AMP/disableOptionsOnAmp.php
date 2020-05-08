@@ -11,7 +11,7 @@ use AMP_Options_Manager;
  * @group WithAmp
  */
 class Test_DisableOptionsOnAmp extends TestCase {
-	protected $path_to_test_data = 'disableOptionsOnAmp.php';
+	protected $path_to_test_data = 'disableOptionsOnAmpIntegration.php';
 	private static $user_id      = 0;
 	private static $post_id;
 
