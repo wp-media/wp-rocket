@@ -151,6 +151,8 @@ class Subscriber implements Subscriber_Interface {
 			return false;
 		}
 
+		$this->busting_factory->type( 'gtm' )->delete();
+
 		return $this->busting_factory->type( 'ga' )->delete();
 	}
 
