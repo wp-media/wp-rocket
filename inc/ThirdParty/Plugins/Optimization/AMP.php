@@ -103,7 +103,10 @@ class AMP implements Subscriber_Interface {
 		unset( $wp_filter['rocket_buffer'] );
 
 		$options = get_option( self::AMP_OPTIONS, [] );
-		if ( in_array( $options['theme_support'], [ 'transitional', 'reader' ], true ) ) {
+
+		if ( ! empty( $options['theme_support'] )
+			&&
+			in_array( $options['theme_support'], [ 'transitional', 'reader' ], true ) ) {
 			add_filter( 'rocket_buffer', [ $this, 'rewrite_cdn' ] );
 		}
 

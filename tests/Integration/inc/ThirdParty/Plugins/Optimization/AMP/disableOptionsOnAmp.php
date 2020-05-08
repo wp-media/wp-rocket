@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\Optimization\AMP;
 
 use AMP_Theme_Support;
+use AMP_Options_Manager;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Plugins\Optimization\AMP::disable_options_on_amp
@@ -10,7 +11,8 @@ use AMP_Theme_Support;
  * @group WithAmp
  */
 class Test_DisableOptionsOnAmp extends TestCase {
-	private static $user_id = 0;
+	protected $path_to_test_data = 'disableOptionsOnAmp.php';
+	private static $user_id      = 0;
 	private static $post_id;
 
 	public static function wpSetUpBeforeClass( $factory ) {
@@ -21,26 +23,42 @@ class Test_DisableOptionsOnAmp extends TestCase {
 		setup_postdata( self::$post_id );
 	}
 
-	public function testShouldBailoutIfIsNotAmpEndpoint() {
-		$this->assertNotFalse( has_filter( 'wp_resource_hints', 'rocket_dns_prefetch') );
+	/**
+	 * @dataProvider ampDataProvider
+	 */
+	public function testShouldDoExpected( $config, $expected ) {
+		if ( $expected[ 'bailout' ] ) {
+			$this->assertNotFalse( has_filter( 'wp_resource_hints', 'rocket_dns_prefetch') );
+		} else {
+			global $wp_filter;
+
+			add_theme_support( AMP_Theme_Support::SLUG );
+			$this->assertNotFalse( has_filter( 'wp_resource_hints', 'rocket_dns_prefetch') );
+			$this->assertFalse( has_filter( 'do_rocket_lazyload', '__return_false') );
+			$this->assertArrayHasKey( 'rocket_buffer', $wp_filter );
+
+			if ( ! is_null( $config[ 'amp_options' ] ) ) {
+				$this->setSettings( 'theme_support', $config[ 'amp_options' ]['theme_support'] );
+				$options = get_option( AMP_Options_Manager::OPTION_NAME );
+				$this->assertEquals( $config[ 'amp_options' ]['theme_support'], $options['theme_support'] );
+			} else {
+				delete_option( AMP_Options_Manager::OPTION_NAME );
+			}
+		}
 
 		do_action( 'wp' );
 
-		$this->assertNotFalse( has_filter( 'wp_resource_hints', 'rocket_dns_prefetch') );
-	}
+		if ( $expected[ 'bailout' ] ) {
+			$this->assertNotFalse( has_filter( 'wp_resource_hints', 'rocket_dns_prefetch') );
+		} else {
+			$this->assertFalse( has_filter( 'wp_resource_hints', 'rocket_dns_prefetch') );
+			$this->assertNotFalse( has_filter( 'do_rocket_lazyload', '__return_false') );
 
-	public function testShouldDisableOptionForAmpExceptImageSrcSet() {
-		global $wp_filter;
-
-		add_theme_support( AMP_Theme_Support::SLUG );
-		$this->assertNotFalse( has_filter( 'wp_resource_hints', 'rocket_dns_prefetch') );
-		$this->assertFalse( has_filter( 'do_rocket_lazyload', '__return_false') );
-		$this->assertArrayHasKey( 'rocket_buffer', $wp_filter );
-
-		do_action( 'wp' );
-
-		$this->assertFalse( has_filter( 'wp_resource_hints', 'rocket_dns_prefetch') );
-		$this->assertNotFalse( has_filter( 'do_rocket_lazyload', '__return_false') );
-		$this->assertArrayNotHasKey( 'rocket_buffer', $wp_filter );
+			if ( in_array( $config[ 'amp_options' ][ 'theme_support' ], [ 'transitional', 'reader' ], true ) ) {
+				$this->assertArrayHasKey( 'rocket_buffer', $wp_filter );
+			} else {
+				$this->assertArrayNotHasKey( 'rocket_buffer', $wp_filter );
+			}
+		}
 	}
 }
