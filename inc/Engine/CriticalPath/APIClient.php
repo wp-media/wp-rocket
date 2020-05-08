@@ -37,30 +37,31 @@ class APIClient {
 			]
 		);
 
-		return $this->prepare_response_array( $post_url, $response );
+		return $this->prepare_generation_response( $post_url, $response );
 	}
 
 	/**
-	 * Prepare the response array structure.
-	 *
-	 * @since 3.6
+	 * Prepare the response to be returned.
 	 *
 	 * @param string         $post_url Url for the post to be checked.
 	 * @param array|WP_Error $response The response or WP_Error on failure.
-	 * @return array
+	 * @return array|WP_Error
+	 * @since 3.6
 	 */
-	private function prepare_response_array( $post_url, $response ) {
-		return [
-			'success' => $this->get_response_success( $response ),
-			'code'    => $this->get_response_code( $response ),
-			'message' => $this->get_response_message( $response, $post_url ),
-			'status'  => $this->get_response_status( $response ),
-			'data'    => $this->get_response_data( $response ),
-		];
+	private function prepare_generation_response( $post_url, $response ) {
+		$succeeded = $this->get_response_success( $response );
+		if ( $succeeded ) {
+			return $this->get_response_data( $response );
+		}else {
+			return new WP_Error(
+				$this->get_response_code( $response ),
+				$this->get_response_message( $response, $post_url )
+			);
+		}
 	}
 
 	/**
-	 * Check the status of response.
+	 * Get the status of response.
 	 *
 	 * @since 3.6
 	 *
@@ -69,7 +70,11 @@ class APIClient {
 	 */
 	private function get_response_success( $response ) {
 		$response_code = $this->get_response_status( $response );
-		return ( 200 === $response_code );
+		$response_data = $this->get_response_data( $response );
+		return (
+			200 === $response_code &&
+			( isset( $response_data->status ) && 200 === $response_data->status )
+		);
 	}
 
 	/**
@@ -90,10 +95,10 @@ class APIClient {
 	 * @since 3.6
 	 *
 	 * @param array|WP_Error $response The response or WP_Error on failure.
-	 * @param string         $post_url Url for the post to be checked.
+	 * @param string         $item_url Url for the web page to be checked.
 	 * @return string
 	 */
-	private function get_response_message( $response, $post_url ) {
+	private function get_response_message( $response, $item_url ) {
 		$response_code = $this->get_response_status( $response );
 		$response_data = $this->get_response_data( $response );
 		$message       = '';
@@ -102,16 +107,21 @@ class APIClient {
 			case 200:
 				if ( ! isset( $response_data->data->id ) ) {
 					$message .= sprintf(
-					// translators: %s = post URL.
+					// translators: %s = item URL.
 						__( 'Critical CSS for %1$s not generated. Error: The API returned an empty response.', 'rocket' ),
-						$post_url
+						$item_url
 					);
+				}
+
+				if ( isset( $response_data->data->state ) && 'complete' !== $response_data->data->state ) {
+					// translators: %s = item URL.
+					$message .= sprintf( __( 'Critical CSS for %s in progress.', 'rocket' ), $item_url );
 				}
 				break;
 			case 400:
 			case 440:
-				// translators: %s = post URL.
-				$message .= sprintf( __( 'Critical CSS for %1$s not generated.', 'rocket' ), $post_url );
+				// translators: %s = item URL.
+				$message .= sprintf( __( 'Critical CSS for %1$s not generated.', 'rocket' ), $item_url );
 				if ( isset( $response_data->message ) ) {
 					// translators: %1$s = error message.
 					$message .= ' ' . sprintf( __( 'Error: %1$s', 'rocket' ), $response_data->message );
@@ -121,7 +131,7 @@ class APIClient {
 				$message .= sprintf(
 				// translators: %s = post URL.
 					__( 'Critical CSS for %1$s not generated. Error: The API returned an invalid response code.', 'rocket' ),
-					$post_url
+					$item_url
 				);
 				break;
 		}
@@ -150,13 +160,62 @@ class APIClient {
 	 * @return string response code.
 	 */
 	private function get_response_code( $response ) {
-		$response_success = $this->get_response_success( $response );
-		$code             = '';
-		if ( ! $response_success ) {
-			$code = 'cpcss_generation_failed';
-		}
-		return $code;
+		// Todo: we can return code based on the response status number, for example 404 not_found.
+		return 'cpcss_generation_failed';
 	}
 
+	/**
+	 * Get job details by calling API with job ID.
+	 *
+	 * @since 3.6
+	 *
+	 * @param string $job_id ID for the job to get details.
+	 * @param string $item_url URL for item to be used in error messages.
+	 * @return mixed|WP_Error Details for job.
+	 */
+	public function get_job_details( $job_id, $item_url ) {
+		$response = wp_remote_get(
+			self::API_URL . "{$job_id}/"
+		);
+
+		return $this->prepare_job_details_response( $response, $item_url );
+	}
+
+	/**
+	 * Get status of Job details response.
+	 *
+	 * @since 3.6
+	 *
+	 * @param array|WP_Error $response The response or WP_Error on failure.
+	 * @return bool
+	 */
+	private function get_job_details_success( $response ) {
+		$response_data = $this->get_response_data( $response );
+		return (
+			$this->get_response_success( $response ) &&
+			isset( $response_data->data->state ) && 'complete' !== $response_data->data->state
+		);
+	}
+
+	/**
+	 * Prepares Job details response to be returned.
+	 *
+	 * @since 3.6
+	 *
+	 * @param array|WP_Error $response The response or WP_Error on failure.
+	 * @param string         $item_url URL for item to be used in error messages.
+	 * @return mixed|WP_Error
+	 */
+	private function prepare_job_details_response( $response, $item_url ) {
+		$succeeded = $this->get_job_details_success( $response );
+		if ( $succeeded ) {
+			return $this->get_response_data( $response );
+		}else {
+			return new WP_Error(
+				$this->get_response_code( $response ),
+				$this->get_response_message( $response, $item_url )
+			);
+		}
+	}
 
 }
