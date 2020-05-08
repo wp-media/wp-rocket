@@ -109,7 +109,7 @@ const cpcssNotice = ( msg, type ) => {
 	/* Add notice class */
 	const cpcssNotice     = document.getElementById( 'cpcss_response_notice' );
 	cpcssNotice.innerHTML = '';
-	cpcssNotice.classList.remove( 'notice', 'notice-error', 'notice-success' );
+	cpcssNotice.classList.remove( 'hidden', 'notice', 'notice-error', 'notice-success' );
 	cpcssNotice.classList.add( 'notice', 'notice-' + type );
 
 	/* create paragraph element to hold message */

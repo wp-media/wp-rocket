@@ -38,7 +38,7 @@ $rocket_cpcss_exists = empty( $data['cpcss_exists'] );
 </p>
 <div class="components-panel__row cpcss_generate cpcss_regenerate">
 	<button id="rocket-generate-post-cpss" class="button components-button is-secondary" <?php disabled( $data['disabled'] ); ?>>
-		<span class="spinner"></span>
+		<span style="display: none;" class="spinner"></span>
 		<span class="rocket-generate-post-cpss-btn-txt">
 			<?php
 			if ( ! $rocket_cpcss_exists ) {
@@ -51,7 +51,9 @@ $rocket_cpcss_exists = empty( $data['cpcss_exists'] );
 	</button>
 </div>
 <div class="components-panel__row cpcss_regenerate <?php echo $rocket_cpcss_exists ? 'hidden' : ''; ?>">
-	<button id="rocket-delete-post-cpss" class="components-button is-link is-destructive" <?php disabled( $data['disabled'] ); ?>>
-		<?php esc_html_e( 'Revert back to the default CPCSS', 'rocket' ); ?>
+	<button id="rocket-delete-post-cpss" class="button components-button is-secondary" <?php disabled( $data['disabled'] ); ?>>
+		<span>
+			<?php esc_html_e( 'Revert back to the default CPCSS', 'rocket' ); ?>
+		</span>
 	</button>
 </div>
