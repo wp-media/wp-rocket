@@ -102,6 +102,11 @@ class AMP implements Subscriber_Interface {
 		add_filter( 'do_rocket_lazyload', '__return_false' );
 		unset( $wp_filter['rocket_buffer'] );
 
+		$options = get_option( self::AMP_OPTIONS, [] );
+		if ( in_array( $options['theme_support'], [ 'transitional', 'reader' ], true ) ) {
+			add_filter( 'rocket_buffer', [ $this, 'rewrite_cdn' ] );
+		}
+
 		if (
 			(bool) $this->options->get( 'do_cloudflare', 0 )
 			&&
@@ -114,5 +119,21 @@ class AMP implements Subscriber_Interface {
 		) {
 			remove_filter( 'wp_calculate_image_srcset', 'rocket_protocol_rewrite_srcset', PHP_INT_MAX );
 		}
+	}
+
+	/**
+	 * Rewrites URLs to the CDN URLs if allowed.
+	 * Rewrites URLs in srcset attributes if allowed.
+	 *
+	 * @since 3.5.5
+	 *
+	 * @param  string $html HTML content.
+	 * @return string $html HTML content.
+	 */
+	public static function rewrite_cdn( $html ) {
+		$container      = apply_filters( 'rocket_container', '' );
+		$cdn_subscriber = $container->get( 'cdn_subscriber' );
+		$html           = $cdn_subscriber->rewrite( $html );
+		return $cdn_subscriber->rewrite_srcset( $html );
 	}
 }

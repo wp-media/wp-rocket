@@ -25,107 +25,77 @@ class Test_DisableOptionsOnAmp extends TestCase {
 		$this->amp     = new AMP( $this->options );
 	}
 
-	public function testShouldBailoutIfIsNotAmpEndpoint() {
+	/**
+	 * @dataProvider providerTestData
+	 */
+	public function testShouldDoExpected( $config, $expected ) {
 		Functions\expect( 'is_amp_endpoint' )
 			->once()
-			->andReturn( false );
+			->andReturn( $config[ 'is_amp_endpoint' ]  );
 
-		Functions\expect( 'remove_filter' )->never();
-		$this->options->shouldReceive( 'get' )->never();
+		if ( $expected[ 'bailout' ] ) {
+			Functions\expect( 'remove_filter' )->never();
+			$this->options->shouldReceive( 'get' )->never();
+		} else {
+			global $wp_filter;
+			add_filter( 'wp_resource_hints', 'rocket_dns_prefetch', 10, 2 );
+			$wp_filter = [ 'rocket_buffer' => '__return_true' ];
+			add_filter( 'wp_calculate_image_srcset', 'rocket_protocol_rewrite_srcset', PHP_INT_MAX );
 
-		$this->amp->disable_options_on_amp();
-	}
+			// Check the hooks before invoking the method.
+			$this->assertTrue( has_filter( 'wp_resource_hints', 'rocket_dns_prefetch', 10, 2 ) );
+			$this->assertFalse( has_filter( 'do_rocket_lazyload', '__return_false' ) );
+			$this->assertTrue( has_filter( 'wp_calculate_image_srcset', 'rocket_protocol_rewrite_srcset', PHP_INT_MAX ) );
+			$this->assertFalse( has_filter( 'rocket_buffer', [ $this->amp, 'rewrite_cdn' ] ) );
 
-	public function testShouldDisableOptionForAmpExceptImageSrcSet() {
-		global $wp_filter;
-		add_filter( 'wp_resource_hints', 'rocket_dns_prefetch', 10, 2 );
-		$wp_filter = [ 'rocket_buffer' => '__return_true' ];
-		add_filter( 'wp_calculate_image_srcset', 'rocket_protocol_rewrite_srcset', PHP_INT_MAX );
+			Functions\expect( 'get_option' )
+				->once()
+				->with( 'amp-options', [] )
+				->andReturn( $config[ 'amp_options' ]  );
 
-		// Check the hooks before invoking the method.
-		$this->assertTrue( has_filter( 'wp_resource_hints', 'rocket_dns_prefetch', 10, 2 ) );
-		$this->assertFalse( has_filter( 'do_rocket_lazyload', '__return_false' ) );
-		$this->assertTrue( has_filter( 'wp_calculate_image_srcset', 'rocket_protocol_rewrite_srcset', PHP_INT_MAX ) );
-
-		Functions\expect( 'is_amp_endpoint' )->once()->andReturn( true );
-		$this->options->shouldReceive( 'get' )
+			$this->options->shouldReceive( 'get' )
 		              ->once()
 		              ->with( 'do_cloudflare', 0 )
-		              ->andReturn( 0 );
-		$this->options->shouldReceive( 'get' )->with( 'cloudflare_protocol_rewrite', 0 )->never();
-		Filters\expectApplied( 'do_rocket_protocol_rewrite' )->with( false )->never();
+					  ->andReturn( $config[ 'do_cloudflare' ] );
 
-		// Run it.
-		$this->amp->disable_options_on_amp();
-
-		// Check the hooks after invoking the method.
-		$this->assertFalse( has_filter( 'wp_resource_hints', 'rocket_dns_prefetch', 10, 2 ) );
-		$this->assertTrue( has_filter( 'do_rocket_lazyload', '__return_false' ) );
-		$this->assertEmpty( $wp_filter );
-		$this->assertTrue( has_filter( 'wp_calculate_image_srcset', 'rocket_protocol_rewrite_srcset', PHP_INT_MAX ) );
-	}
-
-	public function testShouldDisableOptionForAmpWhenCloudflareEnabled() {
-		global $wp_filter;
-		add_filter( 'wp_resource_hints', 'rocket_dns_prefetch', 10, 2 );
-		$wp_filter = [ 'rocket_buffer' => '__return_true' ];
-		add_filter( 'wp_calculate_image_srcset', 'rocket_protocol_rewrite_srcset', PHP_INT_MAX );
-
-		// Check the hooks before invoking the method.
-		$this->assertTrue( has_filter( 'wp_resource_hints', 'rocket_dns_prefetch', 10, 2 ) );
-		$this->assertFalse( has_filter( 'do_rocket_lazyload', '__return_false' ) );
-		$this->assertTrue( has_filter( 'wp_calculate_image_srcset', 'rocket_protocol_rewrite_srcset', PHP_INT_MAX ) );
-
-		Functions\expect( 'is_amp_endpoint' )->once()->andReturn( true );
-		$this->options->shouldReceive( 'get' )
-		              ->once()
-		              ->with( 'do_cloudflare', 0 )
-		              ->andReturn( 1 );
-		$this->options->shouldReceive( 'get' )
+			if ( -1 === $config[ 'cloudflare_protocol_rewrite' ] ) {
+				$this->options->shouldReceive( 'get' )->with( 'cloudflare_protocol_rewrite', 0 )->never();
+			} else {
+				$this->options->shouldReceive( 'get' )
 		              ->once()
 		              ->with( 'cloudflare_protocol_rewrite', 0 )
-		              ->andReturn( 1 );
-		Filters\expectApplied( 'do_rocket_protocol_rewrite' )->with( false )->never();
+		              ->andReturn( $config[ 'cloudflare_protocol_rewrite' ] );
+			}
+			if ( -1 === $config[ 'do_rocket_protocol_rewrite' ] ) {
+				Filters\expectApplied( 'do_rocket_protocol_rewrite' )->with( false )->never();
+			} else {
+				Filters\expectApplied( 'do_rocket_protocol_rewrite' )->once()->with( false )->andReturn( true );
+			}
+		}
 
-		// Run it.
 		$this->amp->disable_options_on_amp();
 
-		// Check the hooks after invoking the method.
-		$this->assertFalse( has_filter( 'wp_resource_hints', 'rocket_dns_prefetch', 10, 2 ) );
-		$this->assertTrue( has_filter( 'do_rocket_lazyload', '__return_false' ) );
-		$this->assertEmpty( $wp_filter );
-		$this->assertFalse( has_filter( 'wp_calculate_image_srcset', 'rocket_protocol_rewrite_srcset', PHP_INT_MAX ) );
+		if ( ! $expected[ 'bailout' ] ) {
+			// Check the hooks after invoking the method.
+			$this->assertFalse( has_filter( 'wp_resource_hints', 'rocket_dns_prefetch', 10, 2 ) );
+			$this->assertTrue( has_filter( 'do_rocket_lazyload', '__return_false' ) );
+			$this->assertEmpty( $wp_filter );
+
+			if ( $expected[ 'remove_filter' ] ) {
+				$this->assertFalse( has_filter( 'wp_calculate_image_srcset', 'rocket_protocol_rewrite_srcset', PHP_INT_MAX ) );
+			} else {
+				$this->assertTrue( has_filter( 'wp_calculate_image_srcset', 'rocket_protocol_rewrite_srcset', PHP_INT_MAX ) );
+			}
+
+			if ( in_array( $config[ 'amp_options' ][ 'theme_support' ], [ 'transitional', 'reader' ], true ) ) {
+				$this->assertTrue( has_filter( 'rocket_buffer', [ $this->amp, 'rewrite_cdn' ] ) );
+			} else {
+				$this->assertFalse( has_filter( 'rocket_buffer', [ $this->amp, 'rewrite_cdn' ] ) );
+			}
+		}
 	}
 
-	public function testShouldDisableOptionForAmpWhenCloudflareEnabledAndFilterProtocolRewrite() {
-		global $wp_filter;
-		add_filter( 'wp_resource_hints', 'rocket_dns_prefetch', 10, 2 );
-		$wp_filter = [ 'rocket_buffer' => '__return_true' ];
-		add_filter( 'wp_calculate_image_srcset', 'rocket_protocol_rewrite_srcset', PHP_INT_MAX );
-
-		// Check the hooks before invoking the method.
-		$this->assertTrue( has_filter( 'wp_resource_hints', 'rocket_dns_prefetch', 10, 2 ) );
-		$this->assertFalse( has_filter( 'do_rocket_lazyload', '__return_false' ) );
-		$this->assertTrue( has_filter( 'wp_calculate_image_srcset', 'rocket_protocol_rewrite_srcset', PHP_INT_MAX ) );
-
-		Functions\expect( 'is_amp_endpoint' )->once()->andReturn( true );
-		$this->options->shouldReceive( 'get' )
-		              ->once()
-		              ->with( 'do_cloudflare', 0 )
-		              ->andReturn( 1 );
-		$this->options->shouldReceive( 'get' )
-		              ->once()
-		              ->with( 'cloudflare_protocol_rewrite', 0 )
-		              ->andReturn( 0 );
-		Filters\expectApplied( 'do_rocket_protocol_rewrite' )->once()->with( false )->andReturn( true );
-
-		// Run it.
-		$this->amp->disable_options_on_amp();
-
-		// Check the hooks after invoking the method.
-		$this->assertFalse( has_filter( 'wp_resource_hints', 'rocket_dns_prefetch', 10, 2 ) );
-		$this->assertTrue( has_filter( 'do_rocket_lazyload', '__return_false' ) );
-		$this->assertEmpty( $wp_filter );
-		$this->assertFalse( has_filter( 'wp_calculate_image_srcset', 'rocket_protocol_rewrite_srcset', PHP_INT_MAX ) );
+	public function providerTestData() {
+		return $this->getTestData( __DIR__, 'disableOptionsOnAmp' );
 	}
 }
