@@ -6,6 +6,7 @@ use \Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Busting\Busting_Factory;
 use WP_Rocket\Busting\Google_Analytics;
+use WP_Rocket\Busting\Google_Tag_Manager;
 use WP_Rocket\Addon\GoogleTracking\Subscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
 
@@ -40,9 +41,26 @@ class Test_DeleteTrackingCache extends TestCase {
 		if ( ! $shouldDelete ) {
 			$factory->shouldReceive( 'type' )
 			        ->never()
+					->with( 'gtm' );
+
+			$factory->shouldReceive( 'type' )
+			        ->never()
 			        ->with( 'ga' );
 			return $factory;
 		}
+
+		$factory->shouldReceive( 'type' )
+		        ->once()
+		        ->with( 'gtm' )
+		        ->andReturnUsing(
+					function() {
+						$mock = Mockery::mock( Google_Tag_Manager::class );
+						$mock->shouldReceive( 'delete' )
+						     ->once()
+						     ->andReturn( true );
+						return $mock;
+					}
+				);
 
 		$factory->shouldReceive( 'type' )
 		        ->once()

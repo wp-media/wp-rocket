@@ -13,5 +13,5 @@ class Test_DeleteTrackingCache extends DeleteTrackingCacheTestCase {
 	protected $path_to_test_data = '/inc/Addon/GoogleTracking/Subscriber/deleteTrackingCache.php';
 	protected $option_name       = 'google_analytics_cache';
 	protected $subscriber_name   = 'google_tracking';
-	protected $factory_types     = [ 'ga' ];
+	protected $factory_types     = [ 'gtm', 'ga' ];
 }
