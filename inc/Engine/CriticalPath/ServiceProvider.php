@@ -47,7 +47,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		// REST CPCSS START.
 		$this->getContainer()->share( 'rest_cpcss_api_client', 'WP_Rocket\Engine\CriticalPath\APIClient' );
 		$this->getContainer()->share( 'rest_cpcss_data_manager', 'WP_Rocket\Engine\CriticalPath\DataManager' )
-			->withArgument( $this->getContainer()->get( 'rest_cpcss_api_client' ) );
+			->withArgument( $this->getContainer()->get( 'rest_cpcss_api_client' ) )
+			->withArgument( $critical_css_path );
 		$this->getContainer()->share( 'rest_cpcss_wp_post', 'WP_Rocket\Engine\CriticalPath\RESTWPPost' )
 			->withArgument( $this->getContainer()->get( 'rest_cpcss_data_manager' ) );
 		$this->getContainer()->share( 'rest_cpcss_subscriber', 'WP_Rocket\Engine\CriticalPath\RESTCSSSubscriber' )
