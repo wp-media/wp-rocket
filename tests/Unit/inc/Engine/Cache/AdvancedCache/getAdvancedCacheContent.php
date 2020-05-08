@@ -2,8 +2,6 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Cache\AdvancedCache;
 
-use Mockery;
-use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 use WP_Rocket\Engine\Cache\AdvancedCache;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
@@ -17,6 +15,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
  */
 class Test_GetAdvancedCacheContent extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/Cache/AdvancedCache/getAdvancedCacheContent.php';
+	private $advanced_cache;
 
 	public function setUp() {
 		parent::setUp();
