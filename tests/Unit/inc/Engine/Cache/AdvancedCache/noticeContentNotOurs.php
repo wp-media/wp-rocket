@@ -7,16 +7,15 @@ use WP_Rocket\Engine\Cache\AdvancedCache;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers WP_Rocket\Engine\Cache\AdvancedCache::notice_permissions
+ * @covers WP_Rocket\Engine\Cache\AdvancedCache::notice_content_not_ours
  *
  * @uses   ::rocket_get_constant
  * @uses   ::rocket_notice_html
- * @uses   ::rocket_direct_filesystem
  *
  * @group  AdvancedCache
  */
-class Test_NoticePermissions extends FilesystemTestCase {
-    protected $path_to_test_data = '/inc/Engine/Cache/AdvancedCache/noticePermissions.php';
+class Test_NoticeContentNotOurs extends FilesystemTestCase {
+    protected $path_to_test_data = '/inc/Engine/Cache/AdvancedCache/noticeContentNotOurs.php';
     private $advanced_cache;
 
 	public function setUp() {
@@ -35,7 +34,8 @@ class Test_NoticePermissions extends FilesystemTestCase {
     }
 
     public function tearDown() {
-        $this->filesystem->chmod( 'wp-content/advanced-cache.php', 0644 );
+        unset( $GLOBALS['pagenow'] );
+        unset( $_GET['activate'] );
 
         parent::tearDown();
     }
@@ -43,7 +43,7 @@ class Test_NoticePermissions extends FilesystemTestCase {
     private function getActualHtml() {
         ob_start();
 
-        $this->advanced_cache->notice_permissions();
+        $this->advanced_cache->notice_content_not_ours();
         return $this->format_the_html( ob_get_clean() );
     }
 
@@ -51,22 +51,18 @@ class Test_NoticePermissions extends FilesystemTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldEchoNotice( $config, $expected ) {
+        $GLOBALS['pagenow'] = $config['pagenow'];
+        $_GET['activate']   = $config['activate'];
         Functions\when( 'current_user_can' )->justReturn( $config['cap'] );
         Functions\when( 'rocket_valid_key' )->justReturn( $config['valid_key'] );
-
-        if ( ! $config['writable'] ) {
-            $this->filesystem->chmod( 'wp-content/advanced-cache.php', 0444 );
-        }
 
         Functions\expect( 'rocket_get_constant' )
             ->atMost()
             ->times( 1 )
             ->with( 'WP_ROCKET_ADVANCED_CACHE' )
             ->andReturn( $config['constant'] );
-        Functions\when( 'get_current_user_id' )->justReturn( 1 );
-        Functions\when( 'get_user_meta' )->justReturn( $config['boxes'] );
+
         Functions\when( 'rocket_notice_writing_permissions' )->justReturn( $config['message'] );
-        Functions\when( 'is_rocket_generate_caching_mobile_files' )->justReturn( false );
         Functions\when( 'rocket_notice_html' )->alias( function() use ( $expected ) {
             echo $expected;
         } );
