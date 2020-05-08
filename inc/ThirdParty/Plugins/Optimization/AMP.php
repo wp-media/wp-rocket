@@ -8,7 +8,6 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * Subscriber for compatibility with AMP
  *
  * @since  3.5.2
- * @author Soponar Cristina
  */
 class AMP implements Subscriber_Interface {
 	const QUERY       = 'amp';
@@ -34,8 +33,6 @@ class AMP implements Subscriber_Interface {
 	 * Subscribed events for AMP.
 	 *
 	 * @since  3.5.2
-	 * @author Soponar Cristina
-	 * @inheritDoc
 	 */
 	public static function get_subscribed_events() {
 		$events = [
@@ -55,7 +52,6 @@ class AMP implements Subscriber_Interface {
 	 * Regenerate config file on plugin activation / deactivation.
 	 *
 	 * @since  3.5.2
-	 * @author Soponar Cristina
 	 */
 	public function generate_config_file() {
 		rocket_generate_config_file();
@@ -65,9 +61,8 @@ class AMP implements Subscriber_Interface {
 	 * Add compatibility with AMP query string by adding it as a cached query string.
 	 *
 	 * @since  3.5.2
-	 * @author Soponar Cristina
 	 *
-	 * @param array $value WP Rocket cache_query_strings value.
+	 * @param  array $value WP Rocket cache_query_strings value.
 	 * @return array
 	 */
 	public function is_amp_compatible_callback( $value ) {
@@ -89,7 +84,6 @@ class AMP implements Subscriber_Interface {
 	 * Removes Minification, DNS Prefetch, LazyLoad, Defer JS when on an AMP version of a post with the AMP for WordPress plugin from Auttomatic.
 	 *
 	 * @since  3.5.2
-	 * @author Soponar Cristina
 	 */
 	public function disable_options_on_amp() {
 		if ( ! is_amp_endpoint() ) {
@@ -131,7 +125,7 @@ class AMP implements Subscriber_Interface {
 	 * @since 3.5.5
 	 *
 	 * @param  string $html HTML content.
-	 * @return string $html HTML content.
+	 * @return string       HTML content.
 	 */
 	public static function rewrite_cdn( $html ) {
 		$container      = apply_filters( 'rocket_container', '' );
