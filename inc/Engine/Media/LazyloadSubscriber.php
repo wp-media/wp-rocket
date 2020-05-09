@@ -117,16 +117,25 @@ class LazyloadSubscriber implements Subscriber_Interface {
 			'polyfill' => $polyfill,
 		];
 
+		$this->add_inline_script();
+		$this->assets->insertLazyloadScript( $script_args );
+	}
+
+	/**
+	 * Adds the inline lazyload script
+	 *
+	 * @since 3.6
+	 *
+	 * @return void
+	 */
+	private function add_inline_script() {
 		$inline_script = $this->assets->getInlineLazyloadScript( $this->set_inline_script_args() );
 
 		if ( ! rocket_get_constant( 'SCRIPT_DEBUG' ) ) {
-			$minify = new JS( $inline_script );
-
-			$inline_script = $minify->minify();
+			$inline_script = $this->minify_script( $inline_script );
 		}
 
 		echo '<script>' . $inline_script . '</script>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
-		$this->assets->insertLazyloadScript( $script_args );
 	}
 
 	/**
@@ -184,6 +193,20 @@ class LazyloadSubscriber implements Subscriber_Interface {
 		 * @param array $inline_args Arguments used for the lazyload script options.
 		 */
 		return (array) apply_filters( 'rocket_lazyload_script_args', $inline_args );
+	}
+
+	/**
+	 * Minifies the inline script
+	 *
+	 * @since 3.6
+	 *
+	 * @param string $script Inline script to minify.
+	 * @return string
+	 */
+	private function minify_script( $script ) {
+		$minify = new JS( $script );
+
+		return $minify->minify();
 	}
 
 	/**
