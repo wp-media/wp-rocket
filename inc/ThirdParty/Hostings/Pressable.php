@@ -11,16 +11,16 @@ use WP_Rocket\Event_Management\Event_Manager_Aware_Subscriber_Interface;
  */
 class Pressable implements Subscriber_Interface {
 	/**
-	 * The WordPress Event Manager
+	 * Event Manager instance
 	 *
 	 * @var Event_Manager;
 	 */
 	protected $event_manager;
 
 	/**
-	 * {@inheritdoc}
+	 * Sets the event manager for the subscriber.
 	 *
-	 * @param Event_Manager $event_manager The WordPress Event Manager.
+	 * @param Event_Manager $event_manager Event Manager instance.
 	 */
 	public function set_event_manager( Event_Manager $event_manager ) {
 		$this->event_manager = $event_manager;
