@@ -34,7 +34,7 @@ class Pressable implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		if ( ! defined( 'IS_PRESSABLE' ) || ! IS_PRESSABLE ) {
+		if ( ! rocket_get_constant( 'IS_PRESSABLE' ) ) {
 			return [];
 		}
 
@@ -117,7 +117,7 @@ class Pressable implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function add_pressable_cdn_cname( $hosts ) {
-		if ( ! defined( 'WP_STACK_CDN_DOMAIN' ) || ! WP_STACK_CDN_DOMAIN ) {
+		if ( ! rocket_get_constant( 'WP_STACK_CDN_DOMAIN' ) ) {
 			return $hosts;
 		}
 
