@@ -11,13 +11,6 @@ use WP_Error;
 class DataManager {
 
 	/**
-	 * APIClient object.
-	 *
-	 * @var APIClient
-	 */
-	private $api_client;
-
-	/**
 	 * Base critical CSS path for posts.
 	 *
 	 * @var string
@@ -27,12 +20,10 @@ class DataManager {
 	/**
 	 * DataManager constructor, adjust the critical css path for posts.
 	 *
-	 * @param APIClient $api_client api_client to call API for cpcss endpoint.
 	 * @param string    $critical_css_path path for main critical css folder.
 	 */
-	public function __construct( APIClient $api_client, $critical_css_path ) {
+	public function __construct( $critical_css_path ) {
 		$this->critical_css_path = $critical_css_path . get_current_blog_id() . '/posts/';
-		$this->api_client        = $api_client;
 	}
 
 	/**
@@ -84,31 +75,6 @@ class DataManager {
 		}
 
 		return true;
-	}
-
-	/**
-	 * Wrapper for APIClient get_job_details.
-	 *
-	 * @since 3.6
-	 *
-	 * @param string $job_id ID for the job to get details.
-	 * @param string $item_url URL for item to be used in error messages.
-	 * @return mixed|WP_Error
-	 */
-	public function get_cpcss_job_details( $job_id, $item_url ) {
-		return $this->api_client->get_job_details( $job_id, $item_url );
-	}
-
-	/**
-	 * Wrapper for APIClient send_generation_request.
-	 *
-	 * @since 3.6
-	 *
-	 * @param string $item_url URL for item to be used in error messages.
-	 * @return array|WP_Error
-	 */
-	public function send_generation_request( $item_url ) {
-		return $this->api_client->send_generation_request( $item_url );
 	}
 
 	/**

@@ -33,14 +33,23 @@ abstract class RESTWP {
 	private $data_manager;
 
 	/**
+	 * Responsible for dealing with CPCSS APIs.
+	 *
+	 * @var APIClient api_client instance.
+	 */
+	private $api_client;
+
+	/**
 	 * RESTWP constructor.
 	 *
 	 * @since 3.6
 	 *
-	 * @param DataManager $data_manager datamanager instance, responsible for dealing with data/database.
+	 * @param DataManager $data_manager Data manager instance, responsible for dealing with data/database.
+	 * @param APIClient   $api_client API Client instance to deal with CPCSS APIs.
 	 */
-	public function __construct( DataManager $data_manager ) {
+	public function __construct( DataManager $data_manager, APIClient $api_client ) {
 		$this->data_manager = $data_manager;
+		$this->api_client   = $api_client;
 	}
 
 	/**
@@ -117,7 +126,7 @@ abstract class RESTWP {
 
 				if ( false === $cpcss_job_id ) {
 					// call send generation request from APIClient through DM for the first time.
-					$generated_job = $this->data_manager->send_generation_request( $item_url );
+					$generated_job = $this->api_client->send_generation_request( $item_url );
 
 					// validate generate response.
 					if ( is_wp_error( $generated_job ) ) {
@@ -161,7 +170,7 @@ abstract class RESTWP {
 	 * @return array|mixed|WP_Error
 	 */
 	private function get_cpcss_job_details( $job_id, $item_url ) {
-		$job_details = $this->data_manager->get_cpcss_job_details( $job_id, $item_url );
+		$job_details = $this->api_client->get_cpcss_job_details( $job_id, $item_url );
 
 		if ( is_wp_error( $job_details ) ) {
 			return $this->return_error( $job_details );

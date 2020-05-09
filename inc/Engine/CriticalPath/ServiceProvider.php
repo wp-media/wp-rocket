@@ -23,8 +23,10 @@ class ServiceProvider extends AbstractServiceProvider {
 		'critical_css_generation',
 		'critical_css',
 		'critical_css_subscriber',
-		'rest_delete_post_cpcss',
-		'rest_generate_post_cpcss',
+		'rest_cpcss_api_client',
+		'rest_cpcss_data_manager',
+		'rest_cpcss_wp_post',
+		'rest_cpcss_subscriber',
 		'critical_css_admin_subscriber',
 	];
 
@@ -47,10 +49,10 @@ class ServiceProvider extends AbstractServiceProvider {
 		// REST CPCSS START.
 		$this->getContainer()->share( 'rest_cpcss_api_client', 'WP_Rocket\Engine\CriticalPath\APIClient' );
 		$this->getContainer()->share( 'rest_cpcss_data_manager', 'WP_Rocket\Engine\CriticalPath\DataManager' )
-			->withArgument( $this->getContainer()->get( 'rest_cpcss_api_client' ) )
 			->withArgument( $critical_css_path );
 		$this->getContainer()->share( 'rest_cpcss_wp_post', 'WP_Rocket\Engine\CriticalPath\RESTWPPost' )
-			->withArgument( $this->getContainer()->get( 'rest_cpcss_data_manager' ) );
+			->withArgument( $this->getContainer()->get( 'rest_cpcss_data_manager' ) )
+			->withArgument( $this->getContainer()->get( 'rest_cpcss_api_client' ) );
 		$this->getContainer()->share( 'rest_cpcss_subscriber', 'WP_Rocket\Engine\CriticalPath\RESTCSSSubscriber' )
 			->withArgument( $this->getContainer()->get( 'rest_cpcss_wp_post' ) );
 		// REST CPCSS END.
