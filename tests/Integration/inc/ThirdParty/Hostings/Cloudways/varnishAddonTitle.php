@@ -11,11 +11,11 @@ use WPMedia\PHPUnit\Integration\TestCase;
  */
 class Test_VarnishAddonTitle extends TestCase {
 	public function testShouldDisplayVarnishTitleWithCloudways() {
-        $settings = [
+		$settings = [
 			'varnish_auto_purge' => [
 				'title' => '',
 			],
-        ];
+		];
 
 		$expected = [
 			'varnish_auto_purge' => [
