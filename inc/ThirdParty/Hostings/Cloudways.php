@@ -60,7 +60,7 @@ class Cloudways implements Subscriber_Interface {
 	 * @param array $settings Array of settings for Varnish.
 	 * @return array
 	 */
-	public function varnish_addon_title( $settings ) {
+	public function varnish_addon_title( array $settings ) {
 		$settings['varnish_auto_purge']['title'] = sprintf(
 			// Translators: %s = Hosting name.
 			__( 'Your site is hosted on %s, we have enabled Varnish auto-purge for compatibility.', 'rocket' ),
@@ -79,6 +79,10 @@ class Cloudways implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function varnish_ip( $varnish_ip ) {
+		if ( ! is_array( $varnish_ip ) ) {
+			$varnish_ip = (array) $varnish_ip;
+		}
+
 		$varnish_ip[] = '127.0.0.1:8080';
 
 		return $varnish_ip;
