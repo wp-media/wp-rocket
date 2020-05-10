@@ -10,17 +10,19 @@ use WPMedia\PHPUnit\Unit\TestCase;
  * @group ThirdParty
  */
 class Test_VarnishIP extends TestCase {
-	public function testShouldReturnCloudwaysVarnishIP() {
+	/**
+	 * @dataProvider providerTestData
+	 */
+	public function testShouldReturnCloudwaysVarnishIP( $varnish_ip, $expected ) {
 		$cloudways = new Cloudways();
-
-		$varnish_ip = [];
-		$expected   = [
-			'127.0.0.1:8080',
-		];
 
 		$this->assertSame(
 			$expected,
 			$cloudways->varnish_ip( $varnish_ip )
 		);
+	}
+
+	public function providerTestData() {
+		return $this->getTestData( __DIR__, 'varnishIP' );
 	}
 }

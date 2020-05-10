@@ -12,24 +12,19 @@ use WPMedia\PHPUnit\Unit\TestCase;
 class Test_VarnishAddonTitle extends TestCase {
 	protected static $mockCommonWpFunctionsInSetUp = true;
 
-	public function testShouldDisplayVarnishTitleWithCloudways() {
+	/**
+	 * @dataProvider providerTestData
+	 */
+	public function testShouldDisplayVarnishTitleWithCloudways( $settings, $expected ) {
 		$cloudways = new Cloudways();
-
-		$settings = [
-			'varnish_auto_purge' => [
-				'title' => '',
-			],
-		];
-
-		$expected = [
-			'varnish_auto_purge' => [
-				'title' => 'Your site is hosted on Cloudways, we have enabled Varnish auto-purge for compatibility.'
-			],
-		];
 
 		$this->assertSame(
 			$expected,
 			$cloudways->varnish_addon_title( $settings )
 		);
+	}
+
+	public function providerTestData() {
+		return $this->getTestData( __DIR__, 'varnishAddonTitle' );
 	}
 }
