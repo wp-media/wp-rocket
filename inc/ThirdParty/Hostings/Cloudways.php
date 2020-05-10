@@ -66,7 +66,7 @@ class Cloudways implements Subscriber_Interface {
 			__( 'Your site is hosted on %s, we have enabled Varnish auto-purge for compatibility.', 'rocket' ),
 			'Cloudways'
 		);
-	
+
 		return $settings;
 	}
 
