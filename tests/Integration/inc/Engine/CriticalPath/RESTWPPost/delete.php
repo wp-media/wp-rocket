@@ -1,17 +1,17 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\RESTDelete;
+namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\RESTWPPost;
 
 use WP_Site;
 use WP_Rocket\Tests\Integration\RESTVfsTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\RESTDelete::delete
+ * @covers \WP_Rocket\Engine\CriticalPath\RESTWPPost::delete
  * @group  CriticalPath
  * @group  vfs
  */
 class Test_Delete extends RESTVfsTestCase {
-	protected $path_to_test_data = '/inc/Engine/CriticalPath/RESTDelete/delete.php';
+	protected $path_to_test_data = '/inc/Engine/CriticalPath/RESTWPPost/delete.php';
 	private static $site2_id = 0;
 
 	protected function doTest( $site_id, $config, $expected ) {

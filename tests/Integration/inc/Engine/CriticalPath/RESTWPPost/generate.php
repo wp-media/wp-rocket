@@ -1,17 +1,17 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\RESTGenerate;
+namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\RESTWPPost;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\RESTVfsTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\RESTGenerate::generate
+ * @covers \WP_Rocket\Engine\CriticalPath\RESTWPPost::generate
  * @group  CriticalPath
  * @group  vfs
  */
 class Test_Generate extends RESTVfsTestCase {
-	protected $path_to_test_data = '/inc/Engine/CriticalPath/RESTGenerate/generate.php';
+	protected $path_to_test_data = '/inc/Engine/CriticalPath/RESTWPPost/generate.php';
 	private static $post_id;
 
 	public static function wpSetUpBeforeClass( $factory ) {

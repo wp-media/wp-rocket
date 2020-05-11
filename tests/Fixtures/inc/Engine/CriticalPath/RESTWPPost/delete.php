@@ -69,8 +69,9 @@ return [
 					'cpcss_exists_after'  => false,
 				],
 				'expected' => [
+					'success' => false,
 					'code'    => 'post_not_exists',
-					'message' => 'Requested post does not exist',
+					'message' => 'Requested post does not exist.',
 					'data'    => [ 'status' => 400 ],
 				],
 			],
@@ -85,6 +86,7 @@ return [
 					'cpcss_exists_after'  => false,
 				],
 				'expected' => [
+					'success' => false,
 					'code'    => 'cpcss_not_exists',
 					'message' => 'Critical CSS file does not exist',
 					'data'    => [ 'status' => 400 ],
@@ -102,6 +104,7 @@ return [
 					'cpcss_exists_after'  => false,
 				],
 				'expected' => [
+					'success' => true,
 					'code'    => 'success',
 					'message' => 'Critical CSS file deleted successfully.',
 					'data'    => [ 'status' => 200 ],
@@ -118,6 +121,7 @@ return [
 					'cpcss_exists_after'  => false,
 				],
 				'expected' => [
+					'success' => true,
 					'code'    => 'success',
 					'message' => 'Critical CSS file deleted successfully.',
 					'data'    => [ 'status' => 200 ],
@@ -134,6 +138,7 @@ return [
 					'cpcss_exists_after'  => false,
 				],
 				'expected' => [
+					'success' => true,
 					'code'    => 'success',
 					'message' => 'Critical CSS file deleted successfully.',
 					'data'    => [ 'status' => 200 ],
@@ -170,8 +175,9 @@ return [
 					'site_id'             => 2,
 				],
 				'expected' => [
+					'success' => false,
 					'code'    => 'post_not_exists',
-					'message' => 'Requested post does not exist',
+					'message' => 'Requested post does not exist.',
 					'data'    => [ 'status' => 400 ],
 				],
 			],
@@ -187,6 +193,7 @@ return [
 					'site_id'             => 2,
 				],
 				'expected' => [
+					'success' => false,
 					'code'    => 'cpcss_not_exists',
 					'message' => 'Critical CSS file does not exist',
 					'data'    => [ 'status' => 400 ],
@@ -205,6 +212,7 @@ return [
 					'site_id'             => 2,
 				],
 				'expected' => [
+					'success' => true,
 					'code'    => 'success',
 					'message' => 'Critical CSS file deleted successfully.',
 					'data'    => [ 'status' => 200 ],

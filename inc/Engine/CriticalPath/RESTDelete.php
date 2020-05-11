@@ -73,7 +73,7 @@ class RESTDelete implements Subscriber_Interface {
 			return rest_ensure_response(
 				[
 					'code'    => 'post_not_exists',
-					'message' => __( 'Requested post does not exist', 'rocket' ),
+					'message' => __( 'Requested post does not exist.', 'rocket' ),
 					'data'    => [
 						'status' => 400,
 					],

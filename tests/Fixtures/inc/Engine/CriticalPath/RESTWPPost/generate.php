@@ -244,8 +244,9 @@ return [
 					'site_id'            => 2,
 				],
 				'expected' => [
+					'success' => false,
 					'code'    => 'post_not_exists',
-					'message' => 'Requested post does not exist',
+					'message' => 'Requested post does not exist.',
 					'data'    => [ 'status' => 400 ],
 				],
 			],
@@ -260,6 +261,7 @@ return [
 					'site_id'            => 2,
 				],
 				'expected' => [
+					'success' => false,
 					'code'    => 'cpcss_not_exists',
 					'message' => 'Critical CSS file does not exist',
 					'data'    => [ 'status' => 400 ],

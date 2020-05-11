@@ -54,9 +54,11 @@ class DataManager {
 	public function delete_cpcss( $path ) {
 		$filesystem = rocket_direct_filesystem();
 
-		if ( ! $filesystem->exists( $path ) ) {
+		$full_path = $this->critical_css_path . $path;
+
+		if ( ! $filesystem->exists( $full_path ) ) {
 			return new WP_Error(
-				'cpcss_path_not_found',
+				'cpcss_not_exists',
 				__( 'Critical CSS file does not exist', 'rocket' ),
 				[
 					'status' => 400,
@@ -64,7 +66,7 @@ class DataManager {
 			);
 		}
 
-		if ( ! $filesystem->delete( $path ) ) {
+		if ( ! $filesystem->delete( $full_path ) ) {
 			return new WP_Error(
 				'cpcss_deleted_failed',
 				__( 'Critical CSS file cannot be deleted', 'rocket' ),

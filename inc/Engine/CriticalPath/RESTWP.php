@@ -319,7 +319,7 @@ abstract class RESTWP {
 			// translators: %1$s = Item URL.
 			sprintf( __( 'Critical CSS for %1$s timeout. Please retry a little later.', 'rocket' ), $item_url ),
 			[
-				'status' => 408,
+				'status' => 400,
 			]
 		)
 			);
