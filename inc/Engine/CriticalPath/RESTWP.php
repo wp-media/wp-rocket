@@ -116,39 +116,69 @@ abstract class RESTWP {
 		if ( ! is_wp_error( $validated ) ) {
 			// get item url.
 			$item_url = $this->get_url( $item_id );
+			$timeout  = ( isset( $request['timeout'] ) && ! empty( $request['timeout'] ) );
 
-			// Ajax call requested a timeout.
-			if ( isset( $request['timeout'] ) && ! empty( $request['timeout'] ) ) {
-				$output = $this->process_timeout( $item_url );
-			}else {
-				$cpcss_job_id = $this->data_manager->get_cache_job_id( $item_url );
-
-				if ( false === $cpcss_job_id ) {
-					// call send generation request from APIClient through DM for the first time.
-					$generated_job = $this->api_client->send_generation_request( $item_url );
-
-					// validate generate response.
-					if ( is_wp_error( $generated_job ) ) {
-						// Failed so return back the data.
-						$output = $this->return_error( $generated_job );
-					}else {
-						// Send generation request succeeded.
-						// Save job_id into cache.
-						$this->data_manager->set_cache_job_id( $item_url, $generated_job->data->id );
-
-						$output = $this->check_cpcss_job_status( $generated_job->data->id, $item_id, $item_url );
-					}
-				}else {
-					// job_id is found and we need to check status for it.
-					$output = $this->check_cpcss_job_status( $cpcss_job_id, $item_id, $item_url );
-				}
-			}
+			$output = $this->process_generate( $item_url, $item_id, $timeout );
 		}else {
 			$output = $this->return_error( $validated );
 		}
 
 		return rest_ensure_response( $output );
 
+	}
+
+	/**
+	 * Process CPCSS generation, Check timeout and send the generation request.
+	 *
+	 * @since 3.6
+	 *
+	 * @param string $item_url URL for item to be used in error messages.
+	 * @param int    $item_id ID for item to be processed.
+	 * @param bool   $timeout Timeout is requested or not.
+	 * @return array
+	 */
+	private function process_generate( $item_url, $item_id, $timeout = false ) {
+		// Ajax call requested a timeout.
+		if ( $timeout ) {
+			return $this->process_timeout( $item_url );
+		}
+
+		$cpcss_job_id = $this->data_manager->get_cache_job_id( $item_url );
+
+		if ( false === $cpcss_job_id ) {
+			return $this->send_generation_request( $item_url, $item_id );
+		}
+
+		// job_id is found and we need to check status for it.
+		return $this->check_cpcss_job_status( $cpcss_job_id, $item_id, $item_url );
+	}
+
+	/**
+	 * Send Generation first request.
+	 *
+	 * @since 3.6
+	 *
+	 * @param string $item_url Url for item to send the generation request for.
+	 * @param int    $item_id ID for item to send the generation request for.
+	 * @return array
+	 */
+	private function send_generation_request( $item_url, $item_id ) {
+		$output = null;
+
+		// call send generation request from APIClient for the first time.
+		$generated_job = $this->api_client->send_generation_request( $item_url );
+
+		// validate generate response.
+		if ( is_wp_error( $generated_job ) ) {
+			// Failed so return back the data.
+			return $this->return_error( $generated_job );
+		}
+
+		// Send generation request succeeded.
+		// Save job_id into cache.
+		$this->data_manager->set_cache_job_id( $item_url, $generated_job->data->id );
+
+		return $this->check_cpcss_job_status( $generated_job->data->id, $item_id, $item_url );
 	}
 
 	/**
@@ -252,7 +282,7 @@ abstract class RESTWP {
 	 *
 	 * @since 3.6
 	 *
-	 * @param int $item_id ID for this item to be validated.
+	 * @param int $item_id ID for this item to get Url for.
 	 * @return false|string
 	 */
 	abstract protected function get_url( $item_id );
@@ -262,7 +292,7 @@ abstract class RESTWP {
 	 *
 	 * @since 3.6
 	 *
-	 * @param int $item_id ID for this item to be validated.
+	 * @param int $item_id ID for this item to get the path for.
 	 * @return string
 	 */
 	abstract protected function get_path( $item_id );
