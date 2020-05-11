@@ -117,9 +117,10 @@ class Plugin {
 				'dequeue_jquery_migrate_subscriber',
 			];
 
+			$this->container->addServiceProvider( 'WP_Rocket\Engine\Media\ServiceProvider' );
+
 			// Don't insert the LazyLoad file if Rocket LazyLoad is activated.
 			if ( ! rocket_is_plugin_active( 'rocket-lazy-load/rocket-lazy-load.php' ) ) {
-				$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Lazyload' );
 				$subscribers[] = 'lazyload_subscriber';
 			}
 		}
