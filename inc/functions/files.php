@@ -1398,52 +1398,6 @@ function _rocket_get_cache_path_iterator( $cache_path ) { // phpcs:ignore WordPr
 }
 
 /**
- * Gets the entries from the URL using RegexIterator.
- *
- * @since  3.5.4
- * @access private
- *
- * @param Iterator     $iterator   Instance of the iterator.
- * @param string|array $url        URL or parsed URL to convert into filesystem path regex to get entries.
- * @param string       $cache_path Optional. Filesystem path to rocket's cache.
- *
- * @return array|RegexIterator when successful, returns iterator; else an empty array.
- */
-function _rocket_get_entries_regex( Iterator $iterator, $url, $cache_path = '' ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
-	if ( empty( $cache_path ) ) {
-		$cache_path = str_replace( '/', '\/', rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) );
-	}
-
-	$parsed_url = is_array( $url ) ? $url : get_rocket_parse_url( $url );
-	$host       = $cache_path . rtrim( $parsed_url['host'], '*' );
-
-	if ( '' !== $parsed_url['path'] && '/' !== $parsed_url['path'] ) {
-		$path = trim( $parsed_url['path'], '/' );
-
-		// Count the hierarchy to determine the depth.
-		$depth = substr_count( $path, '/' ) + 1;
-
-		// Prepare the paths' separator for regex.
-		if ( $depth > 1 ) {
-			$path = str_replace( '/', '\/', $path );
-		}
-
-		$regex = "/{$host}(.*)\/{$path}/i";
-	} else {
-		$regex = "/{$host}(.*)/i";
-		$depth = 0;
-	}
-
-	try {
-		$iterator->setMaxDepth( $depth );
-
-		return new RegexIterator( $iterator, $regex );
-	} catch ( Exception $e ) {
-		return [];
-	}
-}
-
-/**
  * Gets the directories for the given URL host from the cache/wp-rocket/ directory or stored memory.
  *
  * @since  3.5.5
