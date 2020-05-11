@@ -183,7 +183,7 @@ return [
 					'code'    => 'cpcss_generation_failed',
 					'message' => 'Critical CSS for http://example.org/?p=21 not generated. Error: Job not found',
 					'data'    => [
-						'status' => 400,
+						'status' => 404,
 					],
 				],
 			],

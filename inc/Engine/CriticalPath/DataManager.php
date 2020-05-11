@@ -20,7 +20,7 @@ class DataManager {
 	/**
 	 * DataManager constructor, adjust the critical css path for posts.
 	 *
-	 * @param string    $critical_css_path path for main critical css folder.
+	 * @param string $critical_css_path path for main critical css folder.
 	 */
 	public function __construct( $critical_css_path ) {
 		$this->critical_css_path = $critical_css_path . get_current_blog_id() . '/posts/';

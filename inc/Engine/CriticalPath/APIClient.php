@@ -13,7 +13,7 @@ class APIClient {
 	/**
 	 * Constant url for Critical Path API job.
 	 */
-	const API_URL                = 'https://cpcss.wp-rocket.me/api/job/';
+	const API_URL = 'https://cpcss.wp-rocket.me/api/job/';
 
 	/**
 	 * Sends a generation request to the Critical Path API
@@ -49,17 +49,17 @@ class APIClient {
 	 * @since 3.6
 	 */
 	private function prepare_response( $response, $post_url ) {
-		$response_data = $this->get_response_data( $response );
+		$response_data        = $this->get_response_data( $response );
 		$response_status_code = $this->get_response_status( $response );
-		$succeeded = $this->get_response_success( $response_status_code, $response_data );
+		$succeeded            = $this->get_response_success( $response_status_code, $response_data );
 
 		if ( $succeeded ) {
 			return $response_data;
 		}else {
-			$response_code = $this->get_response_code( $response );
+			$response_code    = $this->get_response_code( $response );
 			$response_message = $this->get_response_message( $response_status_code, $response_data, $post_url );
 
-			if( 200 === $response_status_code ) {
+			if ( 200 === $response_status_code ) {
 				$response_status_code = 400;
 			}
 
@@ -67,7 +67,7 @@ class APIClient {
 				$response_code,
 				$response_message,
 				[
-					'status' => $response_status_code
+					'status' => $response_status_code,
 				]
 			);
 		}
@@ -76,15 +76,15 @@ class APIClient {
 	/**
 	 * Get the status of response.
 	 *
-	 * @since 3.6
-	 *
-	 * @param array|WP_Error $response The response or WP_Error on failure.
+	 * @param int   $response_code Response code to check success or failure.
+	 * @param array $response_data Array of data returned from request.
 	 * @return bool success or failed.
+	 * @since 3.6
 	 */
 	private function get_response_success( $response_code, $response_data ) {
 		return (
 			200 === $response_code &&
-			!empty( $response_data ) &&
+			! empty( $response_data ) &&
 			(
 				( isset( $response_data->status ) && 200 === $response_data->status ) ||
 				( isset( $response_data->data ) && isset( $response_data->data->id ) )
@@ -98,9 +98,13 @@ class APIClient {
 	 * @since 3.6
 	 *
 	 * @param array|WP_Error $response The response or WP_Error on failure.
+	 * @param null|int       $status Status code to overwrite the response status.
 	 * @return int|string status code|number of response.
 	 */
-	private function get_response_status( $response ) {
+	private function get_response_status( $response, $status = null ) {
+		if ( ! is_null( $status ) ) {
+			return $status;
+		}
 		return wp_remote_retrieve_response_code( $response );
 	}
 
@@ -109,8 +113,9 @@ class APIClient {
 	 *
 	 * @since 3.6
 	 *
-	 * @param array|WP_Error $response The response or WP_Error on failure.
-	 * @param string         $item_url Url for the web page to be checked.
+	 * @param int    $response_status_code Response status code.
+	 * @param array  $response_data Array of data returned from request.
+	 * @param string $item_url Url for the web page to be checked.
 	 * @return string
 	 */
 	private function get_response_message( $response_status_code, $response_data, $item_url ) {
@@ -200,21 +205,21 @@ class APIClient {
 	 * @return mixed|WP_Error
 	 */
 	private function prepare_job_details_response( $response, $item_url ) {
-		$response_data = $this->get_response_data( $response );
-		$response_status_code = $this->get_response_status( $response );
-		$succeeded = $this->get_response_success( $response_status_code, $response_data );
+		$response_data        = $this->get_response_data( $response );
+		$response_status_code = $this->get_response_status( $response, $response_data->status );
+		$succeeded            = $this->get_response_success( $response_status_code, $response_data );
 
 		if ( $succeeded ) {
 			return $response_data;
 		}else {
-			$response_code = $this->get_response_code( $response );
+			$response_code    = $this->get_response_code( $response );
 			$response_message = $this->get_job_details_response_message( $response_status_code, $response_data, $item_url );
 
 			return new WP_Error(
 				$response_code,
 				$response_message,
 				[
-					'status' => $response_status_code
+					'status' => $response_status_code,
 				]
 			);
 		}
@@ -225,17 +230,17 @@ class APIClient {
 	 *
 	 * @since 3.6
 	 *
-	 * @param array|WP_Error $response The response or WP_Error on failure.
-	 * @param string         $item_url Url for the web page to be checked.
+	 * @param int    $response_status_code Response status code.
+	 * @param array  $response_data Array of data returned from request.
+	 * @param string $item_url Url for the web page to be checked.
 	 * @return string
 	 */
 	private function get_job_details_response_message( $response_status_code, $response_data, $item_url ) {
 		$message = '';
 		switch ( $response_status_code ) {
-			case 200:
-				break;
 			case 400:
 			case 440:
+			case 404:
 				// translators: %s = item URL.
 				$message .= sprintf( __( 'Critical CSS for %1$s not generated.', 'rocket' ), $item_url );
 				break;

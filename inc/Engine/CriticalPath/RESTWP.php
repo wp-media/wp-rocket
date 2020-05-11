@@ -170,14 +170,24 @@ abstract class RESTWP {
 		}
 	}
 
-	private function check_cpcss_job_status ( $job_id, $item_id, $item_url ) {
+	/**
+	 * Check status and process the output for a job.
+	 *
+	 * @since 3.6
+	 *
+	 * @param string $job_id ID for the job to get details.
+	 * @param int    $item_id ID for this item to be validated.
+	 * @param string $item_url URL for item to be used in error messages.
+	 * @return array Response in case of success, failure or pending.
+	 */
+	private function check_cpcss_job_status( $job_id, $item_id, $item_url ) {
 		$job_details = $this->api_client->get_job_details( $job_id, $item_url );
 
 		if ( is_wp_error( $job_details ) ) {
 			return $this->return_error( $job_details );
 		}else {
-			if ( $job_details->status != 200 ) {
-				//on job error
+			if ( 200 !== $job_details->status ) {
+				// On job error.
 				$this->data_manager->delete_cache_job_id( $item_url );
 
 				// translators: %1$s = page URL.
@@ -193,12 +203,12 @@ abstract class RESTWP {
 						'cpcss_generation_failed',
 						$error,
 						[
-							'status' => 400
+							'status' => 400,
 						]
 					)
 				);
-			}else{
-				//on job status 200
+			}else {
+				// On job status 200.
 				if ( isset( $job_details->data->state ) && 'complete' !== $job_details->data->state ) {
 					return $this->return_success(
 						'cpcss_generation_pending',
@@ -216,11 +226,13 @@ abstract class RESTWP {
 					$this->data_manager->save_cpcss( $this->get_path( $item_id ), $job_details->data->critical_path );
 
 					// Send the current status of job.
-					return $job_details;
+					return $this->return_success(
+						'cpcss_generation_successful',
+						// translators: %s = post URL.
+						sprintf( __( 'Critical CSS for %s generated.', 'rocket' ), $item_url )
+					);
 				}
-
 			}
-
 		}
 
 	}
