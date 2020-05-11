@@ -1460,7 +1460,16 @@ function _rocket_get_cache_dirs( $url_host, $cache_path = '', $hard_reset = fals
 	}
 
 	// When Windows-based.
-	$is_windows = ( DIRECTORY_SEPARATOR === '\\' && ( substr( $cache_path, 0, 7 ) !== 'vfs://' ) );
+	$is_windows = (
+		DIRECTORY_SEPARATOR === '\\'
+		&&
+		(
+			! rocket_get_constant( 'WP_ROCKET_IS_TESTING', false )
+			||
+			substr( $cache_path, 0, 6 ) !== 'vfs://'
+		)
+	);
+
 	if ( $is_windows ) {
 		$cache_path = str_replace( '/', '\\', $cache_path );
 	}
