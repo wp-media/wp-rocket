@@ -39,6 +39,8 @@ return [
 				'/wp-content/file.woff2',
 				'/wp-content/file.css',
 				'/wp-content/file.js',
+				'/wp-content/themes/paperback/inc/fontawesome/fonts/fontawesome-webfont.woff2?v=4.4.0',
+				'/wp-content/themes/paperback/inc/fontawesome/fonts/fontawesome-webfont.woff2#123',
 			],
 			'cdn'           => false,
 			'cdn_cnames'    => [],
@@ -47,7 +49,9 @@ return [
 		<link rel="preload" as="font" href="http://example.org/wp-content/file.ttf" crossorigin>
 		<link rel="preload" as="font" href="http://example.org/wp-content/file.svg" crossorigin>
 		<link rel="preload" as="font" href="http://example.org/wp-content/file.woff?v=4.4.0" crossorigin>
-		<link rel="preload" as="font" href="http://example.org/wp-content/file.woff2" crossorigin>'
+		<link rel="preload" as="font" href="http://example.org/wp-content/file.woff2" crossorigin>
+		<link rel="preload" as="font" href="http://example.org/wp-content/themes/paperback/inc/fontawesome/fonts/fontawesome-webfont.woff2?v=4.4.0" crossorigin>
+		<link rel="preload" as="font" href="http://example.org/wp-content/themes/paperback/inc/fontawesome/fonts/fontawesome-webfont.woff2#123" crossorigin>'
 	],
 	'validPreloadFontsOptionsWithCDN' => [
 		[

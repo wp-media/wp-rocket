@@ -125,7 +125,7 @@ class Fonts implements Subscriber_Interface {
 			return false;
 		}
 
-		$ext = strtolower( pathinfo( strtok( $file, '?' ), PATHINFO_EXTENSION ) );
+		$ext = strtolower( pathinfo( wp_parse_url( $file, PHP_URL_PATH ), PATHINFO_EXTENSION ) );
 
 		if ( ! in_array( $ext, $this->font_formats, true ) ) {
 			return false;
