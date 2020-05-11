@@ -215,56 +215,100 @@ abstract class RESTWP {
 
 		if ( is_wp_error( $job_details ) ) {
 			return $this->return_error( $job_details );
-		}else {
-			if ( 200 !== $job_details->status ) {
-				// On job error.
-				$this->data_manager->delete_cache_job_id( $item_url );
-
-				// translators: %1$s = page URL.
-				$error = sprintf( __( 'Critical CSS for %1$s not generated.', 'rocket' ), $item_url );
-
-				if ( isset( $job_data->message ) ) {
-					// translators: %1$s = error message.
-					$error .= ' ' . sprintf( __( 'Error: %1$s', 'rocket' ), $job_data->message );
-				}
-
-				return $this->return_error(
-					new WP_Error(
-						'cpcss_generation_failed',
-						$error,
-						[
-							'status' => 400,
-						]
-					)
-				);
-			}else {
-				// On job status 200.
-				if ( isset( $job_details->data->state ) && 'complete' !== $job_details->data->state ) {
-					return $this->return_success(
-						'cpcss_generation_pending',
-						// translators: %s = post URL.
-						sprintf( __( 'Critical CSS for %s in progress.', 'rocket' ), $item_url )
-					);
-				}
-
-				if ( isset( $job_details->data->state, $job_details->data->critical_path ) && 'complete' === $job_details->data->state ) {
-
-					// delete cache job_id for this item.
-					$this->data_manager->delete_cache_job_id( $item_url );
-
-					// save the generated CPCSS code into file.
-					$this->data_manager->save_cpcss( $this->get_path( $item_id ), $job_details->data->critical_path );
-
-					// Send the current status of job.
-					return $this->return_success(
-						'cpcss_generation_successful',
-						// translators: %s = post URL.
-						sprintf( __( 'Critical CSS for %s generated.', 'rocket' ), $item_url )
-					);
-				}
-			}
 		}
 
+		if ( 200 !== $job_details->status ) {
+			// On job error.
+			return $this->on_job_error( $job_details, $item_url );
+		}
+
+		// On job status 200.
+		$job_state = $job_details->data->state;
+
+		// For pending job status.
+		if ( isset( $job_state ) && 'complete' !== $job_state ) {
+			return $this->on_job_pending( $item_url );
+		}
+
+		// For successful job status.
+		if (
+			isset( $job_state, $job_details->data->critical_path ) &&
+			'complete' === $job_state
+		) {
+			return $this->on_job_success( $item_id, $item_url, $job_details->data->critical_path );
+		}
+	}
+
+	/**
+	 * Process logic for job error.
+	 *
+	 * @since 3.6
+	 *
+	 * @param array  $job_details Job details array.
+	 * @param string $item_url Url for web page to be processed, used for error messages.
+	 * @return array
+	 */
+	private function on_job_error( $job_details, $item_url ) {
+		$this->data_manager->delete_cache_job_id( $item_url );
+
+		// translators: %1$s = page URL.
+		$error = sprintf( __( 'Critical CSS for %1$s not generated.', 'rocket' ), $item_url );
+
+		if ( isset( $job_details->message ) ) {
+			// translators: %1$s = error message.
+			$error .= ' ' . sprintf( __( 'Error: %1$s', 'rocket' ), $job_details->message );
+		}
+
+		return $this->return_error(
+			new WP_Error(
+				'cpcss_generation_failed',
+				$error,
+				[
+					'status' => 400,
+				]
+			)
+		);
+	}
+
+	/**
+	 * Process logic for job pending status.
+	 *
+	 * @since 3.6
+	 *
+	 * @param string $item_url Url for web page to be processed, used for error messages.
+	 * @return array
+	 */
+	private function on_job_pending( $item_url ) {
+		return $this->return_success(
+			'cpcss_generation_pending',
+			// translators: %s = post URL.
+			sprintf( __( 'Critical CSS for %s in progress.', 'rocket' ), $item_url )
+		);
+	}
+
+	/**
+	 * Process logic for job success status.
+	 *
+	 * @since 3.6
+	 *
+	 * @param int    $item_id Item ID for web page to be processed.
+	 * @param string $item_url Item Url for web page to be processed.
+	 * @param string $cpcss_code CPCSS Code to be saved.
+	 * @return array
+	 */
+	private function on_job_success( $item_id, $item_url, $cpcss_code ) {
+		// delete cache job_id for this item.
+		$this->data_manager->delete_cache_job_id( $item_url );
+
+		// save the generated CPCSS code into file.
+		$this->data_manager->save_cpcss( $this->get_path( $item_id ), $cpcss_code );
+
+		// Send the current status of job.
+		return $this->return_success(
+			'cpcss_generation_successful',
+			// translators: %s = post URL.
+			sprintf( __( 'Critical CSS for %s generated.', 'rocket' ), $item_url )
+		);
 	}
 
 	/**
@@ -313,22 +357,31 @@ abstract class RESTWP {
 		// validate item.
 		$validated = $this->validate_item( $item_id );
 		if ( ! is_wp_error( $validated ) ) {
-
-			$deleted = $this->data_manager->delete_cpcss( $this->get_path( $item_id ) );
-
-			if ( is_wp_error( $deleted ) ) {
-				$output = $this->return_error( $deleted );
-			}else {
-				$output = $this->return_success(
-					'success',
-					__( 'Critical CSS file deleted successfully.', 'rocket' )
-				);
-			}
+			$output = $this->process_delete( $item_id );
 		}else {
 			$output = $this->return_error( $validated );
 		}
 
 		return rest_ensure_response( $output );
+	}
+
+	/**
+	 * Process the login for CPCSS deletion.
+	 *
+	 * @param int $item_id ID for item to delete CPCSS code.
+	 * @return array
+	 */
+	private function process_delete( $item_id ) {
+		$deleted = $this->data_manager->delete_cpcss( $this->get_path( $item_id ) );
+
+		if ( is_wp_error( $deleted ) ) {
+			return $this->return_error( $deleted );
+		}
+
+		return $this->return_success(
+			'success',
+			__( 'Critical CSS file deleted successfully.', 'rocket' )
+		);
 	}
 
 	/**
