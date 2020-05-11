@@ -400,41 +400,6 @@ function rocket_extract_url_component( $url, $component ) {
 }
 
 /**
- * Returns paths used for cache busting
- *
- * @since 2.9
- * @author Remy Perona
- *
- * @param string $filename name of the cache busting file.
- * @param string $extension file extension.
- * @return array Array of paths used for cache busting
- */
-function rocket_get_cache_busting_paths( $filename, $extension ) {
-	$blog_id                = get_current_blog_id();
-	$cache_busting_path     = WP_ROCKET_CACHE_BUSTING_PATH . $blog_id;
-	$filename               = rocket_realpath( rtrim( str_replace( [ ' ', '%20' ], '-', $filename ) ) );
-	$cache_busting_filepath = $cache_busting_path . $filename;
-	$cache_busting_url      = WP_ROCKET_CACHE_BUSTING_URL . $blog_id . $filename;
-
-	switch ( $extension ) {
-		case 'css':
-			/** This filter is documented in inc/functions/minify.php */
-			$cache_busting_url = apply_filters( 'rocket_css_url', $cache_busting_url );
-			break;
-		case 'js':
-			/** This filter is documented in inc/functions/minify.php */
-			$cache_busting_url = apply_filters( 'rocket_js_url', $cache_busting_url );
-			break;
-	}
-
-	return [
-		'bustingpath' => $cache_busting_path,
-		'filepath'    => $cache_busting_filepath,
-		'url'         => $cache_busting_url,
-	];
-}
-
-/**
  * Returns realpath to file (used for relative path with /../ in it or not-yet existing file)
  *
  * @since 2.11

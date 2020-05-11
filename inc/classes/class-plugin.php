@@ -66,8 +66,9 @@ class Plugin {
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Options' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Database' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Admin\Beacon\ServiceProvider' );
-		$this->container->addServiceProvider( 'WP_Rocket\Engine\CDN\RocketCDN\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Cache\ServiceProvider' );
+		$this->container->addServiceProvider( 'WP_Rocket\Engine\CDN\RocketCDN\ServiceProvider' );
+		$this->container->addServiceProvider( 'WP_Rocket\Engine\HealthCheck\ServiceProvider' );
 
 		$subscribers = [];
 
@@ -113,7 +114,6 @@ class Plugin {
 				'minify_css_subscriber',
 				'minify_js_subscriber',
 				'cache_dynamic_resource',
-				'remove_query_string_subscriber',
 				'dequeue_jquery_migrate_subscriber',
 			];
 
@@ -137,8 +137,8 @@ class Plugin {
 			'cdn_subscriber',
 			'critical_css_subscriber',
 			'sucuri_subscriber',
-			'facebook_tracking_subscriber',
-			'google_tracking_subscriber',
+			'facebook_tracking',
+			'google_tracking',
 			'expired_cache_purge_subscriber',
 			'preload_subscriber',
 			'sitemap_preload_subscriber',
@@ -155,7 +155,7 @@ class Plugin {
 			'bridge_subscriber',
 			'ngg_subscriber',
 			'smush_subscriber',
-			'cache_dir_size_check_subscriber',
+			'cache_dir_size_check',
 			'plugin_updater_common_subscriber',
 			'plugin_information_subscriber',
 			'plugin_updater_subscriber',
@@ -164,7 +164,9 @@ class Plugin {
 			'rocketcdn_rest_subscriber',
 			'detect_missing_tags_subscriber',
 			'purge_actions_subscriber',
+			'beaverbuilder_subscriber',
 			'amp_subscriber',
+			'simple_custom_css',
 		];
 
 		if ( get_rocket_option( 'do_cloudflare' ) ) {
