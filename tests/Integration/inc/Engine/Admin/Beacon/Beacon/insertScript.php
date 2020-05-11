@@ -11,6 +11,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group  AdminOnly
  */
 class Test_InsertScript extends FilesystemTestCase {
+	protected $path_to_test_data = '/inc/Engine/Admin/Beacon/Beacon/insert-script.php';
 	private function getActualHtml() {
 		ob_start();
 		do_action( 'admin_print_footer_scripts-settings_page_wprocket' );
