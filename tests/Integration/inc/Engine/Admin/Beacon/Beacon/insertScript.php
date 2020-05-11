@@ -3,14 +3,14 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\Beacon\Beacon;
 
 use Brain\Monkey\Functions;
-use WPMedia\PHPUnit\Integration\TestCase;
+use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Admin\Beacon\Beacon::insert_script
  * @group  Beacon
  * @group  AdminOnly
  */
-class Test_InsertScript extends TestCase {
+class Test_InsertScript extends FilesystemTestCase {
 	private function getActualHtml() {
 		ob_start();
 		do_action( 'admin_print_footer_scripts-settings_page_wprocket' );
@@ -56,10 +56,6 @@ class Test_InsertScript extends TestCase {
 
 		remove_filter( 'rocket_beacon_locale', $locale_cb );
 		remove_filter( 'pre_get_rocket_option_consumer_email', [ $this, 'consumer_email' ] );
-	}
-
-	public function providerTestData() {
-		return $this->getTestData( __DIR__, 'insert-script' );
 	}
 
 	public function consumer_email() {
