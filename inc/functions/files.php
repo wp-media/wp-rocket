@@ -1429,6 +1429,7 @@ function _rocket_get_entries_regex( Iterator $iterator, $url, $cache_path = '' )
 	}
 }
 
+
 /**
  * Gets the directories for the given URL host from the cache/wp-rocket/ directory or stored memory.
  *
@@ -1472,7 +1473,8 @@ function _rocket_get_cache_dirs( $url_host, $cache_path = '', $hard_reset = fals
 		return [];
 	}
 
-	$regex = sprintf( '/%1$s%2$s(.*)/i',
+	$regex = sprintf(
+		'/%1$s%2$s(.*)/i',
 		$is_windows
 			? str_replace( '\\', '\\\\', $cache_path )
 			: str_replace( '/', '\/', $cache_path ),
