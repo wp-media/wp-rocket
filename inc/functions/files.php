@@ -1458,6 +1458,12 @@ function _rocket_get_cache_dirs( $url_host, $cache_path = '', $hard_reset = fals
 		$cache_path = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' );
 	}
 
+	// When Windows-based.
+	$is_windows = ( DIRECTORY_SEPARATOR === '\\' && ( substr( $cache_path, 0, 7 ) !== 'vfs://' ) );
+	if ( $is_windows ) {
+		$cache_path = str_replace( '/', '\\', $cache_path );
+	}
+
 	try {
 		$iterator = new IteratorIterator(
 			new FilesystemIterator( $cache_path )
@@ -1466,7 +1472,12 @@ function _rocket_get_cache_dirs( $url_host, $cache_path = '', $hard_reset = fals
 		return [];
 	}
 
-	$regex = sprintf( '/%1$s%2$s(.*)/i', str_replace( '/', '\/', $cache_path ), $url_host );
+	$regex = sprintf( '/%1$s%2$s(.*)/i',
+		$is_windows
+			? str_replace( '\\', '\\\\', $cache_path )
+			: str_replace( '/', '\/', $cache_path ),
+		$url_host
+	);
 
 	try {
 		$entries = new RegexIterator( $iterator, $regex );
