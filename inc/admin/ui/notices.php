@@ -581,12 +581,10 @@ add_action( 'admin_notices', 'rocket_warning_minify_cache_dir_permissions' );
  * This warning is displayed when the busting cache dir isn't writeable
  *
  * @since 2.9
- * @author Remy Perona
  */
 function rocket_warning_busting_cache_dir_permissions() {
 	if ( current_user_can( 'rocket_manage_options' )
 		&& ( ! rocket_direct_filesystem()->is_writable( WP_ROCKET_CACHE_BUSTING_PATH ) )
-		&& ( get_rocket_option( 'remove_query_strings', false ) )
 		&& rocket_valid_key() ) {
 
 		$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );

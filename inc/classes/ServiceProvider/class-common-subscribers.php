@@ -26,13 +26,11 @@ class Common_Subscribers extends AbstractServiceProvider {
 		'critical_css_generation',
 		'critical_css',
 		'critical_css_subscriber',
-		'cache_dir_size_check_subscriber',
 		'capabilities_subscriber',
 		'webp_subscriber',
 		'expired_cache_purge',
 		'expired_cache_purge_subscriber',
 		'detect_missing_tags',
-		'purge_actions_subscriber',
 	];
 
 	/**
@@ -59,7 +57,6 @@ class Common_Subscribers extends AbstractServiceProvider {
 			->withArgument( $options );
 		$this->getContainer()->add( 'expired_cache_purge', 'WP_Rocket\Cache\Expired_Cache_Purge' )
 			->withArgument( rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) );
-		$this->getContainer()->share( 'cache_dir_size_check_subscriber', 'WP_Rocket\Subscriber\Tools\Cache_Dir_Size_Check_Subscriber' );
 		$this->getContainer()->share( 'expired_cache_purge_subscriber', 'WP_Rocket\Subscriber\Cache\Expired_Cache_Purge_Subscriber' )
 			->withArgument( $options )
 			->withArgument( $this->getContainer()->get( 'expired_cache_purge' ) );
@@ -70,7 +67,5 @@ class Common_Subscribers extends AbstractServiceProvider {
 			->withArgument( $this->getContainer()->get( 'cdn_subscriber' ) )
 			->withArgument( $this->getContainer()->get( 'beacon' ) );
 		$this->getContainer()->share( 'detect_missing_tags_subscriber', 'WP_Rocket\Subscriber\Tools\Detect_Missing_Tags_Subscriber' );
-		$this->getContainer()->share( 'purge_actions_subscriber', 'WP_Rocket\Subscriber\Cache\PurgeActionsSubscriber' )
-			->withArgument( $options );
 	}
 }

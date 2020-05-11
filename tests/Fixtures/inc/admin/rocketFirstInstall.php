@@ -40,7 +40,6 @@ return [
 			'sitemap_preload'             => 0,
 			'sitemap_preload_url_crawl'   => '500000',
 			'sitemaps'                    => [],
-			'remove_query_strings'        => 0,
 			'dns_prefetch'                => 0,
 			'preload_fonts'               => [],
 			'database_revisions'          => 0,

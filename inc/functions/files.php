@@ -507,10 +507,9 @@ function rocket_clean_minify( $extensions = [ 'js', 'css' ] ) {
 }
 
 /**
- * Delete all cache busting files
+ * Delete all cache busting files.
  *
  * @since 2.9
- * @author Remy Perona
  *
  * @param  string|array $extensions (default: array('js','css') File extensions to clean.
  * @return void
@@ -536,14 +535,14 @@ function rocket_clean_cache_busting( $extensions = [ 'js', 'css' ] ) {
 
 	try {
 		$dir = new RecursiveDirectoryIterator( $cache_busting_path, FilesystemIterator::SKIP_DOTS );
-	} catch ( \UnexpectedValueException $e ) {
+	} catch ( UnexpectedValueException $e ) {
 		// No logging yet.
 		return;
 	}
 
 	try {
 		$iterator = new RecursiveIteratorIterator( $dir, RecursiveIteratorIterator::CHILD_FIRST );
-	} catch ( \Exception $e ) {
+	} catch ( Exception $e ) {
 		// No logging yet.
 		return;
 	}
@@ -563,7 +562,7 @@ function rocket_clean_cache_busting( $extensions = [ 'js', 'css' ] ) {
 			foreach ( $files as $file ) {
 				rocket_direct_filesystem()->delete( $file[0] );
 			}
-		} catch ( \InvalidArgumentException $e ) {
+		} catch ( InvalidArgumentException $e ) {
 			// No logging yet.
 			return;
 		}
@@ -584,7 +583,7 @@ function rocket_clean_cache_busting( $extensions = [ 'js', 'css' ] ) {
 				rocket_direct_filesystem()->delete( $item );
 			}
 		}
-	} catch ( \UnexpectedValueException $e ) {
+	} catch ( UnexpectedValueException $e ) {
 		// Log the error.
 		Logger::debug(
 			'Cache Busting folder structure contains a directory we cannot recurse into.',
@@ -595,7 +594,6 @@ function rocket_clean_cache_busting( $extensions = [ 'js', 'css' ] ) {
 		);
 	}
 }
-
 
 /**
  * Delete one or several cache files.
@@ -1052,6 +1050,7 @@ function rocket_clean_cache_dir() {
  *
  * @since 3.5.3 Replaces glob and optimizes.
  * @since 1.0
+ * @since 3.5.3 Bails if given dir should be preserved; replaces glob; optimizes.
  *
  * @param string $dir              File/Directory to delete.
  * @param array  $dirs_to_preserve Optional. Dirs that should not be deleted.
