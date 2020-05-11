@@ -1146,7 +1146,7 @@ function rocket_rrmdir( $dir, array $dirs_to_preserve = [], $filesystem = null )
 		if ( ! $filesystem->is_dir( $entry ) ) {
 			$filesystem->delete( $entry );
 		} else {
-			rocket_rrmdir( $entry, $dirs_to_preserve );
+			rocket_rrmdir( $entry, $dirs_to_preserve, $filesystem );
 		}
 	}
 
