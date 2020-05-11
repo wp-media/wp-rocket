@@ -1,31 +1,24 @@
 <?php
-/**
- * Lazyload subscriber
- *
- * @package WP_Rocket
- */
 
-namespace WP_Rocket\Subscriber\Optimization;
+namespace WP_Rocket\Engine\Media;
 
-use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Rocket\Admin\Options_Data;
+use MatthiasMullie\Minify\JS;
 use RocketLazyload\Assets;
 use RocketLazyload\Image;
 use RocketLazyload\Iframe;
-use MatthiasMullie\Minify\JS;
+use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
  * Lazyload Subscriber
  *
  * @since 3.3
- * @author Remy Perona
  */
-class Lazyload_Subscriber implements Subscriber_Interface {
+class LazyloadSubscriber implements Subscriber_Interface {
+	const SCRIPT_VERSION = '15.1.1';
+
 	/**
 	 * Options_Data instance
-	 *
-	 * @since 2.0
-	 * @author Remy Perona
 	 *
 	 * @var Options_Data
 	 */
@@ -34,18 +27,12 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 	/**
 	 * Assets instance
 	 *
-	 * @since 2.0
-	 * @author Remy Perona
-	 *
 	 * @var Assets
 	 */
 	private $assets;
 
 	/**
 	 * Image instance
-	 *
-	 * @since 2.0
-	 * @author Remy Perona
 	 *
 	 * @var Image
 	 */
@@ -54,9 +41,6 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 	/**
 	 * Iframe instance
 	 *
-	 * @since 2.0
-	 * @author Remy Perona
-	 *
 	 * @var Iframe
 	 */
 	private $iframe;
@@ -64,8 +48,7 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 	/**
 	 * Constructor
 	 *
-	 * @since 2.0
-	 * @author Remy Perona
+	 * @since 3.3
 	 *
 	 * @param Options_Data $options Options_Data instance.
 	 * @param Assets       $assets Assets instance.
@@ -83,7 +66,6 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
 	 * @since  3.3
-	 * @author Remy Perona
 	 *
 	 * @return array
 	 */
@@ -107,7 +89,6 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 	 * Inserts the lazyload script in the footer
 	 *
 	 * @since 3.3
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
@@ -121,16 +102,6 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 		}
 
 		/**
-		 * Filters the threshold at which lazyload is triggered
-		 *
-		 * @since 1.2
-		 * @author Remy Perona
-		 *
-		 * @param int $threshold Threshold value.
-		 */
-		$threshold = apply_filters( 'rocket_lazyload_threshold', 300 );
-
-		/**
 		 * Filters the use of the polyfill for intersectionObserver
 		 *
 		 * @since 3.3
@@ -138,36 +109,78 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 		 *
 		 * @param bool $polyfill True to use the polyfill, false otherwise.
 		 */
-		$polyfill = apply_filters( 'rocket_lazyload_polyfill', false );
+		$polyfill = (bool) apply_filters( 'rocket_lazyload_polyfill', false );
 
 		$script_args = [
-			'base_url' => WP_ROCKET_ASSETS_JS_URL . 'lazyload/',
-			'version'  => '12.0',
+			'base_url' => rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'lazyload/',
+			'version'  => self::SCRIPT_VERSION,
 			'polyfill' => $polyfill,
 		];
+
+		$this->add_inline_script();
+		$this->assets->insertLazyloadScript( $script_args );
+	}
+
+	/**
+	 * Adds the inline lazyload script
+	 *
+	 * @since 3.6
+	 *
+	 * @return void
+	 */
+	private function add_inline_script() {
+		$inline_script = $this->assets->getInlineLazyloadScript( $this->set_inline_script_args() );
+
+		if ( ! rocket_get_constant( 'SCRIPT_DEBUG' ) ) {
+			$inline_script = $this->minify_script( $inline_script );
+		}
+
+		echo '<script>' . $inline_script . '</script>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+	}
+
+	/**
+	 * Sets the arguments array for the inline lazyload script
+	 *
+	 * @since 3.6
+	 *
+	 * @return array
+	 */
+	private function set_inline_script_args() {
+		/**
+		 * Filters the threshold at which lazyload is triggered
+		 *
+		 * @since 1.2
+		 * @author Remy Perona
+		 *
+		 * @param int $threshold Threshold value.
+		 */
+		$threshold = (int) apply_filters( 'rocket_lazyload_threshold', 300 );
 
 		$inline_args = [
 			'threshold' => $threshold,
 		];
 
-		if ( apply_filters( 'rocket_use_native_lazyload', false ) ) {
-			$inline_args['options'] = [
+		/**
+		 * Filters the use of native lazyload
+		 *
+		 * @since 3.4
+		 * @author Remy Perona
+		 *
+		 * @param bool $use_native True to use native lazyload, false otherwise.
+		 */
+		if ( (bool) apply_filters( 'rocket_use_native_lazyload', false ) ) {
+			$inline_args['options']             = [
 				'use_native' => 'true',
 			];
+			$inline_args['elements']['loading'] = '[loading=lazy]';
 		}
 
-		if ( $this->options->get( 'lazyload' ) || $this->options->get( 'lazyload_iframes' ) ) {
-			if ( apply_filters( 'rocket_use_native_lazyload', false ) ) {
-				$inline_args['elements']['loading'] = '[loading=lazy]';
-			}
-		}
-
-		if ( $this->options->get( 'lazyload' ) ) {
+		if ( $this->options->get( 'lazyload', 0 ) ) {
 			$inline_args['elements']['image']            = 'img[data-lazy-src]';
 			$inline_args['elements']['background_image'] = '.rocket-lazyload';
 		}
 
-		if ( $this->options->get( 'lazyload_iframes' ) ) {
+		if ( (bool) $this->options->get( 'lazyload_iframes', 0 ) ) {
 			$inline_args['elements']['iframe'] = 'iframe[data-lazy-src]';
 		}
 
@@ -179,25 +192,27 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 		 *
 		 * @param array $inline_args Arguments used for the lazyload script options.
 		 */
-		$inline_args = apply_filters( 'rocket_lazyload_script_args', $inline_args );
+		return (array) apply_filters( 'rocket_lazyload_script_args', $inline_args );
+	}
 
-		$inline_script = $this->assets->getInlineLazyloadScript( $inline_args );
+	/**
+	 * Minifies the inline script
+	 *
+	 * @since 3.6
+	 *
+	 * @param string $script Inline script to minify.
+	 * @return string
+	 */
+	private function minify_script( $script ) {
+		$minify = new JS( $script );
 
-		if ( ! defined( 'SCRIPT_DEBUG' ) || ! SCRIPT_DEBUG ) {
-			$minify = new JS( $inline_script );
-
-			$inline_script = $minify->minify();
-		}
-
-		echo '<script>' . $inline_script . '</script>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
-		$this->assets->insertLazyloadScript( $script_args );
+		return $minify->minify();
 	}
 
 	/**
 	 * Inserts the Youtube thumbnail script in the footer
 	 *
-	 * @since 2.0
-	 * @author Remy Perona
+	 * @since 3.3
 	 *
 	 * @return void
 	 */
@@ -243,7 +258,6 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 	 * Inserts the no JS CSS compatibility in the header
 	 *
 	 * @since 3.3
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
@@ -267,7 +281,6 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 	 * Inserts the Youtube thumbnail CSS in the header
 	 *
 	 * @since 3.3
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
@@ -291,8 +304,7 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 	/**
 	 * Checks if lazyload should be applied
 	 *
-	 * @since 2.0
-	 * @author Remy Perona
+	 * @since 3.3
 	 *
 	 * @return bool
 	 */
@@ -325,7 +337,6 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 	 * Applies lazyload on the provided content
 	 *
 	 * @since 3.3
-	 * @author Remy Perona
 	 *
 	 * @param string $html HTML content.
 	 * @return string
@@ -369,7 +380,6 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 	 * Applies lazyload on responsive images attributes srcset and sizes
 	 *
 	 * @since 3.3
-	 * @author Remy Perona
 	 *
 	 * @param string $html Image HTML.
 	 * @return string
@@ -382,7 +392,6 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 	 * Applies lazyload on WordPress smilies
 	 *
 	 * @since 3.3
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
@@ -415,6 +424,7 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 	 * Prevents lazyload if the option is unchecked on the WP Rocket options metabox for a post
 	 *
 	 * @since 3.3
+	 *
 	 * @return void
 	 */
 	public function deactivate_lazyload_on_specific_posts() {
@@ -431,7 +441,6 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 	 * Disable WP core lazyload if our images lazyload is active
 	 *
 	 * @since 3.5
-	 * @author Remy Perona
 	 *
 	 * @param bool $value Current value for the enabling variable.
 	 * @return bool
@@ -464,7 +473,7 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 	 * @return boolean
 	 */
 	private function can_lazyload_images() {
-		if ( ! $this->options->get( 'lazyload' ) ) {
+		if ( ! $this->options->get( 'lazyload', 0 ) ) {
 			return false;
 		}
 
@@ -487,7 +496,7 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 	 * @return boolean
 	 */
 	private function can_lazyload_iframes() {
-		if ( ! $this->options->get( 'lazyload_iframes' ) ) {
+		if ( ! $this->options->get( 'lazyload_iframes', 0 ) ) {
 			return false;
 		}
 
@@ -504,6 +513,8 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 
 	/**
 	 * Remove noscript tags from the HTML to parse
+	 *
+	 * @since 3.3
 	 *
 	 * @param string $html HTML content.
 	 * @return string

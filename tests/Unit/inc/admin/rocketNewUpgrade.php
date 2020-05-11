@@ -23,7 +23,9 @@ class Test_RocketNewUpgrade extends TestCase {
 			->once();
 		Functions\expect( 'rocket_clean_cache_busting' )
 			->once();
+		Functions\expect( 'rocket_clean_domain' )
+			->once();
 
-		rocket_new_upgrade( '3.5.1', '3.4.4' );
+		rocket_new_upgrade( '3.6', '3.4.4' );
 	}
 }
