@@ -26,6 +26,7 @@ function load_original_functions_before_mocking() {
 		'inc/functions/i18n.php',
 		'inc/functions/options.php',
 		'inc/functions/posts.php',
+		'inc/functions/htaccess.php',
 	];
 
 	foreach ( $originals as $file ) {
