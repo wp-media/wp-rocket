@@ -127,7 +127,7 @@ class AMP implements Subscriber_Interface {
 	 * @param  string $html HTML content.
 	 * @return string       HTML content.
 	 */
-	public static function rewrite_cdn( $html ) {
+	public function rewrite_cdn( $html ) {
 		$container      = apply_filters( 'rocket_container', '' );
 		$cdn_subscriber = $container->get( 'cdn_subscriber' );
 		$html           = $cdn_subscriber->rewrite( $html );
