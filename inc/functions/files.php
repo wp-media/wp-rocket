@@ -817,13 +817,16 @@ function rocket_clean_home_feeds() {
 /**
  * Remove all cache files for the domain.
  *
+ * @since 3.5.5 Optimizes by grabbing root cache dirs once, bailing out when file/dir doesn't exist, & directly
+ *        deleting files.
  * @since 3.5.3 Replaces glob with SPL.
  * @since 2.0   Delete domain cache files for all users
  * @since 1.0
  *
- * @param string $lang Optional. The language code. Default: empty string.
+ * @param string                    $lang       Optional. The language code. Default: empty string.
+ * @param WP_Filesystem_Direct|null $filesystem Optional. Instance of filesystem handler.
  */
-function rocket_clean_domain( $lang = '' ) {
+function rocket_clean_domain( $lang = '', $filesystem = null ) {
 	$urls = ( ! $lang || is_object( $lang ) || is_array( $lang ) || is_int( $lang ) )
 		? (array) get_rocket_i18n_uri()
 		: (array) get_rocket_i18n_home_url( $lang );
@@ -838,17 +841,18 @@ function rocket_clean_domain( $lang = '' ) {
 	 */
 	$urls = (array) apply_filters( 'rocket_clean_domain_urls', $urls, $lang );
 	$urls = array_filter( $urls );
-
-	$cache_path = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' );
-	$iterator   = _rocket_get_cache_path_iterator( $cache_path );
-	if ( false === $iterator ) {
+	if ( empty( $urls ) ) {
 		return;
 	}
 
-	$cache_path_regex = str_replace( '/', '\/', $cache_path );
-	$dirs_to_preserve = get_rocket_i18n_to_preserve( $lang );
 	/** This filter is documented in inc/front/htaccess.php */
-	$url_no_dots = (bool) apply_filters( 'rocket_url_no_dots', false );
+	$url_no_dots      = (bool) apply_filters( 'rocket_url_no_dots', false );
+	$cache_path       = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' );
+	$dirs_to_preserve = get_rocket_i18n_to_preserve( $lang );
+
+	if ( empty( $filesystem ) ) {
+		$filesystem = rocket_direct_filesystem();
+	}
 
 	foreach ( $urls as $url ) {
 		$parsed_url = get_rocket_parse_url( $url );
@@ -870,8 +874,18 @@ function rocket_clean_domain( $lang = '' ) {
 		 */
 		do_action( 'before_rocket_clean_domain', $root, $lang, $url ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
-		foreach ( _rocket_get_entries_regex( $iterator, $parsed_url, $cache_path_regex ) as $entry ) {
-			rocket_rrmdir( $entry->getPathname(), $dirs_to_preserve );
+		foreach ( _rocket_get_cache_dirs( $parsed_url['host'], $cache_path ) as $dir ) {
+			$entry = $dir . $parsed_url['path'];
+			// Skip if the dir/file does not exist.
+			if ( ! $filesystem->exists( $entry ) ) {
+				continue;
+			}
+
+			if ( $filesystem->is_dir( $entry ) ) {
+				rocket_rrmdir( $entry, $dirs_to_preserve, $filesystem );
+			} else {
+				$filesystem->delete( $entry );
+			}
 		}
 
 		/**
