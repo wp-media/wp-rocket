@@ -118,8 +118,7 @@ abstract class RESTWP {
 			$item_url = $this->get_url( $item_id );
 
 			// Ajax call requested a timeout.
-			$request_timeout = $request['timeout'];
-			if ( ! empty( $request_timeout ) ) {
+			if ( isset( $request['timeout'] ) && ! empty( $request['timeout'] ) ) {
 				$output = $this->process_timeout( $item_url );
 			}else {
 				$cpcss_job_id = $this->data_manager->get_cache_job_id( $item_url );
@@ -137,19 +136,11 @@ abstract class RESTWP {
 						// Save job_id into cache.
 						$this->data_manager->set_cache_job_id( $item_url, $generated_job->data->id );
 
-						// delete cache job_id for this item.
-						$this->data_manager->delete_cache_job_id( $item_url );
-
-						// save the generated CPCSS code into file.
-						$this->data_manager->save_cpcss( $this->get_path( $item_id ), $generated_job->data->critical_path );
-
-						// Send the current status of job.
-						$output = $this->get_cpcss_job_details( $cpcss_job_id, $item_url );
+						$output = $this->check_cpcss_job_status( $generated_job->data->id, $item_id, $item_url );
 					}
 				}else {
 					// job_id is found and we need to check status for it.
-					$output = $this->get_cpcss_job_details( $cpcss_job_id, $item_url );
-
+					$output = $this->check_cpcss_job_status( $cpcss_job_id, $item_id, $item_url );
 				}
 			}
 		}else {
@@ -170,13 +161,68 @@ abstract class RESTWP {
 	 * @return array|mixed|WP_Error
 	 */
 	private function get_cpcss_job_details( $job_id, $item_url ) {
-		$job_details = $this->api_client->get_cpcss_job_details( $job_id, $item_url );
+		$job_details = $this->api_client->get_job_details( $job_id, $item_url );
 
 		if ( is_wp_error( $job_details ) ) {
 			return $this->return_error( $job_details );
 		}else {
 			return $job_details;
 		}
+	}
+
+	private function check_cpcss_job_status ( $job_id, $item_id, $item_url ) {
+		$job_details = $this->api_client->get_job_details( $job_id, $item_url );
+
+		if ( is_wp_error( $job_details ) ) {
+			return $this->return_error( $job_details );
+		}else {
+			if ( $job_details->status != 200 ) {
+				//on job error
+				$this->data_manager->delete_cache_job_id( $item_url );
+
+				// translators: %1$s = page URL.
+				$error = sprintf( __( 'Critical CSS for %1$s not generated.', 'rocket' ), $item_url );
+
+				if ( isset( $job_data->message ) ) {
+					// translators: %1$s = error message.
+					$error .= ' ' . sprintf( __( 'Error: %1$s', 'rocket' ), $job_data->message );
+				}
+
+				return $this->return_error(
+					new WP_Error(
+						'cpcss_generation_failed',
+						$error,
+						[
+							'status' => 400
+						]
+					)
+				);
+			}else{
+				//on job status 200
+				if ( isset( $job_details->data->state ) && 'complete' !== $job_details->data->state ) {
+					return $this->return_success(
+						'cpcss_generation_pending',
+						// translators: %s = post URL.
+						sprintf( __( 'Critical CSS for %s in progress.', 'rocket' ), $item_url )
+					);
+				}
+
+				if ( isset( $job_details->data->state, $job_details->data->critical_path ) && 'complete' === $job_details->data->state ) {
+
+					// delete cache job_id for this item.
+					$this->data_manager->delete_cache_job_id( $item_url );
+
+					// save the generated CPCSS code into file.
+					$this->data_manager->save_cpcss( $this->get_path( $item_id ), $job_details->data->critical_path );
+
+					// Send the current status of job.
+					return $job_details;
+				}
+
+			}
+
+		}
+
 	}
 
 	/**
