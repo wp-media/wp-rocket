@@ -43,8 +43,8 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 		return [
 			'admin_init'    => 'register_terms_row_action',
 			'admin_notices' => [
-				'notice_advanced_cache_permissions',
-				'notice_advanced_cache_content_not_ours',
+				[ 'notice_advanced_cache_permissions' ],
+				[ 'notice_advanced_cache_content_not_ours' ],
 			],
 		];
 	}
