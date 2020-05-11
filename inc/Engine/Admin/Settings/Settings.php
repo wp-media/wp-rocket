@@ -617,6 +617,7 @@ class Settings {
 
 		$file = str_replace( [ 'http:', 'https:' ], '', $file );
 		$file = str_replace( $hosts, '', $file );
+		$file = '/' . ltrim( $file, '/' );
 
 		$ext = strtolower( pathinfo( $parsed_url['path'], PATHINFO_EXTENSION ) );
 

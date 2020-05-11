@@ -20,13 +20,14 @@ return [
 	// Textarea with various values as a string and duplicates.
 	'testStringInput' => [
 		[
-			'preload_fonts' => "http://example.org/wp-content/file.ttf?foo=bar \nhttps://example.org/wp-content/file.ttf?foo=bar\n//example.org/wp-content/file.ttf?foo=bar\n \n/wp-content/file.ttf?foo=bar\n/wp-content/file.ttf?bar=baz\nhttp://example.org/wp-content/themes/this-theme/assets/font.svg\n//google.com/font.eot",
+			'preload_fonts' => "http://example.org/wp-content/file.ttf?foo=bar \nhttps://example.org/wp-content/file.ttf?foo=bar\n//example.org/wp-content/file.ttf?foo=bar\n \n/wp-content/file.ttf?foo=bar\n/wp-content/file.ttf?bar=baz\nhttp://example.org/wp-content/themes/this-theme/assets/font.svg\n//google.com/font.eot\nwp-content/plugins/hello-dolly/assets/fontawesome.woff2",
 		],
 		[
 			'preload_fonts' => [
 				'/wp-content/file.ttf?foo=bar',
 				'/wp-content/file.ttf?bar=baz',
 				'/wp-content/themes/this-theme/assets/font.svg',
+				'/wp-content/plugins/hello-dolly/assets/fontawesome.woff2',
 			],
 		],
 	],
@@ -42,6 +43,9 @@ return [
 				'/wp-content/file.ttf?bar=baz',
 				'http://example.org/wp-content/themes/this-theme/assets/font.svg',
 				'//google.com/font.eot',
+				'/wp-content/plugins/hello-dolly/assets/fontawesome.woff2',
+				'wp-content/plugins/hello-dolly/assets/fontawesome.woff2',
+				'/wp-content/plugins/hello-dolly/assets/fontawesome.woff2#123',
 			],
 		],
 		[
@@ -49,6 +53,8 @@ return [
 				'/wp-content/file.ttf?foo=bar',
 				'/wp-content/file.ttf?bar=baz',
 				'/wp-content/themes/this-theme/assets/font.svg',
+				'/wp-content/plugins/hello-dolly/assets/fontawesome.woff2',
+				'/wp-content/plugins/hello-dolly/assets/fontawesome.woff2#123',
 			],
 		],
 	],
