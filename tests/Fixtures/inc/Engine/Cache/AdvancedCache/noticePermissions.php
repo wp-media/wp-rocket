@@ -80,10 +80,10 @@ return [
                 <br>Troubleshoot: <a href="https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket" target="_blank">How to make system files writeable</a>
             </p>
             <p>The following code should have been written to this file:
-			<br><textarea readonly="readonly" id="rules" name="rules" class="large-text readonly" rows="6">' . $content['non_mobile'] . '</textarea>
+			<br><textarea readonly="readonly" id="rules" name="rules" class="large-text readonly" rows="6">' . htmlspecialchars( $content['non_mobile'], ENT_QUOTES ) . '</textarea>
 		    </p>
             <p>
-                <a class="rocket-dismiss" href="http://example.org/wp-admin/admin-post.php?action=rocket_ignore&box=rocket_warning_advanced_cache_permissions&_wpnonce=123456">Dismiss this notice</a>
+                <a class="rocket-dismiss" href="http://example.org/wp-admin/admin-post.php?action=rocket_ignore&amp;box=rocket_warning_advanced_cache_permissions&amp;_wpnonce=123456">Dismiss this notice.</a>
             </p>
             </div>',
         ],

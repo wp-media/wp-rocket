@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\Cache\AdvancedCache;
 
 use Brain\Monkey\Functions;
+use WP_Rocket\Engine\Cache\AdvancedCache;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
@@ -17,11 +18,16 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  */
 class Test_NoticePermissions extends FilesystemTestCase {
     protected $path_to_test_data = '/inc/Engine/Cache/AdvancedCache/noticePermissions.php';
-    private static $advanced_cache;
+    private $advanced_cache;
 
-    public static function setUpBeforeClass() {
-		$container            = apply_filters( 'rocket_container', null );
-		self::$advanced_cache = $container->get( 'advanced_cache' );
+    public function setUp() {
+        parent::setUp();
+
+        $this->whenRocketGetConstant();
+
+        $this->advanced_cache = new AdvancedCache( 
+            $this->filesystem->getUrl( 'wp-content/plugins/wp-rocket/views/cache' )
+        );
     }
 
     public function tearDown() {
@@ -34,7 +40,7 @@ class Test_NoticePermissions extends FilesystemTestCase {
     private function getActualHtml() {
         ob_start();
 
-        self::$advanced_cache->notice_permissions();
+        $this->advanced_cache->notice_permissions();
         return $this->format_the_html( ob_get_clean() );
     }
 
@@ -56,9 +62,15 @@ class Test_NoticePermissions extends FilesystemTestCase {
             $this->filesystem->chmod( 'wp-content/advanced-cache.php', 0444 );
         }
 
+        if ( $config['constant'] ) {
+            $this->filesystem->put_contents( 'wp-content/advanced-cache.php', 'WP_ROCKET_ADVANCED_CACHE' );
+        }
+
         if ( $config['boxes'] ) {
             add_user_meta( $user_id, 'rocket_boxes', [ 'rocket_warning_advanced_cache_permissions' ] );
         }
+
+        Functions\when( 'wp_create_nonce' )->justReturn( '123456' );
 
         if ( ! empty( $expected ) ) {
             $this->assertSame(
@@ -66,7 +78,7 @@ class Test_NoticePermissions extends FilesystemTestCase {
                 $this->getActualHtml()
             );
         } else {
-            $this->assertSame( $expected, self::$advanced_cache->notice_permissions() );
+            $this->assertSame( $expected, $this->advanced_cache->notice_permissions() );
         }
     }
 }
