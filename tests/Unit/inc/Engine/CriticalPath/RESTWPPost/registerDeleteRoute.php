@@ -5,7 +5,6 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\RESTWPPost;
 use Brain\Monkey\Functions;
 use WP_Rocket\Engine\CriticalPath\APIClient;
 use WP_Rocket\Engine\CriticalPath\DataManager;
-use WP_Rocket\Engine\CriticalPath\RESTDelete;
 use WP_Rocket\Engine\CriticalPath\RESTWPPost;
 use WPMedia\PHPUnit\Unit\TestCase;
 
@@ -25,7 +24,7 @@ class Test_RegisterDeleteRoute extends TestCase {
 		Functions\expect( 'register_rest_route' )
 			->once()
 			->with(
-				RESTDelete::ROUTE_NAMESPACE,
+				RESTWPPost::ROUTE_NAMESPACE,
 				'cpcss/post/(?P<id>[\d]+)',
 				[
 					'methods'             => 'DELETE',

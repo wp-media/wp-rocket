@@ -5,7 +5,6 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\RESTWPPost;
 use Brain\Monkey\Functions;
 use WP_Rocket\Engine\CriticalPath\APIClient;
 use WP_Rocket\Engine\CriticalPath\DataManager;
-use WP_Rocket\Engine\CriticalPath\RESTGenerate;
 use WP_Rocket\Engine\CriticalPath\RESTWPPost;
 use WPMedia\PHPUnit\Unit\TestCase;
 
@@ -26,7 +25,7 @@ class Test_RegisterGenerateRoute extends TestCase {
 		Functions\expect( 'register_rest_route' )
 			->once()
 			->with(
-				RESTGenerate::ROUTE_NAMESPACE,
+				RESTWPPost::ROUTE_NAMESPACE,
 				'cpcss/post/(?P<id>[\d]+)',
 				[
 					'methods'             => 'POST',

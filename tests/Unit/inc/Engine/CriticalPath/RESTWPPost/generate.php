@@ -6,7 +6,6 @@ use Brain\Monkey\Functions;
 use WP_REST_Request;
 use WP_Rocket\Engine\CriticalPath\APIClient;
 use WP_Rocket\Engine\CriticalPath\DataManager;
-use WP_Rocket\Engine\CriticalPath\RESTGenerate;
 use WP_Rocket\Engine\CriticalPath\RESTWPPost;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 

@@ -6,13 +6,12 @@ use Brain\Monkey\Functions;
 use WP_REST_Request;
 use WP_Rocket\Engine\CriticalPath\APIClient;
 use WP_Rocket\Engine\CriticalPath\DataManager;
-use WP_Rocket\Engine\CriticalPath\RESTDelete;
 use WP_Rocket\Engine\CriticalPath\RESTWPPost;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use WP_Error;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\RESTDelete::delete
+ * @covers \WP_Rocket\Engine\CriticalPath\RESTWPPost::delete
  * @group  CriticalPath
  * @group  vfs
  */
