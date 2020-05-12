@@ -49,7 +49,8 @@ class Test_DisableOptionsOnAmp extends TestCase {
 			$this->assertTrue( has_filter( 'wp_resource_hints', 'rocket_dns_prefetch', 10, 2 ) );
 			$this->assertFalse( has_filter( 'do_rocket_lazyload', '__return_false' ) );
 			$this->assertTrue( has_filter( 'wp_calculate_image_srcset', 'rocket_protocol_rewrite_srcset', PHP_INT_MAX ) );
-			$this->assertFalse( has_filter( 'rocket_buffer', [ $this->amp, 'rewrite_cdn' ] ) );
+			$this->assertFalse( has_filter( 'rocket_buffer', [ $this->cdn_subscriber, 'rewrite' ] ) );
+			$this->assertFalse( has_filter( 'rocket_buffer', [ $this->cdn_subscriber, 'rewrite_srcset' ] ) );
 
 			Functions\expect( 'get_option' )
 				->once()
@@ -91,9 +92,11 @@ class Test_DisableOptionsOnAmp extends TestCase {
 			}
 
 			if ( in_array( $config[ 'amp_options' ][ 'theme_support' ], [ 'transitional', 'reader' ], true ) ) {
-				$this->assertTrue( has_filter( 'rocket_buffer', [ $this->amp, 'rewrite_cdn' ] ) );
+				$this->assertTrue( has_filter( 'rocket_buffer', [ $this->cdn_subscriber, 'rewrite' ] ) );
+				$this->assertTrue( has_filter( 'rocket_buffer', [ $this->cdn_subscriber, 'rewrite_srcset' ] ) );
 			} else {
-				$this->assertFalse( has_filter( 'rocket_buffer', [ $this->amp, 'rewrite_cdn' ] ) );
+				$this->assertFalse( has_filter( 'rocket_buffer', [ $this->cdn_subscriber, 'rewrite' ] ) );
+				$this->assertFalse( has_filter( 'rocket_buffer', [ $this->cdn_subscriber, 'rewrite_srcset' ] ) );
 			}
 		}
 	}
