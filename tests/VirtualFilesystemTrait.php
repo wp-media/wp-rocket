@@ -14,6 +14,10 @@ trait VirtualFilesystemTrait {
 	protected $wp_cache_constant = false;
 	protected $wp_content_dir    = 'vfs://public/wp-content';
 
+	protected function defineRunningVfsConstant() {
+
+	}
+
 	protected function initDefaultStructure() {
 		if ( empty( $this->config ) ) {
 			$this->loadConfig();
