@@ -25,18 +25,13 @@ class Test_RewriteCdn extends TestCase {
 		parent::setUp();
 
 		$this->options        = Mockery::mock( Options_Data::class );
-		$this->amp            = new AMP( $this->options );
-		$this->container      = Mockery::mock( Container::class );
 		$this->cdn_subscriber = Mockery::mock( Subscriber::class );
+		$this->amp            = new AMP( $this->options, $this->cdn_subscriber );
 	}
 
 	public function testShouldDoExpected() {
 		$html = '<html><head></head><body></body></html>';
-		Filters\expectApplied( 'rocket_container' )->once()->andReturn( $this->container );
-		$this->container->shouldReceive( 'get' )
-		              ->once()
-		              ->with( 'cdn_subscriber' )
-					  ->andReturn( $this->cdn_subscriber );
+
 		$this->cdn_subscriber->shouldReceive( 'rewrite' )
 		              ->once()
 		              ->with( $html )

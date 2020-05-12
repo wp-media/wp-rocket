@@ -2,6 +2,7 @@
 namespace WP_Rocket\ThirdParty\Plugins\Optimization;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\CDN\Subscriber;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
@@ -12,6 +13,13 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
 class AMP implements Subscriber_Interface {
 	const QUERY       = 'amp';
 	const AMP_OPTIONS = 'amp-options';
+
+	/**
+	 * WP Rocket CDN Subscriber
+	 *
+	 * @var WP_Rocket\Engine\CDN\Subscriber
+	 */
+	private $cdn_subscriber;
 
 	/**
 	 * WP Rocket Options instance
@@ -25,8 +33,9 @@ class AMP implements Subscriber_Interface {
 	 *
 	 * @param Options_Data $options WP Rocket Options instance.
 	 */
-	public function __construct( Options_Data $options ) {
-		$this->options = $options;
+	public function __construct( Options_Data $options, $cdn_subscriber ) {
+		$this->options        = $options;
+		$this->cdn_subscriber = $cdn_subscriber;
 	}
 
 	/**
@@ -101,6 +110,7 @@ class AMP implements Subscriber_Interface {
 		if ( ! empty( $options['theme_support'] )
 			&&
 			in_array( $options['theme_support'], [ 'transitional', 'reader' ], true ) ) {
+			add_filter( 'rocket_cdn_reject_files', [ $this, 'reject_files' ], PHP_INT_MAX );
 			add_filter( 'rocket_buffer', [ $this, 'rewrite_cdn' ] );
 		}
 
@@ -119,6 +129,24 @@ class AMP implements Subscriber_Interface {
 	}
 
 	/**
+	 * Adds all CSS and JS files to the list of excluded CDN files.
+	 *
+	 * @since 3.5.5
+	 *
+	 * @param  array $files List of excluded files.
+	 * @return array        List of excluded files.
+	 */
+	public function reject_files( $files ) {
+		return array_merge(
+			$files,
+			[
+				'(.*).css',
+				'(.*).js',
+			]
+		);
+	}
+
+	/**
 	 * Rewrites URLs to the CDN URLs if allowed.
 	 * Rewrites URLs in srcset attributes if allowed.
 	 *
@@ -128,9 +156,7 @@ class AMP implements Subscriber_Interface {
 	 * @return string       HTML content.
 	 */
 	public function rewrite_cdn( $html ) {
-		$container      = apply_filters( 'rocket_container', '' );
-		$cdn_subscriber = $container->get( 'cdn_subscriber' );
-		$html           = $cdn_subscriber->rewrite( $html );
-		return $cdn_subscriber->rewrite_srcset( $html );
+		$html = $this->cdn_subscriber->rewrite( $html );
+		return $this->cdn_subscriber->rewrite_srcset( $html );
 	}
 }
