@@ -34,6 +34,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'optimus_webp_subscriber',
 		'bigcommerce_subscriber',
 		'amp_subscriber',
+		'cloudways',
 	];
 
 	/**
@@ -69,5 +70,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'amp_subscriber', 'WP_Rocket\ThirdParty\Plugins\Optimization\AMP' )
 			->withArgument( $options )
 			->withArgument( $this->getContainer()->get( 'cdn_subscriber' ) );
+		$this->getContainer()->share( 'cloudways', 'WP_Rocket\ThirdParty\Hostings\Cloudways' );
 	}
 }

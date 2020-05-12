@@ -596,43 +596,37 @@ function rocket_clean_cache_busting( $extensions = [ 'js', 'css' ] ) {
 	}
 }
 
-
 /**
  * Delete one or several cache files.
  *
+ * @since 3.5.5 Optimizes by grabbing root cache dirs once, bailing out when file/dir doesn't exist, & directly
+ *        deleting files.
  * @since 3.5.4 Replaces glob and optimizes.
  * @since 2.0   Delete cache files for all users.
  * @since 1.1.0 Add filter rocket_clean_files.
  * @since 1.0
  *
- * @param  string|array $urls URLs of cache files to be deleted.
- * @return void
+ * @param string|array              $urls       URLs of cache files to be deleted.
+ * @param WP_Filesystem_Direct|null $filesystem Optional. Instance of filesystem handler.
  */
-function rocket_clean_files( $urls ) {
+function rocket_clean_files( $urls, $filesystem = null ) {
 	$urls = (array) $urls;
+	if ( empty( $urls ) ) {
+		return;
+	}
 
-	/**
-	 * Filter URLs that the cache file to be deleted.
-	 *
-	 * @since 1.1.0
-	 *
-	 * @param array URLs that will be returned.
-	 */
-	$urls = (array) apply_filters( 'rocket_clean_files', $urls );
 	$urls = array_filter( $urls );
 	if ( empty( $urls ) ) {
 		return;
 	}
 
-	$cache_path = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' );
-	$iterator   = _rocket_get_cache_path_iterator( $cache_path );
-	if ( false === $iterator ) {
-		return;
-	}
-
 	/** This filter is documented in inc/front/htaccess.php */
-	$url_no_dots      = (bool) apply_filters( 'rocket_url_no_dots', false );
-	$cache_path_regex = str_replace( '/', '\/', $cache_path );
+	$url_no_dots = (bool) apply_filters( 'rocket_url_no_dots', false );
+	$cache_path  = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' );
+
+	if ( empty( $filesystem ) ) {
+		$filesystem = rocket_direct_filesystem();
+	}
 
 	/**
 	 * Fires before all cache files are deleted.
@@ -644,6 +638,7 @@ function rocket_clean_files( $urls ) {
 	do_action( 'before_rocket_clean_files', $urls ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 	foreach ( $urls as $url ) {
+
 		/**
 		 * Fires before the cache file is deleted.
 		 *
@@ -657,8 +652,20 @@ function rocket_clean_files( $urls ) {
 			$url = str_replace( '.', '_', $url );
 		}
 
-		foreach ( _rocket_get_entries_regex( $iterator, $url, $cache_path_regex ) as $entry ) {
-			rocket_rrmdir( $entry->getPathname() );
+		$parsed_url = get_rocket_parse_url( $url );
+
+		foreach ( _rocket_get_cache_dirs( $parsed_url['host'], $cache_path ) as $dir ) {
+			$entry = $dir . $parsed_url['path'];
+			// Skip if the dir/file does not exist.
+			if ( ! $filesystem->exists( $entry ) ) {
+				continue;
+			}
+
+			if ( $filesystem->is_dir( $entry ) ) {
+				rocket_rrmdir( $entry, [], $filesystem );
+			} else {
+				$filesystem->delete( $entry );
+			}
 		}
 
 		/**
@@ -1053,12 +1060,16 @@ function rocket_clean_cache_dir() {
  * @since 3.5.3 Replaces glob and optimizes.
  * @since 1.0
  *
- * @param string $dir              File/Directory to delete.
- * @param array  $dirs_to_preserve Optional. Dirs that should not be deleted.
+ * @param string                    $dir              File/Directory to delete.
+ * @param array                     $dirs_to_preserve Optional. Dirs that should not be deleted.
+ * @param WP_Filesystem_Direct|null $filesystem       Optional. Instance of filesystem handler.
  */
-function rocket_rrmdir( $dir, array $dirs_to_preserve = [] ) {
-	$dir        = untrailingslashit( $dir );
-	$filesystem = rocket_direct_filesystem();
+function rocket_rrmdir( $dir, array $dirs_to_preserve = [], $filesystem = null ) {
+	$dir = untrailingslashit( $dir );
+
+	if ( empty( $filesystem ) ) {
+		$filesystem = rocket_direct_filesystem();
+	}
 
 	/**
 	 * Fires before a file/directory cache is deleted
@@ -1416,4 +1427,57 @@ function _rocket_get_entries_regex( Iterator $iterator, $url, $cache_path = '' )
 	} catch ( Exception $e ) {
 		return [];
 	}
+}
+
+/**
+ * Gets the directories for the given URL host from the cache/wp-rocket/ directory or stored memory.
+ *
+ * @since  3.5.5
+ * @access private
+ *
+ * @param string $url_host   The URL's host.
+ * @param string $cache_path Cache's path, e.g. cache/wp-rocket/.
+ * @param bool   $hard_reset Optional. When true, resets the static domain directories array and bails out.
+ *
+ * @return array
+ */
+function _rocket_get_cache_dirs( $url_host, $cache_path = '', $hard_reset = false ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
+	static $domain_dirs = [];
+
+	if ( true === $hard_reset ) {
+		$domain_dirs = [];
+
+		return;
+	}
+
+	if ( isset( $domain_dirs[ $url_host ] ) ) {
+		return $domain_dirs[ $url_host ];
+	}
+
+	if ( empty( $cache_path ) ) {
+		$cache_path = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' );
+	}
+
+	try {
+		$iterator = new IteratorIterator(
+			new FilesystemIterator( $cache_path )
+		);
+	} catch ( Exception $e ) {
+		return [];
+	}
+
+	$regex = sprintf( '/%1$s%2$s(.*)/i', str_replace( '/', '\/', $cache_path ), $url_host );
+
+	try {
+		$entries = new RegexIterator( $iterator, $regex );
+	} catch ( Exception $e ) {
+		return [];
+	}
+
+	$domain_dirs[ $url_host ] = [];
+	foreach ( $entries as $entry ) {
+		$domain_dirs[ $url_host ][] = $entry->getPathname();
+	}
+
+	return $domain_dirs[ $url_host ];
 }
