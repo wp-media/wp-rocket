@@ -1423,21 +1423,7 @@ function _rocket_get_cache_dirs( $url_host, $cache_path = '', $hard_reset = fals
 	}
 
 	if ( empty( $cache_path ) ) {
-		$cache_path = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' );
-	}
-
-	$is_windows = (
-		DIRECTORY_SEPARATOR === '\\'
-		&&
-		(
-			! rocket_get_constant( 'WP_ROCKET_IS_TESTING', false )
-			||
-			substr( $cache_path, 0, 6 ) !== 'vfs://'
-		)
-	);
-
-	if ( $is_windows ) {
-		$cache_path = str_replace( '/', '\\', $cache_path );
+		$cache_path = _rocket_get_cache_path();
 	}
 
 	try {
@@ -1450,9 +1436,7 @@ function _rocket_get_cache_dirs( $url_host, $cache_path = '', $hard_reset = fals
 
 	$regex = sprintf(
 		'/%1$s%2$s(.*)/i',
-		$is_windows
-			? str_replace( '\\', '\\\\', $cache_path )
-			: str_replace( '/', '\/', $cache_path ),
+		_rocket_normalize_path( $cache_path, true ),
 		$url_host
 	);
 
@@ -1530,4 +1514,16 @@ function _rocket_is_windows_fs( $hard_reset = false ) { // phpcs:ignore WordPres
 	}
 
 	return $is_windows;
+}
+
+/**
+ * Gets the normalized cache path, i.e. normalizes constant "WP_ROCKET_CACHE_PATH".
+ *
+ * @since  3.5.5
+ * @access private
+ *
+ * @return string
+ */
+function _rocket_get_cache_path() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
+	return _rocket_normalize_path( rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) );
 }
