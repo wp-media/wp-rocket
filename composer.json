@@ -87,13 +87,14 @@
 	},
 	"scripts": {
 		"test-unit": "\"vendor/bin/phpunit\" --testsuite unit --colors=always --configuration tests/Unit/phpunit.xml.dist",
-		"test-integration": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --exclude-group AdminOnly,WithSmush,WithWoo,WithAmp,WithAmpAndCloudflare,DoCloudflare,Multisite",
+		"test-integration": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --exclude-group AdminOnly,WithSmush,WithWoo,WithAmp,WithAmpAndCloudflare,Cloudways,DoCloudflare,Multisite",
 		"test-integration-adminonly": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group AdminOnly",
 		"test-integration-docloudflare": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group DoCloudflare",
 		"test-integration-withsmush": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group WithSmush",
 		"test-integration-withwoo": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group WithWoo",
 		"test-integration-withamp": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group WithAmp",
 		"test-integration-withampcloudflare": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group WithAmpAndCloudflare",
+		"test-integration-cloudways": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group Cloudways",
 		"test-integration-multisite": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group Multisite",
 		"run-tests": [
 			"@test-unit",
@@ -104,6 +105,7 @@
 			"@test-integration-withwoo",
 			"@test-integration-withamp",
 			"@test-integration-withampcloudflare",
+			"@test-integration-cloudways",
 			"@test-integration-multisite"
 		],
 		"run-stan":"vendor/bin/phpstan analyze --memory-limit=2G --no-progress",

@@ -44,6 +44,8 @@ class Test_Enable extends TestCase {
 		$options->shouldReceive( 'set' )
 		        ->with( 'settings', $expected );
 
+		Functions\expect( 'rocket_clean_domain' )->once();
+
 		( new CDNOptionsManager(
 			$options,
 			$options_array

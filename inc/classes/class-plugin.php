@@ -164,6 +164,7 @@ class Plugin {
 			'detect_missing_tags_subscriber',
 			'purge_actions_subscriber',
 			'amp_subscriber',
+			'cloudways',
 		];
 
 		if ( get_rocket_option( 'do_cloudflare' ) ) {
