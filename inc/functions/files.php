@@ -1397,7 +1397,7 @@ function _rocket_get_cache_path_iterator( $cache_path ) { // phpcs:ignore WordPr
 	}
 }
 
-/*
+/**
  * Gets the directories for the given URL host from the cache/wp-rocket/ directory or stored memory.
  *
  * @since  3.5.5
