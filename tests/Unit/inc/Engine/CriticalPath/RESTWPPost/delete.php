@@ -1,11 +1,15 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\RESTDelete;
+namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\RESTWPPost;
 
 use Brain\Monkey\Functions;
 use WP_REST_Request;
+use WP_Rocket\Engine\CriticalPath\APIClient;
+use WP_Rocket\Engine\CriticalPath\DataManager;
 use WP_Rocket\Engine\CriticalPath\RESTDelete;
+use WP_Rocket\Engine\CriticalPath\RESTWPPost;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
+use WP_Error;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\RESTDelete::delete
@@ -13,13 +17,14 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
  * @group  vfs
  */
 class Test_Delete extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/Engine/CriticalPath/RESTDelete/delete.php';
+	protected $path_to_test_data = '/inc/Engine/CriticalPath/RESTWPPost/delete.php';
 	protected static $mockCommonWpFunctionsInSetUp = true;
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/WP_REST_Request.php';
+		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/WP_Error.php';
 	}
 
 	/**
@@ -40,15 +45,19 @@ class Test_Delete extends FilesystemTestCase {
 			return;
 		}
 
-		Functions\expect( 'get_post_type' )
-			->once()
-			->andReturn( $post_type );
+		if( 'post_not_exists' !== $expected['code'] ){
+			Functions\expect( 'get_post_type' )
+				->once()
+				->andReturn( $post_type );
+		}else{
+			Functions\expect( 'get_post_type' )
+				->never();
+		}
 
 		Functions\expect( 'get_current_blog_id' )
 			->once()
 			->andReturn( 1 );
 		Functions\expect( 'get_permalink' )
-			->once()
 			->with( $post_id )
 			->andReturnUsing( function ( $post_id ) use ( $expected ) {
 				return 'post_not_exists' === $expected['code']
@@ -56,9 +65,20 @@ class Test_Delete extends FilesystemTestCase {
 					: "http://example.org/?p={$post_id}";
 			} );
 
+		//is_wp_error is called two times at normal/ideal case.
+		//validate_item_for_delete
+		//delete_cpcss
+		Functions\expect( 'is_wp_error' )
+			->andReturn(
+				('post_not_exists' === $expected['code']),
+				in_array($expected['code'], ['cpcss_not_exists', 'cpcss_deleted_failed'])
+			);
+
 		Functions\expect( 'rest_ensure_response' )->once()->andReturnFirstArg();
 
-		$instance      = new RESTDelete( 'wp-content/cache/critical-css/' );
+		$api_client = new APIClient();
+		$data_manager = new DataManager('wp-content/cache/critical-css/');
+		$instance = new RESTWPPost( $data_manager, $api_client );
 		$request       = new WP_REST_Request();
 		$request['id'] = $post_id;
 		$this->assertSame( $config['cpcss_exists_before'], $this->filesystem->exists( $file ) );

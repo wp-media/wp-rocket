@@ -112,7 +112,7 @@ abstract class RESTWP {
 		$output  = null;
 
 		// validate item.
-		$validated = $this->validate_item( $item_id );
+		$validated = $this->validate_item_for_generate( $item_id );
 		if ( ! is_wp_error( $validated ) ) {
 			// get item url.
 			$item_url = $this->get_url( $item_id );
@@ -214,6 +214,7 @@ abstract class RESTWP {
 		$job_details = $this->api_client->get_job_details( $job_id, $item_url );
 
 		if ( is_wp_error( $job_details ) ) {
+			$this->data_manager->delete_cache_job_id( $item_url );
 			return $this->return_error( $job_details );
 		}
 
@@ -319,7 +320,17 @@ abstract class RESTWP {
 	 * @param int $item_id ID for this item to be validated.
 	 * @return true|WP_Error
 	 */
-	abstract protected function validate_item( $item_id );
+	abstract protected function validate_item_for_generate( $item_id );
+
+	/**
+	 * Validate the item to be sent to Delete CPCSS.
+	 *
+	 * @since 3.6
+	 *
+	 * @param int $item_id ID for this item to be validated.
+	 * @return true|WP_Error
+	 */
+	abstract protected function validate_item_for_delete( $item_id );
 
 	/**
 	 * Get url for this item.
@@ -355,7 +366,7 @@ abstract class RESTWP {
 		$output  = null;
 
 		// validate item.
-		$validated = $this->validate_item( $item_id );
+		$validated = $this->validate_item_for_delete( $item_id );
 		if ( ! is_wp_error( $validated ) ) {
 			$output = $this->process_delete( $item_id );
 		}else {
@@ -414,7 +425,7 @@ abstract class RESTWP {
 	 * @param WP_Error $error Error that will be converted to array.
 	 * @return array
 	 */
-	protected function return_error( WP_Error $error ) {
+	protected function return_error( $error ) {
 		$error_data = $error->get_error_data();
 
 		return $this->return_array_response(
@@ -456,14 +467,14 @@ abstract class RESTWP {
 
 		return $this->return_error(
 			new WP_Error(
-			'cpcss_generation_timeout',
-			// translators: %1$s = Item URL.
-			sprintf( __( 'Critical CSS for %1$s timeout. Please retry a little later.', 'rocket' ), $item_url ),
-			[
-				'status' => 400,
-			]
-		)
-			);
+				'cpcss_generation_timeout',
+				// translators: %1$s = Item URL.
+				sprintf( __( 'Critical CSS for %1$s timeout. Please retry a little later.', 'rocket' ), $item_url ),
+				[
+					'status' => 400,
+				]
+			)
+		);
 	}
 
 }

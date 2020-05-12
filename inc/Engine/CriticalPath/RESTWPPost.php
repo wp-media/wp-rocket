@@ -26,7 +26,7 @@ class RESTWPPost extends RESTWP {
 	 * @param int $post_id ID for this post to be validated.
 	 * @return true|WP_Error
 	 */
-	protected function validate_item( $post_id ) {
+	protected function validate_item_for_generate( $post_id ) {
 		$status = get_post_status( $post_id );
 
 		if ( ! $status ) {
@@ -43,6 +43,28 @@ class RESTWPPost extends RESTWP {
 			return new WP_Error(
 				'post_not_published',
 				__( 'Cannot generate CPCSS for unpublished post.', 'rocket' ),
+				[
+					'status' => 400,
+				]
+			);
+		}
+
+		return true;
+	}
+
+	/**
+	 * Validate the item to be sent to delete CPCSS.
+	 *
+	 * @since 3.6
+	 *
+	 * @param int $post_id ID for this post to be validated.
+	 * @return true|WP_Error
+	 */
+	protected function validate_item_for_delete( $post_id ) {
+		if ( empty( get_permalink( $post_id ) ) ) {
+			return new WP_Error(
+				'post_not_exists',
+				__( 'Requested post does not exist.', 'rocket' ),
 				[
 					'status' => 400,
 				]
