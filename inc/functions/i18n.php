@@ -319,10 +319,12 @@ function get_rocket_i18n_to_preserve( $current_lang ) { // phpcs:ignore WordPres
 
 	// Stock all URLs of langs to preserve.
 	$langs_to_preserve = [];
-	$cache_path        = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' );
+	$cache_path        = _rocket_get_wp_rocket_cache_path();
 	foreach ( $langs as $lang ) {
 		$parse_url           = get_rocket_parse_url( get_rocket_i18n_home_url( $lang ) );
-		$langs_to_preserve[] = "{$cache_path}{$parse_url['host']}(.*)/" . trim( $parse_url['path'], '/' );
+		$langs_to_preserve[] = _rocket_normalize_path(
+			"{$cache_path}{$parse_url['host']}(.*)/" . trim( $parse_url['path'], '/' )
+		);
 	}
 
 	/**
