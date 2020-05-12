@@ -622,7 +622,7 @@ function rocket_clean_files( $urls, $filesystem = null ) {
 
 	/** This filter is documented in inc/front/htaccess.php */
 	$url_no_dots = (bool) apply_filters( 'rocket_url_no_dots', false );
-	$cache_path  = _rocket_get_cache_path( 'WP_ROCKET_CACHE_PATH' );
+	$cache_path  = _rocket_get_wp_rocket_cache_path();
 
 	if ( empty( $filesystem ) ) {
 		$filesystem = rocket_direct_filesystem();
@@ -847,7 +847,7 @@ function rocket_clean_domain( $lang = '', $filesystem = null ) {
 
 	/** This filter is documented in inc/front/htaccess.php */
 	$url_no_dots      = (bool) apply_filters( 'rocket_url_no_dots', false );
-	$cache_path       = _rocket_get_cache_path();
+	$cache_path       = _rocket_get_wp_rocket_cache_path();
 	$dirs_to_preserve = get_rocket_i18n_to_preserve( $lang );
 
 	if ( empty( $filesystem ) ) {
@@ -1423,7 +1423,7 @@ function _rocket_get_cache_dirs( $url_host, $cache_path = '', $hard_reset = fals
 	}
 
 	if ( empty( $cache_path ) ) {
-		$cache_path = _rocket_get_cache_path();
+		$cache_path = _rocket_get_wp_rocket_cache_path();
 	}
 
 	try {
@@ -1524,6 +1524,6 @@ function _rocket_is_windows_fs( $hard_reset = false ) { // phpcs:ignore WordPres
  *
  * @return string
  */
-function _rocket_get_cache_path() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
+function _rocket_get_wp_rocket_cache_path() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 	return _rocket_normalize_path( rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) );
 }
