@@ -9,8 +9,12 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
  * @covers ::rocket_clean_files
+ * @uses  ::_rocket_get_wp_rocket_cache_path
+ * @uses  ::rocket_get_constant
  * @uses  ::rocket_rrmdir
  * @uses  ::_rocket_get_cache_dirs
+ * @uses  ::_rocket_normalize_path
+ * @uses  ::_rocket_is_windows_fs
  *
  * @group Functions
  * @group Files
@@ -32,14 +36,6 @@ class Test_RocketCleanFiles extends FilesystemTestCase {
 
 		// Clean out the cached dirs before we leave this test class.
 		_rocket_get_cache_dirs( '', '', true );
-	}
-
-	public function setUp() {
-		parent::setUp();
-
-		Functions\expect( 'rocket_get_constant' )
-			->with( 'WP_ROCKET_CACHE_PATH' )
-			->andReturn( 'vfs://public/wp-content/cache/wp-rocket/' );
 	}
 
 	public function tearDown() {
@@ -84,22 +80,7 @@ class Test_RocketCleanFiles extends FilesystemTestCase {
 
 		foreach ( $urls as $url ) {
 			Actions\expectDone( 'before_rocket_clean_file' )->once()->with( $url );
-			Functions\expect( 'get_rocket_parse_url' )
-				->once()
-				->with( $url )
-				->andReturnUsing(
-					function ( $url ) {
-						return array_merge(
-							[
-								'host'   => '',
-								'path'   => '',
-								'scheme' => '',
-								'query'  => '',
-							],
-							parse_url( $url )
-						);
-					}
-				);
+			$this->stubGetRocketParseUrl( $url );
 			Actions\expectDone( 'after_rocket_clean_file' )->once()->with( $url );
 		}
 

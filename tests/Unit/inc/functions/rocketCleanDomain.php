@@ -13,9 +13,12 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
  * @uses  ::get_rocket_i18n_to_preserve
  * @uses  ::get_rocket_i18n_uri
  * @uses  ::get_rocket_parse_url
+ * @uses  ::_rocket_get_wp_rocket_cache_path
  * @uses  ::rocket_get_constant
  * @uses  ::rocket_rrmdir
  * @uses  ::_rocket_get_cache_dirs
+ * @uses  ::_rocket_normalize_path
+ * @uses  ::_rocket_is_windows_fs
  *
  * @group Functions
  * @group Files
