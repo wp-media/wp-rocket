@@ -51,6 +51,8 @@ class Test_CpcssSection extends FilesystemTestCase {
 			->with( 'async_css', 0 )
 			->andReturn( $config['options']['async_css'] );
 
+		Functions\when('esc_js')->returnArg();
+
 		Functions\when( 'wp_sprintf_l' )->alias( function ( $pattern, $args ) {
 			if ( substr( $pattern, 0, 2 ) != '%l' ) {
 				return $pattern;
@@ -93,6 +95,8 @@ class Test_CpcssSection extends FilesystemTestCase {
 		];
 
 		Functions\when( 'get_post_meta' )->justReturn( $config['is_option_excluded'] );
+		Functions\when( 'rest_url' )->justReturn( 'http://example.org/wp-rocket/v1/cpcss/post/' . $config['post']['ID'] );
+		Functions\when( 'wp_create_nonce' )->justReturn( 'wp_rest_nonce' );
 
 		$this->assertSame(
 			$this->format_the_html( $expected ),

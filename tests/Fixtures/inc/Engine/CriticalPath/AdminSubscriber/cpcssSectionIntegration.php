@@ -22,7 +22,6 @@ return [
 							'cpcss' => [
 								'container.php'  => file_get_contents( WP_ROCKET_PLUGIN_ROOT . 'views/metabox/cpcss/container.php' ),
 								'generate.php'   => file_get_contents( WP_ROCKET_PLUGIN_ROOT . 'views/metabox/cpcss/generate.php' ),
-								'regenerate.php' => file_get_contents( WP_ROCKET_PLUGIN_ROOT . 'views/metabox/cpcss/regenerate.php' ),
 							],
 						],
 					],
@@ -46,22 +45,36 @@ return [
 				'is_option_excluded' => false,
 			],
 			'expected' => '<div class="inside">
-			<h3>Critical Path CSS</h3>
-			<div id="rocket-metabox-cpcss-notice"></div>
-			<div id="rocket-metabox-cpcss-content">
-			<p>
-			Generate specific Critical Path CSS for this post. <a href="" target="_blank" rel="noopener noreferrer">More info</a></p>
-			<div class="components-panel__row">
-			<button id="rocket-generate-post-cpss" class="button components-button is-secondary"  disabled=\'disabled\'>
-			Generate Specific CPCSS	</button>
+				<h3>Critical Path CSS</h3>
+				<div id="rocket-metabox-cpcss-content">
+					<p class="cpcss_generate ">
+						Generate specific Critical Path CSS for this post.<a href="" target="_blank" rel="noopener noreferrer">More info</a>
+					</p>
+					<p class="cpcss_regenerate hidden">
+						This post uses specific Critical Path CSS.<a href="" target="_blank" rel="noopener noreferrer">More info</a>
+					</p>
+					<div class="components-panel__row cpcss_generate cpcss_regenerate">
+						<button id="rocket-generate-post-cpss" class="button components-button is-secondary"  disabled=\'disabled\'>
+							<span style="display: none;" class="spinner"></span>
+							<span class="rocket-generate-post-cpss-btn-txt">Generate Specific CPCSS</span>
+						</button>
+					</div>
+					<div class="components-panel__row cpcss_regenerate hidden">
+						<button id="rocket-delete-post-cpss" class="button components-button is-secondary"  disabled=\'disabled\'><span>Revert back to the default CPCSS</span></button>
+					</div>
+				</div>
 			</div>
+			<div id="cpcss_response_notice" class="components-notice is-notice is-warning">
+				<div class="components-notice__content">
+					<p>Enable Optimize CSS delivery in WP Rocket settings to use this feature.</p>
+				</div>
 			</div>
-			</div>
-			<div class="components-notice is-notice is-warning">
-			<div class="components-notice__content">
-			<p>Enable Optimize CSS delivery in WP Rocket settings to use this feature.</p>
-			</div>
-			</div>',
+			<script>
+	var cpcss_rest_url       = \'http://example.org/index.php?rest_route=/wp-rocket/v1/cpcss/post/1\';
+	var cpcss_rest_nonce     = \'wp_rest_nonce\';
+	var cpcss_generate_btn   = \'Generate Specific CPCSS\';
+	var cpcss_regenerate_btn = \'Regenerate specific CPCSS\';
+</script>',
 		],
 		'testShouldDisplayRegenerateTemplateOptionDisabledWarning' => [
 			'config'   => [
@@ -76,31 +89,36 @@ return [
 				'is_option_excluded' => false,
 			],
 			'expected' => '<div class="inside">
-			<h3>
-			Critical Path CSS</h3>
-			<div id="rocket-metabox-cpcss-notice">
+				<h3>Critical Path CSS</h3>
+				<div id="rocket-metabox-cpcss-content">
+					<p class="cpcss_generate hidden">
+						Generate specific Critical Path CSS for this post.<a href="" target="_blank" rel="noopener noreferrer">More info</a>
+					</p>
+					<p class="cpcss_regenerate ">
+						This post uses specific Critical Path CSS.<a href="" target="_blank" rel="noopener noreferrer">More info</a>
+					</p>
+					<div class="components-panel__row cpcss_generate cpcss_regenerate">
+						<button id="rocket-generate-post-cpss" class="button components-button is-secondary"  disabled=\'disabled\'>
+							<span style="display: none;" class="spinner"></span>
+							<span class="rocket-generate-post-cpss-btn-txt">Regenerate specific CPCSS</span>
+						</button>
+					</div>
+					<div class="components-panel__row cpcss_regenerate ">
+						<button id="rocket-delete-post-cpss" class="button components-button is-secondary"  disabled=\'disabled\'><span>Revert back to the default CPCSS</span></button>
+					</div>
+				</div>
 			</div>
-			<div id="rocket-metabox-cpcss-content">
-			<p>
-			This post uses specific Critical Path CSS.<a href="" target="_blank" rel="noopener noreferrer">
-			More info</a>
-			</p>
-			<div class="components-panel__row">
-			<button id="rocket-generate-post-cpss" class="components-button is-link"  disabled=\'disabled\'>
-			Regenerate specific CPCSS</button>
+			<div id="cpcss_response_notice" class="components-notice is-notice is-warning">
+				<div class="components-notice__content">
+					<p>Enable Optimize CSS delivery in WP Rocket settings to use this feature.</p>
+				</div>
 			</div>
-			<div class="components-panel__row">
-			<button id="rocket-delete-post-cpss" class="components-button is-link is-destructive"  disabled=\'disabled\'>
-			Revert back to the default CPCSS</button>
-			</div>
-			</div>
-			</div>
-			<div class="components-notice is-notice is-warning">
-			<div class="components-notice__content">
-			<p>
-			Enable Optimize CSS delivery in WP Rocket settings to use this feature.</p>
-			</div>
-			</div>',
+			<script>
+	var cpcss_rest_url       = \'http://example.org/index.php?rest_route=/wp-rocket/v1/cpcss/post/2\';
+	var cpcss_rest_nonce     = \'wp_rest_nonce\';
+	var cpcss_generate_btn   = \'Generate Specific CPCSS\';
+	var cpcss_regenerate_btn = \'Regenerate specific CPCSS\';
+</script>',
 		],
 		'testShouldDisplayGenerateTemplatePostNotPublishedWarning' => [
 			'config'   => [
@@ -115,22 +133,36 @@ return [
 				'is_option_excluded' => false,
 			],
 			'expected' => '<div class="inside">
-			<h3>Critical Path CSS</h3>
-			<div id="rocket-metabox-cpcss-notice"></div>
-			<div id="rocket-metabox-cpcss-content">
-			<p>
-			Generate specific Critical Path CSS for this post. <a href="" target="_blank" rel="noopener noreferrer">More info</a></p>
-			<div class="components-panel__row">
-			<button id="rocket-generate-post-cpss" class="button components-button is-secondary"  disabled=\'disabled\'>
-			Generate Specific CPCSS	</button>
+				<h3>Critical Path CSS</h3>
+				<div id="rocket-metabox-cpcss-content">
+					<p class="cpcss_generate ">
+						Generate specific Critical Path CSS for this post.<a href="" target="_blank" rel="noopener noreferrer">More info</a>
+					</p>
+					<p class="cpcss_regenerate hidden">
+						This post uses specific Critical Path CSS.<a href="" target="_blank" rel="noopener noreferrer">More info</a>
+					</p>
+					<div class="components-panel__row cpcss_generate cpcss_regenerate">
+						<button id="rocket-generate-post-cpss" class="button components-button is-secondary"  disabled=\'disabled\'>
+							<span style="display: none;" class="spinner"></span>
+							<span class="rocket-generate-post-cpss-btn-txt">Generate Specific CPCSS</span>
+						</button>
+					</div>
+					<div class="components-panel__row cpcss_regenerate hidden">
+						<button id="rocket-delete-post-cpss" class="button components-button is-secondary"  disabled=\'disabled\'><span>Revert back to the default CPCSS</span></button>
+					</div>
+				</div>
 			</div>
+			<div id="cpcss_response_notice" class="components-notice is-notice is-warning">
+				<div class="components-notice__content">
+					<p>Publish the post to use this feature.</p>
+				</div>
 			</div>
-			</div>
-			<div class="components-notice is-notice is-warning">
-			<div class="components-notice__content">
-			<p>Publish the post to use this feature.</p>
-			</div>
-			</div>',
+			<script>
+	var cpcss_rest_url       = \'http://example.org/index.php?rest_route=/wp-rocket/v1/cpcss/post/1\';
+	var cpcss_rest_nonce     = \'wp_rest_nonce\';
+	var cpcss_generate_btn   = \'Generate Specific CPCSS\';
+	var cpcss_regenerate_btn = \'Regenerate specific CPCSS\';
+</script>',
 		],
 		'testShouldDisplayRegenerateTemplatePostNotPublishedWarning' => [
 			'config'   => [
@@ -145,26 +177,36 @@ return [
 				'is_option_excluded' => false,
 			],
 			'expected' => '<div class="inside">
-			<h3>Critical Path CSS</h3>
-			<div id="rocket-metabox-cpcss-notice"></div>
-			<div id="rocket-metabox-cpcss-content">
-			<p>
-			This post uses specific Critical Path CSS. <a href="" target="_blank" rel="noopener noreferrer">More info</a></p>
-			<div class="components-panel__row">
-			<button id="rocket-generate-post-cpss" class="components-button is-link"  disabled=\'disabled\'>
-			Regenerate specific CPCSS	</button>
+				<h3>Critical Path CSS</h3>
+				<div id="rocket-metabox-cpcss-content">
+					<p class="cpcss_generate hidden">
+						Generate specific Critical Path CSS for this post.<a href="" target="_blank" rel="noopener noreferrer">More info</a>
+					</p>
+					<p class="cpcss_regenerate ">
+						This post uses specific Critical Path CSS.<a href="" target="_blank" rel="noopener noreferrer">More info</a>
+					</p>
+					<div class="components-panel__row cpcss_generate cpcss_regenerate">
+						<button id="rocket-generate-post-cpss" class="button components-button is-secondary"  disabled=\'disabled\'>
+							<span style="display: none;" class="spinner"></span>
+							<span class="rocket-generate-post-cpss-btn-txt">Regenerate specific CPCSS</span>
+						</button>
+					</div>
+					<div class="components-panel__row cpcss_regenerate ">
+						<button id="rocket-delete-post-cpss" class="button components-button is-secondary"  disabled=\'disabled\'><span>Revert back to the default CPCSS</span></button>
+					</div>
+				</div>
 			</div>
-			<div class="components-panel__row">
-			<button id="rocket-delete-post-cpss" class="components-button is-link is-destructive"  disabled=\'disabled\'>
-			Revert back to the default CPCSS	</button>
+			<div id="cpcss_response_notice" class="components-notice is-notice is-warning">
+				<div class="components-notice__content">
+					<p>Publish the post to use this feature.</p>
+				</div>
 			</div>
-			</div>
-			</div>
-			<div class="components-notice is-notice is-warning">
-			<div class="components-notice__content">
-			<p>Publish the post to use this feature.</p>
-			</div>
-			</div>',
+			<script>
+	var cpcss_rest_url       = \'http://example.org/index.php?rest_route=/wp-rocket/v1/cpcss/post/2\';
+	var cpcss_rest_nonce     = \'wp_rest_nonce\';
+	var cpcss_generate_btn   = \'Generate Specific CPCSS\';
+	var cpcss_regenerate_btn = \'Regenerate specific CPCSS\';
+</script>',
 		],
 		'testShouldDisplayGenerateTemplatePostNotPublishedAndOptionExcludedWarning' => [
 			'config'   => [
@@ -179,22 +221,36 @@ return [
 				'is_option_excluded' => true,
 			],
 			'expected' => '<div class="inside">
-			<h3>Critical Path CSS</h3>
-			<div id="rocket-metabox-cpcss-notice"></div>
-			<div id="rocket-metabox-cpcss-content">
-			<p>
-			Generate specific Critical Path CSS for this post. <a href="" target="_blank" rel="noopener noreferrer">More info</a></p>
-			<div class="components-panel__row">
-			<button id="rocket-generate-post-cpss" class="button components-button is-secondary"  disabled=\'disabled\'>
-			Generate Specific CPCSS	</button>
+				<h3>Critical Path CSS</h3>
+				<div id="rocket-metabox-cpcss-content">
+					<p class="cpcss_generate ">
+						Generate specific Critical Path CSS for this post.<a href="" target="_blank" rel="noopener noreferrer">More info</a>
+					</p>
+					<p class="cpcss_regenerate hidden">
+						This post uses specific Critical Path CSS.<a href="" target="_blank" rel="noopener noreferrer">More info</a>
+					</p>
+					<div class="components-panel__row cpcss_generate cpcss_regenerate">
+						<button id="rocket-generate-post-cpss" class="button components-button is-secondary"  disabled=\'disabled\'>
+							<span style="display: none;" class="spinner"></span>
+							<span class="rocket-generate-post-cpss-btn-txt">Generate Specific CPCSS</span>
+						</button>
+					</div>
+					<div class="components-panel__row cpcss_regenerate hidden">
+						<button id="rocket-delete-post-cpss" class="button components-button is-secondary"  disabled=\'disabled\'><span>Revert back to the default CPCSS</span></button>
+					</div>
+				</div>
 			</div>
+			<div id="cpcss_response_notice" class="components-notice is-notice is-warning">
+				<div class="components-notice__content">
+					<p>Publish the post and Enable Optimize CSS delivery in the options above to use this feature.</p>
+				</div>
 			</div>
-			</div>
-			<div class="components-notice is-notice is-warning">
-			<div class="components-notice__content">
-			<p>Publish the post and Enable Optimize CSS delivery in the options above to use this feature.</p>
-			</div>
-			</div>',
+			<script>
+	var cpcss_rest_url       = \'http://example.org/index.php?rest_route=/wp-rocket/v1/cpcss/post/1\';
+	var cpcss_rest_nonce     = \'wp_rest_nonce\';
+	var cpcss_generate_btn   = \'Generate Specific CPCSS\';
+	var cpcss_regenerate_btn = \'Regenerate specific CPCSS\';
+</script>',
 		],
 		'testShouldDisplayRegenerateTemplatePostNotPublishedAndOptionExcludedWarning' => [
 			'config'   => [
@@ -209,26 +265,36 @@ return [
 				'is_option_excluded' => true,
 			],
 			'expected' => '<div class="inside">
-			<h3>Critical Path CSS</h3>
-			<div id="rocket-metabox-cpcss-notice"></div>
-			<div id="rocket-metabox-cpcss-content">
-			<p>
-			This post uses specific Critical Path CSS. <a href="" target="_blank" rel="noopener noreferrer">More info</a></p>
-			<div class="components-panel__row">
-			<button id="rocket-generate-post-cpss" class="components-button is-link"  disabled=\'disabled\'>
-			Regenerate specific CPCSS	</button>
+				<h3>Critical Path CSS</h3>
+				<div id="rocket-metabox-cpcss-content">
+					<p class="cpcss_generate hidden">
+						Generate specific Critical Path CSS for this post.<a href="" target="_blank" rel="noopener noreferrer">More info</a>
+					</p>
+					<p class="cpcss_regenerate ">
+						This post uses specific Critical Path CSS.<a href="" target="_blank" rel="noopener noreferrer">More info</a>
+					</p>
+					<div class="components-panel__row cpcss_generate cpcss_regenerate">
+						<button id="rocket-generate-post-cpss" class="button components-button is-secondary"  disabled=\'disabled\'>
+							<span style="display: none;" class="spinner"></span>
+							<span class="rocket-generate-post-cpss-btn-txt">Regenerate specific CPCSS</span>
+						</button>
+					</div>
+					<div class="components-panel__row cpcss_regenerate ">
+						<button id="rocket-delete-post-cpss" class="button components-button is-secondary"  disabled=\'disabled\'><span>Revert back to the default CPCSS</span></button>
+					</div>
+				</div>
 			</div>
-			<div class="components-panel__row">
-			<button id="rocket-delete-post-cpss" class="components-button is-link is-destructive"  disabled=\'disabled\'>
-			Revert back to the default CPCSS	</button>
+			<div id="cpcss_response_notice" class="components-notice is-notice is-warning">
+				<div class="components-notice__content">
+					<p>Publish the post and Enable Optimize CSS delivery in the options above to use this feature.</p>
+				</div>
 			</div>
-			</div>
-			</div>
-			<div class="components-notice is-notice is-warning">
-			<div class="components-notice__content">
-			<p>Publish the post and Enable Optimize CSS delivery in the options above to use this feature.</p>
-			</div>
-			</div>',
+			<script>
+	var cpcss_rest_url       = \'http://example.org/index.php?rest_route=/wp-rocket/v1/cpcss/post/2\';
+	var cpcss_rest_nonce     = \'wp_rest_nonce\';
+	var cpcss_generate_btn   = \'Generate Specific CPCSS\';
+	var cpcss_regenerate_btn = \'Regenerate specific CPCSS\';
+</script>',
 		],
 		'testShouldDisplayGenerateTemplateOptionExcludedFromPostWarning' => [
 			'config'   => [
@@ -243,22 +309,37 @@ return [
 				'is_option_excluded' => true,
 			],
 			'expected' => '<div class="inside">
-			<h3>Critical Path CSS</h3>
-			<div id="rocket-metabox-cpcss-notice"></div>
-			<div id="rocket-metabox-cpcss-content">
-			<p>
-			Generate specific Critical Path CSS for this post. <a href="" target="_blank" rel="noopener noreferrer">More info</a></p>
-			<div class="components-panel__row">
-			<button id="rocket-generate-post-cpss" class="button components-button is-secondary"  disabled=\'disabled\'>
-			Generate Specific CPCSS	</button>
+				<h3>Critical Path CSS</h3>
+				<div id="rocket-metabox-cpcss-content">
+					<p class="cpcss_generate ">
+						Generate specific Critical Path CSS for this post.<a href="" target="_blank" rel="noopener noreferrer">More info</a>
+					</p>
+					<p class="cpcss_regenerate hidden">
+						This post uses specific Critical Path CSS.<a href="" target="_blank" rel="noopener noreferrer">More info</a>
+					</p>
+					<div class="components-panel__row cpcss_generate cpcss_regenerate">
+						<button id="rocket-generate-post-cpss" class="button components-button is-secondary"  disabled=\'disabled\'>
+							<span style="display: none;" class="spinner"></span>
+							<span class="rocket-generate-post-cpss-btn-txt">Generate Specific CPCSS</span>
+						</button>
+					</div>
+					<div class="components-panel__row cpcss_regenerate hidden">
+						<button id="rocket-delete-post-cpss" class="button components-button is-secondary"  disabled=\'disabled\'><span>Revert back to the default CPCSS</span></button>
+					</div>
+				</div>
 			</div>
+			<div id="cpcss_response_notice" class="components-notice is-notice is-warning">
+				<div class="components-notice__content">
+					<p>Enable Optimize CSS delivery in the options above to use this feature.</p>
+				</div>
 			</div>
-			</div>
-			<div class="components-notice is-notice is-warning">
-			<div class="components-notice__content">
-			<p>Enable Optimize CSS delivery in the options above to use this feature.</p>
-			</div>
-			</div>',
+			<script>
+	var cpcss_rest_url       = \'http://example.org/index.php?rest_route=/wp-rocket/v1/cpcss/post/1\';
+	var cpcss_rest_nonce     = \'wp_rest_nonce\';
+	var cpcss_generate_btn   = \'Generate Specific CPCSS\';
+	var cpcss_regenerate_btn = \'Regenerate specific CPCSS\';
+	</script>
+			',
 		],
 		'testShouldDisplayRegenerateTemplateOptionExcludedFromPostWarning' => [
 			'config'   => [
@@ -273,26 +354,36 @@ return [
 				'is_option_excluded' => true,
 			],
 			'expected' => '<div class="inside">
-			<h3>Critical Path CSS</h3>
-			<div id="rocket-metabox-cpcss-notice"></div>
-			<div id="rocket-metabox-cpcss-content">
-			<p>
-			This post uses specific Critical Path CSS. <a href="" target="_blank" rel="noopener noreferrer">More info</a></p>
-			<div class="components-panel__row">
-			<button id="rocket-generate-post-cpss" class="components-button is-link"  disabled=\'disabled\'>
-			Regenerate specific CPCSS	</button>
+				<h3>Critical Path CSS</h3>
+				<div id="rocket-metabox-cpcss-content">
+					<p class="cpcss_generate hidden">
+						Generate specific Critical Path CSS for this post.<a href="" target="_blank" rel="noopener noreferrer">More info</a>
+					</p>
+					<p class="cpcss_regenerate ">
+						This post uses specific Critical Path CSS.<a href="" target="_blank" rel="noopener noreferrer">More info</a>
+					</p>
+					<div class="components-panel__row cpcss_generate cpcss_regenerate">
+						<button id="rocket-generate-post-cpss" class="button components-button is-secondary"  disabled=\'disabled\'>
+							<span style="display: none;" class="spinner"></span>
+							<span class="rocket-generate-post-cpss-btn-txt">Regenerate specific CPCSS</span>
+						</button>
+					</div>
+					<div class="components-panel__row cpcss_regenerate ">
+						<button id="rocket-delete-post-cpss" class="button components-button is-secondary"  disabled=\'disabled\'><span>Revert back to the default CPCSS</span></button>
+					</div>
+				</div>
 			</div>
-			<div class="components-panel__row">
-			<button id="rocket-delete-post-cpss" class="components-button is-link is-destructive"  disabled=\'disabled\'>
-			Revert back to the default CPCSS	</button>
+			<div id="cpcss_response_notice" class="components-notice is-notice is-warning">
+				<div class="components-notice__content">
+					<p>Enable Optimize CSS delivery in the options above to use this feature.</p>
+				</div>
 			</div>
-			</div>
-			</div>
-			<div class="components-notice is-notice is-warning">
-			<div class="components-notice__content">
-			<p>Enable Optimize CSS delivery in the options above to use this feature.</p>
-			</div>
-			</div>',
+			<script>
+	var cpcss_rest_url       = \'http://example.org/index.php?rest_route=/wp-rocket/v1/cpcss/post/2\';
+	var cpcss_rest_nonce     = \'wp_rest_nonce\';
+	var cpcss_generate_btn   = \'Generate Specific CPCSS\';
+	var cpcss_regenerate_btn = \'Regenerate specific CPCSS\';
+</script>',
 		],
 		'testShouldDisplayGenerateTemplateNoWarning'   => [
 			'config'   => [
@@ -307,17 +398,34 @@ return [
 				'is_option_excluded' => false,
 			],
 			'expected' => '<div class="inside">
-			<h3>Critical Path CSS</h3>
-			<div id="rocket-metabox-cpcss-notice"></div>
-			<div id="rocket-metabox-cpcss-content">
-			<p>
-			Generate specific Critical Path CSS for this post. <a href="" target="_blank" rel="noopener noreferrer">More info</a></p>
-			<div class="components-panel__row">
-			<button id="rocket-generate-post-cpss" class="button components-button is-secondary" >
-			Generate Specific CPCSS	</button>
+				<h3>Critical Path CSS</h3>
+				<div id="rocket-metabox-cpcss-content">
+					<p class="cpcss_generate ">
+						Generate specific Critical Path CSS for this post.<a href="" target="_blank" rel="noopener noreferrer">More info</a>
+					</p>
+					<p class="cpcss_regenerate hidden">
+						This post uses specific Critical Path CSS.<a href="" target="_blank" rel="noopener noreferrer">More info</a>
+					</p>
+					<div class="components-panel__row cpcss_generate cpcss_regenerate">
+						<button id="rocket-generate-post-cpss" class="button components-button is-secondary" >
+							<span style="display: none;" class="spinner"></span>
+							<span class="rocket-generate-post-cpss-btn-txt">Generate Specific CPCSS</span>
+						</button>
+					</div>
+					<div class="components-panel__row cpcss_regenerate hidden">
+						<button id="rocket-delete-post-cpss" class="button components-button is-secondary" ><span>Revert back to the default CPCSS</span></button>
+					</div>
+				</div>
 			</div>
+			<div id="cpcss_response_notice" class="components-notice is-notice is-warning hidden">
+				<div class="components-notice__content"></div>
 			</div>
-			</div>',
+			<script>
+	var cpcss_rest_url       = \'http://example.org/index.php?rest_route=/wp-rocket/v1/cpcss/post/1\';
+	var cpcss_rest_nonce     = \'wp_rest_nonce\';
+	var cpcss_generate_btn   = \'Generate Specific CPCSS\';
+	var cpcss_regenerate_btn = \'Regenerate specific CPCSS\';
+</script>',
 		],
 		'testShouldDisplayRegenerateTemplateNoWarning' => [
 			'config'   => [
@@ -332,21 +440,34 @@ return [
 				'is_option_excluded' => false,
 			],
 			'expected' => '<div class="inside">
-			<h3>Critical Path CSS</h3>
-			<div id="rocket-metabox-cpcss-notice"></div>
-			<div id="rocket-metabox-cpcss-content">
-			<p>
-			This post uses specific Critical Path CSS. <a href="" target="_blank" rel="noopener noreferrer">More info</a></p>
-			<div class="components-panel__row">
-			<button id="rocket-generate-post-cpss" class="components-button is-link" >
-			Regenerate specific CPCSS	</button>
+				<h3>Critical Path CSS</h3>
+				<div id="rocket-metabox-cpcss-content">
+					<p class="cpcss_generate hidden">
+						Generate specific Critical Path CSS for this post.<a href="" target="_blank" rel="noopener noreferrer">More info</a>
+					</p>
+					<p class="cpcss_regenerate ">
+						This post uses specific Critical Path CSS.<a href="" target="_blank" rel="noopener noreferrer">More info</a>
+					</p>
+					<div class="components-panel__row cpcss_generate cpcss_regenerate">
+						<button id="rocket-generate-post-cpss" class="button components-button is-secondary" >
+							<span style="display: none;" class="spinner"></span>
+							<span class="rocket-generate-post-cpss-btn-txt">Regenerate specific CPCSS</span>
+						</button>
+					</div>
+					<div class="components-panel__row cpcss_regenerate ">
+						<button id="rocket-delete-post-cpss" class="button components-button is-secondary" ><span>Revert back to the default CPCSS</span></button>
+					</div>
+				</div>
 			</div>
-			<div class="components-panel__row">
-			<button id="rocket-delete-post-cpss" class="components-button is-link is-destructive" >
-			Revert back to the default CPCSS	</button>
+			<div id="cpcss_response_notice" class="components-notice is-notice is-warning hidden">
+				<div class="components-notice__content"></div>
 			</div>
-			</div>
-			</div>',
+			<script>
+	var cpcss_rest_url       = \'http://example.org/index.php?rest_route=/wp-rocket/v1/cpcss/post/2\';
+	var cpcss_rest_nonce     = \'wp_rest_nonce\';
+	var cpcss_generate_btn   = \'Generate Specific CPCSS\';
+	var cpcss_regenerate_btn = \'Regenerate specific CPCSS\';
+</script>',
 		],
 	],
 ];
