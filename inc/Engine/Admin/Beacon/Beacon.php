@@ -424,7 +424,7 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 				],
 				'fr' => [
 					'id'  => '5eb3add02c7d3a5ea54aa66d',
-					'url' => 'https://fr.docs.wp-rocket.me/article/1319-prechargement-fonts/?utm_source=wp_plugin&utm_medium=wp_rocket',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1319-precharger-polices/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'never_cache'                => [
