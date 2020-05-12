@@ -608,8 +608,14 @@ class Settings {
 		$parsed_url = wp_parse_url( $file );
 		$hosts      = $this->get_hosts();
 
-		if ( ! empty( $parsed_url['host'] ) && ! isset( $hosts[ $parsed_url['host'] ] ) ) {
-			return false;
+		if ( ! empty( $parsed_url['host'] ) ) {
+			foreach ( $hosts as $host ) {
+				if ( false !== strpos( $file, $host ) ) {
+					break;
+				}
+
+				return false;
+			}
 		}
 
 		$file = str_replace( [ 'http:', 'https:' ], '', $file );
@@ -650,7 +656,7 @@ class Settings {
 
 			$parsed_url['path'] = ( '/' === $parsed_url['path'] ) ? '' : $parsed_url['path'];
 
-			$this->hosts[ $parsed_url['host'] ] = "//{$parsed_url['host']}{$parsed_url['path']}";
+			$this->hosts[] = "//{$parsed_url['host']}{$parsed_url['path']}";
 		}
 
 		if ( empty( $this->hosts ) ) {
