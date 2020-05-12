@@ -15,9 +15,9 @@ class AMP implements Subscriber_Interface {
 	const AMP_OPTIONS = 'amp-options';
 
 	/**
-	 * WP Rocket CDN Subscriber
+	 * WP Rocket CDN Subscriber.
 	 *
-	 * @var WP_Rocket\Engine\CDN\Subscriber
+	 * @var Subscriber_Interface
 	 */
 	private $cdn_subscriber;
 
@@ -31,10 +31,10 @@ class AMP implements Subscriber_Interface {
 	/**
 	 * Constructor
 	 *
-	 * @param Options_Data $options        WP Rocket Options instance.
-	 * @param Subscriber   $cdn_subscriber WP Rocket CDN Subscriber.
+	 * @param Options_Data         $options        WP Rocket Options instance.
+	 * @param Subscriber_Interface $cdn_subscriber WP Rocket CDN Subscriber.
 	 */
-	public function __construct( Options_Data $options, $cdn_subscriber ) {
+	public function __construct( Options_Data $options, Subscriber_Interface $cdn_subscriber ) {
 		$this->options        = $options;
 		$this->cdn_subscriber = $cdn_subscriber;
 	}
