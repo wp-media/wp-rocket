@@ -79,7 +79,8 @@ class Pressable implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function remove_advanced_cache_notices() {
-		$cache = $this->event_manager->get( 'admin_cache_subscriber' );
+		$container = apply_filters( 'rocket_container', null );
+		$cache     = $container->get( 'admin_cache_subscriber' );
 
 		$this->event_manager->remove_callback( 'admin_notices', [ $cache, 'notice_advanced_cache_permissions' ] );
 		$this->event_manager->remove_callback( 'admin_notices', [ $cache, 'notice_advanced_cache_content_not_ours' ] );
