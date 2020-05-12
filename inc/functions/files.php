@@ -1470,11 +1470,9 @@ function _rocket_get_cache_dirs( $url_host, $cache_path = '', $hard_reset = fals
  */
 function _rocket_normalize_path( $path, $escape = false, $force = false ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 	if ( _rocket_is_windows_fs( $path ) ) {
-		return str_replace(
-			'/',
-			$escape ? '\\\\' : '\\',
-			$path
-		);
+		return $escape
+			? str_replace( [ '/', '\\' ] , '\\\\', $path )
+			: str_replace( '/', '\\', $path );
 	}
 
 	if ( $escape ) {
