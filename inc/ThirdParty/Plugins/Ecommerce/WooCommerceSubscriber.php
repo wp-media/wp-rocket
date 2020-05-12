@@ -470,6 +470,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 			'ajax-login-security', // OneSocial theme pop-up login.
 			'dokan_pageview', // Dokan related pageview.
 			'dokan_report_abuse', // Dokan report abuse popup.
+			'uabb_subscribe_form_submit', // Ultimate Addons for Beaver Builder - MailChimp signup form.
 		];
 	}
 }
