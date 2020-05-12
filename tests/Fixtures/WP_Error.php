@@ -4,12 +4,12 @@ if ( ! class_exists( 'WP_Error') ) {
 	class WP_Error {
 		private $code;
 		private $message;
-		private $data;
+		private $error_data;
 
-		public function __construct( $code, $message, $data = null ) {
+		public function __construct( $code, $message, $error_data = null ) {
 			$this->code = $code;
 			$this->message = $message;
-			$this->data = $data;
+			$this->error_data = $error_data;
 		}
 
 		public function get_error_code() {
@@ -21,7 +21,7 @@ if ( ! class_exists( 'WP_Error') ) {
 		}
 
 		public function get_error_data() {
-			return $this->data;
+			return $this->error_data;
 		}
 	}
 }
