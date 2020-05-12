@@ -76,11 +76,7 @@ class Combine extends AbstractOptimization {
 			return $html;
 		}
 
-		$head_html = preg_match( '/<head[^>]*>(.*?)<\/head>/umsi', $html, $matches );
-		if ( $head_html ) {
-			$new_head = preg_replace( '/<\/title>/', '</title>' . $this->get_combine_tag(), $matches[0], 1 );
-			$html     = str_replace( $matches[0], $new_head, $html );
-		}
+		$html = preg_replace( '@(<head[^>]*>.*<title[^>]*>.*</title>)(.*</head>)@isU', '$1' . $this->get_combine_tag() . '$2', $html, 1 );
 
 		foreach ( $fonts as $font ) {
 			$html = str_replace( $font[0], '', $html );
