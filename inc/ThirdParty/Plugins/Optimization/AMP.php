@@ -112,7 +112,8 @@ class AMP implements Subscriber_Interface {
 			&&
 			in_array( $options['theme_support'], [ 'transitional', 'reader' ], true ) ) {
 			add_filter( 'rocket_cdn_reject_files', [ $this, 'reject_files' ], PHP_INT_MAX );
-			add_filter( 'rocket_buffer', [ $this, 'rewrite_cdn' ] );
+			add_filter( 'rocket_buffer', [ $this->cdn_subscriber, 'rewrite' ] );
+			add_filter( 'rocket_buffer', [ $this->cdn_subscriber, 'rewrite_srcset' ] );
 		}
 
 		if (
@@ -145,19 +146,5 @@ class AMP implements Subscriber_Interface {
 				'(.*).js',
 			]
 		);
-	}
-
-	/**
-	 * Rewrites URLs to the CDN URLs if allowed.
-	 * Rewrites URLs in srcset attributes if allowed.
-	 *
-	 * @since 3.5.5
-	 *
-	 * @param  string $html HTML content.
-	 * @return string       HTML content.
-	 */
-	public function rewrite_cdn( $html ) {
-		$html = $this->cdn_subscriber->rewrite( $html );
-		return $this->cdn_subscriber->rewrite_srcset( $html );
 	}
 }
