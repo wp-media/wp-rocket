@@ -13,7 +13,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
  * @group  RocketCDN
  */
 class Test_DisplayRocketcdnCta extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/classes/subscriber/CDN/RocketCDN/NoticesSubscriber/displayRocketcdnCta.php';
+	protected $path_to_test_data = '/inc/Engine/CDN/RocketCDN/NoticesSubscriber/displayRocketcdnCta.php';
 	protected static $mockCommonWpFunctionsInSetUp = true;
 
 	private $api_client;
