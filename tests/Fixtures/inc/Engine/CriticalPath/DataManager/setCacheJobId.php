@@ -13,9 +13,6 @@ return [
 				],
 				'expected' => [
 					'saved' => true,
-					'applied_filters' => [
-						'set_transient_rocket_specific_cpcss_job_'.md5( 'http://www.example.com/?p=1' )
-					]
 				]
 			],
 			'testShouldBailOutOnSavingCache'     => [
@@ -26,7 +23,6 @@ return [
 				],
 				'expected' => [
 					'saved' => false,
-					'applied_filters' => []
 				]
 			],
 		],

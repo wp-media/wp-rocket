@@ -5,22 +5,24 @@ return [
 
 	'test_data' => [
 		'non_multisite' => [
-			'testShouldBailoutIfNotCachedBefore'     => [
+			'testShouldSuccessfullySaveFile'     => [
 				'config'   => [
-					'item_url'      => 'http://www.example.com/?p=1',
-					'job_id' => null
+					'path'  => 'post-10.css',
+					'cpcss_code'  => 'body{color:red;}',
+					'saved' => true
 				],
 				'expected' => [
-					'job_id' => null,
+					'saved' => true
 				]
 			],
 			'testShouldGetCachedJobIdIfCachedBefore'     => [
 				'config'   => [
-					'item_url'      => 'http://www.example.com/?p=2',
-					'job_id' => 5
+					'path'  => 'post-1000.css',
+					'cpcss_code'  => 'body{color:red;}',
+					'saved' => true
 				],
 				'expected' => [
-					'job_id' => 5,
+					'saved' => true
 				]
 			],
 		],
