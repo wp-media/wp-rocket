@@ -9,14 +9,12 @@ use WP_Rocket\Admin\Options_Data;
  * Subscriber for the partial preload
  *
  * @since 3.2
- * @author Remy Perona
  */
 class PartialPreloadSubscriber implements Subscriber_Interface {
 	/**
 	 * Partial preload process instance
 	 *
 	 * @since 3.2
-	 * @author Remy Perona
 	 *
 	 * @var PartialProcess
 	 */
@@ -26,27 +24,33 @@ class PartialPreloadSubscriber implements Subscriber_Interface {
 	 * Options instance
 	 *
 	 * @since 3.2
-	 * @author Remy Perona
 	 *
 	 * @var Options_Data
 	 */
 	private $options;
 
 	/**
+	 * True when URL has a trailing slash.
+	 *
+	 * @since 3.5.5
+	 *
+	 * @var bool
+	 */
+	private $add_trailingslash;
+
+	/**
 	 * Stores the URLs to preload
 	 *
 	 * @since 3.2.1
-	 * @author Remy Perona
 	 *
 	 * @var array
 	 */
 	private $urls = [];
 
 	/**
-	 * Constructor
+	 * Creates an instance of the subscriber.
 	 *
 	 * @since 3.2
-	 * @author Remy Perona
 	 *
 	 * @param PartialProcess $partial Partial preload instance.
 	 * @param Options_Data   $options Options instance.
@@ -60,7 +64,6 @@ class PartialPreloadSubscriber implements Subscriber_Interface {
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
 	 * @since  3.2
-	 * @author Remy Perona
 	 *
 	 * @return array
 	 */
@@ -78,9 +81,11 @@ class PartialPreloadSubscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.2
 	 *
-	 * @param object $post The post object.
+	 * @param object $post       The post object.
 	 * @param array  $purge_urls An array of URLs to clean.
-	 * @param string $lang The language to clean.
+	 * @param string $lang       The language to clean.
+	 *
+	 * @return void|bool
 	 */
 	public function preload_after_clean_post( $post, $purge_urls, $lang ) {
 		if ( ! $this->options->get( 'manual_preload' ) ) {
@@ -112,21 +117,21 @@ class PartialPreloadSubscriber implements Subscriber_Interface {
 	/**
 	 * Pushes URLs to preload to the queue after cache directories are purged.
 	 *
+	 * @since  3.5.5 Normalizes paths.
 	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
 	 *
-	 * @param array $deleted {
-	 *     An array of arrays, described like: {.
-	 *         @type string $home_url  The home URL.
-	 *         @type string $home_path Path to home.
-	 *         @type bool   $logged_in True if the home path corresponds to a logged in user’s folder.
-	 *         @type array  $files     A list of paths of files that have been deleted.
+	 * @param array $deleted   {
+	 *                         An array of arrays, described like: {.
+	 *
+	 * @type string $home_url  The home URL.
+	 * @type string $home_path Path to home.
+	 * @type bool   $logged_in True if the home path corresponds to a logged in user’s folder.
+	 * @type array  $files     A list of paths of files that have been deleted.
 	 *     }
 	 * }
 	 */
 	public function preload_after_automatic_cache_purge( $deleted ) {
-		if ( ! $deleted || ! $this->options->get( 'manual_preload' ) ) {
+		if ( empty( $deleted ) || ! $this->options->get( 'manual_preload' ) ) {
 			return;
 		}
 
@@ -135,25 +140,43 @@ class PartialPreloadSubscriber implements Subscriber_Interface {
 				// Logged in user: no need to preload those since we would need the corresponding cookies.
 				continue;
 			}
+
+			$this->add_trailingslash = ( '/' === substr( $data['home_url'], - 1 ) );
+			$data['home_path']       = $this->prep_slashes( $data['home_path'] );
+
 			foreach ( $data['files'] as $file_path ) {
 				if ( strpos( $file_path, '#' ) ) {
 					// URL with query string.
 					$file_path = preg_replace( '/#/', '?', $file_path, 1 );
-				} else {
-					$file_path         = untrailingslashit( $file_path );
-					$data['home_path'] = untrailingslashit( $data['home_path'] );
-					if ( '/' === substr( get_option( 'permalink_structure' ), -1 ) ) {
-						$file_path         .= '/';
-						$data['home_path'] .= '/';
-					}
 				}
 
-				$file_path    = str_replace( $data['home_path'], '', $file_path );
-				$file_path    = str_replace( DIRECTORY_SEPARATOR, '/', $file_path );
-				$file_path    = $data['home_url'] . ltrim( $file_path, '/' );
-				$this->urls[] = $file_path;
+				$this->urls[] = str_replace(
+					$data['home_path'],
+					$data['home_url'],
+					_rocket_normalize_path( $this->prep_slashes( $file_path ) )
+				);
 			}
 		}
+	}
+
+	/**
+	 * Strips starting and ending slashes. Adds trailing slash when required by permalink.
+	 *
+	 * @since 3.5.5
+	 *
+	 * @param string $path Path to be prepped.
+	 *
+	 * @return string
+	 */
+	private function prep_slashes( $path ) {
+		// @TODO Bail out if path is a file. Only process directories.
+
+		$path = trim( $path, '/\\' );
+		if ( $this->add_trailingslash ) {
+			$path .= '/';
+		}
+
+		return $path;
 	}
 
 	/**
@@ -161,9 +184,9 @@ class PartialPreloadSubscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.2
 	 *
-	 * @param object $term The term object.
+	 * @param object $term       The term object.
 	 * @param array  $purge_urls An array of URLs to clean.
-	 * @param string $lang The language to clean.
+	 * @param string $lang       The language to clean.
 	 */
 	public function preload_after_clean_term( $term, $purge_urls, $lang ) {
 		if ( ! $this->options->get( 'manual_preload' ) ) {
@@ -181,7 +204,7 @@ class PartialPreloadSubscriber implements Subscriber_Interface {
 	/**
 	 * Starts the partial preload process if there is any URLs saved
 	 *
-	 * @since 3.2.1
+	 * @since  3.2.1
 	 * @author Remy Perona
 	 *
 	 * @return void
@@ -228,7 +251,7 @@ class PartialPreloadSubscriber implements Subscriber_Interface {
 				);
 			}
 
-			++$count;
+			++ $count;
 
 			if ( $count >= $limit ) {
 				break;
