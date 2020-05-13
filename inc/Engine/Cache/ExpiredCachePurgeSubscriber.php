@@ -52,9 +52,6 @@ class ExpiredCachePurgeSubscriber implements Subscriber_Interface {
 	/**
 	 * {@inheritdoc}
 	 */
-	/**
-	 * {@inheritdoc}
-	 */
 	public static function get_subscribed_events() {
 		return [
 			'init'                                                     => 'schedule_event',

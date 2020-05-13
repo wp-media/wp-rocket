@@ -76,7 +76,7 @@ class ExpiredCachePurge {
 		$urls = array_filter( $urls, 'is_string' );
 		$urls = array_filter( $urls );
 
-		if ( ! $urls ) {
+		if ( empty( $urls ) ) {
 			return;
 		}
 
@@ -108,9 +108,8 @@ class ExpiredCachePurge {
 				}
 
 				$sub_dir = rtrim( $file['path'], '/' );
-				$files   = $this->get_cache_files_in_dir( $file );
 
-				foreach ( $files as $item ) {
+				foreach ( $this->get_cache_files_in_dir( $file ) as $item ) {
 					$dir_path     = $item->getPathname();
 					$sub_dir_path = $dir_path . $sub_dir;
 
@@ -253,18 +252,17 @@ class ExpiredCachePurge {
 	 * @since 3.4
 	 *
 	 * @param array $file An array of the parsed URL parts.
-	 * @return Bool|DirectoryIterator
+	 *
+	 * @return []|DirectoryIterator
 	 */
 	private function get_cache_files_in_dir( $file ) {
 		// Grab cache folders.
 		$host_pattern = '@^' . preg_quote( $file['host'], '@' ) . '@';
 		$sub_dir      = rtrim( $file['path'], '/' );
 
-		try {
-			$iterator = new DirectoryIterator( $this->cache_path );
-		}
-		catch ( Exception $e ) {
-			return false;
+		$iterator = $this->get_dir_iterator( $this->cache_path, false );
+		if ( false === $iterator ) {
+			return [];
 		}
 
 		return new CallbackFilterIterator(
@@ -303,14 +301,7 @@ class ExpiredCachePurge {
 	private function purge_dir( $dir_path, $file_age_limit ) {
 		$deleted = [];
 
-		try {
-			$iterator = new DirectoryIterator( $dir_path );
-		}
-		catch ( Exception $e ) {
-			return [];
-		}
-
-		foreach ( $iterator as $item ) {
+		foreach ( $this->get_dir_iterator( $dir_path ) as $item ) {
 			if ( $item->isDot() ) {
 				continue;
 			}
@@ -363,14 +354,7 @@ class ExpiredCachePurge {
 	 * @return bool             True if empty. False if it contains files.
 	 */
 	private function is_dir_empty( $dir_path ) {
-		try {
-			$iterator = new DirectoryIterator( $dir_path );
-		}
-		catch ( Exception $e ) {
-			return [];
-		}
-
-		foreach ( $iterator as $item ) {
+		foreach ( $this->get_dir_iterator( $dir_path )  as $item ) {
 			if ( $item->isDot() ) {
 				continue;
 			}
@@ -378,5 +362,23 @@ class ExpiredCachePurge {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Get the directory iterator for the given path.
+	 *
+	 * @since 3.5.5
+	 *
+	 * @param string $dir     Absolute path to the directory for the iterator.
+	 * @param mixed  $default Optional. Value to return upon error.
+	 *
+	 * @return mixed|DirectoryIterator
+	 */
+	private function get_dir_iterator( $dir, $default = [] ) {
+		try {
+			return new DirectoryIterator( $dir );
+		} catch ( Exception $e ) {
+			return $default;
+		}
 	}
 }
