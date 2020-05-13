@@ -323,7 +323,8 @@ function get_rocket_i18n_to_preserve( $current_lang ) { // phpcs:ignore WordPres
 	foreach ( $langs as $lang ) {
 		$parse_url           = get_rocket_parse_url( get_rocket_i18n_home_url( $lang ) );
 		$langs_to_preserve[] = _rocket_normalize_path(
-			"{$cache_path}{$parse_url['host']}(.*)/" . trim( $parse_url['path'], '/' )
+			"{$cache_path}{$parse_url['host']}(.*)/" . trim( $parse_url['path'], '/' ),
+			true // escape directory separators for regex.
 		);
 	}
 
