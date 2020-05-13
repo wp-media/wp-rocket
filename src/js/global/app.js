@@ -11,3 +11,4 @@ import '../global/main.js';
 import '../global/fields.js';
 import '../global/beacon.js';
 import '../global/ajax.js';
+import '../global/rocketcdn.js';

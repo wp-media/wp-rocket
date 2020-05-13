@@ -19,7 +19,12 @@ class Bridge_Subscriber implements Subscriber_Interface {
 	private $options;
 
 	/**
-	 * @inheritDoc
+	 * Return an array of events that this subscriber wants to listen to.
+	 *
+	 * @since  3.3.1
+	 * @author Remy Perona
+	 *
+	 * @return array
 	 */
 	public static function get_subscribed_events() {
 		$current_theme = wp_get_theme();

@@ -78,10 +78,13 @@ class Facebook_SDK extends Abstract_Busting {
 			return $html;
 		}
 
-		Logger::info( 'FACEBOOK SDK CACHING PROCESS STARTED.', [
-			'fb sdk',
-			'tag' => $tag,
-		] );
+		Logger::info(
+			'FACEBOOK SDK CACHING PROCESS STARTED.',
+			[
+				'fb sdk',
+				'tag' => $tag,
+			]
+		);
 
 		$locale     = $this->get_locale_from_url( $tag );
 		$remote_url = $this->get_url( $locale );
@@ -124,10 +127,13 @@ class Facebook_SDK extends Abstract_Busting {
 		 */
 		do_action( 'rocket_after_facebook_sdk_url_replaced', $file_url, $file_path );
 
-		Logger::info( 'Facebook SDK caching process succeeded.', [
-			'fb sdk',
-			'file' => $file_path,
-		] );
+		Logger::info(
+			'Facebook SDK caching process succeeded.',
+			[
+				'fb sdk',
+				'file' => $file_path,
+			]
+		);
 
 		return $html;
 	}
@@ -243,10 +249,13 @@ class Facebook_SDK extends Abstract_Busting {
 		}
 
 		if ( ! \rocket_put_content( $file_path, $file_contents ) ) {
-			Logger::error( 'Contents could not be written into file.', [
-				'fb sdk',
-				'path' => $file_path,
-			] );
+			Logger::error(
+				'Contents could not be written into file.',
+				[
+					'fb sdk',
+					'path' => $file_path,
+				]
+			);
 			return false;
 		}
 
@@ -301,10 +310,13 @@ class Facebook_SDK extends Abstract_Busting {
 		}
 
 		if ( $error_paths ) {
-			Logger::error( 'Local file(s) could not be updated.', [
-				'fb sdk',
-				'paths' => $error_paths,
-			] );
+			Logger::error(
+				'Local file(s) could not be updated.',
+				[
+					'fb sdk',
+					'paths' => $error_paths,
+				]
+			);
 		}
 
 		/**
@@ -348,10 +360,13 @@ class Facebook_SDK extends Abstract_Busting {
 		}
 
 		if ( $error_paths ) {
-			Logger::error( 'Local file(s) could not be deleted.', [
-				'fb sdk',
-				'paths' => $error_paths,
-			] );
+			Logger::error(
+				'Local file(s) could not be deleted.',
+				[
+					'fb sdk',
+					'paths' => $error_paths,
+				]
+			);
 		}
 
 		/**
@@ -390,20 +405,26 @@ class Facebook_SDK extends Abstract_Busting {
 		}
 
 		if ( ! $filesystem->is_writable( $dir_path ) ) {
-			Logger::error( 'Directory is not writable.', [
-				'fb sdk',
-				'path' => $dir_path,
-			] );
+			Logger::error(
+				'Directory is not writable.',
+				[
+					'fb sdk',
+					'path' => $dir_path,
+				]
+			);
 			return false;
 		}
 
 		$dir = $filesystem->dirlist( $dir_path );
 
 		if ( false === $dir ) {
-			Logger::error( 'Could not get the directory contents.', [
-				'fb sdk',
-				'path' => $dir_path,
-			] );
+			Logger::error(
+				'Could not get the directory contents.',
+				[
+					'fb sdk',
+					'path' => $dir_path,
+				]
+			);
 			return false;
 		}
 
@@ -592,31 +613,40 @@ class Facebook_SDK extends Abstract_Busting {
 		try {
 			$response = wp_remote_get( $url );
 		} catch ( \Exception $e ) {
-			Logger::error( 'Remote file could not be fetched.', [
-				'fb sdk',
-				'url'      => $url,
-				'response' => $e->getMessage(),
-			] );
+			Logger::error(
+				'Remote file could not be fetched.',
+				[
+					'fb sdk',
+					'url'      => $url,
+					'response' => $e->getMessage(),
+				]
+			);
 			return false;
 		}
 
 		if ( is_wp_error( $response ) ) {
-			Logger::error( 'Remote file could not be fetched.', [
-				'fb sdk',
-				'url'      => $url,
-				'response' => $response->get_error_message(),
-			] );
+			Logger::error(
+				'Remote file could not be fetched.',
+				[
+					'fb sdk',
+					'url'      => $url,
+					'response' => $response->get_error_message(),
+				]
+			);
 			return false;
 		}
 
 		$contents = wp_remote_retrieve_body( $response );
 
 		if ( ! $contents ) {
-			Logger::error( 'Remote file could not be fetched.', [
-				'fb sdk',
-				'url'      => $url,
-				'response' => $response,
-			] );
+			Logger::error(
+				'Remote file could not be fetched.',
+				[
+					'fb sdk',
+					'url'      => $url,
+					'response' => $response,
+				]
+			);
 			return false;
 		}
 

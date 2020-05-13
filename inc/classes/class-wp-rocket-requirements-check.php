@@ -73,7 +73,7 @@ class WP_Rocket_Requirements_Check {
 	 * }
 	 */
 	public function __construct( $args ) {
-		foreach ( array( 'plugin_name', 'plugin_file', 'plugin_version', 'plugin_last_version', 'wp_version', 'php_version' ) as $setting ) {
+		foreach ( [ 'plugin_name', 'plugin_file', 'plugin_version', 'plugin_last_version', 'wp_version', 'php_version' ] as $setting ) {
 			if ( isset( $args[ $setting ] ) ) {
 				$this->$setting = $args[ $setting ];
 			}
@@ -94,9 +94,9 @@ class WP_Rocket_Requirements_Check {
 	public function check() {
 		if ( ! $this->php_passes() || ! $this->wp_passes() ) {
 
-			add_action( 'admin_notices', array( $this, 'notice' ) );
-			add_action( 'admin_post_rocket_rollback', array( $this, 'rollback' ) );
-			add_filter( 'http_request_args', array( $this, 'add_own_ua' ), 10, 2 );
+			add_action( 'admin_notices', [ $this, 'notice' ] );
+			add_action( 'admin_post_rocket_rollback', [ $this, 'rollback' ] );
+			add_filter( 'http_request_args', [ $this, 'add_own_ua' ], 10, 2 );
 
 			return false;
 		}
@@ -187,12 +187,12 @@ class WP_Rocket_Requirements_Check {
 		$plugin_folder    = plugin_basename( dirname( $this->plugin_file ) );
 		$plugin_file      = basename( $this->plugin_file );
 		$url              = sprintf( 'https://wp-rocket.me/%s/wp-rocket_%s.zip', $consumer_key, $this->plugin_last_version );
-		$temp_array       = array(
+		$temp_array       = [
 			'slug'        => $plugin_folder,
 			'new_version' => $this->plugin_last_version,
 			'url'         => 'https://wp-rocket.me',
 			'package'     => $url,
-		);
+		];
 
 		$temp_object = (object) $temp_array;
 		$plugin_transient->response[ $plugin_folder . '/' . $plugin_file ] = $temp_object;
@@ -212,9 +212,9 @@ class WP_Rocket_Requirements_Check {
 			'',
 			// translators: %s is the plugin name.
 			sprintf( esc_html__( '%s Update Rollback', 'rocket' ), esc_html( $this->plugin_name ) ),
-			array(
+			[
 				'response' => 200,
-			)
+			]
 		);
 	}
 

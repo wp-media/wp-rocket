@@ -3,7 +3,7 @@
 defined( 'ABSPATH' ) || exit;
 
 if ( defined( 'AIOSEOP_VERSION' ) ) :
-	$aioseosp_options = get_option( 'aioseop_options' );
+	$aioseosp_options = get_option( 'aioseop_options' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	/**
 	 * Improvement with All in One SEO Pack: auto-detect the XML sitemaps for the preload option
 	 *
@@ -63,7 +63,7 @@ if ( defined( 'AIOSEOP_VERSION' ) ) :
 				return $sitemaps;
 			}
 
-			$sitemaps[] = trailingslashit( home_url() ) . apply_filters( 'aiosp_sitemap_filename', 'sitemap' ) . '.xml';
+			$sitemaps[] = trailingslashit( home_url() ) . apply_filters( 'aiosp_sitemap_filename', 'sitemap' ) . '.xml'; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 			return $sitemaps;
 		}

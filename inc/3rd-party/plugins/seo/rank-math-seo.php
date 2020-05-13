@@ -23,7 +23,7 @@ if ( ! defined( 'RANK_MATH_FILE' ) || ! \RankMath\Helper::is_module_active( 'sit
  * @param array $options WP Rocket settings array.
  * @return array Updated WP Rocket settings array
  */
-function rank_math_rocket_sitemap_preload_option( $options ) {
+function rank_math_rocket_sitemap_preload_option( $options ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$options['rank_math_xml_sitemap'] = [
 		'type'              => 'checkbox',
 		'container_class'   => [
@@ -51,7 +51,7 @@ add_filter( 'rocket_sitemap_preload_options', 'rank_math_rocket_sitemap_preload_
  * @param array $options WP Rocket options array.
  * @return array Updated WP Rocket options array
  */
-function rank_math_rocket_add_sitemap_option( $options ) {
+function rank_math_rocket_add_sitemap_option( $options ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$options['rank_math_xml_sitemap'] = 0;
 
 	return $options;
@@ -66,7 +66,7 @@ add_filter( 'rocket_first_install_options', 'rank_math_rocket_add_sitemap_option
  * @param array $inputs WP Rocket inputs array.
  * @return array Sanitized WP Rocket inputs array
  */
-function rank_math_rocket_sitemap_option_sanitize( $inputs ) {
+function rank_math_rocket_sitemap_option_sanitize( $inputs ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$inputs['rank_math_xml_sitemap'] = ! empty( $inputs['rank_math_xml_sitemap'] ) ? 1 : 0;
 
 	return $inputs;
@@ -81,7 +81,7 @@ add_filter( 'rocket_inputs_sanitize', 'rank_math_rocket_sitemap_option_sanitize'
  * @param array $sitemaps Sitemaps to preload.
  * @return array Updated Sitemaps to preload
  */
-function rank_math_rocket_sitemap( $sitemaps ) {
+function rank_math_rocket_sitemap( $sitemaps ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	if ( get_rocket_option( 'rank_math_xml_sitemap', false ) ) {
 		$sitemaps[] = \RankMath\Sitemap\Router::get_base_url( 'sitemap_index.xml' );
 	}

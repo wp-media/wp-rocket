@@ -19,20 +19,20 @@ defined( 'ABSPATH' ) || exit;
 
 if ( ! empty( $data['upload_dir']['error'] ) ) {
 	?>
-	<div class="error"><p><?php _e( 'Before you can upload your import file, you will need to fix the following error:', 'rocket' ); ?></p>
+	<div class="error"><p><?php esc_html_e( 'Before you can upload your import file, you will need to fix the following error:', 'rocket' ); ?></p>
 	<p><strong><?php echo esc_html( $data['upload_dir']['error'] ); ?></strong></p></div>
-<?php
+	<?php
 } else {
 	?>
 	<form action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="POST" enctype="multipart/form-data" class="wpr-tools">
 		<div class="wpr-tools-col">
-			<label for="upload" class="wpr-title3 wpr-tools-label wpr-icon-import"><?php _e( 'Import settings', 'rocket' ); ?></label>
+			<label for="upload" class="wpr-title3 wpr-tools-label wpr-icon-import"><?php esc_html_e( 'Import settings', 'rocket' ); ?></label>
 			<div class="wpr-upload">
 				<input type="file" accept=".txt,.json" id="upload" name="import" size="25" />
 				<small for="upload" class="wpr-field-description">
 					<?php
 					// translators: %s is the maximum upload size set on the current server.
-					printf( __( 'Choose a file from your computer (maximum size: %s)', 'rocket' ), esc_html( $data['size'] ) );
+					printf( esc_html__( 'Choose a file from your computer (maximum size: %s)', 'rocket' ), esc_html( $data['size'] ) );
 					?>
 				</small>
 			</div>

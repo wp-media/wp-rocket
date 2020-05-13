@@ -174,10 +174,13 @@ class Facebook_Pickles {
 			return $html;
 		}
 
-		Logger::info( 'FACEBOOK PIXEL CACHING PROCESS STARTED.', [
-			'fb pixel',
-			'tag' => $tags['tag_to_search'],
-		] );
+		Logger::info(
+			'FACEBOOK PIXEL CACHING PROCESS STARTED.',
+			[
+				'fb pixel',
+				'tag' => $tags['tag_to_search'],
+			]
+		);
 
 		$all_files = [];
 
@@ -285,10 +288,13 @@ class Facebook_Pickles {
 		 */
 		do_action( 'rocket_after_facebook_pixel_url_replaced', $busting_file_url, $all_files );
 
-		Logger::info( 'Facebook pixel caching process succeeded.', [
-			'fb pixel',
-			'files' => $all_files,
-		] );
+		Logger::info(
+			'Facebook pixel caching process succeeded.',
+			[
+				'fb pixel',
+				'files' => $all_files,
+			]
+		);
 
 		return $html;
 	}
@@ -583,10 +589,13 @@ class Facebook_Pickles {
 		}
 
 		if ( ! \rocket_put_content( $file_path, $file_contents ) ) {
-			Logger::error( 'Contents could not be written into file.', [
-				'fb pixel',
-				'path' => $file_path,
-			] );
+			Logger::error(
+				'Contents could not be written into file.',
+				[
+					'fb pixel',
+					'path' => $file_path,
+				]
+			);
 			return false;
 		}
 
@@ -666,10 +675,13 @@ class Facebook_Pickles {
 		// Preload the home page to recreate the files.
 		$home_url = user_trailingslashit( home_url(), 'home' );
 
-		wp_remote_get( $home_url, [
-			'user-agent' => 'WP Rocket/Homepage Preload',
-			'sslverify'  => apply_filters( 'https_local_ssl_verify', false ),
-		] );
+		wp_remote_get(
+			$home_url,
+			[
+				'user-agent' => 'WP Rocket/Homepage Preload',
+				'sslverify'  => apply_filters( 'https_local_ssl_verify', false ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+			]
+		);
 
 		/**
 		 * Triggered once the local files have been refreshed.
@@ -711,10 +723,13 @@ class Facebook_Pickles {
 		}
 
 		if ( $error_paths ) {
-			Logger::error( 'Local file(s) could not be deleted.', [
-				'fb pixel',
-				'paths' => $error_paths,
-			] );
+			Logger::error(
+				'Local file(s) could not be deleted.',
+				[
+					'fb pixel',
+					'paths' => $error_paths,
+				]
+			);
 		}
 
 		/**
@@ -753,20 +768,26 @@ class Facebook_Pickles {
 		}
 
 		if ( ! $filesystem->is_writable( $dir_path ) ) {
-			Logger::error( 'Directory is not writable.', [
-				'fb pixel',
-				'path' => $dir_path,
-			] );
+			Logger::error(
+				'Directory is not writable.',
+				[
+					'fb pixel',
+					'path' => $dir_path,
+				]
+			);
 			return false;
 		}
 
 		$dir = $filesystem->dirlist( $dir_path );
 
 		if ( false === $dir ) {
-			Logger::error( 'Could not get the directory contents.', [
-				'fb pixel',
-				'path' => $dir_path,
-			] );
+			Logger::error(
+				'Could not get the directory contents.',
+				[
+					'fb pixel',
+					'path' => $dir_path,
+				]
+			);
 			return false;
 		}
 
@@ -811,20 +832,26 @@ class Facebook_Pickles {
 		}
 
 		if ( ! $filesystem->is_writable( $dir_path ) ) {
-			Logger::error( 'Directory is not writable.', [
-				'fb pixel',
-				'path' => $dir_path,
-			] );
+			Logger::error(
+				'Directory is not writable.',
+				[
+					'fb pixel',
+					'path' => $dir_path,
+				]
+			);
 			return false;
 		}
 
 		$dir = $filesystem->dirlist( $dir_path );
 
 		if ( false === $dir ) {
-			Logger::error( 'could not get the directory contents.', [
-				'fb pixel',
-				'path' => $dir_path,
-			] );
+			Logger::error(
+				'could not get the directory contents.',
+				[
+					'fb pixel',
+					'path' => $dir_path,
+				]
+			);
 			return false;
 		}
 
@@ -1122,31 +1149,40 @@ class Facebook_Pickles {
 		try {
 			$response = wp_remote_get( $url );
 		} catch ( \Exception $e ) {
-			Logger::error( 'Remote file could not be fetched.', [
-				'fb pixel',
-				'url'      => $url,
-				'response' => $e->getMessage(),
-			] );
+			Logger::error(
+				'Remote file could not be fetched.',
+				[
+					'fb pixel',
+					'url'      => $url,
+					'response' => $e->getMessage(),
+				]
+			);
 			return false;
 		}
 
 		if ( is_wp_error( $response ) ) {
-			Logger::error( 'Remote file could not be fetched.', [
-				'fb pixel',
-				'url'      => $url,
-				'response' => $response->get_error_message(),
-			] );
+			Logger::error(
+				'Remote file could not be fetched.',
+				[
+					'fb pixel',
+					'url'      => $url,
+					'response' => $response->get_error_message(),
+				]
+			);
 			return false;
 		}
 
 		$contents = wp_remote_retrieve_body( $response );
 
 		if ( ! $contents ) {
-			Logger::error( 'Remote file could not be fetched.', [
-				'fb pixel',
-				'url'      => $url,
-				'response' => $response,
-			] );
+			Logger::error(
+				'Remote file could not be fetched.',
+				[
+					'fb pixel',
+					'url'      => $url,
+					'response' => $response,
+				]
+			);
 			return false;
 		}
 

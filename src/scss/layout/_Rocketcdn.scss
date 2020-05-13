@@ -1,0 +1,212 @@
+// main: ../main.scss
+
+/*-----------------------------------------------*\
+
+    RocketCDN Banners & CTA
+
+\*-----------------------------------------------*/
+.wpr-rocketcdn-cta-small {
+    border-radius: 5px;
+    margin: $space * 3 0;
+    padding: $space * 2;
+
+    &.wpr-isHidden{
+        display: none;
+    }
+
+    .notice-title {
+        font-weight: 700;
+    }
+
+    .wpr-flex{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        @include respond-to('xs') {
+            text-align: start;
+            flex-direction: column;
+        }
+    }
+}
+
+.wpr-rocketcdn-cta {
+    margin:10px 0;
+    position: relative;
+
+    &.wpr-isHidden{
+        display: none;
+    }
+
+    &-close {
+        position: absolute;
+        top: $space *2;
+        right: $space * 2;
+        background: transparent;
+        border: 0;
+        color: rgba( 255, 255, 255, 0.5 );
+
+        &--no-promo {
+            position: absolute;
+            top: $space *2;
+            right: $space * 2;
+            background: transparent;
+            border: 0;
+            color: rgba( 0, 0, 0, 0.5 );
+
+            &:before {
+                content: "\2715";
+                font-size: 2rem;
+                line-height: 0.5;
+            }
+        }
+
+        &:before {
+            content: "\2715";
+            font-size: 2rem;
+            line-height: 0.5;
+        }
+    }
+
+    .wpr-rocketcdn-promo {
+        background: $cOrange;
+        border-top-left-radius: 2px;
+        border-top-right-radius: 2px;
+        color: $cWhite;
+        padding: $space *2 $space *6 $space *2 $space *2;
+
+        &-date {
+            margin: 0;
+        }
+    }
+
+    &-subtitle {
+        color: $cGreyDark1;
+        margin-top: 0;
+        @include font-size(16,24);
+    }
+
+    &-content {
+        background: $cGreyLight3;
+        border-top: 1px solid $cGreyLight1;
+        border-left: 1px solid $cGreyLight1;
+        border-right: 1px solid $cGreyLight1;
+        padding: $space * 2;
+
+        &--no-promo {
+            border-top-left-radius: 2px;
+            border-top-right-radius: 2px;
+            background: $cGreyLight3;
+            border-top: 1px solid $cGreyLight1;
+            border-left: 1px solid $cGreyLight1;
+            border-right: 1px solid $cGreyLight1;
+            padding: $space * 2;
+        }
+    }
+    
+    .wpr-flex{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        @include respond-to('xs') {
+            text-align: start;
+            flex-direction: column;
+        }
+    }
+
+    .wpr-rocketcdn-features {
+        border-right: 2px solid #cdd1d5;
+        margin: 0;
+        padding-right: $space *2;
+
+        @include respond-to('xs') {
+            border-right: none;
+        }
+    }
+
+    .wpr-rocketcdn-pricing {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        padding: $space $space * 2;
+        width: calc( 100% / 3 );
+
+        @include respond-to('xs') {
+            width: auto;
+        }
+
+        &-regular {
+            color: $cGreyDark3;
+            margin-bottom: $space;
+        }
+
+        &-current {
+            margin-bottom: $space *2;
+        }
+    }
+
+    .wpr-rocketcdn-feature{
+        margin: $space * 2 0;
+        min-height: 30px;
+        padding-left: 62px;
+        position: relative;
+
+        &:before {
+            position: absolute;
+            top: 50%;
+            left: 16px;
+            transform: translateY(-50%);
+        }
+    }
+
+    .wpr-rocketcdn-bandwidth:before {
+        content: url(../img/bandwidth.svg);
+    }
+
+    .wpr-rocketcdn-configuration:before {
+        content: url(../img/configuration.svg);
+    }
+
+    .wpr-rocketcdn-automatic:before {
+        content: url(../img/automatic.svg);
+    }
+
+    &-footer {
+        background: $cGreyDark3;
+        border-bottom-left-radius: 2px;
+        border-bottom-right-radius: 2px;
+        color: $cWhite;
+        font-weight: 700;
+        padding: $space;
+        text-align: center;
+        text-transform: uppercase;
+        @include font-size(11,20);
+
+        & a {
+            text-decoration: none;
+
+            &:before {
+                content:"\00a1";
+                border: 1px solid $cWhite;
+                color: $cWhite;
+                margin-right: $space;
+                width: 18px;
+                height: 18px;
+                display: inline-block;
+                border-radius: 18px;
+                @include font-size(14,16);
+                font-style: italic;
+            }
+        }
+    }
+}
+
+.wpr-rocketcdn-subscription {
+    text-align: end;
+    
+    .wpr-rocketcdn-open {
+        color: $cGreyDark2;
+        text-decoration: underline;
+    }
+}

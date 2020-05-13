@@ -65,7 +65,9 @@ class Plugin {
 
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Options' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Database' );
-		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Beacon' );
+		$this->container->addServiceProvider( 'WP_Rocket\Engine\Admin\Beacon\ServiceProvider' );
+		$this->container->addServiceProvider( 'WP_Rocket\Engine\CDN\RocketCDN\ServiceProvider' );
+		$this->container->addServiceProvider( 'WP_Rocket\Engine\Cache\ServiceProvider' );
 
 		$subscribers = [];
 
@@ -84,17 +86,24 @@ class Plugin {
 					'capability' => 'rocket_manage_options',
 				]
 			);
-			$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Settings' );
-			$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Admin_Subscribers' );
+			$this->container->addServiceProvider( 'WP_Rocket\Engine\Admin\Settings\ServiceProvider' );
+			$this->container->addServiceProvider( 'WP_Rocket\Engine\Admin\ServiceProvider' );
+			$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\AdminServiceProvider' );
 
 			$subscribers = [
-				'beacon_subscriber',
+				'beacon',
 				'settings_page_subscriber',
 				'deactivation_intent_subscriber',
 				'hummingbird_subscriber',
+				'rocketcdn_admin_subscriber',
+				'rocketcdn_notices_subscriber',
+				'rocketcdn_data_manager_subscriber',
+				'health_check',
+				'minify_css_admin_subscriber',
+				'admin_cache_subscriber',
 			];
 		} elseif ( \rocket_valid_key() ) {
-			$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Optimization_Subscribers' );
+			$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\ServiceProvider' );
 
 			$subscribers = [
 				'buffer_subscriber',
@@ -103,8 +112,9 @@ class Plugin {
 				'combine_google_fonts_subscriber',
 				'minify_css_subscriber',
 				'minify_js_subscriber',
-				'cache_dynamic_resource_subscriber',
+				'cache_dynamic_resource',
 				'remove_query_string_subscriber',
+				'dequeue_jquery_migrate_subscriber',
 			];
 
 			// Don't insert the LazyLoad file if Rocket LazyLoad is activated.
@@ -114,10 +124,11 @@ class Plugin {
 			}
 		}
 
-		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Addons_Subscribers' );
-		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Preload_Subscribers' );
+		$this->container->addServiceProvider( 'WP_Rocket\Addon\ServiceProvider' );
+		$this->container->addServiceProvider( 'WP_Rocket\Engine\Preload\ServiceProvider' );
+		$this->container->addServiceProvider( 'WP_Rocket\Engine\CDN\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Common_Subscribers' );
-		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Third_Party_Subscribers' );
+		$this->container->addServiceProvider( 'WP_Rocket\ThirdParty\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Hostings_Subscribers' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Updater_Subscribers' );
 
@@ -148,10 +159,19 @@ class Plugin {
 			'plugin_information_subscriber',
 			'plugin_updater_subscriber',
 			'capabilities_subscriber',
+			'varnish_subscriber',
+			'rocketcdn_rest_subscriber',
 			'detect_missing_tags_subscriber',
+			'purge_actions_subscriber',
+			'amp_subscriber',
+			'cloudways',
 		];
 
-		if ( \rocket_valid_key() ) {
+		if ( get_rocket_option( 'do_cloudflare' ) ) {
+			$common_subscribers[] = 'cloudflare_subscriber';
+		}
+
+		if ( rocket_valid_key() ) {
 			$common_subscribers = array_merge(
 				$common_subscribers,
 				[

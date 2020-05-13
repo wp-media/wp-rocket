@@ -10,6 +10,8 @@ if ( defined( 'WP_NINUKIS_WP_NAME' ) ) {
 	 * @author Remy Perona
 	 *
 	 * @param array $settings Field settings data.
+	 *
+	 * @return array modified field settings data.
 	 */
 	function rocket_pressidium_varnish_field( $settings ) {
 		// Translators: %s = Hosting name.

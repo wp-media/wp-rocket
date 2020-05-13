@@ -2,24 +2,23 @@
 
 namespace WP_Rocket\Tests\Unit\Inc;
 
-use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey;
+use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
+ * @covers ::rocket_has_constant
+ * @uses  ::rocket_get_constant
  * @group Init
  * @group Constants
- * @covers ::rocket_get_constant
  */
 class Test_RocketGetConstant extends TestCase {
-	protected function setUp() {
-		parent::setUp();
+
+	public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/constants.php';
 	}
 
-	/**
-	 * Test rocket_get_constant() should mock getting constants, allowing tests to override what gets returned.
-	 */
 	public function testShouldMockConstants() {
 		Monkey\Functions\expect( 'rocket_get_constant' )
 			->ordered()
@@ -42,6 +41,6 @@ class Test_RocketGetConstant extends TestCase {
 
 	public function testShouldReturnConstantWhenDefined() {
 		$this->assertSame( WP_ROCKET_PLUGIN_ROOT, rocket_get_constant( 'WP_ROCKET_PLUGIN_ROOT' ) );
-		$this->assertSame( WP_ROCKET_PLUGIN_TESTS_ROOT, rocket_get_constant( 'WP_ROCKET_PLUGIN_TESTS_ROOT' ) );
+		$this->assertSame( WP_ROCKET_TESTS_FIXTURES_DIR, rocket_get_constant( 'WP_ROCKET_TESTS_FIXTURES_DIR' ) );
 	}
 }

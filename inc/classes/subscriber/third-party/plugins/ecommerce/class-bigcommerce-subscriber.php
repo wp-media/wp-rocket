@@ -22,6 +22,8 @@ class BigCommerce_Subscriber implements Event_Manager_Aware_Subscriber_Interface
 
 	/**
 	 * {@inheritdoc}
+	 *
+	 * @param Event_Manager $event_manager The WordPress Event Manager.
 	 */
 	public function set_event_manager( Event_Manager $event_manager ) {
 		$this->event_manager = $event_manager;

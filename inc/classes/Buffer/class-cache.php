@@ -305,13 +305,7 @@ class Cache extends Abstract_Buffer {
 			}
 		}
 
-		// Save the cache file.
-		rocket_put_content( $cache_filepath, $buffer . $footprint );
-
-		if ( function_exists( 'gzencode' ) ) {
-			rocket_put_content( $cache_filepath . '_gzip', gzencode( $buffer . $footprint, apply_filters( 'rocket_gzencode_level_compression', 3 ) ) );
-		}
-
+		$this->write_cache_file( $cache_filepath, $buffer . $footprint );
 		$this->maybe_create_nginx_mobile_file( $cache_dir_path );
 
 		// Send headers with the last modified time of the cache file.
@@ -332,6 +326,42 @@ class Cache extends Abstract_Buffer {
 		);
 
 		return $buffer . $footprint;
+	}
+
+	/**
+	 * Writes the cache file(s)
+	 *
+	 * @since 3.5
+	 * @author Remy Perona
+	 *
+	 * @param string $cache_filepath Absolute path to the cache file.
+	 * @param string $content Content to write in the cache file.
+	 * @return void
+	 */
+	private function write_cache_file( $cache_filepath, $content ) {
+		$gzip_filepath      = $cache_filepath . '_gzip';
+		$temp_filepath      = $cache_filepath . '_temp';
+		$temp_gzip_filepath = $gzip_filepath . '_temp';
+
+		if ( rocket_direct_filesystem()->exists( $temp_filepath ) ) {
+			return;
+		}
+
+		// Save the cache file.
+		rocket_put_content( $temp_filepath, $content );
+		rocket_direct_filesystem()->move( $temp_filepath, $cache_filepath, true );
+
+		if ( function_exists( 'gzencode' ) ) {
+			/**
+			 * Filters the Gzip compression level to use for the cache file
+			 *
+			 * @param int $compression_level Compression level between 0 and 9.
+			 */
+			$compression_level = apply_filters( 'rocket_gzencode_level_compression', 3 );
+
+			rocket_put_content( $temp_gzip_filepath, gzencode( $content, $compression_level ) );
+			rocket_direct_filesystem()->move( $temp_gzip_filepath, $gzip_filepath, true );
+		}
 	}
 
 	/**

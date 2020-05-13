@@ -1,22 +1,30 @@
 <?xml version="1.0"?>
-<ruleset name="WPRocket">
-	<description>Caching plugin for WordPress by WP Media.</description>
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="WP Rocket" xsi:noNamespaceSchemaLocation="vendor/squizlabs/php_codesniffer/phpcs.xsd">
+	<description>The custom ruleset for WP Rocket.</description>
 
-	<arg name="extensions" value="php"/>
-	<!--<arg value="s"/>-->
+	<!-- For help in understanding this file: https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-ruleset.xml -->
+	<!-- For help in using PHPCS: https://github.com/squizlabs/PHP_CodeSniffer/wiki/Usage -->
 
-    <!-- Run against the PHPCompatibility ruleset -->
-    <rule ref="PHPCompatibility"/>
-    <!-- Check for cross-version support for PHP 5.6 and higher. -->
-    <config name="testVersion" value="5.6-"/>
-    <config name="minimum_supported_wp_version" value="4.7"/>
+	<!-- ** WHAT TO SCAN ** -->
 
 	<file>.</file>
+	<!-- Ignoring Files and Folders: https://github.com/squizlabs/PHP_CodeSniffer/wiki/Advanced-Usage#ignoring-files-and-folders -->
 	<exclude-pattern>/inc/deprecated/*</exclude-pattern>
 	<exclude-pattern>/inc/vendors/*</exclude-pattern>
-	<exclude-pattern>/tests/Integration/*</exclude-pattern>
-	<exclude-pattern>/tests/Unit/*</exclude-pattern>
+	<exclude-pattern>/tests/*</exclude-pattern>
 	<exclude-pattern>/vendor/*</exclude-pattern>
+
+	<!-- ** HOW TO SCAN ** -->
+
+	<arg value="sp"/><!-- Show sniff and progress -->
+	<arg name="colors"/><!-- Show results with colors -->
+	<arg name="parallel" value="50"/><!-- Enables parallel processing when available for faster results. -->
+	<arg name="extensions" value="php"/><!-- Limit to PHP files -->
+
+	<!-- Rules: Check PHP version compatibility - see https://github.com/PHPCompatibility/PHPCompatibilityWP -->
+	<rule ref="PHPCompatibility"/>
+	<config name="testVersion" value="5.6-"/>
+	<config name="minimum_supported_wp_version" value="4.7"/>
 
 	<rule ref="WordPress">
         <exclude name="Generic.Functions.FunctionCallArgumentSpacing.TooMuchSpaceAfterComma"/>
@@ -27,6 +35,15 @@
         <exclude name="Squiz.Commenting.FileComment.MissingPackageTag"/>
         <exclude name="Squiz.PHP.CommentedOutCode.Found"/>
 		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
+		<exclude name="Generic.Arrays.DisallowShortArraySyntax" />
+		<!-- Allow cURL. -->
+		<exclude name="WordPress.WP.AlternativeFunctions.curl_curl_init" />
+		<exclude name="WordPress.WP.AlternativeFunctions.curl_curl_exec" />
+		<exclude name="WordPress.WP.AlternativeFunctions.curl_curl_error" />
+		<exclude name="WordPress.WP.AlternativeFunctions.curl_curl_getinfo" />
+		<exclude name="WordPress.WP.AlternativeFunctions.curl_curl_close" />
+		<exclude name="WordPress.WP.AlternativeFunctions.curl_curl_setopt_array" />
+		<exclude name="WordPress.WP.AlternativeFunctions.curl_curl_setopt" />
 	</rule>
     <rule ref="WordPress.WP.I18n">
         <properties>
@@ -35,7 +52,7 @@
     </rule>
     <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
         <properties>
-            <property name="prefixes" type="array" value="rocket,wp_rocket" />
+            <property name="prefixes" type="array" value="rocket,wp_rocket,WPMedia,WPRocket" />
         </properties>
     </rule>
     <rule ref="WordPress.Files.FileName">
@@ -43,23 +60,56 @@
             <property name="strict_class_file_names" value="false" />
         </properties>
     </rule>
-	<rule ref="WordPress.PHP.DevelopmentFunctions.error_log_set_error_handler">
-		<exclude-pattern>inc/classes/class-secure-stream-logger.php</exclude-pattern>
-	</rule>
-	<rule ref="WordPress.WP.AlternativeFunctions.file_system_read_fopen">
-		<exclude-pattern>inc/classes/class-secure-stream-logger.php</exclude-pattern>
-	</rule>
-	<rule ref="WordPress.WP.AlternativeFunctions.file_system_read_fwrite">
-		<exclude-pattern>inc/classes/class-secure-stream-logger.php</exclude-pattern>
-	</rule>
-	<rule ref="WordPress.WP.AlternativeFunctions.file_system_read_fclose">
-		<exclude-pattern>inc/classes/class-secure-stream-logger.php</exclude-pattern>
-	</rule>
 	<rule ref="WordPress.WP.AlternativeFunctions.file_system_read_readfile">
 		<exclude-pattern>inc/classes/buffer/class-cache.php</exclude-pattern>
 	</rule>
 	<rule ref="WordPress.PHP.NoSilencedErrors.Discouraged">
+		<exclude-pattern>inc/admin/admin.php</exclude-pattern>
+		<exclude-pattern>inc/front/process.php</exclude-pattern>
 		<exclude-pattern>inc/classes/buffer/class-cache.php</exclude-pattern>
-		<exclude-pattern>inc/classes/class-secure-stream-logger.php</exclude-pattern>
+		<exclude-pattern>inc/classes/admin/class-logs.php</exclude-pattern>
+		<exclude-pattern>inc/classes/logger/class-stream-handler.php</exclude-pattern>
+		<exclude-pattern>inc/classes/logger/class-logger.php</exclude-pattern>
+		<exclude-pattern>inc/classes/subscriber/third-party/Hostings/class-litespeed-subscriber.php</exclude-pattern>
+		<exclude-pattern>inc/classes/subscriber/third-party/plugins/ecommerce/class-woocommerce-subscriber.php</exclude-pattern>
+		<exclude-pattern>inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php</exclude-pattern>
 	</rule>
+
+	<rule ref="WordPress.DB.DirectDatabaseQuery.DirectQuery">
+		<exclude-pattern>inc/classes/admin/Database/class-optimization-process.php</exclude-pattern>
+		<exclude-pattern>inc/classes/admin/Database/class-optimization.php</exclude-pattern>
+		<exclude-pattern>inc/classes/optimization/CSS/class-critical-css.php</exclude-pattern>
+	</rule>
+
+	<rule ref="WordPress.DB.DirectDatabaseQuery.NoCaching">
+		<exclude-pattern>inc/classes/admin/Database/class-optimization-process.php</exclude-pattern>
+		<exclude-pattern>inc/classes/admin/Database/class-optimization.php</exclude-pattern>
+		<exclude-pattern>inc/classes/optimization/CSS/class-critical-css.php</exclude-pattern>
+	</rule>
+
+	<rule ref="WordPress.DB.PreparedSQL.NotPrepared">
+		<exclude-pattern>inc/classes/admin/Database/class-optimization-process.php</exclude-pattern>
+		<exclude-pattern>inc/classes/admin/Database/class-optimization.php</exclude-pattern>
+	</rule>
+
+	<rule ref="WordPress.DB.PreparedSQL.InterpolatedNotPrepared">
+		<exclude-pattern>inc/classes/admin/Database/class-optimization-process.php</exclude-pattern>
+		<exclude-pattern>inc/classes/optimization/CSS/class-critical-css.php</exclude-pattern>
+	</rule>
+
+	<rule ref="WordPress-Docs">
+		<exclude name="Squiz.Commenting.FileComment.Missing"/>
+		<exclude name="Squiz.Commenting.ClassComment.Missing"/>
+	</rule>
+
+	<!-- Rules: WordPress Coding Standards - see
+		https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards
+		WordPress-Extra includes WordPress-Core -->
+	<rule ref="WordPress-Extra">
+		<exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
+		<exclude name="WordPress.PHP.DisallowShortTernary.Found"/>
+	</rule>
+
+	<!-- Enforce short array syntax: `[]` in place of `array()`. -->
+	<rule ref="Generic.Arrays.DisallowLongArraySyntax" />
 </ruleset>

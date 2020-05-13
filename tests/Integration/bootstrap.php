@@ -1,69 +1,92 @@
 <?php
-/**
- * Bootstraps the WP Rocket Plugin integration tests
- *
- * @package WP_Rocket\Tests\Integration
- */
 
 namespace WP_Rocket\Tests\Integration;
 
-use function WP_Rocket\Tests\init_test_suite;
+use WC_Install;
+use WPMedia\PHPUnit\BootstrapManager;
+use function Patchwork\redefine;
 
-require_once dirname( dirname( __FILE__ ) ) . '/boostrap-functions.php';
-init_test_suite( 'Integration' );
+define( 'WP_ROCKET_PLUGIN_ROOT', dirname( dirname( __DIR__ ) ) . DIRECTORY_SEPARATOR );
+define( 'WP_ROCKET_TESTS_FIXTURES_DIR', dirname( __DIR__ ) . '/Fixtures' );
+define( 'WP_ROCKET_TESTS_DIR', __DIR__ );
+define( 'WP_ROCKET_IS_TESTING', true );
 
-/**
- * Get the WordPress' tests suite directory.
- *
- * @return string Returns The directory path to the WordPress testing environment.
- */
-function get_wp_tests_dir() {
-	$tests_dir = getenv( 'WP_TESTS_DIR' );
-
-	// Travis CI & Vagrant SSH tests directory.
-	if ( empty( $tests_dir ) ) {
-		$tests_dir = '/tmp/wordpress-tests-lib';
-	}
-
-	// If the tests' includes directory does not exist, try a relative path to Core tests directory.
-	if ( ! file_exists( $tests_dir . '/includes/' ) ) {
-		$tests_dir = '../../../../tests/phpunit';
-	}
-
-	// Check it again. If it doesn't exist, stop here and post a message as to why we stopped.
-	if ( ! file_exists( $tests_dir . '/includes/' ) ) {
-		trigger_error( 'Unable to run the integration tests, because the WordPress test suite could not be located.', E_USER_ERROR ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_trigger_error -- Valid use case for our testing suite.
-	}
-
-	// Strip off the trailing directory separator, if it exists.
-	return rtrim( $tests_dir, DIRECTORY_SEPARATOR );
-}
-
-/**
- * Bootstraps the integration testing environment with WordPress and WP Rocket.
- *
- * @param string $wp_tests_dir The directory path to the WordPress testing environment.
- */
-function bootstrap_integration_suite( $wp_tests_dir ) {
-	// Give access to tests_add_filter() function.
-	require_once $wp_tests_dir . '/includes/functions.php';
-
-	// Manually load the plugin being tested.
-	tests_add_filter(
-		'muplugins_loaded',
-		function() {
-			// Load WooCommerce.
-			require WP_ROCKET_PLUGIN_ROOT . '/vendor/woocommerce/woocommerce/woocommerce.php';
-			// Overload the license key for testing.
-			\Patchwork\redefine( 'rocket_valid_key', '__return_true' );
-
-			// Load the plugin.
-			require WP_ROCKET_PLUGIN_ROOT . '/wp-rocket.php';
+// Manually load the plugin being tested.
+tests_add_filter(
+	'muplugins_loaded',
+	function() {
+		if ( BootstrapManager::isGroup( 'WithAmp' ) ) {
+			// Load AMP plugin.
+			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/amp/amp.php';
 		}
-	);
 
-	// Start up the WP testing environment.
-	require_once $wp_tests_dir . '/includes/bootstrap.php';
-}
+		if ( BootstrapManager::isGroup( 'WithAmpAndCloudflare' ) ) {
+			// Load AMP plugin.
+			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/amp/amp.php';
+			update_option(
+				'wp_rocket_settings',
+				[
+					'do_cloudflare'               => 1,
+					'cloudflare_protocol_rewrite' => 1,
+				]
+			);
+		}
 
-bootstrap_integration_suite( get_wp_tests_dir() );
+		// Set the path and URL to our virtual filesystem.
+		define( 'WP_ROCKET_CACHE_ROOT_PATH', 'vfs://public/wp-content/cache/' );
+		define( 'WP_ROCKET_CACHE_ROOT_URL', 'http://example.org/wp-content/cache/' );
+
+		if ( BootstrapManager::isGroup( 'WithSmush' ) ) {
+			// Load WP Smush.
+			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/wp-smushit/wp-smush.php';
+		}
+
+		if ( BootstrapManager::isGroup( 'WithWoo' ) ) {
+			// Load WooCommerce.
+			define( 'WC_TAX_ROUNDING_MODE', 'auto' );
+			define( 'WC_USE_TRANSACTIONS', false );
+			require WP_ROCKET_PLUGIN_ROOT . '/vendor/woocommerce/woocommerce/woocommerce.php';
+		}
+
+		if ( BootstrapManager::isGroup( 'Cloudways' ) ) {
+			$_SERVER['cw_allowed_ip'] = true;
+		}
+
+		// Overload the license key for testing.
+		redefine( 'rocket_valid_key', '__return_true' );
+
+		if ( BootstrapManager::isGroup( 'DoCloudflare' ) ) {
+			update_option( 'wp_rocket_settings', [ 'do_cloudflare' => 1 ] );
+		}
+
+		// Load the plugin.
+		require WP_ROCKET_PLUGIN_ROOT . '/wp-rocket.php';
+	}
+);
+
+
+// install WC.
+tests_add_filter(
+	'setup_theme',
+	function() {
+		if ( ! BootstrapManager::isGroup( 'WithWoo' ) ) {
+			return;
+		}
+		// Clean existing install first.
+		define( 'WP_UNINSTALL_PLUGIN', true );
+		define( 'WC_REMOVE_ALL_DATA', true );
+		include WP_ROCKET_PLUGIN_ROOT . '/vendor/woocommerce/woocommerce/uninstall.php';
+
+		WC_Install::install();
+
+		// Reload capabilities after install, see https://core.trac.wordpress.org/ticket/28374.
+		if ( version_compare( $GLOBALS['wp_version'], '4.7', '<' ) ) {
+			$GLOBALS['wp_roles']->reinit();
+		} else {
+			$GLOBALS['wp_roles'] = null; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+			wp_roles();
+		}
+
+		echo esc_html( 'Installing WooCommerce...' . PHP_EOL );
+	}
+);

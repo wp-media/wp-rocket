@@ -9,7 +9,7 @@ defined( 'ABSPATH' ) || exit;
  * @since 2.7
  */
 if ( function_exists( 'eucookie_start' ) ) :
-	add_filter( 'rocket_cache_mandatory_cookies' , 'rocket_add_eu_cookie_law_mandatory_cookie' );
+	add_filter( 'rocket_cache_mandatory_cookies', 'rocket_add_eu_cookie_law_mandatory_cookie' );
 
 	/**
 	 * Update .htaccess & config files when the "Activate" and "Autoblock" options are turned on
@@ -42,7 +42,7 @@ endif;
  * @since 2.7
  */
 function rocket_activate_eu_cookie_law() {
-	add_filter( 'rocket_htaccess_mod_rewrite'   , '__return_false', 58 );
+	add_filter( 'rocket_htaccess_mod_rewrite', '__return_false', 58 );
 	add_filter( 'rocket_cache_mandatory_cookies', 'rocket_add_eu_cookie_law_mandatory_cookie' );
 
 	// Update the WP Rocket rules on the .htaccess file.
@@ -59,7 +59,7 @@ add_action( 'activate_eu-cookie-law/eu-cookie-law.php', 'rocket_activate_eu_cook
  * @since 2.7
  */
 function rocket_deactivate_eu_cookie_law() {
-	remove_filter( 'rocket_htaccess_mod_rewrite'   , '__return_false', 58 );
+	remove_filter( 'rocket_htaccess_mod_rewrite', '__return_false', 58 );
 	remove_filter( 'rocket_cache_mandatory_cookies', 'rocket_add_eu_cookie_law_mandatory_cookie' );
 
 	// Update the WP Rocket rules on the .htaccess file.

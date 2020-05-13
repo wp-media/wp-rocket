@@ -4,31 +4,24 @@ defined( 'ABSPATH' ) || exit;
 
 // Launch hooks that deletes all the cache domain.
 add_action( 'switch_theme', 'rocket_clean_domain' );  // When user change theme.
-add_action( 'user_register', 'rocket_clean_domain' );  // When a user is added.
-add_action( 'profile_update', 'rocket_clean_domain' );  // When a user is updated.
-add_action( 'deleted_user', 'rocket_clean_domain' );  // When a user is deleted.
 add_action( 'wp_update_nav_menu', 'rocket_clean_domain' );  // When a custom menu is update.
 add_action( 'update_option_sidebars_widgets', 'rocket_clean_domain' );  // When you change the order of widgets.
-add_action( 'update_option_category_base', 'rocket_clean_domain' );  // When category permalink prefix is update.
-add_action( 'update_option_tag_base', 'rocket_clean_domain' );  // When tag permalink prefix is update.
+add_action( 'update_option_category_base', 'rocket_clean_domain' );  // When category permalink is updated.
+add_action( 'update_option_tag_base', 'rocket_clean_domain' );  // When tag permalink is updated.
 add_action( 'permalink_structure_changed', 'rocket_clean_domain' );  // When permalink structure is update.
-add_action( 'create_term', 'rocket_clean_domain' );  // When a term is created.
-add_action( 'edited_terms', 'rocket_clean_domain' );  // When a term is updated.
-add_action( 'delete_term', 'rocket_clean_domain' );  // When a term is deleted.
 add_action( 'add_link', 'rocket_clean_domain' );  // When a link is added.
 add_action( 'edit_link', 'rocket_clean_domain' );  // When a link is updated.
 add_action( 'delete_link', 'rocket_clean_domain' );  // When a link is deleted.
 add_action( 'customize_save', 'rocket_clean_domain' );  // When customizer is saved.
 add_action( 'update_option_theme_mods_' . get_option( 'stylesheet' ), 'rocket_clean_domain' ); // When location of a menu is updated.
-add_action( 'upgrader_process_complete', 'rocket_clean_cache_theme_update', 10, 2 );  // When a theme is updated.
 
 /**
- * Purge cache When a widget is updated
+ * Purge cache When a widget is updated.
  *
  * @since 1.1.1
  *
  * @param object $instance Widget instance.
- * @return object Widget instance
+ * @return object Widget instance.
  */
 function rocket_widget_update_callback( $instance ) {
 	rocket_clean_domain();
@@ -241,7 +234,7 @@ function rocket_clean_post( $post_id, $post = null ) {
 	 * @param array   $purge_urls URLs cache files to remove
 	 * @param string  $lang       The post language
 	 */
-	do_action( 'before_rocket_clean_post', $post, $purge_urls, $lang );
+	do_action( 'before_rocket_clean_post', $post, $purge_urls, $lang ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 	/**
 	 * Filter URLs cache files to remove
@@ -270,7 +263,7 @@ function rocket_clean_post( $post_id, $post = null ) {
 	 * @param array   $purge_urls URLs cache files to remove
 	 * @param string  $lang       The post language
 	 */
-	do_action( 'after_rocket_clean_post', $post, $purge_urls, $lang );
+	do_action( 'after_rocket_clean_post', $post, $purge_urls, $lang ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 }
 add_action( 'wp_trash_post',           'rocket_clean_post' );
 add_action( 'delete_post',             'rocket_clean_post' );
@@ -330,7 +323,7 @@ function rocket_clean_post_cache_on_status_change( $post_id, $post_data ) {
 	 * @param array   $purge_urls URLs cache files to remove
 	 * @param string  $lang       The post language
 	 */
-	do_action( 'before_rocket_clean_post', $post, $purge_urls, $lang );
+	do_action( 'before_rocket_clean_post', $post, $purge_urls, $lang ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 
 	// Purge all files.
 	rocket_clean_files( $purge_urls );
@@ -350,7 +343,7 @@ function rocket_clean_post_cache_on_status_change( $post_id, $post_data ) {
 	 * @param array   $purge_urls URLs cache files to remove
 	 * @param string  $lang       The post language
 	 */
-	do_action( 'after_rocket_clean_post', $post, $purge_urls, $lang );
+	do_action( 'after_rocket_clean_post', $post, $purge_urls, $lang ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 }
 add_action( 'pre_post_update', 'rocket_clean_post_cache_on_status_change', 10, 2 );
 
@@ -421,16 +414,17 @@ add_filter( 'rocket_post_purge_urls', 'rocket_post_purge_urls_for_qtranslate' );
  * @since 1.3.0 Compatibility with WPML
  * @since 1.0
  */
-function do_admin_post_rocket_purge_cache() {
+function do_admin_post_rocket_purge_cache() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	if ( isset( $_GET['type'], $_GET['_wpnonce'] ) ) {
+		$type = sanitize_key( $_GET['type'] );
 
-		$_type     = explode( '-', $_GET['type'] );
+		$_type     = explode( '-', $type );
 		$_type     = reset( $_type );
-		$_id       = explode( '-', $_GET['type'] );
+		$_id       = explode( '-', $type );
 		$_id       = end( $_id );
-		$_taxonomy = isset( $_GET['taxonomy'] ) ? $_GET['taxonomy'] : false;
+		$_taxonomy = isset( $_GET['taxonomy'] ) ? sanitize_title( wp_unslash( $_GET['taxonomy'] ) ) : false;
 
-		if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'purge_cache_' . $_GET['type'] ) ) {
+		if ( ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'purge_cache_' . $type ) ) {
 			wp_nonce_ays( '' );
 		}
 
@@ -464,6 +458,8 @@ function do_admin_post_rocket_purge_cache() {
 				}
 
 				if ( get_rocket_option( 'manual_preload' ) && ( ! defined( 'WP_ROCKET_DEBUG' ) || ! WP_ROCKET_DEBUG ) ) {
+					$home_url = get_rocket_i18n_home_url( $lang );
+
 					/**
 					 * Filters the arguments for the preload request being triggered after clearing the cache.
 					 *
@@ -472,7 +468,7 @@ function do_admin_post_rocket_purge_cache() {
 					 *
 					 * @param array $args Request arguments.
 					 */
-					$args = apply_filters(
+					$args = (array) apply_filters(
 						'rocket_preload_after_purge_cache_request_args',
 						[
 							'blocking'   => false,
@@ -481,10 +477,20 @@ function do_admin_post_rocket_purge_cache() {
 							'sslverify'  => apply_filters( 'https_local_ssl_verify', false ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 						]
 					);
-					wp_safe_remote_get(
-						home_url( $lang ),
-						$args
-					);
+
+					wp_safe_remote_get( $home_url, $args );
+
+					/**
+					 * Fires after automatically preloading the homepage, which occurs after purging the cache.
+					 *
+					 * @since  3.5
+					 * @author Grégory Viguier
+					 *
+					 * @param string $home_url URL to the homepage being preloaded.
+					 * @param string $lang     The lang of the homepage.
+					 * @param array  $args     Arguments used for the preload request.
+					 */
+					do_action( 'rocket_after_preload_after_purge_cache', $home_url, $lang, $args );
 				}
 
 				rocket_dismiss_box( 'rocket_warning_plugin_modification' );
@@ -541,8 +547,8 @@ add_action( 'admin_post_purge_cache', 'do_admin_post_rocket_purge_cache' );
  *
  * @since 2.7
  */
-function do_admin_post_rocket_purge_opcache() {
-	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'rocket_purge_opcache' ) ) {
+function do_admin_post_rocket_purge_opcache() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'rocket_purge_opcache' ) ) {
 		wp_nonce_ays( '' );
 	}
 
@@ -572,48 +578,10 @@ function do_admin_post_rocket_purge_opcache() {
 add_action( 'admin_post_rocket_purge_opcache', 'do_admin_post_rocket_purge_opcache' );
 
 /**
- * Purge CloudFlare cache
- *
- * @since 2.5
- */
-function do_admin_post_rocket_purge_cloudflare() {
-	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'rocket_purge_cloudflare' ) ) {
-		wp_nonce_ays( '' );
-	}
-
-	if ( ! current_user_can( 'rocket_purge_cloudflare_cache' ) ) {
-		return;
-	}
-
-	// Purge CloudFlare.
-	$cf_purge = rocket_purge_cloudflare();
-
-	if ( is_wp_error( $cf_purge ) ) {
-		$cf_purge_result = [
-			'result'  => 'error',
-			// translators: %s = CloudFare API return message.
-			'message' => sprintf( __( '<strong>WP Rocket:</strong> %s', 'rocket' ), $cf_purge->get_error_message() ),
-		];
-	} else {
-		$cf_purge_result = [
-			'result'  => 'success',
-			'message' => __( '<strong>WP Rocket:</strong> Cloudflare cache successfully purged.', 'rocket' ),
-		];
-	}
-
-	set_transient( get_current_user_id() . '_cloudflare_purge_result', $cf_purge_result );
-
-	wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
-	die();
-}
-add_action( 'admin_post_rocket_purge_cloudflare', 'do_admin_post_rocket_purge_cloudflare' );
-
-/**
- * Clean the cache when the current theme is updated
+ * Clean the cache when the current theme is updated.
  *
  * @param WP_Upgrader $wp_upgrader WP_Upgrader instance.
  * @param array       $hook_extra  Array of bulk item update data.
- * @return void
  */
 function rocket_clean_cache_theme_update( $wp_upgrader, $hook_extra ) {
 	if ( 'update' !== $hook_extra['action'] ) {
@@ -624,23 +592,24 @@ function rocket_clean_cache_theme_update( $wp_upgrader, $hook_extra ) {
 		return;
 	}
 
-	$current_theme = wp_get_theme();
-
-	$themes = [
-		$current_theme->get_template(), // Parent theme.
-		$current_theme->get_stylesheet(), // Child theme.
-	];
-
 	if ( ! is_array( $hook_extra['themes'] ) ) {
 		return;
 	}
 
-	if ( ! array_intersect( $hook_extra['themes'], $themes ) ) {
+	$current_theme = wp_get_theme();
+	$themes        = [
+		$current_theme->get_template(), // Parent theme.
+		$current_theme->get_stylesheet(), // Child theme.
+	];
+
+	// Bail out if the current theme or its parent is not updating.
+	if ( empty( array_intersect( $hook_extra['themes'], $themes ) ) ) {
 		return;
 	}
 
 	rocket_clean_domain();
 }
+add_action( 'upgrader_process_complete', 'rocket_clean_cache_theme_update', 10, 2 );  // When a theme is updated.
 
 /**
  * Purge WP Rocket cache on Slug / Permalink change.

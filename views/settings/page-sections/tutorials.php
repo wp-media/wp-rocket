@@ -8,7 +8,7 @@
 defined( 'ABSPATH' ) || exit;
 
 
-$tutorials = [
+$rocket_tutorials = [
 	[
 		'title'     => __( 'Getting Started', 'rocket' ),
 		'tutorials' => [
@@ -46,15 +46,16 @@ $tutorials = [
 	</div>
 	<div class="wpr-Page-row">
 		<div class="wpr-Page-col">
-	<?php foreach ( $tutorials as $section ) : ?>
+	<?php foreach ( $rocket_tutorials as $section ) : // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound ?>
 	<div class="wpr-optionHeader">
 		<h3 class="wpr-title2"><?php echo esc_html( $section['title'] ); ?></h3>
 	</div>
 	<div class="wpr-field wpr-tutorials-section">
-	<?php foreach ( $section['tutorials'] as $id => $title ) : ?>
+		<?php foreach ( $section['tutorials'] as $rocket_tutorial_id => $rocket_tutorial_title ) : ?>
 	<div class="wpr-tutorial-item">
-	<script src="https://fast.wistia.com/embed/medias/<?php echo esc_attr( $id ); ?>.jsonp" async></script><script src="https://fast.wistia.com/assets/external/E-v1.js" async></script><div class="wistia_responsive_padding" style="padding:56.25% 0 0 0;position:relative;"><div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;"><span class="wistia_embed wistia_async_<?php echo esc_attr( $id ); ?> popover=true popoverAnimateThumbnail=true videoFoam=true" style="display:inline-block;height:100%;position:relative;width:100%">&nbsp;</span></div></div>
-	<h4 class="wpr-fieldsContainer-description"><?php echo esc_html( $title ); ?></h4>
+	<?php // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript ?>
+	<script src="https://fast.wistia.com/embed/medias/<?php echo esc_attr( $rocket_tutorial_id ); ?>.jsonp" async></script><script src="https://fast.wistia.com/assets/external/E-v1.js" async></script><div class="wistia_responsive_padding" style="padding:56.25% 0 0 0;position:relative;"><div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;"><span class="wistia_embed wistia_async_<?php echo esc_attr( $rocket_tutorial_id ); ?> popover=true popoverAnimateThumbnail=true videoFoam=true" style="display:inline-block;height:100%;position:relative;width:100%">&nbsp;</span></div></div>
+	<h4 class="wpr-fieldsContainer-description"><?php echo esc_html( $rocket_tutorial_title ); ?></h4>
 	</div>
 	<?php endforeach; ?>
 		</div>

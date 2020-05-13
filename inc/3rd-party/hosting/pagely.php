@@ -3,7 +3,7 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Clear WP Rocket cache after purged the Varnish cache via Pagely hosting
+ * Clear WP Rocket cache after purged the Varnish cache via Pagely hosting.
  *
  * @since 2.5.7
  *

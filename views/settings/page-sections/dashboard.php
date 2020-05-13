@@ -93,7 +93,14 @@ defined( 'ABSPATH' ) || exit;
 				</div>
 			</div>
 			<?php endif; ?>
-
+			<?php
+			/**
+			 * Fires after the account data section on the WP Rocket settings dashboard
+			 *
+			 * @since 3.5
+			 */
+			do_action( 'rocket_dashboard_after_account_data' );
+			?>
 			<?php
 				$this->render_settings_sections( $data['id'] );
 			?>
@@ -145,13 +152,14 @@ defined( 'ABSPATH' ) || exit;
 					<?php endif; ?>
 
 					<?php
-					$opcache_enabled  = filter_var( ini_get( 'opcache.enable' ), FILTER_VALIDATE_BOOLEAN );
-					$restrict_api     = ini_get( 'opcache.restrict_api' );
-					$can_restrict_api = true;
-					if ( $restrict_api && strpos(__FILE__, $restrict_api) !== 0 ) {
-						$can_restrict_api = false;
+					$opcache_enabled  = filter_var( ini_get( 'opcache.enable' ), FILTER_VALIDATE_BOOLEAN ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+					$restrict_api     = ini_get( 'opcache.restrict_api' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+					$can_restrict_api = true; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+					if ( $restrict_api && strpos( __FILE__, $restrict_api ) !== 0 ) {
+						$can_restrict_api = false; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 					}
-					if ( function_exists( 'opcache_reset' ) && $opcache_enabled && current_user_can( 'rocket_purge_opcache' ) && $can_restrict_api ) : ?>
+					if ( function_exists( 'opcache_reset' ) && $opcache_enabled && current_user_can( 'rocket_purge_opcache' ) && $can_restrict_api ) :
+						?>
 					<div class="wpr-field">
 						<h4 class="wpr-title3"><?php esc_html_e( 'Purge OPCache content', 'rocket' ); ?></h4>
 						<?php
@@ -168,7 +176,7 @@ defined( 'ABSPATH' ) || exit;
 						?>
 					</div>
 					<?php endif; ?>
-					<?php if ( get_rocket_option( 'async_css' ) && apply_filters( 'do_rocket_critical_css_generation', true ) && current_user_can( 'rocket_regenerate_critical_css' ) ) : ?>
+					<?php if ( get_rocket_option( 'async_css' ) && apply_filters( 'do_rocket_critical_css_generation', true ) && current_user_can( 'rocket_regenerate_critical_css' ) ) : // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound ?>
 					<div class="wpr-field">
 						<h4 class="wpr-title3"><?php esc_html_e( 'Regenerate Critical CSS', 'rocket' ); ?></h4>
 						<?php

@@ -4,6 +4,9 @@ namespace WP_Rocket\Subscriber\Optimization;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Optimization\CSS\Critical_CSS;
 use WP_Rocket\Admin\Options_Data;
+use FilesystemIterator;
+use UnexpectedValueException;
+
 
 defined( 'ABSPATH' ) || exit;
 
@@ -14,8 +17,23 @@ defined( 'ABSPATH' ) || exit;
  * @author Remy Perona
  */
 class Critical_CSS_Subscriber implements Subscriber_Interface {
+
 	/**
-	 * Constructor
+	 * Instance of Critical CSS.
+	 *
+	 * @var Critical_CSS
+	 */
+	protected $critical_css;
+
+	/**
+	 * Instance of options.
+	 *
+	 * @var Options_Data
+	 */
+	protected $options;
+
+	/**
+	 * Creates an instance of the Critical CSS Subscriber.
 	 *
 	 * @param Critical_CSS $critical_css Critical CSS instance.
 	 * @param Options_Data $options      WP Rocket options.
@@ -26,12 +44,19 @@ class Critical_CSS_Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * @inheritDoc
+	 * Return an array of events that this subscriber wants to listen to.
+	 *
+	 * @since  3.3
+	 * @author Remy Perona
+	 *
+	 * @return array
 	 */
 	public static function get_subscribed_events() {
+		$slug = rocket_get_constant( 'WP_ROCKET_SLUG' );
+
 		return [
 			'admin_post_rocket_generate_critical_css' => 'init_critical_css_generation',
-			'update_option_' . WP_ROCKET_SLUG         => [
+			'update_option_' . $slug                  => [
 				[ 'generate_critical_css_on_activation', 11, 2 ],
 				[ 'stop_process_on_deactivation', 11, 2 ],
 			],
@@ -43,7 +68,7 @@ class Critical_CSS_Subscriber implements Subscriber_Interface {
 			],
 			'wp_head'                                 => [ 'insert_load_css', PHP_INT_MAX ],
 			'rocket_buffer'                           => [
-				[ 'insert_critical_css_buffer', 29 ],
+				[ 'insert_critical_css_buffer', 19 ],
 				[ 'async_css', 32 ],
 			],
 			'switch_theme'                            => 'maybe_regenerate_cpcss',
@@ -128,17 +153,29 @@ class Critical_CSS_Subscriber implements Subscriber_Interface {
 	 * @param array $value     New values for WP Rocket settings.
 	 */
 	public function generate_critical_css_on_activation( $old_value, $value ) {
-		if ( isset( $old_value['async_css'], $value['async_css'] ) && ( $old_value['async_css'] !== $value['async_css'] ) && 1 === (int) $value['async_css'] ) {
-			try {
-				if ( ( new \FilesystemIterator( $this->critical_css->get_critical_css_path(), \FilesystemIterator::SKIP_DOTS ) )->valid() ) {
-					return;
-				}
-			} catch ( \UnexpectedValueException $e ) {
+		if ( ! isset( $old_value['async_css'], $value['async_css'] ) || ( $old_value['async_css'] === $value['async_css'] ) || 1 !== (int) $value['async_css'] ) {
+			return;
+		}
+
+		$critical_css_path = $this->critical_css->get_critical_css_path();
+
+		// Check if the CPCSS path exists and create it.
+		if ( ! rocket_direct_filesystem()->is_dir( $critical_css_path ) ) {
+			rocket_mkdir_p( $critical_css_path );
+		}
+
+		try {
+			if ( ( new FilesystemIterator( $critical_css_path, FilesystemIterator::SKIP_DOTS ) )->valid() ) {
+				// Bail out if the folder is not empty.
 				return;
 			}
-
-			$this->critical_css->process_handler();
+		} catch ( UnexpectedValueException $e ) {
+			// Bail out when folder is invalid.
+			return;
 		}
+
+		// Generate the CPCSS files.
+		$this->critical_css->process_handler();
 	}
 
 	/**
@@ -151,6 +188,7 @@ class Critical_CSS_Subscriber implements Subscriber_Interface {
 	 * @param array $value     New values for WP Rocket settings.
 	 */
 	public function stop_process_on_deactivation( $old_value, $value ) {
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
 		if ( ! empty( $_POST[ WP_ROCKET_SLUG ] ) && isset( $old_value['async_css'], $value['async_css'] ) && ( $old_value['async_css'] !== $value['async_css'] ) && 0 === (int) $value['async_css'] ) {
 			$this->critical_css->stop_generation();
 
@@ -234,7 +272,7 @@ class Critical_CSS_Subscriber implements Subscriber_Interface {
 
 		// Translators: %1$d = number of critical CSS generated, %2$d = total number of critical CSS to generate.
 		$message  = '<p>' . sprintf( __( 'Critical CSS generation finished for %1$d of %2$d page types.', 'rocket' ), $transient['generated'], $transient['total'] );
-		$message .= ' <em> (' . date_i18n( get_option( 'date_format' ), current_time( 'timestamp' ) ) . ' @ ' . date_i18n( get_option( 'time_format' ), current_time( 'timestamp' ) ) . ') </em></p>';
+		$message .= ' <em> (' . date_i18n( get_option( 'date_format' ) ) . ' @ ' . date_i18n( get_option( 'time_format' ) ) . ') </em></p>';
 
 		if ( ! empty( $transient['items'] ) ) {
 			$message .= '<ul>';
@@ -344,7 +382,7 @@ class Critical_CSS_Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		echo <<<JS
+		echo /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. */<<<JS
 <script>
 /*! loadCSS rel=preload polyfill. [c]2017 Filament Group, Inc. MIT License */
 (function(w){"use strict";if(!w.loadCSS){w.loadCSS=function(){}}

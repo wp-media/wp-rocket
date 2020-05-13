@@ -10,8 +10,8 @@ defined( 'ABSPATH' ) || exit;
  * @param int $post_id The post ID.
  * @return array $urls List of taxonomies URLs
  */
-function get_rocket_post_terms_urls( $post_id ) {
-	$urls       = array();
+function get_rocket_post_terms_urls( $post_id ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+	$urls       = [];
 	$taxonomies = get_object_taxonomies( get_post_type( $post_id ), 'objects' );
 
 	foreach ( $taxonomies as $taxonomy ) {
@@ -40,43 +40,47 @@ function get_rocket_post_terms_urls( $post_id ) {
 	 *
 	 * @param array $urls List of taxonomies URLs
 	*/
-	$urls = apply_filters( 'rocket_post_terms_urls', $urls );
-
-	return $urls;
+	return apply_filters( 'rocket_post_terms_urls', $urls );
 }
 
 /**
- * Get all dates archives urls associated to a specific post
+ * Get all dates archives urls associated to a specific post.
  *
  * @since 1.0
  *
  * @param int $post_id The post ID.
- * @return array $urls List of dates URLs
+ *
+ * @return array $urls List of dates URLs on success; else, an empty [].
  */
-function get_rocket_post_dates_urls( $post_id ) {
-	// Get the day and month of the post.
-	$date = explode( '-', get_the_time( 'Y-m-d', $post_id ) );
+function get_rocket_post_dates_urls( $post_id ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+	$time = get_the_time( 'Y-m-d', $post_id );
+	if ( empty( $time ) ) {
+		return [];
+	}
 
-	$urls = array(
-		trailingslashit( get_year_link( $date[0] ) ) . 'index.html',
-		trailingslashit( get_year_link( $date[0] ) ) . 'index.html_gzip',
-		trailingslashit( get_year_link( $date[0] ) ) . $GLOBALS['wp_rewrite']->pagination_base,
-		trailingslashit( get_month_link( $date[0], $date[1] ) ) . 'index.html',
-		trailingslashit( get_month_link( $date[0], $date[1] ) ) . 'index.html_gzip',
-		trailingslashit( get_month_link( $date[0], $date[1] ) ) . $GLOBALS['wp_rewrite']->pagination_base,
+	// Extract and prep the year, month, and day.
+	$date  = explode( '-', $time );
+	$year  = trailingslashit( get_year_link( $date[0] ) );
+	$month = trailingslashit( get_month_link( $date[0], $date[1] ) );
+
+	$urls = [
+		"{$year}index.html",
+		"{$year}index.html_gzip",
+		$year . $GLOBALS['wp_rewrite']->pagination_base,
+		"{$month}index.html",
+		"{$month}index.html_gzip",
+		$month . $GLOBALS['wp_rewrite']->pagination_base,
 		get_day_link( $date[0], $date[1], $date[2] ),
-	);
+	];
 
 	/**
-	 * Filter the list of dates URLs
+	 * Filter the list of dates URLs.
 	 *
 	 * @since 1.1.0
 	 *
-	 * @param array $urls List of dates URLs
+	 * @param array $urls List of dates URLs.
 	*/
-	$urls = apply_filters( 'rocket_post_dates_urls', $urls );
-
-	return $urls;
+	return (array) apply_filters( 'rocket_post_dates_urls', $urls );
 }
 
 /**
@@ -91,10 +95,10 @@ function get_rocket_post_dates_urls( $post_id ) {
  * @param string $name The post name.
  * @return string The permalink
  */
-function get_rocket_sample_permalink( $id, $title = null, $name = null ) {
+function get_rocket_sample_permalink( $id, $title = null, $name = null ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$post = get_post( $id );
 	if ( ! $post ) {
-		return array( '', '' );
+		return [ '', '' ];
 	}
 
 	$ptype = get_post_type_object( $post->post_type );
@@ -104,7 +108,7 @@ function get_rocket_sample_permalink( $id, $title = null, $name = null ) {
 	$original_name   = $post->post_name;
 
 	// Hack: get_permalink() would return ugly permalink for drafts, so we will fake that our post is published.
-	if ( in_array( $post->post_status, array( 'draft', 'pending' ), true ) ) {
+	if ( in_array( $post->post_status, [ 'draft', 'pending' ], true ) ) {
 		$post->post_status = 'publish';
 		$post->post_name   = sanitize_title( $post->post_name ? $post->post_name : $post->post_title, $post->ID );
 	}
@@ -132,7 +136,7 @@ function get_rocket_sample_permalink( $id, $title = null, $name = null ) {
 		$uri = untrailingslashit( $uri );
 
 		/** This filter is documented in wp-admin/edit-tag-form.php */
-		$uri = apply_filters( 'editable_slug', $uri, $post );
+		$uri = apply_filters( 'editable_slug', $uri, $post ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 		if ( ! empty( $uri ) ) {
 			$uri .= '/';
 		}
@@ -140,7 +144,7 @@ function get_rocket_sample_permalink( $id, $title = null, $name = null ) {
 	}
 
 	/** This filter is documented in wp-admin/edit-tag-form.php */
-	$permalink         = array( $permalink, apply_filters( 'editable_slug', $post->post_name, $post ) );
+	$permalink         = [ $permalink, apply_filters( 'editable_slug', $post->post_name, $post ) ]; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$post->post_status = $original_status;
 	$post->post_date   = $original_date;
 	$post->post_name   = $original_name;

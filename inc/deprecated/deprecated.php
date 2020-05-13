@@ -50,7 +50,6 @@ if ( ! function_exists( 'set_rocket_cloudflare_async' ) ) :
 	 */
 	function set_rocket_cloudflare_async( $cf_rocket_loader ) {
 		_deprecated_function( __FUNCTION__, '2.8.16', 'set_rocket_cloudflare_rocket_loader()' );
-		return set_rocket_cloudflare_rocket_loader( $cf_rocket_loader );
 	}
 endif;
 
@@ -66,7 +65,6 @@ if ( ! function_exists( 'set_rocket_cloudflare_cache_lvl' ) ) :
 	 */
 	function set_rocket_cloudflare_cache_lvl( $cf_cache_level ) {
 		_deprecated_function( __FUNCTION__, '2.8.16', 'set_rocket_cloudflare_cache_level()' );
-		return set_rocket_cloudflare_cache_level( $cf_cache_level );
 	}
 endif;
 

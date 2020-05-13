@@ -52,7 +52,7 @@ class Critical_CSS {
 			'url'  => home_url( '/' ),
 		];
 
-		$this->critical_css_path = WP_ROCKET_CRITICAL_CSS_PATH . get_current_blog_id() . '/';
+		$this->critical_css_path = rocket_get_constant( 'WP_ROCKET_CRITICAL_CSS_PATH' ) . get_current_blog_id() . '/';
 	}
 
 	/**
@@ -84,7 +84,7 @@ class Critical_CSS {
 		 *
 		 * @param bool $do_rocket_critical_css_generation True to activate the automatic generation, false to prevent it.
 		 */
-		if ( ! apply_filters( 'do_rocket_critical_css_generation', true ) ) { // WPCS: prefix ok.
+		if ( ! apply_filters( 'do_rocket_critical_css_generation', true ) ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			return;
 		}
 
@@ -193,7 +193,7 @@ class Critical_CSS {
 				'fusion_template',
 				'blocks',
 				'jet-woo-builder',
-				'fl-builder-template'
+				'fl-builder-template',
 			]
 		);
 
@@ -201,13 +201,13 @@ class Critical_CSS {
 		$post_types = esc_sql( $post_types );
 		$post_types = "'" . implode( "','", $post_types ) . "'";
 
-		$rows = $wpdb->get_results( // WPCS: unprepared SQL ok.
+		$rows = $wpdb->get_results(
 			"
 		    SELECT MAX(ID) as ID, post_type
 		    FROM (
 		        SELECT ID, post_type
 		        FROM $wpdb->posts
-		        WHERE post_type IN ( $post_types )
+				WHERE post_type IN ( $post_types )
 		        AND post_status = 'publish'
 		        ORDER BY post_date DESC
 		    ) AS posts
@@ -251,6 +251,8 @@ class Critical_CSS {
 				'truethemes-gallery-category',
 				'coupon_campaign',
 				'element_category',
+				'mediamatic_wpfolder',
+				'attachment_category',
 			]
 		);
 
@@ -258,17 +260,15 @@ class Critical_CSS {
 		$taxonomies = esc_sql( $taxonomies );
 		$taxonomies = "'" . implode( "','", $taxonomies ) . "'";
 
-		$rows = $wpdb->get_results( // WPCS: unprepared SQL ok.
-			"
-			SELECT MAX( term_id ) AS ID, taxonomy
+		$rows = $wpdb->get_results(
+			"SELECT MAX( term_id ) AS ID, taxonomy
 			FROM (
 				SELECT term_id, taxonomy
 				FROM $wpdb->term_taxonomy
 				WHERE taxonomy IN ( $taxonomies )
 				AND count > 0
 			) AS taxonomies
-			GROUP BY taxonomy
-			"
+			GROUP BY taxonomy"
 		);
 
 		return $rows;

@@ -35,10 +35,6 @@ class Litespeed_Subscriber implements Subscriber_Interface {
 	 *
 	 * @since  3.4.1
 	 * @author Soponar Cristina
-	 *
-	 * @param string $root The path of home cache file.
-	 * @param string $lang The current lang to purge.
-	 * @param string $url  The home url.
 	 */
 	public function litespeed_clean_domain() {
 		$this->litespeed_header_purge_all();
@@ -112,7 +108,6 @@ class Litespeed_Subscriber implements Subscriber_Interface {
 	 * @since 3.4.1
 	 * @author Soponar Cristina
 	 *
-	 * @param  string $url The URL to purge.
 	 * @return void
 	 */
 	public function litespeed_header_purge_all() {

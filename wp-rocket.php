@@ -3,8 +3,8 @@
  * Plugin Name: WP Rocket
  * Plugin URI: https://wp-rocket.me
  * Description: The best WordPress performance plugin.
- * Version: 3.4.4
- * Code Name: Scarif
+ * Version: 3.5.4
+ * Code Name: Coruscant
  * Author: WP Media
  * Author URI: https://wp-media.me
  * Licence: GPLv2 or later
@@ -18,7 +18,7 @@
 defined( 'ABSPATH' ) || exit;
 
 // Rocket defines.
-define( 'WP_ROCKET_VERSION',               '3.4.4' );
+define( 'WP_ROCKET_VERSION',               '3.5.4' );
 define( 'WP_ROCKET_WP_VERSION',            '4.9' );
 define( 'WP_ROCKET_WP_VERSION_TESTED',     '5.3.2' );
 define( 'WP_ROCKET_PHP_VERSION',           '5.6' );
@@ -74,11 +74,19 @@ if ( ! defined( 'CHMOD_WP_ROCKET_CACHE_DIRS' ) ) {
 	define( 'CHMOD_WP_ROCKET_CACHE_DIRS', 0755 ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 }
 if ( ! defined( 'WP_ROCKET_LASTVERSION' ) ) {
-	define( 'WP_ROCKET_LASTVERSION', '3.3.7' );
+	define( 'WP_ROCKET_LASTVERSION', '3.4.4' );
+}
+
+/**
+ * We use is_readable() with @ silencing as WP_Filesystem() can use different methods to access the filesystem.
+ *
+ * This is more performant and more compatible. It allows us to work around file permissions and missing credentials.
+ */
+if ( @is_readable( WP_ROCKET_PATH . 'licence-data.php' ) ) { //phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+	require WP_ROCKET_PATH . 'licence-data.php';
 }
 
 require WP_ROCKET_INC_PATH . 'compat.php';
-require dirname( __FILE__ ) . '/licence-data.php';
 require WP_ROCKET_INC_PATH . 'classes/class-wp-rocket-requirements-check.php';
 
 /**
@@ -102,14 +110,14 @@ function rocket_load_textdomain() {
 add_action( 'plugins_loaded', 'rocket_load_textdomain' );
 
 $wp_rocket_requirement_checks = new WP_Rocket_Requirements_Check(
-	array(
+	[
 		'plugin_name'         => 'WP Rocket',
 		'plugin_file'         => WP_ROCKET_FILE,
 		'plugin_version'      => WP_ROCKET_VERSION,
 		'plugin_last_version' => WP_ROCKET_LASTVERSION,
 		'wp_version'          => WP_ROCKET_WP_VERSION,
 		'php_version'         => WP_ROCKET_PHP_VERSION,
-	)
+	]
 );
 
 if ( $wp_rocket_requirement_checks->check() ) {

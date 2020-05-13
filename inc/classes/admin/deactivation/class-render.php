@@ -25,6 +25,6 @@ class Render extends Abstract_Render {
 			'deactivation_url' => wp_nonce_url( 'plugins.php?action=deactivate&amp;plugin=' . rawurlencode( 'wp-rocket/wp-rocket.php' ), 'deactivate-plugin_wp-rocket/wp-rocket.php' ),
 		];
 
-		echo $this->generate( 'form', $args );
+		echo $this->generate( 'form', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 }

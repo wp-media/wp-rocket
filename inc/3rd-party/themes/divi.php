@@ -2,7 +2,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$current_theme = wp_get_theme();
+$current_theme = wp_get_theme(); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 if ( 'Divi' === $current_theme->get( 'Name' ) || 'Divi' === $current_theme->get( 'Template' ) ) :
 	/**

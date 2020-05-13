@@ -15,7 +15,7 @@ endif;
  * @return array Updated array of URLs to exclude from cache
  */
 function rocket_exclude_ithemes_exchange_pages( $urls ) {
-	$pages = array(
+	$pages = [
 		'purchases',
 		'confirmation',
 		'account',
@@ -24,13 +24,13 @@ function rocket_exclude_ithemes_exchange_pages( $urls ) {
 		'purchases',
 		'log-in',
 		'log-out',
-	);
+	];
 
 	foreach ( $pages as $page ) {
 		if ( it_exchange_get_page_type( $page ) === 'WordPress' ) {
 			$exchange_urls = get_rocket_i18n_translated_post_urls( it_exchange_get_page_wpid( $page ) );
 		} else {
-			$exchange_urls = array( rocket_extract_url_component( it_exchange_get_page_url( $page ), PHP_URL_PATH ) );
+			$exchange_urls = [ rocket_extract_url_component( it_exchange_get_page_url( $page ), PHP_URL_PATH ) ];
 		}
 
 		$urls = array_merge( $urls, $exchange_urls );

@@ -40,18 +40,19 @@ function rocket_init() {
 	$wp_rocket->load();
 
 	// Call defines and functions.
+	require_once WP_ROCKET_FUNCTIONS_PATH . 'api.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'files.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'posts.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'admin.php';
-	require WP_ROCKET_FUNCTIONS_PATH . 'preload.php';
+	require WP_ROCKET_INC_PATH . '/API/preload.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'formatting.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'i18n.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'htaccess.php';
-	require WP_ROCKET_FUNCTIONS_PATH . 'varnish.php';
 	require WP_ROCKET_DEPRECATED_PATH . 'deprecated.php';
 	require WP_ROCKET_DEPRECATED_PATH . '3.2.php';
 	require WP_ROCKET_DEPRECATED_PATH . '3.3.php';
 	require WP_ROCKET_DEPRECATED_PATH . '3.4.php';
+	require WP_ROCKET_DEPRECATED_PATH . '3.5.php';
 	require WP_ROCKET_3RD_PARTY_PATH . '3rd-party.php';
 	require WP_ROCKET_COMMON_PATH . 'admin-bar.php';
 	require WP_ROCKET_COMMON_PATH . 'emoji.php';
@@ -59,11 +60,6 @@ function rocket_init() {
 
 	if ( rocket_valid_key() ) {
 		require WP_ROCKET_COMMON_PATH . 'purge.php';
-
-		if ( 0 < (int) get_rocket_option( 'do_cloudflare' ) ) {
-			require WP_ROCKET_FUNCTIONS_PATH . 'cloudflare.php';
-			require WP_ROCKET_COMMON_PATH . 'cloudflare.php';
-		}
 
 		if ( is_multisite() && defined( 'SUNRISE' ) && SUNRISE === 'on' && function_exists( 'domain_mapping_siteurl' ) ) {
 			require WP_ROCKET_INC_PATH . '/domain-mapping.php';
@@ -109,7 +105,7 @@ add_action( 'plugins_loaded', 'rocket_init' );
 function rocket_deactivation() {
 	if ( ! isset( $_GET['rocket_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_GET['rocket_nonce'] ), 'force_deactivation' ) ) {
 		global $is_apache;
-		$causes = array();
+		$causes = [];
 
 		// .htaccess problem.
 		if ( $is_apache && ! rocket_direct_filesystem()->is_writable( get_home_path() . '.htaccess' ) ) {
@@ -193,9 +189,16 @@ function rocket_activation() {
 	require WP_ROCKET_FUNCTIONS_PATH . 'formatting.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'i18n.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'htaccess.php';
-	require WP_ROCKET_3RD_PARTY_PATH . 'hosting/godaddy.php';
-	require WP_ROCKET_3RD_PARTY_PATH . 'hosting/o2switch.php';
-	require WP_ROCKET_3RD_PARTY_PATH . 'hosting/wpengine.php';
+
+	if ( class_exists( 'WPaaS\Plugin' ) ) {
+		require WP_ROCKET_3RD_PARTY_PATH . 'hosting/godaddy.php';
+	}
+	if ( defined( 'O2SWITCH_VARNISH_PURGE_KEY' ) ) {
+		require WP_ROCKET_3RD_PARTY_PATH . 'hosting/o2switch.php';
+	}
+	if ( class_exists( 'WpeCommon' ) && function_exists( 'wpe_param' ) ) {
+		require WP_ROCKET_3RD_PARTY_PATH . 'hosting/wpengine.php';
+	}
 
 	if ( rocket_valid_key() ) {
 		// Add All WP Rocket rules of the .htaccess file.

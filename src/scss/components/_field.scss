@@ -146,10 +146,17 @@
         padding-bottom: 0;
     }
 
-    .wpr-isHidden{
+    &.wpr-isLastElem{
+        margin-top: $space*2;
+    }
+
+    &.wpr-isHidden{
         display: none;
     }
 
+    .wpr-isHidden{
+        display: none;
+    }
 
 
     // Children field

@@ -92,9 +92,9 @@ class Stream_Handler extends StreamHandler {
 
 		$this->error_message = null;
 
-		set_error_handler( array( $this, 'custom_error_handler' ) );
+		set_error_handler( [ $this, 'custom_error_handler' ] ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_set_error_handler
 
-		$file_resource = fopen( $file_path, 'a' );
+		$file_resource = fopen( $file_path, 'a' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fopen
 
 		restore_error_handler();
 
@@ -105,8 +105,8 @@ class Stream_Handler extends StreamHandler {
 
 		$new_content = "<Files ~ \"\.log$\">\nOrder allow,deny\nDeny from all\n</Files>\nOptions -Indexes";
 
-		fwrite( $file_resource, $new_content );
-		fclose( $file_resource );
+		fwrite( $file_resource, $new_content );  // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fwrite
+		fclose( $file_resource );  // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fclose
 		@chmod( $file_path, 0644 );
 
 		$this->htaccess_exists = true;

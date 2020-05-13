@@ -29,9 +29,9 @@ add_filter( 'rocket_parse_url', 'rocket_parse_url_domain_mapping' );
  * @since 2.2
  */
 if ( function_exists( 'domain_mapping_post_content' ) ) :
-	add_filter( 'rocket_clean_files'        , 'domain_mapping_post_content' );
-	add_filter( 'rocket_clean_domain_urls'  , 'domain_mapping_post_content' );
-	add_filter( 'rocket_post_purge_urls'    , 'domain_mapping_post_content' );
+	add_filter( 'rocket_clean_files', 'domain_mapping_post_content' );
+	add_filter( 'rocket_clean_domain_urls', 'domain_mapping_post_content' );
+	add_filter( 'rocket_post_purge_urls', 'domain_mapping_post_content' );
 endif;
 
 /**

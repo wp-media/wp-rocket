@@ -16,4 +16,4 @@
 defined( 'ABSPATH' ) || exit;
 
 ?>
-<button id="wpr-action-<?php echo esc_attr( $data['action'] ); ?>" <?php echo $data['attributes']; ?>><?php echo esc_html( $data['label'] ); ?></button>
+<button id="wpr-action-<?php echo esc_attr( $data['action'] ); ?>" <?php echo $data['attributes']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $data['attributes'] escaped with sanitize_key & esc_attr ?>><?php echo $data['label']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?></button>

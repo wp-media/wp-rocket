@@ -280,6 +280,7 @@ class Expired_Cache_Purge {
 		return new \CallbackFilterIterator(
 			$iterator,
 			function ( $current ) use ( $host_pattern, $sub_dir ) {
+
 				if ( ! $current->isDir() || $current->isDot() ) {
 					// We look for folders only, and don't want '.' nor '..'.
 					return false;

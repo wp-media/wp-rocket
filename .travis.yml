@@ -15,8 +15,9 @@ branches:
 cache:
   directories:
   - vendor
-  - "$HOME/.composer/cache"
+  - $HOME/.composer/cache
 matrix:
+  fast_finish: true
   include:
   - php: 7.4
     env: WP_VERSION=latest
@@ -24,27 +25,34 @@ matrix:
     env: WP_VERSION=latest
   - php: 7.2
     env: WP_VERSION=latest
-  - php: 7.1
-    env: WP_VERSION=latest
-  - php: 7.0
-    env: WP_VERSION=latest
   - php: 5.6
+    env: WP_VERSION=latest
+  - name: Legacy
+    php: 5.6
     env: WP_VERSION=4.9.11
-  - php: 5.6
-    env: WP_VERSION=latest
+  - name: Coding Standards
+    php: 7.3
+    env: WP_TRAVISCI=phpcs
+before_install:
+  # Unless we need XDebug, disable it for improved performance.
+  - phpenv config-rm xdebug.ini || return 0
+  - export PATH="$HOME/.composer/vendor/bin:$PATH"
+  - |
+    if [[ -f composer.lock ]] ; then
+      rm composer.lock
+    fi
+  - composer remove --dev phpstan/phpstan szepeviktor/phpstan-wordpress
+install:
+  - composer install --prefer-dist --no-interaction
 before_script:
-- rm composer.lock
-- export PATH="$HOME/.composer/vendor/bin:$PATH"
-- composer install --no-progress
-- |
-  if [ -f ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini ]; then
-    phpenv config-rm xdebug.ini
-  else
-    echo "xdebug.ini does not exist"
-  fi
 - |
   if [[ ! -z "$WP_VERSION" ]] ; then
     bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
   fi
 script:
-- composer run-tests
+- |
+  if [[ "$WP_TRAVISCI" == "phpcs" ]]; then
+    composer phpcs
+  else
+    composer run-tests
+  fi

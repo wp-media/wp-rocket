@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="20px" viewBox="0 0 24 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 59 (86127) - https://sketch.com -->
+    <title>streamline-icon-fitness-biceps@24x24</title>
+    <desc>Created with Sketch.</desc>
+    <g id="CDN" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="CDN-(promo)Rocket-CDN-(full)-Copy" transform="translate(-470.000000, -491.000000)" stroke-width="1.5">
+            <g id="streamline-icon-fitness-biceps@24x24" transform="translate(470.000000, 492.000000)">
+                <path d="M8.25,6 C7.422,5.171 7.422,3.829 8.25,3" id="Path" stroke="#121116"></path>
+                <path d="M22.005,13.754 C17.225,19.374 6.092,17.9999925 1.592,14.9999925 C-0.149,13.839 1.159,9.162 2.392,5.81 C3.02,4.093 3.936,2.495 5.1,1.085 C5.671,0.396 6.52,-0.002 7.415,-7.501704e-06 L10.5,-7.501704e-06 C12.157,-7.501704e-06 13.5,1.343 13.5,2.9999925 C13.5,4.657 12.157,5.9999925 10.5,5.9999925 L8.25,5.9999925 C7.13,7.217 6.584,8.855 6.75,10.4999925 C8.531,8.648 10.859,7.75 13.5,10.4999925 C13.497,7.808 15.677,5.622 18.369,5.619 C21.061,5.616 23.247,7.796 23.2500017,10.488 C23.251,11.694 22.806,12.857 22,13.753 L22.005,13.753 L22.005,13.754 Z" id="Path" stroke="#121116"></path>
+                <line x1="18.75" y1="9" x2="18.75" y2="12" id="Path" stroke="#F56640"></line>
+                <line x1="17.25" y1="10.5" x2="20.25" y2="10.5" id="Path" stroke="#F56640"></line>
+            </g>
+        </g>
+    </g>
+</svg>

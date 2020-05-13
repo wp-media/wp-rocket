@@ -23,7 +23,7 @@ if ( class_exists( 'Custom_Login_Page_Template' ) ) {
  */
 function rocket_add_custom_login_exclude_pages( $urls ) {
 	$clpt_options = get_option( 'custom_login_page_template' );
-	$urls = array_merge( $urls, get_rocket_i18n_translated_post_urls( $clpt_options['login_page_id'], 'page' ) );
+	$urls         = array_merge( $urls, get_rocket_i18n_translated_post_urls( $clpt_options['login_page_id'], 'page' ) );
 
 	return $urls;
 }
