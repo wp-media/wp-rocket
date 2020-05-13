@@ -75,6 +75,7 @@ return [
 			'facebook_pixel_cache'        => 0,
 			'sucury_waf_cache_sync'       => 0,
 			'sucury_waf_api_key'          => '',
+			'async_css_mobile'            => 1,
 		],
 	],
 ];
