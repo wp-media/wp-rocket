@@ -44,6 +44,8 @@ class Test_Disable extends TestCase {
 				->once()
 		        ->with( 'settings', $expected );
 
+		Functions\expect( 'rocket_clean_domain' )->once();
+
 		( new CDNOptionsManager(
 			$options,
 			$options_array
