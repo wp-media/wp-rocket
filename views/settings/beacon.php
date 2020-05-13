@@ -8,6 +8,7 @@
  *      @type string $form_id  Beacon form ID.
  *      @type string $identify Identify data to send to Helpscout.
  *      @type string $session  Session data to send to Helpscout.
+ *      @type string $prefill  Prefill data to send to Helpscout.
  * }
  */
 
@@ -18,6 +19,7 @@ defined( 'ABSPATH' ) || exit;
 <script type="text/javascript">window.Beacon('init', '<?php echo esc_js( $data['form_id'] ); ?>')</script>
 <script>window.Beacon("identify", <?php echo $data['identify']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>);</script>
 <script>window.Beacon("session-data", <?php echo $data['session']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>);</script>
+<script>window.Beacon("prefill", <?php echo $data['prefill']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>);</script>
 <script>window.addEventListener("hashchange", function () {
 	window.Beacon("suggest");
 }, false);</script>
