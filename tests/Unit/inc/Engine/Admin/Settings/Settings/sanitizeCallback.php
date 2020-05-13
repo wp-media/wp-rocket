@@ -2,13 +2,14 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\Settings\Settings;
 
+use Mockery;
 use Brain\Monkey\Functions;
-use WP_Rocket\Admin\Options;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Settings\Settings;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Admin\Settings::sanitize_callback
+ * @covers \WP_Rocket\Engine\Admin\Settings\Settings::sanitize_callback
  * @group  Admin
  * @group  Settings
  */
@@ -19,7 +20,10 @@ class Test_SanitizeCallback extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->options  = $this->createMock( Options::class );
+		$this->options = Mockery::mock( Options_Data::class );
+		$this->options->shouldReceive( 'get' )
+			->withAnyArgs();
+
 		$this->settings = new Settings( $this->options );
 	}
 
@@ -63,7 +67,7 @@ class Test_SanitizeCallback extends TestCase {
 
 			return filter_var( $url, FILTER_VALIDATE_URL );
 		} );
-		Functions\when( 'wp_parse_url' )->alias( function( $url, $component ) {
+		Functions\when( 'wp_parse_url' )->alias( function( $url, $component = -1 ) {
 			return parse_url( $url, $component );
 		} );
 		Functions\when( 'rocket_valid_key' )->justReturn( true );
@@ -77,8 +81,32 @@ class Test_SanitizeCallback extends TestCase {
 		);
 	}
 
+	/**
+	 * @dataProvider addFontPreloadProvider
+	 */
+	public function testShouldSanitizeFontPreloadEntries( $input, $expected ) {
+		Functions\when( 'rocket_valid_key' )->justReturn( true );
+		Functions\when( 'wp_parse_url' )->alias( function( $url, $component = -1 ) {
+			return parse_url( $url, $component );
+		} );
+		Functions\expect( 'home_url' )
+			->andReturn( 'http://example.org' );
+
+		$output = $this->settings->sanitize_callback( $input );
+
+		$this->assertArrayHasKey( 'preload_fonts', $output );
+		$this->assertSame(
+			$expected['preload_fonts'],
+			array_values( $output['preload_fonts'] )
+		);
+	}
+
 	public function addDNSPrefetchProvider() {
 		return $this->getTestData( __DIR__, 'dns-prefetch' );
+	}
+
+	public function addFontPreloadProvider() {
+		return $this->getTestData( __DIR__, 'font-preload' );
 	}
 
 	public function addCriticalCSSProvider() {
