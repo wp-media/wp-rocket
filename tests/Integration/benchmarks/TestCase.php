@@ -26,7 +26,6 @@ abstract class TestCase extends BaseTestCase {
 
 		self::$urls = [];
 		for ( $i = 1; $i <= 30; $i ++ ) {
-//			self::$urls[] = "http://example.org/child-{$i}/";
 			self::$urls[] = "http://example.org/child-{$i}/grandchild-1/";
 			self::$urls[] = "http://example.org/child-{$i}/grandchild-2/index.html_gzip";
 			self::$urls[] = "http://example.org/child-{$i}/";
@@ -104,24 +103,24 @@ abstract class TestCase extends BaseTestCase {
 		echo "==================== \n\n";
 		echo "\t👉 Number of URLs: {$this->stats['number_urls']} \n";
 		printf( "\t👉 Total time:     %f seconds\n", $this->stats['total'] );
-		echo "\n\n\n";
-
-		echo "-----------------------------------------------------------------------------------\n";
-		echo " URL \t\t\t\t| #Entries | glob/spl   | foreach    | total \n";
-		echo "     \t\t\t\t| (ms)     | (ms)       | (ms)       | (ms) \n";
-		echo "-----------------------------------------------------------------------------------\n";
-
-		foreach ( $this->stats['urls'] as $url => $stats ) {
-			printf( "%s \t| %-8s | %-10s | %-9s | %-s \n", $url, $stats['#entries'], $stats['dirs'], $stats['foreach'], $stats['total'] );
-		}
-
-		echo "-----------------------------------------------------------------------------------\n";
-		printf( " Average \t\t\t|          |  %-9s | %-9s | %-s \n", $this->stats['avgs']['dirs'], $this->stats['avgs']['foreach'], $this->stats['avgs']['total'] );
-		echo "-----------------------------------------------------------------------------------\n";
-
-		echo "\nNotes:\n";
-		echo "\t1. URL individual times shown in milliseconds (ms) \n";
-		echo "\t2. To convert to seconds, ms / 1000 \n\n\n";
+//		echo "\n\n\n";
+//
+//		echo "-----------------------------------------------------------------------------------\n";
+//		echo " URL \t\t\t\t| #Entries | glob/spl   | foreach    | total \n";
+//		echo "     \t\t\t\t| (ms)     | (ms)       | (ms)       | (ms) \n";
+//		echo "-----------------------------------------------------------------------------------\n";
+//
+//		foreach ( $this->stats['urls'] as $url => $stats ) {
+//			printf( "%s \t| %-8s | %-10s | %-9s | %-s \n", $url, $stats['#entries'], $stats['dirs'], $stats['foreach'], $stats['total'] );
+//		}
+//
+//		echo "-----------------------------------------------------------------------------------\n";
+//		printf( " Average \t\t\t|          |  %-9s | %-9s | %-s \n", $this->stats['avgs']['dirs'], $this->stats['avgs']['foreach'], $this->stats['avgs']['total'] );
+//		echo "-----------------------------------------------------------------------------------\n";
+//
+//		echo "\nNotes:\n";
+//		echo "\t1. URL individual times shown in milliseconds (ms) \n";
+//		echo "\t2. To convert to seconds, ms / 1000 \n\n\n";
 	}
 
 	protected function saveResults() {
@@ -132,18 +131,18 @@ abstract class TestCase extends BaseTestCase {
 
 			fputcsv( $fp, [ 'Number of URLs', $this->stats['number_urls'] ] );
 			fputcsv( $fp, [ 'Total time (secs)', $this->stats['total'] ] );
-
-			foreach ( $this->stats['urls'] as $url => $stats ) {
-				fputcsv( $fp, [ $url, $stats['#entries'], $stats['dirs'], $stats['foreach'], $stats['total'] ] );
-			}
-
-			fputcsv( $fp, [
-				'Averages',
-				'',
-				$this->stats['avgs']['dirs'],
-				$this->stats['avgs']['foreach'],
-				$this->stats['avgs']['total'],
-			] );
+//
+//			foreach ( $this->stats['urls'] as $url => $stats ) {
+//				fputcsv( $fp, [ $url, $stats['#entries'], $stats['dirs'], $stats['foreach'], $stats['total'] ] );
+//			}
+//
+//			fputcsv( $fp, [
+//				'Averages',
+//				'',
+//				$this->stats['avgs']['dirs'],
+//				$this->stats['avgs']['foreach'],
+//				$this->stats['avgs']['total'],
+//			] );
 
 		} finally {
 			fclose( $fp );

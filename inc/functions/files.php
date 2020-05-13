@@ -1527,3 +1527,157 @@ function _rocket_is_windows_fs( $hard_reset = false ) { // phpcs:ignore WordPres
 function _rocket_get_wp_rocket_cache_path() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 	return _rocket_normalize_path( rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) );
 }
+
+/**
+ * Delete one or several cache files.
+ *
+ * @since 2.0   Delete cache files for all users.
+ * @since 1.1.0 Add filter rocket_clean_files.
+ * @since 1.0
+ *
+ * @param  string|array $urls URLs of cache files to be deleted.
+ * @return void
+ */
+function rocket_clean_files_v352( $urls ) {
+	$urls = (array) $urls;
+
+	/**
+	 * Filter URLs that the cache file to be deleted.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param array URLs that will be returned.
+	 */
+	$urls = apply_filters( 'rocket_clean_files', $urls );
+	$urls = array_filter( (array) $urls );
+
+	if ( ! $urls ) {
+		return;
+	}
+
+	/**
+	 * Fires before all cache files are deleted.
+	 *
+	 * @since  3.2.2
+	 * @author Grégory Viguier
+	 *
+	 * @param array $urls The URLs corresponding to the deleted cache files.
+	 */
+	do_action( 'before_rocket_clean_files', $urls ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+
+	foreach ( $urls as $url ) {
+		/**
+		 * Fires before the cache file is deleted.
+		 *
+		 * @since 1.0
+		 *
+		 * @param string $url The URL that the cache file to be deleted.
+		 */
+		do_action( 'before_rocket_clean_file', $url ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+
+		/** This filter is documented in inc/front/htaccess.php */
+		if ( apply_filters( 'rocket_url_no_dots', false ) ) {
+			$url = str_replace( '.', '_', $url );
+		}
+
+		$dirs = glob( WP_ROCKET_CACHE_PATH . rocket_remove_url_protocol( $url ), GLOB_NOSORT );
+
+		if ( $dirs ) {
+			foreach ( $dirs as $dir ) {
+				rocket_rrmdir_v352( $dir );
+			}
+		}
+
+		/**
+		 * Fires after the cache file is deleted.
+		 *
+		 * @since 1.0
+		 *
+		 * @param string $url The URL that the cache file was deleted.
+		 */
+		do_action( 'after_rocket_clean_file', $url ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+	}
+
+	/**
+	 * Fires after all cache files are deleted.
+	 *
+	 * @since  3.2.2
+	 * @author Grégory Viguier
+	 *
+	 * @param array $urls The URLs corresponding to the deleted cache files.
+	 */
+	do_action( 'after_rocket_clean_files', $urls ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+}
+
+/**
+ * Remove a single file or a folder recursively
+ *
+ * @since 1.0
+ *
+ * @param string $dir File/Directory to delete.
+ * @param array  $dirs_to_preserve (default: array()) Dirs that should not be deleted.
+ * @return void
+ */
+function rocket_rrmdir_v352( $dir, $dirs_to_preserve = [] ) {
+	$dir = untrailingslashit( $dir );
+
+	/**
+	 * Fires before a file/directory cache is deleted
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param string $dir File/Directory to delete.
+	 * @param array $dirs_to_preserve Directories that should not be deleted.
+	 */
+	do_action( 'before_rocket_rrmdir', $dir, $dirs_to_preserve ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+
+	// Remove the hidden empty file for mobile detection on NGINX with the Rocket NGINX configuration.
+	$nginx_mobile_detect_file = $dir . '/.mobile-active';
+
+	if ( rocket_direct_filesystem()->is_dir( $dir ) && rocket_direct_filesystem()->exists( $nginx_mobile_detect_file ) ) {
+		rocket_direct_filesystem()->delete( $nginx_mobile_detect_file );
+	}
+
+	// Remove the hidden empty file for webp.
+	$nowebp_detect_file = $dir . '/.no-webp';
+
+	if ( rocket_direct_filesystem()->is_dir( $dir ) && rocket_direct_filesystem()->exists( $nowebp_detect_file ) ) {
+		rocket_direct_filesystem()->delete( $nowebp_detect_file );
+	}
+
+	if ( ! rocket_direct_filesystem()->is_dir( $dir ) ) {
+		rocket_direct_filesystem()->delete( $dir );
+		return;
+	};
+
+	$dirs = glob( $dir . '/*', GLOB_NOSORT );
+	if ( $dirs ) {
+
+		$keys = [];
+		foreach ( $dirs_to_preserve as $dir_to_preserve ) {
+			$matches = preg_grep( "#^$dir_to_preserve$#", $dirs );
+			$keys[]  = reset( $matches );
+		}
+
+		$dirs = array_diff( $dirs, array_filter( $keys ) );
+		foreach ( $dirs as $dir ) {
+			if ( rocket_direct_filesystem()->is_dir( $dir ) ) {
+				rocket_rrmdir( $dir, $dirs_to_preserve );
+			} else {
+				rocket_direct_filesystem()->delete( $dir );
+			}
+		}
+	}
+
+	rocket_direct_filesystem()->delete( $dir );
+
+	/**
+	 * Fires after a file/directory cache was deleted
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param string $dir File/Directory to delete.
+	 * @param array $dirs_to_preserve Dirs that should not be deleted.
+	 */
+	do_action( 'after_rocket_rrmdir', $dir, $dirs_to_preserve ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+}
