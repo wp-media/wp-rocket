@@ -609,11 +609,16 @@ class Settings {
 		$hosts      = $this->get_hosts();
 
 		if ( ! empty( $parsed_url['host'] ) ) {
+			$match = false;
+
 			foreach ( $hosts as $host ) {
 				if ( false !== strpos( $file, $host ) ) {
+					$match = true;
 					break;
 				}
+			}
 
+			if ( ! $match ) {
 				return false;
 			}
 		}
