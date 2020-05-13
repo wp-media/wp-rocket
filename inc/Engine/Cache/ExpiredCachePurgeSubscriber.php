@@ -53,12 +53,14 @@ class ExpiredCachePurgeSubscriber implements Subscriber_Interface {
 	 * {@inheritdoc}
 	 */
 	public static function get_subscribed_events() {
+		$slug = rocket_get_constant( 'WP_ROCKET_SLUG' );
+
 		return [
-			'init'                                                     => 'schedule_event',
-			'rocket_deactivation'                                      => 'unschedule_event',
-			static::EVENT_NAME                                         => 'purge_expired_files',
-			'cron_schedules'                                           => 'custom_cron_schedule',
-			'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ) => [ 'clean_expired_cache_scheduled_event', 10, 2 ],
+			'init'                  => 'schedule_event',
+			'rocket_deactivation'   => 'unschedule_event',
+			static::EVENT_NAME      => 'purge_expired_files',
+			'cron_schedules'        => 'custom_cron_schedule',
+			"update_option_{$slug}" => [ 'clean_expired_cache_scheduled_event', 10, 2 ],
 		];
 	}
 
