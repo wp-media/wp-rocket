@@ -25,6 +25,7 @@ class Test_CleanUrls extends TestCase {
 		$this->varnish    = Mockery::mock( Varnish::class );
 		$this->subscriber = new Subscriber( $this->varnish, $this->options );
 	}
+
 	/**
 	 * @dataProvider addDataProvider
 	 */
