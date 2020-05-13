@@ -848,7 +848,7 @@ function rocket_clean_domain( $lang = '', $filesystem = null ) {
 	/** This filter is documented in inc/front/htaccess.php */
 	$url_no_dots      = (bool) apply_filters( 'rocket_url_no_dots', false );
 	$cache_path       = _rocket_get_wp_rocket_cache_path();
-	$dirs_to_preserve = get_rocket_i18n_to_preserve( $lang );
+	$dirs_to_preserve = get_rocket_i18n_to_preserve( $lang, $cache_path );
 
 	if ( empty( $filesystem ) ) {
 		$filesystem = rocket_direct_filesystem();
