@@ -43,7 +43,7 @@ class AdvancedCache {
 	 * @return string
 	 */
 	public function get_advanced_cache_content() {
-		$content = $this->filesystem->get_contents( $this->template_path . '/advanced-cache.php' );
+		$content = $this->filesystem->get_contents( $this->template_path . 'advanced-cache.php' );
 		$mobile  = is_rocket_generate_caching_mobile_files() ? '$1' : '';
 		$content = preg_replace( "/'{{MOBILE_CACHE}}';(\X*)'{{\/MOBILE_CACHE}}';/", $mobile, $content );
 

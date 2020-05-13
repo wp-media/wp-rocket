@@ -34,7 +34,7 @@ define( 'WP_ROCKET_PATH',                  realpath( plugin_dir_path( WP_ROCKET_
 define( 'WP_ROCKET_INC_PATH',              realpath( WP_ROCKET_PATH . 'inc/' ) . '/' );
 
 if ( ! defined( 'WP_ROCKET_VIEWS' ) ) {
-	define( 'WP_ROCKET_VIEWS', WP_ROCKET_PATH . 'views' );
+	define( 'WP_ROCKET_VIEWS', WP_ROCKET_PATH . 'views/' );
 }
 
 require_once WP_ROCKET_INC_PATH . 'constants.php';
