@@ -107,23 +107,20 @@ class ExpiredCachePurge {
 					$file['host'] = str_replace( '.', '_', $file['host'] );
 				}
 
-				$sub_dir = rtrim( $file['path'], '/' );
+				$sub_dir = _rocket_normalize_path( rtrim( $file['path'], '/\\' ) );
 
-				foreach ( $this->get_cache_files_in_dir( $file ) as $item ) {
+				foreach ( $this->get_cache_files_in_dir( $file['host'], $sub_dir ) as $item ) {
 					$dir_path     = $item->getPathname();
 					$sub_dir_path = $dir_path . $sub_dir;
 
 					// Time to cut old leaves.
 					$item_paths = $this->purge_dir( $sub_dir_path, $file_age_limit );
 
-					$logged_dir_path   = str_replace( [ '/', '\\' ], DIRECTORY_SEPARATOR, $dir_path );
-					$logged_cache_path = str_replace( [ '/', '\\' ], DIRECTORY_SEPARATOR, $this->cache_path . $file['host'] );
-
 					if ( $item_paths ) {
 						$url_deleted[] = [
 							'home_url'  => $url,
 							'home_path' => $sub_dir_path,
-							'logged_in' => $logged_dir_path !== $logged_cache_path,
+							'logged_in' => $dir_path !== $this->cache_path . $file['host'],
 							'files'     => $item_paths,
 						];
 					}
@@ -247,23 +244,23 @@ class ExpiredCachePurge {
 	/** TOOLS =================================================================================== */
 	/** ----------------------------------------------------------------------------------------- */
 	/**
-	 * Get all cache files for the provided URL
+	 * Get all cache files for the provided URL.
 	 *
-	 * @since 3.4
+	 * @since  3.4
 	 *
-	 * @param array $file An array of the parsed URL parts.
+	 * @param string $domain  Domain's name.
+	 * @param string $sub_dir Subdirectory's relative path.
 	 *
 	 * @return []|DirectoryIterator
 	 */
-	private function get_cache_files_in_dir( $file ) {
-		// Grab cache folders.
-		$host_pattern = '@^' . preg_quote( $file['host'], '@' ) . '@';
-		$sub_dir      = rtrim( $file['path'], '/' );
-
+	private function get_cache_files_in_dir( $domain, $sub_dir ) {
 		$iterator = $this->get_dir_iterator( $this->cache_path, false );
 		if ( false === $iterator ) {
 			return [];
 		}
+
+		// Grab cache folders.
+		$host_pattern = '@^' . preg_quote( $domain, '@' ) . '@';
 
 		return new CallbackFilterIterator(
 			$iterator,
