@@ -30,7 +30,7 @@ class Test_NoticePermissions extends FilesystemTestCase {
             );
 
 		$this->advanced_cache = new AdvancedCache(
-            $this->filesystem->getUrl( 'wp-content/plugins/wp-rocket/views/cache' )
+            $this->filesystem->getUrl( 'wp-content/plugins/wp-rocket/views/cache/' )
         );
     }
 
