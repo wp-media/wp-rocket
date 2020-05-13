@@ -5,12 +5,12 @@ namespace WP_Rocket\Tests;
 use Brain\Monkey\Functions;
 
 trait StubTrait {
-	protected $abspath = 'vfs://public/';
-	protected $is_running_vfs = true;
+	protected $abspath                  = 'vfs://public/';
+	protected $is_running_vfs           = true;
 	protected $mock_rocket_get_constant = true;
-	protected $just_return_path = false;
-	protected $wp_cache_constant = false;
-	protected $wp_content_dir = 'vfs://public/wp-content';
+	protected $just_return_path         = false;
+	protected $wp_cache_constant        = false;
+	protected $wp_content_dir           = 'vfs://public/wp-content';
 
 
 	protected function stubRocketGetConstant() {
@@ -118,20 +118,20 @@ trait StubTrait {
 	}
 
 	protected function get_rocket_parse_url( $url ) {
-			$parsed = parse_url( $url );
+		$parsed = parse_url( $url );
 
-			$host     = isset( $parsed['host'] ) ? strtolower( urldecode( $parsed['host'] ) ) : '';
-			$path     = isset( $parsed['path'] ) ? urldecode( $parsed['path'] ) : '';
-			$scheme   = isset( $parsed['scheme'] ) ? urldecode( $parsed['scheme'] ) : '';
-			$query    = isset( $parsed['query'] ) ? urldecode( $parsed['query'] ) : '';
-			$fragment = isset( $parsed['fragment'] ) ? urldecode( $parsed['fragment'] ) : '';
+		$host     = isset( $parsed['host'] ) ? strtolower( urldecode( $parsed['host'] ) ) : '';
+		$path     = isset( $parsed['path'] ) ? urldecode( $parsed['path'] ) : '';
+		$scheme   = isset( $parsed['scheme'] ) ? urldecode( $parsed['scheme'] ) : '';
+		$query    = isset( $parsed['query'] ) ? urldecode( $parsed['query'] ) : '';
+		$fragment = isset( $parsed['fragment'] ) ? urldecode( $parsed['fragment'] ) : '';
 
-			return [
-				'host'     => $host,
-				'path'     => $path,
-				'scheme'   => $scheme,
-				'query'    => $query,
-				'fragment' => $fragment,
-			];
+		return [
+			'host'     => $host,
+			'path'     => $path,
+			'scheme'   => $scheme,
+			'query'    => $query,
+			'fragment' => $fragment,
+		];
 	}
 }

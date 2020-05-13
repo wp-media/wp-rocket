@@ -7,9 +7,9 @@ use org\bovigo\vfs\vfsStream;
 
 trait VirtualFilesystemTrait {
 	protected $original_entries = [];
-	protected $shouldNotClean = [];
-	protected $entriesBefore = [];
-	protected $dumpResults = false;
+	protected $shouldNotClean   = [];
+	protected $entriesBefore    = [];
+	protected $dumpResults      = false;
 
 	protected function initDefaultStructure() {
 		if ( empty( $this->config ) ) {
