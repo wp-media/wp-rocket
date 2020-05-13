@@ -102,10 +102,11 @@ class APIClient {
 	 * @return int|string status code|number of response.
 	 */
 	private function get_response_status( $response, $status = null ) {
-		if ( ! is_null( $status ) ) {
-			return $status;
+		if ( is_null( $status ) ) {
+			$status = wp_remote_retrieve_response_code( $response );
 		}
-		return wp_remote_retrieve_response_code( $response );
+
+		return $status;
 	}
 
 	/**
@@ -133,6 +134,7 @@ class APIClient {
 				break;
 			case 400:
 			case 440:
+			case 404:
 				// translators: %s = item URL.
 				$message .= sprintf( __( 'Critical CSS for %1$s not generated.', 'rocket' ), $item_url );
 				break;
@@ -206,14 +208,18 @@ class APIClient {
 	 */
 	private function prepare_job_details_response( $response, $item_url ) {
 		$response_data        = $this->get_response_data( $response );
-		$response_status_code = $this->get_response_status( $response, $response_data->status );
+		$response_status_code = $this->get_response_status( $response, ( isset( $response_data->status ) ) ? $response_data->status : null );
 		$succeeded            = $this->get_response_success( $response_status_code, $response_data );
 
 		if ( $succeeded ) {
 			return $response_data;
 		}else {
 			$response_code    = $this->get_response_code( $response );
-			$response_message = $this->get_job_details_response_message( $response_status_code, $response_data, $item_url );
+			$response_message = $this->get_response_message( $response_status_code, $response_data, $item_url );
+
+			if ( 200 === $response_status_code ) {
+				$response_status_code = 400;
+			}
 
 			return new WP_Error(
 				$response_code,
@@ -223,42 +229,6 @@ class APIClient {
 				]
 			);
 		}
-	}
-
-	/**
-	 * Get response message.
-	 *
-	 * @since 3.6
-	 *
-	 * @param int    $response_status_code Response status code.
-	 * @param array  $response_data Array of data returned from request.
-	 * @param string $item_url Url for the web page to be checked.
-	 * @return string
-	 */
-	private function get_job_details_response_message( $response_status_code, $response_data, $item_url ) {
-		$message = '';
-		switch ( $response_status_code ) {
-			case 400:
-			case 440:
-			case 404:
-				// translators: %s = item URL.
-				$message .= sprintf( __( 'Critical CSS for %1$s not generated.', 'rocket' ), $item_url );
-				break;
-			default:
-				$message .= sprintf(
-				// translators: %s = post URL.
-					__( 'Critical CSS for %1$s not generated. Error: The API returned an invalid response code.', 'rocket' ),
-					$item_url
-				);
-				break;
-		}
-
-		if ( isset( $response_data->message ) ) {
-			// translators: %1$s = error message.
-			$message .= ' ' . sprintf( __( 'Error: %1$s', 'rocket' ), $response_data->message );
-		}
-
-		return $message;
 	}
 
 }
