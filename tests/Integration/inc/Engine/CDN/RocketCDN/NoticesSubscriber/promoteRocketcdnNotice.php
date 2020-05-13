@@ -14,7 +14,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group  AdminOnly
  */
 class Test_PromoteRocketcdnNotice extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/classes/subscriber/CDN/RocketCDN/NoticesSubscriber/promoteRocketcdnNotice.php';
+	protected $path_to_test_data = '/inc/Engine/CDN/RocketCDN/NoticesSubscriber/promoteRocketcdnNotice.php';
 
 	private function getActualHtml() {
 		ob_start();
