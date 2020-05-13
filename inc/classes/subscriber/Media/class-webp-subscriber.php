@@ -5,7 +5,7 @@ use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Rocket\Subscriber\CDN\CDNSubscriber;
+use WP_Rocket\Engine\CDN\Subscriber as CDNSubscriber;
 
 /**
  * Subscriber for the WebP support.

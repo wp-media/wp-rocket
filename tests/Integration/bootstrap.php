@@ -36,11 +36,20 @@ tests_add_filter(
 		define( 'WP_ROCKET_CACHE_ROOT_PATH', 'vfs://public/wp-content/cache/' );
 		define( 'WP_ROCKET_CACHE_ROOT_URL', 'http://example.org/wp-content/cache/' );
 
+		if ( BootstrapManager::isGroup( 'WithSmush' ) ) {
+			// Load WP Smush.
+			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/wp-smushit/wp-smush.php';
+		}
+
 		if ( BootstrapManager::isGroup( 'WithWoo' ) ) {
 			// Load WooCommerce.
 			define( 'WC_TAX_ROUNDING_MODE', 'auto' );
 			define( 'WC_USE_TRANSACTIONS', false );
 			require WP_ROCKET_PLUGIN_ROOT . '/vendor/woocommerce/woocommerce/woocommerce.php';
+		}
+
+		if ( BootstrapManager::isGroup( 'Cloudways' ) ) {
+			$_SERVER['cw_allowed_ip'] = true;
 		}
 
 		// Overload the license key for testing.

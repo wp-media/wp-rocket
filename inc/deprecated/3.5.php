@@ -6,6 +6,11 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Class aliases.
  */
+class_alias( '\WP_Rocket\Engine\Admin\Settings\Page', '\WP_Rocket\Admin\Settings\Page' );
+class_alias( '\WP_Rocket\Engine\Admin\Settings\Render', '\WP_Rocket\Admin\Settings\Render' );
+class_alias( '\WP_Rocket\Engine\Admin\Settings\Settings', '\WP_Rocket\Admin\Settings\Settings' );
+class_alias( '\WP_Rocket\Engine\Admin\Settings\ServiceProvider', '\WP_Rocket\ServiceProvider\Settings' );
+class_alias( '\WP_Rocket\Engine\Admin\Settings\Subscriber', '\WP_Rocket\Subscriber\Admin\Settings\Page_Subscriber' );
 class_alias( '\WP_Rocket\Engine\Preload\AbstractPreload', '\WP_Rocket\Preload\Abstract_Preload' );
 class_alias( '\WP_Rocket\Engine\Preload\AbstractProcess', '\WP_Rocket\Preload\Process' );
 class_alias( '\WP_Rocket\Engine\Preload\FullProcess', '\WP_Rocket\Preload\Full_Process' );
@@ -18,6 +23,16 @@ class_alias( '\WP_Rocket\Engine\Preload\Sitemap', '\WP_Rocket\Preload\Sitemap' )
 class_alias( '\WP_Rocket\Engine\Preload\SitemapPreloadSubscriber', '\WP_Rocket\Subscriber\Preload\Sitemap_Preload_Subscriber' );
 class_alias( '\WP_Rocket\Engine\Optimization\GoogleFonts\Combine', '\WP_Rocket\Optimization\CSS\Combine_Google_Fonts' );
 class_alias( '\WP_Rocket\Engine\Optimization\GoogleFonts\Subscriber', '\WP_Rocket\Subscriber\Optimization\Combine_Google_Fonts_Subscriber' );
+
+//RocketCDN Start
+class_alias('\WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber', '\WP_Rocket\Subscriber\CDN\RocketCDN\AdminPageSubscriber');
+class_alias('\WP_Rocket\Engine\CDN\RocketCDN\APIClient', '\WP_Rocket\CDN\RocketCDN\APIClient');
+class_alias('\WP_Rocket\Engine\CDN\RocketCDN\CDNOptionsManager', '\WP_Rocket\CDN\RocketCDN\CDNOptionsManager');
+class_alias('\WP_Rocket\Engine\CDN\RocketCDN\DataManagerSubscriber', '\WP_Rocket\Subscriber\CDN\RocketCDN\DataManagerSubscriber');
+class_alias('\WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber', '\WP_Rocket\Subscriber\CDN\RocketCDN\NoticesSubscriber');
+class_alias('\WP_Rocket\Engine\CDN\RocketCDN\RESTSubscriber', '\WP_Rocket\Subscriber\CDN\RocketCDN\RESTSubscriber');
+class_alias('\WP_Rocket\Engine\CDN\RocketCDN\ServiceProvider', '\WP_Rocket\ServiceProvider\RocketCDN');
+//RocketCDN End
 
 /**
  * Removes Minification, DNS Prefetch, LazyLoad, Defer JS when on an AMP version of a post with the AMP for WordPress plugin from Auttomatic
@@ -869,4 +884,28 @@ function rocket_warning_cron() {
 			'dismiss_button' => __FUNCTION__,
 		]
 	);
+}
+
+/**
+ * Add a link "Purge this cache" in the taxonomy edit area
+ *
+ * @since 3.5.5 deprecated
+ * @since 1.0
+ *
+ * @param array  $actions An array of row action links.
+ * @param object $term The term object.
+ * @return array Updated array of row action links
+ */
+function rocket_tag_row_actions( $actions, $term ) {
+	_deprecated_function( __FUNCTION__ . '()', '3.5.5', 'WP_Rocket\Engine\Cache\AdminSubscriber::add_purge_term_link()' );
+	global $taxnow;
+
+	if ( ! current_user_can( 'rocket_purge_terms' ) ) {
+		return $actions;
+	}
+
+	$url                     = wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=term-' . $term->term_id . '&taxonomy=' . $taxnow ), 'purge_cache_term-' . $term->term_id );
+	$actions['rocket_purge'] = sprintf( '<a href="%s">%s</a>', $url, __( 'Clear this cache', 'rocket' ) );
+
+	return $actions;
 }

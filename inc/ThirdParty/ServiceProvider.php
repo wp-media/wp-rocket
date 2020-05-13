@@ -34,6 +34,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'optimus_webp_subscriber',
 		'bigcommerce_subscriber',
 		'amp_subscriber',
+		'cloudways',
 	];
 
 	/**
@@ -55,7 +56,9 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'bridge_subscriber', 'WP_Rocket\Subscriber\Third_Party\Themes\Bridge_Subscriber' )
 			->withArgument( $options );
 		$this->getContainer()->share( 'ngg_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\NGG_Subscriber' );
-		$this->getContainer()->share( 'smush_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Smush_Subscriber' );
+		$this->getContainer()->share( 'smush_subscriber', 'WP_Rocket\ThirdParty\Plugins\Smush' )
+			->withArgument( $this->getContainer()->get( 'options_api' ) )
+			->withArgument( $this->getContainer()->get( 'options' ) );
 		$this->getContainer()->share( 'imagify_webp_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber' )
 			->withArgument( $options );
 		$this->getContainer()->share( 'shortpixel_webp_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\ShortPixel_Subscriber' )
@@ -65,6 +68,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'optimus_webp_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Optimus_Subscriber' );
 		$this->getContainer()->share( 'bigcommerce_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Ecommerce\BigCommerce_Subscriber' );
 		$this->getContainer()->share( 'amp_subscriber', 'WP_Rocket\ThirdParty\Plugins\Optimization\AMP' )
-			->withArgument( $options );
+			->withArgument( $options )
+			->withArgument( $this->getContainer()->get( 'cdn_subscriber' ) );
+		$this->getContainer()->share( 'cloudways', 'WP_Rocket\ThirdParty\Hostings\Cloudways' );
 	}
 }
