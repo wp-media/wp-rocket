@@ -44,8 +44,8 @@ class AdvancedCache {
 	 */
 	public function get_advanced_cache_content() {
 		$content = $this->filesystem->get_contents( $this->template_path . '/advanced-cache.php' );
-		$mobile  = is_rocket_generate_caching_mobile_files() ? '$2' : '';
-		$content = preg_replace( "/('{{MOBILE_CACHE}}';)(\X*)('{{\/MOBILE_CACHE}}';)/", $mobile, $content );
+		$mobile  = is_rocket_generate_caching_mobile_files() ? '$1' : '';
+		$content = preg_replace( "/'{{MOBILE_CACHE}}';(\X*)'{{\/MOBILE_CACHE}}';/", $mobile, $content );
 
 		$replacements = [
 			'{{WP_ROCKET_PHP_VERSION}}' => rocket_get_constant( 'WP_ROCKET_PHP_VERSION' ),
@@ -125,7 +125,7 @@ class AdvancedCache {
 
 		if (
 			'plugins.php' === $pagenow
-			&& isset( $_GET['activate'] ) // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			&& filter_has_var( INPUT_GET, 'activate' )
 		) {
 			return;
 		}
