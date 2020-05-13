@@ -32,13 +32,14 @@ class ExpiredCachePurge {
 	private $filesystem;
 
 	/**
-	 * Constructor
+	 * Creates an instance of ExpiredCachePurge.
 	 *
-	 * @param string $cache_path Path to the global cache folder.
+	 * @param string               $cache_path Path to the global cache folder.
+	 * @param WP_Filesystem_Direct $filesystem Instance of the filesystem.
 	 */
-	public function __construct( $cache_path ) {
+	public function __construct( $cache_path, $filesystem = null ) {
 		$this->cache_path = $cache_path;
-		$this->filesystem = rocket_direct_filesystem();
+		$this->filesystem = is_null( $filesystem ) ? rocket_direct_filesystem() : $filesystem;
 	}
 
 	/**

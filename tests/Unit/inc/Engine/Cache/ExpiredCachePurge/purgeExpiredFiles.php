@@ -21,7 +21,7 @@ class Test_PurgeExpiredFiles extends FilesystemTestCase {
 		Functions\expect( 'get_rocket_i18n_uri' )->never();
 		Functions\expect( 'rocket_direct_filesystem' )->never();
 
-		$expired_cache_purge = new ExpiredCachePurge( '' );
+		$expired_cache_purge = new ExpiredCachePurge( '', $this->filesystem );
 		$this->assertNull( $expired_cache_purge->purge_expired_files( 0 ) );
 		$this->assertEquals( 0, Filters\applied( 'rocket_automatic_cache_purge_urls' ) );
 	}
@@ -30,9 +30,8 @@ class Test_PurgeExpiredFiles extends FilesystemTestCase {
 		Functions\expect( 'get_rocket_i18n_uri' )
 			->once()
 			->andReturn( [ null, 1, '' ] );
-		Functions\expect( 'rocket_direct_filesystem' )->never();
 
-		$expired_cache_purge = new ExpiredCachePurge( '' );
+		$expired_cache_purge = new ExpiredCachePurge( '', $this->filesystem );
 		$this->assertNull( $expired_cache_purge->purge_expired_files( 36000 ) );
 		$this->assertEquals( 1, Filters\applied( 'rocket_automatic_cache_purge_urls' ) );
 
@@ -63,7 +62,7 @@ class Test_PurgeExpiredFiles extends FilesystemTestCase {
 			);
 
 		// Purge the expired files.
-		$expired_cache_purge = new ExpiredCachePurge( $this->filesystem->getUrl( $this->config['vfs_dir'] ) );
+		$expired_cache_purge = new ExpiredCachePurge( $this->filesystem->getUrl( $this->config['vfs_dir'] ), $this->filesystem );
 		$expired_cache_purge->purge_expired_files( $lifespan );
 
 		$this->assertEquals( 1, Filters\applied( 'rocket_automatic_cache_purge_urls' ) );
