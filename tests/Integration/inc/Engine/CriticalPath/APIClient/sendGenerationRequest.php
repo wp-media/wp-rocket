@@ -1,8 +1,8 @@
 <?php
-namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\APIClient;
+namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\APIClient;
 
 use WP_Rocket\Engine\CriticalPath\APIClient;
-use WP_Rocket\Tests\Unit\FilesystemTestCase;
+use WP_Rocket\Tests\Integration\FilesystemTestCase;
 use Brain\Monkey\Functions;
 use WP_Error;
 
@@ -14,13 +14,6 @@ use WP_Error;
 class Test_SendGenerationRequest extends FilesystemTestCase {
 
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/APIClient/sendGenerationRequest.php';
-	protected static $mockCommonWpFunctionsInSetUp = true;
-
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
-
-		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/WP_Error.php';
-	}
 
 	/**
 	 * @dataProvider nonMultisiteTestData
