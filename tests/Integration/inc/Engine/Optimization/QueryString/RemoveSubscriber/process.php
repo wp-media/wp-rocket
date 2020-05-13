@@ -20,13 +20,6 @@ use WP_Rocket\Tests\Integration\inc\Engine\Optimization\TestCase;
 class Test_Process extends TestCase {
 	protected $path_to_test_data = '/inc/Engine/Optimization/QueryString/RemoveSubscriber/remove-query-strings.php';
 
-	public function setUp() {
-		parent::setUp();
-
-		// Mocks constants for the virtual filesystem.
-		$this->whenRocketGetConstant();
-	}
-
 	public function tearDown() {
 		parent::tearDown();
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\Minify\CSS\Combine;
 
 use Brain\Monkey\Filters;
@@ -6,34 +7,30 @@ use Brain\Monkey\Functions;
 use MatthiasMullie\Minify;
 use Mockery;
 use WP_Rocket\Engine\Optimization\Minify\CSS\Combine;
+use WP_Rocket\Tests\StubTrait;
 use WP_Rocket\Tests\Unit\inc\Engine\Optimization\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\Minify\CSS\Combine::optimize
- * @group Combine
- * @group CombineCSS
+ * @group  Combine
+ * @group  CombineCSS
  */
 class Test_Optimize extends TestCase {
+	use StubTrait;
+
 	protected $path_to_test_data = '/inc/Engine/Optimization/Minify/CSS/Combine/combine.php';
 	private $combine;
 	private $minify;
 
 	public function setUp() {
+		$this->wp_content_dir = 'vfs://public/wordpress/wp-content';
+
 		parent::setUp();
 
 		$this->minify = Mockery::mock( Minify\CSS::class );
 		$this->minify->shouldReceive( 'add' );
 		$this->minify->shouldReceive( 'minify' )
-			->andReturn( 'body{font-family:Helvetica,Arial,sans-serif;text-align:center;}' );
-
-		Functions\expect( 'rocket_get_constant' )
-			->once()
-			->with( 'WP_ROCKET_MINIFY_CACHE_PATH' )
-			->andReturn( $this->filesystem->getUrl( 'wordpress/wp-content/cache/min/' ) )
-			->andAlsoExpectIt()
-			->once()
-			->with( 'WP_ROCKET_MINIFY_CACHE_URL' )
-			->andReturn( 'http://example.org/wp-content/cache/min/' );
+		             ->andReturn( 'body{font-family:Helvetica,Arial,sans-serif;text-align:center;}' );
 
 		$this->combine = new Combine( $this->options, $this->minify );
 	}

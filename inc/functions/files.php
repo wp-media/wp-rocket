@@ -622,7 +622,7 @@ function rocket_clean_files( $urls, $filesystem = null ) {
 
 	/** This filter is documented in inc/front/htaccess.php */
 	$url_no_dots = (bool) apply_filters( 'rocket_url_no_dots', false );
-	$cache_path  = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' );
+	$cache_path  = _rocket_get_wp_rocket_cache_path();
 
 	if ( empty( $filesystem ) ) {
 		$filesystem = rocket_direct_filesystem();
@@ -847,8 +847,8 @@ function rocket_clean_domain( $lang = '', $filesystem = null ) {
 
 	/** This filter is documented in inc/front/htaccess.php */
 	$url_no_dots      = (bool) apply_filters( 'rocket_url_no_dots', false );
-	$cache_path       = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' );
-	$dirs_to_preserve = get_rocket_i18n_to_preserve( $lang );
+	$cache_path       = _rocket_get_wp_rocket_cache_path();
+	$dirs_to_preserve = get_rocket_i18n_to_preserve( $lang, $cache_path );
 
 	if ( empty( $filesystem ) ) {
 		$filesystem = rocket_direct_filesystem();
@@ -1423,22 +1423,7 @@ function _rocket_get_cache_dirs( $url_host, $cache_path = '', $hard_reset = fals
 	}
 
 	if ( empty( $cache_path ) ) {
-		$cache_path = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' );
-	}
-
-	// When Windows-based.
-	$is_windows = (
-		DIRECTORY_SEPARATOR === '\\'
-		&&
-		(
-			! rocket_get_constant( 'WP_ROCKET_IS_TESTING', false )
-			||
-			substr( $cache_path, 0, 6 ) !== 'vfs://'
-		)
-	);
-
-	if ( $is_windows ) {
-		$cache_path = str_replace( '/', '\\', $cache_path );
+		$cache_path = _rocket_get_wp_rocket_cache_path();
 	}
 
 	try {
@@ -1451,9 +1436,7 @@ function _rocket_get_cache_dirs( $url_host, $cache_path = '', $hard_reset = fals
 
 	$regex = sprintf(
 		'/%1$s%2$s(.*)/i',
-		$is_windows
-			? str_replace( '\\', '\\\\', $cache_path )
-			: str_replace( '/', '\/', $cache_path ),
+		_rocket_normalize_path( $cache_path, true ),
 		$url_host
 	);
 
@@ -1469,4 +1452,78 @@ function _rocket_get_cache_dirs( $url_host, $cache_path = '', $hard_reset = fals
 	}
 
 	return $domain_dirs[ $url_host ];
+}
+
+/**
+ * Normalizes the given filesystem path:
+ *  - Windows/IIS-based servers: converts all directory separators to "\\" or, when escaping, to "\\\\".
+ *  - Linux-based servers: if $forced is true, uses wp_normalize_path(); else, returns the original path.
+ *
+ * @since  3.5.5
+ * @access private
+ *
+ * @param string $path   Filesystem path (file or directory) to normalize.
+ * @param bool   $escape Optional. When true, escapes the directory separator(s).
+ * @param bool   $force  Optional. When true, forces normalizing off non-Windows' paths.
+ *
+ * @return string
+ */
+function _rocket_normalize_path( $path, $escape = false, $force = false ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
+	if ( _rocket_is_windows_fs( $path ) ) {
+		$path = str_replace( '/', '\\', $path );
+
+		return $escape
+			? str_replace( '\\', '\\\\', $path )
+			: $path;
+	}
+
+	if ( $escape ) {
+		return str_replace( '/', '\/', $path );
+	}
+
+	if ( ! $force ) {
+		return $path;
+	}
+
+	return wp_normalize_path( $path );
+}
+
+/**
+ * Checks if the filesystem (fs) is for Windows/IIS server.
+ *
+ * @since  3.5.5
+ * @access private
+ *
+ * @param bool $hard_reset Optional. When true, resets the memoization.
+ *
+ * @return bool
+ */
+function _rocket_is_windows_fs( $hard_reset = false ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
+	static $is_windows = null;
+
+	if ( $hard_reset ) {
+		$is_windows = null;
+	}
+
+	if ( is_null( $is_windows ) ) {
+		$is_windows = (
+			DIRECTORY_SEPARATOR === '\\'
+			&&
+			! rocket_get_constant( 'WP_ROCKET_RUNNING_VFS', false )
+		);
+	}
+
+	return $is_windows;
+}
+
+/**
+ * Gets the normalized cache path, i.e. normalizes constant "WP_ROCKET_CACHE_PATH".
+ *
+ * @since  3.5.5
+ * @access private
+ *
+ * @return string
+ */
+function _rocket_get_wp_rocket_cache_path() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
+	return _rocket_normalize_path( rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) );
 }

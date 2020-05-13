@@ -14,6 +14,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
  */
 class Test__RocketGetCacheDirs extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/functions/_rocketGetCacheDirs.php';
+	protected $mock_rocket_get_constant = false;
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();

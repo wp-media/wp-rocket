@@ -13,9 +13,12 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
  * @uses  ::get_rocket_i18n_to_preserve
  * @uses  ::get_rocket_i18n_uri
  * @uses  ::get_rocket_parse_url
+ * @uses  ::_rocket_get_wp_rocket_cache_path
  * @uses  ::rocket_get_constant
  * @uses  ::rocket_rrmdir
  * @uses  ::_rocket_get_cache_dirs
+ * @uses  ::_rocket_normalize_path
+ * @uses  ::_rocket_is_windows_fs
  *
  * @group Functions
  * @group Files
@@ -59,6 +62,7 @@ class Test_RocketCleanDomain extends FilesystemTestCase {
 		$dirsToPreserve = $i18n['dirs_to_preserve'];
 		$url            = $expected['rocket_clean_domain_urls'][0];
 		$lang           = $i18n['lang'];
+		$cache_path     = _rocket_get_wp_rocket_cache_path();
 
 		if ( ! is_null( $config['get_rocket_i18n_uri'] ) ) {
 			Functions\expect( 'get_rocket_i18n_uri' )->once()->andReturn( $config['get_rocket_i18n_uri'] );
@@ -77,24 +81,10 @@ class Test_RocketCleanDomain extends FilesystemTestCase {
 
 		Functions\expect( 'get_rocket_i18n_to_preserve' )
 			->once()
-			->with( $lang )
+			->with( $lang, $cache_path )
 			->andReturn( $dirsToPreserve );
-		Functions\expect( 'get_rocket_parse_url' )
-			->once()
-			->with( $url )
-			->andReturnUsing(
-				function ( $url ) {
-					return array_merge(
-						[
-							'host'   => '',
-							'path'   => '',
-							'scheme' => '',
-							'query'  => '',
-						],
-						parse_url( $url )
-					);
-				}
-			);
+
+		$this->stubGetRocketParseUrl( $url );
 
 		foreach ( $config['rocket_rrmdir'] as $dir ) {
 			if ( $this->filesystem->is_dir( $dir ) ) {
@@ -104,7 +94,7 @@ class Test_RocketCleanDomain extends FilesystemTestCase {
 					->with( $dir, $dirsToPreserve, $this->filesystem )
 					->andReturnNull();
 			} else {
-				Functions\expect( 'rocket_rrmdir' )->with( $dir )->never();
+				Functions\expect( 'rocket_rrmdir' )->never();
 			}
 		}
 

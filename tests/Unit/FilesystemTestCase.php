@@ -2,10 +2,12 @@
 
 namespace WP_Rocket\Tests\Unit;
 
+use WP_Rocket\Tests\StubTrait;
 use WP_Rocket\Tests\VirtualFilesystemTrait;
 use WPMedia\PHPUnit\Unit\VirtualFilesystemTestCase;
 
 abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
+	use StubTrait;
 	use VirtualFilesystemTrait;
 
 	public function setUp() {
@@ -13,6 +15,8 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 
 		parent::setUp();
 
+		$this->stubRocketGetConstant();
+		$this->stubWpNormalizePath();
 		$this->redefineRocketDirectFilesystem();
 	}
 }
