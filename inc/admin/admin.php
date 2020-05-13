@@ -76,29 +76,6 @@ add_filter( 'page_row_actions', 'rocket_post_row_actions', 10, 2 );
 add_filter( 'post_row_actions', 'rocket_post_row_actions', 10, 2 );
 
 /**
- * Add a link "Purge this cache" in the taxonomy edit area
- *
- * @since 1.0
- *
- * @param array  $actions An array of row action links.
- * @param object $term The term object.
- * @return array Updated array of row action links
- */
-function rocket_tag_row_actions( $actions, $term ) {
-	global $taxnow;
-
-	if ( ! current_user_can( 'rocket_purge_terms' ) ) {
-		return $actions;
-	}
-
-	$url                     = wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=term-' . $term->term_id . '&taxonomy=' . $taxnow ), 'purge_cache_term-' . $term->term_id );
-	$actions['rocket_purge'] = sprintf( '<a href="%s">%s</a>', $url, __( 'Clear this cache', 'rocket' ) );
-
-	return $actions;
-}
-add_filter( 'tag_row_actions', 'rocket_tag_row_actions', 10, 2 );
-
-/**
  * Add a link "Purge this cache" in the user edit area
  *
  * @since 2.6.12
@@ -119,54 +96,43 @@ function rocket_user_row_actions( $actions, $user ) {
 add_filter( 'user_row_actions', 'rocket_user_row_actions', 10, 2 );
 
 /**
- * Manage the dismissed boxes
+ * Manage the dismissed boxes.
  *
- * @since 2.4 Add a delete_transient on function name (box name)
- * @since 1.3.0 $args can replace $_GET when called internaly
+ * @since 3.6   Reverse dependency with rocket_dismiss_box().
+ * @since 2.4   Add a delete_transient on function name (box name).
+ * @since 1.3.0 $args can replace $_GET when called internaly.
  * @since 1.1.10
  *
- * @param array $args An array of query args.
+ * @param array $args An array of query args. Should not be used: see rocket_dismiss_box().
  */
-function rocket_dismiss_boxes( $args ) {
+function rocket_dismiss_boxes( array $args = [] ) {
 	$args = empty( $args ) ? $_GET : $args; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
-	if ( isset( $args['box'], $args['_wpnonce'] ) ) {
+	if ( ! isset( $args['box'], $args['action'], $args['_wpnonce'] ) ) {
+		return;
+	}
 
-		if ( ! wp_verify_nonce( $args['_wpnonce'], $args['action'] . '_' . $args['box'] ) ) {
-			if ( defined( 'DOING_AJAX' ) ) {
-				wp_send_json(
-					[
-						'error' => 1,
-					]
-				);
-			} else {
-				wp_nonce_ays( '' );
-			}
+	if ( ! wp_verify_nonce( $args['_wpnonce'], $args['action'] . '_' . $args['box'] ) ) {
+		if ( rocket_get_constant( 'DOING_AJAX' ) ) {
+			wp_send_json( [ 'error' => 1 ] );
+		} else {
+			wp_nonce_ays( '' );
 		}
+		return;
+	}
 
-		if ( '__rocket_imagify_notice' === $args['box'] ) {
-			update_option( 'wp_rocket_dismiss_imagify_notice', 0 );
-		}
+	if ( '__rocket_imagify_notice' === $args['box'] ) {
+		update_option( 'wp_rocket_dismiss_imagify_notice', 0 );
+	}
 
-		global $current_user;
-		$actual = get_user_meta( $current_user->ID, 'rocket_boxes', true );
-		$actual = array_merge( (array) $actual, [ $args['box'] ] );
-		$actual = array_filter( $actual );
-		$actual = array_unique( $actual );
-		update_user_meta( $current_user->ID, 'rocket_boxes', $actual );
-		delete_transient( $args['box'] );
+	rocket_dismiss_box( $args['box'] );
 
-		if ( 'admin-post.php' === $GLOBALS['pagenow'] ) {
-			if ( defined( 'DOING_AJAX' ) ) {
-				wp_send_json(
-					[
-						'error' => 0,
-					]
-				);
-			} else {
-				wp_safe_redirect( wp_get_referer() );
-				die();
-			}
+	if ( 'admin-post.php' === $GLOBALS['pagenow'] ) {
+		if ( rocket_get_constant( 'DOING_AJAX' ) ) {
+			wp_send_json( [ 'error' => 0 ] );
+		} else {
+			wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
+			rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
 		}
 	}
 }

@@ -237,9 +237,6 @@ class Settings {
 			$input['purge_cron_interval'] = 10;
 		}
 
-		// Option : Remove query strings.
-		$input['remove_query_strings'] = ! empty( $input['remove_query_strings'] ) ? 1 : 0;
-
 		// Option : Prefetch DNS requests.
 		$input['dns_prefetch'] = $this->sanitize_dns_prefetch( $input );
 
