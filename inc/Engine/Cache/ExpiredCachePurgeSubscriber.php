@@ -39,7 +39,7 @@ class ExpiredCachePurgeSubscriber implements Subscriber_Interface {
 	private $purge;
 
 	/**
-	 * Constructor.
+	 * Creates an instance of the subscriber.
 	 *
 	 * @param Options_Data      $options Options instance.
 	 * @param ExpiredCachePurge $purge   Purge instance.

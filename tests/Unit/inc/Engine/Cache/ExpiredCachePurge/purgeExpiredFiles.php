@@ -19,7 +19,6 @@ class Test_PurgeExpiredFiles extends FilesystemTestCase {
 
 	public function testShouldReturnNullWhenNoLifespan() {
 		Functions\expect( 'get_rocket_i18n_uri' )->never();
-		Functions\expect( 'rocket_direct_filesystem' )->never();
 
 		$expired_cache_purge = new ExpiredCachePurge( '', $this->filesystem );
 		$this->assertNull( $expired_cache_purge->purge_expired_files( 0 ) );

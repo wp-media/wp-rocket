@@ -1,13 +1,15 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\classes\subscriber\Expired_Cache_Purge_Subscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Cache\ExpiredCachePurgeSubscriber;
 
 use WPMedia\PHPUnit\Integration\TestCase;
-use WP_Rocket\Subscriber\Cache\Expired_Cache_Purge_Subscriber;
+use WP_Rocket\Engine\Cache\ExpiredCachePurgeSubscriber;
 
 /**
- * @covers Expired_Cache_Purge_Subscriber::get_subscribed_events
- * @group Subscriber
+ * @covers \WP_Rocket\Engine\Cache\ExpiredCachePurgeSubscriber::get_subscribed_events
+ *
+
+ * @group  Subscriber
  */
 class TestGetSubscribedEvents extends TestCase {
 
@@ -22,7 +24,7 @@ class TestGetSubscribedEvents extends TestCase {
 
 		$this->assertSame(
 			$events,
-			Expired_Cache_Purge_Subscriber::get_subscribed_events()
+			ExpiredCachePurgeSubscriber::get_subscribed_events()
 		);
 	}
 }
