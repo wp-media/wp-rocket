@@ -1,21 +1,22 @@
 <?php
-namespace WP_Rocket\Cache;
+namespace WP_Rocket\Engine\Cache;
 
+use CallbackFilterIterator;
+use DirectoryIterator;
+use Exception;
+use WP_Filesystem_Direct;
 use WP_Rocket\Buffer\Cache;
 
 /**
- * Purge expired cache files based on the defined lifespan
+ * Purge expired cache files based on the defined lifespan.
  *
  * @since  3.4
- * @author Grégory Viguier
  */
-class Expired_Cache_Purge {
+class ExpiredCachePurge {
 	/**
 	 * Path to the global cache folder.
 	 *
 	 * @since  3.4
-	 * @access private
-	 * @author Grégory Viguier
 	 *
 	 * @var string
 	 */
@@ -25,10 +26,8 @@ class Expired_Cache_Purge {
 	 * Filesystem object.
 	 *
 	 * @since  3.4
-	 * @access private
-	 * @author Grégory Viguier
 	 *
-	 * @var \WP_Filesystem_Direct
+	 * @var WP_Filesystem_Direct
 	 */
 	private $filesystem;
 
@@ -39,14 +38,13 @@ class Expired_Cache_Purge {
 	 */
 	public function __construct( $cache_path ) {
 		$this->cache_path = $cache_path;
+		$this->filesystem = rocket_direct_filesystem();
 	}
 
 	/**
 	 * Perform the event action.
 	 *
 	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
 	 *
 	 * @param int $lifespan The cache lifespan in seconds.
 	 */
@@ -63,7 +61,6 @@ class Expired_Cache_Purge {
 		 * Filter home URLs that will be searched for old cache files.
 		 *
 		 * @since  3.4
-		 * @author Grégory Viguier
 		 *
 		 * @param array $urls           URLs that will be searched for old cache files.
 		 * @param int   $file_age_limit Timestamp of the maximum age files must have.
@@ -84,10 +81,6 @@ class Expired_Cache_Purge {
 
 		$urls = array_unique( $urls );
 
-		if ( empty( $this->filesystem ) ) {
-			$this->filesystem = rocket_direct_filesystem();
-		}
-
 		$deleted       = [];
 		$cache_enabled = Cache::can_generate_caching_files();
 
@@ -96,7 +89,6 @@ class Expired_Cache_Purge {
 			 * Fires before purging a cache directory.
 			 *
 			 * @since  3.4
-			 * @author Grégory Viguier
 			 *
 			 * @param string $url          The home url.
 			 * @param int    $file_age_limit Timestamp of the maximum age files must have.
@@ -157,7 +149,6 @@ class Expired_Cache_Purge {
 			 * Fires after a cache directory is purged.
 			 *
 			 * @since  3.4
-			 * @author Grégory Viguier
 			 *
 			 * @param array $deleted {
 			 *     An array of arrays sharing the same home URL, described like: {
@@ -205,7 +196,6 @@ class Expired_Cache_Purge {
 		 * Fires after cache directories are purged.
 		 *
 		 * @since  3.4
-		 * @author Grégory Viguier
 		 *
 		 * @param array $deleted {
 		 *     An array of arrays, described like: {
@@ -260,7 +250,6 @@ class Expired_Cache_Purge {
 	 * Get all cache files for the provided URL
 	 *
 	 * @since 3.4
-	 * @author Gregory Viguier
 	 *
 	 * @param array $file An array of the parsed URL parts.
 	 * @return Bool|DirectoryIterator
@@ -271,13 +260,13 @@ class Expired_Cache_Purge {
 		$sub_dir      = rtrim( $file['path'], '/' );
 
 		try {
-			$iterator = new \DirectoryIterator( $this->cache_path );
+			$iterator = new DirectoryIterator( $this->cache_path );
 		}
-		catch ( \Exception $e ) {
+		catch ( Exception $e ) {
 			return false;
 		}
 
-		return new \CallbackFilterIterator(
+		return new CallbackFilterIterator(
 			$iterator,
 			function ( $current ) use ( $host_pattern, $sub_dir ) {
 
@@ -305,8 +294,6 @@ class Expired_Cache_Purge {
 	 * Purge a folder from old files.
 	 *
 	 * @since  3.4
-	 * @access private
-	 * @author Grégory Viguier
 	 *
 	 * @param  string $dir_path     Path to the folder to purge.
 	 * @param  int    $file_age_limit Timestamp of the maximum age files must have.
@@ -316,9 +303,9 @@ class Expired_Cache_Purge {
 		$deleted = [];
 
 		try {
-			$iterator = new \DirectoryIterator( $dir_path );
+			$iterator = new DirectoryIterator( $dir_path );
 		}
-		catch ( \Exception $e ) {
+		catch ( Exception $e ) {
 			return [];
 		}
 
@@ -370,17 +357,15 @@ class Expired_Cache_Purge {
 	 * Tell if a folder is empty.
 	 *
 	 * @since  3.4
-	 * @access private
-	 * @author Grégory Viguier
 	 *
 	 * @param  string $dir_path Path to the folder to purge.
 	 * @return bool             True if empty. False if it contains files.
 	 */
 	private function is_dir_empty( $dir_path ) {
 		try {
-			$iterator = new \DirectoryIterator( $dir_path );
+			$iterator = new DirectoryIterator( $dir_path );
 		}
-		catch ( \Exception $e ) {
+		catch ( Exception $e ) {
 			return [];
 		}
 

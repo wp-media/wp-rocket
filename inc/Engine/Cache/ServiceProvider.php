@@ -4,7 +4,7 @@ namespace WP_Rocket\Engine\Cache;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 
 /**
- * Service Provider for cache subscribers
+ * Service Provider for cache subscribers.
  *
  * @since 3.5.5
  */
@@ -22,17 +22,24 @@ class ServiceProvider extends AbstractServiceProvider {
 	protected $provides = [
 		'purge_actions_subscriber',
 		'admin_cache_subscriber',
+		'expired_cache_purge',
+		'expired_cache_purge_subscriber',
 	];
 
 	/**
-	 * Registers the option array in the container
-	 *
-	 * @return void
+	 * Registers the option array in the container.
 	 */
 	public function register() {
+		$options = $this->getContainer()->get( 'options' );
+
 		$this->getContainer()->share( 'purge_actions_subscriber', 'WP_Rocket\Engine\Cache\PurgeActionsSubscriber' )
-			->withArgument( $this->getContainer()->get( 'options' ) );
+			->withArgument( $options );
 		$this->getContainer()->share( 'admin_cache_subscriber', 'WP_Rocket\Engine\Cache\AdminSubscriber' );
 
+		$this->getContainer()->add( 'expired_cache_purge', 'WP_Rocket\Engine\Cache\ExpiredCachePurge' )
+		     ->withArgument( rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) );
+		$this->getContainer()->share( 'expired_cache_purge_subscriber', 'WP_Rocket\Engine\Cache\ExpiredCachePurgeSubscriber' )
+		     ->withArgument( $options )
+		     ->withArgument( $this->getContainer()->get( 'expired_cache_purge' ) );
 	}
 }

@@ -1,28 +1,29 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\classes\Cache\Expired_Cache_Purge;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Cache\ExpiredCachePurge;
 
 use Brain\Monkey\Functions;
-use WP_Rocket\Cache\Expired_Cache_Purge;
+use WP_Rocket\Engine\Cache\ExpiredCachePurge;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Cache\Expired_Cache_Purge::purge_expired_files
+ * @covers \WP_Rocket\Engine\Cache\ExpiredCachePurge::purge_expired_files
  * @uses   ::get_rocket_i18n_uri
  * @uses   ::rocket_direct_filesystem
  * @uses   ::get_rocket_parse_url
  * @uses   \WP_Rocket\Buffer\Cache::can_generate_caching_files
+ *
  * @group  Cache
  * @group  vfs
  */
 class Test_PurgeExpiredFiles extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/classes/Cache/Expired_Cache_Purge/purgeExpiredFiles.php';
+	protected $path_to_test_data = '/inc/Engine/Cache/ExpiredCachePurge/purgeExpiredFiles.php';
 
 	public function testShouldReturnNullWhenNoLifespan() {
 		Functions\expect( 'get_rocket_il8n_uri' )->never();
 		Functions\expect( 'rocket_direct_filesystem' )->never();
 
-		$expired_cache_purge = new Expired_Cache_Purge( $this->filesystem->getUrl( 'wp-content/cache/wp-rocket' ) );
+		$expired_cache_purge = new ExpiredCachePurge( $this->filesystem->getUrl( 'wp-content/cache/wp-rocket' ) );
 		$this->assertNull( $expired_cache_purge->purge_expired_files( 0 ) );
 	}
 
@@ -33,7 +34,7 @@ class Test_PurgeExpiredFiles extends FilesystemTestCase {
 
 		$this->setFilesToExpire( $this->original_files );
 
-		$expired_cache_purge = new Expired_Cache_Purge( $this->filesystem->getUrl( 'wp-content/cache/wp-rocket' ) );
+		$expired_cache_purge = new ExpiredCachePurge( $this->filesystem->getUrl( 'wp-content/cache/wp-rocket' ) );
 		$this->assertNull( $expired_cache_purge->purge_expired_files( 36000 ) );
 
 		// Check that no files were purged, i.e. just to make sure.
@@ -57,7 +58,7 @@ class Test_PurgeExpiredFiles extends FilesystemTestCase {
 		}
 
 		// Purge the expired files.
-		$expired_cache_purge = new Expired_Cache_Purge( $this->filesystem->getUrl( $this->config['vfs_dir'] ) );
+		$expired_cache_purge = new ExpiredCachePurge( $this->filesystem->getUrl( $this->config['vfs_dir'] ) );
 		$expired_cache_purge->purge_expired_files( $lifespan );
 
 		$this->assertEquals( 1, did_action( 'rocket_before_automatic_cache_purge_dir' ) );

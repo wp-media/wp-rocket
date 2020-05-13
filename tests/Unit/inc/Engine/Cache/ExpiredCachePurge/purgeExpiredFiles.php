@@ -1,32 +1,27 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\classes\Cache\Expired_Cache_Purge;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Cache\ExpiredCachePurge;
 
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
-use WP_Rocket\Cache\Expired_Cache_Purge;
+use WP_Rocket\Engine\Cache\ExpiredCachePurge;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Cache\Expired_Cache_Purge::purge_expired_files
+ * @covers \WP_Rocket\Engine\Cache\ExpiredCachePurge::purge_expired_files
  * @uses   \WP_Rocket\Buffer\Cache::can_generate_caching_files
+ *
  * @group  Cache
  * @group  vfs
  */
 class Test_PurgeExpiredFiles extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/classes/Cache/Expired_Cache_Purge/purgeExpiredFiles.php';
-
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
-
-		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/functions/i18n.php';
-	}
+	protected $path_to_test_data = '/inc/Engine/Cache/ExpiredCachePurge/purgeExpiredFiles.php';
 
 	public function testShouldReturnNullWhenNoLifespan() {
 		Functions\expect( 'get_rocket_i18n_uri' )->never();
 		Functions\expect( 'rocket_direct_filesystem' )->never();
 
-		$expired_cache_purge = new Expired_Cache_Purge( '' );
+		$expired_cache_purge = new ExpiredCachePurge( '' );
 		$this->assertNull( $expired_cache_purge->purge_expired_files( 0 ) );
 		$this->assertEquals( 0, Filters\applied( 'rocket_automatic_cache_purge_urls' ) );
 	}
@@ -37,7 +32,7 @@ class Test_PurgeExpiredFiles extends FilesystemTestCase {
 			->andReturn( [ null, 1, '' ] );
 		Functions\expect( 'rocket_direct_filesystem' )->never();
 
-		$expired_cache_purge = new Expired_Cache_Purge( '' );
+		$expired_cache_purge = new ExpiredCachePurge( '' );
 		$this->assertNull( $expired_cache_purge->purge_expired_files( 36000 ) );
 		$this->assertEquals( 1, Filters\applied( 'rocket_automatic_cache_purge_urls' ) );
 
@@ -62,13 +57,13 @@ class Test_PurgeExpiredFiles extends FilesystemTestCase {
 		Functions\expect( 'get_rocket_parse_url' )
 			->once()
 			->andReturnUsing(
-				function( $value ) {
+				function ( $value ) {
 					return parse_url( $value );
 				}
 			);
 
 		// Purge the expired files.
-		$expired_cache_purge = new Expired_Cache_Purge( $this->filesystem->getUrl( $this->config['vfs_dir'] ) );
+		$expired_cache_purge = new ExpiredCachePurge( $this->filesystem->getUrl( $this->config['vfs_dir'] ) );
 		$expired_cache_purge->purge_expired_files( $lifespan );
 
 		$this->assertEquals( 1, Filters\applied( 'rocket_automatic_cache_purge_urls' ) );
