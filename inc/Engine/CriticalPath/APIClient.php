@@ -3,11 +3,6 @@ namespace WP_Rocket\Engine\CriticalPath;
 
 use WP_Error;
 
-/**
- * Class APIClient
- *
- * @package WP_Rocket\Engine\CriticalPath
- */
 class APIClient {
 
 	/**
