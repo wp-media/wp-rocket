@@ -97,6 +97,6 @@ class RESTWPPost extends RESTWP {
 	 */
 	protected function get_path( $post_id ) {
 		$post_type = get_post_type( $post_id );
-		return "{$post_type}-{$post_id}.css";
+		return 'posts' . DIRECTORY_SEPARATOR . "{$post_type}-{$post_id}.css";
 	}
 }

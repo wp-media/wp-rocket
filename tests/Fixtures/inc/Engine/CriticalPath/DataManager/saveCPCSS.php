@@ -9,20 +9,18 @@ return [
 				'config'   => [
 					'path'  => 'post-10.css',
 					'cpcss_code'  => 'body{color:red;}',
-					'saved' => true
 				],
 				'expected' => [
 					'saved' => true
 				]
 			],
-			'testShouldGetCachedJobIdIfCachedBefore'     => [
+			'testShouldBailOutOnFileCreation'     => [
 				'config'   => [
 					'path'  => 'post-1000.css',
 					'cpcss_code'  => 'body{color:red;}',
-					'saved' => true
 				],
 				'expected' => [
-					'saved' => true
+					'saved' => false
 				]
 			],
 		],

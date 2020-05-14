@@ -31,11 +31,12 @@ class Test_SaveCPCSS extends FilesystemTestCase {
 		Functions\expect( 'get_current_blog_id' )->once()->andReturn( 1 );
 		Functions\when( 'wp_strip_all_tags' )->returnArg();
 
+		Functions\expect( 'rocket_put_content' )->once()->andReturn( $expected['saved'] );
+
 		$data_manager = new DataManager( $this->config['vfs_dir'] );
 		$actual = $data_manager->save_cpcss($path, $cpcss_code);
 
-		$this->assertSame($expected['saved'], $actual);
-		$this->assertTrue( $this->filesystem->exists( $file_path ) );
+		$this->assertSame( $expected['saved'], $actual );
 
 	}
 
