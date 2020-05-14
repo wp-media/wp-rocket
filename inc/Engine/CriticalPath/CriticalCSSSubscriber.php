@@ -436,7 +436,20 @@ JS;
 
 		$critical_css_content = str_replace( '\\', '\\\\', $critical_css_content );
 
+		$script = '
+		<script>
+			function wprRemoveCPCSS() {
+				document.getElementById("rocket-critical-css").remove();
+			}
+			if ( window.addEventListener ) {
+				window.addEventListener("load", wprRemoveCPCSS);
+			} else if ( window.attachEvent ) {
+				window.attachEvent("onload", wprRemoveCPCSS);
+			}
+		</script>
+		';
 		$buffer = preg_replace( '#</title>#iU', '</title><style id="rocket-critical-css">' . wp_strip_all_tags( $critical_css_content ) . '</style>', $buffer, 1 );
+		$buffer = preg_replace( '#</body>#iU', $script . '</body>', $buffer, 1 );
 
 		return $buffer;
 	}
