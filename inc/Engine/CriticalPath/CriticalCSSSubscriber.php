@@ -418,7 +418,7 @@ JS;
 			return $buffer;
 		}
 
-		$critical_css_content = $this->get_critical_css_content();
+		$critical_css_content = $this->critical_css->get_critical_css_content();
 
 		if ( empty( $critical_css_content ) ) {
 			return $buffer;
