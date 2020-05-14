@@ -35,7 +35,7 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 			'delete_user'     => 'purge_user_cache',
 			'create_term'     => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
 			'edit_term'       => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
-			'pre_delete_term' => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
+			'delete_term'     => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
 		];
 	}
 
