@@ -3,12 +3,26 @@
 return [
 	'vfs_dir'   => 'wp-content/cache/critical-css/',
 
+	// Virtual filesystem structure.
+	'structure' => [
+		'wp-content' => [
+			'cache'   => [
+				'critical-css' => [
+					'1' => [
+						'posts' => [
+							'post-10.css' => 'test',
+						],
+					],
+				],
+			],
+		]
+	],
+
 	'test_data' => [
 		'non_multisite' => [
 			'testShouldSuccessfullyDeleteFile'     => [
 				'config'   => [
 					'path'  => 'posts' . DIRECTORY_SEPARATOR . 'post-10.css',
-					'file_exists' => true,
 					'file_deleted' => true
 				],
 				'expected' => [
@@ -17,8 +31,7 @@ return [
 			],
 			'testShouldBailOutFileNotExists'     => [
 				'config'   => [
-					'path'  => 'posts' . DIRECTORY_SEPARATOR .'post-10.css',
-					'file_exists' => false,
+					'path'  => 'posts' . DIRECTORY_SEPARATOR .'post-20.css',
 					'file_deleted' => false
 				],
 				'expected' => [
@@ -30,11 +43,9 @@ return [
 					]
 				]
 			],
-			/*
 			'testShouldBailOutFileExistsNotDeleted'     => [
 				'config'   => [
 					'path'  => 'posts' . DIRECTORY_SEPARATOR .'post-10.css',
-					'file_exists' => true,
 					'file_deleted' => false
 				],
 				'expected' => [
@@ -45,7 +56,7 @@ return [
 						'status' => 400
 					]
 				]
-			],*/
+			],
 		],
 		'multisite' => []
 	],

@@ -32,7 +32,6 @@ class Test_DeleteCPCSS extends FilesystemTestCase {
 	 */
 	public function testShouldDoExpected( $config, $expected ) {
 		$path         = isset( $config['path'] )         ? $config['path']         : null;
-		$file_exists  = isset( $config['file_exists'] )  ? $config['file_exists']  : true;
 		$file_deleted = isset( $config['file_deleted'] ) ? $config['file_deleted'] : true;
 
 		Functions\expect( 'get_current_blog_id' )->once()->andReturn( 1 );
@@ -40,16 +39,10 @@ class Test_DeleteCPCSS extends FilesystemTestCase {
 
 		$full_path = $this->config['vfs_dir'] . "1" . DIRECTORY_SEPARATOR . $path;
 
-		if( $file_exists ){
-			//Create the file and make it exists
-			$this->filesystem->touch( $this->filesystem->getUrl( $full_path ) );
-		}
-
 		if( !$file_deleted ){
-			//Here I want to make file deletion fail.
-			//$this->filesystem->chmod( $this->config['vfs_dir'] . "1", 000 ); //tried to change file permissions.
-			//$this->filesystem->chmod( $full_path, 000 ); //tried to change the containing folder permissions.
-			//chown($this->filesystem->getUrl( $full_path ),465); //tried also change the ownership of the file.
+			//Here I want to simulate file deletion fail.
+			$this->filesystem->chmod( $this->filesystem->getUrl( $this->config['vfs_dir'] . "posts/1" ), 0000 );
+			$this->filesystem->chmod( $full_path, 0000 );
 		}
 
 		$data_manager = new DataManager( $this->config['vfs_dir'] );
@@ -58,6 +51,7 @@ class Test_DeleteCPCSS extends FilesystemTestCase {
 		if( isset( $expected['deleted'] ) && true === $expected['deleted'] ){
 			//Assert success.
 			$this->assertSame( $expected['deleted'], $actual );
+			$this->assertTrue( $this->filesystem->exists() );
 		}else{
 			//Assert WP_Error.
 			$this->assertInstanceOf(WP_Error::class, $actual);

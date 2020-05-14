@@ -15,10 +15,10 @@ class APIClient {
 	 *
 	 * @since 3.6
 	 *
-	 * @param string $post_url The post URL.
+	 * @param string $url The URL to send a CPCSS generation request for.
 	 * @return array
 	 */
-	public function send_generation_request( $post_url ) {
+	public function send_generation_request( $url ) {
 		$response = wp_remote_post(
 			self::API_URL,
 			[
@@ -26,24 +26,24 @@ class APIClient {
 				'body' => apply_filters(
 					'rocket_cpcss_job_request',
 					[
-						'url' => $post_url,
+						'url' => $url,
 					]
 				),
 			]
 		);
 
-		return $this->prepare_response( $response, $post_url );
+		return $this->prepare_response( $response, $url );
 	}
 
 	/**
 	 * Prepare the response to be returned.
 	 *
 	 * @param array|WP_Error $response The response or WP_Error on failure.
-	 * @param string         $post_url Url for the post to be checked.
+	 * @param string         $url Url to be checked.
 	 * @return array|WP_Error
 	 * @since 3.6
 	 */
-	private function prepare_response( $response, $post_url ) {
+	private function prepare_response( $response, $url ) {
 		$response_data        = $this->get_response_data( $response );
 		$response_status_code = $this->get_response_status( $response );
 		$succeeded            = $this->get_response_success( $response_status_code, $response_data );
@@ -52,7 +52,7 @@ class APIClient {
 			return $response_data;
 		}else {
 			$response_code    = $this->get_response_code( $response );
-			$response_message = $this->get_response_message( $response_status_code, $response_data, $post_url );
+			$response_message = $this->get_response_message( $response_status_code, $response_data, $url );
 
 			if ( 200 === $response_status_code ) {
 				$response_status_code = 400;
@@ -135,7 +135,7 @@ class APIClient {
 				break;
 			default:
 				$message .= sprintf(
-				// translators: %s = post URL.
+				// translators: %s = URL.
 					__( 'Critical CSS for %1$s not generated. Error: The API returned an invalid response code.', 'rocket' ),
 					$item_url
 				);
