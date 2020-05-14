@@ -225,7 +225,7 @@ return [
 				],
 				'expected_file' => 'wp-content/cache/critical-css/1/wptests_tax1.css',
 			],
-			'testShouldReturnTaxDoesNotExistReturnFalseFallbackCSS' => [
+			'testShouldReturnTaxDoesNotExistReturnEmpty' => [
 				'config'        => [
 					'blog_id'       => 1,
 					'type'          => 'is_tax',
@@ -261,64 +261,10 @@ return [
 							'return' => (object) [ 'taxonomy' => 'wptests_tax2' ],
 							'param'  => '',
 						],
-						[
-							'type'   => 'get_rocket_option',
-							'return' => '',
-							'param'  => '',
-						],
 					],
 					'excluded_type' => [ 'is_singular' ],
 				],
 				'expected_file'     => '',
-				'expected_fallback' => false,
-			],
-			'testShouldReturnTaxDoesNotExistReturnFallbackCSS'      => [
-				'config'        => [
-					'blog_id'       => 1,
-					'type'          => 'is_tax',
-					'taxonomy'      => 'wptests_tax3',
-					'fallback_css'  => '.fallback_css{ color: red; }',
-					'expected_type' => [
-						[
-							'type'   => 'is_home',
-							'return' => false,
-							'param'  => '',
-						],
-						[
-							'type'   => 'is_front_page',
-							'return' => false,
-							'param'  => '',
-						],
-						[
-							'type'   => 'is_category',
-							'return' => false,
-							'param'  => '',
-						],
-						[
-							'type'   => 'is_tag',
-							'return' => false,
-							'param'  => '',
-						],
-						[
-							'type'   => 'is_tax',
-							'return' => true,
-							'param'  => '',
-						],
-						[
-							'type'   => 'get_queried_object',
-							'return' => (object) [ 'taxonomy' => 'wptests_tax3' ],
-							'param'  => '',
-						],
-						[
-							'type'   => 'get_rocket_option',
-							'return' => '.fallback_css{ color: red; }',
-							'param'  => '',
-						],
-					],
-					'excluded_type' => [ 'is_singular' ],
-				],
-				'expected_file'     => '',
-				'expected_fallback' => 'fallback',
 			],
 			'testShouldReturnSingularCSS'                           => [
 				'config'        => [
