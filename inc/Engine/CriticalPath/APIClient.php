@@ -38,10 +38,11 @@ class APIClient {
 	/**
 	 * Prepare the response to be returned.
 	 *
+	 * @since 3.6
+	 *
 	 * @param array|WP_Error $response The response or WP_Error on failure.
 	 * @param string         $url Url to be checked.
 	 * @return array|WP_Error
-	 * @since 3.6
 	 */
 	private function prepare_response( $response, $url ) {
 		$response_data        = $this->get_response_data( $response );
@@ -50,22 +51,22 @@ class APIClient {
 
 		if ( $succeeded ) {
 			return $response_data;
-		}else {
-			$response_code    = $this->get_response_code( $response );
-			$response_message = $this->get_response_message( $response_status_code, $response_data, $url );
-
-			if ( 200 === $response_status_code ) {
-				$response_status_code = 400;
-			}
-
-			return new WP_Error(
-				$response_code,
-				$response_message,
-				[
-					'status' => $response_status_code,
-				]
-			);
 		}
+
+		$response_code    = $this->get_response_code( $response );
+		$response_message = $this->get_response_message( $response_status_code, $response_data, $url );
+
+		if ( 200 === $response_status_code ) {
+			$response_status_code = 400;
+		}
+
+		return new WP_Error(
+			$response_code,
+			$response_message,
+			[
+				'status' => $response_status_code,
+			]
+		);
 	}
 
 	/**
@@ -101,7 +102,7 @@ class APIClient {
 			$status = wp_remote_retrieve_response_code( $response );
 		}
 
-		return $status;
+		return (int) $status;
 	}
 
 	/**
@@ -111,10 +112,10 @@ class APIClient {
 	 *
 	 * @param int    $response_status_code Response status code.
 	 * @param array  $response_data Array of data returned from request.
-	 * @param string $item_url Url for the web page to be checked.
+	 * @param string $url Url for the web page to be checked.
 	 * @return string
 	 */
-	private function get_response_message( $response_status_code, $response_data, $item_url ) {
+	private function get_response_message( $response_status_code, $response_data, $url ) {
 		$message = '';
 
 		switch ( $response_status_code ) {
@@ -123,7 +124,7 @@ class APIClient {
 					$message .= sprintf(
 					// translators: %s = item URL.
 						__( 'Critical CSS for %1$s not generated. Error: The API returned an empty response.', 'rocket' ),
-						$item_url
+						$url
 					);
 				}
 				break;
@@ -131,13 +132,13 @@ class APIClient {
 			case 440:
 			case 404:
 				// translators: %s = item URL.
-				$message .= sprintf( __( 'Critical CSS for %1$s not generated.', 'rocket' ), $item_url );
+				$message .= sprintf( __( 'Critical CSS for %1$s not generated.', 'rocket' ), $url );
 				break;
 			default:
 				$message .= sprintf(
 				// translators: %s = URL.
 					__( 'Critical CSS for %1$s not generated. Error: The API returned an invalid response code.', 'rocket' ),
-					$item_url
+					$url
 				);
 				break;
 		}
@@ -181,15 +182,15 @@ class APIClient {
 	 * @since 3.6
 	 *
 	 * @param string $job_id ID for the job to get details.
-	 * @param string $item_url URL for item to be used in error messages.
+	 * @param string $url URL to be used in error messages.
 	 * @return mixed|WP_Error Details for job.
 	 */
-	public function get_job_details( $job_id, $item_url ) {
+	public function get_job_details( $job_id, $url ) {
 		$response = wp_remote_get(
 			self::API_URL . "{$job_id}/"
 		);
 
-		return $this->prepare_job_details_response( $response, $item_url );
+		return $this->prepare_job_details_response( $response, $url );
 	}
 
 	/**
@@ -198,32 +199,32 @@ class APIClient {
 	 * @since 3.6
 	 *
 	 * @param array|WP_Error $response The response or WP_Error on failure.
-	 * @param string         $item_url URL for item to be used in error messages.
+	 * @param string         $url URL to be used in error messages.
 	 * @return mixed|WP_Error
 	 */
-	private function prepare_job_details_response( $response, $item_url ) {
+	private function prepare_job_details_response( $response, $url ) {
 		$response_data        = $this->get_response_data( $response );
 		$response_status_code = $this->get_response_status( $response, ( isset( $response_data->status ) ) ? $response_data->status : null );
 		$succeeded            = $this->get_response_success( $response_status_code, $response_data );
 
 		if ( $succeeded ) {
 			return $response_data;
-		}else {
-			$response_code    = $this->get_response_code( $response );
-			$response_message = $this->get_response_message( $response_status_code, $response_data, $item_url );
-
-			if ( 200 === $response_status_code ) {
-				$response_status_code = 400;
-			}
-
-			return new WP_Error(
-				$response_code,
-				$response_message,
-				[
-					'status' => $response_status_code,
-				]
-			);
 		}
+
+		$response_code    = $this->get_response_code( $response );
+		$response_message = $this->get_response_message( $response_status_code, $response_data, $url );
+
+		if ( 200 === $response_status_code ) {
+			$response_status_code = 400;
+		}
+
+		return new WP_Error(
+			$response_code,
+			$response_message,
+			[
+				'status' => $response_status_code,
+			]
+		);
 	}
 
 }
