@@ -1,21 +1,22 @@
 <?php
-namespace WP_Rocket\Cache;
+namespace WP_Rocket\Engine\Cache;
 
+use CallbackFilterIterator;
+use DirectoryIterator;
+use Exception;
+use WP_Filesystem_Direct;
 use WP_Rocket\Buffer\Cache;
 
 /**
- * Purge expired cache files based on the defined lifespan
+ * Purge expired cache files based on the defined lifespan.
  *
  * @since  3.4
- * @author Grégory Viguier
  */
-class Expired_Cache_Purge {
+class ExpiredCachePurge {
 	/**
 	 * Path to the global cache folder.
 	 *
 	 * @since  3.4
-	 * @access private
-	 * @author Grégory Viguier
 	 *
 	 * @var string
 	 */
@@ -25,28 +26,26 @@ class Expired_Cache_Purge {
 	 * Filesystem object.
 	 *
 	 * @since  3.4
-	 * @access private
-	 * @author Grégory Viguier
 	 *
-	 * @var \WP_Filesystem_Direct
+	 * @var WP_Filesystem_Direct
 	 */
 	private $filesystem;
 
 	/**
-	 * Constructor
+	 * Creates an instance of ExpiredCachePurge.
 	 *
-	 * @param string $cache_path Path to the global cache folder.
+	 * @param string               $cache_path Path to the global cache folder.
+	 * @param WP_Filesystem_Direct $filesystem Instance of the filesystem.
 	 */
-	public function __construct( $cache_path ) {
+	public function __construct( $cache_path, $filesystem = null ) {
 		$this->cache_path = $cache_path;
+		$this->filesystem = is_null( $filesystem ) ? rocket_direct_filesystem() : $filesystem;
 	}
 
 	/**
 	 * Perform the event action.
 	 *
 	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
 	 *
 	 * @param int $lifespan The cache lifespan in seconds.
 	 */
@@ -63,7 +62,6 @@ class Expired_Cache_Purge {
 		 * Filter home URLs that will be searched for old cache files.
 		 *
 		 * @since  3.4
-		 * @author Grégory Viguier
 		 *
 		 * @param array $urls           URLs that will be searched for old cache files.
 		 * @param int   $file_age_limit Timestamp of the maximum age files must have.
@@ -78,15 +76,11 @@ class Expired_Cache_Purge {
 		$urls = array_filter( $urls, 'is_string' );
 		$urls = array_filter( $urls );
 
-		if ( ! $urls ) {
+		if ( empty( $urls ) ) {
 			return;
 		}
 
 		$urls = array_unique( $urls );
-
-		if ( empty( $this->filesystem ) ) {
-			$this->filesystem = rocket_direct_filesystem();
-		}
 
 		$deleted       = [];
 		$cache_enabled = Cache::can_generate_caching_files();
@@ -96,7 +90,6 @@ class Expired_Cache_Purge {
 			 * Fires before purging a cache directory.
 			 *
 			 * @since  3.4
-			 * @author Grégory Viguier
 			 *
 			 * @param string $url          The home url.
 			 * @param int    $file_age_limit Timestamp of the maximum age files must have.
@@ -114,10 +107,9 @@ class Expired_Cache_Purge {
 					$file['host'] = str_replace( '.', '_', $file['host'] );
 				}
 
-				$sub_dir = rtrim( $file['path'], '/' );
-				$files   = $this->get_cache_files_in_dir( $file );
+				$sub_dir = _rocket_normalize_path( rtrim( $file['path'], '/\\' ) );
 
-				foreach ( $files as $item ) {
+				foreach ( $this->get_cache_files_in_dir( $file['host'], $sub_dir ) as $item ) {
 					$dir_path     = $item->getPathname();
 					$sub_dir_path = $dir_path . $sub_dir;
 
@@ -154,7 +146,6 @@ class Expired_Cache_Purge {
 			 * Fires after a cache directory is purged.
 			 *
 			 * @since  3.4
-			 * @author Grégory Viguier
 			 *
 			 * @param array $deleted {
 			 *     An array of arrays sharing the same home URL, described like: {
@@ -202,7 +193,6 @@ class Expired_Cache_Purge {
 		 * Fires after cache directories are purged.
 		 *
 		 * @since  3.4
-		 * @author Grégory Viguier
 		 *
 		 * @param array $deleted {
 		 *     An array of arrays, described like: {
@@ -254,27 +244,25 @@ class Expired_Cache_Purge {
 	/** TOOLS =================================================================================== */
 	/** ----------------------------------------------------------------------------------------- */
 	/**
-	 * Get all cache files for the provided URL
+	 * Get all cache files for the provided URL.
 	 *
-	 * @since 3.4
-	 * @author Gregory Viguier
+	 * @since  3.4
 	 *
-	 * @param array $file An array of the parsed URL parts.
-	 * @return Bool|DirectoryIterator
+	 * @param string $domain  Domain's name.
+	 * @param string $sub_dir Subdirectory's relative path.
+	 *
+	 * @return []|DirectoryIterator
 	 */
-	private function get_cache_files_in_dir( $file ) {
+	private function get_cache_files_in_dir( $domain, $sub_dir ) {
+		$iterator = $this->get_dir_iterator( $this->cache_path, false );
+		if ( false === $iterator ) {
+			return [];
+		}
+
 		// Grab cache folders.
-		$host_pattern = '@^' . preg_quote( $file['host'], '@' ) . '@';
-		$sub_dir      = rtrim( $file['path'], '/' );
+		$host_pattern = '@^' . preg_quote( $domain, '@' ) . '@';
 
-		try {
-			$iterator = new \DirectoryIterator( $this->cache_path );
-		}
-		catch ( \Exception $e ) {
-			return false;
-		}
-
-		return new \CallbackFilterIterator(
+		return new CallbackFilterIterator(
 			$iterator,
 			function ( $current ) use ( $host_pattern, $sub_dir ) {
 
@@ -302,8 +290,6 @@ class Expired_Cache_Purge {
 	 * Purge a folder from old files.
 	 *
 	 * @since  3.4
-	 * @access private
-	 * @author Grégory Viguier
 	 *
 	 * @param  string $dir_path     Path to the folder to purge.
 	 * @param  int    $file_age_limit Timestamp of the maximum age files must have.
@@ -312,14 +298,7 @@ class Expired_Cache_Purge {
 	private function purge_dir( $dir_path, $file_age_limit ) {
 		$deleted = [];
 
-		try {
-			$iterator = new \DirectoryIterator( $dir_path );
-		}
-		catch ( \Exception $e ) {
-			return [];
-		}
-
-		foreach ( $iterator as $item ) {
+		foreach ( $this->get_dir_iterator( $dir_path ) as $item ) {
 			if ( $item->isDot() ) {
 				continue;
 			}
@@ -367,21 +346,12 @@ class Expired_Cache_Purge {
 	 * Tell if a folder is empty.
 	 *
 	 * @since  3.4
-	 * @access private
-	 * @author Grégory Viguier
 	 *
 	 * @param  string $dir_path Path to the folder to purge.
 	 * @return bool             True if empty. False if it contains files.
 	 */
 	private function is_dir_empty( $dir_path ) {
-		try {
-			$iterator = new \DirectoryIterator( $dir_path );
-		}
-		catch ( \Exception $e ) {
-			return [];
-		}
-
-		foreach ( $iterator as $item ) {
+		foreach ( $this->get_dir_iterator( $dir_path )  as $item ) {
 			if ( $item->isDot() ) {
 				continue;
 			}
@@ -389,5 +359,23 @@ class Expired_Cache_Purge {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Get the directory iterator for the given path.
+	 *
+	 * @since 3.5.5
+	 *
+	 * @param string $dir     Absolute path to the directory for the iterator.
+	 * @param mixed  $default Optional. Value to return upon error.
+	 *
+	 * @return mixed|DirectoryIterator
+	 */
+	private function get_dir_iterator( $dir, $default = [] ) {
+		try {
+			return new DirectoryIterator( $dir );
+		} catch ( Exception $e ) {
+			return $default;
+		}
 	}
 }

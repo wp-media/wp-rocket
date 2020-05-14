@@ -8,10 +8,16 @@ if ( file_exists( WP_ROCKET_PATH . 'vendor/autoload.php' ) ) {
 }
 
 /**
+ * Loads the filesystem functionality early to make sure it's available for us.
+ *
+ * @since 3.5.5
+ */
+require_once WP_ROCKET_FUNCTIONS_PATH . 'files.php';
+
+/**
  * Fix Cloudflare Flexible SSL redirect first
  *
  * @since  3.4.1
- * @author Soponar Cristina
  */
 require WP_ROCKET_VENDORS_PATH . 'ip_in_range.php';
 require WP_ROCKET_COMMON_PATH . 'cloudflare-flexible-ssl.php';
@@ -41,7 +47,6 @@ function rocket_init() {
 
 	// Call defines and functions.
 	require_once WP_ROCKET_FUNCTIONS_PATH . 'api.php';
-	require WP_ROCKET_FUNCTIONS_PATH . 'files.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'posts.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'admin.php';
 	require WP_ROCKET_INC_PATH . '/API/preload.php';

@@ -11,6 +11,8 @@ class_alias( '\WP_Rocket\Engine\Admin\Settings\Render', '\WP_Rocket\Admin\Settin
 class_alias( '\WP_Rocket\Engine\Admin\Settings\Settings', '\WP_Rocket\Admin\Settings\Settings' );
 class_alias( '\WP_Rocket\Engine\Admin\Settings\ServiceProvider', '\WP_Rocket\ServiceProvider\Settings' );
 class_alias( '\WP_Rocket\Engine\Admin\Settings\Subscriber', '\WP_Rocket\Subscriber\Admin\Settings\Page_Subscriber' );
+class_alias( '\WP_Rocket\Engine\Cache\ExpiredCachePurge', '\WP_Rocket\Cache\Expired_Cache_Purge' );
+class_alias( '\WP_Rocket\Engine\Cache\ExpiredCachePurgeSubscriber', '\WP_Rocket\Subscriber\Cache\Expired_Cache_Purge' );
 class_alias( '\WP_Rocket\Engine\Preload\AbstractPreload', '\WP_Rocket\Preload\Abstract_Preload' );
 class_alias( '\WP_Rocket\Engine\Preload\AbstractProcess', '\WP_Rocket\Preload\Process' );
 class_alias( '\WP_Rocket\Engine\Preload\FullProcess', '\WP_Rocket\Preload\Full_Process' );

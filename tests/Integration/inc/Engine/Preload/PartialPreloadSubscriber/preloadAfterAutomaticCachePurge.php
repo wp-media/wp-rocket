@@ -7,12 +7,11 @@ use WPMedia\PHPUnit\Integration\TestCase;
 /**
  * @covers \WP_Rocket\Engine\Preload\PartialPreloadSubscriber::preload_after_automatic_cache_purge
  * @group  Preload
+ * @group thisone
  */
 class Test_PreloadAfterAutomaticCachePurge extends TestCase {
-	private $urls;
 	private $subscriber;
 	private $property;
-	private $permalink_structure;
 	private $manual_preload;
 
 	public function setUp() {
@@ -32,39 +31,25 @@ class Test_PreloadAfterAutomaticCachePurge extends TestCase {
 		$this->property->setAccessible( false );
 
 		remove_filter( 'pre_get_rocket_option_manual_preload', [ $this, 'manual_preload_filter' ] );
-		remove_filter( 'pre_option_permalink_structure', [ $this, 'permalink_structure_filter' ] );
 	}
 
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldDoExpectedWithSlashedUrl( $permalink_structure, $option_value, $deleted, $expected ) {
-		$this->permalink_structure = $permalink_structure;
+	public function testShouldDoExpectedWithSlashedUrl( $option_value, $deleted, $expected ) {
 		$this->manual_preload      = $option_value;
 
 		add_filter( 'pre_get_rocket_option_manual_preload', [ $this, 'manual_preload_filter' ] );
-		add_filter( 'pre_option_permalink_structure', [ $this, 'permalink_structure_filter' ] );
 
+		// Run it.
 		do_action( 'rocket_after_automatic_cache_purge', $deleted );
 
 		$this->property = $this->get_reflective_property( 'urls', $this->subscriber );
-		$this->urls     = $this->property->getValue( $this->subscriber );
-
-		if ( ! $expected ) {
-			$this->assertEmpty( $this->urls );
-		}
-
-		foreach ( $expected as $url ) {
-			$this->assertContains( $url, $this->urls );
-		}
+		$this->assertSame( $expected, $this->property->getValue( $this->subscriber ) );
 	}
 
 	public function manual_preload_filter() {
 		return $this->manual_preload;
-	}
-
-	public function permalink_structure_filter() {
-		return $this->permalink_structure;
 	}
 
 	public function providerTestData() {
