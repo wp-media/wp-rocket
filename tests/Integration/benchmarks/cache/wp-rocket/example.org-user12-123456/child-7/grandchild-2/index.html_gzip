@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head itemscope itemtype="https://schema.org/WebSite">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Rocket</title>
+<link rel='dns-prefetch' href='//fonts.googleapis.com' />
+<link rel='dns-prefetch' href='//s.w.org' />
+<link rel="alternate" type="application/rss+xml" title="Rocket &raquo; Feed" href="https://example.org/feed/" />
+<link rel="alternate" type="application/rss+xml" title="Rocket &raquo; Comments Feed" href="https://example.org/comments/feed/" />
+<link rel="canonical" href="https://example.org/" />
+<link rel='stylesheet' id='atomic-blocks-fontawesome-css'  href='https://example.org/wp-content/plugins/atomic-blocks/dist/assets/fontawesome/css/all.css?ver=1588363380' media='all' />
+<link rel='stylesheet' id='genesis-sample-css'  href='https://example.org/wp-content/themes/genesis-sample/style.css?ver=1588363440' media='all' />
+<link rel='stylesheet' id='wp-block-library-css'  href='https://example.org/wp-includes/css/dist/block-library/style.css?ver=5.4.1' media='all' />
+<link rel='stylesheet' id='atomic-blocks-style-css-css'  href='https://example.org/wp-content/plugins/atomic-blocks/dist/blocks.style.build.css?ver=1588363380' media='all' />
+<link rel='stylesheet' id='genesis-sample-fonts-css'  href='https://fonts.googleapis.com/css?family=Source+Sans+Pro%3A400%2C400i%2C600%2C700&#038;display=swap&#038;ver=1588363440' media='all' />
+<link rel='stylesheet' id='dashicons-css'  href='https://example.org/wp-includes/css/dashicons.css?ver=5.4.1' media='all' />
+<link rel='stylesheet' id='genesis-sample-gutenberg-css'  href='https://example.org/wp-content/themes/genesis-sample/lib/gutenberg/front-end.css?ver=1588363440' media='all' />
+<link rel='stylesheet' id='simple-social-icons-font-css'  href='https://example.org/wp-content/plugins/simple-social-icons/css/style.css?ver=3.0.2' media='all' />
+<script src='https://example.org/wp-includes/js/jquery/jquery.js?ver=1.12.4-wp'></script>
+<script src='https://example.org/wp-includes/js/jquery/jquery-migrate.js?ver=1.4.1'></script>
+<script src='https://example.org/wp-content/plugins/simple-social-icons/svgxuse.js?ver=1.1.21'></script>
+<link rel='https://api.w.org/' href='https://example.org/wp-json/' />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://example.org/xmlrpc.php?rsd" />
+<link rel="alternate" type="application/json+oembed" href="https://example.org/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fexample.org%2F" />
+<link rel="alternate" type="text/xml+oembed" href="https://example.org/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fexample.org%2F&#038;format=xml" />
+<link rel="icon" href="https://example.org/wp-content/themes/genesis-sample/images/favicon.ico" />
+<link rel="pingback" href="https://example.org/xmlrpc.php" />
+<meta itemprop="name" content="Rocket" />
+<meta itemprop="url" content="https://example.org/" />
+</head>
+<body class="home page-template-default page page-id-52 wp-embed-responsive header-full-width full-width-content genesis-breadcrumbs-hidden genesis-singular-image-hidden genesis-footer-widgets-visible has-no-blocks" itemscope itemtype="https://schema.org/WebPage"><div class="site-container"><ul class="genesis-skip-link"><li><a href="#genesis-nav-primary" class="screen-reader-shortcut"> Skip to primary navigation</a></li><li><a href="#genesis-content" class="screen-reader-shortcut"> Skip to main content</a></li><li><a href="#genesis-footer-widgets" class="screen-reader-shortcut"> Skip to footer</a></li></ul><header class="site-header" itemscope itemtype="https://schema.org/WPHeader"><div class="wrap"><div class="title-area"><h1 class="site-title" itemprop="headline"><a href="https://example.org/">Rocket</a></h1></div><nav class="nav-primary" aria-label="Main" itemscope itemtype="https://schema.org/SiteNavigationElement" id="genesis-nav-primary"><div class="wrap"><ul id="menu-header-menu" class="menu genesis-nav-menu menu-primary js-superfish"><li id="menu-item-39" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-39"><a href="https://example.org/homepage/" itemprop="url"><span itemprop="name">Home</span></a></li>
+<li id="menu-item-50" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-50"><a href="https://example.org/blog/" itemprop="url"><span itemprop="name">[:en]Blog[:fr]Blog[:de][DE] Blog[:]</span></a></li>
+<li id="menu-item-40" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-40"><a href="https://example.org/about-us/" itemprop="url"><span itemprop="name">About Us</span></a></li>
+<li id="menu-item-69" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-69"><a href="https://example.org/parent-page/" itemprop="url"><span itemprop="name">Parent Page</span></a>
+<ul class="sub-menu">
+	<li id="menu-item-70" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-70"><a href="https://example.org/parent-page/child-page/" itemprop="url"><span itemprop="name">Child Page</span></a>
+	<ul class="sub-menu">
+		<li id="menu-item-72" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-72"><a href="https://example.org/parent-page/child-page/grandchild-page/" itemprop="url"><span itemprop="name">Grandchild Page</span></a></li>
+		<li id="menu-item-71" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-71"><a href="https://example.org/parent-page/child-page/grandchild-2-page/" itemprop="url"><span itemprop="name">Grandchild 2 Page</span></a></li>
+	</ul>
+</li>
+</ul>
+</li>
+<li id="menu-item-44" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-44"><a href="#qtransLangSwLM#" itemprop="url"><span itemprop="name">Language Menu</span></a></li>
+</ul></div></nav></div></header><div class="site-inner"><div class="content-sidebar-wrap"><main class="content" id="genesis-content"><article class="post-52 page type-page status-publish entry" itemscope itemtype="https://schema.org/CreativeWork"><header class="entry-header"><h2 class="entry-title" itemprop="headline">Home</h2>
+</header><div class="entry-content" itemprop="text"></div></article></main></div></div><div class="footer-widgets" id="genesis-footer-widgets"><h2 class="genesis-sidebar-title screen-reader-text">Footer</h2><div class="wrap"><div class="widget-area footer-widgets-1 footer-widget-area"><section id="text-5" class="widget widget_text"><div class="widget-wrap"><h3 class="widgettitle widget-title">Design</h3>
+			<div class="textwidget"><p>With an emphasis on typography, white space, and mobile-optimized design, your website will look absolutely breathtaking.</p>
+<p><a href="#">Learn more about design</a>.</p>
+</div>
+		</div></section>
+</div><div class="widget-area footer-widgets-2 footer-widget-area"><section id="text-6" class="widget widget_text"><div class="widget-wrap"><h3 class="widgettitle widget-title">Content</h3>
+			<div class="textwidget"><p>Our team will teach you the art of writing audience-focused content that will help you achieve the success you truly deserve.</p>
+<p><a href="#">Learn more about content</a>.</p>
+</div>
+		</div></section>
+</div><div class="widget-area footer-widgets-3 footer-widget-area"><section id="text-7" class="widget widget_text"><div class="widget-wrap"><h3 class="widgettitle widget-title">Strategy</h3>
+			<div class="textwidget"><p>We help creative entrepreneurs build their digital business by focusing on three key elements of a successful online platform.</p>
+<p><a href="#">Learn more about strategy</a>.</p>
+</div>
+		</div></section>
+</div></div></div><footer class="site-footer" itemscope itemtype="https://schema.org/WPFooter"><div class="wrap"><p>Copyright &#x000A9;&nbsp;2020 · <a href="https://demo.studiopress.com/">Genesis Sample</a> on <a href="https://www.studiopress.com/">Genesis Framework</a> · <a href="https://wordpress.org/">WordPress</a> · <a href="https://example.org/wp-login.php">Log in</a></p></div></footer></div>	<script type="text/javascript">
+		function atomicBlocksShare( url, title, w, h ){
+			var left = ( window.innerWidth / 2 )-( w / 2 );
+			var top  = ( window.innerHeight / 2 )-( h / 2 );
+			return window.open(url, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=600, height=600, top='+top+', left='+left);
+		}
+	</script>
+	<style type="text/css" media="screen"></style><script src='https://example.org/wp-content/plugins/atomic-blocks/dist/assets/js/dismiss.js?ver=1588363380'></script>
+<script src='https://example.org/wp-includes/js/hoverIntent.js?ver=1.8.1'></script>
+<script src='https://example.org/wp-content/themes/genesis/lib/js/menu/superfish.js?ver=1.7.10'></script>
+<script src='https://example.org/wp-content/themes/genesis/lib/js/menu/superfish.args.js?ver=3.3.2'></script>
+<script src='https://example.org/wp-content/themes/genesis/lib/js/skip-links.js?ver=3.3.2'></script>
+<script>
+var genesis_responsive_menu = {"mainMenu":"Menu","menuIconClass":"dashicons-before dashicons-menu","subMenu":"Submenu","subMenuIconClass":"dashicons-before dashicons-arrow-down-alt2","menuClasses":{"others":[".nav-primary"]}};
+</script>
+<script src='https://example.org/wp-content/themes/genesis/lib/js/menu/responsive-menus.js?ver=1.1.3'></script>
+<script src='https://example.org/wp-includes/js/wp-embed.js?ver=5.4.1'></script>
+</body></html>
+
+<!-- This website is like a Rocket, isn't it? Performance optimized by WP Rocket. Learn more: https://wp-rocket.me - Debug: cached@1588363440 -->
