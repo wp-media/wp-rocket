@@ -448,7 +448,6 @@ JS;
 		 * Filters the pattern used to get all stylesheets in the HTML
 		 *
 		 * @since 2.10
-		 * @author Remy Perona
 		 *
 		 * @param string $css_pattern Regex pattern to get all stylesheets in the HTML.
 		 */
