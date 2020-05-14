@@ -51,7 +51,7 @@ class Test_DeleteCPCSS extends FilesystemTestCase {
 		if( isset( $expected['deleted'] ) && true === $expected['deleted'] ){
 			//Assert success.
 			$this->assertSame( $expected['deleted'], $actual );
-			$this->assertTrue( $this->filesystem->exists() );
+			$this->assertFalse( $this->filesystem->exists( $full_path ) );
 		}else{
 			//Assert WP_Error.
 			$this->assertInstanceOf(WP_Error::class, $actual);

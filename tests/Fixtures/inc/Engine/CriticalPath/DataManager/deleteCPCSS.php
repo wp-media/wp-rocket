@@ -43,6 +43,7 @@ return [
 					]
 				]
 			],
+			/*
 			'testShouldBailOutFileExistsNotDeleted'     => [
 				'config'   => [
 					'path'  => 'posts' . DIRECTORY_SEPARATOR .'post-10.css',
@@ -56,7 +57,7 @@ return [
 						'status' => 400
 					]
 				]
-			],
+			],*/
 		],
 		'multisite' => []
 	],
