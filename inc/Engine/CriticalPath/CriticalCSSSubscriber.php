@@ -1,19 +1,15 @@
 <?php
 namespace WP_Rocket\Engine\CriticalPath;
 
-use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Rocket\Admin\Options_Data;
 use FilesystemIterator;
 use UnexpectedValueException;
-
-
-defined( 'ABSPATH' ) || exit;
+use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
  * Critical CSS Subscriber
  *
  * @since 3.3
- * @author Remy Perona
  */
 class CriticalCSSSubscriber implements Subscriber_Interface {
 
@@ -46,7 +42,6 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
 	 * @since  3.3
-	 * @author Remy Perona
 	 *
 	 * @return array
 	 */
@@ -79,7 +74,6 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	 * This notice is displayed when the Critical CSS Generation is triggered from a different page than WP Rocket settings page
 	 *
 	 * @since 3.4.1
-	 * @author Soponar Cristina
 	 */
 	public function notice_critical_css_generation_triggered() {
 		if ( ! current_user_can( 'rocket_regenerate_critical_css' ) ) {
@@ -121,7 +115,6 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	 * Launches the critical CSS generation from admin
 	 *
 	 * @since 2.11
-	 * @author Remy Perona
 	 *
 	 * @see process_handler()
 	 */
@@ -144,7 +137,6 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	 * Launches the critical CSS generation when activating the async CSS option
 	 *
 	 * @since 2.11
-	 * @author Remy Perona
 	 *
 	 * @see Critical_CSS::process_handler()
 	 *
@@ -181,7 +173,6 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	 * Stops the critical CSS generation when deactivating the async CSS option and remove the notices
 	 *
 	 * @since 2.11
-	 * @author Remy Perona
 	 *
 	 * @param array $old_value Previous values for WP Rocket settings.
 	 * @param array $value     New values for WP Rocket settings.
@@ -200,7 +191,6 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	 * This notice is displayed when the critical CSS generation is running
 	 *
 	 * @since 2.11
-	 * @author Remy Perona
 	 */
 	public function critical_css_generation_running_notice() {
 		if ( ! current_user_can( 'rocket_regenerate_critical_css' ) ) {
@@ -243,7 +233,6 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	 * This notice is displayed when the critical CSS generation is complete
 	 *
 	 * @since 2.11
-	 * @author Remy Perona
 	 */
 	public function critical_css_generation_complete_notice() {
 		if ( ! current_user_can( 'rocket_regenerate_critical_css' ) ) {
@@ -301,7 +290,6 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	 * This warning is displayed when the critical CSS dir isn't writeable
 	 *
 	 * @since 2.11
-	 * @author Remy Perona
 	 */
 	public function warning_critical_css_dir_permissions() {
 		if ( current_user_can( 'rocket_manage_options' )
@@ -332,7 +320,6 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	 *
 	 * @since 2.11.2 Updated loadCSS rel=preload polyfill to version 2.0.1
 	 * @since 2.10
-	 * @author Remy Perona
 	 */
 	public function insert_load_css() {
 		global $pagenow;
@@ -400,7 +387,6 @@ JS;
 	 * Insert critical CSS before combined CSS when option is active
 	 *
 	 * @since 2.11.5
-	 * @author Remy Perona
 	 *
 	 * @param string $buffer HTML output of the page.
 	 * @return string Updated HTML output
@@ -435,7 +421,6 @@ JS;
 	 * Defer loading of CSS files
 	 *
 	 * @since 2.10
-	 * @author Remy Perona
 	 *
 	 * @param string $buffer HTML code.
 	 * @return string Updated HTML code
@@ -506,7 +491,7 @@ JS;
 	 * Regenerates the CPCSS when switching theme if the potion is active
 	 *
 	 * @since 3.3
-	 * @author Remy Perona
+	 *
 	 * @return void
 	 */
 	public function maybe_regenerate_cpcss() {
@@ -521,10 +506,10 @@ JS;
 	 * Cleans the cache when the generation is complete
 	 *
 	 * @since 3.3
-	 * @author Remy Perona
+	 *
 	 * @return void
 	 */
 	public function clean_domain_on_complete() {
-		\rocket_clean_domain();
+		rocket_clean_domain();
 	}
 }
