@@ -31,11 +31,11 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'profile_update'  => 'purge_user_cache',
-			'delete_user'     => 'purge_user_cache',
-			'create_term'     => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
-			'edit_term'       => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
-			'delete_term'     => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
+			'profile_update' => 'purge_user_cache',
+			'delete_user'    => 'purge_user_cache',
+			'create_term'    => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
+			'edit_term'      => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
+			'delete_term'    => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
 		];
 	}
 
