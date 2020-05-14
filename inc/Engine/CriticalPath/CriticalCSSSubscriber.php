@@ -410,7 +410,7 @@ JS;
 			return;
 		}
 
-		if ( ! $this->options->get( 'async_css' ) ) {
+		if ( ! $this->options->get( 'async_css', 0 ) ) {
 			return $buffer;
 		}
 
@@ -418,19 +418,9 @@ JS;
 			return $buffer;
 		}
 
-		$current_page_cpcss = $this->critical_css->get_current_page_critical_css();
+		$critical_css_content = $this->get_critical_css_content();
 
-		if ( ! $current_page_cpcss ) {
-			return $buffer;
-		}
-
-		if ( 'fallback' === $current_page_cpcss ) {
-			$critical_css_content = $this->options->get( 'critical_css', '' );
-		} else {
-			$critical_css_content = rocket_direct_filesystem()->get_contents( $current_page_cpcss );
-		}
-
-		if ( ! $critical_css_content ) {
+		if ( empty( $critical_css_content ) ) {
 			return $buffer;
 		}
 
