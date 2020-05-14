@@ -15,7 +15,7 @@ return [
 			'action' => 'edit_term',
 		],
 		'testDeleteTerm' => [
-			'action' => 'pre_delete_term',
+			'action' => 'delete_term',
 		],
 	],
 	'unit_test_data' => [
