@@ -3,14 +3,24 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\Beacon\Beacon;
 
 use Brain\Monkey\Functions;
-use WPMedia\PHPUnit\Integration\TestCase;
+use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Admin\Beacon\Beacon::insert_script
  * @group  Beacon
  * @group  AdminOnly
  */
-class Test_InsertScript extends TestCase {
+class Test_InsertScript extends FilesystemTestCase {
+	protected $path_to_test_data = '/inc/Engine/Admin/Beacon/Beacon/insert-script.php';
+	private $locale;
+
+	public function tearDown() {
+		remove_filter( 'rocket_beacon_locale', [ $this, 'set_locale' ] );
+		remove_filter( 'pre_get_rocket_option_consumer_email', [ $this, 'consumer_email' ] );
+
+		parent::tearDown();
+	}
+
 	private function getActualHtml() {
 		ob_start();
 		do_action( 'admin_print_footer_scripts-settings_page_wprocket' );
@@ -39,27 +49,22 @@ class Test_InsertScript extends TestCase {
 
 		set_current_screen( 'settings_page_wprocket' );
 
-		$locale_cb = function() use ( $locale ) {
-			return current( array_slice( explode( '_', $locale ), 0, 1 ) );
-		};
-		add_filter( 'rocket_beacon_locale', $locale_cb );
+		$this->locale = current( array_slice( explode( '_', $locale ), 0, 1 ) );
+
+		add_filter( 'rocket_beacon_locale', [ $this, 'set_locale' ] );
+		add_filter( 'pre_get_rocket_option_consumer_email', [ $this, 'consumer_email' ] );
 
 		Functions\when( 'get_bloginfo' )->justReturn( '5.4' );
 		Functions\when( 'rocket_get_constant' )->justReturn( '3.6' );
-
-		add_filter( 'pre_get_rocket_option_consumer_email', [ $this, 'consumer_email' ] );
 
 		$this->assertSame(
 			$this->format_the_html( $expected ),
 			$this->getActualHtml()
 		);
-
-		remove_filter( 'rocket_beacon_locale', $locale_cb );
-		remove_filter( 'pre_get_rocket_option_consumer_email', [ $this, 'consumer_email' ] );
 	}
 
-	public function providerTestData() {
-		return $this->getTestData( __DIR__, 'insert-script' );
+	public function set_locale() {
+		return $this->locale;
 	}
 
 	public function consumer_email() {
