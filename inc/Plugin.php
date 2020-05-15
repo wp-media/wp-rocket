@@ -25,6 +25,15 @@ class Plugin {
 	private $container;
 
 	/**
+	 * Instance of the event manager.
+	 *
+	 * @since 3.6
+	 *
+	 * @var Event_Manager
+	 */
+	private $event_manager;
+
+	/**
 	 * Flag for if the license key is valid.
 	 *
 	 * @since 3.6
@@ -36,12 +45,16 @@ class Plugin {
 	/**
 	 * Instance of the Options.
 	 *
+	 * @since 3.6
+	 *
 	 * @var Options
 	 */
 	private $options_api;
 
 	/**
 	 * Instance of the Options_Data.
+	 *
+	 * @since 3.6
 	 *
 	 * @var Options_Data
 	 */
@@ -80,12 +93,8 @@ class Plugin {
 	 * @return void
 	 */
 	public function load() {
-		$this->container->share(
-			'event_manager',
-			function () {
-				return new Event_Manager();
-			}
-		);
+		$this->event_manager = new Event_Manager();
+		$this->container->share( 'event_manager', $this->event_manager );
 
 		$this->options_api = new Options( 'wp_rocket_' );
 		$this->container->add( 'options_api', $this->options_api );
@@ -99,6 +108,19 @@ class Plugin {
 
 		$this->is_valid_key = rocket_valid_key();
 
+		foreach ( $this->get_subscribers() as $subscriber ) {
+			$this->event_manager->add_subscriber( $this->container->get( $subscriber ) );
+		}
+	}
+
+	/**
+	 * Get the subscribers to add to the event manager.
+	 *
+	 * @since 3.6
+	 *
+	 * @return array array of subscribers.
+	 */
+	private function get_subscribers() {
 		if ( is_admin() ) {
 			$subscribers = $this->init_admin_subscribers();
 		} elseif ( $this->is_valid_key ) {
@@ -107,17 +129,15 @@ class Plugin {
 			$subscribers = [];
 		}
 
-		$subscribers = array_merge( $subscribers, $this->init_common_subscribers() );
-
-		foreach ( $subscribers as $subscriber ) {
-			$this->container->get( 'event_manager' )->add_subscriber( $this->container->get( $subscriber ) );
-		}
+		return array_merge( $subscribers, $this->init_common_subscribers() );
 	}
 
 	/**
 	 * Initializes the admin subscribers.
 	 *
-	 * @return array array of subscribers
+	 * @since 3.6
+	 *
+	 * @return array array of subscribers.
 	 */
 	private function init_admin_subscribers() {
 		if ( ! Imagify_Partner::has_imagify_api_key() ) {
@@ -155,6 +175,8 @@ class Plugin {
 	/**
 	 * For plugins with a valid key, initialize the subscribers.
 	 *
+	 * @since 3.6
+	 *
 	 * @return array array of subscribers.
 	 */
 	private function init_valid_key_subscribers() {
@@ -183,6 +205,8 @@ class Plugin {
 
 	/**
 	 * Initializes the common subscribers.
+	 *
+	 * @since 3.6
 	 *
 	 * @return array array of common subscribers.
 	 */
