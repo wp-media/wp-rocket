@@ -24,6 +24,15 @@ class Plugin {
 	private $container;
 
 	/**
+	 * Flag for if the license key is valid.
+	 *
+	 * @since 3.6
+	 *
+	 * @var bool
+	 */
+	private $is_valid_key;
+
+	/**
 	 * Creates an instance of the Plugin.
 	 *
 	 * @since 3.0
@@ -75,9 +84,11 @@ class Plugin {
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\CDN\RocketCDN\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Cache\ServiceProvider' );
 
+		$this->is_valid_key = rocket_valid_key();
+
 		if ( is_admin() ) {
 			$subscribers = $this->init_admin_subscribers();
-		} elseif ( rocket_valid_key() ) {
+		} elseif ( $this->is_valid_key ) {
 			$subscribers = $this->init_valid_key_subscribers();
 		} else {
 			$subscribers = [];
@@ -210,7 +221,7 @@ class Plugin {
 			$common_subscribers[] = 'cloudflare_subscriber';
 		}
 
-		if ( ! rocket_valid_key() ) {
+		if ( ! $this->is_valid_key ) {
 			return $common_subscribers;
 		}
 
