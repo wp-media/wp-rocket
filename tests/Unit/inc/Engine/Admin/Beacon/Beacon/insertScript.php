@@ -14,7 +14,7 @@ use WP_Rocket\Engine\Admin\Beacon\Beacon;
  * @group  Beacon
  */
 class Test_InsertScript extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/Engine/Admin/Beacon/Beacon/insert-script.php';
+	protected $path_to_test_data = '/inc/Engine/Admin/Beacon/Beacon/insertScript.php';
 	private $beacon;
 	private $options;
 

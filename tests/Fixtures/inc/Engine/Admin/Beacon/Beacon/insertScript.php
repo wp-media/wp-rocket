@@ -1,7 +1,8 @@
 <?php
 
 return [
-	'vfs_dir'   => 'public/',
+	'vfs_dir'   => 'wp-content/plugins/wp-rocket/views/settings/',
+
 	'structure' => [
 		'wp-content' => [
 			'plugins' => [
@@ -15,6 +16,7 @@ return [
 			],
 		],
 	],
+
 	'test_data' => [
 		'testShouldEchoDefault' => [
 			'locale'   => 'en_US',
