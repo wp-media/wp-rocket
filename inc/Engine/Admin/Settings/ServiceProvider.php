@@ -36,7 +36,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'settings', 'WP_Rocket\Engine\Admin\Settings\Settings' )
 			->withArgument( $this->getContainer()->get( 'options' ) );
 		$this->getContainer()->add( 'settings_render', 'WP_Rocket\Engine\Admin\Settings\Render' )
-			->withArgument( $this->getContainer()->get( 'template_path' ) . '/settings' );
+			->withArgument( $this->getContainer()->get( 'template_path' ) . 'settings' );
 		$this->getContainer()->add( 'settings_page', 'WP_Rocket\Engine\Admin\Settings\Page' )
 			->withArgument( $this->getContainer()->get( 'settings_page_config' ) )
 			->withArgument( $this->getContainer()->get( 'settings' ) )

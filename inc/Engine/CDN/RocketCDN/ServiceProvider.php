@@ -53,12 +53,12 @@ class ServiceProvider extends AbstractServiceProvider {
 		// RocketCDN Notices Subscriber.
 		$this->getContainer()->share( 'rocketcdn_notices_subscriber', 'WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber' )
 			->withArgument( $this->getContainer()->get( 'rocketcdn_api_client' ) )
-			->withArgument( $this->getContainer()->get( 'template_path' ) . '/settings/rocketcdn' );
+			->withArgument( $this->getContainer()->get( 'template_path' ) . 'settings/rocketcdn' );
 		// RocketCDN settings page subscriber.
 		$this->getContainer()->share( 'rocketcdn_admin_subscriber', 'WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber' )
 			->withArgument( $this->getContainer()->get( 'rocketcdn_api_client' ) )
 			->withArgument( $options )
 			->withArgument( $this->getContainer()->get( 'beacon' ) )
-			->withArgument( $this->getContainer()->get( 'template_path' ) . '/settings/rocketcdn' );
+			->withArgument( $this->getContainer()->get( 'template_path' ) . 'settings/rocketcdn' );
 	}
 }

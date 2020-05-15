@@ -36,7 +36,7 @@ function rocket_init() {
 	define( 'WP_ROCKET_PLUGIN_NAME', 'WP Rocket' );
 	define( 'WP_ROCKET_PLUGIN_SLUG', sanitize_key( WP_ROCKET_PLUGIN_NAME ) );
 
-	$wp_rocket = new WP_Rocket\Plugin( WP_ROCKET_PATH . 'views' );
+	$wp_rocket = new WP_Rocket\Plugin( WP_ROCKET_VIEWS );
 	$wp_rocket->load();
 
 	// Call defines and functions.
