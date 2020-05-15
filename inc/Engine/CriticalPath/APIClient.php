@@ -2,6 +2,7 @@
 namespace WP_Rocket\Engine\CriticalPath;
 
 use WP_Error;
+use stdClass;
 
 class APIClient {
 
@@ -73,8 +74,8 @@ class APIClient {
 	 *
 	 * @since 3.6
 	 *
-	 * @param int   $response_code Response code to check success or failure.
-	 * @param array $response_data Array of data returned from request.
+	 * @param int      $response_code Response code to check success or failure.
+	 * @param stdClass $response_data Object of data returned from request.
 	 * @return bool success or failed.
 	 */
 	private function get_response_success( $response_code, $response_data ) {
@@ -121,9 +122,9 @@ class APIClient {
 	 *
 	 * @since 3.6
 	 *
-	 * @param int    $response_status_code Response status code.
-	 * @param array  $response_data Array of data returned from request.
-	 * @param string $url Url for the web page to be checked.
+	 * @param int      $response_status_code Response status code.
+	 * @param stdClass $response_data Object of data returned from request.
+	 * @param string   $url Url for the web page to be checked.
 	 * @return string
 	 */
 	private function get_response_message( $response_status_code, $response_data, $url ) {
