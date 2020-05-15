@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 /**
  * @covers \WP_Rocket\ThirdParty\Bridge::maybe_clear_cache
  *
- * @group  Bridge
+ * @group  BridgeTheme
  * @group  ThirdParty
  */
 class Test_MaybeClearCache extends FilesystemTestCase {
