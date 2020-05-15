@@ -54,7 +54,28 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 		return [
 			'rocket_after_options_metabox' => 'cpcss_section',
 			'rocket_metabox_cpcss_content' => 'cpcss_actions',
+			'admin_enqueue_scripts'        => 'enqueue_admin_edit_script',
 		];
+	}
+
+	/**
+	 * Enqueue CPCSS generation / deletion script on edit.php page.
+	 *
+	 * @since 3.6
+	 *
+	 * @param  string $page The current admin page.
+	 * @return void
+	 */
+	public function enqueue_admin_edit_script( $page ) {
+		// Bailout if the page is not Post / Page.
+		if ( ! in_array( $page, [ 'edit.php', 'post.php' ], true ) ) {
+			return;
+		}
+		// Bailout if the CPCSS is not enabled for this Post / Page.
+		if ( $this->is_enabled() ) {
+			return;
+		}
+		wp_enqueue_script( 'wpr-edit-cpcss-script', rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'wpr-cpcss.js', [], rocket_get_constant( 'WP_ROCKET_VERSION' ), true );
 	}
 
 	/**
@@ -65,8 +86,14 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function cpcss_section() {
+		global $post, $pagenow;
+
+		$post_id = ( 'post-new.php' === $pagenow ) ? '' : $post->ID;
+
 		$data = [
 			'disabled_description' => $this->get_disabled_description(),
+			'cpcss_rest_url'       => rest_url( "wp-rocket/v1/cpcss/post/{$post_id}" ),
+			'cpcss_rest_nonce'     => wp_create_nonce( 'wp_rest' ),
 		];
 
 		echo $this->generate( 'container', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -81,13 +108,14 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 	 */
 	public function cpcss_actions() {
 		$data = [
-			'disabled' => $this->is_enabled(),
-			'beacon'   => '',
+			'disabled'     => $this->is_enabled(),
+			'beacon'       => '',
+			'cpcss_exists' => $this->cpcss_exists(),
 		];
 
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo $this->generate(
-			$this->cpcss_exists() ? 'regenerate' : 'generate',
+			'generate',
 			$data // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		);
 	}

@@ -16,16 +16,9 @@ class Test_Optimize extends TestCase {
 	protected $minify;
 
 	public function setUp() {
-		parent::setUp();
+		$this->wp_content_dir = 'vfs://public/wordpress/wp-content';
 
-		Functions\expect( 'rocket_get_constant' )
-			->once()
-			->with( 'WP_ROCKET_MINIFY_CACHE_PATH' )
-			->andReturn( $this->filesystem->getUrl( 'wordpress/wp-content/cache/min/' ) )
-			->andAlsoExpectIt()
-			->once()
-			->with( 'WP_ROCKET_MINIFY_CACHE_URL' )
-			->andReturn( 'http://example.org/wp-content/cache/min/' );
+		parent::setUp();
 
 		$this->minify = new Minify( $this->options );
 	}
@@ -33,12 +26,12 @@ class Test_Optimize extends TestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldMinifyCSS( $original, $minified, $cdn_host, $cdn_url, $site_url ) {
+	public function testShouldMinifyCSS( $original, $expected, $cdn_host, $cdn_url, $site_url ) {
 		Filters\expectApplied( 'rocket_cdn_hosts' )
 			->zeroOrMoreTimes()
 			->with( [], [ 'all', 'css_and_js', 'css' ] )
 			->andReturn( $cdn_host );
-		
+
 		Filters\expectApplied( 'rocket_asset_url' )
 			->zeroOrMoreTimes()
 			->andReturnUsing( function( $url ) use ( $cdn_url, $site_url ) {
@@ -52,8 +45,12 @@ class Test_Optimize extends TestCase {
 			} );
 
 		$this->assertSame(
-			$minified,
-			$this->minify->optimize( $original )
+			$this->format_the_html( $expected['html'] ),
+			$this->format_the_html( $this->minify->optimize( $original ) )
 		);
+
+		foreach ( $expected['files'] as $file ) {
+			$this->assertTrue( $this->filesystem->exists( $file ) );
+		}
 	}
 }

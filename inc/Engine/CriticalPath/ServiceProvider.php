@@ -36,8 +36,8 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @since 3.6
 	 */
 	public function register() {
-		$critical_css_path = rocket_get_constant( 'WP_ROCKET_CRITICAL_CSS_PATH' );
 		$options           = $this->getContainer()->get( 'options' );
+		$critical_css_path = rocket_get_constant( 'WP_ROCKET_CRITICAL_CSS_PATH' );
 
 		$this->getContainer()->add( 'critical_css_generation', 'WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration' );
 		$this->getContainer()->add( 'critical_css', 'WP_Rocket\Engine\CriticalPath\CriticalCSS' )

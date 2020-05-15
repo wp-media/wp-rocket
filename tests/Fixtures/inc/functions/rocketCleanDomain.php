@@ -70,8 +70,8 @@ return [
 				'data'             => $i18n_plugins['wpml'],
 				'i18n_plugin'      => 'wpml',
 				'dirs_to_preserve' => [
-					'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/',
-					'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/',
+					'vfs:\/\/public\/wp-content\/cache\/wp-rocket\/example.org(.*)\/',
+					'vfs:\/\/public\/wp-content\/cache\/wp-rocket\/example.org(.*)\/',
 				],
 			],
 			'expected'  => [
@@ -101,8 +101,8 @@ return [
 				'data'             => $i18n_plugins['qtranslate'],
 				'i18n_plugin'      => 'qtranslate',
 				'dirs_to_preserve' => [
-					'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/fr',
-					'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/de',
+					'vfs:\/\/public\/wp-content\/cache\/wp-rocket\/example.org(.*)\/fr',
+					'vfs:\/\/public\/wp-content\/cache\/wp-rocket\/example.org(.*)\/de',
 				],
 			],
 			'expected'  => [
@@ -140,8 +140,8 @@ return [
 				'data'             => $i18n_plugins['qtranslate'],
 				'i18n_plugin'      => 'qtranslate',
 				'dirs_to_preserve' => [
-					'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/',
-					'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/de',
+					'vfs:\/\/public\/wp-content\/cache\/wp-rocket\/example.org(.*)\/',
+					'vfs:\/\/public\/wp-content\/cache\/wp-rocket\/example.org(.*)\/de',
 				],
 			],
 			'expected'  => [
@@ -171,8 +171,8 @@ return [
 				'data'             => $i18n_plugins['polylang'],
 				'i18n_plugin'      => 'polylang',
 				'dirs_to_preserve' => [
-					'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/',
-					'vfs://public/wp-content/cache/wp-rocket/example.org(.*)/fr',
+					'vfs:\/\/public\/wp-content\/cache\/wp-rocket\/example.org(.*)\/',
+					'vfs:\/\/public\/wp-content\/cache\/wp-rocket\/example.org(.*)\/fr',
 				],
 			],
 			'expected'  => [

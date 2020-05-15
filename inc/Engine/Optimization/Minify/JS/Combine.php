@@ -639,6 +639,11 @@ class Combine extends AbstractJSOptimization {
 			'_isp_version',
 			'price_range_data',
 			'window.FeedbackCompanyWidgets',
+			'woocs_current_currency',
+			'woo_variation_swatches_options',
+			'woocommerce_price_slider_params',
+			'scriptParams',
+			'form-adv-pagination',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );

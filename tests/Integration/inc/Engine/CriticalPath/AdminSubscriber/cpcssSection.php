@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\AdminSubscriber;
 
+use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
@@ -60,6 +61,8 @@ class Test_CpcssSection extends FilesystemTestCase {
 			'post_status' => $config['post']['post_status'],
 			'post_type'   => $config['post']['post_type'],
 		];
+
+		Functions\when( 'wp_create_nonce' )->justReturn( 'wp_rest_nonce' );
 
 		$this->assertSame(
 			$this->format_the_html( $expected ),

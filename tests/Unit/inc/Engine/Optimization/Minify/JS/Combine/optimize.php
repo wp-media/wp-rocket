@@ -20,6 +20,8 @@ class Test_Optimize extends TestCase {
 	private $minify;
 
 	public function setUp() {
+		$this->wp_content_dir = 'vfs://public/wordpress/wp-content';
+
 		parent::setUp();
 
 		$this->minify = Mockery::mock( Minify\JS::class );
@@ -37,22 +39,13 @@ class Test_Optimize extends TestCase {
 			return $wp_scripts;
 		} );
 
-		Functions\expect( 'rocket_get_constant' )
-			->once()
-			->with( 'WP_ROCKET_MINIFY_CACHE_PATH' )
-			->andReturn( $this->filesystem->getUrl( 'wordpress/wp-content/cache/min/' ) )
-			->andAlsoExpectIt()
-			->once()
-			->with( 'WP_ROCKET_MINIFY_CACHE_URL' )
-			->andReturn( 'http://example.org/wp-content/cache/min/' );
-
 		$this->combine = new Combine( $this->options, $this->minify, Mockery::mock( Assets_Local_Cache::class ) );
 	}
 
 	/**
 	 * @dataProvider providerTestData
 	 */
-    public function testShouldCombineJS( $original, $minified, $cdn_hosts, $cdn_url, $site_url ) {
+    public function testShouldCombineJS( $original, $expected, $cdn_hosts, $cdn_url, $site_url ) {
 		Filters\expectApplied( 'rocket_cdn_hosts' )
 			->zeroOrMoreTimes()
 			->with( [], [ 'all', 'css_and_js', 'js' ] )
@@ -71,8 +64,12 @@ class Test_Optimize extends TestCase {
 			} );
 
 		$this->assertSame(
-			$this->format_the_html( $minified ),
+			$this->format_the_html( $expected['html'] ),
 			$this->format_the_html( $this->combine->optimize( $original ) )
 		);
+
+		foreach ( $expected['files'] as $file ) {
+			$this->assertTrue( $this->filesystem->exists( $file ) );
+		}
 	}
 }
