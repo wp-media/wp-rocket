@@ -32,15 +32,13 @@ class Plugin {
 	public function __construct( $template_path ) {
 		$this->container = new Container();
 
-		$container = $this->container;
-		add_filter(
-			'rocket_container',
-			function() use ( $container ) {
-				return $container;
-			}
-		);
+		add_filter( 'rocket_container', [ $this, 'get_container'] );
 
 		$this->container->add( 'template_path', $template_path );
+	}
+
+	public function get_container() {
+		return $this->container;
 	}
 
 	/**
