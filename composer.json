@@ -108,7 +108,6 @@
 			"@test-integration",
 			"@test-integration-adminonly",
 			"@test-integration-bb",
-		  	"@test-integration-bridgetheme",
 		  	"@test-integration-cloudflare",
 		  	"@test-integration-cloudways",
 			"@test-integration-elementor",
