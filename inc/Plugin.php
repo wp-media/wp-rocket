@@ -1,6 +1,7 @@
 <?php
 namespace WP_Rocket;
 
+use Imagify_Partner;
 use League\Container\Container;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Admin\Options;
@@ -8,12 +9,12 @@ use WP_Rocket\Admin\Options;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Assembly class
+ * Plugin Manager.
  */
 class Plugin {
 
 	/**
-	 * Instance of Container class
+	 * Instance of Container class.
 	 *
 	 * @since 3.3
 	 *
@@ -22,7 +23,7 @@ class Plugin {
 	private $container;
 
 	/**
-	 * Constructor
+	 * Creates an instance of the Plugin.
 	 *
 	 * @since 3.0
 	 *
@@ -43,7 +44,7 @@ class Plugin {
 	}
 
 	/**
-	 * Loads the plugin into WordPress
+	 * Loads the plugin into WordPress.
 	 *
 	 * @since 3.0
 	 *
@@ -72,8 +73,8 @@ class Plugin {
 		$subscribers = [];
 
 		if ( is_admin() ) {
-			if ( ! \Imagify_Partner::has_imagify_api_key() ) {
-				$imagify = new \Imagify_Partner( 'wp-rocket' );
+			if ( ! Imagify_Partner::has_imagify_api_key() ) {
+				$imagify = new Imagify_Partner( 'wp-rocket' );
 				$imagify->init();
 				remove_action( 'imagify_assets_enqueued', 'imagify_dequeue_sweetalert_wprocket' );
 			}
@@ -102,7 +103,7 @@ class Plugin {
 				'minify_css_admin_subscriber',
 				'admin_cache_subscriber',
 			];
-		} elseif ( \rocket_valid_key() ) {
+		} elseif ( rocket_valid_key() ) {
 			$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\ServiceProvider' );
 
 			$subscribers = [
