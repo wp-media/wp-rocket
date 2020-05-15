@@ -6,8 +6,6 @@ use UnexpectedValueException;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
-defined( 'ABSPATH' ) || exit;
-
 /**
  * Critical CSS Subscriber
  *
@@ -476,8 +474,9 @@ JS;
 	 * @param  array $excluded_inline Array of inline JS excluded from being combined.
 	 * @return array
 	 */
-	public function exclude_inline_js( $excluded_inline ) {
-		return array_merge( [ 'wprRemoveCPCSS' ], $excluded_inline );
+	public function exclude_inline_js( array $excluded_inline ) {
+		$excluded_inline[] = 'wprRemoveCPCSS';
+		return $excluded_inline;
 	}
 
 	/**
