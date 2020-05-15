@@ -23,10 +23,8 @@ class Test_CleanMinify extends TestCase {
 		$this->dumpResults = isset( $expected['dump_results'] ) ? $expected['dump_results'] : false;
 		$this->generateEntriesShouldExistAfter( $expected['cleaned'] );
 
-		update_option(
-			'wp_rocket_settings',
-			array_merge( $this->old_settings, $settings )
-		);
+		// Run it.
+		$this->mergeExistingSettingsAndUpdate( $settings );
 
 		$this->checkEntriesDeleted( $expected['cleaned'] );
 		$this->checkShouldNotDeleteEntries();

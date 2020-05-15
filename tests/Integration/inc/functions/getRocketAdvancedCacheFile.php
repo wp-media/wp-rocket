@@ -16,32 +16,13 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  */
 class Test_GetRocketAdvancedCacheFile extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/functions/getRocketAdvancedCacheFile.php';
-	private   $original_settings;
-
-	public function setUp() {
-		parent::setUp();
-
-		$this->original_settings = get_option( 'wp_rocket_settings', [] );
-	}
-
-	public function tearDown() {
-		parent::tearDown();
-
-		if ( empty( $this->original_settings ) ) {
-			delete_option( 'wp_rocket_settings' );
-		} else {
-			update_option( 'wp_rocket_settings', $this->original_settings );
-		}
-	}
+	protected static $use_settings_trait = true;
 
 	/**
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldReturnExpectedContent( $settings, $expected ) {
-		update_option(
-			'wp_rocket_settings',
-			array_merge( $this->original_settings, $this->config['settings'], $settings )
-		);
+		$this->mergeExistingSettingsAndUpdate( $settings );
 
 		$this->assertSame( $expected, get_rocket_advanced_cache_file() );
 	}

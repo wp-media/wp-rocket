@@ -2,9 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Preload\Fonts;
 
-use WPMedia\PHPUnit\Integration\TestCase;
-use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\Preload\Fonts;
+use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Preload\Fonts::preload_fonts
@@ -12,6 +10,8 @@ use WP_Rocket\Engine\Preload\Fonts;
  * @group  PreloadFonts
  */
 class Test_PreloadFonts extends TestCase {
+	protected static $use_settings_trait = true;
+
 	private $preload_fonts;
 	private $cdn;
 	private $cnames;

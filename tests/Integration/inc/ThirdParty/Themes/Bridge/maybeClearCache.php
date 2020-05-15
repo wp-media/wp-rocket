@@ -11,7 +11,6 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  */
 class Test_MaybeClearCache extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/ThirdParty/Themes/Bridge/maybeClearCache.php';
-	private   $settings;
 
 	public function setUp() {
 		parent::setUp();

@@ -2,18 +2,17 @@
 
 namespace WP_Rocket\Tests\Integration;
 
+use ReflectionObject;
 use WP_Rocket\Tests\SettingsTrait;
-use WP_Rocket\Tests\StubTrait;
-use WP_Rocket\Tests\VirtualFilesystemTrait;
-use WPMedia\PHPUnit\Integration\VirtualFilesystemTestCase;
+use WPMedia\PHPUnit\Integration\TestCase as BaseTestCase;
 
-abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
+abstract class TestCase extends BaseTestCase {
 	use SettingsTrait;
-	use StubTrait;
-	use VirtualFilesystemTrait;
 
-	protected static $use_settings_trait = false;
+	protected static $use_settings_trait = true;
 	protected static $transients         = [];
+
+	protected $config;
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
@@ -24,7 +23,7 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 
 		if ( ! empty( self::$transients ) ) {
 			foreach ( array_keys( self::$transients ) as $transient ) {
-				static::$transients[ $transient ] = get_transient( $transient );
+				self::$transients[ $transient ] = get_transient( $transient );
 			}
 		}
 	}
@@ -36,7 +35,7 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 			SettingsTrait::resetOriginalSettings();
 		}
 
-		foreach ( static::$transients as $transient => $value ) {
+		foreach ( self::$transients as $transient => $value ) {
 			if ( ! empty( $transient ) ) {
 				set_transient( $transient, $value );
 			} else {
@@ -46,12 +45,11 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 	}
 
 	public function setUp() {
-		$this->initDefaultStructure();
+		if ( empty( $this->config ) ) {
+			$this->loadTestDataConfig();
+		}
 
 		parent::setUp();
-
-		$this->stubRocketGetConstant();
-		$this->redefineRocketDirectFilesystem();
 
 		if ( static::$use_settings_trait ) {
 			$this->setUpSettings();
@@ -64,5 +62,22 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 		if ( static::$use_settings_trait ) {
 			$this->tearDownSettings();
 		}
+	}
+
+	public function configTestData() {
+		if ( empty( $this->config ) ) {
+			$this->loadTestDataConfig();
+		}
+
+		return isset( $this->config['test_data'] )
+			? $this->config['test_data']
+			: $this->config;
+	}
+
+	protected function loadTestDataConfig() {
+		$obj      = new ReflectionObject( $this );
+		$filename = $obj->getFileName();
+
+		$this->config = $this->getTestData( dirname( $filename ), basename( $filename, '.php' ) );
 	}
 }

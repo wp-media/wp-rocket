@@ -7,6 +7,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
  * @covers WPRocketUninstall::uninstall
+ *
  * @group  Uninstall
  * @group  vfs
  */
@@ -22,7 +23,7 @@ class Test_Uninstall extends FilesystemTestCase {
 		'rocketcdn_process',
 	];
 
-	private $transients = [
+	protected static $transients = [
 		'wp_rocket_customer_data',
 		'rocket_notice_missing_tags',
 		'rocket_clear_cache',
@@ -67,7 +68,7 @@ class Test_Uninstall extends FilesystemTestCase {
 			add_option( $option, 'test' );
 		}
 
-		foreach ( $this->transients as $transient ) {
+		foreach ( static::$transients as $transient ) {
 			set_transient( $transient, '', HOUR_IN_SECONDS );
 		}
 
@@ -80,7 +81,7 @@ class Test_Uninstall extends FilesystemTestCase {
 
 	public function tearDown() {
 		array_walk( $this->options, 'delete_option' );
-		array_walk( $this->transients, 'delete_transient' );
+		array_walk( static::$transients, 'delete_transient' );
 
 		foreach ( $this->events as $event ) {
 			wp_clear_scheduled_hook( $event );
@@ -96,7 +97,7 @@ class Test_Uninstall extends FilesystemTestCase {
 			$this->assertFalse( get_option( $option ) );
 		}
 
-		foreach ( $this->transients as $transient ) {
+		foreach ( static::$transients as $transient ) {
 			$this->assertFalse( get_transient( $transient ) );
 		}
 

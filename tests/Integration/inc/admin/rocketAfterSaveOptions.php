@@ -22,54 +22,26 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group SaveOptions
  */
 class Test_RocketAfterSaveOptions extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/admin/rocketAfterSaveOptions.php';
+	protected        $path_to_test_data  = '/inc/admin/rocketAfterSaveOptions.php';
+	protected static $use_settings_trait = true;
 
-	private static $transients        = [
+	protected static $transients = [
 		'rocket_analytics_optin' => null,
 	];
-	private static $original_settings = [];
 
 	private $is_apache;
 	private $hooks   = [];
-	private $options = [];
 	private $expected;
 	private $rocketCleanDomainEntriesBefore;
 	private $rocketCleanMinifyEntriesBefore;
 	private $rocketCleanDomainShouldNotClean;
 	private $rocketCleanMinifyShouldNotClean;
 
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
-		self::$original_settings = get_option( 'wp_rocket_settings', [] );
-		foreach ( array_keys( self::$transients ) as $transient ) {
-			self::$transients[ $transient ] = get_transient( $transient );
-		}
-	}
-
-	public static function tearDownAfterClass() {
-		parent::tearDownAfterClass();
-
-		// Restore the originals before exiting.
-		update_option( 'wp_rocket_settings', self::$original_settings );
-		self::resetTransitions();
-	}
-
-	private static function resetTransitions() {
-		foreach ( self::$transients as $transient => $value ) {
-			if ( ! empty( $transient ) ) {
-				set_transient( $transient, $value );
-			} else {
-				delete_transient( $transient );
-			}
-		}
-	}
 
 	public function setUp() {
 		parent::setUp();
 
 		$this->is_apache = $GLOBALS['is_apache'];
-		$this->options   = array_merge( self::$original_settings, $this->config['settings'] );
-		update_option( 'wp_rocket_settings', $this->options );
 
 		$GLOBALS['is_apache'] = true;
 		Functions\when( 'wp_remote_get' )->justReturn();

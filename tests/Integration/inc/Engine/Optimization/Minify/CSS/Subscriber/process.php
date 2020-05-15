@@ -54,10 +54,6 @@ class Test_Process extends TestCase {
 		}
 	}
 
-    public function virtual_wp_content_dir() {
-        return $this->filesystem->getUrl( 'wp-content' );
-    }
-
     public function return_key() {
         return 123456;
     }

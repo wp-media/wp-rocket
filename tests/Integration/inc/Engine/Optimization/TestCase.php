@@ -5,40 +5,9 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 abstract class TestCase extends FilesystemTestCase {
+	protected static $use_settings_trait = true;
 	protected        $cnames;
 	protected        $zones;
-	protected        $settings;
-	protected static $original_settings;
-	protected        $old_settings = [];
-
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
-
-		self::$original_settings = (array) get_option( 'wp_rocket_settings', [] );
-	}
-
-	public static function tearDownAfterClass() {
-		parent::setUpBeforeClass();
-
-		update_option( 'wp_rocket_settings', self::$original_settings );
-	}
-
-	public function setUp() {
-		$this->wp_content_dir = 'vfs://public/wp-content';
-
-		parent::setUp();
-
-		$this->old_settings = array_key_exists( 'settings', $this->config )
-			? array_merge( self::$original_settings, $this->config['settings'] )
-			: self::$original_settings;
-		update_option( 'wp_rocket_settings', $this->old_settings );
-	}
-
-	public function tearDown() {
-		parent::tearDown();
-
-		delete_option( 'wp_rocket_settings' );
-	}
 
 	protected function setSettings() {
 		foreach ( (array) $this->settings as $key => $value ) {
