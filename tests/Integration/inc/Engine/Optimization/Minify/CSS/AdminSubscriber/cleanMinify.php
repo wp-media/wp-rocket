@@ -31,9 +31,6 @@ class Test_CleanMinify extends FilesystemTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		// Mocks the various filesystem constants.
-		$this->whenRocketGetConstant();
-
 		$this->old_settings = array_merge( self::$original_settings, $this->config['settings'] );
 		update_option( 'wp_rocket_settings', $this->old_settings );
 	}

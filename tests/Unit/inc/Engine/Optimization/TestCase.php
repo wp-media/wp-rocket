@@ -12,37 +12,18 @@ abstract class TestCase extends FilesystemTestCase {
 	protected $options;
 
 	public function setUp() {
+		$this->wp_content_dir = 'vfs://public/wordpress/wp-content';
+
 		parent::setUp();
+
+		$this->stubGetRocketParseUrl();
 
 		$this->options = Mockery::mock( Options_Data::class );
 		$this->options->shouldReceive( 'get' )
 			->andReturnArg(1);
 
-		Functions\expect( 'rocket_get_constant' )
-			->zeroOrMoreTimes()
-			->with( 'WP_CONTENT_DIR' )
-			->andReturn( $this->filesystem->getUrl( 'wordpress/wp-content/' ) );
-
 		Functions\when( 'get_current_blog_id' )->justReturn( 1 );
 		Functions\when( 'create_rocket_uniqid' )->justReturn( 'rocket_uniqid' );
-
-		Functions\when( 'get_rocket_parse_url' )->alias( function( $url ) {
-			$parsed = parse_url( $url );
-
-			$host     = isset( $parsed['host'] ) ? strtolower( urldecode( $parsed['host'] ) ) : '';
-			$path     = isset( $parsed['path'] ) ? urldecode( $parsed['path'] ) : '';
-			$scheme   = isset( $parsed['scheme'] ) ? urldecode( $parsed['scheme'] ) : '';
-			$query    = isset( $parsed['query'] ) ? urldecode( $parsed['query'] ) : '';
-			$fragment = isset( $parsed['fragment'] ) ? urldecode( $parsed['fragment'] ) : '';
-
-			return [
-				'host'     => $host,
-				'path'     => $path,
-				'scheme'   => $scheme,
-				'query'    => $query,
-				'fragment' => $fragment,
-			];
-		} );
 
 		Functions\when( 'content_url' )->justReturn( 'http://example.org/wp-content' );
 		Functions\when( 'get_rocket_i18n_uri' )->justReturn( [

@@ -16,6 +16,8 @@ class Test_Optimize extends TestCase {
 	protected $minify;
 
 	public function setUp() {
+		$this->wp_content_dir = 'vfs://public/wordpress/wp-content';
+
 		parent::setUp();
 
 		$GLOBALS['wp_scripts'] = (object) [
@@ -24,16 +26,7 @@ class Test_Optimize extends TestCase {
 					'src' => 'wp-includes/js/jquery/jquery.js',
 				],
 			]
-		]; 
-
-		Functions\expect( 'rocket_get_constant' )
-			->once()
-			->with( 'WP_ROCKET_MINIFY_CACHE_PATH' )
-			->andReturn( $this->filesystem->getUrl( 'wordpress/wp-content/cache/min/' ) )
-			->andAlsoExpectIt()
-			->once()
-			->with( 'WP_ROCKET_MINIFY_CACHE_URL' )
-			->andReturn( 'http://example.org/wp-content/cache/min/' );
+		];
 
 		$this->minify = new Minify( $this->options );
 	}
