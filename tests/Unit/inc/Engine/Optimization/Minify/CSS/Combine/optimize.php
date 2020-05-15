@@ -3,11 +3,9 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\Minify\CSS\Combine;
 
 use Brain\Monkey\Filters;
-use Brain\Monkey\Functions;
 use MatthiasMullie\Minify;
 use Mockery;
 use WP_Rocket\Engine\Optimization\Minify\CSS\Combine;
-use WP_Rocket\Tests\StubTrait;
 use WP_Rocket\Tests\Unit\inc\Engine\Optimization\TestCase;
 
 /**
@@ -16,15 +14,11 @@ use WP_Rocket\Tests\Unit\inc\Engine\Optimization\TestCase;
  * @group  CombineCSS
  */
 class Test_Optimize extends TestCase {
-	use StubTrait;
-
 	protected $path_to_test_data = '/inc/Engine/Optimization/Minify/CSS/Combine/combine.php';
 	private $combine;
 	private $minify;
 
 	public function setUp() {
-		$this->wp_content_dir = 'vfs://public/wordpress/wp-content';
-
 		parent::setUp();
 
 		$this->minify = Mockery::mock( Minify\CSS::class );

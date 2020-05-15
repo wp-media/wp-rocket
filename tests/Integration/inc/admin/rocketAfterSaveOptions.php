@@ -67,9 +67,6 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		// Mocks the various filesystem constants.
-		$this->whenRocketGetConstant();
-
 		$this->is_apache = $GLOBALS['is_apache'];
 		$this->options   = array_merge( self::$original_settings, $this->config['settings'] );
 		update_option( 'wp_rocket_settings', $this->options );

@@ -12,7 +12,6 @@ trait StubTrait {
 	protected $wp_cache_constant        = false;
 	protected $wp_content_dir           = 'vfs://public/wp-content';
 
-
 	protected function stubRocketGetConstant() {
 		if ( ! $this->mock_rocket_get_constant ) {
 			return;
