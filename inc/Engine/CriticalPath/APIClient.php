@@ -53,7 +53,6 @@ class APIClient {
 			return $response_data;
 		}
 
-		$response_code    = $this->get_response_code( $response );
 		$response_message = $this->get_response_message( $response_status_code, $response_data, $url );
 
 		if ( 200 === $response_status_code ) {
@@ -61,7 +60,7 @@ class APIClient {
 		}
 
 		return new WP_Error(
-			$response_code,
+			$this->get_response_code( $response ),
 			$response_message,
 			[
 				'status' => $response_status_code,
