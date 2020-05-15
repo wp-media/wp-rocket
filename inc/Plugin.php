@@ -28,15 +28,21 @@ class Plugin {
 	 * @since 3.0
 	 *
 	 * @param string $template_path Path to the views.
+	 * @param Container $container Instance of the container.
 	 */
-	public function __construct( $template_path ) {
-		$this->container = new Container();
+	public function __construct( $template_path, Container $container ) {
+		$this->container = $container;
 
 		add_filter( 'rocket_container', [ $this, 'get_container'] );
 
 		$this->container->add( 'template_path', $template_path );
 	}
 
+	/**
+	 * Returns the Rocket container instance.
+	 *
+	 * @return Container
+	 */
 	public function get_container() {
 		return $this->container;
 	}
