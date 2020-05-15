@@ -79,11 +79,22 @@ class APIClient {
 	 */
 	private function get_response_success( $response_code, $response_data ) {
 		return (
-			200 === $response_code &&
-			! empty( $response_data ) &&
+			200 === $response_code
+			&&
+			! empty( $response_data )
+			&&
 			(
-				( isset( $response_data->status ) && 200 === $response_data->status ) ||
-				( isset( $response_data->data ) && isset( $response_data->data->id ) )
+				(
+					isset( $response_data->status )
+					&&
+					200 === $response_data->status
+				)
+				||
+				(
+					isset( $response_data->data )
+					&&
+					isset( $response_data->data->id )
+				)
 			)
 		);
 	}
