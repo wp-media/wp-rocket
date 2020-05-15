@@ -25,9 +25,6 @@ class Test_Process extends TestCase {
 		$this->wp_content_dir = 'vfs://public/wp-content';
 
 		parent::setUp();
-
-		// Mocks constants for the virtual filesystem.
-		$this->whenRocketGetConstant();
 	}
 
 	public function tearDown() {

@@ -2,7 +2,6 @@
 
 namespace WP_Rocket\Tests\Integration\inc\functions;
 
-use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
@@ -21,9 +20,6 @@ class Test_GetRocketAdvancedCacheFile extends FilesystemTestCase {
 
 	public function setUp() {
 		parent::setUp();
-
-		// Mocks the various filesystem constants.
-		$this->whenRocketGetConstant();
 
 		$this->original_settings = get_option( 'wp_rocket_settings', [] );
 	}

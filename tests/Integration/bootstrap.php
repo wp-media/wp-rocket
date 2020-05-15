@@ -71,6 +71,8 @@ tests_add_filter(
 		if ( BootstrapManager::isGroup( 'Hummingbird' ) ) {
 			define( 'WP_ADMIN',  true );
 			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/hummingbird-performance/wp-hummingbird.php';
+		if ( BootstrapManager::isGroup( 'Cloudways' ) ) {
+			$_SERVER['cw_allowed_ip'] = true;
 		}
 
 		// Overload the license key for testing.

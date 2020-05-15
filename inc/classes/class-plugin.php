@@ -174,6 +174,7 @@ class Plugin {
 			'rest_generate_post_cpcss',
 			'rest_delete_post_cpcss',
 			'simple_custom_css',
+			'cloudways',
 		];
 
 		if ( get_rocket_option( 'do_cloudflare' ) ) {

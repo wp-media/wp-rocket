@@ -44,7 +44,7 @@ class Test_MaybePurgeCacheOnTermChange extends FilesystemTestCase {
 	public function testShouldNotPurgeCacheWhenTaxonomyNotPublic() {
 		do_action( 'create_term', self::$not_public_term->term_id, self::$not_public_term->term_taxonomy_id, self::$not_public_term->taxonomy );
 		do_action( 'edit_term', self::$not_public_term->term_id, self::$not_public_term->term_taxonomy_id, self::$not_public_term->taxonomy );
-		do_action( 'pre_delete_term', self::$not_public_term->term_id, self::$not_public_term->term_taxonomy_id, self::$not_public_term->taxonomy );
+		do_action( 'delete_term', self::$not_public_term->term_id, self::$not_public_term->term_taxonomy_id, self::$not_public_term->taxonomy );
 
 		// Check no files were deleted.
 		foreach( $this->original_files as $file ) {
