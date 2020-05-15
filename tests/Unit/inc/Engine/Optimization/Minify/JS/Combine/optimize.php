@@ -45,7 +45,7 @@ class Test_Optimize extends TestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-    public function testShouldCombineJS( $original, $minified, $cdn_hosts, $cdn_url, $site_url ) {
+    public function testShouldCombineJS( $original, $expected, $cdn_hosts, $cdn_url, $site_url ) {
 		Filters\expectApplied( 'rocket_cdn_hosts' )
 			->zeroOrMoreTimes()
 			->with( [], [ 'all', 'css_and_js', 'js' ] )
@@ -64,8 +64,12 @@ class Test_Optimize extends TestCase {
 			} );
 
 		$this->assertSame(
-			$this->format_the_html( $minified ),
+			$this->format_the_html( $expected['html'] ),
 			$this->format_the_html( $this->combine->optimize( $original ) )
 		);
+
+		foreach ( $expected['files'] as $file ) {
+			$this->assertTrue( $this->filesystem->exists( $file ) );
+		}
 	}
 }

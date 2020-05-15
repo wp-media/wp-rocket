@@ -33,7 +33,9 @@ class ServiceProvider extends AbstractServiceProvider {
 		'ewww_webp_subscriber',
 		'optimus_webp_subscriber',
 		'bigcommerce_subscriber',
+		'beaverbuilder_subscriber',
 		'amp_subscriber',
+		'simple_custom_css',
 		'cloudways',
 	];
 
@@ -49,11 +51,11 @@ class ServiceProvider extends AbstractServiceProvider {
 		$options = $this->getContainer()->get( 'options' );
 
 		$this->getContainer()->share( 'mobile_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Mobile_Subscriber' );
-		$this->getContainer()->share( 'woocommerce_subscriber', 'WP_Rocket\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber' );
-		$this->getContainer()->share( 'elementor_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\PageBuilder\Elementor_Subscriber' )
+		$this->getContainer()->share( 'elementor_subscriber', 'WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor' )
 			->withArgument( $options );
+		$this->getContainer()->share( 'woocommerce_subscriber', 'WP_Rocket\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber' );
 		$this->getContainer()->share( 'syntaxhighlighter_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\SyntaxHighlighter_Subscriber' );
-		$this->getContainer()->share( 'bridge_subscriber', 'WP_Rocket\Subscriber\Third_Party\Themes\Bridge_Subscriber' )
+		$this->getContainer()->share( 'bridge_subscriber', 'WP_Rocket\ThirdParty\Themes\Bridge' )
 			->withArgument( $options );
 		$this->getContainer()->share( 'ngg_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\NGG_Subscriber' );
 		$this->getContainer()->share( 'smush_subscriber', 'WP_Rocket\ThirdParty\Plugins\Smush' )
@@ -67,9 +69,13 @@ class ServiceProvider extends AbstractServiceProvider {
 			->withArgument( $options );
 		$this->getContainer()->share( 'optimus_webp_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Optimus_Subscriber' );
 		$this->getContainer()->share( 'bigcommerce_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Ecommerce\BigCommerce_Subscriber' );
+		$this->getContainer()->share( 'beaverbuilder_subscriber', 'WP_Rocket\ThirdParty\Plugins\PageBuilder\BeaverBuilder' );
 		$this->getContainer()->share( 'amp_subscriber', 'WP_Rocket\ThirdParty\Plugins\Optimization\AMP' )
 			->withArgument( $options )
 			->withArgument( $this->getContainer()->get( 'cdn_subscriber' ) );
+		$this->getContainer()->share( 'simple_custom_css', 'WP_Rocket\ThirdParty\Plugins\SimpleCustomCss' )
+			->withArgument( WP_ROCKET_CACHE_BUSTING_PATH )
+			->withArgument( WP_ROCKET_CACHE_BUSTING_URL );
 		$this->getContainer()->share( 'cloudways', 'WP_Rocket\ThirdParty\Hostings\Cloudways' );
 	}
 }
