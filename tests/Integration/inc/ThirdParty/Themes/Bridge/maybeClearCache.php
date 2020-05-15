@@ -5,12 +5,26 @@ namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Themes\Bridge;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers WP_Rocket\ThirdParty\Bridge::maybe_clear_cache
+ * @covers \WP_Rocket\ThirdParty\Bridge::maybe_clear_cache
+ *
  * @group  Bridge
  * @group  ThirdParty
  */
 class Test_MaybeClearCache extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/ThirdParty/Themes/Bridge/maybeClearCache.php';
+	protected      $path_to_test_data = '/inc/ThirdParty/Themes/Bridge/maybeClearCache.php';
+	private static $container;
+
+	public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
+
+		self::$container = apply_filters( 'rocket_container', '' );
+	}
+
+	public static function tearDownAfterClass() {
+		parent::tearDownAfterClass();
+
+		self::$container->get( 'event_manager' )->remove_subscriber( self::$container->get( 'bridge_subscriber' ) );
+	}
 
 	public function setUp() {
 		parent::setUp();
@@ -20,18 +34,19 @@ class Test_MaybeClearCache extends FilesystemTestCase {
 		add_filter( 'pre_get_rocket_option_minify_css', [ $this, 'minify_css_value' ] );
 		add_filter( 'pre_get_rocket_option_minify_js', [ $this, 'minify_js_value' ] );
 
-		$container = apply_filters( 'rocket_container', '' );
-		$container->get( 'event_manager' )->add_subscriber( $container->get( 'bridge_subscriber' ) );
+		self::$container->get( 'event_manager' )->add_subscriber( self::$container->get( 'bridge_subscriber' ) );
 	}
 
 	public function tearDown() {
-		delete_option( 'wp_rocket_settings' );
+		global $wp_theme_directories;
+		unset( $wp_theme_directories['virtual'] );
+
 		delete_option( 'qode_options_proya' );
 
 		remove_filter( 'pre_option_stylesheet', [ $this, 'set_stylesheet' ] );
 		remove_filter( 'pre_option_stylesheet_root', [ $this, 'set_stylesheet_root' ] );
-		add_filter( 'pre_get_rocket_option_minify_css', [ $this, 'minify_css_value' ] );
-		add_filter( 'pre_get_rocket_option_minify_js', [ $this, 'minify_js_value' ] );
+		remove_filter( 'pre_get_rocket_option_minify_css', [ $this, 'minify_css_value' ] );
+		remove_filter( 'pre_get_rocket_option_minify_js', [ $this, 'minify_js_value' ] );
 
 		parent::tearDown();
 	}
@@ -41,6 +56,7 @@ class Test_MaybeClearCache extends FilesystemTestCase {
 	 */
 	public function testShouldCleanCacheWhenSettingsMatch( $old_value, $value, $settings, $expected ) {
 		$this->settings = $settings;
+
 		apply_filters( 'update_option_qode_options_proya', $old_value, $value );
 
 		$this->assertSame( $expected, $this->filesystem->exists( 'wp-content/cache/wp-rocket/example.org/index.html' ) );
