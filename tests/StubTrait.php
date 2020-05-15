@@ -11,6 +11,7 @@ trait StubTrait {
 	protected $just_return_path         = false;
 	protected $wp_cache_constant        = false;
 	protected $wp_content_dir           = 'vfs://public/wp-content';
+	protected $script_debug             = false;
 
 	protected function stubRocketGetConstant() {
 		if ( ! $this->mock_rocket_get_constant ) {
@@ -18,7 +19,7 @@ trait StubTrait {
 		}
 
 		Functions\when( 'rocket_get_constant' )->alias(
-			function( $constant_name, $default = null ) {
+			function ( $constant_name, $default = null ) {
 				return $this->getConstant( $constant_name, $default );
 			}
 		);
@@ -35,11 +36,17 @@ trait StubTrait {
 			case 'FS_CHMOD_FILE':
 				return 0666;
 
+			case 'SCRIPT_DEBUG':
+				return $this->script_debug;
+
 			case 'WP_CACHE':
 				return $this->wp_cache_constant;
 
 			case 'WP_CONTENT_DIR':
 				return $this->wp_content_dir;
+
+			case 'WP_ROCKET_ASSETS_JS_URL':
+				return 'http://example.org/wp-content/plugins/wp-rocket/assets/js/';
 
 			case 'WP_ROCKET_CACHE_PATH':
 				return "{$this->wp_content_dir}/cache/wp-rocket/";
@@ -79,7 +86,7 @@ trait StubTrait {
 
 	protected function stubWpNormalizePath() {
 		Functions\when( 'wp_normalize_path' )->alias(
-			function( $path ) {
+			function ( $path ) {
 				if ( true === $this->just_return_path ) {
 					return $path;
 				}
@@ -100,7 +107,7 @@ trait StubTrait {
 		if ( empty( $url ) ) {
 			Functions\when( 'get_rocket_parse_url' )
 				->alias(
-					function( $url ) {
+					function ( $url ) {
 						return $this->get_rocket_parse_url( $url );
 					}
 				);
@@ -109,7 +116,7 @@ trait StubTrait {
 				->once()
 				->with( $url )
 				->andReturnUsing(
-					function( $url ) {
+					function ( $url ) {
 						return $this->get_rocket_parse_url( $url );
 					}
 				);

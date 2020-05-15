@@ -4,10 +4,12 @@ namespace WP_Rocket\Tests\Integration;
 
 use ReflectionObject;
 use WP_Rocket\Tests\SettingsTrait;
+use WP_Rocket\Tests\StubTrait;
 use WPMedia\PHPUnit\Integration\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase {
 	use SettingsTrait;
+	use StubTrait;
 
 	protected static $use_settings_trait = true;
 	protected static $transients         = [];
@@ -48,6 +50,8 @@ abstract class TestCase extends BaseTestCase {
 		if ( empty( $this->config ) ) {
 			$this->loadTestDataConfig();
 		}
+
+		$this->stubRocketGetConstant();
 
 		parent::setUp();
 
