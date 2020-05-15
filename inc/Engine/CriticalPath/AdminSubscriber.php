@@ -52,9 +52,12 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_after_options_metabox' => 'cpcss_section',
-			'rocket_metabox_cpcss_content' => 'cpcss_actions',
-			'admin_enqueue_scripts'        => 'enqueue_admin_edit_script',
+			'rocket_after_options_metabox'  => 'cpcss_section',
+			'rocket_metabox_cpcss_content'  => 'cpcss_actions',
+			'admin_enqueue_scripts'         => 'enqueue_admin_edit_script',
+			'rocket_first_install_options'  => 'add_async_css_mobile_option',
+			'wp_rocket_upgrade'             => [ 'set_async_css_mobile_default_value', 11, 2 ],
+			'rocket_hidden_settings_fields' => 'add_hidden_async_css_mobile',
 		];
 	}
 
@@ -118,6 +121,57 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 			'generate',
 			$data // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		);
+	}
+
+	/**
+	 * Adds async_css_mobile option to WP Rocket options
+	 *
+	 * @since 3.6
+	 *
+	 * @param array $options WP Rocket options array.
+	 * @return array
+	 */
+	public function add_async_css_mobile_option( $options ) {
+		$options = is_array( $options ) ? $options : (array) $options;
+
+		$options['async_css_mobile'] = 1;
+
+		return $options;
+	}
+
+	/**
+	 * Sets the default value of async_css_mobile to 0 when upgrading from < 3.6
+	 *
+	 * @since 3.6
+	 *
+	 * @param string $new_version New WP Rocket version.
+	 * @param string $old_version Previous WP Rocket version.
+	 * @return void
+	 */
+	public function set_async_css_mobile_default_value( $new_version, $old_version ) {
+		if ( version_compare( $old_version, '3.6', '>' ) ) {
+			return;
+		}
+
+		$this->options->set( 'async_css_mobile', 0 );
+
+		update_option( 'wp_rocket_settings', $this->options->get_options() );
+	}
+
+	/**
+	 * Adds async_css_mobile to the hidden settings fields
+	 *
+	 * @since 3.6
+	 *
+	 * @param array $hidden_settings_fields An array of hidden settings fields ID.
+	 * @return array
+	 */
+	public function add_hidden_async_css_mobile( $hidden_settings_fields ) {
+		$hidden_settings_fields = is_array( $hidden_settings_fields ) ? $hidden_settings_fields : (array) $hidden_settings_fields;
+
+		$hidden_settings_fields[] = 'async_css_mobile';
+
+		return $hidden_settings_fields;
 	}
 
 	/**
