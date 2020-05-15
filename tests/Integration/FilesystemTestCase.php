@@ -47,22 +47,21 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 
 	public function setUp() {
 		$this->initDefaultStructure();
+		if ( static::$use_settings_trait ) {
+			$this->setUpSettings();
+		}
 
 		parent::setUp();
 
 		$this->stubRocketGetConstant();
 		$this->redefineRocketDirectFilesystem();
-
-		if ( static::$use_settings_trait ) {
-			$this->setUpSettings();
-		}
 	}
 
 	public function tearDown() {
-		parent::tearDown();
-
 		if ( static::$use_settings_trait ) {
 			$this->tearDownSettings();
 		}
+
+		parent::tearDown();
 	}
 }

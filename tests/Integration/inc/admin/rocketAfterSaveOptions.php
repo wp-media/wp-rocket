@@ -30,21 +30,30 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 	];
 
 	private $is_apache;
-	private $hooks   = [];
+	private $hooks = [];
 	private $expected;
 	private $rocketCleanDomainEntriesBefore;
 	private $rocketCleanMinifyEntriesBefore;
 	private $rocketCleanDomainShouldNotClean;
 	private $rocketCleanMinifyShouldNotClean;
 
-
 	public function setUp() {
+		// Unhook to avoid triggering when storing the configured settings.
+		remove_action( 'update_option_wp_rocket_settings', 'rocket_after_save_options' );
+
 		parent::setUp();
 
-		$this->is_apache = $GLOBALS['is_apache'];
+		$this->is_apache                       = $GLOBALS['is_apache'];
+		$this->rocketCleanDomainEntriesBefore  = [];
+		$this->rocketCleanMinifyEntriesBefore  = [];
+		$this->rocketCleanDomainShouldNotClean = [];
+		$this->rocketCleanMinifyShouldNotClean = [];
 
 		$GLOBALS['is_apache'] = true;
 		Functions\when( 'wp_remote_get' )->justReturn();
+
+		// Hook it back up as we're ready to test.
+		add_action( 'update_option_wp_rocket_settings', 'rocket_after_save_options', 10, 2 );
 	}
 
 	public function tearDown() {
@@ -52,11 +61,6 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 
 		unset( $_POST['rocket_after_save_options'], $GLOBALS['sitepress'], $GLOBALS['q_config'], $GLOBALS['polylang'] );
 		$GLOBALS['is_apache'] = $this->is_apache;
-
-		$this->rocketCleanDomainEntriesBefore  = [];
-		$this->rocketCleanMinifyEntriesBefore  = [];
-		$this->rocketCleanDomainShouldNotClean = [];
-		$this->rocketCleanMinifyShouldNotClean = [];
 	}
 
 	/**
