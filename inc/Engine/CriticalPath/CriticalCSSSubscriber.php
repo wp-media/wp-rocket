@@ -4,7 +4,6 @@ namespace WP_Rocket\Engine\CriticalPath;
 use FilesystemIterator;
 use UnexpectedValueException;
 use WP_Rocket\Admin\Options_Data;
-use MatthiasMullie\Minify as Minifier;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 defined( 'ABSPATH' ) || exit;
@@ -72,6 +71,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 			],
 			'switch_theme'                            => 'maybe_regenerate_cpcss',
 			'rocket_critical_css_generation_process_complete' => 'clean_domain_on_complete',
+			'rocket_excluded_inline_js_content'       => 'exclude_inline_js',
 		];
 	}
 
@@ -436,11 +436,29 @@ JS;
 
 		$critical_css_content = str_replace( '\\', '\\\\', $critical_css_content );
 
-		$script = '
+		$buffer = preg_replace( '#</title>#iU', '</title><style id="rocket-critical-css">' . wp_strip_all_tags( $critical_css_content ) . '</style>', $buffer, 1 );
+		$buffer = preg_replace( '#</body>#iU', $this->return_remove_cpcss_script() . '</body>', $buffer, 1 );
+
+		return $buffer;
+	}
+
+	/**
+	 * Returns JS script to remove the critical css style from frontend.
+	 *
+	 * @since 3.6
+	 *
+	 * @return string
+	 */
+	protected function return_remove_cpcss_script() {
+		if ( ! rocket_get_constant( 'SCRIPT_DEBUG' ) ) {
+			return '<script>const wprRemoveCPCSS = () => { document.getElementById( "rocket-critical-css" ).remove(); }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>';
+		}
+
+		return '
 			<script>
 				const wprRemoveCPCSS = () => {
 					document.getElementById( "rocket-critical-css" ).remove();
-				}
+				};
 				if ( window.addEventListener ) {
 					window.addEventListener( "load", wprRemoveCPCSS );
 				} else if ( window.attachEvent ) {
@@ -448,28 +466,18 @@ JS;
 				}
 			</script>
 			';
-
-		if ( ! rocket_get_constant( 'SCRIPT_DEBUG' ) ) {
-			$script = $this->minify( $script );
-		}
-
-		$buffer = preg_replace( '#</title>#iU', '</title><style id="rocket-critical-css">' . wp_strip_all_tags( $critical_css_content ) . '</style>', $buffer, 1 );
-		$buffer = preg_replace( '#</body>#iU', $script . '</body>', $buffer, 1 );
-
-		return $buffer;
 	}
 
 	/**
-	 * Minifies inline JS code.
+	 * Adds wprRemoveCPCSS to excluded inline JS array.
 	 *
 	 * @since 3.6
 	 *
-	 * @param  string $file_content Content to minify.
-	 * @return string
+	 * @param  array $excluded_inline Array of inline JS excluded from being combined.
+	 * @return array
 	 */
-	protected function minify( $file_content ) {
-		$minifier = new Minifier\JS( $file_content );
-		return $minifier->minify();
+	public function exclude_inline_js( $excluded_inline ) {
+		return array_merge( [ 'wprRemoveCPCSS' ], $excluded_inline );
 	}
 
 	/**
