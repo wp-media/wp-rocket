@@ -71,10 +71,11 @@ class APIClient {
 	/**
 	 * Get the status of response.
 	 *
+	 * @since 3.6
+	 *
 	 * @param int   $response_code Response code to check success or failure.
 	 * @param array $response_data Array of data returned from request.
 	 * @return bool success or failed.
-	 * @since 3.6
 	 */
 	private function get_response_success( $response_code, $response_data ) {
 		return (
