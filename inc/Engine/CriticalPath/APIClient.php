@@ -47,7 +47,7 @@ class APIClient {
 	 */
 	private function prepare_response( $response, $url ) {
 		$response_data        = $this->get_response_data( $response );
-		$response_status_code = $this->get_response_status( $response );
+		$response_status_code = $this->get_response_status( $response, ( isset( $response_data->status ) ) ? $response_data->status : null );
 		$succeeded            = $this->get_response_success( $response_status_code, $response_data );
 
 		if ( $succeeded ) {
@@ -202,41 +202,7 @@ class APIClient {
 			self::API_URL . "{$job_id}/"
 		);
 
-		return $this->prepare_job_details_response( $response, $url );
-	}
-
-	/**
-	 * Prepares Job details response to be returned.
-	 *
-	 * @since 3.6
-	 *
-	 * @param array|WP_Error $response The response or WP_Error on failure.
-	 * @param string         $url URL to be used in error messages.
-	 * @return mixed|WP_Error
-	 */
-	private function prepare_job_details_response( $response, $url ) {
-		$response_data        = $this->get_response_data( $response );
-		$response_status_code = $this->get_response_status( $response, ( isset( $response_data->status ) ) ? $response_data->status : null );
-		$succeeded            = $this->get_response_success( $response_status_code, $response_data );
-
-		if ( $succeeded ) {
-			return $response_data;
-		}
-
-		$response_code    = $this->get_response_code( $response );
-		$response_message = $this->get_response_message( $response_status_code, $response_data, $url );
-
-		if ( 200 === $response_status_code ) {
-			$response_status_code = 400;
-		}
-
-		return new WP_Error(
-			$response_code,
-			$response_message,
-			[
-				'status' => $response_status_code,
-			]
-		);
+		return $this->prepare_response( $response, $url );
 	}
 
 }
