@@ -6,6 +6,7 @@ use Imagify_Partner;
 use League\Container\Container;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Admin\Options;
+use WP_Rocket\Admin\Options_Data;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -31,6 +32,20 @@ class Plugin {
 	 * @var bool
 	 */
 	private $is_valid_key;
+
+	/**
+	 * Instance of the Options.
+	 *
+	 * @var Options
+	 */
+	private $options_api;
+
+	/**
+	 * Instance of the Options_Data.
+	 *
+	 * @var Options_Data
+	 */
+	private $options;
 
 	/**
 	 * Creates an instance of the Plugin.
@@ -71,14 +86,12 @@ class Plugin {
 				return new Event_Manager();
 			}
 		);
-		$this->container->add(
-			'options_api',
-			function () {
-				return new Options( 'wp_rocket_' );
-			}
-		);
 
+		$this->options_api = new Options( 'wp_rocket_' );
+		$this->container->add( 'options_api', $this->options_api );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Options' );
+		$this->options = new Options_Data( $this->options_api->get( 'settings', [] ) );
+
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Database' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Admin\Beacon\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\CDN\RocketCDN\ServiceProvider' );
@@ -217,7 +230,7 @@ class Plugin {
 			'cloudways',
 		];
 
-		if ( get_rocket_option( 'do_cloudflare' ) ) {
+		if ( $this->options->get( 'do_cloudflare', false ) ) {
 			$common_subscribers[] = 'cloudflare_subscriber';
 		}
 
