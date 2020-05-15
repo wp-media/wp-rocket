@@ -106,14 +106,14 @@ class APIClient {
 	 *
 	 * @param array|WP_Error $response The response or WP_Error on failure.
 	 * @param null|int       $status Status code to overwrite the response status.
-	 * @return int|string status code|number of response.
+	 * @return int status code|number of response.
 	 */
 	private function get_response_status( $response, $status = null ) {
-		if ( is_null( $status ) ) {
-			$status = wp_remote_retrieve_response_code( $response );
+		if ( ! is_null( $status ) ) {
+			return (int) $status;
 		}
 
-		return (int) $status;
+		return (int) wp_remote_retrieve_response_code( $response );
 	}
 
 	/**
