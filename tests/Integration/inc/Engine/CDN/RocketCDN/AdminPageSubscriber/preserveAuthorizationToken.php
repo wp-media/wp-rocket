@@ -2,7 +2,6 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\AdminPageSubscriber;
 
-use WPMedia\PHPUnit\Integration\TestCase;
 use WPMedia\PHPUnit\Integration\ApiTrait;
 
 /**
@@ -12,6 +11,7 @@ use WPMedia\PHPUnit\Integration\ApiTrait;
  *
  * @group  RocketCDN
  * @group  AdminOnly
+ * @group  RocketCDNAdminPage
  */
 class Test_PreserveAuthorizationToken extends TestCase {
 	use ApiTrait;

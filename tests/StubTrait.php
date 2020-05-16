@@ -10,9 +10,10 @@ trait StubTrait {
 	protected $mock_rocket_get_constant = true;
 	protected $just_return_path         = false;
 	protected $wp_cache_constant        = false;
-	protected $wp_content_dir           = 'vfs://public/wp-content';
+	protected $wp_content_dir           = 'vfs://public/wp-econtent';
 	protected $script_debug             = false;
 	protected $rocket_version           = '3.5.5.1';
+	protected $wp_rocket_debug          = false;
 
 	protected function stubRocketGetConstant() {
 		if ( ! $this->mock_rocket_get_constant ) {
@@ -54,6 +55,9 @@ trait StubTrait {
 
 			case 'WP_ROCKET_CONFIG_PATH':
 				return "{$this->wp_content_dir}/wp-rocket-config/";
+
+			case 'WP_ROCKET_DEBUG':
+				return $this->wp_rocket_debug;
 
 			case 'WP_ROCKET_INC_PATH':
 				return "{$this->wp_content_dir}/plugins/wp-rocket/inc/";
@@ -151,7 +155,7 @@ trait StubTrait {
 
 	protected function stubWpParseUrl() {
 		Functions\when( 'wp_parse_url' )->alias(
-			function ( $url, $component = -1 ) {
+			function ( $url, $component = - 1 ) {
 				return parse_url( $url, $component );
 			}
 		);

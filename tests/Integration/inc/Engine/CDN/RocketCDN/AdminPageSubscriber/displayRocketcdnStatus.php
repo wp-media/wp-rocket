@@ -2,8 +2,6 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\AdminPageSubscriber;
 
-use WPMedia\PHPUnit\Integration\TestCase;
-
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber::display_rocketcdn_status
  *
@@ -15,6 +13,7 @@ use WPMedia\PHPUnit\Integration\TestCase;
  *
  * @group  RocketCDN
  * @group  AdminOnly
+ * @group  RocketCDNAdminPage
  */
 class Test_DisplayRocketcdnStatus extends TestCase {
 
@@ -22,12 +21,6 @@ class Test_DisplayRocketcdnStatus extends TestCase {
 		parent::setUpBeforeClass();
 
 		update_option( 'date_format', 'Y-m-d' );
-	}
-
-	public function setUp() {
-		parent::setUp();
-
-		set_current_screen( 'settings_page_wprocket' );
 	}
 
 	public function tearDown() {
@@ -54,10 +47,6 @@ class Test_DisplayRocketcdnStatus extends TestCase {
 			MINUTE_IN_SECONDS
 		);
 
-		$callback = function() {
-			return 'http://localhost';
-		};
-
 		$expected = <<<HTML
 <div class="wpr-optionHeader">
 	<h3 class="wpr-title2">RocketCDN</h3>
@@ -67,11 +56,9 @@ class Test_DisplayRocketcdnStatus extends TestCase {
 </div>
 HTML;
 
-		add_filter( 'home_url', $callback );
+		add_filter( 'home_url', [ $this, 'home_url_cb' ] );
 
 		$this->assertSame( $this->format_the_html( $expected ), $this->getActualHtml() );
-
-		remove_filter( 'home_url', $callback );
 	}
 
 	public function testShouldRenderNoSubscriptionHTMLWhenCancelled() {

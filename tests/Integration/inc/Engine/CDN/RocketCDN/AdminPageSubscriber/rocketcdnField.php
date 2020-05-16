@@ -2,8 +2,6 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\AdminPageSubscriber;
 
-use WPMedia\PHPUnit\Integration\TestCase;
-
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber::rocketcdn_field
  *
@@ -14,6 +12,7 @@ use WPMedia\PHPUnit\Integration\TestCase;
  *
  * @group  RocketCDN
  * @group  AdminOnly
+ * @group  RocketCDNAdminPage
  */
 class Test_RocketcdnField extends TestCase {
 	private static $fields;
@@ -67,10 +66,12 @@ class Test_RocketcdnField extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		set_current_screen( 'settings_page_wprocket' );
+		add_filter( 'pre_get_rocket_option_cdn_cnames', [ $this, 'cdn_names_cb'] );
 	}
 
 	public function tearDown() {
+		remove_filter( 'pre_get_rocket_option_cdn_cnames', [ $this, 'cdn_names_cb' ] );
+
 		parent::tearDown();
 
 		delete_transient( 'rocketcdn_status' );
@@ -85,14 +86,9 @@ class Test_RocketcdnField extends TestCase {
 		$this->assertSame( self::$fields, apply_filters( 'rocket_cdn_settings_fields', self::$fields ) );
 	}
 
-	/**
-	 * Test should return the special array for the field when RocketCDN is active.
-	 */
 	public function testShouldReturnRocketCDNFieldWhenRocketCDNActive() {
-		$cdn_names_cb = function(){
-			return [ 'example1.org' ];
-		};
-		add_filter( 'pre_get_rocket_option_cdn_cnames', $cdn_names_cb );
+		$this->cdn_names = [ 'example1.org' ];
+
 		set_transient( 'rocketcdn_status', [ 'subscription_status' => 'running', 'cdn_url' => 'example1.org' ], MINUTE_IN_SECONDS );
 
 		$expected               = self::$fields;
@@ -111,17 +107,11 @@ class Test_RocketcdnField extends TestCase {
 		];
 
 		$this->assertSame( $expected, apply_filters( 'rocket_cdn_settings_fields', self::$fields ) );
-		remove_filter( 'pre_get_rocket_option_cdn_cnames', $cdn_names_cb );
 	}
 
-	/**
-	 * Test should return the special array with CNAME for the field when RocketCDN is active and the field is empty.
-	 */
 	public function testShouldReturnRocketCDNFieldWithCNAMEWhenRocketCDNActiveAndCNamesEmpty() {
-		$cdn_names_cb = function(){
-			return [];
-		};
-		add_filter( 'pre_get_rocket_option_cdn_cnames', $cdn_names_cb );
+		$this->cdn_names = [];
+
 		set_transient( 'rocketcdn_status', [ 'subscription_status' => 'running', 'cdn_url' => 'example1.org' ], MINUTE_IN_SECONDS );
 
 		$expected               = self::$fields;
@@ -140,18 +130,11 @@ class Test_RocketcdnField extends TestCase {
 		];
 
 		$this->assertSame( $expected, apply_filters( 'rocket_cdn_settings_fields', self::$fields ) );
-		remove_filter( 'pre_get_rocket_option_cdn_cnames', $cdn_names_cb );
 	}
 
-	/**
-	 * Test should return the special array with CNAME for the field when RocketCDN is active and there is(are) a
-	 * different CDN CNAME(s).
-	 */
 	public function testShouldReturnRocketCDNFieldWithCNAMEWhenRocketCDNActiveAndCNames() {
-		$cdn_names_cb = function(){
-			return [ 'example2.com' ];
-		};
-		add_filter( 'pre_get_rocket_option_cdn_cnames', $cdn_names_cb );
+		$this->cdn_names = [ 'example2.com' ];
+
 		set_transient( 'rocketcdn_status', [ 'subscription_status' => 'running', 'cdn_url' => 'example1.org' ], MINUTE_IN_SECONDS );
 
 		$expected               = self::$fields;
@@ -170,6 +153,5 @@ class Test_RocketcdnField extends TestCase {
 		];
 
 		$this->assertSame( $expected, apply_filters( 'rocket_cdn_settings_fields', self::$fields ) );
-		remove_filter( 'pre_get_rocket_option_cdn_cnames', $cdn_names_cb );
 	}
 }

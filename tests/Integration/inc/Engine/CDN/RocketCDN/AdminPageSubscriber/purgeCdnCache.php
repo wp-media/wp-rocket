@@ -3,7 +3,6 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\AdminPageSubscriber;
 
 use Brain\Monkey\Functions;
-use WPMedia\PHPUnit\Integration\TestCase;
 use WP_Rocket\Subscriber\Plugin\Capabilities_Subscriber;
 use WPDieException;
 
@@ -14,6 +13,7 @@ use WPDieException;
  *
  * @group  RocketCDN
  * @group  AdminOnly
+ * @group  RocketCDNAdminPage
  */
 class Test_PurgeCdnCache extends TestCase {
 
@@ -27,7 +27,15 @@ class Test_PurgeCdnCache extends TestCase {
 		parent::setUp();
 
 		unset( $_GET['_wpnonce'] );
-		set_current_screen( 'settings_page_wprocket' );
+	}
+
+	public function tearDown() {
+		unset( $_GET['_wpnonce'] );
+
+		parent::tearDown();
+
+		// Clean up.
+		remove_filter( 'wp_redirect', [ $this, 'return_empty_string' ] );
 	}
 
 	/**
@@ -82,7 +90,7 @@ class Test_PurgeCdnCache extends TestCase {
 		$_REQUEST['_wp_http_referer'] = addslashes( 'http://example.com/wp-admin/options-general.php?page=wprocket#page_cdn' );
 		$_SERVER['REQUEST_URI']       = $_REQUEST['_wp_http_referer'];
 		$_GET['_wpnonce']             = wp_create_nonce( 'rocket_purge_rocketcdn' );
-		add_filter( 'wp_redirect', '__return_empty_string' );
+		add_filter( 'wp_redirect', [ $this, 'return_empty_string' ] );
 
 		// Yes, we do expect wp_die() when running tests.
 		$this->expectException( WPDieException::class );
@@ -100,8 +108,5 @@ class Test_PurgeCdnCache extends TestCase {
 			],
 			get_transient( 'rocketcdn_purge_cache_response' )
 		);
-
-		// Clean up.
-		remove_filter( 'wp_redirect', '__return_empty_string' );
 	}
 }
