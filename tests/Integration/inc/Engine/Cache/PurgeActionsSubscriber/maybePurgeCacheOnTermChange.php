@@ -1,22 +1,36 @@
 <?php
+
 namespace WP_Rocket\Tests\Integration\inc\Engine\Cache\PurgeActionsSubscriber;
 
-use Brain\Monkey\Functions;
-use WP_Rocket\Tests\GlobTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Cache\PurgeActionsSubscriber:maybe_purge_cache_on_term_change
- * @uses ::rocket_clean_domain
- * @group purge_actions
- * @group vfs
+ * @uses   ::rocket_clean_domain
+ *
+ * @group  purge_actions
+ * @group  vfs
  */
 class Test_MaybePurgeCacheOnTermChange extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/Cache/PurgeActionsSubscriber/maybePurgeCacheOnTermChange.php';
-	protected static $not_public_term;
-	protected static $public_term;
 
-	public static function wpSetUpBeforeClass( $factory ) {
+	public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
+
+		// Clean out the cached dirs before we run these tests.
+		_rocket_get_cache_dirs( '', '', true );
+	}
+
+	public static function tearDownAfterClass() {
+		parent::tearDownAfterClass();
+
+		// Clean out the cached dirs before we leave this test class.
+		_rocket_get_cache_dirs( '', '', true );
+	}
+
+	public function setUp() {
+		parent::setUp();
+
 		register_taxonomy(
 			'not_public',
 			'post',
@@ -25,42 +39,44 @@ class Test_MaybePurgeCacheOnTermChange extends FilesystemTestCase {
 				'publicly_queryable' => false,
 			]
 		);
-
-		self::$not_public_term = $factory->term->create_and_get(
-			[
-				'name'     => 'test_term',
-				'taxonomy' => 'not_public',
-			]
-		);
-
-		self::$public_term = $factory->term->create_and_get(
-			[
-				'name'     => 'news',
-				'taxonomy' => 'category',
-			]
-		);
 	}
 
-	public function testShouldNotPurgeCacheWhenTaxonomyNotPublic() {
-		do_action( 'create_term', self::$not_public_term->term_id, self::$not_public_term->term_taxonomy_id, self::$not_public_term->taxonomy );
-		do_action( 'edit_term', self::$not_public_term->term_id, self::$not_public_term->term_taxonomy_id, self::$not_public_term->taxonomy );
-		do_action( 'delete_term', self::$not_public_term->term_id, self::$not_public_term->term_taxonomy_id, self::$not_public_term->taxonomy );
+	public function tearDown() {
+		parent::tearDown();
 
-		// Check no files were deleted.
-		foreach( $this->original_files as $file ) {
-			$this->assertTrue( $this->filesystem->exists( $file ) );
-		}
+		unregister_taxonomy( 'not_public' );
+		unset( $GLOBALS['sitepress'], $GLOBALS['q_config'], $GLOBALS['polylang'] );
+		unset( $GLOBALS['debug_fs'] );
 	}
 
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldPurgeCacheWhenTaxonomyPublicWhenEditing( $action ) {
-		$this->generateEntriesShouldExistAfter( $this->config['cleaned'] );
+	public function testShouldPurgeWhenExpected( $action, $is_public, $expected ) {
+		$this->dumpResults = isset( $expected['dump_results'] ) ? $expected['dump_results'] : false;
+		$this->generateEntriesShouldExistAfter( $expected['cleaned'] );
 
-		do_action( $action, self::$public_term->term_id, self::$public_term->term_taxonomy_id, self::$public_term->taxonomy );
+		if ( isset( $expected['debug'] ) && $expected['debug'] ) {
+			$GLOBALS['debug_fs'] = true;
+		}
 
-		$this->checkEntriesDeleted( $this->config['cleaned'] );
+		if ( $is_public ) {
+			$term_config = [
+				'name'     => 'news',
+				'taxonomy' => 'category',
+			];
+
+		} else {
+			$term_config = [
+				'name'     => 'test_term',
+				'taxonomy' => 'not_public',
+			];
+		}
+
+		$term = $this->factory->term->create_and_get( $term_config );
+		do_action( $action, $term->term_id, $term->term_taxonomy_id, $term->taxonomy );
+
+		$this->checkEntriesDeleted( $expected['cleaned'] );
 		$this->checkShouldNotDeleteEntries();
 	}
 }
