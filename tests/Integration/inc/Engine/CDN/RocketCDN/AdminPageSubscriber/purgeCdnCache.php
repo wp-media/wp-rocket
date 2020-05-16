@@ -8,7 +8,6 @@ use WPDieException;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber::purge_cdn_cache
- *
  * @uses ::rocket_get_constant
  *
  * @group  RocketCDN
@@ -38,9 +37,6 @@ class Test_PurgeCdnCache extends TestCase {
 		remove_filter( 'wp_redirect', [ $this, 'return_empty_string' ] );
 	}
 
-	/**
-	 * Test should display "The link you followed has expired." message (via wp_nonce_asy) when the nonce is missing.
-	 */
 	public function testShouldWPNonceAysWhenNonceIsMissing() {
 		Functions\expect( 'current_user_can' )->never();
 		$this->expectException( WPDieException::class );
@@ -48,9 +44,6 @@ class Test_PurgeCdnCache extends TestCase {
 		do_action( 'admin_post_rocket_purge_rocketcdn' );
 	}
 
-	/**
-	 * Test should display "The link you followed has expired." message (via wp_nonce_asy) when the nonce is invalid.
-	 */
 	public function testShouldWPNonceAysWhenNonceInvalid() {
 		$_GET['_wpnonce'] = 'invalid';
 
@@ -77,12 +70,6 @@ class Test_PurgeCdnCache extends TestCase {
 		do_action( 'admin_post_rocket_purge_rocketcdn' );
 	}
 
-	/**
-	 * Test should set the transient and redirect when the current user does have 'rocket_manage_options' capability.
-	 *
-	 * Note: Not setting the subscription ID to ensure `purge_cache_request` just returns without calling the RocketCDN
-	 * API.
-	 */
 	public function testSetTransientAndRedirectWhenCurrentUserCan() {
 		// Set up everything.
 		$user_id = $this->factory->user->create( [ 'role' => 'administrator' ] );

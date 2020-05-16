@@ -10,7 +10,7 @@ trait StubTrait {
 	protected $mock_rocket_get_constant = true;
 	protected $just_return_path         = false;
 	protected $wp_cache_constant        = false;
-	protected $wp_content_dir           = 'vfs://public/wp-econtent';
+	protected $wp_content_dir           = 'vfs://public/wp-content';
 	protected $script_debug             = false;
 	protected $rocket_version           = '3.5.5.1';
 	protected $wp_rocket_debug          = false;

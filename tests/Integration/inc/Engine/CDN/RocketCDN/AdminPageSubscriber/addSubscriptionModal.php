@@ -4,7 +4,6 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\AdminPageSubscrib
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber::add_subscription_modal
- *
  * @uses   ::rocket_is_live_site
  * @uses   ::rocket_get_constant
  *

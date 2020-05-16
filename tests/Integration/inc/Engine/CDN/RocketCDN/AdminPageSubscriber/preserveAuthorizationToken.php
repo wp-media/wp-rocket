@@ -6,8 +6,7 @@ use WPMedia\PHPUnit\Integration\ApiTrait;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber::preserve_authorization_token
- *
- * @uses \WP_Rocket\Engine\CDN\RocketCDN\APIClient::preserve_authorization_token
+ * @uses   \WP_Rocket\Engine\CDN\RocketCDN\APIClient::preserve_authorization_token
  *
  * @group  RocketCDN
  * @group  AdminOnly
@@ -16,7 +15,7 @@ use WPMedia\PHPUnit\Integration\ApiTrait;
 class Test_PreserveAuthorizationToken extends TestCase {
 	use ApiTrait;
 
-	private $client;
+	private          $client;
 	protected static $api_credentials_config_file = 'rocketcdn.php';
 
 	public static function setUpBeforeClass() {
@@ -35,82 +34,19 @@ class Test_PreserveAuthorizationToken extends TestCase {
 		delete_option( 'rocketcdn_user_token' );
 	}
 
-	public function testShouldReturnSameArgsWhenURLNotRocketCDN() {
-		$expected = [
-			'method'  => 'GET',
-			'headers' => [],
-			'body'    => '',
-		];
+	/**
+	 * @dataProvider configTestData
+	 */
+	public function testShouldPreserveAuthorizationToken( $config, $expected, $sent = null ) {
+		if ( isset( $config['getApiCredential'] ) ) {
+			$expected['headers']['Authorization'] .= static::getApiCredential( 'ROCKETCDN_TOKEN' );
+		}
 
-		$args = apply_filters( 'http_request_args', $expected, 'http://example.org' );
+		if ( is_null( $sent ) ) {
+			$sent = $expected;
+		}
 
-		$this->assertSame( $expected, $args );
-	}
-
-	public function testShouldReturnSameArgsWhenAuthorizationHeadersEmptyAndEndpointIsPricing() {
-		$expected = [
-			'method'  => 'GET',
-			'headers' => [],
-			'body'    => '',
-		];
-
-		$args = apply_filters( 'http_request_args', $expected, 'https://rocketcdn.me/api/pricing' );
-
-		$this->assertSame( $expected, $args );
-	}
-
-	public function testShouldReturnSameArgsWhenAuthorizationHeadersCorrect() {
-		$expected = [
-			'method'  => 'GET',
-			'headers' => [
-				'Authorization' => 'token ' . self::getApiCredential( 'ROCKETCDN_TOKEN' )
-			],
-			'body'    => '',
-		];
-
-		$args = apply_filters( 'http_request_args', $expected, 'https://rocketcdn.me/api/' );
-
-		$this->assertSame( $expected, $args );
-	}
-
-	public function testShouldReturnCorrectTokenWhenAuthorizationHeadersEmpty() {
-		$sent = [
-			'method'  => 'GET',
-			'headers' => [],
-			'body'    => '',
-		];
-
-		$expected = [
-			'method'  => 'GET',
-			'headers' => [
-				'Authorization' => 'token ' . self::getApiCredential( 'ROCKETCDN_TOKEN' )
-			],
-			'body'    => '',
-		];
-
-		$args = apply_filters( 'http_request_args', $sent, 'https://rocketcdn.me/api/' );
-
-		$this->assertSame( $expected, $args );
-	}
-
-	public function testShouldReturnCorrectTokenWhenAuthorizationHeadersIncorrect() {
-		$sent = [
-			'method'  => 'GET',
-			'headers' => [
-				'Authorization' => 'token ABCD'
-			],
-			'body'    => '',
-		];
-
-		$expected = [
-			'method'  => 'GET',
-			'headers' => [
-				'Authorization' => 'token ' . self::getApiCredential( 'ROCKETCDN_TOKEN' )
-			],
-			'body'    => '',
-		];
-
-		$args = apply_filters( 'http_request_args', $sent, 'https://rocketcdn.me/api/' );
+		$args = apply_filters( 'http_request_args', $sent, $config['url'] );
 
 		$this->assertSame( $expected, $args );
 	}

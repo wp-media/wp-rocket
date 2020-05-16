@@ -2,16 +2,20 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\AdminPageSubscriber;
 
-//use WP_Rocket\Tests\Integration\FilesystemTestCase as BaseVfsTestCase;
-use WP_Rocket\Tests\Integration\TestCase as BaseVfsTestCase;
+use WP_Rocket\Tests\Integration\TestCase as BaseTestCase;
 
-abstract class TestCase extends BaseVfsTestCase {
+abstract class TestCase extends BaseTestCase {
 	protected $cdn_names;
 	protected $home_url = 'http://example.org';
 
 	protected static $transients = [
 		'rocketcdn_status' => null,
 	];
+
+	public static function setUpBeforeClass() {
+		static::$use_settings_trait = true;
+		parent::setUpBeforeClass();
+	}
 
 	public function setUp() {
 		parent::setUp();
