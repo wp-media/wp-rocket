@@ -44,45 +44,8 @@ class Test_Process extends TestCase {
 		$this->assertSame(
 			$this->format_the_html( $expected['html'] ),
 			$this->format_the_html( apply_filters( 'rocket_buffer', $original ) )
-        );
+		);
 
-        foreach( $expected['files'] as $file ) {
-        	if ( $this->skipGzCheck( $file )  ) {
-        		continue;
-	        }
-            $this->assertTrue( $this->filesystem->exists( $file ) );
-        }
+		$this->assertFilesExists( $expected['files'] );
 	}
-
-    public function return_key() {
-        return 123456;
-    }
-
-    private function set_settings( array $settings ) {
-        foreach ( $settings as $key => $value ) {
-            if ( 'minify_concatenate_js' === $key ) {
-                $callback = 0 === $value ? 'return_false' : 'return_true';
-                add_filter( 'pre_get_rocket_option_minify_concatenate_js', [ $this, $callback ] );
-                continue;
-            }
-
-            if ( 'cdn' === $key ) {
-                $callback = 0 === $value ? 'return_false' : 'return_true';
-                add_filter( 'pre_get_rocket_option_cdn', [ $this, $callback ] );
-                continue;
-            }
-
-            if ( 'cdn_cnames' === $key ) {
-                $this->cnames = $value;
-                add_filter( 'pre_get_rocket_option_cdn_cnames', [ $this, 'set_cnames'] );
-                continue;
-            }
-
-            if ( 'cdn_zone' === $key ) {
-                $this->zones = $value;
-                add_filter( 'pre_get_rocket_option_cdn_zone', [ $this, 'set_zones'] );
-                continue;
-            }
-        }
-    }
 }

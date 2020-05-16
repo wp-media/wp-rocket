@@ -9,6 +9,12 @@ abstract class TestCase extends FilesystemTestCase {
 	protected        $cnames;
 	protected        $zones;
 
+	public function setUp() {
+		$this->default_vfs_structure = '/vfs-structure/optimizeMinify.php';
+
+		parent::setUp();
+	}
+
 	protected function setSettings() {
 		foreach ( (array) $this->settings as $key => $value ) {
 			$this->handleSetting( $key, $value );
@@ -59,6 +65,16 @@ abstract class TestCase extends FilesystemTestCase {
 
 	public function set_zones() {
 		return $this->zones;
+	}
+
+	protected function assertFilesExists( $files ) {
+		foreach ( $files as $file ) {
+			if ( $this->skipGzCheck( $file ) ) {
+				continue;
+			}
+
+			$this->assertTrue( $this->filesystem->exists( $file ) );
+		}
 	}
 
 	protected function skipGzCheck( $file ) {

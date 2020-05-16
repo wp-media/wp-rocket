@@ -9,6 +9,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @uses   ::create_rocket_uniqid
  *
  * @group  Optimize
+ * @group  Minify
  * @group  AdminSubscriber
  * @group  AdminOnly
  */

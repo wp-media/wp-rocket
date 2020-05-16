@@ -1,8 +1,10 @@
 <?php
 return [
-	'vfs_dir' => 'wordpress/',
+	'vfs_dir' => 'wp-content/',
 
 	'settings' => [
+		'minify_css'             => 1,
+		'minify_css_key'         => 123456,
 		'minify_concatenate_css' => 0,
 		'cdn'                    => 0,
 		'cdn_cnames'             => [],
@@ -12,7 +14,6 @@ return [
 	'test_data' => [
 
 		'minifyCssFiles' => [
-			// Test Data: Original CSS files.
 			'original' => '<html>
 				<head>
 					<title>Sample Page</title>

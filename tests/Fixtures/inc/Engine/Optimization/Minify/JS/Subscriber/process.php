@@ -1,6 +1,6 @@
 <?php
 return [
-	'vfs_dir' => 'wordpress/',
+	'vfs_dir' => 'wp-content/',
 
 	'settings' => [
 		'minify_concatenate_js' => 0,

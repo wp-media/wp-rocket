@@ -6,10 +6,10 @@ use Brain\Monkey\Functions;
 use org\bovigo\vfs\vfsStream;
 
 trait VirtualFilesystemTrait {
-	protected $original_entries = [];
-	protected $shouldNotClean   = [];
-	protected $entriesBefore    = [];
-	protected $dumpResults      = false;
+	protected $original_entries      = [];
+	protected $shouldNotClean        = [];
+	protected $entriesBefore         = [];
+	protected $dumpResults           = false;
 	protected $default_vfs_structure = '/vfs-structure/default.php';
 
 	protected function initDefaultStructure() {

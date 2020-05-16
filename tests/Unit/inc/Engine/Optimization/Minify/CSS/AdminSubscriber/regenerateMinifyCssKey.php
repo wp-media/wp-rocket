@@ -10,6 +10,7 @@ use WP_Rocket\Engine\Optimization\Minify\CSS\AdminSubscriber;
  * @covers \WP_Rocket\Engine\Optimization\Minify\CSS\AdminSubscriber::regenerate_minify_css_key
  *
  * @group  Optimize
+ * @group  Minify
  * @group  AdminSubscriber
  */
 class Test_RegenerateMinifyCssKey extends TestCase {

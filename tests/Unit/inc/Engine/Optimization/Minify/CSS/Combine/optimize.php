@@ -13,11 +13,14 @@ use WP_Rocket\Tests\Unit\inc\Engine\Optimization\TestCase;
  *
  * @group  Combine
  * @group  CombineCSS
+ * @group  Optimize
+ * @group  MinifyCSS
+ * @group  Minify
  */
 class Test_Optimize extends TestCase {
 	protected $path_to_test_data = '/inc/Engine/Optimization/Minify/CSS/Combine/combine.php';
-	private $combine;
-	private $minify;
+	private   $combine;
+	private   $minify;
 
 	public function setUp() {
 		parent::setUp();
@@ -41,13 +44,13 @@ class Test_Optimize extends TestCase {
 
 		Filters\expectApplied( 'rocket_asset_url' )
 			->zeroOrMoreTimes()
-			->andReturnUsing( function( $url ) use ( $cdn_url, $site_url ) {
+			->andReturnUsing( function ( $url ) use ( $cdn_url, $site_url ) {
 				return str_replace( $cdn_url, $site_url, $url );
 			} );
 
 		Filters\expectApplied( 'rocket_css_url' )
 			->zeroOrMoreTimes()
-			->andReturnUsing( function( $url, $original_url ) use ( $cdn_url ) {
+			->andReturnUsing( function ( $url, $original_url ) use ( $cdn_url ) {
 				return str_replace( 'http://example.org', $cdn_url, $url );
 			} );
 

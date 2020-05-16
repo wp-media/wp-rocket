@@ -10,6 +10,7 @@ use WP_Rocket\Tests\Integration\inc\Engine\Optimization\TestCase;
  * @uses   ::rocket_direct_filesystem
  *
  * @group  Optimize
+ * @group  Minify
  * @group  AdminSubscriber
  * @group  AdminOnly
  */

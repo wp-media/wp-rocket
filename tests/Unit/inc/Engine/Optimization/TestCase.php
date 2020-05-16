@@ -11,7 +11,6 @@ abstract class TestCase extends FilesystemTestCase {
 	protected $options;
 
 	public function setUp() {
-		$this->wp_content_dir        = 'vfs://public/wordpress/wp-content';
 		$this->default_vfs_structure = '/vfs-structure/optimizeMinify.php';
 
 		parent::setUp();
@@ -57,6 +56,6 @@ abstract class TestCase extends FilesystemTestCase {
 		}
 
 		// If `gzencode()` function does not exist and the file is .gz, skip it.
-		return ( substr( $file, - 3 ) === '.gz' );
+		return ( substr( $file, -3 ) === '.gz' );
 	}
 }

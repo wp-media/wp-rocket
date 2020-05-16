@@ -2,9 +2,9 @@
 
 namespace WP_Rocket\Tests\Integration;
 
-use WPMedia\PHPUnit\Integration\TestCase;
+use WPMedia\PHPUnit\Integration\TestCase as BaseTestCase;
 
-abstract class AdminTestCase extends TestCase {
+abstract class AdminTestCase extends BaseTestCase {
 	protected $error_lel;
 	protected $user_id = 0;
 

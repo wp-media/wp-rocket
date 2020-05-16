@@ -8,8 +8,9 @@ use WP_Rocket\Tests\Unit\inc\Engine\Optimization\TestCase;
 /**
  * @covers \WP_Rocket\Engine\Optimization\Minify\CSS\Minify::optimize
  *
- * @group Optimize
- * @group MinifyCSS
+ * @group  Optimize
+ * @group  MinifyCSS
+ * @group  Minify
  */
 class Test_Optimize extends TestCase {
 	protected $path_to_test_data = '/inc/Engine/Optimization/Minify/CSS/Minify/optimize.php';
