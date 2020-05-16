@@ -1,6 +1,6 @@
 <?php
 
-$rocket_version = WP_ROCKET_VERSION;
+$rocket_version = rocket_get_constant( 'WP_ROCKET_VERSION' );
 
 $start = <<<HTACCESS
 # BEGIN WP Rocket v{$rocket_version}

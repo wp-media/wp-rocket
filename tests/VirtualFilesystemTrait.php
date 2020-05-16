@@ -10,6 +10,7 @@ trait VirtualFilesystemTrait {
 	protected $shouldNotClean   = [];
 	protected $entriesBefore    = [];
 	protected $dumpResults      = false;
+	protected $default_vfs_structure = '/vfs-structure/default.php';
 
 	protected function initDefaultStructure() {
 		if ( empty( $this->config ) ) {
@@ -20,7 +21,7 @@ trait VirtualFilesystemTrait {
 			return;
 		}
 
-		$this->config['structure'] = require WP_ROCKET_TESTS_FIXTURES_DIR . '/vfs-structure/default.php';
+		$this->config['structure'] = require WP_ROCKET_TESTS_FIXTURES_DIR . $this->default_vfs_structure;
 	}
 
 	protected function redefineRocketDirectFilesystem() {

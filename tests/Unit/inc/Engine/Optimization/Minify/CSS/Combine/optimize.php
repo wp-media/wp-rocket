@@ -10,6 +10,7 @@ use WP_Rocket\Tests\Unit\inc\Engine\Optimization\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\Minify\CSS\Combine::optimize
+ *
  * @group  Combine
  * @group  CombineCSS
  */
@@ -55,8 +56,6 @@ class Test_Optimize extends TestCase {
 			$this->combine->optimize( $original )
 		);
 
-		foreach ( $expected['files'] as $file ) {
-			$this->assertTrue( $this->filesystem->exists( $file ) );
-		}
+		$this->assertFilesExists( $expected['files'] );
 	}
 }

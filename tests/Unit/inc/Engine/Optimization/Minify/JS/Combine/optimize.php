@@ -11,6 +11,7 @@ use WP_Rocket\Tests\Unit\inc\Engine\Optimization\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\Minify\JS\Combine::optimize
+ *
  * @group Optimize
  * @group CombineJS
  */
@@ -20,8 +21,6 @@ class Test_Optimize extends TestCase {
 	private $minify;
 
 	public function setUp() {
-		$this->wp_content_dir = 'vfs://public/wordpress/wp-content';
-
 		parent::setUp();
 
 		$this->minify = Mockery::mock( Minify\JS::class );
@@ -68,8 +67,6 @@ class Test_Optimize extends TestCase {
 			$this->format_the_html( $this->combine->optimize( $original ) )
 		);
 
-		foreach ( $expected['files'] as $file ) {
-			$this->assertTrue( $this->filesystem->exists( $file ) );
-		}
+		$this->assertFilesExists( $expected['files'] );
 	}
 }

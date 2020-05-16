@@ -1,46 +1,11 @@
 <?php
 return [
-	'vfs_dir'   => 'public/',
-	'structure' => [
-		'wordpress' => [
-			'wp-includes' => [
-				'js' => [
-					'jquery' => [
-						'jquery.js' => 'jquery',
-					],
-				],
-				'css' => [
-					'dashicons.min.css' => 'body { font-family: Helvetica, Arial, sans-serif; text-align: center;}',
-				],
-			],
-			'wp-content' => [
-				'cache' => [
-					'min' => [
-						'1' => [],
-					],
-				],
-				'themes' => [
-					'twentytwenty' => [
-						'style.css' => 'body { font-family: Helvetica, Arial, sans-serif; text-align: center;}',
-						'assets'    => [
-							'script.js' => 'test',
-						]
-					]
-				],
-				'plugins' => [
-					'hello-dolly' => [
-						'style.css'  => 'body { font-family: Helvetica, Arial, sans-serif; text-align: center;}',
-						'script.js' => 'test',
-					]
-				],
-			],
-		],
-	],
+	'vfs_dir'   => 'wordpress/',
+
 	'test_data' => [
 		// Minify JS files
 		[
-			// Test Data: Original JS files.
-			'<html>
+			'original' => '<html>
 				<head>
 					<title>Sample Page</title>
 					<script type="text/javascript" src="http://example.org/wp-content/themes/twentytwenty/assets/script.js"></script>
@@ -50,8 +15,8 @@ return [
 				<body>
 				</body>
 			</html>',
-			// Expected: Minified JS files.
-			[
+
+			'expected' => [
 				'html' => '<html>
 					<head>
 						<title>Sample Page</title>
@@ -69,9 +34,10 @@ return [
 					'wordpress/wp-content/cache/min/1/wp-content/plugins/hello-dolly/script-796977248f632116e0145a488743a3d2.js.gz',
 				],
 			],
-			[],
-			'http://example.org',
-			'http://example.org',
+
+			'cdn_host' => [],
+			'cdn_url'  => 'http://example.org',
+			'site_url' => 'http://example.org',
 		],
 		// Minify JS files to CDN URL
 		[

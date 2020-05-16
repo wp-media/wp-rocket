@@ -2,12 +2,12 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\Minify\CSS\Minify;
 
 use Brain\Monkey\Filters;
-use Brain\Monkey\Functions;
 use WP_Rocket\Engine\Optimization\Minify\CSS\Minify;
 use WP_Rocket\Tests\Unit\inc\Engine\Optimization\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\Minify\CSS\Minify::optimize
+ *
  * @group Optimize
  * @group MinifyCSS
  */
@@ -16,8 +16,6 @@ class Test_Optimize extends TestCase {
 	protected $minify;
 
 	public function setUp() {
-		$this->wp_content_dir = 'vfs://public/wordpress/wp-content';
-
 		parent::setUp();
 
 		$this->minify = new Minify( $this->options );
@@ -49,8 +47,6 @@ class Test_Optimize extends TestCase {
 			$this->format_the_html( $this->minify->optimize( $original ) )
 		);
 
-		foreach ( $expected['files'] as $file ) {
-			$this->assertTrue( $this->filesystem->exists( $file ) );
-		}
+		$this->assertFilesExists( $expected['files'] );
 	}
 }

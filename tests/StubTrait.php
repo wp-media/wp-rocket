@@ -12,6 +12,7 @@ trait StubTrait {
 	protected $wp_cache_constant        = false;
 	protected $wp_content_dir           = 'vfs://public/wp-content';
 	protected $script_debug             = false;
+	protected $rocket_version           = '3.5.5.1';
 
 	protected function stubRocketGetConstant() {
 		if ( ! $this->mock_rocket_get_constant ) {
@@ -74,6 +75,13 @@ trait StubTrait {
 
 			case 'WP_ROCKET_VENDORS_PATH':
 				return "{$this->wp_content_dir}/plugins/wp-rocket/inc/vendors/";
+
+			case 'WP_ROCKET_VERSION':
+				if ( defined( $constant_name ) ) {
+					return constant( $constant_name );
+				}
+
+				return $this->rocket_version;
 
 			default:
 				if ( ! rocket_has_constant( $constant_name ) ) {
@@ -139,5 +147,55 @@ trait StubTrait {
 			'query'    => $query,
 			'fragment' => $fragment,
 		];
+	}
+
+	protected function stubWpParseUrl() {
+		Functions\when( 'wp_parse_url' )->alias(
+			function ( $url, $component = -1 ) {
+				return parse_url( $url, $component );
+			}
+		);
+	}
+
+	protected function stubRocketRealpath() {
+		Functions\when( 'rocket_realpath' )->alias(
+			function ( $file ) {
+				$wrapper = null;
+				$path    = [];
+
+				if ( false !== strpos( $file, '://' ) ) {
+					list( $wrapper, $file ) = explode( '://', $file, 2 );
+				}
+
+				foreach ( explode( '/', $file ) as $part ) {
+					if ( '' === $part || '.' === $part ) {
+						continue;
+					}
+
+					if ( '..' !== $part ) {
+						array_push( $path, $part );
+					} elseif ( count( $path ) > 0 ) {
+						array_pop( $path );
+					}
+				}
+
+				$file = join( '/', $path );
+
+				// Put the wrapper back on the target.
+				if ( $wrapper !== null ) {
+					return $wrapper . '://' . $file;
+				}
+
+				return $file;
+			}
+		);
+	}
+
+	protected function stubfillWpBasename() {
+		Functions\when( 'wp_basename' )->alias(
+			function ( $path, $suffix = '' ) {
+				return urldecode( basename( str_replace( [ '%2F', '%5C' ], '/', urlencode( $path ) ), $suffix ) );
+			}
+		);
 	}
 }
