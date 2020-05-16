@@ -13,6 +13,7 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 	use VirtualFilesystemTrait;
 
 	protected static $use_settings_trait = false;
+	protected static $skip_setting_up_settings = false;
 	protected static $transients         = [];
 
 	public static function setUpBeforeClass() {
@@ -37,7 +38,7 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 		}
 
 		foreach ( static::$transients as $transient => $value ) {
-			if ( ! empty( $transient ) ) {
+			if ( ! empty( $value ) ) {
 				set_transient( $transient, $value );
 			} else {
 				delete_transient( $transient );
@@ -47,7 +48,7 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 
 	public function setUp() {
 		$this->initDefaultStructure();
-		if ( static::$use_settings_trait ) {
+		if ( static::$use_settings_trait && ! static::$skip_setting_up_settings ) {
 			$this->setUpSettings();
 		}
 
