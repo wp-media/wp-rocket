@@ -27,6 +27,7 @@ return [
 <script type="text/javascript">window.Beacon('init', '44cc73fb-7636-4206-b115-c7b33823551b')</script>
 <script>window.Beacon("identify", {"email":"dummy@wp-rocket.me","Website":"http:\/\/example.org"});</script>
 <script>window.Beacon("session-data", {"Website":"http:\/\/example.org","WordPress Version":"5.4","WP Rocket Version":"3.6","Theme":"WordPress Default","Plugins Enabled":"","WP Rocket Active Options":""});</script>
+<script>window.Beacon("prefill", {"fields":[{"id":21728,"value":108003}]});</script>
 <script>window.addEventListener("hashchange", function () {
 	window.Beacon("suggest");
 }, false);</script>
@@ -41,6 +42,7 @@ SCRIPT
 <script type="text/javascript">window.Beacon('init', '9db9417a-5e2f-41dd-8857-1421d5112aea')</script>
 <script>window.Beacon("identify", {"email":"dummy@wp-rocket.me","Website":"http:\/\/example.org"});</script>
 <script>window.Beacon("session-data", {"Website":"http:\/\/example.org","WordPress Version":"5.4","WP Rocket Version":"3.6","Theme":"WordPress Default","Plugins Enabled":"","WP Rocket Active Options":""});</script>
+<script>window.Beacon("prefill", {"fields":[{"id":21728,"value":108003}]});</script>
 <script>window.addEventListener("hashchange", function () {
 	window.Beacon("suggest");
 }, false);</script>
