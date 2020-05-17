@@ -193,7 +193,7 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 		$newvalue['cache_ssl'] = 1;
 	}
 
-	if ( ! defined( 'WP_ROCKET_ADVANCED_CACHE' ) ) {
+	if ( ! rocket_get_constant( 'WP_ROCKET_ADVANCED_CACHE' ) ) {
 		rocket_generate_advanced_cache_file();
 	}
 

@@ -7,7 +7,8 @@ use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
  * @covers ::rocket_activation
- * @group AdminOnly
+ *
+ * @group Admin_Only
  * @group Activation
  */
 class Test_RocketActivation extends TestCase {

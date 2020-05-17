@@ -2,7 +2,6 @@
 
 namespace WP_Rocket\Tests\Integration\inc\functions;
 
-use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
@@ -46,10 +45,7 @@ class Test_GetAdvancedCacheContent extends FilesystemTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldReturnExpectedContent( $settings, $expected ) {
-		update_option(
-			'wp_rocket_settings',
-			array_merge( $this->original_settings, $this->config['settings'], $settings )
-		);
+		$this->mergeExistingSettingsAndUpdate( $settings );
 
 		$this->assertSame( $expected, self::$advanced_cache->get_advanced_cache_content() );
 	}

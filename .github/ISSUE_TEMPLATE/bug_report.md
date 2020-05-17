@@ -26,3 +26,9 @@ If applicable, add screenshots to help explain your problem.
 
 **Additional context**
 Add any other context about the problem here.
+
+**Backlog Grooming (for WP Media dev team use only)**
+- [ ] Reproduce the problem
+- [ ] Identify the root cause
+- [ ] Scope a solution
+- [ ] Estimate the effort

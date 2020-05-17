@@ -41,6 +41,7 @@ return [
 			'sitemap_preload_url_crawl'   => '500000',
 			'sitemaps'                    => [],
 			'dns_prefetch'                => 0,
+			'preload_fonts'               => [],
 			'database_revisions'          => 0,
 			'database_auto_drafts'        => 0,
 			'database_trashed_posts'      => 0,

@@ -2,106 +2,103 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\DataManagerSubscriber;
 
-use WPMedia\PHPUnit\Integration\TestCase;
+use WP_Rocket\Tests\Integration\TestCase;
 use WPMedia\PHPUnit\Integration\ApiTrait;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\DataManagerSubscriber::maybe_disable_cdn
- * @uses \WP_Rocket\Engine\CDN\RocketCDN\APIClient::get_subscription_data
- * @uses ::rocket_get_constant
+ * @uses   \WP_Rocket\Engine\CDN\RocketCDN\APIClient::get_subscription_data
+ * @uses   ::rocket_get_constant
  *
  * @group  RocketCDN
  * @group  AdminOnly
  */
 class Test_MaybeDisableCDN extends TestCase {
-    use ApiTrait;
+	use ApiTrait;
 
-    protected static $api_credentials_config_file = 'rocketcdn.php';
+	protected static $api_credentials_config_file = 'rocketcdn.php';
+	protected static $use_settings_trait          = true;
+	protected static $rocketcdn_user_token;
+	protected static $transients                  = [
+		'rocketcdn_status'     => null,
+		'rocketcdn_user_token' => null,
+		'wp_rocket_settings'   => null,
+	];
 
-    public static function setUpBeforeClass() {
+	protected $status;
+
+	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
 
 		self::pathToApiCredentialsConfigFile( WP_ROCKET_TESTS_DIR . '/../env/local/' );
+
+		// Save the original "rocketcdn_user_token" option before starting the tests.
+		self::$rocketcdn_user_token = get_option( 'rocketcdn_user_token' );
 	}
 
-    public function setUp() {
-        parent::setUp();
+	public static function tearDownAfterClass() {
+		parent::tearDownAfterClass();
 
-        set_transient( 'rocketcdn_status', [ 'id' => self::getApiCredential( 'ROCKETCDN_WEBSITE_ID' ) ], MINUTE_IN_SECONDS );
+		// Restore the "rocketcdn_user_token" option before leaving this test class.
+		if ( empty ( self::$rocketcdn_user_token ) ) {
+			delete_option( 'rocketcdn_user_token' );
+		} else {
+			update_option( 'rocketcdn_user_token', self::$rocketcdn_user_token );
+		}
+	}
+
+	public function setUp() {
+		parent::setUp();
+
+		set_transient( 'rocketcdn_status', [ 'id' => self::getApiCredential( 'ROCKETCDN_WEBSITE_ID' ) ], MINUTE_IN_SECONDS );
 		update_option( 'rocketcdn_user_token', self::getApiCredential( 'ROCKETCDN_TOKEN' ) );
-    }
-
-    public function tearDown() {
-        parent::tearDown();
-
-        delete_transient( 'rocketcdn_status' );
-        delete_option( 'rocketcdn_user_token' );
-        delete_option( 'wp_rocket_settings' );
+		add_filter( 'rocket_pre_get_subscription_data', [ $this, 'get_subscription_data' ] );
 	}
 
-	public function testShouldScheduleNewCheckEventWhenSubscriptionRunning() {
-        $expected_subset = [
-			'cdn'        => 1,
-			'cdn_cnames' => [ 'https://rocketcdn.me' ],
-			'cdn_zone'   => [ 'all' ],
-        ];
+	public function tearDown() {
+		parent::tearDown();
 
-        update_option( 'wp_rocket_settings', $expected_subset );
+		remove_filter( 'rocket_pre_get_subscription_data', [ $this, 'get_subscription_data' ] );
+		delete_transient( 'rocketcdn_status' );
+		delete_option( 'rocketcdn_user_token' );
+		delete_option( 'wp_rocket_settings' );
+	}
 
-        $callback = function( $subscription ) {
-            if ( ! isset( $subscription['subscription_status'] ) || 'running' !== $subscription['subscription_status'] ) {
-                $subscription['subscription_status'] = 'running';
-            }
+	/**
+	 * @dataProvider configTestData
+	 */
+	public function testShouldDoExpected( $config, $expected ) {
+		$this->status = $config['status'];
+		$this->mergeExistingSettingsAndUpdate( $config['wp_rocket_settings'] );
 
-            return $subscription;
-        };
+		// Run it.
+		do_action( 'rocketcdn_check_subscription_status_event' );
 
-        add_filter( 'rocket_pre_get_subscription_data', $callback );
-        do_action( 'rocketcdn_check_subscription_status_event' );
-        remove_filter( 'rocket_pre_get_subscription_data', $callback );
+		// Check if the cron job is scheduled.
+		$timestamp = wp_next_scheduled( 'rocketcdn_check_subscription_status_event' );
+		if ( false === $expected['cron_is_scheduled'] ) {
+			$this->assertFalse( $timestamp );
+		} else {
+			$this->assertGreaterThan( 0, $timestamp );
+		}
 
-        $this->assertNotFalse( wp_next_scheduled( 'rocketcdn_check_subscription_status_event' ) );
-
-        $options = get_option( 'wp_rocket_settings' );
-
-		foreach ( $expected_subset as $key => $value ) {
+		// Check the expected settings.
+		$options = get_option( 'wp_rocket_settings' );
+		foreach ( $expected['settings'] as $key => $value ) {
 			$this->assertArrayHasKey( $key, $options );
-			$this->assertSame( $value, $options[$key] );
+			$this->assertSame( $value, $options[ $key ] );
 		}
 	}
 
-	public function testShouldDisableCDNWhenSubscriptionCancelled() {
-        $expected_subset = [
-			'cdn'        => 0,
-			'cdn_cnames' => [],
-			'cdn_zone'   => [],
-        ];
-
-        update_option( 'wp_rocket_settings', [
-			'cdn'        => 1,
-			'cdn_cnames' => [ 'https://rocketcdn.me' ],
-			'cdn_zone'   => [ 'all' ],
-        ] );
-
-        $callback = function( $subscription ) {
-            if ( ! isset( $subscription['subscription_status'] ) || 'cancelled' !== $subscription['subscription_status'] ) {
-                $subscription['subscription_status'] = 'cancelled';
-            }
-
-            return $subscription;
-        };
-
-		add_filter( 'rocket_pre_get_subscription_data', $callback );
-        do_action( 'rocketcdn_check_subscription_status_event' );
-        remove_filter( 'rocket_pre_get_subscription_data', $callback );
-
-        $this->assertFalse( wp_next_scheduled( 'rocketcdn_check_subscription_status_event' ) );
-
-        $options = get_option( 'wp_rocket_settings' );
-
-		foreach ( $expected_subset as $key => $value ) {
-			$this->assertArrayHasKey( $key, $options );
-			$this->assertSame( $value, $options[$key] );
+	public function get_subscription_data( $subscription ) {
+		if (
+			! isset( $subscription['subscription_status'] )
+			||
+			$this->status !== $subscription['subscription_status']
+		) {
+			$subscription['subscription_status'] = $this->status;
 		}
+
+		return $subscription;
 	}
 }

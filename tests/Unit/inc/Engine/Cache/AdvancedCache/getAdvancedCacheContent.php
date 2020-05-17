@@ -21,9 +21,6 @@ class Test_GetAdvancedCacheContent extends FilesystemTestCase {
 		parent::setUp();
 
 		$this->advanced_cache = new AdvancedCache( $this->filesystem->getUrl( 'wp-content/plugins/wp-rocket/views/cache/' ) );
-
-		// Mocks the various filesystem constants.
-		$this->whenRocketGetConstant();
 	}
 
 	/**

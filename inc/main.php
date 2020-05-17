@@ -7,6 +7,8 @@ if ( file_exists( WP_ROCKET_PATH . 'vendor/autoload.php' ) ) {
 	require WP_ROCKET_PATH . 'vendor/autoload.php';
 }
 
+require_once WP_ROCKET_FUNCTIONS_PATH . 'files.php';
+
 /**
  * Fix Cloudflare Flexible SSL redirect first
  *
@@ -186,7 +188,6 @@ function rocket_activation() {
 	}
 
 	require WP_ROCKET_FUNCTIONS_PATH . 'options.php';
-	require WP_ROCKET_FUNCTIONS_PATH . 'files.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'formatting.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'i18n.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'htaccess.php';

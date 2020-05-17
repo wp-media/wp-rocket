@@ -38,6 +38,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'litespeed_subscriber',
 		'pressable_subscriber',
 		'simple_custom_css',
+		'cloudways',
 	];
 
 	/**
@@ -72,11 +73,13 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'bigcommerce_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Ecommerce\BigCommerce_Subscriber' );
 		$this->getContainer()->share( 'beaverbuilder_subscriber', 'WP_Rocket\ThirdParty\Plugins\PageBuilder\BeaverBuilder' );
 		$this->getContainer()->share( 'amp_subscriber', 'WP_Rocket\ThirdParty\Plugins\Optimization\AMP' )
-			->withArgument( $options );
+			->withArgument( $options )
+			->withArgument( $this->getContainer()->get( 'cdn_subscriber' ) );
 		$this->getContainer()->share( 'pressable_subscriber', 'WP_Rocket\ThirdParty\Hostings\Pressable' );
 		$this->getContainer()->share( 'litespeed_subscriber', 'WP_Rocket\Subscriber\Third_Party\Hostings\Litespeed_Subscriber' );
 		$this->getContainer()->share( 'simple_custom_css', 'WP_Rocket\ThirdParty\Plugins\SimpleCustomCss' )
 			->withArgument( WP_ROCKET_CACHE_BUSTING_PATH )
 			->withArgument( WP_ROCKET_CACHE_BUSTING_URL );
+		$this->getContainer()->share( 'cloudways', 'WP_Rocket\ThirdParty\Hostings\Cloudways' );
 	}
 }

@@ -11,6 +11,7 @@ use WPMedia\PHPUnit\Unit\TestCase;
  * @covers ::get_rocket_i18n_uri
  * @uses  ::rocket_has_i18n
  * @uses  ::get_rocket_i18n_code
+ *
  * @group Functions
  * @group i18n
  */

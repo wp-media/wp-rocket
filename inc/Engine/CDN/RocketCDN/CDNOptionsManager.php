@@ -51,6 +51,7 @@ class CDNOptionsManager {
 		$this->options_api->set( 'settings', $this->options->get_options() );
 
 		delete_transient( 'rocketcdn_status' );
+		rocket_clean_domain();
 	}
 
 	/**
@@ -69,5 +70,6 @@ class CDNOptionsManager {
 
 		delete_option( 'rocketcdn_user_token' );
 		delete_transient( 'rocketcdn_status' );
+		rocket_clean_domain();
 	}
 }
