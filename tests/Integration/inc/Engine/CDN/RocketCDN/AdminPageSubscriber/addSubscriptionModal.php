@@ -8,7 +8,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\AdminPageSubscrib
  * @uses   ::rocket_get_constant
  *
  * @group  RocketCDN
- * @group  Admin_Only
+ * @group  AdminOnly
  * @group  RocketCDNAdminPage
  */
 class Test_AddSubscriptionModal extends TestCase {
@@ -25,14 +25,18 @@ class Test_AddSubscriptionModal extends TestCase {
 	public function testShouldDisplayExpected( $home_url, $expected ) {
 		$this->home_url = $home_url;
 
-		if ( ! empty ( $expected ) ) {
-			$expected = $this->format_the_html( $expected );
-		}
-
 		ob_start();
 		do_action( 'rocket_settings_page_footer' );
 		$actual = ob_get_clean();
 
-		$this->assertSame( $expected, $this->format_the_html( $actual ) );
+		if ( ! empty ( $expected ) ) {
+			$expected = $this->format_the_html( $expected );
+		}
+
+		if ( ! empty ( $actual ) ) {
+			$actual = $this->format_the_html( $actual );
+		}
+
+		$this->assertSame( $expected, $actual );
 	}
 }

@@ -12,8 +12,6 @@ use WP_Rocket\Tests\Integration\CapTrait;
  * @group  AdminOnly
  */
 class Test_ActivateSafeMode extends AjaxTestCase {
-	use CapTrait;
-
 	protected static $use_settings_trait = true;
 
 	public function setUp() {
