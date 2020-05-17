@@ -35,6 +35,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register() {
 		$this->getContainer()->add( 'beacon', 'WP_Rocket\Engine\Admin\Beacon\Beacon' )
 			->withArgument( $this->getContainer()->get( 'options' ) )
-			->withArgument( $this->getContainer()->get( 'template_path' ) . 'settings' );
+			->withArgument( $this->getContainer()->get( 'template_path' ) . '/settings' );
 	}
 }
