@@ -2,8 +2,6 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\DataManagerSubscriber;
 
-use WPMedia\PHPUnit\Integration\AjaxTestCase;
-
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\DataManagerSubscriber::disable
  *
@@ -12,34 +10,13 @@ use WPMedia\PHPUnit\Integration\AjaxTestCase;
  * @uses \WP_Rocket\Admin\Options::set
  * @uses \WP_Rocket\Admin\Options::get_option_name
  *
- * @group  RocketCDN
  * @group  AdminOnly
+ * @group  DataManagerSubscriber
+ * @group  RocketCDN
  */
 class Test_Disable extends AjaxTestCase {
-	/**
-	 * User's ID.
-	 * @var int
-	 */
-	private static $user_id = 0;
+	protected static $ajax_action = 'rocketcdn_disable';
 
-	/**
-	 * Set up the User ID before tests start.
-	 */
-	public static function wpSetUpBeforeClass( $factory ) {
-		self::$user_id = $factory->user->create( [ 'role' => 'administrator' ] );
-	}
-
-	public function setUp() {
-		parent::setUp();
-
-		wp_set_current_user( self::$user_id );
-		$_POST['nonce'] = wp_create_nonce( 'rocket-ajax' );
-		$this->action   = 'rocketcdn_disable';
-	}
-
-	/**
-	 * Test that the callback is registered to the action.
-	 */
 	public function testCallbackIsRegistered() {
 		$this->assertTrue( has_action( 'wp_ajax_rocketcdn_disable' ) );
 
@@ -49,37 +26,25 @@ class Test_Disable extends AjaxTestCase {
 		$this->assertEquals( 'disable', $callback_registration['function'][1] );
 	}
 
-	public function testShouldSendJSONSuccess() {
-		$_POST['action'] = 'rocketcdn_disable';
-
+	/**
+	 * @dataProvider configTestData
+	 */
+	public function testShouldReturnExpectedResponse( $expected ) {
 		add_option( 'rocketcdn_process', true );
 
+		// Run it.
 		$response = $this->callAjaxAction();
 
-		$this->assertObjectHasAttribute( 'success', $response );
-		$this->assertTrue( $response->success );
-		$this->assertObjectHasAttribute( 'data', $response );
-		$this->assertEquals(
-			(object) [
-				'process' => 'unsubscribe',
-				'message' => 'rocketcdn_disabled',
-			],
-			$response->data
-		);
-		$this->assertFalse( get_option( 'rocketcdn_process' ) );
-		$this->assertFalse( wp_next_scheduled( 'rocketcdn_check_subscription_status_event' ) );
+		// Check the response.
+		$this->assertSame( $expected['response']->success, $response->success );
+		$this->assertEquals( $expected['response']->data, $response->data );
 
-		$expected_subset = [
-			'cdn'        => 0,
-			'cdn_cnames' => [],
-			'cdn_zone'   => [],
-		];
+		$this->assertEquals( $expected['rocketcdn_process'], get_option( 'rocketcdn_process' ) );
+		$this->assertEquals( $expected['cron_is_scheduled'], wp_next_scheduled( 'rocketcdn_check_subscription_status_event' ) );
 
-		$options = get_option( 'wp_rocket_settings' );
-
-		foreach ( $expected_subset as $key => $value ) {
-			$this->assertArrayHasKey( $key, $options );
-			$this->assertSame( $value, $options[$key] );
+		// Check settings.
+		if ( isset( $expected['settings'] ) ) {
+			$this->assertSettings( $expected['settings'] );
 		}
 	}
 }

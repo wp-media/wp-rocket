@@ -15,15 +15,18 @@ use WP_Rocket\Tests\Integration\inc\Engine\Optimization\TestCase;
  * @uses   ::rocket_mkdir_p
  * @uses   ::rocket_put_content
  *
+ * @group  Optimize
  * @group  MinifyCSS
+ * @group  Minify
  */
 class Test_Process extends TestCase {
 	protected $path_to_test_data = '/inc/Engine/Optimization/Minify/CSS/Subscriber/process.php';
 
 	public function setUp() {
-		$this->wp_content_dir = 'vfs://public/wordpress/wp-content';
-
 		parent::setUp();
+
+		add_filter( 'pre_get_rocket_option_minify_css', [ $this, 'return_true' ] );
+		add_filter( 'pre_get_rocket_option_minify_css_key', [ $this, 'return_key' ] );
 	}
 
 	public function tearDown() {
@@ -31,6 +34,7 @@ class Test_Process extends TestCase {
 
 		remove_filter( 'pre_get_rocket_option_minify_css', [ $this, 'return_true' ] );
 		remove_filter( 'pre_get_rocket_option_minify_css_key', [ $this, 'return_key' ] );
+
 		$this->unsetSettings();
 	}
 
@@ -38,15 +42,16 @@ class Test_Process extends TestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldMinifyCSS( $original, $expected, $settings ) {
-		add_filter( 'pre_get_rocket_option_minify_css', [ $this, 'return_true' ] );
-		add_filter( 'pre_get_rocket_option_minify_css_key', [ $this, 'return_key' ] );
-
 		$this->settings = $settings;
 		$this->setSettings();
 
+		$actual = apply_filters( 'rocket_buffer', $original );
+
 		$this->assertSame(
-			$this->format_the_html( $expected ),
-			$this->format_the_html( apply_filters( 'rocket_buffer', $original ) )
+			$this->format_the_html( $expected['html'] ),
+			$this->format_the_html( $actual )
 		);
+
+		$this->assertFilesExists( $expected['files'] );
 	}
 }

@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Engine\Admin\Beacon;
 
+use WP_Rocket\Abstract_Render;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
@@ -9,14 +10,12 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * Helpscout Beacon integration
  *
  * @since  3.2
- * @author Remy Perona
  */
-class Beacon implements Subscriber_Interface {
+class Beacon extends Abstract_Render implements Subscriber_Interface {
 	/**
 	 * Options_Data instance
 	 *
 	 * @since  3.2
-	 * @author Remy Perona
 	 *
 	 * @var Options_Data $options
 	 */
@@ -26,7 +25,6 @@ class Beacon implements Subscriber_Interface {
 	 * Current user locale
 	 *
 	 * @since  3.2
-	 * @author Remy Perona
 	 *
 	 * @var string $locale
 	 */
@@ -36,11 +34,13 @@ class Beacon implements Subscriber_Interface {
 	 * Constructor
 	 *
 	 * @since  3.2
-	 * @author Remy Perona
 	 *
-	 * @param Options_Data $options Options instance.
+	 * @param Options_Data $options       Options instance.
+	 * @param string       $template_path Absolute path to the views/settings.
 	 */
-	public function __construct( Options_Data $options ) {
+	public function __construct( Options_Data $options, $template_path ) {
+		parent::__construct( $template_path );
+
 		$this->options = $options;
 	}
 
@@ -48,7 +48,6 @@ class Beacon implements Subscriber_Interface {
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
 	 * @since  3.2
-	 * @author Remy Perona
 	 *
 	 * @return array
 	 */
@@ -62,7 +61,6 @@ class Beacon implements Subscriber_Interface {
 	 * Configures and returns beacon javascript
 	 *
 	 * @since  3.2
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
@@ -80,44 +78,45 @@ class Beacon implements Subscriber_Interface {
 				break;
 		}
 
-		echo '<script type="text/javascript">!function(e,t,n){function a(){var e=t.getElementsByTagName("script")[0],n=t.createElement("script");n.type="text/javascript",n.async=!0,n.src="https://beacon-v2.helpscout.net",e.parentNode.insertBefore(n,e)}if(e.Beacon=n=function(t,n,a){e.Beacon.readyQueue.push({method:t,options:n,data:a})},n.readyQueue=[],"complete"===t.readyState)return a();e.attachEvent?e.attachEvent("onload",a):e.addEventListener("load",a,!1)}(window,document,window.Beacon||function(){});</script>
-			<script type="text/javascript">window.Beacon(\'init\', \'' . esc_js( $form_id ) . '\')</script>
-			<script>window.Beacon("identify", ' . wp_json_encode( $this->identify_data() ) . ');</script>
-			<script>window.Beacon("session-data", ' . wp_json_encode( $this->session_data() ) . ');</script>
-			<script>window.addEventListener("hashchange", function () {
-				window.Beacon("suggest");
-			  }, false);</script>';
+		$data = [
+			'form_id'  => $form_id,
+			'identify' => wp_json_encode( $this->identify_data() ),
+			'session'  => wp_json_encode( $this->session_data() ),
+		];
+
+		echo $this->generate( 'beacon', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**
 	 * Sets the locale property with the current user locale if not set yet
 	 *
 	 * @since  3.5
-	 * @author Remy Perona
 	 *
 	 * @return string
 	 */
 	private function get_user_locale() {
-		if ( isset( $this->locale ) ) {
-			return $this->locale;
+		if ( ! isset( $this->locale ) ) {
+			$this->locale = current( array_slice( explode( '_', get_user_locale() ), 0, 1 ) );
 		}
 
-		$this->locale = current( array_slice( explode( '_', get_user_locale() ), 0, 1 ) );
-
-		return $this->locale;
+		/**
+		 * Filters the locale ID for Beacon
+		 *
+		 * @since 3.6
+		 *
+		 * @param string $locale The locale ID.
+		 */
+		return apply_filters( 'rocket_beacon_locale', $this->locale );
 	}
 
 	/**
 	 * Returns Session specific data to pass to Beacon
 	 *
 	 * @since  3.3.3
-	 * @author Remy Perona
 	 *
 	 * @return array
 	 */
 	private function session_data() {
-		global $wp_version;
-
 		$options_to_send = [
 			'cache_mobile'            => 'Mobile Cache',
 			'do_caching_mobile_files' => 'Specific Cache for Mobile',
@@ -139,7 +138,6 @@ class Beacon implements Subscriber_Interface {
 			'minify_html'             => 'Minify HTML',
 			'manual_preload'          => 'Preload',
 			'sitemap_preload'         => 'Sitemap Preload',
-			'remove_query_strings'    => 'Remove Query Strings',
 			'cdn'                     => 'CDN Enabled',
 			'do_cloudflare'           => 'Cloudflare Enabled',
 			'varnish_auto_purge'      => 'Varnish Purge Enabled',
@@ -155,8 +153,8 @@ class Beacon implements Subscriber_Interface {
 
 		return [
 			'Website'                  => home_url(),
-			'WordPress Version'        => $wp_version,
-			'WP Rocket Version'        => WP_ROCKET_VERSION,
+			'WordPress Version'        => get_bloginfo( 'version' ),
+			'WP Rocket Version'        => rocket_get_constant( 'WP_ROCKET_VERSION' ),
 			'Theme'                    => $theme->get( 'Name' ),
 			'Plugins Enabled'          => implode( ' - ', rocket_get_active_plugins() ),
 			'WP Rocket Active Options' => implode( ' - ', $active_options ),
@@ -167,7 +165,6 @@ class Beacon implements Subscriber_Interface {
 	 * Returns Identify data to pass to Beacon
 	 *
 	 * @since  3.0
-	 * @author Remy Perona
 	 *
 	 * @return array
 	 */
@@ -189,7 +186,6 @@ class Beacon implements Subscriber_Interface {
 	 * Returns the IDs for the HelpScout docs for the corresponding section and language.
 	 *
 	 * @since  3.0
-	 * @author Remy Perona
 	 *
 	 * @param string $doc_id Section identifier.
 	 *
@@ -317,16 +313,6 @@ class Beacon implements Subscriber_Interface {
 				'en' => '54205957e4b099def9b55df0,5419ec47e4b099def9b5565f,5578cfbbe4b027e1978e6bb1,587904cf90336009736c678e,54b9509de4b07997ea3f27c7,59236dfb0428634b4a3358f9',
 				'fr' => '56967d73c69791436155e637,56967e80c69791436155e646,56957209c69791436155e0f6,58a337c12c7d3a576d352cde,56967eebc69791436155e649,593fe9882c7d3a0747cddb77',
 			],
-			'remove_query_strings'       => [
-				'en' => [
-					'id'  => '55231415e4b0221aadf25676',
-					'url' => 'https://docs.wp-rocket.me/article/56-remove-query-string-from-static-resources/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-				'fr' => [
-					'id'  => '569568269033603f7da30334',
-					'url' => 'https://fr.docs.wp-rocket.me/article/219-supprimer-les-chaines-de-requetes-sur-les-ressources-statiques/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-			],
 			'file_optimization'          => [
 				'en' => [
 					'id'  => '54205957e4b099def9b55df0',
@@ -430,6 +416,16 @@ class Beacon implements Subscriber_Interface {
 			'dns_prefetch'               => [
 				'en' => '541780fde4b005ed2d11784c',
 				'fr' => '5693d582c69791436155d645',
+			],
+			'fonts_preload'              => [
+				'en' => [
+					'id'  => '5eab7729042863474d19f647',
+					'url' => 'https://docs.wp-rocket.me/article/1317-preload-fonts/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '5eb3add02c7d3a5ea54aa66d',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1319-precharger-polices/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
 			],
 			'never_cache'                => [
 				'en' => '5519ab03e4b061031402119f,559110d0e4b027e1978eba09,56b55ba49033600da1c0b687,553ac7bfe4b0eb143c62af44,587920b5c697915403a0e1f4,5569b671e4b027e1978e3c51',
