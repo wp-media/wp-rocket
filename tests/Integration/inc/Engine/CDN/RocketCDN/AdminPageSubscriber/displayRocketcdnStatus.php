@@ -15,7 +15,6 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\AdminPageSubscrib
  * @group  RocketCDNAdminPage
  */
 class Test_DisplayRocketcdnStatus extends TestCase {
-	protected $path_to_test_data = '/inc/Engine/CDN/RocketCDN/AdminPageSubscriber/displayRocketcdnStatus.php';
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();

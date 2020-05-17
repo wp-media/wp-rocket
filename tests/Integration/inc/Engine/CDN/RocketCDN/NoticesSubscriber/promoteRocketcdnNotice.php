@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\NoticesSubscriber;
 
-use WP_Rocket\Tests\Integration\FilesystemTestCase;
+use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::promote_rocketcdn_notice
@@ -13,9 +13,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group  RocketCDN
  * @group  AdminOnly
  */
-class Test_PromoteRocketcdnNotice extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/Engine/CDN/RocketCDN/NoticesSubscriber/promoteRocketcdnNotice.php';
-
+class Test_PromoteRocketcdnNotice extends TestCase {
 	private function getActualHtml() {
 		ob_start();
 		do_action( 'admin_notices' );
