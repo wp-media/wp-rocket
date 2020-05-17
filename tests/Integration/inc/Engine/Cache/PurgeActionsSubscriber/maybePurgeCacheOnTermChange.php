@@ -14,20 +14,6 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 class Test_MaybePurgeCacheOnTermChange extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/Cache/PurgeActionsSubscriber/maybePurgeCacheOnTermChange.php';
 
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
-
-		// Clean out the cached dirs before we run these tests.
-		_rocket_get_cache_dirs( '', '', true );
-	}
-
-	public static function tearDownAfterClass() {
-		parent::tearDownAfterClass();
-
-		// Clean out the cached dirs before we leave this test class.
-		_rocket_get_cache_dirs( '', '', true );
-	}
-
 	public function setUp() {
 		parent::setUp();
 

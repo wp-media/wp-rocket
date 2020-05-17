@@ -28,6 +28,9 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 				static::$transients[ $transient ] = get_transient( $transient );
 			}
 		}
+
+		// Clean out the cached dirs before we run these tests.
+		_rocket_get_cache_dirs( '', '', true );
 	}
 
 	public static function tearDownAfterClass() {
@@ -44,6 +47,9 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 				delete_transient( $transient );
 			}
 		}
+
+		// Clean out the cached dirs before we leave this test class.
+		_rocket_get_cache_dirs( '', '', true );
 	}
 
 	public function setUp() {
@@ -62,6 +68,8 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 		if ( static::$use_settings_trait ) {
 			$this->tearDownSettings();
 		}
+
+		unset( $GLOBALS['debug_fs'] );
 
 		parent::tearDown();
 	}

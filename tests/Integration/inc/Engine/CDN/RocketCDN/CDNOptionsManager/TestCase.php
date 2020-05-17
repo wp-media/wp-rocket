@@ -18,9 +18,6 @@ abstract class TestCase extends FilesystemTestCase {
 		parent::setUpBeforeClass();
 
 		static::$rocketcdn_user_token = get_option( 'rocketcdn_user_token', null );
-
-		// Clean out the cached dirs before we run these tests.
-		_rocket_get_cache_dirs( '', '', true );
 	}
 
 	public function setUp() {
@@ -40,11 +37,7 @@ abstract class TestCase extends FilesystemTestCase {
 			update_option( 'rocketcdn_user_token', static::$rocketcdn_user_token );
 		}
 
-		// Clean out the cached dirs before we leave this test class.
-		_rocket_get_cache_dirs( '', '', true );
-
 		unset( $GLOBALS['sitepress'], $GLOBALS['q_config'], $GLOBALS['polylang'] );
-		unset( $GLOBALS['debug_fs'] );
 	}
 
 	protected function getCDNOptionsManager() {
