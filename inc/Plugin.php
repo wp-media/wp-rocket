@@ -8,7 +8,6 @@ use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 
-defined( 'ABSPATH' ) || exit;
 
 /**
  * Plugin Manager.
