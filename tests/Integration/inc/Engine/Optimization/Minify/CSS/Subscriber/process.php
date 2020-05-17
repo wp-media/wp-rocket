@@ -15,6 +15,7 @@ use WP_Rocket\Tests\Integration\inc\Engine\Optimization\TestCase;
  * @uses   ::rocket_mkdir_p
  * @uses   ::rocket_put_content
  *
+ * @group  Optimize
  * @group  MinifyCSS
  * @group  Minify
  */
@@ -22,9 +23,10 @@ class Test_Process extends TestCase {
 	protected $path_to_test_data = '/inc/Engine/Optimization/Minify/CSS/Subscriber/process.php';
 
 	public function setUp() {
-		$this->wp_content_dir = 'vfs://public/wp-content';
-
 		parent::setUp();
+
+		add_filter( 'pre_get_rocket_option_minify_css', [ $this, 'return_true' ] );
+		add_filter( 'pre_get_rocket_option_minify_css_key', [ $this, 'return_key' ] );
 	}
 
 	public function tearDown() {
@@ -32,6 +34,7 @@ class Test_Process extends TestCase {
 
 		remove_filter( 'pre_get_rocket_option_minify_css', [ $this, 'return_true' ] );
 		remove_filter( 'pre_get_rocket_option_minify_css_key', [ $this, 'return_key' ] );
+
 		$this->unsetSettings();
 	}
 
@@ -39,94 +42,16 @@ class Test_Process extends TestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldMinifyCSS( $original, $expected, $settings ) {
-		add_filter( 'pre_get_rocket_option_minify_css', [ $this, 'return_true' ] );
-		add_filter( 'pre_get_rocket_option_minify_css_key', [ $this, 'return_key' ] );
-
 		$this->settings = $settings;
 		$this->setSettings();
 
+		$actual = apply_filters( 'rocket_buffer', $original );
+
 		$this->assertSame(
 			$this->format_the_html( $expected['html'] ),
-			$this->format_the_html( apply_filters( 'rocket_buffer', $original ) )
+			$this->format_the_html( $actual )
 		);
 
-		foreach( $expected['files'] as $file ) {
-			$this->assertTrue( $this->filesystem->exists( $file ) );
-		}
-
-		$this->unset_settings( $settings );
-		remove_filter( 'pre_get_rocket_option_minify_css', [ $this, 'return_true' ] );
-		remove_filter( 'pre_get_rocket_option_minify_css_key', [ $this, 'return_key' ] );
-		remove_filter( 'rocket_wp_content_dir', [ $this, 'virtual_wp_content_dir' ] );
+		$this->assertFilesExists( $expected['files'] );
 	}
-
-    public function virtual_wp_content_dir() {
-        return $this->filesystem->getUrl( 'wp-content' );
-    }
-
-    public function return_key() {
-        return 123456;
-    }
-
-    private function set_settings( array $settings ) {
-        foreach ( $settings as $key => $value ) {
-            if ( 'minify_concatenate_css' === $key ) {
-                $callback = $value === 0 ? 'return_false' : 'return_true';
-                add_filter( 'pre_get_rocket_option_minify_concatenate_css', [ $this, $callback ] );
-                continue;
-            }
-
-            if ( 'cdn' === $key ) {
-                $callback = $value === 0 ? 'return_false' : 'return_true';
-                add_filter( 'pre_get_rocket_option_cdn', [ $this, $callback ] );
-                continue;
-            }
-
-            if ( 'cdn_cnames' === $key ) {
-                $this->cnames = $value;
-                add_filter( 'pre_get_rocket_option_cdn_cnames', [ $this, 'set_cnames'] );
-                continue;
-            }
-
-            if ( 'cdn_zone' === $key ) {
-                $this->zones = $value;
-                add_filter( 'pre_get_rocket_option_cdn_zone', [ $this, 'set_zones'] );
-                continue;
-            }
-        }
-    }
-
-    private function unset_settings( array $settings ) {
-        foreach ( $settings as $key => $value ) {
-            if ( 'minify_concatenate_css' === $key ) {
-                $callback = $value === 0 ? 'return_false' : 'return_true';
-                remove_filter( 'pre_get_rocket_option_minify_concatenate_css', [ $this, $callback ] );
-                continue;
-            }
-
-            if ( 'cdn' === $key ) {
-                $callback = $value === 0 ? 'return_false' : 'return_true';
-                remove_filter( 'pre_get_rocket_option_cdn', [ $this, $callback ] );
-                continue;
-            }
-
-            if ( 'cdn_cnames' === $key ) {
-                remove_filter( 'pre_get_rocket_option_cdn_cnames', [ $this, 'set_cnames'] );
-                continue;
-            }
-
-            if ( 'cdn_zone' === $key ) {
-                remove_filter( 'pre_get_rocket_option_cdn_zone', [ $this, 'set_zones'] );
-                continue;
-            }
-        }
-    }
-
-    public function set_cnames() {
-        return $this->cnames;
-    }
-
-    public function set_zones() {
-        return $this->zones;
-    }
 }

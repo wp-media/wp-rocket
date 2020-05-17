@@ -2,14 +2,18 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\Deactivation\DeactivationIntent;
 
-use WPMedia\PHPUnit\Integration\AjaxTestCase;
+use WP_Rocket\Tests\Integration\AjaxTestCase;
+use WP_Rocket\Tests\Integration\CapTrait;
 
 /**
  * @covers \WP_Rocket\Engine\Admin\Deactivation\DeactivationIntent::activate_safe_mode
+ *
  * @group  DeactivationIntent
  * @group  AdminOnly
  */
 class Test_ActivateSafeMode extends AjaxTestCase {
+	protected static $use_settings_trait = true;
+
 	public function setUp() {
 		parent::setUp();
 
@@ -17,9 +21,6 @@ class Test_ActivateSafeMode extends AjaxTestCase {
 		$this->action    = 'rocket_safe_mode';
 	}
 
-	/**
-	 * Test that the callback is registered to the action.
-	 */
 	public function testCallbackIsRegistered() {
 		$this->assertTrue( has_action( 'wp_ajax_rocket_safe_mode' ) );
 
@@ -33,16 +34,15 @@ class Test_ActivateSafeMode extends AjaxTestCase {
 		$this->_setRole( 'subscriber' );
 
 		$_POST['nonce'] = wp_create_nonce( 'rocket-ajax' );
-		
+
 		$response = $this->callAjaxAction();
-		
+
 		$this->assertObjectHasAttribute( 'success', $response );
 		$this->assertFalse( $response->success );
 	}
 
 	public function testShouldResetOptions() {
-		$admin = get_role( 'administrator' );
-		$admin->add_cap( 'rocket_manage_options' );
+		CapTrait::setAdminCap();
 
 		$this->_setRole( 'administrator' );
 
@@ -75,7 +75,5 @@ class Test_ActivateSafeMode extends AjaxTestCase {
 			$this->assertArrayHasKey( $key, $options );
 			$this->assertSame( $value, $options[$key] );
 		}
-
-		delete_option( 'wp_rocket_settings' );
 	}
 }

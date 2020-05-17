@@ -17,26 +17,6 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 class Test_RocketCleanFiles extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/functions/rocketCleanFiles.php';
 
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
-
-		// Clean out the cached dirs before we run these tests.
-		_rocket_get_cache_dirs( '', '', true );
-	}
-
-	public static function tearDownAfterClass() {
-		parent::tearDownAfterClass();
-
-		// Clean out the cached dirs before we leave this test class.
-		_rocket_get_cache_dirs( '', '', true );
-	}
-
-	public function tearDown() {
-		parent::tearDown();
-
-		unset( $GLOBALS['debug_fs'] );
-	}
-
 	/**
 	 * @dataProvider providerTestData
 	 */

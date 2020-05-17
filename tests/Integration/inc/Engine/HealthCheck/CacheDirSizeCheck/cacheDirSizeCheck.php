@@ -8,6 +8,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\HealthCheck\CacheDirSizeCheck::cache_dir_size_check
+ *
  * @group Subscriber
  * @group HealthCheck
  */

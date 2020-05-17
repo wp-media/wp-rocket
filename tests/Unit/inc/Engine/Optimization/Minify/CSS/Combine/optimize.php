@@ -3,28 +3,26 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\Minify\CSS\Combine;
 
 use Brain\Monkey\Filters;
-use Brain\Monkey\Functions;
 use MatthiasMullie\Minify;
 use Mockery;
 use WP_Rocket\Engine\Optimization\Minify\CSS\Combine;
-use WP_Rocket\Tests\StubTrait;
 use WP_Rocket\Tests\Unit\inc\Engine\Optimization\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\Minify\CSS\Combine::optimize
+ *
  * @group  Combine
  * @group  CombineCSS
+ * @group  Optimize
+ * @group  MinifyCSS
+ * @group  Minify
  */
 class Test_Optimize extends TestCase {
-	use StubTrait;
-
 	protected $path_to_test_data = '/inc/Engine/Optimization/Minify/CSS/Combine/combine.php';
-	private $combine;
-	private $minify;
+	private   $combine;
+	private   $minify;
 
 	public function setUp() {
-		$this->wp_content_dir = 'vfs://public/wordpress/wp-content';
-
 		parent::setUp();
 
 		$this->minify = Mockery::mock( Minify\CSS::class );
@@ -46,13 +44,13 @@ class Test_Optimize extends TestCase {
 
 		Filters\expectApplied( 'rocket_asset_url' )
 			->zeroOrMoreTimes()
-			->andReturnUsing( function( $url ) use ( $cdn_url, $site_url ) {
+			->andReturnUsing( function ( $url ) use ( $cdn_url, $site_url ) {
 				return str_replace( $cdn_url, $site_url, $url );
 			} );
 
 		Filters\expectApplied( 'rocket_css_url' )
 			->zeroOrMoreTimes()
-			->andReturnUsing( function( $url, $original_url ) use ( $cdn_url ) {
+			->andReturnUsing( function ( $url, $original_url ) use ( $cdn_url ) {
 				return str_replace( 'http://example.org', $cdn_url, $url );
 			} );
 
@@ -61,8 +59,6 @@ class Test_Optimize extends TestCase {
 			$this->combine->optimize( $original )
 		);
 
-		foreach ( $expected['files'] as $file ) {
-			$this->assertTrue( $this->filesystem->exists( $file ) );
-		}
+		$this->assertFilesExists( $expected['files'] );
 	}
 }
