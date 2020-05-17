@@ -14,7 +14,7 @@ use WP_Rocket\Engine\Admin\Beacon\Beacon;
  * @group  Beacon
  */
 class Test_InsertScript extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/Engine/Admin/Beacon/Beacon/insert-script.php';
+	protected $path_to_test_data = '/inc/Engine/Admin/Beacon/Beacon/insertScript.php';
 	private $beacon;
 	private $options;
 
@@ -58,7 +58,7 @@ class Test_InsertScript extends FilesystemTestCase {
 			return new WP_Theme( 'default', '/themes' );
 		} );
 		Functions\when( 'get_bloginfo' )->justReturn( '5.4' );
-		Functions\when( 'rocket_get_constant' )->justReturn( '3.6' );
+		$this->rocket_version = '3.6';
 		Functions\when( 'rocket_get_active_plugins' )->justReturn( [] );
 
 		$this->options->shouldReceive( 'get' )
