@@ -12,8 +12,28 @@ trait StubTrait {
 	protected $wp_cache_constant        = false;
 	protected $wp_content_dir           = 'vfs://public/wp-content';
 	protected $script_debug             = false;
-	protected $rocket_version           = '3.5.5.1';
+	protected $rocket_version;
 	protected $wp_rocket_debug          = false;
+	protected $wp_rocket_advanced_cache = true;
+	protected $disable_wp_cron          = false;
+
+	protected function resetStubProperties() {
+		$defaults = [
+			'abspath'                   => 'vfs://public/',
+			'disable_wp_cron'           => false,
+			'mock_rocket_get_constant'  => true,
+			'wp_cache_constant'         => false,
+			'wp_content_dir'            => 'vfs://public/wp-content',
+			'script_debug'              => false,
+			'rocket_version'            => null,
+			'wp_rocket_debug'           => false,
+			'$wp_rocket_advanced_cache' => true,
+		];
+
+		foreach ( $defaults as $property => $value ) {
+			$this->$property = $value;
+		}
+	}
 
 	protected function stubRocketGetConstant() {
 		if ( ! $this->mock_rocket_get_constant ) {
@@ -32,6 +52,9 @@ trait StubTrait {
 			case 'ABSPATH':
 				return $this->abspath;
 
+			case 'DISABLE_WP_CRON':
+				return $this->disable_wp_cron;
+
 			case 'FS_CHMOD_DIR':
 				return 0777;
 
@@ -46,6 +69,9 @@ trait StubTrait {
 
 			case 'WP_CONTENT_DIR':
 				return $this->wp_content_dir;
+
+			case 'WP_ROCKET_ADVANCED_CACHE':
+				return $this->wp_rocket_advanced_cache;
 
 			case 'WP_ROCKET_ASSETS_JS_URL':
 				return 'http://example.org/wp-content/plugins/wp-rocket/assets/js/';
@@ -81,11 +107,9 @@ trait StubTrait {
 				return "{$this->wp_content_dir}/plugins/wp-rocket/inc/vendors/";
 
 			case 'WP_ROCKET_VERSION':
-				if ( defined( $constant_name ) ) {
-					return constant( $constant_name );
+				if ( ! empty( $this->rocket_version ) ) {
+					return $this->rocket_version;
 				}
-
-				return $this->rocket_version;
 
 			default:
 				if ( ! rocket_has_constant( $constant_name ) ) {

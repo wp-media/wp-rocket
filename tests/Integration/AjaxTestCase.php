@@ -5,18 +5,17 @@ namespace WP_Rocket\Tests\Integration;
 use ReflectionObject;
 use WP_Rocket\Tests\SettingsTrait;
 use WP_Rocket\Tests\StubTrait;
-use WPMedia\PHPUnit\Integration\TestCase as BaseTestCase;
+use WPMedia\PHPUnit\Integration\AjaxTestCase as WPMediaAjaxTestCase;
 
-abstract class TestCase extends BaseTestCase {
+abstract class AjaxTestCase extends WPMediaAjaxTestCase {
 	use CapTrait;
 	use SettingsTrait;
 	use StubTrait;
 
-	protected static $use_settings_trait = true;
+	protected static $use_settings_trait = false;
 	protected static $transients         = [];
 
 	protected $config;
-	protected $original_wp_filter;
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
@@ -67,9 +66,11 @@ abstract class TestCase extends BaseTestCase {
 	}
 
 	public function tearDown() {
-		parent::tearDown();
+		unset( $_POST['action'], $_POST['nonce'] );
+		$this->action = null;
+		CapTrait::resetAdminCap();
 
-		$this->resetStubProperties();
+		parent::tearDown();
 
 		if ( static::$use_settings_trait ) {
 			$this->tearDownSettings();
@@ -91,28 +92,5 @@ abstract class TestCase extends BaseTestCase {
 		$filename = $obj->getFileName();
 
 		$this->config = $this->getTestData( dirname( $filename ), basename( $filename, '.php' ) );
-	}
-
-	protected function unregisterAllCallbacksExcept( $event_name, $method_name, $priority = 10 ) {
-		global $wp_filter;
-		$this->original_wp_filter = $wp_filter[ $event_name ]->callbacks;
-
-		foreach ( $this->original_wp_filter[ $priority ] as $key => $config ) {
-
-			// Skip if not this tests callback.
-			if ( substr( $key, - strlen( $method_name ) ) !== $method_name ) {
-				continue;
-			}
-
-			$wp_filter[ $event_name ]->callbacks = [
-				$priority => [ $key => $config ],
-			];
-		}
-	}
-
-	protected function restoreWpFilter( $event_name ) {
-		global $wp_filter;
-		$wp_filter[ $event_name ]->callbacks = $this->original_wp_filter;
-
 	}
 }

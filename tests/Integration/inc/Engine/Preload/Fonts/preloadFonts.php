@@ -12,33 +12,18 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_PreloadFonts extends TestCase {
 	protected $wp_head;
-	private $preload_fonts;
-	private $cdn;
-	private $cnames;
+	private   $preload_fonts;
+	private   $cdn;
+	private   $cnames;
 
 	public function setUp() {
 		parent::setUp();
 
-		// Unregister all callbacks except for the "preload_fonts".
-		global $wp_filter;
-		$this->wp_head = $wp_filter['wp_head']->callbacks;
-		foreach( $this->wp_head[10] as $callback => $config ) {
-			$is_preload_fonts = substr($callback, -strlen('preload_fonts') ) === 'preload_fonts';
-			if ( ! $is_preload_fonts ) {
-				continue;
-			}
-			$wp_filter['wp_head']->callbacks = [
-				10 => [
-					$callback => $config,
-				]
-			];
-		}
+		$this->unregisterAllCallbacksExcept( 'wp_head', 'preload_fonts', 10 );
 	}
 
 	public function tearDown() {
-		// Restore.
-		global $wp_filter;
-		$wp_filter['wp_head']->callbacks = $this->wp_head;
+		$this->restoreWpFilter( 'wp_head' );
 
 		parent::tearDown();
 

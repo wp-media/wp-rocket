@@ -8,7 +8,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\AdminPageSubscrib
  * @uses   ::rocket_get_constant
  *
  * @group  RocketCDN
- * @group  AdminOnly
+ * @group  Admin_Only
  * @group  RocketCDNAdminPage
  */
 class Test_AddSubscriptionModal extends TestCase {

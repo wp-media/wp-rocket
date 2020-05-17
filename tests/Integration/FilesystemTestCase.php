@@ -69,6 +69,8 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 			$this->tearDownSettings();
 		}
 
+		$this->resetStubProperties();
+
 		unset( $GLOBALS['debug_fs'] );
 
 		parent::tearDown();

@@ -24,9 +24,10 @@ abstract class TestCase extends BaseTestCase {
 	}
 
 	public function tearDown() {
-		remove_filter( 'home_url', [ $this, 'home_url_cb' ] );
-
 		parent::tearDown();
+
+		remove_filter( 'home_url', [ $this, 'home_url_cb' ] );
+		set_current_screen( 'front' );
 	}
 
 	public function home_url_cb() {

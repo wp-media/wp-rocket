@@ -8,6 +8,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 /**
  * @covers WPRocketUninstall::uninstall
  *
+ * @group  AdminOnly
  * @group  Uninstall
  * @group  vfs
  */
