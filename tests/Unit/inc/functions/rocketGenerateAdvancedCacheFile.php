@@ -27,8 +27,6 @@ class Test_RocketGenerateAdvancedCacheFile extends FilesystemTestCase {
 
 		$this->container      = Mockery::mock( 'container' );
 		$this->advanced_cache = Mockery::mock( AdvancedCache::class );
-		// Mocks the various filesystem constants.
-		$this->whenRocketGetConstant();
 	}
 
 	/**

@@ -21,13 +21,6 @@ class Test_NoticeContentNotOurs extends FilesystemTestCase {
 	public function setUp() {
         parent::setUp();
 
-        Functions\expect( 'rocket_get_constant' )
-            ->once()
-            ->with( 'WP_CONTENT_DIR' )
-            ->andReturn(
-                $this->filesystem->getUrl( 'wp-content' )
-            );
-
 		$this->advanced_cache = new AdvancedCache(
             $this->filesystem->getUrl( 'wp-content/plugins/wp-rocket/views/cache/' )
         );
@@ -55,12 +48,6 @@ class Test_NoticeContentNotOurs extends FilesystemTestCase {
         $_GET['activate']   = $config['activate'];
         Functions\when( 'current_user_can' )->justReturn( $config['cap'] );
         Functions\when( 'rocket_valid_key' )->justReturn( $config['valid_key'] );
-
-        Functions\expect( 'rocket_get_constant' )
-            ->atMost()
-            ->times( 1 )
-            ->with( 'WP_ROCKET_ADVANCED_CACHE' )
-            ->andReturn( $config['constant'] );
 
         Functions\when( 'rocket_notice_writing_permissions' )->justReturn( $config['message'] );
         Functions\when( 'rocket_notice_html' )->alias( function() use ( $expected ) {

@@ -22,13 +22,6 @@ class Test_NoticePermissions extends FilesystemTestCase {
 	public function setUp() {
         parent::setUp();
 
-        Functions\expect( 'rocket_get_constant' )
-            ->once()
-            ->with( 'WP_CONTENT_DIR' )
-            ->andReturn(
-                $this->filesystem->getUrl( 'wp-content' )
-            );
-
 		$this->advanced_cache = new AdvancedCache(
             $this->filesystem->getUrl( 'wp-content/plugins/wp-rocket/views/cache/' )
         );
@@ -58,11 +51,6 @@ class Test_NoticePermissions extends FilesystemTestCase {
             $this->filesystem->chmod( 'wp-content/advanced-cache.php', 0444 );
         }
 
-        Functions\expect( 'rocket_get_constant' )
-            ->atMost()
-            ->times( 1 )
-            ->with( 'WP_ROCKET_ADVANCED_CACHE' )
-            ->andReturn( $config['constant'] );
         Functions\when( 'get_current_user_id' )->justReturn( 1 );
         Functions\when( 'get_user_meta' )->justReturn( $config['boxes'] );
         Functions\when( 'rocket_notice_writing_permissions' )->justReturn( $config['message'] );
