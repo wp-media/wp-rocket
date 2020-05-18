@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\CriticalCSSSubscri
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSS::insert_critical_css_buffer
+ * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::insert_critical_css_buffer
  * @group  CriticalPath
  * @group  vfs
  */
@@ -34,7 +34,7 @@ class Test_InsertCriticalCssBuffer extends FilesystemTestCase {
 	/**
 	 * @dataProvider nonMultisiteTestData
 	 */
-	public function testShouldDoExpected( $config, $expected_file, $fallback = null ) {
+	public function testShouldDoExpected( $config, $expected_file, $fallback = null, $js_script = null ) {
 		add_filter( 'pre_get_rocket_option_async_css', [ $this, 'return_1' ] );
 
 		set_current_screen( 'front' );
@@ -117,6 +117,10 @@ class Test_InsertCriticalCssBuffer extends FilesystemTestCase {
 
 		if ( isset( $fallback ) && ! empty( $config[ 'fallback_css' ] ) ) {
 			$this->assertGreaterThan( 0, strpos( $html, $config[ 'fallback_css' ] ) );
+		}
+
+		if ( isset( $js_script ) && ! empty( $js_script ) ) {
+			$this->assertGreaterThan( 0, strpos( $html, $js_script ) );
 		}
 
 		if ( isset( $fallback ) && ! empty( $config[ 'fallback_css' ] ) ) {

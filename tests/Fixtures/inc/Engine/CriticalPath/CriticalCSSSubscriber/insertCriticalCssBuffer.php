@@ -86,6 +86,8 @@ return [
 					'excluded_type' => [],
 				],
 				'expected_file' => 'wp-content/cache/critical-css/1/front_page.css',
+				null,
+				'js_script'     => '<script>const wprRemoveCPCSS = () => { document.getElementById( "rocket-critical-css" ).remove(); }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>',
 			],
 			'testShouldReturnHomeCSS'                               => [
 				'config'        => [
@@ -107,6 +109,8 @@ return [
 					'excluded_type' => [ 'is_front_page', 'is_category', 'is_tag', 'is_tax', 'is_singular' ],
 				],
 				'expected_file' => 'wp-content/cache/critical-css/1/home.css',
+				null,
+				'js_script'     => '<script>const wprRemoveCPCSS = () => { document.getElementById( "rocket-critical-css" ).remove(); }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>',
 			],
 			'testShouldReturnFrontPageCSS'                          => [
 				'config'        => [
@@ -128,6 +132,8 @@ return [
 					'excluded_type' => [ 'is_category', 'is_tag', 'is_tax', 'is_singular' ],
 				],
 				'expected_file' => 'wp-content/cache/critical-css/1/front_page.css',
+				null,
+				'js_script'     => '<script>const wprRemoveCPCSS = () => { document.getElementById( "rocket-critical-css" ).remove(); }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>',
 			],
 			'testShouldReturnCategoryPageCSS'                       => [
 				'config'        => [
@@ -153,6 +159,8 @@ return [
 					'excluded_type' => [ 'is_tag', 'is_tax', 'is_singular' ],
 				],
 				'expected_file' => 'wp-content/cache/critical-css/1/category.css',
+				null,
+				'js_script'     => '<script>const wprRemoveCPCSS = () => { document.getElementById( "rocket-critical-css" ).remove(); }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>',
 			],
 			'testShouldReturnTagCSS'                                => [
 				'config'        => [
@@ -183,6 +191,8 @@ return [
 					'excluded_type' => [ 'is_tax', 'is_singular' ],
 				],
 				'expected_file' => 'wp-content/cache/critical-css/1/post_tag.css',
+				null,
+				'js_script'     => '<script>const wprRemoveCPCSS = () => { document.getElementById( "rocket-critical-css" ).remove(); }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>',
 			],
 			'testShouldReturnTaxCSS'                                => [
 				'config'        => [
@@ -224,6 +234,8 @@ return [
 					'excluded_type' => [ 'is_singular' ],
 				],
 				'expected_file' => 'wp-content/cache/critical-css/1/wptests_tax1.css',
+				null,
+				'js_script'     => '<script>const wprRemoveCPCSS = () => { document.getElementById( "rocket-critical-css" ).remove(); }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>',
 			],
 			'testShouldReturnTaxDoesNotExistReturnFalseFallbackCSS' => [
 				'config'        => [
@@ -271,6 +283,7 @@ return [
 				],
 				'expected_file'     => '',
 				'expected_fallback' => false,
+				'js_script'     => '',
 			],
 			'testShouldReturnTaxDoesNotExistReturnFallbackCSS'      => [
 				'config'        => [
@@ -319,6 +332,7 @@ return [
 				],
 				'expected_file'     => '',
 				'expected_fallback' => 'fallback',
+				'js_script'     => '<script>const wprRemoveCPCSS = () => { document.getElementById( "rocket-critical-css" ).remove(); }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>',
 			],
 			'testShouldReturnSingularCSS'                           => [
 				'config'        => [
@@ -370,6 +384,8 @@ return [
 					'excluded_type' => [],
 				],
 				'expected_file'     => 'wp-content/cache/critical-css/1/page.css',
+				null,
+				'js_script'         => '<script>const wprRemoveCPCSS = () => { document.getElementById( "rocket-critical-css" ).remove(); }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>',
 			],
 			'testShouldReturnSingularCustomPostsCSS'                => [
 				'config'        => [
@@ -421,6 +437,8 @@ return [
 					'excluded_type' => [],
 				],
 				'expected_file'     => 'wp-content/cache/critical-css/1/posts/post-1.css',
+				null,
+				'js_script'     => '<script>const wprRemoveCPCSS = () => { document.getElementById( "rocket-critical-css" ).remove(); }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>',
 			],
 		],
 		'multisite'     => [

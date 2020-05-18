@@ -405,10 +405,10 @@ JS;
 	 */
 	public function insert_critical_css_buffer( $buffer ) {
 		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) || rocket_get_constant( 'DONOTASYNCCSS' ) ) {
-			return;
+			return $buffer;
 		}
 
-		if ( ! $this->options->get( 'async_css' ) ) {
+		if ( ! $this->options->get( 'async_css', 0 ) ) {
 			return $buffer;
 		}
 
@@ -435,9 +435,8 @@ JS;
 		$critical_css_content = str_replace( '\\', '\\\\', $critical_css_content );
 
 		$buffer = preg_replace( '#</title>#iU', '</title><style id="rocket-critical-css">' . wp_strip_all_tags( $critical_css_content ) . '</style>', $buffer, 1 );
-		$buffer = preg_replace( '#</body>#iU', $this->return_remove_cpcss_script() . '</body>', $buffer, 1 );
 
-		return $buffer;
+		return preg_replace( '#</body>#iU', $this->return_remove_cpcss_script() . '</body>', $buffer, 1 );
 	}
 
 	/**
