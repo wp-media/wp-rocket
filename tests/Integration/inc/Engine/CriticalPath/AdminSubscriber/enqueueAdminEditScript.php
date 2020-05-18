@@ -2,30 +2,26 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\AdminSubscriber;
 
-use Brain\Monkey\Functions;
-use WP_Rocket\Tests\Integration\FilesystemTestCase;
+use WP_Rocket\Tests\Integration\CapTrait;
+use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\AdminSubscriber::enqueue_admin_edit_script
+ * @uses   ::rocket_get_constant
+ *
  * @group  AdminOnly
  * @group  CriticalPath
  */
-class Test_EnqueueAdminEditScript extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/Engine/CriticalPath/AdminSubscriber/enqueueAdminEditScript.php';
-
+class Test_EnqueueAdminEditScript extends TestCase {
 	private        $post_id;
 	private static $user_id;
 
-	public static function wpSetUpBeforeClass( $factory ) {
-		$admin = get_role( 'administrator' );
-		$admin->add_cap( 'rocket_manage_options' );
-		self::$user_id = $factory->user->create( [ 'role' => 'administrator' ] );
-	}
+	public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
 
-	public static function tearDownAfterClass() {
-		parent::tearDownAfterClass();
-		$admin = get_role( 'administrator' );
-		$admin->remove_cap( 'rocket_manage_options' );
+		CapTrait::setAdminCap();
+
+		self::$user_id = static::factory()->user->create( [ 'role' => 'administrator' ] );
 	}
 
 	public function tearDown() {
@@ -37,7 +33,7 @@ class Test_EnqueueAdminEditScript extends FilesystemTestCase {
 	}
 
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldEnqueueAdminScript( $config, $expected ) {
 		wp_set_current_user( static::$user_id );
@@ -45,7 +41,7 @@ class Test_EnqueueAdminEditScript extends FilesystemTestCase {
 
 		if ( in_array( $config['page'], [ 'edit.php', 'post.php' ], true ) ) {
 			$this->async_css = $config['options']['async_css'];
-			$this->post_id   = $config['post']['ID'];
+			$this->post_id   = $config['post']->ID;
 
 			add_filter( 'pre_get_rocket_option_async_css', [ $this, 'setCPCSSOption' ] );
 
@@ -53,11 +49,7 @@ class Test_EnqueueAdminEditScript extends FilesystemTestCase {
 				add_post_meta( $this->post_id, '_rocket_exclude_async_css', $config['is_option_excluded'], true );
 			}
 
-			$GLOBALS['post'] = (object) [
-				'ID'          => $this->post_id,
-				'post_status' => $config['post']['post_status'],
-				'post_type'   => $config['post']['post_type'],
-			];
+			$GLOBALS['post'] = $config['post'];
 		}
 
 		$wp_scripts = wp_scripts();

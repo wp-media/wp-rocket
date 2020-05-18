@@ -18,13 +18,6 @@ class Test_Generate extends RESTVfsTestCase {
 		self::$post_id = $factory->post->create();
 	}
 
-	public function setUp() {
-		parent::setUp();
-
-		// Mocks the various filesystem constants.
-		$this->whenRocketGetConstant();
-	}
-
 	protected function doTest( $site_id, $config, $expected ) {
 		if ( isset( $config['post_data'] ) ) {
 			$config['post_data']['ID'] = self::$post_id;

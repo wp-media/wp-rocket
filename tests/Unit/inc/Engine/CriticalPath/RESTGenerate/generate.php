@@ -23,13 +23,6 @@ class Test_Generate extends FilesystemTestCase {
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/WP_REST_Request.php';
 	}
 
-	public function setUp() {
-		parent::setUp();
-
-		// Mocks the various filesystem constants.
-		$this->whenRocketGetConstant();
-	}
-
 	/**
 	 * @dataProvider nonMultisiteTestData
 	 */

@@ -12,7 +12,6 @@ use WPMedia\PHPUnit\Integration\TestCase;
  * @group  RocketCDN
  */
 class Test_AddDismissScript extends TestCase {
-
 	private function get_script( $nonce ) {
 		return $this->format_the_html( "<script>
 		window.addEventListener( 'load', function() {
