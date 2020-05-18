@@ -19,9 +19,6 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		// Mocks the various filesystem constants.
-		$this->whenRocketGetConstant();
-
 		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/admin/options.php';
 
 		Functions\when( 'wp_json_encode' )->alias(

@@ -19,6 +19,7 @@ return [
 			],
 		],
 	],
+
 	'test_data' => [
 		'testShouldNotEnqueueScriptDifferentPage'        => [
 			'config'   => [

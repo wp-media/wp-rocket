@@ -53,10 +53,6 @@ class Test_EnqueueAdminEditScript extends FilesystemTestCase {
 		}
 
 		if ( $expected ) {
-			Functions\expect( 'rocket_get_constant' )
-				->once()
-				->with( 'WP_ROCKET_ASSETS_JS_URL' )
-				->andReturn( $this->filesystem->getUrl( 'wp-content/plugins/wp-rocket/assets/js/' ) );
 			Functions\expect( 'wp_enqueue_script' )->once();
 		} else {
 			Functions\expect( 'wp_enqueue_script' )->never();

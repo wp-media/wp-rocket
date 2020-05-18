@@ -10,6 +10,7 @@ use WPMedia\PHPUnit\Integration\AdminTestCase;
  * @group  Settings
  */
 class Test_SanitizeCallback extends AdminTestCase {
+
 	/**
 	 * @dataProvider addDNSPrefetchProvider
 	 */
