@@ -1,46 +1,34 @@
 <?php
+
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\DataManager;
 
 use WP_Rocket\Engine\CriticalPath\DataManager;
-use WP_Rocket\Tests\Integration\FilesystemTestCase;
-use Brain\Monkey\Functions;
+use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\DataManager::set_cache_job_id
- * @group CriticalPath
- * @group  vfs
+ *
+ * @group  CriticalPath
  */
-class Test_SetCacheJobId extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/Engine/CriticalPath/DataManager/setCacheJobId.php';
+class Test_SetCacheJobId extends TestCase {
+	private $transient;
+
+	public function tearDown() {
+		parent::tearDown();
+
+		delete_transient( $this->transient );
+	}
 
 	/**
-	 * @dataProvider nonMultisiteTestData
+	 * @dataProvider configTestData
 	 */
-	public function testShouldDoExpected( $config, $expected ) {
-		$item_url = isset( $config['item_url'] ) ? $config['item_url'] : '';
-		$job_id   = isset( $config['job_id'] ) ? $config['job_id']     : null;
-		$saved    = isset( $config['saved'] ) ? $config['saved']       : false;
+	public function testShouldDoExpected( $item_url, $job_id ) {
+		$this->transient = 'rocket_specific_cpcss_job_' . md5( $item_url );
 
-		Functions\expect( 'get_current_blog_id' )->once();
+		$data_manager = new DataManager( '', null );
+		$actual       = $data_manager->set_cache_job_id( $item_url, $job_id );
 
-		Functions\expect( 'set_transient' )
-			->once()
-			->with( 'rocket_specific_cpcss_job_'.md5( $item_url ), $job_id, HOUR_IN_SECONDS )
-			->andReturn( $saved );
-
-		$data_manager = new DataManager( '' );
-		$actual = $data_manager->set_cache_job_id( $item_url, $job_id );
-
-		$this->assertSame($expected['saved'], $actual);
-
+		$this->assertTrue( $actual );
+		$this->assertSame( $job_id, get_transient( $this->transient ) );
 	}
-
-	public function nonMultisiteTestData() {
-		if ( empty( $this->config ) ) {
-			$this->loadConfig();
-		}
-
-		return $this->config['test_data']['non_multisite'];
-	}
-
 }

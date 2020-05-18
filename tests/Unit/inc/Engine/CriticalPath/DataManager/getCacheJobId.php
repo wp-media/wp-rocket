@@ -23,7 +23,6 @@ class Test_GetCacheJobId extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $item_url, $expected ) {
-
 		Functions\expect( 'get_transient' )
 			->once()
 			->with( 'rocket_specific_cpcss_job_' . md5( $item_url ) )

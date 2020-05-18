@@ -13,7 +13,7 @@ return [
 	],
 	[
 		'item_url' => 'http://www.example.com/?p=3',
-		'expected' => 5,
+		'expected' => 6,
 	],
 
 	// Should return false when the job ID does not exist.
