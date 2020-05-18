@@ -151,5 +151,4 @@ class DataManager {
 
 		return 'rocket_specific_cpcss_job_' . $encoded_url;
 	}
-
 }

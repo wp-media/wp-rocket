@@ -26,7 +26,7 @@ class Test_DeleteCacheJobId extends TestCase {
 		$this->transient = 'rocket_specific_cpcss_job_' . md5( $item_url );
 
 		if ( $expected ) {
-			set_transient( $this->transient, __METHOD__ );
+			set_transient( $this->transient, 1, MINUTE_IN_SECONDS );
 		}
 
 		$data_manager = new DataManager( '', null );

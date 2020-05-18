@@ -11,7 +11,7 @@ return [
 		'expected' => true,
 	],
 	[
-		'item_url' => 'http://www.example.com/?p=2',
+		'item_url' => 'http://www.example.com/?p=3',
 		'expected' => true,
 	],
 
