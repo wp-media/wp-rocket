@@ -38,6 +38,7 @@ return [
 				'logged_in' => false,
 				'files'     => [
 					'/path-to/home1/wp-content/cache/wp-rocket/example.com-Greg-594d03f6ae698691165999/home1',
+					'/path-to/home1/wp-content/cache/wp-rocket/example.com-Greg-594d03f6ae698691165999/home1/abc',
 				],
 			],
 			[
@@ -46,6 +47,7 @@ return [
 				'logged_in' => false,
 				'files'     => [
 					'/path-to/home1/wp-content/cache/wp-rocket/example.com-Greg-594d03f6ae698691165999/home2',
+					'/path-to/home1/wp-content/cache/wp-rocket/example.com-Greg-594d03f6ae698691165999/home2/abc',
 				],
 			],
 			[
@@ -54,6 +56,7 @@ return [
 				'logged_in' => false,
 				'files'     => [
 					'/path-to/home1/wp-content/cache/wp-rocket/example.com-Greg-594d03f6ae698691165999/home3',
+					'/path-to/home1/wp-content/cache/wp-rocket/example.com-Greg-594d03f6ae698691165999/home3/abc',
 				],
 			],
 			[
@@ -62,6 +65,7 @@ return [
 				'logged_in' => false,
 				'files'     => [
 					'/path-to/home1/wp-content/cache/wp-rocket/example.com-Greg-594d03f6ae698691165999/home4/',
+					'/path-to/home1/wp-content/cache/wp-rocket/example.com-Greg-594d03f6ae698691165999/home4/abc/',
 				],
 			],
 			[
@@ -70,6 +74,7 @@ return [
 				'logged_in' => false,
 				'files'     => [
 					'/path-to/home1/wp-content/cache/wp-rocket/example.com-Greg-594d03f6ae698691165999/home5/',
+					'/path-to/home1/wp-content/cache/wp-rocket/example.com-Greg-594d03f6ae698691165999/home5/abc/',
 				],
 			],
 			[
@@ -78,16 +83,23 @@ return [
 				'logged_in' => false,
 				'files'     => [
 					'/path-to/home1/wp-content/cache/wp-rocket/example.com-Greg-594d03f6ae698691165999/home6/',
+					'/path-to/home1/wp-content/cache/wp-rocket/example.com-Greg-594d03f6ae698691165999/home6/abc/',
 				],
 			],
 		],
 		[
-			'http://example.com/home1',
+			'http://example.com/home1/',
+			'http://example.com/home1/abc/',
 			'http://example.com/home2/',
+			'http://example.com/home2/abc/',
 			'http://example.com/home3/',
+			'http://example.com/home3/abc/',
 			'http://example.com/home4/',
+			'http://example.com/home4/abc/',
 			'http://example.com/home5/',
-			'http://example.com/home6',
+			'http://example.com/home5/abc/',
+			'http://example.com/home6/',
+			'http://example.com/home6/abc/',
 		],
 	],
 	'preloadUrlsUnSlashedPermalink' => [
@@ -100,6 +112,7 @@ return [
 				'logged_in' => false,
 				'files'     => [
 					'/path-to/home1/wp-content/cache/wp-rocket/example.com-Greg-594d03f6ae698691165999/home1',
+					'/path-to/home1/wp-content/cache/wp-rocket/example.com-Greg-594d03f6ae698691165999/home1/abc',
 				],
 			],
 			[
@@ -108,6 +121,7 @@ return [
 				'logged_in' => false,
 				'files'     => [
 					'/path-to/home1/wp-content/cache/wp-rocket/example.com-Greg-594d03f6ae698691165999/home2',
+					'/path-to/home1/wp-content/cache/wp-rocket/example.com-Greg-594d03f6ae698691165999/home2/abc',
 				],
 			],
 			[
@@ -116,6 +130,7 @@ return [
 				'logged_in' => false,
 				'files'     => [
 					'/path-to/home1/wp-content/cache/wp-rocket/example.com-Greg-594d03f6ae698691165999/home3',
+					'/path-to/home1/wp-content/cache/wp-rocket/example.com-Greg-594d03f6ae698691165999/home3/abc',
 				],
 			],
 			[
@@ -124,6 +139,7 @@ return [
 				'logged_in' => false,
 				'files'     => [
 					'/path-to/home1/wp-content/cache/wp-rocket/example.com-Greg-594d03f6ae698691165999/home4/',
+					'/path-to/home1/wp-content/cache/wp-rocket/example.com-Greg-594d03f6ae698691165999/home4/abc',
 				],
 			],
 			[
@@ -132,6 +148,7 @@ return [
 				'logged_in' => false,
 				'files'     => [
 					'/path-to/home1/wp-content/cache/wp-rocket/example.com-Greg-594d03f6ae698691165999/home5/',
+					'/path-to/home1/wp-content/cache/wp-rocket/example.com-Greg-594d03f6ae698691165999/home5/abc',
 				],
 			],
 			[
@@ -140,16 +157,23 @@ return [
 				'logged_in' => false,
 				'files'     => [
 					'/path-to/home1/wp-content/cache/wp-rocket/example.com-Greg-594d03f6ae698691165999/home6/',
+					'/path-to/home1/wp-content/cache/wp-rocket/example.com-Greg-594d03f6ae698691165999/home6/abc/',
 				],
 			],
 		],
 		[
 			'http://example.com/home1',
-			'http://example.com/home2/',
-			'http://example.com/home3/',
-			'http://example.com/home4/',
-			'http://example.com/home5/',
+			'http://example.com/home1/abc',
+			'http://example.com/home2',
+			'http://example.com/home2/abc',
+			'http://example.com/home3',
+			'http://example.com/home3/abc',
+			'http://example.com/home4',
+			'http://example.com/home4/abc',
+			'http://example.com/home5',
+			'http://example.com/home5/abc',
 			'http://example.com/home6',
+			'http://example.com/home6/abc',
 		],
 	],
 ];
