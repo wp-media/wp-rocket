@@ -31,7 +31,7 @@ class Test_DeleteCPCSS extends FilesystemTestCase {
 		}
 
 		if ( isset( $config['change_permissions'] ) && $config['change_permissions'] ) {
-			$this->changePermissions( $cache_path );
+			$this->changePermissions( $file );
 		}
 
 		// Run it.
@@ -50,10 +50,5 @@ class Test_DeleteCPCSS extends FilesystemTestCase {
 			$this->assertSame( $expected['message'], $actual->get_error_message() );
 			$this->assertSame( $expected['data'], $actual->get_error_data() );
 		}
-	}
-
-	private function changePermissions( $cache_path ) {
-		$dir = $this->filesystem->getDir( "{$cache_path}1/posts/" );
-		$dir->chmod( 0000 ); // Only the root user.
 	}
 }

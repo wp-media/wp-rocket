@@ -13,6 +13,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
  *
  * @group  CriticalPath
  * @group  vfs
+ * @group thisone
  */
 class Test_DeleteCPCSS extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/DataManager/deleteCPCSS.php';
@@ -32,7 +33,7 @@ class Test_DeleteCPCSS extends FilesystemTestCase {
 		}
 
 		if ( isset( $config['change_permissions'] ) && $config['change_permissions'] ) {
-			$this->changePermissions( $cache_path );
+			$this->changePermissions( $file );
 		}
 
 		// Run it.
@@ -58,10 +59,5 @@ class Test_DeleteCPCSS extends FilesystemTestCase {
 		Functions\when( 'wp_strip_all_tags' )->returnArg();
 
 		return new DataManager( $cpcss_cache_path, $this->filesystem );
-	}
-
-	private function changePermissions( $cache_path ) {
-		$dir = $this->filesystem->getDir( "{$cache_path}1/posts/" );
-		$dir->chmod( 0000 ); // Only the root user.
 	}
 }
