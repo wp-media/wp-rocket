@@ -19,12 +19,6 @@ class Test_DeleteCPCSS extends FilesystemTestCase {
 
 	protected static $mockCommonWpFunctionsInSetUp = true;
 
-	public function setUp() {
-		parent::setUp();
-
-		Functions\when( 'get_current_blog_id' )->justReturn( 1 );
-	}
-
 	/**
 	 * @dataProvider providerTestData
 	 */
@@ -60,7 +54,7 @@ class Test_DeleteCPCSS extends FilesystemTestCase {
 	}
 
 	private function setUpMocks( $cpcss_cache_path ) {
-		Functions\expect( 'get_current_blog_id' )->once()->andReturn( 1 );
+		Functions\when( 'get_current_blog_id' )->justReturn( 1 );
 		Functions\when( 'wp_strip_all_tags' )->returnArg();
 
 		return new DataManager( $cpcss_cache_path, $this->filesystem );
