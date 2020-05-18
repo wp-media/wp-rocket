@@ -36,6 +36,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @since 3.6
 	 */
 	public function register() {
+		$filesystem        = rocket_direct_filesystem();
 		$options           = $this->getContainer()->get( 'options' );
 		$critical_css_path = rocket_get_constant( 'WP_ROCKET_CRITICAL_CSS_PATH' );
 
@@ -49,7 +50,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		// REST CPCSS START.
 		$this->getContainer()->share( 'rest_cpcss_api_client', 'WP_Rocket\Engine\CriticalPath\APIClient' );
 		$this->getContainer()->share( 'rest_cpcss_data_manager', 'WP_Rocket\Engine\CriticalPath\DataManager' )
-			->withArgument( $critical_css_path );
+			->withArgument( $critical_css_path )
+			->withArgument( $filesystem );
 		$this->getContainer()->share( 'rest_cpcss_wp_post', 'WP_Rocket\Engine\CriticalPath\RESTWPPost' )
 			->withArgument( $this->getContainer()->get( 'rest_cpcss_data_manager' ) )
 			->withArgument( $this->getContainer()->get( 'rest_cpcss_api_client' ) );

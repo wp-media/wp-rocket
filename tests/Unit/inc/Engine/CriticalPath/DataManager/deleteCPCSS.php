@@ -8,6 +8,7 @@ use WP_Error;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\DataManager::delete_cpcss
+ *
  * @group CriticalPath
  * @group  vfs
  */
