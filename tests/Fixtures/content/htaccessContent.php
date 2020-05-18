@@ -1,7 +1,9 @@
 <?php
 
+$rocket_version = rocket_get_constant( 'WP_ROCKET_VERSION' );
+
 $start = <<<HTACCESS
-# BEGIN WP Rocket v3.5.4
+# BEGIN WP Rocket v{$rocket_version}
 # Use UTF-8 encoding for anything served text/plain or text/html
 AddDefaultCharset UTF-8
 # Force UTF-8 for a number of file formats
@@ -50,7 +52,7 @@ HTACCESS;
 
 $middle = <<<HTACCESS
 <IfModule mod_headers.c>
-Header set X-Powered-By "WP Rocket/3.5.4"
+Header set X-Powered-By "WP Rocket/{$rocket_version}"
 Header unset Pragma
 Header append Cache-Control "public"
 Header unset Last-Modified

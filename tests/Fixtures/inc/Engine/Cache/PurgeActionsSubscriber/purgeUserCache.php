@@ -29,6 +29,10 @@ return [
 		],
 	],
 
+	'settings' => [
+		'secret_cache_key' => '594d03f6ae698691165999',
+	],
+
 	// Test data.
 	'test_data' => [
 		[

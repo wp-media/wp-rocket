@@ -25,25 +25,10 @@ class Test_RocketCleanDomain extends FilesystemTestCase {
 
 	protected $path_to_test_data = '/inc/functions/rocketCleanDomain.php';
 
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
-
-		// Clean out the cached dirs before we run these tests.
-		_rocket_get_cache_dirs( '', '', true );
-	}
-
-	public static function tearDownAfterClass() {
-		parent::tearDownAfterClass();
-
-		// Clean out the cached dirs before we leave this test class.
-		_rocket_get_cache_dirs( '', '', true );
-	}
-
 	public function tearDown() {
 		parent::tearDown();
 
 		unset( $GLOBALS['sitepress'], $GLOBALS['q_config'], $GLOBALS['polylang'] );
-		unset( $GLOBALS['debug_fs'] );
 	}
 
 	/**
