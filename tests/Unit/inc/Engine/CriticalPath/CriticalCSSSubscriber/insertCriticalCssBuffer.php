@@ -14,7 +14,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::insert_critical_css_buffer
  * @group  Subscribers
- * @group  CriticalCssX
+ * @group  CriticalCss
  * @group  vfs
  */
 class Test_InsertCriticalCssBuffer extends FilesystemTestCase {
@@ -31,7 +31,7 @@ class Test_InsertCriticalCssBuffer extends FilesystemTestCase {
 		Functions\expect( 'home_url' )->once()->with( '/' )->andReturn( 'http://example.com' );
 		Functions\when( 'wp_strip_all_tags' )->returnArg();
 
-		$this->critical_css = Mockery::mock( CriticalCSS::class, [ $this->createMock( CriticalCSSGeneration::class ) ] );
+		$this->critical_css = Mockery::mock( CriticalCSS::class, [ Mockery::mock( CriticalCSSGeneration::class ) ] );
 		$this->options      = Mockery::mock( Options_Data::class );
 		$this->subscriber   = new CriticalCSSSubscriber( $this->critical_css, $this->options );
 	}
