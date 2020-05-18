@@ -17,7 +17,7 @@ define( 'WP_ROCKET_CACHE_ROOT_URL', 'vfs://public/wp-content/cache/' );
  *
  * @since 3.5
  */
-function load_original_functions_before_mocking() {
+function load_original_files_before_mocking() {
 	$originals = [
 		'inc/constants.php',
 		'inc/functions/api.php',
@@ -28,10 +28,18 @@ function load_original_functions_before_mocking() {
 		'inc/functions/posts.php',
 		'inc/functions/htaccess.php',
 	];
-
 	foreach ( $originals as $file ) {
 		require_once WP_ROCKET_PLUGIN_ROOT . $file;
 	}
+
+	$fixtures = [
+		'/WP_Error.php',
+		'/WP_Theme.php',
+		'/WPDieException.php',
+	];
+	foreach ( $fixtures as $file ) {
+		require_once WP_ROCKET_TESTS_FIXTURES_DIR . $file;
+	}
 }
 
-load_original_functions_before_mocking();
+load_original_files_before_mocking();

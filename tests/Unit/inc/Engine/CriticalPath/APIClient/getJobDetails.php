@@ -15,12 +15,6 @@ use WP_Error;
 class Test_GetJobDetails extends TestCase {
 	protected static $mockCommonWpFunctionsInSetUp = true;
 
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
-
-		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/WP_Error.php';
-	}
-
 	/**
 	 * @dataProvider configTestData
 	 */
@@ -34,6 +28,7 @@ class Test_GetJobDetails extends TestCase {
 			// Assert success.
 			$this->assertSame( $expected['status'], $actual->status );
 			$this->assertSame( $expected['data'], (array) $actual->data );
+
 		} else {
 			// Assert WP_Error.
 			$this->assertInstanceOf( WP_Error::class, $actual );
