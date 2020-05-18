@@ -1,45 +1,37 @@
 <?php
+
 namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\DataManager;
 
-use WP_Rocket\Engine\CriticalPath\DataManager;
-use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use Brain\Monkey\Functions;
+use WP_Rocket\Engine\CriticalPath\DataManager;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\DataManager::delete_cache_job_id
- * @group CriticalPath
+ *
+ * @group  CriticalPath
  * @group  vfs
  */
-class Test_DeleteCacheJobId extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/Engine/CriticalPath/DataManager/deleteCacheJobId.php';
+class Test_DeleteCacheJobId extends TestCase {
+
+	protected function setUp() {
+		parent::setUp();
+
+		Functions\when( 'get_current_blog_id' )->justReturn( 1 );
+	}
 
 	/**
-	 * @dataProvider nonMultisiteTestData
+	 * @dataProvider configTestData
 	 */
-	public function testShouldDoExpected( $config, $expected ) {
-		$item_url = isset( $config['item_url'] ) ? $config['item_url'] : '';
-		$deleted  = isset( $config['deleted'] )  ? $config['deleted']  : false;
-
-		Functions\expect( 'get_current_blog_id' )->once()->andReturn( 1 );
-
+	public function testShouldDoExpected( $item_url, $expected ) {
 		Functions\expect( 'delete_transient' )
 			->once()
-			->with( 'rocket_specific_cpcss_job_'.md5( $item_url ) )
-			->andReturn( $deleted );
+			->with( 'rocket_specific_cpcss_job_' . md5( $item_url ) )
+			->andReturn( $expected );
 
-		$data_manager = new DataManager( '' );
+		$data_manager = new DataManager( '', null );
 		$actual       = $data_manager->delete_cache_job_id( $item_url );
 
-		$this->assertSame($expected['deleted'], $actual);
-
+		$this->assertSame( $expected, $actual );
 	}
-
-	public function nonMultisiteTestData() {
-		if ( empty( $this->config ) ) {
-			$this->loadConfig();
-		}
-
-		return $this->config['test_data']['non_multisite'];
-	}
-
 }

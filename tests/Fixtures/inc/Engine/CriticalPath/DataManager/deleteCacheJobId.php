@@ -1,29 +1,31 @@
 <?php
 
 return [
-	'vfs_dir'   => 'wp-content/cache/critical-css/',
+	// Transient exists before running this test.
+	[
+		'item_url' => 'http://www.example.com/?p=1',
+		'expected' => true,
+	],
+	[
+		'item_url' => 'http://www.example.com/?p=2',
+		'expected' => true,
+	],
+	[
+		'item_url' => 'http://www.example.com/?p=2',
+		'expected' => true,
+	],
 
-	'test_data' => [
-		'non_multisite' => [
-			'testShouldJobIdDeletedFromCache'     => [
-				'config'   => [
-					'item_url' => 'http://www.example.com/?p=1',
-					'deleted'  => true
-				],
-				'expected' => [
-					'deleted'  => true,
-				]
-			],
-			'testShouldBailOutOnSavingCache'     => [
-				'config'   => [
-					'item_url' => 'http://www.example.com/?p=2',
-					'deleted'  => false
-				],
-				'expected' => [
-					'deleted' => false,
-				]
-			],
-		],
-		'multisite' => []
+	// The transient does not exist before this test.
+	[
+		'item_url' => 'http://www.example.com/lorem-ipsum',
+		'expected' => false,
+	],
+	[
+		'item_url' => 'http://www.example.com/minim-veniam',
+		'expected' => false,
+	],
+	[
+		'item_url' => 'http://www.example.com/?p=67',
+		'expected' => false,
 	],
 ];

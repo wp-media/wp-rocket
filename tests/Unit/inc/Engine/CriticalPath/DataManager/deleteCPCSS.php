@@ -13,12 +13,17 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
  *
  * @group  CriticalPath
  * @group  vfs
- * @group thisone
  */
 class Test_DeleteCPCSS extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/DataManager/deleteCPCSS.php';
 
 	protected static $mockCommonWpFunctionsInSetUp = true;
+
+	public function setUp() {
+		parent::setUp();
+
+		Functions\when( 'get_current_blog_id' )->justReturn( 1 );
+	}
 
 	/**
 	 * @dataProvider providerTestData
