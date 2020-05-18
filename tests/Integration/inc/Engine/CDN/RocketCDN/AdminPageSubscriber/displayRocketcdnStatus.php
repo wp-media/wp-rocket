@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\AdminPageSubscriber;
 
-use WP_Rocket\Tests\Integration\FilesystemTestCase;
+use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber::display_rocketcdn_status
@@ -16,8 +16,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group  RocketCDN
  * @group  AdminOnly
  */
-class Test_DisplayRocketcdnStatus extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/classes/subscriber/CDN/RocketCDN/AdminPageSubscriber/displayRocketcdnStatus.php';
+class Test_DisplayRocketcdnStatus extends TestCase {
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();

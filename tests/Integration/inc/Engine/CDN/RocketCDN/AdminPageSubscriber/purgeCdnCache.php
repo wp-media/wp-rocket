@@ -9,7 +9,6 @@ use WPDieException;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber::purge_cdn_cache
- *
  * @uses ::rocket_get_constant
  *
  * @group  RocketCDN

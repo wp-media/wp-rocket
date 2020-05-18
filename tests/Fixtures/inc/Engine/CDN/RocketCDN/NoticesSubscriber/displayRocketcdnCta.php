@@ -1,85 +1,66 @@
 <?php
 
 return [
-	'vfs_dir'   => 'public/',
 
-	// Virtual filesystem structure.
-	'structure' => [
-		'wp-content' => [
-			'plugins' => [
-				'wp-rocket' => [
-					'views' => [
-						'settings' => [
-							'rocketcdn' => [
-								'cta-big.php' => file_get_contents( WP_ROCKET_PLUGIN_ROOT . 'views/settings/rocketcdn/cta-big.php' ),
-								'cta-small.php' => file_get_contents( WP_ROCKET_PLUGIN_ROOT . 'views/settings/rocketcdn/cta-small.php' ),
-							],
-						],
-					],
+	'testShouldNotDisplayNoticeWhenActive' => [
+		// RocketCDN data.
+		[
+			'rocketcdn_status'  => [
+				'subscription_status' => 'running',
+			],
+			'rocketcdn_pricing' => [],
+		],
+		// Expected.
+		[
+			'unit'        => [
+				'cta-small' => [],
+				'cta-big'   => [],
+			],
+			'integration' => [
+				'not_expected' => [
+					'<div class="wpr-rocketcdn-cta-small',
+					'<div class="wpr-rocketcdn-cta " id="wpr-rocketcdn-cta">',
 				],
 			],
+		],
+		// Configuration.
+		[
+			'home_url' => 'http://localhost',
 		],
 	],
-	'test_data' => [
-		'testShouldNotDisplayNoticeWhenActive' => [
-			// RocketCDN data.
-			[
-				'rocketcdn_status'  => [
-					'subscription_status' => 'running',
-				],
-				'rocketcdn_pricing' => [],
+
+	'testShouldDisplayBigCTANoPromoWhenDefault' => [
+		// RocketCDN data.
+		[
+			'rocketcdn_status'  => [
+				'subscription_status' => 'cancelled',
 			],
-			// Expected.
-			[
-				'unit'        => [
-					'cta-small' => [],
-					'cta-big'   => [],
-				],
-				'integration' => [
-					'not_expected' => [
-						'<div class="wpr-rocketcdn-cta-small',
-						'<div class="wpr-rocketcdn-cta " id="wpr-rocketcdn-cta">',
-					],
-				],
-			],
-			// Configuration.
-			[
-				'home_url' => 'http://localhost',
+			'rocketcdn_pricing' => [
+				'is_discount_active'       => false,
+				'discounted_price_monthly' => 5.99,
+				'discounted_price_yearly'  => 59.0,
+				'discount_campaign_name'   => '',
+				'end_date'                 => '2020-01-30',
+				'monthly_price'            => 7.99,
+				'annual_price'             => 79.0,
 			],
 		],
-
-		'testShouldDisplayBigCTANoPromoWhenDefault' => [
-			// RocketCDN data.
-			[
-				'rocketcdn_status'  => [
-					'subscription_status' => 'cancelled',
+		// Expected.
+		[
+			'unit'        => [
+				'cta-small' => [
+					'container_class' => 'wpr-isHidden',
 				],
-				'rocketcdn_pricing' => [
-					'is_discount_active'       => false,
-					'discounted_price_monthly' => 5.99,
-					'discounted_price_yearly'  => 59.0,
-					'discount_campaign_name'   => '',
-					'end_date'                 => '2020-01-30',
-					'monthly_price'            => 7.99,
-					'annual_price'             => 79.0,
+				'cta-big'   => [
+					'container_class'    => '',
+					'promotion_campaign' => '',
+					'promotion_end_date' => '2020-01-30',
+					'nopromo_variant'    => '--no-promo',
+					'regular_price'      => '',
+					'current_price'      => 7.99,
 				],
 			],
-			// Expected.
-			[
-				'unit'        => [
-					'cta-small' => [
-						'container_class' => 'wpr-isHidden',
-					],
-					'cta-big'   => [
-						'container_class'    => '',
-						'promotion_campaign' => '',
-						'promotion_end_date' => '2020-01-30',
-						'nopromo_variant'    => '--no-promo',
-						'regular_price'      => '',
-						'current_price'      => 7.99,
-					],
-				],
-				'integration' => '<div class="wpr-rocketcdn-cta-small notice-alt notice-warning wpr-isHidden" id="wpr-rocketcdn-cta-small">
+			'integration' => '<div class="wpr-rocketcdn-cta-small notice-alt notice-warning wpr-isHidden" id="wpr-rocketcdn-cta-small">
 					<div class="wpr-flex">
 						<section>
 							<h3 class="notice-title">Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network.</strong></h3>
@@ -112,47 +93,47 @@ return [
 						<span class="screen-reader-text">Reduce this banner</span>
 					</button>
 				</div>',
+		],
+		// Configuration.
+		[
+			'home_url'                    => 'http://localhost',
+			'rocket_rocketcdn_cta_hidden' => false,
+			'is_wp_error'                 => false,
+		],
+	],
+
+	'testShouldDisplaySmallCTAWhenBigHidden' => [
+		// RocketCDN data.
+		[
+			'rocketcdn_status'  => [
+				'subscription_status' => 'cancelled',
 			],
-			// Configuration.
-			[
-				'home_url'                    => 'http://localhost',
-				'rocket_rocketcdn_cta_hidden' => false,
-				'is_wp_error'                 => false,
+			'rocketcdn_pricing' => [
+				'is_discount_active'       => false,
+				'discounted_price_monthly' => 5.99,
+				'discounted_price_yearly'  => 59.0,
+				'discount_campaign_name'   => '',
+				'end_date'                 => '2020-01-30',
+				'monthly_price'            => 7.99,
+				'annual_price'             => 79.0,
 			],
 		],
-
-		'testShouldDisplaySmallCTAWhenBigHidden' => [
-			// RocketCDN data.
-			[
-				'rocketcdn_status'  => [
-					'subscription_status' => 'cancelled',
+		// Expected.
+		[
+			'unit'        => [
+				'cta-small' => [
+					'container_class' => '',
 				],
-				'rocketcdn_pricing' => [
-					'is_discount_active'       => false,
-					'discounted_price_monthly' => 5.99,
-					'discounted_price_yearly'  => 59.0,
-					'discount_campaign_name'   => '',
-					'end_date'                 => '2020-01-30',
-					'monthly_price'            => 7.99,
-					'annual_price'             => 79.0,
+				'cta-big'   => [
+					'container_class'    => 'wpr-isHidden',
+					'promotion_campaign' => '',
+					'promotion_end_date' => '2020-01-30',
+					'nopromo_variant'    => '--no-promo',
+					'regular_price'      => '',
+					'current_price'      => 7.99,
 				],
 			],
-			// Expected.
-			[
-				'unit'        => [
-					'cta-small' => [
-						'container_class' => '',
-					],
-					'cta-big'   => [
-						'container_class'    => 'wpr-isHidden',
-						'promotion_campaign' => '',
-						'promotion_end_date' => '2020-01-30',
-						'nopromo_variant'    => '--no-promo',
-						'regular_price'      => '',
-						'current_price'      => 7.99,
-					],
-				],
-				'integration' => '<div class="wpr-rocketcdn-cta-small notice-alt notice-warning " id="wpr-rocketcdn-cta-small">
+			'integration' => '<div class="wpr-rocketcdn-cta-small notice-alt notice-warning " id="wpr-rocketcdn-cta-small">
 					<div class="wpr-flex">
 						<section>
 							<h3 class="notice-title">Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network.</strong></h3>
@@ -185,47 +166,47 @@ return [
 						<span class="screen-reader-text">Reduce this banner</span>
 					</button>
 				</div>',
+		],
+		// Configuration.
+		[
+			'home_url'                    => 'http://localhost',
+			'rocket_rocketcdn_cta_hidden' => true,
+			'is_wp_error'                 => false,
+		],
+	],
+
+	'testShouldDisplayBigCTAPromoWhenPromoActive' => [
+		// RocketCDN data.
+		[
+			'rocketcdn_status'  => [
+				'subscription_status' => 'cancelled',
 			],
-			// Configuration.
-			[
-				'home_url'                    => 'http://localhost',
-				'rocket_rocketcdn_cta_hidden' => true,
-				'is_wp_error'                 => false,
+			'rocketcdn_pricing' => [
+				'is_discount_active'       => true,
+				'discounted_price_monthly' => 5.99,
+				'discounted_price_yearly'  => 59.0,
+				'discount_campaign_name'   => 'Launch',
+				'end_date'                 => '2020-04-01',
+				'monthly_price'            => 7.99,
+				'annual_price'             => 79.0,
 			],
 		],
-
-		'testShouldDisplayBigCTAPromoWhenPromoActive' => [
-			// RocketCDN data.
-			[
-				'rocketcdn_status'  => [
-					'subscription_status' => 'cancelled',
+		// Expected.
+		[
+			'unit'        => [
+				'cta-small' => [
+					'container_class' => 'wpr-isHidden',
 				],
-				'rocketcdn_pricing' => [
-					'is_discount_active'       => true,
-					'discounted_price_monthly' => 5.99,
-					'discounted_price_yearly'  => 59.0,
-					'discount_campaign_name'   => 'Launch',
-					'end_date'                 => '2020-04-01',
-					'monthly_price'            => 7.99,
-					'annual_price'             => 79.0,
+				'cta-big'   => [
+					'container_class'    => '',
+					'promotion_campaign' => 'Launch',
+					'promotion_end_date' => '2020-04-01',
+					'nopromo_variant'    => '',
+					'regular_price'      => 7.99,
+					'current_price'      => 5.99,
 				],
 			],
-			// Expected.
-			[
-				'unit'        => [
-					'cta-small' => [
-						'container_class' => 'wpr-isHidden',
-					],
-					'cta-big'   => [
-						'container_class'    => '',
-						'promotion_campaign' => 'Launch',
-						'promotion_end_date' => '2020-04-01',
-						'nopromo_variant'    => '',
-						'regular_price'      => 7.99,
-						'current_price'      => 5.99,
-					],
-				],
-				'integration' => '<div class="wpr-rocketcdn-cta-small notice-alt notice-warning wpr-isHidden" id="wpr-rocketcdn-cta-small">
+			'integration' => '<div class="wpr-rocketcdn-cta-small notice-alt notice-warning wpr-isHidden" id="wpr-rocketcdn-cta-small">
 					<div class="wpr-flex">
 						<section>
 							<h3 class="notice-title">Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network.</strong></h3>
@@ -264,37 +245,37 @@ return [
 					</button>
 					<p>* $5.99/month for 12 months then $7.99/month. You can cancel your subscription at any time.</p>
 				</div>',
-			],
-			// Configuration.
-			[
-				'home_url'                    => 'http://localhost',
-				'rocket_rocketcdn_cta_hidden' => false,
-				'is_wp_error'                 => false,
-			],
 		],
+		// Configuration.
+		[
+			'home_url'                    => 'http://localhost',
+			'rocket_rocketcdn_cta_hidden' => false,
+			'is_wp_error'                 => false,
+		],
+	],
 
-		'testShouldDisplayErrorMessageWhenPricingAPINotAvailable' => [
-			// RocketCDN data.
-			[
-				'rocketcdn_status'  => [
-					'subscription_status' => 'cancelled',
-				],
-				'rocketcdn_pricing' => 'RocketCDN is not available at the moment. Please retry later',
+	'testShouldDisplayErrorMessageWhenPricingAPINotAvailable' => [
+		// RocketCDN data.
+		[
+			'rocketcdn_status'  => [
+				'subscription_status' => 'cancelled',
 			],
-			// Expected.
-			[
-				'unit'        => [
-					'cta-small' => [
-						'container_class' => 'wpr-isHidden',
-					],
-					'cta-big'   => [
-						'container_class' => '',
-						'nopromo_variant' => '--no-promo',
-						'error'           => true,
-						'message'         => 'RocketCDN is not available at the moment. Please retry later',
-					],
+			'rocketcdn_pricing' => 'RocketCDN is not available at the moment. Please retry later',
+		],
+		// Expected.
+		[
+			'unit'        => [
+				'cta-small' => [
+					'container_class' => 'wpr-isHidden',
 				],
-				'integration' => '<div class="wpr-rocketcdn-cta-small notice-alt notice-warning wpr-isHidden" id="wpr-rocketcdn-cta-small">
+				'cta-big'   => [
+					'container_class' => '',
+					'nopromo_variant' => '--no-promo',
+					'error'           => true,
+					'message'         => 'RocketCDN is not available at the moment. Please retry later',
+				],
+			],
+			'integration' => '<div class="wpr-rocketcdn-cta-small notice-alt notice-warning wpr-isHidden" id="wpr-rocketcdn-cta-small">
 					<div class="wpr-flex">
 						<section>
 							<h3 class="notice-title">Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network.</strong></h3>
@@ -326,13 +307,12 @@ return [
 						<span class="screen-reader-text">Reduce this banner</span>
 					</button>
 				</div>',
-			],
-			// Configuration.
-			[
-				'home_url'                    => 'http://localhost',
-				'rocket_rocketcdn_cta_hidden' => false,
-				'is_wp_error'                 => true,
-			],
+		],
+		// Configuration.
+		[
+			'home_url'                    => 'http://localhost',
+			'rocket_rocketcdn_cta_hidden' => false,
+			'is_wp_error'                 => true,
 		],
 	],
 ];

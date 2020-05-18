@@ -6,12 +6,13 @@ use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::add_dismiss_script
- * @uses ::rocket_is_live_site
+ * @uses   ::rocket_is_live_site
  *
- * @group  RocketCDN
  * @group  AdminOnly
+ * @group  RocketCDN
  */
 class Test_AddDismissScript extends TestCase {
+
 	private function get_script( $nonce ) {
 		return $this->format_the_html( "<script>
 		window.addEventListener( 'load', function() {

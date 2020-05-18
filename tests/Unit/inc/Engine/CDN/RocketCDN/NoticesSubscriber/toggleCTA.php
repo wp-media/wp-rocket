@@ -8,6 +8,7 @@ use Mockery;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::toggle_cta
+ *
  * @group RocketCDN
  */
 class Test_ToggleCTA extends TestCase {

@@ -3,21 +3,20 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\NoticesSubscriber;
 
 use WP_Error;
-use WP_Rocket\Tests\Integration\FilesystemTestCase;
+use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::display_rocketcdn_cta
- * @uses ::rocket_is_live_site
- * @uses \WP_Rocket\Engine\CDN\RocketCDN\APIClient::get_subscription_data
- * @uses \WP_Rocket\Engine\CDN\RocketCDN\APIClient::get_pricing_data
- * @uses \WP_Rocket\Abstract_Render::generate
- * @uses ::rocket_direct_filesystem
+ * @uses   ::rocket_is_live_site
+ * @uses   \WP_Rocket\Engine\CDN\RocketCDN\APIClient::get_subscription_data
+ * @uses   \WP_Rocket\Engine\CDN\RocketCDN\APIClient::get_pricing_data
+ * @uses   \WP_Rocket\Abstract_Render::generate
+ * @uses   ::rocket_direct_filesystem
  *
- * @group  RocketCDN
  * @group  AdminOnly
+ * @group  RocketCDN
  */
-class Test_DisplayRocketcdnCta extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/classes/subscriber/CDN/RocketCDN/NoticesSubscriber/displayRocketcdnCta.php';
+class Test_DisplayRocketcdnCta extends TestCase {
 
 	public function setUp() {
 		parent::setUp();
@@ -79,15 +78,16 @@ class Test_DisplayRocketcdnCta extends FilesystemTestCase {
 	}
 
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldDisplayPerData( $data, $expected, $config ) {
 		set_transient( 'rocketcdn_status', $data['rocketcdn_status'], MINUTE_IN_SECONDS );
 
 		if ( isset( $expected['integration']['not_expected'] ) ) {
-			foreach( $expected['integration']['not_expected'] as $not_expected ) {
+			foreach ( $expected['integration']['not_expected'] as $not_expected ) {
 				$this->assertNotContains( $not_expected, $this->getActualHtml() );
 			}
+
 			return;
 		}
 

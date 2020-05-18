@@ -2,19 +2,18 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\NoticesSubscriber;
 
-use WP_Rocket\Tests\Integration\FilesystemTestCase;
+use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::promote_rocketcdn_notice
- * @uses ::rocket_is_live_site
- * @uses \WP_Rocket\Abstract_Render::generate
- * @uses ::rocket_direct_filesystem
+ * @uses   ::rocket_is_live_site
+ * @uses   \WP_Rocket\Abstract_Render::generate
+ * @uses   ::rocket_direct_filesystem
  *
- * @group  RocketCDN
  * @group  AdminOnly
+ * @group  RocketCDN
  */
-class Test_PromoteRocketcdnNotice extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/classes/subscriber/CDN/RocketCDN/NoticesSubscriber/promoteRocketcdnNotice.php';
+class Test_PromoteRocketcdnNotice extends TestCase {
 
 	private function getActualHtml() {
 		ob_start();
