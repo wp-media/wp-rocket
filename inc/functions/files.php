@@ -1,15 +1,19 @@
 <?php
 
 use WP_Rocket\Logger\Logger;
+use WP_Rocket\Engine\Cache\AdvancedCache;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Creates advanced-cache.php file.
+ * Creates the advanced-cache.php file.
  *
+ * @since 3.6 Uses AdvancedCache::get_advanced_cache_content().
  * @since 2.0
+ *
+ * @param AdvancedCache $advanced_cache Optional. Instance of the advanced cache handler.
  */
-function rocket_generate_advanced_cache_file() {
+function rocket_generate_advanced_cache_file( $advanced_cache = null ) {
 	static $done = false;
 
 	if ( rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ) {
@@ -21,8 +25,10 @@ function rocket_generate_advanced_cache_file() {
 	}
 	$done = true;
 
-	$container      = apply_filters( 'rocket_container', null );
-	$advanced_cache = $container->get( 'advanced_cache' );
+	if ( is_null( $advanced_cache ) ) {
+		$container      = apply_filters( 'rocket_container', null );
+		$advanced_cache = $container->get( 'advanced_cache' );
+	}
 
 	rocket_put_content(
 		rocket_get_constant( 'WP_CONTENT_DIR' ) . '/advanced-cache.php',

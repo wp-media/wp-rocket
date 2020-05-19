@@ -10,6 +10,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @uses   ::is_rocket_generate_caching_mobile_files
  * @uses   ::rocket_get_constant
  * @uses   ::rocket_direct_filesystem
+ * @uses   ::get_rocket_option
  *
  * @group  AdvancedCache
  */

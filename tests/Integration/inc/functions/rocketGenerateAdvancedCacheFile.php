@@ -2,11 +2,14 @@
 
 namespace WP_Rocket\Tests\Integration\inc\functions;
 
+use WP_Rocket\Engine\Cache\AdvancedCache;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
  * @covers ::rocket_generate_advanced_cache_file
- * @uses   ::get_rocket_advanced_cache_file
+ * @uses \WP_Rocket\Engine\Cache\AdvancedCache::get_advanced_cache_content
+ * @uses   ::is_rocket_generate_caching_mobile_files
+ * @uses ::get_rocket_option
  * @uses   ::rocket_put_content
  * @uses   ::rocket_get_constant
  *
@@ -30,8 +33,13 @@ class Test_RocketGenerateAdvancedCacheFile extends FilesystemTestCase {
 			$this->filesystem->delete( $this->advanced_cache_file );
 		}
 
+		$advanced_cache = new AdvancedCache(
+			$this->filesystem->getUrl( $this->config['vfs_dir'] ),
+			$this->filesystem
+		);
+
 		// Run it.
-		rocket_generate_advanced_cache_file();
+		rocket_generate_advanced_cache_file( $advanced_cache );
 
 		$this->assertTrue( $this->filesystem->exists( $this->advanced_cache_file ) );
 
