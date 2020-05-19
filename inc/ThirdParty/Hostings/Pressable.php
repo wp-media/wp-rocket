@@ -2,7 +2,6 @@
 namespace WP_Rocket\ThirdParty\Hostings;
 
 use WP_Rocket\Engine\Cache\AdminSubscriber;
-use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Event_Management\Event_Manager_Aware_Subscriber_Interface;
 
 /**
@@ -10,7 +9,7 @@ use WP_Rocket\Event_Management\Event_Manager_Aware_Subscriber_Interface;
  *
  * @since 3.3
  */
-class Pressable implements Subscriber_Interface {
+class Pressable implements Event_Manager_Aware_Subscriber_Interface {
 	/**
 	 * Event Manager instance
 	 *
