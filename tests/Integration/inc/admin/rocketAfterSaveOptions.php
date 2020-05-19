@@ -269,17 +269,4 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 			$wp_filter = array_merge( $wp_filter, $this->hooks );
 		}
 	}
-
-	/**
- * Mocks the League Container by loading an instance of AdvancedCache into the fixture.
- * By registering this method as a callback to the filter "rocket_container", the tests
- * will use this version instead of the one from the ServiceProvider.
- */
-	public function mock_rocket_container() {
-		$advanced_cache = new AdvancedCache(
-			'vfs://public/wp-content/plugins/wp-rocket/views/cache/',
-			$this->filesystem
-		);
-		return new RocketContainer( 'advanced_cache', $advanced_cache );
-	}
 }

@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\functions;
 
 use WP_Rocket\Engine\Cache\AdvancedCache;
+use WP_Rocket\Tests\Fixtures\DIContainer;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
@@ -23,6 +24,22 @@ class Test_RocketGenerateAdvancedCacheFile extends FilesystemTestCase {
 
 	protected static $use_settings_trait = true;
 
+	private $dicontainer;
+
+	public function setUp() {
+		parent::setUp();
+
+		// Set up the container.
+		$this->dicontainer = new DIContainer();
+		$this->dicontainer->setUp();
+	}
+
+	public function tearDown() {
+		parent::tearDown();
+
+		$this->dicontainer->tearDown();
+	}
+
 	/**
 	 * @dataProvider providerTestData
 	 */
@@ -33,13 +50,13 @@ class Test_RocketGenerateAdvancedCacheFile extends FilesystemTestCase {
 			$this->filesystem->delete( $this->advanced_cache_file );
 		}
 
-		$advanced_cache = new AdvancedCache(
+		$this->dicontainer->addAdvancedCache(
 			$this->filesystem->getUrl( $this->config['vfs_dir'] ),
 			$this->filesystem
 		);
 
 		// Run it.
-		rocket_generate_advanced_cache_file( $advanced_cache );
+		rocket_generate_advanced_cache_file();
 
 		$this->assertTrue( $this->filesystem->exists( $this->advanced_cache_file ) );
 

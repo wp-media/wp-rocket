@@ -17,7 +17,7 @@ class DIContainer implements ArrayAccess {
 	}
 
 	public function getContainer() {
-		return $this->container;
+		return $this;
 	}
 
 	public function add( $key, $concrete ) {
