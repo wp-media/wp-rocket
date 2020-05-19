@@ -43,13 +43,13 @@ class Test_InsertScript extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldReturnBeaconScript( $locale, $expected ) {
+	public function testShouldReturnBeaconScript( $config, $expected ) {
 		Functions\when( 'current_user_can' )->justReturn( true );
-		Functions\when( 'get_user_locale' )->justReturn( $locale );
+		Functions\when( 'get_user_locale' )->justReturn( $config['locale'] );
 		Functions\when( 'esc_js' )->returnArg();
 		Functions\when( 'wp_json_encode' )->alias( 'json_encode' );
 		Functions\when( 'home_url' )->justReturn( 'http://example.org' );
-		Functions\when( 'get_transient' )->justReturn( false );
+		Functions\when( 'get_transient' )->justReturn( $config['customer_data'] );
 		Functions\when( 'wp_get_theme' )->alias( function() {
 			return new WP_Theme( 'default', '/themes' );
 		} );
