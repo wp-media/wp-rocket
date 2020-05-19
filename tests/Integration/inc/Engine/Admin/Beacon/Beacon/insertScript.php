@@ -63,7 +63,7 @@ class Test_InsertScript extends TestCase {
 		add_filter( 'pre_get_rocket_option_consumer_email', [ $this, 'consumer_email' ] );
 
 		$this->assertSame(
-			$this->format_the_html( $expected ),
+			$this->format_the_html( $expected['script'] ),
 			$this->getActualHtml()
 		);
 	}

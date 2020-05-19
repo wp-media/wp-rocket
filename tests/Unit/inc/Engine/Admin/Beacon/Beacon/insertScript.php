@@ -5,16 +5,15 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\Beacon\Beacon;
 use Mockery;
 use WP_Theme;
 use Brain\Monkey\Functions;
-use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Admin\Beacon\Beacon::insert_script
  * @group  Beacon
  */
-class Test_InsertScript extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/Engine/Admin/Beacon/Beacon/insertScript.php';
+class Test_InsertScript extends TestCase {
 	private $beacon;
 	private $options;
 
@@ -28,24 +27,21 @@ class Test_InsertScript extends FilesystemTestCase {
 		parent::setUp();
 
 		$this->options = Mockery::mock( Options_Data::class );
-		$this->beacon  = new Beacon( $this->options, $this->filesystem->getUrl( 'wp-content/plugins/wp-rocket/views/settings' ) );
+		$this->beacon  = Mockery::mock( Beacon::class . '[insert_script]', [
+			$this->options,
+			WP_ROCKET_PLUGIN_ROOT . 'views/settings'
+		] );
 	}
 
-	private function getActualHtml() {
-		ob_start();
-		$this->beacon->insert_script();
-
-		return $this->format_the_html( ob_get_clean() );
-	}
-
-	public function testShouldReturNullWhenNoCapacity() {
+	public function testShouldNotInsertWhenNoCapacity() {
 		Functions\when( 'current_user_can' )->justReturn( false );
 
-		$this->assertNull( $this->beacon->insert_script() );
+		$this->beacon->shouldReceive( 'insert_script' )
+			->never();
 	}
 
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnBeaconScript( $locale, $expected ) {
 		Functions\when( 'current_user_can' )->justReturn( true );
@@ -68,9 +64,20 @@ class Test_InsertScript extends FilesystemTestCase {
 		$this->options->shouldReceive( 'get_options' )
 			->andReturn( [] );
 
-		$this->assertSame(
-			$this->format_the_html( $expected ),
-			$this->getActualHtml()
-		);
+		$this->setUpGenerate( 'beacon', $expected['data'] );
+
+		$this->beacon->shouldReceive( 'insert_script' )
+			->once();
+
+		ob_start();
+		$this->beacon->insert_script();
+		ob_get_clean();
+	}
+
+	protected function setUpGenerate( $view, $data ) {
+		$this->beacon
+			->shouldReceive( 'generate' )
+			->with( $view, $data )
+			->andReturn( '' );
 	}
 }
