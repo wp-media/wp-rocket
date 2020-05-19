@@ -1,30 +1,26 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\RESTGenerate;
+namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\ProcessorService;
 
 use Brain\Monkey\Functions;
-use WP_REST_Request;
-use WP_Rocket\Engine\CriticalPath\RESTGenerate;
+use WP_Rocket\Engine\CriticalPath\APIClient;
+use WP_Rocket\Engine\CriticalPath\ProcessorService;
+use WP_Rocket\Engine\CriticalPath\DataManager;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
+use WP_Error;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\RESTGenerate::generate
+ * @covers \WP_Rocket\Engine\CriticalPath\ProcessorService::process_generate
  *
  * @group  CriticalPath
  * @group  vfs
  */
-class Test_Generate extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/Engine/CriticalPath/RESTGenerate/generate.php';
+class Test_ProcessGenerate extends FilesystemTestCase {
+	protected $path_to_test_data = '/inc/Engine/CriticalPath/ProcessorService/processGenerate.php';
 	protected static $mockCommonWpFunctionsInSetUp = true;
 
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
-
-		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/WP_REST_Request.php';
-	}
-
 	/**
-	 * @dataProvider nonMultisiteTestData
+	 * @dataProvider dataProvider
 	 */
 	public function testShouldDoExpected( $config, $expected ) {
 		$post_id                      = isset( $config['post_data'] )
@@ -66,31 +62,40 @@ class Test_Generate extends FilesystemTestCase {
 		$request_timeout              = isset( $config['request_timeout'] )
 			? $config['request_timeout']
 			: false;
-		$file                         = $this->config['vfs_dir'] . "1/posts/{$post_type}-{$post_id}.css";
+		$item_path = "posts/{$post_type}-{$post_id}.css";
+		$file                         = $this->config['vfs_dir'] . "1/".$item_path;
+		$item_url = ('post_not_exists' === $expected['code'])
+			? null
+			: "http://example.org/?p={$post_id}";
 
-		Functions\expect( 'get_post_status' )
-			->once()
-			->andReturn( $post_status );
+		//is_wp_error is called three times at normal/ideal case.
+		//validate_item_for_generate
+		//send_generation_request
+		//get_job_details
+		Functions\expect( 'is_wp_error' )
+			->andReturnUsing( function( $error_object ) {
+				return $error_object instanceof WP_Error;
+			}  );
 
 		if ( $post_id > 0 && 'publish' === $post_status ) {
 			Functions\expect( 'get_transient' )
-				->once()
-				->with( 'rocket_specific_cpcss_job_' . $post_id )
+				->with( 'rocket_specific_cpcss_job_' . md5($item_url) )
 				->andReturn( $saved_cpcss_job_id );
 		}
 
-		if ( $post_id > 0 && 'publish' === $post_status && $cpcss_post_job_id ) {
+		if ( $post_id > 0 && 'publish' === $post_status && $cpcss_post_job_id &&
+			200 === $post_request_response_code ) {
 			Functions\expect( 'set_transient' )
 				->once()
-				->with( 'rocket_specific_cpcss_job_' . $post_id, $cpcss_post_job_id );
+				->with( 'rocket_specific_cpcss_job_' . md5($item_url), $cpcss_post_job_id, HOUR_IN_SECONDS );
 		}
 
 		if ( in_array( (int) $get_request_response_code, [ 400, 404 ], true )
-		     || ( 200 === $get_request_response_code && 'complete' === $get_request_response_state )
-		     || $request_timeout ) {
+			|| ( 200 === $get_request_response_code && 'complete' === $get_request_response_state )
+			|| $request_timeout ) {
 			Functions\expect( 'delete_transient' )
 				->once()
-				->with( 'rocket_specific_cpcss_job_' . $post_id );
+				->with( 'rocket_specific_cpcss_job_' . md5($item_url) );
 		}
 		Functions\expect( 'get_post_type' )
 			->atMost()
@@ -149,25 +154,27 @@ class Test_Generate extends FilesystemTestCase {
 
 		Functions\when( 'wp_strip_all_tags' )->returnArg();
 
-		Functions\expect( 'rest_ensure_response' )->once()->andReturnArg( 0 );
+		$api_client = new APIClient();
+		$data_manager = new DataManager('wp-content/cache/critical-css/', $this->filesystem);
+		$cpcss_service = new ProcessorService( $data_manager, $api_client );
 
-		$instance      = new RESTGenerate( $this->filesystem->getUrl( 'wp-content/cache/critical-css/' ) );
-		$request       = new WP_REST_Request();
-		$request['id'] = $post_id;
-
-		if ( $request_timeout ) {
-			$request['timeout'] = $request_timeout;
+		$generated = $cpcss_service->process_generate( $item_url, $item_path, $request_timeout );
+		if( isset( $expected['success'] ) && ! $expected['success'] ){
+			$this->assertSame( $expected['code'], $generated->get_error_code() );
+			$this->assertSame( $expected['message'], $generated->get_error_message() );
+			$this->assertSame( $expected['data'], $generated->get_error_data() );
+		}else{
+			$this->assertSame( $expected, $generated );
 		}
 
-		$this->assertSame( $expected, $instance->generate( $request ) );
 		$this->assertSame( $config['cpcss_exists_after'], $this->filesystem->exists( $file ) );
 	}
 
-	public function nonMultisiteTestData() {
+	public function dataProvider() {
 		if ( empty( $this->config ) ) {
 			$this->loadConfig();
 		}
 
-		return $this->config['test_data']['non_multisite'];
+		return $this->config['test_data'];
 	}
 }

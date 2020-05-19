@@ -23,8 +23,11 @@ class ServiceProvider extends AbstractServiceProvider {
 		'critical_css_generation',
 		'critical_css',
 		'critical_css_subscriber',
-		'rest_delete_post_cpcss',
-		'rest_generate_post_cpcss',
+		'rest_cpcss_api_client',
+		'rest_cpcss_data_manager',
+		'cpcss_service',
+		'rest_cpcss_wp_post',
+		'rest_cpcss_subscriber',
 		'critical_css_admin_subscriber',
 	];
 
@@ -34,6 +37,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @since 3.6
 	 */
 	public function register() {
+		$filesystem        = rocket_direct_filesystem();
 		$options           = $this->getContainer()->get( 'options' );
 		$critical_css_path = rocket_get_constant( 'WP_ROCKET_CRITICAL_CSS_PATH' );
 
@@ -43,10 +47,21 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'critical_css_subscriber', 'WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber' )
 			->withArgument( $this->getContainer()->get( 'critical_css' ) )
 			->withArgument( $options );
-		$this->getContainer()->share( 'rest_delete_post_cpcss', 'WP_Rocket\Engine\CriticalPath\RESTDelete' )
-			->withArgument( $critical_css_path );
-		$this->getContainer()->share( 'rest_generate_post_cpcss', 'WP_Rocket\Engine\CriticalPath\RESTGenerate' )
-			->withArgument( $critical_css_path );
+
+		// REST CPCSS START.
+		$this->getContainer()->share( 'rest_cpcss_api_client', 'WP_Rocket\Engine\CriticalPath\APIClient' );
+		$this->getContainer()->share( 'rest_cpcss_data_manager', 'WP_Rocket\Engine\CriticalPath\DataManager' )
+			->withArgument( $critical_css_path )
+			->withArgument( $filesystem );
+		$this->getContainer()->share( 'cpcss_service', 'WP_Rocket\Engine\CriticalPath\ProcessorService' )
+			->withArgument( $this->getContainer()->get( 'rest_cpcss_data_manager' ) )
+			->withArgument( $this->getContainer()->get( 'rest_cpcss_api_client' ) );
+		$this->getContainer()->share( 'rest_cpcss_wp_post', 'WP_Rocket\Engine\CriticalPath\RESTWPPost' )
+			->withArgument( $this->getContainer()->get( 'cpcss_service' ) );
+		$this->getContainer()->share( 'rest_cpcss_subscriber', 'WP_Rocket\Engine\CriticalPath\RESTCSSSubscriber' )
+			->withArgument( $this->getContainer()->get( 'rest_cpcss_wp_post' ) );
+		// REST CPCSS END.
+
 		$this->getContainer()->share( 'critical_css_admin_subscriber', 'WP_Rocket\Engine\CriticalPath\AdminSubscriber' )
 			->withArgument( $options )
 			->withArgument( $this->getContainer()->get( 'beacon' ) )
