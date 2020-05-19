@@ -108,7 +108,7 @@ abstract class RESTWP {
 	 * @return WP_REST_Response
 	 */
 	public function generate( WP_REST_Request $request ) {
-		$item_id = intval( $request['id'] );
+		$item_id = (int) $request->get_param( 'id' );
 		// validate item.
 		$validated = $this->validate_item_for_generate( $item_id );
 		if ( is_wp_error( $validated ) ) {
@@ -358,8 +358,7 @@ abstract class RESTWP {
 	 * @return WP_REST_Response
 	 */
 	public function delete( WP_REST_Request $request ) {
-		$item_id = intval( $request['id'] );
-		$output  = null;
+		$item_id = (int) $request->get_param( 'id' );
 
 		// validate item.
 		$validated = $this->validate_item_for_delete( $item_id );
