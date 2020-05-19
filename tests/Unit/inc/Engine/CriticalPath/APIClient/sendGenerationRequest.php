@@ -9,7 +9,6 @@ use WP_Error;
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\APIClient::send_generation_request
  * @group CriticalPath
- * @group  vfs
  */
 class Test_SendGenerationRequest extends TestCase {
 	protected static $mockCommonWpFunctionsInSetUp = true;
