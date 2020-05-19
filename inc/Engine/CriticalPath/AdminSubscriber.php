@@ -58,7 +58,34 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 			'rocket_first_install_options'  => 'add_async_css_mobile_option',
 			'wp_rocket_upgrade'             => [ 'set_async_css_mobile_default_value', 11, 2 ],
 			'rocket_hidden_settings_fields' => 'add_hidden_async_css_mobile',
+			'rocket_settings_tools_content' => 'display_cpcss_mobile_section',
 		];
+	}
+
+	/**
+	 * Display CPCSS mobile section tool admin view.
+	 *
+	 * @since 3.6
+	 *
+	 * @return void
+	 */
+	public function display_cpcss_mobile_section() {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+		// Bailout if CPCSS is not enabled & separate cache for mobiles is not enabled.
+		// Or bailout if CPCSS mobile option is false.
+		if ( ! ( $this->options->get( 'async_css', 0 )
+				&&
+				$this->options->get( 'cache_mobile', 0 )
+				&&
+				$this->options->get( 'do_caching_mobile_files', 0 ) )
+				||
+				$this->options->get( 'async_css_mobile', 0 ) ) {
+			return;
+		}
+
+		echo $this->generate( 'activate-cpcss-mobile' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**
@@ -99,7 +126,7 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 			'cpcss_rest_nonce'     => wp_create_nonce( 'wp_rest' ),
 		];
 
-		echo $this->generate( 'container', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo $this->generate( 'metabox/container', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**
@@ -118,7 +145,7 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo $this->generate(
-			'generate',
+			'metabox/generate',
 			$data // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		);
 	}
