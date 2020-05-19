@@ -12,11 +12,11 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
 class RESTCSSSubscriber implements Subscriber_Interface {
 
 	/**
-	 * REST Post manager that has generate and delete methods.
+	 * REST manager that has generate and delete methods.
 	 *
-	 * @var RESTWPPost
+	 * @var RESTWPInterface
 	 */
-	private $rest_post_manager;
+	private $rest_manager;
 
 	/**
 	 * RESTCSSSubscriber constructor.
