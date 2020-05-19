@@ -76,7 +76,7 @@ class Test_Delete extends FilesystemTestCase {
 		Functions\expect( 'rest_ensure_response' )->once()->andReturnFirstArg();
 
 		$api_client = new APIClient();
-		$data_manager = new DataManager('wp-content/cache/critical-css/');
+		$data_manager = new DataManager('wp-content/cache/critical-css/', $this->filesystem);
 		$instance = new RESTWPPost( $data_manager, $api_client );
 		$request       = new WP_REST_Request();
 		$request['id'] = $post_id;
