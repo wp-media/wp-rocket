@@ -87,7 +87,14 @@ if ( rocket_direct_filesystem()->exists( Logger::get_log_file_path() ) ) {
 		</div>
 	</div>
 
-	<?php do_action( 'rocket_settings_tools_content' ); ?>
+	<?php
+	/**
+	 * Fires after the Settings Tools page content
+	 *
+	 * @since 3.6
+	 */
+	do_action( 'rocket_settings_tools_content' );
+	?>
 
 	<!-- Temporary hide the option. The logger can still be activated by adding the following to the wp-config.php file: define( 'WP_ROCKET_DEBUG', true );
 	<div class="wpr-tools">
