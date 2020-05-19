@@ -112,7 +112,7 @@ abstract class RESTWP {
 		// validate item.
 		$validated = $this->validate_item_for_generate( $item_id );
 		if ( is_wp_error( $validated ) ) {
-			return rest_ensure_response($this->return_error($validated));
+			return rest_ensure_response( $this->return_error( $validated ) );
 		}
 
 		// get item url.
