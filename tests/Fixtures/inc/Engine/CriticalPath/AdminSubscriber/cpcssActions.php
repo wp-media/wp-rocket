@@ -18,9 +18,9 @@ return [
 			'plugins' => [
 				'wp-rocket' => [
 					'views' => [
-						'metabox' => [
-							'cpcss' => [
-								'generate.php'   => file_get_contents( WP_ROCKET_PLUGIN_ROOT . 'views/metabox/cpcss/generate.php' ),
+						'cpcss' => [
+							'metabox' => [
+								'generate.php'   => file_get_contents( WP_ROCKET_PLUGIN_ROOT . 'views/cpcss/metabox/generate.php' ),
 							],
 						],
 					],

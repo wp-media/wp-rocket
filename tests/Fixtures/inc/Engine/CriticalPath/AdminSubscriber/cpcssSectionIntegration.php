@@ -18,10 +18,10 @@ return [
 			'plugins' => [
 				'wp-rocket' => [
 					'views' => [
-						'metabox' => [
-							'cpcss' => [
-								'container.php'  => file_get_contents( WP_ROCKET_PLUGIN_ROOT . 'views/metabox/cpcss/container.php' ),
-								'generate.php'   => file_get_contents( WP_ROCKET_PLUGIN_ROOT . 'views/metabox/cpcss/generate.php' ),
+						'cpcss' => [
+							'metabox' => [
+								'container.php'  => file_get_contents( WP_ROCKET_PLUGIN_ROOT . 'views/cpcss/metabox/container.php' ),
+								'generate.php'   => file_get_contents( WP_ROCKET_PLUGIN_ROOT . 'views/cpcss/metabox/generate.php' ),
 							],
 						],
 					],

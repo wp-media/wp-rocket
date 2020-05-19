@@ -32,7 +32,7 @@ class Test_CpcssSection extends FilesystemTestCase {
 			$this->options,
 			$this->beacon,
 			'wp-content/cache/critical-css/',
-			$this->filesystem->getUrl( 'wp-content/plugins/wp-rocket/views/metabox/cpcss' )
+			$this->filesystem->getUrl( 'wp-content/plugins/wp-rocket/views/cpcss' )
 		);
 	}
 

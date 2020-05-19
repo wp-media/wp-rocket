@@ -32,7 +32,7 @@ class Test_EnqueueAdminEditScript extends FilesystemTestCase {
 			$this->options,
 			$this->beacon,
 			$this->filesystem->getUrl( 'wp-content/cache/critical-css/' ),
-			$this->filesystem->getUrl( 'wp-content/plugins/wp-rocket/views/metabox/cpcss' )
+			$this->filesystem->getUrl( 'wp-content/plugins/wp-rocket/views/cpcss' )
 		);
 	}
 

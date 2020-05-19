@@ -25,7 +25,7 @@ class Test_AddAsyncCssMobileOption extends TestCase {
 			$this->options,
 			$this->beacon,
 			'wp-content/cache/critical-css/',
-			'wp-content/plugins/wp-rocket/views/metabox/cpcss'
+			'wp-content/plugins/wp-rocket/views/cpcss'
 		);
 	}
 
