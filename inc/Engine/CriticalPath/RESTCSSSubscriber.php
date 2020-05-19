@@ -21,10 +21,10 @@ class RESTCSSSubscriber implements Subscriber_Interface {
 	/**
 	 * RESTCSSSubscriber constructor.
 	 *
-	 * @param RESTWPPost $rest_post_manager Post manager instance.
+	 * @param RESTWPInterface $rest_manager REST manager instance.
 	 */
-	public function __construct( RESTWPPost $rest_post_manager ) {
-		$this->rest_post_manager = $rest_post_manager;
+	public function __construct( RESTWPInterface $rest_manager ) {
+		$this->rest_manager = $rest_manager;
 	}
 
 	/**
@@ -48,8 +48,8 @@ class RESTCSSSubscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function register_routes() {
-		$this->rest_post_manager->register_generate_route();
-		$this->rest_post_manager->register_delete_route();
+		$this->rest_manager->register_generate_route();
+		$this->rest_manager->register_delete_route();
 	}
 
 }

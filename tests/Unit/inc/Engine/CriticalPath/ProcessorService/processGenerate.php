@@ -1,22 +1,22 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\CPCSSService;
+namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\ProcessorService;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\Engine\CriticalPath\APIClient;
-use WP_Rocket\Engine\CriticalPath\CPCSSService;
+use WP_Rocket\Engine\CriticalPath\ProcessorService;
 use WP_Rocket\Engine\CriticalPath\DataManager;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use WP_Error;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\CPCSSService::process_generate
+ * @covers \WP_Rocket\Engine\CriticalPath\ProcessorService::process_generate
  *
  * @group  CriticalPath
  * @group  vfs
  */
 class Test_ProcessGenerate extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/Engine/CriticalPath/CPCSSService/processGenerate.php';
+	protected $path_to_test_data = '/inc/Engine/CriticalPath/ProcessorService/processGenerate.php';
 	protected static $mockCommonWpFunctionsInSetUp = true;
 
 	/**
@@ -156,7 +156,7 @@ class Test_ProcessGenerate extends FilesystemTestCase {
 
 		$api_client = new APIClient();
 		$data_manager = new DataManager('wp-content/cache/critical-css/', $this->filesystem);
-		$cpcss_service = new CPCSSService( $data_manager, $api_client );
+		$cpcss_service = new ProcessorService( $data_manager, $api_client );
 
 		$generated = $cpcss_service->process_generate( $item_url, $item_path, $request_timeout );
 		if( isset( $expected['success'] ) && ! $expected['success'] ){

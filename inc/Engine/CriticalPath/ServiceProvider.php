@@ -53,7 +53,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'rest_cpcss_data_manager', 'WP_Rocket\Engine\CriticalPath\DataManager' )
 			->withArgument( $critical_css_path )
 			->withArgument( $filesystem );
-		$this->getContainer()->share( 'cpcss_service', 'WP_Rocket\Engine\CriticalPath\CPCSSService' )
+		$this->getContainer()->share( 'cpcss_service', 'WP_Rocket\Engine\CriticalPath\ProcessorService' )
 			->withArgument( $this->getContainer()->get( 'rest_cpcss_data_manager' ) )
 			->withArgument( $this->getContainer()->get( 'rest_cpcss_api_client' ) );
 		$this->getContainer()->share( 'rest_cpcss_wp_post', 'WP_Rocket\Engine\CriticalPath\RESTWPPost' )

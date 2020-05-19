@@ -11,7 +11,7 @@ use WP_Error;
  *
  * @package WP_Rocket\Engine\CriticalPath
  */
-abstract class RESTWP {
+abstract class RESTWP implements RESTWPInterface {
 
 	/**
 	 * Namespace for REST Route.
@@ -28,7 +28,7 @@ abstract class RESTWP {
 	/**
 	 * CPCSS generation and deletion service.
 	 *
-	 * @var CPCSSService instance for this service.
+	 * @var ProcessorService instance for this service.
 	 */
 	private $cpcss_service;
 
@@ -37,9 +37,9 @@ abstract class RESTWP {
 	 *
 	 * @since 3.6
 	 *
-	 * @param CPCSSService $cpcss_service Has the logic for cpcss generation and deletion.
+	 * @param ProcessorService $cpcss_service Has the logic for cpcss generation and deletion.
 	 */
-	public function __construct( CPCSSService $cpcss_service ) {
+	public function __construct( ProcessorService $cpcss_service ) {
 		$this->cpcss_service = $cpcss_service;
 	}
 

@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\RESTWPPost;
 use Brain\Monkey\Functions;
 use WP_REST_Request;
 use WP_Rocket\Engine\CriticalPath\APIClient;
-use WP_Rocket\Engine\CriticalPath\CPCSSService;
+use WP_Rocket\Engine\CriticalPath\ProcessorService;
 use WP_Rocket\Engine\CriticalPath\DataManager;
 use WP_Rocket\Engine\CriticalPath\RESTWPPost;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
@@ -163,7 +163,7 @@ class Test_Generate extends FilesystemTestCase {
 
 		$api_client = new APIClient();
 		$data_manager = new DataManager('wp-content/cache/critical-css/', $this->filesystem);
-		$cpcss_service = new CPCSSService( $data_manager, $api_client );
+		$cpcss_service = new ProcessorService( $data_manager, $api_client );
 		$instance = new RESTWPPost( $cpcss_service );
 		$request       = new WP_REST_Request();
 		$request['id'] = $post_id;

@@ -3,7 +3,7 @@ namespace WP_Rocket\Engine\CriticalPath;
 
 use WP_Error;
 
-class CPCSSService {
+class ProcessorService {
 
 	/**
 	 * Responsible for dealing with data/database.
