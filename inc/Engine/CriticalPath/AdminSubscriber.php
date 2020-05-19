@@ -52,14 +52,36 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_after_options_metabox'  => 'cpcss_section',
-			'rocket_metabox_cpcss_content'  => 'cpcss_actions',
-			'admin_enqueue_scripts'         => 'enqueue_admin_edit_script',
-			'rocket_first_install_options'  => 'add_async_css_mobile_option',
-			'wp_rocket_upgrade'             => [ 'set_async_css_mobile_default_value', 11, 2 ],
-			'rocket_hidden_settings_fields' => 'add_hidden_async_css_mobile',
-			'rocket_settings_tools_content' => 'display_cpcss_mobile_section',
+			'rocket_after_options_metabox'       => 'cpcss_section',
+			'rocket_metabox_cpcss_content'       => 'cpcss_actions',
+			'admin_enqueue_scripts'              => 'enqueue_admin_edit_script',
+			'rocket_first_install_options'       => 'add_async_css_mobile_option',
+			'wp_rocket_upgrade'                  => [ 'set_async_css_mobile_default_value', 11, 2 ],
+			'rocket_hidden_settings_fields'      => 'add_hidden_async_css_mobile',
+			'rocket_settings_tools_content'      => 'display_cpcss_mobile_section',
+			'wp_ajax_rocket_enable_mobile_cpcss' => 'enable_mobile_cpcss',
 		];
+	}
+
+	/**
+	 * Enable CPCSS mobile.
+	 *
+	 * @since 3.6
+	 *
+	 * @return void
+	 */
+	public function enable_mobile_cpcss() {
+		check_ajax_referer( 'rocket-ajax' );
+
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			wp_send_json_error();
+			return;
+		}
+
+		$this->options->set( 'async_css_mobile', 1 );
+		update_option( rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' ), $this->options->get_options() );
+
+		wp_send_json_success();
 	}
 
 	/**
@@ -73,6 +95,7 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			return;
 		}
+
 		// Bailout if CPCSS is not enabled & separate cache for mobiles is not enabled.
 		// Or bailout if CPCSS mobile option is false.
 		if ( ! ( $this->options->get( 'async_css', 0 )

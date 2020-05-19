@@ -8,7 +8,7 @@
 defined( 'ABSPATH' ) || exit;
 
 ?>
-<div class="wpr-tools">
+<div id="wpr-mobile_cpcss_view" class="wpr-tools">
 	<div class="wpr-tools-col">
 		<div class="wpr-title3 wpr-tools-label wpr-icon-check2"><?php esc_html_e( 'Enable CPCSS for mobiles text', 'rocket' ); ?></div>
 		<div class="wpr-field-description"><?php esc_html_e( 'Description for CPCSS for mobiles. Probably some doc link.', 'rocket' ); ?></div>

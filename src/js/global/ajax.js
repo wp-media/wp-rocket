@@ -83,5 +83,26 @@ $(document).ready(function(){
             },
             function(response) {}
         );
+	});
+
+	/**
+     * Save enable CPCSS for mobiles option.
+     */
+    $('#wpr-action-rocket_enable_mobile_cpcss').on('click', function(e) {
+        e.preventDefault();
+
+        $.post(
+            ajaxurl,
+            {
+                action: 'rocket_enable_mobile_cpcss',
+                _ajax_nonce: rocket_ajax_data.nonce
+            },
+			function(response) {
+				if ( response.success ) {
+					// Hide Mobile CPCSS view on success.
+					$('#wpr-mobile_cpcss_view').hide();
+				}
+			}
+        );
     });
 });
