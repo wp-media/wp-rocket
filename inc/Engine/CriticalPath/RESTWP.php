@@ -184,7 +184,7 @@ abstract class RESTWP {
 		}
 
 		$item_path = $this->get_path( $item_id );
-		$deleted = $this->cpcss_service->process_delete( $item_path );
+		$deleted   = $this->cpcss_service->process_delete( $item_path );
 		if ( is_wp_error( $deleted ) ) {
 			return rest_ensure_response(
 				$this->return_error( $deleted )
