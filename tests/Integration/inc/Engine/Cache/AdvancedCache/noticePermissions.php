@@ -4,81 +4,84 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Cache\AdvancedCache;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\Engine\Cache\AdvancedCache;
+use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers WP_Rocket\Engine\Cache\AdvancedCache::notice_permissions
- *
+ * @covers \WP_Rocket\Engine\Cache\AdvancedCache::notice_permissions
  * @uses   ::rocket_get_constant
  * @uses   ::rocket_notice_html
  * @uses   ::rocket_direct_filesystem
+ * @uses   ::is_rocket_generate_caching_mobile_files
  *
- * @group  AdvancedCache
  * @group  AdminOnly
+ * @group  AdvancedCache
  */
 class Test_NoticePermissions extends FilesystemTestCase {
-    protected $path_to_test_data = '/inc/Engine/Cache/AdvancedCache/noticePermissions.php';
-    private $advanced_cache;
+	protected $path_to_test_data = '/inc/Engine/Cache/AdvancedCache/noticePermissions.php';
 
-    public function setUp() {
-        parent::setUp();
+	private static $user_id;
 
-        $this->whenRocketGetConstant();
+	public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
 
-        $this->advanced_cache = new AdvancedCache( 
-            $this->filesystem->getUrl( 'wp-content/plugins/wp-rocket/views/cache/' )
-        );
-    }
+		CapTrait::setAdminCap();
+		self::$user_id = static::factory()->user->create( [ 'role' => 'administrator' ] );
+	}
 
-    public function tearDown() {
-        $this->filesystem->chmod( 'wp-content/advanced-cache.php', 0644 );
-        delete_user_meta( get_current_user_id(), 'rocket_boxes', [ 'rocket_warning_advanced_cache_permissions' ] );
+	public function setUp() {
+		parent::setUp();
 
-        parent::tearDown();
-    }
+		Functions\when( 'wp_create_nonce' )->justReturn( '123456' );
+	}
 
-    private function getActualHtml() {
-        ob_start();
+	public function tearDown() {
+		delete_user_meta( get_current_user_id(), 'rocket_boxes', [ 'rocket_warning_advanced_cache_permissions' ] );
 
-        $this->advanced_cache->notice_permissions();
-        return $this->format_the_html( ob_get_clean() );
-    }
+		parent::tearDown();
+	}
 
 	/**
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldEchoNotice( $config, $expected ) {
-        if ( $config['cap'] ) {
-            $admin = get_role( 'administrator' );
-            $admin->add_cap( 'rocket_manage_options' );
+		$this->wp_rocket_advanced_cache = $config['constant'];
+		if ( $config['cap'] ) {
+			wp_set_current_user( self::$user_id );
+		}
+		Functions\when( 'rocket_valid_key' )->justReturn( $config['valid_key'] );
 
-            $user_id = $this->factory->user->create( [ 'role' => 'administrator' ] );
-            wp_set_current_user( $user_id );
-        }
+		if ( ! $config['writable'] ) {
+			$this->filesystem->chmod( 'wp-content/advanced-cache.php', 0444 );
+		}
 
-        Functions\when( 'rocket_valid_key' )->justReturn( $config['valid_key'] );
+		if ( $config['constant'] ) {
+			$this->filesystem->put_contents( 'wp-content/advanced-cache.php', 'WP_ROCKET_ADVANCED_CACHE' );
+		}
 
-        if ( ! $config['writable'] ) {
-            $this->filesystem->chmod( 'wp-content/advanced-cache.php', 0444 );
-        }
+		if ( $config['boxes'] ) {
+			add_user_meta( get_current_user_id(), 'rocket_boxes', [ 'rocket_warning_advanced_cache_permissions' ] );
+		}
 
-        if ( $config['constant'] ) {
-            $this->filesystem->put_contents( 'wp-content/advanced-cache.php', 'WP_ROCKET_ADVANCED_CACHE' );
-        }
+		// Run it.
+		$advanced_cache = new AdvancedCache( WP_ROCKET_PLUGIN_ROOT . 'views/cache/', $this->filesystem );
 
-        if ( $config['boxes'] ) {
-            add_user_meta( $user_id, 'rocket_boxes', [ 'rocket_warning_advanced_cache_permissions' ] );
-        }
+		if ( empty( $expected ) ) {
+			$this->assertSame( $expected, $advanced_cache->notice_permissions() );
 
-        Functions\when( 'wp_create_nonce' )->justReturn( '123456' );
+			return;
+		}
 
-        if ( ! empty( $expected ) ) {
-            $this->assertSame(
-                $this->format_the_html( $expected ),
-                $this->getActualHtml()
-            );
-        } else {
-            $this->assertSame( $expected, $this->advanced_cache->notice_permissions() );
-        }
-    }
+		ob_start();
+		$advanced_cache->notice_permissions();
+		$actual = ob_get_clean();
+		if ( ! empty( $actual ) ) {
+			$actual = $this->format_the_html( $actual );
+		}
+
+		$this->assertSame(
+			$this->format_the_html( $expected ),
+			$actual
+		);
+	}
 }

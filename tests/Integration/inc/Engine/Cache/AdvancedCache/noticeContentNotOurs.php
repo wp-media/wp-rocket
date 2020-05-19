@@ -45,6 +45,7 @@ class Test_NoticeContentNotOurs extends TestCase {
 		}
 		Functions\when( 'rocket_valid_key' )->justReturn( $config['valid_key'] );
 
+		// Run it.
 		$advanced_cache = new AdvancedCache( null, null );
 
 		if ( empty( $expected ) ) {

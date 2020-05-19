@@ -3,69 +3,93 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\Cache\AdvancedCache;
 
 use Brain\Monkey\Functions;
+use Mockery;
 use WP_Rocket\Engine\Cache\AdvancedCache;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers WP_Rocket\Engine\Cache\AdvancedCache::notice_permissions
- *
+ * @covers \WP_Rocket\Engine\Cache\AdvancedCache::notice_permissions
  * @uses   ::rocket_get_constant
  * @uses   ::rocket_notice_html
- * @uses   ::rocket_direct_filesystem
  *
  * @group  AdvancedCache
  */
-class Test_NoticePermissions extends FilesystemTestCase {
-    protected $path_to_test_data = '/inc/Engine/Cache/AdvancedCache/noticePermissions.php';
-    private $advanced_cache;
+class Test_NoticePermissions extends FileSystemTestCase {
+	protected $path_to_test_data = '/inc/Engine/Cache/AdvancedCache/noticePermissions.php';
 
 	public function setUp() {
-        parent::setUp();
+		parent::setUp();
 
-		$this->advanced_cache = new AdvancedCache(
-            $this->filesystem->getUrl( 'wp-content/plugins/wp-rocket/views/cache/' )
-        );
-    }
-
-    public function tearDown() {
-        $this->filesystem->chmod( 'wp-content/advanced-cache.php', 0644 );
-
-        parent::tearDown();
-    }
-
-    private function getActualHtml() {
-        ob_start();
-
-        $this->advanced_cache->notice_permissions();
-        return $this->format_the_html( ob_get_clean() );
-    }
+		Functions\when( 'wp_create_nonce' )->justReturn( '123456' );
+	}
 
 	/**
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldEchoNotice( $config, $expected ) {
-        Functions\when( 'current_user_can' )->justReturn( $config['cap'] );
-        Functions\when( 'rocket_valid_key' )->justReturn( $config['valid_key'] );
+		$this->wp_rocket_advanced_cache = $config['constant'];
+		$this->setUpMocks( $config );
 
-        if ( ! $config['writable'] ) {
-            $this->filesystem->chmod( 'wp-content/advanced-cache.php', 0444 );
-        }
+		$advanced_cache = Mockery::mock(
+			AdvancedCache::class . '[get_advanced_cache_content]',
+			[ null, $this->filesystem ]
+		);
 
-        Functions\when( 'get_current_user_id' )->justReturn( 1 );
-        Functions\when( 'get_user_meta' )->justReturn( $config['boxes'] );
-        Functions\when( 'rocket_notice_writing_permissions' )->justReturn( $config['message'] );
-        Functions\when( 'is_rocket_generate_caching_mobile_files' )->justReturn( false );
-        Functions\when( 'rocket_notice_html' )->alias( function() use ( $expected ) {
-            echo $expected;
-        } );
+		if ( empty( $expected ) ) {
+			$advanced_cache->shouldReceive( 'get_advanced_cache_content' )->never();
+			Functions\expect( 'rocket_notice_html' )->never();
+		} else {
+			$advanced_cache->shouldReceive( 'get_advanced_cache_content' )
+			               ->once()
+			               ->andReturn( '' );
 
-        if ( ! empty( $expected ) ) {
-            $this->assertSame(
-                $this->format_the_html( $expected ),
-                $this->getActualHtml()
-            );
-        } else {
-            $this->assertSame( $expected, $this->advanced_cache->notice_permissions() );
-        }
-    }
+			Functions\expect( 'rocket_notice_writing_permissions' )
+				->once()
+				->with( 'wp-content/advanced-cache.php' )
+				->andReturn( $config['message'] );
+
+			Functions\expect( 'rocket_notice_html' )
+				->once()
+				->with(
+					[
+						'status'           => 'error',
+						'dismissible'      => '',
+						'message'          => $config['message'],
+						'dismiss_button'   => 'rocket_warning_advanced_cache_permissions',
+						'readonly_content' => '',
+					]
+				)
+				->andReturnNull();
+		}
+
+		$advanced_cache->notice_permissions();
+	}
+
+	private function setUpMocks( $config ) {
+		Functions\expect( 'current_user_can' )
+			->once()
+			->with( 'rocket_manage_options' )
+			->andReturn( $config['cap'] );
+		if ( $config['cap'] ) {
+			Functions\expect( 'rocket_valid_key' )
+				->once()
+				->andReturn( $config['valid_key'] );
+		} else {
+			Functions\expect( 'rocket_valid_key' )->never();
+		}
+
+		if ( ! $config['writable'] ) {
+			$this->filesystem->chmod( 'wp-content/advanced-cache.php', 0444 );
+		}
+
+		if ( $config['writable'] || $this->wp_rocket_advanced_cache ) {
+			return;
+		}
+
+		Functions\expect( 'get_current_user_id' )->once()->andReturn( 1 );
+		Functions\expect( 'get_user_meta' )
+			->once()
+			->with( 1, 'rocket_boxes', true )
+			->andReturn( $config['boxes'] );
+	}
 }
