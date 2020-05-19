@@ -95,7 +95,8 @@ abstract class RESTWP {
 	 *
 	 * @since 3.6
 	 *
-	 * @param  WP_REST_Request $request WP REST request response.
+	 * @param WP_REST_Request $request WP REST request response.
+	 *
 	 * @return WP_REST_Response
 	 */
 	public function generate( WP_REST_Request $request ) {
@@ -131,6 +132,7 @@ abstract class RESTWP {
 	 * @since 3.6
 	 *
 	 * @param int $item_id ID for this item to be validated.
+	 *
 	 * @return true|WP_Error
 	 */
 	abstract protected function validate_item_for_generate( $item_id );
@@ -141,6 +143,7 @@ abstract class RESTWP {
 	 * @since 3.6
 	 *
 	 * @param int $item_id ID for this item to be validated.
+	 *
 	 * @return true|WP_Error
 	 */
 	abstract protected function validate_item_for_delete( $item_id );
@@ -151,6 +154,7 @@ abstract class RESTWP {
 	 * @since 3.6
 	 *
 	 * @param int $item_id ID for this item to get Url for.
+	 *
 	 * @return false|string
 	 */
 	abstract protected function get_url( $item_id );
@@ -161,6 +165,7 @@ abstract class RESTWP {
 	 * @since 3.6
 	 *
 	 * @param int $item_id ID for this item to get the path for.
+	 *
 	 * @return string
 	 */
 	abstract protected function get_path( $item_id );
@@ -205,6 +210,7 @@ abstract class RESTWP {
 	 * @param string $code    The code to use for the response.
 	 * @param string $message The message to send in the response.
 	 * @param int    $status  The status code to send for the response.
+	 *
 	 * @return array
 	 */
 	protected function return_array_response( $success = false, $code = '', $message = '', $status = 200 ) {
@@ -224,6 +230,7 @@ abstract class RESTWP {
 	 * @since 3.6
 	 *
 	 * @param WP_Error $error Error that will be converted to array.
+	 *
 	 * @return array
 	 */
 	protected function return_error( $error ) {
@@ -243,6 +250,7 @@ abstract class RESTWP {
 	 * @since 3.6
 	 *
 	 * @param array $data which has success parameters with two keys: code and message.
+	 *
 	 * @return array
 	 */
 	protected function return_success( $data ) {
