@@ -49,13 +49,12 @@ class DataManager {
 	 */
 	public function save_cpcss( $path, $cpcss ) {
 		if ( ! $this->filesystem->is_dir( $this->critical_css_path ) ) {
-			rocket_mkdir_p( $this->critical_css_path, $this->filesystem );
+			rocket_mkdir_p( $this->critical_css_path );
 		}
 
 		return rocket_put_content(
 			$this->critical_css_path . $path,
-			wp_strip_all_tags( $cpcss, true ),
-			$this->filesystem
+			wp_strip_all_tags( $cpcss, true )
 		);
 	}
 

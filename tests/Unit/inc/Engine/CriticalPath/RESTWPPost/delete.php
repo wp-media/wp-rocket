@@ -5,6 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\RESTWPPost;
 use Brain\Monkey\Functions;
 use WP_REST_Request;
 use WP_Rocket\Engine\CriticalPath\APIClient;
+use WP_Rocket\Engine\CriticalPath\CPCSSService;
 use WP_Rocket\Engine\CriticalPath\DataManager;
 use WP_Rocket\Engine\CriticalPath\RESTWPPost;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
@@ -27,7 +28,7 @@ class Test_Delete extends FilesystemTestCase {
 	}
 
 	/**
-	 * @dataProvider nonMultisiteTestData
+	 * @dataProvider dataProvider
 	 */
 	public function testShouldDoExpected( $config, $expected ) {
 		$post_id   = ! isset( $config['post_data']['post_id'] )
@@ -75,21 +76,23 @@ class Test_Delete extends FilesystemTestCase {
 
 		Functions\expect( 'rest_ensure_response' )->once()->andReturnFirstArg();
 
-		$api_client = new APIClient();
-		$data_manager = new DataManager('wp-content/cache/critical-css/', $this->filesystem);
-		$instance = new RESTWPPost( $data_manager, $api_client );
+		$api_client    = new APIClient();
+		$data_manager  = new DataManager('wp-content/cache/critical-css/', $this->filesystem);
+		$cpcss_service = new CPCSSService( $data_manager, $api_client );
+		$instance      = new RESTWPPost( $cpcss_service );
 		$request       = new WP_REST_Request();
 		$request['id'] = $post_id;
+
 		$this->assertSame( $config['cpcss_exists_before'], $this->filesystem->exists( $file ) );
 		$this->assertSame( $expected, $instance->delete( $request ) );
 		$this->assertSame( $config['cpcss_exists_after'], $this->filesystem->exists( $file ) );
 	}
 
-	public function nonMultisiteTestData() {
+	public function dataProvider() {
 		if ( empty( $this->config ) ) {
 			$this->loadConfig();
 		}
 
-		return $this->config['test_data']['non_multisite'];
+		return $this->config['test_data'];
 	}
 }

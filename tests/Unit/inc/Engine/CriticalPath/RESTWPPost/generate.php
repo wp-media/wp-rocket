@@ -5,9 +5,11 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\RESTWPPost;
 use Brain\Monkey\Functions;
 use WP_REST_Request;
 use WP_Rocket\Engine\CriticalPath\APIClient;
+use WP_Rocket\Engine\CriticalPath\CPCSSService;
 use WP_Rocket\Engine\CriticalPath\DataManager;
 use WP_Rocket\Engine\CriticalPath\RESTWPPost;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
+use WP_Error;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\RESTWPPost::generate
@@ -19,15 +21,8 @@ class Test_Generate extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/RESTWPPost/generate.php';
 	protected static $mockCommonWpFunctionsInSetUp = true;
 
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
-
-		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/WP_REST_Request.php';
-		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/WP_Error.php';
-	}
-
 	/**
-	 * @dataProvider nonMultisiteTestData
+	 * @dataProvider dataProvider
 	 */
 	public function testShouldDoExpected( $config, $expected ) {
 		$post_id                      = isset( $config['post_data'] )
@@ -79,18 +74,9 @@ class Test_Generate extends FilesystemTestCase {
 		//send_generation_request
 		//get_job_details
 		Functions\expect( 'is_wp_error' )
-			->andReturn(
-				( in_array( $expected['code'], ['post_not_exists', 'post_not_published'] ) ),
-				(
-					'cpcss_generation_failed' === $expected['code'] &&
-					(
-						200 !== $post_request_response_code ||
-						( 200 === $post_request_response_code && empty( (array) json_decode( $post_request_response_body )) )
-					)
-
-				),
-				( 'cpcss_generation_failed' === $expected['code'] && $get_request_response_code != 200 )
-			);
+			->andReturnUsing( function( $error_object ) {
+				return $error_object instanceof WP_Error;
+			}  );
 
 		Functions\expect( 'get_post_status' )
 			->once()
@@ -177,7 +163,8 @@ class Test_Generate extends FilesystemTestCase {
 
 		$api_client = new APIClient();
 		$data_manager = new DataManager('wp-content/cache/critical-css/', $this->filesystem);
-		$instance = new RESTWPPost( $data_manager, $api_client );
+		$cpcss_service = new CPCSSService( $data_manager, $api_client );
+		$instance = new RESTWPPost( $cpcss_service );
 		$request       = new WP_REST_Request();
 		$request['id'] = $post_id;
 
@@ -189,11 +176,11 @@ class Test_Generate extends FilesystemTestCase {
 		$this->assertSame( $config['cpcss_exists_after'], $this->filesystem->exists( $file ) );
 	}
 
-	public function nonMultisiteTestData() {
+	public function dataProvider() {
 		if ( empty( $this->config ) ) {
 			$this->loadConfig();
 		}
 
-		return $this->config['test_data']['non_multisite'];
+		return $this->config['test_data'];
 	}
 }

@@ -47,177 +47,101 @@ return [
 	],
 
 	'test_data' => [
-		'non_multisite' => [
-			'testShouldBailoutWithNoCapabilities'          => [
-				'config'   => [
-					'cpcss_exists_before' => true,
-					'current_user_can'    => false,
-					'post_data'           => [ 'post_id' => 1, 'post_type' => 'post' ],
-					'cpcss_exists_after'  => true,
-				],
-				'expected' => [
-					'code'    => 'rest_forbidden',
-					'message' => 'Sorry, you are not allowed to do that.',
-					'data'    => [ 'status' => 401 ],
-				],
+		'testShouldBailoutWithNoCapabilities'          => [
+			'config'   => [
+				'cpcss_exists_before' => true,
+				'current_user_can'    => false,
+				'post_data'           => [ 'post_id' => 1, 'post_type' => 'post' ],
+				'cpcss_exists_after'  => true,
 			],
-			'testShouldBailoutIfPostDoesNotExist'          => [
-				'config'   => [
-					'cpcss_exists_before' => false,
-					'current_user_can'    => true,
-					'post_data'           => [ 'post_id' => 2, 'post_type' => 'post' ],
-					'cpcss_exists_after'  => false,
-				],
-				'expected' => [
-					'success' => false,
-					'code'    => 'post_not_exists',
-					'message' => 'Requested post does not exist.',
-					'data'    => [ 'status' => 400 ],
-				],
-			],
-			'testShouldBailoutIfPostCPCSSNotExist'         => [
-				'config'   => [
-					'cpcss_exists_before' => false,
-					'current_user_can'    => true,
-					'post_data'           => [
-						'import_id' => 3,
-						'post_type' => 'post',
-					],
-					'cpcss_exists_after'  => false,
-				],
-				'expected' => [
-					'success' => false,
-					'code'    => 'cpcss_not_exists',
-					'message' => 'Critical CSS file does not exist',
-					'data'    => [ 'status' => 400 ],
-
-				],
-			],
-			'testShouldReturnSuccessWhenCPCSSExist_post'   => [
-				'config'   => [
-					'cpcss_exists_before' => true,
-					'current_user_can'    => true,
-					'post_data'           => [
-						'import_id' => 1,
-						'post_type' => 'post',
-					],
-					'cpcss_exists_after'  => false,
-				],
-				'expected' => [
-					'success' => true,
-					'code'    => 'success',
-					'message' => 'Critical CSS file deleted successfully.',
-					'data'    => [ 'status' => 200 ],
-				],
-			],
-			'testShouldReturnSuccessWhenCPCSSExist_post10' => [
-				'config'   => [
-					'cpcss_exists_before' => true,
-					'current_user_can'    => true,
-					'post_data'           => [
-						'import_id' => 10,
-						'post_type' => 'post',
-					],
-					'cpcss_exists_after'  => false,
-				],
-				'expected' => [
-					'success' => true,
-					'code'    => 'success',
-					'message' => 'Critical CSS file deleted successfully.',
-					'data'    => [ 'status' => 200 ],
-				],
-			],
-			'testShouldReturnSuccessWhenCPCSSExist_page'   => [
-				'config'   => [
-					'cpcss_exists_before' => true,
-					'current_user_can'    => true,
-					'post_data'           => [
-						'import_id' => 20,
-						'post_type' => 'page',
-					],
-					'cpcss_exists_after'  => false,
-				],
-				'expected' => [
-					'success' => true,
-					'code'    => 'success',
-					'message' => 'Critical CSS file deleted successfully.',
-					'data'    => [ 'status' => 200 ],
-				],
+			'expected' => [
+				'code'    => 'rest_forbidden',
+				'message' => 'Sorry, you are not allowed to do that.',
+				'data'    => [ 'status' => 401 ],
 			],
 		],
-		'multisite'     => [
-			'testShouldBailoutWithNoCapabilities'        => [
-				'config'   => [
-					'cpcss_exists_before' => true,
-					'current_user_can'    => false,
-					'post_data'           => [
-						'post_id'   => 1,
-						'post_type' => 'post',
-					],
-					'cpcss_exists_after'  => true,
-					'site_id'             => 2,
-				],
-				'expected' => [
-					'code'    => 'rest_forbidden',
-					'message' => 'Sorry, you are not allowed to do that.',
-					'data'    => [ 'status' => 401 ],
-				],
+		'testShouldBailoutIfPostDoesNotExist'          => [
+			'config'   => [
+				'cpcss_exists_before' => false,
+				'current_user_can'    => true,
+				'post_data'           => [ 'post_id' => 2, 'post_type' => 'post' ],
+				'cpcss_exists_after'  => false,
 			],
-			'testShouldBailoutIfPostDoesNotExist'        => [
-				'config'   => [
-					'cpcss_exists_before' => false,
-					'current_user_can'    => true,
-					'post_data'           => [
-						'post_id'   => 2,
-						'post_type' => 'post',
-					],
-					'cpcss_exists_after'  => false,
-					'site_id'             => 2,
-				],
-				'expected' => [
-					'success' => false,
-					'code'    => 'post_not_exists',
-					'message' => 'Requested post does not exist.',
-					'data'    => [ 'status' => 400 ],
-				],
-			],
-			'testShouldBailoutIfPostCPCSSNotExist'       => [
-				'config'   => [
-					'cpcss_exists_before' => false,
-					'current_user_can'    => true,
-					'post_data'           => [
-						'import_id' => 999,
-						'post_type' => 'post',
-					],
-					'cpcss_exists_after'  => false,
-					'site_id'             => 2,
-				],
-				'expected' => [
-					'success' => false,
-					'code'    => 'cpcss_not_exists',
-					'message' => 'Critical CSS file does not exist',
-					'data'    => [ 'status' => 400 ],
-
-				],
-			],
-			'testShouldReturnSuccessWhenCPCSSExist_post' => [
-				'config'   => [
-					'cpcss_exists_before' => true,
-					'current_user_can'    => true,
-					'post_data'           => [
-						'import_id' => 3,
-						'post_type' => 'post',
-					],
-					'cpcss_exists_after'  => false,
-					'site_id'             => 2,
-				],
-				'expected' => [
-					'success' => true,
-					'code'    => 'success',
-					'message' => 'Critical CSS file deleted successfully.',
-					'data'    => [ 'status' => 200 ],
-				],
+			'expected' => [
+				'success' => false,
+				'code'    => 'post_not_exists',
+				'message' => 'Requested post does not exist.',
+				'data'    => [ 'status' => 400 ],
 			],
 		],
+		'testShouldBailoutIfPostCPCSSNotExist'         => [
+			'config'   => [
+				'cpcss_exists_before' => false,
+				'current_user_can'    => true,
+				'post_data'           => [
+					'import_id' => 3,
+					'post_type' => 'post',
+				],
+				'cpcss_exists_after'  => false,
+			],
+			'expected' => [
+				'success' => false,
+				'code'    => 'cpcss_not_exists',
+				'message' => 'Critical CSS file does not exist',
+				'data'    => [ 'status' => 400 ],
+
+			],
+		],
+		'testShouldReturnSuccessWhenCPCSSExist_post'   => [
+			'config'   => [
+				'cpcss_exists_before' => true,
+				'current_user_can'    => true,
+				'post_data'           => [
+					'import_id' => 1,
+					'post_type' => 'post',
+				],
+				'cpcss_exists_after'  => false,
+			],
+			'expected' => [
+				'success' => true,
+				'code'    => 'success',
+				'message' => 'Critical CSS file deleted successfully.',
+				'data'    => [ 'status' => 200 ],
+			],
+		],
+		'testShouldReturnSuccessWhenCPCSSExist_post10' => [
+			'config'   => [
+				'cpcss_exists_before' => true,
+				'current_user_can'    => true,
+				'post_data'           => [
+					'import_id' => 10,
+					'post_type' => 'post',
+				],
+				'cpcss_exists_after'  => false,
+			],
+			'expected' => [
+				'success' => true,
+				'code'    => 'success',
+				'message' => 'Critical CSS file deleted successfully.',
+				'data'    => [ 'status' => 200 ],
+			],
+		],
+		'testShouldReturnSuccessWhenCPCSSExist_page'   => [
+			'config'   => [
+				'cpcss_exists_before' => true,
+				'current_user_can'    => true,
+				'post_data'           => [
+					'import_id' => 20,
+					'post_type' => 'page',
+				],
+				'cpcss_exists_after'  => false,
+			],
+			'expected' => [
+				'success' => true,
+				'code'    => 'success',
+				'message' => 'Critical CSS file deleted successfully.',
+				'data'    => [ 'status' => 200 ],
+			],
+		]
 	],
 ];

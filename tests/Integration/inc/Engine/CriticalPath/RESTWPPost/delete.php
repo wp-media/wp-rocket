@@ -12,7 +12,6 @@ use WP_Rocket\Tests\Integration\RESTVfsTestCase;
  */
 class Test_Delete extends RESTVfsTestCase {
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/RESTWPPost/delete.php';
-	private static $site2_id = 0;
 
 	protected function doTest( $site_id, $config, $expected ) {
 		$post_id   = ! isset( $config['post_data']['post_id'] )
@@ -37,7 +36,7 @@ class Test_Delete extends RESTVfsTestCase {
 	}
 
 	/**
-	 * @dataProvider nonMultisiteTestData
+	 * @dataProvider dataProvider
 	 */
 	public function testShouldDoExpectedWhenNotMultisite( $config, $expected ) {
 		if ( $config['current_user_can'] ) {
@@ -47,50 +46,12 @@ class Test_Delete extends RESTVfsTestCase {
 		$this->doTest( 1, $config, $expected );
 	}
 
-	/**
-	 * @dataProvider multisiteTestData
-	 * @group        Multisite
-	 */
-	public function testShouldDoExpectedWhenMultisite( $config, $expected ) {
-		// @TODO Figure out why the post does not exist in multisite.
-		//if ( 'success' === $expected['code']) {
-		$this->assertTrue( true );
-		return;
-		//}
-
-		$site_id = $config['site_id'];
-		if ( 0 === self::$site2_id ) {
-			self::$site2_id = $this->factory->blog->create(
-				[
-					'domain' => 'example.org',
-					'path'   => '/site2/',
-				]
-			);
-		}
-
-		switch_to_blog( $site_id );
-
-		if ( $config['current_user_can'] ) {
-			$this->setUpUser( $site_id );
-		}
-
-		$this->doTest( $site_id, $config, $expected );
-	}
-
-	public function nonMultisiteTestData() {
+	public function dataProvider() {
 		if ( empty( $this->config ) ) {
 			$this->loadConfig();
 		}
 
-		return $this->config['test_data']['non_multisite'];
-	}
-
-	public function multisiteTestData() {
-		if ( empty( $this->config ) ) {
-			$this->loadConfig();
-		}
-
-		return $this->config['test_data']['multisite'];
+		return $this->config['test_data'];
 	}
 
 	protected function setUpUser() {

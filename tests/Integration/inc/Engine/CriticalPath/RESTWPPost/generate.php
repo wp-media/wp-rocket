@@ -89,7 +89,7 @@ class Test_Generate extends RESTVfsTestCase {
 	}
 
 	/**
-	 * @dataProvider nonMultisiteTestData
+	 * @dataProvider dataProvider
 	 */
 	public function testShouldDoExpectedWhenNotMultisite( $config, $expected ) {
 		if ( $config['current_user_can'] ) {
@@ -99,12 +99,12 @@ class Test_Generate extends RESTVfsTestCase {
 		$this->doTest( 1, $config, $expected );
 	}
 
-	public function nonMultisiteTestData() {
+	public function dataProvider() {
 		if ( empty( $this->config ) ) {
 			$this->loadConfig();
 		}
 
-		return $this->config['test_data']['non_multisite'];
+		return $this->config['test_data'];
 	}
 
 	protected function setUpUser() {

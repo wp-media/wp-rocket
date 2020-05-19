@@ -26,30 +26,21 @@ abstract class RESTWP {
 	protected $route_namespace;
 
 	/**
-	 * Responsible for dealing with data/database.
+	 * CPCSS generation and deletion service.
 	 *
-	 * @var DataManager datamanager instance.
+	 * @var CPCSSService instance for this service.
 	 */
-	private $data_manager;
-
-	/**
-	 * Responsible for dealing with CPCSS APIs.
-	 *
-	 * @var APIClient api_client instance.
-	 */
-	private $api_client;
+	private $cpcss_service;
 
 	/**
 	 * RESTWP constructor.
 	 *
 	 * @since 3.6
 	 *
-	 * @param DataManager $data_manager Data manager instance, responsible for dealing with data/database.
-	 * @param APIClient   $api_client API Client instance to deal with CPCSS APIs.
+	 * @param CPCSSService $cpcss_service Has the logic for cpcss generation and deletion.
 	 */
-	public function __construct( DataManager $data_manager, APIClient $api_client ) {
-		$this->data_manager = $data_manager;
-		$this->api_client   = $api_client;
+	public function __construct( CPCSSService $cpcss_service ) {
+		$this->cpcss_service = $cpcss_service;
 	}
 
 	/**
@@ -116,196 +107,22 @@ abstract class RESTWP {
 		}
 
 		// get item url.
-		$item_url = $this->get_url( $item_id );
-		$timeout  = ( isset( $request['timeout'] ) && ! empty( $request['timeout'] ) );
+		$item_url  = $this->get_url( $item_id );
+		$item_path = $this->get_path( $item_id );
+		$timeout   = ( isset( $request['timeout'] ) && ! empty( $request['timeout'] ) );
 
-		return rest_ensure_response( $this->process_generate( $item_url, $item_id, $timeout ) );
+		$generated = $this->cpcss_service->process_generate( $item_url, $item_path, $timeout );
 
-	}
-
-	/**
-	 * Process CPCSS generation, Check timeout and send the generation request.
-	 *
-	 * @since 3.6
-	 *
-	 * @param string $item_url URL for item to be used in error messages.
-	 * @param int    $item_id ID for item to be processed.
-	 * @param bool   $timeout Timeout is requested or not.
-	 * @return array
-	 */
-	private function process_generate( $item_url, $item_id, $timeout = false ) {
-		// Ajax call requested a timeout.
-		if ( $timeout ) {
-			return $this->process_timeout( $item_url );
+		if ( is_wp_error( $generated ) ) {
+			return rest_ensure_response(
+				$this->return_error( $generated )
+			);
 		}
 
-		$cpcss_job_id = $this->data_manager->get_cache_job_id( $item_url );
-
-		if ( false === $cpcss_job_id ) {
-			return $this->send_generation_request( $item_url, $item_id );
-		}
-
-		// job_id is found and we need to check status for it.
-		return $this->check_cpcss_job_status( $cpcss_job_id, $item_id, $item_url );
-	}
-
-	/**
-	 * Send Generation first request.
-	 *
-	 * @since 3.6
-	 *
-	 * @param string $item_url Url for item to send the generation request for.
-	 * @param int    $item_id ID for item to send the generation request for.
-	 * @return array
-	 */
-	private function send_generation_request( $item_url, $item_id ) {
-		$output = null;
-
-		// call send generation request from APIClient for the first time.
-		$generated_job = $this->api_client->send_generation_request( $item_url );
-
-		// validate generate response.
-		if ( is_wp_error( $generated_job ) ) {
-			// Failed so return back the data.
-			return $this->return_error( $generated_job );
-		}
-
-		// Send generation request succeeded.
-		// Save job_id into cache.
-		$this->data_manager->set_cache_job_id( $item_url, $generated_job->data->id );
-
-		return $this->check_cpcss_job_status( $generated_job->data->id, $item_id, $item_url );
-	}
-
-	/**
-	 * Get job details by job_id.
-	 *
-	 * @since 3.6
-	 *
-	 * @param string $job_id ID for the job to get details.
-	 * @param string $item_url URL for item to be used in error messages.
-	 * @return array|mixed|WP_Error
-	 */
-	private function get_cpcss_job_details( $job_id, $item_url ) {
-		$job_details = $this->api_client->get_job_details( $job_id, $item_url );
-
-		if ( is_wp_error( $job_details ) ) {
-			return $this->return_error( $job_details );
-		}
-
-		return $job_details;
-	}
-
-	/**
-	 * Check status and process the output for a job.
-	 *
-	 * @since 3.6
-	 *
-	 * @param string $job_id ID for the job to get details.
-	 * @param int    $item_id ID for this item to be validated.
-	 * @param string $item_url URL for item to be used in error messages.
-	 * @return array Response in case of success, failure or pending.
-	 */
-	private function check_cpcss_job_status( $job_id, $item_id, $item_url ) {
-		$job_details = $this->api_client->get_job_details( $job_id, $item_url );
-
-		if ( is_wp_error( $job_details ) ) {
-			$this->data_manager->delete_cache_job_id( $item_url );
-			return $this->return_error( $job_details );
-		}
-
-		if ( 200 !== $job_details->status ) {
-			// On job error.
-			return $this->on_job_error( $job_details, $item_url );
-		}
-
-		// On job status 200.
-		$job_state = $job_details->data->state;
-
-		// For pending job status.
-		if ( isset( $job_state ) && 'complete' !== $job_state ) {
-			return $this->on_job_pending( $item_url );
-		}
-
-		// For successful job status.
-		if (
-			isset( $job_state, $job_details->data->critical_path ) &&
-			'complete' === $job_state
-		) {
-			return $this->on_job_success( $item_id, $item_url, $job_details->data->critical_path );
-		}
-	}
-
-	/**
-	 * Process logic for job error.
-	 *
-	 * @since 3.6
-	 *
-	 * @param array  $job_details Job details array.
-	 * @param string $item_url Url for web page to be processed, used for error messages.
-	 * @return array
-	 */
-	private function on_job_error( $job_details, $item_url ) {
-		$this->data_manager->delete_cache_job_id( $item_url );
-
-		// translators: %1$s = page URL.
-		$error = sprintf( __( 'Critical CSS for %1$s not generated.', 'rocket' ), $item_url );
-
-		if ( isset( $job_details->message ) ) {
-			// translators: %1$s = error message.
-			$error .= ' ' . sprintf( __( 'Error: %1$s', 'rocket' ), $job_details->message );
-		}
-
-		return $this->return_error(
-			new WP_Error(
-				'cpcss_generation_failed',
-				$error,
-				[
-					'status' => 400,
-				]
-			)
+		return rest_ensure_response(
+			$this->return_success( $generated )
 		);
-	}
 
-	/**
-	 * Process logic for job pending status.
-	 *
-	 * @since 3.6
-	 *
-	 * @param string $item_url Url for web page to be processed, used for error messages.
-	 * @return array
-	 */
-	private function on_job_pending( $item_url ) {
-		return $this->return_success(
-			'cpcss_generation_pending',
-			// translators: %s = post URL.
-			sprintf( __( 'Critical CSS for %s in progress.', 'rocket' ), $item_url )
-		);
-	}
-
-	/**
-	 * Process logic for job success status.
-	 *
-	 * @since 3.6
-	 *
-	 * @param int    $item_id Item ID for web page to be processed.
-	 * @param string $item_url Item Url for web page to be processed.
-	 * @param string $cpcss_code CPCSS Code to be saved.
-	 * @return array
-	 */
-	private function on_job_success( $item_id, $item_url, $cpcss_code ) {
-		// delete cache job_id for this item.
-		$this->data_manager->delete_cache_job_id( $item_url );
-
-		// save the generated CPCSS code into file.
-		$this->data_manager->save_cpcss( $this->get_path( $item_id ), $cpcss_code );
-
-		// Send the current status of job.
-		return $this->return_success(
-			'cpcss_generation_successful',
-			// translators: %s = post URL.
-			sprintf( __( 'Critical CSS for %s generated.', 'rocket' ), $item_url )
-		);
 	}
 
 	/**
@@ -366,25 +183,16 @@ abstract class RESTWP {
 			return rest_ensure_response( $this->return_error( $validated ) );
 		}
 
-		return rest_ensure_response( $this->process_delete( $item_id ) );
-	}
-
-	/**
-	 * Process the login for CPCSS deletion.
-	 *
-	 * @param int $item_id ID for item to delete CPCSS code.
-	 * @return array
-	 */
-	private function process_delete( $item_id ) {
-		$deleted = $this->data_manager->delete_cpcss( $this->get_path( $item_id ) );
-
+		$item_path = $this->get_path( $item_id );
+		$deleted = $this->cpcss_service->process_delete( $item_path );
 		if ( is_wp_error( $deleted ) ) {
-			return $this->return_error( $deleted );
+			return rest_ensure_response(
+				$this->return_error( $deleted )
+			);
 		}
 
-		return $this->return_success(
-			'success',
-			__( 'Critical CSS file deleted successfully.', 'rocket' )
+		return rest_ensure_response(
+			$this->return_success( $deleted )
 		);
 	}
 
@@ -434,39 +242,15 @@ abstract class RESTWP {
 	 *
 	 * @since 3.6
 	 *
-	 * @param string $code Code represents the status.
-	 * @param string $message Message to be sent.
+	 * @param array $data which has success parameters with two keys: code and message.
 	 * @return array
 	 */
-	protected function return_success( $code, $message = '' ) {
+	protected function return_success( $data ) {
 		return $this->return_array_response(
 			true,
-			$code,
-			$message,
+			$data['code'],
+			$data['message'],
 			200
-		);
-	}
-
-	/**
-	 * Process timeout action for CPCSS generation.
-	 *
-	 * @since 3.6
-	 *
-	 * @param string $item_url URL for item to be used in error messages.
-	 * @return array
-	 */
-	private function process_timeout( $item_url ) {
-		$this->data_manager->delete_cache_job_id( $item_url );
-
-		return $this->return_error(
-			new WP_Error(
-				'cpcss_generation_timeout',
-				// translators: %1$s = Item URL.
-				sprintf( __( 'Critical CSS for %1$s timeout. Please retry a little later.', 'rocket' ), $item_url ),
-				[
-					'status' => 400,
-				]
-			)
 		);
 	}
 
