@@ -109,21 +109,17 @@ abstract class RESTWP {
 	 */
 	public function generate( WP_REST_Request $request ) {
 		$item_id = intval( $request['id'] );
-		$output  = null;
-
 		// validate item.
 		$validated = $this->validate_item_for_generate( $item_id );
-		if ( ! is_wp_error( $validated ) ) {
-			// get item url.
-			$item_url = $this->get_url( $item_id );
-			$timeout  = ( isset( $request['timeout'] ) && ! empty( $request['timeout'] ) );
-
-			$output = $this->process_generate( $item_url, $item_id, $timeout );
-		}else {
-			$output = $this->return_error( $validated );
+		if ( is_wp_error( $validated ) ) {
+			return rest_ensure_response($this->return_error($validated));
 		}
 
-		return rest_ensure_response( $output );
+		// get item url.
+		$item_url = $this->get_url( $item_id );
+		$timeout  = ( isset( $request['timeout'] ) && ! empty( $request['timeout'] ) );
+
+		return rest_ensure_response( $this->process_generate( $item_url, $item_id, $timeout ) );
 
 	}
 
