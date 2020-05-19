@@ -3,8 +3,22 @@
 $content = require WP_ROCKET_TESTS_FIXTURES_DIR . '/content/advancedCacheContent.php';
 
 return [
-	// Use in tests when the test data starts in this directory.
-	'vfs_dir' => 'wp-content/',
+	'vfs_dir' => 'wp-content/plugins/wp-rocket/views/cache/',
+
+	'structure' => [
+		'wp-content' => [
+			'plugins'            => [
+				'wp-rocket' => [
+					'views' => [
+						'cache' => [
+							'advanced-cache.php' => file_get_contents( WP_ROCKET_PLUGIN_ROOT . 'views/cache/advanced-cache.php' ),
+						],
+					],
+				],
+			],
+			'advanced-cache.php' => '',
+		],
+	],
 
 	'settings' => [
 		'cache_mobile'            => 0,
@@ -17,6 +31,7 @@ return [
 			'expected'                                => $content['non_mobile'],
 			'is_rocket_generate_caching_mobile_files' => false,
 		],
+
 		[
 			'settings'                                => [
 				'cache_mobile' => 1,
@@ -24,6 +39,7 @@ return [
 			'expected'                                => $content['non_mobile'],
 			'is_rocket_generate_caching_mobile_files' => false,
 		],
+
 		[
 			'settings'                                => [
 				'do_caching_mobile_files' => 1,
@@ -31,6 +47,7 @@ return [
 			'expected'                                => $content['non_mobile'],
 			'is_rocket_generate_caching_mobile_files' => false,
 		],
+
 		[
 			'settings'                                => [
 				'cache_mobile'            => 1,

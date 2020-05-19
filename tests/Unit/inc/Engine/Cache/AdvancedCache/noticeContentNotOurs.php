@@ -4,63 +4,69 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Cache\AdvancedCache;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\Engine\Cache\AdvancedCache;
-use WP_Rocket\Tests\Unit\FilesystemTestCase;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers WP_Rocket\Engine\Cache\AdvancedCache::notice_content_not_ours
- *
+ * @covers \WP_Rocket\Engine\Cache\AdvancedCache::notice_content_not_ours
  * @uses   ::rocket_get_constant
  * @uses   ::rocket_notice_html
+ * @uses   ::rocket_notice_writing_permissions
  *
  * @group  AdvancedCache
  */
-class Test_NoticeContentNotOurs extends FilesystemTestCase {
-    protected $path_to_test_data = '/inc/Engine/Cache/AdvancedCache/noticeContentNotOurs.php';
-    private $advanced_cache;
+class Test_NoticeContentNotOurs extends TestCase {
 
-	public function setUp() {
-        parent::setUp();
+	public function tearDown() {
+		unset( $GLOBALS['pagenow'], $_GET['activate'] );
 
-		$this->advanced_cache = new AdvancedCache(
-            $this->filesystem->getUrl( 'wp-content/plugins/wp-rocket/views/cache/' )
-        );
-    }
-
-    public function tearDown() {
-        unset( $GLOBALS['pagenow'] );
-        unset( $_GET['activate'] );
-
-        parent::tearDown();
-    }
-
-    private function getActualHtml() {
-        ob_start();
-
-        $this->advanced_cache->notice_content_not_ours();
-        return $this->format_the_html( ob_get_clean() );
-    }
+		parent::tearDown();
+	}
 
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldEchoNotice( $config, $expected ) {
-        $GLOBALS['pagenow'] = $config['pagenow'];
-        $_GET['activate']   = $config['activate'];
-        Functions\when( 'current_user_can' )->justReturn( $config['cap'] );
-        Functions\when( 'rocket_valid_key' )->justReturn( $config['valid_key'] );
+		$GLOBALS['pagenow']             = $config['pagenow'];
+		$_GET['activate']               = $config['activate'];
+		$this->wp_rocket_advanced_cache = $config['constant'];
 
-        Functions\when( 'rocket_notice_writing_permissions' )->justReturn( $config['message'] );
-        Functions\when( 'rocket_notice_html' )->alias( function() use ( $expected ) {
-            echo $expected;
-        } );
+		Functions\expect( 'current_user_can' )
+			->once()
+			->with( 'rocket_manage_options' )
+			->andReturn( $config['cap'] );
 
-        if ( ! empty( $expected ) ) {
-            $this->assertSame(
-                $this->format_the_html( $expected ),
-                $this->getActualHtml()
-            );
-        } else {
-            $this->assertSame( $expected, $this->advanced_cache->notice_permissions() );
-        }
-    }
+		if ( $config['cap'] ) {
+			Functions\expect( 'rocket_valid_key' )
+				->once()
+				->andReturn( $config['valid_key'] );
+		} else {
+			Functions\expect( 'rocket_valid_key' )->never();
+		}
+
+		if ( $config['cap'] && $config['valid_key'] && ! $this->wp_rocket_advanced_cache ) {
+
+			Functions\expect( 'rocket_notice_writing_permissions' )
+				->once()
+				->with( 'wp-content/advanced-cache.php' )
+				->andReturn( $config['message'] );
+
+			Functions\expect( 'rocket_notice_html' )
+				->once()
+				->with(
+					[
+						'status'      => 'error',
+						'dismissible' => '',
+						'message'     => $config['message'],
+					]
+				)
+				->andReturnNull();
+
+		} else {
+			Functions\expect( 'rocket_notice_writing_permissions' )->never();
+			Functions\expect( 'rocket_notice_html' )->never();
+		}
+
+		$advanced_cache = new AdvancedCache( '', null );
+		$advanced_cache->notice_content_not_ours();
+	}
 }
