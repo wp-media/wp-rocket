@@ -33,7 +33,6 @@ function rocket_init() {
 
 	// Call defines and functions.
 	require WP_ROCKET_FUNCTIONS_PATH . 'options.php';
-	require WP_ROCKET_FUNCTIONS_PATH . 'files.php';
 
 	// Last constants.
 	define( 'WP_ROCKET_PLUGIN_NAME', 'WP Rocket' );

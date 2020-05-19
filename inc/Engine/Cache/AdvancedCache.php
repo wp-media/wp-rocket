@@ -2,7 +2,10 @@
 
 namespace WP_Rocket\Engine\Cache;
 
+use WP_Filesystem_Direct;
+
 class AdvancedCache {
+
 	/**
 	 * Absolute path to template files
 	 *
@@ -18,21 +21,22 @@ class AdvancedCache {
 	private $content_dir;
 
 	/**
-	 * WP Filesystem Direct instance
+	 * Instance of the filesystem handler.
 	 *
 	 * @var WP_Filesystem_Direct
 	 */
 	private $filesystem;
 
 	/**
-	 * Instantiate the class
+	 * Instantiate of the class.
 	 *
-	 * @param string $template_path Absolute path to template files.
+	 * @param string               $template_path Absolute path to template files.
+	 * @param WP_Filesystem_Direct $filesystem    Instance of the filesystem handler.
 	 */
-	public function __construct( $template_path ) {
+	public function __construct( $template_path, $filesystem ) {
 		$this->template_path = $template_path;
 		$this->content_dir   = rocket_get_constant( 'WP_CONTENT_DIR' );
-		$this->filesystem    = rocket_direct_filesystem();
+		$this->filesystem    = $filesystem;
 	}
 
 	/**
@@ -65,7 +69,7 @@ class AdvancedCache {
 		 * @since 2.1
 		 *
 		 * @param string $content The content that will be printed in advanced-cache.php.
-		*/
+		 */
 		return (string) apply_filters( 'rocket_advanced_cache_file', $content );
 	}
 
@@ -84,7 +88,8 @@ class AdvancedCache {
 
 		if (
 			$this->filesystem->is_writable( "{$this->content_dir}/advanced-cache.php" )
-			|| rocket_get_constant( 'WP_ROCKET_ADVANCED_CACHE' )
+			||
+			rocket_get_constant( 'WP_ROCKET_ADVANCED_CACHE' )
 		) {
 			return;
 		}
@@ -92,11 +97,11 @@ class AdvancedCache {
 		$notice_name = 'rocket_warning_advanced_cache_permissions';
 
 		if (
-			in_array(
-				$notice_name,
-				(array) get_user_meta( get_current_user_id(), 'rocket_boxes', true ),
-				true
-			)
+		in_array(
+			$notice_name,
+			(array) get_user_meta( get_current_user_id(), 'rocket_boxes', true ),
+			true
+		)
 		) {
 			return;
 		}
@@ -125,7 +130,8 @@ class AdvancedCache {
 
 		if (
 			'plugins.php' === $pagenow
-			&& filter_has_var( INPUT_GET, 'activate' )
+			&&
+			filter_has_var( INPUT_GET, 'activate' )
 		) {
 			return;
 		}

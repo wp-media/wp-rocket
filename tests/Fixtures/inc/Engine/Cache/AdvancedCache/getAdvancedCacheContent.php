@@ -17,6 +17,7 @@ return [
 			'expected'                                => $content['non_mobile'],
 			'is_rocket_generate_caching_mobile_files' => false,
 		],
+
 		[
 			'settings'                                => [
 				'cache_mobile' => 1,
@@ -24,6 +25,7 @@ return [
 			'expected'                                => $content['non_mobile'],
 			'is_rocket_generate_caching_mobile_files' => false,
 		],
+
 		[
 			'settings'                                => [
 				'do_caching_mobile_files' => 1,
@@ -31,6 +33,7 @@ return [
 			'expected'                                => $content['non_mobile'],
 			'is_rocket_generate_caching_mobile_files' => false,
 		],
+
 		[
 			'settings'                                => [
 				'cache_mobile'            => 1,
