@@ -191,9 +191,9 @@ abstract class RESTWP {
 
 		if ( is_wp_error( $job_details ) ) {
 			return $this->return_error( $job_details );
-		}else {
-			return $job_details;
 		}
+
+		return $job_details;
 	}
 
 	/**
