@@ -1,6 +1,7 @@
 <?php
 namespace WP_Rocket\ThirdParty\Hostings;
 
+use WP_Rocket\Engine\Cache\AdminSubscriber;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Event_Management\Event_Manager_Aware_Subscriber_Interface;
 
@@ -13,9 +14,25 @@ class Pressable implements Subscriber_Interface {
 	/**
 	 * Event Manager instance
 	 *
-	 * @var Event_Manager;
+	 * @var Event_Manager
 	 */
 	protected $event_manager;
+
+	/**
+	 * Cache Admin Subscriber instance
+	 *
+	 * @var AdminSubscriber
+	 */
+	protected $cache_admin_subscriber;
+
+	/**
+	 * Instantiate the class
+	 *
+	 * @param AdminSubscriber $admin_cache_subscriber Cache Admin Subscriber instance.
+	 */
+	public function __construct( AdminSubscriber $admin_cache_subscriber ) {
+		$this->admin_cache_subscriber = $admin_cache_subscriber;
+	}
 
 	/**
 	 * Sets the event manager for the subscriber.
@@ -79,11 +96,8 @@ class Pressable implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function remove_advanced_cache_notices() {
-		$container = apply_filters( 'rocket_container', null );
-		$cache     = $container->get( 'admin_cache_subscriber' );
-
-		$this->event_manager->remove_callback( 'admin_notices', [ $cache, 'notice_advanced_cache_permissions' ] );
-		$this->event_manager->remove_callback( 'admin_notices', [ $cache, 'notice_advanced_cache_content_not_ours' ] );
+		$this->event_manager->remove_callback( 'admin_notices', [ $this->admin_cache_subscriber, 'notice_advanced_cache_permissions' ] );
+		$this->event_manager->remove_callback( 'admin_notices', [ $this->admin_cache_subscriber, 'notice_advanced_cache_content_not_ours' ] );
 	}
 
 	/**
@@ -114,7 +128,7 @@ class Pressable implements Subscriber_Interface {
 	 *
 	 * @since 3.3
 	 *
-	 * @param array $hosts Array of domains.
+	 * @param array $hosts Array of CDN URLs.
 	 * @return array
 	 */
 	public function add_pressable_cdn_cname( $hosts ) {
