@@ -21,6 +21,21 @@ $htaccess       = require WP_ROCKET_TESTS_FIXTURES_DIR . '/content/htaccessConte
 return [
 	'vfs_dir' => 'wp-content/',
 
+	'structure' => [
+		'wp-content' => [
+			'plugins'            => [
+				'wp-rocket' => [
+					'views' => [
+						'cache' => [
+							'advanced-cache.php' => file_get_contents( WP_ROCKET_PLUGIN_ROOT . 'views/cache/advanced-cache.php' ),
+						],
+					],
+				],
+			],
+			'advanced-cache.php' => '',
+		],
+	],
+
 	'settings'  => [
 		'cache_mobile'        => true,
 		'purge_cron_interval' => true,
