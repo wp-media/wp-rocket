@@ -2,7 +2,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\APIClient;
 
 use WP_Rocket\Engine\CriticalPath\APIClient;
-use WP_Rocket\Tests\Integration\FilesystemTestCase;
+use WP_Rocket\Tests\Integration\TestCase;
 use Brain\Monkey\Functions;
 use WP_Error;
 
@@ -11,12 +11,10 @@ use WP_Error;
  * @group CriticalPath
  * @group  vfs
  */
-class Test_SendGenerationRequest extends FilesystemTestCase {
-
-	protected $path_to_test_data = '/inc/Engine/CriticalPath/APIClient/sendGenerationRequest.php';
+class Test_SendGenerationRequest extends TestCase {
 
 	/**
-	 * @dataProvider nonMultisiteTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ) {
 		$item_url      = isset( $config['item_url'] ) ? $config['item_url'] : '';
@@ -24,8 +22,7 @@ class Test_SendGenerationRequest extends FilesystemTestCase {
 		$response_body = ! isset( $config['response_data']['body'] ) ? '' : $config['response_data']['body'];
 
 		Functions\expect( 'wp_remote_post' )
-			->atMost()
-			->times( 1 )
+			->once()
 			->with(
 				'https://cpcss.wp-rocket.me/api/job/',
 				[
@@ -37,14 +34,12 @@ class Test_SendGenerationRequest extends FilesystemTestCase {
 			->andReturn( 'postRequest' );
 
 		Functions\expect( 'wp_remote_retrieve_response_code' )
-			->atMost()
-			->times( 1 )
+			->once()
 			->with( 'postRequest' )
 			->andReturn( $response_code );
 
 		Functions\expect( 'wp_remote_retrieve_body' )
-			->atMost()
-			->times( 1 )
+			->once()
 			->with( 'postRequest' )
 			->andReturn( $response_body );
 
@@ -62,14 +57,6 @@ class Test_SendGenerationRequest extends FilesystemTestCase {
 			$this->assertSame( $expected['message'], $actual->get_error_message() );
 			$this->assertSame( $expected['data'], $actual->get_error_data() );
 		}
-	}
-
-	public function nonMultisiteTestData() {
-		if ( empty( $this->config ) ) {
-			$this->loadConfig();
-		}
-
-		return $this->config['test_data']['non_multisite'];
 	}
 
 }
