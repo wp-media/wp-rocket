@@ -25,6 +25,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'critical_css_subscriber',
 		'rest_cpcss_api_client',
 		'rest_cpcss_data_manager',
+		'cpcss_service',
 		'rest_cpcss_wp_post',
 		'rest_cpcss_subscriber',
 		'critical_css_admin_subscriber',
