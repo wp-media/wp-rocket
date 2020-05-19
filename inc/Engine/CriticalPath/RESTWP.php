@@ -363,13 +363,11 @@ abstract class RESTWP {
 
 		// validate item.
 		$validated = $this->validate_item_for_delete( $item_id );
-		if ( ! is_wp_error( $validated ) ) {
-			$output = $this->process_delete( $item_id );
-		}else {
-			$output = $this->return_error( $validated );
+		if ( is_wp_error( $validated ) ) {
+			return rest_ensure_response( $this->return_error( $validated ) );
 		}
 
-		return rest_ensure_response( $output );
+		return rest_ensure_response( $this->process_delete( $item_id ) );
 	}
 
 	/**
