@@ -136,7 +136,8 @@ class CPCSSService {
 
 		// For successful job status.
 		if (
-			isset( $job_state, $job_details->data->critical_path ) &&
+			isset( $job_state, $job_details->data->critical_path )
+			&&
 			'complete' === $job_state
 		) {
 			return $this->on_job_success( $item_path, $item_url, $job_details->data->critical_path );
