@@ -9,31 +9,51 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
  * @covers ::rocket_clean_files
+ * @uses  ::_rocket_get_wp_rocket_cache_path
+ * @uses  ::rocket_get_constant
  * @uses  ::rocket_rrmdir
- * @uses  ::_rocket_get_cache_path_iterator
- * @uses  ::_rocket_get_entries_regex
+ * @uses  ::_rocket_get_cache_dirs
+ * @uses  ::_rocket_normalize_path
+ * @uses  ::_rocket_is_windows_fs
  *
  * @group Functions
  * @group Files
  * @group vfs
+ * @group Clean
  */
 class Test_RocketCleanFiles extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/functions/rocketCleanFiles.php';
 
-	public function setUp() {
-		parent::setUp();
+	public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
 
-		Functions\expect( 'rocket_get_constant' )
-			->with( 'WP_ROCKET_CACHE_PATH' )
-			->andReturn( 'vfs://public/wp-content/cache/wp-rocket/' );
+		// Clean out the cached dirs before we run these tests.
+		_rocket_get_cache_dirs( '', '', true );
+	}
+
+	public static function tearDownAfterClass() {
+		parent::tearDownAfterClass();
+
+		// Clean out the cached dirs before we leave this test class.
+		_rocket_get_cache_dirs( '', '', true );
+	}
+
+	public function tearDown() {
+		parent::tearDown();
+
+		unset( $GLOBALS['debug_fs'] );
 	}
 
 	/**
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldCleanExpectedFiles( $urls, $expected ) {
+		if ( isset( $expected['debug'] ) && $expected['debug'] ) {
+			$GLOBALS['debug_fs'] = true;
+		}
+
 		if ( empty( $urls ) ) {
-			$this->doBailOutTest( $urls );
+			$this->doBailOutTest();
 		} else {
 			$this->doCleanFilesTest( $urls, $expected );
 		}
@@ -42,11 +62,7 @@ class Test_RocketCleanFiles extends FilesystemTestCase {
 		rocket_clean_files( $urls );
 	}
 
-	private function doBailOutTest( $urls ) {
-		Filters\expectApplied( 'rocket_clean_files' )
-			->once()
-			->with( $urls )
-			->andReturn( [] );
+	private function doBailOutTest() {
 		Filters\expectApplied( 'rocket_url_no_dots' )->never();
 		Actions\expectDone( 'before_rocket_clean_files' )->never();
 		Actions\expectDone( 'before_rocket_clean_file' )->never();
@@ -56,48 +72,27 @@ class Test_RocketCleanFiles extends FilesystemTestCase {
 	}
 
 	private function doCleanFilesTest( $urls, $expected ) {
-		$regex_urls = [];
-		foreach ( $urls as $url ) {
-			$host         = parse_url( $url, PHP_URL_HOST );
-			$regex_urls[] = str_replace( $host, "{$host}*", $url );
-		}
-
-		Filters\expectApplied( 'rocket_clean_files' )
-			->once()
-			->with( $urls )
-			->andReturn( $regex_urls );
 		Filters\expectApplied( 'rocket_url_no_dots' )
 			->once()
 			->with( false )
 			->andReturnFirstArg();
-		Actions\expectDone( 'before_rocket_clean_files' )->once()->with( $regex_urls );
-		foreach ( $regex_urls as $url ) {
+		Actions\expectDone( 'before_rocket_clean_files' )->once()->with( $urls );
+
+		foreach ( $urls as $url ) {
 			Actions\expectDone( 'before_rocket_clean_file' )->once()->with( $url );
-			Functions\expect( 'get_rocket_parse_url' )
-				->once()
-				->with( $url )
-				->andReturnUsing(
-					function ( $url ) {
-						return array_merge(
-							[
-								'host'   => '',
-								'path'   => '',
-								'scheme' => '',
-								'query'  => '',
-							],
-							parse_url( $url )
-						);
-					}
-				);
+			$this->stubGetRocketParseUrl( $url );
 			Actions\expectDone( 'after_rocket_clean_file' )->once()->with( $url );
 		}
 
 		foreach ( array_keys( $expected['cleaned'] ) as $file ) {
-			$file = rtrim( $file, '/\\' );
-			Functions\expect( 'rocket_rrmdir' )
-				->once()
-				->with( $file )
-				->andReturnNull();
+			if ( $this->filesystem->is_dir( $file ) ) {
+				Functions\expect( 'rocket_rrmdir' )
+					->once()
+					->with( $file, [], $this->filesystem )
+					->andReturnNull();
+			} else {
+				Functions\expect( 'rocket_rrmdir' )->with( $file )->never();
+			}
 		}
 	}
 }

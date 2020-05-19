@@ -2,18 +2,32 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Media\LazyloadSubscriber;
 
-use Brain\Monkey\Functions;
-use WPMedia\PHPUnit\Integration\TestCase;
+use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Media\LazyloadSubscriber::insert_lazyload_script
+ * @uses   ::rocket_get_constant
+ * @uses   \RocketLazyload\Assets::insertLazyloadScript
+ *
  * @group  Lazyload
  */
 class Test_InsertLazyloadScript extends TestCase {
 	private $lazyload;
 	private $iframes;
+	private $threshold;
+
+	public function setUp() {
+		$this->script_debug = false;
+
+		parent::setUp();
+
+		$this->lazyload  = null;
+		$this->iframes   = null;
+		$this->threshold = null;
+	}
 
 	public function tearDown() {
+		remove_filter( 'rocket_lazyload_script_tag', [ $this, 'set_js_to_min' ] );
 		remove_filter( 'pre_get_rocket_option_lazyload', [ $this, 'setLazyload' ] );
 		remove_filter( 'pre_get_rocket_option_lazyload_iframes', [ $this, 'setIframes' ] );
 		remove_filter( 'rocket_lazyload_threshold', [ $this, 'setThreshold' ] );
@@ -31,22 +45,16 @@ class Test_InsertLazyloadScript extends TestCase {
 	}
 
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldInsertLazyloadScript( $options, $expected ) {
 		$this->lazyload = $options['lazyload'];
 		$this->iframes  = $options['lazyload_iframes'];
 
-		Functions\expect( 'rocket_get_constant' )
-			->atMost()
-			->times( 1 )
-			->with( 'WP_ROCKET_ASSETS_JS_URL' )
-			->andReturn( 'http://example.org/wp-content/plugins/wp-rocket/assets/js/' )
-			->andAlsoExpectIt()
-			->atMost()
-			->times( 1 )
-			->with( 'SCRIPT_DEBUG')
-			->andReturn( false );
+		// wp-media/rocket-lazyload-common uses the constant for determining whether to set as .min.js.
+		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
+			add_filter( 'rocket_lazyload_script_tag', [ $this, 'set_js_to_min' ] );
+		}
 
 		add_filter( 'pre_get_rocket_option_lazyload', [ $this, 'setLazyload' ] );
 		add_filter( 'pre_get_rocket_option_lazyload_iframes', [ $this, 'setIframes' ] );
@@ -78,10 +86,6 @@ class Test_InsertLazyloadScript extends TestCase {
 		}
 	}
 
-	public function providerTestData() {
-		return $this->getTestData( __DIR__, 'insertLazyloadScript' );
-	}
-
 	public function setLazyload() {
 		return $this->lazyload;
 	}
@@ -92,5 +96,9 @@ class Test_InsertLazyloadScript extends TestCase {
 
 	public function setThreshold() {
 		return $this->threshold;
+	}
+
+	public function set_js_to_min( $script ) {
+		return str_replace( '.js', '.min.js', $script );
 	}
 }

@@ -10,6 +10,7 @@ use WP_Rocket\Engine\Cache\PurgeActionsSubscriber;
 
 /**
  * @covers \WP_Rocket\Engine\Cache\PurgeActionsSubscriber:maybe_purge_cache_on_term_change
+ *
  * @group  purge_actions
  */
 class Test_MaybePurgeCacheOnTermChange extends TestCase {

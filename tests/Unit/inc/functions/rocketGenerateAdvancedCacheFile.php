@@ -19,13 +19,6 @@ class Test_RocketGenerateAdvancedCacheFile extends FilesystemTestCase {
 	protected $path_to_test_data   = '/inc/functions/rocketGenerateAdvancedCacheFile.php';
 	private   $advanced_cache_file = 'vfs://public/wp-content/advanced-cache.php';
 
-	public function setUp() {
-		parent::setUp();
-
-		// Mocks the various filesystem constants.
-		$this->whenRocketGetConstant();
-	}
-
 	/**
 	 * @dataProvider providerTestData
 	 */
