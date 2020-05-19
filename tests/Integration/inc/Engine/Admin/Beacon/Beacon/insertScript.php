@@ -14,6 +14,9 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_InsertScript extends TestCase {
 	private $locale;
+	protected static $transients = [
+		'wp_rocket_customer_data' => null,
+	];
 
 	public function setUp() {
 		parent::setUp();
@@ -26,7 +29,6 @@ class Test_InsertScript extends TestCase {
 		parent::tearDown();
 
 		set_current_screen( 'front' );
-		delete_transient( 'wp_rocket_customer_data' );
 
 		remove_filter( 'rocket_beacon_locale', [ $this, 'locale_cb' ] );
 		remove_filter( 'pre_get_rocket_option_consumer_email', [ $this, 'consumer_email' ] );

@@ -27,7 +27,7 @@ class Test_InsertScript extends TestCase {
 		parent::setUp();
 
 		$this->options = Mockery::mock( Options_Data::class );
-		$this->beacon  = Mockery::mock( Beacon::class . '[insert_script]', [
+		$this->beacon  = Mockery::mock( Beacon::class . '[generate]', [
 			$this->options,
 			WP_ROCKET_PLUGIN_ROOT . 'views/settings'
 		] );
@@ -36,8 +36,7 @@ class Test_InsertScript extends TestCase {
 	public function testShouldNotInsertWhenNoCapacity() {
 		Functions\when( 'current_user_can' )->justReturn( false );
 
-		$this->beacon->shouldReceive( 'insert_script' )
-			->never();
+		$this->assertNull( $this->beacon->insert_script() );
 	}
 
 	/**
@@ -65,9 +64,6 @@ class Test_InsertScript extends TestCase {
 			->andReturn( [] );
 
 		$this->setUpGenerate( 'beacon', $expected['data'] );
-
-		$this->beacon->shouldReceive( 'insert_script' )
-			->once();
 
 		ob_start();
 		$this->beacon->insert_script();
