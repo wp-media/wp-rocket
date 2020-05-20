@@ -1,25 +1,63 @@
 <?php
 
+$cleaned = [
+	'vfs://public/wp-content/cache/wp-rocket/example.org/'                => null,
+	'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456/' => null,
+	'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654/'  => null,
+];
+
 return [
-	'vfs_dir'   => 'wp-content/cache/wp-rocket/',
-	'cleaned'   => [
-		'vfs://public/wp-content/cache/wp-rocket/example.org' => null,
-		'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456' => null,
-		'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654' => null,
-	],
+	'vfs_dir' => 'wp-content/cache/wp-rocket/',
+
 	'test_data' => [
-		'testCreateTerm' => [
-			'action' => 'create_term',
+
+		'testShouldNotPurgeCacheWhenNotPublic_create_term' => [
+			'action'   => 'create_term',
+			'public'   => false,
+			'expected' => [
+				'cleaned' => [],
+			],
 		],
-		'testUpdateTerm' => [
-			'action' => 'edit_term',
+		'testShouldNotPurgeCacheWhenNotPublic_edit_term' => [
+			'action'   => 'edit_term',
+			'public'   => false,
+			'expected' => [
+				'cleaned' => [],
+			],
 		],
-		'testDeleteTerm' => [
-			'action' => 'pre_delete_term',
+		'testShouldNotPurgeCacheWhenNotPublic_delete_term' => [
+			'action'   => 'delete_term',
+			'public'   => false,
+			'expected' => [
+				'cleaned' => [],
+			],
+		],
+
+		'testShouldPurgeCacheWhenPublic_create_term' => [
+			'action'   => 'create_term',
+			'public'   => true,
+			'expected' => [
+				'cleaned' => $cleaned,
+			],
+		],
+		'testShouldPurgeCacheWhenPublic_edit_term'   => [
+			'action'   => 'edit_term',
+			'public'   => true,
+			'expected' => [
+				'cleaned' => $cleaned,
+			],
+		],
+		'testShouldPurgeCacheWhenPublic_delete_term' => [
+			'action'   => 'delete_term',
+			'public'   => true,
+			'expected' => [
+				'cleaned' => $cleaned,
+			],
 		],
 	],
+
 	'unit_test_data' => [
-		'testTaxonomyReturnFalse' => [
+		'testTaxonomyReturnFalse'                      => [
 			'name'     => 'foo',
 			'taxonomy' => false,
 			'clean'    => false,
@@ -32,7 +70,7 @@ return [
 			],
 			'clean'    => false,
 		],
-		'testTaxonomyNotPublic' => [
+		'testTaxonomyNotPublic'                        => [
 			'name'     => 'category',
 			'taxonomy' => (object) [
 				'public'             => false,
@@ -40,7 +78,7 @@ return [
 			],
 			'clean'    => false,
 		],
-		'testTaxonomyNotPubliclyQueryable' => [
+		'testTaxonomyNotPubliclyQueryable'             => [
 			'name'     => 'category',
 			'taxonomy' => (object) [
 				'public'             => true,
@@ -48,7 +86,7 @@ return [
 			],
 			'clean'    => false,
 		],
-		'testTaxonomyPublic' => [
+		'testTaxonomyPublic'                           => [
 			'name'     => 'category',
 			'taxonomy' => (object) [
 				'public'             => true,

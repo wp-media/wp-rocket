@@ -9,8 +9,8 @@ use Brain\Monkey\Functions;
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::purge_cache_notice
  * @uses ::rocket_notice_html
  *
- * @group  RocketCDN
  * @group  AdminOnly
+ * @group  RocketCDN
  */
 class Test_PurgeCacheNotice extends TestCase {
 	private function get_notice( $status = 'success', $message = '' ) {

@@ -3,32 +3,35 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\HealthCheck\HealthCheck;
 
 use Brain\Monkey\Functions;
-use WPMedia\PHPUnit\Integration\TestCase;
+use WP_Rocket\Tests\Integration\CapTrait;
+use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\HealthCheck\HealthCheck::missed_cron
+ *
  * @group  HealthCheck
  * @group  AdminOnly
  */
 class Test_MissedCron extends TestCase {
-	private static $container;
+	use CapTrait;
+
 	private $purge_cron;
 	private $async_css;
 	private $manual_preload;
 	private $schedule_automatic_cleanup;
 
-	private function getActualHtml() {
-		ob_start();
-		do_action( 'admin_notices' );
+	public function setUp() {
+		parent::setUp();
 
-		return $this->format_the_html( ob_get_clean() );
-	}
-
-	public static function setUpBeforeClass() {
-		self::$container = apply_filters( 'rocket_container', null );
+		$this->unregisterAllCallbacksExcept( 'admin_notices', 'missed_cron', 10 );
+		Functions\expect( 'wp_create_nonce' )
+			->with( 'rocket_ignore_rocket_warning_cron' )
+			->andReturn( '123456' );
 	}
 
 	public function tearDown() {
+		$this->restoreWpFilter( 'admin_notices' );
+
 		parent::tearDown();
 
 		remove_filter( 'pre_get_rocket_option_purge_cron_interval', [ $this, 'purge_cron' ] );
@@ -44,64 +47,57 @@ class Test_MissedCron extends TestCase {
 	}
 
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
-	public function testShouldReturnNullWhenNothingToDisplay( $config ) {
-		if ( $config['cap'] ) {
-			$admin = get_role( 'administrator' );
-			$admin->add_cap( 'rocket_manage_options' );
+	public function testShouldReturnNullWhenNothingToDisplay( array $config, $expected ) {
+		$this->configUser( $config );
+		$this->configOptions( $config );
 
-			$user_id = self::factory()->user->create( [ 'role' => 'administrator' ] );
-		} else {
-			$user_id = self::factory()->user->create( [ 'role' => 'editor' ] );
-		}
-
-		wp_set_current_user( $user_id );
 		set_current_screen( $config['screen'] );
-		update_user_meta( $user_id, 'rocket_boxes', $config['dismissed'] );
-
-		$this->purge_cron = $config['options']['purge_cron'];
-		$this->async_css = $config['options']['async_css'];
-		$this->manual_preload = $config['options']['manual_preload'];
-		$this->schedule_automatic_cleanup = $config['options']['schedule_automatic_cleanup'];
 
 		foreach ( $config['events'] as $hook => $timestamp ) {
 			if ( ! $timestamp ) {
 				continue;
 			}
-
 			wp_schedule_single_event( $timestamp, $hook );
 		}
+
+		$expected = empty( $expected )
+			? $expected
+			: $this->format_the_html( $expected );
+
+		$this->assertSame(
+			$expected,
+			$this->getActualHtml()
+		);
+	}
+
+	protected function configUser( $config ) {
+		if ( $config['cap'] ) {
+			CapTrait::setAdminCap();
+			$role = 'administrator';
+		} else {
+			$role = 'editor';
+		}
+		$user_id = $this->factory->user->create( [ 'role' => $role ] );
+
+		wp_set_current_user( $user_id );
+
+		update_user_meta( $user_id, 'rocket_boxes', $config['dismissed'] );
+	}
+
+	protected function configOptions( $config ) {
+		$this->purge_cron                 = $config['options']['purge_cron'];
+		$this->async_css                  = $config['options']['async_css'];
+		$this->manual_preload             = $config['options']['manual_preload'];
+		$this->schedule_automatic_cleanup = $config['options']['schedule_automatic_cleanup'];
+
+		$this->disable_wp_cron = $config['disable_cron'];
 
 		add_filter( 'pre_get_rocket_option_purge_cron_interval', [ $this, 'purge_cron' ] );
 		add_filter( 'pre_get_rocket_option_async_css', [ $this, 'async_css' ] );
 		add_filter( 'pre_get_rocket_option_manual_preload', [ $this, 'manual_preload' ] );
 		add_filter( 'pre_get_rocket_option_schedule_automatic_cleanup', [ $this, 'schedule_automatic_cleanup' ] );
-
-		Functions\expect( 'rocket_get_constant' )
-			->atMost()
-			->times( 1 )
-			->with( 'DISABLE_WP_CRON' )
-			->andReturn( $config['disable_cron'] );
-
-		Functions\expect( 'wp_create_nonce' )
-			->atMost()
-			->times( 1 )
-			->with( 'rocket_ignore_rocket_warning_cron' )
-			->andReturn( '123456' );
-
-		if ( empty( $config['expected'] ) ) {
-			$this->assertNull( self::$container->get( 'health_check' )->missed_cron() );
-		} else {
-			$this->assertContains(
-				$this->format_the_html( $config['expected'] ),
-				$this->getActualHtml()
-			);
-		}
-	}
-
-	public function providerTestData() {
-		return $this->getTestData( __DIR__, 'missed-cron' );
 	}
 
 	public function purge_cron() {
@@ -118,5 +114,15 @@ class Test_MissedCron extends TestCase {
 
 	public function manual_preload() {
 		return $this->manual_preload;
+	}
+
+	private function getActualHtml() {
+		ob_start();
+		do_action( 'admin_notices' );
+		$actual = ob_get_clean();
+
+		return empty( $actual )
+			? $actual
+			: $this->format_the_html( $actual );
 	}
 }

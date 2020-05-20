@@ -1,105 +1,96 @@
 <?php
 
 return [
-	'vfs_dir'   => 'public/',
 
-	// Virtual filesystem structure.
-	'structure' => [
-		'wp-content' => [
-			'plugins' => [
-				'wp-rocket' => [
-					'views' => [
-						'metabox' => [
-							'cpcss' => [
-								'container.php' => file_get_contents( WP_ROCKET_PLUGIN_ROOT . 'views/metabox/cpcss/container.php' ),
-							],
-						],
-					],
-				],
+	'testShouldNotEnqueueScriptDifferentPage' => [
+		'config'   => [
+			'page' => 'options-general.php',
+			'post'               => (object) [
+				'ID'          => 1,
+				'post_status' => 'draft',
+				'post_type'   => 'post',
 			],
 		],
+		'expected' => false,
 	],
-	'test_data' => [
-		'testShouldNotEnqueueScriptDifferentPage'        => [
-			'config'   => [
-				'page'               => 'options-general.php',
+
+	'testShouldNotEnqueueScriptDisabledWarning' => [
+		'config'   => [
+			'page'               => 'edit.php',
+			'options'            => [
+				'async_css' => 0,
 			],
-			'expected' => false,
-		],
-		'testShouldNotEnqueueScriptDisabledWarning'         => [
-			'config'   => [
-				'page'               => 'edit.php',
-				'options'            => [
-					'async_css' => 0,
-				],
-				'post'               => [
-					'post_status' => 'draft',
-					'post_type'   => 'post',
-					'ID'          => 1,
-				],
-				'is_option_excluded' => true,
+			'post'               => (object) [
+				'ID'          => 1,
+				'post_status' => 'draft',
+				'post_type'   => 'post',
 			],
-			'expected' => false,
+			'is_option_excluded' => true,
 		],
-		'testShouldNotEnqueueScriptPostNotPublishedAndOptionExcludedWarning' => [
-			'config'   => [
-				'page'               => 'post.php',
-				'options'            => [
-					'async_css' => 1,
-				],
-				'post'               => [
-					'post_status' => 'draft',
-					'post_type'   => 'post',
-					'ID'          => 1,
-				],
-				'is_option_excluded' => true,
+		'expected' => false,
+	],
+
+	'testShouldNotEnqueueScriptPostNotPublishedAndOptionExcludedWarning' => [
+		'config'   => [
+			'page'               => 'post.php',
+			'options'            => [
+				'async_css' => 1,
 			],
-			'expected' => false,
-		],
-		'testShouldNotEnqueueScriptPostNotPublishedWarning'       => [
-			'config'   => [
-				'page'               => 'edit.php',
-				'options'            => [
-					'async_css' => 1,
-				],
-				'post'               => [
-					'post_status' => 'draft',
-					'post_type'   => 'post',
-					'ID'          => 1,
-				],
-				'is_option_excluded' => false,
+			'post'               => (object) [
+				'ID'          => 1,
+				'post_status' => 'draft',
+				'post_type'   => 'post',
 			],
-			'expected' => false,
+			'is_option_excluded' => true,
 		],
-		'testShouldNotEnqueueScriptExcludedFromPostWarning' => [
-			'config'   => [
-				'page'               => 'edit.php',
-				'options'            => [
-					'async_css' => 1,
-				],
-				'post'               => [
-					'post_status' => 'publish',
-					'post_type'   => 'post',
-					'ID'          => 1,
-				],
-				'is_option_excluded' => true,
+		'expected' => false,
+	],
+
+	'testShouldNotEnqueueScriptPostNotPublishedWarning' => [
+		'config'   => [
+			'page'               => 'edit.php',
+			'options'            => [
+				'async_css' => 1,
 			],
-			'expected' => false,
-		],
-		'testShouldEnqueueScript'                            => [
-			'config'   => [
-				'page'               => 'edit.php',
-				'options'            => [
-					'async_css' => 1,
-				],
-				'post'               => [
-					'post_status' => 'publish',
-					'post_type'   => 'post',
-					'ID'          => 1,
-				],
-				'is_option_excluded' => false,
+			'post'               => (object) [
+				'ID'          => 1,
+				'post_status' => 'draft',
+				'post_type'   => 'post',
 			],
-			'expected' => true,
+			'is_option_excluded' => false,
 		],
+		'expected' => false,
+	],
+
+	'testShouldNotEnqueueScriptExcludedFromPostWarning' => [
+		'config'   => [
+			'page'               => 'edit.php',
+			'options'            => [
+				'async_css' => 1,
+			],
+			'post'               => (object) [
+				'ID'          => 1,
+				'post_status' => 'publish',
+				'post_type'   => 'post',
+			],
+			'is_option_excluded' => true,
+		],
+		'expected' => false,
+	],
+
+	'testShouldEnqueueScript' => [
+		'config'   => [
+			'page'               => 'edit.php',
+			'options'            => [
+				'async_css' => 1,
+			],
+			'post'               => (object) [
+				'ID'          => 1,
+				'post_status' => 'publish',
+				'post_type'   => 'post',
+			],
+			'is_option_excluded' => false,
+		],
+		'expected' => true,
 	],
 ];

@@ -8,6 +8,7 @@ use Mockery;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::purge_cache_notice
+ *
  * @group RocketCDN
  */
 class Test_PurgeCacheNotice extends TestCase {

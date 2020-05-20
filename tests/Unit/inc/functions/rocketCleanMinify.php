@@ -22,7 +22,6 @@ class Test_RocketCleanMinify extends FilesystemTestCase {
 		parent::setUp();
 
 		Functions\when( 'get_current_blog_id' )->justReturn( 1 );
-		Functions\expect( 'rocket_get_constant' )->with( 'WP_ROCKET_MINIFY_CACHE_PATH' )->andReturn( 'vfs://public/wp-content/cache/min/' );
 	}
 
 	/**

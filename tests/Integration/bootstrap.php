@@ -46,7 +46,6 @@ tests_add_filter(
 		// Set the path and URL to our virtual filesystem.
 		define( 'WP_ROCKET_CACHE_ROOT_PATH', 'vfs://public/wp-content/cache/' );
 		define( 'WP_ROCKET_CACHE_ROOT_URL', 'http://example.org/wp-content/cache/' );
-		define( 'WP_ROCKET_VIEWS', 'vfs://public/wp-content/plugins/wp-rocket/views' );
 
 		if ( BootstrapManager::isGroup( 'WithSmush' ) ) {
 			// Load WP Smush.
@@ -69,8 +68,12 @@ tests_add_filter(
 		}
 
 		if ( BootstrapManager::isGroup( 'Hummingbird' ) ) {
-			define( 'WP_ADMIN',  true );
+			define( 'WP_ADMIN', true );
 			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/hummingbird-performance/wp-hummingbird.php';
+		}
+
+		if ( BootstrapManager::isGroup( 'Cloudways' ) ) {
+			$_SERVER['cw_allowed_ip'] = true;
 		}
 
 		// Overload the license key for testing.

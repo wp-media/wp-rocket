@@ -15,46 +15,16 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group  Files
  */
 class Test_RocketGenerateAdvancedCacheFile extends FilesystemTestCase {
-	protected      $path_to_test_data   = '/inc/functions/rocketGenerateAdvancedCacheFile.php';
-	private        $advanced_cache_file = 'vfs://public/wp-content/advanced-cache.php';
-	private static $original_settings   = [];
-	private        $old_settings        = [];
+	protected $path_to_test_data   = '/inc/functions/rocketGenerateAdvancedCacheFile.php';
+	private   $advanced_cache_file = 'vfs://public/wp-content/advanced-cache.php';
 
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
-		self::$original_settings = get_option( 'wp_rocket_settings', [] );
-	}
-
-	public static function tearDownAfterClass() {
-		parent::tearDownAfterClass();
-		// Restore the original settings before exiting.
-		update_option( 'wp_rocket_settings', self::$original_settings );
-	}
-
-	public function setUp() {
-		parent::setUp();
-
-		// Mocks the various filesystem constants.
-		$this->whenRocketGetConstant();
-
-		$this->old_settings = array_merge( self::$original_settings, $this->config['settings'] );
-		update_option( 'wp_rocket_settings', $this->old_settings );
-	}
-
-	public function tearDown() {
-		parent::tearDown();
-
-		delete_option( 'wp_rocket_settings' );
-	}
+	protected static $use_settings_trait = true;
 
 	/**
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldGenerateAdvancedCacheFile( $settings, $expected_content, $when_file_not_exist = false ) {
-		update_option(
-			'wp_rocket_settings',
-			array_merge( $this->old_settings, $settings )
-		);
+		$this->mergeExistingSettingsAndUpdate( $settings );
 
 		if ( $when_file_not_exist ) {
 			$this->filesystem->delete( $this->advanced_cache_file );

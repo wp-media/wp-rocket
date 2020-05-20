@@ -171,9 +171,9 @@ class Plugin {
 			'purge_actions_subscriber',
 			'beaverbuilder_subscriber',
 			'amp_subscriber',
-			'rest_generate_post_cpcss',
-			'rest_delete_post_cpcss',
+			'rest_cpcss_subscriber',
 			'simple_custom_css',
+			'cloudways',
 		];
 
 		if ( get_rocket_option( 'do_cloudflare' ) ) {

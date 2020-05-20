@@ -285,15 +285,19 @@ function get_rocket_i18n_uri() { // phpcs:ignore WordPress.NamingConventions.Pre
 /**
  * Get directories paths to preserve languages ​​when purging a domain.
  * This function is required when the domains of languages (​​other than the default) are managed by subdirectories.
- * By default, when you clear the cache of the french website with the domain example.com, all subdirectory like /en/ and /de/ are deleted.
- * But, if you have a domain for your english and german websites with example.com/en/ and example.com/de/, you want to keep the /en/ and /de/ directory when the french domain is cleared.
+ * By default, when you clear the cache of the french website with the domain example.com, all subdirectory like /en/
+ * and /de/ are deleted. But, if you have a domain for your english and german websites with example.com/en/ and
+ * example.com/de/, you want to keep the /en/ and /de/ directory when the french domain is cleared.
  *
+ * @since 3.5.5 Normalize paths + micro-optimization by passing in the cache path.
  * @since 2.0
  *
- * @param  string $current_lang The current language code.
+ * @param string $current_lang The current language code.
+ * @param string $cache_path   Optional. WP Rocket's cache path.
+ *
  * @return array                A list of directories path to preserve.
  */
-function get_rocket_i18n_to_preserve( $current_lang ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+function get_rocket_i18n_to_preserve( $current_lang, $cache_path = '' ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	// Must not be an empty string.
 	if ( empty( $current_lang ) ) {
 		return [];
@@ -317,12 +321,18 @@ function get_rocket_i18n_to_preserve( $current_lang ) { // phpcs:ignore WordPres
 	// Remove current lang to the preserve dirs.
 	$langs = array_diff( $langs, [ $current_lang ] );
 
+	if ( '' === $cache_path ) {
+		$cache_path = _rocket_get_wp_rocket_cache_path();
+	}
+
 	// Stock all URLs of langs to preserve.
 	$langs_to_preserve = [];
-	$cache_path        = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' );
 	foreach ( $langs as $lang ) {
 		$parse_url           = get_rocket_parse_url( get_rocket_i18n_home_url( $lang ) );
-		$langs_to_preserve[] = "{$cache_path}{$parse_url['host']}(.*)/" . trim( $parse_url['path'], '/' );
+		$langs_to_preserve[] = _rocket_normalize_path(
+			"{$cache_path}{$parse_url['host']}(.*)/" . trim( $parse_url['path'], '/' ),
+			true // escape directory separators for regex.
+		);
 	}
 
 	/**
@@ -331,7 +341,7 @@ function get_rocket_i18n_to_preserve( $current_lang ) { // phpcs:ignore WordPres
 	 * @since 2.1
 	 *
 	 * @param array $langs_to_preserve List of directories path to preserve.
-	*/
+	 */
 	return (array) apply_filters( 'rocket_langs_to_preserve', $langs_to_preserve );
 }
 
