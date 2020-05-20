@@ -76,7 +76,7 @@ trait StubTrait {
 				return $this->wp_rocket_advanced_cache;
 
 			case 'WP_ROCKET_WEB_MAIN':
-				return 'https://wp-rocket.me';
+				return 'https://wp-rocket.me/';
 
 			case 'WP_ROCKET_ASSETS_JS_URL':
 				return 'http://example.org/wp-content/plugins/wp-rocket/assets/js/';
