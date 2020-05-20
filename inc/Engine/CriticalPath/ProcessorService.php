@@ -205,7 +205,7 @@ class ProcessorService {
 
 		// save the generated CPCSS code into file.
 		$saved = $this->data_manager->save_cpcss( $item_path, $cpcss_code, $item_url );
-		if( is_wp_error( $saved ) ) {
+		if ( is_wp_error( $saved ) ) {
 			return $saved;
 		}
 
