@@ -82,6 +82,9 @@ trait StubTrait {
 			case 'WP_ROCKET_CONFIG_PATH':
 				return "{$this->wp_content_dir}/wp-rocket-config/";
 
+			case 'WP_ROCKET_CRITICAL_CSS_PATH':
+				return "{$this->wp_content_dir}/cache/critical-css/";
+
 			case 'WP_ROCKET_DEBUG':
 				return $this->wp_rocket_debug;
 

@@ -92,6 +92,8 @@ class Test_MaybeReplaceUrl extends TestCase {
 		$this->options->shouldReceive( 'get' )
 			->andReturn( true );
 
+		Functions\when( 'is_rocket_post_excluded_option' )->justReturn( false );
+
 		$this->cdn->shouldReceive( 'get_cdn_urls' )
 			->zeroOrMoreTimes()
 			->andReturn( $cdn_urls );
@@ -100,11 +102,11 @@ class Test_MaybeReplaceUrl extends TestCase {
 				if ( strpos( $url, 'http://' ) !== false || strpos( $url, 'https://' ) !== false ) {
 					return $url;
 				}
-	
+
 				if ( substr( $url, 0, 2 ) === '//' ) {
 					return 'http:' . $url;
 				}
-	
+
 				return 'http://' . $url;
 			} );
 		Functions\when( 'site_url' )->justReturn( $site_url );

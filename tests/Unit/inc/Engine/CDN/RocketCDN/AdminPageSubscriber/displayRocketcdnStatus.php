@@ -16,6 +16,7 @@ use WPMedia\PHPUnit\Unit\TestCase;
  */
 class Test_DisplayRocketcdnStatus extends TestCase {
 	protected static $mockCommonWpFunctionsInSetUp = true;
+
 	private $api_client;
 	private $page;
 
@@ -35,7 +36,7 @@ class Test_DisplayRocketcdnStatus extends TestCase {
 	}
 
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldDisplayPerData( $subscription_data, $expected, $config ) {
 		Functions\when( 'rocket_is_live_site' )->justReturn( ( 'http://example.org' === $config['home_url'] ) );
@@ -65,7 +66,7 @@ class Test_DisplayRocketcdnStatus extends TestCase {
 		$this->page->display_rocketcdn_status();
 	}
 
-	public function providerTestData() {
+	public function configTestData() {
 		return $this->getTestData( __DIR__, 'displayRocketcdnStatus' );
 	}
 }

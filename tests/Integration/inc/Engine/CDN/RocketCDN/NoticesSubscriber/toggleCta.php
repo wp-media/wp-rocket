@@ -6,8 +6,9 @@ use WPMedia\PHPUnit\Integration\AjaxTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::toggle_cta
- * @group  RocketCDN
+ *
  * @group  AdminOnly
+ * @group  RocketCDN
  */
 class Test_ToggleCta extends AjaxTestCase {
 	/**
@@ -43,7 +44,7 @@ class Test_ToggleCta extends AjaxTestCase {
 		$this->assertTrue( has_action( 'wp_ajax_toggle_rocketcdn_cta' ) );
 
 		global $wp_filter;
-		$obj = $wp_filter['wp_ajax_toggle_rocketcdn_cta'];
+		$obj                   = $wp_filter['wp_ajax_toggle_rocketcdn_cta'];
 		$callback_registration = current( $obj->callbacks[10] );
 		$this->assertEquals( 'toggle_cta', $callback_registration['function'][1] );
 	}
@@ -64,9 +65,9 @@ class Test_ToggleCta extends AjaxTestCase {
 	}
 
 	/**
-     * Test should add/update the user meta when the status is small.
-     */
-    public function testShouldUpdateUserMetaWhenStatusIsSmall() {
+	 * Test should add/update the user meta when the status is small.
+	 */
+	public function testShouldUpdateUserMetaWhenStatusIsSmall() {
 		$_POST['nonce']  = wp_create_nonce( 'rocket-ajax' );
 		$_POST['action'] = 'toggle_rocketcdn_cta';
 		$_POST['status'] = 'small';

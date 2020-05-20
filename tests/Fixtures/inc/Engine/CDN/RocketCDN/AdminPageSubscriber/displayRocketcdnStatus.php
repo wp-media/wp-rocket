@@ -17,15 +17,12 @@ return [
 				'status_text'     => 'No Subscription',
 				'is_active'       => false,
 			],
-			'integration' => <<<HTML
-<div class="wpr-optionHeader">
-	<h3 class="wpr-title2">RocketCDN</h3>
-</div>
-<div class="wpr-field wpr-field-account">
-	<span class="wpr-infoAccount wpr-isInvalid">RocketCDN is unavailable on local domains and staging sites.</span>
-</div>
-HTML
-	,
+			'integration' => '<div class="wpr-optionHeader">
+					<h3 class="wpr-title2">RocketCDN</h3>
+				</div>
+				<div class="wpr-field wpr-field-account">
+					<span class="wpr-infoAccount wpr-isInvalid">RocketCDN is unavailable on local domains and staging sites.</span>
+				</div>',
 		],
 
 		'config' => [
@@ -51,23 +48,20 @@ HTML
 				'status_text'     => 'No Subscription',
 				'is_active'       => false,
 			],
-			'integration' => <<<HTML
-<div class="wpr-optionHeader">
-	<h3 class="wpr-title2">RocketCDN</h3>
-</div>
-<div class="wpr-field wpr-field-account">
-	<div class="wpr-flex wpr-flex--egal">
-		<div>
-			<span class="wpr-title3"></span>
-			<span class="wpr-infoAccount wpr-isInvalid">No Subscription</span>
-		</div>
-		<div>
-			<a href="#page_cdn" class="wpr-button">Get RocketCDN</a>
-		</div>
-	</div>
-</div>
-HTML
-	,
+			'integration' => '<div class="wpr-optionHeader">
+					<h3 class="wpr-title2">RocketCDN</h3>
+				</div>
+				<div class="wpr-field wpr-field-account">
+					<div class="wpr-flex wpr-flex--egal">
+						<div>
+							<span class="wpr-title3"></span>
+							<span class="wpr-infoAccount wpr-isInvalid">No Subscription</span>
+						</div>
+						<div>
+							<a href="#page_cdn" class="wpr-button">Get RocketCDN</a>
+						</div>
+					</div>
+				</div>',
 		],
 
 		'config' => [
@@ -94,7 +88,6 @@ HTML
 				'status_text'     => '2020-01-01',
 				'is_active'       => true,
 			],
-
 			'integration' => <<<HTML
 <div class="wpr-optionHeader">
 	<h3 class="wpr-title2">RocketCDN</h3>

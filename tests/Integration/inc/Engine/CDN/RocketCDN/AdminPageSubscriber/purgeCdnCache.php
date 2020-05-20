@@ -4,14 +4,15 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\AdminPageSubscrib
 
 use Brain\Monkey\Functions;
 use WP_Rocket\Subscriber\Plugin\Capabilities_Subscriber;
+use  WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
 use WPDieException;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber::purge_cdn_cache
- * @uses ::rocket_get_constant
+ * @uses   ::rocket_get_constant
  *
- * @group  RocketCDN
  * @group  AdminOnly
+ * @group  RocketCDN
  * @group  RocketCDNAdminPage
  */
 class Test_PurgeCdnCache extends TestCase {

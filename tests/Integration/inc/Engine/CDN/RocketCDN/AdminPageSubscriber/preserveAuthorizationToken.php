@@ -3,13 +3,14 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\AdminPageSubscriber;
 
 use WPMedia\PHPUnit\Integration\ApiTrait;
+use  WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber::preserve_authorization_token
  * @uses   \WP_Rocket\Engine\CDN\RocketCDN\APIClient::preserve_authorization_token
  *
- * @group  RocketCDN
  * @group  AdminOnly
+ * @group  RocketCDN
  * @group  RocketCDNAdminPage
  */
 class Test_PreserveAuthorizationToken extends TestCase {

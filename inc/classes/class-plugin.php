@@ -66,6 +66,7 @@ class Plugin {
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Options' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Database' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Admin\Beacon\ServiceProvider' );
+		$this->container->addServiceProvider( 'WP_Rocket\Engine\CriticalPath\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Cache\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\CDN\RocketCDN\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\HealthCheck\ServiceProvider' );
@@ -99,6 +100,7 @@ class Plugin {
 				'rocketcdn_admin_subscriber',
 				'rocketcdn_notices_subscriber',
 				'rocketcdn_data_manager_subscriber',
+				'critical_css_admin_subscriber',
 				'health_check',
 				'minify_css_admin_subscriber',
 				'admin_cache_subscriber',
@@ -124,6 +126,8 @@ class Plugin {
 				$subscribers[] = 'lazyload_subscriber';
 			}
 		}
+
+		$this->container->addServiceProvider( 'WP_Rocket\Engine\CriticalPath\ServiceProvider' );
 
 		$this->container->addServiceProvider( 'WP_Rocket\Addon\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Preload\ServiceProvider' );
@@ -167,6 +171,7 @@ class Plugin {
 			'purge_actions_subscriber',
 			'beaverbuilder_subscriber',
 			'amp_subscriber',
+			'rest_cpcss_subscriber',
 			'simple_custom_css',
 			'cloudways',
 		];

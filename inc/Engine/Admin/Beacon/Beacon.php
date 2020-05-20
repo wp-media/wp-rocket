@@ -644,6 +644,10 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://docs.wp-rocket.me/article/1312-optimize-google-fonts',
 				],
 			],
+			'specific_cpcss'             => [
+				'en' => 'https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				'fr' => 'https://fr.docs.wp-rocket.me/article/1268-optimiser-le-chargement-du-css/?utm_source=wp_plugin&utm_medium=wp_rocket',
+			],
 		];
 
 		return isset( $suggest[ $doc_id ][ $this->get_user_locale() ] )
