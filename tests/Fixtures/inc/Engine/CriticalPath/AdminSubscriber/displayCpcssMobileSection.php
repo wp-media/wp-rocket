@@ -78,14 +78,18 @@ return [
 		],
 		'expected' => '<div id="wpr-mobile_cpcss_view" class="wpr-tools">
 <div class="wpr-tools-col">
-<div class="wpr-title3 wpr-tools-label wpr-icon-check2">
-Enable CPCSS for mobiles text</div>
+<div class="wpr-title3 wpr-tools-label wpr-icon-stack">
+Optimize CSS delivery for mobile</div>
 <div class="wpr-field-description">
-Description for CPCSS for mobiles. Probably some doc link.</div>
+Your website currently uses the same Critical Path CSS for both desktop and mobile.</div>
+<div class="wpr-field-description">
+Click the button to enable mobile-specific CPCSS for your site.</div>
+<div class="wpr-field-description">
+This is a one-time action and this button will be removed afterwards. <a href="" target="_blank" rel="noopener noreferrer">More info</a></div>
 </div>
 <div class="wpr-tools-col">
 <button id="wpr-action-rocket_enable_mobile_cpcss" class="wpr-button wpr-button--icon wpr-button--small wpr-button--purple wpr-icon-refresh">
-Enable CPCSS for mobile</button>
+Generate Mobile Specific CPCSS</button>
 </div>
 </div>
 ',
