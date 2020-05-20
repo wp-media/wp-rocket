@@ -14,7 +14,7 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::exclude_inline_js
  *
  * @group  Subscribers
- * @group  CriticalCss
+ * @group  CriticalPath
  */
 class Test_ExcludeInlineJs extends TestCase {
 
@@ -22,7 +22,7 @@ class Test_ExcludeInlineJs extends TestCase {
 		parent::setUp();
 
 		Functions\when( 'get_current_blog_id' )->justReturn( 1 );
-		Functions\expect( 'home_url' )->once()->with( '/' )->andReturn( 'http://example.com' );
+		Functions\expect( 'home_url' )->once()->with( '/' )->andReturn( 'http://example.com/' );
 	}
 
 	/**
@@ -35,7 +35,6 @@ class Test_ExcludeInlineJs extends TestCase {
 		);
 
 		// Run it.
-		$excluded_inline = $subscriber->exclude_inline_js( $excluded_inline );
-		$this->assertSame( $excluded_inline, $expected_inline );
+		$this->assertSame( $expected_inline, $subscriber->exclude_inline_js( $excluded_inline ) );
 	}
 }

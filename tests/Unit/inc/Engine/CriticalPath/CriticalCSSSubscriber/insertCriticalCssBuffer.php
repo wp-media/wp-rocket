@@ -14,7 +14,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
  * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::insert_critical_css_buffer
  *
  * @group  Subscribers
- * @group  CriticalCss
+ * @group  CriticalPath
  * @group  vfs
  */
 class Test_InsertCriticalCssBuffer extends FilesystemTestCase {
@@ -26,9 +26,8 @@ class Test_InsertCriticalCssBuffer extends FilesystemTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		Functions\expect( 'rocket_get_constant' )->atLeast( 1 )->with( 'WP_ROCKET_CRITICAL_CSS_PATH' )->andReturn( $this->filesystem->getUrl( 'cache/critical-css/' ) );
 		Functions\when( 'get_current_blog_id' )->justReturn( 1 );
-		Functions\expect( 'home_url' )->once()->with( '/' )->andReturn( 'http://example.com' );
+		Functions\expect( 'home_url' )->once()->with( '/' )->andReturn( 'http://example.com/' );
 		Functions\when( 'wp_strip_all_tags' )->returnArg();
 
 		$this->critical_css = Mockery::mock( CriticalCSS::class, [
@@ -93,9 +92,9 @@ class Test_InsertCriticalCssBuffer extends FilesystemTestCase {
 		$html      = $this->subscriber->insert_critical_css_buffer( $orig_html );
 
 		if ( $expected ) {
-			$this->assertSame( $html, $expected_html );
+			$this->assertSame( $expected_html, $html );
 		} else {
-			$this->assertSame( $html, $orig_html );
+			$this->assertSame( $orig_html, $html );
 		}
 	}
 }
