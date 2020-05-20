@@ -1,17 +1,20 @@
 <?php
 namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\RocketCDN\NoticesSubscriber;
 
+use Mockery;
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
 use WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber;
-use Mockery;
+use WP_Rocket\Tests\StubTrait;
 
 /**
  * @covers\WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::add_dismiss_script
  * @group RocketCDN
  */
 class Test_AddDismissScript extends TestCase {
+	use StubTrait;
+
 	protected static $mockCommonWpFunctionsInSetUp = true;
 	private $api_client;
 	private $notices;
@@ -19,8 +22,22 @@ class Test_AddDismissScript extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
+		$this->stubRocketGetConstant();
+
 		$this->api_client = Mockery::mock( APIClient::class );
 		$this->notices    = new NoticesSubscriber( $this->api_client, 'views/settings/rocketcdn' );
+	}
+
+	public function tearDown() {
+		$this->resetStubProperties();
+
+		parent::tearDown();
+	}
+
+	public function testShouldDisplayNothingWhenWhiteLabel() {
+		$this->white_label = true;
+
+		$this->assertNull( $this->notices->add_dismiss_script() );
 	}
 
 	public function testShouldDisplayNothingWhenNotLiveSite() {
