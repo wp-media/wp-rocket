@@ -22,6 +22,7 @@ return [
 
 		// Should update an existing file.
 		[
+			'url'        => 'http://www.example.com/?p=1',
 			'path'       => 'posts/post-1.css',
 			'cpcss_code' => 'body{color:red;}',
 			'expected'   => true,
@@ -29,13 +30,15 @@ return [
 
 		// Should create non-existent files.
 		[
+			'url'        => 'http://www.example.com/?p=500',
 			'path'       => 'posts/post-500.css',
 			'cpcss_code' => 'body{ color:red }',
 			'expected'   => true,
 		],
 
 		[
-			'path'       => 'lorem-ipsum.css',
+			'url'        => 'http://www.example.com/?p=1',
+			'path'       => 'posts/lorem-ipsum.css',
 			'cpcss_code' => 'body{ color:red; font-size: 2em } h1 { color: black }',
 			'expected'   => true,
 		],

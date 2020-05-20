@@ -44,12 +44,23 @@ class DataManager {
 	 *
 	 * @param string $path  Path for cpcss file related to this web page.
 	 * @param string $cpcss CPCSS code to be saved.
+	 * @param string $url URL for item to be used in error messages.
 	 *
-	 * @return bool
+	 * @return bool|WP_Error
 	 */
-	public function save_cpcss( $path, $cpcss ) {
-		if ( ! $this->filesystem->is_dir( $this->critical_css_path ) ) {
-			rocket_mkdir_p( $this->critical_css_path );
+	public function save_cpcss( $path, $cpcss, $url ) {
+		$file_path_directory = dirname( $this->critical_css_path . $path );
+		if ( ! $this->filesystem->is_dir( $file_path_directory ) ) {
+			if( ! rocket_mkdir_p( $file_path_directory ) ) {
+				return new WP_Error(
+					'cpcss_generation_failed',
+					// translators: %s = item URL.
+					sprintf( __( 'Critical CSS for %1$s not generated.', 'rocket' ), $url ),
+					[
+						'status' => 400,
+					]
+				);
+			}
 		}
 
 		return rocket_put_content(

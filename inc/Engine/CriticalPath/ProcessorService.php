@@ -197,14 +197,17 @@ class ProcessorService {
 	 * @param string $item_path Item Path for web page to be processed.
 	 * @param string $item_url Item Url for web page to be processed.
 	 * @param string $cpcss_code CPCSS Code to be saved.
-	 * @return array
+	 * @return array|WP_Error
 	 */
 	private function on_job_success( $item_path, $item_url, $cpcss_code ) {
 		// delete cache job_id for this item.
 		$this->data_manager->delete_cache_job_id( $item_url );
 
 		// save the generated CPCSS code into file.
-		$this->data_manager->save_cpcss( $item_path, $cpcss_code );
+		$saved = $this->data_manager->save_cpcss( $item_path, $cpcss_code, $item_url );
+		if( is_wp_error( $saved ) ) {
+			return $saved;
+		}
 
 		// Send the current status of job.
 		return [

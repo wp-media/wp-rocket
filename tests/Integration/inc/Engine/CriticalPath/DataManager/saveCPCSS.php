@@ -17,12 +17,12 @@ class Test_SaveCPCSS extends FilesystemTestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldDoExpected( $path, $cpcss_code, $expected ) {
+	public function testShouldDoExpected( $url, $path, $cpcss_code, $expected ) {
 		$cache_path = $this->filesystem->getUrl( $this->config['vfs_dir'] );
 		$file_path  = "{$cache_path}1/{$path}";
 
 		$data_manager = new DataManager( $cache_path, $this->filesystem );
-		$actual       = $data_manager->save_cpcss( $path, $cpcss_code );
+		$actual       = $data_manager->save_cpcss( $path, $cpcss_code, $url );
 
 		$this->assertSame( $expected, $actual );
 		$this->assertTrue( $this->filesystem->exists( $file_path ) );
