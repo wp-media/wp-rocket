@@ -71,7 +71,7 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function enable_mobile_cpcss() {
-		check_ajax_referer( 'rocket-ajax' );
+		check_ajax_referer( 'rocket-ajax', 'nonce', true );
 
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			wp_send_json_error();
