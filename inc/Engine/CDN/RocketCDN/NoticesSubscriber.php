@@ -53,6 +53,10 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 * @return void
 	 */
 	public function promote_rocketcdn_notice() {
+		if ( rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) {
+			return;
+		}
+
 		if ( ! rocket_is_live_site() ) {
 			return;
 		}
@@ -72,6 +76,10 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 * @return void
 	 */
 	public function add_dismiss_script() {
+		if ( rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) {
+			return;
+		}
+
 		if ( ! rocket_is_live_site() ) {
 			return;
 		}
@@ -153,6 +161,10 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 * @return void
 	 */
 	public function display_rocketcdn_cta() {
+		if ( rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) {
+			return;
+		}
+
 		if ( ! rocket_is_live_site() ) {
 			return;
 		}
@@ -260,7 +272,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 
 		delete_transient( 'rocketcdn_purge_cache_response' );
 
-		\rocket_notice_html(
+		rocket_notice_html(
 			[
 				'status'  => $purge_response['status'],
 				'message' => $purge_response['message'],

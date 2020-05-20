@@ -72,6 +72,10 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 * @return void
 	 */
 	public function display_rocketcdn_status() {
+		if ( rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) {
+			return;
+		}
+
 		$subscription_data = $this->api_client->get_subscription_data();
 
 		if ( 'running' === $subscription_data['subscription_status'] ) {
@@ -110,6 +114,10 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 * @return array
 	 */
 	public function rocketcdn_field( $fields ) {
+		if ( rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) {
+			return $fields;
+		}
+
 		$subscription_data = $this->api_client->get_subscription_data();
 
 		if ( 'running' !== $subscription_data['subscription_status'] ) {
@@ -163,6 +171,10 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 * @return void
 	 */
 	public function display_manage_subscription() {
+		if ( rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) {
+			return;
+		}
+
 		if ( ! rocket_is_live_site() ) {
 			return;
 		}
@@ -210,6 +222,10 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 * @return void
 	 */
 	public function add_subscription_modal() {
+		if ( rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) {
+			return;
+		}
+
 		if ( ! rocket_is_live_site() ) {
 			return;
 		}
