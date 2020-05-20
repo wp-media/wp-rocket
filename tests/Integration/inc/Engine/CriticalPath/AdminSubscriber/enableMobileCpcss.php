@@ -11,20 +11,21 @@ use WPMedia\PHPUnit\Integration\AjaxTestCase;
  * @group  CriticalPath
  */
 class Test_EnableMobileCpcss extends AjaxTestCase {
-	/**
-	 * User's ID.
-	 * @var int
-	 */
-	private static $user_id = 0;
+
+	private static $admin_user_id  = 0;
+	private static $editor_user_id = 0;
 
 	private static $original_settings;
 	private $old_settings = [];
 
-	/**
-	 * Set up the User ID before tests start.
-	 */
 	public static function wpSetUpBeforeClass( $factory ) {
-		self::$user_id           = $factory->user->create( [ 'role' => 'administrator' ] );
+		$admin = get_role( 'administrator' );
+		$admin->add_cap( 'rocket_manage_options' );
+
+		//create an editor user that has the capability
+		self::$admin_user_id     = $factory->user->create( [ 'role' => 'administrator' ] );
+		//create an editor user that has no capability
+		self::$editor_user_id    = $factory->user->create( [ 'role' => 'editor' ] );
 		self::$original_settings = get_option( 'wp_rocket_settings', [] );
 	}
 
@@ -41,8 +42,6 @@ class Test_EnableMobileCpcss extends AjaxTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		wp_set_current_user( self::$user_id );
-		$_POST['nonce'] = wp_create_nonce( 'rocket-ajax' );
 		$this->action   = 'rocket_enable_mobile_cpcss';
 		update_option( 'wp_rocket_settings', self::$original_settings );
 	}
@@ -59,15 +58,37 @@ class Test_EnableMobileCpcss extends AjaxTestCase {
 		$this->assertEquals( 'enable_mobile_cpcss', $callback_registration['function'][1] );
 	}
 
-	public function testShouldEnableMobileCpcss() {
+	/**
+	 * @dataProvider providerTestData
+	 */
+	public function testShouldEnableMobileCpcss( $config, $update ) {
+		if( $config['rocket_manage_options'] ){
+			$user_id = static::$admin_user_id;
+		}else{
+			$user_id = static::$editor_user_id;
+		}
+
+		wp_set_current_user( $user_id );
+		$_POST['nonce'] = wp_create_nonce( 'rocket-ajax' );
+
 		$options = get_option( 'wp_rocket_settings' );
 		$this->assertArrayNotHasKey( 'async_css_mobile', $options );
 
 		$response = $this->callAjaxAction();
 
 		$options = get_option( 'wp_rocket_settings' );
-		$this->assertArrayHasKey( 'async_css_mobile', $options );
-		$this->assertObjectHasAttribute( 'success', $response );
-		$this->assertTrue( $response->success );
+		if( $config['rocket_manage_options'] ){
+			$this->assertArrayHasKey( 'async_css_mobile', $options );
+			$this->assertObjectHasAttribute( 'success', $response );
+			$this->assertTrue( $response->success );
+		} else {
+			$this->assertArrayNotHasKey( 'async_css_mobile', $options );
+			$this->assertObjectHasAttribute( 'success', $response );
+			$this->assertFalse( $response->success );
+		}
+	}
+
+	public function providerTestData() {
+		return $this->getTestData( __DIR__, 'enableMobileCpcss' );
 	}
 }
