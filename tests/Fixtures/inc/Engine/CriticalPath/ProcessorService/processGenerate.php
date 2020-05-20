@@ -16,6 +16,7 @@ return [
 				],
 				'cpcss_exists_after' => false,
 				'request_timeout'    => true,
+				'mobile'             => false,
 			],
 			'expected' => [
 				'success' => false,
@@ -41,6 +42,7 @@ return [
 					'body' => '{}',
 				],
 				'cpcss_exists_after'         => false,
+				'mobile'             => false,
 			],
 			'expected' => [
 				'success' => false,
@@ -64,6 +66,7 @@ return [
 					'body' => '{}',
 				],
 				'cpcss_exists_after'         => false,
+				'mobile'             => false,
 			],
 			'expected' => [
 				'success' => false,
@@ -87,6 +90,7 @@ return [
 					'body' => '{}',
 				],
 				'cpcss_exists_after'         => false,
+				'mobile'             => false,
 			],
 			'expected' => [
 				'success' => false,
@@ -115,6 +119,7 @@ return [
 				],
 				'cpcss_exists_after'         => false,
 				'cpcss_job_id'               => false,
+				'mobile'             => false,
 			],
 			'expected' => [
 				'success' => false,
@@ -143,6 +148,7 @@ return [
 				],
 				'cpcss_exists_after'         => false,
 				'cpcss_job_id'               => false,
+				'mobile'             => false,
 			],
 			'expected' => [
 				'success' => false,
@@ -171,6 +177,7 @@ return [
 				],
 				'cpcss_exists_after'         => true,
 				'cpcss_job_id'               => false,
+				'mobile'             => false,
 			],
 			'expected' => [
 				'code'    => 'cpcss_generation_successful',

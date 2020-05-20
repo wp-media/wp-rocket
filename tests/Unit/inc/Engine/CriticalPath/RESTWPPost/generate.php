@@ -21,6 +21,12 @@ class Test_Generate extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/RESTWPPost/generate.php';
 	protected static $mockCommonWpFunctionsInSetUp = true;
 
+	public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
+
+		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/WP_REST_Request.php';
+	}
+
 	/**
 	 * @dataProvider dataProvider
 	 */
@@ -63,6 +69,9 @@ class Test_Generate extends FilesystemTestCase {
 			: $get_request_response_decoded->data->state;
 		$request_timeout              = isset( $config['request_timeout'] )
 			? $config['request_timeout']
+			: false;
+		$is_mobile                    = isset( $config['mobile'] )
+			? $config['mobile']
 			: false;
 		$file                         = $this->config['vfs_dir'] . "1/posts/{$post_type}-{$post_id}.css";
 		$post_url = ('post_not_exists' === $expected['code'])
@@ -130,6 +139,7 @@ class Test_Generate extends FilesystemTestCase {
 				[
 					'body' => [
 						'url' => "http://example.org/?p={$post_id}",
+						'mobile' => (int) $is_mobile
 					],
 				]
 			)

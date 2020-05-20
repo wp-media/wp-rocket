@@ -43,6 +43,9 @@ class Test_Generate extends RESTVfsTestCase {
 		$request_timeout            = isset( $config['request_timeout'] )
 			? $config['request_timeout']
 			: false;
+		$is_mobile                    = isset( $config['mobile'] )
+			? $config['mobile']
+			: false;
 		Functions\expect( 'wp_remote_post' )
 			->atMost()
 			->times( 1 )
@@ -51,6 +54,7 @@ class Test_Generate extends RESTVfsTestCase {
 				[
 					'body' => [
 						'url' => "http://example.org/?p={$post_id}",
+						'mobile' => (int) $is_mobile
 					],
 				]
 			)

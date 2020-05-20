@@ -18,20 +18,16 @@ class APIClient {
 	 * @since 3.6
 	 *
 	 * @param string $url The URL to send a CPCSS generation request for.
-	 *
+	 * @param array  $additional_data Any additional data needed to be sent in the body.
 	 * @return array
 	 */
-	public function send_generation_request( $url ) {
-		$response = wp_remote_post(
+	public function send_generation_request( $url, $additional_data = [] ) {
+		$additional_data['url'] = $url;
+		$response               = wp_remote_post(
 			self::API_URL,
 			[
 				// This filter is documented in inc/Engine/CriticalPath/CriticalCSSGeneration.php.
-				'body' => apply_filters(
-					'rocket_cpcss_job_request',
-					[
-						'url' => $url,
-					]
-				),
+				'body' => apply_filters( 'rocket_cpcss_job_request', $additional_data ),
 			]
 		);
 

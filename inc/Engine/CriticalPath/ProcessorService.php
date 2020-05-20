@@ -41,10 +41,11 @@ class ProcessorService {
 	 * @param string $item_url  URL for item to be used in error messages.
 	 * @param string $item_path Path for item to be processed.
 	 * @param bool   $timeout   Timeout is requested or not.
+	 * @param bool  $is_mobile If this request is for mobile cpcss.
 	 *
 	 * @return array|WP_Error
 	 */
-	public function process_generate( $item_url, $item_path, $timeout = false ) {
+	public function process_generate( $item_url, $item_path, $timeout = false, $is_mobile = false ) {
 		// Ajax call requested a timeout.
 		if ( $timeout ) {
 			return $this->process_timeout( $item_url );
@@ -52,7 +53,7 @@ class ProcessorService {
 
 		$cpcss_job_id = $this->data_manager->get_cache_job_id( $item_url );
 		if ( false === $cpcss_job_id ) {
-			return $this->send_generation_request( $item_url, $item_path );
+			return $this->send_generation_request( $item_url, $item_path, $is_mobile );
 		}
 
 		// job_id is found and we need to check status for it.
@@ -66,12 +67,16 @@ class ProcessorService {
 	 *
 	 * @param string $item_url  Url for item to send the generation request for.
 	 * @param string $item_path Path for item to send the generation request for.
+	 * @param bool  $is_mobile If this request is for mobile cpcss.
 	 *
 	 * @return array
 	 */
-	private function send_generation_request( $item_url, $item_path ) {
+	private function send_generation_request( $item_url, $item_path, $is_mobile = false ) {
 		// call send generation request from APIClient for the first time.
-		$generated_job = $this->api_client->send_generation_request( $item_url );
+		$additional_request_data = [
+			'mobile' => (int) $is_mobile
+		];
+		$generated_job = $this->api_client->send_generation_request( $item_url, $additional_request_data );
 
 		// validate generate response.
 		if ( is_wp_error( $generated_job ) ) {

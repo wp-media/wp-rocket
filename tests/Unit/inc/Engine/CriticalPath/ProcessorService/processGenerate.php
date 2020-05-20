@@ -62,6 +62,9 @@ class Test_ProcessGenerate extends FilesystemTestCase {
 		$request_timeout              = isset( $config['request_timeout'] )
 			? $config['request_timeout']
 			: false;
+		$is_mobile                    = isset( $config['mobile'] )
+			? $config['mobile']
+			: false;
 		$item_path = "posts/{$post_type}-{$post_id}.css";
 		$file                         = $this->config['vfs_dir'] . "1/".$item_path;
 		$item_url = ('post_not_exists' === $expected['code'])
@@ -125,6 +128,7 @@ class Test_ProcessGenerate extends FilesystemTestCase {
 				[
 					'body' => [
 						'url' => "http://example.org/?p={$post_id}",
+						'mobile' => (int) $is_mobile
 					],
 				]
 			)

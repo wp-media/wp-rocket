@@ -8,6 +8,7 @@ return [
 			'config'   => [
 				'current_user_can'   => true,
 				'cpcss_exists_after' => false,
+				'mobile'             => false,
 			],
 			'expected' => [
 				'success' => false,
@@ -27,6 +28,7 @@ return [
 					'post_content' => 'content',
 				],
 				'cpcss_exists_after' => false,
+				'mobile'             => false,
 			],
 			'expected' => [
 				'success' => false,
@@ -49,6 +51,7 @@ return [
 				],
 				'cpcss_exists_after' => false,
 				'request_timeout'    => true,
+				'mobile'             => false,
 			],
 			'expected' => [
 				'success' => false,
@@ -74,6 +77,7 @@ return [
 					'body' => '{}',
 				],
 				'cpcss_exists_after'         => false,
+				'mobile'             => false,
 			],
 			'expected' => [
 				'success' => false,
@@ -97,6 +101,7 @@ return [
 					'body' => '{}',
 				],
 				'cpcss_exists_after'         => false,
+				'mobile'             => false,
 			],
 			'expected' => [
 				'success' => false,
@@ -120,6 +125,7 @@ return [
 					'body' => '{}',
 				],
 				'cpcss_exists_after'         => false,
+				'mobile'             => false,
 			],
 			'expected' => [
 				'success' => false,
@@ -148,6 +154,7 @@ return [
 				],
 				'cpcss_exists_after'         => false,
 				'cpcss_job_id'               => false,
+				'mobile'             => false,
 			],
 			'expected' => [
 				'success' => false,
@@ -176,6 +183,7 @@ return [
 				],
 				'cpcss_exists_after'         => false,
 				'cpcss_job_id'               => false,
+				'mobile'             => false,
 			],
 			'expected' => [
 				'success' => false,
@@ -204,6 +212,7 @@ return [
 				],
 				'cpcss_exists_after'         => true,
 				'cpcss_job_id'               => false,
+				'mobile'             => false,
 			],
 			'expected' => [
 				'success' => true,
