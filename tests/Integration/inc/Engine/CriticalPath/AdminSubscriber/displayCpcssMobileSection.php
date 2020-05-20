@@ -12,7 +12,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group  CriticalPath
  */
 class Test_DisplayCpcssMobileSection extends FilesystemTestCase {
-	protected      $path_to_test_data = '/inc/Engine/CriticalPath/AdminSubscriber/DisplayCpcssMobileSection.php';
+	protected      $path_to_test_data = '/inc/Engine/CriticalPath/AdminSubscriber/displayCpcssMobileSection.php';
 	private static $admin_user_id;
 	private static $editor_user_id;
 	private        $options = [];
