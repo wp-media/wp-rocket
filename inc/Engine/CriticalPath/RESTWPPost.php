@@ -24,6 +24,7 @@ class RESTWPPost extends RESTWP {
 	 * @since 3.6
 	 *
 	 * @param int $post_id ID for this post to be validated.
+	 *
 	 * @return true|WP_Error
 	 */
 	protected function validate_item_for_generate( $post_id ) {
@@ -58,6 +59,7 @@ class RESTWPPost extends RESTWP {
 	 * @since 3.6
 	 *
 	 * @param int $post_id ID for this post to be validated.
+	 *
 	 * @return true|WP_Error
 	 */
 	protected function validate_item_for_delete( $post_id ) {
@@ -81,6 +83,7 @@ class RESTWPPost extends RESTWP {
 	 * @since 3.6
 	 *
 	 * @param int $post_id ID for this post to be validated.
+	 *
 	 * @return false|string
 	 */
 	protected function get_url( $post_id ) {
@@ -93,10 +96,12 @@ class RESTWPPost extends RESTWP {
 	 * @since 3.6
 	 *
 	 * @param int $post_id ID for this post to be validated.
+	 *
 	 * @return string
 	 */
 	protected function get_path( $post_id ) {
 		$post_type = get_post_type( $post_id );
+
 		return 'posts' . DIRECTORY_SEPARATOR . "{$post_type}-{$post_id}.css";
 	}
 }

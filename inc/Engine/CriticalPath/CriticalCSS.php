@@ -1,4 +1,5 @@
 <?php
+
 namespace WP_Rocket\Engine\CriticalPath;
 
 use FilesystemIterator;
@@ -8,7 +9,6 @@ use UnexpectedValueException;
  * Handles the critical CSS generation process.
  *
  * @since 2.11
- * @author Remy Perona
  */
 class CriticalCSS {
 	/**
@@ -36,10 +36,9 @@ class CriticalCSS {
 	private $critical_css_path;
 
 	/**
-	 * Class constructor.
+	 * Creates an instance of CriticalCSS.
 	 *
 	 * @since 2.11
-	 * @author Remy Perona
 	 *
 	 * @param CriticalCSSGeneration $process Background process instance.
 	 */
@@ -54,10 +53,9 @@ class CriticalCSS {
 	}
 
 	/**
-	 * Returns the current site critical CSS path
+	 * Returns the current site critical CSS path.
 	 *
 	 * @since 3.3.5
-	 * @author Remy Perona
 	 *
 	 * @return string
 	 */
@@ -66,19 +64,17 @@ class CriticalCSS {
 	}
 
 	/**
-	 * Performs the critical CSS generation
+	 * Performs the critical CSS generation.
 	 *
 	 * @since 2.11
-	 * @author Remy Perona
 	 */
 	public function process_handler() {
 		/**
-		 * Filters the critical CSS generation process
+		 * Filters the critical CSS generation process.
 		 *
 		 * Use this filter to prevent the automatic critical CSS generation.
 		 *
 		 * @since 2.11.5
-		 * @author Remy Perona
 		 *
 		 * @param bool $do_rocket_critical_css_generation True to activate the automatic generation, false to prevent it.
 		 */
@@ -109,10 +105,9 @@ class CriticalCSS {
 	}
 
 	/**
-	 * Stop the critical CSS generation process
+	 * Stop the critical CSS generation process.
 	 *
 	 * @since 3.3
-	 * @author Remy Perona
 	 */
 	public function stop_generation() {
 		if ( method_exists( $this->process, 'cancel_process' ) ) {
@@ -121,11 +116,10 @@ class CriticalCSS {
 	}
 
 	/**
-	 * Deletes critical CSS files
+	 * Deletes critical CSS files.
 	 *
 	 * @since 2.11
 	 * @since 3.6 Replaced glob().
-	 * @author Remy Perona
 	 */
 	public function clean_critical_css() {
 		$filesystem = rocket_direct_filesystem();
@@ -145,10 +139,9 @@ class CriticalCSS {
 	}
 
 	/**
-	 * Gets all public post types
+	 * Gets all public post types.
 	 *
 	 * @since 2.11
-	 * @author Remy Perona
 	 */
 	public function get_public_post_types() {
 		global $wpdb;
@@ -163,12 +156,12 @@ class CriticalCSS {
 		$post_types[] = 'page';
 
 		/**
-		 * Filters the post types excluded from critical CSS generation
+		 * Filters the post types excluded from critical CSS generation.
 		 *
 		 * @since 2.11
-		 * @author Remy Perona
 		 *
 		 * @param array $excluded_post_types An array of post types names.
+		 *
 		 * @return array
 		 */
 		$excluded_post_types = apply_filters(
@@ -210,10 +203,9 @@ class CriticalCSS {
 	}
 
 	/**
-	 * Gets all public taxonomies
+	 * Gets all public taxonomies.
 	 *
-	 * @since 2.11
-	 * @author Remy Perona
+	 * @since  2.11
 	 */
 	public function get_public_taxonomies() {
 		global $wpdb;
@@ -226,12 +218,12 @@ class CriticalCSS {
 		);
 
 		/**
-		 * Filters the taxonomies excluded from critical CSS generation
+		 * Filters the taxonomies excluded from critical CSS generation.
 		 *
-		 * @since 2.11
-		 * @author Remy Perona
+		 * @since  2.11
 		 *
 		 * @param array $excluded_taxonomies An array of taxonomies names.
+		 *
 		 * @return array
 		 */
 		$excluded_taxonomies = apply_filters(
@@ -267,10 +259,9 @@ class CriticalCSS {
 	}
 
 	/**
-	 * Sets the items for which we generate critical CSS
+	 * Sets the items for which we generate critical CSS.
 	 *
-	 * @since 2.11
-	 * @author Remy Perona
+	 * @since  2.11
 	 */
 	public function set_items() {
 		$page_for_posts = get_option( 'page_for_posts' );
@@ -301,23 +292,21 @@ class CriticalCSS {
 		}
 
 		/**
-		 * Filters the array containing the items to send to the critical CSS generator
+		 * Filters the array containing the items to send to the critical CSS generator.
 		 *
-		 * @since 2.11.4
-		 * @author Remy Perona
+		 * @since  2.11.4
 		 *
-		 * @param Array $this->items Array containing the type/url pair for each item to send.
+		 * @param Array $this ->items Array containing the type/url pair for each item to send.
 		 */
 		$this->items = apply_filters( 'rocket_cpcss_items', $this->items );
 	}
 
 	/**
-	 * Determines if critical CSS is available for the current page
+	 * Determines if critical CSS is available for the current page.
 	 *
-	 * @since 2.11
-	 * @author Remy Perona
+	 * @since  2.11
 	 *
-	 * @return bool|string False if critical CSS file doesn't exist, file path otherwise
+	 * @return bool|string False if critical CSS file doesn't exist, file path otherwise.
 	 */
 	public function get_current_page_critical_css() {
 		$name = 'front_page.css';

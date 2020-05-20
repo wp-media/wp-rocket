@@ -1,8 +1,9 @@
 <?php
+
 namespace WP_Rocket\Engine\CriticalPath;
 
-use WP_Error;
 use stdClass;
+use WP_Error;
 
 class APIClient {
 
@@ -17,6 +18,7 @@ class APIClient {
 	 * @since 3.6
 	 *
 	 * @param string $url The URL to send a CPCSS generation request for.
+	 *
 	 * @return array
 	 */
 	public function send_generation_request( $url ) {
@@ -42,7 +44,8 @@ class APIClient {
 	 * @since 3.6
 	 *
 	 * @param array|WP_Error $response The response or WP_Error on failure.
-	 * @param string         $url Url to be checked.
+	 * @param string         $url      Url to be checked.
+	 *
 	 * @return array|WP_Error
 	 */
 	private function prepare_response( $response, $url ) {
@@ -76,6 +79,7 @@ class APIClient {
 	 *
 	 * @param int      $response_code Response code to check success or failure.
 	 * @param stdClass $response_data Object of data returned from request.
+	 *
 	 * @return bool success or failed.
 	 */
 	private function get_response_success( $response_code, $response_data ) {
@@ -106,7 +110,8 @@ class APIClient {
 	 * @since 3.6
 	 *
 	 * @param array|WP_Error $response The response or WP_Error on failure.
-	 * @param null|int       $status Status code to overwrite the response status.
+	 * @param null|int       $status   Status code to overwrite the response status.
+	 *
 	 * @return int status code|number of response.
 	 */
 	private function get_response_status( $response, $status = null ) {
@@ -123,8 +128,9 @@ class APIClient {
 	 * @since 3.6
 	 *
 	 * @param int      $response_status_code Response status code.
-	 * @param stdClass $response_data Object of data returned from request.
-	 * @param string   $url Url for the web page to be checked.
+	 * @param stdClass $response_data        Object of data returned from request.
+	 * @param string   $url                  Url for the web page to be checked.
+	 *
 	 * @return string
 	 */
 	private function get_response_message( $response_status_code, $response_data, $url ) {
@@ -169,6 +175,7 @@ class APIClient {
 	 * @since 3.6
 	 *
 	 * @param array|WP_Error $response The response or WP_Error on failure.
+	 *
 	 * @return mixed response of API.
 	 */
 	private function get_response_data( $response ) {
@@ -181,6 +188,7 @@ class APIClient {
 	 * @since 3.6
 	 *
 	 * @param array|WP_Error $response The response or WP_Error on failure.
+	 *
 	 * @return string response code.
 	 */
 	private function get_response_code( $response ) {
@@ -194,7 +202,8 @@ class APIClient {
 	 * @since 3.6
 	 *
 	 * @param string $job_id ID for the job to get details.
-	 * @param string $url URL to be used in error messages.
+	 * @param string $url    URL to be used in error messages.
+	 *
 	 * @return mixed|WP_Error Details for job.
 	 */
 	public function get_job_details( $job_id, $url ) {
@@ -204,5 +213,4 @@ class APIClient {
 
 		return $this->prepare_response( $response, $url );
 	}
-
 }

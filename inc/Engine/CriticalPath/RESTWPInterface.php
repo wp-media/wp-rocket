@@ -1,4 +1,5 @@
 <?php
+
 namespace WP_Rocket\Engine\CriticalPath;
 
 use WP_REST_Request;

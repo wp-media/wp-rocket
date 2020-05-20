@@ -44,7 +44,7 @@ class DataManager {
 	 *
 	 * @param string $path  Path for cpcss file related to this web page.
 	 * @param string $cpcss CPCSS code to be saved.
-	 * @param string $url URL for item to be used in error messages.
+	 * @param string $url   URL for item to be used in error messages.
 	 *
 	 * @return bool|WP_Error
 	 */

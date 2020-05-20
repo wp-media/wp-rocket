@@ -1,4 +1,5 @@
 <?php
+
 namespace WP_Rocket\Engine\CriticalPath;
 
 use WP_Error;
@@ -25,7 +26,7 @@ class ProcessorService {
 	 * @since 3.6
 	 *
 	 * @param DataManager $data_manager Data manager instance, responsible for dealing with data/database.
-	 * @param APIClient   $api_client API Client instance to deal with CPCSS APIs.
+	 * @param APIClient   $api_client   API Client instance to deal with CPCSS APIs.
 	 */
 	public function __construct( DataManager $data_manager, APIClient $api_client ) {
 		$this->data_manager = $data_manager;
@@ -37,9 +38,10 @@ class ProcessorService {
 	 *
 	 * @since 3.6
 	 *
-	 * @param string $item_url URL for item to be used in error messages.
+	 * @param string $item_url  URL for item to be used in error messages.
 	 * @param string $item_path Path for item to be processed.
-	 * @param bool   $timeout Timeout is requested or not.
+	 * @param bool   $timeout   Timeout is requested or not.
+	 *
 	 * @return array|WP_Error
 	 */
 	public function process_generate( $item_url, $item_path, $timeout = false ) {
@@ -49,7 +51,6 @@ class ProcessorService {
 		}
 
 		$cpcss_job_id = $this->data_manager->get_cache_job_id( $item_url );
-
 		if ( false === $cpcss_job_id ) {
 			return $this->send_generation_request( $item_url, $item_path );
 		}
@@ -63,8 +64,9 @@ class ProcessorService {
 	 *
 	 * @since 3.6
 	 *
-	 * @param string $item_url Url for item to send the generation request for.
+	 * @param string $item_url  Url for item to send the generation request for.
 	 * @param string $item_path Path for item to send the generation request for.
+	 *
 	 * @return array
 	 */
 	private function send_generation_request( $item_url, $item_path ) {
@@ -89,8 +91,9 @@ class ProcessorService {
 	 *
 	 * @since 3.6
 	 *
-	 * @param string $job_id ID for the job to get details.
+	 * @param string $job_id   ID for the job to get details.
 	 * @param string $item_url URL for item to be used in error messages.
+	 *
 	 * @return array|mixed|WP_Error
 	 */
 	private function get_cpcss_job_details( $job_id, $item_url ) {
@@ -108,9 +111,10 @@ class ProcessorService {
 	 *
 	 * @since 3.6
 	 *
-	 * @param string $job_id ID for the job to get details.
+	 * @param string $job_id    ID for the job to get details.
 	 * @param string $item_path Path for this item to be validated.
-	 * @param string $item_url URL for item to be used in error messages.
+	 * @param string $item_url  URL for item to be used in error messages.
+	 *
 	 * @return array|WP_Error Response in case of success, failure or pending.
 	 */
 	private function check_cpcss_job_status( $job_id, $item_path, $item_url ) {
@@ -118,6 +122,7 @@ class ProcessorService {
 
 		if ( is_wp_error( $job_details ) ) {
 			$this->data_manager->delete_cache_job_id( $item_url );
+
 			return $job_details;
 		}
 
@@ -150,7 +155,8 @@ class ProcessorService {
 	 * @since 3.6
 	 *
 	 * @param array  $job_details Job details array.
-	 * @param string $item_url Url for web page to be processed, used for error messages.
+	 * @param string $item_url    Url for web page to be processed, used for error messages.
+	 *
 	 * @return WP_Error
 	 */
 	private function on_job_error( $job_details, $item_url ) {
@@ -165,12 +171,12 @@ class ProcessorService {
 		}
 
 		return new WP_Error(
-				'cpcss_generation_failed',
-				$error,
-				[
-					'status' => 400,
-				]
-			);
+			'cpcss_generation_failed',
+			$error,
+			[
+				'status' => 400,
+			]
+		);
 	}
 
 	/**
@@ -179,6 +185,7 @@ class ProcessorService {
 	 * @since 3.6
 	 *
 	 * @param string $item_url Url for web page to be processed, used for error messages.
+	 *
 	 * @return array
 	 */
 	private function on_job_pending( $item_url ) {
@@ -194,9 +201,10 @@ class ProcessorService {
 	 *
 	 * @since 3.6
 	 *
-	 * @param string $item_path Item Path for web page to be processed.
-	 * @param string $item_url Item Url for web page to be processed.
+	 * @param string $item_path  Item Path for web page to be processed.
+	 * @param string $item_url   Item Url for web page to be processed.
 	 * @param string $cpcss_code CPCSS Code to be saved.
+	 *
 	 * @return array|WP_Error
 	 */
 	private function on_job_success( $item_path, $item_url, $cpcss_code ) {
@@ -221,6 +229,7 @@ class ProcessorService {
 	 * Process the login for CPCSS deletion.
 	 *
 	 * @param string $item_path Path for item to delete CPCSS code.
+	 *
 	 * @return array|WP_Error
 	 */
 	public function process_delete( $item_path ) {
@@ -242,19 +251,20 @@ class ProcessorService {
 	 * @since 3.6
 	 *
 	 * @param string $item_url URL for item to be used in error messages.
+	 *
 	 * @return WP_Error
 	 */
 	private function process_timeout( $item_url ) {
 		$this->data_manager->delete_cache_job_id( $item_url );
 
 		return new WP_Error(
-				'cpcss_generation_timeout',
-				// translators: %1$s = Item URL.
-				sprintf( __( 'Critical CSS for %1$s timeout. Please retry a little later.', 'rocket' ), $item_url ),
-				[
-					'status' => 400,
-				]
-			);
+			'cpcss_generation_timeout',
+			// translators: %1$s = Item URL.
+			sprintf( __( 'Critical CSS for %1$s timeout. Please retry a little later.', 'rocket' ), $item_url ),
+			[
+				'status' => 400,
+			]
+		);
 	}
 
 }

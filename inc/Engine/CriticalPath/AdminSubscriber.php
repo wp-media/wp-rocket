@@ -9,31 +9,38 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 	/**
-	 * Beacon instance
+	 * Instance of the Beacon handler.
 	 *
 	 * @var Beacon
 	 */
 	private $beacon;
 
 	/**
-	 * WP Rocket Options instance
+	 * Path to the critical-css directory.
+	 *
+	 * @var string
+	 */
+	private $critical_css_path;
+
+	/**
+	 * Instance of options handler.
 	 *
 	 * @var Options_Data
 	 */
 	private $options;
 
 	/**
-	 * Array of reasons to disable actions
+	 * Array of reasons to disable actions.
 	 *
 	 * @var array
 	 */
 	private $disabled_data;
 
 	/**
-	 * Constructor
+	 * Creates an instance of the subscriber.
 	 *
-	 * @param Options_Data $options WP Rocket Options instance.
-	 * @param Beacon       $beacon Beacon instance.
+	 * @param Options_Data $options       WP Rocket Options instance.
+	 * @param Beacon       $beacon        Beacon instance.
 	 * @param string       $critical_path Path to the critical CSS base folder.
 	 * @param string       $template_path Path to the templates folder.
 	 */
@@ -46,7 +53,7 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 	}
 
 	/**
-	 * Events this subscriber wants to listen to
+	 * Events this subscriber wants to listen to.
 	 *
 	 * @return array
 	 */
@@ -63,7 +70,8 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 	 *
 	 * @since 3.6
 	 *
-	 * @param  string $page The current admin page.
+	 * @param string $page The current admin page.
+	 *
 	 * @return void
 	 */
 	public function enqueue_admin_edit_script( $page ) {
@@ -79,7 +87,7 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 	}
 
 	/**
-	 * Displays the critical CSS block in WP Rocket options metabox
+	 * Displays the critical CSS block in WP Rocket options metabox.
 	 *
 	 * @since 3.6
 	 *
@@ -100,7 +108,7 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 	}
 
 	/**
-	 * Displays the content inside the critical CSS block
+	 * Displays the content inside the critical CSS block.
 	 *
 	 * @since 3.6
 	 *
@@ -121,7 +129,7 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 	}
 
 	/**
-	 * Gets data for the disabled checks
+	 * Gets data for the disabled checks.
 	 *
 	 * @since 3.6
 	 *
@@ -134,25 +142,27 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 			$this->disabled_data = null;
 		}
 
-		if ( ! isset( $this->disabled_data ) ) {
-			if ( 'publish' !== $post->post_status ) {
-				$this->disabled_data['not_published'] = 1;
-			}
+		if ( isset( $this->disabled_data ) ) {
+			return $this->disabled_data;
+		}
 
-			if ( ! $this->options->get( 'async_css', 0 ) ) {
-				$this->disabled_data['option_disabled'] = 1;
-			}
+		if ( 'publish' !== $post->post_status ) {
+			$this->disabled_data['not_published'] = 1;
+		}
 
-			if ( get_post_meta( $post->ID, '_rocket_exclude_async_css', true ) ) {
-				$this->disabled_data['option_excluded'] = 1;
-			}
+		if ( ! $this->options->get( 'async_css', 0 ) ) {
+			$this->disabled_data['option_disabled'] = 1;
+		}
+
+		if ( get_post_meta( $post->ID, '_rocket_exclude_async_css', true ) ) {
+			$this->disabled_data['option_excluded'] = 1;
 		}
 
 		return $this->disabled_data;
 	}
 
 	/**
-	 * Checks if critical CSS generation is enabled for the current post
+	 * Checks if critical CSS generation is enabled for the current post.
 	 *
 	 * @since 3.6
 	 *
@@ -163,7 +173,7 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 	}
 
 	/**
-	 * Returns the reason why actions are disabled
+	 * Returns the reason why actions are disabled.
 	 *
 	 * @since 3.6
 	 *
@@ -190,7 +200,7 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 	}
 
 	/**
-	 * Checks if a specific critical css file exists for the current post
+	 * Checks if a specific critical css file exists for the current post.
 	 *
 	 * @since 3.6
 	 *
