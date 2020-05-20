@@ -31,7 +31,7 @@ class Test_DisplayCpcssMobileSection extends TestCase {
 	public function testShouldDisplayCPCSSMobileSection( $config, $expected ) {
 		$this->setUpMocks();
 
-		foreach ($config['options'] as $option_key => $option) {
+		foreach ( $config['options'] as $option_key => $option ) {
 			$this->options
 				->shouldReceive( 'get' )
 				->with( $option_key, 0 )
