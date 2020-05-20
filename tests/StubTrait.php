@@ -106,6 +106,9 @@ trait StubTrait {
 			case 'WP_ROCKET_RUNNING_VFS':
 				return $this->is_running_vfs;
 
+			case 'WP_ROCKET_SLUG':
+				return 'wp_rocket_settings';
+
 			case 'WP_ROCKET_VENDORS_PATH':
 				return "{$this->wp_content_dir}/plugins/wp-rocket/inc/vendors/";
 

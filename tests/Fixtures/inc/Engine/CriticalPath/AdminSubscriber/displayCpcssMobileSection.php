@@ -1,102 +1,82 @@
 <?php
 
 return [
-	'vfs_dir'   => 'wp-content/cache/critical-css/',
-
-	// Virtual filesystem structure.
-	'structure' => [
-		'wp-content' => [
-			'plugins' => [
-				'wp-rocket' => [
-					'views' => [
-						'cpcss' => [
-							'activate-cpcss-mobile.php' =>
-								file_get_contents( WP_ROCKET_PLUGIN_ROOT . 'views/cpcss/activate-cpcss-mobile.php' ),
-						],
-					],
-				],
+	'testShouldBailOutWithNoCapability' => [
+		'config'   => [
+			'current_user_can' => false,
+			'options'          => [
+				'async_css'               => 1,
+				'cache_mobile'            => 1,
+				'do_caching_mobile_files' => 1,
+				'async_css_mobile'        => 1,
 			],
 		],
+		'expected' => '',
 	],
 
-	'test_data' => [
-
-		'testShouldBailOutWithNoCapability' => [
-			'config' => [
-				'current_user_can'        => false,
-				'options'                 => [
-					'async_css'               => 1,
-					'cache_mobile'            => 1,
-					'do_caching_mobile_files' => 1,
-					'async_css_mobile'        => 1,
-				],
+	'testShouldBailOutWithNoAsyncCss' => [
+		'config'   => [
+			'current_user_can' => true,
+			'options'          => [
+				'async_css'               => 0,
+				'cache_mobile'            => 1,
+				'do_caching_mobile_files' => 1,
+				'async_css_mobile'        => 0,
 			],
-			'expected' => '',
 		],
+		'expected' => '',
+	],
 
-		'testShouldBailOutWithNoAsyncCss' => [
-			'config' => [
-				'current_user_can'        => true,
-				'options'                 => [
-					'async_css'               => 0,
-					'cache_mobile'            => 1,
-					'do_caching_mobile_files' => 1,
-					'async_css_mobile'        => 0,
-				],
+	'testShouldBailOutWithNoCacheMobile' => [
+		'config'   => [
+			'current_user_can' => true,
+			'options'          => [
+				'async_css'               => 1,
+				'cache_mobile'            => 0,
+				'do_caching_mobile_files' => 1,
+				'async_css_mobile'        => 0,
 			],
-			'expected' => '',
 		],
+		'expected' => '',
+	],
 
-		'testShouldBailOutWithNoCacheMobile' => [
-			'config' => [
-				'current_user_can'        => true,
-				'options'                 => [
-					'async_css'               => 1,
-					'cache_mobile'            => 0,
-					'do_caching_mobile_files' => 1,
-					'async_css_mobile'        => 0,
-				],
+	'testShouldBailOutWithNoDoCacheMobileFiles' => [
+		'config'   => [
+			'current_user_can' => true,
+			'options'          => [
+				'async_css'               => 1,
+				'cache_mobile'            => 1,
+				'do_caching_mobile_files' => 0,
+				'async_css_mobile'        => 0,
 			],
-			'expected' => '',
 		],
+		'expected' => '',
+	],
 
-		'testShouldBailOutWithNoDoCacheMobileFiles' => [
-			'config' => [
-				'current_user_can'        => true,
-				'options'                 => [
-					'async_css'               => 1,
-					'cache_mobile'            => 1,
-					'do_caching_mobile_files' => 0,
-					'async_css_mobile'        => 0,
-				],
+	'testShouldBailOutWithNoOption' => [
+		'config'   => [
+			'current_user_can' => true,
+			'options'          => [
+				'async_css'               => 0,
+				'cache_mobile'            => 0,
+				'do_caching_mobile_files' => 0,
+				'async_css_mobile'        => 0,
 			],
-			'expected' => '',
 		],
+		'expected' => '',
+	],
 
-		'testShouldBailOutWithNoOption' => [
-			'config' => [
-				'current_user_can'        => true,
-				'options'                 => [
-					'async_css'               => 0,
-					'cache_mobile'            => 0,
-					'do_caching_mobile_files' => 0,
-					'async_css_mobile'        => 0,
-				],
+	'testSucceedWithAllOptionsEnabledAndAsyncMobileNotActive' => [
+		'config'   => [
+			'current_user_can' => true,
+			'options'          => [
+				'async_css'               => 1,
+				'cache_mobile'            => 1,
+				'do_caching_mobile_files' => 1,
+				'async_css_mobile'        => 0,
 			],
-			'expected' => '',
 		],
-
-		'testSucceedWithAllOptionsEnabledAndAsyncMobileNotActive' => [
-			'config' => [
-				'current_user_can'        => true,
-				'options'                 => [
-					'async_css'               => 1,
-					'cache_mobile'            => 1,
-					'do_caching_mobile_files' => 1,
-					'async_css_mobile'        => 0,
-				],
-			],
-			'expected' => '<div id="wpr-mobile_cpcss_view" class="wpr-tools">
+		'expected' => '<div id="wpr-mobile_cpcss_view" class="wpr-tools">
 <div class="wpr-tools-col">
 <div class="wpr-title3 wpr-tools-label wpr-icon-check2">
 Enable CPCSS for mobiles text</div>
@@ -109,32 +89,31 @@ Enable CPCSS for mobile</button>
 </div>
 </div>
 ',
-		],
+	],
 
-		'testBailoutAsyncMobileAlreadyActive' => [
-			'config' => [
-				'current_user_can'        => true,
-				'options'                 => [
-					'async_css'               => 0,
-					'cache_mobile'            => 0,
-					'do_caching_mobile_files' => 0,
-					'async_css_mobile'        => 1,
-				],
+	'testBailoutAsyncMobileAlreadyActive' => [
+		'config'   => [
+			'current_user_can' => true,
+			'options'          => [
+				'async_css'               => 0,
+				'cache_mobile'            => 0,
+				'do_caching_mobile_files' => 0,
+				'async_css_mobile'        => 1,
 			],
-			'expected' => '',
 		],
+		'expected' => '',
+	],
 
-		'testBailoutWithAllOptionsAndAsyncMobileAlreadyActive' => [
-			'config' => [
-				'current_user_can'        => true,
-				'options'                 => [
-					'async_css'               => 1,
-					'cache_mobile'            => 1,
-					'do_caching_mobile_files' => 1,
-					'async_css_mobile'        => 1,
-				],
+	'testBailoutWithAllOptionsAndAsyncMobileAlreadyActive' => [
+		'config'   => [
+			'current_user_can' => true,
+			'options'          => [
+				'async_css'               => 1,
+				'cache_mobile'            => 1,
+				'do_caching_mobile_files' => 1,
+				'async_css_mobile'        => 1,
 			],
-			'expected' => '',
 		],
+		'expected' => '',
 	],
 ];
