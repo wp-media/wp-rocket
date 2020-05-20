@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\AdminPageSubscriber;
 
-use  WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
+use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber::rocketcdn_field
@@ -35,10 +35,11 @@ class Test_RocketcdnField extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldAddRocketCdnFields( $cdn_names, $rocketcdn_status, $expected_cdn_cnames ) {
-		$this->cdn_names = $cdn_names;
+	public function testShouldAddRocketCdnFields( $config, $expected_cdn_cnames ) {
+		$this->white_label = isset( $config['white_label'] ) ? $config['white_label'] : $this->white_label;
+		$this->cdn_names   = $config['cdn_names'];
 
-		set_transient( 'rocketcdn_status', $rocketcdn_status, MINUTE_IN_SECONDS );
+		set_transient( 'rocketcdn_status', $config['rocketcdn_status'], MINUTE_IN_SECONDS );
 
 		$expected               = $this->config['fields'];
 		$expected['cdn_cnames'] = $expected_cdn_cnames;

@@ -2,7 +2,8 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\NoticesSubscriber;
 
-use WPMedia\PHPUnit\Integration\TestCase;
+use Brain\Monkey\Functions;
+use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::add_dismiss_script
@@ -10,95 +11,89 @@ use WPMedia\PHPUnit\Integration\TestCase;
  *
  * @group  AdminOnly
  * @group  RocketCDN
+ * @group  dismissScript
  */
 class Test_AddDismissScript extends TestCase {
-	private function get_script( $nonce ) {
-		return $this->format_the_html( "<script>
-		window.addEventListener( 'load', function() {
-			var dismissBtn  = document.querySelectorAll( '#rocketcdn-promote-notice .notice-dismiss, #rocketcdn-promote-notice #rocketcdn-learn-more-dismiss' );
+	protected $user_id = 0;
+	protected $cap;
 
-			dismissBtn.forEach(function(element) {
-				element.addEventListener( 'click', function( event ) {
-					var httpRequest = new XMLHttpRequest(),
-						postData    = '';
+	public function setUp() {
+		parent::setUp();
 
-					postData += 'action=rocketcdn_dismiss_notice';
-					postData += '&nonce=" . esc_attr( $nonce ) . "';
-					httpRequest.open( 'POST', 'http://example.org/wp-admin/admin-ajax.php' );
-					httpRequest.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' )
-					httpRequest.send( postData );
-				});
-			});
-		});
-		</script>" );
+		Functions\when( 'wp_create_nonce' )->justReturn( 'wp_rocket_nonce' );
+
+		add_filter( 'home_url', [ $this, 'home_url_cb' ] );
 	}
 
-	private function getActualHtml() {
+	public function tearDown() {
+		delete_transient( 'rocketcdn_status' );
+		delete_user_meta( get_current_user_id(), 'rocketcdn_dismiss_notice' );
+
+		parent::tearDown();
+
+		set_current_screen( 'front' );
+		if ( $this->user_id > 0 ) {
+			wp_delete_user( $this->user_id );
+		}
+
+		$this->removeRoleCap( 'administrator', $this->cap );
+	}
+
+	/**
+	 * @dataProvider configTestData
+	 */
+	public function testShouldDisplayExpected( $config, $expected ) {
+		$this->white_label = isset( $config['white_label'] ) ? $config['white_label'] : $this->white_label;
+		$this->home_url    = $config['home_url'];
+		$this->cap         = isset( $config['cap'] ) ? $config['cap'] : null;
+
+		if ( isset( $config['cap'] ) ) {
+			$this->setRoleCap( 'administrator', $config['cap'] );
+		}
+
+		if ( isset( $config['role'] ) ) {
+			$this->setCurrentUser( $config['role'] );
+		}       
+
+		if ( isset( $config['screen'] ) ) {
+			set_current_screen( $config['screen'] );
+		}
+
+		if ( isset( $config['dismissed'] ) ) {
+			add_user_meta( get_current_user_id(), 'rocketcdn_dismiss_notice', true );
+		}
+
+		if ( isset( $config['transient'] ) ) {
+			set_transient( 'rocketcdn_status', $config['transient'], MINUTE_IN_SECONDS );
+		}
+
 		ob_start();
 		do_action( 'admin_footer' );
+		$actual = ob_get_clean();
 
-		return $this->format_the_html( ob_get_clean() );
+		if ( ! empty ( $expected ) ) {
+			$expected = $this->format_the_html( $expected );
+		}
+
+		if ( ! empty ( $actual ) ) {
+			$actual = $this->format_the_html( $actual );
+		}
+
+		$this->assertSame( $expected, $actual );
 	}
 
-	public function testShouldDisplayNothingWhenNotLiveSite() {
-		$callback = function() {
-			return 'http://localhost';
-		};
-
-		add_filter( 'home_url', $callback );
-
-		$this->assertNotContains( $this->get_script( wp_create_nonce( 'rocketcdn_dismiss_notice' ) ), $this->getActualHtml() );
-
-		remove_filter( 'home_url', $callback );
+	protected function setRoleCap( $role_type, $cap ) {
+		$role = get_role( $role_type );
+		$role->add_cap( $cap );
 	}
 
-	public function testShouldNotAddScriptWhenNoCapability() {
-		$user_id = self::factory()->user->create( [ 'role' => 'editor' ] );
-
-		wp_set_current_user( $user_id );
-
-		$this->assertNotContains( $this->get_script( wp_create_nonce( 'rocketcdn_dismiss_notice' ) ), $this->getActualHtml() );
+	protected function removeRoleCap( $role_type, $cap ) {
+		$role = get_role( $role_type );
+		$role->remove_cap( $cap );
 	}
 
-	public function testShouldNotAddScriptWhenNotRocketPage() {
-		$user_id = self::factory()->user->create( [ 'role' => 'administrator' ] );
-
-		wp_set_current_user( $user_id );
-		set_current_screen( 'edit.php' );
-
-		$this->assertNotContains( $this->get_script( wp_create_nonce( 'rocketcdn_dismiss_notice' ) ), $this->getActualHtml() );
-	}
-
-	public function testShouldNotAddScriptWhenDismissed() {
-		$user_id = self::factory()->user->create( [ 'role' => 'administrator' ] );
-
-		wp_set_current_user( $user_id );
-
-		set_current_screen( 'settings_page_wprocket' );
-		add_user_meta( get_current_user_id(), 'rocketcdn_dismiss_notice', true );
-
-		$this->assertNotContains( $this->get_script( wp_create_nonce( 'rocketcdn_dismiss_notice' ) ), $this->getActualHtml() );
-	}
-
-	public function testShouldNotAddScriptWhenActive() {
-		$user_id = self::factory()->user->create( [ 'role' => 'administrator' ] );
-
-		wp_set_current_user( $user_id );
-
-		set_current_screen( 'settings_page_wprocket' );
-		set_transient( 'rocketcdn_status', [ 'subscription_status' => 'running' ], MINUTE_IN_SECONDS );
-
-		$this->assertNotContains( $this->get_script( wp_create_nonce( 'rocketcdn_dismiss_notice' ) ), $this->getActualHtml() );
-	}
-
-	public function testShouldAddScriptWhenNotActive() {
-		$user_id = self::factory()->user->create( [ 'role' => 'administrator' ] );
-
-		wp_set_current_user( $user_id );
-
-		set_current_screen( 'settings_page_wprocket' );
-		set_transient( 'rocketcdn_status', [ 'subscription_status' => 'cancelled' ], MINUTE_IN_SECONDS );
-
-		$this->assertContains( $this->get_script( wp_create_nonce( 'rocketcdn_dismiss_notice' ) ), $this->getActualHtml() );
+	protected function setCurrentUser( $role ) {
+		$this->user_id = $this->factory->user->create( [ 'role' => $role ] );
+		wp_set_current_user( $this->user_id );
 	}
 }
