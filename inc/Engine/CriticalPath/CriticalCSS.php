@@ -54,12 +54,13 @@ class CriticalCSS {
 	public function __construct( CriticalCSSGeneration $process, $filesystem ) {
 		$this->process = $process;
 		$this->items[] = [
-			'type' => 'front_page',
-			'url'  => home_url( '/' ),
+			'type'  => 'front_page',
+			'url'   => home_url( '/' ),
+			'check' => 0,
 		];
 
 		$this->critical_css_path = rocket_get_constant( 'WP_ROCKET_CRITICAL_CSS_PATH' ) . get_current_blog_id() . '/';
-		$this->filesystem        = rocket_direct_filesystem();
+		$this->filesystem        = $filesystem;
 	}
 
 	/**
@@ -276,8 +277,9 @@ class CriticalCSS {
 
 		if ( 'page' === get_option( 'show_on_front' ) && ! empty( $page_for_posts ) ) {
 			$this->items[] = [
-				'type' => 'home',
-				'url'  => get_permalink( get_option( 'page_for_posts' ) ),
+				'type'  => 'home',
+				'url'   => get_permalink( get_option( 'page_for_posts' ) ),
+				'check' => 0,
 			];
 		}
 
@@ -285,8 +287,9 @@ class CriticalCSS {
 
 		foreach ( $post_types as $post_type ) {
 			$this->items[] = [
-				'type' => $post_type->post_type,
-				'url'  => get_permalink( $post_type->ID ),
+				'type'  => $post_type->post_type,
+				'url'   => get_permalink( $post_type->ID ),
+				'check' => 0,
 			];
 		}
 
@@ -294,8 +297,9 @@ class CriticalCSS {
 
 		foreach ( $taxonomies as $taxonomy ) {
 			$this->items[] = [
-				'type' => $taxonomy->taxonomy,
-				'url'  => get_term_link( (int) $taxonomy->ID, $taxonomy->taxonomy ),
+				'type'  => $taxonomy->taxonomy,
+				'url'   => get_term_link( (int) $taxonomy->ID, $taxonomy->taxonomy ),
+				'check' => 0,
 			];
 		}
 
