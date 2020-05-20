@@ -9,9 +9,9 @@ return [
 			'cache' => [
 				'critical-css' => [
 					'1' => [
-						'.'              => '',
-						'..'             => '',
-						'posts'          => [
+						'.'                => '',
+						'..'               => '',
+						'posts'            => [
 							'.'           => '',
 							'..'          => '',
 							'post-1.css'  => '.post-1 { color: red; }',
@@ -46,143 +46,142 @@ return [
 		],
 	],
 	'test_data' => [
-		'non_multisite' => [
-			'testShouldBailOutDONOTROCKETOPTIMIZE'      => [
-				'config' => [
-					'DONOTROCKETOPTIMIZE'            => true,
-				],
-				'expected' => false,
+		'testShouldBailOutDONOTROCKETOPTIMIZE'      => [
+			'config'   => [
+				'DONOTROCKETOPTIMIZE' => true,
 			],
-			'testShouldBailOutDONOTASYNCCSS'            => [
-				'config' => [
-					'DONOTROCKETOPTIMIZE'            => false,
-					'DONOTASYNCCSS'                  => true,
-				],
-				'expected' => false,
+			'expected' => false,
+		],
+		'testShouldBailOutDONOTASYNCCSS'            => [
+			'config'   => [
+				'DONOTROCKETOPTIMIZE' => false,
+				'DONOTASYNCCSS'       => true,
 			],
-			'testShouldBailOutAsyncCSSOpt'              => [
-				'config' => [
-					'DONOTROCKETOPTIMIZE'            => false,
-					'DONOTASYNCCSS'                  => false,
-					'options'                        => [
-						'async_css' => [
-							'value'   => false,
-							'default' => 0,
-						],
+			'expected' => false,
+		],
+		'testShouldBailOutAsyncCSSOpt'              => [
+			'config'   => [
+				'DONOTROCKETOPTIMIZE' => false,
+				'DONOTASYNCCSS'       => false,
+				'options'             => [
+					'async_css' => [
+						'value'   => false,
+						'default' => 0,
 					],
 				],
-				'expected' => false,
 			],
-			'testShouldBailOutRocketExcludedOption'     => [
-				'config' => [
-					'DONOTROCKETOPTIMIZE'            => false,
-					'DONOTASYNCCSS'                  => false,
-					'options'                        => [
-						'async_css' => [
-							'value'   => true,
-							'default' => 0,
-						],
+			'expected' => false,
+		],
+		'testShouldBailOutRocketExcludedOption'     => [
+			'config'   => [
+				'DONOTROCKETOPTIMIZE'            => false,
+				'DONOTASYNCCSS'                  => false,
+				'options'                        => [
+					'async_css' => [
+						'value'   => true,
+						'default' => 0,
 					],
-					'is_rocket_post_excluded_option' => true,
 				],
-				'expected' => false,
+				'is_rocket_post_excluded_option' => true,
 			],
-			'testShouldBailOutNoCurrentPageCriticalCSS' => [
-				'config' => [
-					'DONOTROCKETOPTIMIZE'            => false,
-					'DONOTASYNCCSS'                  => false,
-					'options'                        => [
-						'async_css' => [
-							'value'   => true,
-							'default' => 0,
-						],
+			'expected' => false,
+		],
+		'testShouldBailOutNoCurrentPageCriticalCSS' => [
+			'config'   => [
+				'DONOTROCKETOPTIMIZE'            => false,
+				'DONOTASYNCCSS'                  => false,
+				'options'                        => [
+					'async_css' => [
+						'value'   => true,
+						'default' => 0,
 					],
-					'is_rocket_post_excluded_option' => false,
-					'get_current_page_critical_css'  => '',
 				],
-				'expected' => false,
+				'is_rocket_post_excluded_option' => false,
+				'get_current_page_critical_css'  => '',
 			],
-			'testShouldBailOutEmptyFallBackCriticalCSS' => [
-				'config' => [
-					'DONOTROCKETOPTIMIZE'            => false,
-					'DONOTASYNCCSS'                  => false,
-					'options'                        => [
-						'async_css' => [
-							'value'   => true,
-							'default' => 0,
-						],
-						'critical_css' => [
-							'value'   => '',
-							'default' => '',
-						],
+			'expected' => false,
+		],
+		'testShouldBailOutEmptyFallBackCriticalCSS' => [
+			'config'   => [
+				'DONOTROCKETOPTIMIZE'            => false,
+				'DONOTASYNCCSS'                  => false,
+				'options'                        => [
+					'async_css'    => [
+						'value'   => true,
+						'default' => 0,
 					],
-					'is_rocket_post_excluded_option' => false,
-					'get_current_page_critical_css'  => 'fallback',
+					'critical_css' => [
+						'value'   => '',
+						'default' => '',
+					],
 				],
-				'expected' => false,
+				'is_rocket_post_excluded_option' => false,
+				'get_current_page_critical_css'  => 'fallback',
 			],
-			'testShouldDisplatFallBackCriticalCSS'      => [
-				'config' => [
-					'DONOTROCKETOPTIMIZE'            => false,
-					'DONOTASYNCCSS'                  => false,
-					'options'                        => [
-						'async_css' => [
-							'value'   => true,
-							'default' => 0,
-						],
-						'critical_css' => [
-							'value'   => '.fallback { color: red; }',
-							'default' => '',
-						],
+			'expected' => false,
+		],
+		'testShouldDisplatFallBackCriticalCSS'      => [
+			'config'   => [
+				'DONOTROCKETOPTIMIZE'            => false,
+				'DONOTASYNCCSS'                  => false,
+				'options'                        => [
+					'async_css'    => [
+						'value'   => true,
+						'default' => 0,
 					],
-					'is_rocket_post_excluded_option' => false,
-					'get_current_page_critical_css'  => 'fallback',
-					'SCRIPT_DEBUG'                   => false,
+					'critical_css' => [
+						'value'   => '.fallback { color: red; }',
+						'default' => '',
+					],
 				],
-				'expected' => true,
-				'html'     => '<html><head><title></title><style id="rocket-critical-css">.fallback { color: red; }</style></head><body><script>const wprRemoveCPCSS = () => { document.getElementById( "rocket-critical-css" ).remove(); }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script></body></html>',
+				'is_rocket_post_excluded_option' => false,
+				'get_current_page_critical_css'  => 'fallback',
+				'SCRIPT_DEBUG'                   => false,
 			],
-			'testShouldDisplayFileCriticalCSS'          => [
-				'config' => [
-					'DONOTROCKETOPTIMIZE'            => false,
-					'DONOTASYNCCSS'                  => false,
-					'options'                        => [
-						'async_css' => [
-							'value'   => true,
-							'default' => 0,
-						],
-						'critical_css' => [
-							'value'   => '.fallback { color: red; }',
-							'default' => '',
-						],
+			'expected' => true,
+			'html'     => '<html><head><title></title><style id="rocket-critical-css">.fallback { color: red; }</style></head><body><script>const wprRemoveCPCSS = () => { document.getElementById( "rocket-critical-css" ).remove(); }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script></body></html>',
+		],
+		'testShouldDisplayFileCriticalCSS'          => [
+			'config'   => [
+				'DONOTROCKETOPTIMIZE'            => false,
+				'DONOTASYNCCSS'                  => false,
+				'options'                        => [
+					'async_css'    => [
+						'value'   => true,
+						'default' => 0,
 					],
-					'is_rocket_post_excluded_option' => false,
-					'get_current_page_critical_css'  => 'wp-content/cache/critical-css/1/post_tag.css',
-					'SCRIPT_DEBUG'                   => false,
+					'critical_css' => [
+						'value'   => '.fallback { color: red; }',
+						'default' => '',
+					],
 				],
-				'expected' => true,
-				'html'     => '<html><head><title></title><style id="rocket-critical-css">.post_tag { color: red; }</style></head><body><script>const wprRemoveCPCSS = () => { document.getElementById( "rocket-critical-css" ).remove(); }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script></body></html>',
+				'is_rocket_post_excluded_option' => false,
+				'get_current_page_critical_css'  => 'wp-content/cache/critical-css/1/post_tag.css',
+				'SCRIPT_DEBUG'                   => false,
 			],
-			'testShouldDisplayCustomFileCriticalCSS'    => [
-				'config' => [
-					'DONOTROCKETOPTIMIZE'            => false,
-					'DONOTASYNCCSS'                  => false,
-					'options'                        => [
-						'async_css' => [
-							'value'   => true,
-							'default' => 0,
-						],
-						'critical_css' => [
-							'value'   => '.fallback { color: red; }',
-							'default' => '',
-						],
+			'expected' => true,
+			'html'     => '<html><head><title></title><style id="rocket-critical-css">.post_tag { color: red; }</style></head><body><script>const wprRemoveCPCSS = () => { document.getElementById( "rocket-critical-css" ).remove(); }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script></body></html>',
+		],
+		'testShouldDisplayCustomFileCriticalCSS'    => [
+			'config'   => [
+				'DONOTROCKETOPTIMIZE'            => false,
+				'DONOTASYNCCSS'                  => false,
+				'options'                        => [
+					'async_css'    => [
+						'value'   => true,
+						'default' => 0,
 					],
-					'is_rocket_post_excluded_option' => false,
-					'get_current_page_critical_css'  => 'wp-content/cache/critical-css/1/page.css',
-					'SCRIPT_DEBUG'                   => true,
+					'critical_css' => [
+						'value'   => '.fallback { color: red; }',
+						'default' => '',
+					],
 				],
-				'expected' => true,
-				'html'     => '<html><head><title></title><style id="rocket-critical-css">.page { color: red; }</style></head><body>
+				'is_rocket_post_excluded_option' => false,
+				'get_current_page_critical_css'  => 'wp-content/cache/critical-css/1/page.css',
+				'SCRIPT_DEBUG'                   => true,
+			],
+			'expected' => true,
+			'html'     => '<html><head><title></title><style id="rocket-critical-css">.page { color: red; }</style></head><body>
 			<script>
 				const wprRemoveCPCSS = () => {
 					document.getElementById( "rocket-critical-css" ).remove();
@@ -194,11 +193,6 @@ return [
 				}
 			</script>
 			</body></html>',
-			],
-		],
-		'multisite'     => [
-			'testShouldBailoutWithNoCapabilities'        => [
-			],
 		],
 	],
 ];

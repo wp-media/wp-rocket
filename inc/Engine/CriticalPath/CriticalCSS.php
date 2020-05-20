@@ -59,7 +59,7 @@ class CriticalCSS {
 		];
 
 		$this->critical_css_path = rocket_get_constant( 'WP_ROCKET_CRITICAL_CSS_PATH' ) . get_current_blog_id() . '/';
-		$this->filesystem        = rocket_direct_filesystem();
+		$this->filesystem        = $filesystem;
 	}
 
 	/**

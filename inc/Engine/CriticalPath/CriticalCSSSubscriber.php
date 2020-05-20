@@ -8,10 +8,9 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
- * Critical CSS Subscriber
+ * Critical CSS Subscriber.
  *
  * @since  3.3
- * @author Remy Perona
  */
 class CriticalCSSSubscriber implements Subscriber_Interface {
 
@@ -48,29 +47,34 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		$slug = rocket_get_constant( 'WP_ROCKET_SLUG' );
-
+		// phpcs:disable WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned
 		return [
 			'admin_post_rocket_generate_critical_css' => 'init_critical_css_generation',
-			'update_option_' . $slug                  => [
+
+			'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ) => [
 				[ 'generate_critical_css_on_activation', 11, 2 ],
 				[ 'stop_process_on_deactivation', 11, 2 ],
 			],
-			'admin_notices'                           => [
+
+			'admin_notices' => [
 				[ 'notice_critical_css_generation_triggered' ],
 				[ 'critical_css_generation_running_notice' ],
 				[ 'critical_css_generation_complete_notice' ],
 				[ 'warning_critical_css_dir_permissions' ],
 			],
-			'wp_head'                                 => [ 'insert_load_css', PHP_INT_MAX ],
-			'rocket_buffer'                           => [
+
+			'wp_head' => [ 'insert_load_css', PHP_INT_MAX ],
+
+			'rocket_buffer' => [
 				[ 'insert_critical_css_buffer', 19 ],
 				[ 'async_css', 32 ],
 			],
-			'switch_theme'                            => 'maybe_regenerate_cpcss',
+
+			'switch_theme'                                    => 'maybe_regenerate_cpcss',
 			'rocket_critical_css_generation_process_complete' => 'clean_domain_on_complete',
-			'rocket_excluded_inline_js_content'       => 'exclude_inline_js',
+			'rocket_excluded_inline_js_content'               => 'exclude_inline_js',
 		];
+		// phpcs:enable WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned
 	}
 
 	/**
@@ -466,12 +470,55 @@ JS;
 
 		$critical_css_content = str_replace( '\\', '\\\\', $critical_css_content );
 
-		return preg_replace(
+		$buffer = preg_replace(
 			'#</title>#iU',
 			'</title><style id="rocket-critical-css">' . wp_strip_all_tags( $critical_css_content ) . '</style>',
 			$buffer,
 			1
 		);
+
+		return preg_replace( '#</body>#iU', $this->return_remove_cpcss_script() . '</body>', $buffer, 1 );
+	}
+
+	/**
+	 * Returns JS script to remove the critical css style from frontend.
+	 *
+	 * @since 3.6
+	 *
+	 * @return string
+	 */
+	protected function return_remove_cpcss_script() {
+		if ( ! rocket_get_constant( 'SCRIPT_DEBUG' ) ) {
+			return '<script>const wprRemoveCPCSS = () => { document.getElementById( "rocket-critical-css" ).remove(); }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>';
+		}
+
+		return '
+			<script>
+				const wprRemoveCPCSS = () => {
+					document.getElementById( "rocket-critical-css" ).remove();
+				};
+				if ( window.addEventListener ) {
+					window.addEventListener( "load", wprRemoveCPCSS );
+				} else if ( window.attachEvent ) {
+					window.attachEvent( "onload", wprRemoveCPCSS );
+				}
+			</script>
+			';
+	}
+
+	/**
+	 * Adds wprRemoveCPCSS to excluded inline JS array.
+	 *
+	 * @since 3.6
+	 *
+	 * @param array $excluded_inline Array of inline JS excluded from being combined.
+	 *
+	 * @return array
+	 */
+	public function exclude_inline_js( array $excluded_inline ) {
+		$excluded_inline[] = 'wprRemoveCPCSS';
+
+		return $excluded_inline;
 	}
 
 	/**
