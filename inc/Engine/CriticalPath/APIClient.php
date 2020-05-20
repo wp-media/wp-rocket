@@ -26,7 +26,13 @@ class APIClient {
 		$response               = wp_remote_post(
 			self::API_URL,
 			[
-				// This filter is documented in inc/Engine/CriticalPath/CriticalCSSGeneration.php.
+				/**
+				 * Filters the parameters sent to the Critical CSS generator API.
+				 *
+				 * @since 2.11
+				 *
+				 * @param array $additional_data An array of parameters to send to the API.
+				 */
 				'body' => apply_filters( 'rocket_cpcss_job_request', $additional_data ),
 			]
 		);
