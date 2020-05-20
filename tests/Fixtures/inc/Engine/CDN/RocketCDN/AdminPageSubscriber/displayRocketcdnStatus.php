@@ -26,6 +26,37 @@ return [
 		],
 
 		'config' => [
+			'white_label' => true,
+			'home_url'    => 'http://localhost',
+			'get_option'  => '',
+			'date_i18n'   => '',
+		],
+	],
+
+	'testShouldDisplayNothingWhenNotLiveSite' => [
+		'rocketcdn_status' => [
+			'is_active'                     => false,
+			'subscription_status'           => 'cancelled',
+			'subscription_next_date_update' => '2020-01-01',
+		],
+		'expected' => [
+			'unit'        => [
+				'is_live_site'    => false,
+				'container_class' => ' wpr-flex--egal',
+				'label'           => '',
+				'status_class'    => ' wpr-isInvalid',
+				'status_text'     => 'No Subscription',
+				'is_active'       => false,
+			],
+			'integration' => '<div class="wpr-optionHeader">
+					<h3 class="wpr-title2">RocketCDN</h3>
+				</div>
+				<div class="wpr-field wpr-field-account">
+					<span class="wpr-infoAccount wpr-isInvalid">RocketCDN is unavailable on local domains and staging sites.</span>
+				</div>',
+		],
+
+		'config' => [
 			'home_url'   => 'http://localhost',
 			'get_option' => '',
 			'date_i18n'  => '',
