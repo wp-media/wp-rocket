@@ -49,7 +49,7 @@ class Test_EnqueueAdminEditScript extends TestCase {
 			Functions\expect( 'wp_localize_script' )->once();
 		} else {
 			Functions\expect( 'wp_enqueue_script' )->never();
-			Functions\expect( 'wp_enqueue_script' )->never();
+			Functions\expect( 'wp_localize_script' )->never();
 		}
 
 		$this->subscriber->enqueue_admin_edit_script( $config['page'] );
