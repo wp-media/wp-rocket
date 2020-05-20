@@ -468,9 +468,11 @@ JS;
 
 		$critical_css_content = str_replace( '\\', '\\\\', $critical_css_content );
 
-		$buffer = preg_replace( '#</title>#iU', '</title><style id="rocket-critical-css">' . wp_strip_all_tags( $critical_css_content ) . '</style>', $buffer, 1 );
-
-		return $buffer;
+		return preg_replace(
+			'#</title>#iU', '</title><style id="rocket-critical-css">' . wp_strip_all_tags( $critical_css_content ) . '</style>',
+			$buffer,
+			1
+		);
 	}
 
 	/**
@@ -540,9 +542,7 @@ JS;
 			$noscripts .= '<noscript>' . $tags_match[0][ $i ] . '</noscript>';
 		}
 
-		$buffer = str_replace( '</body>', $noscripts . '</body>', $buffer );
-
-		return $buffer;
+		return str_replace( '</body>', $noscripts . '</body>', $buffer );
 	}
 
 	/**
