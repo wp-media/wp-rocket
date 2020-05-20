@@ -30,7 +30,7 @@ class Test_AddHiddenAsyncCssMobile extends TestCase {
 			Mockery::mock( Options_Data::class ),
 			Mockery::mock( Beacon::class ),
 			'wp-content/cache/critical-css/',
-			'wp-content/plugins/wp-rocket/views/metabox/cpcss'
+			'wp-content/plugins/wp-rocket/views/cpcss'
 		);
 
         $this->assertSame(

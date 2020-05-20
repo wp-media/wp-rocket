@@ -18,7 +18,9 @@ return [
 			],
 		],
 	],
+
 	'test_data' => [
+
 		'testShouldBailOutWithNoCapability' => [
 			'config' => [
 				'current_user_can'        => false,
@@ -31,6 +33,7 @@ return [
 			],
 			'expected' => '',
 		],
+
 		'testShouldBailOutWithNoAsyncCss' => [
 			'config' => [
 				'current_user_can'        => true,
@@ -43,6 +46,7 @@ return [
 			],
 			'expected' => '',
 		],
+
 		'testShouldBailOutWithNoCacheMobile' => [
 			'config' => [
 				'current_user_can'        => true,
@@ -55,6 +59,7 @@ return [
 			],
 			'expected' => '',
 		],
+
 		'testShouldBailOutWithNoDoCacheMobileFiles' => [
 			'config' => [
 				'current_user_can'        => true,
@@ -67,6 +72,7 @@ return [
 			],
 			'expected' => '',
 		],
+
 		'testShouldBailOutWithNoOption' => [
 			'config' => [
 				'current_user_can'        => true,
@@ -79,6 +85,7 @@ return [
 			],
 			'expected' => '',
 		],
+
 		'testSucceedWithAllOptionsEnabledAndAsyncMobileNotActive' => [
 			'config' => [
 				'current_user_can'        => true,
@@ -103,6 +110,7 @@ Enable CPCSS for mobile</button>
 </div>
 ',
 		],
+
 		'testBailoutAsyncMobileAlreadyActive' => [
 			'config' => [
 				'current_user_can'        => true,
@@ -115,6 +123,7 @@ Enable CPCSS for mobile</button>
 			],
 			'expected' => '',
 		],
+
 		'testBailoutWithAllOptionsAndAsyncMobileAlreadyActive' => [
 			'config' => [
 				'current_user_can'        => true,
