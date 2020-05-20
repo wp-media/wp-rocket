@@ -52,15 +52,15 @@ class CriticalCSS {
 	 * @param WP_Filesystem_Direct  $filesystem Instance of the filesystem handler.
 	 */
 	public function __construct( CriticalCSSGeneration $process, $filesystem ) {
-		$this->process = $process;
+		$this->process           = $process;
+		$this->critical_css_path = rocket_get_constant( 'WP_ROCKET_CRITICAL_CSS_PATH' ) . get_current_blog_id() . '/';
+		$this->filesystem        = $filesystem;
 		$this->items[] = [
 			'type'  => 'front_page',
 			'url'   => home_url( '/' ),
+			'path'  => $this->critical_css_path,
 			'check' => 0,
 		];
-
-		$this->critical_css_path = rocket_get_constant( 'WP_ROCKET_CRITICAL_CSS_PATH' ) . get_current_blog_id() . '/';
-		$this->filesystem        = $filesystem;
 	}
 
 	/**
@@ -279,6 +279,7 @@ class CriticalCSS {
 			$this->items[] = [
 				'type'  => 'home',
 				'url'   => get_permalink( get_option( 'page_for_posts' ) ),
+				'path'  => $this->critical_css_path,
 				'check' => 0,
 			];
 		}
@@ -289,6 +290,7 @@ class CriticalCSS {
 			$this->items[] = [
 				'type'  => $post_type->post_type,
 				'url'   => get_permalink( $post_type->ID ),
+				'path'  => $this->critical_css_path,
 				'check' => 0,
 			];
 		}
@@ -299,6 +301,7 @@ class CriticalCSS {
 			$this->items[] = [
 				'type'  => $taxonomy->taxonomy,
 				'url'   => get_term_link( (int) $taxonomy->ID, $taxonomy->taxonomy ),
+				'path'  => $this->critical_css_path,
 				'check' => 0,
 			];
 		}
@@ -308,7 +311,7 @@ class CriticalCSS {
 		 *
 		 * @since  2.11.4
 		 *
-		 * @param Array $this ->items Array containing the type/url pair for each item to send.
+		 * @param array $items Array containing the type/url pair for each item to send.
 		 */
 		$this->items = apply_filters( 'rocket_cpcss_items', $this->items );
 	}
