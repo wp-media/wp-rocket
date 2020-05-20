@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\CriticalPath;
 use FilesystemIterator;
 use UnexpectedValueException;
 use WP_Filesystem_Direct;
+use WP_Rocket\Admin\Options_Data;
 
 /**
  * Handles the critical CSS generation process.
@@ -13,7 +14,7 @@ use WP_Filesystem_Direct;
  */
 class CriticalCSS {
 	/**
-	 * Background Process instance
+	 * Background Process instance.
 	 *
 	 * @var CriticalCSSGeneration
 	 */
@@ -53,9 +54,10 @@ class CriticalCSS {
 	 * @since 2.11
 	 *
 	 * @param CriticalCSSGeneration $process    Background process instance.
+	 * @param Options_Data          $options    Instance of options data handler.
 	 * @param WP_Filesystem_Direct  $filesystem Instance of the filesystem handler.
 	 */
-	public function __construct( CriticalCSSGeneration $process, $filesystem ) {
+	public function __construct( CriticalCSSGeneration $process, Options_Data $options, $filesystem ) {
 		$this->process = $process;
 		$this->options = $options;
 		$this->items[] = [
@@ -64,7 +66,7 @@ class CriticalCSS {
 		];
 
 		$this->critical_css_path = rocket_get_constant( 'WP_ROCKET_CRITICAL_CSS_PATH' ) . get_current_blog_id() . '/';
-		$this->filesystem        = rocket_direct_filesystem();
+		$this->filesystem        = $filesystem;
 	}
 
 	/**
@@ -309,13 +311,13 @@ class CriticalCSS {
 		 *
 		 * @since  2.11.4
 		 *
-		 * @param Array $this ->items Array containing the type/url pair for each item to send.
+		 * @param array $this ->items Array containing the type/url pair for each item to send.
 		 */
 		$this->items = (array) apply_filters( 'rocket_cpcss_items', $this->items );
 	}
 
 	/**
-	 * Gets the CPCSS content to use on the current page
+	 * Gets the CPCSS content to use on the current page.
 	 *
 	 * @since 3.6
 	 *
@@ -328,27 +330,28 @@ class CriticalCSS {
 			return $this->options->get( 'critical_css', '' );
 		}
 
-		return rocket_direct_filesystem()->get_contents( $filename );
+		return $this->filesystem->get_contents( $filename );
 	}
 
 	/**
-	 * Determines if critical CSS is available for the current page.
+	 * Gets the CPCSS filepath for the current page.
 	 *
 	 * @since  2.11
 	 *
-	 * @return bool|string False if critical CSS file doesn't exist, file path otherwise.
+	 * @return string Filepath if the file exists, empty string otherwise.
 	 */
 	public function get_current_page_critical_css() {
 		$files = $this->get_critical_css_filenames();
 
 		if (
 			$this->is_async_css_mobile()
-			&& rocket_direct_filesystem()->is_readable( $this->critical_css_path . $files['mobile'] )
+			&&
+			$this->filesystem->is_readable( $this->critical_css_path . $files['mobile'] )
 		) {
 			return $this->critical_css_path . $files['mobile'];
 		}
 
-		if ( rocket_direct_filesystem()->is_readable( $this->critical_css_path . $files['default'] ) ) {
+		if ( $this->filesystem->is_readable( $this->critical_css_path . $files['default'] ) ) {
 			return $this->critical_css_path . $files['default'];
 		}
 
@@ -356,7 +359,7 @@ class CriticalCSS {
 	}
 
 	/**
-	 * Gets the CPCSS filenames for the current URL type
+	 * Gets the CPCSS filenames for the current URL type.
 	 *
 	 * @since 3.6
 	 *
@@ -410,7 +413,7 @@ class CriticalCSS {
 	}
 
 	/**
-	 * Gets the filenames for a singular content
+	 * Gets the filenames for a singular content.
 	 *
 	 * @since 3.6
 	 *
@@ -424,11 +427,15 @@ class CriticalCSS {
 			'mobile'  => "posts/{$post_type}-{$post_id}-mobile.css",
 		];
 
-		if ( $this->is_async_css_mobile() && ! rocket_direct_filesystem()->exists( $this->critical_css_path . $post_cpcss['mobile'] ) ) {
+		if (
+			$this->is_async_css_mobile()
+			&&
+			! $this->filesystem->exists( $this->critical_css_path . $post_cpcss['mobile'] )
+		) {
 			$post_cpcss['mobile'] = $post_cpcss['default'];
 		}
 
-		if ( rocket_direct_filesystem()->exists( $this->critical_css_path . $post_cpcss['default'] ) ) {
+		if ( $this->filesystem->exists( $this->critical_css_path . $post_cpcss['default'] ) ) {
 			return $post_cpcss;
 		}
 
@@ -439,7 +446,7 @@ class CriticalCSS {
 	}
 
 	/**
-	 * Checks if we are in a situation where we need the mobile CPCSS
+	 * Checks if we are in a situation where we need the mobile CPCSS.
 	 *
 	 * @since 3.6
 	 *
