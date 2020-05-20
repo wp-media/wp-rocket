@@ -60,17 +60,10 @@ class Test_DisplayCpcssMobileSection extends FilesystemTestCase {
 		add_filter( 'pre_get_rocket_option_do_caching_mobile_files', [ $this, 'setDoCachingMobileFilesOption' ] );
 		add_filter( 'pre_get_rocket_option_async_css_mobile',        [ $this, 'setAsyncCssMobileOption' ] );
 
-		$actual = $this->getActualHtml();
-var_dump($actual);
-$this->assertTrue(false);
-		/*if( ! is_null( $expected ) ){
-			$this->assertSame(
-				$this->format_the_html( $expected ),
-				$this->getActualHtml()
-			);
-		}else{
-			$this->assertNull( $actual );
-		}*/
+		$this->assertSame(
+			$this->format_the_html( $expected ),
+			$this->getActualHtml()
+		);
 
 	}
 
