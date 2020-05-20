@@ -15,7 +15,6 @@ branches:
   - /feature.*$/
 cache:
   directories:
-  - vendor
   - $HOME/.composer/cache
 matrix:
   fast_finish: true
@@ -36,7 +35,7 @@ matrix:
     env: WP_TRAVISCI=phpcs
 before_install:
   # Unless we need XDebug, disable it for improved performance.
-  - phpenv config-rm xdebug.ini || return 0
+  - phpenv config-rm xdebug.ini || true
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
   - |
     if [[ -f composer.lock ]] ; then

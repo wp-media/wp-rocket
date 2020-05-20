@@ -18,13 +18,6 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 class Test_GetRocketAdvancedCacheFile extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/functions/getRocketAdvancedCacheFile.php';
 
-	public function setUp() {
-		parent::setUp();
-
-		// Mocks the various filesystem constants.
-		$this->whenRocketGetConstant();
-	}
-
 	/**
 	 * @dataProvider providerTestData
 	 */

@@ -56,20 +56,7 @@ class Test_GetCurrentPageCriticalCSS extends FilesystemTestCase {
 			Functions\expect( $excluded_type )->never();
 		}
 
-		$this->options->shouldReceive( 'get' )
-			->zeroOrMoreTimes()
-			->with( 'do_caching_mobile_files', 0 )
-			->andReturnArg( 1 );
-		$this->options->shouldReceive( 'get' )
-			->zeroOrMoreTimes()
-			->withSomeOfArgs('async_css_mobile', 0 )
-			->andReturnArg( 1 );
-		$this->options->shouldReceive( 'get' )
-			->zeroOrMoreTimes()
-			->withSomeOfArgs( 'critical_css', '' )
-			->andReturnArg( 1 );
-
-		$this->critical_css            = new CriticalCSS( $this->critical_css_generation, $this->options );
+		$this->critical_css            = new CriticalCSS( $this->critical_css_generation, $this->filesystem );
 		$get_current_page_critical_css = $this->critical_css->get_current_page_critical_css();
 
 		if ( ! empty( $expected_file ) ) {

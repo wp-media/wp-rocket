@@ -6,8 +6,9 @@ use WPMedia\PHPUnit\Integration\AjaxTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::dismiss_notice
- * @group  RocketCDN
+ *
  * @group  AdminOnly
+ * @group  RocketCDN
  */
 class Test_DismissNotice extends AjaxTestCase {
 	/**

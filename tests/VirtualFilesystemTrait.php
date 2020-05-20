@@ -6,13 +6,11 @@ use Brain\Monkey\Functions;
 use org\bovigo\vfs\vfsStream;
 
 trait VirtualFilesystemTrait {
-	protected $original_entries  = [];
-	protected $shouldNotClean    = [];
-	protected $entriesBefore     = [];
-	protected $dumpResults       = false;
-	protected $abspath           = 'vfs://public/';
-	protected $wp_cache_constant = false;
-	protected $wp_content_dir    = 'vfs://public/wp-content';
+	protected $original_entries      = [];
+	protected $shouldNotClean        = [];
+	protected $entriesBefore         = [];
+	protected $dumpResults           = false;
+	protected $default_vfs_structure = '/vfs-structure/default.php';
 
 	protected function initDefaultStructure() {
 		if ( empty( $this->config ) ) {
@@ -23,7 +21,7 @@ trait VirtualFilesystemTrait {
 			return;
 		}
 
-		$this->config['structure'] = require WP_ROCKET_TESTS_FIXTURES_DIR . '/vfs-structure/default.php';
+		$this->config['structure'] = require WP_ROCKET_TESTS_FIXTURES_DIR . $this->default_vfs_structure;
 	}
 
 	protected function redefineRocketDirectFilesystem() {
@@ -110,64 +108,12 @@ trait VirtualFilesystemTrait {
 		$this->assertEmpty( $actual );
 	}
 
-	protected function whenRocketGetConstant() {
-		Functions\when( 'rocket_get_constant' )->alias(
-			function ( $constant_name, $default = null ) {
-				return $this->getConstant( $constant_name, $default );
-			}
-		);
-	}
-
 	protected function getDirUrl( $dir ) {
 		if ( empty( $dir ) ) {
 			return $this->filesystem->getUrl( $this->config['vfs_dir'] );
 		}
 
 		return $dir;
-	}
-
-	protected function getConstant( $constant_name, $default = null ) {
-		switch ( $constant_name ) {
-			case 'ABSPATH':
-				return $this->abspath;
-
-			case 'FS_CHMOD_DIR':
-				return 0777;
-
-			case 'FS_CHMOD_FILE':
-				return 0666;
-
-			case 'WP_CACHE':
-				return $this->wp_cache_constant;
-
-			case 'WP_CONTENT_DIR':
-				return $this->wp_content_dir;
-
-			case 'WP_ROCKET_CACHE_PATH':
-				return "{$this->wp_content_dir}/cache/wp-rocket/";
-
-			case 'WP_ROCKET_CONFIG_PATH':
-				return "{$this->wp_content_dir}/wp-rocket-config/";
-
-			case 'WP_ROCKET_INC_PATH':
-				return "{$this->wp_content_dir}/plugins/wp-rocket/inc/";
-
-			case 'WP_ROCKET_PATH':
-				return "{$this->wp_content_dir}/plugins/wp-rocket/";
-
-			case 'WP_ROCKET_PHP_VERSION':
-				return '5.6';
-
-			case 'WP_ROCKET_VENDORS_PATH':
-				return "{$this->wp_content_dir}/plugins/wp-rocket/inc/vendors/";
-
-			default:
-				if ( ! rocket_has_constant( $constant_name ) ) {
-					return $default;
-				}
-
-				return constant( $constant_name );
-		}
 	}
 
 	public function getPathToFixturesDir() {
@@ -202,5 +148,20 @@ trait VirtualFilesystemTrait {
 			'wp-config.php' => '',
 			'index.php'     => '',
 		];
+	}
+
+	/**
+	 * Changes directory permission. If file is given, changes its parent directory's permission.
+	 *
+	 * @param string $path       Absolute path to the directory (or file).
+	 * @param int    $permission Permission level to set.
+	 */
+	protected function changePermissions( $path, $permission = 0000 ) {
+		if ( $this->filesystem->is_file( $path ) ) {
+			$path = dirname( $path );
+		}
+
+		$dir = $this->filesystem->getDir( $path );
+		$dir->chmod( $permission ); // Only the root user.
 	}
 }
