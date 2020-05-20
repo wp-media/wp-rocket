@@ -119,7 +119,7 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 			return;
 		}
 
-		echo $this->generate( 'activate-cpcss-mobile' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo $this->generate( 'activate-cpcss-mobile', [] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**
