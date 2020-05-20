@@ -51,7 +51,7 @@ class DataManager {
 	public function save_cpcss( $path, $cpcss, $url ) {
 		$file_path_directory = dirname( $this->critical_css_path . $path );
 		if ( ! $this->filesystem->is_dir( $file_path_directory ) ) {
-			if( ! rocket_mkdir_p( $file_path_directory ) ) {
+			if ( ! rocket_mkdir_p( $file_path_directory ) ) {
 				return new WP_Error(
 					'cpcss_generation_failed',
 					// translators: %s = item URL.
