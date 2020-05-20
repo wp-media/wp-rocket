@@ -40,7 +40,7 @@ class Test_DisplayCpcssMobileSection extends TestCase {
 
 		Functions\when( 'current_user_can' )->justReturn( $config['current_user_can'] );
 
-		$this->setUpGenerate( 'activate-cpcss-mobile', [] );
+		$this->setUpGenerate( 'activate-cpcss-mobile', ['beacon' => ''] );
 
 		ob_start();
 		$this->subscriber->display_cpcss_mobile_section();
