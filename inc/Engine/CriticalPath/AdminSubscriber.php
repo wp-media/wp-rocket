@@ -59,9 +59,9 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_after_options_metabox' => 'cpcss_section',
-			'rocket_metabox_cpcss_content' => 'cpcss_actions',
-			'admin_enqueue_scripts'        => 'enqueue_admin_edit_script',
+			'rocket_after_options_metabox'  => 'cpcss_section',
+			'rocket_metabox_cpcss_content'  => 'cpcss_actions',
+			'admin_enqueue_scripts'         => 'enqueue_admin_edit_script',
 			'rocket_first_install_options'  => 'add_async_css_mobile_option',
 			'wp_rocket_upgrade'             => [ 'set_async_css_mobile_default_value', 11, 2 ],
 			'rocket_hidden_settings_fields' => 'add_hidden_async_css_mobile',
@@ -92,7 +92,13 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 
 		$post_id = ( 'post-new.php' === $pagenow ) ? '' : $post->ID;
 
-		wp_enqueue_script( 'wpr-edit-cpcss-script', rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'wpr-cpcss.js', [], rocket_get_constant( 'WP_ROCKET_VERSION' ), true );
+		wp_enqueue_script(
+			'wpr-edit-cpcss-script',
+			rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'wpr-cpcss.js',
+			[],
+			rocket_get_constant( 'WP_ROCKET_VERSION' ),
+			true
+		);
 		wp_localize_script(
 			'wpr-edit-cpcss-script',
 			'rocket_cpcss',
