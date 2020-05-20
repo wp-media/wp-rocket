@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\CriticalPath;
 use FilesystemIterator;
 use UnexpectedValueException;
 use WP_Filesystem_Direct;
+use WP_Rocket\Admin\Options_Data;
 
 /**
  * Handles the critical CSS generation process.
@@ -13,26 +14,30 @@ use WP_Filesystem_Direct;
  */
 class CriticalCSS {
 	/**
-	 * Background Process instance
+	 * Background Process instance.
 	 *
-	 * @since 2.11
-	 * @var object $process Background Process instance.
+	 * @var CriticalCSSGeneration $process
 	 */
 	public $process;
 
 	/**
-	 * Items for which we generate a critical CSS
+	 * WP Rocket options instance.
 	 *
-	 * @since 2.11
-	 * @var array $items An array of items.
+	 * @var Options_Data
+	 */
+	private $options;
+
+	/**
+	 * Items for which we generate a critical CSS.
+	 *
+	 * @var array $items
 	 */
 	public $items = [];
 
 	/**
-	 * Path to the critical CSS directory
+	 * Path to the critical CSS directory.
 	 *
-	 * @since 2.11
-	 * @var string path to the critical css directory
+	 * @var string
 	 */
 	private $critical_css_path;
 
@@ -46,13 +51,13 @@ class CriticalCSS {
 	/**
 	 * Creates an instance of CriticalCSS.
 	 *
-	 * @since 2.11
-	 *
 	 * @param CriticalCSSGeneration $process    Background process instance.
+	 * @param Options_Data          $options    Instance of options data handler.
 	 * @param WP_Filesystem_Direct  $filesystem Instance of the filesystem handler.
 	 */
-	public function __construct( CriticalCSSGeneration $process, $filesystem ) {
+	public function __construct( CriticalCSSGeneration $process, Options_Data $options, $filesystem ) {
 		$this->process           = $process;
+		$this->options           = $options;
 		$this->critical_css_path = rocket_get_constant( 'WP_ROCKET_CRITICAL_CSS_PATH' ) . get_current_blog_id() . '/';
 		$this->filesystem        = $filesystem;
 		$this->items[] = [
@@ -132,7 +137,7 @@ class CriticalCSS {
 	 * @since 2.11
 	 * @since 3.6 Replaced glob().
 	 */
-	public function clean_critical_css() {
+	protected function clean_critical_css() {
 		try {
 			$files = new FilesystemIterator( $this->critical_css_path );
 
@@ -152,7 +157,7 @@ class CriticalCSS {
 	 *
 	 * @since 2.11
 	 */
-	public function get_public_post_types() {
+	private function get_public_post_types() {
 		global $wpdb;
 
 		$post_types = get_post_types(
@@ -173,7 +178,7 @@ class CriticalCSS {
 		 *
 		 * @return array
 		 */
-		$excluded_post_types = apply_filters(
+		$excluded_post_types = (array) apply_filters(
 			'rocket_cpcss_excluded_post_types',
 			[
 				'elementor_library',
@@ -216,7 +221,7 @@ class CriticalCSS {
 	 *
 	 * @since  2.11
 	 */
-	public function get_public_taxonomies() {
+	private function get_public_taxonomies() {
 		global $wpdb;
 
 		$taxonomies = get_taxonomies(
@@ -235,7 +240,7 @@ class CriticalCSS {
 		 *
 		 * @return array
 		 */
-		$excluded_taxonomies = apply_filters(
+		$excluded_taxonomies = (array) apply_filters(
 			'rocket_cpcss_excluded_taxonomies',
 			[
 				'post_format',
@@ -272,7 +277,7 @@ class CriticalCSS {
 	 *
 	 * @since  2.11
 	 */
-	public function set_items() {
+	private function set_items() {
 		$page_for_posts = get_option( 'page_for_posts' );
 
 		if ( 'page' === get_option( 'show_on_front' ) && ! empty( $page_for_posts ) ) {
@@ -306,6 +311,21 @@ class CriticalCSS {
 			];
 		}
 
+		if ( $this->is_async_css_mobile() ) {
+			$mobile_items = $this->items;
+
+			$mobile_items = array_map(
+				function( $item ) {
+					$item['mobile'] = 1;
+
+					return $item;
+				},
+				$mobile_items
+			);
+
+			$this->items = array_merge( $this->items, $mobile_items );
+		}
+
 		/**
 		 * Filters the array containing the items to send to the critical CSS generator.
 		 *
@@ -313,7 +333,7 @@ class CriticalCSS {
 		 *
 		 * @param array $items Array containing the type/url pair for each item to send.
 		 */
-		$this->items = apply_filters( 'rocket_cpcss_items', $this->items );
+		$this->items = (array) apply_filters( 'rocket_cpcss_items', $this->items );
 	}
 
 	/**
@@ -360,5 +380,20 @@ class CriticalCSS {
 		}
 
 		return $file;
+	}
+
+	/**
+	 * Checks if we are in a situation where we need the mobile CPCSS.
+	 *
+	 * @since 3.6
+	 *
+	 * @return bool
+	 */
+	private function is_async_css_mobile() {
+		if ( ! $this->options->get( 'do_caching_mobile_files', 0 ) ) {
+			return false;
+		}
+
+		return (bool) $this->options->get( 'async_css_mobile', 0 );
 	}
 }
