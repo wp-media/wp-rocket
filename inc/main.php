@@ -1,5 +1,9 @@
 <?php
 
+use WP_Rocket\Engine\Cache\AdvancedCache;
+use WP_Rocket\Plugin;
+use WP_Rocket\Subscriber\Plugin\Capabilities_Subscriber;
+
 defined( 'ABSPATH' ) || exit;
 
 // Composer autoload.
@@ -38,7 +42,7 @@ function rocket_init() {
 	define( 'WP_ROCKET_PLUGIN_NAME', 'WP Rocket' );
 	define( 'WP_ROCKET_PLUGIN_SLUG', sanitize_key( WP_ROCKET_PLUGIN_NAME ) );
 
-	$wp_rocket = new WP_Rocket\Plugin( WP_ROCKET_PATH . 'views' );
+	$wp_rocket = new Plugin( WP_ROCKET_PATH . 'views' );
 	$wp_rocket->load();
 
 	// Call defines and functions.
@@ -166,7 +170,7 @@ function rocket_deactivation() {
 	 */
 	do_action( 'rocket_deactivation' );
 
-	( new WP_Rocket\Subscriber\Plugin\Capabilities_Subscriber() )->remove_rocket_capabilities();
+	( new Capabilities_Subscriber() )->remove_rocket_capabilities();
 }
 register_deactivation_hook( WP_ROCKET_FILE, 'rocket_deactivation' );
 
@@ -176,7 +180,7 @@ register_deactivation_hook( WP_ROCKET_FILE, 'rocket_deactivation' );
  * @since 1.1.0
  */
 function rocket_activation() {
-	( new WP_Rocket\Subscriber\Plugin\Capabilities_Subscriber() )->add_rocket_capabilities();
+	( new Capabilities_Subscriber() )->add_rocket_capabilities();
 
 	// Last constants.
 	define( 'WP_ROCKET_PLUGIN_NAME', 'WP Rocket' );
@@ -216,7 +220,7 @@ function rocket_activation() {
 	rocket_init_config_dir();
 
 	// Create advanced-cache.php file.
-	rocket_generate_advanced_cache_file();
+	rocket_generate_advanced_cache_file( new AdvancedCache( WP_ROCKET_PATH . 'views/cache/', rocket_direct_filesystem() ) );
 
 	/**
 	 * WP Rocket activation.
