@@ -14,25 +14,34 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group  vfs
  */
 class Test_RocketCleanCacheThemeUpdate extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/common/rocketCleanCacheThemeUpdate.php';
-	protected $registrations     = [];
+	protected        $path_to_test_data = '/inc/common/rocketCleanCacheThemeUpdate.php';
+	protected static $hooks;
+
+	public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
+
+		self::$hooks = $GLOBALS['wp_filter']['upgrader_process_complete']->callbacks;
+	}
+
+	public static function tearDownAfterClass() {
+		parent::tearDownAfterClass();
+
+		$GLOBALS['wp_filter']['upgrader_process_complete']->callbacks = self::$hooks;
+	}
 
 	public function setUp() {
 		parent::setUp();
 
 		// Unregister all of the callbacks registered to the action event for these tests.
-		global $wp_filter;
-		$this->registrations = $wp_filter['upgrader_process_complete'];
-		remove_all_actions( 'upgrader_process_complete' );
+		$GLOBALS['wp_filter']['upgrader_process_complete']->callbacks = [];
 		add_action( 'upgrader_process_complete', 'rocket_clean_cache_theme_update', 10, 2 );
 	}
 
 	public function tearDown() {
 		parent::tearDown();
 
-		// Restore the callbacks registered to the action event.
-		global $wp_filter;
-		$wp_filter['upgrader_process_complete'] = $this->registrations;
+		unset( $GLOBALS['sitepress'], $GLOBALS['q_config'], $GLOBALS['polylang'] );
+		unset( $GLOBALS['debug_fs'] );
 	}
 
 	/**
@@ -41,6 +50,10 @@ class Test_RocketCleanCacheThemeUpdate extends FilesystemTestCase {
 	public function testShouldCleanExpected( $hook_extra, $expected ) {
 		if ( empty( $expected['cleaned'] ) ) {
 			Functions\expect( 'rocket_clean_domain' )->never();
+		}
+
+		if ( isset( $expected['debug'] ) && $expected['debug'] ) {
+			$GLOBALS['debug_fs'] = true;
 		}
 
 		$this->dumpResults = isset( $expected['dump_results'] ) ? $expected['dump_results'] : false;

@@ -3,7 +3,7 @@
  * Plugin Name: WP Rocket
  * Plugin URI: https://wp-rocket.me
  * Description: The best WordPress performance plugin.
- * Version: 3.5.4
+ * Version: 3.5.5.1
  * Code Name: Coruscant
  * Author: WP Media
  * Author URI: https://wp-media.me
@@ -18,7 +18,7 @@
 defined( 'ABSPATH' ) || exit;
 
 // Rocket defines.
-define( 'WP_ROCKET_VERSION',               '3.5.4' );
+define( 'WP_ROCKET_VERSION',               '3.5.5.1' );
 define( 'WP_ROCKET_WP_VERSION',            '4.9' );
 define( 'WP_ROCKET_WP_VERSION_TESTED',     '5.3.2' );
 define( 'WP_ROCKET_PHP_VERSION',           '5.6' );
@@ -32,10 +32,6 @@ define( 'WP_ROCKET_WEB_INFO',              WP_ROCKET_WEB_MAIN . 'plugin_informat
 define( 'WP_ROCKET_FILE',                  __FILE__ );
 define( 'WP_ROCKET_PATH',                  realpath( plugin_dir_path( WP_ROCKET_FILE ) ) . '/' );
 define( 'WP_ROCKET_INC_PATH',              realpath( WP_ROCKET_PATH . 'inc/' ) . '/' );
-
-if ( ! defined( 'WP_ROCKET_VIEWS' ) ) {
-	define( 'WP_ROCKET_VIEWS', WP_ROCKET_PATH . 'views' );
-}
 
 require_once WP_ROCKET_INC_PATH . 'constants.php';
 

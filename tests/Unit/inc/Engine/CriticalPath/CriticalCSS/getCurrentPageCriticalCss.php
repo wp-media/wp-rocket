@@ -53,7 +53,7 @@ class Test_GetCurrentPageCriticalCSS extends FilesystemTestCase {
 			Functions\expect( $excluded_type )->never();
 		}
 
-		$this->critical_css            = new CriticalCSS( $this->critical_css_generation );
+		$this->critical_css            = new CriticalCSS( $this->critical_css_generation, $this->filesystem );
 		$get_current_page_critical_css = $this->critical_css->get_current_page_critical_css();
 
 		if ( ! empty( $expected_file ) ) {

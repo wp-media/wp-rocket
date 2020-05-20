@@ -7,6 +7,8 @@ if ( file_exists( WP_ROCKET_PATH . 'vendor/autoload.php' ) ) {
 	require WP_ROCKET_PATH . 'vendor/autoload.php';
 }
 
+require_once WP_ROCKET_FUNCTIONS_PATH . 'files.php';
+
 /**
  * Fix Cloudflare Flexible SSL redirect first
  *
@@ -36,12 +38,11 @@ function rocket_init() {
 	define( 'WP_ROCKET_PLUGIN_NAME', 'WP Rocket' );
 	define( 'WP_ROCKET_PLUGIN_SLUG', sanitize_key( WP_ROCKET_PLUGIN_NAME ) );
 
-	$wp_rocket = new WP_Rocket\Plugin( WP_ROCKET_VIEWS );
+	$wp_rocket = new WP_Rocket\Plugin( WP_ROCKET_PATH . 'views' );
 	$wp_rocket->load();
 
 	// Call defines and functions.
 	require_once WP_ROCKET_FUNCTIONS_PATH . 'api.php';
-	require WP_ROCKET_FUNCTIONS_PATH . 'files.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'posts.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'admin.php';
 	require WP_ROCKET_INC_PATH . '/API/preload.php';
@@ -186,7 +187,6 @@ function rocket_activation() {
 	}
 
 	require WP_ROCKET_FUNCTIONS_PATH . 'options.php';
-	require WP_ROCKET_FUNCTIONS_PATH . 'files.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'formatting.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'i18n.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'htaccess.php';

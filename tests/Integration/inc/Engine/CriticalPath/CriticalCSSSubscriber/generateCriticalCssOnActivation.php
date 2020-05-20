@@ -8,6 +8,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::generate_critical_css_on_activation
+ *
  * @group  Subscribers
  * @group  CriticalCss
  * @group  vfs

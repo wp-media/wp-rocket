@@ -9,9 +9,9 @@ return [
 			'cache' => [
 				'critical-css' => [
 					'1' => [
-						'.'              => '',
-						'..'             => '',
-						'posts'          => [
+						'.'                => '',
+						'..'               => '',
+						'posts'            => [
 							'.'           => '',
 							'..'          => '',
 							'post-1.css'  => '.post-1 { color: red; }',
@@ -45,9 +45,12 @@ return [
 			],
 		],
 	],
+
 	'test_data' => [
+
 		'non_multisite' => [
-			'testShouldReturnDefaultCSS'                            => [
+
+			'testShouldReturnDefaultCSS' => [
 				'config'        => [
 					'blog_id'       => 1,
 					'type'          => 'front_page', // default
@@ -87,7 +90,8 @@ return [
 				],
 				'expected_file' => 'wp-content/cache/critical-css/1/front_page.css',
 			],
-			'testShouldReturnHomeCSS'                               => [
+
+			'testShouldReturnHomeCSS' => [
 				'config'        => [
 					'blog_id'       => 1,
 					'type'          => 'home', // is_home
@@ -108,7 +112,8 @@ return [
 				],
 				'expected_file' => 'wp-content/cache/critical-css/1/home.css',
 			],
-			'testShouldReturnFrontPageCSS'                          => [
+
+			'testShouldReturnFrontPageCSS' => [
 				'config'        => [
 					'blog_id'       => 1,
 					'type'          => 'home', // front default
@@ -129,7 +134,8 @@ return [
 				],
 				'expected_file' => 'wp-content/cache/critical-css/1/front_page.css',
 			],
-			'testShouldReturnCategoryPageCSS'                       => [
+
+			'testShouldReturnCategoryPageCSS' => [
 				'config'        => [
 					'blog_id'       => 1,
 					'type'          => 'is_category', // category
@@ -154,7 +160,8 @@ return [
 				],
 				'expected_file' => 'wp-content/cache/critical-css/1/category.css',
 			],
-			'testShouldReturnTagCSS'                                => [
+
+			'testShouldReturnTagCSS' => [
 				'config'        => [
 					'blog_id'       => 1,
 					'type'          => 'is_tag',
@@ -184,7 +191,8 @@ return [
 				],
 				'expected_file' => 'wp-content/cache/critical-css/1/post_tag.css',
 			],
-			'testShouldReturnTaxCSS'                                => [
+
+			'testShouldReturnTaxCSS' => [
 				'config'        => [
 					'blog_id'       => 1,
 					'type'          => 'is_tax',
@@ -225,8 +233,9 @@ return [
 				],
 				'expected_file' => 'wp-content/cache/critical-css/1/wptests_tax1.css',
 			],
+
 			'testShouldReturnTaxDoesNotExistReturnFalseFallbackCSS' => [
-				'config'        => [
+				'config'            => [
 					'blog_id'       => 1,
 					'type'          => 'is_tax',
 					'taxonomy'      => 'wptests_tax2',
@@ -272,8 +281,9 @@ return [
 				'expected_file'     => '',
 				'expected_fallback' => false,
 			],
-			'testShouldReturnTaxDoesNotExistReturnFallbackCSS'      => [
-				'config'        => [
+
+			'testShouldReturnTaxDoesNotExistReturnFallbackCSS' => [
+				'config'            => [
 					'blog_id'       => 1,
 					'type'          => 'is_tax',
 					'taxonomy'      => 'wptests_tax3',
@@ -320,7 +330,8 @@ return [
 				'expected_file'     => '',
 				'expected_fallback' => 'fallback',
 			],
-			'testShouldReturnSingularCSS'                           => [
+
+			'testShouldReturnSingularCSS' => [
 				'config'        => [
 					'blog_id'       => 1,
 					'type'          => 'is_page',
@@ -369,9 +380,10 @@ return [
 					],
 					'excluded_type' => [],
 				],
-				'expected_file'     => 'wp-content/cache/critical-css/1/page.css',
+				'expected_file' => 'wp-content/cache/critical-css/1/page.css',
 			],
-			'testShouldReturnSingularCustomPostsCSS'                => [
+
+			'testShouldReturnSingularCustomPostsCSS' => [
 				'config'        => [
 					'blog_id'       => 1,
 					'type'          => 'is_post',
@@ -420,11 +432,12 @@ return [
 					],
 					'excluded_type' => [],
 				],
-				'expected_file'     => 'wp-content/cache/critical-css/1/posts/post-1.css',
+				'expected_file' => 'wp-content/cache/critical-css/1/posts/post-1.css',
 			],
 		],
+
 		'multisite'     => [
-			'testShouldBailoutWithNoCapabilities'        => [
+			'testShouldBailoutWithNoCapabilities' => [
 			],
 		],
 	],

@@ -13,13 +13,6 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 class Test_RocketGetFilesystemPerms extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/functions/rocketGetFilesystemPerms.php';
 
-	public function setUp() {
-		parent::setUp();
-
-		// Mocks the various filesystem constants.
-		$this->whenRocketGetConstant();
-	}
-
 	/**
 	 * @dataProvider providerTestData
 	 */
