@@ -469,7 +469,8 @@ JS;
 		$critical_css_content = str_replace( '\\', '\\\\', $critical_css_content );
 
 		return preg_replace(
-			'#</title>#iU', '</title><style id="rocket-critical-css">' . wp_strip_all_tags( $critical_css_content ) . '</style>',
+			'#</title>#iU',
+			'</title><style id="rocket-critical-css">' . wp_strip_all_tags( $critical_css_content ) . '</style>',
 			$buffer,
 			1
 		);
