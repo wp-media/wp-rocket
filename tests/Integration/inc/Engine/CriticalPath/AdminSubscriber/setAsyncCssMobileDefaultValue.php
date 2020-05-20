@@ -2,8 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\AdminSubscriber;
 
-use Brain\Monkey\Functions;
-use WPMedia\PHPUnit\Integration\TestCase;
+use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\AdminSubscriber::set_async_css_mobile_default_value
@@ -12,8 +11,9 @@ use WPMedia\PHPUnit\Integration\TestCase;
  * @group  CriticalPath
  */
 class Test_SetAsyncCssMobileDefaultValue extends TestCase {
+
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldUpdateOption( $versions, $update ) {
         do_action( 'wp_rocket_upgrade', $versions['new'], $versions['old'] );
@@ -36,9 +36,5 @@ class Test_SetAsyncCssMobileDefaultValue extends TestCase {
                 $options
             );
         }
-	}
-
-	public function providerTestData() {
-		return $this->getTestData( __DIR__, 'setAsyncCssMobileDefaultValue' );
 	}
 }

@@ -2,61 +2,58 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\AdminSubscriber;
 
-use Mockery;
 use Brain\Monkey\Functions;
-use WPMedia\PHPUnit\Unit\TestCase;
+use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\CriticalPath\AdminSubscriber;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\AdminSubscriber::set_async_css_mobile_default_value
+ *
  * @group  CriticalPath
  */
 class Test_SetAsyncCssMobileDefaultValue extends TestCase {
+
 	public function setUp() {
 		parent::setUp();
 
 		Functions\when( 'get_current_blog_id' )->justReturn( 1 );
-
-		$this->beacon     = Mockery::mock( Beacon::class );
-		$this->options    = Mockery::mock( Options_Data::class );
-		$this->subscriber = new AdminSubscriber(
-			$this->options,
-			$this->beacon,
-			'wp-content/cache/critical-css/',
-			'wp-content/plugins/wp-rocket/views/metabox/cpcss'
-		);
 	}
 
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldUpdateOption( $versions, $update ) {
+		$options = Mockery::mock( Options_Data::class );
+		$subscriber = new AdminSubscriber(
+			$options,
+			Mockery::mock( Beacon::class ),
+			'wp-content/cache/critical-css/',
+			'wp-content/plugins/wp-rocket/views/metabox/cpcss'
+		);
+
         if ( true === $update ) {
-            $options = [
+            $settings = [
                 'async_css_mobile' => 1,
             ];
 
-            $this->options->shouldReceive( 'set' )
+            $options->shouldReceive( 'set' )
                 ->once()
                 ->with( 'async_css_mobile', 0 );
 
-            $this->options->shouldReceive( 'get_options' )
+            $options->shouldReceive( 'get_options' )
                 ->once()
-                ->andReturn( $options );
+                ->andReturn( $settings );
 
             Functions\expect( 'update_option' )
                 ->once()
-                ->with( 'wp_rocket_settings', $options );
+                ->with( 'wp_rocket_settings', $settings );
         } else {
             Functions\expect( 'update_option' )->never();
         }
 
-        $this->subscriber->set_async_css_mobile_default_value( $versions['new'], $versions['old'] );
-	}
-
-	public function providerTestData() {
-		return $this->getTestData( __DIR__, 'setAsyncCssMobileDefaultValue' );
+        $subscriber->set_async_css_mobile_default_value( $versions['new'], $versions['old'] );
 	}
 }
