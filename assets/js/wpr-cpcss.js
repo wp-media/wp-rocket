@@ -41,7 +41,7 @@ const checkCPCSSGeneration = ( timeout = null ) => {
 			cpcssNotice( cpcss_response.message, 'success' );
 
 			// Revert view to Regenerate.
-			rocketGenerateCPCSSbtn.querySelector( '.rocket-generate-post-cpss-btn-txt' ).innerHTML = cpcss_regenerate_btn;
+			rocketGenerateCPCSSbtn.querySelector( '.rocket-generate-post-cpss-btn-txt' ).innerHTML = rocket_cpcss.regenerate_btn;
 			rocketDeleteCPCSSbtn.style.display                                                     = 'block';
 			rocketGenerateCPCSSbtn.disabled                                                        = false;
 			rocketCPCSSGenerate.forEach( item => item.style.display = 'none' );
@@ -63,9 +63,9 @@ const checkCPCSSGeneration = ( timeout = null ) => {
 		}, 3000 );
 	};
 
-	xhttp.open( 'POST', cpcss_rest_url, true );
+	xhttp.open( 'POST', rocket_cpcss.rest_url, true );
 	xhttp.setRequestHeader( 'Content-Type', 'application/json;charset=UTF-8' );
-	xhttp.setRequestHeader( 'X-WP-Nonce', cpcss_rest_nonce );
+	xhttp.setRequestHeader( 'X-WP-Nonce', rocket_cpcss.rest_nonce );
 	xhttp.send( JSON.stringify( { timeout: timeout } ) );
 }
 
@@ -93,15 +93,15 @@ const deleteCPCSS = () => {
 		cpcssNotice( cpcss_response.message, 'success' );
 
 		// Revert view to Generate.
-		rocketGenerateCPCSSbtn.querySelector( '.rocket-generate-post-cpss-btn-txt' ).innerHTML = cpcss_generate_btn;
+		rocketGenerateCPCSSbtn.querySelector( '.rocket-generate-post-cpss-btn-txt' ).innerHTML = rocket_cpcss.generate_btn;
 		rocketDeleteCPCSSbtn.style.display                                                     = 'none';
 		rocketCPCSSReGenerate.forEach( item => item.style.display = 'none' );
 		rocketCPCSSGenerate.forEach( item => item.style.display = 'block' );
 	};
 
-	xhttp.open( 'DELETE', cpcss_rest_url, true );
+	xhttp.open( 'DELETE', rocket_cpcss.rest_url, true );
 	xhttp.setRequestHeader( 'Content-Type', 'application/json;charset=UTF-8' );
-	xhttp.setRequestHeader( 'X-WP-Nonce', cpcss_rest_nonce );
+	xhttp.setRequestHeader( 'X-WP-Nonce', rocket_cpcss.rest_nonce );
 	xhttp.send();
 }
 

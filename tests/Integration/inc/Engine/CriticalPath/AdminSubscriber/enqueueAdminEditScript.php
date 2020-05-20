@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\AdminSubscriber;
 
+use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
@@ -39,6 +40,8 @@ class Test_EnqueueAdminEditScript extends TestCase {
 		wp_set_current_user( static::$user_id );
 		set_current_screen( $config['page'] );
 
+		Functions\when( 'wp_create_nonce' )->justReturn( 'wp_rest_nonce' );
+
 		if ( in_array( $config['page'], [ 'edit.php', 'post.php' ], true ) ) {
 			$this->async_css = $config['options']['async_css'];
 			$this->post_id   = $config['post']->ID;
@@ -59,6 +62,7 @@ class Test_EnqueueAdminEditScript extends TestCase {
 
 		if ( $expected ) {
 			$this->assertArrayHasKey( 'wpr-edit-cpcss-script', $wp_scripts->registered );
+			$this->assertArrayHasKey( 'data', $wp_scripts->registered['wpr-edit-cpcss-script']->extra );
 		} else {
 			$this->assertArrayNotHasKey( 'wpr-edit-cpcss-script', $wp_scripts->registered );
 		}

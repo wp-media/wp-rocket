@@ -28,9 +28,3 @@ $rocket_disabled_description = empty( $data['disabled_description'] );
 		<?php endif; ?>
 	</div>
 </div>
-<script>
-	var cpcss_rest_url       = '<?php echo esc_js( $data['cpcss_rest_url'] ); ?>';
-	var cpcss_rest_nonce     = '<?php echo esc_js( $data['cpcss_rest_nonce'] ); ?>';
-	var cpcss_generate_btn   = '<?php echo esc_js( __( 'Generate Specific CPCSS', 'rocket' ) ); ?>';
-	var cpcss_regenerate_btn = '<?php echo esc_js( __( 'Regenerate specific CPCSS', 'rocket' ) ); ?>';
-</script>

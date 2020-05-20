@@ -2,7 +2,6 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\AdminSubscriber;
 
-use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
@@ -30,7 +29,6 @@ class Test_CpcssSection extends TestCase {
 		parent::setUp();
 
 		$this->set_permalink_structure( '/%postname%/' );
-		Functions\when( 'wp_create_nonce' )->justReturn( 'wp_rest_nonce' );
 		add_filter( 'pre_get_rocket_option_async_css', [ $this, 'setCPCSSOption' ] );
 
 

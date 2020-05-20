@@ -75,15 +75,31 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function enqueue_admin_edit_script( $page ) {
+		global $post, $pagenow;
+
 		// Bailout if the page is not Post / Page.
 		if ( ! in_array( $page, [ 'edit.php', 'post.php' ], true ) ) {
 			return;
 		}
+
 		// Bailout if the CPCSS is not enabled for this Post / Page.
 		if ( $this->is_enabled() ) {
 			return;
 		}
+
+		$post_id = ( 'post-new.php' === $pagenow ) ? '' : $post->ID;
+
 		wp_enqueue_script( 'wpr-edit-cpcss-script', rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'wpr-cpcss.js', [], rocket_get_constant( 'WP_ROCKET_VERSION' ), true );
+		wp_localize_script(
+			'wpr-edit-cpcss-script',
+			'rocket_cpcss',
+			[
+				'rest_url'       => rest_url( "wp-rocket/v1/cpcss/post/{$post_id}" ),
+				'rest_nonce'     => wp_create_nonce( 'wp_rest' ),
+				'generate_btn'   => __( 'Generate Specific CPCSS', 'rocket' ),
+				'regenerate_btn' => __( 'Regenerate specific CPCSS', 'rocket' ),
+			]
+		);
 	}
 
 	/**
@@ -94,14 +110,8 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function cpcss_section() {
-		global $post, $pagenow;
-
-		$post_id = ( 'post-new.php' === $pagenow ) ? '' : $post->ID;
-
 		$data = [
 			'disabled_description' => $this->get_disabled_description(),
-			'cpcss_rest_url'       => rest_url( "wp-rocket/v1/cpcss/post/{$post_id}" ),
-			'cpcss_rest_nonce'     => wp_create_nonce( 'wp_rest' ),
 		];
 
 		echo $this->generate( 'container', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped

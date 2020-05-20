@@ -50,15 +50,6 @@ $cpcss_content_not_disabled = <<<HTML
 </div>
 HTML;
 
-$script = <<<SCRIPTS
-<script>
-	var cpcss_rest_url       = 'http://example.org/wp-json/wp-rocket/v1/cpcss/post/1';
-	var cpcss_rest_nonce     = 'wp_rest_nonce';
-	var cpcss_generate_btn   = 'Generate Specific CPCSS';
-	var cpcss_regenerate_btn = 'Regenerate specific CPCSS';
-</script>
-SCRIPTS;
-
 return [
 
 	'testShouldDisplayAllWarnings' => [
@@ -78,8 +69,6 @@ return [
 			// For Unit Test: the data the "generate" method should receive.
 			'data'               => [
 				'disabled_description' => 'Publish the post, Enable Optimize CSS delivery in WP Rocket settings, and Enable Optimize CSS delivery in the options above to use this feature.',
-				'cpcss_rest_url'       => 'http://example.org/wp-rocket/v1/cpcss/post/1',
-				'cpcss_rest_nonce'     => 'wp_rest_nonce',
 			],
 
 			// For the integration test.
@@ -95,7 +84,6 @@ return [
 		<p>Publish the post, Enable Optimize CSS delivery in WP Rocket settings, and Enable Optimize CSS delivery in the options above to use this feature.</p>
 	</div>
 </div>
-{$script}
 HTML
 		,
 		],
@@ -117,8 +105,6 @@ HTML
 			// For Unit Test: the data the "generate" method should receive.
 			'data'               => [
 				'disabled_description' => 'Publish the post and Enable Optimize CSS delivery in the options above to use this feature.',
-				'cpcss_rest_url'       => 'http://example.org/wp-rocket/v1/cpcss/post/1',
-				'cpcss_rest_nonce'     => 'wp_rest_nonce',
 			],
 
 			// For the integration test.
@@ -134,7 +120,6 @@ HTML
 	<p>Publish the post and Enable Optimize CSS delivery in the options above to use this feature.</p>
 	</div>
 </div>
-{$script}
 HTML
 		,
 		],
@@ -156,8 +141,6 @@ HTML
 			// For Unit Test: the data the "generate" method should receive.
 			'data'               => [
 				'disabled_description' => 'Publish the post to use this feature.',
-				'cpcss_rest_url'       => 'http://example.org/wp-rocket/v1/cpcss/post/1',
-				'cpcss_rest_nonce'     => 'wp_rest_nonce',
 			],
 
 			// For the integration test.
@@ -173,7 +156,6 @@ HTML
 	<p>Publish the post to use this feature.</p>
 	</div>
 </div>
-{$script}
 HTML
 		,
 		],
@@ -195,8 +177,6 @@ HTML
 			// For Unit Test: the data the "generate" method should receive.
 			'data'               => [
 				'disabled_description' => 'Enable Optimize CSS delivery in the options above to use this feature.',
-				'cpcss_rest_url'       => 'http://example.org/wp-rocket/v1/cpcss/post/1',
-				'cpcss_rest_nonce'     => 'wp_rest_nonce',
 			],
 
 			// For the integration test.
@@ -212,7 +192,6 @@ HTML
 	<p>Enable Optimize CSS delivery in the options above to use this feature.</p>
 	</div>
 </div>
-{$script}
 HTML
 		,
 			],
@@ -235,8 +214,6 @@ HTML
 			// For Unit Test: the data the "generate" method should receive.
 			'data' => [
 				'disabled_description' => '',
-				'cpcss_rest_url'       => 'http://example.org/wp-rocket/v1/cpcss/post/1',
-				'cpcss_rest_nonce'     => 'wp_rest_nonce',
 			],
 
 			// For the integration test.
@@ -250,7 +227,6 @@ HTML
 <div id="cpcss_response_notice" class="components-notice is-notice is-warning hidden">
 	<div class="components-notice__content"></div>
 </div>
-{$script}
 HTML
 			,
 		],

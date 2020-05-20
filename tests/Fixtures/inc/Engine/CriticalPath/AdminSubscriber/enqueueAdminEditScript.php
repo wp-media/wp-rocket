@@ -5,6 +5,11 @@ return [
 	'testShouldNotEnqueueScriptDifferentPage' => [
 		'config'   => [
 			'page' => 'options-general.php',
+			'post'               => (object) [
+				'ID'          => 1,
+				'post_status' => 'draft',
+				'post_type'   => 'post',
+			],
 		],
 		'expected' => false,
 	],

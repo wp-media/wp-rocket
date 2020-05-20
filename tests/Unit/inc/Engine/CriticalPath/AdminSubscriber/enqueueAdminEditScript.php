@@ -41,9 +41,14 @@ class Test_EnqueueAdminEditScript extends TestCase {
 			$this->setUpTest( $config );
 		}
 
+		Functions\when( 'wp_create_nonce' )->justReturn( 'wp_rest_nonce' );
+		Functions\when( 'rest_url' )->justReturn( 'http://example.org/wp-rocket/v1/cpcss/post/' . $config['post']->ID );
+
 		if ( $expected ) {
 			Functions\expect( 'wp_enqueue_script' )->once();
+			Functions\expect( 'wp_localize_script' )->once();
 		} else {
+			Functions\expect( 'wp_enqueue_script' )->never();
 			Functions\expect( 'wp_enqueue_script' )->never();
 		}
 
