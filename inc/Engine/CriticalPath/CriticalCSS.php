@@ -60,7 +60,7 @@ class CriticalCSS {
 		$this->options           = $options;
 		$this->critical_css_path = rocket_get_constant( 'WP_ROCKET_CRITICAL_CSS_PATH' ) . get_current_blog_id() . '/';
 		$this->filesystem        = $filesystem;
-		$this->items[] = [
+		$this->items['front_page'] = [
 			'type'  => 'front_page',
 			'url'   => home_url( '/' ),
 			'path'  => 'front_page.css',
@@ -281,7 +281,7 @@ class CriticalCSS {
 		$page_for_posts = get_option( 'page_for_posts' );
 
 		if ( 'page' === get_option( 'show_on_front' ) && ! empty( $page_for_posts ) ) {
-			$this->items[] = [
+			$this->items['home'] = [
 				'type'  => 'home',
 				'url'   => get_permalink( get_option( 'page_for_posts' ) ),
 				'path'  => 'home.css',
@@ -292,7 +292,7 @@ class CriticalCSS {
 		$post_types = $this->get_public_post_types();
 
 		foreach ( $post_types as $post_type ) {
-			$this->items[] = [
+			$this->items[ $post_type->post_type ] = [
 				'type'  => $post_type->post_type,
 				'url'   => get_permalink( $post_type->ID ),
 				'path'  => "{$post_type->post_type}.css",
@@ -303,7 +303,7 @@ class CriticalCSS {
 		$taxonomies = $this->get_public_taxonomies();
 
 		foreach ( $taxonomies as $taxonomy ) {
-			$this->items[] = [
+			$this->items[ $taxonomy->taxonomy ] = [
 				'type'  => $taxonomy->taxonomy,
 				'url'   => get_term_link( (int) $taxonomy->ID, $taxonomy->taxonomy ),
 				'path'  => "{$taxonomy->taxonomy}.css",
@@ -312,17 +312,14 @@ class CriticalCSS {
 		}
 
 		if ( $this->is_async_css_mobile() ) {
-			$mobile_items = $this->items;
+			$mobile_items = [];
 
-			$mobile_items = array_map(
-				function( $item ) {
-					$item['mobile'] = 1;
-					$item['path']   = str_replace( '.css', '-mobile.css', $item['path'] );
+			foreach ( $this->items as $key => $value ) {
+				$value['mobile'] = 1;
+				$value['path']   = str_replace( '.css', '-mobile.css', $value['path'] );
 
-					return $item;
-				},
-				$mobile_items
-			);
+				$mobile_items["{$key}-mobile"] = $value;
+			}
 
 			$this->items = array_merge( $this->items, $mobile_items );
 		}
@@ -335,6 +332,8 @@ class CriticalCSS {
 		 * @param array $items Array containing the type/url pair for each item to send.
 		 */
 		$this->items = (array) apply_filters( 'rocket_cpcss_items', $this->items );
+
+		ksort( $this->items );
 	}
 
 	/**
@@ -364,14 +363,14 @@ class CriticalCSS {
 			$name        = $post_type . '.css';
 			$custom_name = "posts/{$post_type}-{$post_id}.css";
 
-			if ( rocket_direct_filesystem()->exists( $this->critical_css_path . $custom_name ) ) {
+			if ( $this->filesystem->exists( $this->critical_css_path . $custom_name ) ) {
 				$name = $custom_name;
 			}
 		}
 
 		$file = $this->critical_css_path . $name;
 
-		if ( ! rocket_direct_filesystem()->is_readable( $file ) ) {
+		if ( ! $this->filesystem->is_readable( $file ) ) {
 			$critical_css = get_rocket_option( 'critical_css', '' );
 			if ( ! empty( $critical_css ) ) {
 				return 'fallback';
