@@ -34,6 +34,10 @@ class Test_CpcssActions extends FilesystemTestCase {
 	public function testShouldDisplayCPCSSSActions( $config, $expected ) {
 		$this->setUpTest( $config );
 
+		$this->beacon->shouldReceive( 'get_suggest' )
+			->once()
+			->andReturn( $expected['data']['beacon'] );
+
 		$this->setUpGenerate( 'generate', $expected['data'] );
 
 		ob_start();

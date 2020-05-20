@@ -109,7 +109,7 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 	public function cpcss_actions() {
 		$data = [
 			'disabled'     => $this->is_enabled(),
-			'beacon'       => '',
+			'beacon'       => $this->beacon->get_suggest( 'specific_cpcss' ),
 			'cpcss_exists' => $this->cpcss_exists(),
 		];
 

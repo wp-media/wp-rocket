@@ -2,11 +2,11 @@
 
 $cpcss_content = <<<HTML
 <p class="cpcss_generate ">
-	Generate specific Critical Path CSS for this post.<a href="" target="_blank" rel="noopener noreferrer">
+	Generate specific Critical Path CSS for this post.<a href="https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&#038;utm_medium=wp_rocket" target="_blank" rel="noopener noreferrer">
 	More info</a>
 </p>
 <p class="cpcss_regenerate hidden">
-	This post uses specific Critical Path CSS.<a href="" target="_blank" rel="noopener noreferrer">
+	This post uses specific Critical Path CSS.<a href="https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&#038;utm_medium=wp_rocket" target="_blank" rel="noopener noreferrer">
 	More info</a>
 </p>
 <div class="components-panel__row cpcss_generate cpcss_regenerate">
@@ -27,11 +27,11 @@ HTML;
 
 $cpcss_content_not_disabled = <<<HTML
 <p class="cpcss_generate ">
-	Generate specific Critical Path CSS for this post.<a href="" target="_blank" rel="noopener noreferrer">
+	Generate specific Critical Path CSS for this post.<a href="https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&#038;utm_medium=wp_rocket" target="_blank" rel="noopener noreferrer">
 	More info</a>
 </p>
 <p class="cpcss_regenerate hidden">
-	This post uses specific Critical Path CSS.<a href="" target="_blank" rel="noopener noreferrer">
+	This post uses specific Critical Path CSS.<a href="https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&#038;utm_medium=wp_rocket" target="_blank" rel="noopener noreferrer">
 	More info</a>
 </p>
 <div class="components-panel__row cpcss_generate cpcss_regenerate">
