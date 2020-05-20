@@ -105,13 +105,17 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 
 		// Bailout if CPCSS is not enabled & separate cache for mobiles is not enabled.
 		// Or bailout if CPCSS mobile option is false.
-		if ( ! ( $this->options->get( 'async_css', 0 )
+		if (
+			! (
+				$this->options->get( 'async_css', 0 )
 				&&
 				$this->options->get( 'cache_mobile', 0 )
 				&&
-				$this->options->get( 'do_caching_mobile_files', 0 ) )
-				||
-				$this->options->get( 'async_css_mobile', 0 ) ) {
+				$this->options->get( 'do_caching_mobile_files', 0 )
+			)
+			||
+			$this->options->get( 'async_css_mobile', 0 )
+		) {
 			return;
 		}
 

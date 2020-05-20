@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\AdminSubscriber;
 
 use WP_Rocket\Tests\Integration\AjaxTestCase;
+use WP_Rocket\Tests\Integration\CapTrait;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\AdminSubscriber::enable_mobile_cpcss
@@ -17,10 +18,10 @@ class Test_EnableMobileCpcss extends AjaxTestCase {
 	private static $admin_user_id  = 0;
 	private static $editor_user_id = 0;
 
-	private static $original_settings;
-
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
+
+		CapTrait::setAdminCap();
 
 		//create an editor user that has the capability
 		self::$admin_user_id = static::factory()->user->create( [ 'role' => 'administrator' ] );
