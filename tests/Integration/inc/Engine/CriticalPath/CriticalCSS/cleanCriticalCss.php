@@ -6,6 +6,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSS::clean_critical_css
+ *
  * @group  AdminOnly
  * @group  CriticalCss
  */

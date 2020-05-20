@@ -4,6 +4,7 @@ namespace WP_Rocket\Engine\CriticalPath;
 
 use FilesystemIterator;
 use UnexpectedValueException;
+use WP_Filesystem_Direct;
 
 /**
  * Handles the critical CSS generation process.
@@ -36,13 +37,21 @@ class CriticalCSS {
 	private $critical_css_path;
 
 	/**
+	 * Instance of the filesystem handler.
+	 *
+	 * @var WP_Filesystem_Direct
+	 */
+	private $filesystem;
+
+	/**
 	 * Creates an instance of CriticalCSS.
 	 *
 	 * @since 2.11
 	 *
-	 * @param CriticalCSSGeneration $process Background process instance.
+	 * @param CriticalCSSGeneration $process    Background process instance.
+	 * @param WP_Filesystem_Direct  $filesystem Instance of the filesystem handler.
 	 */
-	public function __construct( CriticalCSSGeneration $process ) {
+	public function __construct( CriticalCSSGeneration $process, $filesystem ) {
 		$this->process = $process;
 		$this->items[] = [
 			'type' => 'front_page',
@@ -50,6 +59,7 @@ class CriticalCSS {
 		];
 
 		$this->critical_css_path = rocket_get_constant( 'WP_ROCKET_CRITICAL_CSS_PATH' ) . get_current_blog_id() . '/';
+		$this->filesystem        = rocket_direct_filesystem();
 	}
 
 	/**
@@ -122,14 +132,12 @@ class CriticalCSS {
 	 * @since 3.6 Replaced glob().
 	 */
 	public function clean_critical_css() {
-		$filesystem = rocket_direct_filesystem();
-
 		try {
 			$files = new FilesystemIterator( $this->critical_css_path );
 
 			foreach ( $files as $file ) {
-				if ( $filesystem->is_file( $file ) ) {
-					$filesystem->delete( $file );
+				if ( $this->filesystem->is_file( $file ) ) {
+					$this->filesystem->delete( $file );
 				}
 			}
 		} catch ( UnexpectedValueException $e ) {

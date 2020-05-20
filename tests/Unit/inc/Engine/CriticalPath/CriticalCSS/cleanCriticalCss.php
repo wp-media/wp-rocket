@@ -45,7 +45,7 @@ class Test_CleanCriticalCSS extends FilesystemTestCase {
 			$this->assertTrue( $this->filesystem->exists( $critical_css_path . $folder ) );
 		}
 
-		$this->critical_css = new CriticalCSS( $this->critical_css_generation );
+		$this->critical_css = new CriticalCSS( $this->critical_css_generation, $this->filesystem );
 		$this->critical_css->clean_critical_css();
 
 		// Test that root files are deleted now.
