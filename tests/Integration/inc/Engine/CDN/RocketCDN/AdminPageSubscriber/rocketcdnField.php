@@ -2,6 +2,8 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\AdminPageSubscriber;
 
+use  WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
+
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber::rocketcdn_field
  *
@@ -10,8 +12,8 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\AdminPageSubscrib
  * @uses   ::rocket_has_constant
  * @uses   \WP_Rocket\Engine\Admin\Beacon\Beacon::get_suggest
  *
- * @group  RocketCDN
  * @group  AdminOnly
+ * @group  RocketCDN
  * @group  RocketCDNAdminPage
  */
 class Test_RocketcdnField extends TestCase {
@@ -38,7 +40,7 @@ class Test_RocketcdnField extends TestCase {
 
 		set_transient( 'rocketcdn_status', $rocketcdn_status, MINUTE_IN_SECONDS );
 
-		$expected              = $this->config['fields'];
+		$expected               = $this->config['fields'];
 		$expected['cdn_cnames'] = $expected_cdn_cnames;
 
 		$this->assertSame(

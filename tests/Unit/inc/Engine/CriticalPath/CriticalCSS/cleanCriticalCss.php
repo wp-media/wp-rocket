@@ -22,10 +22,9 @@ class Test_CleanCriticalCSS extends FilesystemTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->critical_css_path       = 'wp-content/cache/critical-css/';
+		$this->critical_css_path       = 'vfs://public/wp-content/cache/critical-css/';
 		$this->critical_css_generation = Mockery::mock( CriticalCSSGeneration::class );
 
-		Functions\expect( 'rocket_get_constant' )->with( 'WP_ROCKET_CRITICAL_CSS_PATH' )->andReturn( $this->filesystem->getUrl( $this->critical_css_path ) );
 		Functions\expect( 'home_url' )->with( '/' )->andReturn( 'http://example.org/' );
 	}
 
@@ -46,7 +45,7 @@ class Test_CleanCriticalCSS extends FilesystemTestCase {
 			$this->assertTrue( $this->filesystem->exists( $critical_css_path . $folder ) );
 		}
 
-		$this->critical_css = new CriticalCSS( $this->critical_css_generation );
+		$this->critical_css = new CriticalCSS( $this->critical_css_generation, $this->filesystem );
 		$this->critical_css->clean_critical_css();
 
 		// Test that root files are deleted now.

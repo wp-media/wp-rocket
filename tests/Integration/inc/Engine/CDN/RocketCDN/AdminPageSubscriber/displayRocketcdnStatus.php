@@ -5,16 +5,24 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\AdminPageSubscrib
 use  WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber::display_manage_subscription
+ * @covers \WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber::display_rocketcdn_status
+ * @uses   \WP_Rocket\Engine\CDN\RocketCDN\APIClient::get_subscription_data
  * @uses   ::rocket_is_live_site
  * @uses   ::rocket_get_constant
- * @uses   \WP_Rocket\Engine\CDN\RocketCDN\APIClient::get_subscription_data
+ * @uses   \WP_Rocket\Abstract_Render::generate
+ * @uses   ::rocket_direct_filesystem
  *
  * @group  AdminOnly
  * @group  RocketCDN
  * @group  RocketCDNAdminPage
  */
-class Test_DisplayManageSubscription extends TestCase {
+class Test_DisplayRocketcdnStatus extends TestCase {
+
+	public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
+
+		update_option( 'date_format', 'Y-m-d' );
+	}
 
 	public function setUp() {
 		parent::setUp();
@@ -31,21 +39,17 @@ class Test_DisplayManageSubscription extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldDisplayExpected( $home_url, $rocketcdn_status, $expected ) {
-		$this->home_url = $home_url;
-
-		if ( ! empty ( $expected ) ) {
-			$expected = $this->format_the_html( $expected );
-		}
-
-		if ( ! empty( $rocketcdn_status ) ) {
-			set_transient( 'rocketcdn_status', $rocketcdn_status, MINUTE_IN_SECONDS );
-		}
+	public function testShouldDisplayExpected( $rocketcdn_status, $expected, $config ) {
+		$this->home_url = $config['home_url'];
+		set_transient( 'rocketcdn_status', $rocketcdn_status, MINUTE_IN_SECONDS );
 
 		ob_start();
-		do_action( 'rocket_after_cdn_sections' );
+		do_action( 'rocket_dashboard_after_account_data' );
 		$actual = ob_get_clean();
 
-		$this->assertSame( $expected, $this->format_the_html( $actual ) );
+		$this->assertSame(
+			$this->format_the_html( $expected['integration'] ),
+			$this->format_the_html( $actual )
+		);
 	}
 }

@@ -3,7 +3,6 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\CriticalCSSSubscriber;
 
 use Brain\Monkey\Functions;
-use FilesystemIterator;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CriticalPath\CriticalCSS;
@@ -13,14 +12,15 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::generate_critical_css_on_activation
+ *
  * @group  Subscribers
  * @group  CriticalCss
  * @group  vfs
  */
 class Test_GenerateCriticalCssOnActivation extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSSSubscriber/generateCriticalCssOnActivation.php';
-	private $critical_css;
-	private $subscriber;
+	private   $critical_css;
+	private   $subscriber;
 
 	public function setUp() {
 		parent::setUp();
@@ -29,7 +29,10 @@ class Test_GenerateCriticalCssOnActivation extends FilesystemTestCase {
 		Functions\when( 'get_current_blog_id' )->justReturn( 1 );
 		Functions\expect( 'home_url' )->once()->with( '/' )->andReturn( 'http://example.com' );
 
-		$this->critical_css = Mockery::mock( CriticalCSS::class, [ $this->createMock( CriticalCSSGeneration::class ) ] );
+		$this->critical_css = Mockery::mock( CriticalCSS::class, [
+			$this->createMock( CriticalCSSGeneration::class ),
+			$this->filesystem,
+		] );
 		$this->subscriber   = new CriticalCSSSubscriber(
 			$this->critical_css,
 			$this->createMock( Options_Data::class )
@@ -79,7 +82,7 @@ class Test_GenerateCriticalCssOnActivation extends FilesystemTestCase {
 				Functions\expect( 'rocket_mkdir_p' )
 					->with( $critical_css_path )
 					->andReturnUsing(
-						function ( $target ) {
+						function( $target ) {
 							$this->filesystem->mkdir( $target );
 							$this->assertTrue( $this->filesystem->is_dir( $target ) );
 

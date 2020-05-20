@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\AdminPageSubscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN;
 
 use WP_Rocket\Tests\Integration\TestCase as BaseTestCase;
 

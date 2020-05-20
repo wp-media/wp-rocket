@@ -1,6 +1,5 @@
 <?php
 
-
 return [
 	'vfs_dir'   => 'wp-content/cache/critical-css/',
 
