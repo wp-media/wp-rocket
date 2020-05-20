@@ -63,7 +63,7 @@ class CriticalCSS {
 		$this->items[] = [
 			'type'  => 'front_page',
 			'url'   => home_url( '/' ),
-			'path'  => $this->critical_css_path,
+			'path'  => 'front_page.css',
 			'check' => 0,
 		];
 	}
@@ -284,7 +284,7 @@ class CriticalCSS {
 			$this->items[] = [
 				'type'  => 'home',
 				'url'   => get_permalink( get_option( 'page_for_posts' ) ),
-				'path'  => $this->critical_css_path,
+				'path'  => 'home.css',
 				'check' => 0,
 			];
 		}
@@ -295,7 +295,7 @@ class CriticalCSS {
 			$this->items[] = [
 				'type'  => $post_type->post_type,
 				'url'   => get_permalink( $post_type->ID ),
-				'path'  => $this->critical_css_path,
+				'path'  => "{$post_type->post_type}.css",
 				'check' => 0,
 			];
 		}
@@ -306,7 +306,7 @@ class CriticalCSS {
 			$this->items[] = [
 				'type'  => $taxonomy->taxonomy,
 				'url'   => get_term_link( (int) $taxonomy->ID, $taxonomy->taxonomy ),
-				'path'  => $this->critical_css_path,
+				'path'  => "{$taxonomy->taxonomy}.css",
 				'check' => 0,
 			];
 		}
@@ -317,6 +317,7 @@ class CriticalCSS {
 			$mobile_items = array_map(
 				function( $item ) {
 					$item['mobile'] = 1;
+					$item['path']   = str_replace( '.css', '-mobile.css', $item['path'] );
 
 					return $item;
 				},
