@@ -4,7 +4,8 @@ return [
 
 	'testShouldNotEnqueueScriptDifferentPage' => [
 		'config'   => [
-			'page' => 'options-general.php',
+			'page'               => 'options-general.php',
+			'pagenow'            => 'options-general.php',
 			'post'               => (object) [
 				'ID'          => 1,
 				'post_status' => 'draft',
@@ -14,9 +15,27 @@ return [
 		'expected' => false,
 	],
 
+	'testShouldNotEnqueueScriptWhenPostsList' => [
+		'config'   => [
+			'page'               => 'edit.php',
+			'pagenow'            => 'edit.php',
+			'options'            => [
+				'async_css' => 0,
+			],
+			'post'               => (object) [
+				'ID'          => 1,
+				'post_status' => 'draft',
+				'post_type'   => 'post',
+			],
+			'is_option_excluded' => true,
+		],
+		'expected' => false,
+	],
+
 	'testShouldNotEnqueueScriptDisabledWarning' => [
 		'config'   => [
 			'page'               => 'edit.php',
+			'pagenow'            => 'post.php',
 			'options'            => [
 				'async_css' => 0,
 			],
@@ -33,6 +52,7 @@ return [
 	'testShouldNotEnqueueScriptPostNotPublishedAndOptionExcludedWarning' => [
 		'config'   => [
 			'page'               => 'post.php',
+			'pagenow'            => 'post.php',
 			'options'            => [
 				'async_css' => 1,
 			],
@@ -49,6 +69,7 @@ return [
 	'testShouldNotEnqueueScriptPostNotPublishedWarning' => [
 		'config'   => [
 			'page'               => 'edit.php',
+			'pagenow'            => 'post.php',
 			'options'            => [
 				'async_css' => 1,
 			],
@@ -65,6 +86,7 @@ return [
 	'testShouldNotEnqueueScriptExcludedFromPostWarning' => [
 		'config'   => [
 			'page'               => 'edit.php',
+			'pagenow'            => 'post.php',
 			'options'            => [
 				'async_css' => 1,
 			],
@@ -81,6 +103,7 @@ return [
 	'testShouldEnqueueScript' => [
 		'config'   => [
 			'page'               => 'edit.php',
+			'pagenow'            => 'post.php',
 			'options'            => [
 				'async_css' => 1,
 			],

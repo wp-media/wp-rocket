@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\CriticalCSSSubscri
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSS::insert_critical_css_buffer
+ * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::insert_critical_css_buffer
  *
  * @group  CriticalPath
  * @group  vfs
@@ -13,8 +13,10 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 class Test_InsertCriticalCssBuffer extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSSSubscriber/insertCriticalCssBuffer.php';
 
-	private        $fallback_css;
-	private static $user_id;
+	protected static $use_settings_trait = true;
+	private static   $user_id;
+
+	private $fallback_css;
 
 	public static function wpSetUpBeforeClass( $factory ) {
 		self::$user_id = $factory->user->create(
@@ -45,9 +47,9 @@ class Test_InsertCriticalCssBuffer extends FilesystemTestCase {
 	}
 
 	/**
-	 * @dataProvider nonMultisiteTestData
+	 * @dataProvider providerTestData
 	 */
-	public function testShouldDoExpected( $config, $expected_file, $fallback = null ) {
+	public function testShouldDoExpected( $config, $expected_file, $fallback = null, $js_script = null ) {
 
 		switch ( $config['type'] ) {
 			case 'front_page':
@@ -88,6 +90,10 @@ class Test_InsertCriticalCssBuffer extends FilesystemTestCase {
 
 		if ( isset( $fallback ) && ! empty( $config['fallback_css'] ) ) {
 			$this->assertGreaterThan( 0, strpos( $html, $config['fallback_css'] ) );
+		}
+
+		if ( isset( $js_script ) && ! empty( $js_script ) ) {
+			$this->assertGreaterThan( 0, strpos( $html, $js_script ) );
 		}
 	}
 
@@ -166,13 +172,5 @@ class Test_InsertCriticalCssBuffer extends FilesystemTestCase {
 
 	public function getFallbackCss() {
 		return $this->fallback_css;
-	}
-
-	public function nonMultisiteTestData() {
-		if ( empty( $this->config ) ) {
-			$this->loadConfig();
-		}
-
-		return $this->config['test_data']['non_multisite'];
 	}
 }
