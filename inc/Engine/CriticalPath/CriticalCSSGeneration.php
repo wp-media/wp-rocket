@@ -27,12 +27,17 @@ class CriticalCSSGeneration extends WP_Background_Process {
 	protected $action = 'critical_css_generation';
 
 	/**
-	 * ProcessorService instance
+	 * ProcessorService instance.
 	 *
 	 * @var ProcessorService
 	 */
 	protected $processor;
 
+	/**
+	 * Instantiate the class
+	 *
+	 * @param ProcessorService $processor ProcessorService instance.
+	 */
 	public function __construct( ProcessorService $processor ) {
 		parent::__construct();
 

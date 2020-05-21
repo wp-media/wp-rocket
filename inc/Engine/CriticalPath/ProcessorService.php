@@ -41,7 +41,7 @@ class ProcessorService {
 	 * @param string $item_url  URL for item to be used in error messages.
 	 * @param string $item_path Path for item to be processed.
 	 * @param bool   $timeout   Timeout is requested or not.
-	 * @param bool  $is_mobile If this request is for mobile cpcss.
+	 * @param bool   $is_mobile If this request is for mobile cpcss.
 	 *
 	 * @return array|WP_Error
 	 */
@@ -67,16 +67,16 @@ class ProcessorService {
 	 *
 	 * @param string $item_url  Url for item to send the generation request for.
 	 * @param string $item_path Path for item to send the generation request for.
-	 * @param bool  $is_mobile If this request is for mobile cpcss.
+	 * @param bool   $is_mobile If this request is for mobile cpcss.
 	 *
 	 * @return array
 	 */
 	private function send_generation_request( $item_url, $item_path, $is_mobile = false ) {
 		// call send generation request from APIClient for the first time.
 		$additional_request_data = [
-			'mobile' => (int) $is_mobile
+			'mobile' => (int) $is_mobile,
 		];
-		$generated_job = $this->api_client->send_generation_request( $item_url, $additional_request_data );
+		$generated_job           = $this->api_client->send_generation_request( $item_url, $additional_request_data );
 
 		// validate generate response.
 		if ( is_wp_error( $generated_job ) ) {
@@ -258,6 +258,7 @@ class ProcessorService {
 	 * @since 3.6
 	 *
 	 * @param string $item_url URL for item to be used in error messages.
+	 * @param bool   $is_mobile If this request is for mobile cpcss.
 	 *
 	 * @return WP_Error
 	 */
