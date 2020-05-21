@@ -54,6 +54,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 			'update_option_' . $slug                  => [
 				[ 'generate_critical_css_on_activation', 11, 2 ],
 				[ 'stop_process_on_deactivation', 11, 2 ],
+				[ 'maybe_generate_cpcss_mobile', 12, 2 ],
 			],
 			'admin_notices'                           => [
 				[ 'notice_critical_css_generation_triggered' ],
@@ -129,7 +130,13 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 			wp_nonce_ays( '' );
 		}
 
-		$this->critical_css->process_handler();
+		$version = 'default';
+
+		if ( $this->critical_css->is_async_css_mobile() ) {
+			$version = 'all';
+		}
+
+		$this->critical_css->process_handler( $version );
 
 		if ( ! strpos( wp_get_referer(), 'wprocket' ) ) {
 			set_transient( 'rocket_critical_css_generation_triggered', 1 );
@@ -176,8 +183,48 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 			return;
 		}
 
+		$version = 'default';
+
+		if (
+			isset( $value['do_caching_mobile_files'], $value['async_css_mobile'] )
+			&&
+			( 1 === (int) $value['do_caching_mobile_files'] && 1 === (int) $value['do_caching_mobile_files'] )
+		) {
+			$version = 'all';
+		}
+		
 		// Generate the CPCSS files.
-		$this->critical_css->process_handler();
+		$this->critical_css->process_handler( $version );
+	}
+
+	public function maybe_generate_cpcss_mobile( $old_value, $value ) {
+		if (
+			! isset( $value['async_css_mobile'] )
+			||
+			1 !== (int) $value['async_css_mobile']
+		) {
+			return;
+		}
+
+		if (
+			! isset( $value['do_caching_mobile_files'] )
+			||
+			1 !== (int) $value['do_caching_mobile_files']
+		) {
+			return;
+		}
+
+		if (
+			! isset(  $old_value['async_css'], $value['async_css']  )
+			||
+			( ( $old_value['async_css'] !== $value['async_css'] ) && 1 === (int) $value['async_css'] )
+			||
+			1 !== (int) $value['async_css']
+		) {
+			return;
+		}
+	
+		$this->critical_css->process_handler( 'mobile' );
 	}
 
 	/**
@@ -533,7 +580,7 @@ JS;
 	}
 
 	/**
-	 * Regenerates the CPCSS when switching theme if the potion is active.
+	 * Regenerates the CPCSS when switching theme if the option is active.
 	 *
 	 * @since  3.3
 	 */

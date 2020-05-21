@@ -82,9 +82,12 @@ class CriticalCSS {
 	/**
 	 * Performs the critical CSS generation.
 	 *
+	 * @since 3.6 Added the $version parameter.
 	 * @since 2.11
+	 *
+	 * @param string $version Versin of the CPCSS files to generate. Possible values: default, mobile, all.
 	 */
-	public function process_handler() {
+	public function process_handler( $version = 'default' ) {
 		/**
 		 * Filters the critical CSS generation process.
 		 *
@@ -106,7 +109,7 @@ class CriticalCSS {
 
 		$this->stop_generation();
 
-		$this->set_items();
+		$this->set_items( $version );
 
 		array_map( [ $this->process, 'push_to_queue' ], $this->items );
 
@@ -277,7 +280,7 @@ class CriticalCSS {
 	 *
 	 * @since  2.11
 	 */
-	private function set_items() {
+	private function set_items( $version = 'default' ) {
 		$page_for_posts = get_option( 'page_for_posts' );
 
 		if ( 'page' === get_option( 'show_on_front' ) && ! empty( $page_for_posts ) ) {
@@ -311,7 +314,7 @@ class CriticalCSS {
 			];
 		}
 
-		if ( $this->is_async_css_mobile() ) {
+		if ( in_array( $version, [ 'all', 'mobile' ], true ) ) {
 			$mobile_items = [];
 
 			foreach ( $this->items as $key => $value ) {
@@ -320,7 +323,11 @@ class CriticalCSS {
 				$mobile_items[ "{$key}-mobile" ] = $value;
 			}
 
-			$this->items = array_merge( $this->items, $mobile_items );
+			if ( $version === 'mobile' ) {
+				$this->items = $mobile_items;
+			} elseif ( $version === 'all' ) {
+				$this->items = array_merge( $this->items, $mobile_items );
+			}
 		}
 
 		/**
@@ -473,7 +480,7 @@ class CriticalCSS {
 	 *
 	 * @return bool
 	 */
-	private function is_async_css_mobile() {
+	public function is_async_css_mobile() {
 		if ( ! (bool) $this->options->get( 'do_caching_mobile_files', 0 ) ) {
 			return false;
 		}
