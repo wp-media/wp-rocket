@@ -346,7 +346,10 @@ class CriticalCSS {
 
 		if (
 			$this->is_async_css_mobile()
-			&& rocket_direct_filesystem()->is_readable( $this->critical_css_path . $files['mobile'] )
+			&&
+			wp_is_mobile()
+			&&
+			rocket_direct_filesystem()->is_readable( $this->critical_css_path . $files['mobile'] )
 		) {
 			return $this->critical_css_path . $files['mobile'];
 		}
@@ -427,7 +430,11 @@ class CriticalCSS {
 			'mobile'  => "posts/{$post_type}-{$post_id}-mobile.css",
 		];
 
-		if ( $this->is_async_css_mobile() && ! rocket_direct_filesystem()->exists( $this->critical_css_path . $post_cpcss['mobile'] ) ) {
+		if (
+			$this->is_async_css_mobile()
+			&&
+			! rocket_direct_filesystem()->exists( $this->critical_css_path . $post_cpcss['mobile'] )
+		) {
 			$post_cpcss['mobile'] = $post_cpcss['default'];
 		}
 
@@ -453,6 +460,6 @@ class CriticalCSS {
 			return false;
 		}
 
-		return ( $this->options->get( 'async_css_mobile', 0 ) && wp_is_mobile() );
+		return (bool) $this->options->get( 'async_css_mobile', 0 );
 	}
 }
