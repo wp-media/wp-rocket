@@ -17,13 +17,6 @@ class Test_UpdateCacheFile extends FilesystemTestCase {
 	private   $busting_path      = 'vfs://public/wp-content/cache/busting/';
 	private   $busting_url       = 'http://example.org/wp-content/cache/busting/';
 
-	public function setUp() {
-		parent::setUp();
-
-		// Mocks the various filesystem constants.
-		$this->whenRocketGetConstant();
-	}
-
 	/**
 	 * @dataProvider providerTestData
 	 */

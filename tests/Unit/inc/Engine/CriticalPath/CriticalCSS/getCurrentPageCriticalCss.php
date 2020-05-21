@@ -11,25 +11,16 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSS::get_current_page_critical_css
+ *
  * @group  CriticalPath
  * @group  vfs
  */
 class Test_GetCurrentPageCriticalCSS extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSS/getCurrentPageCriticalCss.php';
 
-	private $critical_css;
-	private $critical_css_path;
-	private $critical_css_generation;
-	private $options;
-
 	public function setUp() {
 		parent::setUp();
 
-		$this->critical_css_path       = 'wp-content/cache/critical-css/';
-		$this->critical_css_generation = Mockery::mock( CriticalCSSGeneration::class );
-		$this->options                 = Mockery::mock( Options_Data::class );
-
-		Functions\expect( 'rocket_get_constant' )->with( 'WP_ROCKET_CRITICAL_CSS_PATH' )->andReturn( $this->filesystem->getUrl( $this->critical_css_path ) );
 		Functions\expect( 'home_url' )->with( '/' )->andReturn( 'http://example.org/' );
 	}
 
@@ -56,21 +47,27 @@ class Test_GetCurrentPageCriticalCSS extends FilesystemTestCase {
 			Functions\expect( $excluded_type )->never();
 		}
 
-		$this->options->shouldReceive( 'get' )
-			->zeroOrMoreTimes()
-			->with( 'do_caching_mobile_files', 0 )
-			->andReturnArg( 1 );
-		$this->options->shouldReceive( 'get' )
-			->zeroOrMoreTimes()
-			->withSomeOfArgs('async_css_mobile', 0 )
-			->andReturnArg( 1 );
-		$this->options->shouldReceive( 'get' )
-			->zeroOrMoreTimes()
-			->withSomeOfArgs( 'critical_css', '' )
-			->andReturnArg( 1 );
+		$options = Mockery::mock( Options_Data::class );
+		$options->shouldReceive( 'get' )
+		        ->zeroOrMoreTimes()
+		        ->with( 'do_caching_mobile_files', 0 )
+		        ->andReturnArg( 1 );
+		$options->shouldReceive( 'get' )
+		        ->zeroOrMoreTimes()
+		        ->withSomeOfArgs( 'async_css_mobile', 0 )
+		        ->andReturnArg( 1 );
+		$options->shouldReceive( 'get' )
+		        ->zeroOrMoreTimes()
+		        ->withSomeOfArgs( 'critical_css', '' )
+		        ->andReturnArg( 1 );
 
-		$this->critical_css            = new CriticalCSS( $this->critical_css_generation, $this->options );
-		$get_current_page_critical_css = $this->critical_css->get_current_page_critical_css();
+		$critical_css = new CriticalCSS(
+			Mockery::mock( CriticalCSSGeneration::class ),
+			$options,
+			$this->filesystem
+		);
+
+		$get_current_page_critical_css = $critical_css->get_current_page_critical_css();
 
 		if ( ! empty( $expected_file ) ) {
 			$this->assertSame( $this->filesystem->getUrl( $expected_file ), $get_current_page_critical_css );

@@ -6,14 +6,16 @@ use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
 use WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber;
-use WP_Rocket\Tests\Unit\FilesystemTestCase;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::display_rocketcdn_cta
+ * @uses   \WP_Rocket\Engine\CDN\RocketCDN\APIClient::get_subscription_data
+ * @uses   \WP_Rocket\Engine\CDN\RocketCDN\APIClient::get_pricing_data
+ *
  * @group  RocketCDN
  */
-class Test_DisplayRocketcdnCta extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/Engine/CDN/RocketCDN/NoticesSubscriber/displayRocketcdnCta.php';
+class Test_DisplayRocketcdnCta extends TestCase {
 	protected static $mockCommonWpFunctionsInSetUp = true;
 
 	private $api_client;
@@ -32,22 +34,26 @@ class Test_DisplayRocketcdnCta extends FilesystemTestCase {
 		);
 	}
 
-	public function testShouldDisplayNothingWhenNotLiveSite() {
-		Functions\expect( 'rocket_is_live_site' )->once()->andReturn( false );
-		$this->api_client->shouldReceive( 'get_subscription_data' )->never();
-		$this->notices->shouldReceive( 'generate' )->never();
-
-		$this->assertNull( $this->notices->display_rocketcdn_cta() );
-	}
-
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldDisplayPerData( $data, $expected, $config ) {
-		Functions\expect( 'rocket_is_live_site' )->once()->andReturn( true );
-		$this->api_client->shouldReceive( 'get_subscription_data' )
-		                 ->once()
-		                 ->andReturn( $data['rocketcdn_status'] );
+		$live_site = isset( $config['live_site'] ) ? $config['live_site'] : true;
+
+		Functions\expect( 'rocket_is_live_site' )->once()->andReturn( $live_site );
+
+		if ( ! $live_site ) {
+			$this->api_client->shouldReceive( 'get_subscription_data' )->never();
+			$this->notices->shouldReceive( 'generate' )->never();
+			$this->assertNull( $this->notices->display_rocketcdn_cta() );
+
+			return;
+		}
+
+		$this->api_client
+			->shouldReceive( 'get_subscription_data' )
+			->once()
+			->andReturn( $data['rocketcdn_status'] );
 
 		if ( 'running' === $data['rocketcdn_status']['subscription_status'] ) {
 			$this->api_client->shouldReceive( 'rocketcdn_pricing' )->never();
@@ -81,9 +87,10 @@ class Test_DisplayRocketcdnCta extends FilesystemTestCase {
 				->andReturn( $data['rocketcdn_pricing']['end_date'] );
 		}
 
-		$this->api_client->shouldReceive( 'get_pricing_data' )
-		                 ->once()
-		                 ->andReturn( $pricing );
+		$this->api_client
+			->shouldReceive( 'get_pricing_data' )
+			->once()
+			->andReturn( $pricing );
 		Functions\expect( 'is_wp_error' )
 			->once()
 			->with( $pricing )
@@ -91,14 +98,16 @@ class Test_DisplayRocketcdnCta extends FilesystemTestCase {
 
 		Functions\when( 'number_format_i18n' )->returnArg();
 
-		$this->notices->shouldReceive( 'generate' )
-		              ->once()
-		              ->with( 'cta-small', $expected['unit']['cta-small'] )
-		              ->andReturn( '' );
-		$this->notices->shouldReceive( 'generate' )
-		              ->once()
-		              ->with( 'cta-big', $expected['unit']['cta-big'] )
-		              ->andReturn( '' );
+		$this->notices
+			->shouldReceive( 'generate' )
+			->once()
+			->with( 'cta-small', $expected['unit']['cta-small'] )
+			->andReturn( '' );
+		$this->notices
+			->shouldReceive( 'generate' )
+			->once()
+			->with( 'cta-big', $expected['unit']['cta-big'] )
+			->andReturn( '' );
 
 		$this->expectOutputString( '' );
 		$this->notices->display_rocketcdn_cta();

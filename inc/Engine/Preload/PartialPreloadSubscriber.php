@@ -69,7 +69,7 @@ class PartialPreloadSubscriber implements Subscriber_Interface {
 			'after_rocket_clean_post'            => [ 'preload_after_clean_post', 10, 3 ],
 			'after_rocket_clean_term'            => [ 'preload_after_clean_term', 10, 3 ],
 			'rocket_after_automatic_cache_purge' => 'preload_after_automatic_cache_purge',
-			'shutdown'                           => [ 'maybe_dispatch', 0 ],
+			'shutdown'                           => [ 'maybe_dispatch', PHP_INT_MAX ],
 		];
 	}
 

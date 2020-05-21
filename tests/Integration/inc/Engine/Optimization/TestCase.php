@@ -1,14 +1,19 @@
 <?php
 
-
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization;
 
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 abstract class TestCase extends FilesystemTestCase {
-	protected $cnames;
-	protected $zones;
-	protected   $settings;
+	protected static $use_settings_trait = true;
+	protected        $cnames;
+	protected        $zones;
+
+	public function setUp() {
+		$this->default_vfs_structure = '/vfs-structure/optimizeMinify.php';
+
+		parent::setUp();
+	}
 
 	protected function setSettings() {
 		foreach ( (array) $this->settings as $key => $value ) {
@@ -23,10 +28,10 @@ abstract class TestCase extends FilesystemTestCase {
 	}
 
 	protected function handleSetting( $key, $value, $set = true ) {
-		$func = $set ? 'add_filter' : 'remove_filter';
+		$func     = $set ? 'add_filter' : 'remove_filter';
 		$callback = $value === 0 ? 'return_false' : 'return_true';
 
-		switch( $key ) {
+		switch ( $key ) {
 			case 'minify_concatenate_css':
 				$func( 'pre_get_rocket_option_minify_concatenate_css', [ $this, $callback ] );
 				break;
@@ -60,5 +65,24 @@ abstract class TestCase extends FilesystemTestCase {
 
 	public function set_zones() {
 		return $this->zones;
+	}
+
+	protected function assertFilesExists( $files ) {
+		foreach ( $files as $file ) {
+			if ( $this->skipGzCheck( $file ) ) {
+				continue;
+			}
+
+			$this->assertTrue( $this->filesystem->exists( $file ) );
+		}
+	}
+
+	protected function skipGzCheck( $file ) {
+		if ( function_exists( 'gzencode' ) ) {
+			return false;
+		}
+
+		// If `gzencode()` function does not exist and the file is .gz, skip it.
+		return ( substr( $file, - 3 ) === '.gz' );
 	}
 }

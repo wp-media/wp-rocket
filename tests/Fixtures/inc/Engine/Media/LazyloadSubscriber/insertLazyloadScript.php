@@ -36,6 +36,7 @@ images=mutation.addedNodes[i].getElementsByTagName(\'img\');is_image=mutation.ad
 if(is_iframe){iframe_count+=1}}});if(image_count>0||iframe_count>0||rocketlazy_count>0){lazyLoadInstance.update()}});var b=document.getElementsByTagName("body")[0];var config={childList:!0,subtree:!0};observer.observe(b,config)}},!1)</script><script data-no-minify="1" async src="http://example.org/wp-content/plugins/wp-rocket/assets/js/lazyload/15.1.1/lazyload.min.js"></script>',
 		],
 	],
+
 	'testShouldReturnLazyloadForIframesOnly' => [
 		'options'  => [
 			'lazyload'         => 0,

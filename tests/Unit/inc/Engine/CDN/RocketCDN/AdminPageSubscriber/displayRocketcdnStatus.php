@@ -8,14 +8,13 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
 use WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber;
-use WP_Rocket\Tests\Unit\FilesystemTestCase;
+use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
  * @covers AdminPageSubscriber::display_rocketcdn_status
  * @group  RocketCDN
  */
-class Test_DisplayRocketcdnStatus extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/Engine/CDN/RocketCDN/AdminPageSubscriber/displayRocketcdnStatus.php';
+class Test_DisplayRocketcdnStatus extends TestCase {
 	protected static $mockCommonWpFunctionsInSetUp = true;
 
 	private $api_client;
@@ -37,7 +36,7 @@ class Test_DisplayRocketcdnStatus extends FilesystemTestCase {
 	}
 
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldDisplayPerData( $subscription_data, $expected, $config ) {
 		Functions\when( 'rocket_is_live_site' )->justReturn( ( 'http://example.org' === $config['home_url'] ) );
@@ -65,5 +64,9 @@ class Test_DisplayRocketcdnStatus extends FilesystemTestCase {
 
 		$this->expectOutputString( '' );
 		$this->page->display_rocketcdn_status();
+	}
+
+	public function configTestData() {
+		return $this->getTestData( __DIR__, 'displayRocketcdnStatus' );
 	}
 }
