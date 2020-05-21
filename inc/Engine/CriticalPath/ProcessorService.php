@@ -48,7 +48,7 @@ class ProcessorService {
 	public function process_generate( $item_url, $item_path, $timeout = false, $is_mobile = false ) {
 		// Ajax call requested a timeout.
 		if ( $timeout ) {
-			return $this->process_timeout( $item_url );
+			return $this->process_timeout( $item_url, $is_mobile );
 		}
 
 		$cpcss_job_id = $this->data_manager->get_cache_job_id( $item_url );
@@ -57,7 +57,7 @@ class ProcessorService {
 		}
 
 		// job_id is found and we need to check status for it.
-		return $this->check_cpcss_job_status( $cpcss_job_id, $item_path, $item_url );
+		return $this->check_cpcss_job_status( $cpcss_job_id, $item_path, $item_url, $is_mobile );
 	}
 
 	/**
@@ -88,7 +88,7 @@ class ProcessorService {
 		// Save job_id into cache.
 		$this->data_manager->set_cache_job_id( $item_url, $generated_job->data->id );
 
-		return $this->check_cpcss_job_status( $generated_job->data->id, $item_path, $item_url );
+		return $this->check_cpcss_job_status( $generated_job->data->id, $item_path, $item_url, $is_mobile );
 	}
 
 	/**
@@ -98,10 +98,11 @@ class ProcessorService {
 	 *
 	 * @param string $job_id   ID for the job to get details.
 	 * @param string $item_url URL for item to be used in error messages.
+	 * @param bool   $is_mobile If this is cpcss for mobile or not.
 	 *
 	 * @return array|mixed|WP_Error
 	 */
-	private function get_cpcss_job_details( $job_id, $item_url ) {
+	private function get_cpcss_job_details( $job_id, $item_url, $is_mobile = false ) {
 		$job_details = $this->api_client->get_job_details( $job_id, $item_url );
 
 		if ( is_wp_error( $job_details ) ) {
@@ -119,11 +120,12 @@ class ProcessorService {
 	 * @param string $job_id    ID for the job to get details.
 	 * @param string $item_path Path for this item to be validated.
 	 * @param string $item_url  URL for item to be used in error messages.
+	 * @param bool   $is_mobile If this is cpcss for mobile or not.
 	 *
 	 * @return array|WP_Error Response in case of success, failure or pending.
 	 */
-	private function check_cpcss_job_status( $job_id, $item_path, $item_url ) {
-		$job_details = $this->api_client->get_job_details( $job_id, $item_url );
+	private function check_cpcss_job_status( $job_id, $item_path, $item_url, $is_mobile = false ) {
+		$job_details = $this->api_client->get_job_details( $job_id, $item_url, $is_mobile );
 
 		if ( is_wp_error( $job_details ) ) {
 			$this->data_manager->delete_cache_job_id( $item_url );
@@ -133,7 +135,7 @@ class ProcessorService {
 
 		if ( 200 !== $job_details->status ) {
 			// On job error.
-			return $this->on_job_error( $job_details, $item_url );
+			return $this->on_job_error( $job_details, $item_url, $is_mobile );
 		}
 
 		// On job status 200.
@@ -141,7 +143,7 @@ class ProcessorService {
 
 		// For pending job status.
 		if ( isset( $job_state ) && 'complete' !== $job_state ) {
-			return $this->on_job_pending( $item_url );
+			return $this->on_job_pending( $item_url, $is_mobile );
 		}
 
 		// For successful job status.
@@ -150,7 +152,7 @@ class ProcessorService {
 			&&
 			'complete' === $job_state
 		) {
-			return $this->on_job_success( $item_path, $item_url, $job_details->data->critical_path );
+			return $this->on_job_success( $item_path, $item_url, $job_details->data->critical_path, $is_mobile );
 		}
 	}
 
@@ -259,7 +261,7 @@ class ProcessorService {
 	 *
 	 * @return WP_Error
 	 */
-	private function process_timeout( $item_url ) {
+	private function process_timeout( $item_url, $is_mobile = false ) {
 		$this->data_manager->delete_cache_job_id( $item_url );
 
 		return new WP_Error(

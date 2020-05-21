@@ -58,7 +58,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		// REST CPCSS END.
 
 		$this->getContainer()->add( 'critical_css_generation', 'WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration' )
-			->withArgument( $this->getContainer()->get( 'cpcss_service') );
+			->withArgument( $this->getContainer()->get( 'cpcss_service' ) );
 		$this->getContainer()->add( 'critical_css', 'WP_Rocket\Engine\CriticalPath\CriticalCSS' )
 			->withArgument( $this->getContainer()->get( 'critical_css_generation' ) )
 			->withArgument( $options )

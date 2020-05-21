@@ -56,10 +56,10 @@ class CriticalCSS {
 	 * @param WP_Filesystem_Direct  $filesystem Instance of the filesystem handler.
 	 */
 	public function __construct( CriticalCSSGeneration $process, Options_Data $options, $filesystem ) {
-		$this->process           = $process;
-		$this->options           = $options;
-		$this->critical_css_path = rocket_get_constant( 'WP_ROCKET_CRITICAL_CSS_PATH' ) . get_current_blog_id() . '/';
-		$this->filesystem        = $filesystem;
+		$this->process             = $process;
+		$this->options             = $options;
+		$this->critical_css_path   = rocket_get_constant( 'WP_ROCKET_CRITICAL_CSS_PATH' ) . get_current_blog_id() . '/';
+		$this->filesystem          = $filesystem;
 		$this->items['front_page'] = [
 			'type'  => 'front_page',
 			'url'   => home_url( '/' ),
@@ -318,7 +318,7 @@ class CriticalCSS {
 				$value['mobile'] = 1;
 				$value['path']   = str_replace( '.css', '-mobile.css', $value['path'] );
 
-				$mobile_items["{$key}-mobile"] = $value;
+				$mobile_items[ "{$key}-mobile" ] = $value;
 			}
 
 			$this->items = array_merge( $this->items, $mobile_items );
