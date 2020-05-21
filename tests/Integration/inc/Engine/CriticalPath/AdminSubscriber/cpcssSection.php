@@ -14,7 +14,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group  CriticalPath
  */
 class Test_CpcssSection extends TestCase {
-	private        $async_css;
+	private        $async_css_mobile;
 	private        $post_id;
 	private static $user_id;
 
@@ -29,7 +29,7 @@ class Test_CpcssSection extends TestCase {
 		parent::setUp();
 
 		$this->set_permalink_structure( '/%postname%/' );
-		add_filter( 'pre_get_rocket_option_async_css', [ $this, 'setCPCSSOption' ] );
+		add_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'setCPCSSOption' ] );
 
 
 		set_current_screen( 'edit-post' );
@@ -40,7 +40,7 @@ class Test_CpcssSection extends TestCase {
 
 		parent::tearDown();
 
-		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'setCPCSSOption' ] );
+		remove_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'setCPCSSOption' ] );
 		delete_post_meta( $this->post_id, '_rocket_exclude_async_css' );
 	}
 
@@ -50,7 +50,7 @@ class Test_CpcssSection extends TestCase {
 	public function testShouldDisplayCPCSSSection( $config, $expected ) {
 		wp_set_current_user( static::$user_id );
 
-		$this->async_css = $config['options']['async_css'];
+		$this->async_css_mobile = $config['options']['async_css_mobile'];
 		$this->post_id   = $config['post']->ID;
 		$GLOBALS['post'] = $config['post'];
 
@@ -72,6 +72,6 @@ class Test_CpcssSection extends TestCase {
 	}
 
 	public function setCPCSSOption() {
-		return $this->async_css;
+		return $this->async_css_mobile;
 	}
 }
