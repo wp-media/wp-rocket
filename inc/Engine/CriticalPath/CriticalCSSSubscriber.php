@@ -168,7 +168,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 
 		try {
 			if ( ( new FilesystemIterator( $critical_css_path, FilesystemIterator::SKIP_DOTS ) )->valid() ) {
-				// Bail out if the folder is not empty.
+				// Bail out if the folder has no files (not folders).
 				return;
 			}
 		} catch ( UnexpectedValueException $e ) {
