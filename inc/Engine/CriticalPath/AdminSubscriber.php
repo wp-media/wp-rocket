@@ -85,6 +85,10 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 			return;
 		}
 
+		if ( ! in_array( $pagenow, [ 'post-new.php', 'post.php' ], true ) ) {
+			return;
+		}
+
 		// Bailout if the CPCSS is not enabled for this Post / Page.
 		if ( $this->is_enabled() ) {
 			return;

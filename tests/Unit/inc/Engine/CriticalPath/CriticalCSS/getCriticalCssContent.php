@@ -10,13 +10,14 @@ use WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSS::get_current_page_critical_css
+ * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSS::get_critical_css_content
  *
  * @group  CriticalPath
  * @group  vfs
+ * @group CriticalCssContent
  */
-class Test_GetCurrentPageCriticalCSS extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSS/getCurrentPageCriticalCss.php';
+class Test_GetCriticalCssContent extends FilesystemTestCase {
+	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSS/getCriticalCssContent.php';
 
 	public function setUp() {
 		parent::setUp();
@@ -27,7 +28,7 @@ class Test_GetCurrentPageCriticalCSS extends FilesystemTestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldDoExpected( $config, $expected_file ) {
+	public function testShouldDoExpected( $config, $expected ) {
 		Functions\when( 'get_current_blog_id' )->justReturn( 1 );
 
 		foreach ( $config['expected_type'] as $expected_type ) {
@@ -55,7 +56,11 @@ class Test_GetCurrentPageCriticalCSS extends FilesystemTestCase {
 		$options->shouldReceive( 'get' )
 				->zeroOrMoreTimes()
 		        ->with( 'async_css_mobile', 0 )
-				->andReturn( $config['settings']['async_css_mobile'] );
+                ->andReturn( $config['settings']['async_css_mobile'] );
+        $options->shouldReceive( 'get' )
+				->zeroOrMoreTimes()
+		        ->with( 'critical_css', '' )
+				->andReturn( $config['settings']['critical_css'] );
 
 		Functions\when( 'wp_is_mobile' )->justReturn( $config['wp_is_mobile'] );
 
@@ -65,18 +70,9 @@ class Test_GetCurrentPageCriticalCSS extends FilesystemTestCase {
 			$this->filesystem
 		);
 
-		$current_page_critical_css = $critical_css->get_current_page_critical_css();
-
-		if ( ! empty( $expected_file ) ) {
-			$this->assertSame(
-				$this->filesystem->getUrl( $expected_file ),
-				$current_page_critical_css
-			);
-		} else {
-			$this->assertSame(
-				$expected_file,
-				$current_page_critical_css
-			);
-		}
+        $this->assertSame(
+            $expected,
+            $critical_css->get_critical_css_content()
+        );
 	}
 }
