@@ -19,10 +19,9 @@ use Mockery;
 class Test_RegisterGenerateRoute extends TestCase {
 
 	public function testShouldRegisterRoute() {
-		$api_client = Mockery::mock( APIClient::class );
-		$data_manager = Mockery::mock( DataManager::class );
+		Mockery::mock( APIClient::class );
+		Mockery::mock( DataManager::class );
 		$cpcss_service = Mockery::mock( ProcessorService::class );
-		$options       = Mockery::mock( Options_Data::class );
 		$options = Mockery::mock( Options_Data::class );
 		$instance = new RESTWPPost( $cpcss_service, $options );
 
