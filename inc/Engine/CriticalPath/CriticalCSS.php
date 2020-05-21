@@ -16,7 +16,7 @@ class CriticalCSS {
 	/**
 	 * Background Process instance.
 	 *
-	 * @var CriticalCSSGeneration $process
+	 * @var CriticalCSSGeneration
 	 */
 	public $process;
 
@@ -30,7 +30,7 @@ class CriticalCSS {
 	/**
 	 * Items for which we generate a critical CSS.
 	 *
-	 * @var array $items
+	 * @var array
 	 */
 	public $items = [];
 
@@ -336,49 +336,134 @@ class CriticalCSS {
 	}
 
 	/**
-	 * Determines if critical CSS is available for the current page.
+	 * Gets the CPCSS content to use on the current page.
+	 *
+	 * @since 3.6
+	 *
+	 * @return bool|string
+	 */
+	public function get_critical_css_content() {
+		$filename = $this->get_current_page_critical_css();
+
+		if ( empty( $filename ) ) {
+			return $this->options->get( 'critical_css', '' );
+		}
+
+		return $this->filesystem->get_contents( $filename );
+	}
+
+	/**
+	 * Gets the CPCSS filepath for the current page.
 	 *
 	 * @since  2.11
 	 *
-	 * @return bool|string False if critical CSS file doesn't exist, file path otherwise.
+	 * @return string Filepath if the file exists, empty string otherwise.
 	 */
 	public function get_current_page_critical_css() {
-		$name = 'front_page.css';
+		$files = $this->get_critical_css_filenames();
+
+		if (
+			$this->is_async_css_mobile()
+			&&
+			wp_is_mobile()
+			&&
+			$this->filesystem->is_readable( $this->critical_css_path . $files['mobile'] )
+		) {
+			return $this->critical_css_path . $files['mobile'];
+		}
+
+		if ( $this->filesystem->is_readable( $this->critical_css_path . $files['default'] ) ) {
+			return $this->critical_css_path . $files['default'];
+		}
+
+		return '';
+	}
+
+	/**
+	 * Gets the CPCSS filenames for the current URL type.
+	 *
+	 * @since 3.6
+	 *
+	 * @return array
+	 */
+	private function get_critical_css_filenames() {
+		$default = [
+			'default' => 'front_page.css',
+			'mobile'  => 'front_page-mobile.css',
+		];
 
 		if ( is_home() && 'page' === get_option( 'show_on_front' ) ) {
-			$name = 'home.css';
-		} elseif ( is_front_page() ) {
-			$name = 'front_page.css';
-		} elseif ( is_category() ) {
-			$name = 'category.css';
-		} elseif ( is_tag() ) {
-			$name = 'post_tag.css';
-		} elseif ( is_tax() ) {
+			return [
+				'default' => 'home.css',
+				'mobile'  => 'home-mobile.css',
+			];
+		}
+
+		if ( is_front_page() ) {
+			return $default;
+		}
+
+		if ( is_category() ) {
+			return [
+				'default' => 'category.css',
+				'mobile'  => 'category-mobile.css',
+			];
+		}
+
+		if ( is_tag() ) {
+			return [
+				'default' => 'post_tag.css',
+				'mobile'  => 'post_tag-mobile.css',
+			];
+		}
+
+		if ( is_tax() ) {
 			$taxonomy = get_queried_object()->taxonomy;
-			$name     = $taxonomy . '.css';
-		} elseif ( is_singular() ) {
-			$post_type   = get_post_type();
-			$post_id     = get_the_ID();
-			$name        = $post_type . '.css';
-			$custom_name = "posts/{$post_type}-{$post_id}.css";
 
-			if ( $this->filesystem->exists( $this->critical_css_path . $custom_name ) ) {
-				$name = $custom_name;
-			}
+			return [
+				'default' => "{$taxonomy}.css",
+				'mobile'  => "{$taxonomy}-mobile.css",
+			];
 		}
 
-		$file = $this->critical_css_path . $name;
-
-		if ( ! $this->filesystem->is_readable( $file ) ) {
-			$critical_css = get_rocket_option( 'critical_css', '' );
-			if ( ! empty( $critical_css ) ) {
-				return 'fallback';
-			}
-
-			return false;
+		if ( is_singular() ) {
+			return $this->get_singular_cpcss_filenames();
 		}
 
-		return $file;
+		return $default;
+	}
+
+	/**
+	 * Gets the filenames for a singular content.
+	 *
+	 * @since 3.6
+	 *
+	 * @return array
+	 */
+	private function get_singular_cpcss_filenames() {
+		$post_type  = get_post_type();
+		$post_id    = get_the_ID();
+		$post_cpcss = [
+			'default' => "posts/{$post_type}-{$post_id}.css",
+			'mobile'  => "posts/{$post_type}-{$post_id}-mobile.css",
+		];
+
+		if (
+			$this->is_async_css_mobile()
+			&&
+			! $this->filesystem->exists( $this->critical_css_path . $post_cpcss['mobile'] )
+		) {
+			$post_cpcss['mobile'] = $post_cpcss['default'];
+		}
+
+		if ( $this->filesystem->exists( $this->critical_css_path . $post_cpcss['default'] ) ) {
+			return $post_cpcss;
+		}
+
+		return [
+			'default' => "{$post_type}.css",
+			'mobile'  => "{$post_type}-mobile.css",
+		];
 	}
 
 	/**
@@ -389,7 +474,7 @@ class CriticalCSS {
 	 * @return bool
 	 */
 	private function is_async_css_mobile() {
-		if ( ! $this->options->get( 'do_caching_mobile_files', 0 ) ) {
+		if ( ! (bool) $this->options->get( 'do_caching_mobile_files', 0 ) ) {
 			return false;
 		}
 

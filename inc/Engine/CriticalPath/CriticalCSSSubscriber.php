@@ -2,19 +2,15 @@
 
 namespace WP_Rocket\Engine\CriticalPath;
 
-use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Rocket\Admin\Options_Data;
 use FilesystemIterator;
 use UnexpectedValueException;
-
-
-defined( 'ABSPATH' ) || exit;
+use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
  * Critical CSS Subscriber
  *
- * @since  3.3
- * @author Remy Perona
+ * @since 3.3
  */
 class CriticalCSSSubscriber implements Subscriber_Interface {
 
@@ -442,7 +438,7 @@ JS;
 			return;
 		}
 
-		if ( ! $this->options->get( 'async_css' ) ) {
+		if ( ! $this->options->get( 'async_css', 0 ) ) {
 			return $buffer;
 		}
 
@@ -450,19 +446,9 @@ JS;
 			return $buffer;
 		}
 
-		$current_page_cpcss = $this->critical_css->get_current_page_critical_css();
+		$critical_css_content = $this->critical_css->get_critical_css_content();
 
-		if ( ! $current_page_cpcss ) {
-			return $buffer;
-		}
-
-		if ( 'fallback' === $current_page_cpcss ) {
-			$critical_css_content = $this->options->get( 'critical_css', '' );
-		} else {
-			$critical_css_content = rocket_direct_filesystem()->get_contents( $current_page_cpcss );
-		}
-
-		if ( ! $critical_css_content ) {
+		if ( empty( $critical_css_content ) ) {
 			return $buffer;
 		}
 
