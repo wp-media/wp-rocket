@@ -14,7 +14,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
  * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::generate_critical_css_on_activation
  *
  * @group  Subscribers
- * @group  CriticalCss
+ * @group  CriticalPath
  * @group  vfs
  */
 class Test_GenerateCriticalCssOnActivation extends FilesystemTestCase {
@@ -25,12 +25,12 @@ class Test_GenerateCriticalCssOnActivation extends FilesystemTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		Functions\expect( 'rocket_get_constant' )->atLeast( 1 )->with( 'WP_ROCKET_CRITICAL_CSS_PATH' )->andReturn( $this->filesystem->getUrl( 'cache/critical-css/' ) );
 		Functions\when( 'get_current_blog_id' )->justReturn( 1 );
 		Functions\expect( 'home_url' )->once()->with( '/' )->andReturn( 'http://example.com' );
 
 		$this->critical_css = Mockery::mock( CriticalCSS::class, [
-			$this->createMock( CriticalCSSGeneration::class ),
+			Mockery::mock( CriticalCSSGeneration::class ),
+			Mockery::mock( Options_Data::class ),
 			$this->filesystem,
 		] );
 		$this->subscriber   = new CriticalCSSSubscriber(
