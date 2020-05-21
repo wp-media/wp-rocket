@@ -29,6 +29,7 @@ class Test_EnqueueAdminEditScript extends TestCase {
 		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'setCPCSSOption' ] );
 		delete_post_meta( $this->post_id, '_rocket_exclude_async_css' );
 		unset( $GLOBALS['post'] );
+		unset( $GLOBALS['pagenow'] );
 
 		parent::tearDown();
 	}
@@ -52,7 +53,8 @@ class Test_EnqueueAdminEditScript extends TestCase {
 				add_post_meta( $this->post_id, '_rocket_exclude_async_css', $config['is_option_excluded'], true );
 			}
 
-			$GLOBALS['post'] = $config['post'];
+			$GLOBALS['post']    = $config['post'];
+			$GLOBALS['pagenow'] = $config['pagenow'];
 		}
 
 		$wp_scripts = wp_scripts();
