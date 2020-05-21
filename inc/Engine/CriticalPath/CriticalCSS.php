@@ -137,7 +137,7 @@ class CriticalCSS {
 	 * @since 2.11
 	 * @since 3.6 Replaced glob().
 	 */
-	protected function clean_critical_css() {
+	public function clean_critical_css() {
 		try {
 			$files = new FilesystemIterator( $this->critical_css_path );
 
