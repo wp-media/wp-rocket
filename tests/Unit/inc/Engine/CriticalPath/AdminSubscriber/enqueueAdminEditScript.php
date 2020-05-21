@@ -30,6 +30,7 @@ class Test_EnqueueAdminEditScript extends TestCase {
 
 	protected function tearDown() {
 		unset( $GLOBALS['post'] );
+		unset( $GLOBALS['pagenow'] );
 		parent::tearDown();
 	}
 
@@ -40,6 +41,8 @@ class Test_EnqueueAdminEditScript extends TestCase {
 		if ( in_array( $config['page'], [ 'edit.php', 'post.php' ], true ) ) {
 			$this->setUpTest( $config );
 		}
+	
+		$GLOBALS['pagenow'] = $config['pagenow'];
 
 		Functions\when( 'wp_create_nonce' )->justReturn( 'wp_rest_nonce' );
 		Functions\when( 'rest_url' )->justReturn( 'http://example.org/wp-rocket/v1/cpcss/post/' . $config['post']->ID );
