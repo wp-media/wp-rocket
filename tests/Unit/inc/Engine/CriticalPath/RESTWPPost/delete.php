@@ -4,12 +4,14 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\RESTWPPost;
 
 use Brain\Monkey\Functions;
 use WP_REST_Request;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CriticalPath\APIClient;
 use WP_Rocket\Engine\CriticalPath\ProcessorService;
 use WP_Rocket\Engine\CriticalPath\DataManager;
 use WP_Rocket\Engine\CriticalPath\RESTWPPost;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use WP_Error;
+use Mockery;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\RESTWPPost::delete
@@ -79,7 +81,8 @@ class Test_Delete extends FilesystemTestCase {
 		$api_client    = new APIClient();
 		$data_manager  = new DataManager('wp-content/cache/critical-css/', $this->filesystem);
 		$cpcss_service = new ProcessorService( $data_manager, $api_client );
-		$instance      = new RESTWPPost( $cpcss_service );
+		$options       = Mockery::mock( Options_Data::class );
+		$instance      = new RESTWPPost( $cpcss_service, $options );
 		$request       = new WP_REST_Request();
 		$request['id'] = $post_id;
 

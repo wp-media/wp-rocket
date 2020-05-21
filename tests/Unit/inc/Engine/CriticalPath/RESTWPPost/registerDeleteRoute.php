@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\RESTWPPost;
 
 use Brain\Monkey\Functions;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CriticalPath\APIClient;
 use WP_Rocket\Engine\CriticalPath\ProcessorService;
 use WP_Rocket\Engine\CriticalPath\DataManager;
@@ -17,10 +18,11 @@ use Mockery;
 class Test_RegisterDeleteRoute extends TestCase {
 
 	public function testShouldRegisterRoute() {
-		$api_client = Mockery::mock( APIClient::class );
-		$data_manager = Mockery::mock( DataManager::class );
+		Mockery::mock( APIClient::class );
+		Mockery::mock( DataManager::class );
 		$cpcss_service = Mockery::mock( ProcessorService::class );
-		$instance = new RESTWPPost( $cpcss_service );
+		$options       = Mockery::mock( Options_Data::class );
+		$instance = new RESTWPPost( $cpcss_service, $options );
 
 		Functions\expect( 'register_rest_route' )
 			->once()

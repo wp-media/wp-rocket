@@ -4,12 +4,14 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\RESTWPPost;
 
 use Brain\Monkey\Functions;
 use WP_REST_Request;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CriticalPath\APIClient;
 use WP_Rocket\Engine\CriticalPath\ProcessorService;
 use WP_Rocket\Engine\CriticalPath\DataManager;
 use WP_Rocket\Engine\CriticalPath\RESTWPPost;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use WP_Error;
+use Mockery;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\RESTWPPost::generate
@@ -77,6 +79,9 @@ class Test_Generate extends FilesystemTestCase {
 		$post_url = ('post_not_exists' === $expected['code'])
 			? null
 			: "http://example.org/?p={$post_id}";
+		$async_css_mobile             = isset( $config['async_css_mobile'] )
+			? $config['async_css_mobile']
+			: 0;
 
 		//is_wp_error is called three times at normal/ideal case.
 		//validate_item_for_generate
@@ -174,7 +179,11 @@ class Test_Generate extends FilesystemTestCase {
 		$api_client = new APIClient();
 		$data_manager = new DataManager('wp-content/cache/critical-css/', $this->filesystem);
 		$cpcss_service = new ProcessorService( $data_manager, $api_client );
-		$instance = new RESTWPPost( $cpcss_service );
+		$options = Mockery::mock( Options_Data::class );
+		$options->shouldReceive( 'get' )
+			->with( 'async_css_mobile', 0 )
+			->andReturn( $async_css_mobile );
+		$instance = new RESTWPPost( $cpcss_service, $options );
 		$request       = new WP_REST_Request();
 		$request['id'] = $post_id;
 

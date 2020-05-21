@@ -29,10 +29,12 @@ trait GenerateTrait {
 
 	protected function setUpTest( $config ) {
 		$GLOBALS['post'] = $config['post'];
-		$this->options
-			->shouldReceive( 'get' )
-			->with( 'async_css', 0 )
-			->andReturn( $config['options']['async_css'] );
+		if ( isset( $config['options']['async_css'] ) ) {
+			$this->options
+				->shouldReceive( 'get' )
+				->with( 'async_css', 0 )
+				->andReturn( $config['options']['async_css'] );
+		}
 		Functions\when( 'get_post_meta' )->justReturn( $config['is_option_excluded'] );
 	}
 

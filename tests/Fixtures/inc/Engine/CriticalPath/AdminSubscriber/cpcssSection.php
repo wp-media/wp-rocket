@@ -56,6 +56,7 @@ return [
 		'config' => [
 			'options'            => [
 				'async_css' => 0,
+				'async_css_mobile' => 0,
 			],
 			'post'               => (object) [
 				'ID'          => 1,
@@ -69,6 +70,7 @@ return [
 			// For Unit Test: the data the "generate" method should receive.
 			'data'               => [
 				'disabled_description' => 'Publish the post, Enable Optimize CSS delivery in WP Rocket settings, and Enable Optimize CSS delivery in the options above to use this feature.',
+				'async_css_mobile' => 0,
 			],
 
 			// For the integration test.
@@ -93,6 +95,7 @@ HTML
 		'config'   => [
 			'options'            => [
 				'async_css' => 1,
+				'async_css_mobile' => 1,
 			],
 			'post'               => (object) [
 				'ID'          => 1,
@@ -105,6 +108,7 @@ HTML
 			// For Unit Test: the data the "generate" method should receive.
 			'data'               => [
 				'disabled_description' => 'Publish the post and Enable Optimize CSS delivery in the options above to use this feature.',
+				'async_css_mobile' => 1,
 			],
 
 			// For the integration test.
@@ -129,6 +133,7 @@ HTML
 		'config'   => [
 			'options'            => [
 				'async_css' => 1,
+				'async_css_mobile' => 1,
 			],
 			'post'               => (object) [
 				'ID'          => 1,
@@ -141,6 +146,7 @@ HTML
 			// For Unit Test: the data the "generate" method should receive.
 			'data'               => [
 				'disabled_description' => 'Publish the post to use this feature.',
+				'async_css_mobile' => 1,
 			],
 
 			// For the integration test.
@@ -165,6 +171,7 @@ HTML
 		'config'   => [
 			'options'            => [
 				'async_css' => 1,
+				'async_css_mobile' => 1,
 			],
 			'post'               => (object) [
 				'ID'          => 1,
@@ -177,6 +184,7 @@ HTML
 			// For Unit Test: the data the "generate" method should receive.
 			'data'               => [
 				'disabled_description' => 'Enable Optimize CSS delivery in the options above to use this feature.',
+				'async_css_mobile' => 1,
 			],
 
 			// For the integration test.
@@ -201,6 +209,7 @@ HTML
 		'config' => [
 			'options'            => [
 				'async_css' => 1,
+				'async_css_mobile' => 1,
 			],
 			'post'               => (object) [
 				'ID'          => 1,
@@ -214,6 +223,7 @@ HTML
 			// For Unit Test: the data the "generate" method should receive.
 			'data' => [
 				'disabled_description' => '',
+				'async_css_mobile' => 1,
 			],
 
 			// For the integration test.
