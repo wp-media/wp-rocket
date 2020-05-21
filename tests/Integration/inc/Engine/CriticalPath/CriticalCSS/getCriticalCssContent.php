@@ -13,11 +13,13 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  */
 class Test_GetCriticalCssContent extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSS/getCriticalCssContent.php';
+
 	protected static $critical_css;
+
 	protected $async_css_mobile;
 	protected $cache_mobile;
-    protected $fallback;
-    protected $is_mobile;
+	protected $fallback;
+	protected $is_mobile;
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
@@ -29,8 +31,8 @@ class Test_GetCriticalCssContent extends FilesystemTestCase {
 	public function tearDown() {
 		remove_filter( 'wp_is_mobile', [ $this, 'is_mobile' ] );
 		remove_filter( 'pre_get_rocket_option_do_caching_mobile_files', [ $this, 'cache_mobile' ] );
-        remove_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'async_css_mobile' ] );
-        remove_filter( 'pre_get_rocket_option_critical_css', [ $this, 'critical_css' ] );
+		remove_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'async_css_mobile' ] );
+		remove_filter( 'pre_get_rocket_option_critical_css', [ $this, 'critical_css' ] );
 
 		parent::tearDown();
 	}
@@ -46,8 +48,8 @@ class Test_GetCriticalCssContent extends FilesystemTestCase {
 
 		add_filter( 'wp_is_mobile', [ $this, 'is_mobile' ] );
 		add_filter( 'pre_get_rocket_option_do_caching_mobile_files', [ $this, 'cache_mobile' ] );
-        add_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'async_css_mobile' ] );
-        add_filter( 'pre_get_rocket_option_critical_css', [ $this, 'critical_css' ] );
+		add_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'async_css_mobile' ] );
+		add_filter( 'pre_get_rocket_option_critical_css', [ $this, 'critical_css' ] );
 
 		foreach ( $config['expected_type'] as $expected_type ) {
 			if ( ! empty( $expected_type['param'] ) ) {
@@ -67,16 +69,16 @@ class Test_GetCriticalCssContent extends FilesystemTestCase {
 		}
 
 		$this->assertSame(
-            $expected,
-            self::$critical_css->get_critical_css_content()
-        );
-    }
+			$expected,
+			self::$critical_css->get_critical_css_content()
+		);
+	}
 
-    public function async_css_mobile() {
+	public function async_css_mobile() {
 		return $this->async_css_mobile;
-    }
+	}
 
-    public function cache_mobile() {
+	public function cache_mobile() {
 		return $this->cache_mobile;
 	}
 
