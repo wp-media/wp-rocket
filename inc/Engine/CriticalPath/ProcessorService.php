@@ -217,6 +217,7 @@ class ProcessorService {
 	 * @param string $item_path  Item Path for web page to be processed.
 	 * @param string $item_url   Item Url for web page to be processed.
 	 * @param string $cpcss_code CPCSS Code to be saved.
+	 * @param bool   $is_mobile  Bool identifier for is_mobile CPCSS generation.
 	 *
 	 * @return array|WP_Error
 	 */
