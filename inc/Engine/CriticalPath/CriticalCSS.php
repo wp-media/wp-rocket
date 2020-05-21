@@ -455,7 +455,7 @@ class CriticalCSS {
 	 * @return bool
 	 */
 	private function is_async_css_mobile() {
-		if ( ! $this->options->get( 'do_caching_mobile_files', 0 ) ) {
+		if ( ! (bool) $this->options->get( 'do_caching_mobile_files', 0 ) ) {
 			return false;
 		}
 

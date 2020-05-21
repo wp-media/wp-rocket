@@ -21,14 +21,14 @@ class Test_GetCurrentPageCriticalCSS extends FilesystemTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		Functions\expect( 'home_url' )->with( '/' )->andReturn( 'http://example.org/' );
+		Functions\when( 'home_url' )->justReturn( 'http://example.org/' );
 	}
 
 	/**
-	 * @dataProvider nonMultisiteTestData
+	 * @dataProvider providerTestData
 	 */
-	public function testShouldDoExpected( $config, $expected_file, $fallback = null ) {
-		Functions\expect( 'get_current_blog_id' )->andReturn( $config['blog_id'] );
+	public function testShouldDoExpected( $config, $expected_file ) {
+		Functions\when( 'get_current_blog_id' )->justReturn( 1 );
 
 		foreach ( $config['expected_type'] as $expected_type ) {
 			if ( ! empty( $expected_type['param'] ) ) {
@@ -49,17 +49,15 @@ class Test_GetCurrentPageCriticalCSS extends FilesystemTestCase {
 
 		$options = Mockery::mock( Options_Data::class );
 		$options->shouldReceive( 'get' )
-		        ->zeroOrMoreTimes()
+				->zeroOrMoreTimes()
 		        ->with( 'do_caching_mobile_files', 0 )
-		        ->andReturnArg( 1 );
+		        ->andReturn( $config['settings']['do_caching_mobile_files'] );
 		$options->shouldReceive( 'get' )
-		        ->zeroOrMoreTimes()
-		        ->withSomeOfArgs( 'async_css_mobile', 0 )
-		        ->andReturnArg( 1 );
-		$options->shouldReceive( 'get' )
-		        ->zeroOrMoreTimes()
-		        ->withSomeOfArgs( 'critical_css', '' )
-		        ->andReturnArg( 1 );
+				->zeroOrMoreTimes()
+		        ->with( 'async_css_mobile', 0 )
+				->andReturn( $config['settings']['async_css_mobile'] );
+
+		Functions\when( 'wp_is_mobile' )->justReturn( $config['wp_is_mobile'] );
 
 		$critical_css = new CriticalCSS(
 			Mockery::mock( CriticalCSSGeneration::class ),
@@ -67,21 +65,18 @@ class Test_GetCurrentPageCriticalCSS extends FilesystemTestCase {
 			$this->filesystem
 		);
 
-		$get_current_page_critical_css = $critical_css->get_current_page_critical_css();
+		$current_page_critical_css = $critical_css->get_current_page_critical_css();
 
 		if ( ! empty( $expected_file ) ) {
-			$this->assertSame( $this->filesystem->getUrl( $expected_file ), $get_current_page_critical_css );
+			$this->assertSame(
+				$this->filesystem->getUrl( $expected_file ),
+				$current_page_critical_css
+			);
+		} else {
+			$this->assertSame(
+				$expected_file,
+				$current_page_critical_css
+			);
 		}
-		if ( isset( $fallback ) ) {
-			$this->assertSame( $fallback, $get_current_page_critical_css );
-		}
-	}
-
-	public function nonMultisiteTestData() {
-		if ( empty( $this->config ) ) {
-			$this->loadConfig();
-		}
-
-		return $this->config['test_data']['non_multisite'];
 	}
 }
