@@ -35,7 +35,7 @@ const checkCPCSSGeneration = ( timeout = null, is_mobile = false ) => {
 		const cpcss_response = JSON.parse( xhttp.response );
 		if ( 200 !== cpcss_response.data.status ) {
 			stopCPCSSGeneration( spinner );
-			cpcssNotice( cpcss_response.message, 'error' );
+			cpcssNotice( cpcss_response.message, 'error', is_mobile );
 			rocketGenerateCPCSSbtn.disabled = false;
 			return;
 		}
@@ -43,7 +43,7 @@ const checkCPCSSGeneration = ( timeout = null, is_mobile = false ) => {
 		if ( 200 === cpcss_response.data.status &&
 			'cpcss_generation_pending' !== cpcss_response.code ) {
 			stopCPCSSGeneration( spinner, is_mobile );
-			cpcssNotice( cpcss_response.message, 'success' );
+			cpcssNotice( cpcss_response.message, 'success', is_mobile );
 
 			// Revert view to Regenerate.
 			rocketGenerateCPCSSbtn.querySelector( '.rocket-generate-post-cpss-btn-txt' ).innerHTML = rocket_cpcss.regenerate_btn;
@@ -126,9 +126,9 @@ const deleteCPCSS = () => {
 	xhttp.send();
 }
 
-const cpcssNotice = ( msg, type ) => {
+const cpcssNotice = ( msg, type, is_mobile = false ) => {
 	/* Add notice class */
-	const cpcssNotice     = document.getElementById( 'cpcss_response_notice' );
+	const cpcssNotice     = document.getElementById( 'cpcss_response_notice' + ( is_mobile ? '_mobile' : '' ) );
 	cpcssNotice.innerHTML = '';
 	cpcssNotice.classList.remove( 'hidden', 'notice', 'notice-error', 'notice-success' );
 	cpcssNotice.classList.add( 'notice', 'notice-' + type );

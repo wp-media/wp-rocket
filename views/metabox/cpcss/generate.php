@@ -57,6 +57,3 @@ $rocket_cpcss_exists = empty( $data['cpcss_exists'] );
 		</span>
 	</button>
 </div>
-<script type="text/javascript">
-	let wprMobileCpcssEnabled = <?php echo esc_js( $data['async_css_mobile'] ); ?>;
-</script>

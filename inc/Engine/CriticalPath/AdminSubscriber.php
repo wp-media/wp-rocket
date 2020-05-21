@@ -121,6 +121,7 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 	public function cpcss_section() {
 		$data = [
 			'disabled_description' => $this->get_disabled_description(),
+			'async_css_mobile'     => $this->options->get( 'async_css_mobile', 0 ),
 		];
 
 		echo $this->generate( 'container', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -135,10 +136,9 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 	 */
 	public function cpcss_actions() {
 		$data = [
-			'disabled'         => $this->is_enabled(),
-			'beacon'           => $this->beacon->get_suggest( 'specific_cpcss' ),
-			'cpcss_exists'     => $this->cpcss_exists(),
-			'async_css_mobile' => $this->options->get( 'async_css_mobile', 0 ),
+			'disabled'     => $this->is_enabled(),
+			'beacon'       => $this->beacon->get_suggest( 'specific_cpcss' ),
+			'cpcss_exists' => $this->cpcss_exists(),
 		];
 
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
