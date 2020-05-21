@@ -56,7 +56,7 @@ class CriticalCSSGeneration extends WP_Background_Process {
 			$timeout = true;
 		}
 
-		$generated = $this->processor->process_generate( $item['url'], $item['path'], $timeout );
+		$generated = $this->processor->process_generate( $item['url'], $item['path'], $timeout, $item['mobile'] );
 
 		if ( is_wp_error( $generated ) ) {
 			$transient['items'][] = $generated->get_error_message( 'cpcss_generation_failed' );
