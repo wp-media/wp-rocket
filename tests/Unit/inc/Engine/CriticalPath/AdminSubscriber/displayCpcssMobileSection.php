@@ -38,9 +38,17 @@ class Test_DisplayCpcssMobileSection extends TestCase {
 				->andReturn( $option );
 		}
 
+		$config['beacon'] = isset( $config['beacon'] ) ? $config['beacon'] : '';
+
+		if ( ! empty( $config['beacon'] ) ) {
+			$this->beacon->shouldReceive( 'get_suggest' )
+						->once()
+						->andReturn( $config['beacon'] );
+		}
+
 		Functions\when( 'current_user_can' )->justReturn( $config['current_user_can'] );
 
-		$this->setUpGenerate( 'activate-cpcss-mobile', ['beacon' => ''] );
+		$this->setUpGenerate( 'activate-cpcss-mobile', ['beacon' => $config['beacon'] ] );
 
 		ob_start();
 		$this->subscriber->display_cpcss_mobile_section();

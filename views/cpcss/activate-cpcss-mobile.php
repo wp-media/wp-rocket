@@ -11,13 +11,23 @@ defined( 'ABSPATH' ) || exit;
 <div id="wpr-mobile_cpcss_view" class="wpr-tools">
 	<div class="wpr-tools-col">
 		<div class="wpr-title3 wpr-tools-label wpr-icon-stack"><?php esc_html_e( 'Optimize CSS delivery for mobile', 'rocket' ); ?></div>
-		<div class="wpr-field-description"><?php esc_html_e( 'Your website currently uses the same Critical Path CSS for both desktop and mobile.', 'rocket' ); ?></div>
-		<div class="wpr-field-description"><?php esc_html_e( 'Click the button to enable mobile-specific CPCSS for your site.', 'rocket' ); ?></div>
-		<div class="wpr-field-description">
+		<div class="wpr-field-description wpr-hide-on-click"><?php esc_html_e( 'Your website currently uses the same Critical Path CSS for both desktop and mobile.', 'rocket' ); ?></div>
+		<div class="wpr-field-description wpr-hide-on-click"><?php esc_html_e( 'Click the button to enable mobile-specific CPCSS for your site.', 'rocket' ); ?></div>
+		<div class="wpr-field-description wpr-hide-on-click">
 			<?php
 			printf(
 				// translators: %1$s = opening link tag, %2$s = closing link tag.
 				esc_html__( 'This is a one-time action and this button will be removed afterwards. %1$sMore info%2$s', 'rocket' ),
+				'<a href="' . esc_url( $data['beacon'] ) . '" target="_blank" rel="noopener noreferrer">',
+				'</a>'
+				);
+			?>
+		</div>
+		<div class="wpr-field-description wpr-field wpr-isHidden wpr-show-on-click">
+			<?php
+			printf(
+				// translators: %1$s = opening link tag, %2$s = closing link tag.
+				esc_html__( 'Your site is now using mobile-specific critical path CSS. %1$sMore info%2$s', 'rocket' ),
 				'<a href="' . esc_url( $data['beacon'] ) . '" target="_blank" rel="noopener noreferrer">',
 				'</a>'
 				);

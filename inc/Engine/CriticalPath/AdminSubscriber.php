@@ -120,7 +120,7 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 		}
 
 		$data = [
-			'beacon' => '',
+			'beacon' => $this->beacon->get_suggest( 'specific_cpcss' ),
 		];
 
 		echo $this->generate( 'activate-cpcss-mobile', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped

@@ -99,8 +99,10 @@ $(document).ready(function(){
             },
 			function(response) {
 				if ( response.success ) {
-					// Hide Mobile CPCSS view on success.
-					$('#wpr-mobile_cpcss_view').hide();
+					// Hide Mobile CPCSS btn on success.
+					$('#wpr-action-rocket_enable_mobile_cpcss').hide();
+					$('.wpr-hide-on-click').hide();
+					$('.wpr-show-on-click').show();
 				}
 			}
         );
