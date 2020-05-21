@@ -56,12 +56,13 @@ class CriticalCSSGeneration extends WP_Background_Process {
 	protected function task( $item ) {
 		$timeout   = false;
 		$transient = get_transient( 'rocket_critical_css_generation_process_running' );
+		$mobile    = isset( $item['mobile'] ) ? true : false;
 
 		if ( 10 < $item['check'] ) {
 			$timeout = true;
 		}
 
-		$generated = $this->processor->process_generate( $item['url'], $item['path'], $timeout, $item['mobile'] );
+		$generated = $this->processor->process_generate( $item['url'], $item['path'], $timeout, $mobile );
 
 		if ( is_wp_error( $generated ) ) {
 			$transient['items'][] = $generated->get_error_message( 'cpcss_generation_failed' );
