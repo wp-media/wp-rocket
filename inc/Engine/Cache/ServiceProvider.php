@@ -34,7 +34,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$filesystem = rocket_direct_filesystem();
 
 		$this->getContainer()->add( 'advanced_cache', 'WP_Rocket\Engine\Cache\AdvancedCache' )
-			->withArgument( $this->getContainer()->get( 'template_path' ) . 'cache/' )
+			->withArgument( $this->getContainer()->get( 'template_path' ) . '/cache/' )
 			->withArgument( $filesystem );
 		$this->getContainer()->share( 'purge_actions_subscriber', 'WP_Rocket\Engine\Cache\PurgeActionsSubscriber' )
 			->withArgument( $this->getContainer()->get( 'options' ) );
