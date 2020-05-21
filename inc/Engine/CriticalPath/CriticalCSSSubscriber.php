@@ -167,9 +167,14 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 		}
 
 		try {
-			if ( ( new FilesystemIterator( $critical_css_path, FilesystemIterator::SKIP_DOTS ) )->valid() ) {
-				// Bail out if the folder has no files (not folders).
-				return;
+			$critical_css_path_file_iterator = ( new FilesystemIterator( $critical_css_path, FilesystemIterator::SKIP_DOTS ) );
+			if ( $critical_css_path_file_iterator->valid() ) {
+				// Bail out if this folder has no files (not folders).
+				foreach ( $critical_css_path_file_iterator as $file ) {
+					if ( $file->isFile() ) {
+						return;
+					}
+				}
 			}
 		} catch ( UnexpectedValueException $e ) {
 			// Bail out when folder is invalid.
