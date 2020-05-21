@@ -129,12 +129,13 @@ class DataManager {
 	 *
 	 * @since 3.6
 	 *
-	 * @param string $item_url URL for item to be used in error messages.
+	 * @param string $item_url  URL for item to be used in error messages.
+	 * @param bool   $is_mobile Bool identifier for is_mobile CPCSS generation.
 	 *
 	 * @return mixed
 	 */
-	public function get_cache_job_id( $item_url ) {
-		$cache_key = $this->get_cache_key_from_url( $item_url );
+	public function get_cache_job_id( $item_url, $is_mobile = false ) {
+		$cache_key = $this->get_cache_key_from_url( $item_url, $is_mobile );
 
 		return get_transient( $cache_key );
 	}
@@ -144,13 +145,14 @@ class DataManager {
 	 *
 	 * @since 3.6
 	 *
-	 * @param string $item_url URL for item to be used in error messages.
-	 * @param string $job_id   ID for the job to get details.
+	 * @param string $item_url  URL for item to be used in error messages.
+	 * @param string $job_id    ID for the job to get details.
+	 * @param bool   $is_mobile Bool identifier for is_mobile CPCSS generation.
 	 *
 	 * @return bool
 	 */
-	public function set_cache_job_id( $item_url, $job_id ) {
-		$cache_key = $this->get_cache_key_from_url( $item_url );
+	public function set_cache_job_id( $item_url, $job_id, $is_mobile = false ) {
+		$cache_key = $this->get_cache_key_from_url( $item_url, $is_mobile );
 
 		return set_transient( $cache_key, $job_id, HOUR_IN_SECONDS );
 	}
@@ -160,12 +162,13 @@ class DataManager {
 	 *
 	 * @since 3.6
 	 *
-	 * @param string $item_url URL for item to be used in error messages.
+	 * @param string $item_url  URL for item to be used in error messages.
+	 * @param bool   $is_mobile Bool identifier for is_mobile CPCSS generation.
 	 *
 	 * @return bool
 	 */
-	public function delete_cache_job_id( $item_url ) {
-		$cache_key = $this->get_cache_key_from_url( $item_url );
+	public function delete_cache_job_id( $item_url, $is_mobile = false ) {
+		$cache_key = $this->get_cache_key_from_url( $item_url, $is_mobile );
 
 		return delete_transient( $cache_key );
 	}
@@ -175,13 +178,14 @@ class DataManager {
 	 *
 	 * @since 3.6
 	 *
-	 * @param string $item_url URL for item to be used in error messages.
+	 * @param string $item_url  URL for item to be used in error messages.
+	 * @param bool   $is_mobile Bool identifier for is_mobile CPCSS generation.
 	 *
 	 * @return string
 	 */
-	private function get_cache_key_from_url( $item_url ) {
+	private function get_cache_key_from_url( $item_url, $is_mobile = false ) {
 		$encoded_url = md5( $item_url );
 
-		return 'rocket_specific_cpcss_job_' . $encoded_url;
+		return 'rocket_specific_cpcss_job_' . $encoded_url . ( $is_mobile ? '_mobile' : '' );
 	}
 }

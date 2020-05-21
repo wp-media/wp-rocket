@@ -315,9 +315,8 @@ class CriticalCSS {
 			$mobile_items = [];
 
 			foreach ( $this->items as $key => $value ) {
-				$value['mobile'] = 1;
-				$value['path']   = str_replace( '.css', '-mobile.css', $value['path'] );
-
+				$value['mobile']                 = 1;
+				$value['path']                   = str_replace( '.css', '-mobile.css', $value['path'] );
 				$mobile_items[ "{$key}-mobile" ] = $value;
 			}
 

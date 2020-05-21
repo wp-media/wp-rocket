@@ -95,13 +95,14 @@ class RESTWPPost extends RESTWP {
 	 *
 	 * @since 3.6
 	 *
-	 * @param int $post_id ID for this post to be validated.
+	 * @param int  $post_id   ID for this post to be validated.
+	 * @param bool $is_mobile Bool identifier for is_mobile CPCSS generation.
 	 *
 	 * @return string
 	 */
-	protected function get_path( $post_id ) {
+	protected function get_path( $post_id, $is_mobile = false ) {
 		$post_type = get_post_type( $post_id );
 
-		return 'posts' . DIRECTORY_SEPARATOR . "{$post_type}-{$post_id}.css";
+		return 'posts' . DIRECTORY_SEPARATOR . "{$post_type}-{$post_id}" . ( $is_mobile ? '-mobile' : '' ) . '.css';
 	}
 }

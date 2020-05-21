@@ -1,9 +1,11 @@
 let checkCPCSSGenerationCall;
-let cpcsssGenerationPending  = 0;
-const rocketDeleteCPCSSbtn   = document.getElementById( 'rocket-delete-post-cpss' );
-const rocketGenerateCPCSSbtn = document.getElementById( 'rocket-generate-post-cpss' );
-const rocketCPCSSGenerate    = document.querySelectorAll( '.cpcss_generate' );
-const rocketCPCSSReGenerate  = document.querySelectorAll( '.cpcss_regenerate' );
+let checkCPCSSMobileGenerationCall;
+let cpcsssGenerationPending       = 0;
+let cpcsssMobileGenerationPending = 0;
+const rocketDeleteCPCSSbtn        = document.getElementById( 'rocket-delete-post-cpss' );
+const rocketGenerateCPCSSbtn      = document.getElementById( 'rocket-generate-post-cpss' );
+const rocketCPCSSGenerate         = document.querySelectorAll( '.cpcss_generate' );
+const rocketCPCSSReGenerate       = document.querySelectorAll( '.cpcss_regenerate' );
 
 rocketDeleteCPCSSbtn.addEventListener( 'click', e => {
 	e.preventDefault();
@@ -13,10 +15,13 @@ rocketDeleteCPCSSbtn.addEventListener( 'click', e => {
 rocketGenerateCPCSSbtn.addEventListener( 'click', e => {
 	e.preventDefault();
 	rocketGenerateCPCSSbtn.disabled = true;
-	checkCPCSSGeneration();
+	checkCPCSSGeneration( null, false );
+	if ( wprMobileCpcssEnabled ) {
+		checkCPCSSGeneration( null, true );
+	}
 } );
 
-const checkCPCSSGeneration = ( timeout = null ) => {
+const checkCPCSSGeneration = ( timeout = null, is_mobile = false ) => {
 	const spinner                   = rocketGenerateCPCSSbtn.querySelector( '.spinner' );
 	spinner.style.display           = 'block';
 	spinner.style.visibility        = 'visible';
@@ -37,7 +42,7 @@ const checkCPCSSGeneration = ( timeout = null ) => {
 
 		if ( 200 === cpcss_response.data.status &&
 			'cpcss_generation_pending' !== cpcss_response.code ) {
-			stopCPCSSGeneration( spinner );
+			stopCPCSSGeneration( spinner, is_mobile );
 			cpcssNotice( cpcss_response.message, 'success' );
 
 			// Revert view to Regenerate.
@@ -49,29 +54,45 @@ const checkCPCSSGeneration = ( timeout = null ) => {
 			return;
 		}
 
-		cpcsssGenerationPending++;
+		if ( is_mobile ) {
+			cpcsssMobileGenerationPending++;
+			if ( cpcsssMobileGenerationPending > 10 ) {
+				stopCPCSSGeneration( spinner, is_mobile );
+				cpcsssMobileGenerationPending = 0;
+				checkCPCSSGeneration( true, true );
+				return;
+			}
+			checkCPCSSMobileGenerationCall = setTimeout( () => {
+				checkCPCSSGeneration( null, true );
+			}, 3000 );
+		} else {
+			cpcsssGenerationPending++;
+			if ( cpcsssGenerationPending > 10 ) {
+				stopCPCSSGeneration( spinner, is_mobile );
+				cpcsssGenerationPending = 0;
+				checkCPCSSGeneration( true, false );
+				return;
+			}
 
-		if ( cpcsssGenerationPending > 10 ) {
-			stopCPCSSGeneration( spinner );
-			cpcsssGenerationPending = 0;
-			checkCPCSSGeneration( true );
-			return;
+			checkCPCSSGenerationCall = setTimeout( () => {
+				checkCPCSSGeneration( null, false );
+			}, 3000 );
 		}
-
-		checkCPCSSGenerationCall = setTimeout( () => {
-			checkCPCSSGeneration();
-		}, 3000 );
 	};
 
 	xhttp.open( 'POST', rocket_cpcss.rest_url, true );
 	xhttp.setRequestHeader( 'Content-Type', 'application/json;charset=UTF-8' );
 	xhttp.setRequestHeader( 'X-WP-Nonce', rocket_cpcss.rest_nonce );
-	xhttp.send( JSON.stringify( { timeout: timeout } ) );
+	xhttp.send( JSON.stringify( { timeout: timeout, is_mobile: is_mobile } ) );
 }
 
-const stopCPCSSGeneration = ( spinner ) => {
+const stopCPCSSGeneration = ( spinner, is_mobile ) => {
 	spinner.style.display = 'none';
-	clearTimeout( checkCPCSSGenerationCall );
+	if ( is_mobile ) {
+		clearTimeout( checkCPCSSMobileGenerationCall );
+	} else {
+		clearTimeout( checkCPCSSGenerationCall );
+	}
 }
 
 const deleteCPCSS = () => {

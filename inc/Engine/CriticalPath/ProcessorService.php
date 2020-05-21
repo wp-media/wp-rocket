@@ -51,7 +51,7 @@ class ProcessorService {
 			return $this->process_timeout( $item_url, $is_mobile );
 		}
 
-		$cpcss_job_id = $this->data_manager->get_cache_job_id( $item_url );
+		$cpcss_job_id = $this->data_manager->get_cache_job_id( $item_url, $is_mobile );
 		if ( false === $cpcss_job_id ) {
 			return $this->send_generation_request( $item_url, $item_path, $is_mobile );
 		}
@@ -86,7 +86,7 @@ class ProcessorService {
 
 		// Send generation request succeeded.
 		// Save job_id into cache.
-		$this->data_manager->set_cache_job_id( $item_url, $generated_job->data->id );
+		$this->data_manager->set_cache_job_id( $item_url, $generated_job->data->id, $is_mobile );
 
 		return $this->check_cpcss_job_status( $generated_job->data->id, $item_path, $item_url, $is_mobile );
 	}
@@ -120,7 +120,7 @@ class ProcessorService {
 	 * @param string $job_id    ID for the job to get details.
 	 * @param string $item_path Path for this item to be validated.
 	 * @param string $item_url  URL for item to be used in error messages.
-	 * @param bool   $is_mobile If this is cpcss for mobile or not.
+	 * @param bool   $is_mobile Bool identifier for is_mobile CPCSS generation.
 	 *
 	 * @return array|WP_Error Response in case of success, failure or pending.
 	 */
@@ -163,14 +163,20 @@ class ProcessorService {
 	 *
 	 * @param array  $job_details Job details array.
 	 * @param string $item_url    Url for web page to be processed, used for error messages.
+	 * @param bool   $is_mobile   Bool identifier for is_mobile CPCSS generation.
 	 *
 	 * @return WP_Error
 	 */
-	private function on_job_error( $job_details, $item_url ) {
-		$this->data_manager->delete_cache_job_id( $item_url );
+	private function on_job_error( $job_details, $item_url, $is_mobile = false ) {
+		$this->data_manager->delete_cache_job_id( $item_url, $is_mobile );
 
-		// translators: %1$s = page URL.
-		$error = sprintf( __( 'Critical CSS for %1$s not generated.', 'rocket' ), $item_url );
+		if ( $is_mobile ) {
+			// translators: %1$s = page URL.
+			$error = sprintf( __( 'Mobile Critical CSS for %1$s not generated.', 'rocket' ), $item_url );
+		} else {
+			// translators: %1$s = page URL.
+			$error .= sprintf( __( 'Critical CSS for %1$s not generated.', 'rocket' ), $item_url );
+		}
 
 		if ( isset( $job_details->message ) ) {
 			// translators: %1$s = error message.
@@ -214,14 +220,22 @@ class ProcessorService {
 	 *
 	 * @return array|WP_Error
 	 */
-	private function on_job_success( $item_path, $item_url, $cpcss_code ) {
+	private function on_job_success( $item_path, $item_url, $cpcss_code, $is_mobile = false ) {
 		// delete cache job_id for this item.
-		$this->data_manager->delete_cache_job_id( $item_url );
+		$this->data_manager->delete_cache_job_id( $item_url, $is_mobile );
 
 		// save the generated CPCSS code into file.
 		$saved = $this->data_manager->save_cpcss( $item_path, $cpcss_code, $item_url );
 		if ( is_wp_error( $saved ) ) {
 			return $saved;
+		}
+
+		if ( $is_mobile ) {
+			return [
+				'code'    => 'cpcss_generation_successful',
+				// translators: %s = post URL.
+				'message' => sprintf( __( 'Mobile Critical CSS for %s generated.', 'rocket' ), $item_url ),
+			];
 		}
 
 		// Send the current status of job.
@@ -257,13 +271,23 @@ class ProcessorService {
 	 *
 	 * @since 3.6
 	 *
-	 * @param string $item_url URL for item to be used in error messages.
-	 * @param bool   $is_mobile If this request is for mobile cpcss.
-	 *
+	 * @param string $item_url  URL for item to be used in error messages.
+	 * @param bool   $is_mobile Bool identifier for is_mobile CPCSS generation.
 	 * @return WP_Error
 	 */
 	private function process_timeout( $item_url, $is_mobile = false ) {
-		$this->data_manager->delete_cache_job_id( $item_url );
+		$this->data_manager->delete_cache_job_id( $item_url, $is_mobile );
+
+		if ( $is_mobile ) {
+			return new WP_Error(
+				'cpcss_generation_timeout',
+				// translators: %1$s = Item URL.
+				sprintf( __( 'Mobile Critical CSS for %1$s timeout. Please retry a little later.', 'rocket' ), $item_url ),
+				[
+					'status' => 400,
+				]
+			);
+		}
 
 		return new WP_Error(
 			'cpcss_generation_timeout',

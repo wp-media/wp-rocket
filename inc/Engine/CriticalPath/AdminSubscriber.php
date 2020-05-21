@@ -135,9 +135,10 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 	 */
 	public function cpcss_actions() {
 		$data = [
-			'disabled'     => $this->is_enabled(),
-			'beacon'       => $this->beacon->get_suggest( 'specific_cpcss' ),
-			'cpcss_exists' => $this->cpcss_exists(),
+			'disabled'         => $this->is_enabled(),
+			'beacon'           => $this->beacon->get_suggest( 'specific_cpcss' ),
+			'cpcss_exists'     => $this->cpcss_exists(),
+			'async_css_mobile' => $this->options->get( 'async_css_mobile', 0 ),
 		];
 
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped

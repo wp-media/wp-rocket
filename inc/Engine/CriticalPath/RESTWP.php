@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\CriticalPath;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_Error;
+use WP_Rocket\Admin\Options_Data;
 
 /**
  * Class RESTWP
@@ -33,14 +34,23 @@ abstract class RESTWP implements RESTWPInterface {
 	private $cpcss_service;
 
 	/**
+	 * WP Rocket options instance.
+	 *
+	 * @var Options_Data
+	 */
+	private $options;
+
+	/**
 	 * RESTWP constructor.
 	 *
 	 * @since 3.6
 	 *
 	 * @param ProcessorService $cpcss_service Has the logic for cpcss generation and deletion.
+	 * @param Options_Data     $options       Instance of options data handler.
 	 */
-	public function __construct( ProcessorService $cpcss_service ) {
+	public function __construct( ProcessorService $cpcss_service, Options_Data $options ) {
 		$this->cpcss_service = $cpcss_service;
+		$this->options       = $options;
 	}
 
 	/**
@@ -100,7 +110,24 @@ abstract class RESTWP implements RESTWPInterface {
 	 * @return WP_REST_Response
 	 */
 	public function generate( WP_REST_Request $request ) {
-		$item_id = (int) $request->get_param( 'id' );
+		$item_id   = (int) $request->get_param( 'id' );
+		$is_mobile = (bool) $request->get_param( 'is_mobile' );
+
+		// Bailout in case mobile CPCSS generation is called but this option is disabled.
+		if ( $is_mobile && ! $this->options->get( 'async_css_mobile', 0 ) ) {
+			return rest_ensure_response(
+				$this->return_error(
+					new WP_Error(
+						'mobile_cpcss_not_enabled',
+						__( 'Mobile CPCSS generation not enabled.', 'rocket' ),
+						[
+							'status' => 400,
+						]
+					)
+				)
+			);
+		}
+
 		// validate item.
 		$validated = $this->validate_item_for_generate( $item_id );
 		if ( is_wp_error( $validated ) ) {
@@ -109,10 +136,13 @@ abstract class RESTWP implements RESTWPInterface {
 
 		// get item url.
 		$item_url  = $this->get_url( $item_id );
-		$item_path = $this->get_path( $item_id );
 		$timeout   = ( isset( $request['timeout'] ) && ! empty( $request['timeout'] ) );
+		$item_path = $this->get_path( $item_id );
+		if ( $is_mobile ) {
+			$item_path = $this->get_path( $item_id, true );
+		}
 
-		$generated = $this->cpcss_service->process_generate( $item_url, $item_path, $timeout );
+		$generated = $this->cpcss_service->process_generate( $item_url, $item_path, $timeout, $is_mobile );
 
 		if ( is_wp_error( $generated ) ) {
 			return rest_ensure_response(
@@ -164,11 +194,12 @@ abstract class RESTWP implements RESTWPInterface {
 	 *
 	 * @since 3.6
 	 *
-	 * @param int $item_id ID for this item to get the path for.
+	 * @param int  $item_id   ID for this item to get the path for.
+	 * @param bool $is_mobile Bool identifier for is_mobile CPCSS generation.
 	 *
 	 * @return string
 	 */
-	abstract protected function get_path( $item_id );
+	abstract protected function get_path( $item_id, $is_mobile = false );
 
 	/**
 	 * Delete Post ID CPCSS file.
