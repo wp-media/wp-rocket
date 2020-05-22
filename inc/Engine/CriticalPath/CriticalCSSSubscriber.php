@@ -136,6 +136,10 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 			wp_nonce_ays( '' );
 		}
 
+		if ( ! current_user_can( 'rocket_regenerate_critical_css' ) ) {
+			wp_die();
+		}
+
 		$version = 'default';
 
 		if ( $this->critical_css->is_async_css_mobile() ) {
@@ -149,7 +153,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 		}
 
 		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
-		die();
+		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
 	}
 
 	/**
