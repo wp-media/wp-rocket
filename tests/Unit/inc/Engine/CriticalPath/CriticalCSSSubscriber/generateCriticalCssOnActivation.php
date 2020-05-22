@@ -25,14 +25,7 @@ class Test_GenerateCriticalCssOnActivation extends FilesystemTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		Functions\when( 'get_current_blog_id' )->justReturn( 1 );
-		Functions\expect( 'home_url' )->once()->with( '/' )->andReturn( 'http://example.com' );
-
-		$this->critical_css = Mockery::mock( CriticalCSS::class, [
-			Mockery::mock( CriticalCSSGeneration::class ),
-			Mockery::mock( Options_Data::class ),
-			$this->filesystem,
-		] );
+		$this->critical_css = Mockery::mock( CriticalCSS::class );
 		$this->subscriber   = new CriticalCSSSubscriber(
 			$this->critical_css,
 			$this->createMock( Options_Data::class )
