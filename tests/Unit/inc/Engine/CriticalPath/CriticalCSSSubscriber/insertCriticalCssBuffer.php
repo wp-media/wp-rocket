@@ -3,40 +3,30 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\CriticalCSSSubscriber;
 
 use Brain\Monkey\Functions;
-use Mockery;
-use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\CriticalPath\CriticalCSS;
-use WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration;
-use WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::insert_critical_css_buffer
+ * @uses   ::rocket_get_constant
+ * @uses   ::is_rocket_post_excluded_option
+ * @uses   \WP_Rocket\Engine\CriticalPath\CriticalCss::get_critical_css_content
+ * @uses   \WP_Rocket\Admin\Options_Data::get
  *
  * @group  Subscribers
  * @group  CriticalPath
  * @group  vfs
  */
 class Test_InsertCriticalCssBuffer extends FilesystemTestCase {
+	use SubscriberTrait;
+
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSSSubscriber/insertCriticalCssBufferUnit.php';
-	private   $critical_css;
-	private   $subscriber;
-	private   $options;
 
 	public function setUp() {
 		parent::setUp();
 
-		Functions\when( 'get_current_blog_id' )->justReturn( 1 );
-		Functions\expect( 'home_url' )->once()->with( '/' )->andReturn( 'http://example.com/' );
 		Functions\when( 'wp_strip_all_tags' )->returnArg();
 
-		$this->critical_css = Mockery::mock( CriticalCSS::class, [
-			Mockery::mock( CriticalCSSGeneration::class ),
-			Mockery::mock( Options_Data::class ),
-			$this->filesystem,
-		] );
-		$this->options      = Mockery::mock( Options_Data::class );
-		$this->subscriber   = new CriticalCSSSubscriber( $this->critical_css, $this->options );
+		$this->setUpTests( $this->filesystem, 1 );
 	}
 
 	/**
@@ -59,9 +49,10 @@ class Test_InsertCriticalCssBuffer extends FilesystemTestCase {
 		}
 
 		foreach ( $config['options'] as $name => $value ) {
-			$this->options->shouldReceive( 'get' )
-			              ->with( $name, $value['default'] )
-			              ->andReturn( $value['value'] );
+			$this->options
+				->shouldReceive( 'get' )
+				->with( $name, $value['default'] )
+				->andReturn( $value['value'] );
 		}
 
 		if ( isset( $config['is_rocket_post_excluded_option'] ) ) {
