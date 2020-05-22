@@ -219,6 +219,11 @@ abstract class RESTWP implements RESTWPInterface {
 			return rest_ensure_response( $this->return_error( $validated ) );
 		}
 
+		if ( $this->options->get( 'async_css_mobile', 0 ) ) {
+			$mobile_item_path = $this->get_path( $item_id, true );
+			$mobile_deleted   = $this->cpcss_service->process_delete( $mobile_item_path );
+		}
+
 		$item_path = $this->get_path( $item_id );
 		$deleted   = $this->cpcss_service->process_delete( $item_path );
 		if ( is_wp_error( $deleted ) ) {
