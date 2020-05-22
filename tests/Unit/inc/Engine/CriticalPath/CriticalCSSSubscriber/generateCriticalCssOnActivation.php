@@ -6,7 +6,6 @@ use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CriticalPath\CriticalCSS;
-use WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration;
 use WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
@@ -35,17 +34,27 @@ class Test_GenerateCriticalCssOnActivation extends FilesystemTestCase {
 	/**
 	 * @dataProvider nonMultisiteTestData
 	 */
-	public function testShouldGenerateCriticalCss( $values ) {
-		$critical_css_path = $this->config['vfs_dir'] . '1/';
+	public function testShouldDoExpected( $values, $mobile, $expected ) {
+		$critical_css_path = $this->filesystem->getUrl( $this->config['vfs_dir'] . '1/' );
 
 		$this->assertTrue( $this->filesystem->is_dir( $critical_css_path ) );
 		Functions\expect( 'rocket_mkdir_p' )->with( $critical_css_path )->never();
-		$this->critical_css->shouldReceive( 'process_handler' )->never();
 
 		if ( $values['old']['async_css'] !== $values['new']['async_css'] && 1 === (int) $values['new']['async_css'] ) {
-			$this->critical_css->shouldReceive( 'get_critical_css_path' )->once()->andReturn( $critical_css_path );
+			$this->critical_css->shouldReceive( 'get_critical_css_path' )
+				->once()
+				->andReturn( $critical_css_path );
 		} else {
 			$this->critical_css->shouldReceive( 'get_critical_css_path' )->never();
+		}
+
+		if ( $expected ) {
+			$this->filesystem->delete( 'wp-content/cache/critical-css/1/critical.css' );
+			$this->critical_css->shouldReceive( 'process_handler' )
+				->once()
+				->with( $mobile );
+		} else {
+			$this->critical_css->shouldReceive( 'process_handler' )->never();
 		}
 
 		// Run it.
