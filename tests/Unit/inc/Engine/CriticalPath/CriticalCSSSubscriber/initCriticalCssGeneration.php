@@ -44,13 +44,13 @@ class Test_InitCriticalCssGeneration extends TestCase {
 
 		if ( ! isset( $config['nonce'] ) ) {
 			Functions\expect( 'wp_verify_nonce' )->never();
-		} elseif ( isset( $config['nonce'] ) && 'valid' !== $config['nonce'] ) {
+		} elseif ( isset( $config['nonce'] ) && 'rocket_generate_critical_css' !== $config['nonce'] ) {
 			Functions\expect( 'wp_verify_nonce' )->once()->with( $config['nonce'], 'rocket_generate_critical_css' )->andReturn( false );
 		} else {
 			Functions\expect( 'wp_verify_nonce' )->once()->with( $config['nonce'], 'rocket_generate_critical_css' )->andReturn( true );
 		}
 
-		if ( 'valid' === $config['nonce'] ) {
+		if ( 'rocket_generate_critical_css' === $config['nonce'] ) {
 			Functions\expect( 'wp_nonce_ays' )->never();
 		} else {
 			Functions\expect( 'wp_nonce_ays' )->once()->andReturnUsing( function() {
@@ -95,7 +95,7 @@ class Test_InitCriticalCssGeneration extends TestCase {
 				->with( 'all' );
 			}
 
-			if ( 'settings_page_wprocket' !== $config['referer'] ) {
+			if ( false  === strpos( $config['referer'], 'wprocket' ) ) {
 				Functions\expect( 'set_transient' )
 					->once()
 					->with( 'rocket_critical_css_generation_triggered', 1 );
