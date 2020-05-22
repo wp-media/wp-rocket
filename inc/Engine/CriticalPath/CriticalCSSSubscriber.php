@@ -183,13 +183,12 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 			rocket_mkdir_p( $critical_css_path );
 		}
 
-		try {
-			$critical_css_path_file_iterator = new FilesystemIterator( $critical_css_path, FilesystemIterator::SKIP_DOTS );
-		} catch ( UnexpectedValueException $e ) {
-			// Bail out when folder is invalid.
+		$iterator = $this->get_critical_css_iterator( $critical_css_path );
+
+		// Bail out when folder is invalid.
+		if ( false === $iterator ) {
 			return;
 		}
-
 		// Bail out if this folder has no files in it.
 		foreach ( $critical_css_path_file_iterator as $file ) {
 			if ( $file->isFile() ) {
@@ -209,6 +208,22 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 
 		// Generate the CPCSS files.
 		$this->critical_css->process_handler( $version );
+	}
+
+	/**
+	 * Gets the Critical CSS Filesystem Iterator.
+	 *
+	 * @since 3.6
+	 *
+	 * @return FilesystemIterator|bool Returns iterator on success; else false.
+	 */
+	private function get_critical_css_iterator( $critical_css_path ) {
+		try {
+			return new FilesystemIterator( $critical_css_path, FilesystemIterator::SKIP_DOTS );
+		} catch ( UnexpectedValueException $e ) {
+			// Bail out when folder is invalid.
+			return false;
+		}
 	}
 
 	/**

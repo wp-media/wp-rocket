@@ -137,21 +137,30 @@ class CriticalCSS {
 	/**
 	 * Deletes critical CSS files.
 	 *
-	 * @since 2.11
 	 * @since 3.6 Replaced glob().
+	 * @since 2.11
 	 */
 	public function clean_critical_css() {
-		try {
-			$files = new FilesystemIterator( $this->critical_css_path );
-
-			foreach ( $files as $file ) {
-				if ( $this->filesystem->is_file( $file ) ) {
-					$this->filesystem->delete( $file );
-				}
+		foreach ( $this->get_critical_css_iterator() as $file ) {
+			if ( $this->filesystem->is_file( $file ) ) {
+				$this->filesystem->delete( $file );
 			}
+		}
+	}
+
+	/**
+	 * Gets the Critical CSS Filesystem Iterator.
+	 *
+	 * @since 3.6
+	 *
+	 * @return FilesystemIterator|array Returns iterator on success; else an empty array.
+	 */
+	private function get_critical_css_iterator() {
+		try {
+			return new FilesystemIterator( $this->critical_css_path );
 		} catch ( UnexpectedValueException $e ) {
 			// No logging yet.
-			return;
+			return [];
 		}
 	}
 
