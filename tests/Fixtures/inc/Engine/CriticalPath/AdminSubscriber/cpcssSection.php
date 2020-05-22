@@ -70,7 +70,6 @@ return [
 			// For Unit Test: the data the "generate" method should receive.
 			'data'               => [
 				'disabled_description' => 'Publish the post, Enable Optimize CSS delivery in WP Rocket settings, and Enable Optimize CSS delivery in the options above to use this feature.',
-				'async_css_mobile' => 0,
 			],
 
 			// For the integration test.
@@ -108,7 +107,6 @@ HTML
 			// For Unit Test: the data the "generate" method should receive.
 			'data'               => [
 				'disabled_description' => 'Publish the post and Enable Optimize CSS delivery in the options above to use this feature.',
-				'async_css_mobile' => 1,
 			],
 
 			// For the integration test.
@@ -146,7 +144,6 @@ HTML
 			// For Unit Test: the data the "generate" method should receive.
 			'data'               => [
 				'disabled_description' => 'Publish the post to use this feature.',
-				'async_css_mobile' => 1,
 			],
 
 			// For the integration test.
@@ -184,7 +181,6 @@ HTML
 			// For Unit Test: the data the "generate" method should receive.
 			'data'               => [
 				'disabled_description' => 'Enable Optimize CSS delivery in the options above to use this feature.',
-				'async_css_mobile' => 1,
 			],
 
 			// For the integration test.
@@ -223,7 +219,6 @@ HTML
 			// For Unit Test: the data the "generate" method should receive.
 			'data' => [
 				'disabled_description' => '',
-				'async_css_mobile' => 1,
 			],
 
 			// For the integration test.
