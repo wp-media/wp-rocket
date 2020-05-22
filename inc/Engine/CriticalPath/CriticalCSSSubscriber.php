@@ -202,7 +202,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 		if (
 			isset( $value['do_caching_mobile_files'], $value['async_css_mobile'] )
 			&&
-			( 1 === (int) $value['do_caching_mobile_files'] && 1 === (int) $value['do_caching_mobile_files'] )
+			( 1 === (int) $value['do_caching_mobile_files'] && 1 === (int) $value['async_css_mobile'] )
 		) {
 			$version = 'all';
 		}
