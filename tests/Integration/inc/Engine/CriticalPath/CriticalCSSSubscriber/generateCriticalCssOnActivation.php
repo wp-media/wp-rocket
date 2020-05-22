@@ -15,6 +15,9 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  */
 class Test_GenerateCriticalCssOnActivation extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSSSubscriber/generateCriticalCssOnActivation.php';
+	protected static $transients = [
+		'rocket_critical_css_generation_process_running' => null,
+	];
 	private static $container;
 	private static $user_id;
 	private $subscriber;
@@ -39,13 +42,13 @@ class Test_GenerateCriticalCssOnActivation extends FilesystemTestCase {
 			'do_rocket_critical_css_generation' => 0,
 		];
 		$this->subscriber   = self::$container->get( 'critical_css_subscriber' );
-		delete_transient( 'rocket_critical_css_generation_process_running' );
 	}
 
 	public function tearDown() {
 		parent::tearDown();
 
-		delete_transient( 'rocket_critical_css_generation_process_running' );
+		remove_filter( 'pre_get_rocket_option_do_caching_mobile_files', [ $this, 'return_true' ] );
+		remove_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'return_true' ] );
 
 		if ( $this->switchedBlog ) {
 			restore_current_blog();
@@ -56,14 +59,24 @@ class Test_GenerateCriticalCssOnActivation extends FilesystemTestCase {
 	/**
 	 * @dataProvider nonMultisiteTestData
 	 */
-	public function testShouldProcessNonMultisite( $values ) {
-		$this->assertEquals( 0, Filters\applied( 'do_rocket_critical_css_generation' ) );
-		Functions\expect( 'get_transient' )->with( 'rocket_critical_css_generation_process_running' )->never();
+	public function testShouldProcessNonMultisite( $values, $mobile, $expected ) {
+		if ( $mobile ) {
+			add_filter( 'pre_get_rocket_option_do_caching_mobile_files', [ $this, 'return_true' ] );
+			add_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'return_true' ] );
+		}
 
 		$this->assertTrue( $this->filesystem->is_dir( $this->config['vfs_dir'] . '1/' ) );
 
 		// Run it.
-		$this->subscriber->generate_critical_css_on_activation( $values['old'], $values['new'] );
+		do_action( 'update_option_wp_rocket_settings', $values['old'], $values['new'] );
+
+		$transient = get_transient( 'rocket_critical_css_generation_process_running' );
+
+		if ( $expected ) {
+			$this->assertSame( [ 'generated', 'total', 'items' ], array_keys( $transient ) );
+		} else {
+			$this->assertFalse( $transient );
+		}
 	}
 
 	/**
