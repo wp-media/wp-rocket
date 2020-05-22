@@ -4,9 +4,9 @@ return [
 
 	'testShouldNotEnqueueScriptDifferentPage' => [
 		'config'   => [
-			'page'               => 'options-general.php',
-			'pagenow'            => 'options-general.php',
-			'post'               => (object) [
+			'page'    => 'options-general.php',
+			'pagenow' => 'options-general.php',
+			'post'    => (object) [
 				'ID'          => 1,
 				'post_status' => 'draft',
 				'post_type'   => 'post',
@@ -119,6 +119,13 @@ return [
 				'post_type'   => 'post',
 			],
 			'is_option_excluded' => false,
+			'wp_localize_script' => [
+				'rest_url'              => 'http://example.org/wp-rocket/v1/cpcss/post/1',
+				'rest_nonce'            => 'wp_rest_nonce',
+				'generate_btn'          => 'Generate Specific CPCSS',
+				'regenerate_btn'        => 'Regenerate specific CPCSS',
+				'wprMobileCpcssEnabled' => 1,
+			],
 		],
 		'expected' => true,
 	],

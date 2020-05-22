@@ -161,6 +161,7 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 			rocket_get_constant( 'WP_ROCKET_VERSION' ),
 			true
 		);
+
 		wp_localize_script(
 			'wpr-edit-cpcss-script',
 			'rocket_cpcss',
