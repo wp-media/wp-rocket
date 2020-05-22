@@ -3,6 +3,8 @@
 namespace WP_Rocket\Tests\Integration\inc\admin;
 
 use Brain\Monkey\Functions;
+use WP_Rocket\Engine\Cache\AdvancedCache;
+use WP_Rocket\Tests\Fixtures\DIContainer;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
@@ -22,10 +24,10 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group SaveOptions
  */
 class Test_RocketAfterSaveOptions extends FilesystemTestCase {
-	protected        $path_to_test_data  = '/inc/admin/rocketAfterSaveOptions.php';
-	protected static $use_settings_trait = true;
+	protected $path_to_test_data = '/inc/admin/rocketAfterSaveOptions.php';
 
-	protected static $transients = [
+	protected static $use_settings_trait = true;
+	protected static $transients         = [
 		'rocket_analytics_optin' => null,
 	];
 
@@ -36,6 +38,7 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 	private $rocketCleanMinifyEntriesBefore;
 	private $rocketCleanDomainShouldNotClean;
 	private $rocketCleanMinifyShouldNotClean;
+	private $dicontainer;
 
 	public function setUp() {
 		// Unhook to avoid triggering when storing the configured settings.
@@ -43,13 +46,20 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 
 		parent::setUp();
 
-		$this->is_apache                       = $GLOBALS['is_apache'];
+		// Save the original global state.
+		$this->is_apache = isset( $GLOBALS['is_apache'] ) ? $GLOBALS['is_apache'] : null;
+
+		// Initialize states.
 		$this->rocketCleanDomainEntriesBefore  = [];
 		$this->rocketCleanMinifyEntriesBefore  = [];
 		$this->rocketCleanDomainShouldNotClean = [];
 		$this->rocketCleanMinifyShouldNotClean = [];
-
 		$GLOBALS['is_apache'] = true;
+
+		// Set up the container.
+		$this->dicontainer = new DIContainer();
+		$this->dicontainer->setUp();
+
 		Functions\when( 'wp_remote_get' )->justReturn();
 
 		// Hook it back up as we're ready to test.
@@ -59,8 +69,14 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 	public function tearDown() {
 		parent::tearDown();
 
+		$this->dicontainer->tearDown();
+
 		unset( $_POST['rocket_after_save_options'], $GLOBALS['sitepress'], $GLOBALS['q_config'], $GLOBALS['polylang'] );
-		$GLOBALS['is_apache'] = $this->is_apache;
+
+		// Restore the original state.
+		if ( ! empty( $this->is_apache ) ) {
+			$GLOBALS['is_apache'] = $this->is_apache;
+		}
 	}
 
 	/**
@@ -171,6 +187,12 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 	private function rocket_generate_advanced_cache_file( $before_updating = false ) {
 		// Sets up the test before updating.
 		if ( $before_updating ) {
+
+			$this->dicontainer->addAdvancedCache(
+				$this->filesystem->getUrl( $this->config['vfs_dir'] . 'plugins/wp-rocket/views/cache/' ),
+				$this->filesystem
+			);
+
 			if ( isset( $this->expected['rocket_generate_advanced_cache_file'] ) ) {
 				$_POST['rocket_after_save_options'] = 1;
 			}
