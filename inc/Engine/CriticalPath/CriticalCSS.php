@@ -280,7 +280,7 @@ class CriticalCSS {
 	 *
 	 * @since  2.11
 	 *
-	 * @param array $version Optional. Version.
+	 * @param string $version Optional. Version. Default: 'default'.
 	 */
 	private function set_items( $version = 'default' ) {
 		$page_for_posts = get_option( 'page_for_posts' );
