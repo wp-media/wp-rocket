@@ -91,6 +91,8 @@ $(document).ready(function(){
     $('#wpr-action-rocket_enable_mobile_cpcss').on('click', function(e) {
         e.preventDefault();
 
+		$('#wpr-action-rocket_enable_mobile_cpcss').addClass('wpr-isLoading');
+		//    animation: loading 1.2s infinite;
         $.post(
             ajaxurl,
             {
@@ -103,6 +105,7 @@ $(document).ready(function(){
 					$('#wpr-action-rocket_enable_mobile_cpcss').hide();
 					$('.wpr-hide-on-click').hide();
 					$('.wpr-show-on-click').show();
+					$('#wpr-action-rocket_enable_mobile_cpcss').removeClass('wpr-isLoading');
 				}
 			}
         );
