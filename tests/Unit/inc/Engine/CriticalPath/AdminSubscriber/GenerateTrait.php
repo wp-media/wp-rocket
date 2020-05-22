@@ -22,7 +22,7 @@ trait GenerateTrait {
 				$this->options,
 				$this->beacon,
 				'wp-content/cache/critical-css/',
-				WP_ROCKET_PLUGIN_ROOT . 'views/metabox/cpcss/',
+				WP_ROCKET_PLUGIN_ROOT . 'views/cpcss/',
 			]
 		);
 	}
