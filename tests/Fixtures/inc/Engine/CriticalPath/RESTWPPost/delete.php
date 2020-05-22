@@ -13,11 +13,12 @@ return [
 						'.'              => '',
 						'..'             => '',
 						'posts'          => [
-							'.'           => '',
-							'..'          => '',
-							'post-1.css'  => '.p { color: red; }',
-							'post-10.css' => '.p { color: red; }',
-							'page-20.css' => '.p { color: red; }',
+							'.'                 => '',
+							'..'                => '',
+							'post-1.css'        => '.p { color: red; }',
+							'post-1-mobile.css' => '.p { color: red; }',
+							'post-10.css'       => '.p { color: red; }',
+							'page-20.css'       => '.p { color: red; }',
 						],
 						'home.css'       => '.p { color: red; }',
 						'front_page.css' => '.p { color: red; }',
@@ -50,13 +51,15 @@ return [
 
 		'testShouldBailoutWithNoCapabilities' => [
 			'config'   => [
-				'cpcss_exists_before' => true,
-				'current_user_can'    => false,
-				'post_data'           => [
+				'cpcss_exists_before'        => true,
+				'mobile_cpcss_exists_before' => true,
+				'current_user_can'           => false,
+				'post_data'                  => [
 					'post_id'   => 1,
 					'post_type' => 'post',
 				],
-				'cpcss_exists_after'  => true,
+				'cpcss_exists_after'         => true,
+				'mobile_cpcss_exists_after'  => true,
 			],
 			'expected' => [
 				'code'    => 'rest_forbidden',
@@ -67,14 +70,16 @@ return [
 
 		'testShouldBailoutIfPostDoesNotExist' => [
 			'config'   => [
-				'cpcss_exists_before' => false,
-				'current_user_can'    => true,
-				'post_data'           => [
+				'cpcss_exists_before'        => false,
+				'mobile_cpcss_exists_before' => false,
+				'current_user_can'           => true,
+				'post_data'                  => [
 					'post_id'     => 2,
 					'post_type'   => 'post',
 					'post_status' => null,
 				],
-				'cpcss_exists_after'  => false,
+				'cpcss_exists_after'         => false,
+				'mobile_cpcss_exists_after'  => false,
 			],
 			'expected' => [
 				'success' => false,
@@ -87,6 +92,7 @@ return [
 		'testShouldBailoutIfPostCPCSSNotExist' => [
 			'config'   => [
 				'cpcss_exists_before' => false,
+				'mobile_cpcss_exists_before' => false,
 				'current_user_can'    => true,
 				'post_data'           => [
 					'import_id'   => 3,
@@ -94,6 +100,7 @@ return [
 					'post_status' => 'publish',
 				],
 				'cpcss_exists_after'  => false,
+				'mobile_cpcss_exists_after' => false,
 				'options'             => [
 					'async_css_mobile' => 0,
 				],
@@ -110,6 +117,7 @@ return [
 		'testShouldReturnSuccessWhenCPCSSExist_post' => [
 			'config'   => [
 				'cpcss_exists_before' => true,
+				'mobile_cpcss_exists_before' => true,
 				'current_user_can'    => true,
 				'post_data'           => [
 					'import_id'   => 1,
@@ -117,6 +125,7 @@ return [
 					'post_status' => 'publish',
 				],
 				'cpcss_exists_after'  => false,
+				'mobile_cpcss_exists_after' => true,
 				'options'             => [
 					'async_css_mobile' => 0,
 				],
@@ -133,6 +142,7 @@ return [
 		'testShouldReturnSuccessWhenCPCSSExist_post10' => [
 			'config'   => [
 				'cpcss_exists_before' => true,
+				'mobile_cpcss_exists_before' => false,
 				'current_user_can'    => true,
 				'post_data'           => [
 					'import_id'   => 10,
@@ -140,6 +150,7 @@ return [
 					'post_status' => 'publish',
 				],
 				'cpcss_exists_after'  => false,
+				'mobile_cpcss_exists_after' => false,
 				'options'             => [
 					'async_css_mobile' => 0,
 				],
@@ -156,6 +167,7 @@ return [
 		'testShouldReturnSuccessWhenCPCSSExist_page' => [
 			'config'   => [
 				'cpcss_exists_before' => true,
+				'mobile_cpcss_exists_before' => false,
 				'current_user_can'    => true,
 				'post_data'           => [
 					'import_id'   => 20,
@@ -163,10 +175,63 @@ return [
 					'post_status' => 'publish',
 				],
 				'cpcss_exists_after'  => false,
+				'mobile_cpcss_exists_after' => false,
 				'options'             => [
 					'async_css_mobile' => 0,
 				],
 				'is_mobile'           => false,
+			],
+			'expected' => [
+				'success' => true,
+				'code'    => 'success',
+				'message' => 'Critical CSS file deleted successfully.',
+				'data'    => [ 'status' => 200 ],
+			],
+		],
+
+		'testShouldReturnSuccessWhenCPCSSExist_ButMobileDoesNotExist' => [
+			'config'   => [
+				'cpcss_exists_before'        => true,
+				'mobile_cpcss_exists_before' => false,
+				'mobile_cpcss_exists_before' => false,
+				'current_user_can'           => true,
+				'post_data'                  => [
+					'import_id'   => 20,
+					'post_type'   => 'page',
+					'post_status' => 'publish',
+				],
+				'cpcss_exists_after'         => false,
+				'mobile_cpcss_exists_after' => false,
+				'mobile_cpcss_exists_after'  => false,
+				'options'                    => [
+					'async_css_mobile' => 1,
+				],
+				'is_mobile'                  => true,
+			],
+			'expected' => [
+				'success' => true,
+				'code'    => 'success',
+				'message' => 'Critical CSS file deleted successfully.',
+				'data'    => [ 'status' => 200 ],
+			],
+		],
+
+		'testShouldReturnSuccessWhenCPCSSAndMobileExist_post' => [
+			'config'   => [
+				'cpcss_exists_before'        => true,
+				'mobile_cpcss_exists_before' => true,
+				'current_user_can'           => true,
+				'post_data'                  => [
+					'import_id'   => 1,
+					'post_type'   => 'post',
+					'post_status' => 'publish',
+				],
+				'cpcss_exists_after'         => false,
+				'mobile_cpcss_exists_after'  => false,
+				'options'                    => [
+					'async_css_mobile' => 1,
+				],
+				'is_mobile'                  => true,
 			],
 			'expected' => [
 				'success' => true,

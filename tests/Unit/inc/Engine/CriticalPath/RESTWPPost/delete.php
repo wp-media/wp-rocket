@@ -168,6 +168,15 @@ class Test_Delete extends TestCase {
 			'code'    => 'success',
 			'message' => 'Critical CSS file deleted successfully.',
 		];
+
+		if ( $this->is_mobile ) {
+			$this->cpcss_service
+				->shouldReceive( 'process_delete' )
+				->once()
+				->with( $this->getPath( true ) )
+				->andReturn( $deleted );
+		}
+
 		$this->cpcss_service
 			->shouldReceive( 'process_delete' )
 			->once()
@@ -201,13 +210,14 @@ class Test_Delete extends TestCase {
 		return "http://example.org/?p={$this->post_id}";
 	}
 
-	private function getPath() {
+	private function getPath( $is_mobile = false ) {
 		Functions\expect( 'get_post_type' )
-			->once()
+			->atLeast( 1 )
+			->atMost( 2 )
 			->with( $this->post_id )
 			->andReturn( $this->post_type );
 
-		if ( $this->is_mobile ) {
+		if ( $is_mobile ) {
 			return "posts/{$this->post_type}-{$this->post_id}-mobile.css";
 		}
 

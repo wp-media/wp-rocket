@@ -221,7 +221,7 @@ abstract class RESTWP implements RESTWPInterface {
 
 		if ( $this->options->get( 'async_css_mobile', 0 ) ) {
 			$mobile_item_path = $this->get_path( $item_id, true );
-			$mobile_deleted   = $this->cpcss_service->process_delete( $mobile_item_path );
+			$this->cpcss_service->process_delete( $mobile_item_path );
 		}
 
 		$item_path = $this->get_path( $item_id );
