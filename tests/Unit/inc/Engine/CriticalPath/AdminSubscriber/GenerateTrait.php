@@ -6,21 +6,25 @@ use Mockery;
 use Brain\Monkey\Functions;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
+use WP_Rocket\Engine\CriticalPath\CriticalCSS;
 use WP_Rocket\Engine\CriticalPath\AdminSubscriber;
 
 trait GenerateTrait {
 	protected        $beacon;
 	protected        $options;
+	protected        $critical_css;
 	protected        $subscriber;
 
 	public function setUpMocks() {
 		Functions\when( 'get_current_blog_id' )->justReturn( 1 );
 
-		$this->beacon     = Mockery::mock( Beacon::class );
-		$this->options    = Mockery::mock( Options_Data::class );
-		$this->subscriber = Mockery::mock( AdminSubscriber::class . '[generate]', [
+		$this->beacon       = Mockery::mock( Beacon::class );
+		$this->options      = Mockery::mock( Options_Data::class );
+		$this->critical_css = Mockery::mock( CriticalCSS::class );
+		$this->subscriber   = Mockery::mock( AdminSubscriber::class . '[generate]', [
 				$this->options,
 				$this->beacon,
+				$this->critical_css,
 				'wp-content/cache/critical-css/',
 				WP_ROCKET_PLUGIN_ROOT . 'views/cpcss/',
 			]

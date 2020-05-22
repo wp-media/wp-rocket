@@ -64,13 +64,17 @@ class ServiceProvider extends AbstractServiceProvider {
 			->withArgument( $this->getContainer()->get( 'critical_css_generation' ) )
 			->withArgument( $options )
 			->withArgument( $filesystem );
+
+		$critical_css = $this->getContainer()->get( 'critical_css' );
+
 		$this->getContainer()->share( 'critical_css_subscriber', 'WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber' )
-			->withArgument( $this->getContainer()->get( 'critical_css' ) )
+			->withArgument( $critical_css )
 			->withArgument( $options );
 
 		$this->getContainer()->share( 'critical_css_admin_subscriber', 'WP_Rocket\Engine\CriticalPath\AdminSubscriber' )
 			->withArgument( $options )
 			->withArgument( $this->getContainer()->get( 'beacon' ) )
+			->withArgument( $critical_css)
 			->withArgument( $critical_css_path )
 			->withArgument( $this->getContainer()->get( 'template_path' ) . '/cpcss' );
 	}

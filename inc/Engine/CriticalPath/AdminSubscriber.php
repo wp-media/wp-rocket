@@ -30,6 +30,13 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 	private $options;
 
 	/**
+	 * Instance of CriticalCSS.
+	 *
+	 * @var CriticalCSS
+	 */
+	private $critical_css;
+
+	/**
 	 * Array of reasons to disable actions.
 	 *
 	 * @var array
@@ -41,14 +48,16 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 	 *
 	 * @param Options_Data $options       WP Rocket Options instance.
 	 * @param Beacon       $beacon        Beacon instance.
+	 * @param CriticalCSS  $critical_css  CriticalCSS instance.
 	 * @param string       $critical_path Path to the critical CSS base folder.
 	 * @param string       $template_path Path to the templates folder.
 	 */
-	public function __construct( Options_Data $options, Beacon $beacon, $critical_path, $template_path ) {
+	public function __construct( Options_Data $options, Beacon $beacon, CriticalCSS $critical_css, $critical_path, $template_path ) {
 		parent::__construct( $template_path );
 
 		$this->beacon            = $beacon;
 		$this->options           = $options;
+		$this->critical_css      = $critical_css;
 		$this->critical_css_path = $critical_path . get_current_blog_id() . '/posts/';
 	}
 
@@ -80,13 +89,16 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 	public function enable_mobile_cpcss() {
 		check_ajax_referer( 'rocket-ajax', 'nonce', true );
 
-		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+		if ( ! current_user_can( 'rocket_manage_options' ) || ! current_user_can( 'rocket_regenerate_critical_css' ) ) {
 			wp_send_json_error();
 			return;
 		}
 
 		$this->options->set( 'async_css_mobile', 1 );
 		update_option( rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' ), $this->options->get_options() );
+
+		// Start Mobile CPCSS process.
+		$this->critical_css->process_handler( 'mobile' );
 
 		wp_send_json_success();
 	}
