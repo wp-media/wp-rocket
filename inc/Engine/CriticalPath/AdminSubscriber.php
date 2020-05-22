@@ -161,6 +161,7 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 			rocket_get_constant( 'WP_ROCKET_VERSION' ),
 			true
 		);
+
 		wp_localize_script(
 			'wpr-edit-cpcss-script',
 			'rocket_cpcss',
@@ -169,7 +170,7 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 				'rest_nonce'            => wp_create_nonce( 'wp_rest' ),
 				'generate_btn'          => __( 'Generate Specific CPCSS', 'rocket' ),
 				'regenerate_btn'        => __( 'Regenerate specific CPCSS', 'rocket' ),
-				'wprMobileCpcssEnabled' => $this->options->get( 'async_css_mobile' ),
+				'wprMobileCpcssEnabled' => $this->options->get( 'async_css_mobile', 0 ),
 			]
 		);
 	}

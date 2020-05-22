@@ -2,11 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\AdminSubscriber;
 
-use Mockery;
 use Brain\Monkey\Functions;
-use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\Admin\Beacon\Beacon;
-use WP_Rocket\Engine\CriticalPath\AdminSubscriber;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -17,8 +13,6 @@ use WP_Rocket\Tests\Unit\TestCase;
  */
 class Test_EnqueueAdminEditScript extends TestCase {
 	use GenerateTrait;
-
-	protected $path_to_test_data = '/inc/Engine/CriticalPath/AdminSubscriber/enqueueAdminEditScript.php';
 
 	protected static $mockCommonWpFunctionsInSetUp = true;
 
@@ -41,20 +35,54 @@ class Test_EnqueueAdminEditScript extends TestCase {
 		if ( in_array( $config['page'], [ 'edit.php', 'post.php' ], true ) ) {
 			$this->setUpTest( $config );
 		}
-	
+
 		$GLOBALS['pagenow'] = $config['pagenow'];
 
-		Functions\when( 'wp_create_nonce' )->justReturn( 'wp_rest_nonce' );
-		Functions\when( 'rest_url' )->justReturn( 'http://example.org/wp-rocket/v1/cpcss/post/' . $config['post']->ID );
-
 		if ( $expected ) {
-			Functions\expect( 'wp_enqueue_script' )->once();
-			Functions\expect( 'wp_localize_script' )->once();
+			$this->assertExpected( $config );
 		} else {
-			Functions\expect( 'wp_enqueue_script' )->never();
-			Functions\expect( 'wp_localize_script' )->never();
+			$this->assertNotExpected();
 		}
 
 		$this->subscriber->enqueue_admin_edit_script( $config['page'] );
+	}
+
+	private function assertExpected( $config ) {
+		Functions\expect( 'wp_create_nonce' )
+			->once()
+			->with( 'wp_rest' )
+			->andReturn( 'wp_rest_nonce' );
+
+		Functions\expect( 'rest_url' )
+			->once()
+			->with( "wp-rocket/v1/cpcss/post/{$config['post']->ID}" )
+			->andReturn( 'http://example.org/wp-rocket/v1/cpcss/post/' . $config['post']->ID );
+
+		Functions\expect( 'wp_enqueue_script' )
+			->once()
+			->with(
+				'wpr-edit-cpcss-script',
+				rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'wpr-cpcss.js',
+				[],
+				rocket_get_constant( 'WP_ROCKET_VERSION' ),
+				true
+			)
+			->andReturnNull();
+
+		Functions\expect( 'wp_localize_script' )
+			->once()
+			->with(
+				'wpr-edit-cpcss-script',
+				'rocket_cpcss',
+				$config['wp_localize_script']
+			)
+			->andReturnNull();
+	}
+
+	private function assertNotExpected() {
+		Functions\expect( 'wp_enqueue_script' )->never();
+		Functions\expect( 'rest_url' )->never();
+		Functions\expect( 'wp_create_nonce' )->never();
+		Functions\expect( 'wp_localize_script' )->never();
 	}
 }
