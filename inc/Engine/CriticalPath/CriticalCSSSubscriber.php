@@ -173,13 +173,17 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 		}
 
 		try {
-			if ( ( new FilesystemIterator( $critical_css_path, FilesystemIterator::SKIP_DOTS ) )->valid() ) {
-				// Bail out if the folder is not empty.
-				return;
-			}
+			$critical_css_path_file_iterator = new FilesystemIterator( $critical_css_path, FilesystemIterator::SKIP_DOTS );
 		} catch ( UnexpectedValueException $e ) {
 			// Bail out when folder is invalid.
 			return;
+		}
+
+		// Bail out if this folder has no files in it.
+		foreach ( $critical_css_path_file_iterator as $file ) {
+			if ( $file->isFile() ) {
+				return;
+			}
 		}
 
 		// Generate the CPCSS files.
