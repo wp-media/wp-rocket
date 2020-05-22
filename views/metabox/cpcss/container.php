@@ -28,6 +28,3 @@ $rocket_disabled_description = empty( $data['disabled_description'] );
 		<?php endif; ?>
 	</div>
 </div>
-<script type="text/javascript">
-	let wprMobileCpcssEnabled = <?php echo esc_js( $data['async_css_mobile'] ); ?>;
-</script>

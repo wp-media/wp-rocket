@@ -16,7 +16,7 @@ rocketGenerateCPCSSbtn.addEventListener( 'click', e => {
 	e.preventDefault();
 	rocketGenerateCPCSSbtn.disabled = true;
 	checkCPCSSGeneration( null, false );
-	if ( wprMobileCpcssEnabled ) {
+	if ( rocket_cpcss.wprMobileCpcssEnabled ) {
 		checkCPCSSGeneration( null, true );
 	}
 } );

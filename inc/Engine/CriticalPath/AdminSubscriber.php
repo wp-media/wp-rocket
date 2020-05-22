@@ -107,10 +107,11 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 			'wpr-edit-cpcss-script',
 			'rocket_cpcss',
 			[
-				'rest_url'       => rest_url( "wp-rocket/v1/cpcss/post/{$post_id}" ),
-				'rest_nonce'     => wp_create_nonce( 'wp_rest' ),
-				'generate_btn'   => __( 'Generate Specific CPCSS', 'rocket' ),
-				'regenerate_btn' => __( 'Regenerate specific CPCSS', 'rocket' ),
+				'rest_url'              => rest_url( "wp-rocket/v1/cpcss/post/{$post_id}" ),
+				'rest_nonce'            => wp_create_nonce( 'wp_rest' ),
+				'generate_btn'          => __( 'Generate Specific CPCSS', 'rocket' ),
+				'regenerate_btn'        => __( 'Regenerate specific CPCSS', 'rocket' ),
+				'wprMobileCpcssEnabled' => $this->options->get( 'async_css_mobile' ),
 			]
 		);
 	}
