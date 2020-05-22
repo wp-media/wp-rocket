@@ -162,7 +162,7 @@ class Test_ProcessGenerate extends FilesystemTestCase {
 		$data_manager = new DataManager('wp-content/cache/critical-css/', $this->filesystem);
 		$cpcss_service = new ProcessorService( $data_manager, $api_client );
 
-		$generated = $cpcss_service->process_generate( $item_url, $item_path, $request_timeout );
+		$generated = $cpcss_service->process_generate( $item_url, $item_path, $request_timeout, $is_mobile );
 		if( isset( $expected['success'] ) && ! $expected['success'] ){
 			$this->assertSame( $expected['code'], $generated->get_error_code() );
 			$this->assertSame( $expected['message'], $generated->get_error_message() );
