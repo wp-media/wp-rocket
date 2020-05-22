@@ -190,7 +190,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 			return;
 		}
 		// Bail out if this folder has no files in it.
-		foreach ( $critical_css_path_file_iterator as $file ) {
+		foreach ( $iterator as $file ) {
 			if ( $file->isFile() ) {
 				return;
 			}
