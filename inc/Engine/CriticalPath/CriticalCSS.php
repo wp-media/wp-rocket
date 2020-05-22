@@ -85,7 +85,7 @@ class CriticalCSS {
 	 * @since 3.6 Added the $version parameter.
 	 * @since 2.11
 	 *
-	 * @param string $version Versin of the CPCSS files to generate. Possible values: default, mobile, all.
+	 * @param string $version Optional. Version of the CPCSS files to generate. Possible values: default, mobile, all.
 	 */
 	public function process_handler( $version = 'default' ) {
 		/**
@@ -278,9 +278,9 @@ class CriticalCSS {
 	/**
 	 * Sets the items for which we generate critical CSS.
 	 *
-	 * @param array $version
-	 *
 	 * @since  2.11
+	 *
+	 * @param string $version Optional. Version of the CPCSS files to generate. Possible values: default, mobile, all.
 	 */
 	private function set_items( $version = 'default' ) {
 		$page_for_posts = get_option( 'page_for_posts' );

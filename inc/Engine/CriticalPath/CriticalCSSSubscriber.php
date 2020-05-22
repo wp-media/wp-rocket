@@ -211,6 +211,14 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 		$this->critical_css->process_handler( $version );
 	}
 
+	/**
+	 * Maybe generate the CPCSS for Mobile.
+	 *
+	 * @since 3.6
+	 *
+	 * @param array $old_value Array of original values.
+	 * @param array $value Array of new values.
+	 */
 	public function maybe_generate_cpcss_mobile( $old_value, $value ) {
 		if (
 			! isset( $value['async_css_mobile'] )
