@@ -41,11 +41,12 @@ class Test_EnqueueAdminEditScript extends TestCase {
 		if ( in_array( $config['page'], [ 'edit.php', 'post.php' ], true ) ) {
 			$this->setUpTest( $config );
 		}
-	
-		$GLOBALS['pagenow'] = $config['pagenow'];
+		$config['options']['async_css_mobile'] = isset( $config['options']['async_css_mobile'] ) ? $config['options']['async_css_mobile'] : 0;
+		$GLOBALS['pagenow']                    = $config['pagenow'];
 
 		Functions\when( 'wp_create_nonce' )->justReturn( 'wp_rest_nonce' );
 		Functions\when( 'rest_url' )->justReturn( 'http://example.org/wp-rocket/v1/cpcss/post/' . $config['post']->ID );
+		$this->options->shouldReceive( 'get' )->with( 'async_css_mobile', 0 )->andReturn( $config['options']['async_css_mobile'] );
 
 		if ( $expected ) {
 			Functions\expect( 'wp_enqueue_script' )->once();

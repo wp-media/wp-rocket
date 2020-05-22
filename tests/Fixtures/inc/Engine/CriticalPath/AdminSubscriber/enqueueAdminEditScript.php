@@ -20,7 +20,8 @@ return [
 			'page'               => 'edit.php',
 			'pagenow'            => 'edit.php',
 			'options'            => [
-				'async_css' => 0,
+				'async_css'        => 0,
+				'async_css_mobile' => 0,
 			],
 			'post'               => (object) [
 				'ID'          => 1,
@@ -37,7 +38,8 @@ return [
 			'page'               => 'edit.php',
 			'pagenow'            => 'post.php',
 			'options'            => [
-				'async_css' => 0,
+				'async_css'        => 0,
+				'async_css_mobile' => 0,
 			],
 			'post'               => (object) [
 				'ID'          => 1,
@@ -54,7 +56,8 @@ return [
 			'page'               => 'post.php',
 			'pagenow'            => 'post.php',
 			'options'            => [
-				'async_css' => 1,
+				'async_css'        => 1,
+				'async_css_mobile' => 0,
 			],
 			'post'               => (object) [
 				'ID'          => 1,
@@ -71,7 +74,8 @@ return [
 			'page'               => 'edit.php',
 			'pagenow'            => 'post.php',
 			'options'            => [
-				'async_css' => 1,
+				'async_css'        => 1,
+				'async_css_mobile' => 0,
 			],
 			'post'               => (object) [
 				'ID'          => 1,
@@ -88,7 +92,8 @@ return [
 			'page'               => 'edit.php',
 			'pagenow'            => 'post.php',
 			'options'            => [
-				'async_css' => 1,
+				'async_css'        => 1,
+				'async_css_mobile' => 1,
 			],
 			'post'               => (object) [
 				'ID'          => 1,
@@ -105,7 +110,8 @@ return [
 			'page'               => 'edit.php',
 			'pagenow'            => 'post.php',
 			'options'            => [
-				'async_css' => 1,
+				'async_css'        => 1,
+				'async_css_mobile' => 1,
 			],
 			'post'               => (object) [
 				'ID'          => 1,

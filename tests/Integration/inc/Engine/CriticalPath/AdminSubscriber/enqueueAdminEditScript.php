@@ -44,10 +44,12 @@ class Test_EnqueueAdminEditScript extends TestCase {
 		Functions\when( 'wp_create_nonce' )->justReturn( 'wp_rest_nonce' );
 
 		if ( in_array( $config['page'], [ 'edit.php', 'post.php' ], true ) ) {
-			$this->async_css = $config['options']['async_css'];
-			$this->post_id   = $config['post']->ID;
+			$this->async_css        = $config['options']['async_css'];
+			$this->post_id          = $config['post']->ID;
+			$this->async_css_mobile = isset( $config['options']['async_css_mobile'] ) ? $config['options']['async_css_mobile'] : 0;
 
 			add_filter( 'pre_get_rocket_option_async_css', [ $this, 'setCPCSSOption' ] );
+			add_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'setCPCSSMobileOption' ] );
 
 			if ( $config['is_option_excluded'] ) {
 				add_post_meta( $this->post_id, '_rocket_exclude_async_css', $config['is_option_excluded'], true );
@@ -72,5 +74,9 @@ class Test_EnqueueAdminEditScript extends TestCase {
 
 	public function setCPCSSOption() {
 		return $this->async_css;
+	}
+
+	public function setCPCSSMobileOption() {
+		return $this->async_css_mobile;
 	}
 }
