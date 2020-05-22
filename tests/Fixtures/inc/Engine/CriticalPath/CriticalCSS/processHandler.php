@@ -65,7 +65,22 @@ return [
 				'page_for_posts' => 'page1',
 				'page_for_posts_url' => 'http://www.example.com/?p=1',
 				'show_on_front' => 'page',
-				'post_types' => ['post']
+				'post_types' => ['post'],
+				'posts' => [
+					(object) [
+						'post_type' => 'post',
+						'ID' => 'POST_ID',
+						'post_url' => 'http://www.example.com/?p=2'
+					]
+				],
+				'taxonomies' => ['category'],
+				'terms' => [
+					(object) [
+						'taxonomy' => 'category',
+						'ID' => 'term_ID',
+						'url' => 'http://www.example.com/category/category_slug',
+					]
+				]
 			],
 			'expected' => [
 				'generated' => true

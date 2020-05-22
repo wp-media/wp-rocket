@@ -9,6 +9,7 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CriticalPath\CriticalCSS;
 use WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
+use wpdb;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSS::process_handler
@@ -31,8 +32,6 @@ class Test_ProcessHandler extends FilesystemTestCase {
 
 		$version = isset( $config['version'] ) ? $config['version'] : 'default';
 		$process_running = isset( $config['process_running'] ) ? $config['process_running'] : false;
-
-		$critical_css_path = "vfs://public/wp-content/cache/critical-css/1/";
 
 		foreach ( (array) $config['filters'] as $filter => $return ) {
 			Filters\expectApplied($filter)
@@ -65,6 +64,52 @@ class Test_ProcessHandler extends FilesystemTestCase {
 				->andReturn( $config['post_types'] );
 
 			Functions\expect( 'esc_sql' )->andReturnFirstArg();
+
+			global $wpdb;
+			$wpdb = Mockery::mock( wpdb::class );
+
+			$wpdb->shouldReceive('get_results')->with("
+		    SELECT MAX(ID) as ID, post_type
+		    FROM (
+		        SELECT ID, post_type
+		        FROM posts
+				WHERE post_type IN ( '".implode("','", $config['post_types'])."','page' )
+		        AND post_status = 'publish'
+		        ORDER BY post_date DESC
+		    ) AS posts
+		    GROUP BY post_type")->andReturn( $config['posts'] );
+			$wpdb->posts = 'posts';
+			$wpdb->term_taxonomy = 'terms';
+
+			Functions\expect( 'get_taxonomies' )
+				->with( [
+					'public'             => true,
+					'publicly_queryable' => true,
+				] )
+				->andReturn( $config['taxonomies'] );
+
+			$wpdb->shouldReceive('get_results')->with("SELECT MAX( term_id ) AS ID, taxonomy
+			FROM (
+				SELECT term_id, taxonomy
+				FROM $wpdb->term_taxonomy
+				WHERE taxonomy IN ( '".implode("','", $config['taxonomies'])."' )
+				AND count > 0
+			) AS taxonomies
+			GROUP BY taxonomy")->andReturn( $config['terms'] );
+
+			foreach ($config['posts'] as $post) {
+				Functions\expect( 'get_permalink' )->with( $post->ID )->andReturn( $post->post_url );
+			}
+
+			foreach ($config['terms'] as $term) {
+				Functions\expect( 'get_term_link' )->with( $term->ID )->andReturn( $term->url );
+			}
+
+			$process->shouldReceive( 'push_to_queue' )->andReturn( null );
+
+			Functions\expect( 'set_transient' )->andReturn( null );
+			$process->shouldReceive( 'save' )->andReturn( $process );
+			$process->shouldReceive( 'dispatch' )->andReturn( null );
 
 		}
 
