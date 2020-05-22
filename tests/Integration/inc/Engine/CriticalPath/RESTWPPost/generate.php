@@ -18,6 +18,12 @@ class Test_Generate extends RESTVfsTestCase {
 		self::$post_id = $factory->post->create();
 	}
 
+	public function tearDown() {
+		remove_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'setAsyncCssMobileOption' ] );
+
+		parent::tearDown();
+	}
+
 	protected function doTest( $site_id, $config, $expected ) {
 		if ( isset( $config['post_data'] ) ) {
 			$config['post_data']['ID'] = self::$post_id;
@@ -46,6 +52,10 @@ class Test_Generate extends RESTVfsTestCase {
 		$is_mobile                    = isset( $config['mobile'] )
 			? $config['mobile']
 			: false;
+		$async_css_mobile             = isset( $config['async_css_mobile'] )
+			? $config['async_css_mobile']
+			: 0;
+
 		Functions\expect( 'wp_remote_post' )
 			->atMost()
 			->times( 1 )
@@ -82,12 +92,17 @@ class Test_Generate extends RESTVfsTestCase {
 			->with( 'getRequest' )
 			->andReturn( $get_request_response_body );
 
-		$file = $this->config['vfs_dir'] . "{$site_id}/posts/{$post_type}-{$post_id}.css";
+		$this->async_css_mobile = $async_css_mobile;
+		add_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'setAsyncCssMobileOption' ] );
 
-		$body_param = [];
+		$file = $this->config['vfs_dir'] . "{$site_id}/posts/{$post_type}-{$post_id}" . ( $is_mobile ? '-mobile' : '' ). ".css";
+
+		$body_param              = [];
+		$body_param['is_mobile'] = $is_mobile;
 		if ( $request_timeout ) {
-			$body_param = [ 'timeout' => true ];
+			$body_param['timeout'] = true;
 		}
+
 		$this->assertSame( $expected, $this->doRestRequest( 'POST', "/wp-rocket/v1/cpcss/post/{$post_id}", $body_param ) );
 		$this->assertSame( $config['cpcss_exists_after'], $this->filesystem->exists( $file ) );
 	}
@@ -120,5 +135,9 @@ class Test_Generate extends RESTVfsTestCase {
 		);
 
 		wp_set_current_user( $user_id );
+	}
+
+	public function setAsyncCssMobileOption() {
+		return $this->async_css_mobile;
 	}
 }
