@@ -2,11 +2,14 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\RESTWPPost;
 
-use WP_Site;
 use WP_Rocket\Tests\Integration\RESTVfsTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\RESTWPPost::delete
+ * @uses   \WP_Rocket\Engine\CriticalPath\ProcessorService::process_delete
+ * @uses   \WP_Rocket\Engine\CriticalPath\DataManager::delete_cpcss
+ * @uses   \WP_Rocket\Admin\Options_Data::get
+ *
  * @group  CriticalPath
  * @group  vfs
  */
