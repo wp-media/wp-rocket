@@ -67,6 +67,10 @@ class Test_GenerateCriticalCssOnActivation extends FilesystemTestCase {
 
 		$this->assertTrue( $this->filesystem->is_dir( $this->config['vfs_dir'] . '1/' ) );
 
+		if ( $expected ) {
+			$this->filesystem->delete( 'wp-content/cache/critical-css/1/critical.css' );
+		}
+
 		// Run it.
 		do_action( 'update_option_wp_rocket_settings', $values['old'], $values['new'] );
 
