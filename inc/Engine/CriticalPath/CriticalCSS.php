@@ -278,9 +278,9 @@ class CriticalCSS {
 	/**
 	 * Sets the items for which we generate critical CSS.
 	 *
-	 * @param array $version
-	 *
 	 * @since  2.11
+	 *
+	 * @param array $version Optional. Version.
 	 */
 	private function set_items( $version = 'default' ) {
 		$page_for_posts = get_option( 'page_for_posts' );
