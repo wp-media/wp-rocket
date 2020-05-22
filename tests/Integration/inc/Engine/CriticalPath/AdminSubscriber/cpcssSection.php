@@ -29,7 +29,8 @@ class Test_CpcssSection extends TestCase {
 		parent::setUp();
 
 		$this->set_permalink_structure( '/%postname%/' );
-		add_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'setCPCSSOption' ] );
+		add_filter( 'pre_get_rocket_option_async_css', [ $this, 'setCPCSSOption' ] );
+		add_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'setCPCSSMobileOption' ] );
 
 
 		set_current_screen( 'edit-post' );
@@ -40,7 +41,8 @@ class Test_CpcssSection extends TestCase {
 
 		parent::tearDown();
 
-		remove_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'setCPCSSOption' ] );
+		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'setCPCSSOption' ] );
+		remove_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'setCPCSSMobileOption' ] );
 		delete_post_meta( $this->post_id, '_rocket_exclude_async_css' );
 	}
 
@@ -51,8 +53,9 @@ class Test_CpcssSection extends TestCase {
 		wp_set_current_user( static::$user_id );
 
 		$this->async_css_mobile = $config['options']['async_css_mobile'];
-		$this->post_id   = $config['post']->ID;
-		$GLOBALS['post'] = $config['post'];
+		$this->async_css        = $config['options']['async_css'];
+		$this->post_id          = $config['post']->ID;
+		$GLOBALS['post']        = $config['post'];
 
 		if ( $config['is_option_excluded'] ) {
 			add_post_meta( $this->post_id, '_rocket_exclude_async_css', $config['is_option_excluded'], true );
@@ -71,7 +74,11 @@ class Test_CpcssSection extends TestCase {
 		);
 	}
 
-	public function setCPCSSOption() {
+	public function setCPCSSMobileOption() {
 		return $this->async_css_mobile;
+	}
+
+	public function setCPCSSOption() {
+		return $this->async_css;
 	}
 }
