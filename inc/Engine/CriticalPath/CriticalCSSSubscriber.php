@@ -6,6 +6,7 @@ use FilesystemIterator;
 use UnexpectedValueException;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Filesystem_Direct;
 
 /**
  * Critical CSS Subscriber.
@@ -29,14 +30,23 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	protected $options;
 
 	/**
+	 * Instance of the filesystem handler.
+	 *
+	 * @var WP_Filesystem_Direct
+	 */
+	private $filesystem;
+
+	/**
 	 * Creates an instance of the Critical CSS Subscriber.
 	 *
-	 * @param CriticalCSS  $critical_css Critical CSS instance.
-	 * @param Options_Data $options      WP Rocket options.
+	 * @param CriticalCSS          $critical_css Critical CSS instance.
+	 * @param Options_Data         $options      WP Rocket options.
+	 * @param WP_Filesystem_Direct $filesystem   Instance of the filesystem handler.
 	 */
-	public function __construct( CriticalCSS $critical_css, Options_Data $options ) {
+	public function __construct( CriticalCSS $critical_css, Options_Data $options, $filesystem ) {
 		$this->critical_css = $critical_css;
 		$this->options      = $options;
+		$this->filesystem   = $filesystem;
 	}
 
 	/**
@@ -125,7 +135,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	 *
 	 * @since 2.11
 	 *
-	 * @see   process_handler()
+	 * @see   CriticalCSS::process_handler()
 	 */
 	public function init_critical_css_generation() {
 		if (
@@ -164,7 +174,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	 * @param array $old_value Previous values for WP Rocket settings.
 	 * @param array $value     New values for WP Rocket settings.
 	 *
-	 * @see   Critical_CSS::process_handler()
+	 * @see   CriticalCSS::process_handler()
 	 */
 	public function generate_critical_css_on_activation( $old_value, $value ) {
 		if (
@@ -179,7 +189,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 		$critical_css_path = $this->critical_css->get_critical_css_path();
 
 		// Check if the CPCSS path exists and create it.
-		if ( ! rocket_direct_filesystem()->is_dir( $critical_css_path ) ) {
+		if ( ! $this->filesystem->is_dir( $critical_css_path ) ) {
 			rocket_mkdir_p( $critical_css_path );
 		}
 
@@ -256,7 +266,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	 * @since 3.6
 	 *
 	 * @param array $old_value Array of original values.
-	 * @param array $value Array of new values.
+	 * @param array $value     Array of new values.
 	 */
 	public function maybe_generate_cpcss_mobile( $old_value, $value ) {
 		if (
@@ -429,7 +439,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 		if (
 			current_user_can( 'rocket_manage_options' )
 			&&
-			( ! rocket_direct_filesystem()->is_writable( WP_ROCKET_CRITICAL_CSS_PATH ) )
+			( ! $this->filesystem->is_writable( WP_ROCKET_CRITICAL_CSS_PATH ) )
 			&&
 			( $this->options->get( 'async_css', false ) )
 			&&

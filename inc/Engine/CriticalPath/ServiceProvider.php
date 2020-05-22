@@ -66,7 +66,8 @@ class ServiceProvider extends AbstractServiceProvider {
 			->withArgument( $filesystem );
 		$this->getContainer()->share( 'critical_css_subscriber', 'WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber' )
 			->withArgument( $this->getContainer()->get( 'critical_css' ) )
-			->withArgument( $options );
+			->withArgument( $options )
+			->withArgument( $filesystem );
 
 		$this->getContainer()->share( 'critical_css_admin_subscriber', 'WP_Rocket\Engine\CriticalPath\AdminSubscriber' )
 			->withArgument( $options )
