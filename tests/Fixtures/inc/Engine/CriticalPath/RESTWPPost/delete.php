@@ -47,11 +47,15 @@ return [
 	],
 
 	'test_data' => [
-		'testShouldBailoutWithNoCapabilities'          => [
+
+		'testShouldBailoutWithNoCapabilities' => [
 			'config'   => [
 				'cpcss_exists_before' => true,
 				'current_user_can'    => false,
-				'post_data'           => [ 'post_id' => 1, 'post_type' => 'post' ],
+				'post_data'           => [
+					'post_id'   => 1,
+					'post_type' => 'post',
+				],
 				'cpcss_exists_after'  => true,
 			],
 			'expected' => [
@@ -60,11 +64,16 @@ return [
 				'data'    => [ 'status' => 401 ],
 			],
 		],
-		'testShouldBailoutIfPostDoesNotExist'          => [
+
+		'testShouldBailoutIfPostDoesNotExist' => [
 			'config'   => [
 				'cpcss_exists_before' => false,
 				'current_user_can'    => true,
-				'post_data'           => [ 'post_id' => 2, 'post_type' => 'post' ],
+				'post_data'           => [
+					'post_id'     => 2,
+					'post_type'   => 'post',
+					'post_status' => null,
+				],
 				'cpcss_exists_after'  => false,
 			],
 			'expected' => [
@@ -74,33 +83,44 @@ return [
 				'data'    => [ 'status' => 400 ],
 			],
 		],
-		'testShouldBailoutIfPostCPCSSNotExist'         => [
+
+		'testShouldBailoutIfPostCPCSSNotExist' => [
 			'config'   => [
 				'cpcss_exists_before' => false,
 				'current_user_can'    => true,
 				'post_data'           => [
-					'import_id' => 3,
-					'post_type' => 'post',
+					'import_id'   => 3,
+					'post_type'   => 'post',
+					'post_status' => 'publish',
 				],
 				'cpcss_exists_after'  => false,
+				'options'             => [
+					'async_css_mobile' => 0,
+				],
+				'is_mobile'           => false,
 			],
 			'expected' => [
 				'success' => false,
 				'code'    => 'cpcss_not_exists',
 				'message' => 'Critical CSS file does not exist',
 				'data'    => [ 'status' => 400 ],
-
 			],
 		],
-		'testShouldReturnSuccessWhenCPCSSExist_post'   => [
+
+		'testShouldReturnSuccessWhenCPCSSExist_post' => [
 			'config'   => [
 				'cpcss_exists_before' => true,
 				'current_user_can'    => true,
 				'post_data'           => [
-					'import_id' => 1,
-					'post_type' => 'post',
+					'import_id'   => 1,
+					'post_type'   => 'post',
+					'post_status' => 'publish',
 				],
 				'cpcss_exists_after'  => false,
+				'options'             => [
+					'async_css_mobile' => 0,
+				],
+				'is_mobile'           => false,
 			],
 			'expected' => [
 				'success' => true,
@@ -109,15 +129,21 @@ return [
 				'data'    => [ 'status' => 200 ],
 			],
 		],
+
 		'testShouldReturnSuccessWhenCPCSSExist_post10' => [
 			'config'   => [
 				'cpcss_exists_before' => true,
 				'current_user_can'    => true,
 				'post_data'           => [
-					'import_id' => 10,
-					'post_type' => 'post',
+					'import_id'   => 10,
+					'post_type'   => 'post',
+					'post_status' => 'publish',
 				],
 				'cpcss_exists_after'  => false,
+				'options'             => [
+					'async_css_mobile' => 0,
+				],
+				'is_mobile'           => false,
 			],
 			'expected' => [
 				'success' => true,
@@ -126,15 +152,21 @@ return [
 				'data'    => [ 'status' => 200 ],
 			],
 		],
-		'testShouldReturnSuccessWhenCPCSSExist_page'   => [
+
+		'testShouldReturnSuccessWhenCPCSSExist_page' => [
 			'config'   => [
 				'cpcss_exists_before' => true,
 				'current_user_can'    => true,
 				'post_data'           => [
-					'import_id' => 20,
-					'post_type' => 'page',
+					'import_id'   => 20,
+					'post_type'   => 'page',
+					'post_status' => 'publish',
 				],
 				'cpcss_exists_after'  => false,
+				'options'             => [
+					'async_css_mobile' => 0,
+				],
+				'is_mobile'           => false,
 			],
 			'expected' => [
 				'success' => true,
@@ -142,6 +174,6 @@ return [
 				'message' => 'Critical CSS file deleted successfully.',
 				'data'    => [ 'status' => 200 ],
 			],
-		]
+		],
 	],
 ];
