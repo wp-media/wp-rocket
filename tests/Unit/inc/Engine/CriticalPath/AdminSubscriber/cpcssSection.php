@@ -38,7 +38,7 @@ class Test_CpcssSection extends TestCase {
 	public function testShouldDisplayCPCSSSection( $config, $expected ) {
 		$this->setUpTest( $config );
 
-		$this->setUpGenerate( 'container', $expected['data'] );
+		$this->setUpGenerate( 'metabox/container', $expected['data'] );
 
 		ob_start();
 		$this->subscriber->cpcss_section();

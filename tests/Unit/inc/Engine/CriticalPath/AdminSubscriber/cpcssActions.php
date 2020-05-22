@@ -38,7 +38,7 @@ class Test_CpcssActions extends FilesystemTestCase {
 		             ->once()
 		             ->andReturn( $expected['data']['beacon'] );
 
-		$this->setUpGenerate( 'generate', $expected['data'] );
+		$this->setUpGenerate( 'metabox/generate', $expected['data'] );
 
 		ob_start();
 		$this->subscriber->cpcss_actions();

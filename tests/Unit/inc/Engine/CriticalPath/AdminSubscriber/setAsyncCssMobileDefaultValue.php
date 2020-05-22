@@ -31,7 +31,7 @@ class Test_SetAsyncCssMobileDefaultValue extends TestCase {
 			$options,
 			Mockery::mock( Beacon::class ),
 			'wp-content/cache/critical-css/',
-			'wp-content/plugins/wp-rocket/views/metabox/cpcss'
+			'wp-content/plugins/wp-rocket/views/cpcss'
 		);
 
         if ( true === $update ) {
