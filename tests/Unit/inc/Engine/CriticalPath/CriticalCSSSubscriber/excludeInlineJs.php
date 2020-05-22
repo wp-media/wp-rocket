@@ -30,7 +30,7 @@ class Test_ExcludeInlineJs extends TestCase {
 	 */
 	public function testShouldInsertCriticalCSS( $excluded_inline, $expected_inline ) {
 		$subscriber   = new CriticalCSSSubscriber(
-			Mockery::mock( CriticalCSS::class, [ Mockery::mock( CriticalCSSGeneration::class ), null ] ),
+			Mockery::mock( CriticalCSS::class, [ Mockery::mock( CriticalCSSGeneration::class ), Mockery::mock( Options_Data::class ), null ] ),
 			Mockery::mock( Options_Data::class )
 		);
 

@@ -32,6 +32,7 @@ class Test_InsertCriticalCssBuffer extends FilesystemTestCase {
 
 		$this->critical_css = Mockery::mock( CriticalCSS::class, [
 			Mockery::mock( CriticalCSSGeneration::class ),
+			Mockery::mock( Options_Data::class ),
 			$this->filesystem,
 		] );
 		$this->options      = Mockery::mock( Options_Data::class );
@@ -74,13 +75,13 @@ class Test_InsertCriticalCssBuffer extends FilesystemTestCase {
 				->never();
 		}
 
-		if ( isset( $config['get_current_page_critical_css'] ) ) {
+		if ( isset( $config['get_critical_css_content'] ) ) {
 			$this->critical_css
-				->shouldReceive( 'get_current_page_critical_css' )
+				->shouldReceive( 'get_critical_css_content' )
 				->once()
-				->andReturn( $config['get_current_page_critical_css'] );
+				->andReturn( $config['get_critical_css_content'] );
 		} else {
-			$this->critical_css->shouldReceive( 'get_current_page_critical_css' )->never();
+			$this->critical_css->shouldReceive( 'get_critical_css_content' )->never();
 		}
 
 		if ( isset( $config['SCRIPT_DEBUG'] ) ) {
