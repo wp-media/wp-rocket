@@ -7,6 +7,9 @@ use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::init_critical_css_generation
+ * @uses   \WP_Rocket\Engine\CriticalPath\CriticalCss::process_handler
+ * @uses   \WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration::cancel_process
+ * @uses   ::rocket_get_constant
  *
  * @group  AdminOnly
  * @group  Subscribers
@@ -74,7 +77,7 @@ class Test_InitCriticalCssGeneration extends TestCase {
 		}
 
 		$this->expectException( WPDieException::class );
-		
+
 		do_action( 'admin_post_rocket_purge_rocketcdn' );
 
 		if ( ! empty( $config['referer'] ) && false === strpos( $config['referer'], 'wprocket' ) ) {
