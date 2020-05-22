@@ -54,6 +54,12 @@ class Test_EnableMobileCpcss extends AjaxTestCase {
 			$user_id = static::$editor_user_id;
 		}
 
+		if ( ! empty( $config['rocket_regenerate_critical_css'] ) ) {
+			$this->addRegenerateCriticalCap();
+		} else {
+			$this->removeRegenerateCriticalCap();
+		}
+
 		wp_set_current_user( $user_id );
 		$_POST['nonce'] = wp_create_nonce( 'rocket-ajax' );
 
@@ -63,7 +69,7 @@ class Test_EnableMobileCpcss extends AjaxTestCase {
 		$response = $this->callAjaxAction();
 
 		$options = get_option( 'wp_rocket_settings' );
-		if ( $config['rocket_manage_options'] ) {
+		if ( $update ) {
 			$this->assertArrayHasKey( 'async_css_mobile', $options );
 			$this->assertObjectHasAttribute( 'success', $response );
 			$this->assertTrue( $response->success );
@@ -72,5 +78,15 @@ class Test_EnableMobileCpcss extends AjaxTestCase {
 			$this->assertObjectHasAttribute( 'success', $response );
 			$this->assertFalse( $response->success );
 		}
+	}
+
+	public static function removeRegenerateCriticalCap() {
+		$admin = get_role( 'administrator' );
+		$admin->remove_cap( 'rocket_regenerate_critical_css' );
+	}
+
+	public static function addRegenerateCriticalCap() {
+		$admin = get_role( 'administrator' );
+		$admin->add_cap( 'rocket_regenerate_critical_css' );
 	}
 }

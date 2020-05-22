@@ -92,7 +92,7 @@ $(document).ready(function(){
         e.preventDefault();
 
 		$('#wpr-action-rocket_enable_mobile_cpcss').addClass('wpr-isLoading');
-		//    animation: loading 1.2s infinite;
+
         $.post(
             ajaxurl,
             {

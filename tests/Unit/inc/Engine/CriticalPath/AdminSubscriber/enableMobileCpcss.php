@@ -27,7 +27,10 @@ class Test_EnableMobileCpcss extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldEnableMobileCpcss( $config, $update ) {
-		Functions\when( 'current_user_can' )->justReturn( $config['rocket_manage_options'] );
+		Functions\expect( 'current_user_can' )->once()->with( 'rocket_manage_options' )->andReturn( $config['rocket_manage_options'] );
+		if ( isset( $config['rocket_regenerate_critical_css']) ) {
+			Functions\expect( 'current_user_can' )->once()->with( 'rocket_regenerate_critical_css' )->andReturn( $config['rocket_regenerate_critical_css'] );
+		}
 
 		if ( ! $update ) {
 			Functions\expect( 'wp_send_json_error' )->once();
@@ -35,6 +38,8 @@ class Test_EnableMobileCpcss extends TestCase {
 		} else {
 			$this->options->shouldReceive( 'get_options' )->andReturn( $this->options );
 			$this->options->shouldReceive( 'set' )->with( 'async_css_mobile', 1 );
+
+			$this->critical_css->shouldReceive( 'process_handler' )->with( 'mobile' );
 
 			Functions\expect( 'update_option' )->with( 'wp_rocket_settings', $this->options )->once();
 			Functions\expect( 'wp_send_json_success' )->once();

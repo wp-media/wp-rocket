@@ -6,6 +6,7 @@ use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
+use WP_Rocket\Engine\CriticalPath\CriticalCSS;
 use WP_Rocket\Engine\CriticalPath\AdminSubscriber;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -30,6 +31,7 @@ class Test_SetAsyncCssMobileDefaultValue extends TestCase {
 		$subscriber = new AdminSubscriber(
 			$options,
 			Mockery::mock( Beacon::class ),
+			Mockery::mock( CriticalCSS::class ),
 			'wp-content/cache/critical-css/',
 			'wp-content/plugins/wp-rocket/views/cpcss'
 		);
