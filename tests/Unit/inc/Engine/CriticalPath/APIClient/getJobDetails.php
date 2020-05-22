@@ -21,8 +21,10 @@ class Test_GetJobDetails extends TestCase {
 	public function testShouldDoExpected( $config, $expected ) {
 		$this->setUpMocks( $config );
 
+		$is_mobile = ( isset( $config['is_mobile'] ) ) ? $config['is_mobile'] : false;
+
 		$api_client = new APIClient();
-		$actual     = $api_client->get_job_details( $config['job_id'], $config['item_url'] );
+		$actual     = $api_client->get_job_details( $config['job_id'], $config['item_url'], $is_mobile );
 
 		if ( isset( $expected['status'] ) && 200 === $expected['status'] ) {
 			// Assert success.
