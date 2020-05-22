@@ -278,6 +278,8 @@ class CriticalCSS {
 	/**
 	 * Sets the items for which we generate critical CSS.
 	 *
+	 * @param array $version
+	 *
 	 * @since  2.11
 	 */
 	private function set_items( $version = 'default' ) {
@@ -323,9 +325,9 @@ class CriticalCSS {
 				$mobile_items[ "{$key}-mobile" ] = $value;
 			}
 
-			if ( $version === 'mobile' ) {
+			if ( 'mobile' === $version ) {
 				$this->items = $mobile_items;
-			} elseif ( $version === 'all' ) {
+			} elseif ( 'all' === $version ) {
 				$this->items = array_merge( $this->items, $mobile_items );
 			}
 		}

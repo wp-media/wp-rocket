@@ -35,6 +35,12 @@ trait GenerateTrait {
 				->with( 'async_css', 0 )
 				->andReturn( $config['options']['async_css'] );
 		}
+		if ( isset( $config['options']['async_css_mobile'] ) ) {
+			$this->options
+				->shouldReceive( 'get' )
+				->with( 'async_css_mobile', 0 )
+				->andReturn( $config['options']['async_css_mobile'] );
+		}
 		Functions\when( 'get_post_meta' )->justReturn( $config['is_option_excluded'] );
 	}
 

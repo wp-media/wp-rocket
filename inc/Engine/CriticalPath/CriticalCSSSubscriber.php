@@ -198,7 +198,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 		) {
 			$version = 'all';
 		}
-		
+
 		// Generate the CPCSS files.
 		$this->critical_css->process_handler( $version );
 	}
@@ -221,7 +221,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 		}
 
 		if (
-			! isset(  $old_value['async_css'], $value['async_css']  )
+			! isset( $old_value['async_css'], $value['async_css'] )
 			||
 			( ( $old_value['async_css'] !== $value['async_css'] ) && 1 === (int) $value['async_css'] )
 			||
@@ -229,7 +229,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 		) {
 			return;
 		}
-	
+
 		$this->critical_css->process_handler( 'mobile' );
 	}
 

@@ -184,7 +184,6 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 	public function cpcss_section() {
 		$data = [
 			'disabled_description' => $this->get_disabled_description(),
-			'async_css_mobile'     => $this->options->get( 'async_css_mobile', 0 ),
 		];
 
 		echo $this->generate( 'metabox/container', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
