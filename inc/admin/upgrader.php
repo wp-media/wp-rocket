@@ -386,13 +386,10 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		( new Capabilities_Subscriber() )->add_rocket_capabilities();
 	}
 
-	if ( version_compare( $actual_version, '3.5.0.3', '<' ) ) {
-		rocket_generate_advanced_cache_file();
-	}
-
 	if ( version_compare( $actual_version, '3.6', '<' ) ) {
 		rocket_clean_cache_busting();
 		rocket_clean_domain();
+		rocket_generate_advanced_cache_file();
 	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );
