@@ -13,7 +13,6 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration::task
  *
  * @group  CriticalPath
- * @group  task
  */
 class test_Task extends TestCase {
 	public static function setUpBeforeClass() {

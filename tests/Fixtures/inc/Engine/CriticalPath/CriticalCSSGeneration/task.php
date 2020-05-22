@@ -7,18 +7,17 @@ return [
 				'url'    => 'http://example.org/',
 				'path'   => 'front_page.css',
 				'check'  => 0,
-				'mobile' => 0,
 			],
 			'result' => [
 				'success' => false,
 				'code'    => 'cpcss_generation_failed',
-				'message' => 'error',
+				'message' => 'Critical CSS for http://example.org/ not generated. Error: No valid stylesheets available'
 			],
 			'transient' => [
 				'generated' => 0,
 				'total'     => 1,
 				'items'     => [
-					'error',
+					'Critical CSS for http://example.org/ not generated. Error: No valid stylesheets available'
 				],
 			],
 			'expected' => false,
@@ -29,18 +28,17 @@ return [
 				'url'    => 'http://example.org/',
 				'path'   => 'front_page.css',
 				'check'  => 11,
-				'mobile' => 0,
 			],
 			'result' => [
 				'success' => false,
-				'code'    => 'cpcss_generation_failed',
-				'message' => 'error',
+				'code'    => 'cpcss_generation_timeout',
+				'message' => 'Critical CSS for http://example.org/ timeout. Please retry a little later.',
 			],
 			'transient' => [
 				'generated' => 0,
 				'total'     => 1,
 				'items'     => [
-					'error',
+					'Critical CSS for http://example.org/ timeout. Please retry a little later.',
 				],
 			],
 			'expected' => false,
@@ -51,7 +49,6 @@ return [
 				'url'    => 'http://example.org/',
 				'path'   => 'front_page.css',
 				'check'  => 0,
-				'mobile' => 0,
 			],
 			'result' => [
 				'success' => true,
@@ -63,7 +60,6 @@ return [
 				'url'    => 'http://example.org/',
 				'path'   => 'front_page.css',
 				'check'  => 1,
-				'mobile' => 0,
 			],
 		],
 
@@ -72,7 +68,6 @@ return [
 				'url'    => 'http://example.org/',
 				'path'   => 'front_page.css',
 				'check'  => 0,
-				'mobile' => 0,
 			],
 			'result' => [
 				'success' => true,
