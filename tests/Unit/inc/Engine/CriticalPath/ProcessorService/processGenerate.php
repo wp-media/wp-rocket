@@ -65,7 +65,7 @@ class Test_ProcessGenerate extends FilesystemTestCase {
 		$is_mobile                    = isset( $config['mobile'] )
 			? $config['mobile']
 			: false;
-		$item_path = "posts/{$post_type}-{$post_id}.css";
+		$item_path = "posts/{$post_type}-{$post_id}" . ( $is_mobile ? '_mobile' : '' ) . ".css";
 		$file                         = $this->config['vfs_dir'] . "1/".$item_path;
 		$item_url = ('post_not_exists' === $expected['code'])
 			? null
@@ -82,7 +82,7 @@ class Test_ProcessGenerate extends FilesystemTestCase {
 
 		if ( $post_id > 0 && 'publish' === $post_status ) {
 			Functions\expect( 'get_transient' )
-				->with( 'rocket_specific_cpcss_job_' . md5($item_url) )
+				->with( 'rocket_specific_cpcss_job_' . md5( $item_url ) . ( $is_mobile ? '_mobile' : '' ) )
 				->andReturn( $saved_cpcss_job_id );
 		}
 
@@ -90,7 +90,7 @@ class Test_ProcessGenerate extends FilesystemTestCase {
 			200 === $post_request_response_code ) {
 			Functions\expect( 'set_transient' )
 				->once()
-				->with( 'rocket_specific_cpcss_job_' . md5($item_url), $cpcss_post_job_id, HOUR_IN_SECONDS );
+				->with( 'rocket_specific_cpcss_job_' . md5( $item_url ) . ( $is_mobile ? '_mobile' : '' ), $cpcss_post_job_id, HOUR_IN_SECONDS );
 		}
 
 		if ( in_array( (int) $get_request_response_code, [ 400, 404 ], true )
@@ -98,7 +98,7 @@ class Test_ProcessGenerate extends FilesystemTestCase {
 			|| $request_timeout ) {
 			Functions\expect( 'delete_transient' )
 				->once()
-				->with( 'rocket_specific_cpcss_job_' . md5($item_url) );
+				->with( 'rocket_specific_cpcss_job_' . md5( $item_url ) . ( $is_mobile ? '_mobile' : '' ) );
 		}
 		Functions\expect( 'get_post_type' )
 			->atMost()

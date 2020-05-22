@@ -128,7 +128,7 @@ class ProcessorService {
 		$job_details = $this->api_client->get_job_details( $job_id, $item_url, $is_mobile );
 
 		if ( is_wp_error( $job_details ) ) {
-			$this->data_manager->delete_cache_job_id( $item_url );
+			$this->data_manager->delete_cache_job_id( $item_url, $is_mobile );
 
 			return $job_details;
 		}
