@@ -11,6 +11,7 @@ return [
 					'1' => [
 						'posts' => [
 							'post-10.css' => 'test',
+							'post-10-mobile.css' => 'test',
 						],
 					],
 				],
@@ -65,9 +66,9 @@ return [
 
 		'testShouldSuccessfullyDeleteFileMobile' => [
 			'config'   => [
-				'path'         => 'posts/post-10.css',
+				'path'         => 'posts/post-10-mobile.css',
 				'file_deleted' => true,
-				'is_mobile' => true,
+				'is_mobile'    => true,
 			],
 			'expected' => [
 				'deleted' => true,
@@ -76,9 +77,9 @@ return [
 
 		'testShouldBailOutFileNotExistsMobile' => [
 			'config'   => [
-				'path'         => 'posts/post-20.css',
+				'path'         => 'posts/post-20-mobile.css',
 				'file_deleted' => false,
-				'is_mobile' => true,
+				'is_mobile'    => true,
 			],
 			'expected' => [
 				'deleted' => false,
@@ -93,9 +94,9 @@ return [
 		'testShouldBailOutFileExistsNotDeletedMobile' => [
 			'config'   => [
 				'change_permissions' => true,
-				'path'               => 'posts/post-10.css',
+				'path'               => 'posts/post-10-mobile.css',
 				'file_deleted'       => false,
-				'is_mobile' => true,
+				'is_mobile'          => true,
 			],
 			'expected' => [
 				'deleted' => false,

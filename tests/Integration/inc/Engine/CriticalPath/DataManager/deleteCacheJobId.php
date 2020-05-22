@@ -8,7 +8,7 @@ use WP_Rocket\Tests\Integration\TestCase;
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\DataManager::delete_cache_job_id
  *
- * @group  CriticalPath
+ * @group  CriticalPathX
  */
 class Test_DeleteCacheJobId extends TestCase {
 	private $transient;
@@ -22,15 +22,15 @@ class Test_DeleteCacheJobId extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldDoExpected( $item_url, $expected ) {
-		$this->transient = 'rocket_specific_cpcss_job_' . md5( $item_url );
+	public function testShouldDoExpected( $item_url, $expected, $is_mobile ) {
+		$this->transient = 'rocket_specific_cpcss_job_' . md5( $item_url ) . ( $is_mobile ? '_mobile' : '' );
 
 		if ( $expected ) {
 			set_transient( $this->transient, 1, MINUTE_IN_SECONDS );
 		}
 
 		$data_manager = new DataManager( '', null );
-		$actual       = $data_manager->delete_cache_job_id( $item_url );
+		$actual       = $data_manager->delete_cache_job_id( $item_url, $is_mobile );
 
 		$this->assertSame( $expected, $actual );
 		$this->assertFalse( get_transient( $this->transient ) );
