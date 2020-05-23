@@ -2,37 +2,62 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\CriticalCSS;
 
-use Brain\Monkey\Functions;
+use WP_Rocket\Tests\Integration\ContentTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSS::get_critical_css_content
+ * @uses   ::rocket_get_constant
+ * @uses   \WP_Rocket\Admin\Options_Data::get
  *
  * @group  CriticalPath
  * @group  vfs
  */
 class Test_GetCriticalCssContent extends FilesystemTestCase {
+	use ContentTrait;
+
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSS/getCriticalCssContent.php';
 
+	protected static $use_settings_trait = true;
+	private static   $user_id;
 	protected static $critical_css;
 
-	protected $async_css_mobile;
-	protected $cache_mobile;
-	protected $fallback;
-	protected $is_mobile;
+	private $async_css_mobile;
+	private $cache_mobile;
+	private $fallback_css;
+	private $is_mobile;
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
 
 		$container          = apply_filters( 'rocket_container', null );
 		self::$critical_css = $container->get( 'critical_css' );
+
+		self::$user_id = static::factory()->user->create(
+			[
+				'role'          => 'adminstrator',
+				'user_nicename' => 'rocket_tester',
+			]
+		);
+	}
+
+	public function setUp() {
+		parent::setUp();
+
+		add_filter( 'wp_is_mobile', [ $this, 'is_mobile' ] );
+		add_filter( 'pre_get_rocket_option_do_caching_mobile_files', [ $this, 'cache_mobile' ] );
+		add_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'async_css_mobile' ] );
+		add_filter( 'pre_get_rocket_option_critical_css', [ $this, 'getFallbackCss' ] );
+
+		wp_set_current_user( self::$user_id );
+		set_current_screen( 'front' );
 	}
 
 	public function tearDown() {
 		remove_filter( 'wp_is_mobile', [ $this, 'is_mobile' ] );
 		remove_filter( 'pre_get_rocket_option_do_caching_mobile_files', [ $this, 'cache_mobile' ] );
 		remove_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'async_css_mobile' ] );
-		remove_filter( 'pre_get_rocket_option_critical_css', [ $this, 'critical_css' ] );
+		remove_filter( 'pre_get_rocket_option_critical_css', [ $this, 'getFallbackCss' ] );
 
 		parent::tearDown();
 	}
@@ -44,29 +69,9 @@ class Test_GetCriticalCssContent extends FilesystemTestCase {
 		$this->is_mobile        = $config['wp_is_mobile'];
 		$this->cache_mobile     = $config['settings']['do_caching_mobile_files'];
 		$this->async_css_mobile = $config['settings']['async_css_mobile'];
-		$this->fallback         = $config['settings']['critical_css'];
+		$this->fallback_css     = $config['settings']['critical_css'];
 
-		add_filter( 'wp_is_mobile', [ $this, 'is_mobile' ] );
-		add_filter( 'pre_get_rocket_option_do_caching_mobile_files', [ $this, 'cache_mobile' ] );
-		add_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'async_css_mobile' ] );
-		add_filter( 'pre_get_rocket_option_critical_css', [ $this, 'critical_css' ] );
-
-		foreach ( $config['expected_type'] as $expected_type ) {
-			if ( ! empty( $expected_type['param'] ) ) {
-				Functions\expect( $expected_type['type'] )
-					->once()
-					->with( $expected_type['param'] )
-					->andReturn( $expected_type['return'] );
-			} else {
-				Functions\expect( $expected_type['type'] )
-					->once()
-					->andReturn( $expected_type['return'] );
-			}
-		}
-
-		foreach ( $config['excluded_type'] as $excluded_type ) {
-			Functions\expect( $excluded_type )->never();
-		}
+		$this->goToContentType( $config );
 
 		$this->assertSame(
 			$expected,
@@ -86,7 +91,7 @@ class Test_GetCriticalCssContent extends FilesystemTestCase {
 		return $this->is_mobile;
 	}
 
-	public function critical_css() {
-		return $this->fallback;
+	public function getFallbackCss() {
+		return $this->fallback_css;
 	}
 }

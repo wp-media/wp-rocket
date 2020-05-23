@@ -9,9 +9,9 @@ return [
 			'cache' => [
 				'critical-css' => [
 					'1' => [
-						'.'              => '',
-						'..'             => '',
-						'posts'          => [
+						'.'                       => '',
+						'..'                      => '',
+						'posts'                   => [
 							'.'                 => '',
 							'..'                => '',
 							'post-1.css'        => '.post-1 { color: red; }',
@@ -52,13 +52,14 @@ return [
 		],
 	],
 	'test_data' => [
-		'testShouldReturnDefaultCSS'                            => [
+
+		'testShouldReturnDefaultCSS' => [
 			'config'   => [
 				'blog_id'       => 1,
 				'settings'      => [
 					'do_caching_mobile_files' => 0,
-                    'async_css_mobile'        => 0,
-                    'critical_css'            => '',
+					'async_css_mobile'        => 0,
+					'critical_css'            => '',
 				],
 				'wp_is_mobile'  => false,
 				'type'          => 'front_page', // default
@@ -98,13 +99,14 @@ return [
 			],
 			'expected' => '.front_page { color: red; }',
 		],
-		'testShouldReturnDefaultCSSMobile'                      => [
+
+		'testShouldReturnDefaultCSSMobile' => [
 			'config'   => [
 				'blog_id'       => 1,
 				'settings'      => [
 					'do_caching_mobile_files' => 1,
-                    'async_css_mobile'        => 1,
-                    'critical_css'            => '',
+					'async_css_mobile'        => 1,
+					'critical_css'            => '',
 				],
 				'wp_is_mobile'  => true,
 				'type'          => 'front_page', // default
@@ -144,13 +146,14 @@ return [
 			],
 			'expected' => '.front_page { color: blue; }',
 		],
-		'testShouldReturnHomeCSS'                               => [
+
+		'testShouldReturnHomeCSS' => [
 			'config'   => [
 				'blog_id'       => 1,
 				'settings'      => [
 					'do_caching_mobile_files' => 0,
-                    'async_css_mobile'        => 0,
-                    'critical_css'            => '',
+					'async_css_mobile'        => 0,
+					'critical_css'            => '',
 				],
 				'wp_is_mobile'  => false,
 				'type'          => 'home', // is_home
@@ -171,13 +174,14 @@ return [
 			],
 			'expected' => '.home { color: red; }',
 		],
-		'testShouldReturnHomeCSSMobile'                         => [
+
+		'testShouldReturnHomeCSSMobile' => [
 			'config'   => [
 				'blog_id'       => 1,
 				'settings'      => [
 					'do_caching_mobile_files' => 1,
-                    'async_css_mobile'        => 1,
-                    'critical_css'            => '',
+					'async_css_mobile'        => 1,
+					'critical_css'            => '',
 				],
 				'wp_is_mobile'  => true,
 				'type'          => 'home', // is_home
@@ -198,13 +202,14 @@ return [
 			],
 			'expected' => '.home { color: blue; }',
 		],
-		'testShouldReturnFrontPageCSS'                          => [
+
+		'testShouldReturnFrontPageCSS' => [
 			'config'   => [
 				'blog_id'       => 1,
 				'settings'      => [
 					'do_caching_mobile_files' => 0,
-                    'async_css_mobile'        => 0,
-                    'critical_css'            => '',
+					'async_css_mobile'        => 0,
+					'critical_css'            => '',
 				],
 				'wp_is_mobile'  => false,
 				'type'          => 'home', // front default
@@ -225,13 +230,14 @@ return [
 			],
 			'expected' => '.front_page { color: red; }',
 		],
-		'testShouldReturnFrontPageCSSMobile'                    => [
+
+		'testShouldReturnFrontPageCSSMobile' => [
 			'config'   => [
 				'blog_id'       => 1,
 				'settings'      => [
 					'do_caching_mobile_files' => 1,
-                    'async_css_mobile'        => 1,
-                    'critical_css'            => '',
+					'async_css_mobile'        => 1,
+					'critical_css'            => '',
 				],
 				'wp_is_mobile'  => true,
 				'type'          => 'home', // front default
@@ -252,13 +258,14 @@ return [
 			],
 			'expected' => '.front_page { color: blue; }',
 		],
-		'testShouldReturnCategoryPageCSS'                       => [
+
+		'testShouldReturnCategoryPageCSS' => [
 			'config'   => [
 				'blog_id'       => 1,
 				'settings'      => [
 					'do_caching_mobile_files' => 0,
-                    'async_css_mobile'        => 0,
-                    'critical_css'            => '',
+					'async_css_mobile'        => 0,
+					'critical_css'            => '',
 				],
 				'wp_is_mobile'  => false,
 				'type'          => 'is_category', // category
@@ -283,13 +290,14 @@ return [
 			],
 			'expected' => '.category { color: red; }',
 		],
-		'testShouldReturnCategoryPageCSSMobile'                 => [
+
+		'testShouldReturnCategoryPageCSSMobile' => [
 			'config'   => [
 				'blog_id'       => 1,
 				'settings'      => [
 					'do_caching_mobile_files' => 1,
-                    'async_css_mobile'        => 1,
-                    'critical_css'            => '',
+					'async_css_mobile'        => 1,
+					'critical_css'            => '',
 				],
 				'wp_is_mobile'  => true,
 				'type'          => 'is_category', // category
@@ -314,13 +322,14 @@ return [
 			],
 			'expected' => '.category { color: blue; }',
 		],
-		'testShouldReturnTagCSS'                                => [
+
+		'testShouldReturnTagCSS' => [
 			'config'   => [
 				'blog_id'       => 1,
 				'settings'      => [
 					'do_caching_mobile_files' => 0,
-                    'async_css_mobile'        => 0,
-                    'critical_css'            => '',
+					'async_css_mobile'        => 0,
+					'critical_css'            => '',
 				],
 				'wp_is_mobile'  => false,
 				'type'          => 'is_tag',
@@ -350,13 +359,14 @@ return [
 			],
 			'expected' => '.post_tag { color: red; }',
 		],
-		'testShouldReturnTagCSSMobile'                          => [
+
+		'testShouldReturnTagCSSMobile' => [
 			'config'   => [
 				'blog_id'       => 1,
 				'settings'      => [
 					'do_caching_mobile_files' => 1,
-                    'async_css_mobile'        => 1,
-                    'critical_css'            => '',
+					'async_css_mobile'        => 1,
+					'critical_css'            => '',
 				],
 				'wp_is_mobile'  => true,
 				'type'          => 'is_tag',
@@ -386,13 +396,14 @@ return [
 			],
 			'expected' => '.post_tag { color: blue; }',
 		],
-		'testShouldReturnTaxCSS'                                => [
+
+		'testShouldReturnTaxCSS' => [
 			'config'   => [
 				'blog_id'       => 1,
 				'settings'      => [
 					'do_caching_mobile_files' => 0,
-                    'async_css_mobile'        => 0,
-                    'critical_css'            => '',
+					'async_css_mobile'        => 0,
+					'critical_css'            => '',
 				],
 				'wp_is_mobile'  => false,
 				'type'          => 'is_tax',
@@ -433,13 +444,14 @@ return [
 			],
 			'expected' => '.wptests_tax1 { color: red; }',
 		],
-		'testShouldReturnTaxCSSMobile'                          => [
+
+		'testShouldReturnTaxCSSMobile' => [
 			'config'   => [
 				'blog_id'       => 1,
 				'settings'      => [
 					'do_caching_mobile_files' => 1,
-                    'async_css_mobile'        => 1,
-                    'critical_css'            => '',
+					'async_css_mobile'        => 1,
+					'critical_css'            => '',
 				],
 				'wp_is_mobile'  => true,
 				'type'          => 'is_tax',
@@ -480,13 +492,14 @@ return [
 			],
 			'expected' => '.wptests_tax1 { color: blue; }',
 		],
+
 		'testShouldReturnFallbackForTaxWhenCSSDoesNotExist' => [
 			'config'   => [
 				'blog_id'       => 1,
 				'settings'      => [
 					'do_caching_mobile_files' => 0,
-                    'async_css_mobile'        => 0,
-                    'critical_css'            => 'fallback',
+					'async_css_mobile'        => 0,
+					'critical_css'            => 'fallback',
 				],
 				'wp_is_mobile'  => false,
 				'type'          => 'is_tax',
@@ -525,15 +538,16 @@ return [
 				],
 				'excluded_type' => [ 'is_singular' ],
 			],
-			'expected'     => 'fallback',
+			'expected' => 'fallback',
 		],
+
 		'testShouldReturnEmptyForTaxWhenCssDoesNotExistMobileNoFallback' => [
 			'config'   => [
 				'blog_id'       => 1,
 				'settings'      => [
 					'do_caching_mobile_files' => 1,
-                    'async_css_mobile'        => 1,
-                    'critical_css'            => '',
+					'async_css_mobile'        => 1,
+					'critical_css'            => '',
 				],
 				'wp_is_mobile'  => true,
 				'type'          => 'is_tax',
@@ -572,19 +586,23 @@ return [
 				],
 				'excluded_type' => [ 'is_singular' ],
 			],
-			'expected'     => '',
+			'expected' => '',
 		],
-		'testShouldReturnSingularCSS'                           => [
+		'testShouldReturnSingularCSS'                                    => [
 			'config'   => [
 				'blog_id'       => 1,
 				'settings'      => [
 					'do_caching_mobile_files' => 0,
-                    'async_css_mobile'        => 0,
-                    'critical_css'            => '',
+					'async_css_mobile'        => 0,
+					'critical_css'            => '',
 				],
 				'wp_is_mobile'  => false,
 				'type'          => 'is_page',
 				'post_id'       => 2,
+				'post_data'     => [
+					'import_id' => 2,
+					'post_type' => 'page',
+				],
 				'expected_type' => [
 					[
 						'type'   => 'is_home',
@@ -629,19 +647,23 @@ return [
 				],
 				'excluded_type' => [],
 			],
-			'expected'     => '.page { color: red; }',
+			'expected' => '.page { color: red; }',
 		],
-		'testShouldReturnSingularCSSNoMobile'                   => [
+		'testShouldReturnSingularCSSNoMobile'                            => [
 			'config'   => [
 				'blog_id'       => 1,
 				'settings'      => [
 					'do_caching_mobile_files' => 1,
-                    'async_css_mobile'        => 1,
-                    'critical_css'            => '',
+					'async_css_mobile'        => 1,
+					'critical_css'            => '',
 				],
 				'wp_is_mobile'  => true,
 				'type'          => 'is_page',
 				'post_id'       => 2,
+				'post_data'     => [
+					'import_id' => 2,
+					'post_type' => 'page',
+				],
 				'expected_type' => [
 					[
 						'type'   => 'is_home',
@@ -686,19 +708,24 @@ return [
 				],
 				'excluded_type' => [],
 			],
-			'expected'     => '.page { color: red; }',
+			'expected' => '.page { color: red; }',
 		],
-		'testShouldReturnSingularCustomPostsCSS'                => [
+
+		'testShouldReturnSingularCustomPostsCSS' => [
 			'config'   => [
 				'blog_id'       => 1,
 				'settings'      => [
 					'do_caching_mobile_files' => 0,
-                    'async_css_mobile'        => 0,
-                    'critical_css'            => '',
+					'async_css_mobile'        => 0,
+					'critical_css'            => '',
 				],
 				'wp_is_mobile'  => false,
 				'type'          => 'is_post',
 				'post_id'       => 1,
+				'post_data'     => [
+					'import_id' => 1,
+					'post_type' => 'post',
+				],
 				'expected_type' => [
 					[
 						'type'   => 'is_home',
@@ -743,19 +770,24 @@ return [
 				],
 				'excluded_type' => [],
 			],
-			'expected'     => '.post-1 { color: red; }',
+			'expected' => '.post-1 { color: red; }',
 		],
-		'testShouldReturnSingularCustomPostsCSSMobile'          => [
+
+		'testShouldReturnSingularCustomPostsCSSMobile' => [
 			'config'   => [
 				'blog_id'       => 1,
 				'settings'      => [
 					'do_caching_mobile_files' => 1,
-                    'async_css_mobile'        => 1,
-                    'critical_css'            => '',
+					'async_css_mobile'        => 1,
+					'critical_css'            => '',
 				],
 				'wp_is_mobile'  => true,
 				'type'          => 'is_post',
 				'post_id'       => 1,
+				'post_data'     => [
+					'import_id' => 1,
+					'post_type' => 'post',
+				],
 				'expected_type' => [
 					[
 						'type'   => 'is_home',
@@ -800,7 +832,7 @@ return [
 				],
 				'excluded_type' => [],
 			],
-			'expected'     => '.post-1 { color: blue; }',
+			'expected' => '.post-1 { color: blue; }',
 		],
 	],
 ];
