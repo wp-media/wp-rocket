@@ -348,6 +348,10 @@ return [
 				'blog_id'       => 1,
 				'type'          => 'is_page',
 				'post_id'       => 2,
+				'post_data'     => [
+					'import_id' => 2,
+					'post_type' => 'page',
+				],
 				'expected_type' => [
 					[
 						'type'   => 'is_home',
@@ -400,6 +404,10 @@ return [
 				'blog_id'       => 1,
 				'type'          => 'is_post',
 				'post_id'       => 1,
+				'post_data'     => [
+					'import_id' => 1,
+					'post_type' => 'post',
+				],
 				'expected_type' => [
 					[
 						'type'   => 'is_home',
