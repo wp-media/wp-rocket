@@ -58,7 +58,7 @@ class test_Task extends TestCase {
 				$task->invoke( self::$generation, $item )
 			);
 			$this->assertSame(
-				self::$transient['rocket_critical_css_generation_process_running'],
+				self::$transients['rocket_critical_css_generation_process_running'],
 				$transient
 			);
 		}
