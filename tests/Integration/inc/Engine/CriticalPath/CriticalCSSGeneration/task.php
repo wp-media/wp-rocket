@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\CriticalCSSGeneration;
+namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\CriticalCSSGeneration;
 
 use WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration;
 use WP_Rocket\Tests\Integration\TestCase;
@@ -8,7 +8,7 @@ use WP_Rocket\Tests\Integration\TestCase;
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration::task
  *
- * @group  CriticalPath
+ * @group CriticalPath
  * @group task
  */
 class test_Task extends TestCase {
