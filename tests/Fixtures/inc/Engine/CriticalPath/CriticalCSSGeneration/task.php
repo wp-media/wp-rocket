@@ -55,7 +55,7 @@ return [
 				'code'    => 'cpcss_generation_pending',
 				'message' => 'pending',
 			],
-			'transient' => false,
+			'transient' => null,
 			'expected' => [
 				'url'    => 'http://example.org/',
 				'path'   => 'front_page.css',

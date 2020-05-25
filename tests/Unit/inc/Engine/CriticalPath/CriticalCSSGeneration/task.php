@@ -52,7 +52,7 @@ class test_Task extends TestCase {
 			return ( $thing instanceof WP_Error );
 		} );
 
-		if ( false === $transient ) {
+		if ( ! isset( $transient ) ) {
 			Functions\expect( 'set_transient' )->never();
 		} else {
 			Functions\expect( 'set_transient' )

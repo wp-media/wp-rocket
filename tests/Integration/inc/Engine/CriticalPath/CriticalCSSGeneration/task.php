@@ -2,8 +2,11 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\CriticalCSSGeneration;
 
-use WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration;
+use Mockery;
+use WP_Error;
 use WP_Rocket\Tests\Integration\TestCase;
+use WP_Rocket\Engine\CriticalPath\ProcessorService;
+use WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration::task
@@ -16,13 +19,7 @@ class test_Task extends TestCase {
 		'rocket_critical_css_generation_process_running' => null,
 	];
 	protected static $generation;
-
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
-
-		$container        = apply_filters( 'rocket_container', null );
-		self::$generation = $container->get( 'critical_css_generation' );
-	}
+	protected static $processor;
 
 	public function setUp() {
 		parent::setUp();
@@ -32,6 +29,9 @@ class test_Task extends TestCase {
 			'total'     => 1,
 			'items'     => [],
 		] );
+
+		self::$processor  = Mockery::mock( ProcessorService::class );
+		self::$generation = new CriticalCSSGeneration( self::$processor );
 	}
 
 	public function tearDown() {
@@ -45,6 +45,18 @@ class test_Task extends TestCase {
 	 */
 	public function testShouldDoExpected( $item, $result, $transient, $expected ) {
 		$task = $this->get_reflective_method( 'task', CriticalCSSGeneration::class );
+
+		if ( false === $result['success'] ) {
+			self::$processor->shouldReceive( 'process_generate' )
+							->once()
+							->andReturnUsing( function() use ( $result ) {
+								return new WP_Error( $result['code'], $result['message'] );
+							} );
+		} else {
+			self::$processor->shouldReceive( 'process_generate' )
+							->once()
+							->andReturn( $result );
+		}
 
 		if ( false === $expected ) {
 			$this->assertFalse( $task->invoke( self::$generation, $item ) );
