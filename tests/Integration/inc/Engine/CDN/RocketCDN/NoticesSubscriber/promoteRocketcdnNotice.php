@@ -28,6 +28,8 @@ class Test_PromoteRocketcdnNotice extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDisplayPerData( $data, $expected, $config ) {
+		$this->white_label = isset( $config['white_label'] ) ? $config['white_label'] : $this->white_label;
+
 		if ( isset( $config['home_url'] ) ) {
 			$this->home_url = $config['home_url'];
 			add_filter( 'home_url', [ $this, 'home_url_cb' ] );
