@@ -13,6 +13,11 @@ use Brain\Monkey\Functions;
  * @group  RocketCDN
  */
 class Test_PurgeCacheNotice extends TestCase {
+	public static function SetUpBeforeClass() {
+		$role = get_role( 'administrator' );
+		$role->add_cap( 'rocket_manage_options' );
+	}
+
 	private function get_notice( $status = 'success', $message = '' ) {
 		return $this->format_the_html( '<div class="notice notice-' . $status . ' is-dismissible">
 		<p>' . $message . '</p>
