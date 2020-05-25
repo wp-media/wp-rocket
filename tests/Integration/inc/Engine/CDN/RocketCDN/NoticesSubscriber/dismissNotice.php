@@ -21,6 +21,9 @@ class Test_DismissNotice extends AjaxTestCase {
 	 * Set up the User ID before tests start.
 	 */
 	public static function wpSetUpBeforeClass( $factory ) {
+		$role = get_role( 'administrator' );
+		$role->add_cap( 'rocket_manage_options' );
+
 		self::$user_id = $factory->user->create( [ 'role' => 'administrator' ] );
 	}
 

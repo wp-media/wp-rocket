@@ -47,21 +47,36 @@ return [
 	'fields' => $fields,
 
 	'test_data' => [
+		'testShouldReturnDefaultFieldWhenWhiteLabel' => [
+			'config' => [
+				'white_label'      => true,
+				'cdn_names'        => [],
+				'rocketcdn_status' => [
+					'subscription_status' => 'cancelled',
+					'cdn_url'             => '',
+				],
+			],
+			'expected_cdn_cnames' => $fields['cdn_cnames'],
+		],
 
 		'testShouldReturnDefaultFieldWhenRocketCDNNotActive' => [
-			'cdn_names'           => [],
-			'rocketcdn_status'    => [
-				'subscription_status' => 'cancelled',
-				'cdn_url'             => '',
+			'config' => [
+				'cdn_names'           => [],
+				'rocketcdn_status'    => [
+					'subscription_status' => 'cancelled',
+					'cdn_url'             => '',
+				],
 			],
 			'expected_cdn_cnames' => $fields['cdn_cnames'],
 		],
 
 		'testShouldReturnRocketCDNFieldWhenRocketCDNActive' => [
-			'cdn_names'           => [ 'example1.org' ],
-			'rocketcdn_status'    => [
-				'subscription_status' => 'running',
-				'cdn_url'             => 'example1.org',
+			'config' => [
+				'cdn_names'           => [ 'example1.org' ],
+				'rocketcdn_status'    => [
+					'subscription_status' => 'running',
+					'cdn_url'             => 'example1.org',
+				],
 			],
 			'expected_cdn_cnames' => [
 				'type'        => 'rocket_cdn',
@@ -79,10 +94,12 @@ return [
 		],
 
 		'testShouldReturnRocketCDNFieldWithCNAMEWhenRocketCDNActiveAndCNamesEmpty' => [
-			'cdn_names'           => [],
-			'rocketcdn_status'    => [
-				'subscription_status' => 'running',
-				'cdn_url'             => 'example1.org',
+			'config' => [
+				'cdn_names'           => [],
+				'rocketcdn_status'    => [
+					'subscription_status' => 'running',
+					'cdn_url'             => 'example1.org',
+				],
 			],
 			'expected_cdn_cnames' => [
 				'type'        => 'rocket_cdn',
@@ -100,10 +117,12 @@ return [
 		],
 
 		'testShouldReturnRocketCDNFieldWithCNAMEWhenRocketCDNActiveAndCNames' => [
-			'cdn_names'           => [ 'example2.com' ],
-			'rocketcdn_status'    => [
-				'subscription_status' => 'running',
-				'cdn_url'             => 'example1.org',
+			'config' => [
+				'cdn_names'           => [ 'example2.com' ],
+				'rocketcdn_status'    => [
+					'subscription_status' => 'running',
+					'cdn_url'             => 'example1.org',
+				],
 			],
 			'expected_cdn_cnames' => [
 				'type'        => 'rocket_cdn',

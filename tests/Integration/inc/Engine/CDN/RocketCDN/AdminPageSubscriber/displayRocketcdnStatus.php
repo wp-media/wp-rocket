@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\AdminPageSubscriber;
 
-use  WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
+use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber::display_rocketcdn_status
@@ -40,7 +40,8 @@ class Test_DisplayRocketcdnStatus extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDisplayExpected( $rocketcdn_status, $expected, $config ) {
-		$this->home_url = $config['home_url'];
+		$this->white_label = isset( $config['white_label'] ) ? $config['white_label'] : $this->white_label;
+		$this->home_url    = $config['home_url'];
 		set_transient( 'rocketcdn_status', $rocketcdn_status, MINUTE_IN_SECONDS );
 
 		ob_start();

@@ -2,13 +2,25 @@
 
 return [
 
+	'testShouldDisplayNothingWhenWhiteLabel' => [
+		'config'   => [
+			'white_label' => true,
+			'home_url'    => 'http://localhost',
+		],
+		'expected' => '',
+	],
+
 	'testShouldDisplayNothingWhenNotLiveSite' => [
-		'home_url' => 'http://localhost',
+		'config'   => [
+			'home_url' => 'http://localhost',
+		],
 		'expected' => '',
 	],
 
 	'testShouldDisplayModalWithProductionURL' => [
-		'home_url' => 'http://example.org',
+		'config' => [
+			'home_url' => 'http://example.org',
+		],
 		'expected' => <<<HTML
 <div class="wpr-rocketcdn-modal" id="wpr-rocketcdn-modal" aria-hidden="true">
 	<div class="wpr-rocketcdn-modal__overlay" tabindex="-1">

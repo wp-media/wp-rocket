@@ -2,8 +2,8 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\RocketCDN\NoticesSubscriber;
 
-use Brain\Monkey\Functions;
 use Mockery;
+use Brain\Monkey\Functions;
 use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
 use WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber;
 use WP_Rocket\Tests\Unit\TestCase;
@@ -34,10 +34,32 @@ class Test_DisplayRocketcdnCta extends TestCase {
 		);
 	}
 
+	public function tearDown() {
+		$this->resetStubProperties();
+
+		parent::tearDown();
+	}
+
+	public function testShouldDisplayNothingWhenWhiteLabel() {
+		$this->white_label = true;
+
+		$this->assertNull( $this->notices->display_rocketcdn_cta() );
+	}
+
 	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDisplayPerData( $data, $expected, $config ) {
+		$this->white_label = isset( $config['white_label'] ) ? $config['white_label'] : $this->white_label;
+
+		if ( $this->white_label ) {
+			$this->api_client->shouldReceive( 'get_subscription_data' )->never();
+			$this->notices->shouldReceive( 'generate' )->never();
+			$this->assertNull( $this->notices->display_rocketcdn_cta() );
+
+			return;
+		}
+
 		$live_site = isset( $config['live_site'] ) ? $config['live_site'] : true;
 
 		Functions\expect( 'rocket_is_live_site' )->once()->andReturn( $live_site );
