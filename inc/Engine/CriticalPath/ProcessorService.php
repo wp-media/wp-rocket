@@ -73,10 +73,10 @@ class ProcessorService {
 	 */
 	private function send_generation_request( $item_url, $item_path, $is_mobile = false ) {
 		// call send generation request from APIClient for the first time.
-		$additional_request_data = [
+		$params        = [
 			'mobile' => (int) $is_mobile,
 		];
-		$generated_job           = $this->api_client->send_generation_request( $item_url, $additional_request_data );
+		$generated_job = $this->api_client->send_generation_request( $item_url, $params );
 
 		// validate generate response.
 		if ( is_wp_error( $generated_job ) ) {
