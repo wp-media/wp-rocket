@@ -12,10 +12,13 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSS::process_handler
+ * @uses   \WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration::save
+ * @uses   \WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration::dispatch
+ * @uses   \WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration::cancel_process
+ * @uses   ::rocket_get_constant
  *
  * @group  CriticalCss
  * @group  CriticalPath
- * @group  thisone
  */
 class Test_ProcessHandler extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSS/processHandler.php';
