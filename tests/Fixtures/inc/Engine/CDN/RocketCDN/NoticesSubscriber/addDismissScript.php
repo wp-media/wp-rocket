@@ -23,7 +23,7 @@ HTML;
 
 return [
 
-	'testShouldDisplayNothingWhenNotLiveSite' => [
+	'testShouldDisplayNothingWhenWhiteLabel' => [
 		'config' => [
 			'white_label' => true,
 			'home_url'    => 'http://example.org',
