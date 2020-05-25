@@ -212,9 +212,8 @@ class CriticalCSS {
 		$post_types = esc_sql( $post_types );
 		$post_types = "'" . implode( "','", $post_types ) . "'";
 
-		$rows = $wpdb->get_results(
-			"
-		    SELECT MAX(ID) as ID, post_type
+		return $wpdb->get_results(
+			"SELECT MAX(ID) as ID, post_type
 		    FROM (
 		        SELECT ID, post_type
 		        FROM $wpdb->posts
@@ -224,8 +223,6 @@ class CriticalCSS {
 		    ) AS posts
 		    GROUP BY post_type"
 		);
-
-		return $rows;
 	}
 
 	/**
@@ -270,7 +267,7 @@ class CriticalCSS {
 		$taxonomies = esc_sql( $taxonomies );
 		$taxonomies = "'" . implode( "','", $taxonomies ) . "'";
 
-		$rows = $wpdb->get_results(
+		return $wpdb->get_results(
 			"SELECT MAX( term_id ) AS ID, taxonomy
 			FROM (
 				SELECT term_id, taxonomy
@@ -280,8 +277,6 @@ class CriticalCSS {
 			) AS taxonomies
 			GROUP BY taxonomy"
 		);
-
-		return $rows;
 	}
 
 	/**
