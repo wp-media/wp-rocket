@@ -310,8 +310,8 @@ class CriticalCSS {
 		}
 
 		$taxonomies = $this->get_public_taxonomies();
-
 		foreach ( $taxonomies as $taxonomy ) {
+
 			$this->items[ $taxonomy->taxonomy ] = [
 				'type'  => $taxonomy->taxonomy,
 				'url'   => get_term_link( (int) $taxonomy->ID, $taxonomy->taxonomy ),
