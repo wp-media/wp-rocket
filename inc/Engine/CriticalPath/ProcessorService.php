@@ -174,7 +174,7 @@ class ProcessorService {
 			$error = sprintf( __( 'Mobile Critical CSS for %1$s not generated.', 'rocket' ), $item_url );
 		} else {
 			// translators: %1$s = page URL.
-			$error .= sprintf( __( 'Critical CSS for %1$s not generated.', 'rocket' ), $item_url );
+			$error = sprintf( __( 'Critical CSS for %1$s not generated.', 'rocket' ), $item_url );
 		}
 
 		if ( isset( $job_details->message ) ) {

@@ -186,6 +186,10 @@ class DataManager {
 	private function get_cache_key_from_url( $item_url, $is_mobile = false ) {
 		$encoded_url = md5( $item_url );
 
-		return 'rocket_specific_cpcss_job_' . $encoded_url . ( $is_mobile ? '_mobile' : '' );
+		if ( $is_mobile ) {
+			$encoded_url .= '_mobile';
+		}
+
+		return 'rocket_specific_cpcss_job_' . $encoded_url;
 	}
 }

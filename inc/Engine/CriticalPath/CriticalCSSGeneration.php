@@ -56,7 +56,7 @@ class CriticalCSSGeneration extends WP_Background_Process {
 	protected function task( $item ) {
 		$timeout   = false;
 		$transient = get_transient( 'rocket_critical_css_generation_process_running' );
-		$mobile    = isset( $item['mobile'] ) ? true : false;
+		$mobile    = isset( $item['mobile'] );
 
 		if ( 10 < $item['check'] ) {
 			$timeout = true;
