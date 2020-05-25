@@ -72,7 +72,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 * @return void
 	 */
 	public function display_rocketcdn_status() {
-		if ( rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) {
+		if ( $this->is_white_label_account() ) {
 			return;
 		}
 
@@ -114,7 +114,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 * @return array
 	 */
 	public function rocketcdn_field( $fields ) {
-		if ( rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) {
+		if ( $this->is_white_label_account() ) {
 			return $fields;
 		}
 
@@ -171,7 +171,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 * @return void
 	 */
 	public function display_manage_subscription() {
-		if ( rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) {
+		if ( $this->is_white_label_account() ) {
 			return;
 		}
 
@@ -222,7 +222,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 * @return void
 	 */
 	public function add_subscription_modal() {
-		if ( rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) {
+		if ( $this->is_white_label_account() ) {
 			return;
 		}
 
@@ -262,5 +262,16 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 */
 	public function preserve_authorization_token( $args, $url ) {
 		return $this->api_client->preserve_authorization_token( $args, $url );
+	}
+
+	/**
+	 * Checks if white label is enabled
+	 *
+	 * @since 3.6
+	 *
+	 * @return bool
+	 */
+	private function is_white_label_account() {
+		return (bool) rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' );
 	}
 }

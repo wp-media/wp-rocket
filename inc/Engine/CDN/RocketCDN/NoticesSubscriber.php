@@ -53,7 +53,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 * @return void
 	 */
 	public function promote_rocketcdn_notice() {
-		if ( rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) {
+		if ( $this->is_white_label_account() ) {
 			return;
 		}
 
@@ -76,7 +76,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 * @return void
 	 */
 	public function add_dismiss_script() {
-		if ( rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) {
+		if ( $this->is_white_label_account() ) {
 			return;
 		}
 
@@ -161,7 +161,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 * @return void
 	 */
 	public function display_rocketcdn_cta() {
-		if ( rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) {
+		if ( $this->is_white_label_account() ) {
 			return;
 		}
 
@@ -278,5 +278,16 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 				'message' => $purge_response['message'],
 			]
 		);
+	}
+
+	/**
+	 * Checks if white label is enabled
+	 *
+	 * @since 3.6
+	 *
+	 * @return bool
+	 */
+	private function is_white_label_account() {
+		return (bool) rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' );
 	}
 }
