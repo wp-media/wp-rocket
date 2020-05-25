@@ -17,13 +17,14 @@ class APIClient {
 	 *
 	 * @since 3.6
 	 *
-	 * @param string $url The URL to send a CPCSS generation request for.
-	 * @param array  $additional_data Any additional data needed to be sent in the body.
+	 * @param string $url    The URL to send a CPCSS generation request for.
+	 * @param array  $params Parameters needed to be sent in the body.
 	 * @return array
 	 */
-	public function send_generation_request( $url, $additional_data = [] ) {
-		$additional_data['url'] = $url;
-		$response               = wp_remote_post(
+	public function send_generation_request( $url, $params = [] ) {
+		$params['url'] = $url;
+		$is_mobile     = isset( $params['mobile'] ) && $params['mobile'];
+		$response      = wp_remote_post(
 			self::API_URL,
 			[
 				/**
@@ -31,13 +32,11 @@ class APIClient {
 				 *
 				 * @since 2.11
 				 *
-				 * @param array $additional_data An array of parameters to send to the API.
+				 * @param array $params An array of parameters to send to the API.
 				 */
-				'body' => apply_filters( 'rocket_cpcss_job_request', $additional_data ),
+				'body' => apply_filters( 'rocket_cpcss_job_request', $params ),
 			]
 		);
-
-		$is_mobile = isset( $additional_data['mobile'] ) && $additional_data['mobile'];
 
 		return $this->prepare_response( $response, $url, $is_mobile );
 	}
