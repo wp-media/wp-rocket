@@ -84,7 +84,7 @@ return [
 					(object) [
 						'taxonomy' => 'category',
 						'ID'       => 1,
-						'url'      => 'http://www.example.com/category/category_slug',
+						'url'      => 'http://www.example.com/?cat=1',
 					],
 				],
 			],
