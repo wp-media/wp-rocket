@@ -98,11 +98,10 @@ class ProcessorService {
 	 *
 	 * @param string $job_id   ID for the job to get details.
 	 * @param string $item_url URL for item to be used in error messages.
-	 * @param bool   $is_mobile If this is cpcss for mobile or not.
 	 *
 	 * @return array|mixed|WP_Error
 	 */
-	private function get_cpcss_job_details( $job_id, $item_url, $is_mobile = false ) {
+	private function get_cpcss_job_details( $job_id, $item_url ) {
 		$job_details = $this->api_client->get_job_details( $job_id, $item_url );
 
 		if ( is_wp_error( $job_details ) ) {
