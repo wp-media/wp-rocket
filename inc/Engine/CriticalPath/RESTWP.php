@@ -137,10 +137,7 @@ abstract class RESTWP implements RESTWPInterface {
 		// get item url.
 		$item_url  = $this->get_url( $item_id );
 		$timeout   = ( isset( $request['timeout'] ) && ! empty( $request['timeout'] ) );
-		$item_path = $this->get_path( $item_id );
-		if ( $is_mobile ) {
-			$item_path = $this->get_path( $item_id, true );
-		}
+		$item_path = $this->get_path( $item_id, $is_mobile );
 
 		$generated = $this->cpcss_service->process_generate( $item_url, $item_path, $timeout, $is_mobile );
 

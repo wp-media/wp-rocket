@@ -118,7 +118,7 @@ class Test_Generate extends FilesystemTestCase {
 		}
 		Functions\expect( 'get_post_type' )
 			->atMost()
-			->times( 2 )
+			->times( 1 )
 			->andReturn( $post_type );
 
 		Functions\expect( 'get_current_blog_id' )
