@@ -345,7 +345,9 @@ class CriticalCSS {
 		 */
 		$this->items = (array) apply_filters( 'rocket_cpcss_items', $this->items );
 
-		ksort( $this->items );
+		if ( 'all' === $version ) {
+			ksort( $this->items );
+		}
 	}
 
 	/**
