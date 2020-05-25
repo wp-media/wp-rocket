@@ -39,7 +39,8 @@ return [
 
 			],
 			'expected' => [
-				'generated' => false
+				'generated' => false,
+				'items_count' => 1,
 			]
 		],
 		'testShouldBailOutOnProcessAlreadyRunning' => [
@@ -52,7 +53,8 @@ return [
 
 			],
 			'expected' => [
-				'generated' => false
+				'generated' => false,
+				'items_count' => 1,
 			]
 		],
 		'testShouldSucceed' => [
@@ -62,28 +64,30 @@ return [
 					'do_rocket_critical_css_generation' => true,
 				],
 				'process_running' => false,
-				'page_for_posts' => 'page1',
+				'page_for_posts' => 1,
 				'page_for_posts_url' => 'http://www.example.com/?p=1',
 				'show_on_front' => 'page',
 				'post_types' => ['post'],
 				'posts' => [
 					(object) [
 						'post_type' => 'post',
-						'ID' => 'POST_ID',
-						'post_url' => 'http://www.example.com/?p=2'
+						'ID' => 1,
+						'post_url' => 'http://www.example.com/?p=2',
+						'post_status' => 'publish'
 					]
 				],
 				'taxonomies' => ['category'],
 				'terms' => [
 					(object) [
 						'taxonomy' => 'category',
-						'ID' => 'term_ID',
+						'ID' => 1,
 						'url' => 'http://www.example.com/category/category_slug',
 					]
 				]
 			],
 			'expected' => [
-				'generated' => true
+				'generated' => true,
+				'items_count' => 3
 			]
 		],
 	],
