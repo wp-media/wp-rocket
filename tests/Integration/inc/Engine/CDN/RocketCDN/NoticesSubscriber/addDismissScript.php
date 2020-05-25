@@ -11,7 +11,6 @@ use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
  *
  * @group  AdminOnly
  * @group  RocketCDN
- * @group  dismissScript
  */
 class Test_AddDismissScript extends TestCase {
 	protected $user_id = 0;
