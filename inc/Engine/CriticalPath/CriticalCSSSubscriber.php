@@ -109,6 +109,11 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 		if ( ! current_user_can( 'rocket_regenerate_critical_css' ) ) {
 			return;
 		}
+
+		if ( ! $this->options->get( 'async_css', 0 ) ) {
+			return;
+		}
+
 		$post_type = get_post_type( $post_id );
 		$item_path = 'posts' . DIRECTORY_SEPARATOR . "{$post_type}-{$post_id}.css";
 		$this->cpcss_service->process_delete( $item_path );
