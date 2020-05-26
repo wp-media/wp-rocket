@@ -61,8 +61,8 @@ return [
 					'type' => 'post',
 					'id'   => 10,
 				],
-				'desktop' => 'posts' . DIRECTORY_SEPARATOR . "page-10.css",
-				'mobile'  => 'posts' . DIRECTORY_SEPARATOR . "page-10-mobile.css",
+				'desktop' => 'posts' . DIRECTORY_SEPARATOR . "post-10.css",
+				'mobile'  => 'posts' . DIRECTORY_SEPARATOR . "post-10-mobile.css",
 			],
 			'expected' => [
 				'desktop' => true,
