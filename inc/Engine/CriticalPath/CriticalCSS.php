@@ -158,7 +158,7 @@ class CriticalCSS {
 			} elseif (
 				'default' === $version
 				&&
-				false !== strpos( $file, '-mobile')
+				false !== strpos( $file, '-mobile' )
 			) {
 				continue;
 			}

@@ -128,7 +128,7 @@ abstract class RESTWP implements RESTWPInterface {
 			);
 		}
 
-		// Bailout in case separate cache for mobile option is enabled
+		// Bailout in case separate cache for mobile option is enabled.
 		if ( $is_mobile && $this->options->get( 'do_caching_mobile_files', 0 ) ) {
 			return rest_ensure_response(
 				$this->return_error(
