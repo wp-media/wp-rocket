@@ -105,7 +105,7 @@ class CriticalCSS {
 			return;
 		}
 
-		$this->clean_critical_css();
+		$this->clean_critical_css( $version );
 
 		$this->stop_generation();
 
@@ -138,13 +138,32 @@ class CriticalCSS {
 	 * Deletes critical CSS files.
 	 *
 	 * @since 3.6 Replaced glob().
+	 * @since 3.6 Added $version parameter.
 	 * @since 2.11
+	 *
+	 * @param string $version Optional. Version of the CPCSS files to delete. Possible values: default, mobile, all.
 	 */
-	public function clean_critical_css() {
+	public function clean_critical_css( $version = 'default' ) {
 		foreach ( $this->get_critical_css_iterator() as $file ) {
-			if ( $this->filesystem->is_file( $file ) ) {
-				$this->filesystem->delete( $file );
+			if ( ! $this->filesystem->is_file( $file ) ) {
+				continue;
 			}
+
+			if (
+				'mobile' === $version
+				&&
+				false === strpos( $file, '-mobile' )
+			) {
+				continue;
+			} elseif (
+				'default' === $version
+				&&
+				false !== strpos( $file, '-mobile' )
+			) {
+				continue;
+			}
+
+			$this->filesystem->delete( $file );
 		}
 	}
 

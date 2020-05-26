@@ -14,12 +14,16 @@ class Test_Generate extends RESTVfsTestCase {
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/RESTWPPost/generate.php';
 	private static $post_id;
 
+	private $async_css_mobile;
+	private $do_caching_mobile_files;
+
 	public static function wpSetUpBeforeClass( $factory ) {
 		self::$post_id = $factory->post->create();
 	}
 
 	public function tearDown() {
 		remove_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'setAsyncCssMobileOption' ] );
+		remove_filter( 'pre_get_rocket_option_do_caching_mobile_files', [ $this, 'setDoCachingMobileFilesOption' ] );
 
 		parent::tearDown();
 	}
@@ -54,6 +58,9 @@ class Test_Generate extends RESTVfsTestCase {
 			: false;
 		$async_css_mobile             = isset( $config['async_css_mobile'] )
 			? $config['async_css_mobile']
+			: 0;
+		$do_caching_mobile_files      = isset( $config['do_caching_mobile_files'] )
+			? $config['do_caching_mobile_files']
 			: 0;
 
 		Functions\expect( 'wp_remote_post' )
@@ -95,6 +102,9 @@ class Test_Generate extends RESTVfsTestCase {
 		$this->async_css_mobile = $async_css_mobile;
 		add_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'setAsyncCssMobileOption' ] );
 
+		$this->do_caching_mobile_files = $do_caching_mobile_files;
+		add_filter( 'pre_get_rocket_option_do_caching_mobile_files', [ $this, 'setDoCachingMobileFilesOption' ] );
+
 		$file = $this->config['vfs_dir'] . "{$site_id}/posts/{$post_type}-{$post_id}" . ( $is_mobile ? '-mobile' : '' ). ".css";
 
 		$body_param              = [];
@@ -111,7 +121,7 @@ class Test_Generate extends RESTVfsTestCase {
 	 * @dataProvider dataProvider
 	 */
 	public function testShouldDoExpectedWhenNotMultisite( $config, $expected ) {
-		if ( $config['current_user_can'] ) {
+		if ( isset( $config['current_user_can'] ) && $config['current_user_can'] ) {
 			$this->setUpUser();
 		}
 
@@ -139,5 +149,9 @@ class Test_Generate extends RESTVfsTestCase {
 
 	public function setAsyncCssMobileOption() {
 		return $this->async_css_mobile;
+	}
+
+	public function setDoCachingMobileFilesOption() {
+		return $this->do_caching_mobile_files;
 	}
 }

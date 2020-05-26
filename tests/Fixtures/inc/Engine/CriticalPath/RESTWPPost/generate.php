@@ -4,6 +4,35 @@ return [
 	'vfs_dir'   => 'wp-content/cache/critical-css/',
 
 	'test_data' => [
+		'testShouldBailoutIfAsyncCssMobileDisabled'     => [
+			'config'   => [
+				'current_user_can'   => true,
+				'mobile'             => true,
+				'async_css_mobile'   => false,
+				'cpcss_exists_after' => false,
+			],
+			'expected' => [
+				'success' => false,
+				'code'    => 'mobile_cpcss_not_enabled',
+				'message' => 'Mobile CPCSS generation not enabled.',
+				'data'    => [ 'status' => 400 ],
+			],
+		],
+		'testShouldBailoutIfDoCachingMobileFilesEnabled'     => [
+			'config'   => [
+				'current_user_can'        => true,
+				'mobile'                  => true,
+				'async_css_mobile'        => true,
+				'do_caching_mobile_files' => true,
+				'cpcss_exists_after'      => false,
+			],
+			'expected' => [
+				'success' => false,
+				'code'    => 'caching_mobile_separate_enabled',
+				'message' => 'Separate cache files for mobile devices option is enabled.',
+				'data'    => [ 'status' => 400 ],
+			],
+		],
 		'testShouldBailoutIfPostDoesNotExist'     => [
 			'config'   => [
 				'current_user_can'   => true,

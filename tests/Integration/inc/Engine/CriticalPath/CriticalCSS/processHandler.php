@@ -247,7 +247,7 @@ class Test_ProcessHandler extends FilesystemTestCase {
 			$term->taxonomy
 		);
 
-		$this->to_be_removed['terms'][] = $term_array['term_id'];
+		$this->to_be_removed['terms'][$term_array['term_id']] = $term->taxonomy;
 
 		return $term_array;
 	}

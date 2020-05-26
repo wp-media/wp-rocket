@@ -73,22 +73,6 @@ return [
 				'mobile'   => false,
 				'expected' => false,
 			],
-			'testShouldDoNothingWhenFilesAlreadyExist' => [
-				'values'   => [
-					'old' => [
-						'async_css'               => 0,
-						'do_caching_mobile_files' => 0,
-						'async_css_mobile'        => 0,
-					],
-					'new' => [
-						'async_css'               => 1,
-						'do_caching_mobile_files' => 0,
-						'async_css_mobile'        => 0,
-					],
-				],
-				'mobile'   => false,
-				'expected' => false,
-			],
 
 			'testShouldGenerateWhenFilesDontExist' => [
 				'values'   => [
@@ -130,22 +114,6 @@ return [
 				'values'          => [
 					'old' => [ 'async_css' => 0 ],
 					'new' => [ 'async_css' => 0 ],
-				],
-				'blog_id'         => 2,
-				'should_generate' => false,
-			],
-			[
-				'values'          => [
-					'old' => [ 'async_css' => 0 ],
-					'new' => [ 'async_css' => 1 ],
-				],
-				'blog_id'         => 2,
-				'should_generate' => false,
-			],
-			[
-				'values'          => [
-					'old' => [ 'async_css' => 0 ],
-					'new' => [ 'async_css' => 1 ],
 				],
 				'blog_id'         => 2,
 				'should_generate' => false,
