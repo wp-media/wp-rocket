@@ -224,11 +224,6 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 			rocket_mkdir_p( $critical_css_path );
 		}
 
-		// Bails out if directory is invalid or files already exist.
-		if ( $this->bailout_if_files_exist( $critical_css_path ) ) {
-			return;
-		}
-
 		$version = 'default';
 
 		if (
@@ -245,50 +240,6 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 
 		// Generate the CPCSS files.
 		$this->critical_css->process_handler( $version );
-	}
-
-	/**
-	 * Checks if the Critical CSS directory has files in it.
-	 *
-	 * @since 3.6
-	 *
-	 * @param string $critical_css_path Path to the directory.
-	 *
-	 * @return bool|null true when files exist or directory is invalid; else, false.
-	 */
-	private function bailout_if_files_exist( $critical_css_path ) {
-		$iterator = $this->get_critical_css_iterator( $critical_css_path );
-
-		// Directory is invalid.
-		if ( false === $iterator ) {
-			return true;
-		}
-
-		// Files exist.
-		foreach ( $iterator as $file ) {
-			if ( $file->isFile() ) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	/**
-	 * Gets the Critical CSS Filesystem Iterator.
-	 *
-	 * @since 3.6
-	 *
-	 * @param string $critical_css_path Path to the directory.
-	 *
-	 * @return FilesystemIterator|bool Returns iterator on success; else false.
-	 */
-	private function get_critical_css_iterator( $critical_css_path ) {
-		try {
-			return new FilesystemIterator( $critical_css_path, FilesystemIterator::SKIP_DOTS );
-		} catch ( UnexpectedValueException $e ) {
-			return false;
-		}
 	}
 
 	/**
