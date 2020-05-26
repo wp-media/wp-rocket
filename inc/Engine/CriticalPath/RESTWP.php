@@ -128,6 +128,21 @@ abstract class RESTWP implements RESTWPInterface {
 			);
 		}
 
+		// Bailout in case separate cache for mobile option is enabled
+		if ( $is_mobile && $this->options->get( 'do_caching_mobile_files', 0 ) ) {
+			return rest_ensure_response(
+				$this->return_error(
+					new WP_Error(
+						'caching_mobile_separate_enabled',
+						__( 'Separate cache files for mobile devices option is enabled.', 'rocket' ),
+						[
+							'status' => 400,
+						]
+					)
+				)
+			);
+		}
+
 		// validate item.
 		$validated = $this->validate_item_for_generate( $item_id );
 		if ( is_wp_error( $validated ) ) {

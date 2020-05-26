@@ -82,6 +82,9 @@ class Test_Generate extends FilesystemTestCase {
 		$async_css_mobile             = isset( $config['async_css_mobile'] )
 			? $config['async_css_mobile']
 			: 0;
+		$do_caching_mobile_files      = isset( $config['do_caching_mobile_files'] )
+			? $config['do_caching_mobile_files']
+			: 0;
 
 		//is_wp_error is called three times at normal/ideal case.
 		//validate_item_for_generate
@@ -92,10 +95,11 @@ class Test_Generate extends FilesystemTestCase {
 				return $error_object instanceof WP_Error;
 			}  );
 
-		Functions\expect( 'get_post_status' )
-			->once()
-			->andReturn( $post_status );
-
+		if( ! ( $is_mobile && ( !$async_css_mobile || $do_caching_mobile_files ) ) ) {
+			Functions\expect( 'get_post_status' )
+				->once()
+				->andReturn( $post_status );
+		}
 		if ( $post_id > 0 && 'publish' === $post_status ) {
 			Functions\expect( 'get_transient' )
 				->with( 'rocket_specific_cpcss_job_' . md5( $post_url ) . ( $is_mobile ? '_mobile' : '' ) )
@@ -181,9 +185,19 @@ class Test_Generate extends FilesystemTestCase {
 		$cpcss_service = new ProcessorService( $data_manager, $api_client );
 		$options       = Mockery::mock( Options_Data::class );
 
-		$options->shouldReceive( 'get' )
-			->with( 'async_css_mobile', 0 )
-			->andReturn( $async_css_mobile );
+		if( $is_mobile ) {
+			$options->shouldReceive( 'get' )
+				->with( 'async_css_mobile', 0 )
+				->once()
+				->andReturn( $async_css_mobile );
+
+			if($async_css_mobile){
+				$options->shouldReceive( 'get' )
+					->with( 'do_caching_mobile_files', 0 )
+					->once()
+					->andReturn( $do_caching_mobile_files );
+			}
+		}
 
 		$instance             = new RESTWPPost( $cpcss_service, $options );
 		$request              = new WP_REST_Request();
