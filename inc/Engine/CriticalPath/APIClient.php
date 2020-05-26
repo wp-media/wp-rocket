@@ -13,12 +13,12 @@ class APIClient {
 	const API_URL = 'https://cpcss.wp-rocket.me/api/job/';
 
 	/**
-	 * Sends a generation request to the Critical Path API
+	 * Sends a generation request to the Critical Path API.
 	 *
 	 * @since 3.6
 	 *
 	 * @param string $url    The URL to send a CPCSS generation request for.
-	 * @param array  $params Parameters needed to be sent in the body.
+	 * @param array  $params Optional. Parameters needed to be sent in the body. Default: [].
 	 * @return array
 	 */
 	public function send_generation_request( $url, $params = [] ) {
@@ -48,7 +48,7 @@ class APIClient {
 	 *
 	 * @param array|WP_Error $response  The response or WP_Error on failure.
 	 * @param string         $url       Url to be checked.
-	 * @param bool           $is_mobile if this is cpcss for mobile or not.
+	 * @param bool           $is_mobile Optional. Flag for if this is cpcss for mobile or not. Default: false.
 	 *
 	 * @return array|WP_Error
 	 */
@@ -114,7 +114,7 @@ class APIClient {
 	 * @since 3.6
 	 *
 	 * @param array|WP_Error $response The response or WP_Error on failure.
-	 * @param null|int       $status   Status code to overwrite the response status.
+	 * @param null|int       $status   Optional. Status code to overwrite the response status. Default: null.
 	 *
 	 * @return int status code|number of response.
 	 */
@@ -134,7 +134,7 @@ class APIClient {
 	 * @param int      $response_status_code Response status code.
 	 * @param stdClass $response_data        Object of data returned from request.
 	 * @param string   $url                  Url for the web page to be checked.
-	 * @param bool     $is_mobile            if this is cpcss for mobile or not.
+	 * @param bool     $is_mobile            Optional. Flag for if this is cpcss for mobile or not. Default: false.
 	 *
 	 * @return string
 	 */
@@ -162,24 +162,20 @@ class APIClient {
 				// translators: %s = item URL.
 				$message .= sprintf(
 					$is_mobile
-						?
 						// translators: %s = item URL.
-						__( 'Critical CSS for %1$s on mobile not generated.', 'rocket' )
-						:
+						? __( 'Critical CSS for %1$s on mobile not generated.', 'rocket' )
 						// translators: %s = item URL.
-						__( 'Critical CSS for %1$s not generated.', 'rocket' ),
+						: __( 'Critical CSS for %1$s not generated.', 'rocket' ),
 					$url
 					);
 				break;
 			default:
 				$message .= sprintf(
 					$is_mobile
-						?
 						// translators: %s = URL.
-						__( 'Critical CSS for %1$s on mobile not generated. Error: The API returned an invalid response code.', 'rocket' )
-						:
+						? __( 'Critical CSS for %1$s on mobile not generated. Error: The API returned an invalid response code.', 'rocket' )
 						// translators: %s = URL.
-						__( 'Critical CSS for %1$s not generated. Error: The API returned an invalid response code.', 'rocket' ),
+						: __( 'Critical CSS for %1$s not generated. Error: The API returned an invalid response code.', 'rocket' ),
 					$url
 				);
 				break;
@@ -227,7 +223,7 @@ class APIClient {
 	 *
 	 * @param string $job_id    ID for the job to get details.
 	 * @param string $url       URL to be used in error messages.
-	 * @param bool   $is_mobile If this is cpcss for mobile or not.
+	 * @param bool   $is_mobile Optional. Flag for if this is cpcss for mobile or not. Default: false.
 	 *
 	 * @return mixed|WP_Error Details for job.
 	 */
