@@ -95,7 +95,7 @@ class Test_Generate extends FilesystemTestCase {
 				return $error_object instanceof WP_Error;
 			}  );
 
-		if( ! ( $is_mobile && ( !$async_css_mobile || $do_caching_mobile_files ) ) ) {
+		if( ! ( $is_mobile && ( !$async_css_mobile || ! $do_caching_mobile_files ) ) ) {
 			Functions\expect( 'get_post_status' )
 				->once()
 				->andReturn( $post_status );

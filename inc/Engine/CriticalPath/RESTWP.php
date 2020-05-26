@@ -114,27 +114,20 @@ abstract class RESTWP implements RESTWPInterface {
 		$is_mobile = (bool) $request->get_param( 'is_mobile' );
 
 		// Bailout in case mobile CPCSS generation is called but this option is disabled.
-		if ( $is_mobile && ! $this->options->get( 'async_css_mobile', 0 ) ) {
+		if (
+			$is_mobile
+			&&
+			(
+				! $this->options->get( 'async_css_mobile', 0 )
+				||
+				! $this->options->get( 'do_caching_mobile_files', 0 )
+			)
+		) {
 			return rest_ensure_response(
 				$this->return_error(
 					new WP_Error(
 						'mobile_cpcss_not_enabled',
 						__( 'Mobile CPCSS generation not enabled.', 'rocket' ),
-						[
-							'status' => 400,
-						]
-					)
-				)
-			);
-		}
-
-		// Bailout in case separate cache for mobile option is enabled.
-		if ( $is_mobile && $this->options->get( 'do_caching_mobile_files', 0 ) ) {
-			return rest_ensure_response(
-				$this->return_error(
-					new WP_Error(
-						'caching_mobile_separate_enabled',
-						__( 'Separate cache files for mobile devices option is enabled.', 'rocket' ),
 						[
 							'status' => 400,
 						]
