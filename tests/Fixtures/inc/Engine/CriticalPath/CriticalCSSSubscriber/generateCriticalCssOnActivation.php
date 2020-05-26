@@ -120,22 +120,6 @@ return [
 			],
 			[
 				'values'          => [
-					'old' => [ 'async_css' => 0 ],
-					'new' => [ 'async_css' => 1 ],
-				],
-				'blog_id'         => 2,
-				'should_generate' => false,
-			],
-			[
-				'values'          => [
-					'old' => [ 'async_css' => 0 ],
-					'new' => [ 'async_css' => 1 ],
-				],
-				'blog_id'         => 2,
-				'should_generate' => false,
-			],
-			[
-				'values'          => [
 					'old' => [ 'async_css' => 1 ],
 					'new' => [ 'async_css' => 1 ],
 				],
