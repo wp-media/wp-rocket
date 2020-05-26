@@ -37,16 +37,25 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	private $filesystem;
 
 	/**
+	 * CPCSS generation and deletion service.
+	 *
+	 * @var ProcessorService instance for this service.
+	 */
+	private $cpcss_service;
+
+	/**
 	 * Creates an instance of the Critical CSS Subscriber.
 	 *
-	 * @param CriticalCSS          $critical_css Critical CSS instance.
-	 * @param Options_Data         $options      WP Rocket options.
-	 * @param WP_Filesystem_Direct $filesystem   Instance of the filesystem handler.
+	 * @param CriticalCSS          $critical_css  Critical CSS instance.
+	 * @param ProcessorService     $cpcss_service Has the logic for cpcss generation and deletion.
+	 * @param Options_Data         $options       WP Rocket options.
+	 * @param WP_Filesystem_Direct $filesystem    Instance of the filesystem handler.
 	 */
-	public function __construct( CriticalCSS $critical_css, Options_Data $options, $filesystem ) {
-		$this->critical_css = $critical_css;
-		$this->options      = $options;
-		$this->filesystem   = $filesystem;
+	public function __construct( CriticalCSS $critical_css, ProcessorService $cpcss_service, Options_Data $options, $filesystem ) {
+		$this->critical_css  = $critical_css;
+		$this->cpcss_service = $cpcss_service;
+		$this->options       = $options;
+		$this->filesystem    = $filesystem;
 	}
 
 	/**
@@ -84,8 +93,30 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 			'switch_theme'                                    => 'maybe_regenerate_cpcss',
 			'rocket_critical_css_generation_process_complete' => 'clean_domain_on_complete',
 			'rocket_excluded_inline_js_content'               => 'exclude_inline_js',
+			'before_delete_post'                              => 'delete_cpcss',
 		];
 		// phpcs:enable WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned
+	}
+
+	/**
+	 * Deletes the custom CPCSS files from /posts/ folder.
+	 *
+	 * @since 3.6
+	 *
+	 * @param int $post_id Deleted post id.
+	 */
+	public function delete_cpcss( $post_id ) {
+		if ( ! current_user_can( 'rocket_regenerate_critical_css' ) ) {
+			return;
+		}
+		$post_type = get_post_type( $post_id );
+		$item_path = 'posts' . DIRECTORY_SEPARATOR . "{$post_type}-{$post_id}.css";
+		$this->cpcss_service->process_delete( $item_path );
+
+		if ( $this->options->get( 'async_css_mobile', 0 ) ) {
+			$mobile_item_path = 'posts' . DIRECTORY_SEPARATOR . "{$post_type}-{$post_id}-mobile.css";
+			$this->cpcss_service->process_delete( $mobile_item_path );
+		}
 	}
 
 	/**

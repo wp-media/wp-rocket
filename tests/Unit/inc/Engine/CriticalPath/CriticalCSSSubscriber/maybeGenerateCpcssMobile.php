@@ -2,13 +2,14 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\CriticalCSSSubscriber;
 
-use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\CriticalPath\CriticalCSS;
-use WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration;
-use WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber;
-use WP_Rocket\Tests\Unit\TestCase;
 use Mockery;
 use Brain\Monkey\Functions;
+use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Tests\Unit\TestCase;
+use WP_Rocket\Engine\CriticalPath\CriticalCSS;
+use WP_Rocket\Engine\CriticalPath\ProcessorService;
+use WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration;
+use WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::maybe_generate_cpcss_mobile
@@ -20,6 +21,7 @@ class Test_MaybeGenerateCpcssMobile extends TestCase {
 
 	private $subscriber;
 	private $critical_css;
+	private $processor_service;
 
 	public function setUp() {
 		parent::setUp();
@@ -33,7 +35,8 @@ class Test_MaybeGenerateCpcssMobile extends TestCase {
 			$options,
 			null,
 		] );
-		$this->subscriber   = new CriticalCSSSubscriber( $this->critical_css, $options, null );
+		$this->processor_service = Mockery::mock( ProcessorService::class );
+		$this->subscriber        = new CriticalCSSSubscriber( $this->critical_css, $this->processor_service, $options, null );
 	}
 
 	/**

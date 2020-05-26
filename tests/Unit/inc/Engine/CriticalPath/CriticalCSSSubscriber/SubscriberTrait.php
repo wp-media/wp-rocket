@@ -6,13 +6,15 @@ use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CriticalPath\CriticalCSS;
+use WP_Rocket\Engine\CriticalPath\ProcessorService;
 use WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration;
 use WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber;
 
 trait SubscriberTrait {
 	protected $options;
-	protected $critical_css;
 	protected $subscriber;
+	protected $critical_css;
+	protected $processor_service;
 
 	protected function setUpTests( $filesystem = null, $site_id = 1 ) {
 		Functions\expect( 'get_current_blog_id' )->andReturn( $site_id );
@@ -24,7 +26,8 @@ trait SubscriberTrait {
 			$this->options,
 			$filesystem,
 		] );
-		$this->subscriber   = new CriticalCSSSubscriber( $this->critical_css, $this->options, $filesystem );
+		$this->processor_service = Mockery::mock( ProcessorService::class );
+		$this->subscriber        = new CriticalCSSSubscriber( $this->critical_css, $this->processor_service, $this->options, $filesystem );
 
 	}
 }
