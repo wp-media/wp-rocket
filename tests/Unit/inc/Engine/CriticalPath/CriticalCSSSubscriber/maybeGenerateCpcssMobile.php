@@ -35,8 +35,7 @@ class Test_MaybeGenerateCpcssMobile extends TestCase {
 			$options,
 			null,
 		] );
-		$this->processor_service = Mockery::mock( ProcessorService::class );
-		$this->subscriber        = new CriticalCSSSubscriber( $this->critical_css, $this->processor_service, $options, null );
+		$this->subscriber   = new CriticalCSSSubscriber( $this->critical_css, Mockery::mock( ProcessorService::class ), $options, null );
 	}
 
 	/**
