@@ -169,7 +169,7 @@ class Post extends Abstract_Render {
 		return $this->disabled_data;
 	}
 
-		/**
+	/**
 	 * Checks if critical CSS generation is enabled for the current post.
 	 *
 	 * @since 3.6
