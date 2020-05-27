@@ -84,15 +84,6 @@ class Test_EnableMobileCpcss extends AjaxTestCase {
 		}
 	}
 
-	public function dataProvider() {
-		$dir  = WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/CriticalPath/Admin/Settings/';
-		$data = $this->getTestData( $dir, str_replace( '.php', '', basename( __FILE__ ) ) );
-
-		return isset( $data['test_data'] )
-			? $data['test_data']
-			: $data;
-	}
-
 	public static function removeRegenerateCriticalCap() {
 		$admin = get_role( 'administrator' );
 		$admin->remove_cap( 'rocket_regenerate_critical_css' );

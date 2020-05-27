@@ -54,13 +54,4 @@ class Test_SetAsyncCssMobileDefaultValue extends TestCase {
             );
         }
     }
-
-    public function dataProvider() {
-		$dir  = WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/CriticalPath/Admin/Settings/';
-		$data = $this->getTestData( $dir, str_replace( '.php', '', basename( __FILE__ ) ) );
-
-		return isset( $data['test_data'] )
-			? $data['test_data']
-			: $data;
-	}
 }

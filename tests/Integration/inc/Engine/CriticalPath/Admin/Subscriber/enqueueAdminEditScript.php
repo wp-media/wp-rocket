@@ -76,15 +76,6 @@ class Test_EnqueueAdminEditScript extends TestCase {
 		}
 	}
 
-	public function dataProvider() {
-		$dir  = WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/CriticalPath/Admin/Post/';
-		$data = $this->getTestData( $dir, str_replace( '.php', '', basename( __FILE__ ) ) );
-
-		return isset( $data['test_data'] )
-			? $data['test_data']
-			: $data;
-	}
-
 	public function setCPCSSOption() {
 		return $this->async_css;
 	}
