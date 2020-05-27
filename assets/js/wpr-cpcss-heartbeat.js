@@ -7,7 +7,6 @@ const cpcssHeartbeat = () => {
 		}
 
 		const cpcs_heartbeat_response = JSON.parse( xhttp.response );
-		console.log(cpcs_heartbeat_response);
 		if ( false === cpcs_heartbeat_response.success ) {
 			stopCPCSSHeartbeat();
 			return;

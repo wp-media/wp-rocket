@@ -175,8 +175,7 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 
 		$cpcss_item = reset( $cpcss_pending );
 		if ( ! empty( $cpcss_item ) ) {
-			$k = key( $cpcss_pending );
-
+			$k       = key( $cpcss_pending );
 			$timeout = false;
 			if ( $cpcss_item['check'] > 10 ) {
 				$timeout = true;
@@ -194,15 +193,6 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 			if ( is_wp_error( $cpcss_generation ) ) {
 				$transient['items'][] = $cpcss_generation->get_error_message();
 				set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
-			}
-
-			if ( isset( $cpcss_generation['code'] ) && 'cpcss_generation_pending' === $cpcss_generation['code'] ) {
-				$pending = get_transient( 'rocket_cpcss_generation_pending' );
-				if ( false === $pending ) {
-					$pending = [];
-				}
-				$pending[] = $cpcss_item;
-				set_transient( 'rocket_cpcss_generation_pending', $pending, HOUR_IN_SECONDS );
 			}
 
 			if ( isset( $cpcss_generation['code'] ) && ( 'cpcss_generation_successful' === $cpcss_generation['code'] || 'cpcss_generation_failed' === $cpcss_generation['code'] ) ) {
