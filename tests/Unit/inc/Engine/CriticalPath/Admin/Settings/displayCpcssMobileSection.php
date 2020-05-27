@@ -6,6 +6,7 @@ use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Engine\CriticalPath\Admin\Settings;
+use WP_Rocket\Engine\CriticalPath\CriticalCSS;  
 use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\GenerateTrait;
 
 /**
