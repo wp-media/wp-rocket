@@ -228,6 +228,8 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 		set_transient( 'rocket_cpcss_generation_pending', $cpcss_pending, HOUR_IN_SECONDS );
 
 		if ( empty( $cpcss_pending ) ) {
+			$this->critical_css->generation_complete();
+
 			wp_send_json_success( [ 'status' => 'cpcss_complete' ] );
 			return;
 		}

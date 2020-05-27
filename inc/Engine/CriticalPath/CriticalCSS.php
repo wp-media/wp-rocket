@@ -139,7 +139,7 @@ class CriticalCSS {
 	 *
 	 * @since 3.6
 	 */
-	protected function generation_complete() {
+	public function generation_complete() {
 		/**
 		 * Fires when the critical CSS generation process is complete.
 		 *
