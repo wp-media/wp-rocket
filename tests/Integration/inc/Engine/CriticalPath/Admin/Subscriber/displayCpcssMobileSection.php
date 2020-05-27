@@ -1,15 +1,16 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\AdminSubscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\Admin\Subscriber;
 
 use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\AdminSubscriber::display_cpcss_mobile_section
+ * @covers \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::display_cpcss_mobile_section
  *
  * @group  AdminOnly
  * @group  CriticalPath
+ * @group  CriticalPathAdminSubscriber
  */
 class Test_DisplayCpcssMobileSection extends TestCase {
 	private static $admin_user_id;
@@ -44,7 +45,7 @@ class Test_DisplayCpcssMobileSection extends TestCase {
 	}
 
 	/**
-	 * @dataProvider configTestData
+	 * @dataProvider dataProvider
 	 */
 	public function testShouldDisplayCpcssMobileSection( $config, $expected ) {
 		if ( $config['current_user_can'] ) {
@@ -65,7 +66,15 @@ class Test_DisplayCpcssMobileSection extends TestCase {
 			$this->format_the_html( $expected ),
 			$this->getActualHtml()
 		);
+	}
 
+	public function dataProvider() {
+		$dir  = WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/CriticalPath/Admin/Settings/';
+		$data = $this->getTestData( $dir, str_replace( '.php', '', basename( __FILE__ ) ) );
+
+		return isset( $data['test_data'] )
+			? $data['test_data']
+			: $data;
 	}
 
 	private function getActualHtml() {

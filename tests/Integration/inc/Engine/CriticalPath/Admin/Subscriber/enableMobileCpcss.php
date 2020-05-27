@@ -1,16 +1,17 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\AdminSubscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\Admin\Subscriber;
 
 use WP_Rocket\Tests\Integration\AjaxTestCase;
 use WP_Rocket\Tests\Integration\CapTrait;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\AdminSubscriber::enable_mobile_cpcss
+ * @covers \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::enable_mobile_cpcss
  * @uses   ::rocket_get_constant
  *
  * @group  AdminOnly
  * @group  CriticalPath
+ * @group  CriticalPathAdminSubscriber
  */
 class Test_EnableMobileCpcss extends AjaxTestCase {
 	protected static $use_settings_trait = true;
@@ -45,7 +46,7 @@ class Test_EnableMobileCpcss extends AjaxTestCase {
 	}
 
 	/**
-	 * @dataProvider configTestData
+	 * @dataProvider dataProvider
 	 */
 	public function testShouldEnableMobileCpcss( $config, $update ) {
 		if ( $config['rocket_manage_options'] ) {
@@ -78,6 +79,15 @@ class Test_EnableMobileCpcss extends AjaxTestCase {
 			$this->assertObjectHasAttribute( 'success', $response );
 			$this->assertFalse( $response->success );
 		}
+	}
+
+	public function dataProvider() {
+		$dir  = WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/CriticalPath/Admin/Settings/';
+		$data = $this->getTestData( $dir, str_replace( '.php', '', basename( __FILE__ ) ) );
+
+		return isset( $data['test_data'] )
+			? $data['test_data']
+			: $data;
 	}
 
 	public static function removeRegenerateCriticalCap() {

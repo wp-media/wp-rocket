@@ -1,19 +1,23 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\AdminSubscriber;
+namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\Post;
 
+use Mockery;
+use WP_Rocket\Engine\CriticalPath\Admin\Post;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
+use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\GenerateTrait;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\AdminSubscriber::cpcss_actions
+ * @covers \WP_Rocket\Engine\CriticalPath\Admin\Post::cpcss_actions
  * @uses   ::rocket_direct_filesystem
  *
  * @group  CriticalPath
+ * @group  CriticalPathPost
  */
 class Test_CpcssActions extends FilesystemTestCase {
 	use GenerateTrait;
 
-	protected $path_to_test_data = '/inc/Engine/CriticalPath/AdminSubscriber/cpcssActions.php';
+	protected $path_to_test_data = '/inc/Engine/CriticalPath/Admin/Post/cpcssActions.php';
 
 	protected static $mockCommonWpFunctionsInSetUp = true;
 
@@ -21,6 +25,14 @@ class Test_CpcssActions extends FilesystemTestCase {
 		parent::setUp();
 
 		$this->setUpMocks();
+
+		$this->post = Mockery::mock( Post::class . '[generate]', [
+				$this->options,
+				$this->beacon,
+				'wp-content/cache/critical-css/',
+				WP_ROCKET_PLUGIN_ROOT . 'views/cpcss/',
+			]
+		);
 	}
 
 	protected function tearDown() {
@@ -38,10 +50,12 @@ class Test_CpcssActions extends FilesystemTestCase {
 		             ->once()
 		             ->andReturn( $expected['data']['beacon'] );
 
-		$this->setUpGenerate( 'metabox/generate', $expected['data'] );
+		$this->post->shouldReceive( 'generate' )
+				   ->with( 'metabox/generate', $expected['data'] )
+				   ->andReturn( '' );
 
 		ob_start();
-		$this->subscriber->cpcss_actions();
+		$this->post->cpcss_actions();
 		ob_get_clean();
 	}
 }

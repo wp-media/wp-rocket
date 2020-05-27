@@ -1,15 +1,18 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\AdminSubscriber;
+namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\Post;
 
 use Brain\Monkey\Functions;
+use WP_Rocket\Engine\CriticalPath\Admin\Post;
 use WP_Rocket\Tests\Unit\TestCase;
+use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\GenerateTrait;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\AdminSubscriber::enqueue_admin_edit_script
+ * @covers \WP_Rocket\Engine\CriticalPath\Admin\Post::enqueue_admin_edit_script
  * @uses   ::rocket_get_constant
  *
  * @group  CriticalPath
+ * @group  CriticalPathPost
  */
 class Test_EnqueueAdminEditScript extends TestCase {
 	use GenerateTrait;
@@ -20,6 +23,13 @@ class Test_EnqueueAdminEditScript extends TestCase {
 		parent::setUp();
 
 		$this->setUpMocks();
+
+		$this->post = new Post(
+			$this->options,
+			$this->beacon,
+			'wp-content/cache/critical-css/',
+			WP_ROCKET_PLUGIN_ROOT . 'views/cpcss/',
+		);
 	}
 
 	protected function tearDown() {
@@ -44,7 +54,7 @@ class Test_EnqueueAdminEditScript extends TestCase {
 			$this->assertNotExpected();
 		}
 
-		$this->subscriber->enqueue_admin_edit_script( $config['page'] );
+		$this->post->enqueue_admin_edit_script( $config['page'] );
 	}
 
 	private function assertExpected( $config ) {

@@ -1,17 +1,18 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\AdminSubscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\Admin\Subscriber;
 
 use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\AdminSubscriber::cpcss_section
+ * @covers \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::cpcss_section
  * @uses   ::rocket_direct_filesystem
  * @uses   ::is_rocket_post_excluded_option
  *
  * @group  AdminOnly
  * @group  CriticalPath
+ * @group  CriticalPathAdminSubscriber
  */
 class Test_CpcssSection extends TestCase {
 	private        $async_css_mobile;
@@ -47,7 +48,7 @@ class Test_CpcssSection extends TestCase {
 	}
 
 	/**
-	 * @dataProvider configTestData
+	 * @dataProvider dataProvider
 	 */
 	public function testShouldDisplayCPCSSSection( $config, $expected ) {
 		wp_set_current_user( static::$user_id );
@@ -80,5 +81,14 @@ class Test_CpcssSection extends TestCase {
 
 	public function setCPCSSOption() {
 		return $this->async_css;
+	}
+
+	public function dataProvider() {
+		$dir  = WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/CriticalPath/Admin/Post/';
+		$data = $this->getTestData( $dir, str_replace( '.php', '', basename( __FILE__ ) ) );
+
+		return isset( $data['test_data'] )
+			? $data['test_data']
+			: $data;
 	}
 }

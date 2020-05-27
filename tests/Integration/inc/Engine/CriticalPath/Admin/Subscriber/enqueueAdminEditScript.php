@@ -1,17 +1,18 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\AdminSubscriber;
+namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\Subscriber;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\AdminSubscriber::enqueue_admin_edit_script
+ * @covers \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::enqueue_admin_edit_script
  * @uses   ::rocket_get_constant
  *
  * @group  AdminOnly
  * @group  CriticalPath
+ * @group  CriticalPathAdminSubscriber
  */
 class Test_EnqueueAdminEditScript extends TestCase {
 	private        $post_id;
@@ -35,7 +36,7 @@ class Test_EnqueueAdminEditScript extends TestCase {
 	}
 
 	/**
-	 * @dataProvider configTestData
+	 * @dataProvider dataProvider
 	 */
 	public function testShouldEnqueueAdminScript( $config, $expected ) {
 		wp_set_current_user( static::$user_id );
@@ -70,6 +71,15 @@ class Test_EnqueueAdminEditScript extends TestCase {
 		} else {
 			$this->assertArrayNotHasKey( 'wpr-edit-cpcss-script', $wp_scripts->registered );
 		}
+	}
+
+	public function dataProvider() {
+		$dir  = WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/CriticalPath/Admin/Post/';
+		$data = $this->getTestData( $dir, str_replace( '.php', '', basename( __FILE__ ) ) );
+
+		return isset( $data['test_data'] )
+			? $data['test_data']
+			: $data;
 	}
 
 	public function setCPCSSOption() {
