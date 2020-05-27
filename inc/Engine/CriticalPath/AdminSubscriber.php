@@ -37,6 +37,13 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 	private $critical_css;
 
 	/**
+	 * Instance of ProcessorService.
+	 *
+	 * @var ProcessorService
+	 */
+	private $processor;
+
+	/**
 	 * Array of reasons to disable actions.
 	 *
 	 * @var array
@@ -46,18 +53,20 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 	/**
 	 * Creates an instance of the subscriber.
 	 *
-	 * @param Options_Data $options       WP Rocket Options instance.
-	 * @param Beacon       $beacon        Beacon instance.
-	 * @param CriticalCSS  $critical_css  CriticalCSS instance.
-	 * @param string       $critical_path Path to the critical CSS base folder.
-	 * @param string       $template_path Path to the templates folder.
+	 * @param Options_Data     $options       WP Rocket Options instance.
+	 * @param Beacon           $beacon        Beacon instance.
+	 * @param CriticalCSS      $critical_css  CriticalCSS instance.
+	 * @param ProcessorService $processor     ProcessorService instance.
+	 * @param string           $critical_path Path to the critical CSS base folder.
+	 * @param string           $template_path Path to the templates folder.
 	 */
-	public function __construct( Options_Data $options, Beacon $beacon, CriticalCSS $critical_css, $critical_path, $template_path ) {
+	public function __construct( Options_Data $options, Beacon $beacon, CriticalCSS $critical_css, ProcessorService $processor, $critical_path, $template_path ) {
 		parent::__construct( $template_path );
 
 		$this->beacon            = $beacon;
 		$this->options           = $options;
 		$this->critical_css      = $critical_css;
+		$this->processor         = $processor;
 		$this->critical_css_path = $critical_path . get_current_blog_id() . '/posts/';
 	}
 
@@ -76,6 +85,8 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 			'rocket_hidden_settings_fields'      => 'add_hidden_async_css_mobile',
 			'rocket_settings_tools_content'      => 'display_cpcss_mobile_section',
 			'wp_ajax_rocket_enable_mobile_cpcss' => 'enable_mobile_cpcss',
+			'admin_enqueue_scripts'              => 'enqueue_admin_cpcss_heartbeat_script',
+			'wp_ajax_rocket_cpcss_heartbeat'     => 'cpcss_heartbeat',
 		];
 	}
 
@@ -136,6 +147,93 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 		];
 
 		echo $this->generate( 'activate-cpcss-mobile', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	}
+
+	/**
+	 * Check the CPCSS heartbeat.
+	 *
+	 * @since 3.6
+	 */
+	public function cpcss_heartbeat() {
+		check_ajax_referer( 'cpcss_heartbeat_nonce', '_nonce', true );
+
+		if (
+			! $this->options->get( 'async_css', 0 )
+			||
+			current_user_can( 'rocket_manage_options' )
+			||
+			! current_user_can( 'rocket_regenerate_critical_css' ) ) {
+				wp_send_json_error();
+				return;
+		}
+
+		$cpcss_pending = get_transient( 'rocket_cpcss_generation_pending' );
+
+		if ( false === $cpcss_pending ) {
+			$cpcss_pending = [];
+		}
+
+		foreach ( $cpcss_pending as $k => &$cpcss_item ) {
+			$timeout = false;
+			if ( $cpcss_item['check'] > 10 ) {
+				$timeout = true;
+			}
+			$cpcss_generation = $this->processor->process_generate(
+										$cpcss_item['url'],
+										$cpcss_item['path'],
+										$timeout,
+										( ! empty( $cpcss_item['mobile'] ) ? $cpcss_item['mobile'] : false )
+									);
+			$cpcss_item['check'] ++;
+
+			if (
+				is_wp_error( $cpcss_generation )
+				||
+				'cpcss_generation_successful' === $cpcss_generation['code']
+				||
+				'cpcss_generation_failed' === $cpcss_generation['code']
+				||
+				$timeout
+				) {
+				// CPCSS API returned a success / error reply.
+				unset( $cpcss_pending[ $k ] );
+			}
+		}
+
+		set_transient( 'rocket_cpcss_generation_pending', $cpcss_pending, HOUR_IN_SECONDS );
+
+		if ( empty( $cpcss_pending ) ) {
+			wp_send_json_success( [ 'status' => 'cpcss_complete' ] );
+			return;
+		}
+
+		wp_send_json_success( [ 'status' => 'cpcss_running' ] );
+	}
+
+	/**
+	 * Enqueue CPCSS heartbeat script on all admin pages.
+	 *
+	 * @since 3.6
+	 */
+	public function enqueue_admin_cpcss_heartbeat_script() {
+		if ( ! $this->options->get( 'async_css', 0 ) ) {
+			return;
+		}
+		wp_enqueue_script(
+			'wpr-heartbeat-cpcss-script',
+			rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'wpr-cpcss-heartbeat.js',
+			[],
+			rocket_get_constant( 'WP_ROCKET_VERSION' ),
+			true
+		);
+
+		wp_localize_script(
+			'wpr-heartbeat-cpcss-script',
+			'rocket_cpcss_heartbeat',
+			[
+				'nonce' => wp_create_nonce( 'cpcss_heartbeat_nonce' ),
+			]
+		);
 	}
 
 	/**

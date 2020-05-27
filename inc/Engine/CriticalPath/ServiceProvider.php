@@ -79,6 +79,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->withArgument( $options )
 			->withArgument( $this->getContainer()->get( 'beacon' ) )
 			->withArgument( $critical_css )
+			->withArgument( $processor_service )
 			->withArgument( $critical_css_path )
 			->withArgument( $this->getContainer()->get( 'template_path' ) . '/cpcss' );
 	}
