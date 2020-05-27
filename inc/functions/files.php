@@ -1288,8 +1288,8 @@ function rocket_find_wpconfig_path() {
 	 * @param string $filename The WP Config filename, without the extension.
 	 */
 	$config_file_name = apply_filters( 'rocket_wp_config_name', 'wp-config' );
-	$config_file      = rocket_get_constant( ABSPATH ) . $config_file_name . '.php';
-	$config_file_alt  = dirname( rocket_get_constant( ABSPATH ) ) . '/' . $config_file_name . '.php';
+	$config_file      = rocket_get_constant( 'ABSPATH' ) . $config_file_name . '.php';
+	$config_file_alt  = dirname( rocket_get_constant( 'ABSPATH' ) ) . '/' . $config_file_name . '.php';
 
 	if ( rocket_direct_filesystem()->exists( $config_file ) && rocket_direct_filesystem()->is_writable( $config_file ) ) {
 		return $config_file;
