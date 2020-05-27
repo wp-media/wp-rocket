@@ -181,7 +181,6 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 				$timeout = true;
 			}
 
-			$transient        = get_transient( 'rocket_critical_css_generation_process_running' );
 			$cpcss_generation = $this->processor->process_generate(
 										$cpcss_item['url'],
 										$cpcss_item['path'],
@@ -189,17 +188,7 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 										( ! empty( $cpcss_item['mobile'] ) ? $cpcss_item['mobile'] : false )
 									);
 			$cpcss_pending[ $k ]['check'] ++;
-
-			if ( is_wp_error( $cpcss_generation ) ) {
-				$transient['items'][] = $cpcss_generation->get_error_message();
-				set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
-			}
-
-			if ( isset( $cpcss_generation['code'] ) && ( 'cpcss_generation_successful' === $cpcss_generation['code'] || 'cpcss_generation_failed' === $cpcss_generation['code'] ) ) {
-				$transient['items'][] = $cpcss_generation['message'];
-				$transient['generated']++;
-				set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
-			}
+			$this->cpcss_heartbeat_notices( $cpcss_generation );
 
 			if (
 				is_wp_error( $cpcss_generation )
@@ -210,7 +199,7 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 				||
 				$timeout
 				) {
-				// CPCSS API returned a success / error reply.
+				// CPCSS API returned a success / error reply or it timeout.
 				unset( $cpcss_pending[ $k ] );
 			}
 		}
@@ -219,12 +208,31 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 
 		if ( empty( $cpcss_pending ) ) {
 			$this->critical_css->generation_complete();
-
 			wp_send_json_success( [ 'status' => 'cpcss_complete' ] );
 			return;
 		}
 
 		wp_send_json_success( [ 'status' => 'cpcss_running' ] );
+	}
+
+	/**
+	 * CPCSS heartbeat update notices transients.
+	 *
+	 * @param array|WP_Error $cpcss_generation CPCSS regeneration reply.
+	 */
+	private function cpcss_heartbeat_notices( $cpcss_generation ) {
+		$transient = get_transient( 'rocket_critical_css_generation_process_running' );
+
+		if ( is_wp_error( $cpcss_generation ) ) {
+			$transient['items'][] = $cpcss_generation->get_error_message();
+			set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
+		}
+
+		if ( isset( $cpcss_generation['code'] ) && ( 'cpcss_generation_successful' === $cpcss_generation['code'] || 'cpcss_generation_failed' === $cpcss_generation['code'] ) ) {
+			$transient['items'][] = $cpcss_generation['message'];
+			$transient['generated']++;
+			set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
+		}
 	}
 
 	/**
