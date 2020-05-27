@@ -29,6 +29,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		'cpcss_service',
 		'rest_cpcss_wp_post',
 		'rest_cpcss_subscriber',
+		'cpcss_settings',
+		'cpcss_post',
 		'critical_css_admin_subscriber',
 	];
 
@@ -39,8 +41,10 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	public function register() {
 		$filesystem        = rocket_direct_filesystem();
-		$options           = $this->getContainer()->get( 'options' );
 		$critical_css_path = rocket_get_constant( 'WP_ROCKET_CRITICAL_CSS_PATH' );
+		$options           = $this->getContainer()->get( 'options' );
+		$beacon            = $this->getContainer()->get( 'beacon' );
+		$template_path     = $this->getContainer()->get( 'template_path' ) . '/cpcss';
 
 		$this->getContainer()->share( 'cpcss_api_client', 'WP_Rocket\Engine\CriticalPath\APIClient' );
 		$this->getContainer()->share( 'cpcss_data_manager', 'WP_Rocket\Engine\CriticalPath\DataManager' )
@@ -75,11 +79,18 @@ class ServiceProvider extends AbstractServiceProvider {
 			->withArgument( $options )
 			->withArgument( $filesystem );
 
-		$this->getContainer()->share( 'critical_css_admin_subscriber', 'WP_Rocket\Engine\CriticalPath\AdminSubscriber' )
+		$this->getContainer()->add( 'cpcss_post', 'WP_Rocket\Engine\CriticalPath\Admin\Post' )
 			->withArgument( $options )
-			->withArgument( $this->getContainer()->get( 'beacon' ) )
-			->withArgument( $critical_css )
+			->withArgument( $beacon )
 			->withArgument( $critical_css_path )
-			->withArgument( $this->getContainer()->get( 'template_path' ) . '/cpcss' );
+			->withArgument( $template_path );
+		$this->getContainer()->add( 'cpcss_settings', 'WP_Rocket\Engine\CriticalPath\Admin\Settings' )
+			->withArgument( $options )
+			->withArgument( $beacon )
+			->withArgument( $critical_css )
+			->withArgument( $template_path );
+		$this->getContainer()->share( 'critical_css_admin_subscriber', 'WP_Rocket\Engine\CriticalPath\Admin\Subscriber' )
+			->withArgument( $this->getContainer()->get( 'cpcss_post' ) )
+			->withArgument( $this->getContainer()->get( 'cpcss_settings' ) );
 	}
 }
