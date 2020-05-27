@@ -175,12 +175,8 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 
 		$cpcss_item = reset( $cpcss_pending );
 		if ( ! empty( $cpcss_item ) ) {
-			$k       = key( $cpcss_pending );
-			$timeout = false;
-			if ( $cpcss_item['check'] > 10 ) {
-				$timeout = true;
-			}
-
+			$k                = key( $cpcss_pending );
+			$timeout          = (bool) ( $cpcss_item['check'] > 10 );
 			$cpcss_generation = $this->processor->process_generate(
 										$cpcss_item['url'],
 										$cpcss_item['path'],
