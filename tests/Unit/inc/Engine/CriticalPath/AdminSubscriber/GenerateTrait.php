@@ -7,11 +7,13 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\CriticalPath\CriticalCSS;
+use WP_Rocket\Engine\CriticalPath\ProcessorService;
 use WP_Rocket\Engine\CriticalPath\AdminSubscriber;
 
 trait GenerateTrait {
 	protected        $beacon;
 	protected        $options;
+	protected        $processor;
 	protected        $critical_css;
 	protected        $subscriber;
 
@@ -20,11 +22,13 @@ trait GenerateTrait {
 
 		$this->beacon       = Mockery::mock( Beacon::class );
 		$this->options      = Mockery::mock( Options_Data::class );
+		$this->processor    = Mockery::mock( ProcessorService::class );
 		$this->critical_css = Mockery::mock( CriticalCSS::class );
 		$this->subscriber   = Mockery::mock( AdminSubscriber::class . '[generate]', [
 				$this->options,
 				$this->beacon,
 				$this->critical_css,
+				$this->processor,
 				'wp-content/cache/critical-css/',
 				WP_ROCKET_PLUGIN_ROOT . 'views/cpcss/',
 			]
