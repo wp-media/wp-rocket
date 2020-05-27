@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\Post;
 use Mockery;
 use WP_Rocket\Engine\CriticalPath\Admin\Post;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
-use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\GenerateTrait;
+use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\AdminTrait;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\Admin\Post::cpcss_actions
@@ -15,11 +15,12 @@ use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\GenerateTrait;
  * @group  CriticalPathPost
  */
 class Test_CpcssActions extends FilesystemTestCase {
-	use GenerateTrait;
+	use AdminTrait;
 
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/Admin/Post/cpcssActions.php';
-
 	protected static $mockCommonWpFunctionsInSetUp = true;
+
+	private $post;
 
 	public function setUp() {
 		parent::setUp();

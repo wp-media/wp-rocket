@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Engine\CriticalPath\Admin\Post;
 use WP_Rocket\Tests\Unit\TestCase;
-use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\GenerateTrait;
+use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\AdminTrait;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\Admin\Post::cpcss_section
@@ -15,9 +15,11 @@ use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\GenerateTrait;
  * @group  CriticalPathPost
  */
 class Test_CpcssSection extends TestCase {
-	use GenerateTrait;
+	use AdminTrait;
 
 	protected static $mockCommonWpFunctionsInSetUp = true;
+
+	private $post;
 
 	protected function setUp() {
 		parent::setUp();

@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\Post;
 use Brain\Monkey\Functions;
 use WP_Rocket\Engine\CriticalPath\Admin\Post;
 use WP_Rocket\Tests\Unit\TestCase;
-use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\GenerateTrait;
+use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\AdminTrait;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\Admin\Post::enqueue_admin_edit_script
@@ -15,9 +15,11 @@ use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\GenerateTrait;
  * @group  CriticalPathPost
  */
 class Test_EnqueueAdminEditScript extends TestCase {
-	use GenerateTrait;
+	use AdminTrait;
 
 	protected static $mockCommonWpFunctionsInSetUp = true;
+
+	private $post;
 
 	public function setUp() {
 		parent::setUp();

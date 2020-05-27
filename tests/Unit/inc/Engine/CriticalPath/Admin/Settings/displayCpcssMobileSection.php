@@ -6,8 +6,7 @@ use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Engine\CriticalPath\Admin\Settings;
-use WP_Rocket\Engine\CriticalPath\CriticalCSS;  
-use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\GenerateTrait;
+use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\AdminTrait;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\AdminSubscriber::cpcss_section
@@ -15,9 +14,11 @@ use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\GenerateTrait;
  * @group  CriticalPath
  */
 class Test_DisplayCpcssMobileSection extends TestCase {
-	use GenerateTrait;
+	use AdminTrait;
 
 	protected static $mockCommonWpFunctionsInSetUp = true;
+
+	private $settings;
 
 	protected function setUp() {
 		parent::setUp();
@@ -27,7 +28,7 @@ class Test_DisplayCpcssMobileSection extends TestCase {
 		$this->settings = Mockery::mock( Settings::class . '[generate]', [
 				$this->options,
 				$this->beacon,
-				Mockery::mock( CriticalCSS::class ),
+				$this->critical_css,
 				WP_ROCKET_PLUGIN_ROOT . 'views/cpcss/',
 			]
 		);

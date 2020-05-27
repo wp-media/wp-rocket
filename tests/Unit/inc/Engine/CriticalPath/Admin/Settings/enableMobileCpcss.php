@@ -3,12 +3,9 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\Settings;
 
 use Brain\Monkey\Functions;
-use Mockery;
-use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\CriticalPath\Admin\Settings;
-use WP_Rocket\Engine\CriticalPath\CriticalCSS;
 use WP_Rocket\Tests\Unit\TestCase;
+use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\AdminTrait;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\Admin\Settings::enable_mobile_cpcss
@@ -18,16 +15,20 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group  CriticalPathSettings
  */
 class Test_EnableMobileCpcss extends TestCase {
+	use AdminTrait;
+
+	private $settings;
+
 	public function setUp() {
 		parent::setUp();
 
+		$this->setUpMocks();
+
 		Functions\when( 'check_ajax_referer' )->justReturn( true );
 
-		$this->options      = Mockery::mock( Options_Data::class );
-		$this->critical_css = Mockery::mock( CriticalCSS::class );
-		$this->settings     = new Settings(
+		$this->settings = new Settings(
 			$this->options,
-			Mockery::mock( Beacon::class ),
+			$this->beacon,
 			$this->critical_css,
 			'wp-content/plugins/wp-rocket/views/cpcss'
 		);

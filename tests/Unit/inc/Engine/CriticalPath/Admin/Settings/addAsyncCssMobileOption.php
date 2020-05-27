@@ -2,13 +2,9 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\Settings;
 
-use Brain\Monkey\Functions;
-use Mockery;
-use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\Admin\Beacon\Beacon;
-use WP_Rocket\Engine\CriticalPath\CriticalCSS;
 use WP_Rocket\Engine\CriticalPath\Admin\Settings;
 use WP_Rocket\Tests\Unit\TestCase;
+use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\AdminTrait;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\Admin\Settings::add_async_css_mobile_option
@@ -17,20 +13,30 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group  CriticalPathSettings
  */
 class Test_AddAsyncCssMobileOption extends TestCase {
+	use AdminTrait;
+
+	private $settings;
+
+	public function setUp() {
+		parent::setUp();
+
+		$this->setUpMocks();
+
+		$this->settings = new Settings(
+			$this->options,
+			$this->beacon,
+			$this->critical_css,
+			'wp-content/plugins/wp-rocket/views/metabox/cpcss'
+		);
+	}
+
 	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldAddOption( $options, $expected ) {
-		$settings = new Settings(
-			Mockery::mock( Options_Data::class ),
-			Mockery::mock( Beacon::class ),
-			Mockery::mock( CriticalCSS::class ),
-			'wp-content/plugins/wp-rocket/views/metabox/cpcss'
-		);
-
 		$this->assertSame(
 			$expected,
-			$settings->add_async_css_mobile_option( $options )
+			$this->settings->add_async_css_mobile_option( $options )
 		);
 	}
 }
