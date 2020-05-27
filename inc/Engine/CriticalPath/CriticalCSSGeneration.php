@@ -183,23 +183,4 @@ class CriticalCSSGeneration extends WP_Background_Process {
 
 		return json_decode( wp_remote_retrieve_body( $response ) );
 	}
-
-	/**
-	 * Launches when the background process is complete.
-	 *
-	 * @since 2.11
-	 */
-	protected function complete() {
-		/**
-		 * Fires when the critical CSS generation process is complete.
-		 *
-		 * @since 2.11
-		 */
-		do_action( 'rocket_critical_css_generation_process_complete' );
-
-		set_transient( 'rocket_critical_css_generation_process_complete', get_transient( 'rocket_critical_css_generation_process_running' ), HOUR_IN_SECONDS );
-		delete_transient( 'rocket_critical_css_generation_process_running' );
-
-		parent::complete();
-	}
 }
