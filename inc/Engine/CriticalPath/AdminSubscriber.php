@@ -160,7 +160,7 @@ class AdminSubscriber extends Abstract_Render implements Subscriber_Interface {
 		if (
 			! $this->options->get( 'async_css', 0 )
 			||
-			current_user_can( 'rocket_manage_options' )
+			! current_user_can( 'rocket_manage_options' )
 			||
 			! current_user_can( 'rocket_regenerate_critical_css' ) ) {
 				wp_send_json_error();
