@@ -13,8 +13,12 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group  CriticalPathAdminSubscriber
  */
 class Test_DisplayCpcssMobileSection extends TestCase {
+	use ProviderTrait;
+
 	private static $admin_user_id;
 	private static $editor_user_id;
+
+	protected static $class_name = 'Settings';
 
 	private $options = [];
 
@@ -45,7 +49,7 @@ class Test_DisplayCpcssMobileSection extends TestCase {
 	}
 
 	/**
-	 * @dataProvider dataProvider
+	 * @dataProvider providerTestData
 	 */
 	public function testShouldDisplayCpcssMobileSection( $config, $expected ) {
 		if ( $config['current_user_can'] ) {
@@ -66,15 +70,6 @@ class Test_DisplayCpcssMobileSection extends TestCase {
 			$this->format_the_html( $expected ),
 			$this->getActualHtml()
 		);
-	}
-
-	public function dataProvider() {
-		$dir  = WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/CriticalPath/Admin/Settings/';
-		$data = $this->getTestData( $dir, str_replace( '.php', '', basename( __FILE__ ) ) );
-
-		return isset( $data['test_data'] )
-			? $data['test_data']
-			: $data;
 	}
 
 	private function getActualHtml() {

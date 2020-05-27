@@ -12,6 +12,10 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group  CriticalPathAdminSubscriber
  */
 class Test_SetAsyncCssMobileDefaultValue extends TestCase {
+    use ProviderTrait;
+
+    protected static $class_name = 'Settings';
+
     public function setUp() {
         parent::setUp();
 
@@ -25,7 +29,7 @@ class Test_SetAsyncCssMobileDefaultValue extends TestCase {
     }
 
 	/**
-	 * @dataProvider dataProvider
+	 * @dataProvider providerTestData
 	 */
 	public function testShouldUpdateOption( $versions, $update ) {
         

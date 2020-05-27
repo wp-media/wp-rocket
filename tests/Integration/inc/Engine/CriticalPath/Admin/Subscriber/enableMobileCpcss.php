@@ -14,6 +14,9 @@ use WP_Rocket\Tests\Integration\CapTrait;
  * @group  CriticalPathAdminSubscriber
  */
 class Test_EnableMobileCpcss extends AjaxTestCase {
+	use ProviderTrait;
+
+	protected static $class_name         = 'Settings';
 	protected static $use_settings_trait = true;
 
 	private static $admin_user_id  = 0;
@@ -46,7 +49,7 @@ class Test_EnableMobileCpcss extends AjaxTestCase {
 	}
 
 	/**
-	 * @dataProvider dataProvider
+	 * @dataProvider providerTestData
 	 */
 	public function testShouldEnableMobileCpcss( $config, $update ) {
 		if ( $config['rocket_manage_options'] ) {

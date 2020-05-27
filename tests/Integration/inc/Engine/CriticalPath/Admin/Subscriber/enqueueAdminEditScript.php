@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\Subscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\Admin\Subscriber;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\CapTrait;
@@ -15,6 +15,9 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group  CriticalPathAdminSubscriber
  */
 class Test_EnqueueAdminEditScript extends TestCase {
+	use ProviderTrait;
+
+	protected static $class_name = 'Post';
 	private        $post_id;
 	private static $user_id;
 
@@ -36,7 +39,7 @@ class Test_EnqueueAdminEditScript extends TestCase {
 	}
 
 	/**
-	 * @dataProvider dataProvider
+	 * @dataProvider providerTestData
 	 */
 	public function testShouldEnqueueAdminScript( $config, $expected ) {
 		wp_set_current_user( static::$user_id );

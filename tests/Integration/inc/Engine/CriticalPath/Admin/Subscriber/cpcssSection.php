@@ -15,6 +15,10 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group  CriticalPathAdminSubscriber
  */
 class Test_CpcssSection extends TestCase {
+	use ProviderTrait;
+
+	protected static $class_name = 'Post';
+
 	private        $async_css_mobile;
 	private        $post_id;
 	private static $user_id;
@@ -48,7 +52,7 @@ class Test_CpcssSection extends TestCase {
 	}
 
 	/**
-	 * @dataProvider dataProvider
+	 * @dataProvider providerTestData
 	 */
 	public function testShouldDisplayCPCSSSection( $config, $expected ) {
 		wp_set_current_user( static::$user_id );
