@@ -12,6 +12,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  *
  * @group  AdminOnly
  * @group  CriticalPath
+ * @group  CriticalPathAdminSubscriber
  */
 class Test_EnqueueAdminCpcssHeartbeatScript extends TestCase {
 	use ProviderTrait;

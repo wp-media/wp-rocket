@@ -14,6 +14,7 @@ use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\AdminTrait;
  * @uses   ::rocket_get_constant
  *
  * @group  CriticalPath
+ * @group  CriticalPathAdmin
  */
 class Test_EnqueueAdminCpcssHeartbeatScript extends TestCase {
 	use AdminTrait;
