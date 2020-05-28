@@ -20,14 +20,23 @@ class Subscriber implements Subscriber_Interface {
 	private $post;
 
 	/**
+	 * Instance of the Admin handler
+	 *
+	 * @var Admin
+	 */
+	private $admin;
+
+	/**
 	 * Creates an instance of the subscriber.
 	 *
-	 * @param Post     $post     Post instance.
-	 * @param Settings $settings CPCSS Settings instance.
+	 * @param Post     $post      Post instance.
+	 * @param Settings $settings  CPCSS Settings instance.
+	 * @param Admin    $admin     Admin instance.
 	 */
-	public function __construct( Post $post, Settings $settings ) {
+	public function __construct( Post $post, Settings $settings, Admin $admin ) {
 		$this->post     = $post;
 		$this->settings = $settings;
+		$this->admin    = $admin;
 	}
 
 	/**
@@ -39,12 +48,16 @@ class Subscriber implements Subscriber_Interface {
 		return [
 			'rocket_after_options_metabox'       => 'cpcss_section',
 			'rocket_metabox_cpcss_content'       => 'cpcss_actions',
-			'admin_enqueue_scripts'              => 'enqueue_admin_edit_script',
 			'rocket_first_install_options'       => 'add_async_css_mobile_option',
 			'wp_rocket_upgrade'                  => [ 'set_async_css_mobile_default_value', 11, 2 ],
 			'rocket_hidden_settings_fields'      => 'add_hidden_async_css_mobile',
 			'rocket_settings_tools_content'      => 'display_cpcss_mobile_section',
 			'wp_ajax_rocket_enable_mobile_cpcss' => 'enable_mobile_cpcss',
+			'wp_ajax_rocket_cpcss_heartbeat'     => 'cpcss_heartbeat',
+			'admin_enqueue_scripts'              => [
+				[ 'enqueue_admin_edit_script' ],
+				[ 'enqueue_admin_cpcss_heartbeat_script' ],
+			],
 		];
 	}
 
@@ -141,5 +154,23 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function add_hidden_async_css_mobile( $hidden_settings_fields ) {
 		return $this->settings->add_hidden_async_css_mobile( $hidden_settings_fields );
+	}
+
+	/**
+	 * Check the CPCSS heartbeat.
+	 *
+	 * @since 3.6
+	 */
+	public function cpcss_heartbeat() {
+		$this->admin->cpcss_heartbeat();
+	}
+
+	/**
+	 * Enqueue CPCSS heartbeat script on all admin pages.
+	 *
+	 * @since 3.6
+	 */
+	public function enqueue_admin_cpcss_heartbeat_script() {
+		$this->admin->enqueue_admin_cpcss_heartbeat_script();
 	}
 }
