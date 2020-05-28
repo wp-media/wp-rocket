@@ -49,6 +49,7 @@ return [
 			'rocket_manage_options'           => true,
 			'rocket_regenerate_critical_css'  => true,
 			'rocket_cpcss_generation_pending' => [],
+			'rocket_critical_css_generation_process_running' => false,
 		],
 		'expected' => [
 			'bailout'                             => false,
@@ -67,7 +68,7 @@ return [
 			'rocket_manage_options'           => true,
 			'rocket_regenerate_critical_css'  => true,
 			'rocket_cpcss_generation_pending' => [
-				[
+				'front_page.css' => [
 					'url'     => 'https://example.org/',
 					'path'    => 'front_page.css',
 					'timeout' => false,
@@ -81,10 +82,12 @@ return [
 			'notice' => [
 				'get_error_message' => 'error message',
 				'transient'         => [
-					'items'     => [ 'error message' ],
+					'items'     => [ 'front_page.css' => 'error message' ],
 					'generated' => 0,
+					'total'     => 1,
 				]
 			],
+			'rocket_critical_css_generation_process_running' => true,
 		],
 		'expected' => [
 			'bailout'                             => false,
@@ -103,7 +106,7 @@ return [
 			'rocket_manage_options'           => true,
 			'rocket_regenerate_critical_css'  => true,
 			'rocket_cpcss_generation_pending' => [
-				[
+				'front_page.css' => [
 					'url'     => 'https://example.org/',
 					'path'    => 'front_page.css',
 					'timeout' => false,
@@ -117,10 +120,12 @@ return [
 			],
 			'notice' => [
 				'transient'         => [
-					'items'     => [ 'Critical CSS for https://example.org/ generated.' ],
+					'items'     => [ 'front_page.css' => 'Critical CSS for https://example.org/ generated.' ],
 					'generated' => 1,
+					'total'     => 1,
 				]
 			],
+			'rocket_critical_css_generation_process_running' => true,
 		],
 		'expected' => [
 			'bailout'                             => false,
@@ -139,7 +144,7 @@ return [
 			'rocket_manage_options'           => true,
 			'rocket_regenerate_critical_css'  => true,
 			'rocket_cpcss_generation_pending' => [
-				[
+				'front_page.css' => [
 					'url'     => 'https://example.org/',
 					'path'    => 'front_page.css',
 					'timeout' => false,
@@ -153,10 +158,12 @@ return [
 			],
 			'notice' => [
 				'transient'         => [
-					'items'     => [ 'Critical CSS for https://example.org/ not generated.' ],
+					'items'     => [ 'front_page.css' => 'Critical CSS for https://example.org/ not generated.' ],
 					'generated' => 1,
+					'total'     => 1,
 				]
 			],
+			'rocket_critical_css_generation_process_running' => true,
 		],
 		'expected' => [
 			'bailout'                             => false,
@@ -175,7 +182,7 @@ return [
 			'rocket_manage_options'           => true,
 			'rocket_regenerate_critical_css'  => true,
 			'rocket_cpcss_generation_pending' => [
-				[
+				'front_page.css' => [
 					'url'     => 'https://example.org/',
 					'path'    => 'front_page.css',
 					'timeout' => false,
@@ -187,10 +194,12 @@ return [
 				'code'        => 'cpcss_generation_pending',
 				'message'     => 'Critical CSS for https://example.org/ in progress.',
 			],
+			'rocket_critical_css_generation_process_running' => true,
 		],
 		'expected' => [
 			'bailout'                             => false,
 			'generation_complete'                 => true,
+			'bailout_generation_complete'         => true,
 			'json'                                => 'wp_send_json_success',
 			'data'                                => [ 'status' => 'cpcss_complete' ],
 			'set_rocket_cpcss_generation_pending' => [],
@@ -205,7 +214,7 @@ return [
 			'rocket_manage_options'           => true,
 			'rocket_regenerate_critical_css'  => true,
 			'rocket_cpcss_generation_pending' => [
-				[
+				'front_page.css' => [
 					'url'     => 'https://example.org/',
 					'path'    => 'front_page.css',
 					'timeout' => false,
@@ -224,7 +233,7 @@ return [
 			'json'                                => 'wp_send_json_success',
 			'data'                                => [ 'status' => 'cpcss_running' ],
 			'set_rocket_cpcss_generation_pending' => [
-				[
+				'front_page.css' => [
 					'url'     => 'https://example.org/',
 					'path'    => 'front_page.css',
 					'timeout' => false,
@@ -243,14 +252,14 @@ return [
 			'rocket_manage_options'           => true,
 			'rocket_regenerate_critical_css'  => true,
 			'rocket_cpcss_generation_pending' => [
-				[
+				'front_page.css' => [
 					'url'     => 'https://example.org/',
 					'path'    => 'front_page.css',
 					'timeout' => false,
 					'mobile'  => false,
 					'check'   => 0,
 				],
-				[
+				'category.css' => [
 					'url'     => 'https://example.org/category/',
 					'path'    => 'category.css',
 					'timeout' => false,
@@ -264,18 +273,21 @@ return [
 			],
 			'notice' => [
 				'transient'         => [
-					'items'     => [ 'Critical CSS for https://example.org/ not generated.' ],
+					'items'     => [ 'front_page.css' => 'Critical CSS for https://example.org/ not generated.' ],
 					'generated' => 1,
+					'total'     => 2,
 				]
 			],
+			'rocket_critical_css_generation_process_running' => true,
 		],
 		'expected' => [
 			'bailout'                             => false,
 			'generation_complete'                 => false,
+			'bailout_generation_complete'         => true,
 			'json'                                => 'wp_send_json_success',
 			'data'                                => [ 'status' => 'cpcss_running' ],
 			'set_rocket_cpcss_generation_pending' => [
-				1 => [
+				'category.css' => [
 					'url'     => 'https://example.org/category/',
 					'path'    => 'category.css',
 					'timeout' => false,
