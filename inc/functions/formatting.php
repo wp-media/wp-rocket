@@ -259,22 +259,29 @@ function rocket_remove_url_protocol( $url, $no_dots = false ) {
 }
 
 /**
- * Add HTTP protocol to an url that does not have
+ * Add HTTP protocol to an url that does not have it.
  *
  * @since 2.2.1
  *
  * @param string $url The URL to parse.
- * @return string $url The URL with protocol
+ *
+ * @return string $url The URL with protocol.
  */
 function rocket_add_url_protocol( $url ) {
-
-	if ( strpos( $url, 'http://' ) === false && strpos( $url, 'https://' ) === false ) {
-		if ( substr( $url, 0, 2 ) !== '//' ) {
-			$url = '//' . $url;
-		}
-		$url = set_url_scheme( $url );
+	// Bail out if the URL starts with http:// or https://.
+	if (
+		strpos( $url, 'http://' ) !== false
+		||
+		strpos( $url, 'https://' ) !== false
+	) {
+		return $url;
 	}
-	return $url;
+
+	if ( substr( $url, 0, 2 ) !== '//' ) {
+		$url = '//' . $url;
+	}
+
+	return set_url_scheme( $url );
 }
 
 /**
@@ -393,41 +400,6 @@ function rocket_extract_url_component( $url, $component ) {
 }
 
 /**
- * Returns paths used for cache busting
- *
- * @since 2.9
- * @author Remy Perona
- *
- * @param string $filename name of the cache busting file.
- * @param string $extension file extension.
- * @return array Array of paths used for cache busting
- */
-function rocket_get_cache_busting_paths( $filename, $extension ) {
-	$blog_id                = get_current_blog_id();
-	$cache_busting_path     = WP_ROCKET_CACHE_BUSTING_PATH . $blog_id;
-	$filename               = rocket_realpath( rtrim( str_replace( [ ' ', '%20' ], '-', $filename ) ) );
-	$cache_busting_filepath = $cache_busting_path . $filename;
-	$cache_busting_url      = WP_ROCKET_CACHE_BUSTING_URL . $blog_id . $filename;
-
-	switch ( $extension ) {
-		case 'css':
-			/** This filter is documented in inc/functions/minify.php */
-			$cache_busting_url = apply_filters( 'rocket_css_url', $cache_busting_url );
-			break;
-		case 'js':
-			/** This filter is documented in inc/functions/minify.php */
-			$cache_busting_url = apply_filters( 'rocket_js_url', $cache_busting_url );
-			break;
-	}
-
-	return [
-		'bustingpath' => $cache_busting_path,
-		'filepath'    => $cache_busting_filepath,
-		'url'         => $cache_busting_url,
-	];
-}
-
-/**
  * Returns realpath to file (used for relative path with /../ in it or not-yet existing file)
  *
  * @since 2.11
@@ -481,14 +453,7 @@ function rocket_realpath( $file ) {
  * @return string|bool
  */
 function rocket_url_to_path( $url, array $zones = [ 'all' ] ) {
-	/**
-	 * Filters the filepath to the WP content directory
-	 *
-	 * @since 3.5.3
-	 *
-	 * @param string $filepath wp-content directory filepath.
-	 */
-	$wp_content_dir = apply_filters( 'rocket_wp_content_dir', rocket_get_constant( 'WP_CONTENT_DIR' ) );
+	$wp_content_dir = rocket_get_constant( 'WP_CONTENT_DIR' );
 	$root_dir       = trailingslashit( dirname( $wp_content_dir ) );
 	$root_url       = str_replace( wp_basename( $wp_content_dir ), '', content_url() );
 	$url_host       = wp_parse_url( $url, PHP_URL_HOST );

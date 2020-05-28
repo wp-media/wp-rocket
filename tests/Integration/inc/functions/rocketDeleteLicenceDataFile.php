@@ -15,11 +15,6 @@ class Test_RocketDeleteLicenceDataFile extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/functions/rocketDeleteLicenceDataFile.php';
 
 	public function testShouldDeleteLicenceDataFileWhenExists() {
-		Functions\expect( 'rocket_get_constant' )
-			->once()
-			->with( 'WP_ROCKET_PATH' )
-			->andReturn( $this->filesystem->getUrl( $this->config['vfs_dir'] ) );
-
 		$this->assertTrue( $this->filesystem->exists( 'wp-content/plugins/wp-rocket/licence-data.php' ) );
 
 		rocket_delete_licence_data_file();

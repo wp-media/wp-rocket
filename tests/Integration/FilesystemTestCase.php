@@ -2,63 +2,77 @@
 
 namespace WP_Rocket\Tests\Integration;
 
-use Brain\Monkey\Functions;
-use org\bovigo\vfs\vfsStream;
+use WP_Rocket\Tests\SettingsTrait;
+use WP_Rocket\Tests\StubTrait;
+use WP_Rocket\Tests\VirtualFilesystemTrait;
 use WPMedia\PHPUnit\Integration\VirtualFilesystemTestCase;
 
 abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
-	protected $original_entries = [];
+	use SettingsTrait;
+	use StubTrait;
+	use VirtualFilesystemTrait;
+
+	protected static $use_settings_trait = false;
+	protected static $skip_setting_up_settings = false;
+	protected static $transients         = [];
+
+	public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
+
+		if ( static::$use_settings_trait ) {
+			SettingsTrait::getOriginalSettings();
+		}
+
+		if ( ! empty( self::$transients ) ) {
+			foreach ( array_keys( self::$transients ) as $transient ) {
+				static::$transients[ $transient ] = get_transient( $transient );
+			}
+		}
+
+		// Clean out the cached dirs before we run these tests.
+		_rocket_get_cache_dirs( '', '', true );
+	}
+
+	public static function tearDownAfterClass() {
+		parent::setUpBeforeClass();
+
+		if ( static::$use_settings_trait ) {
+			SettingsTrait::resetOriginalSettings();
+		}
+
+		foreach ( static::$transients as $transient => $value ) {
+			if ( ! empty( $value ) ) {
+				set_transient( $transient, $value );
+			} else {
+				delete_transient( $transient );
+			}
+		}
+
+		// Clean out the cached dirs before we leave this test class.
+		_rocket_get_cache_dirs( '', '', true );
+	}
 
 	public function setUp() {
+		$this->initDefaultStructure();
+		if ( static::$use_settings_trait && ! static::$skip_setting_up_settings ) {
+			$this->setUpSettings();
+		}
+
 		parent::setUp();
 
-		// Redefine rocket_direct_filesystem() to use the virtual filesystem.
-		Functions\when( 'rocket_direct_filesystem' )->justReturn( $this->filesystem );
+		$this->stubRocketGetConstant();
+		$this->redefineRocketDirectFilesystem();
 	}
 
-	public function getPathToFixturesDir() {
-		return WP_ROCKET_TESTS_FIXTURES_DIR;
-	}
+	public function tearDown() {
+		if ( static::$use_settings_trait ) {
+			$this->tearDownSettings();
+		}
 
-	public function getDefaultVfs() {
-		return [
-			'wp-admin'      => [],
-			'wp-content'    => [
-				'cache'            => [
-					'busting'      => [
-						1 => [],
-					],
-					'critical-css' => [],
-					'min'          => [],
-					'wp-rocket'    => [
-						'index.html' => '',
-					],
-				],
-				'mu-plugins'       => [],
-				'plugins'          => [
-					'wp-rocket' => [],
-				],
-				'themes'           => [
-					'twentytwenty' => [],
-				],
-				'uploads'          => [],
-				'wp-rocket-config' => [],
-			],
-			'wp-includes'   => [],
-			'wp-config.php' => '',
-		];
-	}
+		$this->resetStubProperties();
 
-	protected function setUpOriginalEntries() {
-		$this->original_entries = array_merge( $this->original_files, $this->original_dirs );
-		$this->original_entries = array_filter( $this->original_entries );
-		sort( $this->original_entries );
-	}
+		unset( $GLOBALS['debug_fs'] );
 
-	protected function stripVfsRoot( $path ) {
-		$search = vfsStream::SCHEME . "://{$this->rootVirtualDir}";
-		$search = rtrim( $search, '/\\' ) . '/';
-
-		return str_replace( $search, '', $path );
+		parent::tearDown();
 	}
 }

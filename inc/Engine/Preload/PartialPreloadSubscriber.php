@@ -69,7 +69,7 @@ class PartialPreloadSubscriber implements Subscriber_Interface {
 			'after_rocket_clean_post'            => [ 'preload_after_clean_post', 10, 3 ],
 			'after_rocket_clean_term'            => [ 'preload_after_clean_term', 10, 3 ],
 			'rocket_after_automatic_cache_purge' => 'preload_after_automatic_cache_purge',
-			'shutdown'                           => [ 'maybe_dispatch', 0 ],
+			'shutdown'                           => [ 'maybe_dispatch', PHP_INT_MAX ],
 		];
 	}
 
@@ -140,9 +140,13 @@ class PartialPreloadSubscriber implements Subscriber_Interface {
 					// URL with query string.
 					$file_path = preg_replace( '/#/', '?', $file_path, 1 );
 				} else {
-					$file_path = untrailingslashit( $file_path );
+					$file_path         = untrailingslashit( $file_path );
+					$data['home_path'] = untrailingslashit( $data['home_path'] );
+					$data['home_url']  = untrailingslashit( $data['home_url'] );
 					if ( '/' === substr( get_option( 'permalink_structure' ), -1 ) ) {
-						$file_path .= '/';
+						$file_path         .= '/';
+						$data['home_path'] .= '/';
+						$data['home_url']  .= '/';
 					}
 				}
 

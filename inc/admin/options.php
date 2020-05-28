@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) || exit;
  * @param array $value An array of submitted values for the settings.
  */
 function rocket_after_save_options( $oldvalue, $value ) {
-	if ( ! ( is_array( $oldvalue ) && is_array( $value ) ) ) {
+	if ( ! is_array( $oldvalue ) || ! is_array( $value ) ) {
 		return;
 	}
 
@@ -75,21 +75,16 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		);
 	}
 
-	// Purge all minify cache files.
 	// phpcs:ignore WordPress.Security.NonceVerification.Missing
-	if ( ! empty( $_POST ) && ( $oldvalue['minify_css'] !== $value['minify_css'] || $oldvalue['exclude_css'] !== $value['exclude_css'] ) || ( isset( $oldvalue['cdn'] ) && ! isset( $value['cdn'] ) || ! isset( $oldvalue['cdn'] ) && isset( $value['cdn'] ) ) ) {
-		rocket_clean_minify( 'css' );
-	}
-
-	// phpcs:ignore WordPress.Security.NonceVerification.Missing
-	if ( ! empty( $_POST ) && ( $oldvalue['minify_js'] !== $value['minify_js'] || $oldvalue['exclude_js'] !== $value['exclude_js'] ) || ( isset( $oldvalue['cdn'] ) && ! isset( $value['cdn'] ) || ! isset( $oldvalue['cdn'] ) && isset( $value['cdn'] ) ) ) {
+	if ( ( array_key_exists( 'minify_js', $oldvalue ) && array_key_exists( 'minify_js', $value ) && $oldvalue['minify_js'] !== $value['minify_js'] )
+		||
+		( array_key_exists( 'exclude_js', $oldvalue ) && array_key_exists( 'exclude_js', $value ) && $oldvalue['exclude_js'] !== $value['exclude_js'] )
+		||
+		( array_key_exists( 'cdn', $oldvalue ) && array_key_exists( 'cdn', $value ) && $oldvalue['cdn'] !== $value['cdn'] )
+		||
+		( array_key_exists( 'cdn_cnames', $oldvalue ) && array_key_exists( 'cdn_cnames', $value ) && $oldvalue['cdn_cnames'] !== $value['cdn_cnames'] )
+	) {
 		rocket_clean_minify( 'js' );
-	}
-
-	// Purge all cache busting files.
-	// phpcs:ignore WordPress.Security.NonceVerification.Missing
-	if ( ! empty( $_POST ) && ( $oldvalue['remove_query_strings'] !== $value['remove_query_strings'] ) ) {
-		rocket_clean_cache_busting();
 	}
 
 	// Regenerate advanced-cache.php file.
@@ -105,7 +100,7 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	rocket_generate_config_file();
 
 	// Set WP_CACHE constant in wp-config.php.
-	if ( ! defined( 'WP_CACHE' ) || ! WP_CACHE ) {
+	if ( ! rocket_get_constant( 'WP_CACHE' ) ) {
 		set_rocket_wp_cache_define( true );
 	}
 
@@ -113,7 +108,7 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		set_transient( 'rocket_analytics_optin', 1 );
 	}
 }
-add_action( 'update_option_' . WP_ROCKET_SLUG, 'rocket_after_save_options', 10, 2 );
+add_action( 'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ), 'rocket_after_save_options', 10, 2 );
 
 /**
  * Perform actions when settings are saved.
@@ -185,14 +180,6 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 		}
 	}
 
-	// Regenerate the minify key if CSS files have been modified.
-	if ( ( isset( $newvalue['minify_css'], $oldvalue['minify_css'] ) && $newvalue['minify_css'] !== $oldvalue['minify_css'] )
-		|| ( isset( $newvalue['exclude_css'], $oldvalue['exclude_css'] ) && $newvalue['exclude_css'] !== $oldvalue['exclude_css'] )
-		|| ( isset( $oldvalue['cdn'] ) && ! isset( $newvalue['cdn'] ) || ! isset( $oldvalue['cdn'] ) && isset( $newvalue['cdn'] ) )
-	) {
-		$newvalue['minify_css_key'] = create_rocket_uniqid();
-	}
-
 	// Regenerate the minify key if JS files have been modified.
 	if ( ( isset( $newvalue['minify_js'], $oldvalue['minify_js'] ) && $newvalue['minify_js'] !== $oldvalue['minify_js'] )
 		|| ( isset( $newvalue['exclude_js'], $oldvalue['exclude_js'] ) && $newvalue['exclude_js'] !== $oldvalue['exclude_js'] )
@@ -206,7 +193,7 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 		$newvalue['cache_ssl'] = 1;
 	}
 
-	if ( ! defined( 'WP_ROCKET_ADVANCED_CACHE' ) ) {
+	if ( ! rocket_get_constant( 'WP_ROCKET_ADVANCED_CACHE' ) ) {
 		rocket_generate_advanced_cache_file();
 	}
 
@@ -237,7 +224,7 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 
 	return $newvalue;
 }
-add_filter( 'pre_update_option_' . WP_ROCKET_SLUG, 'rocket_pre_main_option', 10, 2 );
+add_filter( 'pre_update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ), 'rocket_pre_main_option', 10, 2 );
 
 /**
  * Auto-activate the SSL cache if the website URL is updated with https protocol

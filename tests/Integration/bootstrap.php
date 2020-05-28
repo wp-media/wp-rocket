@@ -15,6 +15,17 @@ define( 'WP_ROCKET_IS_TESTING', true );
 tests_add_filter(
 	'muplugins_loaded',
 	function() {
+		if ( BootstrapManager::isGroup( 'WithSCCSS' ) ) {
+			// Load Simple Custom CSS plugin.
+			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/simple-custom-css/simple-custom-css.php';
+			update_option(
+				'sccss_settings',
+				[
+					'sccss-content' => '.simple-custom-css { color: red; }',
+				]
+			);
+		}
+
 		if ( BootstrapManager::isGroup( 'WithAmp' ) ) {
 			// Load AMP plugin.
 			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/amp/amp.php';
@@ -36,11 +47,33 @@ tests_add_filter(
 		define( 'WP_ROCKET_CACHE_ROOT_PATH', 'vfs://public/wp-content/cache/' );
 		define( 'WP_ROCKET_CACHE_ROOT_URL', 'http://example.org/wp-content/cache/' );
 
+		if ( BootstrapManager::isGroup( 'WithSmush' ) ) {
+			// Load WP Smush.
+			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/wp-smushit/wp-smush.php';
+		}
+
 		if ( BootstrapManager::isGroup( 'WithWoo' ) ) {
 			// Load WooCommerce.
 			define( 'WC_TAX_ROUNDING_MODE', 'auto' );
 			define( 'WC_USE_TRANSACTIONS', false );
 			require WP_ROCKET_PLUGIN_ROOT . '/vendor/woocommerce/woocommerce/woocommerce.php';
+		}
+
+		if ( BootstrapManager::isGroup( 'BeaverBuilder' ) ) {
+			define( 'FL_BUILDER_VERSION', '5.3' );
+		}
+
+		if ( BootstrapManager::isGroup( 'Elementor' ) ) {
+			define( 'ELEMENTOR_VERSION', '2.0' );
+		}
+
+		if ( BootstrapManager::isGroup( 'Hummingbird' ) ) {
+			define( 'WP_ADMIN', true );
+			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/hummingbird-performance/wp-hummingbird.php';
+		}
+
+		if ( BootstrapManager::isGroup( 'Cloudways' ) ) {
+			$_SERVER['cw_allowed_ip'] = true;
 		}
 
 		// Overload the license key for testing.

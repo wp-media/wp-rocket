@@ -5,29 +5,7 @@
 
 return [
 	'vfs_dir' => 'public/wp-content/',
-	'structure' => [
-		'wp-content' => [
-			'cache'   => [
-				'busting' => [
-					'1' => [],
-				],
-			],
-			'themes'  => [
-				'twentytwenty' => [
-					'style.php' => 'test',
-					'assets'    => [
-						'script.php' => 'test',
-					],
-				],
-			],
-			'plugins' => [
-				'hello-dolly' => [
-					'style.php'  => '',
-					'script.php' => '',
-				],
-			],
-		],
-	],
+
 	'test_data' => [
 		// Test Data: should replace URL when dynamic file.
 		[
