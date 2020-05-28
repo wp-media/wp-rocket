@@ -158,4 +158,48 @@ class Admin {
 			]
 		);
 	}
+
+	/**
+	 * Add Regenerate Critical CSS link to admin bar
+	 *
+	 * @since 3.6
+	 *
+	 * @param WP_Admin_Bar $wp_admin_bar WP_Admin_Bar instance, passed by reference.
+	 * @return void
+	 */
+	public function add_regenerate_admin_bar( $wp_admin_bar ) {
+		if ( ! current_user_can( 'rocket_regenerate_critical_css' ) ) {
+			return;
+		}
+
+		if ( ! is_admin() ) {
+			return;
+		}
+
+		if ( ! (bool) $this->options->get( 'async_css', 0 ) ) {
+			return;
+		}
+
+		// This filter is documented in inc/Engine/CriticalPath/CriticalCSS.php.
+		if ( ! apply_filters( 'do_rocket_critical_css_generation', true ) ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+			return;
+		}
+
+		$referer = '';
+		$action  = 'rocket_generate_critical_css';
+
+		if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
+			$referer_url = filter_var( wp_unslash( $_SERVER['REQUEST_URI'] ), FILTER_SANITIZE_URL );
+			$referer     = '&_wp_http_referer=' . rawurlencode( remove_query_arg( 'fl_builder', $referer_url ) );
+		}
+
+		$wp_admin_bar->add_menu(
+			[
+				'parent' => 'wp-rocket',
+				'id'     => 'regenerate-critical-path',
+				'title'  => __( 'Regenerate Critical Path CSS', 'rocket' ),
+				'href'   => wp_nonce_url( admin_url( "admin-post.php?action={$action}{$referer}" ), $action ),
+			]
+		);
+	}
 }
