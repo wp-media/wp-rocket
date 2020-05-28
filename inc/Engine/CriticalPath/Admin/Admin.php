@@ -27,8 +27,8 @@ class Admin {
 	 * @param ProcessorService $processor ProcessorService instance.
 	 */
 	public function __construct( Options_Data $options, ProcessorService $processor ) {
-		$this->options      = $options;
-		$this->processor    = $processor;
+		$this->options   = $options;
+		$this->processor = $processor;
 	}
 
 	/**
@@ -133,7 +133,7 @@ class Admin {
 		if (
 			false !== $running
 			&&
-			$running['total'] !== $running['generated'] 
+			$running['total'] !== $running['generated']
 		) {
 			return;
 		}
