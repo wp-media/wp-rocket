@@ -1,18 +1,23 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\AdminSubscriber;
+namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\Admin;
 
 use Brain\Monkey\Functions;
+use Mockery;
+use WP_Rocket\Engine\CriticalPath\ProcessorService;
+use WP_Rocket\Engine\CriticalPath\Admin\Admin;
 use WP_Rocket\Tests\Unit\TestCase;
+use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\AdminTrait;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\AdminSubscriber::enqueue_admin_cpcss_heartbeat_script
+ * @covers \WP_Rocket\Engine\CriticalPath\Admin\Admin::enqueue_admin_cpcss_heartbeat_script
  * @uses   ::rocket_get_constant
  *
  * @group  CriticalPath
+ * @group  CriticalPathAdmin
  */
 class Test_EnqueueAdminCpcssHeartbeatScript extends TestCase {
-	use GenerateTrait;
+	use AdminTrait;
 
 	protected static $mockCommonWpFunctionsInSetUp = true;
 
@@ -20,6 +25,11 @@ class Test_EnqueueAdminCpcssHeartbeatScript extends TestCase {
 		parent::setUp();
 
 		$this->setUpMocks();
+
+		$this->admin = new Admin(
+			$this->options,
+			Mockery::mock( ProcessorService::class )
+		);
 	}
 
 	/**
@@ -37,7 +47,7 @@ class Test_EnqueueAdminCpcssHeartbeatScript extends TestCase {
 			$this->assertNotExpected();
 		}
 
-		$this->subscriber->enqueue_admin_cpcss_heartbeat_script();
+		$this->admin->enqueue_admin_cpcss_heartbeat_script();
 	}
 
 	private function assertExpected() {

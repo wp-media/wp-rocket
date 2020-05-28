@@ -1,26 +1,37 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\AdminSubscriber;
+namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\Settings;
 
 use Brain\Monkey\Functions;
+use WP_Rocket\Engine\CriticalPath\Admin\Settings;
 use WP_Rocket\Tests\Unit\TestCase;
+use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\AdminTrait;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\AdminSubscriber::enable_mobile_cpcss
+ * @covers \WP_Rocket\Engine\CriticalPath\Admin\Settings::enable_mobile_cpcss
  * @uses   ::rocket_get_constant
  *
  * @group  CriticalPath
+ * @group  CriticalPathSettings
  */
 class Test_EnableMobileCpcss extends TestCase {
-	use GenerateTrait;
+	use AdminTrait;
+
+	private $settings;
 
 	public function setUp() {
 		parent::setUp();
 
-		Functions\when( 'get_current_blog_id' )->justReturn( 1 );
+		$this->setUpMocks();
+
 		Functions\when( 'check_ajax_referer' )->justReturn( true );
 
-		$this->setUpMocks();
+		$this->settings = new Settings(
+			$this->options,
+			$this->beacon,
+			$this->critical_css,
+			'wp-content/plugins/wp-rocket/views/cpcss'
+		);
 	}
 
 	/**
@@ -45,6 +56,6 @@ class Test_EnableMobileCpcss extends TestCase {
 			Functions\expect( 'wp_send_json_success' )->once();
 		}
 
-		$this->subscriber->enable_mobile_cpcss();
+		$this->settings->enable_mobile_cpcss();
 	}
 }

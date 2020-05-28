@@ -1,19 +1,23 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\AdminSubscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\Admin\Subscriber;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\AdminSubscriber::enqueue_admin_cpcss_heartbeat_script
+ * @covers \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::enqueue_admin_cpcss_heartbeat_script
  * @uses   ::rocket_get_constant
  *
  * @group  AdminOnly
  * @group  CriticalPath
+ * @group  CriticalPathAdminSubscriber
  */
 class Test_EnqueueAdminCpcssHeartbeatScript extends TestCase {
+	use ProviderTrait;
+
+	protected static $class_name = 'Admin';
 	private static $user_id;
 
 	public static function setUpBeforeClass() {
@@ -31,7 +35,7 @@ class Test_EnqueueAdminCpcssHeartbeatScript extends TestCase {
 	}
 
 	/**
-	 * @dataProvider configTestData
+	 * @dataProvider providerTestData
 	 */
 	public function testShouldEnqueueAdminScript( $config, $expected ) {
 		wp_set_current_user( static::$user_id );
