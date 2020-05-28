@@ -74,7 +74,7 @@ class test_Task extends TestCase {
 				->with(
 					'rocket_cpcss_generation_pending',
 					[
-						$item,
+						$item['path'] => $item,
 					],
 					HOUR_IN_SECONDS
 				);

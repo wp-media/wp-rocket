@@ -17,7 +17,7 @@ return [
 				'generated' => 0,
 				'total'     => 1,
 				'items'     => [
-					'Critical CSS for http://example.org/ not generated. Error: No valid stylesheets available'
+					'front_page.css' => 'Critical CSS for http://example.org/ not generated. Error: No valid stylesheets available'
 				],
 			],
 		],
@@ -51,7 +51,7 @@ return [
 				'generated' => 1,
 				'total'     => 1,
 				'items'     => [
-					'success',
+					'front_page.css' => 'success',
 				],
 			],
 		],
