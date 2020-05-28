@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\AdminSubscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\AdminSubscriber;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\CapTrait;
