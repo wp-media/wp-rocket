@@ -30,7 +30,7 @@ class Test_EnqueueAdminEditScript extends TestCase {
 			$this->options,
 			$this->beacon,
 			'wp-content/cache/critical-css/',
-			WP_ROCKET_PLUGIN_ROOT . 'views/cpcss/',
+			WP_ROCKET_PLUGIN_ROOT . 'views/cpcss/'
 		);
 	}
 
