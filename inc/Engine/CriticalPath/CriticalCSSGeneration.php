@@ -60,7 +60,7 @@ class CriticalCSSGeneration extends WP_Background_Process {
 		$generated = $this->processor->process_generate( $item['url'], $item['path'], false, $mobile );
 
 		if ( is_wp_error( $generated ) ) {
-			$transient['items'][] = $generated->get_error_message();
+			$transient['items'][ $item['path'] ] = $generated->get_error_message();
 			set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
 
 			return false;
@@ -73,14 +73,14 @@ class CriticalCSSGeneration extends WP_Background_Process {
 				$pending = [];
 			}
 
-			$pending[] = $item;
+			$pending[ $item['path'] ] = $item;
 
 			set_transient( 'rocket_cpcss_generation_pending', $pending, HOUR_IN_SECONDS );
 
 			return false;
 		}
 
-		$transient['items'][] = $generated['message'];
+		$transient['items'][ $item['path'] ] = $generated['message'];
 		$transient['generated']++;
 		set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
 
