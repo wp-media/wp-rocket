@@ -1,18 +1,22 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\AdminSubscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\Admin\Subscriber;
 
 use WP_Rocket\Tests\Integration\AjaxTestCase;
 use WP_Rocket\Tests\Integration\CapTrait;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\AdminSubscriber::enable_mobile_cpcss
+ * @covers \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::enable_mobile_cpcss
  * @uses   ::rocket_get_constant
  *
  * @group  AdminOnly
  * @group  CriticalPath
+ * @group  CriticalPathAdminSubscriber
  */
 class Test_EnableMobileCpcss extends AjaxTestCase {
+	use ProviderTrait;
+
+	protected static $class_name         = 'Settings';
 	protected static $use_settings_trait = true;
 
 	private static $admin_user_id  = 0;
@@ -45,7 +49,7 @@ class Test_EnableMobileCpcss extends AjaxTestCase {
 	}
 
 	/**
-	 * @dataProvider configTestData
+	 * @dataProvider providerTestData
 	 */
 	public function testShouldEnableMobileCpcss( $config, $update ) {
 		if ( $config['rocket_manage_options'] ) {

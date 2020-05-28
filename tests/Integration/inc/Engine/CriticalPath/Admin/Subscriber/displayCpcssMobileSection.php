@@ -1,19 +1,24 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\AdminSubscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\Admin\Subscriber;
 
 use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\AdminSubscriber::display_cpcss_mobile_section
+ * @covers \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::display_cpcss_mobile_section
  *
  * @group  AdminOnly
  * @group  CriticalPath
+ * @group  CriticalPathAdminSubscriber
  */
 class Test_DisplayCpcssMobileSection extends TestCase {
+	use ProviderTrait;
+
 	private static $admin_user_id;
 	private static $editor_user_id;
+
+	protected static $class_name = 'Settings';
 
 	private $options = [];
 
@@ -44,7 +49,7 @@ class Test_DisplayCpcssMobileSection extends TestCase {
 	}
 
 	/**
-	 * @dataProvider configTestData
+	 * @dataProvider providerTestData
 	 */
 	public function testShouldDisplayCpcssMobileSection( $config, $expected ) {
 		if ( $config['current_user_can'] ) {
@@ -65,7 +70,6 @@ class Test_DisplayCpcssMobileSection extends TestCase {
 			$this->format_the_html( $expected ),
 			$this->getActualHtml()
 		);
-
 	}
 
 	private function getActualHtml() {

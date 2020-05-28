@@ -1,19 +1,24 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\AdminSubscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\Admin\Subscriber;
 
 use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\AdminSubscriber::cpcss_section
+ * @covers \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::cpcss_section
  * @uses   ::rocket_direct_filesystem
  * @uses   ::is_rocket_post_excluded_option
  *
  * @group  AdminOnly
  * @group  CriticalPath
+ * @group  CriticalPathAdminSubscriber
  */
 class Test_CpcssSection extends TestCase {
+	use ProviderTrait;
+
+	protected static $class_name = 'Post';
+
 	private        $async_css_mobile;
 	private        $post_id;
 	private static $user_id;
@@ -47,7 +52,7 @@ class Test_CpcssSection extends TestCase {
 	}
 
 	/**
-	 * @dataProvider configTestData
+	 * @dataProvider providerTestData
 	 */
 	public function testShouldDisplayCPCSSSection( $config, $expected ) {
 		wp_set_current_user( static::$user_id );
