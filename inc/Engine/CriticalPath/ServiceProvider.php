@@ -31,6 +31,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'rest_cpcss_subscriber',
 		'cpcss_settings',
 		'cpcss_post',
+		'cpcss_admin',
 		'critical_css_admin_subscriber',
 	];
 
