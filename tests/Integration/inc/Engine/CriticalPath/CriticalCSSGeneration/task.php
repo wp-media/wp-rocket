@@ -74,7 +74,7 @@ class test_Task extends TestCase {
 
 			$this->assertSame(
 				[
-					$item,
+					$item[ 'path' ] => $item,
 				],
 				get_transient( 'rocket_cpcss_generation_pending' )
 			);
