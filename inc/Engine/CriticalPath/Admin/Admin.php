@@ -116,7 +116,15 @@ class Admin {
 			set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
 		}
 
-		if ( isset( $cpcss_generation['code'] ) && ( 'cpcss_generation_successful' === $cpcss_generation['code'] || 'cpcss_generation_failed' === $cpcss_generation['code'] ) ) {
+		if (
+			isset( $cpcss_generation['code'] )
+			&&
+			(
+				'cpcss_generation_successful' === $cpcss_generation['code']
+				||
+				'cpcss_generation_failed' === $cpcss_generation['code']
+			)
+		) {
 			$transient['items'][] = $cpcss_generation['message'];
 			$transient['generated']++;
 			set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
@@ -132,6 +140,7 @@ class Admin {
 		if ( ! $this->options->get( 'async_css', 0 ) ) {
 			return;
 		}
+
 		wp_enqueue_script(
 			'wpr-heartbeat-cpcss-script',
 			rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'wpr-cpcss-heartbeat.js',
