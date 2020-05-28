@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\Admin;
 
 use Brain\Monkey\Functions;
+use Mockery;
 use WP_Rocket\Engine\CriticalPath\ProcessorService;
 use WP_Rocket\Engine\CriticalPath\Admin\Admin;
 use WP_Rocket\Tests\Unit\TestCase;
