@@ -114,6 +114,7 @@ class Admin {
 		if ( is_wp_error( $cpcss_generation ) ) {
 			$transient['items'][] = $cpcss_generation->get_error_message();
 			set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
+			return;
 		}
 
 		if (
