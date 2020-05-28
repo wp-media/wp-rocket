@@ -1290,7 +1290,6 @@ function rocket_find_wpconfig_path() {
 	$config_file_name = apply_filters( 'rocket_wp_config_name', 'wp-config' );
 	$abs_path         = rocket_get_constant( 'ABSPATH' );
 	$config_file      = "{$abs_path}{$config_file_name}.php";
-	$config_file_alt  = dirname( $abs_path ) . DIRECTORY_SEPARATOR . "{$config_file_name}.php";
 	$file_system      = rocket_direct_filesystem();
 
 	if (
@@ -1301,12 +1300,15 @@ function rocket_find_wpconfig_path() {
 		return $config_file;
 	}
 
+	$abs_parent_path = dirname( $abs_path ) . DIRECTORY_SEPARATOR;
+	$config_file_alt = "{$abs_parent_path}{$config_file_name}.php";
+
 	if (
 		$file_system->exists( $config_file_alt )
 		&&
 		$file_system->is_writable( $config_file_alt )
 		&&
-		! $file_system->exists( dirname( $abs_path ) . DIRECTORY_SEPARATOR . 'wp-settings.php' )
+		! $file_system->exists( "{$abs_parent_path}wp-settings.php" )
 	) {
 		return $config_file_alt;
 	}
