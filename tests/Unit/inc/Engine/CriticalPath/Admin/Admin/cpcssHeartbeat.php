@@ -36,7 +36,6 @@ class Test_CpcssHeartbeat extends TestCase {
 		$this->processor = Mockery::mock( ProcessorService::class );
 		$this->admin     = new Admin(
 			$this->options,
-			$this->critical_css,
 			$this->processor
 		);
 	}

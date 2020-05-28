@@ -28,7 +28,6 @@ class Test_EnqueueAdminCpcssHeartbeatScript extends TestCase {
 
 		$this->admin = new Admin(
 			$this->options,
-			$this->critical_css,
 			Mockery::mock( ProcessorService::class )
 		);
 	}

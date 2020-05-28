@@ -3,7 +3,6 @@
 namespace WP_Rocket\Engine\CriticalPath\Admin;
 
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\CriticalPath\CriticalCSS;
 use WP_Rocket\Engine\CriticalPath\ProcessorService;
 
 class Admin {
@@ -15,13 +14,6 @@ class Admin {
 	private $options;
 
 	/**
-	 * Instance of CriticalCSS handler.
-	 *
-	 * @var CriticalCSS
-	 */
-	private $critical_css;
-
-	/**
 	 * Instance of ProcessorService.
 	 *
 	 * @var ProcessorService
@@ -31,13 +23,11 @@ class Admin {
 	/**
 	 * Creates an instance of the class.
 	 *
-	 * @param Options_Data     $options      Options instance.
-	 * @param CriticalCSS      $critical_css CriticalCSS instance.
-	 * @param ProcessorService $processor    ProcessorService instance.
+	 * @param Options_Data     $options   Options instance.
+	 * @param ProcessorService $processor ProcessorService instance.
 	 */
-	public function __construct( Options_Data $options, CriticalCSS $critical_css, ProcessorService $processor ) {
+	public function __construct( Options_Data $options, ProcessorService $processor ) {
 		$this->options      = $options;
-		$this->critical_css = $critical_css;
 		$this->processor    = $processor;
 	}
 
@@ -95,7 +85,7 @@ class Admin {
 		set_transient( 'rocket_cpcss_generation_pending', $cpcss_pending, HOUR_IN_SECONDS );
 
 		if ( empty( $cpcss_pending ) ) {
-			$this->critical_css->generation_complete();
+			$this->generation_complete();
 			wp_send_json_success( [ 'status' => 'cpcss_complete' ] );
 			return;
 		}
@@ -130,6 +120,34 @@ class Admin {
 			$transient['generated']++;
 			set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
 		}
+	}
+
+	/**
+	 * Launches when the CPCSS generation is complete.
+	 *
+	 * @since 3.6
+	 */
+	private function generation_complete() {
+		$running = get_transient( 'rocket_critical_css_generation_process_running' );
+
+		if (
+			false !== $running
+			&&
+			$running['total'] !== $running['generated'] 
+		) {
+			return;
+		}
+
+		/**
+		 * Fires when the critical CSS generation process is complete.
+		 *
+		 * @since 2.11
+		 */
+		do_action( 'rocket_critical_css_generation_process_complete' );
+
+		rocket_clean_domain();
+		set_transient( 'rocket_critical_css_generation_process_complete', get_transient( 'rocket_critical_css_generation_process_running' ), HOUR_IN_SECONDS );
+		delete_transient( 'rocket_critical_css_generation_process_running' );
 	}
 
 	/**
