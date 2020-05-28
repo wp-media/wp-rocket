@@ -58,7 +58,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'enqueue_admin_edit_script' ],
 				[ 'enqueue_admin_cpcss_heartbeat_script' ],
 			],
-			'admin_bar_menu'                     => [ 'add_regenerate_admin_bar', 1001 ],
+			'admin_bar_menu'                     => [ 'add_regenerate_menu_item', 1001 ],
 		];
 	}
 
@@ -176,14 +176,14 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Add Regenerate Critical CSS link to admin bar
+	 * Add Regenerate Critical CSS link to WP Rocket admin bar item
 	 *
 	 * @since 3.6
 	 *
 	 * @param WP_Admin_Bar $wp_admin_bar WP_Admin_Bar instance, passed by reference.
 	 * @return void
 	 */
-	public function add_regenerate_admin_bar( $wp_admin_bar ) {
-		$this->admin->add_regenerate_admin_bar( $wp_admin_bar );
+	public function add_regenerate_menu_item( $wp_admin_bar ) {
+		$this->admin->add_regenerate_menu_item( $wp_admin_bar );
 	}
 }

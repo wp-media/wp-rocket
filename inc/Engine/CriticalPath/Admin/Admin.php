@@ -184,14 +184,14 @@ class Admin {
 	}
 
 	/**
-	 * Add Regenerate Critical CSS link to admin bar
+	 * Add Regenerate Critical CSS link to WP Rocket admin bar item
 	 *
 	 * @since 3.6
 	 *
 	 * @param WP_Admin_Bar $wp_admin_bar WP_Admin_Bar instance, passed by reference.
 	 * @return void
 	 */
-	public function add_regenerate_admin_bar( $wp_admin_bar ) {
+	public function add_regenerate_menu_item( $wp_admin_bar ) {
 		if ( ! current_user_can( 'rocket_regenerate_critical_css' ) ) {
 			return;
 		}
