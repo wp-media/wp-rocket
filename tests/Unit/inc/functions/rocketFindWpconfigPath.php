@@ -3,8 +3,8 @@
 namespace WP_Rocket\Tests\Unit\inc\functions;
 
 use Brain\Monkey\Filters;
+use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
-
 
 /**
  * @covers ::rocket_find_wpconfig_path
@@ -17,11 +17,19 @@ class Test_RocketFindWpconfigPath extends FilesystemTestCase {
 	 */
 	private $config_file_name = null;
 
+	public function setUp()
+	{
+		parent::setUp();
+
+		$this->abspath = $this->filesystem->getUrl( $this->config['vfs_dir'] );
+	}
+
 	/**
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldReturnValidConfigFileName( $config, $expected ) {
 		$this->config_file_name = isset($config['config_file_name']) ? $config['config_file_name'] : null;
+
 		$filter = Filters\expectApplied('rocket_wp_config_name')->once();
 		if( ! is_null( $this->config_file_name ) ){
 			$filter->andReturn( $this->config_file_name );
@@ -35,7 +43,6 @@ class Test_RocketFindWpconfigPath extends FilesystemTestCase {
 	}
 
 	public function changeWpconfigFileName( $config_original_file_name ) {
-		var_dump($this->config_file_name);
 		return $this->config_file_name;
 	}
 

@@ -17,6 +17,13 @@ class Test_RocketFindWpconfigPath extends FilesystemTestCase {
 	 */
 	private $config_file_name = null;
 
+	public function setUp()
+	{
+		parent::setUp();
+
+		$this->abspath = $this->filesystem->getUrl( $this->config['vfs_dir'] );
+	}
+
 	public function tearDown()
 	{
 		if( !is_null( $this->config_file_name ) ){
