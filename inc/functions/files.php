@@ -1288,12 +1288,26 @@ function rocket_find_wpconfig_path() {
 	 * @param string $filename The WP Config filename, without the extension.
 	 */
 	$config_file_name = apply_filters( 'rocket_wp_config_name', 'wp-config' );
-	$config_file      = rocket_get_constant( 'ABSPATH' ) . $config_file_name . '.php';
-	$config_file_alt  = dirname( rocket_get_constant( 'ABSPATH' ) ) . '/' . $config_file_name . '.php';
+	$abs_path = rocket_get_constant( 'ABSPATH' );
+	$config_file      = "{$abs_path}{$config_file_name}.php";
+	$config_file_alt  = dirname( $abs_path ) . DIRECTORY_SEPARATOR  . "{$config_file_name}.php";
+	$file_system = rocket_direct_filesystem();
 
-	if ( rocket_direct_filesystem()->exists( $config_file ) && rocket_direct_filesystem()->is_writable( $config_file ) ) {
+	if (
+		$file_system->exists( $config_file )
+		&&
+		$file_system->is_writable( $config_file )
+	) {
 		return $config_file;
-	} elseif ( rocket_direct_filesystem()->exists( $config_file_alt ) && rocket_direct_filesystem()->is_writable( $config_file_alt ) && ! rocket_direct_filesystem()->exists( dirname( ABSPATH ) . '/wp-settings.php' ) ) {
+	}
+
+	if (
+		$file_system->exists( $config_file_alt )
+		&&
+		$file_system->is_writable( $config_file_alt )
+		&&
+		! $file_system->exists( dirname( $abs_path ) . DIRECTORY_SEPARATOR . 'wp-settings.php' )
+	) {
 		return $config_file_alt;
 	}
 
