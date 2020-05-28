@@ -133,7 +133,7 @@ class Admin {
 		if (
 			false !== $running
 			&&
-			$running['total'] !== $running['generated']
+			$running['total'] !== count( $running['items'] )
 		) {
 			return;
 		}
