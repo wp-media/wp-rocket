@@ -3,6 +3,7 @@
 namespace WP_Rocket\Engine\CriticalPath\Admin;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\CriticalPath\CriticalCSS;
 use WP_Rocket\Engine\CriticalPath\ProcessorService;
 
 class Admin {
@@ -14,6 +15,13 @@ class Admin {
 	private $options;
 
 	/**
+	 * Instance of CriticalCSS handler.
+	 *
+	 * @var CriticalCSS
+	 */
+	private $critical_css;
+
+	/**
 	 * Instance of ProcessorService.
 	 *
 	 * @var ProcessorService
@@ -23,12 +31,14 @@ class Admin {
 	/**
 	 * Creates an instance of the class.
 	 *
-	 * @param Options_Data     $options   Options instance.
-	 * @param ProcessorService $processor ProcessorService instance.
+	 * @param Options_Data     $options      Options instance.
+	 * @param CriticalCSS      $critical_css CriticalCSS instance.
+	 * @param ProcessorService $processor    ProcessorService instance.
 	 */
-	public function __construct( Options_Data $options, ProcessorService $processor ) {
-		$this->options   = $options;
-		$this->processor = $processor;
+	public function __construct( Options_Data $options, CriticalCSS $critical_css, ProcessorService $processor ) {
+		$this->options      = $options;
+		$this->critical_css = $critical_css;
+		$this->processor    = $processor;
 	}
 
 	/**
