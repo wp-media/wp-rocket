@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\Admin\Subscriber;
 
+use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\AdminTestCase;
 
 /**
@@ -55,6 +56,12 @@ class Test_AddRegenerateMenuItem extends AdminTestCase {
 		$this->filter           = $filter;
 		$_SERVER['REQUEST_URI'] = $request;
 		$wp_admin_bar           = $this->initAdminBar();
+
+		if ( false === $admin ) {
+			set_current_screen( 'front' );
+		}
+
+		Functions\when( 'wp_create_nonce' )->justReturn( 'wp_rocket_nonce' );
 
 		// Fire the hook.
 		do_action_ref_array( 'admin_bar_menu', [ $wp_admin_bar ] );
