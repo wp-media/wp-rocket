@@ -2,14 +2,15 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\Admin\Subscriber;
 
-use Mockery;
+use Brain\Monkey\Functions;
 use WP_Error;
+use WP_Rocket\Engine\CriticalPath\APIClient;
 use WP_Rocket\Tests\Integration\AjaxTestCase;
 use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Engine\CriticalPath\ProcessorService;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::enable_mobcpcss_heartbeatile_cpcss
+ * @covers \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::cpcss_heartbeat
  * @uses   ::rocket_get_constant
  *
  * @group  AdminOnly
@@ -23,7 +24,6 @@ class Test_CpcssHeartbeat extends AjaxTestCase {
 	protected static $use_settings_trait = true;
 	protected static $processor_mock;
 	protected $subscriber;
-	protected $original_processor;
 
 	private static $admin_user_id  = 0;
 
@@ -32,7 +32,6 @@ class Test_CpcssHeartbeat extends AjaxTestCase {
 		parent::setUpBeforeClass();
 
 		CapTrait::setAdminCap();
-		self::$processor_mock     = Mockery::mock( ProcessorService::class );
 		//create an editor user that has the capability
 		self::$admin_user_id = static::factory()->user->create( [ 'role' => 'administrator' ] );
 	}
@@ -42,8 +41,6 @@ class Test_CpcssHeartbeat extends AjaxTestCase {
 
 		$this->action = 'rocket_cpcss_heartbeat';
 		delete_transient( 'rocket_cpcss_generation_pending' );
-
-		$this->mockFactory();
 	}
 
 	public function tearDown() {
@@ -54,8 +51,6 @@ class Test_CpcssHeartbeat extends AjaxTestCase {
 		$this->removeRoleCap( 'administrator', 'rocket_regenerate_critical_css' );
 
 		delete_transient( 'rocket_cpcss_generation_pending' );
-
-		$this->restoreFactory();
 	}
 
 	public function testCallbackIsRegistered() {
@@ -71,7 +66,6 @@ class Test_CpcssHeartbeat extends AjaxTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldEnableMobileCpcss( $config, $expected ) {
-
 		$this->async_css = $config[ 'options' ][ 'async_css' ];
 		add_filter( 'pre_get_rocket_option_async_css', [ $this, 'async_css' ] );
 
@@ -95,27 +89,18 @@ class Test_CpcssHeartbeat extends AjaxTestCase {
 	}
 
 	private function expectProcessGenerate( $config ) {
-		if ( isset( $config['process_generate'] ) ) {
-			if ( ! empty( $config['process_generate']['is_wp_error'] ) ) {
-				self::$processor_mock->shouldReceive( 'process_generate' )->andReturn( new WP_Error( 'error', 'error message' ) );
-			} else {
-				self::$processor_mock->shouldReceive( 'process_generate' )->andReturn( $config['process_generate'] );
-			}
+		if ( ! isset( $config['process_generate'] ) ) {
+			return;
 		}
-	}
 
-	protected function mockFactory() {
-		$container                = apply_filters( 'rocket_container', '' );
-		$this->subscriber         = $container->get( 'cpcss_admin' );
+		$params = [
+			'url' => '',
+		];
 
-		$original_processor_ref   = $this->get_reflective_property( 'processor', $this->subscriber );
-		$this->original_processor = $original_processor_ref->getValue( $this->subscriber );
-
-		$original_processor_ref->setValue( $this->subscriber, self::$processor_mock );
-	}
-
-	protected function restoreFactory() {
-		$this->set_reflective_property( $this->original_processor, 'processor', $this->subscriber );
+		Functions\expect('wp_remote_post')
+			->once()
+			->with( APIClient::API_URL, [ 'body', $params ] )
+			->andReturn(  $config['process_generate'] );
 	}
 
 	public function setUserAndCapabilities( $config ) {
