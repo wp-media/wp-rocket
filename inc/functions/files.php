@@ -624,9 +624,10 @@ function rocket_clean_files( $urls, $filesystem = null ) {
  * @since 1.0
  *
  * @param string $lang (default: '') The language code.
+ * @param WP_Filesystem_Direct|null $filesystem Optional. Instance of filesystem handler.
  * @return void
  */
-function rocket_clean_home( $lang = '' ) {
+function rocket_clean_home( $lang = '', $filesystem = null ) {
 	$parse_url = get_rocket_parse_url( get_rocket_i18n_home_url( $lang ) );
 
 	/** This filter is documented in inc/front/htaccess.php */
@@ -634,7 +635,12 @@ function rocket_clean_home( $lang = '' ) {
 		$parse_url['host'] = str_replace( '.', '_', $parse_url['host'] );
 	}
 
-	$root = WP_ROCKET_CACHE_PATH . $parse_url['host'] . '*' . untrailingslashit( $parse_url['path'] );
+	$cache_path       = _rocket_get_wp_rocket_cache_path();
+	if ( empty( $filesystem ) ) {
+		$filesystem = rocket_direct_filesystem();
+	}
+
+	$root = $cache_path . $parse_url['host'] . untrailingslashit( $parse_url['path'] );
 
 	/**
 	 * Filter the homepage caching folder root
@@ -656,38 +662,27 @@ function rocket_clean_home( $lang = '' ) {
 	*/
 	do_action( 'before_rocket_clean_home', $root, $lang ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
-	// Delete homepage.
-	$files = glob( $root . '/{index,index-*}.{html,html_gzip}', GLOB_BRACE | GLOB_NOSORT );
-	if ( $files ) {
-		foreach ( $files as $file ) { // no array map to use @.
-			rocket_direct_filesystem()->delete( $file );
-		}
-	}
+	foreach ( _rocket_get_cache_dirs( $parse_url['host'], $cache_path ) as $dir ) {
+		$domain_entry = $dir . $parse_url['path'];
+		$iterator = new DirectoryIterator( $domain_entry );
 
-	// Delete homepage pagination.
-	$dirs = glob( $root . '*/' . $GLOBALS['wp_rewrite']->pagination_base, GLOB_NOSORT );
-	if ( $dirs ) {
-		foreach ( $dirs as $dir ) {
-			rocket_rrmdir( $dir );
-		}
-	}
+		// Delete homepage.
+		// Remove the hidden empty file for mobile detection on NGINX with the Rocket NGINX configuration.
+		// Remove the hidden empty file for webp.
+		$index_regex = "/((?:index(-[a-z]+)*)\.(?:html(?:_gzip)*))|(\.mobile-active|\.no-webp)/";//
+		$index_entries = new RegexIterator( $iterator, $index_regex );
 
-	// Remove the hidden empty file for mobile detection on NGINX with the Rocket NGINX configuration.
-	$nginx_mobile_detect_files = glob( $root . '/.mobile-active', GLOB_BRACE | GLOB_NOSORT );
-	if ( $nginx_mobile_detect_files ) {
-		foreach ( $nginx_mobile_detect_files as $nginx_mobile_detect_file ) { // no array map to use @.
-			rocket_direct_filesystem()->delete( $nginx_mobile_detect_file );
+		if($index_entries) {
+			foreach ($index_entries as $entry){
+				$filesystem->delete( $entry->getPathname() );
+			}
 		}
-	}
 
-	// Remove the hidden empty file for webp.
-	$nowebp_detect_files = glob( $root . '/.no-webp', GLOB_BRACE | GLOB_NOSORT );
-	if ( $nowebp_detect_files ) {
-		foreach ( $nowebp_detect_files as $nowebp_detect_file ) { // no array map to use @.
-			rocket_direct_filesystem()->delete( $nowebp_detect_file );
-		}
-	}
+		// Delete homepage pagination.
+		$pagination_dir = $domain_entry . DIRECTORY_SEPARATOR . $GLOBALS['wp_rewrite']->pagination_base;
+		rocket_rrmdir( $pagination_dir );
 
+	}
 	/**
 	 * Fires after the home cache file was deleted
 	 *
