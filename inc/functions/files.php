@@ -664,6 +664,9 @@ function rocket_clean_home( $lang = '', $filesystem = null ) {
 
 	foreach ( _rocket_get_cache_dirs( $parse_url['host'], $cache_path ) as $dir ) {
 		$domain_entry = $dir . $parse_url['path'];
+		if ( ! $filesystem->exists( $domain_entry ) ) {
+			continue;
+		}
 		$iterator     = new DirectoryIterator( $domain_entry );
 
 		// Delete homepage.
