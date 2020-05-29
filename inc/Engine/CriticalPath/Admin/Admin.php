@@ -165,7 +165,6 @@ class Admin {
 		if ( ! $this->options->get( 'async_css', 0 ) ) {
 			return;
 		}
-
 		wp_enqueue_script(
 			'wpr-heartbeat-cpcss-script',
 			rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'wpr-cpcss-heartbeat.js',
