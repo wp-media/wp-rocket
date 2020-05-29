@@ -55,7 +55,7 @@ class Test_AddRegenerateMenuItem extends TestCase {
 			return "http://example.org/wp-admin/{$path}";
 		} );
 		Functions\when( 'wp_nonce_url' )->alias( function( $url ) {
-			return "{$url}&_wpnonce=wp_rocket_nonce";
+			return str_replace( '&', '&amp;', "{$url}&_wpnonce=wp_rocket_nonce" );
 		} );
 		Functions\when( 'wp_unslash' )->alias( function( $value ) {
 			return stripslashes( $value );

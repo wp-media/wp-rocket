@@ -87,10 +87,12 @@ class Test_EnableMobileCpcss extends AjaxTestCase {
 	public static function removeRegenerateCriticalCap() {
 		$admin = get_role( 'administrator' );
 		$admin->remove_cap( 'rocket_regenerate_critical_css' );
+		$admin->remove_cap( 'rocket_manage_options' );
 	}
 
 	public static function addRegenerateCriticalCap() {
 		$admin = get_role( 'administrator' );
 		$admin->add_cap( 'rocket_regenerate_critical_css' );
+		$admin->add_cap( 'rocket_manage_options' );
 	}
 }

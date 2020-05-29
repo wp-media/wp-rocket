@@ -43,7 +43,9 @@ return [
 			'parent' => 'wp-rocket',
 			'id'     => 'regenerate-critical-path',
 			'title'  => 'Regenerate Critical Path CSS',
-			'href'   => 'http://example.org/wp-admin/admin-post.php?action=rocket_generate_critical_css&_wp_http_referer=%2Fwp-admin%2F&_wpnonce=wp_rocket_nonce',
+			'href'   => 'http://example.org/wp-admin/admin-post.php?action=rocket_generate_critical_css&amp;_wp_http_referer=%2Fwp-admin%2F&amp;_wpnonce=wp_rocket_nonce',
+			'group' => false,
+			'meta'  => [],
 		],
 	],
 ];

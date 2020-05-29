@@ -5,6 +5,17 @@ if ( ! class_exists( 'WP_Admin_Bar' ) ) {
 		private $nodes = [];
 
 		public function add_menu( $args ) {
+			$defaults = [
+				'id'     => false,
+				'title'  => false,
+				'parent' => false,
+				'href'   => false,
+				'group'  => false,
+				'meta'   => [],
+			];
+
+			$args = array_merge( $defaults, $args );
+
 			$this->_set_node( $args );
 		}
 
