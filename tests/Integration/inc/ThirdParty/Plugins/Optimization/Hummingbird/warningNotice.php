@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\Optimization\Hummingbird;
 
+use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
@@ -14,6 +15,7 @@ class Test_WarningNotice extends TestCase {
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
+		CapTrait::setAdminCap();
 
 		$user = static::factory()->user->create( [ 'role' => 'administrator' ] );
 		wp_set_current_user( $user );
