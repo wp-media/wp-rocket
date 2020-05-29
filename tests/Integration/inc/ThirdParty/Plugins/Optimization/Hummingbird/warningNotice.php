@@ -24,16 +24,21 @@ class Test_WarningNotice extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
+		$this->unregisterAllCallbacksExcept( 'admin_notices', 'warning_notice', 10 );
+
 		set_current_screen( 'settings_page_wprocket' );
 		add_filter( 'pre_option_active_plugins', [ $this, 'active_plugin' ] );
 	}
 
 	public function tearDown() {
-		delete_option( 'wphb_settings' );
-		remove_filter( 'pre_option_active_plugins', [ $this, 'active_plugin' ] );
+		$this->restoreWpFilter( 'admin_notices' );
+
 		set_current_screen( 'front' );
 
 		parent::tearDown();
+
+		delete_option( 'wphb_settings' );
+		remove_filter( 'pre_option_active_plugins', [ $this, 'active_plugin' ] );
 	}
 
 	private function getActualHtml() {
