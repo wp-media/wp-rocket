@@ -680,7 +680,7 @@ function rocket_clean_home( $lang = '', $filesystem = null ) {
 
 		// Delete homepage pagination.
 		$pagination_dir = $domain_entry . DIRECTORY_SEPARATOR . $GLOBALS['wp_rewrite']->pagination_base;
-		rocket_rrmdir( $pagination_dir );
+		rocket_rrmdir( $pagination_dir,[], $filesystem );
 
 	}
 	/**
