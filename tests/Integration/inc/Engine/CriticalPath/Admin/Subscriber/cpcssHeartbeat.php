@@ -105,8 +105,6 @@ class Test_CpcssHeartbeat extends AjaxTestCase {
 				->with( APIClient::API_URL, [ 'body' => $params ] )
 				->andReturn( new WP_Error( 'error', 'error_data' ) );
 		} else {
-			Functions\when('wp_remote_retrieve_response_code')->justReturn( 200 );
-
 			Functions\expect('wp_remote_post')
 				->once()
 				->with( APIClient::API_URL, [ 'body' => $params ] )
