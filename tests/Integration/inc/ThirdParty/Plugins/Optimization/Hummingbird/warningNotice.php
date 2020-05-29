@@ -15,7 +15,7 @@ class Test_WarningNotice extends TestCase {
 	use CapTrait;
 
 	public static function WpSetupBeforeClass( $factory ) {
-		self::hasAdminCapBeforeClass();
+		CapTrait::setAdminCap();
 
 		$user = $factory->user->create( [ 'role' => 'administrator' ] );
 		wp_set_current_user( $user );
