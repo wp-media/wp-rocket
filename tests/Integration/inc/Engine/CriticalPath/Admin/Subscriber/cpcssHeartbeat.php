@@ -22,6 +22,10 @@ class Test_CpcssHeartbeat extends AjaxTestCase {
 
 	protected static $class_name         = 'Admin';
 	protected static $use_settings_trait = true;
+	protected static $transients = [
+		'rocket_critical_css_generation_process_running' => null,
+		'rocket_cpcss_generation_pending'                => null,
+	];
 	protected static $processor_mock;
 	protected $subscriber;
 
@@ -40,6 +44,12 @@ class Test_CpcssHeartbeat extends AjaxTestCase {
 		parent::setUp();
 
 		$this->action = 'rocket_cpcss_heartbeat';
+
+		set_transient( 'rocket_critical_css_generation_process_running', [
+			'generated' => 0,
+			'total'     => 1,
+			'items'     => [],
+		] );
 		delete_transient( 'rocket_cpcss_generation_pending' );
 	}
 
@@ -50,6 +60,7 @@ class Test_CpcssHeartbeat extends AjaxTestCase {
 		$this->removeRoleCap( 'administrator', 'rocket_manage_options' );
 		$this->removeRoleCap( 'administrator', 'rocket_regenerate_critical_css' );
 
+		delete_transient( 'rocket_critical_css_generation_process_running' );
 		delete_transient( 'rocket_cpcss_generation_pending' );
 	}
 
@@ -65,7 +76,7 @@ class Test_CpcssHeartbeat extends AjaxTestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldEnableMobileCpcss( $config, $expected ) {
+	public function testShouldGenerateCPCSS( $config, $expected ) {
 		$this->async_css = $config[ 'options' ][ 'async_css' ];
 		add_filter( 'pre_get_rocket_option_async_css', [ $this, 'async_css' ] );
 
