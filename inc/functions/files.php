@@ -623,7 +623,7 @@ function rocket_clean_files( $urls, $filesystem = null ) {
  * @since 2.0 Delete cache files for all users
  * @since 1.0
  *
- * @param string $lang (default: '') The language code.
+ * @param string                    $lang (default: '') The language code.
  * @param WP_Filesystem_Direct|null $filesystem Optional. Instance of filesystem handler.
  * @return void
  */
@@ -635,7 +635,7 @@ function rocket_clean_home( $lang = '', $filesystem = null ) {
 		$parse_url['host'] = str_replace( '.', '_', $parse_url['host'] );
 	}
 
-	$cache_path       = _rocket_get_wp_rocket_cache_path();
+	$cache_path = _rocket_get_wp_rocket_cache_path();
 	if ( empty( $filesystem ) ) {
 		$filesystem = rocket_direct_filesystem();
 	}
@@ -664,24 +664,24 @@ function rocket_clean_home( $lang = '', $filesystem = null ) {
 
 	foreach ( _rocket_get_cache_dirs( $parse_url['host'], $cache_path ) as $dir ) {
 		$domain_entry = $dir . $parse_url['path'];
-		$iterator = new DirectoryIterator( $domain_entry );
+		$iterator     = new DirectoryIterator( $domain_entry );
 
 		// Delete homepage.
 		// Remove the hidden empty file for mobile detection on NGINX with the Rocket NGINX configuration.
 		// Remove the hidden empty file for webp.
-		$index_regex = "/((?:index(-[a-z]+)*)\.(?:html(?:_gzip)*))|(\.mobile-active|\.no-webp)/";//
+		$index_regex   = '/((?:index(-[a-z]+)*)\.(?:html(?:_gzip)*))|(\.mobile-active|\.no-webp)/';
 		$index_entries = new RegexIterator( $iterator, $index_regex );
-
-		if($index_entries) {
-			foreach ($index_entries as $entry){
+		if ( $index_entries ) {
+			foreach ( $index_entries as $entry ) {
 				$filesystem->delete( $entry->getPathname() );
 			}
 		}
 
 		// Delete homepage pagination.
 		$pagination_dir = $domain_entry . DIRECTORY_SEPARATOR . $GLOBALS['wp_rewrite']->pagination_base;
-		rocket_rrmdir( $pagination_dir,[], $filesystem );
-
+		if ( $filesystem->is_dir( $pagination_dir ) ) {
+			rocket_rrmdir( $pagination_dir, [], $filesystem );
+		}
 	}
 	/**
 	 * Fires after the home cache file was deleted
