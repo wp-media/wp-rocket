@@ -78,6 +78,13 @@ return [
 			],
 			'process_generate' => [
 				'is_wp_error' => true,
+				'status'      => 404,
+				'success'     => false,
+				'code'        => 'cpcss_generation_failed',
+				'message'     => 'Critical CSS for https://example.org/ not generated.',
+				'data'        => [
+					'state' => 'failed',
+				],
 			],
 			'notice' => [
 				'get_error_message' => 'error message',
@@ -115,8 +122,14 @@ return [
 				],
 			],
 			'process_generate' => [
+				'status'      => 200,
+				'success'     => true,
 				'code'        => 'cpcss_generation_successful',
 				'message'     => 'Critical CSS for https://example.org/ generated.',
+				'data'        => [
+					'state'         => 'complete',
+					'critical_path' => '.critical_path { color: red; }',
+				],
 			],
 			'notice' => [
 				'transient'         => [
@@ -153,8 +166,13 @@ return [
 				],
 			],
 			'process_generate' => [
+				'status'      => 404,
+				'success'     => false,
 				'code'        => 'cpcss_generation_failed',
 				'message'     => 'Critical CSS for https://example.org/ not generated.',
+				'data'        => [
+					'state' => 'failed',
+				],
 			],
 			'notice' => [
 				'transient'         => [
@@ -191,8 +209,13 @@ return [
 				],
 			],
 			'process_generate' => [
+				'status'      => 200,
+				'success'     => true,
 				'code'        => 'cpcss_generation_pending',
 				'message'     => 'Critical CSS for https://example.org/ in progress.',
+				'data'        => [
+					'state' => 'pending',
+				],
 			],
 			'rocket_critical_css_generation_process_running' => true,
 		],
@@ -200,6 +223,7 @@ return [
 			'bailout'                             => false,
 			'generation_complete'                 => true,
 			'bailout_generation_complete'         => true,
+			'bailout_timeout'         => true,
 			'json'                                => 'wp_send_json_success',
 			'data'                                => [ 'status' => 'cpcss_complete' ],
 			'set_rocket_cpcss_generation_pending' => [],
@@ -223,8 +247,13 @@ return [
 				],
 			],
 			'process_generate' => [
+				'status'      => 200,
+				'success'     => true,
 				'code'        => 'cpcss_generation_pending',
 				'message'     => 'Critical CSS for https://example.org/ in progress.',
+				'data'        => [
+					'state' => 'pending',
+				],
 			],
 		],
 		'expected' => [
@@ -268,8 +297,13 @@ return [
 				],
 			],
 			'process_generate' => [
+				'status'      => 404,
+				'success'     => false,
 				'code'        => 'cpcss_generation_failed',
 				'message'     => 'Critical CSS for https://example.org/ not generated.',
+				'data'        => [
+					'state' => 'failed',
+				],
 			],
 			'notice' => [
 				'transient'         => [

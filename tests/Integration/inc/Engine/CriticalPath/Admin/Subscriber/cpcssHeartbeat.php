@@ -75,7 +75,7 @@ class Test_CpcssHeartbeat extends AjaxTestCase {
 			set_transient( 'rocket_cpcss_generation_pending', $config['rocket_cpcss_generation_pending'], HOUR_IN_SECONDS );
 		}
 
-		$this->expectProcessGenerate( $config );
+		$this->expectProcessGenerate( $config, $expected );
 
 		$_POST['_nonce'] = wp_create_nonce( 'cpcss_heartbeat_nonce' );
 		$response        = $this->callAjaxAction();
@@ -84,23 +84,39 @@ class Test_CpcssHeartbeat extends AjaxTestCase {
 			$this->assertFalse( $response->success );
 		} else {
 			$this->assertTrue( $response->success );
-			$this->assertSame( $response->data->status, $expected[ 'data' ][ 'status' ] );
+			$this->assertSame( $expected[ 'data' ][ 'status' ], $response->data->status );
 		}
 	}
 
-	private function expectProcessGenerate( $config ) {
-		if ( ! isset( $config['process_generate'] ) ) {
+	private function expectProcessGenerate( $config, $expected ) {
+		if ( ! isset( $config['process_generate'] ) || ! empty ( $expected['bailout_timeout'] ) ) {
 			return;
 		}
-
 		$params = [
-			'url' => '',
+			'url'    => $config['rocket_cpcss_generation_pending']['front_page.css']['url'],
+			'mobile' => $config['rocket_cpcss_generation_pending']['front_page.css']['mobile'],
 		];
 
-		Functions\expect('wp_remote_post')
-			->once()
-			->with( APIClient::API_URL, [ 'body', $params ] )
-			->andReturn(  $config['process_generate'] );
+		$job_id = 999;
+
+		if ( ! empty( $config['process_generate']['is_wp_error'] ) ) {
+			Functions\expect('wp_remote_post')
+				->once()
+				->with( APIClient::API_URL, [ 'body' => $params ] )
+				->andReturn( new WP_Error( 'error', 'error_data' ) );
+		} else {
+			Functions\when('wp_remote_retrieve_response_code')->justReturn( 200 );
+
+			Functions\expect('wp_remote_post')
+				->once()
+				->with( APIClient::API_URL, [ 'body' => $params ] )
+				->andReturn( [ 'body' => '{"status":200,"success":true,"data":{"state":"generating","id":"' . $job_id . '"}}' ] );
+
+			Functions\expect('wp_remote_get')
+				->once()
+				->with( APIClient::API_URL . "{$job_id}/" )
+				->andReturn( [ 'body' => json_encode( $config[ 'process_generate' ] ) ] );
+		}
 	}
 
 	public function setUserAndCapabilities( $config ) {
