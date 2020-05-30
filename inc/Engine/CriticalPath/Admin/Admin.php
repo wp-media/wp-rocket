@@ -40,11 +40,12 @@ class Admin {
 		check_ajax_referer( 'cpcss_heartbeat_nonce', '_nonce', true );
 
 		if (
-			! $this->options->get( 'async_css', 0 )
+			! $this->is_async_css_enabled()
 			||
 			! current_user_can( 'rocket_manage_options' )
 			||
-			! current_user_can( 'rocket_regenerate_critical_css' ) ) {
+			! current_user_can( 'rocket_regenerate_critical_css' )
+		) {
 			wp_send_json_error();
 
 			return;
@@ -191,9 +192,10 @@ class Admin {
 	 * @since 3.6
 	 */
 	public function enqueue_admin_cpcss_heartbeat_script() {
-		if ( ! $this->options->get( 'async_css', 0 ) ) {
+		if ( ! $this->is_async_css_enabled() ) {
 			return;
 		}
+
 		wp_enqueue_script(
 			'wpr-heartbeat-cpcss-script',
 			rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'wpr-cpcss-heartbeat.js',
@@ -229,7 +231,7 @@ class Admin {
 			return;
 		}
 
-		if ( ! (bool) $this->options->get( 'async_css', 0 ) ) {
+		if ( ! $this->is_async_css_enabled() ) {
 			return;
 		}
 
@@ -254,5 +256,9 @@ class Admin {
 				'href'   => wp_nonce_url( admin_url( "admin-post.php?action={$action}{$referer}" ), $action ),
 			]
 		);
+	}
+
+	private function is_async_css_enabled() {
+		return (bool) $this->options->get( 'async_css', 0 );
 	}
 }
