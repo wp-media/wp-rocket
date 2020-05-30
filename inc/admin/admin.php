@@ -432,8 +432,18 @@ function rocket_analytics_data() {
 	$data['active_plugins']    = rocket_get_active_plugins();
 	$data['locale']            = $locale[0];
 	$data['multisite']         = is_multisite();
-	$data['cdn_cnames']        = count( $data['cdn_cnames'] );
-	$data['sitemaps']          = array_map( 'rocket_clean_exclude_file', $data['sitemaps'] );
+
+	if ( ! empty( $data['cdn_cnames'] ) && is_array( $data['cdn_names'] ) ) {
+		$data['cdn_cnames'] = count( $data['cdn_cnames'] );
+	} else {
+		$data['cdn_cnames'] = 0;
+	}
+
+	if ( ! empty( $data['sitemaps'] ) && is_array( $data['sitemaps'] ) ) {
+		$data['sitemaps'] = array_map( 'rocket_clean_exclude_file', $data['sitemaps'] );
+	} else {
+		$data['sitemaps'] = [];
+	}
 
 	return $data;
 }
