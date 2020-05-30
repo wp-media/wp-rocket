@@ -13,26 +13,25 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_SetAsyncCssMobileDefaultValue extends TestCase {
     use ProviderTrait;
-
-    protected static $class_name = 'Settings';
+	protected static $provider_class = 'Settings';
 
     public function setUp() {
         parent::setUp();
 
-        remove_action( 'wp_rocket_upgrade', 'rocket_new_upgrade' ); 
+        remove_action( 'wp_rocket_upgrade', 'rocket_new_upgrade' );
     }
 
     public function tearDown() {
         parent::tearDown();
 
-        add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade' ); 
+        add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade' );
     }
 
 	/**
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldUpdateOption( $versions, $update ) {
-        
+
         do_action( 'wp_rocket_upgrade', $versions['new'], $versions['old'] );
 
         $options = get_option( 'wp_rocket_settings', [] );

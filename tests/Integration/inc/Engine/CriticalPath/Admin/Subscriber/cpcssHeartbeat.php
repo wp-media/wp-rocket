@@ -26,6 +26,7 @@ use WP_Rocket\Tests\Integration\CapTrait;
  */
 class Test_CpcssHeartbeat extends AjaxTestCase {
 	use ProviderTrait;
+	protected static $provider_class = 'Admin';
 
 	private static   $admin_user_id      = 0;
 	protected static $use_settings_trait = true;

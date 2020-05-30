@@ -16,8 +16,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_CpcssSection extends TestCase {
 	use ProviderTrait;
-
-	protected static $class_name = 'Post';
+	protected static $provider_class = 'Post';
 
 	private        $async_css_mobile;
 	private        $post_id;

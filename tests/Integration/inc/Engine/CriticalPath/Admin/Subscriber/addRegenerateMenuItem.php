@@ -17,6 +17,7 @@ use WP_Rocket\Tests\Integration\AdminTestCase;
  */
 class Test_AddRegenerateMenuItem extends AdminTestCase {
 	use ProviderTrait;
+	protected static $provider_class = 'Admin';
 
 	protected $user_id = 0;
 	private   $filter;
