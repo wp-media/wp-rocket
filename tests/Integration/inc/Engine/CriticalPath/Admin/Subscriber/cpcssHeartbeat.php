@@ -7,11 +7,18 @@ use WP_Error;
 use WP_Rocket\Engine\CriticalPath\APIClient;
 use WP_Rocket\Tests\Integration\AjaxTestCase;
 use WP_Rocket\Tests\Integration\CapTrait;
-use WP_Rocket\Engine\CriticalPath\ProcessorService;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::cpcss_heartbeat
- * @uses   ::rocket_get_constant
+ * @uses   \WP_Rocket\Admin\Options_Data::get
+ * @uses   \WP_Rocket\Engine\CriticalPath\Admin\Admin::cpcss_heartbeat
+ * @uses   \WP_Rocket\Engine\CriticalPath\APIClient::send_generation_request
+ * @uses   \WP_Rocket\Engine\CriticalPath\DataManager::delete_cache_job_id
+ * @uses   \WP_Rocket\Engine\CriticalPath\DataManager::get_cache_job_id
+ * @uses   \WP_Rocket\Engine\CriticalPath\DataManager::get_job_details
+ * @uses   \WP_Rocket\Engine\CriticalPath\DataManager::set_cache_job_id
+ * @uses   \WP_Rocket\Engine\CriticalPath\ProcessorService::process_generate
+ * @uses   ::rocket_has_constant
  *
  * @group  AdminOnly
  * @group  CriticalPath
@@ -20,17 +27,15 @@ use WP_Rocket\Engine\CriticalPath\ProcessorService;
 class Test_CpcssHeartbeat extends AjaxTestCase {
 	use ProviderTrait;
 
-	protected static $class_name         = 'Admin';
+	private static   $admin_user_id      = 0;
 	protected static $use_settings_trait = true;
-	protected static $transients = [
+	protected static $transients         = [
 		'rocket_critical_css_generation_process_running' => null,
 		'rocket_cpcss_generation_pending'                => null,
 	];
-	protected static $processor_mock;
+
+	protected $async_css;
 	protected $subscriber;
-
-	private static $admin_user_id  = 0;
-
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
@@ -56,7 +61,7 @@ class Test_CpcssHeartbeat extends AjaxTestCase {
 	public function tearDown() {
 		parent::tearDown();
 
-		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'async_css'] );
+		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'async_css' ] );
 		$this->removeRoleCap( 'administrator', 'rocket_manage_options' );
 		$this->removeRoleCap( 'administrator', 'rocket_regenerate_critical_css' );
 
@@ -77,7 +82,7 @@ class Test_CpcssHeartbeat extends AjaxTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldGenerateCPCSS( $config, $expected ) {
-		$this->async_css = $config[ 'options' ][ 'async_css' ];
+		$this->async_css = $config['options']['async_css'];
 		add_filter( 'pre_get_rocket_option_async_css', [ $this, 'async_css' ] );
 
 		$this->setUserAndCapabilities( $config );
@@ -95,7 +100,7 @@ class Test_CpcssHeartbeat extends AjaxTestCase {
 			$this->assertFalse( $response->success );
 		} else {
 			$this->assertTrue( $response->success );
-			$this->assertSame( $expected[ 'data' ][ 'status' ], $response->data->status );
+			$this->assertSame( $expected['data']['status'], $response->data->status );
 		}
 	}
 
@@ -111,20 +116,20 @@ class Test_CpcssHeartbeat extends AjaxTestCase {
 		$job_id = 999;
 
 		if ( ! empty( $config['process_generate']['is_wp_error'] ) ) {
-			Functions\expect('wp_remote_post')
+			Functions\expect( 'wp_remote_post' )
 				->once()
 				->with( APIClient::API_URL, [ 'body' => $params ] )
 				->andReturn( new WP_Error( 'error', 'error_data' ) );
 		} else {
-			Functions\expect('wp_remote_post')
+			Functions\expect( 'wp_remote_post' )
 				->once()
 				->with( APIClient::API_URL, [ 'body' => $params ] )
 				->andReturn( [ 'body' => '{"status":200,"success":true,"data":{"state":"generating","id":"' . $job_id . '"}}' ] );
 
-			Functions\expect('wp_remote_get')
+			Functions\expect( 'wp_remote_get' )
 				->once()
 				->with( APIClient::API_URL . "{$job_id}/" )
-				->andReturn( [ 'body' => json_encode( $config[ 'process_generate' ] ) ] );
+				->andReturn( [ 'body' => json_encode( $config['process_generate'] ) ] );
 		}
 	}
 
