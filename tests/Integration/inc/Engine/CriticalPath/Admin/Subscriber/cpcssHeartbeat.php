@@ -41,6 +41,7 @@ class Test_CpcssHeartbeat extends AjaxTestCase {
 		parent::setUpBeforeClass();
 
 		CapTrait::setAdminCap();
+
 		//create an editor user that has the capability
 		self::$admin_user_id = static::factory()->user->create( [ 'role' => 'administrator' ] );
 	}
@@ -59,23 +60,17 @@ class Test_CpcssHeartbeat extends AjaxTestCase {
 	}
 
 	public function tearDown() {
+		$this->removeRoleCap( 'administrator', 'rocket_regenerate_critical_css' );
+
 		parent::tearDown();
 
 		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'async_css' ] );
-		$this->removeRoleCap( 'administrator', 'rocket_manage_options' );
-		$this->removeRoleCap( 'administrator', 'rocket_regenerate_critical_css' );
-
 		delete_transient( 'rocket_critical_css_generation_process_running' );
 		delete_transient( 'rocket_cpcss_generation_pending' );
 	}
 
 	public function testCallbackIsRegistered() {
-		$this->assertTrue( has_action( 'wp_ajax_rocket_cpcss_heartbeat' ) );
-
-		global $wp_filter;
-		$obj                   = $wp_filter['wp_ajax_rocket_cpcss_heartbeat'];
-		$callback_registration = current( $obj->callbacks[10] );
-		$this->assertEquals( 'cpcss_heartbeat', $callback_registration['function'][1] );
+		$this->assertCallbackRegistered( 'wp_ajax_rocket_cpcss_heartbeat', 'cpcss_heartbeat' );
 	}
 
 	/**
