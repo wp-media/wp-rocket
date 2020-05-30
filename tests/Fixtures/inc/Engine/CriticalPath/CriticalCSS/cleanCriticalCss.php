@@ -9,9 +9,9 @@ return [
 			'cache' => [
 				'critical-css' => [
 					'1' => [
-						'.'              => '',
-						'..'             => '',
-						'folder'         => [
+						'.'                     => '',
+						'..'                    => '',
+						'folder'                => [
 							'.'        => '',
 							'..'       => '',
 							'file.css' => '.p { color: red; }',
@@ -27,17 +27,15 @@ return [
 						'page.css'              => '.p { color: red; }',
 						'page-mobile.css'       => '.p { color: blue; }',
 					],
-					'2' => [
-						'.'  => '',
-						'..' => '',
-					],
 				],
 			],
 		],
 	],
+
 	// Test Data
 	'test_data' => [
-		'testShouldNotDeleteAnything'                                              => [
+
+		'testShouldNotDeleteAnything' => [
 			'config'   => [
 				'blog_id' => 2,
 				'version' => 'all',
@@ -45,7 +43,8 @@ return [
 			'delete'   => [],
 			'preserve' => [],
 		],
-		'testShouldDeleteFilesFromRootFolderButKeepChildFoldersWhenAll'            => [
+
+		'testShouldDeleteFilesFromRootFolderButKeepChildFoldersWhenAll' => [
 			'config'   => [
 				'blog_id' => 1,
 				'version' => 'all',
@@ -91,7 +90,7 @@ return [
 			],
 		],
 
-		'testShouldDeleteMobileFilesFromRootFolderButKeepChildFoldersWhenMobile'   => [
+		'testShouldDeleteMobileFilesFromRootFolderButKeepChildFoldersWhenMobile' => [
 			'config'   => [
 				'blog_id' => 1,
 				'version' => 'mobile',

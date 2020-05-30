@@ -11,7 +11,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group  CriticalPath
  */
 class Test_CleanCriticalCSS extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSS/cleanCriticalCss.php';
+	protected      $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSS/cleanCriticalCss.php';
 	private static $critical_css;
 
 	public static function setUpBeforeClass() {
@@ -43,6 +43,7 @@ class Test_CleanCriticalCSS extends FilesystemTestCase {
 		foreach ( $deleted_files as $file ) {
 			$this->assertTrue( $this->filesystem->exists( $critical_css_path . $file ) );
 		}
+
 		// Test that Subfolders are available.
 		foreach ( $available_folders as $folder ) {
 			$this->assertTrue( $this->filesystem->exists( $critical_css_path . $folder ) );
@@ -52,11 +53,16 @@ class Test_CleanCriticalCSS extends FilesystemTestCase {
 
 		// Test that root files are deleted now.
 		foreach ( $deleted_files as $file ) {
-			$this->assertFalse( $this->filesystem->exists( $critical_css_path  . $file ) );
+			$this->assertFalse( $this->filesystem->exists( $critical_css_path . $file ) );
 		}
+
 		// Test that Subfolders are still available.
 		foreach ( $available_folders as $folder ) {
 			$this->assertTrue( $this->filesystem->exists( $critical_css_path . $folder ) );
+		}
+
+		if ( empty( $deleted_files ) && 1 !== $config['blog_id'] ) {
+			$this->assertFalse( $this->filesystem->exists( $critical_css_path ) );
 		}
 	}
 }
