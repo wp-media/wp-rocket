@@ -44,42 +44,16 @@ class Admin {
 			||
 			! current_user_can( 'rocket_manage_options' )
 			||
-			! current_user_can( 'rocket_regenerate_critical_css' ) ) {
+			! current_user_can( 'rocket_regenerate_critical_css' ) )
+		{
 				wp_send_json_error();
 				return;
 		}
 
-		$cpcss_pending = get_transient( 'rocket_cpcss_generation_pending' );
+		$cpcss_pending = (array) get_transient( 'rocket_cpcss_generation_pending' );
 
-		if ( false === $cpcss_pending ) {
-			$cpcss_pending = [];
-		}
-
-		$cpcss_item = reset( $cpcss_pending );
-		if ( ! empty( $cpcss_item ) ) {
-			$timeout          = (bool) ( $cpcss_item['check'] > 10 );
-			$cpcss_generation = $this->processor->process_generate(
-										$cpcss_item['url'],
-										$cpcss_item['path'],
-										$timeout,
-										( ! empty( $cpcss_item['mobile'] ) ? $cpcss_item['mobile'] : false )
-									);
-			$cpcss_pending[ $cpcss_item['path'] ]['check'] ++;
-
-			$this->cpcss_heartbeat_notices( $cpcss_generation, $cpcss_item );
-
-			if (
-				is_wp_error( $cpcss_generation )
-				||
-				'cpcss_generation_successful' === $cpcss_generation['code']
-				||
-				'cpcss_generation_failed' === $cpcss_generation['code']
-				||
-				$timeout
-				) {
-				// CPCSS API returned a success / error reply or it timeout.
-				unset( $cpcss_pending[ $cpcss_item['path'] ] );
-			}
+		if ( ! empty( $cpcss_pending ) ) {
+			$cpcss_pending = $this->process_cpcss_pending_queue( $cpcss_pending );
 		}
 
 		set_transient( 'rocket_cpcss_generation_pending', $cpcss_pending, HOUR_IN_SECONDS );
@@ -91,6 +65,49 @@ class Admin {
 		}
 
 		wp_send_json_success( [ 'status' => 'cpcss_running' ] );
+	}
+
+	/**
+	 * Pull one item off of the CPCSS Pending Queue and process it.
+	 *
+	 * @param array $cpcss_pending CPCSS Pending Queue.
+	 *
+	 * @return array remaining queue.
+	 */
+	private function process_cpcss_pending_queue( array $cpcss_pending ) {
+		$cpcss_item = reset( $cpcss_pending );
+		if ( empty( $cpcss_item ) ) {
+			return $cpcss_pending;
+		}
+
+		// Threshold 'check' > 10 = timed out.
+		$timeout          = (bool) ( $cpcss_item['check'] > 10 );
+		$cpcss_generation = $this->processor->process_generate(
+			$cpcss_item['url'],
+			$cpcss_item['path'],
+			$timeout,
+			! empty( $cpcss_item['mobile'] ) ? (bool) $cpcss_item['mobile'] : false
+		);
+
+		// Increment this item's threshold count.
+		$cpcss_pending[ $cpcss_item['path'] ]['check']++;
+
+		$this->cpcss_heartbeat_notices( $cpcss_generation, $cpcss_item );
+
+		// Remove the item from the queue when (a) the CPCSS API returns success or error or (b) timeouts.
+		if (
+			is_wp_error( $cpcss_generation )
+			||
+			'cpcss_generation_successful' === $cpcss_generation['code']
+			||
+			'cpcss_generation_failed' === $cpcss_generation['code']
+			||
+			$timeout
+		) {
+			unset( $cpcss_pending[ $cpcss_item['path'] ] );
+		}
+
+		return $cpcss_pending;
 	}
 
 	/**
