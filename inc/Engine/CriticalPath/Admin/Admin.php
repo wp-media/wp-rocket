@@ -258,6 +258,13 @@ class Admin {
 		);
 	}
 
+	/**
+	 * Checks if the "async_css" option is enabled.
+	 *
+	 * @since 3.6
+	 *
+	 * @return bool true when "async_css" option is enabled.
+	 */
 	private function is_async_css_enabled() {
 		return (bool) $this->options->get( 'async_css', 0 );
 	}
