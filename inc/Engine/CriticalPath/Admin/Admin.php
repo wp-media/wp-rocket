@@ -85,7 +85,7 @@ class Admin {
 		}
 
 		// Threshold 'check' > 10 = timed out.
-		$timeout          = (bool) ( $cpcss_item['check'] > 10 );
+		$timeout          = ( $cpcss_item['check'] > 10 );
 		$cpcss_generation = $this->processor->process_generate(
 			$cpcss_item['url'],
 			$cpcss_item['path'],
