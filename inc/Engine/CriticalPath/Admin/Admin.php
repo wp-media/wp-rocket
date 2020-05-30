@@ -44,10 +44,10 @@ class Admin {
 			||
 			! current_user_can( 'rocket_manage_options' )
 			||
-			! current_user_can( 'rocket_regenerate_critical_css' ) )
-		{
-				wp_send_json_error();
-				return;
+			! current_user_can( 'rocket_regenerate_critical_css' ) ) {
+			wp_send_json_error();
+
+			return;
 		}
 
 		$cpcss_pending = (array) get_transient( 'rocket_cpcss_generation_pending' );
@@ -61,6 +61,7 @@ class Admin {
 		if ( empty( $cpcss_pending ) ) {
 			$this->generation_complete();
 			wp_send_json_success( [ 'status' => 'cpcss_complete' ] );
+
 			return;
 		}
 
@@ -69,6 +70,8 @@ class Admin {
 
 	/**
 	 * Pull one item off of the CPCSS Pending Queue and process it.
+	 *
+	 * @since 3.6
 	 *
 	 * @param array $cpcss_pending CPCSS Pending Queue.
 	 *
@@ -113,15 +116,24 @@ class Admin {
 	/**
 	 * CPCSS heartbeat update notices transients.
 	 *
+	 * @since 3.6
+	 *
 	 * @param array|WP_Error $cpcss_generation CPCSS regeneration reply.
 	 * @param array          $cpcss_item       Item processed.
 	 */
 	private function cpcss_heartbeat_notices( $cpcss_generation, $cpcss_item ) {
-		$transient = get_transient( 'rocket_critical_css_generation_process_running' );
+		$transient = (array) get_transient( 'rocket_critical_css_generation_process_running' );
+
+		// Initializes the transient.
+		if ( ! isset( $transient['items'] ) ) {
+			$transient['items']     = [];
+			$transient['generated'] = 0;
+		}
 
 		if ( is_wp_error( $cpcss_generation ) ) {
 			$transient['items'][ $cpcss_item['path'] ] = $cpcss_generation->get_error_message();
 			set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
+
 			return;
 		}
 
@@ -205,6 +217,7 @@ class Admin {
 	 * @since 3.6
 	 *
 	 * @param WP_Admin_Bar $wp_admin_bar WP_Admin_Bar instance, passed by reference.
+	 *
 	 * @return void
 	 */
 	public function add_regenerate_menu_item( $wp_admin_bar ) {
