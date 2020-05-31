@@ -672,8 +672,8 @@ function rocket_clean_home( $lang = '', $filesystem = null ) {
 		// Delete homepage.
 		// Remove the hidden empty file for mobile detection on NGINX with the Rocket NGINX configuration.
 		// Remove the hidden empty file for webp.
-		foreach ($iterator as $domain_entry_item) {
-			if( $domain_entry_item->isFile() ) {
+		foreach ( $iterator as $domain_entry_item ) {
+			if ( $domain_entry_item->isFile() ) {
 				$filesystem->delete( $domain_entry_item->getPathname() );
 			}
 		}
