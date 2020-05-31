@@ -7,7 +7,6 @@ return [
 			'cache' => [
 				'wp-rocket' => [
 					'example.org'                => [
-						'test.html' => '',
 						'index.html_gzip' => '',
 						'index.html' => '',
 						'index-test.html' => '',
@@ -81,8 +80,6 @@ return [
 					'example.org#fr/index.html_gzip'
 				],
 				'not_removed_files' => [
-					'example.org/test.html',
-
 					'baz.example.org/index.html_gzip',
 					'baz.example.org-baz1-123456/index.html_gzip',
 					'baz.example.org-baz2-987654/index.html_gzip',
@@ -105,8 +102,6 @@ return [
 					'baz.example.org-baz3-456789/index.html_gzip'
 				],
 				'not_removed_files' => [
-					'example.org/test.html',
-
 					'example.org/index.html_gzip',
 					'example.org/index.html',
 					'example.org/index-test.html',
@@ -136,8 +131,6 @@ return [
 					'wp.baz.example.org-wpbaz1-123456/index.html_gzip'
 				],
 				'not_removed_files' => [
-					'example.org/test.html',
-
 					'example.org/index.html_gzip',
 					'example.org/index.html',
 					'example.org/index-test.html',
