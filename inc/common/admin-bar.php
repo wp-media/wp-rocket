@@ -367,4 +367,4 @@ function rocket_admin_bar( $wp_admin_bar ) {
 		);
 	}
 }
-add_action( 'admin_bar_menu', 'rocket_admin_bar', 1000 );
+add_action( 'admin_bar_menu', 'rocket_admin_bar', PHP_INT_MAX - 10 );
