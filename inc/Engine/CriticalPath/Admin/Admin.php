@@ -51,13 +51,13 @@ class Admin {
 			return;
 		}
 
-		$cpcss_pending = (array) get_transient( 'rocket_cpcss_generation_pending' );
+		$cpcss_pending = get_transient( 'rocket_cpcss_generation_pending' );
 
 		if ( ! empty( $cpcss_pending ) ) {
 			$cpcss_pending = $this->process_cpcss_pending_queue( $cpcss_pending );
+		} elseif ( false !== $cpcss_pending ) {
+			delete_transient( 'rocket_cpcss_generation_pending' );
 		}
-
-		set_transient( 'rocket_cpcss_generation_pending', $cpcss_pending, HOUR_IN_SECONDS );
 
 		if ( empty( $cpcss_pending ) ) {
 			$this->generation_complete();
@@ -65,7 +65,8 @@ class Admin {
 
 			return;
 		}
-
+	
+		set_transient( 'rocket_cpcss_generation_pending', (array) $cpcss_pending, HOUR_IN_SECONDS );
 		wp_send_json_success( [ 'status' => 'cpcss_running' ] );
 	}
 
