@@ -9,10 +9,10 @@ use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\CriticalPath\CriticalCSS;
 
 trait AdminTrait {
-	protected        $beacon;
-	protected        $options;
-	protected        $critical_css;
-	protected        $subscriber;
+	protected $beacon;
+	protected $options;
+	protected $critical_css;
+	protected $subscriber;
 
 	public function setUpMocks() {
 		Functions\when( 'get_current_blog_id' )->justReturn( 1 );

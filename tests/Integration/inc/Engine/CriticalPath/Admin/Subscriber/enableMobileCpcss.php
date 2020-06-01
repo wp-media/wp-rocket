@@ -15,8 +15,8 @@ use WP_Rocket\Tests\Integration\CapTrait;
  */
 class Test_EnableMobileCpcss extends AjaxTestCase {
 	use ProviderTrait;
+	protected static $provider_class = 'Settings';
 
-	protected static $class_name         = 'Settings';
 	protected static $use_settings_trait = true;
 
 	private static $admin_user_id  = 0;
@@ -30,7 +30,7 @@ class Test_EnableMobileCpcss extends AjaxTestCase {
 		//create an editor user that has the capability
 		self::$admin_user_id = static::factory()->user->create( [ 'role' => 'administrator' ] );
 		//create an editor user that has no capability
-		self::$editor_user_id    = static::factory()->user->create( [ 'role' => 'editor' ] );
+		self::$editor_user_id = static::factory()->user->create( [ 'role' => 'editor' ] );
 	}
 
 	public function setUp() {
@@ -87,10 +87,12 @@ class Test_EnableMobileCpcss extends AjaxTestCase {
 	public static function removeRegenerateCriticalCap() {
 		$admin = get_role( 'administrator' );
 		$admin->remove_cap( 'rocket_regenerate_critical_css' );
+		$admin->remove_cap( 'rocket_manage_options' );
 	}
 
 	public static function addRegenerateCriticalCap() {
 		$admin = get_role( 'administrator' );
 		$admin->add_cap( 'rocket_regenerate_critical_css' );
+		$admin->add_cap( 'rocket_manage_options' );
 	}
 }

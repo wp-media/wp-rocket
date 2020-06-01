@@ -90,10 +90,9 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 				[ 'async_css', 32 ],
 			],
 
-			'switch_theme'                                    => 'maybe_regenerate_cpcss',
-			'rocket_critical_css_generation_process_complete' => 'clean_domain_on_complete',
-			'rocket_excluded_inline_js_content'               => 'exclude_inline_js',
-			'before_delete_post'                              => 'delete_cpcss',
+			'switch_theme'                      => 'maybe_regenerate_cpcss',
+			'rocket_excluded_inline_js_content' => 'exclude_inline_js',
+			'before_delete_post'                => 'delete_cpcss',
 		];
 		// phpcs:enable WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned
 	}
@@ -691,14 +690,5 @@ JS;
 		}
 
 		$this->critical_css->process_handler();
-	}
-
-	/**
-	 * Cleans the cache when the generation is complete
-	 *
-	 * @since  3.3
-	 */
-	public function clean_domain_on_complete() {
-		rocket_clean_domain();
 	}
 }

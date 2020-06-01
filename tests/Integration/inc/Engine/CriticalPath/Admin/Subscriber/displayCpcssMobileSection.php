@@ -14,11 +14,10 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_DisplayCpcssMobileSection extends TestCase {
 	use ProviderTrait;
+	protected static $provider_class = 'Settings';
 
 	private static $admin_user_id;
 	private static $editor_user_id;
-
-	protected static $class_name = 'Settings';
 
 	private $options = [];
 

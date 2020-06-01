@@ -16,8 +16,8 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_EnqueueAdminEditScript extends TestCase {
 	use ProviderTrait;
+	protected static $provider_class = 'Post';
 
-	protected static $class_name = 'Post';
 	private        $post_id;
 	private static $user_id;
 

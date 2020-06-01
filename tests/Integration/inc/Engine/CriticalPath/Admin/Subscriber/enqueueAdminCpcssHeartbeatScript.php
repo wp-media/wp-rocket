@@ -16,8 +16,8 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_EnqueueAdminCpcssHeartbeatScript extends TestCase {
 	use ProviderTrait;
+	protected static $provider_class = 'Admin';
 
-	protected static $class_name = 'Admin';
 	private static $user_id;
 
 	public static function setUpBeforeClass() {

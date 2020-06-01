@@ -8,7 +8,7 @@ use WP_Rocket\Tests\Integration\TestCase;
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\DataManager::delete_cache_job_id
  *
- * @group  CriticalPathX
+ * @group  CriticalPath
  */
 class Test_DeleteCacheJobId extends TestCase {
 	private $transient;

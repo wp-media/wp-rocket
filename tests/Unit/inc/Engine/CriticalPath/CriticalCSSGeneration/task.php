@@ -24,13 +24,16 @@ class test_Task extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldDoExpected( $item, $result, $transient, $expected ) {
+	public function testShouldDoExpected( $item, $result, $transient ) {
 		$processor  = Mockery::mock( ProcessorService::class );
 		$generation = new CriticalCSSGeneration( $processor );
 
 		$task = $this->get_reflective_method( 'task', CriticalCSSGeneration::class );
 
-		Functions\when( 'get_transient' )->justReturn( [
+		Functions\expect( 'get_transient' )
+			->once()
+			->with( 'rocket_critical_css_generation_process_running' )
+			->andReturn( [
 			'generated' => 0,
 			'total'     => 1,
 			'items'     => [],
@@ -52,9 +55,7 @@ class test_Task extends TestCase {
 			return ( $thing instanceof WP_Error );
 		} );
 
-		if ( ! isset( $transient ) ) {
-			Functions\expect( 'set_transient' )->never();
-		} else {
+		if ( isset( $transient ) ) {
 			Functions\expect( 'set_transient' )
 				->once()
 				->with(
@@ -62,15 +63,23 @@ class test_Task extends TestCase {
 					$transient,
 					HOUR_IN_SECONDS
 				);
+		} else {
+			Functions\expect( 'get_transient' )
+				->once()
+				->with( 'rocket_cpcss_generation_pending' )
+				->andReturn( false );
+
+			Functions\expect( 'set_transient' )
+				->once()
+				->with(
+					'rocket_cpcss_generation_pending',
+					[
+						$item['path'] => $item,
+					],
+					HOUR_IN_SECONDS
+				);
 		}
 
-		if ( false === $expected ) {
-			$this->assertFalse( $task->invoke( $generation, $item ) );
-		} else {
-			$this->assertSame(
-				$expected,
-				$task->invoke( $generation, $item )
-			);
-		}
+		$this->assertFalse( $task->invoke( $generation, $item ) );
 	}
 }

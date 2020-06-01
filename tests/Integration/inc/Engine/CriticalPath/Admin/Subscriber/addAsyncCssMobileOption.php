@@ -13,8 +13,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_AddAsyncCssMobileOption extends TestCase {
 	use ProviderTrait;
-
-	protected static $class_name = 'Settings';
+	protected static $provider_class = 'Settings';
 
 	/**
 	 * @dataProvider providerTestData
