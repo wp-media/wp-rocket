@@ -3,71 +3,64 @@
 return [
 	'testShouldBailOutAtDisabledAsyncCSS' => [
 		'config'   => [
-			'check_ajax_referer'              => true,
-			'options'                         => [
-				'async_css' => 0,
-			],
+			'check_ajax_referer' => true,
+			'options'            => [ 'async_css' => 0 ],
 		],
 		'expected' => [
 			'bailout' => true,
 			'json'    => 'wp_send_json_error',
 		],
 	],
+
 	'testShouldBailOutWithoutRocketPermissions' => [
 		'config'   => [
-			'check_ajax_referer'              => true,
-			'options'                         => [
-				'async_css' => 1,
-			],
-			'rocket_manage_options'           => false,
+			'check_ajax_referer'    => true,
+			'options'               => [ 'async_css' => 1 ],
+			'rocket_manage_options' => false,
 		],
 		'expected' => [
 			'bailout' => true,
 			'json'    => 'wp_send_json_error',
 		],
 	],
+
 	'testShouldBailOutWithoutCriticalCSSPermissions' => [
 		'config'   => [
-			'check_ajax_referer'              => true,
-			'options'                         => [
-				'async_css' => 1,
-			],
-			'rocket_manage_options'           => true,
-			'rocket_regenerate_critical_css'  => false,
+			'check_ajax_referer'             => true,
+			'options'                        => [ 'async_css' => 1 ],
+			'rocket_manage_options'          => true,
+			'rocket_regenerate_critical_css' => false,
 		],
 		'expected' => [
 			'bailout' => true,
 			'json'    => 'wp_send_json_error',
 		],
 	],
+
 	'testShouldStopNoDataInTransient' => [
 		'config'   => [
-			'check_ajax_referer'              => true,
-			'options'                         => [
-				'async_css' => 1,
-			],
-			'rocket_manage_options'           => true,
-			'rocket_regenerate_critical_css'  => true,
-			'rocket_cpcss_generation_pending' => [],
+			'check_ajax_referer'                             => true,
+			'options'                                        => [ 'async_css' => 1 ],
+			'rocket_manage_options'                          => true,
+			'rocket_regenerate_critical_css'                 => true,
+			'rocket_cpcss_generation_pending'                => [],
 			'rocket_critical_css_generation_process_running' => false,
 		],
 		'expected' => [
-			'bailout'                             => false,
-			'generation_complete'                 => true,
-			'json'                                => 'wp_send_json_success',
-			'data'                                => [ 'status' => 'cpcss_complete' ],
-			'set_rocket_cpcss_generation_pending' => [],
+			'bailout'             => false,
+			'generation_complete' => true,
+			'json'                => 'wp_send_json_success',
+			'data'                => [ 'status' => 'cpcss_complete' ],
 		],
 	],
+
 	'testShouldRunSingleDataInTransientWithProcessGenerateReturnWPError' => [
 		'config'   => [
-			'check_ajax_referer'              => true,
-			'options'                         => [
-				'async_css' => 1,
-			],
-			'rocket_manage_options'           => true,
-			'rocket_regenerate_critical_css'  => true,
-			'rocket_cpcss_generation_pending' => [
+			'check_ajax_referer'                             => true,
+			'options'                                        => [ 'async_css' => 1 ],
+			'rocket_manage_options'                          => true,
+			'rocket_regenerate_critical_css'                 => true,
+			'rocket_cpcss_generation_pending'                => [
 				'front_page.css' => [
 					'url'     => 'https://example.org/',
 					'path'    => 'front_page.css',
@@ -76,7 +69,7 @@ return [
 					'check'   => 0,
 				],
 			],
-			'process_generate' => [
+			'process_generate'                               => [
 				'is_wp_error' => true,
 				'status'      => 404,
 				'success'     => false,
@@ -86,33 +79,33 @@ return [
 					'state' => 'failed',
 				],
 			],
-			'notice' => [
+			'notice'                                         => [
 				'get_error_message' => 'error message',
 				'transient'         => [
 					'items'     => [ 'front_page.css' => 'error message' ],
 					'generated' => 0,
 					'total'     => 1,
-				]
+				],
 			],
 			'rocket_critical_css_generation_process_running' => true,
 		],
 		'expected' => [
-			'bailout'                             => false,
-			'generation_complete'                 => true,
-			'json'                                => 'wp_send_json_success',
-			'data'                                => [ 'status' => 'cpcss_complete' ],
-			'set_rocket_cpcss_generation_pending' => [],
+			'bailout'             => false,
+			'generation_complete' => true,
+			'json'                => 'wp_send_json_success',
+			'data'                => [ 'status' => 'cpcss_complete' ],
 		],
 	],
+
 	'testShouldRunSingleDataInTransientWithProcessGenerateReturnSuccess' => [
 		'config'   => [
-			'check_ajax_referer'              => true,
-			'options'                         => [
+			'check_ajax_referer'                             => true,
+			'options'                                        => [
 				'async_css' => 1,
 			],
-			'rocket_manage_options'           => true,
-			'rocket_regenerate_critical_css'  => true,
-			'rocket_cpcss_generation_pending' => [
+			'rocket_manage_options'                          => true,
+			'rocket_regenerate_critical_css'                 => true,
+			'rocket_cpcss_generation_pending'                => [
 				'front_page.css' => [
 					'url'     => 'https://example.org/',
 					'path'    => 'front_page.css',
@@ -121,42 +114,40 @@ return [
 					'check'   => 0,
 				],
 			],
-			'process_generate' => [
-				'status'      => 200,
-				'success'     => true,
-				'code'        => 'cpcss_generation_successful',
-				'message'     => 'Critical CSS for https://example.org/ generated.',
-				'data'        => [
+			'process_generate'                               => [
+				'status'  => 200,
+				'success' => true,
+				'code'    => 'cpcss_generation_successful',
+				'message' => 'Critical CSS for https://example.org/ generated.',
+				'data'    => [
 					'state'         => 'complete',
 					'critical_path' => '.critical_path { color: red; }',
 				],
 			],
-			'notice' => [
-				'transient'         => [
+			'notice'                                         => [
+				'transient' => [
 					'items'     => [ 'front_page.css' => 'Critical CSS for https://example.org/ generated.' ],
 					'generated' => 1,
 					'total'     => 1,
-				]
+				],
 			],
 			'rocket_critical_css_generation_process_running' => true,
 		],
 		'expected' => [
-			'bailout'                             => false,
-			'generation_complete'                 => true,
-			'json'                                => 'wp_send_json_success',
-			'data'                                => [ 'status' => 'cpcss_complete' ],
-			'set_rocket_cpcss_generation_pending' => [],
+			'bailout'             => false,
+			'generation_complete' => true,
+			'json'                => 'wp_send_json_success',
+			'data'                => [ 'status' => 'cpcss_complete' ],
 		],
 	],
+
 	'testShouldRunSingleDataInTransientWithProcessGenerateReturnFailed' => [
 		'config'   => [
-			'check_ajax_referer'              => true,
-			'options'                         => [
-				'async_css' => 1,
-			],
-			'rocket_manage_options'           => true,
-			'rocket_regenerate_critical_css'  => true,
-			'rocket_cpcss_generation_pending' => [
+			'check_ajax_referer'                             => true,
+			'options'                                        => [ 'async_css' => 1 ],
+			'rocket_manage_options'                          => true,
+			'rocket_regenerate_critical_css'                 => true,
+			'rocket_cpcss_generation_pending'                => [
 				'front_page.css' => [
 					'url'     => 'https://example.org/',
 					'path'    => 'front_page.css',
@@ -165,21 +156,21 @@ return [
 					'check'   => 0,
 				],
 			],
-			'process_generate' => [
-				'status'      => 404,
-				'success'     => false,
-				'code'        => 'cpcss_generation_failed',
-				'message'     => 'Critical CSS for https://example.org/ not generated.',
-				'data'        => [
+			'process_generate'                               => [
+				'status'  => 404,
+				'success' => false,
+				'code'    => 'cpcss_generation_failed',
+				'message' => 'Critical CSS for https://example.org/ not generated.',
+				'data'    => [
 					'state' => 'failed',
 				],
 			],
-			'notice' => [
-				'transient'         => [
+			'notice'                                         => [
+				'transient' => [
 					'items'     => [ 'front_page.css' => 'Critical CSS for https://example.org/ not generated.' ],
 					'generated' => 1,
 					'total'     => 1,
-				]
+				],
 			],
 			'rocket_critical_css_generation_process_running' => true,
 		],
@@ -191,15 +182,14 @@ return [
 			'set_rocket_cpcss_generation_pending' => [],
 		],
 	],
+
 	'testShouldRunSingleDataInTransientWithProcessGenerateReturnTimeout' => [
 		'config'   => [
-			'check_ajax_referer'              => true,
-			'options'                         => [
-				'async_css' => 1,
-			],
-			'rocket_manage_options'           => true,
-			'rocket_regenerate_critical_css'  => true,
-			'rocket_cpcss_generation_pending' => [
+			'check_ajax_referer'                             => true,
+			'options'                                        => [ 'async_css' => 1 ],
+			'rocket_manage_options'                          => true,
+			'rocket_regenerate_critical_css'                 => true,
+			'rocket_cpcss_generation_pending'                => [
 				'front_page.css' => [
 					'url'     => 'https://example.org/',
 					'path'    => 'front_page.css',
@@ -208,12 +198,12 @@ return [
 					'check'   => 11,
 				],
 			],
-			'process_generate' => [
-				'status'      => 200,
-				'success'     => true,
-				'code'        => 'cpcss_generation_pending',
-				'message'     => 'Critical CSS for https://example.org/ in progress.',
-				'data'        => [
+			'process_generate'                               => [
+				'status'  => 200,
+				'success' => true,
+				'code'    => 'cpcss_generation_pending',
+				'message' => 'Critical CSS for https://example.org/ in progress.',
+				'data'    => [
 					'state' => 'pending',
 				],
 			],
@@ -223,18 +213,17 @@ return [
 			'bailout'                             => false,
 			'generation_complete'                 => true,
 			'bailout_generation_complete'         => true,
-			'bailout_timeout'         => true,
+			'bailout_timeout'                     => true,
 			'json'                                => 'wp_send_json_success',
 			'data'                                => [ 'status' => 'cpcss_complete' ],
 			'set_rocket_cpcss_generation_pending' => [],
 		],
 	],
+
 	'testShouldRunSingleDataInTransientWithProcessGeneratePending' => [
 		'config'   => [
 			'check_ajax_referer'              => true,
-			'options'                         => [
-				'async_css' => 1,
-			],
+			'options'                         => [ 'async_css' => 1 ],
 			'rocket_manage_options'           => true,
 			'rocket_regenerate_critical_css'  => true,
 			'rocket_cpcss_generation_pending' => [
@@ -246,12 +235,12 @@ return [
 					'check'   => 0,
 				],
 			],
-			'process_generate' => [
-				'status'      => 200,
-				'success'     => true,
-				'code'        => 'cpcss_generation_pending',
-				'message'     => 'Critical CSS for https://example.org/ in progress.',
-				'data'        => [
+			'process_generate'                => [
+				'status'  => 200,
+				'success' => true,
+				'code'    => 'cpcss_generation_pending',
+				'message' => 'Critical CSS for https://example.org/ in progress.',
+				'data'    => [
 					'state' => 'pending',
 				],
 			],
@@ -272,15 +261,14 @@ return [
 			],
 		],
 	],
+
 	'testShouldMultipleDataInTransientWithCpcssRunning' => [
 		'config'   => [
-			'check_ajax_referer'              => true,
-			'options'                         => [
-				'async_css' => 1,
-			],
-			'rocket_manage_options'           => true,
-			'rocket_regenerate_critical_css'  => true,
-			'rocket_cpcss_generation_pending' => [
+			'check_ajax_referer'                             => true,
+			'options'                                        => [ 'async_css' => 1 ],
+			'rocket_manage_options'                          => true,
+			'rocket_regenerate_critical_css'                 => true,
+			'rocket_cpcss_generation_pending'                => [
 				'front_page.css' => [
 					'url'     => 'https://example.org/',
 					'path'    => 'front_page.css',
@@ -288,7 +276,7 @@ return [
 					'mobile'  => false,
 					'check'   => 0,
 				],
-				'category.css' => [
+				'category.css'   => [
 					'url'     => 'https://example.org/category/',
 					'path'    => 'category.css',
 					'timeout' => false,
@@ -296,21 +284,21 @@ return [
 					'check'   => 0,
 				],
 			],
-			'process_generate' => [
-				'status'      => 404,
-				'success'     => false,
-				'code'        => 'cpcss_generation_failed',
-				'message'     => 'Critical CSS for https://example.org/ not generated.',
-				'data'        => [
+			'process_generate'                               => [
+				'status'  => 404,
+				'success' => false,
+				'code'    => 'cpcss_generation_failed',
+				'message' => 'Critical CSS for https://example.org/ not generated.',
+				'data'    => [
 					'state' => 'failed',
 				],
 			],
-			'notice' => [
-				'transient'         => [
+			'notice'                                         => [
+				'transient' => [
 					'items'     => [ 'front_page.css' => 'Critical CSS for https://example.org/ not generated.' ],
 					'generated' => 1,
 					'total'     => 2,
-				]
+				],
 			],
 			'rocket_critical_css_generation_process_running' => true,
 		],
