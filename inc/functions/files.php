@@ -979,10 +979,11 @@ function rocket_clean_cache_dir() {
 	*/
 	do_action( 'before_rocket_clean_cache_dir' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
+	$filesystem = rocket_direct_filesystem();
+
 	// Delete all caching files.
-	$dirs = glob( WP_ROCKET_CACHE_PATH . '*', GLOB_NOSORT );
-	if ( $dirs ) {
-		foreach ( $dirs as $dir ) {
+	foreach ( _rocket_get_cache_dirs( '.' ) as $dir ) {
+		if ( $filesystem->is_dir( $dir ) ) {
 			rocket_rrmdir( $dir );
 		}
 	}
