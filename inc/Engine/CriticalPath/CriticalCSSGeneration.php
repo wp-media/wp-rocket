@@ -49,11 +49,11 @@ class CriticalCSSGeneration extends WP_Background_Process {
 	 *
 	 * @since 2.11
 	 *
-	 * @param array $item Queue item to iterate over.
+	 * @param mixed $item Queue item to iterate over.
 	 *
 	 * @return bool false if task performed successfully, true otherwise to re-queue the item.
 	 */
-	protected function task( array $item ) {
+	protected function task( $item ) {
 		$transient = get_transient( 'rocket_critical_css_generation_process_running' );
 		$mobile    = isset( $item['mobile'] ) ? $item['mobile'] : 0;
 
