@@ -1,8 +1,8 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\functions;
+namespace WP_Rocket\Tests\Integration\inc\functions;
 
-use WP_Rocket\Tests\Unit\FilesystemTestCase;
+use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
  * @covers ::rocket_clean_cache_dir
