@@ -985,7 +985,7 @@ function rocket_clean_cache_dir() {
 	foreach ( _rocket_get_cache_dirs( '.' ) as $path ) {
 		if ( ! $filesystem->is_dir( $path ) ) {
 			$filesystem->delete( $path );
-		}else{
+		}else {
 			rocket_rrmdir( $path );
 		}
 	}
