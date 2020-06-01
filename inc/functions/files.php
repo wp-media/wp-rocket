@@ -981,10 +981,12 @@ function rocket_clean_cache_dir() {
 
 	$filesystem = rocket_direct_filesystem();
 
-	// Delete all caching files.
-	foreach ( _rocket_get_cache_dirs( '.' ) as $dir ) {
-		if ( $filesystem->is_dir( $dir ) ) {
-			rocket_rrmdir( $dir );
+	// Delete all caching files/folders.
+	foreach ( _rocket_get_cache_dirs( '.' ) as $path ) {
+		if ( ! $filesystem->is_dir( $path ) ) {
+			$filesystem->delete( $path );
+		}else{
+			rocket_rrmdir( $path );
 		}
 	}
 

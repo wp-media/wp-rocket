@@ -21,8 +21,8 @@ class Test_RocketCleanCacheDir extends FilesystemTestCase {
 	 */
 	public function testShouldReturnValidConfigFileName( $config, $expected ) {
 		rocket_clean_cache_dir();
-		foreach ($expected['removed_dirs'] as $dir) {
-			$this->assertFalse( $this->filesystem->exists( $dir ) );
+		foreach ($expected['removed_paths'] as $path) {
+			$this->assertFalse( $this->filesystem->exists( $path ) );
 		}
 	}
 

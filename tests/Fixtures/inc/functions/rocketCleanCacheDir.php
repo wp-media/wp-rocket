@@ -5,6 +5,7 @@ return [
 		'wp-content' => [
 			'cache' => [
 				'wp-rocket' => [
+					'test.html' => '',
 					'example.org'                => [
 						'index.html_gzip' => '',
 						'index.html' => '',
@@ -60,7 +61,8 @@ return [
 		'testShouldCleanCacheDir' => [
 			'config' => [],
 			'expected' => [
-				'removed_dirs' => [
+				'removed_paths' => [
+					'test.html',
 					'example.org',
 					'example.org-wpmedia-123456',
 					'example.org-tester-987654',
