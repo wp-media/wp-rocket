@@ -310,6 +310,15 @@ function rocket_admin_bar( $wp_admin_bar ) {
 		}
 	}
 
+	/**
+	 * Fires when adding WP Rocket admin bar items
+	 *
+	 * @since 3.6
+	 *
+	 * @param WP_Admin_Bar $wp_admin_bar WP_Admin_Bar instance, passed by reference.
+	 */
+	do_action( 'rocket_admin_bar_items', $wp_admin_bar );
+
 	if ( current_user_can( 'rocket_manage_options' ) ) {
 		$rocketcdn_status = get_transient( 'rocketcdn_status' );
 

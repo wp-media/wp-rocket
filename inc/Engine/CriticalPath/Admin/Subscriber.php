@@ -58,7 +58,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'enqueue_admin_edit_script' ],
 				[ 'enqueue_admin_cpcss_heartbeat_script' ],
 			],
-			'admin_bar_menu'                     => [ 'add_regenerate_menu_item', PHP_INT_MAX - 9 ],
+			'rocket_admin_bar_items'             => 'add_regenerate_menu_item',
 		];
 	}
 
