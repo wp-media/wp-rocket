@@ -81,9 +81,12 @@ return [
 			],
 			'notice'                                         => [
 				'get_error_message' => 'error message',
-				'transient'         => [
-					'items'     => [ 'front_page.css' => 'error message' ],
-					'generated' => 0,
+				'transient' => [
+					'items'     => [ 'front_page.css' => [
+						'message' => 'error message',
+						'success' => false,
+						],
+				    ],
 					'total'     => 1,
 				],
 			],
@@ -126,8 +129,11 @@ return [
 			],
 			'notice'                                         => [
 				'transient' => [
-					'items'     => [ 'front_page.css' => 'Critical CSS for https://example.org/ generated.' ],
-					'generated' => 1,
+					'items'     => [ 'front_page.css' => [
+						'message' => 'Critical CSS for https://example.org/ generated.',
+						'success' => true,
+						],
+				    ],
 					'total'     => 1,
 				],
 			],
@@ -167,8 +173,11 @@ return [
 			],
 			'notice'                                         => [
 				'transient' => [
-					'items'     => [ 'front_page.css' => 'Critical CSS for https://example.org/ not generated.' ],
-					'generated' => 1,
+					'items'     => [ 'front_page.css' => [
+						'message' => 'Critical CSS for https://example.org/ not generated.',
+						'success' => false,
+						],
+				    ],
 					'total'     => 1,
 				],
 			],
@@ -295,8 +304,11 @@ return [
 			],
 			'notice'                                         => [
 				'transient' => [
-					'items'     => [ 'front_page.css' => 'Critical CSS for https://example.org/ not generated.' ],
-					'generated' => 1,
+					'items'     => [ 'front_page.css' => [
+						'message' => 'Critical CSS for https://example.org/ not generated.',
+						'success' => false,
+						],
+				    ],
 					'total'     => 2,
 				],
 			],

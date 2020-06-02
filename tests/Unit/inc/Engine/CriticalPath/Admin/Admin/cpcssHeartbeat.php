@@ -157,7 +157,6 @@ class Test_CpcssHeartbeat extends TestCase {
 				? $config['notice']['transient']
 				: [
 					'items'     => [],
-					'generated' => 0,
 					'total'     => count( $config['rocket_cpcss_generation_pending'] ),
 				];
 
@@ -213,7 +212,7 @@ class Test_CpcssHeartbeat extends TestCase {
 		Functions\expect( 'get_transient' )
 			->once()
 			->with( 'rocket_critical_css_generation_process_running' )
-			->andReturn( [ 'total' => $config['notice']['transient']['total'], 'generated' => 0, 'items' => [] ] );
+			->andReturn( [ 'total' => $config['notice']['transient']['total'], 'items' => [] ] );
 
 		if ( ! empty( $config['process_generate']['is_wp_error'] ) ) {
 			$this->wp_error->shouldReceive( 'get_error_message' )->andReturn( $config['notice']['get_error_message'] );
