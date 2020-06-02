@@ -382,7 +382,6 @@ class CriticalCSS {
 		}
 
 		$transient = [
-			'generated' => 0,
 			'total'     => $total,
 			'items'     => [],
 		];

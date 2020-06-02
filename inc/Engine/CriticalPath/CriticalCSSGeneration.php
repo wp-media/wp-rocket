@@ -65,7 +65,8 @@ class CriticalCSSGeneration extends WP_Background_Process {
 
 		if ( is_wp_error( $generated ) ) {
 			if ( ! (bool) $mobile ) {
-				$transient['items'][ $item['path'] ] = $generated->get_error_message();
+				$transient['items'][ $item['path'] ]['message'] = $generated->get_error_message();
+				$transient['items'][ $item['path'] ]['success'] = false;
 				set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
 			}
 
@@ -87,8 +88,9 @@ class CriticalCSSGeneration extends WP_Background_Process {
 		}
 
 		if ( ! (bool) $mobile ) {
-			$transient['items'][ $item['path'] ] = $generated['message'];
-			$transient['generated']++;
+			$transient['items'][ $item['path'] ]['message'] = $generated['message'];
+			$transient['items'][ $item['path'] ]['success'] = true;
+
 			set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
 		}
 

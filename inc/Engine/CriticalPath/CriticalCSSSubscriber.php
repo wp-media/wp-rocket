@@ -330,22 +330,27 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 			return;
 		}
 
+		$success_counter = 0;
+		$items_message   = '';
+		if ( ! empty( $transient['items'] ) ) {
+			$items_message .= '<ul>';
+
+			foreach ( $transient['items'] as $item ) {
+				$items_message .= '<li>' . $item['message'] . '</li>';
+				if ( $item['success'] ) {
+					$success_counter ++;
+				}
+			}
+
+			$items_message .= '</ul>';
+		}
+
 		$message = '<p>' . sprintf(
 			// Translators: %1$d = number of critical CSS generated, %2$d = total number of critical CSS to generate.
 				__( 'Critical CSS generation is currently running: %1$d of %2$d page types completed. (Refresh this page to view progress)', 'rocket' ),
-				$transient['generated'],
+				$success_counter,
 				$transient['total']
-			) . '</p>';
-
-		if ( ! empty( $transient['items'] ) ) {
-			$message .= '<ul>';
-
-			foreach ( $transient['items'] as $item ) {
-				$message .= '<li>' . $item . '</li>';
-			}
-
-			$message .= '</ul>';
-		}
+			) . '</p>' . $items_message;
 
 		rocket_notice_html(
 			[
@@ -376,31 +381,35 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$status = 'success';
+		$status          = 'success';
+		$success_counter = 0;
+		$items_message   = '';
+		if ( ! empty( $transient['items'] ) ) {
+			$items_message .= '<ul>';
 
-		if ( 0 === $transient['generated'] ) {
+			foreach ( $transient['items'] as $item ) {
+				$items_message .= '<li>' . $item['message'] . '</li>';
+				if ( $item['success'] ) {
+					$success_counter ++;
+				}
+			}
+
+			$items_message .= '</ul>';
+		}
+
+		if ( 0 === $success_counter ) {
 			$status = 'error';
-		} elseif ( $transient['generated'] < $transient['total'] ) {
+		} elseif ( $success_counter < $transient['total'] ) {
 			$status = 'warning';
 		}
 
 		$message = '<p>' . sprintf(
 			// Translators: %1$d = number of critical CSS generated, %2$d = total number of critical CSS to generate.
 				__( 'Critical CSS generation finished for %1$d of %2$d page types.', 'rocket' ),
-				$transient['generated'],
+				$success_counter,
 				$transient['total']
 			);
-		$message .= ' <em> (' . date_i18n( get_option( 'date_format' ) ) . ' @ ' . date_i18n( get_option( 'time_format' ) ) . ') </em></p>';
-
-		if ( ! empty( $transient['items'] ) ) {
-			$message .= '<ul>';
-
-			foreach ( $transient['items'] as $item ) {
-				$message .= '<li>' . $item . '</li>';
-			}
-
-			$message .= '</ul>';
-		}
+		$message .= ' <em> (' . date_i18n( get_option( 'date_format' ) ) . ' @ ' . date_i18n( get_option( 'time_format' ) ) . ') </em></p>' . $items_message;
 
 		if ( 'error' === $status || 'warning' === $status ) {
 			$message .= '<p>' . __( 'Critical CSS generation encountered one or more errors.', 'rocket' ) . ' <a href="https://docs.wp-rocket.me/article/1267-troubleshooting-critical-css-generation-issues" data-beacon-article="5d5214d10428631e94f94ae6" target="_blank" rel="noreferer noopener">' . __( 'Learn more.', 'rocket' ) . '</a>';
