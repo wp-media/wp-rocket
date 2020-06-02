@@ -122,7 +122,7 @@ class Test_CpcssHeartbeat extends TestCase {
 			->with( 'rocket_cpcss_generation_pending' )
 			->andReturn( $pending_queue );
 
-		if ( empty( $pending_queue ) && false !== $pending_queue ) {
+		if ( $expected['generation_complete'] ) {
 			$this->delete_pending_transient++;
 		}
 
@@ -170,10 +170,6 @@ class Test_CpcssHeartbeat extends TestCase {
 					->with( 'rocket_critical_css_generation_process_complete' );
 				Functions\expect( 'rocket_clean_domain' )->once()->andReturnNull();
 				Functions\expect( 'set_transient' )->once()->andReturnNull();
-				Functions\expect( 'delete_transient' )
-					->once()
-					->with( 'rocket_critical_css_generation_process_running' )
-					->andReturnNull();
 			}
 
 		} else {
