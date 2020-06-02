@@ -14,7 +14,7 @@ use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\AdminTrait;
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\Admin\Admin::cpcss_heartbeat
  *
- * @group  CriticalPathx
+ * @group  CriticalPath
  * @group  CriticalPathAdmin
  */
 class Test_CpcssHeartbeat extends TestCase {
@@ -22,9 +22,9 @@ class Test_CpcssHeartbeat extends TestCase {
 
 	protected static $mockCommonWpFunctionsInSetUp = true;
 
-	protected $wp_error;
-	private   $processor;
-	private   $admin;
+	private $admin;
+	private $processor;
+	private $wp_error;
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();

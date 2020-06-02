@@ -34,7 +34,6 @@ class test_Task extends TestCase {
 			->once()
 			->with( 'rocket_critical_css_generation_process_running' )
 			->andReturn( [
-			'generated' => 0,
 			'total'     => 1,
 			'items'     => [],
 		] );

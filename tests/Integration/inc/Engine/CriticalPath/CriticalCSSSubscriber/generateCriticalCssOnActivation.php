@@ -80,7 +80,7 @@ class Test_GenerateCriticalCssOnActivation extends FilesystemTestCase {
 		$transient = get_transient( 'rocket_critical_css_generation_process_running' );
 
 		if ( $expected ) {
-			$this->assertSame( [ 'generated', 'total', 'items' ], array_keys( $transient ) );
+			$this->assertSame( [ 'total', 'items' ], array_keys( $transient ) );
 		} else {
 			$this->assertFalse( $transient );
 		}
@@ -114,7 +114,7 @@ class Test_GenerateCriticalCssOnActivation extends FilesystemTestCase {
 		if ( $should_generate ) {
 			$this->assertEquals( 1, $this->did_filter['do_rocket_critical_css_generation'] );
 			$value = get_transient( 'rocket_critical_css_generation_process_running' );
-			$this->assertSame( [ 'generated', 'total', 'items' ], array_keys( $value ) );
+			$this->assertSame( [ 'total', 'items' ], array_keys( $value ) );
 		} else {
 			$this->assertEquals( 0, $this->did_filter['do_rocket_critical_css_generation'] );
 			$this->assertFalse( get_transient( 'rocket_critical_css_generation_process_running' ) );
