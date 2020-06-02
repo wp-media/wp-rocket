@@ -23,7 +23,7 @@ class Test_RocketCleanHomeFeeds extends FilesystemTestCase {
 
 	public function tearDown()
 	{
-		remove_filter( 'home_url', [ $this, 'setHomeURL' ], 10, 2 );
+		remove_filter( 'home_url', [ $this, 'setHomeURL' ], 10 );
 		parent::tearDown();
 	}
 
