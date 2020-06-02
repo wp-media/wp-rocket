@@ -191,7 +191,6 @@ class Admin {
 
 		rocket_clean_domain();
 		set_transient( 'rocket_critical_css_generation_process_complete', get_transient( 'rocket_critical_css_generation_process_running' ), HOUR_IN_SECONDS );
-		delete_transient( 'rocket_critical_css_generation_process_running' );
 	}
 
 	/**
