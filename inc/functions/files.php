@@ -663,17 +663,18 @@ function rocket_clean_home( $lang = '', $filesystem = null ) {
 	do_action( 'before_rocket_clean_home', $root, $lang ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 	foreach ( _rocket_get_cache_dirs( $parse_url['host'], $cache_path ) as $dir ) {
+		global $wp_rewrite;
+
 		$domain_entry = $dir . $parse_url['path'];
 		if ( ! $filesystem->exists( $domain_entry ) ) {
 			continue;
 		}
-		try{
+		try {
 			$iterator = new DirectoryIterator( $domain_entry );
-		} catch (Exception $e) {
+		} catch ( Exception $e ) {
 			// No action required, as logging not enabled.
 			$iterator = [];
 		}
-
 
 		// Delete homepage.
 		// Remove the hidden empty file for mobile detection on NGINX with the Rocket NGINX configuration.
@@ -685,7 +686,7 @@ function rocket_clean_home( $lang = '', $filesystem = null ) {
 		}
 
 		// Delete homepage pagination.
-		$pagination_dir = $domain_entry . DIRECTORY_SEPARATOR . $GLOBALS['wp_rewrite']->pagination_base;
+		$pagination_dir = $domain_entry . DIRECTORY_SEPARATOR . $wp_rewrite->pagination_base;
 		if ( $filesystem->is_dir( $pagination_dir ) ) {
 			rocket_rrmdir( $pagination_dir, [], $filesystem );
 		}
