@@ -667,7 +667,13 @@ function rocket_clean_home( $lang = '', $filesystem = null ) {
 		if ( ! $filesystem->exists( $domain_entry ) ) {
 			continue;
 		}
-		$iterator = new DirectoryIterator( $domain_entry );
+		try{
+			$iterator = new DirectoryIterator( $domain_entry );
+		} catch (Exception $e) {
+			// No action required, as logging not enabled.
+			$iterator = [];
+		}
+
 
 		// Delete homepage.
 		// Remove the hidden empty file for mobile detection on NGINX with the Rocket NGINX configuration.
