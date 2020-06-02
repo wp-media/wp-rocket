@@ -982,7 +982,8 @@ function rocket_clean_cache_dir() {
 	$filesystem = rocket_direct_filesystem();
 
 	// Delete all caching files/folders.
-	foreach ( _rocket_get_cache_dirs( '.' ) as $path ) {
+	$iterator = _rocket_get_cache_path_iterator( _rocket_get_wp_rocket_cache_path() );
+	foreach ( $iterator as $path ) {
 		if ( ! $filesystem->is_dir( $path ) ) {
 			$filesystem->delete( $path );
 		}else {
