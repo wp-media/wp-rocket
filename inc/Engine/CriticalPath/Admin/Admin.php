@@ -156,13 +156,7 @@ class Admin {
 			! (bool) $mobile
 		) {
 			$transient['items'][ $cpcss_item['path'] ]['message'] = $cpcss_generation['message'];
-			$transient['items'][ $cpcss_item['path'] ]['success'] = true;
-
-			if ( 'cpcss_generation_successful' === $cpcss_generation['code'] ) {
-				$transient['items'][ $cpcss_item['path'] ]['success'] = true;
-			} else {
-				$transient['items'][ $cpcss_item['path'] ]['success'] = false;
-			}
+			$transient['items'][ $cpcss_item['path'] ]['success'] = ( 'cpcss_generation_successful' === $cpcss_generation['code'] );
 
 			set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
 		}
