@@ -150,17 +150,5 @@ class ActionScheduler_AdminView extends ActionScheduler_AdminView_Deprecated {
 					'</ul>',
 			)
 		);
-
-		$screen->add_help_tab(
-			array(
-				'id'      => 'action_scheduler_technical',
-				'title'   => __( 'Technical Details', 'action-scheduler' ),
-				'content' =>
-					'<h2>' . __( 'Action Scheduler Technical Details', 'action-scheduler' ) . '</h2>' .
-					'<ul>' .
-					sprintf( '<listrong>%1$s</strong>: <code>%2$s</code></li>', __( 'Data store', 'action-scheduler' ), get_class( ActionScheduler_Store::instance() ) ) .
-					'</ul>',
-			)
-		);
 	}
 }
