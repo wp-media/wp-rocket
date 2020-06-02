@@ -382,8 +382,8 @@ class CriticalCSS {
 		}
 
 		$transient = [
-			'total'     => $total,
-			'items'     => [],
+			'total' => $total,
+			'items' => [],
 		];
 
 		set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
