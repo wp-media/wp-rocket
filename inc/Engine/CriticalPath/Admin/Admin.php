@@ -124,6 +124,7 @@ class Admin {
 	 * @param array          $cpcss_item       Item processed.
 	 */
 	private function cpcss_heartbeat_notices( $cpcss_generation, $cpcss_item ) {
+		$mobile    = isset( $cpcss_item['mobile'] ) ? $cpcss_item['mobile'] : 0;
 		$transient = (array) get_transient( 'rocket_critical_css_generation_process_running' );
 
 		// Initializes the transient.
@@ -133,8 +134,10 @@ class Admin {
 		}
 
 		if ( is_wp_error( $cpcss_generation ) ) {
-			$transient['items'][ $cpcss_item['path'] ] = $cpcss_generation->get_error_message();
-			set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
+			if ( ! (bool) $mobile ) {
+				$transient['items'][ $cpcss_item['path'] ] = $cpcss_generation->get_error_message();
+				set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
+			}
 
 			return;
 		}
@@ -147,6 +150,8 @@ class Admin {
 				||
 				'cpcss_generation_failed' === $cpcss_generation['code']
 			)
+			&&
+			! (bool) $mobile
 		) {
 			$transient['items'][ $cpcss_item['path'] ] = $cpcss_generation['message'];
 			$transient['generated']++;
@@ -184,7 +189,6 @@ class Admin {
 		rocket_clean_domain();
 		set_transient( 'rocket_critical_css_generation_process_complete', get_transient( 'rocket_critical_css_generation_process_running' ), HOUR_IN_SECONDS );
 		delete_transient( 'rocket_critical_css_generation_process_running' );
-		delete_transient( 'rocket_cpcss_generation_pending' );
 	}
 
 	/**

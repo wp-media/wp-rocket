@@ -113,9 +113,24 @@ class CriticalCSS {
 
 		array_map( [ $this->process, 'push_to_queue' ], $this->items );
 
+		$total = 0;
+
+		foreach ( $this->items as $item ) {
+			if ( ! isset( $item['mobile'] ) ) {
+				$total++;
+				continue;
+			}
+
+			if ( 1 === $item['mobile'] ) {
+				continue;
+			}
+
+			$total++;
+		}
+
 		$transient = [
 			'generated' => 0,
-			'total'     => count( $this->items ),
+			'total'     => $total,
 			'items'     => [],
 		];
 
@@ -363,10 +378,6 @@ class CriticalCSS {
 		 * @param array $items Array containing the type/url pair for each item to send.
 		 */
 		$this->items = (array) apply_filters( 'rocket_cpcss_items', $this->items );
-
-		if ( 'all' === $version ) {
-			ksort( $this->items );
-		}
 	}
 
 	/**
