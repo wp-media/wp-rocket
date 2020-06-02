@@ -175,7 +175,6 @@ class Test_CpcssHeartbeat extends TestCase {
 					->once()
 					->with( 'rocket_critical_css_generation_process_running' )
 					->andReturnNull();
-				$this->delete_pending_transient++;
 			}
 
 		} else {
