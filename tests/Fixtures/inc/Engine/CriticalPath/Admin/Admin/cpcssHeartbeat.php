@@ -80,11 +80,15 @@ return [
 				],
 			],
 			'notice'                                         => [
-				'get_error_message' => 'error message',
+				'get_error_message' => 'Critical CSS for https://example.org/ not generated.',
 				'transient'         => [
-					'items'     => [ 'front_page.css' => 'error message' ],
-					'generated' => 0,
-					'total'     => 1,
+					'total' => 1,
+					'items' => [
+						'front_page.css' => [
+							'message' => 'Critical CSS for https://example.org/ not generated.',
+							'success' => false,
+						],
+					],
 				],
 			],
 			'rocket_critical_css_generation_process_running' => true,
@@ -126,9 +130,13 @@ return [
 			],
 			'notice'                                         => [
 				'transient' => [
-					'items'     => [ 'front_page.css' => 'Critical CSS for https://example.org/ generated.' ],
-					'generated' => 1,
-					'total'     => 1,
+					'total' => 1,
+					'items' => [
+						'front_page.css' => [
+							'message' => 'Critical CSS for https://example.org/ generated.',
+							'success' => true,
+						],
+					],
 				],
 			],
 			'rocket_critical_css_generation_process_running' => true,
@@ -167,9 +175,13 @@ return [
 			],
 			'notice'                                         => [
 				'transient' => [
-					'items'     => [ 'front_page.css' => 'Critical CSS for https://example.org/ not generated.' ],
-					'generated' => 1,
-					'total'     => 1,
+					'total' => 1,
+					'items' => [
+						'front_page.css' => [
+							'message' => 'Critical CSS for https://example.org/ not generated.',
+							'success' => false,
+						],
+					],
 				],
 			],
 			'rocket_critical_css_generation_process_running' => true,
@@ -208,6 +220,7 @@ return [
 				],
 			],
 			'rocket_critical_css_generation_process_running' => true,
+			'rocket_cpcss_generation_pending_after'          => [],
 		],
 		'expected' => [
 			'bailout'                             => false,
@@ -295,9 +308,13 @@ return [
 			],
 			'notice'                                         => [
 				'transient' => [
-					'items'     => [ 'front_page.css' => 'Critical CSS for https://example.org/ not generated.' ],
-					'generated' => 1,
-					'total'     => 2,
+					'total' => 2,
+					'items' => [
+						'front_page.css' => [
+							'message' => 'Critical CSS for https://example.org/ not generated.',
+							'success' => false,
+						],
+					],
 				],
 			],
 			'rocket_critical_css_generation_process_running' => true,

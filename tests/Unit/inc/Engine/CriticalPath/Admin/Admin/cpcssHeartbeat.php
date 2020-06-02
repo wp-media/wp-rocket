@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\Admin;
 
+use Brain\Monkey\Actions;
 use Brain\Monkey\Functions;
 use Mockery;
 use WP_Error;
@@ -13,7 +14,7 @@ use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\AdminTrait;
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\Admin\Admin::cpcss_heartbeat
  *
- * @group  CriticalPath
+ * @group  CriticalPathx
  * @group  CriticalPathAdmin
  */
 class Test_CpcssHeartbeat extends TestCase {
@@ -24,7 +25,6 @@ class Test_CpcssHeartbeat extends TestCase {
 	protected $wp_error;
 	private   $processor;
 	private   $admin;
-	private   $delete_pending_transient = 0;
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
@@ -49,8 +49,6 @@ class Test_CpcssHeartbeat extends TestCase {
 			$this->options,
 			$this->processor
 		);
-
-		$this->delete_pending_transient = 0;
 	}
 
 	/**
@@ -66,13 +64,6 @@ class Test_CpcssHeartbeat extends TestCase {
 		$this->expectProcessGenerate( $config );
 		$this->expectHeartbeatNotice( $config );
 		$this->expectGenerationComplete( $config, $expected );
-
-		if ( $this->delete_pending_transient > 0 ) {
-			Functions\expect( 'delete_transient' )
-				->times( $this->delete_pending_transient )
-				->with( 'rocket_cpcss_generation_pending' )
-				->andReturnNull();
-		}
 
 		if ( $expected['bailout'] ) {
 			$this->expectBailoutConditions( $expected );
@@ -122,8 +113,24 @@ class Test_CpcssHeartbeat extends TestCase {
 			->with( 'rocket_cpcss_generation_pending' )
 			->andReturn( $pending_queue );
 
-		if ( empty( $pending_queue ) && false !== $pending_queue ) {
-			$this->delete_pending_transient++;
+		if (
+			(
+				empty( $pending_queue )
+				&&
+				false !== $pending_queue
+			)
+			||
+			(
+				isset( $config['rocket_cpcss_generation_pending_after'] )
+				&&
+				empty( $config['rocket_cpcss_generation_pending_after'] )
+			)
+		) {
+
+			Functions\expect( 'delete_transient' )
+				->once()
+				->with( 'rocket_cpcss_generation_pending' )
+				->andReturnNull();
 		}
 
 		if ( ! isset( $expected['set_rocket_cpcss_generation_pending'] ) ) {
@@ -152,41 +159,41 @@ class Test_CpcssHeartbeat extends TestCase {
 	}
 
 	private function assertGenerationCompleteWhenNotSet( $config, $expected ) {
-		if ( $config['rocket_critical_css_generation_process_running'] ) {
-			$config['notice']['transient'] = isset( $config['notice']['transient'] )
-				? $config['notice']['transient']
-				: [
-					'items'     => [],
-					'generated' => 0,
-					'total'     => count( $config['rocket_cpcss_generation_pending'] ),
-				];
+		Functions\expect( $expected['json'] )
+			->once()
+			->with( $expected['data'] );
 
-			Functions\expect( 'get_transient' )
-				->with( 'rocket_critical_css_generation_process_running' )
-				->andReturn( $config['notice']['transient'] );
-
-			if ( ! isset( $expected['bailout_generation_complete'] ) ) {
-				Functions\expect( 'do_action' )
-					->once()
-					->with( 'rocket_critical_css_generation_process_complete' );
-				Functions\expect( 'rocket_clean_domain' )->once()->andReturnNull();
-				Functions\expect( 'set_transient' )->once()->andReturnNull();
-				Functions\expect( 'delete_transient' )
-					->once()
-					->with( 'rocket_critical_css_generation_process_running' )
-					->andReturnNull();
-			}
-
-		} else {
+		if ( ! $config['rocket_critical_css_generation_process_running'] ) {
 			Functions\expect( 'get_transient' )
 				->once()
 				->with( 'rocket_critical_css_generation_process_running' )
 				->andReturn( $config['rocket_critical_css_generation_process_running'] );
+
+			return;
 		}
 
-		Functions\expect( $expected['json'] )
+		$config['notice']['transient'] = isset( $config['notice']['transient'] )
+			? $config['notice']['transient']
+			: [
+				'items' => [],
+				'total' => count( $config['rocket_cpcss_generation_pending'] ),
+			];
+
+		Functions\expect( 'get_transient' )
+			->with( 'rocket_critical_css_generation_process_running' )
+			->andReturn( $config['notice']['transient'] );
+
+		if ( isset( $expected['bailout_generation_complete'] ) ) {
+			return;
+		}
+
+		Actions\expectDone( 'rocket_critical_css_generation_process_complete' )->once();
+		Functions\expect( 'rocket_clean_domain' )->once()->andReturnNull();
+		Functions\expect( 'set_transient' )->once()->andReturnNull();
+		Functions\expect( 'delete_transient' )
 			->once()
-			->with( $expected['data'] );
+			->with( 'rocket_critical_css_generation_process_running' )
+			->andReturnNull();
 	}
 
 	private function expectProcessGenerate( $config ) {
@@ -213,11 +220,19 @@ class Test_CpcssHeartbeat extends TestCase {
 		Functions\expect( 'get_transient' )
 			->once()
 			->with( 'rocket_critical_css_generation_process_running' )
-			->andReturn( [ 'total' => $config['notice']['transient']['total'], 'generated' => 0, 'items' => [] ] );
+			->andReturn(
+				[
+					'total' => $config['notice']['transient']['total'],
+					'items' => [],
+				]
+			);
 
 		if ( ! empty( $config['process_generate']['is_wp_error'] ) ) {
-			$this->wp_error->shouldReceive( 'get_error_message' )->andReturn( $config['notice']['get_error_message'] );
+			$this->wp_error
+				->shouldReceive( 'get_error_message' )
+				->andReturn( $config['notice']['get_error_message'] );
 		}
+
 		Functions\expect( 'set_transient' )
 			->once()
 			->with( 'rocket_critical_css_generation_process_running', $config['notice']['transient'], HOUR_IN_SECONDS );
