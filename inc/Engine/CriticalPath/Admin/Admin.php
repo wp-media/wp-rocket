@@ -135,13 +135,11 @@ class Admin {
 		}
 
 		if ( is_wp_error( $cpcss_generation ) ) {
-			if ( ! (bool) $mobile ) {
-				$transient['items'][ $cpcss_item['path'] ]['message'] = $cpcss_generation->get_error_message();
-				$transient['items'][ $cpcss_item['path'] ]['success'] = false;
+			$item_path = ! (bool) $mobile ? $cpcss_item['path'] : str_replace( '-mobile.css', '.css', $cpcss_item['path'] );
 
-				set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
-			}
-
+			$transient['items'][ $item_path ]['status'][ ! (bool) $mobile ? 'nonmobile' : 'mobile' ]['message'] = $cpcss_generation->get_error_message();
+			$transient['items'][ $item_path ]['status'][ ! (bool) $mobile ? 'nonmobile' : 'mobile' ]['success'] = false;
+			set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
 			return;
 		}
 
@@ -153,12 +151,11 @@ class Admin {
 				||
 				'cpcss_generation_failed' === $cpcss_generation['code']
 			)
-			&&
-			! (bool) $mobile
 		) {
-			$transient['items'][ $cpcss_item['path'] ]['message'] = $cpcss_generation['message'];
-			$transient['items'][ $cpcss_item['path'] ]['success'] = ( 'cpcss_generation_successful' === $cpcss_generation['code'] );
+			$item_path = ! (bool) $mobile ? $cpcss_item['path'] : str_replace( '-mobile.css', '.css', $cpcss_item['path'] );
 
+			$transient['items'][ $item_path ]['status'][ ! (bool) $mobile ? 'nonmobile' : 'mobile' ]['message'] = $cpcss_generation['message'];
+			$transient['items'][ $item_path ]['status'][ ! (bool) $mobile ? 'nonmobile' : 'mobile' ]['success'] = ( 'cpcss_generation_successful' === $cpcss_generation['code'] );
 			set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
 		}
 	}

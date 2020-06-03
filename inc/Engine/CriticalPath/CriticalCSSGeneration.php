@@ -64,12 +64,11 @@ class CriticalCSSGeneration extends WP_Background_Process {
 		$generated = $this->processor->process_generate( $item['url'], $item['path'], false, $mobile );
 
 		if ( is_wp_error( $generated ) ) {
-			if ( ! (bool) $mobile ) {
-				$transient['items'][ $item['path'] ]['message'] = $generated->get_error_message();
-				$transient['items'][ $item['path'] ]['success'] = false;
-				set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
-			}
+			$item_path = ! (bool) $mobile ? $item['path'] : str_replace( '-mobile.css', '.css', $item['path'] );
 
+			$transient['items'][ $item_path ]['status'][ ! (bool) $mobile ? 'nonmobile' : 'mobile' ]['message'] = $generated->get_error_message();
+			$transient['items'][ $item_path ]['status'][ ! (bool) $mobile ? 'nonmobile' : 'mobile' ]['success'] = false;
+			set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
 			return false;
 		}
 
@@ -87,12 +86,11 @@ class CriticalCSSGeneration extends WP_Background_Process {
 			return false;
 		}
 
-		if ( ! (bool) $mobile ) {
-			$transient['items'][ $item['path'] ]['message'] = $generated['message'];
-			$transient['items'][ $item['path'] ]['success'] = true;
+		$item_path = ! (bool) $mobile ? $item['path'] : str_replace( '-mobile.css', '.css', $item['path'] );
 
-			set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
-		}
+		$transient['items'][ $item_path ]['status'][ ! (bool) $mobile ? 'nonmobile' : 'mobile' ]['message'] = $generated['message'];
+		$transient['items'][ $item_path ]['status'][ ! (bool) $mobile ? 'nonmobile' : 'mobile' ]['success'] = true;
+		set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
 
 		return false;
 	}
