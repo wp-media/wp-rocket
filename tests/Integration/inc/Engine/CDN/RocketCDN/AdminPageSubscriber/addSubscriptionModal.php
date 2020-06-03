@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\AdminPageSubscriber;
 
-use  WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
+use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber::add_subscription_modal
@@ -24,8 +24,9 @@ class Test_AddSubscriptionModal extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldDisplayExpected( $home_url, $expected ) {
-		$this->home_url = $home_url;
+	public function testShouldDisplayExpected( $config, $expected ) {
+		$this->white_label = isset( $config['white_label'] ) ? $config['white_label'] : $this->white_label;
+		$this->home_url = $config['home_url'];
 
 		ob_start();
 		do_action( 'rocket_settings_page_footer' );

@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\AdminPageSubscriber;
 
-use  WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
+use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber::display_manage_subscription
@@ -31,15 +31,16 @@ class Test_DisplayManageSubscription extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldDisplayExpected( $home_url, $rocketcdn_status, $expected ) {
-		$this->home_url = $home_url;
+	public function testShouldDisplayExpected( $config, $expected ) {
+		$this->white_label = isset( $config['white_label'] ) ? $config['white_label'] : $this->white_label;
+		$this->home_url = $config['home_url'];
 
 		if ( ! empty ( $expected ) ) {
 			$expected = $this->format_the_html( $expected );
 		}
 
-		if ( ! empty( $rocketcdn_status ) ) {
-			set_transient( 'rocketcdn_status', $rocketcdn_status, MINUTE_IN_SECONDS );
+		if ( ! empty( $config['rocketcdn_status'] ) ) {
+			set_transient( 'rocketcdn_status', $config['rocketcdn_status'], MINUTE_IN_SECONDS );
 		}
 
 		ob_start();

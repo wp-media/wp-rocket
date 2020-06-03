@@ -19,6 +19,17 @@ HTML
 
 	'test_data' => [
 
+		'testShouldDisplayNothingWhenWhiteLabel' => [
+			'rocketcdn_data' => [],
+			'expected'       => [
+				'should_display' => false,
+			],
+			'config'         => [
+				'home_url'    => 'http://localhost',
+				'white_label' => true,
+			],
+		],
+
 		'testShouldDisplayNothingWhenNotLiveSite' => [
 			'rocketcdn_data' => [],
 			'expected'       => [

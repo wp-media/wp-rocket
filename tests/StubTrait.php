@@ -18,20 +18,23 @@ trait StubTrait {
 	protected $disable_wp_cron          = false;
 	protected $donotrocketoptimize      = null;
 	protected $donotasynccss            = null;
+	protected $white_label              = false;
+	
 
 	protected function resetStubProperties() {
 		$defaults = [
-			'abspath'                  => 'vfs://public/',
-			'disable_wp_cron'          => false,
-			'mock_rocket_get_constant' => true,
-			'wp_cache_constant'        => false,
-			'wp_content_dir'           => 'vfs://public/wp-content',
-			'script_debug'             => false,
-			'rocket_version'           => null,
-			'wp_rocket_debug'          => false,
-			'wp_rocket_advanced_cache' => true,
+			'abspath'                   => 'vfs://public/',
+			'disable_wp_cron'           => false,
+			'mock_rocket_get_constant'  => true,
+			'wp_cache_constant'         => false,
+			'wp_content_dir'            => 'vfs://public/wp-content',
+			'script_debug'              => false,
+			'rocket_version'            => null,
+			'wp_rocket_debug'           => false,
+			'wp_rocket_advanced_cache'  => true,
 			'donotrocketoptimize'      => null,
 			'dontasynccss'             => null,
+			'white_label'               => false,
 		];
 
 		foreach ( $defaults as $property => $value ) {
@@ -83,6 +86,9 @@ trait StubTrait {
 			case 'WP_ROCKET_ADVANCED_CACHE':
 				return $this->wp_rocket_advanced_cache;
 
+			case 'WP_ROCKET_WEB_MAIN':
+				return 'https://wp-rocket.me/';
+
 			case 'WP_ROCKET_ASSETS_JS_URL':
 				return 'http://example.org/wp-content/plugins/wp-rocket/assets/js/';
 
@@ -126,6 +132,9 @@ trait StubTrait {
 				if ( ! empty( $this->rocket_version ) ) {
 					return $this->rocket_version;
 				}
+
+			case 'WP_ROCKET_WHITE_LABEL_ACCOUNT':
+				return $this->white_label;
 
 			default:
 				if ( ! rocket_has_constant( $constant_name ) ) {

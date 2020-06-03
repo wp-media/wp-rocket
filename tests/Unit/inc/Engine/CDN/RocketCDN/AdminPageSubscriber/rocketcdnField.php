@@ -2,15 +2,18 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\RocketCDN\AdminPageSubscriber;
 
+use Mockery;
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber;
-use Mockery;
+use WP_Rocket\Tests\StubTrait;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber::rocketcdn_field
  * @group  RocketCDN
  */
 class Test_RocketcdnField extends TestCase {
+	use StubTrait;
+
 	protected static $mockCommonWpFunctionsInSetUp = true;
 	private $api_client;
 	private $options;
@@ -19,6 +22,8 @@ class Test_RocketcdnField extends TestCase {
 
 	public function setUp() {
 		parent::setUp();
+
+		$this->stubRocketGetConstant();
 
 		$this->api_client = Mockery::mock( 'WP_Rocket\Engine\CDN\RocketCDN\APIClient' );
 		$this->options    = Mockery::mock( 'WP_Rocket\Admin\Options_Data' );
@@ -31,9 +36,19 @@ class Test_RocketcdnField extends TestCase {
 		);
 	}
 
-	/**
-	 * Test should return default array for the field when RocketCDN is not active
-	 */
+	public function tearDown() {
+		$this->resetStubProperties();
+
+		parent::tearDown();
+	}
+
+	public function testShouldReturnDefaultFieldWhenWhiteLabel() {
+		$this->white_label = true;
+
+		$fields = [ 'cdn_cnames' => [] ];
+		$this->assertSame( $fields, $this->page->rocketcdn_field( $fields ) );
+	}
+
 	public function testShouldReturnDefaultFieldWhenRocketCDNNotActive() {
 		$this->api_client->shouldReceive( 'get_subscription_data' )
 						 ->once()
@@ -44,9 +59,6 @@ class Test_RocketcdnField extends TestCase {
 		$this->assertSame( $fields, $this->page->rocketcdn_field( $fields ) );
 	}
 
-	/**
-	 * Test should return the special array for the field when RocketCDN is active.
-	 */
 	public function testShouldReturnRocketCDNFieldWhenRocketCDNActive() {
 		$this->api_client->shouldReceive( 'get_subscription_data' )
 						 ->once()
@@ -81,9 +93,6 @@ class Test_RocketcdnField extends TestCase {
 		$this->assertSame( $expected, $this->page->rocketcdn_field( [ 'cdn_cnames' => [] ] ) );
 	}
 
-	/**
-	 * Test should return the special array with CNAME for the field when RocketCDN is active and the field is empty.
-	 */
 	public function testShouldReturnRocketCDNFieldWithCNAMEWhenRocketCDNActiveAndCNamesEmpty() {
 		$this->api_client->shouldReceive( 'get_subscription_data' )
 						 ->once()
@@ -118,10 +127,6 @@ class Test_RocketcdnField extends TestCase {
 		$this->assertSame( $expected, $this->page->rocketcdn_field( [ 'cdn_cnames' => [] ] ) );
 	}
 
-	/**
-	 * Test should return the special array with CNAME for the field when RocketCDN is active and there is(are) a
-	 * different CDN CNAME(s).
-	 */
 	public function testShouldReturnRocketCDNFieldWithCNAMEWhenRocketCDNActiveAndCNames() {
 		$this->api_client->shouldReceive( 'get_subscription_data' )
 						 ->once()
