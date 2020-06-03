@@ -85,8 +85,12 @@ return [
 					'total' => 1,
 					'items' => [
 						'front_page.css' => [
-							'message' => 'Critical CSS for https://example.org/ not generated.',
-							'success' => false,
+							'status' => [
+								'nonmobile' => [
+									'message' => 'Critical CSS for https://example.org/ not generated.',
+									'success' => false,
+								],
+							],
 						],
 					],
 				],
@@ -133,8 +137,12 @@ return [
 					'total' => 1,
 					'items' => [
 						'front_page.css' => [
-							'message' => 'Critical CSS for https://example.org/ generated.',
-							'success' => true,
+							'status' => [
+								'nonmobile' => [
+									'message' => 'Critical CSS for https://example.org/ generated.',
+									'success' => true,
+								],
+							],
 						],
 					],
 				],
@@ -178,8 +186,12 @@ return [
 					'total' => 1,
 					'items' => [
 						'front_page.css' => [
-							'message' => 'Critical CSS for https://example.org/ not generated.',
-							'success' => false,
+							'status' => [
+								'nonmobile' => [
+									'message' => 'Critical CSS for https://example.org/ not generated.',
+									'success' => false,
+								],
+							],
 						],
 					],
 				],
@@ -311,8 +323,12 @@ return [
 					'total' => 2,
 					'items' => [
 						'front_page.css' => [
-							'message' => 'Critical CSS for https://example.org/ not generated.',
-							'success' => false,
+							'status' => [
+								'nonmobile' => [
+									'message' => 'Critical CSS for https://example.org/ not generated.',
+									'success' => false,
+								],
+							],
 						],
 					],
 				],

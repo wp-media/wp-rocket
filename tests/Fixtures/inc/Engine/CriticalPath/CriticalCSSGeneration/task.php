@@ -15,10 +15,14 @@ return [
 			],
 			'transient' => [
 				'total'     => 1,
-				'items'     => [
+				'items' => [
 					'front_page.css' => [
-						'message' => 'Critical CSS for http://example.org/ not generated. Error: No valid stylesheets available',
-						'success' => false,
+						'status' => [
+							'nonmobile' => [
+								'message' => 'Critical CSS for http://example.org/ not generated. Error: No valid stylesheets available',
+								'success' => false,
+							],
+						],
 					],
 				],
 			],
@@ -51,10 +55,14 @@ return [
 			],
 			'transient' => [
 				'total'     => 1,
-				'items'     => [
+				'items' => [
 					'front_page.css' => [
-						'message' => 'success',
-						'success' => true,
+						'status' => [
+							'nonmobile' => [
+								'message' => 'success',
+								'success' => true,
+							],
+						],
 					],
 				],
 			],
