@@ -431,7 +431,7 @@ function rocket_analytics_data() {
 	$data['locale']            = $locale[0];
 	$data['multisite']         = is_multisite();
 
-	if ( ! empty( $data['cdn_cnames'] ) && is_array( $data['cdn_names'] ) ) {
+	if ( ! empty( $data['cdn_cnames'] ) && is_array( $data['cdn_cnames'] ) ) {
 		$data['cdn_cnames'] = count( $data['cdn_cnames'] );
 	} else {
 		$data['cdn_cnames'] = 0;
