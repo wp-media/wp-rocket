@@ -49,13 +49,13 @@ class Test_GetCurrentPageCriticalCSS extends FilesystemTestCase {
 
 		$options = Mockery::mock( Options_Data::class );
 		$options->shouldReceive( 'get' )
-				->zeroOrMoreTimes()
-		        ->with( 'do_caching_mobile_files', 0 )
-		        ->andReturn( $config['settings']['do_caching_mobile_files'] );
+		    ->zeroOrMoreTimes()
+		    ->with( 'do_caching_mobile_files', 0 )
+		    ->andReturn( $config['settings']['do_caching_mobile_files'] );
 		$options->shouldReceive( 'get' )
-				->zeroOrMoreTimes()
-		        ->with( 'async_css_mobile', 0 )
-				->andReturn( $config['settings']['async_css_mobile'] );
+			->zeroOrMoreTimes()
+			->with( 'async_css_mobile', 0 )
+			->andReturn( $config['settings']['async_css_mobile'] );
 
 		Functions\when( 'wp_is_mobile' )->justReturn( $config['wp_is_mobile'] );
 

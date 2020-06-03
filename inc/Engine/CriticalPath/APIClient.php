@@ -13,29 +13,32 @@ class APIClient {
 	const API_URL = 'https://cpcss.wp-rocket.me/api/job/';
 
 	/**
-	 * Sends a generation request to the Critical Path API
+	 * Sends a generation request to the Critical Path API.
 	 *
 	 * @since 3.6
 	 *
-	 * @param string $url The URL to send a CPCSS generation request for.
-	 *
+	 * @param string $url    The URL to send a CPCSS generation request for.
+	 * @param array  $params Optional. Parameters needed to be sent in the body. Default: [].
 	 * @return array
 	 */
-	public function send_generation_request( $url ) {
-		$response = wp_remote_post(
+	public function send_generation_request( $url, $params = [] ) {
+		$params['url'] = $url;
+		$is_mobile     = isset( $params['mobile'] ) && $params['mobile'];
+		$response      = wp_remote_post(
 			self::API_URL,
 			[
-				// This filter is documented in inc/Engine/CriticalPath/CriticalCSSGeneration.php.
-				'body' => apply_filters(
-					'rocket_cpcss_job_request',
-					[
-						'url' => $url,
-					]
-				),
+				/**
+				 * Filters the parameters sent to the Critical CSS generator API.
+				 *
+				 * @since 2.11
+				 *
+				 * @param array $params An array of parameters to send to the API.
+				 */
+				'body' => apply_filters( 'rocket_cpcss_job_request', $params ),
 			]
 		);
 
-		return $this->prepare_response( $response, $url );
+		return $this->prepare_response( $response, $url, $is_mobile );
 	}
 
 	/**
@@ -43,12 +46,13 @@ class APIClient {
 	 *
 	 * @since 3.6
 	 *
-	 * @param array|WP_Error $response The response or WP_Error on failure.
-	 * @param string         $url      Url to be checked.
+	 * @param array|WP_Error $response  The response or WP_Error on failure.
+	 * @param string         $url       Url to be checked.
+	 * @param bool           $is_mobile Optional. Flag for if this is cpcss for mobile or not. Default: false.
 	 *
 	 * @return array|WP_Error
 	 */
-	private function prepare_response( $response, $url ) {
+	private function prepare_response( $response, $url, $is_mobile = false ) {
 		$response_data        = $this->get_response_data( $response );
 		$response_status_code = $this->get_response_status( $response, ( isset( $response_data->status ) ) ? $response_data->status : null );
 		$succeeded            = $this->get_response_success( $response_status_code, $response_data );
@@ -57,7 +61,7 @@ class APIClient {
 			return $response_data;
 		}
 
-		$response_message = $this->get_response_message( $response_status_code, $response_data, $url );
+		$response_message = $this->get_response_message( $response_status_code, $response_data, $url, $is_mobile );
 
 		if ( 200 === $response_status_code ) {
 			$response_status_code = 400;
@@ -110,7 +114,7 @@ class APIClient {
 	 * @since 3.6
 	 *
 	 * @param array|WP_Error $response The response or WP_Error on failure.
-	 * @param null|int       $status   Status code to overwrite the response status.
+	 * @param null|int       $status   Optional. Status code to overwrite the response status. Default: null.
 	 *
 	 * @return int status code|number of response.
 	 */
@@ -130,18 +134,24 @@ class APIClient {
 	 * @param int      $response_status_code Response status code.
 	 * @param stdClass $response_data        Object of data returned from request.
 	 * @param string   $url                  Url for the web page to be checked.
+	 * @param bool     $is_mobile            Optional. Flag for if this is cpcss for mobile or not. Default: false.
 	 *
 	 * @return string
 	 */
-	private function get_response_message( $response_status_code, $response_data, $url ) {
+	private function get_response_message( $response_status_code, $response_data, $url, $is_mobile = false ) {
 		$message = '';
 
 		switch ( $response_status_code ) {
 			case 200:
 				if ( ! isset( $response_data->data->id ) ) {
 					$message .= sprintf(
-					// translators: %s = item URL.
-						__( 'Critical CSS for %1$s not generated. Error: The API returned an empty response.', 'rocket' ),
+						$is_mobile
+							?
+							// translators: %s = item URL.
+							__( 'Critical CSS for %1$s on mobile not generated. Error: The API returned an empty response.', 'rocket' )
+							:
+							// translators: %s = item URL.
+							__( 'Critical CSS for %1$s not generated. Error: The API returned an empty response.', 'rocket' ),
 						$url
 					);
 				}
@@ -150,12 +160,22 @@ class APIClient {
 			case 440:
 			case 404:
 				// translators: %s = item URL.
-				$message .= sprintf( __( 'Critical CSS for %1$s not generated.', 'rocket' ), $url );
+				$message .= sprintf(
+					$is_mobile
+						// translators: %s = item URL.
+						? __( 'Critical CSS for %1$s on mobile not generated.', 'rocket' )
+						// translators: %s = item URL.
+						: __( 'Critical CSS for %1$s not generated.', 'rocket' ),
+					$url
+					);
 				break;
 			default:
 				$message .= sprintf(
-				// translators: %s = URL.
-					__( 'Critical CSS for %1$s not generated. Error: The API returned an invalid response code.', 'rocket' ),
+					$is_mobile
+						// translators: %s = URL.
+						? __( 'Critical CSS for %1$s on mobile not generated. Error: The API returned an invalid response code.', 'rocket' )
+						// translators: %s = URL.
+						: __( 'Critical CSS for %1$s not generated. Error: The API returned an invalid response code.', 'rocket' ),
 					$url
 				);
 				break;
@@ -201,16 +221,17 @@ class APIClient {
 	 *
 	 * @since 3.6
 	 *
-	 * @param string $job_id ID for the job to get details.
-	 * @param string $url    URL to be used in error messages.
+	 * @param string $job_id    ID for the job to get details.
+	 * @param string $url       URL to be used in error messages.
+	 * @param bool   $is_mobile Optional. Flag for if this is cpcss for mobile or not. Default: false.
 	 *
 	 * @return mixed|WP_Error Details for job.
 	 */
-	public function get_job_details( $job_id, $url ) {
+	public function get_job_details( $job_id, $url, $is_mobile = false ) {
 		$response = wp_remote_get(
 			self::API_URL . "{$job_id}/"
 		);
 
-		return $this->prepare_response( $response, $url );
+		return $this->prepare_response( $response, $url, $is_mobile );
 	}
 }

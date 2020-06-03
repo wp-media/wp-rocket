@@ -22,14 +22,14 @@ class Test_GetCacheJobId extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldDoExpected( $item_url, $expected ) {
+	public function testShouldDoExpected( $item_url, $expected, $is_mobile = false ) {
 		Functions\expect( 'get_transient' )
 			->once()
-			->with( 'rocket_specific_cpcss_job_' . md5( $item_url ) )
+			->with( 'rocket_specific_cpcss_job_' . md5( $item_url ) . ( $is_mobile ? '_mobile' : '' ) )
 			->andReturn( $expected );
 
 		$data_manager = new DataManager( '', null );
-		$actual       = $data_manager->get_cache_job_id( $item_url );
+		$actual       = $data_manager->get_cache_job_id( $item_url, $is_mobile );
 
 		$this->assertSame( $expected, $actual );
 

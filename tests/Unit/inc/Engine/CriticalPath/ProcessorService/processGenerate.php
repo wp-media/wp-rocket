@@ -62,7 +62,10 @@ class Test_ProcessGenerate extends FilesystemTestCase {
 		$request_timeout              = isset( $config['request_timeout'] )
 			? $config['request_timeout']
 			: false;
-		$item_path = "posts/{$post_type}-{$post_id}.css";
+		$is_mobile                    = isset( $config['mobile'] )
+			? $config['mobile']
+			: false;
+		$item_path = "posts/{$post_type}-{$post_id}" . ( $is_mobile ? '_mobile' : '' ) . ".css";
 		$file                         = $this->config['vfs_dir'] . "1/".$item_path;
 		$item_url = ('post_not_exists' === $expected['code'])
 			? null
@@ -79,7 +82,7 @@ class Test_ProcessGenerate extends FilesystemTestCase {
 
 		if ( $post_id > 0 && 'publish' === $post_status ) {
 			Functions\expect( 'get_transient' )
-				->with( 'rocket_specific_cpcss_job_' . md5($item_url) )
+				->with( 'rocket_specific_cpcss_job_' . md5( $item_url ) . ( $is_mobile ? '_mobile' : '' ) )
 				->andReturn( $saved_cpcss_job_id );
 		}
 
@@ -87,7 +90,7 @@ class Test_ProcessGenerate extends FilesystemTestCase {
 			200 === $post_request_response_code ) {
 			Functions\expect( 'set_transient' )
 				->once()
-				->with( 'rocket_specific_cpcss_job_' . md5($item_url), $cpcss_post_job_id, HOUR_IN_SECONDS );
+				->with( 'rocket_specific_cpcss_job_' . md5( $item_url ) . ( $is_mobile ? '_mobile' : '' ), $cpcss_post_job_id, HOUR_IN_SECONDS );
 		}
 
 		if ( in_array( (int) $get_request_response_code, [ 400, 404 ], true )
@@ -95,7 +98,7 @@ class Test_ProcessGenerate extends FilesystemTestCase {
 			|| $request_timeout ) {
 			Functions\expect( 'delete_transient' )
 				->once()
-				->with( 'rocket_specific_cpcss_job_' . md5($item_url) );
+				->with( 'rocket_specific_cpcss_job_' . md5( $item_url ) . ( $is_mobile ? '_mobile' : '' ) );
 		}
 		Functions\expect( 'get_post_type' )
 			->atMost()
@@ -125,6 +128,7 @@ class Test_ProcessGenerate extends FilesystemTestCase {
 				[
 					'body' => [
 						'url' => "http://example.org/?p={$post_id}",
+						'mobile' => (int) $is_mobile
 					],
 				]
 			)
@@ -158,7 +162,7 @@ class Test_ProcessGenerate extends FilesystemTestCase {
 		$data_manager = new DataManager('wp-content/cache/critical-css/', $this->filesystem);
 		$cpcss_service = new ProcessorService( $data_manager, $api_client );
 
-		$generated = $cpcss_service->process_generate( $item_url, $item_path, $request_timeout );
+		$generated = $cpcss_service->process_generate( $item_url, $item_path, $request_timeout, $is_mobile );
 		if( isset( $expected['success'] ) && ! $expected['success'] ){
 			$this->assertSame( $expected['code'], $generated->get_error_code() );
 			$this->assertSame( $expected['message'], $generated->get_error_message() );

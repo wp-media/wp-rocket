@@ -28,14 +28,14 @@ class CriticalCSS {
 	private $options;
 
 	/**
-	 * Items for which we generate a critical CSS
+	 * Items for which we generate a critical CSS.
 	 *
 	 * @var array
 	 */
 	public $items = [];
 
 	/**
-	 * Path to the critical CSS directory
+	 * Path to the critical CSS directory.
 	 *
 	 * @var string
 	 */
@@ -51,22 +51,21 @@ class CriticalCSS {
 	/**
 	 * Creates an instance of CriticalCSS.
 	 *
-	 * @since 2.11
-	 *
 	 * @param CriticalCSSGeneration $process    Background process instance.
 	 * @param Options_Data          $options    Instance of options data handler.
 	 * @param WP_Filesystem_Direct  $filesystem Instance of the filesystem handler.
 	 */
 	public function __construct( CriticalCSSGeneration $process, Options_Data $options, $filesystem ) {
-		$this->process = $process;
-		$this->options = $options;
-		$this->items[] = [
-			'type' => 'front_page',
-			'url'  => home_url( '/' ),
+		$this->process             = $process;
+		$this->options             = $options;
+		$this->critical_css_path   = rocket_get_constant( 'WP_ROCKET_CRITICAL_CSS_PATH' ) . get_current_blog_id() . '/';
+		$this->filesystem          = $filesystem;
+		$this->items['front_page'] = [
+			'type'  => 'front_page',
+			'url'   => home_url( '/' ),
+			'path'  => 'front_page.css',
+			'check' => 0,
 		];
-
-		$this->critical_css_path = rocket_get_constant( 'WP_ROCKET_CRITICAL_CSS_PATH' ) . get_current_blog_id() . '/';
-		$this->filesystem        = $filesystem;
 	}
 
 	/**
@@ -83,9 +82,12 @@ class CriticalCSS {
 	/**
 	 * Performs the critical CSS generation.
 	 *
+	 * @since 3.6 Added the $version parameter.
 	 * @since 2.11
+	 *
+	 * @param string $version Optional. Version of the CPCSS files to generate. Possible values: default, mobile, all.
 	 */
-	public function process_handler() {
+	public function process_handler( $version = 'default' ) {
 		/**
 		 * Filters the critical CSS generation process.
 		 *
@@ -103,21 +105,16 @@ class CriticalCSS {
 			return;
 		}
 
-		$this->clean_critical_css();
+		$this->clean_critical_css( $version );
 
 		$this->stop_generation();
 
-		$this->set_items();
+		$this->set_items( $version );
 
 		array_map( [ $this->process, 'push_to_queue' ], $this->items );
 
-		$transient = [
-			'generated' => 0,
-			'total'     => count( $this->items ),
-			'items'     => [],
-		];
+		$this->update_process_running_transient();
 
-		set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
 		$this->process->save()->dispatch();
 	}
 
@@ -135,21 +132,49 @@ class CriticalCSS {
 	/**
 	 * Deletes critical CSS files.
 	 *
-	 * @since 2.11
 	 * @since 3.6 Replaced glob().
+	 * @since 3.6 Added $version parameter.
+	 * @since 2.11
+	 *
+	 * @param string $version Optional. Version of the CPCSS files to delete. Possible values: default, mobile, all.
 	 */
-	public function clean_critical_css() {
-		try {
-			$files = new FilesystemIterator( $this->critical_css_path );
-
-			foreach ( $files as $file ) {
-				if ( $this->filesystem->is_file( $file ) ) {
-					$this->filesystem->delete( $file );
-				}
+	public function clean_critical_css( $version = 'default' ) {
+		foreach ( $this->get_critical_css_iterator() as $file ) {
+			if ( ! $this->filesystem->is_file( $file ) ) {
+				continue;
 			}
+
+			if (
+				'mobile' === $version
+				&&
+				false === strpos( $file, '-mobile' )
+			) {
+				continue;
+			} elseif (
+				'default' === $version
+				&&
+				false !== strpos( $file, '-mobile' )
+			) {
+				continue;
+			}
+
+			$this->filesystem->delete( $file );
+		}
+	}
+
+	/**
+	 * Gets the Critical CSS Filesystem Iterator.
+	 *
+	 * @since 3.6
+	 *
+	 * @return FilesystemIterator|array Returns iterator on success; else an empty array.
+	 */
+	private function get_critical_css_iterator() {
+		try {
+			return new FilesystemIterator( $this->critical_css_path );
 		} catch ( UnexpectedValueException $e ) {
 			// No logging yet.
-			return;
+			return [];
 		}
 	}
 
@@ -158,7 +183,7 @@ class CriticalCSS {
 	 *
 	 * @since 2.11
 	 */
-	public function get_public_post_types() {
+	private function get_public_post_types() {
 		global $wpdb;
 
 		$post_types = get_post_types(
@@ -201,9 +226,8 @@ class CriticalCSS {
 		$post_types = esc_sql( $post_types );
 		$post_types = "'" . implode( "','", $post_types ) . "'";
 
-		$rows = $wpdb->get_results(
-			"
-		    SELECT MAX(ID) as ID, post_type
+		return $wpdb->get_results(
+			"SELECT MAX(ID) as ID, post_type
 		    FROM (
 		        SELECT ID, post_type
 		        FROM $wpdb->posts
@@ -213,8 +237,6 @@ class CriticalCSS {
 		    ) AS posts
 		    GROUP BY post_type"
 		);
-
-		return $rows;
 	}
 
 	/**
@@ -222,7 +244,7 @@ class CriticalCSS {
 	 *
 	 * @since  2.11
 	 */
-	public function get_public_taxonomies() {
+	private function get_public_taxonomies() {
 		global $wpdb;
 
 		$taxonomies = get_taxonomies(
@@ -259,7 +281,7 @@ class CriticalCSS {
 		$taxonomies = esc_sql( $taxonomies );
 		$taxonomies = "'" . implode( "','", $taxonomies ) . "'";
 
-		$rows = $wpdb->get_results(
+		return $wpdb->get_results(
 			"SELECT MAX( term_id ) AS ID, taxonomy
 			FROM (
 				SELECT term_id, taxonomy
@@ -269,41 +291,63 @@ class CriticalCSS {
 			) AS taxonomies
 			GROUP BY taxonomy"
 		);
-
-		return $rows;
 	}
 
 	/**
 	 * Sets the items for which we generate critical CSS.
 	 *
 	 * @since  2.11
+	 *
+	 * @param string $version Optional. Version of the CPCSS files to generate. Possible values: default, mobile, all.
 	 */
-	public function set_items() {
+	private function set_items( $version = 'default' ) {
 		$page_for_posts = get_option( 'page_for_posts' );
 
 		if ( 'page' === get_option( 'show_on_front' ) && ! empty( $page_for_posts ) ) {
-			$this->items[] = [
-				'type' => 'home',
-				'url'  => get_permalink( get_option( 'page_for_posts' ) ),
+			$this->items['home'] = [
+				'type'  => 'home',
+				'url'   => get_permalink( get_option( 'page_for_posts' ) ),
+				'path'  => 'home.css',
+				'check' => 0,
 			];
 		}
 
 		$post_types = $this->get_public_post_types();
 
 		foreach ( $post_types as $post_type ) {
-			$this->items[] = [
-				'type' => $post_type->post_type,
-				'url'  => get_permalink( $post_type->ID ),
+			$this->items[ $post_type->post_type ] = [
+				'type'  => $post_type->post_type,
+				'url'   => get_permalink( $post_type->ID ),
+				'path'  => "{$post_type->post_type}.css",
+				'check' => 0,
 			];
 		}
 
 		$taxonomies = $this->get_public_taxonomies();
-
 		foreach ( $taxonomies as $taxonomy ) {
-			$this->items[] = [
-				'type' => $taxonomy->taxonomy,
-				'url'  => get_term_link( (int) $taxonomy->ID, $taxonomy->taxonomy ),
+
+			$this->items[ $taxonomy->taxonomy ] = [
+				'type'  => $taxonomy->taxonomy,
+				'url'   => get_term_link( (int) $taxonomy->ID, $taxonomy->taxonomy ),
+				'path'  => "{$taxonomy->taxonomy}.css",
+				'check' => 0,
 			];
+		}
+
+		if ( in_array( $version, [ 'all', 'mobile' ], true ) ) {
+			$mobile_items = [];
+
+			foreach ( $this->items as $key => $value ) {
+				$value['mobile']                 = 1;
+				$value['path']                   = str_replace( '.css', '-mobile.css', $value['path'] );
+				$mobile_items[ "{$key}-mobile" ] = $value;
+			}
+
+			if ( 'mobile' === $version ) {
+				$this->items = $mobile_items;
+			} elseif ( 'all' === $version ) {
+				$this->items = array_merge( $this->items, $mobile_items );
+			}
 		}
 
 		/**
@@ -311,9 +355,38 @@ class CriticalCSS {
 		 *
 		 * @since  2.11.4
 		 *
-		 * @param array $this ->items Array containing the type/url pair for each item to send.
+		 * @param array $items Array containing the type/url pair for each item to send.
 		 */
 		$this->items = (array) apply_filters( 'rocket_cpcss_items', $this->items );
+	}
+
+	/**
+	 * Updates the "rocket_critical_css_generation_process_running" transient.
+	 *
+	 * @since 3.6
+	 */
+	private function update_process_running_transient() {
+		$total = 0;
+
+		foreach ( $this->items as $item ) {
+			if ( ! isset( $item['mobile'] ) ) {
+				$total++;
+				continue;
+			}
+
+			if ( 1 === $item['mobile'] ) {
+				continue;
+			}
+
+			$total++;
+		}
+
+		$transient = [
+			'total' => $total,
+			'items' => [],
+		];
+
+		set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
 	}
 
 	/**
@@ -454,7 +527,7 @@ class CriticalCSS {
 	 *
 	 * @return bool
 	 */
-	private function is_async_css_mobile() {
+	public function is_async_css_mobile() {
 		if ( ! (bool) $this->options->get( 'do_caching_mobile_files', 0 ) ) {
 			return false;
 		}
