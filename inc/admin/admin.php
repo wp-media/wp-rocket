@@ -105,14 +105,16 @@ add_filter( 'user_row_actions', 'rocket_user_row_actions', 10, 2 );
  *
  * @param array $args An array of query args. Should not be used: see rocket_dismiss_box().
  */
-function rocket_dismiss_boxes( array $args = [] ) {
+function rocket_dismiss_boxes( $args = [] ) {
+	global $pagenow;
+
 	$args = empty( $args ) ? $_GET : $args; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 	if ( ! isset( $args['box'], $args['action'], $args['_wpnonce'] ) ) {
 		return;
 	}
 
-	if ( ! wp_verify_nonce( $args['_wpnonce'], $args['action'] . '_' . $args['box'] ) ) {
+	if ( ! wp_verify_nonce( $args['_wpnonce'], "{$args['action']}_{$args['box']}" ) ) {
 		if ( rocket_get_constant( 'DOING_AJAX' ) ) {
 			wp_send_json( [ 'error' => 1 ] );
 		} else {
@@ -121,13 +123,9 @@ function rocket_dismiss_boxes( array $args = [] ) {
 		return;
 	}
 
-	if ( '__rocket_imagify_notice' === $args['box'] ) {
-		update_option( 'wp_rocket_dismiss_imagify_notice', 0 );
-	}
-
 	rocket_dismiss_box( $args['box'] );
 
-	if ( 'admin-post.php' === $GLOBALS['pagenow'] ) {
+	if ( 'admin-post.php' === $pagenow ) {
 		if ( rocket_get_constant( 'DOING_AJAX' ) ) {
 			wp_send_json( [ 'error' => 0 ] );
 		} else {
