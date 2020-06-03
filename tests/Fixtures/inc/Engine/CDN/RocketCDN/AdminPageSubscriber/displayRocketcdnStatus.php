@@ -8,7 +8,7 @@ return [
 			'subscription_status'           => 'cancelled',
 			'subscription_next_date_update' => '2020-01-01',
 		],
-		'expected' => [
+		'expected'         => [
 			'unit'        => [
 				'is_live_site'    => false,
 				'container_class' => ' wpr-flex--egal',
@@ -132,7 +132,7 @@ return [
 	</div>
 </div>
 HTML
-	,
+			,
 		],
 
 		'config' => [

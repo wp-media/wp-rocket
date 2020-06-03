@@ -20,6 +20,7 @@ class Test_SendGenerationRequest extends TestCase {
 		$item_url      = isset( $config['item_url'] ) ? $config['item_url'] : '';
 		$response_code = ! isset( $config['response_data']['code'] ) ? 200 : $config['response_data']['code'];
 		$response_body = ! isset( $config['response_data']['body'] ) ? '' : $config['response_data']['body'];
+		$is_mobile     = isset( $config['is_mobile'] ) ? $config['is_mobile'] : false;
 
 		Functions\expect( 'wp_remote_post' )
 			->once()
@@ -28,6 +29,7 @@ class Test_SendGenerationRequest extends TestCase {
 				[
 					'body' => [
 						'url' => $item_url,
+						'mobile' => (int) $is_mobile
 					],
 				]
 			)
@@ -44,7 +46,7 @@ class Test_SendGenerationRequest extends TestCase {
 			->andReturn( $response_body );
 
 		$api_client = new APIClient();
-		$actual = $api_client->send_generation_request( $item_url );
+		$actual = $api_client->send_generation_request( $item_url, ['mobile' => (int) $is_mobile] );
 
 		if( isset( $expected['success'] ) && true === $expected['success'] ){
 			//Assert success.

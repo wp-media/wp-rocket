@@ -16,7 +16,10 @@ trait StubTrait {
 	protected $wp_rocket_debug          = false;
 	protected $wp_rocket_advanced_cache = true;
 	protected $disable_wp_cron          = false;
+	protected $donotrocketoptimize      = null;
+	protected $donotasynccss            = null;
 	protected $white_label              = false;
+	
 
 	protected function resetStubProperties() {
 		$defaults = [
@@ -29,6 +32,8 @@ trait StubTrait {
 			'rocket_version'            => null,
 			'wp_rocket_debug'           => false,
 			'wp_rocket_advanced_cache'  => true,
+			'donotrocketoptimize'      => null,
+			'dontasynccss'             => null,
 			'white_label'               => false,
 		];
 
@@ -43,7 +48,7 @@ trait StubTrait {
 		}
 
 		Functions\when( 'rocket_get_constant' )->alias(
-			function ( $constant_name, $default = null ) {
+			function( $constant_name, $default = null ) {
 				return $this->getConstant( $constant_name, $default );
 			}
 		);
@@ -56,6 +61,12 @@ trait StubTrait {
 
 			case 'DISABLE_WP_CRON':
 				return $this->disable_wp_cron;
+
+			case 'DONOTASYNCCSS' :
+				return $this->donotasynccss;
+
+			case 'DONOTROCKETOPTIMIZE' :
+				return $this->donotrocketoptimize;
 
 			case 'FS_CHMOD_DIR':
 				return 0777;
@@ -111,6 +122,9 @@ trait StubTrait {
 			case 'WP_ROCKET_RUNNING_VFS':
 				return $this->is_running_vfs;
 
+			case 'WP_ROCKET_SLUG':
+				return 'wp_rocket_settings';
+
 			case 'WP_ROCKET_VENDORS_PATH':
 				return "{$this->wp_content_dir}/plugins/wp-rocket/inc/vendors/";
 
@@ -133,7 +147,7 @@ trait StubTrait {
 
 	protected function stubWpNormalizePath() {
 		Functions\when( 'wp_normalize_path' )->alias(
-			function ( $path ) {
+			function( $path ) {
 				if ( true === $this->just_return_path ) {
 					return $path;
 				}
@@ -154,7 +168,7 @@ trait StubTrait {
 		if ( empty( $url ) ) {
 			Functions\when( 'get_rocket_parse_url' )
 				->alias(
-					function ( $url ) {
+					function( $url ) {
 						return $this->get_rocket_parse_url( $url );
 					}
 				);
@@ -163,7 +177,7 @@ trait StubTrait {
 				->once()
 				->with( $url )
 				->andReturnUsing(
-					function ( $url ) {
+					function( $url ) {
 						return $this->get_rocket_parse_url( $url );
 					}
 				);
@@ -190,7 +204,7 @@ trait StubTrait {
 
 	protected function stubWpParseUrl() {
 		Functions\when( 'wp_parse_url' )->alias(
-			function ( $url, $component = - 1 ) {
+			function( $url, $component = - 1 ) {
 				return parse_url( $url, $component );
 			}
 		);
@@ -198,7 +212,7 @@ trait StubTrait {
 
 	protected function stubRocketRealpath() {
 		Functions\when( 'rocket_realpath' )->alias(
-			function ( $file ) {
+			function( $file ) {
 				$wrapper = null;
 				$path    = [];
 
@@ -232,7 +246,7 @@ trait StubTrait {
 
 	protected function stubfillWpBasename() {
 		Functions\when( 'wp_basename' )->alias(
-			function ( $path, $suffix = '' ) {
+			function( $path, $suffix = '' ) {
 				return urldecode( basename( str_replace( [ '%2F', '%5C' ], '/', urlencode( $path ) ), $suffix ) );
 			}
 		);
