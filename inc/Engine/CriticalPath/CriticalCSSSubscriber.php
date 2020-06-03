@@ -345,6 +345,10 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 			$items_message .= '</ul>';
 		}
 
+		if ( 0 === $success_counter && 0 === $transient['total'] ) {
+			return;
+		}
+
 		$message = '<p>' . sprintf(
 			// Translators: %1$d = number of critical CSS generated, %2$d = total number of critical CSS to generate.
 				__( 'Critical CSS generation is currently running: %1$d of %2$d page types completed. (Refresh this page to view progress)', 'rocket' ),
@@ -395,6 +399,10 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 			}
 
 			$items_message .= '</ul>';
+		}
+
+		if ( 0 === $success_counter && 0 === $transient['total'] ) {
+			return;
 		}
 
 		if ( 0 === $success_counter ) {
