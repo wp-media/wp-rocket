@@ -332,23 +332,13 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 
 		$success_counter = 0;
 		$items_message   = '';
-		$is_mobile_cpcss =
-			(
-				$this->options->get( 'async_css', 0 )
-				&&
-				$this->options->get( 'cache_mobile', 0 )
-				&&
-				$this->options->get( 'do_caching_mobile_files', 0 )
-			)
-			&&
-			$this->options->get( 'async_css_mobile', 0 );
 
 		if ( ! empty( $transient['items'] ) ) {
 			$items_message .= '<ul>';
 
 			foreach ( $transient['items'] as $item ) {
 				$status_nonmobile = isset( $item['status']['nonmobile'] );
-				$status_mobile    = $is_mobile_cpcss ? isset( $item['status']['mobile'] ) : true;
+				$status_mobile    = $this->is_mobile_cpcss_active() ? isset( $item['status']['mobile'] ) : true;
 				if ( $status_nonmobile && $status_mobile ) {
 					$items_message .= '<li>' . $item['status']['nonmobile']['message'] . '</li>';
 					if ( $item['status']['nonmobile']['success'] ) {
@@ -403,23 +393,13 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 		$status          = 'success';
 		$success_counter = 0;
 		$items_message   = '';
-		$is_mobile_cpcss =
-			(
-				$this->options->get( 'async_css', 0 )
-				&&
-				$this->options->get( 'cache_mobile', 0 )
-				&&
-				$this->options->get( 'do_caching_mobile_files', 0 )
-			)
-			&&
-			$this->options->get( 'async_css_mobile', 0 );
 
 		if ( ! empty( $transient['items'] ) ) {
 			$items_message .= '<ul>';
 
 			foreach ( $transient['items'] as $item ) {
 				$status_nonmobile = isset( $item['status']['nonmobile'] );
-				$status_mobile    = $is_mobile_cpcss ? isset( $item['status']['mobile'] ) : true;
+				$status_mobile    = $this->is_mobile_cpcss_active() ? isset( $item['status']['mobile'] ) : true;
 				if ( $status_nonmobile && $status_mobile ) {
 					$items_message .= '<li>' . $item['status']['nonmobile']['message'] . '</li>';
 					if ( $item['status']['nonmobile']['success'] ) {
@@ -737,5 +717,24 @@ JS;
 		}
 
 		$this->critical_css->process_handler();
+	}
+
+	/**
+	 * Checks if mobile CPCSS is active.
+	 *
+	 * @since 3.6
+	 *
+	 * @return boolean CPCSS active or not.
+	 */
+	private function is_mobile_cpcss_active() {
+		return (
+			$this->options->get( 'async_css', 0 )
+			&&
+			$this->options->get( 'cache_mobile', 0 )
+			&&
+			$this->options->get( 'do_caching_mobile_files', 0 )
+		)
+		&&
+		$this->options->get( 'async_css_mobile', 0 );
 	}
 }
