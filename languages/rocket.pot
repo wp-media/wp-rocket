@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.4\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2020-05-28 13:07-0400\n"
+"POT-Creation-Date: 2020-06-03 17:43-0400\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1461,137 +1461,163 @@ msgstr ""
 msgid "Clear this cache"
 msgstr ""
 
-#: inc/Engine/CriticalPath/APIClient.php:144
+#: inc/Engine/CriticalPath/APIClient.php:151
+#: inc/Engine/CriticalPath/DataManager.php:65
+#, php-format
+msgid ""
+"Critical CSS for %1$s on mobile not generated. Error: The API returned an empty "
+"response."
+msgstr ""
+
+#: inc/Engine/CriticalPath/APIClient.php:154
+#: inc/Engine/CriticalPath/DataManager.php:68
 #, php-format
 msgid ""
 "Critical CSS for %1$s not generated. Error: The API returned an empty response."
 msgstr ""
 
-#: inc/Engine/CriticalPath/APIClient.php:153
-#: inc/Engine/CriticalPath/DataManager.php:58
-#: inc/Engine/CriticalPath/ProcessorService.php:166
+#: inc/Engine/CriticalPath/APIClient.php:166
+#, php-format
+msgid "Critical CSS for %1$s on mobile not generated."
+msgstr ""
+
+#: inc/Engine/CriticalPath/APIClient.php:168
+#: inc/Engine/CriticalPath/ProcessorService.php:177
 #, php-format
 msgid "Critical CSS for %1$s not generated."
 msgstr ""
 
-#: inc/Engine/CriticalPath/APIClient.php:158
+#: inc/Engine/CriticalPath/APIClient.php:176
+#, php-format
+msgid ""
+"Critical CSS for %1$s on mobile not generated. Error: The API returned an "
+"invalid response code."
+msgstr ""
+
+#: inc/Engine/CriticalPath/APIClient.php:178
 #, php-format
 msgid ""
 "Critical CSS for %1$s not generated. Error: The API returned an invalid response "
 "code."
 msgstr ""
 
-#: inc/Engine/CriticalPath/APIClient.php:166
-#: inc/Engine/CriticalPath/ProcessorService.php:170
+#: inc/Engine/CriticalPath/APIClient.php:186
+#: inc/Engine/CriticalPath/ProcessorService.php:182
 #, php-format
 msgid "Error: %1$s"
 msgstr ""
 
-#: inc/Engine/CriticalPath/AdminSubscriber.php:99
-#: views/metabox/cpcss/generate.php:47
+#: inc/Engine/CriticalPath/Admin/Admin.php:256
+msgid "Regenerate Critical Path CSS"
+msgstr ""
+
+#: inc/Engine/CriticalPath/Admin/Post.php:132 views/cpcss/metabox/generate.php:47
 msgid "Generate Specific CPCSS"
 msgstr ""
 
-#: inc/Engine/CriticalPath/AdminSubscriber.php:100
-#: views/metabox/cpcss/generate.php:45
+#: inc/Engine/CriticalPath/Admin/Post.php:133 views/cpcss/metabox/generate.php:45
 msgid "Regenerate specific CPCSS"
 msgstr ""
 
-#: inc/Engine/CriticalPath/AdminSubscriber.php:201
+#: inc/Engine/CriticalPath/Admin/Post.php:199
 msgid "%l to use this feature."
 msgstr ""
 
-#: inc/Engine/CriticalPath/AdminSubscriber.php:204
+#: inc/Engine/CriticalPath/Admin/Post.php:202
 #, php-format
 msgid "Publish the %s"
 msgstr ""
 
-#: inc/Engine/CriticalPath/AdminSubscriber.php:205
+#: inc/Engine/CriticalPath/Admin/Post.php:203
 msgid "Enable Optimize CSS delivery in WP Rocket settings"
 msgstr ""
 
-#: inc/Engine/CriticalPath/AdminSubscriber.php:206
+#: inc/Engine/CriticalPath/Admin/Post.php:204
 msgid "Enable Optimize CSS delivery in the options above"
 msgstr ""
 
-#: inc/Engine/CriticalPath/CriticalCSSGeneration.php:80
-#: inc/Engine/CriticalPath/CriticalCSSGeneration.php:92
-#: inc/Engine/CriticalPath/CriticalCSSGeneration.php:105
-#: inc/Engine/CriticalPath/CriticalCSSGeneration.php:117
-#: inc/Engine/CriticalPath/CriticalCSSGeneration.php:140
-#, php-format
-msgid "Critical CSS for %1$s not generated. Error: %2$s"
-msgstr ""
-
-#: inc/Engine/CriticalPath/CriticalCSSGeneration.php:92
-msgid "The API returned an invalid response code."
-msgstr ""
-
-#: inc/Engine/CriticalPath/CriticalCSSGeneration.php:105
-msgid "The API returned an empty response."
-msgstr ""
-
-#: inc/Engine/CriticalPath/CriticalCSSGeneration.php:143
-#, php-format
-msgid "The critical CSS content could not be saved as a file in %s."
-msgstr ""
-
-#: inc/Engine/CriticalPath/CriticalCSSGeneration.php:154
-#: inc/Engine/CriticalPath/ProcessorService.php:224
-#, php-format
-msgid "Critical CSS for %s generated."
-msgstr ""
-
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:101
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:149
 msgid "Critical CSS generation is currently running."
 msgstr ""
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:106
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:154
 #: inc/Engine/Preload/PreloadSubscriber.php:242
 #, php-format
 msgid "Go to the %1$sWP Rocket settings%2$s page to track progress."
 msgstr ""
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:235
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:359
 #, php-format
 msgid ""
 "Critical CSS generation is currently running: %1$d of %2$d page types completed. "
 "(Refresh this page to view progress)"
 msgstr ""
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:289
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:426
 #, php-format
 msgid "Critical CSS generation finished for %1$d of %2$d page types."
 msgstr ""
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:306
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:433
 msgid "Critical CSS generation encountered one or more errors."
 msgstr ""
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:306
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:433
 msgid "Learn more."
 msgstr ""
 
-#: inc/Engine/CriticalPath/DataManager.php:85
+#: inc/Engine/CriticalPath/DataManager.php:101
+msgid "Critical CSS file for mobile does not exist"
+msgstr ""
+
+#: inc/Engine/CriticalPath/DataManager.php:103
 msgid "Critical CSS file does not exist"
 msgstr ""
 
-#: inc/Engine/CriticalPath/DataManager.php:95
+#: inc/Engine/CriticalPath/DataManager.php:115
+msgid "Critical CSS file for mobile cannot be deleted"
+msgstr ""
+
+#: inc/Engine/CriticalPath/DataManager.php:117
 msgid "Critical CSS file cannot be deleted"
 msgstr ""
 
-#: inc/Engine/CriticalPath/ProcessorService.php:195
+#: inc/Engine/CriticalPath/ProcessorService.php:174
+#, php-format
+msgid "Mobile Critical CSS for %1$s not generated."
+msgstr ""
+
+#: inc/Engine/CriticalPath/ProcessorService.php:207
 #, php-format
 msgid "Critical CSS for %s in progress."
 msgstr ""
 
-#: inc/Engine/CriticalPath/ProcessorService.php:244
+#: inc/Engine/CriticalPath/ProcessorService.php:237
+#, php-format
+msgid "Mobile Critical CSS for %s generated."
+msgstr ""
+
+#: inc/Engine/CriticalPath/ProcessorService.php:245
+#, php-format
+msgid "Critical CSS for %s generated."
+msgstr ""
+
+#: inc/Engine/CriticalPath/ProcessorService.php:265
 msgid "Critical CSS file deleted successfully."
 msgstr ""
 
-#: inc/Engine/CriticalPath/ProcessorService.php:263
+#: inc/Engine/CriticalPath/ProcessorService.php:285
+#, php-format
+msgid "Mobile Critical CSS for %1$s timeout. Please retry a little later."
+msgstr ""
+
+#: inc/Engine/CriticalPath/ProcessorService.php:295
 #, php-format
 msgid "Critical CSS for %1$s timeout. Please retry a little later."
+msgstr ""
+
+#: inc/Engine/CriticalPath/RESTWP.php:130
+msgid "Mobile CPCSS generation not enabled."
 msgstr ""
 
 #: inc/Engine/CriticalPath/RESTWPPost.php:36
@@ -1812,7 +1838,7 @@ msgstr ""
 msgid "Smush"
 msgstr ""
 
-#: inc/admin/admin.php:18 inc/common/admin-bar.php:377
+#: inc/admin/admin.php:18 inc/common/admin-bar.php:367
 #: inc/deprecated/deprecated.php:1787
 msgid "Support"
 msgstr ""
@@ -1821,7 +1847,7 @@ msgstr ""
 msgid "Docs"
 msgstr ""
 
-#: inc/admin/admin.php:22 inc/common/admin-bar.php:365
+#: inc/admin/admin.php:22 inc/common/admin-bar.php:355
 msgid "FAQ"
 msgstr ""
 
@@ -1829,43 +1855,43 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: inc/admin/admin.php:227 inc/admin/admin.php:242
+#: inc/admin/admin.php:225 inc/admin/admin.php:240
 #: inc/classes/class-wp-rocket-requirements-check.php:203
 #: inc/classes/class-wp-rocket-requirements-check.php:214
 #, php-format
 msgid "%s Update Rollback"
 msgstr ""
 
-#: inc/admin/admin.php:268
+#: inc/admin/admin.php:266
 #, php-format
 msgid "%1$sReturn to WP Rocket%2$s or %3$sgo to Plugins page%2$s"
 msgstr ""
 
-#: inc/admin/admin.php:507
+#: inc/admin/admin.php:515
 msgid "Settings import failed: you do not have the permissions to do this."
 msgstr ""
 
-#: inc/admin/admin.php:511
+#: inc/admin/admin.php:519
 msgid "Settings import failed: no file uploaded."
 msgstr ""
 
-#: inc/admin/admin.php:515
+#: inc/admin/admin.php:523
 msgid "Settings import failed: incorrect filename."
 msgstr ""
 
-#: inc/admin/admin.php:526
+#: inc/admin/admin.php:534
 msgid "Settings import failed: incorrect filetype."
 msgstr ""
 
-#: inc/admin/admin.php:536
+#: inc/admin/admin.php:544
 msgid "Settings import failed: "
 msgstr ""
 
-#: inc/admin/admin.php:552
+#: inc/admin/admin.php:560
 msgid "Settings import failed: unexpected file content."
 msgstr ""
 
-#: inc/admin/admin.php:573
+#: inc/admin/admin.php:581
 msgid "Settings imported and saved."
 msgstr ""
 
@@ -2321,7 +2347,7 @@ msgid ""
 "\">contact support</a>."
 msgstr ""
 
-#: inc/common/admin-bar.php:125 inc/common/admin-bar.php:312
+#: inc/common/admin-bar.php:125 inc/common/admin-bar.php:293
 #: inc/functions/i18n.php:41 inc/functions/i18n.php:51
 msgid "All languages"
 msgstr ""
@@ -2338,28 +2364,24 @@ msgstr ""
 msgid "Purge OPcache"
 msgstr ""
 
-#: inc/common/admin-bar.php:211
-msgid "Regenerate Critical Path CSS"
-msgstr ""
-
-#: inc/common/admin-bar.php:229
+#: inc/common/admin-bar.php:210
 msgid "Clear Cloudflare cache"
 msgstr ""
 
-#: inc/common/admin-bar.php:247
+#: inc/common/admin-bar.php:228
 msgid "Purge Sucuri cache"
 msgstr ""
 
-#: inc/common/admin-bar.php:270 inc/common/admin-bar.php:324
+#: inc/common/admin-bar.php:251 inc/common/admin-bar.php:305
 #: views/settings/page-sections/dashboard.php:144
 msgid "Preload cache"
 msgstr ""
 
-#: inc/common/admin-bar.php:340 views/settings/fields/rocket-cdn.php:55
+#: inc/common/admin-bar.php:330 views/settings/fields/rocket-cdn.php:55
 msgid "Purge RocketCDN cache"
 msgstr ""
 
-#: inc/common/admin-bar.php:353 views/settings/partials/documentation.php:14
+#: inc/common/admin-bar.php:343 views/settings/partials/documentation.php:14
 msgid "Documentation"
 msgstr ""
 
@@ -2722,6 +2744,54 @@ msgstr ""
 msgid "Go back"
 msgstr ""
 
+#: views/cpcss/activate-cpcss-mobile.php:13
+msgid "Optimize CSS delivery for mobile"
+msgstr ""
+
+#: views/cpcss/activate-cpcss-mobile.php:14
+msgid ""
+"Your website currently uses the same Critical Path CSS for both desktop and "
+"mobile."
+msgstr ""
+
+#: views/cpcss/activate-cpcss-mobile.php:15
+msgid "Click the button to enable mobile-specific CPCSS for your site."
+msgstr ""
+
+#: views/cpcss/activate-cpcss-mobile.php:20
+#, php-format
+msgid ""
+"This is a one-time action and this button will be removed afterwards. %1$sMore "
+"info%2$s"
+msgstr ""
+
+#: views/cpcss/activate-cpcss-mobile.php:30
+#, php-format
+msgid "Your site is now using mobile-specific critical path CSS. %1$sMore info%2$s"
+msgstr ""
+
+#: views/cpcss/activate-cpcss-mobile.php:39
+msgid "Generate Mobile Specific CPCSS"
+msgstr ""
+
+#: views/cpcss/metabox/container.php:19
+msgid "Critical Path CSS"
+msgstr ""
+
+#: views/cpcss/metabox/generate.php:23
+#, php-format
+msgid "Generate specific Critical Path CSS for this post. %1$sMore info%2$s"
+msgstr ""
+
+#: views/cpcss/metabox/generate.php:33
+#, php-format
+msgid "This post uses specific Critical Path CSS. %1$sMore info%2$s"
+msgstr ""
+
+#: views/cpcss/metabox/generate.php:56
+msgid "Revert back to the default CPCSS"
+msgstr ""
+
 #: views/deactivation-intent/form.php:21
 msgid "Return"
 msgstr ""
@@ -2906,24 +2976,6 @@ msgstr ""
 
 #: views/deactivation-intent/form.php:154
 msgid "Skip & Deactivate"
-msgstr ""
-
-#: views/metabox/cpcss/container.php:19
-msgid "Critical Path CSS"
-msgstr ""
-
-#: views/metabox/cpcss/generate.php:23
-#, php-format
-msgid "Generate specific Critical Path CSS for this post. %1$sMore info%2$s"
-msgstr ""
-
-#: views/metabox/cpcss/generate.php:33
-#, php-format
-msgid "This post uses specific Critical Path CSS. %1$sMore info%2$s"
-msgstr ""
-
-#: views/metabox/cpcss/generate.php:56
-msgid "Revert back to the default CPCSS"
 msgstr ""
 
 #: views/settings/fields/cache-lifespan.php:26
@@ -3216,11 +3268,11 @@ msgstr ""
 msgid "Reinstall version %s"
 msgstr ""
 
-#: views/settings/page-sections/tools.php:97
+#: views/settings/page-sections/tools.php:106
 msgid "Debug mode"
 msgstr ""
 
-#: views/settings/page-sections/tools.php:102
+#: views/settings/page-sections/tools.php:111
 msgid "Create a debug log file."
 msgstr ""
 
