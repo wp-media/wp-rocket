@@ -13,7 +13,7 @@ use WP_Rocket\Engine\CriticalPath\DataManager;
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\ProcessorService::process_generate
  *
- * @group  CriticalPathX
+ * @group  CriticalPath
  */
 class Test_ProcessGenerate extends TestCase {
 	protected static $mockCommonWpFunctionsInSetUp = true;
