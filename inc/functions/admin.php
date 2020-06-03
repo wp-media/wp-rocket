@@ -76,21 +76,21 @@ function rocket_renew_box( $function, $uid = 0 ) {
 }
 
 /**
- * Dismissed 1 box, wrapper of rocket_dismiss_boxes()
+ * Dismiss one box.
  *
  * @since 1.3.0
+ * @since 3.6 Doesn’t die anymore.
  *
- * @param string $function function name.
- * @return void
+ * @param string $function Function (box) name.
  */
 function rocket_dismiss_box( $function ) {
-	rocket_dismiss_boxes(
-		[
-			'box'      => $function,
-			'_wpnonce' => wp_create_nonce( 'rocket_ignore_' . $function ),
-			'action'   => 'rocket_ignore',
-		]
-	);
+	$actual = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
+	$actual = array_merge( (array) $actual, [ $function ] );
+	$actual = array_filter( $actual );
+	$actual = array_unique( $actual );
+
+	update_user_meta( get_current_user_id(), 'rocket_boxes', $actual );
+	delete_transient( $function );
 }
 
 /**

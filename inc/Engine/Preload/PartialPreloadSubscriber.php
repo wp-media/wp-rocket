@@ -142,9 +142,11 @@ class PartialPreloadSubscriber implements Subscriber_Interface {
 				} else {
 					$file_path         = untrailingslashit( $file_path );
 					$data['home_path'] = untrailingslashit( $data['home_path'] );
+					$data['home_url']  = untrailingslashit( $data['home_url'] );
 					if ( '/' === substr( get_option( 'permalink_structure' ), -1 ) ) {
 						$file_path         .= '/';
 						$data['home_path'] .= '/';
+						$data['home_url']  .= '/';
 					}
 				}
 

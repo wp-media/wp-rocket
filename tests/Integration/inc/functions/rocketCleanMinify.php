@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\functions;
+namespace WP_Rocket\Tests\Integration\inc\Functions;
 
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 

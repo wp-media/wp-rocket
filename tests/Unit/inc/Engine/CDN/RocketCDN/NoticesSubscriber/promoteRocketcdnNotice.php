@@ -2,23 +2,28 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\RocketCDN\NoticesSubscriber;
 
-use Brain\Monkey\Functions;
 use Mockery;
+use Brain\Monkey\Functions;
+use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
 use WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber;
-use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Tests\StubTrait;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::promote_rocketcdn_notice
  * @group  RocketCDN
  */
 class Test_PromoteRocketcdnNotice extends TestCase {
+	use StubTrait;
+
 	protected static $mockCommonWpFunctionsInSetUp = true;
 	private $api_client;
 	private $notices;
 
 	public function setUp() {
 		parent::setUp();
+
+		$this->stubRocketGetConstant();
 
 		$this->api_client = Mockery::mock( APIClient::class );
 		$this->notices    = Mockery::mock(
@@ -28,6 +33,20 @@ class Test_PromoteRocketcdnNotice extends TestCase {
 				'views/settings/rocketcdn',
 			]
 		);
+	}
+
+	public function tearDown() {
+		$this->resetStubProperties();
+
+		parent::tearDown();
+	}
+
+	public function testShouldDisplayNothingWhenWhiteLabel() {
+		$this->white_label = true;
+		$this->api_client->shouldReceive( 'get_subscription_data' )->never();
+		$this->notices->shouldReceive( 'generate' )->never();
+
+		$this->assertNull( $this->notices->promote_rocketcdn_notice() );
 	}
 
 	public function testShouldDisplayNothingWhenNotLiveSite() {

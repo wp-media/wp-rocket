@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) || exit;
  * @param array $value An array of submitted values for the settings.
  */
 function rocket_after_save_options( $oldvalue, $value ) {
-	if ( ! ( is_array( $oldvalue ) && is_array( $value ) ) ) {
+	if ( ! is_array( $oldvalue ) || ! is_array( $value ) ) {
 		return;
 	}
 
@@ -87,12 +87,6 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		rocket_clean_minify( 'js' );
 	}
 
-	// Purge all cache busting files.
-	// phpcs:ignore WordPress.Security.NonceVerification.Missing
-	if ( array_key_exists( 'remove_query_strings', $oldvalue ) && array_key_exists( 'remove_query_strings', $value ) && $oldvalue['remove_query_strings'] !== $value['remove_query_strings'] ) {
-		rocket_clean_cache_busting();
-	}
-
 	// Regenerate advanced-cache.php file.
 	// phpcs:ignore WordPress.Security.NonceVerification.Missing
 	if ( ! empty( $_POST ) && ( ( isset( $oldvalue['do_caching_mobile_files'] ) && ! isset( $value['do_caching_mobile_files'] ) ) || ( ! isset( $oldvalue['do_caching_mobile_files'] ) && isset( $value['do_caching_mobile_files'] ) ) || ( isset( $oldvalue['do_caching_mobile_files'], $value['do_caching_mobile_files'] ) ) && $oldvalue['do_caching_mobile_files'] !== $value['do_caching_mobile_files'] ) ) {
@@ -106,7 +100,7 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	rocket_generate_config_file();
 
 	// Set WP_CACHE constant in wp-config.php.
-	if ( ! defined( 'WP_CACHE' ) || ! WP_CACHE ) {
+	if ( ! rocket_get_constant( 'WP_CACHE' ) ) {
 		set_rocket_wp_cache_define( true );
 	}
 
@@ -114,7 +108,7 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		set_transient( 'rocket_analytics_optin', 1 );
 	}
 }
-add_action( 'update_option_' . WP_ROCKET_SLUG, 'rocket_after_save_options', 10, 2 );
+add_action( 'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ), 'rocket_after_save_options', 10, 2 );
 
 /**
  * Perform actions when settings are saved.
@@ -199,7 +193,7 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 		$newvalue['cache_ssl'] = 1;
 	}
 
-	if ( ! defined( 'WP_ROCKET_ADVANCED_CACHE' ) ) {
+	if ( ! rocket_get_constant( 'WP_ROCKET_ADVANCED_CACHE' ) ) {
 		rocket_generate_advanced_cache_file();
 	}
 
@@ -230,7 +224,7 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 
 	return $newvalue;
 }
-add_filter( 'pre_update_option_' . WP_ROCKET_SLUG, 'rocket_pre_main_option', 10, 2 );
+add_filter( 'pre_update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ), 'rocket_pre_main_option', 10, 2 );
 
 /**
  * Auto-activate the SSL cache if the website URL is updated with https protocol

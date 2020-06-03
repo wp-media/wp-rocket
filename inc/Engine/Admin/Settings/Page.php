@@ -527,7 +527,6 @@ class Page {
 	 * @since 3.0
 	 */
 	private function assets_section() {
-		$remove_qs_beacon      = $this->beacon->get_suggest( 'remove_query_strings' );
 		$combine_beacon        = $this->beacon->get_suggest( 'combine' );
 		$defer_js_beacon       = $this->beacon->get_suggest( 'defer_js' );
 		$async_beacon          = $this->beacon->get_suggest( 'async' );
@@ -549,10 +548,6 @@ class Page {
 			[
 				'basic' => [
 					'title'  => __( 'Basic Settings', 'rocket' ),
-					'help'   => [
-						'url' => $remove_qs_beacon['url'],
-						'id'  => $this->beacon->get_suggest( 'basic_section' ),
-					],
 					'page'   => 'file_optimization',
 					// translators: %1$s = type of minification (HTML, CSS or JS), %2$s = “WP Rocket”.
 					'helper' => rocket_maybe_disable_minify_html() ? sprintf( __( '%1$s Minification is currently activated in <strong>Autoptimize</strong>. If you want to use %2$s’s minification, disable those options in Autoptimize.', 'rocket' ), 'HTML', WP_ROCKET_PLUGIN_NAME ) : '',
@@ -602,16 +597,6 @@ class Page {
 					'label'             => __( 'Optimize Google Fonts', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description'       => sprintf( __( 'Improves font performance and combines multiple font requests to reduce the number of HTTP requests. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $google_fonts_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $google_fonts_beacon['id'] ) . '" target="_blank">', '</a>' ),
-					'section'           => 'basic',
-					'page'              => 'file_optimization',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
-				],
-				'remove_query_strings'   => [
-					'type'              => 'checkbox',
-					'label'             => __( 'Remove query strings from static resources', 'rocket' ),
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'Removes the version query string from static files (e.g. style.css?ver=1.0) and encodes it into the filename instead (e.g. style-1.0.css). Can improve your GTMetrix score. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $remove_qs_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $remove_qs_beacon['id'] ) . '" target="_blank">', '</a>' ),
 					'section'           => 'basic',
 					'page'              => 'file_optimization',
 					'default'           => 0,
@@ -1034,16 +1019,17 @@ class Page {
 			'preload',
 			[
 				'title'            => __( 'Preload', 'rocket' ),
-				'menu_description' => __( 'Generate cache files', 'rocket' ),
+				'menu_description' => __( 'Generate cache files, preload fonts', 'rocket' ),
 			]
 		);
 
-		$bot_beacon = $this->beacon->get_suggest( 'bot' );
+		$bot_beacon    = $this->beacon->get_suggest( 'bot' );
+		$fonts_preload = $this->beacon->get_suggest( 'fonts_preload' );
 
 		$this->settings->add_settings_sections(
 			[
-				'preload_section'      => [
-					'title'       => __( 'Preload', 'rocket' ),
+				'preload_section'       => [
+					'title'       => __( 'Preload Cache', 'rocket' ),
 					'type'        => 'fields_container',
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description' => sprintf( __( 'When you enable preloading WP Rocket will generate the cache starting with the links on your homepage followed by the sitemaps you specify. Preloading is automatically triggered when you add or update content and can also be manually triggered from the admin bar or from the %1$sWP Rocket Dashboard%2$s.', 'rocket' ), '<a href="#dashboard">', '</a>' ),
@@ -1053,13 +1039,24 @@ class Page {
 					],
 					'page'        => 'preload',
 				],
-				'dns_prefetch_section' => [
+				'dns_prefetch_section'  => [
 					'title'       => __( 'Prefetch DNS Requests', 'rocket' ),
 					'type'        => 'fields_container',
 					'description' => __( 'DNS prefetching can make external files load faster, especially on mobile networks', 'rocket' ),
 					'help'        => [
 						'id'  => $this->beacon->get_suggest( 'dns_prefetch' ),
 						'url' => $bot_beacon['url'],
+					],
+					'page'        => 'preload',
+				],
+				'preload_fonts_section' => [
+					'title'       => __( 'Preload Fonts', 'rocket' ),
+					'type'        => 'fields_container',
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description' => sprintf( __( 'Improves performance by helping browsers discover fonts in CSS files. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $fonts_preload['url'] ) . '" data-beacon-article="' . esc_attr( $fonts_preload['id'] ) . '" target="_blank">', '</a>' ),
+					'help'        => [
+						'id'  => $fonts_preload['id'],
+						'url' => $fonts_preload['url'],
 					],
 					'page'        => 'preload',
 				],
@@ -1106,7 +1103,7 @@ class Page {
 
 		$this->settings->add_settings_fields(
 			[
-				'sitemaps'     => [
+				'sitemaps'      => [
 					'type'              => 'textarea',
 					'label'             => __( 'Sitemaps for preloading', 'rocket' ),
 					'container_class'   => [
@@ -1120,12 +1117,23 @@ class Page {
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
 				],
-				'dns_prefetch' => [
+				'dns_prefetch'  => [
 					'type'              => 'textarea',
 					'label'             => __( 'URLs to prefetch', 'rocket' ),
 					'description'       => __( 'Specify external hosts to be prefetched (no <code>http:</code>, one per line)', 'rocket' ),
 					'placeholder'       => '//example.com',
 					'section'           => 'dns_prefetch_section',
+					'page'              => 'preload',
+					'default'           => [],
+					'sanitize_callback' => 'sanitize_textarea',
+				],
+				'preload_fonts' => [
+					'type'              => 'textarea',
+					'label'             => __( 'Fonts to preload', 'rocket' ),
+					'description'       => __( 'Specify urls of the font files to be preloaded (one per line)', 'rocket' ),
+					'helper'            => __( 'The domain part of the URL will be stripped automatically.<br/>Allowed font extensions: otf, ttf, svg, woff, woff2.', 'rocket' ),
+					'placeholder'       => '/wp-content/themes/your-theme/assets/fonts/font-file.woff',
+					'section'           => 'preload_fonts_section',
 					'page'              => 'preload',
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',

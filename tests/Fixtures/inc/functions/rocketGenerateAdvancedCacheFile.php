@@ -3,7 +3,22 @@
 $content = require WP_ROCKET_TESTS_FIXTURES_DIR . '/content/advancedCacheContent.php';
 
 return [
-	'vfs_dir' => 'wp-content/',
+	'vfs_dir' => 'wp-content/plugins/wp-rocket/views/cache/',
+
+	'structure' => [
+		'wp-content' => [
+			'plugins'            => [
+				'wp-rocket' => [
+					'views' => [
+						'cache' => [
+							'advanced-cache.php' => file_get_contents( WP_ROCKET_PLUGIN_ROOT . 'views/cache/advanced-cache.php' ),
+						],
+					],
+				],
+			],
+			'advanced-cache.php' => '',
+		],
+	],
 
 	'settings' => [
 		'cache_mobile'            => 0,
