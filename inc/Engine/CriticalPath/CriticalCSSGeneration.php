@@ -9,13 +9,13 @@ use WP_Background_Process;
  *
  * @since 2.11
  *
- * @see   WP_Background_Process
+ * @see WP_Background_Process
  */
 class CriticalCSSGeneration extends WP_Background_Process {
+	use TransientTrait;
+
 	/**
 	 * Process prefix.
-	 *
-	 * @since 2.11
 	 *
 	 * @var string
 	 */
@@ -24,20 +24,27 @@ class CriticalCSSGeneration extends WP_Background_Process {
 	/**
 	 * Specific action identifier for sitemap preload.
 	 *
-	 * @since 2.11
-	 *
 	 * @var string Action identifier
 	 */
 	protected $action = 'critical_css_generation';
 
 	/**
-	 * Critical CSS generator API URL.
+	 * ProcessorService instance.
 	 *
-	 * @since 2.11
-	 *
-	 * @var string Critical CSS generator API URL
+	 * @var ProcessorService
 	 */
-	protected $api_url = 'https://cpcss.wp-rocket.me/api/job/';
+	protected $processor;
+
+	/**
+	 * Instantiate the class
+	 *
+	 * @param ProcessorService $processor ProcessorService instance.
+	 */
+	public function __construct( ProcessorService $processor ) {
+		parent::__construct();
+
+		$this->processor = $processor;
+	}
 
 	/**
 	 * Perform the optimization corresponding to $item.
@@ -49,138 +56,35 @@ class CriticalCSSGeneration extends WP_Background_Process {
 	 * @return bool false if task performed successfully, true otherwise to re-queue the item.
 	 */
 	protected function task( $item ) {
-		$response = wp_remote_post(
-			$this->api_url,
-			[
-				/**
-				 * Filters the parameters sent to the Critical CSS generator API.
-				 *
-				 * @since 2.11
-				 *
-				 * @param array $params An array of parameters to send to the API.
-				 * @param array $item   The item to process.
-				 */
-				'body' => apply_filters(
-					'rocket_cpcss_job_request',
-					[
-						'url' => $item['url'],
-					],
-					$item
-				),
-			]
-		);
+		if ( ! is_array( $item ) ) {
+			return false;
+		}
 
 		$transient = get_transient( 'rocket_critical_css_generation_process_running' );
+		$mobile    = isset( $item['mobile'] ) ? $item['mobile'] : 0;
 
-		if ( 400 === wp_remote_retrieve_response_code( $response ) ) {
-			$data = json_decode( wp_remote_retrieve_body( $response ) );
+		$generated = $this->processor->process_generate( $item['url'], $item['path'], false, $mobile );
 
-			if ( isset( $data->message ) ) {
-				// translators: %1$s = type of content, %2$s = error message.
-				$error  = sprintf( __( 'Critical CSS for %1$s not generated. Error: %2$s', 'rocket' ), $item['type'], $data->message );
-				$error .= ' <em> (' . date_i18n( get_option( 'date_format' ) ) . ' @ ' . date_i18n( get_option( 'time_format' ) ) . ') </em>';
+		if ( is_wp_error( $generated ) ) {
+			$this->update_running_transient( $transient, $item['path'], $mobile, $generated->get_error_message(), false );
+			return false;
+		}
 
-				$transient['items'][] = $error;
-				set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
+		if ( isset( $generated['code'] ) && 'cpcss_generation_pending' === $generated['code'] ) {
+			$pending = get_transient( 'rocket_cpcss_generation_pending' );
+
+			if ( false === $pending ) {
+				$pending = [];
 			}
+
+			$pending[ $item['path'] ] = $item;
+
+			set_transient( 'rocket_cpcss_generation_pending', $pending, HOUR_IN_SECONDS );
 
 			return false;
 		}
 
-		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
-			// translators: %1$s = type of content, %2$s = error message.
-			$error  = sprintf( __( 'Critical CSS for %1$s not generated. Error: %2$s', 'rocket' ), $item['type'], __( 'The API returned an invalid response code.', 'rocket' ) );
-			$error .= ' <em> (' . date_i18n( get_option( 'date_format' ) ) . ' @ ' . date_i18n( get_option( 'time_format' ) ) . ') </em>';
-
-			$transient['items'][] = $error;
-			set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
-
-			return false;
-		}
-
-		$data = json_decode( wp_remote_retrieve_body( $response ) );
-
-		if ( ! isset( $data->data ) ) {
-			// translators: %1$s = type of content, %2$s = error message.
-			$error  = sprintf( __( 'Critical CSS for %1$s not generated. Error: %2$s', 'rocket' ), $item['type'], __( 'The API returned an empty response.', 'rocket' ) );
-			$error .= ' <em> (' . date_i18n( get_option( 'date_format' ) ) . ' @ ' . date_i18n( get_option( 'time_format' ) ) . ') </em>';
-
-			$transient['items'][] = $error;
-			set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
-
-			return false;
-		}
-
-		while ( $job_data = $this->get_critical_path( $data->data->id ) ) { // phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
-			if ( 400 === (int) $job_data->status ) {
-				// translators: %1$s = type of content, %2$s = error message.
-				$error  = sprintf( __( 'Critical CSS for %1$s not generated. Error: %2$s', 'rocket' ), $item['type'], $job_data->message );
-				$error .= ' <em> (' . date_i18n( get_option( 'date_format' ) ) . ' @ ' . date_i18n( get_option( 'time_format' ) ) . ') </em>';
-
-				$transient['items'][] = $error;
-				set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
-				break;
-			}
-
-			if ( 'complete' === $job_data->data->state ) {
-				$transient         = get_transient( 'rocket_critical_css_generation_process_running' );
-				$critical_css_path = WP_ROCKET_CRITICAL_CSS_PATH . get_current_blog_id();
-
-				if ( ! rocket_direct_filesystem()->is_dir( $critical_css_path ) ) {
-					rocket_mkdir_p( $critical_css_path );
-				}
-
-				$file_path     = $critical_css_path . '/' . $item['type'] . '.css';
-				$cpcss_content = wp_strip_all_tags( $job_data->data->critical_path, true );
-				$result        = rocket_put_content( $file_path, $cpcss_content );
-
-				if ( ! $result ) {
-					$error = sprintf(
-						// translators: %1$s = type of content, %2$s = error message.
-						__( 'Critical CSS for %1$s not generated. Error: %2$s', 'rocket' ),
-						$item['type'],
-						// translators: %s = critical CSS directory path.
-						sprintf( __( 'The critical CSS content could not be saved as a file in %s.', 'rocket' ), $critical_css_path )
-					);
-
-					$error .= ' <em> (' . date_i18n( get_option( 'date_format' ) ) . ' @ ' . date_i18n( get_option( 'time_format' ) ) . ') </em>';
-
-					$transient['items'][] = $error;
-					set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
-					break;
-				}
-
-				// translators: %s = type of content.
-				$success  = sprintf( __( 'Critical CSS for %s generated.', 'rocket' ), $item['type'] );
-				$success .= ' <em> (' . date_i18n( get_option( 'date_format' ) ) . ' @ ' . date_i18n( get_option( 'time_format' ) ) . ') </em>';
-
-				$transient['items'][] = $success;
-				$transient['generated']++;
-				set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
-
-				break;
-			}
-
-			sleep( 2 );
-		}
-
+		$this->update_running_transient( $transient, $item['path'], $mobile, $generated['message'], ( 'cpcss_generation_successful' === $generated['code'] ) );
 		return false;
-	}
-
-	/**
-	 * Gets the returned body of a request to a specific job from the Critical CSS generator API.
-	 *
-	 * @since 2.11
-	 *
-	 * @param string $job_id Job identifier.
-	 *
-	 * @return object JSON decoded body of the request's response.
-	 */
-	protected function get_critical_path( $job_id ) {
-		$response = wp_remote_get(
-			$this->api_url . $job_id . '/'
-		);
-
-		return json_decode( wp_remote_retrieve_body( $response ) );
 	}
 }

@@ -4,12 +4,14 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\RESTWPPost;
 
 use Brain\Monkey\Functions;
 use WP_REST_Request;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CriticalPath\APIClient;
 use WP_Rocket\Engine\CriticalPath\ProcessorService;
 use WP_Rocket\Engine\CriticalPath\DataManager;
 use WP_Rocket\Engine\CriticalPath\RESTWPPost;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use WP_Error;
+use Mockery;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\RESTWPPost::generate
@@ -20,6 +22,12 @@ use WP_Error;
 class Test_Generate extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/RESTWPPost/generate.php';
 	protected static $mockCommonWpFunctionsInSetUp = true;
+
+	public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
+
+		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/WP_REST_Request.php';
+	}
 
 	/**
 	 * @dataProvider dataProvider
@@ -64,10 +72,19 @@ class Test_Generate extends FilesystemTestCase {
 		$request_timeout              = isset( $config['request_timeout'] )
 			? $config['request_timeout']
 			: false;
-		$file                         = $this->config['vfs_dir'] . "1/posts/{$post_type}-{$post_id}.css";
+		$is_mobile                    = isset( $config['mobile'] )
+			? $config['mobile']
+			: false;
+		$file                         = $this->config['vfs_dir'] . "1/posts/{$post_type}-{$post_id}" . ( $is_mobile ? '-mobile' : '' ). ".css";
 		$post_url = ('post_not_exists' === $expected['code'])
 			? null
 			: "http://example.org/?p={$post_id}";
+		$async_css_mobile             = isset( $config['async_css_mobile'] )
+			? $config['async_css_mobile']
+			: 0;
+		$do_caching_mobile_files      = isset( $config['do_caching_mobile_files'] )
+			? $config['do_caching_mobile_files']
+			: 0;
 
 		//is_wp_error is called three times at normal/ideal case.
 		//validate_item_for_generate
@@ -78,13 +95,14 @@ class Test_Generate extends FilesystemTestCase {
 				return $error_object instanceof WP_Error;
 			}  );
 
-		Functions\expect( 'get_post_status' )
-			->once()
-			->andReturn( $post_status );
-
+		if( ! ( $is_mobile && ( !$async_css_mobile || ! $do_caching_mobile_files ) ) ) {
+			Functions\expect( 'get_post_status' )
+				->once()
+				->andReturn( $post_status );
+		}
 		if ( $post_id > 0 && 'publish' === $post_status ) {
 			Functions\expect( 'get_transient' )
-				->with( 'rocket_specific_cpcss_job_' . md5($post_url) )
+				->with( 'rocket_specific_cpcss_job_' . md5( $post_url ) . ( $is_mobile ? '_mobile' : '' ) )
 				->andReturn( $saved_cpcss_job_id );
 		}
 
@@ -92,7 +110,7 @@ class Test_Generate extends FilesystemTestCase {
 			200 === $post_request_response_code ) {
 			Functions\expect( 'set_transient' )
 				->once()
-				->with( 'rocket_specific_cpcss_job_' . md5($post_url), $cpcss_post_job_id, HOUR_IN_SECONDS );
+				->with( 'rocket_specific_cpcss_job_' . md5( $post_url ) . ( $is_mobile ? '_mobile' : '' ), $cpcss_post_job_id, HOUR_IN_SECONDS );
 		}
 
 		if ( in_array( (int) $get_request_response_code, [ 400, 404 ], true )
@@ -100,7 +118,7 @@ class Test_Generate extends FilesystemTestCase {
 		     || $request_timeout ) {
 			Functions\expect( 'delete_transient' )
 				->once()
-				->with( 'rocket_specific_cpcss_job_' . md5($post_url) );
+				->with( 'rocket_specific_cpcss_job_' . md5($post_url) . ( $is_mobile ? '_mobile' : '' ) );
 		}
 		Functions\expect( 'get_post_type' )
 			->atMost()
@@ -130,6 +148,7 @@ class Test_Generate extends FilesystemTestCase {
 				[
 					'body' => [
 						'url' => "http://example.org/?p={$post_id}",
+						'mobile' => (int) $is_mobile
 					],
 				]
 			)
@@ -161,12 +180,29 @@ class Test_Generate extends FilesystemTestCase {
 
 		Functions\expect( 'rest_ensure_response' )->once()->andReturnArg( 0 );
 
-		$api_client = new APIClient();
-		$data_manager = new DataManager('wp-content/cache/critical-css/', $this->filesystem);
+		$api_client    = new APIClient();
+		$data_manager  = new DataManager('wp-content/cache/critical-css/', $this->filesystem);
 		$cpcss_service = new ProcessorService( $data_manager, $api_client );
-		$instance = new RESTWPPost( $cpcss_service );
-		$request       = new WP_REST_Request();
-		$request['id'] = $post_id;
+		$options       = Mockery::mock( Options_Data::class );
+
+		if( $is_mobile ) {
+			$options->shouldReceive( 'get' )
+				->with( 'async_css_mobile', 0 )
+				->once()
+				->andReturn( $async_css_mobile );
+
+			if($async_css_mobile){
+				$options->shouldReceive( 'get' )
+					->with( 'do_caching_mobile_files', 0 )
+					->once()
+					->andReturn( $do_caching_mobile_files );
+			}
+		}
+
+		$instance             = new RESTWPPost( $cpcss_service, $options );
+		$request              = new WP_REST_Request();
+		$request['id']        = $post_id;
+		$request['is_mobile'] = $is_mobile;
 
 		if ( $request_timeout ) {
 			$request['timeout'] = $request_timeout;

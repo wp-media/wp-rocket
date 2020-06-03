@@ -24,6 +24,7 @@ class Test_DeleteCPCSS extends FilesystemTestCase {
 	public function testShouldDoExpected( $config, $expected ) {
 		$cache_path = $this->filesystem->getUrl( $this->config['vfs_dir'] );
 		$file       = "{$cache_path}1/{$config['path']}";
+		$is_mobile  = isset( $config['is_mobile'] ) ? $config['is_mobile'] : false;
 
 		// Check if the file exists before starting.
 		if ( $expected['deleted'] ) {
@@ -36,7 +37,7 @@ class Test_DeleteCPCSS extends FilesystemTestCase {
 
 		// Run it.
 		$data_manager = new DataManager( $cache_path, $this->filesystem );
-		$actual       = $data_manager->delete_cpcss( $config['path'] );
+		$actual       = $data_manager->delete_cpcss( $config['path'], $is_mobile );
 
 		if ( isset( $expected['deleted'] ) && true === $expected['deleted'] ) {
 			// Assert success.

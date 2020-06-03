@@ -1273,28 +1273,43 @@ function rocket_get_filesystem_perms( $type ) {
 }
 
 /**
- * Try to find the correct wp-config.php file, support one level up in filetree
+ * Try to find the correct wp-config.php file, support one level up in file tree.
  *
  * @since 2.1
  *
- * @return string|bool The path of wp-config.php file or false if not found
+ * @return string|bool The path of wp-config.php file or false if not found.
  */
 function rocket_find_wpconfig_path() {
 	/**
-	 * Filter the wp-config's filename
+	 * Filter the wp-config's filename.
 	 *
 	 * @since 2.11
-	 * @author Maxime Culea
 	 *
 	 * @param string $filename The WP Config filename, without the extension.
 	 */
 	$config_file_name = apply_filters( 'rocket_wp_config_name', 'wp-config' );
-	$config_file      = ABSPATH . $config_file_name . '.php';
-	$config_file_alt  = dirname( ABSPATH ) . '/' . $config_file_name . '.php';
+	$abspath          = rocket_get_constant( 'ABSPATH' );
+	$config_file      = "{$abspath}{$config_file_name}.php";
+	$filesystem       = rocket_direct_filesystem();
 
-	if ( rocket_direct_filesystem()->exists( $config_file ) && rocket_direct_filesystem()->is_writable( $config_file ) ) {
+	if (
+		$filesystem->exists( $config_file )
+		&&
+		$filesystem->is_writable( $config_file )
+	) {
 		return $config_file;
-	} elseif ( rocket_direct_filesystem()->exists( $config_file_alt ) && rocket_direct_filesystem()->is_writable( $config_file_alt ) && ! rocket_direct_filesystem()->exists( dirname( ABSPATH ) . '/wp-settings.php' ) ) {
+	}
+
+	$abspath_parent  = dirname( $abspath ) . DIRECTORY_SEPARATOR;
+	$config_file_alt = "{$abspath_parent}{$config_file_name}.php";
+
+	if (
+		$filesystem->exists( $config_file_alt )
+		&&
+		$filesystem->is_writable( $config_file_alt )
+		&&
+		! $filesystem->exists( "{$abspath_parent}wp-settings.php" )
+	) {
 		return $config_file_alt;
 	}
 

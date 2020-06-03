@@ -8,22 +8,24 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSS::clean_critical_css
  *
  * @group  AdminOnly
- * @group  CriticalCss
+ * @group  CriticalPath
  */
 class Test_CleanCriticalCSS extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSS/cleanCriticalCss.php';
+	protected      $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSS/cleanCriticalCss.php';
+	private static $critical_css;
 
-	private $deleted_files = [
-		'home.css',
-		'front_page.css',
-		'category.css',
-		'post_tag.css',
-		'page.css',
-	];
-	private $available_folders = [
-		'folder',
-		'folder/file.css',
-	];
+	public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
+
+		$container          = apply_filters( 'rocket_container', null );
+		self::$critical_css = $container->get( 'critical_css' );
+	}
+
+	public function setUp() {
+		parent::setUp();
+
+		add_filter( 'pre_get_rocket_option_async_css', [ $this, 'return_true' ] );
+	}
 
 	public function tearDown() {
 		parent::tearDown();
@@ -31,32 +33,36 @@ class Test_CleanCriticalCSS extends FilesystemTestCase {
 		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'return_true' ] );
 	}
 
-	public function testShouldDeleteFilesFromRootFolder() {
-		add_filter( 'pre_get_rocket_option_async_css', [ $this, 'return_true' ] );
+	/**
+	 * @dataProvider providerTestData
+	 */
+	public function testShouldDeleteFilesFromRootFolder( $config, $deleted_files, $available_folders ) {
+		$critical_css_path = "vfs://public/wp-content/cache/critical-css/{$config['blog_id']}/";
 
-		$critical_css_path = rocket_get_constant( 'WP_ROCKET_CRITICAL_CSS_PATH' ) . get_current_blog_id() . '/';
 		// Test that deleted Files are available.
-		foreach ( $this->deleted_files as $file ) {
+		foreach ( $deleted_files as $file ) {
 			$this->assertTrue( $this->filesystem->exists( $critical_css_path . $file ) );
 		}
+
 		// Test that Subfolders are available.
-		foreach ( $this->available_folders as $folder ) {
+		foreach ( $available_folders as $folder ) {
 			$this->assertTrue( $this->filesystem->exists( $critical_css_path . $folder ) );
 		}
 
-		$themes = wp_get_themes();
-		$theme  = reset( $themes );
-
-		// Switching theme will trigger : maybe_regenerate_cpcss() which will call clean_critical_css().
-		switch_theme( $theme->get_stylesheet() );
+		self::$critical_css->clean_critical_css( $config['version'] );
 
 		// Test that root files are deleted now.
-		foreach ( $this->deleted_files as $file ) {
-			$this->assertFalse( $this->filesystem->exists( $critical_css_path  . $file ) );
+		foreach ( $deleted_files as $file ) {
+			$this->assertFalse( $this->filesystem->exists( $critical_css_path . $file ) );
 		}
+
 		// Test that Subfolders are still available.
-		foreach ( $this->available_folders as $folder ) {
+		foreach ( $available_folders as $folder ) {
 			$this->assertTrue( $this->filesystem->exists( $critical_css_path . $folder ) );
+		}
+
+		if ( empty( $deleted_files ) && 1 !== $config['blog_id'] ) {
+			$this->assertFalse( $this->filesystem->exists( $critical_css_path ) );
 		}
 	}
 }
