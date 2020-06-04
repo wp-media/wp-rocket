@@ -33,14 +33,4 @@ abstract class AjaxTestCase extends BaseAjaxTestCase {
 			$this->assertSame( $value, $options[ $key ] );
 		}
 	}
-
-	protected function assertCallbackRegistered( $event, $method, $priority = 10 ) {
-		$this->assertTrue( has_action( $event ) );
-
-		global $wp_filter;
-		$callbacks = $wp_filter[ $event ]->callbacks;
-
-		$registration = current( $callbacks[ $priority ] );
-		$this->assertEquals( $method, $registration['function'][1] );
-	}
 }

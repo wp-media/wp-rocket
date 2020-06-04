@@ -3,11 +3,13 @@
 namespace WP_Rocket\Tests\Integration;
 
 use ReflectionObject;
+use WP_Rocket\Tests\CallbackTrait;
 use WP_Rocket\Tests\SettingsTrait;
 use WP_Rocket\Tests\StubTrait;
 use WPMedia\PHPUnit\Integration\AjaxTestCase as WPMediaAjaxTestCase;
 
 abstract class AjaxTestCase extends WPMediaAjaxTestCase {
+	use CallbackTrait;
 	use CapTrait;
 	use SettingsTrait;
 	use StubTrait;

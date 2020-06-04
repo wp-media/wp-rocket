@@ -24,9 +24,9 @@ class Test_RocketFirstInstall extends TestCase {
 	 */
 	public function testShouldAddOption( $expected ) {
 		$uniqids = [
-			'secret_cache_key' => $expected['secret_cache_key'],
-			'minify_css_key'   => $expected['minify_css_key'],
-			'minify_js_key'    => $expected['minify_js_key'],
+			'secret_cache_key' => $expected['unit']['secret_cache_key'],
+			'minify_css_key'   => $expected['unit']['minify_css_key'],
+			'minify_js_key'    => $expected['unit']['minify_js_key'],
 		];
 
 		Functions\expect( 'create_rocket_uniqid' )
@@ -37,7 +37,7 @@ class Test_RocketFirstInstall extends TestCase {
 			->andReturn( 'wp_rocket_settings' );
 		Functions\expect( 'add_option' )
 			->once()
-			->with( 'wp_rocket_settings', $expected );
+			->with( 'wp_rocket_settings', $expected['unit'] );
 		Functions\expect( 'rocket_dismiss_box' )
 			->once()
 			->with( 'rocket_warning_plugin_modification' );

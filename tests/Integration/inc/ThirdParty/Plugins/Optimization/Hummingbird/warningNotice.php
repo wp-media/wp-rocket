@@ -2,17 +2,22 @@
 
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\Optimization\Hummingbird;
 
-use Brain\Monkey\Functions;
-use WPMedia\PHPUnit\Integration\TestCase;
+use WP_Rocket\Tests\Integration\CapTrait;
+use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers WP_Rocket\inc\ThirdParty\Plugins\Optimization\Hummingbird::warning_notice
+ * @covers \WP_Rocket\ThirdParty\Plugins\Optimization\Hummingbird::warning_notice
+ *
  * @group Hummingbird
  * @group ThirdParty
  */
 class Test_WarningNotice extends TestCase {
-	public static function WpSetupBeforeClass( $factory ) {
-		$user = $factory->user->create( [ 'role' => 'administrator' ] );
+
+	public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
+		CapTrait::setAdminCap();
+
+		$user = static::factory()->user->create( [ 'role' => 'administrator' ] );
 		wp_set_current_user( $user );
 	}
 
@@ -24,10 +29,12 @@ class Test_WarningNotice extends TestCase {
 	}
 
 	public function tearDown() {
-		delete_option( 'wphb_settings' );
-		remove_filter( 'pre_option_active_plugins', [ $this, 'active_plugin' ] );
+		set_current_screen( 'front' );
 
 		parent::tearDown();
+
+		delete_option( 'wphb_settings' );
+		remove_filter( 'pre_option_active_plugins', [ $this, 'active_plugin' ] );
 	}
 
 	private function getActualHtml() {

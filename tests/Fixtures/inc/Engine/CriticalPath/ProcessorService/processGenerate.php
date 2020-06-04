@@ -35,6 +35,7 @@ return [
 				],
 				'cpcss_exists_after' => false,
 				'request_timeout'    => true,
+				'mobile'             => false,
 			],
 			'expected' => [
 				'success' => false,
@@ -227,7 +228,7 @@ return [
 				'cpcss_job_id'               => false,
 				'save_cpcss'                 => new WP_Error(
 					'cpcss_generation_failed',
-					'Critical CSS for http://example.org/?p=21 not generated.',
+					'Critical CSS for http://example.org/?p=21 not generated. Error: The API returned an empty response.',
 					[
 						'status' => 400,
 					]
@@ -236,7 +237,7 @@ return [
 			'expected' => [
 				'success' => false,
 				'code'    => 'cpcss_generation_failed',
-				'message' => 'Critical CSS for http://example.org/?p=21 not generated.',
+				'message' => 'Critical CSS for http://example.org/?p=21 not generated. Error: The API returned an empty response.',
 				'data'    => [
 					'status' => 400,
 				],

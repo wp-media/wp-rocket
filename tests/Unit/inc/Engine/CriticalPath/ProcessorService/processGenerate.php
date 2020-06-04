@@ -66,53 +66,56 @@ class Test_ProcessGenerate extends FilesystemTestCase {
 		$get_job_details_error         = ! isset( $config['get_job_details_error'] )
 			? ''
 			: $config['get_job_details_error'];
+		$is_mobile                    = isset( $config['mobile'] )
+			? $config['mobile']
+			: false;
 
 		$api_client    = Mockery::mock( APIClient::class );
 		$data_manager  = Mockery::mock( DataManager::class );
 		$cpcss_service = new ProcessorService( $data_manager, $api_client );
 
 		if ( $request_timeout ) {
-			$data_manager->shouldReceive( 'delete_cache_job_id' )->once()->with( $item_url );
+			$data_manager->shouldReceive( 'delete_cache_job_id' )->once()->with( $item_url, $is_mobile );
 		} else {
-			$data_manager->shouldReceive( 'get_cache_job_id' )->once()->with( $item_url )->andReturn( $saved_cpcss_job_id );
+			$data_manager->shouldReceive( 'get_cache_job_id' )->once()->with( $item_url, $is_mobile )->andReturn( $saved_cpcss_job_id );
 
 			if ( false === $saved_cpcss_job_id) {
 				// enters send_generation_request()
 				if ( $post_id > 0 && 'publish' === $post_status && $cpcss_post_job_id && 200 === $post_request_response_code ) {
 					$api_client->shouldReceive( 'send_generation_request' )
 						->once()
-						->with( $item_url )
+						->with( $item_url, [ 'mobile' => $is_mobile ] )
 						->andReturn( $cpcss_post_job_body );
 
-					$data_manager->shouldReceive( 'set_cache_job_id' )->once()->with( $item_url, $cpcss_post_job_id );
+					$data_manager->shouldReceive( 'set_cache_job_id' )->once()->with( $item_url, $cpcss_post_job_id, $is_mobile );
 
 					if ( ! in_array( (int) $get_request_response_code, [ 400, 404 ], true ) ) {
 						$api_client->shouldReceive( 'get_job_details' )
 							->once()
-							->with( $cpcss_post_job_id, $item_url )
+							->with( $cpcss_post_job_id, $item_url, $is_mobile )
 							->andReturn( $get_request_response_decoded );
-						$data_manager->shouldReceive( 'delete_cache_job_id' )->once()->with( $item_url );
+						$data_manager->shouldReceive( 'delete_cache_job_id' )->once()->with( $item_url, $is_mobile );
 						$data_manager->shouldReceive( 'save_cpcss' )
 							->once()
-							->with( $item_path, $get_request_response_decoded->data->critical_path, $item_url )
+							->with( $item_path, $get_request_response_decoded->data->critical_path, $item_url, $is_mobile )
 							->andReturn( $save_cpcss );
 					} else {
 						$api_client->shouldReceive( 'get_job_details' )
 							->once()
-							->with( $cpcss_post_job_id, $item_url )
+							->with( $cpcss_post_job_id, $item_url, $is_mobile )
 							->andReturn( $get_job_details_error );
-						$data_manager->shouldReceive( 'delete_cache_job_id' )->once()->with( $item_url );
+						$data_manager->shouldReceive( 'delete_cache_job_id' )->once()->with( $item_url, $is_mobile );
 					}
 				} else {
 					$api_client->shouldReceive( 'send_generation_request' )
 						->once()
-						->with( $item_url )
+						->with( $item_url, [ 'mobile' => $is_mobile ] )
 						->andReturn( $send_generation_request_error );
 				}
 			}
 		}
 
-		$generated = $cpcss_service->process_generate( $item_url, $item_path, $request_timeout );
+		$generated = $cpcss_service->process_generate( $item_url, $item_path, $request_timeout, $is_mobile );
 		if( isset( $expected['success'] ) && ! $expected['success'] ){
 			$this->assertSame( $expected['code'], $generated->get_error_code() );
 			$this->assertSame( $expected['message'], $generated->get_error_message() );

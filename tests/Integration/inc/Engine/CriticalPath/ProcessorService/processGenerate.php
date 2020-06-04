@@ -35,7 +35,7 @@ class Test_ProcessGenerate extends FilesystemTestCase {
 		parent::setUp();
 
 		$this->api_client = Mockery::mock( APIClient::class );
-		$this->processor  = new ProcessorService( self::$container->get( 'rest_cpcss_data_manager' ), $this->api_client );
+		$this->processor  = new ProcessorService( self::$container->get( 'cpcss_data_manager' ), $this->api_client );
 	}
 
 	/**
@@ -87,7 +87,9 @@ class Test_ProcessGenerate extends FilesystemTestCase {
 			? ''
 			: $config['get_job_details_error'];
 		$file                         = $this->config['vfs_dir'] . "1/".$item_path;
-
+		$is_mobile                    = isset( $config['mobile'] )
+			? $config['mobile']
+			: false;
 
 		if ( ! $request_timeout ) {
 			if ( false === $saved_cpcss_job_id) {
@@ -95,24 +97,24 @@ class Test_ProcessGenerate extends FilesystemTestCase {
 				if ( $post_id > 0 && 'publish' === $post_status && $cpcss_post_job_id && 200 === $post_request_response_code ) {
 					$this->api_client->shouldReceive( 'send_generation_request' )
 						->once()
-						->with( $item_url )
+						->with( $item_url, [ 'mobile' => $is_mobile ] )
 						->andReturn( $cpcss_post_job_body );
 
 					if ( ! in_array( (int) $get_request_response_code, [ 400, 404 ], true ) ) {
 						$this->api_client->shouldReceive( 'get_job_details' )
 							->once()
-							->with( $cpcss_post_job_id, $item_url )
+							->with( $cpcss_post_job_id, $item_url, $is_mobile )
 							->andReturn( $get_request_response_decoded );
 					} else {
 						$this->api_client->shouldReceive( 'get_job_details' )
 							->once()
-							->with( $cpcss_post_job_id, $item_url )
+							->with( $cpcss_post_job_id, $item_url, $is_mobile )
 							->andReturn( $get_job_details_error );
 					}
 				} else {
 					$this->api_client->shouldReceive( 'send_generation_request' )
 						->once()
-						->with( $item_url )
+						->with( $item_url, [ 'mobile' => $is_mobile ] )
 						->andReturn( $send_generation_request_error );
 				}
 			}
@@ -124,7 +126,7 @@ class Test_ProcessGenerate extends FilesystemTestCase {
 
 		$generated = $this->processor->process_generate( $item_url, $item_path, $request_timeout );
 
-		if ( isset( $expected['success'] ) && ! $expected['success'] ){
+		if ( isset( $expected['success'] ) && ! $expected['success'] ) {
 			$this->assertSame( $expected['code'], $generated->get_error_code() );
 			$this->assertSame( $expected['message'], $generated->get_error_message() );
 			$this->assertSame( $expected['data'], $generated->get_error_data() );

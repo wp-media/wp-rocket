@@ -1,5 +1,6 @@
 <?php
 
+use League\Container\Container;
 use WP_Rocket\Engine\Cache\AdvancedCache;
 use WP_Rocket\Plugin;
 use WP_Rocket\Subscriber\Plugin\Capabilities_Subscriber;
@@ -42,7 +43,10 @@ function rocket_init() {
 	define( 'WP_ROCKET_PLUGIN_NAME', 'WP Rocket' );
 	define( 'WP_ROCKET_PLUGIN_SLUG', sanitize_key( WP_ROCKET_PLUGIN_NAME ) );
 
-	$wp_rocket = new Plugin( WP_ROCKET_PATH . 'views' );
+	$wp_rocket = new Plugin(
+		WP_ROCKET_PATH . 'views',
+		new Container()
+	);
 	$wp_rocket->load();
 
 	// Call defines and functions.
