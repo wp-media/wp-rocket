@@ -31,7 +31,7 @@ SCRIPT
 			'config'   => [
 				'locale'        => 'en_US',
 				'customer_data' => (object) [
-					'licence_account' => 'Unvailable',
+					'licence_account' => 'Unavailable',
 				],
 			],
 			'expected' => [
