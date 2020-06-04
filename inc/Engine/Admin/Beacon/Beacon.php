@@ -213,7 +213,9 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 			'Unavailable' => 108003,
 		];
 
-		$prefill_data['fields'][0]['value'] = $licenses[ $customer_data->licence_account ];
+		if ( isset( $licenses[ $customer_data->licence_account ] ) ) {
+			$prefill_data['fields'][0]['value'] = $licenses[ $customer_data->licence_account ];
+		}
 
 		return $prefill_data;
 	}
