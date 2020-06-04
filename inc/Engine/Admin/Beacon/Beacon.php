@@ -207,9 +207,10 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 		}
 
 		$licenses = [
-			'Single'   => 108000,
-			'Plus'     => 108001,
-			'Infinite' => 108002,
+			'Single'      => 108000,
+			'Plus'        => 108001,
+			'Infinite'    => 108002,
+			'Unavailable' => 108003,
 		];
 
 		$prefill_data['fields'][0]['value'] = $licenses[ $customer_data->licence_account ];
