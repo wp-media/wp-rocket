@@ -13,7 +13,6 @@ branches:
   - develop
   - /branch-.*$/
   - /feature.*$/
-  - /fix.*$/
 cache:
   directories:
   - $HOME/.composer/cache
