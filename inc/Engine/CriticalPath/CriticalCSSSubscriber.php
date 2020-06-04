@@ -357,7 +357,8 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 
 		if (
 			0 === $success_counter
-			&& 0 === $transient['total']
+			&&
+			0 === $transient['total']
 		) {
 			return;
 		}
