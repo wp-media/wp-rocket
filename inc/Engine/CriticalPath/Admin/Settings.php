@@ -74,7 +74,7 @@ class Settings extends Abstract_Render {
 		}
 
 		$data = [
-			'beacon' => $this->beacon->get_suggest( 'specific_cpcss' ),
+			'beacon' => $this->beacon->get_suggest( 'async' ),
 		];
 
 		echo $this->generate( 'activate-cpcss-mobile', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
