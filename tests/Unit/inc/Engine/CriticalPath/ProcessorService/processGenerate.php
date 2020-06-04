@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\ProcessorService;
 use Mockery;
 use WP_Error;
 use Brain\Monkey\Functions;
-use WP_Rocket\Tests\Unit\TestCase;
+use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use WP_Rocket\Engine\CriticalPath\APIClient;
 use WP_Rocket\Engine\CriticalPath\ProcessorService;
 use WP_Rocket\Engine\CriticalPath\DataManager;
@@ -15,11 +15,12 @@ use WP_Rocket\Engine\CriticalPath\DataManager;
  *
  * @group  CriticalPath
  */
-class Test_ProcessGenerate extends TestCase {
+class Test_ProcessGenerate extends FilesystemTestCase {
+	protected $path_to_test_data = '/inc/Engine/CriticalPath/ProcessorService/processGenerate.php';
 	protected static $mockCommonWpFunctionsInSetUp = true;
 
 	/**
-	 * @dataProvider configTestData
+	 * @dataProvider dataProvider
 	 */
 	public function testShouldDoExpected( $config, $expected ) {
 		$post_id                       = isset( $config['post_data'] )
