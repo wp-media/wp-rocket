@@ -21,7 +21,7 @@ $rocket_cpcss_exists = empty( $data['cpcss_exists'] );
 	printf(
 		// translators: %1$s = opening link tag, %2$s = closing link tag.
 		esc_html__( 'Generate specific Critical Path CSS for this post. %1$sMore info%2$s', 'rocket' ),
-		'<a href="' . esc_url( $data['beacon']['url'] ) . '" data-beacon-article="' . esc_attr( $data['beacon']['id'] ) . '"  target="_blank" rel="noopener noreferrer">',
+		'<a href="' . esc_url( $data['beacon']['url'] ) . '" data-beacon-article="' . esc_attr( $data['beacon']['id'] ) . '" target="_blank" rel="noopener noreferrer">',
 		'</a>'
 		);
 	?>
@@ -31,7 +31,7 @@ $rocket_cpcss_exists = empty( $data['cpcss_exists'] );
 	printf(
 		// translators: %1$s = opening link tag, %2$s = closing link tag.
 		esc_html__( 'This post uses specific Critical Path CSS. %1$sMore info%2$s', 'rocket' ),
-		'<a href="' . esc_url( $data['beacon']['url'] ) . '" data-beacon-article="' . esc_attr( $data['beacon']['id'] ) . '"  target="_blank" rel="noopener noreferrer">',
+		'<a href="' . esc_url( $data['beacon']['url'] ) . '" data-beacon-article="' . esc_attr( $data['beacon']['id'] ) . '" target="_blank" rel="noopener noreferrer">',
 		'</a>'
 		);
 	?>

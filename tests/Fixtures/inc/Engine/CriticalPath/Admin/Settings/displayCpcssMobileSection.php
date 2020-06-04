@@ -87,10 +87,10 @@ Your website currently uses the same Critical Path CSS for both desktop and mobi
 <div class="wpr-field-description wpr-hide-on-click">
 Click the button to enable mobile-specific CPCSS for your site.</div>
 <div class="wpr-field-description wpr-hide-on-click">
-This is a one-time action and this button will be removed afterwards. <a href="https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&#038;utm_medium=wp_rocket" target="_blank" rel="noopener noreferrer">More info</a>
+This is a one-time action and this button will be removed afterwards. <a href="https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&#038;utm_medium=wp_rocket" data-beacon-article="5d52144c0428631e94f94ae2" target="_blank" rel="noopener noreferrer">More info</a>
 </div>
 <div class="wpr-field-description wpr-field wpr-isHidden wpr-show-on-click">
-Your site is now using mobile-specific critical path CSS. <a href="https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&#038;utm_medium=wp_rocket" target="_blank" rel="noopener noreferrer">More info</a></div>
+Your site is now using mobile-specific critical path CSS. <a href="https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&#038;utm_medium=wp_rocket" data-beacon-article="5d52144c0428631e94f94ae2" target="_blank" rel="noopener noreferrer">More info</a></div>
 </div>
 <div class="wpr-tools-col">
 <button id="wpr-action-rocket_enable_mobile_cpcss" class="wpr-button wpr-button--icon wpr-button--small wpr-button--purple wpr-icon-refresh">
