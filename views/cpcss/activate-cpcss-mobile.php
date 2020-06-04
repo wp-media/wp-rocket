@@ -18,7 +18,7 @@ defined( 'ABSPATH' ) || exit;
 			printf(
 				// translators: %1$s = opening link tag, %2$s = closing link tag.
 				esc_html__( 'This is a one-time action and this button will be removed afterwards. %1$sMore info%2$s', 'rocket' ),
-				'<a href="' . esc_url( $data['beacon'] ) . '" target="_blank" rel="noopener noreferrer">',
+				'<a href="' . esc_url( $data['beacon']['url'] ) . '" data-beacon-article="' . esc_attr( $data['beacon']['id'] ) . '" target="_blank" rel="noopener noreferrer">',
 				'</a>'
 				);
 			?>
@@ -28,7 +28,7 @@ defined( 'ABSPATH' ) || exit;
 			printf(
 				// translators: %1$s = opening link tag, %2$s = closing link tag.
 				esc_html__( 'Your site is now using mobile-specific critical path CSS. %1$sMore info%2$s', 'rocket' ),
-				'<a href="' . esc_url( $data['beacon'] ) . '" target="_blank" rel="noopener noreferrer">',
+				'<a href="' . esc_url( $data['beacon']['url'] ) . '" data-beacon-article="' . esc_attr( $data['beacon']['id'] ) . '" target="_blank" rel="noopener noreferrer">',
 				'</a>'
 				);
 			?>
