@@ -225,7 +225,7 @@ class ProcessorService {
 		$this->data_manager->delete_cache_job_id( $item_url, $is_mobile );
 
 		// save the generated CPCSS code into file.
-		$saved = $this->data_manager->save_cpcss( $item_path, $cpcss_code, $item_url );
+		$saved = $this->data_manager->save_cpcss( $item_path, $cpcss_code, $item_url, $is_mobile );
 		if ( is_wp_error( $saved ) ) {
 			return $saved;
 		}
