@@ -40,18 +40,18 @@ class ProcessorService {
 	 *
 	 * @param string $item_url  URL for item to be used in error messages.
 	 * @param string $item_path Path for item to be processed.
-	 * @param array  $additional_parameter additional parameters for generation.
+	 * @param array  $additional_parameters additional parameters for generation.
 	 *
 	 * @return array|WP_Error
 	 */
-	public function process_generate( $item_url, $item_path, $additional_parameter = [
+	public function process_generate( $item_url, $item_path, $additional_parameters = [
 		'timeout'   => false,
 		'is_mobile' => false,
 		'item_type' => 'custom',
 	] ) {
-		$timeout   = isset( $additional_parameter['timeout'] ) ? $additional_parameter['timeout'] : false;
-		$is_mobile = isset( $additional_parameter['is_mobile'] ) ? $additional_parameter['is_mobile'] : false;
-		$item_type = isset( $additional_parameter['item_type'] ) ? $additional_parameter['item_type'] : 'custom';
+		$timeout   = isset( $additional_parameters['timeout'] ) ? $additional_parameters['timeout'] : false;
+		$is_mobile = isset( $additional_parameters['is_mobile'] ) ? $additional_parameters['is_mobile'] : false;
+		$item_type = isset( $additional_parameters['item_type'] ) ? $additional_parameters['item_type'] : 'custom';
 
 		// Ajax call requested a timeout.
 		if ( $timeout ) {
