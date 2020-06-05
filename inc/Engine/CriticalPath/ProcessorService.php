@@ -50,7 +50,7 @@ class ProcessorService {
 			'is_mobile' => false,
 			'item_type' => 'custom',
 		];
-		$args = array_merge( $defaults, $additional_parameters );
+		$args     = array_merge( $defaults, $additional_parameters );
 
 		// Ajax call requested a timeout.
 		if ( $args['timeout'] ) {
