@@ -326,6 +326,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 		}
 
 		$transient = get_transient( 'rocket_critical_css_generation_process_running' );
+
 		if ( ! $transient ) {
 			return;
 		}
@@ -350,7 +351,15 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 			$items_message .= '</ul>';
 		}
 
-		if ( 0 === $success_counter && 0 === $transient['total'] ) {
+		if ( ! isset( $transient['total'] ) ) {
+			return;
+		}
+
+		if (
+			0 === $success_counter
+			&&
+			0 === $transient['total']
+		) {
 			return;
 		}
 
