@@ -19,9 +19,10 @@ class APIClient {
 	 *
 	 * @param string $url    The URL to send a CPCSS generation request for.
 	 * @param array  $params Optional. Parameters needed to be sent in the body. Default: [].
+	 * @param string $item_type Optional. Type for this item if it's custom or specific type. Default: custom.
 	 * @return array
 	 */
-	public function send_generation_request( $url, $params = [] ) {
+	public function send_generation_request( $url, $params = [], $item_type = 'custom' ) {
 		$params['url'] = $url;
 		$is_mobile     = isset( $params['mobile'] ) && $params['mobile'];
 		$response      = wp_remote_post(
@@ -38,7 +39,7 @@ class APIClient {
 			]
 		);
 
-		return $this->prepare_response( $response, $url, $is_mobile );
+		return $this->prepare_response( $response, $url, $is_mobile, $item_type );
 	}
 
 	/**
@@ -49,10 +50,11 @@ class APIClient {
 	 * @param array|WP_Error $response  The response or WP_Error on failure.
 	 * @param string         $url       Url to be checked.
 	 * @param bool           $is_mobile Optional. Flag for if this is cpcss for mobile or not. Default: false.
+	 * @param string         $item_type Optional. Type for this item if it's custom or specific type. Default: custom.
 	 *
 	 * @return array|WP_Error
 	 */
-	private function prepare_response( $response, $url, $is_mobile = false ) {
+	private function prepare_response( $response, $url, $is_mobile = false, $item_type = 'custom' ) {
 		$response_data        = $this->get_response_data( $response );
 		$response_status_code = $this->get_response_status( $response, ( isset( $response_data->status ) ) ? $response_data->status : null );
 		$succeeded            = $this->get_response_success( $response_status_code, $response_data );
@@ -61,7 +63,7 @@ class APIClient {
 			return $response_data;
 		}
 
-		$response_message = $this->get_response_message( $response_status_code, $response_data, $url, $is_mobile );
+		$response_message = $this->get_response_message( $response_status_code, $response_data, $url, $is_mobile, $item_type );
 
 		if ( 200 === $response_status_code ) {
 			$response_status_code = 400;
@@ -135,10 +137,11 @@ class APIClient {
 	 * @param stdClass $response_data        Object of data returned from request.
 	 * @param string   $url                  Url for the web page to be checked.
 	 * @param bool     $is_mobile            Optional. Flag for if this is cpcss for mobile or not. Default: false.
+	 * @param string   $item_type Optional. Type for this item if it's custom or specific type. Default: custom.
 	 *
 	 * @return string
 	 */
-	private function get_response_message( $response_status_code, $response_data, $url, $is_mobile = false ) {
+	private function get_response_message( $response_status_code, $response_data, $url, $is_mobile = false, $item_type = 'custom' ) {
 		$message = '';
 
 		switch ( $response_status_code ) {
@@ -152,7 +155,7 @@ class APIClient {
 							:
 							// translators: %s = item URL.
 							__( 'Critical CSS for %1$s not generated. Error: The API returned an empty response.', 'rocket' ),
-						$url
+						( 'custom' === $item_type ) ? $url : $item_type
 					);
 				}
 				break;
@@ -166,7 +169,7 @@ class APIClient {
 						? __( 'Critical CSS for %1$s on mobile not generated.', 'rocket' )
 						// translators: %s = item URL.
 						: __( 'Critical CSS for %1$s not generated.', 'rocket' ),
-					$url
+					( 'custom' === $item_type ) ? $url : $item_type
 					);
 				break;
 			default:
@@ -176,7 +179,7 @@ class APIClient {
 						? __( 'Critical CSS for %1$s on mobile not generated. Error: The API returned an invalid response code.', 'rocket' )
 						// translators: %s = URL.
 						: __( 'Critical CSS for %1$s not generated. Error: The API returned an invalid response code.', 'rocket' ),
-					$url
+					( 'custom' === $item_type ) ? $url : $item_type
 				);
 				break;
 		}
@@ -224,14 +227,15 @@ class APIClient {
 	 * @param string $job_id    ID for the job to get details.
 	 * @param string $url       URL to be used in error messages.
 	 * @param bool   $is_mobile Optional. Flag for if this is cpcss for mobile or not. Default: false.
+	 * @param string $item_type Optional. Type for this item if it's custom or specific type. Default: custom.
 	 *
 	 * @return mixed|WP_Error Details for job.
 	 */
-	public function get_job_details( $job_id, $url, $is_mobile = false ) {
+	public function get_job_details( $job_id, $url, $is_mobile = false, $item_type = 'custom' ) {
 		$response = wp_remote_get(
 			self::API_URL . "{$job_id}/"
 		);
 
-		return $this->prepare_response( $response, $url, $is_mobile );
+		return $this->prepare_response( $response, $url, $is_mobile, $item_type );
 	}
 }
