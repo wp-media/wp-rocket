@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.4\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2020-05-28 13:07-0400\n"
+"POT-Creation-Date: 2020-06-03 17:43-0400\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Dan Caragea <dan_caragea@yahoo.com>, 2020\n"
 "Language-Team: Romanian (Romania) (https://www.transifex.com/wp-media/teams/18133/ro_RO/)\n"
@@ -1719,7 +1719,18 @@ msgstr "RocketCDN dezactivat"
 msgid "Clear this cache"
 msgstr "Șterge acest cache"
 
-#: inc/Engine/CriticalPath/APIClient.php:144
+#: inc/Engine/CriticalPath/APIClient.php:151
+#: inc/Engine/CriticalPath/DataManager.php:65
+#, php-format
+msgid ""
+"Critical CSS for %1$s on mobile not generated. Error: The API returned an "
+"empty response."
+msgstr ""
+"CSS-ul critic pentru %1$s nu a fost generat pentru dispozitive mobile. "
+"Eroare: API-ul a returnat un răspuns gol."
+
+#: inc/Engine/CriticalPath/APIClient.php:154
+#: inc/Engine/CriticalPath/DataManager.php:68
 #, php-format
 msgid ""
 "Critical CSS for %1$s not generated. Error: The API returned an empty "
@@ -1728,14 +1739,28 @@ msgstr ""
 "CSS-ul critic pentru %1$s nu a fost generat. Eroare: API-ul a returnat un "
 "răspuns gol."
 
-#: inc/Engine/CriticalPath/APIClient.php:153
-#: inc/Engine/CriticalPath/DataManager.php:58
-#: inc/Engine/CriticalPath/ProcessorService.php:166
+#: inc/Engine/CriticalPath/APIClient.php:166
+#, php-format
+msgid "Critical CSS for %1$s on mobile not generated."
+msgstr ""
+"CSS-ul critic pentru %1$s nu a fost generat pentru dispozitive mobile."
+
+#: inc/Engine/CriticalPath/APIClient.php:168
+#: inc/Engine/CriticalPath/ProcessorService.php:177
 #, php-format
 msgid "Critical CSS for %1$s not generated."
 msgstr "CSS-ul critic pentru %1$s nu a fost generat."
 
-#: inc/Engine/CriticalPath/APIClient.php:158
+#: inc/Engine/CriticalPath/APIClient.php:176
+#, php-format
+msgid ""
+"Critical CSS for %1$s on mobile not generated. Error: The API returned an "
+"invalid response code."
+msgstr ""
+"CSS-ul critic pentru %1$s nu a fost generat pentru dispozitive mobile. "
+"Eroare: API-ul a returnat un cod de răspuns invalid."
+
+#: inc/Engine/CriticalPath/APIClient.php:178
 #, php-format
 msgid ""
 "Critical CSS for %1$s not generated. Error: The API returned an invalid "
@@ -1744,78 +1769,54 @@ msgstr ""
 "CSS-ul critic pentru %1$s nu a fost generat. Eroare: API-ul a returnat un "
 "cod de răspuns invalid."
 
-#: inc/Engine/CriticalPath/APIClient.php:166
-#: inc/Engine/CriticalPath/ProcessorService.php:170
+#: inc/Engine/CriticalPath/APIClient.php:186
+#: inc/Engine/CriticalPath/ProcessorService.php:182
 #, php-format
 msgid "Error: %1$s"
 msgstr "Eroare: %1$s"
 
-#: inc/Engine/CriticalPath/AdminSubscriber.php:99
-#: views/metabox/cpcss/generate.php:47
+#: inc/Engine/CriticalPath/Admin/Admin.php:256
+msgid "Regenerate Critical Path CSS"
+msgstr "Regenerează CSS-ul de cale critic"
+
+#: inc/Engine/CriticalPath/Admin/Post.php:132
+#: views/cpcss/metabox/generate.php:47
 msgid "Generate Specific CPCSS"
 msgstr "Generează un anumit CSS de cale critic"
 
-#: inc/Engine/CriticalPath/AdminSubscriber.php:100
-#: views/metabox/cpcss/generate.php:45
+#: inc/Engine/CriticalPath/Admin/Post.php:133
+#: views/cpcss/metabox/generate.php:45
 msgid "Regenerate specific CPCSS"
 msgstr "Regenerează un anumit CSS de cale critic"
 
-#: inc/Engine/CriticalPath/AdminSubscriber.php:201
+#: inc/Engine/CriticalPath/Admin/Post.php:199
 msgid "%l to use this feature."
 msgstr "%l pentru a folosi această funcționalitate."
 
-#: inc/Engine/CriticalPath/AdminSubscriber.php:204
+#: inc/Engine/CriticalPath/Admin/Post.php:202
 #, php-format
 msgid "Publish the %s"
 msgstr "Publică %s"
 
-#: inc/Engine/CriticalPath/AdminSubscriber.php:205
+#: inc/Engine/CriticalPath/Admin/Post.php:203
 msgid "Enable Optimize CSS delivery in WP Rocket settings"
 msgstr "Activează Optimizează livrarea CSS în setările WP Rocket"
 
-#: inc/Engine/CriticalPath/AdminSubscriber.php:206
+#: inc/Engine/CriticalPath/Admin/Post.php:204
 msgid "Enable Optimize CSS delivery in the options above"
 msgstr "Activează Optimizează livrarea CSS în opțiunile de mai sus"
 
-#: inc/Engine/CriticalPath/CriticalCSSGeneration.php:80
-#: inc/Engine/CriticalPath/CriticalCSSGeneration.php:92
-#: inc/Engine/CriticalPath/CriticalCSSGeneration.php:105
-#: inc/Engine/CriticalPath/CriticalCSSGeneration.php:117
-#: inc/Engine/CriticalPath/CriticalCSSGeneration.php:140
-#, php-format
-msgid "Critical CSS for %1$s not generated. Error: %2$s"
-msgstr "CSS-ul critic pentru %1$s nu a fost generat. Eroare: %2$s"
-
-#: inc/Engine/CriticalPath/CriticalCSSGeneration.php:92
-msgid "The API returned an invalid response code."
-msgstr "API-ul a returnat un cod de răspuns invalid."
-
-#: inc/Engine/CriticalPath/CriticalCSSGeneration.php:105
-msgid "The API returned an empty response."
-msgstr "API-ul a returnat un răspuns gol."
-
-#: inc/Engine/CriticalPath/CriticalCSSGeneration.php:143
-#, php-format
-msgid "The critical CSS content could not be saved as a file in %s."
-msgstr "Conținutul CSS-ului critic nu a putut fi salvat ca un fișier în %s."
-
-#: inc/Engine/CriticalPath/CriticalCSSGeneration.php:154
-#: inc/Engine/CriticalPath/ProcessorService.php:224
-#, php-format
-msgid "Critical CSS for %s generated."
-msgstr "CSS-ul critic pentru %s a fost generat."
-
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:101
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:149
 msgid "Critical CSS generation is currently running."
 msgstr "Generarea CSS-ului critic rulează acum."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:106
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:154
 #: inc/Engine/Preload/PreloadSubscriber.php:242
 #, php-format
 msgid "Go to the %1$sWP Rocket settings%2$s page to track progress."
 msgstr "Mergi la pagina %1$sSetări WP Rocket%2$s pentru a urmări progresul."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:235
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:359
 #, php-format
 msgid ""
 "Critical CSS generation is currently running: %1$d of %2$d page types "
@@ -1824,43 +1825,79 @@ msgstr ""
 "Generarea CSS-ului critic rulează acum: %1$d din %2$d tipuri de pagină au "
 "fost finalizate. (Reîmprospătează această pagină pentru a vedea progresul.)"
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:289
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:426
 #, php-format
 msgid "Critical CSS generation finished for %1$d of %2$d page types."
 msgstr ""
 "Generarea CSS-ului critic s-a terminat pentru %1$d din %2$d tipuri de "
 "pagină."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:306
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:433
 msgid "Critical CSS generation encountered one or more errors."
 msgstr "Generarea CSS-ului critic a întâmpinat una sau mai multe erori."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:306
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:433
 msgid "Learn more."
 msgstr "Află mai mult."
 
-#: inc/Engine/CriticalPath/DataManager.php:85
+#: inc/Engine/CriticalPath/DataManager.php:101
+msgid "Critical CSS file for mobile does not exist"
+msgstr "Fișierul CSS critic pentru dispozitive mobile nu există"
+
+#: inc/Engine/CriticalPath/DataManager.php:103
 msgid "Critical CSS file does not exist"
 msgstr "Fișierul CSS critic nu există"
 
-#: inc/Engine/CriticalPath/DataManager.php:95
+#: inc/Engine/CriticalPath/DataManager.php:115
+msgid "Critical CSS file for mobile cannot be deleted"
+msgstr "Fișierul CSS critic pentru dispozitive mobile nu poate fi șters"
+
+#: inc/Engine/CriticalPath/DataManager.php:117
 msgid "Critical CSS file cannot be deleted"
 msgstr "Fișierul CSS critic nu poate fi șters"
 
-#: inc/Engine/CriticalPath/ProcessorService.php:195
+#: inc/Engine/CriticalPath/ProcessorService.php:174
+#, php-format
+msgid "Mobile Critical CSS for %1$s not generated."
+msgstr "CSS-ul critic mobil pentru %1$s nu a fost generat."
+
+#: inc/Engine/CriticalPath/ProcessorService.php:207
 #, php-format
 msgid "Critical CSS for %s in progress."
 msgstr "CSS-ul critic pentru %s este în desfășurare."
 
-#: inc/Engine/CriticalPath/ProcessorService.php:244
+#: inc/Engine/CriticalPath/ProcessorService.php:237
+#, php-format
+msgid "Mobile Critical CSS for %s generated."
+msgstr "CSS-ul critic mobil pentru %s a fost generat."
+
+#: inc/Engine/CriticalPath/ProcessorService.php:245
+#, php-format
+msgid "Critical CSS for %s generated."
+msgstr "CSS-ul critic pentru %s a fost generat."
+
+#: inc/Engine/CriticalPath/ProcessorService.php:265
 msgid "Critical CSS file deleted successfully."
 msgstr "Fișierul CSS critic a fost șters cu succes."
 
-#: inc/Engine/CriticalPath/ProcessorService.php:263
+#: inc/Engine/CriticalPath/ProcessorService.php:285
+#, php-format
+msgid "Mobile Critical CSS for %1$s timeout. Please retry a little later."
+msgstr ""
+"CSS-ul critic mobil pentru %1$s a expirat. Te rog încearcă un pic mai "
+"târziu."
+
+#: inc/Engine/CriticalPath/ProcessorService.php:295
 #, php-format
 msgid "Critical CSS for %1$s timeout. Please retry a little later."
 msgstr ""
 "CSS-ul critic pentru %1$s a expirat. Te rog încearcă un pic mai târziu."
+
+#: inc/Engine/CriticalPath/RESTWP.php:130
+msgid "Mobile CPCSS generation not enabled."
+msgstr ""
+"Generarea CSS-ului de cale critic pentru dispozitive mobile nu este "
+"activată."
 
 #: inc/Engine/CriticalPath/RESTWPPost.php:36
 #: inc/Engine/CriticalPath/RESTWPPost.php:69
@@ -1869,7 +1906,7 @@ msgstr "Articolul cerut nu există."
 
 #: inc/Engine/CriticalPath/RESTWPPost.php:46
 msgid "Cannot generate CPCSS for unpublished post."
-msgstr "Nu pot genera CPCSS pentru articole nepublicate."
+msgstr "Nu pot genera CSS-ul de cale critic pentru articole nepublicate."
 
 #: inc/Engine/HealthCheck/HealthCheck.php:82 inc/deprecated/3.5.php:868
 msgid ""
@@ -2167,7 +2204,7 @@ msgstr ""
 msgid "Smush"
 msgstr "Smush"
 
-#: inc/admin/admin.php:18 inc/common/admin-bar.php:377
+#: inc/admin/admin.php:18 inc/common/admin-bar.php:367
 #: inc/deprecated/deprecated.php:1787
 msgid "Support"
 msgstr "Suport"
@@ -2176,7 +2213,7 @@ msgstr "Suport"
 msgid "Docs"
 msgstr "Documentații"
 
-#: inc/admin/admin.php:22 inc/common/admin-bar.php:365
+#: inc/admin/admin.php:22 inc/common/admin-bar.php:355
 msgid "FAQ"
 msgstr "Întrebări frecvente"
 
@@ -2184,43 +2221,43 @@ msgstr "Întrebări frecvente"
 msgid "Settings"
 msgstr "Setări"
 
-#: inc/admin/admin.php:227 inc/admin/admin.php:242
+#: inc/admin/admin.php:225 inc/admin/admin.php:240
 #: inc/classes/class-wp-rocket-requirements-check.php:203
 #: inc/classes/class-wp-rocket-requirements-check.php:214
 #, php-format
 msgid "%s Update Rollback"
 msgstr "Actualizează restaurarea %s"
 
-#: inc/admin/admin.php:268
+#: inc/admin/admin.php:266
 #, php-format
 msgid "%1$sReturn to WP Rocket%2$s or %3$sgo to Plugins page%2$s"
 msgstr "%1$sÎntoarce-te la WP Rocket%2$s sau %3$smergi la pagina Module%2$s"
 
-#: inc/admin/admin.php:507
+#: inc/admin/admin.php:515
 msgid "Settings import failed: you do not have the permissions to do this."
 msgstr "Importul setărilor a eșuat: nu ai permisiunea de a face asta."
 
-#: inc/admin/admin.php:511
+#: inc/admin/admin.php:519
 msgid "Settings import failed: no file uploaded."
 msgstr "Importul setărilor a eșuat: niciun fișier încărcat."
 
-#: inc/admin/admin.php:515
+#: inc/admin/admin.php:523
 msgid "Settings import failed: incorrect filename."
 msgstr "Importul setărilor a eșuat: nume fișier incorect."
 
-#: inc/admin/admin.php:526
+#: inc/admin/admin.php:534
 msgid "Settings import failed: incorrect filetype."
 msgstr "Importul setărilor a eșuat: tip de fișier incorect."
 
-#: inc/admin/admin.php:536
+#: inc/admin/admin.php:544
 msgid "Settings import failed: "
 msgstr "Importul setărilor a eșuat: "
 
-#: inc/admin/admin.php:552
+#: inc/admin/admin.php:560
 msgid "Settings import failed: unexpected file content."
 msgstr "Importul setărilor a eșuat: conținut neașteptat pentru fișier."
 
-#: inc/admin/admin.php:573
+#: inc/admin/admin.php:581
 msgid "Settings imported and saved."
 msgstr "Setările au fost importate și salvate."
 
@@ -2785,7 +2822,7 @@ msgstr ""
 "Rocket.me sau la configurarea acestui server. Dacă ai probleme în "
 "continuare, <a href=\"%s\">contactează suportul</a>."
 
-#: inc/common/admin-bar.php:125 inc/common/admin-bar.php:312
+#: inc/common/admin-bar.php:125 inc/common/admin-bar.php:293
 #: inc/functions/i18n.php:41 inc/functions/i18n.php:51
 msgid "All languages"
 msgstr "Toate limbile"
@@ -2802,28 +2839,24 @@ msgstr "Curăță acest URL"
 msgid "Purge OPcache"
 msgstr "Curăță OPcache"
 
-#: inc/common/admin-bar.php:211
-msgid "Regenerate Critical Path CSS"
-msgstr "Regenerează CSS-ul de cale critic"
-
-#: inc/common/admin-bar.php:229
+#: inc/common/admin-bar.php:210
 msgid "Clear Cloudflare cache"
 msgstr "Șterge cache Cloudflare"
 
-#: inc/common/admin-bar.php:247
+#: inc/common/admin-bar.php:228
 msgid "Purge Sucuri cache"
 msgstr "Șterge cache-ul Sucuri"
 
-#: inc/common/admin-bar.php:270 inc/common/admin-bar.php:324
+#: inc/common/admin-bar.php:251 inc/common/admin-bar.php:305
 #: views/settings/page-sections/dashboard.php:144
 msgid "Preload cache"
 msgstr "Pre-încarcă cache"
 
-#: inc/common/admin-bar.php:340 views/settings/fields/rocket-cdn.php:55
+#: inc/common/admin-bar.php:330 views/settings/fields/rocket-cdn.php:55
 msgid "Purge RocketCDN cache"
 msgstr "Șterge cache-ul RocketCDN"
 
-#: inc/common/admin-bar.php:353 views/settings/partials/documentation.php:14
+#: inc/common/admin-bar.php:343 views/settings/partials/documentation.php:14
 msgid "Documentation"
 msgstr "Documentație"
 
@@ -3230,6 +3263,67 @@ msgstr "Instalarea modulului a eșuat."
 msgid "Go back"
 msgstr "Du-te înapoi"
 
+#: views/cpcss/activate-cpcss-mobile.php:13
+msgid "Optimize CSS delivery for mobile"
+msgstr "Optimizează livrarea CSS pentru dispozitive mobile"
+
+#: views/cpcss/activate-cpcss-mobile.php:14
+msgid ""
+"Your website currently uses the same Critical Path CSS for both desktop and "
+"mobile."
+msgstr ""
+"În prezent, site-ul tău folosește același CSS de cale critic atât pentru "
+"desktop cât și pentru dispozitive mobile."
+
+#: views/cpcss/activate-cpcss-mobile.php:15
+msgid "Click the button to enable mobile-specific CPCSS for your site."
+msgstr ""
+"Dă clic pe buton pentru a activa CSS-ul de cale critic specific pentru "
+"dispozitive mobile pe site-ul tău."
+
+#: views/cpcss/activate-cpcss-mobile.php:20
+#, php-format
+msgid ""
+"This is a one-time action and this button will be removed afterwards. "
+"%1$sMore info%2$s"
+msgstr ""
+"Aceasta este o acțiune unică și acest buton va fi înlăturat ulterior. "
+"%1$sMai multe informații%2$s"
+
+#: views/cpcss/activate-cpcss-mobile.php:30
+#, php-format
+msgid ""
+"Your site is now using mobile-specific critical path CSS. %1$sMore info%2$s"
+msgstr ""
+"Acum site-ul tău folosește CSS-ul de cale critic specific pentru dispozitive"
+" mobile. %1$sMai multe informații%2$s"
+
+#: views/cpcss/activate-cpcss-mobile.php:39
+msgid "Generate Mobile Specific CPCSS"
+msgstr "Generează CSS-ul de cale critic specific pentru dispozitive mobile"
+
+#: views/cpcss/metabox/container.php:19
+msgid "Critical Path CSS"
+msgstr "CSS de cale critic"
+
+#: views/cpcss/metabox/generate.php:23
+#, php-format
+msgid "Generate specific Critical Path CSS for this post. %1$sMore info%2$s"
+msgstr ""
+"Generează un anumit CSS de cale critic pentru acest articol. %1$sMai multe "
+"informații%2$s"
+
+#: views/cpcss/metabox/generate.php:33
+#, php-format
+msgid "This post uses specific Critical Path CSS. %1$sMore info%2$s"
+msgstr ""
+"Acest articol folosește un anumit CSS de cale critic. %1$sMai multe "
+"informații%2$s"
+
+#: views/cpcss/metabox/generate.php:56
+msgid "Revert back to the default CPCSS"
+msgstr "Revino la CSS-ul de cale critic"
+
 #: views/deactivation-intent/form.php:21
 msgid "Return"
 msgstr "Revino"
@@ -3461,28 +3555,6 @@ msgstr "Anulează"
 #: views/deactivation-intent/form.php:154
 msgid "Skip & Deactivate"
 msgstr "Sari și dezactivează"
-
-#: views/metabox/cpcss/container.php:19
-msgid "Critical Path CSS"
-msgstr "CSS de cale critic"
-
-#: views/metabox/cpcss/generate.php:23
-#, php-format
-msgid "Generate specific Critical Path CSS for this post. %1$sMore info%2$s"
-msgstr ""
-"Generează un anumit CSS de cale critic pentru acest articol. %1$sMai multe "
-"informații%2$s"
-
-#: views/metabox/cpcss/generate.php:33
-#, php-format
-msgid "This post uses specific Critical Path CSS. %1$sMore info%2$s"
-msgstr ""
-"Acest articol folosește un anumit CSS de cale critic. %1$sMai multe "
-"informații%2$s"
-
-#: views/metabox/cpcss/generate.php:56
-msgid "Revert back to the default CPCSS"
-msgstr "Revino la CSS-ul de cale critic"
 
 #: views/settings/fields/cache-lifespan.php:26
 msgid "Clear cache after"
@@ -3794,11 +3866,11 @@ msgstr ""
 msgid "Reinstall version %s"
 msgstr "Reinstalează versiune %s"
 
-#: views/settings/page-sections/tools.php:97
+#: views/settings/page-sections/tools.php:106
 msgid "Debug mode"
 msgstr "Mod depanare"
 
-#: views/settings/page-sections/tools.php:102
+#: views/settings/page-sections/tools.php:111
 msgid "Create a debug log file."
 msgstr "Creează un fișier jurnal de depanare."
 
