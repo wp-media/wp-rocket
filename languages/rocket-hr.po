@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.4\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2020-05-28 13:07-0400\n"
+"POT-Creation-Date: 2020-06-03 17:43-0400\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Borko Livić <borkolivic@gmail.com>, 2020\n"
 "Language-Team: Croatian (https://www.transifex.com/wp-media/teams/18133/hr/)\n"
@@ -1709,7 +1709,18 @@ msgstr "RocketCDN onemogućen"
 msgid "Clear this cache"
 msgstr "Očisti ovo iz cachea"
 
-#: inc/Engine/CriticalPath/APIClient.php:144
+#: inc/Engine/CriticalPath/APIClient.php:151
+#: inc/Engine/CriticalPath/DataManager.php:65
+#, php-format
+msgid ""
+"Critical CSS for %1$s on mobile not generated. Error: The API returned an "
+"empty response."
+msgstr ""
+"Ključni CSS za %1$s na mobilnim uređajima nije generiran. Greška: API je "
+"vratio prazan odgovor."
+
+#: inc/Engine/CriticalPath/APIClient.php:154
+#: inc/Engine/CriticalPath/DataManager.php:68
 #, php-format
 msgid ""
 "Critical CSS for %1$s not generated. Error: The API returned an empty "
@@ -1717,14 +1728,27 @@ msgid ""
 msgstr ""
 "Ključni CSS za %1$s nije generiran. Greška: API je vratio prazan odgovor."
 
-#: inc/Engine/CriticalPath/APIClient.php:153
-#: inc/Engine/CriticalPath/DataManager.php:58
-#: inc/Engine/CriticalPath/ProcessorService.php:166
+#: inc/Engine/CriticalPath/APIClient.php:166
+#, php-format
+msgid "Critical CSS for %1$s on mobile not generated."
+msgstr "Ključni CSS za %1$s na mobilnim uređajima nije generiran."
+
+#: inc/Engine/CriticalPath/APIClient.php:168
+#: inc/Engine/CriticalPath/ProcessorService.php:177
 #, php-format
 msgid "Critical CSS for %1$s not generated."
 msgstr "Ključni CSS za %1$s nije generiran."
 
-#: inc/Engine/CriticalPath/APIClient.php:158
+#: inc/Engine/CriticalPath/APIClient.php:176
+#, php-format
+msgid ""
+"Critical CSS for %1$s on mobile not generated. Error: The API returned an "
+"invalid response code."
+msgstr ""
+"Ključni CSS za %1$s na mobilnim uređajima nije generiran. Greška: API je "
+"vratio nevažeći kôd odgovora."
+
+#: inc/Engine/CriticalPath/APIClient.php:178
 #, php-format
 msgid ""
 "Critical CSS for %1$s not generated. Error: The API returned an invalid "
@@ -1733,78 +1757,54 @@ msgstr ""
 "Ključni CSS za %1$s nije generiran. Greška: API je vratio nevažeći kôd "
 "odgovora."
 
-#: inc/Engine/CriticalPath/APIClient.php:166
-#: inc/Engine/CriticalPath/ProcessorService.php:170
+#: inc/Engine/CriticalPath/APIClient.php:186
+#: inc/Engine/CriticalPath/ProcessorService.php:182
 #, php-format
 msgid "Error: %1$s"
 msgstr "Greška: %1$s"
 
-#: inc/Engine/CriticalPath/AdminSubscriber.php:99
-#: views/metabox/cpcss/generate.php:47
+#: inc/Engine/CriticalPath/Admin/Admin.php:256
+msgid "Regenerate Critical Path CSS"
+msgstr "Obnovi putanju ključnog CSS-a"
+
+#: inc/Engine/CriticalPath/Admin/Post.php:132
+#: views/cpcss/metabox/generate.php:47
 msgid "Generate Specific CPCSS"
 msgstr "Stvaranje specifičnog CPCSS-a"
 
-#: inc/Engine/CriticalPath/AdminSubscriber.php:100
-#: views/metabox/cpcss/generate.php:45
+#: inc/Engine/CriticalPath/Admin/Post.php:133
+#: views/cpcss/metabox/generate.php:45
 msgid "Regenerate specific CPCSS"
 msgstr "Ponovno stvaranje specifičnog CPCSS-a"
 
-#: inc/Engine/CriticalPath/AdminSubscriber.php:201
+#: inc/Engine/CriticalPath/Admin/Post.php:199
 msgid "%l to use this feature."
 msgstr "%l da koristite ovu značajku."
 
-#: inc/Engine/CriticalPath/AdminSubscriber.php:204
+#: inc/Engine/CriticalPath/Admin/Post.php:202
 #, php-format
 msgid "Publish the %s"
 msgstr "Objavi %s"
 
-#: inc/Engine/CriticalPath/AdminSubscriber.php:205
+#: inc/Engine/CriticalPath/Admin/Post.php:203
 msgid "Enable Optimize CSS delivery in WP Rocket settings"
 msgstr "Omogući Optimiziranje isporuke CSS-a u postavkama WP Rocketa"
 
-#: inc/Engine/CriticalPath/AdminSubscriber.php:206
+#: inc/Engine/CriticalPath/Admin/Post.php:204
 msgid "Enable Optimize CSS delivery in the options above"
 msgstr "Omogući Optimiziranje isporuke CSS-a u postavkama iznad"
 
-#: inc/Engine/CriticalPath/CriticalCSSGeneration.php:80
-#: inc/Engine/CriticalPath/CriticalCSSGeneration.php:92
-#: inc/Engine/CriticalPath/CriticalCSSGeneration.php:105
-#: inc/Engine/CriticalPath/CriticalCSSGeneration.php:117
-#: inc/Engine/CriticalPath/CriticalCSSGeneration.php:140
-#, php-format
-msgid "Critical CSS for %1$s not generated. Error: %2$s"
-msgstr "Ključni CSS za %1$s nije generiran. Greška: %2$s"
-
-#: inc/Engine/CriticalPath/CriticalCSSGeneration.php:92
-msgid "The API returned an invalid response code."
-msgstr "API je vratio nevažeći kôd odgovora (invalid response)."
-
-#: inc/Engine/CriticalPath/CriticalCSSGeneration.php:105
-msgid "The API returned an empty response."
-msgstr "API je vratio prazan odgovor."
-
-#: inc/Engine/CriticalPath/CriticalCSSGeneration.php:143
-#, php-format
-msgid "The critical CSS content could not be saved as a file in %s."
-msgstr "Ključni CSS sadržaj nije mogao biti spremljen kao datoteka u %s."
-
-#: inc/Engine/CriticalPath/CriticalCSSGeneration.php:154
-#: inc/Engine/CriticalPath/ProcessorService.php:224
-#, php-format
-msgid "Critical CSS for %s generated."
-msgstr "Ključni CSS za %s je generiran."
-
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:101
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:149
 msgid "Critical CSS generation is currently running."
 msgstr "Trenutno je aktivno generiranje ključnog CSS-a."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:106
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:154
 #: inc/Engine/Preload/PreloadSubscriber.php:242
 #, php-format
 msgid "Go to the %1$sWP Rocket settings%2$s page to track progress."
 msgstr "Idite na stranicu%1$s postavki WP Rocketa%2$s za praćenje napretka."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:235
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:359
 #, php-format
 msgid ""
 "Critical CSS generation is currently running: %1$d of %2$d page types "
@@ -1813,40 +1813,72 @@ msgstr ""
 "Trenutno se izvodi generiranje ključnog CSS-a: %1$d od %2$d vrsta stranica "
 "dovršeno (Osvježite ovu stranicu kako biste vidjeli napredak)"
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:289
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:426
 #, php-format
 msgid "Critical CSS generation finished for %1$d of %2$d page types."
 msgstr "Generiranje ključnog CSS-a za %1$d od %2$d vrsta stranica."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:306
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:433
 msgid "Critical CSS generation encountered one or more errors."
 msgstr "Generiranje ključnog CSS-a naišlo je na jednu ili više pogrešaka."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:306
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:433
 msgid "Learn more."
 msgstr "Saznaj više"
 
-#: inc/Engine/CriticalPath/DataManager.php:85
+#: inc/Engine/CriticalPath/DataManager.php:101
+msgid "Critical CSS file for mobile does not exist"
+msgstr "Datoteka ključnog CSS-a za mobilne uređaje ne postoji."
+
+#: inc/Engine/CriticalPath/DataManager.php:103
 msgid "Critical CSS file does not exist"
 msgstr "Datoteka ključnog CSS-a ne postoji."
 
-#: inc/Engine/CriticalPath/DataManager.php:95
+#: inc/Engine/CriticalPath/DataManager.php:115
+msgid "Critical CSS file for mobile cannot be deleted"
+msgstr "Datoteka kritičnog CSS-a za mobilne uređaje ne može biti izbrisana"
+
+#: inc/Engine/CriticalPath/DataManager.php:117
 msgid "Critical CSS file cannot be deleted"
 msgstr "Datoteka kritičnog CSS-a ne može biti izbrisana"
 
-#: inc/Engine/CriticalPath/ProcessorService.php:195
+#: inc/Engine/CriticalPath/ProcessorService.php:174
+#, php-format
+msgid "Mobile Critical CSS for %1$s not generated."
+msgstr "Ključni CSS na mobilnim uređajima za%1$s nije generiran."
+
+#: inc/Engine/CriticalPath/ProcessorService.php:207
 #, php-format
 msgid "Critical CSS for %s in progress."
 msgstr "Ključni CSS za %s u tijeku."
 
-#: inc/Engine/CriticalPath/ProcessorService.php:244
+#: inc/Engine/CriticalPath/ProcessorService.php:237
+#, php-format
+msgid "Mobile Critical CSS for %s generated."
+msgstr "Ključni CSS na mobilnim uređajima za %s je generiran."
+
+#: inc/Engine/CriticalPath/ProcessorService.php:245
+#, php-format
+msgid "Critical CSS for %s generated."
+msgstr "Ključni CSS za %s je generiran."
+
+#: inc/Engine/CriticalPath/ProcessorService.php:265
 msgid "Critical CSS file deleted successfully."
 msgstr "Datoteka kritičnog CSS-a uspješno izbrisana."
 
-#: inc/Engine/CriticalPath/ProcessorService.php:263
+#: inc/Engine/CriticalPath/ProcessorService.php:285
+#, php-format
+msgid "Mobile Critical CSS for %1$s timeout. Please retry a little later."
+msgstr "Ključni CSS na mobilnim uređajima za %1$s timeout. Probajte kasnije."
+
+#: inc/Engine/CriticalPath/ProcessorService.php:295
 #, php-format
 msgid "Critical CSS for %1$s timeout. Please retry a little later."
 msgstr "Ključni CSS za %1$s timeout. Probajte kasnije."
+
+#: inc/Engine/CriticalPath/RESTWP.php:130
+msgid "Mobile CPCSS generation not enabled."
+msgstr "Generiranje mobilnog CPCSS-a nije aktivirano."
 
 #: inc/Engine/CriticalPath/RESTWPPost.php:36
 #: inc/Engine/CriticalPath/RESTWPPost.php:69
@@ -2148,7 +2180,7 @@ msgstr ""
 msgid "Smush"
 msgstr "Smush"
 
-#: inc/admin/admin.php:18 inc/common/admin-bar.php:377
+#: inc/admin/admin.php:18 inc/common/admin-bar.php:367
 #: inc/deprecated/deprecated.php:1787
 msgid "Support"
 msgstr "Podrška"
@@ -2157,7 +2189,7 @@ msgstr "Podrška"
 msgid "Docs"
 msgstr "Dokumenti"
 
-#: inc/admin/admin.php:22 inc/common/admin-bar.php:365
+#: inc/admin/admin.php:22 inc/common/admin-bar.php:355
 msgid "FAQ"
 msgstr "Česta pitanja"
 
@@ -2165,43 +2197,43 @@ msgstr "Česta pitanja"
 msgid "Settings"
 msgstr "Postavke"
 
-#: inc/admin/admin.php:227 inc/admin/admin.php:242
+#: inc/admin/admin.php:225 inc/admin/admin.php:240
 #: inc/classes/class-wp-rocket-requirements-check.php:203
 #: inc/classes/class-wp-rocket-requirements-check.php:214
 #, php-format
 msgid "%s Update Rollback"
 msgstr "%s Vraćanje ažuriranja"
 
-#: inc/admin/admin.php:268
+#: inc/admin/admin.php:266
 #, php-format
 msgid "%1$sReturn to WP Rocket%2$s or %3$sgo to Plugins page%2$s"
 msgstr "%1$sVratite se na WP Rocket%2$s ili %3$s idite na stranicu Dodaci%2$s"
 
-#: inc/admin/admin.php:507
+#: inc/admin/admin.php:515
 msgid "Settings import failed: you do not have the permissions to do this."
 msgstr "Uvoz postavki nije uspio: nemate dopuštenje za to."
 
-#: inc/admin/admin.php:511
+#: inc/admin/admin.php:519
 msgid "Settings import failed: no file uploaded."
 msgstr "Uvoz postavki nije uspio: datoteka nije prenesena."
 
-#: inc/admin/admin.php:515
+#: inc/admin/admin.php:523
 msgid "Settings import failed: incorrect filename."
 msgstr "Settings import nije uspio: pogrešan naziv fajla."
 
-#: inc/admin/admin.php:526
+#: inc/admin/admin.php:534
 msgid "Settings import failed: incorrect filetype."
 msgstr "Settings import nije uspio: pogrešna vrsta fajla."
 
-#: inc/admin/admin.php:536
+#: inc/admin/admin.php:544
 msgid "Settings import failed: "
 msgstr "Uvoz postavki nije uspio:"
 
-#: inc/admin/admin.php:552
+#: inc/admin/admin.php:560
 msgid "Settings import failed: unexpected file content."
 msgstr "Uvoz postavki nije uspio: neočekivani sadržaj datoteke."
 
-#: inc/admin/admin.php:573
+#: inc/admin/admin.php:581
 msgid "Settings imported and saved."
 msgstr "Postavke uvezene i spremljene."
 
@@ -2757,7 +2789,7 @@ msgstr ""
 " konfiguracijom ovog poslužitelja. Ako i dalje imate problema, <a "
 "href=\"%s\">kontaktirajte podršku</a>."
 
-#: inc/common/admin-bar.php:125 inc/common/admin-bar.php:312
+#: inc/common/admin-bar.php:125 inc/common/admin-bar.php:293
 #: inc/functions/i18n.php:41 inc/functions/i18n.php:51
 msgid "All languages"
 msgstr "Svi jezici"
@@ -2774,28 +2806,24 @@ msgstr "Očistite ovaj URL"
 msgid "Purge OPcache"
 msgstr "Čišćenje OPcache-a"
 
-#: inc/common/admin-bar.php:211
-msgid "Regenerate Critical Path CSS"
-msgstr "Obnovi putanju ključnog CSS-a"
-
-#: inc/common/admin-bar.php:229
+#: inc/common/admin-bar.php:210
 msgid "Clear Cloudflare cache"
 msgstr "Očisti CloudFlare privremeni spremnik"
 
-#: inc/common/admin-bar.php:247
+#: inc/common/admin-bar.php:228
 msgid "Purge Sucuri cache"
 msgstr "Očisti Sucuri cache"
 
-#: inc/common/admin-bar.php:270 inc/common/admin-bar.php:324
+#: inc/common/admin-bar.php:251 inc/common/admin-bar.php:305
 #: views/settings/page-sections/dashboard.php:144
 msgid "Preload cache"
 msgstr "Predučitavanje cachea"
 
-#: inc/common/admin-bar.php:340 views/settings/fields/rocket-cdn.php:55
+#: inc/common/admin-bar.php:330 views/settings/fields/rocket-cdn.php:55
 msgid "Purge RocketCDN cache"
 msgstr "Očisti RocketCDN cache"
 
-#: inc/common/admin-bar.php:353 views/settings/partials/documentation.php:14
+#: inc/common/admin-bar.php:343 views/settings/partials/documentation.php:14
 msgid "Documentation"
 msgstr "Dokumentacija"
 
@@ -3201,6 +3229,63 @@ msgstr "Neuspjela instalacija dodatka."
 msgid "Go back"
 msgstr "Vrati se"
 
+#: views/cpcss/activate-cpcss-mobile.php:13
+msgid "Optimize CSS delivery for mobile"
+msgstr "Optimiziraj isporuku CSS-a za mobilne uređaje"
+
+#: views/cpcss/activate-cpcss-mobile.php:14
+msgid ""
+"Your website currently uses the same Critical Path CSS for both desktop and "
+"mobile."
+msgstr ""
+"Vaša web lokacija trenutno koristi istu putanju ključnog CSS-a za desktop i "
+"za mobilne uređaje."
+
+#: views/cpcss/activate-cpcss-mobile.php:15
+msgid "Click the button to enable mobile-specific CPCSS for your site."
+msgstr ""
+"Kliknite gumb kako biste omogućili CPCSS za svoju web lokaciju specifičan za"
+" mobilne uređaje."
+
+#: views/cpcss/activate-cpcss-mobile.php:20
+#, php-format
+msgid ""
+"This is a one-time action and this button will be removed afterwards. "
+"%1$sMore info%2$s"
+msgstr ""
+"Ovo je jednokratna radnja i ovaj će gumb biti uklonjen nakon toga.%1$sViše "
+"informacija%2$s"
+
+#: views/cpcss/activate-cpcss-mobile.php:30
+#, php-format
+msgid ""
+"Your site is now using mobile-specific critical path CSS. %1$sMore info%2$s"
+msgstr ""
+"Vaša web lokacija koristi CSS-ov kritični put za mobilne uređaje.%1$sViše "
+"informacija%2$s"
+
+#: views/cpcss/activate-cpcss-mobile.php:39
+msgid "Generate Mobile Specific CPCSS"
+msgstr "Generiraj CPCSS specifičan za mobilne uređaje"
+
+#: views/cpcss/metabox/container.php:19
+msgid "Critical Path CSS"
+msgstr "Kritični CSS put"
+
+#: views/cpcss/metabox/generate.php:23
+#, php-format
+msgid "Generate specific Critical Path CSS for this post. %1$sMore info%2$s"
+msgstr "Kreiraj kritični CSS put za ovaj post %1$sViše informacija%2$s"
+
+#: views/cpcss/metabox/generate.php:33
+#, php-format
+msgid "This post uses specific Critical Path CSS. %1$sMore info%2$s"
+msgstr "Ovaj post koristi kritični CSS put. %1$sViše informacija%2$s"
+
+#: views/cpcss/metabox/generate.php:56
+msgid "Revert back to the default CPCSS"
+msgstr "Vrati se na zadani CPCSS"
+
 #: views/deactivation-intent/form.php:21
 msgid "Return"
 msgstr "Povratak"
@@ -3425,24 +3510,6 @@ msgstr "Poništiti"
 #: views/deactivation-intent/form.php:154
 msgid "Skip & Deactivate"
 msgstr "Preskoči i deaktiviraj"
-
-#: views/metabox/cpcss/container.php:19
-msgid "Critical Path CSS"
-msgstr "Kritični CSS put"
-
-#: views/metabox/cpcss/generate.php:23
-#, php-format
-msgid "Generate specific Critical Path CSS for this post. %1$sMore info%2$s"
-msgstr "Kreiraj kritični CSS put za ovaj post %1$sViše informacija%2$s"
-
-#: views/metabox/cpcss/generate.php:33
-#, php-format
-msgid "This post uses specific Critical Path CSS. %1$sMore info%2$s"
-msgstr "Ovaj post koristi kritični CSS put. %1$sViše informacija%2$s"
-
-#: views/metabox/cpcss/generate.php:56
-msgid "Revert back to the default CPCSS"
-msgstr "Vrati se na zadani CPCSS"
 
 #: views/settings/fields/cache-lifespan.php:26
 msgid "Clear cache after"
@@ -3750,11 +3817,11 @@ msgstr ""
 msgid "Reinstall version %s"
 msgstr "Reinstaliraj verziju %s"
 
-#: views/settings/page-sections/tools.php:97
+#: views/settings/page-sections/tools.php:106
 msgid "Debug mode"
 msgstr "Način otklanjanja pogrešaka (debug)"
 
-#: views/settings/page-sections/tools.php:102
+#: views/settings/page-sections/tools.php:111
 msgid "Create a debug log file."
 msgstr "Kreiraj debug log datoteku."
 
