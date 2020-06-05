@@ -67,6 +67,7 @@ return [
 					'timeout' => false,
 					'mobile'  => false,
 					'check'   => 0,
+					'type' => 'home',
 				],
 			],
 			'process_generate'                               => [
@@ -74,20 +75,20 @@ return [
 				'status'      => 404,
 				'success'     => false,
 				'code'        => 'cpcss_generation_failed',
-				'message'     => 'Critical CSS for https://example.org/ not generated.',
+				'message'     => 'Critical CSS for home not generated.',
 				'data'        => [
 					'state' => 'failed',
 				],
 			],
 			'notice'                                         => [
-				'get_error_message' => 'Critical CSS for https://example.org/ not generated.',
+				'get_error_message' => 'Critical CSS for home not generated.',
 				'transient'         => [
 					'total' => 1,
 					'items' => [
 						'front_page.css' => [
 							'status' => [
 								'nonmobile' => [
-									'message' => 'Critical CSS for https://example.org/ not generated.',
+									'message' => 'Critical CSS for home not generated.',
 									'success' => false,
 								],
 							],
@@ -120,13 +121,14 @@ return [
 					'timeout' => false,
 					'mobile'  => false,
 					'check'   => 0,
+					'type'    => 'home',
 				],
 			],
 			'process_generate'                               => [
 				'status'  => 200,
 				'success' => true,
 				'code'    => 'cpcss_generation_successful',
-				'message' => 'Critical CSS for https://example.org/ generated.',
+				'message' => 'Critical CSS for home generated.',
 				'data'    => [
 					'state'         => 'complete',
 					'critical_path' => '.critical_path { color: red; }',
@@ -139,7 +141,7 @@ return [
 						'front_page.css' => [
 							'status' => [
 								'nonmobile' => [
-									'message' => 'Critical CSS for https://example.org/ generated.',
+									'message' => 'Critical CSS for home generated.',
 									'success' => true,
 								],
 							],
@@ -170,13 +172,14 @@ return [
 					'timeout' => false,
 					'mobile'  => false,
 					'check'   => 0,
+					'type'    => 'home',
 				],
 			],
 			'process_generate'                               => [
 				'status'  => 404,
 				'success' => false,
 				'code'    => 'cpcss_generation_failed',
-				'message' => 'Critical CSS for https://example.org/ not generated.',
+				'message' => 'Critical CSS for home not generated.',
 				'data'    => [
 					'state' => 'failed',
 				],
@@ -188,7 +191,7 @@ return [
 						'front_page.css' => [
 							'status' => [
 								'nonmobile' => [
-									'message' => 'Critical CSS for https://example.org/ not generated.',
+									'message' => 'Critical CSS for home not generated.',
 									'success' => false,
 								],
 							],
@@ -220,13 +223,14 @@ return [
 					'timeout' => false,
 					'mobile'  => false,
 					'check'   => 11,
+					'type'    => 'home',
 				],
 			],
 			'process_generate'                               => [
 				'status'  => 200,
 				'success' => true,
 				'code'    => 'cpcss_generation_pending',
-				'message' => 'Critical CSS for https://example.org/ in progress.',
+				'message' => 'Critical CSS for home in progress.',
 				'data'    => [
 					'state' => 'pending',
 				],
@@ -258,13 +262,14 @@ return [
 					'timeout' => false,
 					'mobile'  => false,
 					'check'   => 0,
+					'type'    => 'home',
 				],
 			],
 			'process_generate'                => [
 				'status'  => 200,
 				'success' => true,
 				'code'    => 'cpcss_generation_pending',
-				'message' => 'Critical CSS for https://example.org/ in progress.',
+				'message' => 'Critical CSS for home in progress.',
 				'data'    => [
 					'state' => 'pending',
 				],
@@ -282,6 +287,7 @@ return [
 					'timeout' => false,
 					'mobile'  => false,
 					'check'   => 1,
+					'type'    => 'home',
 				],
 			],
 		],
@@ -300,6 +306,7 @@ return [
 					'timeout' => false,
 					'mobile'  => false,
 					'check'   => 0,
+					'type'    => 'home',
 				],
 				'category.css'   => [
 					'url'     => 'https://example.org/category/',
@@ -307,6 +314,7 @@ return [
 					'timeout' => false,
 					'mobile'  => false,
 					'check'   => 0,
+					'type'    => 'category',
 				],
 			],
 			'process_generate'                               => [

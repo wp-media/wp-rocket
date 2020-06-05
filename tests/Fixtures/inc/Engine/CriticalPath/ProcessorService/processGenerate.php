@@ -36,11 +36,12 @@ return [
 				'cpcss_exists_after' => false,
 				'request_timeout'    => true,
 				'mobile'             => false,
+				'type'               => 'post'
 			],
 			'expected' => [
 				'success' => false,
 				'code'    => 'cpcss_generation_timeout',
-				'message' => 'Critical CSS for http://example.org/?p=21 timeout. Please retry a little later.',
+				'message' => 'Critical CSS for post timeout. Please retry a little later.',
 				'data'    => [
 					'status' => 400,
 				],
