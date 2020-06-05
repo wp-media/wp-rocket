@@ -91,13 +91,13 @@ class Admin {
 		}
 
 		// Threshold 'check' > 10 = timed out.
-		$timeout          = ( $cpcss_item['check'] > 10 );
+		$timeout           = ( $cpcss_item['check'] > 10 );
 		$additional_params = [
-			'timeout' => $timeout,
+			'timeout'   => $timeout,
 			'is_mobile' => ! empty( $cpcss_item['mobile'] ) ? (bool) $cpcss_item['mobile'] : false,
-			'item_type' => $cpcss_item['type']
+			'item_type' => $cpcss_item['type'],
 		];
-		$cpcss_generation = $this->processor->process_generate(
+		$cpcss_generation  = $this->processor->process_generate(
 			$cpcss_item['url'],
 			$cpcss_item['path'],
 			$additional_params

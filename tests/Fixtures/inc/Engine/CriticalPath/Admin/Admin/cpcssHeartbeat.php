@@ -314,7 +314,6 @@ return [
 					'timeout' => false,
 					'mobile'  => false,
 					'check'   => 0,
-					'type'    => 'category',
 				],
 			],
 			'process_generate'                               => [

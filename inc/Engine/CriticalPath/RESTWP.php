@@ -148,11 +148,11 @@ abstract class RESTWP implements RESTWPInterface {
 		$item_path = $this->get_path( $item_id, $is_mobile );
 
 		$additional_params = [
-			'timeout' => $timeout,
+			'timeout'   => $timeout,
 			'is_mobile' => $is_mobile,
-			'item_type' => 'custom'
+			'item_type' => 'custom',
 		];
-		$generated = $this->cpcss_service->process_generate( $item_url, $item_path, $additional_params );
+		$generated         = $this->cpcss_service->process_generate( $item_url, $item_path, $additional_params );
 
 		if ( is_wp_error( $generated ) ) {
 			return rest_ensure_response(
