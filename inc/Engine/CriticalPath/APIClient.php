@@ -55,6 +55,17 @@ class APIClient {
 	 * @return array|WP_Error
 	 */
 	private function prepare_response( $response, $url, $is_mobile = false, $item_type = 'custom' ) {
+
+		if ( is_wp_error( $response ) ) {
+			return new WP_Error(
+				$this->get_response_code( $response ),
+				$response->get_error_message(),
+				[
+					'status' => 400,
+				]
+			);
+		}
+
 		$response_data        = $this->get_response_data( $response );
 		$response_status_code = $this->get_response_status( $response, ( isset( $response_data->status ) ) ? $response_data->status : null );
 		$succeeded            = $this->get_response_success( $response_status_code, $response_data );

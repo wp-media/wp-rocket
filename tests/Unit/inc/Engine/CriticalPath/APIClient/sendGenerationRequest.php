@@ -21,6 +21,12 @@ class Test_SendGenerationRequest extends TestCase {
 		$response_code = ! isset( $config['response_data']['code'] ) ? 200 : $config['response_data']['code'];
 		$response_body = ! isset( $config['response_data']['body'] ) ? '' : $config['response_data']['body'];
 		$is_mobile     = isset( $config['is_mobile'] ) ? $config['is_mobile'] : false;
+		$block_external     = isset( $config['block_external'] ) ? $config['block_external'] : false;
+
+		$post_request_response = 'postRequest';
+		if ( $block_external ) {
+			$post_request_response = new WP_Error('code', 'User has blocked requests through HTTP.');
+		}
 
 		Functions\expect( 'wp_remote_post' )
 			->once()
@@ -33,17 +39,19 @@ class Test_SendGenerationRequest extends TestCase {
 					],
 				]
 			)
-			->andReturn( 'postRequest' );
+			->andReturn( $post_request_response );
 
-		Functions\expect( 'wp_remote_retrieve_response_code' )
-			->once()
-			->with( 'postRequest' )
-			->andReturn( $response_code );
+		if( ! $block_external ) {
+			Functions\expect( 'wp_remote_retrieve_response_code' )
+				->once()
+				->with( 'postRequest' )
+				->andReturn( $response_code );
 
-		Functions\expect( 'wp_remote_retrieve_body' )
-			->once()
-			->with( 'postRequest' )
-			->andReturn( $response_body );
+			Functions\expect( 'wp_remote_retrieve_body' )
+				->once()
+				->with( 'postRequest' )
+				->andReturn( $response_body );
+		}
 
 		$api_client = new APIClient();
 		$actual = $api_client->send_generation_request( $item_url, ['mobile' => (int) $is_mobile] );
