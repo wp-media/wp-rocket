@@ -90,6 +90,9 @@ class Test_ProcessGenerate extends FilesystemTestCase {
 		$is_mobile                    = isset( $config['mobile'] )
 			? $config['mobile']
 			: false;
+		$item_type                    = isset( $config['type'] )
+			? $config['type']
+			: 'custom';
 
 		if ( ! $request_timeout ) {
 			if ( false === $saved_cpcss_job_id) {
@@ -97,24 +100,24 @@ class Test_ProcessGenerate extends FilesystemTestCase {
 				if ( $post_id > 0 && 'publish' === $post_status && $cpcss_post_job_id && 200 === $post_request_response_code ) {
 					$this->api_client->shouldReceive( 'send_generation_request' )
 						->once()
-						->with( $item_url, [ 'mobile' => $is_mobile ] )
+						->with( $item_url, [ 'mobile' => $is_mobile ], $item_type )
 						->andReturn( $cpcss_post_job_body );
 
 					if ( ! in_array( (int) $get_request_response_code, [ 400, 404 ], true ) ) {
 						$this->api_client->shouldReceive( 'get_job_details' )
 							->once()
-							->with( $cpcss_post_job_id, $item_url, $is_mobile )
+							->with( $cpcss_post_job_id, $item_url, $is_mobile, $item_type )
 							->andReturn( $get_request_response_decoded );
 					} else {
 						$this->api_client->shouldReceive( 'get_job_details' )
 							->once()
-							->with( $cpcss_post_job_id, $item_url, $is_mobile )
+							->with( $cpcss_post_job_id, $item_url, $is_mobile, $item_type )
 							->andReturn( $get_job_details_error );
 					}
 				} else {
 					$this->api_client->shouldReceive( 'send_generation_request' )
 						->once()
-						->with( $item_url, [ 'mobile' => $is_mobile ] )
+						->with( $item_url, [ 'mobile' => $is_mobile ], $item_type )
 						->andReturn( $send_generation_request_error );
 				}
 			}
@@ -124,7 +127,12 @@ class Test_ProcessGenerate extends FilesystemTestCase {
 			$this->filesystem->chmod( 'wp-content/cache/critical-css/1/', 0444 );
 		}
 
-		$generated = $this->processor->process_generate( $item_url, $item_path, $request_timeout );
+		$additional_params = [
+			'timeout'   => $request_timeout,
+			'is_mobile' => $is_mobile,
+			'item_type' => $item_type
+		];
+		$generated = $this->processor->process_generate( $item_url, $item_path, $additional_params );
 
 		if ( isset( $expected['success'] ) && ! $expected['success'] ) {
 			$this->assertSame( $expected['code'], $generated->get_error_code() );
