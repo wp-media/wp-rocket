@@ -38,7 +38,8 @@ class Test_NoticeContentNotOurs extends TestCase {
 	public function testShouldEchoNotice( $config, $expected ) {
 		$GLOBALS['pagenow']             = $config['pagenow'];
 		$_GET['activate']               = $config['activate'];
-		$this->wp_rocket_advanced_cache = $config['constant'];
+		this->wp_cache_constant         = $config['wp_cache'];
+		$this->wp_rocket_advanced_cache = $config['wp_rocket_advanced_cache'];
 
 		if ( $config['cap'] ) {
 			wp_set_current_user( self::$user_id );
