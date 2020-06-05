@@ -734,6 +734,7 @@ class Combine extends AbstractJSOptimization {
 			'a.omappapi.com/app/js/api.min.js',
 			'static.zdassets.com',
 			'feedbackcompany.com/widgets/feedback-company-widget.min.js',
+			'widget.gleamjs.io',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
