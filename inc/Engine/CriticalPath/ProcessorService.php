@@ -44,27 +44,26 @@ class ProcessorService {
 	 *
 	 * @return array|WP_Error
 	 */
-	public function process_generate( $item_url, $item_path, $additional_parameters = [
-		'timeout'   => false,
-		'is_mobile' => false,
-		'item_type' => 'custom',
-	] ) {
-		$timeout   = isset( $additional_parameters['timeout'] ) ? $additional_parameters['timeout'] : false;
-		$is_mobile = isset( $additional_parameters['is_mobile'] ) ? $additional_parameters['is_mobile'] : false;
-		$item_type = isset( $additional_parameters['item_type'] ) ? $additional_parameters['item_type'] : 'custom';
+	public function process_generate( $item_url, $item_path, $additional_parameters = [] ) {
+		$defaults = [
+			'timeout'   => false,
+			'is_mobile' => false,
+			'item_type' => 'custom',
+		];
+		$args = array_merge( $defaults, $additional_parameters );
 
 		// Ajax call requested a timeout.
-		if ( $timeout ) {
-			return $this->process_timeout( $item_url, $is_mobile, $item_type );
+		if ( $args['timeout'] ) {
+			return $this->process_timeout( $item_url, $args['is_mobile'], $args['item_type'] );
 		}
 
-		$cpcss_job_id = $this->data_manager->get_cache_job_id( $item_url, $is_mobile );
+		$cpcss_job_id = $this->data_manager->get_cache_job_id( $item_url, $args['is_mobile'] );
 		if ( false === $cpcss_job_id ) {
-			return $this->send_generation_request( $item_url, $item_path, $is_mobile, $item_type );
+			return $this->send_generation_request( $item_url, $item_path, $args['is_mobile'], $args['item_type'] );
 		}
 
 		// job_id is found and we need to check status for it.
-		return $this->check_cpcss_job_status( $cpcss_job_id, $item_path, $item_url, $is_mobile, $item_type );
+		return $this->check_cpcss_job_status( $cpcss_job_id, $item_path, $item_url, $args['is_mobile'], $args['item_type'] );
 	}
 
 	/**
