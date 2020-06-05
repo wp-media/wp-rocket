@@ -73,10 +73,8 @@ class Test_ProcessGenerate extends FilesystemTestCase {
 		$request_timeout               = isset( $config['request_timeout'] )
 			? $config['request_timeout']
 			: false;
-		$item_path                     = "posts/{$post_type}-{$post_id}.css";
-		$item_url                      = ('post_not_exists' === $expected['code'])
-			? null
-			: "http://example.org/?p={$post_id}";
+		$item_path = isset( $config['item_path'] ) ? $config['item_path'] : '';
+		$item_url  = isset( $config['item_url'] ) ? $config['item_url'] : '';
 		$save_cpcss                    =  ! isset( $config['save_cpcss'] )
 			? true
 			: $config['save_cpcss'];
@@ -97,7 +95,7 @@ class Test_ProcessGenerate extends FilesystemTestCase {
 		if ( ! $request_timeout ) {
 			if ( false === $saved_cpcss_job_id) {
 				// enters send_generation_request()
-				if ( $post_id > 0 && 'publish' === $post_status && $cpcss_post_job_id && 200 === $post_request_response_code ) {
+				if ( $cpcss_post_job_id && 200 === $post_request_response_code ) {
 					$this->api_client->shouldReceive( 'send_generation_request' )
 						->once()
 						->with( $item_url, [ 'mobile' => $is_mobile ], $item_type )
