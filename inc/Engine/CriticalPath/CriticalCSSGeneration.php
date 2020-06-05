@@ -63,7 +63,11 @@ class CriticalCSSGeneration extends WP_Background_Process {
 		$transient = get_transient( 'rocket_critical_css_generation_process_running' );
 		$mobile    = isset( $item['mobile'] ) ? $item['mobile'] : 0;
 
-		$generated = $this->processor->process_generate( $item['url'], $item['path'], false, $mobile );
+		$generation_params = [
+			'is_mobile' => $mobile,
+			'item_type' => $item['type']
+		];
+		$generated = $this->processor->process_generate( $item['url'], $item['path'], $generation_params );
 
 		if ( is_wp_error( $generated ) ) {
 			$this->update_running_transient( $transient, $item['path'], $mobile, $generated->get_error_message(), false );
