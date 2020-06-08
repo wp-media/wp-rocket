@@ -19,7 +19,7 @@ class Purge {
 	/**
 	 * Initialize the class
 	 *
-	 * @param WP_Filesystem_Direct $filesystem Filesystem instance
+	 * @param WP_Filesystem_Direct $filesystem Filesystem instance.
 	 */
 	public function __construct( $filesystem ) {
 		$this->filesystem = $filesystem;
@@ -84,13 +84,13 @@ class Purge {
 			return [];
 		}
 
-		$date  = explode( '-', $time );
-		$urls  = [
+		$date = explode( '-', $time );
+		$urls = [
 			get_year_link( $date[0] ),
 			get_month_link( $date[0], $date[1] ),
 			get_day_link( $date[0], $date[1], $date[2] ),
 		];
-	
+
 		/**
 		 * Filter the list of dates URLs.
 		 *
