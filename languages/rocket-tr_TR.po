@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.4\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2020-06-03 17:43-0400\n"
+"POT-Creation-Date: 2020-06-08 11:57-0400\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: BouRock, 2020\n"
 "Language-Team: Turkish (Turkey) (https://www.transifex.com/wp-media/teams/18133/tr_TR/)\n"
@@ -570,7 +570,7 @@ msgid ""
 "Provides a fallback if auto-generated critical path CSS is incomplete. "
 "%1$sMore info%2$s"
 msgstr ""
-"Otomatik oluşturulmuş önemli yol CSS’si tamamlanmazsa son bir çare sağlar. "
+"Otomatik oluşturulmuş önemli yol CSS tamamlanmazsa son bir çare sağlar. "
 "%1$sDaha fazla bilgi%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:699
@@ -915,10 +915,12 @@ msgid "Fonts to preload"
 msgstr "Önyüklenecek yazı tipleri"
 
 #: inc/Engine/Admin/Settings/Page.php:1133
-msgid "Specify urls of the font files to be preloaded (one per line)"
+msgid ""
+"Specify urls of the font files to be preloaded (one per line). Fonts must be"
+" hosted on your own domain."
 msgstr ""
 "Önyüklenecek yazı tipi dosyalarının URL’lerini belirtin (her satıra bir "
-"tane)"
+"tane). Yazı tipleri kendi etki alanınızda barındırılmak zorundadır."
 
 #: inc/Engine/Admin/Settings/Page.php:1134
 msgid ""
@@ -1703,8 +1705,13 @@ msgstr "RocketCDN etkisizleştirildi"
 msgid "Clear this cache"
 msgstr "Bu önbelleği temizle"
 
-#: inc/Engine/CriticalPath/APIClient.php:151
-#: inc/Engine/CriticalPath/DataManager.php:65
+#: inc/Engine/CriticalPath/APIClient.php:64
+#, php-format
+msgid "Critical CSS for %1$s not generated. Error: %2$s"
+msgstr "%1$s için Önemli CSS oluşturulmadı. Hata: %2$s"
+
+#: inc/Engine/CriticalPath/APIClient.php:170
+#: inc/Engine/CriticalPath/DataManager.php:66
 #, php-format
 msgid ""
 "Critical CSS for %1$s on mobile not generated. Error: The API returned an "
@@ -1713,26 +1720,26 @@ msgstr ""
 "Mobil üzerinde %1$s için Önemli CSS oluşturulmadı. Hata: API boş bir yanıt "
 "döndürdü."
 
-#: inc/Engine/CriticalPath/APIClient.php:154
-#: inc/Engine/CriticalPath/DataManager.php:68
+#: inc/Engine/CriticalPath/APIClient.php:173
+#: inc/Engine/CriticalPath/DataManager.php:69
 #, php-format
 msgid ""
 "Critical CSS for %1$s not generated. Error: The API returned an empty "
 "response."
 msgstr "%1$s için Önemli CSS oluşturulmadı. Hata: API boş bir yanıt döndürdü."
 
-#: inc/Engine/CriticalPath/APIClient.php:166
+#: inc/Engine/CriticalPath/APIClient.php:185
 #, php-format
 msgid "Critical CSS for %1$s on mobile not generated."
 msgstr "Mobil üzerinde %1$s için Önemli CSS oluşturulmadı."
 
-#: inc/Engine/CriticalPath/APIClient.php:168
-#: inc/Engine/CriticalPath/ProcessorService.php:177
+#: inc/Engine/CriticalPath/APIClient.php:187
+#: inc/Engine/CriticalPath/ProcessorService.php:193
 #, php-format
 msgid "Critical CSS for %1$s not generated."
 msgstr "%1$s için Önemli CSS oluşturulmadı."
 
-#: inc/Engine/CriticalPath/APIClient.php:176
+#: inc/Engine/CriticalPath/APIClient.php:195
 #, php-format
 msgid ""
 "Critical CSS for %1$s on mobile not generated. Error: The API returned an "
@@ -1741,7 +1748,7 @@ msgstr ""
 "Mobil üzerinde %1$s için Önemli CSS oluşturulmadı. Hata: API geçersiz bir "
 "yanıt kodu döndürdü."
 
-#: inc/Engine/CriticalPath/APIClient.php:178
+#: inc/Engine/CriticalPath/APIClient.php:197
 #, php-format
 msgid ""
 "Critical CSS for %1$s not generated. Error: The API returned an invalid "
@@ -1750,25 +1757,25 @@ msgstr ""
 "%1$s için Önemli CSS oluşturulmadı. Hata: API geçersiz bir yanıt kodu "
 "döndürdü."
 
-#: inc/Engine/CriticalPath/APIClient.php:186
-#: inc/Engine/CriticalPath/ProcessorService.php:182
+#: inc/Engine/CriticalPath/APIClient.php:205
+#: inc/Engine/CriticalPath/ProcessorService.php:200
 #, php-format
 msgid "Error: %1$s"
 msgstr "Hata: %1$s"
 
-#: inc/Engine/CriticalPath/Admin/Admin.php:256
+#: inc/Engine/CriticalPath/Admin/Admin.php:260
 msgid "Regenerate Critical Path CSS"
-msgstr "Önemli Yol CSS’sini yeniden oluştur"
+msgstr "Önemli Yol CSS’yi yeniden oluştur"
 
 #: inc/Engine/CriticalPath/Admin/Post.php:132
 #: views/cpcss/metabox/generate.php:47
 msgid "Generate Specific CPCSS"
-msgstr "Belirli ÖYCSS’si Oluştur"
+msgstr "Belirli ÖYCSS’yi Oluştur"
 
 #: inc/Engine/CriticalPath/Admin/Post.php:133
 #: views/cpcss/metabox/generate.php:45
 msgid "Regenerate specific CPCSS"
-msgstr "Belirli ÖYCSS’sini Yeniden Oluştur"
+msgstr "Belirli ÖYCSS’yi Yeniden Oluştur"
 
 #: inc/Engine/CriticalPath/Admin/Post.php:199
 msgid "%l to use this feature."
@@ -1797,7 +1804,7 @@ msgstr "Önemli CSS üretimi şu anda çalışıyor."
 msgid "Go to the %1$sWP Rocket settings%2$s page to track progress."
 msgstr "İlerlemeyi izlemek için %1$sWP Rocket ayarları%2$s sayfasına gidin."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:359
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:368
 #, php-format
 msgid ""
 "Critical CSS generation is currently running: %1$d of %2$d page types "
@@ -1806,67 +1813,67 @@ msgstr ""
 "Önemli CSS oluşturma şu anda çalışıyor: %1$d / %2$d sayfa türü tamamlandı. "
 "(İlerlemeyi görmek için bu sayfayı yenileyin)"
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:426
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:440
 #, php-format
 msgid "Critical CSS generation finished for %1$d of %2$d page types."
 msgstr "Önemli CSS oluşturma, %1$d / %2$d sayfa türü için bitti."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:433
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:447
 msgid "Critical CSS generation encountered one or more errors."
 msgstr "Önemli CSS oluşturma, bir ya da daha fazla hata ile karşılaştı."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:433
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:447
 msgid "Learn more."
 msgstr "Daha fazla bilgi edinin."
 
-#: inc/Engine/CriticalPath/DataManager.php:101
+#: inc/Engine/CriticalPath/DataManager.php:102
 msgid "Critical CSS file for mobile does not exist"
 msgstr "Mobil için Önemli CSS dosyası yok"
 
-#: inc/Engine/CriticalPath/DataManager.php:103
+#: inc/Engine/CriticalPath/DataManager.php:104
 msgid "Critical CSS file does not exist"
 msgstr "Önemli CSS dosyası yok"
 
-#: inc/Engine/CriticalPath/DataManager.php:115
+#: inc/Engine/CriticalPath/DataManager.php:116
 msgid "Critical CSS file for mobile cannot be deleted"
 msgstr "Mobil için Önemli CSS dosyası silinemez"
 
-#: inc/Engine/CriticalPath/DataManager.php:117
+#: inc/Engine/CriticalPath/DataManager.php:118
 msgid "Critical CSS file cannot be deleted"
 msgstr "Önemli CSS dosyası silinemez"
 
-#: inc/Engine/CriticalPath/ProcessorService.php:174
+#: inc/Engine/CriticalPath/ProcessorService.php:186
 #, php-format
 msgid "Mobile Critical CSS for %1$s not generated."
 msgstr "%1$s için Mobil Önemli CSS oluşturulmadı."
 
-#: inc/Engine/CriticalPath/ProcessorService.php:207
+#: inc/Engine/CriticalPath/ProcessorService.php:227
 #, php-format
 msgid "Critical CSS for %s in progress."
 msgstr "%s için Önemli CSS devam ediyor."
 
-#: inc/Engine/CriticalPath/ProcessorService.php:237
+#: inc/Engine/CriticalPath/ProcessorService.php:261
 #, php-format
 msgid "Mobile Critical CSS for %s generated."
 msgstr "%s için Mobil Önemli CSS oluşturuldu."
 
-#: inc/Engine/CriticalPath/ProcessorService.php:245
+#: inc/Engine/CriticalPath/ProcessorService.php:272
 #, php-format
 msgid "Critical CSS for %s generated."
 msgstr "%s için Önemli CSS oluşturuldu."
 
-#: inc/Engine/CriticalPath/ProcessorService.php:265
+#: inc/Engine/CriticalPath/ProcessorService.php:294
 msgid "Critical CSS file deleted successfully."
 msgstr "Önemli CSS dosyası başarılı olarak silindi."
 
-#: inc/Engine/CriticalPath/ProcessorService.php:285
+#: inc/Engine/CriticalPath/ProcessorService.php:316
 #, php-format
 msgid "Mobile Critical CSS for %1$s timeout. Please retry a little later."
 msgstr ""
 "%1$s için Mobil Önemli CSS zaman aşımına uğradı. Lütfen biraz sonra yeniden "
 "deneyin."
 
-#: inc/Engine/CriticalPath/ProcessorService.php:295
+#: inc/Engine/CriticalPath/ProcessorService.php:329
 #, php-format
 msgid "Critical CSS for %1$s timeout. Please retry a little later."
 msgstr ""
@@ -1884,7 +1891,7 @@ msgstr "İstenen yazı yok."
 
 #: inc/Engine/CriticalPath/RESTWPPost.php:46
 msgid "Cannot generate CPCSS for unpublished post."
-msgstr "Yayınlanmamış yazı için ÖYCSS’si oluşturulamıyor."
+msgstr "Yayınlanmamış yazı için ÖYCSS oluşturulamıyor."
 
 #: inc/Engine/HealthCheck/HealthCheck.php:82 inc/deprecated/3.5.php:868
 msgid ""
@@ -1929,7 +1936,7 @@ msgstr "Önyükleme"
 
 #: inc/Engine/HealthCheck/HealthCheck.php:146
 msgid "Critical Path CSS Generation Process"
-msgstr "Önemli Yol CSS’si Oluşturma İşlemi"
+msgstr "Önemli Yol CSS’yi Oluşturma İşlemi"
 
 #: inc/Engine/Preload/Homepage.php:153
 #, php-format
@@ -3218,7 +3225,7 @@ msgid ""
 "mobile."
 msgstr ""
 "Web siteniz şu anda hem masaüstü hem de mobil cihazlar için aynı Önemli Yol "
-"CSS’sini kullanıyor."
+"CSS’yi kullanıyor."
 
 #: views/cpcss/activate-cpcss-mobile.php:15
 msgid "Click the button to enable mobile-specific CPCSS for your site."
@@ -3239,7 +3246,7 @@ msgstr ""
 msgid ""
 "Your site is now using mobile-specific critical path CSS. %1$sMore info%2$s"
 msgstr ""
-"Bu site artık mobile özgü önemli yol CSS’si kullanıyor. %1$sDaha fazla "
+"Bu site artık mobile özgü önemli yol CSS’yi kullanıyor. %1$sDaha fazla "
 "bilgi%2$s"
 
 #: views/cpcss/activate-cpcss-mobile.php:39
@@ -3248,24 +3255,24 @@ msgstr "Mobile Özgü ÖYCSS’yi Oluştur"
 
 #: views/cpcss/metabox/container.php:19
 msgid "Critical Path CSS"
-msgstr "Önemli Yol CSS’si"
+msgstr "Önemli Yol CSS"
 
 #: views/cpcss/metabox/generate.php:23
 #, php-format
 msgid "Generate specific Critical Path CSS for this post. %1$sMore info%2$s"
 msgstr ""
-"Bu yazı için belirli bir Önemli Yol CSS’si oluşturun. %1$sDaha fazla "
+"Bu yazı için belirli bir Önemli Yol CSS’yi oluşturun. %1$sDaha fazla "
 "bilgi%2$s"
 
 #: views/cpcss/metabox/generate.php:33
 #, php-format
 msgid "This post uses specific Critical Path CSS. %1$sMore info%2$s"
 msgstr ""
-"Bu yazı belirli bir Önemli Yol CSS’si kullanır. %1$sDaha fazla bilgi%2$s"
+"Bu yazı belirli bir Önemli Yol CSS’yi kullanır. %1$sDaha fazla bilgi%2$s"
 
 #: views/cpcss/metabox/generate.php:56
 msgid "Revert back to the default CPCSS"
-msgstr "Varsayılan ÖYCSS’sine geri dön"
+msgstr "Varsayılan ÖYCSS’ye geri dön"
 
 #: views/deactivation-intent/form.php:21
 msgid "Return"
