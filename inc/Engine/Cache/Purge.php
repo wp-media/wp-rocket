@@ -5,13 +5,32 @@ namespace WP_Rocket\Engine\Cache;
 use DirectoryIterator;
 use Exception;
 
+/**
+ * Cache Purge handling class
+ */
 class Purge {
+	/**
+	 * Filesystem instance
+	 *
+	 * @var WP_Filesystem_Direct
+	 */
 	private $filesystem;
 
+	/**
+	 * Initialize the class
+	 *
+	 * @param WP_Filesystem_Direct $filesystem Filesystem instance
+	 */
 	public function __construct( $filesystem ) {
 		$this->filesystem = $filesystem;
 	}
 
+	/**
+	 * Purges cache for the dates archives of a post
+	 *
+	 * @param WP_Post $post Post object.
+	 * @return void
+	 */
 	public function purge_dates_archives( $post ) {
 		global $wp_rewrite;
 
@@ -52,6 +71,12 @@ class Purge {
 		}
 	}
 
+	/**
+	 * Gets the dates archives URLs for the provided post
+	 *
+	 * @param WP_Post $post Post object.
+	 * @return array
+	 */
 	private function get_dates_archives( $post ) {
 		$time = get_the_time( 'Y-m-d', $post );
 

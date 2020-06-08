@@ -17,12 +17,18 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 	 */
 	private $options;
 
+	/**
+	 * Purge instance
+	 *
+	 * @var Purge
+	 */
 	private $purge;
 
 	/**
 	 * Constructor
 	 *
 	 * @param Options_Data $options WP Rocket options instance.
+	 * @param Purge        $purge   Purge instance.
 	 */
 	public function __construct( Options_Data $options, Purge $purge ) {
 		$this->options = $options;
@@ -77,6 +83,12 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 		rocket_clean_domain();
 	}
 
+	/**
+	 * Purges cache for the dates archives of a post after cleaning the post
+	 *
+	 * @param WP_Post $post Post object.
+	 * @return void
+	 */
 	public function purge_dates_archives( $post ) {
 		$this->purge->purge_dates_archives( $post );
 	}
