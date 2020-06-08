@@ -46,10 +46,11 @@ class DataManager {
 	 * @param string $cpcss     CPCSS code to be saved.
 	 * @param string $url       URL for item to be used in error messages.
 	 * @param bool   $is_mobile If this is cpcss for mobile or not.
+	 * @param string $item_type Optional. Type for this item if it's custom or specific type. Default: custom.
 	 *
 	 * @return bool|WP_Error
 	 */
-	public function save_cpcss( $path, $cpcss, $url, $is_mobile = false ) {
+	public function save_cpcss( $path, $cpcss, $url, $is_mobile = false, $item_type = 'custom' ) {
 		$file_path_directory = dirname( $this->critical_css_path . $path );
 
 		if ( ! $this->filesystem->is_dir( $file_path_directory ) ) {
@@ -66,7 +67,7 @@ class DataManager {
 							:
 							// translators: %s = item URL.
 							__( 'Critical CSS for %1$s not generated. Error: The API returned an empty response.', 'rocket' ),
-						$url
+						( 'custom' === $item_type ) ? $url : $item_type
 						),
 					[
 						'status' => 400,

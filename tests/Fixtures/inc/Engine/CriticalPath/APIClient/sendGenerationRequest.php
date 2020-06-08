@@ -2,6 +2,21 @@
 
 return [
 	'test_data' => [
+		'testShouldBailoutIfBlockExternal'     => [
+			'config'   => [
+				'block_external' => true,
+				'item_url'     => 'http://www.example.com/?p=1',
+				'response_data' => [
+					'code' => 400,
+					'body' => '{}',
+				]
+			],
+			'expected' => [
+				'code'    => 'cpcss_generation_failed',
+				'message' => 'Critical CSS for http://www.example.com/?p=1 not generated. Error: User has blocked requests through HTTP.',
+				'data'    => [ 'status' => 400 ],
+			],
+		],
 		'testShouldBailoutIfResponse400'     => [
 			'config'   => [
 				'item_url'     => 'http://www.example.com/?p=1',

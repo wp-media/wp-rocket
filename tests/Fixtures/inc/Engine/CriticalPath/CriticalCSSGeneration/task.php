@@ -7,6 +7,7 @@ return [
 				'url'    => 'http://example.org/',
 				'path'   => 'front_page.css',
 				'check'  => 0,
+				'type'   => 'home',
 			],
 			'result' => [
 				'success' => false,
@@ -33,6 +34,7 @@ return [
 				'url'    => 'http://example.org/',
 				'path'   => 'front_page.css',
 				'check'  => 0,
+				'type'   => 'home',
 			],
 			'result' => [
 				'success' => true,
@@ -47,6 +49,7 @@ return [
 				'url'    => 'http://example.org/',
 				'path'   => 'front_page.css',
 				'check'  => 0,
+				'type'   => 'home',
 			],
 			'result' => [
 				'success' => true,
