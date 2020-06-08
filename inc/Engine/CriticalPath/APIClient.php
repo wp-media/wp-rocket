@@ -59,7 +59,12 @@ class APIClient {
 		if ( is_wp_error( $response ) ) {
 			return new WP_Error(
 				$this->get_response_code( $response ),
-				$response->get_error_message(),
+				sprintf(
+					// translators: %1$s = type of content, %2$s = error message.
+					__( 'Critical CSS for %1$s not generated. Error: %2$s', 'rocket' ),
+					( 'custom' === $item_type ) ? $url : $item_type,
+					$response->get_error_message()
+				),
 				[
 					'status' => 400,
 				]

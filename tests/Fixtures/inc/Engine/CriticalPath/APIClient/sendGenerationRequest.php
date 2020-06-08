@@ -13,7 +13,7 @@ return [
 			],
 			'expected' => [
 				'code'    => 'cpcss_generation_failed',
-				'message' => 'User has blocked requests through HTTP.',
+				'message' => 'Critical CSS for http://www.example.com/?p=1 not generated. Error: User has blocked requests through HTTP.',
 				'data'    => [ 'status' => 400 ],
 			],
 		],
