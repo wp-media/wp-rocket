@@ -1,6 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Admin\Settings;
 
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Security\Sucuri_Subscriber;
 
 /**
@@ -10,11 +11,11 @@ use WP_Rocket\Subscriber\Third_Party\Plugins\Security\Sucuri_Subscriber;
  */
 class Settings {
 	/**
-	 * Settings data.
+	 * Options_Data instance.
 	 *
 	 * @since 3.0
 	 *
-	 * @var Array
+	 * @var Options_Data
 	 */
 	private $options;
 
@@ -37,13 +38,39 @@ class Settings {
 	private $hidden_settings;
 
 	/**
+	 * Font formats allowed to be preloaded.
+	 *
+	 * @since 3.6
+	 * @see   $this->sanitize_font()
+	 *
+	 * @var string|bool
+	 */
+	private $font_formats = [
+		'otf',
+		'ttf',
+		'svg',
+		'woff',
+		'woff2',
+	];
+
+	/**
+	 * Array of valid hosts.
+	 *
+	 * @since 3.6
+	 * @see   $this->get_hosts()
+	 *
+	 * @var array
+	 */
+	private $hosts;
+
+	/**
 	 * Constructor
 	 *
 	 * @since 3.0
 	 *
-	 * @param Array $options Array containg the option data.
+	 * @param Options_Data $options Options_Data instance.
 	 */
-	public function __construct( $options ) {
+	public function __construct( Options_Data $options ) {
 		$this->options = $options;
 	}
 
@@ -237,9 +264,6 @@ class Settings {
 			$input['purge_cron_interval'] = 10;
 		}
 
-		// Option : Remove query strings.
-		$input['remove_query_strings'] = ! empty( $input['remove_query_strings'] ) ? 1 : 0;
-
 		// Option : Prefetch DNS requests.
 		$input['dns_prefetch'] = $this->sanitize_dns_prefetch( $input );
 
@@ -346,6 +370,9 @@ class Settings {
 		} else {
 			$input['sitemaps'] = [];
 		}
+
+		// Option : fonts to preload.
+		$input['preload_fonts'] = ! empty( $input['preload_fonts'] ) ? $this->sanitize_fonts( $input['preload_fonts'] ) : [];
 
 		// Options : CloudFlare.
 		$input['do_cloudflare']               = ! empty( $input['do_cloudflare'] ) ? 1 : 0;
@@ -539,5 +566,108 @@ class Settings {
 				$urls
 			)
 		);
+	}
+
+	/**
+	 * Sanitize a list of font file paths.
+	 *
+	 * @since 3.6
+	 *
+	 * @param  array|string $files List of filepaths to sanitize. Can be an array of strings or a string listing paths separated by "\n".
+	 * @return array               Sanitized filepaths.
+	 */
+	private function sanitize_fonts( $files ) {
+		if ( ! is_array( $files ) ) {
+			$files = explode( "\n", trim( $files ) );
+		}
+
+		$files = array_map( [ $this, 'sanitize_font' ], $files );
+
+		return array_unique( array_filter( $files ) );
+	}
+
+	/**
+	 * Sanitize an entry for the preload fonts option.
+	 *
+	 * @since 3.6
+	 *
+	 * @param string $file URL or path to a font file.
+	 * @return string|bool
+	 */
+	private function sanitize_font( $file ) {
+		if ( ! is_string( $file ) ) {
+			return false;
+		}
+
+		$file = trim( $file );
+
+		if ( empty( $file ) ) {
+			return false;
+		}
+
+		$parsed_url = wp_parse_url( $file );
+		$hosts      = $this->get_hosts();
+
+		if ( ! empty( $parsed_url['host'] ) ) {
+			$match = false;
+
+			foreach ( $hosts as $host ) {
+				if ( false !== strpos( $file, $host ) ) {
+					$match = true;
+					break;
+				}
+			}
+
+			if ( ! $match ) {
+				return false;
+			}
+		}
+
+		$file = str_replace( [ 'http:', 'https:' ], '', $file );
+		$file = str_replace( $hosts, '', $file );
+		$file = '/' . ltrim( $file, '/' );
+
+		$ext = strtolower( pathinfo( $parsed_url['path'], PATHINFO_EXTENSION ) );
+
+		if ( ! in_array( $ext, $this->font_formats, true ) ) {
+			return false;
+		}
+
+		return $file;
+	}
+
+	/**
+	 * Gets an array of valid hosts.
+	 *
+	 * @since 3.6
+	 *
+	 * @return array
+	 */
+	private function get_hosts() {
+		if ( isset( $this->hosts ) ) {
+			return $this->hosts;
+		}
+
+		$urls   = (array) $this->options->get( 'cdn_cnames', [] );
+		$urls[] = home_url();
+		$urls   = array_map( 'rocket_add_url_protocol', $urls );
+
+		foreach ( $urls as $url ) {
+			$parsed_url = get_rocket_parse_url( $url );
+
+			if ( empty( $parsed_url['host'] ) ) {
+				continue;
+			}
+
+			$parsed_url['path'] = ( '/' === $parsed_url['path'] ) ? '' : $parsed_url['path'];
+
+			$this->hosts[] = "//{$parsed_url['host']}{$parsed_url['path']}";
+		}
+
+		if ( empty( $this->hosts ) ) {
+			$this->hosts = [];
+		}
+
+		return $this->hosts;
 	}
 }

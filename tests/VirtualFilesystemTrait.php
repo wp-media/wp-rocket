@@ -6,10 +6,11 @@ use Brain\Monkey\Functions;
 use org\bovigo\vfs\vfsStream;
 
 trait VirtualFilesystemTrait {
-	protected $original_entries = [];
-	protected $shouldNotClean   = [];
-	protected $entriesBefore    = [];
-	protected $dumpResults      = false;
+	protected $original_entries      = [];
+	protected $shouldNotClean        = [];
+	protected $entriesBefore         = [];
+	protected $dumpResults           = false;
+	protected $default_vfs_structure = '/vfs-structure/default.php';
 
 	protected function initDefaultStructure() {
 		if ( empty( $this->config ) ) {
@@ -20,7 +21,7 @@ trait VirtualFilesystemTrait {
 			return;
 		}
 
-		$this->config['structure'] = require WP_ROCKET_TESTS_FIXTURES_DIR . '/vfs-structure/default.php';
+		$this->config['structure'] = require WP_ROCKET_TESTS_FIXTURES_DIR . $this->default_vfs_structure;
 	}
 
 	protected function redefineRocketDirectFilesystem() {
@@ -147,5 +148,20 @@ trait VirtualFilesystemTrait {
 			'wp-config.php' => '',
 			'index.php'     => '',
 		];
+	}
+
+	/**
+	 * Changes directory permission. If file is given, changes its parent directory's permission.
+	 *
+	 * @param string $path       Absolute path to the directory (or file).
+	 * @param int    $permission Permission level to set.
+	 */
+	protected function changePermissions( $path, $permission = 0000 ) {
+		if ( $this->filesystem->is_file( $path ) ) {
+			$path = dirname( $path );
+		}
+
+		$dir = $this->filesystem->getDir( $path );
+		$dir->chmod( $permission ); // Only the root user.
 	}
 }

@@ -2,92 +2,77 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\NoticesSubscriber;
 
-use WPMedia\PHPUnit\Integration\TestCase;
+use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::promote_rocketcdn_notice
- * @uses ::rocket_is_live_site
- * @uses \WP_Rocket\Abstract_Render::generate
- * @uses ::rocket_direct_filesystem
+ * @uses   ::rocket_is_live_site
+ * @uses   \WP_Rocket\Abstract_Render::generate
+ * @uses   ::rocket_direct_filesystem
  *
- * @group  RocketCDN
  * @group  AdminOnly
+ * @group  RocketCDN
  */
 class Test_PromoteRocketcdnNotice extends TestCase {
-	private function getActualHtml() {
+	private $notice;
+
+	public function setUp() {
+		parent::setUp();
+
+		if ( empty( $this->notice ) ) {
+			$this->notice = $this->format_the_html( $this->config['notice'] );
+		}
+	}
+
+	/**
+	 * @dataProvider configTestData
+	 */
+	public function testShouldDisplayPerData( $data, $expected, $config ) {
+		$this->white_label = isset( $config['white_label'] ) ? $config['white_label'] : $this->white_label;
+
+		if ( isset( $config['home_url'] ) ) {
+			$this->home_url = $config['home_url'];
+			add_filter( 'home_url', [ $this, 'home_url_cb' ] );
+		}
+
+		if ( isset( $data['rocketcdn_status'] ) ) {
+			set_transient( 'rocketcdn_status', $data['rocketcdn_status'], MINUTE_IN_SECONDS );
+		}
+
+		if ( isset( $config['role'] ) ) {
+			$this->configUser( $config['role'] );
+		}
+
+		if ( isset( $config['screen'] ) ) {
+			set_current_screen( $config['screen'] );
+		}
+
+		if ( isset( $config['user_meta'] ) ) {
+			add_user_meta( get_current_user_id(), 'rocketcdn_dismiss_notice', $config['user_meta'] );
+		}
+
 		ob_start();
 		do_action( 'admin_notices' );
+		$actual = ob_get_clean();
+		if ( ! empty( $actual ) ) {
+			$actual = $this->format_the_html( $actual );
+		}
 
-		return $this->format_the_html( ob_get_clean() );
+		if ( $expected['should_display'] ) {
+			$this->assertContains( $this->notice, $actual );
+		} else {
+			$this->assertNotContains( $this->notice, $actual );
+		}
 	}
 
-	private function get_notice() {
-		return $this->format_the_html( '<div class="notice notice-alt notice-warning is-dismissible" id="rocketcdn-promote-notice">
-		<h2 class="notice-title">New!</h2>
-		<p>Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network!</p>
-		<p><a href="#page_cdn" class="wpr-button" id="rocketcdn-learn-more-dismiss">Learn More</a></p>
-	</div>' );
-	}
+	private function configUser( $role ) {
+		// Make sure the capability is correct.
+		$admin = get_role( 'administrator' );
+		if ( ! $admin->has_cap( 'rocket_manage_options' ) ) {
+			$admin->add_cap( 'rocket_manage_options' );
+		}
 
-	public function testShouldDisplayNothingWhenNotLiveSite() {
-		$callback = function() {
-			return 'http://localhost';
-		};
-
-		add_filter( 'home_url', $callback );
-
-		$this->assertNotContains( $this->get_notice(), $this->getActualHtml() );
-
-		remove_filter( 'home_url', $callback );
-	}
-
-	public function testShouldNotDisplayNoticeWhenNoCapability() {
-		$user_id = self::factory()->user->create( [ 'role' => 'editor' ] );
-
+		$user_id = $this->factory->user->create( [ 'role' => $role ] );
 		wp_set_current_user( $user_id );
-
-		$this->assertNotContains( $this->get_notice(), $this->getActualHtml() );
-	}
-
-	public function testShouldNotDisplayNoticeWhenNotRocketPage() {
-		$user_id = self::factory()->user->create( [ 'role' => 'administrator' ] );
-
-		wp_set_current_user( $user_id );
-		set_current_screen( 'edit.php' );
-
-		$this->assertNotContains( $this->get_notice(), $this->getActualHtml() );
-	}
-
-	public function testShouldNotDisplayNoticeWhenDismissed() {
-		$user_id = self::factory()->user->create( [ 'role' => 'administrator' ] );
-
-		wp_set_current_user( $user_id );
-
-		set_current_screen( 'settings_page_wprocket' );
-		add_user_meta( get_current_user_id(), 'rocketcdn_dismiss_notice', true );
-
-		$this->assertNotContains( $this->get_notice(), $this->getActualHtml() );
-	}
-
-	public function testShouldNotDisplayNoticeWhenActive() {
-		$user_id = self::factory()->user->create( [ 'role' => 'administrator' ] );
-
-		wp_set_current_user( $user_id );
-
-		set_current_screen( 'settings_page_wprocket' );
-		set_transient( 'rocketcdn_status', [ 'subscription_status' => 'running' ], MINUTE_IN_SECONDS );
-
-		$this->assertNotContains( $this->get_notice(), $this->getActualHtml() );
-	}
-
-	public function testShouldDisplayNoticeWhenNotActive() {
-		$user_id = self::factory()->user->create( [ 'role' => 'administrator' ] );
-
-		wp_set_current_user( $user_id );
-
-		set_current_screen( 'settings_page_wprocket' );
-		set_transient( 'rocketcdn_status', [ 'subscription_status' => 'cancelled' ], MINUTE_IN_SECONDS );
-
-		$this->assertContains( $this->get_notice(), $this->getActualHtml() );
 	}
 }

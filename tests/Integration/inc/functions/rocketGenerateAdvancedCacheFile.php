@@ -2,11 +2,15 @@
 
 namespace WP_Rocket\Tests\Integration\inc\functions;
 
+use WP_Rocket\Engine\Cache\AdvancedCache;
+use WP_Rocket\Tests\Fixtures\DIContainer;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
  * @covers ::rocket_generate_advanced_cache_file
- * @uses   ::get_rocket_advanced_cache_file
+ * @uses \WP_Rocket\Engine\Cache\AdvancedCache::get_advanced_cache_content
+ * @uses   ::is_rocket_generate_caching_mobile_files
+ * @uses ::get_rocket_option
  * @uses   ::rocket_put_content
  * @uses   ::rocket_get_constant
  *
@@ -15,47 +19,41 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group  Files
  */
 class Test_RocketGenerateAdvancedCacheFile extends FilesystemTestCase {
-	protected      $path_to_test_data   = '/inc/functions/rocketGenerateAdvancedCacheFile.php';
-	private        $advanced_cache_file = 'vfs://public/wp-content/advanced-cache.php';
-	private static $original_settings   = [];
-	private        $old_settings        = [];
+	protected $path_to_test_data   = '/inc/functions/rocketGenerateAdvancedCacheFile.php';
+	private   $advanced_cache_file = 'vfs://public/wp-content/advanced-cache.php';
 
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
-		self::$original_settings = get_option( 'wp_rocket_settings', [] );
-	}
+	protected static $use_settings_trait = true;
 
-	public static function tearDownAfterClass() {
-		parent::tearDownAfterClass();
-		// Restore the original settings before exiting.
-		update_option( 'wp_rocket_settings', self::$original_settings );
-	}
+	private $dicontainer;
 
 	public function setUp() {
 		parent::setUp();
 
-		$this->old_settings = array_merge( self::$original_settings, $this->config['settings'] );
-		update_option( 'wp_rocket_settings', $this->old_settings );
+		// Set up the container.
+		$this->dicontainer = new DIContainer();
+		$this->dicontainer->setUp();
 	}
 
 	public function tearDown() {
 		parent::tearDown();
 
-		delete_option( 'wp_rocket_settings' );
+		$this->dicontainer->tearDown();
 	}
 
 	/**
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldGenerateAdvancedCacheFile( $settings, $expected_content, $when_file_not_exist = false ) {
-		update_option(
-			'wp_rocket_settings',
-			array_merge( $this->old_settings, $settings )
-		);
+		$this->mergeExistingSettingsAndUpdate( $settings );
 
 		if ( $when_file_not_exist ) {
 			$this->filesystem->delete( $this->advanced_cache_file );
 		}
+
+		$this->dicontainer->addAdvancedCache(
+			$this->filesystem->getUrl( $this->config['vfs_dir'] ),
+			$this->filesystem
+		);
 
 		// Run it.
 		rocket_generate_advanced_cache_file();

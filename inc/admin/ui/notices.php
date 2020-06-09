@@ -370,66 +370,6 @@ function rocket_warning_wp_config_permissions() {
 add_action( 'admin_notices', 'rocket_warning_wp_config_permissions' );
 
 /**
- * This warning is displayed when the advanced-cache.php file isn't writeable
- *
- * @since 2.0
- */
-function rocket_warning_advanced_cache_permissions() {
-	$advanced_cache_file = WP_CONTENT_DIR . '/advanced-cache.php';
-
-	if ( current_user_can( 'rocket_manage_options' )
-		&& ! rocket_direct_filesystem()->is_writable( $advanced_cache_file )
-		&& ( ! defined( 'WP_ROCKET_ADVANCED_CACHE' ) || ! WP_ROCKET_ADVANCED_CACHE )
-		&& rocket_valid_key() ) {
-
-		$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
-
-		if ( in_array( __FUNCTION__, (array) $boxes, true ) ) {
-			return;
-		}
-
-		$message = rocket_notice_writing_permissions( basename( WP_CONTENT_DIR ) . '/advanced-cache.php' );
-
-		rocket_notice_html(
-			[
-				'status'           => 'error',
-				'dismissible'      => '',
-				'message'          => $message,
-				'dismiss_button'   => __FUNCTION__,
-				'readonly_content' => get_rocket_advanced_cache_file(),
-			]
-		);
-	}
-}
-add_action( 'admin_notices', 'rocket_warning_advanced_cache_permissions' );
-
-/**
- * This warning is displayed when the advanced-cache.php file isn't ours
- *
- * @since 2.2
- */
-function rocket_warning_advanced_cache_not_ours() {
-	if ( ! ( 'plugins.php' === $GLOBALS['pagenow'] && isset( $_GET['activate'] ) ) // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		&& current_user_can( 'rocket_manage_options' )
-		&& ! defined( 'WP_ROCKET_ADVANCED_CACHE' )
-		&& ( defined( 'WP_CACHE' ) && WP_CACHE )
-		&& get_rocket_option( 'version' ) === WP_ROCKET_VERSION
-		&& rocket_valid_key() ) {
-
-			$message = rocket_notice_writing_permissions( basename( WP_CONTENT_DIR ) . '/advanced-cache.php' );
-
-			rocket_notice_html(
-				[
-					'status'      => 'error',
-					'dismissible' => '',
-					'message'     => $message,
-				]
-			);
-	}
-}
-add_action( 'admin_notices', 'rocket_warning_advanced_cache_not_ours' );
-
-/**
  * This warning is displayed when the .htaccess file doesn't exist or isn't writeable
  *
  * @since 1.0
@@ -581,12 +521,10 @@ add_action( 'admin_notices', 'rocket_warning_minify_cache_dir_permissions' );
  * This warning is displayed when the busting cache dir isn't writeable
  *
  * @since 2.9
- * @author Remy Perona
  */
 function rocket_warning_busting_cache_dir_permissions() {
 	if ( current_user_can( 'rocket_manage_options' )
 		&& ( ! rocket_direct_filesystem()->is_writable( WP_ROCKET_CACHE_BUSTING_PATH ) )
-		&& ( get_rocket_option( 'remove_query_strings', false ) )
 		&& rocket_valid_key() ) {
 
 		$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );

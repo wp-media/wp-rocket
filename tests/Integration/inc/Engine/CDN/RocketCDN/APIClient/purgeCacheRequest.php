@@ -2,13 +2,13 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\APIClient;
 
-use WPMedia\PHPUnit\Integration\TestCase;
 use WPMedia\PHPUnit\Integration\ApiTrait;
+use WP_Rocket\Tests\Integration\TestCase;
 use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\APIClient::purge_cache_request
- * @uses \WP_Rocket\Engine\CDN\RocketCDN\APIClient::get_subscription_data
+ * @uses   \WP_Rocket\Engine\CDN\RocketCDN\APIClient::get_subscription_data
  *
  * @group  RocketCDN
  * @group  RocketCDNAPI
@@ -32,78 +32,20 @@ class Test_PurgeCacheRequest extends TestCase {
 	}
 
 	/**
-	 * Test should return the error packet when there's no subscription ID.
+	 * @dataProvider configTestData
 	 */
-	public function testShouldReturnErrorPacketWhenNoSubscriptionId() {
-		set_transient( 'rocketcdn_status', [ 'subscription_status' => 'cancelled' ], MINUTE_IN_SECONDS );
+	public function testShouldReturnExpected( $transient, $option, $expected, $success = false ) {
+		if ( $success ) {
+			$transient = [ 'id' => self::getApiCredential( 'ROCKETCDN_WEBSITE_ID' ) ];
+			$option    = self::getApiCredential( 'ROCKETCDN_TOKEN' );
+		}
+		set_transient( 'rocketcdn_status', $transient, MINUTE_IN_SECONDS );
+		if ( ! empty( $option ) ) {
+			update_option( 'rocketcdn_user_token', $option );
+		}
 
 		$this->assertSame(
-			[
-				'status'  => 'error',
-				'message' => 'RocketCDN cache purge failed: Missing identifier parameter.',
-			],
-			( new APIClient )->purge_cache_request()
-		);
-	}
-
-	/**
-	 * Test should return the error packet when the subscription ID is 0.
-	 */
-	public function testShouldReturnErrorPacketWhenSubscriptionIdIsZero() {
-		set_transient( 'rocketcdn_status', [ 'id' => 0, 'subscription_status' => 'cancelled' ], MINUTE_IN_SECONDS );
-
-		$this->assertSame(
-			[
-				'status'  => 'error',
-				'message' => 'RocketCDN cache purge failed: Missing identifier parameter.',
-			],
-			( new APIClient )->purge_cache_request()
-		);
-	}
-
-	/**
-	 * Test should return error packet when no user token.
-	 */
-	public function testShouldReturnErrorPacketWhenNoToken() {
-		set_transient( 'rocketcdn_status', [ 'id' => 1 ], MINUTE_IN_SECONDS );
-
-		$this->assertSame(
-			[
-				'status'  => 'error',
-				'message' => 'RocketCDN cache purge failed: Missing user token.',
-			],
-			( new APIClient )->purge_cache_request()
-		);
-	}
-
-	/**
-	 * Test should return error packet when subscription ID or token is invalid.
-	 */
-	public function testShouldReturnErrorPacketWhenInvalidSubscriptionIdOrToken() {
-		set_transient( 'rocketcdn_status', [ 'id' => 1 ], MINUTE_IN_SECONDS );
-		update_option( 'rocketcdn_user_token', '9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b' );
-
-		$this->assertSame(
-			[
-				'status'  => 'error',
-				'message' => 'RocketCDN cache purge failed: The API returned an unexpected response code.',
-			],
-			( new APIClient )->purge_cache_request()
-		);
-	}
-
-	/**
-	 * Test should return the status when set in the transient.
-	 */
-	public function testShouldReturnSuccessPacketWhenAPIPurgedCache() {
-		set_transient( 'rocketcdn_status', [ 'id' => self::getApiCredential( 'ROCKETCDN_WEBSITE_ID' ) ], MINUTE_IN_SECONDS );
-		update_option( 'rocketcdn_user_token', self::getApiCredential( 'ROCKETCDN_TOKEN' ) );
-
-		$this->assertSame(
-			[
-				'status'  => 'success',
-				'message' => 'RocketCDN cache purge successful.',
-			],
+			$expected,
 			( new APIClient )->purge_cache_request()
 		);
 	}

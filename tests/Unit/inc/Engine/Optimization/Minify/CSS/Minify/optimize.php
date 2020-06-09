@@ -2,22 +2,21 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\Minify\CSS\Minify;
 
 use Brain\Monkey\Filters;
-use Brain\Monkey\Functions;
 use WP_Rocket\Engine\Optimization\Minify\CSS\Minify;
 use WP_Rocket\Tests\Unit\inc\Engine\Optimization\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\Minify\CSS\Minify::optimize
- * @group Optimize
- * @group MinifyCSS
+ *
+ * @group  Optimize
+ * @group  MinifyCSS
+ * @group  Minify
  */
 class Test_Optimize extends TestCase {
 	protected $path_to_test_data = '/inc/Engine/Optimization/Minify/CSS/Minify/optimize.php';
 	protected $minify;
 
 	public function setUp() {
-		$this->wp_content_dir = 'vfs://public/wordpress/wp-content';
-
 		parent::setUp();
 
 		$this->minify = new Minify( $this->options );
@@ -26,7 +25,7 @@ class Test_Optimize extends TestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldMinifyCSS( $original, $minified, $cdn_host, $cdn_url, $site_url ) {
+	public function testShouldMinifyCSS( $original, $expected, $cdn_host, $cdn_url, $site_url ) {
 		Filters\expectApplied( 'rocket_cdn_hosts' )
 			->zeroOrMoreTimes()
 			->with( [], [ 'all', 'css_and_js', 'css' ] )
@@ -45,8 +44,10 @@ class Test_Optimize extends TestCase {
 			} );
 
 		$this->assertSame(
-			$minified,
-			$this->minify->optimize( $original )
+			$this->format_the_html( $expected['html'] ),
+			$this->format_the_html( $this->minify->optimize( $original ) )
 		);
+
+		$this->assertFilesExists( $expected['files'] );
 	}
 }

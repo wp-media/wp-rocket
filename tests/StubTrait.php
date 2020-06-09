@@ -11,7 +11,36 @@ trait StubTrait {
 	protected $just_return_path         = false;
 	protected $wp_cache_constant        = false;
 	protected $wp_content_dir           = 'vfs://public/wp-content';
+	protected $script_debug             = false;
+	protected $rocket_version;
+	protected $wp_rocket_debug          = false;
+	protected $wp_rocket_advanced_cache = true;
+	protected $disable_wp_cron          = false;
+	protected $donotrocketoptimize      = null;
+	protected $donotasynccss            = null;
+	protected $white_label              = false;
+	
 
+	protected function resetStubProperties() {
+		$defaults = [
+			'abspath'                   => 'vfs://public/',
+			'disable_wp_cron'           => false,
+			'mock_rocket_get_constant'  => true,
+			'wp_cache_constant'         => false,
+			'wp_content_dir'            => 'vfs://public/wp-content',
+			'script_debug'              => false,
+			'rocket_version'            => null,
+			'wp_rocket_debug'           => false,
+			'wp_rocket_advanced_cache'  => true,
+			'donotrocketoptimize'      => null,
+			'dontasynccss'             => null,
+			'white_label'               => false,
+		];
+
+		foreach ( $defaults as $property => $value ) {
+			$this->$property = $value;
+		}
+	}
 
 	protected function stubRocketGetConstant() {
 		if ( ! $this->mock_rocket_get_constant ) {
@@ -30,11 +59,23 @@ trait StubTrait {
 			case 'ABSPATH':
 				return $this->abspath;
 
+			case 'DISABLE_WP_CRON':
+				return $this->disable_wp_cron;
+
+			case 'DONOTASYNCCSS' :
+				return $this->donotasynccss;
+
+			case 'DONOTROCKETOPTIMIZE' :
+				return $this->donotrocketoptimize;
+
 			case 'FS_CHMOD_DIR':
 				return 0777;
 
 			case 'FS_CHMOD_FILE':
 				return 0666;
+
+			case 'SCRIPT_DEBUG':
+				return $this->script_debug;
 
 			case 'WP_CACHE':
 				return $this->wp_cache_constant;
@@ -42,11 +83,26 @@ trait StubTrait {
 			case 'WP_CONTENT_DIR':
 				return $this->wp_content_dir;
 
+			case 'WP_ROCKET_ADVANCED_CACHE':
+				return $this->wp_rocket_advanced_cache;
+
+			case 'WP_ROCKET_WEB_MAIN':
+				return 'https://wp-rocket.me/';
+
+			case 'WP_ROCKET_ASSETS_JS_URL':
+				return 'http://example.org/wp-content/plugins/wp-rocket/assets/js/';
+
 			case 'WP_ROCKET_CACHE_PATH':
 				return "{$this->wp_content_dir}/cache/wp-rocket/";
 
 			case 'WP_ROCKET_CONFIG_PATH':
 				return "{$this->wp_content_dir}/wp-rocket-config/";
+
+			case 'WP_ROCKET_CRITICAL_CSS_PATH':
+				return "{$this->wp_content_dir}/cache/critical-css/";
+
+			case 'WP_ROCKET_DEBUG':
+				return $this->wp_rocket_debug;
 
 			case 'WP_ROCKET_INC_PATH':
 				return "{$this->wp_content_dir}/plugins/wp-rocket/inc/";
@@ -66,8 +122,19 @@ trait StubTrait {
 			case 'WP_ROCKET_RUNNING_VFS':
 				return $this->is_running_vfs;
 
+			case 'WP_ROCKET_SLUG':
+				return 'wp_rocket_settings';
+
 			case 'WP_ROCKET_VENDORS_PATH':
 				return "{$this->wp_content_dir}/plugins/wp-rocket/inc/vendors/";
+
+			case 'WP_ROCKET_VERSION':
+				if ( ! empty( $this->rocket_version ) ) {
+					return $this->rocket_version;
+				}
+
+			case 'WP_ROCKET_WHITE_LABEL_ACCOUNT':
+				return $this->white_label;
 
 			default:
 				if ( ! rocket_has_constant( $constant_name ) ) {
@@ -133,5 +200,55 @@ trait StubTrait {
 			'query'    => $query,
 			'fragment' => $fragment,
 		];
+	}
+
+	protected function stubWpParseUrl() {
+		Functions\when( 'wp_parse_url' )->alias(
+			function( $url, $component = - 1 ) {
+				return parse_url( $url, $component );
+			}
+		);
+	}
+
+	protected function stubRocketRealpath() {
+		Functions\when( 'rocket_realpath' )->alias(
+			function( $file ) {
+				$wrapper = null;
+				$path    = [];
+
+				if ( false !== strpos( $file, '://' ) ) {
+					list( $wrapper, $file ) = explode( '://', $file, 2 );
+				}
+
+				foreach ( explode( '/', $file ) as $part ) {
+					if ( '' === $part || '.' === $part ) {
+						continue;
+					}
+
+					if ( '..' !== $part ) {
+						array_push( $path, $part );
+					} elseif ( count( $path ) > 0 ) {
+						array_pop( $path );
+					}
+				}
+
+				$file = join( '/', $path );
+
+				// Put the wrapper back on the target.
+				if ( $wrapper !== null ) {
+					return $wrapper . '://' . $file;
+				}
+
+				return $file;
+			}
+		);
+	}
+
+	protected function stubfillWpBasename() {
+		Functions\when( 'wp_basename' )->alias(
+			function( $path, $suffix = '' ) {
+				return urldecode( basename( str_replace( [ '%2F', '%5C' ], '/', urlencode( $path ) ), $suffix ) );
+			}
+		);
 	}
 }

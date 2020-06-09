@@ -1,11 +1,18 @@
 <?php
 
+use League\Container\Container;
+use WP_Rocket\Engine\Cache\AdvancedCache;
+use WP_Rocket\Plugin;
+use WP_Rocket\Subscriber\Plugin\Capabilities_Subscriber;
+
 defined( 'ABSPATH' ) || exit;
 
 // Composer autoload.
 if ( file_exists( WP_ROCKET_PATH . 'vendor/autoload.php' ) ) {
 	require WP_ROCKET_PATH . 'vendor/autoload.php';
 }
+
+require_once WP_ROCKET_FUNCTIONS_PATH . 'files.php';
 
 /**
  * Fix Cloudflare Flexible SSL redirect first
@@ -36,12 +43,14 @@ function rocket_init() {
 	define( 'WP_ROCKET_PLUGIN_NAME', 'WP Rocket' );
 	define( 'WP_ROCKET_PLUGIN_SLUG', sanitize_key( WP_ROCKET_PLUGIN_NAME ) );
 
-	$wp_rocket = new WP_Rocket\Plugin( WP_ROCKET_PATH . 'views' );
+	$wp_rocket = new Plugin(
+		WP_ROCKET_PATH . 'views',
+		new Container()
+	);
 	$wp_rocket->load();
 
 	// Call defines and functions.
 	require_once WP_ROCKET_FUNCTIONS_PATH . 'api.php';
-	require WP_ROCKET_FUNCTIONS_PATH . 'files.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'posts.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'admin.php';
 	require WP_ROCKET_INC_PATH . '/API/preload.php';
@@ -53,6 +62,7 @@ function rocket_init() {
 	require WP_ROCKET_DEPRECATED_PATH . '3.3.php';
 	require WP_ROCKET_DEPRECATED_PATH . '3.4.php';
 	require WP_ROCKET_DEPRECATED_PATH . '3.5.php';
+	require WP_ROCKET_DEPRECATED_PATH . '3.6.php';
 	require WP_ROCKET_3RD_PARTY_PATH . '3rd-party.php';
 	require WP_ROCKET_COMMON_PATH . 'admin-bar.php';
 	require WP_ROCKET_COMMON_PATH . 'emoji.php';
@@ -164,7 +174,7 @@ function rocket_deactivation() {
 	 */
 	do_action( 'rocket_deactivation' );
 
-	( new WP_Rocket\Subscriber\Plugin\Capabilities_Subscriber() )->remove_rocket_capabilities();
+	( new Capabilities_Subscriber() )->remove_rocket_capabilities();
 }
 register_deactivation_hook( WP_ROCKET_FILE, 'rocket_deactivation' );
 
@@ -174,7 +184,7 @@ register_deactivation_hook( WP_ROCKET_FILE, 'rocket_deactivation' );
  * @since 1.1.0
  */
 function rocket_activation() {
-	( new WP_Rocket\Subscriber\Plugin\Capabilities_Subscriber() )->add_rocket_capabilities();
+	( new Capabilities_Subscriber() )->add_rocket_capabilities();
 
 	// Last constants.
 	define( 'WP_ROCKET_PLUGIN_NAME', 'WP Rocket' );
@@ -185,7 +195,6 @@ function rocket_activation() {
 	}
 
 	require WP_ROCKET_FUNCTIONS_PATH . 'options.php';
-	require WP_ROCKET_FUNCTIONS_PATH . 'files.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'formatting.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'i18n.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'htaccess.php';
@@ -215,7 +224,7 @@ function rocket_activation() {
 	rocket_init_config_dir();
 
 	// Create advanced-cache.php file.
-	rocket_generate_advanced_cache_file();
+	rocket_generate_advanced_cache_file( new AdvancedCache( WP_ROCKET_PATH . 'views/cache/', rocket_direct_filesystem() ) );
 
 	/**
 	 * WP Rocket activation.

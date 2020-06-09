@@ -12,9 +12,31 @@ return [
 			],
 			// CPCSS cache.
 			'critical-css' => [
-				'1' => [
-					'front-page.php' => '',
-					'blog.php'       => '',
+				'index.php' => '<?php',
+				'1'         => [
+					'.'              => '',
+					'..'             => '',
+					'posts'          => [
+						'.'  => '',
+						'..' => '',
+					],
+					'home.css'       => '.p { color: red; }',
+					'front_page.css' => '.p { color: red; }',
+					'category.css'   => '.p { color: red; }',
+					'post_tag.css'   => '.p { color: red; }',
+					'page.css'       => '.p { color: red; }',
+				],
+				'2'         => [
+					'posts'          => [
+						'.'           => '',
+						'..'          => '',
+						'page-20.css' => '.p { color: red; }',
+					],
+					'home.css'       => '.p { color: red; }',
+					'front_page.css' => '.p { color: red; }',
+					'category.css'   => '.p { color: red; }',
+					'post_tag.css'   => '.p { color: red; }',
+					'page.css'       => '.p { color: red; }',
 				],
 			],
 			// Minify cache.
@@ -36,7 +58,7 @@ return [
 										'admin-bar-171a2ef75c22c390780fe898f9d40c8d.js' => '',
 										'admin-bar-e4aa3c9df56ff024286f4df600f4c643.js' => '',
 									],
-								]
+								],
 							],
 						],
 					],
@@ -192,8 +214,10 @@ return [
 				'script.php' => '',
 			],
 			'wp-rocket'   => [
-				'inc'              => [
-					'process-autoloader.php' => file_get_contents( WP_ROCKET_PLUGIN_ROOT . 'inc/process-autoloader.php' ),
+				'views'            => [
+					'cache' => [
+						'advanced-cache.php' => file_get_contents( WP_ROCKET_PLUGIN_ROOT . 'views/cache/advanced-cache.php' ),
+					],
 				],
 				'licence-data.php' => '',
 			],
@@ -208,4 +232,5 @@ return [
 		'advanced-cache.php' => '<?php $var = "Some contents.";',
 	],
 	'.htaccess'  => "# Random\n# add a trailing slash to /wp-admin# BEGIN WordPress\n\n# BEGIN WP Rocket\nPrevious rules.\n# END WP Rocket\n",
+	'wp-config.php' => "<?php\ndefine( 'DB_NAME', 'local' );\ndefine( 'DB_USER', 'root' );\n",
 ];
