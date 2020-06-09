@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\Cache\Purge;
 
 use Mockery;
+use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use WP_Rocket\Engine\Cache\Purge;
@@ -20,12 +21,49 @@ class Test_PurgeDatesArchives extends FilesystemTestCase {
 		$this->purge = new Purge( $this->filesystem );
 	}
 
+	public function tearDown() {
+		parent::tearDown();
+
+		unset( $GLOBALS['wp_rewrite'] );
+	}
+
 	/**
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldCleanCache( $post, $cleaned ) {
-		$post['ID'] = 1;
+		$GLOBALS['wp_rewrite'] = (object) [ 'pagination_base' => 'page' ];
+		$post['ID']            = 1;
+		$post                  = (object) $post;
+		$date                  = explode( '-', $post->post_date );
 
-		$this->purge->purge_dates_archives( (object) $post );
+		$this->generateEntriesShouldExistAfter( $cleaned );
+
+		Functions\expect( 'get_the_time' )
+			->once()
+			->with( 'Y-m-d', $post )
+			->andReturn( $post->post_date );
+		Functions\expect( 'get_year_link' )
+			->once()
+			->with( $date[0] )
+			->andReturn( "http://example.org/{$date[0]}" );
+		Functions\expect( 'get_month_link' )
+			->once()
+			->with( $date[0], $date[1] )
+			->andReturn( "http://example.org/{$date[0]}/{$date[1]}" );
+		Functions\expect( 'get_day_link' )
+			->once()
+			->with( $date[0], $date[1], $date[2] )
+			->andReturn( "http://example.org/{$date[0]}/{$date[1]}/{$date[2]}/" );
+
+		Functions\when( 'wp_parse_url' )->alias( function( $url, $component = -1 ) {
+			return parse_url( $url, $component );
+		} );
+
+		$this->purge->purge_dates_archives( $post );
+
+		if ( false !== $cleaned ) {
+			$this->checkEntriesDeleted( $cleaned );
+			$this->checkShouldNotDeleteEntries();
+		}
    }
 }
