@@ -336,8 +336,7 @@ function set_rocket_wp_cache_define( $turn_it_on ) { // phpcs:ignore WordPress.N
 
 	// If the constant does not exist, create it.
 	if ( ! $is_wp_cache_exist ) {
-		array_shift( $config_file );
-		array_unshift( $config_file, "<?php\r\n", $constant );
+		$config_file[0] = preg_replace('/(<\?php)/i', "<?php \r\n{$constant}", $config_file[0]);
 	}
 
 	// Insert the constant in wp-config.php file.
