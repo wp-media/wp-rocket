@@ -61,9 +61,7 @@ class Test_PurgeDatesArchives extends FilesystemTestCase {
 
 		$this->purge->purge_dates_archives( $post );
 
-		if ( false !== $cleaned ) {
-			$this->checkEntriesDeleted( $cleaned );
-			$this->checkShouldNotDeleteEntries();
-		}
+		$this->checkEntriesDeleted( $cleaned );
+		$this->checkShouldNotDeleteEntries();
    }
 }

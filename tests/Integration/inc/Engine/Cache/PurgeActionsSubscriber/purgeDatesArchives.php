@@ -49,9 +49,7 @@ class Test_PurgeDatesArchives extends FilesystemTestCase {
 
 		do_action( 'after_rocket_clean_post', $post, [], '' );
 
-		if ( false !== $cleaned ) {
-			$this->checkEntriesDeleted( $cleaned );
-			$this->checkShouldNotDeleteEntries();
-		}
+		$this->checkEntriesDeleted( $cleaned );
+		$this->checkShouldNotDeleteEntries();
    }
 }
