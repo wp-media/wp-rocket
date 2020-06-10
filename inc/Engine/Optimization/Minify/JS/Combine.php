@@ -69,9 +69,9 @@ class Combine extends AbstractJSOptimization {
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
-	 * @param Options_Data       $options     Plugin options instance.
-	 * @param MinifyJS           $minifier    Minifier instance.
-	 * @param AssetsLocalCache   $local_cache Assets local cache instance.
+	 * @param Options_Data     $options     Plugin options instance.
+	 * @param MinifyJS         $minifier    Minifier instance.
+	 * @param AssetsLocalCache $local_cache Assets local cache instance.
 	 */
 	public function __construct( Options_Data $options, MinifyJS $minifier, AssetsLocalCache $local_cache ) {
 		parent::__construct( $options );

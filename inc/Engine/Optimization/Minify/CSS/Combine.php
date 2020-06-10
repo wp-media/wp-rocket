@@ -24,8 +24,8 @@ class Combine extends AbstractCSSOptimization {
 	/**
 	 * Constructor
 	 *
-	 * @param  Options_Data $options  Options instance.
-	 * @param MinifyCSS     $minifier Minifier instance.
+	 * @param Options_Data $options  Options instance.
+	 * @param MinifyCSS    $minifier Minifier instance.
 	 */
 	public function __construct( Options_Data $options, MinifyCSS $minifier ) {
 		parent::__construct( $options );
