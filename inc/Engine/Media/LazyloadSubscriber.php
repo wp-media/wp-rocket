@@ -309,6 +309,8 @@ class LazyloadSubscriber implements Subscriber_Interface {
 	 * @return bool
 	 */
 	private function should_lazyload() {
+		// This filter is documented in inc/front/process.php.
+		$rocket_cache_search = apply_filters( 'rocket_cache_search', false );
 		if (
 			is_admin()
 			||
@@ -316,7 +318,7 @@ class LazyloadSubscriber implements Subscriber_Interface {
 			||
 			is_preview()
 			||
-			is_search()
+			( is_search() && ! $rocket_cache_search )
 			||
 			rocket_get_constant( 'REST_REQUEST', false )
 			||

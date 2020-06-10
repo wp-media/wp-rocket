@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\Media\LazyloadSubscriber;
 
 use WP_Rocket\Tests\Integration\TestCase;
+use Brain\Monkey\Functions;
 
 /**
  * @covers \WP_Rocket\Engine\Media\LazyloadSubscriber::insert_lazyload_script
@@ -47,9 +48,25 @@ class Test_InsertLazyloadScript extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldInsertLazyloadScript( $options, $expected ) {
+	public function testShouldInsertLazyloadScript( $config, $expected ) {
+		$options = $config['options'];
 		$this->lazyload = $options['lazyload'];
 		$this->iframes  = $options['lazyload_iframes'];
+
+		$is_admin           = isset( $config['is_admin'] )           ? $config['is_admin']           : false;
+		$is_feed            = isset( $config['is_feed'] )            ? $config['is_feed']            : false;
+		$is_preview         = isset( $config['is_preview'] )         ? $config['is_preview']         : false;
+		$is_search          = isset( $config['is_search'] )          ? $config['is_search']          : false;
+		$is_rest_request    = isset( $config['is_rest_request'] )    ? $config['is_rest_request']    : false;
+		$is_lazy_load       = isset( $config['is_lazy_load'] )       ? $config['is_lazy_load']       : true;
+		$is_rocket_optimize = isset( $config['is_rocket_optimize'] ) ? $config['is_rocket_optimize'] : true;
+
+		if ( $is_admin ) {
+			set_current_screen( 'settings_page_wprocket' );
+		}
+		Functions\expect( 'rocket_get_constant' )
+			->with('REST_REQUEST', 'DONOTLAZYLOAD', 'DONOTROCKETOPTIMIZE', 'WP_ROCKET_ASSETS_JS_URL')
+			->andReturn( $is_rest_request, !$is_lazy_load, !$is_rocket_optimize, 'http://example.org/wp-content/plugins/wp-rocket/assets/' );
 
 		// wp-media/rocket-lazyload-common uses the constant for determining whether to set as .min.js.
 		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
