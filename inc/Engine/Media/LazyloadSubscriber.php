@@ -309,11 +309,21 @@ class LazyloadSubscriber implements Subscriber_Interface {
 	 * @return bool
 	 */
 	private function should_lazyload() {
-		if ( is_admin() || is_feed() || is_preview() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) || ( defined( 'DONOTLAZYLOAD' ) && DONOTLAZYLOAD ) ) {
-			return false;
-		}
-
-		if ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
+		if (
+			is_admin()
+			||
+			is_feed()
+			||
+			is_preview()
+			||
+			is_search()
+			||
+			( defined( 'REST_REQUEST' ) && REST_REQUEST )
+			||
+			( defined( 'DONOTLAZYLOAD' ) && DONOTLAZYLOAD )
+			||
+			( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE )
+		) {
 			return false;
 		}
 
