@@ -318,11 +318,11 @@ class LazyloadSubscriber implements Subscriber_Interface {
 			||
 			is_search()
 			||
-			( defined( 'REST_REQUEST' ) && REST_REQUEST )
+			rocket_get_constant( 'REST_REQUEST', false )
 			||
-			( defined( 'DONOTLAZYLOAD' ) && DONOTLAZYLOAD )
+			rocket_get_constant( 'DONOTLAZYLOAD', false )
 			||
-			( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE )
+			rocket_get_constant( 'DONOTROCKETOPTIMIZE', false )
 		) {
 			return false;
 		}
