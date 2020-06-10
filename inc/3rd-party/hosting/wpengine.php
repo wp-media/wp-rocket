@@ -30,8 +30,11 @@ add_filter( 'rocket_advanced_cache_file', '__return_empty_string' );
 add_action(
 	'admin_init',
 	function() {
-		remove_action( 'admin_notices', 'rocket_warning_advanced_cache_permissions' );
-		remove_action( 'admin_notices', 'rocket_warning_advanced_cache_not_ours' );
+		$container  = apply_filters( 'rocket_container', null );
+		$subscriber = $container->get( 'admin_cache_subscriber' );
+
+		remove_action( 'admin_notices', [ $subscriber, 'notice_advanced_cache_permissions' ] );
+		remove_action( 'admin_notices', [ $subscriber, 'notice_advanced_cache_content_not_ours' ] );
 	}
 );
 
