@@ -25,9 +25,19 @@ function get_rocket_post_terms_urls( $post_id ) { // phpcs:ignore WordPress.Nami
 		if ( ! empty( $terms ) ) {
 			foreach ( $terms as $term ) {
 				$term_url = get_term_link( $term->slug, $taxonomy->name );
-
 				if ( ! is_wp_error( $term_url ) ) {
 					$urls[] = $term_url;
+				}
+
+				if ( is_taxonomy_hierarchical( $taxonomy->name ) ) {
+					$ancestors = get_ancestors( $term->term_id, $taxonomy->name );
+					foreach ( $ancestors as $ancestor ) {
+						$ancestor_object = get_term( $ancestor, $taxonomy->name );
+						$term_url        = get_term_link( $ancestor_object->slug, $taxonomy->name );
+						if ( ! is_wp_error( $term_url ) ) {
+							$urls[] = $term_url;
+						}
+					}
 				}
 			}
 		}
