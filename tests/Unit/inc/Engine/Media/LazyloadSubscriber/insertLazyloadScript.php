@@ -29,6 +29,7 @@ class Test_InsertLazyloadScript extends TestCase {
 		Functions\when( 'is_admin' )->justReturn( false );
 		Functions\when( 'is_feed' )->justReturn( false );
 		Functions\when( 'is_preview' )->justReturn( false );
+		Functions\when( 'is_search' )->justReturn( false );
 		Functions\when( 'rocket_get_constant' )->justReturn( 'http://example.org/wp-content/plugins/wp-rocket/assets/' );
 
 		$this->assets  = Mockery::mock( Assets::class );
