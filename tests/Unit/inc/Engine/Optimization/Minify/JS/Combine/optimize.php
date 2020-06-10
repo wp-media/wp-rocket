@@ -6,7 +6,7 @@ use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 use MatthiasMullie\Minify;
 use Mockery;
-use WP_Rocket\Optimization\Assets_Local_Cache;
+use WP_Rocket\Engine\Optimization\AssetsLocalCache;
 use WP_Rocket\Engine\Optimization\Minify\JS\Combine;
 use WP_Rocket\Tests\Unit\inc\Engine\Optimization\TestCase;
 
@@ -41,7 +41,7 @@ class Test_Optimize extends TestCase {
 			return $wp_scripts;
 		} );
 
-		$this->combine = new Combine( $this->options, $this->minify, Mockery::mock( Assets_Local_Cache::class ) );
+		$this->combine = new Combine( $this->options, $this->minify, Mockery::mock( AssetsLocalCache::class ) );
 	}
 
 	/**
