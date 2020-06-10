@@ -17,14 +17,23 @@ class AssetsLocalCache {
 	protected $cache_path;
 
 	/**
+	 * Filesystem instance.
+	 *
+	 * @var WP_Filesystem_Direct
+	 */
+	private $filesystem;
+
+	/**
 	 * Constructor
 	 *
 	 * @since 3.1
 	 *
-	 * @param string $cache_path 3rd party assets cache folder path.
+	 * @param string               $cache_path 3rd party assets cache folder path.
+	 * @param WP_Filesystem_Direct $filesystem Filesysten instance.
 	 */
-	public function __construct( $cache_path ) {
+	public function __construct( $cache_path, WP_Filesystem_Direct $filesystem ) {
 		$this->cache_path = "{$cache_path}/3rd-party/";
+		$this->filesystem = $filesystem;
 	}
 
 	/**
@@ -41,8 +50,8 @@ class AssetsLocalCache {
 		$filename = $parts['host'] . str_replace( '/', '-', $parts['path'] );
 		$filepath = $this->cache_path . $filename;
 
-		if ( $this->local_cache_exists( $filepath ) ) {
-			return $this->get_file_content( $filepath );
+		if ( $this->filesystem->is_readable( $filepath ) ) {
+			return $this->filesystem->get_contents( $filepath );
 		}
 
 		$content = $this->get_url_content( $url );
@@ -54,18 +63,6 @@ class AssetsLocalCache {
 		$this->write_file( $content, $filepath );
 
 		return $content;
-	}
-
-	/**
-	 * Checks if the cache file for the specified asset exists.
-	 *
-	 * @since 3.1
-	 *
-	 * @param string $filepath Filepath of the file to check.
-	 * @return bool
-	 */
-	protected function local_cache_exists( $filepath ) {
-		return rocket_direct_filesystem()->is_readable( $filepath );
 	}
 
 	/**
@@ -87,18 +84,6 @@ class AssetsLocalCache {
 	}
 
 	/**
-	 * Gets content of a file
-	 *
-	 * @since 3.1
-	 *
-	 * @param string $file File path.
-	 * @return string
-	 */
-	protected function get_file_content( $file ) {
-		return rocket_direct_filesystem()->get_contents( $file );
-	}
-
-	/**
 	 * Writes the content to a file
 	 *
 	 * @since 3.1
@@ -108,7 +93,7 @@ class AssetsLocalCache {
 	 * @return bool
 	 */
 	protected function write_file( $content, $file ) {
-		if ( rocket_direct_filesystem()->is_readable( $file ) ) {
+		if ( $this->filesystem->is_readable( $file ) ) {
 			return true;
 		}
 
