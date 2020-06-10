@@ -3,22 +3,20 @@ namespace WP_Rocket\Engine\Optimization\Minify\CSS;
 
 use MatthiasMullie\Minify as Minifier;
 use WP_Rocket\Logger\Logger;
-use WP_Rocket\Optimization\CSS\Path_Rewriter;
+use WP_Rocket\Engine\Optimization\PathRewriterTrait;
 
 /**
  * Minify CSS files
  *
  * @since 3.1
- * @author Remy Perona
  */
 class Minify extends AbstractCSSOptimization {
-	use Path_Rewriter;
+	use PathRewriterTrait;
 
 	/**
 	 * Minifies CSS files
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @param string $html HTML content.
 	 * @return string

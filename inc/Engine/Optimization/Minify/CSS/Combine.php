@@ -3,23 +3,19 @@ namespace WP_Rocket\Engine\Optimization\Minify\CSS;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Logger\Logger;
-use WP_Rocket\Optimization\CSS\Path_Rewriter;
+use WP_Rocket\Engine\Optimization\PathRewriterTrait;
 use MatthiasMullie\Minify\CSS as MinifyCSS;
 
 /**
  * Minify & Combine CSS files
  *
  * @since 3.1
- * @author Remy Perona
  */
 class Combine extends AbstractCSSOptimization {
-	use Path_Rewriter;
+	use PathRewriterTrait;
 
 	/**
 	 * Minifier instance
-	 *
-	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @var MinifyCSS
 	 */
@@ -27,9 +23,6 @@ class Combine extends AbstractCSSOptimization {
 
 	/**
 	 * Constructor
-	 *
-	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @param Options_Data $options  Options instance.
 	 * @param MinifyCSS    $minifier Minifier instance.
@@ -44,7 +37,6 @@ class Combine extends AbstractCSSOptimization {
 	 * Minifies and combines all CSS files into one
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @param string $html HTML content.
 	 * @return string
@@ -147,7 +139,6 @@ class Combine extends AbstractCSSOptimization {
 	 * The combined CSS file is added after the closing </title> tag, and the replacement occurs only once. The original CSS tags are then removed from the HTML.
 	 *
 	 * @since 3.3.3
-	 * @author Remy Perona
 	 *
 	 * @param string $html      HTML content.
 	 * @param string $css_url   Combined CSS file URL.
@@ -168,11 +159,9 @@ class Combine extends AbstractCSSOptimization {
 	/**
 	 * Creates the minify URL if the minification is successful
 	 *
-	 * @since 2.11
-	 * @author Remy Perona
+	 * @since 3.1
 	 *
 	 * @param array $files Files to minify.
-
 	 * @return string|bool The minify URL if successful, false otherwise
 	 */
 	protected function combine( $files ) {
@@ -235,8 +224,7 @@ class Combine extends AbstractCSSOptimization {
 	/**
 	 * Minifies the content
 	 *
-	 * @since 2.11
-	 * @author Remy Perona
+	 * @since 3.1
 	 *
 	 * @param string|array $files         Files to minify.
 	 * @param string       $minified_file Target filepath.

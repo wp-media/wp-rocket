@@ -2,7 +2,7 @@
 namespace WP_Rocket\Engine\Optimization\Minify\JS;
 
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Optimization\Assets_Local_Cache;
+use WP_Rocket\Engine\Optimization\AssetsLocalCache;
 use WP_Rocket\Logger\Logger;
 use MatthiasMullie\Minify\JS as MinifyJS;
 
@@ -29,7 +29,7 @@ class Combine extends AbstractJSOptimization {
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
-	 * @var Assets_Local_Cache
+	 * @var AssetsLocalCache
 	 */
 	private $local_cache;
 
@@ -69,11 +69,11 @@ class Combine extends AbstractJSOptimization {
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
-	 * @param Options_Data       $options  Plugin options instance.
-	 * @param MinifyJS           $minifier Minifier instance.
-	 * @param Assets_Local_Cache $local_cache Assets local cache instance.
+	 * @param Options_Data     $options     Plugin options instance.
+	 * @param MinifyJS         $minifier    Minifier instance.
+	 * @param AssetsLocalCache $local_cache Assets local cache instance.
 	 */
-	public function __construct( Options_Data $options, MinifyJS $minifier, Assets_Local_Cache $local_cache ) {
+	public function __construct( Options_Data $options, MinifyJS $minifier, AssetsLocalCache $local_cache ) {
 		parent::__construct( $options );
 
 		$this->minifier    = $minifier;

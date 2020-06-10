@@ -1,18 +1,16 @@
 <?php
-namespace WP_Rocket\Optimization;
+namespace WP_Rocket\Engine\Optimization;
 
 /**
  * Cache locally 3rd party assets.
  *
  * @since 3.1
- * @author Remy Perona
  */
-class Assets_Local_Cache {
+class AssetsLocalCache {
 	/**
 	 * 3rd party assets cache folder path
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @var string
 	 */
@@ -22,12 +20,11 @@ class Assets_Local_Cache {
 	 * Constructor
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @param string $cache_path 3rd party assets cache folder path.
 	 */
 	public function __construct( $cache_path ) {
-		$this->cache_path = $cache_path . '/3rd-party/';
+		$this->cache_path = "{$cache_path}/3rd-party/";
 	}
 
 	/**
@@ -35,7 +32,6 @@ class Assets_Local_Cache {
 	 * Use the local cache file if it exists, else get it from the 3rd party URL and save it locally for future use.
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @param string $url URL to get the content from.
 	 * @return string
@@ -64,20 +60,18 @@ class Assets_Local_Cache {
 	 * Checks if the cache file for the specified asset exists.
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @param string $filepath Filepath of the file to check.
 	 * @return bool
 	 */
 	protected function local_cache_exists( $filepath ) {
-		return \rocket_direct_filesystem()->is_readable( $filepath );
+		return rocket_direct_filesystem()->is_readable( $filepath );
 	}
 
 	/**
 	 * Gets content from an URL
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @param string $url URL to get the content from.
 	 * @return string
@@ -96,7 +90,6 @@ class Assets_Local_Cache {
 	 * Gets content of a file
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @param string $file File path.
 	 * @return string
@@ -109,10 +102,9 @@ class Assets_Local_Cache {
 	 * Writes the content to a file
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
-	 * @param string $content       Content to write.
-	 * @param string $file          Path to the file to write in.
+	 * @param string $content Content to write.
+	 * @param string $file    Path to the file to write in.
 	 * @return bool
 	 */
 	protected function write_file( $content, $file ) {
