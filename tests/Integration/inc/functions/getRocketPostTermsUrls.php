@@ -38,9 +38,9 @@ class Test_GetRocketPostTermsUrls extends TestCase {
 		$this->setCategories( $post_id, $terms['category'], $expected );
 		$this->setCustomTerms( $post_id, $terms['custom'] );
 
-		$expected = sort( $expected );
+		sort( $expected );
 		$urls     = get_rocket_post_terms_urls( $post_id );
-		$urls     = sort( $urls );
+		sort( $urls );
 
 		$this->assertSame( $expected, $urls );
 	}
@@ -71,10 +71,20 @@ class Test_GetRocketPostTermsUrls extends TestCase {
 		$categories = [];
 
 		foreach ( $config as $cat ) {
+			if ( isset( $cat['parent'] ) ) {
+				$parent_slug   = $cat['parent'];
+				$parent_cat_id = $this->factory->category->create( [ 'slug' => $parent_slug ] );
+				$cat['parent'] = $parent_cat_id;
+			}
+
 			$cat_id = $this->factory->category->create( $cat );
 
 			foreach ( $expected as $index => $url ) {
 				$expected[ $index ] = str_replace( $cat['slug'], $cat_id, $url );
+
+				if ( isset( $cat['parent'] ) ) {
+					$expected[ $index ] = str_replace( $parent_slug, $parent_cat_id, $expected[ $index ] );
+				}
 			}
 
 			$categories[] = $cat_id;
