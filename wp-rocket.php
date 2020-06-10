@@ -83,7 +83,7 @@ if ( ! defined( 'WP_ROCKET_LASTVERSION' ) ) {
  * This is more performant and more compatible. It allows us to work around file permissions and missing credentials.
  */
 if ( @is_readable( WP_ROCKET_PATH . 'licence-data.php' ) ) { //phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
-	require WP_ROCKET_PATH . 'licence-data.php';
+	@include WP_ROCKET_PATH . 'licence-data.php'; //phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 }
 
 require WP_ROCKET_INC_PATH . 'compat.php';
