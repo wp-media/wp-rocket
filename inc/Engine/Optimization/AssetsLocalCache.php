@@ -48,17 +48,15 @@ class AssetsLocalCache {
 	 * @return string
 	 */
 	public function get_content( $url ) {
-		$parts    = wp_parse_url( $url );
-		$filename = $parts['host'] . str_replace( '/', '-', $parts['path'] );
-		$filepath = $this->cache_path . $filename;
+		$filepath = $this->get_filepath( $url );
 
 		if ( $this->filesystem->is_readable( $filepath ) ) {
 			return $this->filesystem->get_contents( $filepath );
 		}
 
-		$content = $this->get_url_content( $url );
+		$content = wp_remote_retrieve_body( wp_remote_get( $url ) );
 
-		if ( ! $content ) {
+		if ( empty( $content ) ) {
 			return '';
 		}
 
@@ -68,21 +66,18 @@ class AssetsLocalCache {
 	}
 
 	/**
-	 * Gets content from an URL
+	 * Gets the filepath of the local copy for the given URL
 	 *
-	 * @since 3.1
+	 * @since 3.7
 	 *
-	 * @param string $url URL to get the content from.
+	 * @param string $url URL to get filepath for.
 	 * @return string
 	 */
-	protected function get_url_content( $url ) {
-		$content = wp_remote_retrieve_body( wp_remote_get( $url ) );
+	protected function get_filepath( $url ) {
+		$parts    = wp_parse_url( $url );
+		$filename = $parts['host'] . str_replace( '/', '-', $parts['path'] );
 
-		if ( ! $content ) {
-			return false;
-		}
-
-		return $content;
+		return $this->cache_path . $filename;
 	}
 
 	/**
