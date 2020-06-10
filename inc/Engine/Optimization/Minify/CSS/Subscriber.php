@@ -8,14 +8,12 @@ use WP_Rocket\Engine\Optimization\Minify\AbstractMinifySubscriber;
  * Minify/Combine CSS subscriber
  *
  * @since 3.1
- * @author Remy Perona
  */
 class Subscriber extends AbstractMinifySubscriber {
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
 	 * @since  3.1
-	 * @author Remy Perona
 	 *
 	 * @return array
 	 */
@@ -35,7 +33,6 @@ class Subscriber extends AbstractMinifySubscriber {
 	 * Processes the HTML to Minify/Combine CSS.
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @param string $html HTML content.
 	 * @return string
@@ -58,7 +55,6 @@ class Subscriber extends AbstractMinifySubscriber {
 	 * Checks if is allowed to Minify/Combine CSS.
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @return bool
 	 */
@@ -86,7 +82,6 @@ class Subscriber extends AbstractMinifySubscriber {
 	 * Returns an array of CDN zones for CSS files.
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @return array
 	 */
