@@ -24,6 +24,12 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	private $combine;
 
+	/**
+	 * Instantiate the subscirber
+	 *
+	 * @param Combine      $combine Combine instance.
+	 * @param Options_Data $options Options_Data instance.
+	 */
 	public function __construct( Combine $combine, Options_Data $options ) {
 		$this->combine = $combine;
 		$this->options = $options;

@@ -1,6 +1,8 @@
 <?php
 namespace WP_Rocket\Engine\Optimization;
 
+use WP_Filesystem_Direct;
+
 /**
  * Cache locally 3rd party assets.
  *
