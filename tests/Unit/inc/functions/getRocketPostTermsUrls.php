@@ -52,6 +52,32 @@ class Test_GetRocketPostTermsUrls extends TestCase {
 					->andReturn( $expected[ $index ] );
 				$index++;
 				Functions\when( 'is_wp_error' )->justReturn( false );
+
+				if ( isset( $taxonomy->is_taxonomy_hierarchical ) && isset( $term->parent ) ) {
+					Functions\expect( 'is_taxonomy_hierarchical' )
+						->once()
+						->with( $taxonomy->name )
+						->andReturn( $taxonomy->is_taxonomy_hierarchical );
+					Functions\expect( 'get_ancestors' )
+						->once()
+						->with( $term->term_id, $taxonomy->name )
+						->andReturn( [ $term->parent ] );
+
+					Functions\expect( 'get_term' )
+						->once()
+						->with( $term->parent, $taxonomy->name )
+						->andReturn( (object) [ 'slug' => $term->parent ] );
+					Functions\expect( 'get_term_link' )
+						->once()
+						->with( $term->parent , $taxonomy->name )
+						->andReturn( $expected[ $index ] );
+					$index++;
+				} else {
+					Functions\expect( 'is_taxonomy_hierarchical' )
+						->once()
+						->with( $taxonomy->name )
+						->andReturn( false );
+				}
 			}
 		}
 		Filters\expectApplied( 'rocket_post_terms_urls', $expected )->once();
@@ -66,7 +92,7 @@ class Test_GetRocketPostTermsUrls extends TestCase {
 	private function getTaxonomies( array $config ) {
 		$taxonomies = [];
 
-		$taxonomies['category'] = (object) [ 'name' => 'category', 'public' => true ];
+		$taxonomies['category'] = (object) [ 'name' => 'category', 'public' => true,  'is_taxonomy_hierarchical' => true ];
 
 		if ( ! empty( $config['post_tag'] ) ) {
 			$taxonomies['post_tag'] = (object) [ 'name' => 'post_tag', 'public' => true ];
@@ -91,7 +117,7 @@ class Test_GetRocketPostTermsUrls extends TestCase {
 		}
 
 		foreach ( $config as $term ) {
-			$terms[] = (object) [ 'slug' => isset( $term['name'] ) ? $term['name'] : $term['slug'] ];
+			$terms[] = (object) [ 'term_id' => rand(1, 100), 'slug' => isset( $term['name'] ) ? $term['name'] : $term['slug'], 'parent' => isset( $term['parent']) ? $term['parent'] : null ];
 		}
 
 		return $terms;

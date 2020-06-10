@@ -115,4 +115,38 @@ return [
 			'http://example.org/?cat=1',
 		],
 	],
+
+	[
+		'post_data' => [ 'post_name' => 'abc' ],
+		'terms'     => [
+			'post_tag' => [],
+			'category' => [
+				[ 'slug' => 'cat1', 'parent' => 'cat2' ],
+			],
+			'custom'   => [],
+		],
+
+		'expected'  => [
+			'http://example.org/?cat=cat1', // cat1 gets replaced by its ID.
+			'http://example.org/?cat=cat2', // cat2 gets replaced by its ID.
+		],
+	],
+	[
+		'post_data' => [ 'post_name' => 'abc' ],
+		'terms'     => [
+			'post_tag' => [
+				[ 'name' => 'tag1' ],
+			],
+			'category' => [
+				[ 'slug' => 'cat1', 'parent' => 'cat2' ],
+			],
+			'custom'   => [],
+		],
+
+		'expected'  => [
+			'http://example.org/?cat=cat1', // cat1 gets replaced by its ID.
+			'http://example.org/?cat=cat2', // cat2 gets replaced by its ID.
+			'http://example.org/?tag=tag1',
+		],
+	],
 ];
