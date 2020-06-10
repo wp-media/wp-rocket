@@ -2,21 +2,19 @@
 namespace WP_Rocket\Engine\Optimization\Minify\JS;
 
 use MatthiasMullie\Minify\JS as MinifyJS;
-use WP_Rocket\Optimization\Assets_Local_Cache;
+use WP_Rocket\Engine\Optimization\AssetsLocalCache;
 use WP_Rocket\Engine\Optimization\Minify\AbstractMinifySubscriber;
 
 /**
  * Minify/Combine JS subscriber
  *
  * @since 3.1
- * @author Remy Perona
  */
 class Subscriber extends AbstractMinifySubscriber {
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
 	 * @since  3.1
-	 * @author Remy Perona
 	 *
 	 * @return array
 	 */
@@ -36,7 +34,6 @@ class Subscriber extends AbstractMinifySubscriber {
 	 * Processes the HTML to Minify/Combine JS.
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @param string $html HTML content.
 	 * @return string
@@ -47,7 +44,7 @@ class Subscriber extends AbstractMinifySubscriber {
 		}
 
 		if ( $this->options->get( 'minify_js' ) && $this->options->get( 'minify_concatenate_js' ) ) {
-			$this->set_optimization_type( new Combine( $this->options, new MinifyJS(), new Assets_Local_Cache( WP_ROCKET_MINIFY_CACHE_PATH ) ) );
+			$this->set_optimization_type( new Combine( $this->options, new MinifyJS(), new AssetsLocalCache( WP_ROCKET_MINIFY_CACHE_PATH ) ) );
 		} elseif ( $this->options->get( 'minify_js' ) && ! $this->options->get( 'minify_concatenate_js' ) ) {
 			$this->set_optimization_type( new Minify( $this->options ) );
 		}
@@ -59,7 +56,6 @@ class Subscriber extends AbstractMinifySubscriber {
 	 * Checks if is allowed to Minify/Combine JS.
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @return bool
 	 */
@@ -87,7 +83,6 @@ class Subscriber extends AbstractMinifySubscriber {
 	 * Returns an array of CDN zones for JS files.
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @return array
 	 */
