@@ -1,10 +1,11 @@
 <?php
 namespace WP_Rocket\Engine\Optimization\Minify\CSS;
 
-use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Logger\Logger;
-use WP_Rocket\Engine\Optimization\PathRewriterTrait;
 use MatthiasMullie\Minify\CSS as MinifyCSS;
+use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Optimization\AssetsLocalCache;
+use WP_Rocket\Engine\Optimization\PathRewriterTrait;
+use WP_Rocket\Logger\Logger;
 
 /**
  * Minify & Combine CSS files
@@ -22,15 +23,24 @@ class Combine extends AbstractCSSOptimization {
 	private $minifier;
 
 	/**
+	 * Assets local cache instance
+	 *
+	 * @var AssetsLocalCache
+	 */
+	private $local_cache;
+
+	/**
 	 * Constructor
 	 *
-	 * @param Options_Data $options  Options instance.
-	 * @param MinifyCSS    $minifier Minifier instance.
+	 * @param Options_Data     $options     Options instance.
+	 * @param MinifyCSS        $minifier    Minifier instance.
+	 * @param AssetsLocalCache $local_cache AssetsLocalCache instance.
 	 */
-	public function __construct( Options_Data $options, MinifyCSS $minifier ) {
+	public function __construct( Options_Data $options, MinifyCSS $minifier, AssetsLocalCache $local_cache ) {
 		parent::__construct( $options );
 
-		$this->minifier = $minifier;
+		$this->minifier    = $minifier;
+		$this->local_cache = $local_cache;
 	}
 
 	/**

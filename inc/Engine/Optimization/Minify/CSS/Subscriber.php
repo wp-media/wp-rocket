@@ -43,7 +43,7 @@ class Subscriber extends AbstractMinifySubscriber {
 		}
 
 		if ( $this->options->get( 'minify_css' ) && $this->options->get( 'minify_concatenate_css' ) ) {
-			$this->set_optimization_type( new Combine( $this->options, new MinifyCSS() ) );
+			$this->set_optimization_type( new Combine( $this->options, new MinifyCSS(), new AssetsLocalCache( WP_ROCKET_MINIFY_CACHE_PATH, $this->filesystem ) ) );
 		} elseif ( $this->options->get( 'minify_css' ) && ! $this->options->get( 'minify_concatenate_css' ) ) {
 			$this->set_optimization_type( new Minify( $this->options ) );
 		}

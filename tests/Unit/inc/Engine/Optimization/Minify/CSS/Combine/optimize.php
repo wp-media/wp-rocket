@@ -5,6 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\Minify\CSS\Combine;
 use Brain\Monkey\Filters;
 use MatthiasMullie\Minify;
 use Mockery;
+use WP_Rocket\Engine\Optimization\AssetsLocalCache;
 use WP_Rocket\Engine\Optimization\Minify\CSS\Combine;
 use WP_Rocket\Tests\Unit\inc\Engine\Optimization\TestCase;
 
@@ -30,7 +31,7 @@ class Test_Optimize extends TestCase {
 		$this->minify->shouldReceive( 'minify' )
 		             ->andReturn( 'body{font-family:Helvetica,Arial,sans-serif;text-align:center;}' );
 
-		$this->combine = new Combine( $this->options, $this->minify );
+		$this->combine = new Combine( $this->options, $this->minify, Mockery::mock( AssetsLocalCache::class ) );
 	}
 
 	/**
