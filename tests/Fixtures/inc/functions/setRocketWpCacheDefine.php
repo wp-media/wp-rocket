@@ -143,28 +143,28 @@ return [
 	'test_data' => [
 		'ShouldAddWpCache' => [
 			'config' => [
-				'file' => 'wp-config-has-no-wp-cache.php',
+				'file' => 'wp-config-has-no-wp-cache',
 				'valid_key' => true,
 			],
 			'expected' => $wp_config_has_no_wp_cache_expected
 		],
 		'ShouldAddWpCacheWhenCommentInFirstLine' => [
 			'config' => [
-				'file' => 'wp-config-has-no-wp-cache-comment-on-first-line.php',
+				'file' => 'wp-config-has-no-wp-cache-comment-on-first-line',
 				'valid_key' => true,
 			],
 			'expected' => $wp_config_has_no_wp_cache_comment_on_first_line_expected
 		],
 		'ShouldNotAddWpCache' => [
 			'config' => [
-				'file' => 'wp-config-has-wp-cache.php',
+				'file' => 'wp-config-has-wp-cache',
 				'valid_key' => true,
 			],
 			'expected' => $wp_config_has_wp_cache_expected
 		],
 		'ShouldBailOutWhenNotValidKey' => [
 			'config' => [
-				'file' => 'wp-config-has-no-wp-cache.php',
+				'file' => 'wp-config-has-no-wp-cache',
 				'valid_key' => false,
 			],
 			'expected' => $wp_config_has_no_wp_cache
