@@ -19,7 +19,7 @@ trait StubTrait {
 	protected $donotrocketoptimize      = null;
 	protected $donotasynccss            = null;
 	protected $white_label              = false;
-	protected $attributes               = [];
+	protected $constants                = [];
 
 	protected function resetStubProperties() {
 		$defaults = [
@@ -35,7 +35,7 @@ trait StubTrait {
 			'donotrocketoptimize'       => null,
 			'dontasynccss'              => null,
 			'white_label'               => false,
-			'attributes'                => [],
+			'constants'                 => [],
 		];
 
 		foreach ( $defaults as $property => $value ) {
@@ -138,8 +138,8 @@ trait StubTrait {
 				return $this->white_label;
 
 			default:
-				if ( isset( $this->attributes[$constant_name] ) ){
-					return $this->attributes[$constant_name];
+				if ( isset( $this->constants[$constant_name] ) ){
+					return $this->constants[$constant_name];
 				}
 
 				if ( ! rocket_has_constant( $constant_name ) ) {
