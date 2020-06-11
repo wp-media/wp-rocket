@@ -76,10 +76,10 @@ class Test_InsertLazyloadScript extends TestCase {
 		$wp_query->is_search = $is_search;
 
 		//Constants.
-		$this->attributes['REST_REQUEST'] = $is_rest_request;
-		$this->attributes['DONOTLAZYLOAD'] = !$is_lazy_load;
+		$this->constants['REST_REQUEST'] = $is_rest_request;
+		$this->constants['DONOTLAZYLOAD'] = !$is_lazy_load;
 		$this->donotrocketoptimize = !$is_rocket_optimize;
-		$this->attributes['WP_ROCKET_ASSETS_JS_URL'] = 'http://example.org/wp-content/plugins/wp-rocket/assets/';
+		$this->constants['WP_ROCKET_ASSETS_JS_URL'] = 'http://example.org/wp-content/plugins/wp-rocket/assets/';
 
 		// wp-media/rocket-lazyload-common uses the constant for determining whether to set as .min.js.
 		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
