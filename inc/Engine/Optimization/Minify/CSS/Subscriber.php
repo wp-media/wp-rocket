@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Optimization\Minify\CSS;
 
-use MatthiasMullie\Minify\CSS as MinifyCSS;
+use WP_Rocket\Engine\Optimization\AssetsLocalCache;
 use WP_Rocket\Engine\Optimization\Minify\AbstractMinifySubscriber;
 
 /**
@@ -43,7 +43,7 @@ class Subscriber extends AbstractMinifySubscriber {
 		}
 
 		if ( $this->options->get( 'minify_css' ) && $this->options->get( 'minify_concatenate_css' ) ) {
-			$this->set_optimization_type( new Combine( $this->options, new MinifyCSS(), new AssetsLocalCache( WP_ROCKET_MINIFY_CACHE_PATH, $this->filesystem ) ) );
+			$this->set_optimization_type( new Combine( $this->options, new AssetsLocalCache( rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' ), $this->filesystem ) ) );
 		} elseif ( $this->options->get( 'minify_css' ) && ! $this->options->get( 'minify_concatenate_css' ) ) {
 			$this->set_optimization_type( new Minify( $this->options ) );
 		}
@@ -59,11 +59,11 @@ class Subscriber extends AbstractMinifySubscriber {
 	 * @return bool
 	 */
 	protected function is_allowed() {
-		if ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
+		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
 			return false;
 		}
 
-		if ( defined( 'DONOTMINIFYCSS' ) && DONOTMINIFYCSS ) {
+		if ( rocket_get_constant( 'DONOTMINIFYCSS' ) ) {
 			return false;
 		}
 
@@ -71,11 +71,7 @@ class Subscriber extends AbstractMinifySubscriber {
 			return false;
 		}
 
-		if ( is_rocket_post_excluded_option( 'minify_css' ) ) {
-			return false;
-		}
-
-		return true;
+		return ! is_rocket_post_excluded_option( 'minify_css' );
 	}
 
 	/**
