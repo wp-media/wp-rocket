@@ -47,6 +47,7 @@ class Test_Delete extends RESTVfsTestCase {
 		parent::tearDown();
 		$admin = get_role( 'administrator' );
 		$admin->remove_cap( 'rocket_regenerate_critical_css' );
+		$this->set_permalink_structure( '' );
 	}
 
 	public function setUp() {
