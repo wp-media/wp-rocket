@@ -309,7 +309,7 @@ class LazyloadSubscriber implements Subscriber_Interface {
 	 * @return bool
 	 */
 	private function should_lazyload() {
-		// This filter is documented in inc/front/process.php.
+		// This filter is documented in inc/classes/Buffer/class-tests.php.
 		$rocket_cache_search = apply_filters( 'rocket_cache_search', false );
 		if (
 			is_admin()
