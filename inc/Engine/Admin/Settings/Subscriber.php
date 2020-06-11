@@ -60,11 +60,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function enqueue_rocket_scripts( $hook ) {
-		if ( 'settings_page_wprocket' !== $hook ) {
-			return;
-		}
-
-		wp_enqueue_script( 'wistia-e-v1', 'https://fast.wistia.com/assets/external/E-v1.js', [], null, true );
+		$this->page->enqueue_rocket_scripts( $hook );
 	}
 
 	/**
@@ -76,11 +72,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return string
 	 */
 	public function async_wistia_script( $tag, $handle ) {
-		if ( 'wistia-e-v1' !== $handle ) {
-			return $tag;
-		}
-	
-		return str_replace( ' src', ' async src', $tag );
+		return $this->page->async_wistia_script( $tag, $handle );
 	}
 
 	/**

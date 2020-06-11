@@ -179,6 +179,41 @@ class Page {
 	}
 
 	/**
+	 * Enqueues WP Rocket scripts on the settings page
+	 *
+	 * @since 3.6.1
+	 *
+	 * @param string $hook The current admin page.
+	 *
+	 * @return void
+	 */
+	public function enqueue_rocket_scripts( $hook ) {
+		if ( 'settings_page_wprocket' !== $hook ) {
+			return;
+		}
+
+		wp_enqueue_script( 'wistia-e-v1', 'https://fast.wistia.com/assets/external/E-v1.js', [], null, true );
+	}
+
+	/**
+	 * Adds the async attribute to the Wistia script
+	 *
+	 * @since 3.6.1
+	 *
+	 * @param string $tag    The <script> tag for the enqueued script.
+	 * @param string $handle The script's registered handle.
+	 *
+	 * @return string
+	 */
+	public function async_wistia_script( $tag, $handle ) {
+		if ( 'wistia-e-v1' !== $handle ) {
+			return $tag;
+		}
+	
+		return str_replace( ' src', ' async src', $tag );
+	}
+
+	/**
 	 * Gets customer data from WP Rocket website to display it in the dashboard.
 	 *
 	 * @since 3.0
