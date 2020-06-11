@@ -20,8 +20,7 @@ class Test_SetRocketWpCacheDefine extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/functions/setRocketWpCacheDefine.php';
 	protected $config_file = '';
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		remove_filter( 'rocket_wp_config_name', [ $this, 'setWpCacheFilePath' ] );
 		parent::tearDown();
 	}
@@ -43,7 +42,7 @@ class Test_SetRocketWpCacheDefine extends FilesystemTestCase {
 		$this->assertEquals( $expected, str_replace( "\r\n", "\n", $actual ) );
 	}
 
-	public function setWpCacheFilePath($file) {
+	public function setWpCacheFilePath( $file ) {
 		return $this->config_file;
 	}
 }
