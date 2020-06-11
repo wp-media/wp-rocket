@@ -2,6 +2,8 @@
 
 namespace WP_Rocket\Tests\Unit\inc\functions;
 
+use WP_Term;
+use Mockery;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
@@ -19,6 +21,8 @@ class Test_GetRocketPostTermsUrls extends TestCase {
 	public function testShouldReturnExpectedUrls( $post_data, $terms, $expected ) {
 		$post_id    = 10;
 		$taxonomies = $this->getTaxonomies( $terms );
+
+		$term_mocked = Mockery::mock( WP_Term::class );
 
 		Functions\expect( 'get_post_type' )
 			->once()
@@ -63,10 +67,12 @@ class Test_GetRocketPostTermsUrls extends TestCase {
 						->with( $term->term_id, $taxonomy->name )
 						->andReturn( [ $term->parent ] );
 
+					$term_mocked->slug = $term->parent;
+
 					Functions\expect( 'get_term' )
 						->once()
 						->with( $term->parent, $taxonomy->name )
-						->andReturn( (object) [ 'slug' => $term->parent ] );
+						->andReturn( $term_mocked );
 					Functions\expect( 'get_term_link' )
 						->once()
 						->with( $term->parent , $taxonomy->name )
