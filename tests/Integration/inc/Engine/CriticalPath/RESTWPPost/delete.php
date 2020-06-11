@@ -27,7 +27,6 @@ class Test_Delete extends RESTVfsTestCase {
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
-
 		$admin                 = get_role( 'administrator' );
 		static::$had_admin_cap = $admin->has_cap( 'rocket_regenerate_critical_css' );
 	}
@@ -37,7 +36,6 @@ class Test_Delete extends RESTVfsTestCase {
 		if ( ! static::$had_cap ) {
 			$admin->remove_cap( 'rocket_regenerate_critical_css' );
 		}
-
 		parent::tearDownAfterClass();
 	}
 
@@ -47,11 +45,9 @@ class Test_Delete extends RESTVfsTestCase {
 		parent::tearDown();
 		$admin = get_role( 'administrator' );
 		$admin->remove_cap( 'rocket_regenerate_critical_css' );
-		$this->set_permalink_structure( '' );
 	}
 
 	public function setUp() {
-		$this->set_permalink_structure( '/%postname%/' );
 		parent::setUp();
 	}
 
