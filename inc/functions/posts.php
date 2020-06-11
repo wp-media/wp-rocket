@@ -22,22 +22,26 @@ function get_rocket_post_terms_urls( $post_id ) { // phpcs:ignore WordPress.Nami
 		// Get the terms related to post.
 		$terms = get_the_terms( $post_id, $taxonomy->name );
 
-		if ( ! empty( $terms ) ) {
-			foreach ( $terms as $term ) {
-				$term_url = get_term_link( $term->slug, $taxonomy->name );
-				if ( ! is_wp_error( $term_url ) ) {
-					$urls[] = $term_url;
+		if ( empty( $terms ) ) {
+			continue;
+		}
+		foreach ( $terms as $term ) {
+			$term_url = get_term_link( $term->slug, $taxonomy->name );
+			if ( ! is_wp_error( $term_url ) ) {
+				$urls[] = $term_url;
+			}
+			if ( ! is_taxonomy_hierarchical( $taxonomy->name ) ) {
+				continue;
+			}
+			$ancestors = (array) get_ancestors( $term->term_id, $taxonomy->name );
+			foreach ( $ancestors as $ancestor ) {
+				$ancestor_object = get_term( $ancestor, $taxonomy->name );
+				if ( ! $ancestor_object instanceof WP_Term ) {
+					continue;
 				}
-
-				if ( is_taxonomy_hierarchical( $taxonomy->name ) ) {
-					$ancestors = get_ancestors( $term->term_id, $taxonomy->name );
-					foreach ( $ancestors as $ancestor ) {
-						$ancestor_object   = get_term( $ancestor, $taxonomy->name );
-						$ancestor_term_url = get_term_link( $ancestor_object->slug, $taxonomy->name );
-						if ( ! is_wp_error( $ancestor_term_url ) ) {
-							$urls[] = $ancestor_term_url;
-						}
-					}
+				$ancestor_term_url = get_term_link( $ancestor_object->slug, $taxonomy->name );
+				if ( ! is_wp_error( $ancestor_term_url ) ) {
+					$urls[] = $ancestor_term_url;
 				}
 			}
 		}
