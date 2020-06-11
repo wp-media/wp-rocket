@@ -201,8 +201,7 @@ class Test_Generate extends FilesystemTestCase {
 
 		if ( $expected['success'] && 'cpcss_generation_successful' === $expected['code'] ) {
 			Functions\expect( 'rocket_clean_files' )
-				->atMost()
-				->times( 1 )
+				->once()
 				->with( "http://example.org/?p={$post_id}" );
 		} else {
 			Functions\expect( 'rocket_clean_files' )->never();
