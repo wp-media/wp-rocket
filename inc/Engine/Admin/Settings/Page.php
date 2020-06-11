@@ -192,7 +192,7 @@ class Page {
 			return;
 		}
 
-		wp_enqueue_script( 'wistia-e-v1', 'https://fast.wistia.com/assets/external/E-v1.js', [], null, true );
+		wp_enqueue_script( 'wistia-e-v1', 'https://fast.wistia.com/assets/external/E-v1.js', [], null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 	}
 
 	/**
@@ -209,7 +209,7 @@ class Page {
 		if ( 'wistia-e-v1' !== $handle ) {
 			return $tag;
 		}
-	
+
 		return str_replace( ' src', ' async src', $tag );
 	}
 

@@ -45,8 +45,8 @@ class Subscriber implements Subscriber_Interface {
 				[ 'add_imagify_page', 9 ],
 				[ 'add_tutorials_page', 11 ],
 			],
-			'admin_enqueue_scripts' => 'enqueue_rocket_scripts',
-			'script_loader_tag'     => [ 'async_wistia_script', 10, 2 ],
+			'admin_enqueue_scripts'                => 'enqueue_rocket_scripts',
+			'script_loader_tag'                    => [ 'async_wistia_script', 10, 2 ],
 		];
 	}
 
