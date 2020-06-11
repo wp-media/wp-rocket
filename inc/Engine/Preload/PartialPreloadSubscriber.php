@@ -98,11 +98,8 @@ class PartialPreloadSubscriber implements Subscriber_Interface {
 		// Get the author page.
 		$purge_author = [ get_author_posts_url( $post->post_author ) ];
 
-		// Get all dates archive page.
-		$purge_dates = get_rocket_post_dates_urls( $post->ID );
-
-		// Remove dates archives page and author page to preload cache.
-		$purge_urls = array_diff( $purge_urls, $purge_dates, $purge_author );
+		// Remove author page from preload cache.
+		$purge_urls = array_diff( $purge_urls, $purge_author );
 
 		$purge_urls = array_filter( $purge_urls );
 

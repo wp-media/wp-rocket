@@ -135,12 +135,6 @@ function rocket_get_purge_urls( $post_id, $post ) {
 		$purge_urls = array_merge( $purge_urls, $purge_terms );
 	}
 
-	// Add all dates archive page to purge.
-	$purge_dates = get_rocket_post_dates_urls( $post_id );
-	if ( count( $purge_dates ) ) {
-		$purge_urls = array_merge( $purge_urls, $purge_dates );
-	}
-
 	// Add the author page.
 	$purge_author = [ get_author_posts_url( $post->post_author ) ];
 	$purge_urls   = array_merge( $purge_urls, $purge_author );
