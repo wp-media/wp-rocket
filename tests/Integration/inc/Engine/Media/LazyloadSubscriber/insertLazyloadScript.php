@@ -35,6 +35,13 @@ class Test_InsertLazyloadScript extends TestCase {
 		remove_filter( 'rocket_lazyload_threshold', [ $this, 'return_true' ] );
 		remove_filter( 'rocket_use_native_lazyload', [ $this, 'return_true' ] );
 
+		global $wp_query;
+		$wp_query->is_feed    = false;
+		$wp_query->is_preview = false;
+		$wp_query->is_search  = false;
+
+		set_current_screen('front');
+
 		parent::tearDown();
 	}
 
@@ -68,10 +75,11 @@ class Test_InsertLazyloadScript extends TestCase {
 		$wp_query->is_preview = $is_preview;
 		$wp_query->is_search = $is_search;
 
-		Functions\expect( 'rocket_get_constant' )->with( 'REST_REQUEST' )->andReturn( $is_rest_request );
-		Functions\expect( 'rocket_get_constant' )->with( 'DONOTLAZYLOAD' )->andReturn( !$is_lazy_load );
-		Functions\expect( 'rocket_get_constant' )->with( 'DONOTROCKETOPTIMIZE' )->andReturn( !$is_rocket_optimize );
-		Functions\expect( 'rocket_get_constant' )->with( 'WP_ROCKET_ASSETS_JS_URL' )->andReturn( 'http://example.org/wp-content/plugins/wp-rocket/assets/' );
+		//Constants.
+		$this->attributes['REST_REQUEST'] = $is_rest_request;
+		$this->attributes['DONOTLAZYLOAD'] = !$is_lazy_load;
+		$this->donotrocketoptimize = !$is_rocket_optimize;
+		$this->attributes['WP_ROCKET_ASSETS_JS_URL'] = 'http://example.org/wp-content/plugins/wp-rocket/assets/';
 
 		// wp-media/rocket-lazyload-common uses the constant for determining whether to set as .min.js.
 		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
