@@ -41,6 +41,10 @@ class Test_Generate extends RESTVfsTestCase {
 			? $config['post_data']['post_type']
 			: 'post';
 
+		$post_title = isset( $config['post_data']['post_title'] )
+			? $config['post_data']['post_title']
+			: null;
+
 		$post_request_response_code = ! isset( $config['generate_post_request_data']['code'] )
 			? 200
 			: $config['generate_post_request_data']['code'];
@@ -105,12 +109,16 @@ class Test_Generate extends RESTVfsTestCase {
 		$this->do_caching_mobile_files = $do_caching_mobile_files;
 		add_filter( 'pre_get_rocket_option_do_caching_mobile_files', [ $this, 'setDoCachingMobileFilesOption' ] );
 
-		$file = $this->config['vfs_dir'] . "{$site_id}/posts/{$post_type}-{$post_id}" . ( $is_mobile ? '-mobile' : '' ). ".css";
+		$file = $this->config['vfs_dir'] . "cache/critical-css/{$site_id}/posts/{$post_type}-{$post_id}" . ( $is_mobile ? '-mobile' : '' ). ".css";
 
 		$body_param              = [];
 		$body_param['is_mobile'] = $is_mobile;
 		if ( $request_timeout ) {
 			$body_param['timeout'] = true;
+		}
+		if ( $expected['success'] && isset( $post_title ) ) {
+			$cache_file_path = $this->filesystem->getUrl( "{$this->config['vfs_dir']}cache/wp-rocket/example.org/{$post_title}/index.html" );
+			$this->assertTrue( $this->filesystem->exists( $cache_file_path ) );
 		}
 
 		$this->assertSame( $expected, $this->doRestRequest( 'POST', "/wp-rocket/v1/cpcss/post/{$post_id}", $body_param ) );
