@@ -4,6 +4,7 @@ namespace WP_Rocket\Engine\Cache;
 
 use DirectoryIterator;
 use Exception;
+use WP_Term;
 
 /**
  * Cache Purge handling class
@@ -32,24 +33,37 @@ class Purge {
 	 * @return void
 	 */
 	public function purge_dates_archives( $post ) {
+		foreach ( $this->get_dates_archives( $post ) as $url ) {
+			$this->purge_url( $url, true );
+		}
+	}
+
+	/**
+	 * Purge URL cache.
+	 *
+	 * @param string  $url        URL to be purged.
+	 * @param boolean $pagination Purge also pagination.
+	 * @return void
+	 */
+	private function purge_url( $url, $pagination = false ) {
 		global $wp_rewrite;
 
-		foreach ( $this->get_dates_archives( $post ) as $url ) {
-			$parsed_url = $this->parse_url( $url );
+		$parsed_url = $this->parse_url( $url );
 
-			foreach ( _rocket_get_cache_dirs( $parsed_url['host'] ) as $dir ) {
-				$path = $dir . $parsed_url['path'];
+		foreach ( _rocket_get_cache_dirs( $parsed_url['host'] ) as $dir ) {
+			$path = $dir . $parsed_url['path'];
 
-				if ( ! $this->filesystem->exists( $path ) ) {
-					continue;
+			if ( ! $this->filesystem->exists( $path ) ) {
+				continue;
+			}
+
+			foreach ( $this->get_iterator( $path ) as $item ) {
+				if ( $item->isFile() ) {
+					$this->filesystem->delete( $item->getPathname() );
 				}
+			}
 
-				foreach ( $this->get_iterator( $path ) as $item ) {
-					if ( $item->isFile() ) {
-						$this->filesystem->delete( $item->getPathname() );
-					}
-				}
-
+			if ( $pagination ) {
 				$this->maybe_remove_dir( $path . DIRECTORY_SEPARATOR . $wp_rewrite->pagination_base );
 			}
 		}
@@ -135,5 +149,74 @@ class Purge {
 		if ( $this->filesystem->is_dir( $dir ) ) {
 			rocket_rrmdir( $dir, [], $this->filesystem );
 		}
+	}
+
+	/**
+	 * Purge all terms archives urls associated to a specific post.
+	 *
+	 * @since 1.0
+	 *
+	 * @param WP_Post $post Post object.
+	 */
+	public function purge_post_terms_urls( $post ) {
+		foreach ( $this->get_post_terms_urls( $post ) as $url ) {
+			$this->purge_url( $url );
+		}
+
+	}
+
+	/**
+	 * Get all terms archives urls associated to a specific post.
+	 *
+	 * @since 1.0
+	 *
+	 * @param WP_Post $post Post object.
+	 *
+	 * @return array $urls    List of taxonomies URLs
+	 */
+	private function get_post_terms_urls( $post ) {
+		$urls       = [];
+		$taxonomies = get_object_taxonomies( get_post_type( $post->ID ), 'objects' );
+
+		foreach ( $taxonomies as $taxonomy ) {
+			if ( ! $taxonomy->public || 'product_shipping_class' === $taxonomy->name ) {
+				continue;
+			}
+
+			// Get the terms related to post.
+			$terms = get_the_terms( $post->ID, $taxonomy->name );
+
+			if ( empty( $terms ) ) {
+				continue;
+			}
+			foreach ( $terms as $term ) {
+				$term_url = get_term_link( $term->slug, $taxonomy->name );
+				if ( ! is_wp_error( $term_url ) ) {
+					$urls[] = $term_url;
+				}
+				if ( ! is_taxonomy_hierarchical( $taxonomy->name ) ) {
+					continue;
+				}
+				$ancestors = (array) get_ancestors( $term->term_id, $taxonomy->name );
+				foreach ( $ancestors as $ancestor ) {
+					$ancestor_object = get_term( $ancestor, $taxonomy->name );
+					if ( ! $ancestor_object instanceof WP_Term ) {
+						continue;
+					}
+					$ancestor_term_url = get_term_link( $ancestor_object->slug, $taxonomy->name );
+					if ( ! is_wp_error( $ancestor_term_url ) ) {
+						$urls[] = $ancestor_term_url;
+					}
+				}
+			}
+		}
+		/**
+		 * Filter the list of taxonomies URLs
+		 *
+		 * @since 1.1.0
+		 *
+		 * @param array $urls List of taxonomies URLs
+		*/
+		return apply_filters( 'rocket_post_terms_urls', $urls );
 	}
 }

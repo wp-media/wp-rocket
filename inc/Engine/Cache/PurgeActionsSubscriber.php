@@ -45,7 +45,10 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 			'create_term'             => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
 			'edit_term'               => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
 			'delete_term'             => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
-			'after_rocket_clean_post' => 'purge_dates_archives',
+			'after_rocket_clean_post' => [
+				[ 'purge_dates_archives' ],
+				[ 'purge_post_terms_urls' ],
+			],
 		];
 	}
 
@@ -91,6 +94,16 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 	 */
 	public function purge_dates_archives( $post ) {
 		$this->purge->purge_dates_archives( $post );
+	}
+
+	/**
+	 * Purge all terms archives urls associated to a specific post.
+	 *
+	 * @param  WP_Post $post Post object.
+	 * @return void
+	 */
+	public function purge_post_terms_urls( $post ) {
+		$this->purge->purge_post_terms_urls( $post );
 	}
 
 	/**
