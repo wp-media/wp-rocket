@@ -61,12 +61,17 @@ class Test_InsertLazyloadScript extends TestCase {
 		$is_lazy_load       = isset( $config['is_lazy_load'] )       ? $config['is_lazy_load']       : true;
 		$is_rocket_optimize = isset( $config['is_rocket_optimize'] ) ? $config['is_rocket_optimize'] : true;
 
-		if ( $is_admin ) {
-			set_current_screen( 'settings_page_wprocket' );
-		}
-		Functions\expect( 'rocket_get_constant' )
-			->with('REST_REQUEST', 'DONOTLAZYLOAD', 'DONOTROCKETOPTIMIZE', 'WP_ROCKET_ASSETS_JS_URL')
-			->andReturn( $is_rest_request, !$is_lazy_load, !$is_rocket_optimize, 'http://example.org/wp-content/plugins/wp-rocket/assets/' );
+		set_current_screen( $is_admin ? 'settings_page_wprocket' : 'front' );
+
+		global $wp_query;
+		$wp_query->is_feed = $is_feed;
+		$wp_query->is_preview = $is_preview;
+		$wp_query->is_search = $is_search;
+
+		Functions\expect( 'rocket_get_constant' )->with( 'REST_REQUEST' )->andReturn( $is_rest_request );
+		Functions\expect( 'rocket_get_constant' )->with( 'DONOTLAZYLOAD' )->andReturn( !$is_lazy_load );
+		Functions\expect( 'rocket_get_constant' )->with( 'DONOTROCKETOPTIMIZE' )->andReturn( !$is_rocket_optimize );
+		Functions\expect( 'rocket_get_constant' )->with( 'WP_ROCKET_ASSETS_JS_URL' )->andReturn( 'http://example.org/wp-content/plugins/wp-rocket/assets/' );
 
 		// wp-media/rocket-lazyload-common uses the constant for determining whether to set as .min.js.
 		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
