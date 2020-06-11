@@ -22,7 +22,7 @@ class Test_SetRocketWpCacheDefine extends FilesystemTestCase {
 
 	public function tearDown()
 	{
-		remove_filter( 'rocket_wp_config_name', [$this, 'setWpCacheFilePath'] );
+		remove_filter( 'rocket_wp_config_name', [ $this, 'setWpCacheFilePath' ] );
 		parent::tearDown();
 	}
 
@@ -30,9 +30,10 @@ class Test_SetRocketWpCacheDefine extends FilesystemTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldAddWpCacheDefine( $config, $expected ) {
-		$this->config_file = $config['file'];
+		$this->config_file     = $config['file'];
 		$config_file_full_path = $this->config['vfs_dir'] . $this->config_file . '.php';
-		add_filter( 'rocket_wp_config_name', [$this, 'setWpCacheFilePath'] );
+
+		add_filter( 'rocket_wp_config_name', [ $this, 'setWpCacheFilePath' ] );
 
 		Functions\when( 'rocket_valid_key' )->justReturn( $config['valid_key'] );
 

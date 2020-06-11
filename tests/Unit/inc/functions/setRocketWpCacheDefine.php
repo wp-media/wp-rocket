@@ -24,7 +24,8 @@ class Test_SetRocketWpCacheDefine extends FilesystemTestCase {
 	 */
 	public function testShouldAddWpCacheDefine( $config, $expected ) {
 		$config_file_full_path = $this->config['vfs_dir'] . $config['file'] . '.php';
-		Functions\when('rocket_find_wpconfig_path')->justReturn( $config_file_full_path );
+
+		Functions\when( 'rocket_find_wpconfig_path' )->justReturn( $config_file_full_path );
 		Functions\expect( 'rocket_valid_key' )->once()->andReturn( $config['valid_key'] );
 
 		set_rocket_wp_cache_define( true );
