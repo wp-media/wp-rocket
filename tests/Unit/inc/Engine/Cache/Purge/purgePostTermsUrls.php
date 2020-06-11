@@ -1,25 +1,41 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\functions;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Cache\Purge;
 
 use WP_Term;
 use Mockery;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
-use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Tests\Unit\FilesystemTestCase;
+use WP_Rocket\Engine\Cache\Purge;
 
 /**
  * @covers ::get_rocket_post_terms_urls
- * @group  Functions
- * @group  Posts
+ * @group  Purge
+ * @group  purge_actions
  */
-class Test_GetRocketPostTermsUrls extends TestCase {
+class Test_PurgePostTermsUrls extends FilesystemTestCase {
+	protected $path_to_test_data = '/inc/Engine/Cache/Purge/purgePostTermsUrls.php';
+
+	public function setUp() {
+		parent::setUp();
+
+		$this->purge = new Purge( $this->filesystem );
+	}
+
+	public function tearDown() {
+		parent::tearDown();
+
+		unset( $GLOBALS['wp_rewrite'] );
+	}
 
 	/**
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldReturnExpectedUrls( $post_data, $terms, $expected ) {
 		$post_id    = 10;
+		$post['ID'] = $post_id;
+		$post       = (object) $post;
 		$taxonomies = $this->getTaxonomies( $terms );
 
 		$term_mocked = Mockery::mock( WP_Term::class );
@@ -88,11 +104,11 @@ class Test_GetRocketPostTermsUrls extends TestCase {
 		}
 		Filters\expectApplied( 'rocket_post_terms_urls', $expected )->once();
 
-		$this->assertSame( $expected, get_rocket_post_terms_urls( $post_id ) );
-	}
+		Functions\when( 'wp_parse_url' )->alias( function( $url, $component = -1 ) {
+			return parse_url( $url, $component );
+		} );
 
-	public function providerTestData() {
-		return $this->getTestData( __DIR__, basename( __FILE__, '.php' ) );
+		$this->purge->purge_post_terms_urls( $post );
 	}
 
 	private function getTaxonomies( array $config ) {
