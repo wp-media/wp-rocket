@@ -28,7 +28,7 @@ abstract class AbstractMinifySubscriber implements Subscriber_Interface {
 	 *
 	 * @var WP_Filesystem_Direct
 	 */
-	private $filesystem;
+	protected $filesystem;
 
 	/**
 	 * Creates an instance of inheriting class.
