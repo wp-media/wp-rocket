@@ -47,10 +47,6 @@ class Test_Delete extends RESTVfsTestCase {
 		$admin->remove_cap( 'rocket_regenerate_critical_css' );
 	}
 
-	public function setUp() {
-		parent::setUp();
-	}
-
 	/**
 	 * @dataProvider dataProvider
 	 */
