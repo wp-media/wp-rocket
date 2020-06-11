@@ -59,7 +59,7 @@ class Test_Delete extends RESTVfsTestCase {
 	 * @dataProvider dataProvider
 	 */
 	public function testShouldDoExpectedWhenNotMultisite( $config, $expected ) {
-		$cache_file_path = $this->filesystem->getUrl( "{$this->config['vfs_dir']}cache/wp-rocket/example.org/" . $config['post_data']['post_title'] . '/index.html' );
+		$cache_file_path = $this->filesystem->getUrl( "{$this->config['vfs_dir']}cache/wp-rocket/example.org/{$config['post_data']['post_title']}/index.html" );
 		$this->assertTrue( $this->filesystem->exists( $cache_file_path ) );
 
 		$this->setUpTest( 1, $config );
@@ -72,6 +72,12 @@ class Test_Delete extends RESTVfsTestCase {
 		$actual = $this->doRestDelete( "/wp-rocket/v1/cpcss/post/{$this->post_id}" );
 
 		$this->assertSame( $expected, $actual );
+
+		if ( ! empty ( $expected['success'] ) ) {
+			$this->assertFalse( $this->filesystem->exists( $cache_file_path ) );
+		} else {
+			$this->assertTrue( $this->filesystem->exists( $cache_file_path ) );
+		}
 
 		// Check that the file(s) was(were) deleted.
 		$this->assertFilesDeleted( $config );
