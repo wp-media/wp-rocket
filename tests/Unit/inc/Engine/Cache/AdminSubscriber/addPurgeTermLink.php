@@ -2,9 +2,11 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Cache\AdminSubscriber;
 
+use Mockery;
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Engine\Cache\AdminSubscriber;
+use WP_Rocket\Engine\Cache\AdvancedCache;
 
 /**
  * @covers WP_Rocket\Engine\Cache\AdminSubscriber::add_purge_term_link
@@ -19,7 +21,9 @@ class Test_AddPurgeTermLink extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->subscriber = new AdminSubscriber();
+		$this->subscriber = new AdminSubscriber(
+			Mockery::mock( AdvancedCache::class )
+		);
 	}
 
 	/**

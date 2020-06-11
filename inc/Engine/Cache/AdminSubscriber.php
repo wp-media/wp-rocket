@@ -19,13 +19,33 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	protected $event_manager;
 
 	/**
+	 * AdvancedCache instance
+	 *
+	 * @var AdvancedCache
+	 */
+	private $advanced_cache;
+
+	/**
+	 * Instantiate the class
+	 *
+	 * @param AdvancedCache $advanced_cache AdvancedCache instance.
+	 */
+	public function __construct( AdvancedCache $advanced_cache ) {
+		$this->advanced_cache = $advanced_cache;
+	}
+
+	/**
 	 * Returns an array of events that this subscriber wants to listen to.
 	 *
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'admin_init' => 'register_terms_row_action',
+			'admin_init'    => 'register_terms_row_action',
+			'admin_notices' => [
+				[ 'notice_advanced_cache_permissions' ],
+				[ 'notice_advanced_cache_content_not_ours' ],
+			],
 		];
 	}
 
@@ -83,5 +103,27 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 		);
 
 		return $actions;
+	}
+
+	/**
+	 * Displays the notice for advanced-cache.php permissions
+	 *
+	 * @since 3.6
+	 *
+	 * @return void
+	 */
+	public function notice_advanced_cache_permissions() {
+		$this->advanced_cache->notice_permissions();
+	}
+
+	/**
+	 * Displays the notice when advanced-cache.php content is not ours
+	 *
+	 * @since 3.6
+	 *
+	 * @return void
+	 */
+	public function notice_advanced_cache_content_not_ours() {
+		$this->advanced_cache->notice_content_not_ours();
 	}
 }

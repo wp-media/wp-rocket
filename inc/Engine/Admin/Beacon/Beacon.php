@@ -82,6 +82,7 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 			'form_id'  => $form_id,
 			'identify' => wp_json_encode( $this->identify_data() ),
 			'session'  => wp_json_encode( $this->session_data() ),
+			'prefill'  => wp_json_encode( $this->prefill_data() ),
 		];
 
 		echo $this->generate( 'beacon', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -180,6 +181,43 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 		}
 
 		return $identify_data;
+	}
+
+	/**
+	 * Returns prefill data to pass to Beacon
+	 *
+	 * @since 3.6
+	 *
+	 * @return array
+	 */
+	private function prefill_data() {
+		$prefill_data = [
+			'fields' => [
+				[
+					'id'    => 21728,
+					'value' => 108003, // default to nulled.
+				],
+			],
+		];
+
+		$customer_data = get_transient( 'wp_rocket_customer_data' );
+
+		if ( false === $customer_data || ! isset( $customer_data->licence_account ) ) {
+			return $prefill_data;
+		}
+
+		$licenses = [
+			'Single'      => 108000,
+			'Plus'        => 108001,
+			'Infinite'    => 108002,
+			'Unavailable' => 108003,
+		];
+
+		if ( isset( $licenses[ $customer_data->licence_account ] ) ) {
+			$prefill_data['fields'][0]['value'] = $licenses[ $customer_data->licence_account ];
+		}
+
+		return $prefill_data;
 	}
 
 	/**
@@ -607,6 +645,10 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 				'en' => [
 					'id'  => '5e8687c22c7d3a7e9aea4c4a',
 					'url' => 'https://docs.wp-rocket.me/article/1312-optimize-google-fonts',
+				],
+				'fr' => [
+					'id'  => '5e970f512c7d3a7e9aeaf9fb',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1314-optimiser-les-google-fonts/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 		];

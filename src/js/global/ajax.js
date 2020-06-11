@@ -83,5 +83,31 @@ $(document).ready(function(){
             },
             function(response) {}
         );
+	});
+
+	/**
+     * Save enable CPCSS for mobiles option.
+     */
+    $('#wpr-action-rocket_enable_mobile_cpcss').on('click', function(e) {
+        e.preventDefault();
+
+		$('#wpr-action-rocket_enable_mobile_cpcss').addClass('wpr-isLoading');
+
+        $.post(
+            ajaxurl,
+            {
+                action: 'rocket_enable_mobile_cpcss',
+                _ajax_nonce: rocket_ajax_data.nonce
+            },
+			function(response) {
+				if ( response.success ) {
+					// Hide Mobile CPCSS btn on success.
+					$('#wpr-action-rocket_enable_mobile_cpcss').hide();
+					$('.wpr-hide-on-click').hide();
+					$('.wpr-show-on-click').show();
+					$('#wpr-action-rocket_enable_mobile_cpcss').removeClass('wpr-isLoading');
+				}
+			}
+        );
     });
 });

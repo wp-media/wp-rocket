@@ -6,8 +6,9 @@ use WPMedia\PHPUnit\Integration\AjaxTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::dismiss_notice
- * @group  RocketCDN
+ *
  * @group  AdminOnly
+ * @group  RocketCDN
  */
 class Test_DismissNotice extends AjaxTestCase {
 	/**
@@ -20,6 +21,9 @@ class Test_DismissNotice extends AjaxTestCase {
 	 * Set up the User ID before tests start.
 	 */
 	public static function wpSetUpBeforeClass( $factory ) {
+		$role = get_role( 'administrator' );
+		$role->add_cap( 'rocket_manage_options' );
+
 		self::$user_id = $factory->user->create( [ 'role' => 'administrator' ] );
 	}
 

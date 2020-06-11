@@ -15,7 +15,7 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * @since 3.3
  */
 class LazyloadSubscriber implements Subscriber_Interface {
-	const SCRIPT_VERSION = '15.1.1';
+	const SCRIPT_VERSION = '16.1';
 
 	/**
 	 * Options_Data instance

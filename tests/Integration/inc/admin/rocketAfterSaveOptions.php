@@ -3,6 +3,8 @@
 namespace WP_Rocket\Tests\Integration\inc\admin;
 
 use Brain\Monkey\Functions;
+use WP_Rocket\Engine\Cache\AdvancedCache;
+use WP_Rocket\Tests\Fixtures\DIContainer;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
@@ -24,70 +26,57 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/admin/rocketAfterSaveOptions.php';
 
-	private static $transients        = [
+	protected static $use_settings_trait = true;
+	protected static $transients         = [
 		'rocket_analytics_optin' => null,
 	];
-	private static $original_settings = [];
 
 	private $is_apache;
-	private $hooks   = [];
-	private $options = [];
+	private $hooks = [];
 	private $expected;
 	private $rocketCleanDomainEntriesBefore;
 	private $rocketCleanMinifyEntriesBefore;
 	private $rocketCleanDomainShouldNotClean;
 	private $rocketCleanMinifyShouldNotClean;
-
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
-		self::$original_settings = get_option( 'wp_rocket_settings', [] );
-		foreach ( array_keys( self::$transients ) as $transient ) {
-			self::$transients[ $transient ] = get_transient( $transient );
-		}
-	}
-
-	public static function tearDownAfterClass() {
-		parent::tearDownAfterClass();
-
-		// Restore the originals before exiting.
-		update_option( 'wp_rocket_settings', self::$original_settings );
-		self::resetTransitions();
-	}
-
-	private static function resetTransitions() {
-		foreach ( self::$transients as $transient => $value ) {
-			if ( ! empty( $transient ) ) {
-				set_transient( $transient, $value );
-			} else {
-				delete_transient( $transient );
-			}
-		}
-	}
+	private $dicontainer;
 
 	public function setUp() {
+		// Unhook to avoid triggering when storing the configured settings.
+		remove_action( 'update_option_wp_rocket_settings', 'rocket_after_save_options' );
+
 		parent::setUp();
 
-		// Mocks the various filesystem constants.
-		$this->whenRocketGetConstant();
+		// Save the original global state.
+		$this->is_apache = isset( $GLOBALS['is_apache'] ) ? $GLOBALS['is_apache'] : null;
 
-		$this->is_apache = $GLOBALS['is_apache'];
-		$this->options   = array_merge( self::$original_settings, $this->config['settings'] );
-		update_option( 'wp_rocket_settings', $this->options );
-
+		// Initialize states.
+		$this->rocketCleanDomainEntriesBefore  = [];
+		$this->rocketCleanMinifyEntriesBefore  = [];
+		$this->rocketCleanDomainShouldNotClean = [];
+		$this->rocketCleanMinifyShouldNotClean = [];
 		$GLOBALS['is_apache'] = true;
+
+		// Set up the container.
+		$this->dicontainer = new DIContainer();
+		$this->dicontainer->setUp();
+
 		Functions\when( 'wp_remote_get' )->justReturn();
+
+		// Hook it back up as we're ready to test.
+		add_action( 'update_option_wp_rocket_settings', 'rocket_after_save_options', 10, 2 );
 	}
 
 	public function tearDown() {
 		parent::tearDown();
 
-		unset( $_POST['rocket_after_save_options'], $GLOBALS['sitepress'], $GLOBALS['q_config'], $GLOBALS['polylang'] );
-		$GLOBALS['is_apache'] = $this->is_apache;
+		$this->dicontainer->tearDown();
 
-		$this->rocketCleanDomainEntriesBefore  = [];
-		$this->rocketCleanMinifyEntriesBefore  = [];
-		$this->rocketCleanDomainShouldNotClean = [];
-		$this->rocketCleanMinifyShouldNotClean = [];
+		unset( $_POST['rocket_after_save_options'], $GLOBALS['sitepress'], $GLOBALS['q_config'], $GLOBALS['polylang'] );
+
+		// Restore the original state.
+		if ( ! empty( $this->is_apache ) ) {
+			$GLOBALS['is_apache'] = $this->is_apache;
+		}
 	}
 
 	/**
@@ -198,6 +187,12 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 	private function rocket_generate_advanced_cache_file( $before_updating = false ) {
 		// Sets up the test before updating.
 		if ( $before_updating ) {
+
+			$this->dicontainer->addAdvancedCache(
+				$this->filesystem->getUrl( $this->config['vfs_dir'] . 'plugins/wp-rocket/views/cache/' ),
+				$this->filesystem
+			);
+
 			if ( isset( $this->expected['rocket_generate_advanced_cache_file'] ) ) {
 				$_POST['rocket_after_save_options'] = 1;
 			}

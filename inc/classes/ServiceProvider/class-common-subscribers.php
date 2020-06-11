@@ -23,9 +23,6 @@ class Common_Subscribers extends AbstractServiceProvider {
 	protected $provides = [
 		'heartbeat_subscriber',
 		'db_optimization_subscriber',
-		'critical_css_generation',
-		'critical_css',
-		'critical_css_subscriber',
 		'capabilities_subscriber',
 		'webp_subscriber',
 		'expired_cache_purge',
@@ -48,12 +45,6 @@ class Common_Subscribers extends AbstractServiceProvider {
 			->withArgument( $options );
 		$this->getContainer()->share( 'db_optimization_subscriber', 'WP_Rocket\Subscriber\Admin\Database\Optimization_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'db_optimization' ) )
-			->withArgument( $options );
-		$this->getContainer()->add( 'critical_css_generation', 'WP_Rocket\Optimization\CSS\Critical_CSS_Generation' );
-		$this->getContainer()->add( 'critical_css', 'WP_Rocket\Optimization\CSS\Critical_CSS' )
-			->withArgument( $this->getContainer()->get( 'critical_css_generation' ) );
-		$this->getContainer()->share( 'critical_css_subscriber', 'WP_Rocket\Subscriber\Optimization\Critical_CSS_Subscriber' )
-			->withArgument( $this->getContainer()->get( 'critical_css' ) )
 			->withArgument( $options );
 		$this->getContainer()->add( 'expired_cache_purge', 'WP_Rocket\Cache\Expired_Cache_Purge' )
 			->withArgument( rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) );

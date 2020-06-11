@@ -1088,7 +1088,7 @@ class Page {
 					'title'       => __( 'Preload Fonts', 'rocket' ),
 					'type'        => 'fields_container',
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description' => sprintf( __( 'Improves performance by helping browsers discover fonts in CSS files. %1$sMore info%2$s', 'rocket' ), '<a href="#">', '</a>' ),
+					'description' => sprintf( __( 'Improves performance by helping browsers discover fonts in CSS files. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $fonts_preload['url'] ) . '" data-beacon-article="' . esc_attr( $fonts_preload['id'] ) . '" target="_blank">', '</a>' ),
 					'help'        => [
 						'id'  => $fonts_preload['id'],
 						'url' => $fonts_preload['url'],
@@ -1165,7 +1165,7 @@ class Page {
 				'preload_fonts' => [
 					'type'              => 'textarea',
 					'label'             => __( 'Fonts to preload', 'rocket' ),
-					'description'       => __( 'Specify urls of the font files to be preloaded (one per line)', 'rocket' ),
+					'description'       => __( 'Specify urls of the font files to be preloaded (one per line). Fonts must be hosted on your own domain.', 'rocket' ),
 					'helper'            => __( 'The domain part of the URL will be stripped automatically.<br/>Allowed font extensions: otf, ttf, svg, woff, woff2.', 'rocket' ),
 					'placeholder'       => '/wp-content/themes/your-theme/assets/fonts/font-file.woff',
 					'section'           => 'preload_fonts_section',

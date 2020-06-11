@@ -9,8 +9,10 @@ use WP_Rocket\Engine\Optimization\Minify\CSS\AdminSubscriber;
 /**
  * @covers \WP_Rocket\Engine\Optimization\Minify\CSS\AdminSubscriber::clean_minify
  * @uses   ::rocket_clean_minify
+ * @uses   ::rocket_direct_filesystem
  *
  * @group  Optimize
+ * @group  Minify
  * @group  AdminSubscriber
  */
 class Test_RocketCleanMinify extends FilesystemTestCase {

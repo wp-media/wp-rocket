@@ -148,5 +148,19 @@
         #wpr-account-data:before{
             content: none;
         }
-    }
+	}
+
+	&#tools{ // Exception for tools
+		#wpr-action-rocket_enable_mobile_cpcss{
+            &:before{
+                transition: all 200ms ease-out;
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            &.wpr-isLoading:before{
+                animation: loading 1.2s infinite;
+            }
+        }
+	}
 }

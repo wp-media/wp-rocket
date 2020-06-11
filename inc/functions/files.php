@@ -1,96 +1,19 @@
 <?php
 
 use WP_Rocket\Logger\Logger;
+use WP_Rocket\Engine\Cache\AdvancedCache;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Generate the content of advanced-cache.php file.
+ * Creates the advanced-cache.php file.
  *
- * @since 3.5.5 Uses rocket_get_constant() for constants.
- * @since 2.1   Add filter rocket_advanced_cache_file.
- * @since 2.0.3
- *
- * @return  string  $buffer The content of avanced-cache.php file
- */
-function get_rocket_advanced_cache_file() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
-	$buffer  = "<?php\n";
-	$buffer .= "defined( 'ABSPATH' ) || exit;\n\n";
-
-	// Add a constant to be sure this is our file.
-	$buffer .= "define( 'WP_ROCKET_ADVANCED_CACHE', true );\n\n";
-
-	$buffer .= "if ( ! defined( 'WP_ROCKET_CONFIG_PATH' ) ) {\n";
-	$buffer .= "\tdefine( 'WP_ROCKET_CONFIG_PATH',       WP_CONTENT_DIR . '/wp-rocket-config/' );\n";
-	$buffer .= "}\n\n";
-
-	// Include the Mobile Detect class if we have to create a different caching file for mobile.
-	if ( is_rocket_generate_caching_mobile_files() ) {
-		$vendor_path = rocket_get_constant( 'WP_ROCKET_VENDORS_PATH' );
-
-		$buffer .= "if ( file_exists( '" . $vendor_path . "classes/class-rocket-mobile-detect.php' ) && ! class_exists( 'Rocket_Mobile_Detect' ) ) {\n";
-		$buffer .= "\tinclude_once '" . $vendor_path . "classes/class-rocket-mobile-detect.php';\n";
-		$buffer .= "}\n\n";
-	}
-
-	// Register a class autoloader and include the process file.
-	$buffer .= "if ( version_compare( phpversion(), '" . rocket_get_constant( 'WP_ROCKET_PHP_VERSION' ) . "' ) >= 0 ) {\n\n";
-
-	// Class autoloader.
-	$autoloader = rocket_direct_filesystem()->get_contents( rocket_get_constant( 'WP_ROCKET_INC_PATH' ) . 'process-autoloader.php' );
-
-	if ( $autoloader ) {
-		$autoloader = preg_replace( '@^<\?php\s*@', '', $autoloader );
-		$autoloader = str_replace( [ "\n", "\n\t\n" ], [ "\n\t", "\n\n" ], trim( $autoloader ) );
-		$autoloader = str_replace( 'WP_ROCKET_PATH', "'" . rocket_get_constant( 'WP_ROCKET_PATH' ) . "'", $autoloader );
-
-		$buffer .= "\t$autoloader\n\n";
-	}
-
-	// Initialize the Cache class and process.
-	$buffer .= "\t" . 'if ( ! class_exists( \'\WP_Rocket\Buffer\Cache\' ) ) {
-		if ( ! defined( \'DONOTROCKETOPTIMIZE\' ) ) {
-			define( \'DONOTROCKETOPTIMIZE\', true ); // WPCS: prefix ok.
-		}
-		return;
-	}
-
-	$rocket_config_class = new \WP_Rocket\Buffer\Config(
-		[
-			\'config_dir_path\' => \'' . rocket_get_constant( 'WP_ROCKET_CONFIG_PATH' ) . '\',
-		]
-	);
-
-	( new \WP_Rocket\Buffer\Cache(
-		new \WP_Rocket\Buffer\Tests(
-			$rocket_config_class
-		),
-		$rocket_config_class,
-		[
-			\'cache_dir_path\' => \'' . rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) . '\',
-		]
-	) )->maybe_init_process();' . "\n";
-	$buffer .= "} else {\n";
-	// Add a constant to provent include issue.
-	$buffer .= "\tdefine( 'WP_ROCKET_ADVANCED_CACHE_PROBLEM', true );\n";
-	$buffer .= "}\n";
-
-	/**
-	 * Filter the content of advanced-cache.php file.
-	 *
-	 * @since 2.1
-	 *
-	 * @param string $buffer The content that will be printed in advanced-cache.php.
-	*/
-	return (string) apply_filters( 'rocket_advanced_cache_file', $buffer );
-}
-
-/**
- * Creates advanced-cache.php file.
- *
+ * @since 3.6 Uses AdvancedCache::get_advanced_cache_content().
  * @since 2.0
+ *
+ * @param AdvancedCache $advanced_cache Optional. Instance of the advanced cache handler.
  */
-function rocket_generate_advanced_cache_file() {
+function rocket_generate_advanced_cache_file( $advanced_cache = null ) {
 	static $done = false;
 
 	if ( rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ) {
@@ -102,9 +25,14 @@ function rocket_generate_advanced_cache_file() {
 	}
 	$done = true;
 
+	if ( is_null( $advanced_cache ) ) {
+		$container      = apply_filters( 'rocket_container', null );
+		$advanced_cache = $container->get( 'advanced_cache' );
+	}
+
 	rocket_put_content(
 		rocket_get_constant( 'WP_CONTENT_DIR' ) . '/advanced-cache.php',
-		get_rocket_advanced_cache_file()
+		$advanced_cache->get_advanced_cache_content()
 	);
 }
 
@@ -1345,28 +1273,43 @@ function rocket_get_filesystem_perms( $type ) {
 }
 
 /**
- * Try to find the correct wp-config.php file, support one level up in filetree
+ * Try to find the correct wp-config.php file, support one level up in file tree.
  *
  * @since 2.1
  *
- * @return string|bool The path of wp-config.php file or false if not found
+ * @return string|bool The path of wp-config.php file or false if not found.
  */
 function rocket_find_wpconfig_path() {
 	/**
-	 * Filter the wp-config's filename
+	 * Filter the wp-config's filename.
 	 *
 	 * @since 2.11
-	 * @author Maxime Culea
 	 *
 	 * @param string $filename The WP Config filename, without the extension.
 	 */
 	$config_file_name = apply_filters( 'rocket_wp_config_name', 'wp-config' );
-	$config_file      = ABSPATH . $config_file_name . '.php';
-	$config_file_alt  = dirname( ABSPATH ) . '/' . $config_file_name . '.php';
+	$abspath          = rocket_get_constant( 'ABSPATH' );
+	$config_file      = "{$abspath}{$config_file_name}.php";
+	$filesystem       = rocket_direct_filesystem();
 
-	if ( rocket_direct_filesystem()->exists( $config_file ) && rocket_direct_filesystem()->is_writable( $config_file ) ) {
+	if (
+		$filesystem->exists( $config_file )
+		&&
+		$filesystem->is_writable( $config_file )
+	) {
 		return $config_file;
-	} elseif ( rocket_direct_filesystem()->exists( $config_file_alt ) && rocket_direct_filesystem()->is_writable( $config_file_alt ) && ! rocket_direct_filesystem()->exists( dirname( ABSPATH ) . '/wp-settings.php' ) ) {
+	}
+
+	$abspath_parent  = dirname( $abspath ) . DIRECTORY_SEPARATOR;
+	$config_file_alt = "{$abspath_parent}{$config_file_name}.php";
+
+	if (
+		$filesystem->exists( $config_file_alt )
+		&&
+		$filesystem->is_writable( $config_file_alt )
+		&&
+		! $filesystem->exists( "{$abspath_parent}wp-settings.php" )
+	) {
 		return $config_file_alt;
 	}
 
