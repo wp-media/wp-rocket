@@ -35,7 +35,7 @@ class Purge {
 		global $wp_rewrite;
 
 		foreach ( $this->get_dates_archives( $post ) as $url ) {
-			$parsed_url = $this->parse_url( $url );			
+			$parsed_url = $this->parse_url( $url );
 
 			foreach ( _rocket_get_cache_dirs( $parsed_url['host'] ) as $dir ) {
 				$path = $dir . $parsed_url['path'];
