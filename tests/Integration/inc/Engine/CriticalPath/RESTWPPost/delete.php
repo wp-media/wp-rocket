@@ -10,7 +10,7 @@ use WP_Rocket\Tests\Integration\RESTVfsTestCase;
  * @uses   \WP_Rocket\Engine\CriticalPath\DataManager::delete_cpcss
  * @uses   \WP_Rocket\Admin\Options_Data::get
  *
- * @group  CriticalPathX
+ * @group  CriticalPath
  * @group  vfs
  */
 class Test_Delete extends RESTVfsTestCase {
@@ -50,9 +50,8 @@ class Test_Delete extends RESTVfsTestCase {
 	}
 
 	public function setUp() {
-		parent::setUp();
-
 		$this->set_permalink_structure( '/%postname%/' );
+		parent::setUp();
 	}
 
 	/**
