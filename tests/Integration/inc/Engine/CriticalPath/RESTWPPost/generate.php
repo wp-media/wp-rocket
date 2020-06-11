@@ -43,7 +43,7 @@ class Test_Generate extends RESTVfsTestCase {
 
 		$post_title = isset( $config['post_data']['post_title'] )
 			? $config['post_data']['post_title']
-			: null;
+			: '';
 
 		$post_request_response_code = ! isset( $config['generate_post_request_data']['code'] )
 			? 200
@@ -116,13 +116,18 @@ class Test_Generate extends RESTVfsTestCase {
 		if ( $request_timeout ) {
 			$body_param['timeout'] = true;
 		}
-		if ( $expected['success'] && isset( $post_title ) ) {
-			$cache_file_path = $this->filesystem->getUrl( "{$this->config['vfs_dir']}cache/wp-rocket/example.org/{$post_title}/index.html" );
+
+		$cache_file_path = $this->filesystem->getUrl( "{$this->config['vfs_dir']}cache/wp-rocket/example.org/{$post_title}/index.html" );
+		if ( $expected['success'] ) {
 			$this->assertTrue( $this->filesystem->exists( $cache_file_path ) );
 		}
 
 		$this->assertSame( $expected, $this->doRestRequest( 'POST', "/wp-rocket/v1/cpcss/post/{$post_id}", $body_param ) );
 		$this->assertSame( $config['cpcss_exists_after'], $this->filesystem->exists( $file ) );
+
+		if ( $expected['success'] ) {
+			$this->assertFalse( $this->filesystem->exists( $cache_file_path ) );
+		}
 	}
 
 	/**

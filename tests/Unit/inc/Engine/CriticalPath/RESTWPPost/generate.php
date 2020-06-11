@@ -75,7 +75,7 @@ class Test_Generate extends FilesystemTestCase {
 		$is_mobile                    = isset( $config['mobile'] )
 			? $config['mobile']
 			: false;
-		$file                         = $this->config['vfs_dir'] . "1/posts/{$post_type}-{$post_id}" . ( $is_mobile ? '-mobile' : '' ). ".css";
+		$file                         = $this->config['vfs_dir'] . "cache/critical-css/1/posts/{$post_type}-{$post_id}" . ( $is_mobile ? '-mobile' : '' ). ".css";
 		$post_url = ('post_not_exists' === $expected['code'])
 			? null
 			: "http://example.org/?p={$post_id}";
