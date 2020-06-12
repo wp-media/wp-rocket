@@ -101,6 +101,17 @@ abstract class RESTWP implements RESTWPInterface {
 	}
 
 	/**
+	 * Clean post cache files on CPCSS generation or deletion.
+	 *
+	 * @since 3.6.1
+	 *
+	 * @param int $item_id ID for this item to get Url for.
+	 */
+	private function clean_post_cache( $item_id ) {
+		rocket_clean_files( $this->get_url( $item_id ) );
+	}
+
+	/**
 	 * Generates the CPCSS for the requested post ID.
 	 *
 	 * @since 3.6
@@ -159,6 +170,8 @@ abstract class RESTWP implements RESTWPInterface {
 				$this->return_error( $generated )
 			);
 		}
+
+		$this->clean_post_cache( $item_id );
 
 		return rest_ensure_response(
 			$this->return_success( $generated )
@@ -239,6 +252,8 @@ abstract class RESTWP implements RESTWPInterface {
 		if ( is_wp_error( $deleted ) ) {
 			return rest_ensure_response( $this->return_error( $deleted ) );
 		}
+
+		$this->clean_post_cache( $item_id );
 
 		return rest_ensure_response( $this->return_success( $deleted ) );
 	}
