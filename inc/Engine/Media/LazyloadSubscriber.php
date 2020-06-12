@@ -328,7 +328,7 @@ class LazyloadSubscriber implements Subscriber_Interface {
 		) {
 			return false;
 		}
-		
+
 		if (
 			is_search()
 			&&
