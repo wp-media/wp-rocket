@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Integration\RESTVfsTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\RESTWPPost::generate
- * @group  CriticalPathX
+ * @group  CriticalPath
  * @group  vfs
  */
 class Test_Generate extends RESTVfsTestCase {
