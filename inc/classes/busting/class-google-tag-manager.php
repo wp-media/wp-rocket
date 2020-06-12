@@ -103,6 +103,9 @@ class Google_Tag_Manager extends Abstract_Busting {
 			return $html;
 		}
 
+		//replace relative protocol // with full https://
+		$script = preg_replace('/^\/\//', 'https://', $script);
+
 		Logger::info(
 			'GOOGLE TAG MANAGER CACHING PROCESS STARTED.',
 			[
