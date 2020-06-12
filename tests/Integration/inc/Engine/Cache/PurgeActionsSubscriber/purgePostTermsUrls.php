@@ -35,12 +35,11 @@ class Test_GetRocketPostTermsUrls extends FilesystemTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldReturnExpectedUrls( $post_data, $terms, $expected ) {
-		$post_id = $this->factory->post->create( $post_data );
-		$post    = get_post( $post_id );
+		$post = $this->factory->post->create_and_get( $post_data );
 
-		$this->setTags( $post_id, $terms['post_tag'] );
-		$this->setCategories( $post_id, $terms['category'] );
-		$this->setCustomTerms( $post_id, $terms['custom'] );
+		$this->setTags( $post->ID, $terms['post_tag'] );
+		$this->setCategories( $post->ID, $terms['category'] );
+		$this->setCustomTerms( $post->ID, $terms['custom'] );
 
 		$this->generateEntriesShouldExistAfter( $expected );
 
