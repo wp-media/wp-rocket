@@ -328,11 +328,11 @@ class LazyloadSubscriber implements Subscriber_Interface {
 		) {
 			return false;
 		}
-
-		// This filter is documented in inc/classes/Buffer/class-tests.php.
+		
 		if (
 			is_search()
 			&&
+			// This filter is documented in inc/classes/Buffer/class-tests.php.
 			! (bool) apply_filters( 'rocket_cache_search', false )
 		) {
 			return false;
