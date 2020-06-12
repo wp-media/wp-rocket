@@ -145,3 +145,21 @@ function rocket_wpengine_add_footprint( $buffer ) {
 	return $buffer . $footprint;
 }
 add_filter( 'rocket_buffer', 'rocket_wpengine_add_footprint', 50 );
+
+
+/**
+ * Disable dealing with htaccess if php version is 7.4 or above.
+ *
+ * @since 3.6.1
+ *
+ * @param bool $disable True to disable, false otherwise.
+ * @return bool
+ */
+function rocket_wpengine_disable_htaccess( $disable = false ) {
+	// PHP version should be 7.4 or above.
+	if ( version_compare( PHP_VERSION, '7.4' ) >= 0 ) {
+		return true;
+	}
+	return $disable;
+}
+add_filter( 'rocket_disable_htaccess', 'rocket_wpengine_disable_htaccess' );
