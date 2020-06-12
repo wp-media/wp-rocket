@@ -50,7 +50,10 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'admin_init'    => 'register_terms_row_action',
+			'admin_init'    => [
+				[ 'register_terms_row_action' ],
+				[ 'maybe_set_wp_cache' ],
+			], 
 			'admin_notices' => [
 				[ 'notice_advanced_cache_permissions' ],
 				[ 'notice_advanced_cache_content_not_ours' ],
@@ -135,6 +138,17 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 */
 	public function notice_advanced_cache_content_not_ours() {
 		$this->advanced_cache->notice_content_not_ours();
+	}
+
+	/**
+	 * Set WP_CACHE constant to true if needed
+	 *
+	 * @since 3.6.1
+	 *
+	 * @return void
+	 */
+	public function maybe_set_wp_cache() {
+		$this->wp_cache->maybe_set_wp_cache();
 	}
 
 	/**

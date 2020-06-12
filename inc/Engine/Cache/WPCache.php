@@ -20,6 +20,28 @@ class WPCache {
 	}
 
 	/**
+	 * Set WP_CACHE constant to true if needed
+	 *
+	 * @since 3.6.1
+	 *
+	 * @return void
+	 */
+	public function maybe_set_wp_cache() {
+		if (
+			rocket_get_constant( 'DOING_AJAX' )
+			|| rocket_get_constant( 'DOING_AUTOSAVE' )
+		) {
+			return;
+		}
+
+		if ( rocket_get_constant( 'WP_CACHE' ) ) {
+			return;
+		}
+	
+		$this->set_wp_cache_define( true );
+	}
+
+	/**
 	 * Added or set the value of the WP_CACHE constant
 	 *
 	 * @since 3.6.1
@@ -27,7 +49,7 @@ class WPCache {
 	 * @param bool $turn_it_on The value of WP_CACHE constant.
 	 * @return void
 	 */
-	public function set_wp_cache_define( $turn_it_on ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+	public function set_wp_cache_define( $turn_it_on ) {
 		// If WP_CACHE is already define, return to get a coffee.
 		if ( ! rocket_valid_key() || ( $turn_it_on && defined( 'WP_CACHE' ) && WP_CACHE ) ) {
 			return;
