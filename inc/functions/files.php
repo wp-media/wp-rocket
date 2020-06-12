@@ -1273,51 +1273,6 @@ function rocket_get_filesystem_perms( $type ) {
 }
 
 /**
- * Try to find the correct wp-config.php file, support one level up in file tree.
- *
- * @since 2.1
- *
- * @return string|bool The path of wp-config.php file or false if not found.
- */
-function rocket_find_wpconfig_path() {
-	/**
-	 * Filter the wp-config's filename.
-	 *
-	 * @since 2.11
-	 *
-	 * @param string $filename The WP Config filename, without the extension.
-	 */
-	$config_file_name = apply_filters( 'rocket_wp_config_name', 'wp-config' );
-	$abspath          = rocket_get_constant( 'ABSPATH' );
-	$config_file      = "{$abspath}{$config_file_name}.php";
-	$filesystem       = rocket_direct_filesystem();
-
-	if (
-		$filesystem->exists( $config_file )
-		&&
-		$filesystem->is_writable( $config_file )
-	) {
-		return $config_file;
-	}
-
-	$abspath_parent  = dirname( $abspath ) . DIRECTORY_SEPARATOR;
-	$config_file_alt = "{$abspath_parent}{$config_file_name}.php";
-
-	if (
-		$filesystem->exists( $config_file_alt )
-		&&
-		$filesystem->is_writable( $config_file_alt )
-		&&
-		! $filesystem->exists( "{$abspath_parent}wp-settings.php" )
-	) {
-		return $config_file_alt;
-	}
-
-	// No writable file found.
-	return false;
-}
-
-/**
  * Get the recursive iterator for the cache path.
  *
  * @since  3.5.4

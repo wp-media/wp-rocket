@@ -382,3 +382,50 @@ function rocket_warning_wp_config_permissions() {
 		);
 	}
 }
+
+/**
+ * Try to find the correct wp-config.php file, support one level up in file tree.
+ *
+ * @since 3.6 deprecated
+ * @since 2.1
+ *
+ * @return string|bool The path of wp-config.php file or false if not found.
+ */
+function rocket_find_wpconfig_path() {
+	_deprecated_function( __FUNCTION__ . '()', '3.6.1', '\WP_Rocket\Engine\Cache\WPCache::find_wpconfig_path()' );
+	/**
+	 * Filter the wp-config's filename.
+	 *
+	 * @since 2.11
+	 *
+	 * @param string $filename The WP Config filename, without the extension.
+	 */
+	$config_file_name = apply_filters( 'rocket_wp_config_name', 'wp-config' );
+	$abspath          = rocket_get_constant( 'ABSPATH' );
+	$config_file      = "{$abspath}{$config_file_name}.php";
+	$filesystem       = rocket_direct_filesystem();
+
+	if (
+		$filesystem->exists( $config_file )
+		&&
+		$filesystem->is_writable( $config_file )
+	) {
+		return $config_file;
+	}
+
+	$abspath_parent  = dirname( $abspath ) . DIRECTORY_SEPARATOR;
+	$config_file_alt = "{$abspath_parent}{$config_file_name}.php";
+
+	if (
+		$filesystem->exists( $config_file_alt )
+		&&
+		$filesystem->is_writable( $config_file_alt )
+		&&
+		! $filesystem->exists( "{$abspath_parent}wp-settings.php" )
+	) {
+		return $config_file_alt;
+	}
+
+	// No writable file found.
+	return false;
+}
