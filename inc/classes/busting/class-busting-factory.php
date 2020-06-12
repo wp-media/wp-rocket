@@ -1,6 +1,8 @@
 <?php
 namespace WP_Rocket\Busting;
 
+use WP_Rocket\Addon\GoogleTracking\GoogleTagManager;
+
 /**
  * Busting classes Factory
  *
@@ -48,7 +50,7 @@ class Busting_Factory {
 			case 'ga':
 				return new Google_Analytics( $this->busting_path, $this->busting_url );
 			case 'gtm':
-				return new Google_Tag_Manager( $this->busting_path, $this->busting_url, new Google_Analytics( $this->busting_path, $this->busting_url ) );
+				return new GoogleTagManager( $this->busting_path, $this->busting_url, new Google_Analytics( $this->busting_path, $this->busting_url ) );
 		}
 	}
 }
