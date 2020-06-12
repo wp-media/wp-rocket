@@ -2,6 +2,7 @@
 
 use League\Container\Container;
 use WP_Rocket\Engine\Cache\AdvancedCache;
+use WP_Rocket\Engine\Cache\WPCache;
 use WP_Rocket\Plugin;
 use WP_Rocket\Subscriber\Plugin\Capabilities_Subscriber;
 
@@ -115,15 +116,18 @@ add_action( 'plugins_loaded', 'rocket_init' );
 function rocket_deactivation() {
 	if ( ! isset( $_GET['rocket_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_GET['rocket_nonce'] ), 'force_deactivation' ) ) {
 		global $is_apache;
-		$causes = [];
+		$causes    = [];
+		$filesystem = rocket_direct_filesystem();
 
 		// .htaccess problem.
-		if ( $is_apache && ! rocket_direct_filesystem()->is_writable( get_home_path() . '.htaccess' ) ) {
+		if ( $is_apache && ! $filesystem->is_writable( get_home_path() . '.htaccess' ) ) {
 			$causes[] = 'htaccess';
 		}
 
+		$wp_cache = new WPCache( $filesystem );
+
 		// wp-config problem.
-		if ( ! rocket_direct_filesystem()->is_writable( rocket_find_wpconfig_path() ) ) {
+		if ( ! $wp_cache->find_wpconfig_path() ) {
 			$causes[] = 'wpconfig';
 		}
 
