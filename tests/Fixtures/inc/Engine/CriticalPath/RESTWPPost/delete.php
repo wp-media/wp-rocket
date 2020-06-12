@@ -2,12 +2,54 @@
 
 
 return [
-	'vfs_dir'   => 'wp-content/cache/critical-css/',
+	'vfs_dir'   => 'wp-content/',
 
 	// Virtual filesystem structure.
 	'structure' => [
 		'wp-content' => [
 			'cache' => [
+				// WP Rocket's cache.
+				'wp-rocket'    => [
+					'index.html'                 => '',
+					// domain cache.
+					'example.org'                => [
+						'.'                      => '',
+						'..'                     => '',
+						'index.html'             => '',
+						'index.html_gzip'        => '',
+
+						'post-title-1'    => [
+							'.'                      => '',
+							'..'                     => '',
+							'index.html'             => '',
+							'index.html_gzip'        => '',
+						],
+						'post-title-2'    => [
+							'.'                      => '',
+							'..'                     => '',
+							'index.html'             => '',
+							'index.html_gzip'        => '',
+						],
+						'post-title-3'    => [
+							'.'                      => '',
+							'..'                     => '',
+							'index.html'             => '',
+							'index.html_gzip'        => '',
+						],
+						'post-title-10'    => [
+							'.'                      => '',
+							'..'                     => '',
+							'index.html'             => '',
+							'index.html_gzip'        => '',
+						],
+						'post-title-20'    => [
+							'.'                      => '',
+							'..'                     => '',
+							'index.html'             => '',
+							'index.html_gzip'        => '',
+						],
+					],
+				],
 				'critical-css' => [
 					'1' => [
 						'.'              => '',
@@ -57,6 +99,7 @@ return [
 				'post_data'                  => [
 					'post_id'   => 1,
 					'post_type' => 'post',
+					'post_title'  => 'post-title-1',
 				],
 				'cpcss_exists_after'         => true,
 				'mobile_cpcss_exists_after'  => true,
@@ -77,6 +120,7 @@ return [
 					'post_id'     => 2,
 					'post_type'   => 'post',
 					'post_status' => null,
+					'post_title'  => 'post-title-2',
 				],
 				'cpcss_exists_after'         => false,
 				'mobile_cpcss_exists_after'  => false,
@@ -98,6 +142,7 @@ return [
 					'import_id'   => 3,
 					'post_type'   => 'post',
 					'post_status' => 'publish',
+					'post_title'  => 'post-title-3',
 				],
 				'cpcss_exists_after'  => false,
 				'mobile_cpcss_exists_after' => false,
@@ -123,6 +168,7 @@ return [
 					'import_id'   => 1,
 					'post_type'   => 'post',
 					'post_status' => 'publish',
+					'post_title'  => 'post-title-1',
 				],
 				'cpcss_exists_after'  => false,
 				'mobile_cpcss_exists_after' => true,
@@ -148,6 +194,7 @@ return [
 					'import_id'   => 10,
 					'post_type'   => 'post',
 					'post_status' => 'publish',
+					'post_title'  => 'post-title-10',
 				],
 				'cpcss_exists_after'  => false,
 				'mobile_cpcss_exists_after' => false,
@@ -173,6 +220,7 @@ return [
 					'import_id'   => 20,
 					'post_type'   => 'page',
 					'post_status' => 'publish',
+					'post_title'  => 'post-title-20',
 				],
 				'cpcss_exists_after'  => false,
 				'mobile_cpcss_exists_after' => false,
@@ -199,6 +247,7 @@ return [
 					'import_id'   => 20,
 					'post_type'   => 'page',
 					'post_status' => 'publish',
+					'post_title'  => 'post-title-20',
 				],
 				'cpcss_exists_after'         => false,
 				'mobile_cpcss_exists_after' => false,
@@ -225,6 +274,7 @@ return [
 					'import_id'   => 1,
 					'post_type'   => 'post',
 					'post_status' => 'publish',
+					'post_title'  => 'post-title-1',
 				],
 				'cpcss_exists_after'         => false,
 				'mobile_cpcss_exists_after'  => false,
