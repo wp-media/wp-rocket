@@ -3,8 +3,18 @@
 namespace WP_Rocket\Engine\Cache;
 
 class WPCache {
+	/**
+	 * Filesystem instance.
+	 *
+	 * @var WP_Filesystem_Direct
+	 */
 	private $filesystem;
 
+	/**
+	 * Instantiate the class
+	 *
+	 * @param WP_Filesystem_Direct $filesystem Filesystem instance.
+	 */
 	public function __construct( $filesystem ) {
 		$this->filesystem = $filesystem;
 	}
@@ -12,7 +22,7 @@ class WPCache {
 	/**
 	 * Added or set the value of the WP_CACHE constant
 	 *
-	 * @since 3.6
+	 * @since 3.6.1
 	 *
 	 * @param bool $turn_it_on The value of WP_CACHE constant.
 	 * @return void
@@ -105,11 +115,7 @@ class WPCache {
 		$abspath          = rocket_get_constant( 'ABSPATH' );
 		$config_file      = "{$abspath}{$config_file_name}.php";
 
-		if (
-			$this->filesystem->exists( $config_file )
-			&&
-			$this->filesystem->is_writable( $config_file )
-		) {
+		if ( $this->filesystem->is_writable( $config_file ) ) {
 			return $config_file;
 		}
 
@@ -134,11 +140,11 @@ class WPCache {
 	 * This warning is displayed when the wp-config.php file isn't writable
 	 *
 	 * @since 3.6.1
+	 *
+	 * @return void
 	 */
 	public function notice_wp_config_permissions() {
 		global $pagenow;
-
-		$config_file = $this->find_wpconfig_path();
 
 		if (
 			'plugins.php' === $pagenow
@@ -148,16 +154,18 @@ class WPCache {
 			return;
 		}
 
-		if ( 
-			! current_user_can( 'rocket_manage_options' )
-			||
-			! rocket_valid_key()
-		) {
+		if ( ! $this->is_user_allowed() ) {
 			return;
 		}
 
+		$config_file = $this->find_wpconfig_path();
+
 		if (
-			$this->filesystem->is_writable( $config_file )
+			(
+				false !== $config_file
+				&&
+				$this->filesystem->is_writable( $config_file )
+			)
 			||
 			rocket_get_constant( 'WP_CACHE' )
 		) {
@@ -186,6 +194,24 @@ class WPCache {
 		);
 	}
 
+	/**
+	 * Checks if current user can see the notice
+	 *
+	 * @since 3.6.1
+	 *
+	 * @return bool
+	 */
+	private function is_user_allowed() {
+		return current_user_can( 'rocket_manage_options' ) && rocket_valid_key();
+	}
+
+	/**
+	 * Gets content to add to the wp-config.php file
+	 *
+	 * @since 3.6.1
+	 *
+	 * @return string
+	 */
 	private function get_wp_config_content() {
 		$plugin_name = rocket_get_constant( 'WP_ROCKET_PLUGIN_NAME' );
 	
