@@ -97,7 +97,7 @@ class GoogleTagManager extends Abstract_Busting {
 			return $html;
 		}
 
-		// replace relative protocol // with full https://
+		// replace relative protocol // with full https://.
 		$script = preg_replace( '/^\/\//', 'https://', $script );
 
 		Logger::info(
