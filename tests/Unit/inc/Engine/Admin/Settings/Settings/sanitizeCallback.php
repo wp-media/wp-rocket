@@ -101,6 +101,33 @@ class Test_SanitizeCallback extends TestCase {
 		);
 	}
 
+	/**
+	 * @dataProvider addExcludeCSSProvider
+	 */
+	public function testShouldSanitizeExcludeCSS( $original, $sanitized ) {
+		Functions\when( 'wp_parse_url' )->alias( function( $url, $component ) {
+			return parse_url( $url, $component );
+		} );
+
+		Functions\when( 'content_url' )->justReturn( 'http://example.org/wp-content/' );
+		Functions\when( 'get_rocket_i18n_uri' )->justReturn( [ 'http://example.org/' ] );
+
+		Functions\when( 'sanitize_text_field' )->returnArg();
+		Functions\when( 'rocket_valid_key' )->justReturn( true );
+
+		$sanitize_callback = $this->settings->sanitize_callback( $original );
+
+		// this works
+		$this->assertSame(
+			array_values( $sanitized['exclude_css'] ),
+			array_values( $sanitize_callback['exclude_css'] )
+		);
+	}
+
+	public function addExcludeCSSProvider() {
+		return $this->getTestData( __DIR__, 'exclude-css' );
+	}
+
 	public function addDNSPrefetchProvider() {
 		return $this->getTestData( __DIR__, 'dns-prefetch' );
 	}

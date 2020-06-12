@@ -48,6 +48,21 @@ class Test_SanitizeCallback extends AdminTestCase {
 		);
 	}
 
+	/**
+	 * @dataProvider addExcludeCSSProvider
+	 */
+	public function testShouldSanitizeExcludeCSS( $original, $sanitized ) {
+		$actual = apply_filters( 'sanitize_option_wp_rocket_settings', $original );
+		$this->assertSame(
+			array_values( $sanitized['exclude_css'] ),
+			array_values( $actual['exclude_css'] )
+		);
+	}
+
+	public function addExcludeCSSProvider() {
+		return $this->getTestData( __DIR__, 'exclude-css' );
+	}
+
 	public function addDNSPrefetchProvider() {
 		return $this->getTestData( __DIR__, 'dns-prefetch' );
 	}
