@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Integration\RESTVfsTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\RESTWPPost::generate
- * @group  CriticalPath
+ * @group  CriticalPathX
  * @group  vfs
  */
 class Test_Generate extends RESTVfsTestCase {
@@ -29,6 +29,10 @@ class Test_Generate extends RESTVfsTestCase {
 	}
 
 	protected function doTest( $site_id, $config, $expected ) {
+		$orig_post_id = isset( $config['post_data']['ID'] )
+			? $config['post_data']['ID']
+			: 0;
+
 		if ( isset( $config['post_data'] ) ) {
 			$config['post_data']['ID'] = self::$post_id;
 
@@ -37,9 +41,6 @@ class Test_Generate extends RESTVfsTestCase {
 			$post_id = 0;
 		}
 
-		$orig_post_id = isset( $config['post_data']['ID'] )
-			? $config['post_data']['ID']
-			: 0;
 		$post_type = isset( $config['post_data']['post_type'] )
 			? $config['post_data']['post_type']
 			: 'post';
@@ -116,9 +117,8 @@ class Test_Generate extends RESTVfsTestCase {
 			$body_param['timeout'] = true;
 		}
 
-		if ( ! empty( $expected['message'] ) ) {
-			$expected['message'] = str_replace( $orig_post_id, $post_id, $expected['message'] );
-		}
+		$expected['message'] = str_replace( $orig_post_id, $post_id, $expected['message'] );
+
 		$this->assertSame( $expected, $this->doRestRequest( 'POST', "/wp-rocket/v1/cpcss/post/{$post_id}", $body_param ) );
 		$this->assertSame( $config['cpcss_exists_after'], $this->filesystem->exists( $file ) );
 	}
