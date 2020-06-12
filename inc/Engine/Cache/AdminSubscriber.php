@@ -26,12 +26,21 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	private $advanced_cache;
 
 	/**
+	 * WPCache instance
+	 *
+	 * @var WPCache
+	 */
+	private $wp_cache;
+
+	/**
 	 * Instantiate the class
 	 *
 	 * @param AdvancedCache $advanced_cache AdvancedCache instance.
+	 * @param WPCache       $wp_cache       WPCache instance.
 	 */
-	public function __construct( AdvancedCache $advanced_cache ) {
+	public function __construct( AdvancedCache $advanced_cache, WPCache $wp_cache ) {
 		$this->advanced_cache = $advanced_cache;
+		$this->wp_cache       = $wp_cache;
 	}
 
 	/**
@@ -45,6 +54,7 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 			'admin_notices' => [
 				[ 'notice_advanced_cache_permissions' ],
 				[ 'notice_advanced_cache_content_not_ours' ],
+				[ 'notice_wp_config_permissions' ],
 			],
 		];
 	}
@@ -125,5 +135,16 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 */
 	public function notice_advanced_cache_content_not_ours() {
 		$this->advanced_cache->notice_content_not_ours();
+	}
+
+	/**
+	 * Displays the notice for wp-config.php permissions
+	 *
+	 * @since 3.6.1
+	 *
+	 * @return void
+	 */
+	public function notice_wp_config_permissions() {
+		$this->wp_cache->notice_wp_config_permissions();
 	}
 }
