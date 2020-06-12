@@ -38,7 +38,8 @@ class WPCache {
 		}
 
 		// Get path of the config file.
-		$config_file_path = rocket_find_wpconfig_path();
+		$config_file_path = $this->find_wpconfig_path();
+
 		if ( ! $config_file_path ) {
 			return;
 		}
