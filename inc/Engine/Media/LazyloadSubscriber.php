@@ -309,22 +309,31 @@ class LazyloadSubscriber implements Subscriber_Interface {
 	 * @return bool
 	 */
 	private function should_lazyload() {
-		// This filter is documented in inc/classes/Buffer/class-tests.php.
-		$rocket_cache_search = apply_filters( 'rocket_cache_search', false );
+		if (
+			rocket_get_constant( 'REST_REQUEST', false )
+			||
+			rocket_get_constant( 'DONOTLAZYLOAD', false )
+			||
+			rocket_get_constant( 'DONOTROCKETOPTIMIZE', false )
+		) {
+			return false;
+		}
+
 		if (
 			is_admin()
 			||
 			is_feed()
 			||
 			is_preview()
-			||
-			( is_search() && ! $rocket_cache_search )
-			||
-			rocket_get_constant( 'REST_REQUEST', false )
-			||
-			rocket_get_constant( 'DONOTLAZYLOAD', false )
-			||
-			rocket_get_constant( 'DONOTROCKETOPTIMIZE', false )
+		) {
+			return false;
+		}
+
+		// This filter is documented in inc/classes/Buffer/class-tests.php.
+		if (
+			is_search()
+			&&
+			! (bool) apply_filters( 'rocket_cache_search', false )
 		) {
 			return false;
 		}
