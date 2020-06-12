@@ -4,6 +4,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\Settings\Settings;
 
 use Mockery;
 use Brain\Monkey\Functions;
+use WP_Rocket\Tests\StubTrait;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Settings\Settings;
 use WPMedia\PHPUnit\Unit\TestCase;
@@ -11,9 +12,11 @@ use WPMedia\PHPUnit\Unit\TestCase;
 /**
  * @covers \WP_Rocket\Engine\Admin\Settings\Settings::sanitize_callback
  * @group  Admin
- * @group  Settings
+ * @group  SettingsX
  */
 class Test_SanitizeCallback extends TestCase {
+	use StubTrait;
+
 	private $options;
 	private $settings;
 
@@ -67,9 +70,7 @@ class Test_SanitizeCallback extends TestCase {
 
 			return filter_var( $url, FILTER_VALIDATE_URL );
 		} );
-		Functions\when( 'wp_parse_url' )->alias( function( $url, $component = -1 ) {
-			return parse_url( $url, $component );
-		} );
+		$this->stubWpParseUrl();
 		Functions\when( 'rocket_valid_key' )->justReturn( true );
 
 		$output = $this->settings->sanitize_callback( $input );
@@ -86,9 +87,7 @@ class Test_SanitizeCallback extends TestCase {
 	 */
 	public function testShouldSanitizeFontPreloadEntries( $input, $expected ) {
 		Functions\when( 'rocket_valid_key' )->justReturn( true );
-		Functions\when( 'wp_parse_url' )->alias( function( $url, $component = -1 ) {
-			return parse_url( $url, $component );
-		} );
+		$this->stubWpParseUrl();
 		Functions\expect( 'home_url' )
 			->andReturn( 'http://example.org' );
 
@@ -105,9 +104,7 @@ class Test_SanitizeCallback extends TestCase {
 	 * @dataProvider addExcludeCSSProvider
 	 */
 	public function testShouldSanitizeExcludeCSS( $original, $sanitized ) {
-		Functions\when( 'wp_parse_url' )->alias( function( $url, $component ) {
-			return parse_url( $url, $component );
-		} );
+		$this->stubWpParseUrl();
 
 		Functions\when( 'content_url' )->justReturn( 'http://example.org/wp-content/' );
 		Functions\when( 'get_rocket_i18n_uri' )->justReturn( [ 'http://example.org/' ] );

@@ -99,7 +99,7 @@ function rocket_validate_js( $file ) {
 		return $file;
 	}
 
-	return sanitize_text_field( \rocket_remove_url_protocol( strtok( $file, '?' ) ) );
+	return sanitize_text_field( rocket_remove_url_protocol( strtok( $file, '?' ) ) );
 }
 
 /**
@@ -112,13 +112,10 @@ function rocket_validate_js( $file ) {
  */
 function rocket_validate_css( $file ) {
 	if ( rocket_is_internal_file( $file ) ) {
-		$file = trim( $file );
-		$file = rocket_clean_exclude_file( $file );
-
-		return $file;
+		return rocket_clean_exclude_file( trim( $file ) );
 	}
 
-	return sanitize_text_field( \rocket_remove_url_protocol( strtok( $file, '?' ) ) );
+	return sanitize_text_field( rocket_remove_url_protocol( strtok( $file, '?' ) ) );
 }
 
 /**
