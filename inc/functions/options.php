@@ -232,7 +232,7 @@ function get_rocket_cache_reject_uri() { // phpcs:ignore WordPress.NamingConvent
 	}
 
 	// Exclude feeds.
-	$uris[] = '/(.+/)?' . $GLOBALS['wp_rewrite']->feed_base . '/?';
+	$uris[] = '/(.+/)?' . $GLOBALS['wp_rewrite']->feed_base . '/?.+/?';
 
 	// Exlude embedded URLs.
 	$uris[] = '/(?:.+/)?embed/';
