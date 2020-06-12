@@ -3,7 +3,6 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\Cache\WPCache;
 
 use Brain\Monkey\Functions;
-use Mockery;
 use WP_Rocket\Engine\Cache\WPCache;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
