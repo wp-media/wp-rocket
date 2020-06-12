@@ -429,3 +429,17 @@ function rocket_find_wpconfig_path() {
 	// No writable file found.
 	return false;
 }
+
+/**
+ * Define WP_CACHE to true if it's not defined yet.
+ *
+ * @since 3.6.1 deprecated
+ * @since 2.6
+ */
+function rocket_maybe_set_wp_cache_define() {
+	_deprecated_function( __FUNCTION__ . '()', '3.6.1', '\WP_Rocket\Engine\Cache\WPCache::maybe_set_wp_cache()' );
+
+	if ( defined( 'WP_CACHE' ) && ! WP_CACHE ) {
+		set_rocket_wp_cache_define( true );
+	}
+}
