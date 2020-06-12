@@ -69,7 +69,7 @@ class Test_PurgePostTermsUrls extends FilesystemTestCase {
 				Functions\expect( 'get_term_link' )
 					->once()
 					->with( $term->slug, $taxonomy->name )
-					->andReturn( $expected[ $index ] );
+					->andReturn( 'https://example.org/' . $term->slug );
 				$index++;
 				Functions\when( 'is_wp_error' )->justReturn( false );
 
@@ -92,7 +92,7 @@ class Test_PurgePostTermsUrls extends FilesystemTestCase {
 					Functions\expect( 'get_term_link' )
 						->once()
 						->with( $term->parent , $taxonomy->name )
-						->andReturn( $expected[ $index ] );
+						->andReturn( 'https://example.org/' . $term->parent );
 					$index++;
 				} else {
 					Functions\expect( 'is_taxonomy_hierarchical' )
@@ -109,6 +109,8 @@ class Test_PurgePostTermsUrls extends FilesystemTestCase {
 		} );
 
 		$this->purge->purge_post_terms_urls( $post );
+
+		$this->checkEntriesDeleted( $expected );
 	}
 
 	private function getTaxonomies( array $config ) {

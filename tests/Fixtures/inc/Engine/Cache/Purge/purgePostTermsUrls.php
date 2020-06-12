@@ -7,13 +7,30 @@ return [
 			'cache' => [
 				'wp-rocket' => [
 					'example.org'                => [
-						'2020' => [
-
+						'lorem-ipsum' => [
+							'index.html'      => '',
 						],
-						'2019' => [
-
+						'sit-amet' => [
+							'index.html'      => '',
 						],
-
+						'semper-viverra' => [
+							'index.html'      => '',
+						],
+						'nec-ullamcorper' => [
+							'index.html'      => '',
+						],
+						'tag1' => [
+							'index.html'      => '',
+						],
+						'tag2' => [
+							'index.html'      => '',
+						],
+						'cat1' => [
+							'index.html'      => '',
+						],
+						'cat2' => [
+							'index.html'      => '',
+						],
 					],
 				],
 			],
@@ -31,9 +48,8 @@ return [
 				'custom'   => [],
 			],
 			'expected'  => [
-				'http://example.org/?cat=1',
-				'http://example.org/?tag=tag1',
-				'http://example.org/?tag=tag2',
+				'vfs://wp-content/cache/wp-rocket/example.org/tag1/index.html' => null,
+				'vfs://wp-content/cache/wp-rocket/example.org/tag2/index.html' => null,
 			],
 		],
 
@@ -50,9 +66,8 @@ return [
 				'custom'   => [],
 			],
 			'expected'  => [
-				'http://example.org/?cat=cat1', // cat1 gets replaced by its ID.
-				'http://example.org/?cat=cat2', // cat2 gets replaced by its ID.
-				'http://example.org/?tag=tag1',
+				'vfs://wp-content/cache/wp-rocket/example.org/cat1/index.html' => null,
+				'vfs://wp-content/cache/wp-rocket/example.org/cat2/index.html' => null,
 			],
 		],
 		[
@@ -75,8 +90,8 @@ return [
 				],
 			],
 			'expected'  => [
-				'http://example.org/?cat=1',
-				'http://example.org/tax1/tax1term1/',
+				'vfs://wp-content/cache/wp-rocket/example.org/tax1/index.html'           => null,
+				'vfs://wp-content/cache/wp-rocket/example.org/tax1/tax1term1/index.html' => null,
 			],
 		],
 
@@ -103,18 +118,18 @@ return [
 				],
 			],
 			'expected'  => [
-				'http://example.org/?cat=1',
-				'http://example.org/?tag=producttag',
+				'vfs://wp-content/cache/wp-rocket/example.org/producttag/index.html' => null,
 			],
 		],
 		// Non-public taxonomy.
 		[
 			'post_data' => [
-				'post_title'   => 'Nec ullamcorper',
+				'post_title'   => 'nec-ullamcorper',
 				'post_content' => 'Nec ullamcorper sit amet risus nullam eget.',
 			],
 			'terms'     => [
-				'post_tag' => [],
+				'post_tag' => [
+				],
 				'category' => [],
 				'custom'   => [
 					'tax'   => [
@@ -130,9 +145,7 @@ return [
 					],
 				],
 			],
-			'expected'  => [
-				'http://example.org/?cat=1',
-			],
+			'expected'  => [],
 		],
 
 		[
@@ -146,8 +159,8 @@ return [
 			],
 
 			'expected'  => [
-				'http://example.org/?cat=cat1', // cat1 gets replaced by its ID.
-				'http://example.org/?cat=cat2', // cat2 gets replaced by its ID.
+				'vfs://wp-content/cache/wp-rocket/example.org/cat1/index.html' => null,
+				'vfs://wp-content/cache/wp-rocket/example.org/cat2/index.html' => null,
 			],
 		],
 		[
@@ -163,9 +176,9 @@ return [
 			],
 
 			'expected'  => [
-				'http://example.org/?cat=cat1', // cat1 gets replaced by its ID.
-				'http://example.org/?cat=cat2', // cat2 gets replaced by its ID.
-				'http://example.org/?tag=tag1',
+				'vfs://wp-content/cache/wp-rocket/example.org/cat1/index.html' => null,
+				'vfs://wp-content/cache/wp-rocket/example.org/cat2/index.html' => null,
+				'vfs://wp-content/cache/wp-rocket/example.org/tag1/index.html' => null,
 			],
 		],
 	],
