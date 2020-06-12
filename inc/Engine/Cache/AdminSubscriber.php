@@ -49,16 +49,19 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
+		$slug = rocket_get_constant( 'WP_ROCKET_SLUG' );
+
 		return [
-			'admin_init'    => [
+			'admin_init'            => [
 				[ 'register_terms_row_action' ],
 				[ 'maybe_set_wp_cache' ],
 			], 
-			'admin_notices' => [
+			'admin_notices'         => [
 				[ 'notice_advanced_cache_permissions' ],
 				[ 'notice_advanced_cache_content_not_ours' ],
 				[ 'notice_wp_config_permissions' ],
 			],
+			"update_option_{$slug}" => [ 'maybe_set_wp_cache', 12 ],
 		];
 	}
 

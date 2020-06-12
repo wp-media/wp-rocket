@@ -29,7 +29,8 @@ class WPCache {
 	public function maybe_set_wp_cache() {
 		if (
 			rocket_get_constant( 'DOING_AJAX' )
-			|| rocket_get_constant( 'DOING_AUTOSAVE' )
+			||
+			rocket_get_constant( 'DOING_AUTOSAVE' )
 		) {
 			return;
 		}
