@@ -105,7 +105,7 @@ abstract class ActionScheduler_Abstract_ListTable extends WP_List_Table {
 	/**
 	 * Makes translation easier, it basically just wraps
 	 * `_x` with some default (the package name).
-	 * 
+	 *
 	 * @deprecated 3.0.0
 	 */
 	protected function translate( $text, $context = '' ) {
@@ -625,7 +625,7 @@ abstract class ActionScheduler_Abstract_ListTable extends WP_List_Table {
 	protected function display_table() {
 		echo '<form id="' . esc_attr( $this->_args['plural'] ) . '-filter" method="get">';
 		foreach ( $_GET as $key => $value ) {
-			if ( '_' === $key[0] || 'paged' === $key ) {
+			if ( '_' === $key[0] || 'paged' === $key || 'ID' === $key ) {
 				continue;
 			}
 			echo '<input type="hidden" name="' . esc_attr( $key ) . '" value="' . esc_attr( $value ) . '" />';
