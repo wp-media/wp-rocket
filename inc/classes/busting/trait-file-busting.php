@@ -85,7 +85,7 @@ trait File_Busting {
 	 * @return string|bool Version of the file. False if the file does not exist.
 	 */
 	protected function get_busting_version() {
-		if ( isset( $this->file_version ) && empty( $this->file_version ) ) {
+		if ( ! empty( $this->file_version ) ) {
 			return $this->file_version;
 		}
 
