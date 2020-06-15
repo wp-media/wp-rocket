@@ -644,7 +644,8 @@ function get_rocket_htaccess_web_fonts_access() { // phpcs:ignore WordPress.Nami
 /**
  * Rules to serve gzip compressed CSS & JS files if they exists and client accepts gzip
  *
- * @since 3.5
+ * @since 3.6.0.2 Update rules used to prevent content encoding issue
+ * @since 3.6
  * @author Remy Perona
  *
  * @return string
@@ -652,24 +653,35 @@ function get_rocket_htaccess_web_fonts_access() { // phpcs:ignore WordPress.Nami
 function rocket_get_compressed_assets_rules() {
 	$rules = <<<HTACCESS
 <IfModule mod_headers.c>
-	# Serve gzip compressed CSS and JS files if they exist
-	# and the client accepts gzip.
-	RewriteCond "%{HTTP:Accept-encoding}" "gzip"
-	RewriteCond "%{REQUEST_FILENAME}\.gz" -s
-	RewriteRule "^(.*)\.(css|js)"         "$1\.$2\.gz" [QSA]
+    RewriteCond %{HTTP:Accept-Encoding} gzip
+    RewriteCond %{REQUEST_FILENAME}\.gz -f
+    RewriteRule \.(css|js)$ %{REQUEST_URI}.gz [L]
 
-	# Serve correct content types, and prevent mod_deflate double gzip.
-	RewriteRule "\.css\.gz$" "-" [T=text/css,E=no-gzip:1]
-	RewriteRule "\.js\.gz$"  "-" [T=text/javascript,E=no-gzip:1]
+    # Prevent mod_deflate double gzip
+	RewriteRule \.gz$ - [E=no-gzip:1]
 
-	<FilesMatch "(\.js\.gz|\.css\.gz)$">
-		# Serve correct encoding type.
-		Header append Content-Encoding gzip
+	<FilesMatch "\.gz$">
 
-		# Force proxies to cache gzipped &
-		# non-gzipped css/js files separately.
-		Header append Vary Accept-Encoding
+        # Serve correct content types
+        <IfModule mod_mime.c>
+            # (1)
+            RemoveType gz
+
+            # Serve correct content types
+            AddType text/css              css.gz
+            AddType text/javascript       js.gz
+
+            # Serve correct content charset
+            AddCharset utf-8 .css.gz \
+                             .js.gz
+		</IfModule>
+
+        # Force proxies to cache gzipped and non-gzipped files separately
+        Header append Vary Accept-Encoding
 	</FilesMatch>
+
+    # Serve correct encoding type
+    AddEncoding gzip .gz
 </IfModule>
 
 HTACCESS;
