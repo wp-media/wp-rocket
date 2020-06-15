@@ -5,6 +5,7 @@ use WP_Rocket\Logger\Logger;
 use WP_Rocket\Busting\Abstract_Busting;
 use WP_Rocket\Busting\File_Busting;
 use WP_Rocket\Busting\Google_Analytics;
+use WP_Filesystem_Direct;
 
 /**
  * Manages the cache busting of the Google Tag Manager file
@@ -30,7 +31,7 @@ class GoogleTagManager extends Abstract_Busting {
 	 * @since  3.2.4
 	 * @access protected
 	 */
-	protected $filename = 'gtm-%s.js';
+	protected $file_name_pattern = 'gtm-%s.js';
 
 	/**
 	 * Current file version (local): a md5 hash of the file contents.
@@ -65,16 +66,20 @@ class GoogleTagManager extends Abstract_Busting {
 	 * @since  3.1
 	 * @access public
 	 *
-	 * @param string           $busting_path Path to the busting directory.
-	 * @param string           $busting_url  URL of the busting directory.
-	 * @param Google_Analytics $ga_busting   A Google_Analytics instance.
+	 * @param string               $busting_path Path to the busting directory.
+	 * @param string               $busting_url  URL of the busting directory.
+	 * @param Google_Analytics     $ga_busting   A Google_Analytics instance.
+	 * @param WP_Filesystem_Direct $filesystem   Instance of the filesystem handler.
 	 */
-	public function __construct( $busting_path, $busting_url, Google_Analytics $ga_busting ) {
+	public function __construct( $busting_path, $busting_url, Google_Analytics $ga_busting, $filesystem = null ) {
 		$blog_id            = get_current_blog_id();
 		$this->busting_path = $busting_path . $blog_id . '/';
 		$this->busting_url  = $busting_url . $blog_id . '/';
 		$this->ga_busting   = $ga_busting;
-		$this->filesystem   = \rocket_direct_filesystem();
+		if ( is_null( $filesystem ) ) {
+			$filesystem = rocket_direct_filesystem();
+		}
+		$this->filesystem = $filesystem;
 	}
 
 	/** ----------------------------------------------------------------------------------------- */
@@ -98,7 +103,7 @@ class GoogleTagManager extends Abstract_Busting {
 		}
 
 		// replace relative protocol // with full https://.
-		$script = preg_replace( '/^\/\//', 'https://', $script );
+		$gtm_url = preg_replace( '/^\/\//', 'https://', $script[2] );
 
 		Logger::info(
 			'GOOGLE TAG MANAGER CACHING PROCESS STARTED.',
@@ -108,7 +113,7 @@ class GoogleTagManager extends Abstract_Busting {
 			]
 		);
 
-		if ( ! $this->save( $script[2] ) ) {
+		if ( ! $this->save( $gtm_url ) ) {
 			return $html;
 		}
 

@@ -85,7 +85,7 @@ trait File_Busting {
 	 * @return string|bool Version of the file. False if the file does not exist.
 	 */
 	protected function get_busting_version() {
-		if ( isset( $this->file_version ) ) {
+		if ( isset( $this->file_version ) && empty( $this->file_version ) ) {
 			return $this->file_version;
 		}
 
@@ -108,12 +108,11 @@ trait File_Busting {
 	 *
 	 * @since  3.2.4
 	 * @access private
-	 * @author Grégory Viguier
 	 *
-	 * @return bool|bool A list of file names (as array keys) and versions (as array values). False on failure.
+	 * @return bool|array A list of file names (as array keys) and versions (as array values). False on failure.
 	 */
 	private function get_all_files() {
-		$dir_path = \rtrim( $this->busting_path, '\\/' );
+		$dir_path = rtrim( $this->busting_path, '\\/' );
 
 		if ( ! $this->filesystem->exists( $dir_path ) ) {
 			return [];
@@ -130,35 +129,19 @@ trait File_Busting {
 			return false;
 		}
 
-		$dir = $this->filesystem->dirlist( $dir_path );
+		$pattern = '/' . sprintf(
+			$this->escape_file_name( $this->file_name_pattern ),
+			'([a-f0-9]{32}|local)'
+		) . '/';
 
-		if ( false === $dir ) {
-			Logger::error(
-				'Could not get the directory contents.',
-				[
-					self::LOGGER_CONTEXT,
-					'path' => $dir_path,
-				]
-			);
-			return false;
-		}
+		$entries = rocket_get_dir_files_by_regex( $dir_path, $pattern );
 
-		if ( ! $dir ) {
-			return [];
-		}
+		$list = [];
+		foreach ( $entries as $entry ) {
+			$file_name = $entry->getFilename();
 
-		$list    = [];
-		$pattern = $this->escape_file_name( $this->filename );
-		$pattern = \sprintf( $pattern, '(?<version>(?:[a-f0-9]{32}|local))' );
-
-		foreach ( $dir as $entry ) {
-			if ( 'f' !== $entry['type'] ) {
-				continue;
-			}
-
-			if ( \preg_match( '/^' . $pattern . '$/', $entry['name'], $matches ) ) {
-				$list[ $entry['name'] ] = $matches['version'];
-			}
+			preg_match( $pattern, $file_name, $file_details_match );
+			$list[ $file_name ] = $file_details_match[1];
 		}
 
 		return $list;
@@ -169,7 +152,6 @@ trait File_Busting {
 	 *
 	 * @since  3.2.4
 	 * @access protected
-	 * @author Grégory Viguier
 	 *
 	 * @return string|bool URL of the file. False if the file does not exist.
 	 */
@@ -226,7 +208,7 @@ trait File_Busting {
 			return false;
 		}
 
-		return \sprintf( $this->filename, $version );
+		return sprintf( $this->file_name_pattern, $version );
 	}
 
 	/**
@@ -253,16 +235,12 @@ trait File_Busting {
 	 *
 	 * @since  3.2.4
 	 * @access private
-	 * @author Grégory Viguier
 	 *
-	 * @param  string $file_name The file name.
+	 * @param  string $file_name_pattern The file name.
 	 * @return string
 	 */
-	private function escape_file_name( $file_name ) {
-		$file_name = \explode( '%s', $file_name );
-		$file_name = \array_map( 'preg_quote', $file_name );
-
-		return \implode( '%s', $file_name );
+	private function escape_file_name( $file_name_pattern ) {
+		return preg_quote( $file_name_pattern, '/' );
 	}
 
 	/**
@@ -455,7 +433,7 @@ trait File_Busting {
 	 */
 	private function get_remote_contents( $url ) {
 		try {
-			$response = \wp_remote_get( $url );
+			$response = wp_remote_get( $url );
 		} catch ( \Exception $e ) {
 			Logger::error(
 				'Remote file could not be fetched.',

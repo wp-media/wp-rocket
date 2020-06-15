@@ -1318,6 +1318,32 @@ function rocket_find_wpconfig_path() {
 }
 
 /**
+ * Get Directory files matches regex.
+ *
+ * @since 3.6.1
+ *
+ * @param string $dir   Directory to search for files inside it.
+ * @param string $regex Regular expression for files need to be searched for.
+ * @return array|RegexIterator List of files matches this regular expression.
+ */
+function rocket_get_dir_files_by_regex( $dir, $regex ) {
+	try {
+		$iterator = new IteratorIterator(
+			new FilesystemIterator( $dir )
+		);
+	} catch ( Exception $e ) {
+		return [];
+	}
+
+	try {
+		return new RegexIterator( $iterator, $regex );
+	} catch ( Exception $e ) {
+		return [];
+	}
+
+}
+
+/**
  * Get the recursive iterator for the cache path.
  *
  * @since  3.5.4
