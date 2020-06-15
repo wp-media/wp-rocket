@@ -39,7 +39,7 @@ abstract class AbstractMinifySubscriber implements Subscriber_Interface {
 	 * @param Options_Data         $options   Plugin options.
 	 * @param WP_Filesystem_Direct $filesystem Filesystem instance.
 	 */
-	public function __construct( Options_Data $options, WP_Filesystem_Direct $filesystem ) {
+	public function __construct( Options_Data $options, $filesystem ) {
 		$this->options    = $options;
 		$this->filesystem = $filesystem;
 	}

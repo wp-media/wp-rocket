@@ -33,7 +33,7 @@ class AssetsLocalCache {
 	 * @param string               $cache_path 3rd party assets cache folder path.
 	 * @param WP_Filesystem_Direct $filesystem Filesysten instance.
 	 */
-	public function __construct( $cache_path, WP_Filesystem_Direct $filesystem ) {
+	public function __construct( $cache_path, $filesystem ) {
 		$this->cache_path = "{$cache_path}/3rd-party/";
 		$this->filesystem = $filesystem;
 	}
