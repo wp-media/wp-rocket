@@ -205,9 +205,6 @@ function rocket_activation() {
 	if ( defined( 'O2SWITCH_VARNISH_PURGE_KEY' ) ) {
 		require WP_ROCKET_3RD_PARTY_PATH . 'hosting/o2switch.php';
 	}
-	if ( class_exists( 'WpeCommon' ) && function_exists( 'wpe_param' ) ) {
-		require WP_ROCKET_3RD_PARTY_PATH . 'hosting/wpengine.php';
-	}
 
 	if ( rocket_valid_key() ) {
 		// Add All WP Rocket rules of the .htaccess file.
