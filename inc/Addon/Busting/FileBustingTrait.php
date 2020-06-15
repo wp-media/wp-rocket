@@ -140,7 +140,9 @@ trait FileBustingTrait {
 			$filename = $entry->getFilename();
 
 			preg_match( $pattern, $filename, $file_details_match );
-			$list[ $filename ] = $file_details_match[1];
+			if ( ! empty( $file_details_match[1] ) ) {
+				$list[ $filename ] = $file_details_match[1];
+			}
 		}
 
 		return $list;
