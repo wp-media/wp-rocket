@@ -1,16 +1,17 @@
 <?php
-namespace WP_Rocket\Busting;
+namespace WP_Rocket\Addon\GoogleTracking;
 
+use WP_Rocket\Addon\Busting\FileBustingTrait;
+use WP_Rocket\Busting\Abstract_Busting;
 use WP_Rocket\Logger\Logger;
 
 /**
  * Manages the cache busting of the Google Analytics file.
  *
  * @since  3.1
- * @author Remy Perona
  */
-class Google_Analytics extends Abstract_Busting {
-	use File_Busting;
+class GoogleAnalytics extends Abstract_Busting {
+	use FileBustingTrait;
 
 	/**
 	 * Context used for the logger.

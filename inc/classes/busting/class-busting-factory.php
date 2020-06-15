@@ -1,6 +1,7 @@
 <?php
 namespace WP_Rocket\Busting;
 
+use WP_Rocket\Addon\GoogleTracking\GoogleAnalytics;
 use WP_Rocket\Addon\GoogleTracking\GoogleTagManager;
 
 /**
@@ -48,9 +49,9 @@ class Busting_Factory {
 			case 'fbsdk':
 				return new Facebook_SDK( $this->busting_path, $this->busting_url );
 			case 'ga':
-				return new Google_Analytics( $this->busting_path, $this->busting_url );
+				return new GoogleAnalytics( $this->busting_path, $this->busting_url );
 			case 'gtm':
-				return new GoogleTagManager( $this->busting_path, $this->busting_url, new Google_Analytics( $this->busting_path, $this->busting_url ) );
+				return new GoogleTagManager( $this->busting_path, $this->busting_url, new GoogleAnalytics( $this->busting_path, $this->busting_url ) );
 		}
 	}
 }

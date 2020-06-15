@@ -1,10 +1,9 @@
 <?php
 namespace WP_Rocket\Addon\GoogleTracking;
 
+use WP_Rocket\Addon\Busting\FileBustingTrait;
 use WP_Rocket\Logger\Logger;
 use WP_Rocket\Busting\Abstract_Busting;
-use WP_Rocket\Busting\File_Busting;
-use WP_Rocket\Busting\Google_Analytics;
 use WP_Filesystem_Direct;
 
 /**
@@ -13,7 +12,7 @@ use WP_Filesystem_Direct;
  * @since 3.1
  */
 class GoogleTagManager extends Abstract_Busting {
-	use File_Busting;
+	use FileBustingTrait;
 
 	/**
 	 * Context used for the logger.
@@ -52,7 +51,7 @@ class GoogleTagManager extends Abstract_Busting {
 	protected $filesystem = false;
 
 	/**
-	 * Google_Analytics object.
+	 * Google Analytics object.
 	 *
 	 * @var    object
 	 * @since  3.2.4
@@ -68,10 +67,10 @@ class GoogleTagManager extends Abstract_Busting {
 	 *
 	 * @param string               $busting_path Path to the busting directory.
 	 * @param string               $busting_url  URL of the busting directory.
-	 * @param Google_Analytics     $ga_busting   A Google_Analytics instance.
+	 * @param GoogleAnalytics      $ga_busting   A GoogleAnalytics instance.
 	 * @param WP_Filesystem_Direct $filesystem   Instance of the filesystem handler.
 	 */
-	public function __construct( $busting_path, $busting_url, Google_Analytics $ga_busting, $filesystem = null ) {
+	public function __construct( $busting_path, $busting_url, GoogleAnalytics $ga_busting, $filesystem = null ) {
 		$blog_id            = get_current_blog_id();
 		$this->busting_path = $busting_path . $blog_id . '/';
 		$this->busting_url  = $busting_url . $blog_id . '/';

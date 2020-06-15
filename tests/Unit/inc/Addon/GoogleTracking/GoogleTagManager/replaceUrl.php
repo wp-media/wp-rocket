@@ -1,8 +1,8 @@
 <?php
 namespace WP_Rocket\Tests\Unit\inc\Addon\GoogleTracking\GoogleTagManager;
 
+use WP_Rocket\Addon\GoogleTracking\GoogleAnalytics;
 use WP_Rocket\Addon\GoogleTracking\GoogleTagManager;
-use WP_Rocket\Busting\Google_Analytics;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use Brain\Monkey\Functions;
 
@@ -31,7 +31,7 @@ class Test_ReplaceUrl extends FilesystemTestCase {
 
 		$busting_path       = WP_ROCKET_CACHE_ROOT_PATH . 'busting/';
 		$busting_url        = WP_ROCKET_CACHE_ROOT_URL . 'busting/';
-		$google_tag_manager = new GoogleTagManager( $busting_path, $busting_url, new Google_Analytics( $busting_path, $busting_url ), $this->filesystem );
+		$google_tag_manager = new GoogleTagManager( $busting_path, $busting_url, new GoogleAnalytics( $busting_path, $busting_url ), $this->filesystem );
 		$actual = $google_tag_manager->replace_url( $html );
 
 		$this->assertEquals($expected['unit'], $actual);

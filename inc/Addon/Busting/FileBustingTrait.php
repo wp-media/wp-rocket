@@ -1,15 +1,14 @@
 <?php
-namespace WP_Rocket\Busting;
+namespace WP_Rocket\Addon\Busting;
 
 use WP_Rocket\Logger\Logger;
 
-trait File_Busting {
+trait FileBustingTrait {
 	/**
 	 * Saves the content of the URL to bust to the busting file if it doesn't exist yet.
 	 *
 	 * @since  3.2.4
 	 * @access public
-	 * @author Grégory Viguier
 	 *
 	 * @param  string $url URL to get the content from.
 	 * @return bool
