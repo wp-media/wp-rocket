@@ -103,7 +103,7 @@ class Combine extends AbstractCSSOptimization {
 	 *
 	 * @since 3.7
 	 *
-	 * @param array $styles Array of matched styles
+	 * @param array $styles Array of matched styles.
 	 * @return array
 	 */
 	private function parse( array $styles ) {
@@ -114,7 +114,7 @@ class Combine extends AbstractCSSOptimization {
 
 					continue;
 				}
-				
+
 				$this->styles[ $style['url'] ] = [
 					'type' => 'external',
 					'tag'  => $style[0],
@@ -292,14 +292,14 @@ class Combine extends AbstractCSSOptimization {
 	 * @since 3.7
 	 *
 	 * @param string $combined_file Absolute path to the combined file.
-	 * @return void
+	 * @return string
 	 */
 	private function get_content( $combined_file ) {
 		$content = '';
 
 		foreach ( $this->styles as $key => $style ) {
 			if ( 'internal' === $style['type'] ) {
-				$filepath     = $this->get_file_path($style['url'] ) ;
+				$filepath     = $this->get_file_path( $style['url'] );
 				$file_content = $this->get_file_content( $filepath );
 				$file_content = $this->rewrite_paths( $filepath, $combined_file, $file_content );
 			} elseif ( 'external' === $style['type'] ) {
