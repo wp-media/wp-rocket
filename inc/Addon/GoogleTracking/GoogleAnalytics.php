@@ -41,7 +41,7 @@ class GoogleAnalytics extends Abstract_Busting {
 	 * @access protected
 	 * @author Grégory Viguier
 	 */
-	protected $file_name_pattern = 'ga-%s.js';
+	protected $filename_pattern = 'ga-%s.js';
 
 	/**
 	 * Current file version (local): a md5 hash of the file contents.

@@ -30,7 +30,7 @@ class GoogleTagManager extends Abstract_Busting {
 	 * @since  3.2.4
 	 * @access protected
 	 */
-	protected $file_name_pattern = 'gtm-%s.js';
+	protected $filename_pattern = 'gtm-%s.js';
 
 	/**
 	 * Current file version (local): a md5 hash of the file contents.
@@ -154,7 +154,7 @@ class GoogleTagManager extends Abstract_Busting {
 			return false;
 		}
 
-		$version = \md5( $content );
+		$version = md5( $content );
 		$path    = $this->get_busting_file_path( $version );
 		$content = $this->replace_ga_url( $content );
 

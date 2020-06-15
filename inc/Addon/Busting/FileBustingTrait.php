@@ -67,7 +67,7 @@ trait FileBustingTrait {
 			return true;
 		}
 
-		return $this->delete_files( \array_keys( $files ) );
+		return $this->delete_files( array_keys( $files ) );
 	}
 
 	/** ----------------------------------------------------------------------------------------- */
@@ -96,7 +96,7 @@ trait FileBustingTrait {
 		}
 
 		// Since we're not supposed to have several files, return the first one.
-		$this->file_version = \reset( $files );
+		$this->file_version = reset( $files );
 
 		return $this->file_version;
 	}
@@ -129,7 +129,7 @@ trait FileBustingTrait {
 		}
 
 		$pattern = '/' . sprintf(
-			$this->escape_file_name( $this->file_name_pattern ),
+			$this->escape_file_name( $this->filename_pattern ),
 			'([a-f0-9]{32}|local)'
 		) . '/';
 
@@ -191,7 +191,7 @@ trait FileBustingTrait {
 		$filename = $this->get_busting_file_name( $version );
 
 		// This filter is documented in inc/functions/minify.php.
-		return \apply_filters( 'rocket_js_url', $this->busting_url . $filename );
+		return apply_filters( 'rocket_js_url', $this->busting_url . $filename );
 	}
 
 	/**
@@ -209,7 +209,7 @@ trait FileBustingTrait {
 			return false;
 		}
 
-		return sprintf( $this->file_name_pattern, $version );
+		return sprintf( $this->filename_pattern, $version );
 	}
 
 	/**
@@ -237,11 +237,11 @@ trait FileBustingTrait {
 	 * @since  3.2.4
 	 * @access private
 	 *
-	 * @param  string $file_name_pattern The file name.
+	 * @param  string $filename_pattern The file name.
 	 * @return string
 	 */
-	private function escape_file_name( $file_name_pattern ) {
-		return preg_quote( $file_name_pattern, '/' );
+	private function escape_file_name( $filename_pattern ) {
+		return preg_quote( $filename_pattern, '/' );
 	}
 
 	/**
@@ -305,7 +305,7 @@ trait FileBustingTrait {
 			return false;
 		}
 
-		if ( ! \rocket_put_content( $file_path, $file_contents ) ) {
+		if ( ! rocket_put_content( $file_path, $file_contents ) ) {
 			Logger::error(
 				'Contents could not be written into file.',
 				[
@@ -330,7 +330,7 @@ trait FileBustingTrait {
 	 */
 	private function is_busting_dir_writable() {
 		if ( ! $this->filesystem->exists( $this->busting_path ) ) {
-			\rocket_mkdir_p( $this->busting_path );
+			rocket_mkdir_p( $this->busting_path );
 		}
 
 		if ( ! $this->filesystem->is_writable( $this->busting_path ) ) {
@@ -447,7 +447,7 @@ trait FileBustingTrait {
 			return false;
 		}
 
-		if ( \is_wp_error( $response ) ) {
+		if ( is_wp_error( $response ) ) {
 			Logger::error(
 				'Remote file could not be fetched.',
 				[
@@ -459,7 +459,7 @@ trait FileBustingTrait {
 			return false;
 		}
 
-		$contents = \wp_remote_retrieve_body( $response );
+		$contents = wp_remote_retrieve_body( $response );
 
 		if ( ! $contents ) {
 			Logger::error(
