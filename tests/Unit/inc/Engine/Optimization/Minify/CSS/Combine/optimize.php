@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\Minify\CSS\Combine;
 
 use Brain\Monkey\Filters;
+use Brain\Monkey\Functions;
 use MatthiasMullie\Minify;
 use Mockery;
 use WP_Rocket\Engine\Optimization\AssetsLocalCache;
@@ -21,17 +22,13 @@ use WP_Rocket\Tests\Unit\inc\Engine\Optimization\TestCase;
 class Test_Optimize extends TestCase {
 	protected $path_to_test_data = '/inc/Engine/Optimization/Minify/CSS/Combine/combine.php';
 	private   $combine;
-	private   $minify;
+	private   $local_cache;
 
 	public function setUp() {
 		parent::setUp();
 
-		$this->minify = Mockery::mock( Minify\CSS::class );
-		$this->minify->shouldReceive( 'add' );
-		$this->minify->shouldReceive( 'minify' )
-		             ->andReturn( 'body{font-family:Helvetica,Arial,sans-serif;text-align:center;}' );
-
-		$this->combine = new Combine( $this->options, $this->minify, Mockery::mock( AssetsLocalCache::class ) );
+		$this->local_cache = Mockery::mock( AssetsLocalCache::class );
+		$this->combine     = new Combine( $this->options, $this->local_cache );
 	}
 
 	/**
@@ -54,6 +51,13 @@ class Test_Optimize extends TestCase {
 			->andReturnUsing( function ( $url, $original_url ) use ( $cdn_url ) {
 				return str_replace( 'http://example.org', $cdn_url, $url );
 			} );
+
+		$this->local_cache->shouldReceive( 'get_content' )
+			->zeroOrMoreTimes()
+			->with( 'https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' )
+			->andReturn( "@font-face{font-family:'FontAwesome';src:url('../fonts/fontawesome-webfont.eot?v=4.7.0');src:url('../fonts/fontawesome-webfont.eot?#iefix&v=4.7.0') format('embedded-opentype'),url('../fonts/fontawesome-webfont.woff2?v=4.7.0') format('woff2'),url('../fonts/fontawesome-webfont.woff?v=4.7.0') format('woff'),url('../fonts/fontawesome-webfont.ttf?v=4.7.0') format('truetype'),url('../fonts/fontawesome-webfont.svg?v=4.7.0#fontawesomeregular') format('svg');font-weight:normal;font-style:normal}" );
+
+		Functions\when( 'esc_url' )->returnArg();
 
 		$this->assertSame(
 			$expected['html'],
