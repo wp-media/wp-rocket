@@ -138,10 +138,10 @@ trait File_Busting {
 
 		$list = [];
 		foreach ( $entries as $entry ) {
-			$file_name = $entry->getFilename();
+			$filename = $entry->getFilename();
 
-			preg_match( $pattern, $file_name, $file_details_match );
-			$list[ $file_name ] = $file_details_match[1];
+			preg_match( $pattern, $filename, $file_details_match );
+			$list[ $filename ] = $file_details_match[1];
 		}
 
 		return $list;
