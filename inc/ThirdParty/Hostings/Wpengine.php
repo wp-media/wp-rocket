@@ -18,18 +18,25 @@ class Wpengine implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		if ( ! ( class_exists( 'WpeCommon' ) && function_exists( 'wpe_param' )  ) ) {
+		if (
+			! (
+				class_exists( 'WpeCommon' )
+				&&
+				function_exists( 'wpe_param' )
+			)
+		) {
 			return [];
 		}
 
 		return [
-			'rocket_varnish_field_settings' => 'rocket_wpengine_varnish_field',
+			'rocket_varnish_field_settings' => 'varnish_field',
 			'rocket_display_input_varnish_auto_purge' => 'return_false',
-			'rocket_cache_mandatory_cookies' => ['__return_empty_array', PHP_INT_MAX], // Prevent mandatory cookies on hosting with server cache.
+			// Prevent mandatory cookies on hosting with server cache.
+			'rocket_cache_mandatory_cookies' => ['return_empty_array', PHP_INT_MAX],
 			'rocket_advanced_cache_file', 'return_empty_string',
 			'admin_init' => [
-				'rocket_wpengine_remove_notices',
-				'rocket_run_rocket_bot_after_wpengine'
+				'remove_notices',
+				'run_rocket_bot_after_wpengine'
 			],
 			/**
 			 * Always keep WP_CACHE constant to true.
@@ -43,10 +50,10 @@ class Wpengine implements Subscriber_Interface {
 			 * @since 2.6.4
 			 */
 			'do_rocket_generate_caching_files' => 'return_false',
-			'after_rocket_clean_domain', 'rocket_clean_wpengine',
-			'rocket_buffer' => [ 'rocket_wpengine_add_footprint', 50],
-			'rocket_disable_htaccess', 'rocket_wpengine_disable_htaccess',
-			'wp_rocket_upgrade' => [ 'rocket_wpengine_reset_htaccess', 11, 2 ],
+			'after_rocket_clean_domain', 'clean_wpengine',
+			'rocket_buffer' => [ 'add_footprint', 50],
+			'rocket_disable_htaccess', 'disable_htaccess',
+			'wp_rocket_upgrade' => [ 'reset_htaccess', 11, 2 ],
 		];
 	}
 
@@ -84,6 +91,17 @@ class Wpengine implements Subscriber_Interface {
 	}
 
 	/**
+	 * Returns Empty Array.
+	 *
+	 * @since 3.6.1
+	 *
+	 * @return array Empty array.
+	 */
+	public function return_empty_array() {
+		return [];
+	}
+
+	/**
 	 * Changes the text on the Varnish one-click block.
 	 *
 	 * @since 3.0
@@ -92,7 +110,7 @@ class Wpengine implements Subscriber_Interface {
 	 *
 	 * @return array modified field settings data.
 	 */
-	public function rocket_wpengine_varnish_field( $settings ) {
+	public function varnish_field( $settings ) {
 		$settings['varnish_auto_purge']['title'] = sprintf(
 		// Translators: %s = Hosting name.
 			__( 'Your site is hosted on %s, we have enabled Varnish auto-purge for compatibility.', 'rocket' ),
@@ -102,7 +120,10 @@ class Wpengine implements Subscriber_Interface {
 		return $settings;
 	}
 
-	public function rocket_wpengine_remove_notices() {
+	/**
+	 * Stop showing not valid notices with wpengine.
+	 */
+	public function remove_notices() {
 		$container  = apply_filters( 'rocket_container', null );
 		remove_action( 'admin_notices', 'rocket_warning_advanced_cache_not_ours' );
 		$subscriber = $container->get( 'admin_cache_subscriber' );
@@ -116,7 +137,7 @@ class Wpengine implements Subscriber_Interface {
 	 *
 	 * @since 2.6.4
 	 */
-	public function rocket_run_rocket_bot_after_wpengine() {
+	public function run_rocket_bot_after_wpengine() {
 		if ( wpe_param( 'purge-all' ) && defined( 'PWP_NAME' ) && check_admin_referer( PWP_NAME . '-config' ) ) {
 			// Preload cache.
 			run_rocket_bot();
@@ -129,7 +150,7 @@ class Wpengine implements Subscriber_Interface {
 	 *
 	 * @since 2.6.4
 	 */
-	public function rocket_clean_wpengine() {
+	public function clean_wpengine() {
 		if ( method_exists( 'WpeCommon', 'purge_memcached' ) ) {
 			WpeCommon::purge_memcached();
 		}
@@ -148,7 +169,7 @@ class Wpengine implements Subscriber_Interface {
 	 *
 	 * @return string HTML with WP Rocket footprint.
 	 */
-	public function rocket_wpengine_add_footprint( $buffer ) {
+	public function add_footprint( $buffer ) {
 		if ( ! preg_match( '/<\/html>/i', $buffer ) ) {
 			return $buffer;
 		}
@@ -169,7 +190,7 @@ class Wpengine implements Subscriber_Interface {
 	 * @param bool $disable True to disable, false otherwise.
 	 * @return bool
 	 */
-	public function rocket_wpengine_disable_htaccess( $disable = false ) {
+	public function disable_htaccess( $disable = false ) {
 		// PHP version should be 7.4 or above.
 		if ( version_compare( PHP_VERSION, '7.4' ) >= 0 ) {
 			return true;
@@ -178,14 +199,14 @@ class Wpengine implements Subscriber_Interface {
 	}
 
 	/**
-	 * Reset htaccess file when upgrading from < 3.6.1 .
+	 * Reset htaccess file when upgrading from to 3.6.1 or above.
 	 *
 	 * @since 3.6.1
 	 *
 	 * @param string $new_version New WP Rocket version.
 	 * @param string $old_version Previous WP Rocket version.
 	 */
-	public function rocket_wpengine_reset_htaccess( $new_version, $old_version ) {
+	public function reset_htaccess( $new_version, $old_version ) {
 		if ( version_compare( $new_version, '3.6.1', '<' ) ) {
 			return;
 		}
