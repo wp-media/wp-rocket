@@ -25,12 +25,30 @@ use Brain\Monkey\Functions;
 class Test_RocketDeactivation extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/functions/rocketDeactivation.php';
 
+	/**
+	 * Set up before running these tests.
+	 *
+	 * @return void
+	 * @since  ver 3.6.1
+	 *
+	 * @author Caspar Green
+	 */
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/functions/deactivation.php';
 	}
 
+	/**
+	 * Set up before each test.
+	 *
+	 * @return void
+	 *
+	 * @throws ExpectationArgsRequired
+	 * @author Caspar Green
+	 * @since  ver 3.6.1
+	 *
+	 */
 	public function setUp() {
 		parent::setUp();
 
@@ -39,6 +57,14 @@ class Test_RocketDeactivation extends FilesystemTestCase {
 			->andReturn( 'https://wp-rocket.me/api/wp-rocket' );
 	}
 
+	/**
+	 * Clean up after each test.
+	 *
+	 * @return void
+	 * @since  ver 3.6.1
+	 *
+	 * @author Caspar Green
+	 */
 	public function tearDown() {
 		parent::tearDown();
 	}

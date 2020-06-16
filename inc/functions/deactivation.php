@@ -14,8 +14,11 @@ use WP_Rocket\Subscriber\Plugin\Capabilities_Subscriber;
  * @since 1.0
  */
 function rocket_deactivation() {
-	if ( ! isset( $_GET['rocket_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_GET['rocket_nonce'] ),
-			'force_deactivation' ) ) {
+	if ( ! isset( $_GET['rocket_nonce'] ) || ! wp_verify_nonce(
+			sanitize_key( $_GET['rocket_nonce'] ),
+			'force_deactivation'
+		)
+	) {
 		global $is_apache;
 		$causes = [];
 
