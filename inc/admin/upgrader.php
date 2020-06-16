@@ -356,7 +356,9 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		wp_safe_remote_get( esc_url( home_url() ) );
 	}
 
-	if ( version_compare( $actual_version, '3.3.2', '<' ) ) {
+	if ( version_compare( $actual_version, '3.3.2', '<' )
+		||
+		version_compare( $actual_version, '3.6.1', '<' ) ) {
 		rocket_generate_config_file();
 	}
 

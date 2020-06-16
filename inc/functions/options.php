@@ -203,6 +203,8 @@ function rocket_get_ignored_parameters() {
  */
 function get_rocket_cache_reject_uri( $force = false ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	static $uris;
+	$wp_rewrite = $GLOBALS['wp_rewrite'];
+
 	if ( $force ) {
 		$uris = null;
 	}
@@ -210,8 +212,7 @@ function get_rocket_cache_reject_uri( $force = false ) { // phpcs:ignore WordPre
 		return $uris;
 	}
 
-	$uris              = get_rocket_option( 'cache_reject_uri', [] );
-	$uris              = is_array( $uris ) ? $uris : [];
+	$uris              = (array) get_rocket_option( 'cache_reject_uri', [] );
 	$home_root         = rocket_get_home_dirname();
 	$home_root_escaped = preg_quote( $home_root, '/' ); // The site is not at the domain root, it's in a folder.
 
@@ -234,7 +235,7 @@ function get_rocket_cache_reject_uri( $force = false ) { // phpcs:ignore WordPre
 	}
 
 	// Exclude feeds.
-	$uris[] = '/(.+/)?' . $GLOBALS['wp_rewrite']->feed_base . '/?.+/?';
+	$uris[] = '/(.+/)?' . $wp_rewrite->feed_base . '/?.+/?';
 
 	// Exlude embedded URLs.
 	$uris[] = '/(?:.+/)?embed/';
