@@ -1,7 +1,44 @@
 <?php
 
 return [
-	'vfs_dir'   => 'wp-content/cache/critical-css/',
+	'vfs_dir'   => 'wp-content/',
+	// Virtual filesystem structure.
+	'structure' => [
+		'wp-content' => [
+			'cache' => [
+				// WP Rocket's cache.
+				'wp-rocket'    => [
+					'index.html'                 => '',
+					// domain cache.
+					'example.org'                => [
+						'.'                      => '',
+						'..'                     => '',
+						'index.html'             => '',
+						'index.html_gzip'        => '',
+
+						'CPCSS-title-1'    => [
+							'.'                      => '',
+							'..'                     => '',
+							'index.html'             => '',
+							'index.html_gzip'        => '',
+						],
+						'CPCSS-title-21'    => [
+							'.'                      => '',
+							'..'                     => '',
+							'index.html'             => '',
+							'index.html_gzip'        => '',
+						],
+					],
+				],
+				'critical-css' => [
+					'1' => [
+						'.'              => '',
+						'..'             => '',
+					],
+				],
+			],
+		],
+	],
 
 	'test_data' => [
 		'testShouldBailoutIfAsyncCssMobileDisabled'     => [
@@ -54,7 +91,7 @@ return [
 					'ID'           => 21,
 					'post_type'    => 'post',
 					'post_status'  => 'draft',
-					'post_title'   => 'CPCSS title',
+					'post_title'   => 'CPCSS-title-21',
 					'post_content' => 'content',
 				],
 				'cpcss_exists_after' => false,
@@ -76,7 +113,7 @@ return [
 					'ID'           => 21,
 					'post_type'    => 'post',
 					'post_status'  => 'publish',
-					'post_title'   => 'CPCSS title',
+					'post_title'   => 'CPCSS-title-21',
 					'post_content' => 'content',
 				],
 				'cpcss_exists_after' => false,
@@ -99,7 +136,7 @@ return [
 					'ID'           => 21,
 					'post_type'    => 'post',
 					'post_status'  => 'publish',
-					'post_title'   => 'CPCSS title',
+					'post_title'   => 'CPCSS-title-21',
 					'post_content' => 'content',
 				],
 				'generate_post_request_data' => [
@@ -125,6 +162,7 @@ return [
 					'ID'          => 21,
 					'post_type'   => 'post',
 					'post_status' => 'publish',
+					'post_title'  => 'CPCSS-title-21',
 				],
 				'generate_post_request_data' => [
 					'code' => 403,
@@ -149,6 +187,7 @@ return [
 					'ID'          => 21,
 					'post_type'   => 'post',
 					'post_status' => 'publish',
+					'post_title'  => 'CPCSS-title-21',
 				],
 				'generate_post_request_data' => [
 					'code' => 200,
@@ -173,6 +212,7 @@ return [
 					'ID'          => 21,
 					'post_type'   => 'post',
 					'post_status' => 'publish',
+					'post_title'  => 'CPCSS-title-21',
 				],
 				'generate_post_request_data' => [
 					'code' => 200,
@@ -202,6 +242,7 @@ return [
 					'ID'          => 21,
 					'post_type'   => 'post',
 					'post_status' => 'publish',
+					'post_title'  => 'CPCSS-title-21',
 				],
 				'generate_post_request_data' => [
 					'code' => 200,
@@ -231,6 +272,7 @@ return [
 					'ID'          => 21,
 					'post_type'   => 'post',
 					'post_status' => 'publish',
+					'post_title'  => 'CPCSS-title-21',
 				],
 				'generate_post_request_data' => [
 					'code' => 200,
@@ -275,7 +317,7 @@ return [
 					'ID'           => 21,
 					'post_type'    => 'post',
 					'post_status'  => 'draft',
-					'post_title'   => 'CPCSS title',
+					'post_title'   => 'CPCSS-title-21',
 					'post_content' => 'content',
 				],
 				'cpcss_exists_after'      => false,
@@ -299,7 +341,7 @@ return [
 					'ID'           => 21,
 					'post_type'    => 'post',
 					'post_status'  => 'publish',
-					'post_title'   => 'CPCSS title',
+					'post_title'   => 'CPCSS-title-21',
 					'post_content' => 'content',
 				],
 				'cpcss_exists_after'      => false,
@@ -324,7 +366,7 @@ return [
 					'ID'           => 21,
 					'post_type'    => 'post',
 					'post_status'  => 'publish',
-					'post_title'   => 'CPCSS title',
+					'post_title'   => 'CPCSS-title-21',
 					'post_content' => 'content',
 				],
 				'generate_post_request_data' => [
@@ -352,6 +394,7 @@ return [
 					'ID'          => 21,
 					'post_type'   => 'post',
 					'post_status' => 'publish',
+					'post_title'  => 'CPCSS-title-21',
 				],
 				'generate_post_request_data' => [
 					'code' => 403,
@@ -378,6 +421,7 @@ return [
 					'ID'          => 21,
 					'post_type'   => 'post',
 					'post_status' => 'publish',
+					'post_title'  => 'CPCSS-title-21',
 				],
 				'generate_post_request_data' => [
 					'code' => 200,
@@ -404,6 +448,7 @@ return [
 					'ID'          => 21,
 					'post_type'   => 'post',
 					'post_status' => 'publish',
+					'post_title'  => 'CPCSS-title-21',
 				],
 				'generate_post_request_data' => [
 					'code' => 200,
@@ -435,6 +480,7 @@ return [
 					'ID'          => 21,
 					'post_type'   => 'post',
 					'post_status' => 'publish',
+					'post_title'  => 'CPCSS-title-21',
 				],
 				'generate_post_request_data' => [
 					'code' => 200,
@@ -466,6 +512,7 @@ return [
 					'ID'          => 21,
 					'post_type'   => 'post',
 					'post_status' => 'publish',
+					'post_title'  => 'CPCSS-title-21',
 				],
 				'generate_post_request_data' => [
 					'code' => 200,

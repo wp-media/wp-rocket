@@ -28,13 +28,14 @@ class Test_DisableOptionsOnAmp extends TestCase {
 	 */
 	public function testShouldDoExpected( $config, $expected ) {
 		if ( $expected[ 'bailout' ] ) {
-			$this->assertNotFalse( has_filter( 'wp_resource_hints', 'rocket_dns_prefetch') );
+			$this->assertNotFalse( has_filter( 'wp_resource_hints', 'rocket_dns_prefetch' ) );
 		} else {
 			global $wp_filter;
 
 			add_theme_support( AMP_Theme_Support::SLUG );
-			$this->assertNotFalse( has_filter( 'wp_resource_hints', 'rocket_dns_prefetch') );
-			$this->assertFalse( has_filter( 'do_rocket_lazyload', '__return_false') );
+			$this->assertNotFalse( has_filter( 'wp_resource_hints', 'rocket_dns_prefetch' ) );
+			$this->assertFalse( has_filter( 'do_rocket_lazyload', '__return_false' ) );
+			$this->assertFalse( has_filter( 'do_rocket_lazyload_iframes', '__return_false' ) );
 			$this->assertArrayHasKey( 'rocket_buffer', $wp_filter );
 
 			if ( ! is_null( $config[ 'amp_options' ] ) ) {
@@ -49,10 +50,11 @@ class Test_DisableOptionsOnAmp extends TestCase {
 		do_action( 'wp' );
 
 		if ( $expected[ 'bailout' ] ) {
-			$this->assertNotFalse( has_filter( 'wp_resource_hints', 'rocket_dns_prefetch') );
+			$this->assertNotFalse( has_filter( 'wp_resource_hints', 'rocket_dns_prefetch' ) );
 		} else {
-			$this->assertFalse( has_filter( 'wp_resource_hints', 'rocket_dns_prefetch') );
-			$this->assertNotFalse( has_filter( 'do_rocket_lazyload', '__return_false') );
+			$this->assertFalse( has_filter( 'wp_resource_hints', 'rocket_dns_prefetch' ) );
+			$this->assertNotFalse( has_filter( 'do_rocket_lazyload', '__return_false' ) );
+			$this->assertNotFalse( has_filter( 'do_rocket_lazyload_iframes', '__return_false' ) );
 
 			if ( in_array( $config[ 'amp_options' ][ 'theme_support' ], [ 'transitional', 'reader' ], true ) ) {
 				$this->assertArrayHasKey( 'rocket_buffer', $wp_filter );
