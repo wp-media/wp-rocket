@@ -7,7 +7,7 @@ use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
  * @covers ::get_rocket_cache_reject_uri
- * @group FunctionsX
+ * @group Functions
  * @group Options
  */
 class Test_GetRocketCacheRejectUri extends TestCase {
