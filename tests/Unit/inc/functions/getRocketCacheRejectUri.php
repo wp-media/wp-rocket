@@ -14,7 +14,7 @@ class Test_GetRocketCacheRejectUri extends TestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-    public function testShouldGetRocketCacheRejectUri( $config, $expected ) {
+	public function testShouldGetRocketCacheRejectUri( $config, $expected ) {
 		$GLOBALS['wp_rewrite']            = new stdClass();
 		$GLOBALS['wp_rewrite']->feed_base = 'feed/';
 
@@ -29,11 +29,11 @@ class Test_GetRocketCacheRejectUri extends TestCase {
 			->once()
 			->andReturn( (array) $config['filter_rocket_cache_reject_uri'] );
 
-        $this->assertSame(
+		$this->assertSame(
 			$expected,
-            get_rocket_cache_reject_uri( true )
-        );
-    }
+			get_rocket_cache_reject_uri( true )
+		);
+	}
 
 	public function providerTestData() {
 		return $this->getTestData( __DIR__, 'getRocketCacheRejectUri' );
