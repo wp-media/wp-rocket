@@ -6,6 +6,8 @@ use WPMedia\PHPUnit\Integration\AdminTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Admin\Settings\Settings::sanitize_callback
+ * @covers ::rocket_validate_css
+ *
  * @group  AdminOnly
  * @group  Settings
  */

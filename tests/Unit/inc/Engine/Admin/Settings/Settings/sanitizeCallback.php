@@ -12,7 +12,7 @@ use WPMedia\PHPUnit\Unit\TestCase;
 /**
  * @covers \WP_Rocket\Engine\Admin\Settings\Settings::sanitize_callback
  * @group  Admin
- * @group  SettingsX
+ * @group  Settings
  */
 class Test_SanitizeCallback extends TestCase {
 	use StubTrait;
@@ -106,8 +106,14 @@ class Test_SanitizeCallback extends TestCase {
 	public function testShouldSanitizeExcludeCSS( $original, $sanitized ) {
 		$this->stubWpParseUrl();
 
-		Functions\when( 'content_url' )->justReturn( 'http://example.org/wp-content/' );
-		Functions\when( 'get_rocket_i18n_uri' )->justReturn( [ 'http://example.org/' ] );
+		Functions\when( 'rocket_validate_css' )->alias( function( $url ) {
+			$file_host = parse_url( $url, PHP_URL_HOST );
+			if ( 'example.org' === $file_host ) {
+				return parse_url( trim( $url ), PHP_URL_PATH );
+			}
+
+			return str_replace( [ 'http://', 'https://' ], '', strtok( $url, '?' ) );
+		} );
 
 		Functions\when( 'sanitize_text_field' )->returnArg();
 		Functions\when( 'rocket_valid_key' )->justReturn( true );
