@@ -82,9 +82,6 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 				[ 'critical_css_generation_complete_notice' ],
 				[ 'warning_critical_css_dir_permissions' ],
 			],
-
-			'wp_head' => [ 'insert_load_css', PHP_INT_MAX ],
-
 			'rocket_buffer' => [
 				[ 'insert_critical_css_buffer', 19 ],
 				[ 'async_css', 32 ],
@@ -491,82 +488,6 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 				]
 			);
 		}
-	}
-
-	/**
-	 * Insert loadCSS script in <head>.
-	 *
-	 * @since  2.11.2 Updated loadCSS rel=preload polyfill to version 2.0.1
-	 * @since  2.10
-	 */
-	public function insert_load_css() {
-		global $pagenow;
-
-		if ( ! $this->options->get( 'async_css' ) ) {
-			return;
-		}
-
-		if ( is_rocket_post_excluded_option( 'async_css' ) ) {
-			return;
-		}
-
-		if ( ! $this->critical_css->get_current_page_critical_css() ) {
-			return;
-		}
-
-		// Don't apply on wp-login.php/wp-register.php.
-		if ( 'wp-login.php' === $pagenow || 'wp-register.php' === $pagenow ) {
-			return;
-		}
-
-		if (
-			( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE )
-			||
-			( defined( 'DONOTASYNCCSS' ) && DONOTASYNCCSS )
-		) {
-			return;
-		}
-
-		// Don't apply if user is logged-in and cache for logged-in user is off.
-		if ( is_user_logged_in() && ! $this->options->get( 'cache_logged_user' ) ) {
-			return;
-		}
-
-		// This filter is documented in inc/front/process.php.
-		$rocket_cache_search = apply_filters( 'rocket_cache_search', false );
-
-		// Don't apply on search page.
-		if ( is_search() && ! $rocket_cache_search ) {
-			return;
-		}
-
-		// Don't apply on excluded pages.
-		if (
-			! isset( $_SERVER['REQUEST_URI'] )
-			||
-			in_array( wp_unslash( $_SERVER['REQUEST_URI'] ), $this->options->get( 'cache_reject_uri', [] ), true )
-		) {
-			return;
-		}
-
-		// Don't apply on 404 page.
-		if ( is_404() ) {
-			return;
-		}
-
-		echo /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. */ <<<JS
-<script>
-/*! loadCSS rel=preload polyfill. [c]2017 Filament Group, Inc. MIT License */
-(function(w){"use strict";if(!w.loadCSS){w.loadCSS=function(){}}
-var rp=loadCSS.relpreload={};rp.support=(function(){var ret;try{ret=w.document.createElement("link").relList.supports("preload")}catch(e){ret=!1}
-return function(){return ret}})();rp.bindMediaToggle=function(link){var finalMedia=link.media||"all";function enableStylesheet(){link.media=finalMedia}
-if(link.addEventListener){link.addEventListener("load",enableStylesheet)}else if(link.attachEvent){link.attachEvent("onload",enableStylesheet)}
-setTimeout(function(){link.rel="stylesheet";link.media="only x"});setTimeout(enableStylesheet,3000)};rp.poly=function(){if(rp.support()){return}
-var links=w.document.getElementsByTagName("link");for(var i=0;i<links.length;i++){var link=links[i];if(link.rel==="preload"&&link.getAttribute("as")==="style"&&!link.getAttribute("data-loadcss")){link.setAttribute("data-loadcss",!0);rp.bindMediaToggle(link)}}};if(!rp.support()){rp.poly();var run=w.setInterval(rp.poly,500);if(w.addEventListener){w.addEventListener("load",function(){rp.poly();w.clearInterval(run)})}else if(w.attachEvent){w.attachEvent("onload",function(){rp.poly();w.clearInterval(run)})}}
-if(typeof exports!=="undefined"){exports.loadCSS=loadCSS}
-else{w.loadCSS=loadCSS}}(typeof global!=="undefined"?global:this))
-</script>
-JS;
 	}
 
 	/**
