@@ -29,31 +29,34 @@ class Wpengine implements Subscriber_Interface {
 		}
 
 		return [
-			'rocket_varnish_field_settings' => 'varnish_field',
+			'rocket_varnish_field_settings'           => 'varnish_field',
 			'rocket_display_input_varnish_auto_purge' => 'return_false',
 			// Prevent mandatory cookies on hosting with server cache.
-			'rocket_cache_mandatory_cookies' => ['return_empty_array', PHP_INT_MAX],
-			'rocket_advanced_cache_file', 'return_empty_string',
-			'admin_init' => [
+			'rocket_cache_mandatory_cookies'          => [ 'return_empty_array', PHP_INT_MAX ],
+			'rocket_advanced_cache_file',
+			'return_empty_string',
+			'admin_init'                              => [
 				'remove_notices',
-				'run_rocket_bot_after_wpengine'
+				'run_rocket_bot_after_wpengine',
 			],
 			/**
 			 * Always keep WP_CACHE constant to true.
 			 *
 			 * @since 2.8.6
 			 */
-			'set_rocket_wp_cache_define' => 'return_true',
+			'set_rocket_wp_cache_define'              => 'return_true',
 			/**
 			 * Conflict with WP Engine caching system.
 			 *
 			 * @since 2.6.4
 			 */
-			'do_rocket_generate_caching_files' => 'return_false',
-			'after_rocket_clean_domain', 'clean_wpengine',
-			'rocket_buffer' => [ 'add_footprint', 50],
-			'rocket_disable_htaccess', 'disable_htaccess',
-			'wp_rocket_upgrade' => [ 'reset_htaccess', 11, 2 ],
+			'do_rocket_generate_caching_files'        => 'return_false',
+			'after_rocket_clean_domain',
+			'clean_wpengine',
+			'rocket_buffer'                           => [ 'add_footprint', 50 ],
+			'rocket_disable_htaccess',
+			'disable_htaccess',
+			'wp_rocket_upgrade'                       => [ 'reset_htaccess', 11, 2 ],
 		];
 	}
 
@@ -124,7 +127,7 @@ class Wpengine implements Subscriber_Interface {
 	 * Stop showing not valid notices with wpengine.
 	 */
 	public function remove_notices() {
-		$container  = apply_filters( 'rocket_container', null );
+		$container = apply_filters( 'rocket_container', null );
 		remove_action( 'admin_notices', 'rocket_warning_advanced_cache_not_ours' );
 		$subscriber = $container->get( 'admin_cache_subscriber' );
 

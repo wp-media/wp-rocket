@@ -254,7 +254,7 @@ class Plugin {
 			'rest_cpcss_subscriber',
 			'simple_custom_css',
 			'cloudways',
-			'wpengine'
+			'wpengine',
 		];
 
 		if ( $this->options->get( 'do_cloudflare', false ) ) {
