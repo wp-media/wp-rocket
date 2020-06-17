@@ -152,11 +152,14 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 		if ( ! $this->options->get( 'defer_all_js', 0 ) || ! $this->options->get( 'defer_all_js_safe', 0 ) ) {
 			return [];
 		}
-		$jquery         = rocket_clean_exclude_file( site_url( wp_scripts()->registered['jquery-core']->src ) );
+
 		$exclude_jquery = [];
-		if ( $jquery ) {
+		$jquery         = wp_scripts()->registered['jquery-core']->src;
+
+		if ( isset( $jquery ) ) {
 			$exclude_jquery[] = $jquery;
 		}
+
 		$exclude_jquery[] = 'c0.wp.com/c/(?:.+)/wp-includes/js/jquery/jquery.js';
 		$exclude_jquery[] = 'ajax.googleapis.com/ajax/libs/jquery/(?:.+)/jquery(?:\.min)?.js';
 		$exclude_jquery[] = 'cdnjs.cloudflare.com/ajax/libs/jquery/(?:.+)/jquery(?:\.min)?.js';
