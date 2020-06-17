@@ -187,7 +187,7 @@ class Purge {
 			// Get the terms related to post.
 			$terms = get_the_terms( $post->ID, $taxonomy->name );
 
-			if ( empty( $terms ) ) {
+			if ( empty( $terms ) || is_wp_error( $terms ) ) {
 				continue;
 			}
 			foreach ( $terms as $term ) {

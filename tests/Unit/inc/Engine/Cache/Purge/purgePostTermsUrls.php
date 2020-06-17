@@ -67,13 +67,21 @@ class Test_PurgePostTermsUrls extends FilesystemTestCase {
 				->with( $post_id, $taxonomy->name )
 				->andReturn( $terms_objs );
 
+			Functions\expect( 'is_wp_error' )
+				->once()
+				->with( $terms_objs )
+				->andReturn( false );
+
 			foreach ( $terms_objs as $term ) {
 				Functions\expect( 'get_term_link' )
 					->once()
 					->with( $term->slug, $taxonomy->name )
 					->andReturn( 'https://example.org/' . $term->slug );
 				$index++;
-				Functions\when( 'is_wp_error' )->justReturn( false );
+				Functions\expect( 'is_wp_error' )
+					->once()
+					->with( 'https://example.org/' . $term->slug )
+					->andReturn( false );
 
 				if ( isset( $taxonomy->is_taxonomy_hierarchical ) && isset( $term->parent ) ) {
 					Functions\expect( 'is_taxonomy_hierarchical' )
