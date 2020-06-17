@@ -1,6 +1,6 @@
 <?php
 /**
- * Unit tests for _rocket_get_config_path_php_files().
+ * Unit tests for _rocket_get_directory_php_files_array().
  *
  * @package WP_Rocket\Tests\Unit\inc\functions
  * @author  Caspar Green
@@ -12,14 +12,14 @@ namespace WP_Rocket\Tests\Unit\inc\functions;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * Test _rocket_get_config_path_php_files().
+ * Test _rocket_get_directory_php_files_array().
  *
  * @package WP_Rocket\Tests\Unit\inc\functions
  * @covers ::_rocket_get_config_path_php_files()
  * @author  Caspar Green
  * @since   ver 3.6.1
  */
-class Test_RocketGetConfigPathPHPFiles extends FilesystemTestCase {
+class Test_RocketGetDirectoryPHPFilesArray extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/functions/rocketGetDirectoryPHPFilesArray.php';
 
 	/**
