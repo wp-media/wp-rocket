@@ -195,7 +195,7 @@ class Combine extends AbstractJSOptimization {
 
 						if ( ! empty( $this->jquery_urls ) ) {
 							$jquery_urls = implode( '|', $this->jquery_urls );
-							if ( preg_match( '#^(' . $jquery_urls . ')$#', rocket_remove_url_protocol( $matches['url'] ) ) ) {
+							if ( preg_match( '#^(' . $jquery_urls . ')$#', rocket_remove_url_protocol( strtok( $matches['url'], '?' ) ) ) ) {
 								return;
 							}
 						}
