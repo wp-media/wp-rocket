@@ -322,8 +322,12 @@ function set_rocket_wp_cache_define( $turn_it_on ) { // phpcs:ignore WordPress.N
 	$constant = "define('WP_CACHE', $turn_it_on); // Added by WP Rocket\r\n";
 
 	// Lets find out if the constant WP_CACHE is defined or not.
-	if ( ! preg_match( '/^define\(\s*\'WP_CACHE\',(.*)\)/m', $config_file_contents ) ) {
+	$wp_cache_found = preg_match( '/^define\(\s*\'WP_CACHE\',(.*)\)/m', $config_file_contents, $matches );
+
+	if ( ! $wp_cache_found ) {
 		$config_file_contents = preg_replace( '/(<\?php)/i', "<?php\r\n{$constant}", $config_file_contents );
+	} elseif ( ! empty( $matches[1] ) && $matches[1] !== $turn_it_on ) {
+		$config_file_contents = preg_replace( '/^define\(\s*\'WP_CACHE\',(.*)\).+/m', $constant, $config_file_contents );
 	}
 
 	// Insert the constant in wp-config.php file.
