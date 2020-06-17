@@ -1470,3 +1470,32 @@ function _rocket_is_windows_fs( $hard_reset = false ) { // phpcs:ignore WordPres
 function _rocket_get_wp_rocket_cache_path() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 	return _rocket_normalize_path( rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) );
 }
+
+/**
+ * Get an array of php files in directory.
+ *
+ * @param string $dir_path Full path to the directory.
+ *
+ * @return array php files in the directory.
+ *               [...SplFileInfo file]
+ *
+ * @since  ver 3.6.1
+ *
+ * @author Caspar Green
+ */
+function _rocket_get_directory_php_files_array( $dir_path ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
+	try {
+		$config_dir = new FilesystemIterator( (string) $dir_path );
+	} catch ( Exception $e ) {
+		return [];
+	}
+	$files = [];
+
+	foreach ( $config_dir as $file ) {
+		if ( $file->isFile() && 'php' === $file->getExtension() ) {
+			$files[] = $file;
+		}
+	}
+
+	return $files;
+}
