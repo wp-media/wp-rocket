@@ -347,3 +347,132 @@ function rocket_sccss_create_cache_file( $cache_busting_path, $cache_sccss_filep
 	rocket_put_content( $cache_sccss_filepath, $content );
 }
 
+/**
+ * Changes the text on the Varnish one-click block.
+ *
+ * @deprecated 3.6.1
+ * @since 3.0
+ *
+ * @param array $settings Field settings data.
+ *
+ * @return array modified field settings data.
+ */
+function rocket_wpengine_varnish_field( $settings ) {
+	_deprecated_function( __FUNCTION__ . '()', '3.6.1', '\WP_Rocket\ThirdParty\Hostings\Wpengine::varnish_field' );
+	$settings['varnish_auto_purge']['title'] = sprintf(
+	// Translators: %s = Hosting name.
+		__( 'Your site is hosted on %s, we have enabled Varnish auto-purge for compatibility.', 'rocket' ),
+		'WP Engine'
+	);
+
+	return $settings;
+}
+
+/**
+ * Conflict with WP Engine caching system.
+ *
+ * @deprecated 3.6.1
+ * @since 2.6.4
+ *
+ */
+function rocket_stop_generate_caching_files_on_wpengine() {
+	_deprecated_function( __FUNCTION__ . '()', '3.6.1' );
+	add_filter( 'do_rocket_generate_caching_files', '__return_false' );
+}
+
+/**
+ * Run WP Rocket preload bot after purged the Varnish cache via WP Engine Hosting.
+ *
+ * @deprecated 3.6.1
+ * @since 2.6.4
+ */
+function rocket_run_rocket_bot_after_wpengine() {
+	_deprecated_function( __FUNCTION__ . '()', '3.6.1', '\WP_Rocket\ThirdParty\Hostings\Wpengine::run_rocket_bot_after_wpengine' );
+	if ( wpe_param( 'purge-all' ) && defined( 'PWP_NAME' ) && check_admin_referer( PWP_NAME . '-config' ) ) {
+		// Preload cache.
+		run_rocket_bot();
+		run_rocket_sitemap_preload();
+	}
+}
+
+/**
+ * Call the cache server to purge the cache with WP Engine hosting.
+ *
+ * @deprecated 3.6.1
+ * @since 2.6.4
+ */
+function rocket_clean_wpengine() {
+	_deprecated_function( __FUNCTION__ . '()', '3.6.1', '\WP_Rocket\ThirdParty\Hostings\Wpengine::clean_wpengine' );
+	if ( method_exists( 'WpeCommon', 'purge_memcached' ) ) {
+		WpeCommon::purge_memcached();
+	}
+
+	if ( method_exists( 'WpeCommon', 'purge_varnish_cache' ) ) {
+		WpeCommon::purge_varnish_cache();
+	}
+}
+
+/**
+ * Gets WP Engine CDN Domain.
+ *
+ * @deprecated 3.6.1
+ * @since 2.8.6
+ *
+ * return string $cdn_domain the WP Engine CDN Domain.
+ */
+function rocket_get_wp_engine_cdn_domain() {
+	_deprecated_function( __FUNCTION__ . '()', '3.6.1' );
+	global $wpe_netdna_domains, $wpe_netdna_domains_secure;
+
+	$cdn_domain = '';
+	$is_ssl     = '';
+
+	if ( isset( $_SERVER['HTTPS'] ) ) {
+		$is_ssl = sanitize_text_field( wp_unslash( $_SERVER['HTTPS'] ) );
+	}
+
+	if ( preg_match( '/^[oO][fF]{2}$/', $is_ssl ) ) {
+		$is_ssl = false;  // have seen this!
+	}
+
+	$native_schema = $is_ssl ? 'https' : 'http';
+
+	$domains = $wpe_netdna_domains;
+	// Determine the CDN, if any.
+	if ( $is_ssl ) {
+		$domains = $wpe_netdna_domains_secure;
+	}
+
+	$wpengine   = WpeCommon::instance();
+	$cdn_domain = $wpengine->get_cdn_domain( $domains, home_url(), $is_ssl );
+
+	if ( ! empty( $cdn_domain ) ) {
+		$cdn_domain = $native_schema . '://' . $cdn_domain;
+	}
+
+	return $cdn_domain;
+}
+
+/**
+ * Add WP Rocket footprint on Buffer.
+ *
+ * @deprecated 3.6.1
+ * @since 3.3.2
+ *
+ * @param string $buffer HTML content.
+ *
+ * @return string HTML with WP Rocket footprint.
+ */
+function rocket_wpengine_add_footprint( $buffer ) {
+	_deprecated_function( __FUNCTION__ . '()', '3.6.1', '\WP_Rocket\ThirdParty\Hostings\Wpengine::add_footprint' );
+	if ( ! preg_match( '/<\/html>/i', $buffer ) ) {
+		return $buffer;
+	}
+
+	$footprint  = defined( 'WP_ROCKET_WHITE_LABEL_FOOTPRINT' )
+		? "\n" . '<!-- Optimized for great performance'
+		: "\n" . '<!-- This website is like a Rocket, isn\'t it? Performance optimized by ' . WP_ROCKET_PLUGIN_NAME . '. Learn more: https://wp-rocket.me';
+	$footprint .= ' -->';
+
+	return $buffer . $footprint;
+}
