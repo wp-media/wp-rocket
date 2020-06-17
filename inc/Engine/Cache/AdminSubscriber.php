@@ -44,7 +44,6 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 			'admin_init'    => 'register_terms_row_action',
 			'admin_notices' => [
 				[ 'notice_advanced_cache_permissions' ],
-				[ 'notice_advanced_cache_content_not_ours' ],
 			],
 		];
 	}
@@ -114,16 +113,5 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 */
 	public function notice_advanced_cache_permissions() {
 		$this->advanced_cache->notice_permissions();
-	}
-
-	/**
-	 * Displays the notice when advanced-cache.php content is not ours
-	 *
-	 * @since 3.6
-	 *
-	 * @return void
-	 */
-	public function notice_advanced_cache_content_not_ours() {
-		$this->advanced_cache->notice_content_not_ours();
 	}
 }
