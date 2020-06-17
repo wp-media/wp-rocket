@@ -36,6 +36,14 @@ class Test_RocketGetDirectoryPHPFilesArray extends FilesystemTestCase {
 		require_once WP_ROCKET_PLUGIN_ROOT . '/inc/functions/files.php';
 	}
 
+	/**
+	 * Set up before each test.
+	 *
+	 * @return void
+	 * @since  ver 3.6.1
+	 *
+	 * @author Caspar Green
+	 */
 	public function setUp() {
 		parent::setUp();
 
