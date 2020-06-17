@@ -1,6 +1,8 @@
 <?php
 namespace WP_Rocket\Engine\Optimization;
 
+use WP_Filesystem_Direct;
+
 /**
  * Cache locally 3rd party assets.
  *
@@ -17,14 +19,23 @@ class AssetsLocalCache {
 	protected $cache_path;
 
 	/**
+	 * Filesystem instance.
+	 *
+	 * @var WP_Filesystem_Direct
+	 */
+	private $filesystem;
+
+	/**
 	 * Constructor
 	 *
 	 * @since 3.1
 	 *
-	 * @param string $cache_path 3rd party assets cache folder path.
+	 * @param string               $cache_path 3rd party assets cache folder path.
+	 * @param WP_Filesystem_Direct $filesystem Filesysten instance.
 	 */
-	public function __construct( $cache_path ) {
-		$this->cache_path = "{$cache_path}/3rd-party/";
+	public function __construct( $cache_path, $filesystem ) {
+		$this->cache_path = "{$cache_path}3rd-party/";
+		$this->filesystem = $filesystem;
 	}
 
 	/**
@@ -37,17 +48,15 @@ class AssetsLocalCache {
 	 * @return string
 	 */
 	public function get_content( $url ) {
-		$parts    = wp_parse_url( $url );
-		$filename = $parts['host'] . str_replace( '/', '-', $parts['path'] );
-		$filepath = $this->cache_path . $filename;
+		$filepath = $this->get_filepath( $url );
 
-		if ( $this->local_cache_exists( $filepath ) ) {
-			return $this->get_file_content( $filepath );
+		if ( $this->filesystem->is_readable( $filepath ) ) {
+			return $this->filesystem->get_contents( $filepath );
 		}
 
-		$content = $this->get_url_content( $url );
+		$content = wp_remote_retrieve_body( wp_remote_get( $url ) );
 
-		if ( ! $content ) {
+		if ( empty( $content ) ) {
 			return '';
 		}
 
@@ -57,45 +66,18 @@ class AssetsLocalCache {
 	}
 
 	/**
-	 * Checks if the cache file for the specified asset exists.
+	 * Gets the filepath of the local copy for the given URL
 	 *
-	 * @since 3.1
+	 * @since 3.7
 	 *
-	 * @param string $filepath Filepath of the file to check.
-	 * @return bool
-	 */
-	protected function local_cache_exists( $filepath ) {
-		return rocket_direct_filesystem()->is_readable( $filepath );
-	}
-
-	/**
-	 * Gets content from an URL
-	 *
-	 * @since 3.1
-	 *
-	 * @param string $url URL to get the content from.
+	 * @param string $url URL to get filepath for.
 	 * @return string
 	 */
-	protected function get_url_content( $url ) {
-		$content = wp_remote_retrieve_body( wp_remote_get( $url ) );
+	protected function get_filepath( $url ) {
+		$parts    = wp_parse_url( $url );
+		$filename = $parts['host'] . str_replace( '/', '-', $parts['path'] );
 
-		if ( ! $content ) {
-			return false;
-		}
-
-		return $content;
-	}
-
-	/**
-	 * Gets content of a file
-	 *
-	 * @since 3.1
-	 *
-	 * @param string $file File path.
-	 * @return string
-	 */
-	protected function get_file_content( $file ) {
-		return rocket_direct_filesystem()->get_contents( $file );
+		return $this->cache_path . $filename;
 	}
 
 	/**
@@ -108,7 +90,7 @@ class AssetsLocalCache {
 	 * @return bool
 	 */
 	protected function write_file( $content, $file ) {
-		if ( rocket_direct_filesystem()->is_readable( $file ) ) {
+		if ( $this->filesystem->is_readable( $file ) ) {
 			return true;
 		}
 

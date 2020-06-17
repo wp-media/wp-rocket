@@ -29,6 +29,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'cache_dynamic_resource',
 		'ie_conditionals_subscriber',
 		'minify_html_subscriber',
+		'optimize_google_fonts',
 		'combine_google_fonts_subscriber',
 		'minify_css_subscriber',
 		'minify_js_subscriber',
@@ -44,7 +45,8 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-		$options = $this->getContainer()->get( 'options' );
+		$options    = $this->getContainer()->get( 'options' );
+		$filesystem = rocket_direct_filesystem();
 
 		$this->getContainer()->add( 'config', 'WP_Rocket\Buffer\Config' )
 			->withArgument( [ 'config_dir_path' => rocket_get_constant( 'WP_ROCKET_CONFIG_PATH' ) ] );
@@ -61,12 +63,16 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'ie_conditionals_subscriber', 'WP_Rocket\Subscriber\Optimization\IE_Conditionals_Subscriber' );
 		$this->getContainer()->share( 'minify_html_subscriber', 'WP_Rocket\Subscriber\Optimization\Minify_HTML_Subscriber' )
 			->withArgument( $options );
+		$this->getContainer()->add( 'optimize_google_fonts', 'WP_Rocket\Engine\Optimization\GoogleFonts\Combine' );
 		$this->getContainer()->share( 'combine_google_fonts_subscriber', 'WP_Rocket\Engine\Optimization\GoogleFonts\Subscriber' )
+			->withArgument( $this->getContainer()->get( 'optimize_google_fonts' ) )
 			->withArgument( $options );
 		$this->getContainer()->share( 'minify_css_subscriber', 'WP_Rocket\Engine\Optimization\Minify\CSS\Subscriber' )
-			->withArgument( $options );
+			->withArgument( $options )
+			->withArgument( $filesystem );
 		$this->getContainer()->share( 'minify_js_subscriber', 'WP_Rocket\Engine\Optimization\Minify\JS\Subscriber' )
-			->withArgument( $options );
+			->withArgument( $options )
+			->withArgument( $filesystem );
 		$this->getContainer()->share( 'dequeue_jquery_migrate_subscriber', 'WP_Rocket\Subscriber\Optimization\Dequeue_JQuery_Migrate_Subscriber' )
 			->withArgument( $options );
 	}
