@@ -203,7 +203,7 @@ function rocket_get_ignored_parameters() {
  */
 function get_rocket_cache_reject_uri( $force = false ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	static $uris;
-	$wp_rewrite = $GLOBALS['wp_rewrite'];
+	global $wp_rewrite;
 
 	if ( $force ) {
 		$uris = null;
