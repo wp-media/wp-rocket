@@ -137,7 +137,7 @@ function rocket_deactivation() {
 	// Delete config files.
 	rocket_delete_config_file();
 
-	if ( ! count( glob( WP_ROCKET_CONFIG_PATH . '*.php' ) ) ) {
+	if ( ! count( _rocket_get_directory_php_files_array( rocket_get_constant( 'WP_ROCKET_CONFIG_PATH' ) ) ) ) {
 		// Delete All WP Rocket rules of the .htaccess file.
 		flush_rocket_htaccess( true );
 
