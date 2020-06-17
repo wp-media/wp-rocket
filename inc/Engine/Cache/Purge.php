@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Cache;
 use DirectoryIterator;
 use Exception;
 use WP_Term;
+use WP_Post;
 
 /**
  * Cache Purge handling class
@@ -154,11 +155,11 @@ class Purge {
 	/**
 	 * Purge all terms archives urls associated to a specific post.
 	 *
-	 * @since 1.0
+	 * @since 3.6.1
 	 *
 	 * @param WP_Post $post Post object.
 	 */
-	public function purge_post_terms_urls( $post ) {
+	public function purge_post_terms_urls( WP_Post $post ) {
 		foreach ( $this->get_post_terms_urls( $post ) as $url ) {
 			$this->purge_url( $url );
 		}
@@ -168,13 +169,13 @@ class Purge {
 	/**
 	 * Get all terms archives urls associated to a specific post.
 	 *
-	 * @since 1.0
+	 * @since 3.6.1
 	 *
 	 * @param WP_Post $post Post object.
 	 *
 	 * @return array $urls    List of taxonomies URLs
 	 */
-	private function get_post_terms_urls( $post ) {
+	private function get_post_terms_urls( WP_Post $post ) {
 		$urls       = [];
 		$taxonomies = get_object_taxonomies( get_post_type( $post->ID ), 'objects' );
 
