@@ -11,6 +11,13 @@ use WPMedia\PHPUnit\Unit\TestCase;
  * @group Options
  */
 class Test_GetRocketCacheRejectUri extends TestCase {
+
+	public function tearDown() {
+		parent::tearDown();
+
+		unset( $GLOBALS['wp_rewrite'] );
+	}
+
 	/**
 	 * @dataProvider providerTestData
 	 */

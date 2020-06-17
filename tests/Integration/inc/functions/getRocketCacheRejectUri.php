@@ -3,7 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\functions;
 
 use Brain\Monkey\Functions;
-use WPMedia\PHPUnit\Integration\TestCase;
+use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * @covers ::get_rocket_cache_reject_uri
@@ -16,10 +16,7 @@ class Test_GetRocketCacheRejectUri extends TestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldReturnExcludeDeferJSArray( $config, $expected ) {
-		$options = [
-			'cache_reject_uri' => $config['options']['cache_reject_uri'],
-		];
-		update_option( 'wp_rocket_settings', $options );
+		$this->mergeExistingSettingsAndUpdate( $config['options'] );
 
 		Functions\when( 'rocket_get_home_dirname' )->justReturn( $config['home_dirname'] );
 
