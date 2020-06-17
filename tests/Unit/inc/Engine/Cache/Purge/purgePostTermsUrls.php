@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Cache\Purge;
 
+use WP_Post;
 use WP_Term;
 use Mockery;
 use Brain\Monkey\Filters;
@@ -34,9 +35,10 @@ class Test_PurgePostTermsUrls extends FilesystemTestCase {
 	 */
 	public function testShouldReturnExpectedUrls( $post_data, $terms, $expected ) {
 		$post_id    = 10;
-		$post['ID'] = $post_id;
-		$post       = (object) $post;
 		$taxonomies = $this->getTaxonomies( $terms );
+
+		$post_mocked     = Mockery::mock( WP_Post::class );
+		$post_mocked->ID = $post_id;
 
 		$term_mocked = Mockery::mock( WP_Term::class );
 
@@ -108,7 +110,7 @@ class Test_PurgePostTermsUrls extends FilesystemTestCase {
 			return parse_url( $url, $component );
 		} );
 
-		$this->purge->purge_post_terms_urls( $post );
+		$this->purge->purge_post_terms_urls( $post_mocked );
 
 		$this->checkEntriesDeleted( $expected );
 	}
