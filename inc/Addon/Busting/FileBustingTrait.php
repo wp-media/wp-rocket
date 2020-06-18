@@ -435,7 +435,7 @@ trait FileBustingTrait {
 	private function get_remote_contents( $url ) {
 		try {
 			$response = wp_remote_get( $url );
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			Logger::error(
 				'Remote file could not be fetched.',
 				[

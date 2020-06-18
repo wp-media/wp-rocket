@@ -19,9 +19,9 @@ class Test_ReplaceUrl extends FilesystemTestCase {
 	 */
 	public function testShouldReplaceUrl( $config, $expected ) {
 		$html = isset( $config['html'] ) ? $config['html'] : '';
-		$url = isset( $config['url'] ) ? $config['url'] : '';
+		$url  = isset( $config['url'] ) ? $config['url'] : '';
 
-		if ( !empty( $url ) ) {
+		if ( ! empty( $url ) ) {
 			Functions\expect( 'wp_remote_get' )->once()->with( $url )->andReturn( 'request' );
 			Functions\expect( 'wp_remote_retrieve_body' )->once()->with( 'request' )->andReturn( 'Remote File contents here' );
 		}
@@ -31,7 +31,7 @@ class Test_ReplaceUrl extends FilesystemTestCase {
 		$google_tag_manager = new GoogleTagManager( $busting_path, $busting_url, new GoogleAnalytics( $busting_path, $busting_url ), $this->filesystem );
 		$actual             = $google_tag_manager->replace_url( $html );
 
-		$this->assertEquals($expected['integration'], $actual);
+		$this->assertEquals( $expected['integration'], $actual );
 	}
 
 }

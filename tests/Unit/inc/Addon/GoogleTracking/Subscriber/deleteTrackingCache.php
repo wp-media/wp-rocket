@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Addon\GoogleTracking\Subscriber;
 
-use \Mockery;
+use Mockery;
 use WP_Rocket\Addon\GoogleTracking\GoogleAnalytics;
 use WP_Rocket\Addon\GoogleTracking\GoogleTagManager;
 use WP_Rocket\Admin\Options_Data;
