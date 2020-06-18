@@ -21,23 +21,12 @@ class Test_RocketGetDirectoryPHPFilesArray extends FilesystemTestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldReturnAllPHPFilesInDirectory(array $expected_files ) {
-		$expected_filenames = [];
-		var_dump($this->filesystem->getFilesListing('vfs://public/wp-content/wp-rocket-config/' ) );
-
-		$files_array = _rocket_get_php_files_in_dir( 'vfs://public/wp-content/wp-rocket-config/' );
-//var_dump($files_array);
-		foreach ( $files_array as $file ) {
-			$expected_filenames[] = $file->getFilename();
+	public function testShouldReturnAllPHPFilesInDirectory( $dir, array $expected ) {
+		$actual = [];
+		foreach ( _rocket_get_php_files_in_dir( $dir ) as $file ) {
+			$actual[] = $file->getFilename();
 		}
 
-		$this->assertSame( $expected_files, $expected_filenames );
-	}
-
-	public function testShouldReturnEmptyArrayWhenDirectoryPathIsInvalid() {
-		$this->assertSame(
-			[],
-			_rocket_get_php_files_in_dir( 'vfs://some/bogus/directory' )
-		);
+		$this->assertSame( $expected, $actual );
 	}
 }
