@@ -75,10 +75,7 @@ class GoogleTagManager extends Abstract_Busting {
 		$this->busting_path = $busting_path . $blog_id . '/';
 		$this->busting_url  = $busting_url . $blog_id . '/';
 		$this->ga_busting   = $ga_busting;
-		if ( is_null( $filesystem ) ) {
-			$filesystem = rocket_direct_filesystem();
-		}
-		$this->filesystem = $filesystem;
+		$this->filesystem   = is_null( $filesystem ) ? rocket_direct_filesystem() : $filesystem;
 	}
 
 	/** ----------------------------------------------------------------------------------------- */
