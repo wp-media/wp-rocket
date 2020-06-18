@@ -24,6 +24,8 @@ As mentioned in the [Usage - Load Order](/usage/#load-order) section, Action Sch
 
 Do not use Action Scheduler API functions prior to `'init'` hook with priority `1`. Doing so could lead to unexpected results, like data being stored in the incorrect location.
 
+Action Scheduler provides `Action_Scheduler::is_initialized()` for use in hooks to confirm that the data stores have been initialized.
+
 ## Function Reference / `as_enqueue_async_action()`
 
 ### Description
