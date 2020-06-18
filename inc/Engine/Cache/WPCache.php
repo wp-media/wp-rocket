@@ -47,54 +47,52 @@ class WPCache {
 	 *
 	 * @since 3.6.1
 	 *
-	 * @param bool $turn_it_on The value of WP_CACHE constant.
+	 * @param bool $value The value of WP_CACHE constant.
 	 * @return void
 	 */
-	public function set_wp_cache_define( $turn_it_on ) {
-		if ( ! rocket_valid_key() || ( $turn_it_on && defined( 'WP_CACHE' ) && WP_CACHE ) ) {
+	public function set_wp_cache_define( $value ) {
+		if (
+			! rocket_valid_key()
+			||
+			rocket_get_constant( 'WP_CACHE' )
+		) {
 			return;
 		}
 
-		if ( defined( 'IS_PRESSABLE' ) && IS_PRESSABLE ) {
+		if ( rocket_get_constant( 'IS_PRESSABLE' ) ) {
 			return;
 		}
 
-		// Get path of the config file.
 		$config_file_path = $this->find_wpconfig_path();
 
 		if ( ! $config_file_path ) {
 			return;
 		}
 
-		// Get content of the config file.
 		$config_file_contents = $this->filesystem->get_contents( $config_file_path );
-
-		// Get the value of WP_CACHE constant.
-		$turn_it_on = $turn_it_on ? 'true' : 'false';
+		$value                = $value ? 'true' : 'false';
 
 		/**
 		 * Filter allow to change the value of WP_CACHE constant
 		 *
 		 * @since 2.1
 		 *
-		 * @param string $turn_it_on The value of WP_CACHE constant.
+		 * @param string $value The value of WP_CACHE constant.
 		*/
-		$turn_it_on = apply_filters( 'set_rocket_wp_cache_define', $turn_it_on ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+		$value = apply_filters( 'set_rocket_wp_cache_define', $value ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
-		// Get WP_CACHE constant define.
-		$constant = "define('WP_CACHE', $turn_it_on); // Added by WP Rocket";
-
-		// Lets find out if the constant WP_CACHE is defined or not.
+		$constant       = "define('WP_CACHE', $value); // Added by WP Rocket";
 		$wp_cache_found = preg_match( '/^define\(\s*\'WP_CACHE\',(?<value>.*)\)/m', $config_file_contents, $matches );
 
 		if ( ! $wp_cache_found ) {
 			$config_file_contents = preg_replace( '/(<\?php)/i', "<?php\r\n{$constant}\r\n", $config_file_contents );
-		} elseif ( ! empty( $matches['value'] ) && $matches['value'] !== $turn_it_on ) {
+		} elseif ( ! empty( $matches['value'] ) && $matches['value'] !== $value ) {
 			$config_file_contents = preg_replace( '/^define\(\s*\'WP_CACHE\',(.*)\).+/m', $constant, $config_file_contents );
 		}
 
-		// Insert the constant in wp-config.php file.
-		rocket_put_content( $config_file_path, $config_file_contents );
+		$chmod = rocket_get_filesystem_perms( 'file' );
+
+		$this->filesystem->put_contents( $config_file_path, $config_file_contents, $chmod );
 	}
 
 	/**
