@@ -1,9 +1,9 @@
 <?php
 return [
-	'vfs_dir' => '/wp-content/wp-rocket-config',
+	'vfs_dir' => 'wp-content/',
 
 	'structure' => [
-		'wp_content' => [
+		'wp-content' => [
 			'wp-rocket-config' => [
 				'.'               => '',
 				'..'              => '',
@@ -31,22 +31,30 @@ return [
 
 	'test_data' => [
 		'shouldHandleWPRocketConfigContents' => [
-			[
+			'dir'      => 'vfs://public/wp-content/wp-rocket-config/',
+			'expected' => [
 				'example.org.php'
 			]
 		],
 
 		'shouldHandleEmptyDirectory' => [
-			[],
+			'dir'      => 'vfs://public/wp-content/empty',
+			'expected' => [],
 		],
 
 		'shouldHandleDirWithAssortedFiletypes' => [
-			[
+			'dir'      => 'vfs://public/wp-content/assorted',
+			'expected' => [
 				'somefile.php',
 				'another-file.php',
 				'count-thisfile-please.php',
 				'yet-anothercountable.file.php'
 			]
+		],
+
+		'shouldHandleBadDir' => [
+			'dir'      => 'vfs://public/wp-content/road/to/nowhere/',
+			'expected' => []
 		]
 	]
 ];
