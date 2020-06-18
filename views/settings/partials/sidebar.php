@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 <div class="wpr-Sidebar-notice">
 	<p><?php esc_html_e( 'Check our tutorial and learn how to measure the speed of your site.', 'rocket' ); ?></p>
 	<?php // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript ?>
-	<script src="https://fast.wistia.com/embed/medias/j042jylrre.jsonp" async></script><script src="https://fast.wistia.com/assets/external/E-v1.js" async></script><img src="<?php echo esc_url( WP_ROCKET_ASSETS_IMG_URL . 'play-alt.svg' ); ?>" width="10" height="10" alt=""> <span class="wpr-tutorial-link wpr-Sidebar-notice-link wistia_embed wistia_async_j042jylrre popover=true popoverContent=link" style="display:inline;position:relative"><?php esc_html_e( 'Watch the video', 'rocket' ); ?></span>
+	<script src="https://fast.wistia.com/embed/medias/j042jylrre.jsonp" async></script><img src="<?php echo esc_url( WP_ROCKET_ASSETS_IMG_URL . 'play-alt.svg' ); ?>" width="10" height="10" alt=""> <span class="wpr-tutorial-link wpr-Sidebar-notice-link wistia_embed wistia_async_j042jylrre popover=true popoverContent=link" style="display:inline;position:relative"><?php esc_html_e( 'Watch the video', 'rocket' ); ?></span>
 </div>
 <div class="wpr-Sidebar-notice">
 	<p><?php esc_html_e( 'Learn how to use best practices to correctly measure your site\'s performance.', 'rocket' ); ?></p>

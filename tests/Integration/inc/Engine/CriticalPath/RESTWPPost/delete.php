@@ -27,7 +27,6 @@ class Test_Delete extends RESTVfsTestCase {
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
-
 		$admin                 = get_role( 'administrator' );
 		static::$had_admin_cap = $admin->has_cap( 'rocket_regenerate_critical_css' );
 	}
@@ -37,7 +36,6 @@ class Test_Delete extends RESTVfsTestCase {
 		if ( ! static::$had_cap ) {
 			$admin->remove_cap( 'rocket_regenerate_critical_css' );
 		}
-
 		parent::tearDownAfterClass();
 	}
 
@@ -53,6 +51,9 @@ class Test_Delete extends RESTVfsTestCase {
 	 * @dataProvider dataProvider
 	 */
 	public function testShouldDoExpectedWhenNotMultisite( $config, $expected ) {
+		$cache_file_path = $this->filesystem->getUrl( "{$this->config['vfs_dir']}cache/wp-rocket/example.org/{$config['post_data']['post_title']}/index.html" );
+		$this->assertTrue( $this->filesystem->exists( $cache_file_path ) );
+
 		$this->setUpTest( 1, $config );
 
 		$this->assertFilesExistBefore( $config );
@@ -63,6 +64,12 @@ class Test_Delete extends RESTVfsTestCase {
 		$actual = $this->doRestDelete( "/wp-rocket/v1/cpcss/post/{$this->post_id}" );
 
 		$this->assertSame( $expected, $actual );
+
+		if ( ! empty ( $expected['success'] ) ) {
+			$this->assertFalse( $this->filesystem->exists( $cache_file_path ) );
+		} else {
+			$this->assertTrue( $this->filesystem->exists( $cache_file_path ) );
+		}
 
 		// Check that the file(s) was(were) deleted.
 		$this->assertFilesDeleted( $config );
@@ -78,7 +85,7 @@ class Test_Delete extends RESTVfsTestCase {
 		$this->post_type = isset( $config['post_data']['post_type'] ) ? $config['post_data']['post_type'] : 'post';
 		$this->is_mobile = isset( $config['is_mobile'] ) ? $config['is_mobile'] : false;
 
-		$dirs        = $this->filesystem->getUrl( "{$this->config['vfs_dir']}{$site_id}/" );
+		$dirs        = $this->filesystem->getUrl( "{$this->config['vfs_dir']}cache/critical-css/{$site_id}/" );
 		$this->files = [
 			'dir'        => $dirs,
 			'non_mobile' => "{$dirs}posts/{$this->post_type}-{$this->post_id}.css",

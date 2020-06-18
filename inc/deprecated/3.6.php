@@ -443,3 +443,45 @@ function rocket_maybe_set_wp_cache_define() {
 		set_rocket_wp_cache_define( true );
 	}
 }
+
+/**
+ * Get all dates archives urls associated to a specific post.
+ *
+ * @since 3.6.1 deprecated
+ * @since 1.0
+ *
+ * @param int $post_id The post ID.
+ *
+ * @return array $urls List of dates URLs on success; else, an empty [].
+ */
+function get_rocket_post_dates_urls( $post_id ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+	_deprecated_function( __FUNCTION__ . '()', '3.6.1', '\WP_Rocket\Engine\Cache\Purge::purge_dates_archives()' );
+	$time = get_the_time( 'Y-m-d', $post_id );
+	if ( empty( $time ) ) {
+		return [];
+	}
+
+	// Extract and prep the year, month, and day.
+	$date  = explode( '-', $time );
+	$year  = trailingslashit( get_year_link( $date[0] ) );
+	$month = trailingslashit( get_month_link( $date[0], $date[1] ) );
+
+	$urls = [
+		"{$year}index.html",
+		"{$year}index.html_gzip",
+		$year . $GLOBALS['wp_rewrite']->pagination_base,
+		"{$month}index.html",
+		"{$month}index.html_gzip",
+		$month . $GLOBALS['wp_rewrite']->pagination_base,
+		get_day_link( $date[0], $date[1], $date[2] ),
+	];
+
+	/**
+	 * Filter the list of dates URLs.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param array $urls List of dates URLs.
+	*/
+	return (array) apply_filters( 'rocket_post_dates_urls', $urls );
+}

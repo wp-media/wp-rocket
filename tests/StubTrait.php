@@ -19,7 +19,7 @@ trait StubTrait {
 	protected $donotrocketoptimize      = null;
 	protected $donotasynccss            = null;
 	protected $white_label              = false;
-	
+	protected $constants                = [];
 
 	protected function resetStubProperties() {
 		$defaults = [
@@ -32,9 +32,10 @@ trait StubTrait {
 			'rocket_version'            => null,
 			'wp_rocket_debug'           => false,
 			'wp_rocket_advanced_cache'  => true,
-			'donotrocketoptimize'      => null,
-			'dontasynccss'             => null,
+			'donotrocketoptimize'       => null,
+			'dontasynccss'              => null,
 			'white_label'               => false,
+			'constants'                 => [],
 		];
 
 		foreach ( $defaults as $property => $value ) {
@@ -139,6 +140,10 @@ trait StubTrait {
 				return $this->white_label;
 
 			default:
+				if ( isset( $this->constants[$constant_name] ) ){
+					return $this->constants[$constant_name];
+				}
+
 				if ( ! rocket_has_constant( $constant_name ) ) {
 					return $default;
 				}
