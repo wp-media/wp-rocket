@@ -38,7 +38,7 @@ class WPCache {
 		if ( rocket_get_constant( 'WP_CACHE' ) ) {
 			return;
 		}
-	
+
 		$this->set_wp_cache_constant( true );
 	}
 
@@ -209,10 +209,11 @@ class WPCache {
 		$notice_name = 'rocket_warning_wp_config_permissions';
 
 		if (
-		in_array(
-			$notice_name,
-			(array) get_user_meta( get_current_user_id(), 'rocket_boxes', true ),
-			true )
+			in_array(
+				$notice_name,
+				(array) get_user_meta( get_current_user_id(), 'rocket_boxes', true ),
+				true
+			)
 		) {
 			return;
 		}
@@ -249,7 +250,7 @@ class WPCache {
 	 */
 	private function get_wp_cache_content( $value = 'true' ) {
 		$plugin_name = rocket_get_constant( 'WP_ROCKET_PLUGIN_NAME' );
-	
+
 		return "define( 'WP_CACHE', {$value} ); // Added by {$plugin_name}";
 	}
 }

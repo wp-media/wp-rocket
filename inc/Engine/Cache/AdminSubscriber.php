@@ -55,7 +55,7 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 			'admin_init'            => [
 				[ 'register_terms_row_action' ],
 				[ 'maybe_set_wp_cache' ],
-			], 
+			],
 			'admin_notices'         => [
 				[ 'notice_advanced_cache_permissions' ],
 				[ 'notice_wp_config_permissions' ],
