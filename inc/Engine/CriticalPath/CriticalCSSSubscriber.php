@@ -581,23 +581,9 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	 * @return string Updated HTML code
 	 */
 	public function async_css( $buffer ) {
-		if ( ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) || ( defined( 'DONOTASYNCCSS' ) && DONOTASYNCCSS ) ) {
-			return;
-		}
-
-		if ( ! $this->options->get( 'async_css' ) ) {
+		if ( ! $this->maybe_async_css() ) {
 			return $buffer;
 		}
-
-		if ( is_rocket_post_excluded_option( 'async_css' ) ) {
-			return $buffer;
-		}
-
-		if ( ! $this->critical_css->get_current_page_critical_css() ) {
-			return $buffer;
-		}
-
-		$excluded_css = array_flip( get_rocket_exclude_async_css() );
 
 		/**
 		 * Filters the pattern used to get all stylesheets in the HTML.
@@ -608,7 +594,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 		 */
 		$css_pattern = apply_filters(
 			'rocket_async_css_regex_pattern',
-			'/(?=<link[^>]*\s(rel\s*=\s*[\'"]stylesheet["\']))<link[^>]*\shref\s*=\s*[\'"]([^\'"]+)[\'"](.*)>/iU'
+			'/(?=<link[^>]*\s(rel\s*=\s*[\'"]stylesheet["\']))<link[^>]*\shref\s*=\s*[\'"]([^\'"]+)[\'"]\s*(type\s*=\s*[\'"].*[\'"])\s*(media\s*=\s*[\'"].*[\'"])(.*)>/iU'
 		);
 
 		// Get all css files with this regex.
@@ -617,8 +603,19 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 			return $buffer;
 		}
 
-		$noscripts = '';
+		return $this->async_css_tag_update( $tags_match, $buffer );
+	}
 
+	/**
+	 * Updates the HTML code by defering all CSS matches files.
+	 *
+	 * @param  array  $tags_match All matched css files.
+	 * @param  string $buffer     HTML code.
+	 * @return string             Modified HTML code with defer CSS.
+	 */
+	private function async_css_tag_update( $tags_match, $buffer ) {
+		$excluded_css = array_flip( get_rocket_exclude_async_css() );
+		$noscripts    = '';
 		foreach ( $tags_match[0] as $i => $tag ) {
 			// Strip query args.
 			$path = rocket_extract_url_component( $tags_match[2][ $i ], PHP_URL_PATH );
@@ -628,17 +625,32 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 				continue;
 			}
 
-			$preload = str_replace( 'stylesheet', 'preload', $tags_match[1][ $i ] );
-			$onload  = preg_replace( '~' . preg_quote( $tags_match[3][ $i ], '~' ) . '~iU', ' as="style" onload=""' . $tags_match[3][ $i ] . '>', $tags_match[3][ $i ] );
-			$tag     = str_replace( $tags_match[3][ $i ] . '>', $onload, $tag );
-			$tag     = str_replace( $tags_match[1][ $i ], $preload, $tag );
-			$tag     = str_replace( 'onload=""', 'onload="this.onload=null;this.rel=\'stylesheet\'"', $tag );
-			$buffer  = str_replace( $tags_match[0][ $i ], $tag, $buffer );
-
+			$tag        = str_replace( $tags_match[3][ $i ], 'as="style" onload="" ' . $tags_match[3][ $i ], $tag );
+			$tag        = str_replace( $tags_match[4][ $i ], 'media="print"', $tag );
+			$tag        = str_replace( 'onload=""', 'onload="this.media=\'all\'"', $tag );
+			$buffer     = str_replace( $tags_match[0][ $i ], $tag, $buffer );
 			$noscripts .= '<noscript>' . $tags_match[0][ $i ] . '</noscript>';
 		}
 
 		return str_replace( '</body>', $noscripts . '</body>', $buffer );
+	}
+
+	/**
+	 * Conditions which will allow to defer loading of CSS files.
+	 *
+	 * @return bool True / False if async_css should be applied.
+	 */
+	private function maybe_async_css() {
+		if ( ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) || ( defined( 'DONOTASYNCCSS' ) && DONOTASYNCCSS ) ) {
+			return false;
+		}
+		if ( ! $this->options->get( 'async_css' ) ) {
+			return false;
+		}
+		if ( is_rocket_post_excluded_option( 'async_css' ) ) {
+			return false;
+		}
+		return true;
 	}
 
 	/**
