@@ -496,7 +496,7 @@ function get_rocket_post_dates_urls( $post_id ) { // phpcs:ignore WordPress.Nami
  * @return void
  */
 function set_rocket_wp_cache_define( $turn_it_on ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
-	_deprecated_function( __FUNCTION__ . '()', '3.6.1', '\WP_Rocket\Engine\Cache\WPCache::set_wp_cache_define()' );
+	_deprecated_function( __FUNCTION__ . '()', '3.6.1', '\WP_Rocket\Engine\Cache\WPCache::set_wp_cache_constant()' );
 	// If WP_CACHE is already define, return to get a coffee.
 	if ( ! rocket_valid_key() || ( $turn_it_on && defined( 'WP_CACHE' ) && WP_CACHE ) ) {
 		return;

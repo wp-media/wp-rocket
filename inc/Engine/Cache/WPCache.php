@@ -39,7 +39,7 @@ class WPCache {
 			return;
 		}
 	
-		$this->set_wp_cache_define( true );
+		$this->set_wp_cache_constant( true );
 	}
 
 	/**
@@ -50,7 +50,7 @@ class WPCache {
 	 * @param bool $value The value of WP_CACHE constant.
 	 * @return void
 	 */
-	public function set_wp_cache_define( $value ) {
+	public function set_wp_cache_constant( $value ) {
 		if (
 			! rocket_valid_key()
 			||

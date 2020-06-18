@@ -147,7 +147,7 @@ function rocket_deactivation() {
 		flush_rocket_htaccess( true );
 
 		// Remove WP_CACHE constant in wp-config.php.
-		$wp_cache->set_wp_cache_define( false );
+		$wp_cache->set_wp_cache_constant( false );
 
 		// Delete content of advanced-cache.php.
 		rocket_put_content( WP_CONTENT_DIR . '/advanced-cache.php', '' );
@@ -222,7 +222,7 @@ function rocket_activation() {
 		flush_rocket_htaccess();
 
 		// Add WP_CACHE constant in wp-config.php.
-		$wp_cache->set_wp_cache_define( true );
+		$wp_cache->set_wp_cache_constant( true );
 	}
 
 	// Create the cache folders (wp-rocket & min).
