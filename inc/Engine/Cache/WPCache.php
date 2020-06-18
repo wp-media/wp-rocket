@@ -43,23 +43,15 @@ class WPCache {
 	}
 
 	/**
-	 * Added or set the value of the WP_CACHE constant
+	 * Sets the value of the WP_CACHE constant in wp-config.php
 	 *
 	 * @since 3.6.1
 	 *
-	 * @param bool $value The value of WP_CACHE constant.
+	 * @param bool $value The value to set for WP_CACHE constant.
 	 * @return void
 	 */
 	public function set_wp_cache_constant( $value ) {
-		if (
-			! rocket_valid_key()
-			||
-			rocket_get_constant( 'WP_CACHE' )
-		) {
-			return;
-		}
-
-		if ( rocket_get_constant( 'IS_PRESSABLE' ) ) {
+		if ( ! $this->should_set_wp_cache_constant( $value ) ) {
 			return;
 		}
 
@@ -81,18 +73,62 @@ class WPCache {
 		*/
 		$value = apply_filters( 'set_rocket_wp_cache_define', $value ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
-		$constant       = "define('WP_CACHE', $value); // Added by WP Rocket";
-		$wp_cache_found = preg_match( '/^define\(\s*\'WP_CACHE\',(?<value>.*)\)/m', $config_file_contents, $matches );
+		$pattern        = '/^\s*define\(\s*\'WP_CACHE\',\s*(?<value>[^\s\)]*)\s*\)/m';
+		$wp_cache_found = preg_match( $pattern, $config_file_contents, $matches );
+
+		if (
+			! $wp_cache_found
+			&&
+			rocket_has_constant( 'WP_CACHE' )
+		) {
+			return;
+		}
+
+		if (
+			! empty( $matches['value'] )
+			&&
+			$matches['value'] === $value
+		) {
+			return;
+		}
+
+		$constant = $this->get_wp_cache_content( $value );
 
 		if ( ! $wp_cache_found ) {
 			$config_file_contents = preg_replace( '/(<\?php)/i', "<?php\r\n{$constant}\r\n", $config_file_contents );
 		} elseif ( ! empty( $matches['value'] ) && $matches['value'] !== $value ) {
-			$config_file_contents = preg_replace( '/^define\(\s*\'WP_CACHE\',(.*)\).+/m', $constant, $config_file_contents );
+			$config_file_contents = preg_replace( $pattern, $constant, $config_file_contents );
 		}
 
-		$chmod = rocket_get_filesystem_perms( 'file' );
+		$this->filesystem->put_contents( $config_file_path, $config_file_contents, rocket_get_filesystem_perms( 'file' ) );
+	}
 
-		$this->filesystem->put_contents( $config_file_path, $config_file_contents, $chmod );
+	/**
+	 * Checks if we should set the WP_CACHE constant
+	 *
+	 * @since 3.6.1
+	 *
+	 * @param bool $value The value to set for WP_CACHE constant.
+	 * @return bool
+	 */
+	private function should_set_wp_cache_constant( $value ) {
+		if ( ! $this->is_user_allowed() ) {
+			return false;
+		}
+
+		if (
+			true === $value
+			&&
+			rocket_get_constant( 'WP_CACHE' )
+		) {
+			return false;
+		}
+
+		if ( rocket_get_constant( 'IS_PRESSABLE' ) ) {
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
@@ -188,13 +224,13 @@ class WPCache {
 				'dismissible'      => '',
 				'message'          => rocket_notice_writing_permissions( 'wp-config.php' ),
 				'dismiss_button'   => $notice_name,
-				'readonly_content' => $this->get_wp_config_content(),
+				'readonly_content' => $this->get_wp_cache_content(),
 			]
 		);
 	}
 
 	/**
-	 * Checks if current user can see the notice
+	 * Checks if current user can perform the action
 	 *
 	 * @since 3.6.1
 	 *
@@ -205,15 +241,16 @@ class WPCache {
 	}
 
 	/**
-	 * Gets content to add to the wp-config.php file
+	 * Gets the content to add to the wp-config.php file
 	 *
 	 * @since 3.6.1
 	 *
+	 * @param string $value Value for the WP_CACHE constant.
 	 * @return string
 	 */
-	private function get_wp_config_content() {
+	private function get_wp_cache_content( $value = 'true' ) {
 		$plugin_name = rocket_get_constant( 'WP_ROCKET_PLUGIN_NAME' );
 	
-		return "/** Enable Cache by {$plugin_name} */\r\ndefine( 'WP_CACHE', true );\r\n";
+		return "define( 'WP_CACHE', {$value} ); // Added by {$plugin_name}";
 	}
 }
