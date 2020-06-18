@@ -1,24 +1,28 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\functions;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Cache\WPCache;
 
 use Brain\Monkey\Functions;
+use WP_Rocket\Engine\Cache\WPCache;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers ::set_rocket_wp_cache_define
+ * @covers \WP_Rocket\Engine\Cache\WPCache::set_wp_cache_define
  * @uses   ::rocket_valid_key
- * @uses   ::rocket_find_wpconfig_path
- * @uses   ::rocket_direct_filesystem
- * @uses   ::rocket_put_content
  *
- * @group Functions
- * @group Files
+ * @group WPCache
  * @group vfs
  */
-class Test_SetRocketWpCacheDefine extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/functions/setRocketWpCacheDefine.php';
+class Test_SetWpCacheDefine extends FilesystemTestCase {
+	protected $path_to_test_data = '/inc/Engine/Cache/WPCache/setWpCacheDefine.php';
 	protected $config_file = '';
+	private static $wp_cache;
+
+	public static function setUpBeforeClass() {
+		$container = apply_filters( 'rocket_container', null );
+
+		self::$wp_cache = $container->get( 'wp_cache' );
+	}
 
 	public function tearDown() {
 		remove_filter( 'rocket_wp_config_name', [ $this, 'setWpCacheFilePath' ] );
@@ -36,7 +40,7 @@ class Test_SetRocketWpCacheDefine extends FilesystemTestCase {
 
 		Functions\when( 'rocket_valid_key' )->justReturn( $config['valid_key'] );
 
-		set_rocket_wp_cache_define( true );
+		self::$wp_cache->set_wp_cache_define( true );
 
 		$actual = $this->filesystem->get_contents( $config_file_full_path );
 		$this->assertEquals( $expected, str_replace( "\r\n", "\n", $actual ) );

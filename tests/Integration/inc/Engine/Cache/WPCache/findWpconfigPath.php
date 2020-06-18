@@ -12,17 +12,13 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 class Test_FindWpconfigPath extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/Cache/WPCache/findWpconfigPath.php';
 	private static $wp_cache;
+	private $config_file_name = null;
 
 	public static function setUpBeforeClass() {
 		$container = apply_filters( 'rocket_container', null );
 
 		self::$wp_cache = $container->get( 'wp_cache' );
 	}
-
-	/**
-	 * @var string|null
-	 */
-	private $config_file_name = null;
 
 	public function setUp() {
 		parent::setUp();
