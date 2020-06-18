@@ -51,7 +51,7 @@ class Test_NoticeWpConfigPermissions extends FileSystemTestCase {
 						'dismissible'      => '',
 						'message'          => $config['message'],
 						'dismiss_button'   => 'rocket_warning_wp_config_permissions',
-						'readonly_content' => "/** Enable Cache by WP Rocket */\r\ndefine( 'WP_CACHE', true );\r\n",
+						'readonly_content' => "define( 'WP_CACHE', true ); // Added by WP Rocket",
 					]
 				)
 				->andReturnNull();

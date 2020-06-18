@@ -20,16 +20,19 @@ class Test_SetWpCacheConstant extends FilesystemTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldAddWpCacheConstant( $config, $expected ) {
-		$config_file_full_path = $this->config['vfs_dir'] . $config['file'] . '.php';
+		$wp_config = $this->filesystem->getUrl( 'wp-config.php' );
+		$this->filesystem->put_contents( $wp_config, $config['original'] );
 
-		Functions\when( 'rocket_find_wpconfig_path' )->justReturn( $config_file_full_path );
 		Functions\expect( 'rocket_valid_key' )->once()->andReturn( $config['valid_key'] );
+		Functions\when( 'current_user_can' )->justReturn( true );
 
 		$wp_cache = new WPCache( $this->filesystem );
 
 		$wp_cache->set_wp_cache_constant( true );
 
-		$actual = $this->filesystem->get_contents( $config_file_full_path );
-		$this->assertEquals( $expected, str_replace( "\r\n", "\n", $actual ) );
+		$this->assertEquals(
+			$expected,
+			str_replace( "\r\n", "\n", $this->filesystem->get_contents( $wp_config ) )
+		);
 	}
 }
