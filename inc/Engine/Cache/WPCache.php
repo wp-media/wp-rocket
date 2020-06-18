@@ -73,8 +73,7 @@ class WPCache {
 		*/
 		$value = apply_filters( 'set_rocket_wp_cache_define', $value ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
-		$pattern        = '/^\s*define\(\s*\'WP_CACHE\',\s*(?<value>[^\s\)]*)\s*\)/m';
-		$wp_cache_found = preg_match( $pattern, $config_file_contents, $matches );
+		$wp_cache_found = preg_match( '/^\s*define\(\s*\'WP_CACHE\'\s*,\s*(?<value>[^\s\)]*)\s*\)/m', $config_file_contents, $matches );
 
 		if (
 			! $wp_cache_found
@@ -97,7 +96,7 @@ class WPCache {
 		if ( ! $wp_cache_found ) {
 			$config_file_contents = preg_replace( '/(<\?php)/i', "<?php\r\n{$constant}\r\n", $config_file_contents );
 		} elseif ( ! empty( $matches['value'] ) && $matches['value'] !== $value ) {
-			$config_file_contents = preg_replace( $pattern, $constant, $config_file_contents );
+			$config_file_contents = preg_replace( '/^\s*define\(\s*\'WP_CACHE\'\s*,\s*([^\s\)]*)\s*\).+/m', $constant, $config_file_contents );
 		}
 
 		$this->filesystem->put_contents( $config_file_path, $config_file_contents, rocket_get_filesystem_perms( 'file' ) );
