@@ -594,11 +594,12 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 		 */
 		$css_pattern = apply_filters(
 			'rocket_async_css_regex_pattern',
-			'/(?=<link[^>]*\s(rel\s*=\s*[\'"]stylesheet["\']))<link[^>]*\shref\s*=\s*[\'"]([^\'"]+)[\'"]\s*(type\s*=\s*[\'"].*[\'"])\s*(media\s*=\s*[\'"].*[\'"])(.*)>/iU'
+			'/(?=<link[^>]*\s(rel\s*=\s*[\'"]stylesheet["\']))<link(?=[^<>]*?(?:(?<type>type\s*=\s*[\'"][^<>"\']*[\'"])|>))(?=[^<>]*?(?:(?<media>media\s*=\s*[\'"][^<>"\']*[\'"])|>))(?=[^<>]*?(?:href\s*=\s*[\'"](?<url>.*?)[\'"]|>))(?=[^<>]*?(?:(?<rel>rel\s*=\s*[\'"]>[^<>"\']*)[\'"]|>))(?:.*?<\/\1>|[^<>]*>)/ix'
 		);
 
 		// Get all css files with this regex.
 		preg_match_all( $css_pattern, $buffer, $tags_match );
+
 		if ( ! isset( $tags_match[0] ) ) {
 			return $buffer;
 		}
@@ -614,20 +615,26 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	 * @return string             Modified HTML code with defer CSS.
 	 */
 	private function async_css_tag_update( $tags_match, $buffer ) {
-		$excluded_css = array_flip( get_rocket_exclude_async_css() );
+		$excluded_css = array_flip( $this->critical_css->get_exclude_async_css() );
 		$noscripts    = '';
 		foreach ( $tags_match[0] as $i => $tag ) {
 			// Strip query args.
-			$path = rocket_extract_url_component( $tags_match[2][ $i ], PHP_URL_PATH );
+			$path = rocket_extract_url_component( $tags_match['url'][ $i ], PHP_URL_PATH );
 
 			// Check if this file should be deferred.
 			if ( isset( $excluded_css[ $path ] ) ) {
 				continue;
 			}
 
-			$tag        = str_replace( $tags_match[3][ $i ], 'as="style" onload="" ' . $tags_match[3][ $i ], $tag );
-			$tag        = str_replace( $tags_match[4][ $i ], 'media="print"', $tag );
-			$tag        = str_replace( 'onload=""', 'onload="this.media=\'all\'"', $tag );
+			$original_media = 'all';
+			$tag            = str_replace( $tags_match['type'][ $i ], ' as="style" onload="" ' . $tags_match['type'][ $i ] . ( empty( $tags_match['media'][ $i ] ) ? ' media="print"' : '' ), $tag );
+			if ( ! empty( $tags_match['media'][ $i ] ) ) {
+				preg_match( '/media\s*=\s*[\'"](?<media>.*)[\'"]/ix', $tags_match['media'][ $i ], $media_match );
+				$original_media = $media_match['media'];
+				$tag            = str_replace( $tags_match['media'][ $i ], 'media="print"', $tag );
+			}
+
+			$tag        = str_replace( 'onload=""', 'onload="this.media=\'' . $original_media . '\'"', $tag );
 			$buffer     = str_replace( $tags_match[0][ $i ], $tag, $buffer );
 			$noscripts .= '<noscript>' . $tags_match[0][ $i ] . '</noscript>';
 		}

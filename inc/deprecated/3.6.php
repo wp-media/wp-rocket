@@ -388,3 +388,30 @@ function get_rocket_post_dates_urls( $post_id ) { // phpcs:ignore WordPress.Nami
 	*/
 	return (array) apply_filters( 'rocket_post_dates_urls', $urls );
 }
+
+
+/**
+ * Get list of CSS files to be excluded from async CSS.
+ *
+ * @since 3.6.1 deprecated
+ * @since 2.10
+ * @author Remy Perona
+ *
+ * @return array An array of URLs for the CSS files to be excluded.
+ */
+function get_rocket_exclude_async_css() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+	_deprecated_function( __FUNCTION__ . '()', '3.6.1', '\WP_Rocket\Engine\CriticalPath\CriticalCSS::get_exclude_async_css()' );
+	/**
+	 * Filter list of async CSS files
+	 *
+	 * @since 2.10
+	 * @author Remy Perona
+	 *
+	 * @param array $exclude_async_css An array of URLs for the CSS files to be excluded.
+	 */
+	$exclude_async_css = (array) apply_filters( 'rocket_exclude_async_css', [] );
+	$exclude_async_css = array_filter( $exclude_async_css );
+	$exclude_async_css = array_flip( array_flip( $exclude_async_css ) );
+
+	return $exclude_async_css;
+}
