@@ -50,6 +50,10 @@ class AssetsLocalCache {
 	public function get_content( $url ) {
 		$filepath = $this->get_filepath( $url );
 
+		if ( empty( $filepath ) ) {
+			return '';
+		}
+
 		if ( $this->filesystem->is_readable( $filepath ) ) {
 			return $this->filesystem->get_contents( $filepath );
 		}
@@ -74,7 +78,12 @@ class AssetsLocalCache {
 	 * @return string
 	 */
 	protected function get_filepath( $url ) {
-		$parts    = wp_parse_url( $url );
+		$parts = wp_parse_url( $url );
+
+		if ( empty( $parts['path'] ) ) {
+			return '';
+		}
+
 		$filename = $parts['host'] . str_replace( '/', '-', $parts['path'] );
 
 		return $this->cache_path . $filename;
