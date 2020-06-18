@@ -1472,18 +1472,15 @@ function _rocket_get_wp_rocket_cache_path() { // phpcs:ignore WordPress.NamingCo
 }
 
 /**
- * Get an array of php files in directory.
+ * Gets .php files in a directory as an array of SplFileInfo objects.
  *
- * @param string $dir_path Full path to the directory.
+ * @since 3.6.1
  *
- * @return array php files in the directory.
- *               [...SplFileInfo file]
+ * @param string $dir_path Directory to check.
  *
- * @since  ver 3.6.1
- *
- * @author Caspar Green
+ * @return array .php files in the directory. [...SplFileInfo]
  */
-function _rocket_get_directory_php_files_array( $dir_path ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
+function _rocket_get_php_files_in_dir( $dir_path ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 	try {
 		$config_dir = new FilesystemIterator( (string) $dir_path );
 	} catch ( Exception $e ) {
