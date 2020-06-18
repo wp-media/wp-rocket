@@ -648,7 +648,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	 * @return bool True / False if async_css should be applied.
 	 */
 	private function maybe_async_css() {
-		if ( ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) || ( defined( 'DONOTASYNCCSS' ) && DONOTASYNCCSS ) ) {
+		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) || rocket_get_constant( 'DONOTASYNCCSS' ) ) {
 			return false;
 		}
 		if ( ! $this->options->get( 'async_css' ) ) {
