@@ -485,3 +485,62 @@ function get_rocket_post_dates_urls( $post_id ) { // phpcs:ignore WordPress.Nami
 	*/
 	return (array) apply_filters( 'rocket_post_dates_urls', $urls );
 }
+
+/**
+ * Added or set the value of the WP_CACHE constant
+ *
+ * @since 3.6.1 deprecated
+ * @since 2.0
+ *
+ * @param bool $turn_it_on The value of WP_CACHE constant.
+ * @return void
+ */
+function set_rocket_wp_cache_define( $turn_it_on ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+	_deprecated_function( __FUNCTION__ . '()', '3.6.1', '\WP_Rocket\Engine\Cache\WPCache::set_wp_cache_define()' );
+	// If WP_CACHE is already define, return to get a coffee.
+	if ( ! rocket_valid_key() || ( $turn_it_on && defined( 'WP_CACHE' ) && WP_CACHE ) ) {
+		return;
+	}
+
+	if ( defined( 'IS_PRESSABLE' ) && IS_PRESSABLE ) {
+		return;
+	}
+
+	// Get path of the config file.
+	$config_file_path = rocket_find_wpconfig_path();
+	if ( ! $config_file_path ) {
+		return;
+	}
+
+	$filesystem = rocket_direct_filesystem();
+
+	// Get content of the config file.
+	$config_file_contents = $filesystem->get_contents( $config_file_path );
+
+	// Get the value of WP_CACHE constant.
+	$turn_it_on = $turn_it_on ? 'true' : 'false';
+
+	/**
+	 * Filter allow to change the value of WP_CACHE constant
+	 *
+	 * @since 2.1
+	 *
+	 * @param string $turn_it_on The value of WP_CACHE constant.
+	*/
+	$turn_it_on = apply_filters( 'set_rocket_wp_cache_define', $turn_it_on ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+
+	// Get WP_CACHE constant define.
+	$constant = "define('WP_CACHE', $turn_it_on); // Added by WP Rocket";
+
+	// Lets find out if the constant WP_CACHE is defined or not.
+	$wp_cache_found = preg_match( '/^define\(\s*\'WP_CACHE\',(.*)\)/m', $config_file_contents, $matches );
+
+	if ( ! $wp_cache_found ) {
+		$config_file_contents = preg_replace( '/(<\?php)/i', "<?php\r\n{$constant}\r\n", $config_file_contents );
+	} elseif ( ! empty( $matches[1] ) && $matches[1] !== $turn_it_on ) {
+		$config_file_contents = preg_replace( '/^define\(\s*\'WP_CACHE\',(.*)\).+/m', $constant, $config_file_contents );
+	}
+
+	// Insert the constant in wp-config.php file.
+	rocket_put_content( $config_file_path, $config_file_contents );
+}
