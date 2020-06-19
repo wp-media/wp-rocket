@@ -11,7 +11,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group  WPEngine
  * @group  ThirdParty
  */
-class Test_CleanWWPEngine extends TestCase {
+class Test_CleanWPEngine extends TestCase {
 
 	public static function tearDownAfterClass() {
 		parent::tearDownAfterClass();
