@@ -2,8 +2,10 @@
 /**
  * Mocked WpeCommon for WP Engine to the minimum requirement for tests to run.
  */
-class WpeCommon {
-	public static function purge_memcached() {}
+if ( ! class_exists( 'WpeCommon') ) {
+	class WpeCommon {
+		public static function purge_memcached() {}
 
-	public static function purge_varnish_cache() {}
+		public static function purge_varnish_cache() {}
+	}
 }

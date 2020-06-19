@@ -2,9 +2,11 @@
 /**
  * Mocked wpe_param() from WP Engine to the minimum requirement for tests to run.
  */
-function wpe_param( $option ) {
-	if ( 'purge-all' === $option ) {
-		return true;
+if ( ! function_exists( 'wpe_param') ) {
+	function wpe_param( $option ) {
+		if ( 'purge-all' === $option ) {
+			return true;
+		}
+		return false;
 	}
-	return false;
 }

@@ -2,6 +2,7 @@
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\Wpengine;
 
 use Mockery;
+use WpeCommon;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Hostings\Wpengine;
 
