@@ -192,17 +192,11 @@ class WPCache {
 			return;
 		}
 
-		$config_file = $this->find_wpconfig_path();
+		if ( $this->find_wpconfig_path() ) {
+			return;
+		}
 
-		if (
-			(
-				false !== $config_file
-				&&
-				$this->filesystem->is_writable( $config_file )
-			)
-			||
-			rocket_get_constant( 'WP_CACHE' )
-		) {
+		if ( rocket_get_constant( 'WP_CACHE' ) ) {
 			return;
 		}
 
