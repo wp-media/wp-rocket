@@ -129,12 +129,6 @@ function rocket_get_purge_urls( $post_id, $post ) {
 		}
 	}
 
-	// Add all terms archive page to purge.
-	$purge_terms = get_rocket_post_terms_urls( $post_id );
-	if ( count( $purge_terms ) ) {
-		$purge_urls = array_merge( $purge_urls, $purge_terms );
-	}
-
 	// Add the author page.
 	$purge_author = [ get_author_posts_url( $post->post_author ) ];
 	$purge_urls   = array_merge( $purge_urls, $purge_author );

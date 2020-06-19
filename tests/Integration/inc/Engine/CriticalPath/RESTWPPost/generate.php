@@ -29,6 +29,10 @@ class Test_Generate extends RESTVfsTestCase {
 	}
 
 	protected function doTest( $site_id, $config, $expected ) {
+		$orig_post_id = isset( $config['post_data']['ID'] )
+			? $config['post_data']['ID']
+			: 0;
+
 		if ( isset( $config['post_data'] ) ) {
 			$config['post_data']['ID'] = self::$post_id;
 
@@ -116,6 +120,8 @@ class Test_Generate extends RESTVfsTestCase {
 		if ( $request_timeout ) {
 			$body_param['timeout'] = true;
 		}
+
+		$expected['message'] = str_replace( $orig_post_id, $post_id, $expected['message'] );
 
 		$cache_file_path = $this->filesystem->getUrl( "{$this->config['vfs_dir']}cache/wp-rocket/example.org/{$post_title}/index.html" );
 		if ( $expected['success'] ) {
