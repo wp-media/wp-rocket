@@ -40,19 +40,29 @@ class Test_RemoveNotices extends AdminTestCase {
 
 		$this->user_id = $this->factory->user->create( [ 'role' => 'administrator' ] );
 		wp_set_current_user( $this->user_id );
+
+		remove_action( 'admin_init', [ self::$wpengine, 'run_rocket_bot_after_wpengine' ] );
+	}
+
+	public function tearDown() {
+		parent::tearDown();
+
+		add_action( 'admin_init', [ self::$wpengine, 'run_rocket_bot_after_wpengine' ] );
 	}
 
 	public function testShouldCleanWPEngine() {
-		remove_action( 'admin_init', [ self::$wpengine, 'run_rocket_bot_after_wpengine' ] );
-
+		// Set up before state.
 		$this->assertTrue( (bool) has_action( 'admin_notices', [ self::$subscriber, 'notice_advanced_cache_permissions' ] ) );
+		if ( ! has_action( 'admin_notices', [ self::$subscriber, 'notice_advanced_cache_content_not_ours' ] ) ) {
+			add_action( 'admin_notices', [ self::$subscriber, 'notice_advanced_cache_content_not_ours' ] );
+		}
+		$this->assertTrue( (bool) has_action( 'admin_notices', [ self::$subscriber, 'notice_advanced_cache_content_not_ours' ] ) );
 
+		// Run it.
 		do_action( 'admin_init' );
 
+		// Check that both callbacks were unregistered.
 		$this->assertFalse( has_action( 'admin_notices', [ self::$subscriber, 'notice_advanced_cache_permissions' ] ) );
-		$this->assertFalse( has_action( 'admin_notices', [
-			self::$subscriber,
-			'notice_advanced_cache_content_not_ours',
-		] ) );
+		$this->assertFalse( has_action( 'admin_notices', [ self::$subscriber, 'notice_advanced_cache_content_not_ours' ] ) );
 	}
 }
