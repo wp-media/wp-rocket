@@ -1,4 +1,5 @@
 <?php
+
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\Wpengine;
 
 use Mockery;
@@ -9,6 +10,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Hostings\Wpengine::remove_notices
+ *
  * @group  Wpengine
  * @group  ThirdParty
  */
@@ -22,8 +24,8 @@ class Test_RemoveNotices extends WpengineTestCase {
 			->andReturn( $container );
 
 		$container->shouldReceive( 'get' )
-			->with( 'admin_cache_subscriber' )
-			->andReturn( $admin_cache_subscriber );
+		          ->with( 'admin_cache_subscriber' )
+		          ->andReturn( $admin_cache_subscriber );
 
 		Functions\expect( 'remove_action' )
 			->once()

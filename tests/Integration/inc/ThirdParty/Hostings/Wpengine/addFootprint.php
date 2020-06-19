@@ -1,14 +1,18 @@
 <?php
+
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Hostings\Wpengine;
 
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Hostings\Wpengine::add_footprint
+ * @uses   ::rocket_get_constant
+ *
  * @group  Wpengine
  * @group  ThirdParty
  */
 class Test_AddFootprint extends TestCase {
+
 	/**
 	 * @dataProvider providerTestData
 	 */

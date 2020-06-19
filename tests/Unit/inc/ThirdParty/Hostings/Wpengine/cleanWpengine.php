@@ -1,10 +1,12 @@
 <?php
+
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\Wpengine;
 
 use WpeCommon;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Hostings\Wpengine::clean_wpengine
+ *
  * @group  Wpengine
  * @group  ThirdParty
  */

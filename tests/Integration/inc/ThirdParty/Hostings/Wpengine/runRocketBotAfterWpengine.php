@@ -2,14 +2,16 @@
 
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Hostings\Wpengine;
 
-
-use Brain\Monkey\Actions;
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\AdminTestCase;
 use WP_Rocket\Tests\Integration\CapTrait;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Hostings\Wpengine::run_rocket_bot_after_wpengine
+ * @uses   ::rocket_has_constant
+ * @uses   ::rocket_get_constant
+ * @uses   ::run_rocket_bot
+ * @uses   ::run_rocket_sitemap_preload
  *
  * @group  Wpengine
  * @group  ThirdParty

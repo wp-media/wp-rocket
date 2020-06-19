@@ -1,4 +1,5 @@
 <?php
+
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\Wpengine;
 
 use Brain\Monkey\Functions;
@@ -7,6 +8,11 @@ use WP_Rocket\ThirdParty\Hostings\Wpengine;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Hostings\Wpengine::run_rocket_bot_after_wpengine
+ * @uses   ::rocket_has_constant
+ * @uses   ::rocket_get_constant
+ * @uses   ::run_rocket_bot
+ * @uses   ::run_rocket_sitemap_preload
+ *
  * @group  Wpengine
  * @group  ThirdParty
  */
@@ -17,26 +23,26 @@ class Test_RunRocketBotAfterWpengine extends TestCase {
 	public function testShouldRunRocketBotAfterWpengine( $config, $expected ) {
 		if ( isset( $config['wpe_param'] ) ) {
 			Functions\expect( 'wpe_param' )
-			  ->once()
-			  ->with( 'purge-all' )
-			  ->andReturn( $config['wpe_param'] );
+				->once()
+				->with( 'purge-all' )
+				->andReturn( $config['wpe_param'] );
 		}
 
 		if ( isset( $config['pwp_constant'] ) ) {
 			Functions\expect( 'rocket_has_constant' )
-			  ->once()
-			  ->with( 'PWP_NAME' )
-			  ->andReturn( $config['pwp_constant'] );
+				->once()
+				->with( 'PWP_NAME' )
+				->andReturn( $config['pwp_constant'] );
 		}
 
 		if ( isset( $config['check_admin_referer'] ) ) {
 			Functions\expect( 'rocket_get_constant' )
-			  ->once()
-			  ->with( 'PWP_NAME' )
-			  ->andReturn( 'pwp_constant' );
+				->once()
+				->with( 'PWP_NAME' )
+				->andReturn( 'pwp_constant' );
 			Functions\expect( 'check_admin_referer' )
-			  ->once()
-			  ->andReturn( $config['check_admin_referer'] );
+				->once()
+				->andReturn( $config['check_admin_referer'] );
 		}
 
 		if ( $expected ) {

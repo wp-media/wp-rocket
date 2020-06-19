@@ -5,6 +5,7 @@ use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Hostings\Wpengine::disable_htaccess
+ *
  * @group  Wpengine
  * @group  ThirdParty
  */
