@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\ThirdParty\Hostings;
 
+use WpeCommon;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
@@ -126,7 +127,7 @@ class Wpengine implements Subscriber_Interface {
 	 * @since 3.6.1
 	 */
 	public function run_rocket_bot_after_wpengine() {
-		if ( wpe_param( 'purge-all' ) && defined( 'PWP_NAME' ) && check_admin_referer( PWP_NAME . '-config' ) ) {
+		if ( wpe_param( 'purge-all' ) && rocket_has_constant( 'PWP_NAME' ) && check_admin_referer( rocket_get_constant( 'PWP_NAME' ) . '-config' ) ) {
 			// Preload cache.
 			run_rocket_bot();
 			run_rocket_sitemap_preload();

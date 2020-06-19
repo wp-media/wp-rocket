@@ -1,0 +1,56 @@
+<?php
+namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\Wpengine;
+
+use Brain\Monkey\Functions;
+use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\ThirdParty\Hostings\Wpengine;
+
+/**
+ * @covers \WP_Rocket\ThirdParty\Hostings\Wpengine::run_rocket_bot_after_wpengine
+ * @group  Wpengine
+ * @group  ThirdParty
+ */
+class Test_RunRocketBotAfterWpengine extends TestCase {
+	/**
+	 * @dataProvider providerTestData
+	 */
+	public function testShouldRunRocketBotAfterWpengine( $config, $expected ) {
+		if ( isset( $config['wpe_param'] ) ) {
+			Functions\expect( 'wpe_param' )
+			  ->once()
+			  ->with( 'purge-all' )
+			  ->andReturn( $config['wpe_param'] );
+		}
+
+		if ( isset( $config['pwp_constant'] ) ) {
+			Functions\expect( 'rocket_has_constant' )
+			  ->once()
+			  ->with( 'PWP_NAME' )
+			  ->andReturn( $config['pwp_constant'] );
+		}
+
+		if ( isset( $config['check_admin_referer'] ) ) {
+			Functions\expect( 'rocket_get_constant' )
+			  ->once()
+			  ->with( 'PWP_NAME' )
+			  ->andReturn( 'pwp_constant' );
+			Functions\expect( 'check_admin_referer' )
+			  ->once()
+			  ->andReturn( $config['check_admin_referer'] );
+		}
+
+		if ( $expected ) {
+			Functions\expect( 'run_rocket_bot' )->once();
+			Functions\expect( 'run_rocket_sitemap_preload' )->once();
+		} else {
+			Functions\expect( 'run_rocket_bot' )->never();
+			Functions\expect( 'run_rocket_sitemap_preload' )->never();
+		}
+		$this->wpengine = new Wpengine();
+		$this->wpengine->run_rocket_bot_after_wpengine();
+	}
+
+	public function providerTestData() {
+		return $this->getTestData( __DIR__, 'runRocketBotAfterWpengine' );
+	}
+}
