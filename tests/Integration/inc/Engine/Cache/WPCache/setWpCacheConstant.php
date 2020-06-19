@@ -57,6 +57,7 @@ class Test_SetWpCacheConstant extends FilesystemTestCase {
 		$wp_config = $this->filesystem->getUrl( 'wp-config.php' );
 		$this->filesystem->put_contents( $wp_config, $config['original'] );
 
+		Functions\when( 'rocket_has_constant' )->justReturn( false );
 		Functions\when( 'rocket_valid_key' )->justReturn( $config['valid_key'] );
 		unset( $this->wp_cache_constant );
 		self::$wp_cache->set_wp_cache_constant( true );
