@@ -30,6 +30,9 @@ class Test_Optimize extends TestCase {
 		$this->minify->shouldReceive( 'minify' )
 		             ->andReturn( 'body{font-family:Helvetica,Arial,sans-serif;text-align:center;}' );
 
+		$this->options
+			 ->shouldReceive( 'get' )
+			 ->andReturnArg( 1 );
 		$this->combine = new Combine( $this->options, $this->minify );
 	}
 
