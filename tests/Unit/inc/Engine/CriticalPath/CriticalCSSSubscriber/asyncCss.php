@@ -3,11 +3,6 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\CriticalCSSSubscriber;
 
 use Brain\Monkey\Functions;
-use Mockery;
-use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\CriticalPath\CriticalCSS;
-use WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration;
-use WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
