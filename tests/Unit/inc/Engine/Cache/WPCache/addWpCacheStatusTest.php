@@ -17,7 +17,7 @@ class Test_AddWpCacheStatusTest extends TestCase {
     /**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldMaybeAddWpCacheConstant( $tests, $expected ) {
+	public function testShouldAddWpCacheTest( $tests, $expected ) {
         $wp_cache = new WPCache( null );
 
         $result = $wp_cache->add_wp_cache_status_test( $tests );
