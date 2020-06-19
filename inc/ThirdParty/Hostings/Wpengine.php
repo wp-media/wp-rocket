@@ -116,7 +116,6 @@ class Wpengine implements Subscriber_Interface {
 	public function remove_notices() {
 		$container  = apply_filters( 'rocket_container', null );
 		$subscriber = $container->get( 'admin_cache_subscriber' );
-
 		remove_action( 'admin_notices', [ $subscriber, 'notice_advanced_cache_permissions' ] );
 		remove_action( 'admin_notices', [ $subscriber, 'notice_advanced_cache_content_not_ours' ] );
 	}

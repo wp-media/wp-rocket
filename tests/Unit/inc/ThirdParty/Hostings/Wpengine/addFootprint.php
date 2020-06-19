@@ -1,22 +1,12 @@
 <?php
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\Wpengine;
 
-use WP_Rocket\Tests\Unit\TestCase;
-use WP_Rocket\ThirdParty\Hostings\Wpengine;
-
 /**
  * @covers \WP_Rocket\ThirdParty\Hostings\Wpengine::add_footprint
  * @group  Wpengine
  * @group  ThirdParty
  */
-class Test_AddFootprint extends TestCase {
-	private $wpengine;
-
-	public function setup() {
-		parent::setup();
-		$this->wpengine = new Wpengine();
-	}
-
+class Test_AddFootprint extends WpengineTestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
