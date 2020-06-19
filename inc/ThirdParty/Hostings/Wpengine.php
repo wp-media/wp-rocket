@@ -163,9 +163,9 @@ class Wpengine implements Subscriber_Interface {
 			return $buffer;
 		}
 
-		$footprint  = defined( 'WP_ROCKET_WHITE_LABEL_FOOTPRINT' )
+		$footprint  = rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_FOOTPRINT' )
 			? "\n" . '<!-- Optimized for great performance'
-			: "\n" . '<!-- This website is like a Rocket, isn\'t it? Performance optimized by ' . WP_ROCKET_PLUGIN_NAME . '. Learn more: https://wp-rocket.me';
+			: "\n" . '<!-- This website is like a Rocket, isn\'t it? Performance optimized by ' . rocket_get_constant( 'WP_ROCKET_PLUGIN_NAME' ) . '. Learn more: https://wp-rocket.me';
 		$footprint .= ' -->';
 
 		return $buffer . $footprint;
