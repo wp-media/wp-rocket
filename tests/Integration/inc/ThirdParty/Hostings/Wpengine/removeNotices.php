@@ -46,10 +46,6 @@ class Test_RemoveNotices extends AdminTestCase {
 		remove_action( 'admin_init', [ self::$wpengine, 'run_rocket_bot_after_wpengine' ] );
 
 		$this->assertTrue( (bool) has_action( 'admin_notices', [ self::$subscriber, 'notice_advanced_cache_permissions' ] ) );
-		$this->assertTrue( (bool) has_action( 'admin_notices', [
-			self::$subscriber,
-			'notice_advanced_cache_content_not_ours',
-		] ) );
 
 		do_action( 'admin_init' );
 
