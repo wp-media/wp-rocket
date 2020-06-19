@@ -274,38 +274,38 @@ class WPCache {
 	 */
 	public function check_wp_cache_value() {
 		$result = [
-			'badge'  => [
+			'badge'       => [
 				'label' => __( 'Cache', 'rocket' ),
 			],
 			'description' => sprintf(
 				'<p>%s</p>',
 				__( 'The WP_CACHE constant needs to be set to true for WP Rocket cache to work properly', 'rocket' )
 			),
-			'actions' => '',
-			'test'    => 'wp_cache_status',
+			'actions'     => '',
+			'test'        => 'wp_cache_status',
 		];
 
 		$value = rocket_get_constant( 'WP_CACHE' );
 
 		if ( true === $value ) {
-			$result['label'] = __( 'WP_CACHE is set to true', 'rocket' );
-			$result['status'] = 'good';
+			$result['label']          = __( 'WP_CACHE is set to true', 'rocket' );
+			$result['status']         = 'good';
 			$result['badge']['color'] = 'green';
 
 			return $result;
 		}
 
 		if ( null === $value ) {
-			$result['label'] = __( 'WP_CACHE is not set', 'rocket' );
-			$result['status'] = 'critical';
+			$result['label']          = __( 'WP_CACHE is not set', 'rocket' );
+			$result['status']         = 'critical';
 			$result['badge']['color'] = 'red';
 
 			return $result;
 		}
 
 		if ( false === $value ) {
-			$result['label'] = __( 'WP_CACHE is set to false', 'rocket' );
-			$result['status'] = 'critical';
+			$result['label']          = __( 'WP_CACHE is set to false', 'rocket' );
+			$result['status']         = 'critical';
 			$result['badge']['color'] = 'red';
 
 			return $result;
