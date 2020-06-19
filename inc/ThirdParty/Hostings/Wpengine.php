@@ -2,8 +2,9 @@
 
 namespace WP_Rocket\ThirdParty\Hostings;
 
-use WpeCommon;
+use WP_Rocket\ThirdParty\ReturnTypesTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WpeCommon;
 
 /**
  * Compatibility class for wpengine
@@ -11,6 +12,8 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * @since 3.6.1
  */
 class Wpengine implements Subscriber_Interface {
+	use ReturnTypesTrait;
+
 	/**
 	 * Array of events this subscriber wants to listen to.
 	 *
@@ -44,50 +47,6 @@ class Wpengine implements Subscriber_Interface {
 			'rocket_buffer'                           => [ 'add_footprint', 50 ],
 			'rocket_disable_htaccess'                 => 'disable_htaccess',
 		];
-	}
-
-	/**
-	 * Returns false
-	 *
-	 * @since 3.6.1
-	 *
-	 * @return bool
-	 */
-	public function return_false() {
-		return false;
-	}
-
-	/**
-	 * Returns true
-	 *
-	 * @since 3.6.1
-	 *
-	 * @return true
-	 */
-	public function return_true() {
-		return true;
-	}
-
-	/**
-	 * Returns Empty string.
-	 *
-	 * @since 3.6.1
-	 *
-	 * @return string Empty string
-	 */
-	public function return_empty_string() {
-		return '';
-	}
-
-	/**
-	 * Returns Empty Array.
-	 *
-	 * @since 3.6.1
-	 *
-	 * @return array Empty array.
-	 */
-	public function return_empty_array() {
-		return [];
 	}
 
 	/**
