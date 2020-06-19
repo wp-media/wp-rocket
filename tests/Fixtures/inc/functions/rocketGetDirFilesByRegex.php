@@ -59,14 +59,6 @@ return [
 			'expected' => [],
 		],
 
-		'shouldHandleMoreComplexRegex' => [
-			'dir'      => 'vfs://public/wp-content/regex',
-			'regex'    => '',
-			'expected' => [
-
-			],
-		],
-
 		'shouldHandleExactMatch' => [
 			'dir'      => 'vfs://public/wp-content/exact-match',
 			'regex'    => '/filename.matchme.php/',
