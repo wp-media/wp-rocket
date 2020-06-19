@@ -87,11 +87,21 @@ class Wpengine implements Subscriber_Interface {
 	 * @since 3.6.1
 	 */
 	public function run_rocket_bot_after_wpengine() {
-		if ( wpe_param( 'purge-all' ) && rocket_has_constant( 'PWP_NAME' ) && check_admin_referer( rocket_get_constant( 'PWP_NAME' ) . '-config' ) ) {
-			// Preload cache.
-			run_rocket_bot();
-			run_rocket_sitemap_preload();
+		if ( ! wpe_param( 'purge-all' ) ) {
+			return;
 		}
+
+		if ( ! rocket_has_constant( 'PWP_NAME' ) ) {
+			return;
+		}
+
+		if ( ! check_admin_referer( rocket_get_constant( 'PWP_NAME' ) . '-config' ) ) {
+			return;
+		}
+
+		// Preload cache.
+		run_rocket_bot();
+		run_rocket_sitemap_preload();
 	}
 
 	/**
