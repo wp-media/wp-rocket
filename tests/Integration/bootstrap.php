@@ -86,8 +86,8 @@ tests_add_filter(
 		if ( BootstrapManager::isGroup( 'Wpengine' ) ) {
 			define( 'PWP_NAME', 'PWP_NAME' );
 			// Load WP Engine mocked files.
-			require WP_ROCKET_PLUGIN_ROOT . 'tests/Fixtures/inc/ThirdParty/Hostings/Wpengine/wpe_param.php';
-			require WP_ROCKET_PLUGIN_ROOT . 'tests/Fixtures/inc/ThirdParty/Hostings/Wpengine/WpeCommon.php';
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/Wpengine/wpe_param.php';
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/Wpengine/WpeCommon.php';
 		}
 
 		// Load the plugin.

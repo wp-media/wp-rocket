@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\ThirdParty\Hostings;
 
+use WpeCommon;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
