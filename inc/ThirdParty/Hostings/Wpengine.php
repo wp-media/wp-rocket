@@ -7,7 +7,7 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
 use WpeCommon;
 
 /**
- * Compatibility class for wpengine
+ * Compatibility class for WP Engine.
  *
  * @since 3.6.1
  */
@@ -23,11 +23,11 @@ class Wpengine implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		if (
-			! (
-				class_exists( 'WpeCommon' )
-				&&
-				function_exists( 'wpe_param' )
-			)
+		! (
+			class_exists( 'WpeCommon' )
+			&&
+			function_exists( 'wpe_param' )
+		)
 		) {
 			return [];
 		}
@@ -60,7 +60,7 @@ class Wpengine implements Subscriber_Interface {
 	 */
 	public function varnish_field( $settings ) {
 		$settings['varnish_auto_purge']['title'] = sprintf(
-		// Translators: %s = Hosting name.
+			// Translators: %s = Hosting name.
 			__( 'Your site is hosted on %s, we have enabled Varnish auto-purge for compatibility.', 'rocket' ),
 			'WP Engine'
 		);
@@ -69,13 +69,14 @@ class Wpengine implements Subscriber_Interface {
 	}
 
 	/**
-	 * Stop showing not valid notices with wpengine.
+	 * Stop showing not valid notices with WP Engine.
 	 *
 	 * @since 3.6.1
 	 */
 	public function remove_notices() {
 		$container  = apply_filters( 'rocket_container', null );
 		$subscriber = $container->get( 'admin_cache_subscriber' );
+
 		remove_action( 'admin_notices', [ $subscriber, 'notice_advanced_cache_permissions' ] );
 		remove_action( 'admin_notices', [ $subscriber, 'notice_advanced_cache_content_not_ours' ] );
 	}
@@ -135,7 +136,8 @@ class Wpengine implements Subscriber_Interface {
 	 *
 	 * @since 3.6.1
 	 *
-	 * @param bool $disable True to disable, false otherwise.
+	 * @param bool $disable Optional. When true, disables.
+	 *
 	 * @return bool
 	 */
 	public function disable_htaccess( $disable = false ) {
@@ -143,7 +145,7 @@ class Wpengine implements Subscriber_Interface {
 		if ( version_compare( PHP_VERSION, '7.4' ) >= 0 ) {
 			return true;
 		}
+
 		return (bool) $disable;
 	}
-
 }
