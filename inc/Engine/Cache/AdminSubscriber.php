@@ -61,6 +61,7 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 				[ 'notice_wp_config_permissions' ],
 			],
 			"update_option_{$slug}" => [ 'maybe_set_wp_cache', 12 ],
+			'site_status_tests'     => 'add_wp_cache_status_test',
 		];
 	}
 
@@ -151,5 +152,17 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 */
 	public function notice_wp_config_permissions() {
 		$this->wp_cache->notice_wp_config_permissions();
+	}
+
+	/**
+	 * Adds a Site Health check for the WP_CACHE constant value
+	 *
+	 * @since 3.6.1
+	 *
+	 * @param array $tests An array of tests to perform.
+	 * @return array
+	 */
+	public function add_wp_cache_status_test( $tests ) {
+		return $this->wp_cache->add_wp_cache_status_test( $tests );
 	}
 }

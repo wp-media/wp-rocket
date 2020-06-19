@@ -76,7 +76,7 @@ class WPCache {
 		$wp_cache_found = preg_match( '/^\s*define\(\s*\'WP_CACHE\'\s*,\s*(?<value>[^\s\)]*)\s*\)/m', $config_file_contents, $matches );
 
 		if (
-			$wp_cache_found
+			! $wp_cache_found
 			&&
 			rocket_has_constant( 'WP_CACHE' )
 		) {
@@ -252,5 +252,71 @@ class WPCache {
 		$plugin_name = rocket_get_constant( 'WP_ROCKET_PLUGIN_NAME' );
 
 		return "define( 'WP_CACHE', {$value} ); // Added by {$plugin_name}";
+	}
+
+	/**
+	 * Adds a Site Health check for the WP_CACHE constant value
+	 *
+	 * @since 3.6.1
+	 *
+	 * @param array $tests An array of tests to perform.
+	 * @return array
+	 */
+	public function add_wp_cache_status_test( $tests ) {
+		$tests['direct']['wp_cache_status'] = [
+			'label' => __( 'WP_CACHE value', 'rocket' ),
+			'test'  => [ $this, 'check_wp_cache_value' ],
+		];
+
+		return $tests;
+	}
+
+	/**
+	 * Checks the WP_CACHE constant value and return the result for Site Health
+	 *
+	 * @since 3.6.1
+	 *
+	 * @return array
+	 */
+	public function check_wp_cache_value() {
+		$result = [
+			'badge'  => [
+				'label' => __( 'Cache', 'rocket' ),
+			],
+			'description' => sprintf(
+				'<p>%s</p>',
+				__( 'The WP_CACHE constant needs to be set to true for WP Rocket cache to work properly', 'rocket' )
+			),
+			'actions' => '',
+			'test'    => 'wp_cache_status',
+		];
+
+		$value = rocket_get_constant( 'WP_CACHE' );
+
+		if ( true === $value ) {
+			$result['label'] = __( 'WP_CACHE is set to true', 'rocket' );
+			$result['status'] = 'good';
+			$result['badge']['color'] = 'green';
+
+			return $result;
+		}
+
+		if ( null === $value ) {
+			$result['label'] = __( 'WP_CACHE is not set', 'rocket' );
+			$result['status'] = 'critical';
+			$result['badge']['color'] = 'red';
+
+			return $result;
+		}
+
+		if ( false === $value ) {
+			$result['label'] = __( 'WP_CACHE is set to false', 'rocket' );
+			$result['status'] = 'critical';
+			$result['badge']['color'] = 'red';
+
+			return $result;
+		}
+
+		return $result;
 	}
 }
