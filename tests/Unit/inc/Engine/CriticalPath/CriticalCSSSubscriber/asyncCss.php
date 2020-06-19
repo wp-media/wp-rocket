@@ -10,6 +10,7 @@ use WP_Rocket\Tests\Unit\TestCase;
  *
  * @group  Subscribers
  * @group  CriticalPath
+ * @group  AsyncCSS
  */
 class Test_AsyncCss extends TestCase {
 	use SubscriberTrait;

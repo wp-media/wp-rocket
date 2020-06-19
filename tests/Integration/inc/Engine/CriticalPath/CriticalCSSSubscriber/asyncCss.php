@@ -16,6 +16,7 @@ use Mockery;
  *
  * @group  Subscribers
  * @group  CriticalPath
+ * @group  AsyncCSS
  */
 class Test_AsyncCss extends TestCase {
 

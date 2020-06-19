@@ -28,7 +28,7 @@ class Test_GetExcludeAsyncCss extends FilesystemTestCase {
 		Filters\expectApplied( 'rocket_exclude_async_css' )
 			->once()
 			->with( [] )
-			->andReturn($config);
+			->andReturn( $config );
 
 		$critical_css = new CriticalCSS(
 			Mockery::mock( CriticalCSSGeneration::class ),
@@ -37,7 +37,7 @@ class Test_GetExcludeAsyncCss extends FilesystemTestCase {
 		);
 
 		$actual = array_values( $critical_css->get_exclude_async_css() );
-		$this->assertEquals($expected, $actual);
+		$this->assertEquals( $expected, $actual );
 	}
 
 }
