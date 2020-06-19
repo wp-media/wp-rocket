@@ -1,7 +1,7 @@
 <?php
 
 return [
-	'testShouldReplaceEmptyValueWithWpengineTitle' => [
+	'testShouldReplaceEmptyValueWithWPEngineTitle' => [
 		'settings' => [],
 		'expected' => [
 			'varnish_auto_purge' => [
@@ -9,7 +9,7 @@ return [
 			],
 		],
 	],
-	'testShouldReplaceDefaultTitleWithWpengineTitle' => [
+	'testShouldReplaceDefaultTitleWithWPEngineTitle' => [
 		'settings' => [
 			'varnish_auto_purge' => [
 				'title' => 'If Varnish runs on your server, you must activate this add-on.',

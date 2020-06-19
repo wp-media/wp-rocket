@@ -1,14 +1,14 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Hostings\Wpengine;
+namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Hostings\WPEngine;
 
 use WP_Rocket\Tests\Integration\AdminTestCase;
 use WP_Rocket\Tests\Integration\CapTrait;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\Wpengine::remove_notices
+ * @covers \WP_Rocket\ThirdParty\Hostings\WPEngine::remove_notices
  *
- * @group  Wpengine
+ * @group  WPEngine
  * @group  ThirdParty
  */
 class Test_RemoveNotices extends AdminTestCase {
@@ -53,16 +53,11 @@ class Test_RemoveNotices extends AdminTestCase {
 	public function testShouldCleanWPEngine() {
 		// Set up before state.
 		$this->assertTrue( (bool) has_action( 'admin_notices', [ self::$subscriber, 'notice_advanced_cache_permissions' ] ) );
-		if ( ! has_action( 'admin_notices', [ self::$subscriber, 'notice_advanced_cache_content_not_ours' ] ) ) {
-			add_action( 'admin_notices', [ self::$subscriber, 'notice_advanced_cache_content_not_ours' ] );
-		}
-		$this->assertTrue( (bool) has_action( 'admin_notices', [ self::$subscriber, 'notice_advanced_cache_content_not_ours' ] ) );
 
 		// Run it.
 		do_action( 'admin_init' );
 
 		// Check that both callbacks were unregistered.
 		$this->assertFalse( has_action( 'admin_notices', [ self::$subscriber, 'notice_advanced_cache_permissions' ] ) );
-		$this->assertFalse( has_action( 'admin_notices', [ self::$subscriber, 'notice_advanced_cache_content_not_ours' ] ) );
 	}
 }

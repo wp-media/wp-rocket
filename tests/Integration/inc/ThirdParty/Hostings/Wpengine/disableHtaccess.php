@@ -1,12 +1,12 @@
 <?php
-namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Hostings\Wpengine;
+namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Hostings\WPEngine;
 
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\Wpengine::disable_htaccess
+ * @covers \WP_Rocket\ThirdParty\Hostings\WPEngine::disable_htaccess
  *
- * @group  Wpengine
+ * @group  WPEngine
  * @group  ThirdParty
  */
 class Test_DisableHtaccess extends TestCase {

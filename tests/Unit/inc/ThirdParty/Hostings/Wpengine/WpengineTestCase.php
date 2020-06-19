@@ -1,25 +1,25 @@
 <?php
-namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\Wpengine;
+namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\WPEngine;
 
 use Mockery;
 use WpeCommon;
 use WP_Rocket\Tests\Unit\TestCase;
-use WP_Rocket\ThirdParty\Hostings\Wpengine;
+use WP_Rocket\ThirdParty\Hostings\WPEngine;
 
-abstract class WpengineTestCase extends TestCase {
+abstract class WPEngineTestCase extends TestCase {
 	protected $wpengine;
 	protected $wpe_common_mock;
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
 
-		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/Wpengine/wpe_param.php';
-		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/Wpengine/WpeCommon.php';
+		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/WPEngine/wpe_param.php';
+		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/WPEngine/WpeCommon.php';
 	}
 
 	public function setup() {
 		parent::setup();
-		$this->wpengine        = new Wpengine();
+		$this->wpengine        = new WPEngine();
 		$this->wpe_common_mock = Mockery::mock( WpeCommon::class );
 	}
 }

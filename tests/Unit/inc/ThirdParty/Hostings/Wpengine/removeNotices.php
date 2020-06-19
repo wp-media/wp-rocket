@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\Wpengine;
+namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\WPEngine;
 
 use Mockery;
 use Brain\Monkey\Filters;
@@ -9,12 +9,12 @@ use WP_Rocket\Engine\Cache\AdminSubscriber;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\Wpengine::remove_notices
+ * @covers \WP_Rocket\ThirdParty\Hostings\WPEngine::remove_notices
  *
- * @group  Wpengine
+ * @group  WPEngine
  * @group  ThirdParty
  */
-class Test_RemoveNotices extends WpengineTestCase {
+class Test_RemoveNotices extends WPEngineTestCase {
 
 	public function testShouldRemoveNotices() {
 		$container              = Mockery::mock( 'container' );
@@ -30,9 +30,6 @@ class Test_RemoveNotices extends WpengineTestCase {
 		Functions\expect( 'remove_action' )
 			->once()
 			->with( 'admin_notices', [ $admin_cache_subscriber, 'notice_advanced_cache_permissions' ] );
-		Functions\expect( 'remove_action' )
-			->once()
-			->with( 'admin_notices', [ $admin_cache_subscriber, 'notice_advanced_cache_content_not_ours' ] );
 
 		$this->wpengine->remove_notices();
 	}

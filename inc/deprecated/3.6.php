@@ -458,7 +458,7 @@ function get_rocket_post_terms_urls( $post_id ) { // phpcs:ignore WordPress.Nami
  * @return array modified field settings data.
  */
 function rocket_wpengine_varnish_field( $settings ) {
-	_deprecated_function( __FUNCTION__ . '()', '3.6.1', '\WP_Rocket\ThirdParty\Hostings\Wpengine::varnish_field' );
+	_deprecated_function( __FUNCTION__ . '()', '3.6.1', '\WP_Rocket\ThirdParty\Hostings\WPEngine::varnish_addon_title' );
 	$settings['varnish_auto_purge']['title'] = sprintf(
 	// Translators: %s = Hosting name.
 		__( 'Your site is hosted on %s, we have enabled Varnish auto-purge for compatibility.', 'rocket' ),
@@ -487,7 +487,7 @@ function rocket_stop_generate_caching_files_on_wpengine() {
  * @since 2.6.4
  */
 function rocket_run_rocket_bot_after_wpengine() {
-	_deprecated_function( __FUNCTION__ . '()', '3.6.1', '\WP_Rocket\ThirdParty\Hostings\Wpengine::run_rocket_bot_after_wpengine' );
+	_deprecated_function( __FUNCTION__ . '()', '3.6.1', '\WP_Rocket\ThirdParty\Hostings\WPEngine::run_rocket_bot_after_wpengine' );
 	if ( wpe_param( 'purge-all' ) && defined( 'PWP_NAME' ) && check_admin_referer( PWP_NAME . '-config' ) ) {
 		// Preload cache.
 		run_rocket_bot();
@@ -502,7 +502,7 @@ function rocket_run_rocket_bot_after_wpengine() {
  * @since 2.6.4
  */
 function rocket_clean_wpengine() {
-	_deprecated_function( __FUNCTION__ . '()', '3.6.1', '\WP_Rocket\ThirdParty\Hostings\Wpengine::clean_wpengine' );
+	_deprecated_function( __FUNCTION__ . '()', '3.6.1', '\WP_Rocket\ThirdParty\Hostings\WPEngine::clean_wpengine' );
 	if ( method_exists( 'WpeCommon', 'purge_memcached' ) ) {
 		WpeCommon::purge_memcached();
 	}
@@ -564,7 +564,7 @@ function rocket_get_wp_engine_cdn_domain() {
  * @return string HTML with WP Rocket footprint.
  */
 function rocket_wpengine_add_footprint( $buffer ) {
-	_deprecated_function( __FUNCTION__ . '()', '3.6.1', '\WP_Rocket\ThirdParty\Hostings\Wpengine::add_footprint' );
+	_deprecated_function( __FUNCTION__ . '()', '3.6.1', '\WP_Rocket\ThirdParty\Hostings\WPEngine::add_footprint' );
 	if ( ! preg_match( '/<\/html>/i', $buffer ) ) {
 		return $buffer;
 	}

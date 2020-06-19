@@ -83,6 +83,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->withArgument( WP_ROCKET_CACHE_BUSTING_PATH )
 			->withArgument( WP_ROCKET_CACHE_BUSTING_URL );
 		$this->getContainer()->share( 'cloudways', 'WP_Rocket\ThirdParty\Hostings\Cloudways' );
-		$this->getContainer()->share( 'wpengine', 'WP_Rocket\ThirdParty\Hostings\Wpengine' );
+		$this->getContainer()->share( 'wpengine', 'WP_Rocket\ThirdParty\Hostings\WPEngine' );
 	}
 }

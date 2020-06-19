@@ -11,7 +11,7 @@ use WpeCommon;
  *
  * @since 3.6.1
  */
-class Wpengine implements Subscriber_Interface {
+class WPEngine implements Subscriber_Interface {
 	use ReturnTypesTrait;
 
 	/**
@@ -33,7 +33,7 @@ class Wpengine implements Subscriber_Interface {
 		}
 
 		return [
-			'rocket_varnish_field_settings'           => 'varnish_field',
+			'rocket_varnish_field_settings'           => 'varnish_addon_title',
 			'rocket_display_input_varnish_auto_purge' => 'return_false',
 			'rocket_cache_mandatory_cookies'          => [ 'return_empty_array', PHP_INT_MAX ],
 			'rocket_advanced_cache_file'              => 'return_empty_string',
@@ -58,7 +58,7 @@ class Wpengine implements Subscriber_Interface {
 	 *
 	 * @return array modified field settings data.
 	 */
-	public function varnish_field( $settings ) {
+	public function varnish_addon_title( $settings ) {
 		$settings['varnish_auto_purge']['title'] = sprintf(
 			// Translators: %s = Hosting name.
 			__( 'Your site is hosted on %s, we have enabled Varnish auto-purge for compatibility.', 'rocket' ),
@@ -78,7 +78,6 @@ class Wpengine implements Subscriber_Interface {
 		$subscriber = $container->get( 'admin_cache_subscriber' );
 
 		remove_action( 'admin_notices', [ $subscriber, 'notice_advanced_cache_permissions' ] );
-		remove_action( 'admin_notices', [ $subscriber, 'notice_advanced_cache_content_not_ours' ] );
 	}
 
 	/**

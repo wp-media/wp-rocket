@@ -1,26 +1,26 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\Wpengine;
+namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\WPEngine;
 
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
-use WP_Rocket\ThirdParty\Hostings\Wpengine;
+use WP_Rocket\ThirdParty\Hostings\WPEngine;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\Wpengine::run_rocket_bot_after_wpengine
+ * @covers \WP_Rocket\ThirdParty\Hostings\WPEngine::run_rocket_bot_after_wpengine
  * @uses   ::rocket_has_constant
  * @uses   ::rocket_get_constant
  * @uses   ::run_rocket_bot
  * @uses   ::run_rocket_sitemap_preload
  *
- * @group  Wpengine
+ * @group  WPEngine
  * @group  ThirdParty
  */
-class Test_RunRocketBotAfterWpengine extends TestCase {
+class Test_RunRocketBotAfterWPEngine extends TestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldRunRocketBotAfterWpengine( $config, $expected ) {
+	public function testShouldRunRocketBotAfterWPEngine( $config, $expected ) {
 		if ( isset( $config['wpe_param'] ) ) {
 			Functions\expect( 'wpe_param' )
 				->once()
@@ -52,11 +52,11 @@ class Test_RunRocketBotAfterWpengine extends TestCase {
 			Functions\expect( 'run_rocket_bot' )->never();
 			Functions\expect( 'run_rocket_sitemap_preload' )->never();
 		}
-		$this->wpengine = new Wpengine();
+		$this->wpengine = new WPEngine();
 		$this->wpengine->run_rocket_bot_after_wpengine();
 	}
 
 	public function providerTestData() {
-		return $this->getTestData( __DIR__, 'runRocketBotAfterWpengine' );
+		return $this->getTestData( __DIR__, 'runRocketBotAfterWPEngine' );
 	}
 }

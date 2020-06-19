@@ -1,16 +1,16 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\Wpengine;
+namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\WPEngine;
 
 use WpeCommon;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\Wpengine::clean_wpengine
+ * @covers \WP_Rocket\ThirdParty\Hostings\WPEngine::clean_wpengine
  *
- * @group  Wpengine
+ * @group  WPEngine
  * @group  ThirdParty
  */
-class Test_CleanWpengine extends WpengineTestCase {
+class Test_CleanWPEngine extends WPEngineTestCase {
 	public static function tearDownAfterClass() {
 		parent::tearDownAfterClass();
 
