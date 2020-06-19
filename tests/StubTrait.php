@@ -21,6 +21,7 @@ trait StubTrait {
 	protected $white_label              = false;
 	protected $white_label_footprint    = null;
 	protected $plugin_name              = 'WP Rocket';
+	protected $constants                = [];
 
 	protected function resetStubProperties() {
 		$defaults = [
@@ -37,6 +38,7 @@ trait StubTrait {
 			'dontasynccss'              => null,
 			'white_label'               => false,
 			'white_label_footprint'     => null,
+			'constants'                 => [],
 		];
 
 		foreach ( $defaults as $property => $value ) {
@@ -145,6 +147,10 @@ trait StubTrait {
 				return $this->plugin_name;
 
 			default:
+				if ( isset( $this->constants[$constant_name] ) ){
+					return $this->constants[$constant_name];
+				}
+
 				if ( ! rocket_has_constant( $constant_name ) ) {
 					return $default;
 				}

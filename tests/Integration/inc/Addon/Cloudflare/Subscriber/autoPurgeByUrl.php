@@ -10,10 +10,10 @@ use Brain\Monkey\Functions;
  * @group  Addons
  */
 class Test_AutoPurgeByUrl extends TestCase {
-	private static $post_id;
+	private static $post;
 
 	public static function wpSetUpBeforeClass( $factory ) {
-		self::$post_id = $factory->post->create();
+		self::$post = $factory->post->create_and_get();
 	}
 
 	public function testShouldBailoutWhenUserCantPurgeCF() {
@@ -22,7 +22,7 @@ class Test_AutoPurgeByUrl extends TestCase {
 
 		Functions\expect( 'get_rocket_i18n_home_url' )->never();
 
-		do_action( 'after_rocket_clean_post', self::$post_id, [], 'en' );
+		do_action( 'after_rocket_clean_post', self::$post, [], 'en' );
 	}
 
 	public function testShouldBailoutWhenNoPageRule() {
@@ -38,6 +38,6 @@ class Test_AutoPurgeByUrl extends TestCase {
 		// Why? Because our test site doesn't have page rules.
 		Functions\expect( 'get_rocket_i18n_home_url' )->never();
 
-		do_action( 'after_rocket_clean_post', self::$post_id, [], 'en' );
+		do_action( 'after_rocket_clean_post', self::$post, [], 'en' );
 	}
 }

@@ -348,6 +348,106 @@ function rocket_sccss_create_cache_file( $cache_busting_path, $cache_sccss_filep
 }
 
 /**
+ * Get all dates archives urls associated to a specific post.
+ *
+ * @since 3.6.1 deprecated
+ * @since 1.0
+ *
+ * @param int $post_id The post ID.
+ *
+ * @return array $urls List of dates URLs on success; else, an empty [].
+ */
+function get_rocket_post_dates_urls( $post_id ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+	_deprecated_function( __FUNCTION__ . '()', '3.6.1', '\WP_Rocket\Engine\Cache\Purge::purge_dates_archives()' );
+	$time = get_the_time( 'Y-m-d', $post_id );
+	if ( empty( $time ) ) {
+		return [];
+	}
+
+	// Extract and prep the year, month, and day.
+	$date  = explode( '-', $time );
+	$year  = trailingslashit( get_year_link( $date[0] ) );
+	$month = trailingslashit( get_month_link( $date[0], $date[1] ) );
+
+	$urls = [
+		"{$year}index.html",
+		"{$year}index.html_gzip",
+		$year . $GLOBALS['wp_rewrite']->pagination_base,
+		"{$month}index.html",
+		"{$month}index.html_gzip",
+		$month . $GLOBALS['wp_rewrite']->pagination_base,
+		get_day_link( $date[0], $date[1], $date[2] ),
+	];
+
+	/**
+	 * Filter the list of dates URLs.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param array $urls List of dates URLs.
+	*/
+	return (array) apply_filters( 'rocket_post_dates_urls', $urls );
+}
+
+
+/**
+ * Get all terms archives urls associated to a specific post
+ *
+ * @since 3.6.1 deprecated
+ * @since 1.0
+ *
+ * @param int $post_id The post ID.
+ * @return array $urls List of taxonomies URLs
+ */
+function get_rocket_post_terms_urls( $post_id ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+	_deprecated_function( __FUNCTION__ . '()', '3.6.1', '\WP_Rocket\Engine\Cache\Purge::get_post_terms_urls()' );
+	$urls       = [];
+	$taxonomies = get_object_taxonomies( get_post_type( $post_id ), 'objects' );
+
+	foreach ( $taxonomies as $taxonomy ) {
+		if ( ! $taxonomy->public || 'product_shipping_class' === $taxonomy->name ) {
+			continue;
+		}
+
+		// Get the terms related to post.
+		$terms = get_the_terms( $post_id, $taxonomy->name );
+
+		if ( empty( $terms ) ) {
+			continue;
+		}
+		foreach ( $terms as $term ) {
+			$term_url = get_term_link( $term->slug, $taxonomy->name );
+			if ( ! is_wp_error( $term_url ) ) {
+				$urls[] = $term_url;
+			}
+			if ( ! is_taxonomy_hierarchical( $taxonomy->name ) ) {
+				continue;
+			}
+			$ancestors = (array) get_ancestors( $term->term_id, $taxonomy->name );
+			foreach ( $ancestors as $ancestor ) {
+				$ancestor_object = get_term( $ancestor, $taxonomy->name );
+				if ( ! $ancestor_object instanceof WP_Term ) {
+					continue;
+				}
+				$ancestor_term_url = get_term_link( $ancestor_object->slug, $taxonomy->name );
+				if ( ! is_wp_error( $ancestor_term_url ) ) {
+					$urls[] = $ancestor_term_url;
+				}
+			}
+		}
+	}
+
+	/**
+	 * Filter the list of taxonomies URLs
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param array $urls List of taxonomies URLs
+	*/
+	return apply_filters( 'rocket_post_terms_urls', $urls );
+}
+
+/**
  * Changes the text on the Varnish one-click block.
  *
  * @deprecated 3.6.1
