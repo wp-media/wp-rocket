@@ -564,7 +564,6 @@ class CriticalCSS {
 		 * Filter list of async CSS files
 		 *
 		 * @since 2.10
-		 * @author Remy Perona
 		 *
 		 * @param array $exclude_async_css An array of URLs for the CSS files to be excluded.
 		 */

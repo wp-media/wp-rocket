@@ -96,6 +96,25 @@ return [
 			]
 		],
 
+		'shouldDeferCssFilesWithMediaAllAndID' => [
+			'config' => [
+				'constants' => [
+					'DONOTROCKETOPTIMIZE' => false,
+					'DONOTASYNCCSS'       => false
+				],
+				'options' => [
+					'async_css' => true
+				],
+				'exclude_options' => [
+					'async_css' => false
+				],
+				'html' => '<!doctype html><html lang="en-US"><head><meta charset="UTF-8" /><link id="css_id" rel="stylesheet" type="text/css" href="http://www.example.com/file1.css" media="all"></head><body>Content here</body></html>'
+			],
+			'expected' => [
+				'html' => '<!doctype html><html lang="en-US"><head><meta charset="UTF-8" /><link id="css_id" rel="stylesheet"  as="style" type="text/css" onload="this.media=\'all\'" href="http://www.example.com/file1.css" media="print"></head><body>Content here<noscript><link id="css_id" rel="stylesheet" type="text/css" href="http://www.example.com/file1.css" media="all"></noscript></body></html>'
+			]
+		],
+
 		'shouldDeferCssFilesWithMediaAllRelativeUrl' => [
 			'config' => [
 				'constants' => [

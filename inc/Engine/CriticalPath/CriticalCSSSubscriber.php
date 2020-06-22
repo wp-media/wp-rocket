@@ -600,7 +600,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 		// Get all css files with this regex.
 		preg_match_all( $css_pattern, $buffer, $tags_match );
 
-		if ( ! isset( $tags_match[0] ) ) {
+		if ( empty( $tags_match[0] ) ) {
 			return $buffer;
 		}
 
@@ -619,7 +619,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 		$noscripts    = '';
 		foreach ( $tags_match[0] as $i => $tag ) {
 			// Strip query args.
-			$path = rocket_extract_url_component( $tags_match['url'][ $i ], PHP_URL_PATH );
+			$path = wp_parse_url( $tags_match['url'][ $i ], PHP_URL_PATH );
 
 			// Check if this file should be deferred.
 			if ( isset( $excluded_css[ $path ] ) ) {
@@ -627,7 +627,9 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 			}
 
 			$original_media = 'all';
-			$tag            = str_replace( $tags_match['type'][ $i ], ' as="style" ' . $tags_match['type'][ $i ] . ( empty( $tags_match['media'][ $i ] ) ? ' media="print"' : '' ) . ( empty( $tags_match['onload'][ $i ] ) ? ' onload=""' : '' ), $tag );
+			$media_tag      = empty( $tags_match['media'][ $i ] ) ? ' media="print"' : '';
+			$onload_tag     = empty( $tags_match['onload'][ $i ] ) ? ' onload=""' : '';
+			$tag            = str_replace( $tags_match['type'][ $i ], ' as="style" ' . $tags_match['type'][ $i ] . $media_tag . $onload_tag, $tag );
 			if ( ! empty( $tags_match['media'][ $i ] ) ) {
 				preg_match( '/media\s*=\s*[\'"](?<media>.*)[\'"]/ix', $tags_match['media'][ $i ], $media_match );
 				$original_media = $media_match['media'];
@@ -653,9 +655,9 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Conditions which will allow to defer loading of CSS files.
+	 * Checks if we should apply deferring of CSS files.
 	 *
-	 * @return bool True / False if async_css should be applied.
+	 * @return bool True if we should, false otherwise.
 	 */
 	private function maybe_async_css() {
 		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) || rocket_get_constant( 'DONOTASYNCCSS' ) ) {
