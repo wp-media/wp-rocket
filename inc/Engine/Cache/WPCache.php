@@ -76,14 +76,6 @@ class WPCache {
 		$wp_cache_found = preg_match( '/^\s*define\(\s*\'WP_CACHE\'\s*,\s*(?<value>[^\s\)]*)\s*\)/m', $config_file_contents, $matches );
 
 		if (
-			! $wp_cache_found
-			&&
-			rocket_has_constant( 'WP_CACHE' )
-		) {
-			return;
-		}
-
-		if (
 			! empty( $matches['value'] )
 			&&
 			$matches['value'] === $value
