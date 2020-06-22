@@ -18,6 +18,7 @@ class Test_AsyncCss extends TestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->setUpTests();
+		$this->stubWpParseUrl();
 	}
 
 	/**

@@ -568,9 +568,11 @@ class CriticalCSS {
 		 * @param array $exclude_async_css An array of URLs for the CSS files to be excluded.
 		 */
 		$exclude_async_css = (array) apply_filters( 'rocket_exclude_async_css', [] );
+		if ( empty( $exclude_async_css ) ) {
+			return $exclude_async_css;
+		}
 		$exclude_async_css = array_filter( $exclude_async_css );
-		$exclude_async_css = array_flip( array_flip( $exclude_async_css ) );
 
-		return $exclude_async_css;
+		return array_flip( array_flip( $exclude_async_css ) );
 	}
 }

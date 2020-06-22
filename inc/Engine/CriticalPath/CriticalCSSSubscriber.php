@@ -631,19 +631,21 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 			$onload_tag     = empty( $tags_match['onload'][ $i ] ) ? ' onload=""' : '';
 			$tag            = str_replace( $tags_match['type'][ $i ], ' as="style" ' . $tags_match['type'][ $i ] . $media_tag . $onload_tag, $tag );
 			if ( ! empty( $tags_match['media'][ $i ] ) ) {
-				preg_match( '/media\s*=\s*[\'"](?<media>.*)[\'"]/ix', $tags_match['media'][ $i ], $media_match );
+				$media_attr = $tags_match['media'][ $i ];
+				preg_match( '/media\s*=\s*[\'"](?<media>.*)[\'"]/ix', $media_attr, $media_match );
 				$original_media = $media_match['media'];
-				$tag            = str_replace( $tags_match['media'][ $i ], 'media="print"', $tag );
+				$tag            = str_replace( $media_attr, 'media="print"', $tag );
 			}
 
 			if ( ! empty( $tags_match['onload'][ $i ] ) ) {
-				$onload_delimiter = substr( $tags_match['onload'][ $i ], 7, 1 );
-				$onload_end       = strpos( $tags_match['onload'][ $i ], $onload_delimiter . ' ' );
+				$onload_attr      = $tags_match['onload'][ $i ];
+				$onload_delimiter = substr( $onload_attr, 7, 1 );
+				$onload_end       = strpos( $onload_attr, $onload_delimiter . ' ' );
 				if ( ! $onload_end ) {
-					$onload_end = strpos( $tags_match['onload'][ $i ], $onload_delimiter . '>' );
+					$onload_end = strpos( $onload_attr, $onload_delimiter . '>' );
 				}
 
-				$onload = substr( $tags_match['onload'][ $i ], 0, $onload_end + 1 );
+				$onload = substr( $onload_attr, 0, $onload_end + 1 );
 				$tag    = str_replace( $onload, 'onload=""', $tag );
 			}
 			$tag        = str_replace( 'onload=""', 'onload="this.media=\'' . $original_media . '\'"', $tag );
@@ -666,10 +668,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 		if ( ! $this->options->get( 'async_css' ) ) {
 			return false;
 		}
-		if ( is_rocket_post_excluded_option( 'async_css' ) ) {
-			return false;
-		}
-		return true;
+		return ! is_rocket_post_excluded_option( 'async_css' );
 	}
 
 	/**
