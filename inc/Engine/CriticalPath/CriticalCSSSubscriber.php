@@ -594,7 +594,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 		 */
 		$css_pattern = apply_filters(
 			'rocket_async_css_regex_pattern',
-			'/(?=<link[^>]*\s(rel\s*=\s*[\'"]stylesheet["\']))<link(?=[^<>]*?(?:(?<type>type\s*=\s*[\'"][^<>"\']*[\'"])|>))(?=[^<>]*?(?:(?<media>media\s*=\s*[\'"][^<>"\']*[\'"])|>))(?=[^<>]*?(?:href\s*=\s*[\'"](?<url>.*?)[\'"]|>))(?=[^<>]*?(?:(?<rel>rel\s*=\s*[\'"]>[^<>"\']*)[\'"]|>))(?:.*?<\/\1>|[^<>]*>)/ix'
+			'/(?=<link[^>]*\s(rel\s*=\s*[\'"]stylesheet["\']))<link(?=[^<>]*?(?:(?<type>type\s*=\s*[\'"][^<>"\']*[\'"])|>))(?=[^<>]*?(?:(?<onload>onload\s*=\s*(.*))|>))(?=[^<>]*?(?:(?<media>media\s*=\s*[\'"][^<>"\']*[\'"])|>))(?=[^<>]*?(?:href\s*=\s*[\'"](?<url>.*?)[\'"]|>))(?=[^<>]*?(?:(?<rel>rel\s*=\s*[\'"]>[^<>"\']*)[\'"]|>))(?:.*?<\/\1>|[^<>]*>)/ix'
 		);
 
 		// Get all css files with this regex.
@@ -627,13 +627,23 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 			}
 
 			$original_media = 'all';
-			$tag            = str_replace( $tags_match['type'][ $i ], ' as="style" onload="" ' . $tags_match['type'][ $i ] . ( empty( $tags_match['media'][ $i ] ) ? ' media="print"' : '' ), $tag );
+			$tag            = str_replace( $tags_match['type'][ $i ], ' as="style" ' . $tags_match['type'][ $i ] . ( empty( $tags_match['media'][ $i ] ) ? ' media="print"' : '' ) . ( empty( $tags_match['onload'][ $i ] ) ? ' onload=""' : '' ), $tag );
 			if ( ! empty( $tags_match['media'][ $i ] ) ) {
 				preg_match( '/media\s*=\s*[\'"](?<media>.*)[\'"]/ix', $tags_match['media'][ $i ], $media_match );
 				$original_media = $media_match['media'];
 				$tag            = str_replace( $tags_match['media'][ $i ], 'media="print"', $tag );
 			}
 
+			if ( ! empty( $tags_match['onload'][ $i ] ) ) {
+				$onload_delimiter = substr( $tags_match['onload'][ $i ], 7, 1 );
+				$onload_end       = strpos( $tags_match['onload'][ $i ], $onload_delimiter . ' ' );
+				if ( ! $onload_end ) {
+					$onload_end = strpos( $tags_match['onload'][ $i ], $onload_delimiter . '>' );
+				}
+
+				$onload = substr( $tags_match['onload'][ $i ], 0, $onload_end + 1 );
+				$tag    = str_replace( $onload, 'onload=""', $tag );
+			}
 			$tag        = str_replace( 'onload=""', 'onload="this.media=\'' . $original_media . '\'"', $tag );
 			$buffer     = str_replace( $tags_match[0][ $i ], $tag, $buffer );
 			$noscripts .= '<noscript>' . $tags_match[0][ $i ] . '</noscript>';
