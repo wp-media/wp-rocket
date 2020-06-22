@@ -88,7 +88,7 @@ return [
 			],
 			'expected_file' => 'wp-content/cache/critical-css/1/front_page.css',
 			null,
-			'js_script'     => '<script>const wprRemoveCPCSS = () => { document.getElementById( "rocket-critical-css" ).remove(); }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>',
+			'js_script'     => '<script>const wprRemoveCPCSS = () => { $elem = document.getElementById( "rocket-critical-css" ); if ( $elem ) { $elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>',
 		],
 
 		'testShouldReturnHomeCSS' => [
@@ -112,7 +112,7 @@ return [
 			],
 			'expected_file' => 'wp-content/cache/critical-css/1/home.css',
 			null,
-			'js_script'     => '<script>const wprRemoveCPCSS = () => { document.getElementById( "rocket-critical-css" ).remove(); }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>',
+			'js_script'     => '<script>const wprRemoveCPCSS = () => { $elem = document.getElementById( "rocket-critical-css" ); if ( $elem ) { $elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>',
 		],
 
 		'testShouldReturnFrontPageCSS' => [
@@ -136,7 +136,7 @@ return [
 			],
 			'expected_file' => 'wp-content/cache/critical-css/1/front_page.css',
 			null,
-			'js_script'     => '<script>const wprRemoveCPCSS = () => { document.getElementById( "rocket-critical-css" ).remove(); }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>',
+			'js_script'     => '<script>const wprRemoveCPCSS = () => { $elem = document.getElementById( "rocket-critical-css" ); if ( $elem ) { $elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>',
 		],
 
 		'testShouldReturnCategoryPageCSS' => [
@@ -164,7 +164,7 @@ return [
 			],
 			'expected_file' => 'wp-content/cache/critical-css/1/category.css',
 			null,
-			'js_script'     => '<script>const wprRemoveCPCSS = () => { document.getElementById( "rocket-critical-css" ).remove(); }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>',
+			'js_script'     => '<script>const wprRemoveCPCSS = () => { $elem = document.getElementById( "rocket-critical-css" ); if ( $elem ) { $elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>',
 		],
 
 		'testShouldReturnTagCSS' => [
@@ -197,7 +197,7 @@ return [
 			],
 			'expected_file' => 'wp-content/cache/critical-css/1/post_tag.css',
 			null,
-			'js_script'     => '<script>const wprRemoveCPCSS = () => { document.getElementById( "rocket-critical-css" ).remove(); }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>',
+			'js_script'     => '<script>const wprRemoveCPCSS = () => { $elem = document.getElementById( "rocket-critical-css" ); if ( $elem ) { $elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>',
 		],
 
 		'testShouldReturnTaxCSS' => [
@@ -241,7 +241,7 @@ return [
 			],
 			'expected_file' => 'wp-content/cache/critical-css/1/wptests_tax1.css',
 			null,
-			'js_script'     => '<script>const wprRemoveCPCSS = () => { document.getElementById( "rocket-critical-css" ).remove(); }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>',
+			'js_script'     => '<script>const wprRemoveCPCSS = () => { $elem = document.getElementById( "rocket-critical-css" ); if ( $elem ) { $elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>',
 		],
 
 		'testShouldReturnTaxDoesNotExistReturnFalseFallbackCSS' => [
@@ -340,7 +340,7 @@ return [
 			],
 			'expected_file'     => '',
 			'expected_fallback' => 'fallback',
-			'js_script'         => '<script>const wprRemoveCPCSS = () => { document.getElementById( "rocket-critical-css" ).remove(); }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>',
+			'js_script'         => '<script>const wprRemoveCPCSS = () => { $elem = document.getElementById( "rocket-critical-css" ); if ( $elem ) { $elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>',
 		],
 
 		'testShouldReturnSingularCSS' => [

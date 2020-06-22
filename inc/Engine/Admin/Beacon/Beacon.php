@@ -207,12 +207,15 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 		}
 
 		$licenses = [
-			'Single'   => 108000,
-			'Plus'     => 108001,
-			'Infinite' => 108002,
+			'Single'      => 108000,
+			'Plus'        => 108001,
+			'Infinite'    => 108002,
+			'Unavailable' => 108003,
 		];
 
-		$prefill_data['fields'][0]['value'] = $licenses[ $customer_data->licence_account ];
+		if ( isset( $licenses[ $customer_data->licence_account ] ) ) {
+			$prefill_data['fields'][0]['value'] = $licenses[ $customer_data->licence_account ];
+		}
 
 		return $prefill_data;
 	}
@@ -643,10 +646,10 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'id'  => '5e8687c22c7d3a7e9aea4c4a',
 					'url' => 'https://docs.wp-rocket.me/article/1312-optimize-google-fonts',
 				],
-			],
-			'specific_cpcss'             => [
-				'en' => 'https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				'fr' => 'https://fr.docs.wp-rocket.me/article/1268-optimiser-le-chargement-du-css/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				'fr' => [
+					'id'  => '5e970f512c7d3a7e9aeaf9fb',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1314-optimiser-les-google-fonts/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
 			],
 		];
 

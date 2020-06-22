@@ -140,6 +140,10 @@ class AdvancedCache {
 			return;
 		}
 
+		if ( ! rocket_get_constant( 'WP_CACHE' ) ) {
+			return;
+		}
+
 		if ( rocket_get_constant( 'WP_ROCKET_ADVANCED_CACHE' ) ) {
 			return;
 		}

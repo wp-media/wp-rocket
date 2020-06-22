@@ -42,10 +42,10 @@ return [
 
 				'html' => <<<HTML
 <p class="cpcss_generate ">
-	Generate specific Critical Path CSS for this post.<a href="'https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&utm_medium=wp_rocket'" target="_blank" rel="noopener noreferrer">More info</a>
+	Generate specific Critical Path CSS for this post.<a href="'https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&utm_medium=wp_rocket'" data-beacon-article="5d52144c0428631e94f94ae2" target="_blank" rel="noopener noreferrer">More info</a>
 </p>
 <p class="cpcss_regenerate hidden">
-	This post uses specific Critical Path CSS.<a href="'https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&utm_medium=wp_rocket'" target="_blank" rel="noopener noreferrer">More info</a>
+	This post uses specific Critical Path CSS.<a href="'https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&utm_medium=wp_rocket'" data-beacon-article="5d52144c0428631e94f94ae2" target="_blank" rel="noopener noreferrer">More info</a>
 </p>
 <div class="components-panel__row cpcss_generate cpcss_regenerate">
 	<button id="rocket-generate-post-cpss" class="button components-button is-secondary" disabled="disabled">
@@ -83,10 +83,10 @@ HTML
 
 				'html' => <<<HTML
 <p class="cpcss_generate hidden">
-	Generate specific Critical Path CSS for this post.<a href="'https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&utm_medium=wp_rocket'" target="_blank" rel="noopener noreferrer">More info</a>
+	Generate specific Critical Path CSS for this post.<a href="'https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&utm_medium=wp_rocket'" data-beacon-article="5d52144c0428631e94f94ae2" target="_blank" rel="noopener noreferrer">More info</a>
 </p>
 <p class="cpcss_regenerate ">
-	This post uses specific Critical Path CSS.<a href="'https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&utm_medium=wp_rocket'" target="_blank" rel="noopener noreferrer">More info</a>
+	This post uses specific Critical Path CSS.<a href="'https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&utm_medium=wp_rocket'" data-beacon-article="5d52144c0428631e94f94ae2" target="_blank" rel="noopener noreferrer">More info</a>
 </p>
 <div class="components-panel__row cpcss_generate cpcss_regenerate">
 	<button id="rocket-generate-post-cpss" class="button components-button is-secondary" disabled="disabled">
@@ -126,10 +126,10 @@ HTML
 				// For the integration test.
 				'html' => <<<HTML
 <p class="cpcss_generate ">
-	Generate specific Critical Path CSS for this post.<a href="'https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&utm_medium=wp_rocket'" target="_blank" rel="noopener noreferrer">More info</a>
+	Generate specific Critical Path CSS for this post.<a href="'https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&utm_medium=wp_rocket'" data-beacon-article="5d52144c0428631e94f94ae2" target="_blank" rel="noopener noreferrer">More info</a>
 </p>
 <p class="cpcss_regenerate hidden">
-	This post uses specific Critical Path CSS.<a href="'https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&utm_medium=wp_rocket'" target="_blank" rel="noopener noreferrer">More info</a>
+	This post uses specific Critical Path CSS.<a href="'https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&utm_medium=wp_rocket'" data-beacon-article="5d52144c0428631e94f94ae2" target="_blank" rel="noopener noreferrer">More info</a>
 </p>
 <div class="components-panel__row cpcss_generate cpcss_regenerate">
 	<button id="rocket-generate-post-cpss" class="button components-button is-secondary" disabled="disabled">
@@ -169,10 +169,10 @@ HTML
 				// For the integration test.
 				'html' => <<<HTML
 <p class="cpcss_generate hidden">
-	Generate specific Critical Path CSS for this post.<a href="'https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&utm_medium=wp_rocket'" target="_blank" rel="noopener noreferrer">More info</a>
+	Generate specific Critical Path CSS for this post.<a href="'https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&utm_medium=wp_rocket'" data-beacon-article="5d52144c0428631e94f94ae2" target="_blank" rel="noopener noreferrer">More info</a>
 </p>
 <p class="cpcss_regenerate ">
-	This post uses specific Critical Path CSS.<a href="'https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&utm_medium=wp_rocket'" target="_blank" rel="noopener noreferrer">More info</a>
+	This post uses specific Critical Path CSS.<a href="'https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&utm_medium=wp_rocket'" data-beacon-article="5d52144c0428631e94f94ae2" target="_blank" rel="noopener noreferrer">More info</a>
 </p>
 <div class="components-panel__row cpcss_generate cpcss_regenerate">
 	<button id="rocket-generate-post-cpss" class="button components-button is-secondary" disabled="disabled">
@@ -212,10 +212,10 @@ HTML
 				// For the integration test.
 				'html' => <<<HTML
 <p class="cpcss_generate ">
-	Generate specific Critical Path CSS for this post.<a href="'https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&utm_medium=wp_rocket'" target="_blank" rel="noopener noreferrer">More info</a>
+	Generate specific Critical Path CSS for this post.<a href="'https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&utm_medium=wp_rocket'" data-beacon-article="5d52144c0428631e94f94ae2" target="_blank" rel="noopener noreferrer">More info</a>
 </p>
 <p class="cpcss_regenerate hidden">
-	This post uses specific Critical Path CSS.<a href="'https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&utm_medium=wp_rocket'" target="_blank" rel="noopener noreferrer">More info</a>
+	This post uses specific Critical Path CSS.<a href="'https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&utm_medium=wp_rocket'" data-beacon-article="5d52144c0428631e94f94ae2" target="_blank" rel="noopener noreferrer">More info</a>
 </p>
 <div class="components-panel__row cpcss_generate cpcss_regenerate">
 	<button id="rocket-generate-post-cpss" class="button components-button is-secondary" disabled="disabled">
@@ -255,10 +255,10 @@ HTML
 				// For the integration test.
 				'html' => <<<HTML
 <p class="cpcss_generate hidden">
-	Generate specific Critical Path CSS for this post.<a href="'https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&utm_medium=wp_rocket'" target="_blank" rel="noopener noreferrer">More info</a>
+	Generate specific Critical Path CSS for this post.<a href="'https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&utm_medium=wp_rocket'" data-beacon-article="5d52144c0428631e94f94ae2" target="_blank" rel="noopener noreferrer">More info</a>
 </p>
 <p class="cpcss_regenerate ">
-	This post uses specific Critical Path CSS.<a href="'https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&utm_medium=wp_rocket'" target="_blank" rel="noopener noreferrer">More info</a>
+	This post uses specific Critical Path CSS.<a href="'https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&utm_medium=wp_rocket'" data-beacon-article="5d52144c0428631e94f94ae2" target="_blank" rel="noopener noreferrer">More info</a>
 </p>
 <div class="components-panel__row cpcss_generate cpcss_regenerate">
 	<button id="rocket-generate-post-cpss" class="button components-button is-secondary" disabled="disabled">
@@ -298,10 +298,10 @@ HTML
 				// For the integration test.
 				'html' => <<<HTML
 <p class="cpcss_generate ">
-	Generate specific Critical Path CSS for this post.<a href="'https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&utm_medium=wp_rocket'" target="_blank" rel="noopener noreferrer">More info</a>
+	Generate specific Critical Path CSS for this post.<a href="'https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&utm_medium=wp_rocket'" data-beacon-article="5d52144c0428631e94f94ae2" target="_blank" rel="noopener noreferrer">More info</a>
 </p>
 <p class="cpcss_regenerate hidden">
-	This post uses specific Critical Path CSS.<a href="'https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&utm_medium=wp_rocket'" target="_blank" rel="noopener noreferrer">More info</a>
+	This post uses specific Critical Path CSS.<a href="'https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&utm_medium=wp_rocket'" data-beacon-article="5d52144c0428631e94f94ae2" target="_blank" rel="noopener noreferrer">More info</a>
 </p>
 <div class="components-panel__row cpcss_generate cpcss_regenerate">
 	<button id="rocket-generate-post-cpss" class="button components-button is-secondary" >
@@ -342,10 +342,10 @@ HTML
 				// For the integration test.
 				'html' => <<<HTML
 <p class="cpcss_generate hidden">
-	Generate specific Critical Path CSS for this post.<a href="'https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&utm_medium=wp_rocket'" target="_blank" rel="noopener noreferrer">More info</a>
+	Generate specific Critical Path CSS for this post.<a href="'https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&utm_medium=wp_rocket'" data-beacon-article="5d52144c0428631e94f94ae2" target="_blank" rel="noopener noreferrer">More info</a>
 </p>
 <p class="cpcss_regenerate ">
-	This post uses specific Critical Path CSS.<a href="'https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&utm_medium=wp_rocket'" target="_blank" rel="noopener noreferrer">More info</a>
+	This post uses specific Critical Path CSS.<a href="'https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&utm_medium=wp_rocket'" data-beacon-article="5d52144c0428631e94f94ae2" target="_blank" rel="noopener noreferrer">More info</a>
 </p>
 <div class="components-panel__row cpcss_generate cpcss_regenerate">
 	<button id="rocket-generate-post-cpss" class="button components-button is-secondary" >

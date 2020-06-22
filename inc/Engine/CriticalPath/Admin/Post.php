@@ -76,7 +76,7 @@ class Post extends Abstract_Render {
 	public function cpcss_actions() {
 		$data = [
 			'disabled'     => $this->is_enabled(),
-			'beacon'       => $this->beacon->get_suggest( 'specific_cpcss' ),
+			'beacon'       => $this->beacon->get_suggest( 'async' ),
 			'cpcss_exists' => $this->cpcss_exists(),
 		];
 

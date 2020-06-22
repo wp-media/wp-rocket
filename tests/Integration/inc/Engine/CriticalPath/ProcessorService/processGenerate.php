@@ -1,28 +1,57 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\ProcessorService;
+namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\ProcessorService;
 
 use Mockery;
-use WP_Error;
-use Brain\Monkey\Functions;
-use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use WP_Rocket\Engine\CriticalPath\APIClient;
 use WP_Rocket\Engine\CriticalPath\ProcessorService;
-use WP_Rocket\Engine\CriticalPath\DataManager;
+use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\ProcessorService::process_generate
  *
  * @group  CriticalPath
+ * @group  vfs
  */
 class Test_ProcessGenerate extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/ProcessorService/processGenerate.php';
-	protected static $mockCommonWpFunctionsInSetUp = true;
+
+	private static $container;
+	private static $user_id;
+	private $api_client;
+	private $processor;
+
+	public static function wpSetUpBeforeClass( $factory ) {
+		self::$user_id   = $factory->user->create(
+			[
+				'role'          => 'adminstrator',
+				'user_nicename' => 'rocket_tester',
+			]
+		);
+		self::$container = apply_filters( 'rocket_container', null );
+	}
+
+	public function setUp() {
+		parent::setUp();
+
+		$this->api_client = Mockery::mock( APIClient::class );
+		$this->processor  = new ProcessorService( self::$container->get( 'cpcss_data_manager' ), $this->api_client );
+	}
 
 	/**
-	 * @dataProvider dataProvider
+	 * @dataProvider providerTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ) {
+
+		$post_id                       = isset( $config['post_data'] )
+			? $config['post_data']['ID']
+			: 0;
+		$post_type                     = ! isset( $config['post_data']['post_type'] )
+			? 'post'
+			: $config['post_data']['post_type'];
+		$post_status                   = isset( $config['post_data']['post_status'] )
+			? $config['post_data']['post_status']
+			: false;
 		$post_request_response_code    = ! isset( $config['generate_post_request_data']['code'] )
 			? 200
 			: $config['generate_post_request_data']['code'];
@@ -55,6 +84,7 @@ class Test_ProcessGenerate extends FilesystemTestCase {
 		$get_job_details_error         = ! isset( $config['get_job_details_error'] )
 			? ''
 			: $config['get_job_details_error'];
+		$file                         = $this->config['vfs_dir'] . "1/".$item_path;
 		$is_mobile                    = isset( $config['mobile'] )
 			? $config['mobile']
 			: false;
@@ -62,47 +92,28 @@ class Test_ProcessGenerate extends FilesystemTestCase {
 			? $config['type']
 			: 'custom';
 
-		$api_client    = Mockery::mock( APIClient::class );
-		$data_manager  = Mockery::mock( DataManager::class );
-		$cpcss_service = new ProcessorService( $data_manager, $api_client );
-
-		if ( $request_timeout ) {
-			$data_manager->shouldReceive( 'delete_cache_job_id' )->once()->with( $item_url, $is_mobile );
-		} else {
-			$data_manager->shouldReceive( 'get_cache_job_id' )->once()
-				->with( $item_url, $is_mobile )
-				->andReturn( $saved_cpcss_job_id );
-
+		if ( ! $request_timeout ) {
 			if ( false === $saved_cpcss_job_id) {
 				// enters send_generation_request()
 				if ( $cpcss_post_job_id && 200 === $post_request_response_code ) {
-					$api_client->shouldReceive( 'send_generation_request' )
+					$this->api_client->shouldReceive( 'send_generation_request' )
 						->once()
 						->with( $item_url, [ 'mobile' => $is_mobile ], $item_type )
 						->andReturn( $cpcss_post_job_body );
 
-					$data_manager->shouldReceive( 'set_cache_job_id' )->once()->with( $item_url, $cpcss_post_job_id, $is_mobile );
-
 					if ( ! in_array( (int) $get_request_response_code, [ 400, 404 ], true ) ) {
-						$api_client->shouldReceive( 'get_job_details' )
+						$this->api_client->shouldReceive( 'get_job_details' )
 							->once()
 							->with( $cpcss_post_job_id, $item_url, $is_mobile, $item_type )
 							->andReturn( $get_request_response_decoded );
-						$data_manager->shouldReceive( 'delete_cache_job_id' )->once()->with( $item_url, $is_mobile );
-
-						$data_manager->shouldReceive( 'save_cpcss' )
-							->once()
-							->with( $item_path, $get_request_response_decoded->data->critical_path, $item_url, $is_mobile, $item_type )
-							->andReturn( $save_cpcss );
 					} else {
-						$api_client->shouldReceive( 'get_job_details' )
+						$this->api_client->shouldReceive( 'get_job_details' )
 							->once()
 							->with( $cpcss_post_job_id, $item_url, $is_mobile, $item_type )
 							->andReturn( $get_job_details_error );
-						$data_manager->shouldReceive( 'delete_cache_job_id' )->once()->with( $item_url, $is_mobile );
 					}
 				} else {
-					$api_client->shouldReceive( 'send_generation_request' )
+					$this->api_client->shouldReceive( 'send_generation_request' )
 						->once()
 						->with( $item_url, [ 'mobile' => $is_mobile ], $item_type )
 						->andReturn( $send_generation_request_error );
@@ -110,26 +121,25 @@ class Test_ProcessGenerate extends FilesystemTestCase {
 			}
 		}
 
-		$generation_params = [
+		if ( isset( $save_cpcss ) && is_wp_error( $save_cpcss ) ) {
+			$this->filesystem->chmod( 'wp-content/cache/critical-css/1/', 0444 );
+		}
+
+		$additional_params = [
+			'timeout'   => $request_timeout,
 			'is_mobile' => $is_mobile,
-			'timeout' => $request_timeout,
 			'item_type' => $item_type
 		];
-		$generated = $cpcss_service->process_generate( $item_url, $item_path, $generation_params );
-		if( isset( $expected['success'] ) && ! $expected['success'] ){
+		$generated = $this->processor->process_generate( $item_url, $item_path, $additional_params );
+
+		if ( isset( $expected['success'] ) && ! $expected['success'] ) {
 			$this->assertSame( $expected['code'], $generated->get_error_code() );
 			$this->assertSame( $expected['message'], $generated->get_error_message() );
 			$this->assertSame( $expected['data'], $generated->get_error_data() );
-		}else{
+		} else {
 			$this->assertSame( $expected, $generated );
 		}
-	}
 
-	public function dataProvider() {
-		if ( empty( $this->config ) ) {
-			$this->loadConfig();
-		}
-
-		return $this->config['test_data'];
+		$this->assertSame( $config['cpcss_exists_after'], $this->filesystem->exists( $file ) );
 	}
 }

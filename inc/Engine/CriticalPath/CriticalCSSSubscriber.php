@@ -326,6 +326,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 		}
 
 		$transient = get_transient( 'rocket_critical_css_generation_process_running' );
+
 		if ( ! $transient ) {
 			return;
 		}
@@ -350,7 +351,15 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 			$items_message .= '</ul>';
 		}
 
-		if ( 0 === $success_counter && 0 === $transient['total'] ) {
+		if ( ! isset( $transient['total'] ) ) {
+			return;
+		}
+
+		if (
+			0 === $success_counter
+			&&
+			0 === $transient['total']
+		) {
 			return;
 		}
 
@@ -393,6 +402,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 		$status          = 'success';
 		$success_counter = 0;
 		$items_message   = '';
+		$desktop         = false;
 
 		if ( ! empty( $transient['items'] ) ) {
 			$items_message .= '<ul>';
@@ -400,18 +410,22 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 			foreach ( $transient['items'] as $item ) {
 				$status_nonmobile = isset( $item['status']['nonmobile'] );
 				$status_mobile    = $this->is_mobile_cpcss_active() ? isset( $item['status']['mobile'] ) : true;
-				if ( $status_nonmobile && $status_mobile ) {
-					$items_message .= '<li>' . $item['status']['nonmobile']['message'] . '</li>';
-					if ( $item['status']['nonmobile']['success'] ) {
-						$success_counter ++;
-					}
+				if ( ! $status_nonmobile || ! $status_mobile ) {
+					continue;
+				}
+				if ( isset( $item['status']['nonmobile']['message'] ) ) {
+					$desktop = true;
+				}
+				$items_message .= '<li>' . $item['status']['nonmobile']['message'] . '</li>';
+				if ( $item['status']['nonmobile']['success'] ) {
+					$success_counter ++;
 				}
 			}
 
 			$items_message .= '</ul>';
 		}
 
-		if ( 0 === $success_counter && 0 === $transient['total'] ) {
+		if ( ! $desktop || ( 0 === $success_counter && 0 === $transient['total'] ) ) {
 			return;
 		}
 
@@ -604,13 +618,16 @@ JS;
 	 */
 	protected function return_remove_cpcss_script() {
 		if ( ! rocket_get_constant( 'SCRIPT_DEBUG' ) ) {
-			return '<script>const wprRemoveCPCSS = () => { document.getElementById( "rocket-critical-css" ).remove(); }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>';
+			return '<script>const wprRemoveCPCSS = () => { $elem = document.getElementById( "rocket-critical-css" ); if ( $elem ) { $elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>';
 		}
 
 		return '
 			<script>
 				const wprRemoveCPCSS = () => {
-					document.getElementById( "rocket-critical-css" ).remove();
+					$elem = document.getElementById( "rocket-critical-css" );
+					if ( $elem ) {
+						$elem.remove();
+					}
 				};
 				if ( window.addEventListener ) {
 					window.addEventListener( "load", wprRemoveCPCSS );
