@@ -229,5 +229,23 @@ return [
 				'html' => '<!doctype html><html lang="en-US"><head><meta charset="UTF-8" /><link rel="stylesheet"  as="style" type="text/css" href="http://www.example.com/file1.css" media="print" onload="this.media=\'print\'"></head><body>Content here<noscript><link rel="stylesheet" type="text/css" href="http://www.example.com/file1.css" media="print" onload=\'alert(\'Hi\')\'></noscript></body></html>'
 			]
 		],
+		'shouldDeferCssFilesWithOnloadExistsAndQuotesAtTheEndMultipleFiles' => [
+			'config' => [
+				'constants' => [
+					'DONOTROCKETOPTIMIZE' => false,
+					'DONOTASYNCCSS'       => false
+				],
+				'options' => [
+					'async_css' => true
+				],
+				'exclude_options' => [
+					'async_css' => false
+				],
+				'html' => '<!doctype html><html lang="en-US"><head><meta charset="UTF-8" /><link onload="alert(\'Hi\')" rel="stylesheet" type="text/css" href="http://www.example.com/file2.css" media="print"><link rel="stylesheet" type="text/css" href="//www.example.com/file3.css" media="all"><link rel="stylesheet" type="text/css" href="http://www.example.com/file1.css" media="print" onload=\'alert(\'Hi\')\'></head><body>Content here</body></html>'
+			],
+			'expected' => [
+				'html' => '<!doctype html><html lang="en-US"><head><meta charset="UTF-8" /><link onload="this.media=\'print\'" rel="stylesheet"  as="style" type="text/css" href="http://www.example.com/file2.css" media="print"><link rel="stylesheet"  as="style" type="text/css" onload="this.media=\'all\'" href="//www.example.com/file3.css" media="print"><link rel="stylesheet"  as="style" type="text/css" href="http://www.example.com/file1.css" media="print" onload="this.media=\'print\'"></head><body>Content here<noscript><link onload="alert(\'Hi\')" rel="stylesheet" type="text/css" href="http://www.example.com/file2.css" media="print"></noscript><noscript><link rel="stylesheet" type="text/css" href="//www.example.com/file3.css" media="all"></noscript><noscript><link rel="stylesheet" type="text/css" href="http://www.example.com/file1.css" media="print" onload=\'alert(\'Hi\')\'></noscript></body></html>'
+			]
+		],
 	]
 ];
