@@ -142,7 +142,6 @@ function get_rocket_htaccess_marker() { // phpcs:ignore WordPress.NamingConventi
 	$marker .= get_rocket_htaccess_web_fonts_access();
 	$marker .= get_rocket_htaccess_files_match();
 	$marker .= get_rocket_htaccess_mod_expires();
-	$marker .= rocket_get_compressed_assets_rules();
 	$marker .= get_rocket_htaccess_mod_deflate();
 
 	if ( \WP_Rocket\Buffer\Cache::can_generate_caching_files() && ! is_rocket_generate_caching_mobile_files() ) {
@@ -639,42 +638,6 @@ function get_rocket_htaccess_web_fonts_access() { // phpcs:ignore WordPress.Nami
 	$rules = apply_filters( 'rocket_htaccess_web_fonts_access', $rules );
 
 	return $rules;
-}
-
-/**
- * Rules to serve gzip compressed CSS & JS files if they exists and client accepts gzip
- *
- * @since 3.5
- * @author Remy Perona
- *
- * @return string
- */
-function rocket_get_compressed_assets_rules() {
-	$rules = <<<HTACCESS
-<IfModule mod_headers.c>
-	# Serve gzip compressed CSS and JS files if they exist
-	# and the client accepts gzip.
-	RewriteCond "%{HTTP:Accept-encoding}" "gzip"
-	RewriteCond "%{REQUEST_FILENAME}\.gz" -s
-	RewriteRule "^(.*)\.(css|js)"         "$1\.$2\.gz" [QSA]
-
-	# Serve correct content types, and prevent mod_deflate double gzip.
-	RewriteRule "\.css\.gz$" "-" [T=text/css,E=no-gzip:1]
-	RewriteRule "\.js\.gz$"  "-" [T=text/javascript,E=no-gzip:1]
-
-	<FilesMatch "(\.js\.gz|\.css\.gz)$">
-		# Serve correct encoding type.
-		Header append Content-Encoding gzip
-
-		# Force proxies to cache gzipped &
-		# non-gzipped css/js files separately.
-		Header append Vary Accept-Encoding
-	</FilesMatch>
-</IfModule>
-
-HTACCESS;
-
-	return apply_filters( 'rocket_htaccess_compressed_assets', $rules );
 }
 
 /**
