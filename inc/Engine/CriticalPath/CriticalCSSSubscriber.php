@@ -626,34 +626,65 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 				continue;
 			}
 
-			$original_media = 'all';
-			$media_tag      = empty( $tags_match['media'][ $i ] ) ? ' media="print"' : '';
-			$onload_tag     = empty( $tags_match['onload'][ $i ] ) ? ' onload=""' : '';
-			$tag            = str_replace( $tags_match['type'][ $i ], ' as="style" ' . $tags_match['type'][ $i ] . $media_tag . $onload_tag, $tag );
+			$original_media  = 'all';
+			$original_onload = '';
+			$media_tag       = empty( $tags_match['media'][ $i ] ) ? ' media="print"' : '';
+			$onload_tag      = empty( $tags_match['onload'][ $i ] ) ? ' onload=""' : '';
+			$tag             = str_replace( $tags_match['type'][ $i ], ' as="style" ' . $tags_match['type'][ $i ] . $media_tag . $onload_tag, $tag );
 			if ( ! empty( $tags_match['media'][ $i ] ) ) {
-				$media_attr = $tags_match['media'][ $i ];
-				preg_match( '/media\s*=\s*[\'"](?<media>.*)[\'"]/ix', $media_attr, $media_match );
-				$original_media = $media_match['media'];
-				$tag            = str_replace( $media_attr, 'media="print"', $tag );
+				$tag = $this->replace_media_attribute( $tag, $tags_match['media'][ $i ], $original_media );
 			}
 
 			if ( ! empty( $tags_match['onload'][ $i ] ) ) {
-				$onload_attr      = $tags_match['onload'][ $i ];
-				$onload_delimiter = substr( $onload_attr, 7, 1 );
-				$onload_end       = strpos( $onload_attr, $onload_delimiter . ' ' );
-				if ( ! $onload_end ) {
-					$onload_end = strpos( $onload_attr, $onload_delimiter . '>' );
-				}
-
-				$onload = substr( $onload_attr, 0, $onload_end + 1 );
-				$tag    = str_replace( $onload, 'onload=""', $tag );
+				$tag = $this->replace_onload_attribute( $tag, $tags_match['onload'][ $i ], $original_media, $original_onload );
 			}
-			$tag        = str_replace( 'onload=""', 'onload="this.media=\'' . $original_media . '\'"', $tag );
+			$tag        = str_replace( 'onload=""', 'onload="this.media=\'' . $original_media . '\'' . ( ! empty( $original_onload ) ? ';' . $original_onload : '' ) . '"', $tag );
 			$buffer     = str_replace( $tags_match[0][ $i ], $tag, $buffer );
 			$noscripts .= '<noscript>' . $tags_match[0][ $i ] . '</noscript>';
 		}
 
 		return str_replace( '</body>', $noscripts . '</body>', $buffer );
+	}
+
+	/**
+	 * Replace media tag with 'print'on link.
+	 *
+	 * @param string $tag            Full link tag match.
+	 * @param string $media_attr     Matched media tag for the current tag.
+	 * @param string $original_media Original media value.
+	 *
+	 * @return string Modified tag with the print media attribute.
+	 */
+	private function replace_media_attribute( $tag, $media_attr, &$original_media ) {
+		preg_match( '/media\s*=\s*[\'"](?<media>.*)[\'"]/ix', $media_attr, $media_match );
+		$original_media = $media_match['media'];
+		if ( 'print' === $original_media ) {
+			$original_media = 'all';
+		}
+		return str_replace( $media_attr, 'media="print"', $tag );
+	}
+
+	/**
+	 * Alters onload tag to contain this.media switch + original onload value.
+	 *
+	 * @param string $tag             Full link tag match.
+	 * @param string $onload_attr     Matched onload tag for the current tag.
+	 * @param string $original_media  Original media value.
+	 * @param string $original_onload Original onload value.
+	 *
+	 * @return string Modified tag with the onload attribute.
+	 */
+	private function replace_onload_attribute( $tag, $onload_attr, $original_media, &$original_onload ) {
+		$onload_delimiter = substr( $onload_attr, 7, 1 );
+		$onload_end       = strpos( $onload_attr, $onload_delimiter . ' ' );
+		if ( ! $onload_end ) {
+			$onload_end = strpos( $onload_attr, $onload_delimiter . '>' );
+		}
+
+		$original_onload = substr( $onload_attr, 8, $onload_end - 8 );
+		$original_onload = preg_replace( '@(this.media\s*=\s*[\'"]' . $original_media . '[\'";];*)@ix', '', $original_onload );
+		$onload          = substr( $onload_attr, 0, $onload_end + 1 );
+		return str_replace( $onload, 'onload=""', $tag );
 	}
 
 	/**
