@@ -675,10 +675,6 @@ JS;
 			return $buffer;
 		}
 
-		if ( ! $this->critical_css->get_current_page_critical_css() ) {
-			return $buffer;
-		}
-
 		$excluded_css = array_flip( get_rocket_exclude_async_css() );
 
 		/**
