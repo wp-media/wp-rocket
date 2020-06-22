@@ -192,11 +192,11 @@ class WPCache {
 			return;
 		}
 
-		if ( $this->find_wpconfig_path() ) {
+		if ( rocket_get_constant( 'WP_CACHE' ) ) {
 			return;
 		}
 
-		if ( rocket_get_constant( 'WP_CACHE' ) ) {
+		if ( $this->find_wpconfig_path() ) {
 			return;
 		}
 
