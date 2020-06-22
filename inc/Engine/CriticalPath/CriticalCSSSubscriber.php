@@ -618,13 +618,16 @@ JS;
 	 */
 	protected function return_remove_cpcss_script() {
 		if ( ! rocket_get_constant( 'SCRIPT_DEBUG' ) ) {
-			return '<script>const wprRemoveCPCSS = () => { document.getElementById( "rocket-critical-css" ).remove(); }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>';
+			return '<script>const wprRemoveCPCSS = () => { $elem = document.getElementById( "rocket-critical-css" ); if ( $elem ) { $elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>';
 		}
 
 		return '
 			<script>
 				const wprRemoveCPCSS = () => {
-					document.getElementById( "rocket-critical-css" ).remove();
+					$elem = document.getElementById( "rocket-critical-css" );
+					if ( $elem ) {
+						$elem.remove();
+					}
 				};
 				if ( window.addEventListener ) {
 					window.addEventListener( "load", wprRemoveCPCSS );
