@@ -347,3 +347,53 @@ function rocket_sccss_create_cache_file( $cache_busting_path, $cache_sccss_filep
 	rocket_put_content( $cache_sccss_filepath, $content );
 }
 
+/**
+ * Rules to serve gzip compressed CSS & JS files if they exists and client accepts gzip
+ *
+ * @since 3.6.0.3 deprecated
+ * @since 3.6.0.2 Update rules used to prevent content encoding issue
+ * @since 3.6
+ * @author Remy Perona
+ *
+ * @return string
+ */
+function rocket_get_compressed_assets_rules() {
+	_deprecated_function( __FUNCTION__ . '()', '3.6.0.3' );
+
+	$rules = <<<HTACCESS
+<IfModule mod_headers.c>
+    RewriteCond %{HTTP:Accept-Encoding} gzip
+    RewriteCond %{REQUEST_FILENAME}\.gz -f
+    RewriteRule \.(css|js)$ %{REQUEST_URI}.gz [L]
+
+    # Prevent mod_deflate double gzip
+	RewriteRule \.gz$ - [E=no-gzip:1]
+
+	<FilesMatch "\.gz$">
+
+        # Serve correct content types
+        <IfModule mod_mime.c>
+            # (1)
+            RemoveType gz
+
+            # Serve correct content types
+            AddType text/css              css.gz
+            AddType text/javascript       js.gz
+
+            # Serve correct content charset
+            AddCharset utf-8 .css.gz \
+                             .js.gz
+		</IfModule>
+
+        # Force proxies to cache gzipped and non-gzipped files separately
+        Header append Vary Accept-Encoding
+	</FilesMatch>
+
+    # Serve correct encoding type
+    AddEncoding gzip .gz
+</IfModule>
+
+HTACCESS;
+
+	return apply_filters( 'rocket_htaccess_compressed_assets', $rules );
+}
