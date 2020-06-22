@@ -197,24 +197,27 @@ function rocket_get_ignored_parameters() {
  * @since 2.4.1 Auto-exclude WordPress REST API.
  * @since 2.0
  *
+ * @param bool $force Force the static uris to be reverted to null.
+ *
  * @return string A pipe separated list of rejected uri.
  */
-function get_rocket_cache_reject_uri() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+function get_rocket_cache_reject_uri( $force = false ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	static $uris;
+	global $wp_rewrite;
 
+	if ( $force ) {
+		$uris = null;
+	}
 	if ( $uris ) {
 		return $uris;
 	}
 
-	$uris      = get_rocket_option( 'cache_reject_uri', [] );
-	$uris      = is_array( $uris ) ? $uris : [];
-	$home_root = rocket_get_home_dirname();
+	$uris              = (array) get_rocket_option( 'cache_reject_uri', [] );
+	$home_root         = rocket_get_home_dirname();
+	$home_root_escaped = preg_quote( $home_root, '/' ); // The site is not at the domain root, it's in a folder.
 
 	if ( '' !== $home_root && $uris ) {
-		// The site is not at the domain root, it's in a folder.
-		$home_root_escaped = preg_quote( $home_root, '/' );
-		$home_root_len     = strlen( $home_root );
-
+		$home_root_len = strlen( $home_root );
 		foreach ( $uris as $i => $uri ) {
 			/**
 			 * Since these URIs can be regex patterns like `/homeroot(/.+)/`, we can't simply search for the string `/homeroot/` (nor `/homeroot`).
@@ -232,7 +235,7 @@ function get_rocket_cache_reject_uri() { // phpcs:ignore WordPress.NamingConvent
 	}
 
 	// Exclude feeds.
-	$uris[] = '/(.+/)?' . $GLOBALS['wp_rewrite']->feed_base . '/?';
+	$uris[] = '/(.+/)?' . $wp_rewrite->feed_base . '/?.+/?';
 
 	// Exlude embedded URLs.
 	$uris[] = '/(?:.+/)?embed/';

@@ -3,47 +3,6 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Get all terms archives urls associated to a specific post
- *
- * @since 1.0
- *
- * @param int $post_id The post ID.
- * @return array $urls List of taxonomies URLs
- */
-function get_rocket_post_terms_urls( $post_id ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
-	$urls       = [];
-	$taxonomies = get_object_taxonomies( get_post_type( $post_id ), 'objects' );
-
-	foreach ( $taxonomies as $taxonomy ) {
-		if ( ! $taxonomy->public || 'product_shipping_class' === $taxonomy->name ) {
-			continue;
-		}
-
-		// Get the terms related to post.
-		$terms = get_the_terms( $post_id, $taxonomy->name );
-
-		if ( ! empty( $terms ) ) {
-			foreach ( $terms as $term ) {
-				$term_url = get_term_link( $term->slug, $taxonomy->name );
-
-				if ( ! is_wp_error( $term_url ) ) {
-					$urls[] = $term_url;
-				}
-			}
-		}
-	}
-
-	/**
-	 * Filter the list of taxonomies URLs
-	 *
-	 * @since 1.1.0
-	 *
-	 * @param array $urls List of taxonomies URLs
-	*/
-	return apply_filters( 'rocket_post_terms_urls', $urls );
-}
-
-/**
  * Get the permalink post
  *
  * @since 1.3.1
