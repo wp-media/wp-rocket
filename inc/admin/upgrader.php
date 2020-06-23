@@ -283,11 +283,6 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 	// Disable minification options if they're active in Autoptimize.
 	if ( version_compare( $actual_version, '2.9.5', '<' ) ) {
 		if ( is_plugin_active( 'autoptimize/autoptimize.php' ) ) {
-			if ( 'on' === get_option( 'autoptimize_html' ) ) {
-				update_rocket_option( 'minify_html_inline_css', 0 );
-				update_rocket_option( 'minify_html_inline_js', 0 );
-			}
-
 			if ( 'on' === get_option( 'autoptimize_css' ) ) {
 				update_rocket_option( 'minify_css', 0 );
 			}
