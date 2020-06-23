@@ -186,7 +186,6 @@ class Plugin {
 		$subscribers = [
 			'buffer_subscriber',
 			'ie_conditionals_subscriber',
-			'minify_html_subscriber',
 			'combine_google_fonts_subscriber',
 			'minify_css_subscriber',
 			'minify_js_subscriber',
