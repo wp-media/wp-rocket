@@ -8,7 +8,7 @@ use WP_Rocket\Engine\CriticalPath\CriticalCSS;
 use WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration;
 use WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber;
 use WP_Rocket\Engine\CriticalPath\ProcessorService;
-use WP_Rocket\Tests\Integration\TestCase;
+use WP_Rocket\Tests\Integration\FilesystemTestCase;
 use Mockery;
 
 /**
@@ -18,7 +18,9 @@ use Mockery;
  * @group  CriticalPath
  * @group  AsyncCSS
  */
-class Test_AsyncCss extends TestCase {
+class Test_AsyncCss extends FilesystemTestCase {
+
+	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSSSubscriber/asyncCss.php';
 
 	private $rocket_options = [];
 
@@ -56,8 +58,8 @@ class Test_AsyncCss extends TestCase {
 			foreach ( $this->to_be_removed as $key => $items ) {
 				switch ($key) {
 					case 'filters':
-						foreach ($items as $filter_name => $filter_callback) {
-							remove_filter($filter_name, $filter_callback);
+						foreach ( $items as $filter_name => $filter_callback ) {
+							remove_filter( $filter_name, $filter_callback );
 						}
 						break;
 				}
@@ -67,12 +69,12 @@ class Test_AsyncCss extends TestCase {
 	}
 
 	/**
-	 * @dataProvider configTestData
+	 * @dataProvider providerTestData
 	 */
 	public function testShouldAsyncCss( $config, $expected ) {
 		if ( ! empty( $config['constants'] ) ) {
 			foreach ( $config['constants'] as $constant_name => $constant_value ) {
-				$constant_name = strtolower($constant_name);
+				$constant_name = strtolower( $constant_name );
 				$this->$constant_name = $constant_value;
 			}
 		}
@@ -80,24 +82,29 @@ class Test_AsyncCss extends TestCase {
 		$this->rocket_options = $config['options'];
 		if ( ! empty( $config['options'] ) ) {
 			foreach ( $config['options'] as $option_key => $option_value ) {
-				add_filter('pre_get_rocket_option_'.$option_key, [$this, 'setOption_'.$option_key]);
+				add_filter( 'pre_get_rocket_option_'.$option_key, [ $this, 'setOption_'.$option_key ] );
 				$this->to_be_removed['filters'][] = [
-					'pre_get_rocket_option_'.$option_key => [$this, 'setOption_'.$option_key]
+					'pre_get_rocket_option_'.$option_key => [ $this, 'setOption_'.$option_key ]
 				];
 			}
 		}
 
+		if ( ! empty( $config['get_current_page_critical_css'] ) ) {
+			$item_path = 'wp-content/cache/critical-css/1' . DIRECTORY_SEPARATOR . $config['get_current_page_critical_css'];
+			$this->filesystem->put_contents( $item_path, '.cpcss { color: red; }');
+		}
+
 		if ( ! empty( $config['exclude_options'] ) ) {
-			foreach ($config['exclude_options'] as $exclude_option => $return) {
+			foreach ( $config['exclude_options'] as $exclude_option => $return ) {
 				Functions\expect( 'is_rocket_post_excluded_option' )->with( $exclude_option )->andReturn( $return );
 			}
 		}
 
 		$this->exclude_css_files = isset( $config['exclude_css_files'] ) ? $config['exclude_css_files'] : [];
 		if ( ! empty( $this->exclude_css_files ) ) {
-			add_filter( 'rocket_exclude_async_css', [$this, 'getExcludedCssFiles'] );
+			add_filter( 'rocket_exclude_async_css', [ $this, 'getExcludedCssFiles' ] );
 			$this->to_be_removed['filters'][] = [
-				'rocket_exclude_async_css' => [$this, 'getExcludedCssFiles']
+				'rocket_exclude_async_css' => [ $this, 'getExcludedCssFiles' ]
 			];
 		}
 
@@ -107,6 +114,10 @@ class Test_AsyncCss extends TestCase {
 
 	public function setOption_async_css() {
 		return $this->rocket_options['async_css'];
+	}
+
+	public function setOption_critical_css() {
+		return $this->rocket_options['critical_css'];
 	}
 
 	public function getExcludedCssFiles( ) {

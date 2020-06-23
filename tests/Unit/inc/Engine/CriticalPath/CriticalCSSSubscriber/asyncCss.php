@@ -27,7 +27,7 @@ class Test_AsyncCss extends TestCase {
 	public function testShouldAsyncCss( $config, $expected ) {
 		if ( ! empty( $config['constants'] ) ) {
 			foreach ( $config['constants'] as $constant_name => $constant_value ) {
-				$constant_name = strtolower($constant_name);
+				$constant_name = strtolower( $constant_name );
 				$this->$constant_name = $constant_value;
 			}
 		}
@@ -38,8 +38,12 @@ class Test_AsyncCss extends TestCase {
 			}
 		}
 
+		if ( ! empty( $config['get_current_page_critical_css'] ) ) {
+			$this->critical_css->shouldReceive( 'get_current_page_critical_css' )->andReturn( $config['get_current_page_critical_css'] );
+		}
+
 		if ( ! empty( $config['exclude_options'] ) ) {
-			foreach ($config['exclude_options'] as $exclude_option => $return) {
+			foreach ( $config['exclude_options'] as $exclude_option => $return ) {
 				Functions\expect( 'is_rocket_post_excluded_option' )->with( $exclude_option )->andReturn( $return );
 			}
 		}
@@ -47,9 +51,9 @@ class Test_AsyncCss extends TestCase {
 		$exclude_css_files = isset( $config['exclude_css_files'] ) ? $config['exclude_css_files'] : [];
 
 		$this->critical_css->shouldReceive( 'get_exclude_async_css' )->andReturn( $exclude_css_files );
-		Functions\expect( 'rocket_extract_url_component' )->andReturnUsing( function( $url, $component) {
+		Functions\expect( 'rocket_extract_url_component' )->andReturnUsing( function( $url, $component ) {
 			if ( PHP_URL_PATH === $component ) {
-				$parsed_url = parse_url($url);
+				$parsed_url = parse_url( $url );
 				return $parsed_url['path'];
 			}
 			return '';
