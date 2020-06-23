@@ -33,7 +33,6 @@ $default = [
 	'minify_js_key'               => 'minify_js_key_uniqid',
 	'minify_concatenate_js'       => 0,
 	'minify_google_fonts'         => 1,
-	'minify_html'                 => 0,
 	'manual_preload'              => 1,
 	'sitemap_preload'             => 0,
 	'sitemap_preload_url_crawl'   => '500000',

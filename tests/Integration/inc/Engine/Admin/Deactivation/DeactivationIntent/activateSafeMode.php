@@ -64,7 +64,6 @@ class Test_ActivateSafeMode extends AjaxTestCase {
 			'minify_concatenate_css' => 0,
 			'minify_js'              => 0,
 			'minify_concatenate_js'  => 0,
-			'minify_html'            => 0,
 			'minify_google_fonts'    => 0,
 			'cdn'                    => 0,
 		];
