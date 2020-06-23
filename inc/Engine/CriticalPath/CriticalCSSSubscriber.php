@@ -703,7 +703,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 			return false;
 		}
 		if ( empty( $this->critical_css->get_current_page_critical_css() ) && empty( $this->options->get( 'critical_css', '' ) ) ) {
-			return $buffer;
+			return false;
 		}
 		return ! is_rocket_post_excluded_option( 'async_css' );
 	}
