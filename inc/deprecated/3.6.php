@@ -346,4 +346,3 @@ function rocket_sccss_create_cache_file( $cache_busting_path, $cache_sccss_filep
 
 	rocket_put_content( $cache_sccss_filepath, $content );
 }
-

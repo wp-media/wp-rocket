@@ -1,4 +1,7 @@
 <?php
+
+use WP_Rocket\deprecated\DeprecatedClassTrait;
+
 /**
  * Class Minify_HTML
  * @package Minify
@@ -18,6 +21,8 @@
  */
 class Minify_HTML
 {
+	use DeprecatedClassTrait;
+
     /**
      * @var boolean
      */
@@ -68,6 +73,8 @@ class Minify_HTML
      */
     public function __construct($html, $options = array())
     {
+		self::deprecated_class( '3.7' );
+
         $this->_html = str_replace("\r\n", "\n", trim($html));
         if (isset($options['xhtml'])) {
             $this->_isXhtml = (bool)$options['xhtml'];
