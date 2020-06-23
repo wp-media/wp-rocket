@@ -650,7 +650,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Replace media tag with 'print'on link.
+	 * Replace media tag with 'print' on link.
 	 *
 	 * @param string $tag            Full link tag match.
 	 * @param string $media_attr     Matched media tag for the current tag.
