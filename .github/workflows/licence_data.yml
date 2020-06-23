@@ -1,0 +1,35 @@
+name: Rebuild Licence data file
+
+on:
+  push:
+    branches: [ master, develop ]
+  pull_request:
+    branches: [ master, develop ]
+
+jobs:
+  licence:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Find file
+        run: find ./licence-data.php
+        id: find
+        continue-on-error: true
+
+      - name: Add a file
+        if: ${{ steps.find.outcome == 'failure' }}
+        run: git checkout origin/master licence-data.php
+        id: add
+
+
+      - name: Commit the missing file
+        if: ${{ steps.add.outcome == 'success' }}
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Adds missing licence-data.php file
+          commit_user_name: WP-media GitHub Actions Bot
