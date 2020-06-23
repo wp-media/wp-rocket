@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Cache\WPCache;
 
+use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 use WP_Rocket\Engine\Cache\WPCache;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
@@ -30,6 +31,11 @@ class Test_MaybeSetWpCache extends FilesystemTestCase {
 			->times( 1 )
 			->andReturn( $config['valid_key'] );
 		Functions\when( 'current_user_can' )->justReturn( true );
+		Filters\expectApplied( 'rocket_set_wp_cache_constant' )
+			->atMost()
+			->times( 1 )
+			->with( true )
+			->andReturn( $config['filter'] );
 
 		$wp_cache = new WPCache( $this->filesystem );
 

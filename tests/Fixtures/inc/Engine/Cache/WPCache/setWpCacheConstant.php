@@ -139,29 +139,41 @@ return [
 			'config' => [
 				'original'  => $wp_config_has_no_wp_cache,
 				'valid_key' => true,
+				'filter'    => true,
 			],
-			'expected' => $wp_config_has_no_wp_cache_expected
+			'expected' => $wp_config_has_no_wp_cache_expected,
 		],
 		'ShouldAddWpCacheWhenCommentInFirstLine' => [
 			'config' => [
 				'original'  => $wp_config_has_no_wp_cache_comment_on_first_line,
 				'valid_key' => true,
+				'filter'    => true,
 			],
-			'expected' => $wp_config_has_no_wp_cache_comment_on_first_line_expected
+			'expected' => $wp_config_has_no_wp_cache_comment_on_first_line_expected,
 		],
 		'ShouldNotAddWpCache' => [
 			'config' => [
 				'original'  => $wp_config_has_wp_cache,
 				'valid_key' => true,
+				'filter'    => true,
 			],
-			'expected' => $wp_config_has_wp_cache_expected
+			'expected' => $wp_config_has_wp_cache_expected,
 		],
 		'ShouldBailOutWhenNotValidKey' => [
 			'config' => [
 				'original'  => $wp_config_has_no_wp_cache,
 				'valid_key' => false,
+				'filter'    => true,
 			],
-			'expected' => $wp_config_has_no_wp_cache
-		]
+			'expected' => $wp_config_has_no_wp_cache,
+		],
+		'ShouldBailOutWhenFilterIsFalse' => [
+			'config' => [
+				'original'  => $wp_config_has_no_wp_cache,
+				'valid_key' => false,
+				'filter'    => false,
+			],
+			'expected' => $wp_config_has_no_wp_cache,
+		],
 	],
 ];

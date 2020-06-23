@@ -20,6 +20,7 @@ class Test_SetWpCacheConstant extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/Cache/WPCache/setWpCacheConstant.php';
 	private static $wp_cache;
 	protected $user_id = 0;
+	private $filter_set;
 
 	public static function setUpBeforeClass() {
 		self::hasAdminCapBeforeClass();
@@ -47,6 +48,8 @@ class Test_SetWpCacheConstant extends FilesystemTestCase {
 			wp_delete_user( $this->user_id );
 		}
 
+		remove_filter( 'rocket_set_wp_cache_constant', [ $this, 'filterSetWpCacheConstant' ] );
+
 		parent::tearDown();
 	}
 
@@ -56,15 +59,21 @@ class Test_SetWpCacheConstant extends FilesystemTestCase {
 	public function testShouldAddWpCacheConstant( $config, $expected ) {
 		$wp_config = $this->filesystem->getUrl( 'wp-config.php' );
 		$this->filesystem->put_contents( $wp_config, $config['original'] );
+		$this->filter_set = $config['filter'];
 
-		Functions\when( 'rocket_has_constant' )->justReturn( false );
+		add_filter( 'rocket_set_wp_cache_constant', [ $this, 'filterSetWpCacheConstant' ] );
+
 		Functions\when( 'rocket_valid_key' )->justReturn( $config['valid_key'] );
-		unset( $this->wp_cache_constant );
+
 		self::$wp_cache->set_wp_cache_constant( true );
 
 		$this->assertEquals(
 			$expected,
 			str_replace( "\r\n", "\n", $this->filesystem->get_contents( $wp_config ) )
 		);
+	}
+
+	public function filterSetWpCacheConstant() {
+		return $this->filter_set;
 	}
 }

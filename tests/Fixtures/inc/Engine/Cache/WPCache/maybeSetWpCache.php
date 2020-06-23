@@ -99,6 +99,7 @@ return [
                 'doing_autosave' => false,
                 'original'       => $wp_config_has_no_wp_cache,
                 'valid_key'      => true,
+                'filter'         => true,
 			],
 			'expected' => $wp_config_has_no_wp_cache
         ],
@@ -108,6 +109,7 @@ return [
                 'doing_autosave' => true,
                 'original'       => $wp_config_has_no_wp_cache,
                 'valid_key'      => true,
+                'filter'         => true,
 			],
 			'expected' => $wp_config_has_no_wp_cache
         ],
@@ -117,8 +119,19 @@ return [
                 'doing_autosave' => false,
                 'original'       => $wp_config_has_wp_cache,
                 'valid_key'      => true,
+                'filter'         => true,
 			],
 			'expected' => $wp_config_has_wp_cache_expected
+        ],
+        'ShouldDoNothingWhenFilterIsFalse' => [
+			'config' => [
+                'doing_ajax'     => false,
+                'doing_autosave' => false,
+                'original'       => $wp_config_has_no_wp_cache,
+                'valid_key'      => true,
+                'filter'         => false,
+			],
+			'expected' => $wp_config_has_no_wp_cache
 		],
 		'ShouldAddWpCache'                 => [
 			'config' => [
@@ -126,6 +139,7 @@ return [
                 'doing_autosave' => false,
                 'original'       => $wp_config_has_no_wp_cache,
                 'valid_key'      => true,
+                'filter'         => true,
 			],
 			'expected' => $wp_config_has_no_wp_cache_expected
 		],
