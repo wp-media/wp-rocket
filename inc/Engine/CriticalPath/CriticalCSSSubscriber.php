@@ -675,7 +675,7 @@ JS;
 			return $buffer;
 		}
 
-		if ( ! $this->critical_css->get_current_page_critical_css() ) {
+		if ( empty( $this->critical_css->get_current_page_critical_css() ) && empty( $this->options->get( 'critical_css', '' ) ) ) {
 			return $buffer;
 		}
 
