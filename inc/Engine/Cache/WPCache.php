@@ -119,7 +119,13 @@ class WPCache {
 			return false;
 		}
 
-		return true;
+		/**
+		 * Filters the writing of the WP_CACHE constant in wp-config.php
+		 *
+		 * @since 3.6.1
+		 * @param bool $set True to allow writing, false otherwise.
+		 */
+		return (bool) apply_filters( 'rocket_set_wp_cache_constant', true );
 	}
 
 	/**
