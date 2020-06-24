@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Integration\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase {
 	protected $cdn_names;
-	protected $home_url = 'http://example.org';
+	protected $home_url = 'http://myexample.org';
 
 	protected static $transients = [
 		'rocketcdn_status' => null,
