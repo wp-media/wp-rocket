@@ -42,17 +42,17 @@ class DOM {
 	}
 
 	/**
-	 * Defer loading of CSS files.
+	 * Modifies the given HTML for async CSS, i.e. defer loading of CSS files.
 	 *
 	 * @since  2.10
 	 *
-	 * @param string $buffer HTML code.
+	 * @param string $html HTML code.
 	 *
 	 * @return string Updated HTML code
 	 */
-	public function async_css( $buffer ) {
+	public function modify_html_for_async_css( $html ) {
 		if ( ! $this->maybe_async_css() ) {
-			return $buffer;
+			return $html;
 		}
 
 		/**
@@ -68,13 +68,13 @@ class DOM {
 		);
 
 		// Get all css files with this regex.
-		preg_match_all( $css_pattern, $buffer, $tags_match );
+		preg_match_all( $css_pattern, $html, $tags_match );
 
 		if ( empty( $tags_match[0] ) ) {
-			return $buffer;
+			return $html;
 		}
 
-		return $this->async_css_tag_update( $tags_match, $buffer );
+		return $this->async_css_tag_update( $tags_match, $html );
 	}
 
 	/**
@@ -178,5 +178,4 @@ class DOM {
 
 		return ! is_rocket_post_excluded_option( 'async_css' );
 	}
-
 }

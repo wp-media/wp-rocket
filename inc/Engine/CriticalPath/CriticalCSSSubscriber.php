@@ -589,12 +589,12 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	 * @since  3.6.2 Uses the DOM object.
 	 * @since  2.10
 	 *
-	 * @param string $buffer HTML code.
+	 * @param string $html HTML code.
 	 *
 	 * @return string Updated HTML code
 	 */
-	public function async_css( $buffer ) {
-		return $this->dom->async_css( $buffer );
+	public function async_css( $html ) {
+		return $this->dom->modify_html_for_async_css( $html );
 	}
 
 	/**
