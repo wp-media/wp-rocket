@@ -45,7 +45,7 @@ class WPEngine implements Subscriber_Interface {
 			'do_rocket_generate_caching_files'        => 'return_false',
 			'after_rocket_clean_domain'               => 'clean_wpengine',
 			'rocket_buffer'                           => [ 'add_footprint', 50 ],
-			'rocket_disable_htaccess'                 => 'disable_htaccess',
+			'rocket_disable_htaccess'                 => 'return_true',
 		];
 	}
 
@@ -138,18 +138,5 @@ class WPEngine implements Subscriber_Interface {
 		$footprint .= ' -->';
 
 		return $buffer . $footprint;
-	}
-
-	/**
-	 * Disables .htaccess by default.
-	 *
-	 * @since 3.6.1
-	 *
-	 * @param bool $disable Optional. When true, disables. Default: true.
-	 *
-	 * @return bool
-	 */
-	public function disable_htaccess( $disable = true ) {
-		return (bool) $disable;
 	}
 }
