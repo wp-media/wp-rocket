@@ -25,6 +25,8 @@ class Test_RocketNewUpgrade extends TestCase {
 			->once();
 		Functions\expect( 'rocket_clean_domain' )
 			->once();
+		Functions\expect( 'rocket_generate_config_file' )
+			->once();
 
 		rocket_new_upgrade( '3.6', '3.4.4' );
 	}

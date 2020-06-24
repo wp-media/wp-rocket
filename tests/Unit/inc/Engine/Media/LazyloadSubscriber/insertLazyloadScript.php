@@ -26,11 +26,6 @@ class Test_InsertLazyloadScript extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		Functions\when( 'is_admin' )->justReturn( false );
-		Functions\when( 'is_feed' )->justReturn( false );
-		Functions\when( 'is_preview' )->justReturn( false );
-		Functions\when( 'rocket_get_constant' )->justReturn( 'http://example.org/wp-content/plugins/wp-rocket/assets/' );
-
 		$this->assets  = Mockery::mock( Assets::class );
 		$this->options = Mockery::mock( Options_Data::class );
 
@@ -51,7 +46,24 @@ class Test_InsertLazyloadScript extends TestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldInsertLazyloadScript( $options, $expected ) {
+	public function testShouldInsertLazyloadScript( $config, $expected ) {
+		$options = $config['options'];
+		$is_admin           = isset( $config['is_admin'] )           ? $config['is_admin']           : false;
+		$is_feed            = isset( $config['is_feed'] )            ? $config['is_feed']            : false;
+		$is_preview         = isset( $config['is_preview'] )         ? $config['is_preview']         : false;
+		$is_search          = isset( $config['is_search'] )          ? $config['is_search']          : false;
+		$is_rest_request    = isset( $config['is_rest_request'] )    ? $config['is_rest_request']    : false;
+		$is_lazy_load       = isset( $config['is_lazy_load'] )       ? $config['is_lazy_load']       : true;
+		$is_rocket_optimize = isset( $config['is_rocket_optimize'] ) ? $config['is_rocket_optimize'] : true;
+
+		Functions\when( 'is_admin' )->justReturn( $is_admin );
+		Functions\when( 'is_feed' )->justReturn( $is_feed );
+		Functions\when( 'is_preview' )->justReturn( $is_preview );
+		Functions\when( 'is_search' )->justReturn( $is_search );
+		Functions\expect( 'rocket_get_constant' )
+			->with('REST_REQUEST', 'DONOTLAZYLOAD', 'DONOTROCKETOPTIMIZE', 'WP_ROCKET_ASSETS_JS_URL')
+			->andReturn( $is_rest_request, !$is_lazy_load, !$is_rocket_optimize, 'http://example.org/wp-content/plugins/wp-rocket/assets/' );
+
 		foreach ( $options as $key => $value ) {
 			$this->options->shouldReceive( 'get' )
 				->with( $key, 0 )

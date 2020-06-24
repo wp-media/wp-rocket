@@ -39,9 +39,9 @@ class Combine extends AbstractJSOptimization {
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
-	 * @var bool|string
+	 * @var array
 	 */
-	private $jquery_url;
+	private $jquery_urls;
 
 	/**
 	 * Scripts to combine
@@ -78,7 +78,7 @@ class Combine extends AbstractJSOptimization {
 
 		$this->minifier    = $minifier;
 		$this->local_cache = $local_cache;
-		$this->jquery_url  = $this->get_jquery_url();
+		$this->jquery_urls = $this->get_jquery_urls();
 	}
 
 	/**
@@ -178,7 +178,6 @@ class Combine extends AbstractJSOptimization {
 		$scripts = array_map(
 			function( $script ) {
 				preg_match( '/<script\s+([^>]+[\s\'"])?src\s*=\s*[\'"]\s*?(?<url>[^\'"]+\.js(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>/Umsi', $script[0], $matches );
-
 				if ( isset( $matches['url'] ) ) {
 					if ( $this->is_external_file( $matches['url'] ) ) {
 						foreach ( $this->get_excluded_external_file_path() as $excluded_file ) {
@@ -194,6 +193,13 @@ class Combine extends AbstractJSOptimization {
 							}
 						}
 
+						if ( ! empty( $this->jquery_urls ) ) {
+							$jquery_urls = implode( '|', $this->jquery_urls );
+							if ( preg_match( '#^(' . $jquery_urls . ')$#', rocket_remove_url_protocol( strtok( $matches['url'], '?' ) ) ) ) {
+								return;
+							}
+						}
+
 						$this->scripts[] = [
 							'type'    => 'url',
 							'content' => $matches['url'],
@@ -205,17 +211,6 @@ class Combine extends AbstractJSOptimization {
 					if ( $this->is_minify_excluded_file( $matches ) ) {
 						Logger::debug(
 							'Script is excluded.',
-							[
-								'js combine process',
-								'tag' => $matches[0],
-							]
-						);
-						return;
-					}
-
-					if ( $this->jquery_url && false !== strpos( $matches['url'], $this->jquery_url ) ) {
-						Logger::debug(
-							'Script is jQuery.',
 							[
 								'js combine process',
 								'tag' => $matches[0],
@@ -373,7 +368,6 @@ class Combine extends AbstractJSOptimization {
 
 		$filename      = md5( $content . $this->minify_key ) . '.js';
 		$minified_file = $this->minify_base_path . $filename;
-
 		if ( ! rocket_direct_filesystem()->is_readable( $minified_file ) ) {
 			$minified_content = $this->minify();
 

@@ -45,7 +45,34 @@ class Subscriber implements Subscriber_Interface {
 				[ 'add_imagify_page', 9 ],
 				[ 'add_tutorials_page', 11 ],
 			],
+			'admin_enqueue_scripts'                => 'enqueue_rocket_scripts',
+			'script_loader_tag'                    => [ 'async_wistia_script', 10, 2 ],
 		];
+	}
+
+	/**
+	 * Enqueues WP Rocket scripts on the settings page
+	 *
+	 * @since 3.6
+	 *
+	 * @param string $hook The current admin page.
+	 *
+	 * @return void
+	 */
+	public function enqueue_rocket_scripts( $hook ) {
+		$this->page->enqueue_rocket_scripts( $hook );
+	}
+
+	/**
+	 * Adds the async attribute to the Wistia script
+	 *
+	 * @param string $tag    The <script> tag for the enqueued script.
+	 * @param string $handle The script's registered handle.
+	 *
+	 * @return string
+	 */
+	public function async_wistia_script( $tag, $handle ) {
+		return $this->page->async_wistia_script( $tag, $handle );
 	}
 
 	/**
