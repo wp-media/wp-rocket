@@ -12,10 +12,10 @@ use WP_Rocket\Tests\Integration\TestCase;
 class Test_DisableHtaccess extends TestCase {
 
 	public function testShouldDisableHtaccess() {
-		if ( version_compare( PHP_VERSION, '7.4' ) >= 0 ) {
-			$this->assertTrue( apply_filters( 'rocket_disable_htaccess', false ) );
-		} else {
-			$this->assertFalse( apply_filters( 'rocket_disable_htaccess', false ) );
-		}
+		$this->assertTrue( apply_filters( 'rocket_disable_htaccess', true ) );
+	}
+
+	public function testShouldNotDisableHtaccess() {
+		$this->assertTrue( apply_filters( 'rocket_disable_htaccess', false ) );
 	}
 }

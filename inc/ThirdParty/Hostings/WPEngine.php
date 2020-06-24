@@ -23,11 +23,11 @@ class WPEngine implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		if (
-		! (
-			class_exists( 'WpeCommon' )
-			&&
-			function_exists( 'wpe_param' )
-		)
+			! (
+				class_exists( 'WpeCommon' )
+				&&
+				function_exists( 'wpe_param' )
+			)
 		) {
 			return [];
 		}
@@ -141,20 +141,15 @@ class WPEngine implements Subscriber_Interface {
 	}
 
 	/**
-	 * Disable dealing with htaccess if php version is 7.4 or above.
+	 * Disables .htaccess by default.
 	 *
 	 * @since 3.6.1
 	 *
-	 * @param bool $disable Optional. When true, disables.
+	 * @param bool $disable Optional. When true, disables. Default: true.
 	 *
 	 * @return bool
 	 */
-	public function disable_htaccess( $disable = false ) {
-		// PHP version should be 7.4 or above.
-		if ( version_compare( PHP_VERSION, '7.4' ) >= 0 ) {
-			return true;
-		}
-
+	public function disable_htaccess( $disable = true ) {
 		return (bool) $disable;
 	}
 }
