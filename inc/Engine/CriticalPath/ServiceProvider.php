@@ -3,6 +3,7 @@
 namespace WP_Rocket\Engine\CriticalPath;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Engine\DOM\HTMLDocument;
 
 /**
  * Service provider for the Critical CSS classes
@@ -46,6 +47,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$options           = $this->getContainer()->get( 'options' );
 		$beacon            = $this->getContainer()->get( 'beacon' );
 		$template_path     = $this->getContainer()->get( 'template_path' ) . '/cpcss';
+		$htmldocument      = new HTMLDocument();
 
 		$this->getContainer()->share( 'cpcss_api_client', 'WP_Rocket\Engine\CriticalPath\APIClient' );
 		$this->getContainer()->share( 'cpcss_data_manager', 'WP_Rocket\Engine\CriticalPath\DataManager' )
@@ -73,6 +75,11 @@ class ServiceProvider extends AbstractServiceProvider {
 			->withArgument( $filesystem );
 
 		$critical_css = $this->getContainer()->get( 'critical_css' );
+
+		$this->getContainer()->add( 'criticalpath_dom', 'WP_Rocket\Engine\CriticalPath\DOM' )
+		     ->withArgument( $critical_css )
+		     ->withArgument( $options )
+		     ->withArgument( $htmldocument );
 
 		$this->getContainer()->share( 'critical_css_subscriber', 'WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber' )
 			->withArgument( $critical_css )

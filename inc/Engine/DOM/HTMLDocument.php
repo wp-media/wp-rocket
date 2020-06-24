@@ -48,9 +48,21 @@ class HTMLDocument extends DOMDocument {
 	 * @param string $version  Optional. The version number of the document as part of the XML declaration.
 	 * @param string $encoding Optional. The encoding of the document as part of the XML declaration.
 	 */
-	public function __construct( $version = '', $encoding = null ) {
-		$encoding = (string) $encoding ?: self::ENCODING;
-		parent::__construct( $version ?: '1.0', $encoding );
+	public function __construct( $version = '1.0', $encoding = null ) {
+		if ( ! empty( $encoding ) ) {
+			$encoding = (string) $encoding;
+		} elseif ( function_exists( 'bloginfo' ) ) {
+			$encoding = bloginfo( 'charset' );
+		} else {
+			$encoding = self::ENCODING;
+		}
+
+		$version = (string) $version;
+		if ( empty( $version ) ) {
+			$version = '1.0';
+		}
+
+		parent::__construct( $version, $encoding );
 	}
 
 	/**
