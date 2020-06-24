@@ -6,6 +6,7 @@ use Mockery;
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Cache\Purge;
 use WP_Rocket\Engine\Cache\PurgeActionsSubscriber;
 
 /**
@@ -19,7 +20,7 @@ class Test_MaybePurgeCacheOnTermChange extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->subscriber = new PurgeActionsSubscriber( Mockery::mock( Options_Data::class ) );
+		$this->subscriber = new PurgeActionsSubscriber( Mockery::mock( Options_Data::class ), Mockery::mock( Purge::class ) );
 	}
 
 	/**

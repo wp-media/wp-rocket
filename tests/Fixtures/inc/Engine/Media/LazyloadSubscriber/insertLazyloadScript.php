@@ -4,10 +4,114 @@ $lazyload_script = require __DIR__ . '/content/insertLazyloadScript.php';
 $inline_script   = require __DIR__ . '/content/getInlineLazyloadScript.php';
 
 return [
+	'testShouldReturnNothingWhenIsAdmin' => [
+		'config' => [
+			'is_admin' => true,
+			'options'  => [
+				'lazyload'         => 1,
+				'lazyload_iframes' => 0,
+			],
+		],
+		'expected' => [
+			'unit' => [
+				'inline_script' => '',
+				'script'        => '',
+				'result'        => '',
+			],
+			'integration' => '',
+		],
+	],
+	'testShouldReturnNothingWhenIsFeed' => [
+		'config' => [
+			'is_feed' => true,
+			'options'  => [
+				'lazyload'         => 1,
+				'lazyload_iframes' => 0,
+			],
+		],
+		'expected' => [
+			'unit' => [
+				'inline_script' => '',
+				'script'        => '',
+				'result'        => '',
+			],
+			'integration' => '',
+		],
+	],
+	'testShouldReturnNothingWhenIsPreview' => [
+		'config' => [
+			'is_preview' => true,
+			'options'  => [
+				'lazyload'         => 1,
+				'lazyload_iframes' => 0,
+			],
+		],
+		'expected' => [
+			'unit' => [
+				'inline_script' => '',
+				'script'        => '',
+				'result'        => '',
+			],
+			'integration' => '',
+		],
+	],
+	'testShouldReturnNothingWhenIsSearch' => [
+		'config' => [
+			'is_search' => true,
+			'options'  => [
+				'lazyload'         => 1,
+				'lazyload_iframes' => 0,
+			],
+		],
+		'expected' => [
+			'unit' => [
+				'inline_script' => '',
+				'script'        => '',
+				'result'        => '',
+			],
+			'integration' => '',
+		],
+	],
+	'testShouldReturnNothingWhenIsRest' => [
+		'config' => [
+			'is_rest_request' => true,
+			'options'  => [
+				'lazyload'         => 1,
+				'lazyload_iframes' => 0,
+			],
+		],
+		'expected' => [
+			'unit' => [
+				'inline_script' => '',
+				'script'        => '',
+				'result'        => '',
+			],
+			'integration' => '',
+		],
+	],
+	'testShouldReturnNothingWhenIsNotRocketOptimize' => [
+		'config' => [
+			'is_rocket_optimize' => false,
+			'options'  => [
+				'lazyload'         => 1,
+				'lazyload_iframes' => 0,
+			],
+		],
+		'expected' => [
+			'unit' => [
+				'inline_script' => '',
+				'script'        => '',
+				'result'        => '',
+			],
+			'integration' => '',
+		],
+	],
 	'testShouldReturnNothingWhenLazyloadDisabled' => [
-		'options'  => [
-			'lazyload'         => 0,
-			'lazyload_iframes' => 0,
+		'config' => [
+			'options'  => [
+				'lazyload'         => 0,
+				'lazyload_iframes' => 0,
+			],
 		],
 		'expected' => [
 			'unit' => [
@@ -19,9 +123,11 @@ return [
 		],
 	],
 	'testShouldReturnLazyloadForImagesOnly' => [
-		'options'  => [
-			'lazyload'         => 1,
-			'lazyload_iframes' => 0,
+		'config' => [
+			'options'  => [
+				'lazyload'         => 1,
+				'lazyload_iframes' => 0,
+			],
 		],
 		'expected' => [
 			'unit' => [
@@ -38,9 +144,11 @@ if(is_iframe){iframe_count+=1}}});if(image_count>0||iframe_count>0||rocketlazy_c
 	],
 
 	'testShouldReturnLazyloadForIframesOnly' => [
-		'options'  => [
-			'lazyload'         => 0,
-			'lazyload_iframes' => 1,
+		'config' => [
+			'options'  => [
+				'lazyload'         => 0,
+				'lazyload_iframes' => 1,
+			],
 		],
 		'expected' => [
 			'unit' => [
@@ -56,9 +164,11 @@ if(is_iframe){iframe_count+=1}}});if(image_count>0||iframe_count>0||rocketlazy_c
 		],
 	],
 	'testShouldReturnLazyloadForImagesAndIframes' => [
-		'options'  => [
-			'lazyload'         => 1,
-			'lazyload_iframes' => 1,
+		'config' => [
+			'options'  => [
+				'lazyload'         => 1,
+				'lazyload_iframes' => 1,
+			],
 		],
 		'expected' => [
 			'unit' => [
@@ -74,10 +184,12 @@ if(is_iframe){iframe_count+=1}}});if(image_count>0||iframe_count>0||rocketlazy_c
 		],
 	],
 	'testShouldReturnLazyloadForImagesAndIframesWithCustomThreshold' => [
-		'options'  => [
-			'lazyload'         => 1,
-			'lazyload_iframes' => 1,
-			'threshold'        => 500,
+		'config' => [
+			'options'  => [
+				'lazyload'         => 1,
+				'lazyload_iframes' => 1,
+				'threshold'        => 500,
+			],
 		],
 		'expected' => [
 			'unit' => [
@@ -93,10 +205,12 @@ if(is_iframe){iframe_count+=1}}});if(image_count>0||iframe_count>0||rocketlazy_c
 		],
 	],
 	'testShouldReturnLazyloadForImagesAndIframesWithPolyfill' => [
-		'options'  => [
-			'lazyload'         => 1,
-			'lazyload_iframes' => 1,
-			'polyfill'         => true,
+		'config' => [
+			'options'  => [
+				'lazyload'         => 1,
+				'lazyload_iframes' => 1,
+				'polyfill'         => true,
+			],
 		],
 		'expected' => [
 			'unit' => [
@@ -112,10 +226,12 @@ if(is_iframe){iframe_count+=1}}});if(image_count>0||iframe_count>0||rocketlazy_c
 		],
 	],
 	'testShouldReturnLazyloadForImagesAndIframesWithNativeLazyload' => [
-		'options'  => [
-			'lazyload'         => 1,
-			'lazyload_iframes' => 1,
-			'use_native'       => true,
+		'config' => [
+			'options'  => [
+				'lazyload'         => 1,
+				'lazyload_iframes' => 1,
+				'use_native'       => true,
+			],
 		],
 		'expected' => [
 			'unit' => [

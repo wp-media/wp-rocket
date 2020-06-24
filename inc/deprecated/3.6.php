@@ -348,6 +348,106 @@ function rocket_sccss_create_cache_file( $cache_busting_path, $cache_sccss_filep
 }
 
 /**
+ * Get all dates archives urls associated to a specific post.
+ *
+ * @since 3.6.1 deprecated
+ * @since 1.0
+ *
+ * @param int $post_id The post ID.
+ *
+ * @return array $urls List of dates URLs on success; else, an empty [].
+ */
+function get_rocket_post_dates_urls( $post_id ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+	_deprecated_function( __FUNCTION__ . '()', '3.6.1', '\WP_Rocket\Engine\Cache\Purge::purge_dates_archives()' );
+	$time = get_the_time( 'Y-m-d', $post_id );
+	if ( empty( $time ) ) {
+		return [];
+	}
+
+	// Extract and prep the year, month, and day.
+	$date  = explode( '-', $time );
+	$year  = trailingslashit( get_year_link( $date[0] ) );
+	$month = trailingslashit( get_month_link( $date[0], $date[1] ) );
+
+	$urls = [
+		"{$year}index.html",
+		"{$year}index.html_gzip",
+		$year . $GLOBALS['wp_rewrite']->pagination_base,
+		"{$month}index.html",
+		"{$month}index.html_gzip",
+		$month . $GLOBALS['wp_rewrite']->pagination_base,
+		get_day_link( $date[0], $date[1], $date[2] ),
+	];
+
+	/**
+	 * Filter the list of dates URLs.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param array $urls List of dates URLs.
+	*/
+	return (array) apply_filters( 'rocket_post_dates_urls', $urls );
+}
+
+
+/**
+ * Get all terms archives urls associated to a specific post
+ *
+ * @since 3.6.1 deprecated
+ * @since 1.0
+ *
+ * @param int $post_id The post ID.
+ * @return array $urls List of taxonomies URLs
+ */
+function get_rocket_post_terms_urls( $post_id ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+	_deprecated_function( __FUNCTION__ . '()', '3.6.1', '\WP_Rocket\Engine\Cache\Purge::get_post_terms_urls()' );
+	$urls       = [];
+	$taxonomies = get_object_taxonomies( get_post_type( $post_id ), 'objects' );
+
+	foreach ( $taxonomies as $taxonomy ) {
+		if ( ! $taxonomy->public || 'product_shipping_class' === $taxonomy->name ) {
+			continue;
+		}
+
+		// Get the terms related to post.
+		$terms = get_the_terms( $post_id, $taxonomy->name );
+
+		if ( empty( $terms ) ) {
+			continue;
+		}
+		foreach ( $terms as $term ) {
+			$term_url = get_term_link( $term->slug, $taxonomy->name );
+			if ( ! is_wp_error( $term_url ) ) {
+				$urls[] = $term_url;
+			}
+			if ( ! is_taxonomy_hierarchical( $taxonomy->name ) ) {
+				continue;
+			}
+			$ancestors = (array) get_ancestors( $term->term_id, $taxonomy->name );
+			foreach ( $ancestors as $ancestor ) {
+				$ancestor_object = get_term( $ancestor, $taxonomy->name );
+				if ( ! $ancestor_object instanceof WP_Term ) {
+					continue;
+				}
+				$ancestor_term_url = get_term_link( $ancestor_object->slug, $taxonomy->name );
+				if ( ! is_wp_error( $ancestor_term_url ) ) {
+					$urls[] = $ancestor_term_url;
+				}
+			}
+		}
+	}
+
+	/**
+	 * Filter the list of taxonomies URLs
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param array $urls List of taxonomies URLs
+	*/
+	return apply_filters( 'rocket_post_terms_urls', $urls );
+}
+
+/**
  * Rules to serve gzip compressed CSS & JS files if they exists and client accepts gzip
  *
  * @since 3.6.0.3 deprecated
@@ -396,4 +496,134 @@ function rocket_get_compressed_assets_rules() {
 HTACCESS;
 
 	return apply_filters( 'rocket_htaccess_compressed_assets', $rules );
+}
+
+/**
+ * Changes the text on the Varnish one-click block.
+ *
+ * @deprecated 3.6.1
+ * @since 3.0
+ *
+ * @param array $settings Field settings data.
+ *
+ * @return array modified field settings data.
+ */
+function rocket_wpengine_varnish_field( $settings ) {
+	_deprecated_function( __FUNCTION__ . '()', '3.6.1', '\WP_Rocket\ThirdParty\Hostings\WPEngine::varnish_addon_title' );
+	$settings['varnish_auto_purge']['title'] = sprintf(
+	// Translators: %s = Hosting name.
+		__( 'Your site is hosted on %s, we have enabled Varnish auto-purge for compatibility.', 'rocket' ),
+		'WP Engine'
+	);
+
+	return $settings;
+}
+
+/**
+ * Conflict with WP Engine caching system.
+ *
+ * @deprecated 3.6.1
+ * @since 2.6.4
+ *
+ */
+function rocket_stop_generate_caching_files_on_wpengine() {
+	_deprecated_function( __FUNCTION__ . '()', '3.6.1' );
+	add_filter( 'do_rocket_generate_caching_files', '__return_false' );
+}
+
+/**
+ * Run WP Rocket preload bot after purged the Varnish cache via WP Engine Hosting.
+ *
+ * @deprecated 3.6.1
+ * @since 2.6.4
+ */
+function rocket_run_rocket_bot_after_wpengine() {
+	_deprecated_function( __FUNCTION__ . '()', '3.6.1', '\WP_Rocket\ThirdParty\Hostings\WPEngine::run_rocket_bot_after_wpengine' );
+	if ( wpe_param( 'purge-all' ) && defined( 'PWP_NAME' ) && check_admin_referer( PWP_NAME . '-config' ) ) {
+		// Preload cache.
+		run_rocket_bot();
+		run_rocket_sitemap_preload();
+	}
+}
+
+/**
+ * Call the cache server to purge the cache with WP Engine hosting.
+ *
+ * @deprecated 3.6.1
+ * @since 2.6.4
+ */
+function rocket_clean_wpengine() {
+	_deprecated_function( __FUNCTION__ . '()', '3.6.1', '\WP_Rocket\ThirdParty\Hostings\WPEngine::clean_wpengine' );
+	if ( method_exists( 'WpeCommon', 'purge_memcached' ) ) {
+		WpeCommon::purge_memcached();
+	}
+
+	if ( method_exists( 'WpeCommon', 'purge_varnish_cache' ) ) {
+		WpeCommon::purge_varnish_cache();
+	}
+}
+
+/**
+ * Gets WP Engine CDN Domain.
+ *
+ * @deprecated 3.6.1
+ * @since 2.8.6
+ *
+ * return string $cdn_domain the WP Engine CDN Domain.
+ */
+function rocket_get_wp_engine_cdn_domain() {
+	_deprecated_function( __FUNCTION__ . '()', '3.6.1' );
+	global $wpe_netdna_domains, $wpe_netdna_domains_secure;
+
+	$cdn_domain = '';
+	$is_ssl     = '';
+
+	if ( isset( $_SERVER['HTTPS'] ) ) {
+		$is_ssl = sanitize_text_field( wp_unslash( $_SERVER['HTTPS'] ) );
+	}
+
+	if ( preg_match( '/^[oO][fF]{2}$/', $is_ssl ) ) {
+		$is_ssl = false;  // have seen this!
+	}
+
+	$native_schema = $is_ssl ? 'https' : 'http';
+
+	$domains = $wpe_netdna_domains;
+	// Determine the CDN, if any.
+	if ( $is_ssl ) {
+		$domains = $wpe_netdna_domains_secure;
+	}
+
+	$wpengine   = WpeCommon::instance();
+	$cdn_domain = $wpengine->get_cdn_domain( $domains, home_url(), $is_ssl );
+
+	if ( ! empty( $cdn_domain ) ) {
+		$cdn_domain = $native_schema . '://' . $cdn_domain;
+	}
+
+	return $cdn_domain;
+}
+
+/**
+ * Add WP Rocket footprint on Buffer.
+ *
+ * @deprecated 3.6.1
+ * @since 3.3.2
+ *
+ * @param string $buffer HTML content.
+ *
+ * @return string HTML with WP Rocket footprint.
+ */
+function rocket_wpengine_add_footprint( $buffer ) {
+	_deprecated_function( __FUNCTION__ . '()', '3.6.1', '\WP_Rocket\ThirdParty\Hostings\WPEngine::add_footprint' );
+	if ( ! preg_match( '/<\/html>/i', $buffer ) ) {
+		return $buffer;
+	}
+
+	$footprint  = defined( 'WP_ROCKET_WHITE_LABEL_FOOTPRINT' )
+		? "\n" . '<!-- Optimized for great performance'
+		: "\n" . '<!-- This website is like a Rocket, isn\'t it? Performance optimized by ' . WP_ROCKET_PLUGIN_NAME . '. Learn more: https://wp-rocket.me';
+	$footprint .= ' -->';
+
+	return $buffer . $footprint;
 }

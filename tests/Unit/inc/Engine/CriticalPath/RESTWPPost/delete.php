@@ -155,7 +155,8 @@ class Test_Delete extends TestCase {
 
 	private function assertSuccess( $config, $expected ) {
 		Functions\expect( 'get_permalink' )
-			->once()
+			->atLeast( 1 )
+			->atMost( 2 )
 			->with( $this->post_id )
 			->andReturn( $this->getPermalink() );
 
@@ -192,6 +193,10 @@ class Test_Delete extends TestCase {
 			->with( $deleted )
 			->andReturn( false );
 
+		Functions\expect( 'rocket_clean_files' )
+			->once()
+			->with( $this->getPermalink() );
+
 		Functions\expect( 'rest_ensure_response' )
 			->once()
 			->with( $expected )
@@ -223,4 +228,5 @@ class Test_Delete extends TestCase {
 
 		return "posts/{$this->post_type}-{$this->post_id}.css";
 	}
+
 }

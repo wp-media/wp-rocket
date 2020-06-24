@@ -19,7 +19,9 @@ trait StubTrait {
 	protected $donotrocketoptimize      = null;
 	protected $donotasynccss            = null;
 	protected $white_label              = false;
-	
+	protected $white_label_footprint    = null;
+	protected $plugin_name              = 'WP Rocket';
+	protected $constants                = [];
 
 	protected function resetStubProperties() {
 		$defaults = [
@@ -32,9 +34,11 @@ trait StubTrait {
 			'rocket_version'            => null,
 			'wp_rocket_debug'           => false,
 			'wp_rocket_advanced_cache'  => true,
-			'donotrocketoptimize'      => null,
-			'dontasynccss'             => null,
+			'donotrocketoptimize'       => null,
+			'dontasynccss'              => null,
 			'white_label'               => false,
+			'white_label_footprint'     => null,
+			'constants'                 => [],
 		];
 
 		foreach ( $defaults as $property => $value ) {
@@ -136,7 +140,17 @@ trait StubTrait {
 			case 'WP_ROCKET_WHITE_LABEL_ACCOUNT':
 				return $this->white_label;
 
+			case 'WP_ROCKET_WHITE_LABEL_FOOTPRINT':
+				return $this->white_label_footprint;
+
+			case 'WP_ROCKET_PLUGIN_NAME':
+				return $this->plugin_name;
+
 			default:
+				if ( isset( $this->constants[$constant_name] ) ){
+					return $this->constants[$constant_name];
+				}
+
 				if ( ! rocket_has_constant( $constant_name ) ) {
 					return $default;
 				}

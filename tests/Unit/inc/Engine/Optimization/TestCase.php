@@ -21,9 +21,6 @@ abstract class TestCase extends FilesystemTestCase {
 		$this->stubfillWpBasename();
 
 		$this->options = Mockery::mock( Options_Data::class );
-		$this->options
-			->shouldReceive( 'get' )
-			->andReturnArg( 1 );
 
 		Functions\when( 'get_current_blog_id' )->justReturn( 1 );
 		Functions\when( 'create_rocket_uniqid' )->justReturn( 'rocket_uniqid' );
