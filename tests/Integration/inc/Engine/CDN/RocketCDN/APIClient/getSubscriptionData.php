@@ -2,10 +2,10 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\APIClient;
 
-use WPMedia\PHPUnit\Integration\TestCase;
 use WPMedia\PHPUnit\Integration\ApiTrait;
 use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
 use Brain\Monkey\Functions;
+use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\APIClient::get_subscription_data
@@ -28,6 +28,7 @@ class Test_GetSubscriptionData extends TestCase {
 		parent::setUp();
 
 		$this->client = new APIClient();
+		add_filter( 'home_url', [ $this, 'home_url_cb' ] );
 	}
 
 	public function tearDown() {
