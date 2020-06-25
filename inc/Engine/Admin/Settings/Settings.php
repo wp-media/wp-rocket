@@ -219,7 +219,6 @@ class Settings {
 		$input['do_caching_mobile_files'] = ! empty( $input['do_caching_mobile_files'] ) ? 1 : 0;
 
 		$input['minify_google_fonts'] = ! empty( $input['minify_google_fonts'] ) ? 1 : 0;
-		$input['minify_html']         = ! empty( $input['minify_html'] ) ? 1 : 0;
 
 		// Option : Minification CSS & JS.
 		$input['minify_css'] = ! empty( $input['minify_css'] ) ? 1 : 0;

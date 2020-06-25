@@ -1,6 +1,7 @@
 <?php
 namespace WP_Rocket\Subscriber\Optimization;
 
+use WP_Rocket\deprecated\DeprecatedClassTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Admin\Options_Data as Options;
 use MatthiasMullie\Minify;
@@ -12,6 +13,7 @@ use MatthiasMullie\Minify;
  * @author Remy Perona
  */
 class Minify_HTML_Subscriber implements Subscriber_Interface {
+	use DeprecatedClassTrait;
 	/**
 	 * Plugin options
 	 *
@@ -31,6 +33,7 @@ class Minify_HTML_Subscriber implements Subscriber_Interface {
 	 * @param Options $options Plugin options.
 	 */
 	public function __construct( Options $options ) {
+		self::deprecated_class( '3.7' );
 		$this->options = $options;
 	}
 

@@ -198,7 +198,6 @@ function rocket_first_install() {
 				'minify_js_key'               => $minify_js_key,
 				'minify_concatenate_js'       => 0,
 				'minify_google_fonts'         => 1,
-				'minify_html'                 => 0,
 				'manual_preload'              => 1,
 				'sitemap_preload'             => 0,
 				'sitemap_preload_url_crawl'   => '500000',
@@ -258,18 +257,6 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		delete_transient( 'rocket_ask_for_update' );
 	}
 
-	if ( version_compare( $actual_version, '2.6', '<' ) ) {
-		// Activate Inline CSS & JS minification if HTML minification is activated.
-		$options = get_option( WP_ROCKET_SLUG );
-
-		if ( ! empty( $options['minify_html'] ) ) {
-			$options['minify_html_inline_css'] = 1;
-			$options['minify_html_inline_js']  = 1;
-		}
-
-		update_option( WP_ROCKET_SLUG, $options );
-	}
-
 	if ( version_compare( $actual_version, '2.8', '<' ) ) {
 		$options                              = get_option( WP_ROCKET_SLUG );
 		$options['manual_preload']            = 1;
@@ -296,12 +283,6 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 	// Disable minification options if they're active in Autoptimize.
 	if ( version_compare( $actual_version, '2.9.5', '<' ) ) {
 		if ( is_plugin_active( 'autoptimize/autoptimize.php' ) ) {
-			if ( 'on' === get_option( 'autoptimize_html' ) ) {
-				update_rocket_option( 'minify_html', 0 );
-				update_rocket_option( 'minify_html_inline_css', 0 );
-				update_rocket_option( 'minify_html_inline_js', 0 );
-			}
-
 			if ( 'on' === get_option( 'autoptimize_css' ) ) {
 				update_rocket_option( 'minify_css', 0 );
 			}
