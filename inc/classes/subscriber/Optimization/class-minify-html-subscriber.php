@@ -68,6 +68,7 @@ class Minify_HTML_Subscriber implements Subscriber_Interface {
 
 		$html_options = [
 			'cssMinifier' => [ $this, 'minify_inline_css' ],
+			'jsMinifier'  => [ $this, 'minify_inline_js' ],
 		];
 
 		/**
