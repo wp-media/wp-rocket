@@ -18,7 +18,7 @@ class Cloudways implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		if ( ! isset( $_SERVER['cw_allowed_ip'] ) ) {
+		if ( ! isset( $_SERVER['cw_allowed_ip'] ) || ! self::is_varnish_running() ) {
 			return [];
 		}
 
@@ -28,6 +28,26 @@ class Cloudways implements Subscriber_Interface {
 			'rocket_varnish_field_settings'           => 'varnish_addon_title',
 			'rocket_varnish_ip'                       => 'varnish_ip',
 		];
+	}
+
+	/**
+	 * Determine if the Varnish server is up and running.
+	 *
+	 * @since 3.6.1
+	 */
+	private static function is_varnish_running() {
+		if ( ! isset( $_SERVER['HTTP_X_VARNISH'] ) ) {
+			return false;
+		}
+
+		if ( ! isset( $_SERVER['HTTP_X_APPLICATION'] ) ) {
+			return false;
+		}
+
+		if ( 'varnishpass' === trim( strtolower( $_SERVER['HTTP_X_APPLICATION'] ) ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+			return false;
+		}
+		return true;
 	}
 
 	/**
