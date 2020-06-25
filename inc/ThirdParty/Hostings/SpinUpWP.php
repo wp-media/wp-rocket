@@ -3,6 +3,7 @@
 namespace WP_Rocket\ThirdParty\Hostings;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\ThirdParty\ReturnTypesTrait;
 
 /**
  * Compatibility class for SpinUpWP
@@ -10,6 +11,8 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * @since 3.6.2
  */
 class SpinUpWP implements Subscriber_Interface {
+	use ReturnTypesTrait;
+
 	/**
 	 * Array of events this subscriber wants to listen to.
 	 *
@@ -53,25 +56,4 @@ class SpinUpWP implements Subscriber_Interface {
 		remove_action( 'switch_theme', 'rocket_clean_domain' );
 	}
 
-	/**
-	 * Returns empty array.
-	 *
-	 * @since 3.6.2
-	 *
-	 * @return array
-	 */
-	public function return_empty_array() {
-		return [];
-	}
-
-	/**
-	 * Returns false
-	 *
-	 * @since 3.6.2
-	 *
-	 * @return bool
-	 */
-	public function return_false() {
-		return false;
-	}
 }
