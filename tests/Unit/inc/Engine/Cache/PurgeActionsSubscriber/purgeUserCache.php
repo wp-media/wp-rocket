@@ -2,9 +2,11 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Cache\PurgeActionsSubscriber;
 
+use Mockery;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Engine\Cache\Purge;
 use WP_Rocket\Engine\Cache\PurgeActionsSubscriber;
 
 /**
@@ -12,7 +14,6 @@ use WP_Rocket\Engine\Cache\PurgeActionsSubscriber;
  * @group  purge_actions
  */
 class Test_PurgeUserCache extends TestCase {
-
 	private function getOptionsMock( $cache_logger_enabled = 1 ) {
 		$options = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
 		$map     = [
@@ -21,10 +22,11 @@ class Test_PurgeUserCache extends TestCase {
 		$options->method( 'get' )->will( $this->returnValueMap( $map ) );
 		return $options;
 	}
+
 	public function testShouldNotPurgeUserCacheWhenUserCacheDisabled() {
 		Functions\expect( 'rocket_clean_user' )->never();
 
-		$subscriber = new PurgeActionsSubscriber( $this->getOptionsMock( 0 ) );
+		$subscriber = new PurgeActionsSubscriber( $this->getOptionsMock( 0 ), Mockery::mock( Purge::class ) );
 		$subscriber->purge_user_cache( 1 );
 	}
 
@@ -34,7 +36,7 @@ class Test_PurgeUserCache extends TestCase {
 			->andReturn( true );
 		Functions\expect( 'rocket_clean_user' )->never();
 
-		$subscriber = new PurgeActionsSubscriber( $this->getOptionsMock() );
+		$subscriber = new PurgeActionsSubscriber( $this->getOptionsMock(), Mockery::mock( Purge::class ) );
 		$subscriber->purge_user_cache( 1 );
 	}
 
@@ -43,7 +45,7 @@ class Test_PurgeUserCache extends TestCase {
 			->once()
 			->with( 1 );
 
-		$subscriber = new PurgeActionsSubscriber( $this->getOptionsMock() );
+		$subscriber = new PurgeActionsSubscriber( $this->getOptionsMock(), Mockery::mock( Purge::class ) );
 		$subscriber->purge_user_cache( 1 );
 	}
 }

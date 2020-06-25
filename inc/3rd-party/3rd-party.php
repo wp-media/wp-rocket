@@ -2,10 +2,6 @@
 
 defined( 'ABSPATH' ) || exit;
 
-if ( class_exists( 'WpeCommon' ) && function_exists( 'wpe_param' ) ) {
-	require WP_ROCKET_3RD_PARTY_PATH . 'hosting/wpengine.php';
-}
-
 if ( class_exists( 'FlywheelNginxCompat' ) ) {
 	require WP_ROCKET_3RD_PARTY_PATH . 'hosting/flywheel.php';
 }

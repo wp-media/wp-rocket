@@ -28,6 +28,10 @@ class Test_Optimize extends TestCase {
 			],
 		];
 
+		$this->options
+			->shouldReceive( 'get' )
+			->andReturnArg( 1 );
+
 		$this->minify = new Minify( $this->options );
 	}
 

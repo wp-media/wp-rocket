@@ -118,46 +118,6 @@ class AdvancedCache {
 	}
 
 	/**
-	 * This warning is displayed when the advanced-cache.php file isn't ours
-	 *
-	 * @since 3.6 Moved to a method in AdvancedCache
-	 * @since 2.2
-	 *
-	 * @return void
-	 */
-	public function notice_content_not_ours() {
-		global $pagenow;
-
-		if (
-			'plugins.php' === $pagenow
-			&&
-			filter_has_var( INPUT_GET, 'activate' )
-		) {
-			return;
-		}
-
-		if ( ! $this->is_user_allowed() ) {
-			return;
-		}
-
-		if ( ! rocket_get_constant( 'WP_CACHE' ) ) {
-			return;
-		}
-
-		if ( rocket_get_constant( 'WP_ROCKET_ADVANCED_CACHE' ) ) {
-			return;
-		}
-
-		rocket_notice_html(
-			[
-				'status'      => 'error',
-				'dismissible' => '',
-				'message'     => $this->get_notice_message(),
-			]
-		);
-	}
-
-	/**
 	 * Checks if current user can see the notices
 	 *
 	 * @since 3.6

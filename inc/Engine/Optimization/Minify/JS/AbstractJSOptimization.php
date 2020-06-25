@@ -39,10 +39,10 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 	 */
 	protected function get_excluded_files() {
 		$excluded_files = $this->options->get( 'exclude_js', [] );
-		$jquery_url     = $this->get_jquery_url();
+		$jquery_urls    = $this->get_jquery_urls();
 
-		if ( $jquery_url ) {
-			$excluded_files[] = $jquery_url;
+		if ( ! empty( $jquery_urls ) ) {
+			$excluded_files = array_merge( $excluded_files, $jquery_urls );
 		}
 
 		/**
@@ -146,23 +146,24 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 	 * @since  3.1
 	 * @author Remy Perona
 	 *
-	 * @return bool|string
+	 * @return array
 	 */
-	protected function get_jquery_url() {
-		global $wp_scripts;
-
+	protected function get_jquery_urls() {
 		if ( ! $this->options->get( 'defer_all_js', 0 ) || ! $this->options->get( 'defer_all_js_safe', 0 ) ) {
-			return false;
+			return [];
 		}
 
-		if ( ! isset( $wp_scripts->registered['jquery-core']->src ) ) {
-			return false;
+		$exclude_jquery = [];
+		$jquery         = wp_scripts()->registered['jquery-core']->src;
+
+		if ( isset( $jquery ) ) {
+			$exclude_jquery[] = $jquery;
 		}
 
-		if ( '' === wp_parse_url( $wp_scripts->registered['jquery-core']->src, PHP_URL_HOST ) ) {
-			return wp_parse_url( site_url( $wp_scripts->registered['jquery-core']->src, PHP_URL_PATH ) );
-		}
+		$exclude_jquery[] = 'c0.wp.com/c/(?:.+)/wp-includes/js/jquery/jquery.js';
+		$exclude_jquery[] = 'ajax.googleapis.com/ajax/libs/jquery/(?:.+)/jquery(?:\.min)?.js';
+		$exclude_jquery[] = 'cdnjs.cloudflare.com/ajax/libs/jquery/(?:.+)/jquery(?:\.min)?.js';
 
-		return $wp_scripts->registered['jquery-core']->src;
+		return $exclude_jquery;
 	}
 }
