@@ -3,9 +3,18 @@
 namespace WP_Rocket\Engine\DOM;
 
 use DOMDocument;
+use DOMNode;
+use DOMNodeList;
 use DOMXpath;
 
 class HTMLDocument extends DOMDocument {
+
+	/**
+	 * DOMDocument default version.
+	 *
+	 * @var string
+	 */
+	const VERSION = '1.0';
 
 	/**
 	 * HTML markup default UTF-8 encoding.
@@ -36,7 +45,9 @@ class HTMLDocument extends DOMDocument {
 	protected $body;
 
 	/**
-	 * @var
+	 * Instance of XPath.
+	 *
+	 * @var DOMXpath
 	 */
 	protected $xpath;
 
@@ -59,7 +70,7 @@ class HTMLDocument extends DOMDocument {
 
 		$version = (string) $version;
 		if ( empty( $version ) ) {
-			$version = '1.0';
+			$version = self::VERSION;
 		}
 
 		parent::__construct( $version, $encoding );
@@ -102,6 +113,7 @@ class HTMLDocument extends DOMDocument {
 	public static function from_fragment( $fragment, $version = '', $encoding = null ) {
 		$dom = new self( $version, $encoding );
 
+		// @TODO Need to check versions.
 		$options = LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD;
 
 		if ( ! $dom->loadHTML( $fragment, $options ) ) {
@@ -129,16 +141,37 @@ class HTMLDocument extends DOMDocument {
 		return $this->saveHTML();
 	}
 
+	/**
+	 * Returns the <head> DOMElement.
+	 *
+	 * @return DOMElement
+	 */
 	public function get_head() {
 		return $this->head;
 	}
 
+	/**
+	 * Returns the <body> DOMElement.
+	 *
+	 * @return DOMElement
+	 */
 	public function get_body() {
 		return $this->body;
 	}
 
-	public function query( $query ) {
-		return $this->xpath->query( $query );
+	/**
+	 * Runs a XPath query. Returns the results in an iterable DOMNodeList.
+	 *
+	 * @link https://www.php.net/manual/en/domxpath.query.php
+	 *
+	 * @param string  $query            The query to run.
+	 * @param DOMNode $node             (Optional) Make query relative to this node (context node).
+	 * @param bool    $register_node_ns (Optional). When false, disables registering the context node.
+	 *
+	 * @return DOMNodeList|bool On success returns list; else false.
+	 */
+	public function query( $query, $node = null, $register_node_ns = true ) {
+		return $this->xpath->query( $query, $node, $register_node_ns );
 	}
 
 	/**
@@ -163,30 +196,6 @@ class HTMLDocument extends DOMDocument {
 		libxml_use_internal_errors( $internal_errors );
 
 		return $success;
-	}
-
-	/**
-	 * Initializes the given HTML content.
-	 *
-	 * @param string $html The given HTML to transform into DOM.
-	 */
-	protected function init_html( $html ) {
-		$this->loadHTML( $html );
-
-		$this->head = $this->getElementsByTagName( 'head' )->item( 0 );
-		$this->body = $this->getElementsByTagName( 'body' )->item( 0 );
-	}
-
-	/**
-	 * Normalizes the HTML structure by fixing malformed HTML.
-	 *
-	 * @param string     $html    The HTML string.
-	 * @param int|string $options Optional. Specify additional Libxml parameters.
-	 *
-	 * @return bool true on success; else false.
-	 */
-	protected function maybe_fix_malformed( $html, $options = 0 ) {
-		$this->loadHTML( $html, $options );
 	}
 
 	/**

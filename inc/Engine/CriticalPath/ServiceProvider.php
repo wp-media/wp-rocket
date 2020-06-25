@@ -47,7 +47,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		$options           = $this->getContainer()->get( 'options' );
 		$beacon            = $this->getContainer()->get( 'beacon' );
 		$template_path     = $this->getContainer()->get( 'template_path' ) . '/cpcss';
-		$htmldocument      = new HTMLDocument();
 
 		$this->getContainer()->share( 'cpcss_api_client', 'WP_Rocket\Engine\CriticalPath\APIClient' );
 		$this->getContainer()->share( 'cpcss_data_manager', 'WP_Rocket\Engine\CriticalPath\DataManager' )
@@ -78,8 +77,7 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->getContainer()->add( 'criticalpath_dom', 'WP_Rocket\Engine\CriticalPath\DOM' )
 		     ->withArgument( $critical_css )
-		     ->withArgument( $options )
-		     ->withArgument( $htmldocument );
+		     ->withArgument( $options );
 
 		$this->getContainer()->share( 'critical_css_subscriber', 'WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber' )
 			->withArgument( $critical_css )
