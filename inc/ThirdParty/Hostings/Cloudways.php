@@ -44,10 +44,7 @@ class Cloudways implements Subscriber_Interface {
 			return false;
 		}
 
-		if ( 'varnishpass' === trim( strtolower( $_SERVER['HTTP_X_APPLICATION'] ) ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
-			return false;
-		}
-		return true;
+		return ( 'varnishpass' !== trim( strtolower( $_SERVER['HTTP_X_APPLICATION'] ) ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 	}
 
 	/**
