@@ -254,6 +254,7 @@ class Plugin {
 			'rest_cpcss_subscriber',
 			'simple_custom_css',
 			'cloudways',
+			'wpengine',
 			'spinupwp',
 		];
 

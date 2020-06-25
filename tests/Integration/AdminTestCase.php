@@ -12,9 +12,11 @@ abstract class AdminTestCase extends BaseTestCase {
 	protected $user_id = 0;
 
 	public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
 		remove_action( 'admin_init', '_maybe_update_core' );
 		remove_action( 'admin_init', '_maybe_update_plugins' );
 		remove_action( 'admin_init', '_maybe_update_themes' );
+		remove_action( 'admin_init', array( 'WP_Privacy_Policy_Content', 'add_suggested_content' ), 1 );
 	}
 
 	public function setUp() {
