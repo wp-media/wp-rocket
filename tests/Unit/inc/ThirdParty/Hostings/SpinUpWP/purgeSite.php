@@ -1,4 +1,5 @@
 <?php
+namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\SpinUpWP;
 
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Hostings\SpinUpWP;
