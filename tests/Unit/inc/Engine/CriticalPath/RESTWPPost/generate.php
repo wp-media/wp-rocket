@@ -75,7 +75,7 @@ class Test_Generate extends FilesystemTestCase {
 		$is_mobile                    = isset( $config['mobile'] )
 			? $config['mobile']
 			: false;
-		$file                         = $this->config['vfs_dir'] . "1/posts/{$post_type}-{$post_id}" . ( $is_mobile ? '-mobile' : '' ). ".css";
+		$file                         = $this->config['vfs_dir'] . "cache/critical-css/1/posts/{$post_type}-{$post_id}" . ( $is_mobile ? '-mobile' : '' ). ".css";
 		$post_url = ('post_not_exists' === $expected['code'])
 			? null
 			: "http://example.org/?p={$post_id}";
@@ -129,8 +129,8 @@ class Test_Generate extends FilesystemTestCase {
 			->once()
 			->andReturn( 1 );
 		Functions\expect( 'get_permalink' )
-			->atMost()
-			->times( 1 )
+			->atLeast( 1 )
+			->atMost( 2 )
 			->with( $post_id )
 			->andReturnUsing(
 				function( $post_id ) use ( $expected ) {
@@ -197,6 +197,14 @@ class Test_Generate extends FilesystemTestCase {
 					->once()
 					->andReturn( $do_caching_mobile_files );
 			}
+		}
+
+		if ( $expected['success'] && 'cpcss_generation_successful' === $expected['code'] ) {
+			Functions\expect( 'rocket_clean_files' )
+				->once()
+				->with( "http://example.org/?p={$post_id}" );
+		} else {
+			Functions\expect( 'rocket_clean_files' )->never();
 		}
 
 		$instance             = new RESTWPPost( $cpcss_service, $options );

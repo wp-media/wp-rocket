@@ -1,16 +1,19 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\functions;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Cache\PurgeActionsSubscriber;
 
-use WPMedia\PHPUnit\Integration\TestCase;
+use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers ::get_rocket_post_terms_urls
- * @group  Functions
- * @group  Posts
+ * @covers \WP_Rocket\Engine\Cache\PurgeActionsSubscriber:purge_post_terms_urls
+ * @uses   ::get_rocket_parse_url
+ *
+ * @group  purge_actions
+ * @group  vfs
  */
-class Test_GetRocketPostTermsUrls extends TestCase {
-	private static $user_id;
+class Test_GetRocketPostTermsUrls extends FilesystemTestCase {
+	private static $user_id      = 0;
+	protected $path_to_test_data = '/inc/Engine/Cache/Purge/purgePostTermsUrls.php';
 
 	public static function wpSetUpBeforeClass( $factory ) {
 		self::$user_id = $factory->user->create(
@@ -32,21 +35,18 @@ class Test_GetRocketPostTermsUrls extends TestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldReturnExpectedUrls( $post_data, $terms, $expected ) {
-		$post_id = $this->factory->post->create( $post_data );
+		$post = $this->factory->post->create_and_get( $post_data );
 
-		$this->setTags( $post_id, $terms['post_tag'] );
-		$this->setCategories( $post_id, $terms['category'], $expected );
-		$this->setCustomTerms( $post_id, $terms['custom'] );
+		$this->setTags( $post->ID, $terms['post_tag'] );
+		$this->setCategories( $post->ID, $terms['category'] );
+		$this->setCustomTerms( $post->ID, $terms['custom'] );
 
-		$expected = sort( $expected );
-		$urls     = get_rocket_post_terms_urls( $post_id );
-		$urls     = sort( $urls );
+		$this->generateEntriesShouldExistAfter( $expected );
 
-		$this->assertSame( $expected, $urls );
-	}
+		do_action( 'after_rocket_clean_post', $post, [], '' );
 
-	public function providerTestData() {
-		return $this->getTestData( __DIR__, basename( __FILE__, '.php' ) );
+		$this->checkEntriesDeleted( $expected );
+		$this->checkShouldNotDeleteEntries();
 	}
 
 	private function setTags( $post_id, $config ) {
@@ -63,7 +63,7 @@ class Test_GetRocketPostTermsUrls extends TestCase {
 		wp_set_object_terms( $post_id, $tags, 'post_tag' );
 	}
 
-	private function setCategories( $post_id, array $config, array &$expected ) {
+	private function setCategories( $post_id, array $config ) {
 		if ( empty( $config ) ) {
 			return;
 		}
@@ -71,12 +71,12 @@ class Test_GetRocketPostTermsUrls extends TestCase {
 		$categories = [];
 
 		foreach ( $config as $cat ) {
-			$cat_id = $this->factory->category->create( $cat );
-
-			foreach ( $expected as $index => $url ) {
-				$expected[ $index ] = str_replace( $cat['slug'], $cat_id, $url );
+			if ( isset( $cat['parent'] ) ) {
+				$parent_slug   = $cat['parent'];
+				$parent_cat_id = $this->factory->category->create( [ 'slug' => $parent_slug ] );
+				$cat['parent'] = $parent_cat_id;
 			}
-
+			$cat_id       = $this->factory->category->create( $cat );
 			$categories[] = $cat_id;
 		}
 

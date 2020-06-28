@@ -83,6 +83,14 @@ tests_add_filter(
 			update_option( 'wp_rocket_settings', [ 'do_cloudflare' => 1 ] );
 		}
 
+		if ( BootstrapManager::isGroup( 'WPEngine' ) ) {
+			define( 'WP_ADMIN', true );
+			define( 'PWP_NAME', 'PWP_NAME' );
+			// Load WP Engine mocked files.
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/WPEngine/wpe_param.php';
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/WPEngine/WpeCommon.php';
+		}
+
 		// Load the plugin.
 		require WP_ROCKET_PLUGIN_ROOT . '/wp-rocket.php';
 	}

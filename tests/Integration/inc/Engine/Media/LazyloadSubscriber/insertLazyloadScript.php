@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\Media\LazyloadSubscriber;
 
 use WP_Rocket\Tests\Integration\TestCase;
+use Brain\Monkey\Functions;
 
 /**
  * @covers \WP_Rocket\Engine\Media\LazyloadSubscriber::insert_lazyload_script
@@ -34,6 +35,13 @@ class Test_InsertLazyloadScript extends TestCase {
 		remove_filter( 'rocket_lazyload_threshold', [ $this, 'return_true' ] );
 		remove_filter( 'rocket_use_native_lazyload', [ $this, 'return_true' ] );
 
+		global $wp_query;
+		$wp_query->is_feed    = false;
+		$wp_query->is_preview = false;
+		$wp_query->is_search  = false;
+
+		set_current_screen('front');
+
 		parent::tearDown();
 	}
 
@@ -47,9 +55,31 @@ class Test_InsertLazyloadScript extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldInsertLazyloadScript( $options, $expected ) {
+	public function testShouldInsertLazyloadScript( $config, $expected ) {
+		$options = $config['options'];
 		$this->lazyload = $options['lazyload'];
 		$this->iframes  = $options['lazyload_iframes'];
+
+		$is_admin           = isset( $config['is_admin'] )           ? $config['is_admin']           : false;
+		$is_feed            = isset( $config['is_feed'] )            ? $config['is_feed']            : false;
+		$is_preview         = isset( $config['is_preview'] )         ? $config['is_preview']         : false;
+		$is_search          = isset( $config['is_search'] )          ? $config['is_search']          : false;
+		$is_rest_request    = isset( $config['is_rest_request'] )    ? $config['is_rest_request']    : false;
+		$is_lazy_load       = isset( $config['is_lazy_load'] )       ? $config['is_lazy_load']       : true;
+		$is_rocket_optimize = isset( $config['is_rocket_optimize'] ) ? $config['is_rocket_optimize'] : true;
+
+		set_current_screen( $is_admin ? 'settings_page_wprocket' : 'front' );
+
+		global $wp_query;
+		$wp_query->is_feed = $is_feed;
+		$wp_query->is_preview = $is_preview;
+		$wp_query->is_search = $is_search;
+
+		//Constants.
+		$this->constants['REST_REQUEST'] = $is_rest_request;
+		$this->constants['DONOTLAZYLOAD'] = !$is_lazy_load;
+		$this->donotrocketoptimize = !$is_rocket_optimize;
+		$this->constants['WP_ROCKET_ASSETS_JS_URL'] = 'http://example.org/wp-content/plugins/wp-rocket/assets/';
 
 		// wp-media/rocket-lazyload-common uses the constant for determining whether to set as .min.js.
 		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
