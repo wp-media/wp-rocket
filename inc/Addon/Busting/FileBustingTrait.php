@@ -133,7 +133,7 @@ trait FileBustingTrait {
 			'([a-f0-9]{32}|local)'
 		) . '/';
 
-		$entries = rocket_get_dir_files_by_regex( $dir_path, $pattern );
+		$entries = _rocket_get_dir_files_by_regex( $dir_path, $pattern );
 
 		$list = [];
 		foreach ( $entries as $entry ) {

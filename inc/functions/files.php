@@ -1326,16 +1326,12 @@ function rocket_find_wpconfig_path() {
  * @param string $regex Regular expression for files need to be searched for.
  * @return array|RegexIterator List of files matches this regular expression.
  */
-function rocket_get_dir_files_by_regex( $dir, $regex ) {
+function _rocket_get_dir_files_by_regex( $dir, $regex ) {
 	try {
 		$iterator = new IteratorIterator(
 			new FilesystemIterator( $dir )
 		);
-	} catch ( Exception $e ) {
-		return [];
-	}
 
-	try {
 		return new RegexIterator( $iterator, $regex );
 	} catch ( Exception $e ) {
 		return [];
