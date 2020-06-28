@@ -1,16 +1,17 @@
 <?php
-namespace WP_Rocket\Busting;
+namespace WP_Rocket\Addon\Busting;
 
 use WP_Rocket\Addon\GoogleTracking\GoogleAnalytics;
 use WP_Rocket\Addon\GoogleTracking\GoogleTagManager;
+use WP_Rocket\Busting\Facebook_Pickles;
+use WP_Rocket\Busting\Facebook_SDK;
 
 /**
  * Busting classes Factory
  *
- * @since 3.1
- * @author Remy Perona
+ * @since 3.6.2
  */
-class Busting_Factory {
+class BustingFactory {
 	/**
 	 * Base cache busting filepath.
 	 *

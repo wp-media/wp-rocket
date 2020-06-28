@@ -6,7 +6,7 @@ use Mockery;
 use WP_Rocket\Addon\GoogleTracking\GoogleAnalytics;
 use WP_Rocket\Addon\GoogleTracking\GoogleTagManager;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Busting\Busting_Factory;
+use WP_Rocket\Addon\Busting\BustingFactory;
 use WP_Rocket\Addon\GoogleTracking\Subscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
 
@@ -36,7 +36,7 @@ class Test_DeleteTrackingCache extends TestCase {
 	}
 
 	private function getFactory( $shouldDelete ) {
-		$factory = Mockery::mock( Busting_Factory::class );
+		$factory = Mockery::mock( BustingFactory::class );
 
 		if ( ! $shouldDelete ) {
 			$factory->shouldReceive( 'type' )

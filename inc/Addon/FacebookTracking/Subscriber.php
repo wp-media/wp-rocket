@@ -2,8 +2,8 @@
 
 namespace WP_Rocket\Addon\FacebookTracking;
 
+use WP_Rocket\Addon\Busting\BustingFactory;
 use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Rocket\Busting\Busting_Factory;
 use WP_Rocket\Admin\Options_Data as Options;
 
 /**
@@ -24,7 +24,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Instance of the Busting Factory class.
 	 *
-	 * @var   Busting_Factory
+	 * @var   BustingFactory
 	 * @since 3.2
 	 */
 	private $busting_factory;
@@ -42,10 +42,10 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.2
 	 *
-	 * @param Busting_Factory $busting_factory Instance of the Busting Factory class.
+	 * @param BustingFactory $busting_factory Instance of the Busting Factory class.
 	 * @param Options         $options         Instance of the Options_Data class.
 	 */
-	public function __construct( Busting_Factory $busting_factory, Options $options ) {
+	public function __construct( BustingFactory $busting_factory, Options $options ) {
 		$this->busting_factory = $busting_factory;
 		$this->options         = $options;
 	}
