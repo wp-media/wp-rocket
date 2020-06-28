@@ -43,7 +43,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @since 3.2
 	 *
 	 * @param BustingFactory $busting_factory Instance of the Busting Factory class.
-	 * @param Options         $options         Instance of the Options_Data class.
+	 * @param Options        $options         Instance of the Options_Data class.
 	 */
 	public function __construct( BustingFactory $busting_factory, Options $options ) {
 		$this->busting_factory = $busting_factory;

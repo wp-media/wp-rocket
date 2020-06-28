@@ -30,7 +30,7 @@ class Subscriber implements Subscriber_Interface {
 	 * Constructor
 	 *
 	 * @param BustingFactory $busting_factory Instance of the Busting Factory class.
-	 * @param Options         $options Instance of the Option_Data class.
+	 * @param Options        $options Instance of the Option_Data class.
 	 */
 	public function __construct( BustingFactory $busting_factory, Options $options ) {
 		$this->busting_factory = $busting_factory;
