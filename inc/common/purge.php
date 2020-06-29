@@ -125,7 +125,7 @@ function rocket_get_purge_urls( $post_id, $post ) {
 
 		foreach ( $cache_purge_pages as $page ) {
 			if ( strpos( $page, '(.*)' ) ) {
-				$matches_files = rocket_get_recursive_dir_files_by_regex( '#' . $page . '#i' );
+				$matches_files = _rocket_get_recursive_dir_files_by_regex( '#' . $page . '#i' );
 				foreach ( $matches_files as $file ) {
 					$pathname = $file->getPathname();
 					$filetype = pathinfo( $pathname, PATHINFO_EXTENSION );

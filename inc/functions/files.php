@@ -1458,7 +1458,7 @@ function _rocket_get_wp_rocket_cache_path() { // phpcs:ignore WordPress.NamingCo
  *
  * @return array|RegexIterator List of files which match the regular expression (SplFileInfo).
  */
-function rocket_get_recursive_dir_files_by_regex( $regex ) {
+function _rocket_get_recursive_dir_files_by_regex( $regex ) {
 	try {
 		$cache_path = _rocket_get_wp_rocket_cache_path();
 		$iterator   = new RecursiveIteratorIterator( new RecursiveDirectoryIterator( $cache_path ) );
