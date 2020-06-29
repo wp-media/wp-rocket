@@ -1165,7 +1165,7 @@ class Page {
 				'preload_fonts' => [
 					'type'              => 'textarea',
 					'label'             => __( 'Fonts to preload', 'rocket' ),
-					'description'       => __( 'Specify urls of the font files to be preloaded (one per line). Fonts must be hosted on your own domain.', 'rocket' ),
+					'description'       => __( 'Specify urls of the font files to be preloaded (one per line). Fonts must be hosted on your own domain, or the domain you have specified on the CDN tab.', 'rocket' ),
 					'helper'            => __( 'The domain part of the URL will be stripped automatically.<br/>Allowed font extensions: otf, ttf, svg, woff, woff2.', 'rocket' ),
 					'placeholder'       => '/wp-content/themes/your-theme/assets/fonts/font-file.woff',
 					'section'           => 'preload_fonts_section',
