@@ -1450,3 +1450,20 @@ function _rocket_is_windows_fs( $hard_reset = false ) { // phpcs:ignore WordPres
 function _rocket_get_wp_rocket_cache_path() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 	return _rocket_normalize_path( rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) );
 }
+
+/**
+ * Get recursive files matched by regex.
+ *
+ * @param string $regex Regular Expression to be applied.
+ *
+ * @return array|RegexIterator List of files which match the regular expression (SplFileInfo).
+ */
+function rocket_get_recursive_dir_files_by_regex( $regex ) {
+	try {
+		$cache_path = _rocket_get_wp_rocket_cache_path();
+		$iterator   = new RecursiveIteratorIterator( new RecursiveDirectoryIterator( $cache_path ) );
+		return new RegexIterator( $iterator, $regex, RecursiveRegexIterator::MATCH );
+	} catch ( Exception $e ) {
+		return [];
+	}
+}
