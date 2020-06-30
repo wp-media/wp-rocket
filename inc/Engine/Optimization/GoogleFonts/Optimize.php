@@ -6,12 +6,11 @@ use WP_Rocket\Logger\Logger;
 use WP_Rocket\Engine\Optimization\AbstractOptimization;
 
 /**
- * Combine Google Fonts
+ * Optimize Google Fonts
  *
  * @since  3.1
- * @author Remy Perona
  */
-class Combine extends AbstractOptimization {
+class Optimize extends AbstractOptimization {
 	/**
 	 * Found fonts
 	 *
@@ -36,7 +35,6 @@ class Combine extends AbstractOptimization {
 	 * Combines multiple Google Fonts links into one
 	 *
 	 * @since  3.1
-	 * @author Remy Perona
 	 *
 	 * @param string $html HTML content.
 	 *
@@ -94,10 +92,36 @@ class Combine extends AbstractOptimization {
 	}
 
 	/**
+	 * Adds preload on Google Font link.
+	 *
+	 * @since  3.6.2
+	 */
+	protected function preload() {
+
+	}
+
+	/**
+	 *  To use the media="print" solution for asynchronous, non-blocking fetching of the link.
+	 *
+	 * @since  3.6.2
+	 */
+	protected function async() {
+
+	}
+
+	/**
+	 * Insert a noscript fallback in the footer for Google Font link.
+	 *
+	 * @since  3.6.2
+	 */
+	protected function fallback() {
+
+	}
+
+	/**
 	 * Finds links to Google fonts
 	 *
 	 * @since  3.1
-	 * @author Remy Perona
 	 *
 	 * @param string $pattern Pattern to search for.
 	 * @param string $html    HTML content.
@@ -118,7 +142,6 @@ class Combine extends AbstractOptimization {
 	 * Parses found matches to extract fonts and subsets.
 	 *
 	 * @since  3.1
-	 * @author Remy Perona
 	 *
 	 * @param array $matches Found matches for the pattern.
 	 *
@@ -159,7 +182,6 @@ class Combine extends AbstractOptimization {
 	 *
 	 * @since  3.3.5 Add support for the display parameter
 	 * @since  3.1
-	 * @author Remy Perona
 	 *
 	 * @return string
 	 */
@@ -176,7 +198,6 @@ class Combine extends AbstractOptimization {
 	 * Returns font with display value.
 	 *
 	 * @since  3.5.1
-	 * @author Soponar Cristina
 	 *
 	 * @param array $font Array containing font tag and matches.
 	 *

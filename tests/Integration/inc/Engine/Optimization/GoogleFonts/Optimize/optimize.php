@@ -3,7 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\GoogleFonts;
 
 use WPMedia\PHPUnit\Integration\TestCase;
-use WP_Rocket\Engine\Optimization\GoogleFonts\Combine;
+use WP_Rocket\Engine\Optimization\GoogleFonts\Optimize;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\GoogleFonts::optimize
@@ -16,7 +16,7 @@ class Test_Optimize extends TestCase {
      * @dataProvider addDataProvider
      */
 	public function testShouldCombineGoogleFonts( $original, $combined ) {
-		$combine = new Combine();
+		$combine = new Optimize();
 
 		$this->assertSame(
 			$combined,

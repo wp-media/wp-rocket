@@ -17,6 +17,7 @@ class_alias( '\WP_Rocket\Engine\HealthCheck\CacheDirSizeCheck', '\WP_Rocket\Subs
 class_alias( '\WP_Rocket\Engine\HealthCheck\HealthCheck', '\WP_Rocket\Engine\Admin\HealthCheck' );
 class_alias( '\WP_Rocket\Engine\Optimization\ServiceProvider', '\WP_Rocket\ServiceProvider\Optimization_Subscribers' );
 class_alias( '\WP_Rocket\ThirdParty\Plugins\Smush', '\WP_Rocket\Subscriber\Third_Party\Plugins\Smush_Subscriber' );
+class_alias( '\WP_Rocket\Engine\Optimization\GoogleFonts\Optimize', '\WP_Rocket\Engine\Optimization\GoogleFonts\Combine' );
 
 /**
  * Generate the content of advanced-cache.php file.
