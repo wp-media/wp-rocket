@@ -79,7 +79,7 @@ class HTMLDocument extends DOMDocument {
 	/**
 	 * Named constructor for transforming HTML into DOM.
 	 *
-	 * @param string $html     Optional. HTML to transform into HTML DOMDocument object.
+	 * @param string $html     HTML to transform into HTML DOMDocument object.
 	 * @param string $version  Optional. The version number of the document as part of the XML declaration.
 	 * @param string $encoding Optional. The encoding of the document as part of the XML declaration.
 	 *

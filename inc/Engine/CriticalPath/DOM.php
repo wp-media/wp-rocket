@@ -2,7 +2,6 @@
 
 namespace WP_Rocket\Engine\CriticalPath;
 
-use DOMNode;
 use DOMElement;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\DOM\HTMLDocument;
@@ -28,17 +27,10 @@ class DOM {
 	 *
 	 * @var HTMLDocument
 	 */
-	private $dom;
+	protected $dom;
 
 	/**
-	 * Array of URLs to exclude.
-	 *
-	 * @var array
-	 */
-	private $css_urls_to_exclude;
-
-	/**
-	 * Creates an instance of the CriticalPath DOM Handler.
+	 * Creates an instance of the DOM Handler.
 	 *
 	 * @param CriticalCSS  $critical_css Critical CSS instance.
 	 * @param Options_Data $options      WP Rocket options.
@@ -49,107 +41,91 @@ class DOM {
 	}
 
 	/**
-	 * Modifies the given HTML for async CSS, i.e. defer loading of CSS files.
-	 *
-	 * @since  2.10
-	 *
-	 * @param string $html HTML code.
-	 *
-	 * @return string Updated HTML code
-	 */
-	public function modify_html_for_async_css( $html ) {
-		if ( ! $this->maybe_async_css() ) {
-			return $html;
-		}
-
-		$this->dom = HTMLDocument::from_html( $html );
-		$css_links = $this->dom->get_all_css_links();
-
-		if ( empty( $css_links ) ) {
-			$this->dom = null;
-
-			return $html;
-		}
-
-		$this->get_css_to_exclude();
-		array_walk( $css_links, [ $this, 'modify_css_for_async' ] );
-
-		$html = $this->dom->get_html();
-
-		// Reset.
-		$this->css_urls_to_exclude = [];
-		$this->dom                 = null;
-
-		return $html;
-	}
-
-	/**
-	 * Checks if we should apply deferring of CSS files.
-	 *
-	 * @return bool True if we should, false otherwise.
-	 */
-	private function maybe_async_css() {
-		if (
-			rocket_get_constant( 'DONOTROCKETOPTIMIZE' )
-			||
-			rocket_get_constant( 'DONOTASYNCCSS' )
-		) {
-			return false;
-		}
-
-		if ( ! (bool) $this->options->get( 'async_css', 0 ) ) {
-			return false;
-		}
-
-		if (
-			empty( $this->critical_css->get_current_page_critical_css() )
-			&&
-			empty( $this->options->get( 'critical_css', '' ) )
-		) {
-			return false;
-		}
-
-		return ! is_rocket_post_excluded_option( 'async_css' );
-	}
-
-	/**
-	 * Gets the CSS URLs to exclude from async CSS.
-	 *
-	 * @since 3.6.2
-	 */
-	private function get_css_to_exclude() {
-		$this->css_urls_to_exclude = array_flip( $this->critical_css->get_exclude_async_css() );
-	}
-
-	private function exclude_css_node( $node ) {
-		if ( empty( $this->css_urls_to_exclude ) ) {
-			return false;
-		}
-
-		return in_array( $node->getAttribute( 'href' ), $this->css_urls_to_exclude, true );
-	}
-
-	/**
-	 * Modifies the CSS <link> node for async css.
+	 * Named constructor for transforming HTML into DOM.
 	 *
 	 * @since 3.6.2
 	 *
-	 * @param DOMElement $css CSS <link> DOMElement.
+	 * @param CriticalCSS  $critical_css Critical CSS instance.
+	 * @param Options_Data $options      WP Rocket options.
+	 * @param string       $html         Optional. HTML to transform into HTML DOMDocument object.
+	 *
+	 * @return self Instance of this class.
 	 */
-	private function modify_css_for_async( $css ) {
-		if ( $this->exclude_css_node( $css ) ) {
-			return;
+	public static function from_html( CriticalCSS $critical_css, Options_Data $options, $html ) {
+		$instance = new static( $critical_css, $options );
+
+		if ( $instance->okay_to_create_dom() ) {
+			$instance->dom = HTMLDocument::from_html( $html );
 		}
 
-		$this->set_noscript( $css );
+		return $instance;
+	}
 
-		$css->setAttribute( 'as', 'style' );
+	/**
+	 * Checks if it's okay to create the DOM from the HTML. This method can be overloaded.
+	 *
+	 * @since 3.6.2
+	 *
+	 * @return bool
+	 */
+	protected function okay_to_create_dom() {
+		return true;
+	}
 
-		$this->set_rel_stylesheet( $css );
+	/**
+	 * Checks if the string contains the given needle.
+	 *
+	 * @since 3.6.2
+	 *
+	 * @param string $search_string Search string.
+	 * @param string $needle        Needle to find.
+	 *
+	 * @return bool
+	 */
+	protected function string_contains( $search_string, $needle ) {
+		return ( false !== strpos( $search_string, $needle ) );
+	}
 
-		$this->set_onload( $css );
+	/**
+	 * Converts an array into a string.
+	 *
+	 * @since 3.6.2
+	 *
+	 * @param array  $array    The array to convert.
+	 * @param string $glue     Glue between the string parts.
+	 * @param string $operator Operator between the key and value when flatten the array.
+	 *
+	 * @return string converted string.
+	 */
+	protected function array_to_string( array $array, $glue, $operator ) {
+		return implode( $glue, $this->flatten_array( $array, $operator ) );
+	}
 
-		$css->setAttribute( 'media', 'print' );
+	/**
+	 * Flattens an array from key => value to string elements.
+	 *
+	 * For index key, the value is stored as the element.
+	 * For keys, the key is combined with the value with the operator as the separator.
+	 *
+	 * @since 3.6.2
+	 *
+	 * @param array  $array    The array to flatten.
+	 * @param string $operator The separator between the key and value.
+	 *
+	 * @return array
+	 */
+	protected function flatten_array( array $array, $operator ) {
+		$flat = [];
+
+		foreach ( $array as $key => $value ) {
+			if ( is_integer( $key ) ) {
+				$flat[] = $value;
+			} else {
+				$flat[] = "{$key}{$operator}{$value}";
+			}
+		}
+
+		return $flat;
 	}
 
 	/**
@@ -157,47 +133,11 @@ class DOM {
 	 *
 	 * @since 3.6.2
 	 *
-	 * @param DOMElement $css The CSS <link> DOMElement.
+	 * @param DOMElement $element The element to append within <noscript>.
 	 */
-	private function set_noscript( $css ) {
+	protected function set_noscript( $element ) {
 		$noscript = $this->dom->createElement( 'noscript' );
-		$noscript->appendChild( $css );
+		$noscript->appendChild( $element );
 		$this->dom->get_body()->appendChild( $noscript );
-	}
-
-	/**
-	 * Sets the <rel="stylesheet"> attribute if it doesn't exist.
-	 *
-	 * @since 3.6.2
-	 *
-	 * @param DOMElement $css The CSS <link> DOMElement.
-	 */
-	private function set_rel_stylesheet( DOMElement $css ) {
-		if ( ! $css->hasAttribute( 'rel' ) ) {
-			return;
-		}
-
-		$css->setAttribute( 'rel', 'stylesheet' );
-	}
-
-	private function set_css_onload( $css ) {
-		if ( ! $css->hasAttribute( 'onload' ) ) {
-			$css->setAttribute( 'onload', "this.media='all'" );
-
-			return;
-		}
-
-		$media  = $css->getAttribute( 'media' );
-		$onload = $css->getAttribute( 'onload' );
-
-		// Check if media= already exists.
-		// If yes:
-		//  a. Is it set to "all"? If no, set it to "all"
-		//  b. If no, is it set to "print"? If yes, set it to "all".
-		// Else: add this.media="all".
-		// NOTES:
-		//      1. Retain the other onload code.
-		//      2. Watch out for inverted quotes.
-
 	}
 }

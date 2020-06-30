@@ -2,8 +2,6 @@
 
 namespace WP_Rocket\Engine\CriticalPath;
 
-use FilesystemIterator;
-use UnexpectedValueException;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Filesystem_Direct;
@@ -44,27 +42,18 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	private $cpcss_service;
 
 	/**
-	 * Instance of the CriticalPath DOM Handler.
-	 *
-	 * @var DOM
-	 */
-	private $dom;
-
-	/**
 	 * Creates an instance of the Critical CSS Subscriber.
 	 *
 	 * @param CriticalCSS          $critical_css  Critical CSS instance.
 	 * @param ProcessorService     $cpcss_service Has the logic for cpcss generation and deletion.
 	 * @param Options_Data         $options       WP Rocket options.
 	 * @param WP_Filesystem_Direct $filesystem    Instance of the filesystem handler.
-	 * @param DOM                  $dom           Instance of the CriticalPath DOM Handler.
 	 */
-	public function __construct( CriticalCSS $critical_css, ProcessorService $cpcss_service, Options_Data $options, $filesystem, DOM $dom ) {
+	public function __construct( CriticalCSS $critical_css, ProcessorService $cpcss_service, Options_Data $options, $filesystem ) {
 		$this->critical_css  = $critical_css;
 		$this->cpcss_service = $cpcss_service;
 		$this->options       = $options;
 		$this->filesystem    = $filesystem;
-		$this->dom           = $dom;
 	}
 
 	/**
@@ -594,7 +583,8 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	 * @return string Updated HTML code
 	 */
 	public function async_css( $html ) {
-		return $this->dom->modify_html_for_async_css( $html );
+		$async_css = AsyncCSS::from_html( $html );
+		return $async_css->modify_html( $html );
 	}
 
 	/**
@@ -619,13 +609,13 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	 */
 	private function is_mobile_cpcss_active() {
 		return (
-			$this->options->get( 'async_css', 0 )
-			&&
-			$this->options->get( 'cache_mobile', 0 )
-			&&
-			$this->options->get( 'do_caching_mobile_files', 0 )
-		)
-		&&
-		$this->options->get( 'async_css_mobile', 0 );
+			       $this->options->get( 'async_css', 0 )
+			       &&
+			       $this->options->get( 'cache_mobile', 0 )
+			       &&
+			       $this->options->get( 'do_caching_mobile_files', 0 )
+		       )
+		       &&
+		       $this->options->get( 'async_css_mobile', 0 );
 	}
 }

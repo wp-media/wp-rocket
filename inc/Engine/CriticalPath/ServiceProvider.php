@@ -3,7 +3,6 @@
 namespace WP_Rocket\Engine\CriticalPath;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Engine\DOM\HTMLDocument;
 
 /**
  * Service provider for the Critical CSS classes
@@ -74,10 +73,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->withArgument( $filesystem );
 
 		$critical_css = $this->getContainer()->get( 'critical_css' );
-
-		$this->getContainer()->add( 'criticalpath_dom', 'WP_Rocket\Engine\CriticalPath\DOM' )
-		     ->withArgument( $critical_css )
-		     ->withArgument( $options );
 
 		$this->getContainer()->share( 'critical_css_subscriber', 'WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber' )
 			->withArgument( $critical_css )
