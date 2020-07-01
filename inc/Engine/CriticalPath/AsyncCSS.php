@@ -34,7 +34,7 @@ class AsyncCSS extends DOM {
 	 * @return string Updated HTML code.
 	 */
 	public function modify_html( $html ) {
-		$css_links = $this->dom->query( '//link[@type="text/css"]' );
+		$css_links = $this->dom->query( $this->get_query() );
 
 		if ( empty( $css_links ) || $css_links->length === 0 ) {
 			$this->dom = null;
@@ -42,7 +42,6 @@ class AsyncCSS extends DOM {
 			return $html;
 		}
 
-		$this->get_css_to_exclude();
 		foreach( $css_links as $css ) {
 			$this->modify_css( $css );
 		}
@@ -95,33 +94,40 @@ class AsyncCSS extends DOM {
 	}
 
 	/**
-	 * Gets the CSS URLs to exclude from async CSS.
+	 * Get the XPath query string.
 	 *
 	 * @since 3.6.2
+	 *
+	 * @return string
 	 */
-	protected function get_css_to_exclude() {
-		$this->css_urls_to_exclude = $this->critical_css->get_exclude_async_css();
-		if ( ! empty( $this->css_urls_to_exclude ) ) {
-			$this->css_urls_to_exclude = array_flip( $this->css_urls_to_exclude );
+	protected function get_query() {
+		$exclude = $this->get_css_to_exclude();
+		if ( '' === $exclude ) {
+			return '//link[@type="text/css"]';
 		}
+
+		return '//link[@type="text/css" and ' . $exclude . ']';
 	}
 
 	/**
-	 * Gets a list of CSS hrefs to exclude.
+	 * Gets the CSS URLs to exclude from async CSS.
 	 *
 	 * @since 3.6.2
 	 *
-	 * @param $node
-	 *
-	 * @return bool
+	 * @return string
 	 */
-	protected function exclude_css_node( $node ) {
-		return false;
-		if ( empty( $this->css_urls_to_exclude ) ) {
-			return false;
+	protected function get_css_to_exclude() {
+		$hrefs = $this->critical_css->get_exclude_async_css();
+		if ( empty( $hrefs ) ) {
+			return '';
 		}
 
-		return in_array( $node->getAttribute( 'href' ), $this->css_urls_to_exclude, true );
+		$query = [];
+		foreach( $hrefs as $href ) {
+			$query[] = sprintf( 'contains(@href, "%s")', $href );
+		}
+
+		return 'not(' . implode( ' or ', $query ) . ')';
 	}
 
 	/**
@@ -132,10 +138,6 @@ class AsyncCSS extends DOM {
 	 * @param DOMElement $css CSS <link> DOMElement.
 	 */
 	protected function modify_css( $css ) {
-		if ( $this->exclude_css_node( $css ) ) {
-			return;
-		}
-
 		$this->set_noscript( $css->cloneNode() );
 
 		$css->setAttribute( 'rel', 'preload' );

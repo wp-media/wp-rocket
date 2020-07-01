@@ -57,11 +57,6 @@ return [
 	'shouldBailOutAndReturnOriginalHTMLWhenNoCssLinksInHTML' => [
 		'html'     => $base_html,
 		'expected' => $base_html,
-		'config'   => [
-			'options'      => [ 'async_css' => 1 ],
-			'critical_css' => [ 'get_current_page_critical_css' => 'something' ],
-			'functions'    => [ 'is_rocket_post_excluded_option' => false ],
-		],
 	],
 
 	'shouldSetDefaultsWhenNoOnload' => [
@@ -232,7 +227,7 @@ HTML
 		,
 	],
 
-	'shouldGetOriginalMediaAttribute' => [
+	'shouldGetAllLinksInHeadAndBody' => [
 		'html'     => <<<HTML
 <!DOCTYPE html>
 <html lang="en-US">
@@ -349,5 +344,149 @@ HTML
 	],
 
 	// TODO: Excluded hrefs.
+	'shouldBailOutWhenCSSIsExcluded' => [
+		'html'     => <<<HTML
+<!doctype html>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="all">
+</head>
+<body>
+	<div>
+		<h1>Testing</h1>
+		<p>Testing excluding CSS links.</p>
+	</div>
+</body>
+</html>
+HTML
+		,
+		'expected' => <<<HTML
+<!doctype html>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="all">
+</head>
+<body>
+	<div>
+		<h1>Testing</h1>
+		<p>Testing excluding CSS links.</p>
+	</div>
+</body>
+</html>
+HTML
+		,
+		'config' => [
+			'use_default' => true,
+			'critical_css' => [
+				'get_exclude_async_css'         => [
+					'https://example.org/file1.css'
+				],
+			],
+		],
+	],
 
+	'shouldHandleWhitespaceAndEndingSemicolon' => [
+		'html'     => <<<HTML
+<!doctype html>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<link onload="  this.media = 'all'; this.onload = null; " rel="stylesheet" type="text/css" href="https://example.org/file1.css">
+	<link onload=" this.rel = 'stylesheet'; " href="https://example.org/file2.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+	<div>
+		<h1>Testing</h1>
+		<p>Testing excluding CSS links.</p>
+	</div>
+</body>
+</html>
+HTML
+		,
+		'expected' => <<<HTML
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<link onload="this.media='all';this.onload=null;this.rel='stylesheet'" rel="preload" type="text/css" href="https://example.org/file1.css" as="style" media="print">
+	<link onload=" this.rel = 'stylesheet'; " href="https://example.org/file2.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+	<div>
+		<h1>Testing</h1>
+		<p>Testing excluding CSS links.</p>
+	</div>
+	<noscript>
+		<link onload="  this.media = 'all'; this.onload = null; " rel="stylesheet" type="text/css" href="https://example.org/file1.css">
+	</noscript>
+</body>
+</html>
+HTML
+		,
+		'config' => [
+			'use_default' => true,
+			'critical_css' => [
+				'get_exclude_async_css'         => [
+					'https://example.org/file2.css'
+				],
+			],
+		],
+	],
+
+	'shouldGetAllLinksInHeadAndBody_butExclude' => [
+		'html'     => <<<HTML
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<link rel="preload" type="text/css" href="https://example.org/file1.css" media="screen" onload="this.rel='stylesheet'">
+	<link rel="preload" type="text/css" href="https://example.org/file2.css" media="screen and (max-width: 600px)" onload="this.rel='stylesheet'">
+	<link rel="preload" type="text/css" href="https://example.org/file3.css" media="print">
+<body>
+	<div>
+		<!-- single quotes -->
+		<link rel='preload' type='text/css' href='https://example.org/file4.css' media='screen and (max-width: 800px)' onload='this.rel="stylesheet"'>
+		<h1>Testing</h1>
+		<p>Hello World</p>
+	</div>
+</body>
+</html>
+HTML
+		,
+		'expected' => <<<HTML
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<link rel="preload" type="text/css" href="https://example.org/file1.css" media="print" onload="this.rel='stylesheet';this.onload=null;this.media='screen'" as="style">
+	<link rel="preload" type="text/css" href="https://example.org/file2.css" media="screen and (max-width: 600px)" onload="this.rel='stylesheet'">
+	<link rel="preload" type="text/css" href="https://example.org/file3.css" media="print" as="style" onload="this.onload=null;this.media='all';this.rel='stylesheet'">
+</head>
+<body>
+	<div>
+		<!-- single quotes -->
+		<link rel="preload" type="text/css" href="https://example.org/file4.css" media="screen and (max-width: 800px)" onload='this.rel="stylesheet"'>
+		<h1>Testing</h1>
+		<p>Hello World</p>
+	</div>
+	<noscript>
+		<link rel="preload" type="text/css" href="https://example.org/file1.css" media="screen" onload="this.rel='stylesheet'">
+		<link rel="preload" type="text/css" href="https://example.org/file3.css" media="print">
+	</noscript>
+</body>
+</html>
+HTML
+		,
+		'config' => [
+			'use_default' => true,
+			'critical_css' => [
+				'get_exclude_async_css'         => [
+					'https://example.org/file2.css',
+					'https://example.org/file4.css'
+				],
+			],
+		],
+	],
 ];

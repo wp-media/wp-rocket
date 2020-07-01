@@ -18,7 +18,7 @@ abstract class TestCase extends BaseTestCase {
 	protected $default_config = [
 		'options'      => [ 'async_css' => 1 ],
 		'critical_css' => [
-			'get_current_page_critical_css' => 'something',
+			'get_current_page_critical_css' => 'page.css',
 			'get_exclude_async_css'         => [],
 		],
 		'functions'    => [ 'is_rocket_post_excluded_option' => false ],
@@ -52,6 +52,14 @@ abstract class TestCase extends BaseTestCase {
 	protected function initConfig( $config ) {
 		if ( empty( $config ) ) {
 			return $this->default_config;
+		}
+
+		if ( isset( $config['use_default'] ) && $config['use_default'] ) {
+			unset( $config['use_default'] );
+			return array_merge_recursive(
+				$this->default_config,
+				$config
+			);
 		}
 
 		return array_merge(
