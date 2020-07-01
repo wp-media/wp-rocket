@@ -72,7 +72,6 @@ class PDFEmbedder implements Subscriber_Interface {
 		];
 	}
 
-
 	/**
 	 * PDFEmbedder Premium JS scripts.
 	 *
