@@ -1298,12 +1298,14 @@ function rocket_find_wpconfig_path() {
 }
 
 /**
- * Get Directory files matches regex.
+ * Gets Directory files matches regex.
  *
  * @since 3.6.1
+ * @access private
  *
  * @param string $dir   Directory to search for files inside it.
  * @param string $regex Regular expression for files need to be searched for.
+ *
  * @return array|RegexIterator List of files matches this regular expression.
  */
 function _rocket_get_dir_files_by_regex( $dir, $regex ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
