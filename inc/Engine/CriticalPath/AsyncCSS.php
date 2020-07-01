@@ -3,7 +3,7 @@
 namespace WP_Rocket\Engine\CriticalPath;
 
 use DOMElement;
-use WP_Rocket\Engine\DOM\HTMLDocument;
+use WP_Rocket\Engine\DOM\Attribute;
 
 class AsyncCSS extends DOM {
 
@@ -21,8 +21,8 @@ class AsyncCSS extends DOM {
 	 */
 	protected $onload_defaults = [
 		'this.onload' => 'null',
-		'this.media'  => 'all',
-		'this.rel'    => 'stylesheet',
+		'this.media'  => "'all'",
+		'this.rel'    => "'stylesheet'",
 	];
 
 	/**
@@ -35,7 +35,7 @@ class AsyncCSS extends DOM {
 	 * @return string Updated HTML code.
 	 */
 	public function modify_html( $html ) {
-		$css_links = $this->dom->get_all_css_links();
+		$css_links = $this->dom->query( '//link[@type="text/css"]' );
 
 		if ( empty( $css_links ) ) {
 			$this->dom = null;
@@ -93,6 +93,15 @@ class AsyncCSS extends DOM {
 		$this->css_urls_to_exclude = array_flip( $this->critical_css->get_exclude_async_css() );
 	}
 
+	/**
+	 * Gets a list of CSS hrefs to exclude.
+	 *
+	 * @since 3.6.2
+	 *
+	 * @param $node
+	 *
+	 * @return bool
+	 */
 	protected function exclude_css_node( $node ) {
 		if ( empty( $this->css_urls_to_exclude ) ) {
 			return false;
@@ -134,15 +143,38 @@ class AsyncCSS extends DOM {
 	 * @return string "onload" attribute value.
 	 */
 	protected function build_onload( $css ) {
-		$this->onload_defaults['this.media'] = $css->hasAttribute( 'media' ) ? $css->getAttribute( 'media' ) : 'all';
+		$values = $css->hasAttribute( 'onload' )
+			? $this->get_onload_values( $css )
+			: $this->merge_default_onload_values( $css );
 
-		if ( ! $css->hasAttribute( 'onload' ) ) {
-			return $this->array_to_string( $this->onload_defaults, ';', '=' );
+		$values = $this->array_to_string( $values, ';', '=' );
+
+		$css->setAttribute( 'onload', $values );
+	}
+
+	/**
+	 * Merges the default onload values with the given array of values..
+	 *
+	 * @since 3.6.2
+	 *
+	 * @param array $values Optional. Array of values to add default values to. Default: [].
+	 *
+	 * @return array merged array of values.
+	 */
+	private function merge_default_onload_values( $css, array $values = [] ) {
+		foreach ( $this->onload_defaults as $key => $value ) {
+			if ( array_key_exists( $key, $values ) ) {
+				continue;
+			}
+
+			if ( 'this.media' === $key ) {
+				$value = $this->get_onload_media( $value, $css, true );
+			}
+
+			$values[ $key ] = $this->prepare_for_value_embed( $value );
 		}
 
-		$values = $this->get_onload_values( $css );
-
-		$css->setAttribute( 'onload', $this->array_to_string( $values, ';', '=' ) );
+		return $values;
 	}
 
 	/**
@@ -165,15 +197,19 @@ class AsyncCSS extends DOM {
 				continue;
 			}
 
-			if ( $this->string_contains( $value, '=' ) ) {
-				$values[] = $value;
+			if ( ! $this->string_contains( $value, '=' ) ) {
+				$values[] = $this->replace_double_quotes( $value );
 				continue;
 			}
 
 			list( $key, $value ) = explode( '=', $value );
 
-			$key   = trim( $key );
-			$value = trim( $value );
+			if ( is_string( $value ) ) {
+				$value = trim( $value );
+			}
+
+			$key = trim( $key );
+
 			switch ( $key ) {
 				case 'this.onload':
 				case 'onload':
@@ -181,27 +217,50 @@ class AsyncCSS extends DOM {
 					break;
 				case 'this.media':
 				case 'media':
-					$values['this.media'] = 'print' !== $value ? $value : $this->default['this.media'];
+					$values['this.media'] = $this->prepare_for_value_embed( $this->get_onload_media( $value, $css ) );
 					break;
 				case 'this.rel':
 				case 'rel':
-					$values['this.rel'] = $this->onload_defaults['this.rel'];
+					$values['this.rel'] = $this->prepare_for_value_embed( $this->onload_defaults['this.rel'] );
 					break;
 				default:
-					$values["this.{$key}"] = $value;
+					if ( ! $this->string_starts_with( $key, 'this.' ) ) {
+						$key = "this.{$key}";
+					}
+					$values[ $key ] = $this->prepare_for_value_embed( $value );
 			}
 		}
 
 		// Check that each default exists. If no, add it.
 		// Using foreach to respect the original order of the onload values.
-		foreach ( $this->onload_defaults as $key => $value ) {
-			if ( ! array_key_exists( $key, $values ) ) {
-				continue;
+		return $this->merge_default_onload_values( $css, $values );
+	}
+
+	/**
+	 * Gets the onload media value.
+	 *
+	 * @since 3.6.2
+	 *
+	 * @param string     $value            Existing onload media value.
+	 * @param DOMElement $css              CSS <link> DOMElement.
+	 * @param bool       $check_media_attr Optional. When true, force check for the media attribute.
+	 *
+	 * @return string
+	 */
+	private function get_onload_media( $value, $css, $check_media_attr = false ) {
+		if ( $check_media_attr || ( empty( $value ) && ! $this->is_null( $value ) ) ) {
+
+			if ( ! $css->hasAttribute( 'media' ) ) {
+				return $this->onload_defaults['this.media'];
 			}
 
-			$values[ $key ] = $value;
+			$value = $css->getAttribute( 'media' );
 		}
 
-		return $values;
+		if ( in_array( $value, [ 'print', "'print'", '"print"' ], true ) ) {
+			return $this->onload_defaults['this.media'];
+		}
+
+		return $value;
 	}
 }

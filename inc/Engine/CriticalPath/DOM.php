@@ -73,20 +73,6 @@ class DOM {
 	}
 
 	/**
-	 * Checks if the string contains the given needle.
-	 *
-	 * @since 3.6.2
-	 *
-	 * @param string $search_string Search string.
-	 * @param string $needle        Needle to find.
-	 *
-	 * @return bool
-	 */
-	protected function string_contains( $search_string, $needle ) {
-		return ( false !== strpos( $search_string, $needle ) );
-	}
-
-	/**
 	 * Converts an array into a string.
 	 *
 	 * @since 3.6.2
@@ -139,5 +125,100 @@ class DOM {
 		$noscript = $this->dom->createElement( 'noscript' );
 		$noscript->appendChild( $element );
 		$this->dom->get_body()->appendChild( $noscript );
+	}
+
+	/**
+	 * Prepares the given attribute value for embedding into the attribute.
+	 *
+	 * If it's a string, it's wrapped in quotations.
+	 *
+	 * @since 3.6.2
+	 *
+	 * @param mixed $value Value to wrap.
+	 *
+	 * @return mixed
+	 */
+	protected function prepare_for_value_embed( $value ) {
+		if ( $this->is_null( $value ) ) {
+			return 'null';
+		}
+
+		if ( empty( $value ) ) {
+			return '';
+		}
+
+		if ( ! is_string( $value ) ) {
+			return $value;
+		}
+
+		if ( "'" === $value[0] ) {
+			return $value;
+		}
+
+		if ( '"' === $value[0] ) {
+			return $this->replace_double_quotes( $value );
+		}
+
+		return "'{$value}'";
+	}
+
+	/**
+	 * Checks if the given value is set to NULL, 'null', "null", or null.
+	 *
+	 * @since 3.6.2
+	 *
+	 * @param string $value Value to check.
+	 *
+	 * @return bool
+	 */
+	public static function is_null( $value ) {
+		return (
+			is_null( $value )
+			||
+			'null' === $value
+			||
+			"null" === $value
+		);
+	}
+
+	/**
+	 * Replaces double "" quotes with single quotes ''.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $value Value to replace double quotes.
+	 *
+	 * @return string value with single quotes around it instead of double.
+	 */
+	public static function replace_double_quotes( $value ) {
+		return str_replace( '"', "'", $value );
+	}
+
+	/**
+	 * Checks if the string contains the given needle.
+	 *
+	 * @since 3.6.2
+	 *
+	 * @param string $search_string Search string.
+	 * @param string $needle        Needle to find.
+	 *
+	 * @return bool
+	 */
+	public static function string_contains( $search_string, $needle ) {
+		return ( false !== strpos( $search_string, $needle ) );
+	}
+
+	/**
+	 * Checks if the search string starts with the given needle.
+	 *
+	 * @since 3.6.2
+	 *
+	 * @param string $search_string Search string.
+	 * @param string $needle        Needle to find.
+	 *
+	 * @return bool
+	 */
+	protected function string_starts_with( $search_string, $needle ) {
+		return ( substr( $search_string, 0, strlen( $needle ) ) === $needle );
 	}
 }
