@@ -15,7 +15,8 @@ class PDFEmbedder implements Subscriber_Interface {
 	 * @since  3.6.2
 	 */
 	public static function get_subscribed_events() {
-		if ( ! class_exists( 'core_pdf_embedder' ) || ! class_exists( 'pdfemb_premium_pdf_embedder' ) || ! class_exists( 'pdfemb_commerical_pdf_embedder' ) ) {
+		// All 3 plugins use the same core class.
+		if ( ! class_exists( 'core_pdf_embedder' ) ) {
 			return [];
 		}
 
@@ -29,30 +30,70 @@ class PDFEmbedder implements Subscriber_Interface {
 	 *
 	 * @since 3.6.2
 	 *
-	 * @param  array $excluded_scripts Array of scripts to exclude.
+	 * @param  array $excluded_js Array of scripts to exclude.
 	 * @return array
 	 */
-	public function exclude_pdfembedder_scripts( $excluded_scripts ) {
+	public function exclude_pdfembedder_scripts( $excluded_js ) {
 		if ( class_exists( 'core_pdf_embedder' ) ) {
 			// Exclude Free version.
-			$excluded_js[] = rocket_clean_exclude_file( plugins_url( '/pdf-embedder/js/(.*).js' ) );
+			$excluded_js = array_merge(
+				$excluded_js,
+				$this->pdfembedder_free_scripts()
+			);
 		}
 
 		if ( class_exists( 'pdfemb_premium_pdf_embedder' ) ) {
 			// Excludes PDFEmbedder-premium.
-			$excluded_js[] = rocket_clean_exclude_file( plugins_url( 'PDFEmbedder-premium/js/pdfjs/(.*).js' ) );
-			$excluded_js[] = rocket_clean_exclude_file( plugins_url( 'PDFEmbedder-premium/js/(.*).js' ) );
+			$excluded_js = array_merge(
+				$excluded_js,
+				$this->pdfembedder_premium_scripts()
+			);
 		}
 
 		if ( class_exists( 'pdfemb_commerical_pdf_embedder' ) ) {
 			// Excludes PDFEmbedder-premium-secure.
-			$excluded_js[] = rocket_clean_exclude_file( plugins_url( 'PDFEmbedder-premium-secure/js/pdfjs/(.*).js' ) );
-			$excluded_js[] = rocket_clean_exclude_file( plugins_url( 'PDFEmbedder-premium-secure/js/(.*).js' ) );
+			$excluded_js = array_merge(
+				$excluded_js,
+				$this->pdfembedder_secure_scripts()
+			);
 		}
 
-		return array_merge(
-			$excluded_scripts,
-			$excluded_js
-		);
+		return $excluded_js;
+	}
+
+	/**
+	 * PDFEmbedder Free JS scripts.
+	 *
+	 * @return array JS files to be excluded.
+	 */
+	private function pdfembedder_free_scripts() {
+		return [
+			rocket_clean_exclude_file( plugins_url( '/pdf-embedder/js/(.*).js' ) ),
+		];
+	}
+
+
+	/**
+	 * PDFEmbedder Premium JS scripts.
+	 *
+	 * @return array JS files to be excluded.
+	 */
+	private function pdfembedder_premium_scripts() {
+		return [
+			rocket_clean_exclude_file( plugins_url( 'pdfembedder-premium/js/pdfjs/(.*).js' ) ),
+			rocket_clean_exclude_file( plugins_url( 'pdfembedder-premium/js/(.*).js' ) ),
+		];
+	}
+
+	/**
+	 * PDFEmbedder Secure JS scripts.
+	 *
+	 * @return array JS files to be excluded.
+	 */
+	private function pdfembedder_secure_scripts() {
+		return [
+			rocket_clean_exclude_file( plugins_url( '/pdfembedder-premium-secure/js/pdfjs/(.*).js' ) ),
+			rocket_clean_exclude_file( plugins_url( '/pdfembedder-premium-secure/js/(.*).js' ) ),
+		];
 	}
 }
