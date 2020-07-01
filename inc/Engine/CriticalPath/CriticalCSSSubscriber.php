@@ -510,7 +510,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 			return;
 		}
 
-		if ( ! $this->critical_css->get_current_page_critical_css() ) {
+		if ( empty( $this->critical_css->get_current_page_critical_css() ) && empty( $this->options->get( 'critical_css', '' ) ) ) {
 			return;
 		}
 
