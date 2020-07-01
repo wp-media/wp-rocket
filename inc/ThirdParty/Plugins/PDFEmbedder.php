@@ -34,25 +34,25 @@ class PDFEmbedder implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function exclude_pdfembedder_scripts( $excluded_js ) {
-		if ( class_exists( 'core_pdf_embedder' ) ) {
+		if ( class_exists( 'pdfemb_basic_pdf_embedder' ) ) {
 			// Exclude Free version.
-			$excluded_js = array_merge(
+			return array_merge(
 				$excluded_js,
 				$this->pdfembedder_free_scripts()
 			);
 		}
 
-		if ( class_exists( 'pdfemb_premium_pdf_embedder' ) ) {
+		if ( class_exists( 'pdfemb_premium_mobile_pdf_embedder' ) ) {
 			// Excludes PDFEmbedder-premium.
-			$excluded_js = array_merge(
+			return array_merge(
 				$excluded_js,
 				$this->pdfembedder_premium_scripts()
 			);
 		}
 
-		if ( class_exists( 'pdfemb_commerical_pdf_embedder' ) ) {
+		if ( class_exists( 'pdfemb_premium_secure_pdf_embedder' ) ) {
 			// Excludes PDFEmbedder-premium-secure.
-			$excluded_js = array_merge(
+			return array_merge(
 				$excluded_js,
 				$this->pdfembedder_secure_scripts()
 			);
@@ -80,8 +80,8 @@ class PDFEmbedder implements Subscriber_Interface {
 	 */
 	private function pdfembedder_premium_scripts() {
 		return [
-			rocket_clean_exclude_file( plugins_url( 'pdfembedder-premium/js/pdfjs/(.*).js' ) ),
-			rocket_clean_exclude_file( plugins_url( 'pdfembedder-premium/js/(.*).js' ) ),
+			rocket_clean_exclude_file( plugins_url( '/PDFEmbedder-premium/js/pdfjs/(.*).js' ) ),
+			rocket_clean_exclude_file( plugins_url( '/PDFEmbedder-premium/js/(.*).js' ) ),
 		];
 	}
 
@@ -92,8 +92,8 @@ class PDFEmbedder implements Subscriber_Interface {
 	 */
 	private function pdfembedder_secure_scripts() {
 		return [
-			rocket_clean_exclude_file( plugins_url( '/pdfembedder-premium-secure/js/pdfjs/(.*).js' ) ),
-			rocket_clean_exclude_file( plugins_url( '/pdfembedder-premium-secure/js/(.*).js' ) ),
+			rocket_clean_exclude_file( plugins_url( '/PDFEmbedder-premium-secure/js/pdfjs/(.*).js' ) ),
+			rocket_clean_exclude_file( plugins_url( '/PDFEmbedder-premium-secure/js/(.*).js' ) ),
 		];
 	}
 }

@@ -76,6 +76,20 @@ tests_add_filter(
 			$_SERVER['cw_allowed_ip'] = true;
 		}
 
+		if ( BootstrapManager::isGroup( 'PDFEmbedder' ) ) {
+			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/pdf-embedder/pdf_embedder.php';
+		}
+
+		if ( BootstrapManager::isGroup( 'PDFEmbedderPremium' ) ) {
+			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/pdf-embedder/core/core_pdf_embedder.php';
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/PDFEmbedder/mobile_pdf_embedder.php';
+		}
+
+		if ( BootstrapManager::isGroup( 'PDFEmbedderSecure' ) ) {
+			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/pdf-embedder/core/core_pdf_embedder.php';
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/PDFEmbedder/secure_pdf_embedder.php';
+		}
+
 		// Overload the license key for testing.
 		redefine( 'rocket_valid_key', '__return_true' );
 
