@@ -3,7 +3,6 @@
 namespace WP_Rocket\Engine\CriticalPath;
 
 use DOMElement;
-use WP_Rocket\Engine\DOM\Attribute;
 
 class AsyncCSS extends DOM {
 
@@ -37,22 +36,33 @@ class AsyncCSS extends DOM {
 	public function modify_html( $html ) {
 		$css_links = $this->dom->query( '//link[@type="text/css"]' );
 
-		if ( empty( $css_links ) ) {
+		if ( empty( $css_links ) || $css_links->length === 0 ) {
 			$this->dom = null;
 
 			return $html;
 		}
 
 		$this->get_css_to_exclude();
-		array_walk( $css_links, [ $this, 'modify_css' ] );
+		foreach( $css_links as $css ) {
+			$this->modify_css( $css );
+		}
 
 		$html = $this->dom->get_html();
 
 		// Reset.
-		$this->css_urls_to_exclude = [];
-		$this->dom                 = null;
+		$this->reset();
 
 		return $html;
+	}
+
+	/**
+	 * Resets state.
+	 *
+	 * @since 3.6.2
+	 */
+	protected function reset() {
+		parent::reset();
+		$this->css_urls_to_exclude = [];
 	}
 
 	/**
@@ -90,7 +100,10 @@ class AsyncCSS extends DOM {
 	 * @since 3.6.2
 	 */
 	protected function get_css_to_exclude() {
-		$this->css_urls_to_exclude = array_flip( $this->critical_css->get_exclude_async_css() );
+		$this->css_urls_to_exclude = $this->critical_css->get_exclude_async_css();
+		if ( ! empty( $this->css_urls_to_exclude ) ) {
+			$this->css_urls_to_exclude = array_flip( $this->css_urls_to_exclude );
+		}
 	}
 
 	/**
@@ -103,6 +116,7 @@ class AsyncCSS extends DOM {
 	 * @return bool
 	 */
 	protected function exclude_css_node( $node ) {
+		return false;
 		if ( empty( $this->css_urls_to_exclude ) ) {
 			return false;
 		}
@@ -122,13 +136,13 @@ class AsyncCSS extends DOM {
 			return;
 		}
 
-		$this->set_noscript( $css );
-
-		$css->setAttribute( 'as', 'style' );
+		$this->set_noscript( $css->cloneNode() );
 
 		$css->setAttribute( 'rel', 'preload' );
 
-		$css->setAttribute( 'onload', $this->build_onload( $css ) );
+		$css->setAttribute( 'as', 'style' );
+
+		$this->build_onload( $css );
 
 		$css->setAttribute( 'media', 'print' );
 	}

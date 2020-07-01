@@ -30,6 +30,13 @@ class DOM {
 	protected $dom;
 
 	/**
+	 * <noscript> element.
+	 *
+	 * @var DOMElement
+	 */
+	protected $noscript;
+
+	/**
 	 * Creates an instance of the DOM Handler.
 	 *
 	 * @param CriticalCSS  $critical_css Critical CSS instance.
@@ -54,11 +61,23 @@ class DOM {
 	public static function from_html( CriticalCSS $critical_css, Options_Data $options, $html ) {
 		$instance = new static( $critical_css, $options );
 
-		if ( $instance->okay_to_create_dom() ) {
-			$instance->dom = HTMLDocument::from_html( $html );
+		if ( ! $instance->okay_to_create_dom() ) {
+			return null;
 		}
 
+		$instance->dom = HTMLDocument::from_html( $html );
+
 		return $instance;
+	}
+
+	/**
+	 * Resets state.
+	 *
+	 * @since 3.6.2
+	 */
+	protected function reset() {
+		$this->dom      = null;
+		$this->noscript = null;
 	}
 
 	/**
@@ -122,9 +141,17 @@ class DOM {
 	 * @param DOMElement $element The element to append within <noscript>.
 	 */
 	protected function set_noscript( $element ) {
-		$noscript = $this->dom->createElement( 'noscript' );
-		$noscript->appendChild( $element );
-		$this->dom->get_body()->appendChild( $noscript );
+		$need_to_create = is_null( $this->noscript );
+
+		if ( $need_to_create ) {
+			$this->noscript = $this->dom->createElement( 'noscript' );
+		}
+
+		$this->noscript->appendChild( $element );
+
+		if ( $need_to_create ) {
+			$this->dom->get_body()->appendChild( $this->noscript );
+		}
 	}
 
 	/**
