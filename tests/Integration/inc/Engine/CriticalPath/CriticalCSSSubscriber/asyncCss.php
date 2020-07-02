@@ -12,21 +12,14 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group  Subscribers
  * @group  CriticalPath
  * @group  AsyncCSS
- * @group  abcd
  */
 class Test_AsyncCss extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSSSubscriber/asyncCss.php';
 
 	protected $test_config = [];
-	protected $buffer_callbacks;
 
 	public function setUp() {
 		parent::setUp();
-
-//		// Remove all of the "buffer" callbacks.
-//		global $wp_filter;
-//		$this->buffer_callbacks = $wp_filter['buffer_callbacks'];
-//		remove_all_filters( 'buffer' );
 
 		set_current_screen( 'front' );
 	}
@@ -52,9 +45,6 @@ class Test_AsyncCss extends FilesystemTestCase {
 
 		// Run it.
 		$actual = apply_filters( 'rocket_buffer', $html );
-
-//		print_r ( $actual );
-//		exit;
 
 		$this->assertEquals(
 			$this->format_the_html( $expected ),

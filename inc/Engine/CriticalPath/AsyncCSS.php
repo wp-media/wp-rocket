@@ -42,7 +42,7 @@ class AsyncCSS extends DOM {
 			return $html;
 		}
 
-		foreach( $css_links as $css ) {
+		foreach ( $css_links as $css ) {
 			$this->modify_css( $css );
 		}
 
@@ -123,7 +123,7 @@ class AsyncCSS extends DOM {
 		}
 
 		$query = [];
-		foreach( $hrefs as $href ) {
+		foreach ( $hrefs as $href ) {
 			$query[] = sprintf( 'contains(@href, "%s")', $href );
 		}
 

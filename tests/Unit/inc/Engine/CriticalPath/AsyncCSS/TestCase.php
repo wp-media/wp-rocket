@@ -56,6 +56,7 @@ abstract class TestCase extends BaseTestCase {
 
 		if ( isset( $config['use_default'] ) && $config['use_default'] ) {
 			unset( $config['use_default'] );
+
 			return array_merge_recursive(
 				$this->default_config,
 				$config

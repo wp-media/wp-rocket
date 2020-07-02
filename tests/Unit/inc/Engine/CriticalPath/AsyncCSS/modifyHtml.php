@@ -17,7 +17,6 @@ use WP_Rocket\Engine\CriticalPath\AsyncCSS;
  * @group  CriticalPath
  * @group  AsyncCSS
  * @group  DOM
- * @group  abc
  */
 class Test_ModifyHtml extends TestCase {
 
