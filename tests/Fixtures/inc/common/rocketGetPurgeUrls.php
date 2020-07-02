@@ -7,7 +7,10 @@ return [
 		'wp-content' => [
 			'cache' => [
 				'wp-rocket' => [
-					'test_purge.html' => ''
+					'test_purge.html' => '',
+					'folder_1' => [
+						'test_purge.html' => ''
+					]
 				]
 			]
 		]
@@ -153,7 +156,7 @@ return [
 					'page_for_posts' => 20,
 					'home' => 'http://www.example.org/',
 					'cache_purge_pages' => [
-						'test_purge'
+						'(.*)test_purge'
 					]
 				],
 
@@ -171,7 +174,6 @@ return [
 				'http://www.example.org/test',
 				'http://www.example.org/blog',
 				'http://www.example.org/next_post',
-				'http://www.example.org/test_purge',
 				'http://www.example.org/author/author_name',
 				'http://www.example.org/test_parent',
 				'http://www.example.org/test_parent_2'

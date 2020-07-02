@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Tests\Unit\inc\common;
 
-use WP_Rocket\Tests\Unit\TestCase;
+use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use Brain\Monkey\Functions;
 
 /**
@@ -11,15 +11,14 @@ use Brain\Monkey\Functions;
  * @group  Common
  * @group  Purge
  */
-class Test_RocketGetPurgeUrls extends TestCase {
+class Test_RocketGetPurgeUrls extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/common/rocketGetPurgeUrls.php';
-	protected static $mockCommonWpFunctionsInSetUp = true;
 
 	private $site_options = [
 		'stylesheet' => '',
 	];
 
-	protected function setUp() {
+	public function setUp() {
 		parent::setUp();
 
 		Functions\expect( 'get_option' )->withAnyArgs()->andReturnUsing( function( $option_name, $default=null ) {
@@ -40,7 +39,7 @@ class Test_RocketGetPurgeUrls extends TestCase {
 	}
 
 	/**
-	 * @dataProvider configTestData
+	 * @dataProvider providerTestData
 	 */
 	public function testShouldReturnUrls( $config, $expected ) {
 		$post_id = isset( $config['post_data']['ID'] ) ? $config['post_data']['ID'] : 0;
