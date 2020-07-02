@@ -23,6 +23,8 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  */
 class Test_ModifyHtml extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/AsyncCSS/modifyHtml.php';
+
+	protected static $container;
 	protected static $use_settings_trait = true;
 
 	protected $critical_css;
