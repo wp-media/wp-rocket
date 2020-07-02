@@ -464,6 +464,7 @@ class CriticalCSS {
 		];
 
 		if ( is_home() && 'page' === get_option( 'show_on_front' ) ) {
+//			echo "\n is_home() \n";
 			return [
 				'default' => 'home.css',
 				'mobile'  => 'home-mobile.css',
@@ -471,6 +472,7 @@ class CriticalCSS {
 		}
 
 		if ( is_front_page() ) {
+//			echo "\n is_front_page() \n";
 			return $default;
 		}
 

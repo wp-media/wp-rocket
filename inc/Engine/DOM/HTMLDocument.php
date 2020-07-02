@@ -63,7 +63,7 @@ class HTMLDocument extends DOMDocument {
 		if ( ! empty( $encoding ) ) {
 			$encoding = (string) $encoding;
 		} elseif ( function_exists( 'bloginfo' ) ) {
-			$encoding = bloginfo( 'charset' );
+			$encoding = get_bloginfo( 'charset' );
 		} else {
 			$encoding = self::ENCODING;
 		}

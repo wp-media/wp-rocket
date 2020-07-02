@@ -12,55 +12,77 @@ HTML;
 
 return [
 
-	'shouldBailOutWhenAsyncCSSNotEnabled' => [
-		'html'     => $base_html,
-		'expected' => null,
-		'config'   => [
-			'options' => [ 'async_css' => 0 ],
-		],
-	],
+	'vfs_dir' => 'wp-content/cache/critical-css/',
 
-	'shouldBailOutWhenCriticalCssReturnsNoCurrentPageCriticalCss' => [
-		'html'     => $base_html,
-		'expected' => null,
-		'config'   => [
-			'options'      => [
-				'async_css'    => 1,
-				'critical_css' => '',
+	// Virtual filesystem structure.
+	'structure' => [
+		'wp-content' => [
+			'cache' => [
+				'critical-css' => [
+					'1' => [
+						'.'              => '',
+						'..'             => '',
+						'home.css'                => '.home { color: red; }',
+						'home-mobile.css'         => '.home { color: blue; }',
+						'front_page.css'          => '.front_page { color: red; }',
+						'front_page-mobile.css'   => '.front_page { color: blue; }',
+					],
+				],
 			],
-			'critical_css' => [ 'get_current_page_critical_css' => '' ],
 		],
 	],
 
-	'shouldBailOutWhenNoCriticalCssOption' => [
-		'html'     => $base_html,
-		'expected' => null,
-		'config'   => [
-			'options'      => [
-				'async_css'    => 1,
-				'critical_css' => '',
+	'test_data' => [
+
+		'shouldBailOutWhenAsyncCSSNotEnabled' => [
+			'html'     => $base_html,
+			'expected' => null,
+			'config'   => [
+				'options' => [ 'async_css' => 0 ],
 			],
-			'critical_css' => [ 'get_current_page_critical_css' => '' ],
 		],
-	],
 
-	'shouldBailOutWhenPostExcludesAsyncCss' => [
-		'html'     => $base_html,
-		'expected' => null,
-		'config'   => [
-			'options'      => [ 'async_css' => 1 ],
-			'critical_css' => [ 'get_current_page_critical_css' => 'something' ],
-			'functions'    => [ 'is_rocket_post_excluded_option' => true ],
+		'shouldBailOutWhenCriticalCssReturnsNoCurrentPageCriticalCss' => [
+			'html'     => $base_html,
+			'expected' => null,
+			'config'   => [
+				'options'      => [
+					'async_css'    => 1,
+					'critical_css' => '',
+				],
+				'critical_css' => [ 'get_current_page_critical_css' => '' ],
+			],
 		],
-	],
 
-	'shouldBailOutAndReturnOriginalHTMLWhenNoCssLinksInHTML' => [
-		'html'     => $base_html,
-		'expected' => $base_html,
-	],
+		'shouldBailOutWhenNoCriticalCssOption' => [
+			'html'     => $base_html,
+			'expected' => null,
+			'config'   => [
+				'options'      => [
+					'async_css'    => 1,
+					'critical_css' => '',
+				],
+				'critical_css' => [ 'get_current_page_critical_css' => '' ],
+			],
+		],
 
-	'shouldSetDefaultsWhenNoOnload' => [
-		'html'     => <<<HTML
+		'shouldBailOutWhenPostExcludesAsyncCss' => [
+			'html'     => $base_html,
+			'expected' => null,
+			'config'   => [
+				'options'      => [ 'async_css' => 1 ],
+				'critical_css' => [ 'get_current_page_critical_css' => 'something' ],
+				'functions'    => [ 'is_rocket_post_excluded_option' => true ],
+			],
+		],
+
+		'shouldBailOutAndReturnOriginalHTMLWhenNoCssLinksInHTML' => [
+			'html'     => $base_html,
+			'expected' => $base_html,
+		],
+
+		'shouldSetDefaultsWhenNoOnload' => [
+			'html'     => <<<HTML
 <!doctype html>
 <html lang="en-US">
 <head>
@@ -70,8 +92,8 @@ return [
 <body>Content here</body>
 </html>
 HTML
-		,
-		'expected' => <<<HTML
+			,
+			'expected' => <<<HTML
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
@@ -85,11 +107,11 @@ HTML
 </body>
 </html>
 HTML
-		,
-	],
+			,
+		],
 
-	'shouldIncludeOriginalMedia' => [
-		'html'     => <<<HTML
+		'shouldIncludeOriginalMedia' => [
+			'html'     => <<<HTML
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
@@ -99,8 +121,8 @@ HTML
 <body>Content here</body>
 </html>
 HTML
-		,
-		'expected' => <<<HTML
+			,
+			'expected' => <<<HTML
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
@@ -114,11 +136,11 @@ HTML
 </body>
 </html>
 HTML
-		,
-	],
+			,
+		],
 
-	'shouldUseDefaultMediaWhenOriginalIsPrint' => [
-		'html'     => <<<HTML
+		'shouldUseDefaultMediaWhenOriginalIsPrint' => [
+			'html'     => <<<HTML
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
@@ -128,8 +150,8 @@ HTML
 <body>Content here</body>
 </html>
 HTML
-		,
-		'expected' => <<<HTML
+			,
+			'expected' => <<<HTML
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
@@ -143,11 +165,11 @@ HTML
 </body>
 </html>
 HTML
-		,
-	],
+			,
+		],
 
-	'shouldHandleWhitespaceAndEndingSemicolon' => [
-		'html'     => <<<HTML
+		'shouldHandleWhitespaceAndEndingSemicolon' => [
+			'html'     => <<<HTML
 <!doctype html>
 <html lang="en-US">
 <head>
@@ -158,8 +180,8 @@ HTML
 <body>Content here</body>
 </html>
 HTML
-		,
-		'expected' => <<<HTML
+			,
+			'expected' => <<<HTML
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
@@ -175,11 +197,11 @@ HTML
 </body>
 </html>
 HTML
-		,
-	],
+			,
+		],
 
-	'shouldRetainFunctions' => [
-		'html'     => <<<HTML
+		'shouldRetainFunctions' => [
+			'html'     => <<<HTML
 <!doctype html>
 <html lang="en-US">
 <head>
@@ -198,8 +220,8 @@ HTML
 </body>
 </html>
 HTML
-		,
-		'expected' => <<<HTML
+			,
+			'expected' => <<<HTML
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
@@ -224,11 +246,11 @@ HTML
 </body>
 </html>
 HTML
-		,
-	],
+			,
+		],
 
-	'shouldGetAllLinksInHeadAndBody' => [
-		'html'     => <<<HTML
+		'shouldGetAllLinksInHeadAndBody' => [
+			'html'     => <<<HTML
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
@@ -246,8 +268,8 @@ HTML
 </body>
 </html>
 HTML
-		,
-		'expected' => <<<HTML
+			,
+			'expected' => <<<HTML
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
@@ -272,13 +294,13 @@ HTML
 </body>
 </html>
 HTML
-		,
-	],
+			,
+		],
 
-	// Malformed HTML
+		// Malformed HTML
 
-	'shouldSetDefaultsWhenNoOnload_whenHTMLIsMalformed' => [
-		'html'     => <<<HTML
+		'shouldSetDefaultsWhenNoOnload_whenHTMLIsMalformed' => [
+			'html'     => <<<HTML
 <!doctype html>
 <html lang="en-US">
 <head>
@@ -288,8 +310,8 @@ HTML
 <body>Content here
 </html>
 HTML
-		,
-		'expected' => <<<HTML
+			,
+			'expected' => <<<HTML
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
@@ -303,11 +325,11 @@ HTML
 </body>
 </html>
 HTML
-		,
-	],
+			,
+		],
 
-	'shouldIncludeOriginalMedia_whenHTMLIsMalformed' => [
-		'html'     => <<<HTML
+		'shouldIncludeOriginalMedia_whenHTMLIsMalformed' => [
+			'html'     => <<<HTML
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
@@ -320,8 +342,8 @@ HTML
 		<p>Nested<p>Paragrah</p></p>
 </body>
 HTML
-		,
-		'expected' => <<<HTML
+			,
+			'expected' => <<<HTML
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
@@ -340,12 +362,13 @@ HTML
 </body>
 </html>
 HTML
-		,
-	],
+			,
+		],
 
-	// TODO: Excluded hrefs.
-	'shouldBailOutWhenCSSIsExcluded' => [
-		'html'     => <<<HTML
+		// Exclude CSS URLs.
+
+		'shouldBailOutWhenCSSIsExcluded'                 => [
+			'html'     => <<<HTML
 <!doctype html>
 <html lang="en-US">
 <head>
@@ -360,8 +383,8 @@ HTML
 </body>
 </html>
 HTML
-		,
-		'expected' => <<<HTML
+			,
+			'expected' => <<<HTML
 <!doctype html>
 <html lang="en-US">
 <head>
@@ -376,19 +399,19 @@ HTML
 </body>
 </html>
 HTML
-		,
-		'config' => [
-			'use_default' => true,
-			'critical_css' => [
-				'get_exclude_async_css'         => [
-					'https://example.org/file1.css'
+			,
+			'config'   => [
+				'use_default'  => true,
+				'critical_css' => [
+					'get_exclude_async_css' => [
+						'https://example.org/file1.css',
+					],
 				],
 			],
 		],
-	],
 
-	'shouldHandleWhitespaceAndEndingSemicolon' => [
-		'html'     => <<<HTML
+		'shouldHandleWhitespaceAndEndingSemicolon' => [
+			'html'     => <<<HTML
 <!doctype html>
 <html lang="en-US">
 <head>
@@ -404,8 +427,8 @@ HTML
 </body>
 </html>
 HTML
-		,
-		'expected' => <<<HTML
+			,
+			'expected' => <<<HTML
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
@@ -424,19 +447,19 @@ HTML
 </body>
 </html>
 HTML
-		,
-		'config' => [
-			'use_default' => true,
-			'critical_css' => [
-				'get_exclude_async_css'         => [
-					'https://example.org/file2.css'
+			,
+			'config'   => [
+				'use_default'  => true,
+				'critical_css' => [
+					'get_exclude_async_css' => [
+						'https://example.org/file2.css',
+					],
 				],
 			],
 		],
-	],
 
-	'shouldGetAllLinksInHeadAndBody_butExclude' => [
-		'html'     => <<<HTML
+		'shouldGetAllLinksInHeadAndBody_butExclude' => [
+			'html'     => <<<HTML
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
@@ -454,8 +477,8 @@ HTML
 </body>
 </html>
 HTML
-		,
-		'expected' => <<<HTML
+			,
+			'expected' => <<<HTML
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
@@ -478,13 +501,14 @@ HTML
 </body>
 </html>
 HTML
-		,
-		'config' => [
-			'use_default' => true,
-			'critical_css' => [
-				'get_exclude_async_css'         => [
-					'https://example.org/file2.css',
-					'https://example.org/file4.css'
+			,
+			'config'   => [
+				'use_default'  => true,
+				'critical_css' => [
+					'get_exclude_async_css' => [
+						'https://example.org/file2.css',
+						'https://example.org/file4.css',
+					],
 				],
 			],
 		],

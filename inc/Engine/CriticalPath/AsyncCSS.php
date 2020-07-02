@@ -27,7 +27,7 @@ class AsyncCSS extends DOM {
 	/**
 	 * Modifies the given HTML for async CSS, i.e. defer loading of CSS files.
 	 *
-	 * @since  2.10
+	 * @since  3.6.2
 	 *
 	 * @param string $html HTML code.
 	 *

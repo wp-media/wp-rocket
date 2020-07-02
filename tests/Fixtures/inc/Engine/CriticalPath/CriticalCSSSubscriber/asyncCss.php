@@ -1,6 +1,3 @@
 <?php
 
-return [
-	'vfs_dir'        => 'wp-content/cache/critical-css/',
-	'test_data'      => require '../AsyncCSS/modifyHtml.php',
-];
+return require __DIR__ . '/../AsyncCSS/modifyHtml.php';

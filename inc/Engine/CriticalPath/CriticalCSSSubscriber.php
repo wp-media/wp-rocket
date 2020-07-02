@@ -575,7 +575,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	/**
 	 * Defer loading of CSS files.
 	 *
-	 * @since  3.6.2 Uses the DOM object.
+	 * @since  3.6.2 Uses the AsyncCSS.
 	 * @since  2.10
 	 *
 	 * @param string $html HTML code.
@@ -583,7 +583,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	 * @return string Updated HTML code
 	 */
 	public function async_css( $html ) {
-		$async_css = AsyncCSS::from_html( $html );
+		$async_css = AsyncCSS::from_html( $this->critical_css, $this->options, $html );
 		return $async_css->modify_html( $html );
 	}
 
