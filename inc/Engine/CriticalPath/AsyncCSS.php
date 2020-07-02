@@ -3,6 +3,7 @@
 namespace WP_Rocket\Engine\CriticalPath;
 
 use DOMElement;
+use WP_Rocket\Engine\DOM\Attribute;
 
 class AsyncCSS extends DOM {
 
@@ -43,7 +44,7 @@ class AsyncCSS extends DOM {
 		}
 
 		foreach ( $css_links as $css ) {
-			if ( ! $this->has_href( $css ) ) {
+			if ( ! Attribute::has_href( $css ) ) {
 				continue;
 			}
 			$this->modify_css( $css );
@@ -154,25 +155,6 @@ class AsyncCSS extends DOM {
 	}
 
 	/**
-	 * Checks if the given <link> has a href attribute and that it's not empty.
-	 *
-	 * @since 3.6.2
-	 *
-	 * @param DOMElement $css CSS <link> DOMElement.
-	 *
-	 * @return bool
-	 */
-	private function has_href( $css ) {
-		if ( ! $css->hasAttribute( 'href' ) ) {
-			return false;
-		}
-
-		$href = $css->getAttribute( 'href' );
-
-		return ! empty( trim( $href ) );
-	}
-
-	/**
 	 * Builds the "onload" attribute value(s).
 	 *
 	 * @since 3.6.2
@@ -184,7 +166,7 @@ class AsyncCSS extends DOM {
 			? $this->get_onload_values( $css )
 			: $this->merge_default_onload_values( $css );
 
-		$values = $this->array_to_string( $values, ';', '=' );
+		$values = Attribute::array_to_string( $values, ';', '=' );
 
 		$css->setAttribute( 'onload', $values );
 	}
@@ -209,7 +191,7 @@ class AsyncCSS extends DOM {
 				$value = $this->get_onload_media( $value, $css, true );
 			}
 
-			$values[ $key ] = $this->prepare_for_value_embed( $value );
+			$values[ $key ] = Attribute::prepare_for_embed( $value );
 		}
 
 		return $values;
@@ -235,8 +217,8 @@ class AsyncCSS extends DOM {
 				continue;
 			}
 
-			if ( ! $this->string_contains( $value, '=' ) ) {
-				$values[] = $this->replace_double_quotes( $value );
+			if ( ! Attribute::contains( $value, '=' ) ) {
+				$values[] = Attribute::replace_double_quotes( $value );
 				continue;
 			}
 
@@ -255,17 +237,17 @@ class AsyncCSS extends DOM {
 					break;
 				case 'this.media':
 				case 'media':
-					$values['this.media'] = $this->prepare_for_value_embed( $this->get_onload_media( $value, $css ) );
+					$values['this.media'] = Attribute::prepare_for_embed( $this->get_onload_media( $value, $css ) );
 					break;
 				case 'this.rel':
 				case 'rel':
-					$values['this.rel'] = $this->prepare_for_value_embed( $this->onload_defaults['this.rel'] );
+					$values['this.rel'] = Attribute::prepare_for_embed( $this->onload_defaults['this.rel'] );
 					break;
 				default:
-					if ( ! $this->string_starts_with( $key, 'this.' ) ) {
+					if ( ! Attribute::starts_with( $key, 'this.' ) ) {
 						$key = "this.{$key}";
 					}
-					$values[ $key ] = $this->prepare_for_value_embed( $value );
+					$values[ $key ] = Attribute::prepare_for_embed( $value );
 			}
 		}
 
@@ -286,7 +268,7 @@ class AsyncCSS extends DOM {
 	 * @return string
 	 */
 	private function get_onload_media( $value, $css, $check_media_attr = false ) {
-		if ( $check_media_attr || ( empty( $value ) && ! $this->is_null( $value ) ) ) {
+		if ( $check_media_attr || ( empty( $value ) && ! Attribute::is_null( $value ) ) ) {
 
 			if ( ! $css->hasAttribute( 'media' ) ) {
 				return $this->onload_defaults['this.media'];
