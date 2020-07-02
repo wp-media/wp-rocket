@@ -43,6 +43,9 @@ class AsyncCSS extends DOM {
 		}
 
 		foreach ( $css_links as $css ) {
+			if ( ! $this->has_href( $css ) ) {
+				continue;
+			}
 			$this->modify_css( $css );
 		}
 
@@ -100,13 +103,14 @@ class AsyncCSS extends DOM {
 	 *
 	 * @return string
 	 */
-	protected function get_query() {
+	private function get_query() {
+		$query   = '//link[@rel="stylesheet"';
 		$exclude = $this->get_css_to_exclude();
-		if ( '' === $exclude ) {
-			return '//link[@type="text/css"]';
+		if ( '' !== $exclude ) {
+			$query .= " and {$exclude}";
 		}
 
-		return '//link[@type="text/css" and ' . $exclude . ']';
+		return $query . ']';
 	}
 
 	/**
@@ -116,7 +120,7 @@ class AsyncCSS extends DOM {
 	 *
 	 * @return string
 	 */
-	protected function get_css_to_exclude() {
+	private function get_css_to_exclude() {
 		$hrefs = $this->critical_css->get_exclude_async_css();
 		if ( empty( $hrefs ) ) {
 			return '';
@@ -137,7 +141,7 @@ class AsyncCSS extends DOM {
 	 *
 	 * @param DOMElement $css CSS <link> DOMElement.
 	 */
-	protected function modify_css( $css ) {
+	private function modify_css( $css ) {
 		$this->set_noscript( $css->cloneNode() );
 
 		$css->setAttribute( 'rel', 'preload' );
@@ -150,13 +154,32 @@ class AsyncCSS extends DOM {
 	}
 
 	/**
+	 * Checks if the given <link> has a href attribute and that it's not empty.
+	 *
+	 * @since 3.6.2
+	 *
+	 * @param DOMElement $css CSS <link> DOMElement.
+	 *
+	 * @return bool
+	 */
+	private function has_href( $css ) {
+		if ( ! $css->hasAttribute( 'href' ) ) {
+			return false;
+		}
+
+		$href = $css->getAttribute( 'href' );
+
+		return ! empty( trim( $href ) );
+	}
+
+	/**
 	 * Builds the "onload" attribute value(s).
 	 *
 	 * @since 3.6.2
 	 *
 	 * @param DOMElement $css CSS <link> DOMElement.
 	 */
-	protected function build_onload( $css ) {
+	private function build_onload( $css ) {
 		$values = $css->hasAttribute( 'onload' )
 			? $this->get_onload_values( $css )
 			: $this->merge_default_onload_values( $css );
@@ -201,7 +224,7 @@ class AsyncCSS extends DOM {
 	 *
 	 * @return array
 	 */
-	protected function get_onload_values( $css ) {
+	private function get_onload_values( $css ) {
 		$values     = [];
 		$raw_values = explode( ';', $css->getAttribute( 'onload' ) );
 

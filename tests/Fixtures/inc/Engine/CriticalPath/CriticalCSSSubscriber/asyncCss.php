@@ -285,13 +285,13 @@ HTML
 <html lang="en-US">
 <head>
 	<meta charset="UTF-8">
-	<link rel="preload" type="text/css" href="https://example.org/file1.css" media="screen" onload="this.rel='stylesheet'">
-	<link rel="preload" type="text/css" href="https://example.org/file2.css" media="screen and (max-width: 600px)" onload="this.rel='stylesheet'">
-	<link rel="preload" type="text/css" href="https://example.org/file3.css" media="print">
+	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="screen" onload="this.rel='stylesheet'">
+	<link rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="screen and (max-width: 600px)" onload="this.rel='stylesheet'">
+	<link rel="stylesheet" type="text/css" href="https://example.org/file3.css" media="print">
 <body>
 	<div>
 		<!-- single quotes -->
-		<link rel='preload' type='text/css' href='https://example.org/file4.css' media='screen and (max-width: 800px)' onload='this.rel="stylesheet"'>
+		<link rel='stylesheet' type='text/css' href='https://example.org/file4.css' media='screen and (max-width: 800px)' onload='this.rel="stylesheet"'>
 		<h1>Testing</h1>
 		<p>Hello World</p>
 	</div>
@@ -317,10 +317,10 @@ HTML
 	</div>
 	<script>const wprRemoveCPCSS = () => { \$elem = document.getElementById( "rocket-critical-css" ); if ( \$elem ) { \$elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>
 	<noscript>
-		<link rel="preload" type="text/css" href="https://example.org/file1.css" media="screen" onload="this.rel='stylesheet'">
-		<link rel="preload" type="text/css" href="https://example.org/file2.css" media="screen and (max-width: 600px)" onload="this.rel='stylesheet'">
-		<link rel="preload" type="text/css" href="https://example.org/file3.css" media="print">
-		<link rel="preload" type="text/css" href="https://example.org/file4.css" media="screen and (max-width: 800px)" onload='this.rel="stylesheet"'>
+		<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="screen" onload="this.rel='stylesheet'">
+		<link rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="screen and (max-width: 600px)" onload="this.rel='stylesheet'">
+		<link rel="stylesheet" type="text/css" href="https://example.org/file3.css" media="print">
+		<link rel="stylesheet" type="text/css" href="https://example.org/file4.css" media="screen and (max-width: 800px)" onload='this.rel="stylesheet"'>
 	</noscript>
 </body>
 </html>
@@ -498,13 +498,14 @@ HTML
 <html lang="en-US">
 <head>
 	<meta charset="UTF-8">
-	<link rel="preload" type="text/css" href="https://example.org/file1.css" media="screen" onload="this.rel='stylesheet'">
-	<link rel="preload" type="text/css" href="https://example.org/file2.css" media="screen and (max-width: 600px)" onload="this.rel='stylesheet'">
-	<link rel="preload" type="text/css" href="https://example.org/file3.css" media="print">
+	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="screen" onload="this.rel='stylesheet'">
+	<link rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="screen and (max-width: 600px)">
+	<link rel="stylesheet" type="text/css" href="https://example.org/file3.css" media="print">
+
 <body>
 	<div>
 		<!-- single quotes -->
-		<link rel='preload' type='text/css' href='https://example.org/file4.css' media='screen and (max-width: 800px)' onload='this.rel="stylesheet"'>
+		<link rel='stylesheet' type='text/css' href='https://example.org/file4.css' media='screen and (max-width: 800px)'>
 		<h1>Testing</h1>
 		<p>Hello World</p>
 	</div>
@@ -518,20 +519,20 @@ HTML
 <head>
 	<meta charset="UTF-8">
 	<link rel="preload" type="text/css" href="https://example.org/file1.css" media="print" onload="this.rel='stylesheet';this.onload=null;this.media='screen'" as="style">
-	<link rel="preload" type="text/css" href="https://example.org/file2.css" media="screen and (max-width: 600px)" onload="this.rel='stylesheet'">
+	<link rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="screen and (max-width: 600px)">
 	<link rel="preload" type="text/css" href="https://example.org/file3.css" media="print" as="style" onload="this.onload=null;this.media='all';this.rel='stylesheet'">
 </head>
 <body>
 	<div>
 		<!-- single quotes -->
-		<link rel="preload" type="text/css" href="https://example.org/file4.css" media="screen and (max-width: 800px)" onload='this.rel="stylesheet"'>
+		<link rel="stylesheet" type="text/css" href="https://example.org/file4.css" media="screen and (max-width: 800px)">
 		<h1>Testing</h1>
 		<p>Hello World</p>
 	</div>
 	<script>const wprRemoveCPCSS = () => { \$elem = document.getElementById( "rocket-critical-css" ); if ( \$elem ) { \$elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>
 	<noscript>
-		<link rel="preload" type="text/css" href="https://example.org/file1.css" media="screen" onload="this.rel='stylesheet'">
-		<link rel="preload" type="text/css" href="https://example.org/file3.css" media="print">
+		<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="screen" onload="this.rel='stylesheet'">
+		<link rel="stylesheet" type="text/css" href="https://example.org/file3.css" media="print">
 	</noscript>
 </body>
 </html>
@@ -546,6 +547,148 @@ HTML
 					],
 				],
 			],
+		],
+
+		// Get only <link> with rel="stylesheet".
+
+		'shouldGetOnlyLinksWithRelStylesheet' => [
+			'html'     => <<<HTML
+<!doctype html>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<link rel="preload" type="text/css" href="https://example.org/file1.css" media="screen" onload="this.rel='stylesheet'">
+	<link rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="screen and (max-width: 600px)">
+	<link rel="stylesheet" type="text/css" href="https://example.org/file3.css" media="print">
+</head>
+<body>
+	<div>
+		<!-- single quotes -->
+		<link rel='preload' type='text/css' href='https://example.org/file4.css' media='screen and (max-width: 800px)'>
+		<link rel='stylesheet' type='text/css' href='https://example.org/file5.css' media='all' onload="console.log('I am one.');">
+		<h1>Testing</h1>
+		<p>Testing excluding CSS links.</p>
+	</div>
+</body>
+</html>
+HTML
+			,
+			'expected' => <<<HTML
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<link rel="preload" type="text/css" href="https://example.org/file1.css" media="screen" onload="this.rel='stylesheet'">
+	<link rel="preload" type="text/css" href="https://example.org/file2.css" media="print" as="style" onload="this.onload=null;this.media='screen and (max-width: 600px)';this.rel='stylesheet'">
+	<link rel="preload" type="text/css" href="https://example.org/file3.css" media="print" as="style" onload="this.onload=null;this.media='all';this.rel='stylesheet'">
+</head>
+<body>
+	<div>
+		<!-- single quotes -->
+		<link rel="preload" type="text/css" href="https://example.org/file4.css" media="screen and (max-width: 800px)">
+		<link rel="preload" type="text/css" href="https://example.org/file5.css" media="print" onload="console.log('I am one.');this.onload=null;this.media='all';this.rel='stylesheet'" as="style">
+		<h1>Testing</h1>
+		<p>Testing excluding CSS links.</p>
+	</div>
+	<script>const wprRemoveCPCSS = () => { \$elem = document.getElementById( "rocket-critical-css" ); if ( \$elem ) { \$elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>
+	<noscript>
+		<link rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="screen and (max-width: 600px)">
+		<link rel="stylesheet" type="text/css" href="https://example.org/file3.css" media="print">
+		<link rel="stylesheet" type="text/css" href="https://example.org/file5.css" media="all" onload="console.log('I am one.');">
+	</noscript>
+</body>
+</html>
+HTML
+			,
+		],
+
+		'shouldBailOutWhenCSSIsExcludedAndNoOtherLinksWithRelStylesheet' => [
+			'html'     => <<<HTML
+<!doctype html>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="all">
+	<link rel="preload" type="text/css" href="https://example.org/file2.css" media="all">
+</head>
+<body>
+	<div>
+		<h1>Testing</h1>
+		<p>Testing excluding CSS links.</p>
+	</div>
+</body>
+</html>
+HTML
+			,
+			'expected' => <<<HTML
+<!doctype html>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="all">
+	<link rel="preload" type="text/css" href="https://example.org/file2.css" media="all">
+</head>
+<body>
+	<div>
+		<h1>Testing</h1>
+		<p>Testing excluding CSS links.</p>
+	</div>
+	<script>const wprRemoveCPCSS = () => { \$elem = document.getElementById( "rocket-critical-css" ); if ( \$elem ) { \$elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>
+</body>
+</html>
+HTML
+			,
+			'config'   => [
+				'use_default'  => true,
+				'critical_css' => [
+					'get_exclude_async_css' => [
+						'https://example.org/file1.css',
+					],
+				],
+			],
+		],
+
+		// Check for empty href.
+		'shouldNotProcessWhenHrefIsEmpty' => [
+			'html'     => <<<HTML
+<!doctype html>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="" media="all">
+	<link rel="stylesheet" type="text/css" href=" " media="all">
+	<link rel="stylesheet" type="text/css" href='' media="all">
+	<link rel='stylesheet' type="text/css" media="all">
+</head>
+<body>
+	<div>
+		<h1>Testing</h1>
+		<p>Testing when CSS links do not have a href or href is empty.</p>
+	</div>
+</body>
+</html>
+HTML
+			,
+			'expected' => <<<HTML
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="" media="all">
+	<link rel="stylesheet" type="text/css" href="" media="all">
+	<link rel="stylesheet" type="text/css" href="" media="all">
+	<link rel="stylesheet" type="text/css" media="all">
+</head>
+<body>
+	<div>
+		<h1>Testing</h1>
+		<p>Testing when CSS links do not have a href or href is empty.</p>
+	</div>
+	<script>const wprRemoveCPCSS = () => { \$elem = document.getElementById( "rocket-critical-css" ); if ( \$elem ) { \$elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>
+</body>
+</html>
+HTML
+			,
 		],
 	],
 ];
