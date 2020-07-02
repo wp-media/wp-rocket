@@ -3,9 +3,39 @@
 namespace WP_Rocket\Engine\CriticalPath;
 
 use DOMElement;
+use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\DOM\HTMLDocument;
 use WP_Rocket\Engine\DOM\Attribute;
 
-class AsyncCSS extends DOM {
+class AsyncCSS {
+
+	/**
+	 * Instance of Critical CSS.
+	 *
+	 * @var Critical_CSS
+	 */
+	private $critical_css;
+
+	/**
+	 * Instance of options.
+	 *
+	 * @var Options_Data
+	 */
+	private $options;
+
+	/**
+	 * Instance of the DOM.
+	 *
+	 * @var HTMLDocument
+	 */
+	private $dom;
+
+	/**
+	 * <noscript> element.
+	 *
+	 * @var DOMElement
+	 */
+	private $noscript;
 
 	/**
 	 * Array of URLs to exclude.
@@ -19,11 +49,74 @@ class AsyncCSS extends DOM {
 	 *
 	 * @var array
 	 */
-	protected $onload_defaults = [
+	private $onload_defaults = [
 		'this.onload' => 'null',
 		'this.media'  => "'all'",
 		'this.rel'    => "'stylesheet'",
 	];
+
+	/**
+	 * Creates an instance of the DOM Handler.
+	 *
+	 * @param CriticalCSS  $critical_css Critical CSS instance.
+	 * @param Options_Data $options      WP Rocket options.
+	 */
+	public function __construct( CriticalCSS $critical_css, Options_Data $options ) {
+		$this->critical_css = $critical_css;
+		$this->options      = $options;
+	}
+
+	/**
+	 * Named constructor for transforming HTML into DOM.
+	 *
+	 * @since 3.6.2
+	 *
+	 * @param CriticalCSS  $critical_css Critical CSS instance.
+	 * @param Options_Data $options      WP Rocket options.
+	 * @param string       $html         Optional. HTML to transform into HTML DOMDocument object.
+	 *
+	 * @return self Instance of this class.
+	 */
+	public static function from_html( CriticalCSS $critical_css, Options_Data $options, $html ) {
+		$instance = new static( $critical_css, $options );
+
+		if ( ! $instance->okay_to_create_dom() ) {
+			return null;
+		}
+
+		$instance->dom = HTMLDocument::from_html( $html );
+
+		return $instance;
+	}
+
+	/**
+	 * Checks if we should apply deferring of CSS files.
+	 *
+	 * @return bool True if we should, false otherwise.
+	 */
+	private function okay_to_create_dom() {
+		if (
+			rocket_get_constant( 'DONOTROCKETOPTIMIZE' )
+			||
+			rocket_get_constant( 'DONOTASYNCCSS' )
+		) {
+			return false;
+		}
+
+		if ( ! (bool) $this->options->get( 'async_css', 0 ) ) {
+			return false;
+		}
+
+		if (
+			empty( $this->critical_css->get_current_page_critical_css() )
+			&&
+			empty( $this->options->get( 'critical_css', '' ) )
+		) {
+			return false;
+		}
+
+		return ! is_rocket_post_excluded_option( 'async_css' );
+	}
 
 	/**
 	 * Modifies the given HTML for async CSS, i.e. defer loading of CSS files.
@@ -35,10 +128,14 @@ class AsyncCSS extends DOM {
 	 * @return string Updated HTML code.
 	 */
 	public function modify_html( $html ) {
+		if ( is_null( $this->dom ) ) {
+			return $html;
+		}
+
 		$css_links = $this->dom->query( $this->get_query() );
 
 		if ( empty( $css_links ) || 0 === $css_links->length ) {
-			$this->dom = null;
+			$this->reset();
 
 			return $html;
 		}
@@ -63,38 +160,10 @@ class AsyncCSS extends DOM {
 	 *
 	 * @since 3.6.2
 	 */
-	protected function reset() {
-		parent::reset();
+	private function reset() {
+		$this->dom                 = null;
+		$this->noscript            = null;
 		$this->css_urls_to_exclude = [];
-	}
-
-	/**
-	 * Checks if we should apply deferring of CSS files.
-	 *
-	 * @return bool True if we should, false otherwise.
-	 */
-	protected function okay_to_create_dom() {
-		if (
-			rocket_get_constant( 'DONOTROCKETOPTIMIZE' )
-			||
-			rocket_get_constant( 'DONOTASYNCCSS' )
-		) {
-			return false;
-		}
-
-		if ( ! (bool) $this->options->get( 'async_css', 0 ) ) {
-			return false;
-		}
-
-		if (
-			empty( $this->critical_css->get_current_page_critical_css() )
-			&&
-			empty( $this->options->get( 'critical_css', '' ) )
-		) {
-			return false;
-		}
-
-		return ! is_rocket_post_excluded_option( 'async_css' );
 	}
 
 	/**
@@ -282,5 +351,26 @@ class AsyncCSS extends DOM {
 		}
 
 		return $value;
+	}
+
+	/**
+	 * Sets the <noscript>.
+	 *
+	 * @since 3.6.2
+	 *
+	 * @param DOMElement $element The element to append within <noscript>.
+	 */
+	private function set_noscript( $element ) {
+		$need_to_create = is_null( $this->noscript );
+
+		if ( $need_to_create ) {
+			$this->noscript = $this->dom->createElement( 'noscript' );
+		}
+
+		$this->noscript->appendChild( $element );
+
+		if ( $need_to_create ) {
+			$this->dom->get_body()->appendChild( $this->noscript );
+		}
 	}
 }
