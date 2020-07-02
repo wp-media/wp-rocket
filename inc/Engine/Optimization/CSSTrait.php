@@ -1,8 +1,6 @@
 <?php
 
-
 namespace WP_Rocket\Engine\Optimization;
-
 
 trait CSSTrait {
 
