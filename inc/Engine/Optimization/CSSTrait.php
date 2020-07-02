@@ -17,7 +17,7 @@ trait CSSTrait {
 		$css_file_content = (string) $css_file_content;
 
 		$replacement = preg_replace_callback(
-			"/(?:@font-face)\s*{([^}]+)}/",
+			'/(?:@font-face)\s*{([^}]+)}/',
 			function ( $matches ) {
 				$matches[1] = ( false !== strpos( $matches[1], 'font-display' ) )
 					? $matches[1]
@@ -30,6 +30,4 @@ trait CSSTrait {
 
 		return $replacement;
 	}
-
-
 }
