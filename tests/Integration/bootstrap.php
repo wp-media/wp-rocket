@@ -73,9 +73,7 @@ tests_add_filter(
 		}
 
 		if ( BootstrapManager::isGroup( 'Cloudways' ) ) {
-			$_SERVER['cw_allowed_ip']      = true;
-			$_SERVER['HTTP_X_VARNISH']     = 'VARNISH ID';
-			$_SERVER['HTTP_X_APPLICATION'] = 'APPLICATION NAME';
+			$_SERVER['cw_allowed_ip'] = true;
 		}
 
 		// Overload the license key for testing.
