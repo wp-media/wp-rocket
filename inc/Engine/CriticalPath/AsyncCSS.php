@@ -36,7 +36,7 @@ class AsyncCSS extends DOM {
 	public function modify_html( $html ) {
 		$css_links = $this->dom->query( $this->get_query() );
 
-		if ( empty( $css_links ) || $css_links->length === 0 ) {
+		if ( empty( $css_links ) || 0 === $css_links->length ) {
 			$this->dom = null;
 
 			return $html;
@@ -155,8 +155,6 @@ class AsyncCSS extends DOM {
 	 * @since 3.6.2
 	 *
 	 * @param DOMElement $css CSS <link> DOMElement.
-	 *
-	 * @return string "onload" attribute value.
 	 */
 	protected function build_onload( $css ) {
 		$values = $css->hasAttribute( 'onload' )
@@ -173,7 +171,8 @@ class AsyncCSS extends DOM {
 	 *
 	 * @since 3.6.2
 	 *
-	 * @param array $values Optional. Array of values to add default values to. Default: [].
+	 * @param DOMElement $css    CSS <link> DOMElement.
+	 * @param array      $values Optional. Array of values to add default values to. Default: [].
 	 *
 	 * @return array merged array of values.
 	 */

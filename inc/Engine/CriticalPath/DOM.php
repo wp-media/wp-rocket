@@ -204,7 +204,7 @@ class DOM {
 			||
 			'null' === $value
 			||
-			"null" === $value
+			"null" === $value // phpcs:ignore Squiz.Strings.DoubleQuoteUsage.NotRequired -- This is intentional.
 		);
 	}
 

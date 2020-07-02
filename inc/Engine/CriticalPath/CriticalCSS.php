@@ -387,7 +387,7 @@ class CriticalCSS {
 
 		foreach ( $this->items as $item ) {
 			if ( ! isset( $item['mobile'] ) ) {
-				$total++;
+				$total ++;
 				continue;
 			}
 
@@ -395,7 +395,7 @@ class CriticalCSS {
 				continue;
 			}
 
-			$total++;
+			$total ++;
 		}
 
 		$transient = [
@@ -464,7 +464,6 @@ class CriticalCSS {
 		];
 
 		if ( is_home() && 'page' === get_option( 'show_on_front' ) ) {
-//			echo "\n is_home() \n";
 			return [
 				'default' => 'home.css',
 				'mobile'  => 'home-mobile.css',
@@ -472,7 +471,6 @@ class CriticalCSS {
 		}
 
 		if ( is_front_page() ) {
-//			echo "\n is_front_page() \n";
 			return $default;
 		}
 
