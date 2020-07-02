@@ -11,7 +11,7 @@ trait CSSTrait {
 	 *
 	 * @since 3.7
 	 *
-	 * @param $css_file_content CSS file content to modify.
+	 * @param string $css_file_content CSS file content to modify.
 	 *
 	 * @return string Modified CSS content.
 	 */
@@ -29,6 +29,7 @@ trait CSSTrait {
 
 				return $matches;
 			},
-			$css_file_content );
+			$css_file_content
+		);
 	}
 }
