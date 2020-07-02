@@ -2,125 +2,120 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\CriticalCSSSubscriber;
 
-use Brain\Monkey\Functions;
-use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\CriticalPath\CriticalCSS;
-use WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration;
-use WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber;
-use WP_Rocket\Engine\CriticalPath\ProcessorService;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
-use Mockery;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::async_css
+ * @uses   \WP_Rocket\Engine\CriticalPath\AsyncCSS::modify_html
+ * @uses   \WP_Rocket\Engine\CriticalPath\AsyncCSS::from_html
  *
  * @group  Subscribers
  * @group  CriticalPath
  * @group  AsyncCSS
+ * @group  abcd
  */
 class Test_AsyncCss extends FilesystemTestCase {
-
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSSSubscriber/asyncCss.php';
 
-	private $rocket_options = [];
+	protected $test_config = [];
+	protected $buffer_callbacks;
 
-	private $to_be_removed = [
-		'filters' => [
-
-		]
-	];
-
-	private $exclude_css_files = [];
-
-	private $options;
-	private $subscriber;
-	private $critical_css;
-	private $processor_service;
-
-	public function setUp()
-	{
+	public function setUp() {
 		parent::setUp();
 
-		$this->options           = new Options_Data( [] );
-		$this->critical_css      = new CriticalCSS(
-			Mockery::mock( CriticalCSSGeneration::class ),
-			$this->options,
-			$this->filesystem
-		);
+//		// Remove all of the "buffer" callbacks.
+//		global $wp_filter;
+//		$this->buffer_callbacks = $wp_filter['buffer_callbacks'];
+//		remove_all_filters( 'buffer' );
 
-		$this->processor_service = Mockery::mock( ProcessorService::class );
-		$this->subscriber        = new CriticalCSSSubscriber( $this->critical_css, $this->processor_service, $this->options, $this->filesystem );
+		set_current_screen( 'front' );
 	}
 
-	public function tearDown()
-	{
-		if ( ! empty( $this->to_be_removed ) ){
-			foreach ( $this->to_be_removed as $key => $items ) {
-				switch ($key) {
-					case 'filters':
-						foreach ( $items as $filter_name => $filter_callback ) {
-							remove_filter( $filter_name, $filter_callback );
-						}
-						break;
-				}
-			}
-		}
+	public function tearDown() {
 		parent::tearDown();
+
+		remove_filter( "pre_get_rocket_option_async_css", [ $this, 'set_option_async_css' ] );
+		remove_filter( 'rocket_exclude_async_css', [ $this, 'rocket_exclude_async_css' ] );
+
+		$this->test_config = [];
 	}
 
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldAsyncCss( $config, $expected ) {
-		if ( ! empty( $config['constants'] ) ) {
-			foreach ( $config['constants'] as $constant_name => $constant_value ) {
-				$constant_name = strtolower( $constant_name );
-				$this->$constant_name = $constant_value;
-			}
-		}
+	public function testShouldAsyncCss( $html, $expected, $config = [] ) {
+		$this->test_config = $this->initConfig( $config );
+		$this->mergeExistingSettingsAndUpdate( $this->test_config ['options'] );
+		add_filter( "pre_get_rocket_option_async_css", [ $this, 'set_option_async_css' ] );
+		add_filter( 'rocket_exclude_async_css', [ $this, 'rocket_exclude_async_css' ] );
+		$this->setUpUrl();
 
-		$this->rocket_options = $config['options'];
-		if ( ! empty( $config['options'] ) ) {
-			foreach ( $config['options'] as $option_key => $option_value ) {
-				add_filter( 'pre_get_rocket_option_'.$option_key, [ $this, 'setOption_'.$option_key ] );
-				$this->to_be_removed['filters'][] = [
-					'pre_get_rocket_option_'.$option_key => [ $this, 'setOption_'.$option_key ]
-				];
-			}
-		}
+		// Run it.
+		$actual = apply_filters( 'rocket_buffer', $html );
 
-		if ( ! empty( $config['get_current_page_critical_css'] ) ) {
-			$item_path = 'wp-content/cache/critical-css/1' . DIRECTORY_SEPARATOR . $config['get_current_page_critical_css'];
-			$this->filesystem->put_contents( $item_path, '.cpcss { color: red; }');
-		}
+//		print_r ( $actual );
+//		exit;
 
-		if ( ! empty( $config['exclude_options'] ) ) {
-			foreach ( $config['exclude_options'] as $exclude_option => $return ) {
-				Functions\expect( 'is_rocket_post_excluded_option' )->with( $exclude_option )->andReturn( $return );
-			}
-		}
-
-		$this->exclude_css_files = isset( $config['exclude_css_files'] ) ? $config['exclude_css_files'] : [];
-		if ( ! empty( $this->exclude_css_files ) ) {
-			add_filter( 'rocket_exclude_async_css', [ $this, 'getExcludedCssFiles' ] );
-			$this->to_be_removed['filters'][] = [
-				'rocket_exclude_async_css' => [ $this, 'getExcludedCssFiles' ]
-			];
-		}
-
-		$actual = $this->subscriber->async_css( $config['html'] );
-		$this->assertEquals( $expected['html'], $actual );
+		$this->assertEquals(
+			$this->format_the_html( $expected ),
+			$this->format_the_html( $actual )
+		);
 	}
 
-	public function setOption_async_css() {
-		return $this->rocket_options['async_css'];
+	protected function setUpUrl() {
+		$post_id = $this->factory->post->create();
+
+		if ( ! isset( $this->test_config['doesnotcreatedom'] ) || ! $this->test_config['doesnotcreatedom'] ) {
+			update_option( 'show_on_front', 'page' );
+			$go_to = home_url();
+		} else {
+			$go_to = get_permalink( $post_id );
+		}
+
+		$this->go_to( $go_to );
 	}
 
-	public function setOption_critical_css() {
-		return $this->rocket_options['critical_css'];
+	public function set_option_async_css( $value ) {
+		if ( isset( $this->test_config['options']['async_css'] ) ) {
+			return $this->test_config['options']['async_css'];
+		}
+
+		return $value;
 	}
 
-	public function getExcludedCssFiles( ) {
-		return $this->exclude_css_files;
+	public function rocket_exclude_async_css( $value ) {
+		if ( ! isset( $this->test_config['critical_css']['get_exclude_async_css'] ) ) {
+			return $value;
+		}
+
+		if ( empty( $this->test_config['critical_css']['get_exclude_async_css'] ) ) {
+			return $value;
+		}
+
+		return $this->test_config['critical_css']['get_exclude_async_css'];
+	}
+
+	protected function initConfig( $config ) {
+		if ( empty( $config ) ) {
+			return $this->config['default_config'];
+		}
+
+		if ( isset( $config['use_default'] ) && $config['use_default'] ) {
+			unset( $config['use_default'] );
+
+			return array_merge_recursive(
+				$this->config['default_config'],
+				$config
+			);
+		}
+
+		return array_merge(
+			[
+				'options'      => [],
+				'critical_css' => [],
+				'functions'    => [],
+			],
+			$config
+		);
 	}
 }

@@ -12,7 +12,7 @@ HTML;
 
 return [
 
-	'vfs_dir' => 'wp-content/cache/critical-css/',
+	'vfs_dir'   => 'wp-content/cache/critical-css/',
 
 	// Virtual filesystem structure.
 	'structure' => [
@@ -20,16 +20,27 @@ return [
 			'cache' => [
 				'critical-css' => [
 					'1' => [
-						'.'              => '',
-						'..'             => '',
-						'home.css'                => '.home { color: red; }',
-						'home-mobile.css'         => '.home { color: blue; }',
-						'front_page.css'          => '.front_page { color: red; }',
-						'front_page-mobile.css'   => '.front_page { color: blue; }',
+						'.'                     => '',
+						'..'                    => '',
+						'home.css'              => '.home { color: red; }',
+						'home-mobile.css'       => '.home { color: blue; }',
+						'front_page.css'        => '.front_page { color: red; }',
+						'front_page-mobile.css' => '.front_page { color: blue; }',
 					],
 				],
 			],
 		],
+	],
+
+	'default_config' => [
+		'options'      => [
+			'async_css' => 1,
+		],
+		'critical_css' => [
+			'get_current_page_critical_css' => 'page.css',
+			'get_exclude_async_css'         => [],
+		],
+		'functions'    => [ 'is_rocket_post_excluded_option' => false ],
 	],
 
 	'test_data' => [
@@ -367,7 +378,7 @@ HTML
 
 		// Exclude CSS URLs.
 
-		'shouldBailOutWhenCSSIsExcluded'                 => [
+		'shouldBailOutWhenCSSIsExcluded' => [
 			'html'     => <<<HTML
 <!doctype html>
 <html lang="en-US">

@@ -583,8 +583,12 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	 * @return string Updated HTML code
 	 */
 	public function async_css( $html ) {
-		$async_css = AsyncCSS::from_html( $this->critical_css, $this->options, $html );
-		return $async_css->modify_html( $html );
+		$instance = AsyncCSS::from_html( $this->critical_css, $this->options, $html );
+		if ( ! $instance instanceof AsyncCSS ) {
+			return $html;
+		}
+
+		return $instance->modify_html( $html );
 	}
 
 	/**

@@ -10,20 +10,9 @@ abstract class TestCase extends BaseTestCase {
 	protected static $use_settings_trait = true;
 
 	protected $critical_css;
-	protected $dom;
 	protected $instance;
 	protected $options;
-	protected $default_config = [
-		'options'      => [
-			'async_css' => 1,
-		],
-		'critical_css' => [
-			'get_current_page_critical_css' => 'page.css',
-			'get_exclude_async_css'         => [],
-		],
-		'functions'    => [ 'is_rocket_post_excluded_option' => false ],
-	];
-	protected $test_config    = [];
+	protected $test_config = [];
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
