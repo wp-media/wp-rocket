@@ -76,6 +76,11 @@ tests_add_filter(
 			$_SERVER['cw_allowed_ip'] = true;
 		}
 
+		if ( BootstrapManager::isGroup( 'SpinUpWP' ) ) {
+			putenv( 'SPINUPWP_CACHE_PATH=/wp-content/spinupwp-cache/' );
+			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/spinupwp/spinupwp.php';
+		}
+
 		// Overload the license key for testing.
 		redefine( 'rocket_valid_key', '__return_true' );
 

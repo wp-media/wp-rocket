@@ -255,6 +255,7 @@ class Plugin {
 			'simple_custom_css',
 			'cloudways',
 			'wpengine',
+			'spinupwp',
 		];
 
 		if ( $this->options->get( 'do_cloudflare', false ) ) {
