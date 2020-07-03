@@ -1462,7 +1462,7 @@ function _rocket_get_recursive_dir_files_by_regex( $regex ) { // phpcs:ignore Wo
 	try {
 		$cache_path = _rocket_get_wp_rocket_cache_path();
 		$iterator   = new RecursiveIteratorIterator(
-			new RecursiveDirectoryIterator( $cache_path, FilesystemIterator::SKIP_DOTS  )
+			new RecursiveDirectoryIterator( $cache_path, FilesystemIterator::SKIP_DOTS )
 		);
 		return new RegexIterator( $iterator, $regex, RecursiveRegexIterator::MATCH );
 	} catch ( Exception $e ) {

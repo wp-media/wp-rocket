@@ -69,9 +69,9 @@ function rocket_get_purge_urls( $post_id, $post ) {
 			}
 
 			$post_type_archive = trailingslashit( $post_type_archive );
-			$purge_urls[] = $post_type_archive . $filename . '.html';
-			$purge_urls[] = $post_type_archive . $filename . '.html_gzip';
-			$purge_urls[] = $post_type_archive . $filename . $GLOBALS['wp_rewrite']->pagination_base;
+			$purge_urls[]      = $post_type_archive . $filename . '.html';
+			$purge_urls[]      = $post_type_archive . $filename . '.html_gzip';
+			$purge_urls[]      = $post_type_archive . $filename . $GLOBALS['wp_rewrite']->pagination_base;
 		}
 	}
 
@@ -113,7 +113,7 @@ function rocket_get_purge_urls( $post_id, $post ) {
 		}
 
 		foreach ( $cache_purge_pages as $page ) {
-			//check if it contains regex pattern
+			// Check if it contains regex pattern.
 			if ( strstr( $page, '*' ) ) {
 				$matches_files = _rocket_get_recursive_dir_files_by_regex( '#' . $page . '#i' );
 				foreach ( $matches_files as $file ) {
