@@ -848,6 +848,9 @@ class Combine extends AbstractJSOptimization {
 			'tdbSearchItem',
 			'best_seller_badge',
 			'jQuery(\'#product-top-bar',
+			'fb_desc-',
+			'FC_regenerate_captcha',
+			'wp_post_blocks_vars.listed_posts=[',
 		];
 
 		/**
