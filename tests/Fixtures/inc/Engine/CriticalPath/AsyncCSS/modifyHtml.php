@@ -109,7 +109,7 @@ HTML
 <html lang="en-US">
 <head>
 	<meta charset="UTF-8">
-	<link rel="preload" type="text/css" href="https://example.org/file1.css" media="print" as="style" onload="this.onload=null;this.media='all';this.rel='stylesheet'">
+	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="print" as="style" onload="this.onload=null;this.media='all'">
 </head>
 <body>Content here
 <noscript>
@@ -138,7 +138,7 @@ HTML
 <html lang="en-US">
 <head>
 	<meta charset="UTF-8">
-	<link rel="preload" type="text/css" href="https://example.org/file1.css" media="print" onload="this.media='all';this.onload=null;this.rel='stylesheet'" as="style">
+	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="print" onload="this.media='all';this.onload=null" as="style">
 </head>
 <body>Content here
 <noscript>
@@ -167,7 +167,7 @@ HTML
 <html lang="en-US">
 <head>
 	<meta charset="UTF-8">
-	<link type="text/css" onload="this.media='all';this.onload=null;this.rel='stylesheet'" rel="preload" href="https://example.org/file1.css" as="style" media="print">
+	<link type="text/css" onload="this.media='all';this.onload=null" rel="stylesheet" href="https://example.org/file1.css" as="style" media="print">
 </head>
 <body>Content here
 <noscript>
@@ -197,8 +197,8 @@ HTML
 <html lang="en-US">
 <head>
 	<meta charset="UTF-8">
-	<link onload="this.media='all';this.onload=null;this.rel='stylesheet'" rel="preload" type="text/css" href="https://example.org/file1.css" as="style" media="print">
-	<link onload="this.rel='stylesheet';this.onload=null;this.media='all'" href="https://example.org/file2.css" type="text/css" rel="preload" as="style" media="print">
+	<link onload="this.media='all';this.onload=null" rel="stylesheet" type="text/css" href="https://example.org/file1.css" as="style" media="print">
+	<link onload="this.rel='stylesheet';this.onload=null;this.media='all'" href="https://example.org/file2.css" type="text/css" rel="stylesheet" as="style" media="print">
 </head>
 <body>Content here
 <noscript>
@@ -237,15 +237,15 @@ HTML
 <html lang="en-US">
 <head>
 	<meta charset="UTF-8">
-	<link onload="someFunction();this.onload=null;this.media='all';this.rel='stylesheet'" rel="preload" type="text/css" href="https://example.org/file1.css" as="style" media="print">
-	<link onload="anotherFunction(this);this.onload=null;this.media='all';this.rel='stylesheet'" rel="preload" type="text/css" href="https://example.org/file2.css" as="style" media="print">
+	<link onload="someFunction();this.onload=null;this.media='all'" rel="stylesheet" type="text/css" href="https://example.org/file1.css" as="style" media="print">
+	<link onload="anotherFunction(this);this.onload=null;this.media='all'" rel="stylesheet" type="text/css" href="https://example.org/file2.css" as="style" media="print">
 </head>
 <body>
-	<link onload="yetAnotherFunction(this, 0);this.media='all';this.onload=null;this.rel='stylesheet'" rel="preload" type="text/css" href="https://example.org/file3.css" as="style" media="print">
+	<link onload="yetAnotherFunction(this, 0);this.media='all';this.onload=null" rel="stylesheet" type="text/css" href="https://example.org/file3.css" as="style" media="print">
 	<div>
 		<h1>Testing</h1>
 		<!-- single quotes -->
-		<link rel="preload" type="text/css" href="https://example.org/file4.css" onload="console.log('Hello');this.onload=null;this.media='screen';this.rel='stylesheet'" media="print" as="style">
+		<link rel="stylesheet" type="text/css" href="https://example.org/file4.css" onload="console.log('Hello');this.onload=null;this.media='screen'" media="print" as="style">
 		<p>Hello World</p>
 	</div>
 	<noscript>
@@ -285,14 +285,14 @@ HTML
 <html lang="en-US">
 <head>
 	<meta charset="UTF-8">
-	<link rel="preload" type="text/css" href="https://example.org/file1.css" media="print" onload="this.rel='stylesheet';this.onload=null;this.media='screen'" as="style">
-	<link rel="preload" type="text/css" href="https://example.org/file2.css" media="print" onload="this.rel='stylesheet';this.onload=null;this.media='screen and (max-width: 600px)'" as="style">
-	<link rel="preload" type="text/css" href="https://example.org/file3.css" media="print" as="style" onload="this.onload=null;this.media='all';this.rel='stylesheet'">
+	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="print" onload="this.rel='stylesheet';this.onload=null;this.media='screen'" as="style">
+	<link rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="print" onload="this.rel='stylesheet';this.onload=null;this.media='screen and (max-width: 600px)'" as="style">
+	<link rel="stylesheet" type="text/css" href="https://example.org/file3.css" media="print" as="style" onload="this.onload=null;this.media='all'">
 </head>
 <body>
 	<div>
 		<!-- single quotes -->
-		<link rel="preload" type="text/css" href="https://example.org/file4.css" media="print" onload="this.rel='stylesheet';this.onload=null;this.media='screen and (max-width: 800px)'" as="style">
+		<link rel="stylesheet" type="text/css" href="https://example.org/file4.css" media="print" onload="this.rel='stylesheet';this.onload=null;this.media='screen and (max-width: 800px)'" as="style">
 		<h1>Testing</h1>
 		<p>Hello World</p>
 	</div>
@@ -327,7 +327,7 @@ HTML
 <html lang="en-US">
 <head>
 	<meta charset="UTF-8">
-	<link rel="preload" type="text/css" href="https://example.org/file1.css" media="print" as="style" onload="this.onload=null;this.media='all';this.rel='stylesheet'">
+	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="print" as="style" onload="this.onload=null;this.media='all'">
 </head>
 <body>Content here
 <noscript>
@@ -359,7 +359,7 @@ HTML
 <html lang="en-US">
 <head>
 	<meta charset="UTF-8">
-	<link rel="preload" huh type="text/css" href="https://example.org/file1.css" media="print" abc="123" onload="this.media='all';this.onload=null;this.rel='stylesheet'" as="style">
+	<link rel="stylesheet" huh type="text/css" href="https://example.org/file1.css" media="print" abc="123" onload="this.media='all';this.onload=null" as="style">
 </head>
 <body>
 	<div>
@@ -444,7 +444,7 @@ HTML
 <html lang="en-US">
 <head>
 	<meta charset="UTF-8">
-	<link onload="this.media='all';this.onload=null;this.rel='stylesheet'" rel="preload" type="text/css" href="https://example.org/file1.css" as="style" media="print">
+	<link onload="this.media='all';this.onload=null" rel="stylesheet" type="text/css" href="https://example.org/file1.css" as="style" media="print">
 	<link onload=" this.rel = 'stylesheet'; " href="https://example.org/file2.css" type="text/css" rel="stylesheet">
 </head>
 <body>
@@ -495,9 +495,9 @@ HTML
 <html lang="en-US">
 <head>
 	<meta charset="UTF-8">
-	<link rel="preload" type="text/css" href="https://example.org/file1.css" media="print" onload="this.rel='stylesheet';this.onload=null;this.media='screen'" as="style">
+	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="print" onload="this.rel='stylesheet';this.onload=null;this.media='screen'" as="style">
 	<link rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="screen and (max-width: 600px)">
-	<link rel="preload" type="text/css" href="https://example.org/file3.css" media="print" as="style" onload="this.onload=null;this.media='all';this.rel='stylesheet'">
+	<link rel="stylesheet" type="text/css" href="https://example.org/file3.css" media="print" as="style" onload="this.onload=null;this.media='all'">
 </head>
 <body>
 	<div>
@@ -555,14 +555,14 @@ HTML
 <head>
 	<meta charset="UTF-8">
 	<link rel="preload" type="text/css" href="https://example.org/file1.css" media="screen" onload="this.rel='stylesheet'">
-	<link rel="preload" type="text/css" href="https://example.org/file2.css" media="print" as="style" onload="this.onload=null;this.media='screen and (max-width: 600px)';this.rel='stylesheet'">
-	<link rel="preload" type="text/css" href="https://example.org/file3.css" media="print" as="style" onload="this.onload=null;this.media='all';this.rel='stylesheet'">
+	<link rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="print" as="style" onload="this.onload=null;this.media='screen and (max-width: 600px)'">
+	<link rel="stylesheet" type="text/css" href="https://example.org/file3.css" media="print" as="style" onload="this.onload=null;this.media='all'">
 </head>
 <body>
 	<div>
 		<!-- single quotes -->
 		<link rel="preload" type="text/css" href="https://example.org/file4.css" media="screen and (max-width: 800px)">
-		<link rel="preload" type="text/css" href="https://example.org/file5.css" media="print" onload="console.log('I am one.');this.onload=null;this.media='all';this.rel='stylesheet'" as="style">
+		<link rel="stylesheet" type="text/css" href="https://example.org/file5.css" media="print" onload="console.log('I am one.');this.onload=null;this.media='all'" as="style">
 		<h1>Testing</h1>
 		<p>Testing excluding CSS links.</p>
 	</div>

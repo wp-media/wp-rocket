@@ -52,7 +52,6 @@ class AsyncCSS {
 	private $onload_defaults = [
 		'this.onload' => 'null',
 		'this.media'  => "'all'",
-		'this.rel'    => "'stylesheet'",
 	];
 
 	/**
@@ -214,8 +213,6 @@ class AsyncCSS {
 	private function modify_css( $css ) {
 		$this->set_noscript( $css->cloneNode() );
 
-		$css->setAttribute( 'rel', 'preload' );
-
 		$css->setAttribute( 'as', 'style' );
 
 		$this->build_onload( $css );
@@ -307,10 +304,6 @@ class AsyncCSS {
 				case 'this.media':
 				case 'media':
 					$values['this.media'] = Attribute::prepare_for_embed( $this->get_onload_media( $value, $css ) );
-					break;
-				case 'this.rel':
-				case 'rel':
-					$values['this.rel'] = Attribute::prepare_for_embed( $this->onload_defaults['this.rel'] );
 					break;
 				default:
 					if ( ! Attribute::starts_with( $key, 'this.' ) ) {
