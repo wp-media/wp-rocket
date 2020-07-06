@@ -83,6 +83,25 @@ class Attribute {
 	}
 
 	/**
+	 * Checks if the given value is set to NULL, 'null', "null", or null.
+	 *
+	 * @since 3.6.2
+	 *
+	 * @param string $value Value to check.
+	 *
+	 * @return bool
+	 */
+	public static function is_null( $value ) {
+		return (
+			is_null( $value )
+			||
+			'null' === $value
+			||
+			"null" === $value // phpcs:ignore Squiz.Strings.DoubleQuoteUsage.NotRequired -- This is intentional.
+		);
+	}
+
+	/**
 	 * Prepares value for embedding into the attribute:
 	 *    1. Wraps strings in quotes.
 	 *    2. Replaces double quotes with single quotes.
@@ -106,6 +125,8 @@ class Attribute {
 			return $value;
 		}
 
+		$value = self::strip_escaped_quotes( $value );
+
 		if ( "'" === $value[0] ) {
 			return $value;
 		}
@@ -115,25 +136,6 @@ class Attribute {
 		}
 
 		return "'{$value}'";
-	}
-
-	/**
-	 * Checks if the given value is set to NULL, 'null', "null", or null.
-	 *
-	 * @since 3.6.2
-	 *
-	 * @param string $value Value to check.
-	 *
-	 * @return bool
-	 */
-	public static function is_null( $value ) {
-		return (
-			is_null( $value )
-			||
-			'null' === $value
-			||
-			"null" === $value // phpcs:ignore Squiz.Strings.DoubleQuoteUsage.NotRequired -- This is intentional.
-		);
 	}
 
 	/**
@@ -161,5 +163,30 @@ class Attribute {
 	 */
 	public static function starts_with( $search_string, $needle ) {
 		return ( substr( $search_string, 0, strlen( $needle ) ) === $needle );
+	}
+
+	/**
+	 * Strips escaped quotes in the given string.
+	 *
+	 * @since 3.6.2
+	 *
+	 * @param string $value Given string.
+	 *
+	 * @return string
+	 */
+	private static function strip_escaped_quotes( $value ) {
+		if ( strlen( $value ) < 4 ) {
+			return $value;
+		}
+
+		if ( self::starts_with( $value, "\'" ) ) {
+			return str_replace( "\'", "'", $value );
+		}
+
+		if ( self::starts_with( $value, '\"' ) ) {
+			return str_replace( '\"', "'", $value );
+		}
+
+		return $value;
 	}
 }

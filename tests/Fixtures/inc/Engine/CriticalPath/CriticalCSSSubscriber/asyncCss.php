@@ -341,6 +341,52 @@ HTML
 			,
 		],
 
+		// Handle escaped quotes in "onload" attribute.
+
+		'shouldHandleEscapedQuotesInOnloadAttribute' => [
+			'html'     => <<<HTML
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8" />
+	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="all" baz="boo" onload="this.baz=\'test\'">
+	<link rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="all" baz="boo" onload='this.baz=\"test\"'>
+</head>
+<body>
+	<div>
+		<h1>Testing</h1>
+		<p>Hello World</p>
+	</div>
+</body>
+</html>
+HTML
+			,
+			'expected' => <<<HTML
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<link rel="preload" href="https://example.org/file1.css" as="style">
+	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="print" baz="boo" onload="this.baz='test';this.onload=null;this.media='all'">
+	<link rel="preload" href="https://example.org/file2.css" as="style">
+	<link rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="print" baz="boo" onload="this.baz='test';this.onload=null;this.media='all'">
+</head>
+<body>
+	<div>
+		<h1>Testing</h1>
+		<p>Hello World</p>
+	</div>
+	<script>const wprRemoveCPCSS = () => { \$elem = document.getElementById( "rocket-critical-css" ); if ( \$elem ) { \$elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>
+	<noscript>
+		<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="all" baz="boo" onload="this.baz=\'test\'">
+		<link rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="all" baz="boo" onload='this.baz=\"test\"'>
+	</noscript>
+</body>
+</html>
+HTML
+			,
+		],
+
 		// Malformed HTML
 
 		'shouldSetDefaultsWhenNoOnload_whenHTMLIsMalformed' => [
