@@ -4,6 +4,7 @@ namespace WP_Rocket\Engine\Optimization\Minify\CSS;
 use MatthiasMullie\Minify as Minifier;
 use WP_Rocket\Logger\Logger;
 use WP_Rocket\Optimization\CSS\Path_Rewriter;
+use WP_Rocket\Engine\Optimization\CSSTrait;
 
 /**
  * Minify CSS files
@@ -12,6 +13,7 @@ use WP_Rocket\Optimization\CSS\Path_Rewriter;
  * @author Remy Perona
  */
 class Minify extends AbstractCSSOptimization {
+	use CSSTrait;
 	use Path_Rewriter;
 
 	/**
@@ -43,17 +45,6 @@ class Minify extends AbstractCSSOptimization {
 		);
 
 		foreach ( $styles as $style ) {
-			if ( preg_match( '/(?:-|\.)min.css/iU', $style['url'] ) ) {
-				Logger::debug(
-					'Style is already minified.',
-					[
-						'css minification process',
-						'tag' => $style[0],
-					]
-				);
-				continue;
-			}
-
 			if ( $this->is_external_file( $style['url'] ) ) {
 				Logger::debug(
 					'Style is external.',
@@ -210,6 +201,7 @@ class Minify extends AbstractCSSOptimization {
 		$file_content     = $this->rewrite_paths( $file, $minified_file, $file_content );
 		$minifier         = $this->get_minifier( $file_content );
 		$minified_content = $minifier->minify();
+		$minified_content = $this->apply_font_display_swap( $minified_content );
 
 		if ( empty( $minified_content ) ) {
 			return false;
