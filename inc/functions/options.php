@@ -423,6 +423,7 @@ function get_rocket_exclude_defer_js() { // phpcs:ignore WordPress.NamingConvent
 		'verify.authorize.net/anetseal',
 		'lib/admin/assets/lib/webfont/webfont.min.js',
 		'app.mailerlite.com',
+		'widget.reviews.io',
 	];
 
 	if ( get_rocket_option( 'defer_all_js', 0 ) && get_rocket_option( 'defer_all_js_safe', 0 ) ) {
