@@ -1,5 +1,7 @@
 <?php
 
+use function WP_Rocket\Tests\Fixture\CriticalPath\content\get_html_as_string;
+
 $base_html = <<<HTML
 <!DOCTYPE html>
 <html lang="en-US">
@@ -728,6 +730,22 @@ HTML
 </html>
 HTML
 			,
+		],
+
+		// {{TEMPLATE_TAG}} template tags.
+		'shouldHandlePlaceholderTemplateTag' => [
+			'html'     => get_html_as_string( 'placeholder' ),
+			'expected' => get_html_as_string( 'placeholder-modify_html' ),
+		],
+
+		'shouldHandleConditionalComments' => [
+			'html'     => get_html_as_string( 'conditional-comments' ),
+			'expected' => get_html_as_string( 'conditional-comments-modify_html' ),
+		],
+
+		'shouldHandleLargerWebPages' => [
+			'html'     => get_html_as_string( 'twentyseventeen' ),
+			'expected' => get_html_as_string( 'twentyseventeen-modify_html' ),
 		],
 	],
 ];

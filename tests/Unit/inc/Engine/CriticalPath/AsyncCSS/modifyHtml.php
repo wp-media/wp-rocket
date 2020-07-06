@@ -15,7 +15,7 @@ use WP_Rocket\Engine\CriticalPath\AsyncCSS;
  * @uses   ::is_rocket_post_excluded_option
  *
  * @group  CriticalPath
- * @group  AsyncCSS
+ * @group  AsyncCSSx
  * @group  DOM
  */
 class Test_ModifyHtml extends TestCase {

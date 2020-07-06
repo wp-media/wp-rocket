@@ -1,5 +1,7 @@
 <?php
 
+use function WP_Rocket\Tests\Fixture\CriticalPath\content\get_html_as_string;
+
 $base_html = <<<HTML
 <!DOCTYPE html>
 <html lang="en-US">
@@ -69,11 +71,11 @@ return [
 			'expected' => $base_html,
 			'config'   => [
 				'doesnotcreatedom' => true,
-				'options'      => [
+				'options'          => [
 					'async_css'    => 1,
 					'critical_css' => '',
 				],
-				'critical_css' => [ 'get_current_page_critical_css' => '' ],
+				'critical_css'     => [ 'get_current_page_critical_css' => '' ],
 			],
 		],
 
@@ -82,11 +84,11 @@ return [
 			'expected' => $base_html,
 			'config'   => [
 				'doesnotcreatedom' => true,
-				'options'      => [
+				'options'          => [
 					'async_css'    => 1,
 					'critical_css' => '',
 				],
-				'critical_css' => [ 'get_current_page_critical_css' => '' ],
+				'critical_css'     => [ 'get_current_page_critical_css' => '' ],
 			],
 		],
 
@@ -95,9 +97,9 @@ return [
 			'expected' => $base_html,
 			'config'   => [
 				'doesnotcreatedom' => true,
-				'options'      => [ 'async_css' => 1 ],
-				'critical_css' => [ 'get_current_page_critical_css' => 'something' ],
-				'functions'    => [ 'is_rocket_post_excluded_option' => true ],
+				'options'          => [ 'async_css' => 1 ],
+				'critical_css'     => [ 'get_current_page_critical_css' => 'something' ],
+				'functions'        => [ 'is_rocket_post_excluded_option' => true ],
 			],
 		],
 
@@ -716,7 +718,7 @@ HTML
 		],
 
 		// Check for empty href.
-		'shouldNotProcessWhenHrefIsEmpty' => [
+		'shouldNotProcessWhenHrefIsEmpty'                                => [
 			'html'     => <<<HTML
 <!doctype html>
 <html lang="en-US">
@@ -756,6 +758,23 @@ HTML
 </html>
 HTML
 			,
+		],
+
+
+		// {{TEMPLATE_TAG}} template tags.
+		'shouldHandlePlaceholderTemplateTag' => [
+			'html'     => get_html_as_string( 'placeholder' ),
+			'expected' => get_html_as_string( 'placeholder-async_css' ),
+		],
+
+		'shouldHandleConditionalComments' => [
+			'html'     => get_html_as_string( 'conditional-comments' ),
+			'expected' => get_html_as_string( 'conditional-comments-async_css' ),
+		],
+
+		'shouldHandleLargerWebPages' => [
+			'html'     => get_html_as_string( 'blog-twentyseventeen' ),
+			'expected' => get_html_as_string( 'blog-twentyseventeen-async-css' ),
 		],
 	],
 ];
