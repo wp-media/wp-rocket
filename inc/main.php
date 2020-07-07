@@ -128,7 +128,12 @@ function rocket_deactivation() {
 		}
 
 		// wp-config problem.
-		if ( ! $wp_cache->find_wpconfig_path() ) {
+		if (
+			! $wp_cache->find_wpconfig_path()
+			&&
+			// This filter is documented in inc/Engine/Cache/WPCache.php.
+			(bool) apply_filters( 'rocket_set_wp_cache_constant', true )
+		) {
 			$causes[] = 'wpconfig';
 		}
 
