@@ -41,6 +41,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'cloudways',
 		'wpengine',
 		'spinupwp',
+		'pdfembedder',
 	];
 
 	/**
@@ -86,5 +87,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'cloudways', 'WP_Rocket\ThirdParty\Hostings\Cloudways' );
 		$this->getContainer()->share( 'wpengine', 'WP_Rocket\ThirdParty\Hostings\WPEngine' );
 		$this->getContainer()->share( 'spinupwp', 'WP_Rocket\ThirdParty\Hostings\SpinUpWP' );
+		$this->getContainer()->share( 'pdfembedder', 'WP_Rocket\ThirdParty\Plugins\PDFEmbedder' );
 	}
 }
