@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.4\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2020-06-17 13:41-0400\n"
+"POT-Creation-Date: 2020-07-07 15:04-0400\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Last-Translator: WP Media (http://wp-rocket.me/)\n"
 "Language-Team: WP Media (http://www.transifex.com/projects/p/wp-media/) "
 "<contact@wp-media.me>\n"
-"X-Generator: Poedit 2.3.1\n"
+"X-Generator: Poedit 1.8.11\n"
 "X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;"
 "_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;"
 "esc_html_x:1,2c\n"
@@ -32,8 +32,8 @@ msgstr ""
 #: inc/3rd-party/hosting/flywheel.php:18 inc/3rd-party/hosting/godaddy.php:18
 #: inc/3rd-party/hosting/o2switch.php:17 inc/3rd-party/hosting/pressidium.php:18
 #: inc/3rd-party/hosting/savvii.php:18 inc/3rd-party/hosting/wp-serveur.php:27
-#: inc/ThirdParty/Hostings/Cloudways.php:66 inc/ThirdParty/Hostings/WPEngine.php:64
-#: inc/deprecated/3.6.php:515
+#: inc/ThirdParty/Hostings/Cloudways.php:92 inc/ThirdParty/Hostings/WPEngine.php:64
+#: inc/deprecated/3.6.php:542
 #, php-format
 msgid ""
 "Your site is hosted on %s, we have enabled Varnish auto-purge for compatibility."
@@ -228,7 +228,7 @@ msgstr ""
 msgid "Unavailable"
 msgstr ""
 
-#: inc/Engine/Admin/Settings/Page.php:341 inc/deprecated/deprecated.php:1789
+#: inc/Engine/Admin/Settings/Page.php:341 inc/deprecated/deprecated.php:1788
 #: views/settings/page-sections/dashboard.php:73
 msgid "License"
 msgstr ""
@@ -701,7 +701,7 @@ msgstr ""
 msgid "Enable WebP caching"
 msgstr ""
 
-#: inc/Engine/Admin/Settings/Page.php:1056 inc/deprecated/deprecated.php:1776
+#: inc/Engine/Admin/Settings/Page.php:1056 inc/deprecated/deprecated.php:1775
 #: views/settings/page-sections/tutorials.php:30
 msgid "Preload"
 msgstr ""
@@ -776,7 +776,7 @@ msgstr ""
 #: inc/Engine/Admin/Settings/Page.php:1168
 msgid ""
 "Specify urls of the font files to be preloaded (one per line). Fonts must be "
-"hosted on your own domain."
+"hosted on your own domain, or the domain you have specified on the CDN tab."
 msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:1169
@@ -892,7 +892,7 @@ msgstr ""
 msgid "Specify query strings for caching (one per line)"
 msgstr ""
 
-#: inc/Engine/Admin/Settings/Page.php:1335 inc/deprecated/deprecated.php:1775
+#: inc/Engine/Admin/Settings/Page.php:1335 inc/deprecated/deprecated.php:1774
 msgid "Database"
 msgstr ""
 
@@ -1055,7 +1055,7 @@ msgid "Monthly"
 msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:1505 inc/Engine/Admin/Settings/Page.php:1516
-#: inc/admin/ui/meta-boxes.php:77 inc/deprecated/deprecated.php:1773
+#: inc/admin/ui/meta-boxes.php:77 inc/deprecated/deprecated.php:1772
 msgid "CDN"
 msgstr ""
 
@@ -1351,7 +1351,7 @@ msgctxt "Sucuri"
 msgid "Find your API key"
 msgstr ""
 
-#: inc/Engine/Admin/Settings/Render.php:461 inc/deprecated/deprecated.php:1294
+#: inc/Engine/Admin/Settings/Render.php:461 inc/deprecated/deprecated.php:1293
 msgid "Upload file and import settings"
 msgstr ""
 
@@ -1361,11 +1361,11 @@ msgid ""
 "characters}/{32 characters}</code>."
 msgstr ""
 
-#: inc/Engine/Admin/Settings/Settings.php:496 inc/deprecated/deprecated.php:1245
+#: inc/Engine/Admin/Settings/Settings.php:496 inc/deprecated/deprecated.php:1244
 msgid "Settings saved."
 msgstr ""
 
-#: inc/Engine/Admin/Settings/Subscriber.php:141 inc/deprecated/deprecated.php:1786
+#: inc/Engine/Admin/Settings/Subscriber.php:141 inc/deprecated/deprecated.php:1785
 #: views/settings/page-sections/tools.php:33
 msgid "Tools"
 msgstr ""
@@ -1544,33 +1544,33 @@ msgstr ""
 msgid "Enable Optimize CSS delivery in the options above"
 msgstr ""
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:149
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:144
 msgid "Critical CSS generation is currently running."
 msgstr ""
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:154
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:149
 #: inc/Engine/Preload/PreloadSubscriber.php:242
 #, php-format
 msgid "Go to the %1$sWP Rocket settings%2$s page to track progress."
 msgstr ""
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:368
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:363
 #, php-format
 msgid ""
 "Critical CSS generation is currently running: %1$d of %2$d page types completed. "
 "(Refresh this page to view progress)"
 msgstr ""
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:440
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:435
 #, php-format
 msgid "Critical CSS generation finished for %1$d of %2$d page types."
 msgstr ""
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:447
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:442
 msgid "Critical CSS generation encountered one or more errors."
 msgstr ""
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:447
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:442
 msgid "Learn more."
 msgstr ""
 
@@ -1796,6 +1796,13 @@ msgid ""
 "your host to enable it before running sitemap-based cache preloading."
 msgstr ""
 
+#: inc/ThirdParty/Hostings/Cloudways.php:84
+#, php-format
+msgid ""
+"Varnish auto-purge will be automatically enabled once Varnish is enabled on your "
+"%s server."
+msgstr ""
+
 #: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:78
 #, php-format
 msgctxt "Hummingbird notice"
@@ -1847,7 +1854,7 @@ msgid "Smush"
 msgstr ""
 
 #: inc/admin/admin.php:18 inc/common/admin-bar.php:367
-#: inc/deprecated/deprecated.php:1787
+#: inc/deprecated/deprecated.php:1786
 msgid "Support"
 msgstr ""
 
@@ -2176,7 +2183,7 @@ msgid ""
 msgstr ""
 
 #: inc/classes/class-wp-rocket-requirements-check.php:161
-#: inc/deprecated/deprecated.php:1947
+#: inc/deprecated/deprecated.php:1946
 #, php-format
 msgid "Re-install version %s"
 msgstr ""
@@ -2393,11 +2400,11 @@ msgstr ""
 msgid "Documentation"
 msgstr ""
 
-#: inc/common/purge.php:563
+#: inc/common/purge.php:557
 msgid "OPcache purge failed."
 msgstr ""
 
-#: inc/common/purge.php:568
+#: inc/common/purge.php:562
 msgid "OPcache successfully purged"
 msgstr ""
 
@@ -2483,100 +2490,100 @@ msgstr ""
 msgid "Add URL"
 msgstr ""
 
-#: inc/deprecated/deprecated.php:1277 views/settings/fields/import-form.php:22
+#: inc/deprecated/deprecated.php:1276 views/settings/fields/import-form.php:22
 msgid ""
 "Before you can upload your import file, you will need to fix the following error:"
 msgstr ""
 
-#: inc/deprecated/deprecated.php:1288 views/settings/fields/import-form.php:35
+#: inc/deprecated/deprecated.php:1287 views/settings/fields/import-form.php:35
 #, php-format
 msgid "Choose a file from your computer (maximum size: %s)"
 msgstr ""
 
-#: inc/deprecated/deprecated.php:1385
+#: inc/deprecated/deprecated.php:1384
 msgid "Your Cloudflare credentials are valid."
 msgstr ""
 
-#: inc/deprecated/deprecated.php:1389
+#: inc/deprecated/deprecated.php:1388
 msgid "Your Cloudflare credentials are invalid!"
 msgstr ""
 
-#: inc/deprecated/deprecated.php:1453
+#: inc/deprecated/deprecated.php:1452
 msgid "Save and optimize"
 msgstr ""
 
-#: inc/deprecated/deprecated.php:1453
+#: inc/deprecated/deprecated.php:1452
 msgid "Optimize"
 msgstr ""
 
-#: inc/deprecated/deprecated.php:1464 inc/deprecated/deprecated.php:1666
+#: inc/deprecated/deprecated.php:1463 inc/deprecated/deprecated.php:1665
 msgctxt "screen-reader-text"
 msgid "Note:"
 msgstr ""
 
-#: inc/deprecated/deprecated.php:1470
+#: inc/deprecated/deprecated.php:1469
 msgctxt "screen-reader-text"
 msgid "Performance tip:"
 msgstr ""
 
-#: inc/deprecated/deprecated.php:1476
+#: inc/deprecated/deprecated.php:1475
 msgctxt "screen-reader-text"
 msgid "Third-party feature detected:"
 msgstr ""
 
-#: inc/deprecated/deprecated.php:1488 inc/deprecated/deprecated.php:1672
+#: inc/deprecated/deprecated.php:1487 inc/deprecated/deprecated.php:1671
 msgctxt "screen-reader-text"
 msgid "Warning:"
 msgstr ""
 
-#: inc/deprecated/deprecated.php:1501
+#: inc/deprecated/deprecated.php:1500
 msgctxt "button text"
 msgid "Download settings"
 msgstr ""
 
-#: inc/deprecated/deprecated.php:1531
+#: inc/deprecated/deprecated.php:1530
 msgid "Replace site's hostname with:"
 msgstr ""
 
-#: inc/deprecated/deprecated.php:1550 inc/deprecated/deprecated.php:1587
-#: inc/deprecated/deprecated.php:1615 views/settings/fields/cnames.php:32
+#: inc/deprecated/deprecated.php:1549 inc/deprecated/deprecated.php:1586
+#: inc/deprecated/deprecated.php:1614 views/settings/fields/cnames.php:32
 #: views/settings/fields/cnames.php:64 views/settings/fields/cnames.php:94
 msgid "reserved for"
 msgstr ""
 
-#: inc/deprecated/deprecated.php:1552 inc/deprecated/deprecated.php:1589
-#: inc/deprecated/deprecated.php:1617 views/settings/fields/cnames.php:35
+#: inc/deprecated/deprecated.php:1551 inc/deprecated/deprecated.php:1588
+#: inc/deprecated/deprecated.php:1616 views/settings/fields/cnames.php:35
 #: views/settings/fields/cnames.php:67 views/settings/fields/cnames.php:97
 msgid "All files"
 msgstr ""
 
-#: inc/deprecated/deprecated.php:1564 inc/deprecated/deprecated.php:1594
-#: inc/deprecated/deprecated.php:1622 views/settings/fields/cnames.php:47
+#: inc/deprecated/deprecated.php:1563 inc/deprecated/deprecated.php:1593
+#: inc/deprecated/deprecated.php:1621 views/settings/fields/cnames.php:47
 #: views/settings/fields/cnames.php:79 views/settings/fields/cnames.php:109
 msgid "Images"
 msgstr ""
 
-#: inc/deprecated/deprecated.php:1635 views/settings/fields/cnames.php:120
+#: inc/deprecated/deprecated.php:1634 views/settings/fields/cnames.php:120
 msgid "Add CNAME"
 msgstr ""
 
-#: inc/deprecated/deprecated.php:1706 views/settings/partials/sidebar.php:16
+#: inc/deprecated/deprecated.php:1705 views/settings/partials/sidebar.php:16
 msgid "Watch the video"
 msgstr ""
 
-#: inc/deprecated/deprecated.php:1771
+#: inc/deprecated/deprecated.php:1770
 msgid "Basic"
 msgstr ""
 
-#: inc/deprecated/deprecated.php:1772
+#: inc/deprecated/deprecated.php:1771
 msgid "Static Files"
 msgstr ""
 
-#: inc/deprecated/deprecated.php:1774
+#: inc/deprecated/deprecated.php:1773
 msgid "Advanced"
 msgstr ""
 
-#: inc/deprecated/deprecated.php:1944
+#: inc/deprecated/deprecated.php:1943
 #, php-format
 msgid ""
 "%1$s %2$s requires at least PHP %3$s to function properly. To use this version, "
@@ -2635,99 +2642,99 @@ msgstr ""
 msgid "Which WP Rocket settings are active"
 msgstr ""
 
-#: inc/functions/options.php:547 inc/functions/options.php:586
+#: inc/functions/options.php:524 inc/functions/options.php:563
 msgid ""
 "License validation failed. Our server could not resolve the request from your "
 "website."
 msgstr ""
 
-#: inc/functions/options.php:547 inc/functions/options.php:586
+#: inc/functions/options.php:524 inc/functions/options.php:563
 #, php-format
 msgid ""
 "Try clicking %1$sSave Changes%2$s below. If the error persists, follow %3$sthis "
 "guide%4$s."
 msgstr ""
 
-#: inc/functions/options.php:563
+#: inc/functions/options.php:540
 msgid ""
 "License validation failed. You may be using a nulled version of the plugin. "
 "Please do the following:"
 msgstr ""
 
-#: inc/functions/options.php:563 inc/functions/options.php:605
+#: inc/functions/options.php:540 inc/functions/options.php:582
 #, php-format
 msgid "Login to your WP Rocket %1$saccount%2$s"
 msgstr ""
 
-#: inc/functions/options.php:563 inc/functions/options.php:605
+#: inc/functions/options.php:540 inc/functions/options.php:582
 msgid "Download the zip file"
 msgstr ""
 
-#: inc/functions/options.php:563 inc/functions/options.php:605
+#: inc/functions/options.php:540 inc/functions/options.php:582
 msgid "Reinstall"
 msgstr ""
 
-#: inc/functions/options.php:563
+#: inc/functions/options.php:540
 #, php-format
 msgid "If you do not have a WP Rocket account, please %1$spurchase a license%2$s."
 msgstr ""
 
-#: inc/functions/options.php:571
+#: inc/functions/options.php:548
 msgid ""
 "License validation failed. This user account does not exist in our database."
 msgstr ""
 
-#: inc/functions/options.php:571
+#: inc/functions/options.php:548
 msgid "To resolve, please contact support."
 msgstr ""
 
-#: inc/functions/options.php:576
+#: inc/functions/options.php:556
 msgid "License validation failed. This user account is blocked."
 msgstr ""
 
-#: inc/functions/options.php:579
+#: inc/functions/options.php:556
 #, php-format
 msgid "Please see %1$sthis guide%2$s for more info."
 msgstr ""
 
-#: inc/functions/options.php:599
+#: inc/functions/options.php:576
 msgid "Your license is not valid."
 msgstr ""
 
-#: inc/functions/options.php:599
+#: inc/functions/options.php:576
 #, php-format
 msgid "Make sure you have an active %1$sWP Rocket license%2$s."
 msgstr ""
 
-#: inc/functions/options.php:601
+#: inc/functions/options.php:578
 msgid "You have added as many sites as your current license allows."
 msgstr ""
 
-#: inc/functions/options.php:601
+#: inc/functions/options.php:578
 #, php-format
 msgid ""
 "Upgrade your %1$saccount%2$s or %3$stransfer your license%2$s to this domain."
 msgstr ""
 
-#: inc/functions/options.php:603
+#: inc/functions/options.php:580
 msgid "This website is not allowed."
 msgstr ""
 
-#: inc/functions/options.php:603
+#: inc/functions/options.php:580
 #, php-format
 msgid "Please %1$scontact support%2$s."
 msgstr ""
 
-#: inc/functions/options.php:605
+#: inc/functions/options.php:582
 msgid "This license key is not recognized."
 msgstr ""
 
-#: inc/functions/options.php:605
+#: inc/functions/options.php:582
 #, php-format
 msgid "If the issue persists, please %1$scontact support%2$s."
 msgstr ""
 
-#: inc/functions/options.php:611
+#: inc/functions/options.php:588
 #, php-format
 msgid "License validation failed: %s"
 msgstr ""
