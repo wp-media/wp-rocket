@@ -12,6 +12,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group  Subscribers
  * @group  CriticalPath
  * @group  AsyncCSSx
+ * @group  DOM
  */
 class Test_AsyncCss extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSSSubscriber/asyncCss.php';
