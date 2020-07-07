@@ -2,19 +2,18 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization;
 
-//use PHPUnit\Framework\TestCase;
 use WP_Rocket\Tests\Unit\inc\Engine\Optimization\TestCase;
 use WP_Rocket\Engine\Optimization\CSSTrait;
 
 /**
- * Tests for CSSTrait
+ * @covers \WP_Rocket\Engine\Optimization\CSSTrait::apply_font_display_swap
  *
- * @since 3.7
+ * @group  Optimize
  */
 class CSSTraitTest extends TestCase {
 	use CSSTrait;
 
-	protected $path_to_test_data = '/inc/Engine/Optimization/CSSTrait.php';
+	protected $path_to_test_data = '/inc/Engine/Optimization/CSSTraitApplyFontDisplaySwap.php';
 
 	/**
 	 * @dataProvider providerTestData
