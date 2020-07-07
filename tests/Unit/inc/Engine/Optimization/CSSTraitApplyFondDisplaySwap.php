@@ -2,7 +2,6 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization;
 
-use WP_Rocket\Tests\Unit\inc\Engine\Optimization\TestCase;
 use WP_Rocket\Engine\Optimization\CSSTrait;
 
 /**
