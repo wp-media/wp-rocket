@@ -5,12 +5,12 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Cache\AdminSubscriber;
 use WP_Rocket\Tests\Integration\AdminTestCase;
 
 /**
- * @covers WP_Rocket\Engine\Cache\AdminSubscriber::notice_advanced_cache_permissions
+ * @covers WP_Rocket\Engine\Cache\AdminSubscriber::notice_wp_config_permissions
  *
  * @group  AdminOnly
- * @group  AdvancedCache
+ * @group  WPCache
  */
-class Test_NoticeAdvancedCachePermissions extends AdminTestCase {
+class Test_NoticeWpConfigPermissions extends AdminTestCase {
 	private static $subscriber;
 
 	public static function setUpBeforeClass() {
@@ -21,7 +21,7 @@ class Test_NoticeAdvancedCachePermissions extends AdminTestCase {
 	public function testShouldCheckActionIsRegistered() {
 		$this->assertSame(
 			10,
-			has_action( 'admin_notices', [ self::$subscriber, 'notice_advanced_cache_permissions'] )
+			has_action( 'admin_notices', [ self::$subscriber, 'notice_wp_config_permissions'] )
 		);
 	}
 }
