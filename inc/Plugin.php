@@ -256,6 +256,7 @@ class Plugin {
 			'cloudways',
 			'wpengine',
 			'spinupwp',
+			'wordpresscom',
 		];
 
 		if ( $this->options->get( 'do_cloudflare', false ) ) {
