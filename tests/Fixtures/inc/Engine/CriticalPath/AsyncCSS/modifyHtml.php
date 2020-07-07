@@ -184,6 +184,36 @@ HTML
 			,
 		],
 
+		'shouldRemoveIDAttributeInNoScript' => [
+			'html'     => <<<HTML
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<link id="stylesheet1" type="text/css" onload="this.media='print'" rel="stylesheet" href="https://example.org/file1.css">
+</head>
+<body>Content here</body>
+</html>
+HTML
+			,
+			'expected' => <<<HTML
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<link rel="preload" href="https://example.org/file1.css" as="style">
+	<link id="stylesheet1" type="text/css" onload="this.media='all';this.onload=null" rel="stylesheet" href="https://example.org/file1.css" media="print">
+</head>
+<body>Content here
+<noscript>
+	<link type="text/css" onload="this.media='print'" rel="stylesheet" href="https://example.org/file1.css">
+</noscript>
+</body>
+</html>
+HTML
+			,
+		],
+
 		'shouldHandleWhitespaceAndEndingSemicolon' => [
 			'html'     => <<<HTML
 <!doctype html>

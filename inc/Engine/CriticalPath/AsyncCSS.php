@@ -359,6 +359,9 @@ class AsyncCSS {
 			$this->noscript = $this->dom->createElement( 'noscript' );
 		}
 
+		// Removes the id attribute to avoid duplicate IDs in the DOM.
+		$element->removeAttribute( 'id' );
+
 		$this->noscript->appendChild( $element );
 
 		if ( $need_to_create ) {
