@@ -16,7 +16,6 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @uses  ::flush_rocket_htaccess
  * @uses  ::rocket_generate_config_file
  * @uses  ::rocket_get_constant
- * @uses  ::set_rocket_wp_cache_define
  *
  * @group admin
  * @group AdminOnly
@@ -106,7 +105,6 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 		$this->rocket_generate_advanced_cache_file();
 		$this->flush_rocket_htaccess();
 		$this->rocket_generate_config_file();
-		$this->set_rocket_wp_cache_define();
 		$this->set_transient();
 	}
 
@@ -219,20 +217,6 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 			);
 		} else {
 			Functions\expect( 'rocket_generate_config_file' )->never();
-		}
-	}
-
-	private function set_rocket_wp_cache_define() {
-		if ( isset( $this->expected['set_rocket_wp_cache_define'] ) ) {
-			$this->wp_cache_constant = false;
-			$this->assertSame(
-				$this->expected['set_rocket_wp_cache_define'],
-				$this->filesystem->get_contents( 'vfs://public/wp-config.php' )
-			);
-		} else {
-			$this->wp_cache_constant = true;
-			Functions\expect( 'rocket_get_constant' )->with( 'WP_CACHE' )->andReturn( true );
-			Functions\expect( 'set_rocket_wp_cache_define' )->never();
 		}
 	}
 

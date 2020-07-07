@@ -99,11 +99,6 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	// Update config file.
 	rocket_generate_config_file();
 
-	// Set WP_CACHE constant in wp-config.php.
-	if ( ! rocket_get_constant( 'WP_CACHE' ) ) {
-		set_rocket_wp_cache_define( true );
-	}
-
 	if ( isset( $oldvalue['analytics_enabled'], $value['analytics_enabled'] ) && $oldvalue['analytics_enabled'] !== $value['analytics_enabled'] && 1 === (int) $value['analytics_enabled'] ) {
 		set_transient( 'rocket_analytics_optin', 1 );
 	}
