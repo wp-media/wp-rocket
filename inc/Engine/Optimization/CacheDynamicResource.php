@@ -13,6 +13,7 @@ use WP_Rocket\Optimization\CSS\Path_Rewriter;
  * @author Remy Perona
  */
 class CacheDynamicResource extends AbstractOptimization implements Subscriber_Interface {
+	use CSSTrait;
 	use Path_Rewriter;
 
 	/**
@@ -177,6 +178,7 @@ class CacheDynamicResource extends AbstractOptimization implements Subscriber_In
 
 			if ( 'css' === $this->extension ) {
 				$content = $this->rewrite_paths( $this->get_file_path( $src ), $filepath, $content );
+				$content = $this->apply_font_display_swap( $content );
 			}
 
 			if ( ! $this->write_file( $content, $filepath ) ) {
