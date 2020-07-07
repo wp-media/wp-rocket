@@ -16,18 +16,18 @@ trait CSSTrait {
 	private function apply_font_display_swap( $css_file_content ) {
 		$css_file_content = (string) $css_file_content;
 
-		$replacement = preg_replace_callback(
-			'/(?:@font-face)\s*{([^}]+)}/',
+		return preg_replace_callback(
+			'/(?:@font-face)\s*{(?<value>[^}]+)}/',
 			function ( $matches ) {
-				$matches[1] = ( false !== strpos( $matches[1], 'font-display' ) )
-					? $matches[1]
-					: 'font-display:swap;' . $matches[1];
+				if ( false !== strpos( $matches['value'], 'font-display' ) ) {
+					return $matches[0];
+				}
 
-				return '@font-face{' . $matches[1] . '}';
+				$swap = "font-display:swap;{$matches['value']}";
+
+				return str_replace( $matches['value'], $swap, $matches[0] );
 			},
 			$css_file_content
 		);
-
-		return $replacement;
 	}
 }

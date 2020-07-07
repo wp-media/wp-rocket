@@ -15,7 +15,7 @@ return [
 CSS
 			,
 			'expected' => <<<EXPECTED
-@font-face{font-display:swap;
+@font-face {font-display:swap;
   font-family: 'MyWebFont'; /* Define the custom font name */
   src:  url('myfont.woff2') format('woff2'),
         url('myfont.woff') format('woff'); /* Define where the font can be downloaded */
@@ -60,7 +60,7 @@ EXPECTED
 CSS
 			,
 			'expected' => <<<EXPECTED
-@font-face{
+@font-face {
 	font-family: 'ETmodules';
 	src: url("core/admin/fonts/modules.eot");
 	src: url("core/admin/fonts/modules.eot#iefix")
@@ -91,13 +91,13 @@ EXPECTED
 CSS
 			,
 			'expected' => <<<EXPECTED
-@font-face{font-display:swap;
+@font-face {font-display:swap;
   font-family: 'MyWebFont'; /* Define the custom font name */
   src:  url('myfont.woff2') format('woff2'),
         url('myfont.woff') format('woff'); /* Define where the font can be downloaded */
         /* Define how the browser behaves during download */
 }
-@font-face{font-display:swap;
+@font-face {font-display:swap;
 	font-family: 'ETmodules';
 	src: url("core/admin/fonts/modules.eot");
 	src: url("core/admin/fonts/modules.eot#iefix")
