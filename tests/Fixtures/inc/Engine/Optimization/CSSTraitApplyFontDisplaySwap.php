@@ -107,5 +107,15 @@ CSS
 }
 EXPECTED
 		],
+
+		'shouldReplaceMinimizedWithoutAddingSpaces' => [
+	               <<< CSS
+@font-face{font-family:'MyWebFont';src:url('myfont.woff2')format('woff2'),url('myfont.woff')format('woff')}
+CSS
+		,
+		'expected' => <<<EXPECTED
+@font-face{font-display:swap;font-family:'MyWebFont';src:url('myfont.woff2')format('woff2'),url('myfont.woff')format('woff')}
+EXPECTED
+		],
 	],
 ];
