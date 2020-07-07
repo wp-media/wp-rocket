@@ -194,6 +194,11 @@ class WPCache {
 			return;
 		}
 
+		// This filter is documented in inc/Engine/Cache/WPCache.php.
+		if ( ! (bool) apply_filters( 'rocket_set_wp_cache_constant', true ) ) {
+			return;
+		}
+
 		if ( $this->find_wpconfig_path() ) {
 			return;
 		}

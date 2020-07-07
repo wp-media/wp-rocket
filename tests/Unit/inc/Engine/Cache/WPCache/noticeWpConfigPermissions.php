@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Cache\WPCache;
 
+use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 use WP_Rocket\Engine\Cache\WPCache;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
@@ -71,6 +72,12 @@ class Test_NoticeWpConfigPermissions extends FileSystemTestCase {
 				->andReturn( $config['valid_key'] );
 		} else {
 			Functions\expect( 'rocket_valid_key' )->never();
+		}
+
+		if ( isset( $config['filter'] ) ) {
+			Filters\expectApplied( 'rocket_set_wp_cache_constant' )
+				->once()
+				->andReturn( $config['filter'] );
 		}
 
 		if ( ! $config['writable'] ) {

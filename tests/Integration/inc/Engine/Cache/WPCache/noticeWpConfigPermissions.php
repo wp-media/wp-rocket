@@ -43,7 +43,9 @@ class Test_NoticeWpConfigPermissions extends FilesystemTestCase {
 	public function tearDown() {
         delete_user_meta( get_current_user_id(), 'rocket_boxes', [ 'rocket_warning_wp_config_permissions' ] );
 
-        $this->filesystem->put_contents( 'wp-config.php', "<?php\ndefine( 'DB_NAME', 'local' );\ndefine( 'DB_USER', 'root' );\n" );
+		$this->filesystem->put_contents( 'wp-config.php', "<?php\ndefine( 'DB_NAME', 'local' );\ndefine( 'DB_USER', 'root' );\n" );
+
+		remove_filter( 'rocket_set_wp_cache_constant', [ $this, 'return_false'] );
 
 		parent::tearDown();
 	}
@@ -70,6 +72,10 @@ class Test_NoticeWpConfigPermissions extends FilesystemTestCase {
 
 		if ( $config['boxes'] ) {
 			add_user_meta( get_current_user_id(), 'rocket_boxes', [ 'rocket_warning_wp_config_permissions' ] );
+		}
+	
+		if ( isset( $config['filter'] ) ) {
+			add_filter( 'rocket_set_wp_cache_constant', [ $this, 'return_false'] );
 		}
 
 		// Run it.

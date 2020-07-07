@@ -53,6 +53,19 @@ return [
 			'expected' => null,
 		],
 
+		'testShouldReturnNullWhenFilterFalse' => [
+			'config'   => [
+				'cap'       => true,
+				'valid_key' => true,
+				'writable'  => true,
+				'constant'  => false,
+				'filter'    => false,
+				'boxes'     => [],
+				'message'   => '',
+			],
+			'expected' => null,
+		],
+
 		'testShouldReturnNullWhenDismissed' => [
 			'config'   => [
 				'cap'       => true,
