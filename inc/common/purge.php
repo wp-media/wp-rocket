@@ -137,11 +137,11 @@ function rocket_get_purge_urls( $post_id, $post ) {
 	$parents = get_post_ancestors( $post_id );
 	if ( (bool) $parents ) {
 		foreach ( $parents as $parent_id ) {
-			array_push( $purge_urls, get_permalink( $parent_id ) );
+			$purge_urls[] = get_permalink( $parent_id );
 		}
 	}
 
-	return $purge_urls;
+	return array_flip( array_flip( $purge_urls ) );
 }
 
 /**

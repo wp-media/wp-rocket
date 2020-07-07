@@ -51,11 +51,11 @@ class Test_RocketGetPurgeUrls extends FilesystemTestCase {
 		Functions\expect('get_rocket_sample_permalink')
 			->once()
 			->with( $post_id )
-			->andReturn( ['http://www.example.org/%postname%', $post->post_name] );
+			->andReturn( ['http://example.org/%postname%/', ( ( ! in_array( $post->post_type, [ 'page', 'post' ] ) ) ? $post->post_type."/" : "" ) . $post->post_name] );
 
 		Functions\expect('rocket_extract_url_component')
 			->once()
-			->with('http://www.example.org' . $post->url, PHP_URL_PATH)
+			->with('http://example.org' . $post->url, PHP_URL_PATH)
 			->andReturn( $post->url );
 
 		Functions\expect('get_adjacent_post')

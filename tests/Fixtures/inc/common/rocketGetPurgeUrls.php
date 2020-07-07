@@ -7,9 +7,13 @@ return [
 		'wp-content' => [
 			'cache' => [
 				'wp-rocket' => [
-					'test_purge.html' => '',
+					'test_purge' => [
+						'index.html' => ''
+					],
 					'folder_1' => [
-						'test_purge.html' => ''
+						'test_purge' => [
+							'index.html' => ''
+						]
 					]
 				]
 			]
@@ -18,20 +22,20 @@ return [
 
 	'urls' => [
 		'posts' => [
-			2 => 'http://www.example.org/next_post',
-			3 => 'http://www.example.org/test_parent',
-			4 => 'http://www.example.org/test_parent_2',
-			5 => 'http://www.example.org/test2',
-			6 => 'http://www.example.org/test3',
-			20 => 'http://www.example.org/blog'
+			20 => 'http://example.org/blog/',
+			2 => 'http://example.org/next_post/',
+			3 => 'http://example.org/test_parent/',
+			4 => 'http://example.org/test_parent_2/',
+			5 => 'http://example.org/test2/',
+			6 => 'http://example.org/test3/'
 		],
 		'authors' => [
-			1 => 'http://www.example.org/author/author_name'
+			1 => 'http://example.org/author/author_name/'
 		],
 		'archives' => [
 			'page' => false,
-			'post' => 'http://www.example.org/',
-			'custompost' => 'http://www.example.org/custompost/',
+			'post' => 'http://example.org/',
+			'custompost' => 'http://example.org/custompost/',
 		]
 	],
 
@@ -46,7 +50,7 @@ return [
 				'post_data' => [
 					'ID' => 1,
 					'post_name' => 'test',
-					'url' => '/test',
+					'url' => '/test/',
 					'post_type' => 'post',
 					'next_post_id' => 2,
 					'post_author' => 1,
@@ -54,12 +58,12 @@ return [
 				]
 			],
 			'expected' => [
-				'http://www.example.org/test',
-				'http://www.example.org/blog',
-				'http://www.example.org/next_post',
-				'http://www.example.org/author/author_name',
-				'http://www.example.org/test_parent',
-				'http://www.example.org/test_parent_2'
+				'http://example.org/test/',
+				'http://example.org/blog/',
+				'http://example.org/next_post/',
+				'http://example.org/author/author_name/',
+				'http://example.org/test_parent/',
+				'http://example.org/test_parent_2/'
 			]
 		],
 
@@ -71,21 +75,18 @@ return [
 				],
 				'post_data' => [
 					'ID' => 1,
-					'post_name' => 'test',
-					'url' => '/test',
+					'post_name' => 'test_page',
+					'url' => '/test_page/',
 					'post_type' => 'page',
-					'next_post_id' => 2,
-					'post_author' => 1,
-					'ancestors' => [ 3, 4 ]
+					'next_post_id' => 20,
+					'post_author' => 1
 				],
 
 			],
 			'expected' => [
-				'http://www.example.org/test',
-				'http://www.example.org/next_post',
-				'http://www.example.org/author/author_name',
-				'http://www.example.org/test_parent',
-				'http://www.example.org/test_parent_2'
+				'http://example.org/test_page/',
+				'http://example.org/blog/',
+				'http://example.org/author/author_name/'
 			]
 		],
 
@@ -98,9 +99,8 @@ return [
 				'post_data' => [
 					'ID' => 1,
 					'post_name' => 'test_custom_post',
-					'url' => '/test_custom_post',
+					'url' => '/custompost/test_custom_post/',
 					'post_type' => 'custompost',
-					'next_post_id' => 2,
 					'post_author' => 1,
 					'ancestors' => [ 3, 4 ]
 				],
@@ -108,14 +108,13 @@ return [
 				'is_ssl' => false,
 			],
 			'expected' => [
-				'http://www.example.org/test_custom_post',
-				'http://www.example.org/custompost/index.html',
-				'http://www.example.org/custompost/index.html_gzip',
-				'http://www.example.org/custompost/indexpage',
-				'http://www.example.org/next_post',
-				'http://www.example.org/author/author_name',
-				'http://www.example.org/test_parent',
-				'http://www.example.org/test_parent_2'
+				'http://example.org/custompost/test_custom_post/',
+				'http://example.org/custompost/index.html',
+				'http://example.org/custompost/index.html_gzip',
+				'http://example.org/custompost/indexpage',
+				'http://example.org/author/author_name/',
+				'http://example.org/test_parent/',
+				'http://example.org/test_parent_2/'
 			]
 		],
 
@@ -128,8 +127,8 @@ return [
 
 				'post_data' => [
 					'ID' => 1,
-					'post_name' => 'test',
-					'url' => '/test',
+					'post_name' => 'test_prev',
+					'url' => '/test_prev/',
 					'post_type' => 'post',
 					'next_post_id' => 2,
 					'prev_post_id' => 5,
@@ -139,14 +138,14 @@ return [
 				]
 			],
 			'expected' => [
-				'http://www.example.org/test',
-				'http://www.example.org/blog',
-				'http://www.example.org/next_post',
-				'http://www.example.org/test2',
-				'http://www.example.org/test3',
-				'http://www.example.org/author/author_name',
-				'http://www.example.org/test_parent',
-				'http://www.example.org/test_parent_2'
+				'http://example.org/test_prev/',
+				'http://example.org/blog/',
+				'http://example.org/next_post/',
+				'http://example.org/test2/',
+				'http://example.org/test3/',
+				'http://example.org/author/author_name/',
+				'http://example.org/test_parent/',
+				'http://example.org/test_parent_2/'
 			]
 		],
 
@@ -154,7 +153,7 @@ return [
 			'config' => [
 				'options' => [
 					'page_for_posts' => 20,
-					'home' => 'http://www.example.org/',
+					'home' => 'http://example.org',
 					'cache_purge_pages' => [
 						'(.*)test_purge'
 					]
@@ -162,8 +161,8 @@ return [
 
 				'post_data' => [
 					'ID' => 1,
-					'post_name' => 'test',
-					'url' => '/test',
+					'post_name' => 'test_purge_post',
+					'url' => '/test_purge_post/',
 					'post_type' => 'post',
 					'next_post_id' => 2,
 					'post_author' => 1,
@@ -171,12 +170,12 @@ return [
 				]
 			],
 			'expected' => [
-				'http://www.example.org/test',
-				'http://www.example.org/blog',
-				'http://www.example.org/next_post',
-				'http://www.example.org/author/author_name',
-				'http://www.example.org/test_parent',
-				'http://www.example.org/test_parent_2'
+				'http://example.org/test_purge_post/',
+				'http://example.org/blog/',
+				'http://example.org/next_post/',
+				'http://example.org/author/author_name/',
+				'http://example.org/test_parent/',
+				'http://example.org/test_parent_2/'
 			]
 		],
 
