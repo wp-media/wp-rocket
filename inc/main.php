@@ -229,7 +229,7 @@ function rocket_activation() {
 		/**
 		 * This filter is documented in inc/files.php::rocket_generate_advanced_cache_file
 		 */
-		add_filter( 'rocket_generate_advanced_cache_file', __return_false() );
+		add_filter( 'rocket_generate_advanced_cache_file', '__return_false' );
 	}
 
 	rocket_generate_advanced_cache_file( new AdvancedCache( WP_ROCKET_PATH . 'views/cache/', rocket_direct_filesystem() ) );

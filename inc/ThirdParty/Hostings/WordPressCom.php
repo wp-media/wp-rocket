@@ -34,7 +34,7 @@ class WordPressCom implements Event_Manager_Aware_Subscriber_Interface {
 	 *
 	 * @param AdminSubscriber $admin_cache_subscriber Cache Admin Subscriber instance.
 	 */
-	public function __construct(AdminSubscriber $admin_cache_subscriber) {
+	public function __construct( AdminSubscriber $admin_cache_subscriber ) {
 		$this->admin_cache_subscriber = $admin_cache_subscriber;
 	}
 
@@ -65,7 +65,7 @@ class WordPressCom implements Event_Manager_Aware_Subscriber_Interface {
 
 		return [
 			'do_rocket_generate_caching_files'    => 'return_false',
-			'rocket_cache_mandatory_cookies'      => 'return_false',
+			'rocket_cache_mandatory_cookies'      => 'return_empty_array',
 			'rocket_display_varnish_options_tab'  => 'return_false',
 			'admin_notices'                       => 'remove_admin_subscriber_advanced_cache_permissions_notice',
 			'rocket_generate_advanced_cache_file' => 'return_false',
@@ -80,6 +80,9 @@ class WordPressCom implements Event_Manager_Aware_Subscriber_Interface {
 	 * @return void
 	 */
 	public function remove_admin_subscriber_advanced_cache_permissions_notice() {
-		$this->event_manager->remove_callback( 'admin_notices', [ $this->admin_cache_subscriber, 'notice_advanced_cache_permissions' ] );
+		$this->event_manager->remove_callback(
+			'admin_notices',
+			[ $this->admin_cache_subscriber, 'notice_advanced_cache_permissions' ]
+		);
 	}
 }
