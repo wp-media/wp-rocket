@@ -456,30 +456,6 @@ function get_rocket_exclude_defer_js() { // phpcs:ignore WordPress.NamingConvent
 }
 
 /**
- * Get list of CSS files to be excluded from async CSS.
- *
- * @since 2.10
- * @author Remy Perona
- *
- * @return array An array of URLs for the CSS files to be excluded.
- */
-function get_rocket_exclude_async_css() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
-	/**
-	 * Filter list of async CSS files
-	 *
-	 * @since 2.10
-	 * @author Remy Perona
-	 *
-	 * @param array $exclude_async_css An array of URLs for the CSS files to be excluded.
-	 */
-	$exclude_async_css = (array) apply_filters( 'rocket_exclude_async_css', [] );
-	$exclude_async_css = array_filter( $exclude_async_css );
-	$exclude_async_css = array_flip( array_flip( $exclude_async_css ) );
-
-	return $exclude_async_css;
-}
-
-/**
  * Determine if the key is valid
  *
  * @since 2.9 use hash_equals() to compare the hash values
