@@ -14,6 +14,17 @@ defined( 'ABSPATH' ) || exit;
  * @param AdvancedCache $advanced_cache Optional. Instance of the advanced cache handler.
  */
 function rocket_generate_advanced_cache_file( $advanced_cache = null ) {
+	/**
+	 * Filters whether to generate the advanced-cache.php file.
+	 *
+	 * @since 3.6.3
+	 *
+	 * @param bool True (default) to go ahead with advanced cache file generation; false to stop generation.
+	 */
+	if ( ! (bool) apply_filters( 'rocket_generate_advanced_cache_file', true ) ) {
+		return;
+	}
+
 	static $done = false;
 
 	if ( rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ) {
@@ -37,7 +48,7 @@ function rocket_generate_advanced_cache_file( $advanced_cache = null ) {
 }
 
 /**
- * Generates the configuration file for the current domain based on the values ​​of options
+ * Generates the configuration file for the current domain based on the values of options
  *
  * @since 2.0
  *
