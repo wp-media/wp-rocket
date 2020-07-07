@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\IEConditionalSubscriber;
 use WP_Rocket\Engine\Optimization\IEConditionalSubscriber;
 use WP_Rocket\Tests\Unit\TestCase as BaseTestCase;
 
-class TestCase extends BaseTestCase {
+abstract class TestCase extends BaseTestCase {
 	protected static $subscriber;
 
 	public static function setUpBeforeClass() {

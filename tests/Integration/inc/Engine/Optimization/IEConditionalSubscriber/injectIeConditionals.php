@@ -7,6 +7,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\IEConditionalSubsc
  *
  * @group  IE
  * @group  Optimization
+ * @group  AsyncCSS
  */
 class Test_InjectIeConditionals extends TestCase {
 

@@ -732,7 +732,6 @@ HTML
 			,
 		],
 
-		// {{TEMPLATE_TAG}} template tags.
 		'shouldHandlePlaceholderTemplateTag' => [
 			'html'     => get_html_as_string( 'placeholder' ),
 			'expected' => get_html_as_string( 'placeholder-modify_html' ),
