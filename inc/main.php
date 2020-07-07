@@ -110,6 +110,7 @@ add_action( 'plugins_loaded', 'rocket_init' );
 /**
  * Tell WP what to do when plugin is deactivated.
  *
+ * @since 3.6.3 Does not try to write a blank advanced-cache.php file when installed on WP.com
  * @since 1.0
  */
 function rocket_deactivation() {
@@ -144,8 +145,10 @@ function rocket_deactivation() {
 		// Remove WP_CACHE constant in wp-config.php.
 		set_rocket_wp_cache_define( false );
 
-		// Delete content of advanced-cache.php.
-		rocket_put_content( WP_CONTENT_DIR . '/advanced-cache.php', '' );
+		// Delete content of advanced-cache.php, unless installed on WP.com.
+		if ( ! rocket_get_constant( 'WPCOMSH_VERSION' ) ) {
+			rocket_put_content( WP_CONTENT_DIR . '/advanced-cache.php', '' );
+		}
 	}
 
 	// Update customer key & licence.
@@ -167,7 +170,7 @@ function rocket_deactivation() {
 	wp_clear_scheduled_hook( 'rocket_cache_dir_size_check' );
 
 	/**
-	 * WP Rocket deactivation.
+	 * WP Rocket deactivation.
 	 *
 	 * @since  3.1.5
 	 * @author Grégory Viguier
@@ -181,6 +184,7 @@ register_deactivation_hook( WP_ROCKET_FILE, 'rocket_deactivation' );
 /**
  * Tell WP what to do when plugin is activated.
  *
+ * @since 3.6.3 Checks for installation on WP.com and filters for short-circuiting writing advanced-cache.php file.
  * @since 1.1.0
  */
 function rocket_activation() {
@@ -221,10 +225,17 @@ function rocket_activation() {
 	rocket_init_config_dir();
 
 	// Create advanced-cache.php file.
+	if ( rocket_get_constant( 'WPCOMSH_VERSION' ) ) {
+		/**
+		 * This filter is documented in inc/files.php::rocket_generate_advanced_cache_file
+		 */
+		add_filter( 'rocket_generate_advanced_cache_file', __return_false() );
+	}
+
 	rocket_generate_advanced_cache_file( new AdvancedCache( WP_ROCKET_PATH . 'views/cache/', rocket_direct_filesystem() ) );
 
 	/**
-	 * WP Rocket activation.
+	 * WP Rocket activation.
 	 *
 	 * @since  3.1.5
 	 * @author Grégory Viguier
