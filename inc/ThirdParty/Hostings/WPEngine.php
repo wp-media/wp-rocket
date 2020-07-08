@@ -46,6 +46,7 @@ class WPEngine implements Subscriber_Interface {
 			'after_rocket_clean_domain'               => 'clean_wpengine',
 			'rocket_buffer'                           => [ 'add_footprint', 50 ],
 			'rocket_disable_htaccess'                 => 'return_true',
+			'rocket_generate_advanced_cache_file'     => 'return_false',
 		];
 	}
 
