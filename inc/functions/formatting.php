@@ -112,7 +112,7 @@ function rocket_validate_js( $file ) {
  */
 function rocket_validate_css( $file ) {
 	if ( rocket_is_internal_file( $file ) ) {
-		return rocket_sanitize_js( rocket_clean_exclude_file( trim( $file ) ) );
+		return rocket_sanitize_css( rocket_clean_exclude_file( trim( $file ) ) );
 	}
 
 	return sanitize_text_field( rocket_remove_url_protocol( strtok( $file, '?' ) ) );
