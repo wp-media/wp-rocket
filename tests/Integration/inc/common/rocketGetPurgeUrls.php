@@ -31,10 +31,6 @@ class Test_RocketGetPurgeUrls extends FilesystemTestCase {
 
 		$this->create_authors( $this->config['urls']['authors'] );
 
-		Functions\expect( 'get_rocket_option' )->withAnyArgs()->andReturnUsing( function( $option_name, $default=null ) {
-			return isset( $this->site_options[$option_name] ) ? $this->site_options[$option_name] : $default;
-		} );
-
 		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/common/purge.php';
 	}
 
@@ -45,6 +41,10 @@ class Test_RocketGetPurgeUrls extends FilesystemTestCase {
 		}
 		remove_filter( 'get_previous_post_where', [$this, 'get_previous_posts'], 10 );
 		remove_filter( 'get_next_post_where', [$this, 'get_next_posts'], 10 );
+
+		if ( isset( $this->site_options['cache_purge_pages'] ) ){
+			remove_filter( 'pre_get_rocket_option_cache_purge_pages', [ $this, 'set_cache_purge_pages' ] );
+		}
 	}
 
 	/**
@@ -66,6 +66,10 @@ class Test_RocketGetPurgeUrls extends FilesystemTestCase {
 
 		foreach ( $this->site_options as $option_name => $option_value ) {
 			add_filter( 'pre_option_'.$option_name, [$this, 'prepare_option'], 10, 3 );
+		}
+
+		if ( isset( $this->site_options['cache_purge_pages'] ) ){
+			add_filter( 'pre_get_rocket_option_cache_purge_pages', [ $this, 'set_cache_purge_pages' ] );
 		}
 
 		add_filter( 'get_previous_post_where', [$this, 'get_previous_posts'], 10, 2 );
@@ -152,6 +156,10 @@ class Test_RocketGetPurgeUrls extends FilesystemTestCase {
 		$this->post_data = $current_post_data;
 
 		return $this->factory->post->create( $post_data );
+	}
+
+	public function set_cache_purge_pages() {
+		return $this->site_options['cache_purge_pages'];
 	}
 
 }
