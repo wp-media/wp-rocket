@@ -31,6 +31,10 @@ class Test_RocketGetPurgeUrls extends FilesystemTestCase {
 
 		$this->create_authors( $this->config['urls']['authors'] );
 
+		Functions\expect( 'get_rocket_option' )->withAnyArgs()->andReturnUsing( function( $option_name, $default=null ) {
+			return isset( $this->site_options[$option_name] ) ? $this->site_options[$option_name] : $default;
+		} );
+
 		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/common/purge.php';
 	}
 
