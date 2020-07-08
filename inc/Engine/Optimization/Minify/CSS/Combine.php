@@ -5,6 +5,7 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Logger\Logger;
 use WP_Rocket\Optimization\CSS\Path_Rewriter;
 use MatthiasMullie\Minify\CSS as MinifyCSS;
+use WP_Rocket\Engine\Optimization\CSSTrait;
 
 /**
  * Minify & Combine CSS files
@@ -14,6 +15,7 @@ use MatthiasMullie\Minify\CSS as MinifyCSS;
  */
 class Combine extends AbstractCSSOptimization {
 	use Path_Rewriter;
+	use CSSTrait;
 
 	/**
 	 * Minifier instance
@@ -199,7 +201,8 @@ class Combine extends AbstractCSSOptimization {
 				return false;
 			}
 
-			$minify_filepath = $this->write_file( $minified_content, $minified_file );
+			$minified_content = $this->apply_font_display_swap( $minified_content );
+			$minify_filepath  = $this->write_file( $minified_content, $minified_file );
 
 			if ( ! $minify_filepath ) {
 				Logger::error(
