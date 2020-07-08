@@ -156,7 +156,7 @@ function rocket_deactivation() {
 		$wp_cache->set_wp_cache_constant( false );
 
 		// Delete content of advanced-cache.php, unless installed on WP.com.
-		if ( ! rocket_get_constant( 'WPCOMSH_VERSION' ) ) {
+		if ( rocket_is_non_caching_host() ) {
 			rocket_put_content( WP_CONTENT_DIR . '/advanced-cache.php', '' );
 		}
 	}
@@ -238,7 +238,7 @@ function rocket_activation() {
 	rocket_init_config_dir();
 
 	// Create advanced-cache.php file.
-	if ( rocket_get_constant( 'WPCOMSH_VERSION' ) ) {
+	if ( rocket_is_non_caching_host() ) {
 		/**
 		 * This filter is documented in inc/files.php::rocket_generate_advanced_cache_file
 		 */
@@ -274,3 +274,31 @@ function rocket_activation() {
 	);
 }
 register_activation_hook( WP_ROCKET_FILE, 'rocket_activation' );
+
+/**
+ * Check if hosting does its own caching.
+ *
+ * Determine if installed on a host that uses its own caching
+ * which requires us to disable writing advanced-cache.php
+ *
+ * @since 3.6.3
+ *
+ * @return bool True when we detect a host that has its own caching; false otherwise.
+ */
+function rocket_is_non_caching_host() {
+	if ( rocket_get_constant( 'WPCOMSH_VERSION' ) ) {
+		return true;
+	}
+
+	if (
+	! (
+		class_exists( 'WpeCommon' )
+		&&
+		function_exists( 'wpe_param' )
+	)
+	) {
+		return true;
+	}
+
+	return false;
+}
