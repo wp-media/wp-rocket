@@ -9,6 +9,7 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @covers ::rocket_validate_css
  *
  * @group Functions
+ * @group Formatting
  */
 class Test_RocketValidateCss extends TestCase {
 	/**

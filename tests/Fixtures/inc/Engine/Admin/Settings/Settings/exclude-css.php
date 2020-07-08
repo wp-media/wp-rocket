@@ -38,7 +38,7 @@ return [
 				' ',
 				'http://external.org/style.css',
 				'http://www.external.org/style.css',
-				'http://www.external.org/style.js',
+				'http://www.external.org',
 			],
 		],
 		[
@@ -48,7 +48,7 @@ return [
 				'example.org/style1.css',
 				'external.org/style.css',
 				'www.external.org/style.css',
-				false,
+				'www.external.org',
 			],
 		],
 	],
