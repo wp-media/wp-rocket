@@ -120,7 +120,7 @@ CSS
 
 		'shouldIgnoreMalFormedCSS' => [
 			'css' => <<<CSS
-@font-face:font-display:swap;font-family:'MyWebFont';src:url('myfont.woff2')format('woff2'),url('myfont.woff')format('woff')}@font-face{font-display:swap;
+@font-face:font-display:swap;font-family:'MyWebFont';src:url('myfont.woff2')format('woff2'),url('myfont.woff')format('woff')}@font-face{
 font-family:'MyWebFont';src:url('myfont.woff2')format('woff2'),url('myfont.woff')format('woff')}@font-face {font-display:swapfont-family'ETmodules';src:
 url("core/admin/fonts/modules.eot");src: url("core/admin/fonts/modules.eot#iefix")format("woff"), url("core/admin/fonts/modules.svg#ETModules")font-weight: normal;font-style: normal;
 CSS
