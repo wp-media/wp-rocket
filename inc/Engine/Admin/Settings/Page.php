@@ -179,6 +179,41 @@ class Page {
 	}
 
 	/**
+	 * Enqueues WP Rocket scripts on the settings page
+	 *
+	 * @since 3.6.1
+	 *
+	 * @param string $hook The current admin page.
+	 *
+	 * @return void
+	 */
+	public function enqueue_rocket_scripts( $hook ) {
+		if ( 'settings_page_wprocket' !== $hook ) {
+			return;
+		}
+
+		wp_enqueue_script( 'wistia-e-v1', 'https://fast.wistia.com/assets/external/E-v1.js', [], null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+	}
+
+	/**
+	 * Adds the async attribute to the Wistia script
+	 *
+	 * @since 3.6.1
+	 *
+	 * @param string $tag    The <script> tag for the enqueued script.
+	 * @param string $handle The script's registered handle.
+	 *
+	 * @return string
+	 */
+	public function async_wistia_script( $tag, $handle ) {
+		if ( 'wistia-e-v1' !== $handle ) {
+			return $tag;
+		}
+
+		return str_replace( ' src', ' async src', $tag );
+	}
+
+	/**
 	 * Gets customer data from WP Rocket website to display it in the dashboard.
 	 *
 	 * @since 3.0
@@ -547,10 +582,8 @@ class Page {
 		$this->settings->add_settings_sections(
 			[
 				'basic' => [
-					'title'  => __( 'Basic Settings', 'rocket' ),
-					'page'   => 'file_optimization',
-					// translators: %1$s = type of minification (HTML, CSS or JS), %2$s = “WP Rocket”.
-					'helper' => rocket_maybe_disable_minify_html() ? sprintf( __( '%1$s Minification is currently activated in <strong>Autoptimize</strong>. If you want to use %2$s’s minification, disable those options in Autoptimize.', 'rocket' ), 'HTML', WP_ROCKET_PLUGIN_NAME ) : '',
+					'title' => __( 'Basic Settings', 'rocket' ),
+					'page'  => 'file_optimization',
 				],
 				'css'   => [
 					'title'  => __( 'CSS Files', 'rocket' ),
@@ -577,21 +610,6 @@ class Page {
 
 		$this->settings->add_settings_fields(
 			[
-				'minify_html'            => [
-					'type'              => 'checkbox',
-					'label'             => __( 'Minify HTML', 'rocket' ),
-					'container_class'   => [
-						rocket_maybe_disable_minify_html() ? 'wpr-isDisabled' : '',
-					],
-					'description'       => __( 'Minifying HTML removes whitespace and comments to reduce the size.', 'rocket' ),
-					'section'           => 'basic',
-					'page'              => 'file_optimization',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
-					'input_attr'        => [
-						'disabled' => rocket_maybe_disable_minify_html() ? 1 : 0,
-					],
-				],
 				'minify_google_fonts'    => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Optimize Google Fonts', 'rocket' ),

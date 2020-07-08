@@ -33,13 +33,34 @@ class Test_Optimize extends TestCase {
 
 		Functions\when( 'esc_url' )->returnArg();
 		Functions\when( 'wp_scripts' )->alias( function () {
-			$wp_scripts        = new \stdClass();
-			$jquery            = new \stdClass();
-			$jquery->src       = '/wp-includes/js/jquery/jquery.js';
-			$wp_scripts->queue = [];
+			$wp_scripts                                 = new \stdClass();
+			$jquery                                     = new \stdClass();
+			$jquery->src                                = '/wp-includes/js/jquery/jquery.js';
+			$wp_scripts->registered                = [];
+			$wp_scripts->registered['jquery-core'] = $jquery;
+			$wp_scripts->queue                     = [];
 
 			return $wp_scripts;
 		} );
+
+		Functions\when( 'site_url' )->returnArg();
+		Functions\when('rocket_clean_exclude_file')->returnArg();
+
+		$this->options->shouldReceive( 'get' )
+			->with( 'minify_js_key', 'rocket_uniqid' )
+			->andReturn( 'rocket_uniqid' );
+		$this->options->shouldReceive( 'get' )
+			->with( 'exclude_inline_js', [] )
+			->andReturn( [] );
+		$this->options->shouldReceive( 'get' )
+			->with( 'defer_all_js', 0 )
+			->andReturn( 1 );
+		$this->options->shouldReceive( 'get' )
+			->with( 'defer_all_js_safe', 0 )
+			->andReturn( 1 );
+		$this->options->shouldReceive( 'get' )
+			->with( 'exclude_js', [] )
+			->andReturn( [] );
 
 		$this->combine = new Combine( $this->options, $this->minify, Mockery::mock( AssetsLocalCache::class ) );
 	}

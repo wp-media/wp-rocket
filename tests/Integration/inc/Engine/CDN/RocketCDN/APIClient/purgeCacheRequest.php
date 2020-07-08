@@ -3,8 +3,9 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\APIClient;
 
 use WPMedia\PHPUnit\Integration\ApiTrait;
-use WP_Rocket\Tests\Integration\TestCase;
 use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
+use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
+
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\APIClient::purge_cache_request
@@ -24,6 +25,11 @@ class Test_PurgeCacheRequest extends TestCase {
 		self::pathToApiCredentialsConfigFile( WP_ROCKET_TESTS_DIR . '/../env/local/' );
 	}
 
+	public function setUp() {
+		parent::setUp();
+		add_filter( 'home_url', [ $this, 'home_url_cb' ] );
+	}
+
 	public function tearDown() {
 		parent::tearDown();
 
@@ -39,6 +45,7 @@ class Test_PurgeCacheRequest extends TestCase {
 			$transient = [ 'id' => self::getApiCredential( 'ROCKETCDN_WEBSITE_ID' ) ];
 			$option    = self::getApiCredential( 'ROCKETCDN_TOKEN' );
 		}
+
 		set_transient( 'rocketcdn_status', $transient, MINUTE_IN_SECONDS );
 		if ( ! empty( $option ) ) {
 			update_option( 'rocketcdn_user_token', $option );

@@ -301,8 +301,10 @@ function set_rocket_wp_cache_define( $turn_it_on ) { // phpcs:ignore WordPress.N
 		return;
 	}
 
+	$filesystem = rocket_direct_filesystem();
+
 	// Get content of the config file.
-	$config_file = file( $config_file_path );
+	$config_file_contents = $filesystem->get_contents( $config_file_path );
 
 	// Get the value of WP_CACHE constant.
 	$turn_it_on = $turn_it_on ? 'true' : 'false';
@@ -316,42 +318,20 @@ function set_rocket_wp_cache_define( $turn_it_on ) { // phpcs:ignore WordPress.N
 	*/
 	$turn_it_on = apply_filters( 'set_rocket_wp_cache_define', $turn_it_on ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
-	// Lets find out if the constant WP_CACHE is defined or not.
-	$is_wp_cache_exist = false;
-
 	// Get WP_CACHE constant define.
-	$constant = "define('WP_CACHE', $turn_it_on); // Added by WP Rocket\r\n";
+	$constant = "define('WP_CACHE', $turn_it_on); // Added by WP Rocket";
 
-	foreach ( $config_file as &$line ) {
-		if ( ! preg_match( '/^define\(\s*\'([A-Z_]+)\',(.*)\)/', $line, $match ) ) {
-			continue;
-		}
+	// Lets find out if the constant WP_CACHE is defined or not.
+	$wp_cache_found = preg_match( '/^define\(\s*\'WP_CACHE\',(.*)\)/m', $config_file_contents, $matches );
 
-		if ( 'WP_CACHE' === $match[1] ) {
-			$is_wp_cache_exist = true;
-			$line              = $constant;
-		}
-	}
-	unset( $line );
-
-	// If the constant does not exist, create it.
-	if ( ! $is_wp_cache_exist ) {
-		array_shift( $config_file );
-		array_unshift( $config_file, "<?php\r\n", $constant );
+	if ( ! $wp_cache_found ) {
+		$config_file_contents = preg_replace( '/(<\?php)/i', "<?php\r\n{$constant}\r\n", $config_file_contents );
+	} elseif ( ! empty( $matches[1] ) && $matches[1] !== $turn_it_on ) {
+		$config_file_contents = preg_replace( '/^define\(\s*\'WP_CACHE\',(.*)\).+/m', $constant, $config_file_contents );
 	}
 
 	// Insert the constant in wp-config.php file.
-	// @codingStandardsIgnoreStart
-	$handle = @fopen( $config_file_path, 'w' );
-	foreach ( $config_file as $line ) {
-		@fwrite( $handle, $line );
-	}
-
-	@fclose( $handle );
-	// @codingStandardsIgnoreEnd
-	// Update the writing permissions of wp-config.php file.
-	$chmod = rocket_get_filesystem_perms( 'file' );
-	rocket_direct_filesystem()->chmod( $config_file_path, $chmod );
+	rocket_put_content( $config_file_path, $config_file_contents );
 }
 
 /**

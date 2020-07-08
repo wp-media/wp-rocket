@@ -27,6 +27,10 @@ class Test_Optimize extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
+		$this->options
+			 ->shouldReceive( 'get' )
+			 ->andReturnArg( 1 );
+
 		$this->local_cache = Mockery::mock( AssetsLocalCache::class );
 		$this->combine     = new Combine( $this->options, $this->local_cache );
 	}

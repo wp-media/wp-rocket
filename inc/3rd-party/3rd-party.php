@@ -2,10 +2,6 @@
 
 defined( 'ABSPATH' ) || exit;
 
-if ( class_exists( 'WpeCommon' ) && function_exists( 'wpe_param' ) ) {
-	require WP_ROCKET_3RD_PARTY_PATH . 'hosting/wpengine.php';
-}
-
 if ( class_exists( 'FlywheelNginxCompat' ) ) {
 	require WP_ROCKET_3RD_PARTY_PATH . 'hosting/flywheel.php';
 }
@@ -43,7 +39,6 @@ require WP_ROCKET_3RD_PARTY_PATH . 'hosting/nginx.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'hosting/pressidium.php';
 
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/geotargetingwp.php';
-require WP_ROCKET_3RD_PARTY_PATH . 'plugins/slider/revslider.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/slider/layerslider.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/slider/meta-slider.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/slider/soliloquy.php';
@@ -61,7 +56,6 @@ require WP_ROCKET_3RD_PARTY_PATH . 'plugins/ecommerce/jigoshop.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/ecommerce/wpshop.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/ecommerce/give.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/age-verify.php';
-require WP_ROCKET_3RD_PARTY_PATH . 'plugins/appbanners.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/autoptimize.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/envira-gallery.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/cookies/cookie-notice.php';

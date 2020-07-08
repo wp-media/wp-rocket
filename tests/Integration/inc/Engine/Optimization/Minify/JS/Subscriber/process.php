@@ -28,6 +28,9 @@ class Test_Process extends TestCase {
 		remove_filter( 'pre_get_rocket_option_minify_js', [ $this, 'return_true' ] );
 		remove_filter( 'pre_get_rocket_option_minify_js_key', [ $this, 'return_key' ] );
 
+		remove_filter( 'pre_get_rocket_option_defer_all_js', [ $this, 'return_defer_all_js' ] );
+		remove_filter( 'pre_get_rocket_option_defer_all_js_safe', [ $this, 'return_defer_all_js_safe' ] );
+
 		$this->unsetSettings();
 	}
 
@@ -38,6 +41,12 @@ class Test_Process extends TestCase {
 		add_filter( 'pre_get_rocket_option_minify_js', [ $this, 'return_true' ] );
 		add_filter( 'pre_get_rocket_option_minify_js_key', [ $this, 'return_key' ] );
 
+		$this->defer_all_js      = $settings['defer_all_js'];
+		$this->defer_all_js_safe = $settings['defer_all_js_safe'];
+
+		add_filter( 'pre_get_rocket_option_defer_all_js', [ $this, 'return_defer_all_js' ] );
+		add_filter( 'pre_get_rocket_option_defer_all_js_safe', [ $this, 'return_defer_all_js_safe' ] );
+
 		$this->settings = $settings;
 		$this->setSettings();
 
@@ -47,5 +56,13 @@ class Test_Process extends TestCase {
 		);
 
 		$this->assertFilesExists( $expected['files'] );
+	}
+
+	public function return_defer_all_js() {
+		return $this->defer_all_js;
+	}
+
+	public function return_defer_all_js_safe() {
+		return $this->defer_all_js_safe;
 	}
 }

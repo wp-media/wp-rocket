@@ -136,7 +136,6 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 			'minify_js'               => 'Minify JS',
 			'minify_concatenate_js'   => 'Combine JS',
 			'minify_google_fonts'     => 'Combine Google Fonts',
-			'minify_html'             => 'Minify HTML',
 			'manual_preload'          => 'Preload',
 			'sitemap_preload'         => 'Sitemap Preload',
 			'cdn'                     => 'CDN Enabled',

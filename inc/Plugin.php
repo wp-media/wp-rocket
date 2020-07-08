@@ -186,7 +186,6 @@ class Plugin {
 		$subscribers = [
 			'buffer_subscriber',
 			'ie_conditionals_subscriber',
-			'minify_html_subscriber',
 			'combine_google_fonts_subscriber',
 			'minify_css_subscriber',
 			'minify_js_subscriber',
@@ -254,6 +253,7 @@ class Plugin {
 			'rest_cpcss_subscriber',
 			'simple_custom_css',
 			'cloudways',
+			'wpengine',
 		];
 
 		if ( $this->options->get( 'do_cloudflare', false ) ) {

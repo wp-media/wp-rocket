@@ -63,6 +63,7 @@ function rocket_init() {
 	require WP_ROCKET_DEPRECATED_PATH . '3.4.php';
 	require WP_ROCKET_DEPRECATED_PATH . '3.5.php';
 	require WP_ROCKET_DEPRECATED_PATH . '3.6.php';
+	require WP_ROCKET_DEPRECATED_PATH . '3.7.php';
 	require WP_ROCKET_3RD_PARTY_PATH . '3rd-party.php';
 	require WP_ROCKET_COMMON_PATH . 'admin-bar.php';
 	require WP_ROCKET_COMMON_PATH . 'emoji.php';
@@ -204,9 +205,6 @@ function rocket_activation() {
 	}
 	if ( defined( 'O2SWITCH_VARNISH_PURGE_KEY' ) ) {
 		require WP_ROCKET_3RD_PARTY_PATH . 'hosting/o2switch.php';
-	}
-	if ( class_exists( 'WpeCommon' ) && function_exists( 'wpe_param' ) ) {
-		require WP_ROCKET_3RD_PARTY_PATH . 'hosting/wpengine.php';
 	}
 
 	if ( rocket_valid_key() ) {

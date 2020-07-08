@@ -139,7 +139,7 @@ return [
 				'SCRIPT_DEBUG'                   => false,
 			],
 			'expected' => true,
-			'html'     => '<html><head><title></title><style id="rocket-critical-css">.fallback { color: red; }</style></head><body><script>const wprRemoveCPCSS = () => { document.getElementById( "rocket-critical-css" ).remove(); }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script></body></html>',
+			'html'     => '<html><head><title></title><style id="rocket-critical-css">.fallback { color: red; }</style></head><body><script>const wprRemoveCPCSS = () => { $elem = document.getElementById( "rocket-critical-css" ); if ( $elem ) { $elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script></body></html>',
 		],
 		'testShouldDisplayFileCriticalCSS'          => [
 			'config'   => [
@@ -160,7 +160,7 @@ return [
 				'SCRIPT_DEBUG'                   => false,
 			],
 			'expected' => true,
-			'html'     => '<html><head><title></title><style id="rocket-critical-css">.post_tag { color: red; }</style></head><body><script>const wprRemoveCPCSS = () => { document.getElementById( "rocket-critical-css" ).remove(); }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script></body></html>',
+			'html'     => '<html><head><title></title><style id="rocket-critical-css">.post_tag { color: red; }</style></head><body><script>const wprRemoveCPCSS = () => { $elem = document.getElementById( "rocket-critical-css" ); if ( $elem ) { $elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script></body></html>',
 		],
 		'testShouldDisplayCustomFileCriticalCSS'    => [
 			'config'   => [
@@ -184,7 +184,10 @@ return [
 			'html'     => '<html><head><title></title><style id="rocket-critical-css">.page { color: red; }</style></head><body>
 			<script>
 				const wprRemoveCPCSS = () => {
-					document.getElementById( "rocket-critical-css" ).remove();
+					$elem = document.getElementById( "rocket-critical-css" );
+					if ( $elem ) {
+						$elem.remove();
+					}
 				};
 				if ( window.addEventListener ) {
 					window.addEventListener( "load", wprRemoveCPCSS );

@@ -28,7 +28,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		'buffer_subscriber',
 		'cache_dynamic_resource',
 		'ie_conditionals_subscriber',
-		'minify_html_subscriber',
 		'optimize_google_fonts',
 		'combine_google_fonts_subscriber',
 		'minify_css_subscriber',
@@ -61,8 +60,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->withArgument( WP_ROCKET_CACHE_BUSTING_PATH )
 			->withArgument( WP_ROCKET_CACHE_BUSTING_URL );
 		$this->getContainer()->share( 'ie_conditionals_subscriber', 'WP_Rocket\Subscriber\Optimization\IE_Conditionals_Subscriber' );
-		$this->getContainer()->share( 'minify_html_subscriber', 'WP_Rocket\Subscriber\Optimization\Minify_HTML_Subscriber' )
-			->withArgument( $options );
 		$this->getContainer()->add( 'optimize_google_fonts', 'WP_Rocket\Engine\Optimization\GoogleFonts\Combine' );
 		$this->getContainer()->share( 'combine_google_fonts_subscriber', 'WP_Rocket\Engine\Optimization\GoogleFonts\Subscriber' )
 			->withArgument( $this->getContainer()->get( 'optimize_google_fonts' ) )
