@@ -31,10 +31,6 @@ class Test_RocketGetPurgeUrls extends FilesystemTestCase {
 
 		$this->create_authors( $this->config['urls']['authors'] );
 
-		Functions\expect( 'get_rocket_option' )->withAnyArgs()->andReturnUsing( function( $option_name, $default=null ) {
-			return isset( $this->site_options[$option_name] ) ? $this->site_options[$option_name] : $default;
-		} );
-
 		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/common/purge.php';
 	}
 
@@ -68,10 +64,8 @@ class Test_RocketGetPurgeUrls extends FilesystemTestCase {
 			add_filter( 'pre_option_'.$option_name, [$this, 'prepare_option'], 10, 3 );
 		}
 
-		add_filter( 'get_previous_post_where', [$this, 'get_previous_posts'], 10, 5 );
-		add_filter( 'get_next_post_where', [$this, 'get_next_posts'], 10, 5 );
-
-
+		add_filter( 'get_previous_post_where', [$this, 'get_previous_posts'], 10, 2 );
+		add_filter( 'get_next_post_where', [$this, 'get_next_posts'], 10, 2 );
 
 		// Sort actual and expected arrays to compare between them.
 		$actual = rocket_get_purge_urls( $post_id, $post );
@@ -80,15 +74,11 @@ class Test_RocketGetPurgeUrls extends FilesystemTestCase {
 		$this->assertEquals( array_values( $expected ) , array_values( $actual ) );
 	}
 
-	private function get_archive_url( $post_type ) {
-		return isset( $this->config['urls']['archives'][$post_type] ) ? $this->config['urls']['archives'][$post_type] : '';
-	}
-
 	public function prepare_option( $pre_option, $option, $default ) {
 		return isset( $this->site_options[$option] ) ? $this->site_options[$option] : $default;
 	}
 
-	public function get_previous_posts( $where, $in_same_term, $excluded_terms, $taxonomy, $post ) {
+	public function get_previous_posts( $where, $in_same_term ) {
 		if ( $in_same_term && isset( $this->post_data['prev_in_term_post_id'] ) ) {
 			$where = " WHERE p.ID = {$this->posts_map[ $this->post_data['prev_in_term_post_id'] ]} ";
 		}
@@ -100,7 +90,7 @@ class Test_RocketGetPurgeUrls extends FilesystemTestCase {
 		return $where;
 	}
 
-	public function get_next_posts( $where, $in_same_term, $excluded_terms, $taxonomy, $post ) {
+	public function get_next_posts( $where, $in_same_term ) {
 		if ( $in_same_term && isset( $this->post_data['next_in_term_post_id'] ) ) {
 			$where = " WHERE p.ID = {$this->posts_map[ $this->post_data['next_in_term_post_id'] ]} ";
 		}
@@ -133,7 +123,7 @@ class Test_RocketGetPurgeUrls extends FilesystemTestCase {
 	}
 
 	private function create_authors( $authors ) {
-		foreach ( $this->config['urls']['authors'] as $author_id => $url ) {
+		foreach ( $authors as $author_id => $url ) {
 			$this->authors_map[$author_id] = $this->factory->user->create( [ 'user_login' => str_replace("http://example.org/author/", "", $url), 'role' => 'editor' ] );
 		}
 	}
