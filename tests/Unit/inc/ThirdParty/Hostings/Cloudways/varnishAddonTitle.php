@@ -12,10 +12,25 @@ use WPMedia\PHPUnit\Unit\TestCase;
 class Test_VarnishAddonTitle extends TestCase {
 	protected static $mockCommonWpFunctionsInSetUp = true;
 
+	public function tearDown() {
+		parent::tearDown();
+
+		// Reset after each test.
+		unset( $_SERVER['HTTP_X_VARNISH'] );
+		unset( $_SERVER['HTTP_X_APPLICATION'] );
+	}
+
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldDisplayVarnishTitleWithCloudways( $settings, $expected ) {
+	public function testShouldDisplayVarnishTitleWithCloudways( $settings, $config_server,$expected ) {
+		if ( isset( $config_server['HTTP_X_VARNISH'] ) ) {
+			$_SERVER['HTTP_X_VARNISH'] = $config_server['HTTP_X_VARNISH'];
+		}
+		if ( isset( $config_server['HTTP_X_APPLICATION'] ) ) {
+			$_SERVER['HTTP_X_APPLICATION'] = $config_server['HTTP_X_APPLICATION'];
+		}
+
 		$cloudways = new Cloudways();
 
 		$this->assertSame(

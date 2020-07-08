@@ -45,7 +45,6 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 		$this->flush_rocket_htaccess();
 		$this->rocket_generate_advanced_cache_file();
 		$this->rocket_generate_config_file();
-		$this->set_rocket_wp_cache_define();
 		$this->set_transient();
 
 		// Run it.
@@ -104,16 +103,6 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 			Functions\expect( 'rocket_generate_config_file' )->once()->andReturnNull();
 		} else {
 			Functions\expect( 'rocket_generate_config_file' )->never();
-		}
-	}
-
-	private function set_rocket_wp_cache_define() {
-		if ( isset( $this->expected['set_rocket_wp_cache_define'] ) ) {
-			$this->wp_cache_constant = false;
-			Functions\expect( 'set_rocket_wp_cache_define' )->once()->with( true )->andReturnNull();
-		} else {
-			$this->wp_cache_constant = true;
-			Functions\expect( 'set_rocket_wp_cache_define' )->never();
 		}
 	}
 

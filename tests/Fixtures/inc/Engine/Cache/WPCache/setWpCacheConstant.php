@@ -21,7 +21,7 @@ $wp_config_has_no_wp_cache = "<?php
 ";
 
 $wp_config_has_no_wp_cache_expected = "<?php
-define('WP_CACHE', true); // Added by WP Rocket
+define( 'WP_CACHE', true ); // Added by WP Rocket
 
 /*
  * The base configuration for WordPress
@@ -64,7 +64,7 @@ $wp_config_has_no_wp_cache_comment_on_first_line = "<?php /*
 ";
 
 $wp_config_has_no_wp_cache_comment_on_first_line_expected = "<?php
-define('WP_CACHE', true); // Added by WP Rocket
+define( 'WP_CACHE', true ); // Added by WP Rocket
  /*
  * The base configuration for WordPress
  *
@@ -134,40 +134,46 @@ define('WP_CACHE', true); // Added by WP Rocket
 return [
 	'vfs_dir' => 'public/',
 
-	'structure' => [
-		'wp-config-has-no-wp-cache.php' => $wp_config_has_no_wp_cache,
-		'wp-config-has-no-wp-cache-comment-on-first-line.php' => $wp_config_has_no_wp_cache_comment_on_first_line,
-		'wp-config-has-wp-cache.php' => $wp_config_has_wp_cache,
-	],
-
 	'test_data' => [
 		'ShouldAddWpCache' => [
 			'config' => [
-				'file' => 'wp-config-has-no-wp-cache',
+				'original'  => $wp_config_has_no_wp_cache,
 				'valid_key' => true,
+				'filter'    => true,
 			],
-			'expected' => $wp_config_has_no_wp_cache_expected
+			'expected' => $wp_config_has_no_wp_cache_expected,
 		],
 		'ShouldAddWpCacheWhenCommentInFirstLine' => [
 			'config' => [
-				'file' => 'wp-config-has-no-wp-cache-comment-on-first-line',
+				'original'  => $wp_config_has_no_wp_cache_comment_on_first_line,
 				'valid_key' => true,
+				'filter'    => true,
 			],
-			'expected' => $wp_config_has_no_wp_cache_comment_on_first_line_expected
+			'expected' => $wp_config_has_no_wp_cache_comment_on_first_line_expected,
 		],
 		'ShouldNotAddWpCache' => [
 			'config' => [
-				'file' => 'wp-config-has-wp-cache',
+				'original'  => $wp_config_has_wp_cache,
 				'valid_key' => true,
+				'filter'    => true,
 			],
-			'expected' => $wp_config_has_wp_cache_expected
+			'expected' => $wp_config_has_wp_cache_expected,
 		],
 		'ShouldBailOutWhenNotValidKey' => [
 			'config' => [
-				'file' => 'wp-config-has-no-wp-cache',
+				'original'  => $wp_config_has_no_wp_cache,
 				'valid_key' => false,
+				'filter'    => true,
 			],
-			'expected' => $wp_config_has_no_wp_cache
-		]
+			'expected' => $wp_config_has_no_wp_cache,
+		],
+		'ShouldBailOutWhenFilterIsFalse' => [
+			'config' => [
+				'original'  => $wp_config_has_no_wp_cache,
+				'valid_key' => false,
+				'filter'    => false,
+			],
+			'expected' => $wp_config_has_no_wp_cache,
+		],
 	],
 ];

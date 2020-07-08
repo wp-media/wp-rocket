@@ -7,6 +7,7 @@ use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Engine\Cache\AdminSubscriber;
 use WP_Rocket\Engine\Cache\AdvancedCache;
+use WP_Rocket\Engine\Cache\WPCache;
 use WP_Rocket\Event_Management\Event_Manager;
 
 /**
@@ -23,7 +24,8 @@ class Test_RegisterTermsRowAction extends TestCase {
 
 		$this->event_manager = Mockery::mock( Event_manager::class );
 		$this->subscriber    = new AdminSubscriber(
-			Mockery::mock( AdvancedCache::class )
+			Mockery::mock( AdvancedCache::class ),
+			Mockery::mock( WPCache::class )
 		);
 		$this->subscriber->set_event_manager( $this->event_manager );
 	}
