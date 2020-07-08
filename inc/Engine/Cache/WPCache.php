@@ -19,6 +19,26 @@ class WPCache {
 		$this->filesystem = $filesystem;
 	}
 
+	public function activate() {
+		add_action( 'rocket_activation', [ $this, 'set_wp_cache_on_activation' ] );
+	}
+
+	public function deactivate() {
+		add_action( 'rocket_deactivation', [ $this, 'remove_wp_cache_on_deactivation' ] );
+	}
+
+	public function set_wp_cache_on_activation() {
+		if ( ! rocket_valid_key() ) {
+			return;
+		}
+
+		$this->set_wp_cache_constant( true );
+	}
+
+	public function remove_wp_cache_on_deactivation() {
+		$this->set_wp_cache_constant( false );
+	}
+
 	/**
 	 * Set WP_CACHE constant to true if needed
 	 *
