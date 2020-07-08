@@ -117,12 +117,8 @@ function rocket_get_purge_urls( $post_id, $post ) {
 			if ( strstr( $page, '*' ) ) {
 				$matches_files = _rocket_get_recursive_dir_files_by_regex( '#' . $page . '#i' );
 				foreach ( $matches_files as $file ) {
-					if ( ! empty( $file->getType() ) ) {
-						continue;
-					}
-
 					// Convert path to URL.
-					$purge_urls[] = str_replace( rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ), untrailingslashit( $home_url ) . '/', $file->getPathname() );
+					$purge_urls[] = str_replace( rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ), untrailingslashit( $home_url ) . '/', $file->getPath() );
 				}
 				continue;
 			}

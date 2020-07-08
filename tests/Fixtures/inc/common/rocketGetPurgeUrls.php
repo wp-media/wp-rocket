@@ -173,6 +173,8 @@ return [
 				'http://example.org/test_purge_post/',
 				'http://example.org/blog/',
 				'http://example.org/next_post/',
+				'http://example.org/test_purge',
+				'http://example.org/folder_1/test_purge',
 				'http://example.org/author/author_name/',
 				'http://example.org/test_parent/',
 				'http://example.org/test_parent_2/'
