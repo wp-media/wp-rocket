@@ -68,7 +68,6 @@ Header append Cache-Control "public"
 # Expires headers (for better cache control)
 <IfModule mod_expires.c>
 	ExpiresActive on
-	# Perhaps better to whitelist expires rules? Perhaps.
 	ExpiresDefault                              "access plus 1 month"
 	# cache.appcache needs re-requests in FF 3.6 (thanks Remy ~Introducing HTML5)
 	ExpiresByType text/cache-manifest           "access plus 0 seconds"

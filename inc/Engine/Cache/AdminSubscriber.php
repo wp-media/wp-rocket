@@ -26,12 +26,21 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	private $advanced_cache;
 
 	/**
+	 * WPCache instance
+	 *
+	 * @var WPCache
+	 */
+	private $wp_cache;
+
+	/**
 	 * Instantiate the class
 	 *
 	 * @param AdvancedCache $advanced_cache AdvancedCache instance.
+	 * @param WPCache       $wp_cache       WPCache instance.
 	 */
-	public function __construct( AdvancedCache $advanced_cache ) {
+	public function __construct( AdvancedCache $advanced_cache, WPCache $wp_cache ) {
 		$this->advanced_cache = $advanced_cache;
+		$this->wp_cache       = $wp_cache;
 	}
 
 	/**
@@ -40,11 +49,19 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
+		$slug = rocket_get_constant( 'WP_ROCKET_SLUG' );
+
 		return [
-			'admin_init'    => 'register_terms_row_action',
-			'admin_notices' => [
-				[ 'notice_advanced_cache_permissions' ],
+			'admin_init'            => [
+				[ 'register_terms_row_action' ],
+				[ 'maybe_set_wp_cache' ],
 			],
+			'admin_notices'         => [
+				[ 'notice_advanced_cache_permissions' ],
+				[ 'notice_wp_config_permissions' ],
+			],
+			"update_option_{$slug}" => [ 'maybe_set_wp_cache', 12 ],
+			'site_status_tests'     => 'add_wp_cache_status_test',
 		];
 	}
 
@@ -113,5 +130,39 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 */
 	public function notice_advanced_cache_permissions() {
 		$this->advanced_cache->notice_permissions();
+	}
+
+	/**
+	 * Set WP_CACHE constant to true if needed
+	 *
+	 * @since 3.6.1
+	 *
+	 * @return void
+	 */
+	public function maybe_set_wp_cache() {
+		$this->wp_cache->maybe_set_wp_cache();
+	}
+
+	/**
+	 * Displays the notice for wp-config.php permissions
+	 *
+	 * @since 3.6.1
+	 *
+	 * @return void
+	 */
+	public function notice_wp_config_permissions() {
+		$this->wp_cache->notice_wp_config_permissions();
+	}
+
+	/**
+	 * Adds a Site Health check for the WP_CACHE constant value
+	 *
+	 * @since 3.6.1
+	 *
+	 * @param array $tests An array of tests to perform.
+	 * @return array
+	 */
+	public function add_wp_cache_status_test( $tests ) {
+		return $this->wp_cache->add_wp_cache_status_test( $tests );
 	}
 }

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.4\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2020-06-03 17:43-0400\n"
+"POT-Creation-Date: 2020-06-08 11:57-0400\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Borko Livić <borkolivic@gmail.com>, 2020\n"
 "Language-Team: Croatian (https://www.transifex.com/wp-media/teams/18133/hr/)\n"
@@ -914,10 +914,12 @@ msgid "Fonts to preload"
 msgstr "Fontovi za predučitavanje"
 
 #: inc/Engine/Admin/Settings/Page.php:1133
-msgid "Specify urls of the font files to be preloaded (one per line)"
+msgid ""
+"Specify urls of the font files to be preloaded (one per line). Fonts must be"
+" hosted on your own domain."
 msgstr ""
 "Navedite URL-ove datoteka fontova koje treba unaprijed učitati (jedan u "
-"retku)"
+"retku). Fontovi moraju biti hostani na vašoj domeni."
 
 #: inc/Engine/Admin/Settings/Page.php:1134
 msgid ""
@@ -1709,8 +1711,13 @@ msgstr "RocketCDN onemogućen"
 msgid "Clear this cache"
 msgstr "Očisti ovo iz cachea"
 
-#: inc/Engine/CriticalPath/APIClient.php:151
-#: inc/Engine/CriticalPath/DataManager.php:65
+#: inc/Engine/CriticalPath/APIClient.php:64
+#, php-format
+msgid "Critical CSS for %1$s not generated. Error: %2$s"
+msgstr "Ključni CSS za %1$s nije generiran. Greška: %2$s"
+
+#: inc/Engine/CriticalPath/APIClient.php:170
+#: inc/Engine/CriticalPath/DataManager.php:66
 #, php-format
 msgid ""
 "Critical CSS for %1$s on mobile not generated. Error: The API returned an "
@@ -1719,8 +1726,8 @@ msgstr ""
 "Ključni CSS za %1$s na mobilnim uređajima nije generiran. Greška: API je "
 "vratio prazan odgovor."
 
-#: inc/Engine/CriticalPath/APIClient.php:154
-#: inc/Engine/CriticalPath/DataManager.php:68
+#: inc/Engine/CriticalPath/APIClient.php:173
+#: inc/Engine/CriticalPath/DataManager.php:69
 #, php-format
 msgid ""
 "Critical CSS for %1$s not generated. Error: The API returned an empty "
@@ -1728,18 +1735,18 @@ msgid ""
 msgstr ""
 "Ključni CSS za %1$s nije generiran. Greška: API je vratio prazan odgovor."
 
-#: inc/Engine/CriticalPath/APIClient.php:166
+#: inc/Engine/CriticalPath/APIClient.php:185
 #, php-format
 msgid "Critical CSS for %1$s on mobile not generated."
 msgstr "Ključni CSS za %1$s na mobilnim uređajima nije generiran."
 
-#: inc/Engine/CriticalPath/APIClient.php:168
-#: inc/Engine/CriticalPath/ProcessorService.php:177
+#: inc/Engine/CriticalPath/APIClient.php:187
+#: inc/Engine/CriticalPath/ProcessorService.php:193
 #, php-format
 msgid "Critical CSS for %1$s not generated."
 msgstr "Ključni CSS za %1$s nije generiran."
 
-#: inc/Engine/CriticalPath/APIClient.php:176
+#: inc/Engine/CriticalPath/APIClient.php:195
 #, php-format
 msgid ""
 "Critical CSS for %1$s on mobile not generated. Error: The API returned an "
@@ -1748,7 +1755,7 @@ msgstr ""
 "Ključni CSS za %1$s na mobilnim uređajima nije generiran. Greška: API je "
 "vratio nevažeći kôd odgovora."
 
-#: inc/Engine/CriticalPath/APIClient.php:178
+#: inc/Engine/CriticalPath/APIClient.php:197
 #, php-format
 msgid ""
 "Critical CSS for %1$s not generated. Error: The API returned an invalid "
@@ -1757,13 +1764,13 @@ msgstr ""
 "Ključni CSS za %1$s nije generiran. Greška: API je vratio nevažeći kôd "
 "odgovora."
 
-#: inc/Engine/CriticalPath/APIClient.php:186
-#: inc/Engine/CriticalPath/ProcessorService.php:182
+#: inc/Engine/CriticalPath/APIClient.php:205
+#: inc/Engine/CriticalPath/ProcessorService.php:200
 #, php-format
 msgid "Error: %1$s"
 msgstr "Greška: %1$s"
 
-#: inc/Engine/CriticalPath/Admin/Admin.php:256
+#: inc/Engine/CriticalPath/Admin/Admin.php:260
 msgid "Regenerate Critical Path CSS"
 msgstr "Obnovi putanju ključnog CSS-a"
 
@@ -1804,7 +1811,7 @@ msgstr "Trenutno je aktivno generiranje ključnog CSS-a."
 msgid "Go to the %1$sWP Rocket settings%2$s page to track progress."
 msgstr "Idite na stranicu%1$s postavki WP Rocketa%2$s za praćenje napretka."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:359
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:368
 #, php-format
 msgid ""
 "Critical CSS generation is currently running: %1$d of %2$d page types "
@@ -1813,65 +1820,65 @@ msgstr ""
 "Trenutno se izvodi generiranje ključnog CSS-a: %1$d od %2$d vrsta stranica "
 "dovršeno (Osvježite ovu stranicu kako biste vidjeli napredak)"
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:426
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:440
 #, php-format
 msgid "Critical CSS generation finished for %1$d of %2$d page types."
 msgstr "Generiranje ključnog CSS-a za %1$d od %2$d vrsta stranica."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:433
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:447
 msgid "Critical CSS generation encountered one or more errors."
 msgstr "Generiranje ključnog CSS-a naišlo je na jednu ili više pogrešaka."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:433
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:447
 msgid "Learn more."
 msgstr "Saznaj više"
 
-#: inc/Engine/CriticalPath/DataManager.php:101
+#: inc/Engine/CriticalPath/DataManager.php:102
 msgid "Critical CSS file for mobile does not exist"
 msgstr "Datoteka ključnog CSS-a za mobilne uređaje ne postoji."
 
-#: inc/Engine/CriticalPath/DataManager.php:103
+#: inc/Engine/CriticalPath/DataManager.php:104
 msgid "Critical CSS file does not exist"
 msgstr "Datoteka ključnog CSS-a ne postoji."
 
-#: inc/Engine/CriticalPath/DataManager.php:115
+#: inc/Engine/CriticalPath/DataManager.php:116
 msgid "Critical CSS file for mobile cannot be deleted"
 msgstr "Datoteka kritičnog CSS-a za mobilne uređaje ne može biti izbrisana"
 
-#: inc/Engine/CriticalPath/DataManager.php:117
+#: inc/Engine/CriticalPath/DataManager.php:118
 msgid "Critical CSS file cannot be deleted"
 msgstr "Datoteka kritičnog CSS-a ne može biti izbrisana"
 
-#: inc/Engine/CriticalPath/ProcessorService.php:174
+#: inc/Engine/CriticalPath/ProcessorService.php:186
 #, php-format
 msgid "Mobile Critical CSS for %1$s not generated."
 msgstr "Ključni CSS na mobilnim uređajima za%1$s nije generiran."
 
-#: inc/Engine/CriticalPath/ProcessorService.php:207
+#: inc/Engine/CriticalPath/ProcessorService.php:227
 #, php-format
 msgid "Critical CSS for %s in progress."
 msgstr "Ključni CSS za %s u tijeku."
 
-#: inc/Engine/CriticalPath/ProcessorService.php:237
+#: inc/Engine/CriticalPath/ProcessorService.php:261
 #, php-format
 msgid "Mobile Critical CSS for %s generated."
 msgstr "Ključni CSS na mobilnim uređajima za %s je generiran."
 
-#: inc/Engine/CriticalPath/ProcessorService.php:245
+#: inc/Engine/CriticalPath/ProcessorService.php:272
 #, php-format
 msgid "Critical CSS for %s generated."
 msgstr "Ključni CSS za %s je generiran."
 
-#: inc/Engine/CriticalPath/ProcessorService.php:265
+#: inc/Engine/CriticalPath/ProcessorService.php:294
 msgid "Critical CSS file deleted successfully."
 msgstr "Datoteka kritičnog CSS-a uspješno izbrisana."
 
-#: inc/Engine/CriticalPath/ProcessorService.php:285
+#: inc/Engine/CriticalPath/ProcessorService.php:316
 #, php-format
 msgid "Mobile Critical CSS for %1$s timeout. Please retry a little later."
 msgstr "Ključni CSS na mobilnim uređajima za %1$s timeout. Probajte kasnije."
 
-#: inc/Engine/CriticalPath/ProcessorService.php:295
+#: inc/Engine/CriticalPath/ProcessorService.php:329
 #, php-format
 msgid "Critical CSS for %1$s timeout. Please retry a little later."
 msgstr "Ključni CSS za %1$s timeout. Probajte kasnije."
