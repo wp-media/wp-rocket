@@ -38,6 +38,8 @@ class Test_RocketGenerateAdvancedCacheFile extends FilesystemTestCase {
 		parent::tearDown();
 
 		$this->dicontainer->tearDown();
+
+		remove_filter( 'rocket_generate_advanced_cache_file', [ $this, 'return_false' ] );
 	}
 
 	/**
@@ -48,6 +50,10 @@ class Test_RocketGenerateAdvancedCacheFile extends FilesystemTestCase {
 
 		if ( $when_file_not_exist ) {
 			$this->filesystem->delete( $this->advanced_cache_file );
+		}
+
+		if ( isset( $settings['filter'] ) ) {
+			add_filter( 'rocket_generate_advanced_cache_file', [ $this, 'return_false' ] );
 		}
 
 		$this->dicontainer->addAdvancedCache(

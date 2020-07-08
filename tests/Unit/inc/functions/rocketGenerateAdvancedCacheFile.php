@@ -37,15 +37,21 @@ class Test_RocketGenerateAdvancedCacheFile extends FilesystemTestCase {
 			$this->filesystem->delete( $this->advanced_cache_file );
 		}
 
-		Filters\expectApplied( 'rocket_container' )
-			->andReturn( $this->container );
+		if ( isset( $settings['filter'] ) ) {
+			Filters\expectApplied( 'rocket_generate_advanced_cache_file' )
+				->once()
+				->andReturn( $settings['filter'] );
+		} else {
+			Filters\expectApplied( 'rocket_container' )
+				->andReturn( $this->container );
 
-		$this->container->shouldReceive( 'get' )
-			->with( 'advanced_cache' )
-			->andReturn( $this->advanced_cache );
+			$this->container->shouldReceive( 'get' )
+				->with( 'advanced_cache' )
+				->andReturn( $this->advanced_cache );
 
-		$this->advanced_cache->shouldReceive( 'get_advanced_cache_content' )
-			->andReturn( $expected_content );
+			$this->advanced_cache->shouldReceive( 'get_advanced_cache_content' )
+				->andReturn( $expected_content );
+		}
 
 		// Run it.
 		rocket_generate_advanced_cache_file();
