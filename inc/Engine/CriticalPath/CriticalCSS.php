@@ -387,7 +387,7 @@ class CriticalCSS {
 
 		foreach ( $this->items as $item ) {
 			if ( ! isset( $item['mobile'] ) ) {
-				$total++;
+				$total ++;
 				continue;
 			}
 
@@ -395,7 +395,7 @@ class CriticalCSS {
 				continue;
 			}
 
-			$total++;
+			$total ++;
 		}
 
 		$transient = [
@@ -550,5 +550,29 @@ class CriticalCSS {
 		}
 
 		return (bool) $this->options->get( 'async_css_mobile', 0 );
+	}
+
+	/**
+	 * Get list of CSS files to be excluded from async CSS.
+	 *
+	 * @since 3.6.1
+	 *
+	 * @return array An array of URLs for the CSS files to be excluded.
+	 */
+	public function get_exclude_async_css() {
+		/**
+		 * Filter list of async CSS files
+		 *
+		 * @since 2.10
+		 *
+		 * @param array $exclude_async_css An array of URLs for the CSS files to be excluded.
+		 */
+		$exclude_async_css = (array) apply_filters( 'rocket_exclude_async_css', [] );
+		if ( empty( $exclude_async_css ) ) {
+			return $exclude_async_css;
+		}
+		$exclude_async_css = array_filter( $exclude_async_css );
+
+		return array_flip( array_flip( $exclude_async_css ) );
 	}
 }

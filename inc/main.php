@@ -2,6 +2,7 @@
 
 use League\Container\Container;
 use WP_Rocket\Engine\Cache\AdvancedCache;
+use WP_Rocket\Engine\Cache\WPCache;
 use WP_Rocket\Plugin;
 use WP_Rocket\Subscriber\Plugin\Capabilities_Subscriber;
 
@@ -114,22 +115,31 @@ add_action( 'plugins_loaded', 'rocket_init' );
  * @since 1.0
  */
 function rocket_deactivation() {
+	global $is_apache;
+
+	$filesystem = rocket_direct_filesystem();
+	$wp_cache   = new WPCache( $filesystem );
+
 	if ( ! isset( $_GET['rocket_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_GET['rocket_nonce'] ), 'force_deactivation' ) ) {
-		global $is_apache;
 		$causes = [];
 
 		// .htaccess problem.
-		if ( $is_apache && ! rocket_direct_filesystem()->is_writable( get_home_path() . '.htaccess' ) ) {
+		if ( $is_apache && ! $filesystem->is_writable( get_home_path() . '.htaccess' ) ) {
 			$causes[] = 'htaccess';
 		}
 
 		// wp-config problem.
-		if ( ! rocket_direct_filesystem()->is_writable( rocket_find_wpconfig_path() ) ) {
+		if (
+			! $wp_cache->find_wpconfig_path()
+			&&
+			// This filter is documented in inc/Engine/Cache/WPCache.php.
+			(bool) apply_filters( 'rocket_set_wp_cache_constant', true )
+		) {
 			$causes[] = 'wpconfig';
 		}
 
 		if ( count( $causes ) ) {
-			set_transient( $GLOBALS['current_user']->ID . '_donotdeactivaterocket', $causes );
+			set_transient( get_current_user_id() . '_donotdeactivaterocket', $causes );
 			wp_safe_redirect( wp_get_referer() );
 			die();
 		}
@@ -143,7 +153,7 @@ function rocket_deactivation() {
 		flush_rocket_htaccess( true );
 
 		// Remove WP_CACHE constant in wp-config.php.
-		set_rocket_wp_cache_define( false );
+		$wp_cache->set_wp_cache_constant( false );
 
 		// Delete content of advanced-cache.php, unless installed on WP.com.
 		if ( ! rocket_get_constant( 'WPCOMSH_VERSION' ) ) {
@@ -190,6 +200,9 @@ register_deactivation_hook( WP_ROCKET_FILE, 'rocket_deactivation' );
 function rocket_activation() {
 	( new Capabilities_Subscriber() )->add_rocket_capabilities();
 
+	$filesystem = rocket_direct_filesystem();
+	$wp_cache   = new WPCache( $filesystem );
+
 	// Last constants.
 	define( 'WP_ROCKET_PLUGIN_NAME', 'WP Rocket' );
 	define( 'WP_ROCKET_PLUGIN_SLUG', sanitize_key( WP_ROCKET_PLUGIN_NAME ) );
@@ -215,7 +228,7 @@ function rocket_activation() {
 		flush_rocket_htaccess();
 
 		// Add WP_CACHE constant in wp-config.php.
-		set_rocket_wp_cache_define( true );
+		$wp_cache->set_wp_cache_constant( true );
 	}
 
 	// Create the cache folders (wp-rocket & min).

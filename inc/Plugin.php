@@ -256,6 +256,7 @@ class Plugin {
 			'cloudways',
 			'wpengine',
 			'spinupwp',
+			'pdfembedder',
 			'wordpresscom',
 		];
 
