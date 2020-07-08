@@ -286,7 +286,7 @@ class Page {
 			wp_die();
 		}
 
-		$whitelist = [
+		$allowed = [
 			'do_beta'                     => 1,
 			'analytics_enabled'           => 1,
 			'debug_enabled'               => 1,
@@ -299,7 +299,7 @@ class Page {
 			'sucury_waf_api_key'          => 1,
 		];
 
-		if ( ! isset( $_POST['option']['name'] ) || ! isset( $whitelist[ $_POST['option']['name'] ] ) ) {
+		if ( ! isset( $_POST['option']['name'] ) || ! isset( $allowed[ $_POST['option']['name'] ] ) ) {
 			wp_die();
 		}
 
@@ -914,7 +914,7 @@ class Page {
 				'embeds_section'   => [
 					'title'       => __( 'Embeds', 'rocket' ),
 					'type'        => 'fields_container',
-					'description' => __( 'Prevents others from embedding content from your site, prevents you from embedding content from other (non-whitelisted) sites, and removes JavaScript requests related to WordPress embeds', 'rocket' ),
+					'description' => __( 'Prevents others from embedding content from your site, prevents you from embedding content from other (non-allowed) sites, and removes JavaScript requests related to WordPress embeds', 'rocket' ),
 					'page'        => 'media',
 				],
 				'webp_section'     => [
@@ -1148,7 +1148,7 @@ class Page {
 				'preload_fonts' => [
 					'type'              => 'textarea',
 					'label'             => __( 'Fonts to preload', 'rocket' ),
-					'description'       => __( 'Specify urls of the font files to be preloaded (one per line). Fonts must be hosted on your own domain.', 'rocket' ),
+					'description'       => __( 'Specify urls of the font files to be preloaded (one per line). Fonts must be hosted on your own domain, or the domain you have specified on the CDN tab.', 'rocket' ),
 					'helper'            => __( 'The domain part of the URL will be stripped automatically.<br/>Allowed font extensions: otf, ttf, svg, woff, woff2.', 'rocket' ),
 					'placeholder'       => '/wp-content/themes/your-theme/assets/fonts/font-file.woff',
 					'section'           => 'preload_fonts_section',

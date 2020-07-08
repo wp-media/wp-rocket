@@ -728,6 +728,7 @@ class Combine extends AbstractJSOptimization {
 			'a.omappapi.com/app/js/api.min.js',
 			'static.zdassets.com',
 			'feedbackcompany.com/widgets/feedback-company-widget.min.js',
+			'widget.gleamjs.io',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
@@ -848,6 +849,9 @@ class Combine extends AbstractJSOptimization {
 			'tdbSearchItem',
 			'best_seller_badge',
 			'jQuery(\'#product-top-bar',
+			'fb_desc-',
+			'FC_regenerate_captcha',
+			'wp_post_blocks_vars.listed_posts=[',
 		];
 
 		/**

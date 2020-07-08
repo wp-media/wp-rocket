@@ -8,7 +8,6 @@ use League\Container\ServiceProvider\AbstractServiceProvider;
  *
  * @since  3.3
  * @since  3.6 Renamed and moved into this module.
- * @author Remy Perona
  */
 class ServiceProvider extends AbstractServiceProvider {
 
@@ -59,7 +58,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->withArgument( $options )
 			->withArgument( WP_ROCKET_CACHE_BUSTING_PATH )
 			->withArgument( WP_ROCKET_CACHE_BUSTING_URL );
-		$this->getContainer()->share( 'ie_conditionals_subscriber', 'WP_Rocket\Subscriber\Optimization\IE_Conditionals_Subscriber' );
 		$this->getContainer()->add( 'optimize_google_fonts', 'WP_Rocket\Engine\Optimization\GoogleFonts\Combine' );
 		$this->getContainer()->share( 'combine_google_fonts_subscriber', 'WP_Rocket\Engine\Optimization\GoogleFonts\Subscriber' )
 			->withArgument( $this->getContainer()->get( 'optimize_google_fonts' ) )
@@ -72,5 +70,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->withArgument( $filesystem );
 		$this->getContainer()->share( 'dequeue_jquery_migrate_subscriber', 'WP_Rocket\Subscriber\Optimization\Dequeue_JQuery_Migrate_Subscriber' )
 			->withArgument( $options );
+
+		$this->getContainer()->share( 'ie_conditionals_subscriber', 'WP_Rocket\Engine\Optimization\IEConditionalSubscriber' );
 	}
 }

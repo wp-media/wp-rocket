@@ -3,15 +3,16 @@
 # Translators:
 # FX Bénard <fxb@wp-translations.org>, 2019
 # wpmedia <contact@wp-media.me>, 2020
+# Alice O., 2020
 # 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.4\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2020-06-03 17:43-0400\n"
+"POT-Creation-Date: 2020-06-08 11:57-0400\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
-"Last-Translator: wpmedia <contact@wp-media.me>, 2020\n"
+"Last-Translator: Alice O., 2020\n"
 "Language-Team: French (France) (https://www.transifex.com/wp-media/teams/18133/fr_FR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -670,7 +671,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:790
 msgid "Load JavaScript deferred"
-msgstr "Chargement différé des fichiers JS"
+msgstr "Charger le JavaScript en différé"
 
 #: inc/Engine/Admin/Settings/Page.php:792
 #, php-format
@@ -915,9 +916,12 @@ msgid "Fonts to preload"
 msgstr "Polices à précharger"
 
 #: inc/Engine/Admin/Settings/Page.php:1133
-msgid "Specify urls of the font files to be preloaded (one per line)"
+msgid ""
+"Specify urls of the font files to be preloaded (one per line). Fonts must be"
+" hosted on your own domain."
 msgstr ""
-"Indiquez les URLs des fichiers de polices à précharger (une par ligne)."
+"Indiquer les URLs des fichiers de police à précharger (une par ligne). Les "
+"polices doivent être hébergées sur votre propre domaine."
 
 #: inc/Engine/Admin/Settings/Page.php:1134
 msgid ""
@@ -1704,8 +1708,13 @@ msgstr "RocketCDN désactivé"
 msgid "Clear this cache"
 msgstr "Vider ce cache"
 
-#: inc/Engine/CriticalPath/APIClient.php:151
-#: inc/Engine/CriticalPath/DataManager.php:65
+#: inc/Engine/CriticalPath/APIClient.php:64
+#, php-format
+msgid "Critical CSS for %1$s not generated. Error: %2$s"
+msgstr "Le Critical CSS pour %1$s n'a pas été généré. Erreur : %2$s"
+
+#: inc/Engine/CriticalPath/APIClient.php:170
+#: inc/Engine/CriticalPath/DataManager.php:66
 #, php-format
 msgid ""
 "Critical CSS for %1$s on mobile not generated. Error: The API returned an "
@@ -1714,8 +1723,8 @@ msgstr ""
 "Le Critical CSS pour %1$s n'a pas été généré. Erreur : L'API a renvoyé une "
 "réponse vide."
 
-#: inc/Engine/CriticalPath/APIClient.php:154
-#: inc/Engine/CriticalPath/DataManager.php:68
+#: inc/Engine/CriticalPath/APIClient.php:173
+#: inc/Engine/CriticalPath/DataManager.php:69
 #, php-format
 msgid ""
 "Critical CSS for %1$s not generated. Error: The API returned an empty "
@@ -1724,18 +1733,18 @@ msgstr ""
 "Le Critical CSS pour %1$s n'a pas été généré. Erreur : L'API a renvoyé une "
 "réponse vide."
 
-#: inc/Engine/CriticalPath/APIClient.php:166
+#: inc/Engine/CriticalPath/APIClient.php:185
 #, php-format
 msgid "Critical CSS for %1$s on mobile not generated."
 msgstr "Le Critical CSS pour %1$s sur mobile n'a pas été généré."
 
-#: inc/Engine/CriticalPath/APIClient.php:168
-#: inc/Engine/CriticalPath/ProcessorService.php:177
+#: inc/Engine/CriticalPath/APIClient.php:187
+#: inc/Engine/CriticalPath/ProcessorService.php:193
 #, php-format
 msgid "Critical CSS for %1$s not generated."
 msgstr "Le Critical CSS pour %1$s n'a pas été généré."
 
-#: inc/Engine/CriticalPath/APIClient.php:176
+#: inc/Engine/CriticalPath/APIClient.php:195
 #, php-format
 msgid ""
 "Critical CSS for %1$s on mobile not generated. Error: The API returned an "
@@ -1744,7 +1753,7 @@ msgstr ""
 "Le Critical CSS pour %1$s sur mobile n'a pas été généré. Erreur : L'API a "
 "renvoyé une réponse vide."
 
-#: inc/Engine/CriticalPath/APIClient.php:178
+#: inc/Engine/CriticalPath/APIClient.php:197
 #, php-format
 msgid ""
 "Critical CSS for %1$s not generated. Error: The API returned an invalid "
@@ -1753,13 +1762,13 @@ msgstr ""
 "Le Critical CSS pour %1$s n'a pas été généré. Erreur : L'API a renvoyé une "
 "réponse vide."
 
-#: inc/Engine/CriticalPath/APIClient.php:186
-#: inc/Engine/CriticalPath/ProcessorService.php:182
+#: inc/Engine/CriticalPath/APIClient.php:205
+#: inc/Engine/CriticalPath/ProcessorService.php:200
 #, php-format
 msgid "Error: %1$s"
 msgstr "Erreur : %1$s"
 
-#: inc/Engine/CriticalPath/Admin/Admin.php:256
+#: inc/Engine/CriticalPath/Admin/Admin.php:260
 msgid "Regenerate Critical Path CSS"
 msgstr "Régénérer Critical path CSS"
 
@@ -1804,7 +1813,7 @@ msgid "Go to the %1$sWP Rocket settings%2$s page to track progress."
 msgstr ""
 "Rendez-vous aux %1$sréglages de WP Rocket%2$s pour suivre la progression."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:359
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:368
 #, php-format
 msgid ""
 "Critical CSS generation is currently running: %1$d of %2$d page types "
@@ -1813,69 +1822,69 @@ msgstr ""
 "La génération du Critical CSS est en cours : %1$d de %2$d de types de page "
 "complétés. (Rafraîchir pour voir la progression)"
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:426
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:440
 #, php-format
 msgid "Critical CSS generation finished for %1$d of %2$d page types."
 msgstr ""
 "La génération du Critical CSS est en terminée : %1$d de %2$d de types de "
 "page."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:433
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:447
 msgid "Critical CSS generation encountered one or more errors."
 msgstr "La génération du CSS critique a rencontré une ou plusieurs erreur(s)."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:433
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:447
 msgid "Learn more."
 msgstr "En savoir plus."
 
-#: inc/Engine/CriticalPath/DataManager.php:101
+#: inc/Engine/CriticalPath/DataManager.php:102
 msgid "Critical CSS file for mobile does not exist"
 msgstr "Le fichier Critical CSS pour mobile n’existe pas"
 
-#: inc/Engine/CriticalPath/DataManager.php:103
+#: inc/Engine/CriticalPath/DataManager.php:104
 msgid "Critical CSS file does not exist"
 msgstr "Le fichier Critical CSS n’existe pas"
 
-#: inc/Engine/CriticalPath/DataManager.php:115
+#: inc/Engine/CriticalPath/DataManager.php:116
 msgid "Critical CSS file for mobile cannot be deleted"
 msgstr "Le fichier Critical CSS pour mobile ne peut être supprimé"
 
-#: inc/Engine/CriticalPath/DataManager.php:117
+#: inc/Engine/CriticalPath/DataManager.php:118
 msgid "Critical CSS file cannot be deleted"
 msgstr "Le fichier Critical CSS ne peut être supprimé"
 
-#: inc/Engine/CriticalPath/ProcessorService.php:174
+#: inc/Engine/CriticalPath/ProcessorService.php:186
 #, php-format
 msgid "Mobile Critical CSS for %1$s not generated."
 msgstr "Le Critical CSS mobile pour %1$s n'a pas été généré."
 
-#: inc/Engine/CriticalPath/ProcessorService.php:207
+#: inc/Engine/CriticalPath/ProcessorService.php:227
 #, php-format
 msgid "Critical CSS for %s in progress."
 msgstr "Critical CSS pour %s en cours."
 
-#: inc/Engine/CriticalPath/ProcessorService.php:237
+#: inc/Engine/CriticalPath/ProcessorService.php:261
 #, php-format
 msgid "Mobile Critical CSS for %s generated."
 msgstr "Critical CSS mobile pour %s généré."
 
-#: inc/Engine/CriticalPath/ProcessorService.php:245
+#: inc/Engine/CriticalPath/ProcessorService.php:272
 #, php-format
 msgid "Critical CSS for %s generated."
 msgstr "Critical CSS pour %s généré."
 
-#: inc/Engine/CriticalPath/ProcessorService.php:265
+#: inc/Engine/CriticalPath/ProcessorService.php:294
 msgid "Critical CSS file deleted successfully."
 msgstr "Le fichier Critical CSS a bien été supprimé."
 
-#: inc/Engine/CriticalPath/ProcessorService.php:285
+#: inc/Engine/CriticalPath/ProcessorService.php:316
 #, php-format
 msgid "Mobile Critical CSS for %1$s timeout. Please retry a little later."
 msgstr ""
 "Timeout pour le Critical CSS mobile de%1$s. Veuillez réessayer un peu plus "
 "tard."
 
-#: inc/Engine/CriticalPath/ProcessorService.php:295
+#: inc/Engine/CriticalPath/ProcessorService.php:329
 #, php-format
 msgid "Critical CSS for %1$s timeout. Please retry a little later."
 msgstr ""
@@ -3144,8 +3153,7 @@ msgstr "Pour résoudre ce problème, veuillez contacter le support."
 #: inc/functions/options.php:576
 msgid "License validation failed. This user account is blacklisted."
 msgstr ""
-"La validation de la licence a échoué. Ce compte utilisateur a été "
-"blacklisté."
+"La validation de la licence a échoué. Ce compte utilisateur est bloqué."
 
 #: inc/functions/options.php:576
 #, php-format
