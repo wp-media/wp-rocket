@@ -42,6 +42,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'wpengine',
 		'spinupwp',
 		'pdfembedder',
+		'o2switch',
 	];
 
 	/**
@@ -88,5 +89,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'wpengine', 'WP_Rocket\ThirdParty\Hostings\WPEngine' );
 		$this->getContainer()->share( 'spinupwp', 'WP_Rocket\ThirdParty\Hostings\SpinUpWP' );
 		$this->getContainer()->share( 'pdfembedder', 'WP_Rocket\ThirdParty\Plugins\PDFEmbedder' );
+		$this->getContainer()->share( 'o2switch', 'WP_Rocket\ThirdParty\Hostings\O2Switch' );
 	}
 }

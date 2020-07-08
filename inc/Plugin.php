@@ -257,6 +257,7 @@ class Plugin {
 			'wpengine',
 			'spinupwp',
 			'pdfembedder',
+			'o2switch'
 		];
 
 		if ( $this->options->get( 'do_cloudflare', false ) ) {

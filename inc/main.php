@@ -215,9 +215,6 @@ function rocket_activation() {
 	if ( class_exists( 'WPaaS\Plugin' ) ) {
 		require WP_ROCKET_3RD_PARTY_PATH . 'hosting/godaddy.php';
 	}
-	if ( defined( 'O2SWITCH_VARNISH_PURGE_KEY' ) ) {
-		require WP_ROCKET_3RD_PARTY_PATH . 'hosting/o2switch.php';
-	}
 
 	if ( rocket_valid_key() ) {
 		// Add All WP Rocket rules of the .htaccess file.
