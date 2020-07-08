@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.4\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2020-06-24 21:16+0300\n"
+"POT-Creation-Date: 2020-07-07 15:04-0400\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: 阳 李 <liyangobj@gmail.com>, 2020\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/wp-media/teams/18133/zh_CN/)\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.2.4\n"
+"X-Generator: Poedit 1.8.11\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -36,8 +36,8 @@ msgstr ""
 #: inc/3rd-party/hosting/o2switch.php:17
 #: inc/3rd-party/hosting/pressidium.php:18 inc/3rd-party/hosting/savvii.php:18
 #: inc/3rd-party/hosting/wp-serveur.php:27
-#: inc/ThirdParty/Hostings/Cloudways.php:66
-#: inc/ThirdParty/Hostings/WPEngine.php:64 inc/deprecated/3.6.php:515
+#: inc/ThirdParty/Hostings/Cloudways.php:92
+#: inc/ThirdParty/Hostings/WPEngine.php:64 inc/deprecated/3.6.php:542
 #, php-format
 msgid ""
 "Your site is hosted on %s, we have enabled Varnish auto-purge for "
@@ -249,7 +249,7 @@ msgstr "验证授权"
 msgid "Unavailable"
 msgstr "不可用"
 
-#: inc/Engine/Admin/Settings/Page.php:341 inc/deprecated/deprecated.php:1789
+#: inc/Engine/Admin/Settings/Page.php:341 inc/deprecated/deprecated.php:1788
 #: views/settings/page-sections/dashboard.php:73
 msgid "License"
 msgstr "授权"
@@ -674,10 +674,9 @@ msgstr "嵌入"
 #: inc/Engine/Admin/Settings/Page.php:934
 msgid ""
 "Prevents others from embedding content from your site, prevents you from "
-"embedding content from other (non-whitelisted) sites, and removes JavaScript"
-" requests related to WordPress embeds"
-msgstr ""
-"阻止他人嵌入您网站的内容，阻止自己嵌入其他网站内容（白名单除外），并移除与 WordPress 嵌入功能相关的 JavaScript 请求。"
+"embedding content from other (non-allowed) sites, and removes JavaScript "
+"requests related to WordPress embeds"
+msgstr "阻止他人嵌入您网站的内容，阻止自己嵌入其他网站内容（白名单除外），并移除与WordPress嵌入功能相关的JavaScript请求。"
 
 #: inc/Engine/Admin/Settings/Page.php:938
 msgid "WebP compatibility"
@@ -736,7 +735,7 @@ msgstr "禁用 WordPress 嵌入功能"
 msgid "Enable WebP caching"
 msgstr "开启 WebP 缓存"
 
-#: inc/Engine/Admin/Settings/Page.php:1056 inc/deprecated/deprecated.php:1776
+#: inc/Engine/Admin/Settings/Page.php:1056 inc/deprecated/deprecated.php:1775
 #: views/settings/page-sections/tutorials.php:30
 msgid "Preload"
 msgstr "预缓存"
@@ -816,8 +815,8 @@ msgstr "要预加载的字体"
 #: inc/Engine/Admin/Settings/Page.php:1168
 msgid ""
 "Specify urls of the font files to be preloaded (one per line). Fonts must be"
-" hosted on your own domain."
-msgstr "指定要预加载的字体文件的URL（每行一个）。字体必须托管在您自己的域名中。"
+" hosted on your own domain, or the domain you have specified on the CDN tab."
+msgstr "指定要预加载的字体文件的URL（每行一个）。字体必须托管在您自己的域名中，或者在CDN标签页中指定这个域名。"
 
 #: inc/Engine/Admin/Settings/Page.php:1169
 msgid ""
@@ -934,7 +933,7 @@ msgstr "指定当更新任何文章或页面时，要清除缓存的 URL（每�
 msgid "Specify query strings for caching (one per line)"
 msgstr "指定要缓存的查询字符串（每行一个）"
 
-#: inc/Engine/Admin/Settings/Page.php:1335 inc/deprecated/deprecated.php:1775
+#: inc/Engine/Admin/Settings/Page.php:1335 inc/deprecated/deprecated.php:1774
 msgid "Database"
 msgstr "数据库"
 
@@ -1090,7 +1089,7 @@ msgstr "每月"
 
 #: inc/Engine/Admin/Settings/Page.php:1505
 #: inc/Engine/Admin/Settings/Page.php:1516 inc/admin/ui/meta-boxes.php:77
-#: inc/deprecated/deprecated.php:1773
+#: inc/deprecated/deprecated.php:1772
 msgid "CDN"
 msgstr "CDN"
 
@@ -1400,7 +1399,7 @@ msgctxt "Sucuri"
 msgid "Find your API key"
 msgstr "查找我的 API Key"
 
-#: inc/Engine/Admin/Settings/Render.php:461 inc/deprecated/deprecated.php:1294
+#: inc/Engine/Admin/Settings/Render.php:461 inc/deprecated/deprecated.php:1293
 msgid "Upload file and import settings"
 msgstr "上传文件并导入配置"
 
@@ -1411,12 +1410,12 @@ msgid ""
 msgstr "Sucuri 扩展: Sucuri 防火墙的 API key 长度应为<code>{32个字符}/{32个字符}</code>."
 
 #: inc/Engine/Admin/Settings/Settings.php:496
-#: inc/deprecated/deprecated.php:1245
+#: inc/deprecated/deprecated.php:1244
 msgid "Settings saved."
 msgstr "设置已保存。"
 
 #: inc/Engine/Admin/Settings/Subscriber.php:141
-#: inc/deprecated/deprecated.php:1786
+#: inc/deprecated/deprecated.php:1785
 #: views/settings/page-sections/tools.php:33
 msgid "Tools"
 msgstr "工具"
@@ -1527,7 +1526,7 @@ msgstr "%1$s的关键路径CSS未生成。错误：%2$s"
 msgid ""
 "Critical CSS for %1$s on mobile not generated. Error: The API returned an "
 "empty response."
-msgstr "移动端的%1$sCritical CSS没有被生成。原因：API返回一个了空的响应报文"
+msgstr "移动端的%1$s关键CSS没有被生成。原因：API返回一个了空的响应报文"
 
 #: inc/Engine/CriticalPath/APIClient.php:173
 #: inc/Engine/CriticalPath/DataManager.php:69
@@ -1535,12 +1534,12 @@ msgstr "移动端的%1$sCritical CSS没有被生成。原因：API返回一个�
 msgid ""
 "Critical CSS for %1$s not generated. Error: The API returned an empty "
 "response."
-msgstr "%1$s的Critical CSS 没有生成。原因：API返回了一个空的响应报文。"
+msgstr "%1$s的关键CSS 没有生成。原因：API返回了一个空的响应报文。"
 
 #: inc/Engine/CriticalPath/APIClient.php:185
 #, php-format
 msgid "Critical CSS for %1$s on mobile not generated."
-msgstr "移动端的%1$sCritical CSS没有被生成"
+msgstr "移动端的关键CSS%1$s没有被生成"
 
 #: inc/Engine/CriticalPath/APIClient.php:187
 #: inc/Engine/CriticalPath/ProcessorService.php:193
@@ -1599,33 +1598,33 @@ msgstr "在WP Rocket设置中开启CSS递送优化"
 msgid "Enable Optimize CSS delivery in the options above"
 msgstr "在以上选项中启用CSS递送优化"
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:149
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:144
 msgid "Critical CSS generation is currently running."
 msgstr "关键CSS生成 正在运行中。"
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:154
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:149
 #: inc/Engine/Preload/PreloadSubscriber.php:242
 #, php-format
 msgid "Go to the %1$sWP Rocket settings%2$s page to track progress."
 msgstr "查看进展请访问 %1$sWP Rocket 设置%2$s页面。"
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:368
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:363
 #, php-format
 msgid ""
 "Critical CSS generation is currently running: %1$d of %2$d page types "
 "completed. (Refresh this page to view progress)"
 msgstr "正在生成关键路径CSS：已完成 %1$d / %2$d 页。（刷新以查看进度）"
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:440
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:435
 #, php-format
 msgid "Critical CSS generation finished for %1$d of %2$d page types."
 msgstr "生成关键路径CSS进度：%1$d / %2$d种页面类型。"
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:447
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:442
 msgid "Critical CSS generation encountered one or more errors."
 msgstr "关键CSS生成出错。"
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:447
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:442
 msgid "Learn more."
 msgstr "了解更多。"
 
@@ -1853,6 +1852,13 @@ msgid ""
 "preloading."
 msgstr "您的服务器未启用 %1$sSimpleXML PHP 扩展%2$s. 请时联系主机商开启以使用 sitemap预缓存 功能."
 
+#: inc/ThirdParty/Hostings/Cloudways.php:84
+#, php-format
+msgid ""
+"Varnish auto-purge will be automatically enabled once Varnish is enabled on "
+"your %s server."
+msgstr "在您的%s服务器上启用Varnish后，将自动启用Varnish自动清除功能。"
+
 #: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:78
 #, php-format
 msgctxt "Hummingbird notice"
@@ -1907,7 +1913,7 @@ msgid "Smush"
 msgstr "Smush"
 
 #: inc/admin/admin.php:18 inc/common/admin-bar.php:367
-#: inc/deprecated/deprecated.php:1787
+#: inc/deprecated/deprecated.php:1786
 msgid "Support"
 msgstr "支持"
 
@@ -2245,7 +2251,7 @@ msgid ""
 msgstr "如无法升级，您可使用下方按钮还原至旧版本。"
 
 #: inc/classes/class-wp-rocket-requirements-check.php:161
-#: inc/deprecated/deprecated.php:1947
+#: inc/deprecated/deprecated.php:1946
 #, php-format
 msgid "Re-install version %s"
 msgstr "重新安装 %s 版本"
@@ -2558,101 +2564,101 @@ msgstr "异步加载<strong>JS</strong>文件"
 msgid "Add URL"
 msgstr "添加URL"
 
-#: inc/deprecated/deprecated.php:1277 views/settings/fields/import-form.php:22
+#: inc/deprecated/deprecated.php:1276 views/settings/fields/import-form.php:22
 msgid ""
 "Before you can upload your import file, you will need to fix the following "
 "error:"
 msgstr "在上传配置文件前，你必须先修复以下错误："
 
-#: inc/deprecated/deprecated.php:1288 views/settings/fields/import-form.php:35
+#: inc/deprecated/deprecated.php:1287 views/settings/fields/import-form.php:35
 #, php-format
 msgid "Choose a file from your computer (maximum size: %s)"
 msgstr "从您的电脑选择文件（≤ %s）"
 
-#: inc/deprecated/deprecated.php:1385
+#: inc/deprecated/deprecated.php:1384
 msgid "Your Cloudflare credentials are valid."
 msgstr "您的Cloudflare授权已验证。"
 
-#: inc/deprecated/deprecated.php:1389
+#: inc/deprecated/deprecated.php:1388
 msgid "Your Cloudflare credentials are invalid!"
 msgstr "您的Cloudflare授权无效！"
 
-#: inc/deprecated/deprecated.php:1453
+#: inc/deprecated/deprecated.php:1452
 msgid "Save and optimize"
 msgstr "保存并优化"
 
-#: inc/deprecated/deprecated.php:1453
+#: inc/deprecated/deprecated.php:1452
 msgid "Optimize"
 msgstr "优化"
 
-#: inc/deprecated/deprecated.php:1464 inc/deprecated/deprecated.php:1666
+#: inc/deprecated/deprecated.php:1463 inc/deprecated/deprecated.php:1665
 msgctxt "screen-reader-text"
 msgid "Note:"
 msgstr "注意："
 
-#: inc/deprecated/deprecated.php:1470
+#: inc/deprecated/deprecated.php:1469
 msgctxt "screen-reader-text"
 msgid "Performance tip:"
 msgstr "性能优化小窍门："
 
-#: inc/deprecated/deprecated.php:1476
+#: inc/deprecated/deprecated.php:1475
 msgctxt "screen-reader-text"
 msgid "Third-party feature detected:"
 msgstr "检测到第三方功能："
 
-#: inc/deprecated/deprecated.php:1488 inc/deprecated/deprecated.php:1672
+#: inc/deprecated/deprecated.php:1487 inc/deprecated/deprecated.php:1671
 msgctxt "screen-reader-text"
 msgid "Warning:"
 msgstr "警告："
 
-#: inc/deprecated/deprecated.php:1501
+#: inc/deprecated/deprecated.php:1500
 msgctxt "button text"
 msgid "Download settings"
 msgstr "下载配置"
 
-#: inc/deprecated/deprecated.php:1531
+#: inc/deprecated/deprecated.php:1530
 msgid "Replace site's hostname with:"
 msgstr "将站点主机名重设为："
 
-#: inc/deprecated/deprecated.php:1550 inc/deprecated/deprecated.php:1587
-#: inc/deprecated/deprecated.php:1615 views/settings/fields/cnames.php:32
+#: inc/deprecated/deprecated.php:1549 inc/deprecated/deprecated.php:1586
+#: inc/deprecated/deprecated.php:1614 views/settings/fields/cnames.php:32
 #: views/settings/fields/cnames.php:64 views/settings/fields/cnames.php:94
 msgid "reserved for"
 msgstr "套用到"
 
-#: inc/deprecated/deprecated.php:1552 inc/deprecated/deprecated.php:1589
-#: inc/deprecated/deprecated.php:1617 views/settings/fields/cnames.php:35
+#: inc/deprecated/deprecated.php:1551 inc/deprecated/deprecated.php:1588
+#: inc/deprecated/deprecated.php:1616 views/settings/fields/cnames.php:35
 #: views/settings/fields/cnames.php:67 views/settings/fields/cnames.php:97
 msgid "All files"
 msgstr "所有文件"
 
-#: inc/deprecated/deprecated.php:1564 inc/deprecated/deprecated.php:1594
-#: inc/deprecated/deprecated.php:1622 views/settings/fields/cnames.php:47
+#: inc/deprecated/deprecated.php:1563 inc/deprecated/deprecated.php:1593
+#: inc/deprecated/deprecated.php:1621 views/settings/fields/cnames.php:47
 #: views/settings/fields/cnames.php:79 views/settings/fields/cnames.php:109
 msgid "Images"
 msgstr "图片"
 
-#: inc/deprecated/deprecated.php:1635 views/settings/fields/cnames.php:120
+#: inc/deprecated/deprecated.php:1634 views/settings/fields/cnames.php:120
 msgid "Add CNAME"
 msgstr "添加"
 
-#: inc/deprecated/deprecated.php:1706 views/settings/partials/sidebar.php:16
+#: inc/deprecated/deprecated.php:1705 views/settings/partials/sidebar.php:16
 msgid "Watch the video"
 msgstr "观看视频"
 
-#: inc/deprecated/deprecated.php:1771
+#: inc/deprecated/deprecated.php:1770
 msgid "Basic"
 msgstr "基础设置"
 
-#: inc/deprecated/deprecated.php:1772
+#: inc/deprecated/deprecated.php:1771
 msgid "Static Files"
 msgstr "静态文件"
 
-#: inc/deprecated/deprecated.php:1774
+#: inc/deprecated/deprecated.php:1773
 msgid "Advanced"
 msgstr "高级"
 
-#: inc/deprecated/deprecated.php:1944
+#: inc/deprecated/deprecated.php:1943
 #, php-format
 msgid ""
 "%1$s %2$s requires at least PHP %3$s to function properly. To use this "
@@ -2712,101 +2718,101 @@ msgstr "WP Rocket设置（匿名）："
 msgid "Which WP Rocket settings are active"
 msgstr "WP Rocket中已启用的选项"
 
-#: inc/functions/options.php:547 inc/functions/options.php:586
+#: inc/functions/options.php:524 inc/functions/options.php:563
 msgid ""
 "License validation failed. Our server could not resolve the request from "
 "your website."
 msgstr "验证授权失败. 我们的服务器无法处理来自您网站的请求"
 
-#: inc/functions/options.php:547 inc/functions/options.php:586
+#: inc/functions/options.php:524 inc/functions/options.php:563
 #, php-format
 msgid ""
 "Try clicking %1$sSave Changes%2$s below. If the error persists, follow "
 "%3$sthis guide%4$s."
 msgstr "尝试点击下方的%1$s保存更改%2$s. 如问题仍然存在, 参考%3$s这个文档%4$s."
 
-#: inc/functions/options.php:563
+#: inc/functions/options.php:540
 msgid ""
 "License validation failed. You may be using a nulled version of the plugin. "
 "Please do the following:"
 msgstr "授权验证失败. 您可能在使用破解版本. 请按以下操作:"
 
-#: inc/functions/options.php:563 inc/functions/options.php:605
+#: inc/functions/options.php:540 inc/functions/options.php:582
 #, php-format
 msgid "Login to your WP Rocket %1$saccount%2$s"
 msgstr "登录您的 WP Rocket %1$s账户%2$s"
 
-#: inc/functions/options.php:563 inc/functions/options.php:605
+#: inc/functions/options.php:540 inc/functions/options.php:582
 msgid "Download the zip file"
 msgstr "下载 zip 文件"
 
-#: inc/functions/options.php:563 inc/functions/options.php:605
+#: inc/functions/options.php:540 inc/functions/options.php:582
 msgid "Reinstall"
 msgstr "重新安装"
 
-#: inc/functions/options.php:563
+#: inc/functions/options.php:540
 #, php-format
 msgid ""
 "If you do not have a WP Rocket account, please %1$spurchase a license%2$s."
 msgstr "如您没有 WP Rocket 账号, 请%1$s购买授权%2$s."
 
-#: inc/functions/options.php:571
+#: inc/functions/options.php:548
 msgid ""
 "License validation failed. This user account does not exist in our database."
 msgstr "验证授权失败。用户不存在。"
 
-#: inc/functions/options.php:571
+#: inc/functions/options.php:548
 msgid "To resolve, please contact support."
 msgstr "如需解决问题请联系客服。"
 
-#: inc/functions/options.php:579
-msgid "License validation failed. This user account is blacklisted."
-msgstr "验证授权失败。黑名单用户。"
+#: inc/functions/options.php:556
+msgid "License validation failed. This user account is blocked."
+msgstr "验证授权失败。该用户已被锁定。"
 
-#: inc/functions/options.php:579
+#: inc/functions/options.php:556
 #, php-format
 msgid "Please see %1$sthis guide%2$s for more info."
 msgstr "更多信息请参考%1$s这个文档%2$s。"
 
-#: inc/functions/options.php:599
+#: inc/functions/options.php:576
 msgid "Your license is not valid."
 msgstr "您的授权无效。"
 
-#: inc/functions/options.php:599
+#: inc/functions/options.php:576
 #, php-format
 msgid "Make sure you have an active %1$sWP Rocket license%2$s."
 msgstr "请确保您有已激活的%1$sWP Rocket 授权%2$s。"
 
-#: inc/functions/options.php:601
+#: inc/functions/options.php:578
 msgid "You have added as many sites as your current license allows."
 msgstr "您的网站数已超出授权限制。"
 
-#: inc/functions/options.php:601
+#: inc/functions/options.php:578
 #, php-format
 msgid ""
 "Upgrade your %1$saccount%2$s or %3$stransfer your license%2$s to this "
 "domain."
 msgstr "升级您的%1$s账号%2$s或%3$s转移授权%2$s至当前域名。"
 
-#: inc/functions/options.php:603
+#: inc/functions/options.php:580
 msgid "This website is not allowed."
 msgstr "此网站未被允许。"
 
-#: inc/functions/options.php:603
+#: inc/functions/options.php:580
 #, php-format
 msgid "Please %1$scontact support%2$s."
 msgstr "请%1$s联系客服%2$s。"
 
-#: inc/functions/options.php:605
+#: inc/functions/options.php:582
 msgid "This license key is not recognized."
 msgstr "该授权码无法识别。"
 
-#: inc/functions/options.php:605
+#: inc/functions/options.php:582
 #, php-format
 msgid "If the issue persists, please %1$scontact support%2$s."
 msgstr "如问题仍然存在, 请%1$s联系客服%2$s。"
 
-#: inc/functions/options.php:611
+#: inc/functions/options.php:588
 #, php-format
 msgid "License validation failed: %s"
 msgstr "授权验证失败：%s"
