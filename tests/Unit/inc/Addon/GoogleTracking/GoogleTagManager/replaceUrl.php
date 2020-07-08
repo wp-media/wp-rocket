@@ -34,7 +34,7 @@ class Test_ReplaceUrl extends FilesystemTestCase {
 		$google_tag_manager = new GoogleTagManager( $busting_path, $busting_url, new GoogleAnalytics( $busting_path, $busting_url ), $this->filesystem );
 		$actual             = $google_tag_manager->replace_url( $html );
 
-		$this->assertEquals( $expected['unit'], $actual );
+		$this->assertEquals( str_replace( '{HOME_URL}', 'vfs://public', $expected ), $actual );
 	}
 
 }
