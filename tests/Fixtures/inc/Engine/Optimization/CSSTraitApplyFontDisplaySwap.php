@@ -14,14 +14,14 @@ return [
 }
 CSS
 			,
-			'expected' => <<<EXPECTED
+			'expected' => <<<CSS
 @font-face {font-display:swap;
   font-family: 'MyWebFont'; /* Define the custom font name */
   src:  url('myfont.woff2') format('woff2'),
         url('myfont.woff') format('woff'); /* Define where the font can be downloaded */
         /* Define how the browser behaves during download */
 }
-EXPECTED
+CSS
 		],
 
 		'shouldIgnoreNonFontFaceRuleSets' => [
@@ -35,7 +35,7 @@ body {
 }
 CSS
 			,
-			'expected' => <<<EXPECTED
+			'expected' => <<<CSS
 body {
   font-family: 'MyWebFont'; /* Let's pick a custom font! */
   font-size: 14px;
@@ -43,7 +43,7 @@ body {
   color: #24292e;
   background-color: #fff;
 }
-EXPECTED
+CSS
 		],
 
 		'shouldNotChangeFontDisplayAttributeWhenAlreadySetInRule' => [
@@ -59,7 +59,7 @@ EXPECTED
 }
 CSS
 			,
-			'expected' => <<<EXPECTED
+			'expected' => <<<CSS
 @font-face {
 	font-family: 'ETmodules';
 	src: url("core/admin/fonts/modules.eot");
@@ -69,7 +69,7 @@ CSS
 	font-display: auto;
 	font-style: normal;
 }
-EXPECTED
+CSS
 		],
 
 		'shouldTargetMultipleFontFaceRules' => [
@@ -90,7 +90,7 @@ EXPECTED
 }
 CSS
 			,
-			'expected' => <<<EXPECTED
+			'expected' => <<<CSS
 @font-face {font-display:swap;
   font-family: 'MyWebFont'; /* Define the custom font name */
   src:  url('myfont.woff2') format('woff2'),
@@ -105,17 +105,31 @@ CSS
 	font-weight: normal;
 	font-style: normal;
 }
-EXPECTED
+CSS
 		],
 
 		'shouldReplaceMinimizedWithoutAddingSpaces' => [
-	               <<< CSS
+			'css'      => <<< CSS
 @font-face{font-family:'MyWebFont';src:url('myfont.woff2')format('woff2'),url('myfont.woff')format('woff')}
 CSS
-		,
-		'expected' => <<<EXPECTED
+			,
+			'expected' => <<<CSS
 @font-face{font-display:swap;font-family:'MyWebFont';src:url('myfont.woff2')format('woff2'),url('myfont.woff')format('woff')}
-EXPECTED
+CSS
+		],
+
+		'shouldIgnoreMalFormedCSS' => [
+			'css' => <<<CSS
+@font-face:font-display:swap;font-family:'MyWebFont';src:url('myfont.woff2')format('woff2'),url('myfont.woff')format('woff')}@font-face{font-display:swap;
+font-family:'MyWebFont';src:url('myfont.woff2')format('woff2'),url('myfont.woff')format('woff')}@font-face {font-display:swapfont-family'ETmodules';src:
+url("core/admin/fonts/modules.eot");src: url("core/admin/fonts/modules.eot#iefix")format("woff"), url("core/admin/fonts/modules.svg#ETModules")font-weight: normal;font-style: normal;
+CSS
+			,
+			'expected' => <<<CSS
+@font-face:font-display:swap;font-family:'MyWebFont';src:url('myfont.woff2')format('woff2'),url('myfont.woff')format('woff')}@font-face{font-display:swap;
+font-family:'MyWebFont';src:url('myfont.woff2')format('woff2'),url('myfont.woff')format('woff')}@font-face {font-display:swapfont-family'ETmodules';src:
+url("core/admin/fonts/modules.eot");src: url("core/admin/fonts/modules.eot#iefix")format("woff"), url("core/admin/fonts/modules.svg#ETModules")font-weight: normal;font-style: normal;
+CSS
 		],
 	],
 ];
