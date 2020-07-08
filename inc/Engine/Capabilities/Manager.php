@@ -1,15 +1,8 @@
 <?php
-namespace WP_Rocket\Subscriber\Plugin;
 
-use WP_Rocket\Event_Management\Subscriber_Interface;
+namespace WP_Rocket\Engine\Capabilities;
 
-/**
- * Manage WP Rocket custom capabilities
- *
- * @since 3.4
- * @author Remy Perona
- */
-class Capabilities_Subscriber implements Subscriber_Interface {
+class Manager {
 	/**
 	 * List of WP Rocket capabilities
 	 *
@@ -29,33 +22,35 @@ class Capabilities_Subscriber implements Subscriber_Interface {
 	];
 
 	/**
-	 * Return an array of events that this subscriber wants to listen to.
+	 * Gets the WP Rocket capabilities
 	 *
-	 * @since  3.4
-	 * @author Remy Perona
+	 * @since 3.4
 	 *
 	 * @return array
 	 */
-	public static function get_subscribed_events() {
-		return [
-			'option_page_capability_' . WP_ROCKET_PLUGIN_SLUG => 'required_capability',
-			'ure_built_in_wp_caps'         => 'add_caps_to_ure',
-			'ure_capabilities_groups_tree' => 'add_group_to_ure',
-		];
+	private function get_capabilities() {
+		return $this->capabilities;
+	}
+
+	public function activate() {
+		add_action( 'rocket_activation', [ $this, 'add_rocket_capabilities' ] );
+	}
+
+	public function deactivate() {
+		add_action( 'rocket_deactivation', [ $this, 'remove_rocket_capabilities'] );
 	}
 
 	/**
 	 * Add WP Rocket capabilities to the administrator role
 	 *
 	 * @since 3.4
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
 	public function add_rocket_capabilities() {
-		$role = get_role( 'administrator' );
+		$role = $this->get_administrator_role_object();
 
-		if ( ! $role ) {
+		if ( is_null( $role ) ) {
 			return;
 		}
 
@@ -64,18 +59,17 @@ class Capabilities_Subscriber implements Subscriber_Interface {
 		}
 	}
 
-	/**
+		/**
 	 * Remove WP Rocket capabilities from the administrator role
 	 *
 	 * @since 3.4
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
 	public function remove_rocket_capabilities() {
-		$role = get_role( 'administrator' );
+		$role = $this->get_administrator_role_object();
 
-		if ( ! $role ) {
+		if ( is_null( $role ) ) {
 			return;
 		}
 
@@ -88,7 +82,6 @@ class Capabilities_Subscriber implements Subscriber_Interface {
 	 * Sets the capability for the options page.
 	 *
 	 * @since 3.4
-	 * @author Remy Perona
 	 *
 	 * @param string $capability The capability used for the page, which is manage_options by default.
 	 * @return string
@@ -101,7 +94,6 @@ class Capabilities_Subscriber implements Subscriber_Interface {
 	 * Add WP Rocket capabilities to User Role Editor
 	 *
 	 * @since 3.4
-	 * @author Remy Perona
 	 *
 	 * @param array $caps Array of existing capabilities.
 	 * @return array
@@ -121,7 +113,6 @@ class Capabilities_Subscriber implements Subscriber_Interface {
 	 * Add WP Rocket as a group in User Role Editor
 	 *
 	 * @since 3.4
-	 * @author Remy Perona
 	 *
 	 * @param array $groups Array of existing groups.
 	 * @return array
@@ -136,15 +127,7 @@ class Capabilities_Subscriber implements Subscriber_Interface {
 		return $groups;
 	}
 
-	/**
-	 * Gets the WP Rocket capabilities
-	 *
-	 * @since 3.4
-	 * @author Remy Perona
-	 *
-	 * @return array
-	 */
-	private function get_capabilities() {
-		return $this->capabilities;
+	private function get_administrator_role_object() {
+		return get_role( 'administrator' );
 	}
 }
