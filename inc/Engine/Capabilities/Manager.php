@@ -149,7 +149,7 @@ class Manager implements ActivationInterface, DeactivationInterface {
 	 * @param string $actual_version Installed WP Rocket version.
 	 * @return void
 	 */
-	public function add_capabilities_on_upgrade(  $wp_rocket_version, $actual_version ) {
+	public function add_capabilities_on_upgrade( $wp_rocket_version, $actual_version ) {
 		if ( version_compare( $actual_version, '3.4.0.1', '<' ) ) {
 			$this->add_rocket_capabilities();
 		}

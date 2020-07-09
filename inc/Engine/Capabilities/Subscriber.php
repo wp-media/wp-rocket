@@ -88,7 +88,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @param string $actual_version Installed WP Rocket version.
 	 * @return void
 	 */
-	public function add_capabilities_on_upgrade(  $wp_rocket_version, $actual_version ) {
-		$this->capabilities->add_capabilities_on_upgrade(  $wp_rocket_version, $actual_version );
+	public function add_capabilities_on_upgrade( $wp_rocket_version, $actual_version ) {
+		$this->capabilities->add_capabilities_on_upgrade( $wp_rocket_version, $actual_version );
 	}
 }
