@@ -9,8 +9,18 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * @since 3.4
  */
 class Subscriber implements Subscriber_Interface {
+	/**
+	 * Capabilities manager instance
+	 *
+	 * @var Manager
+	 */
 	private $capabilities;
 
+	/**
+	 * Instantiate the subscriber
+	 *
+	 * @param Manager $capabilities Capabilities manager instance.
+	 */
 	public function __construct( Manager $capabilities ) {
 		$this->capabilities = $capabilities;
 	}
