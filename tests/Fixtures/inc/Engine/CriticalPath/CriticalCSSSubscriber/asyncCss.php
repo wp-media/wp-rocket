@@ -796,5 +796,299 @@ HTML
 			'expected' => get_html_as_string( 'twentyseventeen-async_css' ),
 		],
 	],
+
+	// Test encoding.
+
+	'shouldHandleUTF8' => [
+		'html'     => <<<HTML
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>Testing encoding</title>
+	<link rel="stylesheet" id="twentyseventeen-fonts-css" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&amp;subset=latin%2Clatin-ext&amp;display=fallback" media="all">
+	<link rel="stylesheet" id="twentyseventeen-style-css" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="all">
+</head>
+<body>
+	<div>
+		<h1>Testing encoding</h1>
+		<p>Don't Believe Everything You Hear – ...</p>
+	</div>
+</body>
+</html>
+HTML
+		,
+		'expected' => <<<HTML
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>Testing encoding</title>
+	<link rel="preload" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" as="style">
+	<link rel="stylesheet" id="twentyseventeen-fonts-css" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" media="print" onload="this.onload=null;this.media='all'">
+	<link rel="preload" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" as="style">
+	<link rel="stylesheet" id="twentyseventeen-style-css" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="print" onload="this.onload=null;this.media='all'">
+</head>
+<body>
+	<div>
+		<h1>Testing encoding</h1>
+		<p>Don't Believe Everything You Hear – ...</p>
+	</div>
+	<script>const wprRemoveCPCSS = () => { \$elem = document.getElementById( "rocket-critical-css" ); if ( \$elem ) { \$elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>
+	<noscript>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" media="all">
+		<link rel="stylesheet" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="all">
+	</noscript>
+</body>
+</html>
+HTML
+		,
+	],
+
+	'shouldHandleUnicode_greek' => [
+		'html'     => <<<HTML
+<!DOCTYPE html>
+<html lang="el">
+<head>
+	<meta charset="UTF-8">
+	<title>Δοκιμή κωδικοποίησης</title>
+	<link rel="stylesheet" id="twentyseventeen-fonts-css" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&amp;subset=latin%2Clatin-ext&amp;display=fallback" media="all">
+	<link rel="stylesheet" id="twentyseventeen-style-css" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="all">
+</head>
+<body>
+	<div>
+		<h1>Δοκιμή κωδικοποίησης</h1>
+		<p>Γεια σας, δοκιμή κωδικοποίησης</p>
+	</div>
+</body>
+</html>
+HTML
+		,
+		'expected' => <<<HTML
+<!DOCTYPE html>
+<html lang="el">
+<head>
+	<meta charset="UTF-8">
+	<title>Δοκιμή κωδικοποίησης</title>
+	<link rel="preload" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" as="style">
+	<link rel="stylesheet" id="twentyseventeen-fonts-css" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" media="print" onload="this.onload=null;this.media='all'">
+	<link rel="preload" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" as="style">
+	<link rel="stylesheet" id="twentyseventeen-style-css" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="print" onload="this.onload=null;this.media='all'">
+</head>
+<body>
+	<div>
+		<h1>Δοκιμή κωδικοποίησης</h1>
+		<p>Γεια σας, δοκιμή κωδικοποίησης</p>
+	</div>
+	<script>const wprRemoveCPCSS = () => { \$elem = document.getElementById( "rocket-critical-css" ); if ( \$elem ) { \$elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>
+	<noscript>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" media="all">
+		<link rel="stylesheet" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="all">
+	</noscript>
+</body>
+</html>
+HTML
+		,
+	],
+
+	'shouldHandleUTF8_japenese' => [
+		'html'     => <<<HTML
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<title>エンコーディングのテスト</title>
+	<link rel="stylesheet" id="twentyseventeen-fonts-css" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&amp;subset=latin%2Clatin-ext&amp;display=fallback" media="all">
+	<link rel="stylesheet" id="twentyseventeen-style-css" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="all">
+</head>
+<body>
+	<div>
+		<h1>エンコーディングのテスト</h1>
+		<p>こんにちは世界、私はエンコーディングをテストしています</p>
+	</div>
+</body>
+</html>
+HTML
+		,
+		'expected' => <<<HTML
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<title>エンコーディングのテスト</title>
+	<link rel="preload" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" as="style">
+	<link rel="stylesheet" id="twentyseventeen-fonts-css" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" media="print" onload="this.onload=null;this.media='all'">
+	<link rel="preload" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" as="style">
+	<link rel="stylesheet" id="twentyseventeen-style-css" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="print" onload="this.onload=null;this.media='all'">
+</head>
+<body>
+	<div>
+		<h1>エンコーディングのテスト</h1>
+		<p>こんにちは世界、私はエンコーディングをテストしています</p>
+	</div>
+	<script>const wprRemoveCPCSS = () => { \$elem = document.getElementById( "rocket-critical-css" ); if ( \$elem ) { \$elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>
+	<noscript>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" media="all">
+		<link rel="stylesheet" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="all">
+	</noscript>
+</body>
+</html>
+HTML
+		,
+	],
+
+	'shouldHandleUnicode_hebrew' => [
+		'html'     => <<<HTML
+<!DOCTYPE html>
+<html lang="hr" dir="rtl">
+<head>
+	<meta charset="UTF-8">
+	<title>בדיקת קידוד</title>
+	<link rel="stylesheet" id="twentyseventeen-fonts-css" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&amp;subset=latin%2Clatin-ext&amp;display=fallback" media="all">
+	<link rel="stylesheet" id="twentyseventeen-style-css" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="all">
+</head>
+<body>
+	<div>
+		<h1>בדיקת קידוד</h1>
+		<p>אל תאמין לכל מה שאתה שומע -</p>
+	</div>
+</body>
+</html>
+HTML
+		,
+		'expected' => <<<HTML
+<!DOCTYPE html>
+<html lang="hr" dir="rtl">
+<head>
+	<meta charset="UTF-8">
+	<title>בדיקת קידוד</title>
+	<link rel="preload" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" as="style">
+	<link rel="stylesheet" id="twentyseventeen-fonts-css" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" media="print" onload="this.onload=null;this.media='all'">
+	<link rel="preload" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" as="style">
+	<link rel="stylesheet" id="twentyseventeen-style-css" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="print" onload="this.onload=null;this.media='all'">
+</head>
+<body>
+	<div>
+		<h1>בדיקת קידוד</h1>
+		<p>אל תאמין לכל מה שאתה שומע -</p>
+	</div>
+	<script>const wprRemoveCPCSS = () => { \$elem = document.getElementById( "rocket-critical-css" ); if ( \$elem ) { \$elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>
+	<noscript>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" media="all">
+		<link rel="stylesheet" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="all">
+	</noscript>
+</body>
+</html>
+HTML
+		,
+	],
+
+	'shouldHandleUnicode_arabic' => [
+		'html'     => <<<HTML
+<!DOCTYPE html>
+<html lang="hr" dir="rtl">
+<head>
+	<meta charset="UTF-8">
+	<title>العنوان هنا</title>
+	<link rel="stylesheet" id="twentyseventeen-fonts-css" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&amp;subset=latin%2Clatin-ext&amp;display=fallback" media="all">
+	<link rel="stylesheet" id="twentyseventeen-style-css" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="all">
+</head>
+<body>
+	<div>
+		<h1>تجربة عنوان نصي من هنا</h1>
+		<p>هنا يتم تجربة نص عربي لاكتشاف المشاكل مع اللغات الأخرى -</p>
+	</div>
+</body>
+</html>
+HTML
+		,
+		'expected' => <<<HTML
+<!DOCTYPE html>
+<html lang="hr" dir="rtl">
+<head>
+	<meta charset="UTF-8">
+	<title>العنوان هنا</title>
+	<link rel="preload" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" as="style">
+	<link rel="stylesheet" id="twentyseventeen-fonts-css" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" media="print" onload="this.onload=null;this.media='all'">
+	<link rel="preload" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" as="style">
+	<link rel="stylesheet" id="twentyseventeen-style-css" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="print" onload="this.onload=null;this.media='all'">
+</head>
+<body>
+	<div>
+		<h1>تجربة عنوان نصي من هنا</h1>
+		<p>هنا يتم تجربة نص عربي لاكتشاف المشاكل مع اللغات الأخرى -</p>
+	</div>
+	<script>const wprRemoveCPCSS = () => { \$elem = document.getElementById( "rocket-critical-css" ); if ( \$elem ) { \$elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>
+	<noscript>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" media="all">
+		<link rel="stylesheet" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="all">
+	</noscript>
+</body>
+</html>
+HTML
+		,
+	],
+
+	'shouldNotStripTypeFromScripts' => [
+		'html'     => <<<HTML
+<!DOCTYPE html>
+<html lang="hr" dir="rtl">
+<head>
+	<meta charset="UTF-8">
+	<title>בדיקת קידוד</title>
+	<link rel="stylesheet" id="twentyseventeen-fonts-css" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&amp;subset=latin%2Clatin-ext&amp;display=fallback" media="all">
+	<link rel="stylesheet" id="twentyseventeen-style-css" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="all">
+</head>
+<body>
+	<div>
+		<h1>בדיקת קידוד</h1>
+		<p>אל תאמין לכל מה שאתה שומע -</p>
+	</div>
+	<script type="text/javascript" src="https://example.org/wp-includes/js/hoverintent-js.min.js?ver=2.2.1"></script>
+	<script type="text/javascript" src="https://example.org/wp-includes/js/admin-bar.min.js?ver=5.4.2"></script>
+	<script type="text/template" id="script-template">
+	    <div class="sample-class">
+            <h1><%= title %></h1>
+        </div>
+	</script>
+	<script type="text/html" id="script-html"><h1>Some html</h1></script>
+</body>
+</html>
+HTML
+		,
+		'expected' => <<<HTML
+<!DOCTYPE html>
+<html lang="hr" dir="rtl">
+<head>
+	<meta charset="UTF-8">
+	<title>בדיקת קידוד</title>
+	<link rel="preload" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" as="style">
+	<link rel="stylesheet" id="twentyseventeen-fonts-css" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" media="print" onload="this.onload=null;this.media='all'">
+	<link rel="preload" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" as="style">
+	<link rel="stylesheet" id="twentyseventeen-style-css" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="print" onload="this.onload=null;this.media='all'">
+</head>
+<body>
+	<div>
+		<h1>בדיקת קידוד</h1>
+		<p>אל תאמין לכל מה שאתה שומע -</p>
+	</div>
+	<script>const wprRemoveCPCSS = () => { \$elem = document.getElementById( "rocket-critical-css" ); if ( \$elem ) { \$elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>
+	<script type="text/javascript" src="https://example.org/wp-includes/js/hoverintent-js.min.js?ver=2.2.1"></script>
+	<script type="text/javascript" src="https://example.org/wp-includes/js/admin-bar.min.js?ver=5.4.2"></script>
+	<script type="text/template" id="script-template">
+	    <div class="sample-class">
+            <h1><%= title %></h1>
+        </div>
+	</script>
+	<script type="text/html" id="script-html"><h1>Some html</h1></script>
+	<noscript>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" media="all">
+		<link rel="stylesheet" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="all">
+	</noscript>
+</body>
+</html>
+HTML
+		,
+	],
 ];
 
