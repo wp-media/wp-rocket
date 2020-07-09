@@ -141,6 +141,21 @@ class Manager implements ActivationInterface, DeactivationInterface {
 	}
 
 	/**
+	 * Adds WP Rocket capabilities on plugin upgrade
+	 *
+	 * @since 3.6.3
+	 *
+	 * @param string $wp_rocket_version Latest WP Rocket version.
+	 * @param string $actual_version Installed WP Rocket version.
+	 * @return void
+	 */
+	public function add_capabilities_on_upgrade(  $wp_rocket_version, $actual_version ) {
+		if ( version_compare( $actual_version, '3.4.0.1', '<' ) ) {
+			$this->add_rocket_capabilities();
+		}
+	}
+
+	/**
 	 * Returns the object for the administrator roll
 	 *
 	 * @since 3.6.3

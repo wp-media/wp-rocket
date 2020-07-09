@@ -39,6 +39,7 @@ class Subscriber implements Subscriber_Interface {
 			"option_page_capability_{$slug}" => 'required_capability',
 			'ure_built_in_wp_caps'           => 'add_caps_to_ure',
 			'ure_capabilities_groups_tree'   => 'add_group_to_ure',
+			'wp_rocket_upgrade'              => [ 'add_capabilities_on_upgrade', 12, 2 ],
 		];
 	}
 
@@ -55,7 +56,7 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Add WP Rocket capabilities to User Role Editor
+	 * Adds WP Rocket capabilities to User Role Editor
 	 *
 	 * @since 3.4
 	 *
@@ -67,7 +68,7 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Add WP Rocket as a group in User Role Editor
+	 * Adds WP Rocket as a group in User Role Editor
 	 *
 	 * @since 3.4
 	 *
@@ -76,5 +77,18 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function add_group_to_ure( $groups ) {
 		return $this->capabilities->add_group_to_ure( $groups );
+	}
+
+	/**
+	 * Adds WP Rocket capabilities on plugin upgrade
+	 *
+	 * @since 3.6.3
+	 *
+	 * @param string $wp_rocket_version Latest WP Rocket version.
+	 * @param string $actual_version Installed WP Rocket version.
+	 * @return void
+	 */
+	public function add_capabilities_on_upgrade(  $wp_rocket_version, $actual_version ) {
+		$this->capabilities->add_capabilities_on_upgrade(  $wp_rocket_version, $actual_version );
 	}
 }
