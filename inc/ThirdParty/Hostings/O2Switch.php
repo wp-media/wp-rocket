@@ -42,11 +42,11 @@ class O2Switch implements Subscriber_Interface {
 	 *
 	 * @return array modified field settings data.
 	 */
-	function varnish_addon_title( $settings ) {
+	public function varnish_addon_title( $settings ) {
 		// Translators: %s = Hosting name.
 		$settings['varnish_auto_purge']['title'] = sprintf(
 			__( 'Your site is hosted on %s, we have enabled Varnish auto-purge for compatibility.', 'rocket' ),
-			'o2switch'
+			'O2Switch'
 		);
 
 		return $settings;
@@ -61,7 +61,7 @@ class O2Switch implements Subscriber_Interface {
 	 *
 	 * @return string        Updated htaccess rules.
 	 */
-	function remove_htaccess_html_expire( $rules ) {
+	public function remove_htaccess_html_expire( $rules ) {
 		$rules = preg_replace( '@\s*#\s*Your document html@', '', $rules );
 		$rules = preg_replace( '@\s*ExpiresByType text/html\s*"access plus \d+ (seconds|minutes|hour|week|month|year)"@', '', $rules );
 
