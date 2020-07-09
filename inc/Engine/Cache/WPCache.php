@@ -22,15 +22,33 @@ class WPCache implements ActivationInterface, DeactivationInterface {
 		$this->filesystem = $filesystem;
 	}
 
+	/**
+	 * Performs these actions during the plugin activation
+	 *
+	 * @return void
+	 */
 	public function activate() {
-		add_action( 'rocket_activation', [ $this, 'set_wp_cache_on_activation' ] );
+		add_action( 'rocket_activation', [ $this, 'enable_wp_cache_on_activation' ] );
 	}
 
+	/**
+	 * Performs these actions during the plugin deactivation
+	 *
+	 * @return void
+	 */
 	public function deactivate() {
-		add_action( 'rocket_deactivation', [ $this, 'remove_wp_cache_on_deactivation' ] );
+		add_action( 'rocket_deactivation', [ $this, 'disable_wp_cache_on_deactivation' ] );
+		add_filter( 'rocket_prevent_deactivation', [ $this, 'maybe_prevent_deactivation' ] );
 	}
 
-	public function set_wp_cache_on_activation() {
+	/**
+	 * Enables the WP_CACHE constant on activation
+	 *
+	 * @since 3.6.3
+	 *
+	 * @return void
+	 */
+	public function enable_wp_cache_on_activation() {
 		if ( ! rocket_valid_key() ) {
 			return;
 		}
@@ -38,8 +56,37 @@ class WPCache implements ActivationInterface, DeactivationInterface {
 		$this->set_wp_cache_constant( true );
 	}
 
-	public function remove_wp_cache_on_deactivation() {
+	/**
+	 * Disables the WP_CACHE constant on deactivation
+	 *
+	 * @since 3.6.3
+	 *
+	 * @return void
+	 */
+	public function disable_wp_cache_on_deactivation() {
 		$this->set_wp_cache_constant( false );
+	}
+
+	/**
+	 * Updates the causes array on deactivation if needed
+	 *
+	 * @since 3.6.3
+	 *
+	 * @param array $causes Array of causes to pass to the notice.
+	 */
+	public function maybe_prevent_deactivation( $causes ) {
+		if (
+			$this->find_wpconfig_path()
+			||
+			// This filter is documented in inc/Engine/Cache/WPCache.php.
+			! (bool) apply_filters( 'rocket_set_wp_cache_constant', true )
+		) {
+			return $causes;
+		}
+
+		$causes[] = 'wpconfig';
+
+		return $causes;
 	}
 
 	/**
@@ -158,7 +205,7 @@ class WPCache implements ActivationInterface, DeactivationInterface {
 	 *
 	 * @return string|bool The path of wp-config.php file or false if not found.
 	 */
-	public function find_wpconfig_path() {
+	private function find_wpconfig_path() {
 		/**
 		 * Filter the wp-config's filename.
 		 *
