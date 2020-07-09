@@ -27,10 +27,10 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 	];
 
 	/**
-     * Executes this method when the service provider is registered
-     *
-     * @return void
-     */
+	 * Executes this method when the service provider is registered
+	 *
+	 * @return void
+	 */
 	public function boot() {
 		$this->getContainer()
 			->inflector( 'WP_Rocket\Engine\Deactivation\DeactivationInterface' )
