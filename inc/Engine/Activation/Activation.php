@@ -3,8 +3,12 @@
 namespace WP_Rocket\Engine\Activation;
 
 use League\Container\Container;
-use WP_Rocket\Engine\Cache\AdvancedCache;
 
+/**
+ * Plugin activation controller
+ *
+ * @since 3.6.3
+ */
 class Activation {
 	/**
 	 * Aliases in the container for each class that needs to call its activate method
@@ -12,6 +16,7 @@ class Activation {
 	 * @var array
 	 */
 	private static $activators = [
+		'advanced_cache',
 		'capabilities_manager',
 		'wp_cache',
 	];
@@ -21,10 +26,10 @@ class Activation {
 	 *
 	 * @return void
 	 */
-	public static function activate() {
-		$container  = new Container();
-		$filesystem = rocket_direct_filesystem();
+	public static function activate_plugin() {
+		$container = new Container();
 
+		$container->add( 'template_path', WP_ROCKET_PATH . 'views' );
 		$container->addServiceProvider( 'WP_Rocket\Engine\Activation\ServiceProvider' );
 	
 		foreach ( self::$activators as $activator ) {
@@ -55,7 +60,6 @@ class Activation {
 		 * WP Rocket activation.
 		 *
 		 * @since  3.1.5
-		 * @author Grégory Viguier
 		 */
 		do_action( 'rocket_activation' );
 
@@ -69,9 +73,6 @@ class Activation {
 
 		// Create the config folder (wp-rocket-config).
 		rocket_init_config_dir();
-
-		// Create advanced-cache.php file.
-		rocket_generate_advanced_cache_file( new AdvancedCache( WP_ROCKET_PATH . 'views/cache/', $filesystem ) );
 
 		// Update customer key & licence.
 		wp_remote_get(
