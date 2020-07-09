@@ -35,10 +35,20 @@ class Manager implements ActivationInterface, DeactivationInterface {
 		return $this->capabilities;
 	}
 
+	/**
+	 * Performs these actions during the plugin activation
+	 *
+	 * @return void
+	 */
 	public function activate() {
 		add_action( 'rocket_activation', [ $this, 'add_rocket_capabilities' ] );
 	}
 
+	/**
+	 * Performs these actions during the plugin deactivation
+	 *
+	 * @return void
+	 */
 	public function deactivate() {
 		add_action( 'rocket_deactivation', [ $this, 'remove_rocket_capabilities'] );
 	}
