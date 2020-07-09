@@ -729,6 +729,7 @@ class Combine extends AbstractJSOptimization {
 			'static.zdassets.com',
 			'feedbackcompany.com/widgets/feedback-company-widget.min.js',
 			'widget.gleamjs.io',
+			'beta.phonewagon.com',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
