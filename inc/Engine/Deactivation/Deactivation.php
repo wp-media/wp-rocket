@@ -28,7 +28,7 @@ class Deactivation {
 
 		$container->add( 'template_path', WP_ROCKET_PATH . 'views' );
 		$container->addServiceProvider( 'WP_Rocket\Engine\Deactivation\ServiceProvider' );
-	
+
 		foreach ( self::$deactivators as $deactivator ) {
 			$container->get( $deactivator );
 		}

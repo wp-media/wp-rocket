@@ -31,7 +31,7 @@ class Activation {
 
 		$container->add( 'template_path', WP_ROCKET_PATH . 'views' );
 		$container->addServiceProvider( 'WP_Rocket\Engine\Activation\ServiceProvider' );
-	
+
 		foreach ( self::$activators as $activator ) {
 			$container->get( $activator );
 		}

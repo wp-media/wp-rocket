@@ -20,8 +20,8 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
-        'capabilities_manager',
-        'capabilities_subscriber',
+		'capabilities_manager',
+		'capabilities_subscriber',
 	];
 
 	/**
@@ -30,8 +30,8 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-        $this->getContainer()->add( 'capabilities_manager', 'WP_Rocket\Engine\Capabilities\Manager' );
-        $this->getContainer()->share( 'capabilities_subscriber', 'WP_Rocket\Engine\Capabilities\Subscriber' )
-            ->withArgument( $this->getContainer()->get( 'capabilities_manager' ) );
+		$this->getContainer()->add( 'capabilities_manager', 'WP_Rocket\Engine\Capabilities\Manager' );
+		$this->getContainer()->share( 'capabilities_subscriber', 'WP_Rocket\Engine\Capabilities\Subscriber' )
+			->withArgument( $this->getContainer()->get( 'capabilities_manager' ) );
 	}
 }

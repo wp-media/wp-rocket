@@ -50,7 +50,7 @@ class Manager implements ActivationInterface, DeactivationInterface {
 	 * @return void
 	 */
 	public function deactivate() {
-		add_action( 'rocket_deactivation', [ $this, 'remove_rocket_capabilities'] );
+		add_action( 'rocket_deactivation', [ $this, 'remove_rocket_capabilities' ] );
 	}
 
 	/**
@@ -72,7 +72,7 @@ class Manager implements ActivationInterface, DeactivationInterface {
 		}
 	}
 
-		/**
+	/**
 	 * Remove WP Rocket capabilities from the administrator role
 	 *
 	 * @since 3.4
@@ -140,6 +140,13 @@ class Manager implements ActivationInterface, DeactivationInterface {
 		return $groups;
 	}
 
+	/**
+	 * Returns the object for the administrator roll
+	 *
+	 * @since 3.6.3
+	 *
+	 * @return WP_Role|null
+	 */
 	private function get_administrator_role_object() {
 		return get_role( 'administrator' );
 	}

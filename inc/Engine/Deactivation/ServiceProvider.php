@@ -26,11 +26,15 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 		'wp_cache',
 	];
 
+	/**
+     * Executes this method when the service provider is registered
+     *
+     * @return void
+     */
 	public function boot() {
 		$this->getContainer()
 			->inflector( 'WP_Rocket\Engine\Deactivation\DeactivationInterface' )
 			->invokeMethod( 'deactivate', [] );
-
 	}
 
 	/**

@@ -21,29 +21,33 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 	 * @var array
 	 */
 	protected $provides = [
-        'advanced_cache',
+		'advanced_cache',
 		'capabilities_manager',
 		'wp_cache',
-    ];
+	];
 
-    public function boot() {
-        $this->getContainer()
-            ->inflector( 'WP_Rocket\Engine\Activation\ActivationInterface' )
-            ->invokeMethod( 'activate', [] );
-
-    }
+	/**
+	 * Executes this method when the service provider is registered
+	 *
+	 * @return void
+	 */
+	public function boot() {
+		$this->getContainer()
+			->inflector( 'WP_Rocket\Engine\Activation\ActivationInterface' )
+			->invokeMethod( 'activate', [] );
+	}
 
 	/**
 	 * Registers the option array in the container.
 	 */
 	public function register() {
-        $filesystem = rocket_direct_filesystem();
+		$filesystem = rocket_direct_filesystem();
 
-        $this->getContainer()->add( 'advanced_cache', 'WP_Rocket\Engine\Cache\AdvancedCache' )
-            ->withArgument( $this->getContainer()->get( 'template_path' ) . '/cache/' )
-            ->withArgument( $filesystem );
-        $this->getContainer()->add( 'capabilities_manager', 'WP_Rocket\Engine\Capabilities\Manager' );
-        $this->getContainer()->add( 'wp_cache', 'WP_Rocket\Engine\Cache\WPCache' )
-            ->withArgument( $filesystem );
+		$this->getContainer()->add( 'advanced_cache', 'WP_Rocket\Engine\Cache\AdvancedCache' )
+			->withArgument( $this->getContainer()->get( 'template_path' ) . '/cache/' )
+			->withArgument( $filesystem );
+		$this->getContainer()->add( 'capabilities_manager', 'WP_Rocket\Engine\Capabilities\Manager' );
+		$this->getContainer()->add( 'wp_cache', 'WP_Rocket\Engine\Cache\WPCache' )
+			->withArgument( $filesystem );
 	}
 }
