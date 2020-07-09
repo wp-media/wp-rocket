@@ -18,6 +18,7 @@ class_alias( '\WP_Rocket\Engine\HealthCheck\HealthCheck', '\WP_Rocket\Engine\Adm
 class_alias( '\WP_Rocket\Engine\Optimization\ServiceProvider', '\WP_Rocket\ServiceProvider\Optimization_Subscribers' );
 class_alias( '\WP_Rocket\Engine\Optimization\IEConditionalSubscriber', '\WP_Rocket\Subscriber\Optimization\IE_Conditionals_Subscriber' );
 class_alias( '\WP_Rocket\ThirdParty\Plugins\Smush', '\WP_Rocket\Subscriber\Third_Party\Plugins\Smush_Subscriber' );
+class_alias( '\WP_Rocket\Engine\Capabilities\Subscriber', '\WP_Rocket\Subscriber\Plugin\Capabilities_Subscriber' );
 
 /**
  * Generate the content of advanced-cache.php file.
