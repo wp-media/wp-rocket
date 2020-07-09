@@ -29,6 +29,7 @@ abstract class TestCase extends BaseTestCase {
 
 		Functions\expect( 'get_current_blog_id' )->andReturn( 1 );
 		Functions\when( 'home_url' )->justReturn( 'https://example.org/' );
+		Functions\expect( 'get_option' )->with( 'blog_charset' )->andReturn();
 
 		$this->options      = Mockery::mock( Options_Data::class );
 		$this->critical_css = Mockery::mock( CriticalCSS::class );
