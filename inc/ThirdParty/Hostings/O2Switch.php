@@ -43,8 +43,8 @@ class O2Switch implements Subscriber_Interface {
 	 * @return array modified field settings data.
 	 */
 	public function varnish_addon_title( $settings ) {
-		// Translators: %s = Hosting name.
 		$settings['varnish_auto_purge']['title'] = sprintf(
+		// Translators: %s = Hosting name.
 			__( 'Your site is hosted on %s, we have enabled Varnish auto-purge for compatibility.', 'rocket' ),
 			'O2Switch'
 		);

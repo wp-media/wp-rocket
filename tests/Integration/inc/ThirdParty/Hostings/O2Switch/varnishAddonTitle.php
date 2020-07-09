@@ -3,7 +3,6 @@
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Hostings\O2Switch;
 
 use WP_Rocket\Tests\Integration\TestCase;
-use WP_Rocket\ThirdParty\Hostings\O2Switch;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Hostings\O2Switch::varnish_addon_title
@@ -12,8 +11,6 @@ use WP_Rocket\ThirdParty\Hostings\O2Switch;
  * @group  ThirdParty
  */
 class Test_VarnishAddonTitle extends TestCase {
-	protected static $mockCommonWpFunctionsInSetUp = true;
-
 	/**
 	 * @dataProvider configTestData
 	 */
