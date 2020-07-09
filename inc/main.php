@@ -105,5 +105,5 @@ function rocket_init() {
 }
 add_action( 'plugins_loaded', 'rocket_init' );
 
-register_deactivation_hook( WP_ROCKET_FILE, [ 'WP_Rocket\Engine\Deactivation\Deactivation', 'deactivate' ] );
-register_activation_hook( WP_ROCKET_FILE, [ 'WP_Rocket\Engine\Activation\Activation', 'activate' ] );
+register_deactivation_hook( WP_ROCKET_FILE, [ 'WP_Rocket\Engine\Deactivation\Deactivation', 'deactivate_plugin' ] );
+register_activation_hook( WP_ROCKET_FILE, [ 'WP_Rocket\Engine\Activation\Activation', 'activate_plugin' ] );
