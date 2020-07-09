@@ -74,10 +74,14 @@ class AsyncCSS {
 	 * @param Options_Data $options      WP Rocket options.
 	 * @param string       $html         Optional. HTML to transform into HTML DOMDocument object.
 	 *
-	 * @return self Instance of this class.
+	 * @return self|null Instance of this class when HTML is not empty and conditions are okay; else null.
 	 */
 	public static function from_html( CriticalCSS $critical_css, Options_Data $options, $html ) {
-		$instance = new static( $critical_css, $options );
+		if ( empty( $html ) ) {
+			return null;
+		}
+
+		$instance = new self( $critical_css, $options );
 
 		if ( ! $instance->okay_to_create_dom() ) {
 			return null;
