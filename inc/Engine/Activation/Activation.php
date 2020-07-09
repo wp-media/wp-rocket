@@ -1,22 +1,35 @@
 <?php
 
-namespace WP_Rocket;
+namespace WP_Rocket\Engine\Activation;
 
+use League\Container\Container;
 use WP_Rocket\Engine\Cache\AdvancedCache;
-use WP_Rocket\Engine\Cache\WPCache;
-use WP_Rocket\Engine\Capabilities\Manager;
 
 class Activation {
+	/**
+	 * Aliases in the container for each class that needs to call its activate method
+	 *
+	 * @var array
+	 */
+	private static $activators = [
+		'capabilities_manager',
+		'wp_cache',
+	];
+
 	/**
 	 * Performs these actions during the plugin activation
 	 *
 	 * @return void
 	 */
 	public static function activate() {
+		$container  = new Container();
 		$filesystem = rocket_direct_filesystem();
 
-		( new Manager() )->activate();
-		( new WPCache( $filesystem ) )->activate();
+		$container->addServiceProvider( 'WP_Rocket\Engine\Activation\ServiceProvider' );
+	
+		foreach ( self::$activators as $activator ) {
+			$container->get( $activator );
+		}
 
 		// Last constants.
 		define( 'WP_ROCKET_PLUGIN_NAME', 'WP Rocket' );
