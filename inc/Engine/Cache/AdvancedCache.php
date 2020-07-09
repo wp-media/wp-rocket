@@ -3,8 +3,10 @@
 namespace WP_Rocket\Engine\Cache;
 
 use WP_Filesystem_Direct;
+use WP_Rocket\Engine\Activation\ActivationInterface;
+use WP_Rocket\Engine\Deactivation\DeactivationInterface;
 
-class AdvancedCache {
+class AdvancedCache implements ActivationInterface, DeactivationInterface {
 
 	/**
 	 * Absolute path to template files
@@ -37,6 +39,80 @@ class AdvancedCache {
 		$this->template_path = $template_path;
 		$this->content_dir   = rocket_get_constant( 'WP_CONTENT_DIR' );
 		$this->filesystem    = $filesystem;
+	}
+
+	/**
+	 * Actions to perform on plugin activation
+	 *
+	 * @since 3.6.3
+	 *
+	 * @return void
+	 */
+	public function activate() {
+		add_action( 'rocket_activation', [ $this, 'generate_advanced_cache' ] );
+	}
+
+	/**
+	 * Actions to perform on plugin deactivation
+	 *
+	 * @since 3.6.3
+	 *
+	 * @return void
+	 */
+	public function deactivate() {
+		add_action( 'rocket_deactivation', [ $this, 'empty_advanced_cache' ] );
+	}
+
+	/**
+	 * Generates the advanced-cache.php file with its content
+	 *
+	 * @since 3.6.3
+	 *
+	 * @return void
+	 */
+	public function generate_advanced_cache() {
+		/**
+		 * Filters whether to generate the advanced-cache.php file.
+		 *
+		 * @since 3.6.3
+		 *
+		 * @param bool True (default) to go ahead with advanced cache file generation; false to stop generation.
+		 */
+		if ( ! (bool) apply_filters( 'rocket_generate_advanced_cache_file', true ) ) {
+			return;
+		}
+
+		$this->filesystem->put_contents(
+			"{$this->content_dir}/advanced-cache.php",
+			$this->get_advanced_cache_content(),
+			rocket_get_filesystem_perms( 'file' )
+		);
+	}
+
+	/**
+	 * Removes the content of the advanced-cache.php file
+	 *
+	 * @since 3.6.3
+	 *
+	 * @return void
+	 */
+	public function empty_advanced_cache() {
+		/**
+		 * Filters whether to generate the advanced-cache.php file.
+		 *
+		 * @since 3.6.3
+		 *
+		 * @param bool True (default) to go ahead with advanced cache file generation; false to stop generation.
+		 */
+		if ( ! (bool) apply_filters( 'rocket_generate_advanced_cache_file', true ) ) {
+			return;
+		}
+
+		$this->filesystem->put_contents(
+			"{$this->content_dir}/advanced-cache.php",
+			'',
+			rocket_get_filesystem_perms( 'file' )
+		);
 	}
 
 	/**
