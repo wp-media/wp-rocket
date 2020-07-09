@@ -2,7 +2,10 @@
 
 namespace WP_Rocket\Engine\Capabilities;
 
-class Manager {
+use WP_Rocket\Engine\Activation\ActivationInterface;
+use WP_Rocket\Engine\Deactivation\DeactivationInterface;
+
+class Manager implements ActivationInterface, DeactivationInterface {
 	/**
 	 * List of WP Rocket capabilities
 	 *

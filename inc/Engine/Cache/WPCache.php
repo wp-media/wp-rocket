@@ -2,7 +2,10 @@
 
 namespace WP_Rocket\Engine\Cache;
 
-class WPCache {
+use WP_Rocket\Engine\Activation\ActivationInterface;
+use WP_Rocket\Engine\Deactivation\DeactivationInterface;
+
+class WPCache implements ActivationInterface, DeactivationInterface {
 	/**
 	 * Filesystem instance.
 	 *
