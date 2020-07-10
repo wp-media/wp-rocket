@@ -1109,6 +1109,7 @@ HTML
 	</div>
 	<script type="text/javascript" src="https://example.org/wp-includes/js/hoverintent-js.min.js?ver=2.2.1"></script>
 	<script type="text/javascript" src="https://example.org/wp-includes/js/admin-bar.min.js?ver=5.4.2"></script>
+	<script async="" data-no-minify="1" src="https://www.infocubic.com/assets/plugins/wp-rocket/assets/js/lazyload/16.1/lazyload.min.js" type="text/javascript"></script>
 	<script type="text/template" id="script-template">
 	    <div class="sample-class">
             <h1><%= title %></h1>
@@ -1139,6 +1140,7 @@ HTML
 	<script>const wprRemoveCPCSS = () => { \$elem = document.getElementById( "rocket-critical-css" ); if ( \$elem ) { \$elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>
 	<script type="text/javascript" src="https://example.org/wp-includes/js/hoverintent-js.min.js?ver=2.2.1"></script>
 	<script type="text/javascript" src="https://example.org/wp-includes/js/admin-bar.min.js?ver=5.4.2"></script>
+	<script async="" data-no-minify="1" src="https://www.infocubic.com/assets/plugins/wp-rocket/assets/js/lazyload/16.1/lazyload.min.js" type="text/javascript"></script>
 	<script type="text/template" id="script-template">
 	    <div class="sample-class">
             <h1><%= title %></h1>
