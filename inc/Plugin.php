@@ -257,6 +257,7 @@ class Plugin {
 			'wpengine',
 			'spinupwp',
 			'pdfembedder',
+			'divi',
 		];
 
 		if ( $this->options->get( 'do_cloudflare', false ) ) {

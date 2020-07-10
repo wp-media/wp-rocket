@@ -809,3 +809,24 @@ function rocket_wpengine_add_footprint( $buffer ) {
 
 	return $buffer . $footprint;
 }
+
+/**
+ * Excludes Divi's Salvatorre script from JS minification
+ *
+ * Exclude it to prevent an error after minification/concatenation
+ *
+ * @since 3.6.3. deprecated
+ * @since 2.9
+ * @author Remy Perona
+ *
+ * @param Array $excluded_js An array of JS paths to be excluded.
+ * @return Array the updated array of paths
+ */
+function rocket_exclude_js_divi( $excluded_js ) {
+	_deprecated_function( __FUNCTION__ . '()', '3.6.3', '\WP_Rocket\ThirdParty\Themes\Divi::exclude_js' );
+	if ( defined( 'ET_BUILDER_URI' ) ) {
+		$excluded_js[] = str_replace( home_url(), '', ET_BUILDER_URI ) . '/scripts/salvattore.min.js';
+	}
+
+	return $excluded_js;
+}
