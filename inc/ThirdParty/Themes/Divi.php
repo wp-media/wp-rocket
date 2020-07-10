@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\ThirdParty;
+namespace WP_Rocket\ThirdParty\Themes;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
@@ -13,7 +13,7 @@ class Divi implements Subscriber_Interface {
 	public static function get_subscribed_events() {
 		$current_theme = wp_get_theme();
 
-		if ( 'Divi' !== ( $current_theme->get( 'Name' ) || 'Divi' === $current_theme->get( 'Template' ) ) ) {
+		if ( 'Divi' !== ( $current_theme->get( 'Name' ) || $current_theme->get( 'Template' ) ) ) {
 			return [];
 		}
 
