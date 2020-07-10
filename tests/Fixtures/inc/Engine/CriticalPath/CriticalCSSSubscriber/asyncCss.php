@@ -1091,7 +1091,7 @@ HTML
 		,
 	],
 
-	'shouldHandleLazyLoadNoJsCssNoScript' => [
+	'shouldHandleLazyLoad' => [
 		'html'     => <<<HTML
 <!DOCTYPE html>
 <html lang="hr" dir="rtl">
@@ -1106,6 +1106,7 @@ HTML
 	<div>
 		<h1>בדיקת קידוד</h1>
 		<p>אל תאמין לכל מה שאתה שומע -</p>
+		<img class="vc_single_image-img " src="https://naturalliving.ie/wp-content/uploads/2018/07/KOTANICAL-SPRING-BANNER-DESKTOP-2640-X-700-PX.jpg" alt="KOTANICAL SPRING BANNER DESKTOP 2640 X 700 PX" title="KOTANICAL SPRING BANNER DESKTOP 2640 X 700 PX" width="2640" height="700">
 	</div>
 	<script type="text/javascript" src="https://example.org/wp-includes/js/hoverintent-js.min.js?ver=2.2.1"></script>
 	<script type="text/javascript" src="https://example.org/wp-includes/js/admin-bar.min.js?ver=5.4.2"></script>
@@ -1136,6 +1137,8 @@ HTML
 	<div>
 		<h1>בדיקת קידוד</h1>
 		<p>אל תאמין לכל מה שאתה שומע -</p>
+		<img class="vc_single_image-img " src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%202640%20700'%3E%3C/svg%3E" alt="KOTANICAL SPRING BANNER DESKTOP 2640 X 700 PX" title="KOTANICAL SPRING BANNER DESKTOP 2640 X 700 PX" width="2640" height="700" data-lazy-src="https://naturalliving.ie/wp-content/uploads/2018/07/KOTANICAL-SPRING-BANNER-DESKTOP-2640-X-700-PX.jpg">
+		<noscript><img class="vc_single_image-img " src="https://naturalliving.ie/wp-content/uploads/2018/07/KOTANICAL-SPRING-BANNER-DESKTOP-2640-X-700-PX.jpg" alt="KOTANICAL SPRING BANNER DESKTOP 2640 X 700 PX" title="KOTANICAL SPRING BANNER DESKTOP 2640 X 700 PX" width="2640" height="700"></noscript>
 	</div>
 	<script>const wprRemoveCPCSS = () => { \$elem = document.getElementById( "rocket-critical-css" ); if ( \$elem ) { \$elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>
 	<script type="text/javascript" src="https://example.org/wp-includes/js/hoverintent-js.min.js?ver=2.2.1"></script>
