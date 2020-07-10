@@ -90,6 +90,8 @@ trait StubTrait {
 			case 'WP_ROCKET_ADVANCED_CACHE':
 				return $this->wp_rocket_advanced_cache;
 
+			case 'WP_ROCKET_PLUGIN_NAME':
+				return 'WP Rocket';
 			case 'WP_ROCKET_WEB_MAIN':
 				return 'https://wp-rocket.me/';
 

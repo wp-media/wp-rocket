@@ -2,8 +2,6 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Cache\AdminSubscriber;
 
-use Brain\Monkey\Functions;
-use WP_Rocket\Engine\Cache\AdminSubscriber;
 use WP_Rocket\Tests\Integration\AdminTestCase;
 
 /**
@@ -16,7 +14,7 @@ class Test_NoticeAdvancedCachePermissions extends AdminTestCase {
 	private static $subscriber;
 
 	public static function setUpBeforeClass() {
-		$container = apply_filters( 'rocket_container', null );
+		$container        = apply_filters( 'rocket_container', null );
 		self::$subscriber = $container->get( 'admin_cache_subscriber' );
 	}
 

@@ -276,7 +276,6 @@ if ( ! defined( 'DOING_AJAX' ) && ! defined( 'DOING_AUTOSAVE' ) ) {
 	add_action( 'admin_init', 'rocket_init_cache_dir' );
 	add_action( 'admin_init', 'rocket_maybe_generate_advanced_cache_file' );
 	add_action( 'admin_init', 'rocket_maybe_generate_config_files' );
-	add_action( 'admin_init', 'rocket_maybe_set_wp_cache_define' );
 }
 
 /**
@@ -302,17 +301,6 @@ function rocket_maybe_generate_config_files() {
 
 	if ( ! file_exists( WP_ROCKET_CONFIG_PATH . strtolower( $home['host'] ) . $path . '.php' ) ) {
 		rocket_generate_config_file();
-	}
-}
-
-/**
- * Define WP_CACHE to true if it's not defined yet.
- *
- * @since 2.6
- */
-function rocket_maybe_set_wp_cache_define() {
-	if ( defined( 'WP_CACHE' ) && ! WP_CACHE ) {
-		set_rocket_wp_cache_define( true );
 	}
 }
 
