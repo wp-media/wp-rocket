@@ -1,0 +1,106 @@
+<?php
+
+namespace WP_Rocket\ThirdParty\Hostings;
+
+use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\ThirdParty\ReturnTypesTrait;
+
+/**
+ * Compatibility for Savvii.
+ *
+ * @since 3.6.3
+ */
+class Savvii implements Subscriber_Interface {
+	use ReturnTypesTrait;
+
+	/**
+	 * Returns an array of events that this subscriber wants to listen to.
+	 *
+	 * @see Subscriber_Interface.
+	 *
+	 * @since 3.6.3
+	 *
+	 * @return array
+	 */
+	public static function get_subscribed_events() {
+		if (
+			! defined( '\Savvii\CacheFlusherPlugin::NAME_FLUSH_NOW' )
+			||
+			! defined( '\Savvii\CacheFlusherPlugin::NAME_DOMAINFLUSH_NOW' )
+		) {
+			return [];
+		}
+
+		return [
+			'rocket_varnish_field_settings'           => 'custom_savvii_varnish_field',
+			'rocket_display_input_varnish_auto_purge' => 'return_false',
+			'rocket_cache_mandatory_cookies'          => 'return_empty_array',
+			'init'                                    => 'clear_cache_after_savvii',
+			'after_rocket_clean_domain'               => 'clean_savvii',
+		];
+	}
+
+	/**
+	 * Changes the text on the Varnish one-click block.
+	 *
+	 * @since 3.6.3 Rename and move to new architecture.
+	 * @since  3.0
+	 *
+	 * @param array $settings Field settings data.
+	 *
+	 * @return array modified field settings data.
+	 */
+	public function custom_savvii_varnish_field( $settings ) {
+		$settings['varnish_auto_purge']['title'] = sprintf(
+		// Translators: %s = Hosting name.
+			__( 'Your site is hosted on %s, we have enabled Varnish auto-purge for compatibility.', 'rocket' ),
+			'Savvii'
+		);
+
+		return $settings;
+	}
+
+	/**
+	 * Clear WP Rocket cache after purged the Varnish cache via Savvii Hosting.
+	 *
+	 * @since 3.6.3 Rename and move to new architecture. Refactor. Fix wrong nonce names/actions.
+	 * @since 2.6.5
+	 */
+	public function clear_cache_after_savvii() {
+		if (
+			! ( isset( $_REQUEST[ \Savvii\CacheFlusherPlugin::NAME_FLUSH_NOW ], $_REQUEST['_wpnonce'] )
+				&&
+				wp_verify_nonce( $_REQUEST['_wpnonce'], \Savvii\CacheFlusherPlugin::NAME_FLUSH_NOW ) // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+			)
+			&&
+			! (
+				isset( $_REQUEST[ \Savvii\CacheFlusherPlugin::NAME_DOMAINFLUSH_NOW ], $_REQUEST['_wpnonce'] )
+				&&
+				wp_verify_nonce( $_REQUEST['_wpnonce'], \Savvii\CacheFlusherPlugin::NAME_DOMAINFLUSH_NOW ) // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+			)
+		) {
+			return;
+		}
+
+		// Clear all caching files.
+		rocket_clean_domain();
+
+		// Preload cache.
+		run_rocket_bot();
+		run_rocket_sitemap_preload();
+	}
+
+	/**
+	 * Call the cache server to purge the cache with Savvii hosting.
+	 *
+	 * @since 3.6.3 Rename and move to new architecture.
+	 * @since 2.6.5
+	 */
+	public function clean_savvii() {
+		$plugin = new \Savvii\CacheFlusherPlugin();
+
+		if ( method_exists( $plugin, 'domainflush' ) ) {
+			$plugin->domainflush();
+		}
+	}
+}
