@@ -99,7 +99,8 @@ class HTMLDocument extends DOMDocument {
 
 		$html = $dom->prepare_html( $html );
 
-		if ( ! $dom->loadHTML( $html ) ) {
+		// LIBXML_SCHEMA_CREATE valid in Libxml 2.6.14+.
+		if ( ! $dom->loadHTML( $html, LIBXML_SCHEMA_CREATE ) ) {
 			return false;
 		}
 

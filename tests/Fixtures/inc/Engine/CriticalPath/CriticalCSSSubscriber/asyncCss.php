@@ -795,12 +795,11 @@ HTML
 			'html'     => get_html_as_string( 'twentyseventeen' ),
 			'expected' => get_html_as_string( 'twentyseventeen-async_css' ),
 		],
-	],
 
-	// Test encoding.
+		// Test encoding.
 
-	'shouldHandleUTF8' => [
-		'html'     => <<<HTML
+		'shouldHandleUTF8' => [
+			'html'     => <<<HTML
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
@@ -817,13 +816,14 @@ HTML
 </body>
 </html>
 HTML
-		,
-		'expected' => <<<HTML
+			,
+			'expected' => <<<HTML
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
 	<meta charset="UTF-8">
 	<title>Testing encoding</title>
+	<style id="rocket-critical-css">.home { color: red; }</style>
 	<link rel="preload" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" as="style">
 	<link rel="stylesheet" id="twentyseventeen-fonts-css" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" media="print" onload="this.onload=null;this.media='all'">
 	<link rel="preload" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" as="style">
@@ -842,11 +842,11 @@ HTML
 </body>
 </html>
 HTML
-		,
-	],
+			,
+		],
 
-	'shouldHandleUnicode_greek' => [
-		'html'     => <<<HTML
+		'shouldHandleUnicode_greek' => [
+			'html'     => <<<HTML
 <!DOCTYPE html>
 <html lang="el">
 <head>
@@ -863,13 +863,14 @@ HTML
 </body>
 </html>
 HTML
-		,
-		'expected' => <<<HTML
+			,
+			'expected' => <<<HTML
 <!DOCTYPE html>
 <html lang="el">
 <head>
 	<meta charset="UTF-8">
 	<title>Δοκιμή κωδικοποίησης</title>
+	<style id="rocket-critical-css">.home { color: red; }</style>
 	<link rel="preload" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" as="style">
 	<link rel="stylesheet" id="twentyseventeen-fonts-css" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" media="print" onload="this.onload=null;this.media='all'">
 	<link rel="preload" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" as="style">
@@ -888,11 +889,11 @@ HTML
 </body>
 </html>
 HTML
-		,
-	],
+			,
+		],
 
-	'shouldHandleUTF8_japenese' => [
-		'html'     => <<<HTML
+		'shouldHandleUTF8_japenese' => [
+			'html'     => <<<HTML
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -909,13 +910,14 @@ HTML
 </body>
 </html>
 HTML
-		,
-		'expected' => <<<HTML
+			,
+			'expected' => <<<HTML
 <!DOCTYPE html>
 <html lang="ja">
 <head>
 	<meta charset="UTF-8">
 	<title>エンコーディングのテスト</title>
+	<style id="rocket-critical-css">.home { color: red; }</style>
 	<link rel="preload" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" as="style">
 	<link rel="stylesheet" id="twentyseventeen-fonts-css" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" media="print" onload="this.onload=null;this.media='all'">
 	<link rel="preload" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" as="style">
@@ -934,11 +936,11 @@ HTML
 </body>
 </html>
 HTML
-		,
-	],
+			,
+		],
 
-	'shouldHandleUnicode_hebrew' => [
-		'html'     => <<<HTML
+		'shouldHandleUnicode_hebrew' => [
+			'html'     => <<<HTML
 <!DOCTYPE html>
 <html lang="hr" dir="rtl">
 <head>
@@ -955,13 +957,14 @@ HTML
 </body>
 </html>
 HTML
-		,
-		'expected' => <<<HTML
+			,
+			'expected' => <<<HTML
 <!DOCTYPE html>
 <html lang="hr" dir="rtl">
 <head>
 	<meta charset="UTF-8">
 	<title>בדיקת קידוד</title>
+	<style id="rocket-critical-css">.home { color: red; }</style>
 	<link rel="preload" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" as="style">
 	<link rel="stylesheet" id="twentyseventeen-fonts-css" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" media="print" onload="this.onload=null;this.media='all'">
 	<link rel="preload" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" as="style">
@@ -980,11 +983,11 @@ HTML
 </body>
 </html>
 HTML
-		,
-	],
+			,
+		],
 
-	'shouldHandleUnicode_arabic' => [
-		'html'     => <<<HTML
+		'shouldHandleUnicode_arabic' => [
+			'html'     => <<<HTML
 <!DOCTYPE html>
 <html lang="hr" dir="rtl">
 <head>
@@ -1001,13 +1004,14 @@ HTML
 </body>
 </html>
 HTML
-		,
-		'expected' => <<<HTML
+			,
+			'expected' => <<<HTML
 <!DOCTYPE html>
 <html lang="hr" dir="rtl">
 <head>
 	<meta charset="UTF-8">
 	<title>العنوان هنا</title>
+	<style id="rocket-critical-css">.home { color: red; }</style>
 	<link rel="preload" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" as="style">
 	<link rel="stylesheet" id="twentyseventeen-fonts-css" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" media="print" onload="this.onload=null;this.media='all'">
 	<link rel="preload" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" as="style">
@@ -1026,11 +1030,11 @@ HTML
 </body>
 </html>
 HTML
-		,
-	],
+			,
+		],
 
-	'shouldNotStripTypeFromScripts' => [
-		'html'     => <<<HTML
+		'shouldNotStripTypeFromScripts' => [
+			'html'     => <<<HTML
 <!DOCTYPE html>
 <html lang="hr" dir="rtl">
 <head>
@@ -1046,22 +1050,36 @@ HTML
 	</div>
 	<script type="text/javascript" src="https://example.org/wp-includes/js/hoverintent-js.min.js?ver=2.2.1"></script>
 	<script type="text/javascript" src="https://example.org/wp-includes/js/admin-bar.min.js?ver=5.4.2"></script>
-	<script type="text/template" id="script-template">
-	    <div class="sample-class">
-            <h1><%= title %></h1>
+	<script id="tmpl-js" type="text/x-jsrender">
+	    <div>
+	        {{for items}}
+	            <div>
+	                {{ tmpl='#item-tmpl-js'/}}
+	            </div>
+	        {{/for}}
+	    </div>
+	</script>
+	<script id="item-tmpl-js" type="text/x-jsrender">
+	    <div>
+	        {{title}}
         </div>
 	</script>
-	<script type="text/html" id="script-html"><h1>Some html</h1></script>
+	<script id="hello" type="text/template">Hello world</script>
+	<script>
+	  $('#hello').html();
+	</script>
+	<script type="text/html" id="script-html"><p>Some html</p></script>
 </body>
 </html>
 HTML
-		,
-		'expected' => <<<HTML
+			,
+			'expected' => <<<HTML
 <!DOCTYPE html>
 <html lang="hr" dir="rtl">
 <head>
 	<meta charset="UTF-8">
 	<title>בדיקת קידוד</title>
+	<style id="rocket-critical-css">.home { color: red; }</style>
 	<link rel="preload" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" as="style">
 	<link rel="stylesheet" id="twentyseventeen-fonts-css" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" media="print" onload="this.onload=null;this.media='all'">
 	<link rel="preload" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" as="style">
@@ -1072,15 +1090,28 @@ HTML
 		<h1>בדיקת קידוד</h1>
 		<p>אל תאמין לכל מה שאתה שומע -</p>
 	</div>
-	<script>const wprRemoveCPCSS = () => { \$elem = document.getElementById( "rocket-critical-css" ); if ( \$elem ) { \$elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>
 	<script type="text/javascript" src="https://example.org/wp-includes/js/hoverintent-js.min.js?ver=2.2.1"></script>
 	<script type="text/javascript" src="https://example.org/wp-includes/js/admin-bar.min.js?ver=5.4.2"></script>
-	<script type="text/template" id="script-template">
-	    <div class="sample-class">
-            <h1><%= title %></h1>
+	<script id="tmpl-js" type="text/x-jsrender">
+	    <div>
+	        {{for items}}
+	            <div>
+	                {{ tmpl='#item-tmpl-js'/}}
+	            </div>
+	        {{/for}}
+	    </div>
+	</script>
+	<script id="item-tmpl-js" type="text/x-jsrender">
+	    <div>
+	        {{title}}
         </div>
 	</script>
-	<script type="text/html" id="script-html"><h1>Some html</h1></script>
+	<script id="hello" type="text/template">Hello world</script>
+	<script>
+	  $('#hello').html();
+	</script>
+	<script type="text/html" id="script-html"><p>Some html</p></script>
+	<script>const wprRemoveCPCSS = () => { \$elem = document.getElementById( "rocket-critical-css" ); if ( \$elem ) { \$elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>
 	<noscript>
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" media="all">
 		<link rel="stylesheet" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="all">
@@ -1088,11 +1119,11 @@ HTML
 </body>
 </html>
 HTML
-		,
-	],
+			,
+		],
 
-	'shouldHandleLazyLoad' => [
-		'html'     => <<<HTML
+		'shouldHandleLazyLoad' => [
+			'html'     => <<<HTML
 <!DOCTYPE html>
 <html lang="hr" dir="rtl">
 <head>
@@ -1106,27 +1137,23 @@ HTML
 	<div>
 		<h1>בדיקת קידוד</h1>
 		<p>אל תאמין לכל מה שאתה שומע -</p>
-		<img class="vc_single_image-img " src="https://naturalliving.ie/wp-content/uploads/2018/07/KOTANICAL-SPRING-BANNER-DESKTOP-2640-X-700-PX.jpg" alt="KOTANICAL SPRING BANNER DESKTOP 2640 X 700 PX" title="KOTANICAL SPRING BANNER DESKTOP 2640 X 700 PX" width="2640" height="700">
+		<img class="vc_single_image-img " src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%202640%20700'%3E%3C/svg%3E" alt="KOTANICAL SPRING BANNER DESKTOP 2640 X 700 PX" title="KOTANICAL SPRING BANNER DESKTOP 2640 X 700 PX" width="2640" height="700" data-lazy-src="https://naturalliving.ie/wp-content/uploads/2018/07/KOTANICAL-SPRING-BANNER-DESKTOP-2640-X-700-PX.jpg">
+		<noscript><img class="vc_single_image-img " src="https://naturalliving.ie/wp-content/uploads/2018/07/KOTANICAL-SPRING-BANNER-DESKTOP-2640-X-700-PX.jpg" alt="KOTANICAL SPRING BANNER DESKTOP 2640 X 700 PX" title="KOTANICAL SPRING BANNER DESKTOP 2640 X 700 PX" width="2640" height="700"></noscript>
 	</div>
 	<script type="text/javascript" src="https://example.org/wp-includes/js/hoverintent-js.min.js?ver=2.2.1"></script>
 	<script type="text/javascript" src="https://example.org/wp-includes/js/admin-bar.min.js?ver=5.4.2"></script>
 	<script async="" data-no-minify="1" src="https://www.infocubic.com/assets/plugins/wp-rocket/assets/js/lazyload/16.1/lazyload.min.js" type="text/javascript"></script>
-	<script type="text/template" id="script-template">
-	    <div class="sample-class">
-            <h1><%= title %></h1>
-        </div>
-	</script>
-	<script type="text/html" id="script-html"><h1>Some html</h1></script>
 </body>
 </html>
 HTML
-		,
-		'expected' => <<<HTML
+			,
+			'expected' => <<<HTML
 <!DOCTYPE html>
 <html lang="hr" dir="rtl">
 <head>
 	<meta charset="UTF-8">
 	<title>בדיקת קידוד</title>
+	<style id="rocket-critical-css">.home { color: red; }</style>
 	<link rel="preload" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" as="style">
 	<link rel="stylesheet" id="twentyseventeen-fonts-css" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" media="print" onload="this.onload=null;this.media='all'">
 	<link rel="preload" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" as="style">
@@ -1140,16 +1167,10 @@ HTML
 		<img class="vc_single_image-img " src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%202640%20700'%3E%3C/svg%3E" alt="KOTANICAL SPRING BANNER DESKTOP 2640 X 700 PX" title="KOTANICAL SPRING BANNER DESKTOP 2640 X 700 PX" width="2640" height="700" data-lazy-src="https://naturalliving.ie/wp-content/uploads/2018/07/KOTANICAL-SPRING-BANNER-DESKTOP-2640-X-700-PX.jpg">
 		<noscript><img class="vc_single_image-img " src="https://naturalliving.ie/wp-content/uploads/2018/07/KOTANICAL-SPRING-BANNER-DESKTOP-2640-X-700-PX.jpg" alt="KOTANICAL SPRING BANNER DESKTOP 2640 X 700 PX" title="KOTANICAL SPRING BANNER DESKTOP 2640 X 700 PX" width="2640" height="700"></noscript>
 	</div>
-	<script>const wprRemoveCPCSS = () => { \$elem = document.getElementById( "rocket-critical-css" ); if ( \$elem ) { \$elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>
 	<script type="text/javascript" src="https://example.org/wp-includes/js/hoverintent-js.min.js?ver=2.2.1"></script>
 	<script type="text/javascript" src="https://example.org/wp-includes/js/admin-bar.min.js?ver=5.4.2"></script>
 	<script async="" data-no-minify="1" src="https://www.infocubic.com/assets/plugins/wp-rocket/assets/js/lazyload/16.1/lazyload.min.js" type="text/javascript"></script>
-	<script type="text/template" id="script-template">
-	    <div class="sample-class">
-            <h1><%= title %></h1>
-        </div>
-	</script>
-	<script type="text/html" id="script-html"><h1>Some html</h1></script>
+	<script>const wprRemoveCPCSS = () => { \$elem = document.getElementById( "rocket-critical-css" ); if ( \$elem ) { \$elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>
 	<noscript>
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" media="all">
 		<link rel="stylesheet" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="all">
@@ -1157,7 +1178,8 @@ HTML
 </body>
 </html>
 HTML
-		,
+			,
+		],
 	],
 ];
 

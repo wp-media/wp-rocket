@@ -143,7 +143,7 @@ class AsyncCSS {
 			return $html;
 		}
 
-		foreach ( $css_links as $css ) {
+		foreach ( iterator_to_array( $css_links ) as $css ) {
 			if ( ! Attribute::has_href( $css ) ) {
 				continue;
 			}
