@@ -6,7 +6,13 @@ use DOMDocument;
 use DOMNode;
 use DOMNodeList;
 use DOMXpath;
+use WP_Rocket\Engine\DOM\Transformer\Transformer;
+use WP_Rocket\Engine\DOM\Transformer\TransformerInterface;
 
+/**
+ * Props to AMP Project Contributors https://github.com/ampproject/amp-wp/graphs/contributors as parts of this class are
+ * borrowed and/or adapted from the plugin.
+ */
 class HTMLDocument extends DOMDocument {
 
 	/**
@@ -59,21 +65,48 @@ class HTMLDocument extends DOMDocument {
 	protected $xpath;
 
 	/**
+	 * Dotted version for the Libxml library.
+	 *
+	 * @var string
+	 */
+	private static $libxml_version;
+
+	/**
+	 * Instance of the HTML Transformer.
+	 *
+	 * @var TransformerInterface
+	 */
+	private $transformer;
+
+	/**
+	 * Flag to indicate if the DOM structure should be normalized.
+	 *
+	 * @var bool
+	 */
+	private $normalize = true;
+
+	/**
 	 * Creates a new HTML DOMDocument object.
 	 *
 	 * @link  https://php.net/manual/domdocument.construct.php
 	 *
 	 * @since 3.6.2
 	 *
-	 * @param string $version  Optional. The version number of the document as part of the XML declaration.
-	 * @param string $encoding Optional. The encoding of the document as part of the XML declaration.
+	 * @param string $version            Optional. The version number of the document as part of the XML declaration.
+	 * @param string $encoding           Optional. The encoding of the document as part of the XML declaration.
+	 * @param bool   $enable_transformer Optional. When false, no transformations. Default: true.
 	 */
-	public function __construct( $version = '1.0', $encoding = null ) {
+	public function __construct( $version = '1.0', $encoding = null, $enable_transformer = true ) {
 		$this->init_encoding( $encoding );
 
 		$version = (string) $version;
 		if ( empty( $version ) ) {
 			$version = self::VERSION;
+		}
+
+		self::$libxml_version = self::get_libxml_version();
+		if ( $enable_transformer ) {
+			$this->setTransformer();
 		}
 
 		parent::__construct( $version, $this->current_encoding );
@@ -95,12 +128,10 @@ class HTMLDocument extends DOMDocument {
 			return false;
 		}
 
-		$dom = new self( $version, $encoding );
+		$dom            = new self( $version, $encoding );
+		$dom->normalize = true;
 
-		$html = $dom->prepare_html( $html );
-
-		// LIBXML_SCHEMA_CREATE valid in Libxml 2.6.14+.
-		if ( ! $dom->loadHTML( $html, LIBXML_SCHEMA_CREATE ) ) {
+		if ( ! $dom->loadHTML( $html ) ) {
 			return false;
 		}
 
@@ -118,23 +149,27 @@ class HTMLDocument extends DOMDocument {
 	 *
 	 * @since 3.6.2
 	 *
-	 * @param string $fragment The HTML fragment to transform into HTML DOMDocument object.
-	 * @param string $version  Optional. The version number of the document as part of the XML declaration.
-	 * @param string $encoding Optional. The encoding of the document as part of the XML declaration.
+	 * @param string $fragment           The HTML fragment to transform into HTML DOMDocument object.
+	 * @param string $version            Optional. The version number of the document as part of the XML declaration.
+	 * @param string $encoding           Optional. The encoding of the document as part of the XML declaration.
+	 * @param bool   $enable_transformer Optional. When false, no transformations. Default: true.
 	 *
 	 * @return HTMLDocument|false DOM generated from provided HTML, or false if the transformation failed.
 	 */
-	public static function from_fragment( $fragment, $version = '', $encoding = null ) {
+	public static function from_fragment( $fragment, $version = '', $encoding = null, $enable_transformer = true ) {
 		if ( empty( $fragment ) ) {
 			return false;
 		}
 
-		$dom = new self( $version, $encoding );
+		$dom            = new self( $version, $encoding, $enable_transformer );
+		$dom->normalize = false;
 
-		// @TODO Need to check versions.
-		$options = LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD;
-
-		$fragment = $dom->prepare_html( $fragment );
+		$options = 0;
+		// LIBXML_HTML_NOIMPLIED is only available for libxml >= 2.7.7.
+		// Turns off the automatic adding of implied html/body... elements.
+		if ( defined( 'LIBXML_HTML_NOIMPLIED' ) ) {
+			$options |= constant( 'LIBXML_HTML_NOIMPLIED' );
+		}
 
 		if ( ! $dom->loadHTML( $fragment, $options ) ) {
 			return false;
@@ -153,7 +188,31 @@ class HTMLDocument extends DOMDocument {
 	 * @return string
 	 */
 	public function get_html() {
-		return mb_convert_encoding( $this->saveHTML(), $this->current_encoding, 'HTML-ENTITIES' );
+		return $this->saveHTML();
+	}
+
+	/**
+	 * Dumps the internal document into a string using HTML formatting.
+	 *
+	 * @since 3.6.2.1
+	 *
+	 * @link  https://php.net/manual/domdocument.savehtml.php
+	 *
+	 * @param DOMNode|null $node Optional. When provided, dumps as a string.
+	 *
+	 * @return bool|string HTML string on success; else false.
+	 */
+	public function saveHTML( DOMNode $node = null ) {
+		$html = parent::saveHTML( $node );
+		if ( empty( $html ) ) {
+			return false;
+		}
+
+		if ( empty( $this->transformer ) ) {
+			return $html;
+		}
+
+		return $this->transformer->restore( $html );
 	}
 
 	/**
@@ -188,15 +247,21 @@ class HTMLDocument extends DOMDocument {
 	 * @param string  $query            The query to run.
 	 * @param DOMNode $node             (Optional) Make query relative to this node (context node).
 	 * @param bool    $register_node_ns (Optional). When false, disables registering the context node.
+	 * @param bool    $return_as_array  (Optional). When false, returns as DOMNodeList; else, array.
 	 *
-	 * @return DOMNodeList|bool On success returns list; else false.
+	 * @return DOMNodeList|array|bool On success returns list; else false.
 	 */
-	public function query( $query, $node = null, $register_node_ns = true ) {
+	public function query( $query, $node = null, $register_node_ns = true, $return_as_array = true ) {
 		if ( ! $this->xpath instanceof DOMXpath ) {
 			return false;
 		}
 
-		return $this->xpath->query( $query, $node, $register_node_ns );
+		$results = $this->xpath->query( $query, $node, $register_node_ns );
+		if ( ! $return_as_array ) {
+			return $results;
+		}
+
+		return $results instanceof DOMNodeList ? iterator_to_array( $results ) : false;
 	}
 
 	/**
@@ -215,13 +280,25 @@ class HTMLDocument extends DOMDocument {
 	 * @return bool true on success; else false.
 	 */
 	public function loadHTML( $html, $options = 0 ) {
+		if ( ! is_string( $html ) || '' === $html ) {
+			return false;
+		}
+
+		$html = trim( $html );
 		if ( empty( $html ) ) {
 			return false;
 		}
 
+		if ( ! empty( $this->transformer ) ) {
+			$html = $this->transformer->replace( $html, $this->normalize );
+			if ( empty( $html ) ) {
+				return false;
+			}
+		}
+
 		$internal_errors = libxml_use_internal_errors( true );
 
-		$success = parent::loadHTML( $html, $options );
+		$success = parent::loadHTML( $html, $this->get_libxml_options( $options ) );
 
 		libxml_clear_errors();
 		libxml_use_internal_errors( $internal_errors );
@@ -230,16 +307,57 @@ class HTMLDocument extends DOMDocument {
 	}
 
 	/**
-	 * Prepares the given HTML string with the defined encoding.
+	 * Transformer setter injection.
+	 *
+	 * Why is the transformer not injected into the constructor?
+	 * The transformer requires this class to set up and initialize before creating the transformer.
+	 *
+	 * Why a separate method?
+	 *      1. Encapsulates the knowledge of how to create a transformer.
+	 *      2. For testing.
+	 *      3. Extensibility.
 	 *
 	 * @since 3.6.2.1
 	 *
-	 * @param string $html HTML to prepare.
-	 *
-	 * @return string
+	 * @param TransformerInterface|null $transformer Instance of the HTML Transformer.
 	 */
-	protected function prepare_html( $html ) {
-		return mb_convert_encoding( $html, 'HTML-ENTITIES', $this->current_encoding );
+	protected function setTransformer( TransformerInterface $transformer = null ) {
+		$this->transformer = null === $transformer
+			? new Transformer()
+			: $transformer;
+	}
+
+	/**
+	 * Gets the Libxml options for DOMDocument::loadHTML().
+	 *
+	 * @link  https://www.php.net/manual/en/libxml.constants.php
+	 *
+	 * @since 3.6.2.1
+	 *
+	 * @param int $options Libxml options.
+	 *
+	 * @return int Returns libxml options.
+	 */
+	private function get_libxml_options( $options = 0 ) {
+		// LIBXML_COMPACT is only available for libxml >= 2.6.21.
+		// Activates small nodes allocation optimization.
+		if ( defined( 'LIBXML_COMPACT' ) ) {
+			$options |= constant( 'LIBXML_COMPACT' );
+		}
+
+		// LIBXML_HTML_NODEFDTD is only available for libxml >= 2.7.8.
+		// Prevents a default doctype being added when one is not found.
+		if ( defined( 'LIBXML_HTML_NODEFDTD' ) ) {
+			$options |= constant( 'LIBXML_HTML_NODEFDTD' );
+		}
+
+		// LIBXML_SCHEMA_CREATE is only available for libxml >= 2.6.14.
+		// Ensures DOMDocument does not strip closing HTML tags within a <script> element.
+		if ( defined( 'LIBXML_SCHEMA_CREATE' ) ) {
+			$options |= constant( 'LIBXML_SCHEMA_CREATE' );
+		}
+
+		return $options;
 	}
 
 	/**
@@ -247,9 +365,9 @@ class HTMLDocument extends DOMDocument {
 	 *
 	 * @link  https://www.php.net/manual/en/domxpath.construct.php
 	 *
-	 * @since 3.6
+	 * @since 3.6.2
 	 */
-	protected function init_xpath() {
+	private function init_xpath() {
 		$this->xpath = new DOMXpath( $this );
 	}
 
@@ -266,6 +384,9 @@ class HTMLDocument extends DOMDocument {
 	private function reset() {
 		// Drop references to old DOM document.
 		unset( $this->xpath, $this->head, $this->body );
+
+		$this->transformer->reset();
+		$this->normalize = true;
 
 		return $this;
 	}
@@ -291,6 +412,25 @@ class HTMLDocument extends DOMDocument {
 		if ( empty( $this->current_encoding ) ) {
 			$this->current_encoding = self::DEFAULT_ENCODING;
 		}
+	}
+
+	/**
+	 * Gets the dotted version of the server's Libxml library, if exists.
+	 *
+	 * @since 3.6.2.1
+	 *
+	 * @return string
+	 */
+	public static function get_libxml_version() {
+		if ( static::$libxml_version ) {
+			return static::$libxml_version;
+		}
+
+		if ( defined( 'LIBXML_DOTTED_VERSION' ) ) {
+			return constant( 'LIBXML_DOTTED_VERSION' );
+		}
+
+		return '1.0';
 	}
 
 	/**
