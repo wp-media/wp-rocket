@@ -48,7 +48,7 @@ class HostSubscriberFactory implements SubscriberFactory {
 	 * @return Subscriber_Interface A Subscribe Interface for the current host.
 	 */
 	public function get_subscriber() {
-		$host_service = self::get_hosting_service();
+		$host_service = HostResolver::get_host_service();
 
 		switch ( $host_service ) {
 			case 'pressable':
@@ -65,39 +65,5 @@ class HostSubscriberFactory implements SubscriberFactory {
 			default:
 				return new NullSubscriber();
 		}
-	}
-
-	/**
-	 * Get the name of an identifiable hosting service.
-	 *
-	 * @since 3.6.3
-	 *
-	 * @return string Name of the hosting service or '' if no service is recognized.
-	 */
-	public static function get_hosting_service() {
-		if ( isset( $_SERVER['cw_allowed_ip'] ) ) {
-			return 'cloudways';
-		}
-
-		if ( rocket_get_constant( 'IS_PRESSABLE' ) ) {
-
-			return 'pressable';
-		}
-
-		if ( getenv( 'SPINUPWP_CACHE_PATH' ) ) {
-			return 'spinupwp';
-		}
-
-		if (
-		(
-			class_exists( 'WpeCommon' )
-			&&
-			function_exists( 'wpe_param' )
-		)
-		) {
-			return 'wpengine';
-		}
-
-		return '';
 	}
 }

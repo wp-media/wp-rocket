@@ -2,6 +2,7 @@
 namespace WP_Rocket\ThirdParty;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\ThirdParty\Hostings\HostResolver;
 use WP_Rocket\ThirdParty\Hostings\HostSubscriberFactory;
 
 /**
@@ -51,7 +52,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	public function register() {
 		$options         = $this->getContainer()->get( 'options' );
-		$hosting_service = HostSubscriberFactory::get_hosting_service();
+		$hosting_service = HostResolver::get_host_service();
 
 		if ( $hosting_service ) {
 			$host_subscriber = ( new HostSubscriberFactory(

@@ -6,6 +6,7 @@ use Imagify_Partner;
 use League\Container\Container;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Event_Management\Event_Manager;
+use WP_Rocket\ThirdParty\Hostings\HostResolver;
 use WP_Rocket\ThirdParty\Hostings\HostSubscriberFactory;
 
 /**
@@ -257,7 +258,7 @@ class Plugin {
 			'pdfembedder',
 		];
 
-		$host_type = HostSubscriberFactory::get_hosting_service();
+		$host_type = HostResolver::get_host_service();
 
 		if ( $host_type ) {
 			$common_subscribers[] = $host_type;
