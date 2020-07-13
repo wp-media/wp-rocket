@@ -94,378 +94,44 @@ return [
 			'expected' => $base_html,
 		],
 
-		'shouldSetDefaultsWhenNoOnload' => [
-			'html'     => <<<HTML
-<!doctype html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8" />
-	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="all">
-</head>
-<body>Content here</body>
-</html>
-HTML
-			,
-			'expected' => <<<HTML
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link rel="preload" href="https://example.org/file1.css" as="style">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="print" onload="this.onload=null;this.media='all'">
-</head>
-<body>Content here
-<noscript>
-	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="all">
-</noscript>
-</body>
-</html>
-HTML
-			,
+		'async-css onload: no "onload" - use defaults' => [
+			'html'     => get_html_as_string( 'original/no-onload' ),
+			'expected' => get_html_as_string( 'final/modify-html/no-onload' ),
 		],
 
-		'shouldIncludeOriginalMedia' => [
-			'html'     => <<<HTML
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="print" onload="this.media='all'">
-</head>
-<body>Content here</body>
-</html>
-HTML
-			,
-			'expected' => <<<HTML
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link rel="preload" href="https://example.org/file1.css" as="style">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="print" onload="this.media='all';this.onload=null">
-</head>
-<body>Content here
-<noscript>
-	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="print" onload="this.media='all'">
-</noscript>
-</body>
-</html>
-HTML
-			,
+		'async-css onload: preserve original this.media=all' => [
+			'html'     => get_html_as_string( 'original/onload-media-all' ),
+			'expected' => get_html_as_string( 'final/modify-html/onload-media-all' ),
 		],
 
-		'shouldUseDefaultMediaWhenOriginalIsPrint' => [
-			'html'     => <<<HTML
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link type="text/css" onload="this.media='print'" rel="stylesheet" href="https://example.org/file1.css">
-</head>
-<body>Content here</body>
-</html>
-HTML
-			,
-			'expected' => <<<HTML
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link rel="preload" href="https://example.org/file1.css" as="style">
-	<link type="text/css" onload="this.media='all';this.onload=null" rel="stylesheet" href="https://example.org/file1.css" media="print">
-</head>
-<body>Content here
-<noscript>
-	<link type="text/css" onload="this.media='print'" rel="stylesheet" href="https://example.org/file1.css">
-</noscript>
-</body>
-</html>
-HTML
-			,
+		'async-css onload: use default when original this.media=print' => [
+			'html'     => get_html_as_string( 'original/onload-media-all' ),
+			'expected' => get_html_as_string( 'final/modify-html/onload-media-all' ),
 		],
 
-		'shouldRemoveIDAttributeInNoScript' => [
-			'html'     => <<<HTML
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link id="stylesheet1" type="text/css" onload="this.media='print'" rel="stylesheet" href="https://example.org/file1.css">
-</head>
-<body>Content here</body>
-</html>
-HTML
-			,
-			'expected' => <<<HTML
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link rel="preload" href="https://example.org/file1.css" as="style">
-	<link id="stylesheet1" type="text/css" onload="this.media='all';this.onload=null" rel="stylesheet" href="https://example.org/file1.css" media="print">
-</head>
-<body>Content here
-<noscript>
-	<link type="text/css" onload="this.media='print'" rel="stylesheet" href="https://example.org/file1.css">
-</noscript>
-</body>
-</html>
-HTML
-			,
+		'async-css noscript: remove link "id" attribute' => [
+			'html'     => get_html_as_string( 'original/noscript-remove-link-id' ),
+			'expected' => get_html_as_string( 'final/modify-html/noscript-remove-link-id' ),
 		],
 
-		'shouldHandleWhitespaceAndEndingSemicolon' => [
-			'html'     => <<<HTML
-<!doctype html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link onload="  this.media = 'all'; this.onload = null; " rel="stylesheet" type="text/css" href="https://example.org/file1.css">
-	<link onload=" this.rel = 'stylesheet'; " href="https://example.org/file2.css" type="text/css" rel="stylesheet">
-</head>
-<body>Content here</body>
-</html>
-HTML
-			,
-			'expected' => <<<HTML
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link rel="preload" href="https://example.org/file1.css" as="style">
-	<link onload="this.media='all';this.onload=null" rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="print">
-	<link rel="preload" href="https://example.org/file2.css" as="style">
-	<link onload="this.rel='stylesheet';this.onload=null;this.media='all'" href="https://example.org/file2.css" type="text/css" rel="stylesheet" media="print">
-</head>
-<body>Content here
-<noscript>
-	<link onload="  this.media = 'all'; this.onload = null; " rel="stylesheet" type="text/css" href="https://example.org/file1.css">
-	<link onload=" this.rel = 'stylesheet'; " href="https://example.org/file2.css" type="text/css" rel="stylesheet">
-</noscript>
-</body>
-</html>
-HTML
-			,
+		'async-css: remove extra spaces in attribute value' => [
+			'html'     => get_html_as_string( 'original/attribute-value-spaces-semicolon' ),
+			'expected' => get_html_as_string( 'final/modify-html/attribute-value-spaces-semicolon' ),
 		],
 
-		'shouldRetainFunctions' => [
-			'html'     => <<<HTML
-<!doctype html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8" />
-	<link onload="someFunction();" rel="stylesheet" type="text/css" href="https://example.org/file1.css">
-	<link onload=" anotherFunction(this) " rel="stylesheet" type="text/css" href="https://example.org/file2.css">
-</head>
-<body>
-	<link onload=" yetAnotherFunction(this, 0); this.media='all' " rel="stylesheet" type="text/css" href="https://example.org/file3.css">
-	<div>
-		<h1>Testing</h1>
-		<!-- single quotes -->
-		<link rel="stylesheet" type='text/css' href='https://example.org/file4.css' onload='  console.log("Hello");  ' media="screen">
-		<p>Hello World</p>
-	</div>
-</body>
-</html>
-HTML
-			,
-			'expected' => <<<HTML
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link rel="preload" href="https://example.org/file1.css" as="style">
-	<link onload="someFunction();this.onload=null;this.media='all'" rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="print">
-	<link rel="preload" href="https://example.org/file2.css" as="style">
-	<link onload="anotherFunction(this);this.onload=null;this.media='all'" rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="print">
-</head>
-<body>
-	<link rel="preload" href="https://example.org/file3.css" as="style">
-	<link onload="yetAnotherFunction(this, 0);this.media='all';this.onload=null" rel="stylesheet" type="text/css" href="https://example.org/file3.css" media="print">
-	<div>
-		<h1>Testing</h1>
-		<!-- single quotes -->
-		<link rel="preload" href="https://example.org/file4.css" as="style">
-		<link rel="stylesheet" type="text/css" href="https://example.org/file4.css" onload="console.log('Hello');this.onload=null;this.media='screen'" media="print">
-		<p>Hello World</p>
-	</div>
-	<noscript>
-		<link onload="someFunction();" rel="stylesheet" type="text/css" href="https://example.org/file1.css">
-		<link onload=" anotherFunction(this) " rel="stylesheet" type="text/css" href="https://example.org/file2.css">
-		<link onload=" yetAnotherFunction(this, 0); this.media='all' " rel="stylesheet" type="text/css" href="https://example.org/file3.css">
-		<link rel="stylesheet" type="text/css" href="https://example.org/file4.css" onload='  console.log("Hello");  ' media="screen">
-	</noscript>
-</body>
-</html>
-HTML
-			,
+		'async-css: preserve onload function' => [
+			'html'     => get_html_as_string( 'original/onload-function' ),
+			'expected' => get_html_as_string( 'final/modify-html/onload-function' ),
 		],
 
-		'shouldGetAllLinksInHeadAndBody' => [
-			'html'     => <<<HTML
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="screen" onload="this.rel='stylesheet'">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="screen and (max-width: 600px)" onload="this.rel='stylesheet'">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file3.css" media="print">
-<body>
-	<div>
-		<!-- single quotes -->
-		<link rel='stylesheet' type='text/css' href='https://example.org/file4.css' media='screen and (max-width: 800px)' onload='this.rel="stylesheet"'>
-		<h1>Testing</h1>
-		<p>Hello World</p>
-	</div>
-</body>
-</html>
-HTML
-			,
-			'expected' => <<<HTML
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link rel="preload" href="https://example.org/file1.css" as="style">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="print" onload="this.rel='stylesheet';this.onload=null;this.media='screen'">
-	<link rel="preload" href="https://example.org/file2.css" as="style">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="print" onload="this.rel='stylesheet';this.onload=null;this.media='screen and (max-width: 600px)'">
-	<link rel="preload" href="https://example.org/file3.css" as="style">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file3.css" media="print" onload="this.onload=null;this.media='all'">
-</head>
-<body>
-	<div>
-		<!-- single quotes -->
-		<link rel="preload" href="https://example.org/file4.css" as="style">
-		<link rel="stylesheet" type="text/css" href="https://example.org/file4.css" media="print" onload="this.rel='stylesheet';this.onload=null;this.media='screen and (max-width: 800px)'">
-		<h1>Testing</h1>
-		<p>Hello World</p>
-	</div>
-	<noscript>
-		<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="screen" onload="this.rel='stylesheet'">
-		<link rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="screen and (max-width: 600px)" onload="this.rel='stylesheet'">
-		<link rel="stylesheet" type="text/css" href="https://example.org/file3.css" media="print">
-		<link rel="stylesheet" type="text/css" href="https://example.org/file4.css" media="screen and (max-width: 800px)" onload='this.rel="stylesheet"'>
-	</noscript>
-</body>
-</html>
-HTML
-			,
+		'async-css: apply to stylesheets in head and body' => [
+			'html'     => get_html_as_string( 'original/multiple-stylesheets' ),
+			'expected' => get_html_as_string( 'final/modify-html/multiple-stylesheets' ),
 		],
 
-		// Handle escaped quotes in "onload" attribute.
-
-		'shouldHandleEscapedQuotesInOnloadAttribute' => [
-			'html'     => <<<HTML
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8" />
-	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="all" baz="boo" onload="this.baz=\'test\'">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="all" baz="boo" onload='this.baz=\"test\"'>
-</head>
-<body>
-	<div>
-		<h1>Testing</h1>
-		<p>Hello World</p>
-	</div>
-</body>
-</html>
-HTML
-			,
-			'expected' => <<<HTML
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link rel="preload" href="https://example.org/file1.css" as="style">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="print" baz="boo" onload="this.baz='test';this.onload=null;this.media='all'">
-	<link rel="preload" href="https://example.org/file2.css" as="style">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="print" baz="boo" onload="this.baz='test';this.onload=null;this.media='all'">
-</head>
-<body>
-	<div>
-		<h1>Testing</h1>
-		<p>Hello World</p>
-	</div>
-	<noscript>
-		<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="all" baz="boo" onload="this.baz=\'test\'">
-		<link rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="all" baz="boo" onload='this.baz=\"test\"'>
-	</noscript>
-</body>
-</html>
-HTML
-			,
-		],
-
-		// Malformed HTML
-
-		'shouldSetDefaultsWhenNoOnload_whenHTMLIsMalformed' => [
-			'html'     => <<<HTML
-<!doctype html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8" />
-	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="all">
-
-<body>Content here
-</html>
-HTML
-			,
-			'expected' => <<<HTML
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link rel="preload" href="https://example.org/file1.css" as="style">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="print" onload="this.onload=null;this.media='all'">
-</head>
-<body>Content here
-<noscript>
-	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="all">
-</noscript>
-</body>
-</html>
-HTML
-			,
-		],
-
-		'shouldIncludeOriginalMedia_whenHTMLIsMalformed' => [
-			'html'     => <<<HTML
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8" />
-	<link rel="stylesheet" huh type="text/css" href="https://example.org/file1.css" media="print" abc='123' onload="this.media='all'" />
-</head>
-<body>
-	<div>
-		<h1>Testing</h1>
-		<p>Nested<p>Paragrah</p></p>
-</body>
-HTML
-			,
-			'expected' => <<<HTML
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link rel="preload" href="https://example.org/file1.css" as="style">
-	<link rel="stylesheet" huh type="text/css" href="https://example.org/file1.css" media="print" abc="123" onload="this.media='all';this.onload=null">
-</head>
-<body>
-	<div>
-		<h1>Testing</h1>
-		<p>Nested</p>
-		<p>Paragrah</p>
-	</div>
-	<noscript>
-		<link rel="stylesheet" huh type="text/css" href="https://example.org/file1.css" media="print" abc="123" onload="this.media='all'">
-	</noscript>
-</body>
-</html>
-HTML
-			,
+		'async-css onload: escaped quotes in attribute value' => [
+			'html'     => get_html_as_string( 'original/onload-escaped-quotes' ),
+			'expected' => get_html_as_string( 'final/modify-html/onload-escaped-quotes' ),
 		],
 
 		// Exclude CSS URLs.
@@ -762,433 +428,105 @@ HTML
 			,
 		],
 
-		// Template tags and conditional comments.
-
-		'shouldHandlePlaceholderTemplateTag' => [
-			'html'     => get_html_as_string( 'placeholder' ),
-			'expected' => get_html_as_string( 'placeholder-modify_html' ),
+		// Malformed HTML
+		'malformed: missing <head> tag' => [
+			'html'     => get_html_as_string( 'original/malformed-opening-head' ),
+			'expected' => get_html_as_string( 'final/modify-html/malformed-opening-head' ),
 		],
 
-		'shouldHandleConditionalComments' => [
-			'html'     => get_html_as_string( 'conditional-comments' ),
-			'expected' => get_html_as_string( 'conditional-comments-modify_html' ),
+		'malformed: missing </head> tag' => [
+			'html'     => get_html_as_string( 'original/malformed-closing-head' ),
+			'expected' => get_html_as_string( 'final/modify-html/malformed-closing-head' ),
+		],
+
+		'malformed: missing <body> tag' => [
+			'html'     => get_html_as_string( 'original/malformed-opening-body' ),
+			'expected' => get_html_as_string( 'final/modify-html/malformed-opening-body' ),
+		],
+
+		'malformed: missing </body> tag' => [
+			'html'     => get_html_as_string( 'original/malformed-closing-body' ),
+			'expected' => get_html_as_string( 'final/modify-html/malformed-closing-body' ),
+		],
+
+		'malformed: missing <html> tag' => [
+			'html'     => get_html_as_string( 'original/malformed-opening-html' ),
+			'expected' => get_html_as_string( 'final/modify-html/malformed-opening-html' ),
+		],
+
+		'malformed: missing </html> tag' => [
+			'html'     => get_html_as_string( 'original/malformed-closing-html' ),
+			'expected' => get_html_as_string( 'final/modify-html/malformed-closing-html' ),
+		],
+
+		'malformed: missing </body> and </html> tags' => [
+			'html'     => get_html_as_string( 'original/malformed-closing-body-html' ),
+			'expected' => get_html_as_string( 'final/modify-html/malformed-closing-body-html' ),
+		],
+
+		// Preserve malformed and invalid content in the <head>.
+
+		'preserve <head>: text is not contained in a tag' => [
+			'html'     => get_html_as_string( 'original/head-text-not-in-tag' ),
+			'expected' => get_html_as_string( 'final/modify-html/head-text-not-in-tag' ),
+		],
+
+		'preserve <head>: non-allowable nodes' => [
+			'html'     => get_html_as_string( 'original/head-nonallowed' ),
+			'expected' => get_html_as_string( 'final/modify-html/head-nonallowed' ),
+		],
+
+		// @todo Bug: Async will add async to `<noscript><link...></noscript>`. Hmm.
+//		'preserve <head>: <noscript>' => [
+//			'html'     => get_html_as_string( 'original/head-noscript' ),
+//			'expected' => get_html_as_string( 'final/modify-html/head-noscript' ),
+//		],
+
+		'preserve script template: type attribute and HTML closing tags' => [
+			'html'     => get_html_as_string( 'original/script-template' ),
+			'expected' => get_html_as_string( 'final/modify-html/script-template' ),
+		],
+
+		'preserve: placeholders' => [
+			'html'     => get_html_as_string( 'original/placeholder' ),
+			'expected' => get_html_as_string( 'final/modify-html/placeholder' ),
+		],
+
+		'preserve: conditional comments' => [
+			'html'     => get_html_as_string( 'original/conditional-comments' ),
+			'expected' => get_html_as_string( 'final/modify-html/conditional-comments' ),
 		],
 
 		'shouldHandleLargerWebPages' => [
-			'html'     => get_html_as_string( 'twentyseventeen' ),
-			'expected' => get_html_as_string( 'twentyseventeen-modify_html' ),
+			'html'     => get_html_as_string( 'original/twentyseventeen' ),
+			'expected' => get_html_as_string( 'final/modify-html/twentyseventeen' ),
 		],
 
 		// Test encoding.
 
-		'shouldHandleUTF8' => [
-			'html'     => <<<HTML
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<title>Testing encoding</title>
-	<link rel="stylesheet" id="twentyseventeen-fonts-css" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&amp;subset=latin%2Clatin-ext&amp;display=fallback" media="all">
-	<link rel="stylesheet" id="twentyseventeen-style-css" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="all">
-</head>
-<body>
-	<div>
-		<h1>Testing encoding</h1>
-		<p>Don't Believe Everything You Hear – ...</p>
-	</div>
-</body>
-</html>
-HTML
-			,
-			'expected' => <<<HTML
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<title>Testing encoding</title>
-	<link rel="preload" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" as="style">
-	<link rel="stylesheet" id="twentyseventeen-fonts-css" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" media="print" onload="this.onload=null;this.media='all'">
-	<link rel="preload" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" as="style">
-	<link rel="stylesheet" id="twentyseventeen-style-css" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="print" onload="this.onload=null;this.media='all'">
-</head>
-<body>
-	<div>
-		<h1>Testing encoding</h1>
-		<p>Don't Believe Everything You Hear – ...</p>
-	</div>
-	<noscript>
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" media="all">
-		<link rel="stylesheet" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="all">
-	</noscript>
-</body>
-</html>
-HTML
-			,
+		'encoding: ar' => [
+			'html'     => get_html_as_string( 'original/encoding-ar' ),
+			'expected' => get_html_as_string( 'final/modify-html/encoding-ar' ),
 		],
 
-		'shouldHandleUnicode_greek' => [
-			'html'     => <<<HTML
-<!DOCTYPE html>
-<html lang="el">
-<head>
-	<meta charset="UTF-8">
-	<title>Δοκιμή κωδικοποίησης</title>
-	<link rel="stylesheet" id="twentyseventeen-fonts-css" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&amp;subset=latin%2Clatin-ext&amp;display=fallback" media="all">
-	<link rel="stylesheet" id="twentyseventeen-style-css" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="all">
-</head>
-<body>
-	<div>
-		<h1>Δοκιμή κωδικοποίησης</h1>
-		<p>Γεια σας, δοκιμή κωδικοποίησης</p>
-	</div>
-</body>
-</html>
-HTML
-			,
-			'expected' => <<<HTML
-<!DOCTYPE html>
-<html lang="el">
-<head>
-	<meta charset="UTF-8">
-	<title>Δοκιμή κωδικοποίησης</title>
-	<link rel="preload" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" as="style">
-	<link rel="stylesheet" id="twentyseventeen-fonts-css" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" media="print" onload="this.onload=null;this.media='all'">
-	<link rel="preload" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" as="style">
-	<link rel="stylesheet" id="twentyseventeen-style-css" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="print" onload="this.onload=null;this.media='all'">
-</head>
-<body>
-	<div>
-		<h1>Δοκιμή κωδικοποίησης</h1>
-		<p>Γεια σας, δοκιμή κωδικοποίησης</p>
-	</div>
-	<noscript>
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" media="all">
-		<link rel="stylesheet" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="all">
-	</noscript>
-</body>
-</html>
-HTML
-			,
+		'encoding: el' => [
+			'html'     => get_html_as_string( 'original/encoding-el' ),
+			'expected' => get_html_as_string( 'final/modify-html/encoding-el' ),
 		],
 
-		'shouldHandleUTF8_japenese' => [
-			'html'     => <<<HTML
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-	<meta charset="UTF-8">
-	<title>エンコーディングのテスト</title>
-	<link rel="stylesheet" id="twentyseventeen-fonts-css" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&amp;subset=latin%2Clatin-ext&amp;display=fallback" media="all">
-	<link rel="stylesheet" id="twentyseventeen-style-css" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="all">
-</head>
-<body>
-	<div>
-		<h1>エンコーディングのテスト</h1>
-		<p>こんにちは世界、私はエンコーディングをテストしています</p>
-	</div>
-</body>
-</html>
-HTML
-			,
-			'expected' => <<<HTML
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-	<meta charset="UTF-8">
-	<title>エンコーディングのテスト</title>
-	<link rel="preload" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" as="style">
-	<link rel="stylesheet" id="twentyseventeen-fonts-css" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" media="print" onload="this.onload=null;this.media='all'">
-	<link rel="preload" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" as="style">
-	<link rel="stylesheet" id="twentyseventeen-style-css" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="print" onload="this.onload=null;this.media='all'">
-</head>
-<body>
-	<div>
-		<h1>エンコーディングのテスト</h1>
-		<p>こんにちは世界、私はエンコーディングをテストしています</p>
-	</div>
-	<noscript>
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" media="all">
-		<link rel="stylesheet" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="all">
-	</noscript>
-</body>
-</html>
-HTML
-			,
+		'encoding: en-us' => [
+			'html'     => get_html_as_string( 'original/encoding-en-us' ),
+			'expected' => get_html_as_string( 'final/modify-html/encoding-en-us' ),
 		],
 
-		'shouldHandleUnicode_hebrew' => [
-			'html'     => <<<HTML
-<!DOCTYPE html>
-<html lang="hr" dir="rtl">
-<head>
-	<meta charset="UTF-8">
-	<title>בדיקת קידוד</title>
-	<link rel="stylesheet" id="twentyseventeen-fonts-css" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&amp;subset=latin%2Clatin-ext&amp;display=fallback" media="all">
-	<link rel="stylesheet" id="twentyseventeen-style-css" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="all">
-</head>
-<body>
-	<div>
-		<h1>בדיקת קידוד</h1>
-		<p>אל תאמין לכל מה שאתה שומע -</p>
-	</div>
-</body>
-</html>
-HTML
-			,
-			'expected' => <<<HTML
-<!DOCTYPE html>
-<html lang="hr" dir="rtl">
-<head>
-	<meta charset="UTF-8">
-	<title>בדיקת קידוד</title>
-	<link rel="preload" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" as="style">
-	<link rel="stylesheet" id="twentyseventeen-fonts-css" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" media="print" onload="this.onload=null;this.media='all'">
-	<link rel="preload" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" as="style">
-	<link rel="stylesheet" id="twentyseventeen-style-css" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="print" onload="this.onload=null;this.media='all'">
-</head>
-<body>
-	<div>
-		<h1>בדיקת קידוד</h1>
-		<p>אל תאמין לכל מה שאתה שומע -</p>
-	</div>
-	<noscript>
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" media="all">
-		<link rel="stylesheet" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="all">
-	</noscript>
-</body>
-</html>
-HTML
-			,
+		'encoding: hr' => [
+			'html'     => get_html_as_string( 'original/encoding-hr' ),
+			'expected' => get_html_as_string( 'final/modify-html/encoding-hr' ),
 		],
 
-		'shouldHandleUnicode_arabic' => [
-			'html'     => <<<HTML
-<!DOCTYPE html>
-<html lang="hr" dir="rtl">
-<head>
-	<meta charset="UTF-8">
-	<title>العنوان هنا</title>
-	<link rel="stylesheet" id="twentyseventeen-fonts-css" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&amp;subset=latin%2Clatin-ext&amp;display=fallback" media="all">
-	<link rel="stylesheet" id="twentyseventeen-style-css" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="all">
-</head>
-<body>
-	<div>
-		<h1>تجربة عنوان نصي من هنا</h1>
-		<p>هنا يتم تجربة نص عربي لاكتشاف المشاكل مع اللغات الأخرى -</p>
-	</div>
-</body>
-</html>
-HTML
-			,
-			'expected' => <<<HTML
-<!DOCTYPE html>
-<html lang="hr" dir="rtl">
-<head>
-	<meta charset="UTF-8">
-	<title>العنوان هنا</title>
-	<link rel="preload" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" as="style">
-	<link rel="stylesheet" id="twentyseventeen-fonts-css" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" media="print" onload="this.onload=null;this.media='all'">
-	<link rel="preload" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" as="style">
-	<link rel="stylesheet" id="twentyseventeen-style-css" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="print" onload="this.onload=null;this.media='all'">
-</head>
-<body>
-	<div>
-		<h1>تجربة عنوان نصي من هنا</h1>
-		<p>هنا يتم تجربة نص عربي لاكتشاف المشاكل مع اللغات الأخرى -</p>
-	</div>
-	<noscript>
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" media="all">
-		<link rel="stylesheet" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="all">
-	</noscript>
-</body>
-</html>
-HTML
-			,
-		],
-
-		'shouldWorkOnURLsToo' => [
-			'html'     => <<<HTML
-<!DOCTYPE html>
-<html lang="hr" dir="rtl">
-<head>
-	<meta charset="UTF-8">
-	<title>בדיקת קידוד</title>
-	<link rel="stylesheet" id="twentyseventeen-fonts-css" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&amp;subset=latin%2Clatin-ext&amp;display=fallback" media="all">
-	<link rel="stylesheet" id="twentyseventeen-style-css" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="all">
-</head>
-<body>
-	<div>
-		<h1>בדיקת קידוד</h1>
-		<p>אל תאמין לכל מה שאתה שומע -</p>
-	</div>
-</body>
-</html>
-HTML
-			,
-			'expected' => <<<HTML
-<!DOCTYPE html>
-<html lang="hr" dir="rtl">
-<head>
-	<meta charset="UTF-8">
-	<title>בדיקת קידוד</title>
-	<link rel="preload" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" as="style">
-	<link rel="stylesheet" id="twentyseventeen-fonts-css" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" media="print" onload="this.onload=null;this.media='all'">
-	<link rel="preload" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" as="style">
-	<link rel="stylesheet" id="twentyseventeen-style-css" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="print" onload="this.onload=null;this.media='all'">
-</head>
-<body>
-	<div>
-		<h1>בדיקת קידוד</h1>
-		<p>אל תאמין לכל מה שאתה שומע -</p>
-	</div>
-	<noscript>
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" media="all">
-		<link rel="stylesheet" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="all">
-	</noscript>
-</body>
-</html>
-HTML
-			,
-		],
-
-		'shouldNotStripTypeFromScripts' => [
-			'html'     => <<<HTML
-<!DOCTYPE html>
-<html lang="hr" dir="rtl">
-<head>
-	<meta charset="UTF-8">
-	<title>בדיקת קידוד</title>
-	<link rel="stylesheet" id="twentyseventeen-fonts-css" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&amp;subset=latin%2Clatin-ext&amp;display=fallback" media="all">
-	<link rel="stylesheet" id="twentyseventeen-style-css" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="all">
-</head>
-<body>
-	<div>
-		<h1>בדיקת קידוד</h1>
-		<p>אל תאמין לכל מה שאתה שומע -</p>
-	</div>
-	<script type="text/javascript" src="https://example.org/wp-includes/js/hoverintent-js.min.js?ver=2.2.1"></script>
-	<script type="text/javascript" src="https://example.org/wp-includes/js/admin-bar.min.js?ver=5.4.2"></script>
-	<script id="tmpl-js" type="text/x-jsrender">
-	    <div>
-	        {{for items}}
-	            <div>
-	                {{ tmpl='#item-tmpl-js'/}}
-	            </div>
-	        {{/for}}
-	    </div>
-	</script>
-	<script id="item-tmpl-js" type="text/x-jsrender">
-	    <div>
-	        {{title}}
-        </div>
-	</script>
-	<script id="hello" type="text/template">Hello world</script>
-	<script>
-	  $('#hello').html();
-	</script>
-	<script type="text/html" id="script-html"><p>Some html</p></script>
-</body>
-</html>
-HTML
-			,
-			'expected' => <<<HTML
-<!DOCTYPE html>
-<html lang="hr" dir="rtl">
-<head>
-	<meta charset="UTF-8">
-	<title>בדיקת קידוד</title>
-	<link rel="preload" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" as="style">
-	<link rel="stylesheet" id="twentyseventeen-fonts-css" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" media="print" onload="this.onload=null;this.media='all'">
-	<link rel="preload" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" as="style">
-	<link rel="stylesheet" id="twentyseventeen-style-css" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="print" onload="this.onload=null;this.media='all'">
-</head>
-<body>
-	<div>
-		<h1>בדיקת קידוד</h1>
-		<p>אל תאמין לכל מה שאתה שומע -</p>
-	</div>
-	<script type="text/javascript" src="https://example.org/wp-includes/js/hoverintent-js.min.js?ver=2.2.1"></script>
-	<script type="text/javascript" src="https://example.org/wp-includes/js/admin-bar.min.js?ver=5.4.2"></script>
-	<script id="tmpl-js" type="text/x-jsrender">
-	    <div>
-	        {{for items}}
-	            <div>
-	                {{ tmpl='#item-tmpl-js'/}}
-	            </div>
-	        {{/for}}
-	    </div>
-	</script>
-	<script id="item-tmpl-js" type="text/x-jsrender">
-	    <div>
-	        {{title}}
-        </div>
-	</script>
-	<script id="hello" type="text/template">Hello world</script>
-	<script>
-	  $('#hello').html();
-	</script>
-	<script type="text/html" id="script-html"><p>Some html</p></script>
-	<noscript>
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" media="all">
-		<link rel="stylesheet" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="all">
-	</noscript>
-</body>
-</html>
-HTML
-			,
-		],
-
-		'shouldHandleLazyLoadNoJsCssNoScript' => [
-			'html'     => <<<HTML
-<!DOCTYPE html>
-<html lang="hr" dir="rtl">
-<head>
-	<meta charset="UTF-8">
-	<title>בדיקת קידוד</title>
-	<link rel="stylesheet" id="twentyseventeen-fonts-css" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&amp;subset=latin%2Clatin-ext&amp;display=fallback" media="all">
-	<link rel="stylesheet" id="twentyseventeen-style-css" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="all">
-	<noscript><style id="rocket-lazyload-nojs-css">.rll-youtube-player, [data-lazy-src]{display:none !important;}</style></noscript>
-</head>
-<body class="home blog">
-	<div>
-		<h1>בדיקת קידוד</h1>
-		<p>אל תאמין לכל מה שאתה שומע -</p>
-	</div>
-	<script type="text/javascript" src="https://example.org/wp-includes/js/hoverintent-js.min.js?ver=2.2.1"></script>
-	<script type="text/javascript" src="https://example.org/wp-includes/js/admin-bar.min.js?ver=5.4.2"></script>
-	<script async="" data-no-minify="1" src="https://www.infocubic.com/assets/plugins/wp-rocket/assets/js/lazyload/16.1/lazyload.min.js" type="text/javascript"></script>
-</body>
-</html>
-HTML
-			,
-			'expected' => <<<HTML
-<!DOCTYPE html>
-<html lang="hr" dir="rtl">
-<head>
-	<meta charset="UTF-8">
-	<title>בדיקת קידוד</title>
-	<link rel="preload" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" as="style">
-	<link rel="stylesheet" id="twentyseventeen-fonts-css" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" media="print" onload="this.onload=null;this.media='all'">
-	<link rel="preload" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" as="style">
-	<link rel="stylesheet" id="twentyseventeen-style-css" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="print" onload="this.onload=null;this.media='all'">
-	<noscript><style id="rocket-lazyload-nojs-css">.rll-youtube-player, [data-lazy-src]{display:none !important;}</style></noscript>
-</head>
-<body class="home blog">
-	<div>
-		<h1>בדיקת קידוד</h1>
-		<p>אל תאמין לכל מה שאתה שומע -</p>
-	</div>
-	<script type="text/javascript" src="https://example.org/wp-includes/js/hoverintent-js.min.js?ver=2.2.1"></script>
-	<script type="text/javascript" src="https://example.org/wp-includes/js/admin-bar.min.js?ver=5.4.2"></script>
-	<script async="" data-no-minify="1" src="https://www.infocubic.com/assets/plugins/wp-rocket/assets/js/lazyload/16.1/lazyload.min.js" type="text/javascript"></script>
-	<noscript>
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&subset=latin%2Clatin-ext&display=fallback" media="all">
-		<link rel="stylesheet" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="all">
-	</noscript>
-</body>
-</html>
-HTML
-			,
+		'encoding: ja' => [
+			'html'     => get_html_as_string( 'original/encoding-ja' ),
+			'expected' => get_html_as_string( 'final/modify-html/encoding-ja' ),
 		],
 	],
 ];

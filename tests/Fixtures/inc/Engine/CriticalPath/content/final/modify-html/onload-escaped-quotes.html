@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<link rel="preload" href="https://example.org/file1.css" as="style">
+	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="print" baz="boo" onload="this.baz='test';this.onload=null;this.media='all'">
+	<link rel="preload" href="https://example.org/file2.css" as="style">
+	<link rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="print" baz="boo" onload="this.baz='test';this.onload=null;this.media='all'">
+</head>
+<body>
+	<div>
+		<h1>Testing</h1>
+		<p>Hello World</p>
+	</div>
+	<noscript>
+		<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="all" baz="boo" onload="this.baz=\'test\'">
+		<link rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="all" baz="boo" onload='this.baz=\"test\"'>
+	</noscript>
+</body>
+</html>

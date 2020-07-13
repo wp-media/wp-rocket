@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<link rel="preload" href="https://example.org/file1.css" as="style">
+	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="print" onload="this.media='all';this.onload=null">
+</head>
+<body>Content here
+	<noscript>
+		<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="print" onload="this.media='all'">
+	</noscript>
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en-US" class="js svg background-fixed">
+<head>
+	e
+	<meta charset="UTF-8"/>abc
+	{{title}}
+	@yield('head-scripts')
+	<!-- extra space after opening <. -->
+	< meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Testing</title>
+	<link rel="dns-prefetch" href="//fonts.googleapis.com"/>
+	<link href="https://fonts.gstatic.com" crossorigin="" rel="preconnect"/>
+	<link rel="alternate" type="application/rss+xml" title="WP Rocket QA » Feed" href="https://example.org/feed/" />
+	<link rel="alternate" type="application/rss+xml" title="WP Rocket QA » Comments Feed" href="https://example.org/comments/feed/" />
+	<styles>
+		img.wp-smiley,
+		img.emoji {
+			display: inline !important;
+			border: none !important;
+			box-shadow: none !important;
+			height: 1em !important;
+			width: 1em !important;
+			margin: 0 .07em !important;
+			vertical-align: -0.1em !important;
+			background: none !important;
+			padding: 0 !important;
+		}
+	</styles>
+	<invalid>This is an invalid head node.</invalid>
+	<link rel="stylesheet" id="twentyseventeen-style-css" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="all">
+	<!--[if lt IE 9]>
+	<link rel='stylesheet' id='twentyseventeen-ie8-css' href='https://example.org/wp-content/themes/twentyseventeen/assets/css/ie8.css?ver=20161202' media='all'>
+	<![endif]-->
+	<style media="screen">
+		html { margin-top: 32px !important; }
+		* html body { margin-top: 32px !important; }
+		@media screen and ( max-width: 782px ) {
+			html { margin-top: 46px !important; }
+			* html body { margin-top: 46px !important; }
+		}
+	</style>
+	<meta name="generator" content="WordPress 5.5">
+</head>
+<body class="home blog logged-in admin-bar wp-embed-responsive hfeed has-header-image has-sidebar colors-light customize-support">
+	<!--[if lte IE 8]>
+	<script>
+		document.body.className = document.body.className.replace( /(^|\s)(no-)?customize-support(?=\s|$)/, '' ) + ' no-customize-support';
+	</script>
+	<![endif]-->
+	<!--[if gte IE 9]><!-->
+	<script>
+		(function() {
+			var request, b = document.body, c = 'className', cs = 'customize-support', rcs = new RegExp('(^|\\s+)(no-)?'+cs+'(\\s+|$)');
+
+			request = true;
+
+			b[c] = b[c].replace( rcs, ' ' );
+			// The customizer requires postMessage and CORS (if the site is cross domain).
+			b[c] += ( window.postMessage && request ? ' ' : ' no-' ) + cs;
+		}());
+	</script>
+	<!--<![endif]-->
+
+	<some-tag>This is a custom tag.</some-tag>
+
+	<div id="wpadminbar" class="nojq">
+		<a class="screen-reader-shortcut" href="#wp-toolbar" tabindex="1">Skip to toolbar</a>
+		<div class="quicklinks" id="wp-toolbar" role="navigation" aria-label="Toolbar">
+			<ul id="wp-admin-bar-root-default" class="ab-top-menu"><li id="wp-admin-bar-wp-logo" class="menupop"><a class="ab-item" aria-haspopup="true" href="https://example.org/wp-admin/about.php"><span class="ab-icon"></span><span class="screen-reader-text">About WordPress</span></a><div class="ab-sub-wrapper"><ul id="wp-admin-bar-wp-logo-default" class="ab-submenu"><li id="wp-admin-bar-about"><a class="ab-item" href="https://example.org/wp-admin/about.php">About WordPress</a></li></ul><ul id="wp-admin-bar-wp-logo-external" class="ab-sub-secondary ab-submenu"><li id="wp-admin-bar-wporg"><a class="ab-item" href="https://wordpress.org/">WordPress.org</a></li><li id="wp-admin-bar-documentation"><a class="ab-item" href="https://codex.wordpress.org/">Documentation</a></li><li id="wp-admin-bar-support-forums"><a class="ab-item" href="https://wordpress.org/support/">Support</a></li><li id="wp-admin-bar-feedback"><a class="ab-item" href="https://wordpress.org/support/forum/requests-and-feedback">Feedback</a></li></ul></div></li><li id="wp-admin-bar-site-name" class="menupop"><a class="ab-item" aria-haspopup="true" href="https://example.org/wp-admin/">WP Rocket QA</a><div class="ab-sub-wrapper"><ul id="wp-admin-bar-site-name-default" class="ab-submenu"><li id="wp-admin-bar-dashboard"><a class="ab-item" href="https://example.org/wp-admin/">Dashboard</a></li></ul><ul id="wp-admin-bar-appearance" class="ab-submenu"><li id="wp-admin-bar-themes"><a class="ab-item" href="https://example.org/wp-admin/themes.php">Themes</a></li><li id="wp-admin-bar-widgets"><a class="ab-item" href="https://example.org/wp-admin/widgets.php">Widgets</a></li><li id="wp-admin-bar-menus"><a class="ab-item" href="https://example.org/wp-admin/nav-menus.php">Menus</a></li><li id="wp-admin-bar-header" class="hide-if-customize"><a class="ab-item" href="https://example.org/wp-admin/themes.php?page=custom-header">Header</a></li></ul></div></li><li id="wp-admin-bar-customize" class="hide-if-no-customize"><a class="ab-item" href="https://example.org/wp-admin/customize.php?url=http%3A%2F%2Fmega.wp-rocket.me%2Fqa%2F">Customize</a></li><li id="wp-admin-bar-updates"><a class="ab-item" href="https://example.org/wp-admin/update-core.php" title="1 Plugin Update, 3 Theme Updates"><span class="ab-icon"></span><span class="ab-label">4</span><span class="screen-reader-text">1 Plugin Update, 3 Theme Updates</span></a></li><li id="wp-admin-bar-comments"><a class="ab-item" href="https://example.org/wp-admin/edit-comments.php"><span class="ab-icon"></span><span class="ab-label awaiting-mod pending-count count-0" aria-hidden="true">0</span><span class="screen-reader-text comments-in-moderation-text">0 Comments in moderation</span></a></li><li id="wp-admin-bar-new-content" class="menupop"><a class="ab-item" aria-haspopup="true" href="https://example.org/wp-admin/post-new.php"><span class="ab-icon"></span><span class="ab-label">New</span></a><div class="ab-sub-wrapper"><ul id="wp-admin-bar-new-content-default" class="ab-submenu"><li id="wp-admin-bar-new-post"><a class="ab-item" href="https://example.org/wp-admin/post-new.php">Post</a></li><li id="wp-admin-bar-new-media"><a class="ab-item" href="https://example.org/wp-admin/media-new.php">Media</a></li><li id="wp-admin-bar-new-page"><a class="ab-item" href="https://example.org/wp-admin/post-new.php?post_type=page">Page</a></li><li id="wp-admin-bar-new-user"><a class="ab-item" href="https://example.org/wp-admin/user-new.php">User</a></li></ul></div></li><li id="wp-admin-bar-imagify" class="menupop"><a class="ab-item" aria-haspopup="true" href="https://example.org/wp-admin/options-general.php?page=imagify">Imagify</a><div class="ab-sub-wrapper"><ul id="wp-admin-bar-imagify-default" class="ab-submenu"><li id="wp-admin-bar-imagify-settings"><a class="ab-item" href="https://example.org/wp-admin/options-general.php?page=imagify">Settings</a></li><li id="wp-admin-bar-imagify-bulk-optimization"><a class="ab-item" href="https://example.org/wp-admin/upload.php?page=imagify-bulk-optimization">Bulk Optimization</a></li><li id="wp-admin-bar-imagify-documentation"><a class="ab-item" href="https://imagify.io/documentation/" target="_blank">Documentation</a></li><li id="wp-admin-bar-imagify-rate-it"><a class="ab-item" href="https://wordpress.org/support/view/plugin-reviews/imagify?rate=5#postform" target="_blank">Rate Imagify on WordPress.org</a></li><li id="wp-admin-bar-imagify-profile"><div class="ab-item ab-empty-item"><input type="hidden" id="imagifygetadminbarprofilenonce" name="imagifygetadminbarprofilenonce" value="51487e211b"><div id="wp-admin-bar-imagify-profile-loading" class="hide-if-no-js">Loading...</div><div id="wp-admin-bar-imagify-profile-content" class="hide-if-no-js"></div></div></li></ul></div></li><li id="wp-admin-bar-wp-rocket" class="menupop"><a class="ab-item" aria-haspopup="true" href="https://example.org/wp-admin/options-general.php?page=wprocket">WP Rocket</a><div class="ab-sub-wrapper"><ul id="wp-admin-bar-wp-rocket-default" class="ab-submenu"><li id="wp-admin-bar-rocket-settings"><a class="ab-item" href="https://example.org/wp-admin/options-general.php?page=wprocket">Settings</a></li><li id="wp-admin-bar-purge-all"><a class="ab-item" href="https://example.org/wp-admin/admin-post.php?action=purge_cache&amp;type=all&amp;_wp_http_referer=%2Fqa%2F&amp;_wpnonce=2fd3436522">Clear cache</a></li><li id="wp-admin-bar-purge-url"><a class="ab-item" href="https://example.org/wp-admin/admin-post.php?action=purge_cache&amp;type=url&amp;_wp_http_referer=%2Fqa%2F&amp;_wpnonce=eef85d4020">Purge this URL</a></li><li id="wp-admin-bar-preload-cache"><a class="ab-item" href="https://example.org/wp-admin/admin-post.php?action=preload&amp;_wp_http_referer=%2Fqa%2F&amp;_wpnonce=8ecf38ffcc">Preload cache</a></li><li id="wp-admin-bar-docs"><a class="ab-item" href="https://docs.wp-rocket.me/?utm_source=wp_plugin&amp;utm_medium=wp_rocket">Documentation</a></li><li id="wp-admin-bar-faq"><a class="ab-item" href="https://wp-rocket.me/faq/?utm_source=wp_plugin&amp;utm_medium=wp_rocket">FAQ</a></li><li id="wp-admin-bar-support"><a class="ab-item" href="https://wp-rocket.me/support/?utm_source=wp_plugin&amp;utm_medium=wp_rocket">Support</a></li></ul></div></li></ul><ul id="wp-admin-bar-top-secondary" class="ab-top-secondary ab-top-menu"><li id="wp-admin-bar-search" class="admin-bar-search"><div class="ab-item ab-empty-item" tabindex="-1"><form action="https://example.org/" method="get" id="adminbarsearch"><input class="adminbar-input" name="s" id="adminbar-search" type="text" value="" maxlength="150"><label for="adminbar-search" class="screen-reader-text">Search</label><input type="submit" class="adminbar-button" value="Search"></form></div></li><li id="wp-admin-bar-my-account" class="menupop with-avatar"><a class="ab-item" aria-haspopup="true" href="https://example.org/wp-admin/profile.php">Howdy, <span class="display-name">Tonya Mork</span><img alt="" src="http://0.gravatar.com/avatar/3f8eb0d0a1dfd0541a16f5b27e2f8681?s=26&amp;d=mm&amp;r=g" srcset="http://0.gravatar.com/avatar/3f8eb0d0a1dfd0541a16f5b27e2f8681?s=52&amp;d=mm&amp;r=g 2x" class="avatar avatar-26 photo" height="26" width="26"></a><div class="ab-sub-wrapper"><ul id="wp-admin-bar-user-actions" class="ab-submenu"><li id="wp-admin-bar-user-info"><a class="ab-item" tabindex="-1" href="https://example.org/wp-admin/profile.php"><img alt="" src="http://0.gravatar.com/avatar/3f8eb0d0a1dfd0541a16f5b27e2f8681?s=64&amp;d=mm&amp;r=g" srcset="http://0.gravatar.com/avatar/3f8eb0d0a1dfd0541a16f5b27e2f8681?s=128&amp;d=mm&amp;r=g 2x" class="avatar avatar-64 photo" height="64" width="64"><span class="display-name">Tonya Mork</span><span class="username">tonya</span></a></li><li id="wp-admin-bar-edit-profile"><a class="ab-item" href="https://example.org/wp-admin/profile.php">Edit My Profile</a></li><li id="wp-admin-bar-logout"><a class="ab-item" href="https://example.org/wp-login.php?action=logout&amp;_wpnonce=96a4b515d9">Log Out</a></li></ul></div></li></ul>			</div>
+		<a class="screen-reader-shortcut" href="https://example.org/wp-login.php?action=logout&amp;_wpnonce=96a4b515d9">Log Out</a>
+	</div>
+
+	<div id="page" class="site">
+		<a class="skip-link screen-reader-text" href="#content">Skip to content</a>
+
+		<header id="masthead" class="site-header" role="banner">
+
+			<div class="custom-header">
+
+				<div class="custom-header-media">
+					<div id="wp-custom-header" class="wp-custom-header"><img src="https://example.org/wp-content/themes/twentyseventeen/assets/images/header.jpg" width="2000" height="1200" alt="WP Rocket QA"></div>		</div>
+
+				<div class="site-branding" style="margin-bottom: 72px;">
+					<div class="wrap">
+
+
+						<div class="site-branding-text">
+							<h1 class="site-title"><a href="https://example.org/" rel="home">WP Rocket QA</a></h1>
+
+							<p class="site-description">Just another WordPress site</p>
+						</div><!-- .site-branding-text -->
+
+
+					</div><!-- .wrap -->
+				</div><!-- .site-branding -->
+
+			</div><!-- .custom-header -->
+
+			<div class="navigation-top">
+				<div class="wrap">
+					<nav id="site-navigation" class="main-navigation" role="navigation" aria-label="Top Menu">
+						<button class="menu-toggle" aria-controls="top-menu" aria-expanded="false">
+							<svg class="icon icon-bars" aria-hidden="true" role="img"> <use href="#icon-bars" xlink:href="#icon-bars"></use> </svg><svg class="icon icon-close" aria-hidden="true" role="img"> <use href="#icon-close" xlink:href="#icon-close"></use> </svg>Menu	</button>
+
+						<div class="menu-top-bar-container"><ul id="top-menu" class="menu"><li id="menu-item-42" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-42"><a href="https://example.org/skate-gallery/">Skate Gallery</a></li>
+							<li id="menu-item-43" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-43"><a href="https://example.org/sample-page/">Sample Page</a></li>
+						</ul></div>
+						<a href="#content" class="menu-scroll-down"><svg class="icon icon-arrow-right" aria-hidden="true" role="img"> <use href="#icon-arrow-right" xlink:href="#icon-arrow-right"></use> </svg><span class="screen-reader-text">Scroll down to content</span></a>
+					</nav><!-- #site-navigation -->
+				</div><!-- .wrap -->
+			</div><!-- .navigation-top -->
+
+		</header><!-- #masthead -->
+
+
+		<div class="site-content-contain">
+			<div id="content" class="site-content">
+
+				<div class="wrap">
+					<header class="page-header">
+						<h2 class="page-title">Posts</h2>
+					</header>
+
+					<div id="primary" class="content-area">
+						<main id="main" class="site-main" role="main">
+
+
+							<article id="post-1" class="post-1 post type-post status-publish format-standard hentry category-uncategorized">
+								<header class="entry-header">
+									<div class="entry-meta"><span class="screen-reader-text">Posted on</span> <a href="https://example.org/2020/06/29/hello-world/" rel="bookmark"><time class="entry-date published" datetime="2020-06-29T18:24:18+00:00">June 29, 2020</time><time class="updated" datetime="2020-07-01T15:43:52+00:00">July 1, 2020</time></a><span class="edit-link"><a class="post-edit-link" href="https://example.org/wp-admin/post.php?post=1&amp;action=edit">Edit<span class="screen-reader-text"> "Hello world!"</span></a></span></div><!-- .entry-meta --><h3 class="entry-title"><a href="https://example.org/2020/06/29/hello-world/" rel="bookmark">Hello world!</a></h3>	</header><!-- .entry-header -->
+
+
+								<div class="entry-content">
+
+									<p>Welcome to WordPress. This is your first post. Edit or delete it, then start writing!</p>
+								</div><!-- .entry-content -->
+
+
+							</article><!-- #post-1 -->
+
+						</main><!-- #main -->
+					</div><!-- #primary -->
+
+					<aside id="secondary" class="widget-area" role="complementary" aria-label="Blog Sidebar">
+						<section id="search-2" class="widget widget_search">
+
+							<form role="search" method="get" class="search-form" action="https://example.org/">
+								<label for="search-form-1">
+									<span class="screen-reader-text">Search for:</span>
+								</label>
+								<input type="search" id="search-form-1" class="search-field" placeholder="Search …" value="" name="s">
+								<button type="submit" class="search-submit"><svg class="icon icon-search" aria-hidden="true" role="img"> <use href="#icon-search" xlink:href="#icon-search"></use> </svg><span class="screen-reader-text">Search</span></button>
+							</form>
+						</section>		<section id="recent-posts-2" class="widget widget_recent_entries">		<h2 class="widget-title">Recent Posts</h2>		<ul>
+						<li>
+							<a href="https://example.org/2020/06/29/hello-world/">Hello world!</a>
+						</li>
+					</ul>
+					</section><section id="recent-comments-2" class="widget widget_recent_comments"><h2 class="widget-title">Recent Comments</h2><ul id="recentcomments"><li class="recentcomments"><span class="comment-author-link"><a href="https://wordpress.org/" rel="external nofollow ugc" class="url">A WordPress Commenter</a></span> on <a href="https://example.org/2020/06/29/hello-world/#comment-1">Hello world!</a></li></ul></section><section id="archives-2" class="widget widget_archive"><h2 class="widget-title">Archives</h2>		<ul>
+						<li><a href="https://example.org/2020/06/">June 2020</a></li>
+					</ul>
+					</section><section id="categories-2" class="widget widget_categories"><h2 class="widget-title">Categories</h2>		<ul>
+						<li class="cat-item cat-item-1"><a href="https://example.org/category/uncategorized/">Uncategorized</a>
+						</li>
+					</ul>
+					</section><section id="meta-2" class="widget widget_meta"><h2 class="widget-title">Meta</h2>			<ul>
+						<li><a href="https://example.org/wp-admin/">Site Admin</a></li>			<li><a href="https://example.org/wp-login.php?action=logout&amp;_wpnonce=96a4b515d9">Log out</a></li>
+						<li><a href="https://example.org/feed/">Entries feed</a></li>
+						<li><a href="https://example.org/comments/feed/">Comments feed</a></li>
+						<li><a href="https://wordpress.org/">WordPress.org</a></li>			</ul>
+					</section></aside><!-- #secondary -->
+				</div><!-- .wrap -->
+
+
+			</div><!-- #content -->
+
+			<footer id="colophon" class="site-footer" role="contentinfo">
+				<div class="wrap">
+
+					<div class="site-info">
+						<a href="https://wordpress.org/" class="imprint">
+							Proudly powered by WordPress	</a>
+					</div><!-- .site-info -->
+				</div><!-- .wrap -->
+			</footer><!-- #colophon -->
+		</div><!-- .site-content-contain -->
+	</div><!-- #page -->
+	<script src="https://example.org/wp-includes/js/hoverintent-js.min.js?ver=2.2.1"></script>
+	<script src="https://example.org/wp-includes/js/admin-bar.min.js?ver=5.4.2"></script>
+	<script>
+		var imagifyAdminBar = {"ajaxurl":"http:\/\/mega.wp-rocket.me\/qa\/wp-admin\/admin-ajax.php"};
+	</script>
+	<script src="https://example.org/wp-content/plugins/imagify/assets/js/admin-bar.min.js?ver=1.9.10"></script>
+	<script>
+		var twentyseventeenScreenReaderText = {"quote":"<svg class=\"icon icon-quote-right\" aria-hidden=\"true\" role=\"img\"> <use href=\"#icon-quote-right\" xlink:href=\"#icon-quote-right\"><\/use> <\/svg>","expand":"Expand child menu","collapse":"Collapse child menu","icon":"<svg class=\"icon icon-angle-down\" aria-hidden=\"true\" role=\"img\"> <use href=\"#icon-angle-down\" xlink:href=\"#icon-angle-down\"><\/use> <span class=\"svg-fallback icon-angle-down\"><\/span><\/svg>"};
+	</script>
+	<script src="https://example.org/wp-content/themes/twentyseventeen/assets/js/skip-link-focus-fix.js?ver=20161114"></script>
+	<script src="https://example.org/wp-content/themes/twentyseventeen/assets/js/navigation.js?ver=20161203"></script>
+	<script src="https://example.org/wp-content/themes/twentyseventeen/assets/js/global.js?ver=20190121"></script>
+	<script src="https://example.org/wp-content/themes/twentyseventeen/assets/js/jquery.scrollTo.js?ver=2.1.2"></script>
+	<script src="https://example.org/wp-includes/js/wp-embed.min.js?ver=5.4.2"></script>
+	<noscript><a href="https://wp-rocket.me/">WP Rocket</a></noscript>
+</body>
+</html>

@@ -296,8 +296,14 @@ trait Normalizer {
 	 * @param int    $insertion Position to insert it.
 	 */
 	protected function insert_tag( $tag, $insertion ) {
-		$this->html = mb_substr( $this->html, 0, $insertion, $this->normalizer_encoding )
-		              . $tag
-		              . mb_substr( $this->html, $insertion, mb_strlen( $this->html, $this->normalizer_encoding ), $this->normalizer_encoding );
+		$before = mb_substr( $this->html, 0, $insertion, $this->normalizer_encoding );
+		$after  = mb_substr(
+			$this->html,
+			$insertion,
+			mb_strlen( $this->html, $this->normalizer_encoding ),
+			$this->normalizer_encoding
+		);
+
+		$this->html = "{$before}{$tag}{$after}";
 	}
 }

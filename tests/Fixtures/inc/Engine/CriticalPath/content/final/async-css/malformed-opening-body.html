@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr-FR">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2.0">
+	<link rel="pingback" href="https://example.org/blog/xmlrpc.php">
+
+	<title>Page Image Alignment – tests</title>
+	<style id="rocket-critical-css">.home { color: red; }</style>
+
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//s.w.org">
+	<link rel="alternate" type="application/rss+xml" title="tests » Flux" href="https://example.org/blog/feed">
+	<link rel="alternate" type="application/rss+xml" title="tests » Flux des commentaires" href="https://example.org/blog/comments/feed">
+	<link rel="alternate" type="application/rss+xml" title="tests » Page Image Alignment Flux des commentaires" href="https://example.org/blog/about/page-image-alignment/feed">
+
+	<link rel="preload" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" as="style">
+	<link rel="stylesheet" id="twentyseventeen-style-css" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="print" onload="this.onload=null;this.media='all'">
+</head>
+<!-- missing <body> tag -->
+<body>
+	<div id="page" class="hfeed site">
+		<header id="masthead" class="site-header" role="banner">
+			<div class="col-full">
+				<a class="skip-link screen-reader-text" href="#site-navigation">Aller à la navigation</a>
+				<a class="skip-link screen-reader-text" href="#content">Aller au contenu</a>
+				<div class="site-branding">
+					<div class="beta site-title">
+						<a href="https://example.org/blog/" rel="home">tests</a>
+					</div>
+					<p class="site-description">Just another WordPress site</p>
+				</div>
+				<nav class="secondary-navigation" role="navigation" aria-label="Navigation secondaire">
+				</nav><!-- #site-navigation -->
+			</div>
+		</header>
+	</div>
+	<script>const wprRemoveCPCSS = () => { $elem = document.getElementById( "rocket-critical-css" ); if ( $elem ) { $elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>
+	<noscript>
+		<link rel="stylesheet" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="all">
+	</noscript>
+</body>
+</html>

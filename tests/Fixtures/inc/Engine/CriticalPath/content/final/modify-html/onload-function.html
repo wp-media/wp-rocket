@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<link rel="preload" href="https://example.org/file1.css" as="style">
+	<link onload="someFunction();this.onload=null;this.media='all'" rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="print">
+	<link rel="preload" href="https://example.org/file2.css" as="style">
+	<link onload="anotherFunction(this);this.onload=null;this.media='all'" rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="print">
+</head>
+<body>
+<link rel="preload" href="https://example.org/file3.css" as="style">
+<link onload="yetAnotherFunction(this, 0);this.media='all';this.onload=null" rel="stylesheet" type="text/css" href="https://example.org/file3.css" media="print">
+<div>
+	<h1>Testing</h1>
+	<!-- single quotes -->
+	<link rel="preload" href="https://example.org/file4.css" as="style">
+	<link rel="stylesheet" type="text/css" href="https://example.org/file4.css" onload="console.log('Hello');this.onload=null;this.media='screen'" media="print">
+	<p>Hello World</p>
+</div>
+<noscript>
+	<link onload="someFunction();" rel="stylesheet" type="text/css" href="https://example.org/file1.css">
+	<link onload=" anotherFunction(this) " rel="stylesheet" type="text/css" href="https://example.org/file2.css">
+	<link onload=" yetAnotherFunction(this, 0); this.media='all' " rel="stylesheet" type="text/css" href="https://example.org/file3.css">
+	<link rel="stylesheet" type="text/css" href="https://example.org/file4.css" onload='  console.log("Hello");  ' media="screen">
+</noscript>
+</body>
+</html>

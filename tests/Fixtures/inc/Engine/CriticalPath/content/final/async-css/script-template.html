@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>Testing script templates</title>
+	<style id="rocket-critical-css">.home { color: red; }</style>
+	<link rel="preload" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" as="style">
+	<link rel="stylesheet" id="twentyseventeen-style-css" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="print" onload="this.onload=null;this.media='all'">
+	<link rel="preload" href="https://example.org/wp-includes/css/dashicons.min.css?ver=5.4.2" as="style">
+	<link rel="stylesheet" id="dashicons-css" href="https://example.org/wp-includes/css/dashicons.min.css?ver=5.4.2" media="print" onload="this.onload=null;this.media='all'">
+</head>
+<body>
+	<div>
+		<h1>Testing closing tag remains in script elements</h1>
+		<p>Testing issue #10 - <a href="https://github.com/wp-media/module-dom/issues/10">DOMDocument strips the closing tag inside of a script element.</a></p>
+	</div>
+	<script type="text/javascript" src="https://example.org/wp-includes/js/hoverintent-js.min.js?ver=2.2.1"></script>
+	<script type="text/javascript" src="https://example.org/wp-includes/js/admin-bar.min.js?ver=5.4.2"></script>
+	<script id="tmpl-js" type="text/x-jsrender">
+			<div>
+				{{for items}}
+					<div>
+						{{ tmpl='#item-tmpl-js'/}}
+					</div>
+				{{/for}}
+			</div>
+		</script>
+	<script id="item-tmpl-js" type="text/x-jsrender">
+			<div>
+				{{title}}
+			</div>
+		</script>
+	<script id="hello" type="text/template">Hello world</script>
+	<script>
+		$('#hello').html();
+	</script>
+	<script type="text/html" id="script-html"><p>Some html</p></script>
+	<script>const wprRemoveCPCSS = () => { $elem = document.getElementById( "rocket-critical-css" ); if ( $elem ) { $elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>
+	<noscript>
+		<link rel="stylesheet" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="all">
+		<link rel="stylesheet" href="https://example.org/wp-includes/css/dashicons.min.css?ver=5.4.2" media="all">
+	</noscript>
+</body>
+</html>

@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8" />
+	<link onload="someFunction();" rel="stylesheet" type="text/css" href="https://example.org/file1.css">
+	<link onload=" anotherFunction(this) " rel="stylesheet" type="text/css" href="https://example.org/file2.css">
+</head>
+<body>
+<link onload=" yetAnotherFunction(this, 0); this.media='all' " rel="stylesheet" type="text/css" href="https://example.org/file3.css">
+<div>
+	<h1>Testing</h1>
+	<!-- single quotes -->
+	<link rel="stylesheet" type='text/css' href='https://example.org/file4.css' onload='  console.log("Hello");  ' media="screen">
+	<p>Hello World</p>
+</div>
+</body>
+</html>
