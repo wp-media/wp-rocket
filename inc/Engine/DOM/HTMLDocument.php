@@ -323,7 +323,7 @@ class HTMLDocument extends DOMDocument {
 	 */
 	protected function setTransformer( TransformerInterface $transformer = null ) {
 		$this->transformer = null === $transformer
-			? new Transformer()
+			? new Transformer( $this->current_encoding )
 			: $transformer;
 	}
 
