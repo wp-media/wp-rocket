@@ -103,7 +103,7 @@ trait Head {
 		}
 
 		// Get the position of the end of the <head></head> element.
-		$pos = strpos( $html, '</head>' ) + 7;
+		$pos = mb_strpos( $html, '</head>', 0, $this->encoding ) + 7;
 		if ( empty( $pos ) ) {
 			return $html;
 		}
@@ -111,10 +111,10 @@ trait Head {
 		$head = str_replace(
 			array_keys( $this->head_nodes ),
 			$this->head_nodes,
-			mb_substr( $html, 0, $pos )
+			mb_substr( $html, 0, $pos, $this->encoding )
 		);
 
-		return $head . mb_substr( $html, $pos );
+		return $head . mb_substr( $html, $pos, mb_strlen( $html, $this->encoding ), $this->encoding );
 	}
 
 	/**

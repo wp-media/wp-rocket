@@ -13,7 +13,8 @@ class Transformer implements TransformerInterface {
 	 * @param string $encoding Optional. HTML's encoding. Default: 'UTF-8'.
 	 */
 	public function __construct( $encoding = 'UTF-8' ) {
-		$this->encoding = $encoding;
+		$this->encoding            = $encoding;
+		$this->normalizer_encoding = $encoding;
 	}
 
 	/**

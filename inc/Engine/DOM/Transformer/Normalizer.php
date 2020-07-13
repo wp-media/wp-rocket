@@ -47,6 +47,13 @@ trait Normalizer {
 	private $body_opening_tag;
 
 	/**
+	 * HTML's character encoding.
+	 *
+	 * @var string
+	 */
+	protected $normalizer_encoding = 'UTF-8';
+
+	/**
 	 * Normalize the document structure.
 	 *
 	 * This makes sure the document adheres to the general structure:
@@ -81,7 +88,6 @@ trait Normalizer {
 		if ( false === $this->head_closing_tag && false === $this->body_opening_tag ) {
 			$this->reset();
 
-			// @todo Need a way to bail out of the DOM processing.
 			return false;
 		}
 
@@ -272,12 +278,12 @@ trait Normalizer {
 		}
 
 		$tag               = $matches[0];
-		$starting_position = mb_strpos( $this->html, $tag );
+		$starting_position = mb_strpos( $this->html, $tag, 0, $this->normalizer_encoding );
 
 		return [
 			'tag'               => $tag,
 			'starting_position' => $starting_position,
-			'ending_position'   => $starting_position + mb_strlen( $tag ),
+			'ending_position'   => $starting_position + mb_strlen( $tag, $this->normalizer_encoding ),
 		];
 	}
 
@@ -290,6 +296,8 @@ trait Normalizer {
 	 * @param int    $insertion Position to insert it.
 	 */
 	protected function insert_tag( $tag, $insertion ) {
-		$this->html = mb_substr( $this->html, 0, $insertion ) . $tag . mb_substr( $this->html, $insertion );
+		$this->html = mb_substr( $this->html, 0, $insertion, $this->normalizer_encoding )
+		              . $tag
+		              . mb_substr( $this->html, $insertion, mb_strlen( $this->html, $this->normalizer_encoding ), $this->normalizer_encoding );
 	}
 }
