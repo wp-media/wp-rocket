@@ -137,13 +137,13 @@ class AsyncCSS {
 
 		$css_links = $this->dom->query( $this->get_query() );
 
-		if ( empty( $css_links ) || 0 === $css_links->length ) {
+		if ( empty( $css_links ) ) {
 			$this->reset();
 
 			return $html;
 		}
 
-		foreach ( iterator_to_array( $css_links ) as $css ) {
+		foreach ( $css_links as $css ) {
 			if ( ! Attribute::has_href( $css ) ) {
 				continue;
 			}
