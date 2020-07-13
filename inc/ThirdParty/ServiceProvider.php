@@ -61,7 +61,9 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'syntaxhighlighter_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\SyntaxHighlighter_Subscriber' );
 		$this->getContainer()->share( 'bridge_subscriber', 'WP_Rocket\ThirdParty\Themes\Bridge' )
 			->withArgument( $options );
-		$this->getContainer()->share( 'divi', 'WP_Rocket\ThirdParty\Themes\Divi' );
+		$this->getContainer()->share( 'divi', 'WP_Rocket\ThirdParty\Themes\Divi' )
+			->withArgument( $this->getContainer()->get( 'options_api' ) )
+			->withArgument( $options );
 		$this->getContainer()->share( 'ngg_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\NGG_Subscriber' );
 		$this->getContainer()->share( 'smush_subscriber', 'WP_Rocket\ThirdParty\Plugins\Smush' )
 			->withArgument( $this->getContainer()->get( 'options_api' ) )
