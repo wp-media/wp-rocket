@@ -49,12 +49,11 @@ trait Normalizer {
 	/**
 	 * Normalize the document structure.
 	 *
-	 * This makes sure the document adheres to the general structure that AMP requires:
+	 * This makes sure the document adheres to the general structure:
 	 *   ```
 	 *   <!DOCTYPE html>
 	 *   <html>
 	 *     <head>
-	 *       <meta charset="utf-8">
 	 *     </head>
 	 *     <body>
 	 *     </body>
