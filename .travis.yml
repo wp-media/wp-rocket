@@ -33,6 +33,9 @@ matrix:
   - name: Coding Standards
     php: 7.3
     env: WP_TRAVISCI=phpcs
+  - name: Static Analysis
+    php: 7.4
+    env: WP_TRAVISCI=phpstan
   allow_failures:
   - name: Static Analysis
     php: 7.4
