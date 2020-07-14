@@ -48,7 +48,7 @@ class HostSubscriberFactory implements SubscriberFactoryInterface {
 	 * @return Subscriber_Interface A Subscribe Interface for the current host.
 	 */
 	public function get_subscriber() {
-		$host_service = HostResolver::get_host_service();
+		$host_service = HostResolver::get_host_service( rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) );
 
 		switch ( $host_service ) {
 			case 'pressable':
