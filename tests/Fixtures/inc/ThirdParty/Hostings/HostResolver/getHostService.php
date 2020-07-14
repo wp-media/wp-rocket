@@ -14,8 +14,5 @@ return [
 		'testShouldReturnSpinUpWP' => [
 			'expected' => 'spinupwp',
 		],
-		'testShouldReturnWPEngine' => [
-			'expected' => 'wpengine',
-		],
 	],
 ];
