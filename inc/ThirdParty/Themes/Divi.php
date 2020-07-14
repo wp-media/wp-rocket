@@ -82,7 +82,7 @@ class Divi implements Subscriber_Interface {
 	 */
 	public function maybe_disable_youtube_preview( $name, $theme ) {
 		if ( ! self::is_divi( $theme ) ) {
-			error_log( 'not divi' );
+
 			return;
 		}
 
