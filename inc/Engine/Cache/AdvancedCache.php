@@ -49,7 +49,7 @@ class AdvancedCache implements ActivationInterface, DeactivationInterface {
 	 * @return void
 	 */
 	public function activate() {
-		add_action( 'rocket_activation', [ $this, 'generate_advanced_cache' ] );
+		add_action( 'rocket_activation', [ $this, 'update_advanced_cache' ] );
 	}
 
 	/**
@@ -60,7 +60,7 @@ class AdvancedCache implements ActivationInterface, DeactivationInterface {
 	 * @return void
 	 */
 	public function deactivate() {
-		add_action( 'rocket_deactivation', [ $this, 'empty_advanced_cache' ] );
+		add_action( 'rocket_deactivation', [ $this, 'update_advanced_cache' ] );
 	}
 
 	/**
@@ -70,7 +70,7 @@ class AdvancedCache implements ActivationInterface, DeactivationInterface {
 	 *
 	 * @return void
 	 */
-	public function generate_advanced_cache() {
+	public function update_advanced_cache() {
 		/**
 		 * Filters whether to generate the advanced-cache.php file.
 		 *
@@ -82,35 +82,15 @@ class AdvancedCache implements ActivationInterface, DeactivationInterface {
 			return;
 		}
 
-		$this->filesystem->put_contents(
-			"{$this->content_dir}/advanced-cache.php",
-			$this->get_advanced_cache_content(),
-			rocket_get_filesystem_perms( 'file' )
-		);
-	}
+		$content = '';
 
-	/**
-	 * Removes the content of the advanced-cache.php file
-	 *
-	 * @since 3.6.3
-	 *
-	 * @return void
-	 */
-	public function empty_advanced_cache() {
-		/**
-		 * Filters whether to generate the advanced-cache.php file.
-		 *
-		 * @since 3.6.3
-		 *
-		 * @param bool True (default) to go ahead with advanced cache file generation; false to stop generation.
-		 */
-		if ( ! (bool) apply_filters( 'rocket_generate_advanced_cache_file', true ) ) {
-			return;
+		if ( 'rocket_activation' === current_filter() ) {
+			$content = $this->get_advanced_cache_content();
 		}
 
 		$this->filesystem->put_contents(
 			"{$this->content_dir}/advanced-cache.php",
-			'',
+			$content,
 			rocket_get_filesystem_perms( 'file' )
 		);
 	}
