@@ -4,14 +4,11 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Testing</title>
-	<style id="rocket-critical-css">.home { color: red; }</style>
-	<noscript><link rel="stylesheet" href="noscript.css"></noscript>
-	<base href="https://example.org/">
-	<base target="_blank">
-	<base target="_top" href="https://example.org/">
 
+	<noscript><link rel="stylesheet" href="noscript.css"></noscript>
 	<link rel="preload" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" as="style">
 	<link rel="stylesheet" id="twentyseventeen-style-css" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="print" onload="this.onload=null;this.media='all'">
+	<noscript><link rel="stylesheet" href="style2.css" media="all"></noscript>
 	<noscript><style id="rocket-lazyload-nojs-css">.rll-youtube-player, [data-lazy-src]{display:none !important;}</style></noscript>
 </head>
 <body class="blog home">
@@ -20,6 +17,7 @@
 	<div id="page" class="hfeed site">
 		<header id="masthead" class="site-header" role="banner">
 			<div class="col-full">
+				<noscript><link id="style3" rel="stylesheet" href="style3.css" media="all"></noscript>
 				<a class="skip-link screen-reader-text" href="#site-navigation">Aller à la navigation</a>
 				<a class="skip-link screen-reader-text" href="#content">Aller au contenu</a>
 				<div class="site-branding">
@@ -33,7 +31,6 @@
 			</div>
 		</header>
 	</div>
-	<script>const wprRemoveCPCSS = () => { $elem = document.getElementById( "rocket-critical-css" ); if ( $elem ) { $elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>
 	<noscript>
 		<link rel="stylesheet" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="all">
 	</noscript>

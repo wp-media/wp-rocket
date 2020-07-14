@@ -150,6 +150,10 @@ class AsyncCSS {
 			if ( ! Attribute::has_href( $css ) ) {
 				continue;
 			}
+
+			if ( $this->is_in_noscript( $css ) ) {
+				continue;
+			}
 			$this->modify_css( $css );
 		}
 
@@ -391,5 +395,23 @@ class AsyncCSS {
 
 		// Insert the new element before the stylesheet's node.
 		$css->parentNode->insertBefore( $element, $css ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+	}
+
+	/**
+	 * Checks if the given element is contained inside of <noscript>.
+	 *
+	 * @since 3.6.2.1
+	 *
+	 * @param DOMElement $element The element DOMElement.
+	 *
+	 * @return bool true when href exists and not empty; else false.
+	 */
+	private function is_in_noscript( $element ) {
+		$parent = $element->parentNode; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+		if ( null === $parent ) {
+			return false;
+		}
+
+		return ( 'noscript' === $parent->nodeName ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 	}
 }

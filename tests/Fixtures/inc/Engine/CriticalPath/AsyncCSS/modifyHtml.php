@@ -476,11 +476,10 @@ HTML
 			'expected' => get_html_as_string( 'final/modify-html/head-nonallowed' ),
 		],
 
-		// @todo Bug: Async will add async to `<noscript><link...></noscript>`. Hmm.
-//		'preserve <head>: <noscript>' => [
-//			'html'     => get_html_as_string( 'original/head-noscript' ),
-//			'expected' => get_html_as_string( 'final/modify-html/head-noscript' ),
-//		],
+		'preserve <head>: <noscript>' => [
+			'html'     => get_html_as_string( 'original/head-noscript' ),
+			'expected' => get_html_as_string( 'final/modify-html/head-noscript' ),
+		],
 
 		'preserve script template: type attribute and HTML closing tags' => [
 			'html'     => get_html_as_string( 'original/script-template' ),
@@ -527,6 +526,11 @@ HTML
 		'encoding: ja' => [
 			'html'     => get_html_as_string( 'original/encoding-ja' ),
 			'expected' => get_html_as_string( 'final/modify-html/encoding-ja' ),
+		],
+
+		'skip stylesheets inside of <noscript>' => [
+			'html'     => get_html_as_string( 'original/link-inside-noscript' ),
+			'expected' => get_html_as_string( 'final/modify-html/link-inside-noscript' ),
 		],
 	],
 ];
