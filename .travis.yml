@@ -61,7 +61,7 @@ script:
   if [[ "$WP_TRAVISCI" == "phpcs" ]]; then
     composer phpcs
   elif [[ "$WP_TRAVISCI" == "phpstan" ]]; then
-    composer install --dev szepeviktor/phpstan-wordpress
+    composer require --dev szepeviktor/phpstan-wordpress
     vendor/bin/phpstan analyze
   else
     composer run-tests
