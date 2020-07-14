@@ -46,11 +46,11 @@ class WPCache implements ActivationInterface, DeactivationInterface {
 	 *
 	 * @since 3.6.3
 	 *
-	 * @return void
+	 * @return bool|void False if rocket key is invalid.
 	 */
 	public function update_wp_cache() {
 		if ( ! rocket_valid_key() ) {
-			return;
+			return false;
 		}
 
 		$value = 'rocket_deactivation' === current_filter() ? false : true;
