@@ -28,7 +28,7 @@ class WPCache implements ActivationInterface, DeactivationInterface {
 	 * @return void
 	 */
 	public function activate() {
-		add_action( 'rocket_activation', [ $this, 'enable_wp_cache_on_activation' ] );
+		add_action( 'rocket_activation', [ $this, 'update_wp_cache' ] );
 	}
 
 	/**
@@ -37,34 +37,25 @@ class WPCache implements ActivationInterface, DeactivationInterface {
 	 * @return void
 	 */
 	public function deactivate() {
-		add_action( 'rocket_deactivation', [ $this, 'disable_wp_cache_on_deactivation' ] );
+		add_action( 'rocket_deactivation', [ $this, 'update_wp_cache' ] );
 		add_filter( 'rocket_prevent_deactivation', [ $this, 'maybe_prevent_deactivation' ] );
 	}
 
 	/**
-	 * Enables the WP_CACHE constant on activation
+	 * Sets the WP_CACHE constant on (de)activation
 	 *
 	 * @since 3.6.3
 	 *
 	 * @return void
 	 */
-	public function enable_wp_cache_on_activation() {
+	public function update_wp_cache() {
 		if ( ! rocket_valid_key() ) {
 			return;
 		}
 
-		$this->set_wp_cache_constant( true );
-	}
+		$value = 'rocket_deactivation' === current_filter() ? false : true;
 
-	/**
-	 * Disables the WP_CACHE constant on deactivation
-	 *
-	 * @since 3.6.3
-	 *
-	 * @return void
-	 */
-	public function disable_wp_cache_on_deactivation() {
-		$this->set_wp_cache_constant( false );
+		$this->set_wp_cache_constant( $value );
 	}
 
 	/**

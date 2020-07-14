@@ -82,11 +82,7 @@ class AdvancedCache implements ActivationInterface, DeactivationInterface {
 			return;
 		}
 
-		$content = '';
-
-		if ( 'rocket_activation' === current_filter() ) {
-			$content = $this->get_advanced_cache_content();
-		}
+		$content = 'rocket_activation' === current_filter() ? $this->get_advanced_cache_content() : '';
 
 		$this->filesystem->put_contents(
 			"{$this->content_dir}/advanced-cache.php",
