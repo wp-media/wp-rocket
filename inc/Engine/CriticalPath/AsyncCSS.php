@@ -154,6 +154,7 @@ class AsyncCSS {
 			if ( $this->is_in_noscript( $css ) ) {
 				continue;
 			}
+
 			$this->modify_css( $css );
 		}
 
@@ -404,7 +405,7 @@ class AsyncCSS {
 	 *
 	 * @param DOMElement $element The element DOMElement.
 	 *
-	 * @return bool true when href exists and not empty; else false.
+	 * @return bool true when inside of <noscript>; else, false.
 	 */
 	private function is_in_noscript( $element ) {
 		$parent = $element->parentNode; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
