@@ -17,7 +17,7 @@ class Test_Activate extends TestCase {
 
 		$this->assertEquals(
 			10,
-			has_action( 'rocket_activation', [$advanced_cache, 'update_advanced_cache'] )
+			has_action( 'rocket_activation', [ $advanced_cache, 'update_advanced_cache' ] )
 		);
 	}
 }
