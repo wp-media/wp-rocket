@@ -6,14 +6,14 @@ use WP_Rocket\Engine\Cache\AdminSubscriber;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\ThirdParty\NullSubscriber;
-use WP_Rocket\ThirdParty\SubscriberFactory;
+use WP_Rocket\ThirdParty\SubscriberFactoryInterface;
 
 /**
  * Host Subscriber Factory
  *
  * @since 3.6.3
  */
-class HostSubscriberFactory implements SubscriberFactory {
+class HostSubscriberFactory implements SubscriberFactoryInterface {
 
 	/**
 	 * An Admin Subscriber object.

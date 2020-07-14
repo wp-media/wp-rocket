@@ -9,7 +9,7 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  *
  * @since 3.6.3
  */
-interface SubscriberFactory {
+interface SubscriberFactoryInterface {
 
 	/**
 	 * Get a Subscriber Interface object.
