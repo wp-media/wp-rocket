@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Tests\Unit\inc\Engine\Cache\WPCache;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Cache\WPCache;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\Engine\Cache\WPCache;
@@ -30,7 +30,7 @@ class Test_UpdateWPCache extends TestCase {
 		Functions\expect( 'rocket_valid_key' )
 			->once()
 			->andReturn( true );
-		Functions\expect( 'current_user_can' )->andReturn( false );
+		Functions\expect( 'current_user_can' )->once();
 
 		$wp_cache->update_wp_cache();
 	}
