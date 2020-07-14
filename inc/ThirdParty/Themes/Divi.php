@@ -81,12 +81,11 @@ class Divi implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function maybe_disable_youtube_preview( $name, $theme ) {
-		error_log( current_filter() );
 		if ( ! self::is_divi( $theme ) ) {
 			error_log( 'not divi' );
 			return;
 		}
-		error_log( 'divi' );
+
 		$this->options->set( 'lazyload_youtube', 0 );
 		$this->options_api->set( 'settings', $this->options->get_options() );
 	}
