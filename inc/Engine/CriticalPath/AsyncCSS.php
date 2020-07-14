@@ -88,6 +88,9 @@ class AsyncCSS {
 		}
 
 		$instance->dom = HTMLDocument::from_html( $html );
+		if ( empty( $instance->dom ) ) {
+			return null;
+		}
 
 		return $instance;
 	}
