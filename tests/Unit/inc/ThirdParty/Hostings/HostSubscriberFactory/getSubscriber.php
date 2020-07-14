@@ -43,8 +43,7 @@ class Test_GetSubscriber extends TestCase {
 				$_SERVER['cw_allowed_ip'] = true;
 				break;
 			case 'pressable':
-				Functions\when( 'rocket_get_constant' )
-					->justReturn( true );
+				$this->constants['IS_PRESSABLE'] = true;
 				break;
 			case 'spinupwp':
 				putenv( 'SPINUPWP_CACHE_PATH=/wp-content/spinupwp-cache/' );
