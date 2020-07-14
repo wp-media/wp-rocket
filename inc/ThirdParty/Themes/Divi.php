@@ -37,14 +37,18 @@ class Divi implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		if ( ! self::is_divi( wp_get_theme() ) ) {
-			return [];
+		$events = [
+			'switch_theme' => [ 'maybe_disable_youtube_preview', PHP_INT_MAX, 2 ],
+		];
+	
+		if ( ! self::is_divi() ) {
+			return $events;
 		}
 
-		return [
-			'rocket_exclude_js' => 'exclude_js',
-			'switch_theme'      => [ 'maybe_disable_youtube_preview', 10, 2 ],
-		];
+		$events['rocket_exclude_js'] = 'exclude_js';
+		$events['rocket_maybe_disable_youtube_lazyload_helper'] = 'add_divi_to_description';
+
+		return $events;
 	}
 
 	/**
@@ -77,12 +81,32 @@ class Divi implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function maybe_disable_youtube_preview( $name, $theme ) {
+		error_log( current_filter() );
 		if ( ! self::is_divi( $theme ) ) {
+			error_log( 'not divi' );
 			return;
 		}
-
+		error_log( 'divi' );
 		$this->options->set( 'lazyload_youtube', 0 );
 		$this->options_api->set( 'settings', $this->options->get_options() );
+	}
+
+	/**
+	 * Adds Divi to the array of items disabling Youtube lazyload
+	 *
+	 * @since 3.6.3
+	 *
+	 * @param array $disable_youtube_lazyload Array of items names.
+	 * @return array
+	 */
+	public function add_divi_to_description( $disable_youtube_lazyload ) {
+		if ( ! self::is_divi() ) {
+			return $disable_youtube_lazyload;
+		}
+
+		$disable_youtube_lazyload[] = 'Divi';
+
+		return $disable_youtube_lazyload;
 	}
 
 	/**
@@ -92,7 +116,9 @@ class Divi implements Subscriber_Interface {
 	 *
 	 * @param WP_Theme $theme Instance of the theme.
 	 */
-	private static function is_divi( $theme ) {
-		return ( 'Divi' !== ( $theme->get( 'Name' ) || $theme->get( 'Template' ) ) );
+	private static function is_divi( $theme = null ) {
+		$theme = $theme instanceOf WP_Theme ? $theme : wp_get_theme();
+
+		return ( 'Divi' === $theme->get( 'Name' ) || 'Divi' === $theme->get( 'Template' ) );
 	}
 }
