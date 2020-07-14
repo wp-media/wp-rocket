@@ -27,7 +27,7 @@ class HostResolver {
 	 */
 	public static function get_host_service( $ignore_cached_hostname = false ) {
 
-		if ( ! $ignore_cached_hostname && self::$hostname ) {
+		if ( ! $ignore_cached_hostname && ! empty( self::$hostname ) ) {
 			return self::$hostname;
 		}
 

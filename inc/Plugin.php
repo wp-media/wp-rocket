@@ -260,7 +260,7 @@ class Plugin {
 
 		$host_type = HostResolver::get_host_service();
 
-		if ( $host_type ) {
+		if ( ! empty( $host_type ) ) {
 			$common_subscribers[] = $host_type;
 		}
 
