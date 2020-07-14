@@ -40,12 +40,12 @@ class Divi implements Subscriber_Interface {
 		$events = [
 			'switch_theme' => [ 'maybe_disable_youtube_preview', PHP_INT_MAX, 2 ],
 		];
-	
+
 		if ( ! self::is_divi() ) {
 			return $events;
 		}
 
-		$events['rocket_exclude_js'] = 'exclude_js';
+		$events['rocket_exclude_js']                            = 'exclude_js';
 		$events['rocket_maybe_disable_youtube_lazyload_helper'] = 'add_divi_to_description';
 
 		return $events;
@@ -116,7 +116,7 @@ class Divi implements Subscriber_Interface {
 	 * @param WP_Theme $theme Instance of the theme.
 	 */
 	private static function is_divi( $theme = null ) {
-		$theme = $theme instanceOf WP_Theme ? $theme : wp_get_theme();
+		$theme = $theme instanceof WP_Theme ? $theme : wp_get_theme();
 
 		return ( 'Divi' === $theme->get( 'Name' ) || 'Divi' === $theme->get( 'Template' ) );
 	}
