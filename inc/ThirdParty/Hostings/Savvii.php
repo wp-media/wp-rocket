@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\ThirdParty\Hostings;
 
+use Savvii\CacheFlusherPlugin;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\ThirdParty\ReturnTypesTrait;
 
@@ -32,7 +33,7 @@ class Savvii implements Subscriber_Interface {
 		}
 
 		return [
-			'rocket_varnish_field_settings'           => 'custom_savvii_varnish_field',
+			'rocket_varnish_field_settings'           => 'varnish_addon_title',
 			'rocket_display_input_varnish_auto_purge' => 'return_false',
 			'rocket_cache_mandatory_cookies'          => 'return_empty_array',
 			'init'                                    => 'clear_cache_after_savvii',
@@ -50,7 +51,7 @@ class Savvii implements Subscriber_Interface {
 	 *
 	 * @return array modified field settings data.
 	 */
-	public function custom_savvii_varnish_field( $settings ) {
+	public function varnish_addon_title( $settings ) {
 		$settings['varnish_auto_purge']['title'] = sprintf(
 		// Translators: %s = Hosting name.
 			__( 'Your site is hosted on %s, we have enabled Varnish auto-purge for compatibility.', 'rocket' ),
@@ -68,15 +69,15 @@ class Savvii implements Subscriber_Interface {
 	 */
 	public function clear_cache_after_savvii() {
 		if (
-			! ( isset( $_REQUEST[ \Savvii\CacheFlusherPlugin::NAME_FLUSH_NOW ], $_REQUEST['_wpnonce'] )
+			! ( isset( $_REQUEST[ CacheFlusherPlugin::NAME_FLUSH_NOW ] )
 				&&
-				wp_verify_nonce( $_REQUEST['_wpnonce'], \Savvii\CacheFlusherPlugin::NAME_FLUSH_NOW ) // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+				check_admin_referer( CacheFlusherPlugin::NAME_FLUSH_NOW )
 			)
 			&&
 			! (
-				isset( $_REQUEST[ \Savvii\CacheFlusherPlugin::NAME_DOMAINFLUSH_NOW ], $_REQUEST['_wpnonce'] )
+				isset( $_REQUEST[ CacheFlusherPlugin::NAME_DOMAINFLUSH_NOW ] )
 				&&
-				wp_verify_nonce( $_REQUEST['_wpnonce'], \Savvii\CacheFlusherPlugin::NAME_DOMAINFLUSH_NOW ) // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+				check_admin_referer( CacheFlusherPlugin::NAME_DOMAINFLUSH_NOW )
 			)
 		) {
 			return;
@@ -97,10 +98,6 @@ class Savvii implements Subscriber_Interface {
 	 * @since 2.6.5
 	 */
 	public function clean_savvii() {
-		$plugin = new \Savvii\CacheFlusherPlugin();
-
-		if ( method_exists( $plugin, 'domainflush' ) ) {
-			$plugin->domainflush();
-		}
+		do_action( 'warpdrive_domain_flush' );
 	}
 }
