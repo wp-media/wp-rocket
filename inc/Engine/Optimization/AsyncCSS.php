@@ -58,7 +58,8 @@ class AsyncCSS {
 	 * Creates an instance of the DOM Handler.
 	 *
 	 * @param Options_Data $options        WP Rocket options.
-	 * @param string       $excluded_hrefs Optional. Array of URLs to exclude.
+	 * @param array        $excluded_hrefs Optional. Array of URLs to exclude.
+	 * @param string       $xpath_query    XPath query.
 	 */
 	public function __construct( Options_Data $options, $excluded_hrefs, $xpath_query ) {
 		$this->options        = $options;
