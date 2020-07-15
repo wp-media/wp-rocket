@@ -15,7 +15,7 @@ use WP_Rocket\Engine\Optimization\AsyncCSS;
  * @uses   ::is_rocket_post_excluded_option
  *
  * @group  Optimization
- * @group  AsyncCSSX
+ * @group  AsyncCSS
  * @group  DOM
  */
 class Test_ModifyHtml extends TestCase {
