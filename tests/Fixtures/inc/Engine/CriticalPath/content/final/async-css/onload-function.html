@@ -17,11 +17,12 @@
 	<link rel="stylesheet" type="text/css" href="https://example.org/file4.css" onload="console.log('Hello');this.onload=null;this.media='screen'" media="print">
 	<p>Hello World</p>
 </div>
-<noscript>
-	<link onload="someFunction();" rel="stylesheet" type="text/css" href="https://example.org/file1.css">
-	<link onload=" anotherFunction(this) " rel="stylesheet" type="text/css" href="https://example.org/file2.css">
-	<link onload=" yetAnotherFunction(this, 0); this.media='all' " rel="stylesheet" type="text/css" href="https://example.org/file3.css">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file4.css" onload='  console.log("Hello");  ' media="screen">
-</noscript>
+	<script>const wprRemoveCPCSS = () => { $elem = document.getElementById( "rocket-critical-css" ); if ( $elem ) { $elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>
+	<noscript>
+		<link onload="someFunction();" rel="stylesheet" type="text/css" href="https://example.org/file1.css">
+		<link onload=" anotherFunction(this) " rel="stylesheet" type="text/css" href="https://example.org/file2.css">
+		<link onload=" yetAnotherFunction(this, 0); this.media='all' " rel="stylesheet" type="text/css" href="https://example.org/file3.css">
+		<link rel="stylesheet" type="text/css" href="https://example.org/file4.css" onload='  console.log("Hello");  ' media="screen">
+	</noscript>
 </body>
 </html>

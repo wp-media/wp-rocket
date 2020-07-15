@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<link rel="preload" type="text/css" href="https://example.org/file1.css" media="screen" onload="this.rel='stylesheet'">
+	<link rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="screen and (max-width: 600px)">
+	<link rel="stylesheet" type="text/css" href="https://example.org/file3.css" media="print">
+</head>
+<body>
+<div>
+	<!-- single quotes -->
+	<link rel='preload' type='text/css' href='https://example.org/file4.css' media='screen and (max-width: 800px)'>
+	<link rel='stylesheet' type='text/css' href='https://example.org/file5.css' media='all' onload="console.log('I am one.');">
+	<h1>Testing</h1>
+	<p>Testing excluding CSS links.</p>
+</div>
+</body>
+</html>

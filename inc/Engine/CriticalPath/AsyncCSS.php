@@ -224,6 +224,7 @@ class AsyncCSS {
 	 */
 	private function modify_css( $css ) {
 		$this->set_noscript( $css->cloneNode() );
+
 		$this->add_preload_link( $css );
 
 		$this->build_onload( $css );
@@ -382,7 +383,7 @@ class AsyncCSS {
 	}
 
 	/**
-	 * Adds <link rel="preload" href="same css URL" as="style"> before the given stylesheet element.
+	 * Adds <link rel="preload" href="same css URL" as="style" media="same as original"> before the given stylesheet element.
 	 *
 	 * @since 3.6.2
 	 *
@@ -393,6 +394,10 @@ class AsyncCSS {
 		$element->setAttribute( 'rel', 'preload' );
 		$element->setAttribute( 'href', $css->getAttribute( 'href' ) );
 		$element->setAttribute( 'as', 'style' );
+
+		if ( $css->hasAttribute('media' ) ) {
+			$element->setAttribute( 'media', $css->getAttribute( 'media' ) );
+		}
 
 		// Insert the new element before the stylesheet's node.
 		$css->parentNode->insertBefore( $element, $css ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase

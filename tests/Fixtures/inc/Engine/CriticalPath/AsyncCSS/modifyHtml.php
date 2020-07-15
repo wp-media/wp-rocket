@@ -105,8 +105,8 @@ return [
 		],
 
 		'async-css onload: use default when original this.media=print' => [
-			'html'     => get_html_as_string( 'original/onload-media-all' ),
-			'expected' => get_html_as_string( 'final/modify-html/onload-media-all' ),
+			'html'     => get_html_as_string( 'original/onload-media-print' ),
+			'expected' => get_html_as_string( 'final/modify-html/onload-media-print' ),
 		],
 
 		'async-css noscript: remove link "id" attribute' => [
@@ -134,41 +134,9 @@ return [
 			'expected' => get_html_as_string( 'final/modify-html/onload-escaped-quotes' ),
 		],
 
-		// Exclude CSS URLs.
-
-		'shouldBailOutWhenCSSIsExcluded' => [
-			'html'     => <<<HTML
-<!doctype html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="all">
-</head>
-<body>
-	<div>
-		<h1>Testing</h1>
-		<p>Testing excluding CSS links.</p>
-	</div>
-</body>
-</html>
-HTML
-			,
-			'expected' => <<<HTML
-<!doctype html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="all">
-</head>
-<body>
-	<div>
-		<h1>Testing</h1>
-		<p>Testing excluding CSS links.</p>
-	</div>
-</body>
-</html>
-HTML
-			,
+		'exclude: bail out when the only stylesheet is excluded' => [
+			'html'     => get_html_as_string( 'original/exclude' ),
+			'expected' => get_html_as_string( 'original/exclude' ),
 			'config'   => [
 				'use_default'  => true,
 				'critical_css' => [
@@ -179,45 +147,9 @@ HTML
 			],
 		],
 
-		'shouldHandleWhitespaceAndEndingSemicolon' => [
-			'html'     => <<<HTML
-<!doctype html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link onload="  this.media = 'all'; this.onload = null; " rel="stylesheet" type="text/css" href="https://example.org/file1.css">
-	<link onload=" this.rel = 'stylesheet'; " href="https://example.org/file2.css" type="text/css" rel="stylesheet">
-</head>
-<body>
-	<div>
-		<h1>Testing</h1>
-		<p>Testing excluding CSS links.</p>
-	</div>
-</body>
-</html>
-HTML
-			,
-			'expected' => <<<HTML
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link rel="preload" href="https://example.org/file1.css" as="style">
-	<link onload="this.media='all';this.onload=null" rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="print">
-	<link onload=" this.rel = 'stylesheet'; " href="https://example.org/file2.css" type="text/css" rel="stylesheet">
-</head>
-<body>
-	<div>
-		<h1>Testing</h1>
-		<p>Testing excluding CSS links.</p>
-	</div>
-	<noscript>
-		<link onload="  this.media = 'all'; this.onload = null; " rel="stylesheet" type="text/css" href="https://example.org/file1.css">
-	</noscript>
-</body>
-</html>
-HTML
-			,
+		'exclude: remove extra spaces in attribute value' => [
+			'html'     => get_html_as_string( 'original/attribute-value-spaces-semicolon' ),
+			'expected' => get_html_as_string( 'final/modify-html/exclude/attribute-value-spaces-semicolon' ),
 			'config'   => [
 				'use_default'  => true,
 				'critical_css' => [
@@ -228,53 +160,9 @@ HTML
 			],
 		],
 
-		'shouldGetAllLinksInHeadAndBody_butExclude' => [
-			'html'     => <<<HTML
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="screen" onload="this.rel='stylesheet'">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="screen and (max-width: 600px)">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file3.css" media="print">
-
-<body>
-	<div>
-		<!-- single quotes -->
-		<link rel='stylesheet' type='text/css' href='https://example.org/file4.css' media='screen and (max-width: 800px)'>
-		<h1>Testing</h1>
-		<p>Hello World</p>
-	</div>
-</body>
-</html>
-HTML
-			,
-			'expected' => <<<HTML
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link rel="preload" href="https://example.org/file1.css" as="style">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="print" onload="this.rel='stylesheet';this.onload=null;this.media='screen'">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="screen and (max-width: 600px)">
-	<link rel="preload" href="https://example.org/file3.css" as="style">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file3.css" media="print" onload="this.onload=null;this.media='all'">
-</head>
-<body>
-	<div>
-		<!-- single quotes -->
-		<link rel="stylesheet" type="text/css" href="https://example.org/file4.css" media="screen and (max-width: 800px)">
-		<h1>Testing</h1>
-		<p>Hello World</p>
-	</div>
-	<noscript>
-		<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="screen" onload="this.rel='stylesheet'">
-		<link rel="stylesheet" type="text/css" href="https://example.org/file3.css" media="print">
-	</noscript>
-</body>
-</html>
-HTML
-			,
+		'exclude: multiple stylesheets' => [
+			'html'     => get_html_as_string( 'original/multiple-stylesheets' ),
+			'expected' => get_html_as_string( 'final/modify-html/exclude/multiple-stylesheets' ),
 			'config'   => [
 				'use_default'  => true,
 				'critical_css' => [
@@ -288,57 +176,9 @@ HTML
 
 		// Get only <link> with rel="stylesheet".
 
-		'shouldGetOnlyLinksWithRelStylesheet' => [
-			'html'     => <<<HTML
-<!doctype html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link rel="preload" type="text/css" href="https://example.org/file1.css" media="screen" onload="this.rel='stylesheet'">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="screen and (max-width: 600px)">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file3.css" media="print">
-</head>
-<body>
-	<div>
-		<!-- single quotes -->
-		<link rel='preload' type='text/css' href='https://example.org/file4.css' media='screen and (max-width: 800px)'>
-		<link rel='stylesheet' type='text/css' href='https://example.org/file5.css' media='all' onload="console.log('I am one.');">
-		<h1>Testing</h1>
-		<p>Testing excluding CSS links.</p>
-	</div>
-</body>
-</html>
-HTML
-			,
-			'expected' => <<<HTML
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link rel="preload" type="text/css" href="https://example.org/file1.css" media="screen" onload="this.rel='stylesheet'">
-	<link rel="preload" href="https://example.org/file2.css" as="style">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="print" onload="this.onload=null;this.media='screen and (max-width: 600px)'">
-	<link rel="preload" href="https://example.org/file3.css" as="style">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file3.css" media="print" onload="this.onload=null;this.media='all'">
-</head>
-<body>
-	<div>
-		<!-- single quotes -->
-		<link rel="preload" type="text/css" href="https://example.org/file4.css" media="screen and (max-width: 800px)">
-		<link rel="preload" href="https://example.org/file5.css" as="style">
-		<link rel="stylesheet" type="text/css" href="https://example.org/file5.css" media="print" onload="console.log('I am one.');this.onload=null;this.media='all'">
-		<h1>Testing</h1>
-		<p>Testing excluding CSS links.</p>
-	</div>
-	<noscript>
-		<link rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="screen and (max-width: 600px)">
-		<link rel="stylesheet" type="text/css" href="https://example.org/file3.css" media="print">
-		<link rel="stylesheet" type="text/css" href="https://example.org/file5.css" media="all" onload="console.log('I am one.');">
-	</noscript>
-</body>
-</html>
-HTML
-			,
+		'get only links with rel="stylesheet"' => [
+			'html'     => get_html_as_string( 'original/rel-preload-and-stylesheet' ),
+			'expected' => get_html_as_string( 'final/modify-html/rel-preload-and-stylesheet' ),
 		],
 
 		'shouldBailOutWhenCSSIsExcludedAndNoOtherLinksWithRelStylesheet' => [

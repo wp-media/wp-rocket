@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<link rel="preload" type="text/css" href="https://example.org/file1.css" media="screen" onload="this.rel='stylesheet'">
+	<link rel="preload" href="https://example.org/file2.css" as="style" media="screen and (max-width: 600px)">
+	<link rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="print" onload="this.onload=null;this.media='screen and (max-width: 600px)'">
+	<link rel="preload" href="https://example.org/file3.css" as="style" media="print">
+	<link rel="stylesheet" type="text/css" href="https://example.org/file3.css" media="print" onload="this.onload=null;this.media='all'">
+</head>
+<body>
+<div>
+	<!-- single quotes -->
+	<link rel="preload" type="text/css" href="https://example.org/file4.css" media="screen and (max-width: 800px)">
+	<link rel="preload" href="https://example.org/file5.css" as="style" media="all">
+	<link rel="stylesheet" type="text/css" href="https://example.org/file5.css" media="print" onload="console.log('I am one.');this.onload=null;this.media='all'">
+	<h1>Testing</h1>
+	<p>Testing excluding CSS links.</p>
+</div>
+<script>const wprRemoveCPCSS = () => { $elem = document.getElementById( "rocket-critical-css" ); if ( $elem ) { $elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>
+<noscript>
+	<link rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="screen and (max-width: 600px)">
+	<link rel="stylesheet" type="text/css" href="https://example.org/file3.css" media="print">
+	<link rel="stylesheet" type="text/css" href="https://example.org/file5.css" media="all" onload="console.log('I am one.');">
+</noscript>
+</body>
+</html>

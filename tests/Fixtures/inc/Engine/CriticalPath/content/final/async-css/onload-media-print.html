@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<link rel="preload" href="https://example.org/file1.css" as="style">
+	<link type="text/css" onload="this.media='all';this.onload=null" rel="stylesheet" href="https://example.org/file1.css" media="print">
+</head>
+<body>Content here
+	<script>const wprRemoveCPCSS = () => { $elem = document.getElementById( "rocket-critical-css" ); if ( $elem ) { $elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>
+	<noscript>
+		<link type="text/css" onload="this.media='print'" rel="stylesheet" href="https://example.org/file1.css">
+	</noscript>
+</body>
+</html>

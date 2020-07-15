@@ -108,421 +108,51 @@ return [
 			'expected' => $base_expected,
 		],
 
-		'shouldSetDefaultsWhenNoOnload' => [
-			'html'     => <<<HTML
-<!doctype html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="all">
-</head>
-<body>Content here</body>
-</html>
-HTML
-			,
-			'expected' => <<<HTML
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link rel="preload" href="https://example.org/file1.css" as="style">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="print" onload="this.onload=null;this.media='all'">
-</head>
-<body>Content here
-<script>const wprRemoveCPCSS = () => { \$elem = document.getElementById( "rocket-critical-css" ); if ( \$elem ) { \$elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>
-<noscript>
-	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="all">
-</noscript>
-</body>
-</html>
-HTML
-			,
+		'async-css onload: no "onload" - use defaults' => [
+			'html'     => get_html_as_string( 'original/no-onload' ),
+			'expected' => get_html_as_string( 'final/async-css/no-onload' ),
 		],
 
-		'shouldIncludeOriginalMedia' => [
-			'html'     => <<<HTML
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="print" onload="this.media='all'">
-</head>
-<body>Content here</body>
-</html>
-HTML
-			,
-			'expected' => <<<HTML
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link rel="preload" href="https://example.org/file1.css" as="style">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="print" onload="this.media='all';this.onload=null">
-</head>
-<body>Content here
-<script>const wprRemoveCPCSS = () => { \$elem = document.getElementById( "rocket-critical-css" ); if ( \$elem ) { \$elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>
-<noscript>
-	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="print" onload="this.media='all'">
-</noscript>
-</body>
-</html>
-HTML
-			,
+		'async-css onload: preserve original this.media=all' => [
+			'html'     => get_html_as_string( 'original/onload-media-all' ),
+			'expected' => get_html_as_string( 'final/async-css/onload-media-all' ),
 		],
 
-		'shouldUseDefaultMediaWhenOriginalIsPrint' => [
-			'html'     => <<<HTML
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link type="text/css" onload="this.media='print'" rel="stylesheet" href="https://example.org/file1.css">
-</head>
-<body>Content here</body>
-</html>
-HTML
-			,
-			'expected' => <<<HTML
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link rel="preload" href="https://example.org/file1.css" as="style">
-	<link type="text/css" onload="this.media='all';this.onload=null" rel="stylesheet" href="https://example.org/file1.css" media="print">
-</head>
-<body>Content here
-<script>const wprRemoveCPCSS = () => { \$elem = document.getElementById( "rocket-critical-css" ); if ( \$elem ) { \$elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>
-<noscript>
-	<link type="text/css" onload="this.media='print'" rel="stylesheet" href="https://example.org/file1.css">
-</noscript>
-</body>
-</html>
-HTML
-			,
+		'async-css onload: use default when original this.media=print' => [
+			'html'     => get_html_as_string( 'original/onload-media-print' ),
+			'expected' => get_html_as_string( 'final/async-css/onload-media-print' ),
 		],
 
-		'shouldRemoveIDAttributeInNoScript' => [
-			'html'     => <<<HTML
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link id="stylesheet1" type="text/css" onload="this.media='print'" rel="stylesheet" href="https://example.org/file1.css">
-</head>
-<body>Content here</body>
-</html>
-HTML
-			,
-			'expected' => <<<HTML
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link rel="preload" href="https://example.org/file1.css" as="style">
-	<link id="stylesheet1" type="text/css" onload="this.media='all';this.onload=null" rel="stylesheet" href="https://example.org/file1.css" media="print">
-</head>
-<body>Content here
-	<script>const wprRemoveCPCSS = () => { \$elem = document.getElementById( "rocket-critical-css" ); if ( \$elem ) { \$elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>
-	<noscript>
-		<link type="text/css" onload="this.media='print'" rel="stylesheet" href="https://example.org/file1.css">
-	</noscript>
-</body>
-</html>
-HTML
-			,
+		'async-css noscript: remove link "id" attribute' => [
+			'html'     => get_html_as_string( 'original/noscript-remove-link-id' ),
+			'expected' => get_html_as_string( 'final/async-css/noscript-remove-link-id' ),
 		],
 
-		'shouldHandleWhitespaceAndEndingSemicolon' => [
-			'html'     => <<<HTML
-<!doctype html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link onload="  this.media = 'all'; this.onload = null; " rel="stylesheet" type="text/css" href="https://example.org/file1.css">
-	<link onload=" this.rel = 'stylesheet'; " href="https://example.org/file2.css" type="text/css" rel="stylesheet">
-</head>
-<body>Content here</body>
-</html>
-HTML
-			,
-			'expected' => <<<HTML
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link rel="preload" href="https://example.org/file1.css" as="style">
-	<link onload="this.media='all';this.onload=null" rel="preload" type="text/css" href="https://example.org/file1.css"  media="print">
-	<link rel="preload" href="https://example.org/file2.css" as="style">
-	<link onload="this.rel='stylesheet';this.onload=null;this.media='all'" href="https://example.org/file2.css" type="text/css" rel="stylesheet" media="print">
-</head>
-<body>Content here
-<script>const wprRemoveCPCSS = () => { \$elem = document.getElementById( "rocket-critical-css" ); if ( \$elem ) { \$elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>
-<noscript>
-	<link onload="  this.media = 'all'; this.onload = null; " rel="stylesheet" type="text/css" href="https://example.org/file1.css">
-	<link onload=" this.rel = 'stylesheet'; " href="https://example.org/file2.css" type="text/css" rel="stylesheet">
-</noscript>
-</body>
-</html>
-HTML
-			,
+		'async-css: remove extra spaces in attribute value' => [
+			'html'     => get_html_as_string( 'original/attribute-value-spaces-semicolon' ),
+			'expected' => get_html_as_string( 'final/async-css/attribute-value-spaces-semicolon' ),
 		],
 
-		'shouldRetainFunctions' => [
-			'html'     => <<<HTML
-<!doctype html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link onload="someFunction();" rel="stylesheet" type="text/css" href="https://example.org/file1.css">
-	<link onload=" anotherFunction(this) " rel="stylesheet" type="text/css" href="https://example.org/file2.css">
-</head>
-<body>
-	<link onload=" yetAnotherFunction(this, 0); this.media='all' " rel="stylesheet" type="text/css" href="https://example.org/file3.css">
-	<div>
-		<h1>Testing</h1>
-		<!-- single quotes -->
-		<link rel="stylesheet" type='text/css' href='https://example.org/file4.css' onload='  console.log("Hello");  ' media="screen">
-		<p>Hello World</p>
-	</div>
-</body>
-</html>
-HTML
-			,
-			'expected' => <<<HTML
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link rel="preload" href="https://example.org/file1.css" as="style">
-	<link onload="someFunction();this.onload=null;this.media='all'" rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="print">
-	<link rel="preload" href="https://example.org/file2.css" as="style">
-	<link onload="anotherFunction(this);this.onload=null;this.media='all'" rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="print">
-</head>
-<body>
-	<link rel="preload" href="https://example.org/file3.css" as="style">
-	<link onload="yetAnotherFunction(this, 0);this.media='all';this.onload=null" rel="stylesheet" type="text/css" href="https://example.org/file3.css" media="print">
-	<div>
-		<h1>Testing</h1>
-		<!-- single quotes -->
-		<link rel="preload" href="https://example.org/file4.css" as="style">
-		<link rel="stylesheet" type="text/css" href="https://example.org/file4.css" onload="console.log('Hello');this.onload=null;this.media='screen'" media="print">
-		<p>Hello World</p>
-	</div>
-	<script>const wprRemoveCPCSS = () => { \$elem = document.getElementById( "rocket-critical-css" ); if ( \$elem ) { \$elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>
-	<noscript>
-		<link onload="someFunction();" rel="stylesheet" type="text/css" href="https://example.org/file1.css">
-		<link onload=" anotherFunction(this) " rel="stylesheet" type="text/css" href="https://example.org/file2.css">
-		<link onload=" yetAnotherFunction(this, 0); this.media='all' " rel="stylesheet" type="text/css" href="https://example.org/file3.css">
-		<link rel="stylesheet" type="text/css" href="https://example.org/file4.css" onload='  console.log("Hello");  ' media="screen">
-	</noscript>
-</body>
-</html>
-HTML
-			,
+		'async-css: preserve onload function' => [
+			'html'     => get_html_as_string( 'original/onload-function' ),
+			'expected' => get_html_as_string( 'final/async-css/onload-function' ),
 		],
 
-		'shouldGetAllLinksInHeadAndBody' => [
-			'html'     => <<<HTML
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="screen" onload="this.rel='stylesheet'">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="screen and (max-width: 600px)" onload="this.rel='stylesheet'">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file3.css" media="print">
-<body>
-	<div>
-		<!-- single quotes -->
-		<link rel='stylesheet' type='text/css' href='https://example.org/file4.css' media='screen and (max-width: 800px)' onload='this.rel="stylesheet"'>
-		<h1>Testing</h1>
-		<p>Hello World</p>
-	</div>
-</body>
-</html>
-HTML
-			,
-			'expected' => <<<HTML
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link rel="preload" href="https://example.org/file1.css" as="style">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="print" onload="this.rel='stylesheet';this.onload=null;this.media='screen'">
-	<link rel="preload" href="https://example.org/file2.css" as="style">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="print" onload="this.rel='stylesheet';this.onload=null;this.media='screen and (max-width: 600px)'">
-	<link rel="preload" href="https://example.org/file3.css" as="style">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file3.css" media="print" onload="this.onload=null;this.media='all'">
-</head>
-<body>
-	<div>
-		<!-- single quotes -->
-		<link rel="preload" href="https://example.org/file4.css" as="style">
-		<link rel="stylesheet" type="text/css" href="https://example.org/file4.css" media="print" onload="this.rel='stylesheet';this.onload=null;this.media='screen and (max-width: 800px)'">
-		<h1>Testing</h1>
-		<p>Hello World</p>
-	</div>
-	<script>const wprRemoveCPCSS = () => { \$elem = document.getElementById( "rocket-critical-css" ); if ( \$elem ) { \$elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>
-	<noscript>
-		<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="screen" onload="this.rel='stylesheet'">
-		<link rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="screen and (max-width: 600px)" onload="this.rel='stylesheet'">
-		<link rel="stylesheet" type="text/css" href="https://example.org/file3.css" media="print">
-		<link rel="stylesheet" type="text/css" href="https://example.org/file4.css" media="screen and (max-width: 800px)" onload='this.rel="stylesheet"'>
-	</noscript>
-</body>
-</html>
-HTML
-			,
+		'async-css: apply to stylesheets in head and body' => [
+			'html'     => get_html_as_string( 'original/multiple-stylesheets' ),
+			'expected' => get_html_as_string( 'final/async-css/multiple-stylesheets' ),
 		],
 
-		// Handle escaped quotes in "onload" attribute.
-
-		'shouldHandleEscapedQuotesInOnloadAttribute' => [
-			'html'     => <<<HTML
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="all" baz="boo" onload="this.baz=\'test\'">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="all" baz="boo" onload='this.baz=\"test\"'>
-</head>
-<body>
-	<div>
-		<h1>Testing</h1>
-		<p>Hello World</p>
-	</div>
-</body>
-</html>
-HTML
-			,
-			'expected' => <<<HTML
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link rel="preload" href="https://example.org/file1.css" as="style">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="print" baz="boo" onload="this.baz='test';this.onload=null;this.media='all'">
-	<link rel="preload" href="https://example.org/file2.css" as="style">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="print" baz="boo" onload="this.baz='test';this.onload=null;this.media='all'">
-</head>
-<body>
-	<div>
-		<h1>Testing</h1>
-		<p>Hello World</p>
-	</div>
-	<script>const wprRemoveCPCSS = () => { \$elem = document.getElementById( "rocket-critical-css" ); if ( \$elem ) { \$elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>
-	<noscript>
-		<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="all" baz="boo" onload="this.baz=\'test\'">
-		<link rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="all" baz="boo" onload='this.baz=\"test\"'>
-	</noscript>
-</body>
-</html>
-HTML
-			,
-		],
-
-		// Malformed HTML
-
-		'shouldSetDefaultsWhenNoOnload_whenHTMLIsMalformed' => [
-			'html'     => <<<HTML
-<!doctype html>
-<html lang="en-US">
-<head>
-	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="all">
-
-<body>Content here
-</html>
-HTML
-			,
-			'expected' => <<<HTML
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<link rel="preload" href="https://example.org/file1.css" as="style">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="print" onload="this.onload=null;this.media='all'">
-</head>
-<body>Content here
-<noscript>
-	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="all">
-</noscript>
-</body>
-</html>
-HTML
-			,
-		],
-
-		'shouldIncludeOriginalMedia_whenHTMLIsMalformed' => [
-			'html'     => <<<HTML
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<link rel="stylesheet" huh type="text/css" href="https://example.org/file1.css" media="print" abc='123' onload="this.media='all'" />
-</head>
-<body>
-	<div>
-		<h1>Testing</h1>
-		<p>Nested<p>Paragrah</p></p>
-</body>
-HTML
-			,
-			'expected' => <<<HTML
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<link rel="preload" href="https://example.org/file1.css" as="style">
-	<link rel="stylesheet" huh type="text/css" href="https://example.org/file1.css" media="print" abc="123" onload="this.media='all';this.onload=null">
-</head>
-<body>
-	<div>
-		<h1>Testing</h1>
-		<p>Nested</p>
-		<p>Paragrah</p>
-		<script>const wprRemoveCPCSS = () => { \$elem = document.getElementById( "rocket-critical-css" ); if ( \$elem ) { \$elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>
-	</div>
-	<noscript>
-		<link rel="stylesheet" huh type="text/css" href="https://example.org/file1.css" media="print" abc="123" onload="this.media='all'">
-	</noscript>
-</body>
-</html>
-HTML
-			,
+		'async-css onload: escaped quotes in attribute value' => [
+			'html'     => get_html_as_string( 'original/onload-escaped-quotes' ),
+			'expected' => get_html_as_string( 'final/async-css/onload-escaped-quotes' ),
 		],
 
 		// Exclude CSS URLs.
 
-		'shouldBailOutWhenCSSIsExcluded' => [
-			'html'     => <<<HTML
-<!doctype html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="all">
-</head>
-<body>
-	<div>
-		<h1>Testing</h1>
-		<p>Testing excluding CSS links.</p>
-	</div>
-</body>
-</html>
-HTML
-			,
-			'expected' => <<<HTML
-<!doctype html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="all">
-</head>
-<body>
-	<div>
-		<h1>Testing</h1>
-		<p>Testing excluding CSS links.</p>
-	</div>
-	<script>const wprRemoveCPCSS = () => { \$elem = document.getElementById( "rocket-critical-css" ); if ( \$elem ) { \$elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>
-</body>
-</html>
-HTML
-			,
+		'bail out when the only stylesheet is excluded' => [
+			'html'     => get_html_as_string( 'original/exclude' ),
+			'expected' => get_html_as_string( 'final/async-css/exclude/exclude' ),
 			'config'   => [
 				'use_default'  => true,
 				'critical_css' => [
@@ -533,46 +163,9 @@ HTML
 			],
 		],
 
-		'shouldHandleWhitespaceAndEndingSemicolon' => [
-			'html'     => <<<HTML
-<!doctype html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link onload="  this.media = 'all'; this.onload = null; " rel="stylesheet" type="text/css" href="https://example.org/file1.css">
-	<link onload=" this.rel = 'stylesheet'; " href="https://example.org/file2.css" type="text/css" rel="stylesheet">
-</head>
-<body>
-	<div>
-		<h1>Testing</h1>
-		<p>Testing excluding CSS links.</p>
-	</div>
-</body>
-</html>
-HTML
-			,
-			'expected' => <<<HTML
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link rel="preload" href="https://example.org/file1.css" as="style">
-	<link onload="this.media='all';this.onload=null" rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="print">
-	<link onload=" this.rel = 'stylesheet'; " href="https://example.org/file2.css" type="text/css" rel="stylesheet">
-</head>
-<body>
-	<div>
-		<h1>Testing</h1>
-		<p>Testing excluding CSS links.</p>
-	</div>
-	<script>const wprRemoveCPCSS = () => { \$elem = document.getElementById( "rocket-critical-css" ); if ( \$elem ) { \$elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>
-	<noscript>
-		<link onload="  this.media = 'all'; this.onload = null; " rel="stylesheet" type="text/css" href="https://example.org/file1.css">
-	</noscript>
-</body>
-</html>
-HTML
-			,
+		'exclude: remove extra spaces in attribute value' => [
+			'html'     => get_html_as_string( 'original/attribute-value-spaces-semicolon' ),
+			'expected' => get_html_as_string( 'final/async-css/exclude/attribute-value-spaces-semicolon' ),
 			'config'   => [
 				'use_default'  => true,
 				'critical_css' => [
@@ -583,54 +176,9 @@ HTML
 			],
 		],
 
-		'shouldGetAllLinksInHeadAndBody_butExclude' => [
-			'html'     => <<<HTML
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="screen" onload="this.rel='stylesheet'">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="screen and (max-width: 600px)">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file3.css" media="print">
-
-<body>
-	<div>
-		<!-- single quotes -->
-		<link rel='stylesheet' type='text/css' href='https://example.org/file4.css' media='screen and (max-width: 800px)'>
-		<h1>Testing</h1>
-		<p>Hello World</p>
-	</div>
-</body>
-</html>
-HTML
-			,
-			'expected' => <<<HTML
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link rel="preload" href="https://example.org/file1.css" as="style">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="print" onload="this.rel='stylesheet';this.onload=null;this.media='screen'">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="screen and (max-width: 600px)">
-	<link rel="preload" href="https://example.org/file3.css" as="style">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file3.css" media="print" onload="this.onload=null;this.media='all'">
-</head>
-<body>
-	<div>
-		<!-- single quotes -->
-		<link rel="stylesheet" type="text/css" href="https://example.org/file4.css" media="screen and (max-width: 800px)">
-		<h1>Testing</h1>
-		<p>Hello World</p>
-	</div>
-	<script>const wprRemoveCPCSS = () => { \$elem = document.getElementById( "rocket-critical-css" ); if ( \$elem ) { \$elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>
-	<noscript>
-		<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="screen" onload="this.rel='stylesheet'">
-		<link rel="stylesheet" type="text/css" href="https://example.org/file3.css" media="print">
-	</noscript>
-</body>
-</html>
-HTML
-			,
+		'exclude: multiple stylesheets' => [
+			'html'     => get_html_as_string( 'original/multiple-stylesheets' ),
+			'expected' => get_html_as_string( 'final/async-css/exclude/multiple-stylesheets' ),
 			'config'   => [
 				'use_default'  => true,
 				'critical_css' => [
@@ -644,58 +192,9 @@ HTML
 
 		// Get only <link> with rel="stylesheet".
 
-		'shouldGetOnlyLinksWithRelStylesheet' => [
-			'html'     => <<<HTML
-<!doctype html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link rel="preload" type="text/css" href="https://example.org/file1.css" media="screen" onload="this.rel='stylesheet'">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="screen and (max-width: 600px)">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file3.css" media="print">
-</head>
-<body>
-	<div>
-		<!-- single quotes -->
-		<link rel='preload' type='text/css' href='https://example.org/file4.css' media='screen and (max-width: 800px)'>
-		<link rel='stylesheet' type='text/css' href='https://example.org/file5.css' media='all' onload="console.log('I am one.');">
-		<h1>Testing</h1>
-		<p>Testing excluding CSS links.</p>
-	</div>
-</body>
-</html>
-HTML
-			,
-			'expected' => <<<HTML
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<link rel="preload" type="text/css" href="https://example.org/file1.css" media="screen" onload="this.rel='stylesheet'">
-	<link rel="preload" href="https://example.org/file2.css" as="style">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="print" onload="this.onload=null;this.media='screen and (max-width: 600px)'">
-	<link rel="preload" href="https://example.org/file3.css" as="style">
-	<link rel="stylesheet" type="text/css" href="https://example.org/file3.css" media="print" onload="this.onload=null;this.media='all'">
-</head>
-<body>
-	<div>
-		<!-- single quotes -->
-		<link rel="preload" type="text/css" href="https://example.org/file4.css" media="screen and (max-width: 800px)">
-		<link rel="preload" href="https://example.org/file5.css" as="style">
-		<link rel="stylesheet" type="text/css" href="https://example.org/file5.css" media="print" onload="console.log('I am one.');this.onload=null;this.media='all'">
-		<h1>Testing</h1>
-		<p>Testing excluding CSS links.</p>
-	</div>
-	<script>const wprRemoveCPCSS = () => { \$elem = document.getElementById( "rocket-critical-css" ); if ( \$elem ) { \$elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>
-	<noscript>
-		<link rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="screen and (max-width: 600px)">
-		<link rel="stylesheet" type="text/css" href="https://example.org/file3.css" media="print">
-		<link rel="stylesheet" type="text/css" href="https://example.org/file5.css" media="all" onload="console.log('I am one.');">
-	</noscript>
-</body>
-</html>
-HTML
-			,
+		'get only links with rel="stylesheet"' => [
+			'html'     => get_html_as_string( 'original/rel-preload-and-stylesheet' ),
+			'expected' => get_html_as_string( 'final/async-css/rel-preload-and-stylesheet' ),
 		],
 
 		'shouldBailOutWhenCSSIsExcludedAndNoOtherLinksWithRelStylesheet' => [
@@ -880,4 +379,3 @@ HTML
 		],
 	],
 ];
-
