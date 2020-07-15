@@ -33,8 +33,8 @@ class Test_Optimize extends TestCase {
 		$combine = new Optimize( Mockery::mock( Options_Data::class ) );
 
 		$this->assertSame(
-			$combined,
-			$combine->optimize( $original )
+			$this->format_the_html( $combined ),
+			$this->format_the_html( $combine->optimize( $original ) )
 		);
 	}
 

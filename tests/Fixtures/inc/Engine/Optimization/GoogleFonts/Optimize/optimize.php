@@ -18,11 +18,14 @@ return [
 			'</body>' .
 		'</html>',
 		// Expected: Combined HTML.
+		'<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">' .
 		'<html>' .
 			'<head>' .
-				'<title>Sample Page</title><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&#038;display=swap" />' .
-			'</head>' .
+				'<title>Sample Page</title>'.
+				'<link rel="preload" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&amp;display=swap" as="style">' .
+				'<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&amp;display=swap" onload="this.onload=null;this.media=\'all\'" media="print">' .			'</head>' .
 			'<body>' .
+			'<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&amp;display=swap"></noscript>' .
 			'</body>' .
 		'</html>',
 	],
@@ -41,11 +44,15 @@ return [
 			'</body>' .
 		'</html>',
 		// Expected: Combined HTML.
+		'<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">' .
 		'<html>' .
 			'<head>' .
-				'<title>Sample Page</title><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato%3A100%2C300%2C400%2C600%2C700%2C900%7COpen%20Sans%3A700%2C300%2C600%2C400%7CRaleway%3A900%7CPlayfair%20Display%7COpen%20Sans%7CJockey%20One%3A400%7CAbril%20Fatface%3Aregular&#038;subset=latin&#038;display=swap" />' .
+				'<title>Sample Page</title>'.
+				'<link rel="preload" href="https://fonts.googleapis.com/css?family=Lato%3A100%2C300%2C400%2C600%2C700%2C900%7COpen%20Sans%3A700%2C300%2C600%2C400%7CRaleway%3A900%7CPlayfair%20Display%7COpen%20Sans%7CJockey%20One%3A400%7CAbril%20Fatface%3Aregular&amp;subset=latin&amp;display=swap" as="style">' .
+				'<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato%3A100%2C300%2C400%2C600%2C700%2C900%7COpen%20Sans%3A700%2C300%2C600%2C400%7CRaleway%3A900%7CPlayfair%20Display%7COpen%20Sans%7CJockey%20One%3A400%7CAbril%20Fatface%3Aregular&amp;subset=latin&amp;display=swap" onload="this.onload=null;this.media=\'all\'" media="print">' .
 			'</head>' .
 			'<body>' .
+				'<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato%3A100%2C300%2C400%2C600%2C700%2C900%7COpen%20Sans%3A700%2C300%2C600%2C400%7CRaleway%3A900%7CPlayfair%20Display%7COpen%20Sans%7CJockey%20One%3A400%7CAbril%20Fatface%3Aregular&amp;subset=latin&amp;display=swap"></noscript>' .
 			'</body>' .
 		'</html>',
 	],
@@ -63,11 +70,15 @@ return [
 			'</body>' .
 		'</html>',
 		// Expected: Combined HTML.
+		'<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">' .
 		'<html>' .
 			'<head>' .
-				'<title>Sample Page</title><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&#038;display=swap" />' .
+				'<title>Sample Page</title>' .
+				'<link rel="preload" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&amp;display=swap" as="style">' .
+				'<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&amp;display=swap" onload="this.onload=null;this.media=\'all\'" media="print">' .
 			'</head>' .
 			'<body>' .
+				'<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&amp;display=swap"></noscript>' .
 			'</body>' .
 		'</html>',
 	],
@@ -85,11 +96,14 @@ return [
 			'</body>' .
 		'</html>',
 		// Expected: Combined HTML.
+		'<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">' .
 		'<html>' .
 			'<head>' .
-				'<title>Sample Page</title><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3Aregular%2C300%7CLato%3Aregular%2C300&#038;display=swap" />' .
-			'</head>' .
+				'<title>Sample Page</title>'.
+				'<link rel="preload" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3Aregular%2C300%7CLato%3Aregular%2C300&amp;display=swap" as="style">' .
+				'<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3Aregular%2C300%7CLato%3Aregular%2C300&amp;display=swap" onload="this.onload=null;this.media=\'all\'" media="print">' .			'</head>' .
 			'<body>' .
+				'<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3Aregular%2C300%7CLato%3Aregular%2C300&amp;display=swap"></noscript>' .
 			'</body>' .
 		'</html>',
 	],
@@ -107,14 +121,23 @@ return [
 			'</body>' .
 		'</html>',
 		// Expected: Combined HTML.
+		'<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">' .
 		'<html>' .
 			'<head>' .
 			'<title>Sample Page</title>' .
-			'<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin+Sans:regular,300" type="text/css" media="all" />' .
-			'<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:regular,300" type="text/css" media="all" />' .
-			'<link href="https://fonts.googleapis.com/css?" rel="stylesheet" property="stylesheet" type"text/css" media="all">' .
+			'<link rel="preload" href="https://fonts.googleapis.com/css?family=Josefin+Sans:regular,300" as="style">' .
+			'<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin+Sans:regular,300" type="text/css" media="print" onload="this.onload=null;this.media=\'all\'">' .
+			'<link rel="preload" href="https://fonts.googleapis.com/css?family=Lato:regular,300" as="style">' .
+			'<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:regular,300" type="text/css" media="print" onload="this.onload=null;this.media=\'all\'">' .
+			'<link rel="preload" href="https://fonts.googleapis.com/css?" as="style">' .
+			'<link href="https://fonts.googleapis.com/css?" rel="stylesheet" property="stylesheet" type media="print" onload="this.onload=null;this.media=\'all\'">' .
 			'</head>' .
 			'<body>' .
+				'<noscript>'.
+					'<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin+Sans:regular,300" type="text/css" media="all">' .
+					'<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:regular,300" type="text/css" media="all">' .
+					'<link href="https://fonts.googleapis.com/css?" rel="stylesheet" property="stylesheet" type media="all">' .
+				'</noscript>' .
 			'</body>' .
 		'</html>',
 	],
@@ -130,12 +153,15 @@ return [
 			'</body>' .
 		'</html>',
 		// Expected: Combined HTML.
+		'<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">' .
 		'<html>' .
 			'<head>' .
 				'<title>Sample Page</title>' .
-				'<link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300&#038;display=swap" rel="stylesheet" property="stylesheet" type"text/css" media="all">' .
+				'<link rel="preload" href="https://fonts.googleapis.com/css?family=Josefin+Sans:300&amp;display=swap" as="style">' .
+				'<link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300&amp;display=swap" rel="stylesheet" property="stylesheet" type media="print" onload="this.onload=null;this.media=\'all\'">' .
 			'</head>' .
 			'<body>' .
+				'<noscript><link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300&amp;display=swap" rel="stylesheet" property="stylesheet" type media="all"></noscript>' .
 			'</body>' .
 		'</html>',
 	],
@@ -151,12 +177,15 @@ return [
 			'</body>' .
 		'</html>',
 		// Expected: Combined HTML.
+		'<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">' .
 		'<html>' .
 			'<head>' .
 				'<title>Sample Page</title>' .
-				'<link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300&#038;display=swap" rel="stylesheet" property="stylesheet" type"text/css" media="all">' .
+				'<link rel="preload" href="https://fonts.googleapis.com/css?family=Josefin+Sans:300&amp;display=swap" as="style">' .
+				'<link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300&amp;display=swap" rel="stylesheet" property="stylesheet" type media="print" onload="this.onload=null;this.media=\'all\'">' .
 			'</head>' .
 			'<body>' .
+				'<noscript><link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300&amp;display=swap" rel="stylesheet" property="stylesheet" type media="all"></noscript>' .
 			'</body>' .
 		'</html>',
 	],
@@ -172,12 +201,15 @@ return [
 			'</body>' .
 		'</html>',
 		// Expected: Combined HTML.
+		'<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">' .
 		'<html>' .
 			'<head>' .
 				'<title>Sample Page</title>' .
-				'<link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300&#038;display=swap" rel="stylesheet" property="stylesheet" type"text/css" media="all">' .
+				'<link rel="preload" href="https://fonts.googleapis.com/css?family=Josefin+Sans:300&amp;display=swap" as="style">' .
+				'<link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300&amp;display=swap" rel="stylesheet" property="stylesheet" type media="print" onload="this.onload=null;this.media=\'all\'">' .
 			'</head>' .
 			'<body>' .
+				'<noscript><link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300&amp;display=swap" rel="stylesheet" property="stylesheet" type media="all"></noscript>' .
 			'</body>' .
 		'</html>',
 	],
@@ -193,12 +225,15 @@ return [
 			'</body>' .
 		'</html>',
 		// Expected: Combined HTML.
+		'<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">' .
 		'<html>' .
 			'<head>' .
 				'<title>Sample Page</title>' .
-				'<link rel="stylesheet" id="dt-web-fonts-css"  href="//fonts.googleapis.com/css?family=Josefin+Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica+One%3A400%2C600%2C700&#038;ver=7.3.2&#038;display=swap" type="text/css" media="all" />' .
+				'<link rel="preload" href="//fonts.googleapis.com/css?family=Josefin+Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica+One%3A400%2C600%2C700&amp;ver=7.3.2&amp;display=swap" as="style">' .
+				'<link rel="stylesheet" id="dt-web-fonts-css" href="//fonts.googleapis.com/css?family=Josefin+Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica+One%3A400%2C600%2C700&amp;ver=7.3.2&amp;display=swap" type="text/css" media="print" onload="this.onload=null;this.media=\'all\'">' .
 			'</head>' .
 			'<body>' .
+				'<noscript><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Josefin+Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica+One%3A400%2C600%2C700&amp;ver=7.3.2&amp;display=swap" type="text/css" media="all"></noscript>' .
 			'</body>' .
 		'</html>',
 	],
@@ -217,12 +252,16 @@ return [
 			'</body>' .
 		'</html>',
 		// Expected: Combined HTML.
+		'<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">' .
 		'<html>' .
 			'<head>' .
-				'<title>Sample Page</title><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&#038;display=swap" />' .
+				'<title>Sample Page</title>' .
+				'<link rel="preload" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&amp;display=swap" as="style">' .
+				'<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&amp;display=swap" onload="this.onload=null;this.media=\'all\'" media="print">' .
 				'<title>Sample Title 2</title>' .
 			'</head>' .
 			'<body>' .
+				'<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&amp;display=swap"></noscript>' .
 			'</body>' .
 		'</html>',
 	],
@@ -241,12 +280,16 @@ return [
 			'</body>' .
 		'</html>',
 		// Expected: Combined HTML.
+		'<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">' .
 		'<html>' .
 			'<head>' .
-				'<title>Sample Page</title><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&#038;display=swap" />' .
+				'<title>Sample Page</title>' .
+				'<link rel="preload" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&amp;display=swap" as="style">' .
+				'<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&amp;display=swap" onload="this.onload=null;this.media=\'all\'" media="print">' .
 			'</head>' .
 			'<body>' .
 				'<title>Sample Title 2</title>' .
+				'<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&amp;display=swap"></noscript>' .
 			'</body>' .
 		'</html>',
 	],
@@ -266,13 +309,17 @@ return [
 			'</body>' .
 		'</html>',
 		// Expected: Combined HTML.
+		'<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">' .
 		'<html>' .
 			'<head>' .
-				'<title>Sample Page</title><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&#038;display=swap" />' .
+				'<title>Sample Page</title>' .
+				'<link rel="preload" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&amp;display=swap" as="style">' .
+				'<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&amp;display=swap" onload="this.onload=null;this.media=\'all\'" media="print">' .
 			'</head>' .
 			'<body>' .
 				'<!-- JetMenu Menu markup -->' .
-				'<div id="jet-mobile-menu-5e9eda6a03ac6" class="jet-mobile-menu jet-mobile-menu-widget" data-menu-id="3" data-menu-options=\'{"menuUniqId":"5e9eda6a03ac6","menuId":"3","mobileMenuId":false,"menuLocation":false,"menuLayout":"slide-out","togglePosition":"fixed-right","menuPosition":"right","headerTemplate":"3001","beforeTemplate":"0","afterTemplate":"3050","toggleClosedIcon":"<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 173.61 108.44\"><defs><linearGradient id=\"a\" x1=\"63.95\" y1=\"60.58\" x2=\"-114.86\" y2=\"62.47\" gradientUnits=\"userSpaceOnUse\"><stop offset=\"0.13\" stop-color=\"#fdc700\"></stop><stop offset=\"0.34\" stop-color=\"#f08f34\"></stop><stop offset=\"0.63\" stop-color=\"#e86031\"></stop><stop offset=\"0.69\" stop-color=\"#e64729\"></stop><stop offset=\"0.77\" stop-color=\"#e42b1f\"></stop><stop offset=\"0.84\" stop-color=\"#e31618\"></stop><stop offset=\"0.92\" stop-color=\"#e20a14\"></stop><stop offset=\"0.99\" stop-color=\"#e20613\"></stop></linearGradient><linearGradient id=\"b\" x1=\"63.94\" y1=\"59.65\" x2=\"-114.87\" y2=\"61.54\" xlink:href=\"#a\"></linearGradient></defs><title>logo-cacahuete</title><path d=\"M57,71.39c-6.63-12.14,1-22.57,1-22.57h0A28.47,28.47,0,1,0,4.51,35.16,28.35,28.35,0,0,0,8,48.82H8l0,0c.26.49.56,1,.85,1.42A21.75,21.75,0,0,1,9,71.39a1.4,1.4,0,0,0-.09.17,28.47,28.47,0,1,0,48.4.3C57.18,71.7,57.13,71.56,57,71.39Z\" transform=\"translate(112.17 -6.69)\" fill=\"url(#a)\"></path><path d=\"M-21,61A28.5,28.5,0,0,0-5.11,35.4,28.52,28.52,0,0,0-33.63,6.88a28.48,28.48,0,0,0-25,14.81,28.51,28.51,0,0,0-25-14.81A28.52,28.52,0,0,0-112.17,35.4,28.51,28.51,0,0,0-96.26,61,28.47,28.47,0,0,0-112.17,86.5,28.53,28.53,0,0,0-83.65,115a28.52,28.52,0,0,0,25-14.82,28.49,28.49,0,0,0,25,14.82A28.53,28.53,0,0,0-5.11,86.5,28.47,28.47,0,0,0-21,61Z\" transform=\"translate(112.17 -6.69)\" fill=\"url(#b)\"></path></svg>","toggleOpenedIcon":"","closeIcon":"<i class=\"mdi mdi-toggle-switch\"></i>","backIcon":"<i class=\"mdi mdi-toggle-switch-off\"></i>","dropdownIcon":"<i class=\"far fa-circle\"></i>","useBreadcrumb":true,"breadcrumbIcon":"","toggleText":"MENU","toggleLoader":true,"backText":"RETOUR","itemIconVisible":"true","itemBadgeVisible":"true","itemDescVisible":"false","loaderColor":"#FCC800","subTrigger":"item"}\'><MobileMenu :menu-options="menuOptions"></MobileMenu></div>' .
+				'<div id="jet-mobile-menu-5e9eda6a03ac6" class="jet-mobile-menu jet-mobile-menu-widget" data-menu-id="3" data-menu-options=\'{"menuUniqId":"5e9eda6a03ac6","menuId":"3","mobileMenuId":false,"menuLocation":false,"menuLayout":"slide-out","togglePosition":"fixed-right","menuPosition":"right","headerTemplate":"3001","beforeTemplate":"0","afterTemplate":"3050","toggleClosedIcon":"&lt;svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 173.61 108.44\"&gt;&lt;defs&gt;&lt;linearGradient id=\"a\" x1=\"63.95\" y1=\"60.58\" x2=\"-114.86\" y2=\"62.47\" gradientUnits=\"userSpaceOnUse\"&gt;&lt;stop offset=\"0.13\" stop-color=\"#fdc700\"&gt;&lt;/stop&gt;&lt;stop offset=\"0.34\" stop-color=\"#f08f34\"&gt;&lt;/stop&gt;&lt;stop offset=\"0.63\" stop-color=\"#e86031\"&gt;&lt;/stop&gt;&lt;stop offset=\"0.69\" stop-color=\"#e64729\"&gt;&lt;/stop&gt;&lt;stop offset=\"0.77\" stop-color=\"#e42b1f\"&gt;&lt;/stop&gt;&lt;stop offset=\"0.84\" stop-color=\"#e31618\"&gt;&lt;/stop&gt;&lt;stop offset=\"0.92\" stop-color=\"#e20a14\"&gt;&lt;/stop&gt;&lt;stop offset=\"0.99\" stop-color=\"#e20613\"&gt;&lt;/stop&gt;&lt;/linearGradient&gt;&lt;linearGradient id=\"b\" x1=\"63.94\" y1=\"59.65\" x2=\"-114.87\" y2=\"61.54\" xlink:href=\"#a\"&gt;&lt;/linearGradient&gt;&lt;/defs&gt;&lt;title&gt;logo-cacahuete&lt;/title&gt;&lt;path d=\"M57,71.39c-6.63-12.14,1-22.57,1-22.57h0A28.47,28.47,0,1,0,4.51,35.16,28.35,28.35,0,0,0,8,48.82H8l0,0c.26.49.56,1,.85,1.42A21.75,21.75,0,0,1,9,71.39a1.4,1.4,0,0,0-.09.17,28.47,28.47,0,1,0,48.4.3C57.18,71.7,57.13,71.56,57,71.39Z\" transform=\"translate(112.17 -6.69)\" fill=\"url(#a)\"&gt;&lt;/path&gt;&lt;path d=\"M-21,61A28.5,28.5,0,0,0-5.11,35.4,28.52,28.52,0,0,0-33.63,6.88a28.48,28.48,0,0,0-25,14.81,28.51,28.51,0,0,0-25-14.81A28.52,28.52,0,0,0-112.17,35.4,28.51,28.51,0,0,0-96.26,61,28.47,28.47,0,0,0-112.17,86.5,28.53,28.53,0,0,0-83.65,115a28.52,28.52,0,0,0,25-14.82,28.49,28.49,0,0,0,25,14.82A28.53,28.53,0,0,0-5.11,86.5,28.47,28.47,0,0,0-21,61Z\" transform=\"translate(112.17 -6.69)\" fill=\"url(#b)\"&gt;&lt;/path&gt;&lt;/svg&gt;","toggleOpenedIcon":"","closeIcon":"&lt;i class=\"mdi mdi-toggle-switch\"&gt;&lt;/i&gt;","backIcon":"&lt;i class=\"mdi mdi-toggle-switch-off\"&gt;&lt;/i&gt;","dropdownIcon":"&lt;i class=\"far fa-circle\"&gt;&lt;/i&gt;","useBreadcrumb":true,"breadcrumbIcon":"","toggleText":"MENU","toggleLoader":true,"backText":"RETOUR","itemIconVisible":"true","itemBadgeVisible":"true","itemDescVisible":"false","loaderColor":"#FCC800","subTrigger":"item"}\'><mobilemenu :menu-options="menuOptions"></mobilemenu></div>' .
+				'<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&amp;display=swap"></noscript>' .
 			'</body>' .
 		'</html>',
 	],
