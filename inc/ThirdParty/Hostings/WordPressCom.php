@@ -2,7 +2,9 @@
 
 namespace WP_Rocket\ThirdParty\Hostings;
 
+use WP_Rocket\Engine\Activation\ActivationInterface;
 use WP_Rocket\Engine\Cache\AdminSubscriber;
+use WP_Rocket\Engine\Deactivation\DeactivationInterface;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Event_Management\Event_Manager_Aware_Subscriber_Interface;
 use WP_Rocket\ThirdParty\ReturnTypesTrait;
@@ -12,7 +14,7 @@ use WP_Rocket\ThirdParty\ReturnTypesTrait;
  *
  * @since 3.6.3
  */
-class WordPressCom implements Event_Manager_Aware_Subscriber_Interface {
+class WordPressCom implements ActivationInterface, DeactivationInterface, Event_Manager_Aware_Subscriber_Interface {
 	use ReturnTypesTrait;
 
 	/**
@@ -71,6 +73,39 @@ class WordPressCom implements Event_Manager_Aware_Subscriber_Interface {
 			'rocket_generate_advanced_cache_file' => 'return_false',
 			'after_rocket_clean_domain'           => 'purge_wpcom_cache',
 		];
+	}
+
+	/**
+	 * Actions to perform on plugin activation
+	 *
+	 * @since 3.6.3
+	 *
+	 * @return void
+	 */
+	public function activate() {
+		add_action( 'rocket_activation', [ $this, 'no_advanced_cache' ] );
+	}
+
+	/**
+	 * Actions to perform on plugin deactivation
+	 *
+	 * @since 3.6.3
+	 *
+	 * @return void
+	 */
+	public function deactivate() {
+		add_action( 'rocket_deactivation', [ $this, 'no_advanced_cache' ] );
+	}
+
+	/**
+	 * Prevent writing in advanced-cache.php when on WP.com
+	 *
+	 * @since 3.6.3
+	 *
+	 * @return void
+	 */
+	public function no_advanced_cache() {
+		add_filter( 'rocket_generate_advanced_cache_file', [ $this, 'return_false' ] );
 	}
 
 	/**
