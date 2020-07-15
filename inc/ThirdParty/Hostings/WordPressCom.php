@@ -69,6 +69,7 @@ class WordPressCom implements Event_Manager_Aware_Subscriber_Interface {
 			'rocket_display_varnish_options_tab'  => 'return_false',
 			'admin_notices'                       => 'remove_admin_subscriber_advanced_cache_permissions_notice',
 			'rocket_generate_advanced_cache_file' => 'return_false',
+			'after_rocket_clean_domain'           => 'purge_wpcom_cache',
 		];
 	}
 
@@ -84,5 +85,16 @@ class WordPressCom implements Event_Manager_Aware_Subscriber_Interface {
 			'admin_notices',
 			[ $this->admin_cache_subscriber, 'notice_advanced_cache_permissions' ]
 		);
+	}
+
+	/**
+	 * Purge WordPress.com cache
+	 *
+	 * @since 3.6.3
+	 *
+	 * @return void
+	 */
+	public function purge_wpcom_cache() {
+		wp_cache_flush();
 	}
 }
