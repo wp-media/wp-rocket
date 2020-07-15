@@ -17,7 +17,7 @@ return [
 		],
 		'expected'      => [
 			'varnish_auto_purge' => [
-				'title' => 'Your site is hosted on Cloudways, we have enabled Varnish auto-purge for compatibility.'
+				'title' => 'Your site is hosted on Savvii, we have enabled Varnish auto-purge for compatibility.'
 			],
 		],
 	],
