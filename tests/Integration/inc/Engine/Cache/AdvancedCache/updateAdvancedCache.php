@@ -3,7 +3,6 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Cache\AdvancedCache;
 
 use WP_Rocket\Engine\Cache\AdvancedCache;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
-use Brain\Monkey\Filters;
 
 /**
  * @covers \WP_Rocket\Engine\Cache\AdvancedCache::update_advanced_cache
