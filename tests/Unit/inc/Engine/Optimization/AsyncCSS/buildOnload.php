@@ -1,13 +1,13 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\AsyncCSS;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\AsyncCSS;
 
-use WP_Rocket\Engine\CriticalPath\AsyncCSS;
+use WP_Rocket\Engine\Optimization\AsyncCSS;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\AsyncCSS::build_onload
+ * @covers \WP_Rocket\Engine\Optimization\AsyncCSS::build_onload
  *
- * @group  CriticalPath
+ * @group  Optimization
  * @group  AsyncCSS
  * @group  DOM
  */
@@ -15,8 +15,6 @@ class Test_BuildOnload extends TestCase {
 
 	public function setUp() {
 		parent::setUp();
-
-		$this->default_config['critical_css'] = [ 'get_current_page_critical_css' => 'something' ];
 	}
 
 	/**

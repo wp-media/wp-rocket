@@ -1,21 +1,21 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\AsyncCSS;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\AsyncCSS;
 
-use WP_Rocket\Engine\CriticalPath\AsyncCSS;
+use WP_Rocket\Engine\Optimization\AsyncCSS;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\AsyncCSS::modify_html
+ * @covers \WP_Rocket\Engine\Optimization\AsyncCSS::modify_html
  * @uses   \WP_Rocket\Engine\DOM\HTMLDocument::query
  * @uses   \WP_Rocket\Engine\DOM\HTMLDocument::get_html
- * @uses   \WP_Rocket\Engine\CriticalPath\CriticalCSS::get_current_page_critical_css
- * @uses   \WP_Rocket\Engine\CriticalPath\CriticalCSS::get_exclude_async_css
+ * @uses   \WP_Rocket\Engine\Optimization\CriticalCSS::get_current_page_critical_css
+ * @uses   \WP_Rocket\Engine\Optimization\CriticalCSS::get_exclude_async_css
  * @uses   \WP_Rocket\Admin\Options_Data::get
  * @uses   ::rocket_get_constant
  * @uses   ::is_rocket_post_excluded_option
  *
- * @group  CriticalPath
- * @group  AsyncCSSx
+ * @group  Optimization
+ * @group  AsyncCSSX
  * @group  DOM
  */
 class Test_ModifyHtml extends TestCase {

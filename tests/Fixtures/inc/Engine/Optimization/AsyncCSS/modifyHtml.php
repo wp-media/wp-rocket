@@ -34,60 +34,9 @@ return [
 		],
 	],
 
-	'default_config' => [
-		'options'      => [
-			'async_css' => 1,
-		],
-		'critical_css' => [
-			'get_current_page_critical_css' => 'page.css',
-			'get_exclude_async_css'         => [],
-		],
-		'functions'    => [ 'is_rocket_post_excluded_option' => false ],
-	],
+	'default_config' => [],
 
 	'test_data' => [
-
-		'shouldBailOutWhenAsyncCSSNotEnabled' => [
-			'html'     => $base_html,
-			'expected' => null,
-			'config'   => [
-				'options' => [ 'async_css' => 0 ],
-			],
-		],
-
-		'shouldBailOutWhenCriticalCssReturnsNoCurrentPageCriticalCss' => [
-			'html'     => $base_html,
-			'expected' => null,
-			'config'   => [
-				'options'      => [
-					'async_css'    => 1,
-					'critical_css' => '',
-				],
-				'critical_css' => [ 'get_current_page_critical_css' => '' ],
-			],
-		],
-
-		'shouldBailOutWhenNoCriticalCssOption' => [
-			'html'     => $base_html,
-			'expected' => null,
-			'config'   => [
-				'options'      => [
-					'async_css'    => 1,
-					'critical_css' => '',
-				],
-				'critical_css' => [ 'get_current_page_critical_css' => '' ],
-			],
-		],
-
-		'shouldBailOutWhenPostExcludesAsyncCss' => [
-			'html'     => $base_html,
-			'expected' => null,
-			'config'   => [
-				'options'      => [ 'async_css' => 1 ],
-				'critical_css' => [ 'get_current_page_critical_css' => 'something' ],
-				'functions'    => [ 'is_rocket_post_excluded_option' => true ],
-			],
-		],
 
 		'shouldBailOutAndReturnOriginalHTMLWhenNoCssLinksInHTML' => [
 			'html'     => $base_html,
