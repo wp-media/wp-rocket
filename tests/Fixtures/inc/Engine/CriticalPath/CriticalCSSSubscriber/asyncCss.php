@@ -47,7 +47,8 @@ return [
 
 	'default_config' => [
 		'options'      => [
-			'async_css' => 1,
+			'async_css'           => 1,
+			'minify_google_fonts' => 0,
 		],
 		'critical_css' => [
 			'get_current_page_critical_css' => 'page.css',
@@ -791,10 +792,133 @@ HTML
 			,
 		],
 
-		'shouldHandleLargerWebPages' => [
+
+		'shouldNotProcessGoogleFonts'                                => [
+			'html'     => <<<HTML
+<!doctype html>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" id="imagify-admin-bar-css" href="https://example.org/wp-content/plugins/imagify/assets/css/admin-bar.min.css?ver=1.9.10" media="all">
+	<link rel="stylesheet" id="twentyseventeen-fonts-css" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&amp;subset=latin%2Clatin-ext&amp;display=fallback" media="all">
+	<link rel="stylesheet" id="twentyseventeen-style-css" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="all">
+</head>
+<body>
+	<div>
+		<h1>Testing</h1>
+		<p>Testing when CSS links do not have a href or href is empty.</p>
+	</div>
+</body>
+</html>
+HTML
+			,
+			'expected' => <<<HTML
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<link rel="preload" href="https://example.org/wp-content/plugins/imagify/assets/css/admin-bar.min.css?ver=1.9.10" as="style">
+	<link rel="stylesheet" id="imagify-admin-bar-css" href="https://example.org/wp-content/plugins/imagify/assets/css/admin-bar.min.css?ver=1.9.10" media="print" onload="this.onload=null;this.media='all'">
+	<link rel="stylesheet" id="twentyseventeen-fonts-css" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&amp;subset=latin%2Clatin-ext&amp;display=fallback" media="all">
+	<link rel="preload" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" as="style">
+	<link rel="stylesheet" id="twentyseventeen-style-css" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="print" onload="this.onload=null;this.media='all'">
+</head>
+<body>
+	<div>
+		<h1>Testing</h1>
+		<p>Testing when CSS links do not have a href or href is empty.</p>
+	</div>
+	<script>const wprRemoveCPCSS = () => { \$elem = document.getElementById( "rocket-critical-css" ); if ( \$elem ) { \$elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>
+	<noscript>
+		<link rel="stylesheet" href="https://example.org/wp-content/plugins/imagify/assets/css/admin-bar.min.css?ver=1.9.10" media="all">
+		<link rel="stylesheet" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="all">
+	</noscript>
+</body>
+</html>
+HTML
+			,
+		],
+
+
+		'shouldProcessGoogleFonts'                                => [
+			'html'     => <<<HTML
+<!doctype html>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" id="imagify-admin-bar-css" href="https://example.org/wp-content/plugins/imagify/assets/css/admin-bar.min.css?ver=1.9.10" media="all">
+	<link rel="stylesheet" id="twentyseventeen-fonts-css" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&amp;subset=latin%2Clatin-ext&amp;display=fallback" media="all">
+	<link rel="stylesheet" id="twentyseventeen-style-css" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="all">
+</head>
+<body>
+	<div>
+		<h1>Testing</h1>
+		<p>Testing when CSS links do not have a href or href is empty.</p>
+	</div>
+</body>
+</html>
+HTML
+			,
+			'expected' => <<<HTML
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<link rel="preload" href="https://example.org/wp-content/plugins/imagify/assets/css/admin-bar.min.css?ver=1.9.10" as="style">
+	<link rel="stylesheet" id="imagify-admin-bar-css" href="https://example.org/wp-content/plugins/imagify/assets/css/admin-bar.min.css?ver=1.9.10" media="print" onload="this.onload=null;this.media='all'">
+	<link rel="preload" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&amp;subset=latin%2Clatin-ext&amp;display=swap" as="style">
+	<link rel="stylesheet" id="twentyseventeen-fonts-css" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&amp;subset=latin%2Clatin-ext&amp;display=swap" media="print" onload="this.onload=null;this.media='all'">
+	<link rel="preload" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" as="style">
+	<link rel="stylesheet" id="twentyseventeen-style-css" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="print" onload="this.onload=null;this.media='all'">
+</head>
+<body>
+	<div>
+		<h1>Testing</h1>
+		<p>Testing when CSS links do not have a href or href is empty.</p>
+	</div>
+	<noscript>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Franklin%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C800%2C800i&amp;subset=latin%2Clatin-ext&amp;display=swap" media="all">
+	</noscript>
+	<script>const wprRemoveCPCSS = () => { \$elem = document.getElementById( "rocket-critical-css" ); if ( \$elem ) { \$elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>
+	<noscript>
+		<link rel="stylesheet" href="https://example.org/wp-content/plugins/imagify/assets/css/admin-bar.min.css?ver=1.9.10" media="all">
+		<link rel="stylesheet" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="all">
+	</noscript>
+</body>
+</html>
+HTML
+			,
+			'config'   => [
+				'options'      => [
+					'async_css' => 1,
+					'minify_google_fonts' => 1,
+				],
+				'critical_css' => [
+					'get_current_page_critical_css' => 'page.css',
+					'get_exclude_async_css'         => [],
+				],
+			],
+		],
+
+
+		// 'shouldHandleLargerWebPages' => [
+		// 	'html'     => get_html_as_string( 'twentyseventeen' ),
+		// 	'expected' => get_html_as_string( 'twentyseventeen-async_css' ),
+		// ],
+
+		'shouldHandleLargerWebPagesWithGoogleFonts' => [
 			'html'     => get_html_as_string( 'twentyseventeen' ),
-			'expected' => get_html_as_string( 'twentyseventeen-async_css' ),
+			'expected' => get_html_as_string( 'twentyseventeen-async_css-google_fonts' ),
+			'config'   => [
+				'options'      => [
+					'async_css' => 1,
+					'minify_google_fonts' => 1,
+				],
+				'critical_css' => [
+					'get_current_page_critical_css' => 'page.css',
+					'get_exclude_async_css'         => [],
+				],
+			],
 		],
 	],
 ];
-

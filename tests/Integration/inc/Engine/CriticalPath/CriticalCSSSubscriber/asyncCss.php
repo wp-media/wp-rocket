@@ -11,7 +11,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  *
  * @group  Subscribers
  * @group  CriticalPath
- * @group  AsyncCSS
+ * @group  AsyncCSSX
  * @group  DOM
  */
 class Test_AsyncCss extends FilesystemTestCase {
@@ -29,6 +29,7 @@ class Test_AsyncCss extends FilesystemTestCase {
 		parent::tearDown();
 
 		remove_filter( "pre_get_rocket_option_async_css", [ $this, 'set_option_async_css' ] );
+		remove_filter( "pre_get_rocket_option_minify_google_fonts", [ $this, 'set_option_minify_google_fonts' ] );
 		remove_filter( 'rocket_exclude_async_css', [ $this, 'rocket_exclude_async_css' ] );
 
 		$this->test_config = [];
@@ -41,7 +42,9 @@ class Test_AsyncCss extends FilesystemTestCase {
 		$this->test_config = $this->initConfig( $config );
 		$this->mergeExistingSettingsAndUpdate( $this->test_config ['options'] );
 		add_filter( "pre_get_rocket_option_async_css", [ $this, 'set_option_async_css' ] );
+		add_filter( "pre_get_rocket_option_minify_google_fonts", [ $this, 'set_option_minify_google_fonts' ] );
 		add_filter( 'rocket_exclude_async_css', [ $this, 'rocket_exclude_async_css' ] );
+
 		$this->setUpUrl();
 
 		// Run it.
@@ -69,6 +72,14 @@ class Test_AsyncCss extends FilesystemTestCase {
 	public function set_option_async_css( $value ) {
 		if ( isset( $this->test_config['options']['async_css'] ) ) {
 			return $this->test_config['options']['async_css'];
+		}
+
+		return $value;
+	}
+
+	public function set_option_minify_google_fonts( $value ) {
+		if ( isset( $this->test_config['options']['minify_google_fonts'] ) ) {
+			return $this->test_config['options']['minify_google_fonts'];
 		}
 
 		return $value;
