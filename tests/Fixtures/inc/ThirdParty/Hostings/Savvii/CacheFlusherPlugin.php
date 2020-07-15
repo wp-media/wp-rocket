@@ -8,6 +8,6 @@ namespace Savvii;
 if ( ! class_exists( 'Savvii\CacheFlusherPlugin' ) ) {
 	class CacheFlusherPlugin {
 		const NAME_FLUSH_NOW       = 'warpdrive_flush_now';
-    	const NAME_DOMAINFLUSH_NOW = 'warpdrive_domainflush_now';
+		const NAME_DOMAINFLUSH_NOW = 'warpdrive_domainflush_now';
 	}
 }
