@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\CriticalPath;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Filesystem_Direct;
+use WP_Rocket\Engine\Optimization\AsyncCSS;
 
 /**
  * Critical CSS Subscriber.
@@ -583,12 +584,46 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	 * @return string Updated HTML code
 	 */
 	public function async_css( $html ) {
-		$instance = AsyncCSS::from_html( $this->critical_css, $this->options, $html );
+		if ( ! $this->maybe_async_css() ) {
+			return $html;
+		}
+		$excluded_hrefs = $this->critical_css->get_exclude_async_css();
+		$instance       = AsyncCSS::from_html( $this->options, $html, $excluded_hrefs, '@rel="stylesheet" and not(contains(@href,\'fonts.googleapis.com\'))' );
+
 		if ( ! $instance instanceof AsyncCSS ) {
 			return $html;
 		}
 
 		return $instance->modify_html( $html );
+	}
+
+	/**
+	 * Checks if we should apply deferring of CSS files.
+	 *
+	 * @return bool True if we should, false otherwise.
+	 */
+	private function maybe_async_css() {
+		if (
+			rocket_get_constant( 'DONOTROCKETOPTIMIZE' )
+			||
+			rocket_get_constant( 'DONOTASYNCCSS' )
+		) {
+			return false;
+		}
+
+		if ( ! (bool) $this->options->get( 'async_css', 0 ) ) {
+			return false;
+		}
+
+		if (
+			empty( $this->critical_css->get_current_page_critical_css() )
+			&&
+			empty( $this->options->get( 'critical_css', '' ) )
+		) {
+			return false;
+		}
+
+		return ! is_rocket_post_excluded_option( 'async_css' );
 	}
 
 	/**

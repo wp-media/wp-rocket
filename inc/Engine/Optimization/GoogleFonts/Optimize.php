@@ -3,6 +3,8 @@
 namespace WP_Rocket\Engine\Optimization\GoogleFonts;
 
 use WP_Rocket\Logger\Logger;
+use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Optimization\AsyncCSS;
 use WP_Rocket\Engine\Optimization\AbstractOptimization;
 
 /**
@@ -32,15 +34,36 @@ class Optimize extends AbstractOptimization {
 	protected $subsets = '';
 
 	/**
-	 * Combines multiple Google Fonts links into one
+	 * Creates an instance of inheriting class.
+	 *
+	 * @param Options_Data $options Options instance.
+	 */
+	public function __construct( Options_Data $options ) {
+		$this->options = $options;
+	}
+
+	/**
+	 * Optimize multiple Google Fonts links into one and Preloads them.
 	 *
 	 * @since  3.1
 	 *
-	 * @param string $html HTML content.
-	 *
+	 * @param  string $html HTML content.
 	 * @return string
 	 */
 	public function optimize( $html ) {
+		$html = $this->combine( $html );
+		return $this->preload( $html );
+	}
+
+	/**
+	 * Combine multiple Google Fonts links into one.
+	 *
+	 * @since 3.6.3
+	 *
+	 * @param  string $html HTML content.
+	 * @return string
+	 */
+	protected function combine( $html ) {
 		Logger::info( 'GOOGLE FONTS COMBINE PROCESS STARTED.', [ 'GF combine process' ] );
 
 		$html_nocomments = $this->hide_comments( $html );
@@ -95,27 +118,17 @@ class Optimize extends AbstractOptimization {
 	 * Adds preload on Google Font link.
 	 *
 	 * @since  3.6.2
-	 */
-	protected function preload() {
-
-	}
-
-	/**
-	 *  To use the media="print" solution for asynchronous, non-blocking fetching of the link.
 	 *
-	 * @since  3.6.2
+	 * @param  string $html HTML content.
+	 * @return string
 	 */
-	protected function async() {
+	protected function preload( $html ) {
+		$instance = AsyncCSS::from_html( $this->options, $html, [], '@rel="stylesheet" and contains(@href,\'fonts.googleapis.com\')' );
+		if ( ! $instance instanceof AsyncCSS ) {
+			return $html;
+		}
 
-	}
-
-	/**
-	 * Insert a noscript fallback in the footer for Google Font link.
-	 *
-	 * @since  3.6.2
-	 */
-	protected function fallback() {
-
+		return $instance->modify_html( $html );
 	}
 
 	/**

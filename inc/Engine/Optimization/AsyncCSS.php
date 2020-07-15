@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Engine\CriticalPath;
+namespace WP_Rocket\Engine\Optimization;
 
 use DOMElement;
 use WP_Rocket\Admin\Options_Data;
@@ -8,13 +8,6 @@ use WP_Rocket\Engine\DOM\HTMLDocument;
 use WP_Rocket\Engine\DOM\Attribute;
 
 class AsyncCSS {
-
-	/**
-	 * Instance of Critical CSS.
-	 *
-	 * @var Critical_CSS
-	 */
-	private $critical_css;
 
 	/**
 	 * Instance of options.
@@ -42,7 +35,14 @@ class AsyncCSS {
 	 *
 	 * @var array
 	 */
-	private $css_urls_to_exclude;
+	private $excluded_hrefs;
+
+	/**
+	 * XPath Query.
+	 *
+	 * @var string
+	 */
+	private $xpath_query;
 
 	/**
 	 * The "onload" attribute defaults.
@@ -57,12 +57,13 @@ class AsyncCSS {
 	/**
 	 * Creates an instance of the DOM Handler.
 	 *
-	 * @param CriticalCSS  $critical_css Critical CSS instance.
-	 * @param Options_Data $options      WP Rocket options.
+	 * @param Options_Data $options        WP Rocket options.
+	 * @param string       $excluded_hrefs Optional. Array of URLs to exclude.
 	 */
-	public function __construct( CriticalCSS $critical_css, Options_Data $options ) {
-		$this->critical_css = $critical_css;
-		$this->options      = $options;
+	public function __construct( Options_Data $options, $excluded_hrefs, $xpath_query ) {
+		$this->options        = $options;
+		$this->excluded_hrefs = $excluded_hrefs;
+		$this->xpath_query    = $xpath_query;
 	}
 
 	/**
@@ -70,14 +71,14 @@ class AsyncCSS {
 	 *
 	 * @since 3.6.2
 	 *
-	 * @param CriticalCSS  $critical_css Critical CSS instance.
-	 * @param Options_Data $options      WP Rocket options.
-	 * @param string       $html         Optional. HTML to transform into HTML DOMDocument object.
+	 * @param Options_Data $options        WP Rocket options.
+	 * @param string       $html           Optional. HTML to transform into HTML DOMDocument object.
+	 * @param string       $excluded_hrefs Optional. Array of URLs to exclude.
 	 *
 	 * @return self Instance of this class.
 	 */
-	public static function from_html( CriticalCSS $critical_css, Options_Data $options, $html ) {
-		$instance = new static( $critical_css, $options );
+	public static function from_html( Options_Data $options, $html, $excluded_hrefs, $xpath_query ) {
+		$instance = new static( $options, $excluded_hrefs, $xpath_query );
 
 		if ( ! $instance->okay_to_create_dom() ) {
 			return null;
@@ -102,19 +103,7 @@ class AsyncCSS {
 			return false;
 		}
 
-		if ( ! (bool) $this->options->get( 'async_css', 0 ) ) {
-			return false;
-		}
-
-		if (
-			empty( $this->critical_css->get_current_page_critical_css() )
-			&&
-			empty( $this->options->get( 'critical_css', '' ) )
-		) {
-			return false;
-		}
-
-		return ! is_rocket_post_excluded_option( 'async_css' );
+		return true;
 	}
 
 	/**
@@ -160,9 +149,10 @@ class AsyncCSS {
 	 * @since 3.6.2
 	 */
 	private function reset() {
-		$this->dom                 = null;
-		$this->noscript            = null;
-		$this->css_urls_to_exclude = [];
+		$this->dom            = null;
+		$this->noscript       = null;
+		$this->excluded_hrefs = [];
+		$this->xpath_query    = null;
 	}
 
 	/**
@@ -173,13 +163,13 @@ class AsyncCSS {
 	 * @return string
 	 */
 	private function get_query() {
-		$query   = '//link[@rel="stylesheet"';
+		$query   = $this->xpath_query;
 		$exclude = $this->get_css_to_exclude();
 		if ( '' !== $exclude ) {
 			$query .= " and {$exclude}";
 		}
 
-		return $query . ']';
+		return '//link[' . $query . ']';
 	}
 
 	/**
@@ -190,13 +180,12 @@ class AsyncCSS {
 	 * @return string
 	 */
 	private function get_css_to_exclude() {
-		$hrefs = $this->critical_css->get_exclude_async_css();
-		if ( empty( $hrefs ) ) {
+		if ( empty( $this->excluded_hrefs ) ) {
 			return '';
 		}
 
 		$query = [];
-		foreach ( $hrefs as $href ) {
+		foreach ( $this->excluded_hrefs as $href ) {
 			$query[] = sprintf( 'contains(@href, "%s")', $href );
 		}
 

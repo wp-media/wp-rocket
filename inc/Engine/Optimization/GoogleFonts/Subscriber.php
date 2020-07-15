@@ -7,14 +7,12 @@ use WP_Rocket\Engine\Optimization\Minify\AbstractMinifySubscriber;
  * Combine Google Fonts subscriber
  *
  * @since 3.1
- * @author Remy Perona
  */
 class Subscriber extends AbstractMinifySubscriber {
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
 	 * @since  3.1
-	 * @author Remy Perona
 	 *
 	 * @return array
 	 */
@@ -55,7 +53,6 @@ class Subscriber extends AbstractMinifySubscriber {
 	 * Processes the HTML to combine found Google fonts
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @param string $html HTML content.
 	 * @return string
@@ -65,7 +62,7 @@ class Subscriber extends AbstractMinifySubscriber {
 			return $html;
 		}
 
-		$this->set_optimization_type( new Combine() );
+		$this->set_optimization_type( new Optimize( $this->options ) );
 
 		return $this->optimize( $html );
 	}
@@ -74,7 +71,6 @@ class Subscriber extends AbstractMinifySubscriber {
 	 * Checks if files can combine found Google fonts.
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 */
 	protected function is_allowed() {
 		return (bool) $this->options->get( 'minify_google_fonts', 0 );
