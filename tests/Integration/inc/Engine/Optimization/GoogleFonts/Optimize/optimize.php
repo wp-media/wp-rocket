@@ -11,16 +11,30 @@ use WP_Rocket\Engine\Optimization\GoogleFonts\Optimize;
  * @group  Optimize
  */
 class Test_Optimize extends TestCase {
+	protected static $container;
+	protected $options;
+
+	public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
+
+		self::$container = apply_filters( 'rocket_container', null );
+	}
+
+	public function setUp() {
+		parent::setUp();
+
+		$this->options = self::$container->get( 'options' );
+	}
 
 	/**
      * @dataProvider addDataProvider
      */
 	public function testShouldCombineGoogleFonts( $original, $combined ) {
-		$combine = new Optimize();
+		$combine = new Optimize( $this->options );
 
 		$this->assertSame(
-			$combined,
-			$combine->optimize( $original )
+			$this->format_the_html( $combined ),
+			$this->format_the_html( $combine->optimize( $original ) )
 		);
 	}
 
