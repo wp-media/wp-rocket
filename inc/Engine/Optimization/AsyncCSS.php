@@ -75,6 +75,7 @@ class AsyncCSS {
 	 * @param Options_Data $options        WP Rocket options.
 	 * @param string       $html           Optional. HTML to transform into HTML DOMDocument object.
 	 * @param string       $excluded_hrefs Optional. Array of URLs to exclude.
+	 * @param string       $xpath_query    XPath query.
 	 *
 	 * @return self Instance of this class.
 	 */
