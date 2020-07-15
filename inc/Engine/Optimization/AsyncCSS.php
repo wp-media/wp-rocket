@@ -120,7 +120,6 @@ class AsyncCSS {
 		if ( is_null( $this->dom ) ) {
 			return $html;
 		}
-
 		$css_links = $this->dom->query( $this->get_query() );
 
 		if ( empty( $css_links ) || 0 === $css_links->length ) {
@@ -166,10 +165,10 @@ class AsyncCSS {
 	private function get_query() {
 		$query   = $this->xpath_query;
 		$exclude = $this->get_css_to_exclude();
+
 		if ( '' !== $exclude ) {
 			$query .= " and {$exclude}";
 		}
-
 		return '//link[' . $query . ']';
 	}
 

@@ -11,11 +11,10 @@ use WP_Rocket\Tests\Unit\TestCase as BaseTestCase;
 abstract class TestCase extends BaseTestCase {
 	protected $dom;
 	protected $instance;
-	protected $options;
 
 	protected $default_config = [
 		'excluded_hrefs' => [],
-		'xpath_query'    => '@rel="stylesheet" and not(contains(@href,\'fonts.googleapis.com\'))'
+		'xpath_query'    => '@rel="stylesheet" and not(contains(@href,\'fonts.googleapis.com\'))',
 	];
 
 	protected function setUp() {
@@ -41,15 +40,6 @@ abstract class TestCase extends BaseTestCase {
 	protected function initConfig( $config ) {
 		if ( empty( $config ) ) {
 			return $this->default_config;
-		}
-
-		if ( isset( $config['use_default'] ) && $config['use_default'] ) {
-			unset( $config['use_default'] );
-
-			return array_merge_recursive(
-				$this->default_config,
-				$config
-			);
 		}
 
 		return array_merge(

@@ -453,16 +453,14 @@ HTML
 HTML
 			,
 			'config'   => [
-				'use_default'  => true,
-				'critical_css' => [
-					'get_exclude_async_css' => [
-						'https://example.org/file1.css',
-					],
+				'xpath_query'    => '@rel="stylesheet" and not(contains(@href,\'fonts.googleapis.com\'))',
+				'excluded_hrefs' => [
+					'https://example.org/file1.css',
 				],
 			],
 		],
 
-		'shouldHandleWhitespaceAndEndingSemicolon' => [
+		'shouldHandleWhitespaceAndEndingSemicolonNoExclusion' => [
 			'html'     => <<<HTML
 <!doctype html>
 <html lang="en-US">
@@ -502,11 +500,9 @@ HTML
 HTML
 			,
 			'config'   => [
-				'use_default'  => true,
-				'critical_css' => [
-					'get_exclude_async_css' => [
-						'https://example.org/file2.css',
-					],
+				'xpath_query'    => '@rel="stylesheet" and not(contains(@href,\'fonts.googleapis.com\'))',
+				'excluded_hrefs' => [
+					'https://example.org/file2.css',
 				],
 			],
 		],
@@ -559,12 +555,10 @@ HTML
 HTML
 			,
 			'config'   => [
-				'use_default'  => true,
-				'critical_css' => [
-					'get_exclude_async_css' => [
-						'https://example.org/file2.css',
-						'https://example.org/file4.css',
-					],
+				'xpath_query'    => '@rel="stylesheet" and not(contains(@href,\'fonts.googleapis.com\'))',
+				'excluded_hrefs' => [
+					'https://example.org/file2.css',
+					'https://example.org/file4.css',
 				],
 			],
 		],
@@ -660,11 +654,9 @@ HTML
 HTML
 			,
 			'config'   => [
-				'use_default'  => true,
-				'critical_css' => [
-					'get_exclude_async_css' => [
-						'https://example.org/file1.css',
-					],
+				'xpath_query'    => '@rel="stylesheet" and not(contains(@href,\'fonts.googleapis.com\'))',
+				'excluded_hrefs' => [
+					'https://example.org/file1.css',
 				],
 			],
 		],
