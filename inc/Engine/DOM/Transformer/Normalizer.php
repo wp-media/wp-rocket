@@ -5,11 +5,11 @@ namespace WP_Rocket\Engine\DOM\Transformer;
 trait Normalizer {
 
 	/**
-	 * HTML content.
+	 * Working copy of the HTML content.
 	 *
 	 * @var string
 	 */
-	private $html;
+	private $normalizer_html;
 
 	/**
 	 * The <DOCTYPE>.
@@ -23,14 +23,14 @@ trait Normalizer {
 	 *
 	 * @var string
 	 */
-	private $html_start;
+	private $normalizer_html_start;
 
 	/**
 	 * The closing </head> tag and anything after it.
 	 *
 	 * @var string
 	 */
-	private $html_end;
+	private $normalizer_html_end;
 
 	/**
 	 * Information about the </head> tag.
@@ -51,7 +51,7 @@ trait Normalizer {
 	 *
 	 * @var string
 	 */
-	protected $normalizer_encoding = 'UTF-8';
+	protected $normalizer_encoding;
 
 	/**
 	 * Normalize the document structure.
@@ -72,9 +72,9 @@ trait Normalizer {
 	 * @return string Normalized HTML.
 	 */
 	protected function normalize_structure( $html ) {
-		$this->reset();
+		$this->reset_normalizer();
 
-		$this->html = $html;
+		$this->normalizer_html = $html;
 
 		$this->remove_doctype();
 		$this->remove_opening_html_tag();
@@ -86,7 +86,7 @@ trait Normalizer {
 
 		// If both the </head> and <body> tags are missing, we can't normalize.
 		if ( false === $this->head_closing_tag && false === $this->body_opening_tag ) {
-			$this->reset();
+			$this->reset_normalizer();
 
 			return false;
 		}
@@ -96,25 +96,25 @@ trait Normalizer {
 		$this->reinsert_html_tags();
 		$this->reinsert_doctype();
 
-		$html = $this->html;
+		$html = $this->normalizer_html;
 
-		$this->reset();
+		$this->reset_normalizer();
 
 		return $html;
 	}
 
 	/**
-	 * Reset the state.
+	 * Reset state.
 	 *
 	 * @since 3.2.6.1
 	 */
-	protected function reset() {
-		$this->html             = '';
-		$this->doctype          = '<!DOCTYPE html>';
-		$this->html_start       = '<html>';
-		$this->html_end         = '</html>';
-		$this->head_closing_tag = false;
-		$this->body_opening_tag = false;
+	protected function reset_normalizer() {
+		$this->normalizer_html       = '';
+		$this->doctype               = '<!DOCTYPE html>';
+		$this->normalizer_html_start = '<html>';
+		$this->normalizer_html_end   = '</html>';
+		$this->head_closing_tag      = false;
+		$this->body_opening_tag      = false;
 	}
 
 	/**
@@ -127,14 +127,14 @@ trait Normalizer {
 	private function remove_doctype() {
 		$pattern = '/^(?<doctype>[^<]*(?>\s*<!--.*?-->\s*)*<!doctype(?>\s+[^>]+)?>)/is';
 
-		if ( ! preg_match( $pattern, $this->html, $matches ) ) {
+		if ( ! preg_match( $pattern, $this->normalizer_html, $matches ) ) {
 			return;
 		}
 
 		if ( isset( $matches['doctype'] ) ) {
 			$this->doctype = $matches['doctype'];
 		}
-		$this->html = preg_replace( $pattern, '', $this->html, 1 );
+		$this->normalizer_html = preg_replace( $pattern, '', $this->normalizer_html, 1 );
 	}
 
 	/**
@@ -147,14 +147,14 @@ trait Normalizer {
 	private function remove_opening_html_tag() {
 		$pattern = '/^(?<html_start>[^<]*(?>\s*<!--.*?-->\s*)*<html(?>\s+[^>]*)?>)/is';
 
-		if ( ! preg_match( $pattern, $this->html, $matches ) ) {
+		if ( ! preg_match( $pattern, $this->normalizer_html, $matches ) ) {
 			return;
 		}
 
 		if ( isset( $matches['html_start'] ) ) {
-			$this->html_start = $matches['html_start'];
+			$this->normalizer_html_start = $matches['html_start'];
 		}
-		$this->html = preg_replace( $pattern, '', $this->html, 1 );
+		$this->normalizer_html = preg_replace( $pattern, '', $this->normalizer_html, 1 );
 	}
 
 	/**
@@ -165,14 +165,14 @@ trait Normalizer {
 	private function remove_ending_html_tag() {
 		$pattern = '/(?<html_end><\/html(?>\s+[^>]*)?>.*)$/is';
 
-		if ( ! preg_match( $pattern, $this->html, $matches ) ) {
+		if ( ! preg_match( $pattern, $this->normalizer_html, $matches ) ) {
 			return;
 		}
 
 		if ( isset( $matches['html_end'] ) ) {
-			$this->html_end = $matches['html_end'];
+			$this->normalizer_html_end = $matches['html_end'];
 		}
-		$this->html = preg_replace( $pattern, '', $this->html, 1 );
+		$this->normalizer_html = preg_replace( $pattern, '', $this->normalizer_html, 1 );
 	}
 
 	/**
@@ -199,11 +199,11 @@ trait Normalizer {
 	 * @return void
 	 */
 	private function add_head_opening_tag() {
-		if ( preg_match( '/^[^<]*(?><!--.*?-->\s*)*(?><head(?>\s+[^>]*)?>)/is', $this->html, $matches ) ) {
+		if ( preg_match( '/^[^<]*(?><!--.*?-->\s*)*(?><head(?>\s+[^>]*)?>)/is', $this->normalizer_html, $matches ) ) {
 			return;
 		}
 
-		$this->html = "<head>{$this->html}";
+		$this->normalizer_html = "<head>{$this->normalizer_html}";
 	}
 
 	/**
@@ -232,11 +232,11 @@ trait Normalizer {
 	 * @return void
 	 */
 	private function add_body_closing_tag() {
-		if ( preg_match( '/(?><\/body(?>\s+[^>]*)?>.*)$/is', $this->html, $matches ) ) {
+		if ( preg_match( '/(?><\/body(?>\s+[^>]*)?>.*)$/is', $this->normalizer_html, $matches ) ) {
 			return;
 		}
 
-		$this->html .= '</body>';
+		$this->normalizer_html .= '</body>';
 	}
 
 	/**
@@ -245,7 +245,7 @@ trait Normalizer {
 	 * @since 3.6.2.1
 	 */
 	private function reinsert_html_tags() {
-		$this->html = "{$this->html_start}{$this->html}{$this->html_end}";
+		$this->normalizer_html = "{$this->normalizer_html_start}{$this->normalizer_html}{$this->normalizer_html_end}";
 	}
 
 	/**
@@ -260,7 +260,7 @@ trait Normalizer {
 			$this->doctype
 		);
 
-		$this->html = "{$this->doctype}{$this->html}";
+		$this->normalizer_html = "{$this->doctype}{$this->normalizer_html}";
 	}
 
 	/**
@@ -273,12 +273,12 @@ trait Normalizer {
 	 * @return array|bool
 	 */
 	protected function detect_tag( $pattern ) {
-		if ( ! preg_match( $pattern, $this->html, $matches ) ) {
+		if ( ! preg_match( $pattern, $this->normalizer_html, $matches ) ) {
 			return false;
 		}
 
 		$tag               = $matches[0];
-		$starting_position = mb_strpos( $this->html, $tag, 0, $this->normalizer_encoding );
+		$starting_position = mb_strpos( $this->normalizer_html, $tag, 0, $this->normalizer_encoding );
 
 		return [
 			'tag'               => $tag,
@@ -296,14 +296,14 @@ trait Normalizer {
 	 * @param int    $insertion Position to insert it.
 	 */
 	protected function insert_tag( $tag, $insertion ) {
-		$before = mb_substr( $this->html, 0, $insertion, $this->normalizer_encoding );
+		$before = mb_substr( $this->normalizer_html, 0, $insertion, $this->normalizer_encoding );
 		$after  = mb_substr(
-			$this->html,
+			$this->normalizer_html,
 			$insertion,
-			mb_strlen( $this->html, $this->normalizer_encoding ),
+			mb_strlen( $this->normalizer_html, $this->normalizer_encoding ),
 			$this->normalizer_encoding
 		);
 
-		$this->html = "{$before}{$tag}{$after}";
+		$this->normalizer_html = "{$before}{$tag}{$after}";
 	}
 }

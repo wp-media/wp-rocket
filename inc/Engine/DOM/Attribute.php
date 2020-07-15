@@ -2,6 +2,8 @@
 
 namespace WP_Rocket\Engine\DOM;
 
+use DOMElement;
+
 /**
  * Helpers to make it easier to work with attributes.
  */
@@ -61,6 +63,52 @@ class Attribute {
 		}
 
 		return $flat;
+	}
+
+	/**
+	 * Gets the attribute value from the given element.
+	 *
+	 * @since 3.6.2.1
+	 *
+	 * @param DOMElement|string $element   The element from which to get the attribute value.
+	 * @param string            $attribute Attribute of which to extract the value.
+	 *
+	 * @return string|bool
+	 */
+	public static function get_value( $element, $attribute ) {
+		if ( is_string( $element ) ) {
+			return self::get_value_from_string( $element, $attribute );
+		}
+
+		if ( $element instanceof DOMElement ) {
+			return $element->getAttribute( $attribute );
+		}
+
+		return false;
+	}
+
+	/**
+	 * Gets the attribute value from the given element.
+	 *
+	 * @since 3.6.2.1
+	 *
+	 * @param string $element   The element from which to get the attribute value.
+	 * @param string $attribute Attribute of which to extract the value.
+	 *
+	 * @return string|bool
+	 */
+	private static function get_value_from_string( $element, $attribute ) {
+		$matches = [];
+		$pattern = sprintf(
+			'/%s=(?>([\'"])(?<full>.*)?\1|(?<partial>[^ \'";]+))/',
+			preg_quote( $attribute, '/' )
+		);
+
+		if ( preg_match( $pattern, $element, $matches ) ) {
+			return empty( $matches['full'] ) ? $matches['partial'] : $matches['full'];
+		}
+
+		return false;
 	}
 
 	/**

@@ -23,20 +23,6 @@ class HTMLDocument extends DOMDocument {
 	const VERSION = '1.0';
 
 	/**
-	 * HTML markup default UTF-8 encoding.
-	 *
-	 * @var string
-	 */
-	const DEFAULT_ENCODING = 'UTF-8';
-
-	/**
-	 * Actual encoding.
-	 *
-	 * @var string
-	 */
-	protected $current_encoding;
-
-	/**
 	 * HTML in string format.
 	 *
 	 * @var string
@@ -92,13 +78,12 @@ class HTMLDocument extends DOMDocument {
 	 *
 	 * @since 3.6.2
 	 *
-	 * @param string $version            Optional. The version number of the document as part of the XML declaration.
-	 * @param string $encoding           Optional. The encoding of the document as part of the XML declaration.
-	 * @param bool   $enable_transformer Optional. When false, no transformations. Default: true.
+	 * @param string      $version            Optional. The version number of the document as part of the XML
+	 *                                        declaration.
+	 * @param string|null $encoding           Optional. The character encoding of this document. Default: null.
+	 * @param bool        $enable_transformer Optional. When false, no transformations. Default: true.
 	 */
-	public function __construct( $version = '1.0', $encoding = null, $enable_transformer = true ) {
-		$this->init_encoding( $encoding );
-
+	public function __construct( $version = '', $encoding = null, $enable_transformer = true ) {
 		$version = (string) $version;
 		if ( empty( $version ) ) {
 			$version = self::VERSION;
@@ -107,9 +92,10 @@ class HTMLDocument extends DOMDocument {
 		self::$libxml_version = self::get_libxml_version();
 		if ( $enable_transformer ) {
 			$this->setTransformer();
+			$this->normalize = true;
 		}
 
-		parent::__construct( $version, $this->current_encoding );
+		parent::__construct( $version, $encoding );
 	}
 
 	/**
@@ -117,19 +103,20 @@ class HTMLDocument extends DOMDocument {
 	 *
 	 * @since 3.6.2
 	 *
-	 * @param string $html     HTML to transform into HTML DOMDocument object.
-	 * @param string $version  Optional. The version number of the document as part of the XML declaration.
-	 * @param string $encoding Optional. The encoding of the document as part of the XML declaration.
+	 * @param string      $html               HTML to transform into HTML DOMDocument object.
+	 * @param string      $version            Optional. The version number of the document as part of the XML
+	 *                                        declaration.
+	 * @param string|null $encoding           Optional. The character encoding of this document. Default: null.
+	 * @param bool        $enable_transformer Optional. When false, no transformations. Default: true.
 	 *
 	 * @return HTMLDocument|false DOM generated from provided HTML, or false if the transformation failed.
 	 */
-	public static function from_html( $html, $version = '', $encoding = null ) {
+	public static function from_html( $html, $version = '', $encoding = null, $enable_transformer = true ) {
 		if ( empty( $html ) ) {
 			return false;
 		}
 
-		$dom            = new self( $version, $encoding );
-		$dom->normalize = true;
+		$dom = new self( $version, $encoding, $enable_transformer );
 
 		if ( ! $dom->loadHTML( $html ) ) {
 			return false;
@@ -143,44 +130,6 @@ class HTMLDocument extends DOMDocument {
 	}
 
 	/**
-	 * Named constructor for transforming a HTML fragment into DOM.
-	 *
-	 * A fragment is partial HTML. When using this constructor, <html>, <head>, and <body> will not be added by the DOM.
-	 *
-	 * @since 3.6.2
-	 *
-	 * @param string $fragment           The HTML fragment to transform into HTML DOMDocument object.
-	 * @param string $version            Optional. The version number of the document as part of the XML declaration.
-	 * @param string $encoding           Optional. The encoding of the document as part of the XML declaration.
-	 * @param bool   $enable_transformer Optional. When false, no transformations. Default: true.
-	 *
-	 * @return HTMLDocument|false DOM generated from provided HTML, or false if the transformation failed.
-	 */
-	public static function from_fragment( $fragment, $version = '', $encoding = null, $enable_transformer = true ) {
-		if ( empty( $fragment ) ) {
-			return false;
-		}
-
-		$dom            = new self( $version, $encoding, $enable_transformer );
-		$dom->normalize = false;
-
-		$options = 0;
-		// LIBXML_HTML_NOIMPLIED is only available for libxml >= 2.7.7.
-		// Turns off the automatic adding of implied html/body... elements.
-		if ( defined( 'LIBXML_HTML_NOIMPLIED' ) ) {
-			$options |= constant( 'LIBXML_HTML_NOIMPLIED' );
-		}
-
-		if ( ! $dom->loadHTML( $fragment, $options ) ) {
-			return false;
-		}
-
-		$dom->init_xpath();
-
-		return $dom;
-	}
-
-	/**
 	 * Gets the HTML in string format.
 	 *
 	 * @since 3.6.2
@@ -188,7 +137,7 @@ class HTMLDocument extends DOMDocument {
 	 * @return string
 	 */
 	public function get_html() {
-		return $this->saveHTML();
+		return $this->saveHTML( $this );
 	}
 
 	/**
@@ -323,7 +272,7 @@ class HTMLDocument extends DOMDocument {
 	 */
 	protected function setTransformer( TransformerInterface $transformer = null ) {
 		$this->transformer = null === $transformer
-			? new Transformer( $this->current_encoding )
+			? new Transformer()
 			: $transformer;
 	}
 
@@ -389,29 +338,6 @@ class HTMLDocument extends DOMDocument {
 		$this->normalize = true;
 
 		return $this;
-	}
-
-	/**
-	 * Initializes the encoding.
-	 *
-	 * @since 3.6.2.1
-	 *
-	 * @param string $encoding The encoding of the document as part of the XML declaration.
-	 */
-	private function init_encoding( $encoding ) {
-		if ( ! empty( $encoding ) ) {
-			$this->current_encoding = (string) $encoding;
-
-			return;
-		}
-
-		if ( function_exists( 'get_option' ) ) {
-			$this->current_encoding = get_option( 'blog_charset', self::DEFAULT_ENCODING );
-		}
-
-		if ( empty( $this->current_encoding ) ) {
-			$this->current_encoding = self::DEFAULT_ENCODING;
-		}
 	}
 
 	/**

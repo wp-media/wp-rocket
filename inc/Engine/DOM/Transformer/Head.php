@@ -6,6 +6,7 @@ use DOMElement;
 use DOMNode;
 use DOMText;
 use DOMComment;
+use WP_Rocket\Engine\DOM\Element;
 use WP_Rocket\Engine\DOM\HTMLDocument;
 
 /**
@@ -16,7 +17,6 @@ use WP_Rocket\Engine\DOM\HTMLDocument;
  * phpcs:disable Squiz.PHP.CommentedOutCode.Found -- Comments are by design.
  */
 trait Head {
-	use Encoder;
 
 	/**
 	 * Allowed HTML <head> tags definition.
@@ -64,6 +64,13 @@ trait Head {
 	private $head_nodes_increment = 0;
 
 	/**
+	 * HTML character encoding.
+	 *
+	 * @var string
+	 */
+	protected $head_encoding;
+
+	/**
 	 * Replaces nodes in the <head>.
 	 *
 	 * @since  3.6.2.1
@@ -103,7 +110,7 @@ trait Head {
 		}
 
 		// Get the position of the end of the <head></head> element.
-		$pos = mb_strpos( $html, '</head>', 0, $this->encoding ) + 7;
+		$pos = mb_strpos( $html, '</head>', 0, $this->head_encoding ) + 7;
 		if ( empty( $pos ) ) {
 			return $html;
 		}
@@ -111,10 +118,10 @@ trait Head {
 		$head = str_replace(
 			array_keys( $this->head_nodes ),
 			$this->head_nodes,
-			mb_substr( $html, 0, $pos, $this->encoding )
+			mb_substr( $html, 0, $pos, $this->head_encoding )
 		);
 
-		return $head . mb_substr( $html, $pos, mb_strlen( $html, $this->encoding ), $this->encoding );
+		return $head . mb_substr( $html, $pos, mb_strlen( $html, $this->head_encoding ), $this->head_encoding );
 	}
 
 	/**
@@ -155,7 +162,7 @@ trait Head {
 	 *
 	 * @since 3.6.2.1
 	 *
-	 * @uses  SelfClosing::replace_self_closin
+	 * @uses  SelfClosing::replace_self_closing()
 	 *
 	 * @param string $head_html <head> HTML to transform.
 	 *
@@ -163,31 +170,20 @@ trait Head {
 	 * phpcs:disable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 	 */
 	private function replace_nonallowed_head_nodes( $head_html ) {
-		// Create a DOM for traversing the head nodes.
-		$html = "<body>{$head_html}</body>";
-		$dom  = HTMLDocument::from_fragment( $html, '1.0', $this->encoding, false );
-		$body = $dom->getElementsByTagName( 'body' )[0];
+		list( $dom, $body ) = $this->create_traversal_head_nodes( $head_html );
+		if ( false === $dom || false === $body ) {
+			return $head_html;
+		}
 
 		// Traverse to find any non-allowed nodes.
 		$node = $body->firstChild;
 		while ( $node ) {
 			$next_sibling = $node->nextSibling;
 			if ( ! $this->is_allowed_head_node( $node ) ) {
-				// Construct the placeholder: <!--tag:N-->.
-				$comment     = sprintf( '%s:%d', $node->nodeName, $this->head_nodes_increment );
-				$placeholder = sprintf( '<!--%s-->', $comment );
+				$comment = $this->map_head_node_placeholder( $node, $dom );
 
-				// Map placeholder => original HTML for the restorer.
-				$value                            = trim( $dom->saveHTML( $node ) );
-				$value                            = $this->restore_encoding( $value );
-				$this->head_nodes[ $placeholder ] = $value;
-				$this->head_nodes_increment++;
+				$body->insertBefore( $dom->createComment( $comment ), $node );
 
-				// Insert the placeholder node.
-				$placeholder_node = $dom->createComment( $comment );
-				$body->insertBefore( $placeholder_node, $node );
-
-				// Remove the non-allowed node.
 				$body->removeChild( $node );
 			}
 			$node = $next_sibling;
@@ -203,6 +199,30 @@ trait Head {
 		unset( $dom, $body );
 
 		return $this->get_transformed_head_html( $html );
+	}
+
+	/**
+	 * Creates a DOM to traverse the <head> nodes.
+	 *
+	 * @since 3.6.2.1
+	 *
+	 * @param string $head_html <head> HTML to transform.
+	 *
+	 * @return array|bool
+	 */
+	private function create_traversal_head_nodes( $head_html ) {
+		$html = '<head>' . Element::META_CHARSET . "</head><body>{$head_html}</body>";
+		$dom  = HTMLDocument::from_html( $html, '1.0', $this->head_encoding, false );
+		if ( false === $dom ) {
+			return false;
+		}
+
+		$elements = $dom->getElementsByTagName( 'body' );
+		if ( 0 === $elements->length ) {
+			return false;
+		}
+
+		return [ $dom, $elements->item( 0 ) ];
 	}
 
 	/**
@@ -243,6 +263,30 @@ trait Head {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Maps placeholder => original HTML for the restorer and returns the comment to insert.
+	 *
+	 * @since 3.6.2.1
+	 *
+	 * @param DOMNode      $node instance of the node.
+	 * @param HTMLDocument $dom  Instance of the DOM.
+	 *
+	 * @return string comment to insert in place of this node.
+	 * phpcs:disable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+	 */
+	private function map_head_node_placeholder( $node, $dom ) {
+		// Construct the placeholder: <!--tag:N-->.
+		$comment = sprintf( '%s:%d', $node->nodeName, $this->head_nodes_increment );
+
+		$placeholder                      = sprintf( '<!--%s-->', $comment );
+		$this->head_nodes[ $placeholder ] = $node instanceof DOMText
+			? trim( $node->nodeValue )
+			: trim( $dom->saveHTML( $node ) );
+		$this->head_nodes_increment++;
+
+		return $comment;
 	}
 
 	/**

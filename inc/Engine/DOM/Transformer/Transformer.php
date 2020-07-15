@@ -3,19 +3,10 @@
 namespace WP_Rocket\Engine\DOM\Transformer;
 
 class Transformer implements TransformerInterface {
+	use Encoder;
 	use Head;
 	use Normalizer;
 	use SelfClosing;
-
-	/**
-	 * Creates a Transformer.
-	 *
-	 * @param string $encoding Optional. HTML's encoding. Default: 'UTF-8'.
-	 */
-	public function __construct( $encoding = 'UTF-8' ) {
-		$this->encoding            = $encoding;
-		$this->normalizer_encoding = $encoding;
-	}
 
 	/**
 	 * Replaces elements before loading into the DOM.
@@ -32,6 +23,11 @@ class Transformer implements TransformerInterface {
 			return '';
 		}
 
+		$encoding = $this->init_encoding( $html );
+
+		$this->normalizer_encoding = $encoding;
+		$this->head_encoding       = $encoding;
+
 		if ( $normalize ) {
 			$html = $this->normalize_structure( $html );
 			if ( empty( $html ) ) {
@@ -40,6 +36,7 @@ class Transformer implements TransformerInterface {
 		}
 
 		$html = $this->replace_encoding( $html );
+
 		$html = $this->replace_self_closing( $html );
 
 		return $this->replace_head_nodes( $html );
@@ -59,8 +56,9 @@ class Transformer implements TransformerInterface {
 			return '';
 		}
 
-		$html = $this->restore_encoding( $html );
 		$html = $this->restore_self_closing( $html );
+
+		$html = $this->restore_encoding( $html );
 
 		return $this->restore_head_nodes( $html );
 	}
@@ -69,6 +67,8 @@ class Transformer implements TransformerInterface {
 	 * Resets state.
 	 */
 	public function reset() {
+		$this->reset_normalizer();
+		$this->reset_encoder();
 		$this->reset_self_closing();
 		$this->reset_head_nodes_state();
 	}
