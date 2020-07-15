@@ -34,7 +34,17 @@ return [
 		],
 	],
 
-	'default_config' => [],
+	'default_config' => [
+		'options'      => [
+			'async_css' => 1,
+		],
+		'critical_css' => [
+			'get_current_page_critical_css' => 'page.css',
+			'get_exclude_async_css'         => [],
+		],
+		'xpath_query'    => '@rel="stylesheet" and not(contains(@href,\'fonts.googleapis.com\'))',
+		'excluded_hrefs' => [],
+	],
 
 	'test_data' => [
 

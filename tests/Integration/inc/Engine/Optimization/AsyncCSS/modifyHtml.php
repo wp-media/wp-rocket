@@ -1,13 +1,13 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\AsyncCSS;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\AsyncCSS;
 
-use WP_Rocket\Engine\CriticalPath\AsyncCSS;
+use WP_Rocket\Engine\Optimization\AsyncCSS;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\AsyncCSS::modify_html
- * @uses   \WP_Rocket\Engine\CriticalPath\AsyncCSS::from_html
+ * @covers \WP_Rocket\Engine\Optimization\AsyncCSS::modify_html
+ * @uses   \WP_Rocket\Engine\Optimization\AsyncCSS::from_html
  * @uses   \WP_Rocket\Engine\DOM\HTMLDocument::query
  * @uses   \WP_Rocket\Engine\DOM\HTMLDocument::get_html
  * @uses   \WP_Rocket\Engine\CriticalPath\CriticalCSS::get_current_page_critical_css
@@ -16,12 +16,12 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @uses   ::rocket_get_constant
  * @uses   ::is_rocket_post_excluded_option
  *
- * @group  CriticalPath
+ * @group  Optimization
  * @group  AsyncCSS
  * @group  DOM
  */
 class Test_ModifyHtml extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/Engine/CriticalPath/AsyncCSS/modifyHtml.php';
+	protected $path_to_test_data = '/inc/Engine/Optimization/AsyncCSS/modifyHtml.php';
 
 	protected static $container;
 	protected static $use_settings_trait = true;
@@ -86,7 +86,7 @@ class Test_ModifyHtml extends FilesystemTestCase {
 
 		$this->setUpUrl( $should_create_instance );
 
-		$this->instance = AsyncCSS::from_html( $this->critical_css, $this->options, $html );
+		$this->instance = AsyncCSS::from_html( $this->options, $html, $this->test_config['excluded_hrefs'], $this->test_config['xpath_query'] );
 	}
 
 	protected function setUpUrl( $should_create_instance ) {
@@ -124,20 +124,13 @@ class Test_ModifyHtml extends FilesystemTestCase {
 			return $this->config['default_config'];
 		}
 
-		if ( isset( $config['use_default'] ) && $config['use_default'] ) {
-			unset( $config['use_default'] );
-
-			return array_merge_recursive(
-				$this->config['default_config'],
-				$config
-			);
-		}
-
 		return array_merge(
 			[
-				'options'      => [],
-				'critical_css' => [],
-				'functions'    => [],
+				'options'        => [],
+				'critical_css'   => [],
+				'functions'      => [],
+				'excluded_hrefs' => [],
+				'xpath_query'    => '',
 			],
 			$config
 		);
