@@ -2,7 +2,9 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\GoogleFonts;
 
+use Mockery;
 use Brain\Monkey\Functions;
+use WP_Rocket\Admin\Options_Data;
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Engine\Optimization\GoogleFonts\Optimize;
 
@@ -28,7 +30,7 @@ class Test_Optimize extends TestCase {
 			return str_replace( [ '&amp;', '&' ], '&#038;', $url );
 		} );
 
-		$combine = new Optimize();
+		$combine = new Optimize( Mockery::mock( Options_Data::class ) );
 
 		$this->assertSame(
 			$combined,
