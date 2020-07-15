@@ -111,7 +111,6 @@ add_action( 'plugins_loaded', 'rocket_init' );
 /**
  * Tell WP what to do when plugin is deactivated.
  *
- * @since 3.6.3 Does not try to write a blank advanced-cache.php file when installed on WP.com
  * @since 1.0
  */
 function rocket_deactivation() {
@@ -155,10 +154,7 @@ function rocket_deactivation() {
 		// Remove WP_CACHE constant in wp-config.php.
 		$wp_cache->set_wp_cache_constant( false );
 
-		// Delete content of advanced-cache.php, unless installed on WP.com.
-		if ( rocket_is_non_caching_host() ) {
-			rocket_put_content( WP_CONTENT_DIR . '/advanced-cache.php', '' );
-		}
+		rocket_put_content( WP_CONTENT_DIR . '/advanced-cache.php', '' );
 	}
 
 	// Update customer key & licence.
@@ -194,7 +190,6 @@ register_deactivation_hook( WP_ROCKET_FILE, 'rocket_deactivation' );
 /**
  * Tell WP what to do when plugin is activated.
  *
- * @since 3.6.3 Checks for installation on WP.com and filters for short-circuiting writing advanced-cache.php file.
  * @since 1.1.0
  */
 function rocket_activation() {
@@ -238,13 +233,6 @@ function rocket_activation() {
 	rocket_init_config_dir();
 
 	// Create advanced-cache.php file.
-	if ( rocket_is_non_caching_host() ) {
-		/**
-		 * This filter is documented in inc/files.php::rocket_generate_advanced_cache_file
-		 */
-		add_filter( 'rocket_generate_advanced_cache_file', '__return_false' );
-	}
-
 	rocket_generate_advanced_cache_file( new AdvancedCache( WP_ROCKET_PATH . 'views/cache/', $filesystem ) );
 
 	/**
@@ -275,30 +263,3 @@ function rocket_activation() {
 }
 register_activation_hook( WP_ROCKET_FILE, 'rocket_activation' );
 
-/**
- * Check if hosting does its own caching.
- *
- * Determine if installed on a host that uses its own caching
- * which requires us to disable writing advanced-cache.php
- *
- * @since 3.6.3
- *
- * @return bool True when we detect a host that has its own caching; false otherwise.
- */
-function rocket_is_non_caching_host() {
-	if ( rocket_get_constant( 'WPCOMSH_VERSION' ) ) {
-		return true;
-	}
-
-	if (
-	! (
-		class_exists( 'WpeCommon' )
-		&&
-		function_exists( 'wpe_param' )
-	)
-	) {
-		return true;
-	}
-
-	return false;
-}
