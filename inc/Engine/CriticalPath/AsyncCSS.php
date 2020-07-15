@@ -383,7 +383,8 @@ class AsyncCSS {
 	}
 
 	/**
-	 * Adds <link rel="preload" href="same css URL" as="style" media="same as original"> before the given stylesheet element.
+	 * Adds <link rel="preload" href="same css URL" as="style" media="same as original"> before the given stylesheet
+	 * element.
 	 *
 	 * @since 3.6.2
 	 *
@@ -395,7 +396,7 @@ class AsyncCSS {
 		$element->setAttribute( 'href', $css->getAttribute( 'href' ) );
 		$element->setAttribute( 'as', 'style' );
 
-		if ( $css->hasAttribute('media' ) ) {
+		if ( $css->hasAttribute( 'media' ) ) {
 			$element->setAttribute( 'media', $css->getAttribute( 'media' ) );
 		}
 
