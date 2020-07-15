@@ -7,7 +7,7 @@ return [
 <!doctype html>
 <html lang="en-US">
 <head>
-	<meta charset="UTF-8" />
+	<meta charset="UTF-8">
 	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="all">
 </head>
 <body>Content here</body>
@@ -122,7 +122,7 @@ HTML
 <!doctype html>
 <html lang="en-US">
 <head>
-	<meta charset="UTF-8" />
+	<meta charset="UTF-8">
 	<link onload="someFunction();" rel="stylesheet" type="text/css" href="https://example.org/file1.css">
 	<link onload=" anotherFunction(this) " rel="stylesheet" type="text/css" href="https://example.org/file2.css">
 	<link onload=" yetAnotherFunction(this, 0); this.media='all' " rel="stylesheet" type="text/css" href="https://example.org/file3.css">

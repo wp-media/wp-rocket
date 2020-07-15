@@ -113,7 +113,7 @@ return [
 <!doctype html>
 <html lang="en-US">
 <head>
-	<meta charset="UTF-8" />
+	<meta charset="UTF-8">
 	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="all">
 </head>
 <body>Content here</body>
@@ -272,7 +272,7 @@ HTML
 <!doctype html>
 <html lang="en-US">
 <head>
-	<meta charset="UTF-8" />
+	<meta charset="UTF-8">
 	<link onload="someFunction();" rel="stylesheet" type="text/css" href="https://example.org/file1.css">
 	<link onload=" anotherFunction(this) " rel="stylesheet" type="text/css" href="https://example.org/file2.css">
 </head>
@@ -381,7 +381,7 @@ HTML
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
-	<meta charset="UTF-8" />
+	<meta charset="UTF-8">
 	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="all" baz="boo" onload="this.baz=\'test\'">
 	<link rel="stylesheet" type="text/css" href="https://example.org/file2.css" media="all" baz="boo" onload='this.baz=\"test\"'>
 </head>
@@ -427,7 +427,6 @@ HTML
 <!doctype html>
 <html lang="en-US">
 <head>
-	<meta charset="UTF-8" />
 	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="all">
 
 <body>Content here
@@ -438,7 +437,6 @@ HTML
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
-	<meta charset="UTF-8">
 	<link rel="preload" href="https://example.org/file1.css" as="style">
 	<link rel="stylesheet" type="text/css" href="https://example.org/file1.css" media="print" onload="this.onload=null;this.media='all'">
 </head>
@@ -457,7 +455,6 @@ HTML
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
-	<meta charset="UTF-8" />
 	<link rel="stylesheet" huh type="text/css" href="https://example.org/file1.css" media="print" abc='123' onload="this.media='all'" />
 </head>
 <body>
@@ -471,7 +468,6 @@ HTML
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
-	<meta charset="UTF-8">
 	<link rel="preload" href="https://example.org/file1.css" as="style">
 	<link rel="stylesheet" huh type="text/css" href="https://example.org/file1.css" media="print" abc="123" onload="this.media='all';this.onload=null">
 </head>
