@@ -508,7 +508,11 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 			return;
 		}
 
-		if ( empty( $this->critical_css->get_current_page_critical_css() ) && empty( $this->options->get( 'critical_css', '' ) ) ) {
+		if (
+			empty( $this->critical_css->get_current_page_critical_css() )
+			&&
+			empty( $this->options->get( 'critical_css', '' ) )
+		) {
 			return;
 		}
 
@@ -517,11 +521,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 			return;
 		}
 
-		if (
-			( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE )
-			||
-			( defined( 'DONOTASYNCCSS' ) && DONOTASYNCCSS )
-		) {
+		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
 			return;
 		}
 
@@ -577,7 +577,7 @@ JS;
 	 * @return string Updated HTML output
 	 */
 	public function insert_critical_css_buffer( $buffer ) {
-		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) || rocket_get_constant( 'DONOTASYNCCSS' ) ) {
+		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
 			return $buffer;
 		}
 
@@ -661,7 +661,7 @@ JS;
 	 * @return string Updated HTML code
 	 */
 	public function async_css( $buffer ) {
-		if ( ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) || ( defined( 'DONOTASYNCCSS' ) && DONOTASYNCCSS ) ) {
+		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
 			return;
 		}
 
@@ -673,11 +673,15 @@ JS;
 			return $buffer;
 		}
 
-		if ( empty( $this->critical_css->get_current_page_critical_css() ) && empty( $this->options->get( 'critical_css', '' ) ) ) {
+		if (
+			empty( $this->critical_css->get_current_page_critical_css() )
+			&&
+			empty( $this->options->get( 'critical_css', '' ) )
+		) {
 			return $buffer;
 		}
 
-		$excluded_css = array_flip( get_rocket_exclude_async_css() );
+		$excluded_css = array_flip( $this->critical_css->get_exclude_async_css() );
 
 		/**
 		 * Filters the pattern used to get all stylesheets in the HTML.
@@ -697,11 +701,11 @@ JS;
 			return $buffer;
 		}
 
-		$noscripts = '';
+		$noscripts = '<noscript>';
 
 		foreach ( $tags_match[0] as $i => $tag ) {
 			// Strip query args.
-			$path = rocket_extract_url_component( $tags_match[2][ $i ], PHP_URL_PATH );
+			$path = wp_parse_url( $tags_match[2][ $i ], PHP_URL_PATH );
 
 			// Check if this file should be deferred.
 			if ( isset( $excluded_css[ $path ] ) ) {
@@ -713,10 +717,13 @@ JS;
 			$tag     = str_replace( $tags_match[3][ $i ] . '>', $onload, $tag );
 			$tag     = str_replace( $tags_match[1][ $i ], $preload, $tag );
 			$tag     = str_replace( 'onload=""', 'onload="this.onload=null;this.rel=\'stylesheet\'"', $tag );
+			$tag     = preg_replace( '/(id\s*=\s*[\"\'](?:[^\"\']*)*[\"\'])/i', '', $tag );
 			$buffer  = str_replace( $tags_match[0][ $i ], $tag, $buffer );
 
-			$noscripts .= '<noscript>' . $tags_match[0][ $i ] . '</noscript>';
+			$noscripts .= $tags_match[0][ $i ];
 		}
+
+		$noscripts .= '</noscript>';
 
 		return str_replace( '</body>', $noscripts . '</body>', $buffer );
 	}
