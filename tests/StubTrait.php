@@ -17,7 +17,6 @@ trait StubTrait {
 	protected $wp_rocket_advanced_cache = true;
 	protected $disable_wp_cron          = false;
 	protected $donotrocketoptimize      = null;
-	protected $donotasynccss            = null;
 	protected $white_label              = false;
 	protected $white_label_footprint    = null;
 	protected $plugin_name              = 'WP Rocket';
@@ -65,9 +64,6 @@ trait StubTrait {
 
 			case 'DISABLE_WP_CRON':
 				return $this->disable_wp_cron;
-
-			case 'DONOTASYNCCSS' :
-				return $this->donotasynccss;
 
 			case 'DONOTROCKETOPTIMIZE' :
 				return $this->donotrocketoptimize;
