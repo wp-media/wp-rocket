@@ -30,7 +30,7 @@ class Test_Optimize extends TestCase {
 			return str_replace( [ '&amp;', '&' ], '&#038;', $url );
 		} );
 
-		$combine = new Optimize( Mockery::mock( Options_Data::class ) );
+		$combine = new Optimize();
 
 		$this->assertSame(
 			$this->format_the_html( $combined ),

@@ -3,18 +3,10 @@
 namespace WP_Rocket\Engine\Optimization;
 
 use DOMElement;
-use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\DOM\HTMLDocument;
 use WP_Rocket\Engine\DOM\Attribute;
 
 class AsyncCSS {
-
-	/**
-	 * Instance of options.
-	 *
-	 * @var Options_Data
-	 */
-	private $options;
 
 	/**
 	 * Instance of the DOM.
@@ -57,12 +49,10 @@ class AsyncCSS {
 	/**
 	 * Creates an instance of the DOM Handler.
 	 *
-	 * @param Options_Data $options        WP Rocket options.
-	 * @param array        $excluded_hrefs Optional. Array of URLs to exclude.
-	 * @param string       $xpath_query    XPath query.
+	 * @param array  $excluded_hrefs Optional. Array of URLs to exclude.
+	 * @param string $xpath_query    XPath query.
 	 */
-	public function __construct( Options_Data $options, $excluded_hrefs, $xpath_query ) {
-		$this->options        = $options;
+	public function __construct( $excluded_hrefs, $xpath_query ) {
 		$this->excluded_hrefs = $excluded_hrefs;
 		$this->xpath_query    = $xpath_query;
 	}
@@ -72,15 +62,14 @@ class AsyncCSS {
 	 *
 	 * @since 3.6.2
 	 *
-	 * @param Options_Data $options        WP Rocket options.
-	 * @param string       $html           Optional. HTML to transform into HTML DOMDocument object.
-	 * @param string       $excluded_hrefs Optional. Array of URLs to exclude.
-	 * @param string       $xpath_query    XPath query.
+	 * @param string $html           Optional. HTML to transform into HTML DOMDocument object.
+	 * @param string $excluded_hrefs Optional. Array of URLs to exclude.
+	 * @param string $xpath_query    XPath query.
 	 *
 	 * @return self Instance of this class.
 	 */
-	public static function from_html( Options_Data $options, $html, $excluded_hrefs, $xpath_query ) {
-		$instance = new static( $options, $excluded_hrefs, $xpath_query );
+	public static function from_html( $html, $excluded_hrefs, $xpath_query ) {
+		$instance = new static( $excluded_hrefs, $xpath_query );
 
 		if ( ! $instance->okay_to_create_dom() ) {
 			return null;
@@ -99,8 +88,6 @@ class AsyncCSS {
 	private function okay_to_create_dom() {
 		if (
 			rocket_get_constant( 'DONOTROCKETOPTIMIZE' )
-			||
-			rocket_get_constant( 'DONOTASYNCCSS' )
 		) {
 			return false;
 		}

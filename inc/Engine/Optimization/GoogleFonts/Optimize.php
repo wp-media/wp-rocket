@@ -3,7 +3,6 @@
 namespace WP_Rocket\Engine\Optimization\GoogleFonts;
 
 use WP_Rocket\Logger\Logger;
-use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\AsyncCSS;
 use WP_Rocket\Engine\Optimization\AbstractOptimization;
 
@@ -17,7 +16,6 @@ class Optimize extends AbstractOptimization {
 	 * Found fonts
 	 *
 	 * @since  3.1
-	 * @author Remy Perona
 	 *
 	 * @var string
 	 */
@@ -27,20 +25,10 @@ class Optimize extends AbstractOptimization {
 	 * Found subsets
 	 *
 	 * @since  3.1
-	 * @author Remy Perona
 	 *
 	 * @var string
 	 */
 	protected $subsets = '';
-
-	/**
-	 * Creates an instance of inheriting class.
-	 *
-	 * @param Options_Data $options Options instance.
-	 */
-	public function __construct( Options_Data $options ) {
-		$this->options = $options;
-	}
 
 	/**
 	 * Optimize multiple Google Fonts links into one and Preloads them.
@@ -123,7 +111,7 @@ class Optimize extends AbstractOptimization {
 	 * @return string
 	 */
 	protected function preload( $html ) {
-		$instance = AsyncCSS::from_html( $this->options, $html, [], '@rel="stylesheet" and contains(@href,\'fonts.googleapis.com\')' );
+		$instance = AsyncCSS::from_html( $html, [], '@rel="stylesheet" and contains(@href,\'fonts.googleapis.com\')' );
 		if ( ! $instance instanceof AsyncCSS ) {
 			return $html;
 		}

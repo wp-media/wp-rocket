@@ -30,7 +30,7 @@ abstract class TestCase extends BaseTestCase {
 	protected function setUpTest( $html, array $config = [] ) {
 		$config = $this->initConfig( $config );
 
-		$this->instance = AsyncCSS::from_html( $this->options, $html, $config['excluded_hrefs'], $config['xpath_query'] );
+		$this->instance = AsyncCSS::from_html( $html, $config['excluded_hrefs'], $config['xpath_query'] );
 
 		if ( ! empty( $this->instance ) ) {
 			$this->dom = $this->getNonPublicPropertyValue( 'dom', AsyncCSS::class, $this->instance );

@@ -588,7 +588,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 			return $html;
 		}
 		$excluded_hrefs = $this->critical_css->get_exclude_async_css();
-		$instance       = AsyncCSS::from_html( $this->options, $html, $excluded_hrefs, '@rel="stylesheet" and not(contains(@href,\'fonts.googleapis.com\'))' );
+		$instance       = AsyncCSS::from_html( $html, $excluded_hrefs, '@rel="stylesheet" and not(contains(@href,\'fonts.googleapis.com\'))' );
 
 		if ( ! $instance instanceof AsyncCSS ) {
 			return $html;
@@ -605,8 +605,6 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	private function maybe_async_css() {
 		if (
 			rocket_get_constant( 'DONOTROCKETOPTIMIZE' )
-			||
-			rocket_get_constant( 'DONOTASYNCCSS' )
 		) {
 			return false;
 		}

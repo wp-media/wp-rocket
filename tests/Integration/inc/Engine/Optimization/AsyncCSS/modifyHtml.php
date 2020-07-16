@@ -86,7 +86,7 @@ class Test_ModifyHtml extends FilesystemTestCase {
 
 		$this->setUpUrl( $should_create_instance );
 
-		$this->instance = AsyncCSS::from_html( $this->options, $html, $this->test_config['excluded_hrefs'], $this->test_config['xpath_query'] );
+		$this->instance = AsyncCSS::from_html( $html, $this->test_config['excluded_hrefs'], $this->test_config['xpath_query'] );
 	}
 
 	protected function setUpUrl( $should_create_instance ) {

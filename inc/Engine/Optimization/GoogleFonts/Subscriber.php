@@ -62,7 +62,7 @@ class Subscriber extends AbstractMinifySubscriber {
 			return $html;
 		}
 
-		$this->set_optimization_type( new Optimize( $this->options ) );
+		$this->set_optimization_type( new Optimize() );
 
 		return $this->optimize( $html );
 	}
