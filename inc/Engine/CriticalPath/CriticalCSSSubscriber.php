@@ -498,9 +498,11 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	 * @since  2.10
 	 */
 	public function insert_load_css() {
-		global $pagenow;
+		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
+			return;
+		}
 
-		if ( ! $this->options->get( 'async_css' ) ) {
+		if ( ! $this->options->get( 'async_css', 0 ) ) {
 			return;
 		}
 
@@ -516,34 +518,11 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 			return;
 		}
 
-		// Don't apply on wp-login.php/wp-register.php.
-		if ( 'wp-login.php' === $pagenow || 'wp-register.php' === $pagenow ) {
-			return;
-		}
-
-		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
-			return;
-		}
-
-		// Don't apply if user is logged-in and cache for logged-in user is off.
-		if ( is_user_logged_in() && ! $this->options->get( 'cache_logged_user' ) ) {
-			return;
-		}
-
 		// This filter is documented in inc/front/process.php.
 		$rocket_cache_search = apply_filters( 'rocket_cache_search', false );
 
 		// Don't apply on search page.
 		if ( is_search() && ! $rocket_cache_search ) {
-			return;
-		}
-
-		// Don't apply on excluded pages.
-		if (
-			! isset( $_SERVER['REQUEST_URI'] )
-			||
-			in_array( wp_unslash( $_SERVER['REQUEST_URI'] ), $this->options->get( 'cache_reject_uri', [] ), true )
-		) {
 			return;
 		}
 
