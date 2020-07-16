@@ -2,8 +2,6 @@
 
 namespace WP_Rocket\Engine\CriticalPath;
 
-use FilesystemIterator;
-use UnexpectedValueException;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Filesystem_Direct;
