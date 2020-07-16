@@ -150,7 +150,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 
 		if ( current_user_can( 'rocket_manage_options' ) ) {
 			$message .= ' ' . sprintf(
-				// Translators: %1$s = opening link tag, %2$s = closing link tag.
+					// Translators: %1$s = opening link tag, %2$s = closing link tag.
 					__( 'Go to the %1$sWP Rocket settings%2$s page to track progress.', 'rocket' ),
 					'<a href="' . esc_url( admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG ) ) . '">',
 					'</a>'
@@ -364,7 +364,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 		}
 
 		$message = '<p>' . sprintf(
-			// Translators: %1$d = number of critical CSS generated, %2$d = total number of critical CSS to generate.
+				// Translators: %1$d = number of critical CSS generated, %2$d = total number of critical CSS to generate.
 				__( 'Critical CSS generation is currently running: %1$d of %2$d page types completed. (Refresh this page to view progress)', 'rocket' ),
 				$success_counter,
 				$transient['total']
@@ -436,7 +436,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 		}
 
 		$message = '<p>' . sprintf(
-			// Translators: %1$d = number of critical CSS generated, %2$d = total number of critical CSS to generate.
+				// Translators: %1$d = number of critical CSS generated, %2$d = total number of critical CSS to generate.
 				__( 'Critical CSS generation finished for %1$d of %2$d page types.', 'rocket' ),
 				$success_counter,
 				$transient['total']
