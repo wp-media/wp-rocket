@@ -6,6 +6,8 @@ use Imagify_Partner;
 use League\Container\Container;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Event_Management\Event_Manager;
+use WP_Rocket\ThirdParty\Hostings\HostResolver;
+use WP_Rocket\ThirdParty\Hostings\HostSubscriberFactory;
 
 /**
  * Plugin Manager.
@@ -234,7 +236,6 @@ class Plugin {
 			'mobile_subscriber',
 			'woocommerce_subscriber',
 			'bigcommerce_subscriber',
-			'pressable_subscriber',
 			'litespeed_subscriber',
 			'syntaxhighlighter_subscriber',
 			'elementor_subscriber',
@@ -254,11 +255,14 @@ class Plugin {
 			'amp_subscriber',
 			'rest_cpcss_subscriber',
 			'simple_custom_css',
-			'cloudways',
-			'wpengine',
-			'spinupwp',
 			'pdfembedder',
 		];
+
+		$host_type = HostResolver::get_host_service();
+
+		if ( ! empty( $host_type ) ) {
+			$common_subscribers[] = $host_type;
+		}
 
 		if ( $this->options->get( 'do_cloudflare', false ) ) {
 			$common_subscribers[] = 'cloudflare_subscriber';

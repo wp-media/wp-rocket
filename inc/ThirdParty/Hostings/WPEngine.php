@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\ThirdParty\Hostings;
 
+use WP_Rocket\ThirdParty\NullSubscriber;
 use WP_Rocket\ThirdParty\ReturnTypesTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WpeCommon;
@@ -11,7 +12,7 @@ use WpeCommon;
  *
  * @since 3.6.1
  */
-class WPEngine implements Subscriber_Interface {
+class WPEngine extends NullSubscriber implements Subscriber_Interface {
 	use ReturnTypesTrait;
 
 	/**
@@ -22,16 +23,6 @@ class WPEngine implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		if (
-			! (
-				class_exists( 'WpeCommon' )
-				&&
-				function_exists( 'wpe_param' )
-			)
-		) {
-			return [];
-		}
-
 		return [
 			'rocket_varnish_field_settings'           => 'varnish_addon_title',
 			'rocket_display_input_varnish_auto_purge' => 'return_false',

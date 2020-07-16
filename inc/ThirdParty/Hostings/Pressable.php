@@ -4,13 +4,15 @@ namespace WP_Rocket\ThirdParty\Hostings;
 use WP_Rocket\Engine\Cache\AdminSubscriber;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Event_Management\Event_Manager_Aware_Subscriber_Interface;
+use WP_Rocket\ThirdParty\NullSubscriber;
 
 /**
  * Subscriber for compatibility with Pressable hosting
  *
  * @since 3.3
  */
-class Pressable implements Event_Manager_Aware_Subscriber_Interface {
+class Pressable extends NullSubscriber implements Event_Manager_Aware_Subscriber_Interface {
+
 	/**
 	 * Event Manager instance
 	 *
@@ -51,10 +53,6 @@ class Pressable implements Event_Manager_Aware_Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		if ( ! rocket_get_constant( 'IS_PRESSABLE' ) ) {
-			return [];
-		}
-
 		return [
 			'do_rocket_generate_caching_files'   => [ 'return_false', PHP_INT_MAX ],
 			'rocket_display_varnish_options_tab' => 'return_false',
