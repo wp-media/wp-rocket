@@ -16,6 +16,7 @@ class_alias( '\WP_Rocket\Engine\Admin\Beacon\ServiceProvider', '\WP_Rocket\Servi
 class_alias( '\WP_Rocket\Engine\HealthCheck\CacheDirSizeCheck', '\WP_Rocket\Subscriber\Tools\Cache_Dir_Size_Check_Subscriber' );
 class_alias( '\WP_Rocket\Engine\HealthCheck\HealthCheck', '\WP_Rocket\Engine\Admin\HealthCheck' );
 class_alias( '\WP_Rocket\Engine\Optimization\ServiceProvider', '\WP_Rocket\ServiceProvider\Optimization_Subscribers' );
+class_alias( '\WP_Rocket\Engine\Optimization\IEConditionalSubscriber', '\WP_Rocket\Subscriber\Optimization\IE_Conditionals_Subscriber' );
 class_alias( '\WP_Rocket\ThirdParty\Plugins\Smush', '\WP_Rocket\Subscriber\Third_Party\Plugins\Smush_Subscriber' );
 
 /**
@@ -651,6 +652,32 @@ function rocket_get_compressed_assets_rules() {
 HTACCESS;
 
 	return apply_filters( 'rocket_htaccess_compressed_assets', $rules );
+}
+
+/**
+ * Get list of CSS files to be excluded from async CSS.
+ *
+ * @since 3.6.2 deprecated
+ * @since 2.10
+ * @author Remy Perona
+ *
+ * @return array An array of URLs for the CSS files to be excluded.
+ */
+function get_rocket_exclude_async_css() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+	_deprecated_function( __FUNCTION__ . '()', '3.6.2', '\WP_Rocket\Engine\CriticalPath\CriticalCSS::get_exclude_async_css()' );
+	/**
+	 * Filter list of async CSS files
+	 *
+	 * @since 2.10
+	 * @author Remy Perona
+	 *
+	 * @param array $exclude_async_css An array of URLs for the CSS files to be excluded.
+	 */
+	$exclude_async_css = (array) apply_filters( 'rocket_exclude_async_css', [] );
+	$exclude_async_css = array_filter( $exclude_async_css );
+	$exclude_async_css = array_flip( array_flip( $exclude_async_css ) );
+
+	return $exclude_async_css;
 }
 
 /**
