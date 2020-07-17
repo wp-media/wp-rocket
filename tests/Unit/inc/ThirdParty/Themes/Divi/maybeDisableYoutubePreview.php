@@ -2,15 +2,13 @@
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Themes\Divi;
 
 use Mockery;
-use WP_Rocket\Admin\Options;
-use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use WP_Rocket\ThirdParty\Themes\Divi;
 use \WP_Theme;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Divi::maybe_disable_youtube_preview
+ * @covers \WP_Rocket\ThirdParty\Themes\Divi::maybe_disable_youtube_preview
  * @uses   ::is_divi
  *
  * @group  ThirdParty
