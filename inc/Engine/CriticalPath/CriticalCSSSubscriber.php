@@ -641,7 +641,7 @@ JS;
 	 */
 	public function async_css( $buffer ) {
 		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
-			return;
+			return $buffer;
 		}
 
 		if ( ! $this->options->get( 'async_css' ) ) {
