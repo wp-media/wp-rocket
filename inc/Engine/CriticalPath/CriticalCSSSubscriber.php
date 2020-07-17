@@ -502,15 +502,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 			return;
 		}
 
-		if (
-			empty( $this->critical_css->get_current_page_critical_css() )
-			&&
-			empty( $this->options->get( 'critical_css', '' ) )
-		) {
-			return;
-		}
-
-		// This filter is documented in inc/front/process.php.
+		// This filter is documented in inc/classes/Buffer/class-tests.php.
 		$rocket_cache_search = apply_filters( 'rocket_cache_search', false );
 
 		// Don't apply on search page.
@@ -520,6 +512,14 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 
 		// Don't apply on 404 page.
 		if ( is_404() ) {
+			return;
+		}
+
+		if (
+			empty( $this->critical_css->get_current_page_critical_css() )
+			&&
+			empty( $this->options->get( 'critical_css', '' ) )
+		) {
 			return;
 		}
 
