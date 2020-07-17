@@ -30,6 +30,7 @@ class O2Switch implements Subscriber_Interface {
 			'rocket_display_input_varnish_auto_purge' => 'return_false',
 			'rocket_cache_mandatory_cookies'          => [ 'return_empty_array', PHP_INT_MAX ],
 			'rocket_htaccess_mod_expires'             => [ 'remove_htaccess_html_expire', 5 ],
+			'rocket_varnish_purge_headers'            => 'add_purge_headers',
 		];
 	}
 
@@ -66,6 +67,23 @@ class O2Switch implements Subscriber_Interface {
 		$rules = preg_replace( '@\s*ExpiresByType text/html\s*"access plus \d+ (seconds|minutes|hour|week|month|year)"@', '', $rules );
 
 		return $rules;
+	}
+
+	/**
+	 * Adjust purge request header array.
+	 *
+	 * @param array $headers Headers to send.
+	 *
+	 * @return array Array for headers to be sent.
+	 */
+	public function add_purge_headers( $headers ) {
+		$headers['X-VC-Purge-Key'] = O2SWITCH_VARNISH_PURGE_KEY;
+
+		if ( 'regex' === $headers['X-Purge-Method'] ) {
+			$headers['X-Purge-Regex'] = '.*';
+		}
+
+		return $headers;
 	}
 
 }
