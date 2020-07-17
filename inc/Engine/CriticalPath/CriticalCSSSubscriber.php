@@ -498,15 +498,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	 * @since  2.10
 	 */
 	public function insert_load_css() {
-		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
-			return;
-		}
-
-		if ( ! $this->options->get( 'async_css', 0 ) ) {
-			return;
-		}
-
-		if ( is_rocket_post_excluded_option( 'async_css' ) ) {
+		if ( ! $this->should_async_css() ) {
 			return;
 		}
 
@@ -556,15 +548,7 @@ JS;
 	 * @return string Updated HTML output
 	 */
 	public function insert_critical_css_buffer( $buffer ) {
-		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
-			return $buffer;
-		}
-
-		if ( ! $this->options->get( 'async_css', 0 ) ) {
-			return $buffer;
-		}
-
-		if ( is_rocket_post_excluded_option( 'async_css' ) ) {
+		if ( ! $this->should_async_css() ) {
 			return $buffer;
 		}
 
@@ -640,15 +624,7 @@ JS;
 	 * @return string Updated HTML code
 	 */
 	public function async_css( $buffer ) {
-		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
-			return $buffer;
-		}
-
-		if ( ! $this->options->get( 'async_css' ) ) {
-			return $buffer;
-		}
-
-		if ( is_rocket_post_excluded_option( 'async_css' ) ) {
+		if ( ! $this->should_async_css() ) {
 			return $buffer;
 		}
 
@@ -737,5 +713,24 @@ JS;
 		)
 		&&
 		$this->options->get( 'async_css_mobile', 0 );
+	}
+
+	/**
+	 * Checks if we should async CSS
+	 *
+	 * @since 3.6.2.1
+	 *
+	 * @return boolean
+	 */
+	private function should_async_css() {
+		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
+			return false;
+		}
+
+		if ( ! $this->options->get( 'async_css', 0 ) ) {
+			return false;
+		}
+
+		return ! is_rocket_post_excluded_option( 'async_css' );
 	}
 }
