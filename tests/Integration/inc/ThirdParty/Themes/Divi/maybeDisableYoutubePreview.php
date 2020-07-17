@@ -3,7 +3,7 @@ namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Themes\Divi;
 
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 use WP_Rocket\ThirdParty\Themes\Divi;
-use \WP_Theme;
+use WP_Theme;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Divi::maybe_disable_youtube_preview
