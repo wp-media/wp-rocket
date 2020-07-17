@@ -62,11 +62,11 @@ class Divi implements Subscriber_Interface {
 	 * @return array the updated array of paths
 	 */
 	public function exclude_js( $excluded_js ) {
-		if ( ! defined( 'ET_BUILDER_URI' ) ) {
+		if ( ! rocket_get_constant( 'ET_BUILDER_URI' ) ) {
 			return $excluded_js;
 		}
 
-		$excluded_js[] = str_replace( home_url(), '', ET_BUILDER_URI ) . '/scripts/salvattore.min.js';
+		$excluded_js[] = str_replace( home_url(), '', rocket_get_constant( 'ET_BUILDER_URI' ) . '/scripts/salvattore.min.js' );
 
 		return $excluded_js;
 	}
