@@ -14,6 +14,7 @@ class Deactivation {
 		'advanced_cache',
 		'capabilities_manager',
 		'wp_cache',
+		'wpengine',
 	];
 
 	/**

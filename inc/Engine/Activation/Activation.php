@@ -19,6 +19,7 @@ class Activation {
 		'advanced_cache',
 		'capabilities_manager',
 		'wp_cache',
+		'wpengine',
 	];
 
 	/**
