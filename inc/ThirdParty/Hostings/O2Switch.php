@@ -31,6 +31,7 @@ class O2Switch implements Subscriber_Interface {
 			'rocket_cache_mandatory_cookies'          => [ 'return_empty_array', PHP_INT_MAX ],
 			'rocket_htaccess_mod_expires'             => [ 'remove_htaccess_html_expire', 5 ],
 			'rocket_varnish_purge_headers'            => 'add_purge_headers',
+			'rocket_varnish_purge_url'                => [ 'remove_regex_from_purge_url', 10, 2 ],
 		];
 	}
 
@@ -72,6 +73,8 @@ class O2Switch implements Subscriber_Interface {
 	/**
 	 * Adjust purge request header array.
 	 *
+	 * @since 3.6.3
+	 *
 	 * @param array $headers Headers to send.
 	 *
 	 * @return array Array for headers to be sent.
@@ -83,7 +86,23 @@ class O2Switch implements Subscriber_Interface {
 			$headers['X-Purge-Regex'] = '.*';
 		}
 
+		unset( $headers['X-Purge-Method'] );
+
 		return $headers;
+	}
+
+	/**
+	 * Remove regex part from purge_url as it's handled via headers instead.
+	 *
+	 * @since 3.6.3
+	 *
+	 * @param string $full_purge_url Full url for purge, regex included.
+	 * @param string $main_purge_url Main url without regex.
+	 *
+	 * @return mixed
+	 */
+	public function remove_regex_from_purge_url( $full_purge_url, $main_purge_url ) {
+		return $main_purge_url;
 	}
 
 }

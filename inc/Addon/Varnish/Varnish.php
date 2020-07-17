@@ -111,8 +111,23 @@ class Varnish {
 		);
 
 		foreach ( $varnish_ip as $ip ) {
-			$host      = ! empty( $ip ) ? $ip : str_replace( '*', '', $parse_url['host'] );
-			$purge_url = $scheme . '://' . $host . $parse_url['path'] . $regex;
+			$host           = ! empty( $ip ) ? $ip : str_replace( '*', '', $parse_url['host'] );
+			$purge_url_main = $scheme . '://' . $host . $parse_url['path'];
+
+			/**
+			 * Filters the purge url.
+			 *
+			 * @since 3.6.3
+			 *
+			 * @param string $purge_url_main Main purge url without any additions params.
+			 * @param string $regex          Regex string.
+			 */
+			$purge_url = apply_filters(
+				'rocket_varnish_purge_url',
+				$purge_url_main . $regex,
+				$purge_url_main,
+				$regex
+			);
 
 			wp_remote_request( $purge_url, $args );
 		}
