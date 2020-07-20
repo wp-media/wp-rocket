@@ -52,17 +52,9 @@ return [
 			],
 			'expected' => false,
 		],
-		'testShouldBailOutDONOTASYNCCSS'            => [
-			'config'   => [
-				'DONOTROCKETOPTIMIZE' => false,
-				'DONOTASYNCCSS'       => true,
-			],
-			'expected' => false,
-		],
 		'testShouldBailOutAsyncCSSOpt'              => [
 			'config'   => [
 				'DONOTROCKETOPTIMIZE' => false,
-				'DONOTASYNCCSS'       => false,
 				'options'             => [
 					'async_css' => [
 						'value'   => false,
@@ -75,7 +67,6 @@ return [
 		'testShouldBailOutRocketExcludedOption'     => [
 			'config'   => [
 				'DONOTROCKETOPTIMIZE'            => false,
-				'DONOTASYNCCSS'                  => false,
 				'options'                        => [
 					'async_css' => [
 						'value'   => true,
@@ -89,7 +80,6 @@ return [
 		'testShouldBailOutNoCurrentPageCriticalCSS' => [
 			'config'   => [
 				'DONOTROCKETOPTIMIZE'            => false,
-				'DONOTASYNCCSS'                  => false,
 				'options'                        => [
 					'async_css' => [
 						'value'   => true,
@@ -104,7 +94,6 @@ return [
 		'testShouldBailOutEmptyFallBackCriticalCSS' => [
 			'config'   => [
 				'DONOTROCKETOPTIMIZE'            => false,
-				'DONOTASYNCCSS'                  => false,
 				'options'                        => [
 					'async_css'    => [
 						'value'   => true,
@@ -123,7 +112,6 @@ return [
 		'testShouldDisplatFallBackCriticalCSS'      => [
 			'config'   => [
 				'DONOTROCKETOPTIMIZE'            => false,
-				'DONOTASYNCCSS'                  => false,
 				'options'                        => [
 					'async_css'    => [
 						'value'   => true,
@@ -144,7 +132,6 @@ return [
 		'testShouldDisplayFileCriticalCSS'          => [
 			'config'   => [
 				'DONOTROCKETOPTIMIZE'            => false,
-				'DONOTASYNCCSS'                  => false,
 				'options'                        => [
 					'async_css'    => [
 						'value'   => true,
@@ -165,7 +152,6 @@ return [
 		'testShouldDisplayCustomFileCriticalCSS'    => [
 			'config'   => [
 				'DONOTROCKETOPTIMIZE'            => false,
-				'DONOTASYNCCSS'                  => false,
 				'options'                        => [
 					'async_css'    => [
 						'value'   => true,

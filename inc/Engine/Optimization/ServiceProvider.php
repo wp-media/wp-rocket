@@ -57,7 +57,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->withArgument( $options )
 			->withArgument( WP_ROCKET_CACHE_BUSTING_PATH )
 			->withArgument( WP_ROCKET_CACHE_BUSTING_URL );
-
 		$this->getContainer()->share( 'minify_html_subscriber', 'WP_Rocket\Subscriber\Optimization\Minify_HTML_Subscriber' )
 			->withArgument( $options );
 		$this->getContainer()->share( 'combine_google_fonts_subscriber', 'WP_Rocket\Engine\Optimization\GoogleFonts\Subscriber' )
@@ -68,7 +67,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->withArgument( $options );
 		$this->getContainer()->share( 'dequeue_jquery_migrate_subscriber', 'WP_Rocket\Subscriber\Optimization\Dequeue_JQuery_Migrate_Subscriber' )
 			->withArgument( $options );
-
 		$this->getContainer()->share( 'ie_conditionals_subscriber', 'WP_Rocket\Engine\Optimization\IEConditionalSubscriber' );
 	}
 }

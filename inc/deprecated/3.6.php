@@ -657,14 +657,14 @@ HTACCESS;
 /**
  * Get list of CSS files to be excluded from async CSS.
  *
- * @since 3.6.1 deprecated
+ * @since 3.6.2 deprecated
  * @since 2.10
  * @author Remy Perona
  *
  * @return array An array of URLs for the CSS files to be excluded.
  */
 function get_rocket_exclude_async_css() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
-	_deprecated_function( __FUNCTION__ . '()', '3.6.1', '\WP_Rocket\Engine\CriticalPath\CriticalCSS::get_exclude_async_css()' );
+	_deprecated_function( __FUNCTION__ . '()', '3.6.2', '\WP_Rocket\Engine\CriticalPath\CriticalCSS::get_exclude_async_css()' );
 	/**
 	 * Filter list of async CSS files
 	 *
