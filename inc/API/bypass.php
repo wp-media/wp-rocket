@@ -14,7 +14,15 @@ defined( 'ABSPATH' ) || exit;
 function rocket_bypass() {
 	global $wp;
 
+	static $bypass = null;
+
 	$url = wp_parse_url( add_query_arg( $wp->query_vars, home_url( $wp->request ) ) );
 
-	return isset( $url['query'] ) && false !== strpos( $url['query'], 'nowprocket' );
+	if ( ! is_null( $bypass ) ) {
+		return $bypass;
+	}
+
+	$bypass = isset( $url['query'] ) && false !== strpos( $url['query'], 'nowprocket' );
+
+	return $bypass;
 }
