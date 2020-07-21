@@ -80,13 +80,13 @@ class O2Switch implements Subscriber_Interface {
 	 * @return array Array for headers to be sent.
 	 */
 	public function add_purge_headers( $headers ) {
-		$headers['X-VC-Purge-Key'] = O2SWITCH_VARNISH_PURGE_KEY;
+		$headers['X-VC-Purge-Key'] = rocket_get_constant( 'O2SWITCH_VARNISH_PURGE_KEY' );
 
-		if ( 'regex' === $headers['X-Purge-Method'] ) {
+		if ( isset( $headers['X-Purge-Method'] ) && 'regex' === $headers['X-Purge-Method'] ) {
 			$headers['X-Purge-Regex'] = '.*';
-		}
 
-		unset( $headers['X-Purge-Method'] );
+			unset( $headers['X-Purge-Method'] );
+		}
 
 		return $headers;
 	}
