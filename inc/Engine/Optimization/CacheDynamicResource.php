@@ -123,7 +123,7 @@ class CacheDynamicResource extends AbstractOptimization implements Subscriber_In
 	 * @return string
 	 */
 	public function cache_dynamic_resource( $src ) {
-		if ( ! $this->is_allowed() ) {
+		if ( ! $this->is_allowed() || \rocket_bypass() ) {
 			return $src;
 		}
 
