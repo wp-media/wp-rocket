@@ -580,7 +580,7 @@ class Page {
 
 		$this->settings->add_settings_sections(
 			[
-				'css'   => [
+				'css' => [
 					'title'  => __( 'CSS Files', 'rocket' ),
 					'help'   => [
 						'id'  => $this->beacon->get_suggest( 'css_section' ),
@@ -590,7 +590,7 @@ class Page {
 					// translators: %1$s = type of minification (HTML, CSS or JS), %2$s = “WP Rocket”.
 					'helper' => rocket_maybe_disable_minify_css() ? sprintf( __( '%1$s Minification is currently activated in <strong>Autoptimize</strong>. If you want to use %2$s’s minification, disable those options in Autoptimize.', 'rocket' ), 'CSS', WP_ROCKET_PLUGIN_NAME ) : '',
 				],
-				'js'    => [
+				'js'  => [
 					'title'  => __( 'JavaScript Files', 'rocket' ),
 					'help'   => [
 						'id'  => $this->beacon->get_suggest( 'js_section' ),
