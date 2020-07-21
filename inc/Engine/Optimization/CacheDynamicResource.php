@@ -123,7 +123,7 @@ class CacheDynamicResource extends AbstractOptimization implements Subscriber_In
 	 * @return string
 	 */
 	public function cache_dynamic_resource( $src ) {
-		if ( ! $this->is_allowed() || \rocket_bypass() ) {
+		if ( ! $this->is_allowed() ) {
 			return $src;
 		}
 
@@ -197,6 +197,10 @@ class CacheDynamicResource extends AbstractOptimization implements Subscriber_In
 	 */
 	public function is_allowed() {
 		global $pagenow;
+
+		if ( \rocket_bypass() ) {
+			return false;
+		}
 
 		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
 			return false;

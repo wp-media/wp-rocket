@@ -41,7 +41,7 @@ class Subscriber extends AbstractMinifySubscriber {
 	 * @return string
 	 */
 	public function process( $html ) {
-		if ( ! $this->is_allowed() || rocket_bypass() ) {
+		if ( ! $this->is_allowed() ) {
 			return $html;
 		}
 
@@ -63,6 +63,10 @@ class Subscriber extends AbstractMinifySubscriber {
 	 * @return bool
 	 */
 	protected function is_allowed() {
+		if ( \rocket_bypass() ) {
+			return false;
+		}
+
 		if ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
 			return false;
 		}
