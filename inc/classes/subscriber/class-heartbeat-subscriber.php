@@ -60,7 +60,7 @@ class Heartbeat_Subscriber implements Subscriber_Interface {
 	 * @author Grégory Viguier
 	 */
 	public function maybe_disable() {
-		if ( ! $this->behavior_match_context( 'disable' ) || ! rocket_bypass() ) {
+		if ( ! $this->behavior_match_context( 'disable' ) || ! \rocket_bypass() ) {
 			return;
 		}
 

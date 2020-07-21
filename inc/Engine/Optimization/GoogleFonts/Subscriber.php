@@ -19,10 +19,6 @@ class Subscriber extends AbstractMinifySubscriber {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		if ( rocket_bypass() ) {
-			return [];
-		}
-		
 		return [
 			'wp_resource_hints' => [ 'preconnect', 10, 2 ],
 			'rocket_buffer'     => [ 'process', 18 ],
@@ -39,7 +35,7 @@ class Subscriber extends AbstractMinifySubscriber {
 	 * @return array
 	 */
 	public function preconnect( array $urls, $relation_type ) {
-		if ( ! $this->is_allowed() ) {
+		if ( ! $this->is_allowed() || \rocket_bypass() ) {
 			return $urls;
 		}
 
@@ -65,7 +61,7 @@ class Subscriber extends AbstractMinifySubscriber {
 	 * @return string
 	 */
 	public function process( $html ) {
-		if ( ! $this->is_allowed() ) {
+		if ( ! $this->is_allowed() || \rocket_bypass() ) {
 			return $html;
 		}
 
