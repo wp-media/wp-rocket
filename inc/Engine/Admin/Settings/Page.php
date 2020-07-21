@@ -570,6 +570,7 @@ class Page {
 		$exclude_js_beacon     = $this->beacon->get_suggest( 'exclude_js' );
 		$jquery_migrate_beacon = $this->beacon->get_suggest( 'jquery_migrate' );
 		$google_fonts_beacon   = $this->beacon->get_suggest( 'google_fonts' );
+		$delay_js_beacon       = $this->beacon->get_suggest( 'delay_js' );
 
 		$this->settings->add_page_section(
 			'file_optimization',
@@ -825,6 +826,32 @@ class Page {
 					'page'              => 'file_optimization',
 					'default'           => 1,
 					'sanitize_callback' => 'sanitize_checkbox',
+				],
+				'delay_js' => [
+					'container_class'   => [
+						'wpr-isParent',
+					],
+					'type'              => 'checkbox',
+					'label'             => __( 'Delay Javascript Execution', 'rocket' ),
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description'       => sprintf( __( 'Improves initial loading time by delaying the loading of JavaScript files. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $delay_js_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $delay_js_beacon['id'] ) . '" target="_blank">', '</a>' ),
+					'section'           => 'js',
+					'page'              => 'file_optimization',
+					'default'           => 1,
+					'sanitize_callback' => 'sanitize_checkbox',
+				],
+				'delay_js_scripts'           => [
+					'type'              => 'textarea',
+					'label'             => __( 'Scripts to delay', 'rocket' ),
+					'container_class'   => [
+						'wpr-field--children',
+					],
+					'description'            => __( 'Specify keywords that can identify inline or JavaScript files to be delayed (one per line).', 'rocket' ),
+					'parent'            => 'delay_js',
+					'section'           => 'js',
+					'page'              => 'file_optimization',
+					'default'           => '',
+					'sanitize_callback' => 'sanitize_textarea',
 				],
 			]
 		);
