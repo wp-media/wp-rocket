@@ -15,6 +15,11 @@ function rocket_bypass() {
 	global $wp;
 
 	static $bypass = null;
+
+	if ( rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ) {
+		$bypass = null;
+	}
+
 	if ( ! is_null( $bypass ) ) {
 		return $bypass;
 	}
