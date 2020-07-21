@@ -19,6 +19,10 @@ class Subscriber extends AbstractMinifySubscriber {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
+		if ( rocket_bypass() ) {
+			return [];
+		}
+		
 		return [
 			'wp_resource_hints' => [ 'preconnect', 10, 2 ],
 			'rocket_buffer'     => [ 'process', 18 ],

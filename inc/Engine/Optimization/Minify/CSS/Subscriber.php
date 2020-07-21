@@ -41,7 +41,7 @@ class Subscriber extends AbstractMinifySubscriber {
 	 * @return string
 	 */
 	public function process( $html ) {
-		if ( ! $this->is_allowed() ) {
+		if ( ! $this->is_allowed() || rocket_bypass() ) {
 			return $html;
 		}
 

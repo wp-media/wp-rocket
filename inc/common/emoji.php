@@ -9,6 +9,10 @@ if ( get_rocket_option( 'emoji', 0 ) ) {
 	 * @since 2.7
 	 */
 	function rocket_disable_emoji() {
+		if ( rocket_bypass() ) {
+			return;
+		}
+
 		remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
 		remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
 		remove_filter( 'the_content_feed', 'wp_staticize_emoji' );

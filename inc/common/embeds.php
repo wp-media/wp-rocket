@@ -14,6 +14,10 @@ if ( get_rocket_option( 'embeds', 0 ) ) {
 	 * @author Remy Perona
 	 */
 	function rocket_disable_embeds_init() {
+		if ( rocket_bypass() ) {
+			return;
+		}
+
 		global $wp;
 
 		// Remove the embed query var.
