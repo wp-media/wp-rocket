@@ -44,6 +44,7 @@ function rocket_init() {
 	define( 'WP_ROCKET_PLUGIN_NAME', 'WP Rocket' );
 	define( 'WP_ROCKET_PLUGIN_SLUG', sanitize_key( WP_ROCKET_PLUGIN_NAME ) );
 
+
 	$wp_rocket = new Plugin(
 		WP_ROCKET_PATH . 'views',
 		new Container()
@@ -55,6 +56,7 @@ function rocket_init() {
 	require WP_ROCKET_FUNCTIONS_PATH . 'posts.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'admin.php';
 	require WP_ROCKET_INC_PATH . '/API/preload.php';
+	require WP_ROCKET_INC_PATH . '/API/bypass.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'formatting.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'i18n.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'htaccess.php';
@@ -178,7 +180,7 @@ function rocket_deactivation() {
 	wp_clear_scheduled_hook( 'rocket_cache_dir_size_check' );
 
 	/**
-	 * WP Rocket deactivation.
+	 * WP Rocket deactivation.
 	 *
 	 * @since  3.1.5
 	 * @author Grégory Viguier
@@ -238,7 +240,7 @@ function rocket_activation() {
 	rocket_generate_advanced_cache_file( new AdvancedCache( WP_ROCKET_PATH . 'views/cache/', $filesystem ) );
 
 	/**
-	 * WP Rocket activation.
+	 * WP Rocket activation.
 	 *
 	 * @since  3.1.5
 	 * @author Grégory Viguier
