@@ -39,13 +39,13 @@ class Test_PreloadFonts extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldAddPreloadTagsWhenValidFonts( $bypass, $rocket_options, $expected ) {
+		$GLOBALS['wp'] = (object) [
+			'query_vars' => [],
+			'request'    => 'http://example.org',
+		];
+
 		if ( $bypass ) {
-			$GLOBALS['wp'] = (object) [
-				'query_vars' => [
-					'nowprocket' => 1,
-				],
-				'request'    => 'http://example.org',
-			];
+			$GLOBALS['wp']->query_vars['nowprocket'] =  1;
 		}
 
 		$this->setUpOptionsAndHooks( $rocket_options );
