@@ -31,12 +31,23 @@ class Test_PreloadFonts extends TestCase {
 		remove_filter( 'pre_get_rocket_option_cdn', [ $this, 'return_cdn' ] );
 		remove_filter( 'pre_get_rocket_option_cdn_cnames', [ $this, 'return_cdn_cnames' ] );
 		remove_filter( 'pre_get_rocket_option_cdn_zone', [ $this, 'return_cdn_zones' ] );
+
+		unset( $GLOBALS['wp'] );
 	}
 
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldAddPreloadTagsWhenValidFonts( $rocket_options, $expected ) {
+	public function testShouldAddPreloadTagsWhenValidFonts( $bypass, $rocket_options, $expected ) {
+		if ( $bypass ) {
+			$GLOBALS['wp'] = (object) [
+				'query_vars' => [
+					'nowprocket' => 1,
+				],
+				'request'    => 'http://example.org',
+			];
+		}
+
 		$this->setUpOptionsAndHooks( $rocket_options );
 
 		ob_start();
