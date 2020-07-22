@@ -64,7 +64,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->withArgument( $options );
 		$this->getContainer()->share( 'dequeue_jquery_migrate_subscriber', 'WP_Rocket\Subscriber\Optimization\Dequeue_JQuery_Migrate_Subscriber' )
 			->withArgument( $options );
-
 		$this->getContainer()->share( 'ie_conditionals_subscriber', 'WP_Rocket\Engine\Optimization\IEConditionalSubscriber' );
 	}
 }
