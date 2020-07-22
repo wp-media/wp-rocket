@@ -63,10 +63,6 @@ class Subscriber extends AbstractMinifySubscriber {
 	 * @return bool
 	 */
 	protected function is_allowed() {
-		if ( \rocket_bypass() ) {
-			return false;
-		}
-
 		if ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
 			return false;
 		}
