@@ -126,7 +126,6 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 			'embeds'                  => 'Disable Embeds',
 			'defer_all_js'            => 'Defer JS',
 			'defer_all_js_safe'       => 'Defer JS Safe',
-			'delay_js'                => 'Delay JS',
 			'async_css'               => 'Optimize CSS Delivery',
 			'lazyload'                => 'Lazyload Images',
 			'lazyload_iframes'        => 'Lazyload Iframes',
@@ -391,16 +390,6 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 				'fr' => [
 					'id'  => '5d5ac08b2c7d3a7920be3649',
 					'url' => 'https://fr.​docs.​wp-rocket.​me/article/1270-chargement-differe-des-fichiers-js/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-			],
-			'delay_js'                   => [
-				'en' => [
-					'id'  => '',
-					'url' => 'https://docs.wp-rocket.me/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-				'fr' => [
-					'id'  => '',
-					'url' => 'https://fr.​docs.​wp-rocket.​me/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'jquery_migrate'             => [
