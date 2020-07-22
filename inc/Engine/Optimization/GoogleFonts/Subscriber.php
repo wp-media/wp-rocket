@@ -35,7 +35,7 @@ class Subscriber extends AbstractMinifySubscriber {
 	 * @return array
 	 */
 	public function preconnect( array $urls, $relation_type ) {
-		if ( ! $this->is_allowed() || \rocket_bypass() ) {
+		if ( ! $this->is_allowed() ) {
 			return $urls;
 		}
 
@@ -61,7 +61,7 @@ class Subscriber extends AbstractMinifySubscriber {
 	 * @return string
 	 */
 	public function process( $html ) {
-		if ( ! $this->is_allowed() || \rocket_bypass() ) {
+		if ( ! $this->is_allowed() ) {
 			return $html;
 		}
 
@@ -77,6 +77,10 @@ class Subscriber extends AbstractMinifySubscriber {
 	 * @author Remy Perona
 	 */
 	protected function is_allowed() {
+		if ( rocket_bypass() ) {
+			return false;
+		}
+
 		return (bool) $this->options->get( 'minify_google_fonts', 0 );
 	}
 }
