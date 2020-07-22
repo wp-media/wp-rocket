@@ -1,5 +1,8 @@
 <?php
 
+namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\GoogleFonts;
+
+use Mockery;
 use WP_Rocket\Engine\Optimization\GoogleFonts\Admin\Settings;
 use WP_Rocket\Engine\Optimization\GoogleFonts\Admin\Subscriber;
 use WP_Rocket\Tests\Integration\TestCase;

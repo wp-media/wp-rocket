@@ -14,7 +14,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
  *
  * @group  GoogleFontsAdmin
  */
-class Test_EnableGoogleFonts extends FilesystemTestCase {
+class Test_DisplayGoogleFontsEnabler extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/Optimization/GoogleFonts/Admin/Settings/displayGoogleFontsEnabler.php';
 	private $beacon;
 	private $options;
