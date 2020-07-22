@@ -2,10 +2,12 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\GoogleFonts;
 
+use Mockery;
+use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Optimization\GoogleFonts\Admin\Settings;
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
-use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\AdminTrait;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\GoogleFonts\Admin::enable_google_fonts()
@@ -14,23 +16,22 @@ use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\AdminTrait;
  */
 class Test_EnableGoogleFonts extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/Optimization/GoogleFonts/Admin/Settings/displayGoogleFontsEnabler.php';
-
-	use AdminTrait;
-
+	private $beacon;
+	private $options;
 	private $settings;
 
 	public function setUp() {
 		parent::setUp();
 
-		$this->setUpMocks();
-
-		Functions\when( 'check_ajax_referer' )->justReturn( true );
-
+		$this->beacon       = Mockery::mock( Beacon::class );
+		$this->options      = Mockery::mock( Options_Data::class );
 		$this->settings = new Settings(
 			$this->options,
 			$this->beacon,
-			'content/plugins/wp-rocket/views/settings'
+			'wp-content/plugins/wp-rocket/views'
 		);
+
+		Functions\when( 'check_ajax_referer' )->justReturn( true );
 	}
 
 	/**

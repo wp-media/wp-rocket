@@ -1,8 +1,10 @@
 <?php
 namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\GoogleFonts;
 
+use Mockery;
+use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Optimization\GoogleFonts\Admin\Settings;
-use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\AdminTrait;
 use WPMedia\PHPUnit\Unit\TestCase;
 use Brain\Monkey\Functions;
 
@@ -12,22 +14,22 @@ use Brain\Monkey\Functions;
  * @group  GoogleFontsAdmin
  */
 class Test_EnableGoogleFonts extends TestCase {
-	use AdminTrait;
-
+	private $beacon;
+	private $options;
 	private $settings;
 
 	public function setUp() {
 		parent::setUp();
 
-		$this->setUpMocks();
-
-		Functions\when( 'check_ajax_referer' )->justReturn( true );
-
+		$this->beacon       = Mockery::mock( Beacon::class );
+		$this->options      = Mockery::mock( Options_Data::class );
 		$this->settings = new Settings(
 			$this->options,
 			$this->beacon,
 			'wp-content/plugins/wp-rocket/views'
 		);
+
+		Functions\when( 'check_ajax_referer' )->justReturn( true );
 	}
 
 	/**
