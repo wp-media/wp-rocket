@@ -106,7 +106,7 @@ class GoogleAnalytics extends Abstract_Busting {
 	public function replace_url( $html ) {
 		$this->is_replaced = false;
 
-		$tag = $this->find( '<script[^>]*?>(.*)<\/script>', $html );
+		$tag = $this->find( '<script\s*(?<attr>[^>]*)?>(?<content>.*)?<\/script>', $html );
 
 		if ( ! $tag ) {
 			return $html;
@@ -216,7 +216,7 @@ class GoogleAnalytics extends Abstract_Busting {
 	 * @return string
 	 */
 	protected function find( $pattern, $html ) {
-		\preg_match_all( '/' . $pattern . '/Umsi', $html, $matches, PREG_SET_ORDER );
+		\preg_match_all( '/' . $pattern . '/Umi', $html, $matches, PREG_SET_ORDER );
 
 		if ( ! $matches ) {
 			return false;
@@ -224,7 +224,11 @@ class GoogleAnalytics extends Abstract_Busting {
 
 		$matches = \array_map(
 			function( $match ) {
-				if ( false === \strpos( $match[1], 'GoogleAnalyticsObject' ) ) {
+				if ( isset( $match['attr'] ) && ! preg_match( '/src\s*=\s*[\'"]\s*(?:https?:)?\/\/www\.google-analytics\.com\/analytics\.js\s*[\'"]/i', $match['attr'] ) ) {
+					return;
+				}
+
+				if ( isset( $match['content'] ) && false === \strpos( $match['content'], 'GoogleAnalyticsObject' ) ) {
 					return;
 				}
 
