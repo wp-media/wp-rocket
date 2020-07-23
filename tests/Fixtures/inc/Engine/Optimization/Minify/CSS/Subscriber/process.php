@@ -209,14 +209,50 @@ return [
 				'html'  => '<html>' .
 				           '<head>' .
 				           '<title>Sample Page</title>' .
-				           '<link rel="stylesheet" href="http://example.org/wp-content/cache/min/1/4e0f5a16e3462f854b9440920117e50e.css" data-minify="1" />' .
+				           '<link rel="stylesheet" href="http://example.org/wp-content/cache/min/1/eb7ac62f1625bbbcc73a159d5f6aa290.css" media="all" data-minify="1" />' .
 				           '</head>' .
 				           '<body>' .
 				           '</body>' .
 				           '</html>',
 				'files' => [
-					'wp-content/cache/min/1/4e0f5a16e3462f854b9440920117e50e.css',
-					'wp-content/cache/min/1/4e0f5a16e3462f854b9440920117e50e.css.gz',
+					'wp-content/cache/min/1/eb7ac62f1625bbbcc73a159d5f6aa290.css',
+					'wp-content/cache/min/1/eb7ac62f1625bbbcc73a159d5f6aa290.css.gz',
+				],
+			],
+
+			'settings' => [
+				'minify_concatenate_css' => 1,
+				'cdn'                    => 0,
+				'cdn_cnames'             => [],
+				'cdn_zone'               => [],
+			],
+		],
+
+		'combineCssFilesWithExternalCSS' => [
+			'original' => '<html>' .
+			              '<head>' .
+			              '<title>Sample Page</title>' .
+			              '<link rel="stylesheet" href="http://example.org/wp-content/themes/twentytwenty/style.css" type="text/css" media="all">' .
+			              '<link rel="stylesheet" href="http://example.org/wp-content/plugins/hello-dolly/style.css">' .
+						  '<link rel="stylesheet" href="http://example.org/wp-includes/css/dashicons.min.css">' .
+						  '<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" media="all" />' .
+			              '</head>' .
+			              '<body>' .
+			              '</body>' .
+			              '</html>',
+
+			'expected' => [
+				'html'  => '<html>' .
+				           '<head>' .
+				           '<title>Sample Page</title>' .
+				           '<link rel="stylesheet" href="http://example.org/wp-content/cache/min/1/245ce39ab456beba0af083ce5b883e9d.css" media="all" data-minify="1" />' .
+				           '</head>' .
+				           '<body>' .
+				           '</body>' .
+				           '</html>',
+				'files' => [
+					'wp-content/cache/min/1/245ce39ab456beba0af083ce5b883e9d.css',
+					'wp-content/cache/min/1/245ce39ab456beba0af083ce5b883e9d.css.gz',
 				],
 			],
 
@@ -244,14 +280,14 @@ return [
 				'html'  => '<html>' .
 				           '<head>' .
 				           '<title>Sample Page</title>' .
-				           '<link rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/4e0f5a16e3462f854b9440920117e50e.css" data-minify="1" />' .
+				           '<link rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/eb7ac62f1625bbbcc73a159d5f6aa290.css" media="all" data-minify="1" />' .
 				           '</head>' .
 				           '<body>' .
 				           '</body>' .
 				           '</html>',
 				'files' => [
-					'wp-content/cache/min/1/4e0f5a16e3462f854b9440920117e50e.css',
-					'wp-content/cache/min/1/4e0f5a16e3462f854b9440920117e50e.css.gz',
+					'wp-content/cache/min/1/eb7ac62f1625bbbcc73a159d5f6aa290.css',
+					'wp-content/cache/min/1/eb7ac62f1625bbbcc73a159d5f6aa290.css.gz',
 				],
 			],
 
@@ -279,14 +315,14 @@ return [
 				'html'  => '<html>' .
 				           '<head>' .
 				           '<title>Sample Page</title>' .
-				           '<link rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/4e0f5a16e3462f854b9440920117e50e.css" data-minify="1" />' .
+				           '<link rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/6b11b532cd22becbe49e0ad275f13fd5.css" media="all" data-minify="1" />' .
 				           '</head>' .
 				           '<body>' .
 				           '</body>' .
 				           '</html>',
 				'files' => [
-					'wp-content/cache/min/1/4e0f5a16e3462f854b9440920117e50e.css',
-					'wp-content/cache/min/1/4e0f5a16e3462f854b9440920117e50e.css.gz',
+					'wp-content/cache/min/1/6b11b532cd22becbe49e0ad275f13fd5.css',
+					'wp-content/cache/min/1/6b11b532cd22becbe49e0ad275f13fd5.css.gz',
 				],
 			],
 
@@ -314,14 +350,14 @@ return [
 				'html'  => '<html>' .
 				           '<head>' .
 				           '<title>Sample Page</title>' .
-				           '<link rel="stylesheet" href="https://123456.rocketcdn.me/cdnpath/wp-content/cache/min/1/4e0f5a16e3462f854b9440920117e50e.css" data-minify="1" />' .
+				           '<link rel="stylesheet" href="https://123456.rocketcdn.me/cdnpath/wp-content/cache/min/1/35e2692ad46a43976a37c3d91a650f28.css" media="all" data-minify="1" />' .
 				           '</head>' .
 				           '<body>' .
 				           '</body>' .
 				           '</html>',
 				'files' => [
-					'wp-content/cache/min/1/4e0f5a16e3462f854b9440920117e50e.css',
-					'wp-content/cache/min/1/4e0f5a16e3462f854b9440920117e50e.css.gz',
+					'wp-content/cache/min/1/35e2692ad46a43976a37c3d91a650f28.css',
+					'wp-content/cache/min/1/35e2692ad46a43976a37c3d91a650f28.css.gz',
 				],
 			],
 

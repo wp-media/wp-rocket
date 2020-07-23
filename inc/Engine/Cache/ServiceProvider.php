@@ -21,6 +21,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	protected $provides = [
 		'advanced_cache',
+		'wp_cache',
 		'purge',
 		'purge_actions_subscriber',
 		'admin_cache_subscriber',
@@ -37,12 +38,15 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'advanced_cache', 'WP_Rocket\Engine\Cache\AdvancedCache' )
 			->withArgument( $this->getContainer()->get( 'template_path' ) . '/cache/' )
 			->withArgument( $filesystem );
+		$this->getContainer()->add( 'wp_cache', 'WP_Rocket\Engine\Cache\WPCache' )
+			->withArgument( $filesystem );
 		$this->getContainer()->add( 'purge', 'WP_Rocket\Engine\Cache\Purge' )
 			->withArgument( $filesystem );
 		$this->getContainer()->share( 'purge_actions_subscriber', 'WP_Rocket\Engine\Cache\PurgeActionsSubscriber' )
 			->withArgument( $this->getContainer()->get( 'options' ) )
 			->withArgument( $this->getContainer()->get( 'purge' ) );
 		$this->getContainer()->share( 'admin_cache_subscriber', 'WP_Rocket\Engine\Cache\AdminSubscriber' )
-			->withArgument( $this->getContainer()->get( 'advanced_cache' ) );
+			->withArgument( $this->getContainer()->get( 'advanced_cache' ) )
+			->withArgument( $this->getContainer()->get( 'wp_cache' ) );
 	}
 }

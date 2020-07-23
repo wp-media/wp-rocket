@@ -6,6 +6,8 @@ use WPMedia\PHPUnit\Integration\AdminTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Admin\Settings\Settings::sanitize_callback
+ * @covers ::rocket_validate_css
+ *
  * @group  AdminOnly
  * @group  Settings
  */
@@ -46,6 +48,21 @@ class Test_SanitizeCallback extends AdminTestCase {
 			$sanitized['critical_css'],
 			$actual['critical_css']
 		);
+	}
+
+	/**
+	 * @dataProvider addExcludeCSSProvider
+	 */
+	public function testShouldSanitizeExcludeCSS( $original, $sanitized ) {
+		$actual = apply_filters( 'sanitize_option_wp_rocket_settings', $original );
+		$this->assertSame(
+			array_values( $sanitized['exclude_css'] ),
+			array_values( $actual['exclude_css'] )
+		);
+	}
+
+	public function addExcludeCSSProvider() {
+		return $this->getTestData( __DIR__, 'exclude-css' );
 	}
 
 	public function addDNSPrefetchProvider() {

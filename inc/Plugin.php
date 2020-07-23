@@ -254,6 +254,8 @@ class Plugin {
 			'simple_custom_css',
 			'cloudways',
 			'wpengine',
+			'spinupwp',
+			'pdfembedder',
 		];
 
 		if ( $this->options->get( 'do_cloudflare', false ) ) {

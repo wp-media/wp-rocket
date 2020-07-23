@@ -1,6 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Optimization\Minify;
 
+use WP_Filesystem_Direct;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
@@ -23,15 +24,24 @@ abstract class AbstractMinifySubscriber implements Subscriber_Interface {
 	protected $optimizer;
 
 	/**
+	 * Filesystem instance
+	 *
+	 * @var WP_Filesystem_Direct
+	 */
+	protected $filesystem;
+
+	/**
 	 * Creates an instance of inheriting class.
 	 *
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
-	 * @param Options_Data $options Plugin options.
+	 * @param Options_Data         $options   Plugin options.
+	 * @param WP_Filesystem_Direct $filesystem Filesystem instance.
 	 */
-	public function __construct( Options_Data $options ) {
-		$this->options = $options;
+	public function __construct( Options_Data $options, $filesystem ) {
+		$this->options    = $options;
+		$this->filesystem = $filesystem;
 	}
 
 	/**

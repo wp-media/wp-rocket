@@ -286,7 +286,7 @@ class Page {
 			wp_die();
 		}
 
-		$whitelist = [
+		$allowed = [
 			'do_beta'                     => 1,
 			'analytics_enabled'           => 1,
 			'debug_enabled'               => 1,
@@ -299,7 +299,7 @@ class Page {
 			'sucury_waf_api_key'          => 1,
 		];
 
-		if ( ! isset( $_POST['option']['name'] ) || ! isset( $whitelist[ $_POST['option']['name'] ] ) ) {
+		if ( ! isset( $_POST['option']['name'] ) || ! isset( $allowed[ $_POST['option']['name'] ] ) ) {
 			wp_die();
 		}
 
@@ -667,7 +667,9 @@ class Page {
 					'type'              => 'textarea',
 					'label'             => __( 'Excluded CSS Files', 'rocket' ),
 					'description'       => __( 'Specify URLs of CSS files to be excluded from minification and concatenation (one per line).', 'rocket' ),
-					'helper'            => __( 'The domain part of the URL will be stripped automatically.<br>Use (.*).css wildcards to exclude all CSS files located at a specific path.', 'rocket' ),
+					'helper'            => __( '<strong>Internal:</strong> The domain part of the URL will be stripped automatically. Use (.*).css wildcards to exclude all CSS files located at a specific path.', 'rocket' ) . '<br>' .
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					sprintf( __( '<strong>3rd Party:</strong> Use either the full URL path or only the domain name, to exclude external CSS. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $exclude_js_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $exclude_js_beacon['id'] ) . '" rel="noopener noreferrer" target="_blank">', '</a>' ),
 					'container_class'   => [
 						'wpr-field--children',
 					],
@@ -914,7 +916,7 @@ class Page {
 				'embeds_section'   => [
 					'title'       => __( 'Embeds', 'rocket' ),
 					'type'        => 'fields_container',
-					'description' => __( 'Prevents others from embedding content from your site, prevents you from embedding content from other (non-whitelisted) sites, and removes JavaScript requests related to WordPress embeds', 'rocket' ),
+					'description' => __( 'Prevents others from embedding content from your site, prevents you from embedding content from other (non-allowed) sites, and removes JavaScript requests related to WordPress embeds', 'rocket' ),
 					'page'        => 'media',
 				],
 				'webp_section'     => [
@@ -1148,7 +1150,7 @@ class Page {
 				'preload_fonts' => [
 					'type'              => 'textarea',
 					'label'             => __( 'Fonts to preload', 'rocket' ),
-					'description'       => __( 'Specify urls of the font files to be preloaded (one per line). Fonts must be hosted on your own domain.', 'rocket' ),
+					'description'       => __( 'Specify urls of the font files to be preloaded (one per line). Fonts must be hosted on your own domain, or the domain you have specified on the CDN tab.', 'rocket' ),
 					'helper'            => __( 'The domain part of the URL will be stripped automatically.<br/>Allowed font extensions: otf, ttf, svg, woff, woff2.', 'rocket' ),
 					'placeholder'       => '/wp-content/themes/your-theme/assets/fonts/font-file.woff',
 					'section'           => 'preload_fonts_section',

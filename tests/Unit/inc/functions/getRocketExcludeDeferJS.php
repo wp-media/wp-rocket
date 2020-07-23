@@ -52,6 +52,7 @@ class Test_GetRocketExcludeDeferJS extends TestCase {
             'verify.authorize.net/anetseal',
             'lib/admin/assets/lib/webfont/webfont.min.js',
             'app.mailerlite.com',
+            'widget.reviews.io',
         ];
 
         if ( $defer_jquery ) {

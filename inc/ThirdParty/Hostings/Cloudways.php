@@ -24,10 +24,27 @@ class Cloudways implements Subscriber_Interface {
 
 		return [
 			'rocket_display_input_varnish_auto_purge' => 'return_false',
-			'do_rocket_varnish_http_purge'            => 'return_true',
+			'do_rocket_varnish_http_purge'            => 'should_purge',
 			'rocket_varnish_field_settings'           => 'varnish_addon_title',
 			'rocket_varnish_ip'                       => 'varnish_ip',
 		];
+	}
+
+	/**
+	 * Determine if the Varnish server is up and running.
+	 *
+	 * @since 3.6.1
+	 */
+	private static function is_varnish_running() {
+		if ( ! isset( $_SERVER['HTTP_X_VARNISH'] ) ) {
+			return false;
+		}
+
+		if ( ! isset( $_SERVER['HTTP_X_APPLICATION'] ) ) {
+			return false;
+		}
+
+		return ( 'varnishpass' !== trim( strtolower( $_SERVER['HTTP_X_APPLICATION'] ) ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 	}
 
 	/**
@@ -42,14 +59,14 @@ class Cloudways implements Subscriber_Interface {
 	}
 
 	/**
-	 * Returns true
+	 * Returns should purge Varnish.
 	 *
 	 * @since 3.5.5
 	 *
 	 * @return true
 	 */
-	public function return_true() {
-		return true;
+	public function should_purge() {
+		return self::is_varnish_running();
 	}
 
 	/**
@@ -61,6 +78,15 @@ class Cloudways implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function varnish_addon_title( array $settings ) {
+		if ( ! self::is_varnish_running() ) {
+			$settings['varnish_auto_purge']['title'] = sprintf(
+				// Translators: %s = Hosting name.
+				__( 'Varnish auto-purge will be automatically enabled once Varnish is enabled on your %s server.', 'rocket' ),
+				'Cloudways'
+			);
+
+			return $settings;
+		}
 		$settings['varnish_auto_purge']['title'] = sprintf(
 			// Translators: %s = Hosting name.
 			__( 'Your site is hosted on %s, we have enabled Varnish auto-purge for compatibility.', 'rocket' ),
@@ -79,6 +105,9 @@ class Cloudways implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function varnish_ip( $varnish_ip ) {
+		if ( ! self::is_varnish_running() ) {
+			return $varnish_ip;
+		}
 		if ( ! is_array( $varnish_ip ) ) {
 			$varnish_ip = (array) $varnish_ip;
 		}
