@@ -4,7 +4,6 @@ namespace WP_Rocket\Engine\Optimization\Minify\CSS;
 use MatthiasMullie\Minify as Minifier;
 use WP_Rocket\Logger\Logger;
 use WP_Rocket\Engine\Optimization\CSSTrait;
-use WP_Rocket\Engine\Optimization\PathRewriterTrait;
 
 /**
  * Minify CSS files
@@ -13,7 +12,6 @@ use WP_Rocket\Engine\Optimization\PathRewriterTrait;
  */
 class Minify extends AbstractCSSOptimization {
 	use CSSTrait;
-	use PathRewriterTrait;
 
 	/**
 	 * Minifies CSS files
