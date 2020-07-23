@@ -1,18 +1,16 @@
 <?php
-namespace WP_Rocket\Tests\Integration\inc\Addon\GoogleTracking\GoogleTagManager;
+namespace WP_Rocket\Tests\Integration\inc\Addon\GoogleTracking\GoogleAnalytics;
 
-use WP_Rocket\Addon\GoogleTracking\GoogleAnalytics;
-use WP_Rocket\Addon\GoogleTracking\GoogleTagManager;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Addon\GoogleTracking\GoogleTagManager::replace_url
+ * @covers \WP_Rocket\Addon\GoogleTracking\GoogleAnalytics::replace_url
  * @group  Addon
  * @group  GoogleTracking
  */
 class Test_ReplaceUrl extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/Addon/GoogleTracking/GoogleTagManager/replaceUrl.php';
+	protected $path_to_test_data = '/inc/Addon/GoogleTracking/GoogleAnalytics/replaceUrl.php';
 
 	public function tearDown() {
 		parent::tearDown();
