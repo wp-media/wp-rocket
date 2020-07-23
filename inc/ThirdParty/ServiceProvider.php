@@ -2,6 +2,8 @@
 namespace WP_Rocket\ThirdParty;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\ThirdParty\Hostings\HostResolver;
+use WP_Rocket\ThirdParty\Hostings\HostSubscriberFactory;
 
 /**
  * Service provider for WP Rocket third party compatibility
@@ -35,11 +37,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'beaverbuilder_subscriber',
 		'amp_subscriber',
 		'litespeed_subscriber',
-		'pressable_subscriber',
 		'simple_custom_css',
-		'cloudways',
-		'wpengine',
-		'spinupwp',
 		'pdfembedder',
 		'divi',
 	];
@@ -52,7 +50,17 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-		$options = $this->getContainer()->get( 'options' );
+		$options         = $this->getContainer()->get( 'options' );
+		$hosting_service = HostResolver::get_host_service();
+
+		if ( $hosting_service ) {
+			$host_subscriber = ( new HostSubscriberFactory(
+				$this->getContainer()->get( 'admin_cache_subscriber' ),
+				$this->getContainer()->get( 'event_manager' )
+			) )->get_subscriber();
+
+			$this->provides[] = $hosting_service;
+		}
 
 		$this->getContainer()->share( 'mobile_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Mobile_Subscriber' );
 		$this->getContainer()->share( 'elementor_subscriber', 'WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor' )
@@ -80,15 +88,15 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'amp_subscriber', 'WP_Rocket\ThirdParty\Plugins\Optimization\AMP' )
 			->withArgument( $options )
 			->withArgument( $this->getContainer()->get( 'cdn_subscriber' ) );
-		$this->getContainer()->share( 'pressable_subscriber', 'WP_Rocket\ThirdParty\Hostings\Pressable' )
-			->withArgument( $this->getContainer()->get( 'admin_cache_subscriber' ) );
 		$this->getContainer()->share( 'litespeed_subscriber', 'WP_Rocket\Subscriber\Third_Party\Hostings\Litespeed_Subscriber' );
 		$this->getContainer()->share( 'simple_custom_css', 'WP_Rocket\ThirdParty\Plugins\SimpleCustomCss' )
 			->withArgument( WP_ROCKET_CACHE_BUSTING_PATH )
 			->withArgument( WP_ROCKET_CACHE_BUSTING_URL );
-		$this->getContainer()->share( 'cloudways', 'WP_Rocket\ThirdParty\Hostings\Cloudways' );
-		$this->getContainer()->share( 'wpengine', 'WP_Rocket\ThirdParty\Hostings\WPEngine' );
-		$this->getContainer()->share( 'spinupwp', 'WP_Rocket\ThirdParty\Hostings\SpinUpWP' );
 		$this->getContainer()->share( 'pdfembedder', 'WP_Rocket\ThirdParty\Plugins\PDFEmbedder' );
+
+		// Register only a single host Subscriber, and only when we need one.
+		if ( $hosting_service ) {
+			$this->getContainer()->share( $hosting_service, $host_subscriber );
+		}
 	}
 }
