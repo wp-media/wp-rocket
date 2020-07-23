@@ -256,6 +256,7 @@ class Plugin {
 			'rest_cpcss_subscriber',
 			'simple_custom_css',
 			'pdfembedder',
+			'divi',
 		];
 
 		$host_type = HostResolver::get_host_service();
