@@ -1,8 +1,6 @@
 <?php
 namespace WP_Rocket\Tests\Integration\inc\Addon\GoogleTracking\GoogleTagManager;
 
-use WP_Rocket\Addon\GoogleTracking\GoogleAnalytics;
-use WP_Rocket\Addon\GoogleTracking\GoogleTagManager;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 use Brain\Monkey\Functions;
 

@@ -22,7 +22,7 @@ class Test_ReplaceUrl extends FilesystemTestCase {
 
 		Functions\when( 'get_current_blog_id' )->justReturn( 1 );
 
-		if ( !empty( $url ) ) {
+		if ( ! empty( $url ) ) {
 			Functions\expect( 'wp_remote_get' )->once()->with( $url )->andReturn( 'request' );
 			Functions\expect( 'wp_remote_retrieve_body' )->once()->with( 'request' )->andReturn( 'Remote File contents here' );
 		}
