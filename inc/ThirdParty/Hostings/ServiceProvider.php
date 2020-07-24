@@ -30,9 +30,7 @@ class ServiceProvider extends AbstractServiceProvider  {
 		$hosting_service = HostResolver::get_host_service();
 
 		if ( ! empty( $hosting_service ) ) {
-			$host_subscriber = ( new HostSubscriberFactory(
-				$this->getContainer()->get( 'admin_cache_subscriber' )
-			) )->get_subscriber();
+			$host_subscriber = ( new HostSubscriberFactory() )->get_subscriber();
 
 			$this->provides[] = $hosting_service;
 

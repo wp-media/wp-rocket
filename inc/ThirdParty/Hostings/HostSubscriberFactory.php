@@ -2,7 +2,6 @@
 
 namespace WP_Rocket\ThirdParty\Hostings;
 
-use WP_Rocket\Engine\Cache\AdminSubscriber;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\ThirdParty\NullSubscriber;
 use WP_Rocket\ThirdParty\SubscriberFactoryInterface;
@@ -13,23 +12,6 @@ use WP_Rocket\ThirdParty\SubscriberFactoryInterface;
  * @since 3.6.3
  */
 class HostSubscriberFactory implements SubscriberFactoryInterface {
-
-	/**
-	 * An Admin Subscriber object.
-	 *
-	 * @var AdminSubscriber
-	 */
-	protected $admin_subscriber;
-
-	/**
-	 * HostSubscriberFactory constructor.
-	 *
-	 * @param AdminSubscriber $admin_subscriber An Admin Subscriber object.
-	 */
-	public function __construct( AdminSubscriber $admin_subscriber ) {
-		$this->admin_subscriber = $admin_subscriber;
-	}
-
 	/**
 	 * Get a Subscriber Interface object.
 	 *
@@ -42,15 +24,15 @@ class HostSubscriberFactory implements SubscriberFactoryInterface {
 
 		switch ( $host_service ) {
 			case 'pressable':
-				return new Pressable( $this->admin_subscriber );
+				return new Pressable();
 			case 'cloudways':
 				return new Cloudways();
 			case 'spinupwp':
 				return new SpinUpWP();
 			case 'wpengine':
-				return new WPEngine( $this->admin_subscriber );
+				return new WPEngine();
 			case 'wordpresscom':
-				return new WordPressCom( $this->admin_subscriber );
+				return new WordPressCom();
 			default:
 				return new NullSubscriber();
 		}
