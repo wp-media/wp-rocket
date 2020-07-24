@@ -1,9 +1,7 @@
 <?php
 namespace WP_Rocket\ThirdParty\Hostings;
 
-use WP_Rocket\Engine\Activation\ActivationInterface;
 use WP_Rocket\Engine\Cache\AdminSubscriber;
-use WP_Rocket\Engine\Deactivation\DeactivationInterface;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Event_Management\Event_Manager_Aware_Subscriber_Interface;
 use WP_Rocket\ThirdParty\ReturnTypesTrait;
