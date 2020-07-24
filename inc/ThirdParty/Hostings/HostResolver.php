@@ -62,9 +62,9 @@ class HostResolver {
 		}
 
 		if (
-			! defined( '\Savvii\CacheFlusherPlugin::NAME_FLUSH_NOW' )
-			||
-			! defined( '\Savvii\CacheFlusherPlugin::NAME_DOMAINFLUSH_NOW' )
+			rocket_get_constant( '\Savvii\CacheFlusherPlugin::NAME_FLUSH_NOW' )
+			&&
+			rocket_get_constant( '\Savvii\CacheFlusherPlugin::NAME_DOMAINFLUSH_NOW' )
 		) {
 			return 'savvii';
 		}
