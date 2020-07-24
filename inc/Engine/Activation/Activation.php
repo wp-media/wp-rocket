@@ -3,6 +3,7 @@
 namespace WP_Rocket\Engine\Activation;
 
 use League\Container\Container;
+use WP_Rocket\ThirdParty\Hostings\HostResolver;
 
 /**
  * Plugin activation controller
@@ -19,7 +20,6 @@ class Activation {
 		'advanced_cache',
 		'capabilities_manager',
 		'wp_cache',
-		'wpengine',
 	];
 
 	/**
@@ -29,6 +29,12 @@ class Activation {
 	 */
 	public static function activate_plugin() {
 		$container = new Container();
+
+		$host_type = HostResolver::get_host_service();
+
+		if ( ! empty( $host_type ) ) {
+			self::$activators[] = $host_type;
+		}
 
 		$container->add( 'template_path', WP_ROCKET_PATH . 'views' );
 		$container->addServiceProvider( 'WP_Rocket\Engine\Activation\ServiceProvider' );
@@ -58,7 +64,7 @@ class Activation {
 		}
 
 		/**
-		 * WP Rocket activation.
+		 * WP Rocket activation.
 		 *
 		 * @since  3.1.5
 		 */

@@ -3,6 +3,7 @@
 namespace WP_Rocket\Engine\Deactivation;
 
 use League\Container\Container;
+use WP_Rocket\ThirdParty\Hostings\HostResolver;
 
 class Deactivation {
 	/**
@@ -14,7 +15,6 @@ class Deactivation {
 		'advanced_cache',
 		'capabilities_manager',
 		'wp_cache',
-		'wpengine',
 	];
 
 	/**
@@ -24,6 +24,12 @@ class Deactivation {
 	 */
 	public static function deactivate_plugin() {
 		global $is_apache;
+
+		$host_type = HostResolver::get_host_service();
+
+		if ( ! empty( $host_type ) ) {
+			self::$deactivators[] = $host_type;
+		}
 
 		$container = new Container();
 
@@ -85,7 +91,7 @@ class Deactivation {
 		wp_clear_scheduled_hook( 'rocket_cache_dir_size_check' );
 
 		/**
-		 * WP Rocket deactivation.
+		 * WP Rocket deactivation.
 		 *
 		 * @since  3.1.5
 		 */

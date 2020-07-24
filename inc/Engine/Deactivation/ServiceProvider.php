@@ -3,6 +3,7 @@ namespace WP_Rocket\Engine\Deactivation;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use League\Container\ServiceProvider\BootableServiceProviderInterface;
+use WP_Rocket\ThirdParty\Hostings\HostResolver;
 
 /**
  * Service Provider for the activation process.
@@ -24,8 +25,18 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 		'advanced_cache',
 		'capabilities_manager',
 		'wp_cache',
-		'wpengine',
 	];
+
+	/**
+	 * ServiceProvider constructor.
+	 */
+	public function __construct() {
+		$host_type = HostResolver::get_host_service();
+
+		if ( ! empty( $host_type ) ) {
+			$this->provides[] = $host_type;
+		}
+	}
 
 	/**
 	 * Executes this method when the service provider is registered
