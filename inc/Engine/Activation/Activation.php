@@ -30,14 +30,15 @@ class Activation {
 	public static function activate_plugin() {
 		$container = new Container();
 
+		$container->add( 'template_path', WP_ROCKET_PATH . 'views' );
+		$container->addServiceProvider( 'WP_Rocket\Engine\Activation\ServiceProvider' );
+		$container->addServiceProvider( 'WP_Rocket\ThirdParty\Hostings\ServiceProvider' );
+
 		$host_type = HostResolver::get_host_service();
 
 		if ( ! empty( $host_type ) ) {
 			self::$activators[] = $host_type;
 		}
-
-		$container->add( 'template_path', WP_ROCKET_PATH . 'views' );
-		$container->addServiceProvider( 'WP_Rocket\Engine\Activation\ServiceProvider' );
 
 		foreach ( self::$activators as $activator ) {
 			$container->get( $activator );

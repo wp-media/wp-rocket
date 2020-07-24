@@ -25,16 +25,17 @@ class Deactivation {
 	public static function deactivate_plugin() {
 		global $is_apache;
 
+		$container = new Container();
+
+		$container->add( 'template_path', WP_ROCKET_PATH . 'views' );
+		$container->addServiceProvider( 'WP_Rocket\Engine\Deactivation\ServiceProvider' );
+		$container->addServiceProvider( 'WP_Rocket\ThirdParty\Hostings\ServiceProvider' );
+
 		$host_type = HostResolver::get_host_service();
 
 		if ( ! empty( $host_type ) ) {
 			self::$deactivators[] = $host_type;
 		}
-
-		$container = new Container();
-
-		$container->add( 'template_path', WP_ROCKET_PATH . 'views' );
-		$container->addServiceProvider( 'WP_Rocket\Engine\Deactivation\ServiceProvider' );
 
 		foreach ( self::$deactivators as $deactivator ) {
 			$container->get( $deactivator );
