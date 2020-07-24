@@ -20,6 +20,7 @@ return [
 					<link rel="stylesheet" href="http://example.org/wp-content/themes/twentytwenty/style.css" type="text/css" media="all">
 					<link rel="stylesheet" href="http://example.org/wp-content/plugins/hello-dolly/style.css">
 					<link rel="stylesheet" href="http://example.org/wp-includes/css/dashicons.min.css">
+					<link rel="stylesheet" href="http://example.org/wp-content/themes/twentytwenty/style-font-face.min.css">
 				</head>
 				<body>
 				</body>
@@ -32,6 +33,7 @@ return [
 						<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-5360e3be2666897518a1821fbecc9d28.css" type="text/css" media="all">
 						<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style-4a16b4cd55f600cc39947847baa15308.css">
 						<link rel="stylesheet" href="http://example.org/wp-includes/css/dashicons.min.css">
+						<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min-810497c120aacb0db0d64737badecd9c.css">
 					</head>
 					<body>
 					</body>
@@ -41,6 +43,8 @@ return [
 					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-5360e3be2666897518a1821fbecc9d28.css.gz',
 					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/style-4a16b4cd55f600cc39947847baa15308.css',
 					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/style-4a16b4cd55f600cc39947847baa15308.css.gz',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min-810497c120aacb0db0d64737badecd9c.css',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min-810497c120aacb0db0d64737badecd9c.css.gz',
 				],
 			],
 
@@ -59,6 +63,7 @@ return [
 					<link rel="stylesheet" href="http://example.org/wp-content/themes/twentytwenty/style.css" type="text/css" media="all">
 					<link rel="stylesheet" href="http://example.org/wp-content/plugins/hello-dolly/style.css">
 					<link rel="stylesheet" href="http://example.org/wp-includes/css/dashicons.min.css">
+					<link rel="stylesheet" href="http://example.org/wp-content/themes/twentytwenty/style-font-face.min.css">
 				</head>
 				<body>
 				</body>
@@ -71,6 +76,8 @@ return [
 						<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-5360e3be2666897518a1821fbecc9d28.css" type="text/css" media="all">
 						<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style-4a16b4cd55f600cc39947847baa15308.css">
 						<link rel="stylesheet" href="https://123456.rocketcdn.me/wp-includes/css/dashicons.min.css">
+						<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min-810497c120aacb0db0d64737badecd9c.css">
+
 					</head>
 					<body>
 					</body>
@@ -80,6 +87,8 @@ return [
 					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-5360e3be2666897518a1821fbecc9d28.css.gz',
 					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/style-4a16b4cd55f600cc39947847baa15308.css',
 					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/style-4a16b4cd55f600cc39947847baa15308.css.gz',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min-810497c120aacb0db0d64737badecd9c.css',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min-810497c120aacb0db0d64737badecd9c.css.gz',
 				],
 			],
 
@@ -102,6 +111,7 @@ return [
 					<link rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/themes/twentytwenty/style.css" type="text/css" media="all">
 					<link rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/plugins/hello-dolly/style.css">
 					<link rel="stylesheet" href="https://123456.rocketcdn.me/wp-includes/css/dashicons.min.css">
+					<link rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/themes/twentytwenty/style-font-face.min.css">
 				</head>
 				<body>
 				</body>
@@ -114,6 +124,8 @@ return [
 						<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-5360e3be2666897518a1821fbecc9d28.css" type="text/css" media="all">
 						<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style-4a16b4cd55f600cc39947847baa15308.css">
 						<link rel="stylesheet" href="https://123456.rocketcdn.me/wp-includes/css/dashicons.min.css">
+						<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min-810497c120aacb0db0d64737badecd9c.css">
+
 					</head>
 					<body>
 					</body>
@@ -123,6 +135,8 @@ return [
 					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-5360e3be2666897518a1821fbecc9d28.css.gz',
 					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/style-4a16b4cd55f600cc39947847baa15308.css',
 					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/style-4a16b4cd55f600cc39947847baa15308.css.gz',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min-810497c120aacb0db0d64737badecd9c.css',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min-810497c120aacb0db0d64737badecd9c.css.gz',
 				],
 			],
 
@@ -141,6 +155,8 @@ return [
 					<link rel="stylesheet" href="https://123456.rocketcdn.me/cdnpath/wp-content/themes/twentytwenty/style.css" type="text/css" media="all">
 					<link rel="stylesheet" href="https://123456.rocketcdn.me/cdnpath/wp-content/plugins/hello-dolly/style.css">
 					<link rel="stylesheet" href="https://123456.rocketcdn.me/cdnpath/wp-includes/css/dashicons.min.css">
+					<link rel="stylesheet" href="https://123456.rocketcdn.me/cdnpath/wp-content/themes/twentytwenty/style-font-face.min.css">
+
 				</head>
 				<body>
 				</body>
@@ -153,6 +169,8 @@ return [
 						<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/cdnpath/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-5360e3be2666897518a1821fbecc9d28.css" type="text/css" media="all">
 						<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/cdnpath/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style-4a16b4cd55f600cc39947847baa15308.css">
 						<link rel="stylesheet" href="https://123456.rocketcdn.me/cdnpath/wp-includes/css/dashicons.min.css">
+						<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/cdnpath/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min-810497c120aacb0db0d64737badecd9c.css">
+
 					</head>
 					<body>
 					</body>
@@ -162,6 +180,8 @@ return [
 					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-5360e3be2666897518a1821fbecc9d28.css.gz',
 					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/style-4a16b4cd55f600cc39947847baa15308.css',
 					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/style-4a16b4cd55f600cc39947847baa15308.css.gz',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min-810497c120aacb0db0d64737badecd9c.css',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min-810497c120aacb0db0d64737badecd9c.css.gz',
 				],
 			],
 
@@ -179,7 +199,7 @@ return [
 			              '<title>Sample Page</title>' .
 			              '<link rel="stylesheet" href="http://example.org/wp-content/themes/twentytwenty/style.css" type="text/css" media="all">' .
 			              '<link rel="stylesheet" href="http://example.org/wp-content/plugins/hello-dolly/style.css">' .
-			              '<link rel="stylesheet" href="http://example.org/wp-includes/css/dashicons.min.css">' .
+						  '<link rel="stylesheet" href="http://example.org/wp-includes/css/dashicons.min.css">' .
 			              '</head>' .
 			              '<body>' .
 			              '</body>' .

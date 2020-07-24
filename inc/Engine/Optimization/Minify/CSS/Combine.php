@@ -4,7 +4,7 @@ namespace WP_Rocket\Engine\Optimization\Minify\CSS;
 use MatthiasMullie\Minify\CSS as MinifyCSS;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\AssetsLocalCache;
-use WP_Rocket\Engine\Optimization\PathRewriterTrait;
+use WP_Rocket\Engine\Optimization\CSSTrait;
 use WP_Rocket\Logger\Logger;
 
 /**
@@ -13,7 +13,7 @@ use WP_Rocket\Logger\Logger;
  * @since 3.1
  */
 class Combine extends AbstractCSSOptimization {
-	use PathRewriterTrait;
+	use CSSTrait;
 
 	/**
 	 * Assets local cache instance
@@ -223,6 +223,7 @@ class Combine extends AbstractCSSOptimization {
 		}
 
 		$combined_content = $this->get_content( $combined_file );
+		$combined_content = $this->apply_font_display_swap( $combined_content );
 
 		if ( empty( $combined_content ) ) {
 			Logger::error(
