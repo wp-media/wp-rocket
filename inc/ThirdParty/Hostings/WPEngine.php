@@ -22,10 +22,7 @@ class WPEngine extends AbstractNoCacheHost {
 			'rocket_varnish_field_settings'           => 'varnish_addon_title',
 			'rocket_display_input_varnish_auto_purge' => 'return_false',
 			'rocket_cache_mandatory_cookies'          => [ 'return_empty_array', PHP_INT_MAX ],
-			'admin_init'                              => [
-				[ 'remove_notices' ],
-				[ 'run_rocket_bot_after_wpengine' ],
-			],
+			'admin_init'                              => 'run_rocket_bot_after_wpengine',
 			'rocket_set_wp_cache_constant'            => 'return_false',
 			'do_rocket_generate_caching_files'        => 'return_false',
 			'after_rocket_clean_domain'               => 'clean_wpengine',

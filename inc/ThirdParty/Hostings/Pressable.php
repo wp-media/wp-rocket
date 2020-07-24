@@ -19,7 +19,6 @@ class Pressable extends AbstractNoCacheHost {
 			'do_rocket_generate_caching_files'    => [ 'return_false', PHP_INT_MAX ],
 			'rocket_display_varnish_options_tab'  => 'return_false',
 			'rocket_cache_mandatory_cookies'      => [ 'return_empty_array', PHP_INT_MAX ],
-			'admin_init'                          => 'remove_notices',
 			'after_rocket_clean_domain'           => 'purge_pressable_cache',
 			'rocket_url_to_path'                  => 'fix_wp_includes_path',
 			'rocket_set_wp_cache_constant'        => 'return_false',
