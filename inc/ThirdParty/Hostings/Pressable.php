@@ -6,7 +6,6 @@ use WP_Rocket\Engine\Cache\AdminSubscriber;
 use WP_Rocket\Engine\Deactivation\DeactivationInterface;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Event_Management\Event_Manager_Aware_Subscriber_Interface;
-use WP_Rocket\ThirdParty\NullSubscriber;
 use WP_Rocket\ThirdParty\ReturnTypesTrait;
 
 /**
@@ -14,7 +13,7 @@ use WP_Rocket\ThirdParty\ReturnTypesTrait;
  *
  * @since 3.3
  */
-class Pressable extends NullSubscriber implements Event_Manager_Aware_Subscriber_Interface, ActivationInterface, DeactivationInterface {
+class Pressable extends NoCacheHost {
 	use ReturnTypesTrait;
 
 	/**
@@ -58,54 +57,16 @@ class Pressable extends NullSubscriber implements Event_Manager_Aware_Subscriber
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'do_rocket_generate_caching_files'   => [ 'return_false', PHP_INT_MAX ],
-			'rocket_display_varnish_options_tab' => 'return_false',
-			'rocket_cache_mandatory_cookies'     => [ 'return_empty_array', PHP_INT_MAX ],
-			'admin_init'                         => 'remove_advanced_cache_notices',
-			'after_rocket_clean_domain'          => 'purge_pressable_cache',
-			'rocket_url_to_path'                 => 'fix_wp_includes_path',
-			'rocket_cdn_cnames'                  => [ 'add_pressable_cdn_cname', 1 ],
+			'do_rocket_generate_caching_files'    => [ 'return_false', PHP_INT_MAX ],
+			'rocket_display_varnish_options_tab'  => 'return_false',
+			'rocket_cache_mandatory_cookies'      => [ 'return_empty_array', PHP_INT_MAX ],
+			'admin_init'                          => 'remove_advanced_cache_notices',
+			'after_rocket_clean_domain'           => 'purge_pressable_cache',
+			'rocket_url_to_path'                  => 'fix_wp_includes_path',
+			'rocket_set_wp_cache_constant'        => 'return_false',
+			'rocket_generate_advanced_cache_file' => 'return_false',
+			'rocket_cdn_cnames'                   => [ 'add_pressable_cdn_cname', 1 ],
 		];
-	}
-
-	/**
-	 * Performs these actions during the plugin activation
-	 *
-	 * @return void
-	 */
-	public function activate() {
-		add_action( 'rocket_activation', [ $this, 'no_wp_cache_constant' ] );
-	}
-
-	/**
-	 * Performs these actions during the plugin deactivation
-	 *
-	 * @return void
-	 */
-	public function deactivate() {
-		add_action( 'rocket_deactivation', [ $this, 'no_wp_cache_constant' ] );
-	}
-
-	/**
-	 * Return false
-	 *
-	 * @since 3.3
-	 *
-	 * @return bool
-	 */
-	public function return_false() {
-		return false;
-	}
-
-	/**
-	 * Return empty array
-	 *
-	 * @since 3.3
-	 *
-	 * @return array
-	 */
-	public function return_empty_array() {
-		return [];
 	}
 
 	/**
