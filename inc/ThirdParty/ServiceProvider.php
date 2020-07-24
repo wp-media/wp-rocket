@@ -48,7 +48,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-		$options         = $this->getContainer()->get( 'options' );
+		$options = $this->getContainer()->get( 'options' );
 
 		$this->getContainer()
 			->share( 'mobile_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Mobile_Subscriber' );
