@@ -48,6 +48,10 @@ class Test_RocketGetPurgeUrls extends FilesystemTestCase {
 
 		$this->site_options = array_merge($this->site_options, $options);
 
+		Functions\when( 'wp_parse_url' )->alias( function( $url, $component = -1 ) {
+			return parse_url( $url, $component );
+		} );
+
 		Functions\expect('get_rocket_sample_permalink')
 			->once()
 			->with( $post_id )

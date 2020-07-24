@@ -112,13 +112,15 @@ function rocket_get_purge_urls( $post_id, $post ) {
 			restore_current_blog();
 		}
 
+		$cache_path = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) . wp_parse_url( $home_url, PHP_URL_HOST );
+
 		foreach ( $cache_purge_pages as $page ) {
 			// Check if it contains regex pattern.
 			if ( strstr( $page, '*' ) ) {
 				$matches_files = _rocket_get_recursive_dir_files_by_regex( '#' . $page . '#i' );
 				foreach ( $matches_files as $file ) {
 					// Convert path to URL.
-					$purge_urls[] = str_replace( rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ), untrailingslashit( $home_url ) . '/', $file->getPath() );
+					$purge_urls[] = str_replace( $cache_path, untrailingslashit( $home_url ) , $file->getPath() );
 				}
 				continue;
 			}

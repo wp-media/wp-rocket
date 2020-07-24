@@ -7,12 +7,14 @@ return [
 		'wp-content' => [
 			'cache' => [
 				'wp-rocket' => [
-					'test_purge' => [
-						'index.html' => ''
-					],
-					'folder_1' => [
+					'example.org' => [
 						'test_purge' => [
 							'index.html' => ''
+						],
+						'folder_1' => [
+							'test_purge' => [
+								'index.html' => ''
+							]
 						]
 					]
 				]
