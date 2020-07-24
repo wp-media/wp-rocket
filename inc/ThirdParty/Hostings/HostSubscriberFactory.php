@@ -62,6 +62,8 @@ class HostSubscriberFactory implements SubscriberFactoryInterface {
 				return new SpinUpWP();
 			case 'wpengine':
 				return new WPEngine();
+			case 'wordpresscom':
+				return new WordPressCom( $this->admin_subscriber );
 			default:
 				return new NullSubscriber();
 		}

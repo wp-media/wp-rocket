@@ -61,10 +61,6 @@ class WordPressCom implements ActivationInterface, DeactivationInterface, Event_
 	 * @return array The array of subscribed events.
 	 */
 	public static function get_subscribed_events() {
-		if ( ! rocket_get_constant( 'WPCOMSH_VERSION' ) ) {
-			return [];
-		}
-
 		return [
 			'do_rocket_generate_caching_files'    => 'return_false',
 			'rocket_cache_mandatory_cookies'      => 'return_empty_array',
@@ -98,7 +94,7 @@ class WordPressCom implements ActivationInterface, DeactivationInterface, Event_
 	}
 
 	/**
-	 * Prevent writing in advanced-cache.php when on WP.com
+	 * Prevent writing in advanced-cache.php when on self-caching host.
 	 *
 	 * @since 3.6.3
 	 *
