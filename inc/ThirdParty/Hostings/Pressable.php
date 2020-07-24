@@ -1,17 +1,21 @@
 <?php
 namespace WP_Rocket\ThirdParty\Hostings;
 
+use WP_Rocket\Engine\Activation\ActivationInterface;
 use WP_Rocket\Engine\Cache\AdminSubscriber;
+use WP_Rocket\Engine\Deactivation\DeactivationInterface;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Event_Management\Event_Manager_Aware_Subscriber_Interface;
 use WP_Rocket\ThirdParty\NullSubscriber;
+use WP_Rocket\ThirdParty\ReturnTypesTrait;
 
 /**
  * Subscriber for compatibility with Pressable hosting
  *
  * @since 3.3
  */
-class Pressable extends NullSubscriber implements Event_Manager_Aware_Subscriber_Interface {
+class Pressable extends NullSubscriber implements Event_Manager_Aware_Subscriber_Interface, ActivationInterface, DeactivationInterface {
+	use ReturnTypesTrait;
 
 	/**
 	 * Event Manager instance
@@ -62,6 +66,24 @@ class Pressable extends NullSubscriber implements Event_Manager_Aware_Subscriber
 			'rocket_url_to_path'                 => 'fix_wp_includes_path',
 			'rocket_cdn_cnames'                  => [ 'add_pressable_cdn_cname', 1 ],
 		];
+	}
+
+	/**
+	 * Performs these actions during the plugin activation
+	 *
+	 * @return void
+	 */
+	public function activate() {
+		add_action( 'rocket_activation', [ $this, 'no_wp_cache_constant' ] );
+	}
+
+	/**
+	 * Performs these actions during the plugin deactivation
+	 *
+	 * @return void
+	 */
+	public function deactivate() {
+		add_action( 'rocket_deactivation', [ $this, 'no_wp_cache_constant' ] );
 	}
 
 	/**
