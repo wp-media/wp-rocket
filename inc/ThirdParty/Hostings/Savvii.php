@@ -91,6 +91,6 @@ class Savvii implements Subscriber_Interface {
 	 * @since 2.6.5
 	 */
 	public function clean_savvii() {
-		do_action( 'warpdrive_domain_flush' );
+		do_action( 'warpdrive_domain_flush' ); //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 	}
 }
