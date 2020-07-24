@@ -25,6 +25,7 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 		'capabilities_manager',
 		'wp_cache',
 		'wpengine',
+		'o2switch',
 	];
 
 	/**
@@ -51,5 +52,6 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 		$this->getContainer()->add( 'wp_cache', 'WP_Rocket\Engine\Cache\WPCache' )
 			->withArgument( $filesystem );
 		$this->getContainer()->share( 'wpengine', 'WP_Rocket\ThirdParty\Hostings\WPEngine' );
+		$this->getContainer()->share( 'o2switch', 'WP_Rocket\ThirdParty\Hostings\O2Switch' );
 	}
 }

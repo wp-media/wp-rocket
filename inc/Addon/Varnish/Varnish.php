@@ -119,6 +119,7 @@ class Varnish {
 			 *
 			 * @since 3.6.3
 			 *
+			 * @param string $purge_url_full Full url contains the main url plus regex pattern.
 			 * @param string $purge_url_main Main purge url without any additions params.
 			 * @param string $regex          Regex string.
 			 */

@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\ThirdParty\Hostings;
 
+use WP_Rocket\Engine\Activation\ActivationInterface;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\ThirdParty\NullSubscriber;
 use WP_Rocket\ThirdParty\ReturnTypesTrait;
@@ -11,7 +12,7 @@ use WP_Rocket\ThirdParty\ReturnTypesTrait;
  *
  * @since 3.6.3
  */
-class O2Switch extends NullSubscriber implements Subscriber_Interface {
+class O2Switch extends NullSubscriber implements Subscriber_Interface, ActivationInterface {
 	use ReturnTypesTrait;
 
 	/**
@@ -102,4 +103,23 @@ class O2Switch extends NullSubscriber implements Subscriber_Interface {
 		return $main_purge_url;
 	}
 
+	/**
+	 * Performs these actions during the plugin activation
+	 *
+	 * @return void
+	 */
+	public function activate() {
+		add_action( 'rocket_activation', [ $this, 'activate_no_htaccess_html_expire' ] );
+	}
+
+	/**
+	 * Remove expiration on HTML on activation to prevent issue with Varnish cache.
+	 *
+	 * @since 3.6.3
+	 *
+	 * @return void
+	 */
+	public function activate_no_htaccess_html_expire() {
+		add_filter( 'rocket_htaccess_mod_expires', [ $this, 'remove_htaccess_html_expire' ] );
+	}
 }

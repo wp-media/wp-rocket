@@ -20,6 +20,7 @@ class Activation {
 		'capabilities_manager',
 		'wp_cache',
 		'wpengine',
+		'o2switch',
 	];
 
 	/**
