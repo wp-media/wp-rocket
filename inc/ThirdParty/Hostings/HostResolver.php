@@ -61,6 +61,14 @@ class HostResolver {
 			return 'wpengine';
 		}
 
+		if (
+			! defined( '\Savvii\CacheFlusherPlugin::NAME_FLUSH_NOW' )
+			||
+			! defined( '\Savvii\CacheFlusherPlugin::NAME_DOMAINFLUSH_NOW' )
+		) {
+			return 'savvii';
+		}
+
 		return '';
 	}
 }

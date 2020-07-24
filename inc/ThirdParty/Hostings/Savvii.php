@@ -24,14 +24,6 @@ class Savvii implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		if (
-			! defined( '\Savvii\CacheFlusherPlugin::NAME_FLUSH_NOW' )
-			||
-			! defined( '\Savvii\CacheFlusherPlugin::NAME_DOMAINFLUSH_NOW' )
-		) {
-			return [];
-		}
-
 		return [
 			'rocket_varnish_field_settings'           => 'varnish_addon_title',
 			'rocket_display_input_varnish_auto_purge' => 'return_false',
