@@ -26,7 +26,7 @@ class Pressable extends AbstractNoCacheHost {
 			'rocket_generate_advanced_cache_file' => 'return_false',
 			'rocket_cdn_cnames'                   => [ 'add_pressable_cdn_cname', 1 ],
 		];
-	}	
+	}
 
 	/**
 	 * Purge Pressable cache
