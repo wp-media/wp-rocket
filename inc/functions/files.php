@@ -1198,7 +1198,7 @@ function rocket_get_filesystem_perms( $type ) {
 /**
  * Gets Directory files matches regex.
  *
- * @since 3.6.1
+ * @since 3.6.3
  * @access private
  *
  * @param string $dir   Directory to search for files inside it.
