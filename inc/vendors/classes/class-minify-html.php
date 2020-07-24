@@ -176,7 +176,28 @@ class Minify_HTML
 
     protected function _commentCB($m)
     {
-        return (false !== strpos($m[1], 'fwp-loop') || false !== strpos($m[1], 'ngg_resource_manager_marker') || 0 === strpos($m[1], '[') || false !== strpos($m[1], '<![') || 0 === strpos($m[1], 'esi') || 0 === strpos($m[1], 'noindex') || 0 === strpos($m[1], '/noindex') || 0 === strpos($m[1], 'start_content') || 0 === strpos($m[1], 'end_content'))
+        return
+	        (
+	        	false !== strpos($m[1], 'fwp-loop')
+		        ||
+		        false !== strpos($m[1], 'ngg_resource_manager_marker')
+		        ||
+		        0 === strpos($m[1], '[')
+		        ||
+		        false !== strpos($m[1], '<![')
+		        ||
+		        0 === strpos($m[1], 'esi')
+		        ||
+		        0 === strpos($m[1], 'noindex')
+		        ||
+		        0 === strpos($m[1], '/noindex')
+		        ||
+		        0 === strpos($m[1], 'start_content')
+		        ||
+		        0 === strpos($m[1], 'end_content')
+		        ||
+		        0 === strpos($m[1], '{{WP_ROCKET_CONDITIONAL}}')
+	        )
             ? $m[0]
             : '';
     }
