@@ -14,7 +14,7 @@ class Test_ReplaceUrl extends FilesystemTestCase {
 
 	public function tearDown() {
 		parent::tearDown();
-		remove_filter('pre_get_rocket_option_google_analytics_cache', '__return_true');
+		remove_filter( 'pre_get_rocket_option_google_analytics_cache', [ $this, 'return_true' ] );
 	}
 
 	/**
@@ -29,7 +29,7 @@ class Test_ReplaceUrl extends FilesystemTestCase {
 			Functions\expect( 'wp_remote_retrieve_body' )->once()->with( 'request' )->andReturn( 'Remote File contents here' );
 		}
 
-		add_filter('pre_get_rocket_option_google_analytics_cache', '__return_true');
+		add_filter( 'pre_get_rocket_option_google_analytics_cache', [ $this, 'return_true' ] );
 
 		$actual = apply_filters( 'rocket_buffer', $html );
 
