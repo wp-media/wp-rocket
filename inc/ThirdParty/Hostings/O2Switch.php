@@ -3,6 +3,7 @@
 namespace WP_Rocket\ThirdParty\Hostings;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\ThirdParty\NullSubscriber;
 use WP_Rocket\ThirdParty\ReturnTypesTrait;
 
 /**
@@ -10,7 +11,7 @@ use WP_Rocket\ThirdParty\ReturnTypesTrait;
  *
  * @since 3.6.3
  */
-class O2Switch implements Subscriber_Interface {
+class O2Switch extends NullSubscriber implements Subscriber_Interface {
 	use ReturnTypesTrait;
 
 	/**
@@ -21,10 +22,6 @@ class O2Switch implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		if ( ! rocket_has_constant( 'O2SWITCH_VARNISH_PURGE_KEY' ) ) {
-			return [];
-		}
-
 		return [
 			'rocket_varnish_field_settings'           => 'varnish_addon_title',
 			'rocket_display_input_varnish_auto_purge' => 'return_false',
