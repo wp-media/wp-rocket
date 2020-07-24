@@ -79,10 +79,7 @@
 	"autoload-dev": {
 		"psr-4": {
 			"WP_Rocket\\Tests\\": "tests/"
-		},
-		"files": [
-			"tests/Fixtures/inc/Engine/CriticalPath/content/load-content.php"
-		]
+		}
 	},
 	"extra": {
 		"installer-paths": {

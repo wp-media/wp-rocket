@@ -33,14 +33,11 @@ HTML
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-
 	<link rel="stylesheet" id="dashicons-css" href="https://example.org/wp-includes/css/dashicons.min.css?ver=5.4.2" media="all">
 	<link rel="stylesheet" id="twentyseventeen-style-css" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="all">
-
 	<!--[if lt IE 9]>
 	<link rel='stylesheet' id='twentyseventeen-ie8-css'  href='https://example.org/wp-content/themes/twentyseventeen/assets/css/ie8.css?ver=20161202' media='all' />
 	<![endif]-->
-
 	<script src="https://example.org/wp-includes/js/jquery/jquery.js?ver=1.12.4-wp"></script>
 </head>
 <body>
@@ -57,12 +54,9 @@ HTML
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-
 	<link rel="stylesheet" id="dashicons-css" href="https://example.org/wp-includes/css/dashicons.min.css?ver=5.4.2" media="all">
 	<link rel="stylesheet" id="twentyseventeen-style-css" href="https://example.org/wp-content/themes/twentyseventeen/style.css?ver=20190507" media="all">
-
 	<!--{{WP_ROCKET_CONDITIONAL}}-->
-
 	<script src="https://example.org/wp-includes/js/jquery/jquery.js?ver=1.12.4-wp"></script>
 </head>
 <body>
@@ -143,7 +137,6 @@ IE_LINK
 <body class="home blog logged-in admin-bar wp-embed-responsive hfeed has-header-image has-sidebar colors-light customize-support">
 	<div id="page" class="site">
 		<a class="skip-link screen-reader-text" href="#content">Skip to content</a>
-
 		<header id="masthead" class="site-header" role="banner">
 		</header><!-- #masthead -->
 	</div><!-- #page -->
@@ -206,7 +199,6 @@ HTML
 <body class="home blog logged-in admin-bar wp-embed-responsive hfeed has-header-image has-sidebar colors-light customize-support">
 	<div id="page" class="site">
 		<a class="skip-link screen-reader-text" href="#content">Skip to content</a>
-
 		<header id="masthead" class="site-header" role="banner">
 		</header><!-- #masthead -->
 	</div><!-- #page -->
@@ -305,9 +297,7 @@ IE_SCRIPT
 	<script>
 		(function() {
 			var request, b = document.body, c = 'className', cs = 'customize-support', rcs = new RegExp('(^|\\s+)(no-)?'+cs+'(\\s+|$)');
-
 			request = true;
-
 			b[c] = b[c].replace( rcs, ' ' );
 			// The customizer requires postMessage and CORS (if the site is cross domain).
 			b[c] += ( window.postMessage && request ? ' ' : ' no-' ) + cs;
@@ -316,7 +306,6 @@ IE_SCRIPT
 	<!--<![endif]-->
 	<div id="page" class="site">
 		<a class="skip-link screen-reader-text" href="#content">Skip to content</a>
-
 		<header id="masthead" class="site-header" role="banner">
 		</header><!-- #masthead -->
 	</div><!-- #page -->
@@ -389,7 +378,6 @@ HTML
 	<!--{{WP_ROCKET_CONDITIONAL}}-->
 	<div id="page" class="site">
 		<a class="skip-link screen-reader-text" href="#content">Skip to content</a>
-
 		<header id="masthead" class="site-header" role="banner">
 		</header><!-- #masthead -->
 	</div><!-- #page -->
@@ -423,9 +411,7 @@ IE_IN_BODY
 	<script>
 		(function() {
 			var request, b = document.body, c = 'className', cs = 'customize-support', rcs = new RegExp('(^|\\s+)(no-)?'+cs+'(\\s+|$)');
-
 			request = true;
-
 			b[c] = b[c].replace( rcs, ' ' );
 			// The customizer requires postMessage and CORS (if the site is cross domain).
 			b[c] += ( window.postMessage && request ? ' ' : ' no-' ) + cs;

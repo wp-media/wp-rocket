@@ -3,6 +3,7 @@
 namespace WP_Rocket\ThirdParty\Hostings;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\ThirdParty\NullSubscriber;
 use WP_Rocket\ThirdParty\ReturnTypesTrait;
 
 /**
@@ -10,7 +11,7 @@ use WP_Rocket\ThirdParty\ReturnTypesTrait;
  *
  * @since 3.6.2
  */
-class SpinUpWP implements Subscriber_Interface {
+class SpinUpWP extends NullSubscriber implements Subscriber_Interface {
 	use ReturnTypesTrait;
 
 	/**
@@ -21,10 +22,6 @@ class SpinUpWP implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		if ( ! getenv( 'SPINUPWP_CACHE_PATH' ) ) {
-			return [];
-		}
-
 		return [
 			'do_rocket_generate_caching_files'   => 'return_false',
 			'rocket_display_varnish_options_tab' => 'return_false',

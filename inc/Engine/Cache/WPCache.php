@@ -2,7 +2,10 @@
 
 namespace WP_Rocket\Engine\Cache;
 
-class WPCache {
+use WP_Rocket\Engine\Activation\ActivationInterface;
+use WP_Rocket\Engine\Deactivation\DeactivationInterface;
+
+class WPCache implements ActivationInterface, DeactivationInterface {
 	/**
 	 * Filesystem instance.
 	 *
@@ -17,6 +20,64 @@ class WPCache {
 	 */
 	public function __construct( $filesystem ) {
 		$this->filesystem = $filesystem;
+	}
+
+	/**
+	 * Performs these actions during the plugin activation
+	 *
+	 * @return void
+	 */
+	public function activate() {
+		add_action( 'rocket_activation', [ $this, 'update_wp_cache' ] );
+	}
+
+	/**
+	 * Performs these actions during the plugin deactivation
+	 *
+	 * @return void
+	 */
+	public function deactivate() {
+		add_action( 'rocket_deactivation', [ $this, 'update_wp_cache' ] );
+		add_filter( 'rocket_prevent_deactivation', [ $this, 'maybe_prevent_deactivation' ] );
+	}
+
+	/**
+	 * Sets the WP_CACHE constant on (de)activation
+	 *
+	 * @since 3.6.3
+	 *
+	 * @return bool|void False if rocket key is invalid.
+	 */
+	public function update_wp_cache() {
+		if ( ! rocket_valid_key() ) {
+			return false;
+		}
+
+		$value = 'rocket_deactivation' === current_filter() ? false : true;
+
+		$this->set_wp_cache_constant( $value );
+	}
+
+	/**
+	 * Updates the causes array on deactivation if needed
+	 *
+	 * @since 3.6.3
+	 *
+	 * @param array $causes Array of causes to pass to the notice.
+	 */
+	public function maybe_prevent_deactivation( $causes ) {
+		if (
+			$this->find_wpconfig_path()
+			||
+			// This filter is documented in inc/Engine/Cache/WPCache.php.
+			! (bool) apply_filters( 'rocket_set_wp_cache_constant', true )
+		) {
+			return $causes;
+		}
+
+		$causes[] = 'wpconfig';
+
+		return $causes;
 	}
 
 	/**
@@ -135,7 +196,7 @@ class WPCache {
 	 *
 	 * @return string|bool The path of wp-config.php file or false if not found.
 	 */
-	public function find_wpconfig_path() {
+	private function find_wpconfig_path() {
 		/**
 		 * Filter the wp-config's filename.
 		 *

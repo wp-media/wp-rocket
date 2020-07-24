@@ -42,11 +42,6 @@ class Test_InsertCriticalCssBuffer extends FilesystemTestCase {
 		}
 
 		$this->donotrocketoptimize = $config['DONOTROCKETOPTIMIZE'];
-		if ( isset( $config['DONOTASYNCCSS'] ) ) {
-			$this->donotasynccss = $config['DONOTASYNCCSS'];
-		} else {
-			$this->options->shouldReceive( 'get' )->with( 'async_css', 0 )->never();
-		}
 
 		foreach ( $config['options'] as $name => $value ) {
 			$this->options
