@@ -76,11 +76,38 @@ tests_add_filter(
 			$_SERVER['cw_allowed_ip'] = true;
 		}
 
+		if ( BootstrapManager::isGroup( 'SpinUpWP' ) ) {
+			putenv( 'SPINUPWP_CACHE_PATH=/wp-content/spinupwp-cache/' );
+			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/spinupwp/spinupwp.php';
+		}
+
+		if ( BootstrapManager::isGroup( 'PDFEmbedder' ) ) {
+			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/pdf-embedder/pdf_embedder.php';
+		}
+
+		if ( BootstrapManager::isGroup( 'PDFEmbedderPremium' ) ) {
+			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/pdf-embedder/core/core_pdf_embedder.php';
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/PDFEmbedder/mobile_pdf_embedder.php';
+		}
+
+		if ( BootstrapManager::isGroup( 'PDFEmbedderSecure' ) ) {
+			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/pdf-embedder/core/core_pdf_embedder.php';
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/PDFEmbedder/secure_pdf_embedder.php';
+		}
+
 		// Overload the license key for testing.
 		redefine( 'rocket_valid_key', '__return_true' );
 
 		if ( BootstrapManager::isGroup( 'DoCloudflare' ) ) {
 			update_option( 'wp_rocket_settings', [ 'do_cloudflare' => 1 ] );
+		}
+
+		if ( BootstrapManager::isGroup( 'WPEngine' ) ) {
+			define( 'WP_ADMIN', true );
+			define( 'PWP_NAME', 'PWP_NAME' );
+			// Load WP Engine mocked files.
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/WPEngine/wpe_param.php';
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/WPEngine/WpeCommon.php';
 		}
 
 		// Load the plugin.

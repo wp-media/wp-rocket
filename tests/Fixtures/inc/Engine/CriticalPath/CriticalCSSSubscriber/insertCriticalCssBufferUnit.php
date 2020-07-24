@@ -52,17 +52,9 @@ return [
 			],
 			'expected' => false,
 		],
-		'testShouldBailOutDONOTASYNCCSS'            => [
-			'config'   => [
-				'DONOTROCKETOPTIMIZE' => false,
-				'DONOTASYNCCSS'       => true,
-			],
-			'expected' => false,
-		],
 		'testShouldBailOutAsyncCSSOpt'              => [
 			'config'   => [
 				'DONOTROCKETOPTIMIZE' => false,
-				'DONOTASYNCCSS'       => false,
 				'options'             => [
 					'async_css' => [
 						'value'   => false,
@@ -75,7 +67,6 @@ return [
 		'testShouldBailOutRocketExcludedOption'     => [
 			'config'   => [
 				'DONOTROCKETOPTIMIZE'            => false,
-				'DONOTASYNCCSS'                  => false,
 				'options'                        => [
 					'async_css' => [
 						'value'   => true,
@@ -89,7 +80,6 @@ return [
 		'testShouldBailOutNoCurrentPageCriticalCSS' => [
 			'config'   => [
 				'DONOTROCKETOPTIMIZE'            => false,
-				'DONOTASYNCCSS'                  => false,
 				'options'                        => [
 					'async_css' => [
 						'value'   => true,
@@ -104,7 +94,6 @@ return [
 		'testShouldBailOutEmptyFallBackCriticalCSS' => [
 			'config'   => [
 				'DONOTROCKETOPTIMIZE'            => false,
-				'DONOTASYNCCSS'                  => false,
 				'options'                        => [
 					'async_css'    => [
 						'value'   => true,
@@ -123,7 +112,6 @@ return [
 		'testShouldDisplatFallBackCriticalCSS'      => [
 			'config'   => [
 				'DONOTROCKETOPTIMIZE'            => false,
-				'DONOTASYNCCSS'                  => false,
 				'options'                        => [
 					'async_css'    => [
 						'value'   => true,
@@ -139,12 +127,11 @@ return [
 				'SCRIPT_DEBUG'                   => false,
 			],
 			'expected' => true,
-			'html'     => '<html><head><title></title><style id="rocket-critical-css">.fallback { color: red; }</style></head><body><script>const wprRemoveCPCSS = () => { document.getElementById( "rocket-critical-css" ).remove(); }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script></body></html>',
+			'html'     => '<html><head><title></title><style id="rocket-critical-css">.fallback { color: red; }</style></head><body><script>const wprRemoveCPCSS = () => { $elem = document.getElementById( "rocket-critical-css" ); if ( $elem ) { $elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script></body></html>',
 		],
 		'testShouldDisplayFileCriticalCSS'          => [
 			'config'   => [
 				'DONOTROCKETOPTIMIZE'            => false,
-				'DONOTASYNCCSS'                  => false,
 				'options'                        => [
 					'async_css'    => [
 						'value'   => true,
@@ -160,12 +147,11 @@ return [
 				'SCRIPT_DEBUG'                   => false,
 			],
 			'expected' => true,
-			'html'     => '<html><head><title></title><style id="rocket-critical-css">.post_tag { color: red; }</style></head><body><script>const wprRemoveCPCSS = () => { document.getElementById( "rocket-critical-css" ).remove(); }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script></body></html>',
+			'html'     => '<html><head><title></title><style id="rocket-critical-css">.post_tag { color: red; }</style></head><body><script>const wprRemoveCPCSS = () => { $elem = document.getElementById( "rocket-critical-css" ); if ( $elem ) { $elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script></body></html>',
 		],
 		'testShouldDisplayCustomFileCriticalCSS'    => [
 			'config'   => [
 				'DONOTROCKETOPTIMIZE'            => false,
-				'DONOTASYNCCSS'                  => false,
 				'options'                        => [
 					'async_css'    => [
 						'value'   => true,
@@ -184,7 +170,10 @@ return [
 			'html'     => '<html><head><title></title><style id="rocket-critical-css">.page { color: red; }</style></head><body>
 			<script>
 				const wprRemoveCPCSS = () => {
-					document.getElementById( "rocket-critical-css" ).remove();
+					$elem = document.getElementById( "rocket-critical-css" );
+					if ( $elem ) {
+						$elem.remove();
+					}
 				};
 				if ( window.addEventListener ) {
 					window.addEventListener( "load", wprRemoveCPCSS );

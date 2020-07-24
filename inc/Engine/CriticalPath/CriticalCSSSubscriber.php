@@ -2,8 +2,6 @@
 
 namespace WP_Rocket\Engine\CriticalPath;
 
-use FilesystemIterator;
-use UnexpectedValueException;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Filesystem_Direct;
@@ -150,7 +148,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 
 		if ( current_user_can( 'rocket_manage_options' ) ) {
 			$message .= ' ' . sprintf(
-				// Translators: %1$s = opening link tag, %2$s = closing link tag.
+					// Translators: %1$s = opening link tag, %2$s = closing link tag.
 					__( 'Go to the %1$sWP Rocket settings%2$s page to track progress.', 'rocket' ),
 					'<a href="' . esc_url( admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG ) ) . '">',
 					'</a>'
@@ -364,7 +362,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 		}
 
 		$message = '<p>' . sprintf(
-			// Translators: %1$d = number of critical CSS generated, %2$d = total number of critical CSS to generate.
+				// Translators: %1$d = number of critical CSS generated, %2$d = total number of critical CSS to generate.
 				__( 'Critical CSS generation is currently running: %1$d of %2$d page types completed. (Refresh this page to view progress)', 'rocket' ),
 				$success_counter,
 				$transient['total']
@@ -436,7 +434,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 		}
 
 		$message = '<p>' . sprintf(
-			// Translators: %1$d = number of critical CSS generated, %2$d = total number of critical CSS to generate.
+				// Translators: %1$d = number of critical CSS generated, %2$d = total number of critical CSS to generate.
 				__( 'Critical CSS generation finished for %1$d of %2$d page types.', 'rocket' ),
 				$success_counter,
 				$transient['total']
@@ -500,39 +498,11 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	 * @since  2.10
 	 */
 	public function insert_load_css() {
-		global $pagenow;
-
-		if ( ! $this->options->get( 'async_css' ) ) {
+		if ( ! $this->should_async_css() ) {
 			return;
 		}
 
-		if ( is_rocket_post_excluded_option( 'async_css' ) ) {
-			return;
-		}
-
-		if ( ! $this->critical_css->get_current_page_critical_css() ) {
-			return;
-		}
-
-		// Don't apply on wp-login.php/wp-register.php.
-		if ( 'wp-login.php' === $pagenow || 'wp-register.php' === $pagenow ) {
-			return;
-		}
-
-		if (
-			( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE )
-			||
-			( defined( 'DONOTASYNCCSS' ) && DONOTASYNCCSS )
-		) {
-			return;
-		}
-
-		// Don't apply if user is logged-in and cache for logged-in user is off.
-		if ( is_user_logged_in() && ! $this->options->get( 'cache_logged_user' ) ) {
-			return;
-		}
-
-		// This filter is documented in inc/front/process.php.
+		// This filter is documented in inc/classes/Buffer/class-tests.php.
 		$rocket_cache_search = apply_filters( 'rocket_cache_search', false );
 
 		// Don't apply on search page.
@@ -540,17 +510,16 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 			return;
 		}
 
-		// Don't apply on excluded pages.
-		if (
-			! isset( $_SERVER['REQUEST_URI'] )
-			||
-			in_array( wp_unslash( $_SERVER['REQUEST_URI'] ), $this->options->get( 'cache_reject_uri', [] ), true )
-		) {
+		// Don't apply on 404 page.
+		if ( is_404() ) {
 			return;
 		}
 
-		// Don't apply on 404 page.
-		if ( is_404() ) {
+		if (
+			empty( $this->critical_css->get_current_page_critical_css() )
+			&&
+			empty( $this->options->get( 'critical_css', '' ) )
+		) {
 			return;
 		}
 
@@ -579,15 +548,7 @@ JS;
 	 * @return string Updated HTML output
 	 */
 	public function insert_critical_css_buffer( $buffer ) {
-		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) || rocket_get_constant( 'DONOTASYNCCSS' ) ) {
-			return $buffer;
-		}
-
-		if ( ! $this->options->get( 'async_css', 0 ) ) {
-			return $buffer;
-		}
-
-		if ( is_rocket_post_excluded_option( 'async_css' ) ) {
+		if ( ! $this->should_async_css() ) {
 			return $buffer;
 		}
 
@@ -618,13 +579,16 @@ JS;
 	 */
 	protected function return_remove_cpcss_script() {
 		if ( ! rocket_get_constant( 'SCRIPT_DEBUG' ) ) {
-			return '<script>const wprRemoveCPCSS = () => { document.getElementById( "rocket-critical-css" ).remove(); }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>';
+			return '<script>const wprRemoveCPCSS = () => { $elem = document.getElementById( "rocket-critical-css" ); if ( $elem ) { $elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>';
 		}
 
 		return '
 			<script>
 				const wprRemoveCPCSS = () => {
-					document.getElementById( "rocket-critical-css" ).remove();
+					$elem = document.getElementById( "rocket-critical-css" );
+					if ( $elem ) {
+						$elem.remove();
+					}
 				};
 				if ( window.addEventListener ) {
 					window.addEventListener( "load", wprRemoveCPCSS );
@@ -660,23 +624,19 @@ JS;
 	 * @return string Updated HTML code
 	 */
 	public function async_css( $buffer ) {
-		if ( ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) || ( defined( 'DONOTASYNCCSS' ) && DONOTASYNCCSS ) ) {
-			return;
-		}
-
-		if ( ! $this->options->get( 'async_css' ) ) {
+		if ( ! $this->should_async_css() ) {
 			return $buffer;
 		}
 
-		if ( is_rocket_post_excluded_option( 'async_css' ) ) {
+		if (
+			empty( $this->critical_css->get_current_page_critical_css() )
+			&&
+			empty( $this->options->get( 'critical_css', '' ) )
+		) {
 			return $buffer;
 		}
 
-		if ( ! $this->critical_css->get_current_page_critical_css() ) {
-			return $buffer;
-		}
-
-		$excluded_css = array_flip( get_rocket_exclude_async_css() );
+		$excluded_css = array_flip( $this->critical_css->get_exclude_async_css() );
 
 		/**
 		 * Filters the pattern used to get all stylesheets in the HTML.
@@ -696,11 +656,11 @@ JS;
 			return $buffer;
 		}
 
-		$noscripts = '';
+		$noscripts = '<noscript>';
 
 		foreach ( $tags_match[0] as $i => $tag ) {
 			// Strip query args.
-			$path = rocket_extract_url_component( $tags_match[2][ $i ], PHP_URL_PATH );
+			$path = wp_parse_url( $tags_match[2][ $i ], PHP_URL_PATH );
 
 			// Check if this file should be deferred.
 			if ( isset( $excluded_css[ $path ] ) ) {
@@ -712,10 +672,13 @@ JS;
 			$tag     = str_replace( $tags_match[3][ $i ] . '>', $onload, $tag );
 			$tag     = str_replace( $tags_match[1][ $i ], $preload, $tag );
 			$tag     = str_replace( 'onload=""', 'onload="this.onload=null;this.rel=\'stylesheet\'"', $tag );
+			$tag     = preg_replace( '/(id\s*=\s*[\"\'](?:[^\"\']*)*[\"\'])/i', '', $tag );
 			$buffer  = str_replace( $tags_match[0][ $i ], $tag, $buffer );
 
-			$noscripts .= '<noscript>' . $tags_match[0][ $i ] . '</noscript>';
+			$noscripts .= $tags_match[0][ $i ];
 		}
+
+		$noscripts .= '</noscript>';
 
 		return str_replace( '</body>', $noscripts . '</body>', $buffer );
 	}
@@ -750,5 +713,24 @@ JS;
 		)
 		&&
 		$this->options->get( 'async_css_mobile', 0 );
+	}
+
+	/**
+	 * Checks if we should async CSS
+	 *
+	 * @since 3.6.2.1
+	 *
+	 * @return boolean
+	 */
+	private function should_async_css() {
+		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
+			return false;
+		}
+
+		if ( ! $this->options->get( 'async_css', 0 ) ) {
+			return false;
+		}
+
+		return ! is_rocket_post_excluded_option( 'async_css' );
 	}
 }

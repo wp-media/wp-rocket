@@ -2,10 +2,6 @@
 
 defined( 'ABSPATH' ) || exit;
 
-if ( class_exists( 'WpeCommon' ) && function_exists( 'wpe_param' ) ) {
-	require WP_ROCKET_3RD_PARTY_PATH . 'hosting/wpengine.php';
-}
-
 if ( class_exists( 'FlywheelNginxCompat' ) ) {
 	require WP_ROCKET_3RD_PARTY_PATH . 'hosting/flywheel.php';
 }
@@ -98,7 +94,6 @@ require WP_ROCKET_3RD_PARTY_PATH . 'plugins/s2member.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/sumome.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/nginx-helper.php';
 
-require WP_ROCKET_3RD_PARTY_PATH . 'themes/divi.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'themes/avada.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'themes/studiopress.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'themes/uncode.php';

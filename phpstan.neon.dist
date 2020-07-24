@@ -2,7 +2,6 @@ includes:
     - phar://phpstan.phar/conf/bleedingEdge.neon
     - vendor/szepeviktor/phpstan-wordpress/extension.neon
 parameters:
-#    level: max
     level: 4
     checkMissingIterableValueType: false
     inferPrivatePropertyTypeFromConstructor: true
@@ -17,16 +16,14 @@ parameters:
         # Procedural code
         - %currentWorkingDirectory%/inc/3rd-party/plugins/autoptimize.php
         - %currentWorkingDirectory%/inc/admin/ui/notices.php
+        - %currentWorkingDirectory%/inc/constants.php
         - %currentWorkingDirectory%/inc/functions/admin.php
         - %currentWorkingDirectory%/inc/functions/api.php
-        - %currentWorkingDirectory%/inc/functions/cloudflare.php
         - %currentWorkingDirectory%/inc/functions/files.php
         - %currentWorkingDirectory%/inc/functions/formatting.php
         - %currentWorkingDirectory%/inc/functions/htaccess.php
         - %currentWorkingDirectory%/inc/functions/i18n.php
         - %currentWorkingDirectory%/inc/functions/posts.php
-        - %currentWorkingDirectory%/inc/functions/preload.php
-        - %currentWorkingDirectory%/inc/functions/varnish.php
         # Composer autoloader "exclude-from-classmap"
         - %currentWorkingDirectory%/inc/classes/class-wp-rocket-requirements-check.php
         - %currentWorkingDirectory%/inc/vendors/classes/class-rocket-mobile-detect.php
@@ -39,5 +36,3 @@ parameters:
         - '#^Function apply_filters(_ref_array)? invoked with [34567] parameters, 2 required\.$#'
         # https://core.trac.wordpress.org/ticket/43304
         #- '/^Parameter #2 \$deprecated of function load_plugin_textdomain expects string, false given\.$/'
-        # TODO #1 Define properties.
-        - '#^Access to an undefined property WP_Rocket\\\S+\.$#'

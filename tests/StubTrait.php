@@ -17,8 +17,9 @@ trait StubTrait {
 	protected $wp_rocket_advanced_cache = true;
 	protected $disable_wp_cron          = false;
 	protected $donotrocketoptimize      = null;
-	protected $donotasynccss            = null;
 	protected $white_label              = false;
+	protected $white_label_footprint    = null;
+	protected $plugin_name              = 'WP Rocket';
 	protected $constants                = [];
 
 	protected function resetStubProperties() {
@@ -35,6 +36,7 @@ trait StubTrait {
 			'donotrocketoptimize'       => null,
 			'dontasynccss'              => null,
 			'white_label'               => false,
+			'white_label_footprint'     => null,
 			'constants'                 => [],
 		];
 
@@ -63,9 +65,6 @@ trait StubTrait {
 			case 'DISABLE_WP_CRON':
 				return $this->disable_wp_cron;
 
-			case 'DONOTASYNCCSS' :
-				return $this->donotasynccss;
-
 			case 'DONOTROCKETOPTIMIZE' :
 				return $this->donotrocketoptimize;
 
@@ -87,6 +86,8 @@ trait StubTrait {
 			case 'WP_ROCKET_ADVANCED_CACHE':
 				return $this->wp_rocket_advanced_cache;
 
+			case 'WP_ROCKET_PLUGIN_NAME':
+				return 'WP Rocket';
 			case 'WP_ROCKET_WEB_MAIN':
 				return 'https://wp-rocket.me/';
 
@@ -136,6 +137,12 @@ trait StubTrait {
 
 			case 'WP_ROCKET_WHITE_LABEL_ACCOUNT':
 				return $this->white_label;
+
+			case 'WP_ROCKET_WHITE_LABEL_FOOTPRINT':
+				return $this->white_label_footprint;
+
+			case 'WP_ROCKET_PLUGIN_NAME':
+				return $this->plugin_name;
 
 			default:
 				if ( isset( $this->constants[$constant_name] ) ){

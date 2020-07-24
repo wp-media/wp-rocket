@@ -3,8 +3,10 @@
 namespace WP_Rocket\Engine\Cache;
 
 use WP_Filesystem_Direct;
+use WP_Rocket\Engine\Activation\ActivationInterface;
+use WP_Rocket\Engine\Deactivation\DeactivationInterface;
 
-class AdvancedCache {
+class AdvancedCache implements ActivationInterface, DeactivationInterface {
 
 	/**
 	 * Absolute path to template files
@@ -37,6 +39,56 @@ class AdvancedCache {
 		$this->template_path = $template_path;
 		$this->content_dir   = rocket_get_constant( 'WP_CONTENT_DIR' );
 		$this->filesystem    = $filesystem;
+	}
+
+	/**
+	 * Actions to perform on plugin activation
+	 *
+	 * @since 3.6.3
+	 *
+	 * @return void
+	 */
+	public function activate() {
+		add_action( 'rocket_activation', [ $this, 'update_advanced_cache' ] );
+	}
+
+	/**
+	 * Actions to perform on plugin deactivation
+	 *
+	 * @since 3.6.3
+	 *
+	 * @return void
+	 */
+	public function deactivate() {
+		add_action( 'rocket_deactivation', [ $this, 'update_advanced_cache' ] );
+	}
+
+	/**
+	 * Generates the advanced-cache.php file with its content
+	 *
+	 * @since 3.6.3
+	 *
+	 * @return void
+	 */
+	public function update_advanced_cache() {
+		/**
+		 * Filters whether to generate the advanced-cache.php file.
+		 *
+		 * @since 3.6.3
+		 *
+		 * @param bool True (default) to go ahead with advanced cache file generation; false to stop generation.
+		 */
+		if ( ! (bool) apply_filters( 'rocket_generate_advanced_cache_file', true ) ) {
+			return;
+		}
+
+		$content = 'rocket_activation' === current_filter() ? $this->get_advanced_cache_content() : '';
+
+		$this->filesystem->put_contents(
+			"{$this->content_dir}/advanced-cache.php",
+			$content,
+			rocket_get_filesystem_perms( 'file' )
+		);
 	}
 
 	/**
@@ -113,46 +165,6 @@ class AdvancedCache {
 				'message'          => $this->get_notice_message(),
 				'dismiss_button'   => $notice_name,
 				'readonly_content' => $this->get_advanced_cache_content(),
-			]
-		);
-	}
-
-	/**
-	 * This warning is displayed when the advanced-cache.php file isn't ours
-	 *
-	 * @since 3.6 Moved to a method in AdvancedCache
-	 * @since 2.2
-	 *
-	 * @return void
-	 */
-	public function notice_content_not_ours() {
-		global $pagenow;
-
-		if (
-			'plugins.php' === $pagenow
-			&&
-			filter_has_var( INPUT_GET, 'activate' )
-		) {
-			return;
-		}
-
-		if ( ! $this->is_user_allowed() ) {
-			return;
-		}
-
-		if ( ! rocket_get_constant( 'WP_CACHE' ) ) {
-			return;
-		}
-
-		if ( rocket_get_constant( 'WP_ROCKET_ADVANCED_CACHE' ) ) {
-			return;
-		}
-
-		rocket_notice_html(
-			[
-				'status'      => 'error',
-				'dismissible' => '',
-				'message'     => $this->get_notice_message(),
 			]
 		);
 	}

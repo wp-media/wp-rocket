@@ -179,6 +179,41 @@ class Page {
 	}
 
 	/**
+	 * Enqueues WP Rocket scripts on the settings page
+	 *
+	 * @since 3.6.1
+	 *
+	 * @param string $hook The current admin page.
+	 *
+	 * @return void
+	 */
+	public function enqueue_rocket_scripts( $hook ) {
+		if ( 'settings_page_wprocket' !== $hook ) {
+			return;
+		}
+
+		wp_enqueue_script( 'wistia-e-v1', 'https://fast.wistia.com/assets/external/E-v1.js', [], null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+	}
+
+	/**
+	 * Adds the async attribute to the Wistia script
+	 *
+	 * @since 3.6.1
+	 *
+	 * @param string $tag    The <script> tag for the enqueued script.
+	 * @param string $handle The script's registered handle.
+	 *
+	 * @return string
+	 */
+	public function async_wistia_script( $tag, $handle ) {
+		if ( 'wistia-e-v1' !== $handle ) {
+			return $tag;
+		}
+
+		return str_replace( ' src', ' async src', $tag );
+	}
+
+	/**
 	 * Gets customer data from WP Rocket website to display it in the dashboard.
 	 *
 	 * @since 3.0
@@ -251,7 +286,7 @@ class Page {
 			wp_die();
 		}
 
-		$whitelist = [
+		$allowed = [
 			'do_beta'                     => 1,
 			'analytics_enabled'           => 1,
 			'debug_enabled'               => 1,
@@ -264,7 +299,7 @@ class Page {
 			'sucury_waf_api_key'          => 1,
 		];
 
-		if ( ! isset( $_POST['option']['name'] ) || ! isset( $whitelist[ $_POST['option']['name'] ] ) ) {
+		if ( ! isset( $_POST['option']['name'] ) || ! isset( $allowed[ $_POST['option']['name'] ] ) ) {
 			wp_die();
 		}
 
@@ -837,6 +872,7 @@ class Page {
 
 		$disable_images_lazyload  = [];
 		$disable_iframes_lazyload = [];
+		$disable_youtube_lazyload = [];
 
 		if ( rocket_avada_maybe_disable_lazyload() ) {
 			$disable_images_lazyload[] = __( 'Avada', 'rocket' );
@@ -866,11 +902,24 @@ class Page {
 		$disable_iframes_lazyload = (array) apply_filters( 'rocket_maybe_disable_iframes_lazyload_helper', $disable_iframes_lazyload );
 		$disable_iframes_lazyload = $this->sanitize_and_format_list( $disable_iframes_lazyload );
 
+		/**
+		 * Lazyload Helper filter which disables WPR lazyload functionality to replace YouTube iframe with preview image.
+		 *
+		 * @since 3.6.3
+		 *
+		 * @param array $disable_youtube_lazyload Will return the array with all plugin/themes names which should disable replace YouTube iframe with preview image
+		 */
+		$disable_youtube_lazyload = (array) apply_filters( 'rocket_maybe_disable_youtube_lazyload_helper', $disable_youtube_lazyload );
+		$disable_youtube_lazyload = $this->sanitize_and_format_list( $disable_youtube_lazyload );
+		$disable_youtube_lazyload = array_merge( $disable_youtube_lazyload, $disable_iframes_lazyload );
+		$disable_youtube_lazyload = array_unique( $disable_youtube_lazyload );
+
 		$disable_lazyload = array_merge( $disable_images_lazyload, $disable_iframes_lazyload );
 		$disable_lazyload = array_unique( $disable_lazyload );
 
-		$disable_lazyload        = wp_sprintf_l( '%l', $disable_lazyload );
-		$disable_images_lazyload = wp_sprintf_l( '%l', $disable_images_lazyload );
+		$disable_lazyload         = wp_sprintf_l( '%l', $disable_lazyload );
+		$disable_images_lazyload  = wp_sprintf_l( '%l', $disable_images_lazyload );
+		$disable_youtube_lazyload = wp_sprintf_l( '%l', $disable_youtube_lazyload );
 
 		$this->settings->add_settings_sections(
 			[
@@ -896,7 +945,7 @@ class Page {
 				'embeds_section'   => [
 					'title'       => __( 'Embeds', 'rocket' ),
 					'type'        => 'fields_container',
-					'description' => __( 'Prevents others from embedding content from your site, prevents you from embedding content from other (non-whitelisted) sites, and removes JavaScript requests related to WordPress embeds', 'rocket' ),
+					'description' => __( 'Prevents others from embedding content from your site, prevents you from embedding content from other (non-allowed) sites, and removes JavaScript requests related to WordPress embeds', 'rocket' ),
 					'page'        => 'media',
 				],
 				'webp_section'     => [
@@ -962,7 +1011,7 @@ class Page {
 				],
 				'lazyload_youtube' => [
 					'container_class'   => [
-						! empty( $disable_iframes_lazyload ) ? 'wpr-isDisabled' : '',
+						! empty( $disable_youtube_lazyload ) ? 'wpr-isDisabled' : '',
 						'wpr-field--children',
 					],
 					'type'              => 'checkbox',
@@ -974,8 +1023,10 @@ class Page {
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 					'input_attr'        => [
-						'disabled' => ! empty( $disable_iframes_lazyload ) ? 1 : 0,
+						'disabled' => ! empty( $disable_youtube_lazyload ) ? 1 : 0,
 					],
+					// translators: %1$s = “WP Rocket”, %2$s = a list of plugin or themes names.
+					'description'       => ! empty( $disable_youtube_lazyload ) ? sprintf( __( 'Replace YouTube iframe with preview image is not compatible with %2$s.', 'rocket' ), WP_ROCKET_PLUGIN_NAME, $disable_youtube_lazyload ) : '',
 				],
 				'emoji'            => [
 					'type'              => 'checkbox',
@@ -1130,7 +1181,7 @@ class Page {
 				'preload_fonts' => [
 					'type'              => 'textarea',
 					'label'             => __( 'Fonts to preload', 'rocket' ),
-					'description'       => __( 'Specify urls of the font files to be preloaded (one per line). Fonts must be hosted on your own domain.', 'rocket' ),
+					'description'       => __( 'Specify urls of the font files to be preloaded (one per line). Fonts must be hosted on your own domain, or the domain you have specified on the CDN tab.', 'rocket' ),
 					'helper'            => __( 'The domain part of the URL will be stripped automatically.<br/>Allowed font extensions: otf, ttf, svg, woff, woff2.', 'rocket' ),
 					'placeholder'       => '/wp-content/themes/your-theme/assets/fonts/font-file.woff',
 					'section'           => 'preload_fonts_section',
