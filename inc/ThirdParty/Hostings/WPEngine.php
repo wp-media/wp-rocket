@@ -2,8 +2,6 @@
 
 namespace WP_Rocket\ThirdParty\Hostings;
 
-use WP_Rocket\ThirdParty\ReturnTypesTrait;
-use WP_Rocket\Event_Management\Subscriber_Interface;
 use WpeCommon;
 
 /**
@@ -11,9 +9,7 @@ use WpeCommon;
  *
  * @since 3.6.1
  */
-class WPEngine extends NoCacheHost implements Subscriber_Interface {
-	use ReturnTypesTrait;
-
+class WPEngine extends NoCacheHost {
 	/**
 	 * Array of events this subscriber wants to listen to.
 	 *
@@ -26,7 +22,6 @@ class WPEngine extends NoCacheHost implements Subscriber_Interface {
 			'rocket_varnish_field_settings'           => 'varnish_addon_title',
 			'rocket_display_input_varnish_auto_purge' => 'return_false',
 			'rocket_cache_mandatory_cookies'          => [ 'return_empty_array', PHP_INT_MAX ],
-			'rocket_advanced_cache_file'              => 'return_empty_string',
 			'admin_init'                              => [
 				[ 'remove_notices' ],
 				[ 'run_rocket_bot_after_wpengine' ],
@@ -57,18 +52,6 @@ class WPEngine extends NoCacheHost implements Subscriber_Interface {
 		);
 
 		return $settings;
-	}
-
-	/**
-	 * Stop showing not valid notices with WP Engine.
-	 *
-	 * @since 3.6.1
-	 */
-	public function remove_notices() {
-		$container  = apply_filters( 'rocket_container', null );
-		$subscriber = $container->get( 'admin_cache_subscriber' );
-
-		remove_action( 'admin_notices', [ $subscriber, 'notice_advanced_cache_permissions' ] );
 	}
 
 	/**
