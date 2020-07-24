@@ -61,7 +61,7 @@ class HostResolver {
 			return 'wpengine';
 		}
 
-		if ( rocket_get_constant( 'WPCONSH_VERSION' ) ) {
+		if ( rocket_get_constant( 'WPCOMSH_VERSION' ) ) {
 			self::$hostname = 'wordpresscom';
 
 			return 'wordpresscom';
