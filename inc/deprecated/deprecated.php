@@ -676,10 +676,11 @@ function rocket_insert_critical_css() {
  *
  * @since 2.10
  * @deprecated 2.11
+ * @see WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber->insert_load_css()
  * @author Remy Perona
  */
 function rocket_insert_load_css() {
-	_deprecated_function( __FUNCTION__, '2.11' );
+	_deprecated_function( __FUNCTION__, '2.11', 'WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber->insert_load_css()' );
 }
 
 if ( ! function_exists( 'rocket_lazyload_async_script' ) ) {

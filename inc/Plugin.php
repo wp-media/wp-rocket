@@ -6,6 +6,8 @@ use Imagify_Partner;
 use League\Container\Container;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Event_Management\Event_Manager;
+use WP_Rocket\ThirdParty\Hostings\HostResolver;
+use WP_Rocket\ThirdParty\Hostings\HostSubscriberFactory;
 
 /**
  * Plugin Manager.
@@ -210,6 +212,7 @@ class Plugin {
 	 * @return array array of common subscribers.
 	 */
 	private function init_common_subscribers() {
+		$this->container->addServiceProvider( 'WP_Rocket\Engine\Capabilities\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Addon\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Preload\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\CDN\ServiceProvider' );
@@ -233,7 +236,6 @@ class Plugin {
 			'mobile_subscriber',
 			'woocommerce_subscriber',
 			'bigcommerce_subscriber',
-			'pressable_subscriber',
 			'litespeed_subscriber',
 			'syntaxhighlighter_subscriber',
 			'elementor_subscriber',
@@ -253,12 +255,15 @@ class Plugin {
 			'amp_subscriber',
 			'rest_cpcss_subscriber',
 			'simple_custom_css',
-			'cloudways',
-			'wpengine',
-			'spinupwp',
 			'pdfembedder',
-			'wordpresscom',
+			'divi',
 		];
+
+		$host_type = HostResolver::get_host_service();
+
+		if ( ! empty( $host_type ) ) {
+			$common_subscribers[] = $host_type;
+		}
 
 		if ( $this->options->get( 'do_cloudflare', false ) ) {
 			$common_subscribers[] = 'cloudflare_subscriber';

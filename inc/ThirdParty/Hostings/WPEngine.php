@@ -2,6 +2,9 @@
 
 namespace WP_Rocket\ThirdParty\Hostings;
 
+use WP_Rocket\Engine\Activation\ActivationInterface;
+use WP_Rocket\Engine\Deactivation\DeactivationInterface;
+use WP_Rocket\ThirdParty\NullSubscriber;
 use WP_Rocket\ThirdParty\ReturnTypesTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WpeCommon;
@@ -11,7 +14,7 @@ use WpeCommon;
  *
  * @since 3.6.1
  */
-class WPEngine implements Subscriber_Interface {
+class WPEngine extends NullSubscriber implements ActivationInterface, DeactivationInterface, Subscriber_Interface {
 	use ReturnTypesTrait;
 
 	/**
@@ -22,16 +25,6 @@ class WPEngine implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		if (
-			! (
-				class_exists( 'WpeCommon' )
-				&&
-				function_exists( 'wpe_param' )
-			)
-		) {
-			return [];
-		}
-
 		return [
 			'rocket_varnish_field_settings'           => 'varnish_addon_title',
 			'rocket_display_input_varnish_auto_purge' => 'return_false',
@@ -41,13 +34,42 @@ class WPEngine implements Subscriber_Interface {
 				[ 'remove_notices' ],
 				[ 'run_rocket_bot_after_wpengine' ],
 			],
-			'set_rocket_wp_cache_define'              => 'return_true',
+			'rocket_set_wp_cache_constant'            => 'return_false',
 			'do_rocket_generate_caching_files'        => 'return_false',
 			'after_rocket_clean_domain'               => 'clean_wpengine',
 			'rocket_buffer'                           => [ 'add_footprint', 50 ],
 			'rocket_disable_htaccess'                 => 'return_true',
 			'rocket_generate_advanced_cache_file'     => 'return_false',
 		];
+	}
+
+	/**
+	 * Performs these actions during the plugin activation
+	 *
+	 * @return void
+	 */
+	public function activate() {
+		add_action( 'rocket_activation', [ $this, 'no_wp_cache_constant' ] );
+	}
+
+	/**
+	 * Performs these actions during the plugin deactivation
+	 *
+	 * @return void
+	 */
+	public function deactivate() {
+		add_action( 'rocket_deactivation', [ $this, 'no_wp_cache_constant' ] );
+	}
+
+	/**
+	 * Don't write the WP_CACHE constant in wp-config.php
+	 *
+	 * @since 3.6.3
+	 *
+	 * @return void
+	 */
+	public function no_wp_cache_constant() {
+		add_filter( 'rocket_set_wp_cache_constant', [ $this, 'return_false' ] );
 	}
 
 	/**
