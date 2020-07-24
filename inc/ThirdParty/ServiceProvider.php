@@ -2,8 +2,6 @@
 namespace WP_Rocket\ThirdParty;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\ThirdParty\Hostings\HostResolver;
-use WP_Rocket\ThirdParty\Hostings\HostSubscriberFactory;
 
 /**
  * Service provider for WP Rocket third party compatibility
@@ -51,16 +49,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	public function register() {
 		$options         = $this->getContainer()->get( 'options' );
-		$hosting_service = HostResolver::get_host_service();
-
-		if ( $hosting_service ) {
-			$host_subscriber = ( new HostSubscriberFactory(
-				$this->getContainer()->get( 'admin_cache_subscriber' ),
-				$this->getContainer()->get( 'event_manager' )
-			) )->get_subscriber();
-
-			$this->provides[] = $hosting_service;
-		}
 
 		$this->getContainer()
 			->share( 'mobile_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Mobile_Subscriber' );
@@ -109,10 +97,5 @@ class ServiceProvider extends AbstractServiceProvider {
 			->withArgument( WP_ROCKET_CACHE_BUSTING_PATH )->withArgument( WP_ROCKET_CACHE_BUSTING_URL );
 		$this->getContainer()
 			->share( 'pdfembedder', 'WP_Rocket\ThirdParty\Plugins\PDFEmbedder' );
-
-		// Register only a single host Subscriber, and only when we need one.
-		if ( $hosting_service ) {
-			$this->getContainer()->share( $hosting_service, $host_subscriber );
-		}
 	}
 }
