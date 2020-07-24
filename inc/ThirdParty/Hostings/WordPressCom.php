@@ -7,7 +7,7 @@ namespace WP_Rocket\ThirdParty\Hostings;
  *
  * @since 3.6.3
  */
-class WordPressCom extends NoCacheHost {
+class WordPressCom extends AbstractNoCacheHost {
 	/**
 	 * Array of events this subscriber listens to.
 	 *

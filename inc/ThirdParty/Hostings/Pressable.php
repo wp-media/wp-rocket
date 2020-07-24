@@ -6,7 +6,7 @@ namespace WP_Rocket\ThirdParty\Hostings;
  *
  * @since 3.3
  */
-class Pressable extends NoCacheHost {
+class Pressable extends AbstractNoCacheHost {
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
 	 *

@@ -9,7 +9,7 @@ use WpeCommon;
  *
  * @since 3.6.1
  */
-class WPEngine extends NoCacheHost {
+class WPEngine extends AbstractNoCacheHost {
 	/**
 	 * Array of events this subscriber wants to listen to.
 	 *

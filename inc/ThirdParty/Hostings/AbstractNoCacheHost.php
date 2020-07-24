@@ -9,7 +9,7 @@ use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Event_Management\Event_Manager_Aware_Subscriber_Interface;
 use WP_Rocket\ThirdParty\ReturnTypesTrait;
 
-abstract class NoCacheHost implements ActivationInterface, DeactivationInterface, Event_Manager_Aware_Subscriber_Interface {
+abstract class AbstractNoCacheHost implements ActivationInterface, DeactivationInterface, Event_Manager_Aware_Subscriber_Interface {
 	use ReturnTypesTrait;
 
 	/**
