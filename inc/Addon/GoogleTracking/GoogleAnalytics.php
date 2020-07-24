@@ -86,7 +86,7 @@ class GoogleAnalytics extends Abstract_Busting {
 	public function __construct( $busting_path, $busting_url ) {
 		$this->busting_path = $busting_path . 'google-tracking/';
 		$this->busting_url  = $busting_url . 'google-tracking/';
-		$this->filesystem   = \rocket_direct_filesystem();
+		$this->filesystem   = rocket_direct_filesystem();
 	}
 
 	/** ----------------------------------------------------------------------------------------- */
@@ -177,7 +177,7 @@ class GoogleAnalytics extends Abstract_Busting {
 			return false;
 		}
 
-		$version = \md5( $content );
+		$version = md5( $content );
 		$path    = $this->get_busting_file_path( $version );
 
 		return $this->update_file_contents( $path, $content );
@@ -216,19 +216,19 @@ class GoogleAnalytics extends Abstract_Busting {
 	 * @return string
 	 */
 	protected function find( $pattern, $html ) {
-		\preg_match_all( '/' . $pattern . '/Umi', $html, $matches, PREG_SET_ORDER );
+		preg_match_all( '/' . $pattern . '/Umi', $html, $matches, PREG_SET_ORDER );
 
 		if ( ! $matches ) {
 			return false;
 		}
 
-		$matches = \array_map(
+		$matches = array_map(
 			function( $match ) {
 				if ( isset( $match['attr'] ) && ! preg_match( '/src\s*=\s*[\'"]\s*(?:https?:)?\/\/www\.google-analytics\.com\/analytics\.js\s*[\'"]/i', $match['attr'] ) ) {
 					return;
 				}
 
-				if ( isset( $match['content'] ) && false === \strpos( $match['content'], 'GoogleAnalyticsObject' ) ) {
+				if ( isset( $match['content'] ) && false === strpos( $match['content'], 'GoogleAnalyticsObject' ) ) {
 					return;
 				}
 
@@ -237,7 +237,7 @@ class GoogleAnalytics extends Abstract_Busting {
 			$matches
 		);
 
-		$matches = \array_values( \array_filter( $matches ) );
+		$matches = array_values( array_filter( $matches ) );
 
 		if ( ! $matches ) {
 			return false;
