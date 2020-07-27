@@ -216,19 +216,19 @@ class GoogleAnalytics extends Abstract_Busting {
 	 * @return string
 	 */
 	protected function find( $pattern, $html ) {
-		preg_match_all( '/' . $pattern . '/Umi', $html, $matches, PREG_SET_ORDER );
-
-		if ( ! $matches ) {
-			return false;
-		}
+		preg_match_all( '/' . $pattern . '/si', $html, $matches, PREG_SET_ORDER );
 
 		$matches = array_map(
 			function( $match ) {
-				if ( isset( $match['attr'] ) && ! preg_match( '/src\s*=\s*[\'"]\s*(?:https?:)?\/\/www\.google-analytics\.com\/analytics\.js\s*[\'"]/i', $match['attr'] ) ) {
-					return;
-				}
-
-				if ( isset( $match['content'] ) && false === strpos( $match['content'], 'GoogleAnalyticsObject' ) ) {
+				if (
+					(
+						isset( $match['attr'] ) && ! preg_match( '/src\s*=\s*[\'"]\s*(?:https?:)?\/\/www\.google-analytics\.com\/analytics\.js\s*[\'"]/i', $match['attr'] )
+					)
+					&&
+					(
+						isset( $match['content'] ) && false === strpos( $match['content'], 'GoogleAnalyticsObject' )
+					)
+				) {
 					return;
 				}
 
