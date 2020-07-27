@@ -21,7 +21,7 @@ class Test_UpdateWPCache extends TestCase {
 			->once()
 			->andReturn( false );
 
-		$this->assertFalse( $wp_cache->update_wp_cache() );
+		$this->assertNull( $wp_cache->update_wp_cache() );
 	}
 
 	public function testShouldCallSetCacheConstant() {
