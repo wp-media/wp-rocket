@@ -34,9 +34,14 @@ class WPCache implements ActivationInterface, DeactivationInterface {
 	/**
 	 * Performs these actions during the plugin deactivation
 	 *
+	 * @param int $sites_number Number of WP Rocket config files found.
 	 * @return void
 	 */
-	public function deactivate() {
+	public function deactivate( $sites_number = 0 ) {
+		if ( is_multisite() && 0 !== $sites_number ) {
+			return;
+		}
+
 		add_action( 'rocket_deactivation', [ $this, 'update_wp_cache' ] );
 		add_filter( 'rocket_prevent_deactivation', [ $this, 'maybe_prevent_deactivation' ] );
 	}
@@ -46,11 +51,11 @@ class WPCache implements ActivationInterface, DeactivationInterface {
 	 *
 	 * @since 3.6.3
 	 *
-	 * @return bool|void False if rocket key is invalid.
+	 * @return bool
 	 */
 	public function update_wp_cache() {
 		if ( ! rocket_valid_key() ) {
-			return false;
+			return;
 		}
 
 		$value = 'rocket_deactivation' === current_filter() ? false : true;
