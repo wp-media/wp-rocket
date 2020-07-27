@@ -3,7 +3,6 @@ namespace WP_Rocket\Engine\Activation;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use League\Container\ServiceProvider\BootableServiceProviderInterface;
-use WP_Rocket\ThirdParty\Hostings\HostResolver;
 
 /**
  * Service Provider for the activation process.
