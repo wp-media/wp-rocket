@@ -2032,6 +2032,7 @@ class Page {
 					'cloudflare_old_settings',
 					'sitemap_preload_url_crawl',
 					'cache_ssl',
+					'minify_google_fonts',
 				]
 			)
 		);
