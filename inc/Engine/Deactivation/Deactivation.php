@@ -61,7 +61,9 @@ class Deactivation {
 		// Delete config files.
 		rocket_delete_config_file();
 
-		if ( ! count( glob( WP_ROCKET_CONFIG_PATH . '*.php' ) ) ) {
+		$sites_number = count( glob( WP_ROCKET_CONFIG_PATH . '*.php' ) );
+
+		if ( ! $sites_number ) {
 			// Delete All WP Rocket rules of the .htaccess file.
 			flush_rocket_htaccess( true );
 		}
@@ -87,8 +89,11 @@ class Deactivation {
 		/**
 		 * WP Rocket deactivation.
 		 *
+		 * @since 3.6.3 add $sites_count parameter.
 		 * @since  3.1.5
+		 *
+		 * @param int $sites_number Number of WP Rocket config files found.
 		 */
-		do_action( 'rocket_deactivation' );
+		do_action( 'rocket_deactivation', $sites_number );
 	}
 }
