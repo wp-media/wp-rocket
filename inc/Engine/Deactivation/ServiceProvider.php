@@ -61,6 +61,5 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 		$this->getContainer()->add( 'capabilities_manager', 'WP_Rocket\Engine\Capabilities\Manager' );
 		$this->getContainer()->add( 'wp_cache', 'WP_Rocket\Engine\Cache\WPCache' )
 			->withArgument( $filesystem );
-		$this->getContainer()->share( 'wpengine', 'WP_Rocket\ThirdParty\Hostings\WPEngine' );
 	}
 }
