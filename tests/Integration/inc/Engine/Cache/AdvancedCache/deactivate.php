@@ -20,4 +20,29 @@ class Test_Deactivate extends TestCase {
 			has_action( 'rocket_deactivation', [ $advanced_cache, 'update_advanced_cache' ] )
 		);
 	}
+
+	/**
+	 * @group Multisite
+	 */
+	public function testShouldNotAddActionsWhenSitesNotZeroOnMultisite() {
+		$advanced_cache = new AdvancedCache( 'http://path/to/filesystem', null );
+
+		$advanced_cache->deactivate( 1 );
+
+		$this->assertFalse( has_action( 'rocket_deactivation', [ $advanced_cache, 'update_advanced_cache' ] ) );
+	}
+
+	/**
+	 * @group Multisite
+	 */
+	public function testShouldAddActionsWhenSitesZeroOnMultisite() {
+		$advanced_cache = new AdvancedCache( 'http://path/to/filesystem', null );
+
+		$advanced_cache->deactivate();
+
+		$this->assertEquals(
+			10,
+			has_action( 'rocket_deactivation', [ $advanced_cache, 'update_advanced_cache' ] )
+		);
+	}
 }
