@@ -6,6 +6,7 @@ use Imagify_Partner;
 use League\Container\Container;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Event_Management\Event_Manager;
+use WP_Rocket\ThirdParty\Hostings\HostResolver;
 
 /**
  * Plugin Manager.
