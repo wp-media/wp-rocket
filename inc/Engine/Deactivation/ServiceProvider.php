@@ -28,17 +28,6 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 	];
 
 	/**
-	 * ServiceProvider constructor.
-	 */
-	public function __construct() {
-		$host_type = HostResolver::get_host_service();
-
-		if ( ! empty( $host_type ) ) {
-			$this->provides[] = $host_type;
-		}
-	}
-
-	/**
 	 * Executes this method when the service provider is registered
 	 *
 	 * @return void
