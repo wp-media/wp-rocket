@@ -26,7 +26,7 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 	 * @return void
 	 */
 	public function boot() {
-        $hosting_service = HostResolver::get_host_service();
+		$hosting_service = HostResolver::get_host_service();
 
 		if ( ! empty( $hosting_service ) ) {
 			$this->provides[] = $hosting_service;
