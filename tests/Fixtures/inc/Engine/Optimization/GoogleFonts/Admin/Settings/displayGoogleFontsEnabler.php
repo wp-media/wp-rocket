@@ -12,7 +12,7 @@ return [
 			'expect' => ''
 		],
 
-		'shouldBailWhenMinifyEnabled' => [
+		'shouldBailWhenOptimizeGFEnabled' => [
 			'config' => [
 				'user-can'   => true,
 				'gf-minify'  => true,
@@ -20,7 +20,7 @@ return [
 			'expect' => '',
 		],
 
-		'shouldShowWhenAuthAndMinifyNotEnabled' => [
+		'shouldShowWhenAuthAndOptimizeGFNotEnabled' => [
 			'config' => [
 				'user-can'   => true,
 				'gf-minify'  => false,
