@@ -3,6 +3,7 @@
 namespace WP_Rocket\ThirdParty\Hostings;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
+use League\Container\ServiceProvider\BootableServiceProviderInterface;
 use WP_Rocket\ThirdParty\Hostings\HostResolver;
 use WP_Rocket\ThirdParty\Hostings\HostSubscriberFactory;
 
@@ -11,13 +12,26 @@ use WP_Rocket\ThirdParty\Hostings\HostSubscriberFactory;
  *
  * @since 3.6.3
  */
-class ServiceProvider extends AbstractServiceProvider {
+class ServiceProvider extends AbstractServiceProvider implements BootableServiceProviderInterface {
 	/**
 	 * Services provided
 	 *
 	 * @var array
 	 */
 	protected $provides = [];
+
+	/**
+	 * Register the service in the provider array
+	 *
+	 * @return void
+	 */
+	public function boot() {
+        $hosting_service = HostResolver::get_host_service();
+
+		if ( ! empty( $hosting_service ) ) {
+			$this->provides[] = $hosting_service;
+		}
+	}
 
 	/**
 	 * Registers the current hosting subscriber in the container
@@ -30,11 +44,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$hosting_service = HostResolver::get_host_service();
 
 		if ( ! empty( $hosting_service ) ) {
-			$host_subscriber = ( new HostSubscriberFactory() )->get_subscriber();
-
-			$this->provides[] = $hosting_service;
-
-			$this->getContainer()->share( $hosting_service, $host_subscriber );
+			$this->getContainer()->share( $hosting_service, ( new HostSubscriberFactory() )->get_subscriber() );
 		}
 	}
 }
