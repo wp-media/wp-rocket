@@ -33,7 +33,9 @@ class Test_ReplaceUrl extends FilesystemTestCase {
 
 		$actual = apply_filters( 'rocket_buffer', $html );
 
-		$this->assertEquals( str_replace( '{HOME_URL}', 'http://example.org', $expected ), $actual );
+		$this->assertSame(
+			$this->format_the_html( $expected ),
+			$this->format_the_html( $actual )
+		);
 	}
-
 }

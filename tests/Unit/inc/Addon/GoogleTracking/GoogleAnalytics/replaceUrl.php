@@ -27,13 +27,15 @@ class Test_ReplaceUrl extends FilesystemTestCase {
 			Functions\expect( 'wp_remote_retrieve_body' )->once()->with( 'request' )->andReturn( 'Remote File contents here' );
 		}
 
-
-		$busting_path     = WP_ROCKET_CACHE_ROOT_PATH . 'busting/';
-		$busting_url      = WP_ROCKET_CACHE_ROOT_URL . 'busting/';
-		$google_analytics = new GoogleAnalytics( $busting_path, $busting_url );
+		$google_analytics = new GoogleAnalytics(
+			$this->filesystem->getUrl( 'wp-content/cache/busting/' ),
+			'http://example.org/wp-content/cache/busting/'
+		);
 		$actual           = $google_analytics->replace_url( $html );
 
-		$this->assertEquals( str_replace( '{HOME_URL}', 'vfs://public', $expected ), $actual );
+		$this->assertSame(
+			$this->format_the_html( $expected ),
+			$this->format_the_html( $actual )
+		);
 	}
-
 }
