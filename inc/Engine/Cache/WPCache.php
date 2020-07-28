@@ -47,7 +47,7 @@ class WPCache implements ActivationInterface, DeactivationInterface {
 	 * @since 3.6.3
 	 *
 	 * @param int $sites_number Number of WP Rocket config files found.
-	 * @return bool
+	 * @return void
 	 */
 	public function update_wp_cache( $sites_number = 0 ) {
 		if ( ! rocket_valid_key() ) {
