@@ -47,7 +47,7 @@ class Settings extends Abstract_Render {
 			return;
 		}
 
-		if ( ! apply_filters( 'pre_get_rocket_option_minify_google_fonts', true ) ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound.
+		if ( ! apply_filters( 'pre_get_rocket_option_minify_google_fonts', true ) ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			return;
 		}
 
