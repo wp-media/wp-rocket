@@ -57,14 +57,9 @@ class AdvancedCache implements ActivationInterface, DeactivationInterface {
 	 *
 	 * @since 3.6.3
 	 *
-	 * @param int $sites_number Number of WP Rocket config files found.
 	 * @return void
 	 */
-	public function deactivate( $sites_number = 0 ) {
-		if ( is_multisite() && 0 !== $sites_number ) {
-			return;
-		}
-
+	public function deactivate() {
 		add_action( 'rocket_deactivation', [ $this, 'update_advanced_cache' ] );
 	}
 
@@ -73,9 +68,10 @@ class AdvancedCache implements ActivationInterface, DeactivationInterface {
 	 *
 	 * @since 3.6.3
 	 *
+	 * @param int $sites_number Number of WP Rocket config files found.
 	 * @return void
 	 */
-	public function update_advanced_cache() {
+	public function update_advanced_cache( $sites_number = 0 ) {
 		/**
 		 * Filters whether to generate the advanced-cache.php file.
 		 *
@@ -87,7 +83,15 @@ class AdvancedCache implements ActivationInterface, DeactivationInterface {
 			return;
 		}
 
-		$content = 'rocket_activation' === current_filter() ? $this->get_advanced_cache_content() : '';
+		$content = $this->get_advanced_cache_content();
+
+		if ( 'rocket_deactivation' === current_filter() ) {
+			if ( is_multisite() && 0 !== $sites_number ) {
+				return;
+			}
+
+			$content = '';
+		}
 
 		$this->filesystem->put_contents(
 			"{$this->content_dir}/advanced-cache.php",
