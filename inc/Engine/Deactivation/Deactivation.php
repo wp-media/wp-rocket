@@ -34,7 +34,7 @@ class Deactivation {
 		$host_type = HostResolver::get_host_service();
 
 		if ( ! empty( $host_type ) ) {
-			self::$deactivators[] = $host_type;
+			array_unshift( self::$deactivators, $host_type );
 		}
 
 		foreach ( self::$deactivators as $deactivator ) {

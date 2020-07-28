@@ -37,7 +37,7 @@ class Activation {
 		$host_type = HostResolver::get_host_service();
 
 		if ( ! empty( $host_type ) ) {
-			self::$activators[] = $host_type;
+			array_unshift( self::$activators, $host_type );
 		}
 
 		foreach ( self::$activators as $activator ) {
