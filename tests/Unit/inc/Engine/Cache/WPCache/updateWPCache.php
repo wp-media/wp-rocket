@@ -34,4 +34,19 @@ class Test_UpdateWPCache extends TestCase {
 
 		$wp_cache->update_wp_cache();
 	}
+
+	/**
+	 * @group Multisite
+	 */
+	public function testShouldNotUpdateWhenMultisiteAndSitesNotZero() {
+		$wp_cache = new WPCache( null );
+
+		Functions\expect( 'rocket_valid_key' )
+			->once()
+			->andReturn( true );
+		Functions\when( 'current_filter' )->justReturn( 'rocket_deactivation' );
+		Functions\when( 'is_multisite' )->justReturn( true );
+
+		$this->assertNull( $wp_cache->update_wp_cache( 1 ) );
+	}
 }
