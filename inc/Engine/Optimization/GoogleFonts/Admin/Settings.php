@@ -47,6 +47,10 @@ class Settings extends Abstract_Render {
 			return;
 		}
 
+		if ( ! apply_filters( 'pre_get_rocket_option_minify_google_fonts', true ) ) {
+			return;
+		}
+
 		if ( $this->options->get( 'minify_google_fonts', 0 ) ) {
 			return;
 		}

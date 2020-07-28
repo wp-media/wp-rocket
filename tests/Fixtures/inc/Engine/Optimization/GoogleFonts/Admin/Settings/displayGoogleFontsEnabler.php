@@ -7,14 +7,25 @@ return [
 		'shouldBailWhenUserNotAuthorized' => [
 			'config' => [
 				'user-can'   => false,
+				'filter-not-set' => true,
 				'gf-minify'  => false,
 			],
-			'expect' => ''
+			'expect' => '',
+		],
+
+		'shouldBailWhenOptimizeFilterSetFalse' => [
+			'config' => [
+				'user-can' => true,
+				'filter-not-set' => false,
+				'gf-minify' => false,
+			],
+			'expect' => '',
 		],
 
 		'shouldBailWhenOptimizeGFEnabled' => [
 			'config' => [
 				'user-can'   => true,
+				'filter-not-set' => true,
 				'gf-minify'  => true,
 			],
 			'expect' => '',
@@ -23,6 +34,7 @@ return [
 		'shouldShowWhenAuthAndOptimizeGFNotEnabled' => [
 			'config' => [
 				'user-can'   => true,
+				'filter-not-set' => true,
 				'gf-minify'  => false,
 			],
 			'expect' => 'setting output',

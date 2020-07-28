@@ -6,6 +6,7 @@ use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Optimization\GoogleFonts\Admin\Settings;
+use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
@@ -39,8 +40,16 @@ class Test_DisplayGoogleFontsEnabler extends FilesystemTestCase {
 	 */
 	public function testEnableGoogleFonts( $config, $expect ) {
 		Functions\when( 'current_user_can' )->justReturn( $config['user-can'] );
+		Filters\expectApplied( 'pre_get_rocket_option_minify_google_fonts' )
+			->with( true )
+			->andReturn( $config['filter-not-set'] );
 
 		if ( ! $config['user-can'] ) {
+			$this->shouldBail();
+			return;
+		}
+
+		if ( ! $config['filter-not-set'] ) {
 			$this->shouldBail();
 			return;
 		}
