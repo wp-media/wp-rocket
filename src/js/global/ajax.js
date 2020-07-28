@@ -131,7 +131,8 @@ $(document).ready(function(){
 					$('#wpr-action-rocket_enable_google_fonts').hide();
 					$('.wpr-hide-on-click').hide();
 					$('.wpr-show-on-click').show();
-					$('#wpr-action-rocket_enable_google_fonts').removeClass('wpr-isLoading');
+                    $('#wpr-action-rocket_enable_google_fonts').removeClass('wpr-isLoading');
+                    $('#minify_google_fonts').val(1);
 				}
 			}
         );
