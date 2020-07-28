@@ -25,36 +25,4 @@ class Test_Deactivate extends TestCase {
 			has_action( 'rocket_prevent_deactivation', [ $wp_cache, 'maybe_prevent_deactivation' ] )
 		);
 	}
-
-	/**
-	 * @group Multisite
-	 */
-	public function testShouldNotAddActionsWhenSitesNotZeroOnMultisite() {
-		$wp_cache = new WPCache( null );
-
-		$wp_cache->deactivate( 1 );
-
-		$this->assertFalse( has_action( 'rocket_deactivation', [ $wp_cache, 'update_wp_cache' ] ) );
-
-		$this->assertFalse( has_action( 'rocket_prevent_deactivation', [ $wp_cache, 'maybe_prevent_deactivation' ] ) );
-	}
-
-	/**
-	 * @group Multisite
-	 */
-	public function testShouldAddActionsWhenSitesZeroOnMultisite() {
-		$wp_cache = new WPCache( null );
-
-		$wp_cache->deactivate();
-
-		$this->assertEquals(
-			10,
-			has_action( 'rocket_deactivation', [ $wp_cache, 'update_wp_cache' ] )
-		);
-
-		$this->assertEquals(
-			10,
-			has_action( 'rocket_prevent_deactivation', [ $wp_cache, 'maybe_prevent_deactivation' ] )
-		);
-	}
 }
