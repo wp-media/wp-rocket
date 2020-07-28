@@ -110,4 +110,31 @@ $(document).ready(function(){
 			}
         );
     });
+
+    /**
+     * Save enable Google Fonts Optimization option.
+     */
+    $('#wpr-action-rocket_enable_google_fonts').on('click', function(e) {
+        e.preventDefault();
+
+		$('#wpr-action-rocket_enable_google_fonts').addClass('wpr-isLoading');
+
+        $.post(
+            ajaxurl,
+            {
+                action: 'rocket_enable_google_fonts',
+                _ajax_nonce: rocket_ajax_data.nonce
+            },
+			function(response) {
+				if ( response.success ) {
+					// Hide Mobile CPCSS btn on success.
+					$('#wpr-action-rocket_enable_google_fonts').hide();
+					$('.wpr-hide-on-click').hide();
+					$('.wpr-show-on-click').show();
+                    $('#wpr-action-rocket_enable_google_fonts').removeClass('wpr-isLoading');
+                    $('#minify_google_fonts').val(1);
+				}
+			}
+        );
+    });
 });

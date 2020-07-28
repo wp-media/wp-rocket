@@ -569,7 +569,6 @@ class Page {
 		$inline_js_beacon      = $this->beacon->get_suggest( 'exclude_inline_js' );
 		$exclude_js_beacon     = $this->beacon->get_suggest( 'exclude_js' );
 		$jquery_migrate_beacon = $this->beacon->get_suggest( 'jquery_migrate' );
-		$google_fonts_beacon   = $this->beacon->get_suggest( 'google_fonts' );
 
 		$this->settings->add_page_section(
 			'file_optimization',
@@ -581,11 +580,7 @@ class Page {
 
 		$this->settings->add_settings_sections(
 			[
-				'basic' => [
-					'title' => __( 'Basic Settings', 'rocket' ),
-					'page'  => 'file_optimization',
-				],
-				'css'   => [
+				'css' => [
 					'title'  => __( 'CSS Files', 'rocket' ),
 					'help'   => [
 						'id'  => $this->beacon->get_suggest( 'css_section' ),
@@ -595,7 +590,7 @@ class Page {
 					// translators: %1$s = type of minification (HTML, CSS or JS), %2$s = “WP Rocket”.
 					'helper' => rocket_maybe_disable_minify_css() ? sprintf( __( '%1$s Minification is currently activated in <strong>Autoptimize</strong>. If you want to use %2$s’s minification, disable those options in Autoptimize.', 'rocket' ), 'CSS', WP_ROCKET_PLUGIN_NAME ) : '',
 				],
-				'js'    => [
+				'js'  => [
 					'title'  => __( 'JavaScript Files', 'rocket' ),
 					'help'   => [
 						'id'  => $this->beacon->get_suggest( 'js_section' ),
@@ -610,16 +605,6 @@ class Page {
 
 		$this->settings->add_settings_fields(
 			[
-				'minify_google_fonts'    => [
-					'type'              => 'checkbox',
-					'label'             => __( 'Optimize Google Fonts', 'rocket' ),
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'Improves font performance and combines multiple font requests to reduce the number of HTTP requests. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $google_fonts_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $google_fonts_beacon['id'] ) . '" target="_blank">', '</a>' ),
-					'section'           => 'basic',
-					'page'              => 'file_optimization',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
-				],
 				'minify_css'             => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Minify CSS files', 'rocket' ),
@@ -2049,6 +2034,7 @@ class Page {
 					'cloudflare_old_settings',
 					'sitemap_preload_url_crawl',
 					'cache_ssl',
+					'minify_google_fonts',
 				]
 			)
 		);
