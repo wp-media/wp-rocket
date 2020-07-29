@@ -1,6 +1,5 @@
 <?php
 use WP_Rocket\Logger\Logger;
-use WP_Rocket\Subscriber\Plugin\Capabilities_Subscriber;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -357,10 +356,6 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 
 	if ( version_compare( $actual_version, '3.4', '<' ) ) {
 		wp_clear_scheduled_hook( 'rocket_purge_time_event' );
-	}
-
-	if ( version_compare( $actual_version, '3.4.0.1', '<' ) ) {
-		( new Capabilities_Subscriber() )->add_rocket_capabilities();
 	}
 
 	if ( version_compare( $actual_version, '3.6', '<' ) ) {

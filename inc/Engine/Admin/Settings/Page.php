@@ -842,6 +842,7 @@ class Page {
 
 		$disable_images_lazyload  = [];
 		$disable_iframes_lazyload = [];
+		$disable_youtube_lazyload = [];
 
 		if ( rocket_avada_maybe_disable_lazyload() ) {
 			$disable_images_lazyload[] = __( 'Avada', 'rocket' );
@@ -871,11 +872,24 @@ class Page {
 		$disable_iframes_lazyload = (array) apply_filters( 'rocket_maybe_disable_iframes_lazyload_helper', $disable_iframes_lazyload );
 		$disable_iframes_lazyload = $this->sanitize_and_format_list( $disable_iframes_lazyload );
 
+		/**
+		 * Lazyload Helper filter which disables WPR lazyload functionality to replace YouTube iframe with preview image.
+		 *
+		 * @since 3.6.3
+		 *
+		 * @param array $disable_youtube_lazyload Will return the array with all plugin/themes names which should disable replace YouTube iframe with preview image
+		 */
+		$disable_youtube_lazyload = (array) apply_filters( 'rocket_maybe_disable_youtube_lazyload_helper', $disable_youtube_lazyload );
+		$disable_youtube_lazyload = $this->sanitize_and_format_list( $disable_youtube_lazyload );
+		$disable_youtube_lazyload = array_merge( $disable_youtube_lazyload, $disable_iframes_lazyload );
+		$disable_youtube_lazyload = array_unique( $disable_youtube_lazyload );
+
 		$disable_lazyload = array_merge( $disable_images_lazyload, $disable_iframes_lazyload );
 		$disable_lazyload = array_unique( $disable_lazyload );
 
-		$disable_lazyload        = wp_sprintf_l( '%l', $disable_lazyload );
-		$disable_images_lazyload = wp_sprintf_l( '%l', $disable_images_lazyload );
+		$disable_lazyload         = wp_sprintf_l( '%l', $disable_lazyload );
+		$disable_images_lazyload  = wp_sprintf_l( '%l', $disable_images_lazyload );
+		$disable_youtube_lazyload = wp_sprintf_l( '%l', $disable_youtube_lazyload );
 
 		$this->settings->add_settings_sections(
 			[
@@ -967,7 +981,7 @@ class Page {
 				],
 				'lazyload_youtube' => [
 					'container_class'   => [
-						! empty( $disable_iframes_lazyload ) ? 'wpr-isDisabled' : '',
+						! empty( $disable_youtube_lazyload ) ? 'wpr-isDisabled' : '',
 						'wpr-field--children',
 					],
 					'type'              => 'checkbox',
@@ -979,8 +993,10 @@ class Page {
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 					'input_attr'        => [
-						'disabled' => ! empty( $disable_iframes_lazyload ) ? 1 : 0,
+						'disabled' => ! empty( $disable_youtube_lazyload ) ? 1 : 0,
 					],
+					// translators: %1$s = “WP Rocket”, %2$s = a list of plugin or themes names.
+					'description'       => ! empty( $disable_youtube_lazyload ) ? sprintf( __( 'Replace YouTube iframe with preview image is not compatible with %2$s.', 'rocket' ), WP_ROCKET_PLUGIN_NAME, $disable_youtube_lazyload ) : '',
 				],
 				'emoji'            => [
 					'type'              => 'checkbox',
