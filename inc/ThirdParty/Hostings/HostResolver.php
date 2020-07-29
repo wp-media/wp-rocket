@@ -61,6 +61,12 @@ class HostResolver {
 			return 'wpengine';
 		}
 
+		if ( rocket_get_constant( 'WPCOMSH_VERSION' ) ) {
+			self::$hostname = 'wordpresscom';
+
+			return 'wordpresscom';
+		}
+
 		if (
 			rocket_get_constant( '\Savvii\CacheFlusherPlugin::NAME_FLUSH_NOW' )
 			&&
