@@ -21,7 +21,7 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 	 *
 	 * @var AssetsLocalCache
 	 */
-	private $local_cache;
+	protected $local_cache;
 
 	/**
 	 * Creates an instance of inheriting class.
