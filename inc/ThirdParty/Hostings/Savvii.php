@@ -25,6 +25,7 @@ class Savvii implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
+			'do_rocket_generate_caching_files'        => [ 'return_false', PHP_INT_MAX ],
 			'rocket_varnish_field_settings'           => 'varnish_addon_title',
 			'rocket_display_input_varnish_auto_purge' => 'return_false',
 			'rocket_cache_mandatory_cookies'          => 'return_empty_array',
