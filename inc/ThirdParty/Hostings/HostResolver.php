@@ -67,6 +67,12 @@ class HostResolver {
 			return 'o2switch';
 		}
 
+		if ( rocket_get_constant( 'WPCOMSH_VERSION' ) ) {
+			self::$hostname = 'wordpresscom';
+
+			return 'wordpresscom';
+		}
+
 		return '';
 	}
 }

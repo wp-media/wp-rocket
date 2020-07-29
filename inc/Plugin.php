@@ -7,7 +7,6 @@ use League\Container\Container;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\ThirdParty\Hostings\HostResolver;
-use WP_Rocket\ThirdParty\Hostings\HostSubscriberFactory;
 
 /**
  * Plugin Manager.
@@ -218,6 +217,7 @@ class Plugin {
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\CDN\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Common_Subscribers' );
 		$this->container->addServiceProvider( 'WP_Rocket\ThirdParty\ServiceProvider' );
+		$this->container->addServiceProvider( 'WP_Rocket\ThirdParty\Hostings\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Updater_Subscribers' );
 
 		$common_subscribers = [
