@@ -1,21 +1,20 @@
 <?php
 namespace WP_Rocket\Engine\Optimization\Minify\JS;
 
-use WP_Rocket\Logger\Logger;
 use MatthiasMullie\Minify as Minifier;
+use WP_Rocket\Engine\Optimization\Minify\ProcessorInterface;
+use WP_Rocket\Logger\Logger;
 
 /**
  * Minify JS files
  *
  * @since 3.1
- * @author Remy Perona
  */
-class Minify extends AbstractJSOptimization {
+class Minify extends AbstractJSOptimization implements ProcessorInterface {
 	/**
 	 * Minifies JS files
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @param string $html HTML content.
 	 * @return string
@@ -120,7 +119,6 @@ class Minify extends AbstractJSOptimization {
 	 * Creates the minify URL if the minification is successful
 	 *
 	 * @since 2.11
-	 * @author Remy Perona
 	 *
 	 * @param string $url Original file URL.
 
@@ -204,7 +202,6 @@ class Minify extends AbstractJSOptimization {
 	 * Minifies the content
 	 *
 	 * @since 2.11
-	 * @author Remy Perona
 	 *
 	 * @param string|array $file     File to minify.
 	 * @return string|bool Minified content, false if empty
@@ -230,7 +227,6 @@ class Minify extends AbstractJSOptimization {
 	 * Returns a new minifier instance
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @param string $file_content Content to minify.
 	 * @return Minifier\JS

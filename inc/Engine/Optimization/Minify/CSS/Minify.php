@@ -2,15 +2,16 @@
 namespace WP_Rocket\Engine\Optimization\Minify\CSS;
 
 use MatthiasMullie\Minify as Minifier;
-use WP_Rocket\Logger\Logger;
 use WP_Rocket\Engine\Optimization\CSSTrait;
+use WP_Rocket\Engine\Optimization\Minify\ProcessorInterface;
+use WP_Rocket\Logger\Logger;
 
 /**
  * Minify CSS files
  *
  * @since 3.1
  */
-class Minify extends AbstractCSSOptimization {
+class Minify extends AbstractCSSOptimization implements ProcessorInterface {
 	use CSSTrait;
 
 	/**
