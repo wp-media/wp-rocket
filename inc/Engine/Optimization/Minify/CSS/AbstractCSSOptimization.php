@@ -4,26 +4,34 @@ namespace WP_Rocket\Engine\Optimization\Minify\CSS;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\AbstractOptimization;
+use WP_Rocket\Engine\Optimization\AssetsLocalCache;
 
 /**
  * Abstract class for CSS Optimization
  *
  * @since  3.1
- * @author Remy Perona
  */
 abstract class AbstractCSSOptimization extends AbstractOptimization {
 	const FILE_TYPE = 'css';
 
 	/**
+	 * Assets local cache instance
+	 *
+	 * @var AssetsLocalCache
+	 */
+	private $local_cache;
+
+	/**
 	 * Creates an instance of inheriting class.
 	 *
 	 * @since  3.1
-	 * @author Remy Perona
 	 *
-	 * @param Options_Data $options Options instance.
+	 * @param Options_Data     $options     Options instance.
+	 * @param AssetsLocalCache $local_cache AssetsLocalCache instance.
 	 */
-	public function __construct( Options_Data $options ) {
+	public function __construct( Options_Data $options, AssetsLocalCache $local_cache ) {
 		$this->options        = $options;
+		$this->local_cache    = $local_cache;
 		$this->minify_key     = $this->options->get( 'minify_css_key', create_rocket_uniqid() );
 		$this->excluded_files = $this->get_excluded_files();
 		$this->init_base_path_and_url();
@@ -33,7 +41,6 @@ abstract class AbstractCSSOptimization extends AbstractOptimization {
 	 * Get all files to exclude from minification/concatenation.
 	 *
 	 * @since  2.11
-	 * @author Remy Perona
 	 *
 	 * @return string
 	 */
@@ -64,7 +71,6 @@ abstract class AbstractCSSOptimization extends AbstractOptimization {
 	 * Returns the CDN zones.
 	 *
 	 * @since  3.1
-	 * @author Remy Perona
 	 *
 	 * @return array
 	 */
@@ -76,7 +82,6 @@ abstract class AbstractCSSOptimization extends AbstractOptimization {
 	 * Gets the minify URL
 	 *
 	 * @since  3.1
-	 * @author Remy Perona
 	 *
 	 * @param string $filename     Minified filename.
 	 * @param string $original_url Original URL for this file. Optional.
@@ -101,7 +106,6 @@ abstract class AbstractCSSOptimization extends AbstractOptimization {
 	 * Determines if it is a file excluded from minification
 	 *
 	 * @since  2.11
-	 * @author Remy Perona
 	 *
 	 * @param array $tag Tag corresponding to a CSS file.
 	 *
