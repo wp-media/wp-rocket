@@ -23,15 +23,6 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 	private $minifier;
 
 	/**
-	 * Assets local cache instance
-	 *
-	 * @since 3.1
-	 *
-	 * @var AssetsLocalCache
-	 */
-	private $local_cache;
-
-	/**
 	 * JQuery URL
 	 *
 	 * @since 3.1
@@ -68,10 +59,9 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 	 * @param AssetsLocalCache $local_cache Assets local cache instance.
 	 */
 	public function __construct( Options_Data $options, MinifyJS $minifier, AssetsLocalCache $local_cache ) {
-		parent::__construct( $options );
+		parent::__construct( $options, $local_cache );
 
 		$this->minifier    = $minifier;
-		$this->local_cache = $local_cache;
 		$this->jquery_urls = $this->get_jquery_urls();
 	}
 
