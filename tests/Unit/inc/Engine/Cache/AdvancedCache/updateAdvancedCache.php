@@ -24,6 +24,8 @@ class Test_UpdateAdvancedCache extends FilesystemTestCase {
 			$this->filesystem
 		);
 
+		Functions\when( 'is_rocket_generate_caching_mobile_files' )->justReturn( false );
+
 		if ( $set_filter ) {
 			Filters\expectApplied( 'rocket_generate_advanced_cache_file' )->andReturn( false );
 			Functions\expect( 'rocket_get_filesystem_perms' )->never();
@@ -37,5 +39,45 @@ class Test_UpdateAdvancedCache extends FilesystemTestCase {
 		$advanced_cache->update_advanced_cache();
 
 		$this->assertSame( $expected, $this->filesystem->getFilesListing( 'vfs://public/wp-content/' ) );
+	}
+
+	/**
+	 * @group Multisite
+	 */
+	public function testShouldNotUpdateWhenMultisiteAndSitesNotZero() {
+		$advanced_cache = new AdvancedCache(
+			$this->filesystem->getUrl( $this->config['vfs_dir'] ),
+			$this->filesystem
+		);
+
+		Functions\when( 'is_rocket_generate_caching_mobile_files' )->justReturn( false );
+		Functions\when( 'current_filter' )->justReturn( 'rocket_deactivation' );
+		Functions\when( 'is_multisite' )->justReturn( true );
+
+		$this->assertNull( $advanced_cache->update_advanced_cache( 1 ) );
+	}
+
+	/**
+	 * @group Multisite
+	 */
+	public function testShouldUpdateWhenMultisiteAndSitesZero() {
+		$advanced_cache = new AdvancedCache(
+			$this->filesystem->getUrl( $this->config['vfs_dir'] ),
+			$this->filesystem
+		);
+
+		Functions\when( 'is_rocket_generate_caching_mobile_files' )->justReturn( false );
+		Functions\when( 'current_filter' )->justReturn( 'rocket_deactivation' );
+		Functions\when( 'is_multisite' )->justReturn( true );
+
+		$advanced_cache->update_advanced_cache();
+
+		$this->assertSame(
+			[
+				'vfs://public/wp-content/cache/wp-rocket/index.html',
+				'vfs://public/wp-content/advanced-cache.php',
+			],
+			$this->filesystem->getFilesListing( 'vfs://public/wp-content/' )
+		);
 	}
 }

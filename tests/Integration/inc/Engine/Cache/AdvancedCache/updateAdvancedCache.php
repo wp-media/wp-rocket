@@ -1,6 +1,7 @@
 <?php
 namespace WP_Rocket\Tests\Integration\inc\Engine\Cache\AdvancedCache;
 
+use Brain\Monkey\Functions;
 use WP_Rocket\Engine\Cache\AdvancedCache;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
@@ -35,5 +36,41 @@ class Test_UpdateAdvancedCache extends FilesystemTestCase {
 		$advanced_cache->update_advanced_cache();
 
 		$this->assertSame( $expected, $this->filesystem->getFilesListing( 'vfs://public/wp-content/' ) );
+	}
+
+	/**
+	 * @group Multisite
+	 */
+	public function testShouldNotUpdateWhenMultisiteAndSitesNotZero() {
+		$advanced_cache = new AdvancedCache(
+			$this->filesystem->getUrl( $this->config['vfs_dir'] ),
+			$this->filesystem
+		);
+
+		Functions\when( 'current_filter' )->justReturn( 'rocket_deactivation' );
+
+		$this->assertNull( $advanced_cache->update_advanced_cache( 1 ) );
+	}
+
+	/**
+	 * @group Multisite
+	 */
+	public function testShouldUpdateWhenMultisiteAndSitesZero() {
+		$advanced_cache = new AdvancedCache(
+			$this->filesystem->getUrl( $this->config['vfs_dir'] ),
+			$this->filesystem
+		);
+
+		Functions\when( 'current_filter' )->justReturn( 'rocket_deactivation' );
+
+		$advanced_cache->update_advanced_cache();
+
+		$this->assertSame(
+			[
+				'vfs://public/wp-content/cache/wp-rocket/index.html',
+				'vfs://public/wp-content/advanced-cache.php',
+			],
+			$this->filesystem->getFilesListing( 'vfs://public/wp-content/' )
+		);
 	}
 }

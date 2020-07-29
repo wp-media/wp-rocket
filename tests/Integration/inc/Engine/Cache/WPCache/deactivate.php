@@ -1,7 +1,6 @@
 <?php
 namespace WP_Rocket\Tests\Integration\inc\Engine\Cache\WPCache;
 
-use WP_Rocket\Engine\Cache\AdvancedCache;
 use WP_Rocket\Engine\Cache\WPCache;
 use WP_Rocket\Tests\Integration\TestCase;
 

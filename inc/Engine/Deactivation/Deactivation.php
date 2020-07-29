@@ -3,6 +3,7 @@
 namespace WP_Rocket\Engine\Deactivation;
 
 use League\Container\Container;
+use WP_Rocket\ThirdParty\Hostings\HostResolver;
 
 class Deactivation {
 	/**
@@ -14,7 +15,6 @@ class Deactivation {
 		'advanced_cache',
 		'capabilities_manager',
 		'wp_cache',
-		'wpengine',
 	];
 
 	/**
@@ -29,6 +29,13 @@ class Deactivation {
 
 		$container->add( 'template_path', WP_ROCKET_PATH . 'views' );
 		$container->addServiceProvider( 'WP_Rocket\Engine\Deactivation\ServiceProvider' );
+		$container->addServiceProvider( 'WP_Rocket\ThirdParty\Hostings\ServiceProvider' );
+
+		$host_type = HostResolver::get_host_service();
+
+		if ( ! empty( $host_type ) ) {
+			array_unshift( self::$deactivators, $host_type );
+		}
 
 		foreach ( self::$deactivators as $deactivator ) {
 			$container->get( $deactivator );
@@ -61,7 +68,9 @@ class Deactivation {
 		// Delete config files.
 		rocket_delete_config_file();
 
-		if ( ! count( _rocket_get_directory_php_files_array( rocket_get_constant( 'WP_ROCKET_CONFIG_PATH' ) ) ) ) {
+		$sites_number = count( _rocket_get_directory_php_files_array( rocket_get_constant( 'WP_ROCKET_CONFIG_PATH' ) ) );
+
+		if ( ! $sites_number ) {
 			// Delete All WP Rocket rules of the .htaccess file.
 			flush_rocket_htaccess( true );
 		}
@@ -85,10 +94,13 @@ class Deactivation {
 		wp_clear_scheduled_hook( 'rocket_cache_dir_size_check' );
 
 		/**
-		 * WP Rocket deactivation.
+		 * WP Rocket deactivation.
 		 *
+		 * @since 3.6.3 add $sites_count parameter.
 		 * @since  3.1.5
+		 *
+		 * @param int $sites_number Number of WP Rocket config files found.
 		 */
-		do_action( 'rocket_deactivation' );
+		do_action( 'rocket_deactivation', $sites_number );
 	}
 }

@@ -21,7 +21,7 @@ class Test_UpdateWPCache extends TestCase {
 			->once()
 			->andReturn( false );
 
-		$this->assertFalse( $wp_cache->update_wp_cache() );
+		$this->assertNull( $wp_cache->update_wp_cache() );
 	}
 
 	public function testShouldCallSetCacheConstant() {
@@ -33,5 +33,16 @@ class Test_UpdateWPCache extends TestCase {
 		Functions\expect( 'current_user_can' )->once();
 
 		$wp_cache->update_wp_cache();
+	}
+
+	/**
+	 * @group Multisite
+	 */
+	public function testShouldNotUpdateWhenMultisiteAndSitesNotZero() {
+		$wp_cache = new WPCache( null );
+
+		Functions\when( 'current_filter' )->justReturn( 'rocket_deactivation' );
+
+		$this->assertNull( $wp_cache->update_wp_cache( 1 ) );
 	}
 }
