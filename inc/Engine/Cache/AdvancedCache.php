@@ -147,6 +147,11 @@ class AdvancedCache implements ActivationInterface, DeactivationInterface {
 			return;
 		}
 
+		// This filter is documented in inc/functions/files.php.
+		if ( ! (bool) apply_filters( 'rocket_generate_advanced_cache_file', true ) ) {
+			return;
+		}
+
 		if (
 			$this->filesystem->is_writable( "{$this->content_dir}/advanced-cache.php" )
 			||

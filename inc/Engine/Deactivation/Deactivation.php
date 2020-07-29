@@ -3,6 +3,7 @@
 namespace WP_Rocket\Engine\Deactivation;
 
 use League\Container\Container;
+use WP_Rocket\ThirdParty\Hostings\HostResolver;
 
 class Deactivation {
 	/**
@@ -14,7 +15,6 @@ class Deactivation {
 		'advanced_cache',
 		'capabilities_manager',
 		'wp_cache',
-		'wpengine',
 	];
 
 	/**
@@ -29,6 +29,13 @@ class Deactivation {
 
 		$container->add( 'template_path', WP_ROCKET_PATH . 'views' );
 		$container->addServiceProvider( 'WP_Rocket\Engine\Deactivation\ServiceProvider' );
+		$container->addServiceProvider( 'WP_Rocket\ThirdParty\Hostings\ServiceProvider' );
+
+		$host_type = HostResolver::get_host_service();
+
+		if ( ! empty( $host_type ) ) {
+			array_unshift( self::$deactivators, $host_type );
+		}
 
 		foreach ( self::$deactivators as $deactivator ) {
 			$container->get( $deactivator );
@@ -87,7 +94,7 @@ class Deactivation {
 		wp_clear_scheduled_hook( 'rocket_cache_dir_size_check' );
 
 		/**
-		 * WP Rocket deactivation.
+		 * WP Rocket deactivation.
 		 *
 		 * @since 3.6.3 add $sites_count parameter.
 		 * @since  3.1.5
