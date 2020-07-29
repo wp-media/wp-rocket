@@ -216,25 +216,22 @@ class GoogleAnalytics extends Abstract_Busting {
 	 * @return string
 	 */
 	protected function find( $pattern, $html ) {
-		preg_match_all( '/' . $pattern . '/si', $html, $matches, PREG_SET_ORDER );
+		preg_match_all( '/' . $pattern . '/si', $html, $all_matches, PREG_SET_ORDER );
 
 		$matches = array_map(
 			function( $match ) {
+
 				if (
-					(
-						isset( $match['attr'] ) && ! preg_match( '/src\s*=\s*[\'"]\s*(?:https?:)?\/\/www\.google-analytics\.com\/analytics\.js\s*[\'"]/i', $match['attr'] )
-					)
+						! preg_match( '/src\s*=\s*[\'"]\s*(?:https?:)?\/\/www\.google-analytics\.com\/analytics\.js\s*[\'"]/i', $match['attr'] . $match['content'] )
 					&&
-					(
-						isset( $match['content'] ) && false === strpos( $match['content'], 'GoogleAnalyticsObject' )
-					)
+						false === strpos( $match['content'], 'GoogleAnalyticsObject' )
 				) {
 					return;
 				}
 
 				return $match[0];
 			},
-			$matches
+			$all_matches
 		);
 
 		$matches = array_values( array_filter( $matches ) );

@@ -75,5 +75,22 @@ return [
 				ga('send', 'pageview');
 				</script></head></html>",
 		],
+		'shouldReplaceUrlWhenAsyncScript' => [
+			'config' => [
+				'url' => 'https://www.google-analytics.com/analytics.js',
+				'html' => "<html><head><script>
+		            window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+		            ga('create', 'UA-172439894-1', 'auto');
+		            ga('send', 'pageview');
+		        </script>
+		        <script async src='https://www.google-analytics.com/analytics.js'></script></head></html>",
+			],
+			'expected' => "<html><head><script>
+		            window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+		            ga('create', 'UA-172439894-1', 'auto');
+		            ga('send', 'pageview');
+		        </script>
+		        <script async src='http://example.org/wp-content/cache/busting/google-tracking/ga-88c587e9d2fdeb7ac5d4cdd9bd8d4af5.js'></script></head></html>",
+		],
 	]
 ];
