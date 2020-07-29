@@ -1207,6 +1207,30 @@ function rocket_get_filesystem_perms( $type ) {
 }
 
 /**
+ * Gets Directory files matches regex.
+ *
+ * @since 3.6.3
+ * @access private
+ *
+ * @param string $dir   Directory to search for files inside it.
+ * @param string $regex Regular expression for files need to be searched for.
+ *
+ * @return array|RegexIterator List of files matches this regular expression.
+ */
+function _rocket_get_dir_files_by_regex( $dir, $regex ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
+	try {
+		$iterator = new IteratorIterator(
+			new FilesystemIterator( $dir )
+		);
+
+		return new RegexIterator( $iterator, $regex );
+	} catch ( Exception $e ) {
+		return [];
+	}
+
+}
+
+/**
  * Get the recursive iterator for the cache path.
  *
  * @since  3.5.4
