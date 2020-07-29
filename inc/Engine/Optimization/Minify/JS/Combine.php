@@ -1,23 +1,22 @@
 <?php
 namespace WP_Rocket\Engine\Optimization\Minify\JS;
 
+use MatthiasMullie\Minify\JS as MinifyJS;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\AssetsLocalCache;
+use WP_Rocket\Engine\Optimization\Minify\ProcessorInterface;
 use WP_Rocket\Logger\Logger;
-use MatthiasMullie\Minify\JS as MinifyJS;
 
 /**
  * Combines JS files
  *
  * @since 3.1
- * @author Remy Perona
  */
-class Combine extends AbstractJSOptimization {
+class Combine extends AbstractJSOptimization implements ProcessorInterface {
 	/**
 	 * Minifier instance
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @var MinifyJS
 	 */
@@ -27,7 +26,6 @@ class Combine extends AbstractJSOptimization {
 	 * Assets local cache instance
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @var AssetsLocalCache
 	 */
@@ -37,7 +35,6 @@ class Combine extends AbstractJSOptimization {
 	 * JQuery URL
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @var array
 	 */
@@ -47,7 +44,6 @@ class Combine extends AbstractJSOptimization {
 	 * Scripts to combine
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @var array
 	 */
@@ -57,7 +53,6 @@ class Combine extends AbstractJSOptimization {
 	 * Inline scripts excluded from combined and moved after the combined file
 	 *
 	 * @since 3.1.4
-	 * @author Remy Perona
 	 *
 	 * @var array
 	 */
@@ -67,7 +62,6 @@ class Combine extends AbstractJSOptimization {
 	 * Constructor
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @param Options_Data     $options     Plugin options instance.
 	 * @param MinifyJS         $minifier    Minifier instance.
@@ -85,7 +79,6 @@ class Combine extends AbstractJSOptimization {
 	 * Minifies and combines JavaScripts into one
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @param string $html HTML content.
 	 * @return string
@@ -169,7 +162,6 @@ class Combine extends AbstractJSOptimization {
 	 * Parses found nodes to keep only the ones to combine
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @param Array $scripts scripts corresponding to JS file or content.
 	 * @return array
@@ -322,7 +314,6 @@ class Combine extends AbstractJSOptimization {
 	 * Gets content for each script either from inline or from src
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @return string
 	 */
@@ -355,7 +346,6 @@ class Combine extends AbstractJSOptimization {
 	 * Creates the minify URL if the minification is successful
 	 *
 	 * @since 2.11
-	 * @author Remy Perona
 	 *
 	 * @param string $content Content to minify & combine.
 
@@ -389,7 +379,6 @@ class Combine extends AbstractJSOptimization {
 	 * Minifies the content
 	 *
 	 * @since 2.11
-	 * @author Remy Perona
 	 *
 	 * @return string|bool Minified content, false if empty
 	 */
@@ -407,7 +396,6 @@ class Combine extends AbstractJSOptimization {
 	 * Adds content to the minifier
 	 *
 	 * @since  3.1
-	 * @author Remy Perona
 	 *
 	 * @param string $content Content to minify/combine.
 	 * @return void
@@ -420,7 +408,6 @@ class Combine extends AbstractJSOptimization {
 	 * Patterns in content excluded from being combined
 	 *
 	 * @since  3.1
-	 * @author Remy Perona
 	 *
 	 * @return array
 	 */
@@ -656,7 +643,6 @@ class Combine extends AbstractJSOptimization {
 	 * Patterns in URL excluded from being combined
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @return array
 	 */
@@ -748,7 +734,6 @@ class Combine extends AbstractJSOptimization {
 	 * Patterns of inline JS to move after the combined JS file
 	 *
 	 * @since 3.1.4
-	 * @author Remy Perona
 	 *
 	 * @return array
 	 */
@@ -859,7 +844,6 @@ class Combine extends AbstractJSOptimization {
 		 * Filters inline JS to move after the combined JS file
 		 *
 		 * @since 3.1.4
-		 * @author Remy Perona
 		 *
 		 * @param array $move_after_scripts Patterns to match.
 		 */
@@ -870,7 +854,6 @@ class Combine extends AbstractJSOptimization {
 	 * Gets all localized scripts data to exclude them from combine.
 	 *
 	 * @since 3.1.3
-	 * @author Remy Perona
 	 *
 	 * @return array
 	 */

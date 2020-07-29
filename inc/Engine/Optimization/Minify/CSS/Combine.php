@@ -5,6 +5,7 @@ use MatthiasMullie\Minify\CSS as MinifyCSS;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\AssetsLocalCache;
 use WP_Rocket\Engine\Optimization\CSSTrait;
+use WP_Rocket\Engine\Optimization\Minify\ProcessorInterface;
 use WP_Rocket\Logger\Logger;
 
 /**
@@ -12,7 +13,7 @@ use WP_Rocket\Logger\Logger;
  *
  * @since 3.1
  */
-class Combine extends AbstractCSSOptimization {
+class Combine extends AbstractCSSOptimization implements ProcessorInterface {
 	use CSSTrait;
 
 	/**
