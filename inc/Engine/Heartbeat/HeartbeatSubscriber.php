@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Subscriber;
+namespace WP_Rocket\Engine\Heartbeat;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Admin\Options_Data as Options;
@@ -7,17 +7,16 @@ use WP_Rocket\Admin\Options_Data as Options;
 /**
  * Event subscriber to control Heartbeat behavior.
  *
+ * @since 3.7 Moved to new architecture.
  * @since  3.2
- * @author Grégory Viguier
  */
-class Heartbeat_Subscriber implements Subscriber_Interface {
+class HeartbeatSubscriber implements Subscriber_Interface {
 	/**
 	 * Instance of the Option_Data class.
 	 *
 	 * @var    Options
 	 * @since  3.2
 	 * @access private
-	 * @author Grégory Viguier
 	 */
 	private $options;
 
@@ -26,8 +25,7 @@ class Heartbeat_Subscriber implements Subscriber_Interface {
 	 *
 	 * @since  3.2
 	 * @access public
-	 * @author Grégory Viguier
-	 *
+
 	 * @param Options $options Instance of the Option_Data class.
 	 */
 	public function __construct( Options $options ) {
@@ -39,7 +37,6 @@ class Heartbeat_Subscriber implements Subscriber_Interface {
 	 *
 	 * @since  3.2
 	 * @access public
-	 * @author Grégory Viguier
 	 *
 	 * @return array
 	 */
@@ -57,10 +54,9 @@ class Heartbeat_Subscriber implements Subscriber_Interface {
 	 *
 	 * @since  3.2
 	 * @access public
-	 * @author Grégory Viguier
 	 */
 	public function maybe_disable() {
-		if ( ! $this->behavior_match_context( 'disable' ) || ! rocket_bypass() ) {
+		if ( ! $this->behavior_match_context( 'disable' ) || rocket_bypass() ) {
 			return;
 		}
 
@@ -72,9 +68,9 @@ class Heartbeat_Subscriber implements Subscriber_Interface {
 	 *
 	 * @since  3.2
 	 * @access public
-	 * @author Grégory Viguier
 	 *
 	 * @param  array $settings The Heartbeat settings.
+	 *
 	 * @return array
 	 */
 	public function maybe_modify_period( $settings ) {
@@ -93,7 +89,6 @@ class Heartbeat_Subscriber implements Subscriber_Interface {
 	 *
 	 * @since  3.2
 	 * @access private
-	 * @author Grégory Viguier
 	 *
 	 * @return string Either 'site' (frontend), 'admin' (backend), or 'editor'.
 	 */
@@ -129,7 +124,6 @@ class Heartbeat_Subscriber implements Subscriber_Interface {
 		 * This can be useful for ajax requests or requests to admin-post.php, as there is no easy way to tell where those requests come from.
 		 *
 		 * @since  3.2
-		 * @author Grégory Viguier
 		 *
 		 * @param $context string Either 'site' (frontend), 'admin' (backend), or 'editor'.
 		 */
@@ -149,9 +143,9 @@ class Heartbeat_Subscriber implements Subscriber_Interface {
 	 *
 	 * @since  3.2
 	 * @access private
-	 * @author Grégory Viguier
 	 *
 	 * @param  string $behavior Either '', 'disable', or 'reduce_periodicity'.
+	 *
 	 * @return bool
 	 */
 	private function behavior_match_context( $behavior ) {
