@@ -112,7 +112,9 @@ function rocket_get_purge_urls( $post_id, $post ) {
 			restore_current_blog();
 		}
 
-		$cache_path = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) . wp_parse_url( $home_url, PHP_URL_HOST );
+		$home_parts = get_rocket_parse_url( $home_url );
+		$home_url   = "{$home_parts['scheme']}://{$home_parts['host']}";
+		$cache_path = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) . $home_parts['host'];
 
 		foreach ( $cache_purge_pages as $page ) {
 			// Check if it contains regex pattern.
