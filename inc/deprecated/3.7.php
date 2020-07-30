@@ -8,7 +8,7 @@ defined( 'ABSPATH' ) || exit;
 require_once __DIR__ . '/vendors/classes/class-minify-html.php';
 require_once __DIR__ . '/subscriber/admin/Optimization/class-minify-html-subscriber.php';
 
-class_alias('\WP_Rocket\Engine\Heartbeat\HeartbeatSubscriber', '\WP_Rocket\Subscriber\Heartbeat_Subscriber' );
+class_alias( '\WP_Rocket\Engine\Heartbeat\HeartbeatSubscriber', '\WP_Rocket\Subscriber\Heartbeat_Subscriber' );
 
 /**
  * Conflict with WP Serveur hosting: don't apply inline JS on all pages.
@@ -36,6 +36,7 @@ function rocket_deactivate_inline_js_on_wp_serveur( $html_options ) {
  * @since 2.2.4
  *
  * @param array $html_options An array of WP Rocket options.
+ *
  * @return array Array without the inline js minify option
  */
 function rocket_deactivate_js_minifier_with_appbanner( $html_options ) {
@@ -50,12 +51,14 @@ function rocket_deactivate_js_minifier_with_appbanner( $html_options ) {
 /**
  * Deactivate WP Rocket HTML Minification if Autoptimize HTML minification is enabled
  *
- * @since 3.7 deprecated
- * @since 2.9.5
- * @author Remy Perona
+ * @since  3.7 deprecated
+ * @since  2.9.5
  *
  * @param string $old_value Previous autoptimize option value.
- * @param string $value New autoptimize option value.
+ * @param string $value     New autoptimize option value.
+ *
+ * @author Remy Perona
+ *
  */
 function rocket_maybe_deactivate_minify_html( $old_value, $value ) {
 	_deprecated_function( __FUNCTION__ . '()', '3.7' );
@@ -67,11 +70,11 @@ function rocket_maybe_deactivate_minify_html( $old_value, $value ) {
 /**
  * Disable WP Rocket HTML minification field if Autoptimize HTML minification is enabled
  *
- * @since 3.7 deprecated
- * @since 2.9.5
+ * @since  3.7 deprecated
+ * @since  2.9.5
+ * @return bool|null True if it is active
  * @author Remy Perona
  *
- * @return bool|null True if it is active
  */
 function rocket_maybe_disable_minify_html() {
 	_deprecated_function( __FUNCTION__ . '()', '3.7' );
@@ -87,6 +90,7 @@ function rocket_maybe_disable_minify_html() {
  * @since 2.6.8
  *
  * @param array $html_options WP Rocket options array.
+ *
  * @return array Updated WP Rocket options
  */
 function rocket_deactivate_js_minifier_with_revslider( $html_options ) {
@@ -140,5 +144,201 @@ if ( ! function_exists( 'rocket_disable_emoji_tinymce' ) ) {
 		}
 
 		return [];
+	}
+}
+
+if ( ! function_exists( 'rocket_disable_embeds_init' ) ) {
+	/**
+	 * Disable embeds on init.
+	 *
+	 * - Removes the needed query vars.
+	 * - Disables oEmbed discovery.
+	 * - Completely removes the related JavaScript.
+	 *
+	 * @since 3.7 Deprecated.
+	 * @since 2.10
+	 *
+	 * @deprecated
+	 */
+	function rocket_disable_embeds_init() {
+		if ( rocket_bypass() ) {
+			return;
+		}
+
+		global $wp;
+
+		// Remove the embed query var.
+		$wp->public_query_vars = array_diff(
+			$wp->public_query_vars,
+			[
+				'embed',
+			]
+		);
+
+		// Remove the oembed/1.0/embed REST route.
+		add_filter( 'rest_endpoints', 'rocket_disable_embeds_remove_embed_endpoint' );
+
+		// Disable handling of internal embeds in oembed/1.0/proxy REST route.
+		add_filter( 'oembed_response_data', 'rocket_disable_embeds_filter_oembed_response_data' );
+
+		// Turn off oEmbed auto discovery.
+		add_filter( 'embed_oembed_discover', '__return_false' );
+
+		// Don't filter oEmbed results.
+		remove_filter( 'oembed_dataparse', 'wp_filter_oembed_result', 10 );
+
+		// Remove oEmbed discovery links.
+		remove_action( 'wp_head', 'wp_oembed_add_discovery_links' );
+
+		// Remove oEmbed-specific JavaScript from the front-end and back-end.
+		remove_action( 'wp_head', 'wp_oembed_add_host_js' );
+		add_filter( 'tiny_mce_plugins', 'rocket_disable_embeds_tiny_mce_plugin' );
+
+		// Remove all embeds rewrite rules.
+		add_filter( 'rewrite_rules_array', 'rocket_disable_embeds_rewrites' );
+
+		// Remove filter of the oEmbed result before any HTTP requests are made.
+		remove_filter( 'pre_oembed_result', 'wp_filter_pre_oembed_result', 10 );
+
+		// Load block editor JavaScript.
+		add_action( 'enqueue_block_editor_assets', 'rocket_disable_embeds_enqueue_block_editor_assets' );
+
+		// Remove wp-embed dependency of wp-edit-post script handle.
+		add_action( 'wp_default_scripts', 'rocket_disable_embeds_remove_script_dependencies' );
+	}
+}
+
+if ( ! function_exists( 'rocket_disable_embeds_tiny_mce_plugin' ) ) {
+	/**
+	 * Removes the 'wpembed' TinyMCE plugin.
+	 *
+	 * @since  3.7 Deprecated.
+	 * @since  2.10
+	 *
+	 * @param array $plugins List of TinyMCE plugins.
+	 *
+	 * @return array The modified list.
+	 *
+	 * @deprecated
+	 */
+	function rocket_disable_embeds_tiny_mce_plugin( $plugins ) {
+		return array_diff( $plugins, [ 'wpembed' ] );
+	}
+}
+
+if ( ! function_exists( 'rocket_disable_embeds_rewrites' ) ) {
+	/**
+	 * Remove all rewrite rules related to embeds.
+	 *
+	 * @since 3.7 Deprecated.
+	 * @since 2.10
+	 *
+	 * @param array $rules WordPress rewrite rules.
+	 *
+	 * @return array Rewrite rules without embeds rules.
+	 *
+	 * @deprecated
+	 */
+	function rocket_disable_embeds_rewrites( $rules ) {
+		if ( empty( $rules ) ) {
+			return $rules;
+		}
+
+		foreach ( $rules as $rule => $rewrite ) {
+			if ( false !== strpos( $rewrite, 'embed=true' ) ) {
+				unset( $rules[ $rule ] );
+			}
+		}
+
+		return $rules;
+	}
+}
+
+if ( ! function_exists( 'rocket_disable_embeds_remove_embed_endpoint' ) ) {
+	/**
+	 * Removes the oembed/1.0/embed REST route.
+	 *
+	 * @since 3.6 Deprecated.
+	 * @since 3.3.3
+	 *
+	 * @param array $endpoints Registered REST API endpoints.
+	 *
+	 * @return array Filtered REST API endpoints.
+	 *
+	 * @deprecated
+	 */
+	function rocket_disable_embeds_remove_embed_endpoint( $endpoints ) {
+		unset( $endpoints['/oembed/1.0/embed'] );
+
+		return $endpoints;
+	}
+}
+
+if ( ! function_exists( 'rocket_disable_embeds_filter_oembed_response_data' ) ) {
+	/**
+	 * Disables sending internal oEmbed response data in proxy endpoint.
+	 *
+	 * @since 3.7 Deprecated.
+	 * @since 3.3.3
+	 *
+	 * @param array $data The response data.
+	 *
+	 * @return array|false Response data or false if in a REST API context.
+	 *
+	 * @deprecated
+	 */
+	function rocket_disable_embeds_filter_oembed_response_data( $data ) {
+		if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+			return false;
+		}
+
+		return $data;
+	}
+}
+
+if ( ! function_exists( '' ) ) {
+	/**
+	 * Enqueues JavaScript for the block editor.
+	 *
+	 * This is used to unregister the `core-embed/wordpress` block type.
+	 *
+	 * @since 3.7 Deprecated.
+	 * @since 3.3.3
+	 *
+	 * @deprecated
+	 */
+	function rocket_disable_embeds_enqueue_block_editor_assets() {
+		wp_enqueue_script(
+			'rocket-disable-embeds',
+			WP_ROCKET_ASSETS_JS_URL . 'editor/editor.js',
+			[
+				'wp-edit-post',
+				'wp-editor',
+				'wp-dom',
+			],
+			WP_ROCKET_VERSION,
+			true
+		);
+	}
+}
+
+if ( ! function_exists( 'rocket_disable_embeds_remove_script_dependencies' ) ) {
+	/**
+	 * Removes wp-embed dependency of core packages.
+	 *
+	 * @since 3.7
+	 * @since 3.3.3
+	 *
+	 * @param \WP_Scripts $scripts WP_Scripts instance, passed by reference.
+	 *
+	 * @deprecated
+	 */
+	function rocket_disable_embeds_remove_script_dependencies( $scripts ) {
+		if ( ! empty( $scripts->registered['wp-edit-post'] ) ) {
+			$scripts->registered['wp-edit-post']->deps = array_diff(
+				$scripts->registered['wp-edit-post']->deps,
+				[ 'wp-embed' ]
+			);
+		}
 	}
 }

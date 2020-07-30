@@ -65,8 +65,6 @@ function rocket_init() {
 	require WP_ROCKET_DEPRECATED_PATH . '3.7.php';
 	require WP_ROCKET_3RD_PARTY_PATH . '3rd-party.php';
 	require WP_ROCKET_COMMON_PATH . 'admin-bar.php';
-	require WP_ROCKET_COMMON_PATH . 'emoji.php';
-	require WP_ROCKET_COMMON_PATH . 'embeds.php';
 
 	if ( rocket_valid_key() ) {
 		require WP_ROCKET_COMMON_PATH . 'purge.php';
