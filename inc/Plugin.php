@@ -191,6 +191,8 @@ class Plugin {
 			'minify_js_subscriber',
 			'cache_dynamic_resource',
 			'dequeue_jquery_migrate_subscriber',
+			'embeds_subscriber',
+			'emoji_subscriber',
 		];
 
 		// Don't insert the LazyLoad file if Rocket LazyLoad is activated.
@@ -215,6 +217,7 @@ class Plugin {
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Common_Subscribers' );
 		$this->container->addServiceProvider( 'WP_Rocket\ThirdParty\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Updater_Subscribers' );
+		$this->container->addServiceProvider( 'WP_Rocket\Engine\Heartbeat\ServiceProvider' );
 
 		$common_subscribers = [
 			'cdn_subscriber',
@@ -228,6 +231,8 @@ class Plugin {
 			'partial_preload_subscriber',
 			'fonts_preload_subscriber',
 			'heartbeat_subscriber',
+			'embeds_subscriber',
+			'emojis_subscriber',
 			'db_optimization_subscriber',
 			'mobile_subscriber',
 			'woocommerce_subscriber',
