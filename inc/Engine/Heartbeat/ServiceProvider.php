@@ -34,6 +34,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		$options = $this->getContainer()->get( 'options' );
 
 		$this->getContainer()->share( 'heartbeat_subscriber', 'WP_Rocket\Engine\Heartbeat\HeartbeatSubscriber' )
-			->withArgument( $this->getContainer()->get( $options ) );
+			->withArgument( $this->getContainer()->get( 'options' ) );
 	}
 }
