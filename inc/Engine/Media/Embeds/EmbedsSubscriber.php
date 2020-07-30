@@ -1,9 +1,10 @@
 <?php
-namespace WP_Rocket\Engine\Media;
+namespace WP_Rocket\Engine\Media\Embeds;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\ThirdParty\ReturnTypesTrait;
+use function rocket_bypass;
 
 /**
  * Event subscriber to control Embeds behavior.
@@ -26,7 +27,7 @@ class EmbedsSubscriber implements Subscriber_Interface {
 	 *
 	 * @param Options_Data $options An Options Data instance.
 	 */
-	public function __construct(Options_Data $options) {
+	public function __construct( Options_Data $options ) {
 		$this->options = $options;
 	}
 
@@ -39,10 +40,6 @@ class EmbedsSubscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		if ( rocket_bypass() ) {
-			return [];
-		}
-
 		return [
 			'init'                        => [ 'remove_wp_vars_and_filters', 9999 ],
 			'rest_endpoints'              => 'disable_embeds_remove_embed_endpoint',
@@ -65,7 +62,7 @@ class EmbedsSubscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function remove_wp_vars_and_hooks() {
-		if ( 0 == $this->options->get( 'embeds' ) ) {
+		if ( ! $this->can_embed() ) {
 			return;
 		}
 
@@ -103,7 +100,7 @@ class EmbedsSubscriber implements Subscriber_Interface {
 	 * @return array The modified list.
 	 */
 	public function disable_embeds_tiny_mce_plugin( $plugins ) {
-		if ( 0 == $this->options->get( 'embeds' ) ) {
+		if ( ! $this->can_embed() ) {
 			return $plugins;
 		}
 
@@ -121,7 +118,7 @@ class EmbedsSubscriber implements Subscriber_Interface {
 	 * @return array Rewrite rules without embeds rules.
 	 */
 	public function disable_embeds_rewrites( $rules ) {
-		if ( empty( $rules ) || 0 == $this->options->get( 'embeds' ) ) {
+		if ( empty( $rules ) || ! $this->can_embed() ) {
 			return $rules;
 		}
 
@@ -145,7 +142,7 @@ class EmbedsSubscriber implements Subscriber_Interface {
 	 * @return array Filtered REST API endpoints.
 	 */
 	public function disable_embeds_remove_embed_endpoint( $endpoints ) {
-		if ( 0 == $this->options->get( 'embeds' ) ) {
+		if ( ! $this->can_embed() ) {
 			return $endpoints;
 		}
 
@@ -169,7 +166,7 @@ class EmbedsSubscriber implements Subscriber_Interface {
 			return false;
 		}
 
-		if ( 0 == $this->options->get( 'embeds' ) ) {
+		if ( ! $this->can_embed() ) {
 			return false;
 		}
 
@@ -185,7 +182,7 @@ class EmbedsSubscriber implements Subscriber_Interface {
 	 * This is used to unregister the `core-embed/wordpress` block type.
 	 */
 	public function disable_embeds_enqueue_block_editor_assets() {
-		if ( 0 == $this->options->get( 'embeds' ) ) {
+		if ( ! $this->can_embed() ) {
 			return;
 		}
 
@@ -211,7 +208,7 @@ class EmbedsSubscriber implements Subscriber_Interface {
 	 * @param \WP_Scripts $scripts WP_Scripts instance, passed by reference.
 	 */
 	public function disable_embeds_remove_script_dependencies( $scripts ) {
-		if ( 0 == $this->options->get( 'embeds' ) ) {
+		if ( ! $this->can_embed() ) {
 			return;
 		}
 
@@ -221,5 +218,20 @@ class EmbedsSubscriber implements Subscriber_Interface {
 				[ 'wp-embed' ]
 			);
 		}
+	}
+
+	/**
+	 * Check for embeds enabled.
+	 *
+	 * @since 3.7
+	 *
+	 * @return bool
+	 */
+	private function can_embed() {
+		if ( rocket_bypass() || ! $this->options->get( 'embeds' ) ) {
+			return false;
+		}
+
+		return true;
 	}
 }

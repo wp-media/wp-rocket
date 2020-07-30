@@ -194,7 +194,7 @@ class Plugin {
 			'cache_dynamic_resource',
 			'dequeue_jquery_migrate_subscriber',
 			'embeds_subscriber',
-			'emoji_subscriber',
+			'emojis_subscriber',
 		];
 
 		// Don't insert the LazyLoad file if Rocket LazyLoad is activated.
@@ -235,8 +235,6 @@ class Plugin {
 			'partial_preload_subscriber',
 			'fonts_preload_subscriber',
 			'heartbeat_subscriber',
-			'embeds_subscriber',
-			'emojis_subscriber',
 			'db_optimization_subscriber',
 			'mobile_subscriber',
 			'woocommerce_subscriber',

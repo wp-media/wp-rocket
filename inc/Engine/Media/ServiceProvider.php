@@ -25,7 +25,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'lazyload_iframe',
 		'lazyload_subscriber',
 		'embeds_subscriber',
-		'emoji_subscriber',
+		'emojis_subscriber',
 	];
 
 	/**
@@ -44,9 +44,9 @@ class ServiceProvider extends AbstractServiceProvider {
 			->withArgument( $this->getContainer()->get( 'lazyload_assets' ) )
 			->withArgument( $this->getContainer()->get( 'lazyload_image' ) )
 			->withArgument( $this->getContainer()->get( 'lazyload_iframe' ) );
-		$this->getContainer()->share( 'embeds_subscriber', 'WP_Rocket\Engine\Media\EmbedsSubscriber' )
+		$this->getContainer()->share( 'embeds_subscriber', 'WP_Rocket\Engine\Media\Embeds\EmbedsSubscriber' )
 			->withArgument( $this->getContainer()->get( 'options' ) );
-		$this->getContainer()->share( 'emoji_subscriber', 'WP_Rocket\Engine\Medua\EmojiSubscriber' )
+		$this->getContainer()->share( 'emojis_subscriber', 'WP_Rocket\Engine\Media\Emojis\EmojisSubscriber' )
 			->withArgument( $this->getContainer()->get( 'options' ) );
 	}
 }

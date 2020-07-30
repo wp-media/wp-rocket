@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Engine\Media\Embeds;
+namespace WP_Rocket\Engine\Media\Emojis;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
@@ -36,10 +36,6 @@ class EmojisSubscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		if ( rocket_bypass() ) {
-			return [];
-		}
-
 		return [
 			'init'             => 'disable_emoji',
 			'tiny_mce_plugins' => 'disable_emoji_tinymce',
@@ -52,8 +48,8 @@ class EmojisSubscriber implements Subscriber_Interface {
 	 * @since 3.7 Moved to new architecture.
 	 * @since 2.7
 	 */
-	function disable_emoji() {
-		if ( ! $this->options->get( 'emoji' ) ) {
+	public function disable_emoji() {
+		if ( ! $this->can_emoji() ) {
 			return;
 		}
 
@@ -75,8 +71,8 @@ class EmojisSubscriber implements Subscriber_Interface {
 	 *
 	 * @return array
 	 */
-	function disable_emoji_tinymce( $plugins ) {
-		if ( ! $this->options->get( 'emoji' ) ) {
+	public function disable_emoji_tinymce( $plugins ) {
+		if ( ! $this->can_emoji() ) {
 			return $plugins;
 		}
 
@@ -85,5 +81,20 @@ class EmojisSubscriber implements Subscriber_Interface {
 		}
 
 		return [];
+	}
+
+	/**
+	 * Check for emoji enabled.
+	 *
+	 * @since 3.7
+	 *
+	 * @return bool
+	 */
+	private function can_emoji() {
+		if ( rocket_bypass() || ! $this->options->get( 'emoji' ) ) {
+			return false;
+		}
+
+		return true;
 	}
 }
