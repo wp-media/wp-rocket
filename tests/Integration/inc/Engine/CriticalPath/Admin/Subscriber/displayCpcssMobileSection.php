@@ -35,10 +35,14 @@ class Test_DisplayCpcssMobileSection extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
+		$this->unregisterAllCallbacksExcept( 'rocket_settings_tools_content', 'display_cpcss_mobile_section', 10 );
+
 		set_current_screen( 'settings_page_wprocket' );
 	}
 
 	public function tearDown() {
+		$this->restoreWpFilter( 'rocket_settings_tools_content' );
+
 		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'setAsyncCssOption' ] );
 		remove_filter( 'pre_get_rocket_option_cache_mobile', [ $this, 'setCacheMobileOption' ] );
 		remove_filter( 'pre_get_rocket_option_do_caching_mobile_files', [ $this, 'setDoCachingMobileFilesOption' ] );

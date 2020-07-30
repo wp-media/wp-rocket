@@ -140,6 +140,7 @@ function rocket_plugins_to_deactivate() {
 		'enable-gzip-compression'                    => 'enable-gzip-compression/enable-gzip-compression.php',
 		'leverage-browser-caching'                   => 'leverage-browser-caching/leverage-browser-caching.php',
 		'add-expires-headers'                        => 'add-expires-headers/add-expires-headers.php',
+		'page-optimize'                              => 'page-optimize/page-optimize.php',
 	];
 
 	if ( get_rocket_option( 'lazyload' ) ) {

@@ -569,7 +569,6 @@ class Page {
 		$inline_js_beacon      = $this->beacon->get_suggest( 'exclude_inline_js' );
 		$exclude_js_beacon     = $this->beacon->get_suggest( 'exclude_js' );
 		$jquery_migrate_beacon = $this->beacon->get_suggest( 'jquery_migrate' );
-		$google_fonts_beacon   = $this->beacon->get_suggest( 'google_fonts' );
 
 		$this->settings->add_page_section(
 			'file_optimization',
@@ -581,11 +580,7 @@ class Page {
 
 		$this->settings->add_settings_sections(
 			[
-				'basic' => [
-					'title' => __( 'Basic Settings', 'rocket' ),
-					'page'  => 'file_optimization',
-				],
-				'css'   => [
+				'css' => [
 					'title'  => __( 'CSS Files', 'rocket' ),
 					'help'   => [
 						'id'  => $this->beacon->get_suggest( 'css_section' ),
@@ -595,7 +590,7 @@ class Page {
 					// translators: %1$s = type of minification (HTML, CSS or JS), %2$s = “WP Rocket”.
 					'helper' => rocket_maybe_disable_minify_css() ? sprintf( __( '%1$s Minification is currently activated in <strong>Autoptimize</strong>. If you want to use %2$s’s minification, disable those options in Autoptimize.', 'rocket' ), 'CSS', WP_ROCKET_PLUGIN_NAME ) : '',
 				],
-				'js'    => [
+				'js'  => [
 					'title'  => __( 'JavaScript Files', 'rocket' ),
 					'help'   => [
 						'id'  => $this->beacon->get_suggest( 'js_section' ),
@@ -610,16 +605,6 @@ class Page {
 
 		$this->settings->add_settings_fields(
 			[
-				'minify_google_fonts'    => [
-					'type'              => 'checkbox',
-					'label'             => __( 'Optimize Google Fonts', 'rocket' ),
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'Improves font performance and combines multiple font requests to reduce the number of HTTP requests. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $google_fonts_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $google_fonts_beacon['id'] ) . '" target="_blank">', '</a>' ),
-					'section'           => 'basic',
-					'page'              => 'file_optimization',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
-				],
 				'minify_css'             => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Minify CSS files', 'rocket' ),
@@ -667,7 +652,9 @@ class Page {
 					'type'              => 'textarea',
 					'label'             => __( 'Excluded CSS Files', 'rocket' ),
 					'description'       => __( 'Specify URLs of CSS files to be excluded from minification and concatenation (one per line).', 'rocket' ),
-					'helper'            => __( 'The domain part of the URL will be stripped automatically.<br>Use (.*).css wildcards to exclude all CSS files located at a specific path.', 'rocket' ),
+					'helper'            => __( '<strong>Internal:</strong> The domain part of the URL will be stripped automatically. Use (.*).css wildcards to exclude all CSS files located at a specific path.', 'rocket' ) . '<br>' .
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					sprintf( __( '<strong>3rd Party:</strong> Use either the full URL path or only the domain name, to exclude external CSS. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $exclude_js_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $exclude_js_beacon['id'] ) . '" rel="noopener noreferrer" target="_blank">', '</a>' ),
 					'container_class'   => [
 						'wpr-field--children',
 					],
@@ -855,6 +842,7 @@ class Page {
 
 		$disable_images_lazyload  = [];
 		$disable_iframes_lazyload = [];
+		$disable_youtube_lazyload = [];
 
 		if ( rocket_avada_maybe_disable_lazyload() ) {
 			$disable_images_lazyload[] = __( 'Avada', 'rocket' );
@@ -884,11 +872,24 @@ class Page {
 		$disable_iframes_lazyload = (array) apply_filters( 'rocket_maybe_disable_iframes_lazyload_helper', $disable_iframes_lazyload );
 		$disable_iframes_lazyload = $this->sanitize_and_format_list( $disable_iframes_lazyload );
 
+		/**
+		 * Lazyload Helper filter which disables WPR lazyload functionality to replace YouTube iframe with preview image.
+		 *
+		 * @since 3.6.3
+		 *
+		 * @param array $disable_youtube_lazyload Will return the array with all plugin/themes names which should disable replace YouTube iframe with preview image
+		 */
+		$disable_youtube_lazyload = (array) apply_filters( 'rocket_maybe_disable_youtube_lazyload_helper', $disable_youtube_lazyload );
+		$disable_youtube_lazyload = $this->sanitize_and_format_list( $disable_youtube_lazyload );
+		$disable_youtube_lazyload = array_merge( $disable_youtube_lazyload, $disable_iframes_lazyload );
+		$disable_youtube_lazyload = array_unique( $disable_youtube_lazyload );
+
 		$disable_lazyload = array_merge( $disable_images_lazyload, $disable_iframes_lazyload );
 		$disable_lazyload = array_unique( $disable_lazyload );
 
-		$disable_lazyload        = wp_sprintf_l( '%l', $disable_lazyload );
-		$disable_images_lazyload = wp_sprintf_l( '%l', $disable_images_lazyload );
+		$disable_lazyload         = wp_sprintf_l( '%l', $disable_lazyload );
+		$disable_images_lazyload  = wp_sprintf_l( '%l', $disable_images_lazyload );
+		$disable_youtube_lazyload = wp_sprintf_l( '%l', $disable_youtube_lazyload );
 
 		$this->settings->add_settings_sections(
 			[
@@ -980,7 +981,7 @@ class Page {
 				],
 				'lazyload_youtube' => [
 					'container_class'   => [
-						! empty( $disable_iframes_lazyload ) ? 'wpr-isDisabled' : '',
+						! empty( $disable_youtube_lazyload ) ? 'wpr-isDisabled' : '',
 						'wpr-field--children',
 					],
 					'type'              => 'checkbox',
@@ -992,8 +993,10 @@ class Page {
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 					'input_attr'        => [
-						'disabled' => ! empty( $disable_iframes_lazyload ) ? 1 : 0,
+						'disabled' => ! empty( $disable_youtube_lazyload ) ? 1 : 0,
 					],
+					// translators: %1$s = “WP Rocket”, %2$s = a list of plugin or themes names.
+					'description'       => ! empty( $disable_youtube_lazyload ) ? sprintf( __( 'Replace YouTube iframe with preview image is not compatible with %2$s.', 'rocket' ), WP_ROCKET_PLUGIN_NAME, $disable_youtube_lazyload ) : '',
 				],
 				'emoji'            => [
 					'type'              => 'checkbox',
@@ -2047,6 +2050,7 @@ class Page {
 					'cloudflare_old_settings',
 					'sitemap_preload_url_crawl',
 					'cache_ssl',
+					'minify_google_fonts',
 				]
 			)
 		);

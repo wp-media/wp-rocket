@@ -27,7 +27,10 @@ class Test_RocketNewUpgrade extends TestCase {
 			->once();
 		Functions\expect( 'rocket_generate_config_file' )
 			->once();
+		Functions\expect( 'rocket_clean_minify' )
+			->with( 'css' )
+			->once();
 
-		rocket_new_upgrade( '3.6', '3.4.4' );
+		rocket_new_upgrade( '3.7', '3.4.4' );
 	}
 }

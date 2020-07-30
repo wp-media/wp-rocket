@@ -6,6 +6,7 @@ use Mockery;
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Optimization\GoogleFonts\Combine;
 use WP_Rocket\Engine\Optimization\GoogleFonts\Subscriber;
 
 /**
@@ -18,7 +19,7 @@ class Test_Preconnect extends TestCase {
 
 	public function setUp() {
 		$this->options    = Mockery::mock( Options_Data::class );
-		$this->subscriber = new Subscriber( $this->options );
+		$this->subscriber = new Subscriber( Mockery::mock( Combine::class ), $this->options );
 	}
 
 	/**

@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Cache\WPCache;
 
+use ReflectionMethod;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
@@ -44,7 +45,10 @@ class Test_FindWpconfigPath extends FilesystemTestCase {
 			add_filter( 'rocket_wp_config_name', [$this, 'changeWpconfigFileName'] );
 		}
 
-		$actual = self::$wp_cache->find_wpconfig_path();
+		$find_wpconfig_path = new ReflectionMethod( 'WP_Rocket\Engine\Cache\WPCache', 'find_wpconfig_path' );
+		$find_wpconfig_path->setAccessible( true );
+
+        $actual = $find_wpconfig_path->invoke( self::$wp_cache );
 	
 		if ( false !== $actual ) {
 			$actual = $this->filesystem->getUrl( $actual );
