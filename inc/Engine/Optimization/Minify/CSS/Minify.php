@@ -159,7 +159,7 @@ class Minify extends AbstractCSSOptimization implements ProcessorInterface {
 			return false;
 		}
 
-		$save_minify_file = $this->save_minify_css_file( $minified_file, $minified_content );
+		$save_minify_file = $this->save_minify_file( $minified_file, $minified_content );
 
 		if ( ! $save_minify_file ) {
 			return false;
@@ -203,7 +203,7 @@ class Minify extends AbstractCSSOptimization implements ProcessorInterface {
 	 *
 	 * @return bool
 	 */
-	protected function save_minify_css_file( $minified_file, $minified_content ) {
+	protected function save_minify_file( $minified_file, $minified_content ) {
 		$save_minify_file = $this->write_file( $minified_content, $minified_file );
 
 		if ( ! $save_minify_file ) {
