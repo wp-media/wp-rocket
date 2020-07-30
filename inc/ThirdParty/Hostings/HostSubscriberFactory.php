@@ -33,6 +33,8 @@ class HostSubscriberFactory implements SubscriberFactoryInterface {
 				return new WPEngine();
 			case 'wordpresscom':
 				return new WordPressCom();
+			case 'savvii':
+				return new Savvii();
 			default:
 				return new NullSubscriber();
 		}
