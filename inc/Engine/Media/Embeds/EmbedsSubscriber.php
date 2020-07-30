@@ -41,7 +41,7 @@ class EmbedsSubscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'init'                        => [ 'remove_wp_vars_and_filters', 9999 ],
+			'init'                        => [ 'remove_wp_vars_and_hooks', 9999 ],
 			'rest_endpoints'              => 'disable_embeds_remove_embed_endpoint',
 			'oembed_response_data'        => 'disable_embeds_filter_oembed_response_data',
 			'embed_oembed_discover'       => 'return_false',
