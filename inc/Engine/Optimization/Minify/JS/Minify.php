@@ -22,21 +22,11 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 	public function optimize( $html ) {
 		Logger::info( 'JS MINIFICATION PROCESS STARTED.', [ 'js minification process' ] );
 
-		$html_nocomments = $this->hide_comments( $html );
-		$scripts         = $this->find( '<script\s+([^>]+[\s\'"])?src\s*=\s*[\'"]\s*?(?<url>[^\'"]+\.js(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html_nocomments );
+		$scripts = $this->get_scripts( $html );
 
-		if ( ! $scripts ) {
-			Logger::debug( 'No `<script>` tags found.', [ 'js minification process' ] );
+		if ( empty( $scripts ) ) {
 			return $html;
 		}
-
-		Logger::debug(
-			'Found ' . count( $scripts ) . ' <link> tags.',
-			[
-				'js minification process',
-				'tags' => $scripts,
-			]
-		);
 
 		foreach ( $scripts as $script ) {
 			global $wp_scripts;
@@ -49,6 +39,14 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 						'tag' => $script[0],
 					]
 				);
+				continue;
+			}
+
+			if (
+				$this->is_external_file( $script['url'] )
+				&&
+				$this->is_excluded_external( $script['url'] )
+			) {
 				continue;
 			}
 
@@ -88,20 +86,77 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 				continue;
 			}
 
-			$replace_script = str_replace( $script['url'], $minify_url, $script[0] );
-			$replace_script = str_replace( '<script', '<script data-minify="1"', $replace_script );
-			$html           = str_replace( $script[0], $replace_script, $html );
 
-			Logger::info(
-				'Script minification succeeded.',
-				[
-					'js minification process',
-					'url' => $minify_url,
-				]
-			);
+			$html = $this->replace_script( $script, $minify_url, $html );
 		}
 
 		return $html;
+	}
+
+	/**
+	 * Get all script tags from HTML.
+	 *
+	 * @param  string $html HTML content.
+	 * @return array Array with script tags, empty array if no script tags found.
+	 */
+	private function get_scripts( $html ) {
+		$html_nocomments = $this->hide_comments( $html );
+		$scripts         = $this->find( '<script\s+([^>]+[\s\'"])?src\s*=\s*[\'"]\s*?(?<url>[^\'"]+\.js(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html_nocomments );
+
+		if ( ! $scripts ) {
+			Logger::debug( 'No `<script>` tags found.', [ 'js minification process' ] );
+			return [];
+		}
+
+		Logger::debug(
+			'Found ' . count( $scripts ) . ' <link> tags.',
+			[
+				'js minification process',
+				'tags' => $scripts,
+			]
+		);
+
+		return $scripts;
+	}
+
+	/**
+	 * Checks if the provided external URL is excluded from minify
+	 *
+	 * @since 3.7
+	 *
+	 * @param string $url External URL to check.
+	 * @return boolean
+	 */
+	private function is_excluded_external( $url ) {
+		foreach ( $this->get_excluded_externals() as $excluded ) {
+			if ( false !== strpos( $url, $excluded ) ) {
+				Logger::debug(
+					'Script is external.',
+					[
+						'js combine process',
+						'url' => $url,
+					]
+				);
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Gets external URLs excluded from combine
+	 *
+	 * @since 3.7
+	 *
+	 * @return array
+	 */
+	private function get_excluded_externals() {
+		$excluded_externals = [
+			'google-analytics.com/analytics.js',
+		];
+
+		return array_merge( $excluded_externals, $this->options->get( 'exclude_js', [] ) );
 	}
 
 	/**
@@ -137,7 +192,7 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 			return $minified_url;
 		}
 
-		$file_path = $this->get_file_path( $url );
+		$file_path = $this->is_external_file( $url ) ? $this->local_cache->get_filepath( $url ) : $this->get_file_path( $url );
 
 		if ( ! $file_path ) {
 			Logger::error(
@@ -150,9 +205,22 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 			return false;
 		}
 
-		$minified_content = $this->minify( $file_path );
+		$file_content = $this->is_external_file( $url ) ? $this->local_cache->get_content( $url ) : $this->get_file_content( $file_path );
 
-		if ( ! $minified_content ) {
+		if ( empty( $file_content ) ) {
+			Logger::error(
+				'No file content.',
+				[
+					'js minification process',
+					'path' => $file_path,
+				]
+			);
+			return false;
+		}
+
+		$minified_content = $this->minify( $file_content );
+
+		if ( empty( $minified_content ) ) {
 			Logger::error(
 				'No minified content.',
 				[
@@ -160,9 +228,55 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 					'path' => $minified_file,
 				]
 			);
+
 			return false;
 		}
 
+		$save_minify_file = $this->save_minify_file( $minified_file, $minified_content );
+
+		if ( ! $save_minify_file ) {
+			return false;
+		}
+
+		return $minified_url;
+	}
+
+	/**
+	 * Replace old script tag with the minified tag.
+	 *
+	 * @param array  $script     Script matched data.
+	 * @param string $minify_url Minified URL.
+	 * @param string $html       HTML content.
+	 *
+	 * @return string
+	 */
+	private function replace_script( $script, $minify_url, $html ) {
+		$replace_script = str_replace( $script['url'], $minify_url, $script[0] );
+		$replace_script = str_replace( '<script', '<script data-minify="1"', $replace_script );
+		$html           = str_replace( $script[0], $replace_script, $html );
+
+		Logger::info(
+			'Script minification succeeded.',
+			[
+				'js minification process',
+				'url' => $minify_url,
+			]
+		);
+
+		return $html;
+	}
+
+	/**
+	 * Save minified JS file.
+	 *
+	 * @since 3.7
+	 *
+	 * @param string $minified_file    Minified file path.
+	 * @param string $minified_content Minified HTML content.
+	 *
+	 * @return bool
+	 */
+	protected function save_minify_file( $minified_file, $minified_content ) {
 		$save_minify_file = $this->write_file( $minified_content, $minified_file );
 
 		if ( ! $save_minify_file ) {
@@ -184,7 +298,7 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 			]
 		);
 
-		return $minified_url;
+		return true;
 	}
 
 	/**
@@ -192,21 +306,15 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 	 *
 	 * @since 2.11
 	 *
-	 * @param string|array $file     File to minify.
-	 * @return string|bool Minified content, false if empty
+	 * @param string $file_content Content to minify.
+	 * @return string
 	 */
-	protected function minify( $file ) {
-		$file_content = $this->get_file_content( $file );
-
-		if ( ! $file_content ) {
-			return false;
-		}
-
+	protected function minify( $file_content ) {
 		$minifier         = $this->get_minifier( $file_content );
 		$minified_content = $minifier->minify();
 
 		if ( empty( $minified_content ) ) {
-			return false;
+			return '';
 		}
 
 		return $minified_content;
