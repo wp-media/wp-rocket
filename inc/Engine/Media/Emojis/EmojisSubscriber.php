@@ -31,7 +31,6 @@ class EmojisSubscriber implements Subscriber_Interface {
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
 	 * @since  3.7
-	 * @access public
 	 *
 	 * @return array
 	 */
@@ -91,10 +90,6 @@ class EmojisSubscriber implements Subscriber_Interface {
 	 * @return bool
 	 */
 	private function can_emoji() {
-		if ( rocket_bypass() || ! $this->options->get( 'emoji' ) ) {
-			return false;
-		}
-
-		return true;
+		return rocket_bypass() || ! $this->options->get( 'emoji' );
 	}
 }

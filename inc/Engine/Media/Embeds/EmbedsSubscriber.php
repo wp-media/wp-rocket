@@ -4,7 +4,6 @@ namespace WP_Rocket\Engine\Media\Embeds;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\ThirdParty\ReturnTypesTrait;
-use function rocket_bypass;
 
 /**
  * Event subscriber to control Embeds behavior.
@@ -35,7 +34,6 @@ class EmbedsSubscriber implements Subscriber_Interface {
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
 	 * @since  3.7
-	 * @access public
 	 *
 	 * @return array
 	 */
@@ -162,7 +160,7 @@ class EmbedsSubscriber implements Subscriber_Interface {
 	 * @return array|false Response data or false if in a REST API context.
 	 */
 	public function disable_embeds_filter_oembed_response_data( $data ) {
-		if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+		if ( rocket_get_constant( 'REST_REQUEST' ) ) {
 			return false;
 		}
 
@@ -188,13 +186,13 @@ class EmbedsSubscriber implements Subscriber_Interface {
 
 		wp_enqueue_script(
 			'rocket-disable-embeds',
-			WP_ROCKET_ASSETS_JS_URL . 'editor/editor.js',
+			rocket_get_constant(WP_ROCKET_ASSETS_JS_URL ) . 'editor/editor.js',
 			[
 				'wp-edit-post',
 				'wp-editor',
 				'wp-dom',
 			],
-			WP_ROCKET_VERSION,
+			rocket_get_constant( WP_ROCKET_VERSION ),
 			true
 		);
 	}
@@ -228,10 +226,6 @@ class EmbedsSubscriber implements Subscriber_Interface {
 	 * @return bool
 	 */
 	private function can_embed() {
-		if ( rocket_bypass() || ! $this->options->get( 'embeds' ) ) {
-			return false;
-		}
-
-		return true;
+		return rocket_bypass() || ! $this->options->get( 'embeds' );
 	}
 }
