@@ -97,3 +97,48 @@ function rocket_deactivate_js_minifier_with_revslider( $html_options ) {
 
 	return $html_options;
 }
+
+if ( ! function_exists( 'rocket_disable_emoji' ) ) {
+	/**
+	 * Disable the emoji functionality to reduce then number of external HTTP requests.
+	 *
+	 * @sicne 3.7 Deprecated.
+	 * @since 2.7
+	 *
+	 * @deprecated
+	 */
+	function rocket_disable_emoji() {
+		if ( rocket_bypass() ) {
+			return;
+		}
+
+		remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
+		remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
+		remove_filter( 'the_content_feed', 'wp_staticize_emoji' );
+		remove_filter( 'comment_text_rss', 'wp_staticize_emoji' );
+		remove_filter( 'wp_mail', 'wp_staticize_emoji_for_email' );
+		add_filter( 'emoji_svg_url', '__return_false' );
+	}
+}
+
+if ( ! function_exists( 'rocket_disable_emoji_tinymce' ) ) {
+	/**
+	 * Remove the tinymce emoji plugin.
+	 *
+	 * @since 3.7 Deprecated.
+	 * @since 2.7
+	 *
+	 * @param array $plugins Plugins loaded for TinyMCE.
+	 *
+	 * @return array
+	 *
+	 * @deprecated
+	 */
+	function rocket_disable_emoji_tinymce( $plugins ) {
+		if ( is_array( $plugins ) ) {
+			return array_diff( $plugins, [ 'wpemoji' ] );
+		}
+
+		return [];
+	}
+}
