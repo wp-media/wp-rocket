@@ -86,7 +86,6 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 				continue;
 			}
 
-
 			$html = $this->replace_script( $script, $minify_url, $html );
 		}
 
