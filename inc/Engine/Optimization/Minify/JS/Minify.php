@@ -52,17 +52,6 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 				continue;
 			}
 
-			if ( $this->is_external_file( $script['url'] ) ) {
-				Logger::debug(
-					'Script is external.',
-					[
-						'js minification process',
-						'tag' => $script[0],
-					]
-				);
-				continue;
-			}
-
 			if ( $this->is_minify_excluded_file( $script ) ) {
 				Logger::debug(
 					'Script is excluded.',
