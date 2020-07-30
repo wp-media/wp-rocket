@@ -4,7 +4,7 @@ namespace WP_Rocket\Tests\Unit\inc\Addon\FacebookTracking\Subscriber;
 
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Busting\Busting_Factory;
+use WP_Rocket\Addon\Busting\BustingFactory;
 use WP_Rocket\Busting\Facebook_Pickles;
 use WP_Rocket\Busting\Facebook_SDK;
 use WP_Rocket\Addon\FacebookTracking\Subscriber;
@@ -36,7 +36,7 @@ class Test_DeleteCache extends TestCase {
 	}
 
 	private function getFactory( $shouldDelete ) {
-		$factory = Mockery::mock( Busting_Factory::class );
+		$factory = Mockery::mock( BustingFactory::class );
 
 		if ( ! $shouldDelete ) {
 			$factory->shouldReceive( 'type' )

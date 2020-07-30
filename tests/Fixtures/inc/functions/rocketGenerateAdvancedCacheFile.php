@@ -26,23 +26,29 @@ return [
 	],
 
 	'test_data' => [
-		[
+		'testShouldDoNothingWhenFilterDisableWriting' => [
+			'settings' => [
+				'filter' => false,
+			],
+			'content'  => '',
+		],
+		'testShouldWriteDefaultAdvancedCacheContent' => [
 			'settings' => [],
 			'content'  => $content['non_mobile'],
 		],
-		[
+		'testShouldWriteDefaultAdvancedCacheContentWhenCacheMobile' => [
 			'settings' => [
 				'cache_mobile' => 1,
 			],
 			'content'  => $content['non_mobile'],
 		],
-		[
+		'testShouldWriteAdvancedCacheContentWhenNoCacheMobile' => [
 			'settings' => [
 				'do_caching_mobile_files' => 1,
 			],
 			'content'  => $content['non_mobile'],
 		],
-		[
+		'testShouldWriteAdvancedCacheContentWithMobile' => [
 			'settings' => [
 				'cache_mobile'            => 1,
 				'do_caching_mobile_files' => 1,
@@ -51,7 +57,7 @@ return [
 		],
 
 		// When the file doesn't exist.
-		[
+		'testShouldCreateAdvancedCacheContentWhenFileDoesntExist' => [
 			'settings' => [
 				'cache_mobile'            => 1,
 				'do_caching_mobile_files' => 1,

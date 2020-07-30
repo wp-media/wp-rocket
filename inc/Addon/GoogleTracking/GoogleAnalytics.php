@@ -1,16 +1,17 @@
 <?php
-namespace WP_Rocket\Busting;
+namespace WP_Rocket\Addon\GoogleTracking;
 
+use WP_Rocket\Addon\Busting\FileBustingTrait;
+use WP_Rocket\Busting\Abstract_Busting;
 use WP_Rocket\Logger\Logger;
 
 /**
  * Manages the cache busting of the Google Analytics file.
  *
  * @since  3.1
- * @author Remy Perona
  */
-class Google_Analytics extends Abstract_Busting {
-	use File_Busting;
+class GoogleAnalytics extends Abstract_Busting {
+	use FileBustingTrait;
 
 	/**
 	 * Context used for the logger.
@@ -40,7 +41,7 @@ class Google_Analytics extends Abstract_Busting {
 	 * @access protected
 	 * @author Grégory Viguier
 	 */
-	protected $filename = 'ga-%s.js';
+	protected $filename_pattern = 'ga-%s.js';
 
 	/**
 	 * Current file version (local): a md5 hash of the file contents.
@@ -85,7 +86,7 @@ class Google_Analytics extends Abstract_Busting {
 	public function __construct( $busting_path, $busting_url ) {
 		$this->busting_path = $busting_path . 'google-tracking/';
 		$this->busting_url  = $busting_url . 'google-tracking/';
-		$this->filesystem   = \rocket_direct_filesystem();
+		$this->filesystem   = rocket_direct_filesystem();
 	}
 
 	/** ----------------------------------------------------------------------------------------- */
@@ -105,7 +106,7 @@ class Google_Analytics extends Abstract_Busting {
 	public function replace_url( $html ) {
 		$this->is_replaced = false;
 
-		$tag = $this->find( '<script[^>]*?>(.*)<\/script>', $html );
+		$tag = $this->find( '<script\s*(?<attr>[^>]*)?>(?<content>.*)?<\/script>', $html );
 
 		if ( ! $tag ) {
 			return $html;
@@ -176,7 +177,7 @@ class Google_Analytics extends Abstract_Busting {
 			return false;
 		}
 
-		$version = \md5( $content );
+		$version = md5( $content );
 		$path    = $this->get_busting_file_path( $version );
 
 		return $this->update_file_contents( $path, $content );
@@ -215,24 +216,25 @@ class Google_Analytics extends Abstract_Busting {
 	 * @return string
 	 */
 	protected function find( $pattern, $html ) {
-		\preg_match_all( '/' . $pattern . '/Umsi', $html, $matches, PREG_SET_ORDER );
+		preg_match_all( '/' . $pattern . '/si', $html, $all_matches, PREG_SET_ORDER );
 
-		if ( ! $matches ) {
-			return false;
-		}
-
-		$matches = \array_map(
+		$matches = array_map(
 			function( $match ) {
-				if ( false === \strpos( $match[1], 'GoogleAnalyticsObject' ) ) {
+
+				if (
+						! preg_match( '/src\s*=\s*[\'"]\s*(?:https?:)?\/\/www\.google-analytics\.com\/analytics\.js\s*[\'"]/i', $match['attr'] . $match['content'] )
+					&&
+						false === strpos( $match['content'], 'GoogleAnalyticsObject' )
+				) {
 					return;
 				}
 
 				return $match[0];
 			},
-			$matches
+			$all_matches
 		);
 
-		$matches = \array_values( \array_filter( $matches ) );
+		$matches = array_values( array_filter( $matches ) );
 
 		if ( ! $matches ) {
 			return false;

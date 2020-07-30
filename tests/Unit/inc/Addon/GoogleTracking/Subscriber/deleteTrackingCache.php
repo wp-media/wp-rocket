@@ -2,11 +2,11 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Addon\GoogleTracking\Subscriber;
 
-use \Mockery;
+use Mockery;
+use WP_Rocket\Addon\GoogleTracking\GoogleAnalytics;
+use WP_Rocket\Addon\GoogleTracking\GoogleTagManager;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Busting\Busting_Factory;
-use WP_Rocket\Busting\Google_Analytics;
-use WP_Rocket\Busting\Google_Tag_Manager;
+use WP_Rocket\Addon\Busting\BustingFactory;
 use WP_Rocket\Addon\GoogleTracking\Subscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
 
@@ -36,7 +36,7 @@ class Test_DeleteTrackingCache extends TestCase {
 	}
 
 	private function getFactory( $shouldDelete ) {
-		$factory = Mockery::mock( Busting_Factory::class );
+		$factory = Mockery::mock( BustingFactory::class );
 
 		if ( ! $shouldDelete ) {
 			$factory->shouldReceive( 'type' )
@@ -54,7 +54,7 @@ class Test_DeleteTrackingCache extends TestCase {
 		        ->with( 'gtm' )
 		        ->andReturnUsing(
 					function() {
-						$mock = Mockery::mock( Google_Tag_Manager::class );
+						$mock = Mockery::mock( GoogleTagManager::class );
 						$mock->shouldReceive( 'delete' )
 						     ->once()
 						     ->andReturn( true );
@@ -67,7 +67,7 @@ class Test_DeleteTrackingCache extends TestCase {
 		        ->with( 'ga' )
 		        ->andReturnUsing(
 					function() {
-						$mock = Mockery::mock( Google_Analytics::class );
+						$mock = Mockery::mock( GoogleAnalytics::class );
 						$mock->shouldReceive( 'delete' )
 						     ->once()
 						     ->andReturn( true );

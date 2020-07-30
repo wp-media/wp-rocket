@@ -2,8 +2,6 @@
 
 namespace WP_Rocket\ThirdParty\Hostings;
 
-use WP_Rocket\ThirdParty\ReturnTypesTrait;
-use WP_Rocket\Event_Management\Subscriber_Interface;
 use WpeCommon;
 
 /**
@@ -11,9 +9,7 @@ use WpeCommon;
  *
  * @since 3.6.1
  */
-class WPEngine implements Subscriber_Interface {
-	use ReturnTypesTrait;
-
+class WPEngine extends AbstractNoCacheHost {
 	/**
 	 * Array of events this subscriber wants to listen to.
 	 *
@@ -22,30 +18,17 @@ class WPEngine implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		if (
-			! (
-				class_exists( 'WpeCommon' )
-				&&
-				function_exists( 'wpe_param' )
-			)
-		) {
-			return [];
-		}
-
 		return [
 			'rocket_varnish_field_settings'           => 'varnish_addon_title',
 			'rocket_display_input_varnish_auto_purge' => 'return_false',
 			'rocket_cache_mandatory_cookies'          => [ 'return_empty_array', PHP_INT_MAX ],
-			'rocket_advanced_cache_file'              => 'return_empty_string',
-			'admin_init'                              => [
-				[ 'remove_notices' ],
-				[ 'run_rocket_bot_after_wpengine' ],
-			],
-			'set_rocket_wp_cache_define'              => 'return_true',
+			'admin_init'                              => 'run_rocket_bot_after_wpengine',
+			'rocket_set_wp_cache_constant'            => 'return_false',
 			'do_rocket_generate_caching_files'        => 'return_false',
 			'after_rocket_clean_domain'               => 'clean_wpengine',
 			'rocket_buffer'                           => [ 'add_footprint', 50 ],
 			'rocket_disable_htaccess'                 => 'return_true',
+			'rocket_generate_advanced_cache_file'     => 'return_false',
 		];
 	}
 
@@ -66,18 +49,6 @@ class WPEngine implements Subscriber_Interface {
 		);
 
 		return $settings;
-	}
-
-	/**
-	 * Stop showing not valid notices with WP Engine.
-	 *
-	 * @since 3.6.1
-	 */
-	public function remove_notices() {
-		$container  = apply_filters( 'rocket_container', null );
-		$subscriber = $container->get( 'admin_cache_subscriber' );
-
-		remove_action( 'admin_notices', [ $subscriber, 'notice_advanced_cache_permissions' ] );
 	}
 
 	/**
