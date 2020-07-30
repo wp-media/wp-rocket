@@ -186,7 +186,7 @@ class EmbedsSubscriber implements Subscriber_Interface {
 
 		wp_enqueue_script(
 			'rocket-disable-embeds',
-			rocket_get_constant(WP_ROCKET_ASSETS_JS_URL ) . 'editor/editor.js',
+			rocket_get_constant( WP_ROCKET_ASSETS_JS_URL ) . 'editor/editor.js',
 			[
 				'wp-edit-post',
 				'wp-editor',
