@@ -2,6 +2,8 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\Minify\CSS\Minify;
 
 use Brain\Monkey\Filters;
+use Mockery;
+use WP_Rocket\Engine\Optimization\AssetsLocalCache;
 use WP_Rocket\Engine\Optimization\Minify\CSS\Minify;
 use WP_Rocket\Tests\Unit\inc\Engine\Optimization\TestCase;
 
@@ -15,6 +17,7 @@ use WP_Rocket\Tests\Unit\inc\Engine\Optimization\TestCase;
 class Test_Optimize extends TestCase {
 	protected $path_to_test_data = '/inc/Engine/Optimization/Minify/CSS/Minify/optimize.php';
 	protected $minify;
+	private   $local_cache;
 
 	public function setUp() {
 		parent::setUp();
@@ -23,7 +26,8 @@ class Test_Optimize extends TestCase {
 			->shouldReceive( 'get' )
 			->andReturnArg( 1 );
 
-		$this->minify = new Minify( $this->options );
+		$this->local_cache = Mockery::mock( AssetsLocalCache::class );
+		$this->minify = new Minify( $this->options, $this->local_cache );
 	}
 
 	/**
