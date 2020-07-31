@@ -19,7 +19,7 @@ return [
 
 		'shouldNotDisableSettingWhenChildThemeNotDiviParent' => [
 			'config'   => [
-				'stylesheet'  => 'some-child-theme',
+				'stylesheet'  => 'child-of-twentytwenty',
 				'theme-name'  => 'Child of Twenty Twenty',
 				'is-child'    => 'twentytwenty',
 				'parent-name' => 'Twenty Twenty',
