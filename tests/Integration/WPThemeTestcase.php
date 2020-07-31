@@ -9,7 +9,7 @@ use WP_Theme;
  *
  * @since 3.8
  */
-abstract class WPThemeTestcase extends \WP_Rocket\Tests\Integration\FilesystemTestCase {
+abstract class WPThemeTestcase extends FilesystemTestCase {
 
 	protected $theme;
 
