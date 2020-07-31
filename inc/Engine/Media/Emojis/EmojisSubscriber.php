@@ -48,7 +48,7 @@ class EmojisSubscriber implements Subscriber_Interface {
 	 * @since 2.7
 	 */
 	public function disable_emoji() {
-		if ( ! $this->can_emoji() ) {
+		if ( ! $this->can_disable_emoji() ) {
 			return;
 		}
 
@@ -71,7 +71,7 @@ class EmojisSubscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function disable_emoji_tinymce( $plugins ) {
-		if ( ! $this->can_emoji() ) {
+		if ( ! $this->can_disable_emoji() ) {
 			return $plugins;
 		}
 
@@ -83,13 +83,13 @@ class EmojisSubscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Check for emoji enabled.
+	 * Check for emoji option enabled & not bypassed.
 	 *
 	 * @since 3.7
 	 *
 	 * @return bool
 	 */
-	private function can_emoji() {
+	private function can_disable_emoji() {
 		return ! rocket_bypass() && (bool) $this->options->get( 'emoji', 0 );
 	}
 }
