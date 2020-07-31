@@ -71,7 +71,7 @@ class WPThemeTestcase extends \WP_Rocket\Tests\Integration\FilesystemTestCase {
 		$this->child_theme = new WP_Theme( $stylesheet, 'vfs://public/wp-content/themes/' );
 	}
 
-	protected function set_stylesheet_root() {
+	public function set_stylesheet_root() {
 		global $wp_theme_directories;
 
 		$wp_theme_directories['virtual'] = $this->filesystem->getUrl( 'wp-content/themes/' );
