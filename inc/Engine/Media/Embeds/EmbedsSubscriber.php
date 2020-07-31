@@ -43,7 +43,6 @@ class EmbedsSubscriber implements Subscriber_Interface {
 			'rest_endpoints'              => 'disable_embeds_remove_embed_endpoint',
 			'oembed_response_data'        => 'disable_embeds_filter_oembed_response_data',
 			'embed_oembed_discover'       => 'return_false',
-			'tiny_mce_plugins'            => 'disable_embeds_tiny_mce_plugin',
 			'rewrite_rules_array'         => 'disable_embeds_rewrites',
 			'enqueue_block_editor_assets' => 'disable_embeds_enqueue_block_editor_assets',
 			'wp_default_scripts'          => 'disable_embeds_remove_script_dependencies',
@@ -85,24 +84,6 @@ class EmbedsSubscriber implements Subscriber_Interface {
 
 		// Remove filter of the oEmbed result before any HTTP requests are made.
 		remove_filter( 'pre_oembed_result', 'wp_filter_pre_oembed_result', 10 );
-	}
-
-	/**
-	 * Remove the 'wpembed' TinyMCE plugin.
-	 *
-	 * @since  3.7 Moved to new architecture.
-	 * @since  2.10
-	 *
-	 * @param array $plugins List of TinyMCE plugins.
-	 *
-	 * @return array The modified list.
-	 */
-	public function disable_embeds_tiny_mce_plugin( $plugins ) {
-		if ( ! $this->can_embed() ) {
-			return $plugins;
-		}
-
-		return array_diff( $plugins, [ 'wpembed' ] );
 	}
 
 	/**
