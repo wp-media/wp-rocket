@@ -24,6 +24,7 @@ class O2Switch extends NullSubscriber implements Subscriber_Interface, Activatio
 	 */
 	public static function get_subscribed_events() {
 		return [
+			'do_rocket_varnish_http_purge'            => 'return_true',
 			'rocket_varnish_field_settings'           => 'varnish_addon_title',
 			'rocket_display_input_varnish_auto_purge' => 'return_false',
 			'rocket_cache_mandatory_cookies'          => [ 'return_empty_array', PHP_INT_MAX ],
