@@ -90,6 +90,6 @@ class EmojisSubscriber implements Subscriber_Interface {
 	 * @return bool
 	 */
 	private function can_emoji() {
-		return rocket_bypass() || (bool) $this->options->get( 'emoji', 0 );
+		return ! rocket_bypass() && (bool) $this->options->get( 'emoji', 0 );
 	}
 }
