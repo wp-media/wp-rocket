@@ -122,7 +122,7 @@ function rocket_get_purge_urls( $post_id, $post ) {
 				$matches_files = _rocket_get_recursive_dir_files_by_regex( '#' . $page . '#i' );
 				foreach ( $matches_files as $file ) {
 					// Convert path to URL.
-					$purge_urls[] = str_replace( $cache_path, untrailingslashit( $home_url ) , $file->getPath() );
+					$purge_urls[] = str_replace( $cache_path, untrailingslashit( $home_url ), $file->getPath() );
 				}
 				continue;
 			}
