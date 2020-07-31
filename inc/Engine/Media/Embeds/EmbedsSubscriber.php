@@ -226,6 +226,6 @@ class EmbedsSubscriber implements Subscriber_Interface {
 	 * @return bool
 	 */
 	private function can_embed() {
-		return rocket_bypass() || (bool) $this->options->get( 'embeds', 0 );
+		return ! rocket_bypass() && (bool) $this->options->get( 'embeds', 0 );
 	}
 }
