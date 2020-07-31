@@ -40,12 +40,12 @@ class EmbedsSubscriber implements Subscriber_Interface {
 	public static function get_subscribed_events() {
 		return [
 			'init'                        => [ 'remove_wp_vars_and_hooks', 9999 ],
-			'rest_endpoints'              => 'disable_embeds_remove_embed_endpoint',
-			'oembed_response_data'        => 'disable_embeds_filter_oembed_response_data',
+			'rest_endpoints'              => 'remove_embed_endpoint',
+			'oembed_response_data'        => 'empty_oembed_response_data',
 			'embed_oembed_discover'       => 'return_false',
-			'rewrite_rules_array'         => 'disable_embeds_rewrites',
-			'enqueue_block_editor_assets' => 'disable_embeds_enqueue_block_editor_assets',
-			'wp_default_scripts'          => 'disable_embeds_remove_script_dependencies',
+			'rewrite_rules_array'         => 'remove_embeds_rewrite_rules',
+			'enqueue_block_editor_assets' => 'enqueue_disable_embeds_script',
+			'wp_default_scripts'          => 'remove_wp_embed_dependency',
 		];
 	}
 
@@ -59,7 +59,7 @@ class EmbedsSubscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function remove_wp_vars_and_hooks() {
-		if ( ! $this->can_embed() ) {
+		if ( ! $this->can_disable_embeds() ) {
 			return;
 		}
 
@@ -96,8 +96,8 @@ class EmbedsSubscriber implements Subscriber_Interface {
 	 *
 	 * @return array Rewrite rules without embeds rules.
 	 */
-	public function disable_embeds_rewrites( $rules ) {
-		if ( empty( $rules ) || ! $this->can_embed() ) {
+	public function remove_embeds_rewrite_rules( $rules ) {
+		if ( empty( $rules ) || ! $this->can_disable_embeds() ) {
 			return $rules;
 		}
 
@@ -120,8 +120,8 @@ class EmbedsSubscriber implements Subscriber_Interface {
 	 *
 	 * @return array Filtered REST API endpoints.
 	 */
-	public function disable_embeds_remove_embed_endpoint( $endpoints ) {
-		if ( ! $this->can_embed() ) {
+	public function remove_embed_endpoint( $endpoints ) {
+		if ( ! $this->can_disable_embeds() ) {
 			return $endpoints;
 		}
 
@@ -138,30 +138,32 @@ class EmbedsSubscriber implements Subscriber_Interface {
 	 *
 	 * @param array $data The response data.
 	 *
-	 * @return array|false Response data or false if in a REST API context.
+	 * @return array Response data
 	 */
-	public function disable_embeds_filter_oembed_response_data( $data ) {
-		if ( rocket_get_constant( 'REST_REQUEST' ) ) {
-			return false;
+	public function empty_oembed_response_data( $data ) {
+		if (
+			! rocket_get_constant( 'REST_REQUEST' )
+			||
+			! $this->can_disable_embeds()
+		) {
+			return $data;
 		}
 
-		if ( ! $this->can_embed() ) {
-			return false;
-		}
-
-		return $data;
+		return [];
 	}
 
 	/**
 	 * Enqueue JavaScript for the block editor.
 	 *
+	 * This is used to unregister the `core-embed/wordpress` block type.
+	 *
 	 * @since 3.7 Moved to new architecture.
 	 * @since 3.3.3
 	 *
-	 * This is used to unregister the `core-embed/wordpress` block type.
+	 * @return void
 	 */
-	public function disable_embeds_enqueue_block_editor_assets() {
-		if ( ! $this->can_embed() ) {
+	public function enqueue_disable_embeds_script() {
+		if ( ! $this->can_disable_embeds() ) {
 			return;
 		}
 
@@ -173,7 +175,7 @@ class EmbedsSubscriber implements Subscriber_Interface {
 				'wp-editor',
 				'wp-dom',
 			],
-			rocket_get_constant( WP_ROCKET_VERSION ),
+			'1.0',
 			true
 		);
 	}
@@ -186,8 +188,8 @@ class EmbedsSubscriber implements Subscriber_Interface {
 	 *
 	 * @param \WP_Scripts $scripts WP_Scripts instance, passed by reference.
 	 */
-	public function disable_embeds_remove_script_dependencies( $scripts ) {
-		if ( ! $this->can_embed() ) {
+	public function remove_wp_embed_dependency( $scripts ) {
+		if ( ! $this->can_disable_embeds() ) {
 			return;
 		}
 
@@ -206,7 +208,7 @@ class EmbedsSubscriber implements Subscriber_Interface {
 	 *
 	 * @return bool
 	 */
-	private function can_embed() {
+	private function can_disable_embeds() {
 		return ! rocket_bypass() && (bool) $this->options->get( 'embeds', 0 );
 	}
 }
