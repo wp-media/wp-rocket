@@ -5,7 +5,6 @@ use League\Container\ServiceProvider\AbstractServiceProvider;
 
 /**
  * Service provider for WP Rocket preload links.
- *
  */
 class ServiceProvider extends AbstractServiceProvider {
 	/**
