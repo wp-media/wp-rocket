@@ -2,7 +2,6 @@
 
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\HostResolver;
 
-use Brain\Monkey\Functions;
 use WP_Rocket\ThirdParty\Hostings\HostResolver;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -25,7 +24,7 @@ class Test_GetHostResolver extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpectedValue( $expected ) {
-		switch( $expected ) {
+		switch ( $expected ) {
 			case 'cloudways':
 				$_SERVER['cw_allowed_ip'] = true;
 				break;
@@ -38,6 +37,10 @@ class Test_GetHostResolver extends TestCase {
 			case 'wpengine':
 				require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/WPEngine/wpe_param.php';
 				require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/WPEngine/WpeCommon.php';
+				break;
+			case 'savvii':
+				$this->constants['\Savvii\CacheFlusherPlugin::NAME_FLUSH_NOW']       = true;
+				$this->constants['\Savvii\CacheFlusherPlugin::NAME_DOMAINFLUSH_NOW'] = true;
 				break;
 			default:
 				break;
