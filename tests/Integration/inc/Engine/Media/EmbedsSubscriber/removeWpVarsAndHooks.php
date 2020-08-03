@@ -48,11 +48,13 @@ class RemoveWpVarsAndHooks extends TestCase {
 			$this->assertFalse( has_action( 'wp_head', 'wp_oembed_add_discovery_links' ) );
 			$this->assertFalse( has_action( 'wp_head', 'wp_oembed_add_host_js' ) );
 			$this->assertFalse( has_filter( 'pre_oembed_result', 'wp_filter_pre_oembed_result' ) );
+			$this->assertFalse( in_array( 'embed', $GLOBALS['wp']->public_query_vars, true ) );
 		} else {
 			$this->assertNotFalse( has_filter( 'oembed_dataparse', 'wp_filter_oembed_result' ) );
 			$this->assertNotFalse( has_action( 'wp_head', 'wp_oembed_add_discovery_links' ) );
 			$this->assertNotFalse( has_action( 'wp_head', 'wp_oembed_add_host_js' ) );
 			$this->assertNotFalse( has_filter( 'pre_oembed_result', 'wp_filter_pre_oembed_result' ) );
+			$this->assertTrue( in_array( 'embed', $GLOBALS['wp']->public_query_vars, true ) );
 		}
 	}
 
