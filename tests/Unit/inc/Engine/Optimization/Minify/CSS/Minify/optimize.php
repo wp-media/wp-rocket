@@ -33,7 +33,7 @@ class Test_Optimize extends TestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldMinifyCSS( $original, $expected, $cdn_host, $cdn_url, $site_url ) {
+	public function testShouldMinifyCSS( $original, $expected, $cdn_host, $cdn_url, $site_url, $external_url ) {
 		Filters\expectApplied( 'rocket_cdn_hosts' )
 			->zeroOrMoreTimes()
 			->with( [], [ 'all', 'css_and_js', 'css' ] )
@@ -50,6 +50,20 @@ class Test_Optimize extends TestCase {
 			->andReturnUsing( function( $url, $original_url ) use ( $cdn_url ) {
 				return str_replace( 'http://example.org', $cdn_url, $url );
 			} );
+
+
+		$this->local_cache
+			->shouldReceive( 'get_filepath' )
+			->zeroOrMoreTimes()
+			->with( $external_url )
+			->andReturn(
+				'wp-content/cache/min/3rd-party/' . str_replace( '/', '-', $external_url ) );
+
+		$this->local_cache
+			->shouldReceive( 'get_content' )
+			->zeroOrMoreTimes()
+			->with( $external_url )
+			->andReturn( 'external css content');
 
 		$this->assertSame(
 			$this->format_the_html( $expected['html'] ),
