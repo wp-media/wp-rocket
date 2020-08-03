@@ -3,8 +3,8 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\AdminPageSubscriber;
 
 use Brain\Monkey\Functions;
-use WP_Rocket\Subscriber\Plugin\Capabilities_Subscriber;
-use  WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
+use WP_Rocket\Tests\Integration\CapTrait;
+use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
 use WPDieException;
 
 /**
@@ -16,11 +16,19 @@ use WPDieException;
  * @group  RocketCDNAdminPage
  */
 class Test_PurgeCdnCache extends TestCase {
+	use CapTrait;
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
 
-		( new Capabilities_Subscriber() )->add_rocket_capabilities();
+		CapTrait::hasAdminCapBeforeClass();
+		CapTrait::setAdminCap();
+	}
+
+	public static function tearDownAfterClass() {
+		parent::tearDownAfterClass();
+
+		CapTrait::resetAdminCap();
 	}
 
 	public function setUp() {
