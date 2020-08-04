@@ -14,9 +14,6 @@ $original_html = <<<ORIGINAL_HTML
 </html>
 ORIGINAL_HTML;
 
-
-
-
 return [
 	'vfs_dir' => 'wp-content/',
 

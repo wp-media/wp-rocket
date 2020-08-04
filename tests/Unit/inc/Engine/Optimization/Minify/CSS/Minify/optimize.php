@@ -51,13 +51,15 @@ class Test_Optimize extends TestCase {
 				return str_replace( 'http://example.org', $cdn_url, $url );
 			} );
 
-
 		$this->local_cache
 			->shouldReceive( 'get_filepath' )
 			->zeroOrMoreTimes()
 			->with( $external_url )
-			->andReturn(
-				'wp-content/cache/min/3rd-party/' . str_replace( '/', '-', $external_url ) );
+			->andReturnUsing(function () use ($external_url) {
+				$url_parts = parse_url($external_url);
+				return'wp-content/cache/min/3rd-party/' .
+					  $url_parts['host'] . str_replace( '/', '-', $url_parts['path'] );
+			});
 
 		$this->local_cache
 			->shouldReceive( 'get_content' )
