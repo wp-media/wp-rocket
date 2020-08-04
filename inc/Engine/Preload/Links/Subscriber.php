@@ -15,19 +15,20 @@ class Subscriber implements Subscriber_Interface {
 	private $options;
 
 	/**
-	 * WP_Filesystem_Direct instance
+	 * WP_Filesystem_Direct instance.
 	 *
 	 * @var WP_Filesystem_Direct
 	 */
 	private $filesystem;
 
 	/**
-	 * Instantiate the class
+	 * Instantiate the class.
 	 *
-	 * @param Options_Data $options Options Data instance.
+	 * @param Options_Data         $options    Options Data instance.
+	 * @param WP_Filesystem_Direct $filesystem The Filesystem object.
 	 */
 	public function __construct( Options_Data $options, $filesystem ) {
-		$this->options = $options;
+		$this->options    = $options;
 		$this->filesystem = $filesystem;
 	}
 
