@@ -16,6 +16,9 @@ class Subscriber extends Abstract_Render implements Subscriber_Interface {
 		return [
 			'rocket_first_install_options'                 => 'add_options',
 			'rocket_after_textarea_field_delay_js_scripts' => 'display_restore_defaults_button',
+			'wp_rocket_upgrade'                            => [ 'set_option_on_update', 12, 2 ],
+			'wp_ajax_rocket_restore_delay_js_defaults'     => 'restore_defaults',
+			'rocket_safe_mode_reset_options'               => 'add_options',
 		];
 	}
 
@@ -31,5 +34,19 @@ class Subscriber extends Abstract_Render implements Subscriber_Interface {
 			$data['action'],
 			$data['attributes']
 		);
+	}
+
+	public function set_option_on_update( $new_version, $old_version ) {
+		$this->settings->set_option_on_update( $old_version );
+	}
+
+	public function restore_defaults() {
+		$result = $this->settings->restore_defaults();
+
+		if ( $result ) {
+			wp_send_json_success();
+		}
+
+		wp_send_json_error();
 	}
 }
