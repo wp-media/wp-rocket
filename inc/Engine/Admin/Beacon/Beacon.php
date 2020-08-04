@@ -138,7 +138,7 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 			'minify_google_fonts'     => 'Combine Google Fonts',
 			'manual_preload'          => 'Preload',
 			'sitemap_preload'         => 'Sitemap Preload',
-			'preload_links'           => 'Preload links',
+			'preload_links'           => 'Preload Links',
 			'cdn'                     => 'CDN Enabled',
 			'do_cloudflare'           => 'Cloudflare Enabled',
 			'varnish_auto_purge'      => 'Varnish Purge Enabled',
