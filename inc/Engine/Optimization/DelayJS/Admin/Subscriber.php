@@ -2,9 +2,10 @@
 
 namespace WP_Rocket\Engine\Optimization\DelayJS\Admin;
 
+use WP_Rocket\Abstract_Render;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
-class Subscriber implements Subscriber_Interface {
+class Subscriber extends Abstract_Render implements Subscriber_Interface {
 	private $settings;
 
 	public function __construct( Settings $settings ) {
@@ -23,6 +24,12 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	public function display_restore_defaults_button() {
-		$this->settings->display_restore_defaults_button();
+		$data = $this->settings->get_button_data();
+
+		$this->render_action_button(
+			$data['type'],
+			$data['action'],
+			$data['attributes']
+		);
 	}
 }
