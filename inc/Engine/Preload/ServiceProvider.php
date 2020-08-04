@@ -29,6 +29,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'sitemap_preload_subscriber',
 		'partial_preload_subscriber',
 		'fonts_preload_subscriber',
+		'links_preload_subscriber',
 	];
 
 	/**
@@ -51,6 +52,8 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		// Subscribers.
 		$options = $this->getContainer()->get( 'options' );
+		$filesystem = rocket_direct_filesystem();
+
 		$this->getContainer()->share( 'preload_subscriber', 'WP_Rocket\Engine\Preload\PreloadSubscriber' )
 			->withArgument( $this->getContainer()->get( 'homepage_preload' ) )
 			->withArgument( $options );
@@ -63,5 +66,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'fonts_preload_subscriber', 'WP_Rocket\Engine\Preload\Fonts' )
 			->withArgument( $options )
 			->withArgument( $this->getContainer()->get( 'cdn' ) );
+		$this->getContainer()->share( 'links_preload_subscriber', 'WP_Rocket\Engine\Preload\Links\Subscriber' )
+			->withArgument( $options )
+			->withArgument( $filesystem );
 	}
 }
