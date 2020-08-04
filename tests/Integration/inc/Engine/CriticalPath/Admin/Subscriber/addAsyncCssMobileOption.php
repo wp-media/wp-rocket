@@ -12,9 +12,6 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group  CriticalPathAdminSubscriber
  */
 class Test_AddAsyncCssMobileOption extends TestCase {
-	use ProviderTrait;
-	protected static $provider_class = 'Settings';
-
 	/**
 	 * @dataProvider providerTestData
 	 */
