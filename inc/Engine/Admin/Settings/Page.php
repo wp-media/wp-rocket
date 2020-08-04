@@ -832,7 +832,7 @@ class Page {
 					],
 					'type'              => 'checkbox',
 					'label'             => __( 'Delay JavaScript execution', 'rocket' ),
-					'description'       => sprintf( __( 'Improves initial loading time by delaying the loading of JavaScript files.', 'rocket' ) ),
+					'description'       => __( 'Improves initial loading time by delaying the loading of JavaScript files.', 'rocket' ),
 					'section'           => 'js',
 					'page'              => 'file_optimization',
 					'default'           => 0,
@@ -841,7 +841,7 @@ class Page {
 				'delay_js_scripts'      => [
 					'type'              => 'textarea',
 					'label'             => __( 'Scripts to delay', 'rocket' ),
-					'description'       => sprintf( __( 'Specify keywords that can identify inline or JavaScript files to be delayed (one per line).', 'rocket' ) ),
+					'description'       => __( 'Specify keywords that can identify inline or JavaScript files to be delayed (one per line).', 'rocket' ),
 					'container_class'   => [
 						'wpr-field--children',
 					],
