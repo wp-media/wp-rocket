@@ -126,6 +126,7 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 			'embeds'                  => 'Disable Embeds',
 			'defer_all_js'            => 'Defer JS',
 			'defer_all_js_safe'       => 'Defer JS Safe',
+			'delay_js'                => 'Delay JS',
 			'async_css'               => 'Optimize CSS Delivery',
 			'lazyload'                => 'Lazyload Images',
 			'lazyload_iframes'        => 'Lazyload Iframes',
