@@ -11,14 +11,12 @@ use WP_Rocket\Interfaces\Render_Interface;
  * Deactivation intent form on plugins page
  *
  * @since 3.0
- * @author Remy Perona
  */
 class DeactivationIntent implements Subscriber_Interface {
 	/**
 	 * Render Interface
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @var Render_Interface
 	 */
@@ -27,8 +25,6 @@ class DeactivationIntent implements Subscriber_Interface {
 	/**
 	 * Options instance.
 	 *
-	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @var Options
 	 */
@@ -38,7 +34,6 @@ class DeactivationIntent implements Subscriber_Interface {
 	 * Options_Data instance.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @var Options_Data
 	 */
@@ -48,7 +43,6 @@ class DeactivationIntent implements Subscriber_Interface {
 	 * Constructor
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @param Render_Interface $render      Render interface.
 	 * @param Options          $options_api Options instance.
@@ -64,7 +58,6 @@ class DeactivationIntent implements Subscriber_Interface {
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
 	 * @since  3.0
-	 * @author Remy Perona
 	 *
 	 * @return array
 	 */
@@ -80,7 +73,6 @@ class DeactivationIntent implements Subscriber_Interface {
 	 * Inserts mixpanel tracking on plugins page to send deactivation data
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
@@ -109,7 +101,6 @@ mixpanel.init("a36067b00a263cce0299cfd960e26ecf", {
 	 * Inserts the deactivation intent form on plugins page
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
@@ -127,7 +118,6 @@ mixpanel.init("a36067b00a263cce0299cfd960e26ecf", {
 	 * Activates WP Rocket safe mode by deactivating possibly layout breaking options
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
@@ -139,20 +129,30 @@ mixpanel.init("a36067b00a263cce0299cfd960e26ecf", {
 			return;
 		}
 
-		$reset_options = [
-			'embeds'                 => 0,
-			'defer_all_js'           => 0,
-			'async_css'              => 0,
-			'lazyload'               => 0,
-			'lazyload_iframes'       => 0,
-			'lazyload_youtube'       => 0,
-			'minify_css'             => 0,
-			'minify_concatenate_css' => 0,
-			'minify_js'              => 0,
-			'minify_concatenate_js'  => 0,
-			'minify_google_fonts'    => 0,
-			'cdn'                    => 0,
-		];
+		/**
+		 * Filters the array of options to reset when activating safe mode
+		 *
+		 * @since 3.7
+		 *
+		 * @param array $options Array of options to reset.
+		 */
+		$reset_options = apply_filters(
+			'rocket_safe_mode_reset_options',
+			[
+				'embeds'                 => 0,
+				'defer_all_js'           => 0,
+				'async_css'              => 0,
+				'lazyload'               => 0,
+				'lazyload_iframes'       => 0,
+				'lazyload_youtube'       => 0,
+				'minify_css'             => 0,
+				'minify_concatenate_css' => 0,
+				'minify_js'              => 0,
+				'minify_concatenate_js'  => 0,
+				'minify_google_fonts'    => 0,
+				'cdn'                    => 0,
+			]
+		);
 
 		$this->options->set_values( $reset_options );
 		$this->options_api->set( 'settings', $this->options->get_options() );
