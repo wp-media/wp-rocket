@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Engine\Preload\Links;
 
+use WP_Filesystem_Direct;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
@@ -14,12 +15,20 @@ class Subscriber implements Subscriber_Interface {
 	private $options;
 
 	/**
+	 * WP_Filesystem_Direct instance
+	 *
+	 * @var WP_Filesystem_Direct
+	 */
+	private $filesystem;
+
+	/**
 	 * Instantiate the class
 	 *
 	 * @param Options_Data $options Options Data instance.
 	 */
-	public function __construct( Options_Data $options ) {
+	public function __construct( Options_Data $options, $filesystem ) {
 		$this->options = $options;
+		$this->filesystem = $filesystem;
 	}
 
 	/**
@@ -48,6 +57,9 @@ class Subscriber implements Subscriber_Interface {
 		// Register handle with no src to add the inline script after.
 		wp_register_script( 'rocket-preload-links', '', [], false, true );
 		wp_enqueue_script( 'rocket-preload-links' );
-		wp_add_inline_script( 'rocket-preload-links', 'script' );
+		wp_add_inline_script(
+			'rocket-preload-links',
+			$this->filesystem->get_contents( rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL') . 'preload-links.js' )
+		);
 	}
 }
