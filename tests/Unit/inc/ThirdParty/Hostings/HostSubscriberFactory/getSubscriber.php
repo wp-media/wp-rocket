@@ -38,7 +38,7 @@ class Test_GetSubscriber extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnSubscriber( $host, $expected ) {
-		switch( $host ) {
+		switch ( $host ) {
 			case 'cloudways':
 				$_SERVER['cw_allowed_ip'] = true;
 				break;
@@ -52,10 +52,14 @@ class Test_GetSubscriber extends TestCase {
 				require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/WPEngine/wpe_param.php';
 				require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/WPEngine/WpeCommon.php';
 				break;
+			case 'savvii':
+				$this->constants['\Savvii\CacheFlusherPlugin::NAME_FLUSH_NOW']       = true;
+				$this->constants['\Savvii\CacheFlusherPlugin::NAME_DOMAINFLUSH_NOW'] = true;
+				break;
 			default:
 				break;
 		}
 
-		$this->assertTrue( $this->factory->get_subscriber() instanceOf $expected );
+		$this->assertTrue( $this->factory->get_subscriber() instanceof $expected );
 	}
 }

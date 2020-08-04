@@ -127,8 +127,9 @@ return [
 				'SCRIPT_DEBUG'                   => false,
 			],
 			'expected' => true,
-			'html'     => '<html><head><title></title><style id="rocket-critical-css">.fallback { color: red; }</style></head><body><script>const wprRemoveCPCSS = () => { $elem = document.getElementById( "rocket-critical-css" ); if ( $elem ) { $elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script></body></html>',
+			'html'     => '<html><head><title></title><style id="rocket-critical-css">.fallback { color: red; }</style></head><body><script>const wprRemoveCPCSS = () => { if( document.querySelector("link[data-rocket-async=\'style\'][rel=\'preload\']") ){ setTimeout(wprRemoveCPCSS, 200); }else{ $elem = document.getElementById( "rocket-critical-css" );if ( $elem ) {$elem.remove();} } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script></body></html>'
 		],
+
 		'testShouldDisplayFileCriticalCSS'          => [
 			'config'   => [
 				'DONOTROCKETOPTIMIZE'            => false,
@@ -147,8 +148,9 @@ return [
 				'SCRIPT_DEBUG'                   => false,
 			],
 			'expected' => true,
-			'html'     => '<html><head><title></title><style id="rocket-critical-css">.post_tag { color: red; }</style></head><body><script>const wprRemoveCPCSS = () => { $elem = document.getElementById( "rocket-critical-css" ); if ( $elem ) { $elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script></body></html>',
+			'html'     => '<html><head><title></title><style id="rocket-critical-css">.post_tag { color: red; }</style></head><body><script>const wprRemoveCPCSS = () => { if( document.querySelector("link[data-rocket-async=\'style\'][rel=\'preload\']") ){ setTimeout(wprRemoveCPCSS, 200); }else{ $elem = document.getElementById( "rocket-critical-css" );if ( $elem ) {$elem.remove();} } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script></body></html>'
 		],
+
 		'testShouldDisplayCustomFileCriticalCSS'    => [
 			'config'   => [
 				'DONOTROCKETOPTIMIZE'            => false,
@@ -170,10 +172,14 @@ return [
 			'html'     => '<html><head><title></title><style id="rocket-critical-css">.page { color: red; }</style></head><body>
 			<script>
 				const wprRemoveCPCSS = () => {
-					$elem = document.getElementById( "rocket-critical-css" );
-					if ( $elem ) {
-						$elem.remove();
-					}
+				    if( document.querySelector("link[data-rocket-async=\'style\'][rel=\'preload\']") ){
+				        setTimeout(wprRemoveCPCSS, 200);
+				    }else{
+				        $elem = document.getElementById( "rocket-critical-css" );
+						if ( $elem ) {
+							$elem.remove();
+						}
+				    }
 				};
 				if ( window.addEventListener ) {
 					window.addEventListener( "load", wprRemoveCPCSS );

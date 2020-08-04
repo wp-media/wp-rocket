@@ -185,10 +185,6 @@ class WPCache implements ActivationInterface, DeactivationInterface {
 			return false;
 		}
 
-		if ( rocket_get_constant( 'IS_PRESSABLE' ) ) {
-			return false;
-		}
-
 		/**
 		 * Filters the writing of the WP_CACHE constant in wp-config.php
 		 *

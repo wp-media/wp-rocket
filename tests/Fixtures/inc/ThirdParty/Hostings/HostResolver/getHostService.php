@@ -14,5 +14,8 @@ return [
 		'testShouldReturnSpinUpWP' => [
 			'expected' => 'spinupwp',
 		],
+		'testShouldReturnSavvii' => [
+			'expected' => 'savvii',
+		]
 	],
 ];

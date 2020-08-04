@@ -118,6 +118,6 @@ class Divi implements Subscriber_Interface {
 	private static function is_divi( $theme = null ) {
 		$theme = $theme instanceof WP_Theme ? $theme : wp_get_theme();
 
-		return ( 'Divi' === $theme->get( 'Name' ) || 'Divi' === $theme->get( 'Template' ) );
+		return ( 'Divi' === $theme->get( 'Name' ) || 'divi' === $theme->get_template() );
 	}
 }
