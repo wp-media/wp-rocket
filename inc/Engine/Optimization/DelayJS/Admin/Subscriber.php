@@ -13,8 +13,13 @@ class Subscriber implements Subscriber_Interface {
 
 	public static function get_subscribed_events() {
 		return [
+			'rocket_first_install_options'                 => 'add_options',
 			'rocket_after_textarea_field_delay_js_scripts' => 'display_restore_defaults_button',
 		];
+	}
+
+	public function add_options( $options ) {
+		$this->settings->add_options( $options );
 	}
 
 	public function display_restore_defaults_button() {
