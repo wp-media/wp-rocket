@@ -215,6 +215,7 @@ class Plugin {
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Common_Subscribers' );
 		$this->container->addServiceProvider( 'WP_Rocket\ThirdParty\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Updater_Subscribers' );
+		$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\DelayJS\ServiceProvider' );
 
 		$common_subscribers = [
 			'cdn_subscriber',
@@ -256,6 +257,7 @@ class Plugin {
 			'wpengine',
 			'spinupwp',
 			'pdfembedder',
+			'delay_js_admin_subscriber',
 		];
 
 		if ( $this->options->get( 'do_cloudflare', false ) ) {
