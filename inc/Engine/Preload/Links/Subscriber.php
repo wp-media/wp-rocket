@@ -55,11 +55,17 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		// Register handle with no src to add the inline script after.
-		wp_register_script( 'rocket-preload-links', '', [], false, true );
+		wp_register_script(
+			'rocket-preload-links',
+			'',
+			[],
+			rocket_get_constant( 'WP_ROCKET_VERSION' ),
+			true
+		);
 		wp_enqueue_script( 'rocket-preload-links' );
 		wp_add_inline_script(
 			'rocket-preload-links',
-			$this->filesystem->get_contents( rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL') . 'preload-links.js' )
+			$this->filesystem->get_contents( rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'preload-links.js' )
 		);
 	}
 }
