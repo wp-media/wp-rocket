@@ -37,4 +37,14 @@ defined( 'ABSPATH' ) || exit;
 			<?php echo $data['helper']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
 		</div>
 	<?php endif; ?>
+	<?php
+		/**
+		 * Fires after the display of a textarea field on WP Rocket settings page
+		 * 
+		 * The dynamic portion of the name corresponds to the field ID
+		 *
+		 * @since 3.7
+		 */
+		do_action( "rocket_after_textarea_field_{$data['id']}" );
+	?>
 </div>
