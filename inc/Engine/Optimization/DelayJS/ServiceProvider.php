@@ -27,15 +27,13 @@ class ServiceProvider extends AbstractServiceProvider {
 	/**
 	 * Registers the option array in the container
 	 *
-	 * @since  3.3
-	 * @author Remy Perona
-	 *
 	 * @return void
 	 */
 	public function register() {
 		$this->getContainer()->add( 'delay_js_settings', 'WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings' )
-			->withArgument( $this->getContainer()->get( 'template_path' ) . '/settings' );
+			->withArgument( $this->getContainer()->get( 'options' ) );
 		$this->getContainer()->share( 'delay_js_admin_subscriber', 'WP_Rocket\Engine\Optimization\DelayJS\Admin\Subscriber' )
-			->withArgument( $this->getContainer()->get( 'delay_js_settings' ) );
+			->withArgument( $this->getContainer()->get( 'delay_js_settings' ) )
+			->withArgument( $this->getContainer()->get( 'template_path' ) . '/settings' );
 	}
 }

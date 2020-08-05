@@ -16,9 +16,12 @@ class Subscriber extends Abstract_Render implements Subscriber_Interface {
 	/**
 	 * Instantiate the class
 	 *
-	 * @param Settings $settings Settings instance.
+	 * @param Settings $settings      Settings instance.
+	 * @param string   $template_path Template path.
 	 */
-	public function __construct( Settings $settings ) {
+	public function __construct( Settings $settings, $template_path ) {
+		parent::__construct( $template_path );
+
 		$this->settings = $settings;
 	}
 
