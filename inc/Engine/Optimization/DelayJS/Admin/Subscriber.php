@@ -102,6 +102,5 @@ class Subscriber extends Abstract_Render implements Subscriber_Interface {
 		}
 
 		wp_send_json_error();
-		return;
 	}
 }
