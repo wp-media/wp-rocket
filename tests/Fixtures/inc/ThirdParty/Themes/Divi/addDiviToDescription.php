@@ -20,7 +20,7 @@ return [
 	'shouldAddWhenDiviChild' => [
 		'config'   => [
 			'theme-name'     => 'Divi Child',
-			'theme-template' => 'Divi',
+			'theme-template' => 'divi',
 			'disabled-items' => [
 				'Thing 1',
 				'Thing 2',

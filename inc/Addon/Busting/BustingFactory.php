@@ -1,13 +1,17 @@
 <?php
-namespace WP_Rocket\Busting;
+namespace WP_Rocket\Addon\Busting;
+
+use WP_Rocket\Addon\GoogleTracking\GoogleAnalytics;
+use WP_Rocket\Addon\GoogleTracking\GoogleTagManager;
+use WP_Rocket\Busting\Facebook_Pickles;
+use WP_Rocket\Busting\Facebook_SDK;
 
 /**
  * Busting classes Factory
  *
- * @since 3.1
- * @author Remy Perona
+ * @since 3.6.2
  */
-class Busting_Factory {
+class BustingFactory {
 	/**
 	 * Base cache busting filepath.
 	 *
@@ -46,9 +50,9 @@ class Busting_Factory {
 			case 'fbsdk':
 				return new Facebook_SDK( $this->busting_path, $this->busting_url );
 			case 'ga':
-				return new Google_Analytics( $this->busting_path, $this->busting_url );
+				return new GoogleAnalytics( $this->busting_path, $this->busting_url );
 			case 'gtm':
-				return new Google_Tag_Manager( $this->busting_path, $this->busting_url, new Google_Analytics( $this->busting_path, $this->busting_url ) );
+				return new GoogleTagManager( $this->busting_path, $this->busting_url, new GoogleAnalytics( $this->busting_path, $this->busting_url ) );
 		}
 	}
 }

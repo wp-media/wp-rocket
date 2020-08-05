@@ -1207,6 +1207,30 @@ function rocket_get_filesystem_perms( $type ) {
 }
 
 /**
+ * Gets Directory files matches regex.
+ *
+ * @since 3.6.3
+ * @access private
+ *
+ * @param string $dir   Directory to search for files inside it.
+ * @param string $regex Regular expression for files need to be searched for.
+ *
+ * @return array|RegexIterator List of files matches this regular expression.
+ */
+function _rocket_get_dir_files_by_regex( $dir, $regex ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
+	try {
+		$iterator = new IteratorIterator(
+			new FilesystemIterator( $dir )
+		);
+
+		return new RegexIterator( $iterator, $regex );
+	} catch ( Exception $e ) {
+		return [];
+	}
+
+}
+
+/**
  * Get the recursive iterator for the cache path.
  *
  * @since  3.5.4
@@ -1358,4 +1382,51 @@ function _rocket_is_windows_fs( $hard_reset = false ) { // phpcs:ignore WordPres
  */
 function _rocket_get_wp_rocket_cache_path() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 	return _rocket_normalize_path( rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) );
+}
+
+/**
+ * Gets .php files in a directory as an array of SplFileInfo objects.
+ *
+ * @since 3.6.3
+ *
+ * @param string $dir_path Directory to check.
+ *
+ * @return array .php files in the directory. [...SplFileInfo]
+ */
+function _rocket_get_php_files_in_dir( $dir_path ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
+	try {
+		$config_dir = new FilesystemIterator( (string) $dir_path );
+	} catch ( Exception $e ) {
+		return [];
+	}
+	$files = [];
+
+	foreach ( $config_dir as $file ) {
+		if ( $file->isFile() && 'php' === $file->getExtension() ) {
+			$files[] = $file;
+		}
+	}
+
+	return $files;
+}
+
+/**
+ * Get recursive files matched by regex.
+ *
+ * @since 3.6.3
+ *
+ * @param string $regex Regular Expression to be applied.
+ *
+ * @return array|RegexIterator List of files which match the regular expression (SplFileInfo).
+ */
+function _rocket_get_recursive_dir_files_by_regex( $regex ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
+	try {
+		$cache_path = _rocket_get_wp_rocket_cache_path();
+		$iterator   = new RecursiveIteratorIterator(
+			new RecursiveDirectoryIterator( $cache_path, FilesystemIterator::SKIP_DOTS )
+		);
+		return new RegexIterator( $iterator, $regex, RecursiveRegexIterator::MATCH );
+	} catch ( Exception $e ) {
+		return [];
+	}
 }

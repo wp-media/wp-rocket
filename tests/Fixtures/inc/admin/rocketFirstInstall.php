@@ -76,6 +76,7 @@ $default = [
 
 $integration = $default;
 $integration[ 'async_css_mobile' ] = 1;
+$integration[ 'preload_links' ]    = 0;
 
 return [
 	'test_data' => [
