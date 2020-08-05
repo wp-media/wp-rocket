@@ -4,6 +4,7 @@ class RocketLazyLoadScripts {
 
 	constructor( triggerEvents ) {
 		this.triggerEvents = triggerEvents;
+		this.userEventListener = this.triggerListener.bind( this );
 	}
 
 	init() {
@@ -14,15 +15,36 @@ class RocketLazyLoadScripts {
 		this._removeEventListener( this );
 	}
 
+	/**
+	 * Adds a listener for each of the configured user interactivity event type. When an even is triggered, it invokes
+	 * the triggerListener() method.
+	 *
+	 * Note: self.userEventListener is holding a reference to the object's method. Why? JS returns a different function
+	 * reference back.
+	 *
+	 * @private
+	 *
+	 * @param self Instance of this object.
+	 */
 	_addEventListener( self ) {
 		this.triggerEvents.forEach(
-			eventName => window.addEventListener( eventName, self._triggerListener.bind( self ), self.options )
+			eventName => window.addEventListener( eventName, self.userEventListener, self.options )
 		);
 	}
 
+	/**
+	 * Removes the listener for each of the configured user interactivity event type.
+	 *
+	 * Note: self.userEventListener is holding a reference to the object's method. Why? JS returns a different function
+	 * reference back.
+	 *
+	 * @private
+	 *
+	 * @param self Instance of this object.
+	 */
 	_removeEventListener( self ) {
 		this.triggerEvents.forEach(
-			eventName => window.removeEventListener( eventName, self._triggerListener, self.options )
+			eventName => window.removeEventListener( eventName, self.userEventListener, self.options )
 		);
 	}
 
@@ -39,25 +61,23 @@ class RocketLazyLoadScripts {
 			elem.setAttribute( 'src', scriptSrc );
 			elem.removeAttribute( this.attrName );
 		} );
+
+		this.reset();
 	}
 
 	/**
 	 * Window event listener - when triggered, invokes the load script src handler and then resets.
-	 *
-	 * @param object event Event object.
-	 * @private
 	 */
-	_triggerListener( event ) {
-		console.log( event );
+	triggerListener() {
 		this._loadScriptSrc();
-		this.reset();
+		this._removeEventListener( this );
 	}
 }
 
 const rocketLazyLoadScripts = new RocketLazyLoadScripts(
 	[
-		'mouseover',
 		'keydown',
+		'mouseover',
 		'touchmove',
 		'touchstart'
 	]
