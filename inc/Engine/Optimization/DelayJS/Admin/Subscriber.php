@@ -75,6 +75,7 @@ class Subscriber extends Abstract_Render implements Subscriber_Interface {
 	 *
 	 * @since 3.7
 	 *
+	 * @param string $new_version New plugin version.
 	 * @param string $old_version Previous plugin version.
 	 *
 	 * @return void
