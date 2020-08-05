@@ -391,10 +391,6 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 	 * @return void
 	 */
 	public function delete_cache_empty_cart() {
-		if ( rocket_bypass() ) {
-			return;
-		}
-
 		$langs = get_rocket_i18n_code();
 
 		if ( $langs ) {
