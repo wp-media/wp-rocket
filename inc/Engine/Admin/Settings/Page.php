@@ -1081,6 +1081,17 @@ class Page {
 					],
 					'page'        => 'preload',
 				],
+				'preload_links_section' => [
+					'title'       => __( 'Preload Links', 'rocket' ),
+					'type'        => 'fields_container',
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description' => sprintf( __( 'Link preloading improves the perceived load time by downloading a page when a user hovers over the link. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $fonts_preload['url'] ) . '" data-beacon-article="' . esc_attr( $fonts_preload['id'] ) . '" target="_blank">', '</a>' ),
+					'help'        => [
+						'id'  => $fonts_preload['id'],
+						'url' => $fonts_preload['url'],
+					],
+					'page'        => 'preload',
+				],
 			]
 		);
 
@@ -1158,6 +1169,14 @@ class Page {
 					'page'              => 'preload',
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
+				],
+				'preload_links' => [
+					'type'              => 'checkbox',
+					'label'             => __( 'Enable link preloading', 'rocket' ),
+					'section'           => 'preload_links_section',
+					'page'              => 'preload',
+					'default'           => 0,
+					'sanitize_callback' => 'sanitize_checkbox',
 				],
 			]
 		);
