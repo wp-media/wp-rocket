@@ -90,15 +90,13 @@ class Settings {
 	 *
 	 * @since 3.7
 	 *
-	 * @return bool
+	 * @return bool|array
 	 */
 	public function restore_defaults() {
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			return false;
 		}
 
-		$this->options->set( 'delay_js_scripts', $this->defaults );
-
-		return update_option( rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' ), $this->options->get_options() );
+		return implode( "\n", $this->defaults );
 	}
 }

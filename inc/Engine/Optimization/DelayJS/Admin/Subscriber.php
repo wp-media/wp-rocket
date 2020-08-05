@@ -96,11 +96,11 @@ class Subscriber extends Abstract_Render implements Subscriber_Interface {
 
 		$result = $this->settings->restore_defaults();
 
-		if ( $result ) {
-			wp_send_json_success();
+		if ( ! $result ) {
+			wp_send_json_error();
 			return;
 		}
 
-		wp_send_json_error();
+		wp_send_json_success( $result );
 	}
 }
