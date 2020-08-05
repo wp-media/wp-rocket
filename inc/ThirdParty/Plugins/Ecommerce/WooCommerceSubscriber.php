@@ -60,11 +60,10 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 			 * Filters activation of WooCommerce empty cart caching
 			 *
 			 * @since 3.1
-			 * @author Remy Perona
 			 *
 			 * @param bool true to activate, false to deactivate.
 			 */
-			if ( apply_filters( 'rocket_cache_wc_empty_cart', true ) ) {
+			if ( apply_filters( 'rocket_cache_wc_empty_cart', true ) && ! rocket_bypass() ) {
 				$events['plugins_loaded']    = [ 'serve_cache_empty_cart', 11 ];
 				$events['template_redirect'] = [ 'cache_empty_cart', -1 ];
 				$events['switch_theme']      = 'delete_cache_empty_cart';
