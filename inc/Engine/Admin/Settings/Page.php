@@ -826,7 +826,7 @@ class Page {
 					'default'           => 1,
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
-				'delay_js'           => [
+				'delay_js'               => [
 					'container_class'   => [
 						'wpr-isParent',
 					],
@@ -838,7 +838,7 @@ class Page {
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
-				'delay_js_scripts'      => [
+				'delay_js_scripts'       => [
 					'type'              => 'textarea',
 					'label'             => __( 'Scripts to delay', 'rocket' ),
 					'description'       => __( 'Specify keywords that can identify inline or JavaScript files to be delayed (one per line).', 'rocket' ),
