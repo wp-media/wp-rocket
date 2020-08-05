@@ -1,24 +1,24 @@
 <?php
-namespace WP_Rocket\Busting;
+namespace WP_Rocket\Addon\GoogleTracking;
 
-use WP_Rocket\Busting\Google_Analytics;
+use WP_Rocket\Addon\Busting\FileBustingTrait;
 use WP_Rocket\Logger\Logger;
+use WP_Rocket\Busting\Abstract_Busting;
+use WP_Filesystem_Direct;
 
 /**
  * Manages the cache busting of the Google Tag Manager file
  *
  * @since 3.1
- * @author Remy Perona
  */
-class Google_Tag_Manager extends Abstract_Busting {
-	use File_Busting;
+class GoogleTagManager extends Abstract_Busting {
+	use FileBustingTrait;
 
 	/**
 	 * Context used for the logger.
 	 *
 	 * @var    string
 	 * @since  3.2.4
-	 * @author Grégory Viguier
 	 */
 	const LOGGER_CONTEXT = 'gg tag manager';
 
@@ -29,9 +29,8 @@ class Google_Tag_Manager extends Abstract_Busting {
 	 * @var    string
 	 * @since  3.2.4
 	 * @access protected
-	 * @author Grégory Viguier
 	 */
-	protected $filename = 'gtm-%s.js';
+	protected $filename_pattern = 'gtm-%s.js';
 
 	/**
 	 * Current file version (local): a md5 hash of the file contents.
@@ -39,7 +38,6 @@ class Google_Tag_Manager extends Abstract_Busting {
 	 * @var    string
 	 * @since  3.2.4
 	 * @access protected
-	 * @author Grégory Viguier
 	 */
 	protected $file_version;
 
@@ -49,17 +47,15 @@ class Google_Tag_Manager extends Abstract_Busting {
 	 * @var    object
 	 * @since  3.2.4
 	 * @access protected
-	 * @author Grégory Viguier
 	 */
 	protected $filesystem = false;
 
 	/**
-	 * Google_Analytics object.
+	 * Google Analytics object.
 	 *
 	 * @var    object
 	 * @since  3.2.4
 	 * @access protected
-	 * @author Grégory Viguier
 	 */
 	protected $ga_busting = false;
 
@@ -68,18 +64,18 @@ class Google_Tag_Manager extends Abstract_Busting {
 	 *
 	 * @since  3.1
 	 * @access public
-	 * @author Remy Perona
 	 *
-	 * @param string           $busting_path Path to the busting directory.
-	 * @param string           $busting_url  URL of the busting directory.
-	 * @param Google_Analytics $ga_busting   A Google_Analytics instance.
+	 * @param string               $busting_path Path to the busting directory.
+	 * @param string               $busting_url  URL of the busting directory.
+	 * @param GoogleAnalytics      $ga_busting   A GoogleAnalytics instance.
+	 * @param WP_Filesystem_Direct $filesystem   Instance of the filesystem handler.
 	 */
-	public function __construct( $busting_path, $busting_url, Google_Analytics $ga_busting ) {
+	public function __construct( $busting_path, $busting_url, GoogleAnalytics $ga_busting, $filesystem = null ) {
 		$blog_id            = get_current_blog_id();
 		$this->busting_path = $busting_path . $blog_id . '/';
 		$this->busting_url  = $busting_url . $blog_id . '/';
 		$this->ga_busting   = $ga_busting;
-		$this->filesystem   = \rocket_direct_filesystem();
+		$this->filesystem   = is_null( $filesystem ) ? rocket_direct_filesystem() : $filesystem;
 	}
 
 	/** ----------------------------------------------------------------------------------------- */
@@ -91,7 +87,6 @@ class Google_Tag_Manager extends Abstract_Busting {
 	 *
 	 * @since  3.1
 	 * @access public
-	 * @author Remy Perona
 	 *
 	 * @param string $html HTML content.
 	 * @return string
@@ -103,6 +98,9 @@ class Google_Tag_Manager extends Abstract_Busting {
 			return $html;
 		}
 
+		// replace relative protocol // with full https://.
+		$gtm_url = preg_replace( '/^\/\//', 'https://', $script[2] );
+
 		Logger::info(
 			'GOOGLE TAG MANAGER CACHING PROCESS STARTED.',
 			[
@@ -111,7 +109,7 @@ class Google_Tag_Manager extends Abstract_Busting {
 			]
 		);
 
-		if ( ! $this->save( $script[2] ) ) {
+		if ( ! $this->save( $gtm_url ) ) {
 			return $html;
 		}
 
@@ -135,7 +133,6 @@ class Google_Tag_Manager extends Abstract_Busting {
 	 *
 	 * @since  3.2
 	 * @access public
-	 * @author Grégory Viguier
 	 *
 	 * @param  string $url URL to get the content from.
 	 * @return bool
@@ -154,7 +151,7 @@ class Google_Tag_Manager extends Abstract_Busting {
 			return false;
 		}
 
-		$version = \md5( $content );
+		$version = md5( $content );
 		$path    = $this->get_busting_file_path( $version );
 		$content = $this->replace_ga_url( $content );
 
@@ -170,7 +167,6 @@ class Google_Tag_Manager extends Abstract_Busting {
 	 *
 	 * @since  3.1
 	 * @access public
-	 * @author Remy Perona
 	 *
 	 * @param string $pattern Pattern to match.
 	 * @param string $html    HTML content.
@@ -190,7 +186,6 @@ class Google_Tag_Manager extends Abstract_Busting {
 	 * Replaces the Google Analytics URL by the local copy inside the gtm-local.js file content
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @param string $content JavaScript content.
 	 * @return string

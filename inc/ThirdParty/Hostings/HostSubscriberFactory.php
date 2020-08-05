@@ -31,8 +31,12 @@ class HostSubscriberFactory implements SubscriberFactoryInterface {
 				return new SpinUpWP();
 			case 'wpengine':
 				return new WPEngine();
+			case 'o2switch':
+				return new O2Switch();
 			case 'wordpresscom':
 				return new WordPressCom();
+			case 'savvii':
+				return new Savvii();
 			default:
 				return new NullSubscriber();
 		}

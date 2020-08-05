@@ -1,15 +1,14 @@
 <?php
-namespace WP_Rocket\Busting;
+namespace WP_Rocket\Addon\Busting;
 
 use WP_Rocket\Logger\Logger;
 
-trait File_Busting {
+trait FileBustingTrait {
 	/**
 	 * Saves the content of the URL to bust to the busting file if it doesn't exist yet.
 	 *
 	 * @since  3.2.4
 	 * @access public
-	 * @author Grégory Viguier
 	 *
 	 * @param  string $url URL to get the content from.
 	 * @return bool
@@ -68,7 +67,7 @@ trait File_Busting {
 			return true;
 		}
 
-		return $this->delete_files( \array_keys( $files ) );
+		return $this->delete_files( array_keys( $files ) );
 	}
 
 	/** ----------------------------------------------------------------------------------------- */
@@ -85,7 +84,7 @@ trait File_Busting {
 	 * @return string|bool Version of the file. False if the file does not exist.
 	 */
 	protected function get_busting_version() {
-		if ( isset( $this->file_version ) ) {
+		if ( ! empty( $this->file_version ) ) {
 			return $this->file_version;
 		}
 
@@ -97,7 +96,7 @@ trait File_Busting {
 		}
 
 		// Since we're not supposed to have several files, return the first one.
-		$this->file_version = \reset( $files );
+		$this->file_version = reset( $files );
 
 		return $this->file_version;
 	}
@@ -108,12 +107,11 @@ trait File_Busting {
 	 *
 	 * @since  3.2.4
 	 * @access private
-	 * @author Grégory Viguier
 	 *
-	 * @return bool|bool A list of file names (as array keys) and versions (as array values). False on failure.
+	 * @return bool|array A list of file names (as array keys) and versions (as array values). False on failure.
 	 */
 	private function get_all_files() {
-		$dir_path = \rtrim( $this->busting_path, '\\/' );
+		$dir_path = rtrim( $this->busting_path, '\\/' );
 
 		if ( ! $this->filesystem->exists( $dir_path ) ) {
 			return [];
@@ -130,34 +128,20 @@ trait File_Busting {
 			return false;
 		}
 
-		$dir = $this->filesystem->dirlist( $dir_path );
+		$pattern = '/' . sprintf(
+			$this->escape_file_name( $this->filename_pattern ),
+			'([a-f0-9]{32}|local)'
+		) . '/';
 
-		if ( false === $dir ) {
-			Logger::error(
-				'Could not get the directory contents.',
-				[
-					self::LOGGER_CONTEXT,
-					'path' => $dir_path,
-				]
-			);
-			return false;
-		}
+		$entries = _rocket_get_dir_files_by_regex( $dir_path, $pattern );
 
-		if ( ! $dir ) {
-			return [];
-		}
+		$list = [];
+		foreach ( $entries as $entry ) {
+			$filename = $entry->getFilename();
 
-		$list    = [];
-		$pattern = $this->escape_file_name( $this->filename );
-		$pattern = \sprintf( $pattern, '(?<version>(?:[a-f0-9]{32}|local))' );
-
-		foreach ( $dir as $entry ) {
-			if ( 'f' !== $entry['type'] ) {
-				continue;
-			}
-
-			if ( \preg_match( '/^' . $pattern . '$/', $entry['name'], $matches ) ) {
-				$list[ $entry['name'] ] = $matches['version'];
+			preg_match( $pattern, $filename, $file_details_match );
+			if ( ! empty( $file_details_match[1] ) ) {
+				$list[ $filename ] = $file_details_match[1];
 			}
 		}
 
@@ -169,7 +153,6 @@ trait File_Busting {
 	 *
 	 * @since  3.2.4
 	 * @access protected
-	 * @author Grégory Viguier
 	 *
 	 * @return string|bool URL of the file. False if the file does not exist.
 	 */
@@ -208,7 +191,7 @@ trait File_Busting {
 		$filename = $this->get_busting_file_name( $version );
 
 		// This filter is documented in inc/functions/minify.php.
-		return \apply_filters( 'rocket_js_url', $this->busting_url . $filename );
+		return apply_filters( 'rocket_js_url', $this->busting_url . $filename );
 	}
 
 	/**
@@ -226,7 +209,7 @@ trait File_Busting {
 			return false;
 		}
 
-		return \sprintf( $this->filename, $version );
+		return sprintf( $this->filename_pattern, $version );
 	}
 
 	/**
@@ -253,16 +236,12 @@ trait File_Busting {
 	 *
 	 * @since  3.2.4
 	 * @access private
-	 * @author Grégory Viguier
 	 *
-	 * @param  string $file_name The file name.
+	 * @param  string $filename_pattern The file name.
 	 * @return string
 	 */
-	private function escape_file_name( $file_name ) {
-		$file_name = \explode( '%s', $file_name );
-		$file_name = \array_map( 'preg_quote', $file_name );
-
-		return \implode( '%s', $file_name );
+	private function escape_file_name( $filename_pattern ) {
+		return preg_quote( $filename_pattern, '/' );
 	}
 
 	/**
@@ -326,7 +305,7 @@ trait File_Busting {
 			return false;
 		}
 
-		if ( ! \rocket_put_content( $file_path, $file_contents ) ) {
+		if ( ! rocket_put_content( $file_path, $file_contents ) ) {
 			Logger::error(
 				'Contents could not be written into file.',
 				[
@@ -351,7 +330,7 @@ trait File_Busting {
 	 */
 	private function is_busting_dir_writable() {
 		if ( ! $this->filesystem->exists( $this->busting_path ) ) {
-			\rocket_mkdir_p( $this->busting_path );
+			rocket_mkdir_p( $this->busting_path );
 		}
 
 		if ( ! $this->filesystem->is_writable( $this->busting_path ) ) {
@@ -455,8 +434,8 @@ trait File_Busting {
 	 */
 	private function get_remote_contents( $url ) {
 		try {
-			$response = \wp_remote_get( $url );
-		} catch ( \Exception $e ) {
+			$response = wp_remote_get( $url );
+		} catch ( Exception $e ) {
 			Logger::error(
 				'Remote file could not be fetched.',
 				[
@@ -468,7 +447,7 @@ trait File_Busting {
 			return false;
 		}
 
-		if ( \is_wp_error( $response ) ) {
+		if ( is_wp_error( $response ) ) {
 			Logger::error(
 				'Remote file could not be fetched.',
 				[
@@ -480,7 +459,7 @@ trait File_Busting {
 			return false;
 		}
 
-		$contents = \wp_remote_retrieve_body( $response );
+		$contents = wp_remote_retrieve_body( $response );
 
 		if ( ! $contents ) {
 			Logger::error(

@@ -14,20 +14,12 @@ if ( rocket_is_plugin_active( 'sg-cachepress/sg-cachepress.php' ) ) {
 	require WP_ROCKET_3RD_PARTY_PATH . 'hosting/siteground.php';
 }
 
-if ( class_exists( '\\Savvii\\CacheFlusherPlugin' ) & class_exists( '\\Savvii\\Options' ) ) {
-	require WP_ROCKET_3RD_PARTY_PATH . 'hosting/savvii.php';
-}
-
 if ( class_exists( 'WPaaS\Plugin' ) ) {
 	require WP_ROCKET_3RD_PARTY_PATH . 'hosting/godaddy.php';
 }
 
 if ( isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
 	require WP_ROCKET_3RD_PARTY_PATH . 'hosting/kinsta.php';
-}
-
-if ( defined( 'O2SWITCH_VARNISH_PURGE_KEY' ) ) {
-	require WP_ROCKET_3RD_PARTY_PATH . 'hosting/o2switch.php';
 }
 
 if ( defined( 'PL_INSTANCE_REF' ) && class_exists( '\Presslabs\Cache\CacheHandler' ) && file_exists( WP_CONTENT_DIR . '/advanced-cache.php' ) ) {

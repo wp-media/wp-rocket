@@ -68,7 +68,7 @@ class Deactivation {
 		// Delete config files.
 		rocket_delete_config_file();
 
-		$sites_number = count( glob( WP_ROCKET_CONFIG_PATH . '*.php' ) );
+		$sites_number = count( _rocket_get_php_files_in_dir( rocket_get_constant( 'WP_ROCKET_CONFIG_PATH' ) ) );
 
 		if ( ! $sites_number ) {
 			// Delete All WP Rocket rules of the .htaccess file.
