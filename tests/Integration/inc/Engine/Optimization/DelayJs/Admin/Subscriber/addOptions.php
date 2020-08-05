@@ -17,10 +17,22 @@ class Test_AddOptions extends TestCase{
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldDoExpected( $input, $expected ){
+	public function testShouldDoExpectedForFirstInstallOptions( $input, $expected ){
 		$options  = isset( $input['options'] )  ? $input['options']  : [];
 
 		$actual = apply_filters( 'rocket_first_install_options', $options );
+
+		$this->assertSame( $expected, $actual );
+
+	}
+
+	/**
+	 * @dataProvider configTestData
+	 */
+	public function testShouldDoExpectedForSafeModeResetOptions( $input, $expected ){
+		$options  = isset( $input['options'] )  ? $input['options']  : [];
+
+		$actual = apply_filters( 'rocket_safe_mode_reset_options', $options );
 
 		$this->assertSame( $expected, $actual );
 
