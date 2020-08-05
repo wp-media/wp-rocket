@@ -18,6 +18,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	protected $provides = [
 		'preload_links_admin_subscriber',
+		'preload_links_subscriber',
 	];
 
 	/**
@@ -27,5 +28,8 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	public function register() {
 		$this->getContainer()->share( 'preload_links_admin_subscriber', 'WP_Rocket\Engine\Preload\Links\AdminSubscriber' );
+		$this->getContainer()->share( 'preload_links_subscriber', 'WP_Rocket\Engine\Preload\Links\Subscriber' )
+		->withArgument( $this->getContainer()->get( 'options' ) )
+		->withArgument( rocket_direct_filesystem() );
 	}
 }
