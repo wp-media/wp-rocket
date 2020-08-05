@@ -6,12 +6,27 @@ use WP_Rocket\Abstract_Render;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class Subscriber extends Abstract_Render implements Subscriber_Interface {
+	/**
+	 * Settings instance
+	 *
+	 * @var Settings
+	 */
 	private $settings;
 
+	/**
+	 * Instantiate the class
+	 *
+	 * @param Settings $settings Settings instance.
+	 */
 	public function __construct( Settings $settings ) {
 		$this->settings = $settings;
 	}
 
+	/**
+	 * Return an array of events that this subscriber listens to.
+	 *
+	 * @return array
+	 */
 	public static function get_subscribed_events() {
 		return [
 			'rocket_first_install_options'                 => 'add_options',
@@ -22,10 +37,26 @@ class Subscriber extends Abstract_Render implements Subscriber_Interface {
 		];
 	}
 
+	/**
+	 * Add the delay JS options to the WP Rocket options array
+	 *
+	 * @since 3.7
+	 *
+	 * @param array $options WP Rocket options array.
+	 *
+	 * @return array
+	 */
 	public function add_options( $options ) {
-		$this->settings->add_options( $options );
+		return $this->settings->add_options( $options );
 	}
 
+	/**
+	 * Displays the restore defaults button under the textarea field
+	 *
+	 * @since 3.7
+	 *
+	 * @return void
+	 */
 	public function display_restore_defaults_button() {
 		$data = $this->settings->get_button_data();
 
@@ -36,17 +67,37 @@ class Subscriber extends Abstract_Render implements Subscriber_Interface {
 		);
 	}
 
+	/**
+	 * Sets the delay_js option to zero when updating to 3.7
+	 *
+	 * @since 3.7
+	 *
+	 * @param string $old_version Previous plugin version.
+	 *
+	 * @return void
+	 */
 	public function set_option_on_update( $new_version, $old_version ) {
 		$this->settings->set_option_on_update( $old_version );
 	}
 
+	/**
+	 * AJAX callback to restore the default value for the delay JS scripts
+	 *
+	 * @since 3.7
+	 *
+	 * @return void
+	 */
 	public function restore_defaults() {
+		check_ajax_referer( 'rocket-ajax', 'nonce', true );
+
 		$result = $this->settings->restore_defaults();
 
 		if ( $result ) {
 			wp_send_json_success();
+			return;
 		}
 
 		wp_send_json_error();
+		return;
 	}
 }

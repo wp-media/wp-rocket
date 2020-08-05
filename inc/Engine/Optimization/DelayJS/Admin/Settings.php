@@ -5,6 +5,11 @@ namespace WP_Rocket\Engine\Optimization\DelayJS\Admin;
 use WP_Rocket\Admin\Options_Data;
 
 class Settings {
+	/**
+	 * Array of defaults scripts to delay
+	 *
+	 * @var array
+	 */
 	private $defaults = [];
 
 	/**
@@ -23,6 +28,15 @@ class Settings {
 		$this->options = $options;
 	}
 
+	/**
+	 * Add the delay JS options to the WP Rocket options array
+	 *
+	 * @since 3.7
+	 *
+	 * @param array $options WP Rocket options array.
+	 *
+	 * @return array
+	 */
 	public function add_options( $options ) {
 		$options = (array) $options;
 
@@ -32,6 +46,13 @@ class Settings {
 		return $options;
 	}
 
+	/**
+	 * Gets the data to populate the view for the restore defaults button
+	 *
+	 * @since 3.7
+	 *
+	 * @return array
+	 */
 	public function get_button_data() {
 		return [
 			'type'       => 'button',
@@ -45,6 +66,15 @@ class Settings {
 		];
 	}
 
+	/**
+	 * Sets the delay_js option to zero when updating to 3.7
+	 *
+	 * @since 3.7
+	 *
+	 * @param string $old_version Previous plugin version.
+	 *
+	 * @return void
+	 */
 	public function set_option_on_update( $old_version ) {
 		if ( version_compare( $old_version, '3.7', '>' ) ) {
 			return;
@@ -55,9 +85,14 @@ class Settings {
 		update_option( 'wp_rocket_settings', $this->options->get_options() );
 	}
 
+	/**
+	 * Restores the delay_js_scripts option to the default value
+	 *
+	 * @since 3.7
+	 *
+	 * @return bool
+	 */
 	public function restore_defaults() {
-		check_ajax_referer( 'rocket-ajax', 'nonce', true );
-
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			return false;
 		}
