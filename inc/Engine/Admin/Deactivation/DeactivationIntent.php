@@ -25,7 +25,6 @@ class DeactivationIntent implements Subscriber_Interface {
 	/**
 	 * Options instance.
 	 *
-	 *
 	 * @var Options
 	 */
 	private $options_api;

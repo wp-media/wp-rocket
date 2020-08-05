@@ -40,7 +40,7 @@ defined( 'ABSPATH' ) || exit;
 	<?php
 		/**
 		 * Fires after the display of a textarea field on WP Rocket settings page
-		 * 
+		 *
 		 * The dynamic portion of the name corresponds to the field ID
 		 *
 		 * @since 3.7
