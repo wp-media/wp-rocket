@@ -1,15 +1,16 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\DelayJs\Admin\Settings;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\DelayJs\Admin\Subscriber;
 
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings;
+use WP_Rocket\Engine\Optimization\DelayJS\Admin\Subscriber;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings::restore_defaults
+ * @covers \WP_Rocket\Engine\Optimization\DelayJS\Admin\Subscriber::restore_defaults
  *
  * @group  DelayJs
  */
@@ -23,6 +24,9 @@ class Test_RestoreDefaults extends TestCase{
 
 		$options_data = Mockery::mock( Options_Data::class );
 		$settings = new Settings( $options_data );
+		$subscriber = new Subscriber($settings, '');
+
+		Functions\when( 'check_ajax_referer' )->justReturn( true );
 
 		if ( $capabilities ) {
 			foreach ( $capabilities as $capability ){
@@ -32,13 +36,15 @@ class Test_RestoreDefaults extends TestCase{
 			Functions\when( 'current_user_can' )->justReturn( false );
 		}
 
-		$actual = $settings->restore_defaults();
-
 		if ( $restored ){
-			$this->assertSame('', $actual);
+			Functions\expect( 'wp_send_json_success' )->with( '' )->once();
+			Functions\expect( 'wp_send_json_error' )->never();
 		}else{
-			$this->assertFalse( $actual );
+			Functions\expect( 'wp_send_json_error' )->once();
+			Functions\expect( 'wp_send_json_success' )->never();
 		}
+
+		$subscriber->restore_defaults();
 
 	}
 
