@@ -52,6 +52,7 @@ function rocket_init() {
 	require WP_ROCKET_FUNCTIONS_PATH . 'posts.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'admin.php';
 	require WP_ROCKET_INC_PATH . '/API/preload.php';
+	require WP_ROCKET_INC_PATH . '/API/bypass.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'formatting.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'i18n.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'htaccess.php';
@@ -64,8 +65,6 @@ function rocket_init() {
 	require WP_ROCKET_DEPRECATED_PATH . '3.7.php';
 	require WP_ROCKET_3RD_PARTY_PATH . '3rd-party.php';
 	require WP_ROCKET_COMMON_PATH . 'admin-bar.php';
-	require WP_ROCKET_COMMON_PATH . 'emoji.php';
-	require WP_ROCKET_COMMON_PATH . 'embeds.php';
 
 	if ( rocket_valid_key() ) {
 		require WP_ROCKET_COMMON_PATH . 'purge.php';
@@ -108,3 +107,4 @@ add_action( 'plugins_loaded', 'rocket_init' );
 
 register_deactivation_hook( WP_ROCKET_FILE, [ 'WP_Rocket\Engine\Deactivation\Deactivation', 'deactivate_plugin' ] );
 register_activation_hook( WP_ROCKET_FILE, [ 'WP_Rocket\Engine\Activation\Activation', 'activate_plugin' ] );
+

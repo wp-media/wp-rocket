@@ -24,6 +24,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		'lazyload_image',
 		'lazyload_iframe',
 		'lazyload_subscriber',
+		'embeds_subscriber',
+		'emojis_subscriber',
 	];
 
 	/**
@@ -34,13 +36,19 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
+		$options = $this->getContainer()->get( 'options' );
+
 		$this->getContainer()->add( 'lazyload_assets', 'RocketLazyload\Assets' );
 		$this->getContainer()->add( 'lazyload_image', 'RocketLazyload\Image' );
 		$this->getContainer()->add( 'lazyload_iframe', 'RocketLazyload\Iframe' );
 		$this->getContainer()->share( 'lazyload_subscriber', 'WP_Rocket\Engine\Media\LazyloadSubscriber' )
-			->withArgument( $this->getContainer()->get( 'options' ) )
+			->withArgument( $options )
 			->withArgument( $this->getContainer()->get( 'lazyload_assets' ) )
 			->withArgument( $this->getContainer()->get( 'lazyload_image' ) )
 			->withArgument( $this->getContainer()->get( 'lazyload_iframe' ) );
+		$this->getContainer()->share( 'embeds_subscriber', 'WP_Rocket\Engine\Media\Embeds\EmbedsSubscriber' )
+			->withArgument( $options );
+		$this->getContainer()->share( 'emojis_subscriber', 'WP_Rocket\Engine\Media\Emojis\EmojisSubscriber' )
+			->withArgument( $options );
 	}
 }

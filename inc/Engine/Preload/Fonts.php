@@ -79,6 +79,10 @@ class Fonts implements Subscriber_Interface {
 	 * @since 3.6
 	 */
 	public function preload_fonts() {
+		if ( rocket_bypass() ) {
+			return;
+		}
+
 		$fonts = $this->options->get( 'preload_fonts', [] );
 		/**
 		 * Filters the list of fonts to preload

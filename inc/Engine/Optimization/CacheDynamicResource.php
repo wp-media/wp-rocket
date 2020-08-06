@@ -187,6 +187,10 @@ class CacheDynamicResource extends AbstractOptimization implements Subscriber_In
 	public function is_allowed() {
 		global $pagenow;
 
+		if ( rocket_bypass() ) {
+			return false;
+		}
+
 		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
 			return false;
 		}
