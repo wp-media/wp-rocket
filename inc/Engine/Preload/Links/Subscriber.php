@@ -56,6 +56,7 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		// Register handle with no src to add the inline script after.
+		// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NoExplicitVersion
 		wp_register_script(
 			'rocket-preload-links',
 			'',
