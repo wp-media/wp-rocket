@@ -41,7 +41,7 @@ class Test_AddPreloadScript extends TestCase {
 
 		do_action( 'wp_enqueue_scripts' );
 
-		if ( ! $expected ) {
+		if ( false === $expected ) {
 			$this->assertFalse( wp_script_is( 'rocket-preload-links' ) );
 		} else {
 			$this->assertTrue( wp_script_is( 'rocket-preload-links' ) );
