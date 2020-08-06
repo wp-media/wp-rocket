@@ -33,19 +33,13 @@ class Test_RestoreDefaults extends TestCase{
 			Functions\when( 'current_user_can' )->justReturn( false );
 		}
 
-		if ( $restored ) {
-			foreach ( $options as $option => $option_value ) {
-				$options_data->shouldReceive( 'set' )->with( $option, $option_value )->once();
-			}
+		$actual = $settings->restore_defaults();
 
-			$options_data->shouldReceive('get_options')->once()->andReturn( $options );
-			Functions\expect( 'update_option' )->with( 'wp_rocket_settings', $options )->once();
-		} else {
-			$options_data->shouldReceive('get_options')->never();
-			Functions\expect( 'update_option' )->with( 'wp_rocket_settings', $options )->never();
+		if ( $restored ){
+			$this->assertSame('', $actual);
+		}else{
+			$this->assertFalse( $actual );
 		}
-
-		$settings->restore_defaults();
 
 	}
 
