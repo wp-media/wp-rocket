@@ -17,6 +17,13 @@ use Brain\Monkey\Functions;
  */
 class Test_SetOptionOnUpdate extends TestCase{
 
+	public function tearDown() {
+		parent::tearDown();
+
+		$options = new \WP_Rocket\Admin\Options( 'wp_rocket_' );
+		$options->set( 'settings', null );
+	}
+
 	/**
 	 * @dataProvider configTestData
 	 */
