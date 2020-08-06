@@ -96,7 +96,7 @@ class Subscriber extends Abstract_Render implements Subscriber_Interface {
 
 		$result = $this->settings->restore_defaults();
 
-		if ( ! $result ) {
+		if ( false === $result ) {
 			wp_send_json_error();
 			return;
 		}
