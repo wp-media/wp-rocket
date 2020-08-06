@@ -68,7 +68,7 @@ function compile(watch) {
         });
     }
 
-    rebundle(); 
+    rebundle();
 }
 
 function watch() {
@@ -83,3 +83,27 @@ gulp.task('watch', function () {
 });
 
 gulp.task('default', ['watch', 'sass', 'sass:watch']);
+
+
+/**
+ * Compiles a standalone script file.
+ *
+ * Command line: gulp js:compile_single --script=script-name.js
+ */
+gulp.task('js:compile_single', () => {
+	const {argv} = require("yargs");
+	const transpile = require('gulp-babel');
+	const source = './assets/js/' + argv.script;
+
+	return gulp.src( source )
+		// Transpile newer JS for cross-browser support.
+		.pipe( transpile({
+			presets: ["es2015"]
+		}))
+		// Minify the script.
+		.pipe( uglify() )
+		// Rename the .js to .min.js.
+		.pipe( rename( { suffix: '.min' } ) )
+		// Write out the script to the configured <filename>.min.js destination.
+		.pipe( gulp.dest( './assets/js/' ) );
+});
