@@ -204,7 +204,7 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 			return false;
 		}
 
-		$file_content = $this->is_external_file( $url ) ? $this->local_cache->get_content( $url ) : $this->get_file_content( $file_path );
+		$file_content = $this->is_external_file( $url ) ? $this->local_cache->get_content( rocket_add_url_protocol( $url ) ) : $this->get_file_content( $file_path );
 
 		if ( empty( $file_content ) ) {
 			Logger::error(
