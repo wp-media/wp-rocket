@@ -97,6 +97,10 @@ class Subscriber implements Subscriber_Interface {
 	 * @since 3.1
 	 */
 	protected function is_allowed() {
+		if ( rocket_bypass() ) {
+			return false;
+		}
+
 		return (bool) $this->options->get( 'minify_google_fonts', 0 );
 	}
 }
