@@ -10,6 +10,10 @@ use WP_Rocket\Tests\Unit\inc\Engine\Optimization\TestCase;
 /**
  * @covers \WP_Rocket\Engine\Optimization\Minify\CSS\Minify::optimize
  *
+ * @uses \WP_Rocket\Logger\Logger::info()
+ * @uses \WP_Rocket\Logger\Logger::debug()
+ * @uses \WP_Rocket\Logger\Logger::error()
+
  * @group  Optimize
  * @group  MinifyCSS
  * @group  Minify
@@ -33,7 +37,7 @@ class Test_Optimize extends TestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldMinifyCSS( $original, $expected, $cdn_host, $cdn_url, $site_url ) {
+	public function testShouldMinifyCSS( $original, $expected, $cdn_host, $cdn_url, $site_url, $external_url ) {
 		Filters\expectApplied( 'rocket_cdn_hosts' )
 			->zeroOrMoreTimes()
 			->with( [], [ 'all', 'css_and_js', 'css' ] )
@@ -50,6 +54,22 @@ class Test_Optimize extends TestCase {
 			->andReturnUsing( function( $url, $original_url ) use ( $cdn_url ) {
 				return str_replace( 'http://example.org', $cdn_url, $url );
 			} );
+
+		$this->local_cache
+			->shouldReceive( 'get_filepath' )
+			->zeroOrMoreTimes()
+			->with( $external_url )
+			->andReturnUsing(function () use ($external_url) {
+				$url_parts = parse_url($external_url);
+				return'wp-content/cache/min/3rd-party/' .
+					  $url_parts['host'] . str_replace( '/', '-', $url_parts['path'] );
+			});
+
+		$this->local_cache
+			->shouldReceive( 'get_content' )
+			->zeroOrMoreTimes()
+			->with( $external_url )
+			->andReturn( 'external css content');
 
 		$this->assertSame(
 			$this->format_the_html( $expected['html'] ),

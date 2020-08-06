@@ -579,16 +579,20 @@ JS;
 	 */
 	protected function return_remove_cpcss_script() {
 		if ( ! rocket_get_constant( 'SCRIPT_DEBUG' ) ) {
-			return '<script>const wprRemoveCPCSS = () => { $elem = document.getElementById( "rocket-critical-css" ); if ( $elem ) { $elem.remove(); } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>';
+			return '<script>const wprRemoveCPCSS = () => { if( document.querySelector("link[data-rocket-async=\'style\'][rel=\'preload\']") ){ setTimeout(wprRemoveCPCSS, 200); }else{ $elem = document.getElementById( "rocket-critical-css" );if ( $elem ) {$elem.remove();} } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>';
 		}
 
 		return '
 			<script>
 				const wprRemoveCPCSS = () => {
-					$elem = document.getElementById( "rocket-critical-css" );
-					if ( $elem ) {
-						$elem.remove();
-					}
+				    if( document.querySelector("link[data-rocket-async=\'style\'][rel=\'preload\']") ){
+				        setTimeout(wprRemoveCPCSS, 200);
+				    }else{
+				        $elem = document.getElementById( "rocket-critical-css" );
+						if ( $elem ) {
+							$elem.remove();
+						}
+				    }
 				};
 				if ( window.addEventListener ) {
 					window.addEventListener( "load", wprRemoveCPCSS );
@@ -668,7 +672,7 @@ JS;
 			}
 
 			$preload = str_replace( 'stylesheet', 'preload', $tags_match[1][ $i ] );
-			$onload  = preg_replace( '~' . preg_quote( $tags_match[3][ $i ], '~' ) . '~iU', ' as="style" onload=""' . $tags_match[3][ $i ] . '>', $tags_match[3][ $i ] );
+			$onload  = preg_replace( '~' . preg_quote( $tags_match[3][ $i ], '~' ) . '~iU', ' data-rocket-async="style" as="style" onload=""' . $tags_match[3][ $i ] . '>', $tags_match[3][ $i ] );
 			$tag     = str_replace( $tags_match[3][ $i ] . '>', $onload, $tag );
 			$tag     = str_replace( $tags_match[1][ $i ], $preload, $tag );
 			$tag     = str_replace( 'onload=""', 'onload="this.onload=null;this.rel=\'stylesheet\'"', $tag );

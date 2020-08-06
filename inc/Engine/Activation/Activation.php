@@ -3,6 +3,7 @@
 namespace WP_Rocket\Engine\Activation;
 
 use League\Container\Container;
+use WP_Rocket\ThirdParty\Hostings\HostResolver;
 
 /**
  * Plugin activation controller
@@ -19,7 +20,6 @@ class Activation {
 		'advanced_cache',
 		'capabilities_manager',
 		'wp_cache',
-		'wpengine',
 	];
 
 	/**
@@ -32,6 +32,13 @@ class Activation {
 
 		$container->add( 'template_path', WP_ROCKET_PATH . 'views' );
 		$container->addServiceProvider( 'WP_Rocket\Engine\Activation\ServiceProvider' );
+		$container->addServiceProvider( 'WP_Rocket\ThirdParty\Hostings\ServiceProvider' );
+
+		$host_type = HostResolver::get_host_service();
+
+		if ( ! empty( $host_type ) ) {
+			array_unshift( self::$activators, $host_type );
+		}
 
 		foreach ( self::$activators as $activator ) {
 			$container->get( $activator );
@@ -53,12 +60,9 @@ class Activation {
 		if ( class_exists( 'WPaaS\Plugin' ) ) {
 			require WP_ROCKET_3RD_PARTY_PATH . 'hosting/godaddy.php';
 		}
-		if ( defined( 'O2SWITCH_VARNISH_PURGE_KEY' ) ) {
-			require WP_ROCKET_3RD_PARTY_PATH . 'hosting/o2switch.php';
-		}
 
 		/**
-		 * WP Rocket activation.
+		 * WP Rocket activation.
 		 *
 		 * @since  3.1.5
 		 */
