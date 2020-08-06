@@ -34,7 +34,7 @@ class Subscriber extends Abstract_Render implements Subscriber_Interface {
 		return [
 			'rocket_first_install_options'                 => 'add_options',
 			'rocket_after_textarea_field_delay_js_scripts' => 'display_restore_defaults_button',
-			'wp_rocket_upgrade'                            => [ 'set_option_on_update', 12, 2 ],
+			'wp_rocket_upgrade'                            => [ 'set_option_on_update', 11, 2 ],
 			'wp_ajax_rocket_restore_delay_js_defaults'     => 'restore_defaults',
 			'rocket_safe_mode_reset_options'               => 'add_options',
 		];

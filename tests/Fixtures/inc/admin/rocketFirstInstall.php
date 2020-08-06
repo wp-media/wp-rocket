@@ -76,8 +76,7 @@ $default = [
 
 $integration = $default;
 $integration[ 'async_css_mobile' ] = 1;
-$integration[ 'preload_links' ]    = 0;
-$integration[ 'delay_js' ]         = 0;
+$integration[ 'delay_js' ]         = 1;
 $integration[ 'delay_js_scripts' ] = [];
 
 return [
