@@ -84,7 +84,7 @@ class HTML {
 	 */
 	private function parse( $html ) {
 		$regex_pattern = '<script\s*(?<attr>[^>]*)?>(?<content>.*)?<\/script>';
-		return preg_replace_callback( '/' . $regex_pattern . '/si', [ $this, 'replace_scripts' ], $html );
+		return preg_replace_callback( '/' . $regex_pattern . '/Uis', [ $this, 'replace_scripts' ], $html );
 	}
 
 	/**
@@ -95,10 +95,16 @@ class HTML {
 	 * @return string
 	 */
 	public function replace_scripts( $matches ) {
-		if ( ! empty( $this->allowed_scripts ) ) {
-			if ( ! preg_match( '#^(' . $this->allowed_scripts . ')$#', $matches[0] ) ) {
-				return $matches[0];
-			}
+		if (
+			empty( $this->allowed_scripts )
+			||
+			(
+				! empty( $this->allowed_scripts )
+				&&
+				! preg_match( '#(' . $this->allowed_scripts . ')#', $matches[0] )
+			)
+		) {
+			return $matches[0];
 		}
 
 		$src = '';
@@ -115,7 +121,7 @@ class HTML {
 		}else {
 			// Get the JS content.
 			if ( ! empty( $matches['content'] ) ) {
-				$src = base64_encode( $matches['content'] );
+				$src = base64_encode( $matches['content'] );// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 
 				// Remove the JS content.
 				$matches[0] = str_replace( $matches['content'], '', $matches[0] );
@@ -126,7 +132,7 @@ class HTML {
 			return $matches[0];
 		}
 
-		return str_replace( '<script ', "<script data-rocketlazyloadscript='{$src}' ", $matches[0] );
+		return str_replace( '<script', "<script data-rocketlazyloadscript='{$src}'", $matches[0] );
 	}
 
 	/**
@@ -151,7 +157,7 @@ class HTML {
 		}
 
 		foreach ( $delay_js_scripts as $i => $delay_js_script ) {
-			$delay_js_scripts[ $i ] = str_replace( '#', '\#', $delay_js_script );
+			$delay_js_scripts[ $i ] = preg_quote( str_replace( '#', '\#', $delay_js_script ), '#' );
 		}
 
 		return implode( '|', $delay_js_scripts );
