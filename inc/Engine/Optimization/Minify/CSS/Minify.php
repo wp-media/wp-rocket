@@ -103,6 +103,8 @@ class Minify extends AbstractCSSOptimization implements ProcessorInterface {
 			return false;
 		}
 
+		$url = rocket_add_url_protocol( $url );
+
 		// This filter is documented in /inc/classes/optimization/class-abstract-optimization.php.
 		$url           = apply_filters( 'rocket_asset_url', $url, $this->get_zones() );
 		$unique_id     = md5( $url . $this->minify_key );
@@ -121,7 +123,8 @@ class Minify extends AbstractCSSOptimization implements ProcessorInterface {
 			return $minify_url;
 		}
 
-		$file_path = $this->is_external_file( $url ) ? $this->local_cache->get_filepath( $url ) : $this->get_file_path( $url );
+		$external_url = $this->is_external_file( $url );
+		$file_path    = $external_url ? $this->local_cache->get_filepath( $url ) : $this->get_file_path( $url );
 
 		if ( empty( $file_path ) ) {
 			Logger::error(
@@ -134,7 +137,7 @@ class Minify extends AbstractCSSOptimization implements ProcessorInterface {
 			return false;
 		}
 
-		$file_content = $this->is_external_file( $url ) ? $this->local_cache->get_content( rocket_add_url_protocol( $url ) ) : $this->get_file_content( $file_path );
+		$file_content = $external_url ? $this->local_cache->get_content(  $url ) : $this->get_file_content( $file_path );
 
 		if ( ! $file_content ) {
 			Logger::error(
@@ -147,7 +150,7 @@ class Minify extends AbstractCSSOptimization implements ProcessorInterface {
 			return false;
 		}
 
-		$minified_content = $this->minify( $file_path, $minified_file, $file_content );
+		$minified_content = $external_url ? $this->minify( $url, $minified_file, $file_content ) : $this->minify( $file_path, $minified_file, $file_content );
 
 		if ( empty( $minified_content ) ) {
 			return false;
