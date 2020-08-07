@@ -127,7 +127,7 @@ $(document).ready(function(){
             },
 			function(response) {
 				if ( response.success ) {
-					// Hide Mobile CPCSS btn on success.
+					// Fill the textarea with the returned data on success.
 					$('#delay_js_scripts').val(response.data);
 				}
 			}
