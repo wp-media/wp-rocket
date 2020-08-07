@@ -159,6 +159,7 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 	private function get_excluded_externals() {
 		$excluded_externals = [
 			'google-analytics.com/analytics.js',
+			'a.omappapi.com/app/js/api.min.js',
 		];
 
 		return array_merge( $excluded_externals, $this->options->get( 'exclude_js', [] ) );
