@@ -102,7 +102,6 @@ class Settings {
 	 * A setting section is a block containing settings fields.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @param array $settings_sections {
 	 *      Data to build the section.
@@ -127,7 +126,6 @@ class Settings {
 	 * Adds settings fields to the settings.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @param array $settings_fields {
 	 *      Data to build the section.
@@ -153,7 +151,6 @@ class Settings {
 	 * Adds hidden settings fields to the settings.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @param array $hidden_settings_fields {
 	 *      Data to build the section.
@@ -177,7 +174,6 @@ class Settings {
 	 * Returns the plugin settings
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @return array
 	 */
@@ -189,7 +185,6 @@ class Settings {
 	 * Returns the plugin hidden settings
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @return array
 	 */
@@ -201,7 +196,6 @@ class Settings {
 	 * Sanitizes the submitted values.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @param array $input Array of values submitted by the form.
 	 * @return array
@@ -229,6 +223,8 @@ class Settings {
 
 		$input['defer_all_js']      = ! empty( $input['defer_all_js'] ) ? 1 : 0;
 		$input['defer_all_js_safe'] = ! empty( $input['defer_all_js_safe'] ) ? 1 : 0;
+		$input['delay_js']          = $this->sanitize_checkbox( $input['delay_js'] );
+		$input['delay_js_scripts']  = ! empty( $input['delay_js_scripts'] ) ? rocket_sanitize_textarea_field( 'cdn_reject_files', $input['delay_js_scripts'] ) : [];
 
 		// If Defer JS is deactivated, set Safe Mode for Jquery to active.
 		if ( 0 === $input['defer_all_js'] ) {
@@ -505,7 +501,6 @@ class Settings {
 	 * Sanitizes the returned value of a checkbox
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @param mixed $value Checkbox value.
 	 * @return int
@@ -518,7 +513,6 @@ class Settings {
 	 * Sanitizes the DNS Prefetch sub-option value
 	 *
 	 * @since 3.5.1
-	 * @author Remy Perona
 	 *
 	 * @param array $input Array of values for the WP Rocket settings option.
 	 * @return array Sanitized array for the DNS Prefetch sub-option

@@ -171,6 +171,7 @@ function rocket_sanitize_textarea_field( $field, $value ) {
 		'exclude_css'          => [ 'rocket_clean_exclude_file', 'rocket_sanitize_css', 'rocket_clean_wildcards' ], // Pattern.
 		'exclude_inline_js'    => [ 'sanitize_text_field' ], // Pattern.
 		'exclude_js'           => [ 'rocket_validate_js', 'rocket_clean_wildcards' ], // Pattern.
+		'delay_js_scripts'     => [ 'rocket_validate_js' ],
 	];
 
 	if ( ! isset( $fields[ $field ] ) ) {
