@@ -121,7 +121,7 @@ class HTML {
 		}else {
 			// Get the JS content.
 			if ( ! empty( $matches['content'] ) ) {
-				$src = "data:text/javascript;base64,".base64_encode( $matches['content'] );// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
+				$src = 'data:text/javascript;base64,' . base64_encode( $matches['content'] );// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 
 				// Remove the JS content.
 				$matches[0] = str_replace( $matches['content'], '', $matches[0] );
