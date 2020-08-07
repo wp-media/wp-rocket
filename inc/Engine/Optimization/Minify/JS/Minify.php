@@ -31,7 +31,13 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 		foreach ( $scripts as $script ) {
 			global $wp_scripts;
 
-			if ( preg_match( '/[-.]min\.js/iU', $script['url'] ) ) {
+			$is_external_url = $this->is_external_file( $script['url'] );
+
+			if (
+				! $is_external_url
+				&&
+				preg_match( '/[-.]min\.js/iU', $script['url'] )
+			) {
 				Logger::debug(
 					'Script is already minified.',
 					[
@@ -43,7 +49,7 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 			}
 
 			if (
-				$this->is_external_file( $script['url'] )
+				$is_external_url
 				&&
 				$this->is_excluded_external( $script['url'] )
 			) {
