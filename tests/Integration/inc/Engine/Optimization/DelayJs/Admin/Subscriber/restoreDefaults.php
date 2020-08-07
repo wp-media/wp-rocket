@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\DelayJs\Admin\Subscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\DelayJS\Admin\Subscriber;
 
 use WP_Rocket\Tests\Integration\CapTrait;
 use WPMedia\PHPUnit\Integration\AjaxTestCase;
@@ -8,26 +8,33 @@ use WPMedia\PHPUnit\Integration\AjaxTestCase;
 /**
  * @covers \WP_Rocket\Engine\Optimization\DelayJS\Admin\Subscriber::restore_defaults
  *
- * @group  DelayJs
+ * @group  DelayJS
  */
-class Test_RestoreDefaults extends AjaxTestCase{
+class Test_RestoreDefaults extends AjaxTestCase {
 
 	protected $path_to_test_data = '/inc/Engine/Optimization/DelayJs/Admin/Subscriber/restoreDefaults.php';
 	protected $action = 'rocket_restore_delay_js_defaults';
 
+	public function setUp() {
+		parent::setUp();
+
+		CapTrait::hasAdminCapBeforeClass();
+		CapTrait::setAdminCap();
+	}
+
+	public function tearDown() {
+		parent::tearDown();
+
+		CapTrait::resetAdminCap();
+	}
+
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldDoExpected( $input, $restored ){
-		$capabilities = isset( $input['capabilities'] ) ? $input['capabilities'] : [] ;
-
-		if ( in_array('rocket_manage_options', $capabilities) ){
-			CapTrait::setAdminCap();
-
-			//create an editor user that has the capability
+	public function testShouldDoExpected( $result, $success ) {
+		if ( false !== $result ) {
 			$user_id = static::factory()->user->create( [ 'role' => 'administrator' ] );
 		}else{
-			//create an editor user that has no capability
 			$user_id = static::factory()->user->create( [ 'role' => 'editor' ] );
 		}
 
@@ -36,12 +43,15 @@ class Test_RestoreDefaults extends AjaxTestCase{
 		$_POST['nonce'] = wp_create_nonce( 'rocket-ajax' );
 		$actual = $this->callAjaxAction();
 
-		if ( $restored ){
+		if ( false !== $success ) {
 			$this->assertTrue( $actual->success );
+			$this->assertSame(
+				$result,
+				$actual->data
+			);
 		}else{
 			$this->assertFalse( $actual->success );
 		}
-
 	}
 
 	public function providerTestData() {
@@ -49,5 +59,4 @@ class Test_RestoreDefaults extends AjaxTestCase{
 
 		return $fixture;
 	}
-
 }
