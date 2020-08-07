@@ -285,6 +285,7 @@ class Combine extends AbstractCSSOptimization implements ProcessorInterface {
 				$file_content = $this->rewrite_paths( $filepath, $combined_file, $file_content );
 			} elseif ( 'external' === $style['type'] ) {
 				$file_content = $this->local_cache->get_content( rocket_add_url_protocol( $style['url'] ) );
+				$file_content = $this->rewrite_paths( $style['url'], $combined_file, $file_content );
 			}
 
 			if ( empty( $file_content ) ) {
