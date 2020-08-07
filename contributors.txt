@@ -9,6 +9,9 @@ Developers:
 	Ahmed Saeed <ahmed@wp-media.me>
 	Caspar Green <caspar.g@wp-media.me>
 
+QA:
+	David Acuna <david@wp-media.me>
+
 UX:
 	Caspar Hübinger
 	Thomas Geisen
