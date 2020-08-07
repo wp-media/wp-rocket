@@ -1,6 +1,5 @@
 <?php
 use WP_Rocket\Logger\Logger;
-use WP_Rocket\Subscriber\Plugin\Capabilities_Subscriber;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -359,10 +358,6 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		wp_clear_scheduled_hook( 'rocket_purge_time_event' );
 	}
 
-	if ( version_compare( $actual_version, '3.4.0.1', '<' ) ) {
-		( new Capabilities_Subscriber() )->add_rocket_capabilities();
-	}
-
 	if ( version_compare( $actual_version, '3.6', '<' ) ) {
 		rocket_clean_cache_busting();
 		rocket_clean_domain();
@@ -371,6 +366,10 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 
 	if ( version_compare( $actual_version, '3.6.1', '<' ) ) {
 		rocket_generate_config_file();
+	}
+
+	if ( version_compare( $actual_version, '3.7', '<' ) ) {
+		rocket_clean_minify( 'css' );
 	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );

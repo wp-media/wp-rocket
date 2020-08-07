@@ -81,6 +81,14 @@ tests_add_filter(
 			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/spinupwp/spinupwp.php';
 		}
 
+		if ( BootstrapManager::isGroup( 'O2Switch' ) ) {
+			define( 'O2SWITCH_VARNISH_PURGE_KEY', 'test' );
+		}
+
+		if ( BootstrapManager::isGroup( 'WordPressCom' ) ) {
+			define( 'WPCOMSH_VERSION', '1.0' );
+		}
+
 		if ( BootstrapManager::isGroup( 'PDFEmbedder' ) ) {
 			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/pdf-embedder/pdf_embedder.php';
 		}

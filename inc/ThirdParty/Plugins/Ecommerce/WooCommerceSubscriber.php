@@ -60,7 +60,6 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 			 * Filters activation of WooCommerce empty cart caching
 			 *
 			 * @since 3.1
-			 * @author Remy Perona
 			 *
 			 * @param bool true to activate, false to deactivate.
 			 */
@@ -279,7 +278,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 	 * @return void
 	 */
 	public function serve_cache_empty_cart() {
-		if ( ! $this->is_get_refreshed_fragments() ) {
+		if ( ! $this->is_get_refreshed_fragments() || rocket_bypass() ) {
 			return;
 		}
 
@@ -301,7 +300,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 	 * @return void
 	 */
 	public function cache_empty_cart() {
-		if ( ! $this->is_get_refreshed_fragments() ) {
+		if ( ! $this->is_get_refreshed_fragments() || rocket_bypass() ) {
 			return;
 		}
 

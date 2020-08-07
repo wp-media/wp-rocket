@@ -3,13 +3,15 @@
 namespace WP_Rocket\ThirdParty\Hostings;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\ThirdParty\NullSubscriber;
 
 /**
  * Compatibility class for Cloudways Varnish
  *
  * @since 3.5.5
  */
-class Cloudways implements Subscriber_Interface {
+class Cloudways extends NullSubscriber implements Subscriber_Interface {
+
 	/**
 	 * Array of events this subscriber wants to listen to.
 	 *
@@ -18,10 +20,6 @@ class Cloudways implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		if ( ! isset( $_SERVER['cw_allowed_ip'] ) ) {
-			return [];
-		}
-
 		return [
 			'rocket_display_input_varnish_auto_purge' => 'return_false',
 			'do_rocket_varnish_http_purge'            => 'should_purge',

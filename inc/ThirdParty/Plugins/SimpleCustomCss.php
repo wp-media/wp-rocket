@@ -1,6 +1,7 @@
 <?php
 namespace WP_Rocket\ThirdParty\Plugins;
 
+use WP_Rocket\Engine\Optimization\CSSTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
@@ -10,6 +11,8 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * @author Soponar Cristina
  */
 class SimpleCustomCss implements Subscriber_Interface {
+	use CSSTrait;
+
 	const FILENAME = 'sccss.css';
 
 	/**
@@ -103,6 +106,7 @@ class SimpleCustomCss implements Subscriber_Interface {
 		$raw_content = isset( $options['sccss-content'] ) ? $options['sccss-content'] : '';
 		$content     = wp_kses( $raw_content, [ '\'', '\"' ] );
 		$content     = str_replace( '&gt;', '>', $content );
+		$content     = $this->apply_font_display_swap( $content );
 
 		if ( ! rocket_direct_filesystem()->is_dir( $this->cache_busting_path ) ) {
 			rocket_mkdir_p( $this->cache_busting_path );
