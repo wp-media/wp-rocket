@@ -223,7 +223,7 @@ class Settings {
 
 		$input['defer_all_js']      = ! empty( $input['defer_all_js'] ) ? 1 : 0;
 		$input['defer_all_js_safe'] = ! empty( $input['defer_all_js_safe'] ) ? 1 : 0;
-		$input['delay_js']          = $this->sanitize_checkbox( $input['delay_js'] );
+		$input['delay_js']          = $this->sanitize_checkbox( $input, 'delay_js' );
 		$input['delay_js_scripts']  = ! empty( $input['delay_js_scripts'] ) ? rocket_sanitize_textarea_field( 'cdn_reject_files', $input['delay_js_scripts'] ) : [];
 
 		// If Defer JS is deactivated, set Safe Mode for Jquery to active.
@@ -502,11 +502,12 @@ class Settings {
 	 *
 	 * @since 3.0
 	 *
-	 * @param mixed $value Checkbox value.
+	 * @param array  $value Options array.
+	 * @param string $key   Array key to check.
 	 * @return int
 	 */
-	public function sanitize_checkbox( $value ) {
-		return isset( $value ) ? 1 : 0;
+	public function sanitize_checkbox( $array, $key ) {
+		return isset( $array[ $key ] ) ? 1 : 0;
 	}
 
 	/**
