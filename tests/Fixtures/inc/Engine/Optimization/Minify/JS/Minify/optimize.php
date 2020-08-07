@@ -46,6 +46,7 @@ EXPECTED_HTML
 			'cdn_host' => [],
 			'cdn_url'  => 'http://example.org',
 			'site_url' => 'http://example.org',
+			'external_url' => '',
 		],
 
 		'minifyJssFileAndAddCdnCname' => [
@@ -76,6 +77,7 @@ EXPECTED_HTML
 			'cdn_host' => [ '123456.rocketcdn.me' ],
 			'cdn_url'  => 'https://123456.rocketcdn.me',
 			'site_url' => 'http://example.org',
+			'external_url' => '',
 		],
 
 		'minifyJsFilesWithCdnUrl' => [
@@ -118,6 +120,7 @@ EXPECTED_HTML
 			'cdn_host' => [ '123456.rocketcdn.me' ],
 			'cdn_url'  => 'https://123456.rocketcdn.me',
 			'site_url' => 'http://example.org',
+			'external_url' => '',
 		],
 
 		'minifyJsFilesWithCdnUrlWithSubdir' => [
@@ -160,6 +163,44 @@ EXPECTED_HTML
 			'cdn_host' => [ '123456.rocketcdn.me/cdnpath' ],
 			'cdn_url'  => 'https://123456.rocketcdn.me/cdnpath',
 			'site_url' => 'http://example.org',
+			'external_url' => '',
+		],
+
+		'minifyJsFilesWithExternalUrl' => [
+			'original' => <<<ORIGINAL_HTML
+<html>
+	<head>
+		<title>Sample Page</title>
+		<script type="text/javascript" src="http://external-domain.org/path/to/external-script.js"></script>
+	</head>
+	<body>
+	</body>
+</html>
+ORIGINAL_HTML
+			,
+			'expected' => [
+				'html' => <<<EXPECTED_HTML
+<html>
+	<head>
+		<title>Sample Page</title>
+		<script data-minify="1" type="text/javascript" src="http://example.org/wp-content/cache/min/1/path/to/external-script-be0e316c7ba17da1873da5ede49f7ac9.js"></script>
+	</head>
+	<body>
+	</body>
+</html>
+EXPECTED_HTML
+				,
+
+				'files' => [
+					'wp-content/cache/min/1/path/to/external-script-be0e316c7ba17da1873da5ede49f7ac9.js',
+					'wp-content/cache/min/1/path/to/external-script-be0e316c7ba17da1873da5ede49f7ac9.js.gz',
+				],
+			],
+
+			'cdn_host' => [],
+			'cdn_url'  => 'http://example.org',
+			'site_url' => 'http://example.org',
+			'external_url' => 'http://external-domain.org/path/to/external-script.js',
 		],
 	],
 ];

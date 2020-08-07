@@ -44,7 +44,7 @@ trait CSSTrait {
 		 * @param string $source  Source filepath.
 		 * @param string $target  Target filepath.
 		 */
-		return apply_filters( 'rocket_css_content', $this->move( $this->get_converter( $source, $target ), $content ), $source, $target );
+		return apply_filters( 'rocket_css_content', $this->move( $this->get_converter( $source, $target ), $content, $source ), $source, $target );
 	}
 
 	/**
@@ -68,10 +68,11 @@ trait CSSTrait {
 	 *
 	 * @param ConverterInterface $converter Relative path converter.
 	 * @param string             $content   The CSS content to update relative urls for.
+	 * @param string             $source    The source path or URL for the CSS file.
 	 *
 	 * @return string
 	 */
-	protected function move( ConverterInterface $converter, $content ) {
+	protected function move( ConverterInterface $converter, $content, $source ) {
 		/*
 		 * Relative path references will usually be enclosed by url(). @import
 		 * is an exception, where url() is not necessary around the path (but is
@@ -153,7 +154,7 @@ trait CSSTrait {
 				$url    = $params ? substr( $url, 0, -strlen( $params ) ) : $url;
 
 				// fix relative url.
-				$url = $converter->convert( $url );
+				$url = filter_var( $source, FILTER_VALIDATE_URL ) ? dirname( $source ) . '/' . ltrim( $url, '/' ) : $converter->convert( $url );
 
 				// now that the path has been converted, re-apply GET-params.
 				$url .= $params;

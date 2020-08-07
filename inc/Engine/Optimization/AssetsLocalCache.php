@@ -77,7 +77,7 @@ class AssetsLocalCache {
 	 * @param string $url URL to get filepath for.
 	 * @return string
 	 */
-	protected function get_filepath( $url ) {
+	public function get_filepath( $url ) {
 		$parts = wp_parse_url( $url );
 
 		if ( empty( $parts['path'] ) ) {

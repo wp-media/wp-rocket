@@ -21,7 +21,8 @@ return [
 					<link rel="stylesheet" href="http://example.org/wp-content/plugins/hello-dolly/style.css">
 					<link rel="stylesheet" href="http://example.org/wp-includes/css/dashicons.min.css">
 					<link rel="stylesheet" href="http://example.org/wp-content/themes/twentytwenty/style-font-face.min.css">
-				</head>
+					<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		</head>
 				<body>
 				</body>
 			</html>',
@@ -34,6 +35,7 @@ return [
 						<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style-4a16b4cd55f600cc39947847baa15308.css">
 						<link rel="stylesheet" href="http://example.org/wp-includes/css/dashicons.min.css">
 						<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min-810497c120aacb0db0d64737badecd9c.css">
+						<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/font-awesome/4.7.0/css/font-awesome.min-8f298935317a465eea8c736e75f1b935.css">
 					</head>
 					<body>
 					</body>
@@ -45,6 +47,7 @@ return [
 					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/style-4a16b4cd55f600cc39947847baa15308.css.gz',
 					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min-810497c120aacb0db0d64737badecd9c.css',
 					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min-810497c120aacb0db0d64737badecd9c.css.gz',
+					'wp-content/cache/min/3rd-party/stackpath.bootstrapcdn.com-font-awesome-4.7.0-css-font-awesome.min.css',
 				],
 			],
 
