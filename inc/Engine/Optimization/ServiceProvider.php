@@ -31,6 +31,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		'minify_css_subscriber',
 		'minify_js_subscriber',
 		'dequeue_jquery_migrate_subscriber',
+		'delay_js_html',
+		'delay_js_subscriber',
 	];
 
 	/**
@@ -57,7 +59,8 @@ class ServiceProvider extends AbstractServiceProvider {
 			->withArgument( WP_ROCKET_CACHE_BUSTING_PATH )
 			->withArgument( WP_ROCKET_CACHE_BUSTING_URL );
 		$this->getContainer()->share( 'combine_google_fonts_subscriber', 'WP_Rocket\Engine\Optimization\GoogleFonts\Subscriber' )
-			->withArgument( $options );
+			 ->withArgument( $options );
+
 		$this->getContainer()->share( 'minify_css_subscriber', 'WP_Rocket\Engine\Optimization\Minify\CSS\Subscriber' )
 			->withArgument( $options );
 		$this->getContainer()->share( 'minify_js_subscriber', 'WP_Rocket\Engine\Optimization\Minify\JS\Subscriber' )
@@ -66,5 +69,10 @@ class ServiceProvider extends AbstractServiceProvider {
 			->withArgument( $options );
 
 		$this->getContainer()->share( 'ie_conditionals_subscriber', 'WP_Rocket\Engine\Optimization\IEConditionalSubscriber' );
+
+		$this->getContainer()->add( 'delay_js_html', 'WP_Rocket\Engine\Optimization\DelayJS\HTML' )
+			 ->withArgument( $options );
+		$this->getContainer()->share( 'delay_js_subscriber', 'WP_Rocket\Engine\Optimization\DelayJS\Subscriber' )
+			 ->withArgument( $this->getContainer()->get( 'delay_js_html' ) );
 	}
 }
