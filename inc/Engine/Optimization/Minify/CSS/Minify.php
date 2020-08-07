@@ -157,11 +157,6 @@ class Minify extends AbstractCSSOptimization implements ProcessorInterface {
 		}
 
 		$minified_content = $this->font_display_swap( $url, $minified_file, $minified_content );
-
-		if ( empty( $minified_content ) ) {
-			return false;
-		}
-
 		$save_minify_file = $this->save_minify_file( $minified_file, $minified_content );
 
 		if ( ! $save_minify_file ) {
@@ -250,7 +245,7 @@ class Minify extends AbstractCSSOptimization implements ProcessorInterface {
 					'path' => $minified_file,
 				]
 			);
-			return '';
+			return $content;
 		}
 
 		return $this->apply_font_display_swap( $content );
