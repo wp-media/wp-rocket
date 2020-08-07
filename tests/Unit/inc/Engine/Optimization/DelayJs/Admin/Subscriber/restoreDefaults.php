@@ -1,51 +1,45 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\DelayJs\Admin\Subscriber;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\DelayJS\Admin\Subscriber;
 
+use Brain\Monkey\Functions;
 use Mockery;
-use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\Subscriber;
 use WP_Rocket\Tests\Unit\TestCase;
-use Brain\Monkey\Functions;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\DelayJS\Admin\Subscriber::restore_defaults
  *
- * @group  DelayJs
+ * @group  DelayJS
  */
 class Test_RestoreDefaults extends TestCase{
-
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldDoExpected( $input, $restored ){
-		$capabilities = isset( $input['capabilities'] ) ? $input['capabilities'] : [] ;
-
-		$options_data = Mockery::mock( Options_Data::class );
-		$settings = new Settings( $options_data );
-		$subscriber = new Subscriber($settings, '');
+	public function testShouldDoExpected( $result, $success ) {
+		$settings   = Mockery::mock( Settings::class );
+		$subscriber = new Subscriber( $settings, '' );
 
 		Functions\when( 'check_ajax_referer' )->justReturn( true );
 
-		if ( $capabilities ) {
-			foreach ( $capabilities as $capability ){
-				Functions\expect( 'current_user_can' )->with( $capability )->andReturn( true );
-			}
-		} else {
-			Functions\when( 'current_user_can' )->justReturn( false );
-		}
+		$settings->shouldReceive( 'restore_defaults' )
+			->once()
+			->andReturn( $result );
 
-		if ( $restored ){
-			Functions\expect( 'wp_send_json_success' )->with( '' )->once();
-			Functions\expect( 'wp_send_json_error' )->never();
+		if ( $success ) {
+			Functions\expect( 'wp_send_json_success' )
+				->with( $result )
+				->once();
+			Functions\expect( 'wp_send_json_error' )
+				->never();
 		}else{
-			Functions\expect( 'wp_send_json_error' )->once();
-			Functions\expect( 'wp_send_json_success' )->never();
+			Functions\expect( 'wp_send_json_error' )
+				->once();
+			Functions\expect( 'wp_send_json_success' )
+				->never();
 		}
 
 		$subscriber->restore_defaults();
-
 	}
-
 }

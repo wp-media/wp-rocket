@@ -1,45 +1,35 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\DelayJs\Admin\Settings;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\DelayJS\Admin\Settings;
 
+use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings;
 use WP_Rocket\Tests\Unit\TestCase;
-use Brain\Monkey\Functions;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings::restore_defaults
  *
- * @group  DelayJs
+ * @group  DelayJS
  */
 class Test_RestoreDefaults extends TestCase{
-
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldDoExpected( $input, $restored ){
-		$capabilities = isset( $input['capabilities'] ) ? $input['capabilities'] : [] ;
+	public function testShouldDoExpected( $capability, $restored ) {
+		$settings = new Settings( Mockery::mock( Options_Data::class ) );
 
-		$options_data = Mockery::mock( Options_Data::class );
-		$settings = new Settings( $options_data );
-
-		if ( $capabilities ) {
-			foreach ( $capabilities as $capability ){
-				Functions\expect( 'current_user_can' )->with( $capability )->andReturn( true );
-			}
-		} else {
-			Functions\when( 'current_user_can' )->justReturn( false );
-		}
+		Functions\expect( 'current_user_can' )
+			->with( 'rocket_manage_options' )
+			->andReturn( $capability );
 
 		$actual = $settings->restore_defaults();
 
-		if ( $restored ){
-			$this->assertSame('', $actual);
-		}else{
+		if ( false !== $restored ) {
+			$this->assertSame( $restored, $actual );
+		} else {
 			$this->assertFalse( $actual );
 		}
-
 	}
-
 }

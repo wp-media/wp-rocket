@@ -1,21 +1,11 @@
 <?php
 return [
-	'shouldRestoreDefaults' => [
-		'input' => [
-			'capabilities' => [ 'rocket_manage_options' ],
-			'options' => [
-				'delay_js_scripts' => []
-			]
-		],
-		'restored' => true
+	'testShouldNotRestoreDefaultsWhenNoCapabilities' => [
+		'capability' => false,
+		'restored'   => false,
 	],
-	'shouldNotRestoreDefaults' => [
-		'input' => [
-			'capabilities' => [],
-			'options' => [
-				'delay_js_scripts' => []
-			]
-		],
-		'restored' => false
-	]
+	'testShouldRestoreDefaultsWhenCapabilities'      => [
+		'capability' => true,
+		'restored'   => '',
+	],
 ];
