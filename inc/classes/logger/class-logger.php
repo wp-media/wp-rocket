@@ -36,7 +36,7 @@ class Logger {
 	 * @since  3.1.4
 	 * @author Grégory Viguier
 	 */
-	const LOG_FILE_NAME = 'wp-rocket-debug.log';
+	const LOG_FILE_NAME = 'wp-rocket-debug.log.html';
 
 	/**
 	 * A unique ID given to the current thread.

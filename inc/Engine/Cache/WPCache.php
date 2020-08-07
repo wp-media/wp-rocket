@@ -2,7 +2,10 @@
 
 namespace WP_Rocket\Engine\Cache;
 
-class WPCache {
+use WP_Rocket\Engine\Activation\ActivationInterface;
+use WP_Rocket\Engine\Deactivation\DeactivationInterface;
+
+class WPCache implements ActivationInterface, DeactivationInterface {
 	/**
 	 * Filesystem instance.
 	 *
@@ -17,6 +20,73 @@ class WPCache {
 	 */
 	public function __construct( $filesystem ) {
 		$this->filesystem = $filesystem;
+	}
+
+	/**
+	 * Performs these actions during the plugin activation
+	 *
+	 * @return void
+	 */
+	public function activate() {
+		add_action( 'rocket_activation', [ $this, 'update_wp_cache' ] );
+	}
+
+	/**
+	 * Performs these actions during the plugin deactivation
+	 *
+	 * @return void
+	 */
+	public function deactivate() {
+		add_action( 'rocket_deactivation', [ $this, 'update_wp_cache' ] );
+		add_filter( 'rocket_prevent_deactivation', [ $this, 'maybe_prevent_deactivation' ] );
+	}
+
+	/**
+	 * Sets the WP_CACHE constant on (de)activation
+	 *
+	 * @since 3.6.3
+	 *
+	 * @param int $sites_number Number of WP Rocket config files found.
+	 * @return void
+	 */
+	public function update_wp_cache( $sites_number = 0 ) {
+		if ( ! rocket_valid_key() ) {
+			return;
+		}
+
+		$value = true;
+
+		if ( 'rocket_deactivation' === current_filter() ) {
+			if ( is_multisite() && 0 !== $sites_number ) {
+				return;
+			}
+
+			$value = false;
+		}
+
+		$this->set_wp_cache_constant( $value );
+	}
+
+	/**
+	 * Updates the causes array on deactivation if needed
+	 *
+	 * @since 3.6.3
+	 *
+	 * @param array $causes Array of causes to pass to the notice.
+	 */
+	public function maybe_prevent_deactivation( $causes ) {
+		if (
+			$this->find_wpconfig_path()
+			||
+			// This filter is documented in inc/Engine/Cache/WPCache.php.
+			! (bool) apply_filters( 'rocket_set_wp_cache_constant', true )
+		) {
+			return $causes;
+		}
+
+		$causes[] = 'wpconfig';
+
+		return $causes;
 	}
 
 	/**
@@ -115,10 +185,6 @@ class WPCache {
 			return false;
 		}
 
-		if ( rocket_get_constant( 'IS_PRESSABLE' ) ) {
-			return false;
-		}
-
 		/**
 		 * Filters the writing of the WP_CACHE constant in wp-config.php
 		 *
@@ -135,7 +201,7 @@ class WPCache {
 	 *
 	 * @return string|bool The path of wp-config.php file or false if not found.
 	 */
-	public function find_wpconfig_path() {
+	private function find_wpconfig_path() {
 		/**
 		 * Filter the wp-config's filename.
 		 *
