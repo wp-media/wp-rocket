@@ -137,7 +137,7 @@ class Minify extends AbstractCSSOptimization implements ProcessorInterface {
 			return false;
 		}
 
-		$file_content = $external_url ? $this->local_cache->get_content(  $url ) : $this->get_file_content( $file_path );
+		$file_content = $external_url ? $this->local_cache->get_content( $url ) : $this->get_file_content( $file_path );
 
 		if ( ! $file_content ) {
 			Logger::error(
@@ -157,6 +157,11 @@ class Minify extends AbstractCSSOptimization implements ProcessorInterface {
 		}
 
 		$minified_content = $this->font_display_swap( $url, $minified_file, $minified_content );
+
+		if ( empty( $minified_content ) ) {
+			return false;
+		}
+
 		$save_minify_file = $this->save_minify_file( $minified_file, $minified_content );
 
 		if ( ! $save_minify_file ) {
@@ -235,9 +240,11 @@ class Minify extends AbstractCSSOptimization implements ProcessorInterface {
 	 * @return string
 	 */
 	protected function font_display_swap( $url, $minified_file, $content ) {
-		if ( preg_match( '/(?:-|\.)min.css/iU', $url )
+		if (
+			preg_match( '/(?:-|\.)min.css/iU', $url )
 			&&
-			false === stripos( $content, '@font-face' ) ) {
+			false === stripos( $content, '@font-face' )
+		) {
 			Logger::error(
 				'Do not apply font display swap on min.css files without font-face.',
 				[
@@ -245,6 +252,11 @@ class Minify extends AbstractCSSOptimization implements ProcessorInterface {
 					'path' => $minified_file,
 				]
 			);
+
+			if ( ! $this->is_external_file( $url ) ) {
+				return '';
+			}
+
 			return $content;
 		}
 
