@@ -4,6 +4,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\Settings\Settings;
 
 use Mockery;
 use Brain\Monkey\Functions;
+use WP_Rocket\Tests\StubTrait;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Settings\Settings;
 use WPMedia\PHPUnit\Unit\TestCase;
@@ -14,6 +15,8 @@ use WPMedia\PHPUnit\Unit\TestCase;
  * @group  Settings
  */
 class Test_SanitizeCallback extends TestCase {
+	use StubTrait;
+
 	private $options;
 	private $settings;
 
@@ -67,9 +70,7 @@ class Test_SanitizeCallback extends TestCase {
 
 			return filter_var( $url, FILTER_VALIDATE_URL );
 		} );
-		Functions\when( 'wp_parse_url' )->alias( function( $url, $component = -1 ) {
-			return parse_url( $url, $component );
-		} );
+		$this->stubWpParseUrl();
 		Functions\when( 'rocket_valid_key' )->justReturn( true );
 
 		$output = $this->settings->sanitize_callback( $input );
@@ -86,9 +87,7 @@ class Test_SanitizeCallback extends TestCase {
 	 */
 	public function testShouldSanitizeFontPreloadEntries( $input, $expected ) {
 		Functions\when( 'rocket_valid_key' )->justReturn( true );
-		Functions\when( 'wp_parse_url' )->alias( function( $url, $component = -1 ) {
-			return parse_url( $url, $component );
-		} );
+		$this->stubWpParseUrl();
 		Functions\expect( 'home_url' )
 			->andReturn( 'http://example.org' );
 
@@ -99,6 +98,37 @@ class Test_SanitizeCallback extends TestCase {
 			$expected['preload_fonts'],
 			array_values( $output['preload_fonts'] )
 		);
+	}
+
+	/**
+	 * @dataProvider addExcludeCSSProvider
+	 */
+	public function testShouldSanitizeExcludeCSS( $original, $sanitized ) {
+		$this->stubWpParseUrl();
+
+		Functions\when( 'rocket_validate_css' )->alias( function( $url ) {
+			$file_host = parse_url( $url, PHP_URL_HOST );
+			if ( 'example.org' === $file_host ) {
+				return parse_url( trim( $url ), PHP_URL_PATH );
+			}
+
+			return str_replace( [ 'http://', 'https://' ], '', strtok( $url, '?' ) );
+		} );
+
+		Functions\when( 'sanitize_text_field' )->returnArg();
+		Functions\when( 'rocket_valid_key' )->justReturn( true );
+
+		$sanitize_callback = $this->settings->sanitize_callback( $original );
+
+		// this works
+		$this->assertSame(
+			array_values( $sanitized['exclude_css'] ),
+			array_values( $sanitize_callback['exclude_css'] )
+		);
+	}
+
+	public function addExcludeCSSProvider() {
+		return $this->getTestData( __DIR__, 'exclude-css' );
 	}
 
 	public function addDNSPrefetchProvider() {

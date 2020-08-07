@@ -1,4 +1,7 @@
 # Welcome to the WP Rocket GitHub Repository
+
+[![Build Status](https://travis-ci.com/wp-media/wp-rocket.svg?branch=master)](https://travis-ci.com/wp-media/wp-rocket)
+
 Feel free to browse the source and keep track of our plugin's progress. You can stay informed of our latest versions via our [blog](https://blog.wp-rocket.me/?utm_source=github&utm_medium=wp_rocket_profile) or via Twitter [@wp_rocket](https://twitter.com/wp_rocket).
 
 We aim to help make the web faster, one WordPress website at a time. That’s why we created *WP Rocket*. It's a caching plugin that simplifies the process and helps decrease a website’s load time.
