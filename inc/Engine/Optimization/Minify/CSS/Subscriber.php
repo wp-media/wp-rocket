@@ -42,13 +42,15 @@ class Subscriber extends AbstractMinifySubscriber {
 			return $html;
 		}
 
+		$assets_local_cache = new AssetsLocalCache( rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' ), $this->filesystem );
+
 		if ( $this->options->get( 'minify_css' ) && $this->options->get( 'minify_concatenate_css' ) ) {
-			$this->set_optimization_type( new Combine( $this->options, new AssetsLocalCache( rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' ), $this->filesystem ) ) );
+			$this->set_processor_type( new Combine( $this->options, $assets_local_cache ) );
 		} elseif ( $this->options->get( 'minify_css' ) && ! $this->options->get( 'minify_concatenate_css' ) ) {
-			$this->set_optimization_type( new Minify( $this->options ) );
+			$this->set_processor_type( new Minify( $this->options, $assets_local_cache ) );
 		}
 
-		return $this->optimize( $html );
+		return $this->processor->optimize( $html );
 	}
 
 	/**
@@ -63,11 +65,7 @@ class Subscriber extends AbstractMinifySubscriber {
 			return false;
 		}
 
-		if ( rocket_get_constant( 'DONOTMINIFYCSS' ) ) {
-			return false;
-		}
-
-		if ( ! $this->options->get( 'minify_css' ) ) {
+		if ( ! (bool) $this->options->get( 'minify_css', 0 ) ) {
 			return false;
 		}
 

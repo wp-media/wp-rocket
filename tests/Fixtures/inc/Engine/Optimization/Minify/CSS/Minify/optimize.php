@@ -14,9 +14,6 @@ $original_html = <<<ORIGINAL_HTML
 </html>
 ORIGINAL_HTML;
 
-
-
-
 return [
 	'vfs_dir' => 'wp-content/',
 
@@ -53,6 +50,7 @@ EXPECTED_HTML
 			'cdn_host' => [],
 			'cdn_url'  => 'http://example.org',
 			'site_url' => 'http://example.org',
+			'external_url' => '',
 		],
 
 		'minifyCssFileAndAddCdnCname' => [
@@ -86,6 +84,7 @@ EXPECTED_HTML
 			'cdn_host' => [ '123456.rocketcdn.me' ],
 			'cdn_url'  => 'https://123456.rocketcdn.me',
 			'site_url' => 'http://example.org',
+			'external_url' => '',
 		],
 
 		'minifyCssFilesWithCdnUrl' => [
@@ -132,6 +131,7 @@ EXPECTED_HTML
 			'cdn_host' => [ '123456.rocketcdn.me' ],
 			'cdn_url'  => 'https://123456.rocketcdn.me',
 			'site_url' => 'http://example.org',
+			'external_url' => '',
 		],
 
 		'minifyCssFilesWithCdnUrlWithSubdir' => [
@@ -177,6 +177,43 @@ EXPECTED_HTML
 			'cdn_host' => [ '123456.rocketcdn.me/cdnpath' ],
 			'cdn_url'  => 'https://123456.rocketcdn.me/cdnpath',
 			'site_url' => 'http://example.org',
+			'external_url' => '',
+		],
+
+		'minifyExternalCssFiles' => [
+			'original' => <<<ORIGINAL_HTML
+<html>
+	<head>
+		<title>Sample Page</title>
+		<link rel="stylesheet" href="http://external-domain.org/path/to/style.css" type="text/css" media="all">
+	</head>
+	<body>
+	</body>
+</html>
+ORIGINAL_HTML
+			,
+			'expected' => [
+				'html'  => <<<EXPECTED_HTML
+<html>
+	<head>
+		<title>Sample Page</title>
+		<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/path/to/style-83936e8415166d4e08a1d8998b5990cd.css" type="text/css" media="all">
+	</head>
+	<body>
+	</body>
+</html>
+EXPECTED_HTML
+				,
+				'files' => [
+					'wp-content/cache/min/1/path/to/style-83936e8415166d4e08a1d8998b5990cd.css',
+					'wp-content/cache/min/1/path/to/style-83936e8415166d4e08a1d8998b5990cd.css.gz',
+				],
+			],
+
+			'cdn_host' => [],
+			'cdn_url'  => 'http://example.org',
+			'site_url' => 'http://example.org',
+			'external_url' => 'http://external-domain.org/path/to/style.css',
 		],
 	],
 ];

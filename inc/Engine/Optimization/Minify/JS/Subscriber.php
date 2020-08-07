@@ -43,13 +43,15 @@ class Subscriber extends AbstractMinifySubscriber {
 			return $html;
 		}
 
+		$assets_local_cache = new AssetsLocalCache( rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' ), $this->filesystem );
+
 		if ( $this->options->get( 'minify_js' ) && $this->options->get( 'minify_concatenate_js' ) ) {
-			$this->set_optimization_type( new Combine( $this->options, new MinifyJS(), new AssetsLocalCache( WP_ROCKET_MINIFY_CACHE_PATH, $this->filesystem ) ) );
+			$this->set_processor_type( new Combine( $this->options, new MinifyJS(), $assets_local_cache ) );
 		} elseif ( $this->options->get( 'minify_js' ) && ! $this->options->get( 'minify_concatenate_js' ) ) {
-			$this->set_optimization_type( new Minify( $this->options ) );
+			$this->set_processor_type( new Minify( $this->options, $assets_local_cache ) );
 		}
 
-		return $this->optimize( $html );
+		return $this->processor->optimize( $html );
 	}
 
 	/**
@@ -60,23 +62,15 @@ class Subscriber extends AbstractMinifySubscriber {
 	 * @return bool
 	 */
 	protected function is_allowed() {
-		if ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
+		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
 			return false;
 		}
 
-		if ( defined( 'DONOTMINIFYJS' ) && DONOTMINIFYJS ) {
+		if ( ! (bool) $this->options->get( 'minify_js', 0 ) ) {
 			return false;
 		}
 
-		if ( ! $this->options->get( 'minify_js' ) ) {
-			return false;
-		}
-
-		if ( is_rocket_post_excluded_option( 'minify_js' ) ) {
-			return false;
-		}
-
-		return true;
+		return ! is_rocket_post_excluded_option( 'minify_js' );
 	}
 
 	/**

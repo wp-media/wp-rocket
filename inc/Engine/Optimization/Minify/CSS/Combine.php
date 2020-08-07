@@ -2,9 +2,8 @@
 namespace WP_Rocket\Engine\Optimization\Minify\CSS;
 
 use MatthiasMullie\Minify\CSS as MinifyCSS;
-use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\Optimization\AssetsLocalCache;
 use WP_Rocket\Engine\Optimization\CSSTrait;
+use WP_Rocket\Engine\Optimization\Minify\ProcessorInterface;
 use WP_Rocket\Logger\Logger;
 
 /**
@@ -12,15 +11,8 @@ use WP_Rocket\Logger\Logger;
  *
  * @since 3.1
  */
-class Combine extends AbstractCSSOptimization {
+class Combine extends AbstractCSSOptimization implements ProcessorInterface {
 	use CSSTrait;
-
-	/**
-	 * Assets local cache instance
-	 *
-	 * @var AssetsLocalCache
-	 */
-	private $local_cache;
 
 	/**
 	 * Array of styles
@@ -35,18 +27,6 @@ class Combine extends AbstractCSSOptimization {
 	 * @var string
 	 */
 	private $filename;
-
-	/**
-	 * Constructor
-	 *
-	 * @param Options_Data     $options     Options instance.
-	 * @param AssetsLocalCache $local_cache AssetsLocalCache instance.
-	 */
-	public function __construct( Options_Data $options, AssetsLocalCache $local_cache ) {
-		parent::__construct( $options );
-
-		$this->local_cache = $local_cache;
-	}
 
 	/**
 	 * Minifies and combines all CSS files into one
@@ -305,6 +285,7 @@ class Combine extends AbstractCSSOptimization {
 				$file_content = $this->rewrite_paths( $filepath, $combined_file, $file_content );
 			} elseif ( 'external' === $style['type'] ) {
 				$file_content = $this->local_cache->get_content( rocket_add_url_protocol( $style['url'] ) );
+				$file_content = $this->rewrite_paths( $style['url'], $combined_file, $file_content );
 			}
 
 			if ( empty( $file_content ) ) {
