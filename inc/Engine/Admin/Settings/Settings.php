@@ -502,7 +502,7 @@ class Settings {
 	 *
 	 * @since 3.0
 	 *
-	 * @param array  $value Options array.
+	 * @param array  $array Options array.
 	 * @param string $key   Array key to check.
 	 * @return int
 	 */
