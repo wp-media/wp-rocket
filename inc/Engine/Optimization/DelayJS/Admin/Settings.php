@@ -90,7 +90,7 @@ class Settings {
 	 *
 	 * @since 3.7
 	 *
-	 * @return bool|array
+	 * @return bool|string
 	 */
 	public function restore_defaults() {
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
