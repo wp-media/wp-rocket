@@ -1,50 +1,37 @@
 <?php
 namespace WP_Rocket\Engine\Optimization\Minify\CSS;
 
-use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Logger\Logger;
-use WP_Rocket\Optimization\CSS\Path_Rewriter;
 use MatthiasMullie\Minify\CSS as MinifyCSS;
+use WP_Rocket\Engine\Optimization\CSSTrait;
+use WP_Rocket\Engine\Optimization\Minify\ProcessorInterface;
+use WP_Rocket\Logger\Logger;
 
 /**
  * Minify & Combine CSS files
  *
  * @since 3.1
- * @author Remy Perona
  */
-class Combine extends AbstractCSSOptimization {
-	use Path_Rewriter;
+class Combine extends AbstractCSSOptimization implements ProcessorInterface {
+	use CSSTrait;
 
 	/**
-	 * Minifier instance
+	 * Array of styles
 	 *
-	 * @since 3.1
-	 * @author Remy Perona
-	 *
-	 * @var MinifyCSS
+	 * @var array
 	 */
-	private $minifier;
+	private $styles = [];
 
 	/**
-	 * Constructor
+	 * Combined CSS filename
 	 *
-	 * @since 3.1
-	 * @author Remy Perona
-	 *
-	 * @param Options_Data $options  Options instance.
-	 * @param MinifyCSS    $minifier Minifier instance.
+	 * @var string
 	 */
-	public function __construct( Options_Data $options, MinifyCSS $minifier ) {
-		parent::__construct( $options );
-
-		$this->minifier = $minifier;
-	}
+	private $filename;
 
 	/**
 	 * Minifies and combines all CSS files into one
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @param string $html HTML content.
 	 * @return string
@@ -68,45 +55,7 @@ class Combine extends AbstractCSSOptimization {
 			]
 		);
 
-		$files  = [];
-		$styles = array_map(
-				function( $style ) use ( &$files ) {
-					if ( $this->is_external_file( $style['url'] ) ) {
-						Logger::debug(
-							'Style is external.',
-							[
-								'css combine process',
-								'tag' => $style[0],
-							]
-						);
-						return;
-					}
-
-					if ( $this->is_minify_excluded_file( $style ) ) {
-						Logger::debug(
-							'Style is excluded.',
-							[
-								'css combine process',
-								'tag' => $style[0],
-							]
-						);
-						return;
-					}
-
-					$style_filepath = $this->get_file_path( $style['url'] );
-
-					if ( ! $style_filepath ) {
-						return;
-					}
-
-					$files[] = $style_filepath;
-
-					return $style;
-				},
-			$styles
-			);
-
-		$styles = array_filter( $styles );
+		$styles = $this->parse( $styles );
 
 		if ( empty( $styles ) ) {
 			Logger::debug( 'No `<link>` tags to optimize.', [ 'css combine process' ] );
@@ -121,14 +70,190 @@ class Combine extends AbstractCSSOptimization {
 			]
 		);
 
-		$minify_url = $this->combine( $files );
-
-		if ( ! $minify_url ) {
+		if ( ! $this->combine() ) {
 			Logger::error( 'CSS combine process failed.', [ 'css combine process' ] );
 			return $html;
 		}
 
-		$html = $this->insert_combined_css( $html, $minify_url, $styles );
+		return $this->insert_combined_css( $html );
+	}
+
+	/**
+	 * Parses all found styles tag to keep only the ones to combine
+	 *
+	 * @since 3.7
+	 *
+	 * @param array $styles Array of matched styles.
+	 * @return array
+	 */
+	private function parse( array $styles ) {
+		foreach ( $styles as $key => $style ) {
+			if ( $this->is_external_file( $style['url'] ) ) {
+				if ( $this->is_excluded_external( $style['url'] ) ) {
+					unset( $styles[ $key ] );
+
+					continue;
+				}
+
+				$this->styles[ $style['url'] ] = [
+					'type' => 'external',
+					'tag'  => $style[0],
+					'url'  => $style['url'],
+				];
+
+				continue;
+			}
+
+			if ( $this->is_minify_excluded_file( $style ) ) {
+				Logger::debug(
+					'Style is excluded.',
+					[
+						'css combine process',
+						'tag' => $style[0],
+					]
+				);
+
+				unset( $styles[ $key ] );
+
+				continue;
+			}
+
+			$this->styles[ $style['url'] ] = [
+				'type' => 'internal',
+				'tag'  => $style[0],
+				'url'  => $style['url'],
+			];
+		}
+
+		return $styles;
+	}
+
+	/**
+	 * Checks if the provided external URL is excluded from combine
+	 *
+	 * @since 3.7
+	 *
+	 * @param string $url External URL to check.
+	 * @return boolean
+	 */
+	private function is_excluded_external( $url ) {
+		foreach ( $this->get_excluded_externals() as $excluded ) {
+			if ( false !== strpos( $url, $excluded ) ) {
+				Logger::debug(
+					'Style is external.',
+					[
+						'css combine process',
+						'url' => $url,
+					]
+				);
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Gets external URLs excluded from combine
+	 *
+	 * @since 3.7
+	 *
+	 * @return array
+	 */
+	private function get_excluded_externals() {
+		/**
+		 * Filters CSS external URLs to exclude from the combine process
+		 *
+		 * @since 3.7
+		 *
+		 * @param array $pattern Patterns to match.
+		 */
+		$excluded_externals = (array) apply_filters( 'rocket_combine_css_excluded_external', [] );
+
+		return array_merge( $excluded_externals, $this->options->get( 'exclude_css', [] ) );
+	}
+
+	/**
+	 * Combine the CSS content into one file and save it
+	 *
+	 * @since 3.1
+	 *
+	 * @return bool True if successful, false otherwise
+	 */
+	protected function combine() {
+		if ( empty( $this->styles ) ) {
+			return false;
+		}
+
+		$file_hash      = implode( ',', array_column( $this->styles, 'url' ) );
+		$this->filename = md5( $file_hash . $this->minify_key ) . '.css';
+
+		$combined_file = $this->minify_base_path . $this->filename;
+
+		if ( rocket_direct_filesystem()->exists( $combined_file ) ) {
+			Logger::debug(
+				'Combined CSS file already exists.',
+				[
+					'css combine process',
+					'path' => $combined_file,
+				]
+			);
+
+			return true;
+		}
+
+		$combined_content = $this->get_content( $combined_file );
+		$combined_content = $this->apply_font_display_swap( $combined_content );
+
+		if ( empty( $combined_content ) ) {
+			Logger::error(
+				'No combined content.',
+				[
+					'css combine process',
+					'path' => $combined_file,
+				]
+			);
+			return false;
+		}
+
+		if ( ! $this->write_file( $combined_content, $combined_file ) ) {
+			Logger::error(
+				'Combined CSS file could not be created.',
+				[
+					'css combine process',
+					'path' => $combined_file,
+				]
+			);
+			return false;
+		}
+
+		Logger::debug(
+			'Combined CSS file successfully created.',
+			[
+				'css combine process',
+				'path' => $combined_file,
+			]
+		);
+
+		return true;
+	}
+
+	/**
+	 * Insert the combined CSS file and remove the original CSS tags
+	 *
+	 * The combined CSS file is added after the closing </title> tag, and the replacement occurs only once. The original CSS tags are then removed from the HTML.
+	 *
+	 * @since 3.3.3
+	 *
+	 * @param string $html HTML content.
+	 * @return string
+	 */
+	protected function insert_combined_css( $html ) {
+		foreach ( $this->styles as $style ) {
+			$html = str_replace( $style['tag'], '', $html );
+		}
+
+		$minify_url = $this->get_minify_url( $this->filename );
 
 		Logger::info(
 			'Combined CSS file successfully added.',
@@ -138,124 +263,72 @@ class Combine extends AbstractCSSOptimization {
 			]
 		);
 
-		return $html;
+		// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
+		return preg_replace( '/<\/title>/i', '$0<link rel="stylesheet" href="' . esc_url( $minify_url ) . '" media="all" data-minify="1" />', $html, 1 );
 	}
 
 	/**
-	 * Insert the combined CSS file and remove the original CSS tags
+	 * Gathers the content from all styles to combine & minify it if needed
 	 *
-	 * The combined CSS file is added after the closing </title> tag, and the replacement occurs only once. The original CSS tags are then removed from the HTML.
+	 * @since 3.7
 	 *
-	 * @since 3.3.3
-	 * @author Remy Perona
-	 *
-	 * @param string $html      HTML content.
-	 * @param string $css_url   Combined CSS file URL.
-	 * @param array  $to_remove An array of CSS tags to remove.
+	 * @param string $combined_file Absolute path to the combined file.
 	 * @return string
 	 */
-	protected function insert_combined_css( $html, $css_url, array $to_remove ) {
-		// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
-		$html = preg_replace( '/<\/title>/i', '$0<link rel="stylesheet" href="' . $css_url . '" data-minify="1" />', $html, 1 );
+	private function get_content( $combined_file ) {
+		$content = '';
 
-		foreach ( $to_remove as $style ) {
-			$html = str_replace( $style[0], '', $html );
-		}
-
-		return $html;
-	}
-
-	/**
-	 * Creates the minify URL if the minification is successful
-	 *
-	 * @since 2.11
-	 * @author Remy Perona
-	 *
-	 * @param array $files Files to minify.
-
-	 * @return string|bool The minify URL if successful, false otherwise
-	 */
-	protected function combine( $files ) {
-		if ( empty( $files ) ) {
-			return false;
-		}
-
-		$file_hash = implode( ',', $files );
-		$filename  = md5( $file_hash . $this->minify_key ) . '.css';
-
-		$minified_file = $this->minify_base_path . $filename;
-
-		if ( ! rocket_direct_filesystem()->exists( $minified_file ) ) {
-			$minified_content = $this->minify( $files, $minified_file );
-
-			if ( ! $minified_content ) {
-				Logger::error(
-					'No minified content.',
-					[
-						'css combine process',
-						'path' => $minified_file,
-					]
-				);
-				return false;
+		foreach ( $this->styles as $key => $style ) {
+			if ( 'internal' === $style['type'] ) {
+				$filepath     = $this->get_file_path( $style['url'] );
+				$file_content = $this->get_file_content( $filepath );
+				$file_content = $this->rewrite_paths( $filepath, $combined_file, $file_content );
+			} elseif ( 'external' === $style['type'] ) {
+				$file_content = $this->local_cache->get_content( rocket_add_url_protocol( $style['url'] ) );
+				$file_content = $this->rewrite_paths( $style['url'], $combined_file, $file_content );
 			}
 
-			$minify_filepath = $this->write_file( $minified_content, $minified_file );
+			if ( empty( $file_content ) ) {
+				unset( $this->styles[ $key ] );
 
-			if ( ! $minify_filepath ) {
-				Logger::error(
-					'Minified CSS file could not be created.',
-					[
-						'css combine process',
-						'path' => $minified_file,
-					]
-				);
-				return false;
+				continue;
 			}
 
-			Logger::debug(
-				'Combined CSS file successfully created.',
-				[
-					'css combine process',
-					'path' => $minified_file,
-				]
-			);
-		} else {
-			Logger::debug(
-				'Combined CSS file already exists.',
-				[
-					'css combine process',
-					'path' => $minified_file,
-				]
-			);
+			if ( false !== strpos( $style['url'], '.min.css' ) ) {
+				$content .= $file_content;
+
+				continue;
+			}
+
+			$minified_content = $this->minify( $file_content );
+
+			if ( empty( $minified_content ) ) {
+				unset( $this->styles[ $key ] );
+
+				continue;
+			}
+
+			$content .= $minified_content;
 		}
 
-		return $this->get_minify_url( $filename );
+		if ( empty( $content ) ) {
+			Logger::debug( 'No CSS content.', [ 'css combine process' ] );
+		}
+
+		return $content;
 	}
 
 	/**
 	 * Minifies the content
 	 *
-	 * @since 2.11
-	 * @author Remy Perona
+	 * @since 3.1
 	 *
-	 * @param string|array $files         Files to minify.
-	 * @param string       $minified_file Target filepath.
-	 * @return string|bool
+	 * @param string $content Content to minify.
+	 * @return string
 	 */
-	protected function minify( $files, $minified_file ) {
-		foreach ( $files as $file ) {
-			$file_content = $this->get_file_content( $file );
-			$file_content = $this->rewrite_paths( $file, $minified_file, $file_content );
+	protected function minify( $content ) {
+		$minifier = new MinifyCSS( $content );
 
-			$this->minifier->add( $file_content );
-		}
-
-		$minified_content = $this->minifier->minify();
-
-		if ( empty( $minified_content ) ) {
-			return false;
-		}
-
-		return $minified_content;
+		return $minifier->minify();
 	}
 }

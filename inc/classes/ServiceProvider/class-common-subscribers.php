@@ -21,9 +21,7 @@ class Common_Subscribers extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
-		'heartbeat_subscriber',
 		'db_optimization_subscriber',
-		'capabilities_subscriber',
 		'webp_subscriber',
 		'expired_cache_purge',
 		'expired_cache_purge_subscriber',
@@ -41,8 +39,6 @@ class Common_Subscribers extends AbstractServiceProvider {
 	public function register() {
 		$options = $this->getContainer()->get( 'options' );
 
-		$this->getContainer()->share( 'heartbeat_subscriber', 'WP_Rocket\Subscriber\Heartbeat_Subscriber' )
-			->withArgument( $options );
 		$this->getContainer()->share( 'db_optimization_subscriber', 'WP_Rocket\Subscriber\Admin\Database\Optimization_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'db_optimization' ) )
 			->withArgument( $options );
@@ -51,7 +47,6 @@ class Common_Subscribers extends AbstractServiceProvider {
 		$this->getContainer()->share( 'expired_cache_purge_subscriber', 'WP_Rocket\Subscriber\Cache\Expired_Cache_Purge_Subscriber' )
 			->withArgument( $options )
 			->withArgument( $this->getContainer()->get( 'expired_cache_purge' ) );
-		$this->getContainer()->share( 'capabilities_subscriber', 'WP_Rocket\Subscriber\Plugin\Capabilities_Subscriber' );
 		$this->getContainer()->share( 'webp_subscriber', 'WP_Rocket\Subscriber\Media\Webp_Subscriber' )
 			->withArgument( $options )
 			->withArgument( $this->getContainer()->get( 'options_api' ) )

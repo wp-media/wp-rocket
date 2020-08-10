@@ -555,7 +555,7 @@ class CriticalCSS {
 	/**
 	 * Get list of CSS files to be excluded from async CSS.
 	 *
-	 * @since 3.6.1
+	 * @since 3.6.2
 	 *
 	 * @return array An array of URLs for the CSS files to be excluded.
 	 */

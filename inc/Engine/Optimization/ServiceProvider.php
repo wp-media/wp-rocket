@@ -27,6 +27,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'buffer_subscriber',
 		'cache_dynamic_resource',
 		'ie_conditionals_subscriber',
+		'optimize_google_fonts',
 		'combine_google_fonts_subscriber',
 		'minify_css_subscriber',
 		'minify_js_subscriber',
@@ -44,30 +45,33 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-		$options = $this->getContainer()->get( 'options' );
+		$options    = $this->getContainer()->get( 'options' );
+		$filesystem = rocket_direct_filesystem();
 
 		$this->getContainer()->add( 'config', 'WP_Rocket\Buffer\Config' )
-							->withArgument( [ 'config_dir_path' => rocket_get_constant( 'WP_ROCKET_CONFIG_PATH' ) ] );
+			->withArgument( [ 'config_dir_path' => rocket_get_constant( 'WP_ROCKET_CONFIG_PATH' ) ] );
 		$this->getContainer()->add( 'tests', 'WP_Rocket\Buffer\Tests' )
-							->withArgument( $this->getContainer()->get( 'config' ) );
+			->withArgument( $this->getContainer()->get( 'config' ) );
 		$this->getContainer()->add( 'buffer_optimization', 'WP_Rocket\Buffer\Optimization' )
-							->withArgument( $this->getContainer()->get( 'tests' ) );
+			->withArgument( $this->getContainer()->get( 'tests' ) );
 		$this->getContainer()->share( 'buffer_subscriber', 'WP_Rocket\Subscriber\Optimization\Buffer_Subscriber' )
-							->withArgument( $this->getContainer()->get( 'buffer_optimization' ) );
+			->withArgument( $this->getContainer()->get( 'buffer_optimization' ) );
 		$this->getContainer()->share( 'cache_dynamic_resource', 'WP_Rocket\Engine\Optimization\CacheDynamicResource' )
-							->withArgument( $options )
-							->withArgument( WP_ROCKET_CACHE_BUSTING_PATH )
-							->withArgument( WP_ROCKET_CACHE_BUSTING_URL );
+			->withArgument( $options )
+			->withArgument( WP_ROCKET_CACHE_BUSTING_PATH )
+			->withArgument( WP_ROCKET_CACHE_BUSTING_URL );
+		$this->getContainer()->add( 'optimize_google_fonts', 'WP_Rocket\Engine\Optimization\GoogleFonts\Combine' );
 		$this->getContainer()->share( 'combine_google_fonts_subscriber', 'WP_Rocket\Engine\Optimization\GoogleFonts\Subscriber' )
-							->withArgument( $options );
-
+			->withArgument( $this->getContainer()->get( 'optimize_google_fonts' ) )
+			->withArgument( $options );
 		$this->getContainer()->share( 'minify_css_subscriber', 'WP_Rocket\Engine\Optimization\Minify\CSS\Subscriber' )
-							->withArgument( $options );
+			->withArgument( $options )
+			->withArgument( $filesystem );
 		$this->getContainer()->share( 'minify_js_subscriber', 'WP_Rocket\Engine\Optimization\Minify\JS\Subscriber' )
-							->withArgument( $options );
+			->withArgument( $options )
+			->withArgument( $filesystem );
 		$this->getContainer()->share( 'dequeue_jquery_migrate_subscriber', 'WP_Rocket\Subscriber\Optimization\Dequeue_JQuery_Migrate_Subscriber' )
-							->withArgument( $options );
-
+			->withArgument( $options );
 		$this->getContainer()->share( 'ie_conditionals_subscriber', 'WP_Rocket\Engine\Optimization\IEConditionalSubscriber' );
 
 		$this->getContainer()->add( 'delay_js_html', 'WP_Rocket\Engine\Optimization\DelayJS\HTML' )

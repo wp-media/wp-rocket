@@ -21,6 +21,8 @@ class AdminServiceProvider extends AbstractServiceProvider {
 	 */
 	protected $provides = [
 		'minify_css_admin_subscriber',
+		'google_fonts_settings',
+		'google_fonts_admin_subscriber',
 	];
 
 	/**
@@ -32,5 +34,11 @@ class AdminServiceProvider extends AbstractServiceProvider {
 	 */
 	public function register() {
 		$this->getContainer()->share( 'minify_css_admin_subscriber', 'WP_Rocket\Engine\Optimization\Minify\CSS\AdminSubscriber' );
+		$this->getContainer()->add( 'google_fonts_settings', 'WP_Rocket\Engine\Optimization\GoogleFonts\Admin\Settings' )
+			->withArgument( $this->getContainer()->get( 'options' ) )
+			->withArgument( $this->getContainer()->get( 'beacon' ) )
+			->withArgument( $this->getContainer()->get( 'template_path' ) );
+		$this->getContainer()->share( 'google_fonts_admin_subscriber', 'WP_Rocket\Engine\Optimization\GoogleFonts\Admin\Subscriber' )
+			->withArgument( $this->getContainer()->get( 'google_fonts_settings' ) );
 	}
 }

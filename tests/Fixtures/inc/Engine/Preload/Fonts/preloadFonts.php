@@ -1,8 +1,18 @@
 <?php
 
 return [
+	'NowprocketQueryString' => [
+		'bypass'   => true,
+		'settings' => [
+			'preload_fonts' => [],
+			'cdn'           => false,
+			'cdn_cnames'    => [],
+		],
+		'expected' => '',
+	],
 
 	'emptyPreloadFontsOption'             => [
+		'bypass'   => false,
 		'settings' => [
 			'preload_fonts' => [],
 			'cdn'           => false,
@@ -11,6 +21,7 @@ return [
 		'expected' => '',
 	],
 	'invalidPreloadFontsOptionExtensions' => [
+		'bypass'   => false,
 		'settings' => [
 			'preload_fonts' => [
 				'/wp-content/style.css',
@@ -23,6 +34,7 @@ return [
 		'expected' => '',
 	],
 	'validPreloadFontsOptions'            => [
+		'bypass'   => false,
 		'settings' => [
 			'preload_fonts' => [
 				'/wp-content/file.dfont',
@@ -58,6 +70,7 @@ HTML
 		,
 	],
 	'validPreloadFontsOptionsWithCDN'     => [
+		'bypass'   => false,
 		'settings' => [
 			'preload_fonts' => [
 				'/wp-content/file.otf',

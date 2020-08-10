@@ -2,21 +2,19 @@
 namespace WP_Rocket\Engine\Optimization\Minify\JS;
 
 use MatthiasMullie\Minify\JS as MinifyJS;
-use WP_Rocket\Optimization\Assets_Local_Cache;
+use WP_Rocket\Engine\Optimization\AssetsLocalCache;
 use WP_Rocket\Engine\Optimization\Minify\AbstractMinifySubscriber;
 
 /**
  * Minify/Combine JS subscriber
  *
  * @since 3.1
- * @author Remy Perona
  */
 class Subscriber extends AbstractMinifySubscriber {
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
 	 * @since  3.1
-	 * @author Remy Perona
 	 *
 	 * @return array
 	 */
@@ -36,7 +34,6 @@ class Subscriber extends AbstractMinifySubscriber {
 	 * Processes the HTML to Minify/Combine JS.
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @param string $html HTML content.
 	 * @return string
@@ -46,48 +43,40 @@ class Subscriber extends AbstractMinifySubscriber {
 			return $html;
 		}
 
+		$assets_local_cache = new AssetsLocalCache( rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' ), $this->filesystem );
+
 		if ( $this->options->get( 'minify_js' ) && $this->options->get( 'minify_concatenate_js' ) ) {
-			$this->set_optimization_type( new Combine( $this->options, new MinifyJS(), new Assets_Local_Cache( WP_ROCKET_MINIFY_CACHE_PATH ) ) );
+			$this->set_processor_type( new Combine( $this->options, new MinifyJS(), $assets_local_cache ) );
 		} elseif ( $this->options->get( 'minify_js' ) && ! $this->options->get( 'minify_concatenate_js' ) ) {
-			$this->set_optimization_type( new Minify( $this->options ) );
+			$this->set_processor_type( new Minify( $this->options, $assets_local_cache ) );
 		}
 
-		return $this->optimize( $html );
+		return $this->processor->optimize( $html );
 	}
 
 	/**
 	 * Checks if is allowed to Minify/Combine JS.
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @return bool
 	 */
 	protected function is_allowed() {
-		if ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
+		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
 			return false;
 		}
 
-		if ( defined( 'DONOTMINIFYJS' ) && DONOTMINIFYJS ) {
+		if ( ! (bool) $this->options->get( 'minify_js', 0 ) ) {
 			return false;
 		}
 
-		if ( ! $this->options->get( 'minify_js' ) ) {
-			return false;
-		}
-
-		if ( is_rocket_post_excluded_option( 'minify_js' ) ) {
-			return false;
-		}
-
-		return true;
+		return ! is_rocket_post_excluded_option( 'minify_js' );
 	}
 
 	/**
 	 * Returns an array of CDN zones for JS files.
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @return array
 	 */

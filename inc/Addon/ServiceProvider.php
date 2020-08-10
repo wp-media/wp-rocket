@@ -39,7 +39,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$options = $this->getContainer()->get( 'options' );
 
 		// Busting Factory.
-		$this->getContainer()->add( 'busting_factory', 'WP_Rocket\Busting\Busting_Factory' )
+		$this->getContainer()->add( 'busting_factory', 'WP_Rocket\Addon\Busting\BustingFactory' )
 			->withArgument( rocket_get_constant( 'WP_ROCKET_CACHE_BUSTING_PATH' ) )
 			->withArgument( rocket_get_constant( 'WP_ROCKET_CACHE_BUSTING_URL' ) );
 
