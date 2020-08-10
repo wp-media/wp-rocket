@@ -262,6 +262,7 @@ class Plugin {
 			'pdfembedder',
 			'divi',
 			'preload_links_admin_subscriber',
+			'preload_links_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();

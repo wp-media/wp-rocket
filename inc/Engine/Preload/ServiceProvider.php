@@ -51,6 +51,7 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		// Subscribers.
 		$options = $this->getContainer()->get( 'options' );
+
 		$this->getContainer()->share( 'preload_subscriber', 'WP_Rocket\Engine\Preload\PreloadSubscriber' )
 			->withArgument( $this->getContainer()->get( 'homepage_preload' ) )
 			->withArgument( $options );
