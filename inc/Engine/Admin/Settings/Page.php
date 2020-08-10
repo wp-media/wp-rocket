@@ -813,6 +813,34 @@ class Page {
 					'default'           => 1,
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
+				'delay_js'               => [
+					'container_class'   => [
+						'wpr-isParent',
+					],
+					'type'              => 'checkbox',
+					'label'             => __( 'Delay JavaScript execution', 'rocket' ),
+					'description'       => __( 'Improves initial loading time by delaying the loading of JavaScript files.', 'rocket' ),
+					'section'           => 'js',
+					'page'              => 'file_optimization',
+					'default'           => 0,
+					'sanitize_callback' => 'sanitize_checkbox',
+				],
+				'delay_js_scripts'       => [
+					'type'              => 'textarea',
+					'label'             => __( 'Scripts to delay', 'rocket' ),
+					'description'       => __( 'Specify keywords that can identify inline or JavaScript files to be delayed (one per line).', 'rocket' ),
+					'container_class'   => [
+						'wpr-field--children',
+					],
+					'parent'            => 'delay_js',
+					'section'           => 'js',
+					'page'              => 'file_optimization',
+					'default'           => [],
+					'sanitize_callback' => 'sanitize_textarea',
+					'input_attr'        => [
+						'disabled' => get_rocket_option( 'delay_js' ) ? 0 : 1,
+					],
+				],
 			]
 		);
 	}
