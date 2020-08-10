@@ -1,40 +1,10 @@
-class RocketPreloadPages {
+class RocketBrowserCompatabilityChecker {
 
-	constructor() {
-		this.passiveSupported        = false;
-		this.hrefset                 = new Set;
-		this.timeoutId               = null;
-		this.eventTime               = null;
-		this.doesBrowserSupport      = false;
-		this.d                       = 1111;
-		this.triggerDelay            = 65; // milliseconds.
+	constructor( options ) {
+		this.passiveSupported = false;
 
-		this.userEventListener = this.triggerListener.bind( this );
-		this._initOptions( this );
-	}
-
-	/**
-	 * Initializes the handler.
-	 */
-	init() {
-		this._initBrowser();
-	}
-
-	_initBrowser() {
-		const elem              = document.createElement( 'link' );
-		this.doesBrowserSupport = (
-			elem.relList
-			&&
-			elem.relList.supports
-			&&
-			elem.relList.supports( 'prefetch' )
-			&&
-			window.IntersectionObserver
-			&&
-			"isIntersecting" in IntersectionObserverEntry.prototype
-		);
-
-		this.listenerOptions = this.passiveSupported ? { passive: true } : false;
+		this._checkPassiveOption( this );
+		this.options = this.passiveSupported ? options : false;
 	}
 
 	/**
@@ -46,7 +16,7 @@ class RocketPreloadPages {
 	 * @param self Instance of this object.
 	 * @returns {boolean}
 	 */
-	_initOptions( self ) {
+	_checkPassiveOption( self ) {
 		try {
 			const options = {
 				// This function will be called when the browser attempts to access the passive property.
@@ -62,14 +32,120 @@ class RocketPreloadPages {
 			self.passiveSupported = false;
 		}
 	}
+}
+
+class RocketPreloadPages {
+
+	constructor( options ) {
+		this.browser = new RocketBrowserCompatabilityChecker( options );
+		this.listenerOptions = this.browser.options;
+
+		this.hrefSet = new Set;
+		this.timeoutId = null;
+		this.eventTime = null;
+		this.listenerThreshold = 1111;
+		this.triggerDelay = 65; // milliseconds.
+	}
 
 	/**
-	 * Window event listener.
+	 * Initializes the handler.
 	 */
-	triggerListener() {
-		// add code here.
+	init() {
+		if ( ! this.doesBrowserSupport() ) {
+			return;
+		}
+
+		this._addEventListeners( this );
+	}
+
+	doesBrowserSupport() {
+		const elem = document.createElement( 'link' );
+		return (
+			elem.relList
+			&&
+			elem.relList.supports
+			&&
+			elem.relList.supports( 'prefetch' )
+			&&
+			window.IntersectionObserver
+			&&
+			'isIntersecting' in IntersectionObserverEntry.prototype
+		);
+	}
+
+	_addEventListeners( self ) {
+		document.addEventListener( 'mouseover', self.triggerOnHover.bind( self ), self.listenerOptions );
+	}
+
+	/**
+	 * Adds a <link rel="prefetch" href="<url>"> for the given URL.
+	 *
+	 * @param string url The Given URL to prefetch.
+	 */
+	_addPrefetchLink( url ) {
+		if ( this.hrefSet.has( url ) ) {
+			return;
+		}
+
+		const elem = document.createElement( 'link' );
+
+		elem.rel = 'prefetch';
+		elem.href = url;
+		document.head.appendChild( elem );
+		this.hrefSet.add( url );
+	}
+
+	triggerOnHover( evt ) {
+		if ( performance.now() - this.eventTime < this.listenerThreshold ) {
+			return;
+		}
+
+		const linkElem = evt.target.closest( 'a' );
+		if ( ! this._isLinkOk( linkElem ) ) {
+			return;
+		}
+
+		const self = this;
+		linkElem.addEventListener( 'mouseout', self.resetOnHover.bind(self), { passive: true } );
+
+		this.timeoutId = setTimeout( () => {
+				this._addPrefetchLink( linkElem.href );
+				this.timeoutId = undefined;
+			},
+			self.triggerDelay
+		);
+	}
+
+	resetOnHover( evt ) {
+		if (
+			evt.relatedTarget
+			&&
+			evt.target.closest( 'a' ) === evt.relatedTarget.closest( 'a' )
+			||
+			this.timeoutId
+		) {
+			clearTimeout( this.timeoutId );
+			this.timeoutId = null;
+		}
+	}
+
+	_isLinkOk( linkElem ) {
+		if ( null === linkElem || typeof linkElem !== 'object' ) {
+			return false;
+		}
+
+		if ( ! linkElem.href ) {
+			return false;
+		}
+
+		return true;
 	}
 }
 
-const rocketPreloadPages = new RocketPreloadPages();
+const rocketPreloadPages = new RocketPreloadPages(
+	{
+		capture: true,
+		passive: true
+	}
+);
 rocketPreloadPages.init();
