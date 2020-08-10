@@ -9,7 +9,7 @@ use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Engine\Optimization\DelayJS\HTML;
 
 /**
- * @covers WP_Rocket\Engine\Optimization\DelayJS::delay_js
+ * @covers \WP_Rocket\Engine\Optimization\DelayJS::delay_js
  * @group  Optimize
  * @group  DelayJS
  *
