@@ -59,7 +59,7 @@ class HTML {
 	 *
 	 * @return bool
 	 */
-	private function is_allowed() {
+	public function is_allowed() {
 		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
 			return false;
 		}
@@ -141,7 +141,7 @@ class HTML {
 	 * @return string
 	 */
 	private function prepare_allowed_scripts_regex() {
-		$delay_js_scripts = $this->options->get( 'delay_js_scripts', [] );
+		$delay_js_scripts = $this->options->get( 'delay_js_scripts' );
 
 		/**
 		 * Filters JS files to included into delay JS.
