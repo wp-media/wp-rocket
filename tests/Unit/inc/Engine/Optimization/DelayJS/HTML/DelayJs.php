@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\DelayJS\HTML;
 use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
-use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Engine\Optimization\DelayJS\HTML;
 
 /**
@@ -26,19 +26,14 @@ class Test_Optimize extends TestCase {
 	}
 
 	/**
-	 * @dataProvider addDataProvider
+	 * @dataProvider configTestData
 	 */
 	public function testShouldProcessScriptHTML( $config, $expected ) {
-		Functions\when( 'rocket_get_constant' )->alias( function ( $const ) use ( $config ) {
-			if ( 'DONOTROCKETOPTIMIZE' === $const ) {
-				return $config['do-not-optimize'];
-			} elseif ( 'DONOTDELAYJS' === $const ) {
-				return $config['do-not-delay-const'];
-			} else {
-				return false;
-			}
-		}
-		);
+
+		$allowed_scripts = isset( $config['allowed-scripts'] ) ? $config['allowed-scripts'] : [];
+
+		$this->donotrocketoptimize       = $config['do-not-optimize'];
+		$this->constants['donotdelayjs'] = $config['do-not-delay-const'];
 
 		$this->options->shouldReceive( 'get' )
 			->zeroOrMoreTimes()
@@ -48,7 +43,7 @@ class Test_Optimize extends TestCase {
 		$this->options->shouldReceive( 'get' )
 			->once()
 			->with( 'delay_js_scripts', [] )
-			->andReturn( $config['allowed-scripts'] );
+			->andReturn( $allowed_scripts );
 
 
 		$html           = new HTML( $this->options );
