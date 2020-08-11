@@ -66,7 +66,7 @@ class RocketPreloadPages {
 		this.listenerOptions = this.browser.options;
 
 		this.hrefSet = new Set;
-		this.timeoutId = null;
+		this.addLinkTimeoutId = null;
 		this.eventTime = null;
 		this.listenerThreshold = 1111;
 		this.triggerDelay = 65; // milliseconds.
@@ -135,9 +135,9 @@ class RocketPreloadPages {
 		const self = this;
 		linkElem.addEventListener( 'mouseout', self.resetOnHover.bind( self ), { passive: true } );
 
-		this.timeoutId = setTimeout( () => {
+		this.addLinkTimeoutId = setTimeout( () => {
 				this._addPrefetchLink( linkElem.href );
-				this.timeoutId = undefined;
+				this.addLinkTimeoutId = undefined;
 			},
 			self.triggerDelay
 		);
@@ -149,6 +149,8 @@ class RocketPreloadPages {
 			return;
 		}
 		this.addPrefetchLink( linkElem.href );
+
+		this._resetAddLinkTask();
 	}
 
 	resetOnHover( evt ) {
@@ -157,11 +159,19 @@ class RocketPreloadPages {
 			&&
 			evt.target.closest( 'a' ) === evt.relatedTarget.closest( 'a' )
 			||
-			this.timeoutId
+			this.addLinkTimeoutId
 		) {
-			clearTimeout( this.timeoutId );
-			this.timeoutId = null;
+			this._resetAddLinkTask();
 		}
+	}
+
+	_resetAddLinkTask() {
+		if ( ! this.addLinkTimeoutId ) {
+			return;
+		}
+
+		clearTimeout( this.addLinkTimeoutId );
+		this.addLinkTimeoutId = null;
 	}
 
 	_isLinkOk( linkElem ) {
