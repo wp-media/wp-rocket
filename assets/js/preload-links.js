@@ -121,6 +121,13 @@ class RocketPreloadPages {
 		this._addEventListeners( this );
 	}
 
+	/**
+	 * Adds the event listeners.
+	 *
+	 * @private
+	 *
+	 * @param self instance of this object, used for binding "this" to the listeners.
+	 */
 	_addEventListeners( self ) {
 		document.addEventListener( 'mouseover', self.triggerOnHover.bind( self ), self.listenerOptions );
 
@@ -147,12 +154,17 @@ class RocketPreloadPages {
 		this.processedLinks.add( url );
 	}
 
-	triggerOnHover( evt ) {
+	/**
+	 * Triggers adding the link prefetch when the user hovers over a <a> hyperlink.
+	 *
+	 * @param Event event Event instance.
+	 */
+	triggerOnHover( event ) {
 		if ( performance.now() - this.eventTime < this.listenerThreshold ) {
 			return;
 		}
 
-		const linkElem = evt.target.closest( 'a' );
+		const linkElem = event.target.closest( 'a' );
 		if ( ! this._isLinkOk( linkElem ) ) {
 			return;
 		}
@@ -168,8 +180,13 @@ class RocketPreloadPages {
 		);
 	}
 
-	triggerOnClick( evt ) {
-		const linkElem = evt.target.closest( 'a' );
+	/**
+	 * Triggers adding the link prefetch when the user clicks on a <a> hyperlink.
+	 *
+	 * @param Event event Event instance.
+	 */
+	triggerOnClick( event ) {
+		const linkElem = event.target.closest( 'a' );
 		if ( ! this._isLinkOk( linkElem ) ) {
 			return;
 		}
@@ -178,16 +195,26 @@ class RocketPreloadPages {
 		this._resetAddLinkTask();
 	}
 
-	triggerOnTap( evt ) {
+	/**
+	 * Triggers adding the link prefetch when the user taps a <a> hyperlink.
+	 *
+	 * @param Event event Event instance.
+	 */
+	triggerOnTap( event ) {
 		this.eventTime = performance.now();
-		this.triggerOnClick(evt);
+		this.triggerOnClick( event );
 	}
 
-	resetOnHover( evt ) {
+	/**
+	 * Resets the Add Link Task on hover.
+	 *
+	 * @param object event Event object.
+	 */
+	resetOnHover( event ) {
 		if (
-			evt.relatedTarget
+			event.relatedTarget
 			&&
-			evt.target.closest( 'a' ) === evt.relatedTarget.closest( 'a' )
+			event.target.closest( 'a' ) === event.relatedTarget.closest( 'a' )
 			||
 			this.addLinkTimeoutId
 		) {
@@ -195,15 +222,15 @@ class RocketPreloadPages {
 		}
 	}
 
-	_resetAddLinkTask() {
-		if ( ! this.addLinkTimeoutId ) {
-			return;
-		}
-
-		clearTimeout( this.addLinkTimeoutId );
-		this.addLinkTimeoutId = null;
-	}
-
+	/**
+	 * Checks if the given link element is okay to process.
+	 *
+	 * @private
+	 *
+	 * @param mixed linkElem The element to check.
+	 *
+	 * @returns {boolean}
+	 */
 	_isLinkOk( linkElem ) {
 		if ( null === linkElem || typeof linkElem !== 'object' ) {
 			return false;
@@ -214,6 +241,20 @@ class RocketPreloadPages {
 		}
 
 		return ! this.processedLinks.has( linkElem.href );
+	}
+
+	/**
+	 * Resets the add link task.
+	 *
+	 * @private
+	 */
+	_resetAddLinkTask() {
+		if ( ! this.addLinkTimeoutId ) {
+			return;
+		}
+
+		clearTimeout( this.addLinkTimeoutId );
+		this.addLinkTimeoutId = null;
 	}
 }
 
