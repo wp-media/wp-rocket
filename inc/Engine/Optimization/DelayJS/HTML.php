@@ -50,6 +50,10 @@ class HTML {
 
 		$this->allowed_scripts = $this->prepare_allowed_scripts_regex();
 
+		if ( empty( $this->allowed_scripts ) ){
+			return $html;
+		}
+
 		return $this->parse( $html );
 	}
 
@@ -69,11 +73,7 @@ class HTML {
 			return false;
 		}
 
-		if ( ! $this->options->get( 'delay_js' ) ) {
-			return false;
-		}
-
-		return true;
+		return (bool) $this->options->get( 'delay_js', 0 );
 	}
 
 	/**
@@ -84,8 +84,7 @@ class HTML {
 	 * @return string
 	 */
 	private function parse( $html ) {
-		$regex_pattern = '<script\s*(?<attr>[^>]*)?>(?<content>.*)?<\/script>';
-		return preg_replace_callback( '/' . $regex_pattern . '/Uis', [ $this, 'replace_scripts' ], $html );
+		return preg_replace_callback( '/<script\s*(?<attr>[^>]*)?>(?<content>.*)?<\/script>/Uis', [ $this, 'replace_scripts' ], $html );
 	}
 
 	/**

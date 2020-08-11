@@ -89,7 +89,7 @@ class Subscriber implements Subscriber_Interface {
 
 		wp_add_inline_script(
 			'rocket-delay-js',
-			$this->filesystem->get_contents( rocket_get_constant( 'WP_ROCKET_PATH' ) . 'assets/js/' . $script_filename )
+			$this->filesystem->get_contents( rocket_get_constant( 'WP_ROCKET_PATH' ) . "assets/js/{$script_filename}" )
 		);
 	}
 
