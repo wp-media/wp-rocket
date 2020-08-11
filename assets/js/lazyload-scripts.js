@@ -74,17 +74,23 @@ class RocketLazyLoadScripts {
 		this._loadScriptSrc();
 		this._removeEventListener( this );
 	}
+
+	/**
+	 * Named static constructor to encapsulate how to create the object.
+	 */
+	static run() {
+		const browser = new RocketBrowserCompatabilityChecker( { passive: true } );
+		const instance = new RocketLazyLoadScripts(
+			[
+				'keydown',
+				'mouseover',
+				'touchmove',
+				'touchstart'
+			],
+			browser
+		);
+		instance.init();
+	}
 }
 
-const rocketBrowserCompatabilityChecker = new RocketBrowserCompatabilityChecker( { passive: true } );
-const rocketLazyLoadScripts = new RocketLazyLoadScripts(
-	[
-		'keydown',
-		'mouseover',
-		'touchmove',
-		'touchstart'
-	],
-	rocketBrowserCompatabilityChecker
-);
-
-rocketLazyLoadScripts.init();
+RocketLazyLoadScripts.run();
