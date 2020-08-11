@@ -16,6 +16,15 @@ class HTML {
 	protected $options;
 
 	/**
+	 * Allowed scripts regex.
+	 *
+	 * @since 3.7
+	 *
+	 * @var string
+	 */
+	private $allowed_scripts = '';
+
+	/**
 	 * Creates an instance of HTML.
 	 *
 	 * @since  3.7
@@ -38,6 +47,8 @@ class HTML {
 		if ( ! $this->is_allowed() ) {
 			return $html;
 		}
+
+		$this->allowed_scripts = $this->prepare_allowed_scripts_regex();
 
 		return $this->parse( $html );
 	}
@@ -89,14 +100,13 @@ class HTML {
 	 * @return string
 	 */
 	public function replace_scripts( $matches ) {
-		$allowed_scripts = $this->prepare_allowed_scripts_regex();
 		if (
-			empty( $allowed_scripts )
+			empty( $this->allowed_scripts )
 			||
 			(
-				! empty( $allowed_scripts )
+				! empty( $this->allowed_scripts )
 				&&
-				! preg_match( '#(' . $allowed_scripts . ')#', $matches[0] )
+				! preg_match( '#(' . $this->allowed_scripts . ')#', $matches[0] )
 			)
 		) {
 			return $matches[0];
