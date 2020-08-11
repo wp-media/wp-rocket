@@ -58,23 +58,32 @@ return [
 			],
 		],
 
-		'shouldProcessDelayURLScript' => [
+//		'shouldProcessDelayURLScript' => [
+//			'config'   => [
+//				'html'        => '<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js"></script>',
+//				'do-not-optimize'      => false,
+//				'do-not-delay-const'   => false,
+//				'do-not-delay-setting' => 1,
+//				'allowed-scripts'      => ['https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js'],
+//			],
+//			'expected' => [
+//				'html' => '<script data-rocketlazyloadscript=\'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js\' ></script>',
+//			],
+//		],
+
+		'shouldProcessDelayInlineScript' => [
 			'config'   => [
-				'html'        => '<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js"></script>',
+				'html'        => '<script type="text/javascript">alert("Be alert! We need more lerts!");)</script>',
 				'do-not-optimize'      => false,
 				'do-not-delay-const'   => false,
 				'do-not-delay-setting' => 1,
-				'allowed-scripts'      => ['https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js'],
+				'allowed-scripts'      => ['alert("Be alert! We need more lerts!");'],
 			],
 			'expected' => [
-				'html' => '<script data-rocketlazyloadscript=\'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js\' ></script>',
+				'html' => '<script data-rocketlazyloadscript=\'alert("Be alert! We need more lerts!");\' type="text/javascript"></script>',
 			],
 		],
 
-	//	'shouldProcessDelayInlineScript' => [
-	//
-	//	],
-	//
 	//	'shouldIgnoreScriptsNotAllowed' => [
 	//
 	//	],
