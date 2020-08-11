@@ -34,18 +34,30 @@ class Test_DelayJs extends FilesystemTestCase {
 		$allowed_scripts = isset( $config['allowed-scripts'] ) ? $config['allowed-scripts'] : [];
 
 		$this->donotrocketoptimize       = isset( $config['do-not-optimize'] )    ? $config['do-not-optimize']    : false;
-		$this->constants['donotdelayjs'] = isset( $config['do-not-delay-const'] ) ? $config['do-not-delay-const'] : false;
+		$this->constants['DONOTDELAYJS'] = isset( $config['do-not-delay-const'] ) ? $config['do-not-delay-const'] : false;
 
-		$this->options->shouldReceive( 'get' )
-			->with( 'delay_js' )
-			->zeroOrMoreTimes()
-			->andReturn( $config['do-not-delay-setting'] );
+		if ( $this->donotrocketoptimize || $this->constants['DONOTDELAYJS'] ) {
+			$this->options->shouldReceive( 'get' )
+			              ->with( 'delay_js' )
+			              ->never();
 
-		$this->options->shouldReceive( 'get' )
-			->with( 'delay_js_scripts', [] )
-			->zeroOrMoreTimes()
-			->andReturn( $allowed_scripts );
+			$this->options->shouldReceive( 'get' )
+			              ->with( 'delay_js_scripts', [] )
+			              ->never();
+		}else{
+			$this->options->shouldReceive( 'get' )
+			              ->with( 'delay_js' )
+			              ->once()
+			              ->andReturn( $config['do-not-delay-setting'] );
 
+			if ( $config['do-not-delay-setting'] ) {
+				$this->options->shouldReceive( 'get' )
+				              ->with( 'delay_js_scripts', [] )
+				              ->once()
+				              ->andReturn( $allowed_scripts );
+			}
+
+		}
 
 		$html           = new HTML( $this->options );
 		$subscriber     = new Subscriber( $html, $this->filesystem );
