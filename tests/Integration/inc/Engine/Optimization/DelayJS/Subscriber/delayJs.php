@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\DelayJS\Subscriber;
 
-use WP_Rocket\Tests\Integration\TestCase;
+use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\DelayJS\Subscriber::delay_js
@@ -11,7 +11,8 @@ use WP_Rocket\Tests\Integration\TestCase;
  *
  * @uses   rocket_get_constant()
  */
-class Test_DelayJs extends TestCase {
+class Test_DelayJs extends FilesystemTestCase {
+	protected $path_to_test_data = '/inc/Engine/Optimization/DelayJS/Subscriber/delayJs.php';
 
 	private $options_data = [];
 
@@ -23,7 +24,7 @@ class Test_DelayJs extends TestCase {
 	}
 
 	/**
-	 * @dataProvider configTestData
+	 * @dataProvider providerTestData
 	 */
 	public function testShouldProcessScriptHTML( $config, $expected ) {
 		$this->donotrocketoptimize       = isset( $config['do-not-optimize'] )    ? $config['do-not-optimize']    : false;
