@@ -18,6 +18,7 @@ class Test_AddDelayJsScript extends TestCase {
 	public function tearDown() {
 		parent::tearDown();
 
+		unset( $GLOBALS['wp'] );
 		remove_filter( 'pre_get_rocket_option_delay_js', [ $this, 'set_delay_js_option' ] );
 	}
 
@@ -25,12 +26,26 @@ class Test_AddDelayJsScript extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldProcessScriptHTML( $config, $expected ) {
+		$bypass = isset( $config['bypass'] ) ? $config['bypass'] : false;
+
 		$this->donotrocketoptimize       = isset( $config['do-not-optimize'] )    ? $config['do-not-optimize']    : false;
 		$this->constants['DONOTDELAYJS'] = isset( $config['do-not-delay-const'] ) ? $config['do-not-delay-const'] : false;
 
 		$this->delay_js = isset( $config['do-not-delay-setting'] ) ? $config['do-not-delay-setting'] : false;
 
 		add_filter( 'pre_get_rocket_option_delay_js', [ $this, 'set_delay_js_option' ] );
+
+		$GLOBALS['wp'] = (object) [
+			'query_vars' => [],
+			'request'    => 'http://example.org',
+			'public_query_vars' => [
+				'embed',
+			],
+		];
+
+		if ( $bypass ) {
+			$GLOBALS['wp']->query_vars['nowprocket'] = 1;
+		}
 
 		do_action( 'wp_enqueue_scripts' );
 

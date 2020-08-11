@@ -50,6 +50,10 @@ class HTML {
 	 * @return bool
 	 */
 	public function is_allowed() {
+		if ( rocket_bypass() ) {
+			return false;
+		}
+
 		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
 			return false;
 		}

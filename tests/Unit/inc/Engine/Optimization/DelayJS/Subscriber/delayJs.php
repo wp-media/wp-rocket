@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\DelayJS\Subscriber;
 
 use Mockery;
+use Brain\Monkey\Functions;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\DelayJS\HTML;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
@@ -30,13 +31,18 @@ class Test_DelayJs extends FilesystemTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldProcessScriptHTML( $config, $expected ) {
-
+		$bypass          = isset( $config['bypass'] ) ? $config['bypass'] : false;
 		$allowed_scripts = isset( $config['allowed-scripts'] ) ? $config['allowed-scripts'] : [];
+
+		Functions\expect( 'rocket_bypass' )
+			->atMost()
+			->once()
+			->andReturn( $bypass );
 
 		$this->donotrocketoptimize       = isset( $config['do-not-optimize'] )    ? $config['do-not-optimize']    : false;
 		$this->constants['DONOTDELAYJS'] = isset( $config['do-not-delay-const'] ) ? $config['do-not-delay-const'] : false;
 
-		if ( $this->donotrocketoptimize || $this->constants['DONOTDELAYJS'] ) {
+		if ( $this->donotrocketoptimize || $this->constants['DONOTDELAYJS'] || $bypass ) {
 			$this->options->shouldReceive( 'get' )
 			              ->with( 'delay_js' )
 			              ->never();

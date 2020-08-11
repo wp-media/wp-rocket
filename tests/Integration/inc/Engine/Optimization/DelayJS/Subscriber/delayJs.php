@@ -19,6 +19,7 @@ class Test_DelayJs extends FilesystemTestCase {
 	public function tearDown() {
 		parent::tearDown();
 
+		unset( $GLOBALS['wp'] );
 		remove_filter( 'pre_get_rocket_option_delay_js', [ $this, 'set_delay_js_option' ] );
 		remove_filter( 'pre_get_rocket_option_delay_js_scripts', [ $this, 'set_delay_js_scripts_option' ] );
 	}
@@ -27,6 +28,8 @@ class Test_DelayJs extends FilesystemTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldProcessScriptHTML( $config, $expected ) {
+		$bypass = isset( $config['bypass'] ) ? $config['bypass'] : false;
+
 		$this->donotrocketoptimize       = isset( $config['do-not-optimize'] )    ? $config['do-not-optimize']    : false;
 		$this->constants['donotdelayjs'] = isset( $config['do-not-delay-const'] ) ? $config['do-not-delay-const'] : false;
 
@@ -37,6 +40,18 @@ class Test_DelayJs extends FilesystemTestCase {
 
 		add_filter( 'pre_get_rocket_option_delay_js'         , [ $this, 'set_delay_js_option' ] );
 		add_filter( 'pre_get_rocket_option_delay_js_scripts' , [ $this, 'set_delay_js_scripts_option' ] );
+
+		$GLOBALS['wp'] = (object) [
+			'query_vars' => [],
+			'request'    => 'http://example.org',
+			'public_query_vars' => [
+				'embed',
+			],
+		];
+
+		if ( $bypass ) {
+			$GLOBALS['wp']->query_vars['nowprocket'] = 1;
+		}
 
 		$actual = $this->getActualHtml( $config['html'] );
 

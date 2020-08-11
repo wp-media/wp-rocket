@@ -84,6 +84,20 @@ return [
 			],
 		],
 
+		'shouldNotProcessDelayJsScriptWhenBypass' => [
+			'config'   => [
+				'html'        => '<script type="text/javascript" data-any="value">alert("Be alert! We need more lerts!");</script>',
+				'do-not-optimize'      => false,
+				'do-not-delay-const'   => false,
+				'do-not-delay-setting' => 1,
+				'allowed-scripts'      => ['alert("Be alert! We need more lerts!")'],
+				'bypass'               => true
+			],
+			'expected' => [
+				'html' => '<script type="text/javascript" data-any="value">alert("Be alert! We need more lerts!");</script>',
+			],
+		],
+
 	//	'shouldIgnoreScriptsNotAllowed' => [
 	//
 	//	],
