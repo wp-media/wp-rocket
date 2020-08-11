@@ -43,7 +43,7 @@ class Test_DelayJs extends FilesystemTestCase {
 
 		$this->options->shouldReceive( 'get' )
 			->with( 'delay_js_scripts', [] )
-			->once()
+			->zeroOrMoreTimes()
 			->andReturn( $allowed_scripts );
 
 
