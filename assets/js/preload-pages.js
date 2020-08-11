@@ -100,6 +100,8 @@ class RocketPreloadPages {
 
 	_addEventListeners( self ) {
 		document.addEventListener( 'mouseover', self.triggerOnHover.bind( self ), self.listenerOptions );
+
+		document.addEventListener( 'mousedown', self.triggerOnClick.bind( self ), self.listenerOptions );
 	}
 
 	/**
@@ -139,6 +141,14 @@ class RocketPreloadPages {
 			},
 			self.triggerDelay
 		);
+	}
+
+	triggerOnClick( evt ) {
+		const linkElem = evt.target.closest( 'a' );
+		if ( ! this._isLinkOk( linkElem ) ) {
+			return;
+		}
+		this.addPrefetchLink( linkElem.href );
 	}
 
 	resetOnHover( evt ) {
