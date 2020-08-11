@@ -28,12 +28,10 @@ class Test_DelayJs extends FilesystemTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldProcessScriptHTML( $config, $expected ) {
-		$bypass = isset( $config['bypass'] ) ? $config['bypass'] : false;
+		$bypass                    = isset( $config['bypass'] ) ? $config['bypass'] : false;
+		$this->donotrocketoptimize = isset( $config['do-not-optimize'] )    ? $config['do-not-optimize']    : false;
 
-		$this->donotrocketoptimize       = isset( $config['do-not-optimize'] )    ? $config['do-not-optimize']    : false;
-		$this->constants['donotdelayjs'] = isset( $config['do-not-delay-const'] ) ? $config['do-not-delay-const'] : false;
-
-		$this->options_data = [
+		$this->options_data        = [
 			'delay_js'         => isset( $config['do-not-delay-setting'] ) ? $config['do-not-delay-setting'] : false,
 			'delay_js_scripts' => isset( $config['allowed-scripts'] )      ? $config['allowed-scripts']      : []
 		];

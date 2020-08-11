@@ -24,21 +24,7 @@ return [
 			'config'   => [
 				'html'                 => '<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js">',
 				'do-not-optimize'      => true,
-				'do-not-delay-const'   => false,
 				'do-not-delay-setting' => 1,
-			],
-			'expected' => [
-				'html' => '<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js">',
-			],
-		],
-
-		'shouldDoNothingWhenDelayConstEnabled' => [
-			'config'   => [
-				'html'                 => '<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js">',
-				'do-not-optimize'      => false,
-				'do-not-delay-const'   => true,
-				'do-not-delay-setting' => 1,
-				'allowed-scripts'      => [],
 			],
 			'expected' => [
 				'html' => '<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js">',
@@ -49,7 +35,6 @@ return [
 			'config'   => [
 				'html'                 => '<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js">',
 				'do-not-optimize'      => false,
-				'do-not-delay-const'   => false,
 				'do-not-delay-setting' => 0,
 				'allowed-scripts'      => [],
 			],
@@ -62,7 +47,6 @@ return [
 			'config'   => [
 				'html'                 => '<script type="text/javascript" data-any="value">alert("Be alert! We need more lerts!");</script>',
 				'do-not-optimize'      => false,
-				'do-not-delay-const'   => false,
 				'do-not-delay-setting' => 1,
 				'allowed-scripts'      => [ 'alert("Be alert! We need more lerts!")' ],
 				'bypass'               => true
@@ -76,7 +60,6 @@ return [
 			'config'   => [
 				'html'                 => '<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js"></script>',
 				'do-not-optimize'      => false,
-				'do-not-delay-const'   => false,
 				'do-not-delay-setting' => 1,
 				'allowed-scripts'      => [ 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js' ],
 			],
@@ -89,7 +72,6 @@ return [
 			'config'   => [
 				'html'                 => '<script type="text/javascript" data-any="value">alert("Be alert! We need more lerts!");</script>',
 				'do-not-optimize'      => false,
-				'do-not-delay-const'   => false,
 				'do-not-delay-setting' => 1,
 				'allowed-scripts'      => [ 'alert("Be alert! We need more lerts!")' ],
 			],
@@ -104,7 +86,6 @@ return [
 <script data-ignore-me="this script should be ignored!" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js"></script>
 <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>',
 				'do-not-optimize'      => false,
-				'do-not-delay-const'   => false,
 				'do-not-delay-setting' => 1,
 				'allowed-scripts'      => [
 					'alert("Be alert! We need more lerts!")',

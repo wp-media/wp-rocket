@@ -39,10 +39,9 @@ class Test_DelayJs extends FilesystemTestCase {
 			->once()
 			->andReturn( $bypass );
 
-		$this->donotrocketoptimize       = isset( $config['do-not-optimize'] )    ? $config['do-not-optimize']    : false;
-		$this->constants['DONOTDELAYJS'] = isset( $config['do-not-delay-const'] ) ? $config['do-not-delay-const'] : false;
+		$this->donotrocketoptimize = isset( $config['do-not-optimize'] )    ? $config['do-not-optimize']    : false;
 
-		if ( $this->donotrocketoptimize || $this->constants['DONOTDELAYJS'] || $bypass ) {
+		if ( $this->donotrocketoptimize || $bypass ) {
 			$this->options->shouldReceive( 'get' )
 			              ->with( 'delay_js' )
 			              ->never();

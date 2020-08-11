@@ -26,12 +26,9 @@ class Test_AddDelayJsScript extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldProcessScriptHTML( $config, $expected ) {
-		$bypass = isset( $config['bypass'] ) ? $config['bypass'] : false;
-
-		$this->donotrocketoptimize       = isset( $config['do-not-optimize'] )    ? $config['do-not-optimize']    : false;
-		$this->constants['DONOTDELAYJS'] = isset( $config['do-not-delay-const'] ) ? $config['do-not-delay-const'] : false;
-
-		$this->delay_js = isset( $config['do-not-delay-setting'] ) ? $config['do-not-delay-setting'] : false;
+		$bypass                    = isset( $config['bypass'] ) ? $config['bypass'] : false;
+		$this->donotrocketoptimize = isset( $config['do-not-optimize'] )    ? $config['do-not-optimize']    : false;
+		$this->delay_js            = isset( $config['do-not-delay-setting'] ) ? $config['do-not-delay-setting'] : false;
 
 		add_filter( 'pre_get_rocket_option_delay_js', [ $this, 'set_delay_js_option' ] );
 

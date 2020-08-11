@@ -69,10 +69,6 @@ class HTML {
 			return false;
 		}
 
-		if ( rocket_get_constant( 'DONOTDELAYJS' ) ) {
-			return false;
-		}
-
 		if ( ! $this->options->get( 'delay_js' ) ) {
 			return false;
 		}
