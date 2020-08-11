@@ -82,6 +82,7 @@ class RocketPreloadPages {
 			return;
 		}
 
+		this.hrefSet.add( window.location.href );
 		this._addEventListeners( this );
 	}
 
