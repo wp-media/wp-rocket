@@ -102,6 +102,7 @@ class RocketPreloadPages {
 		document.addEventListener( 'mouseover', self.triggerOnHover.bind( self ), self.listenerOptions );
 
 		document.addEventListener( 'mousedown', self.triggerOnClick.bind( self ), self.listenerOptions );
+		document.addEventListener( 'touchstart', self.triggerOnTap.bind( self ), self.listenerOptions );
 	}
 
 	/**
@@ -148,9 +149,14 @@ class RocketPreloadPages {
 		if ( ! this._isLinkOk( linkElem ) ) {
 			return;
 		}
-		this.addPrefetchLink( linkElem.href );
 
+		this.addPrefetchLink( linkElem.href );
 		this._resetAddLinkTask();
+	}
+
+	triggerOnTap( evt ) {
+		this.eventTime = performance.now();
+		this.triggerOnClick(evt);
 	}
 
 	resetOnHover( evt ) {
