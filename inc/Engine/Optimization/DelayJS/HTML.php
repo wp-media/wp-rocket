@@ -22,7 +22,7 @@ class HTML {
 	 *
 	 * @var string
 	 */
-	protected $allowed_scripts = '';
+	protected $allowed_scripts = 'default';
 
 	/**
 	 * Creates an instance of HTML.
