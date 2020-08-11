@@ -79,6 +79,11 @@ class RocketLazyLoadScripts {
 	 * Named static constructor to encapsulate how to create the object.
 	 */
 	static run() {
+		// Bail out if the browser checker does not exist.
+		if ( ! RocketBrowserCompatabilityChecker ) {
+			return;
+		}
+
 		const browser = new RocketBrowserCompatabilityChecker( { passive: true } );
 		const instance = new RocketLazyLoadScripts(
 			[
