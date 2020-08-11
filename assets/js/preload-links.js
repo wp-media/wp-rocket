@@ -57,6 +57,21 @@ class RocketBrowserCompatabilityChecker {
 			window.cancelIdleCallback = ( id ) => clearTimeout( id );
 		}
 	}
+
+	/**
+	 * Detects if data saver mode is on.
+	 *
+	 * @link https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/save-data/#detecting_the_save-data_setting
+	 *
+	 * @returns {boolean|boolean}
+	 */
+	isDataSaverModeOn() {
+		return (
+			'connection' in navigator
+			&&
+			true === navigator.connection.saveData
+		);
+	}
 }
 
 class RocketPreloadPages {
@@ -78,7 +93,7 @@ class RocketPreloadPages {
 	 * Initializes the handler.
 	 */
 	init() {
-		if ( ! this.doesBrowserSupport() ) {
+		if ( ! this.doesBrowserSupport() || this.browser.isDataSaverModeOn() ) {
 			return;
 		}
 
