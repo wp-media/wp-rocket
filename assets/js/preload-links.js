@@ -1,4 +1,4 @@
-class RocketPreloadPages {
+class RocketPreloadLinks {
 
 	constructor( browser ) {
 		this.browser = browser;
@@ -171,9 +171,9 @@ class RocketPreloadPages {
 		};
 
 		const browser = new RocketBrowserCompatabilityChecker( options );
-		const instance = new RocketPreloadPages( browser );
+		const instance = new RocketPreloadLinks( browser );
 		instance.init();
 	}
 }
 
-RocketPreloadPages.run();
+RocketPreloadLinks.run();
