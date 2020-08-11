@@ -71,7 +71,7 @@ class RocketPreloadPages {
 		this.listenerThreshold = 1111;
 
 		// A pause to prevent adding link when hover is too fast.
-		this.onHoverDelayTime = 250; // milliseconds.
+		this.onHoverDelayTime = 500; // milliseconds.
 	}
 
 	/**
@@ -192,7 +192,7 @@ class RocketPreloadPages {
 			return false;
 		}
 
-		return true;
+		return ! this.hrefSet.has( linkElem.href );
 	}
 }
 
