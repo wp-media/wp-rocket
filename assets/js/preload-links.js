@@ -152,7 +152,7 @@ class RocketPreloadPages {
 			return;
 		}
 
-		this.addPrefetchLink( linkElem.href );
+		this._addPrefetchLink( linkElem.href );
 		this._resetAddLinkTask();
 	}
 
