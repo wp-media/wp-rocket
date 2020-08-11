@@ -32,6 +32,31 @@ class RocketBrowserCompatabilityChecker {
 			self.passiveSupported = false;
 		}
 	}
+
+	/**
+	 * Checks if the browser supports requestIdleCallback and cancelIdleCallback. If no, shims its behavior with a polyfills.
+	 *
+	 * @link @link https://developers.google.com/web/updates/2015/08/using-requestidlecallback
+	 */
+	initRequestIdleCallback() {
+		if ( ! 'requestIdleCallback' in window ) {
+			window.requestIdleCallback = ( cb ) => {
+				const start = Date.now();
+				return setTimeout( () => {
+					cb( {
+						didTimeout: false,
+						timeRemaining: function timeRemaining() {
+							return Math.max( 0, 50 - ( Date.now() - start ) );
+						}
+					} );
+				}, 1 );
+			};
+		}
+
+		if ( ! 'cancelIdleCallback' in window ) {
+			window.cancelIdleCallback = ( id ) => clearTimeout( id );
+		}
+	}
 }
 
 class RocketPreloadPages {
@@ -106,7 +131,7 @@ class RocketPreloadPages {
 		}
 
 		const self = this;
-		linkElem.addEventListener( 'mouseout', self.resetOnHover.bind(self), { passive: true } );
+		linkElem.addEventListener( 'mouseout', self.resetOnHover.bind( self ), { passive: true } );
 
 		this.timeoutId = setTimeout( () => {
 				this._addPrefetchLink( linkElem.href );
