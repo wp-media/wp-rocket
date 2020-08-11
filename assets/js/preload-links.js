@@ -96,8 +96,8 @@ class RocketBrowserCompatabilityChecker {
 
 class RocketPreloadPages {
 
-	constructor( options ) {
-		this.browser = new RocketBrowserCompatabilityChecker( options );
+	constructor( browser ) {
+		this.browser = browser;
 		this.listenerOptions = this.browser.options;
 
 		this.processedLinks = new Set;
@@ -256,12 +256,20 @@ class RocketPreloadPages {
 		clearTimeout( this.addLinkTimeoutId );
 		this.addLinkTimeoutId = null;
 	}
+
+	/**
+	 * Named static constructor to encapsulate how to create the object.
+	 */
+	static run() {
+		const options = {
+			capture: true,
+			passive: true
+		};
+
+		const browser = new RocketBrowserCompatabilityChecker( options );
+		const instance = new RocketPreloadPages( browser );
+		instance.init();
+	}
 }
 
-const rocketPreloadPages = new RocketPreloadPages(
-	{
-		capture: true,
-		passive: true
-	}
-);
-rocketPreloadPages.init();
+RocketPreloadPages.run();
