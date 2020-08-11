@@ -101,9 +101,7 @@ class HTML {
 		$src = '';
 
 		if ( ! empty( $matches['attr'] ) ) {
-			// Search on src attribute on it.
-			$src_count = preg_match( '/src=(["\'])(.*?)\1/', $matches['attr'], $src_matches );
-			if ( false !== $src_count ) {
+			if ( isset( $src_matches[2] ) ) {
 				$src = $src_matches[2];
 
 				// Remove the src attribute.
