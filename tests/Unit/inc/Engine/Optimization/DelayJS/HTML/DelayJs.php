@@ -36,13 +36,13 @@ class Test_Optimize extends TestCase {
 		$this->constants['donotdelayjs'] = $config['do-not-delay-const'];
 
 		$this->options->shouldReceive( 'get' )
-			->zeroOrMoreTimes()
 			->with( 'delay_js' )
+			->zeroOrMoreTimes()
 			->andReturn( $config['do-not-delay-setting'] );
 
 		$this->options->shouldReceive( 'get' )
-			->once()
 			->with( 'delay_js_scripts', [] )
+			->once()
 			->andReturn( $allowed_scripts );
 
 
@@ -52,7 +52,4 @@ class Test_Optimize extends TestCase {
 		$this->assertSame( $expected['html'], $processed_html );
 	}
 
-	public function addDataProvider() {
-		return $this->getTestData( __DIR__, 'DelayJs' );
-	}
 }
