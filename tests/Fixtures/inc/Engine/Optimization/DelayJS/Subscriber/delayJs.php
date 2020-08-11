@@ -58,18 +58,32 @@ return [
 			],
 		],
 
-//		'shouldProcessDelayURLScript' => [
-//			'config'   => [
-//				'html'        => '<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js"></script>',
-//				'do-not-optimize'      => false,
-//				'do-not-delay-const'   => false,
-//				'do-not-delay-setting' => 1,
-//				'allowed-scripts'      => ['https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js'],
-//			],
-//			'expected' => [
-//				'html' => '<script data-rocketlazyloadscript=\'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js\' ></script>',
-//			],
-//		],
+		'shouldNotProcessDelayJsScriptWhenBypass' => [
+			'config'   => [
+				'html'        => '<script type="text/javascript" data-any="value">alert("Be alert! We need more lerts!");</script>',
+				'do-not-optimize'      => false,
+				'do-not-delay-const'   => false,
+				'do-not-delay-setting' => 1,
+				'allowed-scripts'      => ['alert("Be alert! We need more lerts!")'],
+				'bypass'               => true
+			],
+			'expected' => [
+				'html' => '<script type="text/javascript" data-any="value">alert("Be alert! We need more lerts!");</script>',
+			],
+		],
+
+		'shouldProcessDelayURLScript' => [
+			'config'   => [
+				'html'        => '<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js"></script>',
+				'do-not-optimize'      => false,
+				'do-not-delay-const'   => false,
+				'do-not-delay-setting' => 1,
+				'allowed-scripts'      => ['https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js'],
+			],
+			'expected' => [
+				'html' => '<script data-rocketlazyloadscript=\'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js\' ></script>',
+			],
+		],
 
 		'shouldProcessDelayInlineScript' => [
 			'config'   => [
@@ -84,19 +98,6 @@ return [
 			],
 		],
 
-		'shouldNotProcessDelayJsScriptWhenBypass' => [
-			'config'   => [
-				'html'        => '<script type="text/javascript" data-any="value">alert("Be alert! We need more lerts!");</script>',
-				'do-not-optimize'      => false,
-				'do-not-delay-const'   => false,
-				'do-not-delay-setting' => 1,
-				'allowed-scripts'      => ['alert("Be alert! We need more lerts!")'],
-				'bypass'               => true
-			],
-			'expected' => [
-				'html' => '<script type="text/javascript" data-any="value">alert("Be alert! We need more lerts!");</script>',
-			],
-		],
 
 	//	'shouldIgnoreScriptsNotAllowed' => [
 	//

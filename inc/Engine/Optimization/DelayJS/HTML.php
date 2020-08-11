@@ -105,7 +105,7 @@ class HTML {
 		$src = '';
 
 		if ( ! empty( $matches['attr'] ) ) {
-			if ( isset( $src_matches[2] ) ) {
+			if ( preg_match( '/src=(["\'])(.*?)\1/', $matches['attr'], $src_matches ) ) {
 				$src = $src_matches[2];
 
 				// Remove the src attribute.
