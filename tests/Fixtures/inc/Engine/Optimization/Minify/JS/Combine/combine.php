@@ -105,6 +105,57 @@ EXPECTED_HTML
 			'site_url' => 'http://example.org',
 		],
 
+		'combineJsFilesExceptDelayed' => [
+			'original' => <<<ORIGINAL_HTML
+<html>
+	<head>
+		<title>Sample Page</title>
+		<script type="text/javascript" data-rocketlazyloadscript="http://example.org/wp-content/themes/twentytwenty/assets/script.js"></script>
+		<script type="text/javascript" src="http://example.org/wp-content/plugins/hello-dolly/script.js"></script>
+		<script>
+		document.getElementById("demo").innerHTML = "Hello JavaScript!";
+		</script>
+		<script data-rocketlazyloadscript="data:text/javascript;base64,YWxlcnQoIkJlIGFsZXJ0ISBXZSBuZWVkIG1vcmUgbGVydHMhIik7"></script>
+		<script>
+		nonce = "nonce";
+		</script>
+	</head>
+	<body>
+	</body>
+</html>
+ORIGINAL_HTML
+			,
+
+			'expected' => [
+				'html' => <<<EXPECTED_HTML
+<html>
+	<head>
+		<title>Sample Page</title>
+		<script type="text/javascript" data-rocketlazyloadscript="http://example.org/wp-content/themes/twentytwenty/assets/script.js"></script>
+		<script data-rocketlazyloadscript="data:text/javascript;base64,YWxlcnQoIkJlIGFsZXJ0ISBXZSBuZWVkIG1vcmUgbGVydHMhIik7"></script>
+		<script>
+		nonce = "nonce";
+		</script>
+	</head>
+	<body>
+<script src="http://example.org/wp-content/cache/min/1/790c5ff3a394635b5136e2e9409bacbc.js" data-minify="1">
+</script>
+	</body>
+</html>
+EXPECTED_HTML
+				,
+
+				'files' => [
+					'wp-content/cache/min/1/790c5ff3a394635b5136e2e9409bacbc.js',
+					'wp-content/cache/min/1/790c5ff3a394635b5136e2e9409bacbc.js.gz',
+				],
+			],
+
+			'cdn_host' => [],
+			'cdn_url'  => 'http://example.org',
+			'site_url' => 'http://example.org',
+		],
+
 		'combineJsFiles_andUseCdnUrl' => [
 			'original' => <<<ORIGINAL_HTML
 <html>

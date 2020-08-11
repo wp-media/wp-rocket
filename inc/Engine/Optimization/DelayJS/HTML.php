@@ -50,7 +50,7 @@ class HTML {
 
 		$this->allowed_scripts = $this->prepare_allowed_scripts_regex();
 
-		if ( empty( $this->allowed_scripts ) ){
+		if ( empty( $this->allowed_scripts ) ) {
 			return $html;
 		}
 
