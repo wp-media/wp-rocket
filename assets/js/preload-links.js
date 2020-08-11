@@ -69,7 +69,9 @@ class RocketPreloadPages {
 		this.addLinkTimeoutId = null;
 		this.eventTime = null;
 		this.listenerThreshold = 1111;
-		this.triggerDelay = 65; // milliseconds.
+
+		// A pause to prevent adding link when hover is too fast.
+		this.onHoverDelayTime = 250; // milliseconds.
 	}
 
 	/**
@@ -140,7 +142,7 @@ class RocketPreloadPages {
 				this._addPrefetchLink( linkElem.href );
 				this.addLinkTimeoutId = undefined;
 			},
-			self.triggerDelay
+			this.onHoverDelayTime
 		);
 	}
 
