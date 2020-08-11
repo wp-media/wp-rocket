@@ -73,14 +73,14 @@ return [
 
 		'shouldProcessDelayInlineScript' => [
 			'config'   => [
-				'html'        => '<script type="text/javascript">alert("Be alert! We need more lerts!");)</script>',
+				'html'        => '<script type="text/javascript" data-any="value">alert("Be alert! We need more lerts!");</script>',
 				'do-not-optimize'      => false,
 				'do-not-delay-const'   => false,
 				'do-not-delay-setting' => 1,
-				'allowed-scripts'      => ['alert("Be alert! We need more lerts!");'],
+				'allowed-scripts'      => ['alert("Be alert! We need more lerts!")'],
 			],
 			'expected' => [
-				'html' => '<script data-rocketlazyloadscript=\'alert("Be alert! We need more lerts!");\' type="text/javascript"></script>',
+				'html' => '<script data-rocketlazyloadscript=\'data:text/javascript;base64,YWxlcnQoIkJlIGFsZXJ0ISBXZSBuZWVkIG1vcmUgbGVydHMhIik7\' type="text/javascript" data-any="value"></script>',
 			],
 		],
 

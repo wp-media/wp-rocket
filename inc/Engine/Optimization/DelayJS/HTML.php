@@ -107,7 +107,9 @@ class HTML {
 				// Remove the src attribute.
 				$matches[0] = str_replace( $src_matches[0], '', $matches[0] );
 			}
-		}else {
+		}
+
+		if ( empty( $src ) ) {
 			// Get the JS content.
 			if ( ! empty( $matches['content'] ) ) {
 				$src = 'data:text/javascript;base64,' . base64_encode( $matches['content'] );// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
