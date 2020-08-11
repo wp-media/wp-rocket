@@ -72,36 +72,13 @@ class RocketBrowserCompatabilityChecker {
 			true === navigator.connection.saveData
 		);
 	}
-}
-
-class RocketPreloadPages {
-
-	constructor( options ) {
-		this.browser = new RocketBrowserCompatabilityChecker( options );
-		this.listenerOptions = this.browser.options;
-
-		this.hrefSet = new Set;
-		this.addLinkTimeoutId = null;
-		this.eventTime = null;
-		this.listenerThreshold = 1111;
-
-		// A pause to prevent adding link when hover is too fast.
-		this.onHoverDelayTime = 500; // milliseconds.
-	}
 
 	/**
-	 * Initializes the handler.
+	 * Checks if the browser supports link prefetch.
+	 *
+	 * @returns {boolean|boolean}
 	 */
-	init() {
-		if ( ! this.doesBrowserSupport() || this.browser.isDataSaverModeOn() ) {
-			return;
-		}
-
-		this.hrefSet.add( window.location.href );
-		this._addEventListeners( this );
-	}
-
-	doesBrowserSupport() {
+	supportsLinkPrefetch() {
 		const elem = document.createElement( 'link' );
 		return (
 			elem.relList
@@ -114,6 +91,34 @@ class RocketPreloadPages {
 			&&
 			'isIntersecting' in IntersectionObserverEntry.prototype
 		);
+	}
+}
+
+class RocketPreloadPages {
+
+	constructor( options ) {
+		this.browser = new RocketBrowserCompatabilityChecker( options );
+		this.listenerOptions = this.browser.options;
+
+		this.processedLinks = new Set;
+		this.addLinkTimeoutId = null;
+		this.eventTime = null;
+		this.listenerThreshold = 1111;
+
+		// A pause to prevent adding link when hover is too fast.
+		this.onHoverDelayTime = 500; // milliseconds.
+	}
+
+	/**
+	 * Initializes the handler.
+	 */
+	init() {
+		if ( ! this.browser.supportsLinkPrefetch() || this.browser.isDataSaverModeOn() ) {
+			return;
+		}
+
+		this.processedLinks.add( window.location.href );
+		this._addEventListeners( this );
 	}
 
 	_addEventListeners( self ) {
@@ -129,16 +134,17 @@ class RocketPreloadPages {
 	 * @param string url The Given URL to prefetch.
 	 */
 	_addPrefetchLink( url ) {
-		if ( this.hrefSet.has( url ) ) {
+		if ( this.processedLinks.has( url ) ) {
 			return;
 		}
 
 		const elem = document.createElement( 'link' );
-
 		elem.rel = 'prefetch';
 		elem.href = url;
+
 		document.head.appendChild( elem );
-		this.hrefSet.add( url );
+
+		this.processedLinks.add( url );
 	}
 
 	triggerOnHover( evt ) {
@@ -207,7 +213,7 @@ class RocketPreloadPages {
 			return false;
 		}
 
-		return ! this.hrefSet.has( linkElem.href );
+		return ! this.processedLinks.has( linkElem.href );
 	}
 }
 
