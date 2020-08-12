@@ -64,7 +64,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 			 * @param bool true to activate, false to deactivate.
 			 */
 			if ( apply_filters( 'rocket_cache_wc_empty_cart', true ) ) {
-				$events['plugins_loaded']    = [ 'serve_cache_empty_cart', 11 ];
+				$events['after_setup_theme'] = [ 'serve_cache_empty_cart', 11 ];
 				$events['template_redirect'] = [ 'cache_empty_cart', -1 ];
 				$events['switch_theme']      = 'delete_cache_empty_cart';
 			}
