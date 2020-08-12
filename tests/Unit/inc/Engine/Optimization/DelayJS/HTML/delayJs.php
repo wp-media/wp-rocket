@@ -1,16 +1,15 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\DelayJS\Subscriber;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\DelayJS\HTML;
 
 use Mockery;
 use Brain\Monkey\Functions;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\DelayJS\HTML;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
-use WP_Rocket\Engine\Optimization\DelayJS\Subscriber;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DelayJS\Subscriber::delay_js
+ * @covers \WP_Rocket\Engine\Optimization\DelayJS\HTML::delay_js
  * @group  Optimize
  * @group  DelayJS
  *
@@ -65,8 +64,7 @@ class Test_DelayJs extends FilesystemTestCase {
 		}
 
 		$html           = new HTML( $this->options );
-		$subscriber     = new Subscriber( $html, $this->filesystem );
-		$processed_html = $subscriber->delay_js( $config['html'] );
+		$processed_html = $html->delay_js( $config['html'] );
 
 		$this->assertSame( $expected['html'], $processed_html );
 	}
