@@ -84,7 +84,7 @@ class RESTSubscriber implements Subscriber_Interface {
 						},
 					],
 				],
-				'permission_callback' => __return_true(),
+				'permission_callback' => '__return_true',
 			]
 		);
 	}
@@ -113,7 +113,7 @@ class RESTSubscriber implements Subscriber_Interface {
 						'validate_callback' => [ $this, 'validate_key' ],
 					],
 				],
-				'permission_callback' => __return_true(),
+				'permission_callback' => '__return_true',
 			]
 		);
 	}
