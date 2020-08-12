@@ -84,7 +84,6 @@ gulp.task('watch', function () {
 
 gulp.task('default', ['watch', 'sass', 'sass:watch']);
 
-
 /**
  * Compiles a standalone script file.
  *
