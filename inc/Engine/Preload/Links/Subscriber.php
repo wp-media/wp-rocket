@@ -61,13 +61,14 @@ class Subscriber implements Subscriber_Interface {
 		if ( ! wp_script_is( 'rocket-browser-checker' ) ) {
 			$checker_filename = rocket_get_constant( 'SCRIPT_DEBUG' ) ? 'browser-checker.js' : 'browser-checker.min.js';
 
-			wp_enqueue_script(
+			wp_register_script(
 				'rocket-browser-checker',
 				'',
 				[],
 				'',
 				true
 			);
+			wp_enqueue_script( 'rocket-browser-checker' );
 			wp_add_inline_script(
 				'rocket-browser-checker',
 				$this->filesystem->get_contents( "{$js_assets_path}{$checker_filename}" )
@@ -78,13 +79,16 @@ class Subscriber implements Subscriber_Interface {
 
 		// Register handle with no src to add the inline script after.
 		// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NoExplicitVersion
-		wp_enqueue_script(
+		wp_register_script(
 			'rocket-preload-links',
 			'',
-			[],
+			[
+				'rocket-browser-checker',
+			],
 			'',
 			true
 		);
+		wp_enqueue_script( 'rocket-preload-links' );
 		wp_add_inline_script(
 			'rocket-preload-links',
 			$this->filesystem->get_contents( "{$js_assets_path}{$preload_filename}" )
