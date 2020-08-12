@@ -1,19 +1,17 @@
 class RocketLazyLoadScripts {
 
-	constructor( triggerEvents ) {
-		this.passiveSupported = false;
+	constructor( triggerEvents, browser ) {
 		this.attrName = 'data-rocketlazyloadscript';
+		this.browser = browser;
+		this.options = this.browser.options;
 		this.triggerEvents = triggerEvents;
 		this.userEventListener = this.triggerListener.bind( this );
-		this._initOptions( this );
 	}
 
 	/**
 	 * Initializes the LazyLoad Scripts handler.
 	 */
 	init() {
-		this.options = this.passiveSupported ? { passive: true } : false;
-
 		this._addEventListener( this );
 	}
 
@@ -22,32 +20,6 @@ class RocketLazyLoadScripts {
 	 */
 	reset() {
 		this._removeEventListener( this );
-	}
-
-	/**
-	 * Initializes browser check for addEventListener passive option.
-	 *
-	 * @link https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#Safely_detecting_option_support
-	 * @private
-	 *
-	 * @param self Instance of this object.
-	 * @returns {boolean}
-	 */
-	_initOptions( self ) {
-		try {
-			const options = {
-				// This function will be called when the browser attempts to access the passive property.
-				get passive() {
-					self.passiveSupported = true;
-					return false;
-				}
-			};
-
-			window.addEventListener( 'test', null, options );
-			window.removeEventListener( 'test', null, options );
-		} catch ( err ) {
-			self.passiveSupported = false;
-		}
 	}
 
 	/**
@@ -102,15 +74,28 @@ class RocketLazyLoadScripts {
 		this._loadScriptSrc();
 		this._removeEventListener( this );
 	}
+
+	/**
+	 * Named static constructor to encapsulate how to create the object.
+	 */
+	static run() {
+		// Bail out if the browser checker does not exist.
+		if ( ! RocketBrowserCompatabilityChecker ) {
+			return;
+		}
+
+		const browser = new RocketBrowserCompatabilityChecker( { passive: true } );
+		const instance = new RocketLazyLoadScripts(
+			[
+				'keydown',
+				'mouseover',
+				'touchmove',
+				'touchstart'
+			],
+			browser
+		);
+		instance.init();
+	}
 }
 
-const rocketLazyLoadScripts = new RocketLazyLoadScripts(
-	[
-		'keydown',
-		'mouseover',
-		'touchmove',
-		'touchstart'
-	]
-);
-
-rocketLazyLoadScripts.init();
+RocketLazyLoadScripts.run();
