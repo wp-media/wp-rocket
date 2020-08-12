@@ -43,18 +43,25 @@ class Test_DequeueJqueryMigrate extends TestCase {
 	}
 
 	public function testShouldNotDequeueJqueryMigrate() {
+		global $wp_version;
 		add_filter( 'pre_get_rocket_option_dequeue_jquery_migrate', '__return_false' );
 
 		$this->wp_scripts->init();
 		$this->assertGreaterThan( $this->count, did_action( 'wp_default_scripts' ) );
 		$jquery_dependencies = $this->wp_scripts->registered['jquery']->deps;
 
-		$this->assertContains( 'jquery-migrate', $jquery_dependencies );
+		if ( version_compare( $wp_version, '5.5', '>=' ) ) {
+			$this->assertNotContains( 'jquery-migrate', $jquery_dependencies );
+		} else {
+			$this->assertContains( 'jquery-migrate', $jquery_dependencies );
+		}
 
 		remove_filter( 'pre_get_rocket_option_dequeue_jquery_migrate', '__return_false' );
 	}
 
 	public function testShouldNotDequeueJqueryMigrateWithDONOTROCKETOPTIMIZE() {
+		global $wp_version;
+
 		add_filter( 'pre_get_rocket_option_dequeue_jquery_migrate', '__return_true' );
 
 		Monkey\Functions\expect( 'rocket_get_constant' )
@@ -65,7 +72,11 @@ class Test_DequeueJqueryMigrate extends TestCase {
 		$this->assertGreaterThan( $this->count, did_action( 'wp_default_scripts' ) );
 		$jquery_dependencies = $this->wp_scripts->registered['jquery']->deps;
 
-		$this->assertContains( 'jquery-migrate', $jquery_dependencies );
+		if ( version_compare( $wp_version, '5.5', '>=' ) ) {
+			$this->assertNotContains( 'jquery-migrate', $jquery_dependencies );
+		} else {
+			$this->assertContains( 'jquery-migrate', $jquery_dependencies );
+		}
 
 		remove_filter( 'pre_get_rocket_option_dequeue_jquery_migrate', '__return_true' );
 	}
