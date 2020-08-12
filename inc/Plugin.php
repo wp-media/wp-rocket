@@ -195,6 +195,7 @@ class Plugin {
 			'dequeue_jquery_migrate_subscriber',
 			'embeds_subscriber',
 			'emojis_subscriber',
+			'delay_js_subscriber',
 		];
 
 		// Don't insert the LazyLoad file if Rocket LazyLoad is activated.
