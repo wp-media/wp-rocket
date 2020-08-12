@@ -57,10 +57,10 @@ class Subscriber implements Subscriber_Interface {
 
 		$js_assets_path = rocket_get_constant( 'WP_ROCKET_PATH' ) . 'assets/js/';
 
-		// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NoExplicitVersion
 		if ( ! wp_script_is( 'rocket-browser-checker' ) ) {
 			$checker_filename = rocket_get_constant( 'SCRIPT_DEBUG' ) ? 'browser-checker.js' : 'browser-checker.min.js';
 
+			// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NoExplicitVersion
 			wp_register_script(
 				'rocket-browser-checker',
 				'',
