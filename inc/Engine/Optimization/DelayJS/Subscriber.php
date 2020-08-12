@@ -74,12 +74,34 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
+		$js_assets_path = rocket_get_constant( 'WP_ROCKET_PATH' ) . 'assets/js/';
+
+		// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NoExplicitVersion
+		if ( ! wp_script_is( 'rocket-browser-checker' ) ) {
+			$checker_filename = rocket_get_constant( 'SCRIPT_DEBUG' ) ? 'browser-checker.js' : 'browser-checker.min.js';
+
+			wp_register_script(
+				'rocket-browser-checker',
+				'',
+				[],
+				'',
+				true
+			);
+			wp_enqueue_script( 'rocket-browser-checker' );
+			wp_add_inline_script(
+				'rocket-browser-checker',
+				$this->filesystem->get_contents( "{$js_assets_path}{$checker_filename}" )
+			);
+		}
+
 		// Register handle with no src to add the inline script after.
 		// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NoExplicitVersion
 		wp_register_script(
 			'rocket-delay-js',
 			'',
-			[],
+			[
+				'rocket-browser-checker',
+			],
 			'',
 			true
 		);
@@ -89,8 +111,7 @@ class Subscriber implements Subscriber_Interface {
 
 		wp_add_inline_script(
 			'rocket-delay-js',
-			$this->filesystem->get_contents( rocket_get_constant( 'WP_ROCKET_PATH' ) . "assets/js/{$script_filename}" )
+			$this->filesystem->get_contents( "{$js_assets_path}{$script_filename}" )
 		);
 	}
-
 }
