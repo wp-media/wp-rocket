@@ -55,19 +55,39 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
+		$js_assets_path = rocket_get_constant( 'WP_ROCKET_PATH' ) . 'assets/js/';
+
+		// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NoExplicitVersion
+		if ( ! wp_script_is( 'rocket-browser-checker' ) ) {
+			$checker_filename = rocket_get_constant( 'SCRIPT_DEBUG' ) ? 'browser-checker.js' : 'browser-checker.min.js';
+
+			wp_enqueue_script(
+				'rocket-browser-checker',
+				'',
+				[],
+				'',
+				true
+			);
+			wp_add_inline_script(
+				'rocket-browser-checker',
+				$this->filesystem->get_contents( "{$js_assets_path}{$checker_filename}" )
+			);
+		}
+
+		$preload_filename = rocket_get_constant( 'SCRIPT_DEBUG' ) ? 'preload-links.js' : 'preload-links.min.js';
+
 		// Register handle with no src to add the inline script after.
 		// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NoExplicitVersion
-		wp_register_script(
+		wp_enqueue_script(
 			'rocket-preload-links',
 			'',
 			[],
 			'',
 			true
 		);
-		wp_enqueue_script( 'rocket-preload-links' );
 		wp_add_inline_script(
 			'rocket-preload-links',
-			$this->filesystem->get_contents( rocket_get_constant( 'WP_ROCKET_PATH' ) . 'assets/js/preload-links.js' )
+			$this->filesystem->get_contents( "{$js_assets_path}{$preload_filename}" )
 		);
 	}
 }
