@@ -61,9 +61,9 @@ class RESTSubscriber implements Subscriber_Interface {
 			self::ROUTE_NAMESPACE,
 			'rocketcdn/enable',
 			[
-				'methods'  => 'PUT',
-				'callback' => [ $this, 'enable' ],
-				'args'     => [
+				'methods'             => 'PUT',
+				'callback'            => [ $this, 'enable' ],
+				'args'                => [
 					'email' => [
 						'required'          => true,
 						'validate_callback' => [ $this, 'validate_email' ],
@@ -74,16 +74,17 @@ class RESTSubscriber implements Subscriber_Interface {
 					],
 					'url'   => [
 						'required'          => true,
-						'validate_callback' => function( $param ) {
+						'validate_callback' => function ( $param ) {
 							$url = esc_url_raw( $param );
 
 							return ! empty( $url );
 						},
-						'sanitize_callback' => function( $param ) {
+						'sanitize_callback' => function ( $param ) {
 							return esc_url_raw( $param );
 						},
 					],
 				],
+				'permission_callback' => __return_true(),
 			]
 		);
 	}
@@ -100,9 +101,9 @@ class RESTSubscriber implements Subscriber_Interface {
 			self::ROUTE_NAMESPACE,
 			'rocketcdn/disable',
 			[
-				'methods'  => 'PUT',
-				'callback' => [ $this, 'disable' ],
-				'args'     => [
+				'methods'             => 'PUT',
+				'callback'            => [ $this, 'disable' ],
+				'args'                => [
 					'email' => [
 						'required'          => true,
 						'validate_callback' => [ $this, 'validate_email' ],
@@ -112,6 +113,7 @@ class RESTSubscriber implements Subscriber_Interface {
 						'validate_callback' => [ $this, 'validate_key' ],
 					],
 				],
+				'permission_callback' => __return_true(),
 			]
 		);
 	}
@@ -122,6 +124,7 @@ class RESTSubscriber implements Subscriber_Interface {
 	 * @since 3.5
 	 *
 	 * @param \WP_REST_Request $request the WP REST Request object.
+	 *
 	 * @return string
 	 */
 	public function enable( \WP_REST_Request $request ) {
@@ -146,6 +149,7 @@ class RESTSubscriber implements Subscriber_Interface {
 	 * @since 3.5
 	 *
 	 * @param \WP_REST_Request $request the WP Rest Request object.
+	 *
 	 * @return string
 	 */
 	public function disable( \WP_REST_Request $request ) {
@@ -168,6 +172,7 @@ class RESTSubscriber implements Subscriber_Interface {
 	 * @since 3.5
 	 *
 	 * @param string $param Parameter value to validate.
+	 *
 	 * @return bool
 	 */
 	public function validate_email( $param ) {
@@ -180,6 +185,7 @@ class RESTSubscriber implements Subscriber_Interface {
 	 * @since 3.5
 	 *
 	 * @param string $param Parameter value to validate.
+	 *
 	 * @return bool
 	 */
 	public function validate_key( $param ) {
