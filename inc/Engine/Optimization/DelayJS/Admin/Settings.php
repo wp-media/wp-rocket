@@ -10,7 +10,35 @@ class Settings {
 	 *
 	 * @var array
 	 */
-	private $defaults = [];
+	private $defaults = [
+		'getbutton.io',
+		'//a.omappapi.com/app/js/api.min.js',
+		'feedbackcompany.com/includes/widgets/feedback-company-widget.min.js',
+		'snap.licdn.com/li.lms-analytics/insight.min.js',
+		'static.ads-twitter.com/uwt.js',
+		'platform.twitter.com/widgets.js',
+		'connect.facebook.net/en_GB/sdk.js',
+		'connect.facebook.net/en_US/sdk.js',
+		'static.leadpages.net/leadbars/current/embed.js',
+		'translate.google.com/translate_a/element.js',
+		'widget.manychat.com',
+		'google.com/recaptcha/api.js',
+		'connect.facebook.net/en_US/sdk/xfbml.customerchat.js',
+		'static.hotjar.com/c/hotjar-',
+		'smartsuppchat.com/loader.js',
+		'grecaptcha.execute',
+		'Tawk_API',
+		'shareaholic',
+		'sharethis',
+		'simple-share-buttons-adder',
+		'addtoany',
+		'font-awesome',
+		'wpdiscuz',
+		'eucookielaw',
+		'cookie-law-info',
+		'cookie-notice',
+		'pinit.js',
+	];
 
 	/**
 	 * Instance of options handler.
