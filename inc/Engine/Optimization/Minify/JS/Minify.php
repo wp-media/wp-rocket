@@ -133,7 +133,10 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 	 * @return boolean
 	 */
 	private function is_excluded_external( $url ) {
-		foreach ( $this->get_excluded_externals() as $excluded ) {
+		$excluded_externals   = $this->get_excluded_external_file_path();
+		$excluded_externals[] = 'google-analytics.com/analytics.js';
+
+		foreach ( $excluded_externals as $excluded ) {
 			if ( false !== strpos( $url, $excluded ) ) {
 				Logger::debug(
 					'Script is external.',
@@ -147,22 +150,6 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 		}
 
 		return false;
-	}
-
-	/**
-	 * Gets external URLs excluded from combine
-	 *
-	 * @since 3.7
-	 *
-	 * @return array
-	 */
-	private function get_excluded_externals() {
-		$excluded_externals = [
-			'google-analytics.com/analytics.js',
-			'a.omappapi.com/app/js/api.min.js',
-		];
-
-		return array_merge( $excluded_externals, $this->options->get( 'exclude_js', [] ) );
 	}
 
 	/**
@@ -198,7 +185,8 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 			return $minified_url;
 		}
 
-		$file_path = $this->is_external_file( $url ) ? $this->local_cache->get_filepath( $url ) : $this->get_file_path( $url );
+		$is_external_url = $this->is_external_file( $url );
+		$file_path       = $is_external_url ? $this->local_cache->get_filepath( $url ) : $this->get_file_path( $url );
 
 		if ( ! $file_path ) {
 			Logger::error(
@@ -211,7 +199,7 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 			return false;
 		}
 
-		$file_content = $this->is_external_file( $url ) ? $this->local_cache->get_content( rocket_add_url_protocol( $url ) ) : $this->get_file_content( $file_path );
+		$file_content = $is_external_url ? $this->local_cache->get_content( rocket_add_url_protocol( $url ) ) : $this->get_file_content( $file_path );
 
 		if ( empty( $file_content ) ) {
 			Logger::error(
