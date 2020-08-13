@@ -97,7 +97,14 @@ gulp.task('js:compile_single', () => {
 	return gulp.src( source )
 		// Transpile newer JS for cross-browser support.
 		.pipe( transpile({
-			presets: ["es2015"]
+			presets: [
+				[
+					'env',
+					{
+						'targets': 'last 2 versions'
+					}
+				]
+			]
 		}))
 		// Minify the script.
 		.pipe( uglify() )
