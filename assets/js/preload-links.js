@@ -3,6 +3,7 @@ class RocketPreloadLinks {
 	constructor( browser ) {
 		this.browser = browser;
 		this.listenerOptions = this.browser.options;
+		this.pageUrl = window.location.origin;
 
 		this.processedLinks = new Set;
 		this.addLinkTimeoutId = null;
@@ -144,8 +145,13 @@ class RocketPreloadLinks {
 			return false;
 		}
 
-		return ! this.processedLinks.has( linkElem.href );
+		if ( this.processedLinks.has( linkElem.href ) ) {
+			return false;
+		}
+
+		return ( linkElem.href.substring( 0, this.pageUrl.length ) === this.pageUrl );
 	}
+
 
 	/**
 	 * Resets the add link task.
