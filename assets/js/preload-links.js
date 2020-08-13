@@ -136,22 +136,46 @@ class RocketPreloadLinks {
 	 *
 	 * @returns {boolean}
 	 */
+	/**
+	 * Checks if the given link element is okay to process.
+	 *
+	 * @private
+	 *
+	 * @param mixed linkElem The element to check.
+	 *
+	 * @returns {boolean}
+	 */
 	_isLinkOk( linkElem ) {
 		if ( null === linkElem || typeof linkElem !== 'object' ) {
 			return false;
 		}
 
-		if ( ! linkElem.href ) {
+		if ( ! 'href' in linkElem ) {
 			return false;
 		}
 
-		if ( this.processedLinks.has( linkElem.href ) ) {
+		const url = linkElem.href;
+
+		if ( this.processedLinks.has( url ) ) {
 			return false;
 		}
 
-		return ( linkElem.href.substring( 0, this.pageUrl.length ) === this.pageUrl );
+		if ( this._isImage( url ) ) {
+			return false;
+		}
+
+		return this._isInternal( linkElem.href );
 	}
 
+	_isImage( url ) {
+		const regex = RegExp('.(jpg|jpeg|gif|png|tiff|bmp)$', 'i');
+		return regex.test(url);
+	}
+
+	_isInternal( url ) {
+		const domain = url.substring( 0, this.pageUrl.length );
+		return domain === this.pageUrl;
+	}
 
 	/**
 	 * Resets the add link task.
