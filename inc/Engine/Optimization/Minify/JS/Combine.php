@@ -638,6 +638,7 @@ class Combine extends AbstractJSOptimization {
 			'woocommerce_price_slider_params',
 			'scriptParams',
 			'form-adv-pagination',
+			'borlabsCookiePrioritize',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
