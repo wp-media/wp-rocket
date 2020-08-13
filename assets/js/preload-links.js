@@ -136,15 +136,6 @@ class RocketPreloadLinks {
 	 *
 	 * @returns {boolean}
 	 */
-	/**
-	 * Checks if the given link element is okay to process.
-	 *
-	 * @private
-	 *
-	 * @param mixed linkElem The element to check.
-	 *
-	 * @returns {boolean}
-	 */
 	_isLinkOk( linkElem ) {
 		if ( null === linkElem || typeof linkElem !== 'object' ) {
 			return false;
@@ -168,7 +159,7 @@ class RocketPreloadLinks {
 	}
 
 	_isImage( url ) {
-		const regex = RegExp('.(jpg|jpeg|gif|png|tiff|bmp)$', 'i');
+		const regex = RegExp('.(jpg|jpeg|gif|png|tiff|bmp|webp|avif)$', 'i');
 		return regex.test(url);
 	}
 
