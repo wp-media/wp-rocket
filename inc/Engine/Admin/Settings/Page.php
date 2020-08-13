@@ -569,6 +569,7 @@ class Page {
 		$inline_js_beacon      = $this->beacon->get_suggest( 'exclude_inline_js' );
 		$exclude_js_beacon     = $this->beacon->get_suggest( 'exclude_js' );
 		$jquery_migrate_beacon = $this->beacon->get_suggest( 'jquery_migrate' );
+		$delay_js_beacon       = $this->beacon->get_suggest( 'delay_js' );
 
 		$this->settings->add_page_section(
 			'file_optimization',
@@ -819,7 +820,7 @@ class Page {
 					],
 					'type'              => 'checkbox',
 					'label'             => __( 'Delay JavaScript execution', 'rocket' ),
-					'description'       => __( 'Improves initial loading time by delaying the loading of JavaScript files.', 'rocket' ),
+					'description'       => sprintf( __( 'Improves initial loading time by delaying the loading of JavaScript files. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $delay_js_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $delay_js_beacon['id'] ) . '" target="_blank">', '</a>' ),
 					'section'           => 'js',
 					'page'              => 'file_optimization',
 					'default'           => 0,

@@ -403,6 +403,12 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://fr.docs.wp-rocket.me/article/1309-supprimer-jquery-migrate/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
+			'delay_js'                   => [
+				'en' => [
+					'id'  => '5f359695042863444aa04e26',
+					'url' => 'https://docs.wp-rocket.me/article/1349-delay-javascript-execution/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
 			'async'                      => [
 				'en' => [
 					'id'  => '5d52144c0428631e94f94ae2',
