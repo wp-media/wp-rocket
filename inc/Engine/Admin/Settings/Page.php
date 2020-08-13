@@ -820,6 +820,7 @@ class Page {
 					],
 					'type'              => 'checkbox',
 					'label'             => __( 'Delay JavaScript execution', 'rocket' ),
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description'       => sprintf( __( 'Improves initial loading time by delaying the loading of JavaScript files. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $delay_js_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $delay_js_beacon['id'] ) . '" target="_blank">', '</a>' ),
 					'section'           => 'js',
 					'page'              => 'file_optimization',
