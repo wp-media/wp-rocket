@@ -854,6 +854,8 @@ class Combine extends AbstractJSOptimization {
 			'fb_desc-',
 			'FC_regenerate_captcha',
 			'wp_post_blocks_vars.listed_posts=[',
+			'captcha-hash',
+			'mapdata={',
 		];
 
 		/**
