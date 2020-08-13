@@ -27,9 +27,12 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-		$this->getContainer()->share( 'preload_links_admin_subscriber', 'WP_Rocket\Engine\Preload\Links\AdminSubscriber' );
+		$options = $this->getContainer()->get( 'options' );
+
+		$this->getContainer()->share( 'preload_links_admin_subscriber', 'WP_Rocket\Engine\Preload\Links\AdminSubscriber' )
+			->withArgument( $options );
 		$this->getContainer()->share( 'preload_links_subscriber', 'WP_Rocket\Engine\Preload\Links\Subscriber' )
-		->withArgument( $this->getContainer()->get( 'options' ) )
-		->withArgument( rocket_direct_filesystem() );
+			->withArgument( $options )
+			->withArgument( rocket_direct_filesystem() );
 	}
 }
