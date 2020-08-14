@@ -155,7 +155,11 @@ class RocketPreloadLinks {
 			return false;
 		}
 
-		return this._isInternal( linkElem.href );
+		if ( this._isInternal( url ) ) {
+			return false;
+		}
+
+		return ! this._hasQueryString( url );
 	}
 
 	_isImage( url ) {
@@ -166,6 +170,10 @@ class RocketPreloadLinks {
 	_isInternal( url ) {
 		const domain = url.substring( 0, this.pageUrl.length );
 		return domain === this.pageUrl;
+	}
+
+	_hasQueryString( url ) {
+		return url.indexOf( '?' ) !== -1;
 	}
 
 	/**
