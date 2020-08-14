@@ -107,14 +107,15 @@ class HTML {
 			return $matches[0];
 		}
 
-		$src = '';
+		$src             = '';
+		$matches['attr'] = trim( $matches['attr'] );
 
 		if ( ! empty( $matches['attr'] ) ) {
 			if ( preg_match( '/src=(["\'])(.*?)\1/', $matches['attr'], $src_matches ) ) {
 				$src = $src_matches[2];
 
 				// Remove the src attribute.
-				$matches[0] = str_replace( $src_matches[0], '', $matches[0] );
+				$matches['attr'] = str_replace( $src_matches[0], '', $matches['attr'] );
 			}
 		}
 
@@ -122,9 +123,6 @@ class HTML {
 			// Get the JS content.
 			if ( ! empty( $matches['content'] ) ) {
 				$src = 'data:text/javascript;base64,' . base64_encode( $matches['content'] );// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
-
-				// Remove the JS content.
-				$matches[0] = str_replace( $matches['content'], '', $matches[0] );
 			}
 		}
 
@@ -132,7 +130,7 @@ class HTML {
 			return $matches[0];
 		}
 
-		return str_replace( '<script', "<script data-rocketlazyloadscript='{$src}'", $matches[0] );
+		return "<script data-rocketlazyloadscript='{$src}' {$matches['attr']}></script>";
 	}
 
 	/**
