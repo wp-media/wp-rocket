@@ -101,7 +101,6 @@ $integration[ 'delay_js_scripts' ] = [
 	'addtoany',
 	'font-awesome',
 	'wpdiscuz',
-	'eucookielaw',
 	'cookie-law-info',
 	'cookie-notice',
 	'pinit.js',
