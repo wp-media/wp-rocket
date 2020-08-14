@@ -186,9 +186,17 @@ class RocketPreloadLinks {
 
 	_isExcludedPage( url ) {
 		return (
+			url.indexOf( 'add-to-cart' ) !== -1
+			||
 			url.indexOf( 'checkout' ) !== -1
 			||
 			url.indexOf( 'cart' ) !== -1
+			||
+			url.indexOf( 'logout' ) !== -1
+			||
+			url.indexOf( 'wp-admin' ) !== -1
+			||
+			url.indexOf( 'wp-login.php' ) !== -1
 		);
 	}
 
