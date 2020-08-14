@@ -155,12 +155,15 @@ class RocketPreloadLinks {
 			return false;
 		}
 
-
 		if ( this._hasQueryString( url ) ) {
 			return false;
 		}
 
-		return ! this._isImage( url );
+		if ( this._isAnchor( url ) ) {
+			return false;
+		}
+
+		return this._isPageUrl( linkElem );
 	}
 
 	_isImage( url ) {
@@ -171,6 +174,19 @@ class RocketPreloadLinks {
 	_isInternal( url ) {
 		const domain = url.substring( 0, this.pageUrl.length );
 		return domain === this.pageUrl;
+	}
+
+	_isAnchor( url ) {
+		return url.indexOf( '#' ) !== -1;
+	}
+
+	_isPageUrl( linkElem ) {
+		const excludedProtocols = [ 'javascript:', 'data:', 'mailto:' ];
+		if ( excludedProtocols.includes( linkElem.protocol ) ) {
+			return false;
+		}
+
+		return ! this._isImage( linkElem.href );
 	}
 
 	_hasQueryString( url ) {
