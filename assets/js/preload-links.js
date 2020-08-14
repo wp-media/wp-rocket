@@ -163,6 +163,10 @@ class RocketPreloadLinks {
 			return false;
 		}
 
+		if ( this._isExcludedPage( url ) ) {
+			return false;
+		}
+
 		return this._isPageUrl( linkElem );
 	}
 
@@ -178,6 +182,14 @@ class RocketPreloadLinks {
 
 	_isAnchor( url ) {
 		return url.indexOf( '#' ) !== -1;
+	}
+
+	_isExcludedPage( url ) {
+		return (
+			url.indexOf( 'checkout' ) !== -1
+			||
+			url.indexOf( 'cart' ) !== -1
+		);
 	}
 
 	_isPageUrl( linkElem ) {
