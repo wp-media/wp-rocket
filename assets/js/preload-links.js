@@ -151,15 +151,16 @@ class RocketPreloadLinks {
 			return false;
 		}
 
-		if ( this._isImage( url ) ) {
+		if ( ! this._isInternal( url ) ) {
 			return false;
 		}
 
-		if ( this._isInternal( url ) ) {
+
+		if ( this._hasQueryString( url ) ) {
 			return false;
 		}
 
-		return ! this._hasQueryString( url );
+		return ! this._isImage( url );
 	}
 
 	_isImage( url ) {
