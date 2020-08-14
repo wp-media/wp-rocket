@@ -34,7 +34,6 @@ class Settings {
 		'addtoany',
 		'font-awesome',
 		'wpdiscuz',
-		'eucookielaw',
 		'cookie-law-info',
 		'cookie-notice',
 		'pinit.js',
