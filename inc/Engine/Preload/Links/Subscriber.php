@@ -93,5 +93,12 @@ class Subscriber implements Subscriber_Interface {
 			'rocket-preload-links',
 			$this->filesystem->get_contents( "{$js_assets_path}{$preload_filename}" )
 		);
+		wp_localize_script(
+			'rocket-preload-links',
+			'rocket_preload_links',
+			[
+				'excluded_urls' => get_rocket_cache_reject_uri(),
+			]
+		);
 	}
 }
