@@ -101,6 +101,7 @@ class Subscriber implements Subscriber_Interface {
 			[
 				'excludeUris'       => $this->get_uris_to_exclude( $use_trailing_slash ),
 				'usesTrailingSlash' => $use_trailing_slash,
+				'imageExtensions'   => 'jpg|jpeg|gif|png|tiff|bmp|webp|avif',
 			]
 		);
 	}
@@ -118,7 +119,7 @@ class Subscriber implements Subscriber_Interface {
 		$site_url = site_url();
 		$uris     = get_rocket_cache_reject_uri();
 
-		foreach( [ '/wp-admin', '/logout' ] as $uri ) {
+		foreach ( [ '/wp-admin', '/logout' ] as $uri ) {
 			$uris .= "|{$uri}";
 			if ( $use_trailing_slash ) {
 				$uris .= '/';

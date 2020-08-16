@@ -25,7 +25,8 @@ class RocketPreloadLinks {
 
 		this.regex = {
 			excludeUris: RegExp( '(' + this.config.excludeUris + ')', 'i' ),
-			images: RegExp('.(jpg|jpeg|gif|png|tiff|bmp|webp|avif)$', 'i')
+			images: RegExp('.(' + this.config.imageExtensions + ')$', 'i'),
+			fileExtensions: RegExp('.(' + this.config.imageExtensions + '|php|pdf|html|htm' + ')$', 'i')
 		}
 
 		this.processedLinks.add( window.location.href );
@@ -193,11 +194,21 @@ class RocketPreloadLinks {
 			pathname = '/' + pathname;
 		}
 
-		if ( this.config.usesTrailingSlash && ! pathname.endsWith( '/' ) ) {
+		if ( this._shouldAddTrailingSlash( pathname ) ) {
 			return pathname + '/';
 		}
 
 		return pathname;
+	}
+
+	_shouldAddTrailingSlash( pathname ) {
+		return (
+			this.config.usesTrailingSlash
+			&&
+			! pathname.endsWith( '/' )
+			&&
+			! this.regex.fileExtensions.test( pathname )
+		);
 	}
 
 	/**
@@ -234,7 +245,11 @@ class RocketPreloadLinks {
 			return false;
 		}
 
-		return ! this._isImage( url );
+		if ( this._isImage( url.href ) ) {
+			return false;
+		}
+
+		return true;
 	}
 
 	_isAnchor( href ) {
