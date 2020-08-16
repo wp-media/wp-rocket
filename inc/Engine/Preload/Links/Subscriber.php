@@ -97,8 +97,30 @@ class Subscriber implements Subscriber_Interface {
 			'rocket-preload-links',
 			'RocketPreloadLinksConfig',
 			[
-				'excludeUris' => get_rocket_cache_reject_uri(),
+				'excludeUris' => $this->get_uris_to_exclude(),
 			]
 		);
+	}
+
+	/**
+	 * Gets the URIs to exclude.
+	 *
+	 * @since 3.7
+	 *
+	 * @return string
+	 */
+	private function get_uris_to_exclude() {
+		$uris  = get_rocket_cache_reject_uri();
+		$uris .= '|wp-admin';
+
+		$site_url = trailingslashit( site_url() );
+		foreach( [ wp_logout_url(), wp_login_url() ] as $uri ) {
+			if ( strpos( $uri, '?' ) !== false ) {
+				continue;
+			}
+			$uris .= '|' . str_replace( $site_url, '', $uri );
+		}
+
+		return $uris;
 	}
 }
