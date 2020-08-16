@@ -95,9 +95,9 @@ class Subscriber implements Subscriber_Interface {
 		);
 		wp_localize_script(
 			'rocket-preload-links',
-			'rocket_preload_links',
+			'RocketPreloadLinksConfig',
 			[
-				'excluded_urls' => get_rocket_cache_reject_uri(),
+				'excludedUrls' => get_rocket_cache_reject_uri(),
 			]
 		);
 	}

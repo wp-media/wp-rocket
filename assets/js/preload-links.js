@@ -1,7 +1,8 @@
 class RocketPreloadLinks {
 
-	constructor( browser ) {
+	constructor( browser, config ) {
 		this.browser = browser;
+		this.config = config;
 		this.listenerOptions = this.browser.options;
 		this.pageUrl = window.location.origin;
 
@@ -236,8 +237,13 @@ class RocketPreloadLinks {
 			passive: true
 		};
 
+		// Bail out if the configuration not passed from the server.
+		if ( typeof RocketPreloadLinksConfig !== "undefined" ) {
+			return;
+		}
+
 		const browser = new RocketBrowserCompatabilityChecker( options );
-		const instance = new RocketPreloadLinks( browser );
+		const instance = new RocketPreloadLinks( browser, RocketPreloadLinksConfig );
 		instance.init();
 	}
 }
