@@ -23,6 +23,11 @@ class RocketPreloadLinks {
 			return;
 		}
 
+		this.regex = {
+			excludeUris: RegExp( '(' + this.config.excludeUris + ')', 'i' ),
+			images: RegExp('.(jpg|jpeg|gif|png|tiff|bmp|webp|avif)$', 'i')
+		}
+
 		this.processedLinks.add( window.location.href );
 		this._addEventListeners( this );
 	}
@@ -172,8 +177,8 @@ class RocketPreloadLinks {
 	}
 
 	_isImage( url ) {
-		const regex = RegExp('.(jpg|jpeg|gif|png|tiff|bmp|webp|avif)$', 'i');
-		return regex.test(url);
+
+		return this.regex.images.test(url);
 	}
 
 	_isInternal( url ) {
@@ -186,8 +191,7 @@ class RocketPreloadLinks {
 	}
 
 	_isExcludedPage( url ) {
-		const regex = RegExp('(' + this.config.excludeUris + ')', 'i' );
-		return regex.test( url );
+		return this.regex.excludeUris.test( url );
 	}
 
 	_isPageUrl( linkElem ) {
