@@ -93,11 +93,14 @@ class Subscriber implements Subscriber_Interface {
 			'rocket-preload-links',
 			$this->filesystem->get_contents( "{$js_assets_path}{$preload_filename}" )
 		);
+
+		$use_trailing_slash = $this->use_trailing_slash();
 		wp_localize_script(
 			'rocket-preload-links',
 			'RocketPreloadLinksConfig',
 			[
-				'excludeUris' => $this->get_uris_to_exclude(),
+				'excludeUris'       => $this->get_uris_to_exclude( $use_trailing_slash ),
+				'usesTrailingSlash' => $use_trailing_slash,
 			]
 		);
 	}
@@ -107,14 +110,22 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.7
 	 *
+	 * @param bool $use_trailing_slash When true, uses trailing slash.
+	 *
 	 * @return string
 	 */
-	private function get_uris_to_exclude() {
-		$uris  = get_rocket_cache_reject_uri();
-		$uris .= '|wp-admin';
+	private function get_uris_to_exclude( $use_trailing_slash ) {
+		$site_url = site_url();
+		$uris     = get_rocket_cache_reject_uri();
 
-		$site_url = trailingslashit( site_url() );
-		foreach( [ wp_logout_url(), wp_login_url() ] as $uri ) {
+		foreach( [ '/wp-admin', '/logout' ] as $uri ) {
+			$uris .= "|{$uri}";
+			if ( $use_trailing_slash ) {
+				$uris .= '/';
+			}
+		}
+
+		foreach ( [ wp_logout_url(), wp_login_url() ] as $uri ) {
 			if ( strpos( $uri, '?' ) !== false ) {
 				continue;
 			}
@@ -122,5 +133,29 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		return $uris;
+	}
+
+	/**
+	 * Checks if the given URL has a trailing slash.
+	 *
+	 * @since 3.7
+	 *
+	 * @param string $url URL to check.
+	 *
+	 * @return bool
+	 */
+	private function has_trailing_slash( $url ) {
+		return substr( $url, -1 ) === '/';
+	}
+
+	/**
+	 * Indicates if the site uses a trailing slash in the permalink structure.
+	 *
+	 * @since 3.7
+	 *
+	 * @return bool when true, uses `/`; else, no.
+	 */
+	private function use_trailing_slash() {
+		return $this->has_trailing_slash( get_permalink() );
 	}
 }

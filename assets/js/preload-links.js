@@ -52,17 +52,17 @@ class RocketPreloadLinks {
 	 * @param string url The Given URL to prefetch.
 	 */
 	_addPrefetchLink( url ) {
-		if ( this.processedLinks.has( url ) ) {
+		if ( this.processedLinks.has( url.href ) ) {
 			return;
 		}
 
 		const elem = document.createElement( 'link' );
 		elem.rel = 'prefetch';
-		elem.href = url;
+		elem.href = url.href;
 
 		document.head.appendChild( elem );
 
-		this.processedLinks.add( url );
+		this.processedLinks.add( url.href );
 	}
 
 	/**
@@ -75,8 +75,8 @@ class RocketPreloadLinks {
 			return;
 		}
 
-		const linkElem = event.target.closest( 'a' );
-		if ( ! this._isLinkOk( linkElem ) ) {
+		const [ url, linkElem ] = this._prepareUrl( event );
+		if ( null === url ) {
 			return;
 		}
 
@@ -84,7 +84,7 @@ class RocketPreloadLinks {
 		linkElem.addEventListener( 'mouseout', self.resetOnHover.bind( self ), { passive: true } );
 
 		this.addLinkTimeoutId = setTimeout( () => {
-				this._addPrefetchLink( linkElem.href );
+				this._addPrefetchLink( url );
 				this.addLinkTimeoutId = undefined;
 			},
 			this.onHoverDelayTime
@@ -97,12 +97,13 @@ class RocketPreloadLinks {
 	 * @param Event event Event instance.
 	 */
 	triggerOnClick( event ) {
-		const linkElem = event.target.closest( 'a' );
-		if ( ! this._isLinkOk( linkElem ) ) {
+		const [ url, linkElem ] = this._prepareUrl( event );
+
+		if ( null === url ) {
 			return;
 		}
 
-		this._addPrefetchLink( linkElem.href );
+		this._addPrefetchLink( url );
 		this._resetAddLinkTask();
 	}
 
@@ -134,26 +135,86 @@ class RocketPreloadLinks {
 	}
 
 	/**
+	 * Prepares the target link's URL.
+	 *
+	 * @private
+	 *
+	 * @param Event event Event instance.
+	 * @returns {({protocol: *, original: *, origin: string, href: string, pathname: string}|*)[]|*[]}
+	 */
+	_prepareUrl( event ) {
+		const linkElem = event.target.closest( 'a' );
+
+		if ( null === linkElem || typeof linkElem !== 'object' ) {
+			return [ null, null ];
+		}
+
+		if ( ! 'href' in linkElem ) {
+			return [ null, null ];
+		}
+
+		if ( ! this._isHttpProtocol( linkElem ) ) {
+			return [ null, null ];
+		}
+
+		const href = linkElem.href;
+		const origin = href.substring( 0, this.pageUrl.length );
+		const pathname = this._getPathname( href, origin );
+		const url = {
+			original: href,
+			protocol: linkElem.protocol,
+			origin: origin,
+			pathname: pathname,
+			href: origin + pathname
+		}
+
+		if ( ! this._isLinkOk( url ) ) {
+			return [ null, null ];
+		}
+
+		return [ url, linkElem ];
+	}
+
+	/**
+	 * Gets the URL's pathname. Note: ensures the pathname matches the permalink structure.
+	 *
+	 * @private
+	 *
+	 * @param object url Instance of the URL.
+	 * @param string origin The target link href's origin.
+	 * @returns {string}
+	 */
+	_getPathname( url, origin ) {
+		let pathname = origin
+			? url.substring( this.pageUrl.length )
+			: url;
+
+		if ( ! pathname.startsWith( '/' ) ) {
+			pathname = '/' + pathname;
+		}
+
+		if ( this.config.usesTrailingSlash && ! pathname.endsWith( '/' ) ) {
+			return pathname + '/';
+		}
+
+		return pathname;
+	}
+
+	/**
 	 * Checks if the given link element is okay to process.
 	 *
 	 * @private
 	 *
-	 * @param mixed linkElem The element to check.
+	 * @param object url URL parts object.
 	 *
 	 * @returns {boolean}
 	 */
-	_isLinkOk( linkElem ) {
-		if ( null === linkElem || typeof linkElem !== 'object' ) {
+	_isLinkOk( url ) {
+		if ( null === url || typeof url !== 'object' ) {
 			return false;
 		}
 
-		if ( ! 'href' in linkElem ) {
-			return false;
-		}
-
-		const url = linkElem.href;
-
-		if ( this.processedLinks.has( url ) ) {
+		if ( this.processedLinks.has( url.href ) ) {
 			return false;
 		}
 
@@ -161,57 +222,45 @@ class RocketPreloadLinks {
 			return false;
 		}
 
-		if ( this._hasQueryString( url ) ) {
+		if ( this._isQueryString( url.href ) ) {
 			return false;
 		}
 
-		if ( this._isAnchor( url ) ) {
+		if ( this._isAnchor( url.href ) ) {
 			return false;
 		}
 
-		if ( this._isExcludedPage( url ) ) {
+		if ( this._isExcluded( url.href ) ) {
 			return false;
 		}
 
-		return this._isPageUrl( linkElem );
+		return ! this._isImage( url );
 	}
 
-	_isImage( url ) {
-
-		return this.regex.images.test(url);
+	_isAnchor( href ) {
+		return href.indexOf( '#' ) !== -1;
 	}
 
-	_isInternal( url ) {
-		const domain = url.substring( 0, this.pageUrl.length );
-		return domain === this.pageUrl;
-	}
-
-	_isAnchor( url ) {
-		return url.indexOf( '#' ) !== -1;
-	}
-
-	_isExcludedPage( url ) {
+	_isExcluded( url ) {
 		return this.regex.excludeUris.test( url );
 	}
 
-	_isPageUrl( linkElem ) {
-		const excludedProtocols = [ 'javascript:', 'data:', 'mailto:' ];
-		if ( excludedProtocols.includes( linkElem.protocol ) ) {
-			return false;
-		}
-
-		return ! this._isImage( linkElem.href );
+	_isHttpProtocol( linkElem ) {
+		return ( 'http:' === linkElem.protocol || 'https:' === linkElem.protocol );
 	}
 
-	_hasQueryString( url ) {
-		return url.indexOf( '?' ) !== -1;
+	_isImage( href ) {
+		return this.regex.images.test( href );
 	}
 
-	/**
-	 * Resets the add link task.
-	 *
-	 * @private
-	 */
+	_isInternal( url ) {
+		return url.origin === this.pageUrl;
+	}
+
+	_isQueryString( href ) {
+		return href.indexOf( '?' ) !== -1;
+	}
+
 	_resetAddLinkTask() {
 		if ( ! this.addLinkTimeoutId ) {
 			return;
