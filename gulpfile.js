@@ -118,9 +118,7 @@ gulp.task('js:compile_single', () => {
 				join_vars: true,
 				drop_console: true
 			},
-			mangle: {
-				toplevel: true
-			}
+			mangle: false
 		} ) )
 		// Rename the .js to .min.js.
 		.pipe( rename( { suffix: '.min' } ) )
