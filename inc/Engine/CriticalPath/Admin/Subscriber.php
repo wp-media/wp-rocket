@@ -49,7 +49,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_after_options_metabox'       => 'cpcss_section',
 			'rocket_metabox_cpcss_content'       => 'cpcss_actions',
 			'rocket_first_install_options'       => 'add_async_css_mobile_option',
-			'wp_rocket_upgrade'                  => [ 'set_async_css_mobile_default_value', 11, 2 ],
+			'wp_rocket_upgrade'                  => [ 'set_async_css_mobile_default_value', 12, 2 ],
 			'rocket_hidden_settings_fields'      => 'add_hidden_async_css_mobile',
 			'rocket_settings_tools_content'      => 'display_cpcss_mobile_section',
 			'wp_ajax_rocket_enable_mobile_cpcss' => 'enable_mobile_cpcss',

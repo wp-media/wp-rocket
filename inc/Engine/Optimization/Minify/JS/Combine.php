@@ -160,6 +160,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 		$scripts = array_map(
 			function( $script ) {
 				preg_match( '/<script\s+([^>]+[\s\'"])?src\s*=\s*[\'"]\s*?(?<url>[^\'"]+\.js(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>/Umsi', $script[0], $matches );
+
 				if ( isset( $matches['url'] ) ) {
 					if ( $this->is_external_file( $matches['url'] ) ) {
 						foreach ( $this->get_excluded_external_file_path() as $excluded_file ) {
@@ -263,6 +264,10 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 								'excluded_content' => $matches_inline['content'],
 							]
 						);
+						return;
+					}
+
+					if ( $this->is_delayed_script( $matches_inline['attrs'] ) ) {
 						return;
 					}
 
@@ -630,97 +635,6 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 	}
 
 	/**
-	 * Patterns in URL excluded from being combined
-	 *
-	 * @since 3.1
-	 *
-	 * @return array
-	 */
-	protected function get_excluded_external_file_path() {
-		$defaults = [
-			'html5.js',
-			'show_ads.js',
-			'histats.com/js',
-			'ws.amazon.com/widgets',
-			'/ads/',
-			'intensedebate.com',
-			'scripts.chitika.net/',
-			'jotform.com/',
-			'gist.github.com',
-			'forms.aweber.com',
-			'video.unrulymedia.com',
-			'stats.wp.com',
-			'stats.wordpress.com',
-			'widget.rafflecopter.com',
-			'widget-prime.rafflecopter.com',
-			'releases.flowplayer.org',
-			'c.ad6media.fr',
-			'cdn.stickyadstv.com',
-			'www.smava.de',
-			'contextual.media.net',
-			'app.getresponse.com',
-			'adserver.reklamstore.com',
-			's0.wp.com',
-			'wprp.zemanta.com',
-			'files.bannersnack.com',
-			'smarticon.geotrust.com',
-			'js.gleam.io',
-			'ir-na.amazon-adsystem.com',
-			'web.ventunotech.com',
-			'verify.authorize.net',
-			'ads.themoneytizer.com',
-			'embed.finanzcheck.de',
-			'imagesrv.adition.com',
-			'js.juicyads.com',
-			'form.jotformeu.com',
-			'speakerdeck.com',
-			'content.jwplatform.com',
-			'ads.investingchannel.com',
-			'app.ecwid.com',
-			'www.industriejobs.de',
-			's.gravatar.com',
-			'googlesyndication.com',
-			'a.optmstr.com',
-			'a.optmnstr.com',
-			'a.opmnstr.com',
-			'adthrive.com',
-			'mediavine.com',
-			'js.hsforms.net',
-			'googleadservices.com',
-			'f.convertkit.com',
-			'recaptcha/api.js',
-			'mailmunch.co',
-			'apps.shareaholic.com',
-			'dsms0mj1bbhn4.cloudfront.net',
-			'nutrifox.com',
-			'code.tidio.co',
-			'www.uplaunch.com',
-			'widget.reviewability.com',
-			'embed-cdn.gettyimages.com/widgets.js',
-			'app.mailerlite.com',
-			'ck.page',
-			'cdn.jsdelivr.net/gh/AmauriC/',
-			'static.klaviyo.com/onsite/js/klaviyo.js',
-			'a.omappapi.com/app/js/api.min.js',
-			'static.zdassets.com',
-			'feedbackcompany.com/widgets/feedback-company-widget.min.js',
-			'widget.gleamjs.io',
-			'phonewagon.com',
-		];
-
-		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
-
-		/**
-		 * Filters JS externals files to exclude from the combine process
-		 *
-		 * @since 2.2
-		 *
-		 * @param array $pattern Patterns to match.
-		 */
-		return apply_filters( 'rocket_minify_excluded_external_js', $excluded_external );
-	}
-
-	/**
 	 * Patterns of inline JS to move after the combined JS file
 	 *
 	 * @since 3.1.4
@@ -868,4 +782,18 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 
 		return $localized_scripts;
 	}
+
+	/**
+	 * Is this script a delayed script or not.
+	 *
+	 * @since 3.7
+	 *
+	 * @param string $script_attributes Attributes beside the opening of script tag.
+	 *
+	 * @return bool True if it's a delayed script and false if not.
+	 */
+	private function is_delayed_script( $script_attributes ) {
+		return false !== strpos( $script_attributes, 'data-rocketlazyloadscript=' );
+	}
+
 }
