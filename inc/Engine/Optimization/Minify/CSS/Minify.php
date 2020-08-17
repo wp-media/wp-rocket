@@ -2,23 +2,22 @@
 namespace WP_Rocket\Engine\Optimization\Minify\CSS;
 
 use MatthiasMullie\Minify as Minifier;
+use WP_Rocket\Engine\Optimization\CSSTrait;
+use WP_Rocket\Engine\Optimization\Minify\ProcessorInterface;
 use WP_Rocket\Logger\Logger;
-use WP_Rocket\Optimization\CSS\Path_Rewriter;
 
 /**
  * Minify CSS files
  *
  * @since 3.1
- * @author Remy Perona
  */
-class Minify extends AbstractCSSOptimization {
-	use Path_Rewriter;
+class Minify extends AbstractCSSOptimization implements ProcessorInterface {
+	use CSSTrait;
 
 	/**
 	 * Minifies CSS files
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @param string $html HTML content.
 	 * @return string
@@ -26,45 +25,13 @@ class Minify extends AbstractCSSOptimization {
 	public function optimize( $html ) {
 		Logger::info( 'CSS MINIFICATION PROCESS STARTED.', [ 'css minification process' ] );
 
-		$html_nocomments = $this->hide_comments( $html );
-		$styles          = $this->find( '<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?(?<url>[^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html_nocomments );
+		$styles = $this->get_styles( $html );
 
-		if ( ! $styles ) {
-			Logger::debug( 'No `<link>` tags found.', [ 'css minification process' ] );
+		if ( empty( $styles ) ) {
 			return $html;
 		}
 
-		Logger::debug(
-			'Found ' . count( $styles ) . ' `<link>` tags.',
-			[
-				'css minification process',
-				'tags' => $styles,
-			]
-		);
-
 		foreach ( $styles as $style ) {
-			if ( preg_match( '/(?:-|\.)min.css/iU', $style['url'] ) ) {
-				Logger::debug(
-					'Style is already minified.',
-					[
-						'css minification process',
-						'tag' => $style[0],
-					]
-				);
-				continue;
-			}
-
-			if ( $this->is_external_file( $style['url'] ) ) {
-				Logger::debug(
-					'Style is external.',
-					[
-						'css minification process',
-						'tag' => $style[0],
-					]
-				);
-				continue;
-			}
-
 			if ( $this->is_minify_excluded_file( $style ) ) {
 				Logger::debug(
 					'Style is excluded.',
@@ -73,6 +40,7 @@ class Minify extends AbstractCSSOptimization {
 						'tag' => $style[0],
 					]
 				);
+
 				continue;
 			}
 
@@ -89,27 +57,42 @@ class Minify extends AbstractCSSOptimization {
 				continue;
 			}
 
-			$replace_style = str_replace( $style['url'], $minify_url, $style[0] );
-			$replace_style = str_replace( '<link', '<link data-minify="1"', $replace_style );
-			$html          = str_replace( $style[0], $replace_style, $html );
-
-			Logger::info(
-				'Style minification succeeded.',
-				[
-					'css minification process',
-					'url' => $minify_url,
-				]
-			);
+			$html = $this->replace_style( $style, $minify_url, $html );
 		}
 
 		return $html;
 	}
 
 	/**
+	 * Get all style tags from HTML.
+	 *
+	 * @param  string $html HTML content.
+	 * @return array Array with style tags, empty array if no style tags found.
+	 */
+	protected function get_styles( $html ) {
+		$html_nocomments = $this->hide_comments( $html );
+		$styles          = $this->find( '<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?(?<url>[^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html_nocomments );
+
+		if ( ! $styles ) {
+			Logger::debug( 'No `<link>` tags found.', [ 'css minification process' ] );
+			return [];
+		}
+
+		Logger::debug(
+			'Found ' . count( $styles ) . ' `<link>` tags.',
+			[
+				'css minification process',
+				'tags' => $styles,
+			]
+		);
+
+		return $styles;
+	}
+
+	/**
 	 * Creates the minify URL if the minification is successful
 	 *
 	 * @since 2.11
-	 * @author Remy Perona
 	 *
 	 * @param string $url Original file URL.
 
@@ -120,12 +103,12 @@ class Minify extends AbstractCSSOptimization {
 			return false;
 		}
 
+		$url = rocket_add_url_protocol( $url );
+
 		// This filter is documented in /inc/classes/optimization/class-abstract-optimization.php.
-		$url = apply_filters( 'rocket_asset_url', $url, $this->get_zones() );
-
-		$unique_id = md5( $url . $this->minify_key );
-		$filename  = preg_replace( '/\.(css)$/', '-' . $unique_id . '.css', ltrim( rocket_realpath( wp_parse_url( $url, PHP_URL_PATH ) ), '/' ) );
-
+		$url           = apply_filters( 'rocket_asset_url', $url, $this->get_zones() );
+		$unique_id     = md5( $url . $this->minify_key );
+		$filename      = preg_replace( '/\.(css)$/', '-' . $unique_id . '.css', ltrim( rocket_realpath( wp_parse_url( $url, PHP_URL_PATH ) ), '/' ) );
 		$minified_file = $this->minify_base_path . $filename;
 		$minify_url    = $this->get_minify_url( $filename, $url );
 
@@ -140,9 +123,10 @@ class Minify extends AbstractCSSOptimization {
 			return $minify_url;
 		}
 
-		$file_path = $this->get_file_path( $url );
+		$external_url = $this->is_external_file( $url );
+		$file_path    = $external_url ? $this->local_cache->get_filepath( $url ) : $this->get_file_path( $url );
 
-		if ( ! $file_path ) {
+		if ( empty( $file_path ) ) {
 			Logger::error(
 				'Couldn’t get the file path from the URL.',
 				[
@@ -153,19 +137,76 @@ class Minify extends AbstractCSSOptimization {
 			return false;
 		}
 
-		$minified_content = $this->minify( $file_path, $minified_file );
+		$file_content = $external_url ? $this->local_cache->get_content( $url ) : $this->get_file_content( $file_path );
 
-		if ( ! $minified_content ) {
+		if ( ! $file_content ) {
 			Logger::error(
-				'No minified content.',
+				'No file content.',
 				[
 					'css minification process',
-					'path' => $minified_file,
+					'path' => $file_path,
 				]
 			);
 			return false;
 		}
 
+		$minified_content = $external_url ? $this->minify( $url, $minified_file, $file_content ) : $this->minify( $file_path, $minified_file, $file_content );
+
+		if ( empty( $minified_content ) ) {
+			return false;
+		}
+
+		$minified_content = $this->font_display_swap( $url, $minified_file, $minified_content );
+
+		if ( empty( $minified_content ) ) {
+			return false;
+		}
+
+		$save_minify_file = $this->save_minify_file( $minified_file, $minified_content );
+
+		if ( ! $save_minify_file ) {
+			return false;
+		}
+
+		return $minify_url;
+	}
+
+	/**
+	 * Replace old style tag with the minified tag.
+	 *
+	 * @param array  $style      Style matched data.
+	 * @param string $minify_url Minified URL.
+	 * @param string $html       HTML content.
+	 *
+	 * @return string
+	 */
+	protected function replace_style( $style, $minify_url, $html ) {
+		$replace_style = str_replace( $style['url'], $minify_url, $style[0] );
+		$replace_style = str_replace( '<link', '<link data-minify="1"', $replace_style );
+		$html          = str_replace( $style[0], $replace_style, $html );
+
+		Logger::info(
+			'Style minification succeeded.',
+			[
+				'css minification process',
+				'url' => $minify_url,
+			]
+		);
+
+		return $html;
+	}
+
+	/**
+	 * Save minified CSS file.
+	 *
+	 * @since 3.7
+	 *
+	 * @param string $minified_file    Minified file path.
+	 * @param string $minified_content Minified HTML content.
+	 *
+	 * @return bool
+	 */
+	protected function save_minify_file( $minified_file, $minified_content ) {
 		$save_minify_file = $this->write_file( $minified_content, $minified_file );
 
 		if ( ! $save_minify_file ) {
@@ -178,7 +219,6 @@ class Minify extends AbstractCSSOptimization {
 			);
 			return false;
 		}
-
 		Logger::debug(
 			'Minified CSS file successfully created.',
 			[
@@ -186,33 +226,67 @@ class Minify extends AbstractCSSOptimization {
 				'path' => $minified_file,
 			]
 		);
+		return true;
+	}
 
-		return $minify_url;
+	/**
+	 * Applies font display swap if the file contains @font-face.
+	 *
+	 * @since 3.7
+	 *
+	 * @param string $url           File Url.
+	 * @param string $minified_file Minified file path.
+	 * @param string $content       CSS file content.
+	 * @return string
+	 */
+	protected function font_display_swap( $url, $minified_file, $content ) {
+		if (
+			preg_match( '/(?:-|\.)min.css/iU', $url )
+			&&
+			false === stripos( $content, '@font-face' )
+		) {
+			Logger::error(
+				'Do not apply font display swap on min.css files without font-face.',
+				[
+					'css minification process',
+					'path' => $minified_file,
+				]
+			);
+
+			if ( ! $this->is_external_file( $url ) ) {
+				return '';
+			}
+
+			return $content;
+		}
+
+		return $this->apply_font_display_swap( $content );
 	}
 
 	/**
 	 * Minifies the content
 	 *
 	 * @since 2.11
-	 * @author Remy Perona
 	 *
-	 * @param string|array $file          File to minify.
-	 * @param string       $minified_file Target filepath.
-	 * @return string|bool
+	 * @param string $file_path     Source filepath.
+	 * @param string $minified_file Target filepath.
+	 * @param string $file_content  Content to minify.
+	 * @return string
 	 */
-	protected function minify( $file, $minified_file ) {
-		$file_content = $this->get_file_content( $file );
-
-		if ( ! $file_content ) {
-			return false;
-		}
-
-		$file_content     = $this->rewrite_paths( $file, $minified_file, $file_content );
+	protected function minify( $file_path, $minified_file, $file_content ) {
+		$file_content     = $this->rewrite_paths( $file_path, $minified_file, $file_content );
 		$minifier         = $this->get_minifier( $file_content );
 		$minified_content = $minifier->minify();
 
 		if ( empty( $minified_content ) ) {
-			return false;
+			Logger::error(
+				'No minified content.',
+				[
+					'css minification process',
+					'path' => $minified_file,
+				]
+			);
+			return '';
 		}
 
 		return $minified_content;
@@ -222,7 +296,6 @@ class Minify extends AbstractCSSOptimization {
 	 * Returns a new minifier instance
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @param string $file_content Content to minify.
 	 * @return Minifier\CSS

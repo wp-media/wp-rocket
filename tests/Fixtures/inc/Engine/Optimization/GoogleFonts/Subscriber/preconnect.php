@@ -1,7 +1,16 @@
 <?php
 return [
+	// nowprocket query string
+	'NowprocketQueryString' => [
+		true,
+		1,
+		[],
+		'preconnect',
+		[],
+	],
 	// Optimize Google Fonts disabled.
 	'OptimizeGoogleFontsDisabled' => [
+		false,
 		0,
 		[],
 		'preconnect',
@@ -9,6 +18,7 @@ return [
 	],
 	// Relation type is not preconnect.
 	'RelationTypeNotPreconnect' => [
+		false,
 		1,
 		[],
 		'prefetch',
@@ -16,6 +26,7 @@ return [
 	],
 	// Relation type is preconnect, origin array empty.
 	'RelationTypePreconnect' => [
+		false,
 		1,
 		[],
 		'preconnect',
@@ -28,6 +39,7 @@ return [
 	],
 	// Relation type is preconnect, origin array has values.
 	'RelationTypePreconnectAndValues' => [
+		false,
 		1,
 		[
 			[

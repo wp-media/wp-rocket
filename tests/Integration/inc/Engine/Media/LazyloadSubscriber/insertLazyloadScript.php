@@ -41,6 +41,7 @@ class Test_InsertLazyloadScript extends TestCase {
 		$wp_query->is_search  = false;
 
 		set_current_screen('front');
+		unset( $GLOBALS['wp'] );
 
 		parent::tearDown();
 	}
@@ -56,6 +57,11 @@ class Test_InsertLazyloadScript extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldInsertLazyloadScript( $config, $expected ) {
+		$GLOBALS['wp'] = (object) [
+            'query_vars' => [],
+            'request'    => 'http://example.org',
+		];
+
 		$options = $config['options'];
 		$this->lazyload = $options['lazyload'];
 		$this->iframes  = $options['lazyload_iframes'];

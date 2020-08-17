@@ -1,43 +1,31 @@
 <?php
 namespace WP_Rocket\Engine\Optimization\Minify\JS;
 
-use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Optimization\Assets_Local_Cache;
-use WP_Rocket\Logger\Logger;
 use MatthiasMullie\Minify\JS as MinifyJS;
+use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Optimization\AssetsLocalCache;
+use WP_Rocket\Engine\Optimization\Minify\ProcessorInterface;
+use WP_Rocket\Logger\Logger;
 
 /**
  * Combines JS files
  *
  * @since 3.1
- * @author Remy Perona
  */
-class Combine extends AbstractJSOptimization {
+class Combine extends AbstractJSOptimization implements ProcessorInterface {
 	/**
 	 * Minifier instance
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @var MinifyJS
 	 */
 	private $minifier;
 
 	/**
-	 * Assets local cache instance
-	 *
-	 * @since 3.1
-	 * @author Remy Perona
-	 *
-	 * @var Assets_Local_Cache
-	 */
-	private $local_cache;
-
-	/**
 	 * JQuery URL
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @var array
 	 */
@@ -47,7 +35,6 @@ class Combine extends AbstractJSOptimization {
 	 * Scripts to combine
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @var array
 	 */
@@ -57,7 +44,6 @@ class Combine extends AbstractJSOptimization {
 	 * Inline scripts excluded from combined and moved after the combined file
 	 *
 	 * @since 3.1.4
-	 * @author Remy Perona
 	 *
 	 * @var array
 	 */
@@ -67,17 +53,15 @@ class Combine extends AbstractJSOptimization {
 	 * Constructor
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
-	 * @param Options_Data       $options  Plugin options instance.
-	 * @param MinifyJS           $minifier Minifier instance.
-	 * @param Assets_Local_Cache $local_cache Assets local cache instance.
+	 * @param Options_Data     $options     Plugin options instance.
+	 * @param MinifyJS         $minifier    Minifier instance.
+	 * @param AssetsLocalCache $local_cache Assets local cache instance.
 	 */
-	public function __construct( Options_Data $options, MinifyJS $minifier, Assets_Local_Cache $local_cache ) {
-		parent::__construct( $options );
+	public function __construct( Options_Data $options, MinifyJS $minifier, AssetsLocalCache $local_cache ) {
+		parent::__construct( $options, $local_cache );
 
 		$this->minifier    = $minifier;
-		$this->local_cache = $local_cache;
 		$this->jquery_urls = $this->get_jquery_urls();
 	}
 
@@ -85,7 +69,6 @@ class Combine extends AbstractJSOptimization {
 	 * Minifies and combines JavaScripts into one
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @param string $html HTML content.
 	 * @return string
@@ -169,7 +152,6 @@ class Combine extends AbstractJSOptimization {
 	 * Parses found nodes to keep only the ones to combine
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @param Array $scripts scripts corresponding to JS file or content.
 	 * @return array
@@ -178,6 +160,7 @@ class Combine extends AbstractJSOptimization {
 		$scripts = array_map(
 			function( $script ) {
 				preg_match( '/<script\s+([^>]+[\s\'"])?src\s*=\s*[\'"]\s*?(?<url>[^\'"]+\.js(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>/Umsi', $script[0], $matches );
+
 				if ( isset( $matches['url'] ) ) {
 					if ( $this->is_external_file( $matches['url'] ) ) {
 						foreach ( $this->get_excluded_external_file_path() as $excluded_file ) {
@@ -284,6 +267,10 @@ class Combine extends AbstractJSOptimization {
 						return;
 					}
 
+					if ( $this->is_delayed_script( $matches_inline['attrs'] ) ) {
+						return;
+					}
+
 					foreach ( $this->get_excluded_inline_content() as $excluded_content ) {
 						if ( false !== strpos( $matches_inline['content'], $excluded_content ) ) {
 							Logger::debug(
@@ -322,7 +309,6 @@ class Combine extends AbstractJSOptimization {
 	 * Gets content for each script either from inline or from src
 	 *
 	 * @since 3.1
-	 * @author Remy Perona
 	 *
 	 * @return string
 	 */
@@ -355,7 +341,6 @@ class Combine extends AbstractJSOptimization {
 	 * Creates the minify URL if the minification is successful
 	 *
 	 * @since 2.11
-	 * @author Remy Perona
 	 *
 	 * @param string $content Content to minify & combine.
 
@@ -389,7 +374,6 @@ class Combine extends AbstractJSOptimization {
 	 * Minifies the content
 	 *
 	 * @since 2.11
-	 * @author Remy Perona
 	 *
 	 * @return string|bool Minified content, false if empty
 	 */
@@ -407,7 +391,6 @@ class Combine extends AbstractJSOptimization {
 	 * Adds content to the minifier
 	 *
 	 * @since  3.1
-	 * @author Remy Perona
 	 *
 	 * @param string $content Content to minify/combine.
 	 * @return void
@@ -420,7 +403,6 @@ class Combine extends AbstractJSOptimization {
 	 * Patterns in content excluded from being combined
 	 *
 	 * @since  3.1
-	 * @author Remy Perona
 	 *
 	 * @return array
 	 */
@@ -654,102 +636,9 @@ class Combine extends AbstractJSOptimization {
 	}
 
 	/**
-	 * Patterns in URL excluded from being combined
-	 *
-	 * @since 3.1
-	 * @author Remy Perona
-	 *
-	 * @return array
-	 */
-	protected function get_excluded_external_file_path() {
-		$defaults = [
-			'html5.js',
-			'show_ads.js',
-			'histats.com/js',
-			'ws.amazon.com/widgets',
-			'/ads/',
-			'intensedebate.com',
-			'scripts.chitika.net/',
-			'jotform.com/',
-			'gist.github.com',
-			'forms.aweber.com',
-			'video.unrulymedia.com',
-			'stats.wp.com',
-			'stats.wordpress.com',
-			'widget.rafflecopter.com',
-			'widget-prime.rafflecopter.com',
-			'releases.flowplayer.org',
-			'c.ad6media.fr',
-			'cdn.stickyadstv.com',
-			'www.smava.de',
-			'contextual.media.net',
-			'app.getresponse.com',
-			'adserver.reklamstore.com',
-			's0.wp.com',
-			'wprp.zemanta.com',
-			'files.bannersnack.com',
-			'smarticon.geotrust.com',
-			'js.gleam.io',
-			'ir-na.amazon-adsystem.com',
-			'web.ventunotech.com',
-			'verify.authorize.net',
-			'ads.themoneytizer.com',
-			'embed.finanzcheck.de',
-			'imagesrv.adition.com',
-			'js.juicyads.com',
-			'form.jotformeu.com',
-			'speakerdeck.com',
-			'content.jwplatform.com',
-			'ads.investingchannel.com',
-			'app.ecwid.com',
-			'www.industriejobs.de',
-			's.gravatar.com',
-			'googlesyndication.com',
-			'a.optmstr.com',
-			'a.optmnstr.com',
-			'a.opmnstr.com',
-			'adthrive.com',
-			'mediavine.com',
-			'js.hsforms.net',
-			'googleadservices.com',
-			'f.convertkit.com',
-			'recaptcha/api.js',
-			'mailmunch.co',
-			'apps.shareaholic.com',
-			'dsms0mj1bbhn4.cloudfront.net',
-			'nutrifox.com',
-			'code.tidio.co',
-			'www.uplaunch.com',
-			'widget.reviewability.com',
-			'embed-cdn.gettyimages.com/widgets.js',
-			'app.mailerlite.com',
-			'ck.page',
-			'cdn.jsdelivr.net/gh/AmauriC/',
-			'static.klaviyo.com/onsite/js/klaviyo.js',
-			'a.omappapi.com/app/js/api.min.js',
-			'static.zdassets.com',
-			'feedbackcompany.com/widgets/feedback-company-widget.min.js',
-			'widget.gleamjs.io',
-			'phonewagon.com',
-		];
-
-		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
-
-		/**
-		 * Filters JS externals files to exclude from the combine process
-		 *
-		 * @since 2.2
-		 *
-		 * @param array $pattern Patterns to match.
-		 */
-		return apply_filters( 'rocket_minify_excluded_external_js', $excluded_external );
-	}
-
-	/**
 	 * Patterns of inline JS to move after the combined JS file
 	 *
 	 * @since 3.1.4
-	 * @author Remy Perona
 	 *
 	 * @return array
 	 */
@@ -862,7 +751,6 @@ class Combine extends AbstractJSOptimization {
 		 * Filters inline JS to move after the combined JS file
 		 *
 		 * @since 3.1.4
-		 * @author Remy Perona
 		 *
 		 * @param array $move_after_scripts Patterns to match.
 		 */
@@ -873,7 +761,6 @@ class Combine extends AbstractJSOptimization {
 	 * Gets all localized scripts data to exclude them from combine.
 	 *
 	 * @since 3.1.3
-	 * @author Remy Perona
 	 *
 	 * @return array
 	 */
@@ -898,4 +785,18 @@ class Combine extends AbstractJSOptimization {
 
 		return $localized_scripts;
 	}
+
+	/**
+	 * Is this script a delayed script or not.
+	 *
+	 * @since 3.7
+	 *
+	 * @param string $script_attributes Attributes beside the opening of script tag.
+	 *
+	 * @return bool True if it's a delayed script and false if not.
+	 */
+	private function is_delayed_script( $script_attributes ) {
+		return false !== strpos( $script_attributes, 'data-rocketlazyloadscript=' );
+	}
+
 }

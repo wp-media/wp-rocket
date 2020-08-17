@@ -170,6 +170,7 @@ class Plugin {
 			'health_check',
 			'minify_css_admin_subscriber',
 			'admin_cache_subscriber',
+			'google_fonts_admin_subscriber',
 		];
 	}
 
@@ -187,12 +188,14 @@ class Plugin {
 		$subscribers = [
 			'buffer_subscriber',
 			'ie_conditionals_subscriber',
-			'minify_html_subscriber',
 			'combine_google_fonts_subscriber',
 			'minify_css_subscriber',
 			'minify_js_subscriber',
 			'cache_dynamic_resource',
 			'dequeue_jquery_migrate_subscriber',
+			'embeds_subscriber',
+			'emojis_subscriber',
+			'delay_js_subscriber',
 		];
 
 		// Don't insert the LazyLoad file if Rocket LazyLoad is activated.
@@ -214,11 +217,14 @@ class Plugin {
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Capabilities\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Addon\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Preload\ServiceProvider' );
+		$this->container->addServiceProvider( 'WP_Rocket\Engine\Preload\Links\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\CDN\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Common_Subscribers' );
 		$this->container->addServiceProvider( 'WP_Rocket\ThirdParty\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\ThirdParty\Hostings\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Updater_Subscribers' );
+		$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\DelayJS\ServiceProvider' );
+		$this->container->addServiceProvider( 'WP_Rocket\Engine\Heartbeat\ServiceProvider' );
 
 		$common_subscribers = [
 			'cdn_subscriber',
@@ -256,7 +262,10 @@ class Plugin {
 			'rest_cpcss_subscriber',
 			'simple_custom_css',
 			'pdfembedder',
+			'delay_js_admin_subscriber',
 			'divi',
+			'preload_links_admin_subscriber',
+			'preload_links_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();
