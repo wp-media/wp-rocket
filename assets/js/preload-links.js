@@ -289,16 +289,15 @@ class RocketPreloadLinks {
 	 * Named static constructor to encapsulate how to create the object.
 	 */
 	static run() {
-		const options = {
-			capture: true,
-			passive: true
-		};
-
 		// Bail out if the configuration not passed from the server.
 		if ( typeof RocketPreloadLinksConfig === "undefined" ) {
 			return;
 		}
 
+		const options = {
+			capture: true,
+			passive: true
+		};
 		const browser = new RocketBrowserCompatibilityChecker( options );
 		const instance = new RocketPreloadLinks( browser, RocketPreloadLinksConfig );
 		instance.init();
