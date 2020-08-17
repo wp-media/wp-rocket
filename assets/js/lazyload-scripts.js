@@ -80,11 +80,14 @@ class RocketLazyLoadScripts {
 	 */
 	static run() {
 		// Bail out if the browser checker does not exist.
-		if ( ! RocketBrowserCompatabilityChecker ) {
+		if ( ! RocketBrowserCompatibilityChecker ) {
 			return;
 		}
 
-		const browser = new RocketBrowserCompatabilityChecker( { passive: true } );
+		const options = {
+			passive: true
+		};
+		const browser = new RocketBrowserCompatibilityChecker( options );
 		const instance = new RocketLazyLoadScripts(
 			[
 				'keydown',
