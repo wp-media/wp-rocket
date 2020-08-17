@@ -1385,7 +1385,35 @@ function _rocket_get_wp_rocket_cache_path() { // phpcs:ignore WordPress.NamingCo
 }
 
 /**
+ * Gets .php files in a directory as an array of SplFileInfo objects.
+ *
+ * @since 3.6.3
+ *
+ * @param string $dir_path Directory to check.
+ *
+ * @return array .php files in the directory. [...SplFileInfo]
+ */
+function _rocket_get_php_files_in_dir( $dir_path ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
+	try {
+		$config_dir = new FilesystemIterator( (string) $dir_path );
+	} catch ( Exception $e ) {
+		return [];
+	}
+	$files = [];
+
+	foreach ( $config_dir as $file ) {
+		if ( $file->isFile() && 'php' === $file->getExtension() ) {
+			$files[] = $file;
+		}
+	}
+
+	return $files;
+}
+
+/**
  * Get recursive files matched by regex.
+ *
+ * @since 3.6.3
  *
  * @param string $regex Regular Expression to be applied.
  *

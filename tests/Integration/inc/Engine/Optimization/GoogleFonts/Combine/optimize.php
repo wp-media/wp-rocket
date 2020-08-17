@@ -9,6 +9,7 @@ use WP_Rocket\Engine\Optimization\GoogleFonts\Combine;
  * @covers \WP_Rocket\Engine\Optimization\GoogleFonts::optimize
  * @uses   \WP_Rocket\Logger\Logger
  * @group  Optimize
+ * @group  GoogleFonts
  */
 class Test_Optimize extends TestCase {
 

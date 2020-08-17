@@ -61,6 +61,12 @@ class HostResolver {
 			return 'wpengine';
 		}
 
+		if ( rocket_has_constant( 'O2SWITCH_VARNISH_PURGE_KEY' ) ) {
+			self::$hostname = 'o2switch';
+
+			return 'o2switch';
+		}
+
 		if ( rocket_get_constant( 'WPCOMSH_VERSION' ) ) {
 			self::$hostname = 'wordpresscom';
 

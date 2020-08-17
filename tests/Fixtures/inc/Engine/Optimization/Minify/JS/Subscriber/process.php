@@ -21,6 +21,7 @@ return [
 					<script type="text/javascript" src="http://example.org/wp-content/themes/twentytwenty/assets/script.js"></script>
 					<script type="text/javascript" src="http://example.org/wp-content/plugins/hello-dolly/script.js"></script>
 					<script type="text/javascript" src="http://example.org/wp-includes/js/jquery/jquery.js"></script>
+					<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js"></script>
 				</head>
 				<body>
 				</body>
@@ -32,6 +33,7 @@ return [
 						<script data-minify="1" type="text/javascript" src="http://example.org/wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script-cdcfd4a96e52edbc4d3e7d5e887dbd11.js"></script>
 						<script data-minify="1" type="text/javascript" src="http://example.org/wp-content/cache/min/1/wp-content/plugins/hello-dolly/script-82c5174e342f25861cb20cab85ecb625.js"></script>
 						<script type="text/javascript" src="http://example.org/wp-includes/js/jquery/jquery.js"></script>
+						<script data-minify="1" type="text/javascript" src="http://example.org/wp-content/cache/min/1/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap-2d51e1a9b3d408c46ab0057b69063753.js"></script>
 					</head>
 					<body>
 					</body>
@@ -41,6 +43,7 @@ return [
 					'wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script-cdcfd4a96e52edbc4d3e7d5e887dbd11.js.gz',
 					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/script-82c5174e342f25861cb20cab85ecb625.js',
 					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/script-82c5174e342f25861cb20cab85ecb625.js.gz',
+					'wp-content/cache/min/3rd-party/cdnjs.cloudflare.com-ajax-libs-twitter-bootstrap-4.5.0-js-bootstrap.js',
 				],
 			],
 			'settings' => [

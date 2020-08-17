@@ -21,10 +21,10 @@ class Test_MaybeDisableYoutubePreview extends FilesystemTestCase {
 	 */
 	public function testSetsCorrectOptions( $config, $expected ) {
 		$theme = new WP_Theme( $config['stylesheet'], 'wp-content/themes/' );
-		$theme->set_name( $config['stylesheet'] );
+		$theme->set_name( $config['theme-name'] );
 
-		if ( isset( $config['template'] ) ) {
-			$theme->set_template( $config['template'] );
+		if ( isset( $config['is-child'] ) ) {
+			$theme->set_template( $config['is-child'] );
 		}
 
 		Functions\when( 'wp_get_theme' )->justReturn( $theme );

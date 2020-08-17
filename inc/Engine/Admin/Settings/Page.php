@@ -569,7 +569,7 @@ class Page {
 		$inline_js_beacon      = $this->beacon->get_suggest( 'exclude_inline_js' );
 		$exclude_js_beacon     = $this->beacon->get_suggest( 'exclude_js' );
 		$jquery_migrate_beacon = $this->beacon->get_suggest( 'jquery_migrate' );
-		$google_fonts_beacon   = $this->beacon->get_suggest( 'google_fonts' );
+		$delay_js_beacon       = $this->beacon->get_suggest( 'delay_js' );
 
 		$this->settings->add_page_section(
 			'file_optimization',
@@ -581,13 +581,7 @@ class Page {
 
 		$this->settings->add_settings_sections(
 			[
-				'basic' => [
-					'title'  => __( 'Basic Settings', 'rocket' ),
-					'page'   => 'file_optimization',
-					// translators: %1$s = type of minification (HTML, CSS or JS), %2$s = “WP Rocket”.
-					'helper' => rocket_maybe_disable_minify_html() ? sprintf( __( '%1$s Minification is currently activated in <strong>Autoptimize</strong>. If you want to use %2$s’s minification, disable those options in Autoptimize.', 'rocket' ), 'HTML', WP_ROCKET_PLUGIN_NAME ) : '',
-				],
-				'css'   => [
+				'css' => [
 					'title'  => __( 'CSS Files', 'rocket' ),
 					'help'   => [
 						'id'  => $this->beacon->get_suggest( 'css_section' ),
@@ -597,7 +591,7 @@ class Page {
 					// translators: %1$s = type of minification (HTML, CSS or JS), %2$s = “WP Rocket”.
 					'helper' => rocket_maybe_disable_minify_css() ? sprintf( __( '%1$s Minification is currently activated in <strong>Autoptimize</strong>. If you want to use %2$s’s minification, disable those options in Autoptimize.', 'rocket' ), 'CSS', WP_ROCKET_PLUGIN_NAME ) : '',
 				],
-				'js'    => [
+				'js'  => [
 					'title'  => __( 'JavaScript Files', 'rocket' ),
 					'help'   => [
 						'id'  => $this->beacon->get_suggest( 'js_section' ),
@@ -612,31 +606,6 @@ class Page {
 
 		$this->settings->add_settings_fields(
 			[
-				'minify_html'            => [
-					'type'              => 'checkbox',
-					'label'             => __( 'Minify HTML', 'rocket' ),
-					'container_class'   => [
-						rocket_maybe_disable_minify_html() ? 'wpr-isDisabled' : '',
-					],
-					'description'       => __( 'Minifying HTML removes whitespace and comments to reduce the size.', 'rocket' ),
-					'section'           => 'basic',
-					'page'              => 'file_optimization',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
-					'input_attr'        => [
-						'disabled' => rocket_maybe_disable_minify_html() ? 1 : 0,
-					],
-				],
-				'minify_google_fonts'    => [
-					'type'              => 'checkbox',
-					'label'             => __( 'Optimize Google Fonts', 'rocket' ),
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'Improves font performance and combines multiple font requests to reduce the number of HTTP requests. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $google_fonts_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $google_fonts_beacon['id'] ) . '" target="_blank">', '</a>' ),
-					'section'           => 'basic',
-					'page'              => 'file_optimization',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
-				],
 				'minify_css'             => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Minify CSS files', 'rocket' ),
@@ -684,7 +653,9 @@ class Page {
 					'type'              => 'textarea',
 					'label'             => __( 'Excluded CSS Files', 'rocket' ),
 					'description'       => __( 'Specify URLs of CSS files to be excluded from minification and concatenation (one per line).', 'rocket' ),
-					'helper'            => __( 'The domain part of the URL will be stripped automatically.<br>Use (.*).css wildcards to exclude all CSS files located at a specific path.', 'rocket' ),
+					'helper'            => __( '<strong>Internal:</strong> The domain part of the URL will be stripped automatically. Use (.*).css wildcards to exclude all CSS files located at a specific path.', 'rocket' ) . '<br>' .
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					sprintf( __( '<strong>3rd Party:</strong> Use either the full URL path or only the domain name, to exclude external CSS. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $exclude_js_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $exclude_js_beacon['id'] ) . '" rel="noopener noreferrer" target="_blank">', '</a>' ),
 					'container_class'   => [
 						'wpr-field--children',
 					],
@@ -842,6 +813,35 @@ class Page {
 					'page'              => 'file_optimization',
 					'default'           => 1,
 					'sanitize_callback' => 'sanitize_checkbox',
+				],
+				'delay_js'               => [
+					'container_class'   => [
+						'wpr-isParent',
+					],
+					'type'              => 'checkbox',
+					'label'             => __( 'Delay JavaScript execution', 'rocket' ),
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description'       => sprintf( __( 'Improves performance by delaying the loading of JavaScript files until user interaction (e.g. scroll, click). %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $delay_js_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $delay_js_beacon['id'] ) . '" target="_blank">', '</a>' ),
+					'section'           => 'js',
+					'page'              => 'file_optimization',
+					'default'           => 0,
+					'sanitize_callback' => 'sanitize_checkbox',
+				],
+				'delay_js_scripts'       => [
+					'type'              => 'textarea',
+					'label'             => __( 'Scripts to delay', 'rocket' ),
+					'description'       => __( 'Specify keywords that can identify inline or JavaScript files to be delayed (one per line).', 'rocket' ),
+					'container_class'   => [
+						'wpr-field--children',
+					],
+					'parent'            => 'delay_js',
+					'section'           => 'js',
+					'page'              => 'file_optimization',
+					'default'           => [],
+					'sanitize_callback' => 'sanitize_textarea',
+					'input_attr'        => [
+						'disabled' => get_rocket_option( 'delay_js' ) ? 0 : 1,
+					],
 				],
 			]
 		);
@@ -1076,6 +1076,7 @@ class Page {
 
 		$bot_beacon    = $this->beacon->get_suggest( 'bot' );
 		$fonts_preload = $this->beacon->get_suggest( 'fonts_preload' );
+		$preload_links = $this->beacon->get_suggest( 'preload_links' );
 
 		$this->settings->add_settings_sections(
 			[
@@ -1108,6 +1109,17 @@ class Page {
 					'help'        => [
 						'id'  => $fonts_preload['id'],
 						'url' => $fonts_preload['url'],
+					],
+					'page'        => 'preload',
+				],
+				'preload_links_section' => [
+					'title'       => __( 'Preload Links', 'rocket' ),
+					'type'        => 'fields_container',
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description' => sprintf( __( 'Link preloading improves the perceived load time by downloading a page when a user hovers over the link. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $preload_links['url'] ) . '" data-beacon-article="' . esc_attr( $preload_links['id'] ) . '" target="_blank">', '</a>' ),
+					'help'        => [
+						'id'  => $preload_links['id'],
+						'url' => $preload_links['url'],
 					],
 					'page'        => 'preload',
 				],
@@ -1188,6 +1200,14 @@ class Page {
 					'page'              => 'preload',
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
+				],
+				'preload_links' => [
+					'type'              => 'checkbox',
+					'label'             => __( 'Enable link preloading', 'rocket' ),
+					'section'           => 'preload_links_section',
+					'page'              => 'preload',
+					'default'           => 0,
+					'sanitize_callback' => 'sanitize_checkbox',
 				],
 			]
 		);
@@ -2080,6 +2100,7 @@ class Page {
 					'cloudflare_old_settings',
 					'sitemap_preload_url_crawl',
 					'cache_ssl',
+					'minify_google_fonts',
 				]
 			)
 		);

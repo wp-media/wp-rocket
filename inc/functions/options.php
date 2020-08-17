@@ -215,9 +215,9 @@ function get_rocket_cache_reject_uri( $force = false ) { // phpcs:ignore WordPre
 	$uris              = (array) get_rocket_option( 'cache_reject_uri', [] );
 	$home_root         = rocket_get_home_dirname();
 	$home_root_escaped = preg_quote( $home_root, '/' ); // The site is not at the domain root, it's in a folder.
+	$home_root_len     = strlen( $home_root );
 
 	if ( '' !== $home_root && $uris ) {
-		$home_root_len = strlen( $home_root );
 		foreach ( $uris as $i => $uri ) {
 			/**
 			 * Since these URIs can be regex patterns like `/homeroot(/.+)/`, we can't simply search for the string `/homeroot/` (nor `/homeroot`).

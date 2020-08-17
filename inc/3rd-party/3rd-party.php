@@ -22,10 +22,6 @@ if ( isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
 	require WP_ROCKET_3RD_PARTY_PATH . 'hosting/kinsta.php';
 }
 
-if ( defined( 'O2SWITCH_VARNISH_PURGE_KEY' ) ) {
-	require WP_ROCKET_3RD_PARTY_PATH . 'hosting/o2switch.php';
-}
-
 if ( defined( 'PL_INSTANCE_REF' ) && class_exists( '\Presslabs\Cache\CacheHandler' ) && file_exists( WP_CONTENT_DIR . '/advanced-cache.php' ) ) {
 	require WP_ROCKET_3RD_PARTY_PATH . 'hosting/presslabs.php';
 }
@@ -35,7 +31,6 @@ require WP_ROCKET_3RD_PARTY_PATH . 'hosting/nginx.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'hosting/pressidium.php';
 
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/geotargetingwp.php';
-require WP_ROCKET_3RD_PARTY_PATH . 'plugins/slider/revslider.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/slider/layerslider.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/slider/meta-slider.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/slider/soliloquy.php';
@@ -53,7 +48,6 @@ require WP_ROCKET_3RD_PARTY_PATH . 'plugins/ecommerce/jigoshop.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/ecommerce/wpshop.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/ecommerce/give.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/age-verify.php';
-require WP_ROCKET_3RD_PARTY_PATH . 'plugins/appbanners.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/autoptimize.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/envira-gallery.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/cookies/cookie-notice.php';
