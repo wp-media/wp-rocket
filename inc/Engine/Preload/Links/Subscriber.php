@@ -102,6 +102,7 @@ class Subscriber implements Subscriber_Interface {
 				'excludeUris'       => $this->get_uris_to_exclude( $use_trailing_slash ),
 				'usesTrailingSlash' => $use_trailing_slash,
 				'imageExtensions'   => 'jpg|jpeg|gif|png|tiff|bmp|webp|avif',
+				'siteUrl'           => site_url(),
 			]
 		);
 	}

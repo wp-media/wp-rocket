@@ -4,7 +4,6 @@ class RocketPreloadLinks {
 		this.browser = browser;
 		this.config = config;
 		this.listenerOptions = this.browser.options;
-		this.pageUrl = window.location.origin;
 
 		this.processedLinks = new Set;
 		this.addLinkTimeoutId = null;
@@ -159,7 +158,7 @@ class RocketPreloadLinks {
 		}
 
 		const href = linkElem.href;
-		const origin = href.substring( 0, this.pageUrl.length );
+		const origin = href.substring( 0, this.config.siteUrl.length );
 		const pathname = this._getPathname( href, origin );
 		const url = {
 			original: href,
@@ -187,7 +186,7 @@ class RocketPreloadLinks {
 	 */
 	_getPathname( url, origin ) {
 		let pathname = origin
-			? url.substring( this.pageUrl.length )
+			? url.substring( this.config.siteUrl.length )
 			: url;
 
 		if ( ! pathname.startsWith( '/' ) ) {
@@ -269,7 +268,7 @@ class RocketPreloadLinks {
 	}
 
 	_isInternal( url ) {
-		return url.origin === this.pageUrl;
+		return url.origin === this.config.siteUrl;
 	}
 
 	_isQueryString( href ) {
