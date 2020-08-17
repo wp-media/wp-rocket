@@ -12,7 +12,7 @@ use WPMedia\PHPUnit\Integration\AjaxTestCase;
  */
 class Test_RestoreDefaults extends AjaxTestCase {
 
-	protected $path_to_test_data = '/inc/Engine/Optimization/DelayJs/Admin/Subscriber/restoreDefaults.php';
+	protected $path_to_test_data = '/inc/Engine/Optimization/DelayJS/Admin/Subscriber/restoreDefaults.php';
 	protected $action = 'rocket_restore_delay_js_defaults';
 
 	public function setUp() {
