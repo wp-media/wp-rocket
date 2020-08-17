@@ -127,10 +127,29 @@ gulp.task('js:compile_single', () => {
 	return gulp.src( source )
 		// Transpile newer JS for cross-browser support.
 		.pipe( transpile({
-			presets: ["es2015"]
+			presets: [
+				[
+					'env',
+					{
+						'targets': 'last 2 versions'
+					}
+				]
+			]
 		}))
 		// Minify the script.
-		.pipe( uglify() )
+		.pipe( uglify({
+			compress: {
+				sequences: true,
+				dead_code: true,
+				conditionals: true,
+				booleans: true,
+				unused: true,
+				if_return: true,
+				join_vars: true,
+				drop_console: true
+			},
+			mangle: false
+		} ) )
 		// Rename the .js to .min.js.
 		.pipe( rename( { suffix: '.min' } ) )
 		// Write out the script to the configured <filename>.min.js destination.

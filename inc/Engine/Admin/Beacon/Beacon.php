@@ -139,6 +139,7 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 			'minify_google_fonts'     => 'Combine Google Fonts',
 			'manual_preload'          => 'Preload',
 			'sitemap_preload'         => 'Sitemap Preload',
+			'preload_links'           => 'Preload Links',
 			'cdn'                     => 'CDN Enabled',
 			'do_cloudflare'           => 'Cloudflare Enabled',
 			'varnish_auto_purge'      => 'Varnish Purge Enabled',
@@ -469,6 +470,12 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 				'fr' => [
 					'id'  => '5eb3add02c7d3a5ea54aa66d',
 					'url' => 'https://fr.docs.wp-rocket.me/article/1319-precharger-polices/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
+			'preload_links'              => [
+				'en' => [
+					'id'  => '5f35939b042863444aa04df9',
+					'url' => 'https://docs.wp-rocket.me/article/1348-preload-links/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'never_cache'                => [
