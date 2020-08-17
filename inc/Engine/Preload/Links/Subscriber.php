@@ -119,6 +119,7 @@ class Subscriber implements Subscriber_Interface {
 	private function get_uris_to_exclude( $use_trailing_slash ) {
 		$site_url = site_url();
 		$uris     = get_rocket_cache_reject_uri();
+		$uris     = str_replace( [ '/(.*)|', '/(.*)/|' ], '/|', $uris );
 
 		foreach ( [ '/wp-admin', '/logout' ] as $uri ) {
 			$uris .= "|{$uri}";
