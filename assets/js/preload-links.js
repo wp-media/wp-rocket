@@ -299,7 +299,7 @@ class RocketPreloadLinks {
 			return;
 		}
 
-		const browser = new RocketBrowserCompatabilityChecker( options );
+		const browser = new RocketBrowserCompatibilityChecker( options );
 		const instance = new RocketPreloadLinks( browser, RocketPreloadLinksConfig );
 		instance.init();
 	}

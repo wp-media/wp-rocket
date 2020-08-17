@@ -1,4 +1,4 @@
-class RocketBrowserCompatabilityChecker {
+class RocketBrowserCompatibilityChecker {
 
 	constructor( options ) {
 		this.passiveSupported = false;
