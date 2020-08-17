@@ -23,7 +23,7 @@ class Settings {
 		'translate.google.com/translate_a/element.js',
 		'widget.manychat.com',
 		'google.com/recaptcha/api.js',
-		'connect.facebook.net/en_US/sdk/xfbml.customerchat.js',
+		'xfbml.customerchat.js',
 		'static.hotjar.com/c/hotjar-',
 		'smartsuppchat.com/loader.js',
 		'grecaptcha.execute',
@@ -37,6 +37,10 @@ class Settings {
 		'cookie-law-info',
 		'cookie-notice',
 		'pinit.js',
+		'gtag',
+		'gtm',
+		'fbevents.js',
+		'fbq(',
 	];
 
 	/**
