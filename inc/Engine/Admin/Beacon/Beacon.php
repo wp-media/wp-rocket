@@ -126,6 +126,7 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 			'embeds'                  => 'Disable Embeds',
 			'defer_all_js'            => 'Defer JS',
 			'defer_all_js_safe'       => 'Defer JS Safe',
+			'delay_js'                => 'Delay JS',
 			'async_css'               => 'Optimize CSS Delivery',
 			'lazyload'                => 'Lazyload Images',
 			'lazyload_iframes'        => 'Lazyload Iframes',
@@ -400,6 +401,12 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 				'fr' => [
 					'id'  => '5e5e5bfe04286364bc962504',
 					'url' => 'https://fr.docs.wp-rocket.me/article/1309-supprimer-jquery-migrate/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
+			'delay_js'                   => [
+				'en' => [
+					'id'  => '5f359695042863444aa04e26',
+					'url' => 'https://docs.wp-rocket.me/article/1349-delay-javascript-execution/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'async'                      => [

@@ -101,7 +101,11 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 		}
 
 		// File should not be minified.
-		if ( false !== strpos( $tag[0], 'data-minify=' ) || false !== strpos( $tag[0], 'data-no-minify=' ) ) {
+		if (
+			false !== strpos( $tag[0], 'data-minify=' )
+			||
+			false !== strpos( $tag[0], 'data-no-minify=' )
+		) {
 			return true;
 		}
 

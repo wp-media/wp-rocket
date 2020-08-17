@@ -160,6 +160,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 		$scripts = array_map(
 			function( $script ) {
 				preg_match( '/<script\s+([^>]+[\s\'"])?src\s*=\s*[\'"]\s*?(?<url>[^\'"]+\.js(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>/Umsi', $script[0], $matches );
+
 				if ( isset( $matches['url'] ) ) {
 					if ( $this->is_external_file( $matches['url'] ) ) {
 						foreach ( $this->get_excluded_external_file_path() as $excluded_file ) {
@@ -263,6 +264,10 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 								'excluded_content' => $matches_inline['content'],
 							]
 						);
+						return;
+					}
+
+					if ( $this->is_delayed_script( $matches_inline['attrs'] ) ) {
 						return;
 					}
 
@@ -777,4 +782,18 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 
 		return $localized_scripts;
 	}
+
+	/**
+	 * Is this script a delayed script or not.
+	 *
+	 * @since 3.7
+	 *
+	 * @param string $script_attributes Attributes beside the opening of script tag.
+	 *
+	 * @return bool True if it's a delayed script and false if not.
+	 */
+	private function is_delayed_script( $script_attributes ) {
+		return false !== strpos( $script_attributes, 'data-rocketlazyloadscript=' );
+	}
+
 }

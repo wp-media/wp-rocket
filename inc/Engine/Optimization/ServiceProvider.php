@@ -32,6 +32,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		'minify_css_subscriber',
 		'minify_js_subscriber',
 		'dequeue_jquery_migrate_subscriber',
+		'delay_js_html',
+		'delay_js_subscriber',
 	];
 
 	/**
@@ -71,5 +73,11 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'dequeue_jquery_migrate_subscriber', 'WP_Rocket\Subscriber\Optimization\Dequeue_JQuery_Migrate_Subscriber' )
 			->withArgument( $options );
 		$this->getContainer()->share( 'ie_conditionals_subscriber', 'WP_Rocket\Engine\Optimization\IEConditionalSubscriber' );
+
+		$this->getContainer()->add( 'delay_js_html', 'WP_Rocket\Engine\Optimization\DelayJS\HTML' )
+			->withArgument( $options );
+		$this->getContainer()->share( 'delay_js_subscriber', 'WP_Rocket\Engine\Optimization\DelayJS\Subscriber' )
+			->withArgument( $this->getContainer()->get( 'delay_js_html' ) )
+			->withArgument( $filesystem );
 	}
 }
