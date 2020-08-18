@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Preload\Links;
 
-use WP_Rocket\Engine\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Engine\Container\ServiceProvider\AbstractServiceProvider;
 
 /**
  * Service provider for WP Rocket preload links.
