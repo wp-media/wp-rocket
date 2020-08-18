@@ -1,10 +1,10 @@
 <?php
 
-namespace League\Container\Inflector;
+namespace WP_Rocket\Engine\Container\Inflector;
 
-use League\Container\ImmutableContainerAwareTrait;
-use League\Container\Argument\ArgumentResolverInterface;
-use League\Container\Argument\ArgumentResolverTrait;
+use WP_Rocket\Engine\Container\ImmutableContainerAwareTrait;
+use WP_Rocket\Engine\Container\Argument\ArgumentResolverInterface;
+use WP_Rocket\Engine\Container\Argument\ArgumentResolverTrait;
 
 class Inflector implements ArgumentResolverInterface
 {

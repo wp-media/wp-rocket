@@ -1,10 +1,10 @@
 <?php
 
-namespace League\Container;
+namespace WP_Rocket\Engine\Container;
 
-use League\Container\Argument\ArgumentResolverInterface;
-use League\Container\Argument\ArgumentResolverTrait;
-use League\Container\Exception\NotFoundException;
+use WP_Rocket\Engine\Container\Argument\ArgumentResolverInterface;
+use WP_Rocket\Engine\Container\Argument\ArgumentResolverTrait;
+use WP_Rocket\Engine\Container\Exception\NotFoundException;
 use ReflectionClass;
 use ReflectionFunction;
 use ReflectionMethod;

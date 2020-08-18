@@ -1,8 +1,8 @@
 <?php
 
-namespace League\Container\Argument;
+namespace WP_Rocket\Engine\Container\Argument;
 
-use League\Container\ImmutableContainerAwareInterface;
+use WP_Rocket\Engine\Container\ImmutableContainerAwareInterface;
 use ReflectionFunctionAbstract;
 
 interface ArgumentResolverInterface extends ImmutableContainerAwareInterface

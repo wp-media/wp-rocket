@@ -1,20 +1,20 @@
 <?php
 
-namespace League\Container;
+namespace WP_Rocket\Engine\Container;
 
 interface ContainerAwareInterface
 {
     /**
      * Set a container
      *
-     * @param \League\Container\ContainerInterface $container
+     * @param \WP_Rocket\Engine\Container\ContainerInterface $container
      */
     public function setContainer(ContainerInterface $container);
 
     /**
      * Get the container
      *
-     * @return \League\Container\ContainerInterface
+     * @return \WP_Rocket\Engine\Container\ContainerInterface
      */
     public function getContainer();
 }

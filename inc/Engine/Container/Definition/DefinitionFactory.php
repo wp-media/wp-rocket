@@ -1,8 +1,8 @@
 <?php
 
-namespace League\Container\Definition;
+namespace WP_Rocket\Engine\Container\Definition;
 
-use League\Container\ImmutableContainerAwareTrait;
+use WP_Rocket\Engine\Container\ImmutableContainerAwareTrait;
 
 class DefinitionFactory implements DefinitionFactoryInterface
 {

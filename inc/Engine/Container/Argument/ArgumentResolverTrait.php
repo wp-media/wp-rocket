@@ -1,9 +1,9 @@
 <?php
 
-namespace League\Container\Argument;
+namespace WP_Rocket\Engine\Container\Argument;
 
-use League\Container\Exception\NotFoundException;
-use League\Container\ReflectionContainer;
+use WP_Rocket\Engine\Container\Exception\NotFoundException;
+use WP_Rocket\Engine\Container\ReflectionContainer;
 use ReflectionFunctionAbstract;
 use ReflectionParameter;
 
@@ -76,7 +76,7 @@ trait ArgumentResolverTrait
     }
 
     /**
-     * @return \League\Container\ContainerInterface
+     * @return \WP_Rocket\Engine\Container\ContainerInterface
      */
     abstract public function getContainer();
 }

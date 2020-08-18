@@ -1,6 +1,6 @@
 <?php
 
-namespace League\Container\Exception;
+namespace WP_Rocket\Engine\Container\Exception;
 
 use Interop\Container\Exception\NotFoundException as NotFoundExceptionInterface;
 use InvalidArgumentException;

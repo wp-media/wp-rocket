@@ -1,9 +1,9 @@
 <?php
 
-namespace League\Container\ServiceProvider;
+namespace WP_Rocket\Engine\Container\ServiceProvider;
 
-use League\Container\ContainerAwareInterface;
-use League\Container\ContainerAwareTrait;
+use WP_Rocket\Engine\Container\ContainerAwareInterface;
+use WP_Rocket\Engine\Container\ContainerAwareTrait;
 
 class ServiceProviderAggregate implements ServiceProviderAggregateInterface
 {
@@ -46,7 +46,7 @@ class ServiceProviderAggregate implements ServiceProviderAggregateInterface
 
         throw new \InvalidArgumentException(
             'A service provider must be a fully qualified class name or instance ' .
-            'of (\League\Container\ServiceProvider\ServiceProviderInterface)'
+            'of (\WP_Rocket\Engine\Container\ServiceProvider\ServiceProviderInterface)'
         );
     }
 

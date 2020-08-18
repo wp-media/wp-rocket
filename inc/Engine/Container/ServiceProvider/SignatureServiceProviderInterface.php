@@ -1,6 +1,6 @@
 <?php
 
-namespace League\Container\ServiceProvider;
+namespace WP_Rocket\Engine\Container\ServiceProvider;
 
 interface SignatureServiceProviderInterface
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace League\Container\Definition;
+namespace WP_Rocket\Engine\Container\Definition;
 
-use League\Container\Argument\ArgumentResolverInterface;
-use League\Container\Argument\ArgumentResolverTrait;
-use League\Container\ImmutableContainerAwareTrait;
+use WP_Rocket\Engine\Container\Argument\ArgumentResolverInterface;
+use WP_Rocket\Engine\Container\Argument\ArgumentResolverTrait;
+use WP_Rocket\Engine\Container\ImmutableContainerAwareTrait;
 
 abstract class AbstractDefinition implements ArgumentResolverInterface, DefinitionInterface
 {

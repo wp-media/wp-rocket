@@ -1,8 +1,8 @@
 <?php
 
-namespace League\Container\Inflector;
+namespace WP_Rocket\Engine\Container\Inflector;
 
-use League\Container\ImmutableContainerAwareTrait;
+use WP_Rocket\Engine\Container\ImmutableContainerAwareTrait;
 
 class InflectorAggregate implements InflectorAggregateInterface
 {

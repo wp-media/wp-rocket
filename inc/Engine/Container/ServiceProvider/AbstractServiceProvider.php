@@ -1,8 +1,8 @@
 <?php
 
-namespace League\Container\ServiceProvider;
+namespace WP_Rocket\Engine\Container\ServiceProvider;
 
-use League\Container\ContainerAwareTrait;
+use WP_Rocket\Engine\Container\ContainerAwareTrait;
 
 abstract class AbstractServiceProvider implements ServiceProviderInterface
 {

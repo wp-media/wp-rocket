@@ -1,8 +1,8 @@
 <?php
 
-namespace League\Container\Inflector;
+namespace WP_Rocket\Engine\Container\Inflector;
 
-use League\Container\ImmutableContainerAwareInterface;
+use WP_Rocket\Engine\Container\ImmutableContainerAwareInterface;
 
 interface InflectorAggregateInterface extends ImmutableContainerAwareInterface
 {
@@ -11,7 +11,7 @@ interface InflectorAggregateInterface extends ImmutableContainerAwareInterface
      *
      * @param  string   $type
      * @param  callable $callback
-     * @return \League\Container\Inflector\Inflector
+     * @return \WP_Rocket\Engine\Container\Inflector\Inflector
      */
     public function add($type, callable $callback = null);
 

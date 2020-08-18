@@ -1,6 +1,6 @@
 <?php
 
-namespace League\Container;
+namespace WP_Rocket\Engine\Container;
 
 interface ContainerInterface extends ImmutableContainerInterface
 {
@@ -10,7 +10,7 @@ interface ContainerInterface extends ImmutableContainerInterface
      * @param  string     $alias
      * @param  mixed|null $concrete
      * @param  boolean    $share
-     * @return \League\Container\Definition\DefinitionInterface
+     * @return \WP_Rocket\Engine\Container\Definition\DefinitionInterface
      */
     public function add($alias, $concrete = null, $share = false);
 
@@ -19,14 +19,14 @@ interface ContainerInterface extends ImmutableContainerInterface
      *
      * @param  string     $alias
      * @param  mixed|null $concrete
-     * @return \League\Container\Definition\DefinitionInterface
+     * @return \WP_Rocket\Engine\Container\Definition\DefinitionInterface
      */
     public function share($alias, $concrete = null);
 
     /**
      * Add a service provider to the container.
      *
-     * @param  string|\League\Container\ServiceProvider\ServiceProviderInterface $provider
+     * @param  string|\WP_Rocket\Engine\Container\ServiceProvider\ServiceProviderInterface $provider
      * @return void
      */
     public function addServiceProvider($provider);
@@ -35,7 +35,7 @@ interface ContainerInterface extends ImmutableContainerInterface
      * Returns a definition of an item to be extended.
      *
      * @param  string $alias
-     * @return \League\Container\Definition\DefinitionInterface
+     * @return \WP_Rocket\Engine\Container\Definition\DefinitionInterface
      */
     public function extend($alias);
 
@@ -44,7 +44,7 @@ interface ContainerInterface extends ImmutableContainerInterface
      *
      * @param  string        $type
      * @param  callable|null $callback
-     * @return \League\Container\Inflector\Inflector|void
+     * @return \WP_Rocket\Engine\Container\Inflector\Inflector|void
      */
     public function inflector($type, callable $callback = null);
 

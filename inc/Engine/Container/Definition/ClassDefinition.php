@@ -1,6 +1,6 @@
 <?php
 
-namespace League\Container\Definition;
+namespace WP_Rocket\Engine\Container\Definition;
 
 use ReflectionClass;
 

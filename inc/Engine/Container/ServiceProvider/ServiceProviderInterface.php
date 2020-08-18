@@ -1,8 +1,8 @@
 <?php
 
-namespace League\Container\ServiceProvider;
+namespace WP_Rocket\Engine\Container\ServiceProvider;
 
-use League\Container\ContainerAwareInterface;
+use WP_Rocket\Engine\Container\ContainerAwareInterface;
 
 interface ServiceProviderInterface extends ContainerAwareInterface
 {

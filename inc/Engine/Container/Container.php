@@ -1,42 +1,42 @@
 <?php
 
-namespace League\Container;
+namespace WP_Rocket\Engine\Container;
 
 use Interop\Container\ContainerInterface as InteropContainerInterface;
-use League\Container\Argument\RawArgumentInterface;
-use League\Container\Definition\DefinitionFactory;
-use League\Container\Definition\DefinitionFactoryInterface;
-use League\Container\Definition\DefinitionInterface;
-use League\Container\Exception\NotFoundException;
-use League\Container\Inflector\InflectorAggregate;
-use League\Container\Inflector\InflectorAggregateInterface;
-use League\Container\ServiceProvider\ServiceProviderAggregate;
-use League\Container\ServiceProvider\ServiceProviderAggregateInterface;
+use WP_Rocket\Engine\Container\Argument\RawArgumentInterface;
+use WP_Rocket\Engine\Container\Definition\DefinitionFactory;
+use WP_Rocket\Engine\Container\Definition\DefinitionFactoryInterface;
+use WP_Rocket\Engine\Container\Definition\DefinitionInterface;
+use WP_Rocket\Engine\Container\Exception\NotFoundException;
+use WP_Rocket\Engine\Container\Inflector\InflectorAggregate;
+use WP_Rocket\Engine\Container\Inflector\InflectorAggregateInterface;
+use WP_Rocket\Engine\Container\ServiceProvider\ServiceProviderAggregate;
+use WP_Rocket\Engine\Container\ServiceProvider\ServiceProviderAggregateInterface;
 
 class Container implements ContainerInterface
 {
     /**
-     * @var \League\Container\Definition\DefinitionFactoryInterface
+     * @var \WP_Rocket\Engine\Container\Definition\DefinitionFactoryInterface
      */
     protected $definitionFactory;
 
     /**
-     * @var \League\Container\Definition\DefinitionInterface[]
+     * @var \WP_Rocket\Engine\Container\Definition\DefinitionInterface[]
      */
     protected $definitions = [];
 
     /**
-     * @var \League\Container\Definition\DefinitionInterface[]
+     * @var \WP_Rocket\Engine\Container\Definition\DefinitionInterface[]
      */
     protected $sharedDefinitions = [];
 
     /**
-     * @var \League\Container\Inflector\InflectorAggregateInterface
+     * @var \WP_Rocket\Engine\Container\Inflector\InflectorAggregateInterface
      */
     protected $inflectors;
 
     /**
-     * @var \League\Container\ServiceProvider\ServiceProviderAggregateInterface
+     * @var \WP_Rocket\Engine\Container\ServiceProvider\ServiceProviderAggregateInterface
      */
     protected $providers;
 
@@ -53,9 +53,9 @@ class Container implements ContainerInterface
     /**
      * Constructor.
      *
-     * @param \League\Container\ServiceProvider\ServiceProviderAggregateInterface|null $providers
-     * @param \League\Container\Inflector\InflectorAggregateInterface|null             $inflectors
-     * @param \League\Container\Definition\DefinitionFactoryInterface|null             $definitionFactory
+     * @param \WP_Rocket\Engine\Container\ServiceProvider\ServiceProviderAggregateInterface|null $providers
+     * @param \WP_Rocket\Engine\Container\Inflector\InflectorAggregateInterface|null             $inflectors
+     * @param \WP_Rocket\Engine\Container\Definition\DefinitionFactoryInterface|null             $definitionFactory
      */
     public function __construct(
         ServiceProviderAggregateInterface $providers         = null,

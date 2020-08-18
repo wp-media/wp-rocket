@@ -1,6 +1,6 @@
 <?php
 
-namespace League\Container;
+namespace WP_Rocket\Engine\Container;
 
 use Interop\Container\ContainerInterface as InteropContainerInterface;
 
@@ -27,7 +27,7 @@ trait ImmutableContainerAwareTrait
     /**
      * Get the container.
      *
-     * @return \League\Container\ImmutableContainerInterface
+     * @return \WP_Rocket\Engine\Container\ImmutableContainerInterface
      */
     public function getContainer()
     {

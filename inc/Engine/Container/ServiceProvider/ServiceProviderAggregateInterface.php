@@ -1,15 +1,15 @@
 <?php
 
-namespace League\Container\ServiceProvider;
+namespace WP_Rocket\Engine\Container\ServiceProvider;
 
-use League\Container\ContainerAwareInterface;
+use WP_Rocket\Engine\Container\ContainerAwareInterface;
 
 interface ServiceProviderAggregateInterface extends ContainerAwareInterface
 {
     /**
      * Add a service provider to the aggregate.
      *
-     * @param  string|\League\Container\ServiceProvider\ServiceProviderInterface $provider
+     * @param  string|\WP_Rocket\Engine\Container\ServiceProvider\ServiceProviderInterface $provider
      * @return $this
      */
     public function add($provider);

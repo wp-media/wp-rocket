@@ -1,8 +1,8 @@
 <?php
 
-namespace League\Container\Definition;
+namespace WP_Rocket\Engine\Container\Definition;
 
-use League\Container\ImmutableContainerAwareInterface;
+use WP_Rocket\Engine\Container\ImmutableContainerAwareInterface;
 
 interface DefinitionFactoryInterface extends ImmutableContainerAwareInterface
 {

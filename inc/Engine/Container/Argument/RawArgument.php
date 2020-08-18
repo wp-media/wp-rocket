@@ -1,6 +1,6 @@
 <?php
 
-namespace League\Container\Argument;
+namespace WP_Rocket\Engine\Container\Argument;
 
 class RawArgument implements RawArgumentInterface
 {

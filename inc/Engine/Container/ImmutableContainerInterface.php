@@ -1,6 +1,6 @@
 <?php
 
-namespace League\Container;
+namespace WP_Rocket\Engine\Container;
 
 use Interop\Container\ContainerInterface as InteropContainerInterface;
 
