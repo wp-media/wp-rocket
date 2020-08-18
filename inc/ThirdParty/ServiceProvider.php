@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\ThirdParty;
 
-use League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Engine\Container\ServiceProvider\AbstractServiceProvider;
 
 /**
  * Service provider for WP Rocket third party compatibility

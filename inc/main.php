@@ -1,6 +1,6 @@
 <?php
 
-use League\Container\Container;
+use WP_Rocket\Engine\Container\Container;
 use WP_Rocket\Plugin;
 
 defined( 'ABSPATH' ) || exit;
