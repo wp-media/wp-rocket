@@ -13,13 +13,13 @@ class Test_SetOptionOnUpdate extends TestCase{
 	public function setUp() {
 		parent::setUp();
 
-		remove_action( 'wp_rocket_upgrade', 'rocket_new_upgrade' );
+		$this->unregisterAllCallbacksExcept( 'wp_rocket_upgrade', 'set_option_on_update' );
 	}
 
 	public function tearDown() {
 		parent::tearDown();
 
-		add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade' );
+		$this->restoreWpFilter( 'wp_rocket_upgrade' );
 	}
 
 	/**

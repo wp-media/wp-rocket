@@ -40,7 +40,6 @@ return [
 		'expected' => [
 			'delay_js' => 1,
 			'delay_js_scripts' => $list,
-			'preload_links' => 0,
 		]
 	],
 	'shouldReturnValidOptionsWithOptionsNotArray' => [
@@ -51,7 +50,6 @@ return [
 			'test_option',
 			'delay_js' => 1,
 			'delay_js_scripts' => $list,
-			'preload_links' => 0,
 		]
 	],
 	'shouldOverrideOptions' => [
@@ -66,7 +64,6 @@ return [
 		'expected' => [
 			'delay_js' => 1,
 			'delay_js_scripts' => $list,
-			'preload_links' => 0,
 		]
 	],
 	'shouldNotOverrideOtherOptions' => [
@@ -83,7 +80,6 @@ return [
 			'test_option' => 1,
 			'delay_js' => 1,
 			'delay_js_scripts' => $list,
-			'preload_links' => 0,
 		]
 	],
 ];

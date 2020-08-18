@@ -14,8 +14,8 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group  DelayJS
  */
 class Test_SetOptionOnUpdate extends TestCase{
-
-	private $defaults = ['getbutton.io',
+	private $defaults = [
+		'getbutton.io',
 		'//a.omappapi.com/app/js/api.min.js',
 		'feedbackcompany.com/includes/widgets/feedback-company-widget.min.js',
 		'snap.licdn.com/li.lms-analytics/insight.min.js',
@@ -45,7 +45,7 @@ class Test_SetOptionOnUpdate extends TestCase{
 		'gtm',
 		'fbevents.js',
 		'fbq(',
-		];
+	];
 
 	/**
 	 * @dataProvider configTestData

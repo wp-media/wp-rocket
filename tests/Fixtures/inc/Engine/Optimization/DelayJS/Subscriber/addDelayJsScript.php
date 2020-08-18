@@ -1,34 +1,23 @@
 <?php
 
 return [
-	'shouldNotProcessDelayURLScriptOnBypass' => [
+	'shouldNotAddScriptsWhenBypass' => [
 		'config'   => [
-			'do-not-optimize'      => false,
-			'delay_js'             => 1,
-			'bypass'               => true,
+			'delay_js' => 1,
+			'bypass'   => true,
 		],
 		'expected' => false,
 	],
 
-	'shouldAddScriptsWhenDoNotOptimizeEnabled' => [
+	'shouldNotAddScriptsWhenDelaySettingDisabled' => [
 		'config'   => [
-			'do-not-optimize'      => true,
-			'delay_js' => 1,
+			'delay_js' => 0,
 		],
-		'expected' => true,
-	],
-
-	'shouldAddScriptsWhenDelaySettingEnabled' => [
-		'config'   => [
-			'do-not-optimize'      => false,
-			'delay_js' => 1,
-		],
-		'expected' => true,
+		'expected' => false,
 	],
 
 	'shouldProcessDelayURLScript' => [
 		'config'   => [
-			'do-not-optimize'      => false,
 			'delay_js' => 1,
 		],
 		'expected' => true,

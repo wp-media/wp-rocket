@@ -10,6 +10,18 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group  DelayJS
  */
 class Test_AddOptions extends TestCase {
+	public function setUp() {
+		parent::setUp();
+
+		$this->unregisterAllCallbacksExcept( 'rocket_first_install_options', 'add_options' );
+	}
+
+	public function tearDown() {
+		parent::tearDown();
+
+		$this->restoreWpFilter( 'rocket_first_install_options' );
+	}
+
 	/**
 	 * @dataProvider configTestData
 	 */
@@ -30,7 +42,6 @@ class Test_AddOptions extends TestCase {
 
 		$actual = apply_filters( 'rocket_safe_mode_reset_options', $options );
 
-		unset( $expected['preload_links'] );
 		$this->assertSame( $expected, $actual );
 
 	}
