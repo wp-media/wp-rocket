@@ -104,6 +104,7 @@ class Subscriber implements Subscriber_Interface {
 				'imageExtensions'   => 'jpg|jpeg|gif|png|tiff|bmp|webp|avif',
 				'siteUrl'           => site_url(),
 				'onHoverDelayTime'  => 65, // milliseconds
+				'rateThrottle'      => 3, // on hover: limits the number of links preloaded per second.
 			]
 		);
 	}
