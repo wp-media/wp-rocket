@@ -16,10 +16,12 @@ class Test_AddDelayJsScript extends TestCase {
 	private $delay_js = false;
 
 	public function tearDown() {
-		parent::tearDown();
-
 		unset( $GLOBALS['wp'] );
 		remove_filter( 'pre_get_rocket_option_delay_js', [ $this, 'set_delay_js_option' ] );
+		$this->donotrocketoptimize = false;
+		$this->delay_js = false;
+
+		parent::tearDown();
 	}
 
 	/**
@@ -28,7 +30,7 @@ class Test_AddDelayJsScript extends TestCase {
 	public function testShouldProcessScriptHTML( $config, $expected ) {
 		$bypass                    = isset( $config['bypass'] ) ? $config['bypass'] : false;
 		$this->donotrocketoptimize = isset( $config['do-not-optimize'] )    ? $config['do-not-optimize']    : false;
-		$this->delay_js            = isset( $config['do-not-delay-setting'] ) ? $config['do-not-delay-setting'] : false;
+		$this->delay_js            = isset( $config['delay_js'] ) ? $config['delay_js'] : false;
 
 		add_filter( 'pre_get_rocket_option_delay_js', [ $this, 'set_delay_js_option' ] );
 

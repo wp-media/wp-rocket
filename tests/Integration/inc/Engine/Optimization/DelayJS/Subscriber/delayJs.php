@@ -22,6 +22,7 @@ class Test_DelayJs extends FilesystemTestCase {
 		unset( $GLOBALS['wp'] );
 		remove_filter( 'pre_get_rocket_option_delay_js', [ $this, 'set_delay_js_option' ] );
 		remove_filter( 'pre_get_rocket_option_delay_js_scripts', [ $this, 'set_delay_js_scripts_option' ] );
+		$this->donotrocketoptimize = false;
 	}
 
 	/**

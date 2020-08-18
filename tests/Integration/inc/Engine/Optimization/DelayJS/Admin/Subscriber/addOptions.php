@@ -30,6 +30,7 @@ class Test_AddOptions extends TestCase {
 
 		$actual = apply_filters( 'rocket_safe_mode_reset_options', $options );
 
+		unset( $expected['preload_links'] );
 		$this->assertSame( $expected, $actual );
 
 	}

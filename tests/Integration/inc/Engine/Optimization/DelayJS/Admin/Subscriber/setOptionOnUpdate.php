@@ -10,6 +10,18 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group  DelayJS
  */
 class Test_SetOptionOnUpdate extends TestCase{
+	public function setUp() {
+		parent::setUp();
+
+		remove_action( 'wp_rocket_upgrade', 'rocket_new_upgrade' );
+	}
+
+	public function tearDown() {
+		parent::tearDown();
+
+		add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade' );
+	}
+
 	/**
 	 * @dataProvider configTestData
 	 */
