@@ -69,10 +69,6 @@ class HTML {
 			return false;
 		}
 
-		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
-			return false;
-		}
-
 		return (bool) $this->options->get( 'delay_js', 0 );
 	}
 
