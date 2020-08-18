@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Engine\CriticalPath;
 
-use League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Engine\Container\ServiceProvider\AbstractServiceProvider;
 
 /**
  * Service provider for the Critical CSS classes

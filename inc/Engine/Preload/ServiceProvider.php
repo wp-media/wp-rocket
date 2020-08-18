@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Preload;
 
-use League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Engine\Container\ServiceProvider\AbstractServiceProvider;
 
 /**
  * Service provider for the WP Rocket preload.

@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Admin;
 
-use League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Engine\Container\ServiceProvider\AbstractServiceProvider;
 
 /**
  * Service Provider for admin subscribers.
