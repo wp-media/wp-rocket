@@ -223,7 +223,7 @@ class Settings {
 
 		$input['defer_all_js']      = ! empty( $input['defer_all_js'] ) ? 1 : 0;
 		$input['defer_all_js_safe'] = ! empty( $input['defer_all_js_safe'] ) ? 1 : 0;
-		$input['delay_js']          = $this->sanitize_checkbox( $input, 'delay_js' );
+		$input['delay_js']          = $this->sanitize_checkbox( $input['delay_js'], 'delay_js' );
 		$input['delay_js_scripts']  = ! empty( $input['delay_js_scripts'] ) ? rocket_sanitize_textarea_field( 'cdn_reject_files', $input['delay_js_scripts'] ) : [];
 
 		// If Defer JS is deactivated, set Safe Mode for Jquery to active.
