@@ -21,6 +21,9 @@ class Test_AddDelayJsScript extends TestCase {
 		$this->donotrocketoptimize = false;
 		$this->delay_js = false;
 
+		wp_dequeue_script('rocket-browser-checker');
+		wp_dequeue_script('rocket-delay-js');
+
 		parent::tearDown();
 	}
 
