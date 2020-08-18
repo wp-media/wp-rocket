@@ -817,6 +817,7 @@ class Page {
 				'delay_js'               => [
 					'container_class'   => [
 						'wpr-isParent',
+						'wpr-Delayjs',
 					],
 					'type'              => 'checkbox',
 					'label'             => __( 'Delay JavaScript execution', 'rocket' ),
