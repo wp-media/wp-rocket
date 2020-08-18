@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Addon;
 
-use League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Engine\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Admin\Options_Data;
 
 /**
