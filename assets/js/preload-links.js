@@ -84,23 +84,20 @@ class RocketPreloadLinks {
 
 		this.addLinkTimeoutId = setTimeout( () => {
 				this.addLinkTimeoutId = undefined;
-				if ( this.onHoverPreloads > this.config.rateThrottle ) {
-					this._throttleOnHover( url, linkElem );
-				} else {
-					this._addPrefetchLink( url );
-					this.onHoverPreloads++;
+
+				// Start the rate throttle: 1 sec timeout.
+				if ( 0 === this.onHoverPreloads ) {
+					setTimeout( () => this.onHoverPreloads = 0, 1000 );
 				}
+				// Bail out when exceeding the rate throttle.
+				else if ( this.onHoverPreloads > this.config.rateThrottle ) {
+					return;
+				}
+
+				this.onHoverPreloads++;
+				this._addPrefetchLink( url );
 			},
 			this.config.onHoverDelayTime
-		);
-	}
-
-	_throttleOnHover( url, linkElem ) {
-		this.throttleId = setTimeout( () => {
-				this.onHoverPreloads = 0;
-				this.throttleId      = undefined;
-			},
-			1000 // 1 second.
 		);
 	}
 
