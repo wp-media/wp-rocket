@@ -15,6 +15,38 @@ use WP_Rocket\Tests\Unit\TestCase;
  */
 class Test_SetOptionOnUpdate extends TestCase{
 
+	private $defaults = ['getbutton.io',
+		'//a.omappapi.com/app/js/api.min.js',
+		'feedbackcompany.com/includes/widgets/feedback-company-widget.min.js',
+		'snap.licdn.com/li.lms-analytics/insight.min.js',
+		'static.ads-twitter.com/uwt.js',
+		'platform.twitter.com/widgets.js',
+		'connect.facebook.net/en_GB/sdk.js',
+		'connect.facebook.net/en_US/sdk.js',
+		'static.leadpages.net/leadbars/current/embed.js',
+		'translate.google.com/translate_a/element.js',
+		'widget.manychat.com',
+		'google.com/recaptcha/api.js',
+		'xfbml.customerchat.js',
+		'static.hotjar.com/c/hotjar-',
+		'smartsuppchat.com/loader.js',
+		'grecaptcha.execute',
+		'Tawk_API',
+		'shareaholic',
+		'sharethis',
+		'simple-share-buttons-adder',
+		'addtoany',
+		'font-awesome',
+		'wpdiscuz',
+		'cookie-law-info',
+		'cookie-notice',
+		'pinit.js',
+		'gtag',
+		'gtm',
+		'fbevents.js',
+		'fbq(',
+		];
+
 	/**
 	 * @dataProvider configTestData
 	 */
@@ -25,8 +57,11 @@ class Test_SetOptionOnUpdate extends TestCase{
 
 		if ( $valid_version ) {
 			$options_data->shouldReceive( 'set' )
-				->with( 'delay_js', 0 )
-				->once();
+			             ->with( 'delay_js', 0 )
+			             ->once();
+			$options_data->shouldReceive( 'set' )
+			             ->with( 'delay_js_scripts', $this->defaults )
+			             ->once();
 			$options_data->shouldReceive( 'get_options' )
 				->once()
 				->andReturn( $options );
@@ -35,8 +70,11 @@ class Test_SetOptionOnUpdate extends TestCase{
 				->once();
 		} else {
 			$options_data->shouldReceive( 'set' )
-				->with( 'delay_js', 0 )
-				->never();
+			             ->with( 'delay_js', 0 )
+			             ->never();
+			$options_data->shouldReceive( 'set' )
+			             ->with( 'delay_js_scripts', $this->defaults )
+			             ->never();
 			$options_data->shouldReceive( 'get_options' )
 				->never();
 			Functions\expect( 'update_option' )
