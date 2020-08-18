@@ -10,9 +10,6 @@ class RocketPreloadLinks {
 		this.addLinkTimeoutId = null;
 		this.eventTime = null;
 		this.listenerThreshold = 1111;
-
-		// A pause to prevent adding link when hover is too fast.
-		this.onHoverDelayTime = 500; // milliseconds.
 	}
 
 	/**
@@ -88,7 +85,7 @@ class RocketPreloadLinks {
 				this._addPrefetchLink( url );
 				this.addLinkTimeoutId = undefined;
 			},
-			this.onHoverDelayTime
+			this.config.onHoverDelayTime
 		);
 	}
 

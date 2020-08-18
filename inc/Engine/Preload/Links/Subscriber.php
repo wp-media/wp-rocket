@@ -103,6 +103,7 @@ class Subscriber implements Subscriber_Interface {
 				'usesTrailingSlash' => $use_trailing_slash,
 				'imageExtensions'   => 'jpg|jpeg|gif|png|tiff|bmp|webp|avif',
 				'siteUrl'           => site_url(),
+				'onHoverDelayTime'  => 500, // milliseconds
 			]
 		);
 	}
