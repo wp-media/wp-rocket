@@ -40,7 +40,7 @@ class Test_DelayJs extends FilesystemTestCase {
 
 		$this->donotrocketoptimize = isset( $config['do-not-optimize'] ) ? $config['do-not-optimize'] : false;
 
-		if ( $this->donotrocketoptimize || $bypass ) {
+		if ( $bypass ) {
 			$this->options->shouldReceive( 'get' )
 				->with( 'delay_js', 0 )
 				->never();
