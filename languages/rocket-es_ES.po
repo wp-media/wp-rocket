@@ -1768,7 +1768,7 @@ msgstr "WP_CACHE no está establecida"
 
 #: inc/Engine/Cache/WPCache.php:376
 msgid "WP_CACHE is set to false"
-msgstr "WP_CACHE está establecida en falso"
+msgstr "WP_CACHE está establecida como false"
 
 #: inc/Engine/CriticalPath/APIClient.php:64
 #, php-format
