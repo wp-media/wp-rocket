@@ -908,7 +908,7 @@ msgid ""
 "Link preloading improves the perceived load time by downloading a page when "
 "a user hovers over the link. %1$sMore info%2$s"
 msgstr ""
-"Bağlantı önyüklemesi, kullanıcı bağlantının üzerine geldiğinde bir sayfa "
+"Bağlantı önyükleme, kullanıcı bağlantının üzerine geldiğinde bir sayfa "
 "indirerek algılanan yükleme süresini iyileştirir. %1$sDaha fazla bilgi%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:1133
