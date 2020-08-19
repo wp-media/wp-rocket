@@ -6,7 +6,7 @@ use Mockery;
 use Brain\Monkey\Functions;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\DelayJS\HTML;
-use WP_Rocket\Tests\Unit\FilesystemTestCase;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\DelayJS\HTML::delay_js
@@ -15,9 +15,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
  *
  * @uses   rocket_get_constant()
  */
-class Test_DelayJs extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/Engine/Optimization/DelayJS/Subscriber/delayJs.php';
-
+class Test_DelayJs extends TestCase {
 	private $options;
 
 	public function setUp() {
@@ -27,18 +25,18 @@ class Test_DelayJs extends FilesystemTestCase {
 	}
 
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
-	public function testShouldProcessScriptHTML( $config, $expected ) {
-		$bypass          = isset( $config['bypass'] ) ? $config['bypass'] : false;
-		$allowed_scripts = isset( $config['allowed-scripts'] ) ? $config['allowed-scripts'] : [];
+	public function testShouldProcessScriptHTML( $config, $html, $expected ) {
+		$allowed_scripts           = isset( $config['allowed-scripts'] ) ? $config['allowed-scripts'] : [];
+		$this->donotrocketoptimize = isset( $config['donotoptimize'] ) ? $config['donotoptimize'] : false;
 
 		Functions\expect( 'rocket_bypass' )
 			->atMost()
 			->once()
-			->andReturn( $bypass );
+			->andReturn( $config['bypass'] );
 
-		if ( $bypass ) {
+		if ( $this->donotrocketoptimize || $config['bypass'] ) {
 			$this->options->shouldReceive( 'get' )
 				->with( 'delay_js', 0 )
 				->never();
@@ -61,10 +59,11 @@ class Test_DelayJs extends FilesystemTestCase {
 
 		}
 
-		$html           = new HTML( $this->options );
-		$processed_html = $html->delay_js( $config['html'] );
+		$delay_js_html = new HTML( $this->options );
 
-		$this->assertSame( $expected['html'], $processed_html );
+		$this->assertSame(
+			$expected,
+			$delay_js_html->delay_js( $html )
+		);
 	}
-
 }

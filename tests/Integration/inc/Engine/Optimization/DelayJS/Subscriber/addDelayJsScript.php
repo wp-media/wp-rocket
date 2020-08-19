@@ -31,8 +31,8 @@ class Test_AddDelayJsScript extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldProcessScriptHTML( $config, $expected ) {
-		$bypass         = isset( $config['bypass'] ) ? $config['bypass'] : false;
-		$this->delay_js = isset( $config['delay_js'] ) ? $config['delay_js'] : false;
+		$this->donotrocketoptimize = $config['donotoptimize'];
+		$this->delay_js            = $config['delay_js'];
 
 		add_filter( 'pre_get_rocket_option_delay_js', [ $this, 'set_delay_js_option' ] );
 
@@ -44,7 +44,7 @@ class Test_AddDelayJsScript extends TestCase {
 			],
 		];
 
-		if ( $bypass ) {
+		if ( $config['bypass'] ) {
 			$GLOBALS['wp']->query_vars['nowprocket'] = 1;
 		}
 
