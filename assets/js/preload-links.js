@@ -27,7 +27,6 @@ class RocketPreloadLinks {
 			fileExtensions: RegExp( '.(' + this.config.imageExtensions + '|php|pdf|html|htm' + ')$', 'i' )
 		};
 
-		this.linksPreloaded.add( window.location.href );
 		this._addEventListeners( this );
 	}
 
