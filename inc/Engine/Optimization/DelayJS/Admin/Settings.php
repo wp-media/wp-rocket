@@ -112,6 +112,7 @@ class Settings {
 		}
 
 		$this->options->set( 'delay_js', 0 );
+		$this->options->set( 'delay_js_scripts', $this->defaults );
 
 		update_option( 'wp_rocket_settings', $this->options->get_options() );
 	}
