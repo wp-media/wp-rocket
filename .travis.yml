@@ -59,11 +59,11 @@ before_script:
 script:
 - |
   if [[ "$WP_TRAVISCI" == "phpcs" ]]; then
+    vendor/bin/phpcs --config-set installed_paths ../../phpcompatibility/phpcompatibility-paragonie,../../phpcompatibility/phpcompatibility-wp,../../wp-coding-standards/wpcs,../../phpcompatibility/php-compatibility
     composer phpcs
   elif [[ "$WP_TRAVISCI" == "phpstan" ]]; then
     composer require --dev szepeviktor/phpstan-wordpress
     vendor/bin/phpstan analyze
   else
-    vendor/bin/phpcs --config-set installed_paths ../../phpcompatibility/phpcompatibility-paragonie,../../phpcompatibility/phpcompatibility-wp,../../wp-coding-standards/wpcs,../../phpcompatibility/php-compatibility
     composer run-tests
   fi
