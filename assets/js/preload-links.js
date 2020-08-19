@@ -117,7 +117,6 @@ class RocketPreloadLinks {
 	 * @param Event event Event instance.
 	 */
 	triggerOnClick( event ) {
-		this.triggered = true;
 		this._reset();
 
 		const [ url, linkElem ] = this._prepareUrl( event );
@@ -125,6 +124,7 @@ class RocketPreloadLinks {
 			return;
 		}
 
+		this.triggered = true;
 		this._addPrefetchLink( url );
 	}
 
