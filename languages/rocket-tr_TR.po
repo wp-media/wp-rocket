@@ -3593,8 +3593,8 @@ msgstr ""
 msgid ""
 "Google Fonts Optimization is now enabled for your site. %1$sMore info%2$s"
 msgstr ""
-"Google Yazı Tipleri İyileştirmesi artık siteniz için etkinleştirildi. "
-"%1$sDaha fazla bilgi%2$s"
+"Google Yazı Tipleri İyileştirme artık siteniz için etkinleştirildi. %1$sDaha"
+" fazla bilgi%2$s"
 
 #: views/settings/enable-google-fonts.php:38
 msgid "Optimize Google Fonts"
