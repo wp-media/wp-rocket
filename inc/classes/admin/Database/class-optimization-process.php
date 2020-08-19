@@ -1,17 +1,16 @@
 <?php
 namespace WP_Rocket\Admin\Database;
 
-defined( 'ABSPATH' ) || exit;
+use WP_Rocket_WP_Background_Process;
 
 /**
  * Extends the background process class for the database optimization background process.
  *
  * @since 2.11
- * @author Remy Perona
  *
  * @see WP_Background_Process
  */
-class Optimization_Process extends \WP_Background_Process {
+class Optimization_Process extends WP_Rocket_WP_Background_Process {
 	/**
 	 * Prefix
 	 *

@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Preload;
 
-use WP_Background_Process;
+use WP_Rocket_WP_Background_Process;
 
 /**
  * Abstract class to be extended by preload process classes.
@@ -13,7 +13,7 @@ use WP_Background_Process;
  *
  * @see WP_Background_Process
  */
-abstract class AbstractProcess extends WP_Background_Process {
+abstract class AbstractProcess extends WP_Rocket_WP_Background_Process {
 	/**
 	 * Prefix
 	 *
