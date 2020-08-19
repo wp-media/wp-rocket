@@ -3578,7 +3578,7 @@ msgstr "Atla ve Devre Dışı Bırak"
 
 #: views/settings/enable-google-fonts.php:13
 msgid "Enable Google Font Optimization"
-msgstr "Google Yazı Tipi İyileştirmesini etkinleştir"
+msgstr "Google Yazı Tipi İyileştirmeyi etkinleştir"
 
 #: views/settings/enable-google-fonts.php:14
 msgid ""
