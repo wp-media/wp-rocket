@@ -49,8 +49,9 @@ before_install:
       rm composer.lock
     fi
   - composer remove --dev phpstan/phpstan szepeviktor/phpstan-wordpress
+  - composer remove --dev --no-scripts coenjacobs/mozart
 install:
-  - composer install --prefer-dist --no-interaction
+  - composer install --prefer-dist --no-interaction  --no-scripts
 before_script:
 - |
   if [[ ! -z "$WP_VERSION" ]] ; then
