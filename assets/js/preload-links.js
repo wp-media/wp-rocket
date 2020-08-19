@@ -10,6 +10,7 @@ class RocketPreloadLinks {
 		this.eventTime         = null;
 		this.listenerThreshold = 1111;
 		this.onHoverPreloads   = 0;
+		this.tapClickRunning       = false; // tap/trigger events take priority.
 	}
 
 	/**
@@ -21,10 +22,10 @@ class RocketPreloadLinks {
 		}
 
 		this.regex = {
-			excludeUris   : RegExp( this.config.excludeUris, 'i' ),
-			images        : RegExp( '.(' + this.config.imageExtensions + ')$', 'i' ),
+			excludeUris: RegExp( this.config.excludeUris, 'i' ),
+			images: RegExp( '.(' + this.config.imageExtensions + ')$', 'i' ),
 			fileExtensions: RegExp( '.(' + this.config.imageExtensions + '|php|pdf|html|htm' + ')$', 'i' )
-		}
+		};
 
 		this.linksPreloaded.add( window.location.href );
 		this._addEventListeners( this );
@@ -54,13 +55,13 @@ class RocketPreloadLinks {
 			return;
 		}
 
+		this.linksPreloaded.add( url.href );
+
 		const elem = document.createElement( 'link' );
 		elem.rel   = 'prefetch';
 		elem.href  = url.href;
 
 		document.head.appendChild( elem );
-
-		this.linksPreloaded.add( url.href );
 	}
 
 	/**
@@ -69,6 +70,10 @@ class RocketPreloadLinks {
 	 * @param Event event Event instance.
 	 */
 	triggerOnHover( event ) {
+		if ( this.tapClickRunning ) {
+			return;
+		}
+
 		if ( performance.now() - this.eventTime < this.listenerThreshold ) {
 			return;
 		}
@@ -84,6 +89,10 @@ class RocketPreloadLinks {
 		this.addLinkTimeoutId = setTimeout( () => {
 				this.addLinkTimeoutId = undefined;
 
+				if ( this.tapClickRunning ) {
+					return;
+				}
+
 				// Start the rate throttle: 1 sec timeout.
 				if ( 0 === this.onHoverPreloads ) {
 					setTimeout( () => this.onHoverPreloads = 0, 1000 );
@@ -93,7 +102,7 @@ class RocketPreloadLinks {
 					return;
 				}
 
-				this.onHoverPreloads++;
+				this.onHoverPreloads ++;
 				this._addPrefetchLink( url );
 			},
 			this.config.onHoverDelayTime
@@ -106,14 +115,15 @@ class RocketPreloadLinks {
 	 * @param Event event Event instance.
 	 */
 	triggerOnClick( event ) {
-		const [ url, linkElem ] = this._prepareUrl( event );
+		this.tapClickRunning = true;
+		this._resetAddLinkTask();
 
+		const [ url, linkElem ] = this._prepareUrl( event );
 		if ( null === url ) {
 			return;
 		}
 
 		this._addPrefetchLink( url );
-		this._resetAddLinkTask();
 	}
 
 	/**
@@ -173,10 +183,10 @@ class RocketPreloadLinks {
 		const url      = {
 			original: href,
 			protocol: linkElem.protocol,
-			origin  : origin,
+			origin: origin,
 			pathname: pathname,
-			href    : origin + pathname
-		}
+			href: origin + pathname
+		};
 
 		if ( ! this._isLinkOk( url ) ) {
 			return [ null, null ];
@@ -196,8 +206,8 @@ class RocketPreloadLinks {
 	 */
 	_getPathname( url, origin ) {
 		let pathname = origin
-		               ? url.substring( this.config.siteUrl.length )
-		               : url;
+			? url.substring( this.config.siteUrl.length )
+			: url;
 
 		if ( ! pathname.startsWith( '/' ) ) {
 			pathname = '/' + pathname;
@@ -262,7 +272,7 @@ class RocketPreloadLinks {
 	}
 
 	_isAnchor( href ) {
-		return href.indexOf( '#' ) !== -1;
+		return href.indexOf( '#' ) !== - 1;
 	}
 
 	_isExcluded( url ) {
@@ -282,7 +292,7 @@ class RocketPreloadLinks {
 	}
 
 	_isQueryString( href ) {
-		return href.indexOf( '?' ) !== -1;
+		return href.indexOf( '?' ) !== - 1;
 	}
 
 	_resetAddLinkTask() {
@@ -299,7 +309,7 @@ class RocketPreloadLinks {
 	 */
 	static run() {
 		// Bail out if the configuration not passed from the server.
-		if ( typeof RocketPreloadLinksConfig === "undefined" ) {
+		if ( typeof RocketPreloadLinksConfig === 'undefined' ) {
 			return;
 		}
 
