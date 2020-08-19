@@ -39,7 +39,10 @@ class RocketPreloadLinks {
 	 * @param self instance of this object, used for binding "this" to the listeners.
 	 */
 	_addEventListeners( self ) {
-		document.addEventListener( 'mouseover', self.triggerOnHover.bind( self ), self.listenerOptions );
+		// Setting onHoverDelayTime to -1 disables on-hover feature.
+		if ( this.config.onHoverDelayTime > -1 ) {
+			document.addEventListener( 'mouseover', self.triggerOnHover.bind( self ), self.listenerOptions );
+		}
 
 		document.addEventListener( 'mousedown', self.triggerOnClick.bind( self ), self.listenerOptions );
 		document.addEventListener( 'touchstart', self.triggerOnTap.bind( self ), self.listenerOptions );
