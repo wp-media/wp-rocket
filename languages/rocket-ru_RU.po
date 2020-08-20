@@ -380,7 +380,7 @@ msgstr ""
 #: inc/Engine/Admin/Settings/Page.php:542
 msgid ""
 "Specify time after which the global cache is cleared<br>(0 = unlimited )"
-msgstr "Укажите, через какое время очищать весь кэш<br>(0 - бесконечно)"
+msgstr "Укажите, через какое время очищать весь кэш (0 - отключает очистку)"
 
 #: inc/Engine/Admin/Settings/Page.php:544
 #, php-format
