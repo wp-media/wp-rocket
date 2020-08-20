@@ -6,11 +6,6 @@ class RocketPreloadLinks {
 		this.options = this.browser.options;
 
 		this.prefetched = new Set;
-		this.onhoverId  = null;
-		this.eventTime  = null;
-		this.threshold  = 1111;
-		this.numOnHover = 0;
-		this.triggered  = false; // tap/trigger events take priority.
 	}
 
 	/**
@@ -38,13 +33,24 @@ class RocketPreloadLinks {
 	 * @param self instance of this object, used for binding "this" to the listeners.
 	 */
 	_initListeners( self ) {
-		// Setting onHoverDelay to -1 disables on-hover feature.
-		if ( this.config.onHoverDelay > -1 ) {
-			document.addEventListener( 'mouseover', self.triggerOnHover.bind( self ), self.options );
+		document.addEventListener( 'mousedown', self.listener.bind( self ), self.options );
+		document.addEventListener( 'touchstart', self.listener.bind( self ), self.options );
+	}
+
+	/**
+	 * Triggers adding the link prefetch when the user clicks on a <a> hyperlink.
+	 *
+	 * @param Event event Event instance.
+	 */
+	listener( event ) {
+		const url = this._prepareUrl( event );
+		if ( null === url ) {
+			return;
 		}
 
-		document.addEventListener( 'mousedown', self.triggerOnClick.bind( self ), self.options );
-		document.addEventListener( 'touchstart', self.triggerOnTap.bind( self ), self.options );
+		new Promise( ( resolve, reject ) => {
+			this._addPrefetchLink( url, resolve, reject );
+		} );
 	}
 
 	/**
@@ -52,7 +58,7 @@ class RocketPreloadLinks {
 	 *
 	 * @param string url The Given URL to prefetch.
 	 */
-	_addPrefetchLink( url ) {
+	_addPrefetchLink( url, resolve, reject ) {
 		if ( this.prefetched.has( url.href ) ) {
 			return;
 		}
@@ -62,97 +68,10 @@ class RocketPreloadLinks {
 		const elem = document.createElement( 'link' );
 		elem.rel   = 'prefetch';
 		elem.href  = url.href;
+		elem.onload = resolve;
+		elem.onerror = reject;
 
 		document.head.appendChild( elem );
-	}
-
-	/**
-	 * Triggers adding the link prefetch when the user hovers over a <a> hyperlink.
-	 *
-	 * @param Event event Event instance.
-	 */
-	triggerOnHover( event ) {
-		if ( this.triggered ) {
-			return;
-		}
-
-		if ( performance.now() - this.eventTime < this.threshold ) {
-			return;
-		}
-
-		const [ url, linkElem ] = this._prepareUrl( event );
-		if ( null === url ) {
-			return;
-		}
-
-		const self = this;
-		linkElem.addEventListener( 'mouseout', self.resetOnHover.bind( self ), { passive: true } );
-
-		this.onhoverId = setTimeout( () => {
-				this.onhoverId = undefined;
-
-				if ( this.triggered ) {
-					return;
-				}
-
-				// Start the rate throttle: 1 sec timeout.
-				if ( 0 === this.numOnHover ) {
-					setTimeout( () => this.numOnHover = 0, 1000 );
-				}
-				// Bail out when exceeding the rate throttle.
-				else if ( this.numOnHover > this.config.rateThrottle ) {
-					return;
-				}
-
-				this.numOnHover++;
-				this._addPrefetchLink( url );
-			},
-			this.config.onHoverDelay
-		);
-	}
-
-	/**
-	 * Triggers adding the link prefetch when the user clicks on a <a> hyperlink.
-	 *
-	 * @param Event event Event instance.
-	 */
-	triggerOnClick( event ) {
-		this._reset();
-
-		const [ url, linkElem ] = this._prepareUrl( event );
-		if ( null === url ) {
-			return;
-		}
-
-		this.triggered = true;
-		this._addPrefetchLink( url );
-	}
-
-	/**
-	 * Triggers adding the link prefetch when the user taps a <a> hyperlink.
-	 *
-	 * @param Event event Event instance.
-	 */
-	triggerOnTap( event ) {
-		this.eventTime = performance.now();
-		this.triggerOnClick( event );
-	}
-
-	/**
-	 * Resets the Add Link Task on hover.
-	 *
-	 * @param object event Event object.
-	 */
-	resetOnHover( event ) {
-		if (
-			event.relatedTarget
-			&&
-			event.target.closest( 'a' ) === event.relatedTarget.closest( 'a' )
-			||
-			this.onhoverId
-		) {
-			this._reset();
-		}
 	}
 
 	/**
@@ -161,7 +80,7 @@ class RocketPreloadLinks {
 	 * @private
 	 *
 	 * @param Event event Event instance.
-	 * @returns {({protocol: *, original: *, origin: string, href: string, pathname: string}|*)[]|*[]}
+	 * @returns {null|*}
 	 */
 	_prepareUrl( event ) {
 		const linkElem = event.target.closest( 'a' );
@@ -176,7 +95,7 @@ class RocketPreloadLinks {
 			// Link prefetching only works on http/https protocol.
 			[ 'http:', 'https:' ].indexOf( linkElem.protocol ) === -1
 		) {
-			return [ null, null ];
+			return null;
 		}
 
 		const origin   = linkElem.href.substring( 0, this.config.siteUrl.length );
@@ -189,9 +108,7 @@ class RocketPreloadLinks {
 			href: origin + pathname
 		};
 
-		return this._isLinkOk( url )
-			? [ url, linkElem ]
-			: [ null, null ];
+		return this._isLinkOk( url ) ? url : null;
 	}
 
 	/**
@@ -254,15 +171,6 @@ class RocketPreloadLinks {
 			&&
 			! this.regex.images.test( url.href ) // is not an image.
 		);
-	}
-
-	_reset() {
-		if ( ! this.onhoverId ) {
-			return;
-		}
-
-		clearTimeout( this.onhoverId );
-		this.onhoverId = null;
 	}
 
 	/**
