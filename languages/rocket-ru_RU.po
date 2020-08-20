@@ -351,9 +351,8 @@ msgid ""
 "%1$spreloading%2$s for the cache to be rebuilt automatically after lifespan "
 "expiration."
 msgstr ""
-"Файлы кеша, старше установленного Срока жизни кеша, будут "
-"удалены.<br>Включите %1$sПредзагрузку%2$s, чтобы кеш автоматически "
-"создавался заново после того, как истечен его срок жизни. "
+"Файлы кеша, старше установленного срока жизни, будут удалены.<br>Включите "
+"%1$sпредзагрузку%2$s, чтобы кеш создавался автоматически после очистки. "
 
 #: inc/Engine/Admin/Settings/Page.php:501
 msgid "Enable caching for logged-in WordPress users"
