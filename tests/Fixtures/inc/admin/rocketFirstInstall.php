@@ -107,6 +107,7 @@ $integration[ 'delay_js_scripts' ] = [
 	'/gtag/js',
 	'gtag(',
 	'/gtm.js',
+	'/gtm-',
 	'fbevents.js',
 	'fbq(',
 	'google-analytics.com/analytics.js',

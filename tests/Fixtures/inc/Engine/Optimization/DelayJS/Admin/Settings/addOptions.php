@@ -29,6 +29,7 @@ $list = [
 	'/gtag/js',
 	'gtag(',
 	'/gtm.js',
+	'/gtm-',
 	'fbevents.js',
 	'fbq(',
 	'google-analytics.com/analytics.js',

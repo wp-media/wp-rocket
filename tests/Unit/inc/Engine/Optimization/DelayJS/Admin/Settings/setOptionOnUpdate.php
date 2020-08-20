@@ -44,6 +44,7 @@ class Test_SetOptionOnUpdate extends TestCase{
 		'/gtag/js',
 		'gtag(',
 		'/gtm.js',
+		'/gtm-',
 		'fbevents.js',
 		'fbq(',
 		'google-analytics.com/analytics.js',
@@ -65,7 +66,10 @@ class Test_SetOptionOnUpdate extends TestCase{
 	public function testShouldDoExpected( $old_version, $valid_version ) {
 		$options_data = Mockery::mock( Options_Data::class );
 		$settings     = new Settings( $options_data );
-		$options      = [ 'delay_js' => 0 ];
+		$options      = [
+			'delay_js'         => 0,
+			'delay_js_scripts' => $this->defaults,
+		];
 
 		if ( $valid_version ) {
 			$options_data->shouldReceive( 'set' )

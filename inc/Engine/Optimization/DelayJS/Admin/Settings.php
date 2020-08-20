@@ -40,6 +40,7 @@ class Settings {
 		'/gtag/js',
 		'gtag(',
 		'/gtm.js',
+		'/gtm-',
 		'fbevents.js',
 		'fbq(',
 		'google-analytics.com/analytics.js',
