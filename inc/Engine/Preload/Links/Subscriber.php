@@ -105,8 +105,6 @@ class Subscriber implements Subscriber_Interface {
 				'imageExt'          => 'jpg|jpeg|gif|png|tiff|bmp|webp|avif',
 				'fileExt'           => $images_ext . '|php|pdf|html|htm',
 				'siteUrl'           => site_url(),
-				'onHoverDelay'      => -1, // milliseconds. Set to -1 to disable "on hover" trigger.
-				'rateThrottle'      => 3, // on hover: limits the number of links preloaded per second.
 			]
 		);
 	}
