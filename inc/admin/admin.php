@@ -165,7 +165,7 @@ function rocket_deactivate_plugin() {
 		wp_nonce_ays( '' );
 	}
 
-	deactivate_plugins( sanitize_text_field( $_GET['plugin'] ) );
+	deactivate_plugins( sanitize_text_field( wp_unslash( $_GET['plugin'] ) ) );
 
 	wp_safe_redirect( wp_get_referer() );
 	die();
