@@ -4,7 +4,7 @@
  *
  * @package WP-Background-Processing
  */
- 
+
 /**
  * Abstract WP_Background_Process class.
  *
@@ -107,7 +107,7 @@ abstract class WP_Rocket_WP_Background_Process extends WP_Rocket_WP_Async_Reques
 	/**
 	 * Update queue
 	 *
-	 * @param string $key Key.
+	 * @param string $key  Key.
 	 * @param array  $data Data.
 	 *
 	 * @return $this
@@ -196,10 +196,10 @@ abstract class WP_Rocket_WP_Background_Process extends WP_Rocket_WP_Async_Reques
 		$key = $wpdb->esc_like( $this->identifier . '_batch_' ) . '%';
 
 		$count = $wpdb->get_var( $wpdb->prepare( "
-		SELECT COUNT(*)
-		FROM {$table}
-		WHERE {$column} LIKE %s
-	", $key ) );
+			SELECT COUNT(*)
+			FROM {$table}
+			WHERE {$column} LIKE %s
+		", $key ) );
 
 		return ( $count > 0 ) ? false : true;
 	}
@@ -285,12 +285,12 @@ abstract class WP_Rocket_WP_Background_Process extends WP_Rocket_WP_Async_Reques
 		$key = $wpdb->esc_like( $this->identifier . '_batch_' ) . '%';
 
 		$query = $wpdb->get_row( $wpdb->prepare( "
-		SELECT *
-		FROM {$table}
-		WHERE {$column} LIKE %s
-		ORDER BY {$key_column} ASC
-		LIMIT 1
-	", $key ) );
+			SELECT *
+			FROM {$table}
+			WHERE {$column} LIKE %s
+			ORDER BY {$key_column} ASC
+			LIMIT 1
+		", $key ) );
 
 		$batch       = new stdClass();
 		$batch->key  = $query->$column;
@@ -384,7 +384,7 @@ abstract class WP_Rocket_WP_Background_Process extends WP_Rocket_WP_Async_Reques
 			$memory_limit = '32000M';
 		}
 
-		return intval( $memory_limit ) * 1024 * 1024;
+		return wp_convert_hr_to_bytes( $memory_limit );
 	}
 
 	/**
@@ -422,8 +422,8 @@ abstract class WP_Rocket_WP_Background_Process extends WP_Rocket_WP_Async_Reques
 	/**
 	 * Schedule cron healthcheck
 	 *
-	 * @access public
 	 * @param mixed $schedules Schedules.
+	 *
 	 * @return mixed
 	 */
 	public function schedule_cron_healthcheck( $schedules ) {
