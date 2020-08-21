@@ -424,6 +424,8 @@ function get_rocket_exclude_defer_js() { // phpcs:ignore WordPress.NamingConvent
 		'lib/admin/assets/lib/webfont/webfont.min.js',
 		'app.mailerlite.com',
 		'widget.reviews.io',
+		'simplybook.(.*)/v2/widget/widget.js',
+		'/wp-includes/js/dist/i18n.min.js',
 	];
 
 	if ( get_rocket_option( 'defer_all_js', 0 ) && get_rocket_option( 'defer_all_js_safe', 0 ) ) {
