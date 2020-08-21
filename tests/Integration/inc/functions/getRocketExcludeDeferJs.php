@@ -44,6 +44,9 @@ class Test_GetRocketExcludeDeferJS extends TestCase {
 			'lib/admin/assets/lib/webfont/webfont.min.js',
 			'app.mailerlite.com',
 			'widget.reviews.io',
+			'simplybook.(.*)/v2/widget/widget.js',
+			'/wp-includes/js/dist/i18n.min.js',
+			
 		];
 
 		if ( $defer_jquery ) {
