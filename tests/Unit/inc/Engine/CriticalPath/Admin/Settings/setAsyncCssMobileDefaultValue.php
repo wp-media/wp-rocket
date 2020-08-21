@@ -37,7 +37,7 @@ class Test_SetAsyncCssMobileDefaultValue extends TestCase {
 	public function testShouldUpdateOption( $versions, $update ) {
         if ( true === $update ) {
             $options_value = [
-                'async_css_mobile' => 1,
+                'async_css_mobile' => 0,
             ];
 
             Functions\when( 'get_option' )->justReturn( [] );
