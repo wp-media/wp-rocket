@@ -117,27 +117,25 @@ class Expired_Cache_Purge {
 				$sub_dir = rtrim( $file['path'], '/' );
 				$files   = $this->get_cache_files_in_dir( $file );
 
-				if ( is_iterable( $files ) ) {
-					foreach ( $files as $item ) {
-						$dir_path     = $item->getPathname();
-						$sub_dir_path = $dir_path . $sub_dir;
+				foreach ( $files as $item ) {
+					$dir_path     = $item->getPathname();
+					$sub_dir_path = $dir_path . $sub_dir;
 
-						// Time to cut old leaves.
-						$item_paths = $this->purge_dir( $sub_dir_path, $file_age_limit );
+					// Time to cut old leaves.
+					$item_paths = $this->purge_dir( $sub_dir_path, $file_age_limit );
 
-						if ( $item_paths ) {
-							$url_deleted[] = [
-								'home_url'  => $url,
-								'home_path' => $sub_dir_path,
-								'logged_in' => $dir_path !== $this->cache_path . $file['host'],
-								'files'     => $item_paths,
-							];
-						}
+					if ( $item_paths ) {
+						$url_deleted[] = [
+							'home_url'  => $url,
+							'home_path' => $sub_dir_path,
+							'logged_in' => $dir_path !== $this->cache_path . $file['host'],
+							'files'     => $item_paths,
+						];
+					}
 
-						if ( $this->is_dir_empty( $dir_path ) ) {
-							// If the folder is empty, remove it.
-							$this->filesystem->delete( $dir_path );
-						}
+					if ( $this->is_dir_empty( $dir_path ) ) {
+						// If the folder is empty, remove it.
+						$this->filesystem->delete( $dir_path );
 					}
 				}
 
@@ -262,7 +260,7 @@ class Expired_Cache_Purge {
 	 * @author Gregory Viguier
 	 *
 	 * @param array $file An array of the parsed URL parts.
-	 * @return Bool|DirectoryIterator
+	 * @return array|DirectoryIterator
 	 */
 	private function get_cache_files_in_dir( $file ) {
 		// Grab cache folders.
@@ -273,7 +271,7 @@ class Expired_Cache_Purge {
 			$iterator = new \DirectoryIterator( $this->cache_path );
 		}
 		catch ( \Exception $e ) {
-			return false;
+			return [];
 		}
 
 		return new \CallbackFilterIterator(
