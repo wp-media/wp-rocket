@@ -134,7 +134,7 @@ class Settings extends Abstract_Render {
 			return;
 		}
 
-		$options = get_option( 'wp_rocket_settings' );
+		$options = get_option( 'wp_rocket_settings', [] );
 
 		$options['async_css_mobile'] = 0;
 

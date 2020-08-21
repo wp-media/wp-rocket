@@ -124,9 +124,9 @@ class Settings {
 			return;
 		}
 
-		$options = get_option( 'wp_rocket_settings' );
+		$options = get_option( 'wp_rocket_settings', [] );
 
-		$options['delay_js'] = 0;
+		$options['delay_js']         = 0;
 		$options['delay_js_scripts'] = $this->defaults;
 
 		update_option( 'wp_rocket_settings', $options );
