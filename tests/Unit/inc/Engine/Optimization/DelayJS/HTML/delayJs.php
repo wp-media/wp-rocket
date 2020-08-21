@@ -36,7 +36,9 @@ class Test_DelayJs extends TestCase {
 			->once()
 			->andReturn( $config['bypass'] );
 
-		if ( $this->donotrocketoptimize || $config['bypass'] ) {
+		Functions\when( 'is_rocket_post_excluded_option' )->justReturn( $config['post-excluded'] );
+
+		if ( $this->donotrocketoptimize || $config['bypass'] || $config['post-excluded'] ) {
 			$this->options->shouldReceive( 'get' )
 				->with( 'delay_js', 0 )
 				->never();

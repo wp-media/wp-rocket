@@ -7,16 +7,30 @@ return [
 				'bypass'               => false,
 				'donotoptimize'        => true,
 				'do-not-delay-setting' => 1,
+				'post-excluded'        => false,
+			],
+			'html'     => '<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js">',
+			'expected' => '<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js">',
+		],
+	
+		'shouldDoNothingWhenPostExcluded' => [
+			'config'   => [
+				'bypass'               => false,
+				'donotoptimize'        => false,
+				'do-not-delay-setting' => 0,
+				'post-excluded'        => true,
+				'allowed-scripts'      => [],
 			],
 			'html'     => '<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js">',
 			'expected' => '<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js">',
 		],
 
-		'shouldDoNothingWhenDelaySettingEnabled' => [
+		'shouldDoNothingWhenDelaySettingDisabled' => [
 			'config'   => [
 				'bypass'               => false,
 				'donotoptimize'        => false,
 				'do-not-delay-setting' => 0,
+				'post-excluded'        => false,
 				'allowed-scripts'      => [],
 			],
 			'html'     => '<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js">',
@@ -27,6 +41,7 @@ return [
 			'config'   => [
 				'donotoptimize'      => false,
 				'do-not-delay-setting' => 1,
+				'post-excluded'        => false,
 				'allowed-scripts'      => [ 'alert("Be alert! We need more lerts!")' ],
 				'bypass'               => true,
 			],
@@ -39,6 +54,7 @@ return [
 				'bypass'               => false,
 				'donotoptimize'        => false,
 				'do-not-delay-setting' => 1,
+				'post-excluded'        => false,
 				'allowed-scripts'      => [ 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js' ],
 			],
 			'html'     => '<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js"  >  </script>',
@@ -50,6 +66,7 @@ return [
 				'bypass'               => false,
 				'donotoptimize'        => false,
 				'do-not-delay-setting' => 1,
+				'post-excluded'        => false,
 				'allowed-scripts'      => [ 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js' ],
 			],
 			'html'     => '<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js"></script>',
@@ -61,6 +78,7 @@ return [
 				'bypass'               => false,
 				'donotoptimize'        => false,
 				'do-not-delay-setting' => 1,
+				'post-excluded'        => false,
 				'allowed-scripts'      => [ 'alert("Be alert! We need more lerts!")' ],
 			],
 			'html'     => '<script type="text/javascript" data-any="value">alert("Be alert! We need more lerts!");</script>',
@@ -72,6 +90,7 @@ return [
 				'bypass'               => false,
 				'donotoptimize'        => false,
 				'do-not-delay-setting' => 1,
+				'post-excluded'        => false,
 				'allowed-scripts'      => [
 					'alert("Be alert! We need more lerts!")',
 					'//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js',

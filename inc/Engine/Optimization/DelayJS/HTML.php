@@ -73,6 +73,10 @@ class HTML {
 			return false;
 		}
 
+		if ( is_rocket_post_excluded_option( 'delay_js' ) ) {
+			return false;
+		}
+
 		return (bool) $this->options->get( 'delay_js', 0 );
 	}
 
