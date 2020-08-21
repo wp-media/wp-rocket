@@ -21,8 +21,8 @@ class Test_SetOptionOnUpdate extends TestCase{
 		'snap.licdn.com/li.lms-analytics/insight.min.js',
 		'static.ads-twitter.com/uwt.js',
 		'platform.twitter.com/widgets.js',
-		'connect.facebook.net/en_GB/sdk.js',
-		'connect.facebook.net/en_US/sdk.js',
+		'twq(',
+		'/sdk.js#xfbml',
 		'static.leadpages.net/leadbars/current/embed.js',
 		'translate.google.com/translate_a/element.js',
 		'widget.manychat.com',
@@ -39,12 +39,24 @@ class Test_SetOptionOnUpdate extends TestCase{
 		'font-awesome',
 		'wpdiscuz',
 		'cookie-law-info',
-		'cookie-notice',
 		'pinit.js',
-		'gtag',
-		'gtm',
+		'/gtag/js',
+		'gtag(',
+		'/gtm.js',
+		'/gtm-',
 		'fbevents.js',
 		'fbq(',
+		'google-analytics.com/analytics.js',
+		'ga( \'',
+		'ga(\'',
+		'adsbygoogle',
+		'ShopifyBuy',
+		'widget.trustpilot.com',
+		'ft.sdk.min.js',
+		'apps.elfsight.com/p/platform.js',
+		'livechatinc.com/tracking.js',
+		'LiveChatWidget',
+		'/busting/facebook-tracking/',
 	];
 
 	/**
@@ -53,30 +65,17 @@ class Test_SetOptionOnUpdate extends TestCase{
 	public function testShouldDoExpected( $old_version, $valid_version ) {
 		$options_data = Mockery::mock( Options_Data::class );
 		$settings     = new Settings( $options_data );
-		$options      = [ 'delay_js' => 0 ];
+		$options      = [
+			'delay_js'         => 0,
+			'delay_js_scripts' => $this->defaults,
+		];
 
 		if ( $valid_version ) {
-			$options_data->shouldReceive( 'set' )
-			             ->with( 'delay_js', 0 )
-			             ->once();
-			$options_data->shouldReceive( 'set' )
-			             ->with( 'delay_js_scripts', $this->defaults )
-			             ->once();
-			$options_data->shouldReceive( 'get_options' )
-				->once()
-				->andReturn( $options );
+			Functions\when( 'get_option' )->justReturn( [] );
 			Functions\expect( 'update_option' )
 				->with( 'wp_rocket_settings', $options )
 				->once();
 		} else {
-			$options_data->shouldReceive( 'set' )
-			             ->with( 'delay_js', 0 )
-			             ->never();
-			$options_data->shouldReceive( 'set' )
-			             ->with( 'delay_js_scripts', $this->defaults )
-			             ->never();
-			$options_data->shouldReceive( 'get_options' )
-				->never();
 			Functions\expect( 'update_option' )
 				->with( 'wp_rocket_settings', $options )
 				->never();
