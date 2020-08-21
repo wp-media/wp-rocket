@@ -102,7 +102,6 @@ $integration[ 'delay_js_scripts' ] = [
 	'font-awesome',
 	'wpdiscuz',
 	'cookie-law-info',
-	'cookie-notice',
 	'pinit.js',
 	'/gtag/js',
 	'gtag(',

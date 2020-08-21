@@ -39,7 +39,6 @@ class Test_SetOptionOnUpdate extends TestCase{
 		'font-awesome',
 		'wpdiscuz',
 		'cookie-law-info',
-		'cookie-notice',
 		'pinit.js',
 		'/gtag/js',
 		'gtag(',
