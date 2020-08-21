@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.4\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2020-06-03 17:43-0400\n"
+"POT-Creation-Date: 2020-08-17 15:20-0400\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Dan Caragea <dan_caragea@yahoo.com>, 2020\n"
 "Language-Team: Romanian (Romania) (https://www.transifex.com/wp-media/teams/18133/ro_RO/)\n"
@@ -32,11 +32,13 @@ msgstr ""
 "X-Textdomain-Support: yes\n"
 
 #: inc/3rd-party/hosting/flywheel.php:18 inc/3rd-party/hosting/godaddy.php:18
-#: inc/3rd-party/hosting/o2switch.php:17
-#: inc/3rd-party/hosting/pressidium.php:18 inc/3rd-party/hosting/savvii.php:18
+#: inc/3rd-party/hosting/pressidium.php:18
 #: inc/3rd-party/hosting/wp-serveur.php:27
-#: inc/3rd-party/hosting/wpengine.php:18
-#: inc/ThirdParty/Hostings/Cloudways.php:66
+#: inc/ThirdParty/Hostings/Cloudways.php:90
+#: inc/ThirdParty/Hostings/O2Switch.php:49
+#: inc/ThirdParty/Hostings/Savvii.php:50
+#: inc/ThirdParty/Hostings/WPEngine.php:47 inc/deprecated/3.6.php:698
+#: inc/deprecated/3.6.php:1005
 #, php-format
 msgid ""
 "Your site is hosted on %s, we have enabled Varnish auto-purge for "
@@ -178,7 +180,7 @@ msgstr ""
 #: inc/Addon/Cloudflare/Subscriber.php:451
 #: inc/Addon/Cloudflare/Subscriber.php:470
 #: inc/Addon/Cloudflare/Subscriber.php:476
-#: inc/Addon/Cloudflare/Subscriber.php:558 inc/admin/options.php:171
+#: inc/Addon/Cloudflare/Subscriber.php:558 inc/admin/options.php:166
 #: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:148
 msgid "WP Rocket: "
 msgstr "WP Rocket: "
@@ -239,7 +241,7 @@ msgid "Cloudflare browser cache set to %s seconds"
 msgstr "Cache navigator Cloudflare setat la %s secunde"
 
 #: inc/Addon/FacebookTracking/Subscriber.php:87
-#: inc/Addon/GoogleTracking/Subscriber.php:134
+#: inc/Addon/GoogleTracking/Subscriber.php:132
 #: inc/Engine/HealthCheck/CacheDirSizeCheck.php:88
 #: inc/classes/subscriber/admin/Database/class-optimization-subscriber.php:92
 msgid "weekly"
@@ -253,49 +255,49 @@ msgstr "Salvează modificările"
 msgid "Validate License"
 msgstr "Validează licența"
 
-#: inc/Engine/Admin/Settings/Page.php:201
-#: inc/Engine/Admin/Settings/Page.php:202
+#: inc/Engine/Admin/Settings/Page.php:236
+#: inc/Engine/Admin/Settings/Page.php:237
 msgid "Unavailable"
 msgstr "Indisponibilă"
 
-#: inc/Engine/Admin/Settings/Page.php:306 inc/deprecated/deprecated.php:1789
+#: inc/Engine/Admin/Settings/Page.php:341 inc/deprecated/deprecated.php:1789
 #: views/settings/page-sections/dashboard.php:73
 msgid "License"
 msgstr "Licență"
 
-#: inc/Engine/Admin/Settings/Page.php:323
+#: inc/Engine/Admin/Settings/Page.php:358
 msgid "API key"
 msgstr "Cheie API"
 
-#: inc/Engine/Admin/Settings/Page.php:338
+#: inc/Engine/Admin/Settings/Page.php:373
 msgid "Email address"
 msgstr "Adresă email"
 
-#: inc/Engine/Admin/Settings/Page.php:364
+#: inc/Engine/Admin/Settings/Page.php:399
 msgid "Dashboard"
 msgstr "Panou control"
 
-#: inc/Engine/Admin/Settings/Page.php:365
+#: inc/Engine/Admin/Settings/Page.php:400
 msgid "Get help, account info"
 msgstr "Primești ajutor, informații despre cont"
 
-#: inc/Engine/Admin/Settings/Page.php:374
+#: inc/Engine/Admin/Settings/Page.php:409
 msgid "My Status"
 msgstr "Starea mea"
 
-#: inc/Engine/Admin/Settings/Page.php:384 views/settings/page.php:72
+#: inc/Engine/Admin/Settings/Page.php:419 views/settings/page.php:72
 msgid "Rocket Tester"
 msgstr "Tester Rocket"
 
-#: inc/Engine/Admin/Settings/Page.php:385
+#: inc/Engine/Admin/Settings/Page.php:420
 msgid "I am part of the WP Rocket Beta Testing Program."
 msgstr "Iau parte la programul de testare WP Rocket Beta."
 
-#: inc/Engine/Admin/Settings/Page.php:393 views/settings/page.php:90
+#: inc/Engine/Admin/Settings/Page.php:428 views/settings/page.php:90
 msgid "Rocket Analytics"
 msgstr "Analitice Rocket"
 
-#: inc/Engine/Admin/Settings/Page.php:395
+#: inc/Engine/Admin/Settings/Page.php:430
 #, php-format
 msgid ""
 "I agree to share anonymous data with the development team to help improve WP"
@@ -304,24 +306,24 @@ msgstr ""
 "Sunt de acord să partajez date anonime cu echipa de dezvoltare pentru a "
 "ajuta la îmbunătățirea WP Rocket. %1$sCe informații vom colecta?%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:419
+#: inc/Engine/Admin/Settings/Page.php:454 inc/Engine/Cache/WPCache.php:347
 msgid "Cache"
 msgstr "Cache"
 
-#: inc/Engine/Admin/Settings/Page.php:420
+#: inc/Engine/Admin/Settings/Page.php:455
 msgid "Basic cache options"
 msgstr "Opțiuni de bază pentru cache"
 
-#: inc/Engine/Admin/Settings/Page.php:427
+#: inc/Engine/Admin/Settings/Page.php:462
 msgid "Mobile Cache"
 msgstr "Cache pentru mobil"
 
-#: inc/Engine/Admin/Settings/Page.php:429
+#: inc/Engine/Admin/Settings/Page.php:464
 msgid "Speed up your site for mobile visitors."
 msgstr ""
 "Îți accelerează site-ul pentru vizitatorii care folosesc dispozitive mobile."
 
-#: inc/Engine/Admin/Settings/Page.php:434
+#: inc/Engine/Admin/Settings/Page.php:469
 msgid ""
 "We detected you use a plugin that requires a separate cache for mobile, and "
 "automatically enabled this option for compatibility."
@@ -329,11 +331,11 @@ msgstr ""
 "Am detectat că folosești un modul care solicită un cache separat pentru "
 "mobil și s-a activat automat această opțiune pentru compatibilitate."
 
-#: inc/Engine/Admin/Settings/Page.php:438
+#: inc/Engine/Admin/Settings/Page.php:473
 msgid "User Cache"
 msgstr "Cache utilizatori"
 
-#: inc/Engine/Admin/Settings/Page.php:441
+#: inc/Engine/Admin/Settings/Page.php:476
 #, php-format
 msgid ""
 "%1$sUser cache%2$s is great when you have user-specific or restricted "
@@ -342,11 +344,11 @@ msgstr ""
 "%1$sCache utilizatori%2$s este foarte bun când ai conținut specific pentru "
 "utilizatori sau conținut restricționat pe site-ul tău web."
 
-#: inc/Engine/Admin/Settings/Page.php:449
+#: inc/Engine/Admin/Settings/Page.php:484
 msgid "Cache Lifespan"
 msgstr "Durată de viață cache"
 
-#: inc/Engine/Admin/Settings/Page.php:452
+#: inc/Engine/Admin/Settings/Page.php:487
 #, php-format
 msgid ""
 "Cache files older than the specified lifespan will be deleted.<br>Enable "
@@ -357,19 +359,19 @@ msgstr ""
 "<br>Activează %1$spre-încărcarea%2$s pentru cache-ul care să fie reconstruit"
 " automat după expirarea duratei de viață."
 
-#: inc/Engine/Admin/Settings/Page.php:466
+#: inc/Engine/Admin/Settings/Page.php:501
 msgid "Enable caching for logged-in WordPress users"
 msgstr "Activează cache pentru utilizatorii WordPress autentificați"
 
-#: inc/Engine/Admin/Settings/Page.php:474
+#: inc/Engine/Admin/Settings/Page.php:509
 msgid "Enable caching for mobile devices"
 msgstr "Activează cache pentru dispozitivele mobile"
 
-#: inc/Engine/Admin/Settings/Page.php:489
+#: inc/Engine/Admin/Settings/Page.php:524
 msgid "Separate cache files for mobile devices"
 msgstr "Separă fișierele cache pentru dispozitivele mobile"
 
-#: inc/Engine/Admin/Settings/Page.php:491
+#: inc/Engine/Admin/Settings/Page.php:526
 #, php-format
 msgid ""
 "Most modern themes are responsive and should work without a separate cache. "
@@ -380,13 +382,13 @@ msgstr ""
 " un cache separat. Activează asta numai dacă ai o temă sau un modul dedicat "
 "pentru dispozitive mobile. %1$sMai multe informații%2$s."
 
-#: inc/Engine/Admin/Settings/Page.php:507
+#: inc/Engine/Admin/Settings/Page.php:542
 msgid ""
 "Specify time after which the global cache is cleared<br>(0 = unlimited )"
 msgstr ""
 "Specifică timpul după care cache-ul global este șters<br>(0 = nelimitat)"
 
-#: inc/Engine/Admin/Settings/Page.php:509
+#: inc/Engine/Admin/Settings/Page.php:544
 #, php-format
 msgid ""
 "Reduce lifespan to 10 hours or less if you notice issues that seem to appear"
@@ -395,34 +397,33 @@ msgstr ""
 "Reduci durata de viață la 10 ore sau mai puțin dacă remarci probleme care "
 "par să apară periodic. %1$sDe ce?%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:515
+#: inc/Engine/Admin/Settings/Page.php:550
 msgid "Minutes"
 msgstr "Minute"
 
-#: inc/Engine/Admin/Settings/Page.php:516
+#: inc/Engine/Admin/Settings/Page.php:551
 msgid "Hours"
 msgstr "Ore"
 
-#: inc/Engine/Admin/Settings/Page.php:517
+#: inc/Engine/Admin/Settings/Page.php:552
 msgid "Days"
 msgstr "Zile"
 
-#: inc/Engine/Admin/Settings/Page.php:542
+#: inc/Engine/Admin/Settings/Page.php:577
 #: views/settings/page-sections/tutorials.php:22
 msgid "File Optimization"
 msgstr "Optimizare fișiere"
 
-#: inc/Engine/Admin/Settings/Page.php:543
+#: inc/Engine/Admin/Settings/Page.php:578
 msgid "Optimize CSS & JS"
 msgstr "Optimizează CSS și JS"
 
-#: inc/Engine/Admin/Settings/Page.php:550
-msgid "Basic Settings"
-msgstr "Setări de bază"
+#: inc/Engine/Admin/Settings/Page.php:585
+msgid "CSS Files"
+msgstr "Fișiere CSS"
 
-#: inc/Engine/Admin/Settings/Page.php:553
-#: inc/Engine/Admin/Settings/Page.php:563
-#: inc/Engine/Admin/Settings/Page.php:573
+#: inc/Engine/Admin/Settings/Page.php:592
+#: inc/Engine/Admin/Settings/Page.php:602
 #, php-format
 msgid ""
 "%1$s Minification is currently activated in <strong>Autoptimize</strong>. If"
@@ -432,58 +433,31 @@ msgstr ""
 "vrei să folosești minificarea %2$s, dezactivează acele opțiuni în "
 "Autoptimize."
 
-#: inc/Engine/Admin/Settings/Page.php:556
-msgid "CSS Files"
-msgstr "Fișiere CSS"
-
-#: inc/Engine/Admin/Settings/Page.php:566
+#: inc/Engine/Admin/Settings/Page.php:595
 msgid "JavaScript Files"
 msgstr "Fișiere JavaScript"
 
-#: inc/Engine/Admin/Settings/Page.php:582 inc/admin/ui/meta-boxes.php:74
-msgid "Minify HTML"
-msgstr "Minifică HTML"
-
-#: inc/Engine/Admin/Settings/Page.php:586
-msgid "Minifying HTML removes whitespace and comments to reduce the size."
-msgstr ""
-"Minificarea HTML înlătură spațiile goale și comentariile pentru a reduce "
-"dimensiunea."
-
-#: inc/Engine/Admin/Settings/Page.php:597
-msgid "Optimize Google Fonts"
-msgstr "Optimizează fonturile Google"
-
-#: inc/Engine/Admin/Settings/Page.php:599
-#, php-format
-msgid ""
-"Improves font performance and combines multiple font requests to reduce the "
-"number of HTTP requests. %1$sMore info%2$s"
-msgstr ""
-"Îmbunătățește performanța fonturilor și combină mai multe cereri de fonturi "
-"pentru a reduce numărul de cereri HTTP. %1$sMai multe informații%2$s"
-
-#: inc/Engine/Admin/Settings/Page.php:607
+#: inc/Engine/Admin/Settings/Page.php:611
 msgid "Minify CSS files"
 msgstr "Minifică fișierele CSS"
 
-#: inc/Engine/Admin/Settings/Page.php:608
+#: inc/Engine/Admin/Settings/Page.php:612
 msgid "Minify CSS removes whitespace and comments to reduce the file size."
 msgstr ""
 "Minifică CSS înlătură spațiile goale și comentariile pentru a reduce "
 "dimensiunea fișierului."
 
-#: inc/Engine/Admin/Settings/Page.php:621
-#: inc/Engine/Admin/Settings/Page.php:643
-#: inc/Engine/Admin/Settings/Page.php:723
-#: inc/Engine/Admin/Settings/Page.php:745
+#: inc/Engine/Admin/Settings/Page.php:625
+#: inc/Engine/Admin/Settings/Page.php:647
+#: inc/Engine/Admin/Settings/Page.php:729
+#: inc/Engine/Admin/Settings/Page.php:751
 msgid "This could break things!"
 msgstr "Asta ar putea strica unele lucruri!"
 
-#: inc/Engine/Admin/Settings/Page.php:622
-#: inc/Engine/Admin/Settings/Page.php:644
-#: inc/Engine/Admin/Settings/Page.php:724
-#: inc/Engine/Admin/Settings/Page.php:746
+#: inc/Engine/Admin/Settings/Page.php:626
+#: inc/Engine/Admin/Settings/Page.php:648
+#: inc/Engine/Admin/Settings/Page.php:730
+#: inc/Engine/Admin/Settings/Page.php:752
 msgid ""
 "If you notice any errors on your website after having activated this "
 "setting, just deactivate it again, and your site will be back to normal."
@@ -491,17 +465,17 @@ msgstr ""
 "Dacă după activarea acestei setări observi erori pe site-ul tău, trebuie "
 "doar s-o dezactivezi și site-ul va reveni la normal."
 
-#: inc/Engine/Admin/Settings/Page.php:623
+#: inc/Engine/Admin/Settings/Page.php:627
 msgid "Activate minify CSS"
 msgstr "Activează minifică CSS"
 
-#: inc/Engine/Admin/Settings/Page.php:628
+#: inc/Engine/Admin/Settings/Page.php:632
 msgid "Combine CSS files <em>(Enable Minify CSS files to select)</em>"
 msgstr ""
 "Combină fișierele CSS <em>(activează Minifică fișierele CSS pentru a "
 "selecta)</em>"
 
-#: inc/Engine/Admin/Settings/Page.php:630
+#: inc/Engine/Admin/Settings/Page.php:634
 #, php-format
 msgid ""
 "Combine CSS merges all your files into 1, reducing HTTP requests. Not "
@@ -511,15 +485,15 @@ msgstr ""
 "HTTP. Nu este recomandată dacă site-ul tău folosește HTTP/2. %1$sMai multe "
 "informații%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:645
+#: inc/Engine/Admin/Settings/Page.php:649
 msgid "Activate combine CSS"
 msgstr "Activează combină CSS"
 
-#: inc/Engine/Admin/Settings/Page.php:650 inc/admin/options.php:130
+#: inc/Engine/Admin/Settings/Page.php:654 inc/admin/options.php:125
 msgid "Excluded CSS Files"
 msgstr "Fișiere CSS excluse"
 
-#: inc/Engine/Admin/Settings/Page.php:651
+#: inc/Engine/Admin/Settings/Page.php:655
 msgid ""
 "Specify URLs of CSS files to be excluded from minification and concatenation"
 " (one per line)."
@@ -527,20 +501,31 @@ msgstr ""
 "Specifică URL-urile fișierelor CSS care să fie excluse din minificare și "
 "concatenare (câte unul pe un rând)."
 
-#: inc/Engine/Admin/Settings/Page.php:652
+#: inc/Engine/Admin/Settings/Page.php:656
 msgid ""
-"The domain part of the URL will be stripped automatically.<br>Use (.*).css "
-"wildcards to exclude all CSS files located at a specific path."
+"<strong>Internal:</strong> The domain part of the URL will be stripped "
+"automatically. Use (.*).css wildcards to exclude all CSS files located at a "
+"specific path."
 msgstr ""
-"Partea din URL care conține domeniul va fi eliminată automat.<br>Folosește "
-"metacaracterele (.*).css pentru a exclude toate fișierele CSS localizate pe "
-"o anumită cale."
+"<strong>Interne:</strong> Partea din URL care conține domeniul va fi "
+"eliminată automat. Folosește metacaracterele (.*).css pentru a exclude toate"
+" fișierele CSS localizate pe o anumită cale."
 
-#: inc/Engine/Admin/Settings/Page.php:665
+#: inc/Engine/Admin/Settings/Page.php:658
+#, php-format
+msgid ""
+"<strong>3rd Party:</strong> Use either the full URL path or only the domain "
+"name, to exclude external CSS. %1$sMore info%2$s"
+msgstr ""
+"<strong>Parte terță:</strong> pentru a exclude CSS-ul extern, folosește "
+"calea completă a URL-ului sau doar numele de domeniu. %1$sMai multe "
+"informații%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:671
 msgid "Optimize CSS delivery"
 msgstr "Optimizează livrarea CSS"
 
-#: inc/Engine/Admin/Settings/Page.php:672
+#: inc/Engine/Admin/Settings/Page.php:678
 #, php-format
 msgctxt "WP Critical CSS compatibility"
 msgid ""
@@ -551,7 +536,7 @@ msgstr ""
 "vrei să folosești opțiunea Optimizează livrarea CSS oferită de WP Rocket, "
 "dezactivează modulul %1$s."
 
-#: inc/Engine/Admin/Settings/Page.php:674
+#: inc/Engine/Admin/Settings/Page.php:680
 #, php-format
 msgid ""
 "Optimize CSS delivery eliminates render-blocking CSS on your website for "
@@ -561,11 +546,11 @@ msgstr ""
 "tău web pentru un timp de încărcare mai rapid perceput. %1$sMai multe "
 "informații%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:685
+#: inc/Engine/Admin/Settings/Page.php:691
 msgid "Fallback critical CSS"
 msgstr "CSS critic de rezervă"
 
-#: inc/Engine/Admin/Settings/Page.php:690
+#: inc/Engine/Admin/Settings/Page.php:696
 #, php-format
 msgid ""
 "Provides a fallback if auto-generated critical path CSS is incomplete. "
@@ -574,11 +559,11 @@ msgstr ""
 "Oferă o alternativă dacă CSS-ul de cale critic generat automat este "
 "incomplet. %1$sMai multe informații%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:699
+#: inc/Engine/Admin/Settings/Page.php:705
 msgid "Remove jQuery Migrate"
 msgstr "Înlătură migrarea jQuery"
 
-#: inc/Engine/Admin/Settings/Page.php:701
+#: inc/Engine/Admin/Settings/Page.php:707
 #, php-format
 msgid ""
 "Remove jQuery Migrate eliminates a JS file and can improve load time. "
@@ -587,29 +572,29 @@ msgstr ""
 "Înlătură migrarea jQuery elimină un fișier JS și poate îmbunătăți timpul de "
 "încărcare. %1$sMai multe informații%2$s."
 
-#: inc/Engine/Admin/Settings/Page.php:709
+#: inc/Engine/Admin/Settings/Page.php:715
 msgid "Minify JavaScript files"
 msgstr "Minifică fișierele JavaScript"
 
-#: inc/Engine/Admin/Settings/Page.php:710
+#: inc/Engine/Admin/Settings/Page.php:716
 msgid ""
 "Minify JavaScript removes whitespace and comments to reduce the file size."
 msgstr ""
 "Minifică JavaScript înlătură spațiile goale și comentariile pentru a reduce "
 "dimensiunea fișierului."
 
-#: inc/Engine/Admin/Settings/Page.php:725
+#: inc/Engine/Admin/Settings/Page.php:731
 msgid "Activate minify JavaScript"
 msgstr "Activează minifică JavaScript"
 
-#: inc/Engine/Admin/Settings/Page.php:730
+#: inc/Engine/Admin/Settings/Page.php:736
 msgid ""
 "Combine JavaScript files <em>(Enable Minify JavaScript files to select)</em>"
 msgstr ""
 "Combină fișierele JavaScript <em>(activează Minifică fișierele JavaScript "
 "pentru a selecta)</em>"
 
-#: inc/Engine/Admin/Settings/Page.php:732
+#: inc/Engine/Admin/Settings/Page.php:738
 #, php-format
 msgid ""
 "Combine JavaScript files combines your site’s internal, 3rd party and inline"
@@ -620,15 +605,15 @@ msgstr ""
 "resursele terțe și JS-ul în-line, reducând cererile HTTP. Nu este recomandat"
 " dacă site-ul tău folosește HTTP/2. %1$sMai multe informații%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:747
+#: inc/Engine/Admin/Settings/Page.php:753
 msgid "Activate combine JavaScript"
 msgstr "Activează combină JavaScript"
 
-#: inc/Engine/Admin/Settings/Page.php:752 inc/admin/options.php:131
+#: inc/Engine/Admin/Settings/Page.php:758 inc/admin/options.php:126
 msgid "Excluded Inline JavaScript"
 msgstr "JavaScript în-linie exclus"
 
-#: inc/Engine/Admin/Settings/Page.php:754
+#: inc/Engine/Admin/Settings/Page.php:760
 #, php-format
 msgid ""
 "Specify patterns of inline JavaScript to be excluded from concatenation (one"
@@ -637,11 +622,11 @@ msgstr ""
 "Specifică structurile JavaScript în-line care să fie excluse din concatenare"
 " (câte una pe un rând). %1$sMai multe informații%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:770 inc/admin/options.php:132
+#: inc/Engine/Admin/Settings/Page.php:776 inc/admin/options.php:127
 msgid "Excluded JavaScript Files"
 msgstr "Fișiere JavaScript excluse"
 
-#: inc/Engine/Admin/Settings/Page.php:771
+#: inc/Engine/Admin/Settings/Page.php:777
 msgid ""
 "Specify URLs of JavaScript files to be excluded from minification and "
 "concatenation (one per line)."
@@ -649,7 +634,7 @@ msgstr ""
 "Specifică URL-urile fișierelor JavaScript care să fie excluse din minificare"
 " și concatenare (câte unul pe un rând)."
 
-#: inc/Engine/Admin/Settings/Page.php:772
+#: inc/Engine/Admin/Settings/Page.php:778
 msgid ""
 "<strong>Internal:</strong> The domain part of the URL will be stripped "
 "automatically. Use (.*).js wildcards to exclude all JS files located at a "
@@ -659,7 +644,7 @@ msgstr ""
 "eliminată automat. Folosește metacaracterele (.*).js pentru a exclude toate "
 "fișierele JS localizate pe o anumită cale."
 
-#: inc/Engine/Admin/Settings/Page.php:774
+#: inc/Engine/Admin/Settings/Page.php:780
 #, php-format
 msgid ""
 "<strong>3rd Party:</strong> Use either the full URL path or only the domain "
@@ -669,11 +654,11 @@ msgstr ""
 "calea completă a URL-ului ori fie numai numele de domeniu. %1$sMai multe "
 "informații%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:790
+#: inc/Engine/Admin/Settings/Page.php:796
 msgid "Load JavaScript deferred"
 msgstr "Încarcă JavaScript întârziat"
 
-#: inc/Engine/Admin/Settings/Page.php:792
+#: inc/Engine/Admin/Settings/Page.php:798
 #, php-format
 msgid ""
 "Load JavaScript deferred eliminates render-blocking JS on your site and can "
@@ -682,11 +667,11 @@ msgstr ""
 "Încarcă JavaScript întârziat elimină JS-ul care blochează randarea pe site-"
 "ul tău și poate îmbunătăți timpul de încărcare. %1$sMai multe informații%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:803
+#: inc/Engine/Admin/Settings/Page.php:809
 msgid "Safe Mode for jQuery (recommended)"
 msgstr "Mod în siguranță pentru jQuery (recomandat)"
 
-#: inc/Engine/Admin/Settings/Page.php:804
+#: inc/Engine/Admin/Settings/Page.php:810
 msgid ""
 "Safe mode for jQuery for deferred JS ensures support for inline jQuery "
 "references from themes and plugins by loading jQuery at the top of the "
@@ -699,27 +684,53 @@ msgstr ""
 "<em><br>Dezactivarea poate duce la o funcționare defectuoasă, testează "
 "temeinic!</em>"
 
+#: inc/Engine/Admin/Settings/Page.php:822
+msgid "Delay JavaScript execution"
+msgstr "Întârzie executarea JavaScript"
+
+#: inc/Engine/Admin/Settings/Page.php:824
+#, php-format
+msgid ""
+"Improves performance by delaying the loading of JavaScript files until user "
+"interaction (e.g. scroll, click). %1$sMore info%2$s"
+msgstr ""
+"Îmbunătățește performanța prin întârzierea încărcării fișierelor JavaScript "
+"până la interacțiunea cu utilizatorul (de exemplu: derulează, dă clic). "
+"%1$sMai multe informații%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:832
+msgid "Scripts to delay"
+msgstr "Scripturi care să fie întârziate"
+
 #: inc/Engine/Admin/Settings/Page.php:833
+msgid ""
+"Specify keywords that can identify inline or JavaScript files to be delayed "
+"(one per line)."
+msgstr ""
+"Specifică cuvintele cheie care pot identifica fișierele în-line sau "
+"JavaScript care să fie fi întârziate (câte unul pe o linie)."
+
+#: inc/Engine/Admin/Settings/Page.php:868
 msgid "Media"
 msgstr "Media"
 
-#: inc/Engine/Admin/Settings/Page.php:834
+#: inc/Engine/Admin/Settings/Page.php:869
 msgid "LazyLoad, emojis, embeds, WebP"
 msgstr "Încărcare lentă, emoticoane, înglobări, WebP"
 
-#: inc/Engine/Admin/Settings/Page.php:842
+#: inc/Engine/Admin/Settings/Page.php:878
 msgid "Avada"
 msgstr "Avada"
 
-#: inc/Engine/Admin/Settings/Page.php:846
+#: inc/Engine/Admin/Settings/Page.php:882
 msgid "Autoptimize"
 msgstr "Autoptimize"
 
-#: inc/Engine/Admin/Settings/Page.php:878
+#: inc/Engine/Admin/Settings/Page.php:927
 msgid "LazyLoad"
 msgstr "Încărcare lentă"
 
-#: inc/Engine/Admin/Settings/Page.php:881
+#: inc/Engine/Admin/Settings/Page.php:930
 #, php-format
 msgid ""
 "It can improve actual and perceived loading time as images, iframes, and "
@@ -731,7 +742,7 @@ msgstr ""
 "care intră (sau urmează să intre) în fereastra de vizualizare, astfel se "
 "reduce numărul de cereri HTTP. %1$sMai multe informații%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:888
+#: inc/Engine/Admin/Settings/Page.php:937
 #, php-format
 msgid ""
 "LazyLoad is currently activated in %2$s. If you want to use WP Rocket’s "
@@ -741,11 +752,11 @@ msgstr ""
 "încărcarea lentă a imaginilor de la WP Rocket, dezactivează această opțiune "
 "în %2$s."
 
-#: inc/Engine/Admin/Settings/Page.php:891
+#: inc/Engine/Admin/Settings/Page.php:940
 msgid "Emoji 👻"
 msgstr "Emoticon 👻"
 
-#: inc/Engine/Admin/Settings/Page.php:893
+#: inc/Engine/Admin/Settings/Page.php:942
 msgid ""
 "Use default emoji of visitor's browser instead of loading emoji from "
 "WordPress.org"
@@ -753,25 +764,25 @@ msgstr ""
 "Folosește emoticonul implicit al navigatorului vizitatorilor în loc de a "
 "încărca emoticonul de la WordPress.org"
 
-#: inc/Engine/Admin/Settings/Page.php:897
+#: inc/Engine/Admin/Settings/Page.php:946
 msgid "Embeds"
 msgstr "Înglobări"
 
-#: inc/Engine/Admin/Settings/Page.php:899
+#: inc/Engine/Admin/Settings/Page.php:948
 msgid ""
 "Prevents others from embedding content from your site, prevents you from "
-"embedding content from other (non-whitelisted) sites, and removes JavaScript"
-" requests related to WordPress embeds"
+"embedding content from other (non-allowed) sites, and removes JavaScript "
+"requests related to WordPress embeds"
 msgstr ""
 "Îi împiedică pe alții să înglobeze conținut de pe site-ul tău, te împiedică "
-"să înglobezi conținut de pe alte site-uri (care nu sunt în lista ta albă) și"
-" înlătură cererile JavaScript legate de înglobările WordPress"
+"să înglobezi conținut de pe alte site-uri (nepermise) și înlătură cererile "
+"JavaScript legate de înglobările WordPress"
 
-#: inc/Engine/Admin/Settings/Page.php:903
+#: inc/Engine/Admin/Settings/Page.php:952
 msgid "WebP compatibility"
 msgstr "Compatibilitate cu WebP"
 
-#: inc/Engine/Admin/Settings/Page.php:907
+#: inc/Engine/Admin/Settings/Page.php:956
 #, php-format
 msgid ""
 "Enable this option if you would like WP Rocket to serve WebP images to "
@@ -784,11 +795,11 @@ msgstr ""
 " pentru tine. Pentru a crea imagini WebP recomandăm %1$sImagify%2$s. %3$sMai"
 " multe informații%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:934
+#: inc/Engine/Admin/Settings/Page.php:983
 msgid "Enable for images"
 msgstr "Activează pentru imagini"
 
-#: inc/Engine/Admin/Settings/Page.php:946
+#: inc/Engine/Admin/Settings/Page.php:995
 #, php-format
 msgid ""
 "LazyLoad for images is currently activated in %2$s. If you want to use "
@@ -798,15 +809,15 @@ msgstr ""
 "folosești încărcarea lentă a imaginilor de la %1$s, dezactivează această "
 "opțiune în %2$s."
 
-#: inc/Engine/Admin/Settings/Page.php:954
+#: inc/Engine/Admin/Settings/Page.php:1003
 msgid "Enable for iframes and videos"
 msgstr "Activează pentru iframe-uri și videouri"
 
-#: inc/Engine/Admin/Settings/Page.php:969
+#: inc/Engine/Admin/Settings/Page.php:1018
 msgid "Replace YouTube iframe with preview image"
 msgstr "Înlocuiește iframe-ul YouTube cu imaginea de previzualizare"
 
-#: inc/Engine/Admin/Settings/Page.php:970
+#: inc/Engine/Admin/Settings/Page.php:1019
 msgid ""
 "This can significantly improve your loading time if you have a lot of "
 "YouTube videos on a page."
@@ -814,37 +825,44 @@ msgstr ""
 "Îți poate îmbunătăți semnificativ timpul de încărcare dacă ai o mulțime de "
 "videouri YouTube pe o pagină."
 
-#: inc/Engine/Admin/Settings/Page.php:982
+#: inc/Engine/Admin/Settings/Page.php:1029
+#, php-format
+msgid "Replace YouTube iframe with preview image is not compatible with %2$s."
+msgstr ""
+"Înlocuiește iframe-ul YouTube cu imaginea de previzualizare nu este o "
+"acțiune compatibilă cu %2$s."
+
+#: inc/Engine/Admin/Settings/Page.php:1033
 msgid "Disable Emoji"
 msgstr "Dezactivează emoticoanele"
 
-#: inc/Engine/Admin/Settings/Page.php:983
+#: inc/Engine/Admin/Settings/Page.php:1034
 msgid "Disable Emoji will reduce the number of external HTTP requests."
 msgstr "Dezactivarea emoticoanelor va reduce numărul de cereri HTTP externe."
 
-#: inc/Engine/Admin/Settings/Page.php:991
+#: inc/Engine/Admin/Settings/Page.php:1042
 msgid "Disable WordPress embeds"
 msgstr "Dezactivează înglobările WordPress"
 
-#: inc/Engine/Admin/Settings/Page.php:1001
+#: inc/Engine/Admin/Settings/Page.php:1052
 #: inc/classes/subscriber/Media/class-webp-subscriber.php:362
 msgid "Enable WebP caching"
 msgstr "Activează cache-ul pentru WebP"
 
-#: inc/Engine/Admin/Settings/Page.php:1021 inc/deprecated/deprecated.php:1776
+#: inc/Engine/Admin/Settings/Page.php:1072 inc/deprecated/deprecated.php:1776
 #: views/settings/page-sections/tutorials.php:30
 msgid "Preload"
 msgstr "Pre-încărcare"
 
-#: inc/Engine/Admin/Settings/Page.php:1022
+#: inc/Engine/Admin/Settings/Page.php:1073
 msgid "Generate cache files, preload fonts"
 msgstr "Generează fișiere cache, pre-încarcă fonturi"
 
-#: inc/Engine/Admin/Settings/Page.php:1032
+#: inc/Engine/Admin/Settings/Page.php:1084
 msgid "Preload Cache"
 msgstr "Pre-încarcă cache"
 
-#: inc/Engine/Admin/Settings/Page.php:1035
+#: inc/Engine/Admin/Settings/Page.php:1087
 #, php-format
 msgid ""
 "When you enable preloading WP Rocket will generate the cache starting with "
@@ -859,11 +877,11 @@ msgstr ""
 "îl actualizezi și poți s-o declanșezi manual și din bara de administrare sau"
 " din %1$sPanoul de control WP Rocket%2$s."
 
-#: inc/Engine/Admin/Settings/Page.php:1043
+#: inc/Engine/Admin/Settings/Page.php:1095
 msgid "Prefetch DNS Requests"
 msgstr "Pre-aduce cereri DNS"
 
-#: inc/Engine/Admin/Settings/Page.php:1045
+#: inc/Engine/Admin/Settings/Page.php:1097
 msgid ""
 "DNS prefetching can make external files load faster, especially on mobile "
 "networks"
@@ -871,11 +889,11 @@ msgstr ""
 "Pre-aducerea DNS poate face ca fișierele externe să se încarce mai rapid, în"
 " special în rețelele pentru mobil"
 
-#: inc/Engine/Admin/Settings/Page.php:1053
+#: inc/Engine/Admin/Settings/Page.php:1105
 msgid "Preload Fonts"
 msgstr "Pre-încarcă fonturi"
 
-#: inc/Engine/Admin/Settings/Page.php:1056
+#: inc/Engine/Admin/Settings/Page.php:1108
 #, php-format
 msgid ""
 "Improves performance by helping browsers discover fonts in CSS files. "
@@ -884,28 +902,42 @@ msgstr ""
 "Îmbunătățește performanța ajutând navigatoarele să descopere fonturi în "
 "fișierele CSS. %1$sMai multe informații%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1070
+#: inc/Engine/Admin/Settings/Page.php:1116
+msgid "Preload Links"
+msgstr "Pre-încarcă legături"
+
+#: inc/Engine/Admin/Settings/Page.php:1119
+#, php-format
+msgid ""
+"Link preloading improves the perceived load time by downloading a page when "
+"a user hovers over the link. %1$sMore info%2$s"
+msgstr ""
+"Pre-încărcarea legăturilor îmbunătățește timpul de încărcare perceput prin "
+"descărcarea unei pagini atunci când un utilizator trece peste legătură. "
+"%1$sMai multe informații%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:1133
 msgid "Activate Preloading"
 msgstr "Activează pre-încărcarea"
 
-#: inc/Engine/Admin/Settings/Page.php:1089
+#: inc/Engine/Admin/Settings/Page.php:1152
 msgid "Activate sitemap-based cache preloading"
 msgstr "Activează pre-încărcarea cache-ului pe baza hărților site"
 
-#: inc/Engine/Admin/Settings/Page.php:1108
+#: inc/Engine/Admin/Settings/Page.php:1171
 msgid "Sitemaps for preloading"
 msgstr "Hărți site pentru pre-încărcare"
 
-#: inc/Engine/Admin/Settings/Page.php:1112
+#: inc/Engine/Admin/Settings/Page.php:1175
 msgid "Specify XML sitemap(s) to be used for preloading"
 msgstr ""
 "Specifică hărțile (harta) site XML care să fie folosite pentru pre-încărcare"
 
-#: inc/Engine/Admin/Settings/Page.php:1122
+#: inc/Engine/Admin/Settings/Page.php:1185
 msgid "URLs to prefetch"
 msgstr "URL-uri de pre-adus"
 
-#: inc/Engine/Admin/Settings/Page.php:1123
+#: inc/Engine/Admin/Settings/Page.php:1186
 msgid ""
 "Specify external hosts to be prefetched (no <code>http:</code>, one per "
 "line)"
@@ -913,17 +945,20 @@ msgstr ""
 "Specifică gazdele externe care să fie pre-aduse (fără <code>http:</code>, "
 "una pe linie)"
 
-#: inc/Engine/Admin/Settings/Page.php:1132
+#: inc/Engine/Admin/Settings/Page.php:1195
 msgid "Fonts to preload"
 msgstr "Fonturi pentru pre-încărcat"
 
-#: inc/Engine/Admin/Settings/Page.php:1133
-msgid "Specify urls of the font files to be preloaded (one per line)"
+#: inc/Engine/Admin/Settings/Page.php:1196
+msgid ""
+"Specify urls of the font files to be preloaded (one per line). Fonts must be"
+" hosted on your own domain, or the domain you have specified on the CDN tab."
 msgstr ""
-"Specifică URL-urile fișierelor cu fonturi care trebuie pre-încărcate (câte "
-"unul pe o linie)"
+"Specifică URL-urile fișierelor cu fonturi care trebuie preîncărcate (câte "
+"unul pe o linie). Fonturile trebuie să fie găzduite pe propriu domeniu sau "
+"pe domeniul specificat în fila CDN."
 
-#: inc/Engine/Admin/Settings/Page.php:1134
+#: inc/Engine/Admin/Settings/Page.php:1197
 msgid ""
 "The domain part of the URL will be stripped automatically.<br/>Allowed font "
 "extensions: otf, ttf, svg, woff, woff2."
@@ -931,47 +966,51 @@ msgstr ""
 "Partea din URL care conține domeniul va fi eliminată automat.<br/>Extensii "
 "de font permise: otf, ttf, svg, woff, woff2."
 
-#: inc/Engine/Admin/Settings/Page.php:1154
+#: inc/Engine/Admin/Settings/Page.php:1206
+msgid "Enable link preloading"
+msgstr "Activează pre-încărcarea legăturilor"
+
+#: inc/Engine/Admin/Settings/Page.php:1225
 msgid "Advanced Rules"
 msgstr "Reguli avansate"
 
-#: inc/Engine/Admin/Settings/Page.php:1155
+#: inc/Engine/Admin/Settings/Page.php:1226
 msgid "Fine-tune cache rules"
 msgstr "Ajustează fin regulile cache"
 
-#: inc/Engine/Admin/Settings/Page.php:1164
+#: inc/Engine/Admin/Settings/Page.php:1235
 msgid ""
 "Sensitive pages like custom login/logout URLs should be excluded from cache."
 msgstr ""
 "Paginile sensibile, cum ar fi URL-urile personalizate de "
 "autentificare/dezautentificare, ar trebui să fie excluse din cache."
 
-#: inc/Engine/Admin/Settings/Page.php:1167
+#: inc/Engine/Admin/Settings/Page.php:1238
 msgctxt "plugin name"
 msgid "WooCommerce"
 msgstr "WooCommerce"
 
-#: inc/Engine/Admin/Settings/Page.php:1169
+#: inc/Engine/Admin/Settings/Page.php:1240
 msgctxt "plugin name"
 msgid "Easy Digital Downloads"
 msgstr "Easy Digital Downloads"
 
-#: inc/Engine/Admin/Settings/Page.php:1171
+#: inc/Engine/Admin/Settings/Page.php:1242
 msgctxt "plugin name"
 msgid "iThemes Exchange"
 msgstr "iThemes Exchange"
 
-#: inc/Engine/Admin/Settings/Page.php:1173
+#: inc/Engine/Admin/Settings/Page.php:1244
 msgctxt "plugin name"
 msgid "Jigoshop"
 msgstr "Jigoshop"
 
-#: inc/Engine/Admin/Settings/Page.php:1175
+#: inc/Engine/Admin/Settings/Page.php:1246
 msgctxt "plugin name"
 msgid "WP-Shop"
 msgstr "WP-Shop"
 
-#: inc/Engine/Admin/Settings/Page.php:1181
+#: inc/Engine/Admin/Settings/Page.php:1252
 #, php-format
 msgid ""
 "<br>Cart, checkout and \"my account\" pages set in "
@@ -981,27 +1020,27 @@ msgstr ""
 "în <strong>%1$s%2$s%3$s</strong> vor fi detectate și implicit nu sunt "
 "memorate niciodată în cache."
 
-#: inc/Engine/Admin/Settings/Page.php:1191 inc/admin/options.php:133
+#: inc/Engine/Admin/Settings/Page.php:1262 inc/admin/options.php:128
 msgid "Never Cache URL(s)"
 msgstr "Nu memora niciodată în cache URL-uri"
 
-#: inc/Engine/Admin/Settings/Page.php:1202
+#: inc/Engine/Admin/Settings/Page.php:1273
 msgid "Never Cache Cookies"
 msgstr "Nu memora niciodată în cache cookie-uri"
 
-#: inc/Engine/Admin/Settings/Page.php:1207 inc/admin/options.php:134
+#: inc/Engine/Admin/Settings/Page.php:1278 inc/admin/options.php:129
 msgid "Never Cache User Agent(s)"
 msgstr "Nu memora niciodată în cache agentul (agenții) utilizator"
 
-#: inc/Engine/Admin/Settings/Page.php:1212 inc/admin/options.php:135
+#: inc/Engine/Admin/Settings/Page.php:1283 inc/admin/options.php:130
 msgid "Always Purge URL(s)"
 msgstr "Curăță întotdeauna URL-ul (URL-urile)"
 
-#: inc/Engine/Admin/Settings/Page.php:1221
+#: inc/Engine/Admin/Settings/Page.php:1292
 msgid "Cache Query String(s)"
 msgstr "Memorează în cache șirul (șirurile) de interogare"
 
-#: inc/Engine/Admin/Settings/Page.php:1224
+#: inc/Engine/Admin/Settings/Page.php:1295
 #, php-format
 msgid ""
 "%1$sCache for query strings%2$s enables you to force caching for specific "
@@ -1010,15 +1049,15 @@ msgstr ""
 "%1$sCache pentru șiruri de interogare%2$s îți permite să forțezi cache-ul "
 "pentru parametrii GET specifici."
 
-#: inc/Engine/Admin/Settings/Page.php:1238
+#: inc/Engine/Admin/Settings/Page.php:1309
 msgid ""
 "Specify URLs of pages or posts that should never be cached (one per line)"
 msgstr ""
 "Specifică URL-urile paginilor sau articolelor care nu ar trebui să fie "
 "niciodată memorate în cache (unul pe linie)"
 
-#: inc/Engine/Admin/Settings/Page.php:1239
-#: inc/Engine/Admin/Settings/Page.php:1267
+#: inc/Engine/Admin/Settings/Page.php:1310
+#: inc/Engine/Admin/Settings/Page.php:1338
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use (.*) "
 "wildcards to address multiple URLs under a given path."
@@ -1027,7 +1066,7 @@ msgstr ""
 "metacaracterele (.*) pentru a scrie adresa mai multor URL-uri pentru o cale "
 "dată."
 
-#: inc/Engine/Admin/Settings/Page.php:1248
+#: inc/Engine/Admin/Settings/Page.php:1319
 msgid ""
 "Specify the IDs of cookies that, when set in the visitor's browser, should "
 "prevent a page from getting cached (one per line)"
@@ -1036,18 +1075,18 @@ msgstr ""
 "navigatorul vizitatorilor, ar trebui să împiedice o pagină să fie memorată "
 "în cache (unul pe linie)"
 
-#: inc/Engine/Admin/Settings/Page.php:1256
+#: inc/Engine/Admin/Settings/Page.php:1327
 msgid ""
 "Specify user agent strings that should never see cached pages (one per line)"
 msgstr ""
 "Specifică șirurile de agenți utilizator care nu ar trebui să vadă niciodată "
 "pagini memorate în cache (unul pe linie)"
 
-#: inc/Engine/Admin/Settings/Page.php:1257
+#: inc/Engine/Admin/Settings/Page.php:1328
 msgid "Use (.*) wildcards to detect parts of UA strings."
 msgstr "Folosește metacaractere (.*) pentru a detecta părți din șirurile UA."
 
-#: inc/Engine/Admin/Settings/Page.php:1266
+#: inc/Engine/Admin/Settings/Page.php:1337
 msgid ""
 "Specify URLs you always want purged from cache whenever you update any post "
 "or page (one per line)"
@@ -1055,24 +1094,24 @@ msgstr ""
 "Specifică URL-urile care vrei să fie curățate întotdeauna din cache ori de "
 "câte ori actualizezi un articol sau o pagină (unul pe linie)"
 
-#: inc/Engine/Admin/Settings/Page.php:1275
+#: inc/Engine/Admin/Settings/Page.php:1346
 msgid "Specify query strings for caching (one per line)"
 msgstr ""
 "Specifică șirurile de interogare pentru memorare în cache (unul pe linie)"
 
-#: inc/Engine/Admin/Settings/Page.php:1300 inc/deprecated/deprecated.php:1775
+#: inc/Engine/Admin/Settings/Page.php:1371 inc/deprecated/deprecated.php:1775
 msgid "Database"
 msgstr "Bază de date"
 
-#: inc/Engine/Admin/Settings/Page.php:1301
+#: inc/Engine/Admin/Settings/Page.php:1372
 msgid "Optimize, reduce bloat"
 msgstr "Optimizează, reduce dimensiunea"
 
-#: inc/Engine/Admin/Settings/Page.php:1310
+#: inc/Engine/Admin/Settings/Page.php:1381
 msgid "Post Cleanup"
 msgstr "Curățare articole"
 
-#: inc/Engine/Admin/Settings/Page.php:1312
+#: inc/Engine/Admin/Settings/Page.php:1383
 msgid ""
 "Post revisions and drafts will be permanently deleted. Do not use this "
 "option if you need to retain revisions or drafts."
@@ -1080,20 +1119,20 @@ msgstr ""
 "Reviziile și ciornele articolelor vor fi șterse definitiv. Nu folosi această"
 " opțiune dacă trebuie să păstrezi reviziile sau ciornele."
 
-#: inc/Engine/Admin/Settings/Page.php:1320
+#: inc/Engine/Admin/Settings/Page.php:1391
 msgid "Comments Cleanup"
 msgstr "Curățare comentarii"
 
-#: inc/Engine/Admin/Settings/Page.php:1322
+#: inc/Engine/Admin/Settings/Page.php:1393
 msgid "Spam and trashed comments will be permanently deleted."
 msgstr ""
 "Comentariile spam și comentariile aruncate la gunoi vor fi șterse definitiv."
 
-#: inc/Engine/Admin/Settings/Page.php:1326
+#: inc/Engine/Admin/Settings/Page.php:1397
 msgid "Transients Cleanup"
 msgstr "Curățare tranzienți"
 
-#: inc/Engine/Admin/Settings/Page.php:1328
+#: inc/Engine/Admin/Settings/Page.php:1399
 msgid ""
 "Transients are temporary options; they are safe to remove. They will be "
 "automatically regenerated as your plugins require them."
@@ -1101,24 +1140,24 @@ msgstr ""
 "Tranzienții sunt opțiuni temporare; pot fi înlăturați fără probleme. Vor fi "
 "regenerați automat pe măsură ce modulele tale îi cer."
 
-#: inc/Engine/Admin/Settings/Page.php:1332
+#: inc/Engine/Admin/Settings/Page.php:1403
 msgid "Database Cleanup"
 msgstr "Curățare bază de date"
 
-#: inc/Engine/Admin/Settings/Page.php:1334
+#: inc/Engine/Admin/Settings/Page.php:1405
 msgid "Reduces overhead of database tables"
 msgstr "Reduce costul de funcționare a tabelelor din baza de date"
 
-#: inc/Engine/Admin/Settings/Page.php:1338
+#: inc/Engine/Admin/Settings/Page.php:1409
 msgid "Automatic cleanup"
 msgstr "Curățare automată"
 
-#: inc/Engine/Admin/Settings/Page.php:1349
+#: inc/Engine/Admin/Settings/Page.php:1420
 #: inc/classes/admin/Database/class-optimization.php:41
 msgid "Revisions"
 msgstr "Revizii"
 
-#: inc/Engine/Admin/Settings/Page.php:1351
+#: inc/Engine/Admin/Settings/Page.php:1422
 #, php-format
 msgid "%s revision in your database."
 msgid_plural "%s revisions in your database."
@@ -1126,12 +1165,12 @@ msgstr[0] "%s revizie în baza ta de date."
 msgstr[1] "%s revizii în baza ta de date."
 msgstr[2] "%s de revizii în baza ta de date."
 
-#: inc/Engine/Admin/Settings/Page.php:1359
+#: inc/Engine/Admin/Settings/Page.php:1430
 #: inc/classes/admin/Database/class-optimization.php:42
 msgid "Auto Drafts"
 msgstr "Ciorne automate"
 
-#: inc/Engine/Admin/Settings/Page.php:1361
+#: inc/Engine/Admin/Settings/Page.php:1432
 #, php-format
 msgid "%s draft in your database."
 msgid_plural "%s drafts in your database."
@@ -1139,12 +1178,12 @@ msgstr[0] "%s ciornă în baza ta de date."
 msgstr[1] "%s ciorne în baza ta de date."
 msgstr[2] "%s de ciorne în baza ta de date."
 
-#: inc/Engine/Admin/Settings/Page.php:1369
+#: inc/Engine/Admin/Settings/Page.php:1440
 #: inc/classes/admin/Database/class-optimization.php:43
 msgid "Trashed Posts"
 msgstr "Articole aruncate la gunoi"
 
-#: inc/Engine/Admin/Settings/Page.php:1371
+#: inc/Engine/Admin/Settings/Page.php:1442
 #, php-format
 msgid "%s trashed post in your database."
 msgid_plural "%s trashed posts in your database."
@@ -1152,12 +1191,12 @@ msgstr[0] "%s articol aruncat la gunoi în baza ta de date."
 msgstr[1] "%s articole aruncate la gunoi în baza ta de date."
 msgstr[2] "%s de articole aruncate la gunoi în baza ta de date."
 
-#: inc/Engine/Admin/Settings/Page.php:1379
+#: inc/Engine/Admin/Settings/Page.php:1450
 #: inc/classes/admin/Database/class-optimization.php:44
 msgid "Spam Comments"
 msgstr "Comentarii spam"
 
-#: inc/Engine/Admin/Settings/Page.php:1381
+#: inc/Engine/Admin/Settings/Page.php:1452
 #, php-format
 msgid "%s spam comment in your database."
 msgid_plural "%s spam comments in your database."
@@ -1165,12 +1204,12 @@ msgstr[0] "%s comentariu spam în baza ta de date."
 msgstr[1] "%s comentarii spam în baza ta de date."
 msgstr[2] "%s de comentarii spam în baza ta de date."
 
-#: inc/Engine/Admin/Settings/Page.php:1389
+#: inc/Engine/Admin/Settings/Page.php:1460
 #: inc/classes/admin/Database/class-optimization.php:45
 msgid "Trashed Comments"
 msgstr "Comentarii aruncate la gunoi"
 
-#: inc/Engine/Admin/Settings/Page.php:1391
+#: inc/Engine/Admin/Settings/Page.php:1462
 #, php-format
 msgid "%s trashed comment in your database."
 msgid_plural "%s trashed comments in your database."
@@ -1178,12 +1217,12 @@ msgstr[0] "%s comentariu aruncat la gunoi în baza ta de date."
 msgstr[1] "%s comentarii aruncate la gunoi în baza ta de date."
 msgstr[2] "%s de comentarii aruncate la gunoi în baza ta de date."
 
-#: inc/Engine/Admin/Settings/Page.php:1399
+#: inc/Engine/Admin/Settings/Page.php:1470
 #: inc/classes/admin/Database/class-optimization.php:46
 msgid "Expired transients"
 msgstr "Tranzienți expirați"
 
-#: inc/Engine/Admin/Settings/Page.php:1401
+#: inc/Engine/Admin/Settings/Page.php:1472
 #, php-format
 msgid "%s expired transient in your database."
 msgid_plural "%s expired transients in your database."
@@ -1191,11 +1230,11 @@ msgstr[0] "%s tranzient expirat în baza ta de date."
 msgstr[1] "%s tranzienți expirați în baza ta de date."
 msgstr[2] "%s de tranzienți expirați în baza ta de date."
 
-#: inc/Engine/Admin/Settings/Page.php:1409
+#: inc/Engine/Admin/Settings/Page.php:1480
 msgid "All transients"
 msgstr "Toți tranzienții"
 
-#: inc/Engine/Admin/Settings/Page.php:1411
+#: inc/Engine/Admin/Settings/Page.php:1482
 #, php-format
 msgid "%s transient in your database."
 msgid_plural "%s transients in your database."
@@ -1203,11 +1242,11 @@ msgstr[0] "%s tranzient în baza ta de date."
 msgstr[1] "%s tranzienți în baza ta de date."
 msgstr[2] "%s de tranzienți în baza ta de date."
 
-#: inc/Engine/Admin/Settings/Page.php:1419
+#: inc/Engine/Admin/Settings/Page.php:1490
 msgid "Optimize Tables"
 msgstr "Optimizează tabelele"
 
-#: inc/Engine/Admin/Settings/Page.php:1421
+#: inc/Engine/Admin/Settings/Page.php:1492
 #, php-format
 msgid "%s table to optimize in your database."
 msgid_plural "%s tables to optimize in your database."
@@ -1215,37 +1254,37 @@ msgstr[0] "%s tabel de optimizat în baza ta de date."
 msgstr[1] "%s tabele de optimizat în baza ta de date."
 msgstr[2] "%s de tabele de optimizat în baza ta de date."
 
-#: inc/Engine/Admin/Settings/Page.php:1432
+#: inc/Engine/Admin/Settings/Page.php:1503
 msgid "Schedule Automatic Cleanup"
 msgstr "Programează ștergerea automată"
 
-#: inc/Engine/Admin/Settings/Page.php:1444
+#: inc/Engine/Admin/Settings/Page.php:1515
 msgid "Frequency"
 msgstr "Frecvență"
 
-#: inc/Engine/Admin/Settings/Page.php:1452
+#: inc/Engine/Admin/Settings/Page.php:1523
 msgid "Daily"
 msgstr "Zilnic"
 
-#: inc/Engine/Admin/Settings/Page.php:1453
+#: inc/Engine/Admin/Settings/Page.php:1524
 msgid "Weekly"
 msgstr "Săptămânal"
 
-#: inc/Engine/Admin/Settings/Page.php:1454
+#: inc/Engine/Admin/Settings/Page.php:1525
 msgid "Monthly"
 msgstr "Lunar"
 
-#: inc/Engine/Admin/Settings/Page.php:1470
-#: inc/Engine/Admin/Settings/Page.php:1481 inc/admin/ui/meta-boxes.php:77
+#: inc/Engine/Admin/Settings/Page.php:1541
+#: inc/Engine/Admin/Settings/Page.php:1552 inc/admin/ui/meta-boxes.php:76
 #: inc/deprecated/deprecated.php:1773
 msgid "CDN"
 msgstr "CDN"
 
-#: inc/Engine/Admin/Settings/Page.php:1471
+#: inc/Engine/Admin/Settings/Page.php:1542
 msgid "Integrate your CDN"
 msgstr "Integrează-ți CDN-ul"
 
-#: inc/Engine/Admin/Settings/Page.php:1483
+#: inc/Engine/Admin/Settings/Page.php:1554
 msgid ""
 "All URLs of static files (CSS, JS, images) will be rewritten to the CNAME(s)"
 " you provide."
@@ -1253,7 +1292,7 @@ msgstr ""
 "Toate URL-urile fișierelor statice (CSS, JS, imagini) vor fi rescrise în "
 "CNAME-ul furnizat (CNAME-urile furnizate)."
 
-#: inc/Engine/Admin/Settings/Page.php:1485
+#: inc/Engine/Admin/Settings/Page.php:1556
 #, php-format
 msgid ""
 "Not required for services like Cloudflare and Sucuri. Please see our "
@@ -1262,11 +1301,11 @@ msgstr ""
 "Nu este necesar pentru servicii cum ar fi Cloudflare și Sucuri. Te rog vezi "
 "%1$ssuplimentele%2$s noastre disponibile."
 
-#: inc/Engine/Admin/Settings/Page.php:1500 inc/admin/options.php:136
+#: inc/Engine/Admin/Settings/Page.php:1571 inc/admin/options.php:131
 msgid "Exclude files from CDN"
 msgstr "Exclude fișiere din CDN"
 
-#: inc/Engine/Admin/Settings/Page.php:1526
+#: inc/Engine/Admin/Settings/Page.php:1597
 #, php-format
 msgid ""
 "%1$s%2$s Add-on%3$s is currently enabled. Configuration of the CDN settings "
@@ -1284,28 +1323,28 @@ msgstr[2] ""
 "În prezent sunt activate %1$s%2$s de suplimente%3$s. Configurarea setărilor "
 "CDN nu este necesară pentru ca %2$s să funcționeze pe site-ul tău."
 
-#: inc/Engine/Admin/Settings/Page.php:1551
+#: inc/Engine/Admin/Settings/Page.php:1622
 msgid "Enable Content Delivery Network"
 msgstr "Activează rețeaua de livrare a conținutului"
 
-#: inc/Engine/Admin/Settings/Page.php:1560
+#: inc/Engine/Admin/Settings/Page.php:1631
 #: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:151
 msgid "CDN CNAME(s)"
 msgstr "CNAME (CNAME-uri) CDN"
 
-#: inc/Engine/Admin/Settings/Page.php:1561
+#: inc/Engine/Admin/Settings/Page.php:1632
 #: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:152
 msgid "Specify the CNAME(s) below"
 msgstr "Specifică CNAME-ul (CNAME-urile) mai jos"
 
-#: inc/Engine/Admin/Settings/Page.php:1568
+#: inc/Engine/Admin/Settings/Page.php:1639
 msgid ""
 "Specify URL(s) of files that should not get served via CDN (one per line)."
 msgstr ""
 "Specifică URL-urile fișierelor care nu ar trebui să fie servite prin CDN "
 "(unul pe linie)."
 
-#: inc/Engine/Admin/Settings/Page.php:1569
+#: inc/Engine/Admin/Settings/Page.php:1640
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use (.*) "
 "wildcards to exclude all files of a given file type located at a specific "
@@ -1315,16 +1354,16 @@ msgstr ""
 "metacaracterele (.*) pentru a exclude toate fișierele unui tip de fișier dat"
 " localizate pe o anumită cale."
 
-#: inc/Engine/Admin/Settings/Page.php:1591
-#: inc/Engine/Admin/Settings/Page.php:1599
+#: inc/Engine/Admin/Settings/Page.php:1662
+#: inc/Engine/Admin/Settings/Page.php:1670
 msgid "Heartbeat"
 msgstr "Heartbeat"
 
-#: inc/Engine/Admin/Settings/Page.php:1592
+#: inc/Engine/Admin/Settings/Page.php:1663
 msgid "Control WordPress Heartbeat API"
 msgstr "Controlează WordPress Heartbeat API"
 
-#: inc/Engine/Admin/Settings/Page.php:1600
+#: inc/Engine/Admin/Settings/Page.php:1671
 msgid ""
 "Reducing or disabling the Heartbeat API’s activity can help save some of "
 "your server’s resources."
@@ -1332,11 +1371,11 @@ msgstr ""
 "Reducând sau dezactivând activitățile API-ului Heartbeat te poate ajuta să "
 "nu mai folosești o parte din resursele serverului tău."
 
-#: inc/Engine/Admin/Settings/Page.php:1609
+#: inc/Engine/Admin/Settings/Page.php:1680
 msgid "Reduce or disable Heartbeat activity"
 msgstr "Reduce sau dezactivează activitățile Heartbeat"
 
-#: inc/Engine/Admin/Settings/Page.php:1610
+#: inc/Engine/Admin/Settings/Page.php:1681
 msgid ""
 "Reducing activity will change Heartbeat frequency from one hit each minute "
 "to one hit every 2 minutes."
@@ -1344,55 +1383,55 @@ msgstr ""
 "Reducerea activității va modifica frecvența Heartbeat de la o vizită în "
 "fiecare minut la o vizită la fiecare 2 minute."
 
-#: inc/Engine/Admin/Settings/Page.php:1610
+#: inc/Engine/Admin/Settings/Page.php:1681
 msgid ""
 "Disabling Heartbeat entirely may break plugins and themes using this API."
 msgstr ""
 "Dezactivarea completă a Heartbeat poate întrerupe funcționarea modulelor și "
 "temelor când de folosește acest API."
 
-#: inc/Engine/Admin/Settings/Page.php:1624
+#: inc/Engine/Admin/Settings/Page.php:1695
 msgid "Do not limit"
 msgstr "Nu limita"
 
-#: inc/Engine/Admin/Settings/Page.php:1625
+#: inc/Engine/Admin/Settings/Page.php:1696
 msgid "Reduce activity"
 msgstr "Reduce activitatea"
 
-#: inc/Engine/Admin/Settings/Page.php:1626
+#: inc/Engine/Admin/Settings/Page.php:1697
 msgid "Disable"
 msgstr "Dezactivează"
 
-#: inc/Engine/Admin/Settings/Page.php:1634
+#: inc/Engine/Admin/Settings/Page.php:1705
 msgid "Control Heartbeat"
 msgstr "Controlează Heartbeat"
 
-#: inc/Engine/Admin/Settings/Page.php:1643
+#: inc/Engine/Admin/Settings/Page.php:1714
 msgid "Behavior in backend"
 msgstr "Comportament în partea administrativă a sitului"
 
-#: inc/Engine/Admin/Settings/Page.php:1650
+#: inc/Engine/Admin/Settings/Page.php:1721
 msgid "Behavior in post editor"
 msgstr "Comportament în editor de articole"
 
-#: inc/Engine/Admin/Settings/Page.php:1656
+#: inc/Engine/Admin/Settings/Page.php:1727
 msgid "Behavior in frontend"
 msgstr "Comportament în partea din față a sitului"
 
-#: inc/Engine/Admin/Settings/Page.php:1672
+#: inc/Engine/Admin/Settings/Page.php:1743
 #: views/settings/page-sections/tutorials.php:36
 msgid "Add-ons"
 msgstr "Suplimente"
 
-#: inc/Engine/Admin/Settings/Page.php:1673
+#: inc/Engine/Admin/Settings/Page.php:1744
 msgid "Add more features"
 msgstr "Adaugă mai multe funcționalități"
 
-#: inc/Engine/Admin/Settings/Page.php:1680
+#: inc/Engine/Admin/Settings/Page.php:1751
 msgid "One-click Rocket Add-ons"
 msgstr "Suplimente Rocket cu un singur clic"
 
-#: inc/Engine/Admin/Settings/Page.php:1681
+#: inc/Engine/Admin/Settings/Page.php:1752
 msgid ""
 "One-Click Add-ons are features extending available options without "
 "configuration needed. Switch the option \"on\" to enable from this screen."
@@ -1401,25 +1440,25 @@ msgstr ""
 "disponibile fără a fi necesară o configurare. Comută opțiunea pe „pornit” "
 "pentru a le activa din acest ecran."
 
-#: inc/Engine/Admin/Settings/Page.php:1691
+#: inc/Engine/Admin/Settings/Page.php:1762
 msgid "Rocket Add-ons"
 msgstr "Suplimente Rocket"
 
-#: inc/Engine/Admin/Settings/Page.php:1692
+#: inc/Engine/Admin/Settings/Page.php:1763
 msgid "Rocket Add-ons are complementary features extending available options."
 msgstr ""
 "Suplimentele Rocket sunt funcționalități complementare care extind opțiunile"
 " disponibile."
 
-#: inc/Engine/Admin/Settings/Page.php:1705
+#: inc/Engine/Admin/Settings/Page.php:1776
 msgid "Google Tracking"
 msgstr "Urmărire Google"
 
-#: inc/Engine/Admin/Settings/Page.php:1711
+#: inc/Engine/Admin/Settings/Page.php:1782
 msgid "Improve browser caching for Google Analytics"
 msgstr "Îmbunătățește cache-ul navigatorului pentru Google Analytics"
 
-#: inc/Engine/Admin/Settings/Page.php:1713
+#: inc/Engine/Admin/Settings/Page.php:1784
 #, php-format
 msgid ""
 "WP Rocket will host these Google scripts locally on your server to help "
@@ -1430,15 +1469,15 @@ msgstr ""
 "răspunde la recomandarea PageSpeed pentru <em>Utilizează la maxim cache-ul "
 "navigatorului</em>. <br>%1$sAflă mai multe%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1728
+#: inc/Engine/Admin/Settings/Page.php:1799
 msgid "Facebook Pixel"
 msgstr "Pixel Facebook"
 
-#: inc/Engine/Admin/Settings/Page.php:1734
+#: inc/Engine/Admin/Settings/Page.php:1805
 msgid "Improve browser caching for Facebook Pixel"
 msgstr "Îmbunătățește cache-ul navigatorului pentru Pixel Facebook"
 
-#: inc/Engine/Admin/Settings/Page.php:1736
+#: inc/Engine/Admin/Settings/Page.php:1807
 #, php-format
 msgid ""
 "WP Rocket will host these Facebook Pixels locally on your server to help "
@@ -1449,16 +1488,16 @@ msgstr ""
 "te conformezi recomandării PageSpeed pentru <em>Utilizează la maxim cache-ul"
 " navigatorului</em>. <br>%1$sAflă mai mult%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1749
-#: inc/Engine/Admin/Settings/Page.php:1850
+#: inc/Engine/Admin/Settings/Page.php:1820
+#: inc/Engine/Admin/Settings/Page.php:1921
 msgid "Cloudflare"
 msgstr "Cloudflare"
 
-#: inc/Engine/Admin/Settings/Page.php:1755
+#: inc/Engine/Admin/Settings/Page.php:1826
 msgid "Integrate your Cloudflare account with this add-on."
 msgstr "Integrează-ți contul Cloudflare cu acest supliment."
 
-#: inc/Engine/Admin/Settings/Page.php:1756
+#: inc/Engine/Admin/Settings/Page.php:1827
 msgid ""
 "Provide your account email, global API key, and domain to use options such "
 "as clearing the Cloudflare cache and enabling optimal settings with WP "
@@ -1468,16 +1507,16 @@ msgstr ""
 "câteva opțiuni, cum ar fi ștergerea cache-ului Cloudflare și activarea "
 "setărilor optime cu WP Rocket."
 
-#: inc/Engine/Admin/Settings/Page.php:1790
+#: inc/Engine/Admin/Settings/Page.php:1861
 msgid "Varnish"
 msgstr "Varnish"
 
-#: inc/Engine/Admin/Settings/Page.php:1796
+#: inc/Engine/Admin/Settings/Page.php:1867
 msgid "If Varnish runs on your server, you must activate this add-on."
 msgstr ""
 "Dacă Varnish rulează pe serverul tău, trebuie să activezi acest supliment."
 
-#: inc/Engine/Admin/Settings/Page.php:1798
+#: inc/Engine/Admin/Settings/Page.php:1869
 #, php-format
 msgid ""
 "Varnish cache will be purged each time WP Rocket clears its cache to ensure "
@@ -1487,11 +1526,11 @@ msgstr ""
 "cache-ul, astfel conținutul este întotdeauna actualizat.<br>%1$sAflă mai "
 "mult%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1812
+#: inc/Engine/Admin/Settings/Page.php:1883
 msgid "Clear the Sucuri cache when WP Rocket’s cache is cleared."
 msgstr "Șterge cache-ul Sucuri când cache-ul WP Rocket este șters."
 
-#: inc/Engine/Admin/Settings/Page.php:1815
+#: inc/Engine/Admin/Settings/Page.php:1886
 msgid ""
 "Provide your API key to clear the Sucuri cache when WP Rocket’s cache is "
 "cleared."
@@ -1499,48 +1538,48 @@ msgstr ""
 "Furnizează cheia ta API pentru a șterge cache-ul Sucuri când cache-ul WP "
 "Rocket este șters."
 
-#: inc/Engine/Admin/Settings/Page.php:1823
-#: inc/Engine/Admin/Settings/Page.php:1967
+#: inc/Engine/Admin/Settings/Page.php:1894
+#: inc/Engine/Admin/Settings/Page.php:2038
 msgid "Sucuri"
 msgstr "Sucuri"
 
-#: inc/Engine/Admin/Settings/Page.php:1829
+#: inc/Engine/Admin/Settings/Page.php:1900
 msgid "Synchronize Sucuri cache with this add-on."
 msgstr "Sincronizează cache-ul Sucuri cu acest supliment."
 
-#: inc/Engine/Admin/Settings/Page.php:1867
+#: inc/Engine/Admin/Settings/Page.php:1938
 msgid "Cloudflare credentials"
 msgstr "Date de conectare Cloudflare"
 
-#: inc/Engine/Admin/Settings/Page.php:1876
+#: inc/Engine/Admin/Settings/Page.php:1947
 msgid "Cloudflare settings"
 msgstr "Setări Cloudflare"
 
-#: inc/Engine/Admin/Settings/Page.php:1890
+#: inc/Engine/Admin/Settings/Page.php:1961
 msgctxt "Cloudflare"
 msgid "Global API key:"
 msgstr "Cheie API globală:"
 
-#: inc/Engine/Admin/Settings/Page.php:1891
+#: inc/Engine/Admin/Settings/Page.php:1962
 msgctxt "Cloudflare"
 msgid "Find your API key"
 msgstr "Găsește-ți cheia API"
 
-#: inc/Engine/Admin/Settings/Page.php:1903
+#: inc/Engine/Admin/Settings/Page.php:1974
 msgctxt "Cloudflare"
 msgid "Account email"
 msgstr "Email cont"
 
-#: inc/Engine/Admin/Settings/Page.php:1912
+#: inc/Engine/Admin/Settings/Page.php:1983
 msgctxt "Cloudflare"
 msgid "Zone ID"
 msgstr "ID zonă"
 
-#: inc/Engine/Admin/Settings/Page.php:1922
+#: inc/Engine/Admin/Settings/Page.php:1993
 msgid "Development mode"
 msgstr "Mod dezvoltare"
 
-#: inc/Engine/Admin/Settings/Page.php:1924
+#: inc/Engine/Admin/Settings/Page.php:1995
 #, php-format
 msgid ""
 "Temporarily activate development mode on your website. This setting will "
@@ -1549,11 +1588,11 @@ msgstr ""
 "Activează temporar modul dezvoltare pe site-ul tău web. Această setare va fi"
 " oprită automat după 3 ore. %1$sAflă mai mult%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1932
+#: inc/Engine/Admin/Settings/Page.php:2003
 msgid "Optimal settings"
 msgstr "Setări optime"
 
-#: inc/Engine/Admin/Settings/Page.php:1933
+#: inc/Engine/Admin/Settings/Page.php:2004
 msgid ""
 "Automatically enhances your Cloudflare configuration for speed, performance "
 "grade and compatibility."
@@ -1561,11 +1600,11 @@ msgstr ""
 "Îți îmbunătățește automat configurarea Cloudflare pentru viteză, grad de "
 "performanță și compatibilitate."
 
-#: inc/Engine/Admin/Settings/Page.php:1941
+#: inc/Engine/Admin/Settings/Page.php:2012
 msgid "Relative protocol"
 msgstr "Protocol relativ"
 
-#: inc/Engine/Admin/Settings/Page.php:1942
+#: inc/Engine/Admin/Settings/Page.php:2013
 msgid ""
 "Should only be used with Cloudflare's flexible SSL feature. URLs of static "
 "files (CSS, JS, images) will be rewritten to use // instead of http:// or "
@@ -1575,11 +1614,11 @@ msgstr ""
 "Cloudflare. URL-urile fișierelor statice (CSS, JS, imagini) vor fi rescrise "
 "pentru a folosi // în loc de http:// sau https://."
 
-#: inc/Engine/Admin/Settings/Page.php:1980
+#: inc/Engine/Admin/Settings/Page.php:2051
 msgid "Sucuri credentials"
 msgstr "Date de conectare Sucuri"
 
-#: inc/Engine/Admin/Settings/Page.php:1993
+#: inc/Engine/Admin/Settings/Page.php:2064
 msgctxt "Sucuri"
 msgid ""
 "Firewall API key (for plugin), must be in format <code>{32 characters}/{32 "
@@ -1588,7 +1627,7 @@ msgstr ""
 "Cheia API pentru firewall (pentru modul) trebuie să fie în formatul de "
 "<code>{32 de caractere}/{32 de caractere}</code>:"
 
-#: inc/Engine/Admin/Settings/Page.php:1994
+#: inc/Engine/Admin/Settings/Page.php:2065
 msgctxt "Sucuri"
 msgid "Find your API key"
 msgstr "Găsește-ți cheia API"
@@ -1597,7 +1636,7 @@ msgstr "Găsește-ți cheia API"
 msgid "Upload file and import settings"
 msgstr "Încarcă fișierul și importă setările"
 
-#: inc/Engine/Admin/Settings/Settings.php:405
+#: inc/Engine/Admin/Settings/Settings.php:400
 msgid ""
 "Sucuri Add-on: The API key for the Sucuri firewall must be in format "
 "<code>{32 characters}/{32 characters}</code>."
@@ -1605,36 +1644,36 @@ msgstr ""
 "Supliment Sucuri: cheia API pentru firewall-ul Sucuri trebuie să fie în "
 "formatul <code>{32 de caractere}/{32 de caractere}</code>."
 
-#: inc/Engine/Admin/Settings/Settings.php:496
+#: inc/Engine/Admin/Settings/Settings.php:491
 #: inc/deprecated/deprecated.php:1245
 msgid "Settings saved."
 msgstr "Setări salvate."
 
-#: inc/Engine/Admin/Settings/Subscriber.php:114
+#: inc/Engine/Admin/Settings/Subscriber.php:141
 #: inc/deprecated/deprecated.php:1786
 #: views/settings/page-sections/tools.php:33
 msgid "Tools"
 msgstr "Unelte"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:115
+#: inc/Engine/Admin/Settings/Subscriber.php:142
 msgid "Import, Export, Rollback"
 msgstr "Import, export, restaurare"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:136
+#: inc/Engine/Admin/Settings/Subscriber.php:163
 #: views/settings/page-sections/imagify.php:14
 msgid "Image Optimization"
 msgstr "Optimizare imagini"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:137
+#: inc/Engine/Admin/Settings/Subscriber.php:164
 msgid "Compress your images"
 msgstr "Comprimă-ți imaginile"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:154
+#: inc/Engine/Admin/Settings/Subscriber.php:181
 #: views/settings/page-sections/tutorials.php:45
 msgid "Tutorials"
 msgstr "Tutoriale"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:155
+#: inc/Engine/Admin/Settings/Subscriber.php:182
 msgid "Getting started and how to videos"
 msgstr "Noțiuni de bază și cum să vezi videourile"
 
@@ -1706,21 +1745,50 @@ msgstr "%1$sMai multe informații%2$s"
 msgid "Manage Subscription"
 msgstr "Administrează abonamentul"
 
-#: inc/Engine/CDN/RocketCDN/RESTSubscriber.php:134
+#: inc/Engine/CDN/RocketCDN/RESTSubscriber.php:137
 msgid "RocketCDN enabled"
 msgstr "RocketCDN activat"
 
-#: inc/Engine/CDN/RocketCDN/RESTSubscriber.php:156
+#: inc/Engine/CDN/RocketCDN/RESTSubscriber.php:160
 msgid "RocketCDN disabled"
 msgstr "RocketCDN dezactivat"
 
-#: inc/Engine/Cache/AdminSubscriber.php:102 inc/admin/admin.php:71
+#: inc/Engine/Cache/AdminSubscriber.php:118 inc/admin/admin.php:71
 #: inc/admin/admin.php:92 inc/deprecated/3.5.php:908
 msgid "Clear this cache"
 msgstr "Șterge acest cache"
 
-#: inc/Engine/CriticalPath/APIClient.php:151
-#: inc/Engine/CriticalPath/DataManager.php:65
+#: inc/Engine/Cache/WPCache.php:330
+msgid "WP_CACHE value"
+msgstr "Valoare WP_CACHE"
+
+#: inc/Engine/Cache/WPCache.php:351
+msgid ""
+"The WP_CACHE constant needs to be set to true for WP Rocket cache to work "
+"properly"
+msgstr ""
+"Pentru ca WP Rocket să funcționeze așa cum trebuie, constanta WP_CACHE "
+"trebuie să fie setată la „true”."
+
+#: inc/Engine/Cache/WPCache.php:360
+msgid "WP_CACHE is set to true"
+msgstr "WP_CACHE este setată la „true”"
+
+#: inc/Engine/Cache/WPCache.php:368
+msgid "WP_CACHE is not set"
+msgstr "WP_CACHE nu este setată"
+
+#: inc/Engine/Cache/WPCache.php:376
+msgid "WP_CACHE is set to false"
+msgstr "WP_CACHE este setată la „false”"
+
+#: inc/Engine/CriticalPath/APIClient.php:64
+#, php-format
+msgid "Critical CSS for %1$s not generated. Error: %2$s"
+msgstr "CSS-ul critic pentru %1$s nu a fost generat. Eroare: %2$s"
+
+#: inc/Engine/CriticalPath/APIClient.php:170
+#: inc/Engine/CriticalPath/DataManager.php:66
 #, php-format
 msgid ""
 "Critical CSS for %1$s on mobile not generated. Error: The API returned an "
@@ -1729,8 +1797,8 @@ msgstr ""
 "CSS-ul critic pentru %1$s nu a fost generat pentru dispozitive mobile. "
 "Eroare: API-ul a returnat un răspuns gol."
 
-#: inc/Engine/CriticalPath/APIClient.php:154
-#: inc/Engine/CriticalPath/DataManager.php:68
+#: inc/Engine/CriticalPath/APIClient.php:173
+#: inc/Engine/CriticalPath/DataManager.php:69
 #, php-format
 msgid ""
 "Critical CSS for %1$s not generated. Error: The API returned an empty "
@@ -1739,19 +1807,19 @@ msgstr ""
 "CSS-ul critic pentru %1$s nu a fost generat. Eroare: API-ul a returnat un "
 "răspuns gol."
 
-#: inc/Engine/CriticalPath/APIClient.php:166
+#: inc/Engine/CriticalPath/APIClient.php:185
 #, php-format
 msgid "Critical CSS for %1$s on mobile not generated."
 msgstr ""
 "CSS-ul critic pentru %1$s nu a fost generat pentru dispozitive mobile."
 
-#: inc/Engine/CriticalPath/APIClient.php:168
-#: inc/Engine/CriticalPath/ProcessorService.php:177
+#: inc/Engine/CriticalPath/APIClient.php:187
+#: inc/Engine/CriticalPath/ProcessorService.php:193
 #, php-format
 msgid "Critical CSS for %1$s not generated."
 msgstr "CSS-ul critic pentru %1$s nu a fost generat."
 
-#: inc/Engine/CriticalPath/APIClient.php:176
+#: inc/Engine/CriticalPath/APIClient.php:195
 #, php-format
 msgid ""
 "Critical CSS for %1$s on mobile not generated. Error: The API returned an "
@@ -1760,7 +1828,7 @@ msgstr ""
 "CSS-ul critic pentru %1$s nu a fost generat pentru dispozitive mobile. "
 "Eroare: API-ul a returnat un cod de răspuns invalid."
 
-#: inc/Engine/CriticalPath/APIClient.php:178
+#: inc/Engine/CriticalPath/APIClient.php:197
 #, php-format
 msgid ""
 "Critical CSS for %1$s not generated. Error: The API returned an invalid "
@@ -1769,13 +1837,13 @@ msgstr ""
 "CSS-ul critic pentru %1$s nu a fost generat. Eroare: API-ul a returnat un "
 "cod de răspuns invalid."
 
-#: inc/Engine/CriticalPath/APIClient.php:186
-#: inc/Engine/CriticalPath/ProcessorService.php:182
+#: inc/Engine/CriticalPath/APIClient.php:205
+#: inc/Engine/CriticalPath/ProcessorService.php:200
 #, php-format
 msgid "Error: %1$s"
 msgstr "Eroare: %1$s"
 
-#: inc/Engine/CriticalPath/Admin/Admin.php:256
+#: inc/Engine/CriticalPath/Admin/Admin.php:260
 msgid "Regenerate Critical Path CSS"
 msgstr "Regenerează CSS-ul de cale critic"
 
@@ -1806,17 +1874,17 @@ msgstr "Activează Optimizează livrarea CSS în setările WP Rocket"
 msgid "Enable Optimize CSS delivery in the options above"
 msgstr "Activează Optimizează livrarea CSS în opțiunile de mai sus"
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:149
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:147
 msgid "Critical CSS generation is currently running."
 msgstr "Generarea CSS-ului critic rulează acum."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:154
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:152
 #: inc/Engine/Preload/PreloadSubscriber.php:242
 #, php-format
 msgid "Go to the %1$sWP Rocket settings%2$s page to track progress."
 msgstr "Mergi la pagina %1$sSetări WP Rocket%2$s pentru a urmări progresul."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:359
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:366
 #, php-format
 msgid ""
 "Critical CSS generation is currently running: %1$d of %2$d page types "
@@ -1825,75 +1893,75 @@ msgstr ""
 "Generarea CSS-ului critic rulează acum: %1$d din %2$d tipuri de pagină au "
 "fost finalizate. (Reîmprospătează această pagină pentru a vedea progresul.)"
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:426
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:438
 #, php-format
 msgid "Critical CSS generation finished for %1$d of %2$d page types."
 msgstr ""
 "Generarea CSS-ului critic s-a terminat pentru %1$d din %2$d tipuri de "
 "pagină."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:433
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:445
 msgid "Critical CSS generation encountered one or more errors."
 msgstr "Generarea CSS-ului critic a întâmpinat una sau mai multe erori."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:433
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:445
 msgid "Learn more."
 msgstr "Află mai mult."
 
-#: inc/Engine/CriticalPath/DataManager.php:101
+#: inc/Engine/CriticalPath/DataManager.php:102
 msgid "Critical CSS file for mobile does not exist"
 msgstr "Fișierul CSS critic pentru dispozitive mobile nu există"
 
-#: inc/Engine/CriticalPath/DataManager.php:103
+#: inc/Engine/CriticalPath/DataManager.php:104
 msgid "Critical CSS file does not exist"
 msgstr "Fișierul CSS critic nu există"
 
-#: inc/Engine/CriticalPath/DataManager.php:115
+#: inc/Engine/CriticalPath/DataManager.php:116
 msgid "Critical CSS file for mobile cannot be deleted"
 msgstr "Fișierul CSS critic pentru dispozitive mobile nu poate fi șters"
 
-#: inc/Engine/CriticalPath/DataManager.php:117
+#: inc/Engine/CriticalPath/DataManager.php:118
 msgid "Critical CSS file cannot be deleted"
 msgstr "Fișierul CSS critic nu poate fi șters"
 
-#: inc/Engine/CriticalPath/ProcessorService.php:174
+#: inc/Engine/CriticalPath/ProcessorService.php:186
 #, php-format
 msgid "Mobile Critical CSS for %1$s not generated."
 msgstr "CSS-ul critic mobil pentru %1$s nu a fost generat."
 
-#: inc/Engine/CriticalPath/ProcessorService.php:207
+#: inc/Engine/CriticalPath/ProcessorService.php:227
 #, php-format
 msgid "Critical CSS for %s in progress."
 msgstr "CSS-ul critic pentru %s este în desfășurare."
 
-#: inc/Engine/CriticalPath/ProcessorService.php:237
+#: inc/Engine/CriticalPath/ProcessorService.php:261
 #, php-format
 msgid "Mobile Critical CSS for %s generated."
 msgstr "CSS-ul critic mobil pentru %s a fost generat."
 
-#: inc/Engine/CriticalPath/ProcessorService.php:245
+#: inc/Engine/CriticalPath/ProcessorService.php:272
 #, php-format
 msgid "Critical CSS for %s generated."
 msgstr "CSS-ul critic pentru %s a fost generat."
 
-#: inc/Engine/CriticalPath/ProcessorService.php:265
+#: inc/Engine/CriticalPath/ProcessorService.php:294
 msgid "Critical CSS file deleted successfully."
 msgstr "Fișierul CSS critic a fost șters cu succes."
 
-#: inc/Engine/CriticalPath/ProcessorService.php:285
+#: inc/Engine/CriticalPath/ProcessorService.php:316
 #, php-format
 msgid "Mobile Critical CSS for %1$s timeout. Please retry a little later."
 msgstr ""
 "CSS-ul critic mobil pentru %1$s a expirat. Te rog încearcă un pic mai "
 "târziu."
 
-#: inc/Engine/CriticalPath/ProcessorService.php:295
+#: inc/Engine/CriticalPath/ProcessorService.php:329
 #, php-format
 msgid "Critical CSS for %1$s timeout. Please retry a little later."
 msgstr ""
 "CSS-ul critic pentru %1$s a expirat. Te rog încearcă un pic mai târziu."
 
-#: inc/Engine/CriticalPath/RESTWP.php:130
+#: inc/Engine/CriticalPath/RESTWP.php:141
 msgid "Mobile CPCSS generation not enabled."
 msgstr ""
 "Generarea CSS-ului de cale critic pentru dispozitive mobile nu este "
@@ -1956,6 +2024,10 @@ msgstr "Pre-încărcare"
 #: inc/Engine/HealthCheck/HealthCheck.php:146
 msgid "Critical Path CSS Generation Process"
 msgstr "Proces de generare CSS de cale critic"
+
+#: inc/Engine/Optimization/DelayJS/Admin/Settings.php:92
+msgid "Restore Defaults"
+msgstr "Restaurează valorile implicite"
 
 #: inc/Engine/Preload/Homepage.php:153
 #, php-format
@@ -2133,6 +2205,15 @@ msgstr ""
 "contactează serviciul tău de găzduire pentru a o activa înainte de a executa"
 " pre-încărcarea în cache a hărților site-ului."
 
+#: inc/ThirdParty/Hostings/Cloudways.php:82
+#, php-format
+msgid ""
+"Varnish auto-purge will be automatically enabled once Varnish is enabled on "
+"your %s server."
+msgstr ""
+"Ștergerea automată Varnish va fi activată automat pe serverul tău %s după ce"
+" Varnish este activat. "
+
 #: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:78
 #, php-format
 msgctxt "Hummingbird notice"
@@ -2233,47 +2314,47 @@ msgstr "Actualizează restaurarea %s"
 msgid "%1$sReturn to WP Rocket%2$s or %3$sgo to Plugins page%2$s"
 msgstr "%1$sÎntoarce-te la WP Rocket%2$s sau %3$smergi la pagina Module%2$s"
 
-#: inc/admin/admin.php:515
+#: inc/admin/admin.php:503
 msgid "Settings import failed: you do not have the permissions to do this."
 msgstr "Importul setărilor a eșuat: nu ai permisiunea de a face asta."
 
-#: inc/admin/admin.php:519
+#: inc/admin/admin.php:507
 msgid "Settings import failed: no file uploaded."
 msgstr "Importul setărilor a eșuat: niciun fișier încărcat."
 
-#: inc/admin/admin.php:523
+#: inc/admin/admin.php:511
 msgid "Settings import failed: incorrect filename."
 msgstr "Importul setărilor a eșuat: nume fișier incorect."
 
-#: inc/admin/admin.php:534
+#: inc/admin/admin.php:522
 msgid "Settings import failed: incorrect filetype."
 msgstr "Importul setărilor a eșuat: tip de fișier incorect."
 
-#: inc/admin/admin.php:544
+#: inc/admin/admin.php:532
 msgid "Settings import failed: "
 msgstr "Importul setărilor a eșuat: "
 
-#: inc/admin/admin.php:560
+#: inc/admin/admin.php:548
 msgid "Settings import failed: unexpected file content."
 msgstr "Importul setărilor a eșuat: conținut neașteptat pentru fișier."
 
-#: inc/admin/admin.php:581
+#: inc/admin/admin.php:569
 msgid "Settings imported and saved."
 msgstr "Setările au fost importate și salvate."
 
-#: inc/admin/options.php:154
+#: inc/admin/options.php:149
 #, php-format
 msgid "%1$s: <em>%2$s</em>."
 msgstr "%1$s: <em>%2$s</em>."
 
-#: inc/admin/options.php:164
+#: inc/admin/options.php:159
 msgid "The following pattern is invalid and has been removed:"
 msgid_plural "The following patterns are invalid and have been removed:"
 msgstr[0] "Următorul model este invalid și a fost înlăturat:"
 msgstr[1] "Următoarele modele sunt invalide și au fost înlăturate:"
 msgstr[2] "Următoarele modele sunt invalide și au fost înlăturate:"
 
-#: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:806
+#: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:767
 #: inc/common/admin-bar.php:85 inc/common/admin-bar.php:137
 #: views/settings/page-sections/dashboard.php:124
 msgid "Clear cache"
@@ -2299,28 +2380,28 @@ msgstr "Încărcare lentă pentru imagini"
 msgid "LazyLoad for iframes/videos"
 msgstr "Încărcare lentă pentru iframe-uri/videouri"
 
-#: inc/admin/ui/meta-boxes.php:75
+#: inc/admin/ui/meta-boxes.php:74
 msgid "Minify/combine CSS"
 msgstr "Minifică/combină CSS"
 
-#: inc/admin/ui/meta-boxes.php:76
+#: inc/admin/ui/meta-boxes.php:75
 msgid "Minify/combine JS"
 msgstr "Minifică/combină JS"
 
-#: inc/admin/ui/meta-boxes.php:78
+#: inc/admin/ui/meta-boxes.php:77
 msgid "Optimize CSS Delivery"
 msgstr "Optimizează livrarea CSS"
 
-#: inc/admin/ui/meta-boxes.php:79
+#: inc/admin/ui/meta-boxes.php:78
 msgid "Defer JS"
 msgstr "Amână JS"
 
-#: inc/admin/ui/meta-boxes.php:85
+#: inc/admin/ui/meta-boxes.php:84
 #, php-format
 msgid "Activate first the %s option."
 msgstr "Activează mai întâi opțiunea %s."
 
-#: inc/admin/ui/meta-boxes.php:101
+#: inc/admin/ui/meta-boxes.php:100
 #, php-format
 msgid ""
 "%1$sNote:%2$s None of these options will be applied if this post has been "
@@ -2347,7 +2428,7 @@ msgstr ""
 "<strong>%s</strong>: unul sau mai multe module au fost activate sau "
 "dezactivate, șterge cache-ul dacă ele afectează partea din față a site-ului."
 
-#: inc/admin/ui/notices.php:187
+#: inc/admin/ui/notices.php:183
 msgid ""
 "WP Rocket Cloudflare Add-on provides similar functionalities. They can not "
 "be active at the same time."
@@ -2355,7 +2436,7 @@ msgstr ""
 "Suplimentele Cloudflare WP Rocket oferă funcționalități similare. Ele nu pot"
 " fi active în același timp."
 
-#: inc/admin/ui/notices.php:211
+#: inc/admin/ui/notices.php:207
 #, php-format
 msgid ""
 "<strong>%s</strong>: The following plugins are not compatible with this "
@@ -2364,11 +2445,11 @@ msgstr ""
 "<strong>%s</strong>: următoarele module nu sunt compatibile cu acest modul "
 "și pot duce la rezultate neașteptate:"
 
-#: inc/admin/ui/notices.php:217
+#: inc/admin/ui/notices.php:213
 msgid "Deactivate"
 msgstr "Dezactivează"
 
-#: inc/admin/ui/notices.php:259
+#: inc/admin/ui/notices.php:255
 msgid ""
 "WP Rocket Footer JS is not an official add-on. It prevents some options in "
 "WP Rocket from working correctly. Please deactivate it if you have problems."
@@ -2377,7 +2458,7 @@ msgstr ""
 " din WP Rocket să funcționeze corect. Te rog dezactivează-l dacă ai "
 "probleme."
 
-#: inc/admin/ui/notices.php:299
+#: inc/admin/ui/notices.php:295
 #, php-format
 msgid ""
 "Endurance Cache is currently enabled, which will conflict with WP Rocket "
@@ -2389,7 +2470,7 @@ msgstr ""
 "Endurance Cache în pagina %1$sSetări > Generale%2$s pentru a nu avea "
 "probleme."
 
-#: inc/admin/ui/notices.php:320
+#: inc/admin/ui/notices.php:316
 #, php-format
 msgid ""
 "%1$s: A custom permalink structure is required for the plugin to work "
@@ -2399,7 +2480,7 @@ msgstr ""
 "structură personalizată pentru legăturile permanente. %2$sDu-te la setări "
 "Legături permanente%3$s"
 
-#: inc/admin/ui/notices.php:402
+#: inc/admin/ui/notices.php:363
 #, php-format
 msgid ""
 "%s could not modify the .htaccess file due to missing writing permissions."
@@ -2407,13 +2488,13 @@ msgstr ""
 "%s nu a putut modifica fișierul .htaccess deoarece lipsesc permisiunile de "
 "scriere."
 
-#: inc/admin/ui/notices.php:408 inc/admin/ui/notices.php:883
+#: inc/admin/ui/notices.php:369 inc/admin/ui/notices.php:844
 #, php-format
 msgid "Troubleshoot: %1$sHow to make system files writeable%2$s"
 msgstr ""
 "Depanare: %1$scum să faci ca fișierele de sistem să poată fi scrise%2$s"
 
-#: inc/admin/ui/notices.php:410 inc/admin/ui/notices.php:885
+#: inc/admin/ui/notices.php:371 inc/admin/ui/notices.php:846
 msgid ""
 "https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
 "config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
@@ -2421,7 +2502,7 @@ msgstr ""
 "https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
 "config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
 
-#: inc/admin/ui/notices.php:416
+#: inc/admin/ui/notices.php:377
 msgid ""
 "Don’t worry, WP Rocket’s page caching and settings will still function "
 "correctly."
@@ -2429,7 +2510,7 @@ msgstr ""
 "Nu-ți face griji, cache-ul paginilor și setările WP Rocket vor funcționa "
 "corect."
 
-#: inc/admin/ui/notices.php:416
+#: inc/admin/ui/notices.php:377
 msgid ""
 "For optimal performance, adding the following lines into your .htaccess is "
 "recommended (not required):"
@@ -2437,7 +2518,7 @@ msgstr ""
 "Pentru o performanță optimă, se recomandă adăugarea următoarelor linii în "
 "fișierul .htaccess (dat nu sunt obligatorii):"
 
-#: inc/admin/ui/notices.php:563
+#: inc/admin/ui/notices.php:524
 #, php-format
 msgid ""
 "%1$s is good to go! %2$sTest your load time%4$s, or visit your "
@@ -2446,7 +2527,7 @@ msgstr ""
 "%1$s este un început bun! %2$sTestează timpul de încărcare%4$ssau mergi la "
 "%3$sSetări%4$s."
 
-#: inc/admin/ui/notices.php:636
+#: inc/admin/ui/notices.php:597
 msgid ""
 "Would you allow WP Rocket to collect non-sensitive diagnostic data from this"
 " website?"
@@ -2454,15 +2535,15 @@ msgstr ""
 "Vrei să-i permiți modulului WP Rocket să colecteze de pe acest site date de "
 "diagnosticare care nu sunt sensibile?"
 
-#: inc/admin/ui/notices.php:637
+#: inc/admin/ui/notices.php:598
 msgid "This would help us to improve WP Rocket for you in the future."
 msgstr "Acest lucru ne ajută să îmbunătățim WP Rocket în viitor."
 
-#: inc/admin/ui/notices.php:643
+#: inc/admin/ui/notices.php:604
 msgid "What info will we collect?"
 msgstr "Ce informații vom colecta?"
 
-#: inc/admin/ui/notices.php:648
+#: inc/admin/ui/notices.php:609
 msgid ""
 "Below is a detailed view of all data WP Rocket will collect if granted "
 "permission. WP Rocket will never transmit any domain names or email "
@@ -2474,65 +2555,65 @@ msgstr ""
 "domenii sau adrese de email (cu excepția validării licenței), adrese IP sau "
 "chei API de la părți terțe."
 
-#: inc/admin/ui/notices.php:657
+#: inc/admin/ui/notices.php:618
 msgid "Yes, allow"
 msgstr "Da, permit"
 
-#: inc/admin/ui/notices.php:660
+#: inc/admin/ui/notices.php:621
 msgid "No, thanks"
 msgstr "Nu, mulțumesc"
 
-#: inc/admin/ui/notices.php:699
+#: inc/admin/ui/notices.php:660
 msgid "Thank you!"
 msgstr "Îți mulțumim!"
 
-#: inc/admin/ui/notices.php:704
+#: inc/admin/ui/notices.php:665
 msgid "WP Rocket now collects these metrics from your website:"
 msgstr "Acum WP Rocket colectează aceste valori de pe site-ul tău web:"
 
-#: inc/admin/ui/notices.php:742
+#: inc/admin/ui/notices.php:703
 #, php-format
 msgid "%s: Cache cleared."
 msgstr "%s: cache șters."
 
-#: inc/admin/ui/notices.php:749
+#: inc/admin/ui/notices.php:710
 #, php-format
 msgid "%s: Post cache cleared."
 msgstr "%s: cache articol șters."
 
-#: inc/admin/ui/notices.php:756
+#: inc/admin/ui/notices.php:717
 #, php-format
 msgid "%s: Term cache cleared."
 msgstr "%s: cache termen șters."
 
-#: inc/admin/ui/notices.php:763
+#: inc/admin/ui/notices.php:724
 #, php-format
 msgid "%s: User cache cleared."
 msgstr "%s: cache utilizator șters."
 
-#: inc/admin/ui/notices.php:809
+#: inc/admin/ui/notices.php:770
 msgid "Stop Preload"
 msgstr "Oprește pre-încărcarea"
 
-#: inc/admin/ui/notices.php:827
+#: inc/admin/ui/notices.php:788
 msgid "Force deactivation "
 msgstr "Forțează dezactivarea"
 
-#: inc/admin/ui/notices.php:840
+#: inc/admin/ui/notices.php:801
 msgid "The following code should have been written to this file:"
 msgstr "Codul următor ar fi trebuit să poată fi scris în acest fișier:"
 
-#: inc/admin/ui/notices.php:850 views/settings/page-sections/dashboard.php:46
+#: inc/admin/ui/notices.php:811 views/settings/page-sections/dashboard.php:46
 msgid "Dismiss this notice."
 msgstr "Respinge această notificare."
 
-#: inc/admin/ui/notices.php:871
+#: inc/admin/ui/notices.php:832
 #, php-format
 msgid "%s cannot configure itself due to missing writing permissions."
 msgstr ""
 "%s nu se poate configura singur deoarece lipsesc permisiunile de scriere."
 
-#: inc/admin/ui/notices.php:877
+#: inc/admin/ui/notices.php:838
 #, php-format
 msgid "Affected file/folder: %s"
 msgstr "Fișier/dosar afectat: %s"
@@ -2860,11 +2941,11 @@ msgstr "Șterge cache-ul RocketCDN"
 msgid "Documentation"
 msgstr "Documentație"
 
-#: inc/common/purge.php:569
+#: inc/common/purge.php:557
 msgid "OPcache purge failed."
 msgstr "Ștergerea OPcache a eșuat."
 
-#: inc/common/purge.php:574
+#: inc/common/purge.php:562
 msgid "OPcache successfully purged"
 msgstr "OPcache șters cu succes"
 
@@ -3133,7 +3214,7 @@ msgstr "Setări WP Rocket făcute anonime:"
 msgid "Which WP Rocket settings are active"
 msgstr "Care setări WP Rocket sunt active"
 
-#: inc/functions/options.php:544 inc/functions/options.php:583
+#: inc/functions/options.php:524 inc/functions/options.php:563
 msgid ""
 "License validation failed. Our server could not resolve the request from "
 "your website."
@@ -3141,7 +3222,7 @@ msgstr ""
 "Validarea licenței a eșuat. Serverul nostru nu a putut rezolva cererea de pe"
 " site-ul tău web."
 
-#: inc/functions/options.php:544 inc/functions/options.php:583
+#: inc/functions/options.php:524 inc/functions/options.php:563
 #, php-format
 msgid ""
 "Try clicking %1$sSave Changes%2$s below. If the error persists, follow "
@@ -3150,7 +3231,7 @@ msgstr ""
 "Încearcă să dai clic pe %1$sSalvează modificările%2$s mai jos. Dacă eroarea "
 "persistă, urmează %3$sacest ghid%4$s."
 
-#: inc/functions/options.php:560
+#: inc/functions/options.php:540
 msgid ""
 "License validation failed. You may be using a nulled version of the plugin. "
 "Please do the following:"
@@ -3158,60 +3239,59 @@ msgstr ""
 "Validarea licenței a eșuat. Probabil folosești o versiune a modulului "
 "nevalidă. Te rog să faci următoarele:"
 
-#: inc/functions/options.php:560 inc/functions/options.php:602
+#: inc/functions/options.php:540 inc/functions/options.php:582
 #, php-format
 msgid "Login to your WP Rocket %1$saccount%2$s"
 msgstr "Autentifică-te în %1$scontul%2$s tău WP Rocket"
 
-#: inc/functions/options.php:560 inc/functions/options.php:602
+#: inc/functions/options.php:540 inc/functions/options.php:582
 msgid "Download the zip file"
 msgstr "Descarcă fișierul zip"
 
-#: inc/functions/options.php:560 inc/functions/options.php:602
+#: inc/functions/options.php:540 inc/functions/options.php:582
 msgid "Reinstall"
 msgstr "Reinstalează"
 
-#: inc/functions/options.php:560
+#: inc/functions/options.php:540
 #, php-format
 msgid ""
 "If you do not have a WP Rocket account, please %1$spurchase a license%2$s."
 msgstr "Dacă nu ai un cont WP Rocket, te rog %1$scumpără o licență%2$s."
 
-#: inc/functions/options.php:568
+#: inc/functions/options.php:548
 msgid ""
 "License validation failed. This user account does not exist in our database."
 msgstr ""
 "Validarea licenței a eșuat. Acest cont de utilizator nu există în baza "
 "noastră de date."
 
-#: inc/functions/options.php:568
+#: inc/functions/options.php:548
 msgid "To resolve, please contact support."
 msgstr "Pentru a rezolva, te rog contactează suportul."
 
-#: inc/functions/options.php:576
-msgid "License validation failed. This user account is blacklisted."
-msgstr ""
-"Validarea licenței a eșuat. Acest cont de utilizator este în lista neagră."
+#: inc/functions/options.php:556
+msgid "License validation failed. This user account is blocked."
+msgstr "Validarea licenței a eșuat. Acest cont de utilizator este blocat."
 
-#: inc/functions/options.php:576
+#: inc/functions/options.php:556
 #, php-format
 msgid "Please see %1$sthis guide%2$s for more info."
 msgstr "Pentru mai multe informații, te rog vezi %1$sacest ghid%2$s."
 
-#: inc/functions/options.php:596
+#: inc/functions/options.php:576
 msgid "Your license is not valid."
 msgstr "Licența ta nu este validă."
 
-#: inc/functions/options.php:596
+#: inc/functions/options.php:576
 #, php-format
 msgid "Make sure you have an active %1$sWP Rocket license%2$s."
 msgstr "Asigură-te că ai o %1$slicență WP Rocket%2$s activă."
 
-#: inc/functions/options.php:598
+#: inc/functions/options.php:578
 msgid "You have added as many sites as your current license allows."
 msgstr "Ai adăugat numărul de site-uri pe care le permite licența ta actuală."
 
-#: inc/functions/options.php:598
+#: inc/functions/options.php:578
 #, php-format
 msgid ""
 "Upgrade your %1$saccount%2$s or %3$stransfer your license%2$s to this "
@@ -3220,25 +3300,25 @@ msgstr ""
 "Actualizează-ți %1$scontul%2$s sau %3$stransferă-ți licența%2$s la acest "
 "domeniu."
 
-#: inc/functions/options.php:600
+#: inc/functions/options.php:580
 msgid "This website is not allowed."
 msgstr "Acest site web nu este permis."
 
-#: inc/functions/options.php:600
+#: inc/functions/options.php:580
 #, php-format
 msgid "Please %1$scontact support%2$s."
 msgstr "Te rog %1$scontactează suportul%2$s."
 
-#: inc/functions/options.php:602
+#: inc/functions/options.php:582
 msgid "This license key is not recognized."
 msgstr "Această cheie de licență nu este recunoscută."
 
-#: inc/functions/options.php:602
+#: inc/functions/options.php:582
 #, php-format
 msgid "If the issue persists, please %1$scontact support%2$s."
 msgstr "Dacă problema persistă, te rog %1$scontactează suportul%2$s."
 
-#: inc/functions/options.php:608
+#: inc/functions/options.php:588
 #, php-format
 msgid "License validation failed: %s"
 msgstr "Validarea licenței a eșuat: %s"
@@ -3282,6 +3362,7 @@ msgstr ""
 "dispozitive mobile pe site-ul tău."
 
 #: views/cpcss/activate-cpcss-mobile.php:20
+#: views/settings/enable-google-fonts.php:19
 #, php-format
 msgid ""
 "This is a one-time action and this button will be removed afterwards. "
@@ -3555,6 +3636,30 @@ msgstr "Anulează"
 #: views/deactivation-intent/form.php:154
 msgid "Skip & Deactivate"
 msgstr "Sari și dezactivează"
+
+#: views/settings/enable-google-fonts.php:13
+msgid "Enable Google Font Optimization"
+msgstr "Activează optimizarea Fonturilor Google"
+
+#: views/settings/enable-google-fonts.php:14
+msgid ""
+"Improves font performance and combines multiple font requests to reduce the "
+"number of HTTP requests."
+msgstr ""
+"Îmbunătățește performanța fonturilor și combină mai multe cereri de fonturi "
+"pentru a reduce numărul de cereri HTTP."
+
+#: views/settings/enable-google-fonts.php:29
+#, php-format
+msgid ""
+"Google Fonts Optimization is now enabled for your site. %1$sMore info%2$s"
+msgstr ""
+"Optimizarea Fonturilor Google este activată acum pentru site-ul tău. %1$sMai"
+" multe informații%2$s"
+
+#: views/settings/enable-google-fonts.php:38
+msgid "Optimize Google Fonts"
+msgstr "Optimizează fonturile Google"
 
 #: views/settings/fields/cache-lifespan.php:26
 msgid "Clear cache after"
