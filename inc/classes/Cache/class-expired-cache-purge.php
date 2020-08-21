@@ -260,7 +260,7 @@ class Expired_Cache_Purge {
 	 * @author Gregory Viguier
 	 *
 	 * @param array $file An array of the parsed URL parts.
-	 * @return Bool|DirectoryIterator
+	 * @return array|DirectoryIterator
 	 */
 	private function get_cache_files_in_dir( $file ) {
 		// Grab cache folders.
@@ -271,7 +271,7 @@ class Expired_Cache_Purge {
 			$iterator = new \DirectoryIterator( $this->cache_path );
 		}
 		catch ( \Exception $e ) {
-			return false;
+			return [];
 		}
 
 		return new \CallbackFilterIterator(
