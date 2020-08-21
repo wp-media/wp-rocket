@@ -72,27 +72,11 @@ class Test_SetOptionOnUpdate extends TestCase{
 		];
 
 		if ( $valid_version ) {
-			$options_data->shouldReceive( 'set' )
-			             ->with( 'delay_js', 0 )
-			             ->once();
-			$options_data->shouldReceive( 'set' )
-			             ->with( 'delay_js_scripts', $this->defaults )
-			             ->once();
-			$options_data->shouldReceive( 'get_options' )
-				->once()
-				->andReturn( $options );
+			Functions\when( 'get_option' )->justReturn( [] );
 			Functions\expect( 'update_option' )
 				->with( 'wp_rocket_settings', $options )
 				->once();
 		} else {
-			$options_data->shouldReceive( 'set' )
-			             ->with( 'delay_js', 0 )
-			             ->never();
-			$options_data->shouldReceive( 'set' )
-			             ->with( 'delay_js_scripts', $this->defaults )
-			             ->never();
-			$options_data->shouldReceive( 'get_options' )
-				->never();
 			Functions\expect( 'update_option' )
 				->with( 'wp_rocket_settings', $options )
 				->never();
