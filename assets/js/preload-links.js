@@ -57,7 +57,8 @@ class RocketPreloadLinks {
 			return;
 		}
 
-		const [ url, linkElem ] = this._prepareUrl( event );
+		const linkElem = event.target.closest( 'a' );
+		const url = this._prepareUrl( linkElem );
 		if ( null === url ) {
 			return;
 		}
@@ -90,7 +91,8 @@ class RocketPreloadLinks {
 	 * @param Event event Event instance.
 	 */
 	triggerOnClick( event ) {
-		const [ url, linkElem ] = this._prepareUrl( event );
+		const linkElem = event.target.closest( 'a' );
+		const url = this._prepareUrl( linkElem );
 
 		if ( null === url ) {
 			return;
@@ -151,12 +153,10 @@ class RocketPreloadLinks {
 	 *
 	 * @private
 	 *
-	 * @param Event event Event instance.
-	 * @returns {({protocol: *, original: *, origin: string, href: string, pathname: string}|*)[]|*[]}
+	 * @param Element|null linkElem Instance of the link element.
+	 * @returns {null|*}
 	 */
-	_prepareUrl( event ) {
-		const linkElem = event.target.closest( 'a' );
-
+	_prepareUrl( linkElem ) {
 		if (
 			null === linkElem
 			||
@@ -167,7 +167,7 @@ class RocketPreloadLinks {
 			// Link prefetching only works on http/https protocol.
 			[ 'http:', 'https:' ].indexOf( linkElem.protocol ) === -1
 		) {
-			return [ null, null ];
+			return null;
 		}
 
 		const origin   = linkElem.href.substring( 0, this.config.siteUrl.length );
@@ -180,7 +180,7 @@ class RocketPreloadLinks {
 			href: origin + pathname
 		};
 
-		return this._isLinkOk( url ) ? [ url, linkElem ] : [ null, null ];
+		return this._isLinkOk( url ) ? url : null;
 	}
 
 	/**
