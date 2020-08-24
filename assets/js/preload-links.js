@@ -6,7 +6,6 @@ class RocketPreloadLinks {
 		this.options = this.browser.options;
 
 		this.prefetched = new Set;
-		this.onhoverId  = null;
 		this.eventTime  = null;
 		this.threshold  = 1111;
 		this.numOnHover = 0;
@@ -40,11 +39,11 @@ class RocketPreloadLinks {
 	_initListeners( self ) {
 		// Setting onHoverDelay to -1 disables the "on-hover" feature.
 		if ( this.config.onHoverDelay > -1 ) {
-			document.addEventListener( 'mouseover', self.triggerOnHover.bind( self ), self.listenerOptions );
+			document.addEventListener( 'mouseover', self.hoverListener.bind( self ), self.listenerOptions );
 		}
 
-		document.addEventListener( 'mousedown', self.triggerOnClick.bind( self ), self.listenerOptions );
-		document.addEventListener( 'touchstart', self.triggerOnTap.bind( self ), self.listenerOptions );
+		document.addEventListener( 'mousedown', self.clickListener.bind( self ), self.listenerOptions );
+		document.addEventListener( 'touchstart', self.tapListener.bind( self ), self.listenerOptions );
 	}
 
 	/**
@@ -52,7 +51,7 @@ class RocketPreloadLinks {
 	 *
 	 * @param Event event Event instance.
 	 */
-	triggerOnHover( event ) {
+	hoverListener( event ) {
 		if ( performance.now() - this.eventTime < this.threshold ) {
 			return;
 		}
@@ -63,11 +62,8 @@ class RocketPreloadLinks {
 			return;
 		}
 
-		const self = this;
-		linkElem.addEventListener( 'mouseout', self.resetOnHover.bind( self ), { passive: true } );
-
-		this.onhoverId = setTimeout( () => {
-				this.onhoverId = undefined;
+		let triggerOnHover = setTimeout( () => {
+				triggerOnHover = null;
 
 				// Start the rate throttle: 1 sec timeout.
 				if ( 0 === this.numOnHover ) {
@@ -83,6 +79,18 @@ class RocketPreloadLinks {
 			},
 			this.config.onHoverDelay
 		);
+
+		// On mouseout, reset the "on hover" trigger.
+		const reset = () => {
+			linkElem.removeEventListener( 'mouseout', reset, { passive: true } );
+			if ( null === triggerOnHover ) {
+				return;
+			}
+
+			clearTimeout( triggerOnHover );
+			triggerOnHover = null;
+		};
+		linkElem.addEventListener( 'mouseout', reset, { passive: true } );
 	}
 
 	/**
@@ -90,7 +98,7 @@ class RocketPreloadLinks {
 	 *
 	 * @param Event event Event instance.
 	 */
-	triggerOnClick( event ) {
+	clickListener( event ) {
 		const linkElem = event.target.closest( 'a' );
 		const url      = this._prepareUrl( linkElem );
 
@@ -99,7 +107,6 @@ class RocketPreloadLinks {
 		}
 
 		this._addPrefetchLink( url );
-		this._resetAddLinkTask();
 	}
 
 	/**
@@ -107,9 +114,9 @@ class RocketPreloadLinks {
 	 *
 	 * @param Event event Event instance.
 	 */
-	triggerOnTap( event ) {
+	tapListener( event ) {
 		this.eventTime = performance.now();
-		this.triggerOnClick( event );
+		this.clickListener( event );
 	}
 
 	/**
@@ -129,23 +136,6 @@ class RocketPreloadLinks {
 
 			document.head.appendChild( elem );
 		} );
-	}
-
-	/**
-	 * Resets the Add Link Task on hover.
-	 *
-	 * @param object event Event object.
-	 */
-	resetOnHover( event ) {
-		if (
-			event.relatedTarget
-			&&
-			event.target.closest( 'a' ) === event.relatedTarget.closest( 'a' )
-			||
-			this.onhoverId
-		) {
-			this._resetAddLinkTask();
-		}
 	}
 
 	/**
@@ -245,15 +235,6 @@ class RocketPreloadLinks {
 			&&
 			! this.regex.images.test( url.href ) // not an image.
 		);
-	}
-
-	_resetAddLinkTask() {
-		if ( ! this.onhoverId ) {
-			return;
-		}
-
-		clearTimeout( this.onhoverId );
-		this.onhoverId = null;
 	}
 
 	/**
