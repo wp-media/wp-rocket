@@ -66,10 +66,8 @@ class RocketPreloadLinks {
 
 		switch ( event.type ) {
 			case 'mousedown':
-				this._addPrefetchLink( url );
-				break;
 			case 'touchstart':
-				this._earlyPrefetch( linkElem, url,'touchmove' );
+				this._addPrefetchLink( url );
 				break;
 			case 'mouseover':
 				this._earlyPrefetch( linkElem, url, 'mouseout' );
