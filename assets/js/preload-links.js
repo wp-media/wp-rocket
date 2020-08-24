@@ -15,7 +15,11 @@ class RocketPreloadLinks {
 	 * Initializes the handler.
 	 */
 	init() {
-		if ( ! this.browser.supportsLinkPrefetch() || this.browser.isDataSaverModeOn() ) {
+		if (
+			! this.browser.supportsLinkPrefetch()
+			||
+			this.browser.isDataSaverModeOn()
+		) {
 			return;
 		}
 
@@ -39,84 +43,77 @@ class RocketPreloadLinks {
 	_initListeners( self ) {
 		// Setting onHoverDelay to -1 disables the "on-hover" feature.
 		if ( this.config.onHoverDelay > -1 ) {
-			document.addEventListener( 'mouseover', self.hoverListener.bind( self ), self.listenerOptions );
+			document.addEventListener( 'mouseover', self.listener.bind( self ), self.listenerOptions );
 		}
 
-		document.addEventListener( 'mousedown', self.clickListener.bind( self ), self.listenerOptions );
-		document.addEventListener( 'touchstart', self.tapListener.bind( self ), self.listenerOptions );
+		document.addEventListener( 'mousedown', self.listener.bind( self ), self.listenerOptions );
+		document.addEventListener( 'touchstart', self.listener.bind( self ), false );
 	}
 
 	/**
-	 * Triggers adding the link prefetch when the user hovers over a <a> hyperlink.
+	 * Event listener. Processes when near or on a valid <a> hyperlink.
 	 *
 	 * @param Event event Event instance.
 	 */
-	hoverListener( event ) {
-		if ( performance.now() - this.eventTime < this.threshold ) {
-			return;
-		}
-
+	listener( event ) {
 		const linkElem = event.target.closest( 'a' );
 		const url      = this._prepareUrl( linkElem );
 		if ( null === url ) {
 			return;
 		}
 
-		let triggerOnHover = setTimeout( () => {
-				triggerOnHover = null;
-
-				// Start the rate throttle: 1 sec timeout.
-				if ( 0 === this.numOnHover ) {
-					setTimeout( () => this.numOnHover = 0, 1000 );
-				}
-				// Bail out when exceeding the rate throttle.
-				else if ( this.numOnHover > this.config.rateThrottle ) {
-					return;
-				}
-
-				this.numOnHover++;
+		switch ( event.type ) {
+			case 'mousedown':
 				this._addPrefetchLink( url );
-			},
-			this.config.onHoverDelay
-		);
+				break;
+			case 'touchstart':
+				event.preventDefault();
+				this._earlyPrefetch( linkElem, url,'touchmove' );
+				break;
+			case 'mouseover':
+				this._earlyPrefetch( linkElem, url, 'mouseout' );
+		}
+	}
 
-		// On mouseout, reset the "on hover" trigger.
-		const reset = () => {
-			linkElem.removeEventListener( 'mouseout', reset, { passive: true } );
-			if ( null === triggerOnHover ) {
+	/**
+	 *
+	 * @private
+	 *
+	 * @param Element|null linkElem
+	 * @param object url
+	 * @param string resetEvent
+	 */
+	_earlyPrefetch( linkElem, url, resetEvent ) {
+		const doPrefetch = () => {
+			falseTrigger = null;
+
+			// Start the rate throttle: 1 sec timeout.
+			if ( 0 === this.numOnHover ) {
+				setTimeout( () => this.numOnHover = 0, 1000 );
+			}
+			// Bail out when exceeding the rate throttle.
+			else if ( this.numOnHover > this.config.rateThrottle ) {
 				return;
 			}
 
-			clearTimeout( triggerOnHover );
-			triggerOnHover = null;
+			this.numOnHover++;
+			this._addPrefetchLink( url );
 		};
-		linkElem.addEventListener( 'mouseout', reset, { passive: true } );
-	}
 
-	/**
-	 * Triggers adding the link prefetch when the user clicks on a <a> hyperlink.
-	 *
-	 * @param Event event Event instance.
-	 */
-	clickListener( event ) {
-		const linkElem = event.target.closest( 'a' );
-		const url      = this._prepareUrl( linkElem );
+		// Delay to avoid false triggers for hover/touch/tap.
+		let falseTrigger = setTimeout( doPrefetch, this.config.onHoverDelay );
 
-		if ( null === url ) {
-			return;
-		}
+		// On reset event, reset the false trigger timer.
+		const reset = () => {
+			linkElem.removeEventListener( resetEvent, reset, { passive: true } );
+			if ( null === falseTrigger ) {
+				return;
+			}
 
-		this._addPrefetchLink( url );
-	}
-
-	/**
-	 * Triggers adding the link prefetch when the user taps a <a> hyperlink.
-	 *
-	 * @param Event event Event instance.
-	 */
-	tapListener( event ) {
-		this.eventTime = performance.now();
-		this.clickListener( event );
+			clearTimeout( falseTrigger );
+			falseTrigger = null;
+		};
+		linkElem.addEventListener( resetEvent, reset, { passive: true } );
 	}
 
 	/**
