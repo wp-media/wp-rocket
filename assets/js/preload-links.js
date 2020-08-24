@@ -27,18 +27,21 @@ class RocketPreloadLinks {
 		}
 
 		this.linksPreloaded.add( window.location.href );
-		this._addEventListeners( this );
+		this._initListeners( this );
 	}
 
 	/**
-	 * Adds the event listeners.
+	 * Initializes the event listeners.
 	 *
 	 * @private
 	 *
 	 * @param self instance of this object, used for binding "this" to the listeners.
 	 */
-	_addEventListeners( self ) {
-		document.addEventListener( 'mouseover', self.triggerOnHover.bind( self ), self.listenerOptions );
+	_initListeners( self ) {
+		// Setting onHoverDelay to -1 disables the "on-hover" feature.
+		if ( this.config.onHoverDelay > -1 ) {
+			document.addEventListener( 'mouseover', self.triggerOnHover.bind( self ), self.listenerOptions );
+		}
 
 		document.addEventListener( 'mousedown', self.triggerOnClick.bind( self ), self.listenerOptions );
 		document.addEventListener( 'touchstart', self.triggerOnTap.bind( self ), self.listenerOptions );
@@ -96,7 +99,7 @@ class RocketPreloadLinks {
 				this.onHoverPreloads++;
 				this._addPrefetchLink( url );
 			},
-			this.config.onHoverDelayTime
+			this.config.onHoverDelay
 		);
 	}
 
