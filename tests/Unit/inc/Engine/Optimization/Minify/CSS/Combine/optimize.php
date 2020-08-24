@@ -4,7 +4,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\Minify\CSS\Combine;
 
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
-use MatthiasMullie\Minify;
+use WP_Rocket\Dependencies\Minify;
 use Mockery;
 use WP_Rocket\Engine\Optimization\AssetsLocalCache;
 use WP_Rocket\Engine\Optimization\Minify\CSS\Combine;

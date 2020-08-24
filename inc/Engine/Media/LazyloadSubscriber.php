@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Engine\Media;
 
-use MatthiasMullie\Minify\JS;
+use WP_Rocket\Dependencies\Minify\JS;
 use WP_Rocket\Dependencies\RocketLazyload\Assets;
 use WP_Rocket\Dependencies\RocketLazyload\Image;
 use WP_Rocket\Dependencies\RocketLazyload\Iframe;
