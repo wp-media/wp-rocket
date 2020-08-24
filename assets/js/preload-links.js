@@ -19,6 +19,8 @@ class RocketPreloadLinks {
 			! this.browser.supportsLinkPrefetch()
 			||
 			this.browser.isDataSaverModeOn()
+			||
+			this.browser.isSlowConnection()
 		) {
 			return;
 		}
@@ -47,7 +49,7 @@ class RocketPreloadLinks {
 		}
 
 		document.addEventListener( 'mousedown', self.listener.bind( self ), self.listenerOptions );
-		document.addEventListener( 'touchstart', self.listener.bind( self ), false );
+		document.addEventListener( 'touchstart', self.listener.bind( self ), self.listenerOptions );
 	}
 
 	/**
@@ -67,7 +69,6 @@ class RocketPreloadLinks {
 				this._addPrefetchLink( url );
 				break;
 			case 'touchstart':
-				event.preventDefault();
 				this._earlyPrefetch( linkElem, url,'touchmove' );
 				break;
 			case 'mouseover':
