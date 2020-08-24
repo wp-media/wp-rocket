@@ -2,8 +2,8 @@
 
 namespace WP_Rocket\Engine\Optimization;
 
-use WP_Rocket\Dependencies\MatthiasMullie\PathConverter\ConverterInterface;
-use WP_Rocket\Dependencies\MatthiasMullie\PathConverter\Converter;
+use MatthiasMullie\PathConverter\ConverterInterface;
+use MatthiasMullie\PathConverter\Converter;
 
 trait CSSTrait {
 	/**

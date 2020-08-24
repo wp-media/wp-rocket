@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Optimization\Minify\JS;
 
-use WP_Rocket\Dependencies\MatthiasMullie\Minify as Minifier;
+use MatthiasMullie\Minify as Minifier;
 use WP_Rocket\Engine\Optimization\Minify\ProcessorInterface;
 use WP_Rocket\Logger\Logger;
 
