@@ -131,7 +131,9 @@ class RocketPreloadLinks {
 			elem.onerror = reject;
 
 			document.head.appendChild( elem );
-		} );
+		} ).catch(() => {
+			// ignore and continue.
+		});
 	}
 
 	/**
