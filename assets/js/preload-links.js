@@ -58,7 +58,7 @@ class RocketPreloadLinks {
 		}
 
 		const linkElem = event.target.closest( 'a' );
-		const url = this._prepareUrl( linkElem );
+		const url      = this._prepareUrl( linkElem );
 		if ( null === url ) {
 			return;
 		}
@@ -92,7 +92,7 @@ class RocketPreloadLinks {
 	 */
 	triggerOnClick( event ) {
 		const linkElem = event.target.closest( 'a' );
-		const url = this._prepareUrl( linkElem );
+		const url      = this._prepareUrl( linkElem );
 
 		if ( null === url ) {
 			return;
@@ -118,17 +118,17 @@ class RocketPreloadLinks {
 	 * @param string url The Given URL to prefetch.
 	 */
 	_addPrefetchLink( url ) {
-		if ( this.prefetched.has( url.href ) ) {
-			return;
-		}
-
-		const elem = document.createElement( 'link' );
-		elem.rel   = 'prefetch';
-		elem.href  = url.href;
-
-		document.head.appendChild( elem );
-
 		this.prefetched.add( url.href );
+
+		return new Promise( ( resolve, reject ) => {
+			const elem   = document.createElement( 'link' );
+			elem.rel     = 'prefetch';
+			elem.href    = url.href;
+			elem.onload  = resolve;
+			elem.onerror = reject;
+
+			document.head.appendChild( elem );
+		} );
 	}
 
 	/**
