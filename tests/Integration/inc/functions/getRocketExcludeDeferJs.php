@@ -46,6 +46,7 @@ class Test_GetRocketExcludeDeferJS extends TestCase {
 			'widget.reviews.io',
 			'simplybook.(.*)/v2/widget/widget.js',
 			'/wp-includes/js/dist/i18n.min.js',
+			'/wp-content/plugins/wpfront-notification-bar/js/wpfront-notification-bar(.*).js',
 			
 		];
 
