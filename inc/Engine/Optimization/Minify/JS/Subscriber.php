@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Optimization\Minify\JS;
 
-use MatthiasMullie\Minify\JS as MinifyJS;
+use WP_Rocket\Dependencies\MatthiasMullie\Minify\JS as MinifyJS;
 use WP_Rocket\Engine\Optimization\AssetsLocalCache;
 use WP_Rocket\Engine\Optimization\Minify\AbstractMinifySubscriber;
 
