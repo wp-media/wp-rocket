@@ -40,6 +40,8 @@
 		"container-interop/container-interop": "1.2.0",
 		"matthiasmullie/minify": "1.3.*",
 		"monolog/monolog": "^1.0",
+		"mnsami/composer-custom-directory-installer": "1.1.*",
+		"wp-media/module-rocketcdn": "^1.0",
 		"wp-media/rocket-lazyload-common": "^2"
 	},
 	"require-dev": {
@@ -83,7 +85,8 @@
 	},
 	"extra": {
 		"installer-paths": {
-			"vendor/{$vendor}/{$name}/": ["type:wordpress-plugin"]
+			"vendor/{$vendor}/{$name}/": ["type:wordpress-plugin"],
+			"./inc/Engine/CDN/RocketCDN/": ["wp-media/module-rocketcdn"]
 		}
 	},
 	"replace": {
