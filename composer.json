@@ -41,6 +41,7 @@
 		"matthiasmullie/minify": "1.3.*",
 		"monolog/monolog": "^1.0",
 		"mnsami/composer-custom-directory-installer": "1.1.*",
+		"wp-media/cloudflare": "^1.0",
 		"wp-media/module-rocketcdn": "^1.0",
 		"wp-media/rocket-lazyload-common": "^2"
 	},
@@ -74,8 +75,7 @@
 			"inc/classes/class-wp-rocket-requirements-check.php"
 		],
 		"psr-4": {
-			"WP_Rocket\\": "inc/",
-			"WPMedia\\Cloudflare\\": "inc/Addon/Cloudflare/"
+			"WP_Rocket\\": "inc/"
 		}
 	},
 	"autoload-dev": {
@@ -86,11 +86,9 @@
 	"extra": {
 		"installer-paths": {
 			"vendor/{$vendor}/{$name}/": ["type:wordpress-plugin"],
+			"./inc/Addon/Cloudflare/": ["wp-media/cloudflare"],
 			"./inc/Engine/CDN/RocketCDN/": ["wp-media/module-rocketcdn"]
 		}
-	},
-	"replace": {
-		"wp-media/cloudflare": "self.version"
 	},
 	"scripts": {
 		"test-unit": "\"vendor/bin/phpunit\" --testsuite unit --colors=always --configuration tests/Unit/phpunit.xml.dist",
