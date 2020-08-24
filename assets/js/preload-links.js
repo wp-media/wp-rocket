@@ -31,7 +31,6 @@ class RocketPreloadLinks {
 			fileExt: RegExp( '.(' + this.config.fileExt + ')$', 'i' )
 		};
 
-		this.prefetched.add( window.location.href );
 		this._initListeners( this );
 	}
 
