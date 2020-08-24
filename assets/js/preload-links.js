@@ -22,8 +22,8 @@ class RocketPreloadLinks {
 
 		this.regex = {
 			excludeUris   : RegExp( this.config.excludeUris, 'i' ),
-			images        : RegExp( '.(' + this.config.imageExtensions + ')$', 'i' ),
-			fileExtensions: RegExp( '.(' + this.config.imageExtensions + '|php|pdf|html|htm' + ')$', 'i' )
+			images        : RegExp( '.(' + this.config.imageExt + ')$', 'i' ),
+			fileExtensions: RegExp( '.(' + this.config.fileExt + ')$', 'i' )
 		}
 
 		this.linksPreloaded.add( window.location.href );

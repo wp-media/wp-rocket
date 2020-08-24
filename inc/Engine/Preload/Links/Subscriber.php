@@ -95,13 +95,15 @@ class Subscriber implements Subscriber_Interface {
 		);
 
 		$use_trailing_slash = $this->use_trailing_slash();
+		$images_ext         = 'jpg|jpeg|gif|png|tiff|bmp|webp|avif';
 		wp_localize_script(
 			'rocket-preload-links',
 			'RocketPreloadLinksConfig',
 			[
 				'excludeUris'       => $this->get_uris_to_exclude( $use_trailing_slash ),
 				'usesTrailingSlash' => $use_trailing_slash,
-				'imageExtensions'   => 'jpg|jpeg|gif|png|tiff|bmp|webp|avif',
+				'imageExt'          => $images_ext,
+				'fileExt'           => $images_ext . '|php|pdf|html|htm',
 				'siteUrl'           => site_url(),
 				'onHoverDelayTime'  => 200, // milliseconds.
 				'rateThrottle'      => 3, // on hover: limits the number of links preloaded per second.
