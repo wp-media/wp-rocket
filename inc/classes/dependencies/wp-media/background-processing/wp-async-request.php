@@ -6,7 +6,7 @@
  */
 
 /**
- * Abstract WP_Async_Request class.
+ * Abstract WP_Rocket_WP_Async_Request class.
  *
  * @abstract
  */

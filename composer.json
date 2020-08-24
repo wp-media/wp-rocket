@@ -43,7 +43,7 @@
 	"require-dev": {
 		"php": "^5.6 || ^7",
 		"brain/monkey": "^2.0",
-		"coenjacobs/mozart": "^0.5.1",
+		"coenjacobs/mozart": "0.6.0-beta-3",
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
 		"mikey179/vfsstream": "^1.6",
 		"mobiledetect/mobiledetectlib": "^2.8",

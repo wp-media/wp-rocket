@@ -6,10 +6,10 @@
  */
 
 /**
- * Abstract WP_Background_Process class.
+ * Abstract WP_Rocket_WP_Background_Process class.
  *
  * @abstract
- * @extends WP_Async_Request
+ * @extends WP_Rocket_WP_Async_Request
  */
 abstract class WP_Rocket_WP_Background_Process extends WP_Rocket_WP_Async_Request {
 
