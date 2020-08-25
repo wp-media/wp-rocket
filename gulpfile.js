@@ -87,12 +87,17 @@ gulp.task('default', ['watch', 'sass', 'sass:watch']);
 /**
  * Compiles a standalone script file.
  *
- * Command line: gulp js:compile_single --script=script-name.js
+ * Command line: gulp js:compile_single --script=script-name.js [optional --mangle=true]
  */
 gulp.task('js:compile_single', () => {
 	const {argv} = require("yargs");
 	const transpile = require('gulp-babel');
 	const source = './assets/js/' + argv.script;
+	const mangle = 'mangle' in argv && argv.mangle
+		? {
+			toplevel: true
+		}
+		: false;
 
 	return gulp.src( source )
 		// Transpile newer JS for cross-browser support.
@@ -101,7 +106,9 @@ gulp.task('js:compile_single', () => {
 				[
 					'env',
 					{
-						'targets': 'last 2 versions'
+						'targets': {
+							'browsers': [ 'last 2 versions' ]
+						}
 					}
 				]
 			]
@@ -118,7 +125,7 @@ gulp.task('js:compile_single', () => {
 				join_vars: true,
 				drop_console: true
 			},
-			mangle: false
+			mangle: mangle
 		} ) )
 		// Rename the .js to .min.js.
 		.pipe( rename( { suffix: '.min' } ) )
