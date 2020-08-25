@@ -49,7 +49,7 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 	protected function get_excluded_files() {
 		$excluded_files   = $this->options->get( 'exclude_js', [] );
 		$excluded_files[] = '/wp-includes/js/dist/i18n.min.js';
-		$jquery_urls = $this->get_jquery_urls();
+		$jquery_urls      = $this->get_jquery_urls();
 
 		if ( ! empty( $jquery_urls ) ) {
 			$excluded_files = array_merge( $excluded_files, $jquery_urls );
