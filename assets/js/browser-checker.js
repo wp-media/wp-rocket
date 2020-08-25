@@ -92,4 +92,18 @@ class RocketBrowserCompatibilityChecker {
 			'isIntersecting' in IntersectionObserverEntry.prototype
 		);
 	}
+
+	isSlowConnection() {
+		return (
+			'connection' in navigator
+			&&
+			'effectiveType' in navigator.connection
+			&&
+			(
+				'2g' === navigator.connection.effectiveType
+				||
+				'slow-2g' === navigator.connection.effectiveType
+			)
+		)
+	}
 }

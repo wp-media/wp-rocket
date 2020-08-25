@@ -76,6 +76,7 @@ function rocket_display_cache_options_meta_boxes() {
 				'cdn'              => __( 'CDN', 'rocket' ),
 				'async_css'        => __( 'Optimize CSS Delivery', 'rocket' ),
 				'defer_all_js'     => __( 'Defer JS', 'rocket' ),
+				'delay_js'         => __( 'Delay JavaScript execution', 'rocket' ),
 			];
 
 			foreach ( $fields as $field => $label ) {
@@ -157,6 +158,7 @@ function rocket_save_metabox_options() {
 			'cdn',
 			'async_css',
 			'defer_all_js',
+			'delay_js',
 		];
 
 		foreach ( $fields as $field ) {

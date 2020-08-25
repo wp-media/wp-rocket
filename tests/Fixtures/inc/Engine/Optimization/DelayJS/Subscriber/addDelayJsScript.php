@@ -1,35 +1,38 @@
 <?php
 
 return [
-	'shouldDoNothingWhenDoNotOptimizeEnabled' => [
+	'testShouldNotAddScriptsWhenBypass' => [
 		'config'   => [
-			'do-not-optimize'      => true,
-			'do-not-delay-setting' => 1,
+			'delay_js'      => 1,
+			'donotoptimize' => false,
+			'bypass'        => true,
 		],
 		'expected' => false,
 	],
 
-	'shouldDoNothingWhenDelaySettingEnabled' => [
+	'testShouldNotAddScriptsWhenDONOTOPTIMIZE' => [
 		'config'   => [
-			'do-not-optimize'      => false,
-			'do-not-delay-setting' => 0,
+			'delay_js'      => 0,
+			'donotoptimize' => true,
+			'bypass'        => false,
 		],
 		'expected' => false,
 	],
 
-	'shouldNotProcessDelayURLScriptOnBypass' => [
+	'testShouldNotAddScriptsWhenDelaySettingDisabled' => [
 		'config'   => [
-			'do-not-optimize'      => false,
-			'do-not-delay-setting' => 1,
-			'bypass'               => true,
+			'delay_js'      => 0,
+			'donotoptimize' => false,
+			'bypass'        => false,
 		],
 		'expected' => false,
 	],
 
-	'shouldProcessDelayURLScript' => [
+	'testShouldAddScripts' => [
 		'config'   => [
-			'do-not-optimize'      => false,
-			'do-not-delay-setting' => 1,
+			'delay_js' => 1,
+			'donotoptimize' => false,
+			'bypass'        => false,
 		],
 		'expected' => true,
 	],

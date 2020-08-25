@@ -507,7 +507,7 @@ class Settings {
 	 * @return int
 	 */
 	public function sanitize_checkbox( $array, $key ) {
-		return isset( $array[ $key ] ) ? 1 : 0;
+		return isset( $array[ $key ] ) && ! empty( $array[ $key ] ) ? 1 : 0;
 	}
 
 	/**

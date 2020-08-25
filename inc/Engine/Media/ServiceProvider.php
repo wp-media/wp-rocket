@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Media;
 
-use League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Engine\Container\ServiceProvider\AbstractServiceProvider;
 
 /**
  * Service provider for Media module
@@ -38,9 +38,9 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register() {
 		$options = $this->getContainer()->get( 'options' );
 
-		$this->getContainer()->add( 'lazyload_assets', 'RocketLazyload\Assets' );
-		$this->getContainer()->add( 'lazyload_image', 'RocketLazyload\Image' );
-		$this->getContainer()->add( 'lazyload_iframe', 'RocketLazyload\Iframe' );
+		$this->getContainer()->add( 'lazyload_assets', 'WP_Rocket\Dependencies\RocketLazyload\Assets' );
+		$this->getContainer()->add( 'lazyload_image', 'WP_Rocket\Dependencies\RocketLazyload\Image' );
+		$this->getContainer()->add( 'lazyload_iframe', 'WP_Rocket\Dependencies\RocketLazyload\Iframe' );
 		$this->getContainer()->share( 'lazyload_subscriber', 'WP_Rocket\Engine\Media\LazyloadSubscriber' )
 			->withArgument( $options )
 			->withArgument( $this->getContainer()->get( 'lazyload_assets' ) )

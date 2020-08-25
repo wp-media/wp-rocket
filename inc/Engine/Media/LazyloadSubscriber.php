@@ -2,10 +2,10 @@
 
 namespace WP_Rocket\Engine\Media;
 
-use MatthiasMullie\Minify\JS;
-use RocketLazyload\Assets;
-use RocketLazyload\Image;
-use RocketLazyload\Iframe;
+use WP_Rocket\Dependencies\Minify\JS;
+use WP_Rocket\Dependencies\RocketLazyload\Assets;
+use WP_Rocket\Dependencies\RocketLazyload\Image;
+use WP_Rocket\Dependencies\RocketLazyload\Iframe;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 

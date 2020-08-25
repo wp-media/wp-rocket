@@ -11,42 +11,12 @@ var rename = require("gulp-rename");
 
 
 /* Task to compile sass admin */
-gulp.task('js:compile_single', () => {
-	const {argv} = require("yargs");
-	const transpile = require('gulp-babel');
-	const source = './assets/js/' + argv.script;
-
-	return gulp.src( source )
-		// Transpile newer JS for cross-browser support.
-		.pipe( transpile({
-			presets: [
-				[
-					'env',
-					{
-						'targets': 'last 2 versions'
-					}
-				]
-			]
-		}))
-		// Minify the script.
-		.pipe( uglify({
-			compress: {
-				sequences: true,
-				dead_code: true,
-				conditionals: true,
-				booleans: true,
-				unused: true,
-				if_return: true,
-				join_vars: true,
-				drop_console: true
-			},
-			mangle: false
-		} ) )
-		// Rename the .js to .min.js.
-		.pipe( rename( { suffix: '.min' } ) )
-		// Write out the script to the configured <filename>.min.js destination.
-		.pipe( gulp.dest( './assets/js/' ) );
-});
+gulp.task('sass', function () {
+	return gulp.src('./src/scss/main.scss')
+	  .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
+	  .pipe(rename('wpr-admin.css'))
+	  .pipe(gulp.dest('assets/css'));
+  });
 
 /* Task to compile sass admin RTL */
 gulp.task('sass_rtl', function () {
@@ -117,12 +87,17 @@ gulp.task('default', ['watch', 'sass', 'sass:watch']);
 /**
  * Compiles a standalone script file.
  *
- * Command line: gulp js:compile_single --script=script-name.js
+ * Command line: gulp js:compile_single --script=script-name.js [optional --mangle=true]
  */
 gulp.task('js:compile_single', () => {
 	const {argv} = require("yargs");
 	const transpile = require('gulp-babel');
 	const source = './assets/js/' + argv.script;
+	const mangle = 'mangle' in argv && argv.mangle
+		? {
+			toplevel: true
+		}
+		: false;
 
 	return gulp.src( source )
 		// Transpile newer JS for cross-browser support.
@@ -131,7 +106,9 @@ gulp.task('js:compile_single', () => {
 				[
 					'env',
 					{
-						'targets': 'last 2 versions'
+						'targets': {
+							'browsers': [ 'last 2 versions' ]
+						}
 					}
 				]
 			]
@@ -148,7 +125,7 @@ gulp.task('js:compile_single', () => {
 				join_vars: true,
 				drop_console: true
 			},
-			mangle: false
+			mangle: mangle
 		} ) )
 		// Rename the .js to .min.js.
 		.pipe( rename( { suffix: '.min' } ) )

@@ -817,6 +817,7 @@ class Page {
 				'delay_js'               => [
 					'container_class'   => [
 						'wpr-isParent',
+						'wpr-Delayjs',
 					],
 					'type'              => 'checkbox',
 					'label'             => __( 'Delay JavaScript execution', 'rocket' ),
@@ -831,6 +832,7 @@ class Page {
 					'type'              => 'textarea',
 					'label'             => __( 'Scripts to delay', 'rocket' ),
 					'description'       => __( 'Specify keywords that can identify inline or JavaScript files to be delayed (one per line).', 'rocket' ),
+					'helper'            => 'A curated list of scripts that are safe to delay is provided. They may not all apply to your website and it is safe to leave the list as-is unless you face issues.',
 					'container_class'   => [
 						'wpr-field--children',
 					],

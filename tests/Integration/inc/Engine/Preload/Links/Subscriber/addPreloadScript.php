@@ -17,6 +17,9 @@ class Test_AddPreloadScript extends TestCase {
 
 		unset( $GLOBALS['wp'] );
 		remove_filter( 'pre_get_rocket_option_preload_links', [ $this, 'set_preload_links' ] );
+
+		wp_dequeue_script('rocket-browser-checker');
+		wp_dequeue_script('rocket-preload-links');
 	}
 
 	/**

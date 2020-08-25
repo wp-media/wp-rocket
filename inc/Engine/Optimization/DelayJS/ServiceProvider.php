@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Optimization\DelayJS;
 
-use League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Engine\Container\ServiceProvider\AbstractServiceProvider;
 
 /**
  * Service provider for the WP Rocket Delay JS

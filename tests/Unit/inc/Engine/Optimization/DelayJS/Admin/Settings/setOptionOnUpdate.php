@@ -14,6 +14,50 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group  DelayJS
  */
 class Test_SetOptionOnUpdate extends TestCase{
+	private $defaults = [
+		'getbutton.io',
+		'//a.omappapi.com/app/js/api.min.js',
+		'feedbackcompany.com/includes/widgets/feedback-company-widget.min.js',
+		'snap.licdn.com/li.lms-analytics/insight.min.js',
+		'static.ads-twitter.com/uwt.js',
+		'platform.twitter.com/widgets.js',
+		'twq(',
+		'/sdk.js#xfbml',
+		'static.leadpages.net/leadbars/current/embed.js',
+		'translate.google.com/translate_a/element.js',
+		'widget.manychat.com',
+		'google.com/recaptcha/api.js',
+		'xfbml.customerchat.js',
+		'static.hotjar.com/c/hotjar-',
+		'smartsuppchat.com/loader.js',
+		'grecaptcha.execute',
+		'Tawk_API',
+		'shareaholic',
+		'sharethis',
+		'simple-share-buttons-adder',
+		'addtoany',
+		'font-awesome',
+		'wpdiscuz',
+		'cookie-law-info',
+		'pinit.js',
+		'/gtag/js',
+		'gtag(',
+		'/gtm.js',
+		'/gtm-',
+		'fbevents.js',
+		'fbq(',
+		'google-analytics.com/analytics.js',
+		'ga( \'',
+		'ga(\'',
+		'adsbygoogle',
+		'ShopifyBuy',
+		'widget.trustpilot.com',
+		'ft.sdk.min.js',
+		'apps.elfsight.com/p/platform.js',
+		'livechatinc.com/tracking.js',
+		'LiveChatWidget',
+		'/busting/facebook-tracking/',
+	];
 
 	/**
 	 * @dataProvider configTestData
@@ -21,24 +65,17 @@ class Test_SetOptionOnUpdate extends TestCase{
 	public function testShouldDoExpected( $old_version, $valid_version ) {
 		$options_data = Mockery::mock( Options_Data::class );
 		$settings     = new Settings( $options_data );
-		$options      = [ 'delay_js' => 0 ];
+		$options      = [
+			'delay_js'         => 0,
+			'delay_js_scripts' => $this->defaults,
+		];
 
 		if ( $valid_version ) {
-			$options_data->shouldReceive( 'set' )
-				->with( 'delay_js', 0 )
-				->once();
-			$options_data->shouldReceive( 'get_options' )
-				->once()
-				->andReturn( $options );
+			Functions\when( 'get_option' )->justReturn( [] );
 			Functions\expect( 'update_option' )
 				->with( 'wp_rocket_settings', $options )
 				->once();
 		} else {
-			$options_data->shouldReceive( 'set' )
-				->with( 'delay_js', 0 )
-				->never();
-			$options_data->shouldReceive( 'get_options' )
-				->never();
 			Functions\expect( 'update_option' )
 				->with( 'wp_rocket_settings', $options )
 				->never();

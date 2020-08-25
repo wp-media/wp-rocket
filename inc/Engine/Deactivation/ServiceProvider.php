@@ -1,8 +1,8 @@
 <?php
 namespace WP_Rocket\Engine\Deactivation;
 
-use League\Container\ServiceProvider\AbstractServiceProvider;
-use League\Container\ServiceProvider\BootableServiceProviderInterface;
+use WP_Rocket\Engine\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Engine\Container\ServiceProvider\BootableServiceProviderInterface;
 
 /**
  * Service Provider for the activation process.

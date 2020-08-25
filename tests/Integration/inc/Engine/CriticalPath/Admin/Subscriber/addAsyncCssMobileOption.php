@@ -13,7 +13,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_AddAsyncCssMobileOption extends TestCase {
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldAddOption( $options, $expected ) {
 		$filtered_options = apply_filters( 'rocket_first_install_options', $options );

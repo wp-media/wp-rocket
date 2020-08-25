@@ -76,7 +76,6 @@ $default = [
 
 $integration = $default;
 $integration[ 'async_css_mobile' ] = 1;
-$integration[ 'preload_links' ]    = 0;
 $integration[ 'delay_js' ]         = 1;
 $integration[ 'delay_js_scripts' ] = [
 	'getbutton.io',
@@ -85,8 +84,8 @@ $integration[ 'delay_js_scripts' ] = [
 	'snap.licdn.com/li.lms-analytics/insight.min.js',
 	'static.ads-twitter.com/uwt.js',
 	'platform.twitter.com/widgets.js',
-	'connect.facebook.net/en_GB/sdk.js',
-	'connect.facebook.net/en_US/sdk.js',
+	'twq(',
+	'/sdk.js#xfbml',
 	'static.leadpages.net/leadbars/current/embed.js',
 	'translate.google.com/translate_a/element.js',
 	'widget.manychat.com',
@@ -103,13 +102,26 @@ $integration[ 'delay_js_scripts' ] = [
 	'font-awesome',
 	'wpdiscuz',
 	'cookie-law-info',
-	'cookie-notice',
 	'pinit.js',
-	'gtag',
-	'gtm',
+	'/gtag/js',
+	'gtag(',
+	'/gtm.js',
+	'/gtm-',
 	'fbevents.js',
 	'fbq(',
+	'google-analytics.com/analytics.js',
+	'ga( \'',
+	'ga(\'',
+	'adsbygoogle',
+	'ShopifyBuy',
+	'widget.trustpilot.com',
+	'ft.sdk.min.js',
+	'apps.elfsight.com/p/platform.js',
+	'livechatinc.com/tracking.js',
+	'LiveChatWidget',
+	'/busting/facebook-tracking/',
 ];
+$integration[ 'preload_links' ]    = 0;
 
 return [
 	'test_data' => [

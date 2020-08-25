@@ -122,6 +122,7 @@ function rocket_plugins_to_deactivate() {
 		'cache-enabler'                              => 'cache-enabler/cache-enabler.php',
 		'swift-performance-lite'                     => 'swift-performance-lite/performance.php',
 		'swift-performance'                          => 'swift-performance/performance.php',
+		'speed-booster-pack'                         => 'speed-booster-pack/speed-booster-pack.php',
 		'wp-http-compression'                        => 'wp-http-compression/wp-http-compression.php',
 		'wordpress-gzip-compression'                 => 'wordpress-gzip-compression/ezgz.php',
 		'gzip-ninja-speed-compression'               => 'gzip-ninja-speed-compression/gzip-ninja-speed.php',

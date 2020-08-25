@@ -10,6 +10,18 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group  DelayJS
  */
 class Test_AddOptions extends TestCase {
+	public function setUp() {
+		parent::setUp();
+
+		$this->unregisterAllCallbacksExcept( 'rocket_first_install_options', 'add_options' );
+	}
+
+	public function tearDown() {
+		parent::tearDown();
+
+		$this->restoreWpFilter( 'rocket_first_install_options' );
+	}
+
 	/**
 	 * @dataProvider configTestData
 	 */
