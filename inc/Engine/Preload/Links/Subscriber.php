@@ -113,7 +113,7 @@ class Subscriber implements Subscriber_Interface {
 
 		$config = [
 			'excludeUris'       => $this->get_uris_to_exclude( $use_trailing_slash ),
-			'usesTrailingSlash' => $use_trailing_slash,
+			'usesTrailingSlash' => (int) $use_trailing_slash,
 			'imageExt'          => $images_ext,
 			'fileExt'           => $images_ext . '|php|pdf|html|htm',
 			'siteUrl'           => site_url(),
