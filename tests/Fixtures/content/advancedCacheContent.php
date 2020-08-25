@@ -30,8 +30,8 @@ STARTING_CONTENTS;
 
 $mobile = <<<MOBILE_CONTENTS
 
-if ( file_exists( 'vfs://public/wp-content/plugins/wp-rocket/inc/vendors/classes/class-rocket-mobile-detect.php' ) && ! class_exists( 'Rocket_Mobile_Detect' ) ) {
-	include_once 'vfs://public/wp-content/plugins/wp-rocket/inc/vendors/classes/class-rocket-mobile-detect.php';
+if ( file_exists( 'vfs://public/wp-content/plugins/wp-rocket/inc/classes/dependencies/mobiledetect/mobiledetectlib/Mobile_Detect.php' ) && ! class_exists( 'WP_Rocket_Mobile_Detect' ) ) {
+	include_once 'vfs://public/wp-content/plugins/wp-rocket/inc/classes/dependencies/mobiledetect/mobiledetectlib/Mobile_Detect.php';
 }
 
 MOBILE_CONTENTS;

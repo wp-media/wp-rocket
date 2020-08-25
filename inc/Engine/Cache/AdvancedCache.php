@@ -115,7 +115,6 @@ class AdvancedCache implements ActivationInterface, DeactivationInterface {
 		$replacements = [
 			'{{WP_ROCKET_PHP_VERSION}}' => rocket_get_constant( 'WP_ROCKET_PHP_VERSION' ),
 			'{{WP_ROCKET_PATH}}'        => rocket_get_constant( 'WP_ROCKET_PATH' ),
-			'{{VENDOR_PATH}}'           => rocket_get_constant( 'WP_ROCKET_VENDORS_PATH' ),
 			'{{WP_ROCKET_CONFIG_PATH}}' => rocket_get_constant( 'WP_ROCKET_CONFIG_PATH' ),
 			'{{WP_ROCKET_CACHE_PATH}}'  => rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ),
 		];

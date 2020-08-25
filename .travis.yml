@@ -48,9 +48,9 @@ before_install:
     if [[ -f composer.lock ]] ; then
       rm composer.lock
     fi
-  - composer remove --dev phpstan/phpstan szepeviktor/phpstan-wordpress
+  - composer remove --dev --no-scripts phpstan/phpstan szepeviktor/phpstan-wordpress coenjacobs/mozart
 install:
-  - composer install --prefer-dist --no-interaction
+  - composer install --prefer-dist --no-interaction --no-scripts
 before_script:
 - |
   if [[ ! -z "$WP_VERSION" ]] ; then
@@ -59,6 +59,7 @@ before_script:
 script:
 - |
   if [[ "$WP_TRAVISCI" == "phpcs" ]]; then
+    vendor/bin/phpcs --config-set installed_paths ../../phpcompatibility/phpcompatibility-paragonie,../../phpcompatibility/phpcompatibility-wp,../../wp-coding-standards/wpcs,../../phpcompatibility/php-compatibility
     composer phpcs
   elif [[ "$WP_TRAVISCI" == "phpstan" ]]; then
     composer require --dev szepeviktor/phpstan-wordpress

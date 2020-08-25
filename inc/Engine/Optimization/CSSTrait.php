@@ -2,8 +2,8 @@
 
 namespace WP_Rocket\Engine\Optimization;
 
-use MatthiasMullie\PathConverter\ConverterInterface;
-use MatthiasMullie\PathConverter\Converter;
+use WP_Rocket\Dependencies\PathConverter\ConverterInterface;
+use WP_Rocket\Dependencies\PathConverter\Converter;
 
 trait CSSTrait {
 	/**
@@ -64,7 +64,7 @@ trait CSSTrait {
 	 * will have to be updated when a file is being saved at another location
 	 * (e.g. ../../images/image.gif, if the new CSS file is 1 folder deeper).
 	 *
-	 * Method copied from MatthiasMullie\Minify\CSS;
+	 * Method copied from WP_Rocket\Dependencies\Minify\CSS;
 	 *
 	 * @param ConverterInterface $converter Relative path converter.
 	 * @param string             $content   The CSS content to update relative urls for.
