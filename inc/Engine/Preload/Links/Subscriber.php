@@ -93,22 +93,51 @@ class Subscriber implements Subscriber_Interface {
 			'rocket-preload-links',
 			$this->filesystem->get_contents( "{$js_assets_path}{$preload_filename}" )
 		);
-
-		$use_trailing_slash = $this->use_trailing_slash();
-		$images_ext         = 'jpg|jpeg|gif|png|tiff|bmp|webp|avif';
 		wp_localize_script(
 			'rocket-preload-links',
 			'RocketPreloadLinksConfig',
-			[
-				'excludeUris'       => $this->get_uris_to_exclude( $use_trailing_slash ),
-				'usesTrailingSlash' => $use_trailing_slash,
-				'imageExt'          => $images_ext,
-				'fileExt'           => $images_ext . '|php|pdf|html|htm',
-				'siteUrl'           => site_url(),
-				'onHoverDelay'      => 100, // milliseconds. -1 disables the "on hover" feature.
-				'rateThrottle'      => 3, // on hover: limits the number of links preloaded per second.
-			]
+			$this->get_preload_links_config()
 		);
+	}
+
+	/**
+	 * Gets the Preload Links script configuration parameters.
+	 *
+	 * @since 3.7
+	 *
+	 * @return string[] Preload Links script configuration parameters.
+	 */
+	private function get_preload_links_config() {
+		$use_trailing_slash = $this->use_trailing_slash();
+		$images_ext         = 'jpg|jpeg|gif|png|tiff|bmp|webp|avif';
+
+		$config = [
+			'excludeUris'       => $this->get_uris_to_exclude( $use_trailing_slash ),
+			'usesTrailingSlash' => (int) $use_trailing_slash,
+			'imageExt'          => $images_ext,
+			'fileExt'           => $images_ext . '|php|pdf|html|htm',
+			'siteUrl'           => site_url(),
+			'onHoverDelay'      => 100, // milliseconds. -1 disables the "on hover" feature.
+			'rateThrottle'      => 3, // on hover: limits the number of links preloaded per second.
+		];
+
+		/**
+		 * Preload Links script configuration parameters.
+		 *
+		 * This array of parameters are passed as RocketPreloadLinksConfig object and used by the
+		 * `preload-links.min.js` script to configure the behavior of the Preload Links feature.
+		 *
+		 * @since 3.7
+		 *
+		 * @param string[] $config Preload Links script configuration parameters.
+		 */
+		$filtered_config = apply_filters( 'rocket_preload_links_config', $config );
+
+		if ( ! is_array( $filtered_config ) ) {
+			return $config;
+		}
+
+		return array_merge( $config, $filtered_config );
 	}
 
 	/**
