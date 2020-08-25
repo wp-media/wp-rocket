@@ -41,9 +41,10 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'before_rocket_clean_domain' => [ 'clean_domain', 10, 3 ],
-			'before_rocket_clean_file'   => [ 'clean_file' ],
-			'before_rocket_clean_home'   => [ 'clean_home', 10, 2 ],
+			'before_rocket_clean_domain'         => [ 'clean_domain', 10, 3 ],
+			'before_rocket_clean_file'           => [ 'clean_file' ],
+			'before_rocket_clean_home'           => [ 'clean_home', 10, 2 ],
+			'rocket_after_automatic_cache_purge' => 'clean_urls',
 		];
 	}
 
@@ -115,5 +116,37 @@ class Subscriber implements Subscriber_Interface {
 
 		$this->varnish->purge( $home_url );
 		$this->varnish->purge( $home_pagination_url );
+	}
+
+	/**
+	 * Clears URLs in Varnish cache.
+	 *
+	 * @param array $urls The path of home cache file.
+	 */
+	public function clean_urls( $urls ) {
+		if ( ! $this->should_purge() ) {
+			return;
+		}
+
+		foreach ( $urls as $data ) {
+			foreach ( $data['files'] as $file_path ) {
+				if ( strpos( $file_path, '#' ) ) {
+					// URL with query string.
+					continue;
+				}
+
+				$file_path         = untrailingslashit( $file_path );
+				$data['home_path'] = untrailingslashit( $data['home_path'] );
+				$data['home_url']  = untrailingslashit( $data['home_url'] );
+				if ( '/' === substr( get_option( 'permalink_structure' ), -1 ) ) {
+					$file_path         .= '/';
+					$data['home_path'] .= '/';
+					$data['home_url']  .= '/';
+				}
+
+				$url = str_replace( $data['home_path'], $data['home_url'], $file_path );
+				$this->varnish->purge( trailingslashit( $url ) . '?regex' );
+			}
+		}
 	}
 }

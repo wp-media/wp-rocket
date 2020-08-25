@@ -14,9 +14,10 @@ class Test_GetSubscribedEvents extends TestCase {
 
 	public function testShouldReturnSubscribedEventsArray() {
 		$events = [
-			'before_rocket_clean_domain' => [ 'clean_domain', 10, 3 ],
-			'before_rocket_clean_file'   => [ 'clean_file' ],
-			'before_rocket_clean_home'   => [ 'clean_home', 10, 2 ],
+			'before_rocket_clean_domain'         => [ 'clean_domain', 10, 3 ],
+			'before_rocket_clean_file'           => [ 'clean_file' ],
+			'before_rocket_clean_home'           => [ 'clean_home', 10, 2 ],
+			'rocket_after_automatic_cache_purge' => 'clean_urls',
 		];
 
 		$this->assertSame(
