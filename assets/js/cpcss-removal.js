@@ -1,5 +1,5 @@
 const wprRemoveCPCSS = () => {
-	if ( document.querySelector( 'link[data-rocket-async=\'style\'][rel=\'preload\']' ) ) {
+	if ( document.querySelector( 'link[data-rocket-async="style"][rel="preload"]' ) ) {
 		setTimeout( wprRemoveCPCSS, 200 );
 	} else {
 		const elem = document.getElementById( 'rocket-critical-css' );
