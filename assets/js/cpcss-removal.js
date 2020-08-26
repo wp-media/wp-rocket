@@ -2,9 +2,9 @@ const wprRemoveCPCSS = () => {
 	if ( document.querySelector( 'link[data-rocket-async=\'style\'][rel=\'preload\']' ) ) {
 		setTimeout( wprRemoveCPCSS, 200 );
 	} else {
-		$elem = document.getElementById( 'rocket-critical-css' );
-		if ( $elem ) {
-			$elem.remove();
+		const elem = document.getElementById( 'rocket-critical-css' );
+		if ( elem ) {
+			elem.remove();
 		}
 	}
 };
