@@ -1,5 +1,5 @@
 <?php
-use MatthiasMullie\Minify;
+use WP_Rocket\Dependencies\Minify;
 
 defined( 'ABSPATH' ) || exit;
 

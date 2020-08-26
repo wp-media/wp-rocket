@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Optimization\Minify\CSS;
 
-use MatthiasMullie\Minify\CSS as MinifyCSS;
+use WP_Rocket\Dependencies\Minify\CSS as MinifyCSS;
 use WP_Rocket\Engine\Optimization\CSSTrait;
 use WP_Rocket\Engine\Optimization\Minify\ProcessorInterface;
 use WP_Rocket\Logger\Logger;
@@ -98,7 +98,7 @@ class Combine extends AbstractCSSOptimization implements ProcessorInterface {
 				$this->styles[ $style['url'] ] = [
 					'type' => 'external',
 					'tag'  => $style[0],
-					'url'  => $style['url'],
+					'url'  => rocket_add_url_protocol( $style['url'] ),
 				];
 
 				continue;
@@ -284,7 +284,7 @@ class Combine extends AbstractCSSOptimization implements ProcessorInterface {
 				$file_content = $this->get_file_content( $filepath );
 				$file_content = $this->rewrite_paths( $filepath, $combined_file, $file_content );
 			} elseif ( 'external' === $style['type'] ) {
-				$file_content = $this->local_cache->get_content( rocket_add_url_protocol( $style['url'] ) );
+				$file_content = $this->local_cache->get_content( $style['url'] );
 				$file_content = $this->rewrite_paths( $style['url'], $combined_file, $file_content );
 			}
 

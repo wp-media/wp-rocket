@@ -2,19 +2,19 @@
 
 namespace WP_Rocket\Engine\Container;
 
-use Interop\Container\ContainerInterface as InteropContainerInterface;
+use Psr\Container\ContainerInterface as InteropContainerInterface;
 
 trait ImmutableContainerAwareTrait
 {
     /**
-     * @var \Interop\Container\ContainerInterface
+     * @var \Psr\Container\ContainerInterface
      */
     protected $container;
 
     /**
      * Set a container.
      *
-     * @param  \Interop\Container\ContainerInterface $container
+     * @param  \Psr\Container\ContainerInterface $container
      * @return $this
      */
     public function setContainer(InteropContainerInterface $container)

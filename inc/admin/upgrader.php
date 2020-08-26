@@ -361,7 +361,6 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 	if ( version_compare( $actual_version, '3.6', '<' ) ) {
 		rocket_clean_cache_busting();
 		rocket_clean_domain();
-		rocket_generate_advanced_cache_file();
 	}
 
 	if ( version_compare( $actual_version, '3.6.1', '<' ) ) {
@@ -370,6 +369,7 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 
 	if ( version_compare( $actual_version, '3.7', '<' ) ) {
 		rocket_clean_minify( 'css' );
+		rocket_generate_advanced_cache_file();
 	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );

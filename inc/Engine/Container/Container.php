@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Engine\Container;
 
-use Interop\Container\ContainerInterface as InteropContainerInterface;
+use Psr\Container\ContainerInterface as InteropContainerInterface;
 use WP_Rocket\Engine\Container\Argument\RawArgumentInterface;
 use WP_Rocket\Engine\Container\Definition\DefinitionFactory;
 use WP_Rocket\Engine\Container\Definition\DefinitionFactoryInterface;
@@ -46,7 +46,7 @@ class Container implements ContainerInterface
     protected $shared = [];
 
     /**
-     * @var \Interop\Container\ContainerInterface[]
+     * @var \Psr\Container\ContainerInterface[]
      */
     protected $delegates = [];
 
@@ -215,7 +215,7 @@ class Container implements ContainerInterface
      * Delegate a backup container to be checked for services if it
      * cannot be resolved via this container.
      *
-     * @param  \Interop\Container\ContainerInterface $container
+     * @param  \Psr\Container\ContainerInterface $container
      * @return $this
      */
     public function delegate(InteropContainerInterface $container)

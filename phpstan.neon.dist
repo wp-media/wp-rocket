@@ -27,6 +27,7 @@ parameters:
         # Composer autoloader "exclude-from-classmap"
         - %currentWorkingDirectory%/inc/classes/class-wp-rocket-requirements-check.php
         - %currentWorkingDirectory%/inc/vendors/classes/class-rocket-mobile-detect.php
+        - %currentWorkingDirectory%/inc/classes/dependencies/mobiledetect/mobiledetectlib/Mobile_Detect.php
     excludes_analyse:
          - %currentWorkingDirectory%/inc/vendors/
          # These need plugin stubs!

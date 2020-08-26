@@ -4,7 +4,7 @@ namespace WP_Rocket\Subscriber\Optimization;
 use WP_Rocket\deprecated\DeprecatedClassTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Admin\Options_Data as Options;
-use MatthiasMullie\Minify;
+use WP_Rocket\Dependencies\Minify;
 
 /**
  * HTML minification subscriber

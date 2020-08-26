@@ -1,47 +1,117 @@
 class RocketPreloadLinks {
 
 	constructor( browser, config ) {
-		this.browser         = browser;
-		this.config          = config;
-		this.listenerOptions = this.browser.options;
+		this.browser = browser;
+		this.config  = config;
+		this.options = this.browser.options;
 
-		this.linksPreloaded    = new Set;
-		this.addLinkTimeoutId  = null;
-		this.eventTime         = null;
-		this.listenerThreshold = 1111;
-		this.onHoverPreloads   = 0;
+		this.prefetched = new Set;
+		this.eventTime  = null;
+		this.threshold  = 1111;
+		this.numOnHover = 0;
 	}
 
 	/**
 	 * Initializes the handler.
 	 */
 	init() {
-		if ( ! this.browser.supportsLinkPrefetch() || this.browser.isDataSaverModeOn() ) {
+		if (
+			! this.browser.supportsLinkPrefetch()
+			||
+			this.browser.isDataSaverModeOn()
+			||
+			this.browser.isSlowConnection()
+		) {
 			return;
 		}
 
 		this.regex = {
-			excludeUris   : RegExp( this.config.excludeUris, 'i' ),
-			images        : RegExp( '.(' + this.config.imageExtensions + ')$', 'i' ),
-			fileExtensions: RegExp( '.(' + this.config.imageExtensions + '|php|pdf|html|htm' + ')$', 'i' )
-		}
+			excludeUris: RegExp( this.config.excludeUris, 'i' ),
+			images: RegExp( '.(' + this.config.imageExt + ')$', 'i' ),
+			fileExt: RegExp( '.(' + this.config.fileExt + ')$', 'i' )
+		};
 
-		this.linksPreloaded.add( window.location.href );
-		this._addEventListeners( this );
+		this._initListeners( this );
 	}
 
 	/**
-	 * Adds the event listeners.
+	 * Initializes the event listeners.
 	 *
 	 * @private
 	 *
 	 * @param self instance of this object, used for binding "this" to the listeners.
 	 */
-	_addEventListeners( self ) {
-		document.addEventListener( 'mouseover', self.triggerOnHover.bind( self ), self.listenerOptions );
+	_initListeners( self ) {
+		// Setting onHoverDelay to -1 disables the "on-hover" feature.
+		if ( this.config.onHoverDelay > -1 ) {
+			document.addEventListener( 'mouseover', self.listener.bind( self ), self.listenerOptions );
+		}
 
-		document.addEventListener( 'mousedown', self.triggerOnClick.bind( self ), self.listenerOptions );
-		document.addEventListener( 'touchstart', self.triggerOnTap.bind( self ), self.listenerOptions );
+		document.addEventListener( 'mousedown', self.listener.bind( self ), self.listenerOptions );
+		document.addEventListener( 'touchstart', self.listener.bind( self ), self.listenerOptions );
+	}
+
+	/**
+	 * Event listener. Processes when near or on a valid <a> hyperlink.
+	 *
+	 * @param Event event Event instance.
+	 */
+	listener( event ) {
+		const linkElem = event.target.closest( 'a' );
+		const url      = this._prepareUrl( linkElem );
+		if ( null === url ) {
+			return;
+		}
+
+		switch ( event.type ) {
+			case 'mousedown':
+			case 'touchstart':
+				this._addPrefetchLink( url );
+				break;
+			case 'mouseover':
+				this._earlyPrefetch( linkElem, url, 'mouseout' );
+		}
+	}
+
+	/**
+	 *
+	 * @private
+	 *
+	 * @param Element|null linkElem
+	 * @param object url
+	 * @param string resetEvent
+	 */
+	_earlyPrefetch( linkElem, url, resetEvent ) {
+		const doPrefetch = () => {
+			falseTrigger = null;
+
+			// Start the rate throttle: 1 sec timeout.
+			if ( 0 === this.numOnHover ) {
+				setTimeout( () => this.numOnHover = 0, 1000 );
+			}
+			// Bail out when exceeding the rate throttle.
+			else if ( this.numOnHover > this.config.rateThrottle ) {
+				return;
+			}
+
+			this.numOnHover++;
+			this._addPrefetchLink( url );
+		};
+
+		// Delay to avoid false triggers for hover/touch/tap.
+		let falseTrigger = setTimeout( doPrefetch, this.config.onHoverDelay );
+
+		// On reset event, reset the false trigger timer.
+		const reset = () => {
+			linkElem.removeEventListener( resetEvent, reset, { passive: true } );
+			if ( null === falseTrigger ) {
+				return;
+			}
+
+			clearTimeout( falseTrigger );
+			falseTrigger = null;
+		};
+		linkElem.addEventListener( resetEvent, reset, { passive: true } );
 	}
 
 	/**
@@ -50,97 +120,19 @@ class RocketPreloadLinks {
 	 * @param string url The Given URL to prefetch.
 	 */
 	_addPrefetchLink( url ) {
-		if ( this.linksPreloaded.has( url.href ) ) {
-			return;
-		}
+		this.prefetched.add( url.href );
 
-		const elem = document.createElement( 'link' );
-		elem.rel   = 'prefetch';
-		elem.href  = url.href;
+		return new Promise( ( resolve, reject ) => {
+			const elem   = document.createElement( 'link' );
+			elem.rel     = 'prefetch';
+			elem.href    = url.href;
+			elem.onload  = resolve;
+			elem.onerror = reject;
 
-		document.head.appendChild( elem );
-
-		this.linksPreloaded.add( url.href );
-	}
-
-	/**
-	 * Triggers adding the link prefetch when the user hovers over a <a> hyperlink.
-	 *
-	 * @param Event event Event instance.
-	 */
-	triggerOnHover( event ) {
-		if ( performance.now() - this.eventTime < this.listenerThreshold ) {
-			return;
-		}
-
-		const [ url, linkElem ] = this._prepareUrl( event );
-		if ( null === url ) {
-			return;
-		}
-
-		const self = this;
-		linkElem.addEventListener( 'mouseout', self.resetOnHover.bind( self ), { passive: true } );
-
-		this.addLinkTimeoutId = setTimeout( () => {
-				this.addLinkTimeoutId = undefined;
-
-				// Start the rate throttle: 1 sec timeout.
-				if ( 0 === this.onHoverPreloads ) {
-					setTimeout( () => this.onHoverPreloads = 0, 1000 );
-				}
-				// Bail out when exceeding the rate throttle.
-				else if ( this.onHoverPreloads > this.config.rateThrottle ) {
-					return;
-				}
-
-				this.onHoverPreloads++;
-				this._addPrefetchLink( url );
-			},
-			this.config.onHoverDelayTime
-		);
-	}
-
-	/**
-	 * Triggers adding the link prefetch when the user clicks on a <a> hyperlink.
-	 *
-	 * @param Event event Event instance.
-	 */
-	triggerOnClick( event ) {
-		const [ url, linkElem ] = this._prepareUrl( event );
-
-		if ( null === url ) {
-			return;
-		}
-
-		this._addPrefetchLink( url );
-		this._resetAddLinkTask();
-	}
-
-	/**
-	 * Triggers adding the link prefetch when the user taps a <a> hyperlink.
-	 *
-	 * @param Event event Event instance.
-	 */
-	triggerOnTap( event ) {
-		this.eventTime = performance.now();
-		this.triggerOnClick( event );
-	}
-
-	/**
-	 * Resets the Add Link Task on hover.
-	 *
-	 * @param object event Event object.
-	 */
-	resetOnHover( event ) {
-		if (
-			event.relatedTarget
-			&&
-			event.target.closest( 'a' ) === event.relatedTarget.closest( 'a' )
-			||
-			this.addLinkTimeoutId
-		) {
-			this._resetAddLinkTask();
-		}
+			document.head.appendChild( elem );
+		} ).catch(() => {
+			// ignore and continue.
+		});
 	}
 
 	/**
@@ -148,41 +140,34 @@ class RocketPreloadLinks {
 	 *
 	 * @private
 	 *
-	 * @param Event event Event instance.
-	 * @returns {({protocol: *, original: *, origin: string, href: string, pathname: string}|*)[]|*[]}
+	 * @param Element|null linkElem Instance of the link element.
+	 * @returns {null|*}
 	 */
-	_prepareUrl( event ) {
-		const linkElem = event.target.closest( 'a' );
-
-		if ( null === linkElem || typeof linkElem !== 'object' ) {
-			return [ null, null ];
+	_prepareUrl( linkElem ) {
+		if (
+			null === linkElem
+			||
+			typeof linkElem !== 'object'
+			||
+			! 'href' in linkElem
+			||
+			// Link prefetching only works on http/https protocol.
+			[ 'http:', 'https:' ].indexOf( linkElem.protocol ) === -1
+		) {
+			return null;
 		}
 
-		if ( ! 'href' in linkElem ) {
-			return [ null, null ];
-		}
-
-		// Link prefetching only works on http/https protocol.
-		if ( ! this._isHttpProtocol( linkElem ) ) {
-			return [ null, null ];
-		}
-
-		const href     = linkElem.href;
-		const origin   = href.substring( 0, this.config.siteUrl.length );
-		const pathname = this._getPathname( href, origin );
+		const origin   = linkElem.href.substring( 0, this.config.siteUrl.length );
+		const pathname = this._getPathname( linkElem.href, origin );
 		const url      = {
-			original: href,
+			original: linkElem.href,
 			protocol: linkElem.protocol,
-			origin  : origin,
+			origin: origin,
 			pathname: pathname,
-			href    : origin + pathname
-		}
+			href: origin + pathname
+		};
 
-		if ( ! this._isLinkOk( url ) ) {
-			return [ null, null ];
-		}
-
-		return [ url, linkElem ];
+		return this._isLinkOk( url ) ? url : null;
 	}
 
 	/**
@@ -196,8 +181,8 @@ class RocketPreloadLinks {
 	 */
 	_getPathname( url, origin ) {
 		let pathname = origin
-		               ? url.substring( this.config.siteUrl.length )
-		               : url;
+			? url.substring( this.config.siteUrl.length )
+			: url;
 
 		if ( ! pathname.startsWith( '/' ) ) {
 			pathname = '/' + pathname;
@@ -216,7 +201,7 @@ class RocketPreloadLinks {
 			&&
 			! pathname.endsWith( '/' )
 			&&
-			! this.regex.fileExtensions.test( pathname )
+			! this.regex.fileExt.test( pathname )
 		);
 	}
 
@@ -234,64 +219,19 @@ class RocketPreloadLinks {
 			return false;
 		}
 
-		if ( this.linksPreloaded.has( url.href ) ) {
-			return false;
-		}
-
-		if ( ! this._isInternal( url ) ) {
-			return false;
-		}
-
-		if ( this._isQueryString( url.href ) ) {
-			return false;
-		}
-
-		if ( this._isAnchor( url.href ) ) {
-			return false;
-		}
-
-		if ( this._isExcluded( url.href ) ) {
-			return false;
-		}
-
-		if ( this._isImage( url.href ) ) {
-			return false;
-		}
-
-		return true;
-	}
-
-	_isAnchor( href ) {
-		return href.indexOf( '#' ) !== -1;
-	}
-
-	_isExcluded( url ) {
-		return this.regex.excludeUris.test( url );
-	}
-
-	_isHttpProtocol( linkElem ) {
-		return ( 'http:' === linkElem.protocol || 'https:' === linkElem.protocol );
-	}
-
-	_isImage( href ) {
-		return this.regex.images.test( href );
-	}
-
-	_isInternal( url ) {
-		return url.origin === this.config.siteUrl;
-	}
-
-	_isQueryString( href ) {
-		return href.indexOf( '?' ) !== -1;
-	}
-
-	_resetAddLinkTask() {
-		if ( ! this.addLinkTimeoutId ) {
-			return;
-		}
-
-		clearTimeout( this.addLinkTimeoutId );
-		this.addLinkTimeoutId = null;
+		return (
+			! this.prefetched.has( url.href )
+			&&
+			url.origin === this.config.siteUrl // is an internal document.
+			&&
+			url.href.indexOf( '?' ) === -1 // not a query string.
+			&&
+			url.href.indexOf( '#' ) === -1 // not an anchor.
+			&&
+			! this.regex.excludeUris.test( url.href ) // not excluded.
+			&&
+			! this.regex.images.test( url.href ) // not an image.
+		);
 	}
 
 	/**
@@ -299,15 +239,14 @@ class RocketPreloadLinks {
 	 */
 	static run() {
 		// Bail out if the configuration not passed from the server.
-		if ( typeof RocketPreloadLinksConfig === "undefined" ) {
+		if ( typeof RocketPreloadLinksConfig === 'undefined' ) {
 			return;
 		}
 
-		const options  = {
+		const browser  = new RocketBrowserCompatibilityChecker( {
 			capture: true,
 			passive: true
-		};
-		const browser  = new RocketBrowserCompatibilityChecker( options );
+		} );
 		const instance = new RocketPreloadLinks( browser, RocketPreloadLinksConfig );
 		instance.init();
 	}

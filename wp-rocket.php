@@ -18,7 +18,7 @@
 defined( 'ABSPATH' ) || exit;
 
 // Rocket defines.
-define( 'WP_ROCKET_VERSION',               '3.7-alpha2' );
+define( 'WP_ROCKET_VERSION',               '3.7-alpha3' );
 define( 'WP_ROCKET_WP_VERSION',            '4.9' );
 define( 'WP_ROCKET_WP_VERSION_TESTED',     '5.4.1' );
 define( 'WP_ROCKET_PHP_VERSION',           '5.6' );
