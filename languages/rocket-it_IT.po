@@ -686,7 +686,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:823 inc/admin/ui/meta-boxes.php:79
 msgid "Delay JavaScript execution"
-msgstr "Ritarda l'esecuzione del JavaScript"
+msgstr "Rimanda l'esecuzione del JavaScript"
 
 #: inc/Engine/Admin/Settings/Page.php:825
 #, php-format
