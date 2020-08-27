@@ -707,7 +707,7 @@ msgid ""
 "(one per line)."
 msgstr ""
 "Specifica le parole chiave che possono identificare i file in linea o "
-"JavaScript da ritrdare (uno per linea)."
+"JavaScript da rimandare (uno per linea)."
 
 #: inc/Engine/Admin/Settings/Page.php:835
 msgid ""
