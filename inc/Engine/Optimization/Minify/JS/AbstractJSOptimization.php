@@ -254,6 +254,9 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 			'feedbackcompany.com/widgets/feedback-company-widget.min.js',
 			'widget.gleamjs.io',
 			'phonewagon.com',
+			'simplybook.asia/v2/widget/widget.js',
+			'simplybook.it/v2/widget/widget.js',
+			'simplybook.me/v2/widget/widget.js',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
