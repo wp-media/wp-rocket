@@ -716,8 +716,8 @@ msgid ""
 "face issues."
 msgstr ""
 "Ti forniamo un elenco curato di script che possono essere ritardati senza "
-"problemi. Potrebbero non essere tutti applicabili al vostro sito web ed è "
-"sicuro lasciare l'elenco così com'è, a meno che non riscontriate problemi."
+"problemi. Potrebbero non essere tutti applicabili al tuo sito web ed è "
+"sicuro lasciare l'elenco così com'è, a meno che non riscontri problemi."
 
 #: inc/Engine/Admin/Settings/Page.php:870
 msgid "Media"
