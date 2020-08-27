@@ -3613,7 +3613,7 @@ msgstr "Passer & Désactiver"
 
 #: views/settings/enable-google-fonts.php:13
 msgid "Enable Google Font Optimization"
-msgstr "Active l’Optimisation de Google Font"
+msgstr "Active l’Optimisation des Google Fonts"
 
 #: views/settings/enable-google-fonts.php:14
 msgid ""
