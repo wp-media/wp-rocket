@@ -694,7 +694,7 @@ msgid ""
 "Improves performance by delaying the loading of JavaScript files until user "
 "interaction (e.g. scroll, click). %1$sMore info%2$s"
 msgstr ""
-"Migliora le prestazioni ritardando il caricamento dei file JavaScript fino "
+"Migliora le prestazioni rimandando il caricamento dei file JavaScript fino "
 "all'interazione con l'utente (ad es. scroll, clic). %1$sPiù info%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:833
