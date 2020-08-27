@@ -621,6 +621,22 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'scriptParams',
 			'form-adv-pagination',
 			'borlabsCookiePrioritize',
+			'quickViewNonce',
+			'frontendscripts_params',
+			'nj-facebook-messenger',
+			'var fb_mess_position',
+			'init_particles_row_background_script',
+			'setREVStartSize',
+			'fl-node',
+			'PPAccordion',
+			'soliloquy_',
+			'wprevpublicjs_script_vars',
+			'DTGS_NONCE_FRONTEND',
+			'et_animation_data',
+			'archives-dropdown',
+			'loftloaderCache',
+			'SmartSliderSimple',
+			
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
