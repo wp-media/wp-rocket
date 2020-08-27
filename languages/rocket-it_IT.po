@@ -2109,7 +2109,7 @@ msgstr[1] ""
 #: inc/Engine/Preload/PreloadSubscriber.php:344
 #, php-format
 msgid "Preload complete: %d pages have been cached."
-msgstr "Precaricamento completo: %dpagine sono state salvate in cache."
+msgstr "Precaricamento completo: %d pagine sono state salvate in cache."
 
 #: inc/Engine/Preload/Sitemap.php:150
 #, php-format
