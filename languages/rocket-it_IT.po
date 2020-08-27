@@ -699,7 +699,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:833
 msgid "Scripts to delay"
-msgstr "Script da ritardare"
+msgstr "Script da rimandare"
 
 #: inc/Engine/Admin/Settings/Page.php:834
 msgid ""
