@@ -715,7 +715,7 @@ msgid ""
 "all apply to your website and it is safe to leave the list as-is unless you "
 "face issues."
 msgstr ""
-"Ti forniamo un elenco curato di script che possono essere ritardati senza "
+"Ti forniamo un elenco curato di script che possono essere rimandati senza "
 "problemi. Potrebbero non essere tutti applicabili al tuo sito web ed è "
 "sicuro lasciare l'elenco così com'è, a meno che non riscontri problemi."
 
