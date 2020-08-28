@@ -2021,7 +2021,7 @@ msgstr "La génération du Critical Path CSS"
 
 #: inc/Engine/Optimization/DelayJS/Admin/Settings.php:104
 msgid "Restore Defaults"
-msgstr "Rétablir les réglages par défaut"
+msgstr "Rétablir la liste par défaut"
 
 #: inc/Engine/Preload/Homepage.php:153
 #, php-format
