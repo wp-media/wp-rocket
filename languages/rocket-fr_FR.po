@@ -708,7 +708,7 @@ msgid ""
 "Specify keywords that can identify inline or JavaScript files to be delayed "
 "(one per line)."
 msgstr ""
-"Précisez les mots clés qui permettant d'identifier les fichiers JavaScript "
+"Précisez les mots clés qui permettent d'identifier les fichiers JavaScript "
 "ou le JS inline à reporter (un par ligne)."
 
 #: inc/Engine/Admin/Settings/Page.php:835
