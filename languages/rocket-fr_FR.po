@@ -978,7 +978,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:1208
 msgid "Enable link preloading"
-msgstr "Active le préchargement des liens"
+msgstr "Activer le préchargement des liens"
 
 #: inc/Engine/Admin/Settings/Page.php:1227
 msgid "Advanced Rules"
