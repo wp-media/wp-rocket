@@ -53,6 +53,52 @@ EXPECTED_HTML
 			'external_url' => '',
 		],
 
+		'minifyCssFilesWithRelativeURLs' => [
+			'original' => <<<ORIGINAL_HTML
+<html>
+	<head>
+		<title>Sample Page</title>
+		<link rel="stylesheet" href="/wp-content/themes/twentytwenty/style.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/wp-content/plugins/hello-dolly/style.css">
+		<link rel="stylesheet" href="/wp-includes/css/dashicons.min.css">
+		<link rel="stylesheet" href="/wp-content/themes/twentytwenty/style-font-face.min.css">
+	</head>
+	<body>
+	</body>
+</html>
+ORIGINAL_HTML,
+
+			'expected' => [
+				'html'  => <<<EXPECTED_HTML
+<html>
+	<head>
+		<title>Sample Page</title>
+		<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-81368ec770e103151d0a6b86fb40c04b.css" type="text/css" media="all">
+		<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style-dd6c273e12758644d0d561ae5eb1792c.css">
+		<link rel="stylesheet" href="/wp-includes/css/dashicons.min.css">
+		<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min-dae742d87623d4edfaef3856b672fab7.css">
+	</head>
+	<body>
+	</body>
+</html>
+EXPECTED_HTML
+				,
+				'files' => [
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-81368ec770e103151d0a6b86fb40c04b.css',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-81368ec770e103151d0a6b86fb40c04b.css.gz',
+					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/style-dd6c273e12758644d0d561ae5eb1792c.css',
+					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/style-dd6c273e12758644d0d561ae5eb1792c.css.gz',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min-dae742d87623d4edfaef3856b672fab7.css',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min-dae742d87623d4edfaef3856b672fab7.css.gz',
+				],
+			],
+
+			'cdn_host' => [],
+			'cdn_url'  => 'http://example.org',
+			'site_url' => 'http://example.org',
+			'external_url' => '',
+		],
+
 		'minifyCssFileAndAddCdnCname' => [
 			'original' => $original_html,
 			'expected' => [
