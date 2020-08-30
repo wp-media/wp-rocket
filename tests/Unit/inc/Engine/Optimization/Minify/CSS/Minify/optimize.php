@@ -66,7 +66,7 @@ class Test_Optimize extends TestCase {
 					  $url_parts['host'] . str_replace( '/', '-', $url_parts['path'] );
 			});
 
-		Functions\when( 'site_url' )->justReturn( 'http://example.org' );
+		Functions\when( 'site_url' )->justReturn( $site_url );
 		Functions\when( 'set_url_scheme')->alias( function ( $url ) {		 
 			$url = trim( $url );
 			if ( substr( $url, 0, 2 ) === '//' ) {
