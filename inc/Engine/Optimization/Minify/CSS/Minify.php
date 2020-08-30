@@ -103,7 +103,11 @@ class Minify extends AbstractCSSOptimization implements ProcessorInterface {
 			return false;
 		}
 
-		$url = rocket_add_url_protocol( $url );
+		$parsed_url = wp_parse_url( $url );
+
+		if ( ! empty( $parsed_url['host'] ) ) {
+			$url = rocket_add_url_protocol( $url );
+		}
 
 		// This filter is documented in /inc/classes/optimization/class-abstract-optimization.php.
 		$url           = apply_filters( 'rocket_asset_url', $url, $this->get_zones() );
