@@ -105,6 +105,10 @@ class Minify extends AbstractCSSOptimization implements ProcessorInterface {
 
 		$parsed_url = wp_parse_url( $url );
 
+		if ( empty( $parsed_url['path'] ) ) {
+			return false;
+		}
+
 		if ( ! empty( $parsed_url['host'] ) ) {
 			$url = rocket_add_url_protocol( $url );
 		}
@@ -112,7 +116,7 @@ class Minify extends AbstractCSSOptimization implements ProcessorInterface {
 		// This filter is documented in /inc/classes/optimization/class-abstract-optimization.php.
 		$url           = apply_filters( 'rocket_asset_url', $url, $this->get_zones() );
 		$unique_id     = md5( $url . $this->minify_key );
-		$filename      = preg_replace( '/\.(css)$/', '-' . $unique_id . '.css', ltrim( rocket_realpath( wp_parse_url( $url, PHP_URL_PATH ) ), '/' ) );
+		$filename      = preg_replace( '/\.(css)$/', '-' . $unique_id . '.css', ltrim( rocket_realpath( $parsed_url['path'] ), '/' ) );
 		$minified_file = $this->minify_base_path . $filename;
 		$minify_url    = $this->get_minify_url( $filename, $url );
 
