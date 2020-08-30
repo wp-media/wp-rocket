@@ -77,22 +77,22 @@ return [
 				'html'  => '<html>
 					<head>
 						<title>Sample Page</title>
-						<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-81368ec770e103151d0a6b86fb40c04b.css" type="text/css" media="all">
-						<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style-dd6c273e12758644d0d561ae5eb1792c.css">
+						<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-36f730a00bbaa4bb81d6a9dac005155f.css" type="text/css" media="all">
+						<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style-3b71a3cb9b14d657f0cb8365af32e4c8.css">
 						<link rel="stylesheet" href="/wp-includes/css/dashicons.min.css">
-						<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min-dae742d87623d4edfaef3856b672fab7.css">
+						<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min-28df9696b00052d455b668898ba0aef4.css">
 						<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/font-awesome/4.7.0/css/font-awesome.min-8f298935317a465eea8c736e75f1b935.css">
 					</head>
 					<body>
 					</body>
 				</html>',
 				'files' => [
-					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-81368ec770e103151d0a6b86fb40c04b.css',
-					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-81368ec770e103151d0a6b86fb40c04b.css.gz',
-					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/style-dd6c273e12758644d0d561ae5eb1792c.css',
-					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/style-dd6c273e12758644d0d561ae5eb1792c.css.gz',
-					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min-dae742d87623d4edfaef3856b672fab7.css',
-					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min-dae742d87623d4edfaef3856b672fab7.css.gz',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-36f730a00bbaa4bb81d6a9dac005155f.css',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-36f730a00bbaa4bb81d6a9dac005155f.css.gz',
+					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/style-3b71a3cb9b14d657f0cb8365af32e4c8.css',
+					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/style-3b71a3cb9b14d657f0cb8365af32e4c8.css.gz',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min-28df9696b00052d455b668898ba0aef4.css',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min-28df9696b00052d455b668898ba0aef4.css.gz',
 					'wp-content/cache/min/3rd-party/stackpath.bootstrapcdn.com-font-awesome-4.7.0-css-font-awesome.min.css',
 				],
 			],
