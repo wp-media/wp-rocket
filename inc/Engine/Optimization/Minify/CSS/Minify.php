@@ -115,7 +115,7 @@ class Minify extends AbstractCSSOptimization implements ProcessorInterface {
 		if ( ! empty( $parsed_url['host'] ) ) {
 			$url = rocket_add_url_protocol( $url );
 		}
-		
+
 		$unique_id     = md5( $url . $this->minify_key );
 		$filename      = preg_replace( '/\.(css)$/', '-' . $unique_id . '.css', ltrim( rocket_realpath( $parsed_url['path'] ), '/' ) );
 		$minified_file = $this->minify_base_path . $filename;
