@@ -66,8 +66,8 @@ EXPECTED_HTML
 	<body>
 	</body>
 </html>
-ORIGINAL_HTML,
-
+ORIGINAL_HTML
+			,
 			'expected' => [
 				'html'  => <<<EXPECTED_HTML
 <html>
