@@ -5,7 +5,9 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Require deprecated classes.
  */
-require_once __DIR__ . '/vendors/classes/class-minify-html.php';
+if ( ! class_exists( 'Minify_HTML' ) ) {
+	require_once __DIR__ . '/vendors/classes/class-minify-html.php';
+}
 require_once __DIR__ . '/subscriber/admin/Optimization/class-minify-html-subscriber.php';
 
 class_alias( '\WP_Rocket\Engine\Heartbeat\HeartbeatSubscriber', '\WP_Rocket\Subscriber\Heartbeat_Subscriber' );
