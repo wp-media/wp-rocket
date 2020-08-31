@@ -13,7 +13,6 @@ if ( ! class_exists( 'WP_Rocket\Subscriber\Optimization\Minify_HTML_Subscriber' 
 }
 
 class_alias( '\WP_Rocket\Engine\Heartbeat\HeartbeatSubscriber', '\WP_Rocket\Subscriber\Heartbeat_Subscriber' );
-class_alias( '\WP_Rocket_Mobile_Detect', '\Rocket_Mobile_Detect' );
 
 /**
  * Conflict with WP Serveur hosting: don't apply inline JS on all pages.
