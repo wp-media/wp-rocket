@@ -9,7 +9,6 @@ require_once __DIR__ . '/vendors/classes/class-minify-html.php';
 require_once __DIR__ . '/subscriber/admin/Optimization/class-minify-html-subscriber.php';
 
 class_alias( '\WP_Rocket\Engine\Heartbeat\HeartbeatSubscriber', '\WP_Rocket\Subscriber\Heartbeat_Subscriber' );
-class_alias( '\WP_Rocket_Mobile_Detect', '\Rocket_Mobile_Detect' );
 
 /**
  * Conflict with WP Serveur hosting: don't apply inline JS on all pages.
