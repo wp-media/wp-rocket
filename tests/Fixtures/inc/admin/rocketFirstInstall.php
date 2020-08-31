@@ -120,6 +120,7 @@ $integration[ 'delay_js_scripts' ] = [
 	'livechatinc.com/tracking.js',
 	'LiveChatWidget',
 	'/busting/facebook-tracking/',
+	'olark',
 ];
 $integration[ 'preload_links' ]    = 0;
 

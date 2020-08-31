@@ -57,6 +57,7 @@ class Test_SetOptionOnUpdate extends TestCase{
 		'livechatinc.com/tracking.js',
 		'LiveChatWidget',
 		'/busting/facebook-tracking/',
+		'olark',
 	];
 
 	/**
