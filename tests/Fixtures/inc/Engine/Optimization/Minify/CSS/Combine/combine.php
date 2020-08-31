@@ -53,6 +53,30 @@ return [
 			'site_url' => 'http://example.org',
 		],
 
+		'combineCssFilesWithImportNotFirst' => [
+			'original' =>
+				'<html><head><title>Sample Page</title>' .
+				'<link rel="stylesheet" href="http://example.org/wp-content/plugins/hello-dolly/style.css">' .
+				'<link rel="stylesheet" href="http://example.org/wp-content/themes/twentytwenty/style-import.css" type="text/css" media="all">' .
+				'<link rel="stylesheet" href="http://example.org/wp-includes/css/dashicons.min.css">' .
+				'</head><body></body></html>',
+
+			'expected' => [
+				'html'  => '<html><head><title>Sample Page</title>' .
+				           '<link rel="stylesheet" href="http://example.org/wp-content/cache/min/1/afeb29591023f7eb6314ad594ca01138.css" media="all" data-minify="1" />' .
+				           '</head><body></body></html>',
+				'files' => [
+					'wp-content/cache/min/1/afeb29591023f7eb6314ad594ca01138.css',
+					'wp-content/cache/min/1/afeb29591023f7eb6314ad594ca01138.css.gz',
+				],
+				'css' => '@import url(vfs://public/wp-content/themes/twentytwenty/style.css);body{font-family:Helvetica,Arial,sans-serif;text-align:center}body{font-family:Helvetica,Arial,sans-serif;text-align:center}',
+			],
+
+			'cdn_host' => [],
+			'cdn_url'  => 'http://example.org',
+			'site_url' => 'http://example.org',
+		],
+
 		'combineCssFilesWithExternalCSS' => [
 			'original' =>
 				'<html><head><title>Sample Page</title>' .
