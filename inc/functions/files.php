@@ -263,14 +263,26 @@ function rocket_init_cache_dir() {
 		rocket_mkdir_p( WP_ROCKET_MINIFY_CACHE_PATH );
 	}
 
+	if ( ! rocket_direct_filesystem()->is_file( WP_ROCKET_MINIFY_CACHE_PATH . 'index.html' ) ) {
+		rocket_direct_filesystem()->touch( WP_ROCKET_MINIFY_CACHE_PATH . 'index.html' );
+	}
+
 	// Create busting cache folder if not exist.
 	if ( ! rocket_direct_filesystem()->is_dir( WP_ROCKET_CACHE_BUSTING_PATH ) ) {
 		rocket_mkdir_p( WP_ROCKET_CACHE_BUSTING_PATH );
 	}
 
+	if ( ! rocket_direct_filesystem()->is_file( WP_ROCKET_CACHE_BUSTING_PATH . 'index.html' ) ) {
+		rocket_direct_filesystem()->touch( WP_ROCKET_CACHE_BUSTING_PATH . 'index.html' );
+	}
+
 	// Create critical CSS folder if not exist.
 	if ( ! rocket_direct_filesystem()->is_dir( WP_ROCKET_CRITICAL_CSS_PATH ) ) {
 		rocket_mkdir_p( WP_ROCKET_CRITICAL_CSS_PATH );
+	}
+
+	if ( ! rocket_direct_filesystem()->is_file( WP_ROCKET_CRITICAL_CSS_PATH . 'index.html' ) ) {
+		rocket_direct_filesystem()->touch( WP_ROCKET_CRITICAL_CSS_PATH . 'index.html' );
 	}
 }
 
