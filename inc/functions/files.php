@@ -286,6 +286,11 @@ function rocket_init_config_dir() {
 	if ( ! rocket_direct_filesystem()->is_dir( WP_ROCKET_CONFIG_PATH ) ) {
 		rocket_mkdir_p( WP_ROCKET_CONFIG_PATH );
 	}
+
+	// Initialize the config directory with index.html to prevent indexing.
+	if ( ! rocket_direct_filesystem()->is_file( WP_ROCKET_CONFIG_PATH . 'index.html' ) ) {
+		rocket_direct_filesystem()->touch( WP_ROCKET_CONFIG_PATH . 'index.html' );
+	}
 }
 
 /**
