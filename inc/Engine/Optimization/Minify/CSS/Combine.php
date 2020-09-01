@@ -294,22 +294,10 @@ class Combine extends AbstractCSSOptimization implements ProcessorInterface {
 				continue;
 			}
 
-			if ( false !== strpos( $style['url'], '.min.css' ) ) {
-				$content .= $file_content;
-
-				continue;
-			}
-
-			$minified_content = $this->minify( $file_content );
-
-			if ( empty( $minified_content ) ) {
-				unset( $this->styles[ $key ] );
-
-				continue;
-			}
-
-			$content .= $minified_content;
+			$content .= $file_content;
 		}
+
+		$content = $this->minify( $content );
 
 		if ( empty( $content ) ) {
 			Logger::debug( 'No CSS content.', [ 'css combine process' ] );
