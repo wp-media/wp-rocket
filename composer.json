@@ -57,6 +57,7 @@
 		"wp-media/background-processing": "^1.3",
 		"wp-media/cloudflare": "^1.0",
 		"wp-media/module-rocketcdn": "^1.0",
+		"wp-media/module-varnish": "^1.0",
 		"wp-media/rocket-lazyload-common": "^2",
 		"wp-media/phpunit": "^1.0",
 		"wp-media/wp-imagify-partner": "^1.0",
@@ -89,6 +90,7 @@
 		"installer-paths": {
 			"vendor/{$vendor}/{$name}/": ["type:wordpress-plugin"],
 			"./inc/Addon/Cloudflare/": ["wp-media/cloudflare"],
+			"./inc/Addon/Varnish/": ["wp-media/module-varnish"],
 			"./inc/Engine/CDN/RocketCDN/": ["wp-media/module-rocketcdn"]
 		},
 		"mozart": {
