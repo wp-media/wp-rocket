@@ -53,6 +53,7 @@ class Settings {
 		'livechatinc.com/tracking.js',
 		'LiveChatWidget',
 		'/busting/facebook-tracking/',
+		'olark',
 	];
 
 	/**

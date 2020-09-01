@@ -24,6 +24,7 @@ return [
 				'assets'    => [
 					'script.js' => 'test',
 				],
+				'style-import.css' => '@import url(style.css)',
 			],
 		],
 		'plugins' => [

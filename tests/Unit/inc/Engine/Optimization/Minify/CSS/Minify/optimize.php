@@ -1,6 +1,7 @@
 <?php
 namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\Minify\CSS\Minify;
 
+use Brain\Monkey\Functions;
 use Brain\Monkey\Filters;
 use Mockery;
 use WP_Rocket\Engine\Optimization\AssetsLocalCache;
@@ -64,6 +65,16 @@ class Test_Optimize extends TestCase {
 				return'wp-content/cache/min/3rd-party/' .
 					  $url_parts['host'] . str_replace( '/', '-', $url_parts['path'] );
 			});
+
+		Functions\when( 'site_url' )->justReturn( $site_url );
+		Functions\when( 'set_url_scheme')->alias( function ( $url ) {		 
+			$url = trim( $url );
+			if ( substr( $url, 0, 2 ) === '//' ) {
+				$url = 'http:' . $url;
+			}
+		 
+			return preg_replace( '#^\w+://#', 'http://', $url );
+		});
 
 		$this->local_cache
 			->shouldReceive( 'get_content' )

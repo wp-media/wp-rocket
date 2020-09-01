@@ -4,7 +4,6 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\Minify\CSS\Combine;
 
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
-use WP_Rocket\Dependencies\Minify;
 use Mockery;
 use WP_Rocket\Engine\Optimization\AssetsLocalCache;
 use WP_Rocket\Engine\Optimization\Minify\CSS\Combine;
@@ -66,6 +65,13 @@ class Test_Optimize extends TestCase {
 		$this->assertSame(
 			$expected['html'],
 			$this->combine->optimize( $original )
+		);
+
+		$this->assertSame(
+			$expected['css'],
+			$this->filesystem->get_contents(
+				$this->filesystem->getUrl( $expected['files'][0] )
+			)
 		);
 
 		$this->assertFilesExists( $expected['files'] );
