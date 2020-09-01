@@ -43,8 +43,12 @@ class Test_Optimize extends TestCase {
 			return $wp_scripts;
 		} );
 
-		Functions\when( 'site_url' )->returnArg();
-		Functions\when('rocket_clean_exclude_file')->returnArg();
+		Functions\when( 'site_url' )->alias( function( $path = '') {
+			return 'http://example.org/' . ltrim( $path, '/' );
+		} );
+		Functions\when( 'rocket_clean_exclude_file' )->alias( function( $file = '' ) {
+			return parse_url( $file, PHP_URL_PATH );
+		} );
 
 		$this->options->shouldReceive( 'get' )
 			->with( 'minify_js_key', 'rocket_uniqid' )
