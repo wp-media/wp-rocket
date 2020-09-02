@@ -3,16 +3,21 @@
 namespace WP_Rocket\Engine\Optimization;
 
 class APIClient {
-	const API_URL = 'https://example.org';
+	const API_URL = 'https://tree.wp-rocket.me/';
 
 	public function optimize( $html, array $options ) {
+		global $wp;
+
+		timer_start();
+
+		$url = home_url( add_query_arg( array(), $wp->request ) );
+
 		$args = [
-			'body' => wp_json_encode(
-				[
-					'html'    => $html,
-					'options' => $options,
-				]
-			),
+			'body' => [
+				'html'    => $html,
+				'url'     => $url,
+				'config' => $options,
+			]
 		];
 
 		$request = wp_remote_post(
@@ -28,6 +33,8 @@ class APIClient {
 			return $html;
 		}
 
-		return wp_json_decode( wp_remote_retrieve_body( $request ) );
+		error_log( 'Optimization time: ' . timer_stop() );
+
+		return wp_remote_retrieve_body( $request );
 	}
 }
