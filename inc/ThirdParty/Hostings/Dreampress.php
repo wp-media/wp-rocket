@@ -2,19 +2,12 @@
 
 namespace WP_Rocket\ThirdParty\Hostings;
 
-use WP_Rocket\Engine\Activation\ActivationInterface;
-use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Rocket\ThirdParty\NullSubscriber;
-use WP_Rocket\ThirdParty\ReturnTypesTrait;
-
 /**
  * Compatibility class for DreamPress
  *
  * @since 3.7.1
  */
-class Dreampress extends NullSubscriber implements Subscriber_Interface, ActivationInterface {
-	use ReturnTypesTrait;
-
+class Dreampress extends AbstractNoCacheHost  {
 	/**
 	 * Array of events this subscriber wants to listen to.
 	 *
@@ -27,6 +20,9 @@ class Dreampress extends NullSubscriber implements Subscriber_Interface, Activat
 			'do_rocket_varnish_http_purge'            => 'return_true',
 			'rocket_varnish_field_settings'           => 'varnish_addon_title',
 			'rocket_display_input_varnish_auto_purge' => 'return_false',
+			'rocket_set_wp_cache_constant'            => 'return_false',
+			'do_rocket_generate_caching_files'        => 'return_false',
+			'rocket_generate_advanced_cache_file'     => 'return_false',
 			'rocket_cache_mandatory_cookies'          => [ 'return_empty_array', PHP_INT_MAX ],
 			'rocket_htaccess_mod_expires'             => [ 'remove_htaccess_html_expire', 5 ],
 		];
@@ -73,6 +69,8 @@ class Dreampress extends NullSubscriber implements Subscriber_Interface, Activat
 	 * @return void
 	 */
 	public function activate() {
+		parent::activate();
+
 		add_action( 'rocket_activation', [ $this, 'activate_no_htaccess_html_expire' ] );
 	}
 
