@@ -52,6 +52,15 @@ class Test_Process extends TestCase {
 			$this->format_the_html( $actual )
 		);
 
+		if ( isset( $expected['css'] ) ){
+			$this->assertSame(
+				$expected['css'],
+				$this->filesystem->get_contents(
+					$this->filesystem->getUrl( $expected['files'][0] )
+				)
+			);
+		}
+
 		$this->assertFilesExists( $expected['files'] );
 	}
 }

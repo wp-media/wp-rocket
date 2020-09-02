@@ -42,6 +42,7 @@ $list = [
 	'livechatinc.com/tracking.js',
 	'LiveChatWidget',
 	'/busting/facebook-tracking/',
+	'olark',
 ];
 
 return [

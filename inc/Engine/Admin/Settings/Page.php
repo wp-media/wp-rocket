@@ -1093,6 +1093,17 @@ class Page {
 					],
 					'page'        => 'preload',
 				],
+				'preload_links_section' => [
+					'title'       => __( 'Preload Links', 'rocket' ),
+					'type'        => 'fields_container',
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description' => sprintf( __( 'Link preloading improves the perceived load time by downloading a page when a user hovers over the link. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $preload_links['url'] ) . '" data-beacon-article="' . esc_attr( $preload_links['id'] ) . '" target="_blank">', '</a>' ),
+					'help'        => [
+						'id'  => $preload_links['id'],
+						'url' => $preload_links['url'],
+					],
+					'page'        => 'preload',
+				],
 				'dns_prefetch_section'  => [
 					'title'       => __( 'Prefetch DNS Requests', 'rocket' ),
 					'type'        => 'fields_container',
@@ -1111,17 +1122,6 @@ class Page {
 					'help'        => [
 						'id'  => $fonts_preload['id'],
 						'url' => $fonts_preload['url'],
-					],
-					'page'        => 'preload',
-				],
-				'preload_links_section' => [
-					'title'       => __( 'Preload Links', 'rocket' ),
-					'type'        => 'fields_container',
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description' => sprintf( __( 'Link preloading improves the perceived load time by downloading a page when a user hovers over the link. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $preload_links['url'] ) . '" data-beacon-article="' . esc_attr( $preload_links['id'] ) . '" target="_blank">', '</a>' ),
-					'help'        => [
-						'id'  => $preload_links['id'],
-						'url' => $preload_links['url'],
 					],
 					'page'        => 'preload',
 				],

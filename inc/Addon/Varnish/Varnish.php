@@ -1,31 +1,12 @@
 <?php
 namespace WP_Rocket\Addon\Varnish;
 
-use WP_Rocket\Admin\Options_Data;
-
 /**
  * Varnish cache purge
  *
  * @since 3.5
- * @author Remy Perona
  */
 class Varnish {
-	/**
-	 * WP Rocket options instance.
-	 *
-	 * @var Options_Data
-	 */
-	private $options;
-
-	/**
-	 * Constructor
-	 *
-	 * @param Options_Data $options WP Rocket options instance.
-	 */
-	public function __construct( Options_Data $options ) {
-		$this->options = $options;
-	}
-
 	/**
 	 * Send purge request to Varnish
 	 *
@@ -45,24 +26,6 @@ class Varnish {
 		}
 
 		/**
-		* Filter the Varnish IP to call
-		*
-		* @since 2.6.8
-		* @param string|array $varnish_ip The Varnish IP
-		*/
-		$varnish_ip = apply_filters( 'rocket_varnish_ip', [] );
-
-		if ( defined( 'WP_ROCKET_VARNISH_IP' ) && ! $varnish_ip ) {
-			$varnish_ip = WP_ROCKET_VARNISH_IP;
-		}
-
-		if ( empty( $varnish_ip ) ) {
-			$varnish_ip = [ '' ];
-		} elseif ( \is_string( $varnish_ip ) ) {
-			$varnish_ip = (array) $varnish_ip;
-		}
-
-		/**
 		 * Filter the HTTP protocol (scheme)
 		 *
 		 * @since 2.7.3
@@ -74,7 +37,6 @@ class Varnish {
 		 * Filters the headers to send with the Varnish purge request
 		 *
 		 * @since 3.1
-		 * @author Remy Perona
 		 *
 		 * @param array $headers Headers to send.
 		 */
@@ -96,9 +58,8 @@ class Varnish {
 		 * Filters the arguments passed to the Varnish purge request
 		 *
 		 * @since 3.5
-		 * @author Remy Perona
 		 *
-		 * @param array Array of arguments for the request.
+		 * @param array $args Array of arguments for the request.
 		 */
 		$args = apply_filters(
 			'rocket_varnish_purge_request_args',
@@ -110,7 +71,7 @@ class Varnish {
 			]
 		);
 
-		foreach ( $varnish_ip as $ip ) {
+		foreach ( $this->get_varnish_ips() as $ip ) {
 			$host           = ! empty( $ip ) ? $ip : str_replace( '*', '', $parse_url['host'] );
 			$purge_url_main = $scheme . '://' . $host . $parse_url['path'];
 
@@ -132,5 +93,37 @@ class Varnish {
 
 			wp_remote_request( $purge_url, $args );
 		}
+	}
+
+	/**
+	 * Gets an array of Varnish IPs to send the purge request to
+	 *
+	 * @return array
+	 */
+	private function get_varnish_ips() {
+		/**
+		* Filter the Varnish IP to call
+		*
+		* @since 2.6.8
+		* @param string|array $varnish_ip The Varnish IP
+		*/
+		$varnish_ip = apply_filters( 'rocket_varnish_ip', [] );
+		$constant   = rocket_get_constant( 'WP_ROCKET_VARNISH_IP' );
+
+		if (
+			! empty( $constant )
+			&&
+			empty( $varnish_ip )
+		) {
+			$varnish_ip = $constant;
+		}
+
+		if ( empty( $varnish_ip ) ) {
+			$varnish_ip = [ '' ];
+		} elseif ( is_string( $varnish_ip ) ) {
+			$varnish_ip = (array) $varnish_ip;
+		}
+
+		return $varnish_ip;
 	}
 }
