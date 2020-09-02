@@ -20,7 +20,6 @@ use WP_Rocket\Tests\Unit\inc\Engine\Optimization\TestCase;
  */
 class Test_Optimize extends TestCase {
 	protected $path_to_test_data = '/inc/Engine/Optimization/Minify/JS/Combine/combine.php';
-	private   $combine;
 	private   $minify;
 
 	public function setUp() {
@@ -49,7 +48,12 @@ class Test_Optimize extends TestCase {
 		Functions\when( 'rocket_clean_exclude_file' )->alias( function( $file = '' ) {
 			return parse_url( $file, PHP_URL_PATH );
 		} );
+	}
 
+	/**
+	 * @dataProvider providerTestData
+	 */
+	public function testShouldCombineJS( $original, $expected, $config ) {
 		$this->options->shouldReceive( 'get' )
 			->with( 'minify_js_key', 'rocket_uniqid' )
 			->andReturn( 'rocket_uniqid' );
@@ -58,41 +62,36 @@ class Test_Optimize extends TestCase {
 			->andReturn( [] );
 		$this->options->shouldReceive( 'get' )
 			->with( 'defer_all_js', 0 )
-			->andReturn( 1 );
+			->andReturn( $config['defer_all_js'] );
 		$this->options->shouldReceive( 'get' )
 			->with( 'defer_all_js_safe', 0 )
-			->andReturn( 1 );
+			->andReturn( $config['defer_all_js_safe'] );
 		$this->options->shouldReceive( 'get' )
 			->with( 'exclude_js', [] )
 			->andReturn( [] );
 
-		$this->combine = new Combine( $this->options, $this->minify, Mockery::mock( AssetsLocalCache::class ) );
-	}
-
-	/**
-	 * @dataProvider providerTestData
-	 */
-	public function testShouldCombineJS( $original, $expected, $cdn_hosts, $cdn_url, $site_url ) {
 		Filters\expectApplied( 'rocket_cdn_hosts' )
 			->zeroOrMoreTimes()
 			->with( [], [ 'all', 'css_and_js', 'js' ] )
-			->andReturn( $cdn_hosts );
+			->andReturn( $config['cdn_host'] );
 
 		Filters\expectApplied( 'rocket_asset_url' )
 			->zeroOrMoreTimes()
-			->andReturnUsing( function ( $url ) use ( $cdn_url, $site_url ) {
-				return str_replace( $cdn_url, $site_url, $url );
+			->andReturnUsing( function ( $url ) use ( $config ) {
+				return str_replace( $config['cdn_url'], $config['site_url'], $url );
 			} );
 
 		Filters\expectApplied( 'rocket_js_url' )
 			->zeroOrMoreTimes()
-			->andReturnUsing( function ( $url, $original_url ) use ( $cdn_url ) {
-				return str_replace( 'http://example.org', $cdn_url, $url );
+			->andReturnUsing( function ( $url, $original_url ) use ( $config ) {
+				return str_replace( 'http://example.org', $config['cdn_url'], $url );
 			} );
+
+		$combine = new Combine( $this->options, $this->minify, Mockery::mock( AssetsLocalCache::class ) );
 
 		$this->assertSame(
 			$this->format_the_html( $expected['html'] ),
-			$this->format_the_html( $this->combine->optimize( $original ) )
+			$this->format_the_html( $combine->optimize( $original ) )
 		);
 
 		$this->assertFilesExists( $expected['files'] );
