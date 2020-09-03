@@ -41,7 +41,7 @@ class Dreampress extends AbstractNoCacheHost  {
 		$settings['varnish_auto_purge']['title'] = sprintf(
 		// Translators: %s = Hosting name.
 			__( 'Your site is hosted on %s, we have enabled Varnish auto-purge for compatibility.', 'rocket' ),
-			'Dreampress'
+			'DreamPress'
 		);
 
 		return $settings;

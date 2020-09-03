@@ -89,6 +89,10 @@ tests_add_filter(
 			define( 'WPCOMSH_VERSION', '1.0' );
 		}
 
+		if ( BootstrapManager::isGroup( 'Dreampress' ) ) {
+			$_SERVER['x-hosted-by'] = 'DreamPress';
+		}
+
 		if ( BootstrapManager::isGroup( 'PDFEmbedder' ) ) {
 			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/pdf-embedder/pdf_embedder.php';
 		}
