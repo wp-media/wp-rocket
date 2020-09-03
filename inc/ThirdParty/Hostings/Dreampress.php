@@ -7,7 +7,7 @@ namespace WP_Rocket\ThirdParty\Hostings;
  *
  * @since 3.7.1
  */
-class Dreampress extends AbstractNoCacheHost  {
+class Dreampress extends AbstractNoCacheHost {
 	/**
 	 * Array of events this subscriber wants to listen to.
 	 *
