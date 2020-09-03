@@ -81,7 +81,11 @@ class HostResolver {
 			return 'savvii';
 		}
 
-		if ( 'DreamPress' === $_SERVER['x-hosted-by'] ) {
+		if (
+			isset( $_SERVER['x-hosted-by'] )
+			&&
+			'DreamPress' === $_SERVER['x-hosted-by']
+		) {
 			return 'dreampress';
 		}
 
