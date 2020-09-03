@@ -3,7 +3,7 @@
 namespace WP_Rocket\Engine\Optimization;
 
 class APIClient {
-	const API_URL = 'https://tree.wp-rocket.me/';
+	const API_URL = 'https://saas.wp-rocket.me/api/';
 
 	public function optimize( $html, array $options ) {
 		global $wp;
