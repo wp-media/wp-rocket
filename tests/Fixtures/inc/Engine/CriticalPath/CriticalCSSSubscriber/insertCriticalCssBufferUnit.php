@@ -1,7 +1,7 @@
 <?php
 
 $script_min = <<<JS
-<script>"use strict";var wprRemoveCPCSS=function wprRemoveCPCSS(){var elem;document.querySelector('link[data-rocket-async="style"][rel="preload"]')?setTimeout(wprRemoveCPCSS,200):(elem=document.getElementById("rocket-critical-css"))&&elem.remove()};window.addEventListener?window.addEventListener("load",wprRemoveCPCSS):window.attachEvent&&window.attachEvent("onload",wprRemoveCPCSS);</script>
+<script>"use strict";var wprRemoveCPCSS=function wprRemoveCPCSS(){var elem;document.querySelector('link[data-rocket-async="style"][rel="preload"]')?setTimeout(wprRemoveCPCSS,200):null!==(elem=document.getElementById("rocket-critical-css"))&&elem.remove()};window.addEventListener?window.addEventListener("load",wprRemoveCPCSS):window.attachEvent&&window.attachEvent("onload",wprRemoveCPCSS);</script>
 JS;
 
 return [
@@ -189,7 +189,7 @@ return [
 		setTimeout( wprRemoveCPCSS, 200 );
 	} else {
 		const elem = document.getElementById( 'rocket-critical-css' );
-		if ( elem ) {
+		if ( null !== elem ) {
 			elem.remove();
 		}
 	}
