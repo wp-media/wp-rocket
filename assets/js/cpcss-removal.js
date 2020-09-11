@@ -3,7 +3,7 @@ const wprRemoveCPCSS = () => {
 		setTimeout( wprRemoveCPCSS, 200 );
 	} else {
 		const elem = document.getElementById( 'rocket-critical-css' );
-		if ( null !== elem ) {
+		if ( elem && 'remove' in elem ) {
 			elem.remove();
 		}
 	}
