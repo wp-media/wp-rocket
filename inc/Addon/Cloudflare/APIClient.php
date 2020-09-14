@@ -306,7 +306,7 @@ class APIClient {
 		$data = wp_remote_retrieve_body( $response );
 
 		if ( empty( $data ) ) {
-			throw new Exception( __( 'Ops Cloudflare did not provide any reply. Please try again later.', 'rocket' ) );
+			throw new Exception( __( 'Cloudflare did not provide any reply. Please try again later.', 'rocket' ) );
 		}
 
 		$data = json_decode( $data );
