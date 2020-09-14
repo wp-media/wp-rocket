@@ -408,6 +408,9 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 	 */
 	protected function get_excluded_inline_content() {
 		$defaults = [
+			'RocketBrowserCompatibilityChecker',
+			'RocketLazyLoadScripts',
+			'RocketPreloadLinks',
 			'document.write',
 			'google_ad',
 			'edToolbar',
