@@ -54,6 +54,7 @@ class Settings {
 		'LiveChatWidget',
 		'/busting/facebook-tracking/',
 		'olark',
+		'pixel-caffeine/build/frontend.js'
 	];
 
 	/**
