@@ -760,6 +760,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'wp_post_blocks_vars.listed_posts=[',
 			'captcha-hash',
 			'mapdata={',
+			'RocketBrowserCompatibilityChecker',
 		];
 
 		/**
