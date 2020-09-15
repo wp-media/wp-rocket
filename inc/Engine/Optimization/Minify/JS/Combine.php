@@ -408,7 +408,6 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 	 */
 	protected function get_excluded_inline_content() {
 		$defaults = [
-			'RocketBrowserCompatibilityChecker',
 			'document.write',
 			'google_ad',
 			'edToolbar',
@@ -761,6 +760,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'wp_post_blocks_vars.listed_posts=[',
 			'captcha-hash',
 			'mapdata={',
+			'RocketBrowserCompatibilityChecker'
 		];
 
 		/**
