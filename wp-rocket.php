@@ -3,7 +3,7 @@
  * Plugin Name: WP Rocket
  * Plugin URI: https://wp-rocket.me
  * Description: The best WordPress performance plugin.
- * Version: 3.7.0.1
+ * Version: 3.7.1
  * Code Name: Jakku
  * Author: WP Media
  * Author URI: https://wp-media.me
@@ -18,7 +18,7 @@
 defined( 'ABSPATH' ) || exit;
 
 // Rocket defines.
-define( 'WP_ROCKET_VERSION',               '3.7.0.1' );
+define( 'WP_ROCKET_VERSION',               '3.7.1' );
 define( 'WP_ROCKET_WP_VERSION',            '4.9' );
 define( 'WP_ROCKET_WP_VERSION_TESTED',     '5.5.1' );
 define( 'WP_ROCKET_PHP_VERSION',           '5.6' );
