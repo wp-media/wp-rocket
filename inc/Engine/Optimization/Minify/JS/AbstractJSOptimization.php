@@ -167,7 +167,11 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 		$jquery         = wp_scripts()->registered['jquery-core']->src;
 
 		if ( isset( $jquery ) ) {
-			$exclude_jquery[] = $jquery;
+			if ( empty( wp_parse_url( $jquery, PHP_URL_HOST ) ) ) {
+				$exclude_jquery[] = wp_parse_url( site_url( $jquery ), PHP_URL_PATH );
+			} else {
+				$exclude_jquery[] = $jquery;
+			}
 		}
 
 		$exclude_jquery[] = 'c0.wp.com/c/(?:.+)/wp-includes/js/jquery/jquery.js';

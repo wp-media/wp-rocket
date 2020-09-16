@@ -5,7 +5,59 @@ return [
 
 	'test_data' => [
 
-		'combineJsFiles' => [
+		'testShouldCombineJsFiles' => [
+			'original' => <<<ORIGINAL_HTML
+<html>
+	<head>
+		<title>Sample Page</title>
+		<script type="text/javascript" src="http://example.org/wp-content/themes/twentytwenty/assets/script.js"></script>
+		<script type="text/javascript" src="http://example.org/wp-content/plugins/hello-dolly/script.js"></script>
+		<script type="text/javascript" src="http://example.org/wp-includes/js/jquery/jquery.js"></script>
+		<script>
+		document.getElementById("demo").innerHTML = "Hello JavaScript!";
+		</script>
+		<script>
+		nonce = "nonce";
+		</script>
+	</head>
+	<body>
+	</body>
+</html>
+ORIGINAL_HTML
+			,
+
+			'expected' => [
+				'html' => <<<EXPECTED_HTML
+<html>
+	<head>
+		<title>Sample Page</title>
+		<script>
+		nonce = "nonce";
+		</script>
+	</head>
+	<body>
+		<script src="http://example.org/wp-content/cache/min/1/900b339c19ff5a927b3311bf5ddb4dfd.js" data-minify="1"></script>
+	</body>
+</html>
+EXPECTED_HTML
+				,
+
+				'files' => [
+					'wp-content/cache/min/1/900b339c19ff5a927b3311bf5ddb4dfd.js',
+					'wp-content/cache/min/1/900b339c19ff5a927b3311bf5ddb4dfd.js.gz',
+				],
+			],
+
+			'config'   => [
+				'cdn_host'          => [],
+				'cdn_url'           => 'http://example.org',
+				'site_url'          => 'http://example.org',
+				'defer_all_js'      => false,
+				'defer_all_js_safe' => false,
+			],
+		],
+
+		'testShouldCombineJsFilesWithoutjQueryWhenDeferSafeMode' => [
 			'original' => <<<ORIGINAL_HTML
 <html>
 	<head>
@@ -49,12 +101,16 @@ EXPECTED_HTML
 				],
 			],
 
-			'cdn_host' => [],
-			'cdn_url'  => 'http://example.org',
-			'site_url' => 'http://example.org',
+			'config'   => [
+				'cdn_host'          => [],
+				'cdn_url'           => 'http://example.org',
+				'site_url'          => 'http://example.org',
+				'defer_all_js'      => true,
+				'defer_all_js_safe' => true,
+			],
 		],
 
-		'combineJsFilesExceptExcluded' => [
+		'testShouldCombineJsFilesExceptExcluded' => [
 			'original' => <<<ORIGINAL_HTML
 <html>
 	<head>
@@ -62,7 +118,6 @@ EXPECTED_HTML
 		<script type="text/javascript" src="http://example.org/wp-content/themes/twentytwenty/assets/script.js"></script>
 		<script type="text/javascript" src="http://example.org/wp-content/plugins/hello-dolly/script.js"></script>
 		<script type="text/javascript" src="http://example.org/wp-includes/js/jquery/jquery.js"></script>
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
 		<script>
 		document.getElementById("demo").innerHTML = "Hello JavaScript!";
 		</script>
@@ -81,31 +136,33 @@ ORIGINAL_HTML
 <html>
 	<head>
 		<title>Sample Page</title>
-		<script type="text/javascript" src="http://example.org/wp-includes/js/jquery/jquery.js"></script>
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
 		<script>
 		nonce = "nonce";
 		</script>
 	</head>
 	<body>
-		<script src="http://example.org/wp-content/cache/min/1/cfe4eede7af9db7e8fa8951ee9782333.js" data-minify="1"></script>
+		<script src="http://example.org/wp-content/cache/min/1/900b339c19ff5a927b3311bf5ddb4dfd.js" data-minify="1"></script>
 	</body>
 </html>
 EXPECTED_HTML
 				,
 
 				'files' => [
-					'wp-content/cache/min/1/cfe4eede7af9db7e8fa8951ee9782333.js',
-					'wp-content/cache/min/1/cfe4eede7af9db7e8fa8951ee9782333.js.gz',
+					'wp-content/cache/min/1/900b339c19ff5a927b3311bf5ddb4dfd.js',
+					'wp-content/cache/min/1/900b339c19ff5a927b3311bf5ddb4dfd.js.gz',
 				],
 			],
 
-			'cdn_host' => [],
-			'cdn_url'  => 'http://example.org',
-			'site_url' => 'http://example.org',
+			'config'   => [
+				'cdn_host'          => [],
+				'cdn_url'           => 'http://example.org',
+				'site_url'          => 'http://example.org',
+				'defer_all_js'      => false,
+				'defer_all_js_safe' => false,
+			],
 		],
 
-		'combineJsFilesExceptDelayed' => [
+		'testShouldCombineJsFilesExceptDelayed' => [
 			'original' => <<<ORIGINAL_HTML
 <html>
 	<head>
@@ -151,12 +208,16 @@ EXPECTED_HTML
 				],
 			],
 
-			'cdn_host' => [],
-			'cdn_url'  => 'http://example.org',
-			'site_url' => 'http://example.org',
+			'config'   => [
+				'cdn_host'          => [],
+				'cdn_url'           => 'http://example.org',
+				'site_url'          => 'http://example.org',
+				'defer_all_js'      => false,
+				'defer_all_js_safe' => false,
+			],
 		],
 
-		'combineJsFiles_andUseCdnUrl' => [
+		'testShouldCombineJsFilesAndUseCdnUrl' => [
 			'original' => <<<ORIGINAL_HTML
 <html>
 	<head>
@@ -182,30 +243,33 @@ ORIGINAL_HTML
 <html>
 	<head>
 		<title>Sample Page</title>
-		<script type="text/javascript" src="http://example.org/wp-includes/js/jquery/jquery.js"></script>
 		<script>
 		nonce = "nonce";
 		</script>
 	</head>
 	<body>
-		<script src="https://123456.rocketcdn.me/wp-content/cache/min/1/cfe4eede7af9db7e8fa8951ee9782333.js" data-minify="1"></script>
+		<script src="https://123456.rocketcdn.me/wp-content/cache/min/1/900b339c19ff5a927b3311bf5ddb4dfd.js" data-minify="1"></script>
 	</body>
 </html>
 EXPECTED_HTML
 				,
 
 				'files' => [
-					'wp-content/cache/min/1/cfe4eede7af9db7e8fa8951ee9782333.js',
-					'wp-content/cache/min/1/cfe4eede7af9db7e8fa8951ee9782333.js.gz',
+					'wp-content/cache/min/1/900b339c19ff5a927b3311bf5ddb4dfd.js',
+					'wp-content/cache/min/1/900b339c19ff5a927b3311bf5ddb4dfd.js.gz',
 				],
 			],
 
-			'cdn_host' => [ '123456.rocketcdn.me' ],
-			'cdn_url'  => 'https://123456.rocketcdn.me',
-			'site_url' => 'http://example.org',
+			'config'   => [
+				'cdn_host' => [ '123456.rocketcdn.me' ],
+				'cdn_url'  => 'https://123456.rocketcdn.me',
+				'site_url' => 'http://example.org',
+				'defer_all_js'      => false,
+				'defer_all_js_safe' => false,
+			],
 		],
 
-		'combineJsFiles_whenCdnUrl' => [
+		'testShouldCombineJsFilesWhenCdnUrl' => [
 			'original' => <<<ORIGINAL_HTML
 <html>
 	<head>
@@ -231,29 +295,32 @@ ORIGINAL_HTML
 <html>
 	<head>
 		<title>Sample Page</title>
-		<script type="text/javascript" src="https://123456.rocketcdn.me/wp-includes/js/jquery/jquery.js"></script>
 		<script>
 		nonce = "nonce";
 		</script>
 	</head>
 	<body>
-		<script src="https://123456.rocketcdn.me/wp-content/cache/min/1/cfe4eede7af9db7e8fa8951ee9782333.js" data-minify="1"></script>
+		<script src="https://123456.rocketcdn.me/wp-content/cache/min/1/900b339c19ff5a927b3311bf5ddb4dfd.js" data-minify="1"></script>
 	</body>
 </html>
 EXPECTED_HTML
 				,
 				'files' => [
-					'wp-content/cache/min/1/cfe4eede7af9db7e8fa8951ee9782333.js',
-					'wp-content/cache/min/1/cfe4eede7af9db7e8fa8951ee9782333.js.gz',
+					'wp-content/cache/min/1/900b339c19ff5a927b3311bf5ddb4dfd.js',
+					'wp-content/cache/min/1/900b339c19ff5a927b3311bf5ddb4dfd.js.gz',
 				],
 			],
 
-			'cdn_host' => [ '123456.rocketcdn.me' ],
-			'cdn_url'  => 'https://123456.rocketcdn.me',
-			'site_url' => 'http://example.org',
+			'config'   => [
+				'cdn_host' => [ '123456.rocketcdn.me' ],
+				'cdn_url'  => 'https://123456.rocketcdn.me',
+				'site_url' => 'http://example.org',
+				'defer_all_js'      => false,
+				'defer_all_js_safe' => false,
+			],
 		],
 
-		'combineCssFiles_whenCdnUrlWithSubdir' => [
+		'testShouldCombineCssFilesWhenCdnUrlWithSubdir' => [
 			'original' => <<<ORIGINAL_HTML
 <html>
 	<head>
@@ -295,9 +362,13 @@ EXPECTED_HTML
 				],
 			],
 
-			'cdn_host' => [ '123456.rocketcdn.me/cdnpath' ],
-			'cdn_url'  => 'https://123456.rocketcdn.me/cdnpath',
-			'site_url' => 'http://example.org',
+			'config'   => [
+				'cdn_host' => [ '123456.rocketcdn.me/cdnpath' ],
+				'cdn_url'  => 'https://123456.rocketcdn.me/cdnpath',
+				'site_url' => 'http://example.org',
+				'defer_all_js'      => false,
+				'defer_all_js_safe' => false,
+			],
 		],
 	],
 ];
