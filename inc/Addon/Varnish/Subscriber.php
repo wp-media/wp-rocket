@@ -8,7 +8,6 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * Subscriber for the Varnish Purge.
  *
  * @since 3.5
- * @author Remy Perona
  */
 class Subscriber implements Subscriber_Interface {
 	/**
@@ -51,21 +50,20 @@ class Subscriber implements Subscriber_Interface {
 	 * Checks if Varnish cache should be purged
 	 *
 	 * @since 3.5
-	 * @author Remy Perona
 	 *
 	 * @return bool
 	 */
 	private function should_purge() {
-		/**
-		 * Filters the use of the Varnish compatibility add-on
-		 *
-		 * @param bool $varnish_purge True to use, false otherwise.
-		 */
-		if ( ! apply_filters( 'do_rocket_varnish_http_purge', false ) && ! $this->options->get( 'varnish_auto_purge', 0 ) ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
-			return false;
-		}
-
-		return true;
+		return (
+			/**
+			 * Filters the use of the Varnish compatibility add-on
+			 *
+			 * @param bool $varnish_purge True to use, false otherwise.
+			 */
+			apply_filters( 'do_rocket_varnish_http_purge', false ) // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+			||
+			(bool) $this->options->get( 'varnish_auto_purge', 0 )
+		);
 	}
 
 	/**
@@ -87,7 +85,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Clears a specific page in Varnish cache
 	 *
-	 * @param [type] $url The url to purge.
+	 * @param string $url The url to purge.
 	 * @return void
 	 */
 	public function clean_file( $url ) {
