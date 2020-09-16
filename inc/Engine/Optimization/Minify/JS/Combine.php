@@ -621,6 +621,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'scriptParams',
 			'form-adv-pagination',
 			'borlabsCookiePrioritize',
+			'urls_wpwidgetpolylang'
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
