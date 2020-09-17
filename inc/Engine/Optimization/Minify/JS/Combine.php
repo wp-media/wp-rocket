@@ -636,6 +636,8 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'archives-dropdown',
 			'loftloaderCache',
 			'SmartSliderSimple',
+			'RocketBrowserCompatibilityChecker',
+			'RocketPreloadLinksConfig',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
@@ -760,7 +762,6 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'wp_post_blocks_vars.listed_posts=[',
 			'captcha-hash',
 			'mapdata={',
-			'RocketBrowserCompatibilityChecker',
 		];
 
 		/**
