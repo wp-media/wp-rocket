@@ -636,6 +636,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'archives-dropdown',
 			'loftloaderCache',
 			'SmartSliderSimple',
+			'RocketPreloadLinksConfig',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
