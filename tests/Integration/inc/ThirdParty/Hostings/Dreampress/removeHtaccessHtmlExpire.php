@@ -11,18 +11,6 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group  ThirdParty
  */
 class Test_RemoveHtaccessHtmlExpire extends TestCase {
-	public function setUp() {
-		parent::setUp();
-
-		add_filter( 'home_url', [ $this, 'set_home_url' ] );
-	}
-
-	public function tearDown() {
-		parent::tearDown();
-
-		remove_filter( 'home_url', [ $this, 'set_home_url' ] );
-	}
-
 	/**
 	 * @dataProvider configTestData
 	 */
