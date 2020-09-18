@@ -636,6 +636,8 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'archives-dropdown',
 			'loftloaderCache',
 			'SmartSliderSimple',
+			'var nectarLove',
+			'var incOpt',
 			'RocketBrowserCompatibilityChecker',
 			'RocketPreloadLinksConfig',
 		];
@@ -762,6 +764,8 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'wp_post_blocks_vars.listed_posts=[',
 			'captcha-hash',
 			'mapdata={',
+			'.ywpc-char-',
+			').countdowntimer(',
 		];
 
 		/**
