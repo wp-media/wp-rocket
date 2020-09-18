@@ -60,6 +60,9 @@ class Test_GetSubscriber extends TestCase {
 				break;
 		}
 
+		Functions\when( 'get_transient' )->justReturn( false );
+		Functions\when( 'home_url' )->justReturn( 'http://example.org' );
+
 		$this->assertTrue( $this->factory->get_subscriber() instanceof $expected );
 	}
 }
