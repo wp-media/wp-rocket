@@ -81,14 +81,39 @@ class HostResolver {
 			return 'savvii';
 		}
 
-		if (
-			isset( $_SERVER['x-hosted-by'] )
-			&&
-			'DreamPress' === $_SERVER['x-hosted-by']
-		) {
+		if ( self::is_dreampress() ) {
 			return 'dreampress';
 		}
 
 		return '';
+	}
+
+	/**
+	 * Checks if the current host is DreamPress
+	 *
+	 * @since 3.7.2
+	 *
+	 * @return boolean
+	 */
+	private static function is_dreampress() {
+		$transient = get_transient( 'rocket_is_dreampress' );
+
+		if ( true === (bool) $transient ) {
+			return $transient;
+		}
+
+		$headers = get_headers( home_url(), 1 );
+
+		if (
+			isset( $headers['X-Hosted-By'] )
+			&&
+			'DreamPress' === $headers['X-Hosted-By']
+		) {
+			set_transient( 'rocket_is_dreampress', true, WEEK_IN_SECONDS );
+
+			return true;
+		}
+
+		return false;
 	}
 }
