@@ -638,6 +638,8 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'SmartSliderSimple',
 			'var nectarLove',
 			'var incOpt',
+			'RocketBrowserCompatibilityChecker',
+			'RocketPreloadLinksConfig',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );

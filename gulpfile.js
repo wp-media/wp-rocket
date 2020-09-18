@@ -8,7 +8,7 @@ var babel = require('babelify');
 var uglify = require('gulp-uglify');
 var sass = require('gulp-sass');
 var rename = require("gulp-rename");
-
+var iife = require('gulp-iife');
 
 /* Task to compile sass admin */
 gulp.task('sass', function () {
@@ -87,7 +87,7 @@ gulp.task('default', ['watch', 'sass', 'sass:watch']);
 /**
  * Compiles a standalone script file.
  *
- * Command line: gulp js:compile_single --script=script-name.js [optional --mangle=true]
+ * Command line: gulp js:compile_single --script=script-name.js [optional --mangle=true, --iife=true]
  */
 gulp.task('js:compile_single', () => {
 	const {argv} = require("yargs");
@@ -95,11 +95,13 @@ gulp.task('js:compile_single', () => {
 	const source = './assets/js/' + argv.script;
 	const mangle = 'mangle' in argv && argv.mangle
 		? {
-			toplevel: true
+			toplevel: true,
+
 		}
 		: false;
+	const iife_status = 'iife' in argv && argv.iife;
 
-	return gulp.src( source )
+	let stream = gulp.src( source )
 		// Transpile newer JS for cross-browser support.
 		.pipe( transpile({
 			presets: [
@@ -126,9 +128,16 @@ gulp.task('js:compile_single', () => {
 				drop_console: true
 			},
 			mangle: mangle
-		} ) )
+		} ) );
+	//apply iife
+	if ( iife_status ) {
+		stream = stream.pipe( iife({useStrict: false, prependSemicolon: false}) );
+	}
+	stream = stream
 		// Rename the .js to .min.js.
 		.pipe( rename( { suffix: '.min' } ) )
 		// Write out the script to the configured <filename>.min.js destination.
 		.pipe( gulp.dest( './assets/js/' ) );
+
+	return stream;
 });

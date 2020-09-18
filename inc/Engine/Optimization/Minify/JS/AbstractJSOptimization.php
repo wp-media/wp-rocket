@@ -167,7 +167,11 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 		$jquery         = wp_scripts()->registered['jquery-core']->src;
 
 		if ( isset( $jquery ) ) {
-			$exclude_jquery[] = $jquery;
+			if ( empty( wp_parse_url( $jquery, PHP_URL_HOST ) ) ) {
+				$exclude_jquery[] = wp_parse_url( site_url( $jquery ), PHP_URL_PATH );
+			} else {
+				$exclude_jquery[] = $jquery;
+			}
 		}
 
 		$exclude_jquery[] = 'c0.wp.com/c/(?:.+)/wp-includes/js/jquery/jquery.js';
@@ -257,6 +261,7 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 			'simplybook.asia/v2/widget/widget.js',
 			'simplybook.it/v2/widget/widget.js',
 			'simplybook.me/v2/widget/widget.js',
+			'static.botsrv.com/website/js/widget2.36cf1446.js',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
