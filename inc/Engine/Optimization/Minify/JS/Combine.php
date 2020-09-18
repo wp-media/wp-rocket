@@ -621,6 +621,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'scriptParams',
 			'form-adv-pagination',
 			'borlabsCookiePrioritize',
+			'urls_wpwidgetpolylang',
 			'quickViewNonce',
 			'frontendscripts_params',
 			'nj-facebook-messenger',
