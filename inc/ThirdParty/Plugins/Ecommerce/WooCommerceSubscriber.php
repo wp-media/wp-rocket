@@ -471,6 +471,9 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 			'dokan_report_abuse', // Dokan report abuse popup.
 			'uabb_subscribe_form_submit', // Ultimate Addons for Beaver Builder - MailChimp signup form.
 			'konte-add-to-cart', // Add to cart feature of the Konte theme.
+			'wpuf_form_add', // WP User Frontend Pro.
+			'everest_forms_ajax_form_submission', // Everest forms AJAX submission.
+			'everest-forms_process_submit', // Everest forms submission.
 		];
 	}
 }

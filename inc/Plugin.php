@@ -216,6 +216,7 @@ class Plugin {
 	private function init_common_subscribers() {
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Capabilities\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Addon\ServiceProvider' );
+		$this->container->addServiceProvider( 'WP_Rocket\Addon\Varnish\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Preload\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Preload\Links\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\CDN\ServiceProvider' );
