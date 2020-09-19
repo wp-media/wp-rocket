@@ -3162,7 +3162,7 @@ msgstr "启用 Google 字体优化"
 msgid ""
 "Improves font performance and combines multiple font requests to reduce the "
 "number of HTTP requests."
-msgstr "优化字体性能并合并多个字体请求以减少 HTTP请求数"
+msgstr "优化字体性能并合并多个字体请求以减少 HTTP请求数。"
 
 #: views/settings/enable-google-fonts.php:29
 #, php-format
