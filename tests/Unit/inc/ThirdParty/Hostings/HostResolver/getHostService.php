@@ -47,7 +47,7 @@ class Test_GetHostResolver extends TestCase {
 				break;
 		}
 
-		Functions\when( 'get_transient' )->justReturn( false );
+		Functions\when( 'get_transient' )->justReturn( 0 );
 		Functions\when( 'home_url' )->justReturn( 'http://example.org' );
 
 		$this->assertSame(
