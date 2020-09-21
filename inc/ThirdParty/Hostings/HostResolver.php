@@ -98,21 +98,23 @@ class HostResolver {
 	private static function is_dreampress() {
 		$transient = get_transient( 'rocket_is_dreampress' );
 
-		if ( true === (bool) $transient ) {
-			return $transient;
+		if ( false !== $transient ) {
+			return (bool) $transient;
 		}
 
-		$headers = get_headers( home_url(), 1 );
+		$headers = @get_headers( home_url(), 1 ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 
 		if (
 			isset( $headers['X-Hosted-By'] )
 			&&
 			'DreamPress' === $headers['X-Hosted-By']
 		) {
-			set_transient( 'rocket_is_dreampress', true, WEEK_IN_SECONDS );
+			set_transient( 'rocket_is_dreampress', 1, WEEK_IN_SECONDS );
 
 			return true;
 		}
+
+		set_transient( 'rocket_is_dreampress', 0, WEEK_IN_SECONDS );
 
 		return false;
 	}
