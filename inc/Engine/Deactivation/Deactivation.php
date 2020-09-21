@@ -86,6 +86,7 @@ class Deactivation {
 		// Delete transients.
 		delete_transient( 'rocket_check_licence_30' );
 		delete_transient( 'rocket_check_licence_1' );
+		delete_transient( 'rocket_is_dreampress' );
 		delete_site_transient( 'update_wprocket_response' );
 
 		// Unschedule WP Cron events.
