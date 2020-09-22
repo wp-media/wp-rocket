@@ -121,14 +121,24 @@ class Settings {
 	 * @return void
 	 */
 	public function set_option_on_update( $old_version ) {
-		if ( version_compare( $old_version, '3.7', '>' ) ) {
+		if ( version_compare( $old_version, '3.7.2', '>' ) ) {
 			return;
 		}
 
 		$options = get_option( 'wp_rocket_settings', [] );
 
-		$options['delay_js']         = 0;
-		$options['delay_js_scripts'] = $this->defaults;
+		if ( version_compare( $old_version, '3.7', '<=' ) ) {
+			$options['delay_js']         = 0;
+			$options['delay_js_scripts'] = $this->defaults;
+		}
+
+		if (
+			version_compare( $old_version, '3.7', '>' )
+			&&
+			! in_array( 'pixel-caffeine/build/frontend.js', $options['delay_js_scripts'], true )
+		) {
+			$options['delay_js_scripts'][] = 'pixel-caffeine/build/frontend.js';
+		}
 
 		update_option( 'wp_rocket_settings', $options );
 	}
