@@ -96,10 +96,10 @@ class HostResolver {
 	 * @return boolean
 	 */
 	private static function is_dreampress() {
-		if ( ! isset( $_SERVER[ 'DH_USER'] ) ) {
+		if ( ! isset( $_SERVER['DH_USER'] ) ) {
 			return false;
 		}
 
-		return 'wp_' === substr( $_SERVER[ 'DH_USER'], 0, 3 );
+		return 'wp_' === substr( wp_unslash( $_SERVER['DH_USER'] ), 0, 3 );
 	}
 }
