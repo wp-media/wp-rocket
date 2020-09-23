@@ -30,12 +30,12 @@ class Test_OptionUpdate372 extends TestCase{
 		if ( $config['valid_version'] ) {
 			Functions\when( 'get_option' )->justReturn( $options );
 			Functions\expect( 'update_option' )
-				->with( 'wp_rocket_settings', $revised_options )
-				->once();
+				->once()
+				->with( 'wp_rocket_settings', $revised_options );
 		} else {
 			Functions\expect( 'update_option' )
-				->with( 'wp_rocket_settings', $revised_options )
-				->never();
+				->never()
+				->with( 'wp_rocket_settings', $revised_options );
 		}
 
 		$settings->option_update_3_7_2( $config['old_version'] );
