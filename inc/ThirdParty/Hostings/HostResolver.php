@@ -100,6 +100,6 @@ class HostResolver {
 			return false;
 		}
 
-		return 'wp_' === substr( wp_unslash( $_SERVER['DH_USER'] ), 0, 3 );
+		return 'wp_' === substr( sanitize_key( wp_unslash( $_SERVER['DH_USER'] ) ), 0, 3 );
 	}
 }
