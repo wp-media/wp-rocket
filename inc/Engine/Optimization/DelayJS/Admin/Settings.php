@@ -134,6 +134,33 @@ class Settings {
 	}
 
 	/**
+	 * Update delay_js options when updating to ver 3.7.2.
+	 *
+	 * @since 3.7.2
+	 *
+	 * @param string $old_version Old plugin version.
+	 *
+	 * @return void
+	 */
+	public function option_update_3_7_2( $old_version ) {
+		if ( version_compare( $old_version, '3.7.2', '>' ) ) {
+			return;
+		}
+
+		$options = get_option( 'wp_rocket_settings', [] );
+
+		if (
+			in_array( 'fbq(', $options['delay_js_scripts'], true )
+			&&
+			! in_array( 'pixel-caffeine/build/frontend.js', $options['delay_js_scripts'], true )
+		) {
+			$options['delay_js_scripts'][] = 'pixel-caffeine/build/frontend.js';
+		}
+
+		update_option( 'wp_rocket_settings', $options );
+	}
+
+	/**
 	 * Restores the delay_js_scripts option to the default value
 	 *
 	 * @since 3.7
