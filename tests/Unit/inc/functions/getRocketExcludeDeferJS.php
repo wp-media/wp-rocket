@@ -56,6 +56,7 @@ class Test_GetRocketExcludeDeferJS extends TestCase {
 			'simplybook.(.*)/v2/widget/widget.js',
 			'/wp-includes/js/dist/i18n.min.js',
             '/wp-content/plugins/wpfront-notification-bar/js/wpfront-notification-bar(.*).js',
+            '/wp-content/plugins/oxygen/component-framework/vendor/aos/aos.js',
         ];
 
         if ( $defer_jquery ) {
