@@ -90,7 +90,7 @@ tests_add_filter(
 		}
 
 		if ( BootstrapManager::isGroup( 'Dreampress' ) ) {
-			set_transient( 'rocket_is_dreampress', true, MINUTE_IN_SECONDS );
+			$_SERVER[ 'DH_USER'] = 'wp_74cgrq';
 		}
 
 		if ( BootstrapManager::isGroup( 'PDFEmbedder' ) ) {
