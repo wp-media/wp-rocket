@@ -2,7 +2,6 @@
 
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\HostResolver;
 
-use Brain\Monkey\Functions;
 use WP_Rocket\ThirdParty\Hostings\HostResolver;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -46,9 +45,6 @@ class Test_GetHostResolver extends TestCase {
 			default:
 				break;
 		}
-
-		Functions\when( 'get_transient' )->justReturn( 0 );
-		Functions\when( 'home_url' )->justReturn( 'http://example.org' );
 
 		$this->assertSame(
 			$expected,
