@@ -100,7 +100,11 @@ class HostResolver {
 			return false;
 		}
 
-		if ( 'dp-' !== substr( gethostname(), 0, 3 ) ) {
+		if (
+			! rocket_get_constant( 'WP_ROCKET_IS_TESTING', false )
+			&&
+			'dp-' !== substr( gethostname(), 0, 3 )
+		) {
 			return false;
 		}
 
