@@ -156,6 +156,16 @@ class Settings {
 			$options['delay_js_scripts'][] = 'pixel-caffeine/build/frontend.js';
 		}
 
+		$keys = array_keys( $options['delay_js_scripts'], 'google.com/recaptcha/api.js', true );
+
+		if ( ! empty( $keys ) ) {
+			foreach ( $keys as $key ) {
+				unset( $options['delay_js_scripts'][ $key ] );
+			}
+
+			$options['delay_js_scripts'] = array_values( $options['delay_js_scripts'] );
+		}
+
 		update_option( 'wp_rocket_settings', $options );
 	}
 
