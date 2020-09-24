@@ -20,8 +20,4 @@ class Test_RemoveHtaccessHtmlExpire extends TestCase {
 			apply_filters( 'rocket_htaccess_mod_expires', $rules )
 		);
 	}
-
-	public function set_home_url() {
-		return 'https://wprocket.breakwpdh.com';
-	}
 }
