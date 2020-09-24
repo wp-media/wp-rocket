@@ -67,7 +67,7 @@ class Dreampress extends AbstractNoCacheHost {
 
 		$hosts[] = 'localhost';
 
-		return $hosts; 
+		return $hosts;
 	}
 
 	/**
