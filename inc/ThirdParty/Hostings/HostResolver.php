@@ -81,6 +81,33 @@ class HostResolver {
 			return 'savvii';
 		}
 
+		if ( self::is_dreampress() ) {
+			return 'dreampress';
+		}
+
 		return '';
+	}
+
+	/**
+	 * Checks if the current host is DreamPress
+	 *
+	 * @since 3.7.2
+	 *
+	 * @return boolean
+	 */
+	private static function is_dreampress() {
+		if ( ! isset( $_SERVER['DH_USER'] ) ) {
+			return false;
+		}
+
+		if (
+			! rocket_get_constant( 'WP_ROCKET_IS_TESTING', false )
+			&&
+			'dp-' !== substr( gethostname(), 0, 3 )
+		) {
+			return false;
+		}
+
+		return 'wp_' === substr( sanitize_key( wp_unslash( $_SERVER['DH_USER'] ) ), 0, 3 );
 	}
 }
