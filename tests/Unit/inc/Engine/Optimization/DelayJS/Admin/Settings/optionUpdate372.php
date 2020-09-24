@@ -12,7 +12,7 @@ use WP_Rocket\Tests\Unit\TestCase;
  *
  * @group  DelayJS
  */
-class Test_OptionUpdate372 extends TestCase{
+class Test_OptionUpdate372 extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */

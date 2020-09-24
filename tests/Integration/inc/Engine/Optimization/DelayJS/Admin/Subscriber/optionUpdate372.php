@@ -9,7 +9,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  *
  * @group  DelayJS
  */
-class Test_optionUpdate372 extends TestCase{
+class Test_optionUpdate372 extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
@@ -26,7 +26,6 @@ class Test_optionUpdate372 extends TestCase{
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ) {
-		global $wp_filter;
 		$options = get_option( 'wp_rocket_settings' );
 		$options['delay_js_scripts'] = $config['initial_list'];
 
