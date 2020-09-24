@@ -153,7 +153,6 @@ return [
 			'adsbygoogle',
 			'a-script-the-customer-added',
 		],
-	],
 	'ShouldRemoveGoogleRecaptchaApiFromList' => [
 		'config'        => [
 			'old_version'   => '3.5',

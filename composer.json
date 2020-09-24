@@ -78,7 +78,8 @@
 			"inc/classes/class-wp-rocket-requirements-check.php"
 		],
 		"psr-4": {
-			"WP_Rocket\\": "inc/"
+			"WP_Rocket\\": "inc/",
+			"WPMedia\\Cloudflare\\": "inc/Addon/Cloudflare/"
 		}
 	},
 	"autoload-dev": {

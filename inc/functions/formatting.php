@@ -266,7 +266,7 @@ function rocket_sanitize_ua( $user_agent ) {
  * @return string $url The URL without protocol
  */
 function rocket_remove_url_protocol( $url, $no_dots = false ) {
-	$url = str_replace( [ 'http://', 'https://' ], '', $url );
+	$url = preg_replace( '#^(https?:)?\/\/#im', '', $url );
 
 	/** This filter is documented in inc/front/htaccess.php */
 	if ( apply_filters( 'rocket_url_no_dots', $no_dots ) ) {
