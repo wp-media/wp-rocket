@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Hostings\Dreampress;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\Dreampress::varnish_addon_title
+ * @covers \WP_Rocket\ThirdParty\Hostings\Dreampress::set_varnish_addon_title
  *
  * @group  Dreampress
  * @group  ThirdParty
@@ -19,9 +19,5 @@ class Test_VarnishAddonTitle extends TestCase {
 			$expected,
 			apply_filters( 'rocket_varnish_field_settings', $settings )
 		);
-	}
-
-	public function set_home_url() {
-		return 'https://wprocket.breakwpdh.com';
 	}
 }

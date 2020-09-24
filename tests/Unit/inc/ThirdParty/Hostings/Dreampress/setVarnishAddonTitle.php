@@ -6,12 +6,12 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Hostings\Dreampress;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\Dreampress::varnish_addon_title
+ * @covers \WP_Rocket\ThirdParty\Hostings\Dreampress::set_varnish_addon_title
  *
  * @group  Dreampress
  * @group  ThirdParty
  */
-class Test_VarnishAddonTitle extends TestCase {
+class Test_SetVarnishAddonTitle extends TestCase {
 	protected static $mockCommonWpFunctionsInSetUp = true;
 
 	/**
@@ -22,7 +22,7 @@ class Test_VarnishAddonTitle extends TestCase {
 
 		$this->assertSame(
 			$expected,
-			$dreampress->varnish_addon_title( $settings )
+			$dreampress->set_varnish_addon_title( $settings )
 		);
 	}
 }
