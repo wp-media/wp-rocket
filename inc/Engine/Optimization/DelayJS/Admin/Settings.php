@@ -54,6 +54,7 @@ class Settings {
 		'LiveChatWidget',
 		'/busting/facebook-tracking/',
 		'olark',
+		'pixel-caffeine/build/frontend.js',
 	];
 
 	/**
@@ -128,6 +129,33 @@ class Settings {
 
 		$options['delay_js']         = 0;
 		$options['delay_js_scripts'] = $this->defaults;
+
+		update_option( 'wp_rocket_settings', $options );
+	}
+
+	/**
+	 * Update delay_js options when updating to ver 3.7.2.
+	 *
+	 * @since 3.7.2
+	 *
+	 * @param string $old_version Old plugin version.
+	 *
+	 * @return void
+	 */
+	public function option_update_3_7_2( $old_version ) {
+		if ( version_compare( $old_version, '3.7.2', '>' ) ) {
+			return;
+		}
+
+		$options = get_option( 'wp_rocket_settings', [] );
+
+		if (
+			in_array( 'fbq(', $options['delay_js_scripts'], true )
+			&&
+			! in_array( 'pixel-caffeine/build/frontend.js', $options['delay_js_scripts'], true )
+		) {
+			$options['delay_js_scripts'][] = 'pixel-caffeine/build/frontend.js';
+		}
 
 		update_option( 'wp_rocket_settings', $options );
 	}

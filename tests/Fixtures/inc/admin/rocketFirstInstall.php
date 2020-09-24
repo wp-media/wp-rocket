@@ -121,6 +121,7 @@ $integration[ 'delay_js_scripts' ] = [
 	'LiveChatWidget',
 	'/busting/facebook-tracking/',
 	'olark',
+	'pixel-caffeine/build/frontend.js',
 ];
 $integration[ 'preload_links' ]    = 0;
 

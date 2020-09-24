@@ -43,6 +43,7 @@ $list = [
 	'LiveChatWidget',
 	'/busting/facebook-tracking/',
 	'olark',
+	'pixel-caffeine/build/frontend.js',
 ];
 
 return [
