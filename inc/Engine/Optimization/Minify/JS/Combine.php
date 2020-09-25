@@ -641,6 +641,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'var incOpt',
 			'RocketBrowserCompatibilityChecker',
 			'RocketPreloadLinksConfig',
+			'n2jQuery',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
