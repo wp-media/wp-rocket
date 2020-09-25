@@ -24,7 +24,7 @@ class Subscriber implements Subscriber_Interface {
 		return $this->api->optimize(
 			$html,
 			[
-				'unused_css' => true,
+				'tree_shake' => 1,
 			]
 		);
 	}
