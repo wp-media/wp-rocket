@@ -262,6 +262,7 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 			'simplybook.it/v2/widget/widget.js',
 			'simplybook.me/v2/widget/widget.js',
 			'static.botsrv.com/website/js/widget2.36cf1446.js',
+			'static.mailerlite.com/data/',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
