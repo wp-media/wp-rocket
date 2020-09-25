@@ -22,7 +22,6 @@ class Settings {
 		'static.leadpages.net/leadbars/current/embed.js',
 		'translate.google.com/translate_a/element.js',
 		'widget.manychat.com',
-		'google.com/recaptcha/api.js',
 		'xfbml.customerchat.js',
 		'static.hotjar.com/c/hotjar-',
 		'smartsuppchat.com/loader.js',
@@ -155,6 +154,16 @@ class Settings {
 			! in_array( 'pixel-caffeine/build/frontend.js', $options['delay_js_scripts'], true )
 		) {
 			$options['delay_js_scripts'][] = 'pixel-caffeine/build/frontend.js';
+		}
+
+		$keys = array_keys( $options['delay_js_scripts'], 'google.com/recaptcha/api.js', true );
+
+		if ( ! empty( $keys ) ) {
+			foreach ( $keys as $key ) {
+				unset( $options['delay_js_scripts'][ $key ] );
+			}
+
+			$options['delay_js_scripts'] = array_values( $options['delay_js_scripts'] );
 		}
 
 		update_option( 'wp_rocket_settings', $options );
