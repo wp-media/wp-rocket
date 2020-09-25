@@ -113,7 +113,7 @@ $integration[ 'delay_js_scripts' ] = [
 	'ga(\'',
 	'adsbygoogle',
 	'ShopifyBuy',
-	'widget.trustpilot.com',
+	'widget.trustpilot.com/bootstrap',
 	'ft.sdk.min.js',
 	'apps.elfsight.com/p/platform.js',
 	'livechatinc.com/tracking.js',
