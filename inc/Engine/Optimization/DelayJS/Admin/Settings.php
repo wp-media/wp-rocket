@@ -46,7 +46,7 @@ class Settings {
 		'ga(\'',
 		'adsbygoogle',
 		'ShopifyBuy',
-		'widget.trustpilot.com',
+		'widget.trustpilot.com/bootstrap',
 		'ft.sdk.min.js',
 		'apps.elfsight.com/p/platform.js',
 		'livechatinc.com/tracking.js',
@@ -148,23 +148,27 @@ class Settings {
 
 		$options = get_option( 'wp_rocket_settings', [] );
 
+		$delay_js_scripts = array_flip( $options['delay_js_scripts'] );
+
 		if (
-			in_array( 'fbq(', $options['delay_js_scripts'], true )
+			isset( $delay_js_scripts['fbq('] )
 			&&
-			! in_array( 'pixel-caffeine/build/frontend.js', $options['delay_js_scripts'], true )
+			! isset( $delay_js_scripts['pixel-caffeine/build/frontend.js'] )
 		) {
-			$options['delay_js_scripts'][] = 'pixel-caffeine/build/frontend.js';
+			$delay_js_scripts['pixel-caffeine/build/frontend.js'] = '';
 		}
 
-		$keys = array_keys( $options['delay_js_scripts'], 'google.com/recaptcha/api.js', true );
-
-		if ( ! empty( $keys ) ) {
-			foreach ( $keys as $key ) {
-				unset( $options['delay_js_scripts'][ $key ] );
-			}
-
-			$options['delay_js_scripts'] = array_values( $options['delay_js_scripts'] );
+		if ( isset( $delay_js_scripts['google.com/recaptcha/api.js'] ) ) {
+			unset( $delay_js_scripts['google.com/recaptcha/api.js'] );
 		}
+
+		if ( isset( $delay_js_scripts['widget.trustpilot.com'] ) ) {
+			$delay_js_scripts['widget.trustpilot.com/bootstrap'] = $delay_js_scripts['widget.trustpilot.com'];
+
+			unset( $delay_js_scripts['widget.trustpilot.com'] );
+		}
+
+		$options['delay_js_scripts'] = array_values( array_flip( $delay_js_scripts ) );
 
 		update_option( 'wp_rocket_settings', $options );
 	}
