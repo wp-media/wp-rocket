@@ -3,7 +3,6 @@
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\HostSubscriberFactory;
 
 use Mockery;
-use Brain\Monkey\Functions;
 use WP_Rocket\Engine\Cache\AdminSubscriber;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\ThirdParty\Hostings\HostSubscriberFactory;
