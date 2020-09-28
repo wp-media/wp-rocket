@@ -109,6 +109,7 @@ $rocket_remove_query_strings = [
 	'fbclid'          => 1,
 	'campaignid'      => 1,
 	'adgroupid'       => 1,
+	'adid'            => 1,
 	'gclid'           => 1,
 	'age-verified'    => 1,
 	'ao_noptimize'    => 1,
