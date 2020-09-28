@@ -10,6 +10,13 @@ defined( 'ABSPATH' ) || exit;
  * @return void
  */
 function rocket_clear_cache_after_pagely() {
+        //  End the cycle of purges after a single purge has happened
+        if (!empty($GLOBALS['pagely_rocket_stop_cache_purge'])){
+            $GLOBALS['pagely_rocket_stop_cache_purge']=false;
+            return;
+        }
+        $GLOBALS['pagely_rocket_stop_cache_purge']=true;
+
 	// Clear all caching files.
 	rocket_clean_domain();
 }
@@ -23,6 +30,13 @@ add_action( 'pagely_cache_purge_after', 'rocket_clear_cache_after_pagely' );
  * @return void
  */
 function rocket_clean_pagely() {
+        //  End the cycle of purges after a single purge has happened
+        if (!empty($GLOBALS['pagely_rocket_stop_cache_purge'])){
+            $GLOBALS['pagely_rocket_stop_cache_purge']=false;
+            return;
+        }
+        $GLOBALS['pagely_rocket_stop_cache_purge']=true;
+
 	if ( class_exists( 'PagelyCachePurge' ) ) {
 			$purger = new PagelyCachePurge();
 			$purger->purgeAll();
