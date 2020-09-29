@@ -641,6 +641,9 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'var incOpt',
 			'RocketBrowserCompatibilityChecker',
 			'RocketPreloadLinksConfig',
+			'placementVersionId',
+			'var useEdit',
+			'var DTGS_NONCE_FRONTEND',
 			'n2jQuery',
 		];
 
@@ -768,6 +771,8 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'mapdata={',
 			'.ywpc-char-',
 			').countdowntimer(',
+			'jQuery("#td_uid_',
+			'find(\'#td_uid_',
 		];
 
 		/**
