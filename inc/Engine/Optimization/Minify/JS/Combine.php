@@ -644,6 +644,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'placementVersionId',
 			'var useEdit',
 			'var DTGS_NONCE_FRONTEND',
+			'n2jQuery',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );

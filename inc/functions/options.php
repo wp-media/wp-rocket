@@ -428,6 +428,7 @@ function get_rocket_exclude_defer_js() { // phpcs:ignore WordPress.NamingConvent
 		'/wp-includes/js/dist/i18n.min.js',
 		'/wp-content/plugins/wpfront-notification-bar/js/wpfront-notification-bar(.*).js',
 		'/wp-content/plugins/oxygen/component-framework/vendor/aos/aos.js',
+		'static.mailerlite.com/data/(.*).js',
 	];
 
 	if ( get_rocket_option( 'defer_all_js', 0 ) && get_rocket_option( 'defer_all_js_safe', 0 ) ) {
