@@ -11,7 +11,6 @@ $list = [
 	'static.leadpages.net/leadbars/current/embed.js',
 	'translate.google.com/translate_a/element.js',
 	'widget.manychat.com',
-	'google.com/recaptcha/api.js',
 	'xfbml.customerchat.js',
 	'static.hotjar.com/c/hotjar-',
 	'smartsuppchat.com/loader.js',
@@ -36,13 +35,14 @@ $list = [
 	'ga(\'',
 	'adsbygoogle',
 	'ShopifyBuy',
-	'widget.trustpilot.com',
+	'widget.trustpilot.com/bootstrap',
 	'ft.sdk.min.js',
 	'apps.elfsight.com/p/platform.js',
 	'livechatinc.com/tracking.js',
 	'LiveChatWidget',
 	'/busting/facebook-tracking/',
 	'olark',
+	'pixel-caffeine/build/frontend.js',
 ];
 
 return [

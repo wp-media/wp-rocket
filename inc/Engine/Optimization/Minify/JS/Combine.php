@@ -621,6 +621,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'scriptParams',
 			'form-adv-pagination',
 			'borlabsCookiePrioritize',
+			'urls_wpwidgetpolylang',
 			'quickViewNonce',
 			'frontendscripts_params',
 			'nj-facebook-messenger',
@@ -636,8 +637,14 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'archives-dropdown',
 			'loftloaderCache',
 			'SmartSliderSimple',
+			'var nectarLove',
+			'var incOpt',
 			'RocketBrowserCompatibilityChecker',
 			'RocketPreloadLinksConfig',
+			'placementVersionId',
+			'var useEdit',
+			'var DTGS_NONCE_FRONTEND',
+			'n2jQuery',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
@@ -762,6 +769,10 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'wp_post_blocks_vars.listed_posts=[',
 			'captcha-hash',
 			'mapdata={',
+			'.ywpc-char-',
+			').countdowntimer(',
+			'jQuery("#td_uid_',
+			'find(\'#td_uid_',
 		];
 
 		/**
