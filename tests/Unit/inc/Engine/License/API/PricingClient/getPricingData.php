@@ -34,7 +34,7 @@ class GetPricingData extends TestCase {
 		if ( false !== $config['response'] ) {
 			Functions\expect( 'wp_safe_remote_get' )
 				->once()
-				->with( 'https://wp-rocket.me/stat/1.0/wp-rocket/pricing.php' )
+				->with( PricingClient::PRICING_ENDPOINT )
 				->andReturn( $config['response'] );
 
 			if ( ! is_array( $config['response'] ) ) {
@@ -58,7 +58,7 @@ class GetPricingData extends TestCase {
 					->justReturn( $config['response']['body'] );
 			}
 		} else {
-			Functions\expect( 'wp_remote_get' )->never();
+			Functions\expect( 'wp_safe_remote_get' )->never();
 		}
 
 		if (
