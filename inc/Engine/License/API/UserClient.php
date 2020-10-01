@@ -76,6 +76,12 @@ class UserClient {
 			return false;
 		}
 
-		return json_decode( wp_remote_retrieve_body( $response ) );
+		$body = wp_remote_retrieve_body( $response );
+
+		if ( empty( $body ) ) {
+			return false;
+		}
+
+		return json_decode( $body );
 	}
 }
