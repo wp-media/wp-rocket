@@ -83,7 +83,7 @@ class Subscriber implements Subscriber_Interface {
 	public function add_admin_page() {
 		add_options_page(
 			$this->page->get_title(),
-			$this->page->get_title(),
+			apply_filters( 'rocket_menu_title', $this->page->get_title() ),
 			$this->page->get_capability(),
 			$this->page->get_slug(),
 			[ $this->page, 'render_page' ]
