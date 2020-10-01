@@ -177,6 +177,7 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 		$exclude_jquery[] = 'c0.wp.com/c/(?:.+)/wp-includes/js/jquery/jquery.js';
 		$exclude_jquery[] = 'ajax.googleapis.com/ajax/libs/jquery/(?:.+)/jquery(?:\.min)?.js';
 		$exclude_jquery[] = 'cdnjs.cloudflare.com/ajax/libs/jquery/(?:.+)/jquery(?:\.min)?.js';
+		$exclude_jquery[] = 'code.jquery.com/jquery-.*(?:\.min|slim)?.js';
 
 		return $exclude_jquery;
 	}
