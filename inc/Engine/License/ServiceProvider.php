@@ -26,8 +26,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-		$views = __DIR__ . '/views';
-
 		$this->getContainer()->add( 'pricing_client', PricingClient::class );
 	}
 }
