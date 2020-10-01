@@ -22,6 +22,15 @@ return [
 		],
 		'expected' => false,
 	],
+	'testShouldReturnFalseWhenNoBody'  => [
+		'config'   => [
+			'transient' => false,
+			'response'  => [
+				'code' => 200,
+			],
+		],
+		'expected' => false,
+	],
 	'testShouldReturnDataWhenCached'   => [
 		'config'   => [
 			'transient' => true,

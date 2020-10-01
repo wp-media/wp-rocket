@@ -19,17 +19,10 @@ class GetPricingData extends TestCase {
 	public function testShouldReturnExpected( $config, $expected ) {
 		$client = new PricingClient();
 
-		if ( true === $config['transient'] ) {
-			Functions\expect( 'get_transient' )
-				->once()
-				->with( 'wp_rocket_pricing' )
-				->andReturn( $expected );
-		} else {
-			Functions\expect( 'get_transient' )
-				->once()
-				->with( 'wp_rocket_pricing' )
-				->andReturn( false );
-		}
+		Functions\expect( 'get_transient' )
+			->once()
+			->with( 'wp_rocket_pricing' )
+			->andReturn( true === $config['transient'] ? $expected : false );
 
 		if ( false !== $config['response'] ) {
 			Functions\expect( 'wp_safe_remote_get' )
@@ -37,26 +30,19 @@ class GetPricingData extends TestCase {
 				->with( PricingClient::PRICING_ENDPOINT )
 				->andReturn( $config['response'] );
 
-			if ( ! is_array( $config['response'] ) ) {
 				Functions\when( 'wp_remote_retrieve_response_code' )
-				->justReturn( '' );
-			} elseif (
-				is_array( $config['response'] )
-				&&
-				isset( $config['response']['code'] )
-			) {
-				Functions\when( 'wp_remote_retrieve_response_code' )
-				->justReturn( $config['response']['code'] );
-			}
+				->justReturn(
+					is_array( $config['response'] ) && isset( $config['response']['code'] )
+					? $config['response']['code']
+					: ''
+				);
 
-			if (
-				is_array( $config['response'] )
-				&&
-				isset( $config['response']['body'] )
-			) {
 				Functions\when( 'wp_remote_retrieve_body' )
-					->justReturn( $config['response']['body'] );
-			}
+				->justReturn(
+					is_array( $config['response'] ) && isset( $config['response']['body'] )
+					? $config['response']['body']
+					: ''
+				);
 		} else {
 			Functions\expect( 'wp_safe_remote_get' )->never();
 		}
