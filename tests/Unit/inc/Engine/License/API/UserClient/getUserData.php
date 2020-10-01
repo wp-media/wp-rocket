@@ -44,12 +44,12 @@ class GetPricingData extends TestCase {
 
 		if ( false !== $config['response'] ) {
 			$this->options->shouldReceive( 'get' )
-			->once()
+			->twice()
 			->with( 'consumer_key', '' )
 			->andReturn( self::getApiCredential( 'ROCKET_KEY' ) );
 
 			$this->options->shouldReceive( 'get' )
-				->once()
+				->twice()
 				->with( 'consumer_email', '' )
 				->andReturn( self::getApiCredential( 'ROCKET_EMAIL' ) );
 
@@ -60,7 +60,7 @@ class GetPricingData extends TestCase {
 				->with(
 					UserClient::USER_ENDPOINT,
 					[
-						'body' => 'user_id=' . self::getApiCredential( 'ROCKET_EMAIL' ) . '&consumer_key=' . self::getApiCredential( 'ROCKET_KEY' ),
+						'body' => 'user_id=' . rawurlencode( self::getApiCredential( 'ROCKET_EMAIL' ) ) . '&consumer_key=' . self::getApiCredential( 'ROCKET_KEY' ),
 					]
 				)
 				->andReturn( $config['response'] );
