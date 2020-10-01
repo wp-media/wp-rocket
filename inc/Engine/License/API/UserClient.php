@@ -61,7 +61,7 @@ class UserClient {
 		$customer_key   = ! empty( $this->options->get( 'consumer_key', '' ) )
 			? $this->options->get( 'consumer_key', '' )
 			: rocket_get_constant( 'WP_ROCKET_KEY', '' );
-		$customer_email = !empty ( $this->options->get( 'consumer_email', '' ) )
+		$customer_email = ! empty( $this->options->get( 'consumer_email', '' ) )
 			? $this->options->get( 'consumer_email', '' )
 			: rocket_get_constant( 'WP_ROCKET_EMAIL', '' );
 
