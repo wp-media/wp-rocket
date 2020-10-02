@@ -25,7 +25,15 @@ class Pricing {
 	 * @return null|object
 	 */
 	public function get_single_pricing() {
-		return isset( $this->pricing->licenses->single ) ? $this->pricing->licenses->single : null;
+		if (
+			! isset( $this->pricing->licenses->single )
+			||
+			! is_object( $this->pricing->licenses->single )
+		) {
+			return null;
+		}
+
+		return $this->pricing->licenses->single;
 	}
 
 	/**
@@ -34,7 +42,15 @@ class Pricing {
 	 * @return null|object
 	 */
 	public function get_plus_pricing() {
-		return isset( $this->pricing->licenses->plus ) ? $this->pricing->licenses->plus : null;
+		if (
+			! isset( $this->pricing->licenses->plus )
+			||
+			! is_object( $this->pricing->licenses->plus )
+		) {
+			return null;
+		}
+
+		return $this->pricing->licenses->plus;
 	}
 
 	/**
@@ -43,7 +59,15 @@ class Pricing {
 	 * @return null|object
 	 */
 	public function get_infinite_pricing() {
-		return isset( $this->pricing->licenses->infinite ) ? $this->pricing->licenses->infinite : null;
+		if (
+			! isset( $this->pricing->licenses->infinite )
+			||
+			! is_object( $this->pricing->licenses->infinite )
+		) {
+			return null;
+		}
+
+		return $this->pricing->licenses->infinite;
 	}
 
 	/**
@@ -52,7 +76,15 @@ class Pricing {
 	 * @return null|object
 	 */
 	public function get_renewals_data() {
-		return isset( $this->pricing->renewals ) ? $this->pricing->renewals : null;
+		if (
+			! isset( $this->pricing->renewals )
+			||
+			! is_object( $this->pricing->renewals )
+		) {
+			return null;
+		}
+
+		return $this->pricing->renewals;
 	}
 
 	/**
@@ -61,7 +93,15 @@ class Pricing {
 	 * @return null|object
 	 */
 	public function get_promo_data() {
-		return isset( $this->pricing->promo ) ? $this->pricing->promo : null;
+		if (
+			! isset( $this->pricing->promo )
+			||
+			! is_object( $this->pricing->promo )
+		) {
+			return null;
+		}
+
+		return $this->pricing->promo;
 	}
 
 	/**
@@ -83,9 +123,9 @@ class Pricing {
 		$current_time = time();
 
 		return (
-			$promo_data->start_date < $current_time
+			absint( $promo_data->start_date ) < $current_time
 			&&
-			$promo_data->end_date > $current_time
+			absint( $promo_data->end_date ) > $current_time
 		);
 	}
 
@@ -95,7 +135,17 @@ class Pricing {
 	 * @return int
 	 */
 	public function get_promo_end() {
-		return isset( $this->get_promo_data()->end_date ) ? $this->get_promo_data()->end_date : 0;
+		$promo = $this->get_promo_data();
+
+		if (
+			is_null( $promo )
+			||
+			! isset( $promo->end_date )
+		) {
+			return 0;
+		}
+
+		return absint( $promo->end_date );
 	}
 
 	/**
@@ -104,9 +154,17 @@ class Pricing {
 	 * @return int
 	 */
 	public function get_regular_single_to_plus_price() {
-		return isset( $this->get_plus_pricing()->prices->from_single->regular )
-		? $this->get_plus_pricing()->prices->from_single->regular
-		: 0;
+		$plus_pricing = $this->get_plus_pricing();
+
+		if (
+			is_null( $plus_pricing )
+			||
+			! isset( $plus_pricing->prices->from_single->regular )
+		) {
+			return 0;
+		}
+
+		return $this->get_plus_pricing()->prices->from_single->regular;
 	}
 
 	/**
@@ -115,11 +173,18 @@ class Pricing {
 	 * @return int
 	 */
 	public function get_single_to_plus_price() {
-		$sale_price = isset( $this->get_plus_pricing()->prices->from_single->sale )
-		? $this->get_plus_pricing()->prices->from_single->sale
-		: 0;
+		$plus_pricing = $this->get_plus_pricing();
+		$regular      = $this->get_regular_single_to_plus_price();
 
-		return $this->is_promo_active() ? $sale_price : $this->get_regular_single_to_plus_price();
+		if (
+			is_null( $plus_pricing )
+			||
+			! isset( $plus_pricing->prices->from_single->sale )
+		) {
+			return $regular;
+		}
+
+		return $this->is_promo_active() ? $plus_pricing->prices->from_single->sale : $regular;
 	}
 
 	/**
@@ -128,9 +193,17 @@ class Pricing {
 	 * @return int
 	 */
 	public function get_regular_single_to_infinite_price() {
-		return isset( $this->get_infinite_pricing()->prices->from_single->regular )
-		? $this->get_infinite_pricing()->prices->from_single->regular
-		: 0;
+		$infinite_pricing = $this->get_infinite_pricing();
+
+		if (
+			is_null( $infinite_pricing )
+			||
+			! isset( $infinite_pricing->prices->from_single->regular )
+		) {
+			return 0;
+		}
+
+		return $infinite_pricing->prices->from_single->regular;
 	}
 
 	/**
@@ -139,11 +212,18 @@ class Pricing {
 	 * @return int
 	 */
 	public function get_single_to_infinite_price() {
-		$sale_price = isset( $this->get_infinite_pricing()->prices->from_single->sale )
-		? $this->get_infinite_pricing()->prices->from_single->sale
-		: 0;
+		$infinite_pricing = $this->get_infinite_pricing();
+		$regular          = $this->get_regular_single_to_infinite_price();
 
-		return $this->is_promo_active() ? $sale_price : $this->get_regular_single_to_infinite_price();
+		if (
+			is_null( $infinite_pricing )
+			||
+			! isset( $infinite_pricing->prices->from_single->sale )
+		) {
+			return $regular;
+		}
+
+		return $this->is_promo_active() ? $infinite_pricing->prices->from_single->sale : $regular;
 	}
 
 	/**
@@ -152,9 +232,17 @@ class Pricing {
 	 * @return int
 	 */
 	public function get_regular_plus_to_infinite_price() {
-		return isset( $this->get_infinite_pricing()->prices->from_plus->regular )
-		? $this->get_infinite_pricing()->prices->from_plus->regular
-		: 0;
+		$infinite_pricing = $this->get_infinite_pricing();
+
+		if (
+			is_null( $infinite_pricing )
+			||
+			! isset( $infinite_pricing->prices->from_plus->regular )
+		) {
+			return 0;
+		}
+
+		return $infinite_pricing->prices->from_plus->regular;
 	}
 
 	/**
@@ -163,10 +251,17 @@ class Pricing {
 	 * @return int
 	 */
 	public function get_plus_to_infinite_price() {
-		$sale_price = isset( $this->get_infinite_pricing()->prices->from_plus->sale )
-		? $this->get_infinite_pricing()->prices->from_plus->sale
-		: 0;
+		$infinite_pricing = $this->get_infinite_pricing();
+		$regular          = $this->get_regular_plus_to_infinite_price();
 
-		return $this->is_promo_active() ? $sale_price : $this->get_regular_plus_to_infinite_price();
+		if (
+			is_null( $infinite_pricing )
+			||
+			! isset( $infinite_pricing->prices->from_single->sale )
+		) {
+			return $regular;
+		}
+
+		return $this->is_promo_active() ? $infinite_pricing->prices->from_single->sale : $regular;
 	}
 }
