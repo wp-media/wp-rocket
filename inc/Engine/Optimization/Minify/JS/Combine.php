@@ -650,7 +650,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'__CF$cv$params',
 			'trustbox_settings',
 			'aepro',
-			'cdn.jst.ai'
+			'cdn.jst.ai',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
