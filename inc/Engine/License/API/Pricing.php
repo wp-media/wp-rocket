@@ -164,7 +164,7 @@ class Pricing {
 			return 0;
 		}
 
-		return $this->get_plus_pricing()->prices->from_single->regular;
+		return $plus_pricing->prices->from_single->regular;
 	}
 
 	/**
