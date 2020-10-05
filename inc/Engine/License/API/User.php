@@ -16,7 +16,7 @@ class User {
 	 * @param object $user The user object.
 	 */
 	public function __construct( $user ) {
-		$this->user = $user;
+		$this->user = is_object( $user ) ? $user : new \stdClass();
 	}
 
 	/**
@@ -25,11 +25,7 @@ class User {
 	 * @return int
 	 */
 	public function get_license_type() {
-		if (
-			! is_object( $this->user )
-			||
-			! isset( $this->user->licence_account )
-		) {
+		if ( ! isset( $this->user->licence_account ) ) {
 			return 0;
 		}
 
@@ -42,11 +38,7 @@ class User {
 	 * @return int
 	 */
 	public function get_license_expiration() {
-		if (
-			! is_object( $this->user )
-			||
-			! isset( $this->user->licence_expiration )
-		) {
+		if ( ! isset( $this->user->licence_expiration ) ) {
 			return 0;
 		}
 
@@ -68,11 +60,7 @@ class User {
 	 * @return int
 	 */
 	public function get_creation_date() {
-		if (
-			! is_object( $this->user )
-			||
-			! isset( $this->user->date_created )
-		) {
+		if ( ! isset( $this->user->date_created ) ) {
 			return 0;
 		}
 
@@ -85,11 +73,7 @@ class User {
 	 * @return boolean
 	 */
 	public function is_auto_renew() {
-		if (
-			! is_object( $this->user )
-			||
-			! isset( $this->user->has_auto_renew )
-		) {
+		if ( ! isset( $this->user->has_auto_renew ) ) {
 			return false;
 		}
 
@@ -102,11 +86,7 @@ class User {
 	 * @return string
 	 */
 	public function get_upgrade_plus_url() {
-		if (
-			! is_object( $this->user )
-			||
-			! isset( $this->user->upgrade_plus_url )
-		) {
+		if ( ! isset( $this->user->upgrade_plus_url ) ) {
 			return '';
 		}
 
@@ -119,11 +99,7 @@ class User {
 	 * @return string
 	 */
 	public function get_upgrade_infinite_url() {
-		if (
-			! is_object( $this->user )
-			||
-			! isset( $this->user->upgrade_infinite_url )
-		) {
+		if ( ! isset( $this->user->upgrade_infinite_url ) ) {
 			return '';
 		}
 
