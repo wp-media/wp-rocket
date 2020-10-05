@@ -6,6 +6,7 @@ use WP_Rocket\Engine\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\License\API\PricingClient;
 use WP_Rocket\Engine\License\API\Pricing;
 use WP_Rocket\Engine\License\API\UserClient;
+use WP_Rocket\Engine\License\API\User;
 
 /**
  * Service Provider for the License module
@@ -22,6 +23,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'pricing_client',
 		'user_client',
 		'pricing',
+		'user',
 	];
 
 	/**
@@ -35,5 +37,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->withArgument( $this->getContainer()->get( 'options' ) );
 		$this->getContainer()->add( 'pricing', Pricing::class )
 			->withArgument( $this->getContainer()->get( 'pricing_client' )->get_pricing_data() );
+		$this->getContainer()->add( 'user', User::class )
+			->withArgument( $this->getContainer()->get( 'user_client' )->get_user_data() );
 	}
 }
