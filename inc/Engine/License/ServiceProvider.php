@@ -7,8 +7,6 @@ use WP_Rocket\Engine\License\API\PricingClient;
 use WP_Rocket\Engine\License\API\Pricing;
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Engine\License\API\User;
-use WP_Rocket\Engine\License\Renewal;
-use WP_Rocket\Engine\License\Subscriber;
 use WP_Rocket\Engine\License\Upgrade;
 
 /**
@@ -28,8 +26,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		'pricing',
 		'user',
 		'upgrade',
-		'renewal',
-		'license_subscriber',
 	];
 
 	/**
@@ -51,12 +47,5 @@ class ServiceProvider extends AbstractServiceProvider {
 			->withArgument( $this->getContainer()->get( 'pricing' ) )
 			->withArgument( $this->getContainer()->get( 'user' ) )
 			->withArgument( $views );
-		$this->getContainer()->add( 'renewal', Renewal::class )
-			->withArgument( $this->getContainer()->get( 'pricing' ) )
-			->withArgument( $this->getContainer()->get( 'user' ) )
-			->withArgument( $views );
-		$this->getContainer()->share( 'license_subscriber', Subscriber::class )
-			->withArgument( $this->getContainer()->get( 'upgrade' ) )
-			->withArgument( $this->getContainer()->get( 'renewal' ) );
 	}
 }

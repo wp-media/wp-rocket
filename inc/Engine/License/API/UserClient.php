@@ -58,12 +58,12 @@ class UserClient {
 	 * @return bool|object
 	 */
 	private function get_raw_user_data() {
-		$customer_key   = rocket_has_constant( 'WP_ROCKET_KEY' )
-			? rocket_get_constant( 'WP_ROCKET_KEY', '' )
-			: $this->options->get( 'consumer_key', '' );
-		$customer_email = rocket_has_constant( 'WP_ROCKET_EMAIL' )
-			? rocket_get_constant( 'WP_ROCKET_EMAIL', '' )
-			: $this->options->get( 'consumer_email', '' );
+		$customer_key   = ! empty( $this->options->get( 'consumer_key', '' ) )
+			? $this->options->get( 'consumer_key', '' )
+			: rocket_get_constant( 'WP_ROCKET_KEY', '' );
+		$customer_email = ! empty( $this->options->get( 'consumer_email', '' ) )
+			? $this->options->get( 'consumer_email', '' )
+			: rocket_get_constant( 'WP_ROCKET_EMAIL', '' );
 
 		$response = wp_safe_remote_post(
 			self::USER_ENDPOINT,
