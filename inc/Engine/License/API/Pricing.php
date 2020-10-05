@@ -257,11 +257,11 @@ class Pricing {
 		if (
 			is_null( $infinite_pricing )
 			||
-			! isset( $infinite_pricing->prices->from_single->sale )
+			! isset( $infinite_pricing->prices->from_plus->sale )
 		) {
 			return $regular;
 		}
 
-		return $this->is_promo_active() ? $infinite_pricing->prices->from_single->sale : $regular;
+		return $this->is_promo_active() ? $infinite_pricing->prices->from_plus->sale : $regular;
 	}
 }
