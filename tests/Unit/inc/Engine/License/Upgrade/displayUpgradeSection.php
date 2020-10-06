@@ -14,7 +14,6 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group License
  */
 class DisplayUpgradeSection extends TestCase {
-	private $pricing;
 	private $user;
 	private $upgrade;
 
