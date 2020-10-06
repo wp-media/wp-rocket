@@ -59,10 +59,86 @@ class Upgrade extends Abstract_Render {
 		}
 
 		$data = [
-			'upgrades' => $this->get_upgrade_choices(),
+			'is_promo_active' => $this->pricing->is_promo_active(),
+			'upgrades'        => $this->get_upgrade_choices(),
 		];
 
 		echo $this->generate( 'upgrade-popin', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	}
+
+	/**
+	 * Adds the notification bubble to WP Rocket menu item when a promo is active
+	 *
+	 * @param string $menu_title Menu title.
+	 * @return string
+	 */
+	public function add_notification_bubble( $menu_title ) {
+		if ( ! $this->can_upgrade() ) {
+			return $menu_title;
+		}
+
+		if ( ! $this->pricing->is_promo_active() ) {
+			return $menu_title;
+		}
+
+		if ( get_user_meta( get_current_user_id(), 'rocket_promo_seen', true ) ) {
+			return $menu_title;
+		}
+
+		return $menu_title . '<span class="awaiting-mod">!</span>';
+	}
+
+	/**
+	 * Prevents the notification bubble from showing once the user accessed the dashboard once
+	 *
+	 * @return void
+	 */
+	public function dismiss_notification_bubble() {
+		if ( ! $this->can_upgrade() ) {
+			return;
+		}
+
+		if ( ! $this->pricing->is_promo_active() ) {
+			return;
+		}
+
+		$user_id = get_current_user_id();
+
+		if ( get_user_meta( $user_id, 'rocket_promo_seen', true ) ) {
+			return;
+		}
+
+		add_user_meta( $user_id, 'rocket_promo_seen', 1, true );
+	}
+
+	/**
+	 * Schedules a reset of the user meta when a promo ends to be ready for the next one
+	 *
+	 * @return void
+	 */
+	public function schedule_promo_reset() {
+		if ( ! $this->can_upgrade() ) {
+			return;
+		}
+
+		if ( ! $this->pricing->is_promo_active() ) {
+			return;
+		}
+
+		if ( wp_next_scheduled( 'rocket_schedule_promo_reset' ) ) {
+			return;
+		}
+
+		wp_schedule_single_event( $this->pricing->get_promo_end(), 'rocket_schedule_promo_reset' );
+	}
+
+	/**
+	 * Deletes the user meta preventing the notification bubble from showing
+	 *
+	 * @return void
+	 */
+	public function reset_promo_user_meta() {
+		delete_metadata( 'user', 0, 'rocket_promo_seen', null, true );
 	}
 
 	/**
@@ -103,12 +179,21 @@ class Upgrade extends Abstract_Render {
 	 * @return array
 	 */
 	private function get_upgrade_from_single_to_plus_data() {
-		return [
+		$price = $this->pricing->get_single_to_plus_price();
+		$data  = [
 			'name'        => 'Plus',
-			'price'       => $this->pricing->get_single_to_plus_price(),
+			'price'       => $price,
 			'websites'    => $this->pricing->get_plus_websites_count(),
 			'upgrade_url' => $this->user->get_upgrade_plus_url(),
 		];
+
+		if ( $this->pricing->is_promo_active() ) {
+			$regular_price         = $this->pricing->get_regular_single_to_plus_price();
+			$data['saving']        = $regular_price - $price;
+			$data['regular_price'] = $regular_price;
+		}
+
+		return $data;
 	}
 
 	/**
@@ -117,12 +202,21 @@ class Upgrade extends Abstract_Render {
 	 * @return array
 	 */
 	private function get_upgrade_from_single_to_infinite_data() {
-		return [
+		$price = $this->pricing->get_single_to_infinite_price();
+		$data  = [
 			'name'        => 'Infinite',
-			'price'       => $this->pricing->get_single_to_infinite_price(),
+			'price'       => $price,
 			'websites'    => $this->pricing->get_infinite_websites_count(),
 			'upgrade_url' => $this->user->get_upgrade_infinite_url(),
 		];
+
+		if ( $this->pricing->is_promo_active() ) {
+			$regular_price         = $this->pricing->get_regular_single_to_infinite_price();
+			$data['saving']        = $regular_price - $price;
+			$data['regular_price'] = $regular_price;
+		}
+
+		return $data;
 	}
 
 	/**
@@ -131,11 +225,20 @@ class Upgrade extends Abstract_Render {
 	 * @return array
 	 */
 	private function get_upgrade_from_plus_to_infinite_data() {
-		return [
+		$price = $this->pricing->get_plus_to_infinite_price();
+		$data  = [
 			'name'        => 'Infinite',
-			'price'       => $this->pricing->get_plus_to_infinite_price(),
+			'price'       => $price,
 			'websites'    => $this->pricing->get_infinite_websites_count(),
 			'upgrade_url' => $this->user->get_upgrade_infinite_url(),
 		];
+
+		if ( $this->pricing->is_promo_active() ) {
+			$regular_price         = $this->pricing->get_regular_plus_to_infinite_price();
+			$data['saving']        = $regular_price - $price;
+			$data['regular_price'] = $regular_price;
+		}
+
+		return $data;
 	}
 }
