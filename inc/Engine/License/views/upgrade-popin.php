@@ -28,8 +28,16 @@ defined( 'ABSPATH' ) || exit;
 		<div class="wpr-Popin-flex">
 			<?php foreach ( $data['upgrades'] as $rocket_upgrade ) : ?>
 			<div>
+				<?php if ( true === $data['promo_active'] ) : ?>
+				<div>
+					<?php printf( esc_html__( 'Save $%n', 'rocket' ), esc_html( $rocket_upgrade['regular_price'] ) ); ?>
+				</div>
+				<?php endif; ?>
 				<h3><?php echo esc_html( $rocket_upgrade['name'] ); ?></h3>
 				<span>$ <?php echo esc_html( $rocket_upgrade['price'] ); ?></span>
+				<?php if ( true === $data['promo_active'] ) : ?>
+				<span<del>$ <?php echo esc_html( $rocket_upgrade['regular_price'] ); ?></del></span>
+				<?php endif; ?>
 				<span>
 				<?php
 				printf( esc_html__( '%n websites', 'rocket' ), esc_html( $rocket_upgrade['websites'] ) );
