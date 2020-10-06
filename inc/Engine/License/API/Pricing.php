@@ -264,4 +264,61 @@ class Pricing {
 
 		return $this->is_promo_active() ? $infinite_pricing->prices->from_plus->sale : $regular;
 	}
+
+	/**
+	 * Gets the number of websites allowed for the single license
+	 *
+	 * @return int
+	 */
+	public function get_single_websites_count() {
+		$single_pricing = $this->get_single_pricing();
+
+		if (
+			is_null( $single_pricing )
+			||
+			! isset( $single_pricing->websites )
+		) {
+			return 0;
+		}
+
+		return (int) $single_pricing->websites;
+	}
+
+	/**
+	 * Gets the number of websites allowed for the plus license
+	 *
+	 * @return int
+	 */
+	public function get_plus_websites_count() {
+		$plus_pricing = $this->get_plus_pricing();
+
+		if (
+			is_null( $plus_pricing )
+			||
+			! isset( $plus_pricing->websites )
+		) {
+			return 0;
+		}
+
+		return (int) $plus_pricing->websites;
+	}
+
+	/**
+	 * Gets the number of websites allowed for the infinite license
+	 *
+	 * @return int
+	 */
+	public function get_infinite_websites_count() {
+		$infinite_pricing = $this->get_infinite_pricing();
+
+		if (
+			is_null( $infinite_pricing )
+			||
+			! isset( $infinite_pricing->websites )
+		) {
+			return 0;
+		}
+
+		return (int) $infinite_pricing->websites;
+	}
 }
