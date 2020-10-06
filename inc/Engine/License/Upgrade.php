@@ -102,11 +102,13 @@ class Upgrade extends Abstract_Render {
 			return;
 		}
 
-		if ( get_user_meta( get_current_user_id(), 'rocket_promo_seen', true ) ) {
+		$user_id = get_current_user_id();
+
+		if ( get_user_meta( $user_id, 'rocket_promo_seen', true ) ) {
 			return;
 		}
 
-		add_user_meta( get_current_user_id(), 'rocket_promo_seen', 1, true );
+		add_user_meta( $user_id, 'rocket_promo_seen', 1, true );
 	}
 
 	/**
@@ -161,10 +163,10 @@ class Upgrade extends Abstract_Render {
 		$choices = [];
 		$license = $this->user->get_license_type();
 
-		if ( $license === (int) $this->pricing->get_single_pricing()->websites ) {
-			$choices['plus'] = $this->get_upgrade_from_single_to_plus_data();
+		if ( $license === $this->pricing->get_single_websites_count() ) {
+			$choices['plus']     = $this->get_upgrade_from_single_to_plus_data();
 			$choices['infinite'] = $this->get_upgrade_from_single_to_infinite_data();
-		} elseif ( $license === (int) $this->pricing->get_plus_pricing()->websites ) {
+		} elseif ( $license === $this->pricing->get_plus_websites_count() ) {
 			$choices['infinite'] = $this->get_upgrade_from_plus_to_infinite_data();
 		}
 
@@ -177,13 +179,18 @@ class Upgrade extends Abstract_Render {
 	 * @return array
 	 */
 	private function get_upgrade_from_single_to_plus_data() {
-		return [
-			'name'          => 'Plus',
-			'price'         => $this->pricing->get_single_to_plus_price(),
-			'regular_price' => $this->pricing->get_regular_single_to_plus_price(),
-			'websites'      => $this->pricing->get_plus_pricing()->websites,
-			'upgrade_url'   => $this->user->get_upgrade_plus_url(),
+		$data = [
+			'name'        => 'Plus',
+			'price'       => $this->pricing->get_single_to_plus_price(),
+			'websites'    => $this->pricing->get_plus_websites_count(),
+			'upgrade_url' => $this->user->get_upgrade_plus_url(),
 		];
+
+		if ( $this->pricing->is_promo_active() ) {
+			$data['regular_price'] = $this->pricing->get_regular_single_to_plus_price();
+		}
+
+		return $data;
 	}
 
 	/**
@@ -192,13 +199,18 @@ class Upgrade extends Abstract_Render {
 	 * @return array
 	 */
 	private function get_upgrade_from_single_to_infinite_data() {
-		return [
-			'name'          => 'Infinite',
-			'price'         => $this->pricing->get_single_to_infinite_price(),
-			'regular_price' => $this->pricing->get_regular_single_to_infinite_price(),
-			'websites'      => $this->pricing->get_infinite_pricing()->websites,
-			'upgrade_url'   => $this->user->get_upgrade_infinite_url(),
+		$data = [
+			'name'        => 'Infinite',
+			'price'       => $this->pricing->get_single_to_infinite_price(),
+			'websites'    => $this->pricing->get_infinite_websites_count(),
+			'upgrade_url' => $this->user->get_upgrade_infinite_url(),
 		];
+
+		if ( $this->pricing->is_promo_active() ) {
+			$data['regular_price'] = $this->pricing->get_regular_single_to_infinite_price();
+		}
+
+		return $data;
 	}
 
 	/**
@@ -207,12 +219,17 @@ class Upgrade extends Abstract_Render {
 	 * @return array
 	 */
 	private function get_upgrade_from_plus_to_infinite_data() {
-		return [
-			'name'          => 'Infinite',
-			'price'         => $this->pricing->get_plus_to_infinite_price(),
-			'regular_price' => $this->pricing->get_regular_plus_to_infinite_price(),
-			'websites'      => $this->pricing->get_infinite_pricing()->websites,
-			'upgrade_url'   => $this->user->get_upgrade_infinite_url(),
+		$data = [
+			'name'        => 'Infinite',
+			'price'       => $this->pricing->get_plus_to_infinite_price(),
+			'websites'    => $this->pricing->get_infinite_websites_count(),
+			'upgrade_url' => $this->user->get_upgrade_infinite_url(),
 		];
+
+		if ( $this->pricing->is_promo_active() ) {
+			$data['regular_price'] = $this->pricing->get_regular_plus_to_infinite_price();
+		}
+
+		return $data;
 	}
 }
