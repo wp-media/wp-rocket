@@ -32,7 +32,8 @@ defined( 'ABSPATH' ) || exit;
 				<span>$ <?php echo esc_html( $rocket_upgrade['price'] ); ?></span>
 				<span>
 				<?php
-				printf( esc_html__( '%n websites', 'rocket' ), esc_html( $rocket_upgrade['websites'] ) );
+				// translators: %s = number of websites.
+				printf( esc_html__( '%s websites', 'rocket' ),  esc_html( $rocket_upgrade['websites'] ) );
 				?>
 				</span>
 				<a href="<?php echo esc_url( $rocket_upgrade['upgrade_url'] ); ?>" target="_blank" rel="noopener noreferrer">
