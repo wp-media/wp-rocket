@@ -120,7 +120,7 @@ class Upgrade extends Abstract_Render {
 		return [
 			'name'        => 'Infinite',
 			'price'       => $this->pricing->get_single_to_infinite_price(),
-			'websites'    => $this->pricing->get_infinite_websites_count(),
+			'websites'    => __( 'Unlimited', 'rocket' ),
 			'upgrade_url' => $this->user->get_upgrade_infinite_url(),
 		];
 	}
@@ -134,7 +134,7 @@ class Upgrade extends Abstract_Render {
 		return [
 			'name'        => 'Infinite',
 			'price'       => $this->pricing->get_plus_to_infinite_price(),
-			'websites'    => $this->pricing->get_infinite_websites_count(),
+			'websites'    => __( 'Unlimited', 'rocket' ),
 			'upgrade_url' => $this->user->get_upgrade_infinite_url(),
 		];
 	}
