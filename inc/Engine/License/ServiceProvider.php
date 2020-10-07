@@ -41,15 +41,15 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'pricing_client', PricingClient::class );
 		$this->getContainer()->add( 'user_client', UserClient::class )
 			->withArgument( $this->getContainer()->get( 'options' ) );
-		$this->getContainer()->add( 'pricing', Pricing::class )
+		$this->getContainer()->share( 'pricing', Pricing::class )
 			->withArgument( $this->getContainer()->get( 'pricing_client' )->get_pricing_data() );
-		$this->getContainer()->add( 'user', User::class )
+		$this->getContainer()->share( 'user', User::class )
 			->withArgument( $this->getContainer()->get( 'user_client' )->get_user_data() );
 		$this->getContainer()->add( 'upgrade', Upgrade::class )
 			->withArgument( $this->getContainer()->get( 'pricing' ) )
 			->withArgument( $this->getContainer()->get( 'user' ) )
 			->withArgument( $views );
-		$this->getContainer()->add( 'license_subscriber', Subscriber::class )
+		$this->getContainer()->share( 'license_subscriber', Subscriber::class )
 			->withArgument( $this->getContainer()->get( 'upgrade' ) );
 	}
 }
