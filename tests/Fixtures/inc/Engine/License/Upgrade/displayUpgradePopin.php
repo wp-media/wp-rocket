@@ -30,7 +30,7 @@ return [
 				],
 				'infinite' => [
 					'price'       => 200,
-					'websites'    => -1,
+					'websites'    => 'Unlimited',
 					'upgrade_url' => 'https://wp-rocket.me/checkout/upgrade/roger@wp-rocket.me /d89e18ee/infinite/',
 				],
 			],
@@ -46,7 +46,7 @@ return [
 				'infinite' => [
 					'name'        => 'Infinite',
 					'price'       => 200,
-					'websites'    => -1,
+					'websites'    => 'Unlimited',
 					'upgrade_url' => 'https://wp-rocket.me/checkout/upgrade/roger@wp-rocket.me /d89e18ee/infinite/',
 				],
 			],
@@ -67,7 +67,7 @@ return [
 				],
 				'infinite' => [
 					'price'       => 150,
-					'websites'    => -1,
+					'websites'    => 'Unlimited',
 					'upgrade_url' => 'https://wp-rocket.me/checkout/upgrade/roger@wp-rocket.me /d89e18ee/infinite/',
 				],
 			],
@@ -77,7 +77,7 @@ return [
 				'infinite' => [
 					'name'        => 'Infinite',
 					'price'       => 150,
-					'websites'    => -1,
+					'websites'    => 'Unlimited',
 					'upgrade_url' => 'https://wp-rocket.me/checkout/upgrade/roger@wp-rocket.me /d89e18ee/infinite/',
 				],
 			],

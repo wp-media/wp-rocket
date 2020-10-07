@@ -14,6 +14,8 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group License
  */
 class DisplayUpgradeSection extends TestCase {
+	protected static $mockCommonWpFunctionsInSetUp = true;
+
 	private $user;
 	private $upgrade;
 
@@ -35,8 +37,6 @@ class DisplayUpgradeSection extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
-		protected static $mockCommonWpFunctionsInSetUp = true;
-
 		$this->user->shouldReceive( 'get_license_type' )
 			->once()
 			->andReturn( $config['license_account'] );
