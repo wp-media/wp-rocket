@@ -157,6 +157,7 @@ class Plugin {
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Admin\Settings\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Admin\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\AdminServiceProvider' );
+		$this->container->addServiceProvider( 'WP_Rocket\Engine\License\ServiceProvider' );
 
 		return [
 			'beacon',
