@@ -113,7 +113,6 @@ $rocket_remove_query_strings = [
 	'usqp'            => 1,
 	'cn-reloaded'     => 1,
 	'_ga'             => 1,
-	'sscid'           => 1,
 ];
 
 $rocket_params = [];
