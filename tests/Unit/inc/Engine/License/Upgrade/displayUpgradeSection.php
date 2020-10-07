@@ -35,6 +35,8 @@ class DisplayUpgradeSection extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
+		protected static $mockCommonWpFunctionsInSetUp = true;
+
 		$this->user->shouldReceive( 'get_license_type' )
 			->once()
 			->andReturn( $config['license_account'] );
