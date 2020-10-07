@@ -1,0 +1,48 @@
+<?php
+/**
+ * Upgrade section template.
+ *
+ * @since 3.7.3
+ */
+
+defined( 'ABSPATH' ) || exit;
+?>
+<div class="wpr-Popin wpr-Popin-Upgrade">
+	<div class="wpr-Popin-header">
+		<h2 class="wpr-title1"><?php esc_html_e( 'Speed Up More Websites', 'rocket' ); ?></h2>
+		<button class="wpr-Popin-close wpr-Popin-Upgrade-close wpr-icon-close"></button>
+	</div>
+	<div class="wpr-Popin-content">
+		<p>
+		<?php
+		// translators: %1$s = opening strong tag, %2$s = closing strong tag.
+		printf( esc_html__( 'You can use WP Rocket on more websites by upgrading your license. To upgrade, simply pay the %1$sprice difference%2$s between your current and new licenses, as shown below.', 'rocket' ), '<strong>', '</strong>' );
+		?>
+		</p>
+		<p>
+		<?php
+		// translators: %1$s = opening strong tag, %2$s = closing strong tag.
+		printf( esc_html__( '%1$sN.B.%2$s: Upgrading your license does not change your expiration date', 'rocket' ), '<strong>', '</strong>' );
+		?>
+		</p>
+		<div class="wpr-Popin-flex">
+			<?php foreach ( $data['upgrades'] as $rocket_upgrade ) : ?>
+			<div>
+				<h3><?php echo esc_html( $rocket_upgrade['name'] ); ?></h3>
+				<span>$ <?php echo esc_html( $rocket_upgrade['price'] ); ?></span>
+				<span>
+				<?php
+				printf( esc_html__( '%n websites', 'rocket' ), esc_html( $rocket_upgrade['websites'] ) );
+				?>
+				</span>
+				<a href="<?php echo esc_url( $rocket_upgrade['upgrade_url'] ); ?>" target="_blank" rel="noopener noreferrer">
+				<?php
+				// translators: %s = license name.
+				printf( esc_html__( 'Upgrade to %s', 'rocket' ), esc_html( $rocket_upgrade['name'] ) );
+				?>
+				</a>
+			</div>
+			<?php endforeach; ?>
+		</div>
+	</div>
+</div>
