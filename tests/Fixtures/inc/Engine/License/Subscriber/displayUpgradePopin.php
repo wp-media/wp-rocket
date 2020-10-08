@@ -65,24 +65,24 @@ return [
 		N.B.</strong>
 		: Upgrading your license does not change your expiration date</p>
 		<div class="wpr-Popin-flex">
-		<div>
-		<h3>
+		<div class="wpr-Upgrade-Plus">
+		<h3 class="wpr-upgrade-title">
 		Plus</h3>
-		<span>
-		$ 50</span>
-		<span>
-		3 websites</span>
-		<a href="https://wp-rocket.me/checkout/upgrade/roger@wp-rocket.me%20/d89e18ee/plus/" target="_blank" rel="noopener noreferrer">
+		<div class="wpr-upgrade-prices">
+		<span class="wpr-upgrade-price-symbol">$</span> 50</div>
+		<div class="wpr-upgrade-websites">
+		3 websites</div>
+		<a href="https://wp-rocket.me/checkout/upgrade/roger@wp-rocket.me%20/d89e18ee/plus/" class="wpr-upgrade-link" target="_blank" rel="noopener noreferrer">
 		Upgrade to Plus</a>
 		</div>
-		<div>
-		<h3>
+		<div class="wpr-Upgrade-Infinite">
+		<h3 class="wpr-upgrade-title">
 		Infinite</h3>
-		<span>
-		$ 200</span>
-		<span>
-		Unlimited websites</span>
-		<a href="https://wp-rocket.me/checkout/upgrade/roger@wp-rocket.me%20/d89e18ee/infinite/" target="_blank" rel="noopener noreferrer">
+		<div class="wpr-upgrade-prices">
+		<span class="wpr-upgrade-price-symbol">$</span> 200
+		</div>
+		<div class="wpr-upgrade-websites">Unlimited websites</div>
+		<a href="https://wp-rocket.me/checkout/upgrade/roger@wp-rocket.me%20/d89e18ee/infinite/" class="wpr-upgrade-link" target="_blank" rel="noopener noreferrer">
 		Upgrade to Infinite</a>
 		</div>
 		</div>
@@ -137,14 +137,14 @@ return [
 		N.B.</strong>
 		: Upgrading your license does not change your expiration date</p>
 		<div class="wpr-Popin-flex">
-		<div>
-		<h3>
+		<div class="wpr-Upgrade-Infinite">
+		<h3 class="wpr-upgrade-title">
 		Infinite</h3>
-		<span>
-		$ 150</span>
-		<span>
-		Unlimited websites</span>
-		<a href="https://wp-rocket.me/checkout/upgrade/roger@wp-rocket.me%20/d89e18ee/infinite/" target="_blank" rel="noopener noreferrer">
+		<div class="wpr-upgrade-prices">
+		<span class="wpr-upgrade-price-symbol">$</span> 150
+		</div>
+		<div class="wpr-upgrade-websites">Unlimited websites</div>
+		<a href="https://wp-rocket.me/checkout/upgrade/roger@wp-rocket.me%20/d89e18ee/infinite/" class="wpr-upgrade-link" target="_blank" rel="noopener noreferrer">
 		Upgrade to Infinite</a>
 		</div>
 		</div>
