@@ -179,8 +179,9 @@ $(document).ready(function(){
 	});
 
 	function wprOpenUpgradePopin(){
-		var vTL = new TimelineLite()
-			.set($wprUpgradePopin, {'display':'block'})
+		var vTL = new TimelineLite();
+
+		vTL.set($wprUpgradePopin, {'display':'block'})
 			.set($wprPopinOverlay, {'display':'block'})
 			.fromTo($wprPopinOverlay, 0.6, {autoAlpha:0},{autoAlpha:1, ease:Power4.easeOut})
 			.fromTo($wprUpgradePopin, 0.6, {autoAlpha:0, marginTop: -24}, {autoAlpha:1, marginTop:0, ease:Power4.easeOut}, '=-.5')
@@ -188,8 +189,9 @@ $(document).ready(function(){
 	}
 
 	function wprCloseUpgradePopin(){
-		var vTL = new TimelineLite()
-			.fromTo($wprUpgradePopin, 0.6, {autoAlpha:1, marginTop: 0}, {autoAlpha:0, marginTop:-24, ease:Power4.easeOut})
+		var vTL = new TimelineLite();
+
+		vTL.fromTo($wprUpgradePopin, 0.6, {autoAlpha:1, marginTop: 0}, {autoAlpha:0, marginTop:-24, ease:Power4.easeOut})
 			.fromTo($wprPopinOverlay, 0.6, {autoAlpha:1},{autoAlpha:0, ease:Power4.easeOut}, '=-.5')
 			.set($wprUpgradePopin, {'display':'none'})
 			.set($wprPopinOverlay, {'display':'none'})
