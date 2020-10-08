@@ -27,16 +27,16 @@ defined( 'ABSPATH' ) || exit;
 		</p>
 		<div class="wpr-Popin-flex">
 			<?php foreach ( $data['upgrades'] as $rocket_upgrade ) : ?>
-			<div>
-				<h3><?php echo esc_html( $rocket_upgrade['name'] ); ?></h3>
-				<span>$ <?php echo esc_html( $rocket_upgrade['price'] ); ?></span>
-				<span>
+			<div class="wpr-Upgrade-<?php echo esc_attr( $rocket_upgrade['name'] ); ?>">
+				<h3 class="wpr-upgrade-title"><?php echo esc_html( $rocket_upgrade['name'] ); ?></h3>
+				<div class="wpr-upgrade-prices"><span class="wpr-upgrade-price-symbol">$</span> <?php echo esc_html( $rocket_upgrade['price'] ); ?></div>
+				<div class="wpr-upgrade-websites">
 				<?php
 				// translators: %s = number of websites.
 				printf( esc_html__( '%s websites', 'rocket' ),  esc_html( $rocket_upgrade['websites'] ) );
 				?>
-				</span>
-				<a href="<?php echo esc_url( $rocket_upgrade['upgrade_url'] ); ?>" target="_blank" rel="noopener noreferrer">
+				</div>
+				<a href="<?php echo esc_url( $rocket_upgrade['upgrade_url'] ); ?>" class="wpr-upgrade-link" target="_blank" rel="noopener noreferrer">
 				<?php
 				// translators: %s = license name.
 				printf( esc_html__( 'Upgrade to %s', 'rocket' ), esc_html( $rocket_upgrade['name'] ) );
