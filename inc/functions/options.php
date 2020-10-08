@@ -191,6 +191,7 @@ function rocket_get_ignored_parameters() {
 		'usqp'            => 1,
 		'cn-reloaded'     => 1,
 		'_ga'             => 1,
+		'sscid'           => 1,
 	];
 
 	/**
