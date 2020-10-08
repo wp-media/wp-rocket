@@ -12,10 +12,20 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group License
  */
 class GetPricingData extends TestCase {
+	protected static $transients = [
+		'wp_rocket_pricing',
+	];
+
 	public function tearDown() {
 		delete_transient( 'wp_rocket_pricing' );
 
 		parent::tearDown();
+	}
+
+	public function setUp() {
+		parent::setUp();
+
+		delete_transient( 'wp_rocket_pricing' );
 	}
 
 	/**
