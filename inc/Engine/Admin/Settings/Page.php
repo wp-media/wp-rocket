@@ -241,17 +241,6 @@ class Page {
 
 		$customer_data = json_decode( wp_remote_retrieve_body( $response ) );
 
-		if ( 1 <= $customer_data->licence_account && $customer_data->licence_account < 3 ) {
-			$customer_data->licence_account = 'Single';
-		} elseif ( '-1' === $customer_data->licence_account ) {
-			$customer_data->licence_account = 'Infinite';
-		} else {
-			$customer_data->licence_account = 'Plus';
-		}
-
-		$customer_data->class              = time() < $customer_data->licence_expiration ? 'wpr-isValid' : 'wpr-isInvalid';
-		$customer_data->licence_expiration = date_i18n( get_option( 'date_format' ), (int) $customer_data->licence_expiration );
-
 		return $customer_data;
 	}
 
