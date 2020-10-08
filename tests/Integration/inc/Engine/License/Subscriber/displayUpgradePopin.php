@@ -13,6 +13,8 @@ use WP_Rocket\Tests\Integration\TestCase;
 class DisplayUpgradePopin extends TestCase {
 	private static $user;
 	private static $pricing;
+	private $original_user;
+	private $original_pricing;
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
@@ -26,10 +28,15 @@ class DisplayUpgradePopin extends TestCase {
 		parent::setUp();
 
 		$this->unregisterAllCallbacksExcept( 'rocket_settings_page_footer', 'display_upgrade_popin' );
+
+		$this->original_user    = $this->getNonPublicPropertyValue( 'user', self::$user, self::$user );
+		$this->original_pricing = $this->getNonPublicPropertyValue( 'pricing', self::$pricing, self::$pricing );
 	}
 
 	public function tearDown() {
 		$this->restoreWpFilter( 'rocket_settings_page_footer' );
+		$this->set_reflective_property( $this->original_user, 'user', self::$user );
+		$this->set_reflective_property( $this->original_pricing, 'pricing', self::$pricing );
 
 		parent::tearDown();
 	}

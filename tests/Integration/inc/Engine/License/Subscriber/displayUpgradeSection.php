@@ -12,12 +12,26 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class DisplayUpgradeSection extends TestCase {
 	private static $user;
+	private $original_value;
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
 
-		$container  = apply_filters( 'rocket_container', null );
-		self::$user = $container->get( 'user' );
+		$container   = apply_filters( 'rocket_container', null );
+		self::$user  = $container->get( 'user' );
+		self::$value = $this->getNonPublicPropertyValue( 'user', self::$user, self::$user );
+	}
+
+	public function setUp() {
+		parent::setUp();
+
+		$this->original_value = $this->getNonPublicPropertyValue( 'user', self::$user, self::$user );
+	}
+
+	public function tearDown() {
+		$this->set_reflective_property( $this->original_value, 'user', self::$user );
+
+		parent::tearDown();
 	}
 
 	/**
