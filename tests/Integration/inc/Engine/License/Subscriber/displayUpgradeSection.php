@@ -19,7 +19,6 @@ class DisplayUpgradeSection extends TestCase {
 
 		$container   = apply_filters( 'rocket_container', null );
 		self::$user  = $container->get( 'user' );
-		self::$value = $this->getNonPublicPropertyValue( 'user', self::$user, self::$user );
 	}
 
 	public function setUp() {
