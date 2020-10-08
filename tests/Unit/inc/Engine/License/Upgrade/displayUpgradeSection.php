@@ -14,6 +14,8 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group License
  */
 class DisplayUpgradeSection extends TestCase {
+	protected static $mockCommonWpFunctionsInSetUp = true;
+
 	private $user;
 	private $upgrade;
 

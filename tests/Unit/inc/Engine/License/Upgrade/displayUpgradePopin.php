@@ -14,6 +14,8 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group License
  */
 class DisplayUpgradePopin extends TestCase {
+	protected static $mockCommonWpFunctionsInSetUp = true;
+
 	private $pricing;
 	private $user;
 	private $upgrade;
