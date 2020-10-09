@@ -25,6 +25,14 @@ class Subscriber implements Subscriber_Interface {
 	private $filesystem;
 
 	/**
+	 * Script enqueued status.
+	 *
+	 * @since 3.7
+	 * @var bool
+	 */
+	private $is_enqueued = false;
+
+	/**
 	 * Subscriber constructor.
 	 *
 	 * @param HTML                  $html HTML Instance.
@@ -70,6 +78,9 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function add_delay_js_script() {
+		if ( $this->is_enqueued ) {
+			return;
+		}
 		if ( ! $this->html->is_allowed() ) {
 			return;
 		}
@@ -113,5 +124,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket-delay-js',
 			$this->filesystem->get_contents( "{$js_assets_path}{$script_filename}" )
 		);
+
+		$this->is_enqueued = true;
 	}
 }

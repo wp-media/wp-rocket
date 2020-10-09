@@ -52,6 +52,43 @@ return [
 			],
 		],
 	],
+	'testShouldDisplayPopInWhenLicenseIsBetweenSingleAndPlus' => [
+		'config'   => [
+			'license_account'    => 2,
+			'licence_expiration' => false,
+			'pricing'            => [
+				'single'   => [
+					'websites' => 1,
+				],
+				'plus'     => [
+					'price'       => 50,
+					'websites'    => 3,
+					'upgrade_url' => 'https://wp-rocket.me/checkout/upgrade/roger@wp-rocket.me /d89e18ee/plus/',
+				],
+				'infinite' => [
+					'price'       => 200,
+					'websites'    => 'Unlimited',
+					'upgrade_url' => 'https://wp-rocket.me/checkout/upgrade/roger@wp-rocket.me /d89e18ee/infinite/',
+				],
+			],
+		],
+		'expected' => [
+			'upgrades' => [
+				'plus' => [
+					'name'        => 'Plus',
+					'price'       => 50,
+					'websites'    => 3,
+					'upgrade_url' => 'https://wp-rocket.me/checkout/upgrade/roger@wp-rocket.me /d89e18ee/plus/',
+				],
+				'infinite' => [
+					'name'        => 'Infinite',
+					'price'       => 200,
+					'websites'    => 'Unlimited',
+					'upgrade_url' => 'https://wp-rocket.me/checkout/upgrade/roger@wp-rocket.me /d89e18ee/infinite/',
+				],
+			],
+		],
+	],
 	'testShouldDisplayPopInWhenLicenseIsPlus' => [
 		'config'   => [
 			'license_account'    => 3,

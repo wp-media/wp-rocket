@@ -51,6 +51,7 @@ class DisplayUpgradePopin extends TestCase {
 
 		if ( ! is_null( $expected ) ) {
 			$this->pricing->shouldReceive( 'get_single_websites_count' )
+				->atMost()
 				->once()
 				->andReturn( $config['pricing']['single']['websites'] );
 
