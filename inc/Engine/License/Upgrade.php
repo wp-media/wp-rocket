@@ -84,14 +84,20 @@ class Upgrade extends Abstract_Render {
 	 * @return array
 	 */
 	private function get_upgrade_choices() {
-		$choices = [];
-		$license = $this->user->get_license_type();
+		$choices       = [];
+		$license       = $this->user->get_license_type();
+		$plus_websites = $this->pricing->get_plus_websites_count();
 
-		if ( $license === $this->pricing->get_single_websites_count() ) {
+		if ( $license === $plus_websites ) {
+			$choices['infinite'] = $this->get_upgrade_from_plus_to_infinite_data();
+			
+		} elseif (
+			$license >= $this->pricing->get_single_websites_count()
+			&&
+			$license < $plus_websites
+			) {
 			$choices['plus']     = $this->get_upgrade_from_single_to_plus_data();
 			$choices['infinite'] = $this->get_upgrade_from_single_to_infinite_data();
-		} elseif ( $license === $this->pricing->get_plus_websites_count() ) {
-			$choices['infinite'] = $this->get_upgrade_from_plus_to_infinite_data();
 		}
 
 		return $choices;
