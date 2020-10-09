@@ -23,12 +23,12 @@ class Subscriber implements Subscriber_Interface {
 	 * @var \WP_Filesystem_Direct
 	 */
 	private $filesystem;
-	
+
 	/**
 	 * Script enqueued status.
 	 *
 	 * @since 3.7
-	 *
+	 * @var bool
 	 */
 	private $is_enqueued = false;
 
@@ -124,7 +124,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket-delay-js',
 			$this->filesystem->get_contents( "{$js_assets_path}{$script_filename}" )
 		);
-		
+
 		$this->is_enqueued = true;
 	}
 }
