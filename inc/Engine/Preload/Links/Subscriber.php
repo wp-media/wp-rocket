@@ -22,6 +22,13 @@ class Subscriber implements Subscriber_Interface {
 	private $filesystem;
 
 	/**
+	 * Script enqueued status.
+	 *
+	 * @var bool
+	 */
+	private $is_enqueued = false;
+
+	/**
 	 * Instantiate the class.
 	 *
 	 * @param Options_Data         $options    Options Data instance.
@@ -51,6 +58,9 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function add_preload_script() {
+		if ( $this->is_enqueued ) {
+			return;
+		}
 		if ( ! (bool) $this->options->get( 'preload_links', 0 ) || rocket_bypass() ) {
 			return;
 		}
@@ -98,6 +108,8 @@ class Subscriber implements Subscriber_Interface {
 			'RocketPreloadLinksConfig',
 			$this->get_preload_links_config()
 		);
+
+		$this->is_enqueued = true;
 	}
 
 	/**
