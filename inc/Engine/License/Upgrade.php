@@ -90,7 +90,6 @@ class Upgrade extends Abstract_Render {
 
 		if ( $license === $plus_websites ) {
 			$choices['infinite'] = $this->get_upgrade_from_plus_to_infinite_data();
-			
 		} elseif (
 			$license >= $this->pricing->get_single_websites_count()
 			&&
