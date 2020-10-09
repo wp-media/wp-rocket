@@ -54,7 +54,12 @@ class RocketLazyLoadScripts {
 	 * load the script.
 	 */
 	_loadScriptSrc() {
-		const scripts = document.querySelectorAll( `script[${ this.attrName }]` );
+		const scripts = Array.prototype.slice.call(
+			document.querySelectorAll(
+				`script[${ this.attrName }]`
+			)
+		);
+
 
 		scripts.forEach( elem => {
 			const scriptSrc = elem.getAttribute( this.attrName );
