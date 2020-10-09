@@ -160,6 +160,45 @@ $(document).ready(function(){
 	}
 
 	/***
+	* Show popin upgrade
+	***/
+
+	var $wprUpgradePopin = $('.wpr-Popin-Upgrade'),
+	$wprUpgradeClosePopin = $('.wpr-Popin-Upgrade-close'),
+	$wprUpgradeOpenPopin = $('#wpr-popin-upgrade-toggle');
+
+	$wprUpgradeOpenPopin.click(function(e) {
+		e.preventDefault();
+		wprOpenUpgradePopin();
+		return false;
+	});
+
+	$wprUpgradeClosePopin.click(function() {
+		wprCloseUpgradePopin();
+		return false;
+	});
+
+	function wprOpenUpgradePopin(){
+		var vTL = new TimelineLite();
+
+		vTL.set($wprUpgradePopin, {'display':'block'})
+			.set($wprPopinOverlay, {'display':'block'})
+			.fromTo($wprPopinOverlay, 0.6, {autoAlpha:0},{autoAlpha:1, ease:Power4.easeOut})
+			.fromTo($wprUpgradePopin, 0.6, {autoAlpha:0, marginTop: -24}, {autoAlpha:1, marginTop:0, ease:Power4.easeOut}, '=-.5')
+		;
+	}
+
+	function wprCloseUpgradePopin(){
+		var vTL = new TimelineLite();
+
+		vTL.fromTo($wprUpgradePopin, 0.6, {autoAlpha:1, marginTop: 0}, {autoAlpha:0, marginTop:-24, ease:Power4.easeOut})
+			.fromTo($wprPopinOverlay, 0.6, {autoAlpha:1},{autoAlpha:0, ease:Power4.easeOut}, '=-.5')
+			.set($wprUpgradePopin, {'display':'none'})
+			.set($wprPopinOverlay, {'display':'none'})
+		;
+	}
+
+	/***
 	* Sidebar on/off
 	***/
 	var $wprSidebar    = $( '.wpr-Sidebar' );
