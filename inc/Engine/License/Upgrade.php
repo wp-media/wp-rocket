@@ -108,7 +108,7 @@ class Upgrade extends Abstract_Render {
 
 		$user_id = get_current_user_id();
 
-		if ( get_transient( "rocket_promo_seen_{$user_id}" ) ) {
+		if ( false !== get_transient( "rocket_promo_seen_{$user_id}" ) ) {
 			return;
 		}
 
@@ -133,6 +133,10 @@ class Upgrade extends Abstract_Render {
 			return;
 		}
 
+		if ( false !== get_transient( 'rocket_promo_banner_' . get_current_user_id() ) ) {
+			return;
+		}
+
 		$promo          = $this->pricing->get_promo_data();
 		$promo_name     = isset( $promo->name ) ? $promo->name : '';
 		$promo_discount = isset( $promo->discount_percent ) ? $promo->discount_percent : 0;
@@ -143,6 +147,27 @@ class Upgrade extends Abstract_Render {
 		];
 
 		echo $this->generate( 'promo-banner', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	}
+
+	/**
+	 * AJAX callback to dismiss the promotion banner
+	 *
+	 * @return void
+	 */
+	public function dismiss_promo_banner() {
+		check_ajax_referer( 'rocket_promo_dismiss', 'nonce', true );
+
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
+		$user = get_current_user_id();
+
+		if ( false !== get_transient( "rocket_promo_banner_{$user}" ) ) {
+			return;
+		}
+
+		set_transient( "rocket_promo_banner_{$user}", 1, 2 * WEEK_IN_SECONDS );
 	}
 
 	/**
