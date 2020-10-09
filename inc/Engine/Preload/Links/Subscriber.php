@@ -20,10 +20,11 @@ class Subscriber implements Subscriber_Interface {
 	 * @var WP_Filesystem_Direct
 	 */
 	private $filesystem;
-	
+
 	/**
 	 * Script enqueued status.
 	 *
+	 * @var bool
 	 */
 	private $is_enqueued = false;
 
@@ -107,7 +108,7 @@ class Subscriber implements Subscriber_Interface {
 			'RocketPreloadLinksConfig',
 			$this->get_preload_links_config()
 		);
-		
+
 		$this->is_enqueued = true;
 	}
 
