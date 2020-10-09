@@ -77,11 +77,15 @@ class Upgrade extends Abstract_Render {
 			return $menu_title;
 		}
 
+		if ( $this->is_expired_soon() ) {
+			return;
+		}
+
 		if ( ! $this->pricing->is_promo_active() ) {
 			return $menu_title;
 		}
 
-		if ( get_user_meta( get_current_user_id(), 'rocket_promo_seen', true ) ) {
+		if ( get_transient( 'rocket_promo_seen_' . get_current_user_id() ) ) {
 			return $menu_title;
 		}
 
@@ -104,20 +108,24 @@ class Upgrade extends Abstract_Render {
 
 		$user_id = get_current_user_id();
 
-		if ( get_user_meta( $user_id, 'rocket_promo_seen', true ) ) {
+		if ( get_transient( "rocket_promo_seen_{$user_id}" ) ) {
 			return;
 		}
 
-		add_user_meta( $user_id, 'rocket_promo_seen', 1, true );
+		set_transient( "rocket_promo_seen_{$user_id}", 1, 2 * WEEK_IN_SECONDS );
 	}
 
 	/**
-	 * Schedules a reset of the user meta when a promo ends to be ready for the next one
+	 * Displays the promotion banner
 	 *
 	 * @return void
 	 */
-	public function schedule_promo_reset() {
+	public function display_promo_banner() {
 		if ( ! $this->can_upgrade() ) {
+			return;
+		}
+
+		if ( $this->is_expired_soon() ) {
 			return;
 		}
 
@@ -125,20 +133,27 @@ class Upgrade extends Abstract_Render {
 			return;
 		}
 
-		if ( wp_next_scheduled( 'rocket_schedule_promo_reset' ) ) {
-			return;
-		}
+		$promo          = $this->pricing->get_promo_data();
+		$promo_name     = isset( $promo->name ) ? $promo->name : '';
+		$promo_discount = isset( $promo->discount_percent ) ? $promo->discount_percent : 0;
 
-		wp_schedule_single_event( $this->pricing->get_promo_end(), 'rocket_schedule_promo_reset' );
+		$data = [
+			'name'             => $promo_name,
+			'discount_percent' => $promo_discount,
+		];
+
+		echo $this->generate( 'promo-banner', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**
-	 * Deletes the user meta preventing the notification bubble from showing
+	 * Checks if the license expires in less than 30 days
 	 *
-	 * @return void
+	 * @return boolean
 	 */
-	public function reset_promo_user_meta() {
-		delete_metadata( 'user', 0, 'rocket_promo_seen', null, true );
+	private function is_expired_soon() {
+		$expiration_delay = time() - $this->user->get_license_expiration();
+
+		return 30 * DAY_IN_SECONDS > $expiration_delay;
 	}
 
 	/**
