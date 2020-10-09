@@ -21,12 +21,7 @@ defined( 'ABSPATH' ) || exit;
 			printf( esc_html__( '%s promotion is live!', 'rocket' ), esc_html( $data['promo_name'] ) );
 			?>
 		</h3>
-		<p>
-			<?php
-			// translators: %1$s = promotion name, %2$s = promotion discount percentage.
-			printf( esc_html__( 'Take advantage of %1$s to speed up more websites: get a %2$s% off for upgrading your license to Plus or Infinite!', 'rocket' ), esc_html( $data['promo_name'] ), esc_html( $data['promo_discount'] ) );
-			?>
-		</p>
+		<p><?php echo esc_html( $data['message'] ); ?></p>
 	<section>
 	<div>
 		<p><?php esc_html_e( 'Hurry Up! Deal ends in:', 'rocket' ); ?></p>
