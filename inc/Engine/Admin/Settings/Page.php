@@ -93,7 +93,7 @@ class Page {
 	 * @param Render_Interface $render      Implementation of Render interface.
 	 * @param Beacon           $beacon      Beacon instance.
 	 * @param Optimization     $optimize    Database optimization instance.
-	 * @param UserClient       $user_client User client instance;
+	 * @param UserClient       $user_client User client instance.
 	 */
 	public function __construct( array $args, Settings $settings, Render_Interface $render, Beacon $beacon, Optimization $optimize, UserClient $user_client ) {
 		$args = array_merge(
