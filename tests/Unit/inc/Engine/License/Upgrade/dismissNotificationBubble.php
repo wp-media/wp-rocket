@@ -27,7 +27,7 @@ class DismissNotificationBubble extends TestCase {
 		$this->upgrade =  new Upgrade(
 			$this->pricing,
 			$this->user,
-			'views',
+			'views'
 		);
 	}
 
