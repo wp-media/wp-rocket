@@ -173,8 +173,8 @@ class Upgrade extends Abstract_Render {
 			$choices = 1;
 		}
 
-		// translators: %1$s = promotion name, %2$s = promotion discount percentage.
 		return sprintf(
+			// translators: %1$s = promotion name, %2$s = promotion discount percentage.
 			_n(
 				'Take advantage of %1$s to speed up more websites: get a %2$s off for upgrading your license to Plus or Infinite!',
 				'Take advantage of %1$s to speed up more websites: get a %2$s off for upgrading your license to Infinite!',
