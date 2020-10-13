@@ -164,25 +164,25 @@ class Upgrade extends Abstract_Render {
 		$plus_websites  = $this->pricing->get_plus_websites_count();
 
 		if ( $license === $plus_websites ) {
-			$choices = 1;
+			$choices = 2;
 		} elseif (
 			$license >= $this->pricing->get_single_websites_count()
 			&&
 			$license < $plus_websites
 			) {
-			$choices = 2;
+			$choices = 1;
 		}
 
 		// translators: %1$s = promotion name, %2$s = promotion discount percentage.
 		return sprintf(
 			_n(
-				'Take advantage of %1$s to speed up more websites: get a %2$s% off for upgrading your license to Plus or Infinite!',
-				'Take advantage of %1$s to speed up more websites: get a %2$s% off for upgrading your license to Infinite!',
+				'Take advantage of %1$s to speed up more websites: get a %2$s off for upgrading your license to Plus or Infinite!',
+				'Take advantage of %1$s to speed up more websites: get a %2$s off for upgrading your license to Infinite!',
 				$choices,
 				'rocket'
 			),
 			$promo_name,
-			$promo_discount
+			$promo_discount . '%'
 		);
 	}
 
