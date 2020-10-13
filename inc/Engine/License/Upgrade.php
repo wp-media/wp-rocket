@@ -159,9 +159,9 @@ class Upgrade extends Abstract_Render {
 	 * @return string
 	 */
 	private function get_promo_message( $promo_name = '', $promo_discount = 0 ) {
-		$choices        = 0;
-		$license        = $this->user->get_license_type();
-		$plus_websites  = $this->pricing->get_plus_websites_count();
+		$choices       = 0;
+		$license       = $this->user->get_license_type();
+		$plus_websites = $this->pricing->get_plus_websites_count();
 
 		if ( $license === $plus_websites ) {
 			$choices = 2;
