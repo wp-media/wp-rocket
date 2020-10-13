@@ -3,6 +3,7 @@ namespace WP_Rocket\Engine\Admin\Settings;
 
 use WP_Rocket\Admin\Database\Optimization;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
+use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Interfaces\Render_Interface;
 
 /**
@@ -76,24 +77,42 @@ class Page {
 	private $optimize;
 
 	/**
+	 * User client instance.
+	 *
+	 * @var UserClient
+	 */
+	private $user_client;
+
+	/**
 	 * Creates an instance of the Page object.
 	 *
 	 * @since 3.0
 	 *
-	 * @param array            $args     Array of required arguments to add the admin page.
-	 * @param Settings         $settings Instance of Settings class.
-	 * @param Render_Interface $render   Implementation of Render interface.
-	 * @param Beacon           $beacon   Beacon instance.
-	 * @param Optimization     $optimize Database optimization instance.
+	 * @param array            $args        Array of required arguments to add the admin page.
+	 * @param Settings         $settings    Instance of Settings class.
+	 * @param Render_Interface $render      Implementation of Render interface.
+	 * @param Beacon           $beacon      Beacon instance.
+	 * @param Optimization     $optimize    Database optimization instance.
+	 * @param UserClient       $user_client User client instance.
 	 */
-	public function __construct( $args, Settings $settings, Render_Interface $render, Beacon $beacon, Optimization $optimize ) {
-		$this->slug       = $args['slug'];
-		$this->title      = $args['title'];
-		$this->capability = $args['capability'];
-		$this->settings   = $settings;
-		$this->render     = $render;
-		$this->beacon     = $beacon;
-		$this->optimize   = $optimize;
+	public function __construct( array $args, Settings $settings, Render_Interface $render, Beacon $beacon, Optimization $optimize, UserClient $user_client ) {
+		$args = array_merge(
+			[
+				'slug'       => 'wprocket',
+				'title'      => 'WP Rocket',
+				'capability' => 'rocket_manage_options',
+			],
+			$args
+		);
+
+		$this->slug        = $args['slug'];
+		$this->title       = $args['title'];
+		$this->capability  = $args['capability'];
+		$this->settings    = $settings;
+		$this->render      = $render;
+		$this->beacon      = $beacon;
+		$this->optimize    = $optimize;
+		$this->user_client = $user_client;
 	}
 
 	/**
@@ -214,53 +233,45 @@ class Page {
 	}
 
 	/**
-	 * Gets customer data from WP Rocket website to display it in the dashboard.
+	 * Returns the customer data to display on the dashboard
 	 *
-	 * @since 3.0
-	 *
-	 * @return object
-	 */
-	private function get_customer_data() {
-		$customer_key   = defined( 'WP_ROCKET_KEY' ) ? WP_ROCKET_KEY : get_rocket_option( 'consumer_key', '' );
-		$customer_email = defined( 'WP_ROCKET_EMAIL' ) ? WP_ROCKET_EMAIL : get_rocket_option( 'consumer_email', '' );
-
-		$response = wp_safe_remote_post(
-			WP_ROCKET_WEB_MAIN . 'stat/1.0/wp-rocket/user.php',
-			[
-				'body' => 'user_id=' . rawurlencode( $customer_email ) . '&consumer_key=' . $customer_key,
-			]
-		);
-
-		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
-			return (object) [
-				'licence_account'    => __( 'Unavailable', 'rocket' ),
-				'licence_expiration' => __( 'Unavailable', 'rocket' ),
-				'class'              => 'wpr-isInvalid',
-			];
-		}
-
-		$customer_data = json_decode( wp_remote_retrieve_body( $response ) );
-
-		return $customer_data;
-	}
-
-	/**
-	 * Returns customer data from transient or request and save it if not cached.
-	 *
+	 * @since 3.7.3 Update to use the user client class to get the data
 	 * @since 3.0
 	 *
 	 * @return object
 	 */
 	public function customer_data() {
-		if ( false !== get_transient( 'wp_rocket_customer_data' ) ) {
-			return get_transient( 'wp_rocket_customer_data' );
+		$user = $this->user_client->get_user_data();
+		$data = [
+			'license_type'       => __( 'Unavailable', 'rocket' ),
+			'license_expiration' => __( 'Unavailable', 'rocket' ),
+			'license_class'      => 'wpr-isInvalid',
+		];
+
+		if (
+			false === $user
+			||
+			! isset( $user->licence_account, $user->licence_expiration )
+		) {
+			return $data;
 		}
 
-		$customer_data = $this->get_customer_data();
+		if (
+			1 <= $user->licence_account
+			&&
+			$user->licence_account < 3
+		) {
+			$data['license_type'] = 'Single';
+		} elseif ( -1 === (int) $user->licence_account ) {
+			$data['license_type'] = 'Infinite';
+		} else {
+			$data['license_type'] = 'Plus';
+		}
 
-		set_transient( 'wp_rocket_customer_data', $customer_data, DAY_IN_SECONDS );
+		$data['license_class']      = time() < $user->licence_expiration ? 'wpr-isValid' : 'wpr-isInvalid';
+		$data['license_expiration'] = date_i18n( get_option( 'date_format' ), (int) $user->licence_expiration );
 
-		return $customer_data;
+		return $data;
 	}
 
 	/**

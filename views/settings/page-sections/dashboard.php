@@ -71,7 +71,9 @@ defined( 'ABSPATH' ) || exit;
 				<div class="wpr-flex">
 					<div class="wpr-infoAccount-License">
 						<span class="wpr-title3"><?php esc_html_e( 'License', 'rocket' ); ?></span>
-						<span class="wpr-infoAccount wpr-isValid" id="wpr-account-data"><?php echo esc_html( $data['customer_data']->licence_account ); ?></span><br>
+						<span class="wpr-infoAccount wpr-isValid" id="wpr-account-data">
+							<?php echo esc_html( $data['customer_data']['license_type'] ); ?>
+						</span><br>
 						<?php
 						/**
 						 * Fires when displaying the license information
@@ -82,7 +84,7 @@ defined( 'ABSPATH' ) || exit;
 						?>
 						<p>
 							<span class="wpr-title3"><?php esc_html_e( 'Expiration Date', 'rocket' ); ?></span>
-							<span class="wpr-infoAccount <?php echo esc_attr( $data['customer_data']->class ); ?>" id="wpr-expiration-data"><?php echo esc_html( $data['customer_data']->licence_expiration ); ?></span>
+							<span class="wpr-infoAccount <?php echo esc_attr( $data['customer_data']['license_class'] ); ?>" id="wpr-expiration-data"><?php echo esc_html( $data['customer_data']['license_expiration'] ); ?></span>
 						</p>
 					</div>
 					<div>
