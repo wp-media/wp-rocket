@@ -95,7 +95,16 @@ class Page {
 	 * @param Optimization     $optimize    Database optimization instance.
 	 * @param UserClient       $user_client User client instance;
 	 */
-	public function __construct( $args, Settings $settings, Render_Interface $render, Beacon $beacon, Optimization $optimize, UserClient $user_client ) {
+	public function __construct( array $args, Settings $settings, Render_Interface $render, Beacon $beacon, Optimization $optimize, UserClient $user_client ) {
+		$args = array_merge(
+			[
+				'slug'       => 'wprocket',
+				'title'      => 'WP Rocket',
+				'capability' => 'rocket_manage_options',
+			],
+			$args
+		);
+
 		$this->slug        = $args['slug'];
 		$this->title       = $args['title'];
 		$this->capability  = $args['capability'];
