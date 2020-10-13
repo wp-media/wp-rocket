@@ -49,6 +49,8 @@ class Test_GetRocketExcludeDeferJS extends TestCase {
 			'/wp-content/plugins/wpfront-notification-bar/js/wpfront-notification-bar(.*).js',
 			'/wp-content/plugins/oxygen/component-framework/vendor/aos/aos.js',
 			'static.mailerlite.com/data/(.*).js',
+			'cdn.voxpow.com/static/libs/v1/(.*).js',
+			'cdn.voxpow.com/media/trackers/js/(.*).js',
 		];
 
 		if ( $defer_jquery ) {
