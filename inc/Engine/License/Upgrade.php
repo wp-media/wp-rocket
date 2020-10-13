@@ -78,18 +78,18 @@ class Upgrade extends Abstract_Render {
 		}
 
 		if ( $this->is_expired_soon() ) {
-			return;
+			return $menu_title;
 		}
 
 		if ( ! $this->pricing->is_promo_active() ) {
 			return $menu_title;
 		}
 
-		if ( get_transient( 'rocket_promo_seen_' . get_current_user_id() ) ) {
+		if ( false !== get_transient( 'rocket_promo_seen_' . get_current_user_id() ) ) {
 			return $menu_title;
 		}
 
-		return $menu_title . '<span class="awaiting-mod">!</span>';
+		return $menu_title . ' <span class="awaiting-mod">!</span>';
 	}
 
 	/**
@@ -213,7 +213,7 @@ class Upgrade extends Abstract_Render {
 	 * @return boolean
 	 */
 	private function is_expired_soon() {
-		$expiration_delay = time() - $this->user->get_license_expiration();
+		$expiration_delay = $this->user->get_license_expiration() - time();
 
 		return 30 * DAY_IN_SECONDS > $expiration_delay;
 	}
