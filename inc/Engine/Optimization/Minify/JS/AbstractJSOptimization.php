@@ -265,6 +265,7 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 			'static.botsrv.com/website/js/widget2.36cf1446.js',
 			'static.mailerlite.com/data/',
 			'cdn.voxpow.com',
+			'loader.knack.com',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
