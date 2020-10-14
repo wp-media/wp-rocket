@@ -192,7 +192,7 @@ class Upgrade extends Abstract_Render {
 	 * @return void
 	 */
 	public function dismiss_promo_banner() {
-		check_ajax_referer( 'rocket_promo_dismiss', 'nonce', true );
+		check_ajax_referer( 'rocket-ajax', 'nonce', true );
 
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			return;
@@ -205,6 +205,8 @@ class Upgrade extends Abstract_Render {
 		}
 
 		set_transient( "rocket_promo_banner_{$user}", 1, 2 * WEEK_IN_SECONDS );
+
+		wp_send_json_success();
 	}
 
 	/**
