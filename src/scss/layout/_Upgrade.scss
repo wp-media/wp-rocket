@@ -5,7 +5,7 @@
 	Upgrade popin
 
 \*-----------------------------------------------*/
-.wpr-popin-upgrade-toggle {
+.wpr-license-upgrade-button {
 	font-weight: bold;
 	text-decoration: underline;
 
@@ -88,6 +88,16 @@
 	transform: translateX(-50%);
 }
 
+div.wpr-upgrade-saving {
+	background: $brightSun;
+	border-radius: 44px;
+	color: $cBlack;
+	font-weight: bold;
+	margin: 0 0 3 * $space 0;
+	padding: $space 2 * $space;
+	text-align: center;
+}
+
 .wpr-upgrade-title {
 	color: $jaffa;
 	@include font-size(30,36);
@@ -98,14 +108,20 @@
 
 div.wpr-upgrade-prices {
 	color: $cBlack;
-	@include font-size(48,56);
+	@include font-size(48,48);
 	font-weight: bold;
 	margin: 0 0 2 * $space 0;
 }
 
 .wpr-upgrade-price-symbol {
-	@include font-size(30,36);
+	@include font-size(30,30);
 	vertical-align: super;
+}
+
+.wpr-upgrade-price-regular {
+	color: $cGreyDark3;
+	@include font-size(16,16);
+	vertical-align: top;
 }
 
 div.wpr-upgrade-websites {
