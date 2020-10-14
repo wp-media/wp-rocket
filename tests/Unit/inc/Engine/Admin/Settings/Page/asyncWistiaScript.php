@@ -8,6 +8,7 @@ use WP_Rocket\Admin\Database\Optimization;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Admin\Settings\Page;
 use WP_Rocket\Engine\Admin\Settings\Settings;
+use WP_Rocket\Engine\License\API\UserClient;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
@@ -31,7 +32,8 @@ class Test_AsyncWistiaScript extends TestCase {
 			Mockery::mock( Settings::class ),
 			Mockery::mock( 'WP_Rocket\Interfaces\Render_Interface'),
 			Mockery::mock( Beacon::class),
-			Mockery::mock( Optimization::class )
+			Mockery::mock( Optimization::class ),
+			Mockery::mock( UserClient::class )
 		);
 
         $this->assertSame(
