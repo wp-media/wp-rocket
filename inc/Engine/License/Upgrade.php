@@ -144,10 +144,50 @@ class Upgrade extends Abstract_Render {
 		$data = [
 			'name'             => $promo_name,
 			'discount_percent' => $promo_discount,
+			'countdown'        => $this->get_countdown_data(),
 			'message'          => $this->get_promo_message( $promo_name, $promo_discount ),
 		];
 
 		echo $this->generate( 'promo-banner', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	}
+
+	/**
+	 * Returns an array containing the remaining days, hours, minutes & seconds for the promotion
+	 *
+	 * @since 3.7.4
+	 *
+	 * @return array
+	 */
+	private function get_countdown_data() {
+		$data = [
+			'days'    => 0,
+			'hours'   => 0,
+			'minutes' => 0,
+			'seconds' => 0,
+		];
+
+		$promo_end = $this->pricing->get_promo_end();
+
+		if ( 0 === $promo_end ) {
+			return $data;
+		}
+
+		$now = date_create();
+		$end = date_timestamp_set( date_create(), $promo_end );
+
+		if ( $now > $end ) {
+			return $data;
+		}
+
+		$remaining = date_diff( $now, $end );
+		$format    = explode( ' ', $remaining->format( '%d %H %i %s' ) );
+
+		$data['days']    = $format[0];
+		$data['hours']   = $format[1];
+		$data['minutes'] = $format[2];
+		$data['seconds'] = $format[3];
+
+		return $data;
 	}
 
 	/**
@@ -174,15 +214,18 @@ class Upgrade extends Abstract_Render {
 		}
 
 		return sprintf(
-			// translators: %1$s = promotion name, %2$s = promotion discount percentage.
+			// translators: %1$s = promotion name, %2$s = <br>, %3$s = <strong>, %4$s = promotion discount percentage, %5$s = </strong>.
 			_n(
-				'Take advantage of %1$s to speed up more websites: get a %2$s off for upgrading your license to Plus or Infinite!',
-				'Take advantage of %1$s to speed up more websites: get a %2$s off for upgrading your license to Infinite!',
+				'Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s for %3$supgrading your license to Plus or Infinite!%5$s',
+				'Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s for %3$supgrading your license to Infinite!%5$s',
 				$choices,
 				'rocket'
 			),
 			$promo_name,
-			$promo_discount . '%'
+			'<br>',
+			'<strong>',
+			$promo_discount . '%',
+			'</strong>'
 		);
 	}
 
