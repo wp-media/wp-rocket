@@ -29,14 +29,14 @@ defined( 'ABSPATH' ) || exit;
 			<?php foreach ( $data['upgrades'] as $rocket_upgrade ) : ?>
 			<div class="wpr-Upgrade-<?php echo esc_attr( $rocket_upgrade['name'] ); ?>">
 				<?php if ( true === $data['is_promo_active'] ) : ?>
-					<div>
+					<div class="wpr-upgrade-saving">
 						<?php printf( esc_html__( 'Save $%s', 'rocket' ), esc_html( $rocket_upgrade['saving'] ) ); ?>
 					</div>
 					<?php endif; ?>
 				<h3 class="wpr-upgrade-title"><?php echo esc_html( $rocket_upgrade['name'] ); ?></h3>
 				<div class="wpr-upgrade-prices"><span class="wpr-upgrade-price-symbol">$</span> <?php echo esc_html( $rocket_upgrade['price'] ); ?>
 				<?php if ( true === $data['is_promo_active'] ) : ?>
-					<span<del>$ <?php echo esc_html( $rocket_upgrade['regular_price'] ); ?></del></span>
+					<del class="wpr-upgrade-price-regular">$ <?php echo esc_html( $rocket_upgrade['regular_price'] ); ?></del>
 				<?php endif; ?>
 				</div>
 				<div class="wpr-upgrade-websites">
