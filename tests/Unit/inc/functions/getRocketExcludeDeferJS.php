@@ -58,6 +58,8 @@ class Test_GetRocketExcludeDeferJS extends TestCase {
             '/wp-content/plugins/wpfront-notification-bar/js/wpfront-notification-bar(.*).js',
             '/wp-content/plugins/oxygen/component-framework/vendor/aos/aos.js',
 	    'static.mailerlite.com/data/(.*).js',
+	    'cdn.voxpow.com/static/libs/v1/(.*).js',
+	    'cdn.voxpow.com/media/trackers/js/(.*).js',
         ];
 
         if ( $defer_jquery ) {
@@ -68,6 +70,7 @@ class Test_GetRocketExcludeDeferJS extends TestCase {
                     'c0.wp.com/c/(?:.+)/wp-includes/js/jquery/jquery.js',
                     'ajax.googleapis.com/ajax/libs/jquery/(?:.+)/jquery(?:\.min)?.js',
                     'cdnjs.cloudflare.com/ajax/libs/jquery/(?:.+)/jquery(?:\.min)?.js',
+		    'code.jquery.com/jquery-.*(?:\.min|slim)?.js',
                 ]
             );
         }
