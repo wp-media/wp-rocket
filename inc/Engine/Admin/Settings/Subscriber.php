@@ -83,7 +83,14 @@ class Subscriber implements Subscriber_Interface {
 	public function add_admin_page() {
 		add_options_page(
 			$this->page->get_title(),
-			$this->page->get_title(),
+			/**
+			 * Filters the menu title to display in the Settings sub-menu
+			 *
+			 * @since 3.7.4
+			 *
+			 * @param string $menu_title The text to be used for the menu.
+			 */
+			apply_filters( 'rocket_menu_title', $this->page->get_title() ),
 			$this->page->get_capability(),
 			$this->page->get_slug(),
 			[ $this->page, 'render_page' ]

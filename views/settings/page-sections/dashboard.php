@@ -47,7 +47,14 @@ defined( 'ABSPATH' ) || exit;
 		</div>
 	</div>
 	<?php endif; ?>
-
+	<?php
+		/**
+		 * Fires before displaying the dashboard tab content
+		 *
+		 * @since 3.7.4
+		 */
+		do_action( 'rocket_before_dashboard_content' );
+	?>
 	<div class="wpr-Page-row">
 		<div class="wpr-Page-col">
 			<?php if ( ! defined( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) || ! WP_ROCKET_WHITE_LABEL_ACCOUNT ) : ?>

@@ -73,15 +73,7 @@ class Upgrade extends Abstract_Render {
 	 * @return string
 	 */
 	public function add_notification_bubble( $menu_title ) {
-		if ( ! $this->can_upgrade() ) {
-			return $menu_title;
-		}
-
-		if ( $this->is_expired_soon() ) {
-			return $menu_title;
-		}
-
-		if ( ! $this->pricing->is_promo_active() ) {
+		if ( ! $this->can_use_promo() ) {
 			return $menu_title;
 		}
 
@@ -98,11 +90,7 @@ class Upgrade extends Abstract_Render {
 	 * @return void
 	 */
 	public function dismiss_notification_bubble() {
-		if ( ! $this->can_upgrade() ) {
-			return;
-		}
-
-		if ( ! $this->pricing->is_promo_active() ) {
+		if ( ! $this->can_use_promo() ) {
 			return;
 		}
 
@@ -121,15 +109,7 @@ class Upgrade extends Abstract_Render {
 	 * @return void
 	 */
 	public function display_promo_banner() {
-		if ( ! $this->can_upgrade() ) {
-			return;
-		}
-
-		if ( $this->is_expired_soon() ) {
-			return;
-		}
-
-		if ( ! $this->pricing->is_promo_active() ) {
+		if ( ! $this->can_use_promo() ) {
 			return;
 		}
 
@@ -144,10 +124,77 @@ class Upgrade extends Abstract_Render {
 		$data = [
 			'name'             => $promo_name,
 			'discount_percent' => $promo_discount,
+			'countdown'        => $this->get_countdown_data(),
 			'message'          => $this->get_promo_message( $promo_name, $promo_discount ),
 		];
 
 		echo $this->generate( 'promo-banner', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	}
+
+	/**
+	 * AJAX callback to dismiss the promotion banner
+	 *
+	 * @return void
+	 */
+	public function dismiss_promo_banner() {
+		check_ajax_referer( 'rocket-ajax', 'nonce', true );
+
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
+		$user = get_current_user_id();
+
+		if ( false !== get_transient( "rocket_promo_banner_{$user}" ) ) {
+			return;
+		}
+
+		set_transient( "rocket_promo_banner_{$user}", 1, 2 * WEEK_IN_SECONDS );
+
+		wp_send_json_success();
+	}
+
+	/**
+	 * Returns an array containing the remaining days, hours, minutes & seconds for the promotion
+	 *
+	 * @since 3.7.4
+	 *
+	 * @return array
+	 */
+	private function get_countdown_data() {
+		$data = [
+			'days'    => 0,
+			'hours'   => 0,
+			'minutes' => 0,
+			'seconds' => 0,
+		];
+
+		if ( rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ) {
+			return $data;
+		}
+
+		$promo_end = $this->pricing->get_promo_end();
+
+		if ( 0 === $promo_end ) {
+			return $data;
+		}
+
+		$now = date_create();
+		$end = date_timestamp_set( date_create(), $promo_end );
+
+		if ( $now > $end ) {
+			return $data;
+		}
+
+		$remaining = date_diff( $now, $end );
+		$format    = explode( ' ', $remaining->format( '%d %H %i %s' ) );
+
+		$data['days']    = $format[0];
+		$data['hours']   = $format[1];
+		$data['minutes'] = $format[2];
+		$data['seconds'] = $format[3];
+
+		return $data;
 	}
 
 	/**
@@ -174,37 +221,42 @@ class Upgrade extends Abstract_Render {
 		}
 
 		return sprintf(
-			// translators: %1$s = promotion name, %2$s = promotion discount percentage.
+			// translators: %1$s = promotion name, %2$s = <br>, %3$s = <strong>, %4$s = promotion discount percentage, %5$s = </strong>.
 			_n(
-				'Take advantage of %1$s to speed up more websites: get a %2$s off for upgrading your license to Plus or Infinite!',
-				'Take advantage of %1$s to speed up more websites: get a %2$s off for upgrading your license to Infinite!',
+				'Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s for %3$supgrading your license to Plus or Infinite!%5$s',
+				'Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s for %3$supgrading your license to Infinite!%5$s',
 				$choices,
 				'rocket'
 			),
 			$promo_name,
-			$promo_discount . '%'
+			'<br>',
+			'<strong>',
+			$promo_discount . '%',
+			'</strong>'
 		);
 	}
 
 	/**
-	 * AJAX callback to dismiss the promotion banner
+	 * Checks if current user can use the promotion
 	 *
-	 * @return void
+	 * @since 3.7.4
+	 *
+	 * @return boolean
 	 */
-	public function dismiss_promo_banner() {
-		check_ajax_referer( 'rocket_promo_dismiss', 'nonce', true );
-
-		if ( ! current_user_can( 'rocket_manage_options' ) ) {
-			return;
+	private function can_use_promo() {
+		if ( rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) {
+			return false;
 		}
 
-		$user = get_current_user_id();
-
-		if ( false !== get_transient( "rocket_promo_banner_{$user}" ) ) {
-			return;
+		if ( ! $this->can_upgrade() ) {
+			return false;
 		}
 
-		set_transient( "rocket_promo_banner_{$user}", 1, 2 * WEEK_IN_SECONDS );
+		if ( $this->is_expired_soon() ) {
+			return false;
+		}
+
+		return $this->pricing->is_promo_active();
 	}
 
 	/**

@@ -2,30 +2,36 @@
 /**
  * Promo banner.
  *
- * @since 3.7.3
+ * @since 3.7.4
  */
 
 defined( 'ABSPATH' ) || exit;
 ?>
-<div>
-	<section>
-		<span>
-			<?php
-			// translators: %s = promotion discount percentage.
-			printf( esc_html__( '%s% off', 'rocket' ), esc_html( $data['promo_discount'] ) );
-			?>
-		</span>
-		<h3>
+<div class="rocket-promo-banner" id="rocket-promo-banner">
+	<div>
+		<h3 class="rocket-promo-title">
+			<span class="rocket-promo-discount">
+				<?php
+				// translators: %s = promotion discount percentage.
+				printf( esc_html__( '%s off', 'rocket' ), esc_html( $data['discount_percent'] . '%' ) );
+				?>
+			</span>
 			<?php
 			// translators: %s = promotion name.
-			printf( esc_html__( '%s promotion is live!', 'rocket' ), esc_html( $data['promo_name'] ) );
+			printf( esc_html__( '%s promotion is live!', 'rocket' ), esc_html( $data['name'] ) );
 			?>
 		</h3>
-		<p><?php echo esc_html( $data['message'] ); ?></p>
-	<section>
-	<div>
-		<p><?php esc_html_e( 'Hurry Up! Deal ends in:', 'rocket' ); ?></p>
-		<div></div>
-		<button><?php esc_html_e( 'Upgrade now', 'rocket' ); ?></button>
+		<p class="rocket-promo-message"><?php echo wp_kses_post( $data['message'] ); ?></p>
 	</div>
+	<div class="rocket-promo-cta-block">
+		<p class="rocket-promo-deal"><?php esc_html_e( 'Hurry Up! Deal ends in:', 'rocket' ); ?></p>
+		<ul class="rocket-promo-countdown">
+			<li class="item"><span class="value"><?php echo esc_html( $data['countdown']['days'] ); ?></span> <?php esc_html_e( 'Days', 'rocket' ); ?></li>
+			<li class="item"><span class="value"><?php echo esc_html( $data['countdown']['hours'] ); ?></span> <?php esc_html_e( 'Hours', 'rocket' ); ?></li>
+			<li class="item"><span class="value"><?php echo esc_html( $data['countdown']['minutes'] ); ?></span> <?php esc_html_e( 'Minutes', 'rocket' ); ?></li>
+			<li class="item"><span class="value"><?php echo esc_html( $data['countdown']['seconds'] ); ?></span> <?php esc_html_e( 'Seconds', 'rocket' ); ?></li>
+		</ul>
+		<button class="rocket-promo-cta wpr-popin-upgrade-toggle"><?php esc_html_e( 'Upgrade now', 'rocket' ); ?></button>
+	</div>
+	<button class="wpr-notice-close wpr-icon-close" id="rocket-dismiss-promotion"><span class="screen-reader-text"><?php esc_html_e( 'Dismiss this notice.', 'rocket' ); ?></span></button>
 </div>

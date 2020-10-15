@@ -44,6 +44,11 @@ class DismissNotificationBubble extends TestCase {
 			->atMost()
 			->once()
 			->andReturn( $config['licence_expired'] );
+		
+		$this->user->shouldReceive( 'get_license_expiration' )
+			->atMost()
+			->once()
+			->andReturn( $config['licence_expiration'] );
 
 		$this->pricing->shouldReceive( 'is_promo_active' )
 			->atMost()
