@@ -50,8 +50,11 @@ class DismissPromoBanner extends TestCase {
 			Functions\expect( 'set_transient' )
 				->once()
 				->with( 'rocket_promo_banner_1', 1, 2 * WEEK_IN_SECONDS );
+			
+			Functions\expect( 'wp_send_json_success' )->once();
 		} else {
 			Functions\expect( 'set_transient' )->never();
+			Functions\expect( 'wp_send_json_success' )->never();
 		}
 
 		$this->upgrade->dismiss_promo_banner();

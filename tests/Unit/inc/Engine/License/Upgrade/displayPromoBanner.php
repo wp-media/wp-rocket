@@ -86,13 +86,41 @@ class DisplayPromoBanner extends TestCase {
 			Functions\when( '_n' )
 				->justReturn( $config['message'] );
 
+			$this->pricing->shouldReceive( 'get_promo_end' )
+				->atMost()
+				->once()
+				->andReturn( $config['promo_end'] );
+
 			$this->upgrade->shouldReceive( 'generate' )
 				->once()
 				->with(
 					'promo-banner',
-					$expected
+					Mockery::on( function( $array ) use ( $expected ) {
+						if( ! isset( $array['name'], $array['discount_percent'], $array['countdown'], $array['message'] ) ) {
+							return false;
+						}
+
+						if( ! isset( $array['countdown']['days'], $array['countdown']['hours'], $array['countdown']['minutes'], $array['countdown']['seconds'] ) ) {
+							return false;
+						}
+
+						if ( $array['name'] !== $expected['name'] ) {
+							return false;
+						}
+
+						if ( $array['discount_percent'] !== $expected['discount_percent'] ) {
+							return false;
+						}
+
+						if ( $array['message'] !== $expected['message'] ) {
+							return false;
+						}
+
+						return true;
+					} )
 				)
 				->andReturn( '' );
+
 			$this->expectOutputString( '' );
 		} else {
 			$this->upgrade->shouldReceive( 'generate' )
