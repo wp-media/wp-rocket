@@ -162,6 +162,7 @@ class ActionScheduler_wpCommentLogger_Test extends ActionScheduler_UnitTestCase 
 
 	public function test_filtering_of_get_comments() {
 		if ( ! $this->using_comment_logger() ) {
+			$this->assertTrue( true );
 			return;
 		}
 
@@ -208,4 +209,4 @@ class ActionScheduler_wpCommentLogger_Test extends ActionScheduler_UnitTestCase 
 		return $this->use_comment_logger;
 	}
 }
- 
+

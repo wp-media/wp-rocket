@@ -11,7 +11,12 @@ foreach ( array('WP_CONTENT_DIR', 'WP_CONTENT_URL', 'WP_PLUGIN_DIR', 'WP_PLUGIN_
 	}
 }
 
+if( ! defined( 'WP_PLUGIN_DIR' ) ) {
+	define( 'WP_PLUGIN_DIR', dirname( dirname( dirname( __FILE__ ) ) ) );
+}
+
 $wordpress_tests_dir = getenv( 'WP_TESTS_DIR' ) ? getenv( 'WP_TESTS_DIR' ) : sys_get_temp_dir() . '/wordpress-tests-lib';
+require_once $wordpress_tests_dir . '/includes/functions.php';
 require $wordpress_tests_dir . '/includes/bootstrap.php';
 
 require_once dirname(dirname( __FILE__ ) ) .'/action-scheduler.php';
