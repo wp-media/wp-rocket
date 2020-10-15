@@ -30,7 +30,10 @@ defined( 'ABSPATH' ) || exit;
 			<div class="wpr-Upgrade-<?php echo esc_attr( $rocket_upgrade['name'] ); ?>">
 				<?php if ( true === $data['is_promo_active'] ) : ?>
 					<div class="wpr-upgrade-saving">
-						<?php printf( esc_html__( 'Save $%s', 'rocket' ), esc_html( $rocket_upgrade['saving'] ) ); ?>
+						<?php
+						// translators: %s = price.
+						printf( esc_html__( 'Save $%s', 'rocket' ), esc_html( $rocket_upgrade['saving'] ) );
+						?>
 					</div>
 					<?php endif; ?>
 				<h3 class="wpr-upgrade-title"><?php echo esc_html( $rocket_upgrade['name'] ); ?></h3>
