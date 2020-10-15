@@ -7,6 +7,7 @@ return [
 			'licence_expired' => false,
 			'licence_expiration' => strtotime( 'next year' ),
 			'promo_active'       => true,
+			'promo_end'          => strtotime( 'next week' ),
 			'transient'          => false,
 		],
 		'expected' => null,
@@ -17,6 +18,7 @@ return [
 			'licence_expired' => true,
 			'licence_expiration' => strtotime( 'next year' ),
 			'promo_active'       => true,
+			'promo_end'          => strtotime( 'next week' ),
 			'transient'          => false,
 		],
 		'expected' => null,
@@ -27,6 +29,7 @@ return [
 			'licence_expired' => false,
 			'licence_expiration' => strtotime( 'next week' ),
 			'promo_active'       => true,
+			'promo_end'          => strtotime( 'next week' ),
 			'transient'          => false,
 		],
 		'expected' => null,
@@ -37,6 +40,7 @@ return [
 			'licence_expired' => false,
 			'licence_expiration' => strtotime( 'next year' ),
 			'promo_active'       => false,
+			'promo_end'          => strtotime( 'last week' ),
 			'transient'          => false,
 		],
 		'expected' => null,
@@ -47,6 +51,7 @@ return [
 			'licence_expired' => false,
 			'licence_expiration' => strtotime( 'next year' ),
 			'promo_active'       => true,
+			'promo_end'          => strtotime( 'next week' ),
 			'transient'          => true,
 		],
 		'expected' => null,
@@ -57,6 +62,7 @@ return [
 			'licence_expired' => false,
 			'licence_expiration' => strtotime( 'next year' ),
 			'promo_active'       => true,
+			'promo_end'          => strtotime( 'next hour' ),
 			'transient'          => false,
 			'promo_data'         => json_decode( json_encode( [
 				'name' => 'Halloween',
@@ -70,12 +76,12 @@ return [
 					'websites' => 3,
 				],
 			],
-			'message' => 'Take advantage of %1$s to speed up more websites: get a %2$s off for upgrading your license to Plus or Infinite!'
+			'message' => 'Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s for %3$supgrading your license to Plus or Infinite!%5$s'
 		],
 		'expected' => [
 			'name' => 'Halloween',
 			'discount_percent' => 20,
-			'message' => 'Take advantage of Halloween to speed up more websites: get a 20% off for upgrading your license to Plus or Infinite!',
+			'message' => 'Take advantage of Halloween to speed up more websites:<br> get a <strong>20% off</strong> for <strong>upgrading your license to Plus or Infinite!</strong>',
 		],
 	],
 	'testShouldReturnDataWhenPromoNotSeenAndLicenseBetweenSingleAndPlus' => [
@@ -84,6 +90,7 @@ return [
 			'licence_expired' => false,
 			'licence_expiration' => strtotime( 'next year' ),
 			'promo_active'       => true,
+			'promo_end'          => strtotime( 'next hour' ),
 			'transient'          => false,
 			'promo_data'         => json_decode( json_encode( [
 				'name' => 'Halloween',
@@ -97,12 +104,12 @@ return [
 					'websites' => 3,
 				],
 			],
-			'message' => 'Take advantage of %1$s to speed up more websites: get a %2$s off for upgrading your license to Plus or Infinite!'
+			'message' => 'Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s for %3$supgrading your license to Plus or Infinite!%5$s'
 		],
 		'expected' => [
 			'name' => 'Halloween',
 			'discount_percent' => 20,
-			'message' => 'Take advantage of Halloween to speed up more websites: get a 20% off for upgrading your license to Plus or Infinite!',
+			'message' => 'Take advantage of Halloween to speed up more websites:<br> get a <strong>20% off</strong> for <strong>upgrading your license to Plus or Infinite!</strong>',
 		],
 	],
 	'testShouldReturnDataWhenPromoNotSeenAndLicenseIsPlus' => [
@@ -111,6 +118,7 @@ return [
 			'licence_expired' => false,
 			'licence_expiration' => strtotime( 'next year' ),
 			'promo_active'       => true,
+			'promo_end'          => strtotime( 'next hour' ),
 			'transient'          => false,
 			'promo_data'         => json_decode( json_encode( [
 				'name' => 'Halloween',
@@ -124,12 +132,12 @@ return [
 					'websites' => 3,
 				],
 			],
-			'message' => 'Take advantage of %1$s to speed up more websites: get a %2$s off for upgrading your license to Infinite!'
+			'message' => 'Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s for %3$supgrading your license to Infinite!%5$s'
 		],
 		'expected' => [
 			'name' => 'Halloween',
 			'discount_percent' => 20,
-			'message' => 'Take advantage of Halloween to speed up more websites: get a 20% off for upgrading your license to Infinite!',
+			'message' => 'Take advantage of Halloween to speed up more websites:<br> get a <strong>20% off</strong> for <strong>upgrading your license to Infinite!</strong>',
 		],
 	],
 ];
