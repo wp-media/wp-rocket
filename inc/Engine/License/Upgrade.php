@@ -169,6 +169,10 @@ class Upgrade extends Abstract_Render {
 			'seconds' => 0,
 		];
 
+		if ( rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ) {
+			return $data;
+		}
+
 		$promo_end = $this->pricing->get_promo_end();
 
 		if ( 0 === $promo_end ) {
