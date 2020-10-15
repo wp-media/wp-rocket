@@ -73,15 +73,7 @@ class Upgrade extends Abstract_Render {
 	 * @return string
 	 */
 	public function add_notification_bubble( $menu_title ) {
-		if ( ! $this->can_upgrade() ) {
-			return $menu_title;
-		}
-
-		if ( $this->is_expired_soon() ) {
-			return $menu_title;
-		}
-
-		if ( ! $this->pricing->is_promo_active() ) {
+		if ( ! $this->can_use_promo() ) {
 			return $menu_title;
 		}
 
@@ -98,11 +90,7 @@ class Upgrade extends Abstract_Render {
 	 * @return void
 	 */
 	public function dismiss_notification_bubble() {
-		if ( ! $this->can_upgrade() ) {
-			return;
-		}
-
-		if ( ! $this->pricing->is_promo_active() ) {
+		if ( ! $this->can_use_promo() ) {
 			return;
 		}
 
@@ -121,15 +109,7 @@ class Upgrade extends Abstract_Render {
 	 * @return void
 	 */
 	public function display_promo_banner() {
-		if ( ! $this->can_upgrade() ) {
-			return;
-		}
-
-		if ( $this->is_expired_soon() ) {
-			return;
-		}
-
-		if ( ! $this->pricing->is_promo_active() ) {
+		if ( ! $this->can_use_promo() ) {
 			return;
 		}
 
@@ -149,6 +129,29 @@ class Upgrade extends Abstract_Render {
 		];
 
 		echo $this->generate( 'promo-banner', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	}
+
+	/**
+	 * AJAX callback to dismiss the promotion banner
+	 *
+	 * @return void
+	 */
+	public function dismiss_promo_banner() {
+		check_ajax_referer( 'rocket-ajax', 'nonce', true );
+
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
+		$user = get_current_user_id();
+
+		if ( false !== get_transient( "rocket_promo_banner_{$user}" ) ) {
+			return;
+		}
+
+		set_transient( "rocket_promo_banner_{$user}", 1, 2 * WEEK_IN_SECONDS );
+
+		wp_send_json_success();
 	}
 
 	/**
@@ -230,26 +233,26 @@ class Upgrade extends Abstract_Render {
 	}
 
 	/**
-	 * AJAX callback to dismiss the promotion banner
+	 * Checks if current user can use the promotion
 	 *
-	 * @return void
+	 * @since 3.7.4
+	 *
+	 * @return boolean
 	 */
-	public function dismiss_promo_banner() {
-		check_ajax_referer( 'rocket-ajax', 'nonce', true );
-
-		if ( ! current_user_can( 'rocket_manage_options' ) ) {
-			return;
+	private function can_use_promo() {
+		if ( rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) {
+			return false;
 		}
 
-		$user = get_current_user_id();
-
-		if ( false !== get_transient( "rocket_promo_banner_{$user}" ) ) {
-			return;
+		if ( ! $this->can_upgrade() ) {
+			return false;
 		}
 
-		set_transient( "rocket_promo_banner_{$user}", 1, 2 * WEEK_IN_SECONDS );
+		if ( $this->is_expired_soon() ) {
+			return false;
+		}
 
-		wp_send_json_success();
+		return $this->pricing->is_promo_active();
 	}
 
 	/**
