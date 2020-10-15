@@ -155,6 +155,27 @@ class Upgrade extends Abstract_Render {
 	}
 
 	/**
+	 * Adds the current time and promotion end time to WP Rocket localize script data
+	 *
+	 * @since 3.7.4
+	 *
+	 * @param array $data Localize script data.
+	 * @return array
+	 */
+	public function add_localize_script_data( $data ) {
+		$data = (array) $data;
+
+		if ( ! $this->can_use_promo() ) {
+			return $data;
+		}
+
+		$data['now']       = time();
+		$data['promo_end'] = $this->pricing->get_promo_end();
+
+		return $data;
+	}
+
+	/**
 	 * Returns an array containing the remaining days, hours, minutes & seconds for the promotion
 	 *
 	 * @since 3.7.4
