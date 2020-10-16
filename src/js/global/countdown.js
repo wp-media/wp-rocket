@@ -1,6 +1,6 @@
-function getTimeRemaining( endtime ){
+function getTimeRemaining(endtime){
     const start = Date.now();
-    const total = ( endtime * 1000 ) - start;
+    const total = (endtime * 1000) - start;
     const seconds = Math.floor( (total/1000) % 60 );
     const minutes = Math.floor( (total/1000/60) % 60 );
     const hours = Math.floor( (total/(1000*60*60)) % 24 );
@@ -15,7 +15,7 @@ function getTimeRemaining( endtime ){
     };
 }
 
-function initializeClock( id, endtime ) {
+function initializeClock(id, endtime) {
     const clock = document.getElementById(id);
     const daysSpan = clock.querySelector('.rocket-countdown-days');
     const hoursSpan = clock.querySelector('.rocket-countdown-hours');
@@ -23,7 +23,7 @@ function initializeClock( id, endtime ) {
     const secondsSpan = clock.querySelector('.rocket-countdown-seconds');
   
     function updateClock() {
-        const t = getTimeRemaining( endtime );
+        const t = getTimeRemaining(endtime);
         daysSpan.innerHTML = t.days;
         hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
         minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
@@ -38,6 +38,12 @@ function initializeClock( id, endtime ) {
     const timeinterval = setInterval(updateClock, 1000);
 }
 
+if (!Date.now) {
+    Date.now = function now() {
+      return new Date().getTime();
+    };
+}
+
 if (typeof rocket_ajax_data.promo_end !== 'undefined') {
-    initializeClock('rocket-promo-countdown', rocket_ajax_data.promo_end );
+    initializeClock('rocket-promo-countdown', rocket_ajax_data.promo_end);
 }
