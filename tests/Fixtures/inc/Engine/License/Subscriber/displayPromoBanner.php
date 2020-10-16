@@ -136,21 +136,21 @@ return [
 		<div class="rocket-promo-cta-block">
 		<p class="rocket-promo-deal">
 		Hurry Up! Deal ends in:</p>
-		<ul class="rocket-promo-countdown">
-		<li class="item">
-		<span class="value">
+		<ul class="rocket-promo-countdown" id="rocket-promo-countdown">
+		<li class="rocket-countdown-item">
+		<span class="rocket-countdown-value rocket-countdown-days">
 		0</span>
 		Days</li>
-		<li class="item">
-		<span class="value">
+		<li class="rocket-countdown-item">
+		<span class="rocket-countdown-value rocket-countdown-hours">
 		0</span>
 		Hours</li>
-		<li class="item">
-		<span class="value">
+		<li class="rocket-countdown-item">
+		<span class="rocket-countdown-value rocket-countdown-minutes">
 		0</span>
 		Minutes</li>
-		<li class="item">
-		<span class="value">
+		<li class="rocket-countdown-item">
+		<span class="rocket-countdown-value rocket-countdown-seconds">
 		0</span>
 		Seconds</li>
 		</ul>
@@ -218,21 +218,21 @@ return [
 		<div class="rocket-promo-cta-block">
 		<p class="rocket-promo-deal">
 		Hurry Up! Deal ends in:</p>
-		<ul class="rocket-promo-countdown">
-		<li class="item">
-		<span class="value">
+		<ul class="rocket-promo-countdown" id="rocket-promo-countdown">
+		<li class="rocket-countdown-item">
+		<span class="rocket-countdown-value rocket-countdown-days">
 		0</span>
 		Days</li>
-		<li class="item">
-		<span class="value">
+		<li class="rocket-countdown-item">
+		<span class="rocket-countdown-value rocket-countdown-hours">
 		0</span>
 		Hours</li>
-		<li class="item">
-		<span class="value">
+		<li class="rocket-countdown-item">
+		<span class="rocket-countdown-value rocket-countdown-minutes">
 		0</span>
 		Minutes</li>
-		<li class="item">
-		<span class="value">
+		<li class="rocket-countdown-item">
+		<span class="rocket-countdown-value rocket-countdown-seconds">
 		0</span>
 		Seconds</li>
 		</ul>

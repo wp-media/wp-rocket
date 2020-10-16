@@ -62,14 +62,14 @@
     display: flex;
     flex-flow: row wrap;
 
-    & > .item {
+    & > .rocket-countdown-item {
         background: $cWhite;
         border-radius: $space;
         margin-right: $space;
         padding: $space;
         text-align: center;
 
-        & > .value {
+        & > .rocket-countdown-value {
             display: block;
             @include font-size(24,24);
             font-weight: bold;

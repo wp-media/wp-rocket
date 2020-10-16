@@ -25,11 +25,11 @@ defined( 'ABSPATH' ) || exit;
 	</div>
 	<div class="rocket-promo-cta-block">
 		<p class="rocket-promo-deal"><?php esc_html_e( 'Hurry Up! Deal ends in:', 'rocket' ); ?></p>
-		<ul class="rocket-promo-countdown">
-			<li class="item"><span class="value"><?php echo esc_html( $data['countdown']['days'] ); ?></span> <?php esc_html_e( 'Days', 'rocket' ); ?></li>
-			<li class="item"><span class="value"><?php echo esc_html( $data['countdown']['hours'] ); ?></span> <?php esc_html_e( 'Hours', 'rocket' ); ?></li>
-			<li class="item"><span class="value"><?php echo esc_html( $data['countdown']['minutes'] ); ?></span> <?php esc_html_e( 'Minutes', 'rocket' ); ?></li>
-			<li class="item"><span class="value"><?php echo esc_html( $data['countdown']['seconds'] ); ?></span> <?php esc_html_e( 'Seconds', 'rocket' ); ?></li>
+		<ul class="rocket-promo-countdown" id="rocket-promo-countdown">
+			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-days"><?php echo esc_html( $data['countdown']['days'] ); ?></span> <?php esc_html_e( 'Days', 'rocket' ); ?></li>
+			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-hours"><?php echo esc_html( $data['countdown']['hours'] ); ?></span> <?php esc_html_e( 'Hours', 'rocket' ); ?></li>
+			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-minutes"><?php echo esc_html( $data['countdown']['minutes'] ); ?></span> <?php esc_html_e( 'Minutes', 'rocket' ); ?></li>
+			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-seconds"><?php echo esc_html( $data['countdown']['seconds'] ); ?></span> <?php esc_html_e( 'Seconds', 'rocket' ); ?></li>
 		</ul>
 		<button class="rocket-promo-cta wpr-popin-upgrade-toggle"><?php esc_html_e( 'Upgrade now', 'rocket' ); ?></button>
 	</div>

@@ -34,6 +34,7 @@ class Subscriber implements Subscriber_Interface {
 			'admin_footer-settings_page_wprocket' => 'dismiss_notification_bubble',
 			'rocket_before_dashboard_content'     => 'display_promo_banner',
 			'wp_ajax_rocket_dismiss_promo'        => 'dismiss_promo_banner',
+			'rocket_localize_admin_script'        => 'add_localize_script_data',
 		];
 	}
 
@@ -102,5 +103,17 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function dismiss_promo_banner() {
 		$this->upgrade->dismiss_promo_banner();
+	}
+
+	/**
+	 * Adds the current time and promotion end time to WP Rocket localize script data
+	 *
+	 * @since 3.7.4
+	 *
+	 * @param array $data Localize script data.
+	 * @return array
+	 */
+	public function add_localize_script_data( $data ) {
+		return $this->upgrade->add_localize_script_data( $data );
 	}
 }
