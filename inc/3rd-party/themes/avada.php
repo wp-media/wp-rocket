@@ -18,9 +18,12 @@ if ( 'Avada' === $current_theme->get( 'Name' ) ) {
 	 * @param string $value New Avada option value.
 	 * @return void
 	 */
-	function rocket_avada_maybe_deactivate_lazyload( $old_value, $value ) {
-		if ( empty( $old_value['lazy_load'] ) && ! empty( $value['lazy_load'] ) ) {
+	 function rocket_avada_maybe_deactivate_lazyload( $old_value, $value ) {
+		if ( (empty( $old_value['lazy_load'] ) && ! empty( $value['lazy_load'] ) ) 
+			|| ( 'none' === $old_value['lazy_load'] && 'none' !== $value['lazy_load'] ) ) {
+			
 			update_rocket_option( 'lazyload', 0 );
+			
 		}
 	}
 	add_action( 'update_option_fusion_options', 'rocket_avada_maybe_deactivate_lazyload', 10, 2 );
@@ -37,12 +40,14 @@ if ( 'Avada' === $current_theme->get( 'Name' ) ) {
 function rocket_avada_maybe_disable_lazyload() {
 	$avada_options = get_option( 'fusion_options' );
 	$current_theme = wp_get_theme();
-
-	if ( 'Avada' === $current_theme->get( 'Name' ) && ! empty( $avada_options['lazy_load'] ) ) {
-		return true;
+ 
+  
+	if ( 'Avada' === $current_theme->get( 'Name' ) 	&&  ( empty( $avada_options['lazy_load'] )  || 'none' === $avada_options['lazy_load'] ) ) {
+				
+		return false;
 	}
 
-	return false;
+	return true;
 }
 
 /**
