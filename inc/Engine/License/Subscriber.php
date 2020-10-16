@@ -110,6 +110,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.7.4
 	 *
+	 * @param array $data Localize script data.
 	 * @return array
 	 */
 	public function add_localize_script_data( $data ) {
