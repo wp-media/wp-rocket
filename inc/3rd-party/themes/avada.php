@@ -40,7 +40,6 @@ if ( 'Avada' === $current_theme->get( 'Name' ) ) {
 function rocket_avada_maybe_disable_lazyload() {
 	$avada_options = get_option( 'fusion_options' );
 	$current_theme = wp_get_theme();
- 
   
 	if ( 'Avada' === $current_theme->get( 'Name' ) 	&&  ( empty( $avada_options['lazy_load'] )  || 'none' === $avada_options['lazy_load'] ) ) {
 				
