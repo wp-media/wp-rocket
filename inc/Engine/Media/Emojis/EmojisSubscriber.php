@@ -36,8 +36,7 @@ class EmojisSubscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'init'             => 'disable_emoji',
-			'tiny_mce_plugins' => 'disable_emoji_tinymce',
+			'init' => 'disable_emoji',
 		];
 	}
 
@@ -53,16 +52,13 @@ class EmojisSubscriber implements Subscriber_Interface {
 		}
 
 		remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
-		remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
-		remove_filter( 'the_content_feed', 'wp_staticize_emoji' );
-		remove_filter( 'comment_text_rss', 'wp_staticize_emoji' );
-		remove_filter( 'wp_mail', 'wp_staticize_emoji_for_email' );
 		add_filter( 'emoji_svg_url', '__return_false' );
 	}
 
 	/**
 	 * Remove the tinymce emoji plugin.
 	 *
+	 * @since 3.8 deprecated
 	 * @since 3.7 Moved to new architecture.
 	 * @since 2.7
 	 *
@@ -71,6 +67,8 @@ class EmojisSubscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function disable_emoji_tinymce( $plugins ) {
+		_deprecated_function( 'WP_Rocket\Engine\Media\Emojis\EmojisSubscriber::disable_emoji_tinymce', '3.8' );
+
 		if ( ! $this->can_disable_emoji() ) {
 			return $plugins;
 		}
