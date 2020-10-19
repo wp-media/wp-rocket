@@ -27,8 +27,8 @@ $(document).ready(function(){
                     button.addClass('wpr-isHidden');
 
                     if ( true === response.success ) {
-                        account.html(response.data.licence_account);
-                        expire.addClass(response.data.class).html(response.data.licence_expiration);
+                        account.html(response.data.license_type);
+                        expire.addClass(response.data.license_class).html(response.data.license_expiration);
                         setTimeout(function() {
                             button.removeClass('wpr-icon-refresh wpr-isHidden');
                             button.addClass('wpr-icon-check');
@@ -160,4 +160,21 @@ $(document).ready(function(){
 			}
         );
     });
+
+    $( '#rocket-dismiss-promotion' ).on( 'click', function( e ) {
+        e.preventDefault();
+
+        $.post(
+            ajaxurl,
+            {
+                action: 'rocket_dismiss_promo',
+                nonce: rocket_ajax_data.nonce
+            },
+			function(response) {
+				if ( response.success ) {
+					$('#rocket-promo-banner').hide( 'slow' );
+				}
+			}
+        );
+    } );
 });

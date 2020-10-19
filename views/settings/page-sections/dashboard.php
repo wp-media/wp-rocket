@@ -47,7 +47,14 @@ defined( 'ABSPATH' ) || exit;
 		</div>
 	</div>
 	<?php endif; ?>
-
+	<?php
+		/**
+		 * Fires before displaying the dashboard tab content
+		 *
+		 * @since 3.7.4
+		 */
+		do_action( 'rocket_before_dashboard_content' );
+	?>
 	<div class="wpr-Page-row">
 		<div class="wpr-Page-col">
 			<?php if ( ! defined( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) || ! WP_ROCKET_WHITE_LABEL_ACCOUNT ) : ?>
@@ -68,12 +75,24 @@ defined( 'ABSPATH' ) || exit;
 			</div>
 
 			<div class="wpr-field wpr-field-account">
-				<div class="wpr-flex wpr-flex--egal">
-					<div>
+				<div class="wpr-flex">
+					<div class="wpr-infoAccount-License">
 						<span class="wpr-title3"><?php esc_html_e( 'License', 'rocket' ); ?></span>
-						<span class="wpr-infoAccount wpr-isValid" id="wpr-account-data"><?php echo esc_html( $data['customer_data']->licence_account ); ?></span><br>
-						<span class="wpr-title3"><?php esc_html_e( 'Expiration Date', 'rocket' ); ?></span>
-						<span class="wpr-infoAccount <?php echo esc_attr( $data['customer_data']->class ); ?>" id="wpr-expiration-data"><?php echo esc_html( $data['customer_data']->licence_expiration ); ?></span>
+						<span class="wpr-infoAccount wpr-isValid" id="wpr-account-data">
+							<?php echo esc_html( $data['customer_data']['license_type'] ); ?>
+						</span><br>
+						<?php
+						/**
+						 * Fires when displaying the license information
+						 *
+						 * @since 3.7.3
+						 */
+						do_action( 'rocket_dashboard_license_info' );
+						?>
+						<p>
+							<span class="wpr-title3"><?php esc_html_e( 'Expiration Date', 'rocket' ); ?></span>
+							<span class="wpr-infoAccount <?php echo esc_attr( $data['customer_data']['license_class'] ); ?>" id="wpr-expiration-data"><?php echo esc_html( $data['customer_data']['license_expiration'] ); ?></span>
+						</p>
 					</div>
 					<div>
 						<?php

@@ -1,0 +1,86 @@
+// main: ../main.scss
+
+/*-----------------------------------------------*\
+
+	Promotions banner
+
+\*-----------------------------------------------*/
+.rocket-promo-banner {
+    background: $brightSun;
+    display: flex;
+    justify-content: space-around;
+    margin-top: 2 * $space;
+    padding: 3 * $space;
+    position: relative;
+
+    @include respond-to('xs') {
+        flex-flow: column;
+    }
+
+    & > div {
+        display: flex;
+        flex-flow: column;
+
+        @include respond-to('xs') {
+            width: 100%;
+        }
+
+        width: 50%;
+    }
+}
+
+.rocket-promo-title {
+    font-weight: bold;
+    margin-bottom: 3 * $space;
+}
+
+.rocket-promo-discount {
+    background: $cWhite;
+    border-radius: 44px;
+    display: inline-block;
+    margin-right: $space;
+    padding: $space 2 * $space;
+    text-transform: uppercase;
+}
+
+.rocket-promo-message,
+.rocket-promo-deal {
+    @include font-size(16,24);
+    margin-bottom: 0;
+}
+
+.rocket-promo-deal {
+    margin-top: $space;
+}
+
+.rocket-promo-cta-block {
+    align-items: center;
+    margin-right: 3 * $space;
+}
+
+.rocket-promo-countdown {
+    display: flex;
+    flex-flow: row wrap;
+
+    & > .rocket-countdown-item {
+        background: $cWhite;
+        border-radius: $space;
+        margin-right: $space;
+        padding: $space;
+        text-align: center;
+
+        & > .rocket-countdown-value {
+            display: block;
+            @include font-size(24,24);
+            font-weight: bold;
+        }
+    }
+}
+
+.rocket-promo-cta {
+    background: $bunting;
+    border-radius: 44px;
+    color: $cWhite;
+    font-weight: bold;
+    padding: 2* $space 4 * $space;
+}
