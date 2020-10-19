@@ -54,6 +54,10 @@ class Upgrade extends Abstract_Render {
 	 * @return void
 	 */
 	public function display_upgrade_popin() {
+		if ( rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) {
+			return;
+		}
+
 		if ( ! $this->can_upgrade() ) {
 			return;
 		}
