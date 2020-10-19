@@ -35,6 +35,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_before_dashboard_content'     => 'display_promo_banner',
 			'wp_ajax_rocket_dismiss_promo'        => 'dismiss_promo_banner',
 			'rocket_localize_admin_script'        => 'add_localize_script_data',
+			'rocket_upgrade'                      => [ 'clean_user_transient', 15, 2 ],
 		];
 	}
 
@@ -115,5 +116,22 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function add_localize_script_data( $data ) {
 		return $this->upgrade->add_localize_script_data( $data );
+	}
+
+	/**
+	 * Deletes the user data transient on 3.7.4 update
+	 *
+	 * @since 3.7.4
+	 *
+	 * @param string $new_version New version of the plugin.
+	 * @param string $old_version Installed version of the plugin.
+	 * @return void
+	 */
+	public function clean_user_transient( $new_version, $old_version ) {
+		if ( version_compare( $old_version, '3.7.4', '>' ) ) {
+			return;
+		}
+
+		delete_transient( 'wp_rocket_customer_data' );
 	}
 }
