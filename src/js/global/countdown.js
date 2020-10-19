@@ -17,6 +17,11 @@ function getTimeRemaining(endtime){
 
 function initializeClock(id, endtime) {
     const clock = document.getElementById(id);
+
+    if (clock === null) {
+        return;
+    }
+
     const daysSpan = clock.querySelector('.rocket-countdown-days');
     const hoursSpan = clock.querySelector('.rocket-countdown-hours');
     const minutesSpan = clock.querySelector('.rocket-countdown-minutes');
