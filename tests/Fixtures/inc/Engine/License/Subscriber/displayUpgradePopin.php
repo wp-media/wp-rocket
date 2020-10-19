@@ -47,6 +47,12 @@ return [
 					'websites'    => -1,
 				],
 			],
+			'promo' => [
+				'name' => 'Halloween',
+				'discount_percent' => 20,
+				'start_date' => strtotime( 'next week' ),
+				'end_date' => strtotime( 'next month' ),
+			],
 		] ) ),
 		'expected' => '<div class="wpr-Popin wpr-Popin-Upgrade">
 		<div class="wpr-Popin-header">
@@ -119,6 +125,12 @@ return [
 					'websites'    => -1,
 				],
 			],
+			'promo' => [
+				'name' => 'Halloween',
+				'discount_percent' => 20,
+				'start_date' => strtotime( 'next week' ),
+				'end_date' => strtotime( 'next month' ),
+			],
 		] ) ),
 		'expected' => '<div class="wpr-Popin wpr-Popin-Upgrade">
 		<div class="wpr-Popin-header">
@@ -190,6 +202,12 @@ return [
 					],
 					'websites'    => -1,
 				],
+			],
+			'promo' => [
+				'name' => 'Halloween',
+				'discount_percent' => 20,
+				'start_date' => strtotime( 'next week' ),
+				'end_date' => strtotime( 'next month' ),
 			],
 		] ) ),
 		'expected' => '<div class="wpr-Popin wpr-Popin-Upgrade">

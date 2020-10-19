@@ -64,6 +64,11 @@ class DisplayUpgradePopin extends TestCase {
 				->atMost()
 				->once()
 				->andReturn( $config['pricing']['plus']['price'] );
+			
+			$this->pricing->shouldReceive( 'get_regular_single_to_plus_price' )
+				->atMost()
+				->once()
+				->andReturn( $config['pricing']['plus']['regular'] );
 
 			$this->user->shouldReceive( 'get_upgrade_plus_url' )
 				->atMost()
@@ -74,6 +79,11 @@ class DisplayUpgradePopin extends TestCase {
 				->atMost()
 				->once()
 				->andReturn( $config['pricing']['infinite']['price'] );
+		
+			$this->pricing->shouldReceive( 'get_regular_single_to_infinite_price' )
+				->atMost()
+				->once()
+				->andReturn( $config['pricing']['infinite']['regular'] );
 
 			$this->pricing->shouldReceive( 'get_infinite_websites_count' )
 				->atMost()
@@ -89,6 +99,14 @@ class DisplayUpgradePopin extends TestCase {
 				->atMost()
 				->once()
 				->andReturn( $config['pricing']['infinite']['price'] );
+
+			$this->pricing->shouldReceive( 'get_regular_plus_to_infinite_price' )
+				->atMost()
+				->once()
+				->andReturn( $config['pricing']['infinite']['regular'] );
+
+			$this->pricing->shouldReceive( 'is_promo_active' )
+				->andReturn( $config['promo_active'] );
 
 			$this->upgrade->shouldReceive( 'generate' )
 				->once()
