@@ -6,7 +6,7 @@ use WP_Rocket\Abstract_Render;
 use WP_Rocket\Engine\License\API\Pricing;
 use WP_Rocket\Engine\License\API\User;
 
-class Renewal {
+class Renewal extends Abstract_Render  {
 	/**
 	 * Pricing instance
 	 *
@@ -40,6 +40,10 @@ class Renewal {
 			return;
 		}
 
+		if ( $this->user->is_license_expired() ) {
+			return;
+		}
+
 		if ( ! $this->is_expired_soon() ) {
 			return;
 		}
@@ -59,7 +63,11 @@ class Renewal {
 			return;
 		}
 
-		if ( time() > $this->user->get_license_expiration() ) {
+		if ( ! $this->user->is_license_expired() ) {
+			return;
+		}
+
+		if ( false !== get_transient( 'rocket_renewal_banner_' . get_current_user_id() ) ) {
 			return;
 		}
 
@@ -138,17 +146,17 @@ class Renewal {
 		$license = $this->get_license_pricing_data();
 
 		if ( $current > ( $this->user->get_license_expiration() + $extra ) ) {
-			return isset( $license->renewal->is_expired ) ? $license->renewal->is_expired : 0;
+			return isset( $license->prices->renewal->is_expired ) ? $license->prices->renewal->is_expired : 0;
 		}
 
 		if ( $this->user->get_creation_date() > $renewals->grandfather_date ) {
-			return isset( $license->renewal->not_grandfather ) ? $license->renewal->not_grandfather : 0;
+			return isset( $license->prices->renewal->not_grandfather ) ? $license->prices->renewal->not_grandfather : 0;
 		}
 
-		return isset( $license->renewal->is_grandfather ) ? $license->renewal->is_grandfather : 0;
+		return isset( $license->prices->renewal->is_grandfather ) ? $license->prices->renewal->is_grandfather : 0;
 	}
 
-	private function get_license_data() {
+	private function get_license_pricing_data() {
 		$license       = $this->user->get_license_type();
 		$plus_websites = $this->pricing->get_plus_websites_count();
 
