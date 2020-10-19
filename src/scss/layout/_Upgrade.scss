@@ -1,0 +1,155 @@
+// main: ../main.scss
+
+/*-----------------------------------------------*\
+
+	Upgrade popin
+
+\*-----------------------------------------------*/
+.wpr-license-upgrade-button {
+	font-weight: bold;
+	text-decoration: underline;
+
+	&:hover {
+		text-decoration: none;
+	}
+}
+
+.wpr-field.wpr-field-account .wpr-flex {
+	align-items: flex-start;
+}
+
+.wpr-infoAccount-License {
+	flex: 1 0 60%;
+	margin-right: 2 * $space;
+}
+
+.wpr-field.wpr-field-account .wpr-flex > div{
+	@include respond-to('xs') {
+		width: 100%;
+	}
+
+	&:last-child{
+		text-align: right;
+
+		@include respond-to('xs') {
+			text-align: left;
+		}
+	}
+}
+
+.wpr-Popin-Upgrade .wpr-Popin-content {
+	padding-bottom: 4 * $space;
+}
+
+.wpr-Popin-Upgrade .wpr-Popin-flex {
+	justify-content: space-between;
+}
+
+.wpr-Popin-Upgrade .wpr-Popin-flex > div {
+	align-items: center;
+	border: 1px solid #DADADA;
+	border-radius: 3 * $space;
+	display: flex;
+	flex-direction: column;
+	margin: 0 2 * $space 0 0;
+	padding: 3 * $space;
+	text-align: center;
+	width: 50%;
+
+	&:last-child {
+		margin-right: 0;
+	}
+
+	@include respond-to('xs') {
+		margin: 0;
+		width: 100%;
+	}
+}
+
+.wpr-Upgrade-Plus .wpr-upgrade-title::before {
+	content: url(../img/plus.svg);
+	display: block;
+	width: 117px;
+	height: 31px;
+	top: 0;
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.wpr-Upgrade-Infinite .wpr-upgrade-title::before {
+	content: url(../img/infinite.svg);
+	display: block;
+	width: 48px;
+	height: 31px;
+	top: 0;
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+div.wpr-upgrade-saving {
+	background: $brightSun;
+	border-radius: 44px;
+	color: $cBlack;
+	font-weight: bold;
+	margin: 0 0 3 * $space 0;
+	padding: $space 2 * $space;
+	text-align: center;
+}
+
+.wpr-upgrade-title {
+	color: $jaffa;
+	@include font-size(30,36);
+	margin-bottom: 2 * $space;
+	padding-top: 55px;
+	position: relative;
+}
+
+div.wpr-upgrade-prices {
+	color: $cBlack;
+	@include font-size(48,48);
+	font-weight: bold;
+	margin: 0 0 2 * $space 0;
+}
+
+.wpr-upgrade-price-symbol {
+	@include font-size(30,30);
+	vertical-align: super;
+}
+
+.wpr-upgrade-price-regular {
+	color: $cGreyDark3;
+	@include font-size(16,16);
+	vertical-align: top;
+}
+
+div.wpr-upgrade-websites {
+	color: $cBlack;
+	@include font-size(14,14);
+	font-weight: bold;
+	margin: 0 0 3 * $space 0;
+}
+
+.wpr-upgrade-link {
+	background: $cWhite;
+	border: 1px solid $jaffa;
+	border-radius: 800px;
+	color: $jaffa;
+	display: block;
+	@include font-size(16,18);
+	font-weight: bold;
+	padding: 2 * $space 3 * $space;
+	text-decoration: none;
+
+	&:hover {
+		background: $jaffa;
+		color: $cWhite;
+	}
+
+	&::after {
+		content: "\2192";
+		font-weight: normal;
+		margin-left: $space;
+	}
+}
