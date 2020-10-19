@@ -38,5 +38,7 @@ defined( 'ABSPATH' ) || exit;
 		?>
 		</p>
 	</div>
-	<a href="<?php echo esc_url( $data['renewal_url'] ); ?>" class="rocket-promo-cta"><?php esc_html_e( 'Renew now', 'rocket' ); ?></a>
+	<div class="rocket-promo-cta-block">
+		<a href="<?php echo esc_url( $data['renewal_url'] ); ?>" class="rocket-promo-cta"><?php esc_html_e( 'Renew now', 'rocket' ); ?></a>
+	</div>
 </div>
