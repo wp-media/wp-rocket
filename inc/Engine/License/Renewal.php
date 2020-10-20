@@ -35,6 +35,13 @@ class Renewal extends Abstract_Render  {
 		$this->user    = $user;
 	}
 
+	/**
+	 * Displays the renewal banner for users expiring in less than 30 days
+	 *
+	 * @since 3.7.5
+	 *
+	 * @return void
+	 */
 	public function display_renewal_soon_banner() {
 		if ( rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) {
 			return;
@@ -58,6 +65,13 @@ class Renewal extends Abstract_Render  {
 		echo $this->generate( 'renewal-soon-banner', $data );
 	}
 
+	/**
+	 * Displays the renewal banner for expired users
+	 *
+	 * @since 3.7.5
+	 *
+	 * @return void
+	 */
 	public function display_renewal_expired_banner() {
 		if ( rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) {
 			return;
@@ -80,6 +94,13 @@ class Renewal extends Abstract_Render  {
 		echo $this->generate( 'renewal-expired-banner', $data );
 	}
 
+	/**
+	 * AJAX callback to dismiss the renewal banner for expired users
+	 *
+	 * @since 3.7.5
+	 *
+	 * @return void
+	 */
 	public function dismiss_renewal_expired_banner() {
 		check_ajax_referer( 'rocket-ajax', 'nonce', true );
 
@@ -101,6 +122,8 @@ class Renewal extends Abstract_Render  {
 	/**
 	 * Checks if the license expires in less than 30 days
 	 *
+	 * @since 3.7.5
+	 *
 	 * @return boolean
 	 */
 	private function is_expired_soon() {
@@ -113,6 +136,13 @@ class Renewal extends Abstract_Render  {
 		return 30 * DAY_IN_SECONDS > $expiration_delay;
 	}
 
+	/**
+	 * Gets the discount percentage corresponding to the current user status
+	 *
+	 * @since 3.7.5
+	 *
+	 * @return int
+	 */
 	private function get_discount_percent() {
 		$renewals = $this->pricing->get_renewals_data();
 
@@ -134,6 +164,13 @@ class Renewal extends Abstract_Render  {
 		return isset( $renewals->discount_percent->is_grandfather ) ? $renewals->discount_percent->is_grandfather : 0;
 	}
 
+	/**
+	 * Gets the discount price corresponding to the current user status
+	 *
+	 * @since 3.7.5
+	 *
+	 * @return int
+	 */
 	private function get_discount_price() {
 		$renewals = $this->pricing->get_renewals_data();
 
@@ -156,6 +193,13 @@ class Renewal extends Abstract_Render  {
 		return isset( $license->prices->renewal->is_grandfather ) ? $license->prices->renewal->is_grandfather : 0;
 	}
 
+	/**
+	 * Gets the license pricing data corresponding to the user license
+	 *
+	 * @since 3.7.5
+	 *
+	 * @return object|null
+	 */
 	private function get_license_pricing_data() {
 		$license       = $this->user->get_license_type();
 		$plus_websites = $this->pricing->get_plus_websites_count();
@@ -173,6 +217,13 @@ class Renewal extends Abstract_Render  {
 		return $this->pricing->get_infinite_pricing();
 	}
 
+	/**
+	 * Gets the countdown data to display for the renewal soon banner
+	 *
+	 * @since 3.7.5
+	 *
+	 * @return array
+	 */
 	private function get_countdown_data() {
 		$data = [
 			'days'    => 0,
