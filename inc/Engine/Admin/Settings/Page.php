@@ -868,7 +868,7 @@ class Page {
 			'media',
 			[
 				'title'            => __( 'Media', 'rocket' ),
-				'menu_description' => __( 'LazyLoad, emojis, embeds, WebP', 'rocket' ),
+				'menu_description' => __( 'LazyLoad, embeds, WebP', 'rocket' ),
 			]
 		);
 
@@ -937,12 +937,6 @@ class Page {
 					'page'        => 'media',
 					// translators: %1$s = “WP Rocket”, %2$s = a list of plugin names.
 					'helper'      => ! empty( $disable_lazyload ) ? sprintf( __( 'LazyLoad is currently activated in %2$s. If you want to use WP Rocket’s LazyLoad, disable this option in %2$s.', 'rocket' ), WP_ROCKET_PLUGIN_NAME, $disable_lazyload ) : '',
-				],
-				'emoji_section'    => [
-					'title'       => __( 'Emoji 👻', 'rocket' ),
-					'type'        => 'fields_container',
-					'description' => __( 'Use default emoji of visitor\'s browser instead of loading emoji from WordPress.org', 'rocket' ),
-					'page'        => 'media',
 				],
 				'embeds_section'   => [
 					'title'       => __( 'Embeds', 'rocket' ),
@@ -1029,15 +1023,6 @@ class Page {
 					],
 					// translators: %1$s = “WP Rocket”, %2$s = a list of plugin or themes names.
 					'description'       => ! empty( $disable_youtube_lazyload ) ? sprintf( __( 'Replace YouTube iframe with preview image is not compatible with %2$s.', 'rocket' ), WP_ROCKET_PLUGIN_NAME, $disable_youtube_lazyload ) : '',
-				],
-				'emoji'            => [
-					'type'              => 'checkbox',
-					'label'             => __( 'Disable Emoji', 'rocket' ),
-					'description'       => __( 'Disable Emoji will reduce the number of external HTTP requests.', 'rocket' ),
-					'section'           => 'emoji_section',
-					'page'              => 'media',
-					'default'           => 1,
-					'sanitize_callback' => 'sanitize_checkbox',
 				],
 				'embeds'           => [
 					'type'              => 'checkbox',
@@ -2103,6 +2088,7 @@ class Page {
 					'sitemap_preload_url_crawl',
 					'cache_ssl',
 					'minify_google_fonts',
+					'emoji',
 				]
 			)
 		);
