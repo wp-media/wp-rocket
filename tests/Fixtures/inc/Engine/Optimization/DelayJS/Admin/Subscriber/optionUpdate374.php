@@ -29,8 +29,8 @@ return [
 		],
 		'expected_list' => [
 			'getbutton.io',
-			'adsbygoogle.js',
 			'a-script-the-customer-added',
+			'adsbygoogle.js',
 		],
 	],
 ];

@@ -32,7 +32,6 @@ class Test_OptionUpdate374 extends TestCase {
 			Functions\expect( 'update_option' )
 				->once()
 				->with( 'wp_rocket_settings', $revised_options );
-			error_log( var_export( $revised_options, true ) );
 		} else {
 			Functions\expect( 'update_option' )
 				->never()
