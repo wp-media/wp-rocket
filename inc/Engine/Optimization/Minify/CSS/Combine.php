@@ -121,7 +121,7 @@ class Combine extends AbstractCSSOptimization implements ProcessorInterface {
 			$this->styles[ $style['url'] ] = [
 				'type' => 'internal',
 				'tag'  => $style[0],
-				'url'  => $style['url'],
+				'url'  => strtok( $style['url'], '?' ),
 			];
 		}
 
