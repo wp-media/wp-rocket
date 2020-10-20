@@ -111,7 +111,7 @@ $integration[ 'delay_js_scripts' ] = [
 	'google-analytics.com/analytics.js',
 	'ga( \'',
 	'ga(\'',
-	'adsbygoogle',
+	'adsbygoogle.js',
 	'ShopifyBuy',
 	'widget.trustpilot.com/bootstrap',
 	'ft.sdk.min.js',
