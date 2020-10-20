@@ -123,13 +123,16 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Adds the current time and promotion end time to WP Rocket localize script data
 	 *
+	 * @since 3.7.5 Add the renewal localize data
 	 * @since 3.7.4
 	 *
 	 * @param array $data Localize script data.
 	 * @return array
 	 */
 	public function add_localize_script_data( $data ) {
-		return $this->upgrade->add_localize_script_data( $data );
+		$data = $this->upgrade->add_localize_script_data( $data );
+
+		return $this->renewal->add_localize_script_data( $data );
 	}
 
 	/**
@@ -149,10 +152,24 @@ class Subscriber implements Subscriber_Interface {
 		delete_transient( 'wp_rocket_customer_data' );
 	}
 
+	/**
+	 * Displays the renewal banner for users expiring in less than 30 days
+	 *
+	 * @since 3.7.5
+	 *
+	 * @return void
+	 */
 	public function display_renewal_soon_banner() {
 		$this->renewal->display_renewal_soon_banner();
 	}
 
+	/**
+	 * Displays the renewal banner for expired users
+	 *
+	 * @since 3.7.5
+	 *
+	 * @return void
+	 */
 	public function display_renewal_expired_banner() {
 		$this->renewal->display_renewal_expired_banner();
 	}

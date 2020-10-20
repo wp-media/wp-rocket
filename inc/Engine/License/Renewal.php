@@ -120,6 +120,28 @@ class Renewal extends Abstract_Render  {
 	}
 
 	/**
+	 * Adds the license expiration time to WP Rocket localize script data
+	 *
+	 * @since 3.7.5
+	 *
+	 * @param array $data Localize script data.
+	 * @return array
+	 */
+	public function add_localize_script_data( $data ) {
+		if ( ! is_array( $data ) ) {
+			$data = (array) $data;
+		}
+
+		if ( ! $this->is_expired_soon() ) {
+			return $data;
+		}
+
+		$data['license_expiration'] = $this->user->get_license_expiration();
+
+		return $data;
+	}
+
+	/**
 	 * Checks if the license expires in less than 30 days
 	 *
 	 * @since 3.7.5
