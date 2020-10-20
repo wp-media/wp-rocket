@@ -98,7 +98,7 @@ class Combine extends AbstractCSSOptimization implements ProcessorInterface {
 				$this->styles[ $style['url'] ] = [
 					'type' => 'external',
 					'tag'  => $style[0],
-					'url'  => rocket_add_url_protocol( $style['url'] ),
+					'url'  => rocket_add_url_protocol( strtok( $style['url'], '?' ) ),
 				];
 
 				continue;
@@ -121,7 +121,7 @@ class Combine extends AbstractCSSOptimization implements ProcessorInterface {
 			$this->styles[ $style['url'] ] = [
 				'type' => 'internal',
 				'tag'  => $style[0],
-				'url'  => $style['url'],
+				'url'  => strtok( $style['url'], '?' ),
 			];
 		}
 

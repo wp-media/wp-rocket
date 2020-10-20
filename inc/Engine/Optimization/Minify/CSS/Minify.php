@@ -44,7 +44,7 @@ class Minify extends AbstractCSSOptimization implements ProcessorInterface {
 				continue;
 			}
 
-			$minify_url = $this->replace_url( $style['url'] );
+			$minify_url = $this->replace_url( strtok( $style['url'], '?' ) );
 
 			if ( ! $minify_url ) {
 				Logger::error(
