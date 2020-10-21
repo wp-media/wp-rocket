@@ -132,6 +132,10 @@ class Renewal extends Abstract_Render  {
 			$data = (array) $data;
 		}
 
+		if ( $this->user->is_license_expired() ) {
+			return $data;
+		}
+
 		if ( ! $this->is_expired_soon() ) {
 			return $data;
 		}
