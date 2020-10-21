@@ -492,6 +492,7 @@ function rocket_url_to_path( $url, array $zones = [ 'all' ] ) {
 	 */
 	$url = apply_filters( 'rocket_asset_url', $url, $zones );
 
+	$url      = str_replace( '%20', ' ', $url );
 	$root_url = preg_replace( '/^https?:/', '', $root_url );
 	$url      = preg_replace( '/^https?:/', '', $url );
 	$file     = str_replace( $root_url, $root_dir, $url );
