@@ -230,7 +230,7 @@ class Renewal extends Abstract_Render  {
 		$license       = $this->user->get_license_type();
 		$plus_websites = $this->pricing->get_plus_websites_count();
 
-		if ( $license === $this->pricing->get_plus_websites_count() ) {
+		if ( $license === $plus_websites ) {
 			return $this->pricing->get_plus_pricing();
 		} elseif (
 			$license >= $this->pricing->get_single_websites_count()
