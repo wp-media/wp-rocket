@@ -301,7 +301,7 @@ msgid ""
 "I agree to share anonymous data with the development team to help improve WP"
 " Rocket. %1$sWhat info will we collect?%2$s"
 msgstr ""
-"Я разрешаю сбор анонимной информации для улучшения WP Rocket.%1$sКакие "
+"Я разрешаю сбор анонимной информации для улучшения WP Rocket. %1$sКакие "
 "данные собираются?%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:454 inc/Engine/Cache/WPCache.php:347
