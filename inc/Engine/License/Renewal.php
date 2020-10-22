@@ -108,13 +108,13 @@ class Renewal extends Abstract_Render {
 			return;
 		}
 
-		$user = get_current_user_id();
+		$transient = 'rocket_renewal_banner_' . get_current_user_id();
 
-		if ( false !== get_transient( "rocket_renewal_banner_{$user}" ) ) {
+		if ( false !== get_transient( $transient ) ) {
 			return;
 		}
 
-		set_transient( "rocket_renewal_banner_{$user}", 1, MONTH_IN_SECONDS );
+		set_transient( $transient, 1, MONTH_IN_SECONDS );
 
 		wp_send_json_success();
 	}
