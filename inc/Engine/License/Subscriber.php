@@ -49,7 +49,7 @@ class Subscriber implements Subscriber_Interface {
 			'wp_ajax_rocket_dismiss_promo'        => 'dismiss_promo_banner',
 			'wp_ajax_rocket_dismiss_renewal'      => 'dismiss_renewal_banner',
 			'rocket_localize_admin_script'        => 'add_localize_script_data',
-			'rocket_upgrade'                      => [ 'clean_user_transient', 15, 2 ],
+			'wp_rocket_upgrade'                   => [ 'clean_user_transient', 15, 2 ],
 		];
 	}
 

@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.4\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2020-08-25 17:35-0400\n"
+"POT-Creation-Date: 2020-10-19 15:56-0400\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Fabio Fava <go@fabiofava.com>, 2020\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/wp-media/teams/18133/pt_BR/)\n"
@@ -38,6 +38,7 @@ msgstr ""
 #: inc/3rd-party/hosting/pressidium.php:18
 #: inc/3rd-party/hosting/wp-serveur.php:27
 #: inc/ThirdParty/Hostings/Cloudways.php:90
+#: inc/ThirdParty/Hostings/Dreampress.php:44
 #: inc/ThirdParty/Hostings/O2Switch.php:49
 #: inc/ThirdParty/Hostings/Savvii.php:50
 #: inc/ThirdParty/Hostings/WPEngine.php:47 inc/deprecated/3.6.php:698
@@ -106,9 +107,8 @@ msgid "Yoast SEO XML sitemap"
 msgstr "Sitemap XML do Yoast SEO"
 
 #: inc/Addon/Cloudflare/APIClient.php:309
-msgid "Ops Cloudflare did not provide any reply. Please try again later."
-msgstr ""
-"O Cloudflare não forneceu nenhuma resposta. Tente novamente mais tarde."
+msgid "Cloudflare did not provide any reply. Please try again later."
+msgstr "O Cloudflare não forneceu nenhuma resposta. Tente mais tarde."
 
 #: inc/Addon/Cloudflare/APIClient.php:318 inc/deprecated/3.5.php:122
 #: inc/deprecated/3.5.php:179
@@ -250,21 +250,21 @@ msgstr "Cache de navegador do Cloudflare definido para %s segundos"
 msgid "weekly"
 msgstr "semanalmente"
 
-#: inc/Engine/Admin/Settings/Page.php:171
+#: inc/Engine/Admin/Settings/Page.php:190
 msgid "Save Changes"
 msgstr "Salvar Alterações"
 
-#: inc/Engine/Admin/Settings/Page.php:171
+#: inc/Engine/Admin/Settings/Page.php:190
 msgid "Validate License"
-msgstr "Validar a licensa"
+msgstr "Validar a licença"
 
-#: inc/Engine/Admin/Settings/Page.php:236
-#: inc/Engine/Admin/Settings/Page.php:237
+#: inc/Engine/Admin/Settings/Page.php:246
+#: inc/Engine/Admin/Settings/Page.php:247
 msgid "Unavailable"
 msgstr "Indisponível"
 
 #: inc/Engine/Admin/Settings/Page.php:341 inc/deprecated/deprecated.php:1789
-#: views/settings/page-sections/dashboard.php:73
+#: views/settings/page-sections/dashboard.php:80
 msgid "License"
 msgstr "Licença"
 
@@ -401,14 +401,17 @@ msgstr ""
 "periodicamente. %1$sPor que?%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:550
+#: inc/Engine/License/views/promo-banner.php:31
 msgid "Minutes"
 msgstr "Minutos"
 
 #: inc/Engine/Admin/Settings/Page.php:551
+#: inc/Engine/License/views/promo-banner.php:30
 msgid "Hours"
 msgstr "Horas"
 
 #: inc/Engine/Admin/Settings/Page.php:552
+#: inc/Engine/License/views/promo-banner.php:29
 msgid "Days"
 msgstr "Dias"
 
@@ -883,35 +886,10 @@ msgstr ""
 "barra de administração ou do %1$sPainel do WP Rocket%2$s."
 
 #: inc/Engine/Admin/Settings/Page.php:1097
-msgid "Prefetch DNS Requests"
-msgstr "Pré-captura das Requisições de DNS"
-
-#: inc/Engine/Admin/Settings/Page.php:1099
-msgid ""
-"DNS prefetching can make external files load faster, especially on mobile "
-"networks"
-msgstr ""
-"A pré-captura do DNS pode carregar mais rápido arquivos externos, "
-"especialmente em redes móveis"
-
-#: inc/Engine/Admin/Settings/Page.php:1107
-msgid "Preload Fonts"
-msgstr "Pré-carregar as fontes"
-
-#: inc/Engine/Admin/Settings/Page.php:1110
-#, php-format
-msgid ""
-"Improves performance by helping browsers discover fonts in CSS files. "
-"%1$sMore info%2$s"
-msgstr ""
-"Melhora o desempenho ao ajudar os naveggadores a descobrirem fontes em "
-"arquivos CSS. %1$sMais informações%2$s"
-
-#: inc/Engine/Admin/Settings/Page.php:1118
 msgid "Preload Links"
 msgstr "Pré-carregar Links"
 
-#: inc/Engine/Admin/Settings/Page.php:1121
+#: inc/Engine/Admin/Settings/Page.php:1100
 #, php-format
 msgid ""
 "Link preloading improves the perceived load time by downloading a page when "
@@ -920,6 +898,31 @@ msgstr ""
 "O pré-carregamento de link melhora o tempo percebido de carregamento ao "
 "carregar uma página quando um usuário passa o mouse sobre o link. %1$sMais "
 "informações%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:1108
+msgid "Prefetch DNS Requests"
+msgstr "Pré-captura das Requisições de DNS"
+
+#: inc/Engine/Admin/Settings/Page.php:1110
+msgid ""
+"DNS prefetching can make external files load faster, especially on mobile "
+"networks"
+msgstr ""
+"A pré-captura do DNS pode carregar mais rápido arquivos externos, "
+"especialmente em redes móveis"
+
+#: inc/Engine/Admin/Settings/Page.php:1118
+msgid "Preload Fonts"
+msgstr "Pré-carregar as fontes"
+
+#: inc/Engine/Admin/Settings/Page.php:1121
+#, php-format
+msgid ""
+"Improves performance by helping browsers discover fonts in CSS files. "
+"%1$sMore info%2$s"
+msgstr ""
+"Melhora o desempenho ao ajudar os naveggadores a descobrirem fontes em "
+"arquivos CSS. %1$sMais informações%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:1135
 msgid "Activate Preloading"
@@ -1639,31 +1642,31 @@ msgstr ""
 msgid "Settings saved."
 msgstr "Configurações salvas."
 
-#: inc/Engine/Admin/Settings/Subscriber.php:141
+#: inc/Engine/Admin/Settings/Subscriber.php:148
 #: inc/deprecated/deprecated.php:1786
 #: views/settings/page-sections/tools.php:33
 msgid "Tools"
 msgstr "Ferramentas"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:142
+#: inc/Engine/Admin/Settings/Subscriber.php:149
 msgid "Import, Export, Rollback"
 msgstr "Importar, Exportar, Reverter"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:163
+#: inc/Engine/Admin/Settings/Subscriber.php:170
 #: views/settings/page-sections/imagify.php:14
 msgid "Image Optimization"
 msgstr "Otimizar Imagens"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:164
+#: inc/Engine/Admin/Settings/Subscriber.php:171
 msgid "Compress your images"
 msgstr "Comprima as suas imagens"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:181
+#: inc/Engine/Admin/Settings/Subscriber.php:188
 #: views/settings/page-sections/tutorials.php:45
 msgid "Tutorials"
 msgstr "Tutoriais"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:182
+#: inc/Engine/Admin/Settings/Subscriber.php:189
 msgid "Getting started and how to videos"
 msgstr "Comece a usar e vídeos didáticos"
 
@@ -1740,6 +1743,98 @@ msgstr "RocketCDN ativa"
 #: inc/Engine/CDN/RocketCDN/RESTSubscriber.php:160
 msgid "RocketCDN disabled"
 msgstr "RocketCDN inativa"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:27
+#, php-format
+msgid "Valid until %s only!"
+msgstr "Válido apenas até %s! "
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:36
+msgid "Speed up your website thanks to:"
+msgstr "Acelere o seu site graças a:"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:42
+#, php-format
+msgid ""
+"High performance Content Delivery Network (CDN) with %1$sunlimited "
+"bandwith%2$s"
+msgstr ""
+"Rede de Distribuição de Conteúdo (CDN) de alto desempenho com %1$slargura "
+"ilimitada de banda%2$s"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:48
+#, php-format
+msgid ""
+"Easy configuration: the %1$sbest CDN settings%2$s are automatically applied"
+msgstr ""
+"Configuração fácil: as %1$smelhores configurações da CDN%2$s são aplicadas "
+"automaticamente"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:54
+#, php-format
+msgid ""
+"WP Rocket integration: the CDN option is %1$sautomatically configured%2$s in"
+" our plugin"
+msgstr ""
+"Integração do WP Rocket: a opção da CDN é %1$sconfigurada "
+"automaticamente%2$s no nosso plugin"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:69
+#, php-format
+msgid "%s / month"
+msgstr "%s por mês"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:74
+msgid "Get Started"
+msgstr "Começar"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:80
+msgid "Learn more about RocketCDN"
+msgstr "Saiba mais sobre a RocketCDN"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:82
+msgid "Reduce this banner"
+msgstr "Reduzir este banner"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:88
+#, php-format
+msgid ""
+"* $%1$s/month for 12 months then $%2$s/month. You can cancel your "
+"subscription at any time."
+msgstr ""
+"* $%1$s por mês durante 12 meses e então $%2$s por mês. Você pode cancelar a"
+" sua assinatura a qualquer momento."
+
+#: inc/Engine/CDN/RocketCDN/views/cta-small.php:17
+msgid ""
+"Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network."
+msgstr ""
+"Acelere o seu site com a RocketCDN, a Rede de Distribuição de Conteúdo do WP"
+" Rocket."
+
+#: inc/Engine/CDN/RocketCDN/views/cta-small.php:20
+#: inc/Engine/CDN/RocketCDN/views/promote-notice.php:13
+msgid "Learn More"
+msgstr "Saiba mais"
+
+#: inc/Engine/CDN/RocketCDN/views/dashboard-status.php:23
+msgid "RocketCDN is unavailable on local domains and staging sites."
+msgstr "A RocketCDN não funciona em domínios locais e sites de staging."
+
+#: inc/Engine/CDN/RocketCDN/views/dashboard-status.php:32
+msgid "Get RocketCDN"
+msgstr "Obtenha a RocketCDN"
+
+#: inc/Engine/CDN/RocketCDN/views/promote-notice.php:11
+msgid "New!"
+msgstr "Novidade!"
+
+#: inc/Engine/CDN/RocketCDN/views/promote-notice.php:12
+msgid ""
+"Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network!"
+msgstr ""
+"Acelere o seu site com a RocketCDN, a Rede de Distribuição de Conteúdo do WP"
+" Rocket!"
 
 #: inc/Engine/Cache/AdminSubscriber.php:118 inc/admin/admin.php:71
 #: inc/admin/admin.php:92 inc/deprecated/3.5.php:908
@@ -2006,7 +2101,100 @@ msgstr "Pré-Carregar"
 msgid "Critical Path CSS Generation Process"
 msgstr "Processo de geração do CSS do caminho crítico"
 
-#: inc/Engine/Optimization/DelayJS/Admin/Settings.php:104
+#: inc/Engine/License/Upgrade.php:252
+#, php-format
+msgid ""
+"Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s"
+" for %3$supgrading your license to Plus or Infinite!%5$s"
+msgid_plural ""
+"Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s"
+" for %3$supgrading your license to Infinite!%5$s"
+msgstr[0] ""
+"Beneficie-se do %1$s para acelerar mais websites: %2$s te dá %3$s %4$s de "
+"desconto %5$s para %3$s atualizando a sua licença para Infinita!%5$s"
+msgstr[1] ""
+"Beneficie-se do %1$s para acelerar mais websites:%2$s te dá %3$s%4$s de "
+"desconto%5$s para %3$satualizando a sua licença para Infinita!%5$s"
+
+#: inc/Engine/License/Upgrade.php:369 inc/Engine/License/Upgrade.php:392
+msgid "Unlimited"
+msgstr "Ilimitado"
+
+#: inc/Engine/License/views/promo-banner.php:16
+#, php-format
+msgid "%s off"
+msgstr "%sdesligado"
+
+#: inc/Engine/License/views/promo-banner.php:21
+#, php-format
+msgid "%s promotion is live!"
+msgstr "Promoção %sao vivo!"
+
+#: inc/Engine/License/views/promo-banner.php:27
+msgid "Hurry Up! Deal ends in:"
+msgstr "Corra! A oferta termina em:"
+
+#: inc/Engine/License/views/promo-banner.php:32
+msgid "Seconds"
+msgstr "Segundos"
+
+#: inc/Engine/License/views/promo-banner.php:34
+#: inc/Engine/License/views/upgrade-section.php:11
+msgid "Upgrade now"
+msgstr "Atualize agora"
+
+#: inc/Engine/License/views/promo-banner.php:36 inc/admin/ui/notices.php:812
+#: views/settings/page-sections/dashboard.php:46
+msgid "Dismiss this notice."
+msgstr "Dispensar essa notificação."
+
+#: inc/Engine/License/views/upgrade-popin.php:12
+msgid "Speed Up More Websites"
+msgstr "Acelere mais websites"
+
+#: inc/Engine/License/views/upgrade-popin.php:19
+#, php-format
+msgid ""
+"You can use WP Rocket on more websites by upgrading your license. To "
+"upgrade, simply pay the %1$sprice difference%2$s between your current and "
+"new licenses, as shown below."
+msgstr ""
+"Você pode usar o WP Rocket em mais sites atualizando a sua licença. Para "
+"atualizar, asta pagar a diferença de preço de %1$s para %2$s entre a sua "
+"licença atual e a nova, como mostrado abaixo."
+
+#: inc/Engine/License/views/upgrade-popin.php:25
+#, php-format
+msgid ""
+"%1$sN.B.%2$s: Upgrading your license does not change your expiration date"
+msgstr ""
+"%1$s N.B. %2$s: Atualizando a sua licença não altera a sua data de expiração"
+"  "
+
+#: inc/Engine/License/views/upgrade-popin.php:35
+#, php-format
+msgid "Save $%s"
+msgstr "Salvar $ %s"
+
+#: inc/Engine/License/views/upgrade-popin.php:48
+#, php-format
+msgid "%s websites"
+msgstr "%s websites"
+
+#: inc/Engine/License/views/upgrade-popin.php:54
+#, php-format
+msgid "Upgrade to %s"
+msgstr "Atualize para %s"
+
+#: inc/Engine/License/views/upgrade-section.php:11
+msgid ""
+"You can use WP Rocket on more websites by upgrading your license (you will "
+"only pay the price difference between your current and new licenses)."
+msgstr ""
+"Você pode usar o WP Rocket em mais sites atualizando a sua licença (você só "
+"paga a diferença de preço entre a sua licença atual e a nova)."
+
+#: inc/Engine/Optimization/DelayJS/Admin/Settings.php:105
 msgid "Restore Defaults"
 msgstr "Restaurar os padrões"
 
@@ -2325,7 +2513,7 @@ msgstr[1] "Os seguintes padrões são inválidos e foram removidos:"
 
 #: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:768
 #: inc/common/admin-bar.php:85 inc/common/admin-bar.php:137
-#: views/settings/page-sections/dashboard.php:124
+#: views/settings/page-sections/dashboard.php:143
 msgid "Clear cache"
 msgstr "Limpar o cache"
 
@@ -2572,10 +2760,6 @@ msgstr "Forçar desativação "
 #: inc/admin/ui/notices.php:802
 msgid "The following code should have been written to this file:"
 msgstr "O código a seguir deveria ter sido escrito neste arquivo:"
-
-#: inc/admin/ui/notices.php:812 views/settings/page-sections/dashboard.php:46
-msgid "Dismiss this notice."
-msgstr "Dispensar essa notificação."
 
 #: inc/admin/ui/notices.php:833
 #, php-format
@@ -2885,7 +3069,7 @@ msgid "Purge Sucuri cache"
 msgstr "Limpar cache Sucuri"
 
 #: inc/common/admin-bar.php:251 inc/common/admin-bar.php:305
-#: views/settings/page-sections/dashboard.php:144
+#: views/settings/page-sections/dashboard.php:163
 msgid "Preload cache"
 msgstr "Pré-carregar o cache"
 
@@ -3123,7 +3307,7 @@ msgstr[0] ""
 "Parece que houve um problema validando a sua licensa. Por favor veja as "
 "mensagens de erro abaixo."
 msgstr[1] ""
-"Parece que houve um problema validando a sua licensa. Por favor veja a "
+"Parece que houve um problema validando a sua licença. Por favor veja a "
 "mensagem de erro abaixo."
 
 #: inc/functions/admin.php:363
@@ -3166,15 +3350,15 @@ msgstr "Configurações anonimizadas do WP Rocket:"
 msgid "Which WP Rocket settings are active"
 msgstr "Quais configurações do WP Rocket estão ativas"
 
-#: inc/functions/options.php:527 inc/functions/options.php:566
+#: inc/functions/options.php:549 inc/functions/options.php:588
 msgid ""
 "License validation failed. Our server could not resolve the request from "
 "your website."
 msgstr ""
-"Falha na validação da licensa. Nosso servidor não pôde resolver a "
+"Falha na validação da licença. Nosso servidor não pôde resolver a "
 "solicitação do seu website."
 
-#: inc/functions/options.php:527 inc/functions/options.php:566
+#: inc/functions/options.php:549 inc/functions/options.php:588
 #, php-format
 msgid ""
 "Try clicking %1$sSave Changes%2$s below. If the error persists, follow "
@@ -3183,98 +3367,98 @@ msgstr ""
 "Experimente clicar abaixo em %1$sSalvar Alterações%2$s. Se o erro persistir,"
 " siga %3$seste guia%4$s."
 
-#: inc/functions/options.php:543
+#: inc/functions/options.php:565
 msgid ""
 "License validation failed. You may be using a nulled version of the plugin. "
 "Please do the following:"
 msgstr ""
-"Falha na validação da licensa. Você pode estar usando uma versão "
+"Falha na validação da licença. Você pode estar usando uma versão "
 "desatualizada do plugin. Faça o seguinte:"
 
-#: inc/functions/options.php:543 inc/functions/options.php:585
+#: inc/functions/options.php:565 inc/functions/options.php:607
 #, php-format
 msgid "Login to your WP Rocket %1$saccount%2$s"
 msgstr "Conecte-se à sua %1$sconta%2$s do WP Rocket"
 
-#: inc/functions/options.php:543 inc/functions/options.php:585
+#: inc/functions/options.php:565 inc/functions/options.php:607
 msgid "Download the zip file"
 msgstr "Baixe o arquivo zip"
 
-#: inc/functions/options.php:543 inc/functions/options.php:585
+#: inc/functions/options.php:565 inc/functions/options.php:607
 msgid "Reinstall"
 msgstr "Reinstalar"
 
-#: inc/functions/options.php:543
+#: inc/functions/options.php:565
 #, php-format
 msgid ""
 "If you do not have a WP Rocket account, please %1$spurchase a license%2$s."
-msgstr "Se você não tem uma conta do WP Rocket, %1$scompre uma licensa%2$s."
+msgstr "Se você não tem uma conta do WP Rocket, %1$scompre uma licença%2$s."
 
-#: inc/functions/options.php:551
+#: inc/functions/options.php:573
 msgid ""
 "License validation failed. This user account does not exist in our database."
 msgstr ""
-"A validação da licensa falhou: Esta conta de usuário não existe em nosso "
+"A validação da licença falhou: Esta conta de usuário não existe em nosso "
 "banco de dados."
 
-#: inc/functions/options.php:551
+#: inc/functions/options.php:573
 msgid "To resolve, please contact support."
 msgstr "Contacte o suporte para solucionar."
 
-#: inc/functions/options.php:559
+#: inc/functions/options.php:581
 msgid "License validation failed. This user account is blocked."
 msgstr "A validação da licença falhou. Esta conta de usuário está bloqueada."
 
-#: inc/functions/options.php:559
+#: inc/functions/options.php:581
 #, php-format
 msgid "Please see %1$sthis guide%2$s for more info."
 msgstr "Veja %1$seste guia%2$spara mais informações."
 
-#: inc/functions/options.php:579
+#: inc/functions/options.php:601
 msgid "Your license is not valid."
 msgstr "Sua licença não é válida."
 
-#: inc/functions/options.php:579
+#: inc/functions/options.php:601
 #, php-format
 msgid "Make sure you have an active %1$sWP Rocket license%2$s."
-msgstr "Certifique-se de ter uma %1$slicensa ativa do WP Rocket%2$s."
+msgstr "Certifique-se de ter uma %1$slicença ativa do WP Rocket%2$s."
 
-#: inc/functions/options.php:581
+#: inc/functions/options.php:603
 msgid "You have added as many sites as your current license allows."
 msgstr ""
-"Você já adicionou o máximo de sites permitidos para a sua licensa atual."
+"Você já adicionou o máximo de sites permitidos para a sua licença atual."
 
-#: inc/functions/options.php:581
+#: inc/functions/options.php:603
 #, php-format
 msgid ""
 "Upgrade your %1$saccount%2$s or %3$stransfer your license%2$s to this "
 "domain."
 msgstr ""
-"Atualize sua %1$sconta%2$s ou %3$stransfira a sua licensa%2$s para este "
+"Atualize sua %1$sconta%2$s ou %3$stransfira a sua licença%2$s para este "
 "domínio."
 
-#: inc/functions/options.php:583
+#: inc/functions/options.php:605
 msgid "This website is not allowed."
 msgstr "Este website não é permitido."
 
-#: inc/functions/options.php:583
+#: inc/functions/options.php:605
 #, php-format
 msgid "Please %1$scontact support%2$s."
 msgstr "Por favor %1$scontacte o suporte%2$s."
 
-#: inc/functions/options.php:585
+#: inc/functions/options.php:607
 msgid "This license key is not recognized."
-msgstr "Esta chave de licensa não foi reconhecida."
+msgstr "Esta chave de licença não foi reconhecida."
 
-#: inc/functions/options.php:585
+#: inc/functions/options.php:607
 #, php-format
 msgid "If the issue persists, please %1$scontact support%2$s."
 msgstr "Se o problema persistir, %1$scontacte o suporte%2$s."
 
-#: inc/functions/options.php:591
+#: inc/functions/options.php:613
 #, php-format
 msgid "License validation failed: %s"
-msgstr "A validação da licensa falhou: %s"
+msgstr "A validação da licença falhou: %s"
 
 #: inc/vendors/classes/class-imagify-partner.php:531
 msgid "Plugin installed successfully."
@@ -3722,62 +3906,62 @@ msgstr ""
 msgid "Continue to the options to further optimize your site!"
 msgstr "Continue para as opções para otimizar ainda mais o seu site!"
 
-#: views/settings/page-sections/dashboard.php:55
+#: views/settings/page-sections/dashboard.php:62
 msgid "My Account"
 msgstr "Minha Conta"
 
-#: views/settings/page-sections/dashboard.php:61
+#: views/settings/page-sections/dashboard.php:68
 msgid "Refresh info"
 msgstr "Atualizar informações"
 
-#: views/settings/page-sections/dashboard.php:75
+#: views/settings/page-sections/dashboard.php:93
 msgid "Expiration Date"
 msgstr "Data de Expiração"
 
-#: views/settings/page-sections/dashboard.php:84
+#: views/settings/page-sections/dashboard.php:103
 msgid "View my account"
 msgstr "Ver a minha conta"
 
-#: views/settings/page-sections/dashboard.php:111
+#: views/settings/page-sections/dashboard.php:130
 msgid "Quick Actions"
 msgstr "Ações Rápidas"
 
-#: views/settings/page-sections/dashboard.php:118
+#: views/settings/page-sections/dashboard.php:137
 msgid "Remove all cached files"
 msgstr "Remover todos os arquivos em cache"
 
-#: views/settings/page-sections/dashboard.php:138
+#: views/settings/page-sections/dashboard.php:157
 msgid "Start cache preloading"
 msgstr "Iniciar pré-carregamento do cache"
 
-#: views/settings/page-sections/dashboard.php:164
+#: views/settings/page-sections/dashboard.php:183
 msgid "Purge OPCache content"
 msgstr "Esvaziar o conteúdo do OPCache"
 
-#: views/settings/page-sections/dashboard.php:170
+#: views/settings/page-sections/dashboard.php:189
 msgid "Purge OPCache"
 msgstr "Esvaziar o OPCache"
 
-#: views/settings/page-sections/dashboard.php:181
-#: views/settings/page-sections/dashboard.php:187
+#: views/settings/page-sections/dashboard.php:200
+#: views/settings/page-sections/dashboard.php:206
 msgid "Regenerate Critical CSS"
 msgstr "Regenerar CSS Crítico"
 
-#: views/settings/page-sections/dashboard.php:204
+#: views/settings/page-sections/dashboard.php:223
 msgid "Frequently Asked Questions"
 msgstr "Dúvidas Frequentes"
 
-#: views/settings/page-sections/dashboard.php:217
+#: views/settings/page-sections/dashboard.php:236
 msgid "Still cannot find a solution?"
 msgstr "Ainda não consegue achar uma solução?"
 
-#: views/settings/page-sections/dashboard.php:218
+#: views/settings/page-sections/dashboard.php:237
 msgid ""
 "Submit a ticket and get help from our friendly and knowledgeable Rocketeers."
 msgstr ""
 "Envie um ticket e obtenha ajuda dos nossos amigos Rocketeers experientes."
 
-#: views/settings/page-sections/dashboard.php:226
+#: views/settings/page-sections/dashboard.php:245
 msgid "Ask support"
 msgstr "Solicite suporte"
 
@@ -3834,7 +4018,7 @@ msgstr "Instalar o Imagify"
 
 #: views/settings/page-sections/license.php:22
 msgid "WP Rocket was not able to automatically validate your license."
-msgstr "O WP Rocket não conseguiu validar automaticamente a sua licensa."
+msgstr "O WP Rocket não conseguiu validar automaticamente a sua licença."
 
 #: views/settings/page-sections/license.php:29
 #, php-format
@@ -4030,7 +4214,7 @@ msgid ""
 "for license validation), IP addresses, or third-party API keys."
 msgstr ""
 "O WP Rocket jamais irá transmitir quaisquer nomes de domínio e endereços de "
-"e-mail (exceto para a validação da licensa), endereços IP ou chaves de API "
+"e-mail (exceto para a validação da licença), endereços IP ou chaves de API "
 "de terceiros."
 
 #: views/settings/page.php:99
@@ -4103,98 +4287,6 @@ msgid ""
 msgstr ""
 "Use uma janela privativa do navegador para verificar a velocidade e "
 "aparência visual do seu site."
-
-#: views/settings/rocketcdn/cta-big.php:27
-#, php-format
-msgid "Valid until %s only!"
-msgstr "Válido apenas até %s! "
-
-#: views/settings/rocketcdn/cta-big.php:36
-msgid "Speed up your website thanks to:"
-msgstr "Acelere o seu site graças a:"
-
-#: views/settings/rocketcdn/cta-big.php:42
-#, php-format
-msgid ""
-"High performance Content Delivery Network (CDN) with %1$sunlimited "
-"bandwith%2$s"
-msgstr ""
-"Rede de Distribuição de Conteúdo (CDN) de alto desempenho com %1$slargura "
-"ilimitada de banda%2$s"
-
-#: views/settings/rocketcdn/cta-big.php:48
-#, php-format
-msgid ""
-"Easy configuration: the %1$sbest CDN settings%2$s are automatically applied"
-msgstr ""
-"Configuração fácil: as %1$smelhores configurações da CDN%2$s são aplicadas "
-"automaticamente"
-
-#: views/settings/rocketcdn/cta-big.php:54
-#, php-format
-msgid ""
-"WP Rocket integration: the CDN option is %1$sautomatically configured%2$s in"
-" our plugin"
-msgstr ""
-"Integração do WP Rocket: a opção da CDN é %1$sconfigurada "
-"automaticamente%2$s no nosso plugin"
-
-#: views/settings/rocketcdn/cta-big.php:69
-#, php-format
-msgid "%s / month"
-msgstr "%s por mês"
-
-#: views/settings/rocketcdn/cta-big.php:74
-msgid "Get Started"
-msgstr "Começar"
-
-#: views/settings/rocketcdn/cta-big.php:80
-msgid "Learn more about RocketCDN"
-msgstr "Saiba mais sobre a RocketCDN"
-
-#: views/settings/rocketcdn/cta-big.php:82
-msgid "Reduce this banner"
-msgstr "Reduzir este banner"
-
-#: views/settings/rocketcdn/cta-big.php:88
-#, php-format
-msgid ""
-"* $%1$s/month for 12 months then $%2$s/month. You can cancel your "
-"subscription at any time."
-msgstr ""
-"* $%1$s por mês durante 12 meses e então $%2$s por mês. Você pode cancelar a"
-" sua assinatura a qualquer momento."
-
-#: views/settings/rocketcdn/cta-small.php:17
-msgid ""
-"Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network."
-msgstr ""
-"Acelere o seu site com a RocketCDN, a Rede de Distribuição de Conteúdo do WP"
-" Rocket."
-
-#: views/settings/rocketcdn/cta-small.php:20
-#: views/settings/rocketcdn/promote-notice.php:13
-msgid "Learn More"
-msgstr "Saiba mais"
-
-#: views/settings/rocketcdn/dashboard-status.php:23
-msgid "RocketCDN is unavailable on local domains and staging sites."
-msgstr "A RocketCDN não funciona em domínios locais e sites de staging."
-
-#: views/settings/rocketcdn/dashboard-status.php:32
-msgid "Get RocketCDN"
-msgstr "Obtenha a RocketCDN"
-
-#: views/settings/rocketcdn/promote-notice.php:11
-msgid "New!"
-msgstr "Novidade!"
-
-#: views/settings/rocketcdn/promote-notice.php:12
-msgid ""
-"Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network!"
-msgstr ""
-"Acelere o seu site com a RocketCDN, a Rede de Distribuição de Conteúdo do WP"
-" Rocket!"
 
 #: views/settings/sections/addons-container.php:24
 #: views/settings/sections/fields-container.php:28

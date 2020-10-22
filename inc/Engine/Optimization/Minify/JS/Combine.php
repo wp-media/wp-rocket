@@ -202,7 +202,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 						return;
 					}
 
-					$file_path = $this->get_file_path( $matches['url'] );
+					$file_path = $this->get_file_path( strtok( $matches['url'], '?' ) );
 
 					if ( ! $file_path ) {
 						return;
@@ -652,6 +652,12 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'aepro',
 			'cdn.jst.ai',
 			'w2dc_fields_in_categories',
+			'aepc_pixel',
+			'avadaWooCommerceVars',
+			'var isb',
+			'fcaPcPost',
+			'csrf_token',
+			'icwp_wpsf_vars_lpantibot',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
