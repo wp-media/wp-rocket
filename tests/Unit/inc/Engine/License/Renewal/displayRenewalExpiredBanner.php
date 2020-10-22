@@ -99,7 +99,7 @@ class DisplayRenewalExpiredBanner extends TestCase {
 				->once()
 				->with(
 					'renewal-expired-banner',
-					$expected,
+					$expected
 				)
 				->andReturn( '' );
 
