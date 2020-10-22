@@ -97,7 +97,7 @@ class DisplayRenewalSoonBanner extends TestCase {
 				->once()
 				->with(
 					'renewal-soon-banner',
-					$expected,
+					$expected
 				)
 				->andReturn( '' );
 
