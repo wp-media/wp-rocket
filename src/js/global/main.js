@@ -165,7 +165,7 @@ $(document).ready(function(){
 
 	var $wprUpgradePopin = $('.wpr-Popin-Upgrade'),
 	$wprUpgradeClosePopin = $('.wpr-Popin-Upgrade-close'),
-	$wprUpgradeOpenPopin = $('#wpr-popin-upgrade-toggle');
+	$wprUpgradeOpenPopin = $('.wpr-popin-upgrade-toggle');
 
 	$wprUpgradeOpenPopin.click(function(e) {
 		e.preventDefault();
