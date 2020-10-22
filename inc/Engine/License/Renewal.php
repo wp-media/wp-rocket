@@ -170,24 +170,21 @@ class Renewal extends Abstract_Render  {
 	 * @return int
 	 */
 	private function get_discount_percent() {
-		$renewals = $this->pricing->get_renewals_data();
+		$renewals = $this->get_user_renewal_status();
 
-		if ( ! isset( $renewals->extra_days, $renewals->grandfather_date, $renewals->discount_percent ) ) {
+		if ( false === $renewals ) {
 			return 0;
 		}
 
-		$extra   = $renewals->extra_days * DAY_IN_SECONDS;
-		$current = time();
-
-		if ( $current > ( $this->user->get_license_expiration() + $extra ) ) {
-			return isset( $renewals->discount_percent->is_expired ) ? $renewals->discount_percent->is_expired : 0;
+		if ( $renewals['is_expired'] ) {
+			return isset( $renewals['discount_percent']->is_expired ) ? $renewals['discount_percent']->is_expired : 0;
 		}
 
-		if ( $this->user->get_creation_date() > $renewals->grandfather_date ) {
-			return isset( $renewals->discount_percent->not_grandfather ) ? $renewals->discount_percent->not_grandfather : 0;
+		if ($renewals['is_grandfather'] ) {
+			return isset( $renewals['discount_percent']->is_grandfather ) ? $renewals['discount_percent']->is_grandfather : 0;
 		}
 
-		return isset( $renewals->discount_percent->is_grandfather ) ? $renewals->discount_percent->is_grandfather : 0;
+		return isset( $renewals['discount_percent']->not_grandfather ) ? $renewals['discount_percent']->not_grandfather : 0;
 	}
 
 	/**
@@ -198,25 +195,45 @@ class Renewal extends Abstract_Render  {
 	 * @return int
 	 */
 	private function get_discount_price() {
-		$renewals = $this->pricing->get_renewals_data();
+		$renewals = $this->get_user_renewal_status();
 
-		if ( ! isset( $renewals->extra_days, $renewals->grandfather_date, $renewals->discount_percent ) ) {
+		if ( false === $renewals ) {
 			return 0;
 		}
 
-		$extra   = $renewals->extra_days * DAY_IN_SECONDS;
-		$current = time();
 		$license = $this->get_license_pricing_data();
 
-		if ( $current > ( $this->user->get_license_expiration() + $extra ) ) {
+		if ( $renewals['is_expired'] ) {
 			return isset( $license->prices->renewal->is_expired ) ? $license->prices->renewal->is_expired : 0;
 		}
 
-		if ( $this->user->get_creation_date() > $renewals->grandfather_date ) {
-			return isset( $license->prices->renewal->not_grandfather ) ? $license->prices->renewal->not_grandfather : 0;
+		if ( $renewals['is_grandfather'] ) {
+			return isset( $license->prices->renewal->is_grandfather ) ? $license->prices->renewal->is_grandfather : 0;
+			
 		}
 
-		return isset( $license->prices->renewal->is_grandfather ) ? $license->prices->renewal->is_grandfather : 0;
+		return isset( $license->prices->renewal->not_grandfather ) ? $license->prices->renewal->not_grandfather : 0;
+	}
+
+	/**
+	 * Gets the user renewal status
+	 *
+	 * @since 3.7.5
+	 *
+	 * @return array
+	 */
+	private function get_user_renewal_status() {
+		$renewals = $this->pricing->get_renewals_data();
+
+		if ( ! isset( $renewals->extra_days, $renewals->grandfather_date, $renewals->discount_percent ) ) {
+			return false;
+		}
+
+		return [
+			'discount_percent' => $renewals->discount_percent,
+			'is_expired'       => time() > ( $this->user->get_license_expiration() + ( $renewals->extra_days * DAY_IN_SECONDS ) ),
+			'is_grandfather'   => $renewals->grandfather_date > $this->user->get_creation_date(),
+		];
 	}
 
 	/**
