@@ -18,9 +18,9 @@ defined( 'ABSPATH' ) || exit;
 				'<strong>',
 				'</strong>'
 			);
-		?>
+			?>
 		</p>
-        <p>
+		<p>
 		<?php
 			printf(
 				// translators: %1$s = <strong>, %2$s = discount percentage, %3$s = </strong>, %4$s = discount price.
@@ -30,11 +30,11 @@ defined( 'ABSPATH' ) || exit;
 				'</strong>',
 				esc_html( '$' . $data['discount_price'] )
 			);
-		?>
+			?>
 		</p>
 	</div>
-    <div class="rocket-expired-cta-container">
-	    <a href="<?php echo esc_url( $data['renewal_url'] ); ?>" class="rocket-renew-cta" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Renew now', 'rocket' ); ?></a>
-    </div>
-    <button class="wpr-notice-close wpr-icon-close" id="rocket-dismiss-renewal"><span class="screen-reader-text"><?php esc_html_e( 'Dismiss this notice.', 'rocket' ); ?></span></button>
+	<div class="rocket-expired-cta-container">
+		<a href="<?php echo esc_url( $data['renewal_url'] ); ?>" class="rocket-renew-cta" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Renew now', 'rocket' ); ?></a>
+	</div>
+	<button class="wpr-notice-close wpr-icon-close" id="rocket-dismiss-renewal"><span class="screen-reader-text"><?php esc_html_e( 'Dismiss this notice.', 'rocket' ); ?></span></button>
 </div>

@@ -35,7 +35,7 @@ defined( 'ABSPATH' ) || exit;
 				'</strong>',
 				esc_html( '$' . $data['discount_price'] )
 			);
-		?>
+			?>
 		</p>
 	</div>
 	<div class="rocket-renew-cta-container">

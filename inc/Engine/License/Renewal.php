@@ -6,7 +6,7 @@ use WP_Rocket\Abstract_Render;
 use WP_Rocket\Engine\License\API\Pricing;
 use WP_Rocket\Engine\License\API\User;
 
-class Renewal extends Abstract_Render  {
+class Renewal extends Abstract_Render {
 	/**
 	 * Pricing instance
 	 *
@@ -62,7 +62,7 @@ class Renewal extends Abstract_Render  {
 			'renewal_url'      => $this->user->get_renewal_url(),
 		];
 
-		echo $this->generate( 'renewal-soon-banner', $data );
+		echo $this->generate( 'renewal-soon-banner', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**
@@ -91,7 +91,7 @@ class Renewal extends Abstract_Render  {
 			'renewal_url'      => $this->user->get_renewal_url(),
 		];
 
-		echo $this->generate( 'renewal-expired-banner', $data );
+		echo $this->generate( 'renewal-expired-banner', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**
