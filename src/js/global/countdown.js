@@ -52,3 +52,7 @@ if (!Date.now) {
 if (typeof rocket_ajax_data.promo_end !== 'undefined') {
     initializeClock('rocket-promo-countdown', rocket_ajax_data.promo_end);
 }
+
+if (typeof rocket_ajax_data.license_expiration !== 'undefined') {
+    initializeClock('rocket-renew-countdown', rocket_ajax_data.license_expiration);
+}

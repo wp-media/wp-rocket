@@ -5,12 +5,12 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\License\Subscriber;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\License\Subscriber::display_promo_banner
+ * @covers \WP_Rocket\Engine\License\Subscriber::display_renewal_expired_banner
  *
  * @group License
  * @group AdminOnly
  */
-class DisplayPromoBanner extends TestCase {
+class DisplayRenewalExpiredBanner extends TestCase {
 	private static $user;
 	private static $pricing;
 	private $original_user;
@@ -32,7 +32,7 @@ class DisplayPromoBanner extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->unregisterAllCallbacksExcept( 'rocket_before_dashboard_content', 'display_promo_banner', 10 );
+		$this->unregisterAllCallbacksExcept( 'rocket_before_dashboard_content', 'display_renewal_expired_banner', 12 );
 
 		wp_set_current_user( self::$user_id );
 
@@ -46,7 +46,7 @@ class DisplayPromoBanner extends TestCase {
 		$this->set_reflective_property( $this->original_user, 'user', self::$user );
 		$this->set_reflective_property( $this->original_pricing, 'pricing', self::$pricing );
 
-		delete_transient( 'rocket_promo_banner_' . self::$user_id );
+		delete_transient( 'rocket_renewal_banner_' . self::$user_id );
 
 		parent::tearDown();
 	}
@@ -59,7 +59,7 @@ class DisplayPromoBanner extends TestCase {
 		$this->set_reflective_property( $config['pricing'], 'pricing', self::$pricing );
 
 		if ( false !== $config['transient'] ) {
-			set_transient( 'rocket_promo_banner_' . self::$user_id, 1, MINUTE_IN_SECONDS );
+			set_transient( 'rocket_renewal_banner_' . self::$user_id, 1, MINUTE_IN_SECONDS );
 		}
 
 		$this->assertSame(

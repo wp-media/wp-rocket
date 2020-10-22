@@ -177,4 +177,21 @@ $(document).ready(function(){
 			}
         );
     } );
+
+    $( '#rocket-dismiss-renewal' ).on( 'click', function( e ) {
+        e.preventDefault();
+
+        $.post(
+            ajaxurl,
+            {
+                action: 'rocket_dismiss_renewal',
+                nonce: rocket_ajax_data.nonce
+            },
+			function(response) {
+				if ( response.success ) {
+					$('#rocket-renewal-banner').hide( 'slow' );
+				}
+			}
+        );
+    } );
 });
