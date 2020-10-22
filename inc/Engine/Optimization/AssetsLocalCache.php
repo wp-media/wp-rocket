@@ -124,7 +124,7 @@ class AssetsLocalCache {
 	 * @return array|false Matched array with integrityhashmethod, integrityhash keys.
 	 */
 	private function has_integrity( $asset ) {
-		if ( ! preg_match( '#integrity\s*=[\'"](?<integrityhashmethod>.*)-(?<integrityhash>.*)[\'"]#Ui', $asset, $integrity_matches ) ) {
+		if ( ! preg_match( '#\s*integrity\s*=[\'"](?<integrityhashmethod>.*)-(?<integrityhash>.*)[\'"]#Ui', $asset, $integrity_matches ) ) {
 			return false;
 		}
 
