@@ -180,7 +180,7 @@ class Renewal extends Abstract_Render {
 			return isset( $renewals['discount_percent']->is_expired ) ? $renewals['discount_percent']->is_expired : 0;
 		}
 
-		if ($renewals['is_grandfather'] ) {
+		if ( $renewals['is_grandfather'] ) {
 			return isset( $renewals['discount_percent']->is_grandfather ) ? $renewals['discount_percent']->is_grandfather : 0;
 		}
 
@@ -209,7 +209,6 @@ class Renewal extends Abstract_Render {
 
 		if ( $renewals['is_grandfather'] ) {
 			return isset( $license->prices->renewal->is_grandfather ) ? $license->prices->renewal->is_grandfather : 0;
-			
 		}
 
 		return isset( $license->prices->renewal->not_grandfather ) ? $license->prices->renewal->not_grandfather : 0;
