@@ -45,16 +45,18 @@ class AssetsLocalCache {
 	 * @since 3.1
 	 *
 	 * @param string $url URL to get the content from.
+	 * @param bool   $save Save the resource locally or just get contents.
+	 *
 	 * @return string
 	 */
-	public function get_content( $url ) {
+	public function get_content( $url, $save = true ) {
 		$filepath = $this->get_filepath( $url );
 
 		if ( empty( $filepath ) ) {
 			return '';
 		}
 
-		if ( $this->filesystem->is_readable( $filepath ) ) {
+		if ( $save && $this->filesystem->is_readable( $filepath ) ) {
 			return $this->filesystem->get_contents( $filepath );
 		}
 
@@ -64,7 +66,9 @@ class AssetsLocalCache {
 			return '';
 		}
 
-		$this->write_file( $content, $filepath );
+		if ( $save ) {
+			$this->write_file( $content, $filepath );
+		}
 
 		return $content;
 	}
@@ -108,5 +112,51 @@ class AssetsLocalCache {
 		}
 
 		return rocket_put_content( $file, $content );
+	}
+
+	/**
+	 * Check if this link HTML has integrity attribute or not?
+	 *
+	 * @since 3.7.5
+	 *
+	 * @param string $asset Link HTML to be tested.
+	 *
+	 * @return array|false Matched array with integrityhashmethod, integrityhash keys.
+	 */
+	private function has_integrity( $asset ) {
+		if ( ! preg_match( '#integrity\s*=[\'"](?<integrityhashmethod>.*)-(?<integrityhash>.*)[\'"]#Ui', $asset, $integrity_matches ) ) {
+			return false;
+		}
+
+		if ( ! isset( $integrity_matches['integrityhashmethod'] ) || ! isset( $integrity_matches['integrityhash'] ) ) {
+			return false;
+		}
+
+		return $integrity_matches;
+	}
+
+	/**
+	 * Validate the integrity attribute if the content matches with the hashed integrity value.
+	 *
+	 * @param array $asset_matched the matched array which has 0, url keys.
+	 *
+	 * @return bool|string
+	 */
+	public function validate_integrity( $asset_matched ) {
+		$integrity_matches = $this->has_integrity( $asset_matched[0] );
+
+		if ( false === $integrity_matches ) {
+			return $asset_matched[0];
+		}
+
+		$content      = $this->get_content( $asset_matched['url'], false );
+		$content_hash = base64_encode( hash( $integrity_matches['integrityhashmethod'], $content, true ) );// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
+
+		if ( $integrity_matches['integrityhash'] !== $content_hash ) {
+			return false;
+		}
+
+		return str_replace( $integrity_matches[0] . '', '', $asset_matched[0] );
+
 	}
 }
