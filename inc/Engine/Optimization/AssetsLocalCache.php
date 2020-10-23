@@ -26,6 +26,13 @@ class AssetsLocalCache {
 	private $filesystem;
 
 	/**
+	 * Cache contents with url.
+	 *
+	 * @var array
+	 */
+	private $url_cache = [];
+
+	/**
 	 * Constructor
 	 *
 	 * @since 3.1
@@ -46,7 +53,13 @@ class AssetsLocalCache {
 	 * @return string Raw file contents.
 	 */
 	private function get_raw_content( $url ) {
-		return wp_remote_retrieve_body( wp_remote_get( $url ) );
+		$cache_key = md5( $url );
+
+		if ( ! isset( $this->url_cache[ $cache_key ] ) ) {
+			$this->url_cache[ $cache_key ] = wp_remote_retrieve_body( wp_remote_get( $url ) );
+		}
+
+		return $this->url_cache[ $cache_key ];
 	}
 
 	/**
