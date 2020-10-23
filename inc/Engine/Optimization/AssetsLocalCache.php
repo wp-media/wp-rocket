@@ -149,6 +149,11 @@ class AssetsLocalCache {
 			return $asset_matched[0];
 		}
 
+		// validate the hash algorithm.
+		if ( ! in_array( $integrity_matches['integrityhashmethod'], hash_algos(), true ) ) {
+			return false;
+		}
+
 		$content      = $this->get_content( $asset_matched['url'], false );
 		$content_hash = base64_encode( hash( $integrity_matches['integrityhashmethod'], $content, true ) );// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 
