@@ -39,36 +39,44 @@ class AssetsLocalCache {
 	}
 
 	/**
+	 * Get remote file contents.
+	 *
+	 * @param string $url Url of the file to get contents for.
+	 *
+	 * @return string Raw file contents.
+	 */
+	private function get_raw_content( $url ) {
+		return wp_remote_retrieve_body( wp_remote_get( $url ) );
+	}
+
+	/**
 	 * Gets content for the provided URL.
 	 * Use the local cache file if it exists, else get it from the 3rd party URL and save it locally for future use.
 	 *
 	 * @since 3.1
 	 *
 	 * @param string $url URL to get the content from.
-	 * @param bool   $save Save the resource locally or just get contents.
 	 *
 	 * @return string
 	 */
-	public function get_content( $url, $save = true ) {
+	public function get_content( $url ) {
 		$filepath = $this->get_filepath( $url );
 
 		if ( empty( $filepath ) ) {
 			return '';
 		}
 
-		if ( $save && $this->filesystem->is_readable( $filepath ) ) {
+		if ( $this->filesystem->is_readable( $filepath ) ) {
 			return $this->filesystem->get_contents( $filepath );
 		}
 
-		$content = wp_remote_retrieve_body( wp_remote_get( $url ) );
+		$content = $this->get_raw_content( $url );
 
 		if ( empty( $content ) ) {
 			return '';
 		}
 
-		if ( $save ) {
-			$this->write_file( $content, $filepath );
-		}
+		$this->write_file( $content, $filepath );
 
 		return $content;
 	}
@@ -128,7 +136,7 @@ class AssetsLocalCache {
 			return false;
 		}
 
-		if ( ! isset( $integrity_matches['integrityhashmethod'] ) || ! isset( $integrity_matches['integrityhash'] ) ) {
+		if ( ! isset( $integrity_matches['integrityhashmethod'], $integrity_matches['integrityhash'] ) ) {
 			return false;
 		}
 
@@ -154,14 +162,14 @@ class AssetsLocalCache {
 			return false;
 		}
 
-		$content      = $this->get_content( $asset_matched['url'], false );
+		$content      = $this->get_raw_content( $asset_matched['url'] );
 		$content_hash = base64_encode( hash( $integrity_matches['integrityhashmethod'], $content, true ) );// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 
 		if ( $integrity_matches['integrityhash'] !== $content_hash ) {
 			return false;
 		}
 
-		return str_replace( $integrity_matches[0] . '', '', $asset_matched[0] );
+		return str_replace( $integrity_matches[0], '', $asset_matched[0] );
 
 	}
 }
