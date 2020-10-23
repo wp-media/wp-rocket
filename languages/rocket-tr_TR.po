@@ -1314,8 +1314,8 @@ msgstr[0] ""
 "%1$s%2$s Eklentisi%3$s şu anda etkinleştirildi. CDN ayarları yapılandırması,"
 " sitenizde çalışması için %2$s gerektirmez."
 msgstr[1] ""
-"%1$s%2$s Eklentileri%3$s şu anda etkinleştirildi. CDN ayarları "
-"yapılandırması, sitenizde çalışması için %2$s gerektirmez."
+"%1$s%2$s Eklentileri%3$s şu anda etkinleştirildi. CDN ayarlarının "
+"yapılandırması, sitenizde çalışması amacıyla %2$s için gerekmez."
 
 #: inc/Engine/Admin/Settings/Page.php:1624
 msgid "Enable Content Delivery Network"
