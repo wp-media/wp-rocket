@@ -397,10 +397,11 @@ function rocket_analytics_data() {
 		'analytics_enabled'       => 1,
 	];
 
-	$theme              = wp_get_theme();
-	$data               = array_diff_key( get_option( WP_ROCKET_SLUG ), $untracked_wp_rocket_options );
-	$locale             = explode( '_', get_locale() );
-	$data['web_server'] = 'Unknown';
+	$theme                 = wp_get_theme();
+	$data                  = array_diff_key( get_option( WP_ROCKET_SLUG ), $untracked_wp_rocket_options );
+	$locale                = explode( '_', get_locale() );
+	$data['web_server']    = 'Unknown';
+	$data['http_protocol'] = '';
 
 	if ( $is_nginx ) {
 		$data['web_server'] = 'NGINX';
@@ -410,6 +411,10 @@ function rocket_analytics_data() {
 		$data['web_server'] = 'IIS 7';
 	} elseif ( $is_IIS ) {
 		$data['web_server'] = 'IIS';
+	}
+
+	if ( isset( $_SERVER['SERVER_PROTOCOL'] ) ) {
+		$data['http_protocol'] = preg_replace( '/^http\/(.*)$/imu', '\1', $_SERVER['SERVER_PROTOCOL'] );
 	}
 
 	$data['php_version']       = preg_replace( '@^(\d\.\d+).*@', '\1', phpversion() );
