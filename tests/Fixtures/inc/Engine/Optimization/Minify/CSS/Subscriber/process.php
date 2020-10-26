@@ -59,6 +59,44 @@ return [
 			],
 		],
 
+		'minifyCssFilesWithIntegrity' => [
+			'original' => '<html>
+				<head>
+					<title>Sample Page</title>
+					<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" integrity="notvalid" type="text/css" media="all">
+					<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" integrity="notvalidalgorithm-hashed">
+					<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" integrity="sha384-notvalidhash">
+					<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" integrity="sha384-FckWOBo7yuyMS7In0aXZ0aoVvnInlnFMwCv77x9sZpFgOonQgnBj1uLwenWVtsEj">
+		</head>
+				<body>
+				</body>
+			</html>',
+
+			'expected' => [
+				'html'  => '<html>
+					<head>
+						<title>Sample Page</title>
+						<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/font-awesome/4.7.0/css/font-awesome-f0a49cb1d696cc10278bb729970847c9.css" integrity="notvalid" type="text/css" media="all">
+						<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" integrity="notvalidalgorithm-hashed">
+						<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" integrity="sha384-notvalidhash">
+						<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/font-awesome/4.7.0/css/font-awesome-f0a49cb1d696cc10278bb729970847c9.css">
+					</head>
+					<body>
+					</body>
+				</html>',
+				'files' => [
+					'wp-content/cache/min/1/font-awesome/4.7.0/css/font-awesome-f0a49cb1d696cc10278bb729970847c9.css'
+				],
+			],
+
+			'settings' => [
+				'minify_concatenate_css' => 0,
+				'cdn'                    => 0,
+				'cdn_cnames'             => [],
+				'cdn_zone'               => [],
+			],
+		],
+
 		'minifyCssFilesWithRelativeUrls' => [
 			'original' => '<html>
 				<head>
