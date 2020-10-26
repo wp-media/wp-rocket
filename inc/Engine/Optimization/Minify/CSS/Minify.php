@@ -44,6 +44,22 @@ class Minify extends AbstractCSSOptimization implements ProcessorInterface {
 				continue;
 			}
 
+			$integrity_validated = $this->local_cache->validate_integrity( $style );
+
+			if ( false === $integrity_validated ) {
+				Logger::debug(
+					'Style integrity attribute not valid.',
+					[
+						'css minification process',
+						'tag' => $style[0],
+					]
+				);
+
+				continue;
+			}
+
+			$style['final'] = $integrity_validated;
+
 			$minify_url = $this->replace_url( strtok( $style['url'], '?' ) );
 
 			if ( ! $minify_url ) {
@@ -190,7 +206,7 @@ class Minify extends AbstractCSSOptimization implements ProcessorInterface {
 	 * @return string
 	 */
 	protected function replace_style( $style, $minify_url, $html ) {
-		$replace_style = str_replace( $style['url'], $minify_url, $style[0] );
+		$replace_style = str_replace( $style['url'], $minify_url, $style['final'] );
 		$replace_style = str_replace( '<link', '<link data-minify="1"', $replace_style );
 		$html          = str_replace( $style[0], $replace_style, $html );
 
