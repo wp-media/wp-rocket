@@ -55,12 +55,8 @@ class Renewal extends Abstract_Render {
 			return;
 		}
 
-		$data = [
-			'discount_percent' => $this->get_discount_percent(),
-			'discount_price'   => $this->get_discount_price(),
-			'countdown'        => $this->get_countdown_data(),
-			'renewal_url'      => $this->user->get_renewal_url(),
-		];
+		$data              = $this->get_banner_data();
+		$data['countdown'] = $this->get_countdown_data();
 
 		echo $this->generate( 'renewal-soon-banner', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
@@ -85,13 +81,22 @@ class Renewal extends Abstract_Render {
 			return;
 		}
 
-		$data = [
+		echo $this->generate( 'renewal-expired-banner', $this->get_banner_data() ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	}
+
+	/**
+	 * Get base data to display in the banners
+	 *
+	 * @since 3.7.5
+	 *
+	 * @return array
+	 */
+	private function get_banner_data() {
+		return [
 			'discount_percent' => $this->get_discount_percent(),
-			'discount_price'   => $this->get_discount_price(),
+			'discount_price'   => number_format_i18n( $this->get_discount_price(), 2 ),
 			'renewal_url'      => $this->user->get_renewal_url(),
 		];
-
-		echo $this->generate( 'renewal-expired-banner', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**
