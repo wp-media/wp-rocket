@@ -228,6 +228,7 @@ class Plugin {
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Updater_Subscribers' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\DelayJS\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Heartbeat\ServiceProvider' );
+		$this->container->addServiceProvider( 'WP_Rocket\Engine\Support\ServiceProvider' );
 
 		$common_subscribers = [
 			'cdn_subscriber',
@@ -269,6 +270,7 @@ class Plugin {
 			'divi',
 			'preload_links_admin_subscriber',
 			'preload_links_subscriber',
+			'support_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();
