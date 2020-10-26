@@ -45,7 +45,6 @@ before_install:
   # Unless we need XDebug, disable it for improved performance.
   - phpenv config-rm xdebug.ini || true
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
-  - composer self-update --rollback
   - |
     if [[ -f composer.lock ]] ; then
       rm composer.lock
