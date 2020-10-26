@@ -658,6 +658,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'fcaPcPost',
 			'csrf_token',
 			'icwp_wpsf_vars_lpantibot',
+			'ed_school_plugin',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
