@@ -266,6 +266,7 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 			'static.mailerlite.com/data/',
 			'cdn.voxpow.com',
 			'loader.knack.com',
+			'embed.lpcontent.net/leadboxes/current/embed.js',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );

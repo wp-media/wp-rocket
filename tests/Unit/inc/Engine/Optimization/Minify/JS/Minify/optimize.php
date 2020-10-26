@@ -42,7 +42,7 @@ class Test_Optimize extends TestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldMinifyJS( $original, $expected, $cdn_hosts, $cdn_url, $site_url, $external_url ) {
+	public function testShouldMinifyJS( $original, $expected, $cdn_hosts, $cdn_url, $site_url, $external_url, $has_integrity = false, $valid_integrity = true ) {
 		Filters\expectApplied( 'rocket_cdn_hosts' )
 			->zeroOrMoreTimes()
 			->with( [], [ 'all', 'css_and_js', 'js' ] )
@@ -75,6 +75,20 @@ class Test_Optimize extends TestCase {
 			->zeroOrMoreTimes()
 			->with( $external_url )
 			->andReturn( 'console.log("hello world");' );
+
+		$this->local_cache
+			->shouldReceive( 'validate_integrity' )
+			->zeroOrMoreTimes()
+			->andReturnUsing( function ( $asset_match ) use ($has_integrity, $valid_integrity) {
+				if ( $has_integrity ) {
+					if ( ! $valid_integrity ) {
+						return false;
+					}
+
+					return preg_replace( '#integrity\s*=[\'"](.*)-(.*)[\'"]#Ui', '', $asset_match[0] );
+				}
+				return $asset_match[0];
+			} );
 
 		$this->assertSame(
 			$this->format_the_html( $expected['html'] ),

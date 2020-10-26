@@ -56,6 +56,45 @@ return [
 			],
 		],
 
+		'minifyJSFileWithIntegrity' => [
+			// Test Data: Original JS files.
+			'original' => '<html>
+				<head>
+					<title>Sample Page</title>
+					<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js" integrity="notvalid"></script>
+					<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js" integrity="notvalidalgorithm-hashed"></script>
+					<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js" integrity="sha384-notvalidhash"></script>
+					<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js" integrity="sha384-7emZq+z4THDbp1s8SKlmK0zlENQgT+twJBBAcJCe8c+mastOWEfHflsBcz9t1ste"></script>
+				</head>
+				<body>
+				</body>
+			</html>',
+			'expected' => [
+				'html'  => '<html>
+					<head>
+						<title>Sample Page</title>
+						<script data-minify="1" type="text/javascript" src="http://example.org/wp-content/cache/min/1/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap-2d51e1a9b3d408c46ab0057b69063753.js" integrity="notvalid"></script>
+						<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js" integrity="notvalidalgorithm-hashed"></script>
+						<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js" integrity="sha384-notvalidhash"></script>
+						<script data-minify="1" type="text/javascript" src="http://example.org/wp-content/cache/min/1/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap-2d51e1a9b3d408c46ab0057b69063753.js"></script>
+					</head>
+					<body>
+					</body>
+				</html>',
+				'files' => [
+					'wp-content/cache/min/1/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap-2d51e1a9b3d408c46ab0057b69063753.js'
+				],
+			],
+			'settings' => [
+				'minify_concatenate_js' => 0,
+				'cdn'                   => 0,
+				'cdn_cnames'            => [],
+				'cdn_zone'              => [],
+				'defer_all_js'          => 0,
+				'defer_all_js_safe'     => 0,
+			],
+		],
+
 		'minifyJSFilesToCDNUrl' => [
 			'original' => '<html>
 				<head>

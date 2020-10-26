@@ -38,7 +38,7 @@ class Test_Optimize extends TestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldMinifyCSS( $original, $expected, $cdn_host, $cdn_url, $site_url, $external_url ) {
+	public function testShouldMinifyCSS( $original, $expected, $cdn_host, $cdn_url, $site_url, $external_url, $has_integrity = false, $valid_integrity = true ) {
 		Filters\expectApplied( 'rocket_cdn_hosts' )
 			->zeroOrMoreTimes()
 			->with( [], [ 'all', 'css_and_js', 'css' ] )
@@ -67,12 +67,12 @@ class Test_Optimize extends TestCase {
 			});
 
 		Functions\when( 'site_url' )->justReturn( $site_url );
-		Functions\when( 'set_url_scheme')->alias( function ( $url ) {		 
+		Functions\when( 'set_url_scheme')->alias( function ( $url ) {
 			$url = trim( $url );
 			if ( substr( $url, 0, 2 ) === '//' ) {
 				$url = 'http:' . $url;
 			}
-		 
+
 			return preg_replace( '#^\w+://#', 'http://', $url );
 		});
 
@@ -81,6 +81,20 @@ class Test_Optimize extends TestCase {
 			->zeroOrMoreTimes()
 			->with( $external_url )
 			->andReturn( 'external css content');
+
+		$this->local_cache
+			->shouldReceive( 'validate_integrity' )
+			->zeroOrMoreTimes()
+			->andReturnUsing( function ( $asset_match ) use ($has_integrity, $valid_integrity) {
+				if ( $has_integrity ) {
+					if ( ! $valid_integrity ) {
+						return false;
+					}
+
+					return preg_replace( '#\s*integrity\s*=[\'"](.*)-(.*)[\'"]#Ui', '', $asset_match[0] );
+				}
+				return $asset_match[0];
+			} );
 
 		$this->assertSame(
 			$this->format_the_html( $expected['html'] ),
