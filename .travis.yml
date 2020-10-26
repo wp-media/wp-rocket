@@ -41,6 +41,7 @@ matrix:
     php: 7.4
     env: WP_TRAVISCI=phpstan
 before_install:
+  - composer self-update 1.10.16
   # Unless we need XDebug, disable it for improved performance.
   - phpenv config-rm xdebug.ini || true
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
