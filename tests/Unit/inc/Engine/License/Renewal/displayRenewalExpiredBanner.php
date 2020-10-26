@@ -95,6 +95,8 @@ class DisplayRenewalExpiredBanner extends TestCase {
 				->once()
 				->andReturn( $config['pricing']['infinite'] );
 
+			Functions\when( 'number_format_i18n' )->returnArg();
+
 			$this->renewal->shouldReceive( 'generate' )
 				->once()
 				->with(

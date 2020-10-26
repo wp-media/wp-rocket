@@ -100,7 +100,7 @@ return [
 				Your <strong>WP Rocket license is about to expire.</strong>
 			</p>
 			<p>
-			Renew with a <strong>30% discount</strong> before it is too late, you will only pay <strong>$34.3</strong>!
+			Renew with a <strong>30% discount</strong> before it is too late, you will only pay <strong>$34.30</strong>!
 			</p>
 		</div>
 		<div class="rocket-renew-cta-container">
@@ -131,7 +131,7 @@ return [
 				Your <strong>WP Rocket license is about to expire.</strong>
 			</p>
 			<p>
-			Renew with a <strong>50% discount</strong> before it is too late, you will only pay <strong>$24.5</strong>!
+			Renew with a <strong>50% discount</strong> before it is too late, you will only pay <strong>$24.50</strong>!
 			</p>
 		</div>
 		<div class="rocket-renew-cta-container">
@@ -162,7 +162,7 @@ return [
 				Your <strong>WP Rocket license is about to expire.</strong>
 			</p>
 			<p>
-			Renew with a <strong>30% discount</strong> before it is too late, you will only pay <strong>$69.3</strong>!
+			Renew with a <strong>30% discount</strong> before it is too late, you will only pay <strong>$69.30</strong>!
 			</p>
 		</div>
 		<div class="rocket-renew-cta-container">
@@ -193,7 +193,7 @@ return [
 				Your <strong>WP Rocket license is about to expire.</strong>
 			</p>
 			<p>
-			Renew with a <strong>50% discount</strong> before it is too late, you will only pay <strong>$49.5</strong>!
+			Renew with a <strong>50% discount</strong> before it is too late, you will only pay <strong>$49.50</strong>!
 			</p>
 		</div>
 		<div class="rocket-renew-cta-container">
@@ -224,7 +224,7 @@ return [
 				Your <strong>WP Rocket license is about to expire.</strong>
 			</p>
 			<p>
-			Renew with a <strong>30% discount</strong> before it is too late, you will only pay <strong>$174.3</strong>!
+			Renew with a <strong>30% discount</strong> before it is too late, you will only pay <strong>$174.30</strong>!
 			</p>
 		</div>
 		<div class="rocket-renew-cta-container">
@@ -255,7 +255,7 @@ return [
 				Your <strong>WP Rocket license is about to expire.</strong>
 			</p>
 			<p>
-			Renew with a <strong>50% discount</strong> before it is too late, you will only pay <strong>$124.5</strong>!
+			Renew with a <strong>50% discount</strong> before it is too late, you will only pay <strong>$124.50</strong>!
 			</p>
 		</div>
 		<div class="rocket-renew-cta-container">

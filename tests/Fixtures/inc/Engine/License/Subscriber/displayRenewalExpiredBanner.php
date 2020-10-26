@@ -84,7 +84,7 @@ return [
 			Your website could be much faster if it could take advantage of  our <strong>new features and enhancements.</strong>
 			</p>
 			<p>
-			Renew your license for 1 year and get an immediate <strong>20% off</strong> on your renewal rate: you will only pay <strong>$39.2</strong>!
+			Renew your license for 1 year and get an immediate <strong>20% off</strong> on your renewal rate: you will only pay <strong>$39.20</strong>!
 			</p>
 		</div>
 		<div class="rocket-expired-cta-container">
@@ -111,7 +111,7 @@ return [
 			Your website could be much faster if it could take advantage of  our <strong>new features and enhancements.</strong>
 			</p>
 			<p>
-			Renew your license for 1 year and get an immediate <strong>30% off</strong> on your renewal rate: you will only pay <strong>$34.3</strong>!
+			Renew your license for 1 year and get an immediate <strong>30% off</strong> on your renewal rate: you will only pay <strong>$34.30</strong>!
 			</p>
 		</div>
 		<div class="rocket-expired-cta-container">
@@ -138,7 +138,7 @@ return [
 			Your website could be much faster if it could take advantage of  our <strong>new features and enhancements.</strong>
 			</p>
 			<p>
-			Renew your license for 1 year and get an immediate <strong>50% off</strong> on your renewal rate: you will only pay <strong>$24.5</strong>!
+			Renew your license for 1 year and get an immediate <strong>50% off</strong> on your renewal rate: you will only pay <strong>$24.50</strong>!
 			</p>
 		</div>
 		<div class="rocket-expired-cta-container">
@@ -165,7 +165,7 @@ return [
 			Your website could be much faster if it could take advantage of  our <strong>new features and enhancements.</strong>
 			</p>
 			<p>
-			Renew your license for 1 year and get an immediate <strong>20% off</strong> on your renewal rate: you will only pay <strong>$79.2</strong>!
+			Renew your license for 1 year and get an immediate <strong>20% off</strong> on your renewal rate: you will only pay <strong>$79.20</strong>!
 			</p>
 		</div>
 		<div class="rocket-expired-cta-container">
@@ -192,7 +192,7 @@ return [
 			Your website could be much faster if it could take advantage of  our <strong>new features and enhancements.</strong>
 			</p>
 			<p>
-			Renew your license for 1 year and get an immediate <strong>30% off</strong> on your renewal rate: you will only pay <strong>$69.3</strong>!
+			Renew your license for 1 year and get an immediate <strong>30% off</strong> on your renewal rate: you will only pay <strong>$69.30</strong>!
 			</p>
 		</div>
 		<div class="rocket-expired-cta-container">
@@ -219,7 +219,7 @@ return [
 			Your website could be much faster if it could take advantage of  our <strong>new features and enhancements.</strong>
 			</p>
 			<p>
-			Renew your license for 1 year and get an immediate <strong>50% off</strong> on your renewal rate: you will only pay <strong>$49.5</strong>!
+			Renew your license for 1 year and get an immediate <strong>50% off</strong> on your renewal rate: you will only pay <strong>$49.50</strong>!
 			</p>
 		</div>
 		<div class="rocket-expired-cta-container">
@@ -246,7 +246,7 @@ return [
 			Your website could be much faster if it could take advantage of  our <strong>new features and enhancements.</strong>
 			</p>
 			<p>
-			Renew your license for 1 year and get an immediate <strong>20% off</strong> on your renewal rate: you will only pay <strong>$199.2</strong>!
+			Renew your license for 1 year and get an immediate <strong>20% off</strong> on your renewal rate: you will only pay <strong>$199.20</strong>!
 			</p>
 		</div>
 		<div class="rocket-expired-cta-container">
@@ -273,7 +273,7 @@ return [
 			Your website could be much faster if it could take advantage of  our <strong>new features and enhancements.</strong>
 			</p>
 			<p>
-			Renew your license for 1 year and get an immediate <strong>30% off</strong> on your renewal rate: you will only pay <strong>$174.3</strong>!
+			Renew your license for 1 year and get an immediate <strong>30% off</strong> on your renewal rate: you will only pay <strong>$174.30</strong>!
 			</p>
 		</div>
 		<div class="rocket-expired-cta-container">
@@ -300,7 +300,7 @@ return [
 			Your website could be much faster if it could take advantage of  our <strong>new features and enhancements.</strong>
 			</p>
 			<p>
-			Renew your license for 1 year and get an immediate <strong>50% off</strong> on your renewal rate: you will only pay <strong>$124.5</strong>!
+			Renew your license for 1 year and get an immediate <strong>50% off</strong> on your renewal rate: you will only pay <strong>$124.50</strong>!
 			</p>
 		</div>
 		<div class="rocket-expired-cta-container">
