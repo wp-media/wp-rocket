@@ -48,9 +48,9 @@ class AMP implements Subscriber_Interface {
 		$events = [
 			'activate_amp/amp.php'   => 'generate_config_file',
 			'deactivate_amp/amp.php' => 'generate_config_file',
+			'wp'                     => 'disable_options_on_amp',
 		];
 		if ( function_exists( 'is_amp_endpoint' ) ) {
-			$events['wp']                         = 'disable_options_on_amp';
 			$events['rocket_cache_query_strings'] = 'is_amp_compatible_callback';
 			$events['update_option_amp-options']  = 'generate_config_file';
 		}
@@ -91,12 +91,20 @@ class AMP implements Subscriber_Interface {
 	}
 
 	/**
-	 * Removes Minification, DNS Prefetch, LazyLoad, Defer JS when on an AMP version of a post with the AMP for WordPress plugin from Auttomatic.
+	 * Removes Minification, DNS Prefetch, LazyLoad, Defer JS when on an AMP document.
+	 *
+	 * This covers AMP documents as output by the official AMP plugin for WordPress
+	 * (https://amp-wp.org/) as well as Web Stories for WordPress (https://wp.stories.google/),
+	 * which both support the `is_amp_endpoint` function checks.
+	 *
+	 * However, in the case of Web Stories, `is_amp_endpoint` is only defined on
+	 * the `wp` action, not earlier. Hence doing the `function_exists` check at this stage
+	 * instead of in the `get_subscribed_events()` method.
 	 *
 	 * @since  3.5.2
 	 */
 	public function disable_options_on_amp() {
-		if ( ! is_amp_endpoint() ) {
+		if ( ! function_exists( 'is_amp_endpoint' ) || ! is_amp_endpoint() ) {
 			return;
 		}
 
