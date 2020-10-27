@@ -27,7 +27,7 @@ class Test_GetSupportData extends TestCase {
 			->once()
 			->andReturn( $support_data );
 
-		Functions\when( 'wp_get_referer' )
+		Functions\when( 'wp_get_raw_referer' )
 			->justReturn( $referer );
 
 		Functions\expect( 'rest_ensure_response' )
