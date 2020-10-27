@@ -100,6 +100,7 @@ class Plugin {
 		$this->options = $this->container->get( 'options' );
 
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Database' );
+		$this->container->addServiceProvider( 'WP_Rocket\Engine\Support\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Admin\Beacon\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\CDN\RocketCDN\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Cache\ServiceProvider' );
@@ -228,7 +229,6 @@ class Plugin {
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Updater_Subscribers' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\DelayJS\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Heartbeat\ServiceProvider' );
-		$this->container->addServiceProvider( 'WP_Rocket\Engine\Support\ServiceProvider' );
 
 		$common_subscribers = [
 			'cdn_subscriber',
