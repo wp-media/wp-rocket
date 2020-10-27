@@ -7,14 +7,38 @@ use WP_Rocket\Admin\Options_Data;
 class Rest {
 	const ROUTE_NAMESPACE = 'wp-rocket/v1';
 
+	/**
+	 * Data instance
+	 *
+	 * @var Data
+	 */
 	private $data;
+
+	/**
+	 * Options instance
+	 *
+	 * @var Options_Data
+	 */
 	private $options;
 
+	/**
+	 * Instantiate the class
+	 *
+	 * @param Data         $data    Data instance.
+	 * @param Options_Data $options Options instance.
+	 */
 	public function __construct( Data $data, Options_Data $options ) {
 		$this->data    = $data;
 		$this->options = $options;
 	}
 
+	/**
+	 * Registers the REST route to get the support data
+	 *
+	 * @since 3.7.5
+	 *
+	 * @return void
+	 */
 	public function register_route() {
 		register_rest_route(
 			self::ROUTE_NAMESPACE,
@@ -37,6 +61,13 @@ class Rest {
 		);
 	}
 
+	/**
+	 * Returns the support data if the referer is correct
+	 *
+	 * @since 3.7.5
+	 *
+	 * @return WP_REST_Response
+	 */
 	public function get_support_data() {
 		if ( false === strpos( wp_get_referer(), 'wp-rocket.me' ) ) {
 			return rest_ensure_response( [] );
@@ -55,7 +86,7 @@ class Rest {
 	 * @return bool
 	 */
 	public function validate_email( $param ) {
-		return $param === $this->options->get( 'consumer_email' );
+		return $param === $this->options->get( 'consumer_email', '' );
 	}
 
 	/**
@@ -68,6 +99,6 @@ class Rest {
 	 * @return bool
 	 */
 	public function validate_key( $param ) {
-		return $param === $this->options->get( 'consumer_key' );
+		return $param === $this->options->get( 'consumer_key', '' );
 	}
 }

@@ -5,7 +5,18 @@ namespace WP_Rocket\Engine\Support;
 use WP_Rocket\Admin\Options_Data;
 
 class Data {
+	/**
+	 * Options instance
+	 *
+	 * @var Options_Data
+	 */
 	private $options;
+
+	/**
+	 * Array of WP Rocket options to send
+	 *
+	 * @var array
+	 */
 	private $to_send = [
 		'cache_mobile'            => 'Mobile Cache',
 		'do_caching_mobile_files' => 'Specific Cache for Mobile',
@@ -37,13 +48,24 @@ class Data {
 		'sucury_waf_cache_sync'   => 'Sucuri Add-on',
 	];
 
+	/**
+	 * Instantiate the class
+	 *
+	 * @param Options_Data $options Options instance.
+	 */
 	public function __construct( Options_Data $options ) {
 		$this->options = $options;
 	}
 
+	/**
+	 * Returns the data to populate the support information
+	 *
+	 * @since 3.7.5
+	 *
+	 * @return array
+	 */
 	public function get_support_data() {
-		$active_options = array_filter( $this->options->get_options() );
-		$active_options = array_intersect_key( $this->to_send, $active_options );
+		$active_options = array_intersect_key( $this->to_send, array_filter( $this->options->get_options() ) );
 
 		return [
 			'Website'                  => home_url(),
