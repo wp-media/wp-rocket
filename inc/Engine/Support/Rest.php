@@ -69,11 +69,28 @@ class Rest {
 	 * @return WP_REST_Response
 	 */
 	public function get_support_data() {
-		if ( false === strpos( wp_get_referer(), 'wp-rocket.me' ) ) {
-			return rest_ensure_response( [] );
+		if ( false === strpos( wp_get_raw_referer(), 'wp-rocket.me' ) ) {
+			return rest_ensure_response(
+				[
+					'code'    => 'rest_invalid_referer',
+					'message' => 'Invalid referer',
+					'data'    => [
+						'status' => 400,
+					],
+				]
+			);
 		}
 
-		return rest_ensure_response( $this->data->get_support_data() );
+		return rest_ensure_response(
+			[
+				'code'    => 'rest_support_data_success',
+				'message' => 'Support data request successful',
+				'data'    => [
+					'status'  => 200,
+					'content' => $this->data->get_support_data(),
+				],
+			]
+		);
 	}
 
 	/**
