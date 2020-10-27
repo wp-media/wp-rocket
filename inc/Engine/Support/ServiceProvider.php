@@ -15,6 +15,8 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
+		'support_data',
+		'rest_support',
 		'support_subscriber',
 	];
 
