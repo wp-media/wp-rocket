@@ -13,12 +13,21 @@ class Subscriber implements Subscriber_Interface {
 	private $upgrade;
 
 	/**
+	 * Renewal instance
+	 *
+	 * @var Renewal
+	 */
+	private $renewal;
+
+	/**
 	 * Instantiate the class
 	 *
 	 * @param Upgrade $upgrade Upgrade instance.
+	 * @param Renewal $renewal Renewal instance.
 	 */
-	public function __construct( Upgrade $upgrade ) {
+	public function __construct( Upgrade $upgrade, Renewal $renewal ) {
 		$this->upgrade = $upgrade;
+		$this->renewal = $renewal;
 	}
 
 	/**
@@ -32,8 +41,13 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_settings_page_footer'         => 'display_upgrade_popin',
 			'rocket_menu_title'                   => 'add_notification_bubble',
 			'admin_footer-settings_page_wprocket' => 'dismiss_notification_bubble',
-			'rocket_before_dashboard_content'     => 'display_promo_banner',
+			'rocket_before_dashboard_content'     => [
+				[ 'display_promo_banner' ],
+				[ 'display_renewal_soon_banner', 11 ],
+				[ 'display_renewal_expired_banner', 12 ],
+			],
 			'wp_ajax_rocket_dismiss_promo'        => 'dismiss_promo_banner',
+			'wp_ajax_rocket_dismiss_renewal'      => 'dismiss_renewal_banner',
 			'rocket_localize_admin_script'        => 'add_localize_script_data',
 			'wp_rocket_upgrade'                   => [ 'clean_user_transient', 15, 2 ],
 		];
@@ -109,13 +123,16 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Adds the current time and promotion end time to WP Rocket localize script data
 	 *
+	 * @since 3.7.5 Add the renewal localize data
 	 * @since 3.7.4
 	 *
 	 * @param array $data Localize script data.
 	 * @return array
 	 */
 	public function add_localize_script_data( $data ) {
-		return $this->upgrade->add_localize_script_data( $data );
+		$data = $this->upgrade->add_localize_script_data( $data );
+
+		return $this->renewal->add_localize_script_data( $data );
 	}
 
 	/**
@@ -133,5 +150,38 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		delete_transient( 'wp_rocket_customer_data' );
+	}
+
+	/**
+	 * Displays the renewal banner for users expiring in less than 30 days
+	 *
+	 * @since 3.7.5
+	 *
+	 * @return void
+	 */
+	public function display_renewal_soon_banner() {
+		$this->renewal->display_renewal_soon_banner();
+	}
+
+	/**
+	 * Displays the renewal banner for expired users
+	 *
+	 * @since 3.7.5
+	 *
+	 * @return void
+	 */
+	public function display_renewal_expired_banner() {
+		$this->renewal->display_renewal_expired_banner();
+	}
+
+	/**
+	 * AJAX callback to dismiss the renewal banner
+	 *
+	 * @since 3.7.5
+	 *
+	 * @return void
+	 */
+	public function dismiss_renewal_banner() {
+		$this->renewal->dismiss_renewal_expired_banner();
 	}
 }
