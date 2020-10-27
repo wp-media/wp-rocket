@@ -3,6 +3,9 @@
 namespace WP_Rocket\Engine\Support;
 
 use WP_Rocket\Engine\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Engine\Support\Data;
+use WP_Rocket\Engine\Support\Rest;
+use WP_Rocket\Engine\Support\Subscriber;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -28,12 +31,12 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register() {
 		$options = $this->getContainer()->get( 'options' );
 
-		$this->getContainer()->add( 'support_data', 'WP_Rocket\Engine\Support\Data' )
+		$this->getContainer()->add( 'support_data', Data::class )
 			->withArgument( $options );
-		$this->getContainer()->add( 'rest_support', 'WP_Rocket\Engine\Support\Rest' )
+		$this->getContainer()->add( 'rest_support', Rest::class )
 			->withArgument( $this->getContainer()->get( 'support_data' ) )
 			->withArgument( $options );
-		$this->getContainer()->share( 'support_subscriber', 'WP_Rocket\Engine\Support\Subscriber' )
+		$this->getContainer()->share( 'support_subscriber', Subscriber::class )
 			->withArgument( $this->getContainer()->get( 'rest_support' ) );
 	}
 }
