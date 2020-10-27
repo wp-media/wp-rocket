@@ -12,8 +12,11 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group  CriticalPathAdminSubscriber
  */
 class Test_AddAsyncCssMobileOption extends TestCase {
+	use ProviderTrait;
+	protected static $provider_class = 'Settings';
+
 	/**
-	 * @dataProvider configTestData
+	 * @dataProvider providerTestData
 	 */
 	public function testShouldAddOption( $options, $expected ) {
 		$filtered_options = apply_filters( 'rocket_first_install_options', $options );

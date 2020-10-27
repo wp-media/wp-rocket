@@ -79,6 +79,22 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 				continue;
 			}
 
+			$integrity_validated = $this->local_cache->validate_integrity( $script );
+
+			if ( false === $integrity_validated ) {
+				Logger::debug(
+					'Script integrity attribute not valid.',
+					[
+						'js minification process',
+						'tag' => $script[0],
+					]
+				);
+
+				continue;
+			}
+
+			$script['final'] = $integrity_validated;
+
 			$minify_url = $this->replace_url( strtok( $script['url'], '?' ) );
 
 			if ( ! $minify_url ) {
@@ -245,7 +261,7 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 	 * @return string
 	 */
 	private function replace_script( $script, $minify_url, $html ) {
-		$replace_script = str_replace( $script['url'], $minify_url, $script[0] );
+		$replace_script = str_replace( $script['url'], $minify_url, $script['final'] );
 		$replace_script = str_replace( '<script', '<script data-minify="1"', $replace_script );
 		$html           = str_replace( $script[0], $replace_script, $html );
 
