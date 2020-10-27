@@ -7,6 +7,7 @@ use WP_Theme;
 use Brain\Monkey\Functions;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
+use WP_Rocket\Engine\Support\Data;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -29,7 +30,8 @@ class Test_InsertScript extends TestCase {
 		$this->options = Mockery::mock( Options_Data::class );
 		$this->beacon  = Mockery::mock( Beacon::class . '[generate]', [
 			$this->options,
-			WP_ROCKET_PLUGIN_ROOT . 'views/settings'
+			WP_ROCKET_PLUGIN_ROOT . 'views/settings',
+			Mockery::mock( Data::class )
 		] );
 	}
 
