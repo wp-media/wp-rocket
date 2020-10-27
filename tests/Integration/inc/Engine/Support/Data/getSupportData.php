@@ -12,6 +12,24 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group Support
  */
 class Test_GetSupportData extends TestCase {
+	private $wp_version;
+
+	public function setUp() {
+		parent::setUp();
+
+		global $wp_version;
+
+		$this->wp_version = $wp_version;
+	}
+
+	public function tearDown() {
+		global $wp_version;
+
+		$wp_version = $this->wp_version;
+
+		parent::tearDown();
+	}
+
 	/**
 	 * @dataProvider configTestData
 	 */
