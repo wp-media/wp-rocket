@@ -4,6 +4,8 @@
  * Plugin URI: https://wp-rocket.me
  * Description: The best WordPress performance plugin.
  * Version: 3.7.4
+ * Requires at least: 5.2
+ * Requires PHP: 7.0
  * Code Name: Jakku
  * Author: WP Media
  * Author URI: https://wp-media.me
