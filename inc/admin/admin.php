@@ -413,10 +413,7 @@ function rocket_analytics_data() {
 		$data['web_server'] = 'IIS';
 	}
 
-	if ( isset( $_SERVER['SERVER_PROTOCOL'] ) ) {
-		$data['http_protocol'] = preg_replace( '/^http\/(.*)$/imu', '\1', sanitize_text_field( wp_unslash( $_SERVER['SERVER_PROTOCOL'] ) ) );
-	}
-
+	$data['http_protocol']     = preg_replace( '/^http\/(.*)$/imu', '\1', wp_get_server_protocol() );
 	$data['php_version']       = preg_replace( '@^(\d\.\d+).*@', '\1', phpversion() );
 	$data['wordpress_version'] = preg_replace( '@^(\d\.\d+).*@', '\1', $wp_version );
 	$data['current_theme']     = $theme->get( 'Name' );
