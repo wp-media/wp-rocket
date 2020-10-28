@@ -19,7 +19,7 @@ if ( 'Avada' === $current_theme->get( 'Name' ) ) {
 	 * @return void
 	 */
 	function rocket_avada_maybe_deactivate_lazyload( $old_value, $value ) {
-		if ( ( empty( $old_value['lazy_load'] ) && ! empty( $value['lazy_load'] ) ) || ( 'avada' === $value['lazy_load'] ) ) {
+		if ( ( empty( $old_value['lazy_load'] ) || ( ! empty( $value['lazy_load'] ) && ( 'avada' === $value['lazy_load'] ) ) {
 			update_rocket_option( 'lazyload', 0 );
 		}
 	}
