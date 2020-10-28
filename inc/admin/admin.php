@@ -397,10 +397,10 @@ function rocket_analytics_data() {
 		'analytics_enabled'       => 1,
 	];
 
-	$theme                 = wp_get_theme();
-	$data                  = array_diff_key( get_option( WP_ROCKET_SLUG ), $untracked_wp_rocket_options );
-	$locale                = explode( '_', get_locale() );
-	$data['web_server']    = 'Unknown';
+	$theme              = wp_get_theme();
+	$data               = array_diff_key( get_option( WP_ROCKET_SLUG ), $untracked_wp_rocket_options );
+	$locale             = explode( '_', get_locale() );
+	$data['web_server'] = 'Unknown';
 
 	if ( $is_nginx ) {
 		$data['web_server'] = 'NGINX';
