@@ -26,7 +26,7 @@ matrix:
   - php: 7.2
     env: WP_VERSION=latest
   - name: Legacy
-    php: 7.0
+    php: 7.1
     env: WP_VERSION=5.2.7
   - name: Coding Standards
     php: 7.3
