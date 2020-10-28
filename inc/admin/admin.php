@@ -401,7 +401,6 @@ function rocket_analytics_data() {
 	$data                  = array_diff_key( get_option( WP_ROCKET_SLUG ), $untracked_wp_rocket_options );
 	$locale                = explode( '_', get_locale() );
 	$data['web_server']    = 'Unknown';
-	$data['http_protocol'] = '';
 
 	if ( $is_nginx ) {
 		$data['web_server'] = 'NGINX';
