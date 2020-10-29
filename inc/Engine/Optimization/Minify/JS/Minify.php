@@ -95,7 +95,7 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 
 			$script['final'] = $integrity_validated;
 
-			$minify_url = $this->replace_url( strtok( $script['url'], '?' ) );
+			$minify_url = $this->replace_url( rawurldecode( strtok( $script['url'], '?' ) ) );
 
 			if ( ! $minify_url ) {
 				Logger::error(
