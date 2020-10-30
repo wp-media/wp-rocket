@@ -60,7 +60,7 @@ class Minify extends AbstractCSSOptimization implements ProcessorInterface {
 
 			$style['final'] = $integrity_validated;
 
-			$minify_url = $this->replace_url( rawurldecode( strtok( $style['url'], '?' ) ) );
+			$minify_url = $this->replace_url( strtok( $style['url'], '?' ) );
 
 			if ( ! $minify_url ) {
 				Logger::error(
@@ -134,7 +134,7 @@ class Minify extends AbstractCSSOptimization implements ProcessorInterface {
 
 		$unique_id     = md5( $url . $this->minify_key );
 		$filename      = preg_replace( '/\.(css)$/', '-' . $unique_id . '.css', ltrim( rocket_realpath( $parsed_url['path'] ), '/' ) );
-		$minified_file = $this->minify_base_path . $filename;
+		$minified_file = rawurldecode( $this->minify_base_path . $filename );
 		$minify_url    = $this->get_minify_url( $filename, $url );
 
 		if ( rocket_direct_filesystem()->exists( $minified_file ) ) {
