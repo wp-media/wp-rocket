@@ -187,7 +187,7 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 		$unique_id = md5( $url . $this->minify_key );
 		$filename  = preg_replace( '/\.js$/', '-' . $unique_id . '.js', ltrim( rocket_realpath( wp_parse_url( $url, PHP_URL_PATH ) ), '/' ) );
 
-		$minified_file = $this->minify_base_path . $filename;
+		$minified_file = rawurldecode( $this->minify_base_path . $filename );
 		$minified_url  = $this->get_minify_url( $filename, $url );
 
 		if ( rocket_direct_filesystem()->exists( $minified_file ) ) {
