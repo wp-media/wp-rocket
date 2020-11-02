@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Engine\Optimization;
+namespace WP_Rocket\Engine\Optimization\SaaS;
 
 class APIClient {
 	const API_URL = 'https://saas.wp-rocket.me/api/';

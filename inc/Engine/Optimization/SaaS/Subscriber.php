@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Engine\Optimization;
+namespace WP_Rocket\Engine\Optimization\SaaS;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
