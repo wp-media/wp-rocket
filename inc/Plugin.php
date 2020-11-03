@@ -105,6 +105,7 @@ class Plugin {
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Cache\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\CriticalPath\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\HealthCheck\ServiceProvider' );
+		$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\ServiceProvider' );
 
 		$this->is_valid_key = rocket_valid_key();
 
@@ -183,7 +184,6 @@ class Plugin {
 	 */
 	private function init_valid_key_subscribers() {
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Media\ServiceProvider' );
-		$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\ServiceProvider' );
 
 		$subscribers = [
 			'buffer_subscriber',
@@ -196,7 +196,6 @@ class Plugin {
 			'embeds_subscriber',
 			'emojis_subscriber',
 			'delay_js_subscriber',
-			'optimization_subscriber',
 		];
 
 		// Don't insert the LazyLoad file if Rocket LazyLoad is activated.
@@ -267,6 +266,7 @@ class Plugin {
 			'divi',
 			'preload_links_admin_subscriber',
 			'preload_links_subscriber',
+			'optimization_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();
