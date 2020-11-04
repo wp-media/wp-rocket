@@ -105,4 +105,17 @@ class User {
 
 		return $this->user->upgrade_infinite_url;
 	}
+
+	/**
+	 * Gets the renewal url
+	 *
+	 * @return string
+	 */
+	public function get_renewal_url() {
+		if ( ! isset( $this->user->renewal_url ) ) {
+			return '';
+		}
+
+		return $this->user->renewal_url;
+	}
 }

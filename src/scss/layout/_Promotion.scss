@@ -61,10 +61,12 @@
 .rocket-promo-countdown {
     display: flex;
     flex-flow: row wrap;
+    width: 66%;
 
     & > .rocket-countdown-item {
         background: $cWhite;
         border-radius: $space;
+        flex: 1;
         margin-right: $space;
         padding: $space;
         text-align: center;

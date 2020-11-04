@@ -100,6 +100,7 @@ class Plugin {
 		$this->options = $this->container->get( 'options' );
 
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Database' );
+		$this->container->addServiceProvider( 'WP_Rocket\Engine\Support\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Admin\Beacon\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\CDN\RocketCDN\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Cache\ServiceProvider' );
@@ -269,6 +270,7 @@ class Plugin {
 			'divi',
 			'preload_links_admin_subscriber',
 			'preload_links_subscriber',
+			'support_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();

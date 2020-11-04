@@ -2,23 +2,21 @@
 namespace WP_Rocket\Subscriber\Plugin;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Traits\Updater_Api_Tools;
 
 /**
  * Manages the plugin updates.
  *
  * @since  3.3.6
- * @author Grégory Viguier
  */
 class Updater_Subscriber implements Subscriber_Interface {
-	use \WP_Rocket\Traits\Updater_Api_Tools;
+	use Updater_Api_Tools;
 
 	/**
 	 * Full path to the plugin.
 	 *
 	 * @var    string
 	 * @since  3.3.6
-	 * @access private
-	 * @author Grégory Viguier
 	 */
 	private $plugin_file;
 
@@ -27,8 +25,6 @@ class Updater_Subscriber implements Subscriber_Interface {
 	 *
 	 * @var    string
 	 * @since  3.3.6
-	 * @access private
-	 * @author Grégory Viguier
 	 */
 	private $plugin_version;
 
@@ -37,8 +33,6 @@ class Updater_Subscriber implements Subscriber_Interface {
 	 *
 	 * @var    string
 	 * @since  3.3.6
-	 * @access private
-	 * @author Grégory Viguier
 	 */
 	private $vendor_url;
 
@@ -47,8 +41,6 @@ class Updater_Subscriber implements Subscriber_Interface {
 	 *
 	 * @var    string
 	 * @since  3.3.6
-	 * @access private
-	 * @author Grégory Viguier
 	 */
 	private $api_url;
 
@@ -61,9 +53,7 @@ class Updater_Subscriber implements Subscriber_Interface {
 	 *     @type string $svg URL to the svg version of the icon. Optional.
 	 * }
 	 * @since  3.3.6
-	 * @access private
 	 * @see    https://developer.wordpress.org/plugins/wordpress-org/plugin-assets/#plugin-icons
-	 * @author Grégory Viguier
 	 */
 	private $icons;
 
@@ -72,8 +62,6 @@ class Updater_Subscriber implements Subscriber_Interface {
 	 *
 	 * @var    string
 	 * @since  3.3.6
-	 * @access protected
-	 * @author Grégory Viguier
 	 */
 	protected $request_error_id = 'rocket_update_failed';
 
@@ -82,8 +70,6 @@ class Updater_Subscriber implements Subscriber_Interface {
 	 *
 	 * @var    string
 	 * @since  3.3.6
-	 * @access protected
-	 * @author Grégory Viguier
 	 */
 	protected $cache_transient_name = 'wp_rocket_update_data';
 
@@ -91,8 +77,6 @@ class Updater_Subscriber implements Subscriber_Interface {
 	 * Constructor
 	 *
 	 * @since  3.3.6
-	 * @access public
-	 * @author Grégory Viguier
 	 *
 	 * @param array $args {
 	 *     Required arguments to populate the class properties.
@@ -120,6 +104,7 @@ class Updater_Subscriber implements Subscriber_Interface {
 			'pre_set_site_transient_update_plugins' => 'maybe_add_rocket_update_data',
 			'deleted_site_transient'                => 'maybe_delete_rocket_update_data_cache',
 			'wp_rocket_loaded'                      => 'maybe_force_check',
+			'auto_update_plugin'                    => [ 'disable_auto_updates', 10, 2 ],
 		];
 	}
 
@@ -131,9 +116,7 @@ class Updater_Subscriber implements Subscriber_Interface {
 	 * When WP checks plugin versions against the latest versions hosted on WordPress.org, remove WPR from the list.
 	 *
 	 * @since  3.3.6
-	 * @access public
 	 * @see    wp_update_plugins()
-	 * @author Grégory Viguier
 	 *
 	 * @param  array  $request An array of HTTP request arguments.
 	 * @param  string $url     The request URL.
@@ -212,8 +195,6 @@ class Updater_Subscriber implements Subscriber_Interface {
 	 * Add WPR update data to the "WP update" transient.
 	 *
 	 * @since  3.3.6
-	 * @access public
-	 * @author Grégory Viguier
 	 *
 	 * @param  \stdClass $transient_value New value of site transient.
 	 * @return \stdClass
@@ -257,8 +238,6 @@ class Updater_Subscriber implements Subscriber_Interface {
 	 * Delete WPR update data cache when the "WP update" transient is deleted.
 	 *
 	 * @since  3.3.6
-	 * @access public
-	 * @author Grégory Viguier
 	 *
 	 * @param string $transient_name Deleted transient name.
 	 */
@@ -272,13 +251,28 @@ class Updater_Subscriber implements Subscriber_Interface {
 	 * If the `rocket_force_update` query arg is set, force WP to refresh the list of plugins to update.
 	 *
 	 * @since  3.3.6
-	 * @access public
-	 * @author Grégory Viguier
 	 */
 	public function maybe_force_check() {
 		if ( is_string( filter_input( INPUT_GET, 'rocket_force_update' ) ) ) {
 			delete_site_transient( 'update_plugins' );
 		}
+	}
+
+	/**
+	 * Disable auto-updates for WP Rocket
+	 *
+	 * @since 3.7.5
+	 *
+	 * @param bool|null $update Whether to update. The value of null is internally used to detect whether nothing has hooked into this filter.
+	 * @param object    $item The update offer.
+	 * @return bool|null
+	 */
+	public function disable_auto_updates( $update, $item ) {
+		if ( 'wp-rocket/wp-rocket.php' === $item->plugin ) {
+			return false;
+		}
+
+		return $update;
 	}
 
 	/** ----------------------------------------------------------------------------------------- */
@@ -289,8 +283,6 @@ class Updater_Subscriber implements Subscriber_Interface {
 	 * Get the latest WPR update data from our server.
 	 *
 	 * @since  3.3.6
-	 * @access public
-	 * @author Grégory Viguier
 	 *
 	 * @return \stdClass|\WP_Error {
 	 *     A \WP_Error object on failure. An object on success:
@@ -373,8 +365,6 @@ class Updater_Subscriber implements Subscriber_Interface {
 	 * Get the cached version of the latest WPR update data.
 	 *
 	 * @since  3.3.6
-	 * @access public
-	 * @author Grégory Viguier
 	 *
 	 * @return \stdClass|\WP_Error {
 	 *     A \WP_Error object on failure. An object on success:
@@ -438,8 +428,6 @@ class Updater_Subscriber implements Subscriber_Interface {
 	 * Delete WP Rocket update data cache.
 	 *
 	 * @since  3.3.6
-	 * @access public
-	 * @author Grégory Viguier
 	 */
 	public function delete_rocket_update_data_cache() {
 		delete_site_transient( $this->cache_transient_name );

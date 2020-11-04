@@ -79,7 +79,23 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 				continue;
 			}
 
-			$minify_url = $this->replace_url( $script['url'] );
+			$integrity_validated = $this->local_cache->validate_integrity( $script );
+
+			if ( false === $integrity_validated ) {
+				Logger::debug(
+					'Script integrity attribute not valid.',
+					[
+						'js minification process',
+						'tag' => $script[0],
+					]
+				);
+
+				continue;
+			}
+
+			$script['final'] = $integrity_validated;
+
+			$minify_url = $this->replace_url( strtok( $script['url'], '?' ) );
 
 			if ( ! $minify_url ) {
 				Logger::error(
@@ -171,7 +187,7 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 		$unique_id = md5( $url . $this->minify_key );
 		$filename  = preg_replace( '/\.js$/', '-' . $unique_id . '.js', ltrim( rocket_realpath( wp_parse_url( $url, PHP_URL_PATH ) ), '/' ) );
 
-		$minified_file = $this->minify_base_path . $filename;
+		$minified_file = rawurldecode( $this->minify_base_path . $filename );
 		$minified_url  = $this->get_minify_url( $filename, $url );
 
 		if ( rocket_direct_filesystem()->exists( $minified_file ) ) {
@@ -245,7 +261,7 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 	 * @return string
 	 */
 	private function replace_script( $script, $minify_url, $html ) {
-		$replace_script = str_replace( $script['url'], $minify_url, $script[0] );
+		$replace_script = str_replace( $script['url'], $minify_url, $script['final'] );
 		$replace_script = str_replace( '<script', '<script data-minify="1"', $replace_script );
 		$html           = str_replace( $script[0], $replace_script, $html );
 
