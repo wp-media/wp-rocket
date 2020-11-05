@@ -7,6 +7,7 @@ use WP_Theme;
 use Brain\Monkey\Functions;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
+use WP_Rocket\Engine\Support\Data;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -16,6 +17,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 class Test_InsertScript extends TestCase {
 	private $beacon;
 	private $options;
+	private $data;
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
@@ -27,9 +29,11 @@ class Test_InsertScript extends TestCase {
 		parent::setUp();
 
 		$this->options = Mockery::mock( Options_Data::class );
+		$this->data    = Mockery::mock( Data::class );
 		$this->beacon  = Mockery::mock( Beacon::class . '[generate]', [
 			$this->options,
-			WP_ROCKET_PLUGIN_ROOT . 'views/settings'
+			WP_ROCKET_PLUGIN_ROOT . 'views/settings',
+			$this->data
 		] );
 	}
 
@@ -49,16 +53,14 @@ class Test_InsertScript extends TestCase {
 		Functions\when( 'wp_json_encode' )->alias( 'json_encode' );
 		Functions\when( 'home_url' )->justReturn( 'http://example.org' );
 		Functions\when( 'get_transient' )->justReturn( $config['customer_data'] );
-		Functions\when( 'wp_get_theme' )->alias( function() {
-			return new WP_Theme( 'default', '/themes' );
-		} );
-		Functions\when( 'get_bloginfo' )->justReturn( '5.4' );
-		$this->rocket_version = '3.6';
-		Functions\when( 'rocket_get_active_plugins' )->justReturn( [] );
 
 		$this->options->shouldReceive( 'get' )
 			->with( 'consumer_email' )
 			->andReturn( 'dummy@wp-rocket.me' );
+
+		$this->data->shouldReceive( 'get_support_data' )
+			->once()
+			->andReturn( json_decode( $expected['data']['session'] ) );
 
 		$this->options->shouldReceive( 'get_options' )
 			->andReturn( [] );
