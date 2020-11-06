@@ -29,5 +29,5 @@ jobs:
     # Linting
     - name: Lint with phpcs
       run: |
-        phpcs --config-set installed_paths ../../phpcompatibility/phpcompatibility-paragonie,../../phpcompatibility/phpcompatibility-wp,../../wp-coding-standards/wpcs,../../phpcompatibility/php-compatibility
+        phpcs --config-set installed_paths phpcompatibility/phpcompatibility-paragonie,phpcompatibility/phpcompatibility-wp,wp-coding-standards/wpcs,phpcompatibility/php-compatibility
         phpcs -q --report=checkstyle src | cs2pr
