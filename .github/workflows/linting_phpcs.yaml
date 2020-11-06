@@ -1,0 +1,33 @@
+name: WPRocket PHPCS linting
+
+on:
+  pull_request:
+    branches: [ test/ga ]
+
+jobs:
+  run:
+    runs-on: ${{ matrix.operating-system }}
+    
+    strategy:
+      matrix:
+        operating-system: [ubuntu-latest]
+        php-versions: ['7.4']
+        wp-versions: ['latest']
+    
+    name: WP ${{ matrix.wp-versions }} linting with PHPCS. PHP ${{ matrix.php-versions }} on ${{ matrix.operating-system }}.
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-versions }}
+        coverage: none  # XDebug can be enabled here 'coverage: xdebug'
+        tools: composer:v1, phpcs, cs2pr
+
+    # Linting
+    - name: Lint with phpcs
+      run: |
+        phpcs --config-set installed_paths ../../phpcompatibility/phpcompatibility-paragonie,../../phpcompatibility/phpcompatibility-wp,../../wp-coding-standards/wpcs,../../phpcompatibility/php-compatibility
+        phpcs -q --report=checkstyle src | cs2pr
