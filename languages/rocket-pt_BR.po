@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.4\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2020-10-19 15:56-0400\n"
+"POT-Creation-Date: 2020-11-04 12:19-0500\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Fabio Fava <go@fabiofava.com>, 2020\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/wp-media/teams/18133/pt_BR/)\n"
@@ -402,16 +402,19 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:550
 #: inc/Engine/License/views/promo-banner.php:31
+#: inc/Engine/License/views/renewal-soon-banner.php:14
 msgid "Minutes"
 msgstr "Minutos"
 
 #: inc/Engine/Admin/Settings/Page.php:551
 #: inc/Engine/License/views/promo-banner.php:30
+#: inc/Engine/License/views/renewal-soon-banner.php:13
 msgid "Hours"
 msgstr "Horas"
 
 #: inc/Engine/Admin/Settings/Page.php:552
 #: inc/Engine/License/views/promo-banner.php:29
+#: inc/Engine/License/views/renewal-soon-banner.php:12
 msgid "Days"
 msgstr "Dias"
 
@@ -2135,6 +2138,7 @@ msgid "Hurry Up! Deal ends in:"
 msgstr "Corra! A oferta termina em:"
 
 #: inc/Engine/License/views/promo-banner.php:32
+#: inc/Engine/License/views/renewal-soon-banner.php:15
 msgid "Seconds"
 msgstr "Segundos"
 
@@ -2143,10 +2147,52 @@ msgstr "Segundos"
 msgid "Upgrade now"
 msgstr "Atualize agora"
 
-#: inc/Engine/License/views/promo-banner.php:36 inc/admin/ui/notices.php:812
-#: views/settings/page-sections/dashboard.php:46
+#: inc/Engine/License/views/promo-banner.php:36
+#: inc/Engine/License/views/renewal-expired-banner.php:39
+#: inc/admin/ui/notices.php:812 views/settings/page-sections/dashboard.php:46
 msgid "Dismiss this notice."
 msgstr "Dispensar essa notificação."
+
+#: inc/Engine/License/views/renewal-expired-banner.php:12
+msgid "Your WP Rocket license is expired!"
+msgstr "A sua licença do WP Rocket está expirada!"
+
+#: inc/Engine/License/views/renewal-expired-banner.php:17
+#, php-format
+msgid ""
+"Your website could be much faster if it could take advantage of  our %1$snew"
+" features and enhancements.%2$s"
+msgstr ""
+"Seu website pode ser muito mais rápido se tirar vantagem dos nossos "
+"%1$snovos recursos e melhorias.%2$s"
+
+#: inc/Engine/License/views/renewal-expired-banner.php:27
+#, php-format
+msgid ""
+"Renew your license for 1 year and get an immediate %1$s%2$s off%3$s on your "
+"renewal rate: you will only pay %1$s%4$s%3$s!"
+msgstr ""
+"Renove a sua licença por 1 ano e obtenha %1$s%2$s de desconto %3$s no valor "
+"da sua renovação: você pagará apenas %1$s%4$s%3$s!"
+
+#: inc/Engine/License/views/renewal-expired-banner.php:37
+#: inc/Engine/License/views/renewal-soon-banner.php:42
+msgid "Renew now"
+msgstr "Renove agora"
+
+#: inc/Engine/License/views/renewal-soon-banner.php:22
+#, php-format
+msgid "Your %1$sWP Rocket license is about to expire.%2$s"
+msgstr "A sua licensa %1$s do WP Rocket está para expirar.%2$s"
+
+#: inc/Engine/License/views/renewal-soon-banner.php:32
+#, php-format
+msgid ""
+"Renew with a %1$s%2$s discount%3$s before it is too late, you will only pay "
+"%1$s%4$s%3$s!"
+msgstr ""
+"Renove com %1$s%2$s de desconto %3$s antes que seja tarde demais, você só "
+"pagará %1$s%4$s%3$s!"
 
 #: inc/Engine/License/views/upgrade-popin.php:12
 msgid "Speed Up More Websites"
