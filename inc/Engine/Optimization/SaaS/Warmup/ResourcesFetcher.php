@@ -55,9 +55,8 @@ class ResourcesFetcher extends WP_Rocket_WP_Background_Process {
 			return false;
 		}
 
-		return false;
+		add_option( $item['url'], $body );
 
-		/**
 		wp_remote_post(
 			WARMUP_ENDPOINT,
 			[
@@ -68,6 +67,7 @@ class ResourcesFetcher extends WP_Rocket_WP_Background_Process {
 				],
 			]
 		);
-		*/
+
+		return false;
 	}
 }
