@@ -83,7 +83,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'delay_js_subscriber', 'WP_Rocket\Engine\Optimization\DelayJS\Subscriber' )
 			->withArgument( $this->getContainer()->get( 'delay_js_html' ) )
 			->withArgument( $filesystem );
-		$this->getContainer()->add( 'optimization_api', 'WP_Rocket\Engine\Optimization\Saas\APIClient' );
+		$this->getContainer()->add( 'optimization_api', 'WP_Rocket\Engine\Optimization\SaaS\APIClient' );
 		$this->getContainer()->share( 'resources_fetcher', 'WP_Rocket\Engine\Optimization\SaaS\Warmup\ResourcesFetcher' );
 		$this->getContainer()->share( 'resources_finder', 'WP_Rocket\Engine\Optimization\SaaS\Warmup\ResourcesFinder' )
 			->withArgument( $this->getContainer()->get( 'resources_fetcher' ) );
