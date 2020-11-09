@@ -12,14 +12,17 @@ if ( 'Avada' === $current_theme->get( 'Name' ) ) {
 	 * Deactivate WP Rocket lazyload if Avada lazyload is enabled
 	 *
 	 * @since 3.3.4
-	 * @author Remy Perona
 	 *
 	 * @param string $old_value Previous Avada option value.
 	 * @param string $value New Avada option value.
 	 * @return void
 	 */
 	function rocket_avada_maybe_deactivate_lazyload( $old_value, $value ) {
-		if ( empty( $old_value['lazy_load'] ) && ! empty( $value['lazy_load'] ) ) {
+		if (
+			empty( $old_value['lazy_load'] )
+			||
+			( ! empty( $value['lazy_load'] ) && 'avada' === $value['lazy_load'] )
+		) {
 			update_rocket_option( 'lazyload', 0 );
 		}
 	}
@@ -30,7 +33,6 @@ if ( 'Avada' === $current_theme->get( 'Name' ) ) {
  * Disable WP Rocket lazyload field if Avada lazyload is enabled
  *
  * @since 3.3.4
- * @author Remy Perona
  *
  * @return bool
  */
@@ -38,18 +40,27 @@ function rocket_avada_maybe_disable_lazyload() {
 	$avada_options = get_option( 'fusion_options' );
 	$current_theme = wp_get_theme();
 
-	if ( 'Avada' === $current_theme->get( 'Name' ) && ! empty( $avada_options['lazy_load'] ) ) {
-		return true;
+	if ( 'Avada' !== $current_theme->get( 'Name' ) ) {
+		return false;
 	}
 
-	return false;
+	if ( empty( $avada_options['lazy_load'] ) ) {
+		return false;
+	}
+
+	if ( ! empty( $avada_options['lazy_load'] && 'avada' !== $avada_options['lazy_load'] ) ) {
+		return false;
+	}
+
+	return true;
 }
 
 /**
  * Clears WP Rocket's cache after Avada's Fusion Patcher flushes their caches
  *
  * @since 3.3.5
- * @author Vasilis Manthos
+ *
+ * @return void
  */
 function rocket_avada_clear_cache_fusion_patcher() {
 	rocket_clean_domain();

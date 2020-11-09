@@ -166,16 +166,32 @@ function rocket_get_ignored_parameters() {
 		'utm_expid'       => 1,
 		'utm_term'        => 1,
 		'utm_content'     => 1,
+		'mtm_source'      => 1,
+		'mtm_medium'      => 1,
+		'mtm_campaign'    => 1,
+		'mtm_keyword'     => 1,
+		'mtm_cid'         => 1,
+		'mtm_content'     => 1,
+		'pk_source'       => 1,
+		'pk_medium'       => 1,
+		'pk_campaign'     => 1,
+		'pk_keyword'      => 1,
+		'pk_cid'          => 1,
+		'pk_content'      => 1,
 		'fb_action_ids'   => 1,
 		'fb_action_types' => 1,
 		'fb_source'       => 1,
 		'fbclid'          => 1,
+		'campaignid'      => 1,
+		'adgroupid'       => 1,
+		'adid'            => 1,
 		'gclid'           => 1,
 		'age-verified'    => 1,
 		'ao_noptimize'    => 1,
 		'usqp'            => 1,
 		'cn-reloaded'     => 1,
 		'_ga'             => 1,
+		'sscid'           => 1,
 	];
 
 	/**
@@ -427,6 +443,10 @@ function get_rocket_exclude_defer_js() { // phpcs:ignore WordPress.NamingConvent
 		'simplybook.(.*)/v2/widget/widget.js',
 		'/wp-includes/js/dist/i18n.min.js',
 		'/wp-content/plugins/wpfront-notification-bar/js/wpfront-notification-bar(.*).js',
+		'/wp-content/plugins/oxygen/component-framework/vendor/aos/aos.js',
+		'static.mailerlite.com/data/(.*).js',
+		'cdn.voxpow.com/static/libs/v1/(.*).js',
+		'cdn.voxpow.com/media/trackers/js/(.*).js',
 	];
 
 	if ( get_rocket_option( 'defer_all_js', 0 ) && get_rocket_option( 'defer_all_js_safe', 0 ) ) {
@@ -434,11 +454,13 @@ function get_rocket_exclude_defer_js() { // phpcs:ignore WordPress.NamingConvent
 		$jetpack_jquery    = 'c0.wp.com/c/(?:.+)/wp-includes/js/jquery/jquery.js';
 		$googleapis_jquery = 'ajax.googleapis.com/ajax/libs/jquery/(?:.+)/jquery(?:\.min)?.js';
 		$cdnjs_jquery      = 'cdnjs.cloudflare.com/ajax/libs/jquery/(?:.+)/jquery(?:\.min)?.js';
+		$code_jquery       = 'code.jquery.com/jquery-.*(?:\.min|slim)?.js';
 
 		$exclude_defer_js[] = rocket_clean_exclude_file( $jquery );
 		$exclude_defer_js[] = $jetpack_jquery;
 		$exclude_defer_js[] = $googleapis_jquery;
 		$exclude_defer_js[] = $cdnjs_jquery;
+		$exclude_defer_js[] = $code_jquery;
 	}
 
 	/**

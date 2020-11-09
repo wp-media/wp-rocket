@@ -22,6 +22,13 @@ class Subscriber implements Subscriber_Interface {
 	private $filesystem;
 
 	/**
+	 * Script enqueued status.
+	 *
+	 * @var bool
+	 */
+	private $is_enqueued = false;
+
+	/**
 	 * Instantiate the class.
 	 *
 	 * @param Options_Data         $options    Options Data instance.
@@ -51,6 +58,9 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function add_preload_script() {
+		if ( $this->is_enqueued ) {
+			return;
+		}
 		if ( ! (bool) $this->options->get( 'preload_links', 0 ) || rocket_bypass() ) {
 			return;
 		}
@@ -98,6 +108,8 @@ class Subscriber implements Subscriber_Interface {
 			'RocketPreloadLinksConfig',
 			$this->get_preload_links_config()
 		);
+
+		$this->is_enqueued = true;
 	}
 
 	/**
@@ -116,7 +128,7 @@ class Subscriber implements Subscriber_Interface {
 			'usesTrailingSlash' => $use_trailing_slash,
 			'imageExt'          => $images_ext,
 			'fileExt'           => $images_ext . '|php|pdf|html|htm',
-			'siteUrl'           => site_url(),
+			'siteUrl'           => home_url(),
 			'onHoverDelay'      => 100, // milliseconds. -1 disables the "on hover" feature.
 			'rateThrottle'      => 3, // on hover: limits the number of links preloaded per second.
 		];

@@ -4,6 +4,7 @@ namespace WP_Rocket\Engine\Admin\Beacon;
 
 use WP_Rocket\Abstract_Render;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Support\Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
@@ -31,17 +32,26 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 	private $locale;
 
 	/**
+	 * Support data instance
+	 *
+	 * @var Data
+	 */
+	private $support_data;
+
+	/**
 	 * Constructor
 	 *
 	 * @since  3.2
 	 *
 	 * @param Options_Data $options       Options instance.
 	 * @param string       $template_path Absolute path to the views/settings.
+	 * @param Data         $support_data  Support data instance.
 	 */
-	public function __construct( Options_Data $options, $template_path ) {
+	public function __construct( Options_Data $options, $template_path, Data $support_data ) {
 		parent::__construct( $template_path );
 
-		$this->options = $options;
+		$this->options      = $options;
+		$this->support_data = $support_data;
 	}
 
 	/**
@@ -81,7 +91,7 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 		$data = [
 			'form_id'  => $form_id,
 			'identify' => wp_json_encode( $this->identify_data() ),
-			'session'  => wp_json_encode( $this->session_data() ),
+			'session'  => wp_json_encode( $this->support_data->get_support_data() ),
 			'prefill'  => wp_json_encode( $this->prefill_data() ),
 		];
 
@@ -108,59 +118,6 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 		 * @param string $locale The locale ID.
 		 */
 		return apply_filters( 'rocket_beacon_locale', $this->locale );
-	}
-
-	/**
-	 * Returns Session specific data to pass to Beacon
-	 *
-	 * @since  3.3.3
-	 *
-	 * @return array
-	 */
-	private function session_data() {
-		$options_to_send = [
-			'cache_mobile'            => 'Mobile Cache',
-			'do_caching_mobile_files' => 'Specific Cache for Mobile',
-			'cache_logged_user'       => 'User Cache',
-			'emoji'                   => 'Disable Emojis',
-			'embeds'                  => 'Disable Embeds',
-			'defer_all_js'            => 'Defer JS',
-			'defer_all_js_safe'       => 'Defer JS Safe',
-			'delay_js'                => 'Delay JS',
-			'async_css'               => 'Optimize CSS Delivery',
-			'lazyload'                => 'Lazyload Images',
-			'lazyload_iframes'        => 'Lazyload Iframes',
-			'lazyload_youtube'        => 'Lazyload Youtube',
-			'cache_webp'              => 'WebP Cache',
-			'minify_css'              => 'Minify CSS',
-			'minify_concatenate_css'  => 'Combine CSS',
-			'minify_js'               => 'Minify JS',
-			'minify_concatenate_js'   => 'Combine JS',
-			'minify_google_fonts'     => 'Combine Google Fonts',
-			'manual_preload'          => 'Preload',
-			'sitemap_preload'         => 'Sitemap Preload',
-			'preload_links'           => 'Preload Links',
-			'cdn'                     => 'CDN Enabled',
-			'do_cloudflare'           => 'Cloudflare Enabled',
-			'varnish_auto_purge'      => 'Varnish Purge Enabled',
-			'google_analytics_cache'  => 'Google Tracking Add-on',
-			'facebook_pixel_cache'    => 'Facebook Tracking Add-on',
-			'control_heartbeat'       => 'Hearbeat Control',
-			'sucury_waf_cache_sync'   => 'Sucuri Add-on',
-		];
-
-		$active_options = array_filter( $this->options->get_options() );
-		$active_options = array_intersect_key( $options_to_send, $active_options );
-		$theme          = wp_get_theme();
-
-		return [
-			'Website'                  => home_url(),
-			'WordPress Version'        => get_bloginfo( 'version' ),
-			'WP Rocket Version'        => rocket_get_constant( 'WP_ROCKET_VERSION' ),
-			'Theme'                    => $theme->get( 'Name' ),
-			'Plugins Enabled'          => implode( ' - ', rocket_get_active_plugins() ),
-			'WP Rocket Active Options' => implode( ' - ', $active_options ),
-		];
 	}
 
 	/**

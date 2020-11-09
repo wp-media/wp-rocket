@@ -1,0 +1,55 @@
+{
+	"name": "wp-media/module-rocketcdn",
+	"description": "Module for RocketCDN integration",
+	"homepage": "https://github.com/wp-media/module-rocketcdn",
+	"license": "GPL-2.0+",
+	"authors": [
+		{
+			"name": "WP Media",
+			"email": "contact@wp-media.me",
+			"homepage": "https://wp-media.me"
+		}
+	],
+	"type": "library",
+	"config": {
+		"sort-packages": true
+	},
+	"support": {
+		"issues": "https://github.com/wp-media/module-rocketcdn/issues",
+		"source": "https://github.com/wp-media/module-rocketcdn"
+	},
+	"require-dev": {
+		"php": "^5.6 || ^7",
+		"brain/monkey": "^2.0",
+		"dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
+		"phpcompatibility/phpcompatibility-wp": "^2.0",
+		"phpunit/phpunit": "^5.7 || ^7",
+		"roave/security-advisories": "dev-master",
+		"wp-coding-standards/wpcs": "^2",
+		"wp-media/event-manager": "^3.1",
+		"wp-media/options": "^3.0",
+		"wp-media/module-container": "^2.4",
+		"wp-media/phpunit": "^1.0",
+		"wp-media/phpunit-wp-rocket": "^1.0"
+	},
+	"autoload": {
+		"psr-4": { "WP_Rocket\\Engine\\CDN\\RocketCDN\\": "." }
+	},
+	"autoload-dev": {
+		"psr-4": { "WP_Rocket\\Tests\\": "Tests/"	}
+	},
+	"scripts": {
+		"test-unit": "\"vendor/bin/phpunit\" --testsuite unit --colors=always --configuration Tests/Unit/phpunit.xml.dist",
+		"test-integration": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration Tests/Integration/phpunit.xml.dist --exclude-group AdminOnly",
+		"test-integration-adminonly": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration Tests/Integration/phpunit.xml.dist --group AdminOnly",
+		"run-tests": [
+			"@test-unit",
+			"@test-integration",
+			"@test-integration-adminonly"
+		],
+		"install-codestandards": "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run",
+		"phpcs": "phpcs --basepath=.",
+		"phpcs-changed": "./bin/phpcs-changed.sh",
+		"phpcs:fix": "phpcbf"
+	}
+}
