@@ -477,6 +477,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 			'ajax-login-nonce', // Rehub theme login modal.
 			'filter-nonce', // Rehub theme filter.
 			'log-out', // WordPress's log-out action (wp_nonce_ays() function).
+			'ybws123456', // Custom Bookly form.
 		];
 	}
 }

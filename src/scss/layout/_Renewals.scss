@@ -1,0 +1,71 @@
+// main: ../main.scss
+
+/*-----------------------------------------------*\
+
+	Renewals banner
+
+\*-----------------------------------------------*/
+.rocket-renewal-banner {
+    background: $brightSun;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-top: 2 * $space;
+    padding: $space;
+}
+
+.rocket-renew-message {
+    margin: 0 2 * $space;
+
+    & > p {
+        @include font-size(14,21);
+    }
+}
+
+.rocket-expired-message > p {
+    @include font-size(14,21);
+    padding-left: 10 * $space;
+}
+
+.rocket-expired-title {
+    @include font-size(22,33);
+    font-weight: bold;
+
+    &::before {
+        content: url(../img/warning.svg);
+        display: inline-block;
+        height:48px;
+        width: 63px;
+        margin-right: 17px;
+        vertical-align: middle;
+    }
+}
+
+.rocket-expired-cta-container {
+    justify-content: center;
+    align-items: center;
+}
+
+.rocket-renew-cta {
+    display: block;
+    background: $bunting;
+    border-radius: 44px;
+    color: $cWhite;
+    @include font-size(16,18);
+    font-weight: bold;
+    padding: 2 * $space 3 * $space;
+    text-decoration: none;
+
+    &:hover,
+    &:active,
+    &:focus {
+		color: $cWhite;
+	}
+
+    &::after {
+		content: "\2192";
+		font-weight: normal;
+		margin-left: $space;
+	}
+}

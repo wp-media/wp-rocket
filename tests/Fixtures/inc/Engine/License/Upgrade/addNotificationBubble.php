@@ -65,6 +65,6 @@ return [
 			'transient'          => false,
 		],
 		'title'    => 'WP Rocket',
-		'expected' => 'WP Rocket <span class="awaiting-mod">!</span>',
+		'expected' => 'WP Rocket <span class="rocket-promo-bubble">!</span>',
 	],
 ];
