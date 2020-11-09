@@ -17,7 +17,7 @@ class ResourcesFinder extends WP_Rocket_WP_Async_Request {
 	}
 
 	protected function handle() {
-		$html = $this->get_homepage_html();
+		$html = wp_unslash( $_POST['html'] );
 
 		if ( empty( $html ) ) {
 			return;
@@ -59,7 +59,7 @@ class ResourcesFinder extends WP_Rocket_WP_Async_Request {
 				continue;
 			}
 
-			$this->styles[] = $link['url'];
+			$this->styles[] = rocket_add_url_protocol( $link['url'] );
 		}
 	}
 
@@ -71,7 +71,7 @@ class ResourcesFinder extends WP_Rocket_WP_Async_Request {
 		}
 
 		foreach ( $scripts as $script ) {
-			$this->scripts[] = $script['url'];
+			$this->scripts[] = rocket_add_url_protocol( $script['url'] );
 		}
 	}
 
@@ -93,6 +93,10 @@ class ResourcesFinder extends WP_Rocket_WP_Async_Request {
 		}
 
 		foreach ( $this->styles as $style ) {
+			if ( get_option( $style, false ) ) {
+				continue;
+			}
+
 			$this->fetcher->push_to_queue(
 				[
 					'url'  => $style,
@@ -108,6 +112,10 @@ class ResourcesFinder extends WP_Rocket_WP_Async_Request {
 		}
 
 		foreach ( $this->scripts as $script ) {
+			if ( get_option( $script, false ) ) {
+				continue;
+			}
+
 			$this->fetcher->push_to_queue(
 				[
 					'url'  => $script,
