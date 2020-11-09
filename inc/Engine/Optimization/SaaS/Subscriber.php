@@ -19,8 +19,9 @@ class Subscriber implements Subscriber_Interface {
 
 	public static function get_subscribed_events() {
 		return [
-			'rocket_buffer' => 'optimize',
-			'update_option_wp_rocket_settings' => 'warmup',
+			'rocket_buffer' => [
+				[ 'warmup' ],
+			],
 		];
 	}
 
@@ -33,7 +34,9 @@ class Subscriber implements Subscriber_Interface {
 		);
 	}
 
-	public function warmup() {
-		$this->finder->dispatch();
+	public function warmup( $html ) {
+		$this->finder->data( [ 'html' => $html ] )->dispatch();
+
+		return $html;
 	}
 }
