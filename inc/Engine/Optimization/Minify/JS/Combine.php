@@ -202,7 +202,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 						return;
 					}
 
-					$file_path = $this->get_file_path( $matches['url'] );
+					$file_path = $this->get_file_path( strtok( $matches['url'], '?' ) );
 
 					if ( ! $file_path ) {
 						return;
@@ -621,6 +621,51 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'scriptParams',
 			'form-adv-pagination',
 			'borlabsCookiePrioritize',
+			'urls_wpwidgetpolylang',
+			'quickViewNonce',
+			'frontendscripts_params',
+			'nj-facebook-messenger',
+			'var fb_mess_position',
+			'init_particles_row_background_script',
+			'setREVStartSize',
+			'fl-node',
+			'PPAccordion',
+			'soliloquy_',
+			'wprevpublicjs_script_vars',
+			'DTGS_NONCE_FRONTEND',
+			'et_animation_data',
+			'archives-dropdown',
+			'loftloaderCache',
+			'SmartSliderSimple',
+			'var nectarLove',
+			'var incOpt',
+			'RocketBrowserCompatibilityChecker',
+			'RocketPreloadLinksConfig',
+			'placementVersionId',
+			'var useEdit',
+			'var DTGS_NONCE_FRONTEND',
+			'n2jQuery',
+			'et_core_api_spam_recaptcha',
+			'cnArgs',
+			'__CF$cv$params',
+			'trustbox_settings',
+			'aepro',
+			'cdn.jst.ai',
+			'w2dc_fields_in_categories',
+			'aepc_pixel',
+			'avadaWooCommerceVars',
+			'var isb',
+			'fcaPcPost',
+			'csrf_token',
+			'icwp_wpsf_vars_lpantibot',
+			'wpvViewHead',
+			'ed_school_plugin',
+			'aps_comp_',
+			'guaven_woos',			
+			'__lm_redirect_to',
+			'__wpdm_view_count',
+			'bookacti.booking_system',
+			'nfFrontEnd',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
@@ -745,6 +790,10 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'wp_post_blocks_vars.listed_posts=[',
 			'captcha-hash',
 			'mapdata={',
+			'.ywpc-char-',
+			').countdowntimer(',
+			'jQuery("#td_uid_',
+			'find(\'#td_uid_',
 		];
 
 		/**

@@ -34,26 +34,30 @@
 		}
 	],
 	"require": {
-		"php": ">=5.6.0",
+		"php": ">=7.0",
 		"composer/installers": "~1.0",
 		"monolog/monolog": "^1.0",
 		"psr/container": "^1.0"
 	},
 	"require-dev": {
-		"php": "^5.6 || ^7",
+		"php": "^7",
 		"brain/monkey": "^2.0",
 		"coenjacobs/mozart": "0.6.0-beta-3",
-		"dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
+		"dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
 		"mikey179/vfsstream": "^1.6",
 		"mobiledetect/mobiledetectlib": "^2.8",
+		"mnsami/composer-custom-directory-installer": "^2.0",
 		"phpcompatibility/phpcompatibility-wp": "^2.0",
 		"phpstan/phpstan": "^0.12.3",
-		"phpunit/phpunit": "^5.7 || ^7",
+		"phpunit/phpunit": "^7",
 		"roave/security-advisories": "dev-master",
 		"szepeviktor/phpstan-wordpress": "^0.5.0",
-		"woocommerce/woocommerce": "^3.8",
+		"woocommerce/woocommerce": "^3.9",
 		"wp-coding-standards/wpcs": "^2",
 		"wp-media/background-processing": "^1.3",
+		"wp-media/cloudflare": "^1.0",
+		"wp-media/module-rocketcdn": "^1.0",
+		"wp-media/module-varnish": "^1.0",
 		"wp-media/rocket-lazyload-common": "^2",
 		"wp-media/phpunit": "^1.0",
 		"wp-media/wp-imagify-partner": "^1.0",
@@ -85,7 +89,10 @@
 	},
 	"extra": {
 		"installer-paths": {
-			"vendor/{$vendor}/{$name}/": ["type:wordpress-plugin"]
+			"vendor/{$vendor}/{$name}/": ["type:wordpress-plugin"],
+			"./inc/Addon/Cloudflare/": ["wp-media/cloudflare"],
+			"./inc/Addon/Varnish/": ["wp-media/module-varnish"],
+			"./inc/Engine/CDN/RocketCDN/": ["wp-media/module-rocketcdn"]
 		},
 		"mozart": {
 			"dep_namespace": "WP_Rocket\\Dependencies\\",
@@ -100,12 +107,9 @@
 			]
 		}
 	},
-	"replace": {
-		"wp-media/cloudflare": "self.version"
-	},
 	"scripts": {
 		"test-unit": "\"vendor/bin/phpunit\" --testsuite unit --colors=always --configuration tests/Unit/phpunit.xml.dist",
-		"test-integration": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --exclude-group AdminOnly,BeaverBuilder,Elementor,Hummingbird,WithSmush,WithWoo,WithAmp,WithAmpAndCloudflare,WithSCCSS,Cloudways,DoCloudflare,Multisite,WPEngine,SpinUpWP,WordPressCom,O2Switch,PDFEmbedder,PDFEmbedderPremium,PDFEmbedderSecure",
+		"test-integration": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --exclude-group AdminOnly,BeaverBuilder,Elementor,Hummingbird,WithSmush,WithWoo,WithAmp,WithAmpAndCloudflare,WithSCCSS,Cloudways,Dreampress,DoCloudflare,Multisite,WPEngine,SpinUpWP,WordPressCom,O2Switch,PDFEmbedder,PDFEmbedderPremium,PDFEmbedderSecure",
 		"test-integration-adminonly": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group AdminOnly",
 		"test-integration-bb": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group BeaverBuilder",
 		"test-integration-cloudflare": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group DoCloudflare",
@@ -124,7 +128,8 @@
 		"test-integration-pdfembedder": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group PDFEmbedder",
 		"test-integration-pdfembedderpremium": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group PDFEmbedderPremium",
 		"test-integration-pdfembeddersecure": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group PDFEmbedderSecure",
-	    "test-integration-o2switch": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group O2Switch",
+		"test-integration-o2switch": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group O2Switch",
+		"test-integration-dreampress": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group Dreampress",
 		"run-tests": [
 			"@test-unit",
 			"@test-integration",
@@ -146,7 +151,8 @@
 		    "@test-integration-wpengine",
 			"@test-integration-spinupwp",
 			"@test-integration-wpcom",
-			"@test-integration-o2switch"
+			"@test-integration-o2switch",
+			"@test-integration-dreampress"
 		],
 		"run-stan":"vendor/bin/phpstan analyze --memory-limit=2G --no-progress",
 		"install-codestandards": "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run",

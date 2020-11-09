@@ -127,6 +127,7 @@ function rocket_is_live_site() {
 		'.wpserveur.net',
 		'-liquidwebsites.com',
 		'.myftpupload.com',
+		'.dream.press',
 	];
 	foreach ( $staging as $partial_host ) {
 		if ( strpos( $host, $partial_host ) ) {

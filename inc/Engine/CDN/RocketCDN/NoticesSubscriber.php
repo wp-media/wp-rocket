@@ -200,13 +200,20 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			];
 		} else {
 			$current_price      = number_format_i18n( $pricing['monthly_price'], 2 );
-			$promotion_campaign = $pricing['discount_campaign_name'];
-			$promotion_end_date = date_i18n( get_option( 'date_format' ), strtotime( $pricing['end_date'] ) );
+			$promotion_campaign = '';
+			$end_date           = strtotime( $pricing['end_date'] );
+			$promotion_end_date = '';
 
-			if ( $pricing['is_discount_active'] ) {
-				$regular_price   = $current_price;
-				$current_price   = number_format_i18n( $pricing['discounted_price_monthly'], 2 ) . '*';
-				$nopromo_variant = '';
+			if (
+				$pricing['is_discount_active']
+				&&
+				$end_date > time()
+			) {
+				$promotion_campaign = $pricing['discount_campaign_name'];
+				$regular_price      = $current_price;
+				$current_price      = number_format_i18n( $pricing['discounted_price_monthly'], 2 ) . '*';
+				$nopromo_variant    = '';
+				$promotion_end_date = date_i18n( get_option( 'date_format' ), $end_date );
 			}
 
 			$big_cta_data = [

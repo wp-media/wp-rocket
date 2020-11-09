@@ -578,29 +578,17 @@ JS;
 	 * @return string
 	 */
 	protected function return_remove_cpcss_script() {
-		if ( ! rocket_get_constant( 'SCRIPT_DEBUG' ) ) {
-			return '<script>const wprRemoveCPCSS = () => { if( document.querySelector("link[data-rocket-async=\'style\'][rel=\'preload\']") ){ setTimeout(wprRemoveCPCSS, 200); }else{ $elem = document.getElementById( "rocket-critical-css" );if ( $elem ) {$elem.remove();} } }; if ( window.addEventListener ) { window.addEventListener( "load", wprRemoveCPCSS ); } else if ( window.attachEvent ) { window.attachEvent( "onload", wprRemoveCPCSS ); }</script>';
+		$filename = rocket_get_constant( 'SCRIPT_DEBUG' ) ? 'cpcss-removal.js' : 'cpcss-removal.min.js';
+		$script   = rocket_get_constant( 'WP_ROCKET_PATH' ) . "assets/js/{$filename}";
+
+		if ( ! is_readable( $script ) ) {
+			return '';
 		}
 
-		return '
-			<script>
-				const wprRemoveCPCSS = () => {
-				    if( document.querySelector("link[data-rocket-async=\'style\'][rel=\'preload\']") ){
-				        setTimeout(wprRemoveCPCSS, 200);
-				    }else{
-				        $elem = document.getElementById( "rocket-critical-css" );
-						if ( $elem ) {
-							$elem.remove();
-						}
-				    }
-				};
-				if ( window.addEventListener ) {
-					window.addEventListener( "load", wprRemoveCPCSS );
-				} else if ( window.attachEvent ) {
-					window.attachEvent( "onload", wprRemoveCPCSS );
-				}
-			</script>
-			';
+		return sprintf(
+			'<script>%s</script>',
+			$this->filesystem->get_contents( $script )
+		);
 	}
 
 	/**

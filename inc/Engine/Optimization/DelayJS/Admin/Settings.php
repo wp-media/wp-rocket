@@ -22,7 +22,6 @@ class Settings {
 		'static.leadpages.net/leadbars/current/embed.js',
 		'translate.google.com/translate_a/element.js',
 		'widget.manychat.com',
-		'google.com/recaptcha/api.js',
 		'xfbml.customerchat.js',
 		'static.hotjar.com/c/hotjar-',
 		'smartsuppchat.com/loader.js',
@@ -45,15 +44,16 @@ class Settings {
 		'google-analytics.com/analytics.js',
 		'ga( \'',
 		'ga(\'',
-		'adsbygoogle',
+		'adsbygoogle.js',
 		'ShopifyBuy',
-		'widget.trustpilot.com',
+		'widget.trustpilot.com/bootstrap',
 		'ft.sdk.min.js',
 		'apps.elfsight.com/p/platform.js',
 		'livechatinc.com/tracking.js',
 		'LiveChatWidget',
 		'/busting/facebook-tracking/',
 		'olark',
+		'pixel-caffeine/build/frontend.js',
 	];
 
 	/**
@@ -128,6 +128,75 @@ class Settings {
 
 		$options['delay_js']         = 0;
 		$options['delay_js_scripts'] = $this->defaults;
+
+		update_option( 'wp_rocket_settings', $options );
+	}
+
+	/**
+	 * Update delay_js options when updating to ver 3.7.4
+	 *
+	 * @since 3.7.4
+	 *
+	 * @param string $old_version Old plugin version.
+	 *
+	 * @return void
+	 */
+	public function option_update_3_7_4( $old_version ) {
+		if ( version_compare( $old_version, '3.7.4', '>' ) ) {
+			return;
+		}
+
+		$options          = get_option( 'wp_rocket_settings', [] );
+		$delay_js_scripts = array_flip( $options['delay_js_scripts'] );
+
+		if ( isset( $delay_js_scripts['adsbygoogle'] ) ) {
+			$delay_js_scripts['adsbygoogle.js'] = $delay_js_scripts['adsbygoogle'];
+
+			unset( $delay_js_scripts['adsbygoogle'] );
+		}
+
+		$options['delay_js_scripts'] = array_values( array_flip( $delay_js_scripts ) );
+
+		update_option( 'wp_rocket_settings', $options );
+	}
+
+	/**
+	 * Update delay_js options when updating to ver 3.7.2.
+	 *
+	 * @since 3.7.2
+	 *
+	 * @param string $old_version Old plugin version.
+	 *
+	 * @return void
+	 */
+	public function option_update_3_7_2( $old_version ) {
+		if ( version_compare( $old_version, '3.7.2', '>' ) ) {
+			return;
+		}
+
+		$options = get_option( 'wp_rocket_settings', [] );
+
+		$delay_js_scripts = array_flip( $options['delay_js_scripts'] );
+
+		if (
+			isset( $delay_js_scripts['fbq('] )
+			&&
+			! isset( $delay_js_scripts['pixel-caffeine/build/frontend.js'] )
+		) {
+			$delay_js_scripts['pixel-caffeine/build/frontend.js'] = '';
+		}
+
+		if ( isset( $delay_js_scripts['google.com/recaptcha/api.js'] ) ) {
+			unset( $delay_js_scripts['google.com/recaptcha/api.js'] );
+		}
+
+		if ( isset( $delay_js_scripts['widget.trustpilot.com'] ) ) {
+			$delay_js_scripts['widget.trustpilot.com/bootstrap'] = $delay_js_scripts['widget.trustpilot.com'];
+
+			unset( $delay_js_scripts['widget.trustpilot.com'] );
+		}
+
+		$options['delay_js_scripts'] = array_values( array_flip( $delay_js_scripts ) );
 
 		update_option( 'wp_rocket_settings', $options );
 	}

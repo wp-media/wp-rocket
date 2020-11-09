@@ -25,11 +25,9 @@ matrix:
     env: WP_VERSION=latest
   - php: 7.2
     env: WP_VERSION=latest
-  - php: 5.6
-    env: WP_VERSION=latest
   - name: Legacy
-    php: 5.6
-    env: WP_VERSION=4.9.11
+    php: 7.1
+    env: WP_VERSION=5.2.7
   - name: Coding Standards
     php: 7.3
     env: WP_TRAVISCI=phpcs
@@ -41,6 +39,7 @@ matrix:
     php: 7.4
     env: WP_TRAVISCI=phpstan
 before_install:
+  - composer self-update 1.10.16
   # Unless we need XDebug, disable it for improved performance.
   - phpenv config-rm xdebug.ini || true
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
