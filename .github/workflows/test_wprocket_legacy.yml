@@ -20,6 +20,15 @@ jobs:
         wp-versions: ['latest', '4.9.11']
   
     name: WP ${{ matrix.wp-versions }} with PHP ${{ matrix.php-versions }} on ${{ matrix.operating-system }}.
+    
+    env:
+      ROCKETCDN_EMAIL: ${{ secrets.ROCKETCDN_EMAIL }}
+      ROCKETCDN_PWD: ${{ secrets.ROCKETCDN_PWD }}
+      ROCKETCDN_TOKEN: ${{ secrets.ROCKETCDN_TOKEN }}
+      ROCKETCDN_URL: ${{ secrets.ROCKETCDN_URL }}
+      ROCKETCDN_WEBSITE_ID: ${{ secrets.ROCKETCDN_WEBSITE_ID }}
+      ROCKET_EMAIL: ${{ secrets.ROCKET_EMAIL }}
+      ROCKET_KEY: ${{ secrets.ROCKET_KEY }}
 
     services:
       mysql:
