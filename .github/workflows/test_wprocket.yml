@@ -81,7 +81,14 @@ jobs:
         ps -fea
         netstat -ntpl
         whoami
-        mysql --host=127.0.0.1 --port=${{ job.services.mysql.ports[3306] }} -u wordpress -pw0rdpr355 -e 'show databases'    
+        echo "echo 1"
+        echo ${{ job.services.mysql.ports[3306] }}
+        echo "test1"
+        mysql --host=127.0.0.1 --port=3306 -u wordpress -pw0rdpr355 -e 'show databases'    
+        echo "test2"
+        mysql --host=127.0.0.1 --port=${{ job.services.mysql.ports[3306] }} -u wordpress -pw0rdpr355 -e 'show databases'
+        echo "test3"
+        sudo mysql --host=127.0.0.1 --port=3306 -u root -pw0rdpr355 -e 'show databases'
 
     - name: Install tests
       run: bash bin/install-wp-tests.sh wordpress_test wordpress w0rdpr355 127.0.0.1:3306 WP_VERSION
