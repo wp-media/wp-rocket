@@ -30,17 +30,6 @@ jobs:
       ROCKET_EMAIL: ${{ secrets.ROCKET_EMAIL }}
       ROCKET_KEY: ${{ secrets.ROCKET_KEY }}
 
-    services:
-      mysql:
-        image: mysql:5.7
-        env:
-          MYSQL_USER: wordpress
-          MYSQL_PASSWORD: w0rdpr355
-        ports:
-          - 3306
-        # Extra MySQL options can be added here
-        # options: --health-cmd="mysqladmin ping"
-
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -78,13 +67,9 @@ jobs:
     
     - name: Test stuff
       run: |
-        ps -fea
+        ps -fea | grep -i mysql
         netstat -ntpl
         whoami
-        echo "echo 1"
-        echo ${{ job.services.mysql.ports[3306] }}
-        echo "test3"
-        sudo mysql --host=127.0.0.1 --port=3306 -u root -pw0rdpr355 -e 'show databases'
 
     - name: Install tests
       run: bash bin/install-wp-tests.sh wordpress_test wordpress w0rdpr355 127.0.0.1:3306 WP_VERSION
