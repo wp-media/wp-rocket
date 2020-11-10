@@ -75,6 +75,13 @@ jobs:
     
     - name: Install dependencies
       run: composer install --prefer-dist --no-interaction --no-scripts
+    
+    - name: Test stuff
+      run: |
+        ps -fea
+        netstat -ntpl
+        whoami
+        mysql -u wordpress -pw0rdpr355 -e 'show databases'    
 
     - name: Install tests
       run: bash bin/install-wp-tests.sh wordpress_test wordpress w0rdpr355 127.0.0.1:${{ job.services.mysql.ports[3306] }} $WP_VERSION
