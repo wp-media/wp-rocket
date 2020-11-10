@@ -661,7 +661,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'wpvViewHead',
 			'ed_school_plugin',
 			'aps_comp_',
-			'guaven_woos',			
+			'guaven_woos',
 			'__lm_redirect_to',
 			'__wpdm_view_count',
 			'bookacti.booking_system',
