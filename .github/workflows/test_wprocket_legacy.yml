@@ -51,6 +51,9 @@ jobs:
         extensions: mysql
         coverage: none  # XDebug can be enabled here 'coverage: xdebug'
         tools: composer:v1, phpunit
+        
+    - name: Start mysql service
+        run: sudo /etc/init.d/mysql start
     
     - name: Setup problem matchers for PHP
       run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
