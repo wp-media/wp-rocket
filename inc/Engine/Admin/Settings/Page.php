@@ -287,7 +287,6 @@ class Page {
 		}
 
 		$allowed = [
-			'do_beta'                     => 1,
 			'analytics_enabled'           => 1,
 			'debug_enabled'               => 1,
 			'varnish_auto_purge'          => 1,
@@ -414,15 +413,6 @@ class Page {
 
 		$this->settings->add_settings_fields(
 			[
-				'do_beta'           => [
-					'type'              => 'sliding_checkbox',
-					'label'             => __( 'Rocket Tester', 'rocket' ),
-					'description'       => __( 'I am part of the WP Rocket Beta Testing Program.', 'rocket' ),
-					'section'           => 'status',
-					'page'              => 'dashboard',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
-				],
 				'analytics_enabled' => [
 					'type'              => 'sliding_checkbox',
 					'label'             => __( 'Rocket Analytics', 'rocket' ),
