@@ -77,7 +77,7 @@ jobs:
       run: composer install --prefer-dist --no-interaction --no-scripts
 
     - name: Install tests
-      run: bash bin/install-wp-tests.sh wordpress_test wordpress w0rdpr355 localhost:${{ job.services.mysql.ports[3306] }} $WP_VERSION
+      run: bash bin/install-wp-tests.sh wordpress_test wordpress w0rdpr355 127.0.0.1:${{ job.services.mysql.ports[3306] }} $WP_VERSION
 
     - name: Test
       run: composer run-tests
