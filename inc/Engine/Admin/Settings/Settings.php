@@ -203,8 +203,6 @@ class Settings {
 	public function sanitize_callback( $input ) {
 		global $wp_settings_errors;
 
-		$input['do_beta'] = ! empty( $input['do_beta'] ) ? 1 : 0;
-
 		$input['cache_logged_user'] = ! empty( $input['cache_logged_user'] ) ? 1 : 0;
 
 		$input['cache_ssl'] = ! empty( $input['cache_ssl'] ) ? 1 : 0;
