@@ -70,6 +70,7 @@ jobs:
         ps -fea | grep -i mysql
         netstat -ntpl
         whoami
+        mysql -u root -proot -e 'show databases'
 
     - name: Install tests
       run: bash bin/install-wp-tests.sh wordpress_test wordpress w0rdpr355 127.0.0.1:3306 WP_VERSION
