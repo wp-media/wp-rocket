@@ -53,7 +53,7 @@ jobs:
         tools: composer:v1, phpunit
     
     - name: Start mysql service
-        run: sudo /etc/init.d/mysql start
+      run: sudo /etc/init.d/mysql start
     
     - name: Setup problem matchers for PHP
       run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
