@@ -83,8 +83,6 @@ jobs:
         whoami
         echo "echo 1"
         echo ${{ job.services.mysql.ports[3306] }}
-        echo "test2"
-        mysql --host=127.0.0.1 --port=${{ job.services.mysql.ports[3306] }} -u wordpress -pw0rdpr355 -e 'show databases'
         echo "test3"
         sudo mysql --host=127.0.0.1 --port=3306 -u root -pw0rdpr355 -e 'show databases'
 
