@@ -1,12 +1,13 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\DeferJS\DeferJS;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\DeferJS\AdminSubscriber;
 
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DeferJS\DeferJS::add_defer_js_option
+ * @covers \WP_Rocket\Engine\Optimization\DeferJS\AdminSubscriber::add_defer_js_option
  *
+ * @group  AdminOnly
  * @group  DeferJS
  */
 class Test_AddDeferJsOption extends TestCase {
