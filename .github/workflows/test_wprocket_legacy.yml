@@ -38,7 +38,7 @@ jobs:
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php-versions }}
-        extensions: pdo
+        extensions: mysql_pdo
         coverage: none  # XDebug can be enabled here 'coverage: xdebug'
         tools: composer:v1, phpunit
         
