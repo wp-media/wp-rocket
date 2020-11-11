@@ -99,7 +99,7 @@ function rocket_validate_js( $file ) {
 		return $file;
 	}
 
-	return sanitize_text_field( rocket_remove_url_protocol( strtok( $file, '?' ) ) );
+	return esc_url_raw( rocket_remove_url_protocol( strtok( $file, '?' ) ) );
 }
 
 /**
@@ -112,10 +112,10 @@ function rocket_validate_js( $file ) {
  */
 function rocket_validate_css( $file ) {
 	if ( rocket_is_internal_file( $file ) ) {
-		return rocket_sanitize_css( rocket_clean_exclude_file( trim( $file ) ) );
+		return esc_url_raw( rocket_clean_exclude_file( trim( $file ) ) );
 	}
 
-	return sanitize_text_field( rocket_remove_url_protocol( strtok( $file, '?' ) ) );
+	return esc_url_raw( rocket_remove_url_protocol( strtok( $file, '?' ) ) );
 }
 
 /**
@@ -132,7 +132,7 @@ function rocket_is_internal_file( $file ) {
 	$file_host = wp_parse_url( $file, PHP_URL_HOST );
 
 	if ( empty( $file_host ) ) {
-		return false;
+		return true;
 	}
 
 	/**
