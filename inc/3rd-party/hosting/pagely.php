@@ -9,18 +9,16 @@ defined( 'ABSPATH' ) || exit;
  *
  * @return void
  */
-function rocket_clear_cache_after_pagely() {
-        //  End the cycle of purges after a single purge has happened
-        if (!empty($GLOBALS['pagely_rocket_stop_cache_purge'])){
-            $GLOBALS['pagely_rocket_stop_cache_purge']=false;
-            return;
-        }
-        $GLOBALS['pagely_rocket_stop_cache_purge']=true;
-
-	// Clear all caching files.
-	rocket_clean_domain();
-}
-add_action( 'pagely_cache_purge_after', 'rocket_clear_cache_after_pagely' );
+//  We can't have both this action and the next without infinite loop
+//    So commenting out until such time as this can be re-worked. See
+//    the following pull for comments on the way the wp-rocket team
+//    would like this refactored.
+//    https://github.com/wp-media/wp-rocket/pull/3166
+//function rocket_clear_cache_after_pagely() {
+//	// Clear all caching files.
+//	rocket_clean_domain();
+//}
+//add_action( 'pagely_cache_purge_after', 'rocket_clear_cache_after_pagely' );
 
 /**
  * Call the cache server to purge the cache with Pagely hosting.
@@ -30,13 +28,6 @@ add_action( 'pagely_cache_purge_after', 'rocket_clear_cache_after_pagely' );
  * @return void
  */
 function rocket_clean_pagely() {
-        //  End the cycle of purges after a single purge has happened
-        if (!empty($GLOBALS['pagely_rocket_stop_cache_purge'])){
-            $GLOBALS['pagely_rocket_stop_cache_purge']=false;
-            return;
-        }
-        $GLOBALS['pagely_rocket_stop_cache_purge']=true;
-
 	if ( class_exists( 'PagelyCachePurge' ) ) {
 			$purger = new PagelyCachePurge();
 			$purger->purgeAll();
