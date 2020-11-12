@@ -6,7 +6,7 @@ use WP_Rocket\Engine\Container\ServiceProvider\AbstractServiceProvider;
 /**
  * Service provider for the WP Rocket Defer JS
  *
- * @since 3.7
+ * @since 3.8
  */
 class ServiceProvider extends AbstractServiceProvider {
 
@@ -22,6 +22,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	protected $provides = [
 		'defer_js',
 		'defer_js_admin_subscriber',
+		'defer_js_subscriber',
 	];
 
 	/**
@@ -33,6 +34,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'defer_js', 'WP_Rocket\Engine\Optimization\DeferJS\DeferJS' )
 			->withArgument( $this->getContainer()->get( 'options' ) );
 		$this->getContainer()->share( 'defer_js_admin_subscriber', 'WP_Rocket\Engine\Optimization\DeferJS\AdminSubscriber' )
+			->withArgument( $this->getContainer()->get( 'defer_js' ) );
+		$this->getContainer()->share( 'defer_js_subscriber', 'WP_Rocket\Engine\Optimization\DeferJS\Subscriber' )
 			->withArgument( $this->getContainer()->get( 'defer_js' ) );
 	}
 }
