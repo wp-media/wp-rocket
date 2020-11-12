@@ -55,7 +55,6 @@ class Test_DeferJs extends TestCase {
 		add_filter( 'pre_get_rocket_option_exclude_defer_js', [ $this, 'set_exclude_defer_js' ] );
 
 		if ( $config['post_meta'] ) {
-			error_log( 'post_meta' );
 			add_post_meta( 100, '_rocket_exclude_defer_all_js', 1, true );
 		}
 
