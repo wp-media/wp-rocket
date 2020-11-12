@@ -76,6 +76,7 @@ $default = [
 
 $integration = $default;
 $integration[ 'async_css_mobile' ] = 1;
+$integration[ 'exclude_defer_js' ] = [];
 $integration[ 'delay_js' ]         = 1;
 $integration[ 'delay_js_scripts' ] = [
 	'getbutton.io',
