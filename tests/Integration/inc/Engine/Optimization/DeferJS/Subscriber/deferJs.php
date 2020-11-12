@@ -45,7 +45,7 @@ class Test_DeferJs extends TestCase {
 			[
 				'type'      => 'is_post',
 				'post_data' => [
-					'ID' => 100,
+					'import_id' => 100,
 				],
 			]
 		);
