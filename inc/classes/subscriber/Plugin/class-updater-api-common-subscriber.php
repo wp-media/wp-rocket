@@ -150,7 +150,7 @@ class Updater_Api_Common_Subscriber implements Subscriber_Interface {
 		$consumer_email = $this->get_current_option( 'consumer_email' );
 		$php_version    = preg_replace( '@^(\d+\.\d+).*@', '\1', phpversion() );
 
-		return sprintf( 'WP-Rocket|%s%s|%s|%s|%s|%s;', $this->plugin_version, '', $consumer_key, $consumer_email, esc_url( $this->site_url ), $php_version );
+		return sprintf( 'WP-Rocket|%s|%s|%s|%s|%s;', $this->plugin_version, $consumer_key, $consumer_email, esc_url( $this->site_url ), $php_version );
 	}
 
 	/**
