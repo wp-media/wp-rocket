@@ -99,7 +99,7 @@ function rocket_validate_js( $file ) {
 		return $file;
 	}
 
-	return esc_url_raw( rocket_remove_url_protocol( strtok( $file, '?' ) ) );
+	return rocket_remove_url_protocol( esc_url_raw( strtok( $file, '?' ) ) );
 }
 
 /**
@@ -115,7 +115,7 @@ function rocket_validate_css( $file ) {
 		return rocket_sanitize_css( rocket_clean_exclude_file( trim( $file ) ) );
 	}
 
-	return esc_url_raw( rocket_remove_url_protocol( strtok( $file, '?' ) ) );
+	return rocket_remove_url_protocol( esc_url_raw( strtok( $file, '?' ) ) );
 }
 
 /**
