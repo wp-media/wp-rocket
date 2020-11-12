@@ -51,7 +51,7 @@ class DeferJS {
 
 		$buffer_nocomments = preg_replace( '/<!--(.*)-->/Uis', '', $html );
 
-		preg_match_all( '#<script\s+(?<before>[^>]+[\s\'"])?src\s*=\s*[\'"]\s*?(?<url>[^\'"]+)\s*?[\'"](?<after>[^>]+)?\/?>#i', $buffer_nocomments, $matches, PREG_SET_ORDER );
+		preg_match_all( '#<script\s+(?:[^>]+[\s\'"])?src\s*=\s*[\'"]\s*?(?<url>[^\'"]+)\s*?[\'"](?:[^>]+)?\/?>#i', $buffer_nocomments, $matches, PREG_SET_ORDER );
 
 		if ( empty( $matches ) ) {
 			return $html;
@@ -64,16 +64,12 @@ class DeferJS {
 				continue;
 			}
 
-			if ( false !== strpos( $tag['before'], ' async' ) || false !== strpos( $tag['after'], ' async' ) ) {
+			if ( preg_match( '/\s+(?:async|defer)/i', $tag[0] ) ) {
 				continue;
 			}
 
-			if ( false !== strpos( $tag['before'], ' defer' ) || false !== strpos( $tag['after'], ' defer' ) ) {
-				continue;
-			}
-
-			$deferred_tag = str_replace( '>', ' defer>', $tag );
-			$html         = str_replace( $tag, $deferred_tag, $html );
+			$deferred_tag = str_replace( '>', ' defer>', $tag[0] );
+			$html         = str_replace( $tag[0], $deferred_tag, $html );
 		}
 
 		return $html;
