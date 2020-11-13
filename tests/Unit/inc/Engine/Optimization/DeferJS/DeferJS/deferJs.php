@@ -64,7 +64,7 @@ class Test_DeferJs extends TestCase {
 
         $this->assertSame(
             $expected,
-            $defer_js->defer_js( $html ),
+            $defer_js->defer_js( $html )
         );
     }
 }
