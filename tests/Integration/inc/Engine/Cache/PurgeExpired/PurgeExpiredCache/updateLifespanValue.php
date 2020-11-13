@@ -1,10 +1,10 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\Cache\PurgeExpired\PurgeExpiredCache;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Cache\PurgeExpired\PurgeExpiredCache;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\Engine\Cache\PurgeExpired\PurgeExpiredCache;
-use WP_Rocket\Tests\Unit\TestCase;
+use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * @covers PurgeExpiredCache::update_lifespan_value
