@@ -145,24 +145,4 @@ abstract class AbstractCSSOptimization extends AbstractOptimization {
 
 		return false;
 	}
-
-	/**
-	 * Get external files excluded from minify.
-	 *
-	 * @since 3.7.6
-	 *
-	 * @return array Excluded external files.
-	 */
-	protected function get_excluded_externals() {
-		/**
-		 * Filters CSS external URLs to exclude from the minify process
-		 *
-		 * @since 3.7.6
-		 *
-		 * @param array $pattern Patterns to match.
-		 */
-		$excluded_externals = (array) apply_filters( 'rocket_minify_css_excluded_external', [] );
-
-		return array_merge( $excluded_externals, $this->options->get( 'exclude_css', [] ) );
-	}
 }

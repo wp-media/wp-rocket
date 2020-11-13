@@ -346,4 +346,24 @@ class Minify extends AbstractCSSOptimization implements ProcessorInterface {
 	protected function get_minifier( $file_content ) {
 		return new Minifier\CSS( $file_content );
 	}
+
+	/**
+	 * Get external files excluded from minify.
+	 *
+	 * @since 3.7.6
+	 *
+	 * @return array Excluded external files.
+	 */
+	private function get_excluded_externals() {
+		/**
+		 * Filters CSS external URLs to exclude from the minify process
+		 *
+		 * @since 3.7.6
+		 *
+		 * @param array $pattern Patterns to match.
+		 */
+		$excluded_externals = (array) apply_filters( 'rocket_minify_css_excluded_external', [] );
+
+		return array_merge( $excluded_externals, $this->options->get( 'exclude_css', [] ) );
+	}
 }
