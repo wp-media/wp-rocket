@@ -386,12 +386,14 @@ class PurgeExpiredCache {
 	 * @since 3.8
 	 *
 	 * @param int $old_lifespan Old value in minutes.
+	 *
+	 * @return void
 	 */
 	public function update_lifespan_value( $old_lifespan ) {
 		$options = get_option( 'wp_rocket_settings', [] );
 
 		$options['purge_cron_unit']     = 'HOUR_IN_SECONDS';
-		$options['purge_cron_interval'] = ceil( $old_lifespan / 60 );
+		$options['purge_cron_interval'] = round( $old_lifespan / 60 );
 
 		update_option( 'wp_rocket_settings', $options );
 	}
