@@ -184,12 +184,9 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		if ( 'MINUTE_IN_SECONDS' !== $this->options->get( 'purge_cron_unit' ) ) {
-			return;
-		}
-
-		$lifespan = $this->options->get( 'purge_cron_interval' );
-
-		$this->purge->update_lifespan_value( $lifespan );
+		$this->purge->update_lifespan_value(
+			$this->options->get( 'purge_cron_interval' ),
+			$this->options->get( 'purge_cron_unit' )
+		);
 	}
 }
