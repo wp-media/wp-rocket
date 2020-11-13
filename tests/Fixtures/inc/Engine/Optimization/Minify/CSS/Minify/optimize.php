@@ -47,9 +47,9 @@ EXPECTED_HTML
 				],
 			],
 
-			'cdn_host' => [],
-			'cdn_url'  => 'http://example.org',
-			'site_url' => 'http://example.org',
+			'cdn_host'     => [],
+			'cdn_url'      => 'http://example.org',
+			'site_url'     => 'http://example.org',
 			'external_url' => '',
 		],
 
@@ -93,9 +93,9 @@ EXPECTED_HTML
 				],
 			],
 
-			'cdn_host' => [],
-			'cdn_url'  => 'http://example.org',
-			'site_url' => 'http://example.org',
+			'cdn_host'     => [],
+			'cdn_url'      => 'http://example.org',
+			'site_url'     => 'http://example.org',
 			'external_url' => '',
 		],
 
@@ -127,9 +127,9 @@ EXPECTED_HTML
 				],
 			],
 
-			'cdn_host' => [ '123456.rocketcdn.me' ],
-			'cdn_url'  => 'https://123456.rocketcdn.me',
-			'site_url' => 'http://example.org',
+			'cdn_host'     => [ '123456.rocketcdn.me' ],
+			'cdn_url'      => 'https://123456.rocketcdn.me',
+			'site_url'     => 'http://example.org',
 			'external_url' => '',
 		],
 
@@ -174,9 +174,9 @@ EXPECTED_HTML
 				],
 			],
 
-			'cdn_host' => [ '123456.rocketcdn.me' ],
-			'cdn_url'  => 'https://123456.rocketcdn.me',
-			'site_url' => 'http://example.org',
+			'cdn_host'     => [ '123456.rocketcdn.me' ],
+			'cdn_url'      => 'https://123456.rocketcdn.me',
+			'site_url'     => 'http://example.org',
 			'external_url' => '',
 		],
 
@@ -220,9 +220,9 @@ EXPECTED_HTML
 				],
 			],
 
-			'cdn_host' => [ '123456.rocketcdn.me/cdnpath' ],
-			'cdn_url'  => 'https://123456.rocketcdn.me/cdnpath',
-			'site_url' => 'http://example.org',
+			'cdn_host'     => [ '123456.rocketcdn.me/cdnpath' ],
+			'cdn_url'      => 'https://123456.rocketcdn.me/cdnpath',
+			'site_url'     => 'http://example.org',
 			'external_url' => '',
 		],
 
@@ -256,9 +256,9 @@ EXPECTED_HTML
 				],
 			],
 
-			'cdn_host' => [],
-			'cdn_url'  => 'http://example.org',
-			'site_url' => 'http://example.org',
+			'cdn_host'     => [],
+			'cdn_url'      => 'http://example.org',
+			'site_url'     => 'http://example.org',
 			'external_url' => 'http://external-domain.org/path/to/style.css',
 		],
 
@@ -292,11 +292,11 @@ EXPECTED_HTML
 				],
 			],
 
-			'cdn_host' => [],
-			'cdn_url'  => 'http://example.org',
-			'site_url' => 'http://example.org',
-			'external_url' => 'http://external-domain.org/path/to/style.css',
-			'has_integrity' => true,
+			'cdn_host'        => [],
+			'cdn_url'         => 'http://example.org',
+			'site_url'        => 'http://example.org',
+			'external_url'    => 'http://external-domain.org/path/to/style.css',
+			'has_integrity'   => true,
 			'valid_integrity' => true
 		],
 
@@ -328,12 +328,61 @@ EXPECTED_HTML
 				],
 			],
 
-			'cdn_host' => [],
-			'cdn_url'  => 'http://example.org',
-			'site_url' => 'http://example.org',
-			'external_url' => 'http://external-domain.org/path/to/style.css',
-			'has_integrity' => true,
+			'cdn_host'        => [],
+			'cdn_url'         => 'http://example.org',
+			'site_url'        => 'http://example.org',
+			'external_url'    => 'http://external-domain.org/path/to/style.css',
+			'has_integrity'   => true,
 			'valid_integrity' => false
+		],
+
+		'excludeExternalCssFilesInExcludedCSSList' => [
+			'original' => <<<ORIGINAL_HTML
+<html>
+	<head>
+		<title>Sample Page</title>
+		<link rel="stylesheet" href="http://excluded-external-domain.org/path/to/style.css" type="text/css" media="all">
+		<link rel="stylesheet" href="http://subdomain.excluded-domain.org/path/to/style.css" type="text/css" media="all">
+		<link rel="stylesheet" href="http://another-excluded-domain.org/path/to/style.css" type="text/css" media="all">
+	</head>
+	<body>
+	</body>
+</html>
+ORIGINAL_HTML
+			,
+			'expected' => [
+				'html'  => <<<EXPECTED_HTML
+<html>
+	<head>
+		<title>Sample Page</title>
+		<link rel="stylesheet" href="http://excluded-external-domain.org/path/to/style.css" type="text/css" media="all">
+		<link rel="stylesheet" href="http://subdomain.excluded-domain.org/path/to/style.css" type="text/css" media="all">
+		<link rel="stylesheet" href="http://another-excluded-domain.org/path/to/style.css" type="text/css" media="all">
+	<body>
+	</body>
+</html>
+EXPECTED_HTML
+				,
+				'files' => [
+				],
+			],
+
+			'cdn_host'     => [],
+			'cdn_url'      => 'http://example.org',
+			'site_url'     => 'http://example.org',
+			'external_url' => 'http://external-domain.org/path/to/style.css',
+			'excluded_css' => [
+				'urls' => [
+					'http://excluded-external-domain.org/path/to/style.css',
+					'http://subdomain.excluded-domain.org/path/to/style.css',
+					'http://another-excluded-domain.org/path/to/style.css',
+				],
+				'excluded_terms' => [
+					'excluded-external-domain.org/path/to/style.css',
+					'subdomain.excluded-domain.org/path/to/style.css',
+					'another-excluded-domain.org',
+				],
+			],
 		],
 	],
 ];

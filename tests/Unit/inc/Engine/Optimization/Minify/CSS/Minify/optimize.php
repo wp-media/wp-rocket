@@ -38,7 +38,7 @@ class Test_Optimize extends TestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldMinifyCSS( $original, $expected, $cdn_host, $cdn_url, $site_url, $external_url, $has_integrity = false, $valid_integrity = true ) {
+	public function testShouldMinifyCSS( $original, $expected, $cdn_host, $cdn_url, $site_url, $external_url, $has_integrity = false, $valid_integrity = true, $excluded_css = [] ) {
 		Filters\expectApplied( 'rocket_cdn_hosts' )
 			->zeroOrMoreTimes()
 			->with( [], [ 'all', 'css_and_js', 'css' ] )
@@ -95,6 +95,15 @@ class Test_Optimize extends TestCase {
 				}
 				return $asset_match[0];
 			} );
+
+		if ( ! empty( $excluded_css ) ) {
+			foreach ( $excluded_css['urls'] as $url ) {
+				var_dump($url);
+				$this->options->shouldRecieve( 'get' )
+					->with( 'exclude_css', [] )
+					->andReturn( $excluded_css['excluded_terms'] );
+			}
+		}
 
 		$this->assertSame(
 			$this->format_the_html( $expected['html'] ),
