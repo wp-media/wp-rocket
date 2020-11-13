@@ -151,13 +151,13 @@ abstract class AbstractCSSOptimization extends AbstractOptimization {
 	 *
 	 * @since 3.7.6
 	 *
-	 * @return array
+	 * @return array Excluded external files.
 	 */
 	protected function get_excluded_externals() {
 		/**
-		 * Filters CSS external URLs to exclude from the combine process
+		 * Filters CSS external URLs to exclude from the minify process
 		 *
-		 * @since 3.7
+		 * @since 3.7.6
 		 *
 		 * @param array $pattern Patterns to match.
 		 */
