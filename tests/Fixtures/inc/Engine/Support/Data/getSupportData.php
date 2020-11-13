@@ -63,7 +63,7 @@ return [
 			'cloudflare_protocol_rewrite' => 0,
 			'cloudflare_auto_settings'    => 0,
 			'cloudflare_old_settings'     => '',
-			'control_heartbeat'           => 0,
+			'control_heartbeat'           => 1,
 			'heartbeat_site_behavior'     => 'reduce_periodicity',
 			'heartbeat_admin_behavior'    => 'reduce_periodicity',
 			'heartbeat_editor_behavior'   => 'reduce_periodicity',
@@ -81,7 +81,7 @@ return [
 			'WP Rocket Version'        => '3.7.5',
 			'Theme'                    => 'WordPress Default',
 			'Plugins Enabled'          => 'Hello Dolly',
-			'WP Rocket Active Options' => 'Mobile Cache - Disable Emojis - Defer JS Safe - Combine Google Fonts - Preload',
+			'WP Rocket Active Options' => 'Mobile Cache - Disable Emojis - Defer JS Safe - Combine Google Fonts - Preload - Hearbeat Control',
 		],
 	],
 ];

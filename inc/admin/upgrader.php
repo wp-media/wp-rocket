@@ -225,7 +225,7 @@ function rocket_first_install() {
 				'cloudflare_protocol_rewrite' => 0,
 				'cloudflare_auto_settings'    => 0,
 				'cloudflare_old_settings'     => '',
-				'control_heartbeat'           => 0,
+				'control_heartbeat'           => 1,
 				'heartbeat_site_behavior'     => 'reduce_periodicity',
 				'heartbeat_admin_behavior'    => 'reduce_periodicity',
 				'heartbeat_editor_behavior'   => 'reduce_periodicity',

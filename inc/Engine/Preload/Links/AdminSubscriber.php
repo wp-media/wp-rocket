@@ -45,7 +45,7 @@ class AdminSubscriber implements Subscriber_Interface {
 	public function add_option( $options ) {
 		$options = (array) $options;
 
-		$options['preload_links'] = 0;
+		$options['preload_links'] = 1;
 
 		return $options;
 	}
