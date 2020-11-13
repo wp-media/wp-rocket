@@ -13,7 +13,6 @@ class PurgeExpiredCache {
 	 * Path to the global cache folder.
 	 *
 	 * @since  3.4
-	 * @access private
 	 *
 	 * @var string
 	 */
@@ -23,7 +22,6 @@ class PurgeExpiredCache {
 	 * Filesystem object.
 	 *
 	 * @since  3.4
-	 * @access private
 	 *
 	 * @var \WP_Filesystem_Direct
 	 */
@@ -42,7 +40,6 @@ class PurgeExpiredCache {
 	 * Perform the event action.
 	 *
 	 * @since  3.4
-	 * @access public
 	 *
 	 * @param int $lifespan The cache lifespan in seconds.
 	 */
@@ -293,7 +290,6 @@ class PurgeExpiredCache {
 	 * Purge a folder from old files.
 	 *
 	 * @since  3.4
-	 * @access private
 	 *
 	 * @param  string $dir_path     Path to the folder to purge.
 	 * @param  int    $file_age_limit Timestamp of the maximum age files must have.
@@ -357,7 +353,6 @@ class PurgeExpiredCache {
 	 * Tell if a folder is empty.
 	 *
 	 * @since  3.4
-	 * @access private
 	 *
 	 * @param  string $dir_path Path to the folder to purge.
 	 * @return bool             True if empty. False if it contains files.
@@ -385,7 +380,8 @@ class PurgeExpiredCache {
 	 *
 	 * @since 3.8
 	 *
-	 * @param int $old_lifespan Old value in minutes.
+	 * @param int $old_lifespan      Old value in minutes.
+	 * @param int $old_lifespan_unit Old value of unit.
 	 *
 	 * @return void
 	 */

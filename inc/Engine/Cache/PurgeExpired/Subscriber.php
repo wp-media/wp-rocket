@@ -24,7 +24,6 @@ class Subscriber implements Subscriber_Interface {
 	 * WP Rocket Options instance.
 	 *
 	 * @since  3.4
-	 * @access private
 	 *
 	 * @var Options_Data
 	 */
@@ -34,7 +33,6 @@ class Subscriber implements Subscriber_Interface {
 	 * Expired Cache Purge instance.
 	 *
 	 * @since 3.4
-	 * @access private
 	 *
 	 * @var PurgeExpiredCache
 	 */
@@ -68,7 +66,6 @@ class Subscriber implements Subscriber_Interface {
 	 * Adds a custom cron schedule based on purge lifespan interval.
 	 *
 	 * @since  3.4.3
-	 * @access public
 	 *
 	 * @param array $schedules An array of non-default cron schedules.
 	 */
@@ -90,7 +87,6 @@ class Subscriber implements Subscriber_Interface {
 	 * If the task is not programmed, it is automatically added.
 	 *
 	 * @since  3.4
-	 * @access public
 	 */
 	public function schedule_event() {
 		if ( $this->get_cache_lifespan() && ! wp_next_scheduled( static::EVENT_NAME ) ) {
@@ -105,7 +101,6 @@ class Subscriber implements Subscriber_Interface {
 	 * If Hours / Days options are selected, then it will be set to 1 hour.
 	 *
 	 * @since  3.4.3
-	 * @access private
 	 *
 	 * @return int $interval Interval time in seconds.
 	 */
@@ -127,7 +122,6 @@ class Subscriber implements Subscriber_Interface {
 	 * Unschedule the event.
 	 *
 	 * @since  3.4
-	 * @access public
 	 */
 	public function unschedule_event() {
 		wp_clear_scheduled_hook( static::EVENT_NAME );
@@ -137,7 +131,6 @@ class Subscriber implements Subscriber_Interface {
 	 * Perform the event action.
 	 *
 	 * @since  3.4
-	 * @access public
 	 */
 	public function purge_expired_files() {
 		$this->purge->purge_expired_files( $this->get_cache_lifespan() );
@@ -149,7 +142,6 @@ class Subscriber implements Subscriber_Interface {
 	 * If the value from the settings is filled but invalid, fallback to the initial value (10 hours).
 	 *
 	 * @since  3.4
-	 * @access public
 	 *
 	 * @return int The cache lifespan in seconds.
 	 */
