@@ -52,9 +52,9 @@ class ServiceProvider extends AbstractServiceProvider {
 			->withArgument( $this->getContainer()->get( 'wp_cache' ) );
 
 		$this->getContainer()->add( 'expired_cache_purge', 'WP_Rocket\Engine\Cache\PurgeExpired\PurgeExpiredCache' )
-			 ->withArgument( rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) );
+			->withArgument( rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) );
 		$this->getContainer()->share( 'expired_cache_purge_subscriber', 'WP_Rocket\Engine\Cache\PurgeExpired\Subscriber' )
-			 ->withArgument( $this->getContainer()->get( 'options' ) )
-			 ->withArgument( $this->getContainer()->get( 'expired_cache_purge' ) );
+			->withArgument( $this->getContainer()->get( 'options' ) )
+			->withArgument( $this->getContainer()->get( 'expired_cache_purge' ) );
 	}
 }
