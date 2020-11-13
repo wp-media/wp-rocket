@@ -60,7 +60,7 @@ class Test_DeferJs extends TestCase {
 
 		$this->assertSame(
 			$expected,
-			apply_filters( 'rocket_buffer', $html ),
+			apply_filters( 'rocket_buffer', $html )
 		);
 	}
 
