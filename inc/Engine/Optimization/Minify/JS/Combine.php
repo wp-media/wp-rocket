@@ -179,7 +179,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 						}
 
 						if (
-							!empty( $this->excluded_defer_js )
+							! empty( $this->excluded_defer_js )
 							&&
 							preg_match( '#(' . $this->excluded_defer_js . ')#i', $matches['url'] )
 						) {
@@ -213,7 +213,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 					}
 
 					if (
-						!empty( $this->excluded_defer_js )
+						! empty( $this->excluded_defer_js )
 						&&
 						preg_match( '#(' . $this->excluded_defer_js . ')#i', $matches['url'] )
 					) {
