@@ -101,7 +101,7 @@ class DeferJS {
 	 *
 	 * @return array
 	 */
-	private function get_excluded() : array {
+	public function get_excluded() : array {
 		$exclude_defer_js = [
 			'gist.github.com',
 			'content.jwplatform.com',
