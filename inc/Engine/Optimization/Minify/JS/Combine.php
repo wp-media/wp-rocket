@@ -178,7 +178,11 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 							}
 						}
 
-						if ( preg_match( '#(' .  $this->excluded_defer_js . ')#i', $matches['url'] ) ) {
+						if (
+							!empty( $this->excluded_defer_js )
+						   &&
+						   preg_match( '#(' . $this->excluded_defer_js . ')#i', $matches['url'] )
+					   ) {
 							Logger::debug(
 								'Script is excluded from defer JS.',
 								[
@@ -208,7 +212,11 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 						return;
 					}
 
-					if ( preg_match( '#(' .  $this->excluded_defer_js . ')#i', $matches['url'] ) ) {
+					if (
+						 !empty( $this->excluded_defer_js )
+						&&
+						preg_match( '#(' . $this->excluded_defer_js . ')#i', $matches['url'] )
+					) {
 						Logger::debug(
 							'Script is excluded from defer JS.',
 							[
