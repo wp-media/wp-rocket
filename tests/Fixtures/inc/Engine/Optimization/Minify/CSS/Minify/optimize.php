@@ -296,6 +296,7 @@ EXPECTED_HTML
 			'cdn_url'         => 'http://example.org',
 			'site_url'        => 'http://example.org',
 			'external_url'    => 'http://external-domain.org/path/to/style.css',
+			'excluded_css'		=> [],
 			'has_integrity'   => true,
 			'valid_integrity' => true
 		],
@@ -332,6 +333,7 @@ EXPECTED_HTML
 			'cdn_url'         => 'http://example.org',
 			'site_url'        => 'http://example.org',
 			'external_url'    => 'http://external-domain.org/path/to/style.css',
+			'excluded_css'		=> [],
 			'has_integrity'   => true,
 			'valid_integrity' => false
 		],
@@ -358,6 +360,7 @@ ORIGINAL_HTML
 		<link rel="stylesheet" href="http://excluded-external-domain.org/path/to/style.css" type="text/css" media="all">
 		<link rel="stylesheet" href="http://subdomain.excluded-domain.org/path/to/style.css" type="text/css" media="all">
 		<link rel="stylesheet" href="http://another-excluded-domain.org/path/to/style.css" type="text/css" media="all">
+	</head>
 	<body>
 	</body>
 </html>

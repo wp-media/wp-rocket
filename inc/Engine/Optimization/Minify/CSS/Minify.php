@@ -33,9 +33,16 @@ class Minify extends AbstractCSSOptimization implements ProcessorInterface {
 		}
 
 		foreach ( $styles as $style ) {
-			if ( $this->is_external_file( $style['url'] ) ) {
-				if ( in_array( $style, $this->get_excluded_externals(), true ) ) {
-					continue;
+			foreach ( $this->get_excluded_externals() as $excluded ) {
+				if ( false !== strpos( $style['url'], $excluded ) ) {
+					Logger::debug(
+						'Style is external.',
+						[
+							'css minify process',
+							'url' => $style['url'],
+						]
+					);
+					continue 2;
 				}
 			}
 
