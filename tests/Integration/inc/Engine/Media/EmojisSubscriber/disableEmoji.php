@@ -42,17 +42,9 @@ class disableEmoji extends TestCase {
 
 		if ( $expected ) {
 			$this->assertFalse( has_action( 'wp_head', 'print_emoji_detection_script' ) );
-			$this->assertFalse( has_action( 'admin_print_scripts', 'print_emoji_detection_script' ) );
-			$this->assertFalse( has_filter( 'the_content_feed', 'wp_staticize_emoji' ) );
-			$this->assertFalse( has_filter( 'comment_text_rss', 'wp_staticize_emoji' ) );
-			$this->assertFalse( has_filter( 'wp_mail', 'wp_staticize_emoji_for_email' ) );
 			$this->assertNotFalse( has_filter( 'emoji_svg_url', '__return_false' ) );
 		} else {
 			$this->assertNotFalse( has_action( 'wp_head', 'print_emoji_detection_script' ) );
-			$this->assertNotFalse( has_action( 'admin_print_scripts', 'print_emoji_detection_script' ) );
-			$this->assertNotFalse( has_filter( 'the_content_feed', 'wp_staticize_emoji' ) );
-			$this->assertNotFalse( has_filter( 'comment_text_rss', 'wp_staticize_emoji' ) );
-			$this->assertNotFalse( has_filter( 'wp_mail', 'wp_staticize_emoji_for_email' ) );
 			$this->assertFalse( has_filter( 'emoji_svg_url', '__return_false' ) );
 		}
 	}

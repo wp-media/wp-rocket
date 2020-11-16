@@ -61,12 +61,11 @@ $default = [
 	'cloudflare_protocol_rewrite' => 0,
 	'cloudflare_auto_settings'    => 0,
 	'cloudflare_old_settings'     => '',
-	'control_heartbeat'           => 0,
+	'control_heartbeat'           => 1,
 	'heartbeat_site_behavior'     => 'reduce_periodicity',
 	'heartbeat_admin_behavior'    => 'reduce_periodicity',
 	'heartbeat_editor_behavior'   => 'reduce_periodicity',
 	'varnish_auto_purge'          => 0,
-	'do_beta'                     => 0,
 	'analytics_enabled'           => 0,
 	'google_analytics_cache'      => 0,
 	'facebook_pixel_cache'        => 0,
@@ -122,7 +121,7 @@ $integration[ 'delay_js_scripts' ] = [
 	'olark',
 	'pixel-caffeine/build/frontend.js',
 ];
-$integration[ 'preload_links' ]    = 0;
+$integration[ 'preload_links' ]    = 1;
 
 return [
 	'test_data' => [
