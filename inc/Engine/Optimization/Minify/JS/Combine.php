@@ -178,18 +178,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 							}
 						}
 
-						if (
-							! empty( $this->excluded_defer_js )
-							&&
-							preg_match( '#(' . $this->excluded_defer_js . ')#i', $matches['url'] )
-						) {
-							Logger::debug(
-								'Script is excluded from defer JS.',
-								[
-									'js combine process',
-									'tag' => $matches[0],
-								]
-							);
+						if ( $this->is_defer_excluded( $matches['url'] ) ) {
 							return;
 						}
 
@@ -212,18 +201,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 						return;
 					}
 
-					if (
-						! empty( $this->excluded_defer_js )
-						&&
-						preg_match( '#(' . $this->excluded_defer_js . ')#i', $matches['url'] )
-					) {
-						Logger::debug(
-							'Script is excluded from defer JS.',
-							[
-								'js combine process',
-								'tag' => $matches[0],
-							]
-						);
+					if ( $this->is_defer_excluded( $matches['url'] ) ) {
 						return;
 					}
 
@@ -873,4 +851,30 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 		return false !== strpos( $script_attributes, 'data-rocketlazyloadscript=' );
 	}
 
+	/**
+	 * Checks if the current URL is excluded from defer JS
+	 *
+	 * @since 3.8
+	 *
+	 * @param string $url URL to check.
+	 * @return boolean
+	 */
+	private function is_defer_excluded( string $url ) : bool {
+		if (
+			! empty( $this->excluded_defer_js )
+			&&
+			preg_match( '#(' . $this->excluded_defer_js . ')#i', $url )
+		) {
+			Logger::debug(
+				'Script is excluded from defer JS.',
+				[
+					'js combine process',
+					'url' => $url,
+				]
+			);
+			return true;
+		}
+
+		return false;
+	}
 }
