@@ -928,6 +928,12 @@ class Page {
 					// translators: %1$s = “WP Rocket”, %2$s = a list of plugin names.
 					'helper'      => ! empty( $disable_lazyload ) ? sprintf( __( 'LazyLoad is currently activated in %2$s. If you want to use WP Rocket’s LazyLoad, disable this option in %2$s.', 'rocket' ), WP_ROCKET_PLUGIN_NAME, $disable_lazyload ) : '',
 				],
+				'dimensions_section' => [
+					'title' => __( 'Images dimensions', 'rocket' ),
+					'type'  => 'fields_container',
+					'description' => __( 'Add missing width and height attributes to images. Helps prevent layout shifts and improve the reading experience for your visitors. More info', 'rocket' ),
+					'page' => 'media',
+				],
 				'embeds_section'   => [
 					'title'       => __( 'Embeds', 'rocket' ),
 					'type'        => 'fields_container',
@@ -1013,6 +1019,14 @@ class Page {
 					],
 					// translators: %1$s = “WP Rocket”, %2$s = a list of plugin or themes names.
 					'description'       => ! empty( $disable_youtube_lazyload ) ? sprintf( __( 'Replace YouTube iframe with preview image is not compatible with %2$s.', 'rocket' ), WP_ROCKET_PLUGIN_NAME, $disable_youtube_lazyload ) : '',
+				],
+				'images_dimensions' => [
+					'type'              => 'checkbox',
+					'label'             => __( 'Add missing image dimensions', 'rocket' ),
+					'section'           => 'dimensions_section',
+					'page'              => 'media',
+					'default'           => 0,
+					'sanitize_callback' => 'sanitize_checkbox',
 				],
 				'embeds'           => [
 					'type'              => 'checkbox',
