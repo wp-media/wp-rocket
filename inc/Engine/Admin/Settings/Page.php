@@ -929,10 +929,10 @@ class Page {
 					'helper'      => ! empty( $disable_lazyload ) ? sprintf( __( 'LazyLoad is currently activated in %2$s. If you want to use WP Rocket’s LazyLoad, disable this option in %2$s.', 'rocket' ), WP_ROCKET_PLUGIN_NAME, $disable_lazyload ) : '',
 				],
 				'dimensions_section' => [
-					'title' => __( 'Images dimensions', 'rocket' ),
-					'type'  => 'fields_container',
+					'title'       => __( 'Images dimensions', 'rocket' ),
+					'type'        => 'fields_container',
 					'description' => __( 'Add missing width and height attributes to images. Helps prevent layout shifts and improve the reading experience for your visitors. More info', 'rocket' ),
-					'page' => 'media',
+					'page'        => 'media',
 				],
 				'embeds_section'     => [
 					'title'       => __( 'Embeds', 'rocket' ),
