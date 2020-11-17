@@ -537,9 +537,8 @@ class Page {
 					'default'           => 10,
 					'sanitize_callback' => 'sanitize_cache_lifespan',
 					'choices'           => [
-						'MINUTE_IN_SECONDS' => __( 'Minutes', 'rocket' ),
-						'HOUR_IN_SECONDS'   => __( 'Hours', 'rocket' ),
-						'DAY_IN_SECONDS'    => __( 'Days', 'rocket' ),
+						'HOUR_IN_SECONDS' => __( 'Hours', 'rocket' ),
+						'DAY_IN_SECONDS'  => __( 'Days', 'rocket' ),
 					],
 				],
 			]
