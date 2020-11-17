@@ -33,19 +33,6 @@ class Minify extends AbstractCSSOptimization implements ProcessorInterface {
 		}
 
 		foreach ( $styles as $style ) {
-			foreach ( $this->get_excluded_externals() as $excluded ) {
-				if ( false !== strpos( $style['url'], $excluded ) ) {
-					Logger::debug(
-						'Style is external.',
-						[
-							'css minify process',
-							'url' => $style['url'],
-						]
-					);
-					continue 2;
-				}
-			}
-
 			if ( $this->is_minify_excluded_file( $style ) ) {
 				Logger::debug(
 					'Style is excluded.',
@@ -352,25 +339,5 @@ class Minify extends AbstractCSSOptimization implements ProcessorInterface {
 	 */
 	protected function get_minifier( $file_content ) {
 		return new Minifier\CSS( $file_content );
-	}
-
-	/**
-	 * Get external files excluded from minify.
-	 *
-	 * @since 3.7.6
-	 *
-	 * @return array Excluded external files.
-	 */
-	private function get_excluded_externals() {
-		/**
-		 * Filters CSS external URLs to exclude from the minify process
-		 *
-		 * @since 3.7.6
-		 *
-		 * @param array $pattern Patterns to match.
-		 */
-		$excluded_externals = (array) apply_filters( 'rocket_minify_css_excluded_external', [] );
-
-		return array_merge( $excluded_externals, $this->options->get( 'exclude_css', [] ) );
 	}
 }
