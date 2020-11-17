@@ -4,6 +4,7 @@ namespace WP_Rocket\Engine\Optimization\Minify\JS;
 use WP_Rocket\Dependencies\Minify\JS as MinifyJS;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\AssetsLocalCache;
+use WP_Rocket\Engine\Optimization\DeferJS\DeferJS;
 use WP_Rocket\Engine\Optimization\Minify\ProcessorInterface;
 use WP_Rocket\Logger\Logger;
 
@@ -23,13 +24,13 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 	private $minifier;
 
 	/**
-	 * JQuery URL
+	 * Excluded defer JS pattern
 	 *
-	 * @since 3.1
+	 * @since 3.8
 	 *
-	 * @var array
+	 * @var string
 	 */
-	private $jquery_urls;
+	private $excluded_defer_js;
 
 	/**
 	 * Scripts to combine
@@ -57,12 +58,13 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 	 * @param Options_Data     $options     Plugin options instance.
 	 * @param MinifyJS         $minifier    Minifier instance.
 	 * @param AssetsLocalCache $local_cache Assets local cache instance.
+	 * @param DeferJS          $defer_js    Defer JS instance.
 	 */
-	public function __construct( Options_Data $options, MinifyJS $minifier, AssetsLocalCache $local_cache ) {
+	public function __construct( Options_Data $options, MinifyJS $minifier, AssetsLocalCache $local_cache, DeferJS $defer_js ) {
 		parent::__construct( $options, $local_cache );
 
-		$this->minifier    = $minifier;
-		$this->jquery_urls = $this->get_jquery_urls();
+		$this->minifier          = $minifier;
+		$this->excluded_defer_js = implode( '|', $defer_js->get_excluded() );
 	}
 
 	/**
@@ -176,11 +178,8 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 							}
 						}
 
-						if ( ! empty( $this->jquery_urls ) ) {
-							$jquery_urls = implode( '|', $this->jquery_urls );
-							if ( preg_match( '#^(' . $jquery_urls . ')$#', rocket_remove_url_protocol( strtok( $matches['url'], '?' ) ) ) ) {
-								return;
-							}
+						if ( $this->is_defer_excluded( $matches['url'] ) ) {
+							return;
 						}
 
 						$this->scripts[] = [
@@ -199,6 +198,10 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 								'tag' => $matches[0],
 							]
 						);
+						return;
+					}
+
+					if ( $this->is_defer_excluded( $matches['url'] ) ) {
 						return;
 					}
 
@@ -848,4 +851,30 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 		return false !== strpos( $script_attributes, 'data-rocketlazyloadscript=' );
 	}
 
+	/**
+	 * Checks if the current URL is excluded from defer JS
+	 *
+	 * @since 3.8
+	 *
+	 * @param string $url URL to check.
+	 * @return boolean
+	 */
+	private function is_defer_excluded( string $url ) : bool {
+		if (
+			! empty( $this->excluded_defer_js )
+			&&
+			preg_match( '#(' . $this->excluded_defer_js . ')#i', $url )
+		) {
+			Logger::debug(
+				'Script is excluded from defer JS.',
+				[
+					'js combine process',
+					'url' => $url,
+				]
+			);
+			return true;
+		}
+
+		return false;
+	}
 }
