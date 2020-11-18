@@ -2,6 +2,9 @@
 
 defined( 'ABSPATH' ) || exit;
 
+class_alias( '\WP_Rocket\Engine\Cache\PurgeExpired\PurgeExpiredCache', '\WP_Rocket\Cache\Expired_Cache_Purge');
+class_alias( '\WP_Rocket\Engine\Cache\PurgeExpired\Subscriber', '\WP_Rocket\Subscriber\Cache\Expired_Cache_Purge_Subscriber');
+
 /**
  * Defer all JS files.
  *
@@ -122,3 +125,4 @@ function get_rocket_exclude_defer_js() { // phpcs:ignore WordPress.NamingConvent
 
 	return $exclude_defer_js;
 }
+

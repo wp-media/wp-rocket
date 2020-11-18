@@ -110,56 +110,6 @@ $(document).ready(function(){
 	}
 
 	/***
-	* Show popin beta test
-	***/
-
-	var $wprBetaPopin = $('.wpr-Popin-Beta'),
-	$wprBetaClosePopin = $('.wpr-Popin-Beta-close'),
-	$wprBetaPopinButton = $('.wpr-Popin-Beta .wpr-button'),
-	$wprBetaOpenPopin = $('#do_beta');
-
-	$wprBetaOpenPopin.change(function(e) {
-		if ($wprBetaOpenPopin.is(':checked')) {
-			wprOpenBeta();
-			return false;
-		}
-	});
-
-	$wprBetaClosePopin.click(function() {
-		wprDeactivateBeta();
-		return false;
-	});
-
-	$wprBetaPopinButton.click(function() {
-		wprCloseBeta();
-		return false;
-	});
-
-	function wprOpenBeta(){
-		var vTL = new TimelineLite()
-			.set($wprBetaPopin, {'display':'block'})
-			.set($wprPopinOverlay, {'display':'block'})
-			.fromTo($wprPopinOverlay, 0.6, {autoAlpha:0},{autoAlpha:1, ease:Power4.easeOut})
-			.fromTo($wprBetaPopin, 0.6, {autoAlpha:0, marginTop: -24}, {autoAlpha:1, marginTop:0, ease:Power4.easeOut}, '=-.5')
-		;
-	}
-
-	function wprCloseBeta(){
-		var vTL = new TimelineLite()
-			.fromTo($wprBetaPopin, 0.6, {autoAlpha:1, marginTop: 0}, {autoAlpha:0, marginTop:-24, ease:Power4.easeOut})
-			.fromTo($wprPopinOverlay, 0.6, {autoAlpha:1},{autoAlpha:0, ease:Power4.easeOut}, '=-.5')
-			.set($wprBetaPopin, {'display':'none'})
-			.set($wprPopinOverlay, {'display':'none'})
-		;
-	}
-
-	function wprDeactivateBeta(){
-		wprCloseBeta();
-		$('#do_beta').prop('checked', false);
-		$('#do_beta').trigger('change');
-	}
-
-	/***
 	* Show popin upgrade
 	***/
 
