@@ -71,7 +71,8 @@
 	"autoload": {
 		"classmap": [
 			"inc/classes",
-			"inc/vendors/classes"
+			"inc/vendors/classes",
+			"inc/deprecated"
 		],
 		"exclude-from-classmap": [
 			"inc/vendors/classes/class-rocket-mobile-detect.php",
