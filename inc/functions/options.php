@@ -447,6 +447,7 @@ function get_rocket_exclude_defer_js() { // phpcs:ignore WordPress.NamingConvent
 		'static.mailerlite.com/data/(.*).js',
 		'cdn.voxpow.com/static/libs/v1/(.*).js',
 		'cdn.voxpow.com/media/trackers/js/(.*).js',
+		'cc.cdn.civiccomputing.com/9/cookieControl-9.x.min.js',
 	];
 
 	if ( get_rocket_option( 'defer_all_js', 0 ) && get_rocket_option( 'defer_all_js_safe', 0 ) ) {
