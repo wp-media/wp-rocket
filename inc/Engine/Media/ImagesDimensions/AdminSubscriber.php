@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Engine\Media\ImagesDimensions;
 
+use WP_Rocket\Engine\Admin\Settings\Settings;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class AdminSubscriber implements Subscriber_Interface {
@@ -29,6 +30,7 @@ class AdminSubscriber implements Subscriber_Interface {
 	public static function get_subscribed_events() : array {
 		return [
 			'rocket_first_install_options' => [ 'add_option', 14 ],
+			'rocket_input_sanitize'        => [ 'sanitize_option', 10, 2 ],
 		];
 	}
 
@@ -40,5 +42,18 @@ class AdminSubscriber implements Subscriber_Interface {
 	 */
 	public function add_option( array $options ) : array {
 		return $this->dimensions->add_option( $options );
+	}
+
+	/**
+	 * Sanitizes the option value when saving from the settings page
+	 *
+	 * @since 3.8
+	 *
+	 * @param array    $input    Array of sanitized values after being submitted by the form.
+	 * @param Settings $settings Settings class instance.
+	 * @return array
+	 */
+	public function sanitize_option( array $input, Settings $settings ) : array {
+		return $this->dimensions->sanitize_option_value( $input, $settings );
 	}
 }
