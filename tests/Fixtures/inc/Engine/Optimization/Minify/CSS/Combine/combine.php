@@ -170,5 +170,68 @@ return [
 			'cdn_url'  => 'https://123456.rocketcdn.me/cdnpath',
 			'site_url' => 'http://example.org',
 		],
+
+		'combineExcludeMediaQueriesCssFiles' => [
+			'original' =>
+				'<html><head><title>Sample Page</title>' .
+				'<link rel="stylesheet" href="http://example.org/wp-content/themes/twentytwenty/style.css" type="text/css" media="all">' .
+
+				"<link rel='stylesheet' media='screen AND (max-width: 900px)' href='http://example.org/wp-content/plugins/hello-dolly/style.css' />
+				<link rel='stylesheet' media='screen AND (min-width: 500px)' href='http://example.org/wp-includes/css/dashicons.min.css' />
+				<link rel='stylesheet' media='screen not (min-width: 500px)' href='http://example.org/wp-content/themes/twentytwenty/style-font-face.min.css' />
+				<link rel='stylesheet' media='all AND (max-width: 900px)' href='http://example.org/wp-content/themes/twentytwenty/style-import.css' />
+				<link rel='stylesheet' media='all AND (min-width: 500px)' href='http://example.org/wp-content/themes/twentytwenty/new-style.css' />
+				<link rel='stylesheet' media='all not (min-width: 500px)' href='http://example.org/wp-content/themes/twentytwenty/final-style.css' />" .
+				'</head><body></body></html>',
+
+			'expected' => [
+				'html'  => '<html><head><title>Sample Page</title>' .
+				           '<link rel="stylesheet" href="http://example.org/wp-content/cache/min/1/dcd1a95e5d432b5d300d7c2f216d7150.css" media="all" data-minify="1" />' .
+				           "<link rel='stylesheet' media='screen AND (max-width: 900px)' href='http://example.org/wp-content/plugins/hello-dolly/style.css' />
+				<link rel='stylesheet' media='screen AND (min-width: 500px)' href='http://example.org/wp-includes/css/dashicons.min.css' />
+				<link rel='stylesheet' media='screen not (min-width: 500px)' href='http://example.org/wp-content/themes/twentytwenty/style-font-face.min.css' />
+				<link rel='stylesheet' media='all AND (max-width: 900px)' href='http://example.org/wp-content/themes/twentytwenty/style-import.css' />
+				<link rel='stylesheet' media='all AND (min-width: 500px)' href='http://example.org/wp-content/themes/twentytwenty/new-style.css' />
+				<link rel='stylesheet' media='all not (min-width: 500px)' href='http://example.org/wp-content/themes/twentytwenty/final-style.css' />" .
+				           '</head><body></body></html>',
+				'files' => [
+					'wp-content/cache/min/1/dcd1a95e5d432b5d300d7c2f216d7150.css',
+					'wp-content/cache/min/1/dcd1a95e5d432b5d300d7c2f216d7150.css.gz',
+				],
+				'css' => 'body{font-family:Helvetica,Arial,sans-serif;text-align:center}',
+			],
+
+			'cdn_host' => [],
+			'cdn_url'  => 'http://example.org',
+			'site_url' => 'http://example.org',
+		],
+
+		'combineIncludeMediaQueriesCssFiles' => [
+			'original' =>
+				'<html><head><title>Sample Page</title>' .
+				'<link rel="stylesheet" href="http://example.org/wp-content/themes/twentytwenty/style.css" type="text/css" media="all">' .
+				"<link rel='stylesheet' media='screen , (max-width: 900px)' href='http://example.org/wp-content/plugins/hello-dolly/style.css' />
+				<link rel='stylesheet' media='all , (max-width: 900px)' href='http://example.org/wp-includes/css/dashicons.min.css' />
+				<link rel='stylesheet' media='(max-width: 900px), screen' href='http://example.org/wp-content/themes/twentytwenty/style-font-face.min.css' />
+				<link rel='stylesheet' media='(max-width: 900px), all' href='http://example.org/wp-content/themes/twentytwenty/style-import.css' />
+				<link rel='stylesheet' media='screen' href='http://example.org/wp-content/themes/twentytwenty/new-style.css' />" .
+				'</head><body></body></html>',
+
+			'expected' => [
+				'html'  => '<html><head><title>Sample Page</title>' .
+				           '<link rel="stylesheet" href="http://example.org/wp-content/cache/min/1/e03b91d7efb37b80b0c7caf760015dda.css" media="all" data-minify="1" />' .
+				           '</head><body></body></html>',
+				'files' => [
+					'wp-content/cache/min/1/e03b91d7efb37b80b0c7caf760015dda.css',
+					'wp-content/cache/min/1/e03b91d7efb37b80b0c7caf760015dda.css.gz',
+				],
+				'css' => '@import url(vfs://public/wp-content/themes/twentytwenty/style.css);body{font-family:Helvetica,Arial,sans-serif;text-align:center}body{font-family:Helvetica,Arial,sans-serif;text-align:center}body{font-family:Helvetica,Arial,sans-serif;text-align:center}@font-face{font-display:swap;font-family:Helvetica}footer{color:red}',
+			],
+
+			'cdn_host' => [],
+			'cdn_url'  => 'http://example.org',
+			'site_url' => 'http://example.org',
+		],
+
 	],
 ];
