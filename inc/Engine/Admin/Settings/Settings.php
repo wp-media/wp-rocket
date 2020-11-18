@@ -492,7 +492,13 @@ class Settings {
 
 		unset( $input['ignore'] );
 
-		return apply_filters( 'rocket_input_sanitize', $input );
+		/**
+		 * Filters the sanitized input before returning the array
+		 *
+		 * @param array    $input    Array of sanitized values after being submitted by the form.
+		 * @param Settings $settings Current class instance.
+		 */
+		return apply_filters( 'rocket_input_sanitize', $input, $this );
 	}
 
 	/**
