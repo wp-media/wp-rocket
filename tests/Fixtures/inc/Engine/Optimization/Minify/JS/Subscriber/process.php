@@ -338,7 +338,7 @@ return [
 						</script>
 					</head>
 					<body>
-						<script src="http://example.org/wp-content/cache/min/1/1100e4606ab35f45752eb8c3c8da0427.js" data-minify="1"></script>
+						<script src="http://example.org/wp-content/cache/min/1/1100e4606ab35f45752eb8c3c8da0427.js" data-minify="1" defer></script>
 					</body>
 				</html>',
 				'files' => [
@@ -387,7 +387,7 @@ return [
 						</script>
 					</head>
 					<body>
-						<script src="http://example.org/wp-content/cache/min/1/1100e4606ab35f45752eb8c3c8da0427.js" data-minify="1"></script>
+						<script src="http://example.org/wp-content/cache/min/1/1100e4606ab35f45752eb8c3c8da0427.js" data-minify="1" defer></script>
 					</body>
 				</html>',
 				'files' => [
@@ -435,7 +435,7 @@ return [
 						</script>
 					</head>
 					<body>
-						<script src="https://123456.rocketcdn.me/wp-content/cache/min/1/1100e4606ab35f45752eb8c3c8da0427.js" data-minify="1"></script>
+						<script src="https://123456.rocketcdn.me/wp-content/cache/min/1/1100e4606ab35f45752eb8c3c8da0427.js" data-minify="1" defer></script>
 					</body>
 				</html>',
 				'files' => [
@@ -484,7 +484,7 @@ return [
 						</script>
 					</head>
 					<body>
-						<script src="https://123456.rocketcdn.me/wp-content/cache/min/1/1100e4606ab35f45752eb8c3c8da0427.js" data-minify="1"></script>
+						<script src="https://123456.rocketcdn.me/wp-content/cache/min/1/1100e4606ab35f45752eb8c3c8da0427.js" data-minify="1" defer></script>
 					</body>
 				</html>',
 				'files' => [
