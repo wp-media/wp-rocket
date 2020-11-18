@@ -121,7 +121,7 @@ abstract class AbstractCSSOptimization extends AbstractOptimization {
 			return true;
 		}
 
-		if ( false !== strpos( $tag[0], 'media=' ) && ! preg_match( '/media=["\'](?:\s*|[^"\']*?\b(?:\s*?,\s*?)?(all|screen)(?:\s*?,\s*?)?)["\']/i', $tag[0] ) ) {
+		if ( false !== strpos( $tag[0], 'media=' ) && ! preg_match( '/media=["\'](?:\s*|[^"\']*?\b(?:\s*?,\s*?)?(all|screen)(?:\s*?,\s*?[^"\']*)?)["\']/i', $tag[0] ) ) {
 			return true;
 		}
 
