@@ -276,7 +276,7 @@ class Combine extends AbstractCSSOptimization implements ProcessorInterface {
 	 * @return string
 	 */
 	private function get_content( $combined_file ) {
-		$content = '';
+		$minifier = new MinifyCSS();
 
 		foreach ( $this->styles as $key => $style ) {
 			if ( 'internal' === $style['type'] ) {
@@ -294,29 +294,15 @@ class Combine extends AbstractCSSOptimization implements ProcessorInterface {
 				continue;
 			}
 
-			$content .= $file_content;
+			$minifier->add( $file_content );
 		}
 
-		$content = $this->minify( $content );
+		$content = $minifier->minify();
 
 		if ( empty( $content ) ) {
 			Logger::debug( 'No CSS content.', [ 'css combine process' ] );
 		}
 
 		return $content;
-	}
-
-	/**
-	 * Minifies the content
-	 *
-	 * @since 3.1
-	 *
-	 * @param string $content Content to minify.
-	 * @return string
-	 */
-	protected function minify( $content ) {
-		$minifier = new MinifyCSS( $content );
-
-		return $minifier->minify();
 	}
 }
