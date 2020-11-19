@@ -125,10 +125,6 @@ abstract class AbstractCSSOptimization extends AbstractOptimization {
 			return true;
 		}
 
-		if ( false !== strpos( $tag[0], 'only screen and' ) ) {
-			return true;
-		}
-
 		$file      = wp_parse_url( $tag['url'] );
 		$file_path = isset( $file['path'] ) ? $file['path'] : null;
 		$host      = isset( $file['host'] ) ? $file['host'] : null;
@@ -155,4 +151,5 @@ abstract class AbstractCSSOptimization extends AbstractOptimization {
 
 		return false;
 	}
+
 }
