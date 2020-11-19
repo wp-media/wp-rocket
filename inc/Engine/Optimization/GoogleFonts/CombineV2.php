@@ -104,12 +104,13 @@ class CombineV2 extends AbstractOptimization {
 	 *
 	 * @since  3.8
 	 *
-	 * @param array $url A Google Font v2 url.
+	 * @param string $url A Google Font v2 url.
 	 *
 	 * @return void
 	 */
 	protected function parse( string $url ): void {
-		$pattern = '#family=([A-Za-z0-9;:=%&\+\@\.]+)#';
+		$url_pattern = '#^(family=[A-Za-z0-9;:,=%&\+\@\.]+)$#';
+		$display_pattern = '#&display=(?:swap|auto|block|fallback|optional)#';
 
 		$decoded_url = html_entity_decode( $url ); //return $decoded_url;
 		$query       = wp_parse_url( $decoded_url, PHP_URL_QUERY );
@@ -118,12 +119,12 @@ class CombineV2 extends AbstractOptimization {
 			return;
 		}
 
-		if ( ! preg_match_all( $pattern, $query, $matches, PREG_PATTERN_ORDER ) ) {
+		if ( ! preg_match_all( $url_pattern, $query, $matches, PREG_PATTERN_ORDER ) ) {
 			return;
 		}
 
 		foreach ( $matches[1] as $family ) {
-			$this->families[] = rawurlencode( htmlentities( $family ) );
+			$this->families[] = preg_replace( $display_pattern, '', $family );
 		}
 	}
 
@@ -202,12 +203,12 @@ class CombineV2 extends AbstractOptimization {
 	 * @return string
 	 */
 	protected function get_concatenated_families(): string {
-		$families = '';
+		$families = '?';
 
 		foreach ( $this->families as $family ) {
-			$families .= '?family=' . $family . '&';
+			$families .= $family . '&';
 		}
 
-		return rtrim( $families, '&?' );
+		return esc_url( rtrim( $families, '&?' ) );
 	}
 }
