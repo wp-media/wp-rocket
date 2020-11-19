@@ -121,7 +121,7 @@ abstract class AbstractCSSOptimization extends AbstractOptimization {
 			return true;
 		}
 
-		if ( false !== strpos( $tag[0], 'media=' ) && ! preg_match( '/media=["\'](?:\s*|[^"\']*?\b(?:\s*?,\s*?)?(all|screen)(?:\s*?,\s*?[^"\']*)?)["\']/i', $tag[0] ) ) {
+		if ( $this->is_minify_excluded_media( $tag[0] ) ) {
 			return true;
 		}
 
@@ -144,5 +144,21 @@ abstract class AbstractCSSOptimization extends AbstractOptimization {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Check if media query is valid to be excluded from combine or not.
+	 *
+	 * @since 3.8
+	 *
+	 * @param string $tag Stylesheet HTML tag.
+	 * @return bool Ture if it's excluded else false.
+	 */
+	protected function is_minify_excluded_media( $tag ) {
+		return (
+			false !== strpos( $tag, 'media=' )
+			&&
+			! preg_match( '/media=["\'](?:\s*|[^"\']*?\b(?:\s*?,\s*?)?(all|screen)(?:\s*?,\s*?[^"\']*)?)["\']/i', $tag )
+		);
 	}
 }

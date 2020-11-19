@@ -89,7 +89,7 @@ class Combine extends AbstractCSSOptimization implements ProcessorInterface {
 	private function parse( array $styles ) {
 		foreach ( $styles as $key => $style ) {
 			if ( $this->is_external_file( $style['url'] ) ) {
-				if ( $this->is_excluded_external( $style['url'] ) ) {
+				if ( $this->is_excluded_external( $style ) ) {
 					unset( $styles[ $key ] );
 
 					continue;
@@ -133,17 +133,29 @@ class Combine extends AbstractCSSOptimization implements ProcessorInterface {
 	 *
 	 * @since 3.7
 	 *
-	 * @param string $url External URL to check.
+	 * @param array $style Tag corresponding to a CSS file.
 	 * @return boolean
 	 */
-	private function is_excluded_external( $url ) {
+	private function is_excluded_external( $style ) {
+		if ( $this->is_minify_excluded_media( $style[0] ) ) {
+			Logger::debug(
+				'External style is excluded.',
+				[
+					'css combine process',
+					'tag' => $style[0],
+				]
+			);
+
+			return true;
+		}
+
 		foreach ( $this->get_excluded_externals() as $excluded ) {
-			if ( false !== strpos( $url, $excluded ) ) {
+			if ( false !== strpos( $style['url'], $excluded ) ) {
 				Logger::debug(
 					'Style is external.',
 					[
 						'css combine process',
-						'url' => $url,
+						'url' => $style['url'],
 					]
 				);
 				return true;
