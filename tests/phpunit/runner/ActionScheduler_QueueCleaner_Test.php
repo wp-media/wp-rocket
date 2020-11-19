@@ -57,7 +57,7 @@ class ActionScheduler_QueueCleaner_Test extends ActionScheduler_UnitTestCase {
 		remove_action( 'action_scheduler_deleted_action', array( $mock_action, 'action' ), 10 );
 
 		$deleted_actions = array();
-		foreach( $mock_action->get_args() as $action ) {
+		foreach ( $mock_action->get_args() as $action ) {
 			$deleted_actions[] = reset( $action );
 		}
 
