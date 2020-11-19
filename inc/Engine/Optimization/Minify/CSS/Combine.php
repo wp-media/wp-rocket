@@ -88,6 +88,18 @@ class Combine extends AbstractCSSOptimization implements ProcessorInterface {
 	 */
 	private function parse( array $styles ) {
 		foreach ( $styles as $key => $style ) {
+			if ( $this->is_combine_excluded_media( $style[0] ) ) {
+				Logger::debug(
+					'Style is excluded due to media attribute.',
+					[
+						'css combine process',
+						'tag' => $style[0],
+					]
+				);
+
+				continue;
+			}
+
 			if ( $this->is_external_file( $style['url'] ) ) {
 				if ( $this->is_excluded_external( $style['url'] ) ) {
 					unset( $styles[ $key ] );
@@ -133,7 +145,7 @@ class Combine extends AbstractCSSOptimization implements ProcessorInterface {
 	 *
 	 * @since 3.7
 	 *
-	 * @param string $url External URL to check.
+	 * @param array $url External URL to check.
 	 * @return boolean
 	 */
 	private function is_excluded_external( $url ) {
@@ -318,5 +330,21 @@ class Combine extends AbstractCSSOptimization implements ProcessorInterface {
 		$minifier = new MinifyCSS( $content );
 
 		return $minifier->minify();
+	}
+
+	/**
+	 * Check if media query is valid to be excluded from combine or not.
+	 *
+	 * @since 3.8
+	 *
+	 * @param string $tag Stylesheet HTML tag.
+	 * @return bool Ture if it's excluded else false.
+	 */
+	private function is_combine_excluded_media( $tag ) {
+		return (
+			false !== strpos( $tag, 'media=' )
+			&&
+			! preg_match( '/media=["\'](?:\s*|[^"\']*?\b(?:\s*?,\s*?)?(all|screen)(?:\s*?,\s*?[^"\']*)?)["\']/i', $tag )
+		);
 	}
 }
