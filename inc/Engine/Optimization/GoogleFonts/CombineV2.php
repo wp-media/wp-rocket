@@ -81,8 +81,7 @@ class CombineV2 extends AbstractOptimization {
 
 			return $html;
 		}
-// Good to HERE!
-		return var_export($this->families, true);
+
 		$html = preg_replace( '@<\/title>@i', '$0' . $this->get_combine_tag(), $html, 1 );
 
 		foreach ( $font_tags as $font ) {
@@ -141,7 +140,7 @@ class CombineV2 extends AbstractOptimization {
 
 		return sprintf(
 			'<link rel="stylesheet" href="%s" />', // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
-			esc_url( "https://fonts.googleapis.com/css2?{$this->get_concatenated_families()}&display={$display}" )
+			esc_url( "https://fonts.googleapis.com/css2{$this->get_concatenated_families()}&display={$display}" )
 		);
 	}
 
@@ -206,7 +205,7 @@ class CombineV2 extends AbstractOptimization {
 		$families = '';
 
 		foreach ( $this->families as $family ) {
-			$families .= $family . '&?';
+			$families .= '?family=' . $family . '&';
 		}
 
 		return rtrim( $families, '&?' );
