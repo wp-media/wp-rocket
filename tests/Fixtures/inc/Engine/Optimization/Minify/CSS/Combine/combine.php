@@ -174,6 +174,7 @@ return [
 		'combineExcludeMediaQueriesCssFiles' => [
 			'original' =>
 				'<html><head><title>Sample Page</title>' .
+				'<link rel="stylesheet" media="screen not (max-width: 966px)" id="font-awesome-external-css-relative-url" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" />' .
 				'<link rel="stylesheet" href="http://example.org/wp-content/themes/twentytwenty/style.css" type="text/css" media="all">' .
 
 				"<link rel='stylesheet' media='screen AND (max-width: 900px)' href='http://example.org/wp-content/plugins/hello-dolly/style.css' />
@@ -187,6 +188,7 @@ return [
 			'expected' => [
 				'html'  => '<html><head><title>Sample Page</title>' .
 				           '<link rel="stylesheet" href="http://example.org/wp-content/cache/min/1/dcd1a95e5d432b5d300d7c2f216d7150.css" media="all" data-minify="1" />' .
+				           '<link rel="stylesheet" media="screen not (max-width: 966px)" id="font-awesome-external-css-relative-url" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" />' .
 				           "<link rel='stylesheet' media='screen AND (max-width: 900px)' href='http://example.org/wp-content/plugins/hello-dolly/style.css' />
 				<link rel='stylesheet' media='screen AND (min-width: 500px)' href='http://example.org/wp-includes/css/dashicons.min.css' />
 				<link rel='stylesheet' media='screen not (min-width: 500px)' href='http://example.org/wp-content/themes/twentytwenty/style-font-face.min.css' />
@@ -209,6 +211,7 @@ return [
 		'combineIncludeMediaQueriesCssFiles' => [
 			'original' =>
 				'<html><head><title>Sample Page</title>' .
+				'<link rel="stylesheet" media="screen , (max-width: 966px)" id="font-awesome-external-css-relative-url" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />' .
 				'<link rel="stylesheet" href="http://example.org/wp-content/themes/twentytwenty/style.css" type="text/css" media="all">' .
 				"<link rel='stylesheet' media='screen , (max-width: 900px)' href='http://example.org/wp-content/plugins/hello-dolly/style.css' />
 				<link rel='stylesheet' media='all , (max-width: 900px)' href='http://example.org/wp-includes/css/dashicons.min.css' />
@@ -219,13 +222,13 @@ return [
 
 			'expected' => [
 				'html'  => '<html><head><title>Sample Page</title>' .
-				           '<link rel="stylesheet" href="http://example.org/wp-content/cache/min/1/e03b91d7efb37b80b0c7caf760015dda.css" media="all" data-minify="1" />' .
+				           '<link rel="stylesheet" href="http://example.org/wp-content/cache/min/1/074f89d1546ea3c6df831e874538e908.css" media="all" data-minify="1" />' .
 				           '</head><body></body></html>',
 				'files' => [
-					'wp-content/cache/min/1/e03b91d7efb37b80b0c7caf760015dda.css',
-					'wp-content/cache/min/1/e03b91d7efb37b80b0c7caf760015dda.css.gz',
+					'wp-content/cache/min/1/074f89d1546ea3c6df831e874538e908.css',
+					'wp-content/cache/min/1/074f89d1546ea3c6df831e874538e908.css.gz',
 				],
-				'css' => '@import url(vfs://public/wp-content/themes/twentytwenty/style.css);body{font-family:Helvetica,Arial,sans-serif;text-align:center}body{font-family:Helvetica,Arial,sans-serif;text-align:center}body{font-family:Helvetica,Arial,sans-serif;text-align:center}@font-face{font-display:swap;font-family:Helvetica}footer{color:red}',
+				'css' => "@import url(vfs://public/wp-content/themes/twentytwenty/style.css);@font-face{font-display:swap;font-family:'FontAwesome';src:url(https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/../fonts/fontawesome-webfont.eot?v=4.7.0);src:url('https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/../fonts/fontawesome-webfont.eot?#iefix&v=4.7.0') format('embedded-opentype'),url(https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/../fonts/fontawesome-webfont.woff2?v=4.7.0) format('woff2'),url(https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/../fonts/fontawesome-webfont.woff?v=4.7.0) format('woff'),url(https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/../fonts/fontawesome-webfont.ttf?v=4.7.0) format('truetype'),url('https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/../fonts/fontawesome-webfont.svg?v=4.7.0#fontawesomeregular') format('svg');font-weight:400;font-style:normal}body{font-family:Helvetica,Arial,sans-serif;text-align:center}body{font-family:Helvetica,Arial,sans-serif;text-align:center}body{font-family:Helvetica,Arial,sans-serif;text-align:center}@font-face{font-display:swap;font-family:Helvetica}footer{color:red}",
 			],
 
 			'cdn_host' => [],
