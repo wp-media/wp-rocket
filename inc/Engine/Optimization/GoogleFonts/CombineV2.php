@@ -113,9 +113,7 @@ class CombineV2 extends AbstractOptimization {
 	 */
 	protected function parse( array $tag ): bool {
 		if ( false !== strpos( $tag['url'], 'text=' ) ) {
-			Logger::debug(
-				$tag['url'] . ' skipped to preserve "text" attribute.'
-			);
+			Logger::debug( 'GOOGLEFONTS V2 COMBINE: ' . $tag['url'] . ' SKIPPED TO PRESERVE "text" ATTRIBUTE.' );
 
 			return false;
 		}
