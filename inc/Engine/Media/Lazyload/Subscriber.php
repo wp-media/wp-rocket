@@ -486,7 +486,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function add_exclusions( array $exclusions ) : array {
-		$exclude_lazyload = $this->options( 'exclude_lazyload', [] );
+		$exclude_lazyload = $this->options->get( 'exclude_lazyload', [] );
 
 		if ( empty( $exclude_lazyload ) ) {
 			return $exclusions;
