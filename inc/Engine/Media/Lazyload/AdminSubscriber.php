@@ -13,7 +13,7 @@ class AdminSubscriber implements Subscriber_Interface {
 	public static function get_subscribed_events() : array {
 		return [
 			'rocket_first_install_options' => [ 'add_option', 15 ],
-			'rocket_sanitize_input'        => 'sanitize_exclude_lazyload',
+			'rocket_input_sanitize'        => 'sanitize_exclude_lazyload',
 		];
 	}
 
