@@ -3,15 +3,13 @@
 namespace WP_Rocket\Engine\Optimization\GoogleFonts;
 
 use WP_Rocket\Logger\Logger;
-use WP_Rocket\Engine\Optimization\AbstractOptimization;
 
 /**
  * Combine Google Fonts
  *
  * @since  3.1
- * @author Remy Perona
  */
-class Combine extends AbstractOptimization {
+class Combine extends AbstractGFOptimization {
 	/**
 	 * Found fonts
 	 *
@@ -94,27 +92,6 @@ class Combine extends AbstractOptimization {
 	}
 
 	/**
-	 * Finds links to Google fonts
-	 *
-	 * @since  3.1
-	 * @author Remy Perona
-	 *
-	 * @param string $pattern Pattern to search for.
-	 * @param string $html    HTML content.
-	 *
-	 * @return bool|array
-	 */
-	protected function find( $pattern, $html ) {
-		$result = preg_match_all( '/' . $pattern . '/Umsi', $html, $matches, PREG_SET_ORDER );
-
-		if ( empty( $result ) ) {
-			return false;
-		}
-
-		return $matches;
-	}
-
-	/**
 	 * Parses found matches to extract fonts and subsets.
 	 *
 	 * @since  3.1
@@ -124,7 +101,7 @@ class Combine extends AbstractOptimization {
 	 *
 	 * @return void
 	 */
-	protected function parse( array $matches ) {
+	private function parse( array $matches ) {
 		$fonts_array   = [];
 		$subsets_array = [];
 		foreach ( $matches as $match ) {
@@ -163,72 +140,12 @@ class Combine extends AbstractOptimization {
 	 *
 	 * @return string
 	 */
-	protected function get_combine_tag() {
+	private function get_combine_tag() {
 		$display = $this->get_font_display_value();
 
 		return sprintf(
 			'<link rel="stylesheet" href="%s" />', // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
 			esc_url( "https://fonts.googleapis.com/css?family={$this->fonts}{$this->subsets}&display={$display}" )
 		);
-	}
-
-	/**
-	 * Returns font with display value.
-	 *
-	 * @since  3.5.1
-	 * @author Soponar Cristina
-	 *
-	 * @param array $font Array containing font tag and matches.
-	 *
-	 * @return string Google Font tag with display param.
-	 */
-	protected function get_font_with_display( array $font ) {
-		$font_url = html_entity_decode( $font['url'] );
-		$query    = wp_parse_url( $font_url, PHP_URL_QUERY );
-
-		if ( empty( $query ) ) {
-			return $font[0];
-		}
-
-		$display     = $this->get_font_display_value();
-		$parsed_font = wp_parse_args( $query );
-
-		$font_url = ! empty( $parsed_font['display'] )
-			? str_replace( "&display={$parsed_font['display']}", "&display={$display}", $font_url )
-			: "{$font_url}&display={$display}";
-
-		return str_replace( $font['url'], esc_url( $font_url ), $font[0] );
-	}
-
-	/**
-	 * Get the font display value.
-	 *
-	 * @since  3.5.1
-	 *
-	 * @return string font display value.
-	 */
-	protected function get_font_display_value() {
-		$allowed_values = [
-			'auto'     => 1,
-			'block'    => 1,
-			'swap'     => 1,
-			'fallback' => 1,
-			'optional' => 1,
-		];
-
-		/**
-		 * Filters the combined Google Fonts display parameter value
-		 *
-		 * @since  3.3.5
-		 * @author Remy Perona
-		 *
-		 * @param string $display Display value. Can be either auto, block, swap, fallback or optional.
-		 */
-		$display = apply_filters( 'rocket_combined_google_fonts_display', 'swap' );
-		if ( ! is_string( $display ) ) {
-			return 'swap';
-		}
-
-		return isset( $allowed_values[ $display ] ) ? $display : 'swap';
 	}
 }

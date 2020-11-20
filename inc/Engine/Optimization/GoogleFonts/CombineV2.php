@@ -5,29 +5,13 @@ declare( strict_types=1 );
 namespace WP_Rocket\Engine\Optimization\GoogleFonts;
 
 use WP_Rocket\Logger\Logger;
-use WP_Rocket\Engine\Optimization\AbstractOptimization;
 
 /**
  * Combine v2 Google Fonts
  *
  * @since  3.8
  */
-class CombineV2 extends AbstractOptimization {
-
-	/**
-	 * Allowed display values.
-	 *
-	 * @since 3.8
-	 *
-	 * @var array
-	 */
-	protected $display_values = [
-		'auto'     => 1,
-		'block'    => 1,
-		'swap'     => 1,
-		'fallback' => 1,
-		'optional' => 1,
-	];
+class CombineV2 extends AbstractGFOptimization {
 
 	/**
 	 * Font Families
@@ -48,25 +32,25 @@ class CombineV2 extends AbstractOptimization {
 	 * @return string
 	 */
 	public function optimize( string $html ): string {
-		//Logger::info( 'GOOGLE FONTS COMBINE-V2 PROCESS STARTED.', [ 'GF combine process' ] );
+		Logger::info( 'GOOGLE FONTS COMBINE-V2 PROCESS STARTED.', [ 'GF combine process' ] );
 
 		$html_nocomments = $this->hide_comments( $html );
 		$font_tags   = $this->find( '<link(?:\s+(?:(?!href\s*=\s*)[^>])+)?(?:\s+href\s*=\s*([\'"])(?<url>(?:https?:)?\/\/fonts\.googleapis\.com\/css2(?:(?!\1).)+)\1)(?:\s+[^>]*)?>', $html_nocomments );
 
 		if ( ! $font_tags ) {
-			//Logger::debug( 'No v2 Google Fonts found.', [ 'GF combine process' ] );
+			Logger::debug( 'No v2 Google Fonts found.', [ 'GF combine process' ] );
 			return $html;
 		}
 
 		$num_tags = count( $font_tags );
 
-//		Logger::debug(
-//			"Found {$num_tags} v2 Google Fonts.",
-//			[
-//				'GF combine process',
-//				'tags' => $font_tags,
-//			]
-//		);
+		Logger::debug(
+			"Found {$num_tags} v2 Google Fonts.",
+			[
+				'GF combine process',
+				'tags' => $font_tags,
+			]
+		);
 
 		if ( 1 === $num_tags ) {
 			return str_replace( $font_tags[0][0], $this->get_font_with_display( $font_tags[0] ), $html );
@@ -77,30 +61,31 @@ class CombineV2 extends AbstractOptimization {
 		}
 
 		if ( empty( $this->families ) ) {
-			//Logger::debug( 'No v2 Google Fonts left to combine.', [ 'GF combine process' ] );
+			Logger::debug( 'No v2 Google Fonts left to combine.', [ 'GF combine process' ] );
 
 			return $html;
 		}
 
-		$html = preg_replace( '@<\/title>@i', '$0' . $this->get_combine_tag(), $html, 1 );
+		$combined = $this->get_combine_tag();
+		$html = preg_replace( '@<\/title>@i', '$0' . $combined, $html, 1 );
 
 		foreach ( $font_tags as $font ) {
 			$html = str_replace( $font[0], '', $html );
 		}
 
-//		Logger::info(
-//			'V2 Google Fonts successfully combined.',
-//			[
-//				'GF combine process',
-//				'url' => '...', // todo: insert the generated combined url here.
-//			]
-//		);
+		Logger::info(
+			'V2 Google Fonts successfully combined.',
+			[
+				'GF combine process',
+				'url' => $combined,
+			]
+		);
 
 		return $html;
 	}
 
 	/**
-	 * Parses found matches to extract fonts and subsets.
+	 * Parses APIv2 URLs to extract font-family strings.
 	 *
 	 * @since  3.8
 	 *
@@ -108,7 +93,7 @@ class CombineV2 extends AbstractOptimization {
 	 *
 	 * @return void
 	 */
-	protected function parse( string $url ): void {
+	private function parse( string $url ): void {
 		$url_pattern = '#^(family=[A-Za-z0-9;:,=%&\+\@\.]+)$#';
 		$display_pattern = '#&display=(?:swap|auto|block|fallback|optional)#';
 
@@ -136,7 +121,7 @@ class CombineV2 extends AbstractOptimization {
 
 	 * @return string
 	 */
-	protected function get_combine_tag(): string {
+	private function get_combine_tag(): string {
 		$display = $this->get_font_display_value();
 
 		return sprintf(
@@ -146,63 +131,13 @@ class CombineV2 extends AbstractOptimization {
 	}
 
 	/**
-	 * Returns font with display value.
-	 *
-	 * @since  3.8
-	 *
-	 * @param array $font Array containing font tag and matches.
-	 *
-	 * @return string Google Font tag with display param.
-	 */
-	protected function get_font_with_display( array $font ): string {
-		$font_url = html_entity_decode( $font['url'] );
-		$query    = wp_parse_url( $font_url, PHP_URL_QUERY );
-
-		if ( empty( $query ) ) {
-			return $font[0];
-		}
-
-		$display     = $this->get_font_display_value();
-		$parsed_font = wp_parse_args( $query );
-
-		$font_url = ! empty( $parsed_font['display'] )
-			? str_replace( "&display={$parsed_font['display']}", "&display={$display}", $font_url )
-			: "{$font_url}&display={$display}";
-
-		return str_replace( $font['url'], esc_url( $font_url ), $font[0] );
-	}
-
-	/**
-	 * Get the font display value.
-	 *
-	 * @since  3.8
-	 *
-	 * @return string font display value.
-	 */
-	protected function get_font_display_value(): string {
-		/**
-		 * Filters the combined Google Fonts display parameter value.
-		 *
-		 * This filter is documented in GoogleFonts\Combine::get_font_display_value().
-		 *
-		 * @param string $display Display value. Can be either auto, block, swap, fallback or optional.
-		 */
-		$display = apply_filters( 'rocket_combined_google_fonts_display', 'swap' );
-		if ( ! is_string( $display ) ) {
-			return 'swap';
-		}
-
-		return isset( $this->display_values[ $display ] ) ? $display : 'swap';
-	}
-
-	/**
 	 * Get a string of the concatenated font family queries.
 	 *
 	 * @since 3.8
 	 *
 	 * @return string
 	 */
-	protected function get_concatenated_families(): string {
+	private function get_concatenated_families(): string {
 		$families = '?';
 
 		foreach ( $this->families as $family ) {
