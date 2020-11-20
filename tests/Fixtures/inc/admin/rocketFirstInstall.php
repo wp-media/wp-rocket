@@ -121,7 +121,8 @@ $integration[ 'delay_js_scripts' ] = [
 	'olark',
 	'pixel-caffeine/build/frontend.js',
 ];
-$integration[ 'preload_links' ]    = 1;
+$integration[ 'preload_links' ]     = 1;
+$integration[ 'images_dimensions' ] = 0;
 
 return [
 	'test_data' => [
