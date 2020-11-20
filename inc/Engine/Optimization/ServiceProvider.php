@@ -28,6 +28,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'cache_dynamic_resource',
 		'ie_conditionals_subscriber',
 		'optimize_google_fonts',
+		'optimize_google_fonts_v2',
 		'combine_google_fonts_subscriber',
 		'minify_css_subscriber',
 		'minify_js_subscriber',
@@ -63,6 +64,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'optimize_google_fonts', 'WP_Rocket\Engine\Optimization\GoogleFonts\Combine' );
 		$this->getContainer()->share( 'combine_google_fonts_subscriber', 'WP_Rocket\Engine\Optimization\GoogleFonts\Subscriber' )
 			->withArgument( $this->getContainer()->get( 'optimize_google_fonts' ) )
+			->withArgument( $this->getContainer()->get( 'optimize_google_fonts_v2' ) )
 			->withArgument( $options );
 		$this->getContainer()->share( 'minify_css_subscriber', 'WP_Rocket\Engine\Optimization\Minify\CSS\Subscriber' )
 			->withArgument( $options )

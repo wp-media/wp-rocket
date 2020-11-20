@@ -20,18 +20,27 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Combine instance.
 	 *
-	 * @var Combine
+	 * @var AbstractGFOptimization
 	 */
 	private $combine;
 
 	/**
-	 * Instantiate the subscirber
+	 * CombineV2 instance.
 	 *
-	 * @param Combine      $combine Combine instance.
+	 * @var AbstractGFOptimization
+	 */
+	private $combine_v2;
+
+	/**
+	 * Instantiate the subscriber.
+	 *
+	 * @param AbstractGFOptimization      $combine Combine instance.
+	 * @param AbstractGFOptimization $combine_v2 Combine V2 instance.
 	 * @param Options_Data $options Options_Data instance.
 	 */
-	public function __construct( Combine $combine, Options_Data $options ) {
+	public function __construct( AbstractGFOptimization $combine, AbstractGFOptimization $combine_v2, Options_Data $options ) {
 		$this->combine = $combine;
+		$this->combine_v2 = $combine_v2;
 		$this->options = $options;
 	}
 
@@ -88,6 +97,8 @@ class Subscriber implements Subscriber_Interface {
 			return $html;
 		}
 
+		// Todo: Integrate both combine processes, maybe with html comment, here
+		// $this->combine_v2->optimize( $html );
 		return $this->combine->optimize( $html );
 	}
 
