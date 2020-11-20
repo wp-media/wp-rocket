@@ -48,53 +48,56 @@ class CombineV2 extends AbstractOptimization {
 	 * @return string
 	 */
 	public function optimize( string $html ): string {
-		//Logger::info( 'GOOGLE FONTS COMBINE-V2 PROCESS STARTED.', [ 'GF combine process' ] );
+		Logger::info( 'GOOGLE FONTS COMBINE-V2 PROCESS STARTED.', [ 'GF combine process' ] );
 
+		$processed_tags = [];
 		$html_nocomments = $this->hide_comments( $html );
 		$font_tags   = $this->find( '<link(?:\s+(?:(?!href\s*=\s*)[^>])+)?(?:\s+href\s*=\s*([\'"])(?<url>(?:https?:)?\/\/fonts\.googleapis\.com\/css2(?:(?!\1).)+)\1)(?:\s+[^>]*)?>', $html_nocomments );
 
 		if ( ! $font_tags ) {
-			//Logger::debug( 'No v2 Google Fonts found.', [ 'GF combine process' ] );
+			Logger::debug( 'No v2 Google Fonts found.', [ 'GF combine process' ] );
 			return $html;
 		}
 
 		$num_tags = count( $font_tags );
 
-//		Logger::debug(
-//			"Found {$num_tags} v2 Google Fonts.",
-//			[
-//				'GF combine process',
-//				'tags' => $font_tags,
-//			]
-//		);
+		Logger::debug(
+			"Found {$num_tags} v2 Google Fonts.",
+			[
+				'GF combine process',
+				'tags' => $font_tags,
+			]
+		);
 
 		if ( 1 === $num_tags ) {
 			return str_replace( $font_tags[0][0], $this->get_font_with_display( $font_tags[0] ), $html );
 		}
 
 		foreach ( $font_tags as $tag ) {
-			$this->parse( $tag['url'] );
+			if ( $this->parse( $tag ) ) {
+				$processed_tags[] = $tag;
+			}
 		}
 
 		if ( empty( $this->families ) ) {
-			//Logger::debug( 'No v2 Google Fonts left to combine.', [ 'GF combine process' ] );
+			Logger::debug( 'No v2 Google Fonts left to combine.', [ 'GF combine process' ] );
 
 			return $html;
 		}
 
 		$html = preg_replace( '@<\/title>@i', '$0' . $this->get_combine_tag(), $html, 1 );
 
-		foreach ( $font_tags as $font ) {
+		foreach ( $processed_tags as $font ) {
 			$html = str_replace( $font[0], '', $html );
 		}
 
-//		Logger::info(
-//			'V2 Google Fonts successfully combined.',
-//			[
-//				'GF combine process',
-//				'url' => '...', // todo: insert the generated combined url here.
-//			]
-//		);
+		Logger::info(
+			'V2 Google Fonts successfully combined.',
+			[
+				'GF combine process',
+				'url' => '...', // todo: insert the generated combined url here.
+			]
+		);
 
 		return $html;
 	}
@@ -104,28 +107,38 @@ class CombineV2 extends AbstractOptimization {
 	 *
 	 * @since  3.8
 	 *
-	 * @param string $url A Google Font v2 url.
+	 * @param array $tag A Google Font v2 url.
 	 *
-	 * @return void
+	 * @return bool
 	 */
-	protected function parse( string $url ): void {
+	protected function parse( array $tag ): bool {
+		if ( false !== strpos( $tag['url'], 'text=' ) ) {
+			Logger::debug(
+				$tag['url'] . ' skipped to preserve "text" attribute.'
+			);
+
+			return false;
+		}
+
 		$url_pattern = '#^(family=[A-Za-z0-9;:,=%&\+\@\.]+)$#';
 		$display_pattern = '#&display=(?:swap|auto|block|fallback|optional)#';
 
-		$decoded_url = html_entity_decode( $url ); //return $decoded_url;
+		$decoded_url = html_entity_decode( $tag['url'] ); //return $decoded_url;
 		$query       = wp_parse_url( $decoded_url, PHP_URL_QUERY );
 
 		if ( empty( $query ) ) {
-			return;
+			return false;
 		}
 
 		if ( ! preg_match_all( $url_pattern, $query, $matches, PREG_PATTERN_ORDER ) ) {
-			return;
+			return false;
 		}
 
 		foreach ( $matches[1] as $family ) {
 			$this->families[] = preg_replace( $display_pattern, '', $family );
 		}
+
+		return true;
 	}
 
 
