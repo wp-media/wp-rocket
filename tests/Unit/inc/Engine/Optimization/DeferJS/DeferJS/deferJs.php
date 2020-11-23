@@ -33,12 +33,6 @@ class Test_DeferJs extends TestCase {
         $options->shouldReceive( 'get' )
             ->atMost()
             ->once()
-            ->with( 'defer_all_js_safe', 0 )
-            ->andReturn( $config['options']['defer_all_js_safe'] );
-        
-        $options->shouldReceive( 'get' )
-            ->atMost()
-            ->once()
             ->with( 'exclude_defer_js', [] )
             ->andReturn( $config['options']['exclude_defer_js'] );
 

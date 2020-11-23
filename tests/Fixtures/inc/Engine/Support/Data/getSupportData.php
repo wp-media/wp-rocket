@@ -22,7 +22,6 @@ return [
 			'exclude_js'                  => [],
 			'exclude_inline_js'           => [],
 			'defer_all_js'                => 0,
-			'defer_all_js_safe'           => 1,
 			'async_css'                   => 0,
 			'critical_css'                => '',
 			'lazyload'                    => 0,
@@ -80,7 +79,7 @@ return [
 			'WP Rocket Version'        => '3.7.5',
 			'Theme'                    => 'WordPress Default',
 			'Plugins Enabled'          => 'Hello Dolly',
-			'WP Rocket Active Options' => 'Mobile Cache - Disable Emojis - Defer JS Safe - Combine Google Fonts - Preload - Hearbeat Control',
+			'WP Rocket Active Options' => 'Mobile Cache - Disable Emojis - Combine Google Fonts - Preload - Hearbeat Control',
 		],
 	],
 ];
