@@ -3,6 +3,7 @@
 namespace WP_Rocket\Engine\Media\Images;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Filesystem_Direct;
 
 /**
  * Images Frontend Class
@@ -26,12 +27,26 @@ class Frontend {
 	private $local_paths = [];
 
 	/**
+	 * Filesystem instance
+	 *
+	 * @var WP_Filesystem_Direct
+	 */
+	private $filesystem;
+
+	/**
 	 * Frontend constructor.
 	 *
 	 * @param Options_Data $options Options_Data instance.
+	 * @param WP_Filesystem_Direct $filesystem Filesystem instance.
 	 */
-	public function __construct( Options_Data $options ) {
+	public function __construct( Options_Data $options, $filesystem = null ) {
 		$this->options = $options;
+
+		if ( null === $filesystem ) {
+			$filesystem = rocket_direct_filesystem();
+		}
+
+		$this->filesystem = $filesystem;
 	}
 
 	/**
@@ -89,8 +104,18 @@ class Frontend {
 					continue;
 				}
 
+				if ( ! $this->image_exists( $image_url, true ) ) {
+					continue;
+				}
+
 				$sizes = getimagesize( $image_url );
 			} else {
+				$local_path = $this->get_local_path( $image_url );
+
+				if ( ! $this->image_exists( $local_path, false ) ) {
+					continue;
+				}
+
 				$sizes = getimagesize( $this->get_local_path( $image_url ) );
 			}
 
@@ -98,13 +123,11 @@ class Frontend {
 				continue;
 			}
 
-			if ( ! empty( $sizes ) ) {
-				// Add width and height attribute.
-				$image = str_replace( '<img', '<img ' . $sizes[3], $image );
+			// Add width and height attribute.
+			$image = str_replace( '<img', '<img ' . $sizes[3], $image );
 
-				// Replace image with new attributes, we will replace all images at once after the loop for optimizations.
-				$replaces[ $image ] = $this->assign_width_height( $image, $sizes[3] );
-			}
+			// Replace image with new attributes, we will replace all images at once after the loop for optimizations.
+			$replaces[ $image ] = $this->assign_width_height( $image, $sizes[3] );
 		}
 
 		if ( empty( $replaces ) ) {
@@ -222,6 +245,27 @@ class Frontend {
 		}
 
 		return $changed_image;
+	}
+
+	/**
+	 * Check if the image exists, internal or external image.
+	 *
+	 * @param string $image    Image Url for external and Image absolute path for internal.
+	 * @param bool   $external If this image is external or not.
+	 *
+	 * @return bool If image exists or not.
+	 */
+	private function image_exists( $image, $external = false ) {
+		if ( ! $external ) {
+			return $this->filesystem->exists( $image );
+		}
+
+		$file_headers = get_headers( $image );
+		if ( ! $file_headers ) {
+			return false;
+		}
+
+		return strpos( $file_headers[0], '404' ) === false;
 	}
 
 }
