@@ -53,7 +53,7 @@ class Frontend {
 		 *
 		 * @param bool Do the job or not.
 		 */
-		if ( ! apply_filters( 'rocket_specify_image_dimensions', false ) ) {
+		if ( ! apply_filters( 'rocket_specify_image_dimensions', true ) ) {
 			return $html;
 		}
 
