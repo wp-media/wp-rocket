@@ -18,10 +18,29 @@ class Frontend {
 	 */
 	private $options;
 
+	/**
+	 * Cache local paths for images.
+	 *
+	 * @var array
+	 */
+	private $local_paths = [];
+
+	/**
+	 * Frontend constructor.
+	 *
+	 * @param Options_Data $options Options_Data instance.
+	 */
 	public function __construct( Options_Data $options ) {
 		$this->options = $options;
 	}
 
+	/**
+	 * Specify image dimensions and insert it into images.
+	 *
+	 * @param string $html Buffer Page HTML contents.
+	 *
+	 * @return string Buffer Page HTML contents after inserting dimentions into images.
+	 */
 	public function specify_image_dimensions( $html ) {
 		if ( ! $this->options->get( 'image_dimensions', false ) ) {
 			return $html;
@@ -45,6 +64,8 @@ class Frontend {
 			return $html;
 		}
 
+		$replaces = [];
+
 		foreach ( $images_match[0] as $image ) {
 
 			// Don't touch lazy-load file (no conflict with Photon (Jetpack)).
@@ -56,48 +77,41 @@ class Frontend {
 				continue;
 			}
 
-			$tmp = $image;
-
 			// Get link of the file.
-			preg_match( '/src\s*=\s*[\'"]([^\'"]+)/i', $image, $src_match );
-
-			if ( $this->is_external_file( $src_match[1] ) ) {
-
-			} else {
-
+			if ( ! preg_match( '/src\s*=\s*[\'"]([^\'"]+)/i', $image, $src_match ) ) {
+				continue;
 			}
 
-			// Get infos of the URL.
-			$image_url = wp_parse_url( $src_match[1] );
+			$image_url = $src_match[1];
 
-			// Check if the link isn't external.
-			if ( empty( $image_url['host'] ) || rocket_remove_url_protocol( home_url() ) === $image_url['host'] ) {
-				// Get image attributes.
-				$sizes = getimagesize( ABSPATH . $image_url['path'] );
-			} else {
-				/**
-				 * Filter distant images dimensions attributes
-				 *
-				 * @since 2.2
-				 *
-				 * @param bool Do the job or not
-				 */
-				if ( ini_get( 'allow_url_fopen' ) && apply_filters( 'rocket_specify_image_dimensions_for_distant', false ) ) {
-					// Get image attributes.
-					$sizes = getimagesize( $image_url['scheme'] . '://' . $image_url['host'] . $image_url['path'] );
+			if ( $this->is_external_file( $image_url ) ) {
+				if ( ! $this->can_specify_dimensions_external_images() ) {
+					continue;
 				}
+
+				$sizes = getimagesize( $image_url );
+			} else {
+				$sizes = getimagesize( $this->get_local_path( $image_url ) );
+			}
+
+			if ( ! $sizes ) {
+				continue;
 			}
 
 			if ( ! empty( $sizes ) ) {
 				// Add width and height attribute.
 				$image = str_replace( '<img', '<img ' . $sizes[3], $image );
 
-				// Replace image with new attributes.
-				$buffer = str_replace( $tmp, $image, $buffer );
+				// Replace image with new attributes, we will replace all images at once after the loop for optimizations.
+				$replaces[ $image ] = $this->assign_width_height( $image, $sizes[3] );
 			}
 		}
 
-		return $buffer;
+		if ( empty( $replaces ) ) {
+			return $html;
+		}
+
+		return str_replace( array_keys( $replaces ), $replaces, $image );
 	}
 
 	/**
@@ -129,7 +143,7 @@ class Frontend {
 		 * @param array $hosts Allowed hosts.
 		 * @param array $zones Zones to check available hosts.
 		 */
-		$hosts   = (array) apply_filters( 'rocket_cdn_hosts', [], [ 'all', 'css_and_js', self::FILE_TYPE ] );
+		$hosts   = (array) apply_filters( 'rocket_cdn_hosts', [], [ 'all', 'css_and_js', '' ] );
 		$hosts[] = $wp_content['host'];
 		$langs   = get_rocket_i18n_uri();
 
@@ -154,6 +168,7 @@ class Frontend {
 		if ( ! empty( $file['host'] ) ) {
 			foreach ( $hosts as $host ) {
 				if ( false !== strpos( $url, $host ) ) {
+					$this->local_paths[ md5( $url ) ] = str_replace( $host, WP_CONTENT_DIR, $url );
 					return false;
 				}
 			}
@@ -163,6 +178,50 @@ class Frontend {
 
 		// URL has no domain and doesn't contain the WP_CONTENT path or wp-includes.
 		return ! preg_match( '#(' . $wp_content['path'] . '|wp-includes)#', $file['path'] );
+	}
+
+	/**
+	 * Get local absolute path for image.
+	 *
+	 * @param string $url Image url.
+	 *
+	 * @return string Image absolute local path.
+	 */
+	private function get_local_path( $url ) {
+		if ( isset( $this->local_paths[ md5( $url ) ] ) ) {
+			return $this->local_paths[ md5( $url ) ];
+		}
+
+		return str_replace( content_url(), WP_CONTENT_DIR, $url );
+	}
+
+	/**
+	 * Check if we can specify dimensions for external images.
+	 *
+	 * @return bool Valid to be parsed or not.
+	 */
+	private function can_specify_dimensions_external_images() {
+		return ini_get( 'allow_url_fopen' ) && apply_filters( 'rocket_specify_image_dimensions_for_distant', false );
+	}
+
+	/**
+	 * Assign width and height attributes to the img tag.
+	 *
+	 * @param string $image IMG tag.
+	 * @param string $width_height Width/Height attributes in ready state like [height="100" width="100"].
+	 *
+	 * @return string IMG tag after adding attributes otherwise return the input img when error.
+	 */
+	private function assign_width_height( string $image, $width_height ) {
+		// Remove old width and height attributes if found.
+		$changed_image = preg_replace( '/(height|width)=[\'"](?:\S+)*[\'"]/i', '', $image );
+		$changed_image = preg_replace( '<\s*img', '<img ' . $width_height, $changed_image );
+
+		if ( null === $changed_image ) {
+			return $image;
+		}
+
+		return $changed_image;
 	}
 
 }

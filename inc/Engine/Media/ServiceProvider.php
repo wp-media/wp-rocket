@@ -52,6 +52,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'emojis_subscriber', 'WP_Rocket\Engine\Media\Emojis\EmojisSubscriber' )
 			->withArgument( $options );
 		$this->getContainer()->share( 'images_subscriber', 'WP_Rocket\Engine\Media\Images\Subscriber' )
-		     ->withArgument( $options );
+			->withArgument( $options );
 	}
 }
