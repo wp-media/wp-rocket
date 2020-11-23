@@ -34,7 +34,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_buffer' => [ 'specify_image_dimensions', 19 ],
+			'rocket_buffer' => [ 'specify_image_dimensions', 17 ],
 		];
 	}
 
