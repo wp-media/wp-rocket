@@ -5,14 +5,13 @@ declare( strict_types=1 );
 namespace WP_Rocket\Engine\Optimization\GoogleFonts;
 
 use WP_Rocket\Logger\Logger;
-use WP_Rocket\Engine\Optimization\AbstractOptimization;
 
 /**
  * Combine v2 Google Fonts
  *
  * @since  3.8
  */
-class CombineV2 extends AbstractOptimization {
+class CombineV2 extends AbstractGFOptimization {
 
 	/**
 	 * Allowed display values.
@@ -50,9 +49,9 @@ class CombineV2 extends AbstractOptimization {
 	public function optimize( string $html ): string {
 		Logger::info( 'GOOGLE FONTS COMBINE-V2 PROCESS STARTED.', [ 'GF combine process' ] );
 
-		$processed_tags = [];
+		$processed_tags  = [];
 		$html_nocomments = $this->hide_comments( $html );
-		$font_tags   = $this->find( '<link(?:\s+(?:(?!href\s*=\s*)[^>])+)?(?:\s+href\s*=\s*([\'"])(?<url>(?:https?:)?\/\/fonts\.googleapis\.com\/css2(?:(?!\1).)+)\1)(?:\s+[^>]*)?>', $html_nocomments );
+		$font_tags       = $this->find( '<link(?:\s+(?:(?!href\s*=\s*)[^>])+)?(?:\s+href\s*=\s*([\'"])(?<url>(?:https?:)?\/\/fonts\.googleapis\.com\/css2(?:(?!\1).)+)\1)(?:\s+[^>]*)?>', $html_nocomments );
 
 		if ( ! $font_tags ) {
 			Logger::debug( 'No v2 Google Fonts found.', [ 'GF combine process' ] );
@@ -118,11 +117,10 @@ class CombineV2 extends AbstractOptimization {
 			return false;
 		}
 
-		$url_pattern = '#^(family=[A-Za-z0-9;:,=%&\+\@\.]+)$#';
+		$url_pattern     = '#^(family=[A-Za-z0-9;:,=%&\+\@\.]+)$#';
 		$display_pattern = '#&display=(?:swap|auto|block|fallback|optional)#';
-
-		$decoded_url = html_entity_decode( $tag['url'] ); //return $decoded_url;
-		$query       = wp_parse_url( $decoded_url, PHP_URL_QUERY );
+		$decoded_url     = html_entity_decode( $tag['url'] ); //return $decoded_url;
+		$query           = wp_parse_url( $decoded_url, PHP_URL_QUERY );
 
 		if ( empty( $query ) ) {
 			return false;
@@ -175,8 +173,7 @@ class CombineV2 extends AbstractOptimization {
 
 		$display     = $this->get_font_display_value();
 		$parsed_font = wp_parse_args( $query );
-
-		$font_url = ! empty( $parsed_font['display'] )
+		$font_url    = ! empty( $parsed_font['display'] )
 			? str_replace( "&display={$parsed_font['display']}", "&display={$display}", $font_url )
 			: "{$font_url}&display={$display}";
 
