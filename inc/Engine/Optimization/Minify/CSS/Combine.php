@@ -333,20 +333,4 @@ class Combine extends AbstractCSSOptimization implements ProcessorInterface {
 			! preg_match( '/media=["\'](?:\s*|[^"\']*?\b(?:\s*?,\s*?)?(all|screen)(?:\s*?,\s*?[^"\']*)?)["\']/i', $tag )
 		);
 	}
-
-	/**
-	 * Check if media query is valid to be excluded from combine or not.
-	 *
-	 * @since 3.8
-	 *
-	 * @param string $tag Stylesheet HTML tag.
-	 * @return bool Ture if it's excluded else false.
-	 */
-	private function is_combine_excluded_media( $tag ) {
-		return (
-			false !== strpos( $tag, 'media=' )
-			&&
-			! preg_match( '/media=["\'](?:\s*|[^"\']*?\b(?:\s*?,\s*?)?(all|screen)(?:\s*?,\s*?[^"\']*)?)["\']/i', $tag )
-		);
-	}
 }
