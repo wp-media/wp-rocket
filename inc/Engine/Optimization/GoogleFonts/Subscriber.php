@@ -39,9 +39,9 @@ class Subscriber implements Subscriber_Interface {
 	 * @param Options_Data $options Options_Data instance.
 	 */
 	public function __construct( AbstractGFOptimization $combine, AbstractGFOptimization $combine_v2, Options_Data $options ) {
-		$this->combine = $combine;
+		$this->combine    = $combine;
 		$this->combine_v2 = $combine_v2;
-		$this->options = $options;
+		$this->options    = $options;
 	}
 
 	/**
@@ -98,7 +98,7 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		// Todo: Integrate both combine processes, maybe with html comment, here
-		// $this->combine_v2->optimize( $html );
+		// $html = $this->combine_v2->optimize( $html );
 		return $this->combine->optimize( $html );
 	}
 

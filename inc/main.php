@@ -86,11 +86,6 @@ function rocket_init() {
 		require WP_ROCKET_FRONT_PATH . 'cookie.php';
 		require WP_ROCKET_FRONT_PATH . 'images.php';
 		require WP_ROCKET_FRONT_PATH . 'dns-prefetch.php';
-
-		if ( get_rocket_option( 'defer_all_js' ) ) {
-			require WP_ROCKET_FRONT_PATH . 'deferred-js.php';
-		}
-
 		require WP_ROCKET_FRONT_PATH . 'protocol.php';
 	}
 

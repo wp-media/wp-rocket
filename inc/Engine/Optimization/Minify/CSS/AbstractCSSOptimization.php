@@ -121,14 +121,6 @@ abstract class AbstractCSSOptimization extends AbstractOptimization {
 			return true;
 		}
 
-		if ( false !== strpos( $tag[0], 'media=' ) && ! preg_match( '/media=["\'](?:\s*|[^"\']*?\b(all|screen)\b[^"\']*?)["\']/i', $tag[0] ) ) {
-			return true;
-		}
-
-		if ( false !== strpos( $tag[0], 'only screen and' ) ) {
-			return true;
-		}
-
 		$file_path = wp_parse_url( $tag['url'], PHP_URL_PATH );
 
 		// File extension is not css.
@@ -145,4 +137,5 @@ abstract class AbstractCSSOptimization extends AbstractOptimization {
 
 		return false;
 	}
+
 }
