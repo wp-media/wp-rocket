@@ -2,9 +2,7 @@
 
 namespace WP_Rocket\Engine\Media\Images;
 
-use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Rocket\Logger\Logger;
 
 /**
  * Images Subscriber
@@ -48,7 +46,6 @@ class Subscriber implements Subscriber_Interface {
 	 * @return string Page HTML content after update.
 	 */
 	public function specify_image_dimensions( $buffer ) {
-		Logger::debug("specify_image_dimensions_start");
 		if ( rocket_bypass() ) {
 			return $buffer;
 		}
