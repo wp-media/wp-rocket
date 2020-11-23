@@ -288,7 +288,7 @@ class Combine extends AbstractCSSOptimization implements ProcessorInterface {
 	 * @return string
 	 */
 	private function get_content( $combined_file ) {
-		$content = '';
+		$minifier = new MinifyCSS();
 
 		foreach ( $this->styles as $key => $style ) {
 			if ( 'internal' === $style['type'] ) {
@@ -306,10 +306,10 @@ class Combine extends AbstractCSSOptimization implements ProcessorInterface {
 				continue;
 			}
 
-			$content .= $file_content;
+			$minifier->add( $file_content );
 		}
 
-		$content = $this->minify( $content );
+		$content = $minifier->minify();
 
 		if ( empty( $content ) ) {
 			Logger::debug( 'No CSS content.', [ 'css combine process' ] );
@@ -319,17 +319,19 @@ class Combine extends AbstractCSSOptimization implements ProcessorInterface {
 	}
 
 	/**
-	 * Minifies the content
+	 * Check if media query is valid to be excluded from combine or not.
 	 *
-	 * @since 3.1
+	 * @since 3.8
 	 *
-	 * @param string $content Content to minify.
-	 * @return string
+	 * @param string $tag Stylesheet HTML tag.
+	 * @return bool Ture if it's excluded else false.
 	 */
-	protected function minify( $content ) {
-		$minifier = new MinifyCSS( $content );
-
-		return $minifier->minify();
+	private function is_combine_excluded_media( $tag ) {
+		return (
+			false !== strpos( $tag, 'media=' )
+			&&
+			! preg_match( '/media=["\'](?:\s*|[^"\']*?\b(?:\s*?,\s*?)?(all|screen)(?:\s*?,\s*?[^"\']*)?)["\']/i', $tag )
+		);
 	}
 
 	/**

@@ -121,7 +121,13 @@ abstract class AbstractCSSOptimization extends AbstractOptimization {
 			return true;
 		}
 
-		$file_path = wp_parse_url( $tag['url'], PHP_URL_PATH );
+		if ( false !== strpos( $tag[0], 'media=' ) && ! preg_match( '/media=["\'](?:\s*|[^"\']*?\b(all|screen)\b[^"\']*?)["\']/i', $tag[0] ) ) {
+			return true;
+		}
+
+		$file      = wp_parse_url( $tag['url'] );
+		$file_path = isset( $file['path'] ) ? $file['path'] : null;
+		$host      = isset( $file['host'] ) ? $file['host'] : null;
 
 		// File extension is not css.
 		if ( pathinfo( $file_path, PATHINFO_EXTENSION ) !== self::FILE_TYPE ) {
@@ -131,6 +137,14 @@ abstract class AbstractCSSOptimization extends AbstractOptimization {
 		if ( ! empty( $this->excluded_files ) ) {
 			// File is excluded from minification/concatenation.
 			if ( preg_match( '#^(' . $this->excluded_files . ')$#', $file_path ) ) {
+				return true;
+			}
+
+			if ( preg_match( '#^(' . $this->excluded_files . ')$#', $host ) ) {
+				return true;
+			}
+
+			if ( preg_match( '#^(' . $this->excluded_files . ')$#', $host . $file_path ) ) {
 				return true;
 			}
 		}
