@@ -8,7 +8,6 @@ return [
 		'cdn_cnames'            => [],
 		'cdn_zone'              => [],
 		'defer_all_js'          => 0,
-		'defer_all_js_safe'     => 0,
 	],
 
 	'test_data' => [
@@ -52,7 +51,6 @@ return [
 				'cdn_cnames'            => [],
 				'cdn_zone'              => [],
 				'defer_all_js'          => 0,
-				'defer_all_js_safe'     => 0,
 			],
 		],
 
@@ -91,7 +89,6 @@ return [
 				'cdn_cnames'            => [],
 				'cdn_zone'              => [],
 				'defer_all_js'          => 0,
-				'defer_all_js_safe'     => 0,
 			],
 		],
 
@@ -132,7 +129,6 @@ return [
 				'cdn_cnames'            => [ 'https://123456.rocketcdn.me' ],
 				'cdn_zone'              => [ 'all' ],
 				'defer_all_js'          => 0,
-				'defer_all_js_safe'     => 0,
 			],
 		],
 
@@ -174,7 +170,6 @@ return [
 				'cdn_cnames'            => [ 'https://123456.rocketcdn.me' ],
 				'cdn_zone'              => [ 'all' ],
 				'defer_all_js'          => 0,
-				'defer_all_js_safe'     => 0,
 			],
 		],
 
@@ -214,7 +209,6 @@ return [
 				'cdn_cnames'            => [ 'https://123456.rocketcdn.me/cdnpath' ],
 				'cdn_zone'              => [ 'all' ],
 				'defer_all_js'          => 0,
-				'defer_all_js_safe'     => 0,
 			],
 		],
 
@@ -260,7 +254,6 @@ return [
 				'cdn_cnames'            => [],
 				'cdn_zone'              => [],
 				'defer_all_js'          => 0,
-				'defer_all_js_safe'     => 0,
 			],
 		],
 
@@ -306,7 +299,6 @@ return [
 				'cdn_cnames'            => [ 'https://123456.rocketcdn.me' ],
 				'cdn_zone'              => [ 'all' ],
 				'defer_all_js'          => 0,
-				'defer_all_js_safe'     => 0,
 			],
 		],
 
@@ -332,18 +324,17 @@ return [
 				'html'  => '<html>
 					<head>
 						<title>Sample Page</title>
-						<script type="text/javascript" src="http://example.org/wp-includes/js/jquery/jquery.js"></script>
 						<script>
 						nonce = "nonce";
 						</script>
 					</head>
 					<body>
-						<script src="http://example.org/wp-content/cache/min/1/1100e4606ab35f45752eb8c3c8da0427.js" data-minify="1" defer></script>
+						<script src="http://example.org/wp-content/cache/min/1/f819bcaed244d53d3b4ffc4c5cc0efdc.js" data-minify="1" defer></script>
 					</body>
 				</html>',
 				'files' => [
-					'wp-content/cache/min/1/1100e4606ab35f45752eb8c3c8da0427.js',
-					'wp-content/cache/min/1/1100e4606ab35f45752eb8c3c8da0427.js.gz',
+					'wp-content/cache/min/1/f819bcaed244d53d3b4ffc4c5cc0efdc.js',
+					'wp-content/cache/min/1/f819bcaed244d53d3b4ffc4c5cc0efdc.js.gz',
 				],
 			],
 
@@ -353,7 +344,6 @@ return [
 				'cdn_cnames'            => [ ],
 				'cdn_zone'              => [ ],
 				'defer_all_js'          => 1,
-				'defer_all_js_safe'     => 1,
 			],
 		],
 
@@ -380,19 +370,17 @@ return [
 				'html'  => '<html>
 					<head>
 						<title>Sample Page</title>
-						<script type="text/javascript" src="http://example.org/wp-includes/js/jquery/jquery.js"></script>
-						<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
 						<script>
 						nonce = "nonce";
 						</script>
 					</head>
 					<body>
-						<script src="http://example.org/wp-content/cache/min/1/1100e4606ab35f45752eb8c3c8da0427.js" data-minify="1" defer></script>
+						<script src="http://example.org/wp-content/cache/min/1/8fea854656965569d8a4541e43d7bcd0.js" data-minify="1" defer></script>
 					</body>
 				</html>',
 				'files' => [
-					'wp-content/cache/min/1/1100e4606ab35f45752eb8c3c8da0427.js',
-					'wp-content/cache/min/1/1100e4606ab35f45752eb8c3c8da0427.js.gz',
+					'wp-content/cache/min/1/8fea854656965569d8a4541e43d7bcd0.js',
+					'wp-content/cache/min/1/8fea854656965569d8a4541e43d7bcd0.js.gz',
 				],
 			],
 
@@ -402,7 +390,6 @@ return [
 				'cdn_cnames'            => [ ],
 				'cdn_zone'              => [ ],
 				'defer_all_js'          => 1,
-				'defer_all_js_safe'     => 1,
 			],
 		],
 
@@ -429,18 +416,17 @@ return [
 				'html'  => '<html>
 					<head>
 						<title>Sample Page</title>
-						<script type="text/javascript" src="https://123456.rocketcdn.me/wp-includes/js/jquery/jquery.js"></script>
 						<script>
 						nonce = "nonce";
 						</script>
 					</head>
 					<body>
-						<script src="https://123456.rocketcdn.me/wp-content/cache/min/1/1100e4606ab35f45752eb8c3c8da0427.js" data-minify="1" defer></script>
+						<script src="https://123456.rocketcdn.me/wp-content/cache/min/1/f819bcaed244d53d3b4ffc4c5cc0efdc.js" data-minify="1" defer></script>
 					</body>
 				</html>',
 				'files' => [
-					'wp-content/cache/min/1/1100e4606ab35f45752eb8c3c8da0427.js',
-					'wp-content/cache/min/1/1100e4606ab35f45752eb8c3c8da0427.js.gz',
+					'wp-content/cache/min/1/f819bcaed244d53d3b4ffc4c5cc0efdc.js',
+					'wp-content/cache/min/1/f819bcaed244d53d3b4ffc4c5cc0efdc.js.gz',
 				],
 			],
 
@@ -450,7 +436,6 @@ return [
 				'cdn_cnames'            => [ 'https://123456.rocketcdn.me' ],
 				'cdn_zone'              => [ 'all' ],
 				'defer_all_js'          => 1,
-				'defer_all_js_safe'     => 1,
 			],
 		],
 
@@ -477,19 +462,17 @@ return [
 				'html'  => '<html>
 					<head>
 						<title>Sample Page</title>
-						<script type="text/javascript" src="https://123456.rocketcdn.me/wp-includes/js/jquery/jquery.js"></script>
-						<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
 						<script>
 						nonce = "nonce";
 						</script>
 					</head>
 					<body>
-						<script src="https://123456.rocketcdn.me/wp-content/cache/min/1/1100e4606ab35f45752eb8c3c8da0427.js" data-minify="1" defer></script>
+						<script src="https://123456.rocketcdn.me/wp-content/cache/min/1/8fea854656965569d8a4541e43d7bcd0.js" data-minify="1" defer></script>
 					</body>
 				</html>',
 				'files' => [
-					'wp-content/cache/min/1/1100e4606ab35f45752eb8c3c8da0427.js',
-					'wp-content/cache/min/1/1100e4606ab35f45752eb8c3c8da0427.js.gz',
+					'wp-content/cache/min/1/8fea854656965569d8a4541e43d7bcd0.js',
+					'wp-content/cache/min/1/8fea854656965569d8a4541e43d7bcd0.js.gz',
 				],
 			],
 
@@ -499,7 +482,6 @@ return [
 				'cdn_cnames'            => [ 'https://123456.rocketcdn.me' ],
 				'cdn_zone'              => [ 'all' ],
 				'defer_all_js'          => 1,
-				'defer_all_js_safe'     => 1,
 			],
 		],
 
@@ -545,7 +527,6 @@ return [
 				'cdn_cnames'            => [ 'https://123456.rocketcdn.me' ],
 				'cdn_zone'              => [ 'all' ],
 				'defer_all_js'          => 0,
-				'defer_all_js_safe'     => 0,
 			],
 		],
 
@@ -592,7 +573,6 @@ return [
 				'cdn_cnames'            => [ 'https://123456.rocketcdn.me/cdnpath' ],
 				'cdn_zone'              => [ 'all' ],
 				'defer_all_js'          => 0,
-				'defer_all_js_safe'     => 0,
 			],
 		],
 	],

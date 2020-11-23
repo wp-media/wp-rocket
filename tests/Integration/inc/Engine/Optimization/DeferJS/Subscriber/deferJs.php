@@ -25,7 +25,6 @@ class Test_DeferJs extends TestCase {
 
 	public function tearDown() {
 		remove_filter( 'pre_get_rocket_option_defer_all_js', [ $this, 'set_defer_js' ] );
-		remove_filter( 'pre_get_rocket_option_defer_all_js_safe', [ $this, 'set_defer_js_safe' ] );
 		remove_filter( 'pre_get_rocket_option_exclude_defer_js', [ $this, 'set_exclude_defer_js' ] );
 		delete_post_meta( 100, '_rocket_exclude_defer_all_js' );
 
@@ -38,7 +37,6 @@ class Test_DeferJs extends TestCase {
 	public function testShouldReturnExpected( $config, $html, $expected ) {
 		$this->donotrocketoptimize = $config['donotrocketoptimize'];
 		$this->defer_js            = $config['options']['defer_all_js'];
-		$this->defer_js_safe       = $config['options']['defer_all_js_safe'];
 		$this->exclude_defer_js    = $config['options']['exclude_defer_js'];
 
 		$this->goToContentType(
@@ -51,7 +49,6 @@ class Test_DeferJs extends TestCase {
 		);
 
 		add_filter( 'pre_get_rocket_option_defer_all_js', [ $this, 'set_defer_js' ] );
-		add_filter( 'pre_get_rocket_option_defer_all_js_safe', [ $this, 'set_defer_js_safe' ] );
 		add_filter( 'pre_get_rocket_option_exclude_defer_js', [ $this, 'set_exclude_defer_js' ] );
 
 		if ( $config['post_meta'] ) {

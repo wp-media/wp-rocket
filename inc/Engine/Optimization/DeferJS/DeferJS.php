@@ -122,10 +122,6 @@ class DeferJS {
 			'cdn.voxpow.com/media/trackers/js/(.*).js',
 		];
 
-		if ( $this->options->get( 'defer_all_js', 0 ) && $this->options->get( 'defer_all_js_safe', 0 ) ) {
-			$exclude_defer_js = array_merge( $exclude_defer_js, $this->get_jquery_urls() );
-		}
-
 		$exclude_defer_js = array_unique( array_merge( $exclude_defer_js, $this->options->get( 'exclude_defer_js', [] ) ) );
 
 		/**
@@ -142,27 +138,5 @@ class DeferJS {
 		}
 
 		return $exclude_defer_js;
-	}
-
-	/**
-	 * Returns jquery URLs to not defer when Safe mode is enabled
-	 *
-	 * @since 3.8
-	 *
-	 * @return array
-	 */
-	private function get_jquery_urls() : array {
-		$jquery_urls = [
-			'c0.wp.com/c/(?:.+)/wp-includes/js/jquery/jquery.js',
-			'ajax.googleapis.com/ajax/libs/jquery/(?:.+)/jquery(?:\.min)?.js',
-			'cdnjs.cloudflare.com/ajax/libs/jquery/(?:.+)/jquery(?:\.min)?.js',
-			'code.jquery.com/jquery-.*(?:\.min|slim)?.js',
-		];
-
-		if ( isset( wp_scripts()->registered['jquery-core']->src ) ) {
-			$jquery_urls[] = rocket_clean_exclude_file( site_url( wp_scripts()->registered['jquery-core']->src ) );
-		}
-
-		return $jquery_urls;
 	}
 }
