@@ -4,6 +4,7 @@ namespace WP_Rocket\Engine\Media\Images;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Logger\Logger;
 
 /**
  * Images Subscriber
@@ -24,7 +25,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @param Frontend $frontend Frontend class that handles all business logic.
 	 */
-	public function __construct( $frontend ) {
+	public function __construct( Frontend $frontend ) {
 		$this->frontend = $frontend;
 	}
 
@@ -35,7 +36,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_buffer' => 'specify_image_dimensions',
+			'rocket_buffer' => ['specify_image_dimensions', 19],
 		];
 	}
 
@@ -47,6 +48,11 @@ class Subscriber implements Subscriber_Interface {
 	 * @return string Page HTML content after update.
 	 */
 	public function specify_image_dimensions( $buffer ) {
+		Logger::debug("specify_image_dimensions_start");
+		if ( rocket_bypass() ) {
+			return $buffer;
+		}
+
 		return $this->frontend->specify_image_dimensions( $buffer );
 	}
 }
