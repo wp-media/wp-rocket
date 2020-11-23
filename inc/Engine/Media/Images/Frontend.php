@@ -80,8 +80,9 @@ class Frontend {
 		}
 
 		$replaces = [];
+		$images = apply_filters('rocket_specify_dimension_images', $images_match[0]);
 
-		foreach ( $images_match[0] as $image ) {
+		foreach ( $images as $image ) {
 
 			// Don't touch lazy-load file (no conflict with Photon (Jetpack)).
 			if (
@@ -93,7 +94,7 @@ class Frontend {
 			}
 
 			// Get link of the file.
-			if ( ! preg_match( '/src\s*=\s*[\'"]([^\'"]+)/i', $image, $src_match ) ) {
+			if ( ! preg_match( '/\s+src\s*=\s*[\'"]([^\'"]+)/i', $image, $src_match ) ) {
 				continue;
 			}
 
@@ -123,9 +124,6 @@ class Frontend {
 				continue;
 			}
 
-			// Add width and height attribute.
-			$image = str_replace( '<img', '<img ' . $sizes[3], $image );
-
 			// Replace image with new attributes, we will replace all images at once after the loop for optimizations.
 			$replaces[ $image ] = $this->assign_width_height( $image, $sizes[3] );
 		}
@@ -134,7 +132,7 @@ class Frontend {
 			return $html;
 		}
 
-		return str_replace( array_keys( $replaces ), $replaces, $image );
+		return str_replace( array_keys( $replaces ), $replaces, $html );
 	}
 
 	/**
@@ -166,7 +164,7 @@ class Frontend {
 		 * @param array $hosts Allowed hosts.
 		 * @param array $zones Zones to check available hosts.
 		 */
-		$hosts   = (array) apply_filters( 'rocket_cdn_hosts', [], [ 'all', 'css_and_js', '' ] );
+		$hosts   = (array) apply_filters( 'rocket_cdn_hosts', [], [ 'all' ] );
 		$hosts[] = $wp_content['host'];
 		$langs   = get_rocket_i18n_uri();
 
@@ -191,7 +189,7 @@ class Frontend {
 		if ( ! empty( $file['host'] ) ) {
 			foreach ( $hosts as $host ) {
 				if ( false !== strpos( $url, $host ) ) {
-					$this->local_paths[ md5( $url ) ] = str_replace( $host, WP_CONTENT_DIR, $url );
+					$this->local_paths[ md5( $url ) ] = str_replace( $host, untrailingslashit( rocket_get_constant( 'ABSPATH' ) ), rocket_remove_url_protocol( $url ) );
 					return false;
 				}
 			}
@@ -215,7 +213,7 @@ class Frontend {
 			return $this->local_paths[ md5( $url ) ];
 		}
 
-		return str_replace( content_url(), WP_CONTENT_DIR, $url );
+		return str_replace( content_url(), rocket_get_constant( 'WP_CONTENT_DIR' ), $url );
 	}
 
 	/**
@@ -224,7 +222,7 @@ class Frontend {
 	 * @return bool Valid to be parsed or not.
 	 */
 	private function can_specify_dimensions_external_images() {
-		return ini_get( 'allow_url_fopen' ) && apply_filters( 'rocket_specify_image_dimensions_for_distant', false );
+		return ini_get( 'allow_url_fopen' ) && apply_filters( 'rocket_specify_image_dimensions_for_distant', true );
 	}
 
 	/**
@@ -238,7 +236,7 @@ class Frontend {
 	private function assign_width_height( string $image, $width_height ) {
 		// Remove old width and height attributes if found.
 		$changed_image = preg_replace( '/(height|width)=[\'"](?:\S+)*[\'"]/i', '', $image );
-		$changed_image = preg_replace( '<\s*img', '<img ' . $width_height, $changed_image );
+		$changed_image = preg_replace( '/<\s*img/i', '<img ' . $width_height, $changed_image );
 
 		if ( null === $changed_image ) {
 			return $image;
