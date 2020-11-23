@@ -4,6 +4,7 @@ defined( 'ABSPATH' ) || exit;
 
 class_alias( '\WP_Rocket\Engine\Cache\PurgeExpired\PurgeExpiredCache', '\WP_Rocket\Cache\Expired_Cache_Purge');
 class_alias( '\WP_Rocket\Engine\Cache\PurgeExpired\Subscriber', '\WP_Rocket\Subscriber\Cache\Expired_Cache_Purge_Subscriber');
+class_alias( '\WP_Rocket\Engine\Media\Lazyload\Subscriber', '\WP_Rocket\Engine\Media\LazyloadSubscriber');
 
 /**
  * Defer all JS files.

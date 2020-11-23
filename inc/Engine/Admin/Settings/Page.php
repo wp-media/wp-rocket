@@ -1033,7 +1033,7 @@ class Page {
 					],
 					'type'            => 'textarea',
 					'label'           => __( 'Excluded images or iframes', 'rocket' ),
-					'description'     => __( 'Specify keywords (e.g. image filename, CSS class, domain) from the image or iframe code to be excluded (one per line).' ),
+					'description'     => __( 'Specify keywords (e.g. image filename, CSS class, domain) from the image or iframe code to be excluded (one per line).', 'rocket' ),
 					'section'         => 'lazyload_section',
 					'page'            => 'media',
 					'default'         => [],

@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\Media\LazyloadSubscriber;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Media\Lazyload\Subscriber;
 
 use Mockery;
 use Brain\Monkey\Functions;
@@ -10,10 +10,10 @@ use WP_Rocket\Dependencies\RocketLazyload\Image;
 use WP_Rocket\Dependencies\RocketLazyload\Iframe;
 use WP_Rocket\Admin\Options_Data;
 use WPMedia\PHPUnit\Unit\TestCase;
-use WP_Rocket\Engine\Media\LazyloadSubscriber;
+use WP_Rocket\Engine\Media\Lazyload\Subscriber;
 
 /**
- * @covers \WP_Rocket\Engine\Media\LazyloadSubscriber::insert_lazyload_script
+ * @covers \WP_Rocket\Engine\Media\Lazyload\Subscriber::insert_lazyload_script
  *
  * @group Media
  * @group Lazyload
@@ -29,7 +29,7 @@ class Test_InsertLazyloadScript extends TestCase {
 		$this->assets  = Mockery::mock( Assets::class );
 		$this->options = Mockery::mock( Options_Data::class );
 
-		$this->subscriber = new LazyloadSubscriber(
+		$this->subscriber = new Subscriber(
 			$this->options,
 			$this->assets,
 			Mockery::mock( Image::class ),
