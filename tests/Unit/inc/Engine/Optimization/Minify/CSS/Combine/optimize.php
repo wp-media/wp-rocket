@@ -63,8 +63,8 @@ class Test_Optimize extends TestCase {
 		Functions\when( 'esc_url' )->returnArg();
 
 		$this->assertSame(
-			$expected['html'],
-			$this->combine->optimize( $original )
+			$this->format_the_html($expected['html']),
+			$this->format_the_html( $this->combine->optimize( $original ) )
 		);
 
 		$this->assertSame(
