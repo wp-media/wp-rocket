@@ -202,7 +202,7 @@ class Plugin {
 			'emojis_subscriber',
 			'delay_js_subscriber',
 			'defer_js_subscriber',
-			'images_subscriber'
+			'images_subscriber',
 		];
 
 		// Don't insert the LazyLoad file if Rocket LazyLoad is activated.

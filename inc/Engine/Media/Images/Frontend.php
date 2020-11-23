@@ -36,7 +36,7 @@ class Frontend {
 	/**
 	 * Frontend constructor.
 	 *
-	 * @param Options_Data $options Options_Data instance.
+	 * @param Options_Data         $options Options_Data instance.
 	 * @param WP_Filesystem_Direct $filesystem Filesystem instance.
 	 */
 	public function __construct( Options_Data $options, $filesystem = null ) {
@@ -80,7 +80,7 @@ class Frontend {
 		}
 
 		$replaces = [];
-		$images = apply_filters('rocket_specify_dimension_images', $images_match[0]);
+		$images   = apply_filters( 'rocket_specify_dimension_images', $images_match[0] );
 
 		foreach ( $images as $image ) {
 
