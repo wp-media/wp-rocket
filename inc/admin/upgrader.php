@@ -184,7 +184,6 @@ function rocket_first_install() {
 				'exclude_js'                  => [],
 				'exclude_inline_js'           => [],
 				'defer_all_js'                => 0,
-				'defer_all_js_safe'           => 1,
 				'async_css'                   => 0,
 				'critical_css'                => '',
 				'lazyload'                    => 0,
