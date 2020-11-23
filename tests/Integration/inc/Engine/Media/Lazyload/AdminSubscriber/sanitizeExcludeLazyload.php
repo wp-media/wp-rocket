@@ -19,7 +19,7 @@ class Test_SanitizeExcludeLazyload extends TestCase {
 	public function testShouldReturnExpected( $input, $expected ) {
 		$this->assertSame(
 			$expected,
-			apply_filters( 'rocket_sanitize_input', $input )
+			apply_filters( 'rocket_input_sanitize', $input )
 		);
 	}
 }
