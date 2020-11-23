@@ -34,9 +34,9 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Instantiate the subscriber.
 	 *
-	 * @param AbstractGFOptimization      $combine Combine instance.
+	 * @param AbstractGFOptimization $combine Combine instance.
 	 * @param AbstractGFOptimization $combine_v2 Combine V2 instance.
-	 * @param Options_Data $options Options_Data instance.
+	 * @param Options_Data           $options Options_Data instance.
 	 */
 	public function __construct( AbstractGFOptimization $combine, AbstractGFOptimization $combine_v2, Options_Data $options ) {
 		$this->combine    = $combine;
@@ -85,7 +85,8 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Processes the HTML to combine found Google fonts
+	 * Processes the HTML to combine found Google fonts.
+	 * Handles both Google Fonts API v2 and v1.
 	 *
 	 * @since 3.1
 	 *
@@ -97,8 +98,9 @@ class Subscriber implements Subscriber_Interface {
 			return $html;
 		}
 
-		// Todo: Integrate both combine processes, maybe with html comment, here
-		// $html = $this->combine_v2->optimize( $html );
+		// Combine Google Font API V2.
+		$html = $this->combine_v2->optimize( $html );
+		// Combine Google Font API V1.
 		return $this->combine->optimize( $html );
 	}
 
