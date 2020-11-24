@@ -1,7 +1,8 @@
 on:
   pull_request:
     branches:
-      - dev/*
+      - dev-*
+      - ga-*
 
 name: Deploy new WP Instance
 jobs:
@@ -31,10 +32,12 @@ jobs:
           KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         with:
           args: |
-            kubectl create namespace ${GITHUB_REF##*/}
-            helm repo add bitnami https://charts.bitnami.com/bitnami
-            helm install ${GITHUB_REF##*/} bitnami/wordpress -f values.yml -n ${GITHUB_REF##*/}
-            kubectl get secret dev-tls --namespace=default --export -o yaml | kubectl apply --namespace=${GITHUB_REF##*/} -f -
-            kubectl apply -f k8s/ingress.yaml
+            if ! kubectl get namespace -A | grep ${GITHUB_REF##*/}; then
+              kubectl create namespace ${GITHUB_REF##*/}
+              helm repo add bitnami https://charts.bitnami.com/bitnami
+              helm install ${GITHUB_REF##*/} bitnami/wordpress -f values.yml -n ${GITHUB_REF##*/}
+              kubectl get secret dev-tls --namespace=default --export -o yaml | kubectl apply --namespace=${GITHUB_REF##*/} -f -
+              kubectl apply -f k8s/ingress.yaml
+            fi
             export PODNAME=$(kubectl get pods --context kubernetes-admin@TST-SBG5-MAN-K8S-01 -A | grep ${GITHUB_REF##*/} | grep wordpress | awk '{print $2}')
             kubectl cp . $PODNAME:/opt/bitnami/wordpress/wp-content/plugins/wp-rocket
