@@ -27,18 +27,13 @@ class Test_Optimize extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->options
-			->shouldReceive( 'get' )
-			->andReturnArg( 1 );
-
 		$this->local_cache = Mockery::mock( AssetsLocalCache::class );
-		$this->minify = new Minify( $this->options, $this->local_cache );
 	}
 
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldMinifyCSS( $original, $expected, $cdn_host, $cdn_url, $site_url, $external_url, $has_integrity = false, $valid_integrity = true ) {
+	public function testShouldMinifyCSS( $original, $expected, $cdn_host, $cdn_url, $site_url, $external_url, $excluded_css = [], $has_integrity = false, $valid_integrity = true ) {
 		Filters\expectApplied( 'rocket_cdn_hosts' )
 			->zeroOrMoreTimes()
 			->with( [], [ 'all', 'css_and_js', 'css' ] )
@@ -95,6 +90,30 @@ class Test_Optimize extends TestCase {
 				}
 				return $asset_match[0];
 			} );
+
+		if ( ! empty( $excluded_css ) ) {
+			foreach ( $excluded_css['urls'] as $url ) {
+				$this->options
+					->shouldReceive( 'get' )
+					->with( 'minify_css_key', 'rocket_uniqid' )
+					->andReturnArg( 1 );
+				$this->options->shouldReceive( 'get' )
+					->with( 'exclude_css', [] )
+					->andReturn( $excluded_css['excluded_terms'] );
+				$this->local_cache->shouldReceive('get_filepath')
+					->with( $url )
+					->andReturn( $url );
+				$this->local_cache->shouldReceive( 'get_content' )
+					->with( $url )
+					->andReturn( 'external css content' );
+			}
+		} else {
+			$this->options
+				->shouldReceive( 'get' )
+				->andReturnArg( 1 );
+		}
+
+		$this->minify = new Minify( $this->options, $this->local_cache );
 
 		$this->assertSame(
 			$this->format_the_html( $expected['html'] ),
