@@ -8,7 +8,7 @@ jobs:
   deploy:
     name: deploy new WP instance to cluster
     # We run this job only if branch name doing the PR starts with these patterns
-    if: startsWith(github.head_ref, 'dev-') || startsWith(github.head_ref, 'ga-')
+    if: startsWith(github.head_ref, 'dev-') || startsWith(github.head_ref, 'qa-')
     runs-on: ubuntu-latest
     steps:
       - name: checkout
