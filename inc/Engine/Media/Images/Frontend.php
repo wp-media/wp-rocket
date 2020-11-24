@@ -57,18 +57,7 @@ class Frontend {
 	 * @return string Buffer Page HTML contents after inserting dimentions into images.
 	 */
 	public function specify_image_dimensions( $html ) {
-		if ( ! $this->options->get( 'image_dimensions', false ) ) {
-			return $html;
-		}
-
-		/**
-		 * Filter images dimensions attributes
-		 *
-		 * @since 2.2
-		 *
-		 * @param bool Do the job or not.
-		 */
-		if ( ! apply_filters( 'rocket_specify_image_dimensions', true ) ) {
+		if ( ! $this->can_specify_dimensions_images() ) {
 			return $html;
 		}
 
@@ -84,41 +73,13 @@ class Frontend {
 
 		foreach ( $images as $image ) {
 
-			// Don't touch lazy-load file (no conflict with Photon (Jetpack)).
-			if (
-				false !== strpos( $image, 'data-lazy-original' )
-				||
-				false !== strpos( $image, 'data-no-image-dimensions' )
-			) {
+			$image_url = $this->can_specify_dimensions_one_image( $image );
+
+			if ( ! $image_url ) {
 				continue;
 			}
 
-			// Get link of the file.
-			if ( ! preg_match( '/\s+src\s*=\s*[\'"]([^\'"]+)/i', $image, $src_match ) ) {
-				continue;
-			}
-
-			$image_url = $src_match[1];
-
-			if ( $this->is_external_file( $image_url ) ) {
-				if ( ! $this->can_specify_dimensions_external_images() ) {
-					continue;
-				}
-
-				if ( ! $this->image_exists( $image_url, true ) ) {
-					continue;
-				}
-
-				$sizes = getimagesize( $image_url );
-			} else {
-				$local_path = $this->get_local_path( $image_url );
-
-				if ( ! $this->image_exists( $local_path, false ) ) {
-					continue;
-				}
-
-				$sizes = getimagesize( $this->get_local_path( $image_url ) );
-			}
+			$sizes = $this->get_image_sizes( $image_url );
 
 			if ( ! $sizes ) {
 				continue;
@@ -264,6 +225,82 @@ class Frontend {
 		}
 
 		return strpos( $file_headers[0], '404' ) === false;
+	}
+
+	/**
+	 * Check if we can specify image dimensions for all images.
+	 *
+	 * @return bool Can we or not.
+	 */
+	private function can_specify_dimensions_images() {
+		if ( ! $this->options->get( 'image_dimensions', false ) ) {
+			return false;
+		}
+
+		/**
+		 * Filter images dimensions attributes
+		 *
+		 * @since 2.2
+		 *
+		 * @param bool Do the job or not.
+		 */
+		if ( ! apply_filters( 'rocket_specify_image_dimensions', true ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Check if we can specify image dimensions for one image.
+	 *
+	 * @param string $image Full img tag.
+	 *
+	 * @return false|string false if we can't specify for this image otherwise get img src attribute.
+	 */
+	private function can_specify_dimensions_one_image( $image ) {
+		// Don't touch lazy-load file (no conflict with Photon (Jetpack)).
+		if (
+			false !== strpos( $image, 'data-lazy-original' )
+			||
+			false !== strpos( $image, 'data-no-image-dimensions' )
+			||
+			! preg_match( '/\s+src\s*=\s*[\'"]([^\'"]+)/i', $image, $src_match )
+		) {
+			return false;
+		}
+
+		return $src_match[1];
+
+	}
+
+	/**
+	 * Get Image sizes.
+	 *
+	 * @param string $image_url Image url to get sizes for.
+	 *
+	 * @return array|false Get image sizes otherwise false.
+	 */
+	private function get_image_sizes( $image_url ) {
+		if ( $this->is_external_file( $image_url ) ) {
+			if ( ! $this->can_specify_dimensions_external_images() ) {
+				return false;
+			}
+
+			if ( ! $this->image_exists( $image_url, true ) ) {
+				return false;
+			}
+
+			return getimagesize( $image_url );
+		}
+
+		$local_path = $this->get_local_path( $image_url );
+
+		if ( ! $this->image_exists( $local_path, false ) ) {
+			return false;
+		}
+
+		return getimagesize( $this->get_local_path( $image_url ) );
 	}
 
 }
