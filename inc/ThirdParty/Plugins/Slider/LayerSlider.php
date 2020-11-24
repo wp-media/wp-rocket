@@ -25,9 +25,9 @@ class LayerSlider implements Subscriber_Interface {
 			return [];
 		}
 
-		//Conflict with LayerSlider: don't add width and height attributes on all images.
+		// Conflict with LayerSlider: don't add width and height attributes on all images.
 		return [
-			'rocket_specify_image_dimensions' => 'return_false'
+			'rocket_specify_image_dimensions' => 'return_false',
 		];
 	}
 
