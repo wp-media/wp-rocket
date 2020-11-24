@@ -69,6 +69,13 @@ class Frontend {
 		}
 
 		$replaces = [];
+		/**
+		 * Filters Page images passed to specify dimensions.
+		 *
+		 * @since  3.8
+		 *
+		 * @param array Page images.
+		 */
 		$images   = apply_filters( 'rocket_specify_dimension_images', $images_match[0] );
 
 		foreach ( $images as $image ) {
@@ -86,7 +93,7 @@ class Frontend {
 			}
 
 			// Replace image with new attributes, we will replace all images at once after the loop for optimizations.
-			$replaces[ $image ] = $this->assign_width_height( $image, $sizes[3] );
+			$replaces[ $image ] = $this->assign_width_height( $image, $sizes );
 		}
 
 		if ( empty( $replaces ) ) {
@@ -183,6 +190,13 @@ class Frontend {
 	 * @return bool Valid to be parsed or not.
 	 */
 	private function can_specify_dimensions_external_images() {
+		/**
+		 * Enable/Disable specify image dimensions for external images.
+		 *
+		 * @since 3.8
+		 *
+		 * @param bool Specify image dimensions for external images or not.
+		 */
 		return ini_get( 'allow_url_fopen' ) && apply_filters( 'rocket_specify_image_dimensions_for_distant', true );
 	}
 
@@ -244,11 +258,7 @@ class Frontend {
 		 *
 		 * @param bool Do the job or not.
 		 */
-		if ( ! apply_filters( 'rocket_specify_image_dimensions', true ) ) {
-			return false;
-		}
-
-		return true;
+		return apply_filters( 'rocket_specify_image_dimensions', true );
 	}
 
 	/**
@@ -265,12 +275,12 @@ class Frontend {
 			||
 			false !== strpos( $image, 'data-no-image-dimensions' )
 			||
-			! preg_match( '/\s+src\s*=\s*[\'"]([^\'"]+)/i', $image, $src_match )
+			! preg_match( '/\s+src\s*=\s*[\'"](?<url>[^\'"]+)/i', $image, $src_match )
 		) {
 			return false;
 		}
 
-		return $src_match[1];
+		return $src_match['url'];
 
 	}
 
@@ -281,7 +291,7 @@ class Frontend {
 	 *
 	 * @return array|false Get image sizes otherwise false.
 	 */
-	private function get_image_sizes( $image_url ) {
+	private function get_image_sizes( string $image_url ) {
 		if ( $this->is_external_file( $image_url ) ) {
 			if ( ! $this->can_specify_dimensions_external_images() ) {
 				return false;
@@ -291,7 +301,13 @@ class Frontend {
 				return false;
 			}
 
-			return getimagesize( $image_url );
+			$sizes = getimagesize( $image_url );
+
+			if ( ! $sizes ) {
+				return false;
+			}
+
+			return $sizes[3];
 		}
 
 		$local_path = $this->get_local_path( $image_url );
@@ -300,7 +316,13 @@ class Frontend {
 			return false;
 		}
 
-		return getimagesize( $this->get_local_path( $image_url ) );
+		$sizes = getimagesize( $this->get_local_path( $image_url ) );
+
+		if ( ! $sizes ) {
+			return false;
+		}
+
+		return $sizes[3];
 	}
 
 }
