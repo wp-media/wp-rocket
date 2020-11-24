@@ -85,7 +85,6 @@ class CombineV2 extends AbstractGFOptimization {
 		}
 
 		$html = preg_replace( '@<\/title>@i', '$0' . $this->get_combine_tag(), $html, 1 );
-
 		foreach ( $processed_tags as $font ) {
 			$html = str_replace( $font[0], '', $html );
 		}
@@ -113,7 +112,6 @@ class CombineV2 extends AbstractGFOptimization {
 	protected function parse( array $tag ): bool {
 		if ( false !== strpos( $tag['url'], 'text=' ) ) {
 			Logger::debug( 'GOOGLEFONTS V2 COMBINE: ' . $tag['url'] . ' SKIPPED TO PRESERVE "text" ATTRIBUTE.' );
-
 			return false;
 		}
 

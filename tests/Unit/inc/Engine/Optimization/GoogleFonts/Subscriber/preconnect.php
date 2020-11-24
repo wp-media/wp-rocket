@@ -12,7 +12,7 @@ use WP_Rocket\Engine\Optimization\GoogleFonts\Subscriber;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\GoogleFonts\Subscriber::preconnect
- * @group CombineGoogleFonts
+ * @group GoogleFonts
  */
 class Test_Preconnect extends TestCase {
 	private $options;
