@@ -30,7 +30,9 @@ class Test_OptimizeV2 extends TestCase {
 			parse_str( $value, $r );
 			return $r;
 		} );
-		Functions\when( 'esc_url' )->returnArg();
+		Functions\when( 'esc_url' )->alias( function( $url ) {
+			return str_replace( [ '&amp;', '&' ], '&#038;', $url );
+		} );
 
 		$expected = $this->format_the_html( $expected );
 		$combiner = new CombineV2();
