@@ -38,7 +38,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		'simple_custom_css',
 		'pdfembedder',
 		'divi',
-		'layerslider-subscriber',
 	];
 
 	/**
@@ -98,7 +97,5 @@ class ServiceProvider extends AbstractServiceProvider {
 			->withArgument( WP_ROCKET_CACHE_BUSTING_PATH )->withArgument( WP_ROCKET_CACHE_BUSTING_URL );
 		$this->getContainer()
 			->share( 'pdfembedder', 'WP_Rocket\ThirdParty\Plugins\PDFEmbedder' );
-		$this->getContainer()
-			->share( 'layerslider-subscriber', 'WP_Rocket\ThirdParty\Plugins\Slider\LayerSlider' );
 	}
 }
