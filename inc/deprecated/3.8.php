@@ -198,3 +198,13 @@ function rocket_specify_image_dimensions( $buffer ) {
 
 	return $buffer;
 }
+
+/**
+ * Conflict with LayerSlider: don't add width and height attributes on all images
+ *
+ * @since 2.1
+ */
+function rocket_deactivate_specify_image_dimensions_with_layerslider() {
+	_deprecated_function( __FUNCTION__ . '()', '3.8', 'WP_Rocket\ThirdParty\Plugins\Slider\LayerSlider::get_subscribed_events()' );
+	remove_filter( 'rocket_buffer', 'rocket_specify_image_dimensions' );
+}
