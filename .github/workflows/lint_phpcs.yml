@@ -1,4 +1,4 @@
-name: PHP CodeSniffer lint
+name: PHP CodeSniffer lint 
 
 on:
   pull_request:
