@@ -33,7 +33,7 @@ class Buffer_Subscriber implements Subscriber_Interface {
 		return [
 			'template_redirect' => [
 				[ 'redirect_canonical', 1 ],
-				[ 'start_content_process', 2 ]
+				[ 'start_content_process', 2 ],
 			],
 		];
 	}
@@ -57,7 +57,7 @@ class Buffer_Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function redirect_canonical() {
-		if ( ! function_exists( 'redirect_canonical' ) ){
+		if ( ! function_exists( 'redirect_canonical' ) ) {
 			return;
 		}
 
