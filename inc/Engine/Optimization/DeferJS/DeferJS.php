@@ -102,16 +102,34 @@ class DeferJS {
 			return $html;
 		}
 
+		/**
+		 * Filters the patterns used to find jQuery in inline JS
+		 *
+		 * @since 3.8
+		 *
+		 * @param string $jquery_patterns A RegEx pattern to find jQuery inline JS.
+		 */
+		$jquery_patterns = apply_filters( 'rocket_defer_jquery_patterns', 'jQuery|\$\.\(|\$\(' );
+
+		/**
+		 * Filters the patterns used to find inline JS that should not be deferred
+		 *
+		 * @since 3.8
+		 *
+		 * @param string $inline_exclusions A RegEx pattern to find inline JS that should not be deferred.
+		 */
+		$inline_exclusions = apply_filters( 'rocket_defer_inline_exclusions', 'DOMContentLoaded|document\.write' );
+
 		foreach ( $matches as $inline_js ) {
 			if ( empty( $inline_js['content'] ) ) {
 				continue;
 			}
 
-			if ( preg_match( '/(DOMContentLoaded|document\.write)/msi', $inline_js['content'] ) ) {
+			if ( preg_match( "/({$inline_exclusions})/msi", $inline_js['content'] ) ) {
 				continue;
 			}
 
-			if ( ! preg_match( '/(jQuery|\$\.\(|\$\()/msi', $inline_js['content'] ) ) {
+			if ( ! preg_match( "/({$jquery_patterns})/msi", $inline_js['content'] ) ) {
 				continue;
 			}
 
