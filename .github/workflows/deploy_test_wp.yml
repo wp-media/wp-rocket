@@ -3,7 +3,7 @@ on:
     branches:
       - develop
 
-name: Deploy new WP Instance 
+name: Deploy new WP Instance
 jobs:
   deploy:
     name: deploy new WP instance to cluster
