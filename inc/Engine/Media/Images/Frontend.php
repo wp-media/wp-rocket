@@ -76,7 +76,7 @@ class Frontend {
 		 *
 		 * @param array Page images.
 		 */
-		$images   = apply_filters( 'rocket_specify_dimension_images', $images_match[0] );
+		$images = apply_filters( 'rocket_specify_dimension_images', $images_match[0] );
 
 		foreach ( $images as $image ) {
 
