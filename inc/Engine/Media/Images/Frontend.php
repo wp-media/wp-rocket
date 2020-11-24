@@ -289,7 +289,7 @@ class Frontend {
 	 *
 	 * @param string $image_url Image url to get sizes for.
 	 *
-	 * @return array|false Get image sizes otherwise false.
+	 * @return string|false Get image sizes otherwise false.
 	 */
 	private function get_image_sizes( string $image_url ) {
 		if ( $this->is_external_file( $image_url ) ) {
