@@ -22,7 +22,7 @@ jobs:
       - name: parse ingress
         run: |
           export BRANCH=$(echo "$GITHUB_REF" | sed 's/.*\///')
-          sed -i "s|CHANGEME|$BRANCH|g" k8s/ingress.yaml 
+          sed -i "s|CHANGEME|$BRANCH|g" .github/k8s_ingress.yaml
       - name: create Helm values.yml
         uses: "finnp/create-file-action@master"
         env:
@@ -40,7 +40,7 @@ jobs:
               helm repo add bitnami https://charts.bitnami.com/bitnami
               helm install $BRANCH bitnami/wordpress -f values.yml -n BRANCH
               kubectl get secret dev-tls --namespace=default --export -o yaml | kubectl apply --namespace=$BRANCH -f -
-              kubectl apply -f k8s/ingress.yaml
+              kubectl apply -f .github/k8s_ingress.yaml
             fi
             export PODNAME=$(kubectl get pods --context kubernetes-admin@TST-SBG5-MAN-K8S-01 -A | grep $BRANCH | grep wordpress | awk '{print $2}')
             kubectl cp . $PODNAME:/opt/bitnami/wordpress/wp-content/plugins/wp-rocket -n $BRANCH
