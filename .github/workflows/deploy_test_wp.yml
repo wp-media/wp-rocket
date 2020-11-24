@@ -1,13 +1,14 @@
 on:
-  push:
+  pull_request:
     branches:
-      - dev-*
-      - ga-*
+      - develop
 
 name: Deploy new WP Instance 
 jobs:
   deploy:
     name: deploy new WP instance to cluster
+    # We run this job only if branch name doing the PR starts with these patterns
+    if: startsWith(github.head_ref, 'dev-') || startsWith(github.head_ref, 'ga-')
     runs-on: ubuntu-latest
     steps:
       - name: checkout
@@ -32,7 +33,6 @@ jobs:
           KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         with:
           args: |
-            export BRANCH=$(echo "$GITHUB_REF" | sed 's/.*\///')
             if ! kubectl get namespace -A | grep ${{ github.head_ref }}; then
               kubectl create namespace ${{ github.head_ref }}
               helm repo add bitnami https://charts.bitnami.com/bitnami
