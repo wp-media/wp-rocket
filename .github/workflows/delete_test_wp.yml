@@ -3,7 +3,7 @@ on: delete
 name: Delete WP test Instance
 jobs:
   delete:
-    if: startsWith(github.event.ref, 'dev-') || startsWith(github.event.ref, 'ga-') && (github.event.ref_type == 'branch')
+    if: (github.event.ref_type == 'branch')
     name: delete WP instance from cluster
     runs-on: ubuntu-latest
     steps:
