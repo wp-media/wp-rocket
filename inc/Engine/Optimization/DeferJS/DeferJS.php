@@ -107,16 +107,16 @@ class DeferJS {
 				continue;
 			}
 
-			if ( ! preg_match( '/(jQuery|\$\.\(|\$\()/msi', $inline_js['content'] ) ) {
-				continue;
-			}
-
 			if ( preg_match( '/(DOMContentLoaded|document\.write)/msi', $inline_js['content'] ) ) {
 				continue;
 			}
 
-			$tag  = str_replace( $inline_js['content'], $this->inline_js_wrapper( $inline_js['content'] ), $matches[0] );
-			$html = str_replace( $matches[0], $tag, $html );
+			if ( ! preg_match( '/(jQuery|\$\.\(|\$\()/msi', $inline_js['content'] ) ) {
+				continue;
+			}
+
+			$tag  = str_replace( $inline_js['content'], $this->inline_js_wrapper( $inline_js['content'] ), $inline_js[0] );
+			$html = str_replace( $inline_js[0], $tag, $html );
 		}
 
 		return $html;
