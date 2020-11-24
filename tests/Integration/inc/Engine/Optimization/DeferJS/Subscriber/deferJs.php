@@ -14,7 +14,6 @@ class Test_DeferJs extends TestCase {
 	use ContentTrait;
 
 	private $defer_js;
-	private $defer_js_safe;
 	private $exclude_defer_js;
 
 	public function setUp() {
@@ -63,10 +62,6 @@ class Test_DeferJs extends TestCase {
 
 	public function set_defer_js() {
 		return $this->defer_js;
-	}
-
-	public function set_defer_js_safe() {
-		return $this->defer_js_safe;
 	}
 
 	public function set_exclude_defer_js() {

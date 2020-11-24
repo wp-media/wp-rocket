@@ -4,7 +4,6 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\DeferJS\DeferJS;
 
 use Brain\Monkey\Functions;
 use Mockery;
-use stdClass;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\DeferJS\DeferJS;
 use WP_Rocket\Tests\Unit\TestCase;
@@ -38,23 +37,6 @@ class Test_DeferJs extends TestCase {
 
         Functions\when( 'is_rocket_post_excluded_option' )
             ->justReturn( $config['post_meta'] );
-        
-        Functions\when( 'site_url' )->alias( function( $path = '') {
-            return 'http://example.org/' . ltrim( $path, '/' );
-        } );
-        Functions\when( 'rocket_clean_exclude_file' )->alias( function( $file = '' ) {
-            return parse_url( $file, PHP_URL_PATH );
-        } );
-        Functions\when( 'wp_scripts' )->alias( function() {
-            $wp_scripts = new stdClass();
-            $jquery     = new stdClass();
-            $jquery->src = '/wp-includes/js/jquery/jquery.js';
-            $wp_scripts->registered = [
-                'jquery-core' => $jquery,
-            ];
-
-            return $wp_scripts;
-        } );
 
         $this->assertSame(
             $expected,
