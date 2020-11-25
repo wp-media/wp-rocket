@@ -138,6 +138,10 @@ function get_rocket_htaccess_marker() { // phpcs:ignore WordPress.NamingConventi
 	$marker .= apply_filters( 'before_rocket_htaccess_rules', '' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 	$marker .= get_rocket_htaccess_charset();
+	// Don't add our trailingslash rules if our helper is installed.
+	if ( false === strstr( '', '# Remove trailing slash' ) ) {
+		$marker .= rocket_htaccess_trailingslash();
+	}
 	$marker .= get_rocket_htaccess_etag();
 	$marker .= get_rocket_htaccess_web_fonts_access();
 	$marker .= get_rocket_htaccess_files_match();
@@ -693,4 +697,29 @@ function rocket_check_htaccess_rules() {
 	}
 
 	return false;
+}
+
+/**
+ * Return rules for trailing slash redirection based on permalink schema.
+ *
+ * @return string htaccess Rules.
+ */
+function rocket_htaccess_trailingslash() {
+	global $wp_rewrite;
+
+	$rules  = '<IfModule mod_rewrite.c>' . PHP_EOL;
+	$rules .= 'RewriteCond %{REQUEST_FILENAME} !-f' . PHP_EOL;
+	$rules .= 'RewriteCond %{REQUEST_METHOD} GET' . PHP_EOL;
+
+	if ( $wp_rewrite->use_trailing_slashes ) {
+		$rules .= 'RewriteCond %{REQUEST_URI} !(.*)/$' . PHP_EOL;
+		$rules .= 'RewriteRule ^(.*)$ /$1/ [R=301,L]' . PHP_EOL;
+	} else {
+		$rules .= 'RewriteCond %{REQUEST_URI} (.*)/$' . PHP_EOL;
+		$rules .= 'RewriteRule ^(.*)/$ /$1 [R=301,L]' . PHP_EOL;
+	}
+
+	$rules .= '</IfModule>' . PHP_EOL;
+
+	return $rules;
 }
