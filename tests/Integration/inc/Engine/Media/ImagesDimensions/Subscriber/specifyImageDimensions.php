@@ -1,15 +1,15 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\Media\Images\Subscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Media\ImagesDimensions\Subscriber;
 
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Media\Images\Subscriber::specify_image_dimensions
+ * @covers \WP_Rocket\Engine\Media\ImagesDimensions\Subscriber::specify_image_dimensions
  * @group  Media
  */
 class Test_SpecifyImageDimensions extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/Engine/Media/Images/Frontend/specifyImageDimensions.php';
+	protected $path_to_test_data = '/inc/Engine/Media/ImagesDimensions/ImagesDimensions/specifyImageDimensions.php';
 
 	private $config_data = [];
 

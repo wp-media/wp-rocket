@@ -34,7 +34,7 @@ return [
 	'structure' => [
 		'wp-content' => [
 			'themes' => [
-				'image.jpg' => file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . "/inc/Engine/Media/Images/empty.jpg" )
+				'image.jpg' => file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . "/inc/Engine/Media/ImagesDimensions/empty.jpg" )
 			]
 		]
 	],

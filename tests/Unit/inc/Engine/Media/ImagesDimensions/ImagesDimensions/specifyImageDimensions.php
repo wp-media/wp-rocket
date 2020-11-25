@@ -1,20 +1,21 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\Media\Images\Frontend;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Media\ImagesDimensions\ImagesDimensions;
 
-use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\Media\Images\Frontend;
-use WP_Rocket\Tests\Unit\FilesystemTestCase;
-use Mockery;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
+use Mockery;
+use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Media\ImagesDimensions\ImagesDimensions;
+use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Media\Images\Frontend::specify_image_dimensions
+ * @covers \WP_Rocket\Engine\Media\ImagesDimensions\ImagesDimensions::specify_image_dimensions
+ * @group  ImagesDimensions
  * @group  Media
  */
 class Test_SpecifyImageDimensions extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/Engine/Media/Images/Frontend/specifyImageDimensions.php';
+	protected $path_to_test_data = '/inc/Engine/Media/ImagesDimensions/ImagesDimensions/specifyImageDimensions.php';
 
 	/**
 	 * @dataProvider providerTestData
@@ -36,7 +37,7 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 				->andReturn( $config['rocket_specify_image_dimensions_filter'] );
 		}
 
-		$frontend = new Frontend( $options, $this->filesystem );
+		$frontend = new ImagesDimensions( $options, $this->filesystem );
 
 		if ( isset( $config['external'] ) || isset( $config['internal'] ) ) {
 			Functions\expect( 'get_rocket_parse_url' )
