@@ -12,6 +12,11 @@
     "wp-cli/wp-cli": "~1.5.1",
     "woocommerce/woocommerce-sniffs": "0.0.8"
   },
+  "config": {
+    "platform": {
+      "php": "7.1"
+    }
+  },
   "scripts": {
     "test": [
       "phpunit"
