@@ -44,7 +44,7 @@ return [
 		'shouldNotChangeHTMLWhenOptionDisabled' => [
 			'html' => $simple_html_with_local_image,
 			'config' => [
-				'image_dimensions' => false
+				'images_dimensions' => false
 			],
 			'expected' => $simple_html_with_local_image
 		],
@@ -52,7 +52,7 @@ return [
 		'shouldNotChangeHTMLWhenFiltered' => [
 			'html' => $simple_html_with_local_image,
 			'config' => [
-				'image_dimensions' => true,
+				'images_dimensions' => true,
 				'rocket_specify_image_dimensions_filter' => false
 			],
 			'expected' => $simple_html_with_local_image
@@ -61,7 +61,7 @@ return [
 		'shouldNotChangeHTMLWhenNoImages' => [
 			'html' => $simple_html_without_images,
 			'config' => [
-				'image_dimensions' => true,
+				'images_dimensions' => true,
 				'rocket_specify_image_dimensions_filter' => true
 			],
 			'expected' => $simple_html_without_images
@@ -70,7 +70,7 @@ return [
 		'shouldNotChangeHTMLWithImageHasWidthHeightAttributes' => [
 			'html' => '<!DOCTYPE html><html><body><img src="https://example.org/wp-content/themes/image.jpg" width="100" height="100"></body></html>',
 			'config' => [
-				'image_dimensions' => true,
+				'images_dimensions' => true,
 				'rocket_specify_image_dimensions_filter' => true,
 
 			],
@@ -85,7 +85,7 @@ return [
 </body>
 </html>',
 			'config' => [
-				'image_dimensions' => true,
+				'images_dimensions' => true,
 				'rocket_specify_image_dimensions_filter' => true,
 
 			],
@@ -105,7 +105,7 @@ return [
 </body>
 </html>',
 			'config' => [
-				'image_dimensions' => true,
+				'images_dimensions' => true,
 				'rocket_specify_image_dimensions_filter' => true,
 
 			],
@@ -120,7 +120,7 @@ return [
 		'shouldNotChangeHTMLWhenHasImageWithoutSrcAttribute' => [
 			'html' => '<!DOCTYPE html><html><body><img anothersrc="https://example.org/wp-content/themes/image.jpg"></body></html>',
 			'config' => [
-				'image_dimensions' => true,
+				'images_dimensions' => true,
 				'rocket_specify_image_dimensions_filter' => true,
 
 			],
@@ -130,7 +130,7 @@ return [
 		'shouldNotChangeHTMLWhenHasExternalValidImageWithDistantFilterDisabled' => [
 			'html' => '<!DOCTYPE html><html><body><img src="https://v3b4d4f5.rocketcdn.me/wp-content/themes/wp-rocket/assets/images/support-photo-2017.jpg"></body></html>',
 			'config' => [
-				'image_dimensions' => true,
+				'images_dimensions' => true,
 				'rocket_specify_image_dimensions_filter' => true,
 				'external' => true,
 				'rocket_specify_image_dimensions_for_distant_filter' => false
@@ -141,7 +141,7 @@ return [
 		'shouldNotChangeHTMLWhenHasExternalNotFoundImage' => [
 			'html' => '<!DOCTYPE html><html><body><img src="https://v3b4d4f5.rocketcdn.me/image.jpg"></body></html>',
 			'config' => [
-				'image_dimensions' => true,
+				'images_dimensions' => true,
 				'rocket_specify_image_dimensions_filter' => true,
 				'external' => true,
 				'rocket_specify_image_dimensions_for_distant_filter' => false
@@ -152,7 +152,7 @@ return [
 		'shouldChangeHTMLWhenHasExternalFoundImage' => [
 			'html' => '<!DOCTYPE html><html><body><img src="https://v3b4d4f5.rocketcdn.me/wp-content/themes/wp-rocket/assets/images/support-photo-2017.jpg"></body></html>',
 			'config' => [
-				'image_dimensions' => true,
+				'images_dimensions' => true,
 				'rocket_specify_image_dimensions_filter' => true,
 				'external' => true,
 				'rocket_specify_image_dimensions_for_distant_filter' => true
@@ -163,7 +163,7 @@ return [
 		'shouldNotChangeHTMLWhenHasInternalNotFoundImage' => [
 			'html' => '<!DOCTYPE html><html><body><img src="https://example.org/wp-content/themes/image-notfound.jpg"></body></html>',
 			'config' => [
-				'image_dimensions' => true,
+				'images_dimensions' => true,
 				'rocket_specify_image_dimensions_filter' => true,
 				'internal' => true,
 			],
@@ -173,7 +173,7 @@ return [
 		'shouldChangeHTMLWhenHasInternalFoundImage' => [
 			'html' => '<!DOCTYPE html><html><body><img src="https://example.org/wp-content/themes/image.jpg"></body></html>',
 			'config' => [
-				'image_dimensions' => true,
+				'images_dimensions' => true,
 				'rocket_specify_image_dimensions_filter' => true,
 				'internal' => true,
 			],

@@ -4,6 +4,7 @@ namespace WP_Rocket\Engine\Media\Images;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Filesystem_Direct;
+use WP_Rocket\Logger\Logger;
 
 /**
  * Images Frontend Class
@@ -57,7 +58,9 @@ class Frontend {
 	 * @return string Buffer Page HTML contents after inserting dimentions into images.
 	 */
 	public function specify_image_dimensions( $html ) {
+		Logger::debug('Start Specify Image Dimensions.');
 		if ( ! $this->can_specify_dimensions_images() ) {
+			Logger::debug('Specify Image Dimensions failed because option is not enabled from admin or by filter (rocket_specify_image_dimensions).');
 			return $html;
 		}
 
@@ -65,6 +68,7 @@ class Frontend {
 		preg_match_all( '/<img(?:[^>](?!(height|width)=[\'\"](?:\S+)[\'\"]))*+>/i', $html, $images_match );
 
 		if ( empty( $images_match ) ) {
+			Logger::debug('Specify Image Dimensions failed because there is no image without dimensions on this page.');
 			return $html;
 		}
 
@@ -78,11 +82,17 @@ class Frontend {
 		 */
 		$images = apply_filters( 'rocket_specify_dimension_images', $images_match[0] );
 
+		Logger::debug('Specify Image Dimensions found ( ' . count( $images ) . ' ).', $images);
+
 		foreach ( $images as $image ) {
 
 			$image_url = $this->can_specify_dimensions_one_image( $image );
 
 			if ( ! $image_url ) {
+				Logger::debug(
+					'Specify Image Dimensions failed because it has attribute (data-lazy-original or data-no-image-dimensions) or it\'s without src.',
+					[ 'image' => $image ]
+				);
 				continue;
 			}
 
@@ -247,7 +257,7 @@ class Frontend {
 	 * @return bool Can we or not.
 	 */
 	private function can_specify_dimensions_images() {
-		if ( ! $this->options->get( 'image_dimensions', false ) ) {
+		if ( ! $this->options->get( 'images_dimensions', false ) ) {
 			return false;
 		}
 
@@ -294,16 +304,28 @@ class Frontend {
 	private function get_image_sizes( string $image_url ) {
 		if ( $this->is_external_file( $image_url ) ) {
 			if ( ! $this->can_specify_dimensions_external_images() ) {
+				Logger::debug(
+					'Specify Image Dimensions failed because you/server disabled specifying dimensions for external images.',
+					[ 'image_url' => $image_url ]
+				);
 				return false;
 			}
 
 			if ( ! $this->image_exists( $image_url, true ) ) {
+				Logger::debug(
+					'Specify Image Dimensions failed because external image not found.',
+					[ 'image_url' => $image_url ]
+				);
 				return false;
 			}
 
 			$sizes = getimagesize( $image_url );
 
 			if ( ! $sizes ) {
+				Logger::debug(
+					'Specify Image Dimensions failed because image is not valid.',
+					[ 'image_url' => $image_url ]
+				);
 				return false;
 			}
 
@@ -313,12 +335,21 @@ class Frontend {
 		$local_path = $this->get_local_path( $image_url );
 
 		if ( ! $this->image_exists( $local_path, false ) ) {
+			Logger::debug(
+				'Specify Image Dimensions failed because internal image is not found.',
+				[ 'image_url' => $image_url ]
+			);
 			return false;
 		}
 
 		$sizes = getimagesize( $this->get_local_path( $image_url ) );
 
 		if ( ! $sizes ) {
+			Logger::debug(
+				'Specify Image Dimensions failed because image is not valid.',
+				[ 'image_url' => $image_url ]
+			);
+
 			return false;
 		}
 

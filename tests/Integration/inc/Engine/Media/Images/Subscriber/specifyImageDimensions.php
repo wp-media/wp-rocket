@@ -14,8 +14,8 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 	private $config_data = [];
 
 	public function tearDown() {
-		if ( isset( $this->config_data['image_dimensions'] ) ){
-			remove_filter( 'pre_get_rocket_option_image_dimensions', [$this, 'set_image_dimensions'] );
+		if ( isset( $this->config_data['images_dimensions'] ) ){
+			remove_filter( 'pre_get_rocket_option_images_dimensions', [$this, 'set_image_dimensions'] );
 		}
 
 		if ( isset( $this->config_data['rocket_specify_image_dimensions_filter'] ) ){
@@ -39,8 +39,8 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 	public function testShouldAddMissedDimensions( $input, $config, $expected ) {
 		$this->config_data = $config;
 
-		if ( isset( $config['image_dimensions'] ) ){
-			add_filter( 'pre_get_rocket_option_image_dimensions', [$this, 'set_image_dimensions'] );
+		if ( isset( $config['images_dimensions'] ) ){
+			add_filter( 'pre_get_rocket_option_images_dimensions', [$this, 'set_image_dimensions'] );
 		}
 
 		if ( isset( $config['rocket_specify_image_dimensions_filter'] ) ){
@@ -66,7 +66,7 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 	}
 
 	public function set_image_dimensions( $value ) {
-		return $this->config_data['image_dimensions'];
+		return $this->config_data['images_dimensions'];
 	}
 
 	public function filter_rocket_specify_image_dimensions( $value ) {

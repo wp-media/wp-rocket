@@ -22,11 +22,11 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 	public function testShouldAddMissedDimensions( $input, $config, $expected ) {
 		$options = Mockery::mock( Options_Data::class );
 
-		if ( isset( $config['image_dimensions'] ) ){
+		if ( isset( $config['images_dimensions'] ) ){
 			$options->shouldReceive( 'get' )
 			        ->once()
-			        ->with( 'image_dimensions', false )
-			        ->andReturn( $config['image_dimensions'] );
+			        ->with( 'images_dimensions', false )
+			        ->andReturn( $config['images_dimensions'] );
 		}
 
 		if ( isset( $config['rocket_specify_image_dimensions_filter'] ) ){
