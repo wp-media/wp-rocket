@@ -10,11 +10,11 @@ use WP_Rocket\Engine\Optimization\DeferJS\DeferJS;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DeferJS\DeferJS::defer_js
+ * @covers \WP_Rocket\Engine\Optimization\DeferJS\DeferJS::defer_inline_js
  *
  * @group  DeferJS
  */
-class Test_DeferJs extends TestCase {
+class Test_DeferInlineJs extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
@@ -40,8 +40,8 @@ class Test_DeferJs extends TestCase {
 			->justReturn( $config['post_meta'] );
 
 		$this->assertSame(
-			$expected,
-			$defer_js->defer_js( $html )
+			$this->format_the_html( $expected ),
+			$this->format_the_html( $defer_js->defer_inline_js( $html ) )
 		);
 	}
 }
