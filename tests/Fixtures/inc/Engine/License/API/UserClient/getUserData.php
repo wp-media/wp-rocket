@@ -37,5 +37,15 @@ return [
 		],
 		'expected' => $data,
 	],
+	'testShouldReturnDataWhenSuccess'  => [
+		'config'   => [
+			'transient' => false,
+			'response'  => [
+				'code' => 200,
+				'body' => $json,
+			],
+		],
+		'expected' => $data,
+	],
 ];
 
