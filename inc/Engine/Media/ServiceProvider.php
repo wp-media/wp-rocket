@@ -26,6 +26,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		'lazyload_subscriber',
 		'embeds_subscriber',
 		'emojis_subscriber',
+		'images_frontend',
+		'images_subscriber',
 		'images_dimensions',
 		'dimensions_admin_subscriber',
 	];
@@ -52,6 +54,10 @@ class ServiceProvider extends AbstractServiceProvider {
 			->withArgument( $options );
 		$this->getContainer()->share( 'emojis_subscriber', 'WP_Rocket\Engine\Media\Emojis\EmojisSubscriber' )
 			->withArgument( $options );
+		$this->getContainer()->share( 'images_frontend', 'WP_Rocket\Engine\Media\Images\Frontend' )
+			->withArgument( $options );
+		$this->getContainer()->share( 'images_subscriber', 'WP_Rocket\Engine\Media\Images\Subscriber' )
+			->withArgument( $this->getContainer()->get( 'images_frontend' ) );
 
 		$this->getContainer()->add( 'images_dimensions', 'WP_Rocket\Engine\Media\ImagesDimensions\ImagesDimensions' );
 		$this->getContainer()->share( 'dimensions_admin_subscriber', 'WP_Rocket\Engine\Media\ImagesDimensions\AdminSubscriber' )

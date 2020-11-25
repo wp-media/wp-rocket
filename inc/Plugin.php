@@ -202,6 +202,7 @@ class Plugin {
 			'embeds_subscriber',
 			'emojis_subscriber',
 			'delay_js_subscriber',
+			'images_subscriber',
 			'defer_js_subscriber',
 		];
 
