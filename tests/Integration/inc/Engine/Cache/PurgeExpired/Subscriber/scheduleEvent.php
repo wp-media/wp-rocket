@@ -1,27 +1,27 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\classes\subscriber\Expired_Cache_Purge_Subscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Cache\PurgeExpired\Subscriber;
 
 use WPMedia\PHPUnit\Integration\TestCase;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Admin\Options;
-use WP_Rocket\Cache\Expired_Cache_Purge;
-use WP_Rocket\Subscriber\Cache\Expired_Cache_Purge_Subscriber;
+use WP_Rocket\Engine\Cache\PurgeExpired\PurgeExpiredCache;
+use WP_Rocket\Engine\Cache\PurgeExpired\Subscriber;
 
 /**
- * @covers \WP_Rocket\Subscriber\Cache\Expired_Cache_Purge_Subscriber::schedule_event
- * @uses   \WP_Rocket\Subscriber\Cache\Expired_Cache_Purge_Subscriber::get_cache_lifespan
+ * @covers Subscriber::schedule_event
+ * @uses   Subscriber::get_cache_lifespan
  * @uses   \WP_Rocket\Admin\Options
  * @uses   \WP_Rocket\Admin\Options_Data
- * @uses   \WP_Rocket\Cache\Expired_Cache_Purge
+ * @uses   PurgeExpiredCache
  * @group  Subscriber
  */
 class Test_ScheduleEvent extends TestCase {
 
 	private function getSubscriberInstance() {
-		return new Expired_Cache_Purge_Subscriber(
+		return new Subscriber(
 			new Options_Data( ( new Options( 'wp_rocket_' ) )->get( 'settings' ) ),
-			new Expired_Cache_Purge( rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) )
+			new PurgeExpiredCache( rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) )
 		);
 	}
 

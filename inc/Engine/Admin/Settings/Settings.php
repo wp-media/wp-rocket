@@ -220,6 +220,7 @@ class Settings {
 		$input['minify_concatenate_js']  = ! empty( $input['minify_concatenate_js'] ) ? 1 : 0;
 
 		$input['defer_all_js']      = ! empty( $input['defer_all_js'] ) ? 1 : 0;
+		$input['exclude_defer_js']  = ! empty( $input['exclude_defer_js'] ) ? rocket_sanitize_textarea_field( 'exclude_defer_js', $input['exclude_defer_js'] ) : [];
 		$input['defer_all_js_safe'] = ! empty( $input['defer_all_js_safe'] ) ? 1 : 0;
 		$input['delay_js']          = $this->sanitize_checkbox( $input, 'delay_js' );
 		$input['delay_js_scripts']  = ! empty( $input['delay_js_scripts'] ) ? rocket_sanitize_textarea_field( 'delay_js_scripts', $input['delay_js_scripts'] ) : [];
@@ -245,17 +246,11 @@ class Settings {
 		$input['purge_cron_interval'] = isset( $input['purge_cron_interval'] ) ? (int) $input['purge_cron_interval'] : $this->options->get( 'purge_cron_interval' );
 
 		$allowed_cron_units = [
-			'MINUTE_IN_SECONDS' => 1,
-			'HOUR_IN_SECONDS'   => 1,
-			'DAY_IN_SECONDS'    => 1,
+			'HOUR_IN_SECONDS' => 1,
+			'DAY_IN_SECONDS'  => 1,
 		];
 
 		$input['purge_cron_unit'] = isset( $input['purge_cron_unit'], $allowed_cron_units[ $input['purge_cron_unit'] ] ) ? $input['purge_cron_unit'] : $this->options->get( 'purge_cron_unit' );
-
-		// Force a minimum 10 minutes value for the purge interval.
-		if ( $input['purge_cron_interval'] < 10 && 'MINUTE_IN_SECONDS' === $input['purge_cron_unit'] ) {
-			$input['purge_cron_interval'] = 10;
-		}
 
 		// Option : Prefetch DNS requests.
 		$input['dns_prefetch'] = $this->sanitize_dns_prefetch( $input );

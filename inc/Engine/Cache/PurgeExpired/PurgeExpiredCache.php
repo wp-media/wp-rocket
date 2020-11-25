@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Cache;
+namespace WP_Rocket\Engine\Cache\PurgeExpired;
 
 use WP_Rocket\Buffer\Cache;
 
@@ -7,15 +7,12 @@ use WP_Rocket\Buffer\Cache;
  * Purge expired cache files based on the defined lifespan
  *
  * @since  3.4
- * @author Grégory Viguier
  */
-class Expired_Cache_Purge {
+class PurgeExpiredCache {
 	/**
 	 * Path to the global cache folder.
 	 *
 	 * @since  3.4
-	 * @access private
-	 * @author Grégory Viguier
 	 *
 	 * @var string
 	 */
@@ -25,8 +22,6 @@ class Expired_Cache_Purge {
 	 * Filesystem object.
 	 *
 	 * @since  3.4
-	 * @access private
-	 * @author Grégory Viguier
 	 *
 	 * @var \WP_Filesystem_Direct
 	 */
@@ -45,8 +40,6 @@ class Expired_Cache_Purge {
 	 * Perform the event action.
 	 *
 	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
 	 *
 	 * @param int $lifespan The cache lifespan in seconds.
 	 */
@@ -63,7 +56,6 @@ class Expired_Cache_Purge {
 		 * Filter home URLs that will be searched for old cache files.
 		 *
 		 * @since  3.4
-		 * @author Grégory Viguier
 		 *
 		 * @param array $urls           URLs that will be searched for old cache files.
 		 * @param int   $file_age_limit Timestamp of the maximum age files must have.
@@ -96,7 +88,6 @@ class Expired_Cache_Purge {
 			 * Fires before purging a cache directory.
 			 *
 			 * @since  3.4
-			 * @author Grégory Viguier
 			 *
 			 * @param string $url          The home url.
 			 * @param int    $file_age_limit Timestamp of the maximum age files must have.
@@ -154,7 +145,6 @@ class Expired_Cache_Purge {
 			 * Fires after a cache directory is purged.
 			 *
 			 * @since  3.4
-			 * @author Grégory Viguier
 			 *
 			 * @param array $deleted {
 			 *     An array of arrays sharing the same home URL, described like: {
@@ -202,7 +192,6 @@ class Expired_Cache_Purge {
 		 * Fires after cache directories are purged.
 		 *
 		 * @since  3.4
-		 * @author Grégory Viguier
 		 *
 		 * @param array $deleted {
 		 *     An array of arrays, described like: {
@@ -257,10 +246,9 @@ class Expired_Cache_Purge {
 	 * Get all cache files for the provided URL
 	 *
 	 * @since 3.4
-	 * @author Gregory Viguier
 	 *
 	 * @param array $file An array of the parsed URL parts.
-	 * @return array|DirectoryIterator
+	 * @return array|\CallbackFilterIterator
 	 */
 	private function get_cache_files_in_dir( $file ) {
 		// Grab cache folders.
@@ -302,8 +290,6 @@ class Expired_Cache_Purge {
 	 * Purge a folder from old files.
 	 *
 	 * @since  3.4
-	 * @access private
-	 * @author Grégory Viguier
 	 *
 	 * @param  string $dir_path     Path to the folder to purge.
 	 * @param  int    $file_age_limit Timestamp of the maximum age files must have.
@@ -367,8 +353,6 @@ class Expired_Cache_Purge {
 	 * Tell if a folder is empty.
 	 *
 	 * @since  3.4
-	 * @access private
-	 * @author Grégory Viguier
 	 *
 	 * @param  string $dir_path Path to the folder to purge.
 	 * @return bool             True if empty. False if it contains files.
@@ -390,4 +374,32 @@ class Expired_Cache_Purge {
 
 		return true;
 	}
+
+	/**
+	 * Update lifespan option to convert old minutes to hours.
+	 *
+	 * @since 3.8
+	 *
+	 * @param int $old_lifespan      Old value in minutes.
+	 * @param int $old_lifespan_unit Old value of unit.
+	 *
+	 * @return void
+	 */
+	public function update_lifespan_value( $old_lifespan, $old_lifespan_unit ) {
+		if ( 'MINUTE_IN_SECONDS' !== $old_lifespan_unit ) {
+			return;
+		}
+
+		$options = get_option( 'wp_rocket_settings', [] );
+
+		if ( $old_lifespan > 0 && $old_lifespan < 60 ) {
+			$old_lifespan = 60;
+		}
+
+		$options['purge_cron_unit']     = 'HOUR_IN_SECONDS';
+		$options['purge_cron_interval'] = round( $old_lifespan / 60 );
+
+		update_option( 'wp_rocket_settings', $options );
+	}
+
 }

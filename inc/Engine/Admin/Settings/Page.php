@@ -537,9 +537,8 @@ class Page {
 					'default'           => 10,
 					'sanitize_callback' => 'sanitize_cache_lifespan',
 					'choices'           => [
-						'MINUTE_IN_SECONDS' => __( 'Minutes', 'rocket' ),
-						'HOUR_IN_SECONDS'   => __( 'Hours', 'rocket' ),
-						'DAY_IN_SECONDS'    => __( 'Days', 'rocket' ),
+						'HOUR_IN_SECONDS' => __( 'Hours', 'rocket' ),
+						'DAY_IN_SECONDS'  => __( 'Days', 'rocket' ),
 					],
 				],
 			]
@@ -790,6 +789,20 @@ class Page {
 					'page'              => 'file_optimization',
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
+				],
+				'exclude_defer_js'       => [
+					'container_class'   => [
+						'wpr-field--children',
+					],
+					'type'              => 'textarea',
+					'label'             => __( 'Excluded JavaScript Files', 'rocket' ),
+					'description'       => __( 'Specify URLs of JavaScript files to be excluded from defer (one per line).', 'rocket' ),
+					'placeholder'       => '/wp-content/themes/some-theme/(.*).js',
+					'parent'            => 'defer_all_js',
+					'section'           => 'js',
+					'page'              => 'file_optimization',
+					'default'           => [],
+					'sanitize_callback' => 'sanitize_textarea',
 				],
 				'defer_all_js_safe'      => [
 					'container_class'   => [
