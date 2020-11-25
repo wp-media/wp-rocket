@@ -58,9 +58,9 @@ class Frontend {
 	 * @return string Buffer Page HTML contents after inserting dimentions into images.
 	 */
 	public function specify_image_dimensions( $html ) {
-		Logger::debug('Start Specify Image Dimensions.');
+		Logger::debug( 'Start Specify Image Dimensions.' );
 		if ( ! $this->can_specify_dimensions_images() ) {
-			Logger::debug('Specify Image Dimensions failed because option is not enabled from admin or by filter (rocket_specify_image_dimensions).');
+			Logger::debug( 'Specify Image Dimensions failed because option is not enabled from admin or by filter (rocket_specify_image_dimensions).' );
 			return $html;
 		}
 
@@ -68,7 +68,7 @@ class Frontend {
 		preg_match_all( '/<img(?:[^>](?!(height|width)=[\'\"](?:\S+)[\'\"]))*+>/i', $html, $images_match );
 
 		if ( empty( $images_match ) ) {
-			Logger::debug('Specify Image Dimensions failed because there is no image without dimensions on this page.');
+			Logger::debug( 'Specify Image Dimensions failed because there is no image without dimensions on this page.' );
 			return $html;
 		}
 
@@ -82,7 +82,7 @@ class Frontend {
 		 */
 		$images = apply_filters( 'rocket_specify_dimension_images', $images_match[0] );
 
-		Logger::debug('Specify Image Dimensions found ( ' . count( $images ) . ' ).', $images);
+		Logger::debug( 'Specify Image Dimensions found ( ' . count( $images ) . ' ).', $images );
 
 		foreach ( $images as $image ) {
 
