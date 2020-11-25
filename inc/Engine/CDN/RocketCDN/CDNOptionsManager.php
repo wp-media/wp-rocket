@@ -72,4 +72,13 @@ class CDNOptionsManager {
 		delete_transient( 'rocketcdn_status' );
 		rocket_clean_domain();
 	}
+
+	/**
+	 * Get current CDN cnames.
+	 *
+	 * @return array
+	 */
+	public function get_cdn_cnames() {
+		return $this->options->get( 'cdn_cnames', [] );
+	}
 }
