@@ -21,7 +21,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Subscriber constructor.
 	 *
-	 * @param Frontend $dimensions Images dimensions class that handles all business logic.
+	 * @param ImagesDimensions $dimensions Images dimensions class that handles all business logic.
 	 */
 	public function __construct( ImagesDimensions $dimensions ) {
 		$this->dimensions = $dimensions;
