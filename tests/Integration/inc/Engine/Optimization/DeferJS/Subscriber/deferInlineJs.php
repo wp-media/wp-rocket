@@ -6,11 +6,11 @@ use WP_Rocket\Tests\Integration\ContentTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DeferJS\Subscriber::defer_js
+ * @covers \WP_Rocket\Engine\Optimization\DeferJS\Subscriber::defer_inline_js
  *
  * @group  DeferJS
  */
-class Test_DeferJs extends TestCase {
+class Test_DeferInlineJs extends TestCase {
 	use ContentTrait;
 
 	private $defer_js;
@@ -55,8 +55,8 @@ class Test_DeferJs extends TestCase {
 		}
 
 		$this->assertSame(
-			$expected,
-			apply_filters( 'rocket_buffer', $html )
+			$this->format_the_html( $expected ),
+			$this->format_the_html( apply_filters( 'rocket_buffer', $html ) )
 		);
 	}
 

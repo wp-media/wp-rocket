@@ -76,6 +76,83 @@ class DeferJS {
 	}
 
 	/**
+	 * Defers inline JS containing jQuery calls
+	 *
+	 * @since 3.8
+	 *
+	 * @param string $html HTML content.
+	 * @return string
+	 */
+	public function defer_inline_js( string $html ) : string {
+		if ( ! $this->can_defer_js() ) {
+			return $html;
+		}
+
+		$exclude_defer_js = implode( '|', $this->get_excluded() );
+
+		if ( preg_match( '/(jquery(?:.*)?\.js)/i', $exclude_defer_js ) ) {
+			return $html;
+		}
+
+		$buffer_nocomments = preg_replace( '/<!--(.*)-->/Uis', '', $html );
+
+		preg_match_all( '#<script(?:[^>]*)>(?<content>[\s\S]*?)</script>#msi', $buffer_nocomments, $matches, PREG_SET_ORDER );
+
+		if ( empty( $matches ) ) {
+			return $html;
+		}
+
+		/**
+		 * Filters the patterns used to find jQuery in inline JS
+		 *
+		 * @since 3.8
+		 *
+		 * @param string $jquery_patterns A RegEx pattern to find jQuery inline JS.
+		 */
+		$jquery_patterns = apply_filters( 'rocket_defer_jquery_patterns', 'jQuery|\$\.\(|\$\(' );
+
+		/**
+		 * Filters the patterns used to find inline JS that should not be deferred
+		 *
+		 * @since 3.8
+		 *
+		 * @param string $inline_exclusions A RegEx pattern to find inline JS that should not be deferred.
+		 */
+		$inline_exclusions = apply_filters( 'rocket_defer_inline_exclusions', 'DOMContentLoaded|document\.write' );
+
+		foreach ( $matches as $inline_js ) {
+			if ( empty( $inline_js['content'] ) ) {
+				continue;
+			}
+
+			if ( preg_match( "/({$inline_exclusions})/msi", $inline_js['content'] ) ) {
+				continue;
+			}
+
+			if ( ! preg_match( "/({$jquery_patterns})/msi", $inline_js['content'] ) ) {
+				continue;
+			}
+
+			$tag  = str_replace( $inline_js['content'], $this->inline_js_wrapper( $inline_js['content'] ), $inline_js[0] );
+			$html = str_replace( $inline_js[0], $tag, $html );
+		}
+
+		return $html;
+	}
+
+	/**
+	 * Adds the JS wrapper for inline jQuery code
+	 *
+	 * @since 3.8
+	 *
+	 * @param string $content Inline JS content.
+	 * @return string
+	 */
+	private function inline_js_wrapper( string $content ) : string {
+		return "window.addEventListener('DOMContentLoaded', function() {" . $content . '});';
+	}
+
+	/**
 	 * Checks if we can defer JS
 	 *
 	 * @since 3.8

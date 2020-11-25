@@ -29,7 +29,10 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() : array {
 		return [
-			'rocket_buffer' => [ 'defer_js', 24 ],
+			'rocket_buffer' => [
+				[ 'defer_js', 24 ],
+				[ 'defer_inline_js', 25 ],
+			],
 		];
 	}
 
@@ -43,5 +46,17 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function defer_js( string $html ) : string {
 		return $this->defer_js->defer_js( $html );
+	}
+
+	/**
+	 * Defers inline JS containing jQuery calls
+	 *
+	 * @since 3.8
+	 *
+	 * @param string $html HTML content.
+	 * @return string
+	 */
+	public function defer_inline_js( string $html ) : string {
+		return $this->defer_js->defer_inline_js( $html );
 	}
 }
