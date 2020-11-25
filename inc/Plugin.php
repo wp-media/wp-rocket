@@ -107,6 +107,7 @@ class Plugin {
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\CriticalPath\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\HealthCheck\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\DeferJS\ServiceProvider' );
+		$this->container->addServiceProvider( 'WP_Rocket\Engine\Media\ServiceProvider' );
 
 		$this->is_valid_key = rocket_valid_key();
 
@@ -175,7 +176,7 @@ class Plugin {
 			'admin_cache_subscriber',
 			'google_fonts_admin_subscriber',
 			'license_subscriber',
-			'defer_js_admin_subscriber',
+			'dimensions_admin_subscriber',
 		];
 	}
 
@@ -201,7 +202,6 @@ class Plugin {
 			'embeds_subscriber',
 			'emojis_subscriber',
 			'delay_js_subscriber',
-			'defer_js_subscriber',
 			'images_subscriber',
 		];
 

@@ -28,6 +28,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		'emojis_subscriber',
 		'images_frontend',
 		'images_subscriber',
+		'images_dimensions',
+		'dimensions_admin_subscriber',
 	];
 
 	/**
@@ -56,5 +58,9 @@ class ServiceProvider extends AbstractServiceProvider {
 			->withArgument( $options );
 		$this->getContainer()->share( 'images_subscriber', 'WP_Rocket\Engine\Media\Images\Subscriber' )
 			->withArgument( $this->getContainer()->get( 'images_frontend' ) );
+
+		$this->getContainer()->add( 'images_dimensions', 'WP_Rocket\Engine\Media\ImagesDimensions\ImagesDimensions' );
+		$this->getContainer()->share( 'dimensions_admin_subscriber', 'WP_Rocket\Engine\Media\ImagesDimensions\AdminSubscriber' )
+			->withArgument( $this->getContainer()->get( 'images_dimensions' ) );
 	}
 }
