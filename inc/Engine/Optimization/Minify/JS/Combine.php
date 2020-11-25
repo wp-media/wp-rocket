@@ -669,6 +669,8 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'__wpdm_view_count',
 			'bookacti.booking_system',
 			'nfFrontEnd',
+			'view_quote_cart_link',
+			'__eae_decode_emails',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
@@ -797,6 +799,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			').countdowntimer(',
 			'jQuery("#td_uid_',
 			'find(\'#td_uid_',
+			'variation_estimate_msg',
 		];
 
 		/**

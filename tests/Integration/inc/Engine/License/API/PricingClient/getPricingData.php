@@ -43,22 +43,20 @@ class GetPricingData extends TestCase {
 			->once()
 			->with( PricingClient::PRICING_ENDPOINT )
 			->andReturn( $config['response'] );
-		}
 
-		$this->assertEquals(
-			$expected,
-			$client->get_pricing_data()
-		);
-
-		if (
-			false === $config['transient']
-			&&
-			false !== $expected
-		) {
+			$this->assertFalse( $client->get_pricing_data() );
+		} else {
 			$this->assertEquals(
-				$expected,
-				get_transient( 'wp_rocket_pricing' )
+				array_keys( (array) $expected ),
+				array_keys( (array) $client->get_pricing_data() )
 			);
+
+			if ( false === $config['transient'] ) {
+				$this->assertEquals(
+					array_keys( (array) $expected ),
+					array_keys( (array) get_transient( 'wp_rocket_pricing' ) )
+				);
+			}
 		}
 	}
 }
