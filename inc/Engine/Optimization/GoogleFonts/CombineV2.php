@@ -29,15 +29,6 @@ class CombineV2 extends AbstractGFOptimization {
 	];
 
 	/**
-	 * Font Families
-	 *
-	 * @since  3.8
-	 *
-	 * @var array
-	 */
-	protected $families = [];
-
-	/**
 	 * Combines multiple Google Fonts (API v2) links into one
 	 *
 	 * @since  3.8
@@ -72,19 +63,23 @@ class CombineV2 extends AbstractGFOptimization {
 			return str_replace( $font_tags[0][0], $this->get_font_with_display( $font_tags[0] ), $html );
 		}
 
+		$families = [];
 		foreach ( $font_tags as $tag ) {
-			if ( $this->parse( $tag ) ) {
+			$parsed_families = $this->parse( $tag );
+			if ( ! empty( $parsed_families ) ) {
 				$processed_tags[] = $tag;
+				$families  = array_merge( $families, $parsed_families );
 			}
 		}
 
-		if ( empty( $this->families ) ) {
+		if ( empty( $families ) ) {
 			Logger::debug( 'No v2 Google Fonts left to combine.', [ 'GF combine process' ] );
-
 			return $html;
 		}
 
-		$html = preg_replace( '@<\/title>@i', '$0' . $this->get_combine_tag(), $html, 1 );
+		$families     = array_unique( $families );
+		$combined_tag = $this->get_combine_tag( $families );
+		$html         = preg_replace( '@<\/title>@i', '$0' . $combined_tag, $html, 1 );
 
 		foreach ( $processed_tags as $font ) {
 			$html = str_replace( $font[0], '', $html );
@@ -94,7 +89,7 @@ class CombineV2 extends AbstractGFOptimization {
 			'V2 Google Fonts successfully combined.',
 			[
 				'GF combine process',
-				'url' => '...', // todo: insert the generated combined url here.
+				'url' => $combined_tag,
 			]
 		);
 
@@ -105,16 +100,13 @@ class CombineV2 extends AbstractGFOptimization {
 	 * Parses found matches to extract fonts and subsets.
 	 *
 	 * @since  3.8
-	 *
-	 * @param array $tag A Google Font v2 url.
-	 *
-	 * @return bool
+	 * @param  array $tag A Google Font v2 url.
+	 * @return array
 	 */
-	protected function parse( array $tag ): bool {
+	protected function parse( array $tag ) {
 		if ( false !== strpos( $tag['url'], 'text=' ) ) {
 			Logger::debug( 'GOOGLEFONTS V2 COMBINE: ' . $tag['url'] . ' SKIPPED TO PRESERVE "text" ATTRIBUTE.' );
-
-			return false;
+			return [];
 		}
 
 		$url_pattern     = '#^(family=[A-Za-z0-9;:,=%&\+\@\.]+)$#';
@@ -123,18 +115,19 @@ class CombineV2 extends AbstractGFOptimization {
 		$query           = wp_parse_url( $decoded_url, PHP_URL_QUERY );
 
 		if ( empty( $query ) ) {
-			return false;
+			return [];
 		}
 
 		if ( ! preg_match_all( $url_pattern, $query, $matches, PREG_PATTERN_ORDER ) ) {
-			return false;
+			return [];
 		}
 
+		$families = [];
 		foreach ( $matches[1] as $family ) {
-			$this->families[] = preg_replace( $display_pattern, '', $family );
+			$families[] = preg_replace( $display_pattern, '', $family );
 		}
 
-		return true;
+		return $families;
 	}
 
 
@@ -142,81 +135,30 @@ class CombineV2 extends AbstractGFOptimization {
 	 * Returns the combined Google fonts link tag.
 	 *
 	 * @since  3.8
-
+	 * @param  array $families Array with all Google V2 families.
 	 * @return string
 	 */
-	protected function get_combine_tag(): string {
+	protected function get_combine_tag( array $families ): string {
 		$display = $this->get_font_display_value();
-
 		return sprintf(
 			'<link rel="stylesheet" href="%s" />', // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
-			esc_url( "https://fonts.googleapis.com/css2{$this->get_concatenated_families()}&display={$display}" )
+			esc_url( "https://fonts.googleapis.com/css2{$this->get_concatenated_families( $families )}&display={$display}" )
 		);
-	}
-
-	/**
-	 * Returns font with display value.
-	 *
-	 * @since  3.8
-	 *
-	 * @param array $font Array containing font tag and matches.
-	 *
-	 * @return string Google Font tag with display param.
-	 */
-	protected function get_font_with_display( array $font ): string {
-		$font_url = html_entity_decode( $font['url'] );
-		$query    = wp_parse_url( $font_url, PHP_URL_QUERY );
-
-		if ( empty( $query ) ) {
-			return $font[0];
-		}
-
-		$display     = $this->get_font_display_value();
-		$parsed_font = wp_parse_args( $query );
-		$font_url    = ! empty( $parsed_font['display'] )
-			? str_replace( "&display={$parsed_font['display']}", "&display={$display}", $font_url )
-			: "{$font_url}&display={$display}";
-
-		return str_replace( $font['url'], esc_url( $font_url ), $font[0] );
-	}
-
-	/**
-	 * Get the font display value.
-	 *
-	 * @since  3.8
-	 *
-	 * @return string font display value.
-	 */
-	protected function get_font_display_value(): string {
-		/**
-		 * Filters the combined Google Fonts display parameter value.
-		 *
-		 * This filter is documented in GoogleFonts\Combine::get_font_display_value().
-		 *
-		 * @param string $display Display value. Can be either auto, block, swap, fallback or optional.
-		 */
-		$display = apply_filters( 'rocket_combined_google_fonts_display', 'swap' );
-		if ( ! is_string( $display ) ) {
-			return 'swap';
-		}
-
-		return isset( $this->display_values[ $display ] ) ? $display : 'swap';
 	}
 
 	/**
 	 * Get a string of the concatenated font family queries.
 	 *
-	 * @since 3.8
-	 *
+	 * @since  3.8
+	 * @param  array $families Array with all Google V2 families.
 	 * @return string
 	 */
-	protected function get_concatenated_families(): string {
-		$families = '?';
-
-		foreach ( $this->families as $family ) {
-			$families .= $family . '&';
+	protected function get_concatenated_families( array $families ): string {
+		$families_string = '?';
+		foreach ( $families as $family ) {
+			$families_string .= $family . '&';
 		}
 
-		return esc_url( rtrim( $families, '&?' ) );
+		return rtrim( $families_string, '&?' );
 	}
 }

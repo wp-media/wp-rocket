@@ -93,18 +93,6 @@
 			"./inc/Addon/Cloudflare/": ["wp-media/cloudflare"],
 			"./inc/Addon/Varnish/": ["wp-media/module-varnish"],
 			"./inc/Engine/CDN/RocketCDN/": ["wp-media/module-rocketcdn"]
-		},
-		"mozart": {
-			"dep_namespace": "WP_Rocket\\Dependencies\\",
-			"dep_directory": "/inc/Dependencies/",
-			"classmap_directory": "/inc/classes/dependencies/",
-			"classmap_prefix": "WP_Rocket_",
-			"packages": [
-				"mobiledetect/mobiledetectlib",
-				"wp-media/background-processing",
-				"wp-media/rocket-lazyload-common",
-				"wp-media/wp-imagify-partner"
-			]
 		}
 	},
 	"scripts": {
