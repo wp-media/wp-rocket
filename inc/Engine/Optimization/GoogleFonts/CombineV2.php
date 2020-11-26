@@ -101,12 +101,12 @@ class CombineV2 extends AbstractGFOptimization {
 	 *
 	 * @since  3.8
 	 * @param  array $tag A Google Font v2 url.
-	 * @return false|array
+	 * @return array
 	 */
 	protected function parse( array $tag ) {
 		if ( false !== strpos( $tag['url'], 'text=' ) ) {
 			Logger::debug( 'GOOGLEFONTS V2 COMBINE: ' . $tag['url'] . ' SKIPPED TO PRESERVE "text" ATTRIBUTE.' );
-			return false;
+			return [];
 		}
 
 		$url_pattern     = '#^(family=[A-Za-z0-9;:,=%&\+\@\.]+)$#';
@@ -115,11 +115,11 @@ class CombineV2 extends AbstractGFOptimization {
 		$query           = wp_parse_url( $decoded_url, PHP_URL_QUERY );
 
 		if ( empty( $query ) ) {
-			return false;
+			return [];
 		}
 
 		if ( ! preg_match_all( $url_pattern, $query, $matches, PREG_PATTERN_ORDER ) ) {
-			return false;
+			return [];
 		}
 
 		$families = [];

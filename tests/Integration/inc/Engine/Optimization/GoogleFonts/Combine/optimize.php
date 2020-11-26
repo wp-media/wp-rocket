@@ -2,8 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\GoogleFonts;
 
-use WPMedia\PHPUnit\Integration\TestCase;
-// use WP_Rocket\Engine\Optimization\GoogleFonts\Combine;
+use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\GoogleFonts::optimize

@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\GoogleFonts;
 use Brain\Monkey\Functions;
 use WP_Rocket\Engine\Optimization\GoogleFonts\CombineV2;
 use WP_Rocket\Logger\Logger;
-use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\GoogleFonts\CombineV2::optimize
