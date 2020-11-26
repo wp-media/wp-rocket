@@ -1037,7 +1037,7 @@ class Page {
 					'section'         => 'lazyload_section',
 					'page'            => 'media',
 					'default'         => [],
-					'placeholder'     => "example-image.jpg\nclass+\"image\"",
+					'placeholder'     => "example-image.jpg\nclass=\"image\"",
 				],
 				'embeds'           => [
 					'type'              => 'checkbox',
