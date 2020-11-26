@@ -38,6 +38,7 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 	private $rocketCleanDomainShouldNotClean;
 	private $rocketCleanMinifyShouldNotClean;
 	private $dicontainer;
+	private $all_settings = [];
 
 	public function setUp() {
 		// Unhook to avoid triggering when storing the configured settings.
@@ -76,6 +77,12 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 		if ( ! empty( $this->is_apache ) ) {
 			$GLOBALS['is_apache'] = $this->is_apache;
 		}
+
+		if ( isset( $this->all_settings['notrailingslash'] ) && $this->all_settings['notrailingslash'] ) {
+			global $wp_rewrite;
+
+			$wp_rewrite->use_trailing_slashes = true;
+		}
 	}
 
 	/**
@@ -91,6 +98,13 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 
 		$this->expected    = $expected;
 		$this->dumpResults = isset( $expected['dump_results'] ) ? $expected['dump_results'] : false;
+		$this->all_settings = $settings;
+
+		if ( isset( $this->all_settings['notrailingslash'] ) && $this->all_settings['notrailingslash'] ) {
+			global $wp_rewrite;
+
+			$wp_rewrite->use_trailing_slashes = false;
+		}
 
 		$this->rocket_clean_domain( true );
 		$this->rocket_clean_minify( true );

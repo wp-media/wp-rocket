@@ -10,6 +10,33 @@ AddDefaultCharset UTF-8
 <IfModule mod_mime.c>
 AddCharset UTF-8 .atom .css .js .json .rss .vtt .xml
 </IfModule>
+<IfModule mod_rewrite.c>
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_METHOD} GET
+RewriteCond %{REQUEST_URI} !(.*)/$
+RewriteRule ^(.*)$ /$1/ [R=301,L]
+</IfModule>
+# FileETag None is not enough for every server.
+<IfModule mod_headers.c>
+Header unset ETag
+</IfModule>
+
+HTACCESS;
+
+$start_notrailingslash = <<<HTACCESS
+# BEGIN WP Rocket v{$rocket_version}
+# Use UTF-8 encoding for anything served text/plain or text/html
+AddDefaultCharset UTF-8
+# Force UTF-8 for a number of file formats
+<IfModule mod_mime.c>
+AddCharset UTF-8 .atom .css .js .json .rss .vtt .xml
+</IfModule>
+<IfModule mod_rewrite.c>
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_METHOD} GET
+RewriteCond %{REQUEST_URI} (.*)/$
+RewriteRule ^(.*)/$ /$1 [R=301,L]
+</IfModule>
 # FileETag None is not enough for every server.
 <IfModule mod_headers.c>
 Header unset ETag
@@ -191,13 +218,14 @@ return [
 	'with_cors'         => "{$start}{$fileETag}{$cors}{$mod_alias}{$middle}{$end}",
 	'with_cors_wprules' => "{$start}{$fileETag}{$cors}{$mod_alias}{$middle}{$wp_rules_start}{$wp_rules_end}{$end}",
 
-	'start'          => $start,
-	'FileETag'       => $fileETag,
-	'CORS'           => $cors,
-	'mod_alias'      => $mod_alias,
-	'middle'         => $middle,
-	'gzip'           => $gzip,
-	'wp_rules_start' => $wp_rules_start,
-	'wp_rules_end'   => $wp_rules_end,
-	'end'            => $end,
+	'start'               => $start,
+	'start_notrailingslash' => $start_notrailingslash,
+	'FileETag'            => $fileETag,
+	'CORS'                => $cors,
+	'mod_alias'           => $mod_alias,
+	'middle'              => $middle,
+	'gzip'                => $gzip,
+	'wp_rules_start'      => $wp_rules_start,
+	'wp_rules_end'        => $wp_rules_end,
+	'end'                 => $end,
 ];
