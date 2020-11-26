@@ -12,6 +12,13 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_Optimize extends TestCase {
 
+	public function setUp() {
+		parent::setUp();
+		$GLOBALS['wp'] = (object) [
+            'query_vars' => [],
+        ];
+	}
+
 	public function tearDown() {
 		remove_filter( 'pre_get_rocket_option_minify_google_fonts', [ $this, 'return_true' ] );
 		parent::tearDown();
