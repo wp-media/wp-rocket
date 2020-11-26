@@ -68,7 +68,7 @@ class CombineV2 extends AbstractGFOptimization {
 			$parsed_families = $this->parse( $tag );
 			if ( ! empty( $parsed_families ) ) {
 				$processed_tags[] = $tag;
-				$families  = array_merge( $families, $parsed_families );
+				$families         = array_merge( $families, $parsed_families );
 			}
 		}
 

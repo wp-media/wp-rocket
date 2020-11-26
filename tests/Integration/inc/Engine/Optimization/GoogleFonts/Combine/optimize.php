@@ -15,7 +15,11 @@ class Test_Optimize extends TestCase {
 	public function setUp() {
 		parent::setUp();
 		$GLOBALS['wp'] = (object) [
-            'query_vars' => [],
+			'query_vars' => [],
+			'request'    => 'http://example.org',
+			'public_query_vars' => [
+				'embed',
+			],
         ];
 	}
 
