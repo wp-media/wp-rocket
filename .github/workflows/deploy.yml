@@ -1,0 +1,16 @@
+name: Call AWX for Deploy
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Invoke deployment hook
+      uses: distributhor/workflow-webhook@v1
+      env:
+        webhook_url: https://awx.wp-media.me:443/api/v2/job_templates/34/github/
+        webhook_secret: ${{ secrets.WEBHOOK_KEY_PLUGIN }}
