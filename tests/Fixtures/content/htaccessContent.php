@@ -11,6 +11,8 @@ AddDefaultCharset UTF-8
 AddCharset UTF-8 .atom .css .js .json .rss .vtt .xml
 </IfModule>
 <IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{REQUEST_URI} !wp-admin
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_METHOD} GET
 RewriteCond %{REQUEST_URI} !(.*)/$
@@ -32,6 +34,8 @@ AddDefaultCharset UTF-8
 AddCharset UTF-8 .atom .css .js .json .rss .vtt .xml
 </IfModule>
 <IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{REQUEST_URI} !wp-admin
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_METHOD} GET
 RewriteCond %{REQUEST_URI} (.*)/$
