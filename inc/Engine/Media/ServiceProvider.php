@@ -24,6 +24,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'lazyload_image',
 		'lazyload_iframe',
 		'lazyload_subscriber',
+		'lazyload_admin_subscriber',
 		'embeds_subscriber',
 		'emojis_subscriber',
 	];
@@ -41,11 +42,12 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'lazyload_assets', 'WP_Rocket\Dependencies\RocketLazyload\Assets' );
 		$this->getContainer()->add( 'lazyload_image', 'WP_Rocket\Dependencies\RocketLazyload\Image' );
 		$this->getContainer()->add( 'lazyload_iframe', 'WP_Rocket\Dependencies\RocketLazyload\Iframe' );
-		$this->getContainer()->share( 'lazyload_subscriber', 'WP_Rocket\Engine\Media\LazyloadSubscriber' )
+		$this->getContainer()->share( 'lazyload_subscriber', 'WP_Rocket\Engine\Media\Lazyload\Subscriber' )
 			->withArgument( $options )
 			->withArgument( $this->getContainer()->get( 'lazyload_assets' ) )
 			->withArgument( $this->getContainer()->get( 'lazyload_image' ) )
 			->withArgument( $this->getContainer()->get( 'lazyload_iframe' ) );
+		$this->getContainer()->share( 'lazyload_admin_subscriber', 'WP_Rocket\Engine\Media\Lazyload\AdminSubscriber' );
 		$this->getContainer()->share( 'embeds_subscriber', 'WP_Rocket\Engine\Media\Embeds\EmbedsSubscriber' )
 			->withArgument( $options );
 		$this->getContainer()->share( 'emojis_subscriber', 'WP_Rocket\Engine\Media\Emojis\EmojisSubscriber' )
