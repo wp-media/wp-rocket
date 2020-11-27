@@ -6,7 +6,6 @@ return [
 			'key'   => false,
 			'email' => false,
 		],
-		'referer'  => 'https://wp-rocket.me',
 		'expected' => [
 			'code' => 'rest_invalid_param',
 			'message' => 'Invalid parameter(s): email, key',
@@ -24,7 +23,6 @@ return [
 			'key'   => false,
 			'email' => true,
 		],
-		'referer'  => 'https://wp-rocket.me',
 		'expected' => [
 			'code' => 'rest_invalid_param',
 			'message' => 'Invalid parameter(s): key',
@@ -41,7 +39,6 @@ return [
 			'key'   => true,
 			'email' => false,
 		],
-		'referer'  => 'https://wp-rocket.me',
 		'expected' => [
 			'code' => 'rest_invalid_param',
 			'message' => 'Invalid parameter(s): email',
@@ -53,26 +50,11 @@ return [
 			],
 		],
 	],
-	'testShouldReturnEmptyDataWhenWrongReferer' => [
-		'params'   => [
-			'key'   => true,
-			'email' => true,
-		],
-		'referer'  => 'https://google.com',
-		'expected' => [
-			'code'    => 'rest_invalid_referer',
-			'message' => 'Invalid referer',
-			'data'    => [
-				'status' => 400,
-			],
-		],
-	],
 	'testShouldReturnSupportDataWhenValid' => [
 		'params'   => [
 			'key'   => true,
 			'email' => true,
 		],
-		'referer'  => 'https://wp-rocket.me',
 		'expected' => [
 			'code'    => 'rest_support_data_success',
 			'message' => 'Support data request successful',
