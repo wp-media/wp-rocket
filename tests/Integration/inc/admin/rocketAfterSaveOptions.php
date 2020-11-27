@@ -100,10 +100,12 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 		$this->dumpResults = isset( $expected['dump_results'] ) ? $expected['dump_results'] : false;
 		$this->all_settings = $settings;
 
-		if ( isset( $this->all_settings['notrailingslash'] ) && $this->all_settings['notrailingslash'] ) {
-			global $wp_rewrite;
+		global $wp_rewrite;
 
+		if ( isset( $this->all_settings['notrailingslash'] ) && $this->all_settings['notrailingslash'] ) {
 			$wp_rewrite->use_trailing_slashes = false;
+		}else{
+			$wp_rewrite->use_trailing_slashes = true;
 		}
 
 		$this->rocket_clean_domain( true );
