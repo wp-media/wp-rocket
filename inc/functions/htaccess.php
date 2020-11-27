@@ -723,5 +723,12 @@ function rocket_htaccess_trailingslash() {
 
 	$rules .= '</IfModule>' . PHP_EOL;
 
-	return $rules;
+	/**
+	 * Filters htaccess trailingslash rules.
+	 *
+	 * @since 3.8
+	 *
+	 * @param string Trailingslash htaccess rules.
+	 */
+	return apply_filters( 'rocket_htaccess_trailingslash_rules', $rules );
 }
