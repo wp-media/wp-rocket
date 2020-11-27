@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Engine\Media;
+namespace WP_Rocket\Engine\Media\Lazyload;
 
 use WP_Rocket\Dependencies\Minify\JS;
 use WP_Rocket\Dependencies\RocketLazyload\Assets;
@@ -14,7 +14,7 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  *
  * @since 3.3
  */
-class LazyloadSubscriber implements Subscriber_Interface {
+class Subscriber implements Subscriber_Interface {
 	const SCRIPT_VERSION = '16.1';
 
 	/**
@@ -71,17 +71,20 @@ class LazyloadSubscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'wp_footer'               => [
+			'wp_footer'                                => [
 				[ 'insert_lazyload_script', PHP_INT_MAX ],
 				[ 'insert_youtube_thumbnail_script', PHP_INT_MAX ],
 			],
-			'wp_head'                 => [ 'insert_nojs_style', PHP_INT_MAX ],
-			'wp_enqueue_scripts'      => [ 'insert_youtube_thumbnail_style', PHP_INT_MAX ],
-			'rocket_buffer'           => [ 'lazyload', 18 ],
-			'rocket_lazyload_html'    => 'lazyload_responsive',
-			'init'                    => 'lazyload_smilies',
-			'wp'                      => 'deactivate_lazyload_on_specific_posts',
-			'wp_lazy_loading_enabled' => 'maybe_disable_core_lazyload',
+			'wp_head'                                  => [ 'insert_nojs_style', PHP_INT_MAX ],
+			'wp_enqueue_scripts'                       => [ 'insert_youtube_thumbnail_style', PHP_INT_MAX ],
+			'rocket_buffer'                            => [ 'lazyload', 18 ],
+			'rocket_lazyload_html'                     => 'lazyload_responsive',
+			'init'                                     => 'lazyload_smilies',
+			'wp'                                       => 'deactivate_lazyload_on_specific_posts',
+			'wp_lazy_loading_enabled'                  => 'maybe_disable_core_lazyload',
+			'rocket_lazyload_excluded_attributes'      => 'add_exclusions',
+			'rocket_lazyload_excluded_src'             => 'add_exclusions',
+			'rocket_lazyload_iframe_excluded_patterns' => 'add_exclusions',
 		];
 	}
 
@@ -472,6 +475,24 @@ class LazyloadSubscriber implements Subscriber_Interface {
 		}
 
 		return ! (bool) $this->can_lazyload_images();
+	}
+
+	/**
+	 * Adds the exclusions from the options to the exclusions arrays
+	 *
+	 * @since 3.8
+	 *
+	 * @param array $exclusions Array of excluded patterns.
+	 * @return array
+	 */
+	public function add_exclusions( array $exclusions ) : array {
+		$exclude_lazyload = $this->options->get( 'exclude_lazyload', [] );
+
+		if ( empty( $exclude_lazyload ) ) {
+			return $exclusions;
+		}
+
+		return array_unique( array_merge( $exclusions, $exclude_lazyload ) );
 	}
 
 	/**

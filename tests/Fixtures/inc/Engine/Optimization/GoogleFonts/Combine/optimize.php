@@ -110,8 +110,7 @@ return [
 		'<html>' .
 			'<head>' .
 			'<title>Sample Page</title>' .
-			'<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin+Sans:regular,300" type="text/css" media="all" />' .
-			'<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:regular,300" type="text/css" media="all" />' .
+			'<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3Aregular%2C300%7CLato%3Aregular%2C300&#038;display=swap" />' .
 			'<link href="https://fonts.googleapis.com/css?" rel="stylesheet" property="stylesheet" type"text/css" media="all">' .
 			'</head>' .
 			'<body>' .

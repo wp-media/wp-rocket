@@ -1027,6 +1027,18 @@ class Page {
 					// translators: %1$s = “WP Rocket”, %2$s = a list of plugin or themes names.
 					'description'       => ! empty( $disable_youtube_lazyload ) ? sprintf( __( 'Replace YouTube iframe with preview image is not compatible with %2$s.', 'rocket' ), WP_ROCKET_PLUGIN_NAME, $disable_youtube_lazyload ) : '',
 				],
+				'exclude_lazyload' => [
+					'container_class' => [
+						'wpr-Delayjs',
+					],
+					'type'            => 'textarea',
+					'label'           => __( 'Excluded images or iframes', 'rocket' ),
+					'description'     => __( 'Specify keywords (e.g. image filename, CSS class, domain) from the image or iframe code to be excluded (one per line).', 'rocket' ),
+					'section'         => 'lazyload_section',
+					'page'            => 'media',
+					'default'         => [],
+					'placeholder'     => "example-image.jpg\nclass=\"image\"",
+				],
 				'embeds'           => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Disable WordPress embeds', 'rocket' ),

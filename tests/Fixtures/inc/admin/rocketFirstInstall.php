@@ -123,6 +123,7 @@ $integration[ 'delay_js_scripts' ] = [
 	'pixel-caffeine/build/frontend.js',
 ];
 $integration[ 'preload_links' ]    = 1;
+$integration[ 'exclude_lazyload' ] = [];
 
 return [
 	'test_data' => [
