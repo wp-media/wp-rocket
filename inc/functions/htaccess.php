@@ -709,7 +709,7 @@ function rocket_htaccess_trailingslash() {
 
 	$rules  = '<IfModule mod_rewrite.c>' . PHP_EOL;
 	$rules .= 'RewriteEngine On' . PHP_EOL;
-	$rules .= 'RewriteCond %{REQUEST_URI} !wp-admin' . PHP_EOL;
+	$rules .= 'RewriteCond %{REQUEST_URI} !(?:^|/)wp\-admin(?:/|$)' . PHP_EOL;
 	$rules .= 'RewriteCond %{REQUEST_FILENAME} !-f' . PHP_EOL;
 	$rules .= 'RewriteCond %{REQUEST_METHOD} GET' . PHP_EOL;
 
