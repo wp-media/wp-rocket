@@ -45,11 +45,11 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 				->andReturn( $config['rocket_specify_image_dimensions_filter'] );
 		}
 
-		if ( isset( $config['rocket_specify_dimension_images_inside_pictures_filter'] ) ){
-			Filters\expectApplied( 'rocket_specify_dimension_images_inside_pictures' )
+		if ( isset( $config['rocket_specify_dimension_skip_pictures_filter'] ) ){
+			Filters\expectApplied( 'rocket_specify_dimension_skip_pictures' )
 				->once()
 				->with( true )
-				->andReturn( $config['rocket_specify_dimension_images_inside_pictures_filter'] );
+				->andReturn( $config['rocket_specify_dimension_skip_pictures_filter'] );
 		}
 
 		$frontend = new ImagesDimensions( $options, $this->filesystem );
