@@ -1041,6 +1041,18 @@ class Page {
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
+				'exclude_lazyload' => [
+					'container_class' => [
+						'wpr-Delayjs',
+					],
+					'type'            => 'textarea',
+					'label'           => __( 'Excluded images or iframes', 'rocket' ),
+					'description'     => __( 'Specify keywords (e.g. image filename, CSS class, domain) from the image or iframe code to be excluded (one per line).', 'rocket' ),
+					'section'         => 'lazyload_section',
+					'page'            => 'media',
+					'default'         => [],
+					'placeholder'     => "example-image.jpg\nclass=\"image\"",
+				],
 				'embeds'            => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Disable WordPress embeds', 'rocket' ),

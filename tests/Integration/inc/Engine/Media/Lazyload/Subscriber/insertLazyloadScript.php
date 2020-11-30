@@ -1,12 +1,12 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\Media\LazyloadSubscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Media\Lazyload\Subscriber;
 
 use WP_Rocket\Tests\Integration\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Media\LazyloadSubscriber::insert_lazyload_script
+ * @covers \WP_Rocket\Engine\Media\Lazyload\Subscriber::insert_lazyload_script
  * @uses   ::rocket_get_constant
  * @uses   \RocketLazyload\Assets::insertLazyloadScript
  *
