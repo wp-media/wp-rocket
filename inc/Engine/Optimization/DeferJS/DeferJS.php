@@ -216,4 +216,45 @@ class DeferJS {
 
 		return $exclude_defer_js;
 	}
+
+	/**
+	 * Excludes jQuery from combine JS when defer and combine are enabled
+	 *
+	 * @since 3.8
+	 *
+	 * @param array $excluded_files Array of excluded files from combine JS.
+	 * @return array
+	 */
+	public function exclude_jquery_combine( array $excluded_files ) : array {
+		if ( ! $this->can_defer_js() ) {
+			return $excluded_files;
+		}
+
+		if ( ! $this->options->get( 'minify_concatenate_js' ) ) {
+			return $excluded_files;
+		}
+
+		$excluded_files[] = '(?:.*)/jquery-?[0-9.]*(?:.min|.slim|.slim.min)?.js';
+
+		return $excluded_files;
+	}
+
+	/**
+	 * Adds jQuery to defer JS exclusion field if safe mode was enabled before 3.8
+	 *
+	 * @since 3.8
+	 *
+	 * @return void
+	 */
+	public function exclude_jquery_upgrade() {
+		$options = get_option( 'wp_rocket_settings' );
+
+		if ( ! (bool) $options['defer_all_js_safe'] ) {
+			return;
+		}
+
+		$options['exclude_defer_js'][] = '(?:.*)/jquery-?[0-9\.]*(?:\.min|\.slim|\.slim\.min)?\.js';
+
+		update_option( 'wp_rocket_settings', $options );
+	}
 }
