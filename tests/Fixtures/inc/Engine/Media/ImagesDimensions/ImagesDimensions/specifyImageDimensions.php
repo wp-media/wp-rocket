@@ -41,19 +41,11 @@ return [
 
 	'test_data' => [
 
-		'shouldNotChangeHTMLWhenOptionDisabled' => [
+		'shouldNotChangeHTMLWhenOptionANDFilterDisabled' => [
 			'html' => $simple_html_with_local_image,
 			'config' => [
-				'images_dimensions' => false
-			],
-			'expected' => $simple_html_with_local_image
-		],
-
-		'shouldNotChangeHTMLWhenFiltered' => [
-			'html' => $simple_html_with_local_image,
-			'config' => [
-				'images_dimensions' => true,
-				'rocket_specify_image_dimensions_filter' => false
+				'images_dimensions' => false,
+				'rocket_specify_image_dimensions_filter' => false,
 			],
 			'expected' => $simple_html_with_local_image
 		],

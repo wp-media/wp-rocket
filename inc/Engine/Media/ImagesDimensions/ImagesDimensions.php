@@ -281,10 +281,6 @@ class ImagesDimensions {
 	 * @return bool Can we or not.
 	 */
 	private function can_specify_dimensions_images() {
-		if ( ! $this->options->get( 'images_dimensions', false ) ) {
-			return false;
-		}
-
 		/**
 		 * Filter images dimensions attributes
 		 *
@@ -292,7 +288,9 @@ class ImagesDimensions {
 		 *
 		 * @param bool Do the job or not.
 		 */
-		return apply_filters( 'rocket_specify_image_dimensions', true );
+		return apply_filters( 'rocket_specify_image_dimensions', false )
+		       ||
+		       $this->options->get( 'images_dimensions', false );
 	}
 
 	/**

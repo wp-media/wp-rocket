@@ -6,6 +6,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Media\ImagesDimensions\Subscriber::specify_image_dimensions
+ * @group  ImagesDimensions
  * @group  Media
  */
 class Test_SpecifyImageDimensions extends FilesystemTestCase {
