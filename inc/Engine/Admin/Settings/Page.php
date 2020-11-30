@@ -1021,7 +1021,8 @@ class Page {
 					],
 					'type'              => 'checkbox',
 					'label'             => __( 'Replace YouTube iframe with preview image', 'rocket' ),
-					'description'       => __( 'This can significantly improve your loading time if you have a lot of YouTube videos on a page.', 'rocket' ),
+					// translators: %1$s = “WP Rocket”, %2$s = a list of plugin or themes names.
+					'description'       => ! empty( $disable_youtube_lazyload ) ? sprintf( __( 'Replace YouTube iframe with preview image is not compatible with %2$s.', 'rocket' ), WP_ROCKET_PLUGIN_NAME, $disable_youtube_lazyload ) : __( 'This can significantly improve your loading time if you have a lot of YouTube videos on a page.', 'rocket' ),
 					'parent'            => 'lazyload_iframes',
 					'section'           => 'lazyload_section',
 					'page'              => 'media',
@@ -1030,8 +1031,6 @@ class Page {
 					'input_attr'        => [
 						'disabled' => ! empty( $disable_youtube_lazyload ) ? 1 : 0,
 					],
-					// translators: %1$s = “WP Rocket”, %2$s = a list of plugin or themes names.
-					'description'       => ! empty( $disable_youtube_lazyload ) ? sprintf( __( 'Replace YouTube iframe with preview image is not compatible with %2$s.', 'rocket' ), WP_ROCKET_PLUGIN_NAME, $disable_youtube_lazyload ) : '',
 				],
 				'images_dimensions' => [
 					'type'              => 'checkbox',
@@ -1041,7 +1040,7 @@ class Page {
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
-				'exclude_lazyload' => [
+				'exclude_lazyload'  => [
 					'container_class' => [
 						'wpr-Delayjs',
 					],
