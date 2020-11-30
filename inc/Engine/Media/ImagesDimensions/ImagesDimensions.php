@@ -289,8 +289,8 @@ class ImagesDimensions {
 		 * @param bool Do the job or not.
 		 */
 		return apply_filters( 'rocket_specify_image_dimensions', false )
-		       ||
-		       $this->options->get( 'images_dimensions', false );
+			||
+			$this->options->get( 'images_dimensions', false );
 	}
 
 	/**
