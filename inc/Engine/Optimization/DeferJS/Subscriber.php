@@ -29,10 +29,13 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() : array {
 		return [
-			'rocket_buffer' => [
+			'rocket_buffer'                      => [
 				[ 'defer_js', 24 ],
 				[ 'defer_inline_js', 25 ],
 			],
+			'rocket_exclude_js'                  => 'exclude_jquery_combine',
+			'rocket_minify_excluded_external_js' => 'exclude_jquery_combine',
+			'wp_rocket_upgrade'                  => [ 'exclude_jquery_defer', 14, 2 ],
 		];
 	}
 
@@ -58,5 +61,35 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function defer_inline_js( string $html ) : string {
 		return $this->defer_js->defer_inline_js( $html );
+	}
+
+	/**
+	 * Excludes jQuery from combine JS when defer and combine are enabled
+	 *
+	 * @since 3.8
+	 *
+	 * @param array $excluded_files Array of excluded files from combine JS.
+	 * @return array
+	 */
+	public function exclude_jquery_combine( array $excluded_files ) : array {
+		return $this->defer_js->exclude_jquery_combine( $excluded_files );
+	}
+
+	/**
+	 * Adds jQuery to defer JS exclusion field if safe mode was enabled before 3.8
+	 *
+	 * @since 3.7
+	 *
+	 * @param string $new_version New plugin version.
+	 * @param string $old_version Previous plugin version.
+	 *
+	 * @return void
+	 */
+	public function exclude_jquery_defer( $new_version, $old_version ) {
+		if ( version_compare( $old_version, '3.8', '>' ) ) {
+			return;
+		}
+
+		$this->defer_js->exclude_jquery_upgrade();
 	}
 }
