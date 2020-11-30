@@ -23,6 +23,10 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 			remove_filter( 'rocket_specify_image_dimensions', [$this, 'filter_rocket_specify_image_dimensions'] );
 		}
 
+		if ( isset( $config['rocket_specify_dimension_images_inside_pictures_filter'] ) ){
+			remove_filter( 'rocket_specify_dimension_images_inside_pictures', [$this, 'filter_rocket_specify_dimension_images_inside_pictures'] );
+		}
+
 		if ( isset( $this->config_data['external'] ) || isset( $this->config_data['internal'] ) ) {
 			if ( isset( $this->config_data['rocket_specify_image_dimensions_for_distant_filter'] ) ){
 				remove_filter( 'rocket_specify_image_dimensions_for_distant', [$this, 'filter_rocket_specify_image_dimensions_for_distant'] );
@@ -46,6 +50,10 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 
 		if ( isset( $config['rocket_specify_image_dimensions_filter'] ) ){
 			add_filter( 'rocket_specify_image_dimensions', [$this, 'filter_rocket_specify_image_dimensions'] );
+		}
+
+		if ( isset( $config['rocket_specify_dimension_images_inside_pictures_filter'] ) ){
+			add_filter( 'rocket_specify_dimension_images_inside_pictures', [$this, 'filter_rocket_specify_dimension_images_inside_pictures'] );
 		}
 
 		if ( isset( $config['external'] ) || isset( $config['internal'] ) ) {
@@ -76,5 +84,9 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 
 	public function filter_rocket_specify_image_dimensions_for_distant( $value ) {
 		return $this->config_data['rocket_specify_image_dimensions_for_distant_filter'];
+	}
+
+	public function filter_rocket_specify_dimension_images_inside_pictures( $value ) {
+		return $this->config_data['rocket_specify_dimension_images_inside_pictures_filter'];
 	}
 }

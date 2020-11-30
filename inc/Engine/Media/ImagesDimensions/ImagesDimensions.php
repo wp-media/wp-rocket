@@ -89,7 +89,19 @@ class ImagesDimensions {
 		}
 
 		// Get all images without width or height attribute.
-		preg_match_all( '/<img(?:[^>](?!(height|width)=[\'\"](?:\S+)[\'\"]))*+>/i', $html, $images_match );
+		$images_regex = '<img(?:[^>](?!(height|width)=[\'\"](?:\S+)[\'\"]))*+>';
+
+		/**
+		 * Filters Specify image dimensions inside picture tags also.
+		 *
+		 * @since  3.8
+		 *
+		 * @param array Do or not, Default is True so it will skip all img tags that are inside picture tag.
+		 */
+		if ( apply_filters( 'rocket_specify_dimension_images_inside_pictures', true ) ) {
+			$images_regex = '<\s*picture[^>]*>.*' . $images_regex . '<\s*\/\s*picture\s*>(*SKIP)(*FAIL)|' . $images_regex;
+		}
+		preg_match_all( "/{$images_regex}/is", $html, $images_match );
 
 		if ( empty( $images_match ) ) {
 			Logger::debug( 'Specify Image Dimensions failed because there is no image without dimensions on this page.' );
@@ -282,7 +294,7 @@ class ImagesDimensions {
 	 */
 	private function can_specify_dimensions_images() {
 		/**
-		 * Filter images dimensions attributes
+		 * Filter images dimensions attributes process.
 		 *
 		 * @since 2.2
 		 *

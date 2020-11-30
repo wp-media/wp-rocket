@@ -172,5 +172,26 @@ return [
 			'expected' => '<!DOCTYPE html><html><body><img width="1" height="1" src="https://example.org/wp-content/themes/image.jpg"></body></html>'
 		],
 
+		'shouldNotChangeHTMLWithImageInsidePictureWithoutFilter' => [
+			'html' => '<!DOCTYPE html><html><body><picture><img src="https://example.org/wp-content/themes/image.jpg"></picture></body></html>',
+			'config' => [
+				'images_dimensions' => true,
+				'rocket_specify_image_dimensions_filter' => true,
+				'internal' => true,
+			],
+			'expected' => '<!DOCTYPE html><html><body><picture><img src="https://example.org/wp-content/themes/image.jpg"></picture></body></html>'
+		],
+
+		'shouldChangeHTMLWithImageInsidePictureWithFilter' => [
+			'html' => '<!DOCTYPE html><html><body><picture><img src="https://example.org/wp-content/themes/image.jpg"></picture></body></html>',
+			'config' => [
+				'images_dimensions' => true,
+				'rocket_specify_image_dimensions_filter' => true,
+				'internal' => true,
+				'rocket_specify_dimension_images_inside_pictures_filter' => false
+			],
+			'expected' => '<!DOCTYPE html><html><body><picture><img width="1" height="1" src="https://example.org/wp-content/themes/image.jpg"></picture></body></html>'
+		],
+
 	]
 ];
