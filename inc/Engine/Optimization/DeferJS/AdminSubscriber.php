@@ -49,7 +49,7 @@ class AdminSubscriber implements Subscriber_Interface {
 	/**
 	 * Adds jQuery to defer JS exclusion field if safe mode was enabled before 3.8
 	 *
-	 * @since 3.7
+	 * @since 3.8
 	 *
 	 * @param string $new_version New plugin version.
 	 * @param string $old_version Previous plugin version.
