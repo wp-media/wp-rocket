@@ -230,7 +230,7 @@ class DeferJS {
 			return $excluded_files;
 		}
 
-		if ( ! $this->options->get( 'minify_concatenate_js' ) ) {
+		if ( ! (bool) $this->options->get( 'minify_concatenate_js', 0 ) ) {
 			return $excluded_files;
 		}
 
@@ -248,6 +248,10 @@ class DeferJS {
 	 */
 	public function exclude_jquery_upgrade() {
 		$options = get_option( 'wp_rocket_settings' );
+
+		if ( ! isset( $options['defer_all_js_safe'] ) ) {
+			return;
+		}
 
 		if ( ! (bool) $options['defer_all_js_safe'] ) {
 			return;
