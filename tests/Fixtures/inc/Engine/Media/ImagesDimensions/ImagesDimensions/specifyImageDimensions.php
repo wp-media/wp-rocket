@@ -173,13 +173,27 @@ return [
 		],
 
 		'shouldNotChangeHTMLWithImageInsidePictureWithoutFilter' => [
-			'html' => '<!DOCTYPE html><html><body><picture><img src="https://example.org/wp-content/themes/image.jpg"></picture></body></html>',
+			'html' => '<!DOCTYPE html>
+<html>
+<body>
+<picture>
+<img src="https://example.org/wp-content/themes/image.jpg">
+</picture>
+</body>
+</html>',
 			'config' => [
 				'images_dimensions' => true,
 				'rocket_specify_image_dimensions_filter' => true,
 				'internal' => true,
 			],
-			'expected' => '<!DOCTYPE html><html><body><picture><img src="https://example.org/wp-content/themes/image.jpg"></picture></body></html>'
+			'expected' => '<!DOCTYPE html>
+<html>
+<body>
+<picture>
+<img src="https://example.org/wp-content/themes/image.jpg">
+</picture>
+</body>
+</html>'
 		],
 
 		'shouldChangeHTMLWithImageInsidePictureWithFilter' => [

@@ -99,7 +99,7 @@ class ImagesDimensions {
 		 * @param bool Do or not, Default is True so it will skip all img tags that are inside picture tag.
 		 */
 		if ( apply_filters( 'rocket_specify_dimension_skip_pictures', true ) ) {
-			$images_regex = '<\s*picture[^>]*>.*' . $images_regex . '<\s*\/\s*picture\s*>(*SKIP)(*FAIL)|' . $images_regex;
+			$images_regex = '<\s*picture[^>]*>.*' . $images_regex . '.*<\s*\/\s*picture\s*>(*SKIP)(*FAIL)|' . $images_regex;
 		}
 		preg_match_all( "/{$images_regex}/is", $html, $images_match );
 
