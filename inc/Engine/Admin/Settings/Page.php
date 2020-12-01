@@ -928,7 +928,7 @@ class Page {
 
 		$this->settings->add_settings_sections(
 			[
-				'lazyload_section' => [
+				'lazyload_section'   => [
 					'title'       => __( 'LazyLoad', 'rocket' ),
 					'type'        => 'fields_container',
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
@@ -941,13 +941,19 @@ class Page {
 					// translators: %1$s = “WP Rocket”, %2$s = a list of plugin names.
 					'helper'      => ! empty( $disable_lazyload ) ? sprintf( __( 'LazyLoad is currently activated in %2$s. If you want to use WP Rocket’s LazyLoad, disable this option in %2$s.', 'rocket' ), WP_ROCKET_PLUGIN_NAME, $disable_lazyload ) : '',
 				],
-				'embeds_section'   => [
+				'dimensions_section' => [
+					'title'       => __( 'Images dimensions', 'rocket' ),
+					'type'        => 'fields_container',
+					'description' => __( 'Add missing width and height attributes to images. Helps prevent layout shifts and improve the reading experience for your visitors. More info', 'rocket' ),
+					'page'        => 'media',
+				],
+				'embeds_section'     => [
 					'title'       => __( 'Embeds', 'rocket' ),
 					'type'        => 'fields_container',
 					'description' => __( 'Prevents others from embedding content from your site, prevents you from embedding content from other (non-allowed) sites, and removes JavaScript requests related to WordPress embeds', 'rocket' ),
 					'page'        => 'media',
 				],
-				'webp_section'     => [
+				'webp_section'       => [
 					'title'       => __( 'WebP compatibility', 'rocket' ),
 					'type'        => 'fields_container',
 					'description' => sprintf(
@@ -977,7 +983,7 @@ class Page {
 
 		$this->settings->add_settings_fields(
 			[
-				'lazyload'         => [
+				'lazyload'          => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Enable for images', 'rocket' ),
 					'section'           => 'lazyload_section',
@@ -993,7 +999,7 @@ class Page {
 					// translators: %1$s = “WP Rocket”, %2$s = a list of plugin names.
 					'description'       => ! empty( $disable_images_lazyload ) ? sprintf( __( 'LazyLoad for images is currently activated in %2$s. If you want to use %1$s’s LazyLoad, disable this option in %2$s.', 'rocket' ), WP_ROCKET_PLUGIN_NAME, $disable_images_lazyload ) : '',
 				],
-				'lazyload_iframes' => [
+				'lazyload_iframes'  => [
 					'container_class'   => [
 						! empty( $disable_iframes_lazyload ) ? 'wpr-isDisabled' : '',
 						'wpr-isParent',
@@ -1008,14 +1014,15 @@ class Page {
 						'disabled' => ! empty( $disable_iframes_lazyload ) ? 1 : 0,
 					],
 				],
-				'lazyload_youtube' => [
+				'lazyload_youtube'  => [
 					'container_class'   => [
 						! empty( $disable_youtube_lazyload ) ? 'wpr-isDisabled' : '',
 						'wpr-field--children',
 					],
 					'type'              => 'checkbox',
 					'label'             => __( 'Replace YouTube iframe with preview image', 'rocket' ),
-					'description'       => __( 'This can significantly improve your loading time if you have a lot of YouTube videos on a page.', 'rocket' ),
+					// translators: %1$s = “WP Rocket”, %2$s = a list of plugin or themes names.
+					'description'       => ! empty( $disable_youtube_lazyload ) ? sprintf( __( 'Replace YouTube iframe with preview image is not compatible with %2$s.', 'rocket' ), WP_ROCKET_PLUGIN_NAME, $disable_youtube_lazyload ) : __( 'This can significantly improve your loading time if you have a lot of YouTube videos on a page.', 'rocket' ),
 					'parent'            => 'lazyload_iframes',
 					'section'           => 'lazyload_section',
 					'page'              => 'media',
@@ -1024,10 +1031,16 @@ class Page {
 					'input_attr'        => [
 						'disabled' => ! empty( $disable_youtube_lazyload ) ? 1 : 0,
 					],
-					// translators: %1$s = “WP Rocket”, %2$s = a list of plugin or themes names.
-					'description'       => ! empty( $disable_youtube_lazyload ) ? sprintf( __( 'Replace YouTube iframe with preview image is not compatible with %2$s.', 'rocket' ), WP_ROCKET_PLUGIN_NAME, $disable_youtube_lazyload ) : '',
 				],
-				'exclude_lazyload' => [
+				'images_dimensions' => [
+					'type'              => 'checkbox',
+					'label'             => __( 'Add missing image dimensions', 'rocket' ),
+					'section'           => 'dimensions_section',
+					'page'              => 'media',
+					'default'           => 0,
+					'sanitize_callback' => 'sanitize_checkbox',
+				],
+				'exclude_lazyload'  => [
 					'container_class' => [
 						'wpr-Delayjs',
 					],
@@ -1039,7 +1052,7 @@ class Page {
 					'default'         => [],
 					'placeholder'     => "example-image.jpg\nclass=\"image\"",
 				],
-				'embeds'           => [
+				'embeds'            => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Disable WordPress embeds', 'rocket' ),
 					'section'           => 'embeds_section',
@@ -1047,7 +1060,7 @@ class Page {
 					'default'           => 1,
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
-				'cache_webp'       => array_merge(
+				'cache_webp'        => array_merge(
 					$cache_webp_field,
 					[
 						'type'              => 'checkbox',

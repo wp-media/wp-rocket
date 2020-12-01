@@ -84,7 +84,6 @@ function rocket_init() {
 		require WP_ROCKET_ADMIN_UI_PATH . 'meta-boxes.php';
 	} elseif ( rocket_valid_key() ) {
 		require WP_ROCKET_FRONT_PATH . 'cookie.php';
-		require WP_ROCKET_FRONT_PATH . 'images.php';
 		require WP_ROCKET_FRONT_PATH . 'dns-prefetch.php';
 		require WP_ROCKET_FRONT_PATH . 'protocol.php';
 	}
