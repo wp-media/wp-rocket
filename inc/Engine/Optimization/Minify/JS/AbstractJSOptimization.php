@@ -268,6 +268,10 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 			'loader.knack.com',
 			'embed.lpcontent.net/leadboxes/current/embed.js',
 			'cc.cdn.civiccomputing.com/9/cookieControl-9.x.min.js',
+			'/wp-content/plugins/interactive-3d-flipbook-powered-physics-engine/assets/js/html2canvas.min.js',
+			'/wp-content/plugins/interactive-3d-flipbook-powered-physics-engine/assets/js/pdf.min.js',
+			'/wp-content/plugins/interactive-3d-flipbook-powered-physics-engine/assets/js/three.min.js',
+			'/wp-content/plugins/interactive-3d-flipbook-powered-physics-engine/assets/js/3d-flip-book.min.js',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
