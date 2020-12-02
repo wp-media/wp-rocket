@@ -847,6 +847,7 @@ class Page {
 	private function media_section() {
 		$lazyload_beacon = $this->beacon->get_suggest( 'lazyload' );
 		$webp_beacon     = $this->beacon->get_suggest( 'webp' );
+		$dimensions      = $this->beacon->get_suggest( 'images_dimensions' );
 
 		if ( rocket_valid_key() && ! \Imagify_Partner::has_imagify_api_key() ) {
 			$imagify_link = '<a href="#imagify">';
@@ -931,7 +932,8 @@ class Page {
 				'dimensions_section' => [
 					'title'       => __( 'Images dimensions', 'rocket' ),
 					'type'        => 'fields_container',
-					'description' => __( 'Add missing width and height attributes to images. Helps prevent layout shifts and improve the reading experience for your visitors. More info', 'rocket' ),
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description' => sprintf( __( 'Add missing width and height attributes to images. Helps prevent layout shifts and improve the reading experience for your visitors. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $dimensions['url'] ) . '" data-beacon-article="' . esc_attr( $dimensions['id'] ) . '" target="_blank" rel="noopener noreferrer">', '</a>' ),
 					'page'        => 'media',
 				],
 				'embeds_section'     => [
