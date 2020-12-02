@@ -118,7 +118,7 @@ class DeferJS {
 		 *
 		 * @param string $inline_exclusions A RegEx pattern to find inline JS that should not be deferred.
 		 */
-		$inline_exclusions = apply_filters( 'rocket_defer_inline_exclusions', 'DOMContentLoaded|document\.write' );
+		$inline_exclusions = apply_filters( 'rocket_defer_inline_exclusions', 'DOMContentLoaded|document\.write|window\.lazyLoadOptions' );
 
 		foreach ( $matches as $inline_js ) {
 			if ( empty( $inline_js['content'] ) ) {
