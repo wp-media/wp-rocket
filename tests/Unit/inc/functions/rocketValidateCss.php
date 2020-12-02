@@ -25,7 +25,7 @@ class Test_RocketValidateCss extends TestCase {
 			}
 			return parse_url( $url, PHP_URL_PATH );
 		} );
-		Functions\when( 'sanitize_text_field' )->returnArg();
+		Functions\when( 'esc_url_raw' )->returnArg();
 		Functions\when( 'rocket_remove_url_protocol' )->alias( function( $url ) {
 			return str_replace( [ 'http://', 'https://' ], '', $url );
 		} );

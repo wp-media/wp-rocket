@@ -53,7 +53,7 @@ EXPECTED_HTML
 				'cdn_url'           => 'http://example.org',
 				'site_url'          => 'http://example.org',
 				'defer_all_js'      => false,
-				'defer_all_js_safe' => false,
+				'exclude_defer_js'  => [],
 			],
 		],
 
@@ -106,7 +106,9 @@ EXPECTED_HTML
 				'cdn_url'           => 'http://example.org',
 				'site_url'          => 'http://example.org',
 				'defer_all_js'      => true,
-				'defer_all_js_safe' => true,
+				'exclude_defer_js'  => [
+					'/wp-includes/js/jquery/jquery.js',
+				],
 			],
 		],
 
@@ -158,7 +160,7 @@ EXPECTED_HTML
 				'cdn_url'           => 'http://example.org',
 				'site_url'          => 'http://example.org',
 				'defer_all_js'      => false,
-				'defer_all_js_safe' => false,
+				'exclude_defer_js'  => [],
 			],
 		],
 
@@ -213,7 +215,7 @@ EXPECTED_HTML
 				'cdn_url'           => 'http://example.org',
 				'site_url'          => 'http://example.org',
 				'defer_all_js'      => false,
-				'defer_all_js_safe' => false,
+				'exclude_defer_js'  => [],
 			],
 		],
 
@@ -265,7 +267,7 @@ EXPECTED_HTML
 				'cdn_url'  => 'https://123456.rocketcdn.me',
 				'site_url' => 'http://example.org',
 				'defer_all_js'      => false,
-				'defer_all_js_safe' => false,
+				'exclude_defer_js'  => [],
 			],
 		],
 
@@ -316,7 +318,7 @@ EXPECTED_HTML
 				'cdn_url'  => 'https://123456.rocketcdn.me',
 				'site_url' => 'http://example.org',
 				'defer_all_js'      => false,
-				'defer_all_js_safe' => false,
+				'exclude_defer_js'  => [],
 			],
 		],
 
@@ -367,7 +369,7 @@ EXPECTED_HTML
 				'cdn_url'  => 'https://123456.rocketcdn.me/cdnpath',
 				'site_url' => 'http://example.org',
 				'defer_all_js'      => false,
-				'defer_all_js_safe' => false,
+				'exclude_defer_js'  => [],
 			],
 		],
 	],
