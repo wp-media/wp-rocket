@@ -804,19 +804,6 @@ class Page {
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
 				],
-				'defer_all_js_safe'      => [
-					'container_class'   => [
-						'wpr-field--children',
-					],
-					'type'              => 'checkbox',
-					'label'             => __( 'Safe Mode for jQuery (recommended)', 'rocket' ),
-					'description'       => __( 'Safe mode for jQuery for deferred JS ensures support for inline jQuery references from themes and plugins by loading jQuery at the top of the document as a render-blocking script.<br><em>Deactivating may result in broken functionality, test thoroughly!</em>', 'rocket' ),
-					'parent'            => 'defer_all_js',
-					'section'           => 'js',
-					'page'              => 'file_optimization',
-					'default'           => 1,
-					'sanitize_callback' => 'sanitize_checkbox',
-				],
 				'delay_js'               => [
 					'container_class'   => [
 						'wpr-isParent',

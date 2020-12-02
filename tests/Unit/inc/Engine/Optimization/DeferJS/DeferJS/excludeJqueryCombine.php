@@ -9,15 +9,15 @@ use WP_Rocket\Engine\Optimization\DeferJS\DeferJS;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DeferJS\DeferJS::defer_js
+ * @covers \WP_Rocket\Engine\Optimization\DeferJS\DeferJS::exclude_jquery_combine
  *
  * @group  DeferJS
  */
-class Test_DeferJs extends TestCase {
+class Test_ExcludeJqueryCombine extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldReturnExpected( $config, $html, $expected ) {
+	public function testShouldReturnExpected( $config, $excluded, $expected ) {
 		$this->donotrocketoptimize = $config['donotrocketoptimize'];
 
 		$options  = Mockery::mock( Options_Data::class );
@@ -25,22 +25,22 @@ class Test_DeferJs extends TestCase {
 
 		$options->shouldReceive( 'get' )
 			->atMost()
-			->twice()
+			->once()
 			->with( 'defer_all_js', 0 )
 			->andReturn( $config['options']['defer_all_js'] );
-		
-		$options->shouldReceive( 'get' )
-			->atMost()
-			->once()
-			->with( 'exclude_defer_js', [] )
-			->andReturn( $config['options']['exclude_defer_js'] );
 
 		Functions\when( 'is_rocket_post_excluded_option' )
 			->justReturn( $config['post_meta'] );
 
+		$options->shouldReceive( 'get' )
+			->atMost()
+			->once()
+			->with( 'minify_concatenate_js', 0 )
+			->andReturn( $config['options']['minify_concatenate_js'] );
+
 		$this->assertSame(
 			$expected,
-			$defer_js->defer_js( $html )
+			$defer_js->exclude_jquery_combine( $excluded )
 		);
 	}
 }

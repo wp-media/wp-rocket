@@ -8,7 +8,7 @@ return [
 			'WP Rocket Version'        => '3.7.5',
 			'Theme'                    => 'WordPress Default',
 			'Plugins Enabled'          => 'Hello Dolly',
-			'WP Rocket Active Options' => 'Mobile Cache - Disable Emojis - Defer JS Safe - Combine Google Fonts - Preload',
+			'WP Rocket Active Options' => 'Mobile Cache - Disable Emojis - Combine Google Fonts - Preload',
 		],
 		'referer' => 'http://google.com',
 		'expected' => [
@@ -27,7 +27,7 @@ return [
 			'WP Rocket Version'        => '3.7.5',
 			'Theme'                    => 'WordPress Default',
 			'Plugins Enabled'          => 'Hello Dolly',
-			'WP Rocket Active Options' => 'Mobile Cache - Disable Emojis - Defer JS Safe - Combine Google Fonts - Preload',
+			'WP Rocket Active Options' => 'Mobile Cache - Disable Emojis - Combine Google Fonts - Preload',
 		],
 		'referer' => 'https://wp-rocket.me',
 		'expected' => [
@@ -41,7 +41,7 @@ return [
 					'WP Rocket Version'        => '3.7.5',
 					'Theme'                    => 'WordPress Default',
 					'Plugins Enabled'          => 'Hello Dolly',
-					'WP Rocket Active Options' => 'Mobile Cache - Disable Emojis - Defer JS Safe - Combine Google Fonts - Preload',
+					'WP Rocket Active Options' => 'Mobile Cache - Disable Emojis - Combine Google Fonts - Preload',
 				],
 			],
 		],

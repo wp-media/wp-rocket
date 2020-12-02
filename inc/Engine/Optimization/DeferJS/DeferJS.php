@@ -76,6 +76,83 @@ class DeferJS {
 	}
 
 	/**
+	 * Defers inline JS containing jQuery calls
+	 *
+	 * @since 3.8
+	 *
+	 * @param string $html HTML content.
+	 * @return string
+	 */
+	public function defer_inline_js( string $html ) : string {
+		if ( ! $this->can_defer_js() ) {
+			return $html;
+		}
+
+		$exclude_defer_js = implode( '|', $this->get_excluded() );
+
+		if ( preg_match( '/(jquery(?:.*)?\.js)/i', $exclude_defer_js ) ) {
+			return $html;
+		}
+
+		$buffer_nocomments = preg_replace( '/<!--(.*)-->/Uis', '', $html );
+
+		preg_match_all( '#<script(?:[^>]*)>(?<content>[\s\S]*?)</script>#msi', $buffer_nocomments, $matches, PREG_SET_ORDER );
+
+		if ( empty( $matches ) ) {
+			return $html;
+		}
+
+		/**
+		 * Filters the patterns used to find jQuery in inline JS
+		 *
+		 * @since 3.8
+		 *
+		 * @param string $jquery_patterns A RegEx pattern to find jQuery inline JS.
+		 */
+		$jquery_patterns = apply_filters( 'rocket_defer_jquery_patterns', 'jQuery|\$\.\(|\$\(' );
+
+		/**
+		 * Filters the patterns used to find inline JS that should not be deferred
+		 *
+		 * @since 3.8
+		 *
+		 * @param string $inline_exclusions A RegEx pattern to find inline JS that should not be deferred.
+		 */
+		$inline_exclusions = apply_filters( 'rocket_defer_inline_exclusions', 'DOMContentLoaded|document\.write' );
+
+		foreach ( $matches as $inline_js ) {
+			if ( empty( $inline_js['content'] ) ) {
+				continue;
+			}
+
+			if ( preg_match( "/({$inline_exclusions})/msi", $inline_js['content'] ) ) {
+				continue;
+			}
+
+			if ( ! preg_match( "/({$jquery_patterns})/msi", $inline_js['content'] ) ) {
+				continue;
+			}
+
+			$tag  = str_replace( $inline_js['content'], $this->inline_js_wrapper( $inline_js['content'] ), $inline_js[0] );
+			$html = str_replace( $inline_js[0], $tag, $html );
+		}
+
+		return $html;
+	}
+
+	/**
+	 * Adds the JS wrapper for inline jQuery code
+	 *
+	 * @since 3.8
+	 *
+	 * @param string $content Inline JS content.
+	 * @return string
+	 */
+	private function inline_js_wrapper( string $content ) : string {
+		return "window.addEventListener('DOMContentLoaded', function() {" . $content . '});';
+	}
+
+	/**
 	 * Checks if we can defer JS
 	 *
 	 * @since 3.8
@@ -122,10 +199,6 @@ class DeferJS {
 			'cdn.voxpow.com/media/trackers/js/(.*).js',
 		];
 
-		if ( $this->options->get( 'defer_all_js', 0 ) && $this->options->get( 'defer_all_js_safe', 0 ) ) {
-			$exclude_defer_js = array_merge( $exclude_defer_js, $this->get_jquery_urls() );
-		}
-
 		$exclude_defer_js = array_unique( array_merge( $exclude_defer_js, $this->options->get( 'exclude_defer_js', [] ) ) );
 
 		/**
@@ -145,24 +218,47 @@ class DeferJS {
 	}
 
 	/**
-	 * Returns jquery URLs to not defer when Safe mode is enabled
+	 * Excludes jQuery from combine JS when defer and combine are enabled
 	 *
 	 * @since 3.8
 	 *
+	 * @param array $excluded_files Array of excluded files from combine JS.
 	 * @return array
 	 */
-	private function get_jquery_urls() : array {
-		$jquery_urls = [
-			'c0.wp.com/c/(?:.+)/wp-includes/js/jquery/jquery.js',
-			'ajax.googleapis.com/ajax/libs/jquery/(?:.+)/jquery(?:\.min)?.js',
-			'cdnjs.cloudflare.com/ajax/libs/jquery/(?:.+)/jquery(?:\.min)?.js',
-			'code.jquery.com/jquery-.*(?:\.min|slim)?.js',
-		];
-
-		if ( isset( wp_scripts()->registered['jquery-core']->src ) ) {
-			$jquery_urls[] = rocket_clean_exclude_file( site_url( wp_scripts()->registered['jquery-core']->src ) );
+	public function exclude_jquery_combine( array $excluded_files ) : array {
+		if ( ! $this->can_defer_js() ) {
+			return $excluded_files;
 		}
 
-		return $jquery_urls;
+		if ( ! (bool) $this->options->get( 'minify_concatenate_js', 0 ) ) {
+			return $excluded_files;
+		}
+
+		$excluded_files[] = '/jquery-*[0-9.]*(.min|.slim|.slim.min)*([^\.]*).js';
+
+		return $excluded_files;
+	}
+
+	/**
+	 * Adds jQuery to defer JS exclusion field if safe mode was enabled before 3.8
+	 *
+	 * @since 3.8
+	 *
+	 * @return void
+	 */
+	public function exclude_jquery_upgrade() {
+		$options = get_option( 'wp_rocket_settings' );
+
+		if ( ! isset( $options['defer_all_js_safe'] ) ) {
+			return;
+		}
+
+		if ( ! (bool) $options['defer_all_js_safe'] ) {
+			return;
+		}
+
+		$options['exclude_defer_js'][] = '/jquery-*[0-9.]*(.min|.slim|.slim.min)*([^\.]*).js';
+
+		update_option( 'wp_rocket_settings', $options );
 	}
 }

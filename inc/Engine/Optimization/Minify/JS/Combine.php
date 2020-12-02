@@ -159,23 +159,22 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 	 * @return array
 	 */
 	protected function parse( $scripts ) {
-		$scripts = array_map(
-			function( $script ) {
+		$excluded_externals = implode( '|', $this->get_excluded_external_file_path() );
+		$scripts            = array_map(
+			function( $script ) use ( $excluded_externals ) {
 				preg_match( '/<script\s+([^>]+[\s\'"])?src\s*=\s*[\'"]\s*?(?<url>[^\'"]+\.js(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>/Umsi', $script[0], $matches );
 
 				if ( isset( $matches['url'] ) ) {
 					if ( $this->is_external_file( $matches['url'] ) ) {
-						foreach ( $this->get_excluded_external_file_path() as $excluded_file ) {
-							if ( false !== strpos( $matches['url'], $excluded_file ) ) {
-								Logger::debug(
-									'Script is external.',
-									[
-										'js combine process',
-										'tag' => $matches[0],
-									]
-								);
-								return;
-							}
+						if ( preg_match( '#(' . $excluded_externals . ')#', $matches['url'] ) ) {
+							Logger::debug(
+								'Script is external.',
+								[
+									'js combine process',
+									'tag' => $matches[0],
+								]
+							);
+							return;
 						}
 
 						if ( $this->is_defer_excluded( $matches['url'] ) ) {

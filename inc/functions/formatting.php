@@ -182,7 +182,7 @@ function rocket_sanitize_textarea_field( $field, $value ) {
 		'cdn_reject_files'     => [ 'rocket_clean_exclude_file', 'rocket_clean_wildcards' ], // Pattern.
 		'exclude_css'          => [ 'rocket_validate_css', 'rocket_clean_wildcards' ], // Pattern.
 		'exclude_inline_js'    => [ 'sanitize_text_field' ], // Pattern.
-		'exclude_defer_js'     => [ 'rocket_validate_js', 'rocket_clean_wildcards' ], // Pattern.
+		'exclude_defer_js'     => [ 'rocket_validate_js' ], // Pattern.
 		'exclude_js'           => [ 'rocket_validate_js', 'rocket_clean_wildcards' ], // Pattern.
 		'delay_js_scripts'     => [ 'rocket_validate_js' ],
 		'exclude_lazyload'     => [ 'sanitize_text_field' ],
