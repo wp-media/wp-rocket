@@ -1,6 +1,8 @@
 on:
   release:
-    types: [published]
+    types: 
+      - published
+      - edited
 
 name: Deploy Rocket Plugin on Dev
 jobs:
@@ -30,13 +32,28 @@ jobs:
         run: composer install --no-scripts --no-dev
   
       - name: Zip Folder
-        run: zip -r /tmp/__wp-rocket__${{ GITHUB_REF }}.zip .
+        run: zip -r /tmp/__wp-rocket__${GITHUB_REF##*v}.zip .
 
-      - name: Upload by sFTP
-        uses: appleboy/scp-action@master
+      # Use Openstack Swift to upload the zip to OVH block storage
+      # We post a header to instruct the file to be deleted after 10 minutes
+      - name: Upload Zip
+        uses: iksaku/openstack-swift-action@v3.8.1
+        env:
+          OS_AUTH_URL: 'https://auth.cloud.ovh.net/v3'
+          OS_PASSWORD: ${{ secrets.OBJECT_STORAGE_PASSWORD }}
+          OS_PROJECT_NAME: ${{ secrets.OBJECT_STORAGE_PROJECT }}
+          OS_PROJECT_ID: ${{ secrets.OBJECT_STORAGE_PROJECT_ID }}
+          OS_REGION_NAME: 'SBG5'
+          OS_USERNAME: ${{ secrets.OBJECT_STORAGE_USERNAME }}
+          OS_USER_DOMAIN_NAME: 'Default'
         with:
-          host: ${{ secrets.DEPLOY_PLUGIN_HOST }}
-          username: ${{ secrets.DEPLOY_PLUGIN_USER }}
-          source: "/tmp/__wp-rocket__${{ GITHUB_REF }}.zip"
-          target: "/var/www/wp-rocket.me/api/wp-rocket/versioning"
-          key: ${{ secrets.DEPLOY_PLUGIN_SSH_KEY }}
+          args: |
+            upload rocket-plugin /tmp/__wp-rocket__${GITHUB_REF##*v}.zip
+            post --header "X-Delete-After: 600" rocket-plugin __wp-rocket__${GITHUB_REF##*v}.zip
+
+      # Call the webhook on AWX to fetch and deploy the zip
+      - name: Invoke deployment hook
+        uses: distributhor/workflow-webhook@v1
+        env:
+          webhook_url: https://awx.wp-media.me:443/api/v2/job_templates/34/github/
+          webhook_secret: ${{ secrets.WEBHOOK_KEY_PLUGIN }}
