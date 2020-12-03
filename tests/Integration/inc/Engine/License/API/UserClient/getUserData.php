@@ -62,22 +62,20 @@ class GetUserData extends TestCase {
 				]
 			)
 			->andReturn( $config['response'] );
-		}
 
-		$this->assertEquals(
-			$expected,
-			self::$client->get_user_data()
-		);
-
-		if (
-			false === $config['transient']
-			&&
-			false !== $expected
-		) {
+			$this->assertFalse( self::$client->get_user_data() );
+		} else {
 			$this->assertEquals(
-				$expected,
-				get_transient( 'wp_rocket_customer_data' )
+				array_keys( (array) $expected ),
+				array_keys( (array) self::$client->get_user_data() )
 			);
+
+			if ( false === $config['transient'] ) {
+				$this->assertEquals(
+					array_keys( (array) $expected ),
+					array_keys( (array) get_transient( 'wp_rocket_customer_data' ) )
+				);
+			}
 		}
 	}
 

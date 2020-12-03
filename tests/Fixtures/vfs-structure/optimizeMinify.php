@@ -25,6 +25,8 @@ return [
 					'script.js' => 'test',
 				],
 				'style-import.css' => '@import url(style.css)',
+				'new-style.css' => 'footer{color:red;}',
+				'final-style.css' => 'header{color:red;}'
 			],
 		],
 		'plugins' => [
