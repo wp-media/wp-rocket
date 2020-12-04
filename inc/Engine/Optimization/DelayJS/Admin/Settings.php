@@ -202,6 +202,27 @@ class Settings {
 	}
 
 	/**
+	 * Restores the default list when updating from 3.7.6 (which removed anything ending in '.js' -- whoops!)
+	 *
+	 * @since 3.7.6.1
+	 *
+	 * @param string $old_version Old plugin version.
+	 *
+	 * @return void
+	 */
+	public function option_update_3_7_6_1( $old_version ) {
+		if ( 0 !== version_compare( $old_version, '3.7.6' ) ) {
+			return;
+		}
+
+		$options = get_option( 'wp_rocket_settings', [] );
+
+		$options['delay_js_scripts'] = $this->defaults;
+
+		update_option( 'wp_rocket_settings', $options );
+	}
+
+	/**
 	 * Restores the delay_js_scripts option to the default value
 	 *
 	 * @since 3.7

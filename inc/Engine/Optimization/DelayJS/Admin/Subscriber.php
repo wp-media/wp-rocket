@@ -38,6 +38,7 @@ class Subscriber extends Abstract_Render implements Subscriber_Interface {
 				[ 'set_option_on_update', 13, 2 ],
 				[ 'option_update_3_7_2', 13, 2 ],
 				[ 'option_update_3_7_4', 13, 2 ],
+				[ 'option_update_3_7_6_1', 13, 2 ],
 			],
 			'wp_ajax_rocket_restore_delay_js_defaults'     => 'restore_defaults',
 			'rocket_safe_mode_reset_options'               => 'add_options',
@@ -114,6 +115,20 @@ class Subscriber extends Abstract_Render implements Subscriber_Interface {
 	 */
 	public function option_update_3_7_4( $new_version, $old_version ) {
 		$this->settings->option_update_3_7_4( $old_version );
+	}
+
+	/**
+	 * Restore the delay_js options to default when updating from 3.7.6.
+	 *
+	 * @since 3.7.6.1
+	 *
+	 * @param string $new_version New plugin version.
+	 * @param string $old_version Old plugin version.
+	 *
+	 * @return void
+	 */
+	public function option_update_3_7_6_1( $new_version, $old_version ) {
+		$this->settings->option_update_3_7_6_1( $old_version );
 	}
 
 	/**
