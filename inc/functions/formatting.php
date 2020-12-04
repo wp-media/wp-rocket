@@ -132,7 +132,7 @@ function rocket_is_internal_file( $file ) {
 	$file_host = wp_parse_url( $file, PHP_URL_HOST );
 
 	if ( empty( $file_host ) ) {
-		return true;
+		return false;
 	}
 
 	/**
