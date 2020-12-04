@@ -300,7 +300,7 @@ class WPCache implements ActivationInterface, DeactivationInterface {
 	 * @return bool
 	 */
 	private function is_user_allowed() {
-		return ( defined( 'WP_CLI' ) || current_user_can( 'rocket_manage_options' ) ) && rocket_valid_key();
+		return ( rocket_get_constant( 'WP_CLI', false ) || current_user_can( 'rocket_manage_options' ) ) && rocket_valid_key();
 	}
 
 	/**
