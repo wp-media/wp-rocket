@@ -1,5 +1,7 @@
 <?php
+
 defined( 'ABSPATH' ) || exit;
+
 $aioseoV3 = defined( 'AIOSEOP_VERSION' );
 $aioseoV4 = defined( 'AIOSEO_VERSION' ) && function_exists( 'aioseo' );
 if ( $aioseoV3 || $aioseoV4 ) :
@@ -30,9 +32,11 @@ if ( $aioseoV3 || $aioseoV4 ) :
 		 */
 		function rocket_add_all_in_one_seo_sitemap_option( $options ) {
 			$options['all_in_one_seo_xml_sitemap'] = 0;
+
 			return $options;
 		}
 		add_filter( 'rocket_first_install_options', 'rocket_add_all_in_one_seo_sitemap_option' );
+
 		/**
 		 * Sanitize the AIO SEO option value
 		 *
@@ -44,6 +48,7 @@ if ( $aioseoV3 || $aioseoV4 ) :
 		 */
 		function rocket_all_in_one_seo_sitemap_option_sanitize( $inputs ) {
 			$inputs['all_in_one_seo_xml_sitemap'] = ! empty( $inputs['all_in_one_seo_xml_sitemap'] ) ? 1 : 0;
+
 			return $inputs;
 		}
 		add_filter( 'rocket_inputs_sanitize', 'rocket_all_in_one_seo_sitemap_option_sanitize' );
@@ -66,14 +71,17 @@ if ( $aioseoV3 || $aioseoV4 ) :
 			) {
 				return $sitemaps;
 			}
+
 			if ( $aioseoV3 ) {
 				$sitemaps[] = trailingslashit( home_url() ) . apply_filters( 'aiosp_sitemap_filename', 'sitemap' ) . '.xml'; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 			} elseif ( $aioseoV4 ) {
 				$sitemaps[] = trailingslashit( home_url() ) . apply_filters( 'aioseo_sitemap_filename', 'sitemap' ) . '.xml'; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 			}
+
 			return $sitemaps;
 		}
 		add_filter( 'rocket_sitemap_preload_list', 'rocket_add_all_in_one_seo_sitemap' );
+
 		/**
 		 * Add All in One SEO Sitemap sub-option on WP Rocket settings page
 		 *
@@ -98,6 +106,7 @@ if ( $aioseoV3 || $aioseoV4 ) :
 				'default'           => 0,
 				'sanitize_callback' => 'sanitize_checkbox',
 			];
+
 			return $options;
 		}
 		add_filter( 'rocket_sitemap_preload_options', 'rocket_sitemap_preload_all_in_one_seo_option' );
