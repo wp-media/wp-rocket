@@ -22,8 +22,9 @@ return [
 			'old_version'   => '3.7.6',
 			'valid_version' => true,
 			'initial_list'  => [
+				'adsbygoogle.js',
+				'wp-content/plugins/xxxxx/xxxx.js',
 				'getbutton.io',
-				'adsbygoogle',
 				'a-script-the-customer-added',
 			],
 		],
@@ -71,6 +72,8 @@ return [
 			'/busting/facebook-tracking/',
 			'olark',
 			'pixel-caffeine/build/frontend.js',
+			'wp-content/plugins/xxxxx/xxxx.js',
+			'a-script-the-customer-added',
 		],
 	],
 ];
