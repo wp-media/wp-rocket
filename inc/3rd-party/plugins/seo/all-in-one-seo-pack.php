@@ -2,12 +2,12 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$aioseoV3 = defined( 'AIOSEOP_VERSION' );
-$aioseoV4 = defined( 'AIOSEO_VERSION' ) && function_exists( 'aioseo' );
-if ( $aioseoV3 || $aioseoV4 ) :
+$aioseo_v3 = defined( 'AIOSEOP_VERSION' );
+$aioseo_v4 = defined( 'AIOSEO_VERSION' ) && function_exists( 'aioseo' );
+if ( $aioseo_v3 || $aioseo_v4 ) :
 	$aioseop_options = '';
 	$sitemapEnabled  = false;
-	if ( $aioseoV3 ) {
+	if ( $aioseo_v3 ) {
 		$aioseop_options = get_option( 'aioseop_options' );
 		$sitemapEnabled  = isset( $aioseop_options['modules']['aiosp_feature_manager_options']['aiosp_feature_manager_enable_sitemap'] ) && 'on' === $aioseop_options['modules']['aiosp_feature_manager_options']['aiosp_feature_manager_enable_sitemap'];
 	}
@@ -18,8 +18,8 @@ if ( $aioseoV3 || $aioseoV4 ) :
 	 * @author Remy Perona
 	 */
 	if (
-		( $aioseoV3 && $sitemapEnabled ) ||
-		( $aioseoV4 && aioseo()->options->sitemap->general->enable )
+		( $aioseo_v3 && $sitemapEnabled ) ||
+		( $aioseo_v4 && aioseo()->options->sitemap->general->enable )
 	) {
 		/**
 		 * Add All in One SEO Sitemap option to WP Rocket options
@@ -67,15 +67,15 @@ if ( $aioseoV3 || $aioseoV4 ) :
 				return $sitemaps;
 			}
 			if (
-				( $aioseoV3 && ! $sitemapEnabled ) ||
-				( $aioseoV4 && ! aioseo()->options->sitemap->general->enable )
+				( $aioseo_v3 && ! $sitemapEnabled ) ||
+				( $aioseo_v4 && ! aioseo()->options->sitemap->general->enable )
 			) {
 				return $sitemaps;
 			}
 
-			if ( $aioseoV3 ) {
+			if ( $aioseo_v3 ) {
 				$sitemaps[] = trailingslashit( home_url() ) . apply_filters( 'aiosp_sitemap_filename', 'sitemap' ) . '.xml'; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
-			} elseif ( $aioseoV4 ) {
+			} elseif ( $aioseo_v4 ) {
 				$sitemaps[] = trailingslashit( home_url() ) . apply_filters( 'aioseo_sitemap_filename', 'sitemap' ) . '.xml'; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 			}
 
