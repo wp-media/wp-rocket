@@ -1,15 +1,15 @@
 <?php
-
+// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 defined( 'ABSPATH' ) || exit;
 
 $aioseo_v3 = defined( 'AIOSEOP_VERSION' );
 $aioseo_v4 = defined( 'AIOSEO_VERSION' ) && function_exists( 'aioseo' );
 if ( $aioseo_v3 || $aioseo_v4 ) :
 	$aioseop_options = '';
-	$sitemapEnabled  = false;
+	$sitemap_enabled  = false;
 	if ( $aioseo_v3 ) {
 		$aioseop_options = get_option( 'aioseop_options' );
-		$sitemapEnabled  = isset( $aioseop_options['modules']['aiosp_feature_manager_options']['aiosp_feature_manager_enable_sitemap'] ) && 'on' === $aioseop_options['modules']['aiosp_feature_manager_options']['aiosp_feature_manager_enable_sitemap'];
+		$sitemap_enabled  = isset( $aioseop_options['modules']['aiosp_feature_manager_options']['aiosp_feature_manager_enable_sitemap'] ) && 'on' === $aioseop_options['modules']['aiosp_feature_manager_options']['aiosp_feature_manager_enable_sitemap'];
 	}
 	/**
 	 * Improvement with All in One SEO Pack: auto-detect the XML sitemaps for the preload option
@@ -18,7 +18,7 @@ if ( $aioseo_v3 || $aioseo_v4 ) :
 	 * @author Remy Perona
 	 */
 	if (
-		( $aioseo_v3 && $sitemapEnabled ) ||
+		( $aioseo_v3 && $sitemap_enabled ) ||
 		( $aioseo_v4 && aioseo()->options->sitemap->general->enable )
 	) {
 		/**
@@ -67,7 +67,7 @@ if ( $aioseo_v3 || $aioseo_v4 ) :
 				return $sitemaps;
 			}
 			if (
-				( $aioseo_v3 && ! $sitemapEnabled ) ||
+				( $aioseo_v3 && ! $sitemap_enabled ) ||
 				( $aioseo_v4 && ! aioseo()->options->sitemap->general->enable )
 			) {
 				return $sitemaps;
