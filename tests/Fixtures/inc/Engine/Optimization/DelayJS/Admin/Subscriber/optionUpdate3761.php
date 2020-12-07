@@ -23,6 +23,8 @@ return [
 			'valid_version' => true,
 			'initial_list'  => [
 				'adsbygoogle.js',
+				'a.omappapi.com/app/js/api.min.js',
+				'/sdk.js',
 				'wp-content/plugins/xxxxx/xxxx.js',
 				'getbutton.io',
 				'a-script-the-customer-added',

@@ -220,7 +220,17 @@ class Settings {
 		if ( ! isset( $options['delay_js_scripts'] ) || ! is_array( $options['delay_js_scripts'] ) )  {
 			$options['delay_js_scripts'] = $this->defaults;
 		} else {
-			$options['delay_js_scripts'] = array_values( array_unique( array_merge( $this->defaults, $options['delay_js_scripts'] ) ) );
+			$delay_js_scripts = array_flip( $options['delay_js_scripts'] );
+
+			if ( isset( $delay_js_scripts['a.omappapi.com/app/js/api.min.js'] ) ) {
+				unset( $delay_js_scripts['a.omappapi.com/app/js/api.min.js'] );
+			}
+
+			if ( isset( $delay_js_scripts['/sdk.js'] ) ) {
+				unset( $delay_js_scripts['/sdk.js'] );
+			}
+
+			$options['delay_js_scripts'] = array_values( array_unique( array_merge( $this->defaults, array_flip( $delay_js_scripts ) ) ) );
 		}
 
 		update_option( 'wp_rocket_settings', $options );
