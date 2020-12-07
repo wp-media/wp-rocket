@@ -974,7 +974,7 @@ class Page {
 
 		$this->settings->add_settings_fields(
 			[
-				'lazyload'          => [
+				'lazyload'         => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Enable for images', 'rocket' ),
 					'section'           => 'lazyload_section',
@@ -990,7 +990,7 @@ class Page {
 					// translators: %1$s = “WP Rocket”, %2$s = a list of plugin names.
 					'description'       => ! empty( $disable_images_lazyload ) ? sprintf( __( 'LazyLoad for images is currently activated in %2$s. If you want to use %1$s’s LazyLoad, disable this option in %2$s.', 'rocket' ), WP_ROCKET_PLUGIN_NAME, $disable_images_lazyload ) : '',
 				],
-				'lazyload_iframes'  => [
+				'lazyload_iframes' => [
 					'container_class'   => [
 						! empty( $disable_iframes_lazyload ) ? 'wpr-isDisabled' : '',
 						'wpr-isParent',
@@ -1005,7 +1005,7 @@ class Page {
 						'disabled' => ! empty( $disable_iframes_lazyload ) ? 1 : 0,
 					],
 				],
-				'lazyload_youtube'  => [
+				'lazyload_youtube' => [
 					'container_class'   => [
 						! empty( $disable_youtube_lazyload ) ? 'wpr-isDisabled' : '',
 						'wpr-field--children',
@@ -1031,7 +1031,7 @@ class Page {
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
-				'exclude_lazyload'  => [
+				'exclude_lazyload' => [
 					'container_class' => [
 						'wpr-Delayjs',
 					],
@@ -1043,7 +1043,7 @@ class Page {
 					'default'         => [],
 					'placeholder'     => "example-image.jpg\nclass=\"image\"",
 				],
-				'embeds'            => [
+				'embeds'           => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Disable WordPress embeds', 'rocket' ),
 					'section'           => 'embeds_section',
@@ -1051,7 +1051,7 @@ class Page {
 					'default'           => 1,
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
-				'cache_webp'        => array_merge(
+				'cache_webp'       => array_merge(
 					$cache_webp_field,
 					[
 						'type'              => 'checkbox',
