@@ -3,10 +3,10 @@
  * Plugin Name: WP Rocket
  * Plugin URI: https://wp-rocket.me
  * Description: The best WordPress performance plugin.
- * Version: 3.8
+ * Version: 3.8-alpha1
  * Requires at least: 5.2
  * Requires PHP: 7.0
- * Code Name: Jakku
+ * Code Name: Naboo
  * Author: WP Media
  * Author URI: https://wp-media.me
  * Licence: GPLv2 or later
@@ -14,13 +14,13 @@
  * Text Domain: rocket
  * Domain Path: languages
  *
- * Copyright 2013-2019 WP Rocket
+ * Copyright 2013-2020 WP Rocket
  * */
 
 defined( 'ABSPATH' ) || exit;
 
 // Rocket defines.
-define( 'WP_ROCKET_VERSION',               '3.8' );
+define( 'WP_ROCKET_VERSION',               '3.8-alpha1' );
 define( 'WP_ROCKET_WP_VERSION',            '5.2' );
 define( 'WP_ROCKET_WP_VERSION_TESTED',     '5.5.1' );
 define( 'WP_ROCKET_PHP_VERSION',           '7.0' );

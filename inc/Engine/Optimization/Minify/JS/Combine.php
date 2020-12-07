@@ -670,6 +670,10 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'nfFrontEnd',
 			'view_quote_cart_link',
 			'__eae_decode_emails',
+			'divioverlays_ajaxurl',
+			'var _EPYT_',
+			'#ins-heading-',
+			'#ins-button-',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );

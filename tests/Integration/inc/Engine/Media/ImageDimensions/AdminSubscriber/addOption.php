@@ -1,14 +1,14 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\Media\ImagesDimensions\AdminSubscriber;
+namespace WP_Rocket\Tests\Integration\inc\Media\ImageDimensions\AdminSubscriber;
 
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Media\ImagesDimensions\AdminSubscriber::add_option
+ * @covers \WP_Rocket\Engine\Media\ImageDimensions\AdminSubscriber::add_option
  *
  * @group  AdminOnly
- * @group  ImagesDimensions
+ * @group  ImageDimensions
  */
 class Test_AddOption extends TestCase {
 	public function setUp() {

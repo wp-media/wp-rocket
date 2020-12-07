@@ -27,9 +27,9 @@ class ServiceProvider extends AbstractServiceProvider {
 		'lazyload_admin_subscriber',
 		'embeds_subscriber',
 		'emojis_subscriber',
-		'images_dimensions',
-		'images_dimensions_subscriber',
-		'images_dimensions_admin_subscriber',
+		'image_dimensions',
+		'image_dimensions_subscriber',
+		'image_dimensions_admin_subscriber',
 	];
 
 	/**
@@ -55,11 +55,11 @@ class ServiceProvider extends AbstractServiceProvider {
 			->withArgument( $options );
 		$this->getContainer()->share( 'emojis_subscriber', 'WP_Rocket\Engine\Media\Emojis\EmojisSubscriber' )
 			->withArgument( $options );
-		$this->getContainer()->add( 'images_dimensions', 'WP_Rocket\Engine\Media\ImagesDimensions\ImagesDimensions' )
+		$this->getContainer()->add( 'image_dimensions', 'WP_Rocket\Engine\Media\ImageDimensions\ImageDimensions' )
 			->withArgument( $options );
-		$this->getContainer()->share( 'images_dimensions_subscriber', 'WP_Rocket\Engine\Media\ImagesDimensions\Subscriber' )
-			->withArgument( $this->getContainer()->get( 'images_dimensions' ) );
-		$this->getContainer()->share( 'images_dimensions_admin_subscriber', 'WP_Rocket\Engine\Media\ImagesDimensions\AdminSubscriber' )
-			->withArgument( $this->getContainer()->get( 'images_dimensions' ) );
+		$this->getContainer()->share( 'image_dimensions_subscriber', 'WP_Rocket\Engine\Media\ImageDimensions\Subscriber' )
+			->withArgument( $this->getContainer()->get( 'image_dimensions' ) );
+		$this->getContainer()->share( 'image_dimensions_admin_subscriber', 'WP_Rocket\Engine\Media\ImageDimensions\AdminSubscriber' )
+			->withArgument( $this->getContainer()->get( 'image_dimensions' ) );
 	}
 }

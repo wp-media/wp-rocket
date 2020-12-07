@@ -1,21 +1,21 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\Media\ImagesDimensions\ImagesDimensions;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Media\ImageDimensions\ImageDimensions;
 
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\Media\ImagesDimensions\ImagesDimensions;
+use WP_Rocket\Engine\Media\ImageDimensions\ImageDimensions;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Media\ImagesDimensions\ImagesDimensions::specify_image_dimensions
- * @group  ImagesDimensions
+ * @covers \WP_Rocket\Engine\Media\ImageDimensions\ImageDimensions::specify_image_dimensions
+ * @group  ImageDimensions
  * @group  Media
  */
 class Test_SpecifyImageDimensions extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/Engine/Media/ImagesDimensions/ImagesDimensions/specifyImageDimensions.php';
+	protected $path_to_test_data = '/inc/Engine/Media/ImageDimensions/ImageDimensions/specifyImageDimensions.php';
 
 	/**
 	 * @dataProvider providerTestData
@@ -24,7 +24,7 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 		$options = Mockery::mock( Options_Data::class );
 
 		if (
-			isset( $config['images_dimensions'] )
+			isset( $config['image_dimensions'] )
 			&&
 			(
 				! isset( $config['rocket_specify_image_dimensions_filter'] )
@@ -34,8 +34,8 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 		){
 			$options->shouldReceive( 'get' )
 			        ->once()
-			        ->with( 'images_dimensions', false )
-			        ->andReturn( $config['images_dimensions'] );
+			        ->with( 'image_dimensions', false )
+			        ->andReturn( $config['image_dimensions'] );
 		}
 
 		if ( isset( $config['rocket_specify_image_dimensions_filter'] ) ){
@@ -52,7 +52,7 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 				->andReturn( $config['rocket_specify_dimension_skip_pictures_filter'] );
 		}
 
-		$frontend = new ImagesDimensions( $options, $this->filesystem );
+		$frontend = new ImageDimensions( $options, $this->filesystem );
 
 		if ( isset( $config['external'] ) || isset( $config['internal'] ) ) {
 			Functions\expect( 'get_rocket_parse_url' )
