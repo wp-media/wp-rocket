@@ -202,6 +202,41 @@ class Settings {
 	}
 
 	/**
+	 * Restores the default list when updating from 3.7.6 (which removed anything ending in '.js' -- whoops!)
+	 *
+	 * @since 3.7.6.1
+	 *
+	 * @param string $old_version Old plugin version.
+	 *
+	 * @return void
+	 */
+	public function option_update_3_7_6_1( $old_version ) {
+		if ( 0 !== version_compare( $old_version, '3.7.6' ) ) {
+			return;
+		}
+
+		$options = get_option( 'wp_rocket_settings', [] );
+
+		if ( ! isset( $options['delay_js_scripts'] ) || ! is_array( $options['delay_js_scripts'] ) ) {
+			$options['delay_js_scripts'] = $this->defaults;
+		} else {
+			$delay_js_scripts = array_flip( $options['delay_js_scripts'] );
+
+			if ( isset( $delay_js_scripts['a.omappapi.com/app/js/api.min.js'] ) ) {
+				unset( $delay_js_scripts['a.omappapi.com/app/js/api.min.js'] );
+			}
+
+			if ( isset( $delay_js_scripts['/sdk.js'] ) ) {
+				unset( $delay_js_scripts['/sdk.js'] );
+			}
+
+			$options['delay_js_scripts'] = array_values( array_unique( array_merge( $this->defaults, array_flip( $delay_js_scripts ) ) ) );
+		}
+
+		update_option( 'wp_rocket_settings', $options );
+	}
+
+	/**
 	 * Restores the delay_js_scripts option to the default value
 	 *
 	 * @since 3.7
