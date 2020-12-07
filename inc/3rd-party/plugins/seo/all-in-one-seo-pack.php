@@ -1,5 +1,5 @@
 <?php
-// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals
 defined( 'ABSPATH' ) || exit;
 
 $aioseo_v3 = defined( 'AIOSEOP_VERSION' );
