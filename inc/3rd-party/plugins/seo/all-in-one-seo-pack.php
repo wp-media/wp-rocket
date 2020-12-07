@@ -6,10 +6,10 @@ $aioseo_v3 = defined( 'AIOSEOP_VERSION' );
 $aioseo_v4 = defined( 'AIOSEO_VERSION' ) && function_exists( 'aioseo' );
 if ( $aioseo_v3 || $aioseo_v4 ) :
 	$aioseop_options = '';
-	$sitemap_enabled  = false;
+	$sitemap_enabled = false;
 	if ( $aioseo_v3 ) {
 		$aioseop_options = get_option( 'aioseop_options' );
-		$sitemap_enabled  = isset( $aioseop_options['modules']['aiosp_feature_manager_options']['aiosp_feature_manager_enable_sitemap'] ) && 'on' === $aioseop_options['modules']['aiosp_feature_manager_options']['aiosp_feature_manager_enable_sitemap'];
+		$sitemap_enabled = isset( $aioseop_options['modules']['aiosp_feature_manager_options']['aiosp_feature_manager_enable_sitemap'] ) && 'on' === $aioseop_options['modules']['aiosp_feature_manager_options']['aiosp_feature_manager_enable_sitemap'];
 	}
 	/**
 	 * Improvement with All in One SEO Pack: auto-detect the XML sitemaps for the preload option
