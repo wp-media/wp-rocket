@@ -284,7 +284,7 @@ class ImageDimensions {
 			return false;
 		}
 
-		return strpos( $file_headers[0], '404' ) === false;
+		return false !== strstr( $file_headers[0], '200' );
 	}
 
 	/**
