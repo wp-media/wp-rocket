@@ -217,7 +217,7 @@ class Settings {
 
 		$options = get_option( 'wp_rocket_settings', [] );
 
-		if ( ! isset( $options['delay_js_scripts'] ) || ! is_array( $options['delay_js_scripts'] ) )  {
+		if ( ! isset( $options['delay_js_scripts'] ) || ! is_array( $options['delay_js_scripts'] ) ) {
 			$options['delay_js_scripts'] = $this->defaults;
 		} else {
 			$delay_js_scripts = array_flip( $options['delay_js_scripts'] );
