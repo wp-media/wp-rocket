@@ -52,6 +52,7 @@ if ( $aioseoV3 || $aioseoV4 ) :
 			return $inputs;
 		}
 		add_filter( 'rocket_inputs_sanitize', 'rocket_all_in_one_seo_sitemap_option_sanitize' );
+
 		/**
 		 * Add All in One SEO Sitemap to the preload list
 		 *
