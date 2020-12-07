@@ -7,7 +7,7 @@ return [
         ],
 		'expected' => [
             'minify_css'        => 0,
-            'images_dimensions' => 0,
+            'image_dimensions' => 0,
 			'exclude_lazyload'  => [],
 		]
 	],
@@ -24,7 +24,7 @@ return [
                 '/wp-content/plugins/test/test.jpg',
                 'data-image',
             ],
-            'images_dimensions' => 0,
+            'image_dimensions' => 0,
 		]
 	],
 ];

@@ -176,7 +176,7 @@ class Plugin {
 			'admin_cache_subscriber',
 			'google_fonts_admin_subscriber',
 			'license_subscriber',
-			'images_dimensions_admin_subscriber',
+			'image_dimensions_admin_subscriber',
 			'defer_js_admin_subscriber',
 			'lazyload_admin_subscriber',
 		];
@@ -203,7 +203,7 @@ class Plugin {
 			'embeds_subscriber',
 			'emojis_subscriber',
 			'delay_js_subscriber',
-			'images_dimensions_subscriber',
+			'image_dimensions_subscriber',
 			'defer_js_subscriber',
 		];
 

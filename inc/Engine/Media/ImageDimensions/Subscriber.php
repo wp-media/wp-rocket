@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Engine\Media\ImagesDimensions;
+namespace WP_Rocket\Engine\Media\ImageDimensions;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
@@ -14,16 +14,16 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Images dimensions instance
 	 *
-	 * @var ImagesDimensions
+	 * @var ImageDimensions
 	 */
 	private $dimensions;
 
 	/**
 	 * Subscriber constructor.
 	 *
-	 * @param ImagesDimensions $dimensions Images dimensions class that handles all business logic.
+	 * @param ImageDimensions $dimensions Images dimensions class that handles all business logic.
 	 */
-	public function __construct( ImagesDimensions $dimensions ) {
+	public function __construct( ImageDimensions $dimensions ) {
 		$this->dimensions = $dimensions;
 	}
 

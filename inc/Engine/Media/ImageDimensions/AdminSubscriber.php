@@ -1,24 +1,24 @@
 <?php
 
-namespace WP_Rocket\Engine\Media\ImagesDimensions;
+namespace WP_Rocket\Engine\Media\ImageDimensions;
 
 use WP_Rocket\Engine\Admin\Settings\Settings;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class AdminSubscriber implements Subscriber_Interface {
 	/**
-	 * ImagesDimensions instance
+	 * ImageDimensions instance
 	 *
-	 * @var ImagesDimensions
+	 * @var ImageDimensions
 	 */
 	private $dimensions;
 
 	/**
 	 * Instantiate the class
 	 *
-	 * @param ImagesDimensions $dimensions ImageDimensions instance.
+	 * @param ImageDimensions $dimensions ImageDimensions instance.
 	 */
-	public function __construct( ImagesDimensions $dimensions ) {
+	public function __construct( ImageDimensions $dimensions ) {
 		$this->dimensions = $dimensions;
 	}
 
