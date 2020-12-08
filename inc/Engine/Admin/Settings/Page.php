@@ -847,9 +847,10 @@ class Page {
 	 * @since 3.0
 	 */
 	private function media_section() {
-		$lazyload_beacon = $this->beacon->get_suggest( 'lazyload' );
-		$webp_beacon     = $this->beacon->get_suggest( 'webp' );
-		$dimensions      = $this->beacon->get_suggest( 'image_dimensions' );
+		$lazyload_beacon  = $this->beacon->get_suggest( 'lazyload' );
+		$exclude_lazyload = $this->beacon->get_suggest( 'exclude_lazyload' );
+		$webp_beacon      = $this->beacon->get_suggest( 'webp' );
+		$dimensions       = $this->beacon->get_suggest( 'image_dimensions' );
 
 		if ( rocket_valid_key() && ! \Imagify_Partner::has_imagify_api_key() ) {
 			$imagify_link = '<a href="#imagify">';
@@ -1023,6 +1024,19 @@ class Page {
 						'disabled' => ! empty( $disable_youtube_lazyload ) ? 1 : 0,
 					],
 				],
+				'exclude_lazyload'  => [
+					'container_class' => [
+						'wpr-Delayjs',
+					],
+					'type'            => 'textarea',
+					'label'           => __( 'Excluded images or iframes', 'rocket' ),
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description'     => sprintf( __( 'Specify keywords (e.g. image filename, CSS class, domain) from the image or iframe code to be excluded (one per line). %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $exclude_lazyload['url'] ) . '" data-beacon-article="' . esc_attr( $exclude_lazyload['id'] ) . '" target="_blank" rel="noopener noreferrer">', '</a>' ),
+					'section'         => 'lazyload_section',
+					'page'            => 'media',
+					'default'         => [],
+					'placeholder'     => "example-image.jpg\nslider-image",
+				],
 				'image_dimensions' => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Add missing image dimensions', 'rocket' ),
@@ -1030,18 +1044,6 @@ class Page {
 					'page'              => 'media',
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
-				],
-				'exclude_lazyload' => [
-					'container_class' => [
-						'wpr-Delayjs',
-					],
-					'type'            => 'textarea',
-					'label'           => __( 'Excluded images or iframes', 'rocket' ),
-					'description'     => __( 'Specify keywords (e.g. image filename, CSS class, domain) from the image or iframe code to be excluded (one per line).', 'rocket' ),
-					'section'         => 'lazyload_section',
-					'page'            => 'media',
-					'default'         => [],
-					'placeholder'     => "example-image.jpg\nclass=\"image\"",
 				],
 				'embeds'           => [
 					'type'              => 'checkbox',
