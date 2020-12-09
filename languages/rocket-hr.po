@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.4\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2020-08-25 17:35-0400\n"
+"POT-Creation-Date: 2020-11-04 12:19-0500\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Borko Livić <borkolivic@gmail.com>, 2020\n"
 "Language-Team: Croatian (https://www.transifex.com/wp-media/teams/18133/hr/)\n"
@@ -35,6 +35,7 @@ msgstr ""
 #: inc/3rd-party/hosting/pressidium.php:18
 #: inc/3rd-party/hosting/wp-serveur.php:27
 #: inc/ThirdParty/Hostings/Cloudways.php:90
+#: inc/ThirdParty/Hostings/Dreampress.php:44
 #: inc/ThirdParty/Hostings/O2Switch.php:49
 #: inc/ThirdParty/Hostings/Savvii.php:50
 #: inc/ThirdParty/Hostings/WPEngine.php:47 inc/deprecated/3.6.php:698
@@ -103,7 +104,7 @@ msgid "Yoast SEO XML sitemap"
 msgstr "Yoast SEO XML mapa sajta"
 
 #: inc/Addon/Cloudflare/APIClient.php:309
-msgid "Ops Cloudflare did not provide any reply. Please try again later."
+msgid "Cloudflare did not provide any reply. Please try again later."
 msgstr "Cloudflare nije dao nikakav odgovor. Molimo pokušajte ponovo kasnije."
 
 #: inc/Addon/Cloudflare/APIClient.php:318 inc/deprecated/3.5.php:122
@@ -245,21 +246,21 @@ msgstr "Cloudflare cache pretraživača stavljen na %ssekundu"
 msgid "weekly"
 msgstr "tjedno"
 
-#: inc/Engine/Admin/Settings/Page.php:171
+#: inc/Engine/Admin/Settings/Page.php:190
 msgid "Save Changes"
 msgstr "Spremi Promjene"
 
-#: inc/Engine/Admin/Settings/Page.php:171
+#: inc/Engine/Admin/Settings/Page.php:190
 msgid "Validate License"
 msgstr "Potvrdite licencu"
 
-#: inc/Engine/Admin/Settings/Page.php:236
-#: inc/Engine/Admin/Settings/Page.php:237
+#: inc/Engine/Admin/Settings/Page.php:246
+#: inc/Engine/Admin/Settings/Page.php:247
 msgid "Unavailable"
 msgstr "Nedostupno"
 
 #: inc/Engine/Admin/Settings/Page.php:341 inc/deprecated/deprecated.php:1789
-#: views/settings/page-sections/dashboard.php:73
+#: views/settings/page-sections/dashboard.php:80
 msgid "License"
 msgstr "Licenca"
 
@@ -398,14 +399,20 @@ msgstr ""
 "se povremeno pojavljuju. %1$sZašto?%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:550
+#: inc/Engine/License/views/promo-banner.php:31
+#: inc/Engine/License/views/renewal-soon-banner.php:14
 msgid "Minutes"
 msgstr "Minuta"
 
 #: inc/Engine/Admin/Settings/Page.php:551
+#: inc/Engine/License/views/promo-banner.php:30
+#: inc/Engine/License/views/renewal-soon-banner.php:13
 msgid "Hours"
 msgstr "Sati"
 
 #: inc/Engine/Admin/Settings/Page.php:552
+#: inc/Engine/License/views/promo-banner.php:29
+#: inc/Engine/License/views/renewal-soon-banner.php:12
 msgid "Days"
 msgstr "Dana"
 
@@ -882,35 +889,10 @@ msgstr ""
 "nadzorne ploče%2$s."
 
 #: inc/Engine/Admin/Settings/Page.php:1097
-msgid "Prefetch DNS Requests"
-msgstr "Prethodno dohvati DNS zahtjeve"
-
-#: inc/Engine/Admin/Settings/Page.php:1099
-msgid ""
-"DNS prefetching can make external files load faster, especially on mobile "
-"networks"
-msgstr ""
-"Prethodno dohvaćanje (prefetch) DNS-a može ubrzati učitavanje vanjskih "
-"datoteka, posebno na mobilnim mrežama"
-
-#: inc/Engine/Admin/Settings/Page.php:1107
-msgid "Preload Fonts"
-msgstr "Predučitaj fontove"
-
-#: inc/Engine/Admin/Settings/Page.php:1110
-#, php-format
-msgid ""
-"Improves performance by helping browsers discover fonts in CSS files. "
-"%1$sMore info%2$s"
-msgstr ""
-"Poboljšava performanse pomažući preglednicima da otkriju fontove u CSS "
-"datotekama. %1$sViše informacija%2$s"
-
-#: inc/Engine/Admin/Settings/Page.php:1118
 msgid "Preload Links"
 msgstr "Predučitavanje linkova"
 
-#: inc/Engine/Admin/Settings/Page.php:1121
+#: inc/Engine/Admin/Settings/Page.php:1100
 #, php-format
 msgid ""
 "Link preloading improves the perceived load time by downloading a page when "
@@ -919,6 +901,31 @@ msgstr ""
 "Predučitavanje linkova poboljšava percipirano vrijeme učitavanja "
 "preuzimanjem stranice kada korisnik zadrži pokazivač iznad linka.%1$sViše "
 "informacija%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:1108
+msgid "Prefetch DNS Requests"
+msgstr "Prethodno dohvati DNS zahtjeve"
+
+#: inc/Engine/Admin/Settings/Page.php:1110
+msgid ""
+"DNS prefetching can make external files load faster, especially on mobile "
+"networks"
+msgstr ""
+"Prethodno dohvaćanje (prefetch) DNS-a može ubrzati učitavanje vanjskih "
+"datoteka, posebno na mobilnim mrežama"
+
+#: inc/Engine/Admin/Settings/Page.php:1118
+msgid "Preload Fonts"
+msgstr "Predučitaj fontove"
+
+#: inc/Engine/Admin/Settings/Page.php:1121
+#, php-format
+msgid ""
+"Improves performance by helping browsers discover fonts in CSS files. "
+"%1$sMore info%2$s"
+msgstr ""
+"Poboljšava performanse pomažući preglednicima da otkriju fontove u CSS "
+"datotekama. %1$sViše informacija%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:1135
 msgid "Activate Preloading"
@@ -1650,31 +1657,31 @@ msgstr ""
 msgid "Settings saved."
 msgstr "Settings spremljene."
 
-#: inc/Engine/Admin/Settings/Subscriber.php:141
+#: inc/Engine/Admin/Settings/Subscriber.php:148
 #: inc/deprecated/deprecated.php:1786
 #: views/settings/page-sections/tools.php:33
 msgid "Tools"
 msgstr "Alati"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:142
+#: inc/Engine/Admin/Settings/Subscriber.php:149
 msgid "Import, Export, Rollback"
 msgstr "Uvoz, izvoz, povrat postavki"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:163
+#: inc/Engine/Admin/Settings/Subscriber.php:170
 #: views/settings/page-sections/imagify.php:14
 msgid "Image Optimization"
 msgstr "Optimizacija slika"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:164
+#: inc/Engine/Admin/Settings/Subscriber.php:171
 msgid "Compress your images"
 msgstr "Sažmite slike"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:181
+#: inc/Engine/Admin/Settings/Subscriber.php:188
 #: views/settings/page-sections/tutorials.php:45
 msgid "Tutorials"
 msgstr "Upute"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:182
+#: inc/Engine/Admin/Settings/Subscriber.php:189
 msgid "Getting started and how to videos"
 msgstr "Početak rada i edukativni videozapisi"
 
@@ -1749,6 +1756,92 @@ msgstr "Omogućen RocketCDN"
 #: inc/Engine/CDN/RocketCDN/RESTSubscriber.php:160
 msgid "RocketCDN disabled"
 msgstr "RocketCDN onemogućen"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:27
+#, php-format
+msgid "Valid until %s only!"
+msgstr "Vrijedi samo do %s !"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:36
+msgid "Speed up your website thanks to:"
+msgstr "Ubrzajte svoju web stranicu zahvaljujući:"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:42
+#, php-format
+msgid ""
+"High performance Content Delivery Network (CDN) with %1$sunlimited "
+"bandwith%2$s"
+msgstr "CDN s visokim performansama i %1$sneograničenim bandwithom%2$s"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:48
+#, php-format
+msgid ""
+"Easy configuration: the %1$sbest CDN settings%2$s are automatically applied"
+msgstr ""
+"Jednostavna konfiguracija:  %1$snajbolje CDN postavke%2$s su automatski "
+"primijenjene"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:54
+#, php-format
+msgid ""
+"WP Rocket integration: the CDN option is %1$sautomatically configured%2$s in"
+" our plugin"
+msgstr ""
+"WP Rocket integracija: CDN je %1$sautomatski konfiguriran%2$s u našem "
+"pluginu"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:69
+#, php-format
+msgid "%s / month"
+msgstr "%s / mjesec"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:74
+msgid "Get Started"
+msgstr "Započni"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:80
+msgid "Learn more about RocketCDN"
+msgstr "Saznaj više o RocketCDN-u"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:82
+msgid "Reduce this banner"
+msgstr "Smanji ovaj banner"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:88
+#, php-format
+msgid ""
+"* $%1$s/month for 12 months then $%2$s/month. You can cancel your "
+"subscription at any time."
+msgstr ""
+"* $%1$s/mjesec za 12 mjeseci a zatim $%2$s/mjesec. Svoju pretplatu možete "
+"otkazati u svakom trenutku."
+
+#: inc/Engine/CDN/RocketCDN/views/cta-small.php:17
+msgid ""
+"Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network."
+msgstr "Ubrzajte svoju web stranicu pomoću RocketCDN-a od WP Rocketa."
+
+#: inc/Engine/CDN/RocketCDN/views/cta-small.php:20
+#: inc/Engine/CDN/RocketCDN/views/promote-notice.php:13
+msgid "Learn More"
+msgstr "Saznaj više"
+
+#: inc/Engine/CDN/RocketCDN/views/dashboard-status.php:23
+msgid "RocketCDN is unavailable on local domains and staging sites."
+msgstr "RocketCDN nije dostupan na lokalnim domenama i staging webovima."
+
+#: inc/Engine/CDN/RocketCDN/views/dashboard-status.php:32
+msgid "Get RocketCDN"
+msgstr "Nabavi RocketCDN"
+
+#: inc/Engine/CDN/RocketCDN/views/promote-notice.php:11
+msgid "New!"
+msgstr "Novo!"
+
+#: inc/Engine/CDN/RocketCDN/views/promote-notice.php:12
+msgid ""
+"Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network!"
+msgstr "Ubrzajte svoju web stranicu pomoću RocketCDN-a od WP Rocketa."
 
 #: inc/Engine/Cache/AdminSubscriber.php:118 inc/admin/admin.php:71
 #: inc/admin/admin.php:92 inc/deprecated/3.5.php:908
@@ -2011,7 +2104,144 @@ msgstr "Predučitavanje"
 msgid "Critical Path CSS Generation Process"
 msgstr "Postupak stvaranja ključnog puta CSS-a"
 
-#: inc/Engine/Optimization/DelayJS/Admin/Settings.php:104
+#: inc/Engine/License/Upgrade.php:252
+#, php-format
+msgid ""
+"Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s"
+" for %3$supgrading your license to Plus or Infinite!%5$s"
+msgid_plural ""
+"Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s"
+" for %3$supgrading your license to Infinite!%5$s"
+msgstr[0] ""
+"Iskoristite %1$s za ubrzavanje više web stranica:%2$s dobijete %3$s%4$s "
+"popusta%5$s za %3$snadogradnju vaše licence na Infinite!%5$s"
+msgstr[1] ""
+"Iskoristite %1$s za ubrzavanje više web stranica:%2$s dobijete %3$s%4$s "
+"popusta%5$s za %3$snadogradnju vaše licence na Infinite!%5$s"
+msgstr[2] ""
+"Iskoristite %1$s za ubrzavanje više web stranica:%2$s dobijete %3$s%4$s "
+"popusta%5$s za %3$snadogradnju vaše licence na Infinite!%5$s"
+
+#: inc/Engine/License/Upgrade.php:369 inc/Engine/License/Upgrade.php:392
+msgid "Unlimited"
+msgstr "Neograničeno"
+
+#: inc/Engine/License/views/promo-banner.php:16
+#, php-format
+msgid "%s off"
+msgstr "%s popust"
+
+#: inc/Engine/License/views/promo-banner.php:21
+#, php-format
+msgid "%s promotion is live!"
+msgstr "%s promocija je aktivna!"
+
+#: inc/Engine/License/views/promo-banner.php:27
+msgid "Hurry Up! Deal ends in:"
+msgstr "Požuri! Ponuda završava za:"
+
+#: inc/Engine/License/views/promo-banner.php:32
+#: inc/Engine/License/views/renewal-soon-banner.php:15
+msgid "Seconds"
+msgstr "Sekundi"
+
+#: inc/Engine/License/views/promo-banner.php:34
+#: inc/Engine/License/views/upgrade-section.php:11
+msgid "Upgrade now"
+msgstr "Nadogradi sada"
+
+#: inc/Engine/License/views/promo-banner.php:36
+#: inc/Engine/License/views/renewal-expired-banner.php:39
+#: inc/admin/ui/notices.php:812 views/settings/page-sections/dashboard.php:46
+msgid "Dismiss this notice."
+msgstr "Uklonite ovu obavijest."
+
+#: inc/Engine/License/views/renewal-expired-banner.php:12
+msgid "Your WP Rocket license is expired!"
+msgstr "Vaša WP Rocket licenca je istekla!"
+
+#: inc/Engine/License/views/renewal-expired-banner.php:17
+#, php-format
+msgid ""
+"Your website could be much faster if it could take advantage of  our %1$snew"
+" features and enhancements.%2$s"
+msgstr ""
+"Vaša web stranica mogla bi biti puno brža ako bi mogla iskoristiti naše "
+"%1$snove značajke i poboljšanja.%2$s"
+
+#: inc/Engine/License/views/renewal-expired-banner.php:27
+#, php-format
+msgid ""
+"Renew your license for 1 year and get an immediate %1$s%2$s off%3$s on your "
+"renewal rate: you will only pay %1$s%4$s%3$s!"
+msgstr ""
+"Obnovite licencu na godinu dana i odmah ćete dobiti %1$s%2$s popusta%3$s na "
+"obnovi: platit ćete samo%1$s%4$s%3$s!"
+
+#: inc/Engine/License/views/renewal-expired-banner.php:37
+#: inc/Engine/License/views/renewal-soon-banner.php:42
+msgid "Renew now"
+msgstr "Obnovi odmah"
+
+#: inc/Engine/License/views/renewal-soon-banner.php:22
+#, php-format
+msgid "Your %1$sWP Rocket license is about to expire.%2$s"
+msgstr "Vaša %1$sWP Rocket licenca uskoro ističe.%2$s"
+
+#: inc/Engine/License/views/renewal-soon-banner.php:32
+#, php-format
+msgid ""
+"Renew with a %1$s%2$s discount%3$s before it is too late, you will only pay "
+"%1$s%4$s%3$s!"
+msgstr ""
+"Obnovite uz %1$s%2$s popust%3$s prije nego što bude prekasno. Platit ćete "
+"samo %1$s%4$s%3$s!"
+
+#: inc/Engine/License/views/upgrade-popin.php:12
+msgid "Speed Up More Websites"
+msgstr "Ubrzajte više web stranica"
+
+#: inc/Engine/License/views/upgrade-popin.php:19
+#, php-format
+msgid ""
+"You can use WP Rocket on more websites by upgrading your license. To "
+"upgrade, simply pay the %1$sprice difference%2$s between your current and "
+"new licenses, as shown below."
+msgstr ""
+"WP Rocket možete koristiti na više web stranica nadogradnjom licence. Za "
+"nadogradnju jednostavno platite %1$srazliku u cijeni%2$s između vaše "
+"trenutne i nove licence, kao što je prikazano u nastavku."
+
+#: inc/Engine/License/views/upgrade-popin.php:25
+#, php-format
+msgid ""
+"%1$sN.B.%2$s: Upgrading your license does not change your expiration date"
+msgstr "%1$sNapomena%2$s: Nadogradnja licence ne mijenja datum isteka"
+
+#: inc/Engine/License/views/upgrade-popin.php:35
+#, php-format
+msgid "Save $%s"
+msgstr "Uštedite $%s"
+
+#: inc/Engine/License/views/upgrade-popin.php:48
+#, php-format
+msgid "%s websites"
+msgstr "%s web stranica"
+
+#: inc/Engine/License/views/upgrade-popin.php:54
+#, php-format
+msgid "Upgrade to %s"
+msgstr "Nadogradite na %s"
+
+#: inc/Engine/License/views/upgrade-section.php:11
+msgid ""
+"You can use WP Rocket on more websites by upgrading your license (you will "
+"only pay the price difference between your current and new licenses)."
+msgstr ""
+"WP Rocket možete koristiti na više web lokacija nadogradnjom licence (plaćat"
+" ćete samo razliku u cijeni između trenutne i nove licence)."
+
+#: inc/Engine/Optimization/DelayJS/Admin/Settings.php:105
 msgid "Restore Defaults"
 msgstr "Vrati na zadano"
 
@@ -2339,7 +2569,7 @@ msgstr[2] "Sljedeći su obrasci nevažeći i uklonjeni:"
 
 #: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:768
 #: inc/common/admin-bar.php:85 inc/common/admin-bar.php:137
-#: views/settings/page-sections/dashboard.php:124
+#: views/settings/page-sections/dashboard.php:143
 msgid "Clear cache"
 msgstr "Očisti cache"
 
@@ -2581,10 +2811,6 @@ msgstr "Prisili deaktiviranje"
 #: inc/admin/ui/notices.php:802
 msgid "The following code should have been written to this file:"
 msgstr "Sljedeći kôd bi trebao biti zapisan u ovu datoteku:"
-
-#: inc/admin/ui/notices.php:812 views/settings/page-sections/dashboard.php:46
-msgid "Dismiss this notice."
-msgstr "Uklonite ovu obavijest."
 
 #: inc/admin/ui/notices.php:833
 #, php-format
@@ -2908,7 +3134,7 @@ msgid "Purge Sucuri cache"
 msgstr "Očisti Sucuri cache"
 
 #: inc/common/admin-bar.php:251 inc/common/admin-bar.php:305
-#: views/settings/page-sections/dashboard.php:144
+#: views/settings/page-sections/dashboard.php:163
 msgid "Preload cache"
 msgstr "Predučitavanje cachea"
 
@@ -3189,7 +3415,7 @@ msgstr "Anonimizirane postavke WP Rocketa:"
 msgid "Which WP Rocket settings are active"
 msgstr "Koje postavke WP Rocketa su aktivne"
 
-#: inc/functions/options.php:527 inc/functions/options.php:566
+#: inc/functions/options.php:549 inc/functions/options.php:588
 msgid ""
 "License validation failed. Our server could not resolve the request from "
 "your website."
@@ -3197,7 +3423,7 @@ msgstr ""
 "Provjera valjanosti licence nije uspjela. Naš poslužitelj nije mogao "
 "riješiti zahtjev s vaše web-lokacije."
 
-#: inc/functions/options.php:527 inc/functions/options.php:566
+#: inc/functions/options.php:549 inc/functions/options.php:588
 #, php-format
 msgid ""
 "Try clicking %1$sSave Changes%2$s below. If the error persists, follow "
@@ -3206,7 +3432,7 @@ msgstr ""
 "Pokušajte kliknuti %1$sSpremi promjene%2$s niže. Ako se pogreška i dalje "
 "pojavljuje, slijedite %3$sovaj vodič%4$s."
 
-#: inc/functions/options.php:543
+#: inc/functions/options.php:565
 msgid ""
 "License validation failed. You may be using a nulled version of the plugin. "
 "Please do the following:"
@@ -3214,61 +3440,61 @@ msgstr ""
 "Provjera valjanosti licence nije uspjela. Možda koristite ilegalnu verziju "
 "dodatka. Učinite sljedeće:"
 
-#: inc/functions/options.php:543 inc/functions/options.php:585
+#: inc/functions/options.php:565 inc/functions/options.php:607
 #, php-format
 msgid "Login to your WP Rocket %1$saccount%2$s"
 msgstr "Prijavite se u svoj WP Rocket %1$sračun%2$s"
 
-#: inc/functions/options.php:543 inc/functions/options.php:585
+#: inc/functions/options.php:565 inc/functions/options.php:607
 msgid "Download the zip file"
 msgstr "Preuzmite zip datoteku"
 
-#: inc/functions/options.php:543 inc/functions/options.php:585
+#: inc/functions/options.php:565 inc/functions/options.php:607
 msgid "Reinstall"
 msgstr "Reinstaliraj"
 
-#: inc/functions/options.php:543
+#: inc/functions/options.php:565
 #, php-format
 msgid ""
 "If you do not have a WP Rocket account, please %1$spurchase a license%2$s."
 msgstr "Ako nemate WP Rocket račun, molimo %1$skupite licencu%2$s."
 
-#: inc/functions/options.php:551
+#: inc/functions/options.php:573
 msgid ""
 "License validation failed. This user account does not exist in our database."
 msgstr ""
 "Provjera valjanosti licence nije uspjela. Ovaj korisnički račun ne postoji u"
 " našoj bazi podataka."
 
-#: inc/functions/options.php:551
+#: inc/functions/options.php:573
 msgid "To resolve, please contact support."
 msgstr "Za rješavanje, kontaktirajte podršku."
 
-#: inc/functions/options.php:559
+#: inc/functions/options.php:581
 msgid "License validation failed. This user account is blocked."
 msgstr ""
 "Provjera valjanosti licence nije uspjela. Ovaj korisnički račun je blokiran."
 
-#: inc/functions/options.php:559
+#: inc/functions/options.php:581
 #, php-format
 msgid "Please see %1$sthis guide%2$s for more info."
 msgstr "Molimo pogledajte %1$sovaj vodič%2$s za više informacija."
 
-#: inc/functions/options.php:579
+#: inc/functions/options.php:601
 msgid "Your license is not valid."
 msgstr "Vaša licenca nije valjana."
 
-#: inc/functions/options.php:579
+#: inc/functions/options.php:601
 #, php-format
 msgid "Make sure you have an active %1$sWP Rocket license%2$s."
 msgstr "Provjerite imate li aktivnu %1$sWP Rocket licencu%2$s."
 
-#: inc/functions/options.php:581
+#: inc/functions/options.php:603
 msgid "You have added as many sites as your current license allows."
 msgstr ""
 "Dodali ste onoliko web-lokacija koliko to dopušta vaša trenutna licenca."
 
-#: inc/functions/options.php:581
+#: inc/functions/options.php:603
 #, php-format
 msgid ""
 "Upgrade your %1$saccount%2$s or %3$stransfer your license%2$s to this "
@@ -3277,26 +3503,26 @@ msgstr ""
 "Nadogradite svoj %1$sračun%2$s ili %3$sprenesite licencu%2$s na ovu web "
 "lokaciju."
 
-#: inc/functions/options.php:583
+#: inc/functions/options.php:605
 msgid "This website is not allowed."
 msgstr "Ova web stranica nije dopuštena."
 
-#: inc/functions/options.php:583
+#: inc/functions/options.php:605
 #, php-format
 msgid "Please %1$scontact support%2$s."
 msgstr "Molimo %1$skontaktirajte korisničku podršku%2$s."
 
-#: inc/functions/options.php:585
+#: inc/functions/options.php:607
 msgid "This license key is not recognized."
 msgstr "Ovaj licencni ključ nije prepoznat."
 
-#: inc/functions/options.php:585
+#: inc/functions/options.php:607
 #, php-format
 msgid "If the issue persists, please %1$scontact support%2$s."
 msgstr ""
 "Ako se problem nastavi, molimo %1$skontaktirajte korisničku podršku%2$s."
 
-#: inc/functions/options.php:591
+#: inc/functions/options.php:613
 #, php-format
 msgid "License validation failed: %s"
 msgstr "Provjera valjanosti licence nije uspjela: %s"
@@ -3743,61 +3969,61 @@ msgstr ""
 msgid "Continue to the options to further optimize your site!"
 msgstr "Nastavite do opcija za daljnju optimizaciju vaše web-lokacije!"
 
-#: views/settings/page-sections/dashboard.php:55
+#: views/settings/page-sections/dashboard.php:62
 msgid "My Account"
 msgstr "Moj račun"
 
-#: views/settings/page-sections/dashboard.php:61
+#: views/settings/page-sections/dashboard.php:68
 msgid "Refresh info"
 msgstr "Osvježi informacije"
 
-#: views/settings/page-sections/dashboard.php:75
+#: views/settings/page-sections/dashboard.php:93
 msgid "Expiration Date"
 msgstr "Datum isteka"
 
-#: views/settings/page-sections/dashboard.php:84
+#: views/settings/page-sections/dashboard.php:103
 msgid "View my account"
 msgstr "Pogledaj moj račun"
 
-#: views/settings/page-sections/dashboard.php:111
+#: views/settings/page-sections/dashboard.php:130
 msgid "Quick Actions"
 msgstr "Brze radnje"
 
-#: views/settings/page-sections/dashboard.php:118
+#: views/settings/page-sections/dashboard.php:137
 msgid "Remove all cached files"
 msgstr "Ukloni sve cachirane datoteke"
 
-#: views/settings/page-sections/dashboard.php:138
+#: views/settings/page-sections/dashboard.php:157
 msgid "Start cache preloading"
 msgstr "Počni predučitavanje cachea"
 
-#: views/settings/page-sections/dashboard.php:164
+#: views/settings/page-sections/dashboard.php:183
 msgid "Purge OPCache content"
 msgstr "Očisti OPCache sadržaj"
 
-#: views/settings/page-sections/dashboard.php:170
+#: views/settings/page-sections/dashboard.php:189
 msgid "Purge OPCache"
 msgstr "Očisti OPCache"
 
-#: views/settings/page-sections/dashboard.php:181
-#: views/settings/page-sections/dashboard.php:187
+#: views/settings/page-sections/dashboard.php:200
+#: views/settings/page-sections/dashboard.php:206
 msgid "Regenerate Critical CSS"
 msgstr "Obnovi ključni CSS"
 
-#: views/settings/page-sections/dashboard.php:204
+#: views/settings/page-sections/dashboard.php:223
 msgid "Frequently Asked Questions"
 msgstr "Učestalo postavljana pitanja"
 
-#: views/settings/page-sections/dashboard.php:217
+#: views/settings/page-sections/dashboard.php:236
 msgid "Still cannot find a solution?"
 msgstr "Još uvijek ne možete pronaći rješenje?"
 
-#: views/settings/page-sections/dashboard.php:218
+#: views/settings/page-sections/dashboard.php:237
 msgid ""
 "Submit a ticket and get help from our friendly and knowledgeable Rocketeers."
 msgstr "Otvorite ticket i zatražite pomoć od naše stručne ekipe."
 
-#: views/settings/page-sections/dashboard.php:226
+#: views/settings/page-sections/dashboard.php:245
 msgid "Ask support"
 msgstr "Pitajte korisničku podršku"
 
@@ -4127,92 +4353,6 @@ msgid ""
 msgstr ""
 "Pomoću privatne/incognito kartice preglednika provjerite brzinu i izgled "
 "vaše web-lokacije."
-
-#: views/settings/rocketcdn/cta-big.php:27
-#, php-format
-msgid "Valid until %s only!"
-msgstr "Vrijedi samo do %s !"
-
-#: views/settings/rocketcdn/cta-big.php:36
-msgid "Speed up your website thanks to:"
-msgstr "Ubrzajte svoju web stranicu zahvaljujući:"
-
-#: views/settings/rocketcdn/cta-big.php:42
-#, php-format
-msgid ""
-"High performance Content Delivery Network (CDN) with %1$sunlimited "
-"bandwith%2$s"
-msgstr "CDN s visokim performansama i %1$sneograničenim bandwithom%2$s"
-
-#: views/settings/rocketcdn/cta-big.php:48
-#, php-format
-msgid ""
-"Easy configuration: the %1$sbest CDN settings%2$s are automatically applied"
-msgstr ""
-"Jednostavna konfiguracija:  %1$snajbolje CDN postavke%2$s su automatski "
-"primijenjene"
-
-#: views/settings/rocketcdn/cta-big.php:54
-#, php-format
-msgid ""
-"WP Rocket integration: the CDN option is %1$sautomatically configured%2$s in"
-" our plugin"
-msgstr ""
-"WP Rocket integracija: CDN je %1$sautomatski konfiguriran%2$s u našem "
-"pluginu"
-
-#: views/settings/rocketcdn/cta-big.php:69
-#, php-format
-msgid "%s / month"
-msgstr "%s / mjesec"
-
-#: views/settings/rocketcdn/cta-big.php:74
-msgid "Get Started"
-msgstr "Započni"
-
-#: views/settings/rocketcdn/cta-big.php:80
-msgid "Learn more about RocketCDN"
-msgstr "Saznaj više o RocketCDN-u"
-
-#: views/settings/rocketcdn/cta-big.php:82
-msgid "Reduce this banner"
-msgstr "Smanji ovaj banner"
-
-#: views/settings/rocketcdn/cta-big.php:88
-#, php-format
-msgid ""
-"* $%1$s/month for 12 months then $%2$s/month. You can cancel your "
-"subscription at any time."
-msgstr ""
-"* $%1$s/mjesec za 12 mjeseci a zatim $%2$s/mjesec. Svoju pretplatu možete "
-"otkazati u svakom trenutku."
-
-#: views/settings/rocketcdn/cta-small.php:17
-msgid ""
-"Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network."
-msgstr "Ubrzajte svoju web stranicu pomoću RocketCDN-a od WP Rocketa."
-
-#: views/settings/rocketcdn/cta-small.php:20
-#: views/settings/rocketcdn/promote-notice.php:13
-msgid "Learn More"
-msgstr "Saznaj više"
-
-#: views/settings/rocketcdn/dashboard-status.php:23
-msgid "RocketCDN is unavailable on local domains and staging sites."
-msgstr "RocketCDN nije dostupan na lokalnim domenama i staging webovima."
-
-#: views/settings/rocketcdn/dashboard-status.php:32
-msgid "Get RocketCDN"
-msgstr "Nabavi RocketCDN"
-
-#: views/settings/rocketcdn/promote-notice.php:11
-msgid "New!"
-msgstr "Novo!"
-
-#: views/settings/rocketcdn/promote-notice.php:12
-msgid ""
-"Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network!"
-msgstr "Ubrzajte svoju web stranicu pomoću RocketCDN-a od WP Rocketa."
 
 #: views/settings/sections/addons-container.php:24
 #: views/settings/sections/fields-container.php:28
