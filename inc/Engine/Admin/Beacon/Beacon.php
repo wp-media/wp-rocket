@@ -623,13 +623,13 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 			],
 			'image_dimensions'           => [
 				'en' => [
-					'id' => '5fc70216de1bfa158fb54737',
+					'id'  => '5fc70216de1bfa158fb54737',
 					'url' => 'https://docs.wp-rocket.me/article/1366-add-missing-image-dimensions/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'exclude_defer_js'           => [
 				'en' => [
-					'id' => '59236dfb0428634b4a3358f9',
+					'id'  => '59236dfb0428634b4a3358f9',
 					'url' => 'https://docs.wp-rocket.me/article/976-exclude-files-from-defer-js/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
