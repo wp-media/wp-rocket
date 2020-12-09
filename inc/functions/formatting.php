@@ -130,7 +130,7 @@ function rocket_is_internal_file( $file ) {
 	$file_host = wp_parse_url( rocket_add_url_protocol( $file ), PHP_URL_HOST );
 
 	if ( empty( $file_host ) ) {
-		return true;
+		return false;
 	}
 
 	/**
@@ -184,8 +184,8 @@ function rocket_sanitize_textarea_field( $field, $value ) {
 		'exclude_inline_js'    => [ 'sanitize_text_field' ], // Pattern.
 		'exclude_defer_js'     => [ 'rocket_validate_js' ], // Pattern.
 		'exclude_js'           => [ 'rocket_validate_js', 'rocket_clean_wildcards' ], // Pattern.
-		'delay_js_scripts'     => [ 'rocket_validate_js' ],
 		'exclude_lazyload'     => [ 'sanitize_text_field' ],
+		'delay_js_scripts'     => [ 'sanitize_text_field' ],
 	];
 
 	if ( ! isset( $fields[ $field ] ) ) {
