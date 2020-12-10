@@ -234,7 +234,7 @@ class DeferJS {
 			return $excluded_files;
 		}
 
-		$excluded_files[] = 'jquery-?[0-9.]*(.min|.slim|.slim.min)?.js';
+		$excluded_files[] = '/jquery-?[0-9.]*(.min|.slim|.slim.min)?.js';
 
 		return $excluded_files;
 	}
@@ -257,7 +257,7 @@ class DeferJS {
 			return;
 		}
 
-		$options['exclude_defer_js'][] = 'jquery-?[0-9.]*(.min|.slim|.slim.min)?.js';
+		$options['exclude_defer_js'][] = '/jquery-?[0-9.]*(.min|.slim|.slim.min)?.js';
 
 		update_option( 'wp_rocket_settings', $options );
 	}
