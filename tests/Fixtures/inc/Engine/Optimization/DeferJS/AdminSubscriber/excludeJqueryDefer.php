@@ -33,7 +33,7 @@ return [
 		'expected' => [
 			'defer_all_js_safe' => 1,
 			'exclude_defer_js'  => [
-				'/jquery-*[0-9.]*(.min|.slim|.slim.min)*([^\.]*).js',
+				'jquery-?[0-9.]*(.min|.slim|.slim.min)?.js',
 			],
 		],
 	],

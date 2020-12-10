@@ -60,7 +60,7 @@ return [
 		],
 		'excluded' => [],
 		'expected' => [
-			'/jquery-*[0-9.]*(.min|.slim|.slim.min)*([^\.]*).js',
+			'jquery-?[0-9.]*(.min|.slim|.slim.min)?.js',
 		],
 	],
 ];
