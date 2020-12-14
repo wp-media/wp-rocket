@@ -29,7 +29,7 @@
 		</div>
 		<?php if ( ! $data['is_active'] ) : ?>
 		<div>
-			<a href="#page_cdn" class="wpr-button"><?php esc_html_e( 'Get RocketCDN', 'rocket' ); ?></a>
+			<a href="#page_cdn" class="wpr-button"><?php esc_html_e( 'Start RocketCDN', 'rocket' ); ?></a>
 		</div>
 		<?php endif; ?>
 	</div>
