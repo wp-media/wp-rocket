@@ -625,7 +625,7 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 			],
 			'exclude_lazyload'           => [
 				'en' => [
-					'id' => '5418c792e4b0e7b8127bed99',
+					'id'  => '5418c792e4b0e7b8127bed99',
 					'url' => 'https://docs.wp-rocket.me/article/15-disabling-lazy-load-on-specific-images/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],

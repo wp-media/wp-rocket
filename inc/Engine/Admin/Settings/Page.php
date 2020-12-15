@@ -551,14 +551,14 @@ class Page {
 	 * @since 3.0
 	 */
 	private function assets_section() {
-		$combine_beacon        = $this->beacon->get_suggest( 'combine' );
-		$defer_js_beacon       = $this->beacon->get_suggest( 'defer_js' );
-		$async_beacon          = $this->beacon->get_suggest( 'async' );
-		$files_beacon          = $this->beacon->get_suggest( 'file_optimization' );
-		$inline_js_beacon      = $this->beacon->get_suggest( 'exclude_inline_js' );
-		$exclude_js_beacon     = $this->beacon->get_suggest( 'exclude_js' );
-		$delay_js_beacon       = $this->beacon->get_suggest( 'delay_js' );
-		$exclude_defer_js      = $this->beacon->get_suggest( 'exclude_defer_js' );
+		$combine_beacon    = $this->beacon->get_suggest( 'combine' );
+		$defer_js_beacon   = $this->beacon->get_suggest( 'defer_js' );
+		$async_beacon      = $this->beacon->get_suggest( 'async' );
+		$files_beacon      = $this->beacon->get_suggest( 'file_optimization' );
+		$inline_js_beacon  = $this->beacon->get_suggest( 'exclude_inline_js' );
+		$exclude_js_beacon = $this->beacon->get_suggest( 'exclude_js' );
+		$delay_js_beacon   = $this->beacon->get_suggest( 'delay_js' );
+		$exclude_defer_js  = $this->beacon->get_suggest( 'exclude_defer_js' );
 
 		$this->settings->add_page_section(
 			'file_optimization',
@@ -1013,7 +1013,7 @@ class Page {
 						'disabled' => ! empty( $disable_youtube_lazyload ) ? 1 : 0,
 					],
 				],
-				'exclude_lazyload'  => [
+				'exclude_lazyload' => [
 					'container_class' => [
 						'wpr-Delayjs',
 					],
