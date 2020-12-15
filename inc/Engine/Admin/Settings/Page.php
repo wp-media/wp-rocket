@@ -557,7 +557,6 @@ class Page {
 		$files_beacon          = $this->beacon->get_suggest( 'file_optimization' );
 		$inline_js_beacon      = $this->beacon->get_suggest( 'exclude_inline_js' );
 		$exclude_js_beacon     = $this->beacon->get_suggest( 'exclude_js' );
-		$jquery_migrate_beacon = $this->beacon->get_suggest( 'jquery_migrate' );
 		$delay_js_beacon       = $this->beacon->get_suggest( 'delay_js' );
 		$exclude_defer_js      = $this->beacon->get_suggest( 'exclude_defer_js' );
 
@@ -689,16 +688,6 @@ class Page {
 					'page'              => 'file_optimization',
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
-				],
-				'dequeue_jquery_migrate' => [
-					'type'              => 'checkbox',
-					'label'             => __( 'Remove jQuery Migrate', 'rocket' ),
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'Remove jQuery Migrate eliminates a JS file and can improve load time. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $jquery_migrate_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $jquery_migrate_beacon['id'] ) . '" target="_blank">', '</a>' ),
-					'section'           => 'js',
-					'page'              => 'file_optimization',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
 				],
 				'minify_js'              => [
 					'type'              => 'checkbox',
