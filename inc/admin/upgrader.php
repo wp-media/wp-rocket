@@ -370,7 +370,7 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		rocket_generate_advanced_cache_file();
 	}
 
-	if ( version_compare( $actual_version, '3.8', '>=' ) ) {
+	if ( version_compare( $actual_version, '3.8.1', '<' ) ) {
 		$options = get_option( WP_ROCKET_SLUG );
 		unset( $options['dequeue_jquery_migrate'] );
 		update_option( WP_ROCKET_SLUG, $options );
