@@ -135,7 +135,10 @@ class DeferJS {
 
 		$inline_exclusions = '';
 		if ( ! empty( $inline_exclusions_list ) ) {
-			$inline_exclusions = preg_quote( implode( '|', $inline_exclusions_list ), '#' );
+			foreach ( $inline_exclusions_list as $inline_exclusions_item ) {
+				$inline_exclusions .= preg_quote( $inline_exclusions_item, '#' ) . "|";
+			}
+			$inline_exclusions = rtrim( $inline_exclusions, '|' );
 		}
 
 		foreach ( $matches as $inline_js ) {
@@ -147,7 +150,7 @@ class DeferJS {
 				continue;
 			}
 
-			if ( empty( $jquery_patterns ) || ! preg_match( "/({$jquery_patterns})/msi", $inline_js['content'] ) ) {
+			if ( ! empty( $jquery_patterns ) && ! preg_match( "/({$jquery_patterns})/msi", $inline_js['content'] ) ) {
 				continue;
 			}
 
