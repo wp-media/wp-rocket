@@ -4,7 +4,7 @@ namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Themes\Avada;
 
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
-class TestCase extends FilesystemTestCase {
+abstract class TestCase extends FilesystemTestCase {
 	private static $container;
 
 	public static function setUpBeforeClass() {
