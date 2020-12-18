@@ -870,10 +870,6 @@ class Page {
 		$disable_iframes_lazyload = [];
 		$disable_youtube_lazyload = [];
 
-		if ( rocket_avada_maybe_disable_lazyload() ) {
-			$disable_images_lazyload[] = __( 'Avada', 'rocket' );
-		}
-
 		if ( rocket_maybe_disable_lazyload() ) {
 			$disable_images_lazyload[] = __( 'Autoptimize', 'rocket' );
 		}
