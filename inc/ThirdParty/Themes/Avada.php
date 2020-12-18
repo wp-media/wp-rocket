@@ -23,9 +23,7 @@ class Avada implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		$current_theme = wp_get_theme();
-
-		if ( 'Avada' !== $current_theme->get( 'Name' ) ) {
+		if ( ! self::is_avada() ) {
 			return [];
 		}
 
@@ -33,9 +31,19 @@ class Avada implements Subscriber_Interface {
 			'avada_clear_dynamic_css_cache'        => 'clean_domain',
 			'rocket_exclude_defer_js'              => 'exclude_defer_js',
 			'rocket_maybe_disable_lazyload_helper' => 'maybe_disable_lazyload',
-			'fusion_cache_reset_after'             => 'clear_cache_fusion_patcher',
+			'fusion_cache_reset_after'             => 'clean_domain',
 			'update_option_fusion_options'         => [ 'maybe_deactivate_lazyload', 10, 2 ],
 		];
+	}
+
+	/**
+	 * Check if is Avada theme.
+	 *
+	 * @return boolean
+	 */
+	private static function is_avada() {
+		$current_theme = wp_get_theme();
+		return 'avada' === strtolower( $current_theme->get( 'Name' ) ) || 'avada' === strtolower( $current_theme->get_template() );
 	}
 
 	/**
@@ -84,7 +92,7 @@ class Avada implements Subscriber_Interface {
 	 */
 	public function exclude_defer_js( $exclude_defer_js ) {
 		$exclude_defer_js[] = '/jquery-?[0-9.]*(.min|.slim|.slim.min)?.js';
-		$exclude_defer_js[] = rocket_clean_exclude_file( 'maps.googleapis.com' );
+		$exclude_defer_js[] = 'maps.googleapis.com';
 
 		return $exclude_defer_js;
 	}
@@ -109,16 +117,5 @@ class Avada implements Subscriber_Interface {
 
 		$disable_images_lazyload[] = __( 'Avada', 'rocket' );
 		return $disable_images_lazyload;
-	}
-
-	/**
-	 * Clears WP Rocket's cache after Avada's Fusion Patcher flushes their caches
-	 *
-	 * @since 3.3.5
-	 *
-	 * @return void
-	 */
-	public function clear_cache_fusion_patcher() {
-		rocket_clean_domain();
 	}
 }
