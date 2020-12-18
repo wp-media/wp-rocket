@@ -351,16 +351,6 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://fr.​docs.​wp-rocket.​me/article/1270-chargement-differe-des-fichiers-js/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
-			'jquery_migrate'             => [
-				'en' => [
-					'id'  => '5e1d27de2c7d3a7e9ae627e8',
-					'url' => 'https://docs.wp-rocket.me/article/1304-remove-jquery-migrate/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-				'fr' => [
-					'id'  => '5e5e5bfe04286364bc962504',
-					'url' => 'https://fr.docs.wp-rocket.me/article/1309-supprimer-jquery-migrate/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-			],
 			'delay_js'                   => [
 				'en' => [
 					'id'  => '5f359695042863444aa04e26',

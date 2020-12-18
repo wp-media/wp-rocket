@@ -6,6 +6,10 @@ class_alias( '\WP_Rocket\Engine\Cache\PurgeExpired\PurgeExpiredCache', '\WP_Rock
 class_alias( '\WP_Rocket\Engine\Cache\PurgeExpired\Subscriber', '\WP_Rocket\Subscriber\Cache\Expired_Cache_Purge_Subscriber');
 class_alias( '\WP_Rocket\Engine\Media\Lazyload\Subscriber', '\WP_Rocket\Engine\Media\LazyloadSubscriber');
 
+if ( ! class_exists( 'WP_Rocket\Subscriber\Optimization\Dequeue_JQuery_Migrate_Subscriber' ) ) {
+	require_once __DIR__ . '/subscriber/Optimization/class-dequeue-jquery-migrate-subscriber.php';
+}
+
 /**
  * Defer all JS files.
  *
@@ -209,4 +213,3 @@ function rocket_deactivate_specify_image_dimensions_with_layerslider() {
 	_deprecated_function( __FUNCTION__ . '()', '3.8', 'WP_Rocket\ThirdParty\Plugins\Slider\LayerSlider::get_subscribed_events()' );
 	remove_filter( 'rocket_buffer', 'rocket_specify_image_dimensions' );
 }
-
