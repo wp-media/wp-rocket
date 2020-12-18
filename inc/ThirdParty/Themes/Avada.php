@@ -94,7 +94,7 @@ class Avada implements Subscriber_Interface {
 	 *
 	 * @since 3.3.4
 	 * @param  array $disable_images_lazyload Array with plugins which disable lazyload functionality.
-	 * @return bool
+	 * @return array
 	 */
 	public function maybe_disable_lazyload( $disable_images_lazyload ) {
 		$avada_options = get_option( 'fusion_options' );
