@@ -199,7 +199,6 @@ class Plugin {
 			'minify_css_subscriber',
 			'minify_js_subscriber',
 			'cache_dynamic_resource',
-			'dequeue_jquery_migrate_subscriber',
 			'embeds_subscriber',
 			'emojis_subscriber',
 			'delay_js_subscriber',

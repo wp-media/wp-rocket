@@ -6,6 +6,10 @@ class_alias( '\WP_Rocket\Engine\Cache\PurgeExpired\PurgeExpiredCache', '\WP_Rock
 class_alias( '\WP_Rocket\Engine\Cache\PurgeExpired\Subscriber', '\WP_Rocket\Subscriber\Cache\Expired_Cache_Purge_Subscriber');
 class_alias( '\WP_Rocket\Engine\Media\Lazyload\Subscriber', '\WP_Rocket\Engine\Media\LazyloadSubscriber');
 
+if ( ! class_exists( 'WP_Rocket\Subscriber\Optimization\Dequeue_JQuery_Migrate_Subscriber' ) ) {
+	require_once __DIR__ . '/subscriber/Optimization/class-dequeue-jquery-migrate-subscriber.php';
+}
+
 /**
  * Deactivate WP Rocket lazyload if Avada lazyload is enabled
  *
