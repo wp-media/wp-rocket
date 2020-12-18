@@ -13,6 +13,19 @@ class DeferJS {
 	 */
 	private $options;
 
+
+	/**
+	 * Array of inline exclusions list.
+	 *
+	 * @var string[]
+	 */
+	private $inline_exclusions = [
+		'DOMContentLoaded',
+		'document.write',
+		'window.lazyLoadOptions',
+		'N.N2_',
+	];
+
 	/**
 	 * Instantiate the class
 	 *
@@ -116,20 +129,28 @@ class DeferJS {
 		 *
 		 * @since 3.8
 		 *
-		 * @param string $inline_exclusions A RegEx pattern to find inline JS that should not be deferred.
+		 * @param array $inline_exclusions_list Array of inline JS that should not be deferred.
 		 */
-		$inline_exclusions = apply_filters( 'rocket_defer_inline_exclusions', 'DOMContentLoaded|document\.write|window\.lazyLoadOptions' );
+		$inline_exclusions_list = apply_filters( 'rocket_defer_inline_exclusions', $this->inline_exclusions );
+
+		$inline_exclusions = '';
+		if ( ! empty( $inline_exclusions_list ) ) {
+			foreach ( $inline_exclusions_list as $inline_exclusions_item ) {
+				$inline_exclusions .= preg_quote( $inline_exclusions_item, '#' ) . '|';
+			}
+			$inline_exclusions = rtrim( $inline_exclusions, '|' );
+		}
 
 		foreach ( $matches as $inline_js ) {
 			if ( empty( $inline_js['content'] ) ) {
 				continue;
 			}
 
-			if ( preg_match( "/({$inline_exclusions})/msi", $inline_js['content'] ) ) {
+			if ( empty( $inline_exclusions ) || preg_match( "/({$inline_exclusions})/msi", $inline_js['content'] ) ) {
 				continue;
 			}
 
-			if ( ! preg_match( "/({$jquery_patterns})/msi", $inline_js['content'] ) ) {
+			if ( ! empty( $jquery_patterns ) && ! preg_match( "/({$jquery_patterns})/msi", $inline_js['content'] ) ) {
 				continue;
 			}
 
