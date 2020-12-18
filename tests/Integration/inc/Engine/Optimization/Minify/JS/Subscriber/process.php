@@ -39,6 +39,11 @@ class Test_Process extends TestCase {
 		add_filter( 'pre_get_rocket_option_minify_js', [ $this, 'return_true' ] );
 		add_filter( 'pre_get_rocket_option_minify_js_key', [ $this, 'return_key' ] );
 
+		if (version_compare( get_bloginfo('version'), '3.8', '<' ) ) {
+			str_replace( $original, '/jquery.min.js', '/jquery.js' );
+			str_replace( $expected, '/jquery.min.js', '/jquery.js' );
+		}
+
 		$this->defer_all_js = $settings['defer_all_js'];
 
 		add_filter( 'pre_get_rocket_option_defer_all_js', [ $this, 'return_defer_all_js' ] );
