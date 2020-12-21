@@ -1,15 +1,22 @@
 <?php
 
 return [
-	'testShouldReturnZeroWhenNotObject' => [
+	'testShouldReturnCurrentTimeWhenNotObject' => [
 		'data'     => [],
-		'expected' => 0,
+		'expected' => time(),
 	],
-	'testShouldReturnZeroWhenPropertyNotSet' => [
+	'testShouldReturnCurrentTimeWhenPropertyNotSet' => [
 		'data'     => json_decode( json_encode( [
 			'ID' => 1,
 		] ) ),
-		'expected' => 0,
+		'expected' => time(),
+	],
+	'testShouldReturnCurrentTimeWhenPropertyZero' => [
+		'data' => json_decode( json_encode( [
+			'ID' => 1,
+			'date_created' => 0,
+		] ) ),
+		'expected' => time(),
 	],
 	'testShouldReturnValueWhenPropertySet' => [
 		'data'     => json_decode( json_encode( [
