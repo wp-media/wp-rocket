@@ -629,7 +629,7 @@ function rocket_clean_home( $lang = '' ) {
 	}
 
 	// Remove the hidden empty file for mobile detection on NGINX with the Rocket NGINX configuration.
-	$nginx_mobile_detect_files = glob( $root . '/.mobile-active', GLOB_BRACE | GLOB_NOSORT );
+	$nginx_mobile_detect_files = glob( $root . '/.mobile-active', GLOB_NOSORT );
 	if ( $nginx_mobile_detect_files ) {
 		foreach ( $nginx_mobile_detect_files as $nginx_mobile_detect_file ) { // no array map to use @.
 			rocket_direct_filesystem()->delete( $nginx_mobile_detect_file );
@@ -637,7 +637,7 @@ function rocket_clean_home( $lang = '' ) {
 	}
 
 	// Remove the hidden empty file for webp.
-	$nowebp_detect_files = glob( $root . '/.no-webp', GLOB_BRACE | GLOB_NOSORT );
+	$nowebp_detect_files = glob( $root . '/.no-webp', GLOB_NOSORT );
 	if ( $nowebp_detect_files ) {
 		foreach ( $nowebp_detect_files as $nowebp_detect_file ) { // no array map to use @.
 			rocket_direct_filesystem()->delete( $nowebp_detect_file );
