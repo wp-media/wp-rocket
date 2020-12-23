@@ -1438,21 +1438,17 @@ function _rocket_get_php_files_in_dir( $dir_path ) { // phpcs:ignore WordPress.N
 /**
  * Get recursive files matched by regex.
  *
- * @since 3.8.2 Added optional $path param.
  * @since 3.6.3
  *
  * @param string $regex Regular Expression to be applied.
- * @param string $path (optional) A root path to begin recursion. (Defaults to Rocket Cache path.)
  *
  * @return array|RegexIterator List of files which match the regular expression (SplFileInfo).
  */
-function _rocket_get_recursive_dir_files_by_regex( string $regex, string $path = '' ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
-	if ( empty( $path ) ) {
-		$path = _rocket_get_wp_rocket_cache_path();
-	}
+function _rocket_get_recursive_dir_files_by_regex( $regex ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 	try {
+		$cache_path = _rocket_get_wp_rocket_cache_path();
 		$iterator   = new RecursiveIteratorIterator(
-			new RecursiveDirectoryIterator( $path, FilesystemIterator::SKIP_DOTS )
+			new RecursiveDirectoryIterator( $cache_path, FilesystemIterator::SKIP_DOTS )
 		);
 		return new RegexIterator( $iterator, $regex, RecursiveRegexIterator::MATCH );
 	} catch ( Exception $e ) {
