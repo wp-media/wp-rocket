@@ -20,8 +20,13 @@ class PagespeedModule implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		$has_pagespeed = get_transient( 'rocket_mod_pagespeed_enabled' );
-		//@todo: check the transient
-		if ( ! self::has_pagespeed() ) {
+
+		if ( false === $has_pagespeed ) {
+			$has_pagespeed = self::has_pagespeed();
+			set_transient( 'rocket_mod_pagespeed_enabled', (int) $has_pagespeed, DAY_IN_SECONDS );
+		}
+
+		if ( 1 !== (int) $has_pagespeed ) {
 			return [];
 		}
 
