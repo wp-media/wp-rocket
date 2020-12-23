@@ -613,11 +613,13 @@ function rocket_clean_home( $lang = '' ) {
 	do_action( 'before_rocket_clean_home', $root, $lang ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 	// Delete homepage.
-	//$files = glob( $root . '/{index,index-*}.{html,html_gzip}', GLOB_BRACE | GLOB_NOSORT );
-	$files = _rocket_get_dir_files_by_regex( $root, '#^index(?:\-.+\.|\.)(?:html(?:_gzip)?)$#' );
+	$files = glob( $root . '/*', GLOB_NOSORT );
+
 	if ( $files ) {
-		foreach ( $files as $file ) { // no array map to use @.
-			rocket_direct_filesystem()->delete( $file );
+		foreach ( $files as $file ) {
+			if ( preg_match( '#/index(?:\-.+\.|\.)(?:html(?:_gzip)?)$#', $file ) ) {
+				rocket_direct_filesystem()->delete( $file );
+			}
 		}
 	}
 
