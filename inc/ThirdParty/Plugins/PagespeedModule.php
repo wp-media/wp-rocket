@@ -19,6 +19,8 @@ class PagespeedModule implements Subscriber_Interface {
 	 * @inheritDoc
 	 */
 	public static function get_subscribed_events(): array {
+		$has_pagespeed = get_transient( 'rocket_mod_pagespeed_enabled' );
+		//@todo: check the transient
 		if ( ! self::has_pagespeed() ) {
 			return [];
 		}
@@ -35,13 +37,14 @@ class PagespeedModule implements Subscriber_Interface {
 			if ( in_array("mod_pagespeed", apache_get_modules(), true ) ) {
 				return true;
 			}
+		}
+
+		if ( empty( $headers = get_headers(home_url() ?? "/", true ) ) ) {
 			return false;
 		}
 
-		if ( ! empty( $headers = get_headers(home_url() ?? null ) ) ) {
-			if ( ! empty( $headers["X-Mod-Pagespeed"] ) || ! empty( $headers["X-Page-Speed"] ) ) {
-				return true;
-			}
+		if ( ! empty( $headers["X-Mod-Pagespeed"] ) || ! empty( $headers["X-Page-Speed"] ) ) {
+			return true;
 		}
 
 		return false;
@@ -52,12 +55,13 @@ class PagespeedModule implements Subscriber_Interface {
 			return;
 		}
 
-		$message = "";
+		// translators: %s is WP Rocket plugin name.
+		$warning = '<p>' . sprintf( __( '<strong>%s</strong>: The following modules are not compatible with this plugin and may cause unexpected results:', 'rocket' ), rocket_get_constant( 'WP_ROCKET_PLUGIN_NAME' ) ) . '</p>';
 
 		rocket_notice_html(
 			[
 				'status'  => 'error',
-				'message' => $message,
+				'message' => $warning,
 			]
 		);
 	}

@@ -277,6 +277,7 @@ class Plugin {
 			'preload_links_admin_subscriber',
 			'preload_links_subscriber',
 			'support_subscriber',
+			'mod_pagespeed',
 		];
 
 		$host_type = HostResolver::get_host_service();
