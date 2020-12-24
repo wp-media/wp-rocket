@@ -48,7 +48,7 @@ abstract class AbstractGFOptimization extends AbstractOptimization {
 
 		$parsed_font = wp_parse_args( $query );
 		$font_url    = ! empty( $parsed_font['display'] )
-			? str_replace( "&display={$parsed_font['display']}", "&display=swap", $font_url )
+			? str_replace( "&display={$parsed_font['display']}", '&display=swap', $font_url )
 			: "{$font_url}&display=swap";
 
 		return str_replace( $font['url'], esc_url( $font_url ), $font[0] );
