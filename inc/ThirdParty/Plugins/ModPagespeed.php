@@ -85,12 +85,12 @@ class ModPagespeed implements Subscriber_Interface {
 		}
 
 		// translators: %1$s is WP Rocket plugin name, %2$s is opening <a> tag, %3$s is closing </a> tag.
-		$warning = '<p>' . sprintf( __( '<strong>%1$s</strong>: Mod PageSpeed is not compatible with this plugin and may cause unexpected results. %2$sMore Info%3$s', 'rocket' ), rocket_get_constant( 'WP_ROCKET_PLUGIN_NAME' ), '<a href="https://docs.wp-rocket.me/article/670-hosting-compatibility">', '</a>' ) . '</p>';
+		$error_message = '<p>' . sprintf( __( '<strong>%1$s</strong>: Mod PageSpeed is not compatible with this plugin and may cause unexpected results. %2$sMore Info%3$s', 'rocket' ), rocket_get_constant( 'WP_ROCKET_PLUGIN_NAME' ), '<a href="https://docs.wp-rocket.me/article/670-hosting-compatibility">', '</a>' ) . '</p>';
 
 		rocket_notice_html(
 			[
 				'status'  => 'error',
-				'message' => $warning,
+				'message' => $error_message,
 			]
 		);
 	}
