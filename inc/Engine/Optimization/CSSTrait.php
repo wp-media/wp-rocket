@@ -207,7 +207,7 @@ trait CSSTrait {
 			'/(?:@font-face)\s*{(?<value>[^}]+)}/',
 			function ( $matches ) {
 				if ( false !== strpos( $matches['value'], 'font-display' ) ) {
-					preg_match('font-display:\s*(?<attrib>\w*);?/', $matches['value'], $attribute );
+					preg_match('/font-display:\s*(?<attrib>\w*);?/', $matches['value'], $attribute );
 					return 'swap' === $attribute['attrib']
 						? $matches[0]
 						: str_replace( $attribute['attrib'], 'swap', $matches[0] );
