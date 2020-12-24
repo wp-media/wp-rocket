@@ -84,6 +84,12 @@ class ModPagespeed implements Subscriber_Interface {
 			return;
 		}
 
+		$notice_name = 'rocket_error_mod_pagespeed';
+
+		if ( in_array( $notice_name, (array) get_user_meta( get_current_user_id(), 'rocket_boxes', true ), true ) ) {
+			return;
+		}
+
 		// translators: %1$s is WP Rocket plugin name, %2$s is opening <a> tag, %3$s is closing </a> tag.
 		$error_message = '<p>' . sprintf( __( '<strong>%1$s</strong>: Mod PageSpeed is not compatible with this plugin and may cause unexpected results. %2$sMore Info%3$s', 'rocket' ), rocket_get_constant( 'WP_ROCKET_PLUGIN_NAME' ), '<a href="https://docs.wp-rocket.me/article/1376-mod-pagespeed">', '</a>' ) . '</p>';
 
@@ -91,6 +97,8 @@ class ModPagespeed implements Subscriber_Interface {
 			[
 				'status'  => 'error',
 				'message' => $error_message,
+				'dismissible'      => '',
+				'dismiss_button'   => $notice_name,
 			]
 		);
 	}
