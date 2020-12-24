@@ -176,7 +176,7 @@ class Plugin {
 			'admin_cache_subscriber',
 			'google_fonts_admin_subscriber',
 			'license_subscriber',
-			'images_dimensions_admin_subscriber',
+			'image_dimensions_admin_subscriber',
 			'defer_js_admin_subscriber',
 			'lazyload_admin_subscriber',
 		];
@@ -199,11 +199,10 @@ class Plugin {
 			'minify_css_subscriber',
 			'minify_js_subscriber',
 			'cache_dynamic_resource',
-			'dequeue_jquery_migrate_subscriber',
 			'embeds_subscriber',
 			'emojis_subscriber',
 			'delay_js_subscriber',
-			'images_dimensions_subscriber',
+			'image_dimensions_subscriber',
 			'defer_js_subscriber',
 		];
 
@@ -256,6 +255,7 @@ class Plugin {
 			'syntaxhighlighter_subscriber',
 			'elementor_subscriber',
 			'bridge_subscriber',
+			'avada_subscriber',
 			'ngg_subscriber',
 			'smush_subscriber',
 			'cache_dir_size_check',

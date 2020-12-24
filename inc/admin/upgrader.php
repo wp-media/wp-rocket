@@ -369,5 +369,11 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		rocket_clean_minify( 'css' );
 		rocket_generate_advanced_cache_file();
 	}
+
+	if ( version_compare( $actual_version, '3.8.1', '<' ) ) {
+		$options = get_option( rocket_get_constant( 'WP_ROCKET_SLUG' ) );
+		unset( $options['dequeue_jquery_migrate'] );
+		update_option( rocket_get_constant( 'WP_ROCKET_SLUG' ), $options );
+	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );

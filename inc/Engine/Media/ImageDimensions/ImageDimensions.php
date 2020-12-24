@@ -1,13 +1,13 @@
 <?php
 
-namespace WP_Rocket\Engine\Media\ImagesDimensions;
+namespace WP_Rocket\Engine\Media\ImageDimensions;
 
 use WP_Filesystem_Direct;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Settings\Settings;
 use WP_Rocket\Logger\Logger;
 
-class ImagesDimensions {
+class ImageDimensions {
 	/**
 	 * Options_Data instance
 	 *
@@ -54,7 +54,7 @@ class ImagesDimensions {
 	 * @return array
 	 */
 	public function add_option( array $options ) : array {
-		$options['images_dimensions'] = 0;
+		$options['image_dimensions'] = 0;
 
 		return $options;
 	}
@@ -69,7 +69,7 @@ class ImagesDimensions {
 	 * @return array
 	 */
 	public function sanitize_option_value( array $input, Settings $settings ) : array {
-		$input['images_dimensions'] = $settings->sanitize_checkbox( $input, 'images_dimensions' );
+		$input['image_dimensions'] = $settings->sanitize_checkbox( $input, 'image_dimensions' );
 
 		return $input;
 	}
@@ -243,7 +243,7 @@ class ImagesDimensions {
 		 *
 		 * @param bool Specify image dimensions for external images or not.
 		 */
-		return ini_get( 'allow_url_fopen' ) && apply_filters( 'rocket_specify_image_dimensions_for_distant', true );
+		return ini_get( 'allow_url_fopen' ) && apply_filters( 'rocket_specify_image_dimensions_for_distant', false );
 	}
 
 	/**
@@ -284,7 +284,7 @@ class ImagesDimensions {
 			return false;
 		}
 
-		return strpos( $file_headers[0], '404' ) === false;
+		return false !== strstr( $file_headers[0], '200' );
 	}
 
 	/**
@@ -302,7 +302,7 @@ class ImagesDimensions {
 		 */
 		return apply_filters( 'rocket_specify_image_dimensions', false )
 			||
-			$this->options->get( 'images_dimensions', false );
+			$this->options->get( 'image_dimensions', false );
 	}
 
 	/**

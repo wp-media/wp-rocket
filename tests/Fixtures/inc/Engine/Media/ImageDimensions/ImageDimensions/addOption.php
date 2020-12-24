@@ -8,7 +8,7 @@ return [
 				'options' => [],
 			],
 			'expected' => [
-				'images_dimensions' => 0,
+				'image_dimensions' => 0,
 			]
 		],
 		'shouldNotOverrideOtherOptions' => [
@@ -19,7 +19,7 @@ return [
 			],
 			'expected' => [
 				'test_option'       => 1,
-				'images_dimensions' => 0,
+				'image_dimensions' => 0,
 			]
 		],
 	],

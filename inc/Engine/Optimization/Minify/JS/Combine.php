@@ -674,6 +674,12 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'var _EPYT_',
 			'#ins-heading-',
 			'#ins-button-',
+			'tve_frontend_options',
+			'lb24.src',
+			'amazon_Login_accessToken',
+			'porto_infinite_scroll',
+			'.adace-loader-',
+			'adace_load_',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );

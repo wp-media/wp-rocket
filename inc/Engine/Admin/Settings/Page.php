@@ -551,14 +551,14 @@ class Page {
 	 * @since 3.0
 	 */
 	private function assets_section() {
-		$combine_beacon        = $this->beacon->get_suggest( 'combine' );
-		$defer_js_beacon       = $this->beacon->get_suggest( 'defer_js' );
-		$async_beacon          = $this->beacon->get_suggest( 'async' );
-		$files_beacon          = $this->beacon->get_suggest( 'file_optimization' );
-		$inline_js_beacon      = $this->beacon->get_suggest( 'exclude_inline_js' );
-		$exclude_js_beacon     = $this->beacon->get_suggest( 'exclude_js' );
-		$jquery_migrate_beacon = $this->beacon->get_suggest( 'jquery_migrate' );
-		$delay_js_beacon       = $this->beacon->get_suggest( 'delay_js' );
+		$combine_beacon    = $this->beacon->get_suggest( 'combine' );
+		$defer_js_beacon   = $this->beacon->get_suggest( 'defer_js' );
+		$async_beacon      = $this->beacon->get_suggest( 'async' );
+		$files_beacon      = $this->beacon->get_suggest( 'file_optimization' );
+		$inline_js_beacon  = $this->beacon->get_suggest( 'exclude_inline_js' );
+		$exclude_js_beacon = $this->beacon->get_suggest( 'exclude_js' );
+		$delay_js_beacon   = $this->beacon->get_suggest( 'delay_js' );
+		$exclude_defer_js  = $this->beacon->get_suggest( 'exclude_defer_js' );
 
 		$this->settings->add_page_section(
 			'file_optimization',
@@ -689,16 +689,6 @@ class Page {
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
 				],
-				'dequeue_jquery_migrate' => [
-					'type'              => 'checkbox',
-					'label'             => __( 'Remove jQuery Migrate', 'rocket' ),
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'Remove jQuery Migrate eliminates a JS file and can improve load time. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $jquery_migrate_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $jquery_migrate_beacon['id'] ) . '" target="_blank">', '</a>' ),
-					'section'           => 'js',
-					'page'              => 'file_optimization',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
-				],
 				'minify_js'              => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Minify JavaScript files', 'rocket' ),
@@ -796,7 +786,8 @@ class Page {
 					],
 					'type'              => 'textarea',
 					'label'             => __( 'Excluded JavaScript Files', 'rocket' ),
-					'description'       => __( 'Specify URLs of JavaScript files to be excluded from defer (one per line).', 'rocket' ),
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description'       => sprintf( __( 'Specify URLs or keywords of JavaScript files to be excluded from defer (one per line). %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $exclude_defer_js['url'] ) . '" data-beacon-article="' . esc_attr( $exclude_defer_js['id'] ) . '" target="_blank">', '</a>' ),
 					'placeholder'       => '/wp-content/themes/some-theme/(.*).js',
 					'parent'            => 'defer_all_js',
 					'section'           => 'js',
@@ -845,9 +836,10 @@ class Page {
 	 * @since 3.0
 	 */
 	private function media_section() {
-		$lazyload_beacon = $this->beacon->get_suggest( 'lazyload' );
-		$webp_beacon     = $this->beacon->get_suggest( 'webp' );
-		$dimensions      = $this->beacon->get_suggest( 'images_dimensions' );
+		$lazyload_beacon  = $this->beacon->get_suggest( 'lazyload' );
+		$exclude_lazyload = $this->beacon->get_suggest( 'exclude_lazyload' );
+		$webp_beacon      = $this->beacon->get_suggest( 'webp' );
+		$dimensions       = $this->beacon->get_suggest( 'image_dimensions' );
 
 		if ( rocket_valid_key() && ! \Imagify_Partner::has_imagify_api_key() ) {
 			$imagify_link = '<a href="#imagify">';
@@ -866,10 +858,6 @@ class Page {
 		$disable_images_lazyload  = [];
 		$disable_iframes_lazyload = [];
 		$disable_youtube_lazyload = [];
-
-		if ( rocket_avada_maybe_disable_lazyload() ) {
-			$disable_images_lazyload[] = __( 'Avada', 'rocket' );
-		}
 
 		if ( rocket_maybe_disable_lazyload() ) {
 			$disable_images_lazyload[] = __( 'Autoptimize', 'rocket' );
@@ -930,7 +918,7 @@ class Page {
 					'helper'      => ! empty( $disable_lazyload ) ? sprintf( __( 'LazyLoad is currently activated in %2$s. If you want to use WP Rocket’s LazyLoad, disable this option in %2$s.', 'rocket' ), WP_ROCKET_PLUGIN_NAME, $disable_lazyload ) : '',
 				],
 				'dimensions_section' => [
-					'title'       => __( 'Images dimensions', 'rocket' ),
+					'title'       => __( 'Image Dimensions', 'rocket' ),
 					'type'        => 'fields_container',
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description' => sprintf( __( 'Add missing width and height attributes to images. Helps prevent layout shifts and improve the reading experience for your visitors. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $dimensions['url'] ) . '" data-beacon-article="' . esc_attr( $dimensions['id'] ) . '" target="_blank" rel="noopener noreferrer">', '</a>' ),
@@ -972,7 +960,7 @@ class Page {
 
 		$this->settings->add_settings_fields(
 			[
-				'lazyload'          => [
+				'lazyload'         => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Enable for images', 'rocket' ),
 					'section'           => 'lazyload_section',
@@ -988,7 +976,7 @@ class Page {
 					// translators: %1$s = “WP Rocket”, %2$s = a list of plugin names.
 					'description'       => ! empty( $disable_images_lazyload ) ? sprintf( __( 'LazyLoad for images is currently activated in %2$s. If you want to use %1$s’s LazyLoad, disable this option in %2$s.', 'rocket' ), WP_ROCKET_PLUGIN_NAME, $disable_images_lazyload ) : '',
 				],
-				'lazyload_iframes'  => [
+				'lazyload_iframes' => [
 					'container_class'   => [
 						! empty( $disable_iframes_lazyload ) ? 'wpr-isDisabled' : '',
 						'wpr-isParent',
@@ -1003,7 +991,7 @@ class Page {
 						'disabled' => ! empty( $disable_iframes_lazyload ) ? 1 : 0,
 					],
 				],
-				'lazyload_youtube'  => [
+				'lazyload_youtube' => [
 					'container_class'   => [
 						! empty( $disable_youtube_lazyload ) ? 'wpr-isDisabled' : '',
 						'wpr-field--children',
@@ -1021,7 +1009,20 @@ class Page {
 						'disabled' => ! empty( $disable_youtube_lazyload ) ? 1 : 0,
 					],
 				],
-				'images_dimensions' => [
+				'exclude_lazyload' => [
+					'container_class' => [
+						'wpr-Delayjs',
+					],
+					'type'            => 'textarea',
+					'label'           => __( 'Excluded images or iframes', 'rocket' ),
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description'     => sprintf( __( 'Specify keywords (e.g. image filename, CSS class, domain) from the image or iframe code to be excluded (one per line). %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $exclude_lazyload['url'] ) . '" data-beacon-article="' . esc_attr( $exclude_lazyload['id'] ) . '" target="_blank" rel="noopener noreferrer">', '</a>' ),
+					'section'         => 'lazyload_section',
+					'page'            => 'media',
+					'default'         => [],
+					'placeholder'     => "example-image.jpg\nslider-image",
+				],
+				'image_dimensions' => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Add missing image dimensions', 'rocket' ),
 					'section'           => 'dimensions_section',
@@ -1029,19 +1030,7 @@ class Page {
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
-				'exclude_lazyload'  => [
-					'container_class' => [
-						'wpr-Delayjs',
-					],
-					'type'            => 'textarea',
-					'label'           => __( 'Excluded images or iframes', 'rocket' ),
-					'description'     => __( 'Specify keywords (e.g. image filename, CSS class, domain) from the image or iframe code to be excluded (one per line).', 'rocket' ),
-					'section'         => 'lazyload_section',
-					'page'            => 'media',
-					'default'         => [],
-					'placeholder'     => "example-image.jpg\nclass=\"image\"",
-				],
-				'embeds'            => [
+				'embeds'           => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Disable WordPress embeds', 'rocket' ),
 					'section'           => 'embeds_section',
@@ -1049,7 +1038,7 @@ class Page {
 					'default'           => 1,
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
-				'cache_webp'        => array_merge(
+				'cache_webp'       => array_merge(
 					$cache_webp_field,
 					[
 						'type'              => 'checkbox',
