@@ -38,7 +38,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'simple_custom_css',
 		'pdfembedder',
 		'divi',
-		'mod_pagespeed'
+		'mod_pagespeed',
 	];
 
 	/**
@@ -100,6 +100,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->share( 'pdfembedder', 'WP_Rocket\ThirdParty\Plugins\PDFEmbedder' );
 
 		$this->getContainer()
-		    ->share( 'mod_pagespeed', 'WP_Rocket\ThirdParty\Plugins\PagespeedModule' );
+			->share( 'mod_pagespeed', 'WP_Rocket\ThirdParty\Plugins\ModPagespeed' );
 	}
 }
