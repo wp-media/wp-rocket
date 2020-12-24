@@ -30,6 +30,8 @@ class ModPagespeed implements Subscriber_Interface {
 	/**
 	 * Check if mod_pagespeed is enabled on this server with and cache the result on transient.
 	 *
+	 * @since  3.8.2
+	 *
 	 * @return bool Status of mod_pagespeed.
 	 */
 	private static function has_pagespeed_with_cache() {
@@ -45,6 +47,8 @@ class ModPagespeed implements Subscriber_Interface {
 
 	/**
 	 * Check if mod_pagespeed is enabled on this server.
+	 *
+	 * @since  3.8.2
 	 *
 	 * @return bool
 	 */
@@ -72,6 +76,8 @@ class ModPagespeed implements Subscriber_Interface {
 
 	/**
 	 * Show admin notice message.
+	 *
+	 * @since  3.8.2
 	 */
 	public function show_admin_notice() {
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
