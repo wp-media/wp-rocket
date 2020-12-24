@@ -207,10 +207,13 @@ trait CSSTrait {
 			'/(?:@font-face)\s*{(?<value>[^}]+)}/',
 			function ( $matches ) {
 				if ( false !== strpos( $matches['value'], 'font-display' ) ) {
-					return $matches[0];
+					preg_match('font-display:\s*(?<attrib>\w*);?/', $matches['value'], $attribute );
+					return 'swap' === $attribute['attrib']
+						? $matches[0]
+						: str_replace( $attribute['attrib'], 'swap', $matches[0] );
+				} else {
+					$swap = "font-display:swap;{$matches['value']}";
 				}
-
-				$swap = "font-display:swap;{$matches['value']}";
 
 				return str_replace( $matches['value'], $swap, $matches[0] );
 			},
