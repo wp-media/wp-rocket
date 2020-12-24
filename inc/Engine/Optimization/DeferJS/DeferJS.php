@@ -24,6 +24,7 @@ class DeferJS {
 		'document.write',
 		'window.lazyLoadOptions',
 		'N.N2_',
+		'rev_slider_wrapper',
 	];
 
 	/**
