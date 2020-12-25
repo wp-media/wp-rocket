@@ -41,6 +41,14 @@ class Cache extends Abstract_Buffer {
 	private $cache_dir_path;
 
 	/**
+	 * The filesystem implementation.
+	 *
+	 * @var    WP_Filesystem_Base
+	 * @since  3.9
+	 */
+	private $fs;
+
+	/**
 	 * Constructor.
 	 *
 	 * @since  3.3
@@ -78,6 +86,8 @@ class Cache extends Abstract_Buffer {
 			return;
 		}
 
+		$this->fs = rocket_direct_filesystem();
+
 		/**
 		 * Serve the cache file if it exists.
 		 */
@@ -95,11 +105,11 @@ class Cache extends Abstract_Buffer {
 		$accept_gzip         = $accept_encoding && false !== strpos( $accept_encoding, 'gzip' );
 
 		// Check if cache file exist.
-		if ( $accept_gzip && is_readable( $cache_filepath_gzip ) ) {
+		if ( $accept_gzip && $this->fs->is_readable( $cache_filepath_gzip ) ) {
 			$this->serve_gzip_cache_file( $cache_filepath_gzip );
 		}
 
-		if ( is_readable( $cache_filepath ) ) {
+		if ( $this->fs->is_readable( $cache_filepath ) ) {
 			$this->serve_cache_file( $cache_filepath );
 		}
 
@@ -110,7 +120,7 @@ class Cache extends Abstract_Buffer {
 			// We're looking for a webp file that doesn't exist: try to locate any `.no-webp` file.
 			$cache_dir_path = rtrim( dirname( $cache_filepath ), '/\\' ) . DIRECTORY_SEPARATOR;
 
-			if ( file_exists( $cache_dir_path . '.no-webp' ) ) {
+			if ( $this->fs->exists( $cache_dir_path . '.no-webp' ) ) {
 				// We have a `.no-webp` file: try to deliver a non-webp cache file.
 				$cache_filepath      = $cache_dir_path . str_replace( '-webp', '', $cache_filename );
 				$cache_filepath_gzip = $cache_filepath . '_gzip';
@@ -123,11 +133,11 @@ class Cache extends Abstract_Buffer {
 				);
 
 				// Try to deliver the non-webp version instead.
-				if ( $accept_gzip && is_readable( $cache_filepath_gzip ) ) {
+				if ( $accept_gzip && $this->fs->is_readable( $cache_filepath_gzip ) ) {
 					$this->serve_gzip_cache_file( $cache_filepath_gzip );
 				}
 
-				if ( is_readable( $cache_filepath ) ) {
+				if ( $this->fs->is_readable( $cache_filepath ) ) {
 					$this->serve_cache_file( $cache_filepath );
 				}
 			}
@@ -154,12 +164,12 @@ class Cache extends Abstract_Buffer {
 	 * @param string $cache_filepath Path to the cache file.
 	 */
 	private function serve_cache_file( $cache_filepath ) {
-		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', filemtime( $cache_filepath ) ) . ' GMT' );
+		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', $this->fs->mtime( $cache_filepath ) ) . ' GMT' );
 
 		$if_modified_since = $this->get_if_modified_since();
 
 		// Checking if the client is validating his cache and if it is current.
-		if ( $if_modified_since && ( strtotime( $if_modified_since ) === @filemtime( $cache_filepath ) ) ) {
+		if ( $if_modified_since && ( strtotime( $if_modified_since ) === $this->fs->mtime( $cache_filepath ) ) ) {
 			// Client's cache is current, so we just respond '304 Not Modified'.
 			header( $this->config->get_server_input( 'SERVER_PROTOCOL', '' ) . ' 304 Not Modified', true, 304 );
 			header( 'Expires: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
@@ -198,12 +208,12 @@ class Cache extends Abstract_Buffer {
 	 * @param string $cache_filepath Path to the gzip cache file.
 	 */
 	private function serve_gzip_cache_file( $cache_filepath ) {
-		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', filemtime( $cache_filepath ) ) . ' GMT' );
+		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', $this->fs->mtime( $cache_filepath ) ) . ' GMT' );
 
 		$if_modified_since = $this->get_if_modified_since();
 
 		// Checking if the client is validating his cache and if it is current.
-		if ( $if_modified_since && ( strtotime( $if_modified_since ) === @filemtime( $cache_filepath ) ) ) {
+		if ( $if_modified_since && ( strtotime( $if_modified_since ) === $this->fs->mtime( $cache_filepath ) ) ) {
 			// Client's cache is current, so we just respond '304 Not Modified'.
 			header( $this->config->get_server_input( 'SERVER_PROTOCOL', '' ) . ' 304 Not Modified', true, 304 );
 			header( 'Expires: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
@@ -294,8 +304,8 @@ class Cache extends Abstract_Buffer {
 		$this->maybe_create_nginx_mobile_file( $cache_dir_path );
 
 		// Send headers with the last modified time of the cache file.
-		if ( file_exists( $cache_filepath ) ) {
-			header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', filemtime( $cache_filepath ) ) . ' GMT' );
+		if ( $this->fs->exists( $cache_filepath ) ) {
+			header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', $this->fs->mtime( $cache_filepath ) ) . ' GMT' );
 		}
 
 		if ( $is_html ) {
@@ -327,13 +337,13 @@ class Cache extends Abstract_Buffer {
 		$temp_filepath      = $cache_filepath . '_temp';
 		$temp_gzip_filepath = $gzip_filepath . '_temp';
 
-		if ( rocket_direct_filesystem()->exists( $temp_filepath ) ) {
+		if ( $this->fs->exists( $temp_filepath ) ) {
 			return;
 		}
 
 		// Save the cache file.
 		rocket_put_content( $temp_filepath, $content );
-		rocket_direct_filesystem()->move( $temp_filepath, $cache_filepath, true );
+		$this->fs->move( $temp_filepath, $cache_filepath, true );
 
 		if ( function_exists( 'gzencode' ) ) {
 			/**
@@ -344,7 +354,7 @@ class Cache extends Abstract_Buffer {
 			$compression_level = apply_filters( 'rocket_gzencode_level_compression', 6 );
 
 			rocket_put_content( $temp_gzip_filepath, gzencode( $content, $compression_level ) );
-			rocket_direct_filesystem()->move( $temp_gzip_filepath, $gzip_filepath, true );
+			$this->fs->move( $temp_gzip_filepath, $gzip_filepath, true );
 		}
 	}
 
@@ -463,11 +473,11 @@ class Cache extends Abstract_Buffer {
 
 		$nginx_mobile_detect = $cache_dir_path . '/.mobile-active';
 
-		if ( rocket_direct_filesystem()->exists( $nginx_mobile_detect ) ) {
+		if ( $this->fs->exists( $nginx_mobile_detect ) ) {
 			return;
 		}
 
-		rocket_direct_filesystem()->touch( $nginx_mobile_detect );
+		$this->fs->touch( $nginx_mobile_detect );
 	}
 
 	/**
@@ -480,11 +490,11 @@ class Cache extends Abstract_Buffer {
 	private function maybe_create_nowebp_file( $cache_dir_path ) {
 		$nowebp_filepath = $cache_dir_path . DIRECTORY_SEPARATOR . '.no-webp';
 
-		if ( rocket_direct_filesystem()->exists( $nowebp_filepath ) ) {
+		if ( $this->fs->exists( $nowebp_filepath ) ) {
 			return;
 		}
 
-		rocket_direct_filesystem()->touch( $nowebp_filepath );
+		$this->fs->touch( $nowebp_filepath );
 	}
 
 	/**
