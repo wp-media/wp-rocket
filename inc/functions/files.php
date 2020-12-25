@@ -1059,6 +1059,9 @@ function rocket_rrmdir( $dir, array $dirs_to_preserve = [], $filesystem = null )
 function rocket_direct_filesystem() {
 	require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php';
 	require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php';
+
+	// TODO: support custom filesystem classes
+	// TODO: add `readfile()` and `readgzfile()` on top
 	return new WP_Filesystem_Direct( new StdClass() );
 }
 
