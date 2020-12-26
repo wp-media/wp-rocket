@@ -187,7 +187,7 @@ class Cache extends Abstract_Buffer {
 		}
 
 		// Serve the cache if file isn't store in the client browser cache.
-		readfile( $cache_filepath );
+		$this->fs->readfile( $cache_filepath );
 
 		$this->log(
 			'Serving cache file.',
@@ -231,7 +231,7 @@ class Cache extends Abstract_Buffer {
 		}
 
 		// Serve the cache if file isn't store in the client browser cache.
-		readgzfile( $cache_filepath );
+		$this->fs->readgzfile( $cache_filepath );
 
 		$this->log(
 			'Serving gzip cache file.',
