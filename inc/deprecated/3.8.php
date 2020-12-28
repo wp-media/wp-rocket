@@ -11,6 +11,71 @@ if ( ! class_exists( 'WP_Rocket\Subscriber\Optimization\Dequeue_JQuery_Migrate_S
 }
 
 /**
+ * Deactivate WP Rocket lazyload if Avada lazyload is enabled
+ *
+ * @since 3.8.1 deprecated
+ * @since 3.3.4
+ *
+ *  @param string $old_value Previous Avada option value.
+ * @param string $value New Avada option value.
+ * @return void
+ */
+function rocket_avada_maybe_deactivate_lazyload( $old_value, $value ) {
+	_deprecated_function( __FUNCTION__ . '()', '3.8.1', 'WP_Rocket\ThirdParty\Themes\Avada::maybe_deactivate_lazyload()' );
+
+	if (
+		empty( $old_value['lazy_load'] )
+		||
+		( ! empty( $value['lazy_load'] ) && 'avada' === $value['lazy_load'] )
+	) {
+		update_rocket_option( 'lazyload', 0 );
+	}
+}
+
+/**
+ * Disable WP Rocket lazyload field if Avada lazyload is enabled
+ *
+ * @since 3.8.1 deprecated
+ * @since 3.3.4
+ *
+ * @return bool
+ */
+function rocket_avada_maybe_disable_lazyload() {
+	_deprecated_function( __FUNCTION__ . '()', '3.8.1', 'WP_Rocket\ThirdParty\Themes\Avada::maybe_disable_lazyload()' );
+
+	$avada_options = get_option( 'fusion_options' );
+	$current_theme = wp_get_theme();
+
+	if ( 'Avada' !== $current_theme->get( 'Name' ) ) {
+		return false;
+	}
+
+	if ( empty( $avada_options['lazy_load'] ) ) {
+		return false;
+	}
+
+	if ( ! empty( $avada_options['lazy_load'] && 'avada' !== $avada_options['lazy_load'] ) ) {
+		return false;
+	}
+
+	return true;
+}
+
+/**
+ * Clears WP Rocket's cache after Avada's Fusion Patcher flushes their caches
+ *
+ * @since 3.8.1 deprecated
+ * @since 3.3.5
+ *
+ * @return void
+ */
+function rocket_avada_clear_cache_fusion_patcher() {
+	_deprecated_function( __FUNCTION__ . '()', '3.8.1', 'WP_Rocket\ThirdParty\Themes\Avada::clear_cache_fusion_patcher()' );
+
+	rocket_clean_domain();
+}
+
+/**
  * Defer all JS files.
  *
  * @since 3.8 deprecated

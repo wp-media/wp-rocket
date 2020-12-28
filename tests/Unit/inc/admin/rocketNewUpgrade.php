@@ -30,6 +30,14 @@ class Test_RocketNewUpgrade extends TestCase {
 		Functions\expect( 'rocket_clean_minify' )
 			->with( 'css' )
 			->once();
+		Functions\expect( 'rocket_get_constant' )
+			->with( 'WP_ROCKET_SLUG' )
+			->andReturn( 'wp_rocket_settings' );
+		Functions\expect( 'get_option' )
+			->once()
+			->andReturn( [] );
+		Functions\expect( 'update_option' )
+			->once();
 
 		rocket_new_upgrade( '3.7', '3.4.4' );
 	}

@@ -371,9 +371,9 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 	}
 
 	if ( version_compare( $actual_version, '3.8.1', '<' ) ) {
-		$options = get_option( WP_ROCKET_SLUG );
+		$options = get_option( rocket_get_constant( 'WP_ROCKET_SLUG' ) );
 		unset( $options['dequeue_jquery_migrate'] );
-		update_option( WP_ROCKET_SLUG, $options );
+		update_option( rocket_get_constant( 'WP_ROCKET_SLUG' ), $options );
 	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );

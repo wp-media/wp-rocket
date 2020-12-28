@@ -8,7 +8,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 /**
  * @covers \WP_Rocket\Engine\License\API\User::get_creation_date
  *
- * @group License
+ * @group  License
  */
 class GetCreationDate extends TestCase {
 	/**
@@ -16,10 +16,8 @@ class GetCreationDate extends TestCase {
 	 */
 	public function testShouldReturnExpected( $data, $expected ) {
 		$user = new User( $data );
+		$time_match = $expected - $user->get_creation_date();
 
-		$this->assertEquals(
-			$expected,
-			$user->get_creation_date()
-		);
+		$this->assertLessThan( 2, $time_match );
 	}
 }
