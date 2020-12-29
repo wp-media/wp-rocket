@@ -292,7 +292,7 @@ class Combine extends AbstractCSSOptimization implements ProcessorInterface {
 
 		foreach ( $this->styles as $key => $style ) {
 			if ( 'internal' === $style['type'] ) {
-				$filepath     = $this->get_file_path( $style['url'] );
+				$filepath = $this->get_file_path( $style['url'] );
 				if ( ! $filepath ) {
 					unset( $this->styles[ $key ] );
 
