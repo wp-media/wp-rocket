@@ -39,21 +39,10 @@ class Test_Process extends TestCase {
 		add_filter( 'pre_get_rocket_option_minify_js', [ $this, 'return_true' ] );
 		add_filter( 'pre_get_rocket_option_minify_js_key', [ $this, 'return_key' ] );
 
-		$post_56 = version_compare( get_bloginfo( 'version' ), '5.6', '>=' );
-
-		$original = $post_56
-			? $original['post-56']
-			: $original['pre-56'];
-		$expected['html'] = $post_56
-			? $expected['post-56']
-			: $expected['pre-56'];
-		$files = $post_56 && isset( $expected['files-56'] )
-			? $expected['files-56']
-			: $expected['files'];
-
 		$this->defer_all_js = $settings['defer_all_js'];
 
 		add_filter( 'pre_get_rocket_option_defer_all_js', [ $this, 'return_defer_all_js' ] );
+		add_filter( 'pre_get_rocket_option_exclude_defer_js', [ $this, 'return_exclude_defer_js' ] );
 
 		$this->settings = $settings;
 		$this->setSettings();
@@ -63,10 +52,19 @@ class Test_Process extends TestCase {
 			$this->format_the_html( apply_filters( 'rocket_buffer', $original ) )
 		);
 
-		$this->assertFilesExists( $files );
+		$this->assertFilesExists( $expected['files'] );
 	}
 
 	public function return_defer_all_js() {
 		return $this->defer_all_js;
 	}
+
+	public function return_exclude_defer_js( $list ) {
+		if ( 0 === $this->defer_all_js ) {
+			return [];
+		}
+
+		return $list;
+	}
+
 }
