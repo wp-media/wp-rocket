@@ -5,7 +5,7 @@ return [
 		'js'  => [
 			'jquery' => [
 				'jquery.js' => 'jquery',
-			//	'jquery.min.js' => 'jquery',
+				'jquery.min.js' => 'jquery',
 			],
 		],
 		'css' => [
