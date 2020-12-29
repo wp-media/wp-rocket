@@ -24,13 +24,14 @@ class Divi implements Subscriber_Interface {
 	/**
 	 * Instantiate the class
 	 *
-	 * @param Options      $options_api  Options API instance.
-	 * @param Options_Data $options      WP Rocket options instance.
+	 * @param Options      $options_api Options API instance.
+	 * @param Options_Data $options     WP Rocket options instance.
 	 */
 	public function __construct( Options $options_api, Options_Data $options ) {
 		$this->options_api = $options_api;
 		$this->options     = $options;
 	}
+
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
@@ -47,6 +48,7 @@ class Divi implements Subscriber_Interface {
 
 		$events['rocket_exclude_js']                            = 'exclude_js';
 		$events['rocket_maybe_disable_youtube_lazyload_helper'] = 'add_divi_to_description';
+		$events['rocket_specify_dimension_images']              = 'disable_image_dimensions_height_percentage';
 
 		return $events;
 	}
@@ -59,6 +61,7 @@ class Divi implements Subscriber_Interface {
 	 * @since 3.6.3
 	 *
 	 * @param array $excluded_js An array of JS paths to be excluded.
+	 *
 	 * @return array the updated array of paths
 	 */
 	public function exclude_js( $excluded_js ) {
@@ -78,6 +81,7 @@ class Divi implements Subscriber_Interface {
 	 *
 	 * @param string   $name  Name of the new theme.
 	 * @param WP_Theme $theme instance of the new theme.
+	 *
 	 * @return void
 	 */
 	public function maybe_disable_youtube_preview( $name, $theme ) {
@@ -96,6 +100,7 @@ class Divi implements Subscriber_Interface {
 	 * @since 3.6.3
 	 *
 	 * @param array $disable_youtube_lazyload Array of items names.
+	 *
 	 * @return array
 	 */
 	public function add_divi_to_description( $disable_youtube_lazyload ) {
@@ -106,6 +111,29 @@ class Divi implements Subscriber_Interface {
 		$disable_youtube_lazyload[] = 'Divi';
 
 		return $disable_youtube_lazyload;
+	}
+
+	/**
+	 * Disables setting explicit dimensions on images where Divi calculates height as percentage.
+	 *
+	 * @since 3.8.2
+	 *
+	 * @param array $images The array of images selected for adding image dimensions.
+	 *
+	 * @return array The array without images using data-height-percentage.
+	 */
+	public function disable_image_dimensions_height_percentage( array $images ) {
+		if ( ! self::is_divi() ) {
+			return $images;
+		}
+
+		foreach ( $images as $key => $image ) {
+			if ( false !== strpos( $image, 'data-height-percentage' ) ) {
+				unset( $images[ $key ] );
+			}
+		}
+
+		return array_values( $images );
 	}
 
 	/**
