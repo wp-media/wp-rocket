@@ -39,10 +39,17 @@ class Test_Process extends TestCase {
 		add_filter( 'pre_get_rocket_option_minify_js', [ $this, 'return_true' ] );
 		add_filter( 'pre_get_rocket_option_minify_js_key', [ $this, 'return_key' ] );
 
-		if (version_compare( get_bloginfo( 'version' ), '5.6', '>=' ) ) {
-			str_replace('/jquery.js', '/jquery.min.js', $original );
-			str_replace('/jquery.js', '/jquery.min.js', $expected );
-		}
+		$post_56 = version_compare( get_bloginfo( 'version' ), '5.6', '>=' );
+
+		$original = $post_56
+			? $original['post-56']
+			: $original['pre-56'];
+		$expected['html'] = $post_56
+			? $expected['post-56']
+			: $expected['pre-56'];
+		$files = $post_56 && isset( $expected['files-56'] )
+			? $expected['files-56']
+			: $expected['files'];
 
 		$this->defer_all_js = $settings['defer_all_js'];
 
@@ -56,7 +63,7 @@ class Test_Process extends TestCase {
 			$this->format_the_html( apply_filters( 'rocket_buffer', $original ) )
 		);
 
-		$this->assertFilesExists( $expected['files'] );
+		$this->assertFilesExists( $files );
 	}
 
 	public function return_defer_all_js() {
