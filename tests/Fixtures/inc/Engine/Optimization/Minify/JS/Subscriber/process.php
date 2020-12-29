@@ -323,79 +323,84 @@ return [
 			],
 		],
 
-//		'shouldCombineJSFiles_whenNoCDN' => [
-//			'original' => [
-//				'pre-56'  => '<html>
-//				<head>
-//					<title>Sample Page</title>
-//					<script type="text/javascript" src="http://example.org/wp-content/themes/twentytwenty/assets/script.js"></script>
-//					<script type="text/javascript" src="http://example.org/wp-content/plugins/hello-dolly/script.js"></script>
-//					<script type="text/javascript" src="http://example.org/wp-includes/js/jquery/jquery.js"></script>
-//					<script>
-//					document.getElementById("demo").innerHTML = "Hello JavaScript!";
-//					</script>
-//					<script>
-//					nonce = "nonce";
-//					</script>
-//				</head>
-//				<body>
-//				</body>
-//			</html>',
-//				'post-56' => '<html>
-//				<head>
-//					<title>Sample Page</title>
-//					<script type="text/javascript" src="http://example.org/wp-content/themes/twentytwenty/assets/script.js"></script>
-//					<script type="text/javascript" src="http://example.org/wp-content/plugins/hello-dolly/script.js"></script>
-//					<script type="text/javascript" src="http://example.org/wp-includes/js/jquery/jquery.min.js"></script>
-//					<script>
-//					document.getElementById("demo").innerHTML = "Hello JavaScript!";
-//					</script>
-//					<script>
-//					nonce = "nonce";
-//					</script>
-//				</head>
-//				<body>
-//				</body>
-//			</html>',
-//			],
-//			'expected' => [
-//				'pre-56'  => '<html>
-//					<head>
-//						<title>Sample Page</title>
-//						<script>
-//						nonce = "nonce";
-//						</script>
-//					</head>
-//					<body>
-//						<script src="http://example.org/wp-content/cache/min/1/f819bcaed244d53d3b4ffc4c5cc0efdc.js" data-minify="1"></script>
-//					</body>
-//				</html>',
-//				'post-56' => '<html>
-//					<head>
-//						<title>Sample Page</title>
-//						<script>
-//						nonce = "nonce";
-//						</script>
-//					</head>
-//					<body>
-//						<script src="http://example.org/wp-content/cache/min/1/1100e4606ab35f45752eb8c3c8da0427.js" data-minify="1"></script>
-//					</body>
-//				</html>',
-//				'files'   => [
-//					'wp-content/cache/min/1/f819bcaed244d53d3b4ffc4c5cc0efdc.js',
-//					'wp-content/cache/min/1/f819bcaed244d53d3b4ffc4c5cc0efdc.js.gz',
-//				],
-//			],
-//
-//			'settings' => [
-//				'minify_concatenate_js' => 1,
-//				'cdn'                   => 0,
-//				'cdn_cnames'            => [],
-//				'cdn_zone'              => [],
-//				'defer_all_js'          => 0,
-//			],
-//		],
-//
+		'shouldCombineJSFiles_whenNoCDN' => [
+			'original' => [
+				'pre-56'  => '<html>
+				<head>
+					<title>Sample Page</title>
+					<script type="text/javascript" src="http://example.org/wp-content/themes/twentytwenty/assets/script.js"></script>
+					<script type="text/javascript" src="http://example.org/wp-content/plugins/hello-dolly/script.js"></script>
+					<script type="text/javascript" src="http://example.org/wp-includes/js/jquery/jquery.js"></script>
+					<script>
+					document.getElementById("demo").innerHTML = "Hello JavaScript!";
+					</script>
+					<script>
+					nonce = "nonce";
+					</script>
+				</head>
+				<body>
+				</body>
+			</html>',
+				'post-56' => '<html>
+				<head>
+					<title>Sample Page</title>
+					<script type="text/javascript" src="http://example.org/wp-content/themes/twentytwenty/assets/script.js"></script>
+					<script type="text/javascript" src="http://example.org/wp-content/plugins/hello-dolly/script.js"></script>
+					<script type="text/javascript" src="http://example.org/wp-includes/js/jquery/jquery.min.js"></script>
+					<script>
+					document.getElementById("demo").innerHTML = "Hello JavaScript!";
+					</script>
+					<script>
+					nonce = "nonce";
+					</script>
+				</head>
+				<body>
+				</body>
+			</html>',
+			],
+			'expected' => [
+				'pre-56'  => '<html>
+					<head>
+						<title>Sample Page</title>
+						<script>
+						nonce = "nonce";
+						</script>
+					</head>
+					<body>
+						<script src="http://example.org/wp-content/cache/min/1/f819bcaed244d53d3b4ffc4c5cc0efdc.js" data-minify="1"></script>
+					</body>
+				</html>',
+				'post-56' => '<html>
+					<head>
+						<title>Sample Page</title>
+						<script type="text/javascript" src="http://example.org/wp-includes/js/jquery/jquery.min.js"></script>
+					<script>
+						nonce = "nonce";
+						</script>
+					</head>
+					<body>
+						<script src="http://example.org/wp-content/cache/min/1/1100e4606ab35f45752eb8c3c8da0427.js" data-minify="1"></script>
+					</body>
+				</html>',
+				'files'   => [
+					'wp-content/cache/min/1/f819bcaed244d53d3b4ffc4c5cc0efdc.js',
+					'wp-content/cache/min/1/f819bcaed244d53d3b4ffc4c5cc0efdc.js.gz',
+				],
+				'files-56' => [
+					'wp-content/cache/min/1/1100e4606ab35f45752eb8c3c8da0427.js',
+					'wp-content/cache/min/1/1100e4606ab35f45752eb8c3c8da0427.js.gz',
+				],
+			],
+
+			'settings' => [
+				'minify_concatenate_js' => 1,
+				'cdn'                   => 0,
+				'cdn_cnames'            => [],
+				'cdn_zone'              => [],
+				'defer_all_js'          => 0,
+			],
+		],
+
 //		'shouldCombineJSFilesToCDNUrl' => [
 //			'original' => '<html>
 //				<head>
