@@ -24,6 +24,7 @@ class DeferJS {
 		'document.write',
 		'window.lazyLoadOptions',
 		'N.N2_',
+		'FB3D_CLIENT_LOCALE',
 	];
 
 	/**
