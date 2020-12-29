@@ -417,7 +417,7 @@ return [
 				'html'  => '<html>
 					<head>
 						<title>Sample Page</title>
-						<script type="text/javascript" src="https://123456.rocketcdn.me/wp-includes/js/jquery/jquery.js" defer></script>
+						<script type="text/javascript" src="https://123456.rocketcdn.me' . $jquery_path . '" defer></script>
 						<script>
 						nonce = "nonce";
 						</script>
