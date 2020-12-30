@@ -52,7 +52,7 @@ class Test_DisableImageDimensionsHeightPercentage extends WPThemeTestcase {
 
 		switch_theme( $config['stylesheet'] );
 
-		$images = $divi->disable_image_dimensions_height_percentage( $config['images'] );
+		$images = array_values( $divi->disable_image_dimensions_height_percentage( $config['images'] ) );
 
 		$this->assertSame( $expected, $images );
 	}

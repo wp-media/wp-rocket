@@ -32,7 +32,7 @@ class Test_DisableImageDimensionsHeightPercentage extends TestCase {
 
 		$divi = new Divi( $options_api, $options );
 
-		$this->assertSame( $expected, $divi->disable_image_dimensions_height_percentage( $config['images'] ) );
+		$this->assertSame( $expected, array_values( $divi->disable_image_dimensions_height_percentage( $config['images'] ) ) );
 	}
 
 	public function providerTestData() {

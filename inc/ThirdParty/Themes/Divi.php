@@ -133,7 +133,7 @@ class Divi implements Subscriber_Interface {
 			}
 		}
 
-		return array_values( $images );
+		return $images;
 	}
 
 	/**
