@@ -123,10 +123,6 @@ class Divi implements Subscriber_Interface {
 	 * @return array The array without images using data-height-percentage.
 	 */
 	public function disable_image_dimensions_height_percentage( array $images ) {
-		if ( ! self::is_divi() ) {
-			return $images;
-		}
-
 		foreach ( $images as $key => $image ) {
 			if ( false !== strpos( strtolower( $image ), 'data-height-percentage' ) ) {
 				unset( $images[ $key ] );

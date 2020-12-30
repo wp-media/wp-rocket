@@ -53,22 +53,5 @@ return [
 				'<img src="http://example.com/wp-content/uploads/my-picture.png">',
 			],
 		],
-
-		'shouldNotFilterLogoWhenNotDivi' => [
-			'config'   => [
-				'stylesheet'     => 'twentytwenty',
-				'theme-name'     => 'TwentyTwenty',
-				'theme-template' => '',
-				'is-child'       => '',
-				'images'         => [
-					'<img src="http://example.com/wp-content/uploads/logo.png" data-height-percentage="54">',
-					'<img src="http://example.com/wp-content/uploads/my-picture.png">',
-				],
-			],
-			'expected' => [
-				'<img src="http://example.com/wp-content/uploads/logo.png" data-height-percentage="54">',
-				'<img src="http://example.com/wp-content/uploads/my-picture.png">',
-			],
-		],
 	],
 ];
