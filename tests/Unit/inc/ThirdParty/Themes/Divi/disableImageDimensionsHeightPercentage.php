@@ -36,6 +36,6 @@ class Test_DisableImageDimensionsHeightPercentage extends TestCase {
 	}
 
 	public function providerTestData() {
-		return $this->getTestData( __DIR__, 'disableImageDimensionsHeightPercentage' );
+		return $this->getTestData( __DIR__, 'disableImageDimensionsHeightPercentage' )['test_data'];
 	}
 }
