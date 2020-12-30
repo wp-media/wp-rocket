@@ -128,7 +128,7 @@ class Divi implements Subscriber_Interface {
 		}
 
 		foreach ( $images as $key => $image ) {
-			if ( false !== strpos( $image, 'data-height-percentage' ) ) {
+			if ( false !== strpos( strtolower( $image ), 'data-height-percentage' ) ) {
 				unset( $images[ $key ] );
 			}
 		}
