@@ -42,7 +42,6 @@ class Test_Process extends TestCase {
 		$this->defer_all_js = $settings['defer_all_js'];
 
 		add_filter( 'pre_get_rocket_option_defer_all_js', [ $this, 'return_defer_all_js' ] );
-		add_filter( 'pre_get_rocket_option_exclude_defer_js', [ $this, 'return_exclude_defer_js' ] );
 
 		$this->settings = $settings;
 		$this->setSettings();
@@ -58,13 +57,4 @@ class Test_Process extends TestCase {
 	public function return_defer_all_js() {
 		return $this->defer_all_js;
 	}
-
-	public function return_exclude_defer_js( $list ) {
-		if ( 0 === $this->defer_all_js ) {
-			return [];
-		}
-
-		return $list;
-	}
-
 }
