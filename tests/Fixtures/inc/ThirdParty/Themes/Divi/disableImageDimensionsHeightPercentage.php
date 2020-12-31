@@ -5,8 +5,8 @@ $original_html = <<<ORIGINALHTML
 <html>
 <head></head>
 <body>
-	<img src="https://example.com/wp-content/uploads/logo.png" data-height-percentage="54">
-	<img src="https://example.com/wp-content/uploads/my-picture.png">
+	<img src="https://example.org/wp-content/uploads/logo.png" data-height-percentage="54">
+	<img src="https://example.org/wp-content/uploads/my-picture.png">
 </body>
 </html>
 ORIGINALHTML;
@@ -16,8 +16,8 @@ $expected_html = <<<EXPECTEDHTML
 <html>
 <head></head>
 <body>
-	<img src="https://example.com/wp-content/uploads/logo.png" data-height-percentage="54">
-	<img src="https://example.com/wp-content/uploads/my-picture.png">
+	<img src="https://example.org/wp-content/uploads/logo.png" data-height-percentage="54">
+	<img width="1" height="1" src="https://example.org/wp-content/uploads/my-picture.png">
 </body>
 </html>
 EXPECTEDHTML;
@@ -42,12 +42,12 @@ return [
 				'theme-template' => '',
 				'is-child'       => '',
 				'images'         => [
-					'<img src="http://example.com/wp-content/uploads/logo.png" data-height-percentage="54">',
-					'<img src="http://example.com/wp-content/uploads/my-picture.png">',
+					'<img src="http://example.org/wp-content/uploads/logo.png" data-height-percentage="54">',
+					'<img src="http://example.org/wp-content/uploads/my-picture.png">',
 				],
 			],
 			'expected' => [
-				'<img src="http://example.com/wp-content/uploads/my-picture.png">',
+				'<img src="http://example.org/wp-content/uploads/my-picture.png">',
 			],
 			'html' => [
 				'original' => $original_html,
@@ -63,12 +63,12 @@ return [
 				'is-child'       => 'divi',
 				'parent-name'    => 'Divi',
 				'images'         => [
-					'<img src="http://example.com/wp-content/uploads/logo.png" data-height-percentage="54">',
-					'<img src="http://example.com/wp-content/uploads/my-picture.png">',
+					'<img src="http://example.org/wp-content/uploads/logo.png" data-height-percentage="54">',
+					'<img src="http://example.org/wp-content/uploads/my-picture.png">',
 				],
 			],
 			'expected' => [
-				'<img src="http://example.com/wp-content/uploads/my-picture.png">',
+				'<img src="http://example.org/wp-content/uploads/my-picture.png">',
 			],
 			'html' => [
 				'original' => $original_html,
@@ -83,16 +83,16 @@ return [
 				'theme-template' => '',
 				'is-child'       => '',
 				'images'         => [
-					'<img src="http://example.com/wp-content/uploads/logo.png" DATA-height-PERcenTAGE="54">',
-					'<img src="http://example.com/wp-content/uploads/my-picture.png">',
+					'<img src="http://example.org/wp-content/uploads/logo.png" DATA-height-PERcenTAGE="54">',
+					'<img src="http://example.org/wp-content/uploads/my-picture.png">',
 				],
 			],
 			'expected' => [
-				'<img src="http://example.com/wp-content/uploads/my-picture.png">',
+				'<img src="http://example.org/wp-content/uploads/my-picture.png">',
 			],
 			'html' => [
-				'original' => '<!doctype><html><body><img src="http://example.com/wp-content/uploads/logo.png" width="100" DATA-height-PERcenTAGE="54"></body></html>',
-				'expected' => '<!doctype><html><body><img src="http://example.com/wp-content/uploads/logo.png" width="100" DATA-height-PERcenTAGE="54"></body></html>',
+				'original' => '<!doctype><html><body><img src="http://example.org/wp-content/uploads/logo.png" width="100" DATA-height-PERcenTAGE="54"></body></html>',
+				'expected' => '<!doctype><html><body><img src="http://example.org/wp-content/uploads/logo.png" width="100" DATA-height-PERcenTAGE="54"></body></html>',
 			],
 		],
 	],
