@@ -1309,7 +1309,7 @@ class Page {
 				],
 				'cache_reject_cookies' => [
 					'type'              => 'textarea',
-					'description'       => __( 'Specify the IDs of cookies that, when set in the visitor\'s browser, should prevent a page from getting cached (one per line)', 'rocket' ),
+					'description'       => __( 'Specify full or partial IDs of cookies that, when set in the visitor\'s browser, should prevent a page from getting cached (one per line)', 'rocket' ),
 					'section'           => 'cache_reject_cookies_section',
 					'page'              => 'advanced_cache',
 					'default'           => [],
