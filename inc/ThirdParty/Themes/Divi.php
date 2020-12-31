@@ -39,7 +39,8 @@ class Divi implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		$events = [
-			'switch_theme' => [ 'maybe_disable_youtube_preview', PHP_INT_MAX, 2 ],
+			'switch_theme'                    => [ 'maybe_disable_youtube_preview', PHP_INT_MAX, 2 ],
+			'rocket_specify_dimension_images' => 'disable_image_dimensions_height_percentage',
 		];
 
 		if ( ! self::is_divi() ) {
@@ -48,7 +49,6 @@ class Divi implements Subscriber_Interface {
 
 		$events['rocket_exclude_js']                            = 'exclude_js';
 		$events['rocket_maybe_disable_youtube_lazyload_helper'] = 'add_divi_to_description';
-		$events['rocket_specify_dimension_images']              = 'disable_image_dimensions_height_percentage';
 
 		return $events;
 	}
