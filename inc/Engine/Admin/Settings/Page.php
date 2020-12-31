@@ -1222,6 +1222,7 @@ class Page {
 		$ecommerce_beacon           = $this->beacon->get_suggest( 'ecommerce' );
 		$cache_query_strings_beacon = $this->beacon->get_suggest( 'cache_query_strings' );
 		$never_cache_beacon         = $this->beacon->get_suggest( 'exclude_cache' );
+		$never_cache_cookie_beacon  = $this->beacon->get_suggest( 'exclude_cookie' );
 		$always_purge_beacon        = $this->beacon->get_suggest( 'always_purge' );
 
 		$ecommerce_plugin = '';
@@ -1266,6 +1267,7 @@ class Page {
 					'title' => __( 'Never Cache Cookies', 'rocket' ),
 					'type'  => 'fields_container',
 					'page'  => 'advanced_cache',
+					'help'  => $never_cache_cookie_beacon,
 				],
 				'cache_reject_ua_section'      => [
 					'title' => __( 'Never Cache User Agent(s)', 'rocket' ),
