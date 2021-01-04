@@ -470,7 +470,7 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 			'exclude_cookie'             => [
 				'en' => [
 					'id'  => '5fe5462df24ccf588e3fe804',
-					'url' => 'https://docs.wp-rocket.me/article/1382-never-cache-cookies',
+					'url' => 'https://docs.wp-rocket.me/article/1382-never-cache-cookies/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'always_purge'               => [
