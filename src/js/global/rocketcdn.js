@@ -68,6 +68,7 @@
 		processStatus( e.data );
 		enableCDN( e.data, iframeURL );
 		disableCDN( e.data, iframeURL );
+		validateTokenAndCNAME( e.data );
 	};
 
 	function maybeOpenModal() {
@@ -237,5 +238,20 @@
 				);
 			}
 		};
+	}
+
+	function validateTokenAndCNAME( data ) {
+		if ( ! data.hasOwnProperty( 'rocketcdn_validate_token' ) || ! data.hasOwnProperty( 'rocketcdn_validate_cname' ) ) {
+			return;
+		}
+
+		let postData = '';
+
+		postData += 'action=rocketcdn_validate_token_cname';
+		postData += '&cdn_url=' + data.rocketcdn_validate_cname;
+		postData += '&cdn_token=' + data.rocketcdn_validate_token;
+		postData += '&nonce=' + rocket_ajax_data.nonce;
+
+		const request = sendHTTPRequest( postData );
 	}
 } )( document, window );

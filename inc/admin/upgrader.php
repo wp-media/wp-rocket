@@ -184,7 +184,6 @@ function rocket_first_install() {
 				'exclude_js'                  => [],
 				'exclude_inline_js'           => [],
 				'defer_all_js'                => 0,
-				'defer_all_js_safe'           => 1,
 				'async_css'                   => 0,
 				'critical_css'                => '',
 				'lazyload'                    => 0,
@@ -225,12 +224,11 @@ function rocket_first_install() {
 				'cloudflare_protocol_rewrite' => 0,
 				'cloudflare_auto_settings'    => 0,
 				'cloudflare_old_settings'     => '',
-				'control_heartbeat'           => 0,
+				'control_heartbeat'           => 1,
 				'heartbeat_site_behavior'     => 'reduce_periodicity',
 				'heartbeat_admin_behavior'    => 'reduce_periodicity',
 				'heartbeat_editor_behavior'   => 'reduce_periodicity',
 				'varnish_auto_purge'          => 0,
-				'do_beta'                     => 0,
 				'analytics_enabled'           => 0,
 				'google_analytics_cache'      => 0,
 				'facebook_pixel_cache'        => 0,
@@ -370,6 +368,12 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 	if ( version_compare( $actual_version, '3.7', '<' ) ) {
 		rocket_clean_minify( 'css' );
 		rocket_generate_advanced_cache_file();
+	}
+
+	if ( version_compare( $actual_version, '3.8.1', '<' ) ) {
+		$options = get_option( rocket_get_constant( 'WP_ROCKET_SLUG' ) );
+		unset( $options['dequeue_jquery_migrate'] );
+		update_option( rocket_get_constant( 'WP_ROCKET_SLUG' ), $options );
 	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );

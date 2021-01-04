@@ -8,14 +8,15 @@ Developers:
 	Tonya Mork <tonya@wp-media.me>
 	Ahmed Saeed <ahmed@wp-media.me>
 	Caspar Green <caspar.g@wp-media.me>
+	Vasilis Manthos <vasilis@wp-media.me>
+	Alfonso Catron <alfonso@wp-media.me>
 
 QA:
-	David Acuna <david@wp-media.me>
-
-UX:
-	Caspar Hübinger
-	Thomas Geisen
+	Piotr Bąk <piotr@wp-media.me>
 
 Previous contributors:
 	Julio Potier
 	Gregory Viguier
+	David Acuna
+	Caspar Hübinger
+	Thomas Geisen

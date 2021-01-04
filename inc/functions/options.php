@@ -421,66 +421,6 @@ function get_rocket_cache_query_string() { // phpcs:ignore WordPress.NamingConve
 }
 
 /**
- * Get list of JS files to be excluded from defer JS.
- *
- * @since 2.10
- * @author Remy Perona
- *
- * @return array An array of URLs for the JS files to be excluded.
- */
-function get_rocket_exclude_defer_js() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
-	$exclude_defer_js = [
-		'gist.github.com',
-		'content.jwplatform.com',
-		'js.hsforms.net',
-		'www.uplaunch.com',
-		'google.com/recaptcha',
-		'widget.reviews.co.uk',
-		'verify.authorize.net/anetseal',
-		'lib/admin/assets/lib/webfont/webfont.min.js',
-		'app.mailerlite.com',
-		'widget.reviews.io',
-		'simplybook.(.*)/v2/widget/widget.js',
-		'/wp-includes/js/dist/i18n.min.js',
-		'/wp-content/plugins/wpfront-notification-bar/js/wpfront-notification-bar(.*).js',
-		'/wp-content/plugins/oxygen/component-framework/vendor/aos/aos.js',
-		'static.mailerlite.com/data/(.*).js',
-		'cdn.voxpow.com/static/libs/v1/(.*).js',
-		'cdn.voxpow.com/media/trackers/js/(.*).js',
-	];
-
-	if ( get_rocket_option( 'defer_all_js', 0 ) && get_rocket_option( 'defer_all_js_safe', 0 ) ) {
-		$jquery            = site_url( wp_scripts()->registered['jquery-core']->src );
-		$jetpack_jquery    = 'c0.wp.com/c/(?:.+)/wp-includes/js/jquery/jquery.js';
-		$googleapis_jquery = 'ajax.googleapis.com/ajax/libs/jquery/(?:.+)/jquery(?:\.min)?.js';
-		$cdnjs_jquery      = 'cdnjs.cloudflare.com/ajax/libs/jquery/(?:.+)/jquery(?:\.min)?.js';
-		$code_jquery       = 'code.jquery.com/jquery-.*(?:\.min|slim)?.js';
-
-		$exclude_defer_js[] = rocket_clean_exclude_file( $jquery );
-		$exclude_defer_js[] = $jetpack_jquery;
-		$exclude_defer_js[] = $googleapis_jquery;
-		$exclude_defer_js[] = $cdnjs_jquery;
-		$exclude_defer_js[] = $code_jquery;
-	}
-
-	/**
-	 * Filter list of Deferred JavaScript files
-	 *
-	 * @since 2.10
-	 * @author Remy Perona
-	 *
-	 * @param array $exclude_defer_js An array of URLs for the JS files to be excluded.
-	 */
-	$exclude_defer_js = apply_filters( 'rocket_exclude_defer_js', $exclude_defer_js );
-
-	foreach ( $exclude_defer_js as $i => $exclude ) {
-		$exclude_defer_js[ $i ] = str_replace( '#', '\#', $exclude );
-	}
-
-	return $exclude_defer_js;
-}
-
-/**
  * Determine if the key is valid
  *
  * @since 2.9 use hash_equals() to compare the hash values

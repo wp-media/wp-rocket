@@ -23,8 +23,6 @@ class Common_Subscribers extends AbstractServiceProvider {
 	protected $provides = [
 		'db_optimization_subscriber',
 		'webp_subscriber',
-		'expired_cache_purge',
-		'expired_cache_purge_subscriber',
 		'detect_missing_tags',
 	];
 
@@ -42,11 +40,6 @@ class Common_Subscribers extends AbstractServiceProvider {
 		$this->getContainer()->share( 'db_optimization_subscriber', 'WP_Rocket\Subscriber\Admin\Database\Optimization_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'db_optimization' ) )
 			->withArgument( $options );
-		$this->getContainer()->add( 'expired_cache_purge', 'WP_Rocket\Cache\Expired_Cache_Purge' )
-			->withArgument( rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) );
-		$this->getContainer()->share( 'expired_cache_purge_subscriber', 'WP_Rocket\Subscriber\Cache\Expired_Cache_Purge_Subscriber' )
-			->withArgument( $options )
-			->withArgument( $this->getContainer()->get( 'expired_cache_purge' ) );
 		$this->getContainer()->share( 'webp_subscriber', 'WP_Rocket\Subscriber\Media\Webp_Subscriber' )
 			->withArgument( $options )
 			->withArgument( $this->getContainer()->get( 'options_api' ) )

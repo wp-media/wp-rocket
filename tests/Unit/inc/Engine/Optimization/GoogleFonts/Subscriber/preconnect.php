@@ -7,11 +7,12 @@ use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\GoogleFonts\Combine;
+use WP_Rocket\Engine\Optimization\GoogleFonts\CombineV2;
 use WP_Rocket\Engine\Optimization\GoogleFonts\Subscriber;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\GoogleFonts\Subscriber::preconnect
- * @group CombineGoogleFonts
+ * @group GoogleFonts
  */
 class Test_Preconnect extends TestCase {
 	private $options;
@@ -19,7 +20,7 @@ class Test_Preconnect extends TestCase {
 
 	public function setUp() {
 		$this->options    = Mockery::mock( Options_Data::class );
-		$this->subscriber = new Subscriber( Mockery::mock( Combine::class ), $this->options );
+		$this->subscriber = new Subscriber( Mockery::mock( Combine::class ), Mockery::mock( CombineV2::class ), $this->options );
 	}
 
 	/**

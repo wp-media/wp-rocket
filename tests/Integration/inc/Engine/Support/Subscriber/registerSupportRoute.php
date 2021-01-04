@@ -63,13 +63,11 @@ class Test_RegisterSupportRoute extends WPMediaRESTfulTestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldReturnExpected( $params, $referer, $expected ) {
+	public function testShouldReturnExpected( $params, $expected ) {
 		global $wp_version;
 
 		$this->rocket_version = '3.7.5';
-
-		$wp_version              = '5.5';
-		$_SERVER['HTTP_REFERER'] = $referer;
+		$wp_version           = '5.5';
 
 		$body = [
 			'email' => $params['email'] ? self::getApiCredential( 'ROCKET_EMAIL' ) : '',
