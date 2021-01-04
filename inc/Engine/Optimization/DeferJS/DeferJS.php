@@ -25,6 +25,7 @@ class DeferJS {
 		'window.lazyLoadOptions',
 		'N.N2_',
 		'rev_slider_wrapper',
+		'FB3D_CLIENT_LOCALE',
 	];
 
 	/**

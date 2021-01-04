@@ -141,11 +141,9 @@ class Combine extends AbstractGFOptimization {
 	 * @return string
 	 */
 	private function get_combine_tag() {
-		$display = $this->get_font_display_value();
-
 		return sprintf(
 			'<link rel="stylesheet" href="%s" />', // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
-			esc_url( "https://fonts.googleapis.com/css?family={$this->fonts}{$this->subsets}&display={$display}" )
+			esc_url( "https://fonts.googleapis.com/css?family={$this->fonts}{$this->subsets}&display=swap" )
 		);
 	}
 }

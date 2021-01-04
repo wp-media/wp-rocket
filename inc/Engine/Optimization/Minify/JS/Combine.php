@@ -680,6 +680,8 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'porto_infinite_scroll',
 			'.adace-loader-',
 			'adace_load_',
+			'tagGroupsAccordiontaggroupscloudaccordion',
+			'tagGroupsTabstaggroupscloudtabs',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
