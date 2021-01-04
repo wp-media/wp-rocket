@@ -316,6 +316,37 @@ return [
 			],
 		],
 
+		'combineNotfoundCssFiles' => [
+			'original' => '<html>' .
+			              '<head>' .
+			              '<title>Sample Page</title>' .
+			              '<link rel="stylesheet" href="http://example.org/wp-content/themes/twentytwenty/notfound.css" type="text/css" media="all">' .
+			              '</head>' .
+			              '<body>' .
+			              '</body>' .
+			              '</html>',
+
+			'expected' => [
+				'html'  => '<html>' .
+				           '<head>' .
+				           '<title>Sample Page</title>' .
+				           '<link rel="stylesheet" href="http://example.org/wp-content/themes/twentytwenty/notfound.css" type="text/css" media="all">' .
+				           '</head>' .
+				           '<body>' .
+				           '</body>' .
+				           '</html>',
+				'files' => [],
+				'css' => false,
+			],
+
+			'settings' => [
+				'minify_concatenate_css' => 1,
+				'cdn'                    => 0,
+				'cdn_cnames'             => [],
+				'cdn_zone'               => [],
+			],
+		],
+
 		'combineCssFilesWithImport' => [
 			'original' => '<html>' .
 			              '<head>' .
