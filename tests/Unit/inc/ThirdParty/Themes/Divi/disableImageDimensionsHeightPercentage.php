@@ -3,6 +3,8 @@
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Themes\Divi;
 
 use Mockery;
+use WP_Rocket\Admin\Options;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 use WP_Rocket\ThirdParty\Themes\Divi;
@@ -19,8 +21,8 @@ class Test_DisableImageDimensionsHeightPercentage extends TestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testAddDiviToDescription( $config, $expected ) {
-		$options_api = Mockery::mock( 'WP_Rocket\Admin\Options' );
-		$options     = Mockery::mock( 'WP_Rocket\Admin\Options_Data' );
+		$options_api = Mockery::mock( Options::class );
+		$options     = Mockery::mock( Options_Data::class );
 		$theme       = new WP_Theme( $config['theme-name'], 'wp-content/themes/' );
 		$theme->set_name( $config['theme-name'] );
 
