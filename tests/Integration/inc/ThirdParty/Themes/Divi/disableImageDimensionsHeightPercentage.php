@@ -29,14 +29,13 @@ class Test_DisableImageDimensionsHeightPercentage extends WPThemeTestcase {
 		parent::setUp();
 
 		self::$container->get( 'event_manager' )->add_subscriber( self::$container->get( 'divi' ) );
+		add_filter( 'rocket_specify_image_dimensions', '__return_true' );
 	}
 
 	public function tearDown() {
-		if ( isset( $this->config_data['image_dimensions'] ) ){
-			remove_filter( 'pre_get_rocket_option_image_dimensions', [$this, 'set_image_dimensions'] );
-		}
-
+		remove_filter( 'rocket_specify_image_dimensions', '__return_true' );
 		unset( $GLOBALS['wp'] );
+
 		parent::tearDown();
 	}
 
@@ -57,7 +56,6 @@ class Test_DisableImageDimensionsHeightPercentage extends WPThemeTestcase {
 		}
 
 		switch_theme( $config['stylesheet'] );
-		add_filter( 'rocket_specify_image_dimensions', '__return_true' );
 
 		$this->assertSame(
 			$this->format_the_html( $html['expected'] ),
