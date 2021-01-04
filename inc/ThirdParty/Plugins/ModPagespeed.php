@@ -67,11 +67,7 @@ class ModPagespeed implements Subscriber_Interface {
 			return false;
 		}
 
-		if ( ! empty( $headers['X-Mod-Pagespeed'] ) || ! empty( $headers['X-Page-Speed'] ) ) {
-			return true;
-		}
-
-		return false;
+		return ( ! empty( $headers['X-Mod-Pagespeed'] ) || ! empty( $headers['X-Page-Speed'] ) );
 	}
 
 	/**
@@ -84,6 +80,10 @@ class ModPagespeed implements Subscriber_Interface {
 			return;
 		}
 
+		if ( 'settings_page_wprocket' !== get_current_screen()->id ) {
+			return;
+		}
+
 		$notice_name = 'rocket_error_mod_pagespeed';
 
 		if ( in_array( $notice_name, (array) get_user_meta( get_current_user_id(), 'rocket_boxes', true ), true ) ) {
@@ -91,14 +91,14 @@ class ModPagespeed implements Subscriber_Interface {
 		}
 
 		// translators: %1$s is WP Rocket plugin name, %2$s is opening <a> tag, %3$s is closing </a> tag.
-		$error_message = '<p>' . sprintf( __( '<strong>%1$s</strong>: Mod PageSpeed is not compatible with this plugin and may cause unexpected results. %2$sMore Info%3$s', 'rocket' ), rocket_get_constant( 'WP_ROCKET_PLUGIN_NAME' ), '<a target="_blank" href="https://docs.wp-rocket.me/article/1376-mod-pagespeed">', '</a>' ) . '</p>';
+		$error_message = sprintf( __( '<strong>%1$s</strong>: Mod PageSpeed is not compatible with this plugin and may cause unexpected results. %2$sMore Info%3$s', 'rocket' ), rocket_get_constant( 'WP_ROCKET_PLUGIN_NAME' ), '<a target="_blank" href="https://docs.wp-rocket.me/article/1376-mod-pagespeed">', '</a>' );
 
 		rocket_notice_html(
 			[
-				'status'  => 'error',
-				'message' => $error_message,
-				'dismissible'      => '',
-				'dismiss_button'   => $notice_name,
+				'status'         => 'error',
+				'message'        => $error_message,
+				'dismissible'    => '',
+				'dismiss_button' => $notice_name,
 			]
 		);
 	}
