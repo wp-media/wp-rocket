@@ -22,7 +22,7 @@ function rocket_generate_advanced_cache_file( $advanced_cache = null ) {
 	 * @param bool True (default) to go ahead with advanced cache file generation; false to stop generation.
 	 */
 	if ( ! (bool) apply_filters( 'rocket_generate_advanced_cache_file', true ) ) {
-		return;
+		return false;
 	}
 
 	static $done = false;
@@ -32,7 +32,7 @@ function rocket_generate_advanced_cache_file( $advanced_cache = null ) {
 	}
 
 	if ( $done ) {
-		return;
+		return false;
 	}
 	$done = true;
 
@@ -41,7 +41,7 @@ function rocket_generate_advanced_cache_file( $advanced_cache = null ) {
 		$advanced_cache = $container->get( 'advanced_cache' );
 	}
 
-	rocket_put_content(
+	return rocket_put_content(
 		rocket_get_constant( 'WP_CONTENT_DIR' ) . '/advanced-cache.php',
 		$advanced_cache->get_advanced_cache_content()
 	);
@@ -725,7 +725,7 @@ function rocket_clean_domain( $lang = '', $filesystem = null ) {
 	$urls = (array) apply_filters( 'rocket_clean_domain_urls', $urls, $lang );
 	$urls = array_filter( $urls );
 	if ( empty( $urls ) ) {
-		return;
+		return false;
 	}
 
 	/** This filter is documented in inc/front/htaccess.php */
@@ -782,6 +782,8 @@ function rocket_clean_domain( $lang = '', $filesystem = null ) {
 		 */
 		do_action( 'after_rocket_clean_domain', $root, $lang, $url ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	}
+
+	return true;
 }
 
 /**
