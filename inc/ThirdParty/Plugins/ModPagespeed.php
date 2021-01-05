@@ -34,7 +34,7 @@ class ModPagespeed implements Subscriber_Interface {
 		$has_pagespeed = get_transient( 'rocket_mod_pagespeed_enabled' );
 
 		if ( false === $has_pagespeed ) {
-			$has_pagespeed = self::has_pagespeed();
+			$has_pagespeed = $this->has_pagespeed();
 			set_transient( 'rocket_mod_pagespeed_enabled', (int) $has_pagespeed, DAY_IN_SECONDS );
 		}
 
@@ -48,7 +48,7 @@ class ModPagespeed implements Subscriber_Interface {
 	 *
 	 * @return bool
 	 */
-	private static function has_pagespeed(): bool {
+	private function has_pagespeed(): bool {
 		global $is_apache;
 
 		if ( $is_apache && function_exists( 'apache_get_modules' ) ) {
