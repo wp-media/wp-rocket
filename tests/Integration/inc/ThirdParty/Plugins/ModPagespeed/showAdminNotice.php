@@ -7,6 +7,7 @@ use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Plugins\ModPagespeed::show_admin_notice
+ * @group AdminOnly
  * @group mod_pagespeed
  * @group ThirdParty
  */
@@ -81,7 +82,7 @@ class Test_ShowAdminNotice extends TestCase {
 		if ( isset( $config['home_response_headers'] ) ) {
 			Functions\expect( 'wp_remote_get' )
 				->once()
-				->with( 'http://example.org', ['sslverify'=>false] )
+				->with( 'http://example.org', ['timeout'=>3,'sslverify'=>false] )
 				->andReturn( 'response' );
 			Functions\expect( 'wp_remote_retrieve_headers' )
 				->once()
@@ -89,18 +90,10 @@ class Test_ShowAdminNotice extends TestCase {
 				->andReturn( $config['home_response_headers'] );
 		}
 
-		if ( $expected['show_notice'] ) {
-			Functions\when( 'rocket_notice_html' )->alias(
-				function ( $args ) {
-					echo '<div class="notice notice-warning ">' . $args['message'] . '<p><a class="rocket-dismiss" href="http://example.org/wp-admin/admin-post.php?action=rocket_ignore&amp;box=rocket_warning_cron&amp;_wpnonce=123456">Dismiss this notice.</a></p></div>';
-				}
-			);
-		}
-
 		ob_start();
 		do_action( 'admin_notices' );
 		$actual = ob_get_clean();
 
-		$this->assertSame( $this->format_the_html( $expected['html'] ?? '' ), $this->format_the_html( $actual ) );
+		$this->assertContains( $this->format_the_html( str_replace('{{nonce}}', wp_create_nonce('rocket_ignore_rocket_error_mod_pagespeed'), $expected['html'] ?? '') ), $this->format_the_html( $actual ) );
 	}
 }

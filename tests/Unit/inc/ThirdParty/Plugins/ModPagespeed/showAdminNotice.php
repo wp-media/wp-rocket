@@ -65,7 +65,7 @@ class Test_ShowAdminNotice extends TestCase {
 			Functions\expect( 'home_url' )->andReturn( 'http://example.org' );
 			Functions\expect( 'wp_remote_get' )
 				->once()
-				->with( 'http://example.org', ['sslverify'=>false] )
+				->with( 'http://example.org', ['timeout' => 3,'sslverify'=>false] )
 				->andReturn( 'response' );
 			Functions\expect( 'wp_remote_retrieve_headers' )
 				->once()
@@ -83,7 +83,7 @@ class Test_ShowAdminNotice extends TestCase {
 		if ( $expected['show_notice'] ) {
 			Functions\when( 'rocket_notice_html' )->alias(
 				function ( $args ) {
-					echo '<div class="notice notice-warning ">' . $args['message'] . '<p><a class="rocket-dismiss" href="http://example.org/wp-admin/admin-post.php?action=rocket_ignore&amp;box=rocket_warning_cron&amp;_wpnonce=123456">Dismiss this notice.</a></p></div>';
+					echo '<div class="notice notice-' . $args['status'] . ' "><p>' . $args['message'] . '</p><p><a class="rocket-dismiss" href="http://example.org/wp-admin/admin-post.php?action=rocket_ignore&amp;box=rocket_error_mod_pagespeed&amp;_wpnonce=123456">Dismiss this notice.</a></p></div>';
 				}
 			);
 		}
@@ -92,6 +92,6 @@ class Test_ShowAdminNotice extends TestCase {
 		$this->subscriber->show_admin_notice();
 		$actual = ob_get_clean();
 
-		$this->assertSame( $this->format_the_html( $expected['html'] ?? '' ), $this->format_the_html( $actual ) );
+		$this->assertSame( $this->format_the_html( str_replace("{{nonce}}", "123456", $expected['html'] ?? '' ) ), $this->format_the_html( $actual ) );
 	}
 }

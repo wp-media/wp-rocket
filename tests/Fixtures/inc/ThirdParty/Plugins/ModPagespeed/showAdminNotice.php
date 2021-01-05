@@ -1,13 +1,14 @@
 <?php
 
 $notice_html = <<<HTML
-<div class="notice notice-warning ">
-<strong>
+<div class="notice notice-error ">
+<p><strong>
 WP Rocket</strong>
 : Mod PageSpeed is not compatible with this plugin and may cause unexpected results.<a target="_blank" href="https://docs.wp-rocket.me/article/1376-mod-pagespeed">
 More Info</a>
+</p>
 <p>
-<a class="rocket-dismiss" href="http://example.org/wp-admin/admin-post.php?action=rocket_ignore&amp;box=rocket_warning_cron&amp;_wpnonce=123456">
+<a class="rocket-dismiss" href="http://example.org/wp-admin/admin-post.php?action=rocket_ignore&amp;box=rocket_error_mod_pagespeed&amp;_wpnonce={{nonce}}">
 Dismiss this notice.</a>
 </p>
 </div>
