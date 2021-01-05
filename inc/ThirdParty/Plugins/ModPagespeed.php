@@ -60,14 +60,9 @@ class ModPagespeed implements Subscriber_Interface {
 		$home_request = wp_remote_get(
 			home_url(),
 			[
-				'timeout'   => 0.01,
 				'sslverify' => apply_filters( 'https_local_ssl_verify', false ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			]
 		);
-
-		if ( is_wp_error( $home_request ) ) {
-			return false;
-		}
 
 		$headers = wp_remote_retrieve_headers( $home_request );
 
