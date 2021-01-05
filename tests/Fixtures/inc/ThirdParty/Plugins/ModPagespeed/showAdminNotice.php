@@ -29,7 +29,7 @@ return [
 	'shouldNotShowNoticeWhenOtherScreen' => [
 		'config' => [
 			'capability' => true,
-			'current_screen' => 'welcome'
+			'current_screen' => 'front'
 		],
 		'expected' => [
 			'show_notice' => 0,
