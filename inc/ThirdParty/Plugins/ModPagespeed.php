@@ -18,10 +18,6 @@ class ModPagespeed implements Subscriber_Interface {
 	 * @inheritDoc
 	 */
 	public static function get_subscribed_events(): array {
-		if ( ! self::has_pagespeed_with_cache() ) {
-			return [];
-		}
-
 		return [
 			'admin_notices' => 'show_admin_notice',
 		];
@@ -34,7 +30,7 @@ class ModPagespeed implements Subscriber_Interface {
 	 *
 	 * @return bool Status of mod_pagespeed.
 	 */
-	private static function has_pagespeed_with_cache() {
+	private function has_pagespeed_with_cache() {
 		$has_pagespeed = get_transient( 'rocket_mod_pagespeed_enabled' );
 
 		if ( false === $has_pagespeed ) {
@@ -61,7 +57,19 @@ class ModPagespeed implements Subscriber_Interface {
 			}
 		}
 
-		$headers = get_headers( home_url() ?? '/', true );
+		$home_request = wp_remote_get(
+			home_url(),
+			[
+				'timeout'   => 0.01,
+				'sslverify' => apply_filters( 'https_local_ssl_verify', false ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+			]
+		);
+
+		if ( is_wp_error( $home_request ) ) {
+			return false;
+		}
+
+		$headers = wp_remote_retrieve_headers( $home_request );
 
 		if ( empty( $headers ) ) {
 			return false;
@@ -81,6 +89,10 @@ class ModPagespeed implements Subscriber_Interface {
 		}
 
 		if ( 'settings_page_wprocket' !== get_current_screen()->id ) {
+			return;
+		}
+
+		if ( ! $this->has_pagespeed_with_cache() ) {
 			return;
 		}
 
