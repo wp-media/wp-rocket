@@ -256,10 +256,10 @@ class Image {
 				continue;
 			}
 
+			$lazy_sources = 0;
+
 			if ( preg_match_all( '#<source(?<atts>\s.+)>#iUs', $picture['sources'], $sources, PREG_SET_ORDER ) ) {
 				$sources = array_unique( $sources, SORT_REGULAR );
-
-				$lazy_sources = 0;
 
 				foreach ( $sources as $source ) {
 					$lazyload_srcset = preg_replace( '/([\s"\'])srcset/i', '\1data-lazy-srcset', $source[0] );
@@ -287,7 +287,7 @@ class Image {
 			$img_lazy  = $this->replaceImage( $img );
 			$img_lazy .= $this->noscript( $img[0] );
 			$safe_img = str_replace('/', '\/', preg_quote( $img[0], '#' ));
-			$html      = preg_replace( '#<noscript[^>]*>.*' . $safe_img . '.*<\/noscript>(*SKIP)(*FAIL)|' . $safe_img . '#iU', $img_lazy, $html );
+			$html      = preg_replace( '#<noscript[^>]*>.*' . $safe_img . '.*<\/noscript>(*SKIP)(*FAIL)|' . $safe_img . '#i', $img_lazy, $html );
 
 			unset( $img_lazy );
 		}

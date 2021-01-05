@@ -46,7 +46,7 @@ body {
 CSS
 		],
 
-		'shouldNotChangeFontDisplayAttributeWhenAlreadySetInRule' => [
+		'shouldChangeFontDisplayAttributeWhenAlreadySetInRule' => [
 			'css'      => <<<CSS
 @font-face {
 	font-family: 'ETmodules';
@@ -66,7 +66,7 @@ CSS
 	src: url("core/admin/fonts/modules.eot#iefix")
 	format("woff"), url("core/admin/fonts/modules.svg#ETModules");
 	font-weight: normal;
-	font-display: auto;
+	font-display: swap;
 	font-style: normal;
 }
 CSS

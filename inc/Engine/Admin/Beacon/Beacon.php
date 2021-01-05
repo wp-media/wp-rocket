@@ -467,6 +467,12 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://fr.docs.wp-rocket.me/article/196-exclure-pages-cache/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
+			'exclude_cookie'             => [
+				'en' => [
+					'id'  => '5fe5462df24ccf588e3fe804',
+					'url' => 'https://docs.wp-rocket.me/article/1382-never-cache-cookies/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
 			'always_purge'               => [
 				'en' => [
 					'id'  => '555c7e9ee4b027e1978e17a5',
