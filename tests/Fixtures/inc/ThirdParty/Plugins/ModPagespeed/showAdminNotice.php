@@ -82,7 +82,7 @@ return [
 			'current_screen' => 'settings_page_wprocket',
 			'rocket_mod_pagespeed_enabled' => false,
 			'boxes' => [],
-			'apache_get_modules' => [ 'mod_pagespeed' ]
+			'apache_mod_loaded' => true
 		],
 		'expected' => [
 			'show_notice' => 1,
@@ -96,7 +96,7 @@ return [
 			'capability' => true,
 			'current_screen' => 'settings_page_wprocket',
 			'rocket_mod_pagespeed_enabled' => false,
-			'apache_get_modules' => [],
+			'apache_mod_loaded' => false,
 			'home_response_headers' => [],
 		],
 		'expected' => [

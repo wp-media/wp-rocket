@@ -49,12 +49,10 @@ class ModPagespeed implements Subscriber_Interface {
 	 * @return bool
 	 */
 	private function has_pagespeed(): bool {
-		global $is_apache;
+		$apache_module_loaded = apache_mod_loaded( 'mod_pagespeed', false );
 
-		if ( $is_apache && function_exists( 'apache_get_modules' ) ) {
-			if ( in_array( 'mod_pagespeed', apache_get_modules(), true ) ) {
-				return true;
-			}
+		if ( $apache_module_loaded ) {
+			return true;
 		}
 
 		$home_request = wp_remote_get(

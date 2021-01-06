@@ -14,8 +14,6 @@ use WP_Rocket\Tests\Integration\TestCase;
 class Test_ShowAdminNotice extends TestCase {
 	protected static $mockCommonWpFunctionsInSetUp = true;
 
-	private $is_apache;
-
 	private static $admin_user_id  = 0;
 	private static $editor_user_id = 0;
 
@@ -28,19 +26,6 @@ class Test_ShowAdminNotice extends TestCase {
 		self::$admin_user_id = static::factory()->user->create( [ 'role' => 'administrator' ] );
 		//create an editor user that has no capability
 		self::$editor_user_id = static::factory()->user->create( [ 'role' => 'editor' ] );
-	}
-
-	public function setUp() {
-		parent::setUp();
-
-		global $is_apache;
-		$this->is_apache = $is_apache;
-	}
-
-	public function tearDown() {
-		parent::tearDown();
-		global $is_apache;
-		$is_apache = $this->is_apache;
 	}
 
 	/**
@@ -66,18 +51,7 @@ class Test_ShowAdminNotice extends TestCase {
 			delete_user_meta( $user_id, 'rocket_boxes' );
 		}
 
-		global $is_apache;
-
-		if ( isset( $config['apache_get_modules'] ) ) {
-			$is_apache = true;
-			Functions\when( 'apache_get_modules' )->alias(
-				function () use ( $config ) {
-					return $config['apache_get_modules'];
-				}
-			);
-		}else{
-			$is_apache = false;
-		}
+		Functions\when( 'apache_mod_loaded' )->justReturn( $config['apache_mod_loaded'] ?? false );
 
 		if ( isset( $config['home_response_headers'] ) ) {
 			Functions\expect( 'wp_remote_get' )

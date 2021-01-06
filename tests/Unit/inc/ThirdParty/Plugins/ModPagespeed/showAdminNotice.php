@@ -48,18 +48,7 @@ class Test_ShowAdminNotice extends TestCase {
 				->andReturn( $config['boxes'] );
 		}
 
-		global $is_apache;
-
-		if ( isset( $config['apache_get_modules'] ) ) {
-			$is_apache = true;
-			Functions\when( 'apache_get_modules' )->alias(
-				function () use ( $config ) {
-					return $config['apache_get_modules'];
-				}
-			);
-		}else{
-			$is_apache = false;
-		}
+		Functions\when( 'apache_mod_loaded' )->justReturn( $config['apache_mod_loaded'] ?? false );
 
 		if ( isset( $config['home_response_headers'] ) ) {
 			Functions\expect( 'home_url' )->andReturn( 'http://example.org' );
