@@ -253,7 +253,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.8.3
 	 *
-	 * @param array  $urls The initial array of wp_resource_hint urls.
+	 * @param array  $urls          The initial array of wp_resource_hint urls.
 	 * @param string $relation_type The relation type for the hint: eg., 'preconnect', 'prerender', etc.
 	 *
 	 * @return array The filtered urls.
@@ -270,16 +270,21 @@ class Subscriber implements Subscriber_Interface {
 		) {
 			return $urls;
 		}
-
 		$cdn_urls = $this->get_cdn_hosts();
 
-		if ( empty( $cdn_urls) ) {
+		if ( empty( $cdn_urls ) ) {
 			return $urls;
 		}
 
 		foreach ( $cdn_urls as $cdn_url ) {
-			$urls[] = $cdn_url;
-			$urls[] = [ 'href' => $cdn_url, 'crossorigin' => 'crossorigin' ];
+			//Todo: We cannot add more than one instance of a domain url
+			//on the wp_resource_hint() hook -- wp_resource_hint() will
+			//only actually print the first one.
+			$urls[] = '//123456.rocketcdn.me';
+			$urls[] = [
+				'href' => '//123456.rocketcdn.me',
+				'crossorigin',
+			];
 		}
 
 		return $urls;
