@@ -243,7 +243,7 @@ class ImageDimensions {
 		 *
 		 * @param bool Specify image dimensions for external images or not.
 		 */
-		return ini_get( 'allow_url_fopen' ) && apply_filters( 'rocket_specify_image_dimensions_for_distant', true );
+		return ini_get( 'allow_url_fopen' ) && apply_filters( 'rocket_specify_image_dimensions_for_distant', false );
 	}
 
 	/**
@@ -284,7 +284,7 @@ class ImageDimensions {
 			return false;
 		}
 
-		return strpos( $file_headers[0], '404' ) === false;
+		return false !== strstr( $file_headers[0], '200' );
 	}
 
 	/**

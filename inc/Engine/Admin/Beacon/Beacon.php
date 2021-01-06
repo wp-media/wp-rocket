@@ -351,16 +351,6 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://fr.​docs.​wp-rocket.​me/article/1270-chargement-differe-des-fichiers-js/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
-			'jquery_migrate'             => [
-				'en' => [
-					'id'  => '5e1d27de2c7d3a7e9ae627e8',
-					'url' => 'https://docs.wp-rocket.me/article/1304-remove-jquery-migrate/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-				'fr' => [
-					'id'  => '5e5e5bfe04286364bc962504',
-					'url' => 'https://fr.docs.wp-rocket.me/article/1309-supprimer-jquery-migrate/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-			],
 			'delay_js'                   => [
 				'en' => [
 					'id'  => '5f359695042863444aa04e26',
@@ -475,6 +465,12 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 				'fr' => [
 					'id'  => '56941c0cc69791436155d8ab',
 					'url' => 'https://fr.docs.wp-rocket.me/article/196-exclure-pages-cache/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
+			'exclude_cookie'             => [
+				'en' => [
+					'id'  => '5fe5462df24ccf588e3fe804',
+					'url' => 'https://docs.wp-rocket.me/article/1382-never-cache-cookies/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'always_purge'               => [
@@ -623,19 +619,19 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 			],
 			'image_dimensions'           => [
 				'en' => [
-					'id' => '5fc70216de1bfa158fb54737',
+					'id'  => '5fc70216de1bfa158fb54737',
 					'url' => 'https://docs.wp-rocket.me/article/1366-add-missing-image-dimensions/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'exclude_defer_js'           => [
 				'en' => [
-					'id' => '59236dfb0428634b4a3358f9',
+					'id'  => '59236dfb0428634b4a3358f9',
 					'url' => 'https://docs.wp-rocket.me/article/976-exclude-files-from-defer-js/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'exclude_lazyload'           => [
 				'en' => [
-					'id' => '5418c792e4b0e7b8127bed99',
+					'id'  => '5418c792e4b0e7b8127bed99',
 					'url' => 'https://docs.wp-rocket.me/article/15-disabling-lazy-load-on-specific-images/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],

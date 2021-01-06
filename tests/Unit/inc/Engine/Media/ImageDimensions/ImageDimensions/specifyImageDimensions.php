@@ -74,7 +74,7 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 			if ( isset( $config['rocket_specify_image_dimensions_for_distant_filter'] ) ){
 				Filters\expectApplied( 'rocket_specify_image_dimensions_for_distant' )
 					->once()
-					->with( true )
+					->with( false )
 					->andReturn( $config['rocket_specify_image_dimensions_for_distant_filter'] );
 			}
 		}

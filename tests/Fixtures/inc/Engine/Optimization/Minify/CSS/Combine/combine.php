@@ -29,6 +29,25 @@ return [
 			'site_url' => 'http://example.org',
 		],
 
+		'combineNotfoundFiles' => [
+			'original' =>
+				'<html><head><title>Sample Page</title>' .
+				'<link rel="stylesheet" href="http://example.org/wp-content/themes/twentytwenty/notfound.css" type="text/css" media="all">' .
+				'</head><body></body></html>',
+
+			'expected' => [
+				'html'  => '<html><head><title>Sample Page</title>' .
+				           '<link rel="stylesheet" href="http://example.org/wp-content/themes/twentytwenty/notfound.css" type="text/css" media="all">' .
+				           '</head><body></body></html>',
+				'files' => [],
+				'css' => false,
+			],
+
+			'cdn_host' => [],
+			'cdn_url'  => 'http://example.org',
+			'site_url' => 'http://example.org',
+		],
+
 		'combineCssFilesWithImport' => [
 			'original' =>
 				'<html><head><title>Sample Page</title>' .

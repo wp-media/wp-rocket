@@ -199,7 +199,6 @@ class Plugin {
 			'minify_css_subscriber',
 			'minify_js_subscriber',
 			'cache_dynamic_resource',
-			'dequeue_jquery_migrate_subscriber',
 			'embeds_subscriber',
 			'emojis_subscriber',
 			'delay_js_subscriber',
@@ -256,6 +255,7 @@ class Plugin {
 			'syntaxhighlighter_subscriber',
 			'elementor_subscriber',
 			'bridge_subscriber',
+			'avada_subscriber',
 			'ngg_subscriber',
 			'smush_subscriber',
 			'cache_dir_size_check',
@@ -277,6 +277,7 @@ class Plugin {
 			'preload_links_admin_subscriber',
 			'preload_links_subscriber',
 			'support_subscriber',
+			'mod_pagespeed',
 		];
 
 		$host_type = HostResolver::get_host_service();
