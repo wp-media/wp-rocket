@@ -62,4 +62,4 @@ jobs:
         env:
           webhook_type: 'json-extended'
           webhook_url: https://awx.wp-media.me:443/api/v2/job_templates/34/github/
-          webhook_secret: ${{ secrets.WEBHOOK_PLUGIN_DEPLOY }}
+          webhook_secret: ${{ secrets.WEBHOOK_KEY_PLUGIN }}
