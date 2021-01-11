@@ -4,13 +4,14 @@ defined( 'ABSPATH' ) || exit;
 
 $aioseo_v3 = defined( 'AIOSEOP_VERSION' );
 $aioseo_v4 = defined( 'AIOSEO_VERSION' ) && function_exists( 'aioseo' );
+
 if ( $aioseo_v3 || $aioseo_v4 ) :
-	$aioseop_options = '';
 	$sitemap_enabled = false;
 	if ( $aioseo_v3 ) {
 		$aioseop_options = get_option( 'aioseop_options' );
-		$sitemap_enabled = isset( $aioseop_options['modules']['aiosp_feature_manager_options']['aiosp_feature_manager_enable_sitemap'] ) && 'on' === $aioseop_options['modules']['aiosp_feature_manager_options']['aiosp_feature_manager_enable_sitemap'];
+		$sitemap_enabled = ( isset( $aioseop_options['modules']['aiosp_feature_manager_options']['aiosp_feature_manager_enable_sitemap'] ) && 'on' === $aioseop_options['modules']['aiosp_feature_manager_options']['aiosp_feature_manager_enable_sitemap'] ) || ( ! isset( $aioseop_options['modules']['aiosp_feature_manager_options'] ) && isset( $aioseop_options['modules']['aiosp_sitemap_options'] ) );
 	}
+
 	/**
 	 * Improvement with All in One SEO Pack: auto-detect the XML sitemaps for the preload option
 	 *
@@ -66,6 +67,20 @@ if ( $aioseo_v3 || $aioseo_v4 ) :
 			if ( ! get_rocket_option( 'all_in_one_seo_xml_sitemap', false ) ) {
 				return $sitemaps;
 			}
+
+			$aioseo_v3 = defined( 'AIOSEOP_VERSION' );
+			$aioseo_v4 = defined( 'AIOSEO_VERSION' ) && function_exists( 'aioseo' );
+
+			if ( ! $aioseo_v3 && ! $aioseo_v4 ) {
+				return $sitemaps;
+			}
+
+			$sitemap_enabled = false;
+			if ( $aioseo_v3 ) {
+				$aioseop_options = get_option( 'aioseop_options' );
+				$sitemap_enabled = ( isset( $aioseop_options['modules']['aiosp_feature_manager_options']['aiosp_feature_manager_enable_sitemap'] ) && 'on' === $aioseop_options['modules']['aiosp_feature_manager_options']['aiosp_feature_manager_enable_sitemap'] ) || ( ! isset( $aioseop_options['modules']['aiosp_feature_manager_options'] ) && isset( $aioseop_options['modules']['aiosp_sitemap_options'] ) );
+			}
+
 			if (
 				( $aioseo_v3 && ! $sitemap_enabled ) ||
 				( $aioseo_v4 && ! aioseo()->options->sitemap->general->enable )
@@ -113,4 +128,3 @@ if ( $aioseo_v3 || $aioseo_v4 ) :
 		add_filter( 'rocket_sitemap_preload_options', 'rocket_sitemap_preload_all_in_one_seo_option' );
 	}
 endif;
-
