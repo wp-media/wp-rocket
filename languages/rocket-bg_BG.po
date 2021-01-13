@@ -51,10 +51,10 @@ msgid ""
 "from working correctly. Please get in touch with Kinsta support through your"
 " %1$sMyKinsta%2$s account to resolve this issue."
 msgstr ""
-"Вашата инсталация изглежда има липсващи Kinsta файлове управляващи "
-"изчистването на кеша и CDN, което ще доведе Вашата Kinsta инсталация и WP "
-"Rocket до неправилна работа. Моля свържете се с Kinsta поддръжката чрез "
-"Вашият %1$sMyKinsta%2$sакаунт за да разрешите този проблем. "
+"Вашата инсталация има липсващи Kinsta файлове управляващи "
+"изчистването на кеша и CDN, което ще доведе до неправилна работа Вашата Kinsta инсталация и WP "
+"Rocket . Моля свържете се с Kinsta поддръжката чрез "
+"Вашият %1$sMyKinsta%2$s акаунт за да разрешите този проблем. "
 
 #: inc/3rd-party/plugins/jetpack.php:86
 msgid "Jetpack XML Sitemaps"
@@ -80,7 +80,7 @@ msgstr ""
 
 #: inc/3rd-party/plugins/seo/all-in-one-seo-pack.php:86
 msgid "All in One SEO XML sitemap"
-msgstr "Всичко е едно SEO XML карта на сайта"
+msgstr "Всичко в една SEO XML карта на сайта"
 
 #: inc/3rd-party/plugins/seo/rank-math-seo.php:32
 msgid "Rank Math XML sitemap"
@@ -117,14 +117,14 @@ msgstr "Настройки"
 
 #: inc/admin/admin.php:64 inc/admin/admin.php:86 inc/admin/admin.php:105
 msgid "Clear this cache"
-msgstr "Изчистете този кеш"
+msgstr "Изчистване на кеша"
 
 #: inc/admin/admin.php:249 inc/admin/admin.php:264
 #: inc/classes/class-wp-rocket-requirements-check.php:204
 #: inc/classes/class-wp-rocket-requirements-check.php:214
 #, php-format
 msgid "%s Update Rollback"
-msgstr "%s Връщания на обновяване"
+msgstr "%s Актуализиране на връщането"
 
 #: inc/admin/admin.php:290
 #, php-format
@@ -133,91 +133,90 @@ msgstr ""
 
 #: inc/admin/admin.php:529
 msgid "Settings import failed: you do not have the permissions to do this."
-msgstr ""
-"Импортиране на настройките са провалени: Вие нямате права да правите това."
+msgstr "Импортирането на настройки не бе успешно: нямате разрешения за това"
 
 #: inc/admin/admin.php:533
 msgid "Settings import failed: no file uploaded."
-msgstr "Импортиране на настройките са провалени: няма качен файл."
+msgstr "Импортирането на настройките не бе успешно: няма качени файлове."
 
 #: inc/admin/admin.php:537
 msgid "Settings import failed: incorrect filename."
-msgstr "Настройките за импортиране са провалени: некоректно име на файл."
+msgstr "Неуспешно импортиране на настройки: неправилно име на файл."
 
 #: inc/admin/admin.php:546
 msgid "Settings import failed: incorrect filetype."
-msgstr "Настройките за импортиране са провалени: некорекетн тип на файла."
+msgstr "Неуспешно импортиране на настройки: неправилен тип файл."
 
 #: inc/admin/admin.php:554
 msgid "Settings import failed: "
-msgstr ""
+msgstr "Импортирането на настройки не бе успешно: "
 
 #: inc/admin/admin.php:571
 msgid "Settings import failed: unexpected file content."
-msgstr ""
+msgstr "Неуспешен импорт на настройки: непредвидено съдържание на файл."
 
 #: inc/admin/admin.php:592
 msgid "Settings imported and saved."
-msgstr "Настройките са импортнати и запазени."
+msgstr "Настройките са импортирани и запазени."
 
 #: inc/admin/options.php:101
 #, php-format
 msgid "Cloudflare development mode error: %s"
-msgstr "Грешка за режим на разработчик на Cloudflare: %s"
+msgstr "Cloudflare грешка при режим на разработване: %s"
 
 #: inc/admin/options.php:107
 #, php-format
 msgid "Cloudflare development mode %s"
-msgstr "Режим на разработчик за Cloudflare %s"
+msgstr "Cloudflare режим на разработка %s"
 
 #: inc/admin/options.php:124
 #, php-format
 msgid "Cloudflare cache level error: %s"
-msgstr "Грешка в нивото на кеша за Cloudflare: %s"
+msgstr "Cloudflare грешка в нивото на кеша: %s"
 
 #: inc/admin/options.php:128
 msgctxt "Cloudflare caching level"
 msgid "Standard"
-msgstr "Стандартни"
+msgstr "Стандартен"
 
 #: inc/admin/options.php:134
 #, php-format
 msgid "Cloudflare cache level set to %s"
-msgstr "Нивото на кеша за Cloudflare е зададено на %s"
+msgstr "Нивото на кеша в Cloudflare е зададено на %s"
 
 #: inc/admin/options.php:146
 #, php-format
 msgid "Cloudflare minification error: %s"
-msgstr "Грешка в минификацията за Cloudflare: %s"
+msgstr ""
 
 #: inc/admin/options.php:152
 #, php-format
 msgid "Cloudflare minification %s"
-msgstr "Минификация на Cloudflare %s"
+msgstr ""
 
 #: inc/admin/options.php:164
 #, php-format
 msgid "Cloudflare rocket loader error: %s"
-msgstr "Грешка в rocket loader за Cloudflare: %s"
+msgstr ""
 
 #: inc/admin/options.php:170
 #, php-format
 msgid "Cloudflare rocket loader %s"
-msgstr "Rocker loader за Cloudflare %s"
+msgstr ""
 
 #: inc/admin/options.php:182
 #, php-format
 msgid "Cloudflare browser cache error: %s"
-msgstr "Грешка в кеша на браузера за Cloudflare: %s"
+msgstr ""
 
 #: inc/admin/options.php:188
 #, php-format
 msgid "Cloudflare browser cache set to %s seconds"
-msgstr "Кеша на браузера за Cloudflare е зададено на %s секунди"
+msgstr ""
 
 #: inc/admin/options.php:241 inc/classes/admin/settings/class-page.php:692
 msgid "Excluded CSS Files"
-msgstr "Изключени CSS файлове"
+msgstr ""
 
 #: inc/admin/options.php:242 inc/classes/admin/settings/class-page.php:784
 msgid "Excluded Inline JavaScript"
@@ -251,14 +250,14 @@ msgstr ""
 #: inc/admin/options.php:275
 msgid "The following pattern is invalid and has been removed:"
 msgid_plural "The following patterns are invalid and have been removed:"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Следният модел е невалиден и е премахнат:"
+msgstr[1] "Следните модели са невалидни и са премахнати:"
 
 #: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:955
 #: inc/common/admin-bar.php:65 inc/common/admin-bar.php:118
 #: views/settings/page-sections/dashboard.php:115
 msgid "Clear cache"
-msgstr "Изчистете кеша"
+msgstr "Изчистване на кеша"
 
 #: inc/admin/ui/meta-boxes.php:36
 msgid "WP Rocket Options"
@@ -270,48 +269,48 @@ msgstr "Никога да не се кешира тази страница"
 
 #: inc/admin/ui/meta-boxes.php:70
 msgid "Activate these options on this post:"
-msgstr "Активирайте тези опции за тази публикация:"
+msgstr "Активиране на опции за публикацията:"
 
 #: inc/admin/ui/meta-boxes.php:73
 msgid "LazyLoad for images"
-msgstr "LazyLoad за изображенията"
+msgstr ""
 
 #: inc/admin/ui/meta-boxes.php:74
 msgid "LazyLoad for iframes/videos"
-msgstr "LazyLoad за iframes/видеа"
+msgstr ""
 
 #: inc/admin/ui/meta-boxes.php:75
 #: inc/classes/admin/settings/class-page.php:615
 msgid "Minify HTML"
-msgstr "Минифициране на HTML"
+msgstr ""
 
 #: inc/admin/ui/meta-boxes.php:76
 msgid "Minify/combine CSS"
-msgstr "Минифициране/комбиниране на CSS"
+msgstr ""
 
 #: inc/admin/ui/meta-boxes.php:77
 msgid "Minify/combine JS"
-msgstr "Минифициране/комбиниране на JS"
+msgstr ""
 
 #: inc/admin/ui/meta-boxes.php:78
 #: inc/classes/admin/settings/class-page.php:1413
 #: inc/classes/admin/settings/class-page.php:1424
 #: inc/deprecated/deprecated.php:1775
 msgid "CDN"
-msgstr "CDN"
+msgstr ""
 
 #: inc/admin/ui/meta-boxes.php:79
 msgid "Optimize CSS Delivery"
-msgstr "Оптимизиране на CSS доставката"
+msgstr ""
 
 #: inc/admin/ui/meta-boxes.php:80
 msgid "Defer JS"
-msgstr "Отлагане на JS"
+msgstr ""
 
 #: inc/admin/ui/meta-boxes.php:86
 #, php-format
 msgid "Activate first the %s option."
-msgstr "Активирайте първо %s опция."
+msgstr ""
 
 #: inc/admin/ui/meta-boxes.php:102
 #, php-format
@@ -327,7 +326,7 @@ msgid ""
 "Make <strong>%2$s</strong> writeable and retry deactivation, or force deactivation now:"
 msgstr ""
 "<strong>%1$s</strong> не е бил деактивиран заради липсващи права за писане.<br>\n"
-"Направете <strong>%2$s</strong>с права за писане и опитайте деактивирането, или изпълнете деактивацията сега:"
+"Получете <strong>%2$s</strong>права за писане и опитайте отново деактивирането, или деактивирайте сега:"
 
 #: inc/admin/ui/notices.php:83
 #, php-format
@@ -335,9 +334,9 @@ msgid ""
 "<strong>%s</strong>: One or more plugins have been enabled or disabled, "
 "clear the cache if they affect the front end of your site."
 msgstr ""
-"<strong>%s</strong>: Един или повече плъгини са били забранени или "
-"разрешени, изчистете кеша, ако те имат ефект на потребителската част на "
-"Вашият сайт."
+"<strong>%s</strong>: Една или повече приставки са активирани или деактивирани, "
+"изчистете кеша, ако те влияят на сайта ви."
+
 
 #: inc/admin/ui/notices.php:196
 #, php-format
@@ -345,7 +344,7 @@ msgid ""
 "<strong>%s</strong>: The following plugins are not compatible with this "
 "plugin and may cause unexpected results:"
 msgstr ""
-"<strong>%s</strong>: Следните плъгини не са съвместими с този плъгин и може "
+"<strong>%s</strong>: Следните приставки не са съвместими с тази приставка и може "
 "да предизвикат неочаквани резултати:"
 
 #: inc/admin/ui/notices.php:202
@@ -372,8 +371,8 @@ msgid ""
 "%1$s: A custom permalink structure is required for the plugin to work "
 "properly. %2$sGo to permalinks settings%3$s"
 msgstr ""
-"%1$s: Структурата на потребителските връзки се изисква за да може плъгина да"
-" работи коректно. %2$sОтидете до настройки на постоянни връзки %3$s"
+"%1$s: Структурата на връзките се изисква за да може плъгина да работи"
+"коректно. %2$sОтидете в настройките на връзките %3$s"
 
 #: inc/admin/ui/notices.php:442
 #, php-format
@@ -385,22 +384,23 @@ msgstr ""
 #, php-format
 msgid "Troubleshoot: %1$sHow to make system files writeable%2$s"
 msgstr ""
-"Отстраняване на повреди: %1$sКак да направите системните файлове с права за "
-"писане%2$s"
+"Отстраняване на повреди: %1$sКак да направите да получите права за писане%2$s  в системните файлове"
+""
 
 #: inc/admin/ui/notices.php:450 inc/admin/ui/notices.php:1034
 msgid ""
 "https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
 "config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
 msgstr ""
-"https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
-"config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
+
 
 #: inc/admin/ui/notices.php:456
 msgid ""
 "Don’t worry, WP Rocket’s page caching and settings will still function "
 "correctly."
 msgstr ""
+"Не се притеснявайте, кеширането и настройките на страниците на WP Rocket ще продължат да функционират"
+"коректно"
 
 #: inc/admin/ui/notices.php:456
 msgid ""
@@ -423,15 +423,15 @@ msgid ""
 " website?"
 msgstr ""
 "Ще позволите ли на WP Rocket да събира не-чувствителни данни от този "
-"уебсайт?"
+"сайт?"
 
 #: inc/admin/ui/notices.php:722
 msgid "This would help us to improve WP Rocket for you in the future."
-msgstr "Това ще ни помогне да подобрим WP Rocket за Вас за в бъдеще."
+msgstr "Това ще ни помогне да подобрим WP Rocket за Вас в бъдеще."
 
 #: inc/admin/ui/notices.php:728
 msgid "What info will we collect?"
-msgstr "Каква информация ние ще събираме?"
+msgstr "Каква информация ще събираме?"
 
 #: inc/admin/ui/notices.php:733
 msgid ""
@@ -459,7 +459,7 @@ msgstr "Благодарим Ви!"
 
 #: inc/admin/ui/notices.php:788
 msgid "WP Rocket now collects these metrics from your website:"
-msgstr "WP Rocket сега ще събира тези метрики от Вашият уебсайт:"
+msgstr "WP Rocket сега ще събира тези метрики от Вашият сайт:"
 
 #: inc/admin/ui/notices.php:825
 #, php-format
@@ -469,7 +469,7 @@ msgstr "%s: Кешът е изчистен."
 #: inc/admin/ui/notices.php:830
 #, php-format
 msgid "%s: Post cache cleared."
-msgstr "%s: Кешът на буликации е изчистен."
+msgstr "%s: Кешът на публикации е изчистен."
 
 #: inc/admin/ui/notices.php:835
 #, php-format
@@ -495,11 +495,11 @@ msgstr[1] ""
 
 #: inc/admin/ui/notices.php:919
 msgid "Please contact your host to check if CRON is working."
-msgstr ""
+msgstr "Моля, свържете се с вашия хост, за да проверите дали CRON работи."
 
 #: inc/admin/ui/notices.php:958
 msgid "Stop Preload"
-msgstr ""
+msgstr "Спрете предварително зареждане"
 
 #: inc/admin/ui/notices.php:976
 msgid "Force deactivation "
