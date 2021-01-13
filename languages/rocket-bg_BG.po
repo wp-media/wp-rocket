@@ -1742,6 +1742,8 @@ msgid ""
 " response code: %2$s. Security measures could be preventing access. "
 "%3$sLearn more%4$s."
 msgstr ""
+"Предварителното зареждане намери грешка.%1$s не е достъпно"
+"код на отговора: %2$s. Мерките за сигурност може да попречат на достъпа. "
 
 #: inc/classes/preload/class-homepage.php:102
 #, php-format
@@ -1750,6 +1752,9 @@ msgid ""
 " response code: 404. Please make sure your homepage is accessible in your "
 "browser. %2$sLearn more%3$s."
 msgstr ""
+"Предварителното зареждане намери грешка. %1$s не е достъпно"
+" код на отговора: 404. Уверете се, че вашата начална страница е достъпна във вашия "
+"браузър. %2$sLearn morе%3$s."
 
 #: inc/classes/preload/class-homepage.php:108
 #, php-format
@@ -1758,6 +1763,9 @@ msgid ""
 " response code: 500. Please check with your web host about server access. "
 "%2$sLearn more%3$s."
 msgstr ""
+"Предварителното зареждане намери грешка. %1$s не е достъпно"
+" код на отговора: 500. Моля, обърнете се към вашия хостинг за достъп до сървъра. "
+"%2$sНаучете повече%3$s."
 
 #: inc/classes/preload/class-homepage.php:114
 #, php-format
@@ -1765,6 +1773,8 @@ msgid ""
 "Preload encountered an error. Could not gather links on %1$s because it "
 "returned the following response code: %2$s. %3$sLearn more%4$s."
 msgstr ""
+"Предварителното зареждане намери грешка. Не може да зареди връзките на %1$s, защото "
+"върна, следният отговор с код: %2$s. %3$sНаучете повече%4$s."
 
 #: inc/classes/preload/class-sitemap.php:138
 #, php-format
@@ -1772,6 +1782,8 @@ msgid ""
 "Sitemap preload encountered an error. Could not gather links on %1$s because"
 " of the following error: %2$s. %3$sLearn more%4$s."
 msgstr ""
+"Предварителното зареждане на картата на сайта намери грешка. Не може да зареди линковете на %1$s защото"
+"има грешка: %2$s. %3$sНаучете повече%4$s."
 
 #: inc/classes/preload/class-sitemap.php:153
 #, php-format
@@ -1780,6 +1792,8 @@ msgid ""
 "following response code: %2$s. Security measures could be preventing access."
 " %3$sLearn more%4$s."
 msgstr ""
+"Предварителното зареждане на картата на сайта намери грешка. %1$s не е достъпен поради "
+"отговор с код: %2$s. Мерките за сигурност може да попречат на достъпа."
 
 #: inc/classes/preload/class-sitemap.php:158
 #, php-format
@@ -1788,6 +1802,9 @@ msgid ""
 "following response code: 404. Please make sure you entered the correct "
 "sitemap URL and it is accessible in your browser. %2$sLearn more%3$s."
 msgstr ""
+"Предварителното зареждане на картата на сайта намери грешка. %1$s не е достъпен поради "
+"отговор с код: 404. Уверете се, че сте въвели правилния "
+"URL на картата на сайта и че е достъпен във вашия браузър. %2$sНаучете повече%3$s."
 
 #: inc/classes/preload/class-sitemap.php:163
 #, php-format
@@ -1796,13 +1813,18 @@ msgid ""
 "following response code: 500. Please check with your web host about server "
 "access. %2$sLearn more%3$s."
 msgstr ""
-
+"Предварителното зареждане на картата на сайта намери грешка. %1$s не е достъпен поради "
+"отговор с код: 500. Уверете се, че вашия сървър "
+"е достъпен. %2$sНаучете повече%3$s."
+""
 #: inc/classes/preload/class-sitemap.php:168
 #, php-format
 msgid ""
 "Sitemap preload encountered an error. Could not gather links on %1$s because"
 " it returned the following response code: %2$s. %3$sLearn more%4$s."
 msgstr ""
+"Предварителното зареждане на картата на сайта намери грешка. Не може да зареди връзките на %1$s защото"
+" върна отговор с код: %2$s. %3$sНаучете повече%4$s."
 
 #: inc/classes/preload/class-sitemap.php:184
 #, php-format
@@ -1810,6 +1832,8 @@ msgid ""
 "Sitemap preload encountered an error. Could not collect links from %1$s "
 "because the file is empty. %2$sLearn more%3$s."
 msgstr ""
+"Предварителното зареждане на картата на сайта намери грешка. Не може да зареди връзките от %1$s "
+",защото файлът е празен. %2$sНаучете повече%3$s." 
 
 #: inc/classes/preload/class-sitemap.php:205
 #, php-format
@@ -1817,6 +1841,8 @@ msgid ""
 "Sitemap preload encountered an error. Could not collect links from %1$s "
 "because of an error during the XML sitemap parsing. %2$sLearn more%3$s."
 msgstr ""
+"Предварителното зареждане на картата на сайта намери грешка. Не може да зареди връзките от %1$s "
+"поради грешка по време на XML sitemap parsing. %2$sНаучете повече%3$s."
 
 #: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:138
 #, php-format
@@ -1824,19 +1850,21 @@ msgid ""
 "Critical CSS generation is currently running: %1$d of %2$d page types "
 "completed. (Refresh this page to view progress)"
 msgstr ""
+"Понастоящем се изпълнява генериране на критичния CSS: %1$d на %2$d типове страници "
+"завършен. (Опреснете тази страница, за да видите напредъка)"
 
 #: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:189
 #, php-format
 msgid "Critical CSS generation finished for %1$d of %2$d page types."
-msgstr ""
+msgstr "Генерирането на критичния CSS приключи за %1$d на %2$d типове страници."
 
 #: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:203
 msgid "Critical CSS generation encountered one or more errors."
-msgstr ""
+msgstr "При генерирането на критичния CSS се получиха една или повече грешки."
 
 #: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:203
 msgid "Learn more."
-msgstr ""
+msgstr "Научване повече."
 
 #: inc/classes/subscriber/Tools/class-cache-dir-size-check-subscriber.php:51
 #: inc/classes/subscriber/class-facebook-tracking-cache-busting-subscriber.php:97
@@ -1847,22 +1875,24 @@ msgstr "седмично"
 
 #: inc/classes/subscriber/admin/Database/class-optimization-subscriber.php:148
 msgid "Database optimization process is running"
-msgstr ""
+msgstr "Процесът за оптимизация на базата данни в ход"
 
 #: inc/classes/subscriber/admin/Database/class-optimization-subscriber.php:179
 msgid ""
 "Database optimization process is complete. Everything was already optimized!"
 msgstr ""
+"Процесът на оптимизация на базата данни е завършен. Всичко беше оптимизирано!"
 
 #: inc/classes/subscriber/admin/Database/class-optimization-subscriber.php:182
 msgid ""
 "Database optimization process is complete. List of optimized items below:"
 msgstr ""
+"Процесът на оптимизация на базата данни е завършен. Списъкът на оптимизираните елементи е по-долу:"
 
 #: inc/classes/subscriber/admin/Database/class-optimization-subscriber.php:190
 #, php-format
 msgid "%1$d %2$s optimized."
-msgstr ""
+msgstr "%1$d %2$s .оптимизиран"
 
 #: inc/classes/subscriber/admin/Settings/class-page-subscriber.php:137
 #: inc/deprecated/deprecated.php:1788
@@ -1872,16 +1902,16 @@ msgstr "Инструменти"
 
 #: inc/classes/subscriber/admin/Settings/class-page-subscriber.php:138
 msgid "Import, Export, Rollback"
-msgstr ""
+msgstr "Импортиране, експортиране, връщане назад"
 
 #: inc/classes/subscriber/admin/Settings/class-page-subscriber.php:160
 #: views/settings/page-sections/imagify.php:13
 msgid "Image Optimization"
-msgstr ""
+msgstr "Оптимизация на изображението"
 
 #: inc/classes/subscriber/admin/Settings/class-page-subscriber.php:161
 msgid "Compress your images"
-msgstr ""
+msgstr "Компресиране на изображенията ви"
 
 #: inc/classes/subscriber/preload/class-preload-subscriber.php:212
 #, php-format
@@ -1911,7 +1941,7 @@ msgstr[1] ""
 #: inc/classes/subscriber/preload/class-preload-subscriber.php:308
 #, php-format
 msgid "Preload complete: %d pages have been cached."
-msgstr ""
+msgstr "Предварителното зареждане завърши: %d страници са кеширани."
 
 #: inc/classes/subscriber/preload/class-sitemap-preload-subscriber.php:117
 #, php-format
@@ -1920,6 +1950,9 @@ msgid ""
 "contact your host to enable it before running sitemap-based cache "
 "preloading."
 msgstr ""
+"%1$sSimpleXML PHP extension%2$s" не активиран на вашия сървър. "
+"свържете се с хостинга ви, за да го активирате, преди да стартирате кеша, въз основа на картата на сайта "
+"за предварително зареждане."
 
 #: inc/classes/subscriber/third-party/plugins/Optimization/class-hummingbird-subscriber.php:72
 #, php-format
@@ -1930,8 +1963,8 @@ msgid ""
 msgid_plural ""
 "Please deactivate the following %s options which conflict with WP Rocket "
 "features:"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Деактивирайте тази опция %s, която е в конфликт с WP Rocket функция:"
+msgstr[1] "Деактивирайте тези опции %s, които са в конфликт с WP Rocket функция:"
 
 #: inc/classes/subscriber/third-party/plugins/Optimization/class-hummingbird-subscriber.php:145
 #, php-format
@@ -1955,6 +1988,8 @@ msgid ""
 "%1$s %2$sGZIP compression%3$s conflicts with WP Rocket %2$sGZIP "
 "compression%3$s"
 msgstr ""
+"1$s %2$sGZIP компресия%3$s е в конфликт с WP Rocket %2$sGZIP"
+"компресия%3$s"
 
 #: inc/classes/subscriber/third-party/plugins/Optimization/class-hummingbird-subscriber.php:239
 #, php-format
