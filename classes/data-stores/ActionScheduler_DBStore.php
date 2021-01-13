@@ -358,27 +358,29 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 		}
 
 		if ( 'select' === $select_or_count ) {
-			switch ( $query['orderby'] ) {
-				case 'hook':
-					$orderby = 'a.hook';
-					break;
-				case 'group':
-					$orderby = 'g.slug';
-					break;
-				case 'modified':
-					$orderby = 'a.last_attempt_gmt';
-					break;
-				case 'date':
-				default:
-					$orderby = 'a.scheduled_date_gmt';
-					break;
-			}
 			if ( strtoupper( $query[ 'order' ] ) == 'ASC' ) {
 				$order = 'ASC';
 			} else {
 				$order = 'DESC';
 			}
-			$sql .= " ORDER BY $orderby $order";
+			switch ( $query['orderby'] ) {
+				case 'hook':
+					$sql .= " ORDER BY a.hook $order";
+					break;
+				case 'group':
+					$sql .= " ORDER BY g.slug $order";
+					break;
+				case 'modified':
+					$sql .= " ORDER BY a.last_attempt_gmt $order";
+					break;
+				case 'none':
+					break;
+				case 'date':
+				default:
+					$sql .= " ORDER BY a.scheduled_date_gmt $order";
+					break;
+			}
+
 			if ( $query[ 'per_page' ] > 0 ) {
 				$sql          .= " LIMIT %d, %d";
 				$sql_params[] = $query[ 'offset' ];
