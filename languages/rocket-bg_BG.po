@@ -1170,6 +1170,7 @@ msgstr ""
 msgid ""
 "Specify URLs of pages or posts that should never be cached (one per line)"
 msgstr ""
+"Посочете URL адреси на страници или публикации, които никога не трябва да се кешират (по един на ред)"
 
 #: inc/classes/admin/settings/class-page.php:1176
 #: inc/classes/admin/settings/class-page.php:1204
@@ -1177,19 +1178,23 @@ msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use (.*) "
 "wildcards to address multiple URLs under a given path."
 msgstr ""
+"Частта на домейна в URL адреса ще бъде премахната автоматично. <br>Използвайте (.*) "
+"заместващи символи за адресиране на множество URL адреси за даден път."
 
 #: inc/classes/admin/settings/class-page.php:1185
 msgid ""
 "Specify the IDs of cookies that, when set in the visitor's browser, should "
 "prevent a page from getting cached (one per line)"
 msgstr ""
+"Посочете IDs на бисквитките, които, когато са зададени в браузъра на посетителя, трябва"
+"да предотвратяват кеширането на дадена страница (по една на ред)"
 
 #: inc/classes/admin/settings/class-page.php:1193
 msgid ""
 "Specify user agent strings that should never see cached pages (one per line)"
 msgstr ""
-"Уточнете потребителските агенти, които никога няма да виждат кеширани "
-"страници (една на ред)"
+"Уточнете user agent strings, които никога няма да кешират страници (една на ред) "
+
 
 #: inc/classes/admin/settings/class-page.php:1194
 msgid "Use (.*) wildcards to detect parts of UA strings."
@@ -1200,12 +1205,12 @@ msgid ""
 "Specify URLs you always want purged from cache whenever you update any post "
 "or page (one per line)"
 msgstr ""
-"Уточнете URL-и, които винаги искате да се изчистват от кеша независимо дали "
-"да обновите публикация или страница (една на ред)"
+"Посочете URL адресите, за които винаги да сеизчиства кеша, когато актуализирате публикация "
+"или страница (една на ред)"
 
 #: inc/classes/admin/settings/class-page.php:1212
 msgid "Specify query strings for caching (one per line)"
-msgstr "Уточнете query strings за кеширане (една на страница)"
+msgstr "Посочете query strings за кеширане (една на страница)"
 
 #: inc/classes/admin/settings/class-page.php:1240
 #: inc/deprecated/deprecated.php:1777
@@ -1214,7 +1219,7 @@ msgstr "База данни"
 
 #: inc/classes/admin/settings/class-page.php:1241
 msgid "Optimize, reduce bloat"
-msgstr ""
+msgstr "Оптимизиран, намаляване на излишните записи"
 
 #: inc/classes/admin/settings/class-page.php:1250
 msgid "Post Cleanup"
@@ -1225,6 +1230,8 @@ msgid ""
 "Post revisions and drafts will be permanently deleted. Do not use this "
 "option if you need to retain revisions or drafts."
 msgstr ""
+"Ревизиите и черновите на публикациите ще бъдат изтрити завинаги. Не използвайте тази "
+"опция, ако трябва да запазите редакции или чернови."
 
 #: inc/classes/admin/settings/class-page.php:1260
 msgid "Comments Cleanup"
@@ -1232,7 +1239,7 @@ msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1262
 msgid "Spam and trashed comments will be permanently deleted."
-msgstr ""
+msgstr "Спамът и коментарите в кошчето, ще бъдат изтрити завинаги."
 
 #: inc/classes/admin/settings/class-page.php:1266
 msgid "Transients Cleanup"
@@ -1254,75 +1261,75 @@ msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1278
 msgid "Automatic cleanup"
-msgstr ""
+msgstr "Автоматично почистване"
 
 #: inc/classes/admin/settings/class-page.php:1291
 #, php-format
 msgid "%s revision in your database."
 msgid_plural "%s revisions in your database."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s ревизия във вашата база данни."
+msgstr[1] "%s ревизии във вашата база данни."
 
 #: inc/classes/admin/settings/class-page.php:1301
 #, php-format
 msgid "%s draft in your database."
 msgid_plural "%s drafts in your database."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s чернова във вашата база данни."
+msgstr[1] "%s чернови във вашата база данни."
 
 #: inc/classes/admin/settings/class-page.php:1311
 #, php-format
 msgid "%s trashed post in your database."
 msgid_plural "%s trashed posts in your database."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s публикация в кошчето на вашата база данни."
+msgstr[1] "%s публикации в кошчето на вашата база данни."
 
 #: inc/classes/admin/settings/class-page.php:1321
 #, php-format
 msgid "%s spam comment in your database."
 msgid_plural "%s spam comments in your database."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s спам коментар във вашата база данни"
+msgstr[1] "%s спам коментари във вашата база данни"
 
 #: inc/classes/admin/settings/class-page.php:1331
 #, php-format
 msgid "%s trashed comment in your database."
 msgid_plural "%s trashed comments in your database."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s коментар в кошчето на вашата база данни"
+msgstr[1] "%s коментари в кошчето на вашата база данни"
 
 #: inc/classes/admin/settings/class-page.php:1341
 #, php-format
 msgid "%s expired transient in your database."
 msgid_plural "%s expired transients in your database."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s изтекъл преходен процес във вашата база данни."
+msgstr[1] "%s изтекли преходни процеси във вашата база данни."
 
 #: inc/classes/admin/settings/class-page.php:1349
 msgid "All transients"
-msgstr "Всички настройки"
+msgstr "Всички преходни процеси"
 
 #: inc/classes/admin/settings/class-page.php:1351
 #, php-format
 msgid "%s transient in your database."
 msgid_plural "%s transients in your database."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s преходен процес във вашата база данни."
+msgstr[1] "%s преходни процеси във вашата база данни."
 
 #: inc/classes/admin/settings/class-page.php:1359
 msgid "Optimize Tables"
-msgstr ""
+msgstr "Оптимизиране на таблици"
 
 #: inc/classes/admin/settings/class-page.php:1361
 #, php-format
 msgid "%s table to optimize in your database."
 msgid_plural "%s tables to optimize in your database."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s таблица за оптимизиране във вашата база данни."
+msgstr[1] "%s таблици за оптимизиране във вашата база данни."
 
 #: inc/classes/admin/settings/class-page.php:1372
 msgid "Schedule Automatic Cleanup"
-msgstr ""
+msgstr "План за автоматично почистване"
 
 #: inc/classes/admin/settings/class-page.php:1384
 msgid "Frequency"
@@ -1342,7 +1349,7 @@ msgstr "Месечно"
 
 #: inc/classes/admin/settings/class-page.php:1414
 msgid "Integrate your CDN"
-msgstr ""
+msgstr "Интегрирайте вашия CDN"
 
 #: inc/classes/admin/settings/class-page.php:1426
 msgid ""
@@ -1356,6 +1363,8 @@ msgid ""
 "Not required for services like Cloudflare and Sucuri. Please see our "
 "available %1$sAdd-ons%2$s."
 msgstr ""
+"Не се изисква за услуги като Cloudflare и Sucuri. Моля, вижте нашия "
+"достъпен %1$sAdd-ons%2$s."
 
 #: inc/classes/admin/settings/class-page.php:1469
 #, php-format
@@ -1366,11 +1375,15 @@ msgid_plural ""
 "%1$s%2$s Add-ons%3$s are currently enabled. Configuration of the CDN "
 "settings is not required for %2$s to work on your site."
 msgstr[0] ""
+"%1$s%2$s Add-on%3$s в момента е активиран. Конфигуриране на настройките на CDN "
+"не са необходими %2$s за да работи на вашия сайт."
 msgstr[1] ""
+"%1$s%2$s Add-on%3$s в момента са активирани. Конфигуриране на настройките на CDN "
+"не са необходими %2$s за да работят на вашия сайт."
 
 #: inc/classes/admin/settings/class-page.php:1484
 msgid "Enable Content Delivery Network"
-msgstr "Разрешаване на Мрежата за Доставка на Съдържание"
+msgstr "Разрешаване на Мрежа за Доставка на Съдържание"
 
 #: inc/classes/admin/settings/class-page.php:1493
 msgid "CDN CNAME(s)"
@@ -1384,6 +1397,7 @@ msgstr ""
 msgid ""
 "Specify URL(s) of files that should not get served via CDN (one per line)."
 msgstr ""
+"Посочете URL(и) на файлове, които не трябва да се обслужват чрез CDN (по един на ред)."
 
 #: inc/classes/admin/settings/class-page.php:1502
 msgid ""
@@ -1391,6 +1405,9 @@ msgid ""
 "wildcards to exclude all files of a given file type located at a specific "
 "path."
 msgstr ""
+"Частта от домейна в URL адреса ще бъде премахната автоматично. <br>Използвайте (.*) "
+"заместващи символи за изключване на всички файлове от даден тип файлове, намиращи се в определен "
+"път."
 
 #: inc/classes/admin/settings/class-page.php:1525
 #: inc/classes/admin/settings/class-page.php:1533
@@ -1424,15 +1441,15 @@ msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1558
 msgid "Do not limit"
-msgstr ""
+msgstr "Не ограничавайте"
 
 #: inc/classes/admin/settings/class-page.php:1559
 msgid "Reduce activity"
-msgstr ""
+msgstr "Намаляване на активността"
 
 #: inc/classes/admin/settings/class-page.php:1560
 msgid "Disable"
-msgstr ""
+msgstr "Деактивиране"
 
 #: inc/classes/admin/settings/class-page.php:1568
 msgid "Control Heartbeat"
@@ -1456,7 +1473,7 @@ msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1610
 msgid "Add more features"
-msgstr ""
+msgstr "Добавете още функции"
 
 #: inc/classes/admin/settings/class-page.php:1617
 msgid "One-click Rocket Add-ons"
@@ -1467,6 +1484,8 @@ msgid ""
 "One-Click Add-ons are features extending available options without "
 "configuration needed. Switch the option \"on\" to enable from this screen."
 msgstr ""
+"One-Click Add-ons са функции, разширяващи наличните опции без "
+"необходима конфигурация. Включете опцията \"on\", за да активирате от този екран."
 
 #: inc/classes/admin/settings/class-page.php:1628
 msgid "Rocket Add-ons"
@@ -1474,7 +1493,7 @@ msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1629
 msgid "Rocket Add-ons are complementary features extending available options."
-msgstr ""
+msgstr "Rocket Add-ons са допълващи функции, разширяващи наличните."
 
 #: inc/classes/admin/settings/class-page.php:1642
 msgid "Google Tracking"
@@ -1482,7 +1501,7 @@ msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1648
 msgid "Improve browser caching for Google Analytics"
-msgstr ""
+msgstr "Подобрете кеширането на браузъра за Google Analytics"
 
 #: inc/classes/admin/settings/class-page.php:1650
 #, php-format
@@ -1498,7 +1517,7 @@ msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1671
 msgid "Improve browser caching for Facebook Pixel"
-msgstr ""
+msgstr "Подобрете кеширането на браузъра за Facebook Pixel"
 
 #: inc/classes/admin/settings/class-page.php:1673
 #, php-format
@@ -1510,11 +1529,11 @@ msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1706
 msgid "Varnish"
-msgstr "Varnish"
+msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1712
 msgid "If Varnish runs on your server, you must activate this add-on."
-msgstr ""
+msgstr "Ако Varnish работи на вашия сървър, трябва да активирате тази добавка."
 
 #: inc/classes/admin/settings/class-page.php:1714
 #, php-format
@@ -1530,7 +1549,7 @@ msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1735
 msgid "Integrate your Cloudflare account with this add-on."
-msgstr ""
+msgstr "Интегрирайте вашия акаунт в Cloudflare с тази добавка."
 
 #: inc/classes/admin/settings/class-page.php:1736
 msgid ""
@@ -1538,6 +1557,9 @@ msgid ""
 "as clearing the Cloudflare cache and enabling optimal settings with WP "
 "Rocket."
 msgstr ""
+"предоставете имейл адреса на вашия акаунт, глобалния API ключ и домейна, за да използвате опции "
+"като изчистване на кеша на Cloudflare и активиране на оптимални настройки с WP "
+"Rocket."
 
 #: inc/classes/admin/settings/class-page.php:1748
 msgid "Clear the Sucuri cache when WP Rocket’s cache is cleared."
@@ -1556,15 +1578,15 @@ msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1765
 msgid "Synchronize Sucuri cache with this add-on."
-msgstr ""
+msgstr "Синхронизиране на кеша на Sucuri с тази добавка."
 
 #: inc/classes/admin/settings/class-page.php:1805
 msgid "Cloudflare credentials"
-msgstr ""
+msgstr "Идентификационни данни на Cloudflare"
 
 #: inc/classes/admin/settings/class-page.php:1814
 msgid "Cloudflare settings"
-msgstr ""
+msgstr "Настройки на Cloudflare"
 
 #: inc/classes/admin/settings/class-page.php:1828
 msgctxt "Cloudflare"
@@ -1580,7 +1602,7 @@ msgstr ""
 #: inc/classes/admin/settings/class-page.php:1829
 msgctxt "Cloudflare"
 msgid "Find your API key"
-msgstr ""
+msgstr "Намери своя API key"
 
 #: inc/classes/admin/settings/class-page.php:1841
 msgctxt "Cloudflare"
@@ -1602,16 +1624,20 @@ msgid ""
 "Temporarily activate development mode on your website. This setting will "
 "automatically turn off after 3 hours. %1$sLearn more%2$s"
 msgstr ""
+"Временно активиране на режима за разработка на вашия уебсайт. Тази настройка ще "
+"се изключи автоматично след 3 часа. %1$sНаучете повече%2$s"
 
 #: inc/classes/admin/settings/class-page.php:1870
 msgid "Optimal settings"
-msgstr ""
+msgstr "Оптимални настройки"
 
 #: inc/classes/admin/settings/class-page.php:1871
 msgid ""
 "Automatically enhances your Cloudflare configuration for speed, performance "
 "grade and compatibility."
 msgstr ""
+"Автоматично подобрява вашата конфигурация на Cloudflare за скорост, производителност "
+"степен и съвместимост."
 
 #: inc/classes/admin/settings/class-page.php:1879
 msgid "Relative protocol"
@@ -1623,10 +1649,13 @@ msgid ""
 "files (CSS, JS, images) will be rewritten to use // instead of http:// or "
 "https://."
 msgstr ""
+"Трябва да се използва само с SSL функция на Cloudflare. URL адреси на статични "
+"файлове (CSS, JS, изображения) ще бъдат пренаписани ще се използва // вместо http:// "
+"или https://."
 
 #: inc/classes/admin/settings/class-page.php:1920
 msgid "Sucuri credentials"
-msgstr ""
+msgstr "Sucuri идентификационни данни"
 
 #: inc/classes/admin/settings/class-page.php:1933
 msgctxt "Sucuri"
@@ -1638,12 +1667,12 @@ msgstr ""
 #: inc/classes/admin/settings/class-page.php:1934
 msgctxt "Sucuri"
 msgid "Find your API key"
-msgstr ""
+msgstr "Намиране на вашия API ключ"
 
 #: inc/classes/admin/settings/class-render.php:486
 #: inc/deprecated/deprecated.php:1296
 msgid "Upload file and import settings"
-msgstr "Качване на файла и импортване на настройките"
+msgstr "Качване на файла и импортиране на настройките"
 
 #: inc/classes/admin/settings/class-settings.php:385
 msgid ""
@@ -1659,7 +1688,7 @@ msgstr "Настройките са запазени."
 #: inc/classes/class-wp-rocket-requirements-check.php:148
 #, php-format
 msgid "To function properly, %1$s %2$s requires at least:"
-msgstr ""
+msgstr "За да функционира правилно, %1$s %2$s изисква поне:"
 
 #: inc/classes/class-wp-rocket-requirements-check.php:152
 #, php-format
@@ -1667,6 +1696,8 @@ msgid ""
 "PHP %1$s. To use this WP Rocket version, please ask your web host how to "
 "upgrade your server to PHP %1$s or higher."
 msgstr ""
+"PHP %1$s. За да използвате тази версия на WP Rocket, попитайте вашия уеб хост как да "
+"надстройте сървъра си до PHP %1$s или по-висока."
 
 #: inc/classes/class-wp-rocket-requirements-check.php:157
 #, php-format
@@ -1674,32 +1705,36 @@ msgid ""
 "WordPress %1$s. To use this WP Rocket version, please upgrade WordPress to "
 "version %1$s or higher."
 msgstr ""
+"WordPress %1$s. За да използвате тази версия на WP Rocket, надстройте WordPress "
+"до версия %1$s или по-висока."
 
 #: inc/classes/class-wp-rocket-requirements-check.php:160
 msgid ""
 "If you are not able to upgrade, you can rollback to the previous version by "
 "using the button below."
 msgstr ""
+"Ако не можете да надстройте, можете да се върнете към предишната версия "
+"като използвате бутона по-долу."
 
 #: inc/classes/class-wp-rocket-requirements-check.php:162
 #: inc/deprecated/deprecated.php:1949
 #, php-format
 msgid "Re-install version %s"
-msgstr ""
+msgstr "Преинсталирайте версията  %s"
 
 #: inc/classes/logger/class-logger.php:253
 #: inc/classes/logger/class-logger.php:285
 msgid "The log file does not exist."
-msgstr ""
+msgstr "Файлът на дневника не съществува."
 
 #: inc/classes/logger/class-logger.php:259
 #: inc/classes/logger/class-logger.php:291
 msgid "The log file could not be read."
-msgstr ""
+msgstr "Файлът на дневника не може да бъде прочетен."
 
 #: inc/classes/logger/class-logger.php:278
 msgid "The logs are not saved into a file."
-msgstr ""
+msgstr "Дневниците не се записват във файл."
 
 #: inc/classes/optimization/CSS/class-critical-css-generation.php:88
 #: inc/classes/optimization/CSS/class-critical-css-generation.php:99
@@ -1708,25 +1743,25 @@ msgstr ""
 #: inc/classes/optimization/CSS/class-critical-css-generation.php:142
 #, php-format
 msgid "Critical CSS for %1$s not generated. Error: %2$s"
-msgstr ""
+msgstr "Критичният CSS за %1$s не е генериран. Грешка: %2$s"
 
 #: inc/classes/optimization/CSS/class-critical-css-generation.php:99
 msgid "The API returned an invalid response code."
-msgstr ""
+msgstr "API върна невалиден код за отговор."
 
 #: inc/classes/optimization/CSS/class-critical-css-generation.php:110
 msgid "The API returned an empty response."
-msgstr ""
+msgstr "API върна празен отговор."
 
 #: inc/classes/optimization/CSS/class-critical-css-generation.php:145
 #, php-format
 msgid "The critical CSS content could not be saved as a file in %s."
-msgstr ""
+msgstr "Критичният CSS не може да бъде записан като файл в %s."
 
 #: inc/classes/optimization/CSS/class-critical-css-generation.php:154
 #, php-format
 msgid "Critical CSS for %s generated."
-msgstr ""
+msgstr "Критичният CSS за %s е генериран."
 
 #: inc/classes/preload/class-homepage.php:83
 #, php-format
@@ -1734,6 +1769,8 @@ msgid ""
 "Preload encountered an error. Could not gather links on %1$s because of the "
 "following error: %2$s. %3$sLearn more%4$s."
 msgstr ""
+"Предварителното зареждане попадна на грешка. Невъзможно свързване чрез връзките на %1$s, защото "
+"има грешка: %2$s. %3$sНаучете повече%4$s."
 
 #: inc/classes/preload/class-homepage.php:96
 #, php-format
