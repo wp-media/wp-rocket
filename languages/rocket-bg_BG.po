@@ -523,7 +523,7 @@ msgstr ""
 #: inc/admin/ui/notices.php:1026
 #, php-format
 msgid "Affected file/folder: %s"
-msgstr "Афектиран файл/папка: %s"
+msgstr "Засегнат файл/папка: %s"
 
 #: inc/classes/admin/Database/class-optimization.php:41
 #: inc/classes/admin/settings/class-page.php:1289
@@ -538,34 +538,34 @@ msgstr "Автоматични чернови"
 #: inc/classes/admin/Database/class-optimization.php:43
 #: inc/classes/admin/settings/class-page.php:1309
 msgid "Trashed Posts"
-msgstr ""
+msgstr "Изхвърлени в коша публикации"
 
 #: inc/classes/admin/Database/class-optimization.php:44
 #: inc/classes/admin/settings/class-page.php:1319
 msgid "Spam Comments"
-msgstr ""
+msgstr "Спам коментари"
 
 #: inc/classes/admin/Database/class-optimization.php:45
 #: inc/classes/admin/settings/class-page.php:1329
 msgid "Trashed Comments"
-msgstr ""
+msgstr "Изхвърлени в коша коментари"
 
 #: inc/classes/admin/Database/class-optimization.php:46
 #: inc/classes/admin/settings/class-page.php:1339
 msgid "Expired transients"
-msgstr "Изтекли настройки"
+msgstr "Изтекли преходни процеси"
 
 #: inc/classes/admin/Database/class-optimization.php:47
 msgid "Transients"
-msgstr ""
+msgstr "Преходни процеси"
 
 #: inc/classes/admin/Database/class-optimization.php:48
 msgid "Tables"
-msgstr ""
+msgstr "Таблици"
 
 #: inc/classes/admin/class-logs.php:124
 msgid "The debug file could not be deleted."
-msgstr ""
+msgstr "Файлът за отстраняване на грешки не можа да бъде изтрит."
 
 #: inc/classes/admin/settings/class-page.php:212
 #: inc/classes/admin/settings/class-page.php:213
@@ -592,7 +592,7 @@ msgstr "Табло"
 
 #: inc/classes/admin/settings/class-page.php:389
 msgid "Get help, account info"
-msgstr "Вземете помощ, информация на акаунт"
+msgstr "Намерете помощ, информация за акаунт"
 
 #: inc/classes/admin/settings/class-page.php:398
 msgid "My Status"
@@ -600,15 +600,15 @@ msgstr "Моят статус"
 
 #: inc/classes/admin/settings/class-page.php:408 views/settings/page.php:71
 msgid "Rocket Tester"
-msgstr "Rocket тестер"
+msgstr "Rocket Tester"
 
 #: inc/classes/admin/settings/class-page.php:409
 msgid "I am part of the WP Rocket Beta Testing Program."
-msgstr "Аз съм част от WP Rocket бета тестер програмата."
+msgstr "Аз съм част от WP Rocket Beta Testing Program."
 
 #: inc/classes/admin/settings/class-page.php:417 views/settings/page.php:89
 msgid "Rocket Analytics"
-msgstr "Rocket анализи"
+msgstr "Rocket Analytics"
 
 #: inc/classes/admin/settings/class-page.php:419
 #, php-format
@@ -616,8 +616,8 @@ msgid ""
 "I agree to share anonymous data with the development team to help improve WP"
 " Rocket. %1$sWhat info will we collect?%2$s"
 msgstr ""
-"Съгласен съм да споделям анонимни данни с екипа за разработка за помощ на "
-"подобряване на WP Rocket. %1$sКаква информация ние ще събираме?%2$s"
+"Съгласен съм да споделям анонимни данни с екипа разработчици за"
+"подобряване на WP Rocket. %1$sКаква информация ще събираме?%2$s"
 
 #: inc/classes/admin/settings/class-page.php:447
 msgid "Cache"
@@ -633,14 +633,14 @@ msgstr "Мобилен кеш"
 
 #: inc/classes/admin/settings/class-page.php:457
 msgid "Speed up your site for mobile visitors."
-msgstr "Успорете Вашият сайт за мобилни посетители."
+msgstr "Ускорете сайта си за посетители с мобилни устройства."
 
 #: inc/classes/admin/settings/class-page.php:462
 msgid ""
 "We detected you use a plugin that requires a separate cache for mobile, and "
 "automatically enabled this option for compatibility."
 msgstr ""
-"Ние засякохме, че Вие използвате плъгин, който изисква разделен кеш за "
+"Засякохме, че използвате плъгин, който изисква разделен кеш за "
 "мобилни устройства и автоматично разрешихме тази опция за съвместимост."
 
 #: inc/classes/admin/settings/class-page.php:466
@@ -653,12 +653,12 @@ msgid ""
 "%1$sUser cache%2$s is great when you have user-specific or restricted "
 "content on your website."
 msgstr ""
-"%1$sПотребителският кеш%2$s е чудесен когато Вие имате специфични или "
-"ограничено съдържание на Вашият сайт."
+"%1$sПотребителският кеш%2$s е полезен когато имате специфично или "
+"ограничено за достъп съдържание на сайт ви."
 
 #: inc/classes/admin/settings/class-page.php:477
 msgid "Cache Lifespan"
-msgstr "Живот на кеша"
+msgstr "Продължителност на кеша"
 
 #: inc/classes/admin/settings/class-page.php:480
 #, php-format
@@ -667,13 +667,13 @@ msgid ""
 "removed.<br>Enable %1$spreloading%2$s for the cache to be rebuilt "
 "automatically after lifespan expiration."
 msgstr ""
-"Живота на кеша е периода от време, след което Всичките кеш файлове ще се "
-"премахнат. <br>Разрешаване на %1$s презареждането%2$sза кеша за да се "
-"построи отново всчтоматично след като живота му изтече."
+"Продължителност на кеша е период от време, след което всички кеш файлове ще се "
+"премахнат.<br>Разрешаване на %1$sspreloading%2$s за кеша за да се възстанови"
+"отново автоматично след като времето му изтече."
 
 #: inc/classes/admin/settings/class-page.php:494
 msgid "Enable caching for logged-in WordPress users"
-msgstr "Разрешаване на кеширането за вписани в WordPress потребители"
+msgstr "Разрешаване на кеширането за влезли в WordPress потребители"
 
 #: inc/classes/admin/settings/class-page.php:502
 msgid "Enable caching for mobile devices"
@@ -681,7 +681,7 @@ msgstr "Разрешаване на кеширането за мобилни у�
 
 #: inc/classes/admin/settings/class-page.php:517
 msgid "Separate cache files for mobile devices"
-msgstr "Съединете кеш файловете за мобилни устройства"
+msgstr "Отделни кеш файловете за мобилни устройства"
 
 #: inc/classes/admin/settings/class-page.php:519
 #, php-format
@@ -689,15 +689,14 @@ msgid ""
 "%1$sMobile cache%2$s works safest with both options enabled. When in doubt, "
 "keep both."
 msgstr ""
-"%1$sМобилният кеш%2$s работи безопастно и с двете разрешени опции. При "
-"съмнение запазете и двете."
+"%1$sМобилният кеш%2$s работи безопастно и с двете активирани опции. При съмнение"
+"запазете и двете."
 
 #: inc/classes/admin/settings/class-page.php:535
 msgid ""
 "Specify time after which the global cache is cleared<br>(0 = unlimited )"
 msgstr ""
-"Определете време след което глобалният кеш ще се изтрие<br>(0 = неограничено"
-" )"
+"Определете време след което глобалният кеш ще се изтрие<br>(0 = неограничено )"
 
 #: inc/classes/admin/settings/class-page.php:537
 #, php-format
@@ -705,7 +704,7 @@ msgid ""
 "Reduce lifespan to 10 hours or less if you notice issues that seem to appear"
 " periodically. %1$sWhy?%2$s"
 msgstr ""
-"Намалете живота на 10 часа или по-малко, ако Вие забелязвате проблеми които "
+"Намалете продължителността на 10 часа или по-малко, ако забелязвате проблеми които "
 "се появяват периодично. %1$sЗащо?%2$s"
 
 #: inc/classes/admin/settings/class-page.php:543
@@ -726,7 +725,7 @@ msgstr "Оптимизация на файл"
 
 #: inc/classes/admin/settings/class-page.php:572
 msgid "Optimize CSS & JS"
-msgstr "Оптимизиране на CSS & JS"
+msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:579
 msgid "Basic Settings"
@@ -742,21 +741,21 @@ msgid ""
 msgstr ""
 "%1$s Минифицирането в момента е активирано в "
 "<strong>Автооптимизиране</strong>. Ако искате да използвате "
-"%2$sминифициране, изключете тези опции в Автооптимизиране."
+"%2$s минифициране, изключете тези опции в Автооптимизиране."
 
 #: inc/classes/admin/settings/class-page.php:589
 msgid "CSS Files"
-msgstr "CSS файлове"
+msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:599
 msgid "JavaScript Files"
-msgstr "JavaScript файлове"
+msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:619
 msgid "Minifying HTML removes whitespace and comments to reduce the size."
 msgstr ""
-"Минифицирането на HTML премахва празните пространства и коментарите за да "
-"намали размера."
+"Минифицирането на HTML премахва празните пространства и коментарите за да намали размера."
+
 
 #: inc/classes/admin/settings/class-page.php:630
 msgid "Combine Google Fonts files"
@@ -778,12 +777,12 @@ msgid ""
 "your GTMetrix score. %1$sMore info%2$s"
 msgstr ""
 "Премахване на версията на заявката от статичните файлове (напр. "
-"style.css?ver=1.0) и кодирането им в файлово име (напр. style-1.0.css). Може"
-" да подробите Вашата GTMetrix оценка. %1$sПовече информация%2$s"
+"style.css?ver=1.0) и кодирането им в файлово име вместо (напр. style-1.0.css). Може да подобрите"
+" Вашата GTMetrix оценка. %1$sПовече информация%2$s"
 
 #: inc/classes/admin/settings/class-page.php:649
 msgid "Minify CSS files"
-msgstr "Минифициране на CSS файлове"
+msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:650
 msgid "Minify CSS removes whitespace and comments to reduce the file size."
@@ -796,7 +795,7 @@ msgstr ""
 #: inc/classes/admin/settings/class-page.php:755
 #: inc/classes/admin/settings/class-page.php:777
 msgid "This could break things!"
-msgstr "Това може да счупи неща!"
+msgstr "Това може да доведе до повреди!"
 
 #: inc/classes/admin/settings/class-page.php:664
 #: inc/classes/admin/settings/class-page.php:686
@@ -806,8 +805,8 @@ msgid ""
 "If you notice any errors on your website after having activated this "
 "setting, just deactivate it again, and your site will be back to normal."
 msgstr ""
-"Ако забележите някакви грешки на Вашият сайт след активирането на тези "
-"настройки, просто ги деактивирайте отново, и Вашият сайт ще работи нормално."
+"Ако забележите някакви грешки на сайт ви след активирането на тези "
+"настройки, просто ги деактивирайте отново, и сайтът ви ще работи нормално."
 
 #: inc/classes/admin/settings/class-page.php:665
 msgid "Activate minify CSS"
@@ -816,8 +815,7 @@ msgstr "Активиране на CSS минифицирането"
 #: inc/classes/admin/settings/class-page.php:670
 msgid "Combine CSS files <em>(Enable Minify CSS files to select)</em>"
 msgstr ""
-"Комбиниране на CSS файлове <em>(Разрешаване на минифицирането на CSS "
-"файловете за избор)</em>"
+"Комбиниране на CSS файлове <em>(Активирайте Minify CSS файлове, за да изберете)</em>"
 
 #: inc/classes/admin/settings/class-page.php:672
 #, php-format
@@ -826,7 +824,7 @@ msgid ""
 "recommended if your site uses HTTP/2. %1$sMore info%2$s"
 msgstr ""
 "Комбиниране на CSS свързва всички файлове в 1, намалява HTTP заявките. Не е "
-"препоръчително, ако Вашият сайт използва HTTP.2. %1$sПовече информация%2$s"
+"препоръчително, ако Вашият сайт използва HTTP/2. %1$sПовече информация%2$s"
 
 #: inc/classes/admin/settings/class-page.php:687
 msgid "Activate combine CSS"
@@ -849,7 +847,7 @@ msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:707
 msgid "Optimize CSS delivery"
-msgstr "ОПтимизиране на CSS доставката"
+msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:714
 #, php-format
@@ -865,12 +863,10 @@ msgid ""
 "Optimize CSS delivery eliminates render-blocking CSS on your website for "
 "faster perceived load time. %1$sMore info%2$s"
 msgstr ""
-"Оптимизиране на CSS доставката елеминира блокирането-рендирането на CSS за "
-"Вашият сайт за по-бързо време за зареждане. %1$sПовече информация%2$s"
 
 #: inc/classes/admin/settings/class-page.php:727
 msgid "Fallback critical CSS"
-msgstr "Критичен отговор за CSS"
+msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:732
 #, php-format
@@ -878,7 +874,7 @@ msgid ""
 "Provides a fallback if auto-generated critical path CSS is incomplete. "
 "%1$sMore info%2$s"
 msgstr ""
-"Предоставя отговор , ако автоматично-генерирания път към CSS е непълен. "
+"Предоставя отговор , ако автоматично генерирания път към CSS е непълен. "
 "%1$sПовече информация%2$s"
 
 #: inc/classes/admin/settings/class-page.php:741
@@ -894,7 +890,7 @@ msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:757
 msgid "Activate minify JavaScript"
-msgstr ""
+msgstr "Активирана на минифицирането на JavaScript"
 
 #: inc/classes/admin/settings/class-page.php:762
 msgid ""
@@ -982,6 +978,9 @@ msgid ""
 "videos will be loaded only as they enter (or about to enter) the viewport "
 "and reduces the number of HTTP requests. %1$sMore Info%2$s"
 msgstr ""
+"Може да подобри времето за зареждане на изображения, рамки и"
+"видеоклиповете ще се зареждат само когато започват (или предстои да започнат) в прозореца за гледане"
+"и намалява броя на HTTP заявките. %1$Повече информация%2$s"
 
 #: inc/classes/admin/settings/class-page.php:879
 #, php-format
@@ -1028,14 +1027,14 @@ msgstr "Разрешаване за iframes и видеа"
 
 #: inc/classes/admin/settings/class-page.php:934
 msgid "Replace YouTube iframe with preview image"
-msgstr "Заместете YouTube iframe с изображение за преглед"
+msgstr "Заместете YouTube iframe с преглед на изображението"
 
 #: inc/classes/admin/settings/class-page.php:935
 msgid ""
 "This can significantly improve your loading time if you have a lot of "
 "YouTube videos on a page."
 msgstr ""
-"Това може значително да подобри Вашето време за зареждане, и ако имате много"
+"Това може значително да подобри времето ви за зареждане, особено ако имате много"
 " YouTube видеа на страницата."
 
 #: inc/classes/admin/settings/class-page.php:947
@@ -1058,7 +1057,7 @@ msgstr "Презареждане"
 
 #: inc/classes/admin/settings/class-page.php:979
 msgid "Generate cache files"
-msgstr ""
+msgstr "Генериране на кеш файлове"
 
 #: inc/classes/admin/settings/class-page.php:991
 #, php-format
@@ -1069,6 +1068,11 @@ msgid ""
 "manually triggered from the admin bar or from the %1$sWP Rocket "
 "Dashboard%2$s."
 msgstr ""
+"Когато активирате предварително зареждане, WP Rocket ще генерира кеша, започвайки с "
+"връзките на вашата начална страница, последвани от картите на сайта, които сте посочили. Предварително зареждане "
+"автоматично се задейства, когато добавяте или актуализирате съдържание и може да бъде "
+"ръчно задействана от администраторската лента или от %1$sWP Rocket "
+""Табло%2$s."
 
 #: inc/classes/admin/settings/class-page.php:999
 msgid "Prefetch DNS Requests"
@@ -1082,19 +1086,19 @@ msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1015
 msgid "Activate Preloading"
-msgstr ""
+msgstr "Активирайте предварително зареждане"
 
 #: inc/classes/admin/settings/class-page.php:1034
 msgid "Activate sitemap-based cache preloading"
-msgstr ""
+msgstr "Активирайте предварително зареждане на кеша според картата на сайта"
 
 #: inc/classes/admin/settings/class-page.php:1053
 msgid "Sitemaps for preloading"
-msgstr ""
+msgstr "Карта на сайта за предварително зареждане"
 
 #: inc/classes/admin/settings/class-page.php:1057
 msgid "Specify XML sitemap(s) to be used for preloading"
-msgstr ""
+msgstr "Посочете XML карта на сайта, която да се използва за предварително зареждане"
 
 #: inc/classes/admin/settings/class-page.php:1067
 msgid "URLs to prefetch"
@@ -1108,41 +1112,42 @@ msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1091
 msgid "Advanced Rules"
-msgstr ""
+msgstr "Разширени правила"
 
 #: inc/classes/admin/settings/class-page.php:1092
 msgid "Fine-tune cache rules"
-msgstr ""
+msgstr "Фина настройка на кеш правилата"
 
 #: inc/classes/admin/settings/class-page.php:1101
 msgid ""
 "Sensitive pages like custom login/logout URLs should be excluded from cache."
 msgstr ""
+"Чувствителните страници като URL адреси за влизане/излизане трябва да бъдат изключени от кеша."
 
 #: inc/classes/admin/settings/class-page.php:1104
 msgctxt "plugin name"
 msgid "WooCommerce"
-msgstr "WooCommerce"
+msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1106
 msgctxt "plugin name"
 msgid "Easy Digital Downloads"
-msgstr "Easy Digital Downloads"
+msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1108
 msgctxt "plugin name"
 msgid "iThemes Exchange"
-msgstr "iThemes Exchange"
+msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1110
 msgctxt "plugin name"
 msgid "Jigoshop"
-msgstr "Jigoshop"
+msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1112
 msgctxt "plugin name"
 msgid "WP-Shop"
-msgstr "WP-Shop"
+msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1118
 #, php-format
@@ -1150,10 +1155,12 @@ msgid ""
 "<br>Cart, checkout and \"my account\" pages set in "
 "<strong>%1$s%2$s%3$s</strong> will be detected and never cached by default."
 msgstr ""
+"<br>Настроени страници за количка, плащане и \"моят акаунт\ ""
+"<strong>%1$s%2$s%3$s</strong> ще бъде открито и никога няма да се кешира по подразбиране."
 
 #: inc/classes/admin/settings/class-page.php:1139
 msgid "Never Cache Cookies"
-msgstr ""
+msgstr "Никога не кеширайте бисквитки"
 
 #: inc/classes/admin/settings/class-page.php:1158
 msgid "Cache Query String(s)"
