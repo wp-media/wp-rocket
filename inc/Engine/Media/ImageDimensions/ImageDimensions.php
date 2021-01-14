@@ -227,7 +227,15 @@ class ImageDimensions {
 			return $this->local_paths[ md5( $url ) ];
 		}
 
-		return str_replace( content_url(), rocket_get_constant( 'WP_CONTENT_DIR' ), $url );
+		if ( false === strpos( $url, content_url() ) ) {
+			$url = site_url('/') . ltrim( $url, '/' );
+		}
+
+		return str_replace(
+			'/',
+			rocket_get_constant( 'DIRECTORY_SEPARATOR' ),
+			str_replace( content_url(), rocket_get_constant( 'WP_CONTENT_DIR' ), $url )
+		);
 	}
 
 	/**
@@ -368,6 +376,8 @@ class ImageDimensions {
 
 		$local_path = $this->get_local_path( $image_url );
 
+		Logger::debug('asa_local', compact( 'image_url', 'local_path' ));
+
 		if ( ! $this->image_exists( $local_path, false ) ) {
 			Logger::debug(
 				'Specify Image Dimensions failed because internal image is not found.',
@@ -376,7 +386,7 @@ class ImageDimensions {
 			return false;
 		}
 
-		$sizes = getimagesize( $this->get_local_path( $image_url ) );
+		$sizes = getimagesize( $local_path );
 
 		if ( ! $sizes ) {
 			Logger::debug(
