@@ -278,5 +278,40 @@ EXPECTED_HTML
 			'has_integrity' => true,
 			'valid_integrity' => false
 		],
+
+		'minifyJsFilesWithGoogleCSE' => [
+			'original' => <<<ORIGINAL_HTML
+<html>
+	<head>
+		<title>Sample Page</title>
+		<script type="text/javascript" src="https://cse.google.com/cse.js?cx=xxx:xxx"></script>
+	</head>
+	<body>
+	</body>
+</html>
+ORIGINAL_HTML
+			,
+			'expected' => [
+				'html' => <<<EXPECTED_HTML
+<html>
+	<head>
+		<title>Sample Page</title>
+		<script type="text/javascript" src="https://cse.google.com/cse.js?cx=xxx:xxx"></script>
+	</head>
+	<body>
+	</body>
+</html>
+EXPECTED_HTML
+				,
+
+				'files' => [
+				],
+			],
+
+			'cdn_host' => [],
+			'cdn_url'  => 'http://example.org',
+			'site_url' => 'http://example.org',
+			'external_url' => 'https://cse.google.com/cse.js?cx=xxx:xxx',
+		],
 	],
 ];
