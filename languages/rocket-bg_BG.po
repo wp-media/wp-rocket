@@ -2643,10 +2643,15 @@ msgid ""
 "optimization/?utm_source=wp_plugin&utm_medium=wp_rocket\" "
 "target=\"_blank\">More info</a>"
 msgstr ""
+"Проблемът решен ли е? Сега можете да активирате опциите една по една, за да "
+"определите коя е причинила проблема. <a href=\"https://docs.wp-"
+"rocket.me/article/19-resolving-issues-with-file-"
+"optimization/?utm_source=wp_plugin&utm_medium=wp_rocket\" "
+"target=\"_blank\">Повече информация</a>"
 
 #: views/deactivation-intent/form.php:81
 msgid "My PageSpeed or GT Metrix score did not improve"
-msgstr ""
+msgstr "Резултатът ми в PageSpeed или GT Metrix не се подобри"
 
 #: views/deactivation-intent/form.php:82
 msgid ""
@@ -2655,10 +2660,14 @@ msgid ""
 "see your website’s “grade”. Speed is the only metric that matters for SEO "
 "and conversions."
 msgstr ""
+"WP Rocket прави вашия сайт по-бърз. Оценката на PageSpeed или GTMetrix "
+"не са показатели за скорост. Нито вашите истински посетители, нито Google никога няма "
+"да видят „оценката“ на уебсайта ви. Скоростта е единственият показател, който има значение за SEO "
+"и конверсиите."
 
 #: views/deactivation-intent/form.php:83
 msgid "Yoast, the expert on all things related to SEO for WordPress states:"
-msgstr ""
+msgstr "Yoast, експерта за всички неща свързани със състоянието на SEO на WordPress:"
 
 #: views/deactivation-intent/form.php:84
 msgid ""
@@ -2666,6 +2675,9 @@ msgid ""
 "have to obsess over that specific score. You have to make sure your website "
 "is as fast as you can get it."
 msgstr ""
+"[Google] просто разглежда колко бързо се зарежда уебсайтът ви при потребителите, така че "
+"не трябва да се обсебвате от конкретен резултат. Трябва да се уверите, че вашият уебсайт "
+"е толкова бърз, колкото можете да бъде."
 
 #: views/deactivation-intent/form.php:87
 msgid ""
@@ -2674,6 +2686,10 @@ msgid ""
 "time/?utm_source=wp_plugin&utm_medium=wp_rocket\" target=\"_blank\">https"
 "://wp-rocket.me/blog/correctly-measure-websites-page-load-time/</a>"
 msgstr ""
+"Как да измерите времето за зареждане на вашия сайт:<br><a href=\"https://wp-"
+"rocket.me/blog/correctly-measure-websites-page-load-"
+"time/?utm_source=wp_plugin&utm_medium=wp_rocket\" target=\"_blank\">https"
+"://wp-rocket.me/blog/correctly-measure-websites-page-load-time/</a>"
 
 #: views/deactivation-intent/form.php:88
 msgid ""
@@ -2683,16 +2699,23 @@ msgid ""
 "target=\"_blank\">https://wp-rocket.me/blog/the-truth-about-google-"
 "pagespeed-insights/</a>"
 msgstr ""
+"Защо не трябва да преследвате определен резултат от PageSpeed:<br><a href=\"https://wp-"
+"rocket.me/blog/the-truth-about-google-pagespeed-"
+"insights/?utm_source=wp_plugin&utm_medium=wp_rocket\" "
+"target=\"_blank\">https://wp-rocket.me/blog/the-truth-about-google-"
+"pagespeed-insights/</a>"
 
 #: views/deactivation-intent/form.php:91
 msgid "I did not notice a difference in loading time"
-msgstr ""
+msgstr "Не забелязах разлика във времето за зареждане"
 
 #: views/deactivation-intent/form.php:92
 msgid ""
 "Make sure you look at your site while logged out to see the fast, cached "
 "pages!"
 msgstr ""
+"Уверете се, че разглеждате сайта си, докато сте излезли от него, за да видите бързите, кеширани "
+"страници!"
 
 #: views/deactivation-intent/form.php:93
 msgid ""
@@ -2703,14 +2726,20 @@ msgid ""
 "target=\"_blank\">https://wp-rocket.me/blog/correctly-measure-websites-page-"
 "load-time/</a>"
 msgstr ""
+"Най-добрият начин да видите подобрението, което предлага WP Rocket, е да осигурите  "
+"изпълнението на тестове за бързина. Следвайте това ръководство, за да измервате правилно времето за зареждане на вашия "
+"сайт:<br><a href=\"https://wp-rocket.me/blog/correctly-measure-websites-"
+"page-load-time/?utm_source=wp_plugin&utm_medium=wp_rocket\" "
+"target=\"_blank\">https://wp-rocket.me/blog/correctly-measure-websites-page-"
+"load-time/</a>"
 
 #: views/deactivation-intent/form.php:96
 msgid "The plugin is too complicated to configure"
-msgstr ""
+msgstr "Приставката е твърде сложна за конфигуриране"
 
 #: views/deactivation-intent/form.php:97
 msgid "We are sorry to hear you are finding it difficult to use WP Rocket."
-msgstr ""
+msgstr "Съжаляваме да чуем, че ви е трудно да използвате WP Rocket."
 
 #: views/deactivation-intent/form.php:98
 #, php-format
@@ -2719,12 +2748,17 @@ msgid ""
 "speed optimization, by default. That means you do not have to do anything "
 "besides activate WP Rocket and your site will already be faster!"
 msgstr ""
+"WP Rocket е единствената приставка за кеширане, която предоставя 80% от най-добрите практики "
+"в оптимизацията на скоростта, по подразбиране. Това означава, че не трябва да правите нищо "
+"освен да активирате WP Rocket и сайтът ви вече ще е по-бърз!"
 
 #: views/deactivation-intent/form.php:99
 msgid ""
 "The additional options are not required for a fast site, they are for fine-"
 "tuning."
 msgstr ""
+"Допълнителните опции не се изискват за бърз сайт, а за фини "
+"настройки.
 
 #: views/deactivation-intent/form.php:100
 msgid ""
@@ -2734,10 +2768,15 @@ msgid ""
 "time/?utm_source=wp_plugin&utm_medium=wp_rocket\" target=\"_blank\">https"
 "://wp-rocket.me/blog/correctly-measure-websites-page-load-time/</a>"
 msgstr ""
+"За да видите ползата, която WP Rocket вече предоставя, измерете скоростта на вашия"
+"сайт с помощта на инструмент като Pingdom:<br><a href=\"https://wp-rocket.me/blog"
+"/correctly-measure-websites-page-load-"
+"time/?utm_source=wp_plugin&utm_medium=wp_rocket\" target=\"_blank\">https"
+"://wp-rocket.me/blog/correctly-measure-websites-page-load-time/</a>"
 
 #: views/deactivation-intent/form.php:105
 msgid "Send & Deactivate"
-msgstr ""
+msgstr "Изпращане и деактивиране"
 
 #: views/deactivation-intent/form.php:106
 msgid "Cancel"
@@ -2745,11 +2784,11 @@ msgstr "Отказ"
 
 #: views/deactivation-intent/form.php:108
 msgid "Skip & Deactivate"
-msgstr ""
+msgstr "Пропускане и Деактивиране"
 
 #: views/settings/fields/cache-lifespan.php:26
 msgid "Clear cache after"
-msgstr ""
+msgstr "Изчистване на кеша след"
 
 #: views/settings/fields/cnames.php:49 views/settings/fields/cnames.php:80
 #: views/settings/fields/cnames.php:110
@@ -2768,7 +2807,7 @@ msgstr ""
 
 #: views/settings/fields/import-form.php:29
 msgid "Import settings"
-msgstr ""
+msgstr "Настройки за импортиране"
 
 #: views/settings/fields/one-click-addon.php:39
 #: views/settings/fields/rocket-addon.php:31
@@ -2787,11 +2826,11 @@ msgstr "Изключено"
 #: views/settings/fields/one-click-addon.php:41
 #: views/settings/fields/rocket-addon.php:33
 msgid "Add-on status"
-msgstr ""
+msgstr "Състояние на добавката"
 
 #: views/settings/fields/rocket-addon.php:56
 msgid "Modify options"
-msgstr ""
+msgstr "Промяна на опциите"
 
 #: views/settings/page-sections/cloudflare.php:26
 msgid "Cloudflare Cache"
@@ -2801,7 +2840,7 @@ msgstr ""
 #: views/settings/page-sections/sucuri.php:34
 #, php-format
 msgid "Purges cached resources for your website. %s"
-msgstr ""
+msgstr "Очиства кешираните ресурси на вашия сайт."
 
 #: views/settings/page-sections/cloudflare.php:34
 msgid "https://support.cloudflare.com/hc/en-us/articles/200169246"
@@ -2810,23 +2849,23 @@ msgstr ""
 #: views/settings/page-sections/cloudflare.php:34
 #: views/settings/page-sections/sucuri.php:35
 msgid "Learn more"
-msgstr ""
+msgstr "Научете повече"
 
 #: views/settings/page-sections/cloudflare.php:40
 msgid "Clear all Cloudflare cache files"
-msgstr ""
+msgstr "Изчистване на всички кеш файлове на Cloudflare"
 
 #: views/settings/page-sections/dashboard.php:37
 msgid "Congratulations!"
-msgstr ""
+msgstr "Честито!"
 
 #: views/settings/page-sections/dashboard.php:39
 msgid "WP Rocket is now activated and already working for you."
-msgstr ""
+msgstr "WP Rocket вече е активиран и работи за вас."
 
 #: views/settings/page-sections/dashboard.php:41
 msgid "Your website should be loading faster now!"
-msgstr ""
+msgstr "Вашият сайт трябва да се зарежда по-бързо сега!"
 
 #: views/settings/page-sections/dashboard.php:43
 #, php-format
@@ -2834,27 +2873,30 @@ msgid ""
 "To guarantee fast websites, WP Rocket applies 80% of web performance best "
 "practices."
 msgstr ""
+"За да гарантира бързи сайтове, WP Rocket прилага 80% от уеб най-добрите практики "
+"на ефективността"
 
 #: views/settings/page-sections/dashboard.php:43
 msgid ""
 "We also enable options that provide immediate benefits to your website."
 msgstr ""
+"Също така даваме възможност за опции, които осигуряват пряки ползи за вашия сайт."
 
 #: views/settings/page-sections/dashboard.php:44
 msgid "Continue to the options to further optimize your site!"
-msgstr ""
+msgstr "Продължете към опциите за допълнителна оптимизация на вашия сайт!"
 
 #: views/settings/page-sections/dashboard.php:54
 msgid "My Account"
-msgstr ""
+msgstr "Моят акаунт"
 
 #: views/settings/page-sections/dashboard.php:60
 msgid "Refresh info"
-msgstr ""
+msgstr "Обновяване на информацията"
 
 #: views/settings/page-sections/dashboard.php:74
 msgid "Expiration Date"
-msgstr ""
+msgstr "Срок на годност"
 
 #: views/settings/page-sections/dashboard.php:83
 msgid "View my account"
@@ -2862,54 +2904,56 @@ msgstr ""
 
 #: views/settings/page-sections/dashboard.php:103
 msgid "Quick Actions"
-msgstr ""
+msgstr "Преглед на акаунта ми"
 
 #: views/settings/page-sections/dashboard.php:109
 msgid "Remove all cached files"
-msgstr ""
+msgstr "Премахване на всички кеширани файлове"
 
 #: views/settings/page-sections/dashboard.php:129
 msgid "Start cache preloading"
-msgstr ""
+msgstr "Започнете предварително зареждане на кеша"
 
 #: views/settings/page-sections/dashboard.php:147
 msgid "Purge OPCache content"
-msgstr ""
+msgstr "Пречистване на съдържанието на OPCache"
 
 #: views/settings/page-sections/dashboard.php:153
 msgid "Purge OPCache"
-msgstr ""
+msgstr "Пречистване на OPCache"
 
 #: views/settings/page-sections/dashboard.php:164
 #: views/settings/page-sections/dashboard.php:170
 msgid "Regenerate Critical CSS"
-msgstr ""
+msgstr "Възстановяване на критичния CSS"
 
 #: views/settings/page-sections/dashboard.php:186
 msgid "Frequently Asked Questions"
-msgstr ""
+msgstr "Често задавани въпроси"
 
 #: views/settings/page-sections/dashboard.php:199
 msgid "Still cannot find a solution?"
-msgstr ""
+msgstr "Все още не можете да намерите решение?"
 
 #: views/settings/page-sections/dashboard.php:200
 msgid ""
 "Submit a ticket and get help from our friendly and knowledgeable Rocketeers."
 msgstr ""
+"Изпратете билете и получете помощ от знаещите, Rocketeers."
 
 #: views/settings/page-sections/dashboard.php:208
 msgid "Ask support"
-msgstr ""
+msgstr "Искане на помощ"
 
 #: views/settings/page-sections/database.php:24
 msgid "Backup your database before you run a cleanup!"
-msgstr ""
+msgstr "Архивирайте вашата база данни, преди да стартирате почистването ѝ!"
 
 #: views/settings/page-sections/database.php:25
 msgid ""
 "Once a database optimization has been performed, there is no way to undo it."
 msgstr ""
+"След като бъде извършена оптимизацията на базата данни, няма начин да я отмените."
 
 #: views/settings/page-sections/imagify.php:20
 #, php-format
@@ -2923,14 +2967,16 @@ msgid ""
 "Compress image to make your website faster, all while maintaining image "
 "quality."
 msgstr ""
+"Компресирайте изображението, за да е	сайта ви	по-бърз, като същевременно поддържате изображението "
+"качествено"
 
 #: views/settings/page-sections/imagify.php:24
 msgid "More on Imagify:"
-msgstr ""
+msgstr "Повече за Imagify:"
 
 #: views/settings/page-sections/imagify.php:26
 msgid "Imagify Plugin Page"
-msgstr ""
+msgstr "Страница на Imagify Plugin"
 
 #: views/settings/page-sections/imagify.php:27
 msgid "Imagify Website"
@@ -2938,15 +2984,15 @@ msgstr ""
 
 #: views/settings/page-sections/imagify.php:28
 msgid "Review of Image Compression Plugins"
-msgstr ""
+msgstr "Преглед на Image Compression Plugins"
 
 #: views/settings/page-sections/imagify.php:37
 msgid "Install Imagify"
-msgstr ""
+msgstr "Инсталиране на Imagify"
 
 #: views/settings/page-sections/license.php:21
 msgid "WP Rocket was not able to automatically validate your license."
-msgstr ""
+msgstr "WP Rocket не успя да потвърди автоматично вашия лиценз."
 
 #: views/settings/page-sections/license.php:26
 #, php-format
@@ -2963,30 +3009,30 @@ msgstr ""
 
 #: views/settings/page-sections/sucuri.php:41
 msgid "Clear all Sucuri cache files"
-msgstr ""
+msgstr "Изчистване	на	всички	кеш	файлове на Sucuri"
 
 #: views/settings/page-sections/tools.php:20
 #, php-format
 msgid "Files size: %1$s. Number of entries: %2$s."
-msgstr ""
+msgstr "Размер на файловете:	%1$s.	Брой влизания: %2$s."
 
 #: views/settings/page-sections/tools.php:23
 #, php-format
 msgid "%1$sDownload the file%2$s."
-msgstr ""
+msgstr "%1$sИзтегляне на файла%2$s."
 
 #: views/settings/page-sections/tools.php:26
 #, php-format
 msgid "%1$sDelete the file%2$s."
-msgstr ""
+msgstr "%1$sИзтриване на файла%2$s."
 
 #: views/settings/page-sections/tools.php:37
 msgid "Export settings"
-msgstr ""
+msgstr "Експортиране на настройките"
 
 #: views/settings/page-sections/tools.php:38
 msgid "Download a backup file of your settings"
-msgstr ""
+msgstr "Изтегляне на архивен файл с вашите настройки"
 
 #: views/settings/page-sections/tools.php:43
 msgid "Download settings"
@@ -2994,58 +3040,62 @@ msgstr "Настройки за сваляне"
 
 #: views/settings/page-sections/tools.php:56
 msgid "Rollback"
-msgstr ""
+msgstr "Отмяна"
 
 #: views/settings/page-sections/tools.php:60
 #, php-format
 msgid "Has version %s caused an issue on your website?"
-msgstr ""
+msgstr "Версията %s причини ли проблем на вашия сайт?"
 
 #: views/settings/page-sections/tools.php:62
 msgid ""
 "You can rollback to the previous major version here.<br>Then send us a "
 "support request."
 msgstr ""
+"Можете да се върнете към предишната версия тук. <br> След това ни изпратете "
+"искане за помощ"
 
 #: views/settings/page-sections/tools.php:69
 #, php-format
 msgid "Reinstall version %s"
-msgstr ""
+msgstr "Преинсталиране на версия %s"
 
 #: views/settings/page-sections/tools.php:85
 msgid "Debug mode"
-msgstr ""
+msgstr "Режим за отстраняване на грешки"
 
 #: views/settings/page-sections/tools.php:90
 msgid "Create a debug log file."
-msgstr ""
+msgstr "Създаване	на	регистрационен	файл за отстраняване на грешки."
 
 #: views/settings/page.php:16
 msgid "WP Rocket Settings"
-msgstr ""
+msgstr "Настройки на WP Rocket"
 
 #: views/settings/page.php:30
 #, php-format
 msgid "version %s"
-msgstr ""
+msgstr "версия	%s"
 
 #: views/settings/page.php:40
 msgid "Save Changes"
-msgstr "Запазете промените"
+msgstr "Запазване	на	промените"
 
 #: views/settings/page.php:56
 msgid "Show Sidebar"
-msgstr ""
+msgstr "Показване на страничната лента"
 
 #: views/settings/page.php:75
 msgid "Thanks for choosing to participate in the WP Rocket beta program!"
-msgstr ""
+msgstr "Благодарим ви, че избрахте да участвате в бета програмата WP Rocket!"
 
 #: views/settings/page.php:76
 msgid ""
 "A beta version is usually one that has new features and improvements, but we"
 " want to test it a little more before full launch."
 msgstr ""
+"Бета версията обикновено е тази, която има нови функции и подобрения, но ние	"
+"	искаме	да го тестваме	още малко преди пълното стартиране."
 
 #: views/settings/page.php:77
 msgid ""
@@ -3053,54 +3103,65 @@ msgid ""
 "mind that it might be less stable than our other releases. Don’t worry, you "
 "can switch back to a full release version at any time."
 msgstr ""
+"Ще се радваме, ако изпробвате нашата	бета версия	"
+"имайте предвид, че	тя	може	да е по-малко стабилна	от другите ни версии. Не се притеснявайте, вие	"
+"може да се върнете към стабилна	версия по всяко време."
 
 #: views/settings/page.php:78
 msgid ""
 "Your mission: please send all feedback about our beta versions, including "
 "bug reports, to support@wp-rocket.me"
 msgstr ""
+"Вашата задача	е:	да	ни	изпращате	всички отзиви за нашите бета версии, включително "
+"доклади за грешки, до	support@wp-rocket.me"
 
 #: views/settings/page.php:80
 msgid "If you don’t want to join the beta program, simply close this window."
-msgstr ""
+msgstr "Ако не искате да се присъедините към бета програмата, просто затворете този прозорец."
 
 #: views/settings/page.php:82
 msgid "Activate Rocket Tester"
-msgstr ""
+msgstr "Активиране на Rocket Tester"
 
 #: views/settings/page.php:93
 msgid ""
 "Below is a detailed view of all data WP Rocket will collect <strong>if "
 "granted permission.</strong>"
 msgstr ""
+"По-долу е даден подробен изглед на всички данни, които WP Rocket ще събере <strong> ако	"
+"е предоставено разрешение. </strong>
 
 #: views/settings/page.php:96
 msgid ""
 "WP Rocket will never transmit any domain names or email addresses (except "
 "for license validation), IP addresses, or third-party API keys."
 msgstr ""
+"WP Rocket никога няма да предава имена на домейни или имейл адреси (с изключение на	"
+"за проверка на лиценза), IP адреси или API ключове на трети страни."
 
 #: views/settings/page.php:98
 msgid "Activate Rocket analytics"
-msgstr ""
+msgstr "Активиране на Rocket analytics"
 
 #: views/settings/partials/documentation.php:14
 msgid "It is a great starting point to fix some of the most common issues."
-msgstr ""
+msgstr "Отправна	точка за	поправяне	на	някои от най-често срещаните проблеми."
 
 #: views/settings/partials/documentation.php:18
 msgid "Read the documentation"
-msgstr ""
+msgstr "Прочетете документацията"
 
 #: views/settings/partials/sidebar.php:11
 msgid "How to correctly measure your website’s loading time"
-msgstr ""
+msgstr "Как правилно да измервате времето за зареждане на вашия сайт"
 
 #: views/settings/partials/sidebar.php:13
 msgid ""
 "Learn how to use best practices to correctly measure your site's "
 "performance."
 msgstr ""
+"Научете как да използвате най-добрите практики за правилно измерване "
+"на производителността на сайта ви"
 
 #: views/settings/partials/sidebar.php:14
 msgid ""
@@ -3110,11 +3171,11 @@ msgstr ""
 
 #: views/settings/partials/sidebar.php:14
 msgid "Read our guide"
-msgstr ""
+msgstr "Прочетете нашето ръководство"
 
 #: views/settings/partials/sidebar.php:17
 msgid "Why Google PageSpeed grade should not matter"
-msgstr ""
+msgstr "Защо оценката на Google PageSpeed не трябва да има значение"
 
 #: views/settings/partials/sidebar.php:18
 msgid ""
@@ -3124,18 +3185,20 @@ msgstr ""
 
 #: views/settings/partials/sidebar.php:18
 msgid "Read more"
-msgstr ""
+msgstr "Прочетете още"
 
 #: views/settings/partials/sidebar.php:23
 msgid "You have not activated logged-in user cache."
-msgstr ""
+msgstr "Не сте активирали кеша за влезлите потребители."
 
 #: views/settings/partials/sidebar.php:24
 msgid ""
 "Use a private browser to check your website's speed and visual appearance."
 msgstr ""
+"Използване на поверителен прозорец на браузър, за проверка на скоростта на ""
+"на сайта и неговия външен вид"
 
 #: views/settings/sections/addons-container.php:23
 #: views/settings/sections/fields-container.php:27
 msgid "Need Help?"
-msgstr ""
+msgstr "Нужда от помощ?"
