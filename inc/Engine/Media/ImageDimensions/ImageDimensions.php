@@ -227,7 +227,7 @@ class ImageDimensions {
 		}
 
 		if ( false === strpos( $url, content_url() ) ) {
-			$url = site_url('/') . ltrim( $url, '/' );
+			$url = site_url( '/' ) . ltrim( $url, '/' );
 		}
 
 		return str_replace(
@@ -374,8 +374,6 @@ class ImageDimensions {
 		}
 
 		$local_path = $this->get_local_path( $image_url );
-
-		Logger::debug('asa_local', compact( 'image_url', 'local_path' ));
 
 		if ( ! $this->image_exists( $local_path, false ) ) {
 			Logger::debug(
