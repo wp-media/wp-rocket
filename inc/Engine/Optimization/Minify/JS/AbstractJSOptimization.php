@@ -236,6 +236,7 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 			'loader.knack.com',
 			'embed.lpcontent.net/leadboxes/current/embed.js',
 			'cc.cdn.civiccomputing.com/9/cookieControl-9.x.min.js',
+			'cse.google.com/cse.js',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );

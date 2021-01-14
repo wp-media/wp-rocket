@@ -98,6 +98,36 @@ return [
 			],
 		],
 
+		'minifyJSFileForGoogleCSE' => [
+			// Test Data: Original JS files.
+			'original' => '<html>
+				<head>
+					<title>Sample Page</title>
+					<script type="text/javascript" src="https://cse.google.com/cse.js?cx=xxx:xxx"></script>
+				</head>
+				<body>
+				</body>
+			</html>',
+			'expected' => [
+				'html'  => '<html>
+					<head>
+						<title>Sample Page</title>
+						<script type="text/javascript" src="https://cse.google.com/cse.js?cx=xxx:xxx"></script>
+					</head>
+					<body>
+					</body>
+				</html>',
+				'files' => [],
+			],
+			'settings' => [
+				'minify_concatenate_js' => 0,
+				'cdn'                   => 0,
+				'cdn_cnames'            => [],
+				'cdn_zone'              => [],
+				'defer_all_js'          => 0,
+			],
+		],
+
 		'minifyJSFilesToCDNUrl' => [
 			'original' => '<html>
 				<head>
