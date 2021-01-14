@@ -164,9 +164,9 @@ class ImageDimensions {
 			return true;
 		}
 
-		$wp_content = wp_parse_url( content_url() );
+		$parsed_site_url = wp_parse_url( site_url() );
 
-		if ( empty( $wp_content['host'] ) || empty( $wp_content['path'] ) ) {
+		if ( empty( $parsed_site_url['host'] ) ) {
 			return true;
 		}
 
@@ -179,7 +179,7 @@ class ImageDimensions {
 		 * @param array $zones Zones to check available hosts.
 		 */
 		$hosts   = (array) apply_filters( 'rocket_cdn_hosts', [], [ 'all' ] );
-		$hosts[] = $wp_content['host'];
+		$hosts[] = $parsed_site_url['host'];
 		$langs   = get_rocket_i18n_uri();
 
 		// Get host for all langs.
@@ -211,8 +211,7 @@ class ImageDimensions {
 			return true;
 		}
 
-		// URL has no domain and doesn't contain the WP_CONTENT path or wp-includes.
-		return ! preg_match( '#(' . $wp_content['path'] . '|wp-includes)#', $file['path'] );
+		return false;
 	}
 
 	/**
@@ -234,7 +233,7 @@ class ImageDimensions {
 		return str_replace(
 			'/',
 			rocket_get_constant( 'DIRECTORY_SEPARATOR' ),
-			str_replace( content_url(), rocket_get_constant( 'WP_CONTENT_DIR' ), $url )
+			str_replace( site_url(), rocket_get_constant( 'ABSPATH' ), $url )
 		);
 	}
 

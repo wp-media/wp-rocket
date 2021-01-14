@@ -23,6 +23,10 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 	public function testShouldAddMissedDimensions( $input, $config, $expected ) {
 		$options = Mockery::mock( Options_Data::class );
 
+		Functions\when( 'site_url' )->alias( function( $path = '') {
+			return 'http://example.org/' . ltrim( $path, '/' );
+		} );
+
 		if (
 			isset( $config['image_dimensions'] )
 			&&
