@@ -2071,39 +2071,41 @@ msgstr ""
 
 #: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:242
 msgid "Sucuri firewall API key was not found."
-msgstr ""
+msgstr "Ключът за API на защитната стена на Sucuri не е намерен."
 
 #: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:251
 msgid "Sucuri firewall API key is invalid."
-msgstr ""
+msgstr "API ключът на защитната стена на Sucuri е невалиден."
 
 #: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:303
 msgid "Error when contacting Sucuri firewall API."
-msgstr ""
+msgstr "Грешка при свързване с API на защитната стена на Sucuri."
 
 #: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:313
 #, php-format
 msgid "Error when contacting Sucuri firewall API. Error message was: %s"
 msgstr ""
+"Грешка при свързване с API на защитната стена на Sucuri. " 
+"Съобщението за грешка беше: %s"
 
 #: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:324
 msgid "Could not get a response from the Sucuri firewall API."
-msgstr ""
+msgstr "Няма отговор от API на защитната стена на Sucuri."
 
 #: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:335
 msgid "Got an invalid response from the Sucuri firewall API."
-msgstr ""
+msgstr "Получих невалиден отговор от API на защитната стена на Sucuri."
 
 #: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:345
 msgid "The Sucuri firewall API returned an unknown error."
-msgstr ""
+msgstr "API на защитната стена на Sucuri връща непозната грешка."
 
 #: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:348
 #, php-format
 msgid "The Sucuri firewall API returned the following error: %s"
 msgid_plural "The Sucuri firewall API returned the following errors: %s"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "API на защитната стена на Sucuri връща следната грешка: %s"
+msgstr[1] "API на защитната стена на Sucuri връща следните грешки: %s"
 
 #: inc/classes/traits/trait-updater-api-tools.php:53
 #: inc/deprecated/3.3.php:760 inc/deprecated/3.3.php:769
@@ -2113,8 +2115,8 @@ msgid ""
 "this server&#8217;s configuration. If you continue to have problems, <a "
 "href=\"%s\">contact support</a>."
 msgstr ""
-"Възникна неочаквана грешка. Нещо може би се обърка с WP-Rocket.me за "
-"конфигурацията на този сървър&#8217;s. Ако продължавате да имате проблеми, "
+"Възникна неочаквана грешка. Нещо може би се обърка с WP-Rocket.me или "
+"с конфигурацията на този сървър&#8217;s. Ако продължавате да имате проблеми, "
 "<a href=\"%s\">свържете се с поддръжката</a>."
 
 #: inc/common/admin-bar.php:106 inc/common/admin-bar.php:260
@@ -2136,7 +2138,7 @@ msgstr "Изчистване на OPcache"
 
 #: inc/common/admin-bar.php:180
 msgid "Regenerate Critical Path CSS"
-msgstr ""
+msgstr "Регенериране на критичния път на CSS"
 
 #: inc/common/admin-bar.php:196
 msgid "Clear Cloudflare cache"
@@ -2163,11 +2165,11 @@ msgstr "месечно"
 #: inc/common/purge.php:456
 #, php-format
 msgid "Cloudflare cache purge error: %s"
-msgstr ""
+msgstr "Грешка при изчистване на кеша в Cloudflare: %s"
 
 #: inc/common/purge.php:461
 msgid "Cloudflare cache successfully purged"
-msgstr ""
+msgstr "Кешът на Cloudflare е изчистен успешно"
 
 #: inc/deprecated/3.2.php:51 views/settings/page-sections/imagify.php:35
 msgid "Activate Imagify"
@@ -2175,7 +2177,7 @@ msgstr "Активиране на Imagify"
 
 #: inc/deprecated/3.2.php:51
 msgid "Install Imagify for Free"
-msgstr "Инсталирайте Imagify безплатно"
+msgstr "Инсталиране на Imagify безплатно"
 
 #: inc/deprecated/3.2.php:66
 msgid ""
@@ -2216,30 +2218,30 @@ msgid ""
 "Before you can upload your import file, you will need to fix the following "
 "error:"
 msgstr ""
-"Преди да можете да качите и импортнете файла, Вие трябва да решите следната "
+"Преди да можете да качите и импортирате файла, трябва да поправите следната "
 "грешка:"
 
 #: inc/deprecated/deprecated.php:1290 views/settings/fields/import-form.php:35
 #, php-format
 msgid "Choose a file from your computer (maximum size: %s)"
-msgstr "Изберете файл от Вашият компютър (максимален размер: %s )"
+msgstr "Изберете файл от Вашият компютър (максимален размер: %s)"
 
 #: inc/deprecated/deprecated.php:1387
 msgid "Your Cloudflare credentials are valid."
-msgstr "Вашите данни за вход в Cloudflare са валидни."
+msgstr "Идентификационните данни в Cloudflare са валидни."
 
 #: inc/deprecated/deprecated.php:1391
 msgid "Your Cloudflare credentials are invalid!"
-msgstr "Вашите данни за вход в Cloudflare са невалидни!"
+msgstr Идентификационните данни в Cloudflare са невалидни!"
 
 #: inc/deprecated/deprecated.php:1455
 msgid "Save and optimize"
-msgstr "Запаметете и оптимизирайте"
+msgstr "Запаметяване и оптимизиране"
 
 #: inc/deprecated/deprecated.php:1455
 #: views/settings/page-sections/database.php:27
 msgid "Optimize"
-msgstr "Оптимизирайте"
+msgstr "Оптимизиране"
 
 #: inc/deprecated/deprecated.php:1466 inc/deprecated/deprecated.php:1668
 msgctxt "screen-reader-text"
@@ -2268,7 +2270,7 @@ msgstr "Настройки за сваляне"
 
 #: inc/deprecated/deprecated.php:1533
 msgid "Replace site's hostname with:"
-msgstr "Заменете hostname на сайтовете с:"
+msgstr "Заменете името на хоста си с:"
 
 #: inc/deprecated/deprecated.php:1552 inc/deprecated/deprecated.php:1589
 #: inc/deprecated/deprecated.php:1617 views/settings/fields/cnames.php:32
@@ -2316,6 +2318,10 @@ msgid ""
 "higher. If you are not able to upgrade, you can rollback to the previous "
 "version by using the button below."
 msgstr ""
+"%1$s %2$s изисква поне PHP %3$s, за да функционира правилно. За да използвате това "
+"версия, моля попитайте вашия хостинг как да надстроите сървъра си до PHP %3$s или "
+"по-висока. Ако не можете да надстроите, можете да се върнете към предишната "
+"версия, като използвате бутона по-долу."
 
 #: inc/functions/admin.php:23
 msgid ""
@@ -2325,19 +2331,23 @@ msgid_plural ""
 "There seems to be an issue validating your license. You can see the error "
 "messages below."
 msgstr[0] ""
+"Има проблем с валидирането на вашия лиценз. Моля, вижте грешката "
+"в съобщението по-долу."
 msgstr[1] ""
+"Има проблем с валидирането на вашия лиценз. Моля, вижте грешката "
+"в съобщенията по-долу."
 
 #: inc/functions/admin.php:361
 msgid "Server type:"
-msgstr ""
+msgstr "Тип сървър:"
 
 #: inc/functions/admin.php:370
 msgid "PHP version number:"
-msgstr ""
+msgstr "PHP версия:"
 
 #: inc/functions/admin.php:379
 msgid "WordPress version number:"
-msgstr ""
+msgstr "WordPress версия:"
 
 #: inc/functions/admin.php:388
 msgid "WordPress multisite:"
@@ -2345,47 +2355,49 @@ msgstr ""
 
 #: inc/functions/admin.php:397
 msgid "Current theme:"
-msgstr ""
+msgstr "Текуща тема:"
 
 #: inc/functions/admin.php:406
 msgid "Current site language:"
-msgstr ""
+msgstr "Текущ език на сайта:"
 
 #: inc/functions/admin.php:415
 msgid "Active plugins:"
-msgstr ""
+msgstr "Активни плъгини:"
 
 #: inc/functions/admin.php:418
 msgid "Plugin names of all active plugins"
-msgstr ""
+msgstr "Всички активни плъгини"
 
 #: inc/functions/admin.php:424
 msgid "Anonymized WP Rocket settings:"
-msgstr ""
+msgstr "Анонимизирани настройки на WP Rocket:"
 
 #: inc/functions/admin.php:427
 msgid "Which WP Rocket settings are active"
-msgstr ""
+msgstr "Кои настройки на WP Rocket са активни"
 
 #: inc/functions/cloudflare.php:14
 msgid ""
 "Curl functions are disabled, they are required for the Cloudflare Add-on to "
 "work correctly."
 msgstr ""
+"Curl функционалност е изключена, тя е необходима за добавката на Cloudflare "
+", за да работи коректно."
 
 #: inc/functions/cloudflare.php:21
 msgid "Cloudflare Email and API key are not set"
-msgstr ""
+msgstr "Cloudflare Email и API ключът не са зададени"
 
 #: inc/functions/cloudflare.php:52
 #, php-format
 msgid "Missing Cloudflare zone ID. %s could not fix this automatically."
-msgstr ""
+msgstr "Липсва ID на зона в Cloudflare. %s не можа да поправи това автоматично."
 
 #: inc/functions/cloudflare.php:58
 #, php-format
 msgid "Read the %1$sdocumentation%2$s for further guidance."
-msgstr ""
+msgstr "Прочетете %1$sдокументацията%2$s за допълнителни указания."
 
 #: inc/functions/cloudflare.php:60
 msgid ""
@@ -2395,11 +2407,11 @@ msgstr ""
 
 #: inc/functions/cloudflare.php:100
 msgid "Connection to Cloudflare failed"
-msgstr ""
+msgstr "Връзката с Cloudflare не бе успешна"
 
 #: inc/functions/cloudflare.php:122
 msgid "Choose a domain from the list"
-msgstr ""
+msgstr "Изберете домейн от списъка"
 
 #: inc/functions/cloudflare.php:135
 msgid "No domain available in your Cloudflare account"
@@ -2410,6 +2422,8 @@ msgid ""
 "License validation failed. Our server could not resolve the request from "
 "your website."
 msgstr ""
+"Проверката на лиценза не бе успешна. Нашият сървър не можа да разреши заявката от "
+"вашия сайт."
 
 #: inc/functions/options.php:580 inc/functions/options.php:619
 #, php-format
@@ -2417,12 +2431,16 @@ msgid ""
 "Try clicking %1$sSave Changes%2$s below. If the error persists, follow "
 "%3$sthis guide%4$s."
 msgstr ""
+"Кликнете %1$sЗапазете промените%2$s по-долу. Ако грешката продължава, следвайте "
+"%3$sтова ръководство%4$s."
 
 #: inc/functions/options.php:596
 msgid ""
 "License validation failed. You may be using a nulled version of the plugin. "
 "Please do the following:"
 msgstr ""
+"Проверката на лиценза не бе успешна. Може да използвате хакнатата версия на приставката. "
+"Моля, направете следното:"
 
 #: inc/functions/options.php:596 inc/functions/options.php:638
 #, php-format
@@ -2431,35 +2449,37 @@ msgstr ""
 
 #: inc/functions/options.php:596 inc/functions/options.php:638
 msgid "Download the zip file"
-msgstr ""
+msgstr "Сваляне на zip файл"
 
 #: inc/functions/options.php:596 inc/functions/options.php:638
 msgid "Reinstall"
-msgstr ""
+msgstr "Преинсталиране"
 
 #: inc/functions/options.php:596
 #, php-format
 msgid ""
 "If you do not have a WP Rocket account, please %1$spurchase a license%2$s."
 msgstr ""
+"Ако нямате акаунт в WP Rocket, моля, %1$закупете лиценз%2$s."
 
 #: inc/functions/options.php:604
 msgid ""
 "License validation failed. This user account does not exist in our database."
 msgstr ""
+"Проверката на лиценза не бе успешна. Този потребителски акаунт не съществува в нашата база данни."
 
 #: inc/functions/options.php:604
 msgid "To resolve, please contact support."
-msgstr ""
+msgstr "За да разрешите проблема, свържете се с екипа за поддръжка."
 
 #: inc/functions/options.php:612
 msgid "License validation failed. This user account is blacklisted."
-msgstr ""
+msgstr "Проверката на лиценза не бе успешна. Този потребителски акаунт е в черния списък."
 
 #: inc/functions/options.php:612
 #, php-format
 msgid "Please see %1$sthis guide%2$s for more info."
-msgstr ""
+msgstr "Вижте %1$това ръководство%2$s за повече информация."
 
 #: inc/functions/options.php:632
 msgid "Your license is not valid."
@@ -2468,11 +2488,11 @@ msgstr "Вашият лиценз не е валиден."
 #: inc/functions/options.php:632
 #, php-format
 msgid "Make sure you have an active %1$sWP Rocket license%2$s."
-msgstr ""
+msgstr "Уверете се, че имате активен %1$sWP Rocket лиценз%2$s."
 
 #: inc/functions/options.php:634
 msgid "You have added as many sites as your current license allows."
-msgstr ""
+msgstr "Добавили сте толкова сайтове, колкото позволява текущият ви лиценз."
 
 #: inc/functions/options.php:634
 #, php-format
@@ -2480,114 +2500,121 @@ msgid ""
 "Upgrade your %1$saccount%2$s or %3$stransfer your license%2$s to this "
 "domain."
 msgstr ""
+"Надстройте своя %1$акаунт%2$s или%3$ прехвърлете вашия лиценз%2$s към този "
+""домейн.
 
 #: inc/functions/options.php:636
 msgid "This website is not allowed."
-msgstr "Този уебсайт не е позволен."
+msgstr "Този сайт не е позволен."
 
 #: inc/functions/options.php:636
 #, php-format
 msgid "Please %1$scontact support%2$s."
-msgstr ""
+msgstr "%1$sСвържете се с поддръжката%2$s."
 
 #: inc/functions/options.php:638
 msgid "This license key is not recognized."
-msgstr ""
+msgstr "Този лицензен ключ не е разпознат."
 
 #: inc/functions/options.php:638
 #, php-format
 msgid "If the issue persists, please %1$scontact support%2$s."
-msgstr ""
+msgstr "Ако проблемът продължава, %1$s се свържете с екипа за поддръжка%2$s."
 
 #: inc/functions/options.php:644
 #, php-format
 msgid "License validation failed: %s"
-msgstr ""
+msgstr "Проверката на лиценза не бе успешна: %s"
 
 #: inc/vendors/classes/class-imagify-partner.php:531
 msgid "Plugin installed successfully."
-msgstr ""
+msgstr "Приставката е инсталирана успешно."
 
 #: inc/vendors/classes/class-imagify-partner.php:532
 msgid "Sorry, you are not allowed to install plugins on this site."
-msgstr ""
+msgstr "За съжаление нямате право да инсталирате приставки на този сайт."
 
 #: inc/vendors/classes/class-imagify-partner.php:533
 msgid "Sorry, you are not allowed to do that."
-msgstr ""
+msgstr "За съжаление нямате право да правите това."
 
 #: inc/vendors/classes/class-imagify-partner.php:534
 msgid "Plugin install failed."
-msgstr ""
+msgstr "Инсталирането на приставката не бе успешно."
 
 #: inc/vendors/classes/class-imagify-partner.php:535
 msgid "Go back"
-msgstr ""
+msgstr "Връщане"
 
 #: views/deactivation-intent/form.php:20
 msgid "Return"
-msgstr ""
+msgstr "Връщане"
 
 #: views/deactivation-intent/form.php:21
 msgid "WP Rocket feedback"
-msgstr ""
+msgstr "WP Rocket обратна връзка"
 
 #: views/deactivation-intent/form.php:23
 msgid "Close"
-msgstr ""
+msgstr "Затвори"
 
 #: views/deactivation-intent/form.php:27
 msgid "May we have a little info about why you are deactivating?"
-msgstr ""
+msgstr "Може ли да ни дадете малко информация защо деактивирате?"
 
 #: views/deactivation-intent/form.php:31
 msgid ""
 "<strong>It is a temporary deactivation.</strong> I am just debugging an "
 "issue."
 msgstr ""
+"<strong>Това е временно деактивиране.</strong> Просто отстранявам "
+"грешки ."
 
 #: views/deactivation-intent/form.php:35
 msgid "The plugin <strong>broke my layout</strong> or some functionality."
 msgstr ""
+"Плъгина <strong>развали оформлението</strong> или някаква функционалност."
 
 #: views/deactivation-intent/form.php:39
 msgid "My PageSpeed or GTMetrix <strong>score did not improve.</strong>"
-msgstr ""
+msgstr "My PageSpeed or GTMetrix <strong>резултатът не се подобри.</strong>"
 
 #: views/deactivation-intent/form.php:43
 msgid "I did not notice a difference in loading time."
-msgstr ""
+msgstr "Не забелязах разлика във времето за зареждане."
 
 #: views/deactivation-intent/form.php:47
 msgid "The plugin is <strong>too complicated to configure.</strong>"
-msgstr ""
+msgstr "Приставката е <strong>твърде сложна за конфигуриране.</strong>"
 
 #: views/deactivation-intent/form.php:51
 msgid "My host already has its own caching system."
-msgstr ""
+msgstr "Моят хост вече има собствена кешираща система."
 
 #: views/deactivation-intent/form.php:53
 msgid "What is the name of your web host?"
-msgstr ""
+msgstr "Какво е името на вашия хост?"
 
 #: views/deactivation-intent/form.php:58
 msgid "Other"
-msgstr ""
+msgstr "Други"
 
 #: views/deactivation-intent/form.php:60
 msgid ""
 "Let us know why you are deactivating WP Rocket so we can improve the plugin"
-msgstr ""
+msgstr "Кажете ни защо деактивирате WP Rocket, за да можем да подобрим приставката"
 
 #: views/deactivation-intent/form.php:68
 msgid "The plugin broke my layout or some functionality"
-msgstr ""
+msgstr "Приставката наруши оформлението ми или някаква функционалност"
 
 #: views/deactivation-intent/form.php:69
 msgid ""
 "This type of issue can usually be fixed by deactivating some options in WP "
 "Rocket."
 msgstr ""
+"Този тип проблем обикновено може да бъде отстранен чрез деактивиране на някои опции в WP" 
+"Rocket."
 
 #: views/deactivation-intent/form.php:70
 msgid ""
@@ -2598,15 +2625,15 @@ msgstr ""
 
 #: views/deactivation-intent/form.php:72
 msgid "Apply safe mode"
-msgstr ""
+msgstr "Приложете безопасен режим"
 
 #: views/deactivation-intent/form.php:75
 msgid "Safe mode applied."
-msgstr ""
+msgstr "Безопасният режим беше приложен."
 
 #: views/deactivation-intent/form.php:76
 msgid "Review your site in a private/logged out browser window."
-msgstr ""
+msgstr "Прегледайте сайта си в поверителен/или сте излязли прозорец на браузъра."
 
 #: views/deactivation-intent/form.php:78
 msgid ""
