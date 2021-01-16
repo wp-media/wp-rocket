@@ -394,6 +394,7 @@ class Image {
 				'avia-bg-style-fixed',
 				'data-skip-lazy',
 				'skip-lazy',
+				'image-compare__',
 			]
 		);
 	}
