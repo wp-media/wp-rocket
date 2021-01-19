@@ -73,7 +73,7 @@ class Subscriber implements Subscriber_Interface {
 		 *
 		 * @param bool $do_preload_links Whether to enable preload links. Default is true.
 		 */
-		if ( ! (bool) apply_filters( 'do_rocket_preload_links', true ) ) {
+		if ( ! (bool) apply_filters( 'do_rocket_preload_links', true ) ) { //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			return;
 		}
 
