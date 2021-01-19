@@ -3,7 +3,7 @@
  * Plugin Name: WP Rocket
  * Plugin URI: https://wp-rocket.me
  * Description: The best WordPress performance plugin.
- * Version: 3.8.2
+ * Version: 3.8.3
  * Requires at least: 5.2
  * Requires PHP: 7.0
  * Code Name: Naboo
