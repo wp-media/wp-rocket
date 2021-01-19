@@ -61,7 +61,19 @@ class Subscriber implements Subscriber_Interface {
 		if ( $this->is_enqueued ) {
 			return;
 		}
+
 		if ( ! (bool) $this->options->get( 'preload_links', 0 ) || rocket_bypass() ) {
+			return;
+		}
+
+		/**
+		 * Filter whether to allow rocket to enable preload links.
+		 *
+		 * @since 3.8.4
+		 *
+		 * @param bool $do_preload_links Whether to enable preload links. Default is true.
+		 */
+		if ( ! (bool) apply_filters( 'do_rocket_preload_links', true ) ) {
 			return;
 		}
 
