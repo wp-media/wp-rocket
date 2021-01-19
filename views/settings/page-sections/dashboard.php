@@ -244,7 +244,7 @@ defined( 'ABSPATH' ) || exit;
 								[
 									'label'      => __( 'Ask support', 'rocket' ),
 									'attributes' => [
-										'class'  => 'wpr-button wpr-button--icon wpr-button--small wpr-button--blue wpr-icon-help wpr-js-askSupport',
+										'class'  => 'wpr-button wpr-button--icon wpr-button--small wpr-button--blue wpr-icon-help',
 										'target' => '_blank',
 									],
 								]
