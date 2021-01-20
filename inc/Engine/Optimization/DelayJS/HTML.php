@@ -76,7 +76,7 @@ class HTML {
 		 *
 		 * @param bool $do_delay_js Whether to enable preload links. Default is true.
 		 */
-		if ( ! (bool) apply_filters( 'do_rocket_delay_js', true ) ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+		if ( ! (bool) apply_filters( 'rocket_do_delay_js', true ) ) {
 			return false;
 		}
 

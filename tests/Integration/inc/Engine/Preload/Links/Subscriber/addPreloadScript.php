@@ -17,7 +17,7 @@ class Test_AddPreloadScript extends TestCase {
 
 		unset( $GLOBALS['wp'] );
 		remove_filter( 'pre_get_rocket_option_preload_links', [ $this, 'set_preload_links' ] );
-		remove_filter( 'do_rocket_preload_links', '__return_false' );
+		remove_filter( 'rocket_do_preload_links', '__return_false' );
 
 		wp_dequeue_script('rocket-browser-checker');
 		wp_dequeue_script('rocket-preload-links');
@@ -40,7 +40,7 @@ class Test_AddPreloadScript extends TestCase {
 		}
 
 		if ( isset( $config['preload_filter'] ) && false === $config['preload_filter'] ) {
-			add_filter( 'do_rocket_preload_links' , '__return_false' );
+			add_filter( 'rocket_do_preload_links' , '__return_false' );
 		}
 
 		$this->preload_links = $config['options']['preload_links'];

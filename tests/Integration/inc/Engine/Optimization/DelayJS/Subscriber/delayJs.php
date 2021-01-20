@@ -20,7 +20,7 @@ class Test_DelayJs extends TestCase {
 		unset( $GLOBALS['wp'] );
 		remove_filter( 'pre_get_rocket_option_delay_js', [ $this, 'set_delay_js_option' ] );
 		remove_filter( 'pre_get_rocket_option_delay_js_scripts', [ $this, 'set_delay_js_scripts_option' ] );
-		remove_filter( 'do_rocket_delay_js', '__return_false' );
+		remove_filter( 'rocket_do_delay_js', '__return_false' );
 	}
 
 	/**
@@ -70,7 +70,7 @@ class Test_DelayJs extends TestCase {
 
 	public function set_do_rocket_delay_js_filter( bool $do_delay = true ): void {
 		if ( ! $do_delay ) {
-			add_filter( 'do_rocket_delay_js', 'return_false' );
+			add_filter( 'rocket_do_delay_js', 'return_false' );
 		}
 	}
 }
