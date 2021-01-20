@@ -75,7 +75,7 @@ class PricingClient {
 	 *
 	 * @return void
 	 */
-	private function set_timeout_transients(): void {
+	private function set_timeout_transients() {
 		$timeout = (int) get_transient( 'wp_rocket_pricing_timeout' );
 		$timeout = ( 0 === $timeout )
 			? 300
