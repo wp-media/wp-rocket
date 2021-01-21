@@ -54,7 +54,7 @@ class GetPricingData extends TestCase {
 		) {
 			Functions\expect( 'set_transient' )
 				->once()
-				->with( 'wp_rocket_pricing', Mockery::type( 'object' ), 6 * HOUR_IN_SECONDS );
+				->with( 'wp_rocket_pricing', Mockery::type( 'object' ), 12 * HOUR_IN_SECONDS );
 		} else {
 			Functions\expect( 'set_transient' )->never();
 		}
