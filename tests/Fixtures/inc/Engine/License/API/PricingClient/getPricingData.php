@@ -7,14 +7,14 @@ $data = json_decode( $json );
 return [
 	'testShouldReturnFalseWhenWPError' => [
 		'config'   => [
-			'transient' => false,
+			'pricing-transient' => false,
 			'response'  => new WP_Error( 'http_request_failed', 'error' ),
 		],
 		'expected' => false,
 	],
 	'testShouldReturnFalseWhenNot200'  => [
 		'config'   => [
-			'transient' => false,
+			'pricing-transient' => false,
 			'response'  => [
 				'code' => 404,
 				'body' => false,
@@ -24,7 +24,7 @@ return [
 	],
 	'testShouldReturnFalseWhenNoBody'  => [
 		'config'   => [
-			'transient' => false,
+			'pricing-transient' => false,
 			'response'  => [
 				'code' => 200,
 			],
@@ -33,14 +33,14 @@ return [
 	],
 	'testShouldReturnDataWhenCached'   => [
 		'config'   => [
-			'transient' => true,
+			'pricing-transient' => true,
 			'response'  => false,
 		],
 		'expected' => $data,
 	],
 	'testShouldReturnDataWhenSuccess'  => [
 		'config'   => [
-			'transient' => false,
+			'pricing-transient' => false,
 			'response'  => [
 				'code' => 200,
 				'body' => $json,

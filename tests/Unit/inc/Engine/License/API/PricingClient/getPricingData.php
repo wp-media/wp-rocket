@@ -10,7 +10,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 /**
  * @covers \WP_Rocket\Engine\License\API\PricingClient::get_pricing_data
  *
- * @group License
+ * @group  License
  */
 class GetPricingData extends TestCase {
 	/**
@@ -22,7 +22,7 @@ class GetPricingData extends TestCase {
 		Functions\expect( 'get_transient' )
 			->once()
 			->with( 'wp_rocket_pricing' )
-			->andReturn( true === $config['transient'] ? $expected : false );
+			->andReturn( true === $config['pricing-transient'] ? $expected : false );
 
 		if ( false !== $config['response'] ) {
 			Functions\expect( 'wp_safe_remote_get' )
@@ -30,31 +30,44 @@ class GetPricingData extends TestCase {
 				->with( PricingClient::PRICING_ENDPOINT )
 				->andReturn( $config['response'] );
 
-				Functions\when( 'wp_remote_retrieve_response_code' )
+			Functions\when( 'wp_remote_retrieve_response_code' )
 				->justReturn(
 					is_array( $config['response'] ) && isset( $config['response']['code'] )
-					? $config['response']['code']
-					: ''
+						? $config['response']['code']
+						: ''
 				);
 
-				Functions\when( 'wp_remote_retrieve_body' )
+			Functions\when( 'wp_remote_retrieve_body' )
 				->justReturn(
 					is_array( $config['response'] ) && isset( $config['response']['body'] )
-					? $config['response']['body']
-					: ''
+						? $config['response']['body']
+						: ''
 				);
+
+			if ( is_array( $config['response'] ) && ! $config['response']['body'] ) {
+				Functions\expect( 'set_transient' )->twice();
+			}
+
 		} else {
-			Functions\expect( 'wp_safe_remote_get' )->never();
+			 if ( is_array( $config['response'] ) && isset( $config['response']['body'] ) ) {
+			 	Functions\expect( 'set_transient' )
+					->with( 'wp_rocket_pricing_timeout' )
+					->andAlsoExpectIt()
+					->with( 'wp_rocket_pricing_timeout_active' );
+			 }
+
+			 Functions\expect( 'wp_safe_remote_get' )->never();
 		}
 
 		if (
-			false === $config['transient']
+			false === $config['pricing-transient']
 			&&
 			false !== $expected
 		) {
 			Functions\expect( 'set_transient' )
 				->once()
 				->with( 'wp_rocket_pricing', Mockery::type( 'object' ), 12 * HOUR_IN_SECONDS );
+			Functions\expect( 'delete_transient' )->twice();
 		} else {
 			Functions\expect( 'set_transient' )->never();
 		}
