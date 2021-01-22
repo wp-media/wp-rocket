@@ -197,7 +197,7 @@ function get_rocket_htaccess_mod_rewrite() { // phpcs:ignore WordPress.NamingCon
 	$site_root = isset( $site_root ) ? trailingslashit( $site_root ) : '';
 
 	// Get cache root.
-	if ( strpos( ABSPATH, WP_ROCKET_CACHE_PATH ) === false && isset( $_SERVER['DOCUMENT_ROOT'] ) ) {
+	if ( strpos( WP_ROCKET_CACHE_PATH, ABSPATH ) === false && isset( $_SERVER['DOCUMENT_ROOT'] ) ) {
 		$cache_root = str_replace( sanitize_text_field( wp_unslash( $_SERVER['DOCUMENT_ROOT'] ) ), '', WP_ROCKET_CACHE_PATH );
 	} else {
 		$cache_root = $site_root . str_replace( ABSPATH, '', WP_ROCKET_CACHE_PATH );
