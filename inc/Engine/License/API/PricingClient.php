@@ -62,8 +62,8 @@ class PricingClient {
 			return false;
 		}
 
-		set_transient( 'wp_rocket_pricing_timeout', 0 );
-		set_transient( 'wp_rocket_pricing_timeout_active', 0 );
+		delete_transient( 'wp_rocket_pricing_timeout' );
+		delete_transient( 'wp_rocket_pricing_timeout_active' );
 
 		return json_decode( $body );
 	}
@@ -84,7 +84,7 @@ class PricingClient {
 				DAY_IN_SECONDS
 			);
 
-		set_transient( 'wp_rocket_pricing_timeout', $timeout );
-		set_transient( 'wp_rocket_pricing_timeout_active', true );
+		set_transient( 'wp_rocket_pricing_timeout', $timeout, WEEK_IN_SECONDS );
+		set_transient( 'wp_rocket_pricing_timeout_active', true, WEEK_IN_SECONDS );
 	}
 }
