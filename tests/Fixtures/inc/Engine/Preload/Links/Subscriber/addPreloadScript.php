@@ -20,6 +20,16 @@ return [
 			],
 			'expected' => false,
 		],
+		'testShouldDoNothingWhenDoPreloadLinksFilterFalse' => [
+			'config' => [
+				'options' => [
+					'preload_links' => 1,
+				],
+				'bypass' => false,
+				'preload_filter' => false,
+			],
+			'expected' => false,
+		],
 		'testShouldReturnPreloadScript' => [
 			'config' => [
 				'options' => [
