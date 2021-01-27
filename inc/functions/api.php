@@ -129,6 +129,7 @@ function rocket_is_live_site() {
 		'.myftpupload.com',
 		'.dream.press',
 		'.sg-host.com',
+		'.platformsh.site',
 	];
 	foreach ( $staging as $partial_host ) {
 		if ( strpos( $host, $partial_host ) ) {
