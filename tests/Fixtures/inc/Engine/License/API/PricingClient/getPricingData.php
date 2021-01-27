@@ -90,7 +90,7 @@ return [
 			'pricing-transient' => false,
 			'timeout-active'    => false,
 			'timeout-duration'  => 300,
-			'response'          => false,
+			'response'          => [ 'code' => 404 ],
 		],
 		'expected' => [
 			'result'           => false,
@@ -104,7 +104,7 @@ return [
 			'timeout-active'    => false,
 			'timeout-duration'  => rocket_get_constant( 'DAY_IN_SECONDS' )
 								   - rocket_get_constant( 'HOuR_IN_SECONDS' ),
-			'response'          => false,
+			'response'          => [ 'code' => 404 ],
 		],
 		'expected' => [
 			'result'           => false,
