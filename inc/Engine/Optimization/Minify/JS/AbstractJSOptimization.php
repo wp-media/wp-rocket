@@ -238,6 +238,7 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 			'cc.cdn.civiccomputing.com/9/cookieControl-9.x.min.js',
 			'cse.google.com/cse.js',
 			'kit.fontawesome.com',
+			'booqable.com/v2/booqable.js',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
