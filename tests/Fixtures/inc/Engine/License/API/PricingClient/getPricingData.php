@@ -5,47 +5,80 @@ $json = '{"licenses":{"single":{"prices":{"regular":49,"sale":39.2,"renewal":{"i
 $data = json_decode( $json );
 
 return [
-	'testShouldReturnFalseWhenWPError' => [
+	'testShouldReturnDataWhenCached' => [
 		'config'   => [
-			'pricing-transient' => false,
-			'response'  => new WP_Error( 'http_request_failed', 'error' ),
+			'pricing-transient' => true,
+			'response'          => false,
 		],
-		'expected' => false,
+		'expected' => [
+			'result' => $data,
+		]
 	],
-	'testShouldReturnFalseWhenNot200'  => [
+
+	'testShouldReturnFalseWhenTimeoutActive' => [
 		'config'   => [
 			'pricing-transient' => false,
-			'response'  => [
+			'timeout-active'    => true,
+			'response'          => false,
+		],
+		'expected' => [
+			'result' => false,
+		],
+	],
+
+	'testReturnFalseWhenWPError' => [
+		'config'   => [
+			'pricing-transient' => false,
+			'timeout-active'    => false,
+			'timeout-duration'  => false,
+			'response'          => new WP_Error( 'http_request_failed', 'error' ),
+		],
+		'expected' => [
+			'result' => false,
+		],
+	],
+
+	'testShouldReturnFalseWhenNot200' => [
+		'config'   => [
+			'pricing-transient' => false,
+			'timeout-active'    => false,
+			'timeout-duration'  => false,
+			'response'          => [
 				'code' => 404,
 				'body' => false,
 			],
 		],
-		'expected' => false,
+		'expected' => [
+			'result' => false,
+		],
 	],
-	'testShouldReturnFalseWhenNoBody'  => [
+
+	'testShouldReturnFalseWhenNoBody' => [
 		'config'   => [
 			'pricing-transient' => false,
-			'response'  => [
+			'timeout-active'    => false,
+			'timeout-duration'  => false,
+			'response'          => [
 				'code' => 200,
 			],
 		],
-		'expected' => false,
-	],
-	'testShouldReturnDataWhenCached'   => [
-		'config'   => [
-			'pricing-transient' => true,
-			'response'  => false,
+		'expected' => [
+			'result' => false,
 		],
-		'expected' => $data,
 	],
-	'testShouldReturnDataWhenSuccess'  => [
+
+	'testShouldReturnDataWhenSuccess' => [
 		'config'   => [
 			'pricing-transient' => false,
-			'response'  => [
+			'timeout-active'    => false,
+			'timeout-duration'  => false,
+			'response'          => [
 				'code' => 200,
 				'body' => $json,
 			],
 		],
-		'expected' => $data,
+		'expected' => [
+			'result' => $data,
+		],
 	],
 ];
