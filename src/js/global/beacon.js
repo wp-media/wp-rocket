@@ -26,15 +26,7 @@ $(document).ready(function(){
                 } else {
                     window.Beacon("article", aID.toString());
                 }
-            
-        }
 
-        // Ask support
-        var $askSupport = $('.wpr-js-askSupport');
-        $askSupport.on('click', function(){
-            window.Beacon("open");
-            window.Beacon("navigate", "/ask/message/");
-            return false;
-        });
+        }
     }
 });

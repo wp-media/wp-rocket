@@ -3,15 +3,14 @@
 # Translators:
 # wpmedia <contact@wp-media.me>, 2019
 # Valentin Lyong <icedge@abv.bg>, 2019
-# 
-#, fuzzy
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.3.7\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
 "POT-Creation-Date: 2019-08-26 11:14-0400\n"
-"PO-Revision-Date: 2019-08-26 15:14+0000\n"
-"Last-Translator: Valentin Lyong <icedge@abv.bg>, 2019\n"
+"PO-Revision-Date: 2021-01-15 09:18-0500\n"
+"Last-Translator: Rémy Perona <remperona@gmail.com>\n"
 "Language-Team: Bulgarian (Bulgaria) (https://www.transifex.com/wp-media/teams/18133/bg_BG/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,41 +19,34 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.8.11\n"
 "X-Poedit-Basepath: ..\n"
-"X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c\n"
+"X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_attr__;esc_html__;"
+"esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Textdomain-Support: yes\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: assets\n"
 "X-Poedit-SearchPathExcluded-1: src\n"
 "X-Poedit-SearchPathExcluded-2: vendor\n"
 "X-Poedit-SearchPathExcluded-3: node_modules\n"
 "X-Poedit-SearchPathExcluded-4: tests\n"
-"X-Poedit-SourceCharset: UTF-8\n"
-"X-Textdomain-Support: yes\n"
 
-#: inc/3rd-party/hosting/flywheel.php:15 inc/3rd-party/hosting/godaddy.php:15
-#: inc/3rd-party/hosting/o2switch.php:15
-#: inc/3rd-party/hosting/pressidium.php:15 inc/3rd-party/hosting/savvii.php:15
-#: inc/3rd-party/hosting/wp-serveur.php:24
+#: inc/3rd-party/hosting/flywheel.php:15 inc/3rd-party/hosting/godaddy.php:15 inc/3rd-party/hosting/o2switch.php:15
+#: inc/3rd-party/hosting/pressidium.php:15 inc/3rd-party/hosting/savvii.php:15 inc/3rd-party/hosting/wp-serveur.php:24
 #: inc/3rd-party/hosting/wpengine.php:15
 #, php-format
-msgid ""
-"Your site is hosted on %s, we have enabled Varnish auto-purge for "
-"compatibility."
-msgstr ""
-"Вашият сайт се хоства на %s, ние разрешихме авто-изчистване на Varnish за "
-"съвместинмост."
+msgid "Your site is hosted on %s, we have enabled Varnish auto-purge for compatibility."
+msgstr "Вашият сайт се хоства на %s, ние разрешихме авто-изчистване на Varnish за съвместинмост."
 
 #: inc/3rd-party/hosting/kinsta.php:150
 #, php-format
 msgid ""
-"Your installation seems to be missing core Kinsta files managing Cache "
-"clearing and CDN, which will prevent your Kinsta installation and WP Rocket "
-"from working correctly. Please get in touch with Kinsta support through your"
-" %1$sMyKinsta%2$s account to resolve this issue."
+"Your installation seems to be missing core Kinsta files managing Cache clearing and CDN, which will prevent your "
+"Kinsta installation and WP Rocket from working correctly. Please get in touch with Kinsta support through your "
+"%1$sMyKinsta%2$s account to resolve this issue."
 msgstr ""
-"Вашата инсталация изглежда има липсващи Kinsta файлове управляващи "
-"изчистването на кеша и CDN, което ще доведе Вашата Kinsta инсталация и WP "
-"Rocket до неправилна работа. Моля свържете се с Kinsta поддръжката чрез "
-"Вашият %1$sMyKinsta%2$sакаунт за да разрешите този проблем. "
+"Вашата инсталация има липсващи Kinsta файлове управляващи изчистването на кеша и CDN, което ще доведе до неправилна "
+"работа Вашата Kinsta инсталация и WP Rocket . Моля свържете се с Kinsta поддръжката чрез Вашият %1$sMyKinsta%2$s "
+"акаунт за да разрешите този проблем. "
 
 #: inc/3rd-party/plugins/jetpack.php:86
 msgid "Jetpack XML Sitemaps"
@@ -64,23 +56,18 @@ msgstr "Jetpack XML карти на сайта"
 msgid "Preload the sitemap from the Jetpack plugin"
 msgstr "Презаредете картата на сайта от плъгина Jetpack"
 
-#: inc/3rd-party/plugins/jetpack.php:96
-#: inc/3rd-party/plugins/seo/all-in-one-seo-pack.php:88
-#: inc/3rd-party/plugins/seo/rank-math-seo.php:34
-#: inc/3rd-party/plugins/seo/seopress.php:85
-#: inc/3rd-party/plugins/seo/the-seo-framework.php:123
-#: inc/3rd-party/plugins/seo/yoast-seo.php:86
+#: inc/3rd-party/plugins/jetpack.php:96 inc/3rd-party/plugins/seo/all-in-one-seo-pack.php:88
+#: inc/3rd-party/plugins/seo/rank-math-seo.php:34 inc/3rd-party/plugins/seo/seopress.php:85
+#: inc/3rd-party/plugins/seo/the-seo-framework.php:123 inc/3rd-party/plugins/seo/yoast-seo.php:86
 #, php-format
-msgid ""
-"We automatically detected the sitemap generated by the %s plugin. You can "
-"check the option to preload it."
+msgid "We automatically detected the sitemap generated by the %s plugin. You can check the option to preload it."
 msgstr ""
-"Ние автоматично засичаме картата на сайта генерирана от %s плъгина. Вие "
-"можете да отметнете опцията за да я презаредите."
+"Ние автоматично засичаме картата на сайта генерирана от %s плъгина. Вие можете да отметнете опцията за да я "
+"презаредите."
 
 #: inc/3rd-party/plugins/seo/all-in-one-seo-pack.php:86
 msgid "All in One SEO XML sitemap"
-msgstr "Всичко е едно SEO XML карта на сайта"
+msgstr "Всичко в една SEO XML карта на сайта"
 
 #: inc/3rd-party/plugins/seo/rank-math-seo.php:32
 msgid "Rank Math XML sitemap"
@@ -98,8 +85,7 @@ msgstr ""
 msgid "Yoast SEO XML sitemap"
 msgstr "Yoast SEO XML карта на сайта"
 
-#: inc/admin/admin.php:13 inc/common/admin-bar.php:311
-#: inc/deprecated/deprecated.php:1789
+#: inc/admin/admin.php:13 inc/common/admin-bar.php:311 inc/deprecated/deprecated.php:1789
 msgid "Support"
 msgstr "Поддръжка"
 
@@ -117,14 +103,13 @@ msgstr "Настройки"
 
 #: inc/admin/admin.php:64 inc/admin/admin.php:86 inc/admin/admin.php:105
 msgid "Clear this cache"
-msgstr "Изчистете този кеш"
+msgstr "Изчистване на кеша"
 
-#: inc/admin/admin.php:249 inc/admin/admin.php:264
-#: inc/classes/class-wp-rocket-requirements-check.php:204
+#: inc/admin/admin.php:249 inc/admin/admin.php:264 inc/classes/class-wp-rocket-requirements-check.php:204
 #: inc/classes/class-wp-rocket-requirements-check.php:214
 #, php-format
 msgid "%s Update Rollback"
-msgstr "%s Връщания на обновяване"
+msgstr "%s Актуализиране на връщането"
 
 #: inc/admin/admin.php:290
 #, php-format
@@ -133,91 +118,90 @@ msgstr ""
 
 #: inc/admin/admin.php:529
 msgid "Settings import failed: you do not have the permissions to do this."
-msgstr ""
-"Импортиране на настройките са провалени: Вие нямате права да правите това."
+msgstr "Импортирането на настройки не бе успешно: нямате разрешения за това"
 
 #: inc/admin/admin.php:533
 msgid "Settings import failed: no file uploaded."
-msgstr "Импортиране на настройките са провалени: няма качен файл."
+msgstr "Импортирането на настройките не бе успешно: няма качени файлове."
 
 #: inc/admin/admin.php:537
 msgid "Settings import failed: incorrect filename."
-msgstr "Настройките за импортиране са провалени: некоректно име на файл."
+msgstr "Неуспешно импортиране на настройки: неправилно име на файл."
 
 #: inc/admin/admin.php:546
 msgid "Settings import failed: incorrect filetype."
-msgstr "Настройките за импортиране са провалени: некорекетн тип на файла."
+msgstr "Неуспешно импортиране на настройки: неправилен тип файл."
 
 #: inc/admin/admin.php:554
 msgid "Settings import failed: "
-msgstr ""
+msgstr "Импортирането на настройки не бе успешно: "
 
 #: inc/admin/admin.php:571
 msgid "Settings import failed: unexpected file content."
-msgstr ""
+msgstr "Неуспешен импорт на настройки: непредвидено съдържание на файл."
 
 #: inc/admin/admin.php:592
 msgid "Settings imported and saved."
-msgstr "Настройките са импортнати и запазени."
+msgstr "Настройките са импортирани и запазени."
 
 #: inc/admin/options.php:101
 #, php-format
 msgid "Cloudflare development mode error: %s"
-msgstr "Грешка за режим на разработчик на Cloudflare: %s"
+msgstr "Cloudflare грешка при режим на разработване: %s"
 
 #: inc/admin/options.php:107
 #, php-format
 msgid "Cloudflare development mode %s"
-msgstr "Режим на разработчик за Cloudflare %s"
+msgstr "Cloudflare режим на разработка %s"
 
 #: inc/admin/options.php:124
 #, php-format
 msgid "Cloudflare cache level error: %s"
-msgstr "Грешка в нивото на кеша за Cloudflare: %s"
+msgstr "Cloudflare грешка в нивото на кеша: %s"
 
 #: inc/admin/options.php:128
 msgctxt "Cloudflare caching level"
 msgid "Standard"
-msgstr "Стандартни"
+msgstr "Стандартен"
 
 #: inc/admin/options.php:134
 #, php-format
 msgid "Cloudflare cache level set to %s"
-msgstr "Нивото на кеша за Cloudflare е зададено на %s"
+msgstr "Нивото на кеша в Cloudflare е зададено на %s"
 
 #: inc/admin/options.php:146
 #, php-format
 msgid "Cloudflare minification error: %s"
-msgstr "Грешка в минификацията за Cloudflare: %s"
+msgstr ""
 
 #: inc/admin/options.php:152
 #, php-format
 msgid "Cloudflare minification %s"
-msgstr "Минификация на Cloudflare %s"
+msgstr ""
 
 #: inc/admin/options.php:164
 #, php-format
 msgid "Cloudflare rocket loader error: %s"
-msgstr "Грешка в rocket loader за Cloudflare: %s"
+msgstr ""
 
 #: inc/admin/options.php:170
 #, php-format
 msgid "Cloudflare rocket loader %s"
-msgstr "Rocker loader за Cloudflare %s"
+msgstr ""
 
 #: inc/admin/options.php:182
 #, php-format
 msgid "Cloudflare browser cache error: %s"
-msgstr "Грешка в кеша на браузера за Cloudflare: %s"
+msgstr ""
 
 #: inc/admin/options.php:188
 #, php-format
 msgid "Cloudflare browser cache set to %s seconds"
-msgstr "Кеша на браузера за Cloudflare е зададено на %s секунди"
+msgstr ""
 
 #: inc/admin/options.php:241 inc/classes/admin/settings/class-page.php:692
 msgid "Excluded CSS Files"
-msgstr "Изключени CSS файлове"
+msgstr ""
 
 #: inc/admin/options.php:242 inc/classes/admin/settings/class-page.php:784
 msgid "Excluded Inline JavaScript"
@@ -251,14 +235,13 @@ msgstr ""
 #: inc/admin/options.php:275
 msgid "The following pattern is invalid and has been removed:"
 msgid_plural "The following patterns are invalid and have been removed:"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Следният модел е невалиден и е премахнат:"
+msgstr[1] "Следните модели са невалидни и са премахнати:"
 
-#: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:955
-#: inc/common/admin-bar.php:65 inc/common/admin-bar.php:118
+#: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:955 inc/common/admin-bar.php:65 inc/common/admin-bar.php:118
 #: views/settings/page-sections/dashboard.php:115
 msgid "Clear cache"
-msgstr "Изчистете кеша"
+msgstr "Изчистване на кеша"
 
 #: inc/admin/ui/meta-boxes.php:36
 msgid "WP Rocket Options"
@@ -270,54 +253,51 @@ msgstr "Никога да не се кешира тази страница"
 
 #: inc/admin/ui/meta-boxes.php:70
 msgid "Activate these options on this post:"
-msgstr "Активирайте тези опции за тази публикация:"
+msgstr "Активиране на опции за публикацията:"
 
 #: inc/admin/ui/meta-boxes.php:73
 msgid "LazyLoad for images"
-msgstr "LazyLoad за изображенията"
+msgstr ""
 
 #: inc/admin/ui/meta-boxes.php:74
 msgid "LazyLoad for iframes/videos"
-msgstr "LazyLoad за iframes/видеа"
+msgstr ""
 
-#: inc/admin/ui/meta-boxes.php:75
-#: inc/classes/admin/settings/class-page.php:615
+#: inc/admin/ui/meta-boxes.php:75 inc/classes/admin/settings/class-page.php:615
 msgid "Minify HTML"
-msgstr "Минифициране на HTML"
+msgstr ""
 
 #: inc/admin/ui/meta-boxes.php:76
 msgid "Minify/combine CSS"
-msgstr "Минифициране/комбиниране на CSS"
+msgstr ""
 
 #: inc/admin/ui/meta-boxes.php:77
 msgid "Minify/combine JS"
-msgstr "Минифициране/комбиниране на JS"
+msgstr ""
 
-#: inc/admin/ui/meta-boxes.php:78
-#: inc/classes/admin/settings/class-page.php:1413
-#: inc/classes/admin/settings/class-page.php:1424
-#: inc/deprecated/deprecated.php:1775
+#: inc/admin/ui/meta-boxes.php:78 inc/classes/admin/settings/class-page.php:1413
+#: inc/classes/admin/settings/class-page.php:1424 inc/deprecated/deprecated.php:1775
 msgid "CDN"
-msgstr "CDN"
+msgstr ""
 
 #: inc/admin/ui/meta-boxes.php:79
 msgid "Optimize CSS Delivery"
-msgstr "Оптимизиране на CSS доставката"
+msgstr ""
 
 #: inc/admin/ui/meta-boxes.php:80
 msgid "Defer JS"
-msgstr "Отлагане на JS"
+msgstr ""
 
 #: inc/admin/ui/meta-boxes.php:86
 #, php-format
 msgid "Activate first the %s option."
-msgstr "Активирайте първо %s опция."
+msgstr ""
 
 #: inc/admin/ui/meta-boxes.php:102
 #, php-format
 msgid ""
-"%1$sNote:%2$s None of these options will be applied if this post has been "
-"excluded from cache in the global cache settings."
+"%1$sNote:%2$s None of these options will be applied if this post has been excluded from cache in the global cache "
+"settings."
 msgstr ""
 
 #: inc/admin/ui/notices.php:24 inc/admin/ui/notices.php:34
@@ -327,26 +307,22 @@ msgid ""
 "Make <strong>%2$s</strong> writeable and retry deactivation, or force deactivation now:"
 msgstr ""
 "<strong>%1$s</strong> не е бил деактивиран заради липсващи права за писане.<br>\n"
-"Направете <strong>%2$s</strong>с права за писане и опитайте деактивирането, или изпълнете деактивацията сега:"
+"Получете <strong>%2$s</strong>права за писане и опитайте отново деактивирането, или деактивирайте сега:"
 
 #: inc/admin/ui/notices.php:83
 #, php-format
 msgid ""
-"<strong>%s</strong>: One or more plugins have been enabled or disabled, "
-"clear the cache if they affect the front end of your site."
+"<strong>%s</strong>: One or more plugins have been enabled or disabled, clear the cache if they affect the front end "
+"of your site."
 msgstr ""
-"<strong>%s</strong>: Един или повече плъгини са били забранени или "
-"разрешени, изчистете кеша, ако те имат ефект на потребителската част на "
-"Вашият сайт."
+"<strong>%s</strong>: Една или повече приставки са активирани или деактивирани, изчистете кеша, ако те влияят на сайта "
+"ви."
 
 #: inc/admin/ui/notices.php:196
 #, php-format
-msgid ""
-"<strong>%s</strong>: The following plugins are not compatible with this "
-"plugin and may cause unexpected results:"
+msgid "<strong>%s</strong>: The following plugins are not compatible with this plugin and may cause unexpected results:"
 msgstr ""
-"<strong>%s</strong>: Следните плъгини не са съвместими с този плъгин и може "
-"да предизвикат неочаквани резултати:"
+"<strong>%s</strong>: Следните приставки не са съвместими с тази приставка и може да предизвикат неочаквани резултати:"
 
 #: inc/admin/ui/notices.php:202
 msgid "Deactivate"
@@ -354,96 +330,72 @@ msgstr "Деактивиране"
 
 #: inc/admin/ui/notices.php:243
 msgid ""
-"WP Rocket Footer JS is not an official add-on. It prevents some options in "
-"WP Rocket from working correctly. Please deactivate it if you have problems."
+"WP Rocket Footer JS is not an official add-on. It prevents some options in WP Rocket from working correctly. Please "
+"deactivate it if you have problems."
 msgstr ""
 
 #: inc/admin/ui/notices.php:283
 #, php-format
 msgid ""
-"Endurance Cache is currently enabled, which will conflict with WP Rocket "
-"Cache. Please set the Endurance Cache cache level to Off (Level 0) on the "
-"%1$sSettings > General%2$s page to prevent any issues."
+"Endurance Cache is currently enabled, which will conflict with WP Rocket Cache. Please set the Endurance Cache cache "
+"level to Off (Level 0) on the %1$sSettings > General%2$s page to prevent any issues."
 msgstr ""
 
 #: inc/admin/ui/notices.php:305
 #, php-format
-msgid ""
-"%1$s: A custom permalink structure is required for the plugin to work "
-"properly. %2$sGo to permalinks settings%3$s"
+msgid "%1$s: A custom permalink structure is required for the plugin to work properly. %2$sGo to permalinks settings%3$s"
 msgstr ""
-"%1$s: Структурата на потребителските връзки се изисква за да може плъгина да"
-" работи коректно. %2$sОтидете до настройки на постоянни връзки %3$s"
+"%1$s: Структурата на връзките се изисква за да може плъгина да работикоректно. %2$sОтидете в настройките на връзките "
+"%3$s"
 
 #: inc/admin/ui/notices.php:442
 #, php-format
-msgid ""
-"%s could not modify the .htaccess file due to missing writing permissions."
+msgid "%s could not modify the .htaccess file due to missing writing permissions."
 msgstr ""
 
 #: inc/admin/ui/notices.php:448 inc/admin/ui/notices.php:1032
 #, php-format
 msgid "Troubleshoot: %1$sHow to make system files writeable%2$s"
-msgstr ""
-"Отстраняване на повреди: %1$sКак да направите системните файлове с права за "
-"писане%2$s"
+msgstr "Отстраняване на повреди: %1$sКак да направите да получите права за писане%2$s  в системните файлове"
 
 #: inc/admin/ui/notices.php:450 inc/admin/ui/notices.php:1034
 msgid ""
-"https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
-"config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
-msgstr ""
-"https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
-"config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
-
-#: inc/admin/ui/notices.php:456
-msgid ""
-"Don’t worry, WP Rocket’s page caching and settings will still function "
-"correctly."
+"https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-config-writeable/?"
+"utm_source=wp_plugin&utm_medium=wp_rocket"
 msgstr ""
 
 #: inc/admin/ui/notices.php:456
-msgid ""
-"For optimal performance, adding the following lines into your .htaccess is "
-"recommended (not required):"
+msgid "Don’t worry, WP Rocket’s page caching and settings will still function correctly."
+msgstr "Не се притеснявайте, кеширането и настройките на страниците на WP Rocket ще продължат да функционираткоректно"
+
+#: inc/admin/ui/notices.php:456
+msgid "For optimal performance, adding the following lines into your .htaccess is recommended (not required):"
 msgstr ""
 
 #: inc/admin/ui/notices.php:600
 #, php-format
-msgid ""
-"%1$s is good to go! %2$sTest your load time%4$s, or visit your "
-"%3$ssettings%4$s."
-msgstr ""
-"%1$s е готов за работа! %2$sТествайте времето за зареждане%4$s, или посетете"
-" Вашите %3$sнастройки%4$s."
+msgid "%1$s is good to go! %2$sTest your load time%4$s, or visit your %3$ssettings%4$s."
+msgstr "%1$s е готов за работа! %2$sТествайте времето за зареждане%4$s, или посетете Вашите %3$sнастройки%4$s."
 
 #: inc/admin/ui/notices.php:721
-msgid ""
-"Would you allow WP Rocket to collect non-sensitive diagnostic data from this"
-" website?"
-msgstr ""
-"Ще позволите ли на WP Rocket да събира не-чувствителни данни от този "
-"уебсайт?"
+msgid "Would you allow WP Rocket to collect non-sensitive diagnostic data from this website?"
+msgstr "Ще позволите ли на WP Rocket да събира не-чувствителни данни от този сайт?"
 
 #: inc/admin/ui/notices.php:722
 msgid "This would help us to improve WP Rocket for you in the future."
-msgstr "Това ще ни помогне да подобрим WP Rocket за Вас за в бъдеще."
+msgstr "Това ще ни помогне да подобрим WP Rocket за Вас в бъдеще."
 
 #: inc/admin/ui/notices.php:728
 msgid "What info will we collect?"
-msgstr "Каква информация ние ще събираме?"
+msgstr "Каква информация ще събираме?"
 
 #: inc/admin/ui/notices.php:733
 msgid ""
-"Below is a detailed view of all data WP Rocket will collect if granted "
-"permission. WP Rocket will never transmit any domain names or email "
-"addresses (except for license validation), IP addresses, or third-party API "
-"keys."
+"Below is a detailed view of all data WP Rocket will collect if granted permission. WP Rocket will never transmit any "
+"domain names or email addresses (except for license validation), IP addresses, or third-party API keys."
 msgstr ""
-"Отдолу е подробен изглед на всичките данни, които WP Rocket ще събира, ако "
-"разрешите достъп. WP Rocket никога няма да трансферира домейн имена или "
-"email адреси (освен за валидация на лиценз), IP адреси, или API ключове от "
-"трети лица."
+"Отдолу е подробен изглед на всичките данни, които WP Rocket ще събира, ако разрешите достъп. WP Rocket никога няма да "
+"трансферира домейн имена или email адреси (освен за валидация на лиценз), IP адреси, или API ключове от трети лица."
 
 #: inc/admin/ui/notices.php:742
 msgid "Yes, allow"
@@ -459,7 +411,7 @@ msgstr "Благодарим Ви!"
 
 #: inc/admin/ui/notices.php:788
 msgid "WP Rocket now collects these metrics from your website:"
-msgstr "WP Rocket сега ще събира тези метрики от Вашият уебсайт:"
+msgstr "WP Rocket сега ще събира тези метрики от Вашият сайт:"
 
 #: inc/admin/ui/notices.php:825
 #, php-format
@@ -469,7 +421,7 @@ msgstr "%s: Кешът е изчистен."
 #: inc/admin/ui/notices.php:830
 #, php-format
 msgid "%s: Post cache cleared."
-msgstr "%s: Кешът на буликации е изчистен."
+msgstr "%s: Кешът на публикации е изчистен."
 
 #: inc/admin/ui/notices.php:835
 #, php-format
@@ -483,23 +435,21 @@ msgstr "%s: Кешът на потребителите е изчистен."
 
 #: inc/admin/ui/notices.php:910
 msgid ""
-"The following scheduled event failed to run. This may indicate the CRON "
-"system is not running properly, which can prevent some WP Rocket features "
-"from working as intended:"
+"The following scheduled event failed to run. This may indicate the CRON system is not running properly, which can "
+"prevent some WP Rocket features from working as intended:"
 msgid_plural ""
-"The following scheduled events failed to run. This may indicate the CRON "
-"system is not running properly, which can prevent some WP Rocket features "
-"from working as intended:"
+"The following scheduled events failed to run. This may indicate the CRON system is not running properly, which can "
+"prevent some WP Rocket features from working as intended:"
 msgstr[0] ""
 msgstr[1] ""
 
 #: inc/admin/ui/notices.php:919
 msgid "Please contact your host to check if CRON is working."
-msgstr ""
+msgstr "Моля, свържете се с вашия хост, за да проверите дали CRON работи."
 
 #: inc/admin/ui/notices.php:958
 msgid "Stop Preload"
-msgstr ""
+msgstr "Спрете предварително зареждане"
 
 #: inc/admin/ui/notices.php:976
 msgid "Force deactivation "
@@ -516,64 +466,54 @@ msgstr "Скрийте това съобщение."
 #: inc/admin/ui/notices.php:1020
 #, php-format
 msgid "%s cannot configure itself due to missing writing permissions."
-msgstr ""
-"%s не може да се конфигурира от само себе си заради липсващи права за "
-"писане."
+msgstr "%s не може да се конфигурира от само себе си заради липсващи права за писане."
 
 #: inc/admin/ui/notices.php:1026
 #, php-format
 msgid "Affected file/folder: %s"
-msgstr "Афектиран файл/папка: %s"
+msgstr "Засегнат файл/папка: %s"
 
-#: inc/classes/admin/Database/class-optimization.php:41
-#: inc/classes/admin/settings/class-page.php:1289
+#: inc/classes/admin/Database/class-optimization.php:41 inc/classes/admin/settings/class-page.php:1289
 msgid "Revisions"
 msgstr "Ревизии"
 
-#: inc/classes/admin/Database/class-optimization.php:42
-#: inc/classes/admin/settings/class-page.php:1299
+#: inc/classes/admin/Database/class-optimization.php:42 inc/classes/admin/settings/class-page.php:1299
 msgid "Auto Drafts"
 msgstr "Автоматични чернови"
 
-#: inc/classes/admin/Database/class-optimization.php:43
-#: inc/classes/admin/settings/class-page.php:1309
+#: inc/classes/admin/Database/class-optimization.php:43 inc/classes/admin/settings/class-page.php:1309
 msgid "Trashed Posts"
-msgstr ""
+msgstr "Изхвърлени в коша публикации"
 
-#: inc/classes/admin/Database/class-optimization.php:44
-#: inc/classes/admin/settings/class-page.php:1319
+#: inc/classes/admin/Database/class-optimization.php:44 inc/classes/admin/settings/class-page.php:1319
 msgid "Spam Comments"
-msgstr ""
+msgstr "Спам коментари"
 
-#: inc/classes/admin/Database/class-optimization.php:45
-#: inc/classes/admin/settings/class-page.php:1329
+#: inc/classes/admin/Database/class-optimization.php:45 inc/classes/admin/settings/class-page.php:1329
 msgid "Trashed Comments"
-msgstr ""
+msgstr "Изхвърлени в коша коментари"
 
-#: inc/classes/admin/Database/class-optimization.php:46
-#: inc/classes/admin/settings/class-page.php:1339
+#: inc/classes/admin/Database/class-optimization.php:46 inc/classes/admin/settings/class-page.php:1339
 msgid "Expired transients"
-msgstr "Изтекли настройки"
+msgstr "Изтекли преходни процеси"
 
 #: inc/classes/admin/Database/class-optimization.php:47
 msgid "Transients"
-msgstr ""
+msgstr "Преходни процеси"
 
 #: inc/classes/admin/Database/class-optimization.php:48
 msgid "Tables"
-msgstr ""
+msgstr "Таблици"
 
 #: inc/classes/admin/class-logs.php:124
 msgid "The debug file could not be deleted."
-msgstr ""
+msgstr "Файлът за отстраняване на грешки не можа да бъде изтрит."
 
-#: inc/classes/admin/settings/class-page.php:212
-#: inc/classes/admin/settings/class-page.php:213
+#: inc/classes/admin/settings/class-page.php:212 inc/classes/admin/settings/class-page.php:213
 msgid "Unavailable"
 msgstr "Не достъпен"
 
-#: inc/classes/admin/settings/class-page.php:327
-#: inc/deprecated/deprecated.php:1791
+#: inc/classes/admin/settings/class-page.php:327 inc/deprecated/deprecated.php:1791
 #: views/settings/page-sections/dashboard.php:72
 msgid "License"
 msgstr "Лиценз"
@@ -592,7 +532,7 @@ msgstr "Табло"
 
 #: inc/classes/admin/settings/class-page.php:389
 msgid "Get help, account info"
-msgstr "Вземете помощ, информация на акаунт"
+msgstr "Намерете помощ, информация за акаунт"
 
 #: inc/classes/admin/settings/class-page.php:398
 msgid "My Status"
@@ -600,24 +540,23 @@ msgstr "Моят статус"
 
 #: inc/classes/admin/settings/class-page.php:408 views/settings/page.php:71
 msgid "Rocket Tester"
-msgstr "Rocket тестер"
+msgstr "Rocket Tester"
 
 #: inc/classes/admin/settings/class-page.php:409
 msgid "I am part of the WP Rocket Beta Testing Program."
-msgstr "Аз съм част от WP Rocket бета тестер програмата."
+msgstr "Аз съм част от WP Rocket Beta Testing Program."
 
 #: inc/classes/admin/settings/class-page.php:417 views/settings/page.php:89
 msgid "Rocket Analytics"
-msgstr "Rocket анализи"
+msgstr "Rocket Analytics"
 
 #: inc/classes/admin/settings/class-page.php:419
 #, php-format
 msgid ""
-"I agree to share anonymous data with the development team to help improve WP"
-" Rocket. %1$sWhat info will we collect?%2$s"
+"I agree to share anonymous data with the development team to help improve WP Rocket. %1$sWhat info will we collect?%2$s"
 msgstr ""
-"Съгласен съм да споделям анонимни данни с екипа за разработка за помощ на "
-"подобряване на WP Rocket. %1$sКаква информация ние ще събираме?%2$s"
+"Съгласен съм да споделям анонимни данни с екипа разработчици заподобряване на WP Rocket. %1$sКаква информация ще "
+"събираме?%2$s"
 
 #: inc/classes/admin/settings/class-page.php:447
 msgid "Cache"
@@ -633,15 +572,15 @@ msgstr "Мобилен кеш"
 
 #: inc/classes/admin/settings/class-page.php:457
 msgid "Speed up your site for mobile visitors."
-msgstr "Успорете Вашият сайт за мобилни посетители."
+msgstr "Ускорете сайта си за посетители с мобилни устройства."
 
 #: inc/classes/admin/settings/class-page.php:462
 msgid ""
-"We detected you use a plugin that requires a separate cache for mobile, and "
-"automatically enabled this option for compatibility."
+"We detected you use a plugin that requires a separate cache for mobile, and automatically enabled this option for "
+"compatibility."
 msgstr ""
-"Ние засякохме, че Вие използвате плъгин, който изисква разделен кеш за "
-"мобилни устройства и автоматично разрешихме тази опция за съвместимост."
+"Засякохме, че използвате плъгин, който изисква разделен кеш за мобилни устройства и автоматично разрешихме тази опция "
+"за съвместимост."
 
 #: inc/classes/admin/settings/class-page.php:466
 msgid "User Cache"
@@ -649,31 +588,25 @@ msgstr "Потребителски кеш"
 
 #: inc/classes/admin/settings/class-page.php:469
 #, php-format
-msgid ""
-"%1$sUser cache%2$s is great when you have user-specific or restricted "
-"content on your website."
-msgstr ""
-"%1$sПотребителският кеш%2$s е чудесен когато Вие имате специфични или "
-"ограничено съдържание на Вашият сайт."
+msgid "%1$sUser cache%2$s is great when you have user-specific or restricted content on your website."
+msgstr "%1$sПотребителският кеш%2$s е полезен когато имате специфично или ограничено за достъп съдържание на сайт ви."
 
 #: inc/classes/admin/settings/class-page.php:477
 msgid "Cache Lifespan"
-msgstr "Живот на кеша"
+msgstr "Продължителност на кеша"
 
 #: inc/classes/admin/settings/class-page.php:480
 #, php-format
 msgid ""
-"Cache lifespan is the period of time after which all cache files are "
-"removed.<br>Enable %1$spreloading%2$s for the cache to be rebuilt "
-"automatically after lifespan expiration."
+"Cache lifespan is the period of time after which all cache files are removed.<br>Enable %1$spreloading%2$s for the "
+"cache to be rebuilt automatically after lifespan expiration."
 msgstr ""
-"Живота на кеша е периода от време, след което Всичките кеш файлове ще се "
-"премахнат. <br>Разрешаване на %1$s презареждането%2$sза кеша за да се "
-"построи отново всчтоматично след като живота му изтече."
+"Продължителност на кеша е период от време, след което всички кеш файлове ще се премахнат.<br>Разрешаване на "
+"%1$sspreloading%2$s за кеша за да се възстановиотново автоматично след като времето му изтече."
 
 #: inc/classes/admin/settings/class-page.php:494
 msgid "Enable caching for logged-in WordPress users"
-msgstr "Разрешаване на кеширането за вписани в WordPress потребители"
+msgstr "Разрешаване на кеширането за влезли в WordPress потребители"
 
 #: inc/classes/admin/settings/class-page.php:502
 msgid "Enable caching for mobile devices"
@@ -681,32 +614,23 @@ msgstr "Разрешаване на кеширането за мобилни у�
 
 #: inc/classes/admin/settings/class-page.php:517
 msgid "Separate cache files for mobile devices"
-msgstr "Съединете кеш файловете за мобилни устройства"
+msgstr "Отделни кеш файловете за мобилни устройства"
 
 #: inc/classes/admin/settings/class-page.php:519
 #, php-format
-msgid ""
-"%1$sMobile cache%2$s works safest with both options enabled. When in doubt, "
-"keep both."
-msgstr ""
-"%1$sМобилният кеш%2$s работи безопастно и с двете разрешени опции. При "
-"съмнение запазете и двете."
+msgid "%1$sMobile cache%2$s works safest with both options enabled. When in doubt, keep both."
+msgstr "%1$sМобилният кеш%2$s работи безопастно и с двете активирани опции. При съмнениезапазете и двете."
 
 #: inc/classes/admin/settings/class-page.php:535
-msgid ""
-"Specify time after which the global cache is cleared<br>(0 = unlimited )"
-msgstr ""
-"Определете време след което глобалният кеш ще се изтрие<br>(0 = неограничено"
-" )"
+msgid "Specify time after which the global cache is cleared<br>(0 = unlimited )"
+msgstr "Определете време след което глобалният кеш ще се изтрие<br>(0 = неограничено )"
 
 #: inc/classes/admin/settings/class-page.php:537
 #, php-format
-msgid ""
-"Reduce lifespan to 10 hours or less if you notice issues that seem to appear"
-" periodically. %1$sWhy?%2$s"
+msgid "Reduce lifespan to 10 hours or less if you notice issues that seem to appear periodically. %1$sWhy?%2$s"
 msgstr ""
-"Намалете живота на 10 часа или по-малко, ако Вие забелязвате проблеми които "
-"се появяват периодично. %1$sЗащо?%2$s"
+"Намалете продължителността на 10 часа или по-малко, ако забелязвате проблеми които се появяват периодично. %1$sЗащо?"
+"%2$s"
 
 #: inc/classes/admin/settings/class-page.php:543
 msgid "Minutes"
@@ -726,37 +650,33 @@ msgstr "Оптимизация на файл"
 
 #: inc/classes/admin/settings/class-page.php:572
 msgid "Optimize CSS & JS"
-msgstr "Оптимизиране на CSS & JS"
+msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:579
 msgid "Basic Settings"
 msgstr "Основни настройки"
 
-#: inc/classes/admin/settings/class-page.php:586
-#: inc/classes/admin/settings/class-page.php:596
+#: inc/classes/admin/settings/class-page.php:586 inc/classes/admin/settings/class-page.php:596
 #: inc/classes/admin/settings/class-page.php:606
 #, php-format
 msgid ""
-"%1$s Minification is currently activated in <strong>Autoptimize</strong>. If"
-" you want to use %2$s’s minification, disable those options in Autoptimize."
+"%1$s Minification is currently activated in <strong>Autoptimize</strong>. If you want to use %2$s’s minification, "
+"disable those options in Autoptimize."
 msgstr ""
-"%1$s Минифицирането в момента е активирано в "
-"<strong>Автооптимизиране</strong>. Ако искате да използвате "
-"%2$sминифициране, изключете тези опции в Автооптимизиране."
+"%1$s Минифицирането в момента е активирано в <strong>Автооптимизиране</strong>. Ако искате да използвате %2$s "
+"минифициране, изключете тези опции в Автооптимизиране."
 
 #: inc/classes/admin/settings/class-page.php:589
 msgid "CSS Files"
-msgstr "CSS файлове"
+msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:599
 msgid "JavaScript Files"
-msgstr "JavaScript файлове"
+msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:619
 msgid "Minifying HTML removes whitespace and comments to reduce the size."
-msgstr ""
-"Минифицирането на HTML премахва празните пространства и коментарите за да "
-"намали размера."
+msgstr "Минифицирането на HTML премахва празните пространства и коментарите за да намали размера."
 
 #: inc/classes/admin/settings/class-page.php:630
 msgid "Combine Google Fonts files"
@@ -773,41 +693,33 @@ msgstr "Премахване на query strings от статичните рес
 #: inc/classes/admin/settings/class-page.php:641
 #, php-format
 msgid ""
-"Removes the version query string from static files (e.g. style.css?ver=1.0) "
-"and encodes it into the filename instead (e.g. style-1.0.css). Can improve "
-"your GTMetrix score. %1$sMore info%2$s"
+"Removes the version query string from static files (e.g. style.css?ver=1.0) and encodes it into the filename instead "
+"(e.g. style-1.0.css). Can improve your GTMetrix score. %1$sMore info%2$s"
 msgstr ""
-"Премахване на версията на заявката от статичните файлове (напр. "
-"style.css?ver=1.0) и кодирането им в файлово име (напр. style-1.0.css). Може"
-" да подробите Вашата GTMetrix оценка. %1$sПовече информация%2$s"
+"Премахване на версията на заявката от статичните файлове (напр. style.css?ver=1.0) и кодирането им в файлово име "
+"вместо (напр. style-1.0.css). Може да подобрите Вашата GTMetrix оценка. %1$sПовече информация%2$s"
 
 #: inc/classes/admin/settings/class-page.php:649
 msgid "Minify CSS files"
-msgstr "Минифициране на CSS файлове"
+msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:650
 msgid "Minify CSS removes whitespace and comments to reduce the file size."
-msgstr ""
-"Минифициране на CSS премахва празните пространства и коментарите за да "
-"намали размера на файла."
+msgstr "Минифициране на CSS премахва празните пространства и коментарите за да намали размера на файла."
 
-#: inc/classes/admin/settings/class-page.php:663
-#: inc/classes/admin/settings/class-page.php:685
-#: inc/classes/admin/settings/class-page.php:755
-#: inc/classes/admin/settings/class-page.php:777
+#: inc/classes/admin/settings/class-page.php:663 inc/classes/admin/settings/class-page.php:685
+#: inc/classes/admin/settings/class-page.php:755 inc/classes/admin/settings/class-page.php:777
 msgid "This could break things!"
-msgstr "Това може да счупи неща!"
+msgstr "Това може да доведе до повреди!"
 
-#: inc/classes/admin/settings/class-page.php:664
-#: inc/classes/admin/settings/class-page.php:686
-#: inc/classes/admin/settings/class-page.php:756
-#: inc/classes/admin/settings/class-page.php:778
+#: inc/classes/admin/settings/class-page.php:664 inc/classes/admin/settings/class-page.php:686
+#: inc/classes/admin/settings/class-page.php:756 inc/classes/admin/settings/class-page.php:778
 msgid ""
-"If you notice any errors on your website after having activated this "
-"setting, just deactivate it again, and your site will be back to normal."
+"If you notice any errors on your website after having activated this setting, just deactivate it again, and your site "
+"will be back to normal."
 msgstr ""
-"Ако забележите някакви грешки на Вашият сайт след активирането на тези "
-"настройки, просто ги деактивирайте отново, и Вашият сайт ще работи нормално."
+"Ако забележите някакви грешки на сайт ви след активирането на тези настройки, просто ги деактивирайте отново, и сайтът "
+"ви ще работи нормално."
 
 #: inc/classes/admin/settings/class-page.php:665
 msgid "Activate minify CSS"
@@ -815,98 +727,81 @@ msgstr "Активиране на CSS минифицирането"
 
 #: inc/classes/admin/settings/class-page.php:670
 msgid "Combine CSS files <em>(Enable Minify CSS files to select)</em>"
-msgstr ""
-"Комбиниране на CSS файлове <em>(Разрешаване на минифицирането на CSS "
-"файловете за избор)</em>"
+msgstr "Комбиниране на CSS файлове <em>(Активирайте Minify CSS файлове, за да изберете)</em>"
 
 #: inc/classes/admin/settings/class-page.php:672
 #, php-format
 msgid ""
-"Combine CSS merges all your files into 1, reducing HTTP requests. Not "
-"recommended if your site uses HTTP/2. %1$sMore info%2$s"
+"Combine CSS merges all your files into 1, reducing HTTP requests. Not recommended if your site uses HTTP/2. %1$sMore "
+"info%2$s"
 msgstr ""
-"Комбиниране на CSS свързва всички файлове в 1, намалява HTTP заявките. Не е "
-"препоръчително, ако Вашият сайт използва HTTP.2. %1$sПовече информация%2$s"
+"Комбиниране на CSS свързва всички файлове в 1, намалява HTTP заявките. Не е препоръчително, ако Вашият сайт използва "
+"HTTP/2. %1$sПовече информация%2$s"
 
 #: inc/classes/admin/settings/class-page.php:687
 msgid "Activate combine CSS"
 msgstr "Активиране на комбиниране на CSS"
 
 #: inc/classes/admin/settings/class-page.php:693
-msgid ""
-"Specify URLs of CSS files to be excluded from minification and concatenation"
-" (one per line)."
+msgid "Specify URLs of CSS files to be excluded from minification and concatenation (one per line)."
 msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:694
 msgid ""
-"The domain part of the URL will be stripped automatically.<br>Use (.*).css "
-"wildcards to exclude all CSS files located at a specific path."
+"The domain part of the URL will be stripped automatically.<br>Use (.*).css wildcards to exclude all CSS files located "
+"at a specific path."
 msgstr ""
-"Домейнът част от URL-ът ще бъде премахнат автоматично.<br>Използване на "
-"(.*).css заместващи символи изключващи всички CSS файлове намиращи се в "
-"специфични пътища."
+"Домейнът част от URL-ът ще бъде премахнат автоматично.<br>Използване на (.*).css заместващи символи изключващи всички "
+"CSS файлове намиращи се в специфични пътища."
 
 #: inc/classes/admin/settings/class-page.php:707
 msgid "Optimize CSS delivery"
-msgstr "ОПтимизиране на CSS доставката"
+msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:714
 #, php-format
 msgctxt "WP Critical CSS compatibility"
 msgid ""
-"Optimize CSS Delivery is currently handled by the %1$s plugin. If you want "
-"to use WP Rocket’s Optimize CSS Delivery option, disable the %1$s plugin."
+"Optimize CSS Delivery is currently handled by the %1$s plugin. If you want to use WP Rocket’s Optimize CSS Delivery "
+"option, disable the %1$s plugin."
 msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:716
 #, php-format
 msgid ""
-"Optimize CSS delivery eliminates render-blocking CSS on your website for "
-"faster perceived load time. %1$sMore info%2$s"
+"Optimize CSS delivery eliminates render-blocking CSS on your website for faster perceived load time. %1$sMore info%2$s"
 msgstr ""
-"Оптимизиране на CSS доставката елеминира блокирането-рендирането на CSS за "
-"Вашият сайт за по-бързо време за зареждане. %1$sПовече информация%2$s"
 
 #: inc/classes/admin/settings/class-page.php:727
 msgid "Fallback critical CSS"
-msgstr "Критичен отговор за CSS"
+msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:732
 #, php-format
-msgid ""
-"Provides a fallback if auto-generated critical path CSS is incomplete. "
-"%1$sMore info%2$s"
-msgstr ""
-"Предоставя отговор , ако автоматично-генерирания път към CSS е непълен. "
-"%1$sПовече информация%2$s"
+msgid "Provides a fallback if auto-generated critical path CSS is incomplete. %1$sMore info%2$s"
+msgstr "Предоставя отговор , ако автоматично генерирания път към CSS е непълен. %1$sПовече информация%2$s"
 
 #: inc/classes/admin/settings/class-page.php:741
 msgid "Minify JavaScript files"
 msgstr "Минифициране на JavaScript файловете"
 
 #: inc/classes/admin/settings/class-page.php:742
-msgid ""
-"Minify JavaScript removes whitespace and comments to reduce the file size."
-msgstr ""
-"Минифициране на JavaScript файловете премахва празното място и коментарите "
-"за да намали размера на файла."
+msgid "Minify JavaScript removes whitespace and comments to reduce the file size."
+msgstr "Минифициране на JavaScript файловете премахва празното място и коментарите за да намали размера на файла."
 
 #: inc/classes/admin/settings/class-page.php:757
 msgid "Activate minify JavaScript"
-msgstr ""
+msgstr "Активирана на минифицирането на JavaScript"
 
 #: inc/classes/admin/settings/class-page.php:762
-msgid ""
-"Combine JavaScript files <em>(Enable Minify JavaScript files to select)</em>"
+msgid "Combine JavaScript files <em>(Enable Minify JavaScript files to select)</em>"
 msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:764
 #, php-format
 msgid ""
-"Combine JavaScript files combines your site’s internal, 3rd party and inline"
-" JS reducing HTTP requests. Not recommended if your site uses HTTP/2. "
-"%1$sMore info%2$s"
+"Combine JavaScript files combines your site’s internal, 3rd party and inline JS reducing HTTP requests. Not "
+"recommended if your site uses HTTP/2. %1$sMore info%2$s"
 msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:779
@@ -915,29 +810,24 @@ msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:786
 #, php-format
-msgid ""
-"Specify patterns of inline JavaScript to be excluded from concatenation (one"
-" per line). %1$sMore info%2$s"
+msgid "Specify patterns of inline JavaScript to be excluded from concatenation (one per line). %1$sMore info%2$s"
 msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:803
-msgid ""
-"Specify URLs of JavaScript files to be excluded from minification and "
-"concatenation (one per line)."
+msgid "Specify URLs of JavaScript files to be excluded from minification and concatenation (one per line)."
 msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:804
 msgid ""
-"<strong>Internal:</strong> The domain part of the URL will be stripped "
-"automatically. Use (.*).js wildcards to exclude all JS files located at a "
-"specific path."
+"<strong>Internal:</strong> The domain part of the URL will be stripped automatically. Use (.*).js wildcards to exclude "
+"all JS files located at a specific path."
 msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:806
 #, php-format
 msgid ""
-"<strong>3rd Party:</strong> Use either the full URL path or only the domain "
-"name, to exclude external JS. %1$sMore info%2$s"
+"<strong>3rd Party:</strong> Use either the full URL path or only the domain name, to exclude external JS. %1$sMore info"
+"%2$s"
 msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:822
@@ -946,9 +836,7 @@ msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:824
 #, php-format
-msgid ""
-"Load JavaScript deferred eliminates render-blocking JS on your site and can "
-"improve load time. %1$sMore info%2$s"
+msgid "Load JavaScript deferred eliminates render-blocking JS on your site and can improve load time. %1$sMore info%2$s"
 msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:835
@@ -957,10 +845,9 @@ msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:836
 msgid ""
-"Safe mode for jQuery for deferred JS ensures support for inline jQuery "
-"references from themes and plugins by loading jQuery at the top of the "
-"document as a render-blocking script.<br><em>Deactivating may result in "
-"broken functionality, test thoroughly!</em>"
+"Safe mode for jQuery for deferred JS ensures support for inline jQuery references from themes and plugins by loading "
+"jQuery at the top of the document as a render-blocking script.<br><em>Deactivating may result in broken functionality, "
+"test thoroughly!</em>"
 msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:861
@@ -978,16 +865,17 @@ msgstr ""
 #: inc/classes/admin/settings/class-page.php:872
 #, php-format
 msgid ""
-"It can improve actual and perceived loading time as images, iframes, and "
-"videos will be loaded only as they enter (or about to enter) the viewport "
-"and reduces the number of HTTP requests. %1$sMore Info%2$s"
+"It can improve actual and perceived loading time as images, iframes, and videos will be loaded only as they enter (or "
+"about to enter) the viewport and reduces the number of HTTP requests. %1$sMore Info%2$s"
 msgstr ""
+"Може да подобри времето за зареждане на изображения, рамки ивидеоклиповете ще се зареждат само когато започват (или "
+"предстои да започнат) в прозореца за гледанеи намалява броя на HTTP заявките. %1$sПовече информация%2$s"
 
 #: inc/classes/admin/settings/class-page.php:879
 #, php-format
 msgid ""
-"Lazyload is currently activated in <strong>Autoptimize</strong>. If you want"
-" to use %1$s’s lazyload, disable this option in Autoptimize."
+"Lazyload is currently activated in <strong>Autoptimize</strong>. If you want to use %1$s’s lazyload, disable this "
+"option in Autoptimize."
 msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:882
@@ -995,9 +883,7 @@ msgid "Emoji 👻"
 msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:884
-msgid ""
-"Use default emoji of visitor's browser instead of loading emoji from "
-"WordPress.org"
+msgid "Use default emoji of visitor's browser instead of loading emoji from WordPress.org"
 msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:888
@@ -1006,9 +892,8 @@ msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:890
 msgid ""
-"Prevents others from embedding content from your site, prevents you from "
-"embedding content from other (non-whitelisted) sites, and removes JavaScript"
-" requests related to WordPress embeds"
+"Prevents others from embedding content from your site, prevents you from embedding content from other (non-"
+"whitelisted) sites, and removes JavaScript requests related to WordPress embeds"
 msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:900
@@ -1018,8 +903,8 @@ msgstr "Разрешаване за изображения"
 #: inc/classes/admin/settings/class-page.php:911
 msgctxt "Avada"
 msgid ""
-"Lazyload for images is currently activated in Avada. If you want to use WP "
-"Rocket’s LazyLoad, disable this option in Avada."
+"Lazyload for images is currently activated in Avada. If you want to use WP Rocket’s LazyLoad, disable this option in "
+"Avada."
 msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:919
@@ -1028,15 +913,11 @@ msgstr "Разрешаване за iframes и видеа"
 
 #: inc/classes/admin/settings/class-page.php:934
 msgid "Replace YouTube iframe with preview image"
-msgstr "Заместете YouTube iframe с изображение за преглед"
+msgstr "Заместете YouTube iframe с преглед на изображението"
 
 #: inc/classes/admin/settings/class-page.php:935
-msgid ""
-"This can significantly improve your loading time if you have a lot of "
-"YouTube videos on a page."
-msgstr ""
-"Това може значително да подобри Вашето време за зареждане, и ако имате много"
-" YouTube видеа на страницата."
+msgid "This can significantly improve your loading time if you have a lot of YouTube videos on a page."
+msgstr "Това може значително да подобри времето ви за зареждане, особено ако имате много YouTube видеа на страницата."
 
 #: inc/classes/admin/settings/class-page.php:947
 msgid "Disable Emoji"
@@ -1050,110 +931,108 @@ msgstr ""
 msgid "Disable WordPress embeds"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:978
-#: inc/classes/admin/settings/class-page.php:988
+#: inc/classes/admin/settings/class-page.php:978 inc/classes/admin/settings/class-page.php:988
 #: inc/deprecated/deprecated.php:1778
 msgid "Preload"
 msgstr "Презареждане"
 
 #: inc/classes/admin/settings/class-page.php:979
 msgid "Generate cache files"
-msgstr ""
+msgstr "Генериране на кеш файлове"
 
 #: inc/classes/admin/settings/class-page.php:991
 #, php-format
 msgid ""
-"When you enable preloading WP Rocket will generate the cache starting with "
-"the links on your homepage followed by the sitemaps you specify. Preloading "
-"is automatically triggered when you add or update content and can also be "
-"manually triggered from the admin bar or from the %1$sWP Rocket "
-"Dashboard%2$s."
+"When you enable preloading WP Rocket will generate the cache starting with the links on your homepage followed by the "
+"sitemaps you specify. Preloading is automatically triggered when you add or update content and can also be manually "
+"triggered from the admin bar or from the %1$sWP Rocket Dashboard%2$s."
 msgstr ""
+"Когато активирате предварително зареждане, WP Rocket ще генерира кеша, започвайки с връзките на вашата начална "
+"страница, последвани от картите на сайта, които сте посочили. Предварително зареждане автоматично се задейства, когато "
+"добавяте или актуализирате съдържание и може да бъде ръчно задействана от администраторската лента или от %1$sWP "
+"Rocket \"Табло%2$s."
 
 #: inc/classes/admin/settings/class-page.php:999
 msgid "Prefetch DNS Requests"
 msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1001
-msgid ""
-"DNS prefetching can make external files load faster, especially on mobile "
-"networks"
+msgid "DNS prefetching can make external files load faster, especially on mobile networks"
 msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1015
 msgid "Activate Preloading"
-msgstr ""
+msgstr "Активирайте предварително зареждане"
 
 #: inc/classes/admin/settings/class-page.php:1034
 msgid "Activate sitemap-based cache preloading"
-msgstr ""
+msgstr "Активирайте предварително зареждане на кеша според картата на сайта"
 
 #: inc/classes/admin/settings/class-page.php:1053
 msgid "Sitemaps for preloading"
-msgstr ""
+msgstr "Карта на сайта за предварително зареждане"
 
 #: inc/classes/admin/settings/class-page.php:1057
 msgid "Specify XML sitemap(s) to be used for preloading"
-msgstr ""
+msgstr "Посочете XML карта на сайта, която да се използва за предварително зареждане"
 
 #: inc/classes/admin/settings/class-page.php:1067
 msgid "URLs to prefetch"
 msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1068
-msgid ""
-"Specify external hosts to be prefetched (no <code>http:</code>, one per "
-"line)"
+msgid "Specify external hosts to be prefetched (no <code>http:</code>, one per line)"
 msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1091
 msgid "Advanced Rules"
-msgstr ""
+msgstr "Разширени правила"
 
 #: inc/classes/admin/settings/class-page.php:1092
 msgid "Fine-tune cache rules"
-msgstr ""
+msgstr "Фина настройка на кеш правилата"
 
 #: inc/classes/admin/settings/class-page.php:1101
-msgid ""
-"Sensitive pages like custom login/logout URLs should be excluded from cache."
-msgstr ""
+msgid "Sensitive pages like custom login/logout URLs should be excluded from cache."
+msgstr "Чувствителните страници като URL адреси за влизане/излизане трябва да бъдат изключени от кеша."
 
 #: inc/classes/admin/settings/class-page.php:1104
 msgctxt "plugin name"
 msgid "WooCommerce"
-msgstr "WooCommerce"
+msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1106
 msgctxt "plugin name"
 msgid "Easy Digital Downloads"
-msgstr "Easy Digital Downloads"
+msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1108
 msgctxt "plugin name"
 msgid "iThemes Exchange"
-msgstr "iThemes Exchange"
+msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1110
 msgctxt "plugin name"
 msgid "Jigoshop"
-msgstr "Jigoshop"
+msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1112
 msgctxt "plugin name"
 msgid "WP-Shop"
-msgstr "WP-Shop"
+msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1118
 #, php-format
 msgid ""
-"<br>Cart, checkout and \"my account\" pages set in "
-"<strong>%1$s%2$s%3$s</strong> will be detected and never cached by default."
+"<br>Cart, checkout and \"my account\" pages set in <strong>%1$s%2$s%3$s</strong> will be detected and never cached by "
+"default."
 msgstr ""
+"<br>Настроени страници за количка, плащане и \"моят акаунт\\ \"<strong>%1$s%2$s%3$s</strong> ще бъде открито и никога "
+"няма да се кешира по подразбиране."
 
 #: inc/classes/admin/settings/class-page.php:1139
 msgid "Never Cache Cookies"
-msgstr ""
+msgstr "Никога не кеширайте бисквитки"
 
 #: inc/classes/admin/settings/class-page.php:1158
 msgid "Cache Query String(s)"
@@ -1161,60 +1040,53 @@ msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1161
 #, php-format
-msgid ""
-"%1$sCache for query strings%2$s enables you to force caching for specific "
-"GET parameters."
+msgid "%1$sCache for query strings%2$s enables you to force caching for specific GET parameters."
 msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1175
-msgid ""
-"Specify URLs of pages or posts that should never be cached (one per line)"
-msgstr ""
+msgid "Specify URLs of pages or posts that should never be cached (one per line)"
+msgstr "Посочете URL адреси на страници или публикации, които никога не трябва да се кешират (по един на ред)"
 
-#: inc/classes/admin/settings/class-page.php:1176
-#: inc/classes/admin/settings/class-page.php:1204
+#: inc/classes/admin/settings/class-page.php:1176 inc/classes/admin/settings/class-page.php:1204
 msgid ""
-"The domain part of the URL will be stripped automatically.<br>Use (.*) "
-"wildcards to address multiple URLs under a given path."
+"The domain part of the URL will be stripped automatically.<br>Use (.*) wildcards to address multiple URLs under a "
+"given path."
 msgstr ""
+"Частта на домейна в URL адреса ще бъде премахната автоматично. <br>Използвайте (.*) заместващи символи за адресиране "
+"на множество URL адреси за даден път."
 
 #: inc/classes/admin/settings/class-page.php:1185
 msgid ""
-"Specify the IDs of cookies that, when set in the visitor's browser, should "
-"prevent a page from getting cached (one per line)"
+"Specify the IDs of cookies that, when set in the visitor's browser, should prevent a page from getting cached (one per "
+"line)"
 msgstr ""
+"Посочете IDs на бисквитките, които, когато са зададени в браузъра на посетителя, трябвада предотвратяват кеширането на "
+"дадена страница (по една на ред)"
 
 #: inc/classes/admin/settings/class-page.php:1193
-msgid ""
-"Specify user agent strings that should never see cached pages (one per line)"
-msgstr ""
-"Уточнете потребителските агенти, които никога няма да виждат кеширани "
-"страници (една на ред)"
+msgid "Specify user agent strings that should never see cached pages (one per line)"
+msgstr "Уточнете user agent strings, които никога няма да кешират страници (една на ред) "
 
 #: inc/classes/admin/settings/class-page.php:1194
 msgid "Use (.*) wildcards to detect parts of UA strings."
 msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1203
-msgid ""
-"Specify URLs you always want purged from cache whenever you update any post "
-"or page (one per line)"
+msgid "Specify URLs you always want purged from cache whenever you update any post or page (one per line)"
 msgstr ""
-"Уточнете URL-и, които винаги искате да се изчистват от кеша независимо дали "
-"да обновите публикация или страница (една на ред)"
+"Посочете URL адресите, за които винаги да сеизчиства кеша, когато актуализирате публикация или страница (една на ред)"
 
 #: inc/classes/admin/settings/class-page.php:1212
 msgid "Specify query strings for caching (one per line)"
-msgstr "Уточнете query strings за кеширане (една на страница)"
+msgstr "Посочете query strings за кеширане (една на страница)"
 
-#: inc/classes/admin/settings/class-page.php:1240
-#: inc/deprecated/deprecated.php:1777
+#: inc/classes/admin/settings/class-page.php:1240 inc/deprecated/deprecated.php:1777
 msgid "Database"
 msgstr "База данни"
 
 #: inc/classes/admin/settings/class-page.php:1241
 msgid "Optimize, reduce bloat"
-msgstr ""
+msgstr "Оптимизиран, намаляване на излишните записи"
 
 #: inc/classes/admin/settings/class-page.php:1250
 msgid "Post Cleanup"
@@ -1222,9 +1094,11 @@ msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1252
 msgid ""
-"Post revisions and drafts will be permanently deleted. Do not use this "
-"option if you need to retain revisions or drafts."
+"Post revisions and drafts will be permanently deleted. Do not use this option if you need to retain revisions or "
+"drafts."
 msgstr ""
+"Ревизиите и черновите на публикациите ще бъдат изтрити завинаги. Не използвайте тази опция, ако трябва да запазите "
+"редакции или чернови."
 
 #: inc/classes/admin/settings/class-page.php:1260
 msgid "Comments Cleanup"
@@ -1232,7 +1106,7 @@ msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1262
 msgid "Spam and trashed comments will be permanently deleted."
-msgstr ""
+msgstr "Спамът и коментарите в кошчето, ще бъдат изтрити завинаги."
 
 #: inc/classes/admin/settings/class-page.php:1266
 msgid "Transients Cleanup"
@@ -1240,8 +1114,8 @@ msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1268
 msgid ""
-"Transients are temporary options; they are safe to remove. They will be "
-"automatically regenerated as your plugins require them."
+"Transients are temporary options; they are safe to remove. They will be automatically regenerated as your plugins "
+"require them."
 msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1272
@@ -1254,75 +1128,75 @@ msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1278
 msgid "Automatic cleanup"
-msgstr ""
+msgstr "Автоматично почистване"
 
 #: inc/classes/admin/settings/class-page.php:1291
 #, php-format
 msgid "%s revision in your database."
 msgid_plural "%s revisions in your database."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s ревизия във вашата база данни."
+msgstr[1] "%s ревизии във вашата база данни."
 
 #: inc/classes/admin/settings/class-page.php:1301
 #, php-format
 msgid "%s draft in your database."
 msgid_plural "%s drafts in your database."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s чернова във вашата база данни."
+msgstr[1] "%s чернови във вашата база данни."
 
 #: inc/classes/admin/settings/class-page.php:1311
 #, php-format
 msgid "%s trashed post in your database."
 msgid_plural "%s trashed posts in your database."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s публикация в кошчето на вашата база данни."
+msgstr[1] "%s публикации в кошчето на вашата база данни."
 
 #: inc/classes/admin/settings/class-page.php:1321
 #, php-format
 msgid "%s spam comment in your database."
 msgid_plural "%s spam comments in your database."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s спам коментар във вашата база данни"
+msgstr[1] "%s спам коментари във вашата база данни"
 
 #: inc/classes/admin/settings/class-page.php:1331
 #, php-format
 msgid "%s trashed comment in your database."
 msgid_plural "%s trashed comments in your database."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s коментар в кошчето на вашата база данни"
+msgstr[1] "%s коментари в кошчето на вашата база данни"
 
 #: inc/classes/admin/settings/class-page.php:1341
 #, php-format
 msgid "%s expired transient in your database."
 msgid_plural "%s expired transients in your database."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s изтекъл преходен процес във вашата база данни."
+msgstr[1] "%s изтекли преходни процеси във вашата база данни."
 
 #: inc/classes/admin/settings/class-page.php:1349
 msgid "All transients"
-msgstr "Всички настройки"
+msgstr "Всички преходни процеси"
 
 #: inc/classes/admin/settings/class-page.php:1351
 #, php-format
 msgid "%s transient in your database."
 msgid_plural "%s transients in your database."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s преходен процес във вашата база данни."
+msgstr[1] "%s преходни процеси във вашата база данни."
 
 #: inc/classes/admin/settings/class-page.php:1359
 msgid "Optimize Tables"
-msgstr ""
+msgstr "Оптимизиране на таблици"
 
 #: inc/classes/admin/settings/class-page.php:1361
 #, php-format
 msgid "%s table to optimize in your database."
 msgid_plural "%s tables to optimize in your database."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s таблица за оптимизиране във вашата база данни."
+msgstr[1] "%s таблици за оптимизиране във вашата база данни."
 
 #: inc/classes/admin/settings/class-page.php:1372
 msgid "Schedule Automatic Cleanup"
-msgstr ""
+msgstr "План за автоматично почистване"
 
 #: inc/classes/admin/settings/class-page.php:1384
 msgid "Frequency"
@@ -1342,35 +1216,35 @@ msgstr "Месечно"
 
 #: inc/classes/admin/settings/class-page.php:1414
 msgid "Integrate your CDN"
-msgstr ""
+msgstr "Интегрирайте вашия CDN"
 
 #: inc/classes/admin/settings/class-page.php:1426
-msgid ""
-"All URLs of static files (CSS, JS, images) will be rewritten to the CNAME(s)"
-" you provide."
+msgid "All URLs of static files (CSS, JS, images) will be rewritten to the CNAME(s) you provide."
 msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1428
 #, php-format
-msgid ""
-"Not required for services like Cloudflare and Sucuri. Please see our "
-"available %1$sAdd-ons%2$s."
-msgstr ""
+msgid "Not required for services like Cloudflare and Sucuri. Please see our available %1$sAdd-ons%2$s."
+msgstr "Не се изисква за услуги като Cloudflare и Sucuri. Моля, вижте нашия достъпен %1$sAdd-ons%2$s."
 
 #: inc/classes/admin/settings/class-page.php:1469
 #, php-format
 msgid ""
-"%1$s%2$s Add-on%3$s is currently enabled. Configuration of the CDN settings "
-"is not required for %2$s to work on your site."
+"%1$s%2$s Add-on%3$s is currently enabled. Configuration of the CDN settings is not required for %2$s to work on your "
+"site."
 msgid_plural ""
-"%1$s%2$s Add-ons%3$s are currently enabled. Configuration of the CDN "
-"settings is not required for %2$s to work on your site."
+"%1$s%2$s Add-ons%3$s are currently enabled. Configuration of the CDN settings is not required for %2$s to work on your "
+"site."
 msgstr[0] ""
+"%1$s%2$s Add-on%3$s в момента е активиран. Конфигуриране на настройките на CDN не са необходими %2$s за да работи на "
+"вашия сайт."
 msgstr[1] ""
+"%1$s%2$s Add-on%3$s в момента са активирани. Конфигуриране на настройките на CDN не са необходими %2$s за да работят "
+"на вашия сайт."
 
 #: inc/classes/admin/settings/class-page.php:1484
 msgid "Enable Content Delivery Network"
-msgstr "Разрешаване на Мрежата за Доставка на Съдържание"
+msgstr "Разрешаване на Мрежа за Доставка на Съдържание"
 
 #: inc/classes/admin/settings/class-page.php:1493
 msgid "CDN CNAME(s)"
@@ -1381,19 +1255,18 @@ msgid "Specify the CNAME(s) below"
 msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1501
-msgid ""
-"Specify URL(s) of files that should not get served via CDN (one per line)."
-msgstr ""
+msgid "Specify URL(s) of files that should not get served via CDN (one per line)."
+msgstr "Посочете URL(и) на файлове, които не трябва да се обслужват чрез CDN (по един на ред)."
 
 #: inc/classes/admin/settings/class-page.php:1502
 msgid ""
-"The domain part of the URL will be stripped automatically.<br>Use (.*) "
-"wildcards to exclude all files of a given file type located at a specific "
-"path."
+"The domain part of the URL will be stripped automatically.<br>Use (.*) wildcards to exclude all files of a given file "
+"type located at a specific path."
 msgstr ""
+"Частта от домейна в URL адреса ще бъде премахната автоматично. <br>Използвайте (.*) заместващи символи за изключване "
+"на всички файлове от даден тип файлове, намиращи се в определен път."
 
-#: inc/classes/admin/settings/class-page.php:1525
-#: inc/classes/admin/settings/class-page.php:1533
+#: inc/classes/admin/settings/class-page.php:1525 inc/classes/admin/settings/class-page.php:1533
 msgid "Heartbeat"
 msgstr ""
 
@@ -1402,9 +1275,7 @@ msgid "Control WordPress Heartbeat API"
 msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1534
-msgid ""
-"Reducing or disabling the Heartbeat API’s activity can help save some of "
-"your server’s resources."
+msgid "Reducing or disabling the Heartbeat API’s activity can help save some of your server’s resources."
 msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1543
@@ -1412,27 +1283,24 @@ msgid "Reduce or disable Heartbeat activity"
 msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1544
-msgid ""
-"Reducing activity will change Heartbeat frequency from one hit each minute "
-"to one hit every 2 minutes."
+msgid "Reducing activity will change Heartbeat frequency from one hit each minute to one hit every 2 minutes."
 msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1544
-msgid ""
-"Disabling Heartbeat entirely may break plugins and themes using this API."
+msgid "Disabling Heartbeat entirely may break plugins and themes using this API."
 msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1558
 msgid "Do not limit"
-msgstr ""
+msgstr "Не ограничавайте"
 
 #: inc/classes/admin/settings/class-page.php:1559
 msgid "Reduce activity"
-msgstr ""
+msgstr "Намаляване на активността"
 
 #: inc/classes/admin/settings/class-page.php:1560
 msgid "Disable"
-msgstr ""
+msgstr "Деактивиране"
 
 #: inc/classes/admin/settings/class-page.php:1568
 msgid "Control Heartbeat"
@@ -1456,7 +1324,7 @@ msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1610
 msgid "Add more features"
-msgstr ""
+msgstr "Добавете още функции"
 
 #: inc/classes/admin/settings/class-page.php:1617
 msgid "One-click Rocket Add-ons"
@@ -1464,9 +1332,11 @@ msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1618
 msgid ""
-"One-Click Add-ons are features extending available options without "
-"configuration needed. Switch the option \"on\" to enable from this screen."
+"One-Click Add-ons are features extending available options without configuration needed. Switch the option \"on\" to "
+"enable from this screen."
 msgstr ""
+"One-Click Add-ons са функции, разширяващи наличните опции без необходима конфигурация. Включете опцията \"on\", за да "
+"активирате от този екран."
 
 #: inc/classes/admin/settings/class-page.php:1628
 msgid "Rocket Add-ons"
@@ -1474,7 +1344,7 @@ msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1629
 msgid "Rocket Add-ons are complementary features extending available options."
-msgstr ""
+msgstr "Rocket Add-ons са допълващи функции, разширяващи наличните."
 
 #: inc/classes/admin/settings/class-page.php:1642
 msgid "Google Tracking"
@@ -1482,14 +1352,13 @@ msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1648
 msgid "Improve browser caching for Google Analytics"
-msgstr ""
+msgstr "Подобрете кеширането на браузъра за Google Analytics"
 
 #: inc/classes/admin/settings/class-page.php:1650
 #, php-format
 msgid ""
-"WP Rocket will host these Google scripts locally on your server to help "
-"satisfy the PageSpeed recommendation for <em>Leverage browser "
-"caching</em>.<br>%1$sLearn more%2$s"
+"WP Rocket will host these Google scripts locally on your server to help satisfy the PageSpeed recommendation for "
+"<em>Leverage browser caching</em>.<br>%1$sLearn more%2$s"
 msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1665
@@ -1498,73 +1367,69 @@ msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1671
 msgid "Improve browser caching for Facebook Pixel"
-msgstr ""
+msgstr "Подобрете кеширането на браузъра за Facebook Pixel"
 
 #: inc/classes/admin/settings/class-page.php:1673
 #, php-format
 msgid ""
-"WP Rocket will host these Facebook Pixels locally on your server to help "
-"satisfy the PageSpeed recommendation for <em>Leverage browser "
-"caching</em>.<br>%1$sLearn more%2$s"
+"WP Rocket will host these Facebook Pixels locally on your server to help satisfy the PageSpeed recommendation for "
+"<em>Leverage browser caching</em>.<br>%1$sLearn more%2$s"
 msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1706
 msgid "Varnish"
-msgstr "Varnish"
+msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1712
 msgid "If Varnish runs on your server, you must activate this add-on."
-msgstr ""
+msgstr "Ако Varnish работи на вашия сървър, трябва да активирате тази добавка."
 
 #: inc/classes/admin/settings/class-page.php:1714
 #, php-format
 msgid ""
-"Varnish cache will be purged each time WP Rocket clears its cache to ensure "
-"content is always up-to-date.<br>%1$sLearn more%2$s"
+"Varnish cache will be purged each time WP Rocket clears its cache to ensure content is always up-to-date.<br>%1$sLearn "
+"more%2$s"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1729
-#: inc/classes/admin/settings/class-page.php:1789
+#: inc/classes/admin/settings/class-page.php:1729 inc/classes/admin/settings/class-page.php:1789
 msgid "Cloudflare"
 msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1735
 msgid "Integrate your Cloudflare account with this add-on."
-msgstr ""
+msgstr "Интегрирайте вашия акаунт в Cloudflare с тази добавка."
 
 #: inc/classes/admin/settings/class-page.php:1736
 msgid ""
-"Provide your account email, global API key, and domain to use options such "
-"as clearing the Cloudflare cache and enabling optimal settings with WP "
-"Rocket."
+"Provide your account email, global API key, and domain to use options such as clearing the Cloudflare cache and "
+"enabling optimal settings with WP Rocket."
 msgstr ""
+"предоставете имейл адреса на вашия акаунт, глобалния API ключ и домейна, за да използвате опции като изчистване на "
+"кеша на Cloudflare и активиране на оптимални настройки с WP Rocket."
 
 #: inc/classes/admin/settings/class-page.php:1748
 msgid "Clear the Sucuri cache when WP Rocket’s cache is cleared."
 msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1751
-msgid ""
-"Provide your API key to clear the Sucuri cache when WP Rocket’s cache is "
-"cleared."
+msgid "Provide your API key to clear the Sucuri cache when WP Rocket’s cache is cleared."
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1759
-#: inc/classes/admin/settings/class-page.php:1907
+#: inc/classes/admin/settings/class-page.php:1759 inc/classes/admin/settings/class-page.php:1907
 msgid "Sucuri"
 msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1765
 msgid "Synchronize Sucuri cache with this add-on."
-msgstr ""
+msgstr "Синхронизиране на кеша на Sucuri с тази добавка."
 
 #: inc/classes/admin/settings/class-page.php:1805
 msgid "Cloudflare credentials"
-msgstr ""
+msgstr "Идентификационни данни на Cloudflare"
 
 #: inc/classes/admin/settings/class-page.php:1814
 msgid "Cloudflare settings"
-msgstr ""
+msgstr "Настройки на Cloudflare"
 
 #: inc/classes/admin/settings/class-page.php:1828
 msgctxt "Cloudflare"
@@ -1572,15 +1437,13 @@ msgid "Global API key:"
 msgstr "Глобален API ключ:"
 
 #: inc/classes/admin/settings/class-page.php:1829
-msgid ""
-"https://support.cloudflare.com/hc/en-us/articles/200167836-Where-do-I-find-"
-"my-Cloudflare-API-key-"
+msgid "https://support.cloudflare.com/hc/en-us/articles/200167836-Where-do-I-find-my-Cloudflare-API-key-"
 msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1829
 msgctxt "Cloudflare"
 msgid "Find your API key"
-msgstr ""
+msgstr "Намери своя API key"
 
 #: inc/classes/admin/settings/class-page.php:1841
 msgctxt "Cloudflare"
@@ -1599,19 +1462,19 @@ msgstr ""
 #: inc/classes/admin/settings/class-page.php:1862
 #, php-format
 msgid ""
-"Temporarily activate development mode on your website. This setting will "
-"automatically turn off after 3 hours. %1$sLearn more%2$s"
+"Temporarily activate development mode on your website. This setting will automatically turn off after 3 hours. "
+"%1$sLearn more%2$s"
 msgstr ""
+"Временно активиране на режима за разработка на вашия уебсайт. Тази настройка ще се изключи автоматично след 3 часа. "
+"%1$sНаучете повече%2$s"
 
 #: inc/classes/admin/settings/class-page.php:1870
 msgid "Optimal settings"
-msgstr ""
+msgstr "Оптимални настройки"
 
 #: inc/classes/admin/settings/class-page.php:1871
-msgid ""
-"Automatically enhances your Cloudflare configuration for speed, performance "
-"grade and compatibility."
-msgstr ""
+msgid "Automatically enhances your Cloudflare configuration for speed, performance grade and compatibility."
+msgstr "Автоматично подобрява вашата конфигурация на Cloudflare за скорост, производителност степен и съвместимост."
 
 #: inc/classes/admin/settings/class-page.php:1879
 msgid "Relative protocol"
@@ -1619,87 +1482,77 @@ msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1880
 msgid ""
-"Should only be used with Cloudflare's flexible SSL feature. URLs of static "
-"files (CSS, JS, images) will be rewritten to use // instead of http:// or "
-"https://."
+"Should only be used with Cloudflare's flexible SSL feature. URLs of static files (CSS, JS, images) will be rewritten "
+"to use // instead of http:// or https://."
 msgstr ""
+"Трябва да се използва само с SSL функция на Cloudflare. URL адреси на статични файлове (CSS, JS, изображения) ще бъдат "
+"пренаписани ще се използва // вместо http:// или https://."
 
 #: inc/classes/admin/settings/class-page.php:1920
 msgid "Sucuri credentials"
-msgstr ""
+msgstr "Sucuri идентификационни данни"
 
 #: inc/classes/admin/settings/class-page.php:1933
 msgctxt "Sucuri"
-msgid ""
-"Firewall API key (for plugin), must be in format <code>{32 characters}/{32 "
-"characters}</code>:"
+msgid "Firewall API key (for plugin), must be in format <code>{32 characters}/{32 characters}</code>:"
 msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1934
 msgctxt "Sucuri"
 msgid "Find your API key"
-msgstr ""
+msgstr "Намиране на вашия API ключ"
 
-#: inc/classes/admin/settings/class-render.php:486
-#: inc/deprecated/deprecated.php:1296
+#: inc/classes/admin/settings/class-render.php:486 inc/deprecated/deprecated.php:1296
 msgid "Upload file and import settings"
-msgstr "Качване на файла и импортване на настройките"
+msgstr "Качване на файла и импортиране на настройките"
 
 #: inc/classes/admin/settings/class-settings.php:385
 msgid ""
-"Sucuri Add-on: The API key for the Sucuri firewall must be in format "
-"<code>{32 characters}/{32 characters}</code>."
+"Sucuri Add-on: The API key for the Sucuri firewall must be in format <code>{32 characters}/{32 characters}</code>."
 msgstr ""
 
-#: inc/classes/admin/settings/class-settings.php:462
-#: inc/deprecated/deprecated.php:1247
+#: inc/classes/admin/settings/class-settings.php:462 inc/deprecated/deprecated.php:1247
 msgid "Settings saved."
 msgstr "Настройките са запазени."
 
 #: inc/classes/class-wp-rocket-requirements-check.php:148
 #, php-format
 msgid "To function properly, %1$s %2$s requires at least:"
-msgstr ""
+msgstr "За да функционира правилно, %1$s %2$s изисква поне:"
 
 #: inc/classes/class-wp-rocket-requirements-check.php:152
 #, php-format
 msgid ""
-"PHP %1$s. To use this WP Rocket version, please ask your web host how to "
-"upgrade your server to PHP %1$s or higher."
+"PHP %1$s. To use this WP Rocket version, please ask your web host how to upgrade your server to PHP %1$s or higher."
 msgstr ""
+"PHP %1$s. За да използвате тази версия на WP Rocket, попитайте вашия уеб хост как да надстройте сървъра си до PHP %1$s "
+"или по-висока."
 
 #: inc/classes/class-wp-rocket-requirements-check.php:157
 #, php-format
-msgid ""
-"WordPress %1$s. To use this WP Rocket version, please upgrade WordPress to "
-"version %1$s or higher."
-msgstr ""
+msgid "WordPress %1$s. To use this WP Rocket version, please upgrade WordPress to version %1$s or higher."
+msgstr "WordPress %1$s. За да използвате тази версия на WP Rocket, надстройте WordPress до версия %1$s или по-висока."
 
 #: inc/classes/class-wp-rocket-requirements-check.php:160
-msgid ""
-"If you are not able to upgrade, you can rollback to the previous version by "
-"using the button below."
-msgstr ""
+msgid "If you are not able to upgrade, you can rollback to the previous version by using the button below."
+msgstr "Ако не можете да надстройте, можете да се върнете към предишната версия като използвате бутона по-долу."
 
-#: inc/classes/class-wp-rocket-requirements-check.php:162
-#: inc/deprecated/deprecated.php:1949
+#: inc/classes/class-wp-rocket-requirements-check.php:162 inc/deprecated/deprecated.php:1949
 #, php-format
 msgid "Re-install version %s"
-msgstr ""
+msgstr "Преинсталирайте версията  %s"
 
-#: inc/classes/logger/class-logger.php:253
-#: inc/classes/logger/class-logger.php:285
+#: inc/classes/logger/class-logger.php:253 inc/classes/logger/class-logger.php:285
 msgid "The log file does not exist."
-msgstr ""
+msgstr "Файлът на дневника не съществува."
 
-#: inc/classes/logger/class-logger.php:259
-#: inc/classes/logger/class-logger.php:291
+#: inc/classes/logger/class-logger.php:259 inc/classes/logger/class-logger.php:291
 msgid "The log file could not be read."
-msgstr ""
+msgstr "Файлът на дневника не може да бъде прочетен."
 
 #: inc/classes/logger/class-logger.php:278
 msgid "The logs are not saved into a file."
-msgstr ""
+msgstr "Дневниците не се записват във файл."
 
 #: inc/classes/optimization/CSS/class-critical-css-generation.php:88
 #: inc/classes/optimization/CSS/class-critical-css-generation.php:99
@@ -1708,275 +1561,268 @@ msgstr ""
 #: inc/classes/optimization/CSS/class-critical-css-generation.php:142
 #, php-format
 msgid "Critical CSS for %1$s not generated. Error: %2$s"
-msgstr ""
+msgstr "Критичният CSS за %1$s не е генериран. Грешка: %2$s"
 
 #: inc/classes/optimization/CSS/class-critical-css-generation.php:99
 msgid "The API returned an invalid response code."
-msgstr ""
+msgstr "API върна невалиден код за отговор."
 
 #: inc/classes/optimization/CSS/class-critical-css-generation.php:110
 msgid "The API returned an empty response."
-msgstr ""
+msgstr "API върна празен отговор."
 
 #: inc/classes/optimization/CSS/class-critical-css-generation.php:145
 #, php-format
 msgid "The critical CSS content could not be saved as a file in %s."
-msgstr ""
+msgstr "Критичният CSS не може да бъде записан като файл в %s."
 
 #: inc/classes/optimization/CSS/class-critical-css-generation.php:154
 #, php-format
 msgid "Critical CSS for %s generated."
-msgstr ""
+msgstr "Критичният CSS за %s е генериран."
 
 #: inc/classes/preload/class-homepage.php:83
 #, php-format
 msgid ""
-"Preload encountered an error. Could not gather links on %1$s because of the "
-"following error: %2$s. %3$sLearn more%4$s."
+"Preload encountered an error. Could not gather links on %1$s because of the following error: %2$s. %3$sLearn more%4$s."
 msgstr ""
+"Предварителното зареждане попадна на грешка. Невъзможно свързване чрез връзките на %1$s, защото има грешка: %2$s. "
+"%3$sНаучете повече%4$s."
 
 #: inc/classes/preload/class-homepage.php:96
 #, php-format
 msgid ""
-"Preload encountered an error. %1$s is not accessible to due to the following"
-" response code: %2$s. Security measures could be preventing access. "
-"%3$sLearn more%4$s."
+"Preload encountered an error. %1$s is not accessible to due to the following response code: %2$s. Security measures "
+"could be preventing access. %3$sLearn more%4$s."
 msgstr ""
+"Предварителното зареждане намери грешка.%1$s не е достъпнокод на отговора: %2$s. Мерките за сигурност може да попречат "
+"на достъпа. %3$ssНаучете повече%4$s."
 
 #: inc/classes/preload/class-homepage.php:102
 #, php-format
 msgid ""
-"Preload encountered an error. %1$s is not accessible to due to the following"
-" response code: 404. Please make sure your homepage is accessible in your "
-"browser. %2$sLearn more%3$s."
+"Preload encountered an error. %1$s is not accessible to due to the following response code: 404. Please make sure your "
+"homepage is accessible in your browser. %2$sLearn more%3$s."
 msgstr ""
+"Предварителното зареждане намери грешка. %1$s не е достъпно код на отговора: 404. Уверете се, че вашата начална "
+"страница е достъпна във вашия браузър. %2$sLearn morе%3$s."
 
 #: inc/classes/preload/class-homepage.php:108
 #, php-format
 msgid ""
-"Preload encountered an error. %1$s is not accessible to due to the following"
-" response code: 500. Please check with your web host about server access. "
-"%2$sLearn more%3$s."
+"Preload encountered an error. %1$s is not accessible to due to the following response code: 500. Please check with "
+"your web host about server access. %2$sLearn more%3$s."
 msgstr ""
+"Предварителното зареждане намери грешка. %1$s не е достъпно код на отговора: 500. Моля, обърнете се към вашия хостинг "
+"за достъп до сървъра. %2$sНаучете повече%3$s."
 
 #: inc/classes/preload/class-homepage.php:114
 #, php-format
 msgid ""
-"Preload encountered an error. Could not gather links on %1$s because it "
-"returned the following response code: %2$s. %3$sLearn more%4$s."
+"Preload encountered an error. Could not gather links on %1$s because it returned the following response code: %2$s. "
+"%3$sLearn more%4$s."
 msgstr ""
+"Предварителното зареждане намери грешка. Не може да зареди връзките на %1$s, защото върна, следният отговор с код: "
+"%2$s. %3$sНаучете повече%4$s."
 
 #: inc/classes/preload/class-sitemap.php:138
 #, php-format
 msgid ""
-"Sitemap preload encountered an error. Could not gather links on %1$s because"
-" of the following error: %2$s. %3$sLearn more%4$s."
+"Sitemap preload encountered an error. Could not gather links on %1$s because of the following error: %2$s. %3$sLearn "
+"more%4$s."
 msgstr ""
+"Предварителното зареждане на картата на сайта намери грешка. Не може да зареди линковете на %1$s защотоима грешка: "
+"%2$s. %3$sНаучете повече%4$s."
 
 #: inc/classes/preload/class-sitemap.php:153
 #, php-format
 msgid ""
-"Sitemap preload encountered an error. %1$s is not accessible to due to the "
-"following response code: %2$s. Security measures could be preventing access."
-" %3$sLearn more%4$s."
+"Sitemap preload encountered an error. %1$s is not accessible to due to the following response code: %2$s. Security "
+"measures could be preventing access. %3$sLearn more%4$s."
 msgstr ""
+"Предварителното зареждане на картата на сайта намери грешка. %1$s не е достъпен поради отговор с код: %2$s. Мерките за "
+"сигурност може да попречат на достъпа. %3$ssНаучете повече%4$s."
 
 #: inc/classes/preload/class-sitemap.php:158
 #, php-format
 msgid ""
-"Sitemap preload encountered an error. %1$s is not accessible to due to the "
-"following response code: 404. Please make sure you entered the correct "
-"sitemap URL and it is accessible in your browser. %2$sLearn more%3$s."
+"Sitemap preload encountered an error. %1$s is not accessible to due to the following response code: 404. Please make "
+"sure you entered the correct sitemap URL and it is accessible in your browser. %2$sLearn more%3$s."
 msgstr ""
+"Предварителното зареждане на картата на сайта намери грешка. %1$s не е достъпен поради отговор с код: 404. Уверете се, "
+"че сте въвели правилния URL на картата на сайта и че е достъпен във вашия браузър. %2$sНаучете повече%3$s."
 
 #: inc/classes/preload/class-sitemap.php:163
 #, php-format
 msgid ""
-"Sitemap preload encountered an error. %1$s is not accessible to due to the "
-"following response code: 500. Please check with your web host about server "
-"access. %2$sLearn more%3$s."
+"Sitemap preload encountered an error. %1$s is not accessible to due to the following response code: 500. Please check "
+"with your web host about server access. %2$sLearn more%3$s."
 msgstr ""
+"Предварителното зареждане на картата на сайта намери грешка. %1$s не е достъпен поради отговор с код: 500. Уверете се, "
+"че вашия сървър е достъпен. %2$sНаучете повече%3$s."
 
 #: inc/classes/preload/class-sitemap.php:168
 #, php-format
 msgid ""
-"Sitemap preload encountered an error. Could not gather links on %1$s because"
-" it returned the following response code: %2$s. %3$sLearn more%4$s."
+"Sitemap preload encountered an error. Could not gather links on %1$s because it returned the following response code: "
+"%2$s. %3$sLearn more%4$s."
 msgstr ""
+"Предварителното зареждане на картата на сайта намери грешка. Не може да зареди връзките на %1$s защото върна отговор с "
+"код: %2$s. %3$sНаучете повече%4$s."
 
 #: inc/classes/preload/class-sitemap.php:184
 #, php-format
 msgid ""
-"Sitemap preload encountered an error. Could not collect links from %1$s "
-"because the file is empty. %2$sLearn more%3$s."
+"Sitemap preload encountered an error. Could not collect links from %1$s because the file is empty. %2$sLearn more%3$s."
 msgstr ""
+"Предварителното зареждане на картата на сайта намери грешка. Не може да зареди връзките от %1$s ,защото файлът е "
+"празен. %2$sНаучете повече%3$s."
 
 #: inc/classes/preload/class-sitemap.php:205
 #, php-format
 msgid ""
-"Sitemap preload encountered an error. Could not collect links from %1$s "
-"because of an error during the XML sitemap parsing. %2$sLearn more%3$s."
+"Sitemap preload encountered an error. Could not collect links from %1$s because of an error during the XML sitemap "
+"parsing. %2$sLearn more%3$s."
 msgstr ""
+"Предварителното зареждане на картата на сайта намери грешка. Не може да зареди връзките от %1$s поради грешка по време "
+"на XML sitemap parsing. %2$sНаучете повече%3$s."
 
 #: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:138
 #, php-format
 msgid ""
-"Critical CSS generation is currently running: %1$d of %2$d page types "
-"completed. (Refresh this page to view progress)"
+"Critical CSS generation is currently running: %1$d of %2$d page types completed. (Refresh this page to view progress)"
 msgstr ""
+"Понастоящем се изпълнява генериране на критичния CSS: %1$d на %2$d типове страници завършен. (Опреснете тази страница, "
+"за да видите напредъка)"
 
 #: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:189
 #, php-format
 msgid "Critical CSS generation finished for %1$d of %2$d page types."
-msgstr ""
+msgstr "Генерирането на критичния CSS приключи за %1$d на %2$d типове страници."
 
 #: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:203
 msgid "Critical CSS generation encountered one or more errors."
-msgstr ""
+msgstr "При генерирането на критичния CSS се получиха една или повече грешки."
 
 #: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:203
 msgid "Learn more."
-msgstr ""
+msgstr "Научване повече."
 
 #: inc/classes/subscriber/Tools/class-cache-dir-size-check-subscriber.php:51
 #: inc/classes/subscriber/class-facebook-tracking-cache-busting-subscriber.php:97
-#: inc/classes/subscriber/class-google-tracking-cache-busting-subscriber.php:154
-#: inc/common/cron.php:33
+#: inc/classes/subscriber/class-google-tracking-cache-busting-subscriber.php:154 inc/common/cron.php:33
 msgid "weekly"
 msgstr "седмично"
 
 #: inc/classes/subscriber/admin/Database/class-optimization-subscriber.php:148
 msgid "Database optimization process is running"
-msgstr ""
+msgstr "Процесът за оптимизация на базата данни в ход"
 
 #: inc/classes/subscriber/admin/Database/class-optimization-subscriber.php:179
-msgid ""
-"Database optimization process is complete. Everything was already optimized!"
-msgstr ""
+msgid "Database optimization process is complete. Everything was already optimized!"
+msgstr "Процесът на оптимизация на базата данни е завършен. Всичко беше оптимизирано!"
 
 #: inc/classes/subscriber/admin/Database/class-optimization-subscriber.php:182
-msgid ""
-"Database optimization process is complete. List of optimized items below:"
-msgstr ""
+msgid "Database optimization process is complete. List of optimized items below:"
+msgstr "Процесът на оптимизация на базата данни е завършен. Списъкът на оптимизираните елементи е по-долу:"
 
 #: inc/classes/subscriber/admin/Database/class-optimization-subscriber.php:190
 #, php-format
 msgid "%1$d %2$s optimized."
-msgstr ""
+msgstr "%1$d %2$s .оптимизиран"
 
-#: inc/classes/subscriber/admin/Settings/class-page-subscriber.php:137
-#: inc/deprecated/deprecated.php:1788
+#: inc/classes/subscriber/admin/Settings/class-page-subscriber.php:137 inc/deprecated/deprecated.php:1788
 #: views/settings/page-sections/tools.php:33
 msgid "Tools"
 msgstr "Инструменти"
 
 #: inc/classes/subscriber/admin/Settings/class-page-subscriber.php:138
 msgid "Import, Export, Rollback"
-msgstr ""
+msgstr "Импортиране, експортиране, връщане назад"
 
-#: inc/classes/subscriber/admin/Settings/class-page-subscriber.php:160
-#: views/settings/page-sections/imagify.php:13
+#: inc/classes/subscriber/admin/Settings/class-page-subscriber.php:160 views/settings/page-sections/imagify.php:13
 msgid "Image Optimization"
-msgstr ""
+msgstr "Оптимизация на изображението"
 
 #: inc/classes/subscriber/admin/Settings/class-page-subscriber.php:161
 msgid "Compress your images"
-msgstr ""
+msgstr "Компресиране на изображенията ви"
 
 #: inc/classes/subscriber/preload/class-preload-subscriber.php:212
 #, php-format
 msgid ""
-"Preload: WP Rocket has started preloading your website. Go to the %1$sWP "
-"Rocket settings%2$s page to track progress."
+"Preload: WP Rocket has started preloading your website. Go to the %1$sWP Rocket settings%2$s page to track progress."
 msgstr ""
 
 #: inc/classes/subscriber/preload/class-preload-subscriber.php:246
 #, php-format
-msgid ""
-"Preload: %1$s uncached page has now been preloaded. (refresh to see "
-"progress)"
-msgid_plural ""
-"Preload: %1$s uncached pages have now been preloaded. (refresh to see "
-"progress)"
+msgid "Preload: %1$s uncached page has now been preloaded. (refresh to see progress)"
+msgid_plural "Preload: %1$s uncached pages have now been preloaded. (refresh to see progress)"
 msgstr[0] ""
 msgstr[1] ""
 
 #: inc/classes/subscriber/preload/class-preload-subscriber.php:255
 msgid "The following error happened during gathering of the URLs to preload:"
-msgid_plural ""
-"The following errors happened during gathering of the URLs to preload:"
+msgid_plural "The following errors happened during gathering of the URLs to preload:"
 msgstr[0] ""
 msgstr[1] ""
 
 #: inc/classes/subscriber/preload/class-preload-subscriber.php:308
 #, php-format
 msgid "Preload complete: %d pages have been cached."
-msgstr ""
+msgstr "Предварителното зареждане завърши: %d страници са кеширани."
 
 #: inc/classes/subscriber/preload/class-sitemap-preload-subscriber.php:117
 #, php-format
 msgid ""
-"%1$sSimpleXML PHP extension%2$s is not enabled on your server. Please "
-"contact your host to enable it before running sitemap-based cache "
-"preloading."
+"%1$sSimpleXML PHP extension%2$s is not enabled on your server. Please contact your host to enable it before running "
+"sitemap-based cache preloading."
 msgstr ""
+"%1$sSimpleXML PHP extension%2$s\" не активиран на вашия сървър. свържете се с хостинга ви, за да го активирате, преди "
+"да стартирате кеша, въз основа на картата на сайта за предварително зареждане."
 
 #: inc/classes/subscriber/third-party/plugins/Optimization/class-hummingbird-subscriber.php:72
 #, php-format
 msgctxt "Hummingbird notice"
-msgid ""
-"Please deactivate the following %s option which conflicts with WP Rocket "
-"features:"
-msgid_plural ""
-"Please deactivate the following %s options which conflict with WP Rocket "
-"features:"
-msgstr[0] ""
-msgstr[1] ""
+msgid "Please deactivate the following %s option which conflicts with WP Rocket features:"
+msgid_plural "Please deactivate the following %s options which conflict with WP Rocket features:"
+msgstr[0] "Деактивирайте тази опция %s, която е в конфликт с WP Rocket функция:"
+msgstr[1] "Деактивирайте тези опции %s, които са в конфликт с WP Rocket функция:"
 
 #: inc/classes/subscriber/third-party/plugins/Optimization/class-hummingbird-subscriber.php:145
 #, php-format
 msgctxt "Hummingbird notice"
-msgid ""
-"%1$s %2$sdisable emoji%3$s conflicts with WP Rockets %2$sdisable emoji%3$s"
+msgid "%1$s %2$sdisable emoji%3$s conflicts with WP Rockets %2$sdisable emoji%3$s"
 msgstr ""
 
 #: inc/classes/subscriber/third-party/plugins/Optimization/class-hummingbird-subscriber.php:167
 #, php-format
 msgctxt "Hummingbird notice"
-msgid ""
-"%1$s %2$sremove query strings%3$s conflicts with WP Rocket %2$sremove query "
-"strings%3$s"
+msgid "%1$s %2$sremove query strings%3$s conflicts with WP Rocket %2$sremove query strings%3$s"
 msgstr ""
 
 #: inc/classes/subscriber/third-party/plugins/Optimization/class-hummingbird-subscriber.php:203
 #, php-format
 msgctxt "Hummingbird notice"
-msgid ""
-"%1$s %2$sGZIP compression%3$s conflicts with WP Rocket %2$sGZIP "
-"compression%3$s"
-msgstr ""
+msgid "%1$s %2$sGZIP compression%3$s conflicts with WP Rocket %2$sGZIP compression%3$s"
+msgstr "%1$s %2$sGZIP компресия%3$s е в конфликт с WP Rocket %2$sGZIPкомпресия%3$s"
 
 #: inc/classes/subscriber/third-party/plugins/Optimization/class-hummingbird-subscriber.php:239
 #, php-format
 msgctxt "Hummingbird notice"
-msgid ""
-"%1$s %2$sbrowser caching%3$s conflicts with WP Rocket %2$sbrowser "
-"caching%3$s"
+msgid "%1$s %2$sbrowser caching%3$s conflicts with WP Rocket %2$sbrowser caching%3$s"
 msgstr ""
 
 #: inc/classes/subscriber/third-party/plugins/Optimization/class-hummingbird-subscriber.php:271
 #, php-format
 msgctxt "Hummingbird notice"
-msgid ""
-"%1$s %2$spage caching%3$s conflicts with WP Rocket %2$spage caching%3$s"
+msgid "%1$s %2$spage caching%3$s conflicts with WP Rocket %2$spage caching%3$s"
 msgstr ""
 
 #: inc/classes/subscriber/third-party/plugins/Optimization/class-hummingbird-subscriber.php:305
 #, php-format
 msgctxt "Hummingbird notice"
-msgid ""
-"%1$s %2$sasset optimization%3$s conflicts with WP Rocket %2$sfile "
-"optimization%3$s"
+msgid "%1$s %2$sasset optimization%3$s conflicts with WP Rocket %2$sfile optimization%3$s"
 msgstr ""
 
 #: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:123
@@ -1985,61 +1831,55 @@ msgid "Sucuri cache purge error: %s"
 msgstr ""
 
 #: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:128
-msgid ""
-"The Sucuri cache is being cleared. Note that it may take up to two minutes "
-"for it to be fully flushed."
+msgid "The Sucuri cache is being cleared. Note that it may take up to two minutes for it to be fully flushed."
 msgstr ""
 
 #: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:242
 msgid "Sucuri firewall API key was not found."
-msgstr ""
+msgstr "Ключът за API на защитната стена на Sucuri не е намерен."
 
 #: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:251
 msgid "Sucuri firewall API key is invalid."
-msgstr ""
+msgstr "API ключът на защитната стена на Sucuri е невалиден."
 
 #: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:303
 msgid "Error when contacting Sucuri firewall API."
-msgstr ""
+msgstr "Грешка при свързване с API на защитната стена на Sucuri."
 
 #: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:313
 #, php-format
 msgid "Error when contacting Sucuri firewall API. Error message was: %s"
-msgstr ""
+msgstr "Грешка при свързване с API на защитната стена на Sucuri. Съобщението за грешка беше: %s"
 
 #: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:324
 msgid "Could not get a response from the Sucuri firewall API."
-msgstr ""
+msgstr "Няма отговор от API на защитната стена на Sucuri."
 
 #: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:335
 msgid "Got an invalid response from the Sucuri firewall API."
-msgstr ""
+msgstr "Получих невалиден отговор от API на защитната стена на Sucuri."
 
 #: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:345
 msgid "The Sucuri firewall API returned an unknown error."
-msgstr ""
+msgstr "API на защитната стена на Sucuri връща непозната грешка."
 
 #: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:348
 #, php-format
 msgid "The Sucuri firewall API returned the following error: %s"
 msgid_plural "The Sucuri firewall API returned the following errors: %s"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "API на защитната стена на Sucuri връща следната грешка: %s"
+msgstr[1] "API на защитната стена на Sucuri връща следните грешки: %s"
 
-#: inc/classes/traits/trait-updater-api-tools.php:53
-#: inc/deprecated/3.3.php:760 inc/deprecated/3.3.php:769
+#: inc/classes/traits/trait-updater-api-tools.php:53 inc/deprecated/3.3.php:760 inc/deprecated/3.3.php:769
 #, php-format
 msgid ""
-"An unexpected error occurred. Something may be wrong with WP-Rocket.me or "
-"this server&#8217;s configuration. If you continue to have problems, <a "
-"href=\"%s\">contact support</a>."
+"An unexpected error occurred. Something may be wrong with WP-Rocket.me or this server&#8217;s configuration. If you "
+"continue to have problems, <a href=\"%s\">contact support</a>."
 msgstr ""
-"Възникна неочаквана грешка. Нещо може би се обърка с WP-Rocket.me за "
-"конфигурацията на този сървър&#8217;s. Ако продължавате да имате проблеми, "
-"<a href=\"%s\">свържете се с поддръжката</a>."
+"Възникна неочаквана грешка. Нещо може би се обърка с WP-Rocket.me или с конфигурацията на този сървър&#8217;s. Ако "
+"продължавате да имате проблеми, <a href=\"%s\">свържете се с поддръжката</a>."
 
-#: inc/common/admin-bar.php:106 inc/common/admin-bar.php:260
-#: inc/functions/i18n.php:39 inc/functions/i18n.php:48
+#: inc/common/admin-bar.php:106 inc/common/admin-bar.php:260 inc/functions/i18n.php:39 inc/functions/i18n.php:48
 msgid "All languages"
 msgstr "Всички езици"
 
@@ -2057,14 +1897,13 @@ msgstr "Изчистване на OPcache"
 
 #: inc/common/admin-bar.php:180
 msgid "Regenerate Critical Path CSS"
-msgstr ""
+msgstr "Регенериране на критичния път на CSS"
 
 #: inc/common/admin-bar.php:196
 msgid "Clear Cloudflare cache"
 msgstr "Изчистване на Cloudflare кеша"
 
-#: inc/common/admin-bar.php:217 inc/common/admin-bar.php:272
-#: views/settings/page-sections/dashboard.php:135
+#: inc/common/admin-bar.php:217 inc/common/admin-bar.php:272 views/settings/page-sections/dashboard.php:135
 msgid "Preload cache"
 msgstr "Презареждане на кеша"
 
@@ -2084,11 +1923,11 @@ msgstr "месечно"
 #: inc/common/purge.php:456
 #, php-format
 msgid "Cloudflare cache purge error: %s"
-msgstr ""
+msgstr "Грешка при изчистване на кеша в Cloudflare: %s"
 
 #: inc/common/purge.php:461
 msgid "Cloudflare cache successfully purged"
-msgstr ""
+msgstr "Кешът на Cloudflare е изчистен успешно"
 
 #: inc/deprecated/3.2.php:51 views/settings/page-sections/imagify.php:35
 msgid "Activate Imagify"
@@ -2096,15 +1935,12 @@ msgstr "Активиране на Imagify"
 
 #: inc/deprecated/3.2.php:51
 msgid "Install Imagify for Free"
-msgstr "Инсталирайте Imagify безплатно"
+msgstr "Инсталиране на Imagify безплатно"
 
 #: inc/deprecated/3.2.php:66
-msgid ""
-"Speed up your website and boost your SEO by reducing image file sizes "
-"without losing quality with Imagify."
+msgid "Speed up your website and boost your SEO by reducing image file sizes without losing quality with Imagify."
 msgstr ""
-"Ускорете Вашият сайт и увеличете Вашето SEO, като намалите размера на "
-"изображенията без да губите качество с Imagify."
+"Ускорете Вашият сайт и увеличете Вашето SEO, като намалите размера на изображенията без да губите качество с Imagify."
 
 #: inc/deprecated/3.2.php:71
 msgid "More details"
@@ -2117,12 +1953,9 @@ msgstr "Презареждане на карта на сайта: %d стран�
 
 #: inc/deprecated/3.2.php:260
 #, php-format
-msgid ""
-"Sitemap preload: %d uncached pages have now been preloaded. (refresh to see "
-"progress)"
+msgid "Sitemap preload: %d uncached pages have now been preloaded. (refresh to see progress)"
 msgstr ""
-"Презареждане на карта на сайта: %d не кеширани страници вече са били "
-"презаредени. (опреснете за да видите прогреса)"
+"Презареждане на карта на сайта: %d не кеширани страници вече са били презаредени. (опреснете за да видите прогреса)"
 
 #: inc/deprecated/deprecated.php:242
 msgid "<strong>JS</strong> files with Deferred Loading JavaScript"
@@ -2133,34 +1966,25 @@ msgid "Add URL"
 msgstr "Добавяне на URL"
 
 #: inc/deprecated/deprecated.php:1279 views/settings/fields/import-form.php:22
-msgid ""
-"Before you can upload your import file, you will need to fix the following "
-"error:"
-msgstr ""
-"Преди да можете да качите и импортнете файла, Вие трябва да решите следната "
-"грешка:"
+msgid "Before you can upload your import file, you will need to fix the following error:"
+msgstr "Преди да можете да качите и импортирате файла, трябва да поправите следната грешка:"
 
 #: inc/deprecated/deprecated.php:1290 views/settings/fields/import-form.php:35
 #, php-format
 msgid "Choose a file from your computer (maximum size: %s)"
-msgstr "Изберете файл от Вашият компютър (максимален размер: %s )"
+msgstr "Изберете файл от Вашият компютър (максимален размер: %s)"
 
 #: inc/deprecated/deprecated.php:1387
 msgid "Your Cloudflare credentials are valid."
-msgstr "Вашите данни за вход в Cloudflare са валидни."
+msgstr "Идентификационните данни в Cloudflare са валидни."
 
-#: inc/deprecated/deprecated.php:1391
-msgid "Your Cloudflare credentials are invalid!"
-msgstr "Вашите данни за вход в Cloudflare са невалидни!"
-
-#: inc/deprecated/deprecated.php:1455
+#: inc/deprecated/deprecated.php:1391 inc/deprecated/deprecated.php:1455
 msgid "Save and optimize"
-msgstr "Запаметете и оптимизирайте"
+msgstr "Запаметяване и оптимизиране"
 
-#: inc/deprecated/deprecated.php:1455
-#: views/settings/page-sections/database.php:27
+#: inc/deprecated/deprecated.php:1455 views/settings/page-sections/database.php:27
 msgid "Optimize"
-msgstr "Оптимизирайте"
+msgstr "Оптимизиране"
 
 #: inc/deprecated/deprecated.php:1466 inc/deprecated/deprecated.php:1668
 msgctxt "screen-reader-text"
@@ -2189,23 +2013,20 @@ msgstr "Настройки за сваляне"
 
 #: inc/deprecated/deprecated.php:1533
 msgid "Replace site's hostname with:"
-msgstr "Заменете hostname на сайтовете с:"
+msgstr "Заменете името на хоста си с:"
 
-#: inc/deprecated/deprecated.php:1552 inc/deprecated/deprecated.php:1589
-#: inc/deprecated/deprecated.php:1617 views/settings/fields/cnames.php:32
-#: views/settings/fields/cnames.php:63 views/settings/fields/cnames.php:93
+#: inc/deprecated/deprecated.php:1552 inc/deprecated/deprecated.php:1589 inc/deprecated/deprecated.php:1617
+#: views/settings/fields/cnames.php:32 views/settings/fields/cnames.php:63 views/settings/fields/cnames.php:93
 msgid "reserved for"
 msgstr "запазено за"
 
-#: inc/deprecated/deprecated.php:1554 inc/deprecated/deprecated.php:1591
-#: inc/deprecated/deprecated.php:1619 views/settings/fields/cnames.php:35
-#: views/settings/fields/cnames.php:66 views/settings/fields/cnames.php:96
+#: inc/deprecated/deprecated.php:1554 inc/deprecated/deprecated.php:1591 inc/deprecated/deprecated.php:1619
+#: views/settings/fields/cnames.php:35 views/settings/fields/cnames.php:66 views/settings/fields/cnames.php:96
 msgid "All files"
 msgstr "Всички файлове"
 
-#: inc/deprecated/deprecated.php:1566 inc/deprecated/deprecated.php:1596
-#: inc/deprecated/deprecated.php:1624 views/settings/fields/cnames.php:47
-#: views/settings/fields/cnames.php:78 views/settings/fields/cnames.php:108
+#: inc/deprecated/deprecated.php:1566 inc/deprecated/deprecated.php:1596 inc/deprecated/deprecated.php:1624
+#: views/settings/fields/cnames.php:47 views/settings/fields/cnames.php:78 views/settings/fields/cnames.php:108
 msgid "Images"
 msgstr "Изображения"
 
@@ -2232,33 +2053,31 @@ msgstr "Разширени"
 #: inc/deprecated/deprecated.php:1946
 #, php-format
 msgid ""
-"%1$s %2$s requires at least PHP %3$s to function properly. To use this "
-"version, please ask your web host how to upgrade your server to PHP %3$s or "
-"higher. If you are not able to upgrade, you can rollback to the previous "
-"version by using the button below."
+"%1$s %2$s requires at least PHP %3$s to function properly. To use this version, please ask your web host how to "
+"upgrade your server to PHP %3$s or higher. If you are not able to upgrade, you can rollback to the previous version by "
+"using the button below."
 msgstr ""
+"%1$s %2$s изисква поне PHP %3$s, за да функционира правилно. За да използвате това версия, моля попитайте вашия "
+"хостинг как да надстроите сървъра си до PHP %3$s или по-висока. Ако не можете да надстроите, можете да се върнете към "
+"предишната версия, като използвате бутона по-долу."
 
 #: inc/functions/admin.php:23
-msgid ""
-"There seems to be an issue validating your license. Please see the error "
-"message below."
-msgid_plural ""
-"There seems to be an issue validating your license. You can see the error "
-"messages below."
-msgstr[0] ""
-msgstr[1] ""
+msgid "There seems to be an issue validating your license. Please see the error message below."
+msgid_plural "There seems to be an issue validating your license. You can see the error messages below."
+msgstr[0] "Има проблем с валидирането на вашия лиценз. Моля, вижте грешката в съобщението по-долу."
+msgstr[1] "Има проблем с валидирането на вашия лиценз. Моля, вижте грешката в съобщенията по-долу."
 
 #: inc/functions/admin.php:361
 msgid "Server type:"
-msgstr ""
+msgstr "Тип сървър:"
 
 #: inc/functions/admin.php:370
 msgid "PHP version number:"
-msgstr ""
+msgstr "PHP версия:"
 
 #: inc/functions/admin.php:379
 msgid "WordPress version number:"
-msgstr ""
+msgstr "WordPress версия:"
 
 #: inc/functions/admin.php:388
 msgid "WordPress multisite:"
@@ -2266,84 +2085,75 @@ msgstr ""
 
 #: inc/functions/admin.php:397
 msgid "Current theme:"
-msgstr ""
+msgstr "Текуща тема:"
 
 #: inc/functions/admin.php:406
 msgid "Current site language:"
-msgstr ""
+msgstr "Текущ език на сайта:"
 
 #: inc/functions/admin.php:415
 msgid "Active plugins:"
-msgstr ""
+msgstr "Активни плъгини:"
 
 #: inc/functions/admin.php:418
 msgid "Plugin names of all active plugins"
-msgstr ""
+msgstr "Всички активни плъгини"
 
 #: inc/functions/admin.php:424
 msgid "Anonymized WP Rocket settings:"
-msgstr ""
+msgstr "Анонимизирани настройки на WP Rocket:"
 
 #: inc/functions/admin.php:427
 msgid "Which WP Rocket settings are active"
-msgstr ""
+msgstr "Кои настройки на WP Rocket са активни"
 
 #: inc/functions/cloudflare.php:14
-msgid ""
-"Curl functions are disabled, they are required for the Cloudflare Add-on to "
-"work correctly."
-msgstr ""
+msgid "Curl functions are disabled, they are required for the Cloudflare Add-on to work correctly."
+msgstr "Curl функционалност е изключена, тя е необходима за добавката на Cloudflare , за да работи коректно."
 
 #: inc/functions/cloudflare.php:21
 msgid "Cloudflare Email and API key are not set"
-msgstr ""
+msgstr "Cloudflare Email и API ключът не са зададени"
 
 #: inc/functions/cloudflare.php:52
 #, php-format
 msgid "Missing Cloudflare zone ID. %s could not fix this automatically."
-msgstr ""
+msgstr "Липсва ID на зона в Cloudflare. %s не можа да поправи това автоматично."
 
 #: inc/functions/cloudflare.php:58
 #, php-format
 msgid "Read the %1$sdocumentation%2$s for further guidance."
-msgstr ""
+msgstr "Прочетете %1$sдокументацията%2$s за допълнителни указания."
 
 #: inc/functions/cloudflare.php:60
-msgid ""
-"https://docs.wp-rocket.me/article/18-using-wp-rocket-with-"
-"cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket"
+msgid "https://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket"
 msgstr ""
 
 #: inc/functions/cloudflare.php:100
 msgid "Connection to Cloudflare failed"
-msgstr ""
+msgstr "Връзката с Cloudflare не бе успешна"
 
 #: inc/functions/cloudflare.php:122
 msgid "Choose a domain from the list"
-msgstr ""
+msgstr "Изберете домейн от списъка"
 
 #: inc/functions/cloudflare.php:135
 msgid "No domain available in your Cloudflare account"
 msgstr "Няма достъпен домейн за Вашият Cloudflare акаунт"
 
 #: inc/functions/options.php:580 inc/functions/options.php:619
-msgid ""
-"License validation failed. Our server could not resolve the request from "
-"your website."
-msgstr ""
+msgid "License validation failed. Our server could not resolve the request from your website."
+msgstr "Проверката на лиценза не бе успешна. Нашият сървър не можа да разреши заявката от вашия сайт."
 
 #: inc/functions/options.php:580 inc/functions/options.php:619
 #, php-format
-msgid ""
-"Try clicking %1$sSave Changes%2$s below. If the error persists, follow "
-"%3$sthis guide%4$s."
-msgstr ""
+msgid "Try clicking %1$sSave Changes%2$s below. If the error persists, follow %3$sthis guide%4$s."
+msgstr "Кликнете %1$sЗапазете промените%2$s по-долу. Ако грешката продължава, следвайте %3$sтова ръководство%4$s."
 
 #: inc/functions/options.php:596
-msgid ""
-"License validation failed. You may be using a nulled version of the plugin. "
-"Please do the following:"
+msgid "License validation failed. You may be using a nulled version of the plugin. Please do the following:"
 msgstr ""
+"Проверката на лиценза не бе успешна. Може да използвате хакнатата версия на приставката. Моля, направете следното:"
 
 #: inc/functions/options.php:596 inc/functions/options.php:638
 #, php-format
@@ -2352,35 +2162,33 @@ msgstr ""
 
 #: inc/functions/options.php:596 inc/functions/options.php:638
 msgid "Download the zip file"
-msgstr ""
+msgstr "Сваляне на zip файл"
 
 #: inc/functions/options.php:596 inc/functions/options.php:638
 msgid "Reinstall"
-msgstr ""
+msgstr "Преинсталиране"
 
 #: inc/functions/options.php:596
 #, php-format
-msgid ""
-"If you do not have a WP Rocket account, please %1$spurchase a license%2$s."
-msgstr ""
+msgid "If you do not have a WP Rocket account, please %1$spurchase a license%2$s."
+msgstr "Ако нямате акаунт в WP Rocket, моля, %1$sзакупете лиценз%2$s."
 
 #: inc/functions/options.php:604
-msgid ""
-"License validation failed. This user account does not exist in our database."
-msgstr ""
+msgid "License validation failed. This user account does not exist in our database."
+msgstr "Проверката на лиценза не бе успешна. Този потребителски акаунт не съществува в нашата база данни."
 
 #: inc/functions/options.php:604
 msgid "To resolve, please contact support."
-msgstr ""
+msgstr "За да разрешите проблема, свържете се с екипа за поддръжка."
 
 #: inc/functions/options.php:612
 msgid "License validation failed. This user account is blacklisted."
-msgstr ""
+msgstr "Проверката на лиценза не бе успешна. Този потребителски акаунт е в черния списък."
 
 #: inc/functions/options.php:612
 #, php-format
 msgid "Please see %1$sthis guide%2$s for more info."
-msgstr ""
+msgstr "Вижте %1$sтова ръководство%2$s за повече информация."
 
 #: inc/functions/options.php:632
 msgid "Your license is not valid."
@@ -2389,249 +2197,247 @@ msgstr "Вашият лиценз не е валиден."
 #: inc/functions/options.php:632
 #, php-format
 msgid "Make sure you have an active %1$sWP Rocket license%2$s."
-msgstr ""
+msgstr "Уверете се, че имате активен %1$sWP Rocket лиценз%2$s."
 
 #: inc/functions/options.php:634
 msgid "You have added as many sites as your current license allows."
-msgstr ""
+msgstr "Добавили сте толкова сайтове, колкото позволява текущият ви лиценз."
 
 #: inc/functions/options.php:634
 #, php-format
-msgid ""
-"Upgrade your %1$saccount%2$s or %3$stransfer your license%2$s to this "
-"domain."
-msgstr ""
+msgid "Upgrade your %1$saccount%2$s or %3$stransfer your license%2$s to this domain."
+msgstr "Надстройте своя %1$sакаунт%2$s или%3$s прехвърлете вашия лиценз%2$s към този "
 
 #: inc/functions/options.php:636
 msgid "This website is not allowed."
-msgstr "Този уебсайт не е позволен."
+msgstr "Този сайт не е позволен."
 
 #: inc/functions/options.php:636
 #, php-format
 msgid "Please %1$scontact support%2$s."
-msgstr ""
+msgstr "%1$sСвържете се с поддръжката%2$s."
 
 #: inc/functions/options.php:638
 msgid "This license key is not recognized."
-msgstr ""
+msgstr "Този лицензен ключ не е разпознат."
 
 #: inc/functions/options.php:638
 #, php-format
 msgid "If the issue persists, please %1$scontact support%2$s."
-msgstr ""
+msgstr "Ако проблемът продължава, %1$s се свържете с екипа за поддръжка%2$s."
 
 #: inc/functions/options.php:644
 #, php-format
 msgid "License validation failed: %s"
-msgstr ""
+msgstr "Проверката на лиценза не бе успешна: %s"
 
 #: inc/vendors/classes/class-imagify-partner.php:531
 msgid "Plugin installed successfully."
-msgstr ""
+msgstr "Приставката е инсталирана успешно."
 
 #: inc/vendors/classes/class-imagify-partner.php:532
 msgid "Sorry, you are not allowed to install plugins on this site."
-msgstr ""
+msgstr "За съжаление нямате право да инсталирате приставки на този сайт."
 
 #: inc/vendors/classes/class-imagify-partner.php:533
 msgid "Sorry, you are not allowed to do that."
-msgstr ""
+msgstr "За съжаление нямате право да правите това."
 
 #: inc/vendors/classes/class-imagify-partner.php:534
 msgid "Plugin install failed."
-msgstr ""
+msgstr "Инсталирането на приставката не бе успешно."
 
 #: inc/vendors/classes/class-imagify-partner.php:535
 msgid "Go back"
-msgstr ""
+msgstr "Връщане"
 
 #: views/deactivation-intent/form.php:20
 msgid "Return"
-msgstr ""
+msgstr "Връщане"
 
 #: views/deactivation-intent/form.php:21
 msgid "WP Rocket feedback"
-msgstr ""
+msgstr "WP Rocket обратна връзка"
 
 #: views/deactivation-intent/form.php:23
 msgid "Close"
-msgstr ""
+msgstr "Затвори"
 
 #: views/deactivation-intent/form.php:27
 msgid "May we have a little info about why you are deactivating?"
-msgstr ""
+msgstr "Може ли да ни дадете малко информация защо деактивирате?"
 
 #: views/deactivation-intent/form.php:31
-msgid ""
-"<strong>It is a temporary deactivation.</strong> I am just debugging an "
-"issue."
-msgstr ""
+msgid "<strong>It is a temporary deactivation.</strong> I am just debugging an issue."
+msgstr "<strong>Това е временно деактивиране.</strong> Просто отстранявам грешки ."
 
 #: views/deactivation-intent/form.php:35
 msgid "The plugin <strong>broke my layout</strong> or some functionality."
-msgstr ""
+msgstr "Плъгина <strong>развали оформлението</strong> или някаква функционалност."
 
 #: views/deactivation-intent/form.php:39
 msgid "My PageSpeed or GTMetrix <strong>score did not improve.</strong>"
-msgstr ""
+msgstr "My PageSpeed or GTMetrix <strong>резултатът не се подобри.</strong>"
 
 #: views/deactivation-intent/form.php:43
 msgid "I did not notice a difference in loading time."
-msgstr ""
+msgstr "Не забелязах разлика във времето за зареждане."
 
 #: views/deactivation-intent/form.php:47
 msgid "The plugin is <strong>too complicated to configure.</strong>"
-msgstr ""
+msgstr "Приставката е <strong>твърде сложна за конфигуриране.</strong>"
 
 #: views/deactivation-intent/form.php:51
 msgid "My host already has its own caching system."
-msgstr ""
+msgstr "Моят хост вече има собствена кешираща система."
 
 #: views/deactivation-intent/form.php:53
 msgid "What is the name of your web host?"
-msgstr ""
+msgstr "Какво е името на вашия хост?"
 
 #: views/deactivation-intent/form.php:58
 msgid "Other"
-msgstr ""
+msgstr "Други"
 
 #: views/deactivation-intent/form.php:60
-msgid ""
-"Let us know why you are deactivating WP Rocket so we can improve the plugin"
-msgstr ""
+msgid "Let us know why you are deactivating WP Rocket so we can improve the plugin"
+msgstr "Кажете ни защо деактивирате WP Rocket, за да можем да подобрим приставката"
 
 #: views/deactivation-intent/form.php:68
 msgid "The plugin broke my layout or some functionality"
-msgstr ""
+msgstr "Приставката наруши оформлението ми или някаква функционалност"
 
 #: views/deactivation-intent/form.php:69
-msgid ""
-"This type of issue can usually be fixed by deactivating some options in WP "
-"Rocket."
-msgstr ""
+msgid "This type of issue can usually be fixed by deactivating some options in WP Rocket."
+msgstr "Този тип проблем обикновено може да бъде отстранен чрез деактивиране на някои опции в WPRocket."
 
 #: views/deactivation-intent/form.php:70
 msgid ""
-"Click \"Apply Safe Mode\" to quickly disable LazyLoad, File Optimization, "
-"Embeds and CDN options. Then check your site to see if the issue has "
-"resolved."
+"Click \"Apply Safe Mode\" to quickly disable LazyLoad, File Optimization, Embeds and CDN options. Then check your site "
+"to see if the issue has resolved."
 msgstr ""
 
 #: views/deactivation-intent/form.php:72
 msgid "Apply safe mode"
-msgstr ""
+msgstr "Приложете безопасен режим"
 
 #: views/deactivation-intent/form.php:75
 msgid "Safe mode applied."
-msgstr ""
+msgstr "Безопасният режим беше приложен."
 
 #: views/deactivation-intent/form.php:76
 msgid "Review your site in a private/logged out browser window."
-msgstr ""
+msgstr "Прегледайте сайта си в поверителен/или сте излязли прозорец на браузъра."
 
 #: views/deactivation-intent/form.php:78
 msgid ""
-"Is the issue fixed? Now you can reactivate options one at a time to "
-"determine which one caused the problem. <a href=\"https://docs.wp-"
-"rocket.me/article/19-resolving-issues-with-file-"
-"optimization/?utm_source=wp_plugin&utm_medium=wp_rocket\" "
-"target=\"_blank\">More info</a>"
+"Is the issue fixed? Now you can reactivate options one at a time to determine which one caused the problem. <a href="
+"\"https://docs.wp-rocket.me/article/19-resolving-issues-with-file-optimization/?"
+"utm_source=wp_plugin&utm_medium=wp_rocket\" target=\"_blank\">More info</a>"
 msgstr ""
+"Проблемът решен ли е? Сега можете да активирате опциите една по една, за да определите коя е причинила проблема. <a "
+"href=\"https://docs.wp-rocket.me/article/19-resolving-issues-with-file-optimization/?"
+"utm_source=wp_plugin&utm_medium=wp_rocket\" target=\"_blank\">Повече информация</a>"
 
 #: views/deactivation-intent/form.php:81
 msgid "My PageSpeed or GT Metrix score did not improve"
-msgstr ""
+msgstr "Резултатът ми в PageSpeed или GT Metrix не се подобри"
 
 #: views/deactivation-intent/form.php:82
 msgid ""
-"WP Rocket makes your site faster. The PageSpeed grade or GTMetrix score are "
-"not indicators of speed.  Neither your real visitors, nor Google will ever "
-"see your website’s “grade”. Speed is the only metric that matters for SEO "
-"and conversions."
+"WP Rocket makes your site faster. The PageSpeed grade or GTMetrix score are not indicators of speed.  Neither your "
+"real visitors, nor Google will ever see your website’s “grade”. Speed is the only metric that matters for SEO and "
+"conversions."
 msgstr ""
+"WP Rocket прави вашия сайт по-бърз. Оценката на PageSpeed или GTMetrix не са показатели за скорост. Нито вашите "
+"истински посетители, нито Google никога няма да видят „оценката“ на уебсайта ви. Скоростта е единственият показател, "
+"който има значение за SEO и конверсиите."
 
 #: views/deactivation-intent/form.php:83
 msgid "Yoast, the expert on all things related to SEO for WordPress states:"
-msgstr ""
+msgstr "Yoast, експерта за всички неща свързани със състоянието на SEO на WordPress:"
 
 #: views/deactivation-intent/form.php:84
 msgid ""
-"[Google] just looks at how fast your website loads for users, so you don’t "
-"have to obsess over that specific score. You have to make sure your website "
-"is as fast as you can get it."
+"[Google] just looks at how fast your website loads for users, so you don’t have to obsess over that specific score. "
+"You have to make sure your website is as fast as you can get it."
 msgstr ""
+"[Google] просто разглежда колко бързо се зарежда уебсайтът ви при потребителите, така че не трябва да се обсебвате от "
+"конкретен резултат. Трябва да се уверите, че вашият уебсайт е толкова бърз, колкото можете да бъде."
 
 #: views/deactivation-intent/form.php:87
 msgid ""
-"How to measure the load time of your site:<br><a href=\"https://wp-"
-"rocket.me/blog/correctly-measure-websites-page-load-"
-"time/?utm_source=wp_plugin&utm_medium=wp_rocket\" target=\"_blank\">https"
-"://wp-rocket.me/blog/correctly-measure-websites-page-load-time/</a>"
+"How to measure the load time of your site:<br><a href=\"https://wp-rocket.me/blog/correctly-measure-websites-page-load-"
+"time/?utm_source=wp_plugin&utm_medium=wp_rocket\" target=\"_blank\">https://wp-rocket.me/blog/correctly-measure-"
+"websites-page-load-time/</a>"
 msgstr ""
+"Как да измерите времето за зареждане на вашия сайт:<br><a href=\"https://wp-rocket.me/blog/correctly-measure-websites-"
+"page-load-time/?utm_source=wp_plugin&utm_medium=wp_rocket\" target=\"_blank\">https://wp-rocket.me/blog/correctly-"
+"measure-websites-page-load-time/</a>"
 
 #: views/deactivation-intent/form.php:88
 msgid ""
-"Why you should not be chasing a PageSpeed score:<br><a href=\"https://wp-"
-"rocket.me/blog/the-truth-about-google-pagespeed-"
-"insights/?utm_source=wp_plugin&utm_medium=wp_rocket\" "
-"target=\"_blank\">https://wp-rocket.me/blog/the-truth-about-google-"
-"pagespeed-insights/</a>"
+"Why you should not be chasing a PageSpeed score:<br><a href=\"https://wp-rocket.me/blog/the-truth-about-google-"
+"pagespeed-insights/?utm_source=wp_plugin&utm_medium=wp_rocket\" target=\"_blank\">https://wp-rocket.me/blog/the-truth-"
+"about-google-pagespeed-insights/</a>"
 msgstr ""
+"Защо не трябва да преследвате определен резултат от PageSpeed:<br><a href=\"https://wp-rocket.me/blog/the-truth-about-"
+"google-pagespeed-insights/?utm_source=wp_plugin&utm_medium=wp_rocket\" target=\"_blank\">https://wp-rocket.me/blog/the-"
+"truth-about-google-pagespeed-insights/</a>"
 
 #: views/deactivation-intent/form.php:91
 msgid "I did not notice a difference in loading time"
-msgstr ""
+msgstr "Не забелязах разлика във времето за зареждане"
 
 #: views/deactivation-intent/form.php:92
-msgid ""
-"Make sure you look at your site while logged out to see the fast, cached "
-"pages!"
-msgstr ""
+msgid "Make sure you look at your site while logged out to see the fast, cached pages!"
+msgstr "Уверете се, че разглеждате сайта си, докато сте излезли от него, за да видите бързите, кеширани страници!"
 
 #: views/deactivation-intent/form.php:93
 msgid ""
-"The best way to see the improvement WP Rocket provides is to perform speed "
-"tests. Follow this guide to correctly measure the load time of your "
-"website:<br><a href=\"https://wp-rocket.me/blog/correctly-measure-websites-"
-"page-load-time/?utm_source=wp_plugin&utm_medium=wp_rocket\" "
-"target=\"_blank\">https://wp-rocket.me/blog/correctly-measure-websites-page-"
-"load-time/</a>"
+"The best way to see the improvement WP Rocket provides is to perform speed tests. Follow this guide to correctly "
+"measure the load time of your website:<br><a href=\"https://wp-rocket.me/blog/correctly-measure-websites-page-load-"
+"time/?utm_source=wp_plugin&utm_medium=wp_rocket\" target=\"_blank\">https://wp-rocket.me/blog/correctly-measure-"
+"websites-page-load-time/</a>"
 msgstr ""
+"Най-добрият начин да видите подобрението, което предлага WP Rocket, е да осигурите  изпълнението на тестове за "
+"бързина. Следвайте това ръководство, за да измервате правилно времето за зареждане на вашия сайт:<br><a href=\"https://"
+"wp-rocket.me/blog/correctly-measure-websites-page-load-time/?utm_source=wp_plugin&utm_medium=wp_rocket\" target="
+"\"_blank\">https://wp-rocket.me/blog/correctly-measure-websites-page-load-time/</a>"
 
 #: views/deactivation-intent/form.php:96
 msgid "The plugin is too complicated to configure"
-msgstr ""
+msgstr "Приставката е твърде сложна за конфигуриране"
 
 #: views/deactivation-intent/form.php:97
 msgid "We are sorry to hear you are finding it difficult to use WP Rocket."
-msgstr ""
+msgstr "Съжаляваме да чуем, че ви е трудно да използвате WP Rocket."
 
 #: views/deactivation-intent/form.php:98
 #, php-format
 msgid ""
-"WP Rocket is the only caching plugin that provides 80% of best practices in "
-"speed optimization, by default. That means you do not have to do anything "
-"besides activate WP Rocket and your site will already be faster!"
+"WP Rocket is the only caching plugin that provides 80% of best practices in speed optimization, by default. That means "
+"you do not have to do anything besides activate WP Rocket and your site will already be faster!"
 msgstr ""
 
 #: views/deactivation-intent/form.php:99
-msgid ""
-"The additional options are not required for a fast site, they are for fine-"
-"tuning."
-msgstr ""
+msgid "The additional options are not required for a fast site, they are for fine-tuning."
+msgstr "Допълнителните опции не се изискват за бърз сайт, а за фини "
 
 #: views/deactivation-intent/form.php:100
 msgid ""
-"To see the benefit WP Rocket is already providing, measure the speed of your"
-" site using a tool like Pingdom:<br><a href=\"https://wp-rocket.me/blog"
-"/correctly-measure-websites-page-load-"
-"time/?utm_source=wp_plugin&utm_medium=wp_rocket\" target=\"_blank\">https"
-"://wp-rocket.me/blog/correctly-measure-websites-page-load-time/</a>"
+"To see the benefit WP Rocket is already providing, measure the speed of your site using a tool like Pingdom:<br><a "
+"href=\"https://wp-rocket.me/blog/correctly-measure-websites-page-load-time/?utm_source=wp_plugin&utm_medium=wp_rocket"
+"\" target=\"_blank\">https://wp-rocket.me/blog/correctly-measure-websites-page-load-time/</a>"
 msgstr ""
+"За да видите ползата, която WP Rocket вече предоставя, измерете скоростта на вашиясайт с помощта на инструмент като "
+"Pingdom:<br><a href=\"https://wp-rocket.me/blog/correctly-measure-websites-page-load-time/?"
+"utm_source=wp_plugin&utm_medium=wp_rocket\" target=\"_blank\">https://wp-rocket.me/blog/correctly-measure-websites-"
+"page-load-time/</a>"
 
 #: views/deactivation-intent/form.php:105
 msgid "Send & Deactivate"
-msgstr ""
+msgstr "Изпращане и деактивиране"
 
 #: views/deactivation-intent/form.php:106
 msgid "Cancel"
@@ -2639,116 +2445,105 @@ msgstr "Отказ"
 
 #: views/deactivation-intent/form.php:108
 msgid "Skip & Deactivate"
-msgstr ""
+msgstr "Пропускане и Деактивиране"
 
 #: views/settings/fields/cache-lifespan.php:26
 msgid "Clear cache after"
-msgstr ""
+msgstr "Изчистване на кеша след"
 
-#: views/settings/fields/cnames.php:49 views/settings/fields/cnames.php:80
-#: views/settings/fields/cnames.php:110
+#: views/settings/fields/cnames.php:49 views/settings/fields/cnames.php:80 views/settings/fields/cnames.php:110
 msgid "CSS & JavaScript"
 msgstr ""
 
-#: views/settings/fields/cnames.php:50 views/settings/fields/cnames.php:81
-#: views/settings/fields/cnames.php:111
+#: views/settings/fields/cnames.php:50 views/settings/fields/cnames.php:81 views/settings/fields/cnames.php:111
 msgid "JavaScript"
 msgstr ""
 
-#: views/settings/fields/cnames.php:51 views/settings/fields/cnames.php:82
-#: views/settings/fields/cnames.php:112
+#: views/settings/fields/cnames.php:51 views/settings/fields/cnames.php:82 views/settings/fields/cnames.php:112
 msgid "CSS"
 msgstr ""
 
 #: views/settings/fields/import-form.php:29
 msgid "Import settings"
-msgstr ""
+msgstr "Настройки за импортиране"
 
-#: views/settings/fields/one-click-addon.php:39
-#: views/settings/fields/rocket-addon.php:31
+#: views/settings/fields/one-click-addon.php:39 views/settings/fields/rocket-addon.php:31
 #: views/settings/fields/sliding-checkbox.php:24 views/settings/page.php:54
 msgctxt "Active state of checkbox"
 msgid "On"
 msgstr "Включено"
 
-#: views/settings/fields/one-click-addon.php:40
-#: views/settings/fields/rocket-addon.php:32
+#: views/settings/fields/one-click-addon.php:40 views/settings/fields/rocket-addon.php:32
 #: views/settings/fields/sliding-checkbox.php:25 views/settings/page.php:55
 msgctxt "Inactive state of checkbox"
 msgid "Off"
 msgstr "Изключено"
 
-#: views/settings/fields/one-click-addon.php:41
-#: views/settings/fields/rocket-addon.php:33
+#: views/settings/fields/one-click-addon.php:41 views/settings/fields/rocket-addon.php:33
 msgid "Add-on status"
-msgstr ""
+msgstr "Състояние на добавката"
 
 #: views/settings/fields/rocket-addon.php:56
 msgid "Modify options"
-msgstr ""
+msgstr "Промяна на опциите"
 
 #: views/settings/page-sections/cloudflare.php:26
 msgid "Cloudflare Cache"
 msgstr ""
 
-#: views/settings/page-sections/cloudflare.php:33
-#: views/settings/page-sections/sucuri.php:34
+#: views/settings/page-sections/cloudflare.php:33 views/settings/page-sections/sucuri.php:34
 #, php-format
 msgid "Purges cached resources for your website. %s"
-msgstr ""
+msgstr "Очиства кешираните ресурси на вашия сайт. %s"
 
 #: views/settings/page-sections/cloudflare.php:34
 msgid "https://support.cloudflare.com/hc/en-us/articles/200169246"
 msgstr ""
 
-#: views/settings/page-sections/cloudflare.php:34
-#: views/settings/page-sections/sucuri.php:35
+#: views/settings/page-sections/cloudflare.php:34 views/settings/page-sections/sucuri.php:35
 msgid "Learn more"
-msgstr ""
+msgstr "Научете повече"
 
 #: views/settings/page-sections/cloudflare.php:40
 msgid "Clear all Cloudflare cache files"
-msgstr ""
+msgstr "Изчистване на всички кеш файлове на Cloudflare"
 
 #: views/settings/page-sections/dashboard.php:37
 msgid "Congratulations!"
-msgstr ""
+msgstr "Честито!"
 
 #: views/settings/page-sections/dashboard.php:39
 msgid "WP Rocket is now activated and already working for you."
-msgstr ""
+msgstr "WP Rocket вече е активиран и работи за вас."
 
 #: views/settings/page-sections/dashboard.php:41
 msgid "Your website should be loading faster now!"
-msgstr ""
+msgstr "Вашият сайт трябва да се зарежда по-бързо сега!"
 
 #: views/settings/page-sections/dashboard.php:43
 #, php-format
-msgid ""
-"To guarantee fast websites, WP Rocket applies 80% of web performance best "
-"practices."
+msgid "To guarantee fast websites, WP Rocket applies 80% of web performance best practices."
 msgstr ""
 
 #: views/settings/page-sections/dashboard.php:43
-msgid ""
-"We also enable options that provide immediate benefits to your website."
-msgstr ""
+msgid "We also enable options that provide immediate benefits to your website."
+msgstr "Също така даваме възможност за опции, които осигуряват пряки ползи за вашия сайт."
 
 #: views/settings/page-sections/dashboard.php:44
 msgid "Continue to the options to further optimize your site!"
-msgstr ""
+msgstr "Продължете към опциите за допълнителна оптимизация на вашия сайт!"
 
 #: views/settings/page-sections/dashboard.php:54
 msgid "My Account"
-msgstr ""
+msgstr "Моят акаунт"
 
 #: views/settings/page-sections/dashboard.php:60
 msgid "Refresh info"
-msgstr ""
+msgstr "Обновяване на информацията"
 
 #: views/settings/page-sections/dashboard.php:74
 msgid "Expiration Date"
-msgstr ""
+msgstr "Срок на годност"
 
 #: views/settings/page-sections/dashboard.php:83
 msgid "View my account"
@@ -2756,75 +2551,68 @@ msgstr ""
 
 #: views/settings/page-sections/dashboard.php:103
 msgid "Quick Actions"
-msgstr ""
+msgstr "Преглед на акаунта ми"
 
 #: views/settings/page-sections/dashboard.php:109
 msgid "Remove all cached files"
-msgstr ""
+msgstr "Премахване на всички кеширани файлове"
 
 #: views/settings/page-sections/dashboard.php:129
 msgid "Start cache preloading"
-msgstr ""
+msgstr "Започнете предварително зареждане на кеша"
 
 #: views/settings/page-sections/dashboard.php:147
 msgid "Purge OPCache content"
-msgstr ""
+msgstr "Пречистване на съдържанието на OPCache"
 
 #: views/settings/page-sections/dashboard.php:153
 msgid "Purge OPCache"
-msgstr ""
+msgstr "Пречистване на OPCache"
 
-#: views/settings/page-sections/dashboard.php:164
-#: views/settings/page-sections/dashboard.php:170
+#: views/settings/page-sections/dashboard.php:164 views/settings/page-sections/dashboard.php:170
 msgid "Regenerate Critical CSS"
-msgstr ""
+msgstr "Възстановяване на критичния CSS"
 
 #: views/settings/page-sections/dashboard.php:186
 msgid "Frequently Asked Questions"
-msgstr ""
+msgstr "Често задавани въпроси"
 
 #: views/settings/page-sections/dashboard.php:199
 msgid "Still cannot find a solution?"
-msgstr ""
+msgstr "Все още не можете да намерите решение?"
 
 #: views/settings/page-sections/dashboard.php:200
-msgid ""
-"Submit a ticket and get help from our friendly and knowledgeable Rocketeers."
-msgstr ""
+msgid "Submit a ticket and get help from our friendly and knowledgeable Rocketeers."
+msgstr "Изпратете билете и получете помощ от знаещите, Rocketeers."
 
 #: views/settings/page-sections/dashboard.php:208
 msgid "Ask support"
-msgstr ""
+msgstr "Искане на помощ"
 
 #: views/settings/page-sections/database.php:24
 msgid "Backup your database before you run a cleanup!"
-msgstr ""
+msgstr "Архивирайте вашата база данни, преди да стартирате почистването ѝ!"
 
 #: views/settings/page-sections/database.php:25
-msgid ""
-"Once a database optimization has been performed, there is no way to undo it."
-msgstr ""
+msgid "Once a database optimization has been performed, there is no way to undo it."
+msgstr "След като бъде извършена оптимизацията на базата данни, няма начин да я отмените."
 
 #: views/settings/page-sections/imagify.php:20
 #, php-format
-msgid ""
-"%1$sWP ROCKET%2$s created %3$sIMAGIFY%4$s %1$sfor best-in-class image "
-"optimization.%2$s"
+msgid "%1$sWP ROCKET%2$s created %3$sIMAGIFY%4$s %1$sfor best-in-class image optimization.%2$s"
 msgstr ""
 
 #: views/settings/page-sections/imagify.php:23
-msgid ""
-"Compress image to make your website faster, all while maintaining image "
-"quality."
-msgstr ""
+msgid "Compress image to make your website faster, all while maintaining image quality."
+msgstr "Компресирайте изображението, за да е\tсайта ви\tпо-бърз, като същевременно поддържате изображението качествено"
 
 #: views/settings/page-sections/imagify.php:24
 msgid "More on Imagify:"
-msgstr ""
+msgstr "Повече за Imagify:"
 
 #: views/settings/page-sections/imagify.php:26
 msgid "Imagify Plugin Page"
-msgstr ""
+msgstr "Страница на Imagify Plugin"
 
 #: views/settings/page-sections/imagify.php:27
 msgid "Imagify Website"
@@ -2832,55 +2620,55 @@ msgstr ""
 
 #: views/settings/page-sections/imagify.php:28
 msgid "Review of Image Compression Plugins"
-msgstr ""
+msgstr "Преглед на Image Compression Plugins"
 
 #: views/settings/page-sections/imagify.php:37
 msgid "Install Imagify"
-msgstr ""
+msgstr "Инсталиране на Imagify"
 
 #: views/settings/page-sections/license.php:21
 msgid "WP Rocket was not able to automatically validate your license."
-msgstr ""
+msgstr "WP Rocket не успя да потвърди автоматично вашия лиценз."
 
 #: views/settings/page-sections/license.php:26
 #, php-format
 msgid ""
-"Follow this <a href=\"%1$s\" target=\"_blank\">tutorial</a>, or contact <a "
-"href=\"%2$s\" target=\"_blank\">support</a> to get the engine started."
+"Follow this <a href=\"%1$s\" target=\"_blank\">tutorial</a>, or contact <a href=\"%2$s\" target=\"_blank\">support</a> "
+"to get the engine started."
 msgstr ""
 
 #: views/settings/page-sections/license.php:26
 msgid ""
-"https://docs.wp-rocket.me/article/100-resolving-problems-with-license-"
-"validation/?utm_source=wp_plugin&utm_medium=wp_rocket"
+"https://docs.wp-rocket.me/article/100-resolving-problems-with-license-validation/?"
+"utm_source=wp_plugin&utm_medium=wp_rocket"
 msgstr ""
 
 #: views/settings/page-sections/sucuri.php:41
 msgid "Clear all Sucuri cache files"
-msgstr ""
+msgstr "Изчистване\tна\tвсички\tкеш\tфайлове на Sucuri"
 
 #: views/settings/page-sections/tools.php:20
 #, php-format
 msgid "Files size: %1$s. Number of entries: %2$s."
-msgstr ""
+msgstr "Размер на файловете:\t%1$s.\tБрой влизания: %2$s."
 
 #: views/settings/page-sections/tools.php:23
 #, php-format
 msgid "%1$sDownload the file%2$s."
-msgstr ""
+msgstr "%1$sИзтегляне на файла%2$s."
 
 #: views/settings/page-sections/tools.php:26
 #, php-format
 msgid "%1$sDelete the file%2$s."
-msgstr ""
+msgstr "%1$sИзтриване на файла%2$s."
 
 #: views/settings/page-sections/tools.php:37
 msgid "Export settings"
-msgstr ""
+msgstr "Експортиране на настройките"
 
 #: views/settings/page-sections/tools.php:38
 msgid "Download a backup file of your settings"
-msgstr ""
+msgstr "Изтегляне на архивен файл с вашите настройки"
 
 #: views/settings/page-sections/tools.php:43
 msgid "Download settings"
@@ -2888,148 +2676,141 @@ msgstr "Настройки за сваляне"
 
 #: views/settings/page-sections/tools.php:56
 msgid "Rollback"
-msgstr ""
+msgstr "Отмяна"
 
 #: views/settings/page-sections/tools.php:60
 #, php-format
 msgid "Has version %s caused an issue on your website?"
-msgstr ""
+msgstr "Версията %s причини ли проблем на вашия сайт?"
 
 #: views/settings/page-sections/tools.php:62
-msgid ""
-"You can rollback to the previous major version here.<br>Then send us a "
-"support request."
-msgstr ""
+msgid "You can rollback to the previous major version here.<br>Then send us a support request."
+msgstr "Можете да се върнете към предишната версия тук. <br> След това ни изпратете искане за помощ"
 
 #: views/settings/page-sections/tools.php:69
 #, php-format
 msgid "Reinstall version %s"
-msgstr ""
+msgstr "Преинсталиране на версия %s"
 
 #: views/settings/page-sections/tools.php:85
 msgid "Debug mode"
-msgstr ""
+msgstr "Режим за отстраняване на грешки"
 
 #: views/settings/page-sections/tools.php:90
 msgid "Create a debug log file."
-msgstr ""
+msgstr "Създаване\tна\tрегистрационен\tфайл за отстраняване на грешки."
 
 #: views/settings/page.php:16
 msgid "WP Rocket Settings"
-msgstr ""
+msgstr "Настройки на WP Rocket"
 
 #: views/settings/page.php:30
 #, php-format
 msgid "version %s"
-msgstr ""
+msgstr "версия\t%s"
 
 #: views/settings/page.php:40
 msgid "Save Changes"
-msgstr "Запазете промените"
+msgstr "Запазване\tна\tпромените"
 
 #: views/settings/page.php:56
 msgid "Show Sidebar"
-msgstr ""
+msgstr "Показване на страничната лента"
 
 #: views/settings/page.php:75
 msgid "Thanks for choosing to participate in the WP Rocket beta program!"
-msgstr ""
+msgstr "Благодарим ви, че избрахте да участвате в бета програмата WP Rocket!"
 
 #: views/settings/page.php:76
 msgid ""
-"A beta version is usually one that has new features and improvements, but we"
-" want to test it a little more before full launch."
+"A beta version is usually one that has new features and improvements, but we want to test it a little more before full "
+"launch."
 msgstr ""
+"Бета версията обикновено е тази, която има нови функции и подобрения, но ние\t\tискаме\tда го тестваме\tоще малко "
+"преди пълното стартиране."
 
 #: views/settings/page.php:77
 msgid ""
-"We’d love it if you took our beta versions for a ride, but please keep in "
-"mind that it might be less stable than our other releases. Don’t worry, you "
-"can switch back to a full release version at any time."
+"We’d love it if you took our beta versions for a ride, but please keep in mind that it might be less stable than our "
+"other releases. Don’t worry, you can switch back to a full release version at any time."
 msgstr ""
+"Ще се радваме, ако изпробвате нашата\tбета версия\tимайте предвид, че\tтя\tможе\tда е по-малко стабилна\tот другите ни "
+"версии. Не се притеснявайте, вие\tможе да се върнете към стабилна\tверсия по всяко време."
 
 #: views/settings/page.php:78
-msgid ""
-"Your mission: please send all feedback about our beta versions, including "
-"bug reports, to support@wp-rocket.me"
+msgid "Your mission: please send all feedback about our beta versions, including bug reports, to support@wp-rocket.me"
 msgstr ""
+"Вашата задача\tе:\tда\tни\tизпращате\tвсички отзиви за нашите бета версии, включително доклади за грешки, до"
+"\tsupport@wp-rocket.me"
 
 #: views/settings/page.php:80
 msgid "If you don’t want to join the beta program, simply close this window."
-msgstr ""
+msgstr "Ако не искате да се присъедините към бета програмата, просто затворете този прозорец."
 
 #: views/settings/page.php:82
 msgid "Activate Rocket Tester"
-msgstr ""
+msgstr "Активиране на Rocket Tester"
 
 #: views/settings/page.php:93
-msgid ""
-"Below is a detailed view of all data WP Rocket will collect <strong>if "
-"granted permission.</strong>"
-msgstr ""
+msgid "Below is a detailed view of all data WP Rocket will collect <strong>if granted permission.</strong>"
+msgstr "По-долу е даден подробен изглед на всички данни, които WP Rocket ще събере <strong> ако\t"
 
 #: views/settings/page.php:96
 msgid ""
-"WP Rocket will never transmit any domain names or email addresses (except "
-"for license validation), IP addresses, or third-party API keys."
+"WP Rocket will never transmit any domain names or email addresses (except for license validation), IP addresses, or "
+"third-party API keys."
 msgstr ""
+"WP Rocket никога няма да предава имена на домейни или имейл адреси (с изключение на\tза проверка на лиценза), IP "
+"адреси или API ключове на трети страни."
 
 #: views/settings/page.php:98
 msgid "Activate Rocket analytics"
-msgstr ""
+msgstr "Активиране на Rocket analytics"
 
 #: views/settings/partials/documentation.php:14
 msgid "It is a great starting point to fix some of the most common issues."
-msgstr ""
+msgstr "Отправна\tточка за\tпоправяне\tна\tнякои от най-често срещаните проблеми."
 
 #: views/settings/partials/documentation.php:18
 msgid "Read the documentation"
-msgstr ""
+msgstr "Прочетете документацията"
 
 #: views/settings/partials/sidebar.php:11
 msgid "How to correctly measure your website’s loading time"
-msgstr ""
+msgstr "Как правилно да измервате времето за зареждане на вашия сайт"
 
 #: views/settings/partials/sidebar.php:13
-msgid ""
-"Learn how to use best practices to correctly measure your site's "
-"performance."
-msgstr ""
+msgid "Learn how to use best practices to correctly measure your site's performance."
+msgstr "Научете как да използвате най-добрите практики за правилно измерване на производителността на сайта ви"
 
 #: views/settings/partials/sidebar.php:14
-msgid ""
-"https://wp-rocket.me/blog/correctly-measure-websites-page-load-"
-"time/?utm_source=wp_plugin&utm_medium=wp_rocket"
+msgid "https://wp-rocket.me/blog/correctly-measure-websites-page-load-time/?utm_source=wp_plugin&utm_medium=wp_rocket"
 msgstr ""
 
 #: views/settings/partials/sidebar.php:14
 msgid "Read our guide"
-msgstr ""
+msgstr "Прочетете нашето ръководство"
 
 #: views/settings/partials/sidebar.php:17
 msgid "Why Google PageSpeed grade should not matter"
-msgstr ""
+msgstr "Защо оценката на Google PageSpeed не трябва да има значение"
 
 #: views/settings/partials/sidebar.php:18
-msgid ""
-"https://wp-rocket.me/blog/the-truth-about-google-pagespeed-"
-"insights/?utm_source=wp_plugin&utm_medium=wp_rocket"
+msgid "https://wp-rocket.me/blog/the-truth-about-google-pagespeed-insights/?utm_source=wp_plugin&utm_medium=wp_rocket"
 msgstr ""
 
 #: views/settings/partials/sidebar.php:18
 msgid "Read more"
-msgstr ""
+msgstr "Прочетете още"
 
 #: views/settings/partials/sidebar.php:23
 msgid "You have not activated logged-in user cache."
-msgstr ""
+msgstr "Не сте активирали кеша за влезлите потребители."
 
 #: views/settings/partials/sidebar.php:24
-msgid ""
-"Use a private browser to check your website's speed and visual appearance."
-msgstr ""
+msgid "Use a private browser to check your website's speed and visual appearance."
+msgstr "Използване на поверителен прозорец на браузър, за проверка на скоростта на \"на сайта и неговия външен вид"
 
-#: views/settings/sections/addons-container.php:23
-#: views/settings/sections/fields-container.php:27
+#: views/settings/sections/addons-container.php:23 views/settings/sections/fields-container.php:27
 msgid "Need Help?"
-msgstr ""
+msgstr "Нужда от помощ?"
