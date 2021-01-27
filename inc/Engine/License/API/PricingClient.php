@@ -79,7 +79,7 @@ class PricingClient {
 		$timeout = (int) get_transient( 'wp_rocket_pricing_timeout' );
 		$timeout = ( 0 === $timeout )
 			? 300
-			: ( 2 * $timeout < DAY_IN_SECONDS
+			: ( 2 * $timeout <= DAY_IN_SECONDS
 				? 2 * $timeout :
 				DAY_IN_SECONDS
 			);

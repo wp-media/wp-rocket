@@ -8,6 +8,8 @@ return [
 	'testShouldReturnDataWhenCached' => [
 		'config'   => [
 			'pricing-transient' => true,
+			'timeout-active'    => false,
+			'timeout-duration'  => false,
 			'response'          => false,
 		],
 		'expected' => [
@@ -19,6 +21,7 @@ return [
 		'config'   => [
 			'pricing-transient' => false,
 			'timeout-active'    => true,
+			'timeout-duration'  => false,
 			'response'          => false,
 		],
 		'expected' => [
@@ -79,6 +82,33 @@ return [
 		],
 		'expected' => [
 			'result' => $data,
+		],
+	],
+
+	'testShouldDoubleTimeoutDurationFromPreviousDuration' => [
+		'config'   => [
+			'pricing-transient' => false,
+			'timeout-active'    => false,
+			'timeout-duration'  => 300,
+			'response'          => false,
+		],
+		'expected' => [
+			'result'           => false,
+			'timeout-duration' => 600
+		],
+	],
+
+	'testShouldNotSetTimeoutDurationLongerThanADay' => [
+		'config'   => [
+			'pricing-transient' => false,
+			'timeout-active'    => false,
+			'timeout-duration'  => rocket_get_constant( 'DAY_IN_SECONDS' )
+								   - rocket_get_constant( 'HOuR_IN_SECONDS' ),
+			'response'          => false,
+		],
+		'expected' => [
+			'result'           => false,
+			'timeout-duration' => rocket_get_constant( 'DAY_IN_SECONDS' ),
 		],
 	],
 ];
