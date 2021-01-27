@@ -27,7 +27,7 @@ class PricingClient {
 			return false;
 		}
 
-		set_transient( 'wp_rocket_pricing', $data, 6 * HOUR_IN_SECONDS );
+		set_transient( 'wp_rocket_pricing', $data, 12 * HOUR_IN_SECONDS );
 
 		return $data;
 	}

@@ -36,7 +36,7 @@ return [
 		</div>
 	</section>
 	<div class="wpr-rocketcdn-cta-footer">
-		<a href="https://go.wp-rocket.me/rocket-cdn" target="_blank" rel="noopener noreferrer">Learn more about RocketCDN</a>
+		<a href="https://wp-rocket.me/rocketcdn/" target="_blank" rel="noopener noreferrer">Learn more about RocketCDN</a>
 	</div>
 	<button class="wpr-rocketcdn-cta-close--no-promo" id="wpr-rocketcdn-close-cta">
 		<span class="screen-reader-text">Reduce this banner</span>
@@ -86,7 +86,7 @@ HTML
 		</div>
 	</section>
 	<div class="wpr-rocketcdn-cta-footer">
-		<a href="https://go.wp-rocket.me/rocket-cdn" target="_blank" rel="noopener noreferrer">Learn more about RocketCDN</a>
+		<a href="https://wp-rocket.me/rocketcdn/" target="_blank" rel="noopener noreferrer">Learn more about RocketCDN</a>
 	</div>
 	<button class="wpr-rocketcdn-cta-close--no-promo" id="wpr-rocketcdn-close-cta">
 		<span class="screen-reader-text">Reduce this banner</span>
@@ -187,7 +187,7 @@ HTML
 		</div>
 	</section>
 	<div class="wpr-rocketcdn-cta-footer">
-		<a href="https://go.wp-rocket.me/rocket-cdn" target="_blank" rel="noopener noreferrer">Learn more about RocketCDN</a>
+		<a href="https://wp-rocket.me/rocketcdn/" target="_blank" rel="noopener noreferrer">Learn more about RocketCDN</a>
 	</div>
 	<button class="wpr-rocketcdn-cta-close--no-promo" id="wpr-rocketcdn-close-cta">
 		<span class="screen-reader-text">Reduce this banner</span>
@@ -262,7 +262,7 @@ HTML
 		</div>
 	</section>
 	<div class="wpr-rocketcdn-cta-footer">
-		<a href="https://go.wp-rocket.me/rocket-cdn" target="_blank" rel="noopener noreferrer">Learn more about RocketCDN</a>
+		<a href="https://wp-rocket.me/rocketcdn/" target="_blank" rel="noopener noreferrer">Learn more about RocketCDN</a>
 	</div>
 	<button class="wpr-rocketcdn-cta-close--no-promo" id="wpr-rocketcdn-close-cta">
 		<span class="screen-reader-text">Reduce this banner</span>
@@ -337,7 +337,7 @@ HTML
 		</div>
 	</section>
 	<div class="wpr-rocketcdn-cta-footer">
-		<a href="https://go.wp-rocket.me/rocket-cdn" target="_blank" rel="noopener noreferrer">Learn more about RocketCDN</a>
+		<a href="https://wp-rocket.me/rocketcdn/" target="_blank" rel="noopener noreferrer">Learn more about RocketCDN</a>
 	</div>
 	<button class="wpr-rocketcdn-cta-close--no-promo" id="wpr-rocketcdn-close-cta">
 		<span class="screen-reader-text">Reduce this banner</span>
@@ -412,7 +412,7 @@ HTML
 		</div>
 	</section>
 	<div class="wpr-rocketcdn-cta-footer">
-		<a href="https://go.wp-rocket.me/rocket-cdn" target="_blank" rel="noopener noreferrer">Learn more about RocketCDN</a>
+		<a href="https://wp-rocket.me/rocketcdn/" target="_blank" rel="noopener noreferrer">Learn more about RocketCDN</a>
 	</div>
 	<button class="wpr-rocketcdn-cta-close--no-promo" id="wpr-rocketcdn-close-cta">
 		<span class="screen-reader-text">Reduce this banner</span>
@@ -491,7 +491,7 @@ HTML
 		</div>
 	</section>
 	<div class="wpr-rocketcdn-cta-footer">
-		<a href="https://go.wp-rocket.me/rocket-cdn" target="_blank" rel="noopener noreferrer">Learn more about RocketCDN</a>
+		<a href="https://wp-rocket.me/rocketcdn/" target="_blank" rel="noopener noreferrer">Learn more about RocketCDN</a>
 	</div>
 	<button class="wpr-rocketcdn-cta-close" id="wpr-rocketcdn-close-cta">
 		<span class="screen-reader-text">Reduce this banner</span>
@@ -556,7 +556,7 @@ HTML
 		</div>
 	</section>
 	<div class="wpr-rocketcdn-cta-footer">
-		<a href="https://go.wp-rocket.me/rocket-cdn" target="_blank" rel="noopener noreferrer">Learn more about RocketCDN</a>
+		<a href="https://wp-rocket.me/rocketcdn/" target="_blank" rel="noopener noreferrer">Learn more about RocketCDN</a>
 	</div>
 	<button class="wpr-rocketcdn-cta-close--no-promo" id="wpr-rocketcdn-close-cta">
 		<span class="screen-reader-text">Reduce this banner</span>
