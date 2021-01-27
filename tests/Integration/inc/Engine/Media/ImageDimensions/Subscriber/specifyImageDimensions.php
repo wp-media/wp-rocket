@@ -33,6 +33,9 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 			}
 		}
 
+		remove_filter( 'site_url', [ $this, 'setSiteUrl' ] );
+		remove_filter( 'home_url', [ $this, 'setHomeUrl' ] );
+
 		unset( $GLOBALS['wp'] );
 
 		parent::tearDown();
@@ -62,6 +65,9 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 			}
 		}
 
+		add_filter( 'site_url', [ $this, 'setSiteUrl' ] );
+		add_filter( 'home_url', [ $this, 'setHomeUrl' ] );
+
 		$GLOBALS['wp'] = (object) [
 			'query_vars' => [],
 			'request'    => 'http://example.org'
@@ -88,5 +94,13 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 
 	public function filter_rocket_specify_dimension_skip_pictures( $value ) {
 		return $this->config_data['rocket_specify_dimension_skip_pictures_filter'];
+	}
+
+	public function setSiteUrl( $site_url ) {
+		return $this->config_data['site_url'] ?? $site_url;
+	}
+
+	public function setHomeUrl( $home_url ) {
+		return $this->config_data['home_url'] ?? $home_url;
 	}
 }

@@ -213,6 +213,8 @@ return [
 		'shouldChangeHTMLWithRelativeImage' => [
 			'html' => '<!DOCTYPE html><html><body><img src="/wp-content/themes/image.jpg"><img src="/main/image.jpg"><img src="http://example.org/main/image.jpg"></body></html>',
 			'config' => [
+				'site_url' => 'http://example.org/wp/',
+				'home_url' => 'http://example.org/',
 				'image_dimensions' => true,
 				'rocket_specify_image_dimensions_filter' => true,
 				'internal' => true,

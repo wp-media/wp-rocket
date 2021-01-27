@@ -23,8 +23,11 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 	public function testShouldAddMissedDimensions( $input, $config, $expected ) {
 		$options = Mockery::mock( Options_Data::class );
 
-		Functions\when( 'site_url' )->alias( function( $path = '') {
-			return 'http://example.org/' . ltrim( $path, '/' );
+		$site_url = $config['site_url'] ?? 'http://example.org/';
+		$home_url = $config['home_url'] ?? 'http://example.org/';
+
+		Functions\when( 'site_url' )->alias( function( $path = '') use ( $site_url ) {
+			return $site_url . ltrim( $path, '/' );
 		} );
 
 		if (
@@ -73,7 +76,7 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 				return parse_url( $url, $component );
 			} );
 
-			Functions\when( 'home_url' )->justReturn( 'https://example.org/' );
+			Functions\when( 'home_url' )->justReturn( $home_url );
 
 			if ( isset( $config['rocket_specify_image_dimensions_for_distant_filter'] ) ){
 				Filters\expectApplied( 'rocket_specify_image_dimensions_for_distant' )
