@@ -10,7 +10,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 /**
  * @covers \WP_Rocket\Engine\License\API\PricingClient::get_pricing_data
  *
- * @group  License
+ * @group License
  */
 class GetPricingData extends TestCase {
 	/**
@@ -22,28 +22,7 @@ class GetPricingData extends TestCase {
 		Functions\expect( 'get_transient' )
 			->once()
 			->with( 'wp_rocket_pricing' )
-			->andReturn( true === $config['pricing-transient'] ? $expected['result'] : false );
-
-		Functions\when( 'wp_remote_retrieve_response_code' )
-			->justReturn(
-				is_array( $config['response'] ) && isset( $config['response']['code'] )
-					? $config['response']['code']
-					: ''
-			);
-
-		Functions\when( 'wp_remote_retrieve_body' )
-			->justReturn(
-				is_array( $config['response'] ) && isset( $config['response']['body'] )
-					? $config['response']['body']
-					: ''
-			);
-
-		if ( false === $config['pricing-transient'] ) {
-			Functions\expect( 'get_transient' )
-				->once()
-				->with( 'wp_rocket_pricing_timeout_active' )
-				->andReturn( $config['timeout-active'] );
-		}
+			->andReturn( true === $config['transient'] ? $expected : false );
 
 		if ( false !== $config['response'] ) {
 			Functions\expect( 'wp_safe_remote_get' )
@@ -51,36 +30,38 @@ class GetPricingData extends TestCase {
 				->with( PricingClient::PRICING_ENDPOINT )
 				->andReturn( $config['response'] );
 
-			if (
-				! is_array( $config['response'] ) ||
-				200 !== $config['response']['code'] ||
-				! isset( $config['response']['body'] )
-			) {
-				Functions\expect( 'get_transient' )
-					->once()
-					->with( 'wp_rocket_pricing_timeout' )
-					->andReturn( (int) $config['timeout-duration'] );
+				Functions\when( 'wp_remote_retrieve_response_code' )
+				->justReturn(
+					is_array( $config['response'] ) && isset( $config['response']['code'] )
+					? $config['response']['code']
+					: ''
+				);
 
-				Functions\expect( 'set_transient' )
-					->with(
-						'wp_rocket_pricing_timeout',
-						$config['timeout-duration']
-							? min( [
-							2 * $config['timeout-duration'],
-							rocket_get_constant( 'DAY_IN_SECONDS' )
-						] )
-							: 300,
-						rocket_get_constant( 'WEEK_IN_SECONDS' ) )
-					->andAlsoExpectIt()
-					->with( 'wp_rocket_pricing_timeout_active', true, WEEK_IN_SECONDS );
-			} else {
-				Functions\expect( 'set_transient' )
-					->once()
-					->with( 'wp_rocket_pricing', Mockery::type( 'object' ), 12 * HOUR_IN_SECONDS );
-				Functions\expect( 'delete_transient' )->twice();
-			}
+				Functions\when( 'wp_remote_retrieve_body' )
+				->justReturn(
+					is_array( $config['response'] ) && isset( $config['response']['body'] )
+					? $config['response']['body']
+					: ''
+				);
+		} else {
+			Functions\expect( 'wp_safe_remote_get' )->never();
 		}
 
-		$this->assertEquals( $expected['result'], $client->get_pricing_data() );
+		if (
+			false === $config['transient']
+			&&
+			false !== $expected
+		) {
+			Functions\expect( 'set_transient' )
+				->once()
+				->with( 'wp_rocket_pricing', Mockery::type( 'object' ), 12 * HOUR_IN_SECONDS );
+		} else {
+			Functions\expect( 'set_transient' )->never();
+		}
+
+		$this->assertEquals(
+			$expected,
+			$client->get_pricing_data()
+		);
 	}
 }
