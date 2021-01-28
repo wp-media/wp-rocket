@@ -5,110 +5,47 @@ $json = '{"licenses":{"single":{"prices":{"regular":49,"sale":39.2,"renewal":{"i
 $data = json_decode( $json );
 
 return [
-	'testShouldReturnDataWhenCached' => [
+	'testShouldReturnFalseWhenWPError' => [
 		'config'   => [
-			'pricing-transient' => true,
-			'timeout-active'    => false,
-			'timeout-duration'  => false,
-			'response'          => false,
+			'transient' => false,
+			'response'  => new WP_Error( 'http_request_failed', 'error' ),
 		],
-		'expected' => [
-			'result' => $data,
-		]
+		'expected' => false,
 	],
-
-	'testShouldReturnFalseWhenTimeoutActive' => [
+	'testShouldReturnFalseWhenNot200'  => [
 		'config'   => [
-			'pricing-transient' => false,
-			'timeout-active'    => true,
-			'timeout-duration'  => false,
-			'response'          => false,
-		],
-		'expected' => [
-			'result' => false,
-		],
-	],
-
-	'testReturnFalseWhenWPError' => [
-		'config'   => [
-			'pricing-transient' => false,
-			'timeout-active'    => false,
-			'timeout-duration'  => false,
-			'response'          => new WP_Error( 'http_request_failed', 'error' ),
-		],
-		'expected' => [
-			'result' => false,
-		],
-	],
-
-	'testShouldReturnFalseWhenNot200' => [
-		'config'   => [
-			'pricing-transient' => false,
-			'timeout-active'    => false,
-			'timeout-duration'  => false,
-			'response'          => [
+			'transient' => false,
+			'response'  => [
 				'code' => 404,
 				'body' => false,
 			],
 		],
-		'expected' => [
-			'result' => false,
-		],
+		'expected' => false,
 	],
-
-	'testShouldReturnFalseWhenNoBody' => [
+	'testShouldReturnFalseWhenNoBody'  => [
 		'config'   => [
-			'pricing-transient' => false,
-			'timeout-active'    => false,
-			'timeout-duration'  => false,
-			'response'          => [
+			'transient' => false,
+			'response'  => [
 				'code' => 200,
 			],
 		],
-		'expected' => [
-			'result' => false,
-		],
+		'expected' => false,
 	],
-
-	'testShouldReturnDataWhenSuccess' => [
+	'testShouldReturnDataWhenCached'   => [
 		'config'   => [
-			'pricing-transient' => false,
-			'timeout-active'    => false,
-			'timeout-duration'  => false,
-			'response'          => [
+			'transient' => true,
+			'response'  => false,
+		],
+		'expected' => $data,
+	],
+	'testShouldReturnDataWhenSuccess'  => [
+		'config'   => [
+			'transient' => false,
+			'response'  => [
 				'code' => 200,
 				'body' => $json,
 			],
 		],
-		'expected' => [
-			'result' => $data,
-		],
-	],
-
-	'testShouldDoubleTimeoutDurationFromPreviousDuration' => [
-		'config'   => [
-			'pricing-transient' => false,
-			'timeout-active'    => false,
-			'timeout-duration'  => 300,
-			'response'          => [ 'code' => 404 ],
-		],
-		'expected' => [
-			'result'           => false,
-			'timeout-duration' => 600
-		],
-	],
-
-	'testShouldNotSetTimeoutDurationLongerThanADay' => [
-		'config'   => [
-			'pricing-transient' => false,
-			'timeout-active'    => false,
-			'timeout-duration'  => rocket_get_constant( 'DAY_IN_SECONDS' )
-								   - rocket_get_constant( 'HOuR_IN_SECONDS' ),
-			'response'          => [ 'code' => 404 ],
-		],
-		'expected' => [
-			'result'           => false,
-			'timeout-duration' => rocket_get_constant( 'DAY_IN_SECONDS' ),
-		],
+		'expected' => $data,
 	],
 ];
