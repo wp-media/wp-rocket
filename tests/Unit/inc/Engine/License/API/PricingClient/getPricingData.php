@@ -61,18 +61,20 @@ class GetPricingData extends TestCase {
 					->with( 'wp_rocket_pricing_timeout' )
 					->andReturn( (int) $config['timeout-duration'] );
 
+				$duration = $config['timeout-duration']
+					? min( [
+						2 * $config['timeout-duration'],
+						rocket_get_constant( 'DAY_IN_SECONDS' )
+					] )
+					: 300;
+
 				Functions\expect( 'set_transient' )
 					->with(
 						'wp_rocket_pricing_timeout',
-						$config['timeout-duration']
-							? min( [
-							2 * $config['timeout-duration'],
-							rocket_get_constant( 'DAY_IN_SECONDS' )
-						] )
-							: 300,
+						$duration,
 						rocket_get_constant( 'WEEK_IN_SECONDS' ) )
 					->andAlsoExpectIt()
-					->with( 'wp_rocket_pricing_timeout_active', true, WEEK_IN_SECONDS );
+					->with( 'wp_rocket_pricing_timeout_active', true, $duration );
 			} else {
 				Functions\expect( 'set_transient' )
 					->once()

@@ -85,6 +85,6 @@ class PricingClient {
 			);
 
 		set_transient( 'wp_rocket_pricing_timeout', $timeout, WEEK_IN_SECONDS );
-		set_transient( 'wp_rocket_pricing_timeout_active', true, WEEK_IN_SECONDS );
+		set_transient( 'wp_rocket_pricing_timeout_active', true, $timeout );
 	}
 }
