@@ -39,10 +39,6 @@ class NGG_Subscriber implements Subscriber_Interface {
 	 * @return bool
 	 */
 	public function deactivate_resource_manager() {
-		if( is_admin() ) {
-			return true;
-		}
-		
-		return false;
+		return is_admin();
 	}
 }
