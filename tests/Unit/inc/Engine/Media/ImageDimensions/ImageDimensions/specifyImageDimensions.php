@@ -78,6 +78,22 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 
 			Functions\when( 'home_url' )->justReturn( $home_url );
 
+			if ( isset( $config['internal'] ) ) {
+				Functions\expect( 'wp_make_link_relative' )->andReturnUsing( function( $url ) {
+					return preg_replace( '|^(https?:)?//[^/]+(/?.*)|i', '$2', $url );
+				} );
+
+				Functions\when( 'sanitize_text_field' )->returnArg();
+
+				Functions\when( 'wp_unslash' )->alias(
+					function ( $value ) {
+						return stripslashes( $value );
+					}
+				);
+
+				$_SERVER['DOCUMENT_ROOT'] = "vfs://public";
+			}
+
 			if ( isset( $config['rocket_specify_image_dimensions_for_distant_filter'] ) ){
 				Filters\expectApplied( 'rocket_specify_image_dimensions_for_distant' )
 					->once()
