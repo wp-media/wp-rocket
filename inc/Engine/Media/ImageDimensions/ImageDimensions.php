@@ -226,15 +226,11 @@ class ImageDimensions {
 			return $this->local_paths[ md5( $url ) ];
 		}
 
-		if ( false === strpos( $url, content_url() ) ) {
-			$url = site_url( '/' ) . ltrim( $url, '/' );
-		}
+		$relative_path = ltrim( wp_make_link_relative( $url ), '/' );
+		$ds            = rocket_get_constant( 'DIRECTORY_SEPARATOR' );
+		$base_path     = isset( $_SERVER['DOCUMENT_ROOT'] ) ? ( sanitize_text_field( wp_unslash( $_SERVER['DOCUMENT_ROOT'] ) ) . $ds ) : '';
 
-		return str_replace(
-			'/',
-			rocket_get_constant( 'DIRECTORY_SEPARATOR' ),
-			str_replace( site_url(), rocket_get_constant( 'ABSPATH' ), $url )
-		);
+		return $base_path . str_replace( '/', $ds, $relative_path );
 	}
 
 	/**
