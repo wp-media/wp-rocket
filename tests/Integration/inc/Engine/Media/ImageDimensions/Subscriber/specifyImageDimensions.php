@@ -47,6 +47,8 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 	public function testShouldAddMissedDimensions( $input, $config, $expected ) {
 		$this->config_data = $config;
 
+		$_SERVER['DOCUMENT_ROOT'] = "vfs://public";
+
 		if ( isset( $config['image_dimensions'] ) ){
 			add_filter( 'pre_get_rocket_option_image_dimensions', [$this, 'set_image_dimensions'] );
 		}
