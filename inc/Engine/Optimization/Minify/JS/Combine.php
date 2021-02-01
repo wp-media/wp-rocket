@@ -684,6 +684,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'tagGroupsTabstaggroupscloudtabs',
 			'jrRelatedWidgets',
 			'UNCODE.initRow',
+			'ampURL',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
