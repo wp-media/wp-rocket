@@ -103,7 +103,7 @@ return [
 			'pricing-transient' => false,
 			'timeout-active'    => false,
 			'timeout-duration'  => rocket_get_constant( 'DAY_IN_SECONDS' )
-								   - rocket_get_constant( 'HOuR_IN_SECONDS' ),
+								   - rocket_get_constant( 'HOUR_IN_SECONDS' ),
 			'response'          => [ 'code' => 404 ],
 		],
 		'expected' => [
