@@ -132,6 +132,8 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			}
 		}
 
+
+		$minify_url = apply_filters( 'rocket_minified_js_url', $minify_url );
 		// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript
 		$html = str_replace( '</body>', '<script src="' . esc_url( $minify_url ) . '" data-minify="1"></script>' . $move_after . '</body>', $html );
 
@@ -355,6 +357,8 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 
 		$filename      = md5( $content . $this->minify_key ) . '.js';
 		$minified_file = $this->minify_base_path . $filename;
+		$filename      = apply_filters( 'rocket_minified_js_file_name', $filename );
+
 		if ( ! rocket_direct_filesystem()->is_readable( $minified_file ) ) {
 			$minified_content = $this->minify();
 

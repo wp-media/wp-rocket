@@ -199,6 +199,7 @@ class Combine extends AbstractCSSOptimization implements ProcessorInterface {
 
 		$file_hash      = implode( ',', array_column( $this->styles, 'url' ) );
 		$this->filename = md5( $file_hash . $this->minify_key ) . '.css';
+		$this->filename      = apply_filters( 'rocket_minified_css_file_name', $this->filename );
 
 		$combined_file = $this->minify_base_path . $this->filename;
 
@@ -275,6 +276,7 @@ class Combine extends AbstractCSSOptimization implements ProcessorInterface {
 			]
 		);
 
+		$minify_url = apply_filters( 'rocket_minified_css_url', $minify_url );
 		// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
 		return preg_replace( '/<\/title>/i', '$0<link rel="stylesheet" href="' . esc_url( $minify_url ) . '" media="all" data-minify="1" />', $html, 1 );
 	}
