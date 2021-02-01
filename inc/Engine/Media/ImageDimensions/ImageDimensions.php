@@ -16,13 +16,6 @@ class ImageDimensions {
 	private $options;
 
 	/**
-	 * Cache local paths for images.
-	 *
-	 * @var array
-	 */
-	private $local_paths = [];
-
-	/**
 	 * Filesystem instance
 	 *
 	 * @var WP_Filesystem_Direct
@@ -203,7 +196,6 @@ class ImageDimensions {
 		if ( ! empty( $file['host'] ) ) {
 			foreach ( $hosts as $host ) {
 				if ( false !== strpos( $url, $host ) ) {
-					$this->local_paths[ md5( $url ) ] = str_replace( $host, untrailingslashit( rocket_get_constant( 'ABSPATH' ) ), rocket_remove_url_protocol( $url ) );
 					return false;
 				}
 			}
@@ -222,10 +214,6 @@ class ImageDimensions {
 	 * @return string Image absolute local path.
 	 */
 	private function get_local_path( $url ) {
-		if ( isset( $this->local_paths[ md5( $url ) ] ) ) {
-			return $this->local_paths[ md5( $url ) ];
-		}
-
 		$relative_path = ltrim( wp_make_link_relative( $url ), '/' );
 		$ds            = rocket_get_constant( 'DIRECTORY_SEPARATOR' );
 		$base_path     = isset( $_SERVER['DOCUMENT_ROOT'] ) ? ( sanitize_text_field( wp_unslash( $_SERVER['DOCUMENT_ROOT'] ) ) . $ds ) : '';
