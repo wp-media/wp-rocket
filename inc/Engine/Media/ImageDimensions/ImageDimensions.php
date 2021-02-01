@@ -214,9 +214,9 @@ class ImageDimensions {
 	 * @return string Image absolute local path.
 	 */
 	private function get_local_path( $url ) {
-		$relative_url = ltrim( wp_make_link_relative( $url ), '/' );
-		$site_url_components = wp_parse_url( site_url('/') );
-		$full_url = $site_url_components['scheme'] . "://" . $site_url_components['host'] . "/" . $relative_url;
+		$relative_url        = ltrim( wp_make_link_relative( $url ), '/' );
+		$site_url_components = wp_parse_url( site_url( '/' ) );
+		$full_url            = $site_url_components['scheme'] . '://' . $site_url_components['host'] . '/' . $relative_url;
 
 		return rocket_url_to_path( $full_url );
 	}
