@@ -218,7 +218,15 @@ class ImageDimensions {
 		$site_url_components = wp_parse_url( site_url( '/' ) );
 		$full_url            = $site_url_components['scheme'] . '://' . $site_url_components['host'] . '/' . $relative_url;
 
-		return rocket_url_to_path( $full_url );
+		$path = rocket_url_to_path( $full_url );
+		if ( $path ) {
+			return $path;
+		}
+
+		$ds        = rocket_get_constant( 'DIRECTORY_SEPARATOR' );
+		$base_path = isset( $_SERVER['DOCUMENT_ROOT'] ) ? ( sanitize_text_field( wp_unslash( $_SERVER['DOCUMENT_ROOT'] ) ) . $ds ) : '';
+
+		return $base_path . str_replace( '/', $ds, $relative_url );
 	}
 
 	/**
