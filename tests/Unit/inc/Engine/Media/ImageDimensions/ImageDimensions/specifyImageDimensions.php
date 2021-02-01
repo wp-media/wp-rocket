@@ -83,15 +83,9 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 					return preg_replace( '|^(https?:)?//[^/]+(/?.*)|i', '$2', $url );
 				} );
 
-				Functions\when( 'sanitize_text_field' )->returnArg();
-
-				Functions\when( 'wp_unslash' )->alias(
-					function ( $value ) {
-						return stripslashes( $value );
-					}
-				);
-
-				$_SERVER['DOCUMENT_ROOT'] = "vfs://public";
+				Functions\expect( 'wp_basename' )->andReturnUsing( function ( $path, $suffix = '' ) {
+					return urldecode( basename( str_replace( array( '%2F', '%5C' ), '/', urlencode( $path ) ), $suffix ) );
+				} );
 			}
 
 			if ( isset( $config['rocket_specify_image_dimensions_for_distant_filter'] ) ){

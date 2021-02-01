@@ -214,11 +214,11 @@ class ImageDimensions {
 	 * @return string Image absolute local path.
 	 */
 	private function get_local_path( $url ) {
-		$relative_path = ltrim( wp_make_link_relative( $url ), '/' );
-		$ds            = rocket_get_constant( 'DIRECTORY_SEPARATOR' );
-		$base_path     = isset( $_SERVER['DOCUMENT_ROOT'] ) ? ( sanitize_text_field( wp_unslash( $_SERVER['DOCUMENT_ROOT'] ) ) . $ds ) : '';
+		$relative_url = ltrim( wp_make_link_relative( $url ), '/' );
+		$site_url_components = wp_parse_url( site_url('/') );
+		$full_url = $site_url_components['scheme'] . "://" . $site_url_components['host'] . "/" . $relative_url;
 
-		return $base_path . str_replace( '/', $ds, $relative_path );
+		return rocket_url_to_path( $full_url );
 	}
 
 	/**
@@ -266,6 +266,10 @@ class ImageDimensions {
 	 * @return bool If image exists or not.
 	 */
 	private function image_exists( $image, $external = false ) {
+		if ( ! $image ) {
+			return false;
+		}
+
 		if ( ! $external ) {
 			return $this->filesystem->exists( $image );
 		}
