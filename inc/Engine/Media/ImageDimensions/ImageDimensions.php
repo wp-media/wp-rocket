@@ -218,17 +218,16 @@ class ImageDimensions {
 	 * @return string Image absolute local path.
 	 */
 	private function get_local_path( $url ) {
-		$relative_url        = ltrim( wp_make_link_relative( $url ), '/' );
-		$site_url_components = wp_parse_url( site_url( '/' ) );
-		$full_url            = $site_url_components['scheme'] . '://' . $site_url_components['host'] . '/' . $relative_url;
+		$url = $this->normalize_url( $url );
 
-		$path = rocket_url_to_path( $full_url );
+		$path = rocket_url_to_path( $url );
 		if ( $path ) {
 			return $path;
 		}
 
-		$ds        = rocket_get_constant( 'DIRECTORY_SEPARATOR' );
-		$base_path = isset( $_SERVER['DOCUMENT_ROOT'] ) ? ( sanitize_text_field( wp_unslash( $_SERVER['DOCUMENT_ROOT'] ) ) . $ds ) : '';
+		$relative_url = ltrim( wp_make_link_relative( $url ), '/' );
+		$ds           = rocket_get_constant( 'DIRECTORY_SEPARATOR' );
+		$base_path    = isset( $_SERVER['DOCUMENT_ROOT'] ) ? ( sanitize_text_field( wp_unslash( $_SERVER['DOCUMENT_ROOT'] ) ) . $ds ) : '';
 
 		return $base_path . str_replace( '/', $ds, $relative_url );
 	}
@@ -344,6 +343,7 @@ class ImageDimensions {
 	 */
 	private function get_image_sizes( string $image_url ) {
 		if ( $this->is_external_file( $image_url ) ) {
+			$image_url = $this->normalize_url( $image_url );
 			if ( ! $this->can_specify_dimensions_external_images() ) {
 				Logger::debug(
 					'Specify Image Dimensions failed because you/server disabled specifying dimensions for external images.',
@@ -395,5 +395,24 @@ class ImageDimensions {
 		}
 
 		return $sizes[3];
+	}
+
+	/**
+	 * Normalize relative url to full url.
+	 *
+	 * @param string $url Url to be normalized.
+	 *
+	 * @return string Normalized url.
+	 */
+	private function normalize_url( $url ) {
+		$url_host = wp_parse_url( $url, PHP_URL_HOST );
+
+		if ( empty( $url_host ) ) {
+			$relative_url        = ltrim( wp_make_link_relative( $url ), '/' );
+			$site_url_components = wp_parse_url( site_url( '/' ) );
+			return $site_url_components['scheme'] . '://' . $site_url_components['host'] . '/' . $relative_url;
+		}
+
+		return $url;
 	}
 }
