@@ -1,6 +1,7 @@
 <?php
 
 use WP_Rocket\Logger\Logger;
+use WP_Rocket\Storage\FilesystemDirect;
 use WP_Rocket\Engine\Cache\AdvancedCache;
 
 defined( 'ABSPATH' ) || exit;
@@ -1057,12 +1058,15 @@ function rocket_rrmdir( $dir, array $dirs_to_preserve = [], $filesystem = null )
  * @return object WP_Filesystem_Direct instance
  */
 function rocket_direct_filesystem() {
+	require_once WP_ROCKET_INC_PATH . 'classes/Storage/class-abstract-storage.php';
+	require_once WP_ROCKET_INC_PATH . 'classes/Storage/class-filesystem-direct.php';
+
 	require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php';
 	require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php';
 
-	// TODO: support custom filesystem classes
-	// TODO: add `readfile()` and `readgzfile()` on top
-	return new WP_Filesystem_Direct( new StdClass() );
+	return new FilesystemDirect(
+		new WP_Filesystem_Direct( null )
+	);
 }
 
 /**
