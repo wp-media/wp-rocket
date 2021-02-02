@@ -1064,6 +1064,8 @@ function rocket_direct_filesystem() {
 	require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php';
 	require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php';
 
+	// TODO: load storage implementation based on config/constant
+
 	return new FilesystemDirect(
 		new WP_Filesystem_Direct( null )
 	);
