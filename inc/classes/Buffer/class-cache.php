@@ -1,6 +1,9 @@
 <?php
 namespace WP_Rocket\Buffer;
 
+use WP_Filesystem_Direct;
+use WP_Rocket\Storage\FilesystemDirect;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -86,7 +89,7 @@ class Cache extends Abstract_Buffer {
 			return;
 		}
 
-		$this->storage = rocket_direct_filesystem();
+		$this->storage = $this->init_storage();
 
 		/**
 		 * Serve the cache file if it exists.
@@ -154,6 +157,23 @@ class Cache extends Abstract_Buffer {
 		);
 
 		ob_start( [ $this, 'maybe_process_buffer' ] );
+	}
+
+	/**
+	 * Instanciate the filesystem class.
+	 *
+	 * @since  3.9
+	 */
+	public function init_storage() {
+		require_once __DIR__ . '/../Storage/class-abstract-storage.php';
+		require_once __DIR__ . '/../Storage/class-filesystem-direct.php';
+
+		require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php';
+		require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php';
+
+		return new FilesystemDirect(
+			new WP_Filesystem_Direct( null )
+		);
 	}
 
 	/**
