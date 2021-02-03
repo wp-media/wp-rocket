@@ -94,14 +94,12 @@ class Cache extends Abstract_Buffer {
 		$accept_encoding     = $this->config->get_server_input( 'HTTP_ACCEPT_ENCODING' );
 		$accept_gzip         = $accept_encoding && false !== strpos( $accept_encoding, 'gzip' );
 
-		$force_no_cache = apply_filters( 'rocket_force_no_cache', false );
-
 		// Check if cache file exist.
-		if ( ! $force_no_cache && $accept_gzip && is_readable( $cache_filepath_gzip ) ) {
+		if ( $accept_gzip && is_readable( $cache_filepath_gzip ) ) {
 			$this->serve_gzip_cache_file( $cache_filepath_gzip );
 		}
 
-		if ( ! $force_no_cache && is_readable( $cache_filepath ) ) {
+		if ( is_readable( $cache_filepath ) ) {
 			$this->serve_cache_file( $cache_filepath );
 		}
 
