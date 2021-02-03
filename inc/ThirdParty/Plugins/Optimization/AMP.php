@@ -4,7 +4,6 @@ namespace WP_Rocket\ThirdParty\Plugins\Optimization;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\Subscriber;
 use WP_Rocket\Event_Management\Subscriber_Interface;
-use function Sodium\add;
 
 /**
  * Subscriber for compatibility with AMP
