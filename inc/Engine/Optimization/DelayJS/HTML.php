@@ -69,17 +69,6 @@ class HTML {
 			return false;
 		}
 
-		/**
-		 * Filter whether to allow rocket to enable delay JS.
-		 *
-		 * @since 3.8.4
-		 *
-		 * @param bool $do_delay_js Whether to enable preload links. Default is true.
-		 */
-		if ( ! (bool) apply_filters( 'rocket_do_delay_js', true ) ) {
-			return false;
-		}
-
 		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
 			return false;
 		}

@@ -37,19 +37,6 @@ return [
 			'expected' => '<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js">',
 		],
 
-		'shouldDoNothingWhenDoDelayFilterFalse' => [
-			'config'   => [
-				'bypass'               => false,
-				'donotoptimize'        => false,
-				'do-not-delay-setting' => 0,
-				'post-excluded'        => false,
-				'allowed-scripts'      => [],
-				'do-delay-filter'	   => false,
-			],
-			'html'     => '<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js">',
-			'expected' => '<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js">',
-		],
-
 		'shouldNotProcessDelayJsScriptWhenBypass' => [
 			'config'   => [
 				'donotoptimize'      => false,
