@@ -66,17 +66,6 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		/**
-		 * Filter whether to allow rocket to enable preload links.
-		 *
-		 * @since 3.8.4
-		 *
-		 * @param bool $do_preload_links Whether to enable preload links. Default is true.
-		 */
-		if ( ! (bool) apply_filters( 'rocket_do_preload_links', true ) ) {
-			return;
-		}
-
 		$js_assets_path = rocket_get_constant( 'WP_ROCKET_PATH' ) . 'assets/js/';
 
 		if ( ! wp_script_is( 'rocket-browser-checker' ) ) {

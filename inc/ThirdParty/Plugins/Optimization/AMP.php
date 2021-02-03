@@ -4,6 +4,7 @@ namespace WP_Rocket\ThirdParty\Plugins\Optimization;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\Subscriber;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use function Sodium\add;
 
 /**
  * Subscriber for compatibility with AMP
@@ -113,8 +114,10 @@ class AMP implements Subscriber_Interface {
 		remove_filter( 'wp_resource_hints', 'rocket_dns_prefetch', 10, 2 );
 		add_filter( 'do_rocket_lazyload', '__return_false' );
 		add_filter( 'do_rocket_lazyload_iframes', '__return_false' );
-		add_filter( 'rocket_do_delay_js', '__return_false' );
-		add_filter( 'rocket_do_preload_links', '__return_false' );
+		add_filter( 'pre_get_rocket_option_async_css', '__return_false' );
+		add_filter( 'pre_get_rocket_option_delay_js', '__return_false' );
+		add_filter( 'pre_get_rocket_option_preload_links', '__return_false' );
+
 		unset( $wp_filter['rocket_buffer'] );
 
 		$options = get_option( self::AMP_OPTIONS, [] );
