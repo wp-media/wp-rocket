@@ -3,7 +3,7 @@ name: PHP CodeSniffer lint
 on:
   pull_request:
     branches:
-      - master
+      - trunk
       - develop
       - branch-*
       - feature/*
