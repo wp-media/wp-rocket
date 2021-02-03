@@ -147,6 +147,10 @@ class DeferJS {
 			if ( empty( $inline_js['content'] ) ) {
 				continue;
 			}
+			
+			if ( preg_match( "/(application\/ld\+json)/i", $inline_js[0] ) ) {
+				continue;
+			}
 
 			if ( empty( $inline_exclusions ) || preg_match( "/({$inline_exclusions})/msi", $inline_js['content'] ) ) {
 				continue;
