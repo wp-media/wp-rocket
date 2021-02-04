@@ -3,7 +3,7 @@ name: WPRocket Test - Legacy
 on:
   pull_request:
     branches:
-      - master
+      - trunk
       - develop
       - branch-*
       - feature/*
@@ -16,7 +16,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ubuntu-latest]
-        php-versions: ['7.1']
+        php-versions: ['7.1', '7.2']
         wp-versions: ['5.2.9']
   
     name: WP ${{ matrix.wp-versions }} with PHP ${{ matrix.php-versions }} on ${{ matrix.operating-system }}.
