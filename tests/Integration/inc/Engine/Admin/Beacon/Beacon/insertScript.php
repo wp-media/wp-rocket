@@ -14,22 +14,28 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_InsertScript extends TestCase {
 	private $locale;
+	private $text_direction;
+
 	protected static $transients = [
 		'wp_rocket_customer_data' => null,
 	];
 
 	public function setUp() {
+		global $wp_locale;
+
 		parent::setUp();
 
 		set_current_screen( 'settings_page_wprocket' );
 		Functions\when( 'get_bloginfo' )->justReturn( '5.4' );
+
+		$this->text_direction = $wp_locale->text_direction;
 	}
 
 	public function tearDown() {
 		global $wp_locale;
 		set_current_screen( 'front' );
 
-		$wp_locale->text_direction = 'ltr';
+		$wp_locale->text_direction = $this->text_direction;
 
 		remove_filter( 'rocket_beacon_locale', [ $this, 'locale_cb' ] );
 		remove_filter( 'pre_get_rocket_option_consumer_email', [ $this, 'consumer_email' ] );
