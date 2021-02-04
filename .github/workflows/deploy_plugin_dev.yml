@@ -53,7 +53,7 @@ jobs:
         working-directory: /tmp
         run: |
           /usr/bin/swift upload rocket-plugin __wp-rocket__${GITHUB_REF##*v}.zip
-          /usr/bin/swift post --header "X-Delete-After: 600" rocket-plugin __wp-rocket__${GITHUB_REF##*v}.zip
+          /usr/bin/swift post --header "X-Delete-After: 600" rocket-plugin __wp-rocket_${GITHUB_REF##*v}.zip
         
             
       # Call the webhook on AWX to fetch and deploy the zip
