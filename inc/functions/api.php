@@ -66,7 +66,7 @@ function get_rocket_cdn_cnames( $zone = 'all' ) { // phpcs:ignore WordPress.Nami
 	 *
 	 * @param array $hosts List of CNAMES.
 	 */
-	$hosts = (array) apply_filters( 'rocket_cdn_cnames', $hosts );
+	$hosts = (array) apply_filters( 'rocket_cdn_cnames', $hosts, $zone );
 	$hosts = array_filter( $hosts );
 	$hosts = array_flip( array_flip( $hosts ) );
 	$hosts = array_values( $hosts );
