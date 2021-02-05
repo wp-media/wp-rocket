@@ -358,14 +358,10 @@ class Page {
 					'default'           => '',
 					'container_class'   => [
 						'wpr-field--split',
-						'wpr-isDisabled',
 					],
 					'section'           => 'license_section',
 					'page'              => 'license',
 					'sanitize_callback' => 'sanitize_text_field',
-					'input_attr'        => [
-						'disabled' => 1,
-					],
 				],
 				'consumer_email' => [
 					'type'              => 'text',
@@ -373,14 +369,10 @@ class Page {
 					'default'           => '',
 					'container_class'   => [
 						'wpr-field--split',
-						'wpr-isDisabled',
 					],
 					'section'           => 'license_section',
 					'page'              => 'license',
 					'sanitize_callback' => 'sanitize_email',
-					'input_attr'        => [
-						'disabled' => 1,
-					],
 				],
 			]
 		);
