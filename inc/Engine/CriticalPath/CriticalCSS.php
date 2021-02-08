@@ -236,6 +236,7 @@ class CriticalCSS {
 				'blocks',
 				'jet-woo-builder',
 				'fl-builder-template',
+				'web-story',
 			]
 		);
 
