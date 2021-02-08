@@ -41,7 +41,7 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 	/**
 	 * Constructor
 	 *
-	 * @since  3.2
+	 * @since 3.2
 	 *
 	 * @param Options_Data $options       Options instance.
 	 * @param string       $template_path Absolute path to the views/settings.
@@ -93,6 +93,7 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 			'identify' => wp_json_encode( $this->identify_data() ),
 			'session'  => wp_json_encode( $this->support_data->get_support_data() ),
 			'prefill'  => wp_json_encode( $this->prefill_data() ),
+			'config'   => wp_json_encode( $this->config_data() ),
 		];
 
 		echo $this->generate( 'beacon', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -176,6 +177,21 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 		}
 
 		return $prefill_data;
+	}
+
+	/**
+	 * Returns config data to pass to Beacon
+	 *
+	 * @since 3.8.5
+	 *
+	 * @return array
+	 */
+	private function config_data() : array {
+		return [
+			'display' => [
+				'position' => is_rtl() ? 'left' : 'right',
+			],
+		];
 	}
 
 	/**
