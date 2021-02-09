@@ -2064,6 +2064,28 @@ class Page {
 	 * @since 3.0
 	 */
 	private function hidden_fields() {
+		$hidden_fields = [
+			'secret_key',
+			'license',
+			'secret_cache_key',
+			'minify_css_key',
+			'minify_js_key',
+			'version',
+			'cloudflare_old_settings',
+			'sitemap_preload_url_crawl',
+			'cache_ssl',
+			'minify_google_fonts',
+			'emoji',
+		];
+
+		if ( ! empty( get_rocket_option( 'consumer_key', '' ) ) ) {
+			$hidden_fields[] = 'consumer_key';
+		}
+
+		if ( ! empty( get_rocket_option( 'consumer_email', '' ) ) ) {
+			$hidden_fields[] = 'consumer_email';
+		}
+
 		$this->settings->add_hidden_settings_fields(
 			/**
 			 * Filters the hidden settings fields
@@ -2071,26 +2093,9 @@ class Page {
 			 * @since 3.5
 			 * @author Remy Perona
 			 *
-			 * @param array $hidden_settings_fields An array of hidden settings fields ID
+			 * @param array $hidden_fields An array of hidden settings fields ID
 			 */
-			apply_filters(
-				'rocket_hidden_settings_fields',
-				[
-					'consumer_key',
-					'consumer_email',
-					'secret_key',
-					'license',
-					'secret_cache_key',
-					'minify_css_key',
-					'minify_js_key',
-					'version',
-					'cloudflare_old_settings',
-					'sitemap_preload_url_crawl',
-					'cache_ssl',
-					'minify_google_fonts',
-					'emoji',
-				]
-			)
+			apply_filters( 'rocket_hidden_settings_fields', $hidden_fields )
 		);
 	}
 
