@@ -140,7 +140,10 @@ function rocket_get_purge_urls( $post_id, $post ) {
 			$purge_urls[] = get_permalink( $parent_id );
 		}
 	}
-
+	
+	// Remove entries with empty values in array
+	$purge_urls = array_filter( $purge_urls );
+	
 	return array_flip( array_flip( $purge_urls ) );
 }
 
