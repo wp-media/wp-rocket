@@ -137,7 +137,11 @@ class DeferJS {
 
 		$inline_exclusions = '';
 		if ( ! empty( $inline_exclusions_list ) ) {
-			foreach ( $inline_exclusions_list as $inline_exclusions_item ) {
+			if ( is_string( $inline_exclusions_list ) ) {
+				$inline_exclusions_list = explode( '|', $inline_exclusions_list );
+			}
+
+			foreach ( (array) $inline_exclusions_list as $inline_exclusions_item ) {
 				$inline_exclusions .= preg_quote( $inline_exclusions_item, '#' ) . '|';
 			}
 			$inline_exclusions = rtrim( $inline_exclusions, '|' );
