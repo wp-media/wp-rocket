@@ -36,6 +36,8 @@ class NGG_Subscriber implements Subscriber_Interface {
 	 * @since 3.3.1
 	 * @author Remy Perona
 	 *
+	 * @param bool $valid_request Indicates if the current request is valid for the NGG resource manager.
+	 *
 	 * @return bool
 	 */
 	public function deactivate_resource_manager( $valid_request ) {
