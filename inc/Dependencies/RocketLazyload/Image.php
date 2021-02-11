@@ -253,6 +253,16 @@ class Image {
 
 		foreach ( $pictures as $picture ) {
 			if ( $this->isExcluded( $picture[0], $excluded ) ) {
+				if ( ! preg_match( '#<img(?<atts>\s.+)\s?/?>#iUs', $picture[0], $img ) ) {
+					continue;
+				}
+	
+				$img = $this->canLazyload( $img );
+	
+				if ( ! $img ) {
+					continue;
+				}
+
 				$nolazy_picture = str_replace( '<img', '<img data-skip-lazy=""', $picture[0] );
 				$html           = str_replace( $picture[0], $nolazy_picture, $html );
 
