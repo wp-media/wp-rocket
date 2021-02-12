@@ -142,7 +142,7 @@ function rocket_get_purge_urls( $post_id, $post ) {
 	}
 
 	// Remove entries with empty values in array.
-	$purge_urls = array_filter( $purge_urls );
+	$purge_urls = array_filter( $purge_urls, 'is_string' );
 
 	return array_flip( array_flip( $purge_urls ) );
 }
