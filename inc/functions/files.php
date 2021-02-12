@@ -544,7 +544,7 @@ function rocket_clean_files( $urls, $filesystem = null ) {
 				if ( ! $filesystem->exists( $entry ) ) {
 					continue;
 				}
-	
+
 				if ( $filesystem->is_dir( $entry ) ) {
 					rocket_rrmdir( $entry, [], $filesystem );
 				} else {
