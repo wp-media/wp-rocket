@@ -537,6 +537,10 @@ function rocket_clean_files( $urls, $filesystem = null ) {
 
 		$parsed_url = get_rocket_parse_url( $url );
 
+		if ( empty( $parsed_url['host'] ) ) {
+			continue;
+		}
+
 		foreach ( _rocket_get_cache_dirs( $parsed_url['host'], $cache_path ) as $dir ) {
 			$entry = $dir . $parsed_url['path'];
 			// Skip if the dir/file does not exist.
