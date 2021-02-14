@@ -292,6 +292,7 @@ endif;
 /**
  * Add age-verified to the list of mandatory cookies
  *
+ * @since 3.8.6 deprecated
  * @since 2.7
  *
  * @param Array $cookies Array of mandatory cookies.
