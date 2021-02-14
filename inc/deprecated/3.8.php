@@ -306,6 +306,7 @@ function rocket_add_cache_mandatory_cookie_for_age_verify( $cookies ) {
 /**
  * Add age-verified cookie when we activate the plugin
  *
+ * @since 3.8.6 deprecated
  * @since 2.7
  */
 function rocket_activate_age_verify() {
