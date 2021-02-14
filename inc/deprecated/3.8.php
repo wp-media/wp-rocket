@@ -318,7 +318,6 @@ function rocket_activate_age_verify() {
 	// Regenerate the config file.
 	rocket_generate_config_file();
 }
-add_action( 'activate_age-verify/age-verify.php', 'rocket_activate_age_verify', 11 );
 
 /**
  * Remove age-verified cookie when we deactivate the plugin
