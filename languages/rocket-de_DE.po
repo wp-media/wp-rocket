@@ -3978,7 +3978,7 @@ msgstr "Ablaufdatum"
 
 #: views/settings/page-sections/dashboard.php:103
 msgid "View my account"
-msgstr "Konto ansehen"
+msgstr "Mein Konto anzeigen"
 
 #: views/settings/page-sections/dashboard.php:130
 msgid "Quick Actions"
