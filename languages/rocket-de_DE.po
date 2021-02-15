@@ -1373,7 +1373,7 @@ msgstr "Deaktivieren"
 
 #: inc/Engine/Admin/Settings/Page.php:1700
 msgid "Control Heartbeat"
-msgstr "Steuere Heartbeat"
+msgstr "Heartbeat kontrollieren"
 
 #: inc/Engine/Admin/Settings/Page.php:1709
 msgid "Behavior in backend"
