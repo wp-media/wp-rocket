@@ -1752,7 +1752,7 @@ msgid ""
 " our plugin"
 msgstr ""
 "WP-Rocket-integration: Die CDN-Option ist in unserem Plugin %1$sautomatisch "
-"kkonfiguriert%2$s"
+"konfiguriert%2$s"
 
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:69
 #, php-format
