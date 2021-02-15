@@ -33,17 +33,4 @@ class Test_AddOptions extends TestCase {
 		$this->assertSame( $expected, $actual );
 
 	}
-
-	/**
-	 * @dataProvider configTestData
-	 */
-	public function testShouldDoExpectedForSafeModeResetOptions( $input, $expected ) {
-		$options  = isset( $input['options'] )  ? $input['options']  : [];
-
-		$actual = apply_filters( 'rocket_safe_mode_reset_options', $options );
-
-		$this->assertSame( $expected, $actual );
-
-	}
-
 }
