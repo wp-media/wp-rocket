@@ -41,7 +41,10 @@ class Test_ActivateSafeMode extends AjaxTestCase {
 		$this->assertFalse( $response->success );
 	}
 
-	public function testShouldResetOptions() {
+	/**
+	 * @dataProvider configTestData
+	 */
+	public function testShouldResetOptions( $expected ) {
 		CapTrait::setAdminCap();
 
 		$this->_setRole( 'administrator' );
@@ -53,25 +56,9 @@ class Test_ActivateSafeMode extends AjaxTestCase {
 		$this->assertObjectHasAttribute( 'success', $response );
 		$this->assertTrue( $response->success );
 
-		$expected_subset = [
-			'embeds'                 => 0,
-			'async_css'              => 0,
-			'lazyload'               => 0,
-			'lazyload_iframes'       => 0,
-			'lazyload_youtube'       => 0,
-			'minify_css'             => 0,
-			'minify_concatenate_css' => 0,
-			'minify_js'              => 0,
-			'minify_concatenate_js'  => 0,
-			'defer_all_js'           => 0,
-			'delay_js'               => 0,
-			'minify_google_fonts'    => 0,
-			'cdn'                    => 0,
-		];
-
 		$options = get_option( 'wp_rocket_settings' );
 
-		foreach ( $expected_subset as $key => $value ) {
+		foreach ( $expected as $key => $value ) {
 			$this->assertArrayHasKey( $key, $options );
 			$this->assertSame( $value, $options[$key] );
 		}
