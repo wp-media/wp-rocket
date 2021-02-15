@@ -491,7 +491,7 @@ msgid ""
 " (one per line)."
 msgstr ""
 "URLs von CSS-Dateien, die von der Minifizierung und Zusammenführung "
-"ausgenommen werdn sollen (eine pro Zeile)."
+"ausgenommen werden sollen (eine pro Zeile)."
 
 #: inc/Engine/Admin/Settings/Page.php:645
 msgid ""
