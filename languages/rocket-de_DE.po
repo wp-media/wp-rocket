@@ -4236,7 +4236,7 @@ msgid ""
 "for license validation), IP addresses, or third-party API keys."
 msgstr ""
 "WP Rocket wird niemals Domain-Namen, E-Mail-Adressen (außer zur "
-"Lizenzprüfung), IP-Adressen, oder API-Schlüssel für Drittanbieter-Dienste "
+"Lizenzprüfung), IP-Adressen oder API-Schlüssel von Drittanbietern "
 "übermitteln."
 
 #: views/settings/page.php:81
