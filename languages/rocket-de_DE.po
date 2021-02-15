@@ -2756,7 +2756,7 @@ msgid ""
 msgstr ""
 "Hier findest du eine genaue Auflistung der Daten, die WP Rocket nach Hause "
 "sendet, wenn du die Erlaubnis dazu erteilst. WP Rocket wird niemals Domain-"
-"Namen, E-Mail-Adressen (außer für Lizenzprüfung), IP-Adressen oder API-"
+"Namen, E-Mail-Adressen (außer zur Lizenzprüfung), IP-Adressen oder API-"
 "Schlüssel von Drittanbietern übermitteln."
 
 #: inc/admin/ui/notices.php:619
