@@ -18,7 +18,6 @@ function flush_rocket_htaccess( $remove_rules = false ) { // phpcs:ignore WordPr
 	 * Filters disabling of WP Rocket htaccess rules
 	 *
 	 * @since 3.2.5
-	 * @author Remy Perona
 	 *
 	 * @param bool $disable True to disable, false otherwise.
 	 */
@@ -54,18 +53,6 @@ function flush_rocket_htaccess( $remove_rules = false ) { // phpcs:ignore WordPr
 
 	if ( ! $remove_rules ) {
 		$ftmp = get_rocket_htaccess_marker() . PHP_EOL . $ftmp;
-	}
-
-	/**
-	 * Determine if empty lines should be removed in the .htaccess file.
-	 *
-	 * @since  2.10.7
-	 * @author Remy Perona
-	 *
-	 * @param boolean $remove_empty_lines True to remove, false otherwise.
-	 */
-	if ( apply_filters( 'rocket_remove_empty_lines', true ) ) {
-		$ftmp = preg_replace( "/\n+/", "\n", $ftmp );
 	}
 
 	// Make sure the WP rules are still there.
