@@ -198,7 +198,7 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 		$filename            = ltrim( rocket_realpath( $parsed_url['path'] ), '/' );
 		$minified_file       = rawurldecode( $this->minify_base_path . $filename );
 		$minified_file_mtime = rocket_direct_filesystem()->mtime( $minified_file );
-		$minified_url        = add_query_arg( 'ver', $minified_file_mtime ? $minified_file_mtime : '', $this->get_minify_url( $filename, $url ) );
+		$minified_url        = add_query_arg( 'ver', $minified_file_mtime ? $minified_file_mtime : md5( $url . $this->minify_key ), $this->get_minify_url( $filename, $url ) );
 
 		if ( rocket_direct_filesystem()->exists( $minified_file ) ) {
 			Logger::debug(

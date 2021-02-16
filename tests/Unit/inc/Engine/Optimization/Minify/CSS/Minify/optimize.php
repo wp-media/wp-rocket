@@ -114,7 +114,7 @@ class Test_Optimize extends TestCase {
 		}
 
 		Functions\expect( 'add_query_arg' )->andReturnUsing( function ( $key, $value, $url ) {
-			return $url . '?' . $key;
+			return $url . '?' . $key . '=' . $value;
 		} );
 
 		$this->minify = new Minify( $this->options, $this->local_cache );

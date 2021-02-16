@@ -36,10 +36,10 @@ return [
 				'html' => '<html>
 					<head>
 						<title>Sample Page</title>
-						<script data-minify="1" type="text/javascript" src="http://example.org/wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script.js?ver"></script>
-						<script data-minify="1" type="text/javascript" src="http://example.org/wp-content/cache/min/1/wp-content/plugins/hello-dolly/script.js?ver"></script>
+						<script data-minify="1" type="text/javascript" src="http://example.org/wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script.js?ver=cdcfd4a96e52edbc4d3e7d5e887dbd11"></script>
+						<script data-minify="1" type="text/javascript" src="http://example.org/wp-content/cache/min/1/wp-content/plugins/hello-dolly/script.js?ver=82c5174e342f25861cb20cab85ecb625"></script>
 						<script type="text/javascript" src="http://example.org' . $jquery_path . '"></script>
-						<script data-minify="1" type="text/javascript" src="http://example.org/wp-content/cache/min/1/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js?ver"></script>
+						<script data-minify="1" type="text/javascript" src="http://example.org/wp-content/cache/min/1/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js?ver=2d51e1a9b3d408c46ab0057b69063753"></script>
 					</head>
 					<body>
 					</body>
@@ -78,10 +78,10 @@ return [
 				'html'  => '<html>
 					<head>
 						<title>Sample Page</title>
-						<script data-minify="1" type="text/javascript" src="http://example.org/wp-content/cache/min/1/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js?ver" integrity="notvalid"></script>
+						<script data-minify="1" type="text/javascript" src="http://example.org/wp-content/cache/min/1/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js?ver=2d51e1a9b3d408c46ab0057b69063753" integrity="notvalid"></script>
 						<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js" integrity="notvalidalgorithm-hashed"></script>
 						<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js" integrity="sha384-notvalidhash"></script>
-						<script data-minify="1" type="text/javascript" src="http://example.org/wp-content/cache/min/1/ajax/libs/twitter-bootstrap/4.5.1/js/bootstrap.js?ver"></script>
+						<script data-minify="1" type="text/javascript" src="http://example.org/wp-content/cache/min/1/ajax/libs/twitter-bootstrap/4.5.1/js/bootstrap.js?ver=a4fa5fe2f754976b8d54f283a3962b95"></script>
 					</head>
 					<body>
 					</body>
@@ -144,8 +144,8 @@ return [
 				'html'  => '<html>
 					<head>
 						<title>Sample Page</title>
-						<script data-minify="1" type="text/javascript" src="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script.js?ver"></script>
-						<script data-minify="1" type="text/javascript" src="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/plugins/hello-dolly/script.js?ver"></script>
+						<script data-minify="1" type="text/javascript" src="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script.js?ver=cdcfd4a96e52edbc4d3e7d5e887dbd11"></script>
+						<script data-minify="1" type="text/javascript" src="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/plugins/hello-dolly/script.js?ver=82c5174e342f25861cb20cab85ecb625"></script>
 						<script type="text/javascript" src="https://123456.rocketcdn.me' . $jquery_path . '"></script>
 					</head>
 					<body>
@@ -183,8 +183,8 @@ return [
 				'html'  => '<html>
 					<head>
 						<title>Sample Page</title>
-						<script data-minify="1" type="text/javascript" src="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script.js?ver"></script>
-						<script data-minify="1" type="text/javascript" src="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/plugins/hello-dolly/script.js?ver"></script>
+						<script data-minify="1" type="text/javascript" src="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script.js?ver=cdcfd4a96e52edbc4d3e7d5e887dbd11"></script>
+						<script data-minify="1" type="text/javascript" src="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/plugins/hello-dolly/script.js?ver=82c5174e342f25861cb20cab85ecb625"></script>
 						<script type="text/javascript" src="https://123456.rocketcdn.me' . $jquery_path . '"></script>
 					</head>
 					<body>
@@ -221,8 +221,8 @@ return [
 				'html'  => '<html>
 					<head>
 						<title>Sample Page</title>
-						<script data-minify="1" type="text/javascript" src="https://123456.rocketcdn.me/cdnpath/wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script.js?ver"></script>
-						<script data-minify="1" type="text/javascript" src="https://123456.rocketcdn.me/cdnpath/wp-content/cache/min/1/wp-content/plugins/hello-dolly/script.js?ver"></script>
+						<script data-minify="1" type="text/javascript" src="https://123456.rocketcdn.me/cdnpath/wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script.js?ver=cdcfd4a96e52edbc4d3e7d5e887dbd11"></script>
+						<script data-minify="1" type="text/javascript" src="https://123456.rocketcdn.me/cdnpath/wp-content/cache/min/1/wp-content/plugins/hello-dolly/script.js?ver=82c5174e342f25861cb20cab85ecb625"></script>
 						<script type="text/javascript" src="https://123456.rocketcdn.me/cdnpath' . $jquery_path . '"></script>
 					</head>
 					<body>
