@@ -31,22 +31,22 @@ return [
 				'html'  => '<html>
 					<head>
 						<title>Sample Page</title>
-						<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-5360e3be2666897518a1821fbecc9d28.css" type="text/css" media="all">
-						<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style-4a16b4cd55f600cc39947847baa15308.css">
+						<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/themes/twentytwenty/style.css?ver=" type="text/css" media="all">
+						<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style.css?ver=">
 						<link rel="stylesheet" href="http://example.org/wp-includes/css/dashicons.min.css">
-						<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min-810497c120aacb0db0d64737badecd9c.css">
-						<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/font-awesome/4.7.0/css/font-awesome.min-8f298935317a465eea8c736e75f1b935.css">
+						<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min.css?ver=">
+						<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/font-awesome/4.7.0/css/font-awesome.min.css?ver=">
 					</head>
 					<body>
 					</body>
 				</html>',
 				'files' => [
-					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-5360e3be2666897518a1821fbecc9d28.css',
-					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-5360e3be2666897518a1821fbecc9d28.css.gz',
-					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/style-4a16b4cd55f600cc39947847baa15308.css',
-					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/style-4a16b4cd55f600cc39947847baa15308.css.gz',
-					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min-810497c120aacb0db0d64737badecd9c.css',
-					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min-810497c120aacb0db0d64737badecd9c.css.gz',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style.css',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style.css.gz',
+					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/style.css',
+					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/style.css.gz',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min.css',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min.css.gz',
 					'wp-content/cache/min/3rd-party/stackpath.bootstrapcdn.com-font-awesome-4.7.0-css-font-awesome.min.css',
 				],
 			],
@@ -66,7 +66,7 @@ return [
 					<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" integrity="notvalid" type="text/css" media="all">
 					<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" integrity="notvalidalgorithm-hashed">
 					<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" integrity="sha384-notvalidhash">
-					<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" integrity="sha384-FckWOBo7yuyMS7In0aXZ0aoVvnInlnFMwCv77x9sZpFgOonQgnBj1uLwenWVtsEj">
+					<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.1/css/font-awesome.css" integrity="sha384-/TCrTtA4HcJvf4j70IDxw88HLaJNQ86jM0UFg9q6wTlTb1TPNXRkZC7WhiRZQVOa">
 		</head>
 				<body>
 				</body>
@@ -76,10 +76,10 @@ return [
 				'html'  => '<html>
 					<head>
 						<title>Sample Page</title>
-						<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/font-awesome/4.7.0/css/font-awesome-f0a49cb1d696cc10278bb729970847c9.css" integrity="notvalid" type="text/css" media="all">
+						<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/font-awesome/4.7.0/css/font-awesome.css?ver=" integrity="notvalid" type="text/css" media="all">
 						<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" integrity="notvalidalgorithm-hashed">
 						<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" integrity="sha384-notvalidhash">
-						<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/font-awesome/4.7.0/css/font-awesome-f0a49cb1d696cc10278bb729970847c9.css">
+						<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/font-awesome/4.7.1/css/font-awesome.css?ver=">
 					</head>
 					<body>
 					</body>
@@ -115,22 +115,22 @@ return [
 				'html'  => '<html>
 					<head>
 						<title>Sample Page</title>
-						<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-36f730a00bbaa4bb81d6a9dac005155f.css" type="text/css" media="all">
-						<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style-3b71a3cb9b14d657f0cb8365af32e4c8.css">
+						<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/themes/twentytwenty/style.css?ver=" type="text/css" media="all">
+						<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style.css?ver=">
 						<link rel="stylesheet" href="/wp-includes/css/dashicons.min.css">
-						<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min-28df9696b00052d455b668898ba0aef4.css">
-						<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/font-awesome/4.7.0/css/font-awesome.min-8f298935317a465eea8c736e75f1b935.css">
+						<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min.css?ver=">
+						<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/font-awesome/4.7.0/css/font-awesome.min.css?ver=">
 					</head>
 					<body>
 					</body>
 				</html>',
 				'files' => [
-					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-36f730a00bbaa4bb81d6a9dac005155f.css',
-					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-36f730a00bbaa4bb81d6a9dac005155f.css.gz',
-					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/style-3b71a3cb9b14d657f0cb8365af32e4c8.css',
-					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/style-3b71a3cb9b14d657f0cb8365af32e4c8.css.gz',
-					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min-28df9696b00052d455b668898ba0aef4.css',
-					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min-28df9696b00052d455b668898ba0aef4.css.gz',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style.css',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style.css.gz',
+					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/style.css',
+					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/style.css.gz',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min.css',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min.css.gz',
 					'wp-content/cache/min/3rd-party/stackpath.bootstrapcdn.com-font-awesome-4.7.0-css-font-awesome.min.css',
 				],
 			],
@@ -160,22 +160,22 @@ return [
 				'html'  => '<html>
 					<head>
 						<title>Sample Page</title>
-						<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-5360e3be2666897518a1821fbecc9d28.css" type="text/css" media="all">
-						<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style-4a16b4cd55f600cc39947847baa15308.css">
+						<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/style.css?ver=" type="text/css" media="all">
+						<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style.css?ver=">
 						<link rel="stylesheet" href="https://123456.rocketcdn.me/wp-includes/css/dashicons.min.css">
-						<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min-810497c120aacb0db0d64737badecd9c.css">
+						<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min.css?ver=">
 
 					</head>
 					<body>
 					</body>
 				</html>',
 				'files' => [
-					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-5360e3be2666897518a1821fbecc9d28.css',
-					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-5360e3be2666897518a1821fbecc9d28.css.gz',
-					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/style-4a16b4cd55f600cc39947847baa15308.css',
-					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/style-4a16b4cd55f600cc39947847baa15308.css.gz',
-					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min-810497c120aacb0db0d64737badecd9c.css',
-					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min-810497c120aacb0db0d64737badecd9c.css.gz',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style.css',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style.css.gz',
+					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/style.css',
+					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/style.css.gz',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min.css',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min.css.gz',
 				],
 			],
 
@@ -208,22 +208,22 @@ return [
 				'html'  => '<html>
 					<head>
 						<title>Sample Page</title>
-						<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-5360e3be2666897518a1821fbecc9d28.css" type="text/css" media="all">
-						<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style-4a16b4cd55f600cc39947847baa15308.css">
+						<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/style.css?ver=" type="text/css" media="all">
+						<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style.css?ver=">
 						<link rel="stylesheet" href="https://123456.rocketcdn.me/wp-includes/css/dashicons.min.css">
-						<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min-810497c120aacb0db0d64737badecd9c.css">
+						<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min.css?ver=">
 
 					</head>
 					<body>
 					</body>
 				</html>',
 				'files' => [
-					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-5360e3be2666897518a1821fbecc9d28.css',
-					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-5360e3be2666897518a1821fbecc9d28.css.gz',
-					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/style-4a16b4cd55f600cc39947847baa15308.css',
-					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/style-4a16b4cd55f600cc39947847baa15308.css.gz',
-					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min-810497c120aacb0db0d64737badecd9c.css',
-					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min-810497c120aacb0db0d64737badecd9c.css.gz',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style.css',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style.css.gz',
+					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/style.css',
+					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/style.css.gz',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min.css',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min.css.gz',
 				],
 			],
 
@@ -253,22 +253,22 @@ return [
 				'html'  => '<html>
 					<head>
 						<title>Sample Page</title>
-						<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/cdnpath/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-5360e3be2666897518a1821fbecc9d28.css" type="text/css" media="all">
-						<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/cdnpath/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style-4a16b4cd55f600cc39947847baa15308.css">
+						<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/cdnpath/wp-content/cache/min/1/wp-content/themes/twentytwenty/style.css?ver=" type="text/css" media="all">
+						<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/cdnpath/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style.css?ver=">
 						<link rel="stylesheet" href="https://123456.rocketcdn.me/cdnpath/wp-includes/css/dashicons.min.css">
-						<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/cdnpath/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min-810497c120aacb0db0d64737badecd9c.css">
+						<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/cdnpath/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min.css?ver=">
 
 					</head>
 					<body>
 					</body>
 				</html>',
 				'files' => [
-					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-5360e3be2666897518a1821fbecc9d28.css',
-					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-5360e3be2666897518a1821fbecc9d28.css.gz',
-					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/style-4a16b4cd55f600cc39947847baa15308.css',
-					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/style-4a16b4cd55f600cc39947847baa15308.css.gz',
-					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min-810497c120aacb0db0d64737badecd9c.css',
-					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min-810497c120aacb0db0d64737badecd9c.css.gz',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style.css',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style.css.gz',
+					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/style.css',
+					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/style.css.gz',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min.css',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min.css.gz',
 				],
 			],
 
