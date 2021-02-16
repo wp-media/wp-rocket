@@ -41,7 +41,6 @@ class Subscriber extends Abstract_Render implements Subscriber_Interface {
 				[ 'option_update_3_7_6_1', 13, 2 ],
 			],
 			'wp_ajax_rocket_restore_delay_js_defaults'     => 'restore_defaults',
-			'rocket_safe_mode_reset_options'               => 'add_options',
 		];
 	}
 
