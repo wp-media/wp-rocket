@@ -137,7 +137,7 @@ class Minify extends AbstractCSSOptimization implements ProcessorInterface {
 
 		$filename      = ltrim( rocket_realpath( $parsed_url['path'] ), '/' );
 		$minified_file = rawurldecode( $this->minify_base_path . $filename );
-		$minify_url    = $this->get_minify_url( $filename, $url ) . "?ver=" . rocket_direct_filesystem()->mtime( $minified_file );
+		$minify_url    = $this->get_minify_url( $filename, $url ) . '?ver=' . rocket_direct_filesystem()->mtime( $minified_file );
 
 		if ( rocket_direct_filesystem()->exists( $minified_file ) ) {
 			Logger::debug(
