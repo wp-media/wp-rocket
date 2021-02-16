@@ -184,11 +184,9 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 
 		// This filter is documented in /inc/classes/optimization/class-abstract-optimization.php.
 		$url       = apply_filters( 'rocket_asset_url', $url, $this->get_zones() );
-		$unique_id = md5( $url . $this->minify_key );
-		$filename  = preg_replace( '/\.js$/', '-' . $unique_id . '.js', ltrim( rocket_realpath( wp_parse_url( $url, PHP_URL_PATH ) ), '/' ) );
-
+		$filename      = ltrim( rocket_realpath( wp_parse_url( $url, PHP_URL_PATH ) ), '/' );
 		$minified_file = rawurldecode( $this->minify_base_path . $filename );
-		$minified_url  = $this->get_minify_url( $filename, $url );
+		$minified_url    = $this->get_minify_url( $filename, $url ) . "?ver=" . rocket_direct_filesystem()->mtime( $minified_file );
 
 		if ( rocket_direct_filesystem()->exists( $minified_file ) ) {
 			Logger::debug(
