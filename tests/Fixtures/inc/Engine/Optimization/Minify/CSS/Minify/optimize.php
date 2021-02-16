@@ -27,10 +27,10 @@ return [
 <html>
 	<head>
 		<title>Sample Page</title>
-		<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/themes/twentytwenty/style.css?ver=" type="text/css" media="all">
-		<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style.css?ver=">
+		<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/themes/twentytwenty/style.css?ver" type="text/css" media="all">
+		<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style.css?ver">
 		<link rel="stylesheet" href="http://example.org/wp-includes/css/dashicons.min.css">
-		<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min.css?ver=">
+		<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min.css?ver">
 	</head>
 	<body>
 	</body>
@@ -73,10 +73,10 @@ ORIGINAL_HTML
 <html>
 	<head>
 		<title>Sample Page</title>
-		<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/themes/twentytwenty/style.css?ver=" type="text/css" media="all">
-		<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style.css?ver=">
+		<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/themes/twentytwenty/style.css?ver" type="text/css" media="all">
+		<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style.css?ver">
 		<link rel="stylesheet" href="/wp-includes/css/dashicons.min.css">
-		<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min.css?ver=">
+		<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min.css?ver">
 	</head>
 	<body>
 	</body>
@@ -106,10 +106,10 @@ EXPECTED_HTML
 <html>
 	<head>
 		<title>Sample Page</title>
-		<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/style.css?ver=" type="text/css" media="all">
-		<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style.css?ver=">
+		<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/style.css?ver" type="text/css" media="all">
+		<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style.css?ver">
 		<link rel="stylesheet" href="http://example.org/wp-includes/css/dashicons.min.css">
-		<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min.css?ver=">
+		<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min.css?ver">
 	</head>
 	<body>
 	</body>
@@ -153,10 +153,10 @@ ORIGINAL_HTML
 <html>
 	<head>
 		<title>Sample Page</title>
-		<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/style.css?ver=" type="text/css" media="all">
-		<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style.css?ver=">
+		<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/style.css?ver" type="text/css" media="all">
+		<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style.css?ver">
 		<link rel="stylesheet" href="https://123456.rocketcdn.me/wp-includes/css/dashicons.min.css">
-		<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min.css?ver=">
+		<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min.css?ver">
 	</head>
 	<body>
 	</body>
@@ -200,10 +200,10 @@ ORIGINAL_HTML
 <html>
 	<head>
 		<title>Sample Page</title>
-		<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/cdnpath/wp-content/cache/min/1/wp-content/themes/twentytwenty/style.css?ver=" type="text/css" media="all">
-		<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/cdnpath/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style.css?ver=">
+		<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/cdnpath/wp-content/cache/min/1/wp-content/themes/twentytwenty/style.css?ver" type="text/css" media="all">
+		<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/cdnpath/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style.css?ver">
 		<link rel="stylesheet" href="https://123456.rocketcdn.me/cdnpath/wp-includes/css/dashicons.min.css">
-		<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/cdnpath/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min.css?ver=">
+		<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/cdnpath/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min.css?ver">
 	</head>
 	<body>
 	</body>
@@ -243,7 +243,7 @@ ORIGINAL_HTML
 <html>
 	<head>
 		<title>Sample Page</title>
-		<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/path/to/style.css?ver=" type="text/css" media="all">
+		<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/path/to/style.css?ver" type="text/css" media="all">
 	</head>
 	<body>
 	</body>
@@ -279,7 +279,7 @@ ORIGINAL_HTML
 <html>
 	<head>
 		<title>Sample Page</title>
-		<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/path/to/style.css?ver=" type="text/css" media="all">
+		<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/path/to/style.css?ver" type="text/css" media="all">
 	</head>
 	<body>
 	</body>

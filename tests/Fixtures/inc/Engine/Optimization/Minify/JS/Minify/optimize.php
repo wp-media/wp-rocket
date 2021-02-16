@@ -26,8 +26,8 @@ return [
 <html>
 	<head>
 		<title>Sample Page</title>
-		<script data-minify="1" type="text/javascript" src="http://example.org/wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script.js?ver="></script>
-		<script data-minify="1" type="text/javascript" src="http://example.org/wp-content/cache/min/1/wp-content/plugins/hello-dolly/script.js?ver="></script>
+		<script data-minify="1" type="text/javascript" src="http://example.org/wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script.js?ver"></script>
+		<script data-minify="1" type="text/javascript" src="http://example.org/wp-content/cache/min/1/wp-content/plugins/hello-dolly/script.js?ver"></script>
 		<script type="text/javascript" src="http://example.org/wp-includes/js/jquery/jquery.js"></script>
 	</head>
 	<body>
@@ -56,8 +56,8 @@ EXPECTED_HTML
 <html>
 	<head>
 		<title>Sample Page</title>
-		<script data-minify="1" type="text/javascript" src="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script.js?ver="></script>
-		<script data-minify="1" type="text/javascript" src="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/plugins/hello-dolly/script.js?ver="></script>
+		<script data-minify="1" type="text/javascript" src="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script.js?ver"></script>
+		<script data-minify="1" type="text/javascript" src="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/plugins/hello-dolly/script.js?ver"></script>
 		<script type="text/javascript" src="http://example.org/wp-includes/js/jquery/jquery.js"></script>
 	</head>
 	<body>
@@ -99,8 +99,8 @@ ORIGINAL_HTML
 <html>
 	<head>
 		<title>Sample Page</title>
-		<script data-minify="1" type="text/javascript" src="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script.js?ver="></script>
-		<script data-minify="1" type="text/javascript" src="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/plugins/hello-dolly/script.js?ver="></script>
+		<script data-minify="1" type="text/javascript" src="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script.js?ver"></script>
+		<script data-minify="1" type="text/javascript" src="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/plugins/hello-dolly/script.js?ver"></script>
 		<script type="text/javascript" src="https://123456.rocketcdn.me/wp-includes/js/jquery/jquery.js"></script>
 	</head>
 	<body>
@@ -142,8 +142,8 @@ ORIGINAL_HTML
 <html>
 	<head>
 		<title>Sample Page</title>
-		<script data-minify="1" type="text/javascript" src="https://123456.rocketcdn.me/cdnpath/wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script.js?ver="></script>
-		<script data-minify="1" type="text/javascript" src="https://123456.rocketcdn.me/cdnpath/wp-content/cache/min/1/wp-content/plugins/hello-dolly/script.js?ver="></script>
+		<script data-minify="1" type="text/javascript" src="https://123456.rocketcdn.me/cdnpath/wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script.js?ver"></script>
+		<script data-minify="1" type="text/javascript" src="https://123456.rocketcdn.me/cdnpath/wp-content/cache/min/1/wp-content/plugins/hello-dolly/script.js?ver"></script>
 		<script type="text/javascript" src="https://123456.rocketcdn.me/cdnpath/wp-includes/js/jquery/jquery.js"></script>
 	</head>
 	<body>
@@ -183,7 +183,7 @@ ORIGINAL_HTML
 <html>
 	<head>
 		<title>Sample Page</title>
-		<script data-minify="1" type="text/javascript" src="http://example.org/wp-content/cache/min/1/path/to/external-script.js?ver="></script>
+		<script data-minify="1" type="text/javascript" src="http://example.org/wp-content/cache/min/1/path/to/external-script.js?ver"></script>
 	</head>
 	<body>
 	</body>
@@ -220,7 +220,7 @@ ORIGINAL_HTML
 <html>
 	<head>
 		<title>Sample Page</title>
-		<script data-minify="1" type="text/javascript" src="http://example.org/wp-content/cache/min/1/path/to/external-script.js?ver="></script>
+		<script data-minify="1" type="text/javascript" src="http://example.org/wp-content/cache/min/1/path/to/external-script.js?ver"></script>
 	</head>
 	<body>
 	</body>

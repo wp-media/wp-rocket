@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\Minify\JS\Minify;
 
+use Brain\Monkey\Functions;
 use Brain\Monkey\Filters;
 use Mockery;
 use WP_Rocket\Engine\Optimization\AssetsLocalCache;
@@ -89,6 +90,10 @@ class Test_Optimize extends TestCase {
 				}
 				return $asset_match[0];
 			} );
+
+		Functions\expect( 'add_query_arg' )->andReturnUsing( function ( $key, $value, $url ) {
+			return $url . '?' . $key;
+		} );
 
 		$this->assertSame(
 			$this->format_the_html( $expected['html'] ),

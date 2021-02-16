@@ -113,6 +113,10 @@ class Test_Optimize extends TestCase {
 				->andReturnArg( 1 );
 		}
 
+		Functions\expect( 'add_query_arg' )->andReturnUsing( function ( $key, $value, $url ) {
+			return $url . '?' . $key;
+		} );
+
 		$this->minify = new Minify( $this->options, $this->local_cache );
 
 		$this->assertSame(

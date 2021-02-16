@@ -183,10 +183,11 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 		}
 
 		// This filter is documented in /inc/classes/optimization/class-abstract-optimization.php.
-		$url           = apply_filters( 'rocket_asset_url', $url, $this->get_zones() );
-		$filename      = ltrim( rocket_realpath( wp_parse_url( $url, PHP_URL_PATH ) ), '/' );
-		$minified_file = rawurldecode( $this->minify_base_path . $filename );
-		$minified_url  = $this->get_minify_url( $filename, $url ) . '?ver=' . rocket_direct_filesystem()->mtime( $minified_file );
+		$url                 = apply_filters( 'rocket_asset_url', $url, $this->get_zones() );
+		$filename            = ltrim( rocket_realpath( wp_parse_url( $url, PHP_URL_PATH ) ), '/' );
+		$minified_file       = rawurldecode( $this->minify_base_path . $filename );
+		$minified_file_mtime = rocket_direct_filesystem()->mtime( $minified_file );
+		$minified_url        = add_query_arg( 'ver', $minified_file_mtime ? $minified_file_mtime : '', $this->get_minify_url( $filename, $url ) );
 
 		if ( rocket_direct_filesystem()->exists( $minified_file ) ) {
 			Logger::debug(
