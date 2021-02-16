@@ -66,7 +66,7 @@ return [
 					<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" integrity="notvalid" type="text/css" media="all">
 					<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" integrity="notvalidalgorithm-hashed">
 					<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" integrity="sha384-notvalidhash">
-					<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.1/css/font-awesome.css" integrity="sha384-/TCrTtA4HcJvf4j70IDxw88HLaJNQ86jM0UFg9q6wTlTb1TPNXRkZC7WhiRZQVOa">
+					<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/fontawesome.css" integrity="sha384-kru28UjhynaepLMcLGIBjkuOAHbhva6Xuk0nZStgRk733F+oTf2JKejiH/TslLhR">
 		</head>
 				<body>
 				</body>
@@ -79,7 +79,7 @@ return [
 						<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/font-awesome/4.7.0/css/font-awesome.css?ver=" integrity="notvalid" type="text/css" media="all">
 						<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" integrity="notvalidalgorithm-hashed">
 						<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" integrity="sha384-notvalidhash">
-						<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/font-awesome/4.7.1/css/font-awesome.css?ver=">
+						<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/ajax/libs/font-awesome/5.15.2/css/fontawesome.css?ver=">
 					</head>
 					<body>
 					</body>
