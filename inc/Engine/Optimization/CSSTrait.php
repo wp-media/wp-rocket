@@ -35,6 +35,10 @@ trait CSSTrait {
 		 */
 		$target = apply_filters( 'rocket_css_asset_target_path', $target );
 
+		$content = $this->move( $this->get_converter( $source, $target ), $content, $source );
+
+		$content = $this->combine_imports( $content, $target );
+
 		/**
 		 * Filters the content of a CSS file
 		 *
@@ -44,7 +48,7 @@ trait CSSTrait {
 		 * @param string $source  Source filepath.
 		 * @param string $target  Target filepath.
 		 */
-		return apply_filters( 'rocket_css_content', $this->move( $this->get_converter( $source, $target ), $content, $source ), $source, $target );
+		return apply_filters( 'rocket_css_content', $content, $source, $target );
 	}
 
 	/**
@@ -191,6 +195,120 @@ trait CSSTrait {
 		return str_replace( $search, $replace, $content );
 	}
 
+	protected function combine_imports( $content, $target ) {
+		$importRegexes = [
+			// @import url(xxx)
+			'/
+		# import statement
+		@import
+
+		# whitespace
+		\s+
+
+			# open url()
+			url\(
+
+				# (optional) open path enclosure
+				(?P<quotes>["\']?)
+
+					# fetch path
+					(?P<path>.+?)
+
+				# (optional) close path enclosure
+				(?P=quotes)
+
+			# close url()
+			\)
+
+			# (optional) trailing whitespace
+			\s*
+
+			# (optional) media statement(s)
+			(?P<media>[^;]*)
+
+			# (optional) trailing whitespace
+			\s*
+
+		# (optional) closing semi-colon
+		;?
+
+		/ix',
+
+			// @import 'xxx'
+			'/
+
+		# import statement
+		@import
+
+		# whitespace
+		\s+
+
+			# open path enclosure
+			(?P<quotes>["\'])
+
+				# fetch path
+				(?P<path>.+?)
+
+			# close path enclosure
+			(?P=quotes)
+
+			# (optional) trailing whitespace
+			\s*
+
+			# (optional) media statement(s)
+			(?P<media>[^;]*)
+
+			# (optional) trailing whitespace
+			\s*
+
+		# (optional) closing semi-colon
+		;?
+
+		/ix',
+		];
+
+		// find all relative imports in css
+		$matches = [];
+		foreach ( $importRegexes as $importRegex ) {
+			if ( preg_match_all( $importRegex, $content, $regexMatches, PREG_SET_ORDER ) ) {
+				$matches = array_merge( $matches, $regexMatches );
+			}
+		}
+
+		if ( empty( $matches ) ) {
+			return $content;
+		}
+
+		$search  = [];
+		$replace = [];
+
+		// loop the matches
+		foreach ( $matches as $match ) {
+			// grab referenced file & minify it (which may include importing
+			// yet other @import statements recursively)
+			$importContent = $this->get_file_contents( $match['path'] );
+
+			if ( empty( $importContent ) ) {
+				continue;
+			}
+
+			// check if this is only valid for certain media
+			if ( ! empty( $match['media'] ) ) {
+				$importContent = '@media ' . $match['media'] . '{' . $importContent . '}';
+			}
+
+			// Use recursion to rewrite paths and combine imports again for imported content.
+			$importContent = $this->rewrite_paths( $match['path'], $target, $importContent );
+
+			// add to replacement array
+			$search[]  = $match[0];
+			$replace[] = $importContent;
+		}
+
+		// replace the import statements
+		return str_replace( $search, $replace, $content );
+	}
+
 	/**
 	 * Applies font-display:swap to all font-family rules without a previously set font-display property.
 	 *
@@ -218,5 +336,9 @@ trait CSSTrait {
 			},
 			$css_file_content
 		);
+	}
+
+	private function get_file_contents( $path ) {
+		return rocket_direct_filesystem()->get_contents( $path );
 	}
 }

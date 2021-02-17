@@ -64,7 +64,31 @@ return [
 					'wp-content/cache/min/1/b6dcf622d68835c7b1cd01e3cb339560.css',
 					'wp-content/cache/min/1/b6dcf622d68835c7b1cd01e3cb339560.css.gz',
 				],
-				'css' => '@import url(vfs://public/wp-content/themes/twentytwenty/style.css);body{font-family:Helvetica,Arial,sans-serif;text-align:center}body{font-family:Helvetica,Arial,sans-serif;text-align:center}',
+				'css' => 'body{font-family:Helvetica,Arial,sans-serif;text-align:center}body{font-family:Helvetica,Arial,sans-serif;text-align:center}body{font-family:Helvetica,Arial,sans-serif;text-align:center}',
+			],
+
+			'cdn_host' => [],
+			'cdn_url'  => 'http://example.org',
+			'site_url' => 'http://example.org',
+		],
+
+		'combineCssFilesWithNestedImport' => [
+			'original' =>
+				'<html><head><title>Sample Page</title>' .
+				'<link rel="stylesheet" href="http://example.org/wp-content/themes/twentytwenty/style-import2.css" type="text/css" media="all">' .
+				'<link rel="stylesheet" href="http://example.org/wp-content/plugins/hello-dolly/style.css">' .
+				'<link rel="stylesheet" href="http://example.org/wp-includes/css/dashicons.min.css">' .
+				'</head><body></body></html>',
+
+			'expected' => [
+				'html'  => '<html><head><title>Sample Page</title>' .
+				           '<link rel="stylesheet" href="http://example.org/wp-content/cache/min/1/a41edef8114680bb60b530fa32be3ca5.css" media="all" data-minify="1" />' .
+				           '</head><body></body></html>',
+				'files' => [
+					'wp-content/cache/min/1/a41edef8114680bb60b530fa32be3ca5.css',
+					'wp-content/cache/min/1/a41edef8114680bb60b530fa32be3ca5.css.gz',
+				],
+				'css' => '.style-another-import2{color:green}.style-another-import{color:red}body{font-family:Helvetica,Arial,sans-serif;text-align:center}body{font-family:Helvetica,Arial,sans-serif;text-align:center}',
 			],
 
 			'cdn_host' => [],
@@ -88,7 +112,7 @@ return [
 					'wp-content/cache/min/1/afeb29591023f7eb6314ad594ca01138.css',
 					'wp-content/cache/min/1/afeb29591023f7eb6314ad594ca01138.css.gz',
 				],
-				'css' => '@import url(vfs://public/wp-content/themes/twentytwenty/style.css);body{font-family:Helvetica,Arial,sans-serif;text-align:center}body{font-family:Helvetica,Arial,sans-serif;text-align:center}',
+				'css' => 'body{font-family:Helvetica,Arial,sans-serif;text-align:center}body{font-family:Helvetica,Arial,sans-serif;text-align:center}body{font-family:Helvetica,Arial,sans-serif;text-align:center}',
 			],
 
 			'cdn_host' => [],
@@ -247,7 +271,7 @@ return [
 					'wp-content/cache/min/1/074f89d1546ea3c6df831e874538e908.css',
 					'wp-content/cache/min/1/074f89d1546ea3c6df831e874538e908.css.gz',
 				],
-				'css' => "@import url(vfs://public/wp-content/themes/twentytwenty/style.css);@font-face{font-display:swap;font-family:'FontAwesome';src:url(https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/../fonts/fontawesome-webfont.eot?v=4.7.0);src:url('https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/../fonts/fontawesome-webfont.eot?#iefix&v=4.7.0') format('embedded-opentype'),url(https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/../fonts/fontawesome-webfont.woff2?v=4.7.0) format('woff2'),url(https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/../fonts/fontawesome-webfont.woff?v=4.7.0) format('woff'),url(https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/../fonts/fontawesome-webfont.ttf?v=4.7.0) format('truetype'),url('https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/../fonts/fontawesome-webfont.svg?v=4.7.0#fontawesomeregular') format('svg');font-weight:400;font-style:normal}body{font-family:Helvetica,Arial,sans-serif;text-align:center}body{font-family:Helvetica,Arial,sans-serif;text-align:center}body{font-family:Helvetica,Arial,sans-serif;text-align:center}@font-face{font-display:swap;font-family:Helvetica}footer{color:red}",
+				'css' => "@font-face{font-display:swap;font-family:'FontAwesome';src:url(https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/../fonts/fontawesome-webfont.eot?v=4.7.0);src:url('https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/../fonts/fontawesome-webfont.eot?#iefix&v=4.7.0') format('embedded-opentype'),url(https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/../fonts/fontawesome-webfont.woff2?v=4.7.0) format('woff2'),url(https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/../fonts/fontawesome-webfont.woff?v=4.7.0) format('woff'),url(https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/../fonts/fontawesome-webfont.ttf?v=4.7.0) format('truetype'),url('https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/../fonts/fontawesome-webfont.svg?v=4.7.0#fontawesomeregular') format('svg');font-weight:400;font-style:normal}body{font-family:Helvetica,Arial,sans-serif;text-align:center}body{font-family:Helvetica,Arial,sans-serif;text-align:center}body{font-family:Helvetica,Arial,sans-serif;text-align:center}@font-face{font-display:swap;font-family:Helvetica}body{font-family:Helvetica,Arial,sans-serif;text-align:center}footer{color:red}",
 			],
 
 			'cdn_host' => [],

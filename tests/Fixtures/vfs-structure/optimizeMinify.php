@@ -26,6 +26,9 @@ return [
 					'script.js' => 'test',
 				],
 				'style-import.css' => '@import url(style.css)',
+				'style-import2.css' => '@import url(style-another-import.css)',
+				'style-another-import.css' => '@import url(style-another-import2.css);.style-another-import{color:red;}',
+				'style-another-import2.css' => '.style-another-import2{color:green;}',
 				'new-style.css' => 'footer{color:red;}',
 				'final-style.css' => 'header{color:red;}'
 			],

@@ -372,7 +372,34 @@ return [
 					'wp-content/cache/min/1/5619350d0ac97fc96b40673a7e395900.css',
 					'wp-content/cache/min/1/5619350d0ac97fc96b40673a7e395900.css.gz',
 				],
-				'css' => '@import url(vfs://public/wp-content/themes/twentytwenty/style.css);body{font-family:Helvetica,Arial,sans-serif;text-align:center}body{font-family:Helvetica,Arial,sans-serif;text-align:center}',
+				'css' => 'body{font-family:Helvetica,Arial,sans-serif;text-align:center}body{font-family:Helvetica,Arial,sans-serif;text-align:center}body{font-family:Helvetica,Arial,sans-serif;text-align:center}',
+			],
+
+			'settings' => [
+				'minify_concatenate_css' => 1,
+				'cdn'                    => 0,
+				'cdn_cnames'             => [],
+				'cdn_zone'               => [],
+			],
+		],
+
+		'combineCssFilesWithNestedImport' => [
+			'original' =>
+				'<html><head><title>Sample Page</title>' .
+				'<link rel="stylesheet" href="http://example.org/wp-content/themes/twentytwenty/style-import2.css" type="text/css" media="all">' .
+				'<link rel="stylesheet" href="http://example.org/wp-content/plugins/hello-dolly/style.css">' .
+				'<link rel="stylesheet" href="http://example.org/wp-includes/css/dashicons.min.css">' .
+				'</head><body></body></html>',
+
+			'expected' => [
+				'html'  => '<html><head><title>Sample Page</title>' .
+				           '<link rel="stylesheet" href="http://example.org/wp-content/cache/min/1/29cb84c177f1a73204fd92c3d4dae284.css" media="all" data-minify="1" />' .
+				           '</head><body></body></html>',
+				'files' => [
+					'wp-content/cache/min/1/29cb84c177f1a73204fd92c3d4dae284.css',
+					'wp-content/cache/min/1/29cb84c177f1a73204fd92c3d4dae284.css.gz',
+				],
+				'css' => '.style-another-import2{color:green}.style-another-import{color:red}body{font-family:Helvetica,Arial,sans-serif;text-align:center}body{font-family:Helvetica,Arial,sans-serif;text-align:center}',
 			],
 
 			'settings' => [
@@ -408,7 +435,7 @@ return [
 					'wp-content/cache/min/1/77d8f7c4cbcc265ddf66e8e60dab3e7c.css',
 					'wp-content/cache/min/1/77d8f7c4cbcc265ddf66e8e60dab3e7c.css.gz',
 				],
-				'css' => '@import url(vfs://public/wp-content/themes/twentytwenty/style.css);body{font-family:Helvetica,Arial,sans-serif;text-align:center}body{font-family:Helvetica,Arial,sans-serif;text-align:center}',
+				'css' => 'body{font-family:Helvetica,Arial,sans-serif;text-align:center}body{font-family:Helvetica,Arial,sans-serif;text-align:center}body{font-family:Helvetica,Arial,sans-serif;text-align:center}',
 			],
 
 			'settings' => [
