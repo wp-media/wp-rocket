@@ -195,8 +195,16 @@ trait CSSTrait {
 		return str_replace( $search, $replace, $content );
 	}
 
+	/**
+	 * Replace local imports with their contents recursively.
+	 *
+	 * @param string $content CSS Content.
+	 * @param string $target Target CSS file path.
+	 *
+	 * @return string
+	 */
 	protected function combine_imports( $content, $target ) {
-		$importRegexes = [
+		$import_regexes = [
 			// @import url(xxx)
 			'/
 		# import statement
@@ -267,11 +275,11 @@ trait CSSTrait {
 		/ix',
 		];
 
-		// find all relative imports in css
+		// find all relative imports in css.
 		$matches = [];
-		foreach ( $importRegexes as $importRegex ) {
-			if ( preg_match_all( $importRegex, $content, $regexMatches, PREG_SET_ORDER ) ) {
-				$matches = array_merge( $matches, $regexMatches );
+		foreach ( $import_regexes as $import_regexe ) {
+			if ( preg_match_all( $import_regexe, $content, $regex_matches, PREG_SET_ORDER ) ) {
+				$matches = array_merge( $matches, $regex_matches );
 			}
 		}
 
@@ -282,30 +290,28 @@ trait CSSTrait {
 		$search  = [];
 		$replace = [];
 
-		// loop the matches
+		// loop the matches.
 		foreach ( $matches as $match ) {
-			// grab referenced file & minify it (which may include importing
-			// yet other @import statements recursively)
-			$importContent = $this->get_file_contents( $match['path'] );
+			$import_content = rocket_direct_filesystem()->get_contents( $match['path'] );
 
-			if ( empty( $importContent ) ) {
+			if ( empty( $import_content ) ) {
 				continue;
 			}
 
-			// check if this is only valid for certain media
+			// check if this is only valid for certain media.
 			if ( ! empty( $match['media'] ) ) {
-				$importContent = '@media ' . $match['media'] . '{' . $importContent . '}';
+				$import_content = '@media ' . $match['media'] . '{' . $import_content . '}';
 			}
 
 			// Use recursion to rewrite paths and combine imports again for imported content.
-			$importContent = $this->rewrite_paths( $match['path'], $target, $importContent );
+			$import_content = $this->rewrite_paths( $match['path'], $target, $import_content );
 
-			// add to replacement array
+			// add to replacement array.
 			$search[]  = $match[0];
-			$replace[] = $importContent;
+			$replace[] = $import_content;
 		}
 
-		// replace the import statements
+		// replace the import statements.
 		return str_replace( $search, $replace, $content );
 	}
 
@@ -338,7 +344,4 @@ trait CSSTrait {
 		);
 	}
 
-	private function get_file_contents( $path ) {
-		return rocket_direct_filesystem()->get_contents( $path );
-	}
 }
