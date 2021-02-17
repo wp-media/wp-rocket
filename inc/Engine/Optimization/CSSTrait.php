@@ -300,7 +300,7 @@ trait CSSTrait {
 
 			if ( 'vfs' === $parsed_import_file['scheme'] ) {
 				$import_path = $match['path'];
-			}else{
+			}else {
 				$import_path = dirname( $target ) . DIRECTORY_SEPARATOR . $parsed_import_file['path'];
 			}
 
