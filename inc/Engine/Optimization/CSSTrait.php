@@ -292,7 +292,19 @@ trait CSSTrait {
 
 		// loop the matches.
 		foreach ( $matches as $match ) {
-			$import_content = rocket_direct_filesystem()->get_contents( $match['path'] );
+			$parsed_import_file = get_rocket_parse_url( $match['path'] );
+
+			if ( ! empty( $parsed_import_file['host'] ) && 'vfs' !== $parsed_import_file['scheme'] ) {
+				continue;
+			}
+
+			if ( 'vfs' === $parsed_import_file['scheme'] ) {
+				$import_path = $match['path'];
+			}else{
+				$import_path = dirname( $target ) . DIRECTORY_SEPARATOR . $parsed_import_file['path'];
+			}
+
+			$import_content = rocket_direct_filesystem()->get_contents( $import_path );
 
 			if ( empty( $import_content ) ) {
 				continue;
@@ -304,7 +316,7 @@ trait CSSTrait {
 			}
 
 			// Use recursion to rewrite paths and combine imports again for imported content.
-			$import_content = $this->rewrite_paths( $match['path'], $target, $import_content );
+			$import_content = $this->rewrite_paths( $import_path, $target, $import_content );
 
 			// add to replacement array.
 			$search[]  = $match[0];

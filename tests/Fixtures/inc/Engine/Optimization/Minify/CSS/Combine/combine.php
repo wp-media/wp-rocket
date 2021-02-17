@@ -88,7 +88,7 @@ return [
 					'wp-content/cache/min/1/a41edef8114680bb60b530fa32be3ca5.css',
 					'wp-content/cache/min/1/a41edef8114680bb60b530fa32be3ca5.css.gz',
 				],
-				'css' => '.style-another-import2{color:green}.style-another-import{color:red}body{font-family:Helvetica,Arial,sans-serif;text-align:center}body{font-family:Helvetica,Arial,sans-serif;text-align:center}',
+				'css' => '@import "http://www.google.com/style.css";.style-import-external{color:green}.style-another-import2{color:green}.style-another-import{color:red}body{font-family:Helvetica,Arial,sans-serif;text-align:center}body{font-family:Helvetica,Arial,sans-serif;text-align:center}',
 			],
 
 			'cdn_host' => [],

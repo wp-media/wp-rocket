@@ -399,7 +399,7 @@ return [
 					'wp-content/cache/min/1/29cb84c177f1a73204fd92c3d4dae284.css',
 					'wp-content/cache/min/1/29cb84c177f1a73204fd92c3d4dae284.css.gz',
 				],
-				'css' => '.style-another-import2{color:green}.style-another-import{color:red}body{font-family:Helvetica,Arial,sans-serif;text-align:center}body{font-family:Helvetica,Arial,sans-serif;text-align:center}',
+				'css' => '@import "http://www.google.com/style.css";.style-import-external{color:green}.style-another-import2{color:green}.style-another-import{color:red}body{font-family:Helvetica,Arial,sans-serif;text-align:center}body{font-family:Helvetica,Arial,sans-serif;text-align:center}',
 			],
 
 			'settings' => [
