@@ -62,6 +62,29 @@ class Test_Optimize extends TestCase {
 
 		Functions\when( 'esc_url' )->returnArg();
 
+		Functions\when( 'site_url' )->alias( function( $path = '') {
+			return 'http://example.org/' . ltrim( $path, '/' );
+		} );
+
+		Functions\when( 'wp_http_validate_url' )->alias( function( $path = '') {
+			if ( false !== strpos( 'vfs://', $path ) ) {
+				return $path;
+			}
+			return false;
+		} );
+
+		Functions\expect( 'wp_make_link_relative' )->andReturnUsing( function( $url ) {
+			return preg_replace( '|^(https?:)?//[^/]+(/?.*)|i', '$2', $url );
+		} );
+
+		Functions\when( 'sanitize_text_field' )->returnArg();
+
+		Functions\when( 'wp_unslash' )->alias(
+			function ( $value ) {
+				return stripslashes( $value );
+			}
+		);
+
 		$this->assertSame(
 			$this->format_the_html($expected['html']),
 			$this->format_the_html( $this->combine->optimize( $original ) )
