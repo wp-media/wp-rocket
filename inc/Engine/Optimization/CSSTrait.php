@@ -292,16 +292,16 @@ trait CSSTrait {
 
 		// loop the matches.
 		foreach ( $matches as $match ) {
-			$parsed_import_file = get_rocket_parse_url( $match['path'] );
-
-			if ( ! empty( $parsed_import_file['host'] ) && 'vfs' !== $parsed_import_file['scheme'] ) {
+			$matched_path_is_url = wp_http_validate_url( $match['path'] );
+			if ( $matched_path_is_url ) {
 				continue;
 			}
 
-			if ( 'vfs' === $parsed_import_file['scheme'] ) {
+			if ( rocket_direct_filesystem()->is_readable( $match['path'] ) ) {
 				$import_path = $match['path'];
 			}else {
-				$import_path = dirname( $target ) . DIRECTORY_SEPARATOR . $parsed_import_file['path'];
+				$ds = rocket_get_constant( 'DIRECTORY_SEPARATOR' );
+				$import_path = dirname( $target ) . $ds . str_replace( '/', $ds, $match['path'] );
 			}
 
 			$import_content = rocket_direct_filesystem()->get_contents( $import_path );
