@@ -62,49 +62,48 @@ function ModalWpr(aElem) {
     this.titleText = this.title.text();
 
     // Open
-    this.opener.click(function() {
+    this.opener.on( 'click', function() {
         refThis.open();
         return false;
     });
 
     // Close
-    this.closer.click(function() {
+    this.closer.on( 'click', function() {
         refThis.close();
         return false;
     });
 
-    aElem.bind('keyup', function(){
-        if(event.keyCode == 27){ // ECHAP
+    aElem.bind('keyup', function(e){
+        if(e.keyCode == 27){ // ECHAP
             refThis.close();
             return false;
         }
     });
 
     // Back
-    this.return.click(function() {
+    this.return.on( 'click', function() {
         refThis.returnToQuestion();
         return false;
     });
 
     // Click on radio
-    this.radio.change(function(){
+    this.radio.on( 'change', function() {
         refThis.change($(this));
     });
 
     // Write text
-    this.textFields.keyup(function() {
+    this.textFields.on( "keyup", function() {
         refThis.hiddenDetails.val($(this).val());
         if(refThis.hiddenDetails.val() != ''){
             refThis.button.removeClass('wpr-isDisabled');
-            refThis.button.removeAttr("disabled");
+            refThis.button.prop("disabled", false);
         }
         else{
             refThis.button.addClass('wpr-isDisabled');
-            refThis.button.attr("disabled", true);
+            refThis.button.prop("disabled", true);
         }
     });
 }
-
 
 /*
 * Change modal state
@@ -122,7 +121,7 @@ ModalWpr.prototype.change = function(aElem) {
     $('.wpr-Modal-fieldHidden').removeClass('wpr-isOpen');
     $('.wpr-Modal-hidden').removeClass('wpr-isOpen');
     this.button.removeClass('wpr-isDisabled');
-    this.button.removeAttr("disabled");
+    this.button.prop("disabled", false);
 
     switch(id){
       case 'reason-temporary':
@@ -148,7 +147,7 @@ ModalWpr.prototype.change = function(aElem) {
           field.addClass('wpr-isOpen');
           field.find('input, textarea').focus();
           refThis.button.addClass('wpr-isDisabled');
-          refThis.button.attr("disabled", true);
+          refThis.button.prop("disabled", true);
       break;
     }
 };
@@ -170,9 +169,9 @@ ModalWpr.prototype.returnToQuestion = function() {
     this.hiddenReason.val('');
     this.hiddenDetails.val('');
 
-    this.radio.attr('checked', false);
+    this.radio.prop('checked', false);
     this.button.addClass('wpr-isDisabled');
-    this.button.attr("disabled", true);
+    this.button.prop("disabled", true);
 
 };
 
