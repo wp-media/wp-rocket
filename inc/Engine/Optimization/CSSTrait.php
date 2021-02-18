@@ -387,53 +387,53 @@ trait CSSTrait {
 	 * @param string $url URL of the file.
 	 * @return bool True if external, false otherwise.
 	 */
-	 function is_external_path( $url ) {
-		 $file = get_rocket_parse_url( $url );
+	protected function is_external_path( $url ) {
+		$file = get_rocket_parse_url( $url );
 
-		 if ( empty( $file['path'] ) ) {
-			 return true;
-		 }
+		if ( empty( $file['path'] ) ) {
+			return true;
+		}
 
-		 $parsed_site_url = wp_parse_url( site_url() );
+		$parsed_site_url = wp_parse_url( site_url() );
 
-		 if ( empty( $parsed_site_url['host'] ) ) {
-			 return true;
-		 }
+		if ( empty( $parsed_site_url['host'] ) ) {
+			return true;
+		}
 
-		 // This filter is documented in inc/Engine/Admin/Settings/Settings.php.
-		 $hosts   = (array) apply_filters( 'rocket_cdn_hosts', [], [ 'all' ] );
-		 $hosts[] = $parsed_site_url['host'];
-		 $langs   = get_rocket_i18n_uri();
+		// This filter is documented in inc/Engine/Admin/Settings/Settings.php.
+		$hosts   = (array) apply_filters( 'rocket_cdn_hosts', [], [ 'all' ] );
+		$hosts[] = $parsed_site_url['host'];
+		$langs   = get_rocket_i18n_uri();
 
-		 // Get host for all langs.
-		 foreach ( $langs as $lang ) {
-			 $url_host = wp_parse_url( $lang, PHP_URL_HOST );
+		// Get host for all langs.
+		foreach ( $langs as $lang ) {
+			$url_host = wp_parse_url( $lang, PHP_URL_HOST );
 
-			 if ( ! isset( $url_host ) ) {
-				 continue;
-			 }
+			if ( ! isset( $url_host ) ) {
+				continue;
+			}
 
-			 $hosts[] = $url_host;
-		 }
+			$hosts[] = $url_host;
+		}
 
-		 $hosts = array_unique( $hosts );
+		$hosts = array_unique( $hosts );
 
-		 if ( empty( $hosts ) ) {
-			 return true;
-		 }
+		if ( empty( $hosts ) ) {
+			return true;
+		}
 
-		 // URL has domain and domain is part of the internal domains.
-		 if ( ! empty( $file['host'] ) ) {
-			 foreach ( $hosts as $host ) {
-				 if ( false !== strpos( $url, $host ) ) {
-					 return false;
-				 }
-			 }
+		// URL has domain and domain is part of the internal domains.
+		if ( ! empty( $file['host'] ) ) {
+			foreach ( $hosts as $host ) {
+				if ( false !== strpos( $url, $host ) ) {
+					return false;
+				}
+			}
 
-			 return true;
-		 }
+			return true;
+		}
 
-		 return false;
+		return false;
 	}
 
 	/**
