@@ -198,6 +198,8 @@ trait CSSTrait {
 	/**
 	 * Replace local imports with their contents recursively.
 	 *
+	 * @since 3.8.6
+	 *
 	 * @param string $content CSS Content.
 	 * @param string $target Target CSS file path.
 	 *
@@ -347,6 +349,8 @@ trait CSSTrait {
 	/**
 	 * Get internal file full path and contents.
 	 *
+	 * @since 3.8.6
+	 *
 	 * @param string $file Internal file path (maybe external url or relative path).
 	 * @param string $base_path Base path as reference for relative paths.
 	 *
@@ -357,7 +361,7 @@ trait CSSTrait {
 			/**
 			 * Filter Import external urls.
 			 *
-			 * @since 3.6.8
+			 * @since 3.8.6
 			 *
 			 * @param bool Allow status.
 			 * @param string $file File path/URL.
@@ -369,6 +373,7 @@ trait CSSTrait {
 			return [ $file, false ];
 		}
 
+		// Check if this file is readable or it's relative path so we add base_path at it's start.
 		if ( ! rocket_direct_filesystem()->is_readable( $this->get_local_path( $file ) ) ) {
 			$ds   = rocket_get_constant( 'DIRECTORY_SEPARATOR' );
 			$file = $base_path . $ds . str_replace( '/', $ds, $file );
@@ -382,7 +387,7 @@ trait CSSTrait {
 	/**
 	 * Determines if the file is external.
 	 *
-	 * @since 3.8
+	 * @since 3.8.6
 	 *
 	 * @param string $url URL of the file.
 	 * @return bool True if external, false otherwise.
@@ -439,6 +444,8 @@ trait CSSTrait {
 	/**
 	 * Get local absolute path for image.
 	 *
+	 * @since 3.8.6
+	 *
 	 * @param string $url Image url.
 	 *
 	 * @return string Image absolute local path.
@@ -460,6 +467,8 @@ trait CSSTrait {
 
 	/**
 	 * Normalize relative url to full url.
+	 *
+	 * @since 3.8.6
 	 *
 	 * @param string $url Url to be normalized.
 	 *
