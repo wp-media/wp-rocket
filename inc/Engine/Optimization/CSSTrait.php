@@ -292,19 +292,7 @@ trait CSSTrait {
 
 		// loop the matches.
 		foreach ( $matches as $match ) {
-			$matched_path_is_url = wp_http_validate_url( $match['path'] );
-			if ( $matched_path_is_url ) {
-				continue;
-			}
-
-			if ( rocket_direct_filesystem()->is_readable( $match['path'] ) ) {
-				$import_path = $match['path'];
-			}else {
-				$ds = rocket_get_constant( 'DIRECTORY_SEPARATOR' );
-				$import_path = dirname( $target ) . $ds . str_replace( '/', $ds, $match['path'] );
-			}
-
-			$import_content = rocket_direct_filesystem()->get_contents( $import_path );
+			list( $import_path, $import_content ) = $this->get_internal_file_contents( $match['path'], dirname( $target ) );
 
 			if ( empty( $import_content ) ) {
 				continue;
@@ -354,6 +342,25 @@ trait CSSTrait {
 			},
 			$css_file_content
 		);
+	}
+
+	/**
+	 * Get internal file full path and contents.
+	 *
+	 * @param string $file Internal file path (maybe external url or relative path).
+	 * @param string $base_path Base path as reference for relative paths.
+	 *
+	 * @return array Array of two values ( full path, contents )
+	 */
+	private function get_internal_file_contents( $file, $base_path ) {
+		if ( ! rocket_direct_filesystem()->is_readable( $file ) ) {
+			$ds   = rocket_get_constant( 'DIRECTORY_SEPARATOR' );
+			$file = $base_path . $ds . str_replace( '/', $ds, $file );
+		}
+
+		$import_content = rocket_direct_filesystem()->get_contents( $file );
+
+		return [ $file, $import_content ];
 	}
 
 }
