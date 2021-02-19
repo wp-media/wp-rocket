@@ -294,6 +294,10 @@ trait CSSTrait {
 
 		// loop the matches.
 		foreach ( $matches as $match ) {
+			if ( apply_filters( 'rocket_skip_import_replacement', false, $match['path'], $match ) ){
+				continue;
+			}
+
 			list( $import_path, $import_content ) = $this->get_internal_file_contents( $match['path'], dirname( $target ) );
 
 			if ( empty( $import_content ) ) {
