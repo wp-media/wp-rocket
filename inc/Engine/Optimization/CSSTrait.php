@@ -294,7 +294,7 @@ trait CSSTrait {
 
 		// loop the matches.
 		foreach ( $matches as $match ) {
-			if ( apply_filters( 'rocket_skip_import_replacement', false, $match['path'], $match ) ){
+			if ( apply_filters( 'rocket_skip_import_replacement', false, $match['path'], $match ) ) {
 				continue;
 			}
 
