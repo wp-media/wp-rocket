@@ -119,9 +119,18 @@ class Test_Optimize extends TestCase {
 
 		$this->minify = new Minify( $this->options, $this->local_cache );
 
+		$optimized_html = $this->minify->optimize( $original );
+
+		foreach ($expected['files'] as $file) {
+			$file_mtime = $this->filesystem->mtime( $file );
+			if ( $file_mtime ) {
+				$expected['html'] = str_replace( $file."?ver={{mtime}}", $file."?ver=".$file_mtime, $expected['html'] );
+			}
+		}
+
 		$this->assertSame(
 			$this->format_the_html( $expected['html'] ),
-			$this->format_the_html( $this->minify->optimize( $original ) )
+			$this->format_the_html( $optimized_html )
 		);
 
 		$this->assertFilesExists( $expected['files'] );

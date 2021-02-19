@@ -27,10 +27,10 @@ return [
 <html>
 	<head>
 		<title>Sample Page</title>
-		<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/themes/twentytwenty/style.css?ver=dcd1a95e5d432b5d300d7c2f216d7150" type="text/css" media="all">
-		<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style.css?ver=b35546733b0295036e79cc1f700b1efd">
+		<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/themes/twentytwenty/style.css?ver={{mtime}}" type="text/css" media="all">
+		<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style.css?ver={{mtime}}">
 		<link rel="stylesheet" href="http://example.org/wp-includes/css/dashicons.min.css">
-		<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min.css?ver=73003a856907a7e09cca97c586493ed7">
+		<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min.css?ver={{mtime}}">
 	</head>
 	<body>
 	</body>
@@ -73,10 +73,10 @@ ORIGINAL_HTML
 <html>
 	<head>
 		<title>Sample Page</title>
-		<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/themes/twentytwenty/style.css?ver=81368ec770e103151d0a6b86fb40c04b" type="text/css" media="all">
-		<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style.css?ver=dd6c273e12758644d0d561ae5eb1792c">
+		<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/themes/twentytwenty/style.css?ver={{mtime}}" type="text/css" media="all">
+		<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style.css?ver={{mtime}}">
 		<link rel="stylesheet" href="/wp-includes/css/dashicons.min.css">
-		<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min.css?ver=dae742d87623d4edfaef3856b672fab7">
+		<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min.css?ver={{mtime}}">
 	</head>
 	<body>
 	</body>
@@ -106,10 +106,10 @@ EXPECTED_HTML
 <html>
 	<head>
 		<title>Sample Page</title>
-		<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/style.css?ver=dcd1a95e5d432b5d300d7c2f216d7150" type="text/css" media="all">
-		<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style.css?ver=b35546733b0295036e79cc1f700b1efd">
+		<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/style.css?ver={{mtime}}" type="text/css" media="all">
+		<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style.css?ver={{mtime}}">
 		<link rel="stylesheet" href="http://example.org/wp-includes/css/dashicons.min.css">
-		<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min.css?ver=73003a856907a7e09cca97c586493ed7">
+		<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min.css?ver={{mtime}}">
 	</head>
 	<body>
 	</body>
@@ -153,10 +153,10 @@ ORIGINAL_HTML
 <html>
 	<head>
 		<title>Sample Page</title>
-		<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/style.css?ver=dcd1a95e5d432b5d300d7c2f216d7150" type="text/css" media="all">
-		<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style.css?ver=b35546733b0295036e79cc1f700b1efd">
+		<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/style.css?ver={{mtime}}" type="text/css" media="all">
+		<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style.css?ver={{mtime}}">
 		<link rel="stylesheet" href="https://123456.rocketcdn.me/wp-includes/css/dashicons.min.css">
-		<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min.css?ver=73003a856907a7e09cca97c586493ed7">
+		<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min.css?ver={{mtime}}">
 	</head>
 	<body>
 	</body>
@@ -200,10 +200,10 @@ ORIGINAL_HTML
 <html>
 	<head>
 		<title>Sample Page</title>
-		<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/cdnpath/wp-content/cache/min/1/wp-content/themes/twentytwenty/style.css?ver=dcd1a95e5d432b5d300d7c2f216d7150" type="text/css" media="all">
-		<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/cdnpath/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style.css?ver=b35546733b0295036e79cc1f700b1efd">
+		<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/cdnpath/wp-content/cache/min/1/wp-content/themes/twentytwenty/style.css?ver={{mtime}}" type="text/css" media="all">
+		<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/cdnpath/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style.css?ver={{mtime}}">
 		<link rel="stylesheet" href="https://123456.rocketcdn.me/cdnpath/wp-includes/css/dashicons.min.css">
-		<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/cdnpath/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min.css?ver=73003a856907a7e09cca97c586493ed7">
+		<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/cdnpath/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min.css?ver={{mtime}}">
 	</head>
 	<body>
 	</body>
@@ -243,7 +243,7 @@ ORIGINAL_HTML
 <html>
 	<head>
 		<title>Sample Page</title>
-		<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/path/to/style.css?ver=83936e8415166d4e08a1d8998b5990cd" type="text/css" media="all">
+		<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/path/to/style.css?ver={{mtime}}" type="text/css" media="all">
 	</head>
 	<body>
 	</body>
@@ -279,7 +279,7 @@ ORIGINAL_HTML
 <html>
 	<head>
 		<title>Sample Page</title>
-		<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/path/to/style.css?ver=83936e8415166d4e08a1d8998b5990cd" type="text/css" media="all">
+		<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/path/to/style.css?ver={{mtime}}" type="text/css" media="all">
 	</head>
 	<body>
 	</body>

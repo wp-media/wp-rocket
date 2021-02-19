@@ -195,10 +195,8 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 			$url = rocket_add_url_protocol( $url );
 		}
 
-		$filename            = ltrim( rocket_realpath( $parsed_url['path'] ), '/' );
-		$minified_file       = rawurldecode( $this->minify_base_path . $filename );
-		$minified_file_mtime = rocket_direct_filesystem()->mtime( $minified_file );
-		$minified_url        = add_query_arg( 'ver', $minified_file_mtime ? $minified_file_mtime : md5( $url . $this->minify_key ), $this->get_minify_url( $filename, $url ) );
+		$filename      = ltrim( rocket_realpath( $parsed_url['path'] ), '/' );
+		$minified_file = rawurldecode( $this->minify_base_path . $filename );
 
 		if ( rocket_direct_filesystem()->exists( $minified_file ) ) {
 			Logger::debug(
@@ -208,7 +206,7 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 					'path' => $minified_file,
 				]
 			);
-			return $minified_url;
+			return $this->get_full_minified_url( $minified_file, $this->get_minify_url( $filename, $url ) );
 		}
 
 		$is_external_url = $this->is_external_file( $url );
@@ -258,7 +256,7 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 			return false;
 		}
 
-		return $minified_url;
+		return $this->get_full_minified_url( $minified_file, $this->get_minify_url( $filename, $url ) );
 	}
 
 	/**
