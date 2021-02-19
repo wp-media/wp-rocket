@@ -294,6 +294,15 @@ trait CSSTrait {
 
 		// loop the matches.
 		foreach ( $matches as $match ) {
+			/**
+			 * Filter Skip import replacement for one file.
+			 *
+			 * @since 3.8.6
+			 *
+			 * @param bool Skipped or not (Default not skipped).
+			 * @param string $file_path Matched import path.
+			 * @param string $import_match Full import match.
+			 */
 			if ( apply_filters( 'rocket_skip_import_replacement', false, $match['path'], $match ) ) {
 				continue;
 			}
