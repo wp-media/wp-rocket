@@ -126,26 +126,7 @@ class DeferJS {
 		 */
 		$jquery_patterns = apply_filters( 'rocket_defer_jquery_patterns', 'jQuery|\$\.\(|\$\(' );
 
-		/**
-		 * Filters the patterns used to find inline JS that should not be deferred
-		 *
-		 * @since 3.8
-		 *
-		 * @param array $inline_exclusions_list Array of inline JS that should not be deferred.
-		 */
-		$inline_exclusions_list = apply_filters( 'rocket_defer_inline_exclusions', $this->inline_exclusions );
-
-		$inline_exclusions = '';
-		if ( ! empty( $inline_exclusions_list ) ) {
-			if ( is_string( $inline_exclusions_list ) ) {
-				$inline_exclusions_list = explode( '|', $inline_exclusions_list );
-			}
-
-			foreach ( (array) $inline_exclusions_list as $inline_exclusions_item ) {
-				$inline_exclusions .= preg_quote( (string) $inline_exclusions_item, '#' ) . '|';
-			}
-			$inline_exclusions = rtrim( $inline_exclusions, '|' );
-		}
+		$inline_exclusions = $this->get_inline_exclusions_list_pattern();
 
 		foreach ( $matches as $inline_js ) {
 			if ( empty( $inline_js['content'] ) ) {
@@ -292,5 +273,36 @@ class DeferJS {
 		$options['exclude_defer_js'][] = '/jquery-?[0-9.]*(.min|.slim|.slim.min)?.js';
 
 		update_option( 'wp_rocket_settings', $options );
+	}
+
+	/**
+	 * Get exclusion list pattern.
+	 *
+	 * @return string
+	 */
+	private function get_inline_exclusions_list_pattern() {
+		/**
+		 * Filters the patterns used to find inline JS that should not be deferred
+		 *
+		 * @since 3.8
+		 *
+		 * @param array $inline_exclusions_list Array of inline JS that should not be deferred.
+		 */
+		$inline_exclusions_list = apply_filters( 'rocket_defer_inline_exclusions', $this->inline_exclusions );
+
+		$inline_exclusions = '';
+		if ( empty( $inline_exclusions_list ) ) {
+			$inline_exclusions_list = $this->inline_exclusions;
+		}
+
+		if ( is_string( $inline_exclusions_list ) ) {
+			$inline_exclusions_list = explode( '|', $inline_exclusions_list );
+		}
+
+		foreach ( (array) $inline_exclusions_list as $inline_exclusions_item ) {
+			$inline_exclusions .= preg_quote( (string) $inline_exclusions_item, '#' ) . '|';
+		}
+
+		return rtrim( $inline_exclusions, '|' );
 	}
 }

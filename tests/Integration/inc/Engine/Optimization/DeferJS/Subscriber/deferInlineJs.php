@@ -40,7 +40,7 @@ class Test_DeferInlineJs extends TestCase {
 		$this->defer_js            = $config['options']['defer_all_js'];
 		$this->exclude_defer_js    = $config['options']['exclude_defer_js'];
 
-		if ( ! empty( $config['rocket_defer_inline_exclusions_filter'] ) ) {
+		if ( isset( $config['rocket_defer_inline_exclusions_filter'] ) ) {
 			$this->rocket_defer_inline_exclusions_filter = $config['rocket_defer_inline_exclusions_filter'];
 
 			add_filter( 'rocket_defer_inline_exclusions', [ $this, 'add_defer_inline_exclusion' ] );
