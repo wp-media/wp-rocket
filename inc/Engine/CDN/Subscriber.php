@@ -271,7 +271,7 @@ class Subscriber implements Subscriber_Interface {
 			return $urls;
 		}
 
-		$cdn_urls = $this->get_cdn_hosts();
+		$cdn_urls = $this->cdn->get_cdn_urls([ 'all', 'images', 'css_and_js', 'css', 'js' ]);
 
 		if ( empty( $cdn_urls ) ) {
 			return $urls;
@@ -286,11 +286,11 @@ class Subscriber implements Subscriber_Interface {
 			//Jonathan has submitted a ticket to change this behavior:
 			//@see https://core.trac.wordpress.org/ticket/52465
 			// Until then, we order these to prefer/print the non-crossorigin version.
+			$urls[] = [ 'href' => $cdn_url ];
 			$urls[] = [
 				'href'        => $cdn_url,
 				'crossorigin' => 'anonymous',
 			];
-			$urls[] = [ 'href' => $cdn_url ];
 		}
 
 		return $urls;
