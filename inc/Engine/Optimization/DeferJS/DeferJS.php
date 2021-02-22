@@ -281,6 +281,8 @@ class DeferJS {
 	 * @return string
 	 */
 	private function get_inline_exclusions_list_pattern() {
+		$inline_exclusions_list = $this->inline_exclusions;
+
 		/**
 		 * Filters the patterns used to find inline JS that should not be deferred
 		 *
@@ -288,16 +290,15 @@ class DeferJS {
 		 *
 		 * @param array $inline_exclusions_list Array of inline JS that should not be deferred.
 		 */
-		$inline_exclusions_list = apply_filters( 'rocket_defer_inline_exclusions', $this->inline_exclusions );
+		$additional_inline_exclusions_list = apply_filters( 'rocket_defer_inline_exclusions', null );
 
 		$inline_exclusions = '';
-		if ( empty( $inline_exclusions_list ) ) {
-			$inline_exclusions_list = $this->inline_exclusions;
+
+		if ( is_string( $additional_inline_exclusions_list ) ) {
+			$additional_inline_exclusions_list = explode( '|', $additional_inline_exclusions_list );
 		}
 
-		if ( is_string( $inline_exclusions_list ) ) {
-			$inline_exclusions_list = explode( '|', $inline_exclusions_list );
-		}
+		$inline_exclusions_list = array_merge( $inline_exclusions_list, (array) $additional_inline_exclusions_list);
 
 		foreach ( (array) $inline_exclusions_list as $inline_exclusions_item ) {
 			$inline_exclusions .= preg_quote( (string) $inline_exclusions_item, '#' ) . '|';
