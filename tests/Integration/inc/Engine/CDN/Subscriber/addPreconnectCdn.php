@@ -9,17 +9,20 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Subscriber;
  */
 class Test_addPreconnectCdn extends TestCase {
 
-	public function testShouldAddPreconnectCdn() {
-		$this->cnames = [
-			'https://123456.rocketcdn.me',
-		];
+	/**
+	 * @dataProvider providerTestData
+	 */
+	public function testShouldAddPreconnectCdn($cnames, $expected) {
+		$this->cnames = $cnames;
+//		$this->cnames = [
+//			'https://123456.rocketcdn.me',
+//		];
 
-		$html = <<<HTML
-<link rel='dns-prefetch' href='//s.w.org' />
-<link rel='dns-prefetch' href='//123456.rocketcdn.me' />
-<link rel='preconnect' href='//123456.rocketcdn.me' />
-<link href='//123456.rocketcdn.me' crossorigin rel='preconnect' />
-HTML;
+//		$html = <<<HTML
+//<link rel='dns-prefetch' href='//s.w.org' />
+//<link rel='dns-prefetch' href='//123456.rocketcdn.me' />
+//<link href='https://123456.rocketcdn.me' rel='preconnect' />
+//HTML;
 
 
 		add_filter( 'pre_get_rocket_option_cdn', [ $this, 'return_true'] );
@@ -29,13 +32,12 @@ HTML;
 		wp_resource_hints();
 
 		$this->assertSame(
-			$this->format_the_html($html),
+			$this->format_the_html($expected),
 			$this->format_the_html(ob_get_clean())
 		);
 	}
 
-	// Todo: get data from an actual dataproider fixture
 	public function providerTestData() {
-		return $this->getTestData( __DIR__, 'addPreconnectCdn' );
+		return $this->getTestData( __DIR__, 'add-preconnect-cdn' );
 	}
 }
