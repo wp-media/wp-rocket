@@ -234,5 +234,31 @@ return [
 				'set_transient'               => '1',
 			],
 		],
+
+		'testShouldReturnHtaccessForNoTrailingSlashPermalinks' => [
+			'settings' => [
+				'cache_mobile'        => true,
+				'purge_cron_interval' => true,
+				'purge_cron_unit'     => true,
+				'minify_css'          => false,
+				'exclude_css'         => '',
+				'minify_js'           => false,
+				'exclude_js'          => '',
+				'analytics_enabled'   => true,
+				'notrailingslash'       => true
+			],
+			'expected' => [
+				'rocket_clean_domain'         => $rocket_clean_domain,
+				'flush_rocket_htaccess'       => [
+					$htaccess['start_notrailingslash'],
+					$htaccess['FileETag'],
+					$htaccess['mod_alias'],
+					$htaccess['wp_rules_start'],
+					$htaccess['end'],
+				],
+				'rocket_generate_config_file' => '<?php $var = "Some contents.";',
+				'set_transient'               => '1',
+			],
+		],
 	],
 ];
