@@ -18,7 +18,7 @@ class Test_GetSupportData extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldReturnExpected( $support_data, $referer, $expected ) {
+	public function testShouldReturnExpected( $support_data, $expected ) {
 		$data = Mockery::mock( Data::class );
 		$rest = new Rest( $data, Mockery::mock( Options_Data::class ) );
 
@@ -26,9 +26,6 @@ class Test_GetSupportData extends TestCase {
 			->atMost()
 			->once()
 			->andReturn( $support_data );
-
-		Functions\when( 'wp_get_raw_referer' )
-			->justReturn( $referer );
 
 		Functions\expect( 'rest_ensure_response' )
 			->once()

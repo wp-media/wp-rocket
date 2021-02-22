@@ -118,17 +118,17 @@ class WPCache implements ActivationInterface, DeactivationInterface {
 	 * @since 3.6.1
 	 *
 	 * @param bool $value The value to set for WP_CACHE constant.
-	 * @return void
+	 * @return bool true on success, false otherwise.
 	 */
 	public function set_wp_cache_constant( $value ) {
 		if ( ! $this->should_set_wp_cache_constant( $value ) ) {
-			return;
+			return false;
 		}
 
 		$config_file_path = $this->find_wpconfig_path();
 
 		if ( ! $config_file_path ) {
-			return;
+			return false;
 		}
 
 		$config_file_contents = $this->filesystem->get_contents( $config_file_path );
@@ -150,18 +150,18 @@ class WPCache implements ActivationInterface, DeactivationInterface {
 			&&
 			$matches['value'] === $value
 		) {
-			return;
+			return false;
 		}
 
 		$constant = $this->get_wp_cache_content( $value );
 
 		if ( ! $wp_cache_found ) {
-			$config_file_contents = preg_replace( '/(<\?php)/i', "<?php\r\n{$constant}\r\n", $config_file_contents );
+			$config_file_contents = preg_replace( '/(<\?php)/i', "<?php\r\n{$constant}\r\n", $config_file_contents, 1 );
 		} elseif ( ! empty( $matches['value'] ) && $matches['value'] !== $value ) {
 			$config_file_contents = preg_replace( '/^\s*define\(\s*\'WP_CACHE\'\s*,\s*([^\s\)]*)\s*\).+/m', $constant, $config_file_contents );
 		}
 
-		$this->filesystem->put_contents( $config_file_path, $config_file_contents, rocket_get_filesystem_perms( 'file' ) );
+		return $this->filesystem->put_contents( $config_file_path, $config_file_contents, rocket_get_filesystem_perms( 'file' ) );
 	}
 
 	/**
@@ -300,7 +300,7 @@ class WPCache implements ActivationInterface, DeactivationInterface {
 	 * @return bool
 	 */
 	private function is_user_allowed() {
-		return current_user_can( 'rocket_manage_options' ) && rocket_valid_key();
+		return ( rocket_get_constant( 'WP_CLI', false ) || current_user_can( 'rocket_manage_options' ) ) && rocket_valid_key();
 	}
 
 	/**

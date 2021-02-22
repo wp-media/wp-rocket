@@ -7,7 +7,6 @@ defined( 'ABSPATH' ) || exit;
  * Handle page cache.
  *
  * @since  3.3
- * @author Grégory Viguier
  */
 class Cache extends Abstract_Buffer {
 
@@ -16,8 +15,6 @@ class Cache extends Abstract_Buffer {
 	 *
 	 * @var    string
 	 * @since  3.3
-	 * @access protected
-	 * @author Grégory Viguier
 	 */
 	protected $process_id = 'caching process';
 
@@ -40,8 +37,6 @@ class Cache extends Abstract_Buffer {
 	 *
 	 * @var    string
 	 * @since  3.3
-	 * @access private
-	 * @author Grégory Viguier
 	 */
 	private $cache_dir_path;
 
@@ -49,8 +44,6 @@ class Cache extends Abstract_Buffer {
 	 * Constructor.
 	 *
 	 * @since  3.3
-	 * @access public
-	 * @author Grégory Viguier
 	 *
 	 * @param Tests  $tests Tests instance.
 	 * @param Config $config Config instance.
@@ -77,8 +70,6 @@ class Cache extends Abstract_Buffer {
 	 * Serve the cache file if it exists. If not, init the buffer.
 	 *
 	 * @since  3.3
-	 * @access public
-	 * @author Grégory Viguier
 	 */
 	public function maybe_init_process() {
 		if ( ! $this->tests->can_init_process() ) {
@@ -159,8 +150,6 @@ class Cache extends Abstract_Buffer {
 	 * Serve a cache file.
 	 *
 	 * @since  3.3
-	 * @access private
-	 * @author Grégory Viguier
 	 *
 	 * @param string $cache_filepath Path to the cache file.
 	 */
@@ -205,8 +194,6 @@ class Cache extends Abstract_Buffer {
 	 * Serve a gzipped cache file.
 	 *
 	 * @since  3.3
-	 * @access private
-	 * @author Grégory Viguier
 	 *
 	 * @param string $cache_filepath Path to the gzip cache file.
 	 */
@@ -251,8 +238,6 @@ class Cache extends Abstract_Buffer {
 	 * Maybe cache the page content.
 	 *
 	 * @since  3.3
-	 * @access public
-	 * @author Grégory Viguier
 	 *
 	 * @param  string $buffer The buffer content.
 	 * @return string         The buffered content.
@@ -332,7 +317,6 @@ class Cache extends Abstract_Buffer {
 	 * Writes the cache file(s)
 	 *
 	 * @since 3.5
-	 * @author Remy Perona
 	 *
 	 * @param string $cache_filepath Absolute path to the cache file.
 	 * @param string $content Content to write in the cache file.
@@ -368,8 +352,6 @@ class Cache extends Abstract_Buffer {
 	 * Get the path to the cache file.
 	 *
 	 * @since  3.3
-	 * @access public
-	 * @author Grégory Viguier
 	 *
 	 * @param  array $args {
 	 *     A list of arguments.
@@ -419,10 +401,8 @@ class Cache extends Abstract_Buffer {
 	 * Declares and sets value of constant preventing Optimizations.
 	 *
 	 * @since  3.3
-	 * @access private
-	 * @author Grégory Viguier
 	 */
-	final private function define_donotoptimize_true() {
+	private function define_donotoptimize_true() {
 		if ( ! defined( 'DONOTROCKETOPTIMIZE' ) ) {
 			define( 'DONOTROCKETOPTIMIZE', true ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 		}
@@ -432,8 +412,6 @@ class Cache extends Abstract_Buffer {
 	 * Gets If-modified-since header value
 	 *
 	 * @since 3.3
-	 * @access private
-	 * @author Remy Perona
 	 * @return string
 	 */
 	private function get_if_modified_since() {
@@ -496,8 +474,6 @@ class Cache extends Abstract_Buffer {
 	 * Create a hidden empty file when webp is enabled but the buffer doesn’t contain webp files.
 	 *
 	 * @since  3.4
-	 * @access private
-	 * @author Grégory Viguier
 	 *
 	 * @param string $cache_dir_path Path to the current cache directory (without trailing slah).
 	 */
@@ -515,8 +491,6 @@ class Cache extends Abstract_Buffer {
 	 * Tell if generating cache files is allowed.
 	 *
 	 * @since  3.3
-	 * @access public
-	 * @author Grégory Viguier
 	 *
 	 * @return bool
 	 */
@@ -535,7 +509,6 @@ class Cache extends Abstract_Buffer {
 	 * Gets the base cache path for the current request
 	 *
 	 * @since 3.3
-	 * @author Remy Perona
 	 *
 	 * @param array $cookies Cookies for the current request.
 	 * @return string
@@ -573,7 +546,6 @@ class Cache extends Abstract_Buffer {
 	 * Modifies the filename if the request is from a mobile device.
 	 *
 	 * @since 3.3
-	 * @author Remy Perona
 	 *
 	 * @param string $filename Cache filename.
 	 * @return string
@@ -606,7 +578,6 @@ class Cache extends Abstract_Buffer {
 	 * Modifies the filename if the request is WebP compatible
 	 *
 	 * @since 3.4
-	 * @author Remy Perona
 	 *
 	 * @param string $filename Cache filename.
 	 * @return string
@@ -620,7 +591,6 @@ class Cache extends Abstract_Buffer {
 		 * Force WP Rocket to disable its webp cache.
 		 *
 		 * @since  3.4
-		 * @author Grégory Viguier
 		 *
 		 * @param bool $disable_webp_cache Set to true to disable the webp cache.
 		 */
@@ -692,8 +662,6 @@ class Cache extends Abstract_Buffer {
 	 * Force lowercase on encoded url strings from different alphabets to prevent issues on some hostings.
 	 *
 	 * @since  3.3
-	 * @access protected
-	 * @author Grégory Viguier
 	 *
 	 * @param  array $matches Cache path.
 	 * @return string         Cache path in lowercase.

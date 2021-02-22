@@ -61,6 +61,7 @@ class Subscriber implements Subscriber_Interface {
 		if ( $this->is_enqueued ) {
 			return;
 		}
+
 		if ( ! (bool) $this->options->get( 'preload_links', 0 ) || rocket_bypass() ) {
 			return;
 		}

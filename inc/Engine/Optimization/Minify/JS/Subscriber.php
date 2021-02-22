@@ -3,6 +3,7 @@ namespace WP_Rocket\Engine\Optimization\Minify\JS;
 
 use WP_Rocket\Dependencies\Minify\JS as MinifyJS;
 use WP_Rocket\Engine\Optimization\AssetsLocalCache;
+use WP_Rocket\Engine\Optimization\DeferJS\DeferJS;
 use WP_Rocket\Engine\Optimization\Minify\AbstractMinifySubscriber;
 
 /**
@@ -46,7 +47,7 @@ class Subscriber extends AbstractMinifySubscriber {
 		$assets_local_cache = new AssetsLocalCache( rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' ), $this->filesystem );
 
 		if ( $this->options->get( 'minify_js' ) && $this->options->get( 'minify_concatenate_js' ) ) {
-			$this->set_processor_type( new Combine( $this->options, new MinifyJS(), $assets_local_cache ) );
+			$this->set_processor_type( new Combine( $this->options, new MinifyJS(), $assets_local_cache, new DeferJS( $this->options ) ) );
 		} elseif ( $this->options->get( 'minify_js' ) && ! $this->options->get( 'minify_concatenate_js' ) ) {
 			$this->set_processor_type( new Minify( $this->options, $assets_local_cache ) );
 		}

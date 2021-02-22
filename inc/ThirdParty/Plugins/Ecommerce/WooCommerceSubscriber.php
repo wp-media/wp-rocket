@@ -478,6 +478,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 			'filter-nonce', // Rehub theme filter.
 			'log-out', // WordPress's log-out action (wp_nonce_ays() function).
 			'ybws123456', // Custom Bookly form.
+			'_wc_additional_variation_images_nonce', // WooCommerce Additional Variation Images.
 		];
 	}
 }

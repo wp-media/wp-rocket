@@ -67,31 +67,18 @@ settings_errors( $data['slug'] ); ?>
 		</aside>
 	</div>
 
-	<div class="wpr-Popin wpr-Popin-Beta">
-		<div class="wpr-Popin-header">
-			<h2 class="wpr-title1"><?php esc_html_e( 'Rocket Tester', 'rocket' ); ?></h2>
-			<button class="wpr-Popin-close wpr-Popin-Beta-close wpr-icon-close"></button>
-		</div>
-		<div class="wpr-Popin-content">
-			<p><?php esc_html_e( 'Thanks for choosing to participate in the WP Rocket beta program!', 'rocket' ); ?></p>
-			<p><?php esc_html_e( 'A beta version is usually one that has new features and improvements, but we want to test it a little more before full launch.', 'rocket' ); ?></p>
-			<p><?php esc_html_e( 'We’d love it if you took our beta versions for a ride, but please keep in mind that it might be less stable than our other releases. Don’t worry, you can switch back to a full release version at any time.', 'rocket' ); ?></p>
-			<p><?php esc_html_e( 'Your mission: please send all feedback about our beta versions, including bug reports, to support@wp-rocket.me', 'rocket' ); ?></p>
-			<div class="wpr-Popin-flex">
-				<p><?php esc_html_e( 'If you don’t want to join the beta program, simply close this window.', 'rocket' ); ?></p>
-				<div>
-					<button class="wpr-button wpr-button--small wpr-button--icon wpr-icon-check wpr-button--blue"><?php esc_html_e( 'Activate Rocket Tester', 'rocket' ); ?></button>
-				</div>
-			</div>
-		</div>
-	</div>
 	<div class="wpr-Popin wpr-Popin-Analytics">
 		<div class="wpr-Popin-header">
 			<h2 class="wpr-title1"><?php esc_html_e( 'Rocket Analytics', 'rocket' ); ?></h2>
 			<button class="wpr-Popin-close wpr-Popin-Analytics-close wpr-icon-close"></button>
 		</div>
 		<div class="wpr-Popin-content">
-			<p><?php esc_html_e( 'Below is a detailed view of all data WP Rocket will collect <strong>if granted permission.</strong>', 'rocket' ); ?></p>
+			<p>
+			<?php
+				// translators: %1$s = <strong>, %2$s = </strong>.
+				printf( esc_html__( 'Below is a detailed view of all data WP Rocket will collect %1$sif granted permission.%2$s', 'rocket' ), '<strong>', '</strong>' );
+			?>
+			</p>
 			<?php echo rocket_data_collection_preview_table(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
 			<div class="wpr-Popin-flex">
 				<p><?php esc_html_e( 'WP Rocket will never transmit any domain names or email addresses (except for license validation), IP addresses, or third-party API keys.', 'rocket' ); ?></p>

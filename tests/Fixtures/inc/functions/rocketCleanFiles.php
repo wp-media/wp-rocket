@@ -12,6 +12,14 @@ return [
 				'cleaned' => [],
 			],
 		],
+		'shouldBailOutWhenInvalidURLsToClean'                        => [
+			'urls'     => [
+				'test',
+			],
+			'expected' => [
+				'cleaned' => [],
+			],
+		],
 		'shouldDeleteSingleDirUrl'                              => [
 			'urls'     => [
 				'http://baz.example.org/',

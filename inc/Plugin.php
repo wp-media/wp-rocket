@@ -106,6 +106,8 @@ class Plugin {
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Cache\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\CriticalPath\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\HealthCheck\ServiceProvider' );
+		$this->container->addServiceProvider( 'WP_Rocket\Engine\Media\ServiceProvider' );
+		$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\DeferJS\ServiceProvider' );
 
 		$this->is_valid_key = rocket_valid_key();
 
@@ -174,6 +176,9 @@ class Plugin {
 			'admin_cache_subscriber',
 			'google_fonts_admin_subscriber',
 			'license_subscriber',
+			'image_dimensions_admin_subscriber',
+			'defer_js_admin_subscriber',
+			'lazyload_admin_subscriber',
 		];
 	}
 
@@ -185,7 +190,6 @@ class Plugin {
 	 * @return array array of subscribers.
 	 */
 	private function init_valid_key_subscribers() {
-		$this->container->addServiceProvider( 'WP_Rocket\Engine\Media\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\ServiceProvider' );
 
 		$subscribers = [
@@ -195,11 +199,11 @@ class Plugin {
 			'minify_css_subscriber',
 			'minify_js_subscriber',
 			'cache_dynamic_resource',
-			'dequeue_jquery_migrate_subscriber',
 			'embeds_subscriber',
 			'emojis_subscriber',
 			'delay_js_subscriber',
-			'optimization_subscriber',
+			'image_dimensions_subscriber',
+			'defer_js_subscriber',
 		];
 
 		// Don't insert the LazyLoad file if Rocket LazyLoad is activated.
@@ -251,6 +255,7 @@ class Plugin {
 			'syntaxhighlighter_subscriber',
 			'elementor_subscriber',
 			'bridge_subscriber',
+			'avada_subscriber',
 			'ngg_subscriber',
 			'smush_subscriber',
 			'cache_dir_size_check',
@@ -272,6 +277,7 @@ class Plugin {
 			'preload_links_admin_subscriber',
 			'preload_links_subscriber',
 			'support_subscriber',
+			'mod_pagespeed',
 		];
 
 		$host_type = HostResolver::get_host_service();

@@ -12,7 +12,7 @@ return [
 			'html'     => '<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js">',
 			'expected' => '<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js">',
 		],
-	
+
 		'shouldDoNothingWhenPostExcluded' => [
 			'config'   => [
 				'bypass'               => false,

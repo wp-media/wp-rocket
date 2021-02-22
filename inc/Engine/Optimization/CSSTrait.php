@@ -204,13 +204,15 @@ trait CSSTrait {
 		$css_file_content = (string) $css_file_content;
 
 		return preg_replace_callback(
-			'/(?:@font-face)\s*{(?<value>[^}]+)}/',
+			'/(?:@font-face)\s*{(?<value>[^}]+)}/i',
 			function ( $matches ) {
-				if ( false !== strpos( $matches['value'], 'font-display' ) ) {
-					return $matches[0];
+				if ( preg_match( '/font-display:\s*(?<swap_value>\w*);?/i', $matches['value'], $attribute ) ) {
+					return 'swap' === strtolower( $attribute['swap_value'] )
+						? $matches[0]
+						: str_replace( $attribute['swap_value'], 'swap', $matches[0] );
+				} else {
+					$swap = "font-display:swap;{$matches['value']}";
 				}
-
-				$swap = "font-display:swap;{$matches['value']}";
 
 				return str_replace( $matches['value'], $swap, $matches[0] );
 			},

@@ -4,7 +4,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\Deactivation\DeactivationIntent;
 
 use Mockery;
 use Brain\Monkey\Functions;
-use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Engine\Admin\Deactivation\DeactivationIntent;
 
 /**
@@ -34,33 +34,21 @@ class Test_ActivateSafeMode extends TestCase {
 		$this->deactivation->activate_safe_mode();
 	}
 
-	public function testShouldResetOptions() {
-		$options = [
-			'embeds'                 => 0,
-			'defer_all_js'           => 0,
-			'async_css'              => 0,
-			'lazyload'               => 0,
-			'lazyload_iframes'       => 0,
-			'lazyload_youtube'       => 0,
-			'minify_css'             => 0,
-			'minify_concatenate_css' => 0,
-			'minify_js'              => 0,
-			'minify_concatenate_js'  => 0,
-			'minify_google_fonts'    => 0,
-			'cdn'                    => 0,
-		];
-
+	/**
+	 * @dataProvider configTestData
+	 */
+	public function testShouldResetOptions( $expected ) {
 		Functions\when( 'current_user_can' )->justReturn( true );
 
 		$this->options->shouldReceive( 'set_values' )
 			->once()
-			->with( $options );
+			->with( $expected );
 		$this->options->shouldReceive( 'get_options' )
 			->once()
-			->andReturn( $options );
+			->andReturn( $expected );
 		$this->options_api->shouldReceive( 'set' )
 			->once()
-			->with( 'settings', $options );
+			->with( 'settings', $expected );
 
 		Functions\expect( 'wp_send_json_success' )->once();
 

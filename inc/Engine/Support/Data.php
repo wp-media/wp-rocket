@@ -24,7 +24,6 @@ class Data {
 		'emoji'                   => 'Disable Emojis',
 		'embeds'                  => 'Disable Embeds',
 		'defer_all_js'            => 'Defer JS',
-		'defer_all_js_safe'       => 'Defer JS Safe',
 		'delay_js'                => 'Delay JS',
 		'async_css'               => 'Optimize CSS Delivery',
 		'lazyload'                => 'Lazyload Images',

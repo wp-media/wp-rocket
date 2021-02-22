@@ -25,6 +25,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'syntaxhighlighter_subscriber',
 		'elementor_subscriber',
 		'bridge_subscriber',
+		'avada_subscriber',
 		'ngg_subscriber',
 		'smush_subscriber',
 		'imagify_webp_subscriber',
@@ -38,6 +39,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'simple_custom_css',
 		'pdfembedder',
 		'divi',
+		'mod_pagespeed',
 	];
 
 	/**
@@ -65,6 +67,9 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()
 			->share( 'divi', 'WP_Rocket\ThirdParty\Themes\Divi' )
 			->withArgument( $this->getContainer()->get( 'options_api' ) )
+			->withArgument( $options );
+		$this->getContainer()
+			->share( 'avada_subscriber', 'WP_Rocket\ThirdParty\Themes\Avada' )
 			->withArgument( $options );
 		$this->getContainer()
 			->share( 'ngg_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\NGG_Subscriber' );
@@ -97,5 +102,8 @@ class ServiceProvider extends AbstractServiceProvider {
 			->withArgument( WP_ROCKET_CACHE_BUSTING_PATH )->withArgument( WP_ROCKET_CACHE_BUSTING_URL );
 		$this->getContainer()
 			->share( 'pdfembedder', 'WP_Rocket\ThirdParty\Plugins\PDFEmbedder' );
+
+		$this->getContainer()
+			->share( 'mod_pagespeed', 'WP_Rocket\ThirdParty\Plugins\ModPagespeed' );
 	}
 }

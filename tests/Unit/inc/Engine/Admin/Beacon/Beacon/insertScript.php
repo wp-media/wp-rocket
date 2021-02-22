@@ -2,13 +2,13 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\Beacon\Beacon;
 
-use Mockery;
-use WP_Theme;
 use Brain\Monkey\Functions;
+use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Support\Data;
 use WP_Rocket\Tests\Unit\TestCase;
+use WP_Theme;
 
 /**
  * @covers \WP_Rocket\Engine\Admin\Beacon\Beacon::insert_script
@@ -53,6 +53,7 @@ class Test_InsertScript extends TestCase {
 		Functions\when( 'wp_json_encode' )->alias( 'json_encode' );
 		Functions\when( 'home_url' )->justReturn( 'http://example.org' );
 		Functions\when( 'get_transient' )->justReturn( $config['customer_data'] );
+		Functions\when( 'is_rtl' )->justReturn( $config['rtl'] );
 
 		$this->options->shouldReceive( 'get' )
 			->with( 'consumer_email' )

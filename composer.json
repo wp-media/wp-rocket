@@ -42,7 +42,7 @@
 	"require-dev": {
 		"php": "^7",
 		"brain/monkey": "^2.0",
-		"coenjacobs/mozart": "0.6.0-beta-3",
+		"coenjacobs/mozart": "^0.7",
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
 		"mikey179/vfsstream": "^1.6",
 		"mobiledetect/mobiledetectlib": "^2.8",
@@ -71,7 +71,8 @@
 	"autoload": {
 		"classmap": [
 			"inc/classes",
-			"inc/vendors/classes"
+			"inc/vendors/classes",
+			"inc/deprecated"
 		],
 		"exclude-from-classmap": [
 			"inc/vendors/classes/class-rocket-mobile-detect.php",
