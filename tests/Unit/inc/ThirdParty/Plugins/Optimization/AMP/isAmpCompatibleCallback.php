@@ -30,18 +30,11 @@ class Test_IsAmpCompatibleCallback extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldReturnExpected( $enabled, $theme_support, $expected ) {
-		if ( $enabled ) {
-			Functions\when( 'is_amp_endpoint' )->justReturn( $enabled );
-
-			Functions\expect( 'get_option' )
-				->once()
-				->with( 'amp-options', [] )
-				->andReturn( $theme_support );
-		} else {
-			Functions\expect( 'get_option' )
-				->never();
-		}
+	public function testShouldReturnExpected( $theme_support, $expected ) {
+		Functions\expect( 'get_option' )
+			->once()
+			->with( 'amp-options', [] )
+			->andReturn( $theme_support );
 
 		$this->assertSame( $expected, $this->amp->is_amp_compatible_callback( [] ) );
 	}
