@@ -23,7 +23,7 @@ class Test_IsAmpCompatibleCallback extends TestCase {
 	/**
 	 * @dataProvider ampDataProvider
 	 */
-	public function testShouldReturnExpected( $setting, $expected ) {
+	public function testShouldReturnExpected( $enabled, $setting, $expected ) {
 		// Set and then check the AMP theme support setting.
 		if ( ! is_null( $setting ) ) {
 			$this->setSettings( 'theme_support', $setting['theme_support'] );
