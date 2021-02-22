@@ -53,7 +53,7 @@ class AMP implements Subscriber_Interface {
 		];
 
 		if ( function_exists( 'is_amp_endpoint' ) ) {
-			$events['update_option_amp-options']  = 'generate_config_file';
+			$events['update_option_amp-options'] = 'generate_config_file';
 		}
 
 		return $events;
@@ -80,7 +80,7 @@ class AMP implements Subscriber_Interface {
 		if ( ! function_exists( 'is_amp_endpoint' ) ) {
 			return $value;
 		}
-	
+
 		$options       = get_option( self::AMP_OPTIONS, [] );
 		$query_strings = array_diff( $value, [ static::QUERY ] );
 
