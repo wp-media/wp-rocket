@@ -167,7 +167,7 @@ HTML
 HTML,
 	],
 
-	'testShouldExcludeUsingArrayFilter' => [
+	'testShouldExcludeUsingArrayOfStringsFilter' => [
 		'config' => [
 			'rocket_defer_inline_exclusions_filter' => [
 				'first_string',
@@ -190,6 +190,33 @@ HTML
 	<script type="text/javascript">var first_string = jQuery('#first_selector');</script>
 	<script type="text/javascript">window.addEventListener('DOMContentLoaded', function() {var second_string = jQuery('#second_selector');});</script>
 	<script type="text/javascript">var third_string = jQuery('#third_selector');</script>
+HTML,
+	],
+
+	'testShouldExcludeUsingArrayOfIntegersFilter' => [
+		'config' => [
+			'rocket_defer_inline_exclusions_filter' => [
+				1,
+				2,
+				3,
+			],
+			'donotrocketoptimize' => false,
+			'post_meta'           => false,
+			'options'             => [
+				'defer_all_js'      => 1,
+				'exclude_defer_js'  => [],
+			],
+		],
+		'html'     => <<<HTML
+	<script type="text/javascript">var first_string = jQuery('#first_selector');</script>
+	<script type="text/javascript">var second_string = jQuery('#second_selector');</script>
+	<script type="text/javascript">var third_string = jQuery('#third_selector');</script>
+HTML
+		,
+		'expected' => <<<HTML
+	<script type="text/javascript">window.addEventListener('DOMContentLoaded', function() {var first_string = jQuery('#first_selector');});</script>
+	<script type="text/javascript">window.addEventListener('DOMContentLoaded', function() {var second_string = jQuery('#second_selector');});</script>
+	<script type="text/javascript">window.addEventListener('DOMContentLoaded', function() {var third_string = jQuery('#third_selector');});</script>
 HTML,
 	],
 
