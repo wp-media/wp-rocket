@@ -73,8 +73,8 @@ function ModalWpr(aElem) {
         return false;
     });
 
-    aElem.bind('keyup', function(e){
-        if(e.keyCode == 27){ // ECHAP
+    $(document).on('keyup', function(e){
+        if( aElem.length > 0 && 27 === e.keyCode ){ // ECHAP
             refThis.close();
             return false;
         }
@@ -94,7 +94,7 @@ function ModalWpr(aElem) {
     // Write text
     this.textFields.on( "keyup", function() {
         refThis.hiddenDetails.val($(this).val());
-        if(refThis.hiddenDetails.val() != ''){
+        if( '' !== refThis.hiddenDetails.val() ){
             refThis.button.removeClass('wpr-isDisabled');
             refThis.button.prop("disabled", false);
         }
