@@ -270,6 +270,7 @@ class Subscriber implements Subscriber_Interface {
 		) {
 			return $urls;
 		}
+
 		$cdn_urls = $this->get_cdn_hosts();
 
 		if ( empty( $cdn_urls ) ) {
@@ -277,14 +278,19 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		foreach ( $cdn_urls as $cdn_url ) {
-			//Todo: We cannot add more than one instance of a domain url
+			//Note: As of 22 Feb, 2021 we cannot add more than one instance of a domain url
 			//on the wp_resource_hint() hook -- wp_resource_hint() will
 			//only actually print the first one.
-			$urls[] = '//123456.rocketcdn.me';
+			//Ideally, we want both because CSS resources will use the crossorigin version,
+			//But JS resources will not.
+			//Jonathan has submitted a ticket to change this behavior:
+			//@see https://core.trac.wordpress.org/ticket/52465
+			// Until then, we order these to prefer/print the non-crossorigin version.
 			$urls[] = [
-				'href' => '//123456.rocketcdn.me',
-				'crossorigin',
+				'href'        => $cdn_url,
+				'crossorigin' => 'anonymous',
 			];
+			$urls[] = [ 'href' => $cdn_url ];
 		}
 
 		return $urls;
