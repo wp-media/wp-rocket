@@ -298,7 +298,7 @@ class DeferJS {
 			$additional_inline_exclusions_list = explode( '|', $additional_inline_exclusions_list );
 		}
 
-		$inline_exclusions_list = array_merge( $inline_exclusions_list, (array) $additional_inline_exclusions_list);
+		$inline_exclusions_list = array_merge( $inline_exclusions_list, (array) $additional_inline_exclusions_list );
 
 		foreach ( (array) $inline_exclusions_list as $inline_exclusions_item ) {
 			$inline_exclusions .= preg_quote( (string) $inline_exclusions_item, '#' ) . '|';
