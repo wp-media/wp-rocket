@@ -34,7 +34,7 @@ class Settings {
 	public function add_options( $options ) {
 		$options = (array) $options;
 
-		$options['remove_unused_css']          = 1;
+		$options['remove_unused_css']          = 0;
 		$options['remove_unused_css_safelist'] = [];
 
 		return $options;
