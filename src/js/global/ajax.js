@@ -12,7 +12,7 @@ $(document).ready(function(){
 
             e.preventDefault();
             _isRefreshing = true;
-            button.blur();
+            button.trigger( 'blur' );
             button.addClass('wpr-isLoading');
             expire.removeClass('wpr-isValid wpr-isInvalid');
 
