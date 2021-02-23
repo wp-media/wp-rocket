@@ -26,7 +26,8 @@ return [
 			title="Accueil AcommeAssure"
 			alt="logo dacommeassure"
 		/>
-	</picture>',
+	</picture>
+	<img src="/wp-content/themes/test/img/test.png" loading="lazy" width="900" srcset="/wp-content/themes/test/img/test-2.png 500w, /wp-content/themes/test/img/test-2.png 800w" sizes="(max-width: 767px) 37vw, (max-width: 991px) 34vw, 37vw" alt="">',
 	'expected' => '<img class="size-full wp-image-906 aligncenter" title="Image Alignment 580x300" alt="Image Alignment 580x300" src="http://cdn.example.org/wp-content/uploads/2013/03/image-alignment-580x300.jpg" width="580" height="300" />
 	<img class="size-full wp-image-904 alignleft" title="Image Alignment 150x150" alt="Image Alignment 150x150" src="http://cdn.example.org/wp-content/uploads/2013/03/image-alignment-150x150.jpg" width="150" height="150" />
 	<img class="alignnone  wp-image-907" title="Image Alignment 1200x400" alt="Image Alignment 1200x400" src="http://cdn.example.org/wp-content/uploads/2013/03/image-alignment-1200x4002.jpg" width="1200" height="400" />
@@ -52,7 +53,8 @@ return [
 			title="Accueil AcommeAssure"
 			alt="logo dacommeassure"
 		/>
-	</picture>',
+	</picture>
+	<img src="http://cdn.example.org/wp-content/themes/test/img/test.png" loading="lazy" width="900" srcset="http://cdn.example.org/wp-content/themes/test/img/test-2.png 500w, http://cdn.example.org/wp-content/themes/test/img/test-2.png 800w" sizes="(max-width: 767px) 37vw, (max-width: 991px) 34vw, 37vw" alt="">',
 	'test_data' => [
 		'testShouldRewriteSrcsetWithCDN' => [
 			'options'  => [
