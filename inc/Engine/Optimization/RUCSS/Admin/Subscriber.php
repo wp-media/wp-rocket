@@ -28,7 +28,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_first_install_options' => 'add_options',
+			'rocket_first_install_options' => 'add_options_first_time',
 			'wp_rocket_upgrade'            => [
 				[ 'set_option_on_update', 13, 2 ],
 			],
@@ -44,7 +44,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return array
 	 */
-	public function add_options( $options ) {
+	public function add_options_first_time( $options ) {
 		return $this->settings->add_options( $options );
 	}
 
