@@ -38,7 +38,7 @@ return [
 		'input' => [
 			'options' => [
 				'test_option'      => 1,
-				'remove_unused_css'         => 0,
+				'remove_unused_css'         => 1,
 				'remove_unused_css_safelist' => [
 					'any value'
 				]
@@ -46,7 +46,7 @@ return [
 		],
 		'expected' => [
 			'test_option'      => 1,
-			'remove_unused_css'         => 1,
+			'remove_unused_css'         => 0,
 			'remove_unused_css_safelist' => [],
 		]
 	],
