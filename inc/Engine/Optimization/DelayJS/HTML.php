@@ -88,7 +88,7 @@ class HTML {
 	 * @return string
 	 */
 	private function parse( $html ) {
-		$replaced_html = preg_replace_callback( '/<\s*script\s*(?<attr>[^>]*)?>(?<content>.*)?<\s*\/\s*script\s*>/Uims', [ $this, 'replace_scripts' ], $html );
+		$replaced_html = preg_replace_callback( '/<\s*script\s*(?<attr>.*)?>(?<content>.*)?<\s*\/\s*script\s*>/Uims', [ $this, 'replace_scripts' ], $html );
 
 		if ( empty( $replaced_html ) ) {
 			return $html;
