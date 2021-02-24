@@ -390,7 +390,7 @@ trait CSSTrait {
 		if ( ! rocket_direct_filesystem()->is_readable( $this->get_local_path( $file ) ) ) {
 			$ds   = rocket_get_constant( 'DIRECTORY_SEPARATOR' );
 			$file = $base_path . $ds . str_replace( '/', $ds, $file );
-		}else{
+		}else {
 			$file = $this->get_local_path( $file );
 		}
 
