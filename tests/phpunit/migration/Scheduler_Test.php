@@ -41,7 +41,7 @@ class Scheduler_Test extends ActionScheduler_UnitTestCase {
 		$scheduler->schedule_migration();
 		$this->assertTrue(
 			$scheduler->is_migration_scheduled(),
-			'Migration is scheduled only after is_mmigration_scheduled() has been called.'
+			'Migration is scheduled only after schedule_migration() has been called.'
 		);
 	}
 
