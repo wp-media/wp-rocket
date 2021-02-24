@@ -374,6 +374,9 @@ trait CSSTrait {
 			return [ $file, false ];
 		}
 
+		// Remove query strings.
+		$file = str_replace( '?' . wp_parse_url( $file, PHP_URL_QUERY ), '', $file );
+
 		// Check if this file is readable or it's relative path so we add base_path at it's start.
 		if ( ! rocket_direct_filesystem()->is_readable( $this->get_local_path( $file ) ) ) {
 			$ds   = rocket_get_constant( 'DIRECTORY_SEPARATOR' );
@@ -480,13 +483,14 @@ trait CSSTrait {
 	private function normalize_url( $url ) {
 		$url_host = wp_parse_url( $url, PHP_URL_HOST );
 
-		if ( empty( $url_host ) ) {
-			$relative_url        = ltrim( wp_make_link_relative( $url ), '/' );
-			$site_url_components = wp_parse_url( site_url( '/' ) );
-			return $site_url_components['scheme'] . '://' . $site_url_components['host'] . '/' . $relative_url;
+		if ( ! empty( $url_host ) ) {
+			return $url;
 		}
 
-		return $url;
+		$relative_url        = ltrim( wp_make_link_relative( $url ), '/' );
+		$site_url_components = wp_parse_url( site_url( '/' ) );
+
+		return $site_url_components['scheme'] . '://' . $site_url_components['host'] . '/' . $relative_url;
 	}
 
 }
