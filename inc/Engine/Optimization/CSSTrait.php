@@ -371,18 +371,6 @@ trait CSSTrait {
 	 */
 	private function get_internal_file_contents( $file, $base_path ) {
 		if ( $this->is_external_path( $file ) && wp_http_validate_url( $file ) ) {
-			/**
-			 * Filter Import external urls.
-			 *
-			 * @since 3.8.6
-			 *
-			 * @param bool Allow status.
-			 * @param string $file File path/URL.
-			 */
-			if ( (bool) apply_filters( 'rocket_allow_import_externals', false, $file ) ) {
-				return [ $file, rocket_direct_filesystem()->get_contents( $file ) ];
-			}
-
 			return [ $file, false ];
 		}
 
