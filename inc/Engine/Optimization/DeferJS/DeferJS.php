@@ -294,11 +294,13 @@ class DeferJS {
 
 		$inline_exclusions = '';
 
-		if ( ! is_array( $additional_inline_exclusions_list ) ) {
-			$additional_inline_exclusions_list = explode( '|', (string) $additional_inline_exclusions_list );
+		// Check if filter return is string so convert it to array for backward compatibility.
+		if ( is_string( $additional_inline_exclusions_list ) ) {
+			$additional_inline_exclusions_list = explode( '|', $additional_inline_exclusions_list );
 		}
 
-		$inline_exclusions_list = array_merge( $inline_exclusions_list, $additional_inline_exclusions_list );
+		// Cast filter return to array.
+		$inline_exclusions_list = array_merge( $inline_exclusions_list, (array) $additional_inline_exclusions_list );
 
 		foreach ( $inline_exclusions_list as $inline_exclusions_item ) {
 			$inline_exclusions .= preg_quote( (string) $inline_exclusions_item, '#' ) . '|';
