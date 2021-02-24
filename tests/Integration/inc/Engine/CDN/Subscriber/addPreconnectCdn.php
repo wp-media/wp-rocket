@@ -14,16 +14,6 @@ class Test_addPreconnectCdn extends TestCase {
 	 */
 	public function testShouldAddPreconnectCdn($cnames, $expected) {
 		$this->cnames = $cnames;
-//		$this->cnames = [
-//			'https://123456.rocketcdn.me',
-//		];
-
-//		$html = <<<HTML
-//<link rel='dns-prefetch' href='//s.w.org' />
-//<link rel='dns-prefetch' href='//123456.rocketcdn.me' />
-//<link href='https://123456.rocketcdn.me' rel='preconnect' />
-//HTML;
-
 
 		add_filter( 'pre_get_rocket_option_cdn', [ $this, 'return_true'] );
 		add_filter( 'rocket_cdn_cnames', [ $this, 'setCnames' ] );
