@@ -9,6 +9,18 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Subscriber;
  */
 class Test_addPreconnectCdn extends TestCase {
 
+	public function setUp() {
+		$this->unregisterAllCallbacksExcept( 'wp_resource_hints', 'add_preconnect_cdn', 10 );
+
+		parent::setUp();
+	}
+
+	public function tearDown() {
+		$this->restoreWpFilter( 'wp_resource_hints' );
+
+		parent::tearDown();
+	}
+
 	/**
 	 * @dataProvider providerTestData
 	 */

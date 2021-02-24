@@ -12,11 +12,6 @@ return [
 		],
 		'expected-html' => <<<HTML
 <link rel='dns-prefetch' href='//s.w.org' />
-<link rel='dns-prefetch' href='//123456.rocketcdn.me' />
-<link rel='dns-prefetch' href='//my-cdn.cdnservice.com' />
-<link rel='dns-prefetch' href='//cdn.example.com' />
-<link rel='dns-prefetch' href='//8901.wicked-fast-cdn.com' />
-<link rel='dns-prefetch' href='//another.cdn.com' />
 <link href='//123456.rocketcdn.me' rel='preconnect' />
 <link href='https://my-cdn.cdnservice.com' rel='preconnect' />
 <link href='http://cdn.example.com' rel='preconnect' />
