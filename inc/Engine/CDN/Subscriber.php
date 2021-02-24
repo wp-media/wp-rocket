@@ -281,11 +281,11 @@ class Subscriber implements Subscriber_Interface {
 			$url_parts = get_rocket_parse_url( $url );
 
 			if ( empty( $url_parts['scheme'] ) ) {
-				$url       =  '//' . $url ;
+				$url       = '//' . $url;
 				$url_parts = get_rocket_parse_url( $url );
 			}
 
-			$domain = empty($url_parts['scheme'])
+			$domain = empty( $url_parts['scheme'] )
 				? '//' . $url_parts['host']
 				: $url_parts['scheme'] . '://' . $url_parts['host'];
 
@@ -314,8 +314,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return boolean
 	 */
-	private
-	function is_allowed() {
+	private function is_allowed() {
 		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
 			return false;
 		}
@@ -338,8 +337,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return bool
 	 */
-	private
-	function is_cdn_enabled() {
+	private function is_cdn_enabled() {
 		return (bool) $this->options->get( 'cdn', 0 );
 	}
 }
