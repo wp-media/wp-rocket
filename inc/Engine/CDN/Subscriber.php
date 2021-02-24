@@ -277,7 +277,18 @@ class Subscriber implements Subscriber_Interface {
 			return $urls;
 		}
 
-		foreach ( $cdn_urls as $cdn_url ) {
+		foreach ( $cdn_urls as $url ) {
+			$url_parts = get_rocket_parse_url( $url );
+
+			if ( empty( $url_parts['scheme'] ) ) {
+				$url       =  '//' . $url ;
+				$url_parts = get_rocket_parse_url( $url );
+			}
+
+			$domain = empty($url_parts['scheme'])
+				? '//' . $url_parts['host']
+				: $url_parts['scheme'] . '://' . $url_parts['host'];
+
 			// Note: As of 22 Feb, 2021 we cannot add more than one instance of a domain url
 			// on the wp_resource_hint() hook -- wp_resource_hint() will
 			// only actually print the first one.
@@ -286,9 +297,9 @@ class Subscriber implements Subscriber_Interface {
 			// Jonathan has submitted a ticket to change this behavior:
 			// @see https://core.trac.wordpress.org/ticket/52465
 			// Until then, we order these to prefer/print the non-crossorigin version.
-			$urls[] = [ 'href' => $cdn_url ];
+			$urls[] = [ 'href' => $domain ];
 			$urls[] = [
-				'href'        => $cdn_url,
+				'href'        => $domain,
 				'crossorigin' => 'anonymous',
 			];
 		}
@@ -303,7 +314,8 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return boolean
 	 */
-	private function is_allowed() {
+	private
+	function is_allowed() {
 		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
 			return false;
 		}
@@ -326,7 +338,8 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return bool
 	 */
-	private function is_cdn_enabled() {
+	private
+	function is_cdn_enabled() {
 		return (bool) $this->options->get( 'cdn', 0 );
 	}
 }
