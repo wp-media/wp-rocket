@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\RUCSS\Admin;
 
@@ -26,7 +27,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return array
 	 */
-	public static function get_subscribed_events() {
+	public static function get_subscribed_events() : array {
 		return [
 			'rocket_first_install_options' => 'add_options_first_time',
 			'wp_rocket_upgrade'            => [
@@ -44,7 +45,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return array
 	 */
-	public function add_options_first_time( $options ) {
+	public function add_options_first_time( $options ) : array {
 		return $this->settings->add_options( $options );
 	}
 

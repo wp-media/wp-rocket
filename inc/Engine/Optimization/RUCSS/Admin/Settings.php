@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\RUCSS\Admin;
 
@@ -31,7 +32,7 @@ class Settings {
 	 *
 	 * @return array
 	 */
-	public function add_options( $options ) {
+	public function add_options( $options ) : array {
 		$options = (array) $options;
 
 		$options['remove_unused_css']          = 0;

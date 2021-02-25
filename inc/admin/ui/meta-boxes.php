@@ -72,12 +72,12 @@ function rocket_display_cache_options_meta_boxes() {
 				'lazyload'          => __( 'LazyLoad for images', 'rocket' ),
 				'lazyload_iframes'  => __( 'LazyLoad for iframes/videos', 'rocket' ),
 				'minify_css'        => __( 'Minify/combine CSS', 'rocket' ),
+				'remove_unused_css' => __( 'Remove Unused CSS', 'rocket' ),
 				'minify_js'         => __( 'Minify/combine JS', 'rocket' ),
 				'cdn'               => __( 'CDN', 'rocket' ),
 				'async_css'         => __( 'Optimize CSS Delivery', 'rocket' ),
 				'defer_all_js'      => __( 'Defer JS', 'rocket' ),
 				'delay_js'          => __( 'Delay JavaScript execution', 'rocket' ),
-				'remove_unused_css' => __( 'Remove Unused CSS', 'rocket' ),
 			];
 
 			foreach ( $fields as $field => $label ) {
