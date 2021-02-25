@@ -7,6 +7,7 @@ return [
 			'https://my-cdn.cdnservice.com/',
 			'http://cdn.example.com',
 			'/some/path/with/no/domain',
+			'test/tests',
 			'8901.wicked-fast-cdn.com/path/to/my/files',
 			'https://another.cdn.com/with/a/path',
 		],

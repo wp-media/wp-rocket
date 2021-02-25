@@ -281,6 +281,10 @@ class Subscriber implements Subscriber_Interface {
 			$url_parts = get_rocket_parse_url( $url );
 
 			if ( empty( $url_parts['scheme'] ) ) {
+				if ( preg_match( '/^(?![\/])(?=[^\.]+\/).+/i', $url ) ) {
+					continue;
+				}
+
 				$url       = '//' . $url;
 				$url_parts = get_rocket_parse_url( $url );
 			}
