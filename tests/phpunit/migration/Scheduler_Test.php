@@ -29,8 +29,20 @@ class Scheduler_Test extends ActionScheduler_UnitTestCase {
 	}
 
 	public function test_migration_is_scheduled() {
+		// Clear the any existing migration hooks that have already been setup.
+		as_unschedule_all_actions( Scheduler::HOOK );
+
 		$scheduler = new Scheduler();
-		$this->assertTrue( $scheduler->is_migration_scheduled() );
+		$this->assertFalse(
+			$scheduler->is_migration_scheduled(),
+			'Migration is not automatically scheduled when a new ' . Scheduler::class . ' instance is created.'
+		);
+
+		$scheduler->schedule_migration();
+		$this->assertTrue(
+			$scheduler->is_migration_scheduled(),
+			'Migration is scheduled only after schedule_migration() has been called.'
+		);
 	}
 
 	public function test_scheduler_runs_migration() {
