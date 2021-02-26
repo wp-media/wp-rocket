@@ -1,5 +1,7 @@
 <?php
 
+use DateTime;
+
 /**
  * Class ActionScheduler_DBStore
  *
@@ -597,7 +599,7 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	public function stake_claim( $max_actions = 10, \DateTime $before_date = null, $hooks = array(), $group = '' ) {
 		$claim_id = $this->generate_claim_id();
 		$this->claim_actions( $claim_id, $max_actions, $before_date, $hooks, $group );
-		$action_ids = $this->find_actions_by_claim_id( $claim_id );
+		$action_ids = $this->find_actions_by_claim_id( $claim_id, $before_date );
 
 		return new ActionScheduler_ActionClaim( $claim_id, $action_ids );
 	}
@@ -712,19 +714,33 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	 * Retrieve the action IDs of action in a claim.
 	 *
 	 * @param string $claim_id Claim ID.
+	 * @param DateTime $before_date Should use UTC timezone.
 	 *
 	 * @return int[]
 	 */
-	public function find_actions_by_claim_id( $claim_id ) {
+	public function find_actions_by_claim_id( $claim_id, DateTime $before_date = null ) {
 		/** @var \wpdb $wpdb */
 		global $wpdb;
 
-		$sql = "SELECT action_id FROM {$wpdb->actionscheduler_actions} WHERE claim_id=%d";
-		$sql = $wpdb->prepare( $sql, $claim_id );
+		$action_ids = array();
+		$now        = as_get_datetime_object();
+		$date       = is_null( $before_date ) ? $now : clone $before_date;
+		$cut_off    = $date->format( 'Y-m-d H:i:s' );
 
-		$action_ids = $wpdb->get_col( $sql );
+		$sql = $wpdb->prepare(
+			"SELECT action_id, scheduled_date_gmt FROM {$wpdb->actionscheduler_actions} WHERE claim_id = %d",
+			$claim_id
+		);
 
-		return array_map( 'intval', $action_ids );
+		// Verify that the scheduled date for each action is within the expected bounds (in some unusual
+		// cases, we cannot depend on MySQL to honor all of the WHERE conditions we specify).
+		foreach ( $wpdb->get_results( $sql ) as $claimed_action ) {
+			if ( $claimed_action->scheduled_date_gmt <= $cut_off ) {
+				$action_ids[] = absint( $claimed_action->action_id );
+			}
+		}
+
+		return $action_ids;
 	}
 
 	/**
