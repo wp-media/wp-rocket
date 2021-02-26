@@ -383,6 +383,40 @@ return [
 			],
 		],
 
+		'combineCssFilesWithImportJSFile' => [
+			'original' => '<html>' .
+			              '<head>' .
+			              '<title>Sample Page</title>' .
+			              '<link rel="stylesheet" href="http://example.org/wp-content/themes/twentytwenty/style-import-jsfile.css" type="text/css" media="all">' .
+			              '</head>' .
+			              '<body>' .
+			              '</body>' .
+			              '</html>',
+
+			'expected' => [
+				'html'  => '<html>' .
+				           '<head>' .
+				           '<title>Sample Page</title>' .
+				           '<link rel="stylesheet" href="http://example.org/wp-content/cache/min/1/005e912f43deb4a5c82ff794ba94b288.css" media="all" data-minify="1" />' .
+				           '</head>' .
+				           '<body>' .
+				           '</body>' .
+				           '</html>',
+				'files' => [
+					'wp-content/cache/min/1/005e912f43deb4a5c82ff794ba94b288.css',
+					'wp-content/cache/min/1/005e912f43deb4a5c82ff794ba94b288.css.gz',
+				],
+				'css' => '@import url(vfs://public/wp-content/themes/twentytwenty/assets/script.js);',
+			],
+
+			'settings' => [
+				'minify_concatenate_css' => 1,
+				'cdn'                    => 0,
+				'cdn_cnames'             => [],
+				'cdn_zone'               => [],
+			],
+		],
+
 		'combineCssFilesWithNestedImport' => [
 			'original' =>
 				'<html><head><title>Sample Page</title>' .
