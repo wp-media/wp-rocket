@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\ServiceProvider;
 
-use WP_Rocket\Engine\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 
 /**
  * Service provider for the WP Rocket updates.
@@ -40,7 +40,7 @@ class Updater_Subscribers extends AbstractServiceProvider {
 		$api_url = wp_parse_url( WP_ROCKET_WEB_INFO );
 
 		$this->getContainer()->add( 'plugin_updater_common_subscriber', 'WP_Rocket\Subscriber\Plugin\Updater_Api_Common_Subscriber' )
-			->withArgument(
+			->addArgument(
 				[
 					'api_host'           => $api_url['host'],
 					'site_url'           => home_url(),
@@ -51,14 +51,14 @@ class Updater_Subscribers extends AbstractServiceProvider {
 				]
 			);
 		$this->getContainer()->add( 'plugin_information_subscriber', 'WP_Rocket\Subscriber\Plugin\Information_Subscriber' )
-			->withArgument(
+			->addArgument(
 				[
 					'plugin_file' => WP_ROCKET_FILE,
 					'api_url'     => WP_ROCKET_WEB_INFO,
 				]
 			);
 		$this->getContainer()->add( 'plugin_updater_subscriber', 'WP_Rocket\Subscriber\Plugin\Updater_Subscriber' )
-			->withArgument(
+			->addArgument(
 				[
 					'plugin_file'    => WP_ROCKET_FILE,
 					'plugin_version' => WP_ROCKET_VERSION,

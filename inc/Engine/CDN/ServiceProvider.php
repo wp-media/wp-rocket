@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\CDN;
 
-use WP_Rocket\Engine\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 
 /**
  * Service provider for WP Rocket CDN
@@ -32,9 +32,9 @@ class ServiceProvider extends AbstractServiceProvider {
 		$options = $this->getContainer()->get( 'options' );
 
 		$this->getContainer()->share( 'cdn', 'WP_Rocket\Engine\CDN\CDN' )
-			->withArgument( $options );
+			->addArgument( $options );
 		$this->getContainer()->share( 'cdn_subscriber', 'WP_Rocket\Engine\CDN\Subscriber' )
-			->withArgument( $options )
-			->withArgument( $this->getContainer()->get( 'cdn' ) );
+			->addArgument( $options )
+			->addArgument( $this->getContainer()->get( 'cdn' ) );
 	}
 }
