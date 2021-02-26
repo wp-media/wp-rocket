@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\Minify\CSS\Subscriber;
 
 use WP_Rocket\Tests\Integration\inc\Engine\Optimization\TestCase;
+use Brain\Monkey\Functions;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\Minify\CSS\Subscriber::process

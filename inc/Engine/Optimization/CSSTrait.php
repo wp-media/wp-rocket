@@ -386,7 +386,7 @@ trait CSSTrait {
 			$file = $this->get_local_path( $file );
 		}
 
-		$file_type = wp_check_filetype_and_ext( $file, basename( $file ), [ 'css' => 'text/css' ] );
+		$file_type = wp_check_filetype( $file, [ 'css' => 'text/css' ] );
 
 		if ( 'css' !== $file_type['ext'] ) {
 			return [ $file, null ];

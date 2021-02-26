@@ -85,8 +85,8 @@ class Test_Optimize extends TestCase {
 			}
 		);
 
-		Functions\expect( 'wp_check_filetype_and_ext' )->andReturnUsing( function( $file, $filename, $mimes ) {
-			$filename_array = explode( '.', $filename );
+		Functions\expect( 'wp_check_filetype' )->andReturnUsing( function( $file, $mimes ) {
+			$filename_array = explode( '.', $file );
 			$ext = false;
 			$type = false;
 			if ( $filename_array ) {
@@ -100,7 +100,6 @@ class Test_Optimize extends TestCase {
 			return [
 				'ext' => $ext,
 				'type' => $type,
-				'proper_filename' => $filename
 			];
 		} );
 
