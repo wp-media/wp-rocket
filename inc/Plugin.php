@@ -233,6 +233,7 @@ class Plugin {
 		$this->container->addServiceProvider( 'WP_Rocket\ThirdParty\Hostings\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Updater_Subscribers' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\DelayJS\ServiceProvider' );
+		$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\RUCSS\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Heartbeat\ServiceProvider' );
 
 		$common_subscribers = [
@@ -273,6 +274,7 @@ class Plugin {
 			'simple_custom_css',
 			'pdfembedder',
 			'delay_js_admin_subscriber',
+			'rucss_admin_subscriber',
 			'divi',
 			'preload_links_admin_subscriber',
 			'preload_links_subscriber',

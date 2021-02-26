@@ -121,9 +121,11 @@ $integration[ 'delay_js_scripts' ] = [
 	'olark',
 	'pixel-caffeine/build/frontend.js',
 ];
-$integration[ 'preload_links' ]     = 1;
-$integration[ 'image_dimensions' ] = 0;
-$integration[ 'exclude_lazyload' ] = [];
+$integration[ 'remove_unused_css' ]          = 0;
+$integration[ 'remove_unused_css_safelist' ] = [];
+$integration[ 'preload_links' ]              = 1;
+$integration[ 'image_dimensions' ]           = 0;
+$integration[ 'exclude_lazyload' ]           = [];
 
 return [
 	'test_data' => [
