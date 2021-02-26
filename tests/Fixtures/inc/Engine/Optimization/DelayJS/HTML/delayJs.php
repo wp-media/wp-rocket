@@ -12,7 +12,7 @@ return [
 			'html'     => '<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js">',
 			'expected' => '<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js">',
 		],
-	
+
 		'shouldDoNothingWhenPostExcluded' => [
 			'config'   => [
 				'bypass'               => false,
@@ -102,6 +102,19 @@ return [
 			'expected' => '<script data-rocketlazyloadscript=\'data:text/javascript;base64,YWxlcnQoIkJlIGFsZXJ0ISBXZSBuZWVkIG1vcmUgbGVydHMhIik7\' type="text/javascript" data-any="value"></script>
 <script data-ignore-me="this script should be ignored!" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js"></script>
 <script data-rocketlazyloadscript=\'//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js\' type="text/javascript" ></script>',
+		],
+		'shouldProcessScriptsWithSpaces' => [
+			'config'   => [
+				'bypass'               => false,
+				'donotoptimize'        => false,
+				'do-not-delay-setting' => 1,
+				'post-excluded'        => false,
+				'allowed-scripts'      => [ 'ck239.infusionsoft.com/app/webTracking/getTrackingCode' ],
+			],
+			'html'     => '<script src="https://ck239.infusionsoft.com/app/webTracking/getTrackingCode"></script >
+<style>.tcm-color-ac span { color: #03a9f4;}</style>',
+			'expected' => '<script data-rocketlazyloadscript=\'https://ck239.infusionsoft.com/app/webTracking/getTrackingCode\' ></script>
+<style>.tcm-color-ac span { color: #03a9f4;}</style>',
 		],
 	]
 ];

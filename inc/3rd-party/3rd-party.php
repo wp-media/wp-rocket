@@ -46,7 +46,6 @@ require WP_ROCKET_3RD_PARTY_PATH . 'plugins/ecommerce/ithemes-exchange.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/ecommerce/jigoshop.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/ecommerce/wpshop.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/ecommerce/give.php';
-require WP_ROCKET_3RD_PARTY_PATH . 'plugins/age-verify.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/autoptimize.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/envira-gallery.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/cookies/cookie-notice.php';

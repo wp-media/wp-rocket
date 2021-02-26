@@ -199,6 +199,7 @@ function get_rocket_exclude_defer_js() { // phpcs:ignore WordPress.NamingConvent
 /**
  * Add width and height attributes on all images
  *
+ * @since 3.8 deprecated
  * @since 2.2.2 This feature is enabled by a hook
  * @since 1.3.0 This process is called via the new filter rocket_buffer
  * @since 1.3.0 It's possible to not specify dimensions of an image with data-no-image-dimensions attribute
@@ -272,9 +273,61 @@ function rocket_specify_image_dimensions( $buffer ) {
 /**
  * Conflict with LayerSlider: don't add width and height attributes on all images
  *
+ * @since 3.8 deprecated
  * @since 2.1
  */
 function rocket_deactivate_specify_image_dimensions_with_layerslider() {
 	_deprecated_function( __FUNCTION__ . '()', '3.8', 'WP_Rocket\ThirdParty\Plugins\Slider\LayerSlider::get_subscribed_events()' );
 	remove_filter( 'rocket_buffer', 'rocket_specify_image_dimensions' );
+}
+
+/**
+ * Add age-verified to the list of mandatory cookies
+ *
+ * @since 3.8.6 deprecated
+ * @since 2.7
+ *
+ * @param Array $cookies Array of mandatory cookies.
+ * @return Array Updated array of mandatory cookies
+ */
+function rocket_add_cache_mandatory_cookie_for_age_verify( $cookies ) {
+	_deprecated_function( __FUNCTION__ . '()', '3.8.6' );
+
+	$cookies[] = 'age-verified';
+	return $cookies;
+}
+
+/**
+ * Add age-verified cookie when we activate the plugin
+ *
+ * @since 3.8.6 deprecated
+ * @since 2.7
+ */
+function rocket_activate_age_verify() {
+	_deprecated_function( __FUNCTION__ . '()', '3.8.6' );
+	add_filter( 'rocket_htaccess_mod_rewrite', '__return_false', 18 );
+	add_filter( 'rocket_cache_mandatory_cookies', 'rocket_add_cache_mandatory_cookie_for_age_verify' );
+
+	// Update the WP Rocket rules on the .htaccess file.
+	flush_rocket_htaccess();
+
+	// Regenerate the config file.
+	rocket_generate_config_file();
+}
+
+/**
+ * Remove age-verified cookie when we deactivate the plugin
+ *
+ * @since 3.8.6 deprecated
+ * @since 2.7
+ */
+function rocket_deactivate_age_verify() {
+	_deprecated_function( __FUNCTION__ . '()', '3.8.6' );
+	remove_filter( 'rocket_cache_mandatory_cookies', 'rocket_add_cache_mandatory_cookie_for_age_verify' );
+
+	// Update the WP Rocket rules on the .htaccess file.
+	flush_rocket_htaccess();
+
+	// Regenerate the config file.
+	rocket_generate_config_file();
 }

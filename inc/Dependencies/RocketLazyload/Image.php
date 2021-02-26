@@ -2,7 +2,7 @@
 /**
  * Handles lazyloading of images
  *
- * @package RocketLazyload
+ * @package WP_Rocket\Dependencies\RocketLazyload
  */
 
 namespace WP_Rocket\Dependencies\RocketLazyload;
@@ -253,25 +253,40 @@ class Image {
 
 		foreach ( $pictures as $picture ) {
 			if ( $this->isExcluded( $picture[0], $excluded ) ) {
+				if ( ! preg_match( '#<img(?<atts>\s.+)\s?/?>#iUs', $picture[0], $img ) ) {
+					continue;
+				}
+	
+				$img = $this->canLazyload( $img );
+	
+				if ( ! $img ) {
+					continue;
+				}
+
+				$nolazy_picture = str_replace( '<img', '<img data-skip-lazy=""', $picture[0] );
+				$html           = str_replace( $picture[0], $nolazy_picture, $html );
+
 				continue;
 			}
 
-			$lazy_sources = 0;
-
 			if ( preg_match_all( '#<source(?<atts>\s.+)>#iUs', $picture['sources'], $sources, PREG_SET_ORDER ) ) {
-				$sources = array_unique( $sources, SORT_REGULAR );
+				$lazy_sources = 0;
+				$sources      = array_unique( $sources, SORT_REGULAR );
+				$lazy_picture = $picture[0];
 
 				foreach ( $sources as $source ) {
 					$lazyload_srcset = preg_replace( '/([\s"\'])srcset/i', '\1data-lazy-srcset', $source[0] );
-					$html            = str_replace( $source[0], $lazyload_srcset, $html );
+					$lazy_picture    = str_replace( $source[0], $lazyload_srcset, $lazy_picture );
 
 					unset( $lazyload_srcset );
 					$lazy_sources++;
 				}
-			}
 
-			if ( 0 === $lazy_sources ) {
-				continue;
+				if ( 0 === $lazy_sources ) {
+					continue;
+				}
+
+				$html = str_replace( $picture[0], $lazy_picture, $html );
 			}
 
 			if ( ! preg_match( '#<img(?<atts>\s.+)\s?/?>#iUs', $picture[0], $img ) ) {
@@ -394,6 +409,7 @@ class Image {
 				'avia-bg-style-fixed',
 				'data-skip-lazy',
 				'skip-lazy',
+				'image-compare__',
 			]
 		);
 	}

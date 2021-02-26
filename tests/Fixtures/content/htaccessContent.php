@@ -10,6 +10,7 @@ AddDefaultCharset UTF-8
 <IfModule mod_mime.c>
 AddCharset UTF-8 .atom .css .js .json .rss .vtt .xml
 </IfModule>
+
 # FileETag None is not enough for every server.
 <IfModule mod_headers.c>
 Header unset ETag
@@ -18,6 +19,7 @@ Header unset ETag
 HTACCESS;
 
 $fileETag = <<<HTACCESS
+
 # Since we’re sending far-future expires, we don’t need ETags for static content.
 # developer.yahoo.com/performance/rules.html#etags
 FileETag None
@@ -35,12 +37,14 @@ Header set Access-Control-Allow-Origin "*" env=IS_CORS
 </FilesMatch>
 </IfModule>
 </IfModule>
+
 # Allow access to web fonts from all domains.
 <FilesMatch "\.(eot|otf|tt[cf]|woff2?)$">
 <IfModule mod_headers.c>
 Header set Access-Control-Allow-Origin "*"
 </IfModule>
 </FilesMatch>
+
 
 HTACCESS;
 
@@ -179,6 +183,7 @@ HTACCESS;
 
 $end = <<<HTACCESS
 # END WP Rocket
+
 # Random
 # add a trailing slash to /wp-admin# BEGIN WordPress
 
