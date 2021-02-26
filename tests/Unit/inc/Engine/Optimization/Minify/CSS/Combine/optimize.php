@@ -85,6 +85,25 @@ class Test_Optimize extends TestCase {
 			}
 		);
 
+		Functions\expect( 'wp_check_filetype_and_ext' )->andReturnUsing( function( $file, $filename, $mimes ) {
+			$filename_array = explode( '.', $filename );
+			$ext = false;
+			$type = false;
+			if ( $filename_array ) {
+				$ext = end( $filename_array );
+				if ( isset( $mimes[$ext] ) ) {
+					$type = $mimes[$ext];
+				}else{
+					$type = $ext = false;
+				}
+			}
+			return [
+				'ext' => $ext,
+				'type' => $type,
+				'proper_filename' => $filename
+			];
+		} );
+
 		$this->assertSame(
 			$this->format_the_html($expected['html']),
 			$this->format_the_html( $this->combine->optimize( $original ) )

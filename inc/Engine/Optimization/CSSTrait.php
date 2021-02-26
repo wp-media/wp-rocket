@@ -4,6 +4,7 @@ namespace WP_Rocket\Engine\Optimization;
 
 use WP_Rocket\Dependencies\PathConverter\ConverterInterface;
 use WP_Rocket\Dependencies\PathConverter\Converter;
+use WP_Rocket\Logger\Logger;
 
 trait CSSTrait {
 	/**
@@ -383,6 +384,12 @@ trait CSSTrait {
 			$file = $base_path . $ds . str_replace( '/', $ds, $file );
 		}else {
 			$file = $this->get_local_path( $file );
+		}
+
+		$file_type = wp_check_filetype_and_ext( $file, basename( $file ), [ 'css' => 'text/css' ] );
+
+		if ( 'css' !== $file_type['ext'] ) {
+			return [ $file, null ];
 		}
 
 		$import_content = rocket_direct_filesystem()->get_contents( $file );

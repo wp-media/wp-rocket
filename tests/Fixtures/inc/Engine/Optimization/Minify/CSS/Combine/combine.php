@@ -72,6 +72,28 @@ return [
 			'site_url' => 'http://example.org',
 		],
 
+		'combineCssFilesWithImportJSFile' => [
+			'original' =>
+				'<html><head><title>Sample Page</title>' .
+				'<link rel="stylesheet" href="http://example.org/wp-content/themes/twentytwenty/style-import-jsfile.css" type="text/css" media="all">' .
+				'</head><body></body></html>',
+
+			'expected' => [
+				'html'  => '<html><head><title>Sample Page</title>' .
+				           '<link rel="stylesheet" href="http://example.org/wp-content/cache/min/1/c78ec42dba4ed16fe23582b1e3d03895.css" media="all" data-minify="1" />' .
+				           '</head><body></body></html>',
+				'files' => [
+					'wp-content/cache/min/1/c78ec42dba4ed16fe23582b1e3d03895.css',
+					'wp-content/cache/min/1/c78ec42dba4ed16fe23582b1e3d03895.css.gz',
+				],
+				'css' => '@import url(vfs://public/wp-content/themes/twentytwenty/assets/script.js);',
+			],
+
+			'cdn_host' => [],
+			'cdn_url'  => 'http://example.org',
+			'site_url' => 'http://example.org',
+		],
+
 		'combineCssFilesWithNestedImport' => [
 			'original' =>
 				'<html><head><title>Sample Page</title>' .
