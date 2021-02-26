@@ -9,7 +9,7 @@ $(document).ready(function(){
 	var $notice = $('.wpr-notice');
 	var $noticeClose = $('.wpr-notice-close');
 
-	$noticeClose.click(function() {
+	$noticeClose.on('click', function() {
 		wprCloseDashboardNotice();
 		return false;
 	});
@@ -41,7 +41,7 @@ $(document).ready(function(){
 		var $checkbox = $button.closest( '.wpr-fieldsContainer-fieldset' ).find( '.wpr-radio :checkbox' );
 		var $menuItem = $( '[href="' + $button.attr( 'href' ) + '"].wpr-menuItem' );
 
-		$checkbox.change( function() {
+		$checkbox.on('change', function() {
 			if ( $checkbox.is( ':checked' ) ) {
 				$menuItem.css( 'display', 'block' );
 				$button.css( 'display', 'inline-block' );
@@ -67,19 +67,19 @@ $(document).ready(function(){
 		$wprAnalyticsOpenPopin = $('.wpr-js-popin')
 	;
 
-	$wprAnalyticsOpenPopin.click(function(e) {
+	$wprAnalyticsOpenPopin.on('click', function(e) {
 		e.preventDefault();
 		wprOpenAnalytics();
 		return false;
 	});
 
-	$wprAnalyticsClosePopin.click(function(e) {
+	$wprAnalyticsClosePopin.on('click', function(e) {
 		e.preventDefault();
 		wprCloseAnalytics();
 		return false;
 	});
 
-	$wprAnalyticsPopinButton.click(function(e) {
+	$wprAnalyticsPopinButton.on('click', function(e) {
 		e.preventDefault();
 		wprActivateAnalytics();
 		return false;
@@ -117,13 +117,13 @@ $(document).ready(function(){
 	$wprUpgradeClosePopin = $('.wpr-Popin-Upgrade-close'),
 	$wprUpgradeOpenPopin = $('.wpr-popin-upgrade-toggle');
 
-	$wprUpgradeOpenPopin.click(function(e) {
+	$wprUpgradeOpenPopin.on('click', function(e) {
 		e.preventDefault();
 		wprOpenUpgradePopin();
 		return false;
 	});
 
-	$wprUpgradeClosePopin.click(function() {
+	$wprUpgradeClosePopin.on('click', function() {
 		wprCloseUpgradePopin();
 		return false;
 	});
@@ -154,7 +154,7 @@ $(document).ready(function(){
 	var $wprSidebar    = $( '.wpr-Sidebar' );
 	var $wprButtonTips = $('.wpr-js-tips');
 
-	$wprButtonTips.change(function() {
+	$wprButtonTips.on('change', function() {
 		wprDetectTips($(this));
 	});
 
@@ -184,7 +184,7 @@ $(document).ready(function(){
 	var $adblock = $('.wpr-adblock');
 	var $adblockClose = $('.wpr-adblock-close');
 
-	$adblockClose.click(function() {
+	$adblockClose.on('click', function() {
 		wprCloseAdblockNotice();
 		return false;
 	});

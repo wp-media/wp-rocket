@@ -47,6 +47,13 @@ class Test_Process extends TestCase {
 
 		$actual = apply_filters( 'rocket_buffer', $original );
 
+		foreach ($expected['files'] as $file) {
+			$file_mtime = $this->filesystem->mtime( $file );
+			if ( $file_mtime ) {
+				$expected['html'] = str_replace( $file."?ver={{mtime}}", $file."?ver=".$file_mtime, $expected['html'] );
+			}
+		}
+
 		$this->assertSame(
 			$this->format_the_html( $expected['html'] ),
 			$this->format_the_html( $actual )

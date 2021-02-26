@@ -33,6 +33,9 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 			}
 		}
 
+		remove_filter( 'site_url', [ $this, 'setSiteUrl' ] );
+		remove_filter( 'home_url', [ $this, 'setHomeUrl' ] );
+
 		unset( $GLOBALS['wp'] );
 
 		parent::tearDown();
@@ -43,6 +46,8 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 	 */
 	public function testShouldAddMissedDimensions( $input, $config, $expected ) {
 		$this->config_data = $config;
+
+		$_SERVER['DOCUMENT_ROOT'] = "vfs://public";
 
 		if ( isset( $config['image_dimensions'] ) ){
 			add_filter( 'pre_get_rocket_option_image_dimensions', [$this, 'set_image_dimensions'] );
@@ -61,6 +66,9 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 				add_filter( 'rocket_specify_image_dimensions_for_distant', [$this, 'filter_rocket_specify_image_dimensions_for_distant'] );
 			}
 		}
+
+		add_filter( 'site_url', [ $this, 'setSiteUrl' ] );
+		add_filter( 'home_url', [ $this, 'setHomeUrl' ] );
 
 		$GLOBALS['wp'] = (object) [
 			'query_vars' => [],
@@ -88,5 +96,13 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 
 	public function filter_rocket_specify_dimension_skip_pictures( $value ) {
 		return $this->config_data['rocket_specify_dimension_skip_pictures_filter'];
+	}
+
+	public function setSiteUrl( $site_url ) {
+		return $this->config_data['site_url'] ?? $site_url;
+	}
+
+	public function setHomeUrl( $home_url ) {
+		return $this->config_data['home_url'] ?? $home_url;
 	}
 }

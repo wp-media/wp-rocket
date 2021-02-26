@@ -4,10 +4,10 @@ on:
       - published
       - edited
 
-name: Deploy Rocket Plugin on Dev
+name: Deploy Rocket Plugin
 jobs:
   deploy:
-    name: Deploy Rocket Plugin on Dev
+    name: Deploy Rocket Plugin
     runs-on: ubuntu-latest
     steps:
       - name: checkout
@@ -28,17 +28,25 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
           restore-keys: ${{ runner.os }}-composer-
 
+      - name: Download zip
+        run: |
+          wget "https://github.com/wp-media/wp-rocket/archive/trunk.zip"
+          unzip trunk.zip
+          mv wp-rocket-trunk wp-rocket
+        working-directory: /tmp
+
       - name: Run composer
         run: composer install --no-scripts --no-dev
+        working-directory: /tmp/wp-rocket
   
       - name: Zip Folder
-        run: zip -r /tmp/__wp-rocket__${GITHUB_REF##*v}.zip .
+        run: zip -r __wp-rocket_${GITHUB_REF##*v}.zip wp-rocket
+        working-directory: /tmp
 
       - name: Install Swift
         run: |
           sudo apt update
           sudo apt install python3-swiftclient -y
-
       # Use Openstack Swift to upload the zip to OVH block storage
       # We post a header to instruct the file to be deleted after 10 minutes
       - name: Upload Zip
@@ -52,8 +60,8 @@ jobs:
           OS_USER_DOMAIN_NAME: "Default"
         working-directory: /tmp
         run: |
-          /usr/bin/swift upload rocket-plugin __wp-rocket__${GITHUB_REF##*v}.zip
-          /usr/bin/swift post --header "X-Delete-After: 600" rocket-plugin __wp-rocket__${GITHUB_REF##*v}.zip
+          /usr/bin/swift upload rocket-plugin __wp-rocket_${GITHUB_REF##*v}.zip
+          /usr/bin/swift post --header "X-Delete-After: 600" rocket-plugin __wp-rocket_${GITHUB_REF##*v}.zip
         
             
       # Call the webhook on AWX to fetch and deploy the zip
@@ -61,5 +69,5 @@ jobs:
         uses: distributhor/workflow-webhook@v1
         env:
           webhook_type: 'json-extended'
-          webhook_url: https://awx.wp-media.me:443/api/v2/job_templates/34/github/
+          webhook_url: https://awx.wm-mgmt.ovh:443/api/v2/job_templates/34/github/
           webhook_secret: ${{ secrets.WEBHOOK_KEY_PLUGIN }}

@@ -156,7 +156,7 @@ class WPCache implements ActivationInterface, DeactivationInterface {
 		$constant = $this->get_wp_cache_content( $value );
 
 		if ( ! $wp_cache_found ) {
-			$config_file_contents = preg_replace( '/(<\?php)/i', "<?php\r\n{$constant}\r\n", $config_file_contents );
+			$config_file_contents = preg_replace( '/(<\?php)/i', "<?php\r\n{$constant}\r\n", $config_file_contents, 1 );
 		} elseif ( ! empty( $matches['value'] ) && $matches['value'] !== $value ) {
 			$config_file_contents = preg_replace( '/^\s*define\(\s*\'WP_CACHE\'\s*,\s*([^\s\)]*)\s*\).+/m', $constant, $config_file_contents );
 		}

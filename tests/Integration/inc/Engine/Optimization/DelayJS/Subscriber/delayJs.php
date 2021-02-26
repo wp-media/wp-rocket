@@ -20,7 +20,6 @@ class Test_DelayJs extends TestCase {
 		unset( $GLOBALS['wp'] );
 		remove_filter( 'pre_get_rocket_option_delay_js', [ $this, 'set_delay_js_option' ] );
 		remove_filter( 'pre_get_rocket_option_delay_js_scripts', [ $this, 'set_delay_js_scripts_option' ] );
-		remove_filter( 'rocket_do_delay_js', '__return_false' );
 	}
 
 	/**
@@ -29,10 +28,6 @@ class Test_DelayJs extends TestCase {
 	public function testShouldProcessScriptHTML( $config, $html, $expected ) {
 		$bypass                    = isset( $config['bypass'] ) ? $config['bypass'] : false;
 		$this->donotrocketoptimize = isset( $config['donotoptimize'] ) ? $config['donotoptimize'] : false;
-
-		if ( isset ($config['do-delay-filter'] ) ) {
-			$this->set_do_rocket_delay_js_filter( $config['do-delay-filter']);
-		}
 
 		$this->options_data        = [
 			'delay_js'         => isset( $config['do-not-delay-setting'] ) ? $config['do-not-delay-setting'] : false,
@@ -66,11 +61,5 @@ class Test_DelayJs extends TestCase {
 
 	public function set_delay_js_scripts_option() {
 		return isset( $this->options_data[ 'delay_js_scripts' ] ) ? $this->options_data[ 'delay_js_scripts' ] : [];
-	}
-
-	public function set_do_rocket_delay_js_filter( bool $do_delay = true ): void {
-		if ( ! $do_delay ) {
-			add_filter( 'rocket_do_delay_js', 'return_false' );
-		}
 	}
 }
