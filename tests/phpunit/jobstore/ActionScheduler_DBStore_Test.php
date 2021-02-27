@@ -297,11 +297,11 @@ class ActionScheduler_DBStore_Test extends ActionScheduler_UnitTestCase {
 	 * @see https://github.com/woocommerce/action-scheduler/issues/634
 	 */
 	public function test_claim_filters_out_unexpected_future_actions() {
-		$group      = __METHOD__;
-		$store      = new ActionScheduler_DBStore();
+		$group = __METHOD__;
+		$store = new ActionScheduler_DBStore();
 
 		// Create 4 actions: 2 that are already due (-3hrs and -1hrs) and 2 that are not yet due (+1hr and +3hrs).
-		for ($i = -3; $i <= 3; $i += 2 ) {
+		for ( $i = -3; $i <= 3; $i += 2 ) {
 			$schedule     = new ActionScheduler_SimpleSchedule( as_get_datetime_object( $i . ' hours' ) );
 			$action_ids[] = $store->save_action( new ActionScheduler_Action( 'test_' . $i, array(), $schedule, $group ) );
 		}
