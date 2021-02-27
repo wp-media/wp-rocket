@@ -1,7 +1,5 @@
 <?php
 
-use DateTime;
-
 /**
  * Class ActionScheduler_DBStore
  *
