@@ -215,6 +215,7 @@ class DeferJS {
 			'/wp-includes/js/dist/i18n(.min)?.js',
 			'/wp-includes/js/dist/vendor/wp-polyfill(.min)?.js',
 			'/wp-includes/js/dist/url(.min)?.js',
+			'/wp-includes/js/dist/hooks(.min)?.js',
 		];
 
 		$exclude_defer_js = array_unique( array_merge( $exclude_defer_js, $this->options->get( 'exclude_defer_js', [] ) ) );
