@@ -210,6 +210,12 @@ class DeferJS {
 			'cdn.voxpow.com/static/libs/v1/(.*).js',
 			'cdn.voxpow.com/media/trackers/js/(.*).js',
 			'use.typekit.net',
+			'/wp-includes/js/dist/vendor/lodash(.min)?.js',
+			'/wp-includes/js/dist/api-fetch(.min)?.js',
+			'/wp-includes/js/dist/i18n(.min)?.js',
+			'/wp-includes/js/dist/vendor/wp-polyfill(.min)?.js',
+			'/wp-includes/js/dist/url(.min)?.js',
+			'/wp-includes/js/dist/hooks(.min)?.js',
 		];
 
 		$exclude_defer_js = array_unique( array_merge( $exclude_defer_js, $this->options->get( 'exclude_defer_js', [] ) ) );
