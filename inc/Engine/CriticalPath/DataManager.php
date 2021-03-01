@@ -11,6 +11,7 @@ use WP_Filesystem_Direct;
  * @package WP_Rocket\Engine\CriticalPath
  */
 class DataManager {
+	use WP_Rocket\Engine\Optimization\CSSTrait;
 
 	/**
 	 * Base critical CSS path for posts.
@@ -76,6 +77,8 @@ class DataManager {
 
 			}
 		}
+
+		$cpcss = $this->apply_font_display_swap( $cpcss );
 
 		return rocket_put_content(
 			$this->critical_css_path . $path,
