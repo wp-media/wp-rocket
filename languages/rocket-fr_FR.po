@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.4\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2021-01-06 14:57-0500\n"
+"POT-Creation-Date: 2021-02-26 15:51-0500\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: wpmedia <contact@wp-media.me>, 2021\n"
 "Language-Team: French (France) (https://www.transifex.com/wp-media/teams/18133/fr_FR/)\n"
@@ -69,7 +69,7 @@ msgid "Preload the sitemap from the Jetpack plugin"
 msgstr "Précharger le sitemap de l'extension Jetpack"
 
 #: inc/3rd-party/plugins/jetpack.php:96
-#: inc/3rd-party/plugins/seo/all-in-one-seo-pack.php:89
+#: inc/3rd-party/plugins/seo/all-in-one-seo-pack.php:118
 #: inc/3rd-party/plugins/seo/rank-math-seo.php:34
 #: inc/3rd-party/plugins/seo/seopress.php:86
 #: inc/3rd-party/plugins/seo/the-seo-framework.php:144
@@ -82,7 +82,7 @@ msgstr ""
 "Nous avons automatiquement détecté le sitemap généré par l'extension %s. "
 "Vous pouvez cocher l'option pour l'inclure dans le préchargement."
 
-#: inc/3rd-party/plugins/seo/all-in-one-seo-pack.php:87
+#: inc/3rd-party/plugins/seo/all-in-one-seo-pack.php:116
 msgid "All in One SEO XML sitemap"
 msgstr "Sitemap XML de All in One SEO"
 
@@ -2143,7 +2143,7 @@ msgstr "Mettez à niveau maintenant"
 
 #: inc/Engine/License/views/promo-banner.php:36
 #: inc/Engine/License/views/renewal-expired-banner.php:39
-#: inc/admin/ui/notices.php:812 views/settings/page-sections/dashboard.php:46
+#: inc/admin/ui/notices.php:813 views/settings/page-sections/dashboard.php:46
 msgid "Dismiss this notice."
 msgstr "Ne pas tenir compte de cet avertissement."
 
@@ -2569,7 +2569,7 @@ msgid_plural "The following patterns are invalid and have been removed:"
 msgstr[0] "Le pattern suivant est invalide et a été supprimé :"
 msgstr[1] "Les patterns suivants sont invalides et ont été supprimés :"
 
-#: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:768
+#: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:769
 #: inc/common/admin-bar.php:85 inc/common/admin-bar.php:137
 #: views/settings/page-sections/dashboard.php:143
 msgid "Clear cache"
@@ -2643,7 +2643,7 @@ msgstr ""
 "<strong>%s</strong>: Une ou plusieurs extensions ont été activées ou "
 "désactivées, videz le cache si elles influent sur le front de votre site."
 
-#: inc/admin/ui/notices.php:184
+#: inc/admin/ui/notices.php:185
 msgid ""
 "WP Rocket Cloudflare Add-on provides similar functionalities. They can not "
 "be active at the same time."
@@ -2651,7 +2651,7 @@ msgstr ""
 "l’Add-on Cloudflare de WP Rocket fournit les même fonctionnalités. Ils ne "
 "peuvent pas être activés en même temps."
 
-#: inc/admin/ui/notices.php:208
+#: inc/admin/ui/notices.php:209
 #, php-format
 msgid ""
 "<strong>%s</strong>: The following plugins are not compatible with this "
@@ -2660,11 +2660,11 @@ msgstr ""
 "<strong>%s</strong>: Les extensions suivantes ne sont pas compatibles avec "
 "WP Rocket et vont générer des résultats inattendus :"
 
-#: inc/admin/ui/notices.php:214
+#: inc/admin/ui/notices.php:215
 msgid "Deactivate"
 msgstr "Désactiver"
 
-#: inc/admin/ui/notices.php:256
+#: inc/admin/ui/notices.php:257
 msgid ""
 "WP Rocket Footer JS is not an official add-on. It prevents some options in "
 "WP Rocket from working correctly. Please deactivate it if you have problems."
@@ -2673,7 +2673,7 @@ msgstr ""
 "options de WP Rocket de fonctionner correctement. Veuillez le désactiver si "
 "vous avez des problèmes."
 
-#: inc/admin/ui/notices.php:296
+#: inc/admin/ui/notices.php:297
 #, php-format
 msgid ""
 "Endurance Cache is currently enabled, which will conflict with WP Rocket "
@@ -2684,7 +2684,7 @@ msgstr ""
 " WP Rocket. Veuillez régler Endurance Cache sur Off (Niveau 0) sur la page "
 "%1$sRéglages > Général%2$s pour éviter tout problème."
 
-#: inc/admin/ui/notices.php:317
+#: inc/admin/ui/notices.php:318
 #, php-format
 msgid ""
 "%1$s: A custom permalink structure is required for the plugin to work "
@@ -2693,7 +2693,7 @@ msgstr ""
 "%1$s: Une structure de permalien personnalisée est requise pour que WP "
 "Rocket fonctionne. %2$sRendez-vous aux réglages des permaliens%3$s"
 
-#: inc/admin/ui/notices.php:364
+#: inc/admin/ui/notices.php:365
 #, php-format
 msgid ""
 "%s could not modify the .htaccess file due to missing writing permissions."
@@ -2701,14 +2701,14 @@ msgstr ""
 "%s n'a pas pu modifier le fichier .htaccess en raison d'un défaut de "
 "permissions en écriture."
 
-#: inc/admin/ui/notices.php:370 inc/admin/ui/notices.php:845
+#: inc/admin/ui/notices.php:371 inc/admin/ui/notices.php:846
 #, php-format
 msgid "Troubleshoot: %1$sHow to make system files writeable%2$s"
 msgstr ""
 "Pour résoudre le problème : %1$sComment rendre les fichiers systèmes "
 "accessible à l'écriture%2$s"
 
-#: inc/admin/ui/notices.php:372 inc/admin/ui/notices.php:847
+#: inc/admin/ui/notices.php:373 inc/admin/ui/notices.php:848
 msgid ""
 "https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
 "config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
@@ -2716,7 +2716,7 @@ msgstr ""
 "https://fr.docs.wp-rocket.me/article/945-fichiers-systemes-accessible-"
 "ecriture/?utm_source=wp_plugin&utm_medium=wp_rocket"
 
-#: inc/admin/ui/notices.php:378
+#: inc/admin/ui/notices.php:379
 msgid ""
 "Don’t worry, WP Rocket’s page caching and settings will still function "
 "correctly."
@@ -2724,7 +2724,7 @@ msgstr ""
 "Ne vous inquiétez pas, la mise en cache des pages et les réglages de WP "
 "Rocket fonctionneront toujours correctement."
 
-#: inc/admin/ui/notices.php:378
+#: inc/admin/ui/notices.php:379
 msgid ""
 "For optimal performance, adding the following lines into your .htaccess is "
 "recommended (not required):"
@@ -2732,7 +2732,7 @@ msgstr ""
 "Pour des performances optimales, il est recommandé d'ajouter les lignes "
 "suivantes dans votre fichier .htaccess (pas obligatoire) :"
 
-#: inc/admin/ui/notices.php:525
+#: inc/admin/ui/notices.php:526
 #, php-format
 msgid ""
 "%1$s is good to go! %2$sTest your load time%4$s, or visit your "
@@ -2741,7 +2741,7 @@ msgstr ""
 "%1$s est prêt à décoller ! %2$sTestez votre temps de chargement%4$s, ou "
 "jetez un oeil aux %3$sréglages%4$s."
 
-#: inc/admin/ui/notices.php:598
+#: inc/admin/ui/notices.php:599
 msgid ""
 "Would you allow WP Rocket to collect non-sensitive diagnostic data from this"
 " website?"
@@ -2749,15 +2749,15 @@ msgstr ""
 "Autorisez-vous WP Rocket à collecter les données de diagnostic non sensibles"
 " de votre site web ?"
 
-#: inc/admin/ui/notices.php:599
+#: inc/admin/ui/notices.php:600
 msgid "This would help us to improve WP Rocket for you in the future."
 msgstr "Cela nous aiderait à améliorer WP Rocket pour vous dans le futur."
 
-#: inc/admin/ui/notices.php:605
+#: inc/admin/ui/notices.php:606
 msgid "What info will we collect?"
 msgstr "Quelles infos collecterons-nous ?"
 
-#: inc/admin/ui/notices.php:610
+#: inc/admin/ui/notices.php:611
 msgid ""
 "Below is a detailed view of all data WP Rocket will collect if granted "
 "permission. WP Rocket will never transmit any domain names or email "
@@ -2769,62 +2769,62 @@ msgstr ""
 "transmettra jamais de noms de domaine ou d'adresses email (sauf pour la "
 "validation de licence), d'adresses IP ou de clés API tierces."
 
-#: inc/admin/ui/notices.php:619
+#: inc/admin/ui/notices.php:620
 msgid "Yes, allow"
 msgstr "Oui, j'autorise"
 
-#: inc/admin/ui/notices.php:622
+#: inc/admin/ui/notices.php:623
 msgid "No, thanks"
 msgstr "Non, merci"
 
-#: inc/admin/ui/notices.php:661
+#: inc/admin/ui/notices.php:662
 msgid "Thank you!"
 msgstr "Merci !"
 
-#: inc/admin/ui/notices.php:666
+#: inc/admin/ui/notices.php:667
 msgid "WP Rocket now collects these metrics from your website:"
 msgstr "WP Rocket collecte désormais ces données sur votre site web :"
 
-#: inc/admin/ui/notices.php:704
+#: inc/admin/ui/notices.php:705
 #, php-format
 msgid "%s: Cache cleared."
 msgstr "%s : Cache vidé."
 
-#: inc/admin/ui/notices.php:711
+#: inc/admin/ui/notices.php:712
 #, php-format
 msgid "%s: Post cache cleared."
 msgstr "%s : Cache Article vidé."
 
-#: inc/admin/ui/notices.php:718
+#: inc/admin/ui/notices.php:719
 #, php-format
 msgid "%s: Term cache cleared."
 msgstr "%s : Cache Terme vidé."
 
-#: inc/admin/ui/notices.php:725
+#: inc/admin/ui/notices.php:726
 #, php-format
 msgid "%s: User cache cleared."
 msgstr "%s : Cache Utilisateur vidé."
 
-#: inc/admin/ui/notices.php:771
+#: inc/admin/ui/notices.php:772
 msgid "Stop Preload"
 msgstr "Arrêter le préchargement"
 
-#: inc/admin/ui/notices.php:789
+#: inc/admin/ui/notices.php:790
 msgid "Force deactivation "
 msgstr "Forcer la désactivation"
 
-#: inc/admin/ui/notices.php:802
+#: inc/admin/ui/notices.php:803
 msgid "The following code should have been written to this file:"
 msgstr "Le code suivant aurait dû être écrit sur ce fichier :"
 
-#: inc/admin/ui/notices.php:833
+#: inc/admin/ui/notices.php:834
 #, php-format
 msgid "%s cannot configure itself due to missing writing permissions."
 msgstr ""
 "%s ne peut pas se configurer seul en raison de l'absence de permissions en "
 "écriture."
 
-#: inc/admin/ui/notices.php:839
+#: inc/admin/ui/notices.php:840
 #, php-format
 msgid "Affected file/folder: %s"
 msgstr "Fichier/dossier affecté : %s"
@@ -3137,11 +3137,11 @@ msgstr "Purger le cache de RocketCDN"
 msgid "Documentation"
 msgstr "Documentation"
 
-#: inc/common/purge.php:559
+#: inc/common/purge.php:562
 msgid "OPcache purge failed."
 msgstr "La purge OPcache a échouée."
 
-#: inc/common/purge.php:564
+#: inc/common/purge.php:567
 msgid "OPcache successfully purged"
 msgstr "OPcache purgé avec succès "
 
@@ -3406,7 +3406,7 @@ msgstr "Réglages de WP Rocket anonymes :"
 msgid "Which WP Rocket settings are active"
 msgstr "Quels sont les réglages de WP Rocket activés"
 
-#: inc/functions/options.php:489 inc/functions/options.php:528
+#: inc/functions/options.php:513 inc/functions/options.php:552
 msgid ""
 "License validation failed. Our server could not resolve the request from "
 "your website."
@@ -3414,7 +3414,7 @@ msgstr ""
 "La validation de la licence a échoué. Notre serveur n'a pas pu résoudre la "
 "demande de votre site Web.."
 
-#: inc/functions/options.php:489 inc/functions/options.php:528
+#: inc/functions/options.php:513 inc/functions/options.php:552
 #, php-format
 msgid ""
 "Try clicking %1$sSave Changes%2$s below. If the error persists, follow "
@@ -3423,7 +3423,7 @@ msgstr ""
 "Essayez de cliquer sur %1$sEnregistrer les modifications%2$s ci-dessous. Si "
 "l’erreur persiste, suivez les instructions de %3$sce guide%4$s."
 
-#: inc/functions/options.php:505
+#: inc/functions/options.php:529
 msgid ""
 "License validation failed. You may be using a nulled version of the plugin. "
 "Please do the following:"
@@ -3431,20 +3431,20 @@ msgstr ""
 "La validation de la licence a échoué. Vous utilisez peut-être une version "
 "cackée du plugin. Veuillez faire la chose suivante :"
 
-#: inc/functions/options.php:505 inc/functions/options.php:547
+#: inc/functions/options.php:529 inc/functions/options.php:571
 #, php-format
 msgid "Login to your WP Rocket %1$saccount%2$s"
 msgstr "Connectez-vous à votre %1$scompte%2$s WP Rocket"
 
-#: inc/functions/options.php:505 inc/functions/options.php:547
+#: inc/functions/options.php:529 inc/functions/options.php:571
 msgid "Download the zip file"
 msgstr "Télécharger le fichier zip."
 
-#: inc/functions/options.php:505 inc/functions/options.php:547
+#: inc/functions/options.php:529 inc/functions/options.php:571
 msgid "Reinstall"
 msgstr "Réinstaller"
 
-#: inc/functions/options.php:505
+#: inc/functions/options.php:529
 #, php-format
 msgid ""
 "If you do not have a WP Rocket account, please %1$spurchase a license%2$s."
@@ -3452,42 +3452,42 @@ msgstr ""
 "Si vous ne possédez pas de compte WP Rocket, veuillez %1$sacheter une "
 "licence%2$s."
 
-#: inc/functions/options.php:513
+#: inc/functions/options.php:537
 msgid ""
 "License validation failed. This user account does not exist in our database."
 msgstr ""
 "La validation de la licence a échoué. Ce compte utilisateur n'existe pas "
 "dans notre base de données."
 
-#: inc/functions/options.php:513
+#: inc/functions/options.php:537
 msgid "To resolve, please contact support."
 msgstr "Pour résoudre ce problème, veuillez contacter le support."
 
-#: inc/functions/options.php:521
+#: inc/functions/options.php:545
 msgid "License validation failed. This user account is blocked."
 msgstr ""
 "La validation de la licence a échoué. Ce compte utilisateur est bloqué."
 
-#: inc/functions/options.php:521
+#: inc/functions/options.php:545
 #, php-format
 msgid "Please see %1$sthis guide%2$s for more info."
 msgstr "Veuillez consulter %1$sce guide%2$s pour plus d’informations."
 
-#: inc/functions/options.php:541
+#: inc/functions/options.php:565
 msgid "Your license is not valid."
 msgstr "Votre licence n’est pas correcte."
 
-#: inc/functions/options.php:541
+#: inc/functions/options.php:565
 #, php-format
 msgid "Make sure you have an active %1$sWP Rocket license%2$s."
 msgstr "Assurez-vous que vous avez une %1$slicence WP Rocket%2$s active."
 
-#: inc/functions/options.php:543
+#: inc/functions/options.php:567
 msgid "You have added as many sites as your current license allows."
 msgstr ""
 "Vous avez ajouté autant de sites que votre licence actuelle vous le permet."
 
-#: inc/functions/options.php:543
+#: inc/functions/options.php:567
 #, php-format
 msgid ""
 "Upgrade your %1$saccount%2$s or %3$stransfer your license%2$s to this "
@@ -3496,25 +3496,25 @@ msgstr ""
 "Mettez à niveau votre %1$scompte%2$s ou %3$stransfèrez votre licence%2$s "
 "vers ce domaine."
 
-#: inc/functions/options.php:545
+#: inc/functions/options.php:569
 msgid "This website is not allowed."
 msgstr "Ce site n'est pas autorisé."
 
-#: inc/functions/options.php:545
+#: inc/functions/options.php:569
 #, php-format
 msgid "Please %1$scontact support%2$s."
 msgstr "Veuillez %1$scontacter le support%2$s."
 
-#: inc/functions/options.php:547
+#: inc/functions/options.php:571
 msgid "This license key is not recognized."
 msgstr "Cette clé de licence n'est pas reconnue."
 
-#: inc/functions/options.php:547
+#: inc/functions/options.php:571
 #, php-format
 msgid "If the issue persists, please %1$scontact support%2$s."
 msgstr "Si le problème persiste, veuillez %1$scontacter le support%2$s."
 
-#: inc/functions/options.php:553
+#: inc/functions/options.php:577
 #, php-format
 msgid "License validation failed: %s"
 msgstr "La validation de la licence a échoué : %s"
@@ -3956,11 +3956,11 @@ msgstr "Votre site devrait être déjà plus rapide !"
 #: views/settings/page-sections/dashboard.php:44
 #, php-format
 msgid ""
-"To guarantee fast websites, WP Rocket applies 80% of web performance best "
-"practices."
+"To guarantee fast websites, WP Rocket automatically applies 80% of web "
+"performance best practices."
 msgstr ""
-"Pour garantir des sites rapides, WP Rocket applique 80% des bonnes pratiques"
-" de performances Web."
+"Pour des sites web plus rapides, WP Rocket applique automatiquement 80 % des"
+" bonnes pratiques en matière de performance web."
 
 #: views/settings/page-sections/dashboard.php:44
 msgid ""
@@ -4232,15 +4232,16 @@ msgstr "version %s"
 msgid "Show Sidebar"
 msgstr "Afficher la barre latérale"
 
-#: views/settings/page.php:76
-msgid ""
-"Below is a detailed view of all data WP Rocket will collect <strong>if "
-"granted permission.</strong>"
-msgstr ""
-"Vous trouverez ci-dessous une vue détaillée de toutes les données que WP "
-"Rocket collectera <strong>si l'autorisation lui est accordée.</strong>"
-
 #: views/settings/page.php:79
+#, php-format
+msgid ""
+"Below is a detailed view of all data WP Rocket will collect %1$sif granted "
+"permission.%2$s"
+msgstr ""
+"Vous trouverez ci-dessous les données collectées par WP Rocket%1$ssi vous "
+"nous en donnez l'autorisation.%2$s"
+
+#: views/settings/page.php:84
 msgid ""
 "WP Rocket will never transmit any domain names or email addresses (except "
 "for license validation), IP addresses, or third-party API keys."
@@ -4248,7 +4249,7 @@ msgstr ""
 "WP Rocket ne transmettra jamais de noms de domaine ou d'adresses email (sauf"
 " pour la validation de licence), d'adresses IP ou de clés API tierces."
 
-#: views/settings/page.php:81
+#: views/settings/page.php:86
 msgid "Activate Rocket analytics"
 msgstr "Activer Rocket Analytics"
 
