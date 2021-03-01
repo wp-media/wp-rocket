@@ -40,6 +40,8 @@ trait CSSTrait {
 
 		$content = $this->combine_imports( $content, $target );
 
+		$content = $this->move_charset( $content );
+
 		/**
 		 * Filters the content of a CSS file
 		 *
@@ -329,6 +331,21 @@ trait CSSTrait {
 
 		// replace the import statements.
 		return str_replace( $search, $replace, $content );
+	}
+
+	/**
+	 * Move Charset to the top of the page.
+	 *
+	 * @param string $content CSS content to be parsed.
+	 *
+	 * @return string Content after moving charset to the top of it.
+	 */
+	private function move_charset( $content ) {
+		if ( ! preg_match_all( '#@charset.*;#iU', $content, $charset_matches ) ) {
+			return $content;
+		}
+
+		return implode( '', $charset_matches[0] ) . str_replace( $charset_matches[0], '', $content );
 	}
 
 	/**
