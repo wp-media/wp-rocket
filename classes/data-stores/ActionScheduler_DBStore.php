@@ -610,7 +610,7 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 		$this->claim_before_date = $before_date;
 		$this->claim_actions( $claim_id, $max_actions, $before_date, $hooks, $group );
 		$action_ids = $this->find_actions_by_claim_id( $claim_id );
-		unset( $this->claim_before_date );
+		$this->claim_before_date = null;
 
 		return new ActionScheduler_ActionClaim( $claim_id, $action_ids );
 	}
