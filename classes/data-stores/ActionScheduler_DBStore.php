@@ -15,7 +15,7 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	 * This is used in preference to passing the same information as a method param
 	 * for backwards-compatibility reasons.
 	 *
-	 * @var ?DateTime
+	 * @var DateTime|null
 	 */
 	private $claim_before_date = null;
 
