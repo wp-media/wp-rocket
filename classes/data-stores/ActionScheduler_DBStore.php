@@ -12,9 +12,12 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	/**
 	 * Used to share information about the before_date property of claims internally.
 	 *
-	 * @var array
+	 * This is used in preference to passing the same information as a method param
+	 * for backwards-compatibility reasons.
+	 *
+	 * @var ?DateTime
 	 */
-	private $before_dates_by_claim_id = array();
+	private $claim_before_date = null;
 
 	/** @var int */
 	protected static $max_args_length = 8000;
@@ -604,10 +607,10 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	public function stake_claim( $max_actions = 10, \DateTime $before_date = null, $hooks = array(), $group = '' ) {
 		$claim_id = $this->generate_claim_id();
 
-		$this->before_dates_by_claim_id[ $claim_id ] = $before_date;
+		$this->claim_before_date = $before_date;
 		$this->claim_actions( $claim_id, $max_actions, $before_date, $hooks, $group );
 		$action_ids = $this->find_actions_by_claim_id( $claim_id );
-		unset( $this->before_dates_by_claim_id[ $claim_id ] );
+		unset( $this->claim_before_date );
 
 		return new ActionScheduler_ActionClaim( $claim_id, $action_ids );
 	}
@@ -728,7 +731,7 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 		global $wpdb;
 
 		$action_ids  = array();
-		$before_date = isset( $this->before_dates_by_claim_id[ $claim_id ] ) ? $this->before_dates_by_claim_id[ $claim_id ] : as_get_datetime_object();
+		$before_date = isset( $this->claim_before_date ) ? $this->claim_before_date : as_get_datetime_object();
 		$cut_off     = $before_date->format( 'Y-m-d H:i:s' );
 
 		$sql = $wpdb->prepare(
