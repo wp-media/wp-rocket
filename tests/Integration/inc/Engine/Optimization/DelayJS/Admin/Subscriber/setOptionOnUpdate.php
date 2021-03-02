@@ -8,6 +8,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @covers \WP_Rocket\Engine\Optimization\DelayJS\Admin\Subscriber::set_option_on_update
  *
  * @group  DelayJS
+ * @group  AdminOnly
  */
 class Test_SetOptionOnUpdate extends TestCase{
 	public function setUp() {

@@ -183,12 +183,20 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 		}
 
 		// This filter is documented in /inc/classes/optimization/class-abstract-optimization.php.
-		$url       = apply_filters( 'rocket_asset_url', $url, $this->get_zones() );
-		$unique_id = md5( $url . $this->minify_key );
-		$filename  = preg_replace( '/\.js$/', '-' . $unique_id . '.js', ltrim( rocket_realpath( wp_parse_url( $url, PHP_URL_PATH ) ), '/' ) );
+		$url = apply_filters( 'rocket_asset_url', $url, $this->get_zones() );
 
+		$parsed_url = wp_parse_url( $url );
+
+		if ( empty( $parsed_url['path'] ) ) {
+			return false;
+		}
+
+		if ( ! empty( $parsed_url['host'] ) ) {
+			$url = rocket_add_url_protocol( $url );
+		}
+
+		$filename      = ltrim( rocket_realpath( $parsed_url['path'] ), '/' );
 		$minified_file = rawurldecode( $this->minify_base_path . $filename );
-		$minified_url  = $this->get_minify_url( $filename, $url );
 
 		if ( rocket_direct_filesystem()->exists( $minified_file ) ) {
 			Logger::debug(
@@ -198,7 +206,7 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 					'path' => $minified_file,
 				]
 			);
-			return $minified_url;
+			return $this->get_full_minified_url( $minified_file, $this->get_minify_url( $filename, $url ) );
 		}
 
 		$is_external_url = $this->is_external_file( $url );
@@ -248,7 +256,7 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 			return false;
 		}
 
-		return $minified_url;
+		return $this->get_full_minified_url( $minified_file, $this->get_minify_url( $filename, $url ) );
 	}
 
 	/**

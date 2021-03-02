@@ -65,8 +65,9 @@ function get_rocket_cdn_cnames( $zone = 'all' ) { // phpcs:ignore WordPress.Nami
 	 * @since 2.7
 	 *
 	 * @param array $hosts List of CNAMES.
+	 * @param array $zone  Array of CDN zones.
 	 */
-	$hosts = (array) apply_filters( 'rocket_cdn_cnames', $hosts );
+	$hosts = (array) apply_filters( 'rocket_cdn_cnames', $hosts, $zone );
 	$hosts = array_filter( $hosts );
 	$hosts = array_flip( array_flip( $hosts ) );
 	$hosts = array_values( $hosts );
@@ -128,6 +129,8 @@ function rocket_is_live_site() {
 		'-liquidwebsites.com',
 		'.myftpupload.com',
 		'.dream.press',
+		'.sg-host.com',
+		'.platformsh.site',
 	];
 	foreach ( $staging as $partial_host ) {
 		if ( strpos( $host, $partial_host ) ) {

@@ -88,6 +88,18 @@ class Combine extends AbstractCSSOptimization implements ProcessorInterface {
 	 */
 	private function parse( array $styles ) {
 		foreach ( $styles as $key => $style ) {
+			if ( $this->is_combine_excluded_media( $style[0] ) ) {
+				Logger::debug(
+					'Style is excluded due to media attribute.',
+					[
+						'css combine process',
+						'tag' => $style[0],
+					]
+				);
+
+				continue;
+			}
+
 			if ( $this->is_external_file( $style['url'] ) ) {
 				if ( $this->is_excluded_external( $style['url'] ) ) {
 					unset( $styles[ $key ] );
@@ -133,7 +145,7 @@ class Combine extends AbstractCSSOptimization implements ProcessorInterface {
 	 *
 	 * @since 3.7
 	 *
-	 * @param string $url External URL to check.
+	 * @param array $url External URL to check.
 	 * @return boolean
 	 */
 	private function is_excluded_external( $url ) {
@@ -276,11 +288,17 @@ class Combine extends AbstractCSSOptimization implements ProcessorInterface {
 	 * @return string
 	 */
 	private function get_content( $combined_file ) {
-		$content = '';
+		$minifier = new MinifyCSS();
 
 		foreach ( $this->styles as $key => $style ) {
 			if ( 'internal' === $style['type'] ) {
-				$filepath     = $this->get_file_path( $style['url'] );
+				$filepath = $this->get_file_path( $style['url'] );
+				if ( ! $filepath ) {
+					unset( $this->styles[ $key ] );
+
+					continue;
+				}
+
 				$file_content = $this->get_file_content( $filepath );
 				$file_content = $this->rewrite_paths( $filepath, $combined_file, $file_content );
 			} elseif ( 'external' === $style['type'] ) {
@@ -294,10 +312,10 @@ class Combine extends AbstractCSSOptimization implements ProcessorInterface {
 				continue;
 			}
 
-			$content .= $file_content;
+			$minifier->add( $file_content );
 		}
 
-		$content = $this->minify( $content );
+		$content = $minifier->minify();
 
 		if ( empty( $content ) ) {
 			Logger::debug( 'No CSS content.', [ 'css combine process' ] );
@@ -307,16 +325,18 @@ class Combine extends AbstractCSSOptimization implements ProcessorInterface {
 	}
 
 	/**
-	 * Minifies the content
+	 * Check if media query is valid to be excluded from combine or not.
 	 *
-	 * @since 3.1
+	 * @since 3.8
 	 *
-	 * @param string $content Content to minify.
-	 * @return string
+	 * @param string $tag Stylesheet HTML tag.
+	 * @return bool Ture if it's excluded else false.
 	 */
-	protected function minify( $content ) {
-		$minifier = new MinifyCSS( $content );
-
-		return $minifier->minify();
+	private function is_combine_excluded_media( $tag ) {
+		return (
+			false !== strpos( $tag, 'media=' )
+			&&
+			! preg_match( '/media=["\'](?:\s*|[^"\']*?\b(?:\s*?,\s*?)?(all|screen)(?:\s*?,\s*?[^"\']*)?)["\']/i', $tag )
+		);
 	}
 }

@@ -160,38 +160,62 @@ function rocket_get_dns_prefetch_domains() {
  */
 function rocket_get_ignored_parameters() {
 	$params = [
-		'utm_source'      => 1,
-		'utm_medium'      => 1,
-		'utm_campaign'    => 1,
-		'utm_expid'       => 1,
-		'utm_term'        => 1,
-		'utm_content'     => 1,
-		'mtm_source'      => 1,
-		'mtm_medium'      => 1,
-		'mtm_campaign'    => 1,
-		'mtm_keyword'     => 1,
-		'mtm_cid'         => 1,
-		'mtm_content'     => 1,
-		'pk_source'       => 1,
-		'pk_medium'       => 1,
-		'pk_campaign'     => 1,
-		'pk_keyword'      => 1,
-		'pk_cid'          => 1,
-		'pk_content'      => 1,
-		'fb_action_ids'   => 1,
-		'fb_action_types' => 1,
-		'fb_source'       => 1,
-		'fbclid'          => 1,
-		'campaignid'      => 1,
-		'adgroupid'       => 1,
-		'adid'            => 1,
-		'gclid'           => 1,
-		'age-verified'    => 1,
-		'ao_noptimize'    => 1,
-		'usqp'            => 1,
-		'cn-reloaded'     => 1,
-		'_ga'             => 1,
-		'sscid'           => 1,
+		'utm_source'            => 1,
+		'utm_medium'            => 1,
+		'utm_campaign'          => 1,
+		'utm_expid'             => 1,
+		'utm_term'              => 1,
+		'utm_content'           => 1,
+		'mtm_source'            => 1,
+		'mtm_medium'            => 1,
+		'mtm_campaign'          => 1,
+		'mtm_keyword'           => 1,
+		'mtm_cid'               => 1,
+		'mtm_content'           => 1,
+		'pk_source'             => 1,
+		'pk_medium'             => 1,
+		'pk_campaign'           => 1,
+		'pk_keyword'            => 1,
+		'pk_cid'                => 1,
+		'pk_content'            => 1,
+		'fb_action_ids'         => 1,
+		'fb_action_types'       => 1,
+		'fb_source'             => 1,
+		'fbclid'                => 1,
+		'campaignid'            => 1,
+		'adgroupid'             => 1,
+		'adid'                  => 1,
+		'gclid'                 => 1,
+		'age-verified'          => 1,
+		'ao_noptimize'          => 1,
+		'usqp'                  => 1,
+		'cn-reloaded'           => 1,
+		'_ga'                   => 1,
+		'sscid'                 => 1,
+		'gclsrc'                => 1,
+		'_gl'                   => 1,
+		'mc_cid'                => 1,
+		'mc_eid'                => 1,
+		'_bta_tid'              => 1,
+		'_bta_c'                => 1,
+		'trk_contact'           => 1,
+		'trk_msg'               => 1,
+		'trk_module'            => 1,
+		'trk_sid'               => 1,
+		'gdfms'                 => 1,
+		'gdftrk'                => 1,
+		'gdffi'                 => 1,
+		'_ke'                   => 1,
+		'redirect_log_mongo_id' => 1,
+		'redirect_mongo_id'     => 1,
+		'sb_referer_host'       => 1,
+		'mkwid'                 => 1,
+		'pcrid'                 => 1,
+		'ef_id'                 => 1,
+		's_kwcid'               => 1,
+		'msclkid'               => 1,
+		'dm_i'                  => 1,
+		'epik'                  => 1,
 	];
 
 	/**
@@ -418,66 +442,6 @@ function get_rocket_cache_query_string() { // phpcs:ignore WordPress.NamingConve
 	$query_strings = array_flip( array_flip( $query_strings ) );
 
 	return $query_strings;
-}
-
-/**
- * Get list of JS files to be excluded from defer JS.
- *
- * @since 2.10
- * @author Remy Perona
- *
- * @return array An array of URLs for the JS files to be excluded.
- */
-function get_rocket_exclude_defer_js() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
-	$exclude_defer_js = [
-		'gist.github.com',
-		'content.jwplatform.com',
-		'js.hsforms.net',
-		'www.uplaunch.com',
-		'google.com/recaptcha',
-		'widget.reviews.co.uk',
-		'verify.authorize.net/anetseal',
-		'lib/admin/assets/lib/webfont/webfont.min.js',
-		'app.mailerlite.com',
-		'widget.reviews.io',
-		'simplybook.(.*)/v2/widget/widget.js',
-		'/wp-includes/js/dist/i18n.min.js',
-		'/wp-content/plugins/wpfront-notification-bar/js/wpfront-notification-bar(.*).js',
-		'/wp-content/plugins/oxygen/component-framework/vendor/aos/aos.js',
-		'static.mailerlite.com/data/(.*).js',
-		'cdn.voxpow.com/static/libs/v1/(.*).js',
-		'cdn.voxpow.com/media/trackers/js/(.*).js',
-	];
-
-	if ( get_rocket_option( 'defer_all_js', 0 ) && get_rocket_option( 'defer_all_js_safe', 0 ) ) {
-		$jquery            = site_url( wp_scripts()->registered['jquery-core']->src );
-		$jetpack_jquery    = 'c0.wp.com/c/(?:.+)/wp-includes/js/jquery/jquery.js';
-		$googleapis_jquery = 'ajax.googleapis.com/ajax/libs/jquery/(?:.+)/jquery(?:\.min)?.js';
-		$cdnjs_jquery      = 'cdnjs.cloudflare.com/ajax/libs/jquery/(?:.+)/jquery(?:\.min)?.js';
-		$code_jquery       = 'code.jquery.com/jquery-.*(?:\.min|slim)?.js';
-
-		$exclude_defer_js[] = rocket_clean_exclude_file( $jquery );
-		$exclude_defer_js[] = $jetpack_jquery;
-		$exclude_defer_js[] = $googleapis_jquery;
-		$exclude_defer_js[] = $cdnjs_jquery;
-		$exclude_defer_js[] = $code_jquery;
-	}
-
-	/**
-	 * Filter list of Deferred JavaScript files
-	 *
-	 * @since 2.10
-	 * @author Remy Perona
-	 *
-	 * @param array $exclude_defer_js An array of URLs for the JS files to be excluded.
-	 */
-	$exclude_defer_js = apply_filters( 'rocket_exclude_defer_js', $exclude_defer_js );
-
-	foreach ( $exclude_defer_js as $i => $exclude ) {
-		$exclude_defer_js[ $i ] = str_replace( '#', '\#', $exclude );
-	}
-
-	return $exclude_defer_js;
 }
 
 /**

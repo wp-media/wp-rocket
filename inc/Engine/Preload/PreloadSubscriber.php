@@ -167,7 +167,6 @@ class PreloadSubscriber implements Subscriber_Interface {
 			'heartbeat_admin_behavior'    => true,
 			'heartbeat_editor_behavior'   => true,
 			'varnish_auto_purge'          => true,
-			'do_beta'                     => true,
 			'analytics_enabled'           => true,
 			'sucury_waf_cache_sync'       => true,
 			'sucury_waf_api_key'          => true,

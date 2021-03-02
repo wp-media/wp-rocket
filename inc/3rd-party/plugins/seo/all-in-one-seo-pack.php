@@ -1,16 +1,27 @@
 <?php
-
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals
 defined( 'ABSPATH' ) || exit;
 
-if ( defined( 'AIOSEOP_VERSION' ) ) :
-	$aioseosp_options = get_option( 'aioseop_options' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+$aioseo_v3 = defined( 'AIOSEOP_VERSION' );
+$aioseo_v4 = defined( 'AIOSEO_VERSION' ) && function_exists( 'aioseo' );
+
+if ( $aioseo_v3 || $aioseo_v4 ) :
+	$sitemap_enabled = false;
+	if ( $aioseo_v3 ) {
+		$aioseop_options = get_option( 'aioseop_options' );
+		$sitemap_enabled = ( isset( $aioseop_options['modules']['aiosp_feature_manager_options']['aiosp_feature_manager_enable_sitemap'] ) && 'on' === $aioseop_options['modules']['aiosp_feature_manager_options']['aiosp_feature_manager_enable_sitemap'] ) || ( ! isset( $aioseop_options['modules']['aiosp_feature_manager_options'] ) && isset( $aioseop_options['modules']['aiosp_sitemap_options'] ) );
+	}
+
 	/**
 	 * Improvement with All in One SEO Pack: auto-detect the XML sitemaps for the preload option
 	 *
 	 * @since 2.8
 	 * @author Remy Perona
 	 */
-	if ( isset( $aioseosp_options['modules']['aiosp_feature_manager_options']['aiosp_feature_manager_enable_sitemap'] ) && 'on' === $aioseosp_options['modules']['aiosp_feature_manager_options']['aiosp_feature_manager_enable_sitemap'] ) {
+	if (
+		( $aioseo_v3 && $sitemap_enabled ) ||
+		( $aioseo_v4 && aioseo()->options->sitemap->general->enable )
+	) {
 		/**
 		 * Add All in One SEO Sitemap option to WP Rocket options
 		 *
@@ -57,13 +68,31 @@ if ( defined( 'AIOSEOP_VERSION' ) ) :
 				return $sitemaps;
 			}
 
-			$aioseosp_options = get_option( 'aioseop_options' );
+			$aioseo_v3 = defined( 'AIOSEOP_VERSION' );
+			$aioseo_v4 = defined( 'AIOSEO_VERSION' ) && function_exists( 'aioseo' );
 
-			if ( ! isset( $aioseosp_options['modules']['aiosp_feature_manager_options']['aiosp_feature_manager_enable_sitemap'] ) || 'on' !== $aioseosp_options['modules']['aiosp_feature_manager_options']['aiosp_feature_manager_enable_sitemap'] ) {
+			if ( ! $aioseo_v3 && ! $aioseo_v4 ) {
 				return $sitemaps;
 			}
 
-			$sitemaps[] = trailingslashit( home_url() ) . apply_filters( 'aiosp_sitemap_filename', 'sitemap' ) . '.xml'; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+			$sitemap_enabled = false;
+			if ( $aioseo_v3 ) {
+				$aioseop_options = get_option( 'aioseop_options' );
+				$sitemap_enabled = ( isset( $aioseop_options['modules']['aiosp_feature_manager_options']['aiosp_feature_manager_enable_sitemap'] ) && 'on' === $aioseop_options['modules']['aiosp_feature_manager_options']['aiosp_feature_manager_enable_sitemap'] ) || ( ! isset( $aioseop_options['modules']['aiosp_feature_manager_options'] ) && isset( $aioseop_options['modules']['aiosp_sitemap_options'] ) );
+			}
+
+			if (
+				( $aioseo_v3 && ! $sitemap_enabled ) ||
+				( $aioseo_v4 && ! aioseo()->options->sitemap->general->enable )
+			) {
+				return $sitemaps;
+			}
+
+			if ( $aioseo_v3 ) {
+				$sitemaps[] = trailingslashit( home_url() ) . apply_filters( 'aiosp_sitemap_filename', 'sitemap' ) . '.xml'; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+			} elseif ( $aioseo_v4 ) {
+				$sitemaps[] = trailingslashit( home_url() ) . apply_filters( 'aioseo_sitemap_filename', 'sitemap' ) . '.xml'; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+			}
 
 			return $sitemaps;
 		}

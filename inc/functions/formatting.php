@@ -99,7 +99,7 @@ function rocket_validate_js( $file ) {
 		return $file;
 	}
 
-	return sanitize_text_field( rocket_remove_url_protocol( strtok( $file, '?' ) ) );
+	return rocket_remove_url_protocol( esc_url_raw( strtok( $file, '?' ) ) );
 }
 
 /**
@@ -115,21 +115,19 @@ function rocket_validate_css( $file ) {
 		return rocket_sanitize_css( rocket_clean_exclude_file( trim( $file ) ) );
 	}
 
-	return sanitize_text_field( rocket_remove_url_protocol( strtok( $file, '?' ) ) );
+	return rocket_remove_url_protocol( esc_url_raw( strtok( $file, '?' ) ) );
 }
 
 /**
  * Check if the passed value is an internal URL (default domain or CDN/Multilingual).
  *
  * @since  3.3.7
- * @author Remy Perona
- * @author Grégory Viguier
  *
  * @param  string $file string to test.
  * @return bool
  */
 function rocket_is_internal_file( $file ) {
-	$file_host = wp_parse_url( $file, PHP_URL_HOST );
+	$file_host = wp_parse_url( rocket_add_url_protocol( $file ), PHP_URL_HOST );
 
 	if ( empty( $file_host ) ) {
 		return false;
@@ -139,7 +137,6 @@ function rocket_is_internal_file( $file ) {
 	 * Filters the allowed hosts for optimization
 	 *
 	 * @since  3.4
-	 * @author Remy Perona
 	 *
 	 * @param array $hosts Allowed hosts.
 	 * @param array $zones Zones to check available hosts.
@@ -168,7 +165,6 @@ function rocket_is_internal_file( $file ) {
  * Sanitize a setting value meant for a textarea.
  *
  * @since  3.3.7
- * @author Grégory Viguier
  *
  * @param  string       $field The field’s name. Can be one of the following:
  *                             'exclude_css', 'exclude_inline_js', 'exclude_js', 'cache_reject_uri',
@@ -185,9 +181,11 @@ function rocket_sanitize_textarea_field( $field, $value ) {
 		'cache_query_strings'  => [ 'rocket_sanitize_key' ],
 		'cdn_reject_files'     => [ 'rocket_clean_exclude_file', 'rocket_clean_wildcards' ], // Pattern.
 		'exclude_css'          => [ 'rocket_validate_css', 'rocket_clean_wildcards' ], // Pattern.
-		'exclude_inline_js'    => [ 'sanitize_text_field' ], // Pattern.
+		'exclude_inline_js'    => [ 'sanitize_text_field' ],
+		'exclude_defer_js'     => [ 'sanitize_text_field' ],
 		'exclude_js'           => [ 'rocket_validate_js', 'rocket_clean_wildcards' ], // Pattern.
-		'delay_js_scripts'     => [ 'rocket_validate_js' ],
+		'exclude_lazyload'     => [ 'sanitize_text_field' ],
+		'delay_js_scripts'     => [ 'sanitize_text_field' ],
 	];
 
 	if ( ! isset( $fields[ $field ] ) ) {

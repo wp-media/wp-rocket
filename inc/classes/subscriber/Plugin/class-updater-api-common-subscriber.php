@@ -148,10 +148,9 @@ class Updater_Api_Common_Subscriber implements Subscriber_Interface {
 	public function get_rocket_user_agent() {
 		$consumer_key   = $this->get_current_option( 'consumer_key' );
 		$consumer_email = $this->get_current_option( 'consumer_email' );
-		$bonus          = $this->plugin_options && $this->plugin_options->get( 'do_beta' ) ? '+' : '';
 		$php_version    = preg_replace( '@^(\d+\.\d+).*@', '\1', phpversion() );
 
-		return sprintf( 'WP-Rocket|%s%s|%s|%s|%s|%s;', $this->plugin_version, $bonus, $consumer_key, $consumer_email, esc_url( $this->site_url ), $php_version );
+		return sprintf( 'WP-Rocket|%s|%s|%s|%s|%s;', $this->plugin_version, $consumer_key, $consumer_email, esc_url( $this->site_url ), $php_version );
 	}
 
 	/**

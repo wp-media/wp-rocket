@@ -18,7 +18,6 @@ function flush_rocket_htaccess( $remove_rules = false ) { // phpcs:ignore WordPr
 	 * Filters disabling of WP Rocket htaccess rules
 	 *
 	 * @since 3.2.5
-	 * @author Remy Perona
 	 *
 	 * @param bool $disable True to disable, false otherwise.
 	 */
@@ -54,18 +53,6 @@ function flush_rocket_htaccess( $remove_rules = false ) { // phpcs:ignore WordPr
 
 	if ( ! $remove_rules ) {
 		$ftmp = get_rocket_htaccess_marker() . PHP_EOL . $ftmp;
-	}
-
-	/**
-	 * Determine if empty lines should be removed in the .htaccess file.
-	 *
-	 * @since  2.10.7
-	 * @author Remy Perona
-	 *
-	 * @param boolean $remove_empty_lines True to remove, false otherwise.
-	 */
-	if ( apply_filters( 'rocket_remove_empty_lines', true ) ) {
-		$ftmp = preg_replace( "/\n+/", "\n", $ftmp );
 	}
 
 	// Make sure the WP rules are still there.
@@ -197,10 +184,10 @@ function get_rocket_htaccess_mod_rewrite() { // phpcs:ignore WordPress.NamingCon
 	$site_root = isset( $site_root ) ? trailingslashit( $site_root ) : '';
 
 	// Get cache root.
-	if ( strpos( ABSPATH, WP_ROCKET_CACHE_PATH ) === false && isset( $_SERVER['DOCUMENT_ROOT'] ) ) {
-		$cache_root = str_replace( sanitize_text_field( wp_unslash( $_SERVER['DOCUMENT_ROOT'] ) ), '', WP_ROCKET_CACHE_PATH );
+	if ( strpos( WP_ROCKET_CACHE_PATH, ABSPATH ) === false && isset( $_SERVER['DOCUMENT_ROOT'] ) ) {
+		$cache_root = '/' . ltrim( str_replace( sanitize_text_field( wp_unslash( $_SERVER['DOCUMENT_ROOT'] ) ), '', WP_ROCKET_CACHE_PATH ), '/' );
 	} else {
-		$cache_root = $site_root . str_replace( ABSPATH, '', WP_ROCKET_CACHE_PATH );
+		$cache_root = '/' . ltrim( $site_root . str_replace( ABSPATH, '', WP_ROCKET_CACHE_PATH ), '/' );
 	}
 
 	/**

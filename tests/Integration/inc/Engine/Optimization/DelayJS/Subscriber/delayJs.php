@@ -28,6 +28,7 @@ class Test_DelayJs extends TestCase {
 	public function testShouldProcessScriptHTML( $config, $html, $expected ) {
 		$bypass                    = isset( $config['bypass'] ) ? $config['bypass'] : false;
 		$this->donotrocketoptimize = isset( $config['donotoptimize'] ) ? $config['donotoptimize'] : false;
+
 		$this->options_data        = [
 			'delay_js'         => isset( $config['do-not-delay-setting'] ) ? $config['do-not-delay-setting'] : false,
 			'delay_js_scripts' => isset( $config['allowed-scripts'] ) ? $config['allowed-scripts'] : []

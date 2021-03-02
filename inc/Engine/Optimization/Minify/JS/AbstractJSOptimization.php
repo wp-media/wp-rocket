@@ -49,11 +49,10 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 	protected function get_excluded_files() {
 		$excluded_files   = $this->options->get( 'exclude_js', [] );
 		$excluded_files[] = '/wp-includes/js/dist/i18n.min.js';
-		$jquery_urls      = $this->get_jquery_urls();
-
-		if ( ! empty( $jquery_urls ) ) {
-			$excluded_files = array_merge( $excluded_files, $jquery_urls );
-		}
+		$excluded_files[] = '/interactive-3d-flipbook-powered-physics-engine/assets/js/html2canvas.min.js';
+		$excluded_files[] = '/interactive-3d-flipbook-powered-physics-engine/assets/js/pdf.min.js';
+		$excluded_files[] = '/interactive-3d-flipbook-powered-physics-engine/assets/js/three.min.js';
+		$excluded_files[] = '/interactive-3d-flipbook-powered-physics-engine/assets/js/3d-flip-book.min.js';
 
 		/**
 		 * Filter JS files to exclude from minification/concatenation.
@@ -119,7 +118,7 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 
 		if ( ! empty( $this->excluded_files ) ) {
 			// File is excluded from minification/concatenation.
-			if ( preg_match( '#^(' . $this->excluded_files . ')$#', $file_path ) ) {
+			if ( preg_match( '#(' . $this->excluded_files . ')#', $file_path ) ) {
 				return true;
 			}
 		}
@@ -149,37 +148,6 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 		 * @param string $original_url Original URL for this file.
 		 */
 		return apply_filters( 'rocket_js_url', $minify_url, $original_url );
-	}
-
-	/**
-	 * Gets jQuery URL if defer JS safe mode is active.
-	 *
-	 * @since  3.1
-	 *
-	 * @return array
-	 */
-	protected function get_jquery_urls() {
-		if ( ! $this->options->get( 'defer_all_js', 0 ) || ! $this->options->get( 'defer_all_js_safe', 0 ) ) {
-			return [];
-		}
-
-		$exclude_jquery = [];
-		$jquery         = wp_scripts()->registered['jquery-core']->src;
-
-		if ( isset( $jquery ) ) {
-			if ( empty( wp_parse_url( $jquery, PHP_URL_HOST ) ) ) {
-				$exclude_jquery[] = wp_parse_url( site_url( $jquery ), PHP_URL_PATH );
-			} else {
-				$exclude_jquery[] = $jquery;
-			}
-		}
-
-		$exclude_jquery[] = 'c0.wp.com/c/(?:.+)/wp-includes/js/jquery/jquery.js';
-		$exclude_jquery[] = 'ajax.googleapis.com/ajax/libs/jquery/(?:.+)/jquery(?:\.min)?.js';
-		$exclude_jquery[] = 'cdnjs.cloudflare.com/ajax/libs/jquery/(?:.+)/jquery(?:\.min)?.js';
-		$exclude_jquery[] = 'code.jquery.com/jquery-.*(?:\.min|slim)?.js';
-
-		return $exclude_jquery;
 	}
 
 	/**
@@ -267,6 +235,12 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 			'cdn.voxpow.com',
 			'loader.knack.com',
 			'embed.lpcontent.net/leadboxes/current/embed.js',
+			'cc.cdn.civiccomputing.com/9/cookieControl-9.x.min.js',
+			'cse.google.com/cse.js',
+			'kit.fontawesome.com',
+			'cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js',
+			'static.leadpages.net/leadbars/current/embed.js',
+			'booqable.com/v2/booqable.js',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );

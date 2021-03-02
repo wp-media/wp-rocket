@@ -20,7 +20,6 @@ $default = [
 	'exclude_js'                  => [],
 	'exclude_inline_js'           => [],
 	'defer_all_js'                => 0,
-	'defer_all_js_safe'           => 1,
 	'async_css'                   => 0,
 	'critical_css'                => '',
 	'lazyload'                    => 0,
@@ -61,12 +60,11 @@ $default = [
 	'cloudflare_protocol_rewrite' => 0,
 	'cloudflare_auto_settings'    => 0,
 	'cloudflare_old_settings'     => '',
-	'control_heartbeat'           => 0,
+	'control_heartbeat'           => 1,
 	'heartbeat_site_behavior'     => 'reduce_periodicity',
 	'heartbeat_admin_behavior'    => 'reduce_periodicity',
 	'heartbeat_editor_behavior'   => 'reduce_periodicity',
 	'varnish_auto_purge'          => 0,
-	'do_beta'                     => 0,
 	'analytics_enabled'           => 0,
 	'google_analytics_cache'      => 0,
 	'facebook_pixel_cache'        => 0,
@@ -76,6 +74,7 @@ $default = [
 
 $integration = $default;
 $integration[ 'async_css_mobile' ] = 1;
+$integration[ 'exclude_defer_js' ] = [];
 $integration[ 'delay_js' ]         = 1;
 $integration[ 'delay_js_scripts' ] = [
 	'getbutton.io',
@@ -122,7 +121,11 @@ $integration[ 'delay_js_scripts' ] = [
 	'olark',
 	'pixel-caffeine/build/frontend.js',
 ];
-$integration[ 'preload_links' ]    = 0;
+$integration[ 'remove_unused_css' ]          = 0;
+$integration[ 'remove_unused_css_safelist' ] = [];
+$integration[ 'preload_links' ]              = 1;
+$integration[ 'image_dimensions' ]           = 0;
+$integration[ 'exclude_lazyload' ]           = [];
 
 return [
 	'test_data' => [

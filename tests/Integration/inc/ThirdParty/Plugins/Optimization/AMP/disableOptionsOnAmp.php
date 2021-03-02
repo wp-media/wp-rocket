@@ -36,6 +36,10 @@ class Test_DisableOptionsOnAmp extends TestCase {
 			$this->assertNotFalse( has_filter( 'wp_resource_hints', 'rocket_dns_prefetch' ) );
 			$this->assertFalse( has_filter( 'do_rocket_lazyload', '__return_false' ) );
 			$this->assertFalse( has_filter( 'do_rocket_lazyload_iframes', '__return_false' ) );
+			$this->assertFalse( has_filter( 'pre_get_rocket_option_async_css', '__return_false' ) );
+			$this->assertFalse( has_filter( 'pre_get_rocket_option_delay_js', '__return_false' ) );
+			$this->assertFalse( has_filter( 'pre_get_rocket_option_preload_links', '__return_false' ) );
+
 			$this->assertArrayHasKey( 'rocket_buffer', $wp_filter );
 
 			if ( ! is_null( $config[ 'amp_options' ] ) ) {
@@ -55,6 +59,9 @@ class Test_DisableOptionsOnAmp extends TestCase {
 			$this->assertFalse( has_filter( 'wp_resource_hints', 'rocket_dns_prefetch' ) );
 			$this->assertNotFalse( has_filter( 'do_rocket_lazyload', '__return_false' ) );
 			$this->assertNotFalse( has_filter( 'do_rocket_lazyload_iframes', '__return_false' ) );
+			$this->assertNotFalse( has_filter( 'pre_get_rocket_option_async_css', '__return_false' ) );
+			$this->assertNotFalse( has_filter( 'pre_get_rocket_option_delay_js', '__return_false' ) );
+			$this->assertNotFalse( has_filter( 'pre_get_rocket_option_preload_links', '__return_false' ) );
 
 			if ( in_array( $config[ 'amp_options' ][ 'theme_support' ], [ 'transitional', 'reader' ], true ) ) {
 				$this->assertArrayHasKey( 'rocket_buffer', $wp_filter );
