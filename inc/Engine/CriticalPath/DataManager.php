@@ -4,6 +4,7 @@ namespace WP_Rocket\Engine\CriticalPath;
 
 use WP_Error;
 use WP_Filesystem_Direct;
+use WP_Rocket\Engine\Optimization\CSSTrait;
 
 /**
  * Class DataManager
@@ -11,7 +12,7 @@ use WP_Filesystem_Direct;
  * @package WP_Rocket\Engine\CriticalPath
  */
 class DataManager {
-	use WP_Rocket\Engine\Optimization\CSSTrait;
+	use CSSTrait;
 
 	/**
 	 * Base critical CSS path for posts.
