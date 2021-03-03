@@ -13,18 +13,18 @@ if ( ! defined( 'WP_ROCKET_CONFIG_PATH' ) ) {
 require_once dirname( __FILE__ ) . '/inc/Engine/WPRocketUninstall.php';
 
 // RUCSS Database Engine.
-require_once dirname( __FILE__ ) . 'inc/Dependencies/Database/base.php';
-require_once dirname( __FILE__ ) . 'inc/Dependencies/Database/column.php';
-require_once dirname( __FILE__ ) . 'inc/Dependencies/Database/schema.php';
-require_once dirname( __FILE__ ) . 'inc/Dependencies/Database/query.php';
-require_once dirname( __FILE__ ) . 'inc/Dependencies/Database/row.php';
-require_once dirname( __FILE__ ) . 'inc/Dependencies/Database/table.php';
-require_once dirname( __FILE__ ) . 'inc/Dependencies/Database/Queries/meta.php';
-require_once dirname( __FILE__ ) . 'inc/Dependencies/Database/Queries/date.php';
-require_once dirname( __FILE__ ) . 'inc/Dependencies/Database/Queries/compare.php';
-require_once dirname( __FILE__ ) . 'inc/Engine/Optimization/RUCSS/Tables/Resources.php';
+require_once dirname( __FILE__ ) . '/inc/Dependencies/Database/base.php';
+require_once dirname( __FILE__ ) . '/inc/Dependencies/Database/column.php';
+require_once dirname( __FILE__ ) . '/inc/Dependencies/Database/schema.php';
+require_once dirname( __FILE__ ) . '/inc/Dependencies/Database/query.php';
+require_once dirname( __FILE__ ) . '/inc/Dependencies/Database/row.php';
+require_once dirname( __FILE__ ) . '/inc/Dependencies/Database/table.php';
+require_once dirname( __FILE__ ) . '/inc/Dependencies/Database/Queries/meta.php';
+require_once dirname( __FILE__ ) . '/inc/Dependencies/Database/Queries/date.php';
+require_once dirname( __FILE__ ) . '/inc/Dependencies/Database/Queries/compare.php';
+require_once dirname( __FILE__ ) . '/inc/Engine/Optimization/RUCSS/Database/Tables/Resources.php';
 
-$rocket_rucss_resources_table = new Resources();
+$rocket_rucss_resources_table = new WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\Resources();
 
 $rocket_uninstall = new WPRocketUninstall( WP_ROCKET_CACHE_ROOT_PATH, WP_ROCKET_CONFIG_PATH, $rocket_rucss_resources_table );
 $rocket_uninstall->uninstall();

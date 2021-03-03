@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Engine\Optimization\RUCSS\Schemas;
+namespace WP_Rocket\Engine\Optimization\RUCSS\Database\Schemas;
 
 use WP_Rocket\Dependencies\Database\Schema;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Engine\Optimization\RUCSS\Tables;
+namespace WP_Rocket\Engine\Optimization\RUCSS\Database\Tables;
 
 use WP_Rocket\Dependencies\Database\Table;
 
