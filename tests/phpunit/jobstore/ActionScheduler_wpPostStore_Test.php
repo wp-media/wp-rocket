@@ -411,4 +411,56 @@ class ActionScheduler_wpPostStore_Test extends ActionScheduler_UnitTestCase {
 		$this->assertFalse( in_array( $action2, $claim->get_actions() ) );
 		$store->release_claim( $claim );
 	}
+
+	/**
+	 * The query used to claim actions explicitly ignores future pending actions, but it
+	 * is still possible under unusual conditions (such as if MySQL runs out of temporary
+	 * storage space) for such actions to be returned.
+	 *
+	 * When this happens, we still expect the store to filter them out, otherwise there is
+	 * a risk that actions will be unexpectedly processed ahead of time.
+	 *
+	 * @see https://github.com/woocommerce/action-scheduler/issues/634
+	 */
+	public function test_claim_filters_out_unexpected_future_actions() {
+		$group = __METHOD__;
+		$store = new ActionScheduler_wpPostStore();
+
+		// Create 4 actions: 2 that are already due (-3hrs and -1hrs) and 2 that are not yet due (+1hr and +3hrs).
+		for ( $i = -3; $i <= 3; $i += 2 ) {
+			$schedule     = new ActionScheduler_SimpleSchedule( as_get_datetime_object( $i . ' hours' ) );
+			$action_ids[] = $store->save_action( new ActionScheduler_Action( 'test_' . $i, array(), $schedule, $group ) );
+		}
+
+		// This callback is used to simulate the unusual conditions whereby MySQL might unexpectedly return future
+		// actions, contrary to the conditions used by the store object when staking its claim.
+		$simulate_unexpected_db_behavior = static function( $sql ) use ( $action_ids ) {
+			global $wpdb;
+
+			$post_type = ActionScheduler_wpPostStore::POST_TYPE;
+			$pending   = ActionScheduler_wpPostStore::STATUS_PENDING;
+
+			// Look out for the claim update query, ignore all others.
+			if (
+				0 !== strpos( $sql, "UPDATE $wpdb->posts" )
+				|| 0 !== strpos( $sql, "WHERE post_type = '$post_type' AND post_status = '$pending' AND post_password = ''" )
+				|| ! preg_match( "/AND post_date_gmt <= '([0-9:\-\s]{19})'/", $sql, $matches )
+				|| count( $matches ) !== 2
+			) {
+				return $sql;
+			}
+
+			// Now modify the query, forcing it to also return the future actions we created.
+			return str_replace( $matches[1], as_get_datetime_object( '+4 hours' )->format( 'Y-m-d H:i:s' ), $sql );
+		};
+
+		add_filter( 'query', $simulate_unexpected_db_behavior );
+		$claim = $store->stake_claim( 10, null, array(), $group );
+		$claimed_actions = $claim->get_actions();
+		$this->assertCount( 2, $claimed_actions );
+
+		// Cleanup.
+		remove_filter( 'query', $simulate_unexpected_db_behavior );
+		$store->release_claim( $claim );
+	}
 }

@@ -9,6 +9,16 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	const SCHEDULE_META_KEY = '_action_manager_schedule';
 	const DEPENDENCIES_MET = 'as-post-store-dependencies-met';
 
+	/**
+	 * Used to share information about the before_date property of claims internally.
+	 *
+	 * This is used in preference to passing the same information as a method param
+	 * for backwards-compatibility reasons.
+	 *
+	 * @var DateTime|null
+	 */
+	private $claim_before_date = null;
+
 	/** @var DateTimeZone */
 	protected $local_timezone = NULL;
 
@@ -512,9 +522,11 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	 * @throws InvalidArgumentException When the given group is not valid.
 	 */
 	public function stake_claim( $max_actions = 10, DateTime $before_date = null, $hooks = array(), $group = '' ) {
+		$this->claim_before_date = $before_date;
 		$claim_id = $this->generate_claim_id();
 		$this->claim_actions( $claim_id, $max_actions, $before_date, $hooks, $group );
 		$action_ids = $this->find_actions_by_claim_id( $claim_id );
+		$this->claim_before_date = null;
 
 		return new ActionScheduler_ActionClaim( $claim_id, $action_ids );
 	}
@@ -667,9 +679,22 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	public function find_actions_by_claim_id( $claim_id ) {
 		/** @var wpdb $wpdb */
 		global $wpdb;
-		$sql = "SELECT ID FROM {$wpdb->posts} WHERE post_type = %s AND post_password = %s";
+
+		$sql = "SELECT ID, post_date_gmt FROM {$wpdb->posts} WHERE post_type = %s AND post_password = %s";
 		$sql = $wpdb->prepare( $sql, array( self::POST_TYPE, $claim_id ) );
-		$action_ids = $wpdb->get_col( $sql );
+
+		$action_ids  = array();
+		$before_date = isset( $this->claim_before_date ) ? $this->claim_before_date : as_get_datetime_object();
+		$cut_off     = $before_date->format( 'Y-m-d H:i:s' );
+
+		// Verify that the scheduled date for each action is within the expected bounds (in some unusual
+		// cases, we cannot depend on MySQL to honor all of the WHERE conditions we specify).
+		foreach ( $wpdb->get_results( $sql ) as $claimed_action ) {
+			if ( $claimed_action->post_date_gmt <= $cut_off ) {
+				$action_ids[] = absint( $claimed_action->ID );
+			}
+		}
+
 		return $action_ids;
 	}
 
