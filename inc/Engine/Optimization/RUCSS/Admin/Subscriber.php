@@ -14,12 +14,21 @@ class Subscriber implements Subscriber_Interface {
 	private $settings;
 
 	/**
+	 * Database instance
+	 *
+	 * @var Database
+	 */
+	private $database;
+
+	/**
 	 * Instantiate the class
 	 *
 	 * @param Settings $settings Settings instance.
+	 * @param Database $database Database instance.
 	 */
-	public function __construct( Settings $settings ) {
+	public function __construct( Settings $settings, Database $database ) {
 		$this->settings = $settings;
+		$this->database = $database;
 	}
 
 	/**
@@ -29,15 +38,19 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() : array {
 		return [
-			'rocket_first_install_options' => 'add_options_first_time',
+			'rocket_first_install_options' => [
+				[ 'add_options_first_time' ],
+				[ 'instantiate_rucss_database_tables' ],
+			],
 			'wp_rocket_upgrade'            => [
 				[ 'set_option_on_update', 13, 2 ],
+				[ 'instantiate_rucss_database_tables_on_update', 13, 2 ],
 			],
 		];
 	}
 
 	/**
-	 * Add the RUCSS options to the WP Rocket options array
+	 * Add the RUCSS options to the WP Rocket options array.
 	 *
 	 * @since 3.9
 	 *
@@ -63,4 +76,28 @@ class Subscriber implements Subscriber_Interface {
 		$this->settings->set_option_on_update( $old_version );
 	}
 
+	/**
+	 * Instantiate DB tables required by RUCSS.
+	 *
+	 * @since 3.9
+	 *
+	 * @return void
+	 */
+	public function instantiate_rucss_database_tables() {
+		$this->database->instantiate_rucss_database_tables();
+	}
+
+	/**
+	 * Instantiates RUCSS DB tables when updating to 3.9
+	 *
+	 * @since 3.9
+	 *
+	 * @param string $new_version New plugin version.
+	 * @param string $old_version Previous plugin version.
+	 *
+	 * @return void
+	 */
+	public function instantiate_rucss_database_tables_on_update( $new_version, $old_version ) {
+		$this->database->instantiate_rucss_database_tables_on_update( $old_version );
+	}
 }

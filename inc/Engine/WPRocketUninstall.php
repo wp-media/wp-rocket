@@ -86,14 +86,22 @@ class WPRocketUninstall {
 	];
 
 	/**
+	 * Instance of RUCSS resources table.
+	 *
+	 * @var WP_Rocket\Engine\Optimization\RUCSS\Tables\Resources
+	 */
+	private $rucss_resources_table;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param string $cache_path  Path to the cache folder.
 	 * @param string $config_path Path to the config folder.
 	 */
-	public function __construct( $cache_path, $config_path ) {
-		$this->cache_path  = trailingslashit( $cache_path );
-		$this->config_path = $config_path;
+	public function __construct( $cache_path, $config_path, $rucss_resources_table ) {
+		$this->cache_path            = trailingslashit( $cache_path );
+		$this->config_path           = $config_path;
+		$this->rucss_resources_table = $rucss_resources_table;
 	}
 
 	/**
@@ -108,6 +116,19 @@ class WPRocketUninstall {
 		$this->delete_plugin_data();
 		$this->delete_cache_files();
 		$this->delete_config_files();
+		$this->drop_rucss_databse_tables();
+	}
+
+	/**
+	 * Drop RUCSS database tables.
+	 *
+	 * @return void
+	 */
+	private function drop_rucss_databse_tables() {
+		// If the table exist, then drop the table.
+		if ( $this->rucss_resources_table->exists() ) {
+			$this->rucss_resources_table->uninstall();
+		}
 	}
 
 	/**
