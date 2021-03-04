@@ -72,14 +72,13 @@ abstract class AjaxTestCase extends WPMediaAjaxTestCase {
 		unset( $_POST['action'], $_POST['nonce'] );
 		$this->action = null;
 		CapTrait::resetAdminCap();
+		DBTrait::uninstallDBTables();
 
 		parent::tearDown();
 
 		if ( static::$use_settings_trait ) {
 			$this->tearDownSettings();
 		}
-
-		DBTrait::uninstallDBTables();
 	}
 
 	public function configTestData() {

@@ -35,6 +35,8 @@ abstract class AdminTestCase extends BaseTestCase {
 		$_GET  = [];
 		unset( $GLOBALS['post'], $GLOBALS['comment'] );
 
+		DBTrait::uninstallDBTables();
+
 		$this->resetStubProperties();
 
 		parent::tearDown();
@@ -44,8 +46,6 @@ abstract class AdminTestCase extends BaseTestCase {
 		if ( $this->user_id > 0 ) {
 			wp_delete_user( $this->user_id );
 		}
-
-		DBTrait::uninstallDBTables();
 	}
 
 	protected function setRoleCap( $role_type, $cap ) {
