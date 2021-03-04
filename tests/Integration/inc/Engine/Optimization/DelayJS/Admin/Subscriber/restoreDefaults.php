@@ -3,7 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\DelayJS\Admin\Subscriber;
 
 use WP_Rocket\Tests\Integration\CapTrait;
-use WPMedia\PHPUnit\Integration\AjaxTestCase;
+use WP_Rocket\Tests\Integration\AjaxTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\DelayJS\Admin\Subscriber::restore_defaults

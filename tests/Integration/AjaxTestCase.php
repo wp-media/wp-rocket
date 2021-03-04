@@ -13,6 +13,7 @@ abstract class AjaxTestCase extends WPMediaAjaxTestCase {
 	use CapTrait;
 	use SettingsTrait;
 	use StubTrait;
+	use DBTrait;
 
 	protected static $use_settings_trait = false;
 	protected static $transients         = [];
@@ -77,6 +78,8 @@ abstract class AjaxTestCase extends WPMediaAjaxTestCase {
 		if ( static::$use_settings_trait ) {
 			$this->tearDownSettings();
 		}
+
+		DBTrait::uninstallDBTables();
 	}
 
 	public function configTestData() {
