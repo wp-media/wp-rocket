@@ -59,6 +59,8 @@ abstract class AjaxTestCase extends WPMediaAjaxTestCase {
 			$this->loadTestDataConfig();
 		}
 
+		DBTrait::removeDBHooks();
+
 		$this->stubRocketGetConstant();
 
 		parent::setUp();
@@ -72,7 +74,6 @@ abstract class AjaxTestCase extends WPMediaAjaxTestCase {
 		unset( $_POST['action'], $_POST['nonce'] );
 		$this->action = null;
 		CapTrait::resetAdminCap();
-		DBTrait::uninstallDBTables();
 
 		parent::tearDown();
 

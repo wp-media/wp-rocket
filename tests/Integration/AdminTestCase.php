@@ -23,6 +23,8 @@ abstract class AdminTestCase extends BaseTestCase {
 	public function setUp() {
 		parent::setUp();
 
+		DBTrait::removeDBHooks();
+
 		$this->stubRocketGetConstant();
 
 		// Suppress warnings from "Cannot modify header information - headers already sent by".
@@ -34,8 +36,6 @@ abstract class AdminTestCase extends BaseTestCase {
 		$_POST = [];
 		$_GET  = [];
 		unset( $GLOBALS['post'], $GLOBALS['comment'] );
-
-		DBTrait::uninstallDBTables();
 
 		$this->resetStubProperties();
 
