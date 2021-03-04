@@ -23,35 +23,6 @@ class Database {
 	}
 
 	/**
-	 * Instantiate and creates RUCSS Database Tables.
-	 *
-	 * @return void
-	 */
-	public function instantiate_rucss_database_tables() {
-		// If the table does not exist, then create the table.
-		if ( ! $this->rucss_resources_table->exists() ) {
-			$this->rucss_resources_table->install();
-		}
-	}
-
-	/**
-	 * Instantiate RUCSS tables when updating to 3.9 from older versions.
-	 *
-	 * @since 3.9
-	 *
-	 * @param string $old_version Previous plugin version.
-	 *
-	 * @return void
-	 */
-	public function instantiate_rucss_database_tables_on_update( $old_version ) {
-		if ( version_compare( $old_version, '3.9', '>' ) ) {
-			return;
-		}
-
-		$this->instantiate_rucss_database_tables();
-	}
-
-	/**
 	 * Drop RUCSS Database Tables.
 	 *
 	 * @return void
