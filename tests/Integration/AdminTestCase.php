@@ -7,6 +7,7 @@ use WPMedia\PHPUnit\Integration\TestCase as BaseTestCase;
 
 abstract class AdminTestCase extends BaseTestCase {
 	use StubTrait;
+	use DBTrait;
 
 	protected $error_level;
 	protected $user_id = 0;
@@ -43,6 +44,8 @@ abstract class AdminTestCase extends BaseTestCase {
 		if ( $this->user_id > 0 ) {
 			wp_delete_user( $this->user_id );
 		}
+
+		DBTrait::uninstallDBTables();
 	}
 
 	protected function setRoleCap( $role_type, $cap ) {

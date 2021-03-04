@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\Settings\Settings;
 
-use WPMedia\PHPUnit\Integration\AdminTestCase;
+use WP_Rocket\Tests\Integration\AdminTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Admin\Settings\Settings::sanitize_callback
