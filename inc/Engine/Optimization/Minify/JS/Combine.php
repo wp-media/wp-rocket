@@ -689,6 +689,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'wpml_browser_redirect_params',
 			'swPreRegister',
 			'kboard_settings',
+			'ct_ultimate_gdpr_cookie',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
