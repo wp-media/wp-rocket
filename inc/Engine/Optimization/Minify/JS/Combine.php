@@ -686,6 +686,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'UNCODE.initRow',
 			'amp_mobile_redirect_disabled',
 			'wcpv_registration_local',
+			'www.idxhome.com',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
