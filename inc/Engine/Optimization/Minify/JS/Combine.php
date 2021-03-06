@@ -685,6 +685,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'jrRelatedWidgets',
 			'UNCODE.initRow',
 			'amp_mobile_redirect_disabled',
+			'wcpv_registration_local',
 			'www.idxhome.com',
 		];
 
