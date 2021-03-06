@@ -690,6 +690,8 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'swPreRegister',
 			'kboard_settings',
 			'ct_ultimate_gdpr_cookie',
+			'wcpv_registration_local',
+			'www.idxhome.com',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
