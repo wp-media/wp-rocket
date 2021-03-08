@@ -378,12 +378,12 @@ class CDN {
 	 */
 	private function get_srcset_attributes() {
 		/**
-			* Filter the srcset attributes.
-			*
-			* @since 3.8.7
-			*
-			* @param array $srcset_attributes List of srcset attributes.
-		*/
+		 * Filter the srcset attributes.
+		 *
+		 * @since 3.8.7
+		 *
+		 * @param array $srcset_attributes List of srcset attributes.
+		 */
 		$srcset_attributes = (array) apply_filters(
 			'rocket_cdn_srcset_attributes',
 			[
