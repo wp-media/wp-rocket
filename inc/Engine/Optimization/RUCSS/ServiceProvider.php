@@ -24,6 +24,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		'rucss_resources_table',
 		'rucss_database',
 		'rucss_admin_subscriber',
+		'local_cache',
+		'rucss_resource_fetcher',
 	];
 
 	/**
@@ -41,5 +43,14 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'rucss_admin_subscriber', 'WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber' )
 			->withArgument( $this->getContainer()->get( 'rucss_settings' ) )
 			->withArgument( $this->getContainer()->get( 'rucss_database' ) );
+
+		$this->getContainer()->add( 'local_cache', '\WP_Rocket\Engine\Optimization\AssetsLocalCache' )
+			->withArgument( rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' ) )
+			->withArgument( rocket_direct_filesystem() );
+		$this->getContainer()->share( 'rucss_resource_fetcher', '\WP_Rocket\Engine\Optimization\RUCSS\Warmup\ResourceFetcher' )
+			->withArgument( $this->getContainer()->get( 'local_cache' ) );
+		$this->getContainer()->share( 'rucss_warmup_subscriber', '\WP_Rocket\Engine\Optimization\RUCSS\Warmup\Subscriber' )
+			->withArgument( $this->getContainer()->get( 'rucss_resource_fetcher' ) );
+
 	}
 }
