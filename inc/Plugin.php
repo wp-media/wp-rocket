@@ -275,6 +275,7 @@ class Plugin {
 			'pdfembedder',
 			'delay_js_admin_subscriber',
 			'rucss_admin_subscriber',
+			'rucss_frontend_subscriber',
 			'divi',
 			'preload_links_admin_subscriber',
 			'preload_links_subscriber',

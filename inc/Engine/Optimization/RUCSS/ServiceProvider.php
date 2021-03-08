@@ -24,6 +24,10 @@ class ServiceProvider extends AbstractServiceProvider {
 		'rucss_resources_table',
 		'rucss_database',
 		'rucss_admin_subscriber',
+		'rucss_api_client',
+		'rucss_used_css',
+		'rucss_used_css_query',
+		'rucss_frontend_subscriber',
 	];
 
 	/**
@@ -43,5 +47,13 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'rucss_admin_subscriber', 'WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber' )
 			->withArgument( $this->getContainer()->get( 'rucss_settings' ) )
 			->withArgument( $this->getContainer()->get( 'rucss_database' ) );
+
+		$this->getContainer()->add( 'rucss_used_css_query', 'WP_Rocket\Engine\Optimization\RUCSS\Database\Query\UsedCSS' );
+		$this->getContainer()->add( 'rucss_api_client', 'WP_Rocket\Engine\Optimization\RUCSS\APIClient' );
+		$this->getContainer()->add( 'rucss_used_css_controller', 'WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS' )
+			->withArgument( $this->getContainer()->get( 'rucss_used_css_query' ) );
+		$this->getContainer()->share( 'rucss_frontend_subscriber', 'WP_Rocket\Engine\Optimization\RUCSS\Frontend\Subscriber' )
+			->withArgument( $this->getContainer()->get( 'rucss_used_css_controller' ) )
+			->withArgument( $this->getContainer()->get( 'rucss_api_client' ) );
 	}
 }
