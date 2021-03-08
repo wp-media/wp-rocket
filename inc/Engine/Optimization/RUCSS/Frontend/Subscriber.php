@@ -63,7 +63,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function treeshake( string $html ) : string {
 		if ( ! $this->is_allowed() ) {
-			return [];
+			return $html;
 		}
 
 		global $wp;
