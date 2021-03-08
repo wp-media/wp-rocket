@@ -60,7 +60,7 @@ class CDN {
 	 * @return string
 	 */
 	public function rewrite_srcset( $html ) {
-		$pattern = '#\s+(?:data-lazy-|data-)?srcset\s*=\s*["\']\s*(?<sources>[^"\',\s]+\.[^"\',\s]+(?:\s+\d+[wx])?(?:\s*,\s*[^"\',\s]+\.[^"\',\s]+\s+\d+[wx])*)\s*["\']#i';
+		$pattern = '#\s+(?:' . $this->get_srcset_attributes() . ')?\s*=\s*["\']\s*(?<sources>[^"\',\s]+\.[^"\',\s]+(?:\s+\d+[wx])?(?:\s*,\s*[^"\',\s]+\.[^"\',\s]+\s+\d+[wx])*)\s*["\']#i';
 
 		if ( ! preg_match_all( $pattern, $html, $srcsets, PREG_SET_ORDER ) ) {
 			return $html;
@@ -367,5 +367,30 @@ class CDN {
 		);
 
 		return implode( '|', $files );
+	}
+	
+	/**
+	 * Get srcset attributes to rewrite to the CDN.
+	 *
+	 * @since 3.8.7
+	 *
+	 * @return string A pipe-separated list of srcset attributes.
+	 */
+	private function get_srcset_attributes() {
+		/**
+			* Filter the srcset attributes.
+			*
+			* @since 3.8.7
+			*
+			* @param array $srcset_attributes List of srcset attributes.
+		*/
+		$srcset_attributes = (array) apply_filters( 
+			'rocket_cdn_srcset_attributes',
+			[
+				'data-lazy-srcset',
+				'data-srcset',
+			]
+		);
+		return implode( '|', $srcset_attributes );
 	}
 }
