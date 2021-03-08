@@ -165,7 +165,7 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 		$store->release_claim( $claim );
 
 		// Make sure the 3rd instance of the cron action is scheduled for 24 hours from now, as the action was run early, ahead of schedule
-		$runner->process_action( $action_id );
+		$runner->process_action( $fetched_action_id );
 		$date = as_get_datetime_object( '+1 day' );
 
 		$claim = $store->stake_claim( 10, $date );
