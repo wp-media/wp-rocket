@@ -60,7 +60,7 @@ class CDN {
 	 * @return string
 	 */
 	public function rewrite_srcset( $html ) {
-		$pattern = '#\s+(?:data-lazy-|data-)?srcset\s*=\s*["\']\s*(?<sources>[^"\',\s]+\.[^"\',\s]+(?:\s+\d+[wx])?(?:\s*,\s*[^"\',\s]+\.[^"\',\s]+\s+\d+[wx])*)\s*["\']#i';
+		$pattern = '#\s+(?:data-lazy-|data-)?srcset\s*=\s*["\']\s*(?<sources>[^"\',\s]+\.[^"\',\s]+(?:\s+\d+[wx])?(?:\s*,\s*[^"\',\s]+\.[^"\',\s]+(?:\s+\d+[wx])?)*)\s*["\']#i';
 
 		if ( ! preg_match_all( $pattern, $html, $srcsets, PREG_SET_ORDER ) ) {
 			return $html;
