@@ -368,7 +368,7 @@ class CDN {
 
 		return implode( '|', $files );
 	}
-	
+
 	/**
 	 * Get srcset attributes to rewrite to the CDN.
 	 *
@@ -384,7 +384,7 @@ class CDN {
 			*
 			* @param array $srcset_attributes List of srcset attributes.
 		*/
-		$srcset_attributes = (array) apply_filters( 
+		$srcset_attributes = (array) apply_filters(
 			'rocket_cdn_srcset_attributes',
 			[
 				'data-lazy-srcset',
