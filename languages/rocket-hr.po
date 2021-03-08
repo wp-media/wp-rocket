@@ -3,16 +3,16 @@
 # Translators:
 # wpmedia <contact@wp-media.me>, 2019
 # Ivica Delic <ivica.delic@gmail.com>, 2020
-# Borko Livić <borkolivic@gmail.com>, 2020
+# Borko Livić <borkolivic@gmail.com>, 2021
 # 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.4\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2020-11-04 12:19-0500\n"
+"POT-Creation-Date: 2021-02-26 15:51-0500\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
-"Last-Translator: Borko Livić <borkolivic@gmail.com>, 2020\n"
+"Last-Translator: Borko Livić <borkolivic@gmail.com>, 2021\n"
 "Language-Team: Croatian (https://www.transifex.com/wp-media/teams/18133/hr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -70,7 +70,7 @@ msgid "Preload the sitemap from the Jetpack plugin"
 msgstr "Unaprijed učitaj mapu web-lokacije od Jetpacka"
 
 #: inc/3rd-party/plugins/jetpack.php:96
-#: inc/3rd-party/plugins/seo/all-in-one-seo-pack.php:89
+#: inc/3rd-party/plugins/seo/all-in-one-seo-pack.php:118
 #: inc/3rd-party/plugins/seo/rank-math-seo.php:34
 #: inc/3rd-party/plugins/seo/seopress.php:86
 #: inc/3rd-party/plugins/seo/the-seo-framework.php:144
@@ -83,7 +83,7 @@ msgstr ""
 "Automatski detektiramo mapu web-lokacije generiranu pomoću%s. Možete "
 "označiti opciju da ga se predučita."
 
-#: inc/3rd-party/plugins/seo/all-in-one-seo-pack.php:87
+#: inc/3rd-party/plugins/seo/all-in-one-seo-pack.php:116
 msgid "All in One SEO XML sitemap"
 msgstr "All in One SEO XML mapa sajta"
 
@@ -179,7 +179,7 @@ msgstr "<strong>WP Rocket:</strong> Cloudflare cache je uspješno očišćen."
 #: inc/Addon/Cloudflare/Subscriber.php:451
 #: inc/Addon/Cloudflare/Subscriber.php:470
 #: inc/Addon/Cloudflare/Subscriber.php:476
-#: inc/Addon/Cloudflare/Subscriber.php:558 inc/admin/options.php:166
+#: inc/Addon/Cloudflare/Subscriber.php:558 inc/admin/options.php:165
 #: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:148
 msgid "WP Rocket: "
 msgstr "WP Rocket: "
@@ -259,44 +259,36 @@ msgstr "Potvrdite licencu"
 msgid "Unavailable"
 msgstr "Nedostupno"
 
-#: inc/Engine/Admin/Settings/Page.php:341 inc/deprecated/deprecated.php:1789
+#: inc/Engine/Admin/Settings/Page.php:340 inc/deprecated/deprecated.php:1789
 #: views/settings/page-sections/dashboard.php:80
 msgid "License"
 msgstr "Licenca"
 
-#: inc/Engine/Admin/Settings/Page.php:358
+#: inc/Engine/Admin/Settings/Page.php:357
 msgid "API key"
 msgstr "API ključ"
 
-#: inc/Engine/Admin/Settings/Page.php:373
+#: inc/Engine/Admin/Settings/Page.php:372
 msgid "Email address"
 msgstr "Email adresa"
 
-#: inc/Engine/Admin/Settings/Page.php:399
+#: inc/Engine/Admin/Settings/Page.php:398
 msgid "Dashboard"
 msgstr "Nadzorna ploča"
 
-#: inc/Engine/Admin/Settings/Page.php:400
+#: inc/Engine/Admin/Settings/Page.php:399
 msgid "Get help, account info"
 msgstr "Zatražite pomoć, informacije o računu"
 
-#: inc/Engine/Admin/Settings/Page.php:409
+#: inc/Engine/Admin/Settings/Page.php:408
 msgid "My Status"
 msgstr "Moj status"
 
-#: inc/Engine/Admin/Settings/Page.php:419 views/settings/page.php:72
-msgid "Rocket Tester"
-msgstr "Rocket Tester"
-
-#: inc/Engine/Admin/Settings/Page.php:420
-msgid "I am part of the WP Rocket Beta Testing Program."
-msgstr "Ja sam učesnik programa testiranja WP Rocket Beta."
-
-#: inc/Engine/Admin/Settings/Page.php:428 views/settings/page.php:90
+#: inc/Engine/Admin/Settings/Page.php:418 views/settings/page.php:72
 msgid "Rocket Analytics"
 msgstr "Rocket Analitika"
 
-#: inc/Engine/Admin/Settings/Page.php:430
+#: inc/Engine/Admin/Settings/Page.php:420
 #, php-format
 msgid ""
 "I agree to share anonymous data with the development team to help improve WP"
@@ -305,24 +297,24 @@ msgstr ""
 "Slažem se da dijelim anonimne podatke s razvojnim timom kako bih pomogao "
 "poboljšati WP Rocket. %1$sKoje ćemo podatke prikupiti?%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:454 inc/Engine/Cache/WPCache.php:347
+#: inc/Engine/Admin/Settings/Page.php:444 inc/Engine/Cache/WPCache.php:347
 msgid "Cache"
 msgstr "Cache"
 
-#: inc/Engine/Admin/Settings/Page.php:455
+#: inc/Engine/Admin/Settings/Page.php:445
 msgid "Basic cache options"
 msgstr "Osnovne mogućnosti cachea"
 
-#: inc/Engine/Admin/Settings/Page.php:462
+#: inc/Engine/Admin/Settings/Page.php:452
 msgid "Mobile Cache"
 msgstr "Mobilni Cache"
 
-#: inc/Engine/Admin/Settings/Page.php:464
+#: inc/Engine/Admin/Settings/Page.php:454
 msgid "Speed up your site for mobile visitors."
 msgstr ""
 "Ubrzajte svoju web-lokaciju za posjetitelje koji koriste mobilne uređaje."
 
-#: inc/Engine/Admin/Settings/Page.php:469
+#: inc/Engine/Admin/Settings/Page.php:459
 msgid ""
 "We detected you use a plugin that requires a separate cache for mobile, and "
 "automatically enabled this option for compatibility."
@@ -330,11 +322,11 @@ msgstr ""
 "Otkrili smo da koristite dodatak koji zahtijeva zasebni cache za mobilne "
 "uređaje i automatski smo uključili tu mogućnost radi bolje kompatibilnosti."
 
-#: inc/Engine/Admin/Settings/Page.php:473
+#: inc/Engine/Admin/Settings/Page.php:463
 msgid "User Cache"
 msgstr "Cache korisnika"
 
-#: inc/Engine/Admin/Settings/Page.php:476
+#: inc/Engine/Admin/Settings/Page.php:466
 #, php-format
 msgid ""
 "%1$sUser cache%2$s is great when you have user-specific or restricted "
@@ -344,11 +336,11 @@ msgstr ""
 "određenim korisnicima ili imate ograničenu vidljivost sadržaja na vašoj web-"
 "lokaciji."
 
-#: inc/Engine/Admin/Settings/Page.php:484
+#: inc/Engine/Admin/Settings/Page.php:474
 msgid "Cache Lifespan"
 msgstr "Vijek trajanja cachea"
 
-#: inc/Engine/Admin/Settings/Page.php:487
+#: inc/Engine/Admin/Settings/Page.php:477
 #, php-format
 msgid ""
 "Cache files older than the specified lifespan will be deleted.<br>Enable "
@@ -359,19 +351,19 @@ msgstr ""
 "uklonjene.<br>Aktivirajte %1$spreloading%2$s kako bi se cache obnovio nakon "
 "isteka."
 
-#: inc/Engine/Admin/Settings/Page.php:501
+#: inc/Engine/Admin/Settings/Page.php:491
 msgid "Enable caching for logged-in WordPress users"
 msgstr "Omogući caching za logirane WordPress korisnike."
 
-#: inc/Engine/Admin/Settings/Page.php:509
+#: inc/Engine/Admin/Settings/Page.php:499
 msgid "Enable caching for mobile devices"
 msgstr "Omogućite cachiranje na mobilnim uređajima"
 
-#: inc/Engine/Admin/Settings/Page.php:524
+#: inc/Engine/Admin/Settings/Page.php:514
 msgid "Separate cache files for mobile devices"
 msgstr "Odvojite cache datoteke za mobilne uređaje"
 
-#: inc/Engine/Admin/Settings/Page.php:526
+#: inc/Engine/Admin/Settings/Page.php:516
 #, php-format
 msgid ""
 "Most modern themes are responsive and should work without a separate cache. "
@@ -382,14 +374,14 @@ msgstr ""
 " Omogućite ovo samo ako imate dediciranu mobilnu temu ili dodatak. %1$sViše "
 "informacija%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:542
+#: inc/Engine/Admin/Settings/Page.php:532
 msgid ""
 "Specify time after which the global cache is cleared<br>(0 = unlimited )"
 msgstr ""
 "Navedite vrijeme nakon kojeg će se izbrisati globalni cache<br>(0 = "
 "neograničeno )"
 
-#: inc/Engine/Admin/Settings/Page.php:544
+#: inc/Engine/Admin/Settings/Page.php:534
 #, php-format
 msgid ""
 "Reduce lifespan to 10 hours or less if you notice issues that seem to appear"
@@ -398,39 +390,33 @@ msgstr ""
 "Smanjite vijek trajanja na 10 sati ili manje ako primijetite probleme koji "
 "se povremeno pojavljuju. %1$sZašto?%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:550
-#: inc/Engine/License/views/promo-banner.php:31
-#: inc/Engine/License/views/renewal-soon-banner.php:14
-msgid "Minutes"
-msgstr "Minuta"
-
-#: inc/Engine/Admin/Settings/Page.php:551
+#: inc/Engine/Admin/Settings/Page.php:540
 #: inc/Engine/License/views/promo-banner.php:30
 #: inc/Engine/License/views/renewal-soon-banner.php:13
 msgid "Hours"
 msgstr "Sati"
 
-#: inc/Engine/Admin/Settings/Page.php:552
+#: inc/Engine/Admin/Settings/Page.php:541
 #: inc/Engine/License/views/promo-banner.php:29
 #: inc/Engine/License/views/renewal-soon-banner.php:12
 msgid "Days"
 msgstr "Dana"
 
-#: inc/Engine/Admin/Settings/Page.php:577
+#: inc/Engine/Admin/Settings/Page.php:566
 #: views/settings/page-sections/tutorials.php:22
 msgid "File Optimization"
 msgstr "Optimizacija datoteka"
 
-#: inc/Engine/Admin/Settings/Page.php:578
+#: inc/Engine/Admin/Settings/Page.php:567
 msgid "Optimize CSS & JS"
 msgstr "Optimiziraj CSS i JS"
 
-#: inc/Engine/Admin/Settings/Page.php:585
+#: inc/Engine/Admin/Settings/Page.php:574
 msgid "CSS Files"
 msgstr "CSS datoteke"
 
-#: inc/Engine/Admin/Settings/Page.php:592
-#: inc/Engine/Admin/Settings/Page.php:602
+#: inc/Engine/Admin/Settings/Page.php:581
+#: inc/Engine/Admin/Settings/Page.php:591
 #, php-format
 msgid ""
 "%1$s Minification is currently activated in <strong>Autoptimize</strong>. If"
@@ -440,31 +426,31 @@ msgstr ""
 "<strong>Autoptimize</strong>. Ako želite koristiti %2$sminifikaciju, "
 "onemogućite te opcije u postavkama Autoptimize-a."
 
-#: inc/Engine/Admin/Settings/Page.php:595
+#: inc/Engine/Admin/Settings/Page.php:584
 msgid "JavaScript Files"
 msgstr "JavaScript datoteke"
 
-#: inc/Engine/Admin/Settings/Page.php:611
+#: inc/Engine/Admin/Settings/Page.php:600
 msgid "Minify CSS files"
 msgstr "Minificiraj CSS datoteke"
 
-#: inc/Engine/Admin/Settings/Page.php:612
+#: inc/Engine/Admin/Settings/Page.php:601
 msgid "Minify CSS removes whitespace and comments to reduce the file size."
 msgstr ""
 "Minificiranje CSS-a uklanja razmake  i komentare kako bi se smanjila "
 "veličina datoteke."
 
-#: inc/Engine/Admin/Settings/Page.php:625
-#: inc/Engine/Admin/Settings/Page.php:647
-#: inc/Engine/Admin/Settings/Page.php:729
-#: inc/Engine/Admin/Settings/Page.php:751
+#: inc/Engine/Admin/Settings/Page.php:614
+#: inc/Engine/Admin/Settings/Page.php:636
+#: inc/Engine/Admin/Settings/Page.php:708
+#: inc/Engine/Admin/Settings/Page.php:730
 msgid "This could break things!"
 msgstr "Ovo bi moglo poremetiti izgled/funkcionalnost vaše web-lokacije!"
 
-#: inc/Engine/Admin/Settings/Page.php:626
-#: inc/Engine/Admin/Settings/Page.php:648
-#: inc/Engine/Admin/Settings/Page.php:730
-#: inc/Engine/Admin/Settings/Page.php:752
+#: inc/Engine/Admin/Settings/Page.php:615
+#: inc/Engine/Admin/Settings/Page.php:637
+#: inc/Engine/Admin/Settings/Page.php:709
+#: inc/Engine/Admin/Settings/Page.php:731
 msgid ""
 "If you notice any errors on your website after having activated this "
 "setting, just deactivate it again, and your site will be back to normal."
@@ -473,17 +459,17 @@ msgstr ""
 "postavku, samo je ponovno deaktivirajte, a web-lokacija će se vratiti u "
 "normalu."
 
-#: inc/Engine/Admin/Settings/Page.php:627
+#: inc/Engine/Admin/Settings/Page.php:616
 msgid "Activate minify CSS"
 msgstr "Aktiviraj minifikaciju CSS-a"
 
-#: inc/Engine/Admin/Settings/Page.php:632
+#: inc/Engine/Admin/Settings/Page.php:621
 msgid "Combine CSS files <em>(Enable Minify CSS files to select)</em>"
 msgstr ""
 "Kombiniraj CSS datoteke <em>(Omogući minifikaciju CSS datoteka za "
 "odabir)</em>"
 
-#: inc/Engine/Admin/Settings/Page.php:634
+#: inc/Engine/Admin/Settings/Page.php:623
 #, php-format
 msgid ""
 "Combine CSS merges all your files into 1, reducing HTTP requests. Not "
@@ -493,15 +479,15 @@ msgstr ""
 "zahtjeve. Ne preporučuje se ako web-lokacija koristi HTTP/2. %1$sViše "
 "informacija%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:649
+#: inc/Engine/Admin/Settings/Page.php:638
 msgid "Activate combine CSS"
 msgstr "Aktiviraj kombiniranje CSS-a"
 
-#: inc/Engine/Admin/Settings/Page.php:654 inc/admin/options.php:125
+#: inc/Engine/Admin/Settings/Page.php:643 inc/admin/options.php:124
 msgid "Excluded CSS Files"
 msgstr "Izuzete CSS datoteke"
 
-#: inc/Engine/Admin/Settings/Page.php:655
+#: inc/Engine/Admin/Settings/Page.php:644
 msgid ""
 "Specify URLs of CSS files to be excluded from minification and concatenation"
 " (one per line)."
@@ -509,7 +495,7 @@ msgstr ""
 "Navedite URL-ove CSS datoteka koje treba isključiti iz minifikacije i "
 "kombiniranja (jedan URL po retku)."
 
-#: inc/Engine/Admin/Settings/Page.php:656
+#: inc/Engine/Admin/Settings/Page.php:645
 msgid ""
 "<strong>Internal:</strong> The domain part of the URL will be stripped "
 "automatically. Use (.*).css wildcards to exclude all CSS files located at a "
@@ -519,7 +505,7 @@ msgstr ""
 "uklonjen. Koristite (.*).css zamjenske znakove (wildcard) da biste "
 "isključili sve CSS datoteke koje se nalaze na određenoj putanji."
 
-#: inc/Engine/Admin/Settings/Page.php:658
+#: inc/Engine/Admin/Settings/Page.php:647
 #, php-format
 msgid ""
 "<strong>3rd Party:</strong> Use either the full URL path or only the domain "
@@ -529,11 +515,11 @@ msgstr ""
 "upotrijebite ili punu putanju URL-a ili samo naziv domene. %1$sViše "
 "informacija%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:671
+#: inc/Engine/Admin/Settings/Page.php:660
 msgid "Optimize CSS delivery"
 msgstr "Optimiziraj isporuku CSS-a"
 
-#: inc/Engine/Admin/Settings/Page.php:678
+#: inc/Engine/Admin/Settings/Page.php:667
 #, php-format
 msgctxt "WP Critical CSS compatibility"
 msgid ""
@@ -543,7 +529,7 @@ msgstr ""
 "Optimizacijom isporuke CSS-a trenutno upravlja %1$s .  Ako želite koristiti "
 "opciju Optimiziraj isporuku CSS-a WP Rocketa, onemogućite plugin %1$s ."
 
-#: inc/Engine/Admin/Settings/Page.php:680
+#: inc/Engine/Admin/Settings/Page.php:669
 #, php-format
 msgid ""
 "Optimize CSS delivery eliminates render-blocking CSS on your website for "
@@ -553,11 +539,11 @@ msgstr ""
 "vašoj web-lokaciji radi doživljavanja bržeg  vremena učitavanja. %1$sViše "
 "informacija%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:691
+#: inc/Engine/Admin/Settings/Page.php:680
 msgid "Fallback critical CSS"
 msgstr "Zamjenski ključni CSS"
 
-#: inc/Engine/Admin/Settings/Page.php:696
+#: inc/Engine/Admin/Settings/Page.php:685
 #, php-format
 msgid ""
 "Provides a fallback if auto-generated critical path CSS is incomplete. "
@@ -566,42 +552,29 @@ msgstr ""
 "Pruža zamjenu ako je automatski generiran CSS ključne putanje nepotpun. "
 "%1$sViše informacija%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:705
-msgid "Remove jQuery Migrate"
-msgstr "Ukloni jQuery Migrate"
-
-#: inc/Engine/Admin/Settings/Page.php:707
-#, php-format
-msgid ""
-"Remove jQuery Migrate eliminates a JS file and can improve load time. "
-"%1$sMore info%2$s"
-msgstr ""
-"Uklanjanje jQuery Migratea uklanja JS datoteku i može poboljšati vrijeme "
-"učitavanja. %1$sViše informacija%2$s"
-
-#: inc/Engine/Admin/Settings/Page.php:715
+#: inc/Engine/Admin/Settings/Page.php:694
 msgid "Minify JavaScript files"
 msgstr "Minificiraj JavaScript datoteke"
 
-#: inc/Engine/Admin/Settings/Page.php:716
+#: inc/Engine/Admin/Settings/Page.php:695
 msgid ""
 "Minify JavaScript removes whitespace and comments to reduce the file size."
 msgstr ""
 "Minficiranje JavaScripta uklanja razmake i komentare kako bi se smanjila "
 "veličina datoteke."
 
-#: inc/Engine/Admin/Settings/Page.php:731
+#: inc/Engine/Admin/Settings/Page.php:710
 msgid "Activate minify JavaScript"
 msgstr "Aktiviraj minifikaciju JavaScripta"
 
-#: inc/Engine/Admin/Settings/Page.php:736
+#: inc/Engine/Admin/Settings/Page.php:715
 msgid ""
 "Combine JavaScript files <em>(Enable Minify JavaScript files to select)</em>"
 msgstr ""
 "Kombiniraj JavaScript datoteke <em>(Omogući minifikaciju JavaScript datoteka"
 " za odabir)</em>"
 
-#: inc/Engine/Admin/Settings/Page.php:738
+#: inc/Engine/Admin/Settings/Page.php:717
 #, php-format
 msgid ""
 "Combine JavaScript files combines your site’s internal, 3rd party and inline"
@@ -612,15 +585,15 @@ msgstr ""
 "strane i inline JS smanjujući HTTP zahtjeve.. Ne preporučuje se ako web-"
 "lokacija koristi HTTP/2. %1$sViše informacija%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:753
+#: inc/Engine/Admin/Settings/Page.php:732
 msgid "Activate combine JavaScript"
 msgstr "Aktiviraj kombiniranje JavaScripta"
 
-#: inc/Engine/Admin/Settings/Page.php:758 inc/admin/options.php:126
+#: inc/Engine/Admin/Settings/Page.php:737 inc/admin/options.php:125
 msgid "Excluded Inline JavaScript"
 msgstr "Izuzet Inline JavaScript"
 
-#: inc/Engine/Admin/Settings/Page.php:760
+#: inc/Engine/Admin/Settings/Page.php:739
 #, php-format
 msgid ""
 "Specify patterns of inline JavaScript to be excluded from concatenation (one"
@@ -629,11 +602,12 @@ msgstr ""
 "Navedite uzorke inline JavaScripta koji će biti isključeni iz kombiniranja "
 "(jedan po retku).%1$sViše informacija%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:776 inc/admin/options.php:127
+#: inc/Engine/Admin/Settings/Page.php:755
+#: inc/Engine/Admin/Settings/Page.php:788 inc/admin/options.php:126
 msgid "Excluded JavaScript Files"
 msgstr "Izuzete JavaScript datoteke"
 
-#: inc/Engine/Admin/Settings/Page.php:777
+#: inc/Engine/Admin/Settings/Page.php:756
 msgid ""
 "Specify URLs of JavaScript files to be excluded from minification and "
 "concatenation (one per line)."
@@ -641,7 +615,7 @@ msgstr ""
 "Odredite URL-ove JavaScript datoteka koje će biti isključene iz minifikacije"
 " i kombiniranja (jedan po retku)"
 
-#: inc/Engine/Admin/Settings/Page.php:778
+#: inc/Engine/Admin/Settings/Page.php:757
 msgid ""
 "<strong>Internal:</strong> The domain part of the URL will be stripped "
 "automatically. Use (.*).js wildcards to exclude all JS files located at a "
@@ -651,7 +625,7 @@ msgstr ""
 "uklonjen. Koristite (.*).js zamjenske znakove (wildcard) da biste isključili"
 " sve JS datoteke koje se nalaze na određenoj putanji."
 
-#: inc/Engine/Admin/Settings/Page.php:780
+#: inc/Engine/Admin/Settings/Page.php:759
 #, php-format
 msgid ""
 "<strong>3rd Party:</strong> Use either the full URL path or only the domain "
@@ -661,11 +635,11 @@ msgstr ""
 "upotrijebite ili punu putanju URL-a ili samo naziv domene. %1$sViše "
 "informacija%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:796
+#: inc/Engine/Admin/Settings/Page.php:775
 msgid "Load JavaScript deferred"
 msgstr "Učitaj JavaScript s odgodom"
 
-#: inc/Engine/Admin/Settings/Page.php:798
+#: inc/Engine/Admin/Settings/Page.php:777
 #, php-format
 msgid ""
 "Load JavaScript deferred eliminates render-blocking JS on your site and can "
@@ -674,27 +648,20 @@ msgstr ""
 "Učitavanje JavaScript s odgodom uklanja JS koji blokira prikaz vaše web-"
 "lokacije i može poboljšati vrijeme učitavanja.%1$sViše informacija%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:809
-msgid "Safe Mode for jQuery (recommended)"
-msgstr "Siguran način (Safe Mode) za jQuery (preporučeno)"
-
-#: inc/Engine/Admin/Settings/Page.php:810
+#: inc/Engine/Admin/Settings/Page.php:790
+#, php-format
 msgid ""
-"Safe mode for jQuery for deferred JS ensures support for inline jQuery "
-"references from themes and plugins by loading jQuery at the top of the "
-"document as a render-blocking script.<br><em>Deactivating may result in "
-"broken functionality, test thoroughly!</em>"
+"Specify URLs or keywords of JavaScript files to be excluded from defer (one "
+"per line). %1$sMore info%2$s"
 msgstr ""
-"Siguran način za jQuery za odgođeni JS osigurava podršku za inline jQuery "
-"reference iz tema i dodataka učitavanjem jQuery-a na vrhu dokumenta kao "
-"render-blocking skriptu.<br><em>Deaktivacija može rezultirati slomljenom "
-"funkcionalnošću, temeljito testirati!</em>"
+"Navedite URL-ove ili ključne riječi JavaScript datoteka koje će se izuzeti "
+"iz odgode (po jedan u retku). %1$sViše informacija%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:823 inc/admin/ui/meta-boxes.php:79
+#: inc/Engine/Admin/Settings/Page.php:804 inc/admin/ui/meta-boxes.php:79
 msgid "Delay JavaScript execution"
 msgstr "Odgodi izvršavanje JavaScripta"
 
-#: inc/Engine/Admin/Settings/Page.php:825
+#: inc/Engine/Admin/Settings/Page.php:806
 #, php-format
 msgid ""
 "Improves performance by delaying the loading of JavaScript files until user "
@@ -703,11 +670,11 @@ msgstr ""
 "Poboljšava performanse odgađajući učitavanje JavaScript datoteka do "
 "interakcije korisnika (npr. scroll, klik).  %1$sViše informacija%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:833
+#: inc/Engine/Admin/Settings/Page.php:814
 msgid "Scripts to delay"
 msgstr "Skripte kojima želite odgoditi učitavanje"
 
-#: inc/Engine/Admin/Settings/Page.php:834
+#: inc/Engine/Admin/Settings/Page.php:815
 msgid ""
 "Specify keywords that can identify inline or JavaScript files to be delayed "
 "(one per line)."
@@ -715,7 +682,7 @@ msgstr ""
 "Navedite ključne riječi koje mogu prepoznati inline ili JavaScript datoteke "
 "koje žeite odgoditi (jedna po retku)."
 
-#: inc/Engine/Admin/Settings/Page.php:835
+#: inc/Engine/Admin/Settings/Page.php:816
 msgid ""
 "A curated list of scripts that are safe to delay is provided. They may not "
 "all apply to your website and it is safe to leave the list as-is unless you "
@@ -725,27 +692,23 @@ msgstr ""
 " vaše web mjesto i sigurno je ostaviti popis kakav jest, osim ako se ne "
 "suočite s problemima."
 
-#: inc/Engine/Admin/Settings/Page.php:870
+#: inc/Engine/Admin/Settings/Page.php:853
 msgid "Media"
 msgstr "Medij"
 
-#: inc/Engine/Admin/Settings/Page.php:871
-msgid "LazyLoad, emojis, embeds, WebP"
-msgstr "LazyLoad, emoji, embedovi, WebP"
+#: inc/Engine/Admin/Settings/Page.php:854
+msgid "LazyLoad, embeds, WebP"
+msgstr "LazyLoad, embedovi, WebP"
 
-#: inc/Engine/Admin/Settings/Page.php:880
-msgid "Avada"
-msgstr "Avada"
-
-#: inc/Engine/Admin/Settings/Page.php:884
+#: inc/Engine/Admin/Settings/Page.php:863
 msgid "Autoptimize"
 msgstr "Autoptimize"
 
-#: inc/Engine/Admin/Settings/Page.php:929
+#: inc/Engine/Admin/Settings/Page.php:908
 msgid "LazyLoad"
 msgstr "LazyLoad"
 
-#: inc/Engine/Admin/Settings/Page.php:932
+#: inc/Engine/Admin/Settings/Page.php:911
 #, php-format
 msgid ""
 "It can improve actual and perceived loading time as images, iframes, and "
@@ -757,7 +720,7 @@ msgstr ""
 "prikaz (viewport) te tako smanjiti broj HTTP zahtjeva. %1$sViše "
 "informacija%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:939
+#: inc/Engine/Admin/Settings/Page.php:918
 #, php-format
 msgid ""
 "LazyLoad is currently activated in %2$s. If you want to use WP Rocket’s "
@@ -766,23 +729,26 @@ msgstr ""
 "Lazyload je trenutno aktivan pomoću %2$s. Ako želite koristiti WP Rocket "
 "LazyLoad, onemogućite ovu opciju pod%2$s."
 
-#: inc/Engine/Admin/Settings/Page.php:942
-msgid "Emoji 👻"
-msgstr "Emoji 👻"
+#: inc/Engine/Admin/Settings/Page.php:921
+msgid "Image Dimensions"
+msgstr "Dimenzije slika"
 
-#: inc/Engine/Admin/Settings/Page.php:944
+#: inc/Engine/Admin/Settings/Page.php:924
+#, php-format
 msgid ""
-"Use default emoji of visitor's browser instead of loading emoji from "
-"WordPress.org"
+"Add missing width and height attributes to images. Helps prevent layout "
+"shifts and improve the reading experience for your visitors. %1$sMore "
+"info%2$s"
 msgstr ""
-"Upotrijebite zadani emoji preglednika posjetitelja umjesto učitavanja "
-"emoji-a sa WordPress.org"
+"Slikama dodajte atribute širine i visine koji nedostaju. Pomaže u "
+"sprječavanju pomicanja elemenata stranice i poboljšava iskustvo čitanja.. "
+"%1$sViše informacija%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:948
+#: inc/Engine/Admin/Settings/Page.php:928
 msgid "Embeds"
 msgstr "Embedi"
 
-#: inc/Engine/Admin/Settings/Page.php:950
+#: inc/Engine/Admin/Settings/Page.php:930
 msgid ""
 "Prevents others from embedding content from your site, prevents you from "
 "embedding content from other (non-allowed) sites, and removes JavaScript "
@@ -792,11 +758,11 @@ msgstr ""
 "sprječava ugrađivanje sadržaja s drugih web-lokacija (koje nisu dopuštene) i"
 " uklanja JavaScript zahtjeve vezane uz WordPress embede."
 
-#: inc/Engine/Admin/Settings/Page.php:954
+#: inc/Engine/Admin/Settings/Page.php:934
 msgid "WebP compatibility"
 msgstr "WebP kompatibilnost"
 
-#: inc/Engine/Admin/Settings/Page.php:958
+#: inc/Engine/Admin/Settings/Page.php:938
 #, php-format
 msgid ""
 "Enable this option if you would like WP Rocket to serve WebP images to "
@@ -809,11 +775,11 @@ msgstr ""
 "WebP slike za vas. Za stvaranje WebP slika preporučujemo %1$sImagify%2$s. "
 "%3$sViše informacija%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:985
+#: inc/Engine/Admin/Settings/Page.php:965
 msgid "Enable for images"
 msgstr "Uključi za slike"
 
-#: inc/Engine/Admin/Settings/Page.php:997
+#: inc/Engine/Admin/Settings/Page.php:977
 #, php-format
 msgid ""
 "LazyLoad for images is currently activated in %2$s. If you want to use "
@@ -822,15 +788,20 @@ msgstr ""
 "Lazyload je trenutno aktivan pomoću %2$s. Ako želite koristiti %1$s "
 "lazyload, onemogućite ovu opciju pod%2$s."
 
-#: inc/Engine/Admin/Settings/Page.php:1005
+#: inc/Engine/Admin/Settings/Page.php:985
 msgid "Enable for iframes and videos"
 msgstr "Uključi za iframes i videa"
 
-#: inc/Engine/Admin/Settings/Page.php:1020
+#: inc/Engine/Admin/Settings/Page.php:1000
 msgid "Replace YouTube iframe with preview image"
 msgstr "Zamijenite YouTube iframe slikom za pregled"
 
-#: inc/Engine/Admin/Settings/Page.php:1021
+#: inc/Engine/Admin/Settings/Page.php:1002
+#, php-format
+msgid "Replace YouTube iframe with preview image is not compatible with %2$s."
+msgstr "Zamijenite YouTube iframe slikom za pregled nije kompatibilan s %2$s."
+
+#: inc/Engine/Admin/Settings/Page.php:1002
 msgid ""
 "This can significantly improve your loading time if you have a lot of "
 "YouTube videos on a page."
@@ -838,42 +809,47 @@ msgstr ""
 "Može značajno poboljšati vrijeme učitavanja ako na stranici imate mnogo "
 "videozapisa sa YouTube-a."
 
-#: inc/Engine/Admin/Settings/Page.php:1031
+#: inc/Engine/Admin/Settings/Page.php:1017
+msgid "Excluded images or iframes"
+msgstr "Izuzete slike ili iframe-ovi"
+
+#: inc/Engine/Admin/Settings/Page.php:1019
 #, php-format
-msgid "Replace YouTube iframe with preview image is not compatible with %2$s."
-msgstr "Zamijenite YouTube iframe slikom za pregled nije kompatibilan s %2$s."
+msgid ""
+"Specify keywords (e.g. image filename, CSS class, domain) from the image or "
+"iframe code to be excluded (one per line). %1$sMore info%2$s"
+msgstr ""
+"Navedite ključne riječi (npr. naziv datoteke slike, CSS klasa, domena) sa "
+"slike ili iframe koda koji će biti izuzeti (po jedna u retku).%1$sViše "
+"informacija%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:1027
+msgid "Add missing image dimensions"
+msgstr "Dodaj dimenzije slike koje nedostaju"
 
 #: inc/Engine/Admin/Settings/Page.php:1035
-msgid "Disable Emoji"
-msgstr "Onemogući Emoji"
-
-#: inc/Engine/Admin/Settings/Page.php:1036
-msgid "Disable Emoji will reduce the number of external HTTP requests."
-msgstr "Onemogućavanjem Emoji-a smanjit će se broj vanjskih HTTP zahtjeva."
-
-#: inc/Engine/Admin/Settings/Page.php:1044
 msgid "Disable WordPress embeds"
 msgstr "Onemogući WordPress embede"
 
-#: inc/Engine/Admin/Settings/Page.php:1054
+#: inc/Engine/Admin/Settings/Page.php:1045
 #: inc/classes/subscriber/Media/class-webp-subscriber.php:362
 msgid "Enable WebP caching"
 msgstr "Omogući WebP caching"
 
-#: inc/Engine/Admin/Settings/Page.php:1074 inc/deprecated/deprecated.php:1776
+#: inc/Engine/Admin/Settings/Page.php:1065 inc/deprecated/deprecated.php:1776
 #: views/settings/page-sections/tutorials.php:30
 msgid "Preload"
 msgstr "Predučitavanje"
 
-#: inc/Engine/Admin/Settings/Page.php:1075
+#: inc/Engine/Admin/Settings/Page.php:1066
 msgid "Generate cache files, preload fonts"
 msgstr "Generiraj cache datoteke, predučitaj fontove"
 
-#: inc/Engine/Admin/Settings/Page.php:1086
+#: inc/Engine/Admin/Settings/Page.php:1077
 msgid "Preload Cache"
 msgstr "Predučitaj cache"
 
-#: inc/Engine/Admin/Settings/Page.php:1089
+#: inc/Engine/Admin/Settings/Page.php:1080
 #, php-format
 msgid ""
 "When you enable preloading WP Rocket will generate the cache starting with "
@@ -888,11 +864,11 @@ msgstr ""
 "može se i ručno pokrenuti iz administratorske trake ili iz %1$sWP Rocket "
 "nadzorne ploče%2$s."
 
-#: inc/Engine/Admin/Settings/Page.php:1097
+#: inc/Engine/Admin/Settings/Page.php:1088
 msgid "Preload Links"
 msgstr "Predučitavanje linkova"
 
-#: inc/Engine/Admin/Settings/Page.php:1100
+#: inc/Engine/Admin/Settings/Page.php:1091
 #, php-format
 msgid ""
 "Link preloading improves the perceived load time by downloading a page when "
@@ -902,11 +878,11 @@ msgstr ""
 "preuzimanjem stranice kada korisnik zadrži pokazivač iznad linka.%1$sViše "
 "informacija%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1108
+#: inc/Engine/Admin/Settings/Page.php:1099
 msgid "Prefetch DNS Requests"
 msgstr "Prethodno dohvati DNS zahtjeve"
 
-#: inc/Engine/Admin/Settings/Page.php:1110
+#: inc/Engine/Admin/Settings/Page.php:1101
 msgid ""
 "DNS prefetching can make external files load faster, especially on mobile "
 "networks"
@@ -914,11 +890,11 @@ msgstr ""
 "Prethodno dohvaćanje (prefetch) DNS-a može ubrzati učitavanje vanjskih "
 "datoteka, posebno na mobilnim mrežama"
 
-#: inc/Engine/Admin/Settings/Page.php:1118
+#: inc/Engine/Admin/Settings/Page.php:1109
 msgid "Preload Fonts"
 msgstr "Predučitaj fontove"
 
-#: inc/Engine/Admin/Settings/Page.php:1121
+#: inc/Engine/Admin/Settings/Page.php:1112
 #, php-format
 msgid ""
 "Improves performance by helping browsers discover fonts in CSS files. "
@@ -927,27 +903,27 @@ msgstr ""
 "Poboljšava performanse pomažući preglednicima da otkriju fontove u CSS "
 "datotekama. %1$sViše informacija%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1135
+#: inc/Engine/Admin/Settings/Page.php:1126
 msgid "Activate Preloading"
 msgstr "Aktiviraj predučitavanje"
 
-#: inc/Engine/Admin/Settings/Page.php:1154
+#: inc/Engine/Admin/Settings/Page.php:1145
 msgid "Activate sitemap-based cache preloading"
 msgstr "Aktivirajte prethodno učitavanje cachea temeljeno na Sitemapu"
 
-#: inc/Engine/Admin/Settings/Page.php:1173
+#: inc/Engine/Admin/Settings/Page.php:1164
 msgid "Sitemaps for preloading"
 msgstr "Mape web-lokacije za predučitavanje"
 
-#: inc/Engine/Admin/Settings/Page.php:1177
+#: inc/Engine/Admin/Settings/Page.php:1168
 msgid "Specify XML sitemap(s) to be used for preloading"
 msgstr "Navedite XML mape web-lokacije koje će se koristiti za predučitavanje"
 
-#: inc/Engine/Admin/Settings/Page.php:1187
+#: inc/Engine/Admin/Settings/Page.php:1178
 msgid "URLs to prefetch"
 msgstr "URL-ovi koje treba prethodno dohvatiti (prefetch)"
 
-#: inc/Engine/Admin/Settings/Page.php:1188
+#: inc/Engine/Admin/Settings/Page.php:1179
 msgid ""
 "Specify external hosts to be prefetched (no <code>http:</code>, one per "
 "line)"
@@ -955,11 +931,11 @@ msgstr ""
 "Odredite vanjske hostove za pretragu (bez <code>http:</code>, jedan po "
 "retku)"
 
-#: inc/Engine/Admin/Settings/Page.php:1197
+#: inc/Engine/Admin/Settings/Page.php:1188
 msgid "Fonts to preload"
 msgstr "Fontovi za predučitavanje"
 
-#: inc/Engine/Admin/Settings/Page.php:1198
+#: inc/Engine/Admin/Settings/Page.php:1189
 msgid ""
 "Specify urls of the font files to be preloaded (one per line). Fonts must be"
 " hosted on your own domain, or the domain you have specified on the CDN tab."
@@ -968,7 +944,7 @@ msgstr ""
 "retku). Fontovi moraju biti hostani na vašoj domeni ili domeni koju ste "
 "naveli u kartici CDN."
 
-#: inc/Engine/Admin/Settings/Page.php:1199
+#: inc/Engine/Admin/Settings/Page.php:1190
 msgid ""
 "The domain part of the URL will be stripped automatically.<br/>Allowed font "
 "extensions: otf, ttf, svg, woff, woff2."
@@ -976,51 +952,51 @@ msgstr ""
 "Domena URL-a automatski će biti uklonjena.<br/>Dopuštena proširenja fonta: "
 "otf, ttf, svg, woff, woff2."
 
-#: inc/Engine/Admin/Settings/Page.php:1208
+#: inc/Engine/Admin/Settings/Page.php:1199
 msgid "Enable link preloading"
 msgstr "Uključi predučitavanje linkova"
 
-#: inc/Engine/Admin/Settings/Page.php:1227
+#: inc/Engine/Admin/Settings/Page.php:1218
 msgid "Advanced Rules"
 msgstr "Napredna pravila"
 
-#: inc/Engine/Admin/Settings/Page.php:1228
+#: inc/Engine/Admin/Settings/Page.php:1219
 msgid "Fine-tune cache rules"
 msgstr "Fino podešavanje pravila cachiranja"
 
-#: inc/Engine/Admin/Settings/Page.php:1237
+#: inc/Engine/Admin/Settings/Page.php:1229
 msgid ""
 "Sensitive pages like custom login/logout URLs should be excluded from cache."
 msgstr ""
 "Osjetljive stranice kao što su prilagođeni URL-ovi za prijavu / odjavu "
 "trebali bi biti izuzeti iz cachea."
 
-#: inc/Engine/Admin/Settings/Page.php:1240
+#: inc/Engine/Admin/Settings/Page.php:1232
 msgctxt "plugin name"
 msgid "WooCommerce"
 msgstr "WooCommerce"
 
-#: inc/Engine/Admin/Settings/Page.php:1242
+#: inc/Engine/Admin/Settings/Page.php:1234
 msgctxt "plugin name"
 msgid "Easy Digital Downloads"
 msgstr "Easy Digital Download-ovi"
 
-#: inc/Engine/Admin/Settings/Page.php:1244
+#: inc/Engine/Admin/Settings/Page.php:1236
 msgctxt "plugin name"
 msgid "iThemes Exchange"
 msgstr "iThemes Exchange"
 
-#: inc/Engine/Admin/Settings/Page.php:1246
+#: inc/Engine/Admin/Settings/Page.php:1238
 msgctxt "plugin name"
 msgid "Jigoshop"
 msgstr "Jigoshop"
 
-#: inc/Engine/Admin/Settings/Page.php:1248
+#: inc/Engine/Admin/Settings/Page.php:1240
 msgctxt "plugin name"
 msgid "WP-Shop"
 msgstr "WP-Shop"
 
-#: inc/Engine/Admin/Settings/Page.php:1254
+#: inc/Engine/Admin/Settings/Page.php:1246
 #, php-format
 msgid ""
 "<br>Cart, checkout and \"my account\" pages set in "
@@ -1030,27 +1006,27 @@ msgstr ""
 "<strong>%1$s%2$s%3$s</strong> će biti detektirane i neće biti cachirane, "
 "prema zadanim postavkama."
 
-#: inc/Engine/Admin/Settings/Page.php:1264 inc/admin/options.php:128
+#: inc/Engine/Admin/Settings/Page.php:1256 inc/admin/options.php:127
 msgid "Never Cache URL(s)"
 msgstr "Nikad ne cachiraj ove URL-ove"
 
-#: inc/Engine/Admin/Settings/Page.php:1275
+#: inc/Engine/Admin/Settings/Page.php:1267
 msgid "Never Cache Cookies"
 msgstr "Nikad ne cachiraj ove Kolačiće (Cookies)"
 
-#: inc/Engine/Admin/Settings/Page.php:1280 inc/admin/options.php:129
+#: inc/Engine/Admin/Settings/Page.php:1273 inc/admin/options.php:128
 msgid "Never Cache User Agent(s)"
 msgstr "Nikada ne cachiraj ove korisničke agente"
 
-#: inc/Engine/Admin/Settings/Page.php:1285 inc/admin/options.php:130
+#: inc/Engine/Admin/Settings/Page.php:1278 inc/admin/options.php:129
 msgid "Always Purge URL(s)"
 msgstr "Uvijek očisti ove URL-ove"
 
-#: inc/Engine/Admin/Settings/Page.php:1294
+#: inc/Engine/Admin/Settings/Page.php:1287
 msgid "Cache Query String(s)"
 msgstr "Nizovi upita za cachiranje (Cache Query String(s))"
 
-#: inc/Engine/Admin/Settings/Page.php:1297
+#: inc/Engine/Admin/Settings/Page.php:1290
 #, php-format
 msgid ""
 "%1$sCache for query strings%2$s enables you to force caching for specific "
@@ -1059,15 +1035,15 @@ msgstr ""
 "%1$sCache za nizove upita%2$s  omogućuje vam prisiljavanje cachiranja za "
 "određene GET parametre."
 
-#: inc/Engine/Admin/Settings/Page.php:1311
+#: inc/Engine/Admin/Settings/Page.php:1304
 msgid ""
 "Specify URLs of pages or posts that should never be cached (one per line)"
 msgstr ""
 "Navedite URL-ove stranica ili objava koje ne bi smjeli nikad biti cachirani "
 "(jedan po retku)"
 
-#: inc/Engine/Admin/Settings/Page.php:1312
-#: inc/Engine/Admin/Settings/Page.php:1340
+#: inc/Engine/Admin/Settings/Page.php:1305
+#: inc/Engine/Admin/Settings/Page.php:1333
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use (.*) "
 "wildcards to address multiple URLs under a given path."
@@ -1076,28 +1052,29 @@ msgstr ""
 "znakove (wildcard) da biste isključili sve URL-ove koje se nalaze na "
 "određenoj putanji."
 
-#: inc/Engine/Admin/Settings/Page.php:1321
+#: inc/Engine/Admin/Settings/Page.php:1314
 msgid ""
-"Specify the IDs of cookies that, when set in the visitor's browser, should "
-"prevent a page from getting cached (one per line)"
+"Specify full or partial IDs of cookies that, when set in the visitor's "
+"browser, should prevent a page from getting cached (one per line)"
 msgstr ""
-"Navedite ID-eve kolačića koji bi, kada su postavljeni u pregledniku "
-"posjetitelja, trebali spriječiti cachiranje stranice (jedan po retku)."
+"Navedite potpune ili djelomične ID-ove kolačića koji bi, kada se postave u "
+"pregledniku posjetitelja, trebali spriječiti da se stranica cachira (po "
+"jedan u retku)"
 
-#: inc/Engine/Admin/Settings/Page.php:1329
+#: inc/Engine/Admin/Settings/Page.php:1322
 msgid ""
 "Specify user agent strings that should never see cached pages (one per line)"
 msgstr ""
 "Navedite nizove korisničkog agenta koji nikada ne bi trebali vidjeti "
 "cachirane (jedna po retku)"
 
-#: inc/Engine/Admin/Settings/Page.php:1330
+#: inc/Engine/Admin/Settings/Page.php:1323
 msgid "Use (.*) wildcards to detect parts of UA strings."
 msgstr ""
 "Upotrijebite (.*) zamjenske znakove (wildcards) kako bi otkrili dijelove UA "
 "nizova."
 
-#: inc/Engine/Admin/Settings/Page.php:1339
+#: inc/Engine/Admin/Settings/Page.php:1332
 msgid ""
 "Specify URLs you always want purged from cache whenever you update any post "
 "or page (one per line)"
@@ -1105,23 +1082,23 @@ msgstr ""
 "Navedite URL-ove koje želite uvijek očistiti iz cachea svaki put kad "
 "ažurirate bilo koju objavu ili stranicu (jednu po retku)"
 
-#: inc/Engine/Admin/Settings/Page.php:1348
+#: inc/Engine/Admin/Settings/Page.php:1341
 msgid "Specify query strings for caching (one per line)"
 msgstr "Navedite nizove upita za cachiranje (jedan po retku)"
 
-#: inc/Engine/Admin/Settings/Page.php:1373 inc/deprecated/deprecated.php:1775
+#: inc/Engine/Admin/Settings/Page.php:1366 inc/deprecated/deprecated.php:1775
 msgid "Database"
 msgstr "Baza podataka"
 
-#: inc/Engine/Admin/Settings/Page.php:1374
+#: inc/Engine/Admin/Settings/Page.php:1367
 msgid "Optimize, reduce bloat"
 msgstr "Optimizirajte, smanjite višak podataka"
 
-#: inc/Engine/Admin/Settings/Page.php:1383
+#: inc/Engine/Admin/Settings/Page.php:1376
 msgid "Post Cleanup"
 msgstr "Čišćenje objava"
 
-#: inc/Engine/Admin/Settings/Page.php:1385
+#: inc/Engine/Admin/Settings/Page.php:1378
 msgid ""
 "Post revisions and drafts will be permanently deleted. Do not use this "
 "option if you need to retain revisions or drafts."
@@ -1129,19 +1106,19 @@ msgstr ""
 "Izmjene objava i skice bit će trajno izbrisani. Ne koristite ovu opciju ako "
 "želite zadržati revizije ili skice."
 
-#: inc/Engine/Admin/Settings/Page.php:1393
+#: inc/Engine/Admin/Settings/Page.php:1386
 msgid "Comments Cleanup"
 msgstr "Čišćenje komentara"
 
-#: inc/Engine/Admin/Settings/Page.php:1395
+#: inc/Engine/Admin/Settings/Page.php:1388
 msgid "Spam and trashed comments will be permanently deleted."
 msgstr "Spam i komentari u smeću će biti trajno izbrisani."
 
-#: inc/Engine/Admin/Settings/Page.php:1399
+#: inc/Engine/Admin/Settings/Page.php:1392
 msgid "Transients Cleanup"
 msgstr "Čišćenje transienta"
 
-#: inc/Engine/Admin/Settings/Page.php:1401
+#: inc/Engine/Admin/Settings/Page.php:1394
 msgid ""
 "Transients are temporary options; they are safe to remove. They will be "
 "automatically regenerated as your plugins require them."
@@ -1149,24 +1126,24 @@ msgstr ""
 "Transienti su privremene opcije; sigurno ih je ukloniti. Biti će ponovno "
 "automatski generirani ukoliko ih vaši dodaci budu zahtijevali."
 
-#: inc/Engine/Admin/Settings/Page.php:1405
+#: inc/Engine/Admin/Settings/Page.php:1398
 msgid "Database Cleanup"
 msgstr "Čišćenje baze podataka"
 
-#: inc/Engine/Admin/Settings/Page.php:1407
+#: inc/Engine/Admin/Settings/Page.php:1400
 msgid "Reduces overhead of database tables"
 msgstr "Uklanja suvišne informacije u tablicama baze podataka"
 
-#: inc/Engine/Admin/Settings/Page.php:1411
+#: inc/Engine/Admin/Settings/Page.php:1404
 msgid "Automatic cleanup"
 msgstr "Automatsko čišćenje"
 
-#: inc/Engine/Admin/Settings/Page.php:1422
+#: inc/Engine/Admin/Settings/Page.php:1415
 #: inc/classes/admin/Database/class-optimization.php:41
 msgid "Revisions"
 msgstr "Izmjene"
 
-#: inc/Engine/Admin/Settings/Page.php:1424
+#: inc/Engine/Admin/Settings/Page.php:1417
 #, php-format
 msgid "%s revision in your database."
 msgid_plural "%s revisions in your database."
@@ -1174,12 +1151,12 @@ msgstr[0] "%s revizija u vašoj bazi podataka."
 msgstr[1] "%s revizija u vašoj bazi podataka."
 msgstr[2] "%s revizija u vašoj bazi podataka."
 
-#: inc/Engine/Admin/Settings/Page.php:1432
+#: inc/Engine/Admin/Settings/Page.php:1425
 #: inc/classes/admin/Database/class-optimization.php:42
 msgid "Auto Drafts"
 msgstr "Auto nacrti"
 
-#: inc/Engine/Admin/Settings/Page.php:1434
+#: inc/Engine/Admin/Settings/Page.php:1427
 #, php-format
 msgid "%s draft in your database."
 msgid_plural "%s drafts in your database."
@@ -1187,12 +1164,12 @@ msgstr[0] "%s skica u vašoj bazi podataka."
 msgstr[1] "%s skica u vašoj bazi podataka."
 msgstr[2] "%s skica u vašoj bazi podataka."
 
-#: inc/Engine/Admin/Settings/Page.php:1442
+#: inc/Engine/Admin/Settings/Page.php:1435
 #: inc/classes/admin/Database/class-optimization.php:43
 msgid "Trashed Posts"
 msgstr "Objave u smeću"
 
-#: inc/Engine/Admin/Settings/Page.php:1444
+#: inc/Engine/Admin/Settings/Page.php:1437
 #, php-format
 msgid "%s trashed post in your database."
 msgid_plural "%s trashed posts in your database."
@@ -1200,12 +1177,12 @@ msgstr[0] "%s objava u smeću u vašoj bazi podataka."
 msgstr[1] "%s objava u smeću u vašoj bazi podataka."
 msgstr[2] "%s objava u smeću u vašoj bazi podataka."
 
-#: inc/Engine/Admin/Settings/Page.php:1452
+#: inc/Engine/Admin/Settings/Page.php:1445
 #: inc/classes/admin/Database/class-optimization.php:44
 msgid "Spam Comments"
 msgstr "Spam kometari"
 
-#: inc/Engine/Admin/Settings/Page.php:1454
+#: inc/Engine/Admin/Settings/Page.php:1447
 #, php-format
 msgid "%s spam comment in your database."
 msgid_plural "%s spam comments in your database."
@@ -1213,12 +1190,12 @@ msgstr[0] "%s spam komentar u vašoj bazi podataka."
 msgstr[1] "%s spam komentara u vašoj bazi podataka."
 msgstr[2] "%s spam komentara u vašoj bazi podataka."
 
-#: inc/Engine/Admin/Settings/Page.php:1462
+#: inc/Engine/Admin/Settings/Page.php:1455
 #: inc/classes/admin/Database/class-optimization.php:45
 msgid "Trashed Comments"
 msgstr "Obrisani komentari"
 
-#: inc/Engine/Admin/Settings/Page.php:1464
+#: inc/Engine/Admin/Settings/Page.php:1457
 #, php-format
 msgid "%s trashed comment in your database."
 msgid_plural "%s trashed comments in your database."
@@ -1226,12 +1203,12 @@ msgstr[0] "%s obrisan komentar u vašoj bazi podataka."
 msgstr[1] "%s obrisanih komentara u vašoj bazi podataka."
 msgstr[2] "%s obrisanih komentara u vašoj bazi podataka."
 
-#: inc/Engine/Admin/Settings/Page.php:1472
+#: inc/Engine/Admin/Settings/Page.php:1465
 #: inc/classes/admin/Database/class-optimization.php:46
 msgid "Expired transients"
 msgstr "Istekli transienti"
 
-#: inc/Engine/Admin/Settings/Page.php:1474
+#: inc/Engine/Admin/Settings/Page.php:1467
 #, php-format
 msgid "%s expired transient in your database."
 msgid_plural "%s expired transients in your database."
@@ -1239,11 +1216,11 @@ msgstr[0] "%s istekli transient u vašoj bazi podataka."
 msgstr[1] "%s isteklih transienta u vašoj bazi podataka."
 msgstr[2] "%s isteklih transienta u vašoj bazi podataka."
 
-#: inc/Engine/Admin/Settings/Page.php:1482
+#: inc/Engine/Admin/Settings/Page.php:1475
 msgid "All transients"
 msgstr "Svi transienti"
 
-#: inc/Engine/Admin/Settings/Page.php:1484
+#: inc/Engine/Admin/Settings/Page.php:1477
 #, php-format
 msgid "%s transient in your database."
 msgid_plural "%s transients in your database."
@@ -1251,11 +1228,11 @@ msgstr[0] "%s transient u vašoj bazi podataka."
 msgstr[1] "%s transienta u vašoj bazi podataka."
 msgstr[2] "%s transienta u vašoj bazi podataka."
 
-#: inc/Engine/Admin/Settings/Page.php:1492
+#: inc/Engine/Admin/Settings/Page.php:1485
 msgid "Optimize Tables"
 msgstr "Optimize tablice podataka"
 
-#: inc/Engine/Admin/Settings/Page.php:1494
+#: inc/Engine/Admin/Settings/Page.php:1487
 #, php-format
 msgid "%s table to optimize in your database."
 msgid_plural "%s tables to optimize in your database."
@@ -1263,37 +1240,37 @@ msgstr[0] "%s tablica za optimizaciju u vašoj bazi podataka."
 msgstr[1] "%s tablica za optimizaciju u vašoj bazi podataka."
 msgstr[2] "%s tablica za optimizaciju u vašoj bazi podataka."
 
-#: inc/Engine/Admin/Settings/Page.php:1505
+#: inc/Engine/Admin/Settings/Page.php:1498
 msgid "Schedule Automatic Cleanup"
 msgstr "Zakaži automatsko čišćenje"
 
-#: inc/Engine/Admin/Settings/Page.php:1517
+#: inc/Engine/Admin/Settings/Page.php:1510
 msgid "Frequency"
 msgstr "Učestalost"
 
-#: inc/Engine/Admin/Settings/Page.php:1525
+#: inc/Engine/Admin/Settings/Page.php:1518
 msgid "Daily"
 msgstr "Dnevno"
 
-#: inc/Engine/Admin/Settings/Page.php:1526
+#: inc/Engine/Admin/Settings/Page.php:1519
 msgid "Weekly"
 msgstr "Tjedno"
 
-#: inc/Engine/Admin/Settings/Page.php:1527
+#: inc/Engine/Admin/Settings/Page.php:1520
 msgid "Monthly"
 msgstr "Mjesečno"
 
-#: inc/Engine/Admin/Settings/Page.php:1543
-#: inc/Engine/Admin/Settings/Page.php:1554 inc/admin/ui/meta-boxes.php:76
+#: inc/Engine/Admin/Settings/Page.php:1536
+#: inc/Engine/Admin/Settings/Page.php:1547 inc/admin/ui/meta-boxes.php:76
 #: inc/deprecated/deprecated.php:1773
 msgid "CDN"
 msgstr "CDN"
 
-#: inc/Engine/Admin/Settings/Page.php:1544
+#: inc/Engine/Admin/Settings/Page.php:1537
 msgid "Integrate your CDN"
 msgstr "Integrirajte svoj CDN"
 
-#: inc/Engine/Admin/Settings/Page.php:1556
+#: inc/Engine/Admin/Settings/Page.php:1549
 msgid ""
 "All URLs of static files (CSS, JS, images) will be rewritten to the CNAME(s)"
 " you provide."
@@ -1301,7 +1278,7 @@ msgstr ""
 "Svi URL-ovi statičkih datoteka (CSS, JS, slike) bit će prepisani u CNAME(s) "
 "koje navedete."
 
-#: inc/Engine/Admin/Settings/Page.php:1558
+#: inc/Engine/Admin/Settings/Page.php:1551
 #, php-format
 msgid ""
 "Not required for services like Cloudflare and Sucuri. Please see our "
@@ -1310,11 +1287,11 @@ msgstr ""
 "Nije potrebno za servise kao što su Cloudflare i Sucuri. Molimo pogledajte "
 "naše dostupne %1$sDodatke%2$s."
 
-#: inc/Engine/Admin/Settings/Page.php:1573 inc/admin/options.php:131
+#: inc/Engine/Admin/Settings/Page.php:1566 inc/admin/options.php:130
 msgid "Exclude files from CDN"
 msgstr "Izuzmi datoteke iz CDN-a"
 
-#: inc/Engine/Admin/Settings/Page.php:1599
+#: inc/Engine/Admin/Settings/Page.php:1592
 #, php-format
 msgid ""
 "%1$s%2$s Add-on%3$s is currently enabled. Configuration of the CDN settings "
@@ -1332,28 +1309,28 @@ msgstr[2] ""
 "%1$s%2$s Dodataka%3$s je trenutno omogućeno. Konfiguracija CDN postavki nije"
 " potrebna%2$s kako bi radila na vašoj web-lokaciji."
 
-#: inc/Engine/Admin/Settings/Page.php:1624
+#: inc/Engine/Admin/Settings/Page.php:1617
 msgid "Enable Content Delivery Network"
 msgstr "Omogućite CDN."
 
-#: inc/Engine/Admin/Settings/Page.php:1633
+#: inc/Engine/Admin/Settings/Page.php:1626
 #: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:151
 msgid "CDN CNAME(s)"
 msgstr "CDN CNAME(s)"
 
-#: inc/Engine/Admin/Settings/Page.php:1634
+#: inc/Engine/Admin/Settings/Page.php:1627
 #: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:152
 msgid "Specify the CNAME(s) below"
 msgstr "U nastavku navedite CNAME(s)"
 
-#: inc/Engine/Admin/Settings/Page.php:1641
+#: inc/Engine/Admin/Settings/Page.php:1634
 msgid ""
 "Specify URL(s) of files that should not get served via CDN (one per line)."
 msgstr ""
 "Navedite URL-ove datoteka koje se ne smiju posluživati ​​putem CDN-a (jedan "
 "po retku)."
 
-#: inc/Engine/Admin/Settings/Page.php:1642
+#: inc/Engine/Admin/Settings/Page.php:1635
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use (.*) "
 "wildcards to exclude all files of a given file type located at a specific "
@@ -1363,16 +1340,16 @@ msgstr ""
 " znakove (wildcards) kako biste izuzeli sve datoteke određene vrste "
 "smještene na navedenoj putanji."
 
-#: inc/Engine/Admin/Settings/Page.php:1664
-#: inc/Engine/Admin/Settings/Page.php:1672
+#: inc/Engine/Admin/Settings/Page.php:1657
+#: inc/Engine/Admin/Settings/Page.php:1665
 msgid "Heartbeat"
 msgstr "Heartbeat"
 
-#: inc/Engine/Admin/Settings/Page.php:1665
+#: inc/Engine/Admin/Settings/Page.php:1658
 msgid "Control WordPress Heartbeat API"
 msgstr "Upravljajte WordPress Heartbeat API-em"
 
-#: inc/Engine/Admin/Settings/Page.php:1673
+#: inc/Engine/Admin/Settings/Page.php:1666
 msgid ""
 "Reducing or disabling the Heartbeat API’s activity can help save some of "
 "your server’s resources."
@@ -1380,11 +1357,11 @@ msgstr ""
 "Smanjenje ili onemogućavanje aktivnosti Heartbeat API-ja može pomoći u "
 "uštedi resursa vašeg web poslužitelja."
 
-#: inc/Engine/Admin/Settings/Page.php:1682
+#: inc/Engine/Admin/Settings/Page.php:1675
 msgid "Reduce or disable Heartbeat activity"
 msgstr "Smanji ili onemogući aktivnost Heartbeata"
 
-#: inc/Engine/Admin/Settings/Page.php:1683
+#: inc/Engine/Admin/Settings/Page.php:1676
 msgid ""
 "Reducing activity will change Heartbeat frequency from one hit each minute "
 "to one hit every 2 minutes."
@@ -1392,55 +1369,55 @@ msgstr ""
 "Smanjenje aktivnosti će promijeniti frekvenciju s jednog \"otkucaja\" svake "
 "minute do jednog \"otkucaja\" svake 2 minute."
 
-#: inc/Engine/Admin/Settings/Page.php:1683
+#: inc/Engine/Admin/Settings/Page.php:1676
 msgid ""
 "Disabling Heartbeat entirely may break plugins and themes using this API."
 msgstr ""
 "Onemogućavanje funkcije Heartbeat može u potpunosti onemogućiti pravino "
 "funkcioniranje dodataka i /ili teme koja koristi ovaj API."
 
-#: inc/Engine/Admin/Settings/Page.php:1697
+#: inc/Engine/Admin/Settings/Page.php:1690
 msgid "Do not limit"
 msgstr "Nemoj ograničiti"
 
-#: inc/Engine/Admin/Settings/Page.php:1698
+#: inc/Engine/Admin/Settings/Page.php:1691
 msgid "Reduce activity"
 msgstr "Ograniči aktivnost"
 
-#: inc/Engine/Admin/Settings/Page.php:1699
+#: inc/Engine/Admin/Settings/Page.php:1692
 msgid "Disable"
 msgstr "Onemogući"
 
-#: inc/Engine/Admin/Settings/Page.php:1707
+#: inc/Engine/Admin/Settings/Page.php:1700
 msgid "Control Heartbeat"
 msgstr "Kontroliraj Heartbeat"
 
-#: inc/Engine/Admin/Settings/Page.php:1716
+#: inc/Engine/Admin/Settings/Page.php:1709
 msgid "Behavior in backend"
 msgstr "Ponašanje u backendu"
 
-#: inc/Engine/Admin/Settings/Page.php:1723
+#: inc/Engine/Admin/Settings/Page.php:1716
 msgid "Behavior in post editor"
 msgstr "Ponašanje u uređivaču objava"
 
-#: inc/Engine/Admin/Settings/Page.php:1729
+#: inc/Engine/Admin/Settings/Page.php:1722
 msgid "Behavior in frontend"
 msgstr "Ponašanje u frontendu"
 
-#: inc/Engine/Admin/Settings/Page.php:1745
+#: inc/Engine/Admin/Settings/Page.php:1738
 #: views/settings/page-sections/tutorials.php:36
 msgid "Add-ons"
 msgstr "Dodaci"
 
-#: inc/Engine/Admin/Settings/Page.php:1746
+#: inc/Engine/Admin/Settings/Page.php:1739
 msgid "Add more features"
 msgstr "Dodajte još značajki"
 
-#: inc/Engine/Admin/Settings/Page.php:1753
+#: inc/Engine/Admin/Settings/Page.php:1746
 msgid "One-click Rocket Add-ons"
 msgstr "One-click Rocket dodaci"
 
-#: inc/Engine/Admin/Settings/Page.php:1754
+#: inc/Engine/Admin/Settings/Page.php:1747
 msgid ""
 "One-Click Add-ons are features extending available options without "
 "configuration needed. Switch the option \"on\" to enable from this screen."
@@ -1449,24 +1426,24 @@ msgstr ""
 "dodatnom konfiguracijom. Prebacite opciju \"uključeno\" da biste omogućili "
 "funkcionalnost s ovog zaslona."
 
-#: inc/Engine/Admin/Settings/Page.php:1764
+#: inc/Engine/Admin/Settings/Page.php:1757
 msgid "Rocket Add-ons"
 msgstr "Rocket Dodaci"
 
-#: inc/Engine/Admin/Settings/Page.php:1765
+#: inc/Engine/Admin/Settings/Page.php:1758
 msgid "Rocket Add-ons are complementary features extending available options."
 msgstr ""
 "Rocket Dodaci su komplementarne značajke koje proširuju dostupne opcije."
 
-#: inc/Engine/Admin/Settings/Page.php:1778
+#: inc/Engine/Admin/Settings/Page.php:1771
 msgid "Google Tracking"
 msgstr "Google praćenje"
 
-#: inc/Engine/Admin/Settings/Page.php:1784
+#: inc/Engine/Admin/Settings/Page.php:1777
 msgid "Improve browser caching for Google Analytics"
 msgstr "Poboljšajte cacheiranje preglednika za Google Analytics"
 
-#: inc/Engine/Admin/Settings/Page.php:1786
+#: inc/Engine/Admin/Settings/Page.php:1779
 #, php-format
 msgid ""
 "WP Rocket will host these Google scripts locally on your server to help "
@@ -1477,15 +1454,15 @@ msgstr ""
 "bi zadovoljio PageSpeed preporuku za <em>Leverage browser "
 "caching</em>.<br>%1$sSaznaj više%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1801
+#: inc/Engine/Admin/Settings/Page.php:1794
 msgid "Facebook Pixel"
 msgstr "Facebook Pixel"
 
-#: inc/Engine/Admin/Settings/Page.php:1807
+#: inc/Engine/Admin/Settings/Page.php:1800
 msgid "Improve browser caching for Facebook Pixel"
 msgstr "Poboljšajte cacheiranje preglednika za Facebook Pixel"
 
-#: inc/Engine/Admin/Settings/Page.php:1809
+#: inc/Engine/Admin/Settings/Page.php:1802
 #, php-format
 msgid ""
 "WP Rocket will host these Facebook Pixels locally on your server to help "
@@ -1496,16 +1473,16 @@ msgstr ""
 "bi zadovoljio PageSpeed preporuku za <em>Leverage browser "
 "caching</em>.<br>%1$sSaznaj više%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1822
-#: inc/Engine/Admin/Settings/Page.php:1923
+#: inc/Engine/Admin/Settings/Page.php:1815
+#: inc/Engine/Admin/Settings/Page.php:1916
 msgid "Cloudflare"
 msgstr "Cloudflare"
 
-#: inc/Engine/Admin/Settings/Page.php:1828
+#: inc/Engine/Admin/Settings/Page.php:1821
 msgid "Integrate your Cloudflare account with this add-on."
 msgstr "Integrirajte svoj Cloudflare račun pomoću ovog dodatka."
 
-#: inc/Engine/Admin/Settings/Page.php:1829
+#: inc/Engine/Admin/Settings/Page.php:1822
 msgid ""
 "Provide your account email, global API key, and domain to use options such "
 "as clearing the Cloudflare cache and enabling optimal settings with WP "
@@ -1515,17 +1492,17 @@ msgstr ""
 "koristili opcije kao što je brisanje Cloudflare cachea i omogućavanje "
 "optimalnih postavki pomoću programa WP Rocket."
 
-#: inc/Engine/Admin/Settings/Page.php:1863
+#: inc/Engine/Admin/Settings/Page.php:1856
 msgid "Varnish"
 msgstr "Varnish"
 
-#: inc/Engine/Admin/Settings/Page.php:1869
+#: inc/Engine/Admin/Settings/Page.php:1862
 msgid "If Varnish runs on your server, you must activate this add-on."
 msgstr ""
 "Ako je Varnish pokrenut na vašem poslužitelju, morate aktivirati ovaj "
 "dodatak."
 
-#: inc/Engine/Admin/Settings/Page.php:1871
+#: inc/Engine/Admin/Settings/Page.php:1864
 #, php-format
 msgid ""
 "Varnish cache will be purged each time WP Rocket clears its cache to ensure "
@@ -1534,11 +1511,11 @@ msgstr ""
 "Varnisj cache će biti izbrisan svaki put kada WP Rocket obriše svoj cache "
 "kako bi se osiguralo da je sadržaj uvijek ažuriran. <br>%1$sSaznaj više%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1885
+#: inc/Engine/Admin/Settings/Page.php:1878
 msgid "Clear the Sucuri cache when WP Rocket’s cache is cleared."
 msgstr "Očistite Sucuri cache kada je obrisan cache WP Rocketa."
 
-#: inc/Engine/Admin/Settings/Page.php:1888
+#: inc/Engine/Admin/Settings/Page.php:1881
 msgid ""
 "Provide your API key to clear the Sucuri cache when WP Rocket’s cache is "
 "cleared."
@@ -1546,48 +1523,48 @@ msgstr ""
 "Upišite svoj API ključ za brisanje Sucuri cachea kada je izbrisan cache WP "
 "Rocketa."
 
-#: inc/Engine/Admin/Settings/Page.php:1896
-#: inc/Engine/Admin/Settings/Page.php:2040
+#: inc/Engine/Admin/Settings/Page.php:1889
+#: inc/Engine/Admin/Settings/Page.php:2033
 msgid "Sucuri"
 msgstr "Sucuri"
 
-#: inc/Engine/Admin/Settings/Page.php:1902
+#: inc/Engine/Admin/Settings/Page.php:1895
 msgid "Synchronize Sucuri cache with this add-on."
 msgstr "Sinkronizirajte Sucuri cache pomoću ovog dodatka."
 
-#: inc/Engine/Admin/Settings/Page.php:1940
+#: inc/Engine/Admin/Settings/Page.php:1933
 msgid "Cloudflare credentials"
 msgstr "Cloudflare podaci"
 
-#: inc/Engine/Admin/Settings/Page.php:1949
+#: inc/Engine/Admin/Settings/Page.php:1942
 msgid "Cloudflare settings"
 msgstr "Cloudflare postavke"
 
-#: inc/Engine/Admin/Settings/Page.php:1963
+#: inc/Engine/Admin/Settings/Page.php:1956
 msgctxt "Cloudflare"
 msgid "Global API key:"
 msgstr "Globalni API ključ:"
 
-#: inc/Engine/Admin/Settings/Page.php:1964
+#: inc/Engine/Admin/Settings/Page.php:1957
 msgctxt "Cloudflare"
 msgid "Find your API key"
 msgstr "Pronađi svoj API ključ"
 
-#: inc/Engine/Admin/Settings/Page.php:1976
+#: inc/Engine/Admin/Settings/Page.php:1969
 msgctxt "Cloudflare"
 msgid "Account email"
 msgstr "Email računa"
 
-#: inc/Engine/Admin/Settings/Page.php:1985
+#: inc/Engine/Admin/Settings/Page.php:1978
 msgctxt "Cloudflare"
 msgid "Zone ID"
 msgstr "Zone ID"
 
-#: inc/Engine/Admin/Settings/Page.php:1995
+#: inc/Engine/Admin/Settings/Page.php:1988
 msgid "Development mode"
 msgstr "Development mode"
 
-#: inc/Engine/Admin/Settings/Page.php:1997
+#: inc/Engine/Admin/Settings/Page.php:1990
 #, php-format
 msgid ""
 "Temporarily activate development mode on your website. This setting will "
@@ -1596,11 +1573,11 @@ msgstr ""
 "Privremeno aktivirajte Development mode na web-lokaciji. Ova postavka će se "
 "automatski isključiti nakon 3 sata. %1$sSaznaj više%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:2005
+#: inc/Engine/Admin/Settings/Page.php:1998
 msgid "Optimal settings"
 msgstr "Optimalne postavke"
 
-#: inc/Engine/Admin/Settings/Page.php:2006
+#: inc/Engine/Admin/Settings/Page.php:1999
 msgid ""
 "Automatically enhances your Cloudflare configuration for speed, performance "
 "grade and compatibility."
@@ -1608,11 +1585,11 @@ msgstr ""
 "Automatski poboljšava Cloudflare konfiguraciju za brzinu, ocjenu izvedbe i "
 "kompatibilnost."
 
-#: inc/Engine/Admin/Settings/Page.php:2014
+#: inc/Engine/Admin/Settings/Page.php:2007
 msgid "Relative protocol"
 msgstr "Relativni protokol"
 
-#: inc/Engine/Admin/Settings/Page.php:2015
+#: inc/Engine/Admin/Settings/Page.php:2008
 msgid ""
 "Should only be used with Cloudflare's flexible SSL feature. URLs of static "
 "files (CSS, JS, images) will be rewritten to use // instead of http:// or "
@@ -1622,11 +1599,11 @@ msgstr ""
 "ovi statičkih datoteka (CSS, JS, slike) bit će prepisani tako da koriste // "
 "umjesto http:// ili https://."
 
-#: inc/Engine/Admin/Settings/Page.php:2053
+#: inc/Engine/Admin/Settings/Page.php:2046
 msgid "Sucuri credentials"
 msgstr "Sucuri podaci"
 
-#: inc/Engine/Admin/Settings/Page.php:2066
+#: inc/Engine/Admin/Settings/Page.php:2059
 msgctxt "Sucuri"
 msgid ""
 "Firewall API key (for plugin), must be in format <code>{32 characters}/{32 "
@@ -1635,7 +1612,7 @@ msgstr ""
 "Firewall API ključ (za dodatak) mora biti u formatu <code>{32 znaka}/{32 "
 "znaka}</code>:"
 
-#: inc/Engine/Admin/Settings/Page.php:2067
+#: inc/Engine/Admin/Settings/Page.php:2060
 msgctxt "Sucuri"
 msgid "Find your API key"
 msgstr "Pronađi svoj API ključ"
@@ -1644,7 +1621,7 @@ msgstr "Pronađi svoj API ključ"
 msgid "Upload file and import settings"
 msgstr "Upload datoteke i uvoz settings"
 
-#: inc/Engine/Admin/Settings/Settings.php:400
+#: inc/Engine/Admin/Settings/Settings.php:387
 msgid ""
 "Sucuri Add-on: The API key for the Sucuri firewall must be in format "
 "<code>{32 characters}/{32 characters}</code>."
@@ -1652,7 +1629,7 @@ msgstr ""
 "Dodatak za Sucuri: API ključ za Sucuri firewall mora biti u formatu<code>{32"
 " znaka}/{32 znaka}.</code>."
 
-#: inc/Engine/Admin/Settings/Settings.php:491
+#: inc/Engine/Admin/Settings/Settings.php:478
 #: inc/deprecated/deprecated.php:1245
 msgid "Settings saved."
 msgstr "Settings spremljene."
@@ -1848,6 +1825,10 @@ msgstr "Ubrzajte svoju web stranicu pomoću RocketCDN-a od WP Rocketa."
 msgid "Clear this cache"
 msgstr "Očisti ovo iz cachea"
 
+#: inc/Engine/Cache/PurgeExpired/Subscriber.php:75
+msgid "WP Rocket Expired Cache Interval"
+msgstr "WP Rocket interval isteklog cachea"
+
 #: inc/Engine/Cache/WPCache.php:330
 msgid "WP_CACHE value"
 msgstr "WP_CACHE vrijednost"
@@ -1967,7 +1948,7 @@ msgid "Critical CSS generation is currently running."
 msgstr "Trenutno je aktivno generiranje ključnog CSS-a."
 
 #: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:152
-#: inc/Engine/Preload/PreloadSubscriber.php:242
+#: inc/Engine/Preload/PreloadSubscriber.php:241
 #, php-format
 msgid "Go to the %1$sWP Rocket settings%2$s page to track progress."
 msgstr "Idite na stranicu%1$s postavki WP Rocketa%2$s za praćenje napretka."
@@ -2140,6 +2121,11 @@ msgstr "%s promocija je aktivna!"
 msgid "Hurry Up! Deal ends in:"
 msgstr "Požuri! Ponuda završava za:"
 
+#: inc/Engine/License/views/promo-banner.php:31
+#: inc/Engine/License/views/renewal-soon-banner.php:14
+msgid "Minutes"
+msgstr "Minuta"
+
 #: inc/Engine/License/views/promo-banner.php:32
 #: inc/Engine/License/views/renewal-soon-banner.php:15
 msgid "Seconds"
@@ -2152,7 +2138,7 @@ msgstr "Nadogradi sada"
 
 #: inc/Engine/License/views/promo-banner.php:36
 #: inc/Engine/License/views/renewal-expired-banner.php:39
-#: inc/admin/ui/notices.php:812 views/settings/page-sections/dashboard.php:46
+#: inc/admin/ui/notices.php:813 views/settings/page-sections/dashboard.php:46
 msgid "Dismiss this notice."
 msgstr "Uklonite ovu obavijest."
 
@@ -2296,12 +2282,12 @@ msgstr ""
 "Predučitavanje je naišlo na pogrešku. Nije moguće prikupiti veze na %1$s jer"
 " je vraćen sljedeći kod odgovora: %2$s. %3$sSaznaj više%4$s."
 
-#: inc/Engine/Preload/PreloadSubscriber.php:237
+#: inc/Engine/Preload/PreloadSubscriber.php:236
 msgid "Preload: WP Rocket has started preloading your website."
 msgstr ""
 "Predučitavanje: WP Rocket je počeo s predučitavanjem vaše web-lokacije."
 
-#: inc/Engine/Preload/PreloadSubscriber.php:283
+#: inc/Engine/Preload/PreloadSubscriber.php:282
 #, php-format
 msgid ""
 "Preload: %1$s uncached page has now been preloaded. (refresh to see "
@@ -2319,7 +2305,7 @@ msgstr[2] ""
 "Predučitavanje: %1$s ne-cachiranih  stranica je predučitano (osvježite kako "
 "biste vidjeli napredak)"
 
-#: inc/Engine/Preload/PreloadSubscriber.php:292
+#: inc/Engine/Preload/PreloadSubscriber.php:291
 msgid "The following error happened during gathering of the URLs to preload:"
 msgid_plural ""
 "The following errors happened during gathering of the URLs to preload:"
@@ -2333,7 +2319,7 @@ msgstr[2] ""
 "Tijekom prikupljanja URL-ova za predučitavanje došlo je do sljedećih "
 "pogrešaka:"
 
-#: inc/Engine/Preload/PreloadSubscriber.php:344
+#: inc/Engine/Preload/PreloadSubscriber.php:343
 #, php-format
 msgid "Preload complete: %d pages have been cached."
 msgstr "Predučitavanje završeno: %d stranica je cachirano."
@@ -2431,6 +2417,15 @@ msgstr ""
 "Varnish automatsko pročišćavanje automatski će se omogućiti nakon što "
 "omogućite Varnish na vašem %s serveru."
 
+#: inc/ThirdParty/Plugins/ModPagespeed.php:100
+#, php-format
+msgid ""
+"<strong>%1$s</strong>: Mod PageSpeed is not compatible with this plugin and "
+"may cause unexpected results. %2$sMore Info%3$s"
+msgstr ""
+"<strong>%1$s</strong>: Mod PageSpeed ​​nije kompatibilan s ovim dodatkom i "
+"može dovesti do neočekivanih rezultata. %2$sViše infromacija%3$s"
+
 #: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:78
 #, php-format
 msgctxt "Hummingbird notice"
@@ -2498,6 +2493,10 @@ msgstr ""
 msgid "Smush"
 msgstr "Smush"
 
+#: inc/ThirdParty/Themes/Avada.php:118
+msgid "Avada"
+msgstr "Avada"
+
 #: inc/admin/admin.php:18 inc/common/admin-bar.php:367
 #: inc/deprecated/deprecated.php:1787
 msgid "Support"
@@ -2555,19 +2554,19 @@ msgstr "Uvoz postavki nije uspio: neočekivani sadržaj datoteke."
 msgid "Settings imported and saved."
 msgstr "Postavke uvezene i spremljene."
 
-#: inc/admin/options.php:149
+#: inc/admin/options.php:148
 #, php-format
 msgid "%1$s: <em>%2$s</em>."
 msgstr "%1$s: <em>%2$s</em>."
 
-#: inc/admin/options.php:159
+#: inc/admin/options.php:158
 msgid "The following pattern is invalid and has been removed:"
 msgid_plural "The following patterns are invalid and have been removed:"
 msgstr[0] "Sljedeći je obrazac nevažeći i uklonjen:"
 msgstr[1] "Sljedeći su obrasci nevažeći i uklonjeni:"
 msgstr[2] "Sljedeći su obrasci nevažeći i uklonjeni:"
 
-#: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:768
+#: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:769
 #: inc/common/admin-bar.php:85 inc/common/admin-bar.php:137
 #: views/settings/page-sections/dashboard.php:143
 msgid "Clear cache"
@@ -2641,7 +2640,7 @@ msgstr ""
 "<strong>%s</strong>: Jedan ili više dodataka su omogućeni ili onemogućeni. "
 "Ako želite utjecati na pravilan prikaz web-lokacije, očistite cache."
 
-#: inc/admin/ui/notices.php:184
+#: inc/admin/ui/notices.php:185
 msgid ""
 "WP Rocket Cloudflare Add-on provides similar functionalities. They can not "
 "be active at the same time."
@@ -2649,7 +2648,7 @@ msgstr ""
 "WP Rocket Cloudflare dodatak pruža slične funkcionalnosti. Ne mogu "
 "istovremeno biti aktivni."
 
-#: inc/admin/ui/notices.php:208
+#: inc/admin/ui/notices.php:209
 #, php-format
 msgid ""
 "<strong>%s</strong>: The following plugins are not compatible with this "
@@ -2658,11 +2657,11 @@ msgstr ""
 "<strong>%s</strong> : Sljedeći pluginovi nisu kompatibilni s ovim pluginom i"
 " to može izazvati neočekivane rezultate:"
 
-#: inc/admin/ui/notices.php:214
+#: inc/admin/ui/notices.php:215
 msgid "Deactivate"
 msgstr "Deaktiviraj"
 
-#: inc/admin/ui/notices.php:256
+#: inc/admin/ui/notices.php:257
 msgid ""
 "WP Rocket Footer JS is not an official add-on. It prevents some options in "
 "WP Rocket from working correctly. Please deactivate it if you have problems."
@@ -2670,7 +2669,7 @@ msgstr ""
 "WP Rocket Footer JS nije službeni dodatak. On spriječava da neke opcije WP "
 "Rocketa rade ispravno. Isključite ga ako primjetite problem."
 
-#: inc/admin/ui/notices.php:296
+#: inc/admin/ui/notices.php:297
 #, php-format
 msgid ""
 "Endurance Cache is currently enabled, which will conflict with WP Rocket "
@@ -2681,7 +2680,7 @@ msgstr ""
 "Cacheom. Molimo, postavite Endurance Cache razinu cachea na Off (Level 0) na"
 " stranici %1$sPostavke > Općenito%2$s kako biste spriječili probleme."
 
-#: inc/admin/ui/notices.php:317
+#: inc/admin/ui/notices.php:318
 #, php-format
 msgid ""
 "%1$s: A custom permalink structure is required for the plugin to work "
@@ -2690,7 +2689,7 @@ msgstr ""
 "%1$s: Za ispravan rad dodatka potrebna je prilagođena struktura stalnih "
 "veza. %2$sIdite na postavke stalnih veza%3$s"
 
-#: inc/admin/ui/notices.php:364
+#: inc/admin/ui/notices.php:365
 #, php-format
 msgid ""
 "%s could not modify the .htaccess file due to missing writing permissions."
@@ -2698,14 +2697,14 @@ msgstr ""
 "%s nije mogao izmijeniti .htaccess datoteku zbog nedostajućih dozvola "
 "pisanja."
 
-#: inc/admin/ui/notices.php:370 inc/admin/ui/notices.php:845
+#: inc/admin/ui/notices.php:371 inc/admin/ui/notices.php:846
 #, php-format
 msgid "Troubleshoot: %1$sHow to make system files writeable%2$s"
 msgstr ""
 "Rješavanje problema:: %1$sKako omogućiti zapisivanje u sistemske "
 "datoteke%2$s"
 
-#: inc/admin/ui/notices.php:372 inc/admin/ui/notices.php:847
+#: inc/admin/ui/notices.php:373 inc/admin/ui/notices.php:848
 msgid ""
 "https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
 "config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
@@ -2713,13 +2712,13 @@ msgstr ""
 "https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
 "config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
 
-#: inc/admin/ui/notices.php:378
+#: inc/admin/ui/notices.php:379
 msgid ""
 "Don’t worry, WP Rocket’s page caching and settings will still function "
 "correctly."
 msgstr "Ne brinite, caching i postavke WP Rocketa će i dalje raditi ispravno."
 
-#: inc/admin/ui/notices.php:378
+#: inc/admin/ui/notices.php:379
 msgid ""
 "For optimal performance, adding the following lines into your .htaccess is "
 "recommended (not required):"
@@ -2727,7 +2726,7 @@ msgstr ""
 "Za optimalne performanse, preporučuje se dodavanje sljedećih redaka u vašu "
 ".htaccess datoteku (nije obvezno):"
 
-#: inc/admin/ui/notices.php:525
+#: inc/admin/ui/notices.php:526
 #, php-format
 msgid ""
 "%1$s is good to go! %2$sTest your load time%4$s, or visit your "
@@ -2736,7 +2735,7 @@ msgstr ""
 "%1$s je spreman! %2$sTestirajte vrijeme učitavanja%4$s, ili posjetite vaše "
 "%3$spostavke%4$s."
 
-#: inc/admin/ui/notices.php:598
+#: inc/admin/ui/notices.php:599
 msgid ""
 "Would you allow WP Rocket to collect non-sensitive diagnostic data from this"
 " website?"
@@ -2744,15 +2743,15 @@ msgstr ""
 "Dopuštate li WP Rocketu da prikupi osnovne dijagnostičke podatke s ove web "
 "stranice?"
 
-#: inc/admin/ui/notices.php:599
+#: inc/admin/ui/notices.php:600
 msgid "This would help us to improve WP Rocket for you in the future."
 msgstr "To bi nam pomoglo da u budućnosti poboljšamo WP Rocket."
 
-#: inc/admin/ui/notices.php:605
+#: inc/admin/ui/notices.php:606
 msgid "What info will we collect?"
 msgstr "Koje ćemo podatke prikupiti?"
 
-#: inc/admin/ui/notices.php:610
+#: inc/admin/ui/notices.php:611
 msgid ""
 "Below is a detailed view of all data WP Rocket will collect if granted "
 "permission. WP Rocket will never transmit any domain names or email "
@@ -2764,60 +2763,60 @@ msgstr ""
 "ili adrese e-pošte (osim za provjeru licence), IP adrese ili API ključeve "
 "treće strane."
 
-#: inc/admin/ui/notices.php:619
+#: inc/admin/ui/notices.php:620
 msgid "Yes, allow"
 msgstr "Da, dozvoli"
 
-#: inc/admin/ui/notices.php:622
+#: inc/admin/ui/notices.php:623
 msgid "No, thanks"
 msgstr "Ne, hvala"
 
-#: inc/admin/ui/notices.php:661
+#: inc/admin/ui/notices.php:662
 msgid "Thank you!"
 msgstr "Hvala vam!"
 
-#: inc/admin/ui/notices.php:666
+#: inc/admin/ui/notices.php:667
 msgid "WP Rocket now collects these metrics from your website:"
 msgstr "WP Rocket sada prikuplja ove podatke s vaše web-lokacije:"
 
-#: inc/admin/ui/notices.php:704
+#: inc/admin/ui/notices.php:705
 #, php-format
 msgid "%s: Cache cleared."
 msgstr "%s: Cache očišćen."
 
-#: inc/admin/ui/notices.php:711
+#: inc/admin/ui/notices.php:712
 #, php-format
 msgid "%s: Post cache cleared."
 msgstr "%s: Cache objava očišćen."
 
-#: inc/admin/ui/notices.php:718
+#: inc/admin/ui/notices.php:719
 #, php-format
 msgid "%s: Term cache cleared."
 msgstr "%s: Cache pojmova očišćen."
 
-#: inc/admin/ui/notices.php:725
+#: inc/admin/ui/notices.php:726
 #, php-format
 msgid "%s: User cache cleared."
 msgstr "%s: Cache korisnika očišćen."
 
-#: inc/admin/ui/notices.php:771
+#: inc/admin/ui/notices.php:772
 msgid "Stop Preload"
 msgstr "Zaustavi predučitavanje"
 
-#: inc/admin/ui/notices.php:789
+#: inc/admin/ui/notices.php:790
 msgid "Force deactivation "
 msgstr "Prisili deaktiviranje"
 
-#: inc/admin/ui/notices.php:802
+#: inc/admin/ui/notices.php:803
 msgid "The following code should have been written to this file:"
 msgstr "Sljedeći kôd bi trebao biti zapisan u ovu datoteku:"
 
-#: inc/admin/ui/notices.php:833
+#: inc/admin/ui/notices.php:834
 #, php-format
 msgid "%s cannot configure itself due to missing writing permissions."
 msgstr "%s se ne može konfigurirati zbog nedostatka dozvola za pisanje."
 
-#: inc/admin/ui/notices.php:839
+#: inc/admin/ui/notices.php:840
 #, php-format
 msgid "Affected file/folder: %s"
 msgstr "Utjecana datoteka/mapa: %s"
@@ -2889,10 +2888,6 @@ msgstr "Log datoteku nije moguće pročitati."
 #: inc/classes/logger/class-logger.php:279
 msgid "The logs are not saved into a file."
 msgstr "Log zapisi nisu spremljeni u datoteku."
-
-#: inc/classes/subscriber/Cache/class-expired-cache-purge-subscriber.php:128
-msgid "WP Rocket Expired Cache Interval"
-msgstr "WP Rocket interval isteklog cachea"
 
 #: inc/classes/subscriber/Media/class-webp-subscriber.php:269
 #, php-format
@@ -3146,11 +3141,11 @@ msgstr "Očisti RocketCDN cache"
 msgid "Documentation"
 msgstr "Dokumentacija"
 
-#: inc/common/purge.php:557
+#: inc/common/purge.php:562
 msgid "OPcache purge failed."
 msgstr "Čišćenje OPcachea nije uspjelo."
 
-#: inc/common/purge.php:562
+#: inc/common/purge.php:567
 msgid "OPcache successfully purged"
 msgstr "Čišćenje OPcachea uspješno"
 
@@ -3415,7 +3410,7 @@ msgstr "Anonimizirane postavke WP Rocketa:"
 msgid "Which WP Rocket settings are active"
 msgstr "Koje postavke WP Rocketa su aktivne"
 
-#: inc/functions/options.php:549 inc/functions/options.php:588
+#: inc/functions/options.php:513 inc/functions/options.php:552
 msgid ""
 "License validation failed. Our server could not resolve the request from "
 "your website."
@@ -3423,7 +3418,7 @@ msgstr ""
 "Provjera valjanosti licence nije uspjela. Naš poslužitelj nije mogao "
 "riješiti zahtjev s vaše web-lokacije."
 
-#: inc/functions/options.php:549 inc/functions/options.php:588
+#: inc/functions/options.php:513 inc/functions/options.php:552
 #, php-format
 msgid ""
 "Try clicking %1$sSave Changes%2$s below. If the error persists, follow "
@@ -3432,7 +3427,7 @@ msgstr ""
 "Pokušajte kliknuti %1$sSpremi promjene%2$s niže. Ako se pogreška i dalje "
 "pojavljuje, slijedite %3$sovaj vodič%4$s."
 
-#: inc/functions/options.php:565
+#: inc/functions/options.php:529
 msgid ""
 "License validation failed. You may be using a nulled version of the plugin. "
 "Please do the following:"
@@ -3440,61 +3435,61 @@ msgstr ""
 "Provjera valjanosti licence nije uspjela. Možda koristite ilegalnu verziju "
 "dodatka. Učinite sljedeće:"
 
-#: inc/functions/options.php:565 inc/functions/options.php:607
+#: inc/functions/options.php:529 inc/functions/options.php:571
 #, php-format
 msgid "Login to your WP Rocket %1$saccount%2$s"
 msgstr "Prijavite se u svoj WP Rocket %1$sračun%2$s"
 
-#: inc/functions/options.php:565 inc/functions/options.php:607
+#: inc/functions/options.php:529 inc/functions/options.php:571
 msgid "Download the zip file"
 msgstr "Preuzmite zip datoteku"
 
-#: inc/functions/options.php:565 inc/functions/options.php:607
+#: inc/functions/options.php:529 inc/functions/options.php:571
 msgid "Reinstall"
 msgstr "Reinstaliraj"
 
-#: inc/functions/options.php:565
+#: inc/functions/options.php:529
 #, php-format
 msgid ""
 "If you do not have a WP Rocket account, please %1$spurchase a license%2$s."
 msgstr "Ako nemate WP Rocket račun, molimo %1$skupite licencu%2$s."
 
-#: inc/functions/options.php:573
+#: inc/functions/options.php:537
 msgid ""
 "License validation failed. This user account does not exist in our database."
 msgstr ""
 "Provjera valjanosti licence nije uspjela. Ovaj korisnički račun ne postoji u"
 " našoj bazi podataka."
 
-#: inc/functions/options.php:573
+#: inc/functions/options.php:537
 msgid "To resolve, please contact support."
 msgstr "Za rješavanje, kontaktirajte podršku."
 
-#: inc/functions/options.php:581
+#: inc/functions/options.php:545
 msgid "License validation failed. This user account is blocked."
 msgstr ""
 "Provjera valjanosti licence nije uspjela. Ovaj korisnički račun je blokiran."
 
-#: inc/functions/options.php:581
+#: inc/functions/options.php:545
 #, php-format
 msgid "Please see %1$sthis guide%2$s for more info."
 msgstr "Molimo pogledajte %1$sovaj vodič%2$s za više informacija."
 
-#: inc/functions/options.php:601
+#: inc/functions/options.php:565
 msgid "Your license is not valid."
 msgstr "Vaša licenca nije valjana."
 
-#: inc/functions/options.php:601
+#: inc/functions/options.php:565
 #, php-format
 msgid "Make sure you have an active %1$sWP Rocket license%2$s."
 msgstr "Provjerite imate li aktivnu %1$sWP Rocket licencu%2$s."
 
-#: inc/functions/options.php:603
+#: inc/functions/options.php:567
 msgid "You have added as many sites as your current license allows."
 msgstr ""
 "Dodali ste onoliko web-lokacija koliko to dopušta vaša trenutna licenca."
 
-#: inc/functions/options.php:603
+#: inc/functions/options.php:567
 #, php-format
 msgid ""
 "Upgrade your %1$saccount%2$s or %3$stransfer your license%2$s to this "
@@ -3503,26 +3498,26 @@ msgstr ""
 "Nadogradite svoj %1$sračun%2$s ili %3$sprenesite licencu%2$s na ovu web "
 "lokaciju."
 
-#: inc/functions/options.php:605
+#: inc/functions/options.php:569
 msgid "This website is not allowed."
 msgstr "Ova web stranica nije dopuštena."
 
-#: inc/functions/options.php:605
+#: inc/functions/options.php:569
 #, php-format
 msgid "Please %1$scontact support%2$s."
 msgstr "Molimo %1$skontaktirajte korisničku podršku%2$s."
 
-#: inc/functions/options.php:607
+#: inc/functions/options.php:571
 msgid "This license key is not recognized."
 msgstr "Ovaj licencni ključ nije prepoznat."
 
-#: inc/functions/options.php:607
+#: inc/functions/options.php:571
 #, php-format
 msgid "If the issue persists, please %1$scontact support%2$s."
 msgstr ""
 "Ako se problem nastavi, molimo %1$skontaktirajte korisničku podršku%2$s."
 
-#: inc/functions/options.php:613
+#: inc/functions/options.php:577
 #, php-format
 msgid "License validation failed: %s"
 msgstr "Provjera valjanosti licence nije uspjela: %s"
@@ -3953,8 +3948,8 @@ msgstr "Vaša bi se web-lokacija trebala već brže učitavati!"
 #: views/settings/page-sections/dashboard.php:44
 #, php-format
 msgid ""
-"To guarantee fast websites, WP Rocket applies 80% of web performance best "
-"practices."
+"To guarantee fast websites, WP Rocket automatically applies 80% of web "
+"performance best practices."
 msgstr ""
 "Kako bi se zajamčile brze web stranice, WP Rocket primjenjuje 80% najboljih "
 "praksi za web performanse."
@@ -4225,54 +4220,16 @@ msgstr "verzija %s"
 msgid "Show Sidebar"
 msgstr "Prikaži bočnu traku"
 
-#: views/settings/page.php:76
-msgid "Thanks for choosing to participate in the WP Rocket beta program!"
-msgstr "Hvala što ste odabrali sudjelovanje u WP Rocket beta programu!"
-
-#: views/settings/page.php:77
-msgid ""
-"A beta version is usually one that has new features and improvements, but we"
-" want to test it a little more before full launch."
-msgstr ""
-"Beta verzija obično ima nove značajke i poboljšanja, ali želimo je dodatno "
-"testirati prije službene objave."
-
-#: views/settings/page.php:78
-msgid ""
-"We’d love it if you took our beta versions for a ride, but please keep in "
-"mind that it might be less stable than our other releases. Don’t worry, you "
-"can switch back to a full release version at any time."
-msgstr ""
-"Bilo bi nam drago ako biste preuzeli našu beta verziju za probu, ali imajte "
-"na umu da je možda manje stabilna od naših ostalih verzija. Ne brinite, "
-"možete se vratiti na punu verziju u bilo kojem trenutku."
-
 #: views/settings/page.php:79
+#, php-format
 msgid ""
-"Your mission: please send all feedback about our beta versions, including "
-"bug reports, to support@wp-rocket.me"
-msgstr ""
-"Vaša misija: pošaljite sve povratne informacije o našim beta verzijama, "
-"uključujući izvješća o pogreškama, na support@wp-rocket.me"
-
-#: views/settings/page.php:81
-msgid "If you don’t want to join the beta program, simply close this window."
-msgstr ""
-"Ako se ne želite pridružiti beta programu, samo zatvorite ovaj prozor."
-
-#: views/settings/page.php:83
-msgid "Activate Rocket Tester"
-msgstr "Aktiviraj Rocket Tester"
-
-#: views/settings/page.php:94
-msgid ""
-"Below is a detailed view of all data WP Rocket will collect <strong>if "
-"granted permission.</strong>"
+"Below is a detailed view of all data WP Rocket will collect %1$sif granted "
+"permission.%2$s"
 msgstr ""
 "U nastavku se nalazi detaljan pregled svih podataka koje će WP Rocket "
-"prikupiti<strong>ako dobije dozvolu.</strong>"
+"prikupiti%1$sako dobije dozvolu.%2$s"
 
-#: views/settings/page.php:97
+#: views/settings/page.php:84
 msgid ""
 "WP Rocket will never transmit any domain names or email addresses (except "
 "for license validation), IP addresses, or third-party API keys."
@@ -4280,7 +4237,7 @@ msgstr ""
 "WP Rocket nikada neće prenijeti imena domena ili adrese e-pošte (osim za "
 "provjeru licence), IP adrese ili API ključeve treće strane."
 
-#: views/settings/page.php:99
+#: views/settings/page.php:86
 msgid "Activate Rocket analytics"
 msgstr "Aktiviraj Rocket analitiku"
 
