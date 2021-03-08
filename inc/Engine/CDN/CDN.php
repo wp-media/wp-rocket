@@ -60,7 +60,7 @@ class CDN {
 	 * @return string
 	 */
 	public function rewrite_srcset( $html ) {
-		$pattern = '#\s+(?:' . $this->get_srcset_attributes() . ')?\s*=\s*["\']\s*(?<sources>[^"\',\s]+\.[^"\',\s]+(?:\s+\d+[wx])?(?:\s*,\s*[^"\',\s]+\.[^"\',\s]+\s+\d+[wx])*)\s*["\']#i';
+		$pattern = '#\s+(?:' . $this->get_srcset_attributes() . ')?srcset\s*=\s*["\']\s*(?<sources>[^"\',\s]+\.[^"\',\s]+(?:\s+\d+[wx])?(?:\s*,\s*[^"\',\s]+\.[^"\',\s]+\s+\d+[wx])*)\s*["\']#i';
 
 		if ( ! preg_match_all( $pattern, $html, $srcsets, PREG_SET_ORDER ) ) {
 			return $html;
@@ -387,8 +387,8 @@ class CDN {
 		$srcset_attributes = (array) apply_filters(
 			'rocket_cdn_srcset_attributes',
 			[
-				'data-lazy-srcset',
-				'data-srcset',
+				'data-lazy-',
+				'data-',
 			]
 		);
 		return implode( '|', $srcset_attributes );
