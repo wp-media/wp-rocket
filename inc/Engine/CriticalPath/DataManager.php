@@ -65,10 +65,10 @@ class DataManager {
 						$is_mobile
 							?
 							// translators: %s = item URL.
-							__( 'Critical CSS for %1$s on mobile not generated. Error: The API returned an empty response.', 'rocket' )
+							__( 'Critical CSS for %1$s on mobile not generated. Error: The destination folder could not be created.', 'rocket' )
 							:
 							// translators: %s = item URL.
-							__( 'Critical CSS for %1$s not generated. Error: The API returned an empty response.', 'rocket' ),
+							__( 'Critical CSS for %1$s not generated. Error: The destination folder could not be created.', 'rocket' ),
 						( 'custom' === $item_type ) ? $url : $item_type
 						),
 					[
