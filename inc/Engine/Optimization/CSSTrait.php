@@ -4,6 +4,7 @@ namespace WP_Rocket\Engine\Optimization;
 
 use WP_Rocket\Dependencies\PathConverter\ConverterInterface;
 use WP_Rocket\Dependencies\PathConverter\Converter;
+use WP_Rocket\Logger\Logger;
 
 trait CSSTrait {
 	/**
@@ -35,6 +36,10 @@ trait CSSTrait {
 		 */
 		$target = apply_filters( 'rocket_css_asset_target_path', $target );
 
+		$content = $this->move( $this->get_converter( $source, $target ), $content, $source );
+
+		$content = $this->combine_imports( $content, $target );
+
 		/**
 		 * Filters the content of a CSS file
 		 *
@@ -44,7 +49,7 @@ trait CSSTrait {
 		 * @param string $source  Source filepath.
 		 * @param string $target  Target filepath.
 		 */
-		return apply_filters( 'rocket_css_content', $this->move( $this->get_converter( $source, $target ), $content, $source ), $source, $target );
+		return apply_filters( 'rocket_css_content', $content, $source, $target );
 	}
 
 	/**
@@ -192,6 +197,141 @@ trait CSSTrait {
 	}
 
 	/**
+	 * Replace local imports with their contents recursively.
+	 *
+	 * @since 3.8.6
+	 *
+	 * @param string $content CSS Content.
+	 * @param string $target Target CSS file path.
+	 *
+	 * @return string
+	 */
+	protected function combine_imports( $content, $target ) {
+		$import_regexes = [
+			// @import url(xxx)
+			'/
+		# import statement
+		@import
+
+		# whitespace
+		\s+
+
+			# open url()
+			url\(
+
+				# (optional) open path enclosure
+				(?P<quotes>["\']?)
+
+					# fetch path
+					(?P<path>.+?)
+
+				# (optional) close path enclosure
+				(?P=quotes)
+
+			# close url()
+			\)
+
+			# (optional) trailing whitespace
+			\s*
+
+			# (optional) media statement(s)
+			(?P<media>[^;]*)
+
+			# (optional) trailing whitespace
+			\s*
+
+		# (optional) closing semi-colon
+		;?
+
+		/ix',
+
+			// @import 'xxx'
+			'/
+
+		# import statement
+		@import
+
+		# whitespace
+		\s+
+
+			# open path enclosure
+			(?P<quotes>["\'])
+
+				# fetch path
+				(?P<path>.+?)
+
+			# close path enclosure
+			(?P=quotes)
+
+			# (optional) trailing whitespace
+			\s*
+
+			# (optional) media statement(s)
+			(?P<media>[^;]*)
+
+			# (optional) trailing whitespace
+			\s*
+
+		# (optional) closing semi-colon
+		;?
+
+		/ix',
+		];
+
+		// find all relative imports in css.
+		$matches = [];
+		foreach ( $import_regexes as $import_regexe ) {
+			if ( preg_match_all( $import_regexe, $content, $regex_matches, PREG_SET_ORDER ) ) {
+				$matches = array_merge( $matches, $regex_matches );
+			}
+		}
+
+		if ( empty( $matches ) ) {
+			return $content;
+		}
+
+		$search  = [];
+		$replace = [];
+
+		// loop the matches.
+		foreach ( $matches as $match ) {
+			/**
+			 * Filter Skip import replacement for one file.
+			 *
+			 * @since 3.8.6
+			 *
+			 * @param bool Skipped or not (Default not skipped).
+			 * @param string $file_path Matched import path.
+			 * @param string $import_match Full import match.
+			 */
+			if ( apply_filters( 'rocket_skip_import_replacement', false, $match['path'], $match ) ) {
+				continue;
+			}
+
+			list( $import_path, $import_content ) = $this->get_internal_file_contents( $match['path'], dirname( $target ) );
+
+			if ( empty( $import_content ) ) {
+				continue;
+			}
+
+			// check if this is only valid for certain media.
+			if ( ! empty( $match['media'] ) ) {
+				$import_content = '@media ' . $match['media'] . '{' . $import_content . '}';
+			}
+
+			// Use recursion to rewrite paths and combine imports again for imported content.
+			$import_content = $this->rewrite_paths( $import_path, $target, $import_content );
+
+			// add to replacement array.
+			$search[]  = $match[0];
+			$replace[] = $import_content;
+		}
+
+		// replace the import statements.
+		return str_replace( $search, $replace, $content );
+	}
+
+	/**
 	 * Applies font-display:swap to all font-family rules without a previously set font-display property.
 	 *
 	 * @since 3.7
@@ -219,4 +359,145 @@ trait CSSTrait {
 			$css_file_content
 		);
 	}
+
+	/**
+	 * Get internal file full path and contents.
+	 *
+	 * @since 3.8.6
+	 *
+	 * @param string $file Internal file path (maybe external url or relative path).
+	 * @param string $base_path Base path as reference for relative paths.
+	 *
+	 * @return array Array of two values ( full path, contents )
+	 */
+	private function get_internal_file_contents( $file, $base_path ) {
+		if ( $this->is_external_path( $file ) && wp_http_validate_url( $file ) ) {
+			return [ $file, false ];
+		}
+
+		// Remove query strings.
+		$file = str_replace( '?' . wp_parse_url( $file, PHP_URL_QUERY ), '', $file );
+
+		// Check if this file is readable or it's relative path so we add base_path at it's start.
+		if ( ! rocket_direct_filesystem()->is_readable( $this->get_local_path( $file ) ) ) {
+			$ds   = rocket_get_constant( 'DIRECTORY_SEPARATOR' );
+			$file = $base_path . $ds . str_replace( '/', $ds, $file );
+		}else {
+			$file = $this->get_local_path( $file );
+		}
+
+		$file_type = wp_check_filetype( $file, [ 'css' => 'text/css' ] );
+
+		if ( 'css' !== $file_type['ext'] ) {
+			return [ $file, null ];
+		}
+
+		$import_content = rocket_direct_filesystem()->get_contents( $file );
+
+		return [ $file, $import_content ];
+	}
+
+	/**
+	 * Determines if the file is external.
+	 *
+	 * @since 3.8.6
+	 *
+	 * @param string $url URL of the file.
+	 * @return bool True if external, false otherwise.
+	 */
+	protected function is_external_path( $url ) {
+		$file = get_rocket_parse_url( $url );
+
+		if ( empty( $file['path'] ) ) {
+			return true;
+		}
+
+		$parsed_site_url = wp_parse_url( site_url() );
+
+		if ( empty( $parsed_site_url['host'] ) ) {
+			return true;
+		}
+
+		// This filter is documented in inc/Engine/Admin/Settings/Settings.php.
+		$hosts   = (array) apply_filters( 'rocket_cdn_hosts', [], [ 'all' ] );
+		$hosts[] = $parsed_site_url['host'];
+		$langs   = get_rocket_i18n_uri();
+
+		// Get host for all langs.
+		foreach ( $langs as $lang ) {
+			$url_host = wp_parse_url( $lang, PHP_URL_HOST );
+
+			if ( ! isset( $url_host ) ) {
+				continue;
+			}
+
+			$hosts[] = $url_host;
+		}
+
+		$hosts = array_unique( $hosts );
+
+		if ( empty( $hosts ) ) {
+			return true;
+		}
+
+		// URL has domain and domain is part of the internal domains.
+		if ( ! empty( $file['host'] ) ) {
+			foreach ( $hosts as $host ) {
+				if ( false !== strpos( $url, $host ) ) {
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Get local absolute path for image.
+	 *
+	 * @since 3.8.6
+	 *
+	 * @param string $url Image url.
+	 *
+	 * @return string Image absolute local path.
+	 */
+	private function get_local_path( $url ) {
+		$url = $this->normalize_url( $url );
+
+		$path = rocket_url_to_path( $url );
+		if ( $path ) {
+			return $path;
+		}
+
+		$relative_url = ltrim( wp_make_link_relative( $url ), '/' );
+		$ds           = rocket_get_constant( 'DIRECTORY_SEPARATOR' );
+		$base_path    = isset( $_SERVER['DOCUMENT_ROOT'] ) ? ( sanitize_text_field( wp_unslash( $_SERVER['DOCUMENT_ROOT'] ) ) . $ds ) : '';
+
+		return $base_path . str_replace( '/', $ds, $relative_url );
+	}
+
+	/**
+	 * Normalize relative url to full url.
+	 *
+	 * @since 3.8.6
+	 *
+	 * @param string $url Url to be normalized.
+	 *
+	 * @return string Normalized url.
+	 */
+	private function normalize_url( $url ) {
+		$url_host = wp_parse_url( $url, PHP_URL_HOST );
+
+		if ( ! empty( $url_host ) ) {
+			return $url;
+		}
+
+		$relative_url        = ltrim( wp_make_link_relative( $url ), '/' );
+		$site_url_components = wp_parse_url( site_url( '/' ) );
+
+		return $site_url_components['scheme'] . '://' . $site_url_components['host'] . '/' . $relative_url;
+	}
+
 }

@@ -81,7 +81,7 @@ $(document).ready(function(){
     }
 
     // Display/Hide childern fields on checkbox change.
-    $( '.wpr-isParent input[type=checkbox]' ).change( function() {
+    $( '.wpr-isParent input[type=checkbox]' ).on('change', function() {
         wprShowChildren($(this));
     });
 
@@ -109,7 +109,7 @@ $(document).ready(function(){
         wprShowChildren($(this));
     });
 
-    $warningParent.change(function() {
+    $warningParent.on('change', function() {
         wprShowWarning($(this));
     });
 
@@ -132,7 +132,7 @@ $(document).ready(function(){
             var $warningButton = $warningField.find('.wpr-button');
 
             // Validate the warning
-            $warningButton.click(function(){
+            $warningButton.on('click', function(){
                 $thisCheckbox.prop('checked', true);
                 $warningField.removeClass('wpr-isOpen');
                 $children.addClass('wpr-isOpen');
