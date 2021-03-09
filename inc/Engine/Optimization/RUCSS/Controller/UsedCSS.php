@@ -26,32 +26,41 @@ class UsedCSS {
 	/**
 	 * Get UsedCSS from DB table based on page url.
 	 *
-	 * @param string $url The page URL.
+	 * @param string $url       The page URL.
+	 * @param bool   $is_mobile Page is_mobile.
 	 *
 	 * @return UsedCSS_Row|false
 	 */
-	public function get_used_css( string $url ) {
-		return $this->used_css_query->get_item_by( 'url', $url );
+	public function get_used_css( string $url, bool $is_mobile = false ) {
+		$query = $this->used_css_query->query(
+					[
+						'url'       => $url,
+						'is_mobile' => $is_mobile,
+					]
+				);
+
+		if ( empty( $query[0] ) ) {
+			return false;
+		}
+
+		return $query[0];
 	}
 
 	/**
 	 * Insert or update used css row based on URL.
 	 *
-	 * @param string $url             The page URL.
-	 * @param string $css             The page used css.
-	 * @param array  $unprocessed_css The page unprocessed CSS list.
-	 * @param int    $retries         No of automatically retries for generating the unused css.
+	 * @param array $data {
+	 *      @param string $url             The page URL.
+	 *      @param string $css             The page used css.
+	 *      @param array  $unprocessed_css The page unprocessed CSS list.
+	 *      @param int    $retries         No of automatically retries for generating the unused css.
+	 *      @param bool   $is_mobile       Is mobile page.
+	 * }
 	 *
 	 * @return UsedCSS_Row|false
 	 */
-	public function save_or_update_used_css( string $url, string $css, array $unprocessed_css, int $retries ) {
-		$used_css = $this->used_css_query->get_item_by( 'url', $url );
-		$data     = [
-			'url'            => $url,
-			'css'            => $css,
-			'unprocessedcss' => json_encode( $unprocessed_css ),
-			'retries'        => $retries,
-		];
+	public function save_or_update_used_css( array $data ) {
+		$used_css = $this->get_used_css( $data['url'], $data['is_mobile'] );
 
 		if ( empty( $used_css ) ) {
 			return $this->insert_used_css( $data );
@@ -71,7 +80,7 @@ class UsedCSS {
 		$saved = $this->used_css_query->add_item( $data );
 
 		if ( $saved ) {
-			return $this->used_css_query->get_item_by( 'url', $data['url'] );
+			return $this->get_used_css( $data['url'], $data['is_mobile'] );
 		}
 		return false;
 	}

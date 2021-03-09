@@ -68,8 +68,9 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		global $wp;
-		$url      = home_url( add_query_arg( [], $wp->request ) );
-		$used_css = $this->used_css->get_used_css( $url );
+		$url       = home_url( add_query_arg( [], $wp->request ) );
+		$is_mobile = $this->is_mobile();
+		$used_css  = $this->used_css->get_used_css( $url, $is_mobile );
 
 		if ( empty( $used_css ) || ( $used_css->retries < 3 ) ) {
 			$customer_key = ! empty( $this->options->get( 'consumer_key', '' ) )
@@ -102,7 +103,15 @@ class Subscriber implements Subscriber_Interface {
 				$retries = $used_css->retries;
 			}
 
-			$used_css = $this->used_css->save_or_update_used_css( $url, $treeshaked_result['css'], $treeshaked_result['unprocessed_css'], $retries + 1 );
+			$data = [
+				'url'            => $url,
+				'css'            => $treeshaked_result['css'],
+				'unprocessedcss' => wp_json_encode( $treeshaked_result['unprocessed_css'] ),
+				'retries'        => $retries + 1,
+				'is_mobile'      => $is_mobile,
+			];
+
+			$used_css = $this->used_css->save_or_update_used_css( $data );
 
 			if ( ! $used_css ) {
 				return $html;
@@ -133,5 +142,16 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Determines if the page is mobile and separate cache for mobile files is enabled.
+	 *
+	 * @return boolean
+	 */
+	public function is_mobile() : bool {
+		return (bool) $this->options->get( 'cache_mobile', 0 ) &&
+				(bool) $this->options->get( 'do_caching_mobile_files', 0 ) &&
+				wp_is_mobile();
 	}
 }

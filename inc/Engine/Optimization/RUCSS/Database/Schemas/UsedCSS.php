@@ -69,6 +69,17 @@ class UsedCSS extends Schema {
 			'sortable'   => true,
 		],
 
+		// IS_MOBILE column.
+		[
+			'name'       => 'is_mobile',
+			'type'       => 'tinyint',
+			'length'     => '1',
+			'default'    => 0,
+			'cache_key'  => true,
+			'searchable' => true,
+			'sortable'   => true,
+		],
+
 		// LAST_UPDATE column.
 		[
 			'name'       => 'last_update',
