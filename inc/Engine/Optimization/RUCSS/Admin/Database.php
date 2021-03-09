@@ -25,6 +25,7 @@ class Database {
 	 * Creates an instance of the class.
 	 *
 	 * @param Resources $rucss_resources_table RUCSS Resources Database Table.
+	 * @param UsedCSS   $rucss_usedcss_table   RUCSS UsedCSS Database Table.
 	 */
 	public function __construct( Resources $rucss_resources_table, UsedCSS $rucss_usedcss_table ) {
 		$this->rucss_resources_table = $rucss_resources_table;

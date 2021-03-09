@@ -30,7 +30,7 @@ class APIClient {
 	 */
 	public function optimize( string $html, string $url, array $options ) : array {
 		$args = [
-			'body' => [
+			'body'    => [
 				'html'   => $html,
 				'url'    => $url,
 				'config' => $options,

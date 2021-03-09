@@ -55,7 +55,7 @@ class UsedCSS {
 			return $this->insert_used_css( $data );
 		}
 
-		return $this->update_used_css( (int) $used_css->id, $data);
+		return $this->update_used_css( (int) $used_css->id, $data );
 	}
 
 	/**
@@ -100,22 +100,21 @@ class UsedCSS {
 	 * @return string HTML content.
 	 */
 	public function remove_used_css_from_html( string $html, array $unprocessed_css ) : string {
-		$html_nocomments = $this->hide_comments( $html );
-
-		$link_styles          = $this->find( '<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?(?<url>[^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html_nocomments );
-		$inline_styles        = $this->find( '<style.*>(?<content>.*)<\/style>', $html_nocomments );
-		$unprocessed_links    = $this->unprocessed_flat_array( 'link', $unprocessed_css );
-		$unprocessed_styles   = $this->unprocessed_flat_array( 'inline', $unprocessed_css );
+		$html_nocomments    = $this->hide_comments( $html );
+		$link_styles        = $this->find( '<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?(?<url>[^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html_nocomments );
+		$inline_styles      = $this->find( '<style.*>(?<content>.*)<\/style>', $html_nocomments );
+		$unprocessed_links  = $this->unprocessed_flat_array( 'link', $unprocessed_css );
+		$unprocessed_styles = $this->unprocessed_flat_array( 'inline', $unprocessed_css );
 
 		foreach ( $link_styles as $style ) {
-			if ( in_array( $style['url'], $unprocessed_links ) ) {
+			if ( in_array( $style['url'], $unprocessed_links, true ) ) {
 				continue;
 			}
 			$html = str_replace( $style[0], '', $html );
 		}
 
 		foreach ( $inline_styles as $style ) {
-			if ( in_array( $this->strip_line_breaks( $style['content'] ), $unprocessed_styles ) ) {
+			if ( in_array( $this->strip_line_breaks( $style['content'] ), $unprocessed_styles, true ) ) {
 				continue;
 			}
 			$html = str_replace( $style[0], '', $html );
@@ -208,15 +207,15 @@ class UsedCSS {
 	}
 
 	/**
-     * Strip line breaks.
-     *
-     * @param string $value - Value to be processed.
-     *
-     * @return string
-     */
-    protected function strip_line_breaks( string $value ): string
-    {
-        $value = str_replace( ["\r", "\n", "\r\n", "\t"], '', $value );
-        return trim( $value );
-    }
+	 * Strip line breaks.
+	 *
+	 * @param string $value - Value to be processed.
+	 *
+	 * @return string
+	 */
+	protected function strip_line_breaks( string $value ): string
+	{
+		$value = str_replace( ["\r", "\n", "\r\n", "\t"], '', $value );
+		return trim( $value );
+	}
 }

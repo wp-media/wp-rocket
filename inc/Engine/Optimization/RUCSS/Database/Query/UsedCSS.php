@@ -7,7 +7,7 @@ use WP_Rocket\Dependencies\Database\Query;
 /**
  * RUCSS UsedCSS Query.
  */
-class UsedCSS extends Query  {
+class UsedCSS extends Query {
 
 	/**
 	 * Name of the database table to query.
