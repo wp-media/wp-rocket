@@ -28,10 +28,67 @@ class UsedCSS {
 	 *
 	 * @param string $url The page URL.
 	 *
-	 * @return UsedCSS_Row
+	 * @return UsedCSS_Row|false
 	 */
-	public function get_used_css( string $url ) : UsedCSS_Row {
+	public function get_used_css( string $url ) {
 		return $this->used_css_query->get_item_by( 'url', $url );
+	}
+
+	/**
+	 * Insert or update used css row based on URL.
+	 *
+	 * @param string $url             The page URL.
+	 * @param string $css             The page used css.
+	 * @param array  $unprocessed_css The page unprocessed CSS list.
+	 *
+	 * @return UsedCSS_Row|false
+	 */
+	public function save_or_update_used_css( string $url, string $css, array $unprocessed_css ) {
+		$used_css = $this->used_css_query->get_item_by( 'url', $url );
+		$data     = [
+			'url'            => $url,
+			'css'            => $css,
+			'unprocessedcss' => json_encode( $unprocessed_css ),
+		];
+
+		if ( empty( $used_css ) ) {
+			return $this->insert_used_css( $data );
+		}
+
+		return $this->update_used_css( (int) $used_css->id, $data);
+	}
+
+	/**
+	 * Insert used CSS.
+	 *
+	 * @param array $data Data to be inserted in used_css table.
+	 *
+	 * @return UsedCSS_Row|false
+	 */
+	public function insert_used_css( array $data ) {
+		$saved = $this->used_css_query->add_item( $data );
+
+		if ( $saved ) {
+			return $this->used_css_query->get_item_by( 'url', $data['url'] );
+		}
+		return false;
+	}
+
+	/**
+	 * Update used CSS.
+	 *
+	 * @param integer $id   Used CSS ID.
+	 * @param array   $data Data to be updated in used_css table.
+	 *
+	 * @return UsedCSS_Row|false
+	 */
+	public function update_used_css( int $id, array $data ) {
+		$updated = $this->used_css_query->update_item( $id, $data );
+
+		if ( $updated ) {
+			return $this->used_css_query->get_item( $id );
+		}
+		return false;
 	}
 
 	/**
@@ -51,8 +108,7 @@ class UsedCSS {
 		$unprocessed_styles   = $this->unprocessed_flat_array( 'inline', $unprocessed_css );
 
 		foreach ( $link_styles as $style ) {
-			$style_url = strtok( $style['url'], '?' );
-			if ( in_array( $style_url, $unprocessed_links ) ) {
+			if ( in_array( $style['url'], $unprocessed_links ) ) {
 				continue;
 			}
 			$html = str_replace( $style[0], '', $html );

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\RUCSS\Frontend;
 
+use WP_Rocket\Logger\Logger;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Engine\Optimization\RUCSS\APIClient;
@@ -67,18 +68,40 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		global $wp;
-		$url      = home_url( $wp->request );
+		$url      = home_url( add_query_arg( [], $wp->request ) );
 		$used_css = $this->used_css->get_used_css( $url );
 
 		if ( empty( $used_css ) ) {
-			// TO DO -> API optimize.
-			// TO DO -> save to DB RUCSS result.
-			// TO DO -> remove used_css from html.
-			// TO DO -> add used css to HTML.
+			$customer_key = ! empty( $this->options->get( 'consumer_key', '' ) )
+				? $this->options->get( 'consumer_key', '' )
+				: rocket_get_constant( 'WP_ROCKET_KEY', '' );
 
-			// $html = $this->api->optimize( $html, [] );
+			$config = [
+				'treeshake'      => 1,
+				'wpr_key'        => $customer_key,
+				'rucss_safelist' => $this->options->get( 'remove_unused_css_safelist', [] ),
+			];
 
-			return $html;
+			$treeshaked_result = $this->api->optimize( $html, $url, $config );
+
+			if ( 200 !== $treeshaked_result['code'] ) {
+				Logger::error(
+					'Error when contacting the RUCSS API.',
+					[
+						'rucss error',
+						'url'     => $url,
+						'code'    => $treeshaked_result['code'],
+						'message' => $treeshaked_result['message'],
+					]
+				);
+				return $html;
+			}
+
+			$used_css = $this->used_css->save_or_update_used_css( $url, $treeshaked_result['css'], $treeshaked_result['unprocessed_css'] );
+
+			if ( ! $used_css ) {
+				return $html;
+			}
 		}
 
 		$html = $this->used_css->remove_used_css_from_html( $html, $used_css->unprocessedcss );
