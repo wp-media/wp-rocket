@@ -60,7 +60,7 @@ class CDN {
 	 * @return string
 	 */
 	public function rewrite_srcset( $html ) {
-		$pattern = '#\s+(?:' . $this->get_srcset_attributes() . ')?srcset\s*=\s*["\']\s*(?<sources>[^"\',\s]+\.[^"\',\s]+(?:\s+\d+[wx])?(?:\s*,\s*[^"\',\s]+\.[^"\',\s]+\s+\d+[wx])*)\s*["\']#i';
+		$pattern = '#\s+(?:' . $this->get_srcset_attributes() . ')?srcset\s*=\s*["\']\s*(?<sources>[^"\',\s]+\.[^"\',\s]+(?:\s+\d+[wx])?(?:\s*,\s*[^"\',\s]+\.[^"\',\s]+(?:\s+\d+[wx])?)*)\s*["\']#i';
 
 		if ( ! preg_match_all( $pattern, $html, $srcsets, PREG_SET_ORDER ) ) {
 			return $html;
@@ -71,7 +71,8 @@ class CDN {
 			$cdn_srcset = $srcset['sources'];
 			foreach ( $sources as $source ) {
 				$url        = preg_split( '#\s+#', trim( $source ) );
-				$cdn_srcset = str_replace( $url[0], $this->rewrite_url( $url[0] ), $cdn_srcset );
+				$cdn_source = str_replace( $url[0], $this->rewrite_url( $url[0] ), $source );
+				$cdn_srcset = str_replace( $source, $cdn_source, $cdn_srcset );
 			}
 
 			$cdn_srcsets = str_replace( $srcset['sources'], $cdn_srcset, $srcset[0] );
