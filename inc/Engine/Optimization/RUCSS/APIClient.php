@@ -9,8 +9,6 @@ class APIClient {
 	 */
 	const API_URL = 'https://central-saas.wp-rocket.me:30443/';
 
-	// const API_URL = 'http://localhost:8010/';
-
 	/**
 	 * SAAS main API path.
 	 */
