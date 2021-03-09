@@ -59,6 +59,8 @@ abstract class AjaxTestCase extends WPMediaAjaxTestCase {
 			$this->loadTestDataConfig();
 		}
 
+		DBTrait::removeDBHooks();
+
 		$this->stubRocketGetConstant();
 
 		parent::setUp();
@@ -78,8 +80,6 @@ abstract class AjaxTestCase extends WPMediaAjaxTestCase {
 		if ( static::$use_settings_trait ) {
 			$this->tearDownSettings();
 		}
-
-		DBTrait::uninstallDBTables();
 	}
 
 	public function configTestData() {

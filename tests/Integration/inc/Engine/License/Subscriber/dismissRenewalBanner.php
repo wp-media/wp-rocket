@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\License\Subscriber;
 
-use WPMedia\PHPUnit\Integration\AjaxTestCase;
+use WP_Rocket\Tests\Integration\AjaxTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\License\Subscriber::dismiss_renewal_banner
