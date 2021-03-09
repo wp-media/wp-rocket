@@ -1303,7 +1303,7 @@ class Page {
 					'type'              => 'textarea',
 					'description'       => __( 'Specify URLs of pages or posts that should never be cached (one per line)', 'rocket' ),
 					'helper'            => __( 'The domain part of the URL will be stripped automatically.<br>Use (.*) wildcards to address multiple URLs under a given path.', 'rocket' ),
-					'placeholder'       => '/members/(.*)',
+					'placeholder'       => '/example/(.*)',
 					'section'           => 'cache_reject_uri_section',
 					'page'              => 'advanced_cache',
 					'default'           => [],
