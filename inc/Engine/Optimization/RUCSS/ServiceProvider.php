@@ -47,8 +47,10 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'local_cache', '\WP_Rocket\Engine\Optimization\AssetsLocalCache' )
 			->withArgument( rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' ) )
 			->withArgument( rocket_direct_filesystem() );
+		$this->getContainer()->add( 'rucss_resource_fetcher_process', '\WP_Rocket\Engine\Optimization\RUCSS\Warmup\ResourceFetcherProcess' );
 		$this->getContainer()->share( 'rucss_resource_fetcher', '\WP_Rocket\Engine\Optimization\RUCSS\Warmup\ResourceFetcher' )
-			->withArgument( $this->getContainer()->get( 'local_cache' ) );
+			->withArgument( $this->getContainer()->get( 'local_cache' ) )
+			->withArgument( $this->getContainer()->get( 'rucss_resource_fetcher_process' ) );
 		$this->getContainer()->share( 'rucss_warmup_subscriber', '\WP_Rocket\Engine\Optimization\RUCSS\Warmup\Subscriber' )
 			->withArgument( $this->getContainer()->get( 'rucss_resource_fetcher' ) );
 

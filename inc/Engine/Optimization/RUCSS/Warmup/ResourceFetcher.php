@@ -21,15 +21,18 @@ class ResourceFetcher extends AbstractOptimization {
 	 *
 	 * @var AssetsLocalCache
 	 */
-	protected $local_cache;
+	private $local_cache;
+
+	private $process;
 
 	/**
 	 * Resource constructor.
 	 *
 	 * @param AssetsLocalCache $local_cache Local cache instance.
 	 */
-	public function __construct( AssetsLocalCache $local_cache ) {
+	public function __construct( AssetsLocalCache $local_cache, ResourceFetcherProcess $process ) {
 		$this->local_cache = $local_cache;
+		$this->process = $process;
 	}
 
 	/**
@@ -42,7 +45,10 @@ class ResourceFetcher extends AbstractOptimization {
 		$this->find_styles( $html );
 		$this->find_scripts( $html );
 
-		// Save resources into the DB.
+		// Send resources to the background process to be saved into DB.
+		$this->process->push_to_queue( $this->resources );
+
+		$this->process->save()->dispatch();
 	}
 
 	/**
@@ -97,7 +103,7 @@ class ResourceFetcher extends AbstractOptimization {
 
 			$this->resources[] = [
 				'url'     => rocket_add_url_protocol( $script['url'] ),
-				'content' => $this->get_url_contents( $script['url'] ),
+				'content' => $contents,
 				'type'    => 'js',
 			];
 		}
@@ -141,6 +147,17 @@ class ResourceFetcher extends AbstractOptimization {
 		}
 
 		return $file_content;
+	}
+
+	/**
+	 * Gets the CDN zones.
+	 *
+	 * @since  3.1
+	 *
+	 * @return array
+	 */
+	public function get_zones() {
+		return [ 'all', 'css_and_js' ];
 	}
 
 }

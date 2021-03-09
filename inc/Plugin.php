@@ -280,6 +280,7 @@ class Plugin {
 			'preload_links_subscriber',
 			'support_subscriber',
 			'mod_pagespeed',
+			'rucss_warmup_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();
