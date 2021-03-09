@@ -308,7 +308,7 @@ class ActionScheduler_DBStore_Test extends ActionScheduler_UnitTestCase {
 
 		// This callback is used to simulate the unusual conditions whereby MySQL might unexpectedly return future
 		// actions, contrary to the conditions used by the store object when staking its claim.
-		$simulate_unexpected_db_behavior = static function( $sql ) use ( $action_ids ) {
+		$simulate_unexpected_db_behavior = function( $sql ) use ( $action_ids ) {
 			global $wpdb;
 
 			// Look out for the claim update query, ignore all others.
