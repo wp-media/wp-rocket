@@ -49,6 +49,7 @@ final class UsedCSS extends Table {
 			url              varchar(2000)       NOT NULL default '',
 			css              longtext                     default NULL,
 			unprocessedcss   longtext            NOT NULL default '',
+			retries          tinyint(1)          NOT NULL default 1,
 			last_update      timestamp           NOT NULL default '0000-00-00 00:00:00',
 			last_accessed    timestamp           NOT NULL default '0000-00-00 00:00:00',
 			PRIMARY KEY (id),

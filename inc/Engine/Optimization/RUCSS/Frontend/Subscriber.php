@@ -71,7 +71,7 @@ class Subscriber implements Subscriber_Interface {
 		$url      = home_url( add_query_arg( [], $wp->request ) );
 		$used_css = $this->used_css->get_used_css( $url );
 
-		if ( empty( $used_css ) ) {
+		if ( empty( $used_css ) || ( $used_css->retries < 3 ) ) {
 			$customer_key = ! empty( $this->options->get( 'consumer_key', '' ) )
 				? $this->options->get( 'consumer_key', '' )
 				: rocket_get_constant( 'WP_ROCKET_KEY', '' );
@@ -97,7 +97,12 @@ class Subscriber implements Subscriber_Interface {
 				return $html;
 			}
 
-			$used_css = $this->used_css->save_or_update_used_css( $url, $treeshaked_result['css'], $treeshaked_result['unprocessed_css'] );
+			$retries = 0;
+			if ( isset( $used_css->retries ) ) {
+				$retries = $used_css->retries;
+			}
+
+			$used_css = $this->used_css->save_or_update_used_css( $url, $treeshaked_result['css'], $treeshaked_result['unprocessed_css'], $retries + 1 );
 
 			if ( ! $used_css ) {
 				return $html;

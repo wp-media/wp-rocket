@@ -40,15 +40,17 @@ class UsedCSS {
 	 * @param string $url             The page URL.
 	 * @param string $css             The page used css.
 	 * @param array  $unprocessed_css The page unprocessed CSS list.
+	 * @param int    $retries         No of automatically retries for generating the unused css.
 	 *
 	 * @return UsedCSS_Row|false
 	 */
-	public function save_or_update_used_css( string $url, string $css, array $unprocessed_css ) {
+	public function save_or_update_used_css( string $url, string $css, array $unprocessed_css, int $retries ) {
 		$used_css = $this->used_css_query->get_item_by( 'url', $url );
 		$data     = [
 			'url'            => $url,
 			'css'            => $css,
 			'unprocessedcss' => json_encode( $unprocessed_css ),
+			'retries'        => $retries,
 		];
 
 		if ( empty( $used_css ) ) {

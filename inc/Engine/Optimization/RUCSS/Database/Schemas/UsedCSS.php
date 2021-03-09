@@ -58,6 +58,17 @@ class UsedCSS extends Schema {
 			'sortable'   => true,
 		],
 
+		// RETRIES column.
+		[
+			'name'       => 'retries',
+			'type'       => 'tinyint',
+			'length'     => '1',
+			'default'    => 1,
+			'cache_key'  => false,
+			'searchable' => true,
+			'sortable'   => true,
+		],
+
 		// LAST_UPDATE column.
 		[
 			'name'       => 'last_update',
