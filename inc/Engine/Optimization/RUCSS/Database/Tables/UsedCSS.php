@@ -58,4 +58,25 @@ final class UsedCSS extends Table {
 			KEY last_update (last_update),
 			KEY last_accessed (last_accessed)";
 	}
+
+	/**
+	 * Delete all used_css which were not accessed in the last month.
+	 *
+	 * @return int|false
+	 */
+	public function delete_old_used_css() {
+		// Get the database interface.
+		$db = $this->get_db();
+
+		// Bail if no database interface is available.
+		if ( empty( $db ) ) {
+			return false;
+		}
+
+		$prefixed_table_name = $this->apply_prefix( $this->table_name );
+		$query               = "DELETE FROM `$prefixed_table_name` WHERE `last_accessed` <= date_sub(now(), interval 1 month)";
+		$rows_affected       = $db->query( $query );
+
+		return $rows_affected;
+	}
 }

@@ -70,8 +70,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function cron_clean_used_css() {
-		$last_accessed = strtotime( current_time( 'mysql' ) . ' - 1 month' );
-		$this->used_css->delete_old_used_css();
+		$this->database->delete_old_used_css();
 	}
 
 	/**
