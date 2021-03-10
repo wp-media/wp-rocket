@@ -50,7 +50,7 @@ class UsedCSS {
 	/**
 	 * Insert or update used css row based on URL.
 	 *
-	 * @param array $data {
+	 * @param array  $data {
 	 *      @param string $url             The page URL.
 	 *      @param string $css             The page used css.
 	 *      @param array  $unprocessed_css The page unprocessed CSS list.
@@ -250,9 +250,8 @@ class UsedCSS {
 	 *
 	 * @return string
 	 */
-	protected function strip_line_breaks( string $value ): string
-	{
-		$value = str_replace( ["\r", "\n", "\r\n", "\t"], '', $value );
+	protected function strip_line_breaks( string $value ) : string {
+		$value = str_replace( [ "\r", "\n", "\r\n", "\t" ], '', $value );
 		return trim( $value );
 	}
 }
