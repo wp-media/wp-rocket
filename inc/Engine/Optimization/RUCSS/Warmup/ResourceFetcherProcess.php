@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Optimization\RUCSS\Warmup;
 
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\ResourcesQuery;
-use WP_Rocket\Logger\Logger;
 use \WP_Rocket_WP_Background_Process;
 
 class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
@@ -42,8 +41,13 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 		$this->resources_query = $resources_query;
 	}
 
+
 	/**
-	 * @inheritDoc
+	 * Do the task for each page resources.
+	 *
+	 * @param array $resources Array of collected resources on the page.
+	 *
+	 * @return false
 	 */
 	protected function task( $resources ) {
 		if ( ! is_array( $resources ) ) {
@@ -77,26 +81,26 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 
 			// In all cases update last_accessed column with current date/time.
 			$this->resources_query->update_item(
-				 $db_row->id,
+				$db_row->id,
 				[
 					'last_accessed' => gmdate( 'Y-m-d\TH:i:s\Z' ),
 				]
-				);
+			);
 
 			// Check the content hash.
-			if ( $db_row->hash === md5( $resource['content'] ) ) {
+			if ( md5( $resource['content'] ) === $db_row->hash ) {
 				// Do nothing.
 				continue;
 			}
 
 			// Update this row with the new content and change resend_to_warmup to be 1.
 			$this->resources_query->update_item(
-				 $db_row->id,
-				 [
+				$db_row->id,
+				[
 					'content'          => $resource['content'],
 					'hash'             => md5( $resource['content'] ),
 					'resend_to_warmup' => 1,
-				 ]
+				]
 			);
 
 			$send_to_warmup[] = $db_row->id;

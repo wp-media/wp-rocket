@@ -7,6 +7,11 @@ use WP_Rocket\Dependencies\Database\Row;
 
 class ResourceRow extends Row {
 
+	/**
+	 * ResourceRow constructor.
+	 *
+	 * @param object $item Current row details.
+	 */
 	public function __construct( $item ) {
 		parent::__construct( $item );
 
