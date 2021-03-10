@@ -66,4 +66,19 @@ class UsedCSS extends Query {
 	 * @var   mixed
 	 */
 	protected $item_shape = '\\WP_Rocket\\Engine\\Optimization\\RUCSS\\Database\\Row\\UsedCSS';
+
+	/**
+	 * Delete all used_css which were not accessed in the last month.
+	 *
+	 * @return int|false
+	 */
+	public function delete_old_used_css() {
+		global $wpdb;
+
+		$prefixed_table_name = $wpdb->prefix . $this->table_name;
+		$query               = "DELETE FROM `$prefixed_table_name` WHERE `last_accessed` <= date_sub(now(), interval 1 month)";
+		$rows_affected       = $wpdb->query( $query );
+
+		return $rows_affected;
+	}
 }

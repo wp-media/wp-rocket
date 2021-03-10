@@ -48,20 +48,41 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() : array {
 		return [
-			'rocket_first_install_options' => [
-				[ 'add_options_first_time' ],
-			],
-			'wp_rocket_upgrade'            => [
+			'rocket_first_install_options'     => 'add_options_first_time',
+			'wp_rocket_upgrade'                => [
 				[ 'set_option_on_update', 13, 2 ],
 			],
-			'switch_theme'                 => 'truncate_used_css',
-			'rocket_rucss_file_changed'    => 'truncate_used_css',
-			'pre_post_update'              => 'delete_used_css_on_update_or_delete',
-			'wp_trash_post'                => 'delete_used_css_on_update_or_delete',
-			'delete_post'                  => 'delete_used_css_on_update_or_delete',
-			'clean_post_cache'             => 'delete_used_css_on_update_or_delete',
-			'wp_update_comment_count'      => 'delete_used_css_on_update_or_delete',
+			'switch_theme'                     => 'truncate_used_css',
+			'rocket_rucss_file_changed'        => 'truncate_used_css',
+			'pre_post_update'                  => 'delete_used_css_on_update_or_delete',
+			'wp_trash_post'                    => 'delete_used_css_on_update_or_delete',
+			'delete_post'                      => 'delete_used_css_on_update_or_delete',
+			'clean_post_cache'                 => 'delete_used_css_on_update_or_delete',
+			'wp_update_comment_count'          => 'delete_used_css_on_update_or_delete',
+			'init'                             => 'clean_used_css_scheduled',
+			'rocket_clean_used_css_time_event' => 'cron_clean_used_css',
 		];
+	}
+
+	/**
+	 * Used CSS cron callback for deleting old used css.
+	 *
+	 * @return void
+	 */
+	public function cron_clean_used_css() {
+		$last_accessed = strtotime( current_time( 'mysql' ) . ' - 1 month' );
+		$this->used_css->delete_old_used_css();
+	}
+
+	/**
+	 * Schedules cron for used CSS.
+	 *
+	 * @return void
+	 */
+	public function clean_used_css_scheduled() {
+		if ( ! wp_next_scheduled( 'rocket_clean_used_css_time_event' ) ) {
+			wp_schedule_event( time(), 'weekly', 'rocket_clean_used_css_time_event' );
+		}
 	}
 
 	/**

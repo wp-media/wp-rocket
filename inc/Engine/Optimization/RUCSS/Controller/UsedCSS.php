@@ -131,6 +131,13 @@ class UsedCSS {
 	}
 
 	/**
+	 * Delete old used css based on last accessed date.
+	 */
+	public function delete_old_used_css() {
+		$this->used_css_query->delete_old_used_css();
+	}
+
+	/**
 	 * Alter HTML and remove all CSS which was processed from HTML page.
 	 *
 	 * @param string $html            HTML content.
