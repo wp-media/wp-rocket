@@ -81,10 +81,20 @@ class Resources extends Schema {
 			'sortable'   => true,
 		],
 
-		// LAST_UPDATE column.
+		// CREATED column.
 		[
-			'name'       => 'last_update',
-			'type'       => 'timestamp',
+			'name'       => 'created',
+			'type'       => 'datetime',
+			'default'    => '0000-00-00 00:00:00',
+			'created'    => true,
+			'date_query' => true,
+			'sortable'   => true,
+		],
+
+		// MODIFIED column.
+		[
+			'name'       => 'modified',
+			'type'       => 'datetime',
 			'default'    => '0000-00-00 00:00:00',
 			'created'    => true,
 			'date_query' => true,

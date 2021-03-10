@@ -30,7 +30,8 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() : array {
 		return [
-			'rocket_buffer' => 'collect_resources',
+			'rocket_buffer'              => 'collect_resources',
+			'rocket_trigger_call_warmup' => 'call_warmup',
 		];
 	}
 
@@ -45,6 +46,15 @@ class Subscriber implements Subscriber_Interface {
 		$this->resource_fetcher->handle( $html );
 
 		return $html;
+	}
+
+	/**
+	 * Dispatch the background process for calling the saas warmup.
+	 *
+	 * @param array $db_resources_ids Array of DB resources IDs to be sent to warmup.
+	 */
+	public function call_warmup( array $db_resources_ids ) {
+		// Todo: Dispatch sending resources to warmup.
 	}
 
 }

@@ -23,16 +23,22 @@ class ResourceFetcher extends AbstractOptimization {
 	 */
 	private $local_cache;
 
+	/**
+	 * Resource fetcher process instance.
+	 *
+	 * @var ResourceFetcherProcess
+	 */
 	private $process;
 
 	/**
 	 * Resource constructor.
 	 *
-	 * @param AssetsLocalCache $local_cache Local cache instance.
+	 * @param AssetsLocalCache       $local_cache Local cache instance.
+	 * @param ResourceFetcherProcess $process     Resource fetcher process instance.
 	 */
 	public function __construct( AssetsLocalCache $local_cache, ResourceFetcherProcess $process ) {
 		$this->local_cache = $local_cache;
-		$this->process = $process;
+		$this->process     = $process;
 	}
 
 	/**
