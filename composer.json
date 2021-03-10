@@ -40,7 +40,7 @@
 		"psr/container": "^1.0"
 	},
 	"require-dev": {
-		"php": "^7",
+		"php": "^7 || ^8",
 		"brain/monkey": "^2.0",
 		"coenjacobs/mozart": "^0.7",
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
@@ -49,7 +49,7 @@
 		"mnsami/composer-custom-directory-installer": "^2.0",
 		"phpcompatibility/phpcompatibility-wp": "^2.0",
 		"phpstan/phpstan": "^0.12.3",
-		"phpunit/phpunit": "^7",
+		"phpunit/phpunit": "^7 || ^9",
 		"roave/security-advisories": "dev-master",
 		"szepeviktor/phpstan-wordpress": "^0.5.0",
 		"woocommerce/woocommerce": "^3.9",
