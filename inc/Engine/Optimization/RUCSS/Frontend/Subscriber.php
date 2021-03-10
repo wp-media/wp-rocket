@@ -109,6 +109,7 @@ class Subscriber implements Subscriber_Interface {
 				'unprocessedcss' => wp_json_encode( $treeshaked_result['unprocessed_css'] ),
 				'retries'        => $retries + 1,
 				'is_mobile'      => $is_mobile,
+				'last_update'    => current_time( 'mysql' ),
 			];
 
 			$used_css = $this->used_css->save_or_update_used_css( $data );
