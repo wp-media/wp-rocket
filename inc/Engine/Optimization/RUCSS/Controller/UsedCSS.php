@@ -51,7 +51,7 @@ class UsedCSS {
 	 * Insert or update used css row based on URL.
 	 *
 	 * @param  array $data {
-	 * 		Data to be saved / updated in database.
+	 *      Data to be saved / updated in database.
 	 *
 	 *      @type string $url             The page URL.
 	 *      @type string $css             The page used css.
