@@ -12,12 +12,12 @@ class APIClient {
 	/**
 	 * SAAS main API path.
 	 */
-	const API_TREESHAKE = 'api';
+	const TREESHAKE_PATH = 'api';
 
 	/**
 	 * API Warmup path.
 	 */
-	const API_WARMUP = 'warmup';
+	const WARMUP_PATH = 'warmup';
 
 	/**
 	 * Calls Central Saas API.
@@ -39,7 +39,7 @@ class APIClient {
 		];
 
 		$request = wp_remote_post(
-			self::API_URL . self::API_TREESHAKE,
+			self::API_URL . self::TREESHAKE_PATH,
 			$args
 		);
 

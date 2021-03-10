@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Optimization\RUCSS\Admin;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 
 class Subscriber implements Subscriber_Interface {
 	/**
@@ -21,14 +22,22 @@ class Subscriber implements Subscriber_Interface {
 	private $database;
 
 	/**
+	 * UsedCSS instance
+	 *
+	 * @var UsedCSS
+	 */
+	private $used_css;
+
+	/**
 	 * Instantiate the class
 	 *
 	 * @param Settings $settings Settings instance.
 	 * @param Database $database Database instance.
 	 */
-	public function __construct( Settings $settings, Database $database ) {
+	public function __construct( Settings $settings, Database $database, UsedCSS $used_css ) {
 		$this->settings = $settings;
 		$this->database = $database;
+		$this->used_css = $used_css;
 	}
 
 	/**
@@ -44,7 +53,36 @@ class Subscriber implements Subscriber_Interface {
 			'wp_rocket_upgrade'            => [
 				[ 'set_option_on_update', 13, 2 ],
 			],
+			'switch_theme'                 => 'truncate_used_css',
+			'rocket_rucss_file_changed'    => 'truncate_used_css',
+			'pre_post_update'              => 'delete_used_css_on_update_or_delete',
+			'wp_trash_post'                => 'delete_used_css_on_update_or_delete',
+			'delete_post'                  => 'delete_used_css_on_update_or_delete',
+			'clean_post_cache'             => 'delete_used_css_on_update_or_delete',
+			'wp_update_comment_count'      => 'delete_used_css_on_update_or_delete',
 		];
+	}
+
+	/**
+	 * Delete used_css on Update Post or Delete post.
+	 *
+	 * @param int $post_id The post ID.
+	 *
+	 * @return void
+	 */
+	public function delete_used_css_on_update_or_delete( $post_id ) {
+		$url = untrailingslashit( get_permalink( $post_id ) );
+
+		$this->used_css->delete_used_css( $url );
+	}
+
+	/**
+	 * Truncate RUCSS used_css DB table.
+	 *
+	 * @return void
+	 */
+	public function truncate_used_css() {
+		$this->database->truncate_used_css_table();
 	}
 
 	/**

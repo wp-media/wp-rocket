@@ -68,7 +68,7 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		global $wp;
-		$url       = home_url( add_query_arg( [], $wp->request ) );
+		$url       = untrailingslashit( home_url( add_query_arg( [], $wp->request ) ) );
 		$is_mobile = $this->is_mobile();
 		$used_css  = $this->used_css->get_used_css( $url, $is_mobile );
 

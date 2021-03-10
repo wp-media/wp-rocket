@@ -44,14 +44,16 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'rucss_database', 'WP_Rocket\Engine\Optimization\RUCSS\Admin\Database' )
 			->withArgument( $this->getContainer()->get( 'rucss_resources_table' ) )
 			->withArgument( $this->getContainer()->get( 'rucss_usedcss_table' ) );
-		$this->getContainer()->share( 'rucss_admin_subscriber', 'WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber' )
-			->withArgument( $this->getContainer()->get( 'rucss_settings' ) )
-			->withArgument( $this->getContainer()->get( 'rucss_database' ) );
 
 		$this->getContainer()->add( 'rucss_used_css_query', 'WP_Rocket\Engine\Optimization\RUCSS\Database\Query\UsedCSS' );
 		$this->getContainer()->add( 'rucss_api_client', 'WP_Rocket\Engine\Optimization\RUCSS\APIClient' );
 		$this->getContainer()->add( 'rucss_used_css_controller', 'WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS' )
 			->withArgument( $this->getContainer()->get( 'rucss_used_css_query' ) );
+
+		$this->getContainer()->share( 'rucss_admin_subscriber', 'WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber' )
+			->withArgument( $this->getContainer()->get( 'rucss_settings' ) )
+			->withArgument( $this->getContainer()->get( 'rucss_database' ) )
+			->withArgument( $this->getContainer()->get( 'rucss_used_css_controller' ) );
 		$this->getContainer()->share( 'rucss_frontend_subscriber', 'WP_Rocket\Engine\Optimization\RUCSS\Frontend\Subscriber' )
 			->withArgument( $this->getContainer()->get( 'options' ) )
 			->withArgument( $this->getContainer()->get( 'rucss_used_css_controller' ) )

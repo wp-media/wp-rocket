@@ -14,6 +14,7 @@ class UsedCSS {
 	 */
 	private $used_css_query;
 
+
 	/**
 	 * Instantiate the class
 	 *
@@ -77,10 +78,9 @@ class UsedCSS {
 	 * @return UsedCSS_Row|false
 	 */
 	public function insert_used_css( array $data ) {
-		$saved = $this->used_css_query->add_item( $data );
-
-		if ( $saved ) {
-			return $this->get_used_css( $data['url'], $data['is_mobile'] );
+		$id = $this->used_css_query->add_item( $data );
+		if ( ! empty( $id ) ) {
+			return $this->used_css_query->get_item( $id );
 		}
 		return false;
 	}
@@ -100,6 +100,22 @@ class UsedCSS {
 			return $this->used_css_query->get_item( $id );
 		}
 		return false;
+	}
+
+	public function delete_used_css( string $url ) : bool {
+		$used_css_arr = $this->used_css_query->query( [ 'url' => $url ] );
+
+		if ( empty( $used_css_arr ) ) {
+			return false;
+		}
+
+		$deleted = true;
+
+		foreach ( $used_css_arr as $used_css ) {
+			$deleted = $deleted && $this->used_css_query->delete_item( $used_css->id );
+		}
+
+		return $deleted;
 	}
 
 	/**

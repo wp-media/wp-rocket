@@ -46,4 +46,16 @@ class Database {
 			$this->rucss_usedcss_table->uninstall();
 		}
 	}
+
+	/**
+	 * Truncate RUCSS used_css DB table.
+	 *
+	 * @return bool
+	 */
+	public function truncate_used_css_table() : bool {
+		if ( $this->rucss_usedcss_table->exists() ) {
+			return $this->rucss_usedcss_table->truncate();
+		}
+		return false;
+	}
 }
