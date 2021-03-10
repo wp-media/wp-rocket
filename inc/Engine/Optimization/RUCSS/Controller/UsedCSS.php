@@ -50,12 +50,14 @@ class UsedCSS {
 	/**
 	 * Insert or update used css row based on URL.
 	 *
-	 * @param array  $data {
-	 *      @param string $url             The page URL.
-	 *      @param string $css             The page used css.
-	 *      @param array  $unprocessed_css The page unprocessed CSS list.
-	 *      @param int    $retries         No of automatically retries for generating the unused css.
-	 *      @param bool   $is_mobile       Is mobile page.
+	 * @param  array $data {
+	 * 		Data to be saved / updated in database.
+	 *
+	 *      @type string $url             The page URL.
+	 *      @type string $css             The page used css.
+	 *      @type array  $unprocessed_css The page unprocessed CSS list.
+	 *      @type int    $retries         No of automatically retries for generating the unused css.
+	 *      @type bool   $is_mobile       Is mobile page.
 	 * }
 	 *
 	 * @return UsedCSS_Row|false
