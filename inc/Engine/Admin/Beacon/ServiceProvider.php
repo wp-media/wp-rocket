@@ -7,7 +7,6 @@ use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvi
  * Service Provider for Beacon
  *
  * @since 3.3
- * @author Remy Perona
  */
 class ServiceProvider extends AbstractServiceProvider {
 
@@ -25,17 +24,15 @@ class ServiceProvider extends AbstractServiceProvider {
 	];
 
 	/**
-	 * Registers the option array in the container
-	 *
-	 * @since 3.3
-	 * @author Remy Perona
+	 * Registers items with the container
 	 *
 	 * @return void
 	 */
 	public function register() {
-		$this->getContainer()->add( 'beacon', 'WP_Rocket\Engine\Admin\Beacon\Beacon' )
+		$this->getContainer()->share( 'beacon', 'WP_Rocket\Engine\Admin\Beacon\Beacon' )
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addArgument( $this->getContainer()->get( 'template_path' ) . '/settings' )
-			->addArgument( $this->getContainer()->get( 'support_data' ) );
+			->addArgument( $this->getContainer()->get( 'support_data' ) )
+			->addTag( 'admin_subscriber' );
 	}
 }

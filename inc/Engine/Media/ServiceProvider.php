@@ -33,9 +33,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	];
 
 	/**
-	 * Registers the services in the container
-	 *
-	 * @since 3.6
+	 * Registers items with the container
 	 *
 	 * @return void
 	 */
@@ -49,17 +47,23 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $options )
 			->addArgument( $this->getContainer()->get( 'lazyload_assets' ) )
 			->addArgument( $this->getContainer()->get( 'lazyload_image' ) )
-			->addArgument( $this->getContainer()->get( 'lazyload_iframe' ) );
-		$this->getContainer()->share( 'lazyload_admin_subscriber', 'WP_Rocket\Engine\Media\Lazyload\AdminSubscriber' );
+			->addArgument( $this->getContainer()->get( 'lazyload_iframe' ) )
+			->addTag( 'lazyload_subscriber' );
+		$this->getContainer()->share( 'lazyload_admin_subscriber', 'WP_Rocket\Engine\Media\Lazyload\AdminSubscriber' )
+			->addTag( 'admin_subscriber' );
 		$this->getContainer()->share( 'embeds_subscriber', 'WP_Rocket\Engine\Media\Embeds\EmbedsSubscriber' )
-			->addArgument( $options );
+			->addArgument( $options )
+			->addTag( 'front_subscriber' );
 		$this->getContainer()->share( 'emojis_subscriber', 'WP_Rocket\Engine\Media\Emojis\EmojisSubscriber' )
-			->addArgument( $options );
+			->addArgument( $options )
+			->addTag( 'front_subscriber' );
 		$this->getContainer()->add( 'image_dimensions', 'WP_Rocket\Engine\Media\ImageDimensions\ImageDimensions' )
 			->addArgument( $options );
 		$this->getContainer()->share( 'image_dimensions_subscriber', 'WP_Rocket\Engine\Media\ImageDimensions\Subscriber' )
-			->addArgument( $this->getContainer()->get( 'image_dimensions' ) );
+			->addArgument( $this->getContainer()->get( 'image_dimensions' ) )
+			->addTag( 'front_subscriber' );
 		$this->getContainer()->share( 'image_dimensions_admin_subscriber', 'WP_Rocket\Engine\Media\ImageDimensions\AdminSubscriber' )
-			->addArgument( $this->getContainer()->get( 'image_dimensions' ) );
+			->addArgument( $this->getContainer()->get( 'image_dimensions' ) )
+			->addTag( 'admin_subscriber' );
 	}
 }

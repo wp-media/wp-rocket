@@ -7,7 +7,6 @@ use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvi
  * Service provider for WP Rocket features common for admin and front
  *
  * @since 3.3
- * @author Remy Perona
  */
 class Common_Subscribers extends AbstractServiceProvider {
 
@@ -27,10 +26,7 @@ class Common_Subscribers extends AbstractServiceProvider {
 	];
 
 	/**
-	 * Registers the subscribers in the container
-	 *
-	 * @since 3.3
-	 * @author Remy Perona
+	 * Registers items with the container
 	 *
 	 * @return void
 	 */
@@ -39,12 +35,15 @@ class Common_Subscribers extends AbstractServiceProvider {
 
 		$this->getContainer()->share( 'db_optimization_subscriber', 'WP_Rocket\Subscriber\Admin\Database\Optimization_Subscriber' )
 			->addArgument( $this->getContainer()->get( 'db_optimization' ) )
-			->addArgument( $options );
+			->addArgument( $options )
+			->addTag( 'common_subscriber' );
 		$this->getContainer()->share( 'webp_subscriber', 'WP_Rocket\Subscriber\Media\Webp_Subscriber' )
 			->addArgument( $options )
 			->addArgument( $this->getContainer()->get( 'options_api' ) )
 			->addArgument( $this->getContainer()->get( 'cdn_subscriber' ) )
-			->addArgument( $this->getContainer()->get( 'beacon' ) );
-		$this->getContainer()->share( 'detect_missing_tags_subscriber', 'WP_Rocket\Subscriber\Tools\Detect_Missing_Tags_Subscriber' );
+			->addArgument( $this->getContainer()->get( 'beacon' ) )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()->share( 'detect_missing_tags_subscriber', 'WP_Rocket\Subscriber\Tools\Detect_Missing_Tags_Subscriber' )
+			->addTag( 'common_subscriber' );
 	}
 }

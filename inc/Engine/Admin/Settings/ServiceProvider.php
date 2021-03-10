@@ -28,9 +28,9 @@ class ServiceProvider extends AbstractServiceProvider {
 	];
 
 	/**
-	 * Registers the option array in the container.
+	 * Registers items with the container
 	 *
-	 * @since 3.3
+	 * @return void
 	 */
 	public function register() {
 		$this->getContainer()->add( 'settings', 'WP_Rocket\Engine\Admin\Settings\Settings' )
@@ -45,6 +45,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'db_optimization' ) )
 			->addArgument( $this->getContainer()->get( 'user_client' ) );
 		$this->getContainer()->share( 'settings_page_subscriber', 'WP_Rocket\Engine\Admin\Settings\Subscriber' )
-			->addArgument( $this->getContainer()->get( 'settings_page' ) );
+			->addArgument( $this->getContainer()->get( 'settings_page' ) )
+			->addTag( 'admin_subscriber' );
 	}
 }

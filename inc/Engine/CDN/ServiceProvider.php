@@ -24,7 +24,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	];
 
 	/**
-	 * Registers the services in the container
+	 * Registers items with the container
 	 *
 	 * @return void
 	 */
@@ -35,6 +35,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $options );
 		$this->getContainer()->share( 'cdn_subscriber', 'WP_Rocket\Engine\CDN\Subscriber' )
 			->addArgument( $options )
-			->addArgument( $this->getContainer()->get( 'cdn' ) );
+			->addArgument( $this->getContainer()->get( 'cdn' ) )
+			->addTag( 'common_subscriber' );
 	}
 }

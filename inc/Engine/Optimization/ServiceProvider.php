@@ -37,10 +37,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	];
 
 	/**
-	 * Registers the option array in the container
-	 *
-	 * @since  3.3
-	 * @author Remy Perona
+	 * Registers items with the container
 	 *
 	 * @return void
 	 */
@@ -55,29 +52,36 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'buffer_optimization', 'WP_Rocket\Buffer\Optimization' )
 			->addArgument( $this->getContainer()->get( 'tests' ) );
 		$this->getContainer()->share( 'buffer_subscriber', 'WP_Rocket\Subscriber\Optimization\Buffer_Subscriber' )
-			->addArgument( $this->getContainer()->get( 'buffer_optimization' ) );
+			->addArgument( $this->getContainer()->get( 'buffer_optimization' ) )
+			->addTag( 'front_subscriber' );
 		$this->getContainer()->share( 'cache_dynamic_resource', 'WP_Rocket\Engine\Optimization\CacheDynamicResource' )
 			->addArgument( $options )
 			->addArgument( WP_ROCKET_CACHE_BUSTING_PATH )
-			->addArgument( WP_ROCKET_CACHE_BUSTING_URL );
+			->addArgument( WP_ROCKET_CACHE_BUSTING_URL )
+			->addTag( 'front_subscriber' );
 		$this->getContainer()->add( 'optimize_google_fonts', 'WP_Rocket\Engine\Optimization\GoogleFonts\Combine' );
 		$this->getContainer()->add( 'optimize_google_fonts_v2', 'WP_Rocket\Engine\Optimization\GoogleFonts\CombineV2' );
 		$this->getContainer()->share( 'combine_google_fonts_subscriber', 'WP_Rocket\Engine\Optimization\GoogleFonts\Subscriber' )
 			->addArgument( $this->getContainer()->get( 'optimize_google_fonts' ) )
 			->addArgument( $this->getContainer()->get( 'optimize_google_fonts_v2' ) )
-			->addArgument( $options );
+			->addArgument( $options )
+			->addTag( 'front_subscriber' );
 		$this->getContainer()->share( 'minify_css_subscriber', 'WP_Rocket\Engine\Optimization\Minify\CSS\Subscriber' )
 			->addArgument( $options )
-			->addArgument( $filesystem );
+			->addArgument( $filesystem )
+			->addTag( 'front_subscriber' );
 		$this->getContainer()->share( 'minify_js_subscriber', 'WP_Rocket\Engine\Optimization\Minify\JS\Subscriber' )
 			->addArgument( $options )
-			->addArgument( $filesystem );
-		$this->getContainer()->share( 'ie_conditionals_subscriber', 'WP_Rocket\Engine\Optimization\IEConditionalSubscriber' );
+			->addArgument( $filesystem )
+			->addTag( 'front_subscriber' );
+		$this->getContainer()->share( 'ie_conditionals_subscriber', 'WP_Rocket\Engine\Optimization\IEConditionalSubscriber' )
+			->addTag( 'front_subscriber' );
 
 		$this->getContainer()->add( 'delay_js_html', 'WP_Rocket\Engine\Optimization\DelayJS\HTML' )
 			->addArgument( $options );
 		$this->getContainer()->share( 'delay_js_subscriber', 'WP_Rocket\Engine\Optimization\DelayJS\Subscriber' )
 			->addArgument( $this->getContainer()->get( 'delay_js_html' ) )
-			->addArgument( $filesystem );
+			->addArgument( $filesystem )
+			->addTag( 'front_subscriber' );
 	}
 }

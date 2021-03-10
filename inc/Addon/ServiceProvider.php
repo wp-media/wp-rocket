@@ -29,9 +29,9 @@ class ServiceProvider extends AbstractServiceProvider {
 	];
 
 	/**
-	 * Registers the subscribers in the container.
+	 * Registers items with the container
 	 *
-	 * @since 3.3
+	 * @return void
 	 */
 	public function register() {
 		$options = $this->getContainer()->get( 'options' );
@@ -44,16 +44,19 @@ class ServiceProvider extends AbstractServiceProvider {
 		// Facebook Tracking Subscriber.
 		$this->getContainer()->share( 'facebook_tracking', 'WP_Rocket\Addon\FacebookTracking\Subscriber' )
 			->addArgument( $this->getContainer()->get( 'busting_factory' ) )
-			->addArgument( $options );
+			->addArgument( $options )
+			->addTag( 'common_subscriber' );
 
 		// Google Tracking Subscriber.
 		$this->getContainer()->share( 'google_tracking', 'WP_Rocket\Addon\GoogleTracking\Subscriber' )
 			->addArgument( $this->getContainer()->get( 'busting_factory' ) )
-			->addArgument( $options );
+			->addArgument( $options )
+			->addTag( 'common_subscriber' );
 
 		// Sucuri Addon.
 		$this->getContainer()->share( 'sucuri_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Security\Sucuri_Subscriber' )
-			->addArgument( $options );
+			->addArgument( $options )
+			->addTag( 'common_subscriber' );
 
 		// Cloudflare Addon.
 		$this->addon_cloudflare( $options );
@@ -83,6 +86,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'cloudflare_subscriber', 'WPMedia\Cloudflare\Subscriber' )
 			->addArgument( $this->getContainer()->get( 'cloudflare' ) )
 			->addArgument( $options )
-			->addArgument( $this->getContainer()->get( 'options_api' ) );
+			->addArgument( $this->getContainer()->get( 'options_api' ) )
+			->addTag( 'cloudflare_subscriber' );
 	}
 }

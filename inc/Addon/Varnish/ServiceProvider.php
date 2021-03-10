@@ -23,14 +23,15 @@ class ServiceProvider extends AbstractServiceProvider {
 	];
 
 	/**
-	 * Registers the subscribers in the container.
+	 * Registers items with the container
 	 *
-	 * @since 3.3
+	 * @return void
 	 */
 	public function register() {
 		$this->getContainer()->add( 'varnish', 'WP_Rocket\Addon\Varnish\Varnish' );
 		$this->getContainer()->share( 'varnish_subscriber', 'WP_Rocket\Addon\Varnish\Subscriber' )
 			->addArgument( $this->getContainer()->get( 'varnish' ) )
-			->addArgument( $this->getContainer()->get( 'options' ) );
+			->addArgument( $this->getContainer()->get( 'options' ) )
+			->addTag( 'common_subscriber' );
 	}
 }

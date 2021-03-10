@@ -7,7 +7,6 @@ use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvi
  * Service provider for the WP Rocket preload.
  *
  * @since 3.3
- * @author Remy Perona
  */
 class ServiceProvider extends AbstractServiceProvider {
 
@@ -35,7 +34,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * Registers the subscribers in the container
 	 *
 	 * @since 3.3
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
@@ -54,15 +52,19 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->getContainer()->share( 'preload_subscriber', 'WP_Rocket\Engine\Preload\PreloadSubscriber' )
 			->addArgument( $this->getContainer()->get( 'homepage_preload' ) )
-			->addArgument( $options );
+			->addArgument( $options )
+			->addTag( 'common_subscriber' );
 		$this->getContainer()->share( 'sitemap_preload_subscriber', 'WP_Rocket\Engine\Preload\SitemapPreloadSubscriber' )
 			->addArgument( $this->getContainer()->get( 'sitemap_preload' ) )
-			->addArgument( $options );
+			->addArgument( $options )
+			->addTag( 'common_subscriber' );
 		$this->getContainer()->share( 'partial_preload_subscriber', 'WP_Rocket\Engine\Preload\PartialPreloadSubscriber' )
 			->addArgument( $this->getContainer()->get( 'partial_preload_process' ) )
-			->addArgument( $options );
+			->addArgument( $options )
+			->addTag( 'common_subscriber' );
 		$this->getContainer()->share( 'fonts_preload_subscriber', 'WP_Rocket\Engine\Preload\Fonts' )
 			->addArgument( $options )
-			->addArgument( $this->getContainer()->get( 'cdn' ) );
+			->addArgument( $this->getContainer()->get( 'cdn' ) )
+			->addTag( 'common_subscriber' );
 	}
 }

@@ -26,20 +26,23 @@ class ServiceProvider extends AbstractServiceProvider {
 	];
 
 	/**
-	 * Registers the option array in the container.
+	 * Registers items with the container
 	 *
-	 * @since 3.3
+	 * @return void
 	 */
 	public function register() {
 		$options = $this->getContainer()->get( 'options' );
 
 		$this->getContainer()->add( 'deactivation_intent_render', 'WP_Rocket\Admin\Deactivation\Render' )
 			->addArgument( $this->getContainer()->get( 'template_path' ) . '/deactivation-intent' );
-		$this->getContainer()->share( 'deactivation_intent_subscriber', 'WP_Rocket\Engine\Admin\Deactivation\DeactivationIntent' )
+        $this->getContainer()->share( 'deactivation_intent_subscriber', 'WP_Rocket\Engine\Admin\Deactivation\DeactivationIntent' )
 			->addArgument( $this->getContainer()->get( 'deactivation_intent_render' ) )
 			->addArgument( $this->getContainer()->get( 'options_api' ) )
-			->addArgument( $options );
+			->addArgument( $options )
+			->addTag( 'admin_subscriber' );
 		$this->getContainer()->share( 'hummingbird_subscriber', 'WP_Rocket\ThirdParty\Plugins\Optimization\Hummingbird' )
-			->addArgument( $options );
-	}
+			->addArgument( $options )
+			->addTag( 'admin_subscriber' );
+
+    }
 }

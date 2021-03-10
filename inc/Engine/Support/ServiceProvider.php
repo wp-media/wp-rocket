@@ -37,6 +37,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'support_data' ) )
 			->addArgument( $options );
 		$this->getContainer()->share( 'support_subscriber', Subscriber::class )
-			->addArgument( $this->getContainer()->get( 'rest_support' ) );
+			->addArgument( $this->getContainer()->get( 'rest_support' ) )
+			->addTag( 'common_subscriber' );
 	}
 }

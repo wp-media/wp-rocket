@@ -25,13 +25,14 @@ class ServiceProvider extends AbstractServiceProvider {
 	];
 
 	/**
-	 * Registers the option array in the container
+	 * Registers items with the container
 	 *
 	 * @return void
 	 */
 	public function register() {
 		$this->getContainer()->add( 'capabilities_manager', 'WP_Rocket\Engine\Capabilities\Manager' );
 		$this->getContainer()->share( 'capabilities_subscriber', 'WP_Rocket\Engine\Capabilities\Subscriber' )
-			->addArgument( $this->getContainer()->get( 'capabilities_manager' ) );
+			->addArgument( $this->getContainer()->get( 'capabilities_manager' ) )
+			->addTag( 'common_subscriber' );
 	}
 }

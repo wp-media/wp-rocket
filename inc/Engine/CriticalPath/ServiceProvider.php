@@ -36,9 +36,9 @@ class ServiceProvider extends AbstractServiceProvider {
 	];
 
 	/**
-	 * Registers the subscribers in the container.
+	 * Registers items with the container
 	 *
-	 * @since 3.6
+	 * @return void
 	 */
 	public function register() {
 		$filesystem        = rocket_direct_filesystem();
@@ -62,7 +62,8 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $processor_service )
 			->addArgument( $options );
 		$this->getContainer()->share( 'rest_cpcss_subscriber', 'WP_Rocket\Engine\CriticalPath\RESTCSSSubscriber' )
-			->addArgument( $this->getContainer()->get( 'rest_cpcss_wp_post' ) );
+			->addArgument( $this->getContainer()->get( 'rest_cpcss_wp_post' ) )
+			->addTag( 'common_subscriber' );
 		// REST CPCSS END.
 
 		$this->getContainer()->add( 'critical_css_generation', 'WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration' )
@@ -78,7 +79,8 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $critical_css )
 			->addArgument( $processor_service )
 			->addArgument( $options )
-			->addArgument( $filesystem );
+			->addArgument( $filesystem )
+			->addTag( 'common_subscriber' );
 
 		$this->getContainer()->add( 'cpcss_post', 'WP_Rocket\Engine\CriticalPath\Admin\Post' )
 			->addArgument( $options )
@@ -96,6 +98,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'critical_css_admin_subscriber', 'WP_Rocket\Engine\CriticalPath\Admin\Subscriber' )
 			->addArgument( $this->getContainer()->get( 'cpcss_post' ) )
 			->addArgument( $this->getContainer()->get( 'cpcss_settings' ) )
-			->addArgument( $this->getContainer()->get( 'cpcss_admin' ) );
+			->addArgument( $this->getContainer()->get( 'cpcss_admin' ) )
+			->addTag( 'admin_subscriber' );
 	}
 }
