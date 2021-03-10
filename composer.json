@@ -51,7 +51,7 @@
 		"phpstan/phpstan": "^0.12.3",
 		"phpunit/phpunit": "^7 || ^9",
 		"roave/security-advisories": "dev-master",
-		"szepeviktor/phpstan-wordpress": "^0.5.0",
+		"szepeviktor/phpstan-wordpress": "^0.7.0",
 		"woocommerce/woocommerce": "^3.9",
 		"wp-coding-standards/wpcs": "^2",
 		"wp-media/background-processing": "^1.3",
