@@ -70,6 +70,10 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function cron_clean_used_css() {
+		if ( ! $this->settings->is_allowed() ) {
+			return;
+		}
+
 		$this->database->delete_old_used_css();
 	}
 
@@ -92,6 +96,10 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function delete_used_css_on_update_or_delete( $post_id ) {
+		if ( ! $this->settings->is_allowed() ) {
+			return;
+		}
+
 		$url = untrailingslashit( get_permalink( $post_id ) );
 
 		$this->used_css->delete_used_css( $url );
@@ -103,6 +111,10 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function truncate_used_css() {
+		if ( ! $this->settings->is_allowed() ) {
+			return;
+		}
+
 		$this->database->truncate_used_css_table();
 	}
 
