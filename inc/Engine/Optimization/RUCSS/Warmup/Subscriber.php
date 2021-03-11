@@ -14,13 +14,16 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	private $resource_fetcher;
 
+	private $warmup_process;
+
 	/**
 	 * Subscriber constructor.
 	 *
 	 * @param ResourceFetcher $resource_fetcher Resource object.
 	 */
-	public function __construct( ResourceFetcher $resource_fetcher ) {
+	public function __construct( ResourceFetcher $resource_fetcher, WarmupProcess $warmup_process ) {
 		$this->resource_fetcher = $resource_fetcher;
+		$this->warmup_process   = $warmup_process;
 	}
 
 	/**
@@ -30,8 +33,8 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() : array {
 		return [
-			'rocket_buffer'              => 'collect_resources',
-			'rocket_trigger_call_warmup' => 'call_warmup',
+			'rocket_buffer'                       => 'collect_resources',
+			'rocket_rucss_fetch_resources_finish' => 'call_warmup',
 		];
 	}
 
@@ -53,8 +56,16 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @param array $db_resources_ids Array of DB resources IDs to be sent to warmup.
 	 */
-	public function call_warmup( array $db_resources_ids ) {
-		// Todo: Dispatch sending resources to warmup.
+	public function call_warmup( array $db_resources_ids = [] ) {
+		if ( empty( $db_resources_ids ) ) {
+			return;
+		}
+
+		foreach ( $db_resources_ids as $db_resources_id ) {
+			$this->warmup_process->push_to_queue( $db_resources_id );
+		}
+
+		$this->warmup_process->save()->dispatch();
 	}
 
 }

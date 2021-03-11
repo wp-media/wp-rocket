@@ -107,9 +107,7 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 
 		}
 
-		if ( ! empty( $send_to_warmup ) ) {
-			do_action( 'rocket_trigger_call_warmup', $send_to_warmup );
-		}
+		do_action( 'rocket_rucss_fetch_resources_finish', $send_to_warmup );
 
 		return false;
 	}
