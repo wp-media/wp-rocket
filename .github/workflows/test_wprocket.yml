@@ -47,10 +47,9 @@ jobs:
     
     - name: Start mysql service
       run: |
-        sudo bash -c "echo "default_authentication_plugin=mysql_native_password" >> /etc/mysql/my.cnf"
+        sudo bash -c "echo "default_authentication_plugin=mysql_native_password" >> /etc/mysql/conf.d/mysql.cnf"
         sudo /etc/init.d/mysql start
-        sudo service mysql status
-    
+        
     - name: Setup problem matchers for PHP
       run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
 
