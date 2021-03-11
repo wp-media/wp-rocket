@@ -47,8 +47,7 @@ jobs:
     
     - name: Start mysql service
       run: |
-        sudo bash -c "echo "[mysqld]" >> /etc/alternatives/my.cnf"
-        sudo bash -c "echo "default_authentication_plugin=mysql_native_password" >> /etc/alternatives/my.cnf"
+        sudo bash -c "echo "default_authentication_plugin=mysql_native_password" >> /etc/mysql/mariadb.conf.d/50-server.cnf"
         sudo /etc/init.d/mysql start
     
     - name: Setup problem matchers for PHP
