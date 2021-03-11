@@ -59,7 +59,7 @@
 		"wp-media/module-rocketcdn": "^1.0",
 		"wp-media/module-varnish": "^1.0",
 		"wp-media/rocket-lazyload-common": "^2",
-		"wp-media/phpunit": "^1.0",
+		"wp-media/phpunit": "1.1.6",
 		"wp-media/wp-imagify-partner": "^1.0",
 		"wpackagist-plugin/amp": "^1.1.4",
 		"wpackagist-plugin/hummingbird-performance": "2.0.1",
