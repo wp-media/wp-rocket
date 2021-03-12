@@ -70,17 +70,6 @@ class Resources extends Schema {
 			'sortable'   => true,
 		],
 
-		// RESEND_TO_WARMUP column.
-		[
-			'name'       => 'resend_to_warmup',
-			'type'       => 'tinyint',
-			'length'     => '1',
-			'default'    => 1,
-			'cache_key'  => true,
-			'searchable' => true,
-			'sortable'   => true,
-		],
-
 		// CREATED column.
 		[
 			'name'       => 'created',

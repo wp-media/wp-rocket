@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\RUCSS\Warmup;
 
-use WP_Rocket\Logger\Logger;
-
 class APIClient {
 
 	/**

@@ -73,7 +73,11 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 				);
 
 				if ( $resource_id ) {
-					$send_to_warmup[] = (int) $resource_id;
+					$send_to_warmup[] = [
+						'url'           => $resource['url'],
+						'type'          => $resource['type'],
+						'content'       => $resource['content'],
+					];
 				}
 
 				continue;
@@ -93,17 +97,20 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 				continue;
 			}
 
-			// Update this row with the new content and change resend_to_warmup to be 1.
+			// Update this row with the new content.
 			$this->resources_query->update_item(
 				$db_row->id,
 				[
 					'content'          => $resource['content'],
 					'hash'             => md5( $resource['content'] ),
-					'resend_to_warmup' => 1,
 				]
 			);
 
-			$send_to_warmup[] = $db_row->id;
+			$send_to_warmup[] = [
+				'url'           => $resource['url'],
+				'type'          => $resource['type'],
+				'content'       => $resource['content'],
+			];
 
 		}
 
