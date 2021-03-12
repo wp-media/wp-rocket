@@ -33,7 +33,7 @@ class WarmupProcess extends WP_Rocket_WP_Background_Process {
 	/**
 	 * WarmupProcess constructor.
 	 *
-	 * @param APIClient $api_client      APIClient instance.
+	 * @param APIClient $api_client APIClient instance.
 	 */
 	public function __construct( APIClient $api_client ) {
 		parent::__construct();
