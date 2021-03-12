@@ -74,9 +74,9 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 
 				if ( $resource_id ) {
 					$send_to_warmup[] = [
-						'url'           => $resource['url'],
-						'type'          => $resource['type'],
-						'content'       => $resource['content'],
+						'url'     => $resource['url'],
+						'type'    => $resource['type'],
+						'content' => $resource['content'],
 					];
 				}
 
@@ -101,15 +101,15 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 			$this->resources_query->update_item(
 				$db_row->id,
 				[
-					'content'          => $resource['content'],
-					'hash'             => md5( $resource['content'] ),
+					'content' => $resource['content'],
+					'hash'    => md5( $resource['content'] ),
 				]
 			);
 
 			$send_to_warmup[] = [
-				'url'           => $resource['url'],
-				'type'          => $resource['type'],
-				'content'       => $resource['content'],
+				'url'     => $resource['url'],
+				'type'    => $resource['type'],
+				'content' => $resource['content'],
 			];
 
 		}
