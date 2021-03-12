@@ -120,7 +120,7 @@ class ResourceFetcher extends AbstractOptimization {
 	 *
 	 * @param string $url File url.
 	 *
-	 * @return false|string
+	 * @return string
 	 */
 	private function get_url_contents( $url ) {
 		$external_url = $this->is_external_file( $url );
@@ -135,7 +135,7 @@ class ResourceFetcher extends AbstractOptimization {
 				]
 			);
 
-			return false;
+			return '';
 		}
 
 		$file_content = $external_url ? $this->local_cache->get_content( $url ) : $this->get_file_content( $file_path );
@@ -149,7 +149,7 @@ class ResourceFetcher extends AbstractOptimization {
 				]
 			);
 
-			return false;
+			return '';
 		}
 
 		return $file_content;
