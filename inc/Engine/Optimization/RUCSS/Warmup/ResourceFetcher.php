@@ -51,8 +51,14 @@ class ResourceFetcher extends AbstractOptimization {
 		$this->find_styles( $html );
 		$this->find_scripts( $html );
 
+		if ( empty( $this->resources ) ) {
+			return;
+		}
+
 		// Send resources to the background process to be saved into DB.
-		$this->process->push_to_queue( $this->resources );
+		foreach ( $this->resources as $resource ) {
+			$this->process->push_to_queue( $resource );
+		}
 
 		$this->process->save()->dispatch();
 	}

@@ -23,22 +23,13 @@ class Subscriber implements Subscriber_Interface {
 	private $resource_fetcher;
 
 	/**
-	 * Warmup process instance.
-	 *
-	 * @var WarmupProcess
-	 */
-	private $warmup_process;
-
-	/**
 	 * Subscriber constructor.
 	 *
 	 * @param Options_Data    $options Options instance.
 	 * @param ResourceFetcher $resource_fetcher Resource object.
-	 * @param WarmupProcess   $warmup_process Warmup Process instance.
 	 */
-	public function __construct( Options_Data $options, ResourceFetcher $resource_fetcher, WarmupProcess $warmup_process ) {
+	public function __construct( Options_Data $options, ResourceFetcher $resource_fetcher ) {
 		$this->resource_fetcher = $resource_fetcher;
-		$this->warmup_process   = $warmup_process;
 		$this->options          = $options;
 	}
 
@@ -49,8 +40,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() : array {
 		return [
-			'rocket_buffer'                       => 'collect_resources',
-			'rocket_rucss_fetch_resources_finish' => 'call_warmup',
+			'rocket_buffer' => 'collect_resources',
 		];
 	}
 
@@ -67,23 +57,6 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		return $html;
-	}
-
-	/**
-	 * Dispatch the background process for calling the saas warmup.
-	 *
-	 * @param array $db_resources_ids Array of DB resources IDs to be sent to warmup.
-	 */
-	public function call_warmup( array $db_resources_ids = [] ) {
-		if ( empty( $db_resources_ids ) ) {
-			return;
-		}
-
-		foreach ( $db_resources_ids as $db_resources_id ) {
-			$this->warmup_process->push_to_queue( $db_resources_id );
-		}
-
-		$this->warmup_process->save()->dispatch();
 	}
 
 	/**

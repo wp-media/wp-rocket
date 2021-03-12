@@ -27,7 +27,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		'local_cache',
 		'rucss_resource_fetcher',
 		'rucss_resources_query',
-		'rucss_warmup_process',
 		'rucss_warmup_apiclient',
 	];
 
@@ -52,12 +51,10 @@ class ServiceProvider extends AbstractServiceProvider {
 			->withArgument( rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' ) )
 			->withArgument( rocket_direct_filesystem() );
 
-		$this->getContainer()->add( 'rucss_resource_fetcher_process', '\WP_Rocket\Engine\Optimization\RUCSS\Warmup\ResourceFetcherProcess' )
-			->withArgument( $this->getContainer()->get( 'rucss_resources_query' ) );
-
 		$this->getContainer()->add( 'rucss_warmup_apiclient', '\WP_Rocket\Engine\Optimization\RUCSS\Warmup\APIClient' );
 
-		$this->getContainer()->add( 'rucss_warmup_process', '\WP_Rocket\Engine\Optimization\RUCSS\Warmup\WarmupProcess' )
+		$this->getContainer()->add( 'rucss_resource_fetcher_process', '\WP_Rocket\Engine\Optimization\RUCSS\Warmup\ResourceFetcherProcess' )
+			->withArgument( $this->getContainer()->get( 'rucss_resources_query' ) )
 			->withArgument( $this->getContainer()->get( 'rucss_warmup_apiclient' ) );
 
 		$this->getContainer()->share( 'rucss_resource_fetcher', '\WP_Rocket\Engine\Optimization\RUCSS\Warmup\ResourceFetcher' )
@@ -66,8 +63,7 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->getContainer()->share( 'rucss_warmup_subscriber', '\WP_Rocket\Engine\Optimization\RUCSS\Warmup\Subscriber' )
 			->withArgument( $this->getContainer()->get( 'options' ) )
-			->withArgument( $this->getContainer()->get( 'rucss_resource_fetcher' ) )
-			->withArgument( $this->getContainer()->get( 'rucss_warmup_process' ) );
+			->withArgument( $this->getContainer()->get( 'rucss_resource_fetcher' ) );
 
 	}
 }
