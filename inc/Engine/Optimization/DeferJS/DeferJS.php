@@ -126,22 +126,7 @@ class DeferJS {
 		 */
 		$jquery_patterns = apply_filters( 'rocket_defer_jquery_patterns', 'jQuery|\$\.\(|\$\(' );
 
-		/**
-		 * Filters the patterns used to find inline JS that should not be deferred
-		 *
-		 * @since 3.8
-		 *
-		 * @param array $inline_exclusions_list Array of inline JS that should not be deferred.
-		 */
-		$inline_exclusions_list = apply_filters( 'rocket_defer_inline_exclusions', $this->inline_exclusions );
-
-		$inline_exclusions = '';
-		if ( ! empty( $inline_exclusions_list ) ) {
-			foreach ( $inline_exclusions_list as $inline_exclusions_item ) {
-				$inline_exclusions .= preg_quote( $inline_exclusions_item, '#' ) . '|';
-			}
-			$inline_exclusions = rtrim( $inline_exclusions, '|' );
-		}
+		$inline_exclusions = $this->get_inline_exclusions_list_pattern();
 
 		foreach ( $matches as $inline_js ) {
 			if ( empty( $inline_js['content'] ) ) {
@@ -225,6 +210,13 @@ class DeferJS {
 			'cdn.voxpow.com/static/libs/v1/(.*).js',
 			'cdn.voxpow.com/media/trackers/js/(.*).js',
 			'use.typekit.net',
+			'www.idxhome.com',
+			'/wp-includes/js/dist/vendor/lodash(.min)?.js',
+			'/wp-includes/js/dist/api-fetch(.min)?.js',
+			'/wp-includes/js/dist/i18n(.min)?.js',
+			'/wp-includes/js/dist/vendor/wp-polyfill(.min)?.js',
+			'/wp-includes/js/dist/url(.min)?.js',
+			'/wp-includes/js/dist/hooks(.min)?.js',
 		];
 
 		$exclude_defer_js = array_unique( array_merge( $exclude_defer_js, $this->options->get( 'exclude_defer_js', [] ) ) );
@@ -288,5 +280,39 @@ class DeferJS {
 		$options['exclude_defer_js'][] = '/jquery-?[0-9.]*(.min|.slim|.slim.min)?.js';
 
 		update_option( 'wp_rocket_settings', $options );
+	}
+
+	/**
+	 * Get exclusion list pattern.
+	 *
+	 * @return string
+	 */
+	private function get_inline_exclusions_list_pattern() {
+		$inline_exclusions_list = $this->inline_exclusions;
+
+		/**
+		 * Filters the patterns used to find inline JS that should not be deferred
+		 *
+		 * @since 3.8
+		 *
+		 * @param array $inline_exclusions_list Array of inline JS that should not be deferred.
+		 */
+		$additional_inline_exclusions_list = apply_filters( 'rocket_defer_inline_exclusions', null );
+
+		$inline_exclusions = '';
+
+		// Check if filter return is string so convert it to array for backward compatibility.
+		if ( is_string( $additional_inline_exclusions_list ) ) {
+			$additional_inline_exclusions_list = explode( '|', $additional_inline_exclusions_list );
+		}
+
+		// Cast filter return to array.
+		$inline_exclusions_list = array_merge( $inline_exclusions_list, (array) $additional_inline_exclusions_list );
+
+		foreach ( $inline_exclusions_list as $inline_exclusions_item ) {
+			$inline_exclusions .= preg_quote( (string) $inline_exclusions_item, '#' ) . '|';
+		}
+
+		return rtrim( $inline_exclusions, '|' );
 	}
 }

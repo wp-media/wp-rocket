@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\Minify\JS\Minify;
 
+use Brain\Monkey\Functions;
 use Brain\Monkey\Filters;
 use Mockery;
 use WP_Rocket\Engine\Optimization\AssetsLocalCache;
@@ -90,9 +91,22 @@ class Test_Optimize extends TestCase {
 				return $asset_match[0];
 			} );
 
+		Functions\expect( 'add_query_arg' )->andReturnUsing( function ( $key, $value, $url ) {
+			return $url . '?' . $key . '=' . $value;
+		} );
+
+		$optimized_html = $this->minify->optimize( $original );
+
+		foreach ($expected['files'] as $file) {
+			$file_mtime = $this->filesystem->mtime( $file );
+			if ( $file_mtime ) {
+				$expected['html'] = str_replace( $file."?ver={{mtime}}", $file."?ver=".$file_mtime, $expected['html'] );
+			}
+		}
+
 		$this->assertSame(
 			$this->format_the_html( $expected['html'] ),
-			$this->format_the_html( $this->minify->optimize( $original ) )
+			$this->format_the_html( $optimized_html )
 		);
 
 		$this->assertFilesExists( $expected['files'] );

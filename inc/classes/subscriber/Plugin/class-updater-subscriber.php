@@ -268,7 +268,7 @@ class Updater_Subscriber implements Subscriber_Interface {
 	 * @return bool|null
 	 */
 	public function disable_auto_updates( $update, $item ) {
-		if ( 'wp-rocket/wp-rocket.php' === $item->plugin ) {
+		if ( isset( $item->plugin ) && ( 'wp-rocket/wp-rocket.php' === $item->plugin ) ) {
 			return false;
 		}
 

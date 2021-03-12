@@ -214,4 +214,20 @@ abstract class AbstractOptimization {
 
 		return $html;
 	}
+
+	/**
+	 * Get full minified url with ?ver query string.
+	 *
+	 * @param string $minified_path Path of minified file.
+	 * @param string $minified_url Url of minified file.
+	 *
+	 * @return string
+	 */
+	protected function get_full_minified_url( $minified_path, $minified_url ) {
+		$file_mtime = rocket_direct_filesystem()->mtime( $minified_path );
+
+		$version = $file_mtime ? $file_mtime : md5( $minified_url . $this->minify_key );
+
+		return add_query_arg( 'ver', $version, $minified_url );
+	}
 }
