@@ -40,8 +40,6 @@ class APIClient {
 			]
 		);
 
-		Logger::debug( 'asa_api_client', (array) $response );
-
 		if ( is_wp_error( $response ) ) {
 			return false;
 		}
