@@ -40,15 +40,7 @@ class APIClient {
 			]
 		);
 
-		if ( is_wp_error( $response ) ) {
-			return false;
-		}
-
-		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
-			return false;
-		}
-
-		return true;
+		return 200 === wp_remote_retrieve_response_code( $response );
 	}
 
 }
