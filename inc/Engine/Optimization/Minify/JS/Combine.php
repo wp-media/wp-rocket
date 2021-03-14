@@ -204,7 +204,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 						return;
 					}
 
-					$file_path = $this->get_file_path( strtok( $matches['url'], '?' ) );
+					$file_path = $this->get_file_path( $matches['url'] );
 
 					if ( ! $file_path ) {
 						return;
