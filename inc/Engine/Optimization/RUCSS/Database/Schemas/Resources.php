@@ -70,16 +70,6 @@ class Resources extends Schema {
 			'sortable'   => true,
 		],
 
-		// CREATED column.
-		[
-			'name'       => 'created',
-			'type'       => 'datetime',
-			'default'    => '0000-00-00 00:00:00',
-			'created'    => true,
-			'date_query' => true,
-			'sortable'   => true,
-		],
-
 		// MODIFIED column.
 		[
 			'name'       => 'modified',

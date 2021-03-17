@@ -20,7 +20,6 @@ class ResourceRow extends Row {
 		$this->type          = (string) $this->type;
 		$this->content       = (string) $this->content;
 		$this->hash          = (string) $this->hash;
-		$this->created       = (string) $this->created;
 		$this->modified      = (string) $this->modified;
 		$this->last_accessed = false === $this->date ? 0 : strtotime( $this->last_accessed );
 	}

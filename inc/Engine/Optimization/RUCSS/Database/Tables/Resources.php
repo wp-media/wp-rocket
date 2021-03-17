@@ -28,7 +28,7 @@ final class Resources extends Table {
 	 *
 	 * @var int
 	 */
-	protected $version = 20210312;
+	protected $version = 20210317;
 
 
 	/**
@@ -50,7 +50,6 @@ final class Resources extends Table {
 			type             varchar(5)          NOT NULL default '',
 			content          longtext                     default NULL,
 			hash             varchar(100)        NOT NULL default '',
-			created          DATETIME            NOT NULL default '0000-00-00 00:00:00',
 			modified         DATETIME            NOT NULL default '0000-00-00 00:00:00',
 			last_accessed    DATETIME            NOT NULL default '0000-00-00 00:00:00',
 			PRIMARY KEY (id),
