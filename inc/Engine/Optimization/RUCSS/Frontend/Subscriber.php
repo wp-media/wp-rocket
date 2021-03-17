@@ -106,7 +106,7 @@ class Subscriber implements Subscriber_Interface {
 				'unprocessedcss' => wp_json_encode( $treeshaked_result['unprocessed_css'] ),
 				'retries'        => $retries + 1,
 				'is_mobile'      => $is_mobile,
-				'last_update'    => current_time( 'mysql' ),
+				'modified'       => current_time( 'mysql', true ),
 			];
 
 			$used_css = $this->used_css->save_or_update_used_css( $data );
@@ -135,7 +135,7 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		// Bailout if user is logged in and cache for logged in customers is active.
-		if ( is_user_logged_in() && $this->options->get( 'cache_logged_user' ) ) {
+		if ( is_user_logged_in() && (bool) $this->options->get( 'cache_logged_user', 0 ) ) {
 			return false;
 		}
 

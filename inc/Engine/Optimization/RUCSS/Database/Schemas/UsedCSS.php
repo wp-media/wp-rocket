@@ -80,9 +80,9 @@ class UsedCSS extends Schema {
 			'sortable'   => true,
 		],
 
-		// LAST_UPDATE column.
+		// MODIFIED column.
 		[
-			'name'       => 'last_update',
+			'name'       => 'modified',
 			'type'       => 'timestamp',
 			'default'    => '0000-00-00 00:00:00',
 			'created'    => true,

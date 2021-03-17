@@ -51,11 +51,11 @@ final class UsedCSS extends Table {
 			unprocessedcss   longtext            NOT NULL default '',
 			retries          tinyint(1)          NOT NULL default 1,
 			is_mobile        tinyint(1)          NOT NULL default 0,
-			last_update      timestamp           NOT NULL default '0000-00-00 00:00:00',
+			modified         timestamp           NOT NULL default '0000-00-00 00:00:00',
 			last_accessed    timestamp           NOT NULL default '0000-00-00 00:00:00',
 			PRIMARY KEY (id),
 			UNIQUE KEY url (url(150), is_mobile),
-			KEY last_update (last_update),
+			KEY modified (modified),
 			KEY last_accessed (last_accessed)";
 	}
 

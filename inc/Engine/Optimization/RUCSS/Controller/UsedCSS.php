@@ -148,7 +148,11 @@ class UsedCSS {
 		$unprocessed_styles = $this->unprocessed_flat_array( 'inline', $unprocessed_css );
 
 		foreach ( $link_styles as $style ) {
-			if ( in_array( $style['url'], $unprocessed_links, true ) ) {
+			if (
+				! (bool) preg_match( '/rel=[\'"]stylesheet[\'"]/is', $style[0] )
+				||
+				in_array( $style['url'], $unprocessed_links, true )
+				) {
 				continue;
 			}
 			$html = str_replace( $style[0], '', $html );
@@ -192,7 +196,7 @@ class UsedCSS {
 		return (bool) $this->used_css_query->update_item(
 			$id,
 			[
-				'last_accessed' => current_time( 'mysql' ),
+				'last_accessed' => current_time( 'mysql', true ),
 			]
 		);
 	}

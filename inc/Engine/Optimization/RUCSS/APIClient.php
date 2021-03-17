@@ -84,9 +84,11 @@ class APIClient {
 			];
 		}
 
-		if ( 200 !== wp_remote_retrieve_response_code( $request ) ) {
+		$code = wp_remote_retrieve_response_code( $request );
+
+		if ( 200 !== $code ) {
 			return [
-				'code'    => wp_remote_retrieve_response_code( $request ),
+				'code'    => $code,
 				'message' => __( 'Remove Unused CSS is not available at the moment. Please retry later', 'rocket' ),
 			];
 		}

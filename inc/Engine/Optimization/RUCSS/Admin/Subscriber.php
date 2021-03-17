@@ -54,7 +54,6 @@ class Subscriber implements Subscriber_Interface {
 			],
 			'switch_theme'                     => 'truncate_used_css',
 			'rocket_rucss_file_changed'        => 'truncate_used_css',
-			'pre_post_update'                  => 'delete_used_css_on_update_or_delete',
 			'wp_trash_post'                    => 'delete_used_css_on_update_or_delete',
 			'delete_post'                      => 'delete_used_css_on_update_or_delete',
 			'clean_post_cache'                 => 'delete_used_css_on_update_or_delete',
