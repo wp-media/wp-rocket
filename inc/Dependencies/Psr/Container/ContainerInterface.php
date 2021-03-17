@@ -1,6 +1,7 @@
 <?php
-
-declare(strict_types=1);
+/**
+ * @license http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
+ */
 
 namespace WP_Rocket\Dependencies\Psr\Container;
 
@@ -19,7 +20,7 @@ interface ContainerInterface
      *
      * @return mixed Entry.
      */
-    public function get(string $id);
+    public function get($id);
 
     /**
      * Returns true if the container can return an entry for the given identifier.
@@ -32,5 +33,5 @@ interface ContainerInterface
      *
      * @return bool
      */
-    public function has(string $id);
+    public function has($id);
 }
