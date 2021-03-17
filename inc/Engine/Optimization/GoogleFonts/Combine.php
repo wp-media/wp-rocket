@@ -49,6 +49,8 @@ class Combine extends AbstractGFOptimization {
 		if ( ! $fonts ) {
 			Logger::debug( 'No Google Fonts found.', [ 'GF combine process' ] );
 
+			$this->has_google_fonts = false;
+
 			return $html;
 		}
 
