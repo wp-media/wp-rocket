@@ -74,7 +74,7 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 					'type'          => $resource['type'],
 					'content'       => $resource['content'],
 					'hash'          => md5( $resource['content'] ),
-					'last_accessed' => gmdate( 'Y-m-d\TH:i:s\Z' ),
+					'last_accessed' => current_time( 'mysql', true ),
 				]
 			);
 
@@ -89,7 +89,7 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 		$this->resources_query->update_item(
 			$db_row->id,
 			[
-				'last_accessed' => gmdate( 'Y-m-d\TH:i:s\Z' ),
+				'last_accessed' => current_time( 'mysql', true ),
 			]
 		);
 
