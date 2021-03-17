@@ -46,13 +46,14 @@ class AMP implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		$events = [
-			'activate_amp/amp.php'   => 'generate_config_file',
-			'deactivate_amp/amp.php' => 'generate_config_file',
-			'wp'                     => 'disable_options_on_amp',
+			'activate_amp/amp.php'       => 'generate_config_file',
+			'deactivate_amp/amp.php'     => 'generate_config_file',
+			'wp'                         => 'disable_options_on_amp',
+			'rocket_cache_query_strings' => 'is_amp_compatible_callback',
 		];
+
 		if ( function_exists( 'is_amp_endpoint' ) ) {
-			$events['rocket_cache_query_strings'] = 'is_amp_compatible_callback';
-			$events['update_option_amp-options']  = 'generate_config_file';
+			$events['update_option_amp-options'] = 'generate_config_file';
 		}
 
 		return $events;
@@ -76,6 +77,10 @@ class AMP implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function is_amp_compatible_callback( $value ) {
+		if ( ! function_exists( 'is_amp_endpoint' ) ) {
+			return $value;
+		}
+
 		$options       = get_option( self::AMP_OPTIONS, [] );
 		$query_strings = array_diff( $value, [ static::QUERY ] );
 
