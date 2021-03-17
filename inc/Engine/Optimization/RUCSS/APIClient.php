@@ -7,7 +7,7 @@ class APIClient {
 	/**
 	 * API URL.
 	 */
-	const API_URL = 'https://central-saas.wp-rocket.me:30443/';
+	const API_URL = 'https://central-saas.wp-rocket.me/';
 
 	/**
 	 * SAAS main API path.
@@ -35,7 +35,7 @@ class APIClient {
 				'url'    => $url,
 				'config' => $options,
 			],
-			'timeout' => 30,
+			'timeout' => 5,
 		];
 
 		$request = wp_remote_post(
@@ -48,7 +48,18 @@ class APIClient {
 			return $error_request;
 		}
 
+		$default = [
+			'code'     => 400,
+			'message'  => 'Bad json',
+			'contents' => [
+				'shakedCSS'      => '',
+				'unProcessedCss' => [],
+			],
+		];
+
 		$result = json_decode( wp_remote_retrieve_body( $request ), true );
+		$result = array_intersect_key( (array) $result, $default );
+		$result = array_merge( $default, (array) $result );
 
 		return [
 			'code'            => $result['code'],
@@ -76,7 +87,7 @@ class APIClient {
 		if ( 200 !== wp_remote_retrieve_response_code( $request ) ) {
 			return [
 				'code'    => wp_remote_retrieve_response_code( $request ),
-				'message' => __( 'RUCSS is not available at the moment. Please retry later', 'rocket' ),
+				'message' => __( 'Remove Unused CSS is not available at the moment. Please retry later', 'rocket' ),
 			];
 		}
 

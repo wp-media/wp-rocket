@@ -59,7 +59,7 @@ class Subscriber implements Subscriber_Interface {
 			'delete_post'                      => 'delete_used_css_on_update_or_delete',
 			'clean_post_cache'                 => 'delete_used_css_on_update_or_delete',
 			'wp_update_comment_count'          => 'delete_used_css_on_update_or_delete',
-			'init'                             => 'clean_used_css_scheduled',
+			'init'                             => 'schedule_clean_used_css',
 			'rocket_clean_used_css_time_event' => 'cron_clean_used_css',
 		];
 	}
@@ -70,7 +70,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function cron_clean_used_css() {
-		if ( ! $this->settings->is_allowed() ) {
+		if ( ! $this->settings->is_enabled() ) {
 			return;
 		}
 
@@ -82,7 +82,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return void
 	 */
-	public function clean_used_css_scheduled() {
+	public function schedule_clean_used_css() {
 		if ( ! wp_next_scheduled( 'rocket_clean_used_css_time_event' ) ) {
 			wp_schedule_event( time(), 'weekly', 'rocket_clean_used_css_time_event' );
 		}
@@ -96,7 +96,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function delete_used_css_on_update_or_delete( $post_id ) {
-		if ( ! $this->settings->is_allowed() ) {
+		if ( ! $this->settings->is_enabled() ) {
 			return;
 		}
 
@@ -111,7 +111,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function truncate_used_css() {
-		if ( ! $this->settings->is_allowed() ) {
+		if ( ! $this->settings->is_enabled() ) {
 			return;
 		}
 

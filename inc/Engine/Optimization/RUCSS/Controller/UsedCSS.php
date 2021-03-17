@@ -81,10 +81,11 @@ class UsedCSS {
 	 */
 	public function insert_used_css( array $data ) {
 		$id = $this->used_css_query->add_item( $data );
-		if ( ! empty( $id ) ) {
-			return $this->used_css_query->get_item( $id );
+		if ( empty( $id ) ) {
+			return false;
 		}
-		return false;
+
+		return $this->used_css_query->get_item( $id );
 	}
 
 	/**
@@ -98,10 +99,11 @@ class UsedCSS {
 	public function update_used_css( int $id, array $data ) {
 		$updated = $this->used_css_query->update_item( $id, $data );
 
-		if ( $updated ) {
-			return $this->used_css_query->get_item( $id );
+		if ( ! $updated ) {
+			return false;
 		}
-		return false;
+
+		return $this->used_css_query->get_item( $id );
 	}
 
 	/**
@@ -173,7 +175,7 @@ class UsedCSS {
 	public function add_used_css_to_html( string $html, string $used_css ) : string {
 		return preg_replace(
 			'#</title>#iU',
-			'</title><style id="rucss-usedcss">' . wp_strip_all_tags( $used_css ) . '</style>',
+			'</title><style id="wpr-usedcss">' . wp_strip_all_tags( $used_css ) . '</style>',
 			$html,
 			1
 		);

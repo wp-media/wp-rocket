@@ -53,10 +53,10 @@ class Database {
 	 * @return bool
 	 */
 	public function truncate_used_css_table() : bool {
-		if ( $this->rucss_usedcss_table->exists() ) {
-			return $this->rucss_usedcss_table->truncate();
+		if ( ! $this->rucss_usedcss_table->exists() ) {
+			return false;
 		}
-		return false;
+		return $this->rucss_usedcss_table->truncate();
 	}
 
 	/**

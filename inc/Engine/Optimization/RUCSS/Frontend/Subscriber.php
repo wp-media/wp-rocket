@@ -73,13 +73,10 @@ class Subscriber implements Subscriber_Interface {
 		$used_css  = $this->used_css->get_used_css( $url, $is_mobile );
 
 		if ( empty( $used_css ) || ( $used_css->retries < 3 ) ) {
-			$customer_key = ! empty( $this->options->get( 'consumer_key', '' ) )
-				? $this->options->get( 'consumer_key', '' )
-				: rocket_get_constant( 'WP_ROCKET_KEY', '' );
-
 			$config = [
 				'treeshake'      => 1,
-				'wpr_key'        => $customer_key,
+				'wpr_email'      => $this->options->get( 'consumer_email', '' ),
+				'wpr_key'        => $this->options->get( 'consumer_key', '' ),
 				'rucss_safelist' => $this->options->get( 'remove_unused_css_safelist', [] ),
 			];
 

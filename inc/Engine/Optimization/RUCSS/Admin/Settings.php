@@ -68,11 +68,7 @@ class Settings {
 	 *
 	 * @return boolean
 	 */
-	public function is_allowed() : bool {
-		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
-			return false;
-		}
-
-		return true;
+	public function is_enabled() : bool {
+		return (bool) $this->options->get( 'remove_unused_css', 0 );
 	}
 }
