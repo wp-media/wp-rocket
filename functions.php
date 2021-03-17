@@ -209,7 +209,7 @@ function as_next_scheduled_action( $hook, $args = NULL, $group = '' ) {
  *        'claimed' => NULL - TRUE to find claimed actions, FALSE to find unclaimed actions, a string to find a specific claim ID
  *        'per_page' => 5 - Number of results to return
  *        'offset' => 0
- *        'orderby' => 'date' - accepted values are 'hook', 'group', 'modified', or 'date'
+ *        'orderby' => 'date' - accepted values are 'hook', 'group', 'modified', 'date' or 'none'
  *        'order' => 'ASC'
  *
  * @param string $return_format OBJECT, ARRAY_A, or ids.
