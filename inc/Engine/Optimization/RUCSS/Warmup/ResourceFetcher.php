@@ -3,11 +3,29 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\RUCSS\Warmup;
 
-use WP_Rocket\Engine\Optimization\AbstractOptimization;
 use WP_Rocket\Engine\Optimization\AssetsLocalCache;
+use WP_Rocket\Engine\Optimization\RegexTrait;
+use WP_Rocket\Engine\Optimization\UrlTrait;
 use WP_Rocket\Logger\Logger;
+use WP_Rocket_WP_Async_Request;
 
-class ResourceFetcher extends AbstractOptimization {
+class ResourceFetcher extends WP_Rocket_WP_Async_Request {
+
+	use RegexTrait, UrlTrait;
+
+	/**
+	 * Prefix
+	 *
+	 * @var string
+	 */
+	protected $prefix = 'rocket';
+
+	/**
+	 * Action
+	 *
+	 * @var string
+	 */
+	protected $action = 'saas_warmup';
 
 	/**
 	 * Resources array.
@@ -39,15 +57,20 @@ class ResourceFetcher extends AbstractOptimization {
 	public function __construct( AssetsLocalCache $local_cache, ResourceFetcherProcess $process ) {
 		$this->local_cache = $local_cache;
 		$this->process     = $process;
+		parent::__construct();
 	}
 
 	/**
 	 * Handle Collecting resources and save them into the DB
-	 *
-	 * @param string $html Page HTML.
 	 */
-	public function handle( $html ) {
+	public function handle() {
 		// Grab resources from page HTML.
+		$html = ! empty( $_POST['html'] ) ? wp_unslash( $_POST['html'] ) : '';// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+
+		if ( empty( $html ) ) {
+			return;
+		}
+
 		$this->find_styles( $html );
 		$this->find_scripts( $html );
 
@@ -163,8 +186,6 @@ class ResourceFetcher extends AbstractOptimization {
 
 	/**
 	 * Gets the CDN zones.
-	 *
-	 * @since  3.1
 	 *
 	 * @return array
 	 */

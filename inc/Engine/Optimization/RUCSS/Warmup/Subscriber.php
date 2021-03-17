@@ -53,7 +53,11 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function collect_resources( $html ) {
 		if ( $this->is_allowed() ) {
-			$this->resource_fetcher->handle( $html );
+			$this->resource_fetcher->data(
+				[
+					'html' => $html,
+				]
+			)->dispatch();
 		}
 
 		return $html;
@@ -66,6 +70,10 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	private function is_allowed() {
 		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
+			return false;
+		}
+
+		if ( rocket_bypass() ) {
 			return false;
 		}
 

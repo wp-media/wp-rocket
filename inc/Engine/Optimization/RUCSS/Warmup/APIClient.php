@@ -8,7 +8,7 @@ class APIClient {
 	/**
 	 * Warmup API url.
 	 */
-	const API_URL = 'https://central-saas.wp-rocket.me:30443/warmup';
+	const API_URL = 'http://localhost/wp-media/warmup/public/index.php/warmup';
 
 	/**
 	 * Send the request to Warmup.
