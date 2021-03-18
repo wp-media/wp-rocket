@@ -480,6 +480,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 			'ybws123456', // Custom Bookly form.
 			'_wc_additional_variation_images_nonce', // WooCommerce Additional Variation Images.
 			'get_price_table', // Tiered Pricing Table for WooCommerce.
+			'wccs_single_product_nonce', // Discount Rules and Dynamic Pricing for WooCommerce.
 		];
 	}
 }
