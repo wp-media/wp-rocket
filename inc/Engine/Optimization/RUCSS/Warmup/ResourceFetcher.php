@@ -92,7 +92,7 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 	 * @param string $html Page HTML.
 	 */
 	private function find_styles( $html ) {
-		$links = $this->find( '<link(?:[^>]+[\s"\'])?href\s*=\s*[\'"]\s*(?<url>[^\'"\s]+)\s*?[\'"](?:[^>]+)?\/?>', $html );
+		$links = $this->find( '<link\s+(?:[^>]+[\s"\'])?href\s*=\s*[\'"]\s*(?<url>[^\'"\s]+)\s*?[\'"](?:[^>]+)?\/?>', $html );
 
 		if ( empty( $links ) ) {
 			return;
