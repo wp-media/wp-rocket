@@ -216,6 +216,7 @@ function rocket_get_ignored_parameters() {
 		'msclkid'               => 1,
 		'dm_i'                  => 1,
 		'epik'                  => 1,
+		'pp'                    => 1,
 	];
 
 	/**
