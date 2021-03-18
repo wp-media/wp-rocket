@@ -43,6 +43,7 @@ class Test_RegisterDisableRoute extends ApiTestCase {
 				'params' => [
 					'email' => 'Invalid parameter.',
 				],
+				'details' => [],
 			],
 		];
 
@@ -68,6 +69,7 @@ class Test_RegisterDisableRoute extends ApiTestCase {
 				'params' => [
 					'key' => 'Invalid parameter.',
 				],
+				'details' => [],
 			],
 		];
 
@@ -93,6 +95,7 @@ class Test_RegisterDisableRoute extends ApiTestCase {
 					'email' => 'Invalid parameter.',
 					'key'   => 'Invalid parameter.',
 				],
+				'details' => [],
 			],
 		];
 
