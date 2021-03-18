@@ -55,9 +55,10 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 	 * @param ResourceFetcherProcess $process     Resource fetcher process instance.
 	 */
 	public function __construct( AssetsLocalCache $local_cache, ResourceFetcherProcess $process ) {
+		parent::__construct();
+
 		$this->local_cache = $local_cache;
 		$this->process     = $process;
-		parent::__construct();
 	}
 
 	/**
