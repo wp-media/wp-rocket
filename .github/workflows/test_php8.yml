@@ -1,4 +1,4 @@
-name: Unit/Integration tests
+name: Unit/Integration tests - PHP 8
 
 on:
   pull_request:
@@ -16,7 +16,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ubuntu-latest]
-        php-versions: ['7.3', '7.4']
+        php-versions: ['8.0']
         wp-versions: ['latest']
 
     name: WP ${{ matrix.wp-versions }} with PHP ${{ matrix.php-versions }} on ${{ matrix.operating-system }}.
@@ -68,7 +68,7 @@ jobs:
         restore-keys: ${{ runner.os }}-composer-
 
     - name: Install dependencies
-      run: composer install --prefer-dist --no-interaction --no-scripts
+      run: composer install --prefer-dist --no-interaction --no-scripts --ignore-platform-reqs
 
     - name: Install tests
       run: bash bin/install-wp-tests.sh wordpress_test root root 127.0.0.1:3306 ${{ matrix.wp-versions }}
