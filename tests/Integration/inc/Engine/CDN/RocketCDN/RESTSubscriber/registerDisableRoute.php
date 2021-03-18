@@ -43,11 +43,10 @@ class Test_RegisterDisableRoute extends ApiTestCase {
 				'params' => [
 					'email' => 'Invalid parameter.',
 				],
-				'details' => [],
 			],
 		];
 
-		$this->assertSame( $expected, $actual );
+		$this->assertArraySubset( $expected, $actual );
 	}
 
 	/**
@@ -69,11 +68,10 @@ class Test_RegisterDisableRoute extends ApiTestCase {
 				'params' => [
 					'key' => 'Invalid parameter.',
 				],
-				'details' => [],
 			],
 		];
 
-		$this->assertSame( $expected, $actual );
+		$this->assertArraySubset( $expected, $actual );
 	}
 
 	/**
@@ -95,11 +93,10 @@ class Test_RegisterDisableRoute extends ApiTestCase {
 					'email' => 'Invalid parameter.',
 					'key'   => 'Invalid parameter.',
 				],
-				'details' => [],
 			],
 		];
 
-		$this->assertSame( $expected, $actual );
+		$this->assertArraySubset( $expected, $actual );
 	}
 
 	/**

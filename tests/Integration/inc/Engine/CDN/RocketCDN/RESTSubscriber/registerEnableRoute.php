@@ -43,11 +43,10 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 				'params' => [
 					'email' => 'Invalid parameter.',
 				],
-				'details' => [],
 			],
 		];
 
-		$this->assertSame( $expected, $actual );
+		$this->assertArraySubset( $expected, $actual );
 	}
 
 	/**
@@ -70,11 +69,10 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 				'params' => [
 					'key' => 'Invalid parameter.',
 				],
-				'details' => [],
 			],
 		];
 
-		$this->assertSame( $expected, $actual );
+		$this->assertArraySubset( $expected, $actual );
 	}
 
 	/**
@@ -97,11 +95,10 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 				'params' => [
 					'url' => 'Invalid parameter.',
 				],
-				'details' => [],
 			],
 		];
 
-		$this->assertSame( $expected, $actual );
+		$this->assertArraySubset( $expected, $actual );
 	}
 
 	/**
@@ -125,11 +122,10 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 					'email' => 'Invalid parameter.',
 					'key'   => 'Invalid parameter.',
 				],
-				'details' => [],
 			],
 		];
 
-		$this->assertSame( $expected, $actual );
+		$this->assertArraySubset( $expected, $actual );
 	}
 
 	/**
@@ -153,11 +149,10 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 					'email' => 'Invalid parameter.',
 					'url'   => 'Invalid parameter.',
 				],
-				'details' => [],
 			],
 		];
 
-		$this->assertSame( $expected, $actual );
+		$this->assertArraySubset( $expected, $actual );
 	}
 
 	/**
@@ -181,11 +176,10 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 					'key' => 'Invalid parameter.',
 					'url' => 'Invalid parameter.',
 				],
-				'details' => [],
 			],
 		];
 
-		$this->assertSame( $expected, $actual );
+		$this->assertArraySubset( $expected, $actual );
 	}
 
 	/**
@@ -210,11 +204,10 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 					'key'   => 'Invalid parameter.',
 					'url'   => 'Invalid parameter.',
 				],
-				'details' => [],
 			],
 		];
 
-		$this->assertSame( $expected, $actual );
+		$this->assertArraySubset( $expected, $actual );
 	}
 
 	/**
