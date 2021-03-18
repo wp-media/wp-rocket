@@ -76,11 +76,11 @@ class ResourcesQuery extends Query {
 	 */
 	public function create_or_update( array $resource ) {
 		// check the database if those resources added before.
-		$db_row = $this->resources_query->get_item_by( 'url', $resource['url'] );
+		$db_row = $this->get_item_by( 'url', $resource['url'] );
 
 		if ( empty( $db_row ) ) {
 			// Create this new row in DB.
-			$resource_id = $this->resources_query->add_item(
+			$resource_id = $this->add_item(
 				[
 					'url'           => $resource['url'],
 					'type'          => $resource['type'],
@@ -98,7 +98,7 @@ class ResourcesQuery extends Query {
 		}
 
 		// In all cases update last_accessed column with current date/time.
-		$this->resources_query->update_item(
+		$this->update_item(
 			$db_row->id,
 			[
 				'last_accessed' => current_time( 'mysql', true ),
@@ -112,11 +112,12 @@ class ResourcesQuery extends Query {
 		}
 
 		// Update this row with the new content.
-		$this->resources_query->update_item(
+		$this->update_item(
 			$db_row->id,
 			[
-				'content' => $resource['content'],
-				'hash'    => md5( $resource['content'] ),
+				'content'  => $resource['content'],
+				'hash'     => md5( $resource['content'] ),
+				'modified' => current_time( 'mysql', true ),
 			]
 		);
 
