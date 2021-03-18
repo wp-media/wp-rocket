@@ -74,7 +74,7 @@ class Test_RegisterSupportRoute extends WPMediaRESTfulTestCase {
 			'key'   => $params['key'] ? self::getApiCredential( 'ROCKET_KEY' ) : '',
 		];
 
-		$this->assertSame(
+		$this->assertArraySubset(
 			$expected,
 			$this->requestSupportEndpoint( $body )
 		);
