@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) || exit;
 		<?php
 			printf(
 				// translators: %1$s = <strong>, %2$s = </strong>.
-				esc_html__( 'Your website could be much faster if it could take advantage of  our %1$snew features and enhancements.%2$s', 'rocket' ),
+				esc_html__( 'Your website could be much faster if it could take advantage of our %1$snew features and enhancements.%2$s', 'rocket' ),
 				'<strong>',
 				'</strong>'
 			);
