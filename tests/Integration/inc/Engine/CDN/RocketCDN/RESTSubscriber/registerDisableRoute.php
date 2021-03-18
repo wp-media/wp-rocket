@@ -46,7 +46,7 @@ class Test_RegisterDisableRoute extends ApiTestCase {
 			],
 		];
 
-		$this->assertSame( $expected, $actual );
+		$this->assertArraySubset( $expected, $actual );
 	}
 
 	/**
@@ -71,7 +71,7 @@ class Test_RegisterDisableRoute extends ApiTestCase {
 			],
 		];
 
-		$this->assertSame( $expected, $actual );
+		$this->assertArraySubset( $expected, $actual );
 	}
 
 	/**
@@ -96,7 +96,7 @@ class Test_RegisterDisableRoute extends ApiTestCase {
 			],
 		];
 
-		$this->assertSame( $expected, $actual );
+		$this->assertArraySubset( $expected, $actual );
 	}
 
 	/**
