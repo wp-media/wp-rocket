@@ -67,4 +67,60 @@ class ResourcesQuery extends Query {
 	 */
 	protected $item_shape = ResourceRow::class;
 
+	/**
+	 * Create new resource row or update its contents if not created before.
+	 *
+	 * @param array $resource Resource array.
+	 *
+	 * @return bool
+	 */
+	public function create_or_update( array $resource ) {
+		// check the database if those resources added before.
+		$db_row = $this->resources_query->get_item_by( 'url', $resource['url'] );
+
+		if ( empty( $db_row ) ) {
+			// Create this new row in DB.
+			$resource_id = $this->resources_query->add_item(
+				[
+					'url'           => $resource['url'],
+					'type'          => $resource['type'],
+					'content'       => $resource['content'],
+					'hash'          => md5( $resource['content'] ),
+					'last_accessed' => current_time( 'mysql', true ),
+				]
+			);
+
+			if ( $resource_id ) {
+				return $resource_id;
+			}
+
+			return false;
+		}
+
+		// In all cases update last_accessed column with current date/time.
+		$this->resources_query->update_item(
+			$db_row->id,
+			[
+				'last_accessed' => current_time( 'mysql', true ),
+			]
+		);
+
+		// Check the content hash.
+		if ( md5( $resource['content'] ) === $db_row->hash ) {
+			// Do nothing.
+			return false;
+		}
+
+		// Update this row with the new content.
+		$this->resources_query->update_item(
+			$db_row->id,
+			[
+				'content' => $resource['content'],
+				'hash'    => md5( $resource['content'] ),
+			]
+		);
+
+		return $db_row->id;
+	}
+
 }

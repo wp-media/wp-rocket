@@ -63,52 +63,11 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 			return false;
 		}
 
-		// check the database if those resources added before.
-		$db_row = $this->resources_query->get_item_by( 'url', $resource['url'] );
-
-		if ( empty( $db_row ) ) {
-			// Create this new row in DB.
-			$resource_id = $this->resources_query->add_item(
-				[
-					'url'           => $resource['url'],
-					'type'          => $resource['type'],
-					'content'       => $resource['content'],
-					'hash'          => md5( $resource['content'] ),
-					'last_accessed' => current_time( 'mysql', true ),
-				]
-			);
-
-			if ( $resource_id ) {
-				return ! $this->send_warmup_request( $resource );
-			}
-
-			return false;
+		if ( $this->resources_query->create_or_update( $resource ) ) {
+			return ! $this->send_warmup_request( $resource );
 		}
 
-		// In all cases update last_accessed column with current date/time.
-		$this->resources_query->update_item(
-			$db_row->id,
-			[
-				'last_accessed' => current_time( 'mysql', true ),
-			]
-		);
-
-		// Check the content hash.
-		if ( md5( $resource['content'] ) === $db_row->hash ) {
-			// Do nothing.
-			return false;
-		}
-
-		// Update this row with the new content.
-		$this->resources_query->update_item(
-			$db_row->id,
-			[
-				'content' => $resource['content'],
-				'hash'    => md5( $resource['content'] ),
-			]
-		);
-
-		return ! $this->send_warmup_request( $resource );
+		return false;
 	}
 
 	/**
