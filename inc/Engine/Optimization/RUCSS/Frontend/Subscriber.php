@@ -130,6 +130,14 @@ class Subscriber implements Subscriber_Interface {
 	 * @return boolean
 	 */
 	public function is_allowed() : bool {
+		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
+			return false;
+		}
+
+		if ( rocket_bypass() ) {
+			return false;
+		}
+
 		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
 			return false;
 		}
