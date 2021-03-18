@@ -52,6 +52,8 @@ class CombineV2 extends AbstractGFOptimization {
 			return $html;
 		}
 
+		$this->has_google_fonts = true;
+
 		$num_tags = count( $font_tags );
 
 		Logger::debug(

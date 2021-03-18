@@ -34,7 +34,6 @@ class Combine extends AbstractGFOptimization {
 	 * Combines multiple Google Fonts links into one
 	 *
 	 * @since  3.1
-	 * @author Remy Perona
 	 *
 	 * @param string $html HTML content.
 	 *
@@ -53,6 +52,8 @@ class Combine extends AbstractGFOptimization {
 
 			return $html;
 		}
+
+		$this->has_google_fonts = true;
 
 		$num_fonts = count( $fonts );
 
@@ -97,7 +98,6 @@ class Combine extends AbstractGFOptimization {
 	 * Parses found matches to extract fonts and subsets.
 	 *
 	 * @since  3.1
-	 * @author Remy Perona
 	 *
 	 * @param array $matches Found matches for the pattern.
 	 *
@@ -138,7 +138,6 @@ class Combine extends AbstractGFOptimization {
 	 *
 	 * @since  3.3.5 Add support for the display parameter
 	 * @since  3.1
-	 * @author Remy Perona
 	 *
 	 * @return string
 	 */
