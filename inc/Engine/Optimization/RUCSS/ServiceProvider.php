@@ -24,6 +24,10 @@ class ServiceProvider extends AbstractServiceProvider {
 		'rucss_resources_table',
 		'rucss_database',
 		'rucss_admin_subscriber',
+		'local_cache',
+		'rucss_resource_fetcher',
+		'rucss_resources_query',
+		'rucss_warmup_apiclient',
 	];
 
 	/**
@@ -36,10 +40,30 @@ class ServiceProvider extends AbstractServiceProvider {
 			->withArgument( $this->getContainer()->get( 'options' ) );
 		// Instantiate the RUCSS Resources Table class.
 		$this->getContainer()->add( 'rucss_resources_table', 'WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\Resources' );
+		$this->getContainer()->add( 'rucss_resources_query', 'WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\ResourcesQuery' );
 		$this->getContainer()->add( 'rucss_database', 'WP_Rocket\Engine\Optimization\RUCSS\Admin\Database' )
 			->withArgument( $this->getContainer()->get( 'rucss_resources_table' ) );
 		$this->getContainer()->share( 'rucss_admin_subscriber', 'WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber' )
 			->withArgument( $this->getContainer()->get( 'rucss_settings' ) )
 			->withArgument( $this->getContainer()->get( 'rucss_database' ) );
+
+		$this->getContainer()->add( 'local_cache', '\WP_Rocket\Engine\Optimization\AssetsLocalCache' )
+			->withArgument( rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' ) )
+			->withArgument( rocket_direct_filesystem() );
+
+		$this->getContainer()->add( 'rucss_warmup_apiclient', '\WP_Rocket\Engine\Optimization\RUCSS\Warmup\APIClient' );
+
+		$this->getContainer()->add( 'rucss_resource_fetcher_process', '\WP_Rocket\Engine\Optimization\RUCSS\Warmup\ResourceFetcherProcess' )
+			->withArgument( $this->getContainer()->get( 'rucss_resources_query' ) )
+			->withArgument( $this->getContainer()->get( 'rucss_warmup_apiclient' ) );
+
+		$this->getContainer()->share( 'rucss_resource_fetcher', '\WP_Rocket\Engine\Optimization\RUCSS\Warmup\ResourceFetcher' )
+			->withArgument( $this->getContainer()->get( 'local_cache' ) )
+			->withArgument( $this->getContainer()->get( 'rucss_resource_fetcher_process' ) );
+
+		$this->getContainer()->share( 'rucss_warmup_subscriber', '\WP_Rocket\Engine\Optimization\RUCSS\Warmup\Subscriber' )
+			->withArgument( $this->getContainer()->get( 'options' ) )
+			->withArgument( $this->getContainer()->get( 'rucss_resource_fetcher' ) );
+
 	}
 }

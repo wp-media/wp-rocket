@@ -70,23 +70,11 @@ class Resources extends Schema {
 			'sortable'   => true,
 		],
 
-		// RESEND_TO_WARMUP column.
+		// MODIFIED column.
 		[
-			'name'       => 'resend_to_warmup',
-			'type'       => 'tinyint',
-			'length'     => '1',
-			'default'    => 1,
-			'cache_key'  => true,
-			'searchable' => true,
-			'sortable'   => true,
-		],
-
-		// LAST_UPDATE column.
-		[
-			'name'       => 'last_update',
-			'type'       => 'timestamp',
+			'name'       => 'modified',
+			'type'       => 'datetime',
 			'default'    => '0000-00-00 00:00:00',
-			'created'    => true,
 			'date_query' => true,
 			'sortable'   => true,
 		],
@@ -96,7 +84,6 @@ class Resources extends Schema {
 			'name'       => 'last_accessed',
 			'type'       => 'timestamp',
 			'default'    => '0000-00-00 00:00:00',
-			'created'    => true,
 			'date_query' => true,
 			'sortable'   => true,
 		],
