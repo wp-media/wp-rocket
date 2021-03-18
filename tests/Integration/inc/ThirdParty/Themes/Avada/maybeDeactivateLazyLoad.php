@@ -12,7 +12,7 @@ class Test_MaybeDeactivateLazyLoad extends TestCase {
 	protected      $path_to_test_data = '/inc/ThirdParty/Themes/Avada/maybeDeactivateLazyLoad.php';
 	private static $container;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		self::$container = apply_filters( 'rocket_container', '' );

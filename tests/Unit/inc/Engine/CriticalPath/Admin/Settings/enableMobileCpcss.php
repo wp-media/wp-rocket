@@ -19,7 +19,7 @@ class Test_EnableMobileCpcss extends TestCase {
 
 	private $settings;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->setUpMocks();

@@ -24,7 +24,7 @@ class Test_Optimize extends TestCase {
 	protected $minify;
 	private   $local_cache;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->local_cache = Mockery::mock( AssetsLocalCache::class );

@@ -14,7 +14,7 @@ use WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor;
 class Test_ClearCache extends TestCase {
 	private $elementor;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->elementor = new Elementor( $this->createMock( Options_Data::class ) );

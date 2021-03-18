@@ -21,7 +21,7 @@ class Test_Optimize extends TestCase {
 	protected $minify;
 	private $local_cache;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$GLOBALS['wp_scripts'] = (object) [

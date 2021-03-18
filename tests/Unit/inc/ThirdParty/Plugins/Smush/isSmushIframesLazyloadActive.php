@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\Smush;
 
+use Brain\Monkey\Functions;
 use WP_Rocket\ThirdParty\Plugins\Smush;
 
 /**
@@ -10,6 +11,10 @@ use WP_Rocket\ThirdParty\Plugins\Smush;
  * @group Smush
  */
 class Test_IsSmushIframesLazyloadActive extends SmushSubscriberTestCase {
+	public function setUp() : void {
+		parent::setUp();
+		Functions\stubTranslationFunctions();
+	}
 
 	public function testShouldNotDisableWPRocketLazyLoad() {
 		$subscriber = new Smush( $this->createMock( 'WP_Rocket\Admin\Options' ), $this->createMock( 'WP_Rocket\Admin\Options_Data' ) );
@@ -53,7 +58,6 @@ class Test_IsSmushIframesLazyloadActive extends SmushSubscriberTestCase {
 	}
 
 	public function testShouldDisableWPRocketLazyLoadWhenIframeFormat() {
-		$this->mockCommonWpFunctions();
 
 		$subscriber = new Smush( $this->createMock( 'WP_Rocket\Admin\Options' ), $this->createMock( 'WP_Rocket\Admin\Options_Data' ) );
 

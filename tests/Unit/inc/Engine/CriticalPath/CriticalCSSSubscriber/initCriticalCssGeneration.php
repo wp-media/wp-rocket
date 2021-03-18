@@ -18,15 +18,16 @@ use WP_Rocket\Tests\Unit\TestCase;
 class Test_InitCriticalCssGeneration extends TestCase {
 	use SubscriberTrait;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/WPDieException.php';
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
+		Functions\stubEscapeFunctions();
 		unset( $_GET['_wpnonce'] );
 
 		$this->setUpTests();
@@ -77,7 +78,6 @@ class Test_InitCriticalCssGeneration extends TestCase {
 			}
 
 			Functions\expect( 'wp_safe_redirect' )->once();
-			Functions\when( 'esc_url_raw' )->returnArg();
 			Functions\expect( 'wp_die' )->once();
 		}
 

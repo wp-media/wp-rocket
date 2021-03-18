@@ -12,6 +12,11 @@ use WP_Rocket\Engine\Preload\Homepage;
  * @group  Preload
  */
 class Test_Preload extends TestCase {
+	public function setUp() : void {
+		parent::setUp();
+
+		Functions\stubEscapeFunctions();
+	}
 
 	public function testShouldNotPreloadWhenInvalidUrls() {
 		$preload_process = $this->createMock( FullProcess::class );
@@ -75,7 +80,6 @@ class Test_Preload extends TestCase {
 		Functions\when( 'set_transient' )->justReturn( null );
 
 		// Stubs for $this->get_urls().
-		Functions\when( 'esc_url_raw' )->returnArg();
 		Functions\when( 'wp_remote_get' )->alias( function( $url, $args = [] ) {
 			$mobile_sub = ! empty( $args['user-agent'] ) && strpos( $args['user-agent'], 'iPhone' ) ? '/mobile' : '';
 			$home_url   = 'https://example.org' . $mobile_sub;

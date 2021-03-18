@@ -20,13 +20,13 @@ class Test_MaybeGenerateCpcssMobile extends FilesystemTestCase {
 	private        $subscriber;
 	private static $container;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		self::$container = apply_filters( 'rocket_container', null );
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->subscriber = self::$container->get( 'critical_css_subscriber' );

@@ -21,7 +21,7 @@ class test_Task extends TestCase {
 	protected static $generation;
 	protected static $processor;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		set_transient( 'rocket_critical_css_generation_process_running', [

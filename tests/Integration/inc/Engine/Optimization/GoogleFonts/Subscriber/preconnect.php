@@ -11,7 +11,7 @@ use WPMedia\PHPUnit\Integration\TestCase;
 class Test_Preconnect extends TestCase {
 	private $option_value;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->option_value = null;

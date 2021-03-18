@@ -10,7 +10,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group  DelayJS
  */
 class Test_optionUpdate3761 extends TestCase {
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->unregisterAllCallbacksExcept( 'wp_rocket_upgrade', 'option_update_3_7_6_1', 13 );

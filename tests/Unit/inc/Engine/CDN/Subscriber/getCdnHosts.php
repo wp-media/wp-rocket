@@ -17,7 +17,7 @@ class Test_GetCdnHosts extends TestCase {
 	private $cdn;
 	private $subscriber;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->cdn        = Mockery::mock( CDN::class );

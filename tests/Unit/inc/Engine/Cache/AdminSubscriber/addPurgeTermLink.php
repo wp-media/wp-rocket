@@ -15,12 +15,12 @@ use WP_Rocket\Engine\Cache\WPCache;
  * @group Cache
  */
 class Test_AddPurgeTermLink extends TestCase {
-	protected static $mockCommonWpFunctionsInSetUp = true;
-
 	private $subscriber;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
+
+		Functions\stubTranslationFunctions();
 
 		$this->subscriber = new AdminSubscriber(
 			Mockery::mock( AdvancedCache::class ),

@@ -16,7 +16,7 @@ class Test_ActivateSafeMode extends TestCase {
 	private $options;
 	private $options_api;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->options_api  = Mockery::mock( 'WP_Rocket\Admin\Options' );

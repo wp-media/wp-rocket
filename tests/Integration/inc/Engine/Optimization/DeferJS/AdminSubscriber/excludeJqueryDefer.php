@@ -11,7 +11,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group  AdminOnly
  */
 class Test_ExcludeJqueryDefer extends TestCase {
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->unregisterAllCallbacksExcept( 'wp_rocket_upgrade', 'exclude_jquery_defer', 14 );

@@ -10,7 +10,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 abstract class TestCase extends FilesystemTestCase {
 	protected $options;
 
-	public function setUp() {
+	public function setUp() : void {
 		$this->default_vfs_structure = '/vfs-structure/optimizeMinify.php';
 
 		parent::setUp();

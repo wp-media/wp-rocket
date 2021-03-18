@@ -12,6 +12,11 @@ use WP_Rocket\Engine\Preload\Sitemap;
  * @group Preload
  */
 class Test_RunPreload extends TestCase {
+	public function setUp() : void {
+		parent::setUp();
+
+		Functions\stubEscapeFunctions();
+	}
 
 	public function testShouldNotPreloadWhenNoUrls() {
 		$preload_process = $this->createMock( FullProcess::class );
@@ -59,7 +64,6 @@ class Test_RunPreload extends TestCase {
 		Functions\when( 'set_transient' )->justReturn( null );
 
 		// Stubs for $this->process_sitemap().
-		Functions\when( 'esc_url_raw' )->returnArg();
 		Functions\when( 'wp_remote_get' )->alias( function( $url, $args = [] ) {
 			switch ( $url ) {
 				case 'https://example.org/sitemap.xml':

@@ -15,7 +15,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 class Test_DoAdminPostRocketPurgeCache extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/common/doAdminPostRocketPurgeCache.php';
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		// Load the file once.

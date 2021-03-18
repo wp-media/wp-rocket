@@ -10,7 +10,11 @@ use WP_Rocket\Subscriber\Media\Webp_Subscriber;
  * @group Subscriber
  */
 class Test_WebpSectionDescription extends TestCase {
-	protected static $mockCommonWpFunctionsInSetUp = true;
+	public function setUp() : void {
+		parent::setUp();
+		Functions\stubTranslationFunctions();
+		Functions\stubEscapeFunctions();
+	}
 
 	public function testShouldReturnTextWhenNoPluginsAndCacheOptionDisabled() {
 		Functions\when( 'rocket_valid_key' )->justReturn( false );

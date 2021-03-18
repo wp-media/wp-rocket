@@ -17,7 +17,7 @@ class Test_ShowAdminNotice extends TestCase {
 	private static $admin_user_id  = 0;
 	private static $editor_user_id = 0;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		CapTrait::setAdminCap();
