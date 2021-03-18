@@ -35,7 +35,7 @@ abstract class AbstractGFOptimization extends AbstractOptimization {
 	 *
 	 * @var bool
 	 */
-	protected $has_google_fonts;
+	protected $has_google_fonts = true;
 
 
 	/**
@@ -46,7 +46,7 @@ abstract class AbstractGFOptimization extends AbstractOptimization {
 	 * @return bool Will default to true when extending classes have not set via the optimize() method.
 	 */
 	public function has_google_fonts() {
-		return isset( $this->has_google_fonts ) ? $this->has_google_fonts : true;
+		return $this->has_google_fonts;
 	}
 
 	/**
