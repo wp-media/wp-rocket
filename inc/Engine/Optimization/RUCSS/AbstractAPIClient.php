@@ -39,7 +39,7 @@ abstract class AbstractAPIClient {
 	 *
 	 * @return bool WP Remote request status.
 	 */
-	protected function handle_post( array $args ) {
+	protected function handle_post( array $args ): bool {
 		$response = wp_remote_post(
 			self::API_URL . $this->request_path,
 			$args
@@ -55,7 +55,7 @@ abstract class AbstractAPIClient {
 	 *
 	 * @return bool
 	 */
-	private function check_response( $response ) {
+	private function check_response( $response ): bool {
 		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
 			$this->error_message = wp_remote_retrieve_response_message( $response );
 
