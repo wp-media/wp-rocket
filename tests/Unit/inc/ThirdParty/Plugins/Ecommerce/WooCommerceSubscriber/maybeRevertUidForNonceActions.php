@@ -12,7 +12,7 @@ use WPMedia\PHPUnit\Unit\TestCase;
 class Test_MaybeRevertUidForNonceActions extends TestCase {
 	private $subscriber;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->subscriber = new WooCommerceSubscriber();

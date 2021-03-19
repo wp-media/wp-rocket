@@ -16,7 +16,7 @@ class Test_IsExcludedFile extends TestCase {
 	protected $path_to_test_data = '/inc/Engine/Optimization/CacheDynamicResource/isExcludedFile.php';
 	private $cache_resource;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->cache_resource = new CacheDynamicResource(

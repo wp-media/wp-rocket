@@ -16,7 +16,7 @@ class Test_PreloadFonts extends TestCase {
 	private   $cdn;
 	private   $cnames;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->unregisterAllCallbacksExcept( 'wp_head', 'preload_fonts', 10 );

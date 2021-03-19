@@ -10,7 +10,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 abstract class TestCase extends FilesystemTestCase {
 	protected static $rocketcdn_user_token;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		static::$use_settings_trait = true;
 		static::$transients         = [
 			'rocketcdn_status' => null,
@@ -20,7 +20,7 @@ abstract class TestCase extends FilesystemTestCase {
 		static::$rocketcdn_user_token = get_option( 'rocketcdn_user_token', null );
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		set_transient( 'rocketcdn_status', [ 'transient' ], MINUTE_IN_SECONDS );

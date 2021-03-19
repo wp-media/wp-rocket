@@ -22,7 +22,7 @@ class Test_EnableMobileCpcss extends AjaxTestCase {
 	private static $admin_user_id  = 0;
 	private static $editor_user_id = 0;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		CapTrait::setAdminCap();
@@ -33,7 +33,7 @@ class Test_EnableMobileCpcss extends AjaxTestCase {
 		self::$editor_user_id = static::factory()->user->create( [ 'role' => 'editor' ] );
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->action = 'rocket_enable_mobile_cpcss';

@@ -20,7 +20,7 @@ class Test_InsertScript extends TestCase {
 		'wp_rocket_customer_data' => null,
 	];
 
-	public function setUp() {
+	public function setUp() : void {
 		global $wp_locale;
 
 		parent::setUp();

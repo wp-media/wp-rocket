@@ -23,7 +23,7 @@ class Test_RunRocketAfterWPEngine extends AdminTestCase {
 	private static $subscriber;
 	private static $wpengine;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		CapTrait::hasAdminCapBeforeClass();
@@ -40,7 +40,7 @@ class Test_RunRocketAfterWPEngine extends AdminTestCase {
 		CapTrait::resetAdminCap();
 	}
 
-	public function setup() {
+	public function setUp() : void {
 		parent::setup();
 
 		$this->user_id = $this->factory->user->create( [ 'role' => 'administrator' ] );

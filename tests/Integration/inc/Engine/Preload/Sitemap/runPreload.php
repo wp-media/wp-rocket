@@ -16,7 +16,7 @@ class Test_RunPreload extends PreloadTestCase {
 	protected $setUpFilters = true;
 	protected $tearDownFilters = true;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->markTestSkipped(

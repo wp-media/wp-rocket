@@ -5,6 +5,8 @@ namespace WP_Rocket\Tests\Unit\inc\classes\third_party\plugins\Images\Webp\Imagi
 use Brain\Monkey\Actions;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
+use Mockery;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
 
@@ -16,16 +18,11 @@ use WPMedia\PHPUnit\Unit\TestCase;
 class Test_LoadHooks extends TestCase {
 
 	public function testShouldRegisterHooksWhenCacheIsDisabledByOption() {
-		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
+		$optionsData = Mockery::mock( Options_Data::class );
 		$optionsData
-			->method( 'get' )
-			->will(
-				$this->returnValueMap(
-					[
-						[ 'cache_webp', '', 0 ],
-					]
-				)
-			);
+			->shouldReceive( 'get' )
+			->with( 'cache_webp' )
+			->andReturn( 0 );
 
 		$subscriber = new Imagify_Subscriber( $optionsData );
 
@@ -35,16 +32,11 @@ class Test_LoadHooks extends TestCase {
 	}
 
 	public function testShouldRegisterHooksWhenPluginNotAvailable() {
-		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
+		$optionsData = Mockery::mock( Options_Data::class );
 		$optionsData
-			->method( 'get' )
-			->will(
-				$this->returnValueMap(
-					[
-						[ 'cache_webp', '', 1 ],
-					]
-				)
-			);
+			->shouldReceive( 'get' )
+			->with( 'cache_webp' )
+			->andReturn( 1 );
 
 		$subscriber  = new Imagify_Subscriber( $optionsData );
 		$option_name = 'imagify_settings';
@@ -66,16 +58,11 @@ class Test_LoadHooks extends TestCase {
 	}
 
 	public function testShouldRegisterHooksWhenPluginIsAvailable() {
-		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
+		$optionsData = Mockery::mock( Options_Data::class );
 		$optionsData
-			->method( 'get' )
-			->will(
-				$this->returnValueMap(
-					[
-						[ 'cache_webp', '', 1 ],
-					]
-				)
-			);
+			->shouldReceive( 'get' )
+			->with( 'cache_webp' )
+			->andReturn( 1 );
 
 		Functions\when( 'is_multisite' )->justReturn( false );
 

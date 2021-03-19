@@ -1,4 +1,4 @@
-name: WPRocket Test - Legacy
+name: Unit/Integration tests - Legacy
 
 on:
   pull_request:
@@ -22,6 +22,8 @@ jobs:
     name: WP ${{ matrix.wp-versions }} with PHP ${{ matrix.php-versions }} on ${{ matrix.operating-system }}.
     
     env:
+      WP_TESTS_DIR: "/tmp/tests/phpunit"
+      WP_CORE_DIR: "/tmp/wordpress-develop"
       ROCKETCDN_EMAIL: ${{ secrets.ROCKETCDN_EMAIL }}
       ROCKETCDN_PWD: ${{ secrets.ROCKETCDN_PWD }}
       ROCKETCDN_TOKEN: ${{ secrets.ROCKETCDN_TOKEN }}
@@ -74,6 +76,9 @@ jobs:
 
     - name: Install tests
       run: bash bin/install-wp-tests.sh wordpress_test root root 127.0.0.1:3306 ${{ matrix.wp-versions }}
+    
+    - name: Mysql8 auth plugin workaround
+      run: sudo mysql -u root -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';"
 
     - name: Test
       run: composer run-tests

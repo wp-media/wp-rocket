@@ -13,7 +13,7 @@ class Test_DisableImageDimensionsHeightPercentage extends WPThemeTestcase {
 
 	private static $container;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		self::$container = apply_filters( 'rocket_container', '' );
@@ -25,7 +25,7 @@ class Test_DisableImageDimensionsHeightPercentage extends WPThemeTestcase {
 		self::$container->get( 'event_manager' )->remove_subscriber( self::$container->get( 'divi' ) );
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		self::$container->get( 'event_manager' )->add_subscriber( self::$container->get( 'divi' ) );

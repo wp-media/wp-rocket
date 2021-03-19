@@ -19,7 +19,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 class Test_GetCriticalCssContent extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSS/getCriticalCssContent.php';
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		Functions\when( 'home_url' )->justReturn( 'http://example.org/' );

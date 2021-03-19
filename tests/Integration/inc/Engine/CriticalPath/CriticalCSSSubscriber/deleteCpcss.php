@@ -25,7 +25,7 @@ class Test_DeleteCpcss extends FilesystemTestCase {
 		self::$post_id = $factory->post->create();
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		add_filter( 'pre_get_rocket_option_async_css', [ $this, 'async_css' ] );

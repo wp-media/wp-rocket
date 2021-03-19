@@ -12,7 +12,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_Optimize extends TestCase {
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 		$GLOBALS['wp'] = (object) [
 			'query_vars' => [],
