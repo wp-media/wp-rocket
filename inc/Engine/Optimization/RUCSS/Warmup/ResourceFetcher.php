@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\RUCSS\Warmup;
 
+use org\bovigo\vfs\vfsStream;
 use WP_Rocket\Engine\Optimization\AssetsLocalCache;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Engine\Optimization\UrlTrait;
@@ -12,6 +13,9 @@ use WP_Rocket_WP_Async_Request;
 class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 
 	use RegexTrait, UrlTrait;
+
+	const LINK_PATTERN = '<link\s+(?:[^>]+[\s"\'])?href\s*=\s*[\'"]\s*(?<url>[^\'"\s]+)\s*?[\'"](?:[^>]+)?\/?>';
+	const SCRIPT_PATTERN = '<script\s+(?:[^>]+[\s\'"])?src\s*=\s*[\'"]\s*?(?<url>[^\'"\s]+)\s*?[\'"](?:[^>]+)?\/?>';
 
 	/**
 	 * Prefix
@@ -63,6 +67,8 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 
 	/**
 	 * Handle Collecting resources and save them into the DB
+	 *
+	 * @since 3.9
 	 */
 	public function handle() {
 		// Grab resources from page HTML.
@@ -72,8 +78,8 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 			return;
 		}
 
-		$this->find_styles( $html );
-		$this->find_scripts( $html );
+		$this->find_resources( $html, 'css' );
+		$this->find_resources( $html, 'js' );
 
 		if ( empty( $this->resources ) ) {
 			return;
@@ -88,61 +94,55 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 	}
 
 	/**
-	 * Find link styles on the page HTML.
+	 * Find resources of type (style/script) on the page HTML.
+	 *
+	 * @since 3.9
 	 *
 	 * @param string $html Page HTML.
+	 * @param string $type Specify to look for 'css' or 'js' resources.
+	 *
+	 * @return void
 	 */
-	private function find_styles( $html ) {
-		$links = $this->find( '<link\s+(?:[^>]+[\s"\'])?href\s*=\s*[\'"]\s*(?<url>[^\'"\s]+)\s*?[\'"](?:[^>]+)?\/?>', $html );
+	private function find_resources( string $html, string $type ) {
+		$pattern = ( 'css' === $type) ? SELF::LINK_PATTERN : SELF::SCRIPT_PATTERN;
 
-		if ( empty( $links ) ) {
+		$resources = $this->find( $pattern, $html );
+
+		if ( empty( $resources ) ) {
 			return;
 		}
 
-		foreach ( $links as $link ) {
-			if ( ! (bool) preg_match( '/rel=[\'"]stylesheet[\'"]/is', $link[0] ) ) {
+		foreach ( $resources as $resource ) {
+
+			if ( 'css' === $type && ! $this->is_link_stylesheet( $resource[0] ) ) {
 				continue;
 			}
 
-			$contents = $this->get_url_contents( $link['url'] );
+			$contents = $this->get_url_contents( $resource['url'] );
 
 			if ( empty( $contents ) ) {
 				continue;
 			}
 
 			$this->resources[] = [
-				'url'     => rocket_add_url_protocol( $link['url'] ),
+				'url'     => rocket_add_url_protocol( $resource['url'] ),
 				'content' => $contents,
-				'type'    => 'css',
+				'type'    => $type,
 			];
 		}
 	}
 
 	/**
-	 * Find scripts with src on the page HTML.
+	 * Check that a link element is a stylesheet.
 	 *
-	 * @param string $html Page HTML.
+	 * @since 3.9
+	 *
+	 * @param string $link The link element to check.
+	 *
+	 * @return bool True for stylesheet; false for anything else.
 	 */
-	private function find_scripts( $html ) {
-		$scripts = $this->find( '<script\s+(?:[^>]+[\s\'"])?src\s*=\s*[\'"]\s*?(?<url>[^\'"\s]+)\s*?[\'"](?:[^>]+)?\/?>', $html );
-
-		if ( empty( $scripts ) ) {
-			return;
-		}
-
-		foreach ( $scripts as $script ) {
-			$contents = $this->get_url_contents( $script['url'] );
-
-			if ( empty( $contents ) ) {
-				continue;
-			}
-
-			$this->resources[] = [
-				'url'     => rocket_add_url_protocol( $script['url'] ),
-				'content' => $contents,
-				'type'    => 'js',
-			];
-		}
+	private function is_link_stylesheet( string $link ) {
+		return (bool) preg_match( '/rel=[\'"]stylesheet[\'"]/is', $link );
 	}
 
 	/**
