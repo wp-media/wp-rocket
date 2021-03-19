@@ -8,6 +8,11 @@ use WP_Rocket\Engine\Optimization\RUCSS\AbstractAPIClient;
 class APIClient extends AbstractAPIClient {
 
 	/**
+	 * SAAS main API path.
+	 */
+	const TREESHAKE_PATH = 'api';
+
+	/**
 	 * Calls Central Saas API.
 	 *
 	 * @param string $html    HTML content.

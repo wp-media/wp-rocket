@@ -8,6 +8,11 @@ use WP_Rocket\Engine\Optimization\RUCSS\AbstractAPIClient;
 class APIClient extends AbstractAPIClient {
 
 	/**
+	 * API Warmup path.
+	 */
+	const WARMUP_PATH = 'warmup';
+
+	/**
 	 * Send the request to Warmup.
 	 *
 	 * @param array $atts Resource attributes.

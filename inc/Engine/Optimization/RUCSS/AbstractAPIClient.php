@@ -10,16 +10,6 @@ abstract class AbstractAPIClient {
 	const API_URL = 'https://central-saas.wp-rocket.me/';
 
 	/**
-	 * SAAS main API path.
-	 */
-	const TREESHAKE_PATH = 'api';
-
-	/**
-	 * API Warmup path.
-	 */
-	const WARMUP_PATH = 'warmup';
-
-	/**
 	 * Handle Saas request error.
 	 *
 	 * @param  array|WP_Error $request WP Remote request.
