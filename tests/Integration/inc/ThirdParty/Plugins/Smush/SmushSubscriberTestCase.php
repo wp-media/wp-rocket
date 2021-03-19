@@ -16,7 +16,7 @@ abstract class SmushSubscriberTestCase extends TestCase {
 	protected $smush_lazy_option_name;
 	protected $smush_lazy;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->assertTrue( class_exists( '\Smush\Core\Settings' ), 'Smush plugin not loaded' );

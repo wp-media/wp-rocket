@@ -10,7 +10,7 @@ use WPMedia\PHPUnit\Unit\TestCase;
  * @group vendors
  */
 class Test_RocketIp2Long6 extends TestCase {
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/vendors/ip_in_range.php';

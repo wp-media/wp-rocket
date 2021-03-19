@@ -15,13 +15,13 @@ abstract class PreloadTestCase extends TestCase {
 	protected $setUpFilters       = false;
 	protected $tearDownFilters    = false;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Preload/Process_Wrapper.php';
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		add_filter( 'site_url', [ $this, 'setSiteUrl' ] );

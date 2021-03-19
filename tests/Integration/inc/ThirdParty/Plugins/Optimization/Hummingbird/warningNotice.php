@@ -13,7 +13,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_WarningNotice extends TestCase {
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 		CapTrait::setAdminCap();
 
@@ -21,7 +21,7 @@ class Test_WarningNotice extends TestCase {
 		wp_set_current_user( $user );
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		set_current_screen( 'settings_page_wprocket' );

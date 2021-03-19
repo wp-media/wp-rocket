@@ -27,7 +27,7 @@ class Test_ProcessHandler extends FilesystemTestCase {
 	private $to_be_removed;
 	private $expected_items;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->to_be_removed  = [

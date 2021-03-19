@@ -5,6 +5,8 @@ namespace WP_Rocket\Tests\Unit\inc\classes\third_party\plugins\Images\Webp\EwwwS
 use Brain\Monkey\Actions;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
+use Mockery;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
 
@@ -16,16 +18,11 @@ use WPMedia\PHPUnit\Unit\TestCase;
 class Test_LoadHooks extends TestCase {
 
 	public function testShouldRegisterHooksWhenCacheIsDisabledByOption() {
-		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
+		$optionsData = Mockery::mock( Options_Data::class );
 		$optionsData
-			->method( 'get' )
-			->will(
-				$this->returnValueMap(
-					[
-						[ 'cache_webp', '', 0 ],
-					]
-				)
-			);
+			->shouldReceive( 'get' )
+			->with( 'cache_webp' )
+			->andReturn( 0 );
 
 		$subscriber = new EWWW_Subscriber( $optionsData );
 
@@ -35,16 +32,11 @@ class Test_LoadHooks extends TestCase {
 	}
 
 	public function testShouldRegisterHooksWhenPluginNotAvailable() {
-		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
+		$optionsData = Mockery::mock( Options_Data::class );
 		$optionsData
-			->method( 'get' )
-			->will(
-				$this->returnValueMap(
-					[
-						[ 'cache_webp', '', 1 ],
-					]
-				)
-			);
+			->shouldReceive( 'get' )
+			->with( 'cache_webp' )
+			->andReturn( 1 );
 
 		$subscriber = new EWWW_Subscriber( $optionsData );
 
@@ -66,30 +58,17 @@ class Test_LoadHooks extends TestCase {
 	}
 
 	public function testShouldCallCallbacksWhenDidAction() {
-		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
+		$optionsData = Mockery::mock( Options_Data::class );
 		$optionsData
-			->method( 'get' )
-			->will(
-				$this->returnValueMap(
-					[
-						[ 'cache_webp', '', 1 ],
-					]
-				)
-			);
+			->shouldReceive( 'get' )
+			->with( 'cache_webp' )
+			->andReturn( 1 );
 
-		$subscriber = $this->getMockBuilder( EWWW_Subscriber::class )
-		                   ->setConstructorArgs( [ $optionsData ] )
-		                   ->setMethods( [ 'plugin_activation', 'plugin_deactivation' ] )
-		                   ->getMock();
-		$subscriber
-			->expects( $this->once() )
-			->method( 'plugin_activation' );
-		$subscriber
-			->expects( $this->once() )
-			->method( 'plugin_deactivation' );
+		$subscriber = new EWWW_Subscriber( $optionsData );
 
 		Functions\When( 'plugin_basename' )->justReturn( 'ewww-image-optimizer/ewww-image-optimizer.php' );
 		Functions\When( 'is_multisite' )->justReturn( false );
+		Functions\when( 'ewww_image_optimizer_get_option' )->justReturn( true );
 
 		do_action( 'activate_ewww-image-optimizer/ewww-image-optimizer.php' );
 		do_action( 'deactivate_ewww-image-optimizer/ewww-image-optimizer.php' );
@@ -100,16 +79,11 @@ class Test_LoadHooks extends TestCase {
 	public function testShouldRegisterHooksWhenPluginIsAvailable() {
 		global $ewww_get_option;
 
-		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
+		$optionsData = Mockery::mock( Options_Data::class );
 		$optionsData
-			->method( 'get' )
-			->will(
-				$this->returnValueMap(
-					[
-						[ 'cache_webp', '', 1 ],
-					]
-				)
-			);
+			->shouldReceive( 'get' )
+			->with( 'cache_webp' )
+			->andReturn( 1 );
 
 		Functions\When( 'plugin_basename' )->justReturn( 'ewww-image-optimizer/ewww-image-optimizer.php' );
 		Functions\when( 'is_multisite' )->justReturn( false );

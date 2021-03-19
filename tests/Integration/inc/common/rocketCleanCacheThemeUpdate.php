@@ -17,7 +17,7 @@ class Test_RocketCleanCacheThemeUpdate extends FilesystemTestCase {
 	protected        $path_to_test_data = '/inc/common/rocketCleanCacheThemeUpdate.php';
 	protected static $hooks;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		self::$hooks = $GLOBALS['wp_filter']['upgrader_process_complete']->callbacks;
@@ -29,7 +29,7 @@ class Test_RocketCleanCacheThemeUpdate extends FilesystemTestCase {
 		$GLOBALS['wp_filter']['upgrader_process_complete']->callbacks = self::$hooks;
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		// Unregister all of the callbacks registered to the action event for these tests.

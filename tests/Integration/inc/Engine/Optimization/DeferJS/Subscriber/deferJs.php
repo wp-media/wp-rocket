@@ -16,7 +16,7 @@ class Test_DeferJs extends TestCase {
 	private $defer_js;
 	private $exclude_defer_js;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		set_current_screen( 'front' );

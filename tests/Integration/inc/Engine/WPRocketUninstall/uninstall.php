@@ -54,7 +54,7 @@ class Test_Uninstall extends FilesystemTestCase {
 		'rocket_cron_deactivate_cloudflare_devmode',
 	];
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_PLUGIN_ROOT . '/inc/Engine/WPRocketUninstall.php';
@@ -84,7 +84,7 @@ class Test_Uninstall extends FilesystemTestCase {
 		return array_keys( self::$transients );
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		foreach ( self::getOptionNames() as $option_name ) {

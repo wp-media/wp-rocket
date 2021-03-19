@@ -7,7 +7,8 @@ use WP_Rocket\Subscriber\Media\Webp_Subscriber;
 
 /**
  * @covers \WP_Rocket\Subscriber\Media\Webp_Subscriber::sync_webp_cache_with_third_party_plugins
- * @group Subscriber
+ *
+ * @group WebP
  */
 class Test_SyncWebpCacheWithThirdPartyPlugins extends TestCase {
 
@@ -17,8 +18,8 @@ class Test_SyncWebpCacheWithThirdPartyPlugins extends TestCase {
 		$mocks = $this->getConstructorMocks( 0 ); // Cache option disabled.
 
 		$mocks['optionsApi']
-			->expects( $this->never() )
-			->method( 'set' );
+			->shouldReceive( 'set' )
+			->never();
 
 		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
 
@@ -40,8 +41,8 @@ class Test_SyncWebpCacheWithThirdPartyPlugins extends TestCase {
 		$mocks = $this->getConstructorMocks(); // Cache option enabled, CDN enabled.
 
 		$mocks['optionsApi']
-			->expects( $this->never() )
-			->method( 'set' );
+			->shouldReceive( 'set' )
+			->never();
 
 		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
 
@@ -98,8 +99,20 @@ class Test_SyncWebpCacheWithThirdPartyPlugins extends TestCase {
 		$mocks = $this->getConstructorMocks(); // Cache option enabled, CDN enabled.
 
 		$mocks['optionsApi']
-			->expects( $this->exactly( 2 ) )
-			->method( 'set' );
+			->shouldReceive( 'set' )
+			->with( 'settings', [
+				'cache_webp' => 0
+			] );
+
+		$mocks['optionsData']
+			->shouldReceive( 'set' )
+			->with( 'cache_webp', 0 );
+		
+		$mocks['optionsData']
+			->shouldReceive( 'get_options' )
+			->andReturn( [
+				'cache_webp' => 0
+			] );
 
 		$webpPluginMock = $this->getWebpPluginMock( false, true, true ); // Not creating but serving webp, compatible with CDN.
 
@@ -128,8 +141,20 @@ class Test_SyncWebpCacheWithThirdPartyPlugins extends TestCase {
 		$mocks = $this->getConstructorMocks( 1, [] ); // Cache option enabled, no CDN.
 
 		$mocks['optionsApi']
-			->expects( $this->once() )
-			->method( 'set' );
+			->shouldReceive( 'set' )
+			->with( 'settings', [
+				'cache_webp' => 0
+			] );
+
+		$mocks['optionsData']
+			->shouldReceive( 'set' )
+			->with( 'cache_webp', 0 );
+
+		$mocks['optionsData']
+			->shouldReceive( 'get_options' )
+			->andReturn( [
+				'cache_webp' => 0
+			] );
 
 		$webpPluginMock = $this->getWebpPluginMock( true, true, false ); // Creating and serving webp, but not compatible with CDN.
 

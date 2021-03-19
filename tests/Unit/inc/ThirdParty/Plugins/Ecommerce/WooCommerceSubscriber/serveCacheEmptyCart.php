@@ -13,7 +13,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 class Test_ServeCacheEmptyCart extends TestCase {
 	private $subscriber;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->subscriber = new WooCommerceSubscriber();

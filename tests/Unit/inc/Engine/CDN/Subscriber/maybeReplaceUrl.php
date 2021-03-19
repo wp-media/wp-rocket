@@ -18,7 +18,7 @@ class Test_MaybeReplaceUrl extends TestCase {
 	private $options;
 	private $subscriber;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		Functions\when( 'get_rocket_parse_url' )->alias( function( $url ) {

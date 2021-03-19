@@ -23,7 +23,7 @@ class Test_InsertLazyloadScript extends TestCase {
 	private $options;
 	private $subscriber;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->assets  = Mockery::mock( Assets::class );

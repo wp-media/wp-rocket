@@ -15,7 +15,7 @@ use WP_Rocket\Engine\Cache\Purge;
 class Test_PurgeDatesArchives extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/Cache/Purge/purgeDatesArchives.php';
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->purge = new Purge( $this->filesystem );
