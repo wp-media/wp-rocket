@@ -37,7 +37,7 @@ abstract class AbstractAPIClient {
 	 *
 	 * @param array $args Array with options sent to Saas API.
 	 *
-	 * @return bool $request WP Remote request.
+	 * @return bool WP Remote request status.
 	 */
 	protected function handle_post( array $args ) {
 		$response = wp_remote_post(
