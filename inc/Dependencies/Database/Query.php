@@ -77,7 +77,7 @@ class Query extends Base {
 	 * @since 1.0.0
 	 * @var   string
 	 */
-	protected $table_schema = '\\BerlinDB\\Database\\Schema';
+	protected $table_schema = '\\WP_Rocket\\Dependencies\\Database\\Schema';
 
 	/** Item ******************************************************************/
 
@@ -113,7 +113,7 @@ class Query extends Base {
 	 * @since 1.0.0
 	 * @var   mixed
 	 */
-	protected $item_shape = '\\BerlinDB\\Database\\Row';
+	protected $item_shape = '\\WP_Rocket\\Dependencies\\Database\\Row';
 
 	/** Cache *****************************************************************/
 

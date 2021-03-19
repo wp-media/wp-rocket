@@ -36,8 +36,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		'delay_js_subscriber',
 		'optimization_api',
 		'optimization_subscriber',
-		'resources_finder',
-		'resources_fetcher',
 	];
 
 	/**

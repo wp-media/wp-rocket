@@ -28,7 +28,7 @@ final class Resources extends Table {
 	 *
 	 * @var int
 	 */
-	protected $version = 20210303;
+	protected $version = 20210317;
 
 
 	/**
@@ -50,15 +50,12 @@ final class Resources extends Table {
 			type             varchar(5)          NOT NULL default '',
 			content          longtext                     default NULL,
 			hash             varchar(100)        NOT NULL default '',
-			resend_to_warmup tinyint(1)          NOT NULL default 1,
-			last_update      timestamp           NOT NULL default '0000-00-00 00:00:00',
-			last_accessed    timestamp           NOT NULL default '0000-00-00 00:00:00',
+			modified         DATETIME                NULL default '0000-00-00 00:00:00',
+			last_accessed    DATETIME            NOT NULL default '0000-00-00 00:00:00',
 			PRIMARY KEY (id),
 			UNIQUE KEY hash (hash),
 			KEY url (url),
 			KEY type (type),
-			KEY resend_to_warmup (resend_to_warmup),
-			KEY last_update (last_update),
 			KEY last_accessed (last_accessed)";
 	}
 }
