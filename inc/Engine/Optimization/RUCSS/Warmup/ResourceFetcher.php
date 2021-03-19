@@ -93,7 +93,7 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 	}
 
 	/**
-	 * Find resources of type (style/script) on the page HTML.
+	 * Find resources of type (css/js) on the page HTML.
 	 *
 	 * @since 3.9
 	 *
