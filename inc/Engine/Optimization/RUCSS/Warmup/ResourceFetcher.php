@@ -13,7 +13,7 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 
 	use RegexTrait, UrlTrait;
 
-	const LINK_PATTERN = '<link\s+(?:[^>]+[\s"\'])?href\s*=\s*[\'"]\s*(?<url>[^\'"\s]+)\s*?[\'"](?:[^>]+)?\/?>';
+	const LINK_PATTERN   = '<link\s+(?:[^>]+[\s"\'])?href\s*=\s*[\'"]\s*(?<url>[^\'"\s]+)\s*?[\'"](?:[^>]+)?\/?>';
 	const SCRIPT_PATTERN = '<script\s+(?:[^>]+[\s\'"])?src\s*=\s*[\'"]\s*?(?<url>[^\'"\s]+)\s*?[\'"](?:[^>]+)?\/?>';
 
 	/**
@@ -103,7 +103,7 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 	 * @return void
 	 */
 	private function find_resources( string $html, string $type ) {
-		$pattern = ( 'css' === $type) ? SELF::LINK_PATTERN : SELF::SCRIPT_PATTERN;
+		$pattern = ( 'css' === $type ) ? self::LINK_PATTERN : self::SCRIPT_PATTERN;
 
 		$resources = $this->find( $pattern, $html );
 
