@@ -3,6 +3,8 @@
 namespace WP_Rocket\Tests\Unit\inc\classes\third_party\plugins\Images\Webp\Imagify_Subscriber;
 
 use Brain\Monkey\Functions;
+use Mockery;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
 
@@ -14,7 +16,7 @@ use WPMedia\PHPUnit\Unit\TestCase;
 class Test_GetBasename extends TestCase {
 
 	public function testShouldReturnBasenameWhenImagifyNotEnabled() {
-		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
+		$optionsData = Mockery::mock( Options_Data::class );
 		$subscriber  = new Imagify_Subscriber( $optionsData );
 
 		Functions\expect( 'rocket_has_constant' )
@@ -29,7 +31,7 @@ class Test_GetBasename extends TestCase {
 	}
 
 	public function testShouldReturnBasenameWhenImagifyIsEnabled() {
-		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
+		$optionsData = Mockery::mock( Options_Data::class );
 		$subscriber  = new Imagify_Subscriber( $optionsData );
 		$expected    = 'some-file.php';
 

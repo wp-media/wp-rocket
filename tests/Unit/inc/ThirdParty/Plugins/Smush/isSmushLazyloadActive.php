@@ -3,6 +3,9 @@
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\Smush;
 
 use Brain\Monkey\Functions;
+use Mockery;
+use WP_Rocket\Admin\Options;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\ThirdParty\Plugins\Smush;
 
 /**
@@ -20,7 +23,7 @@ class Test_IsSmushLazyloadActive extends SmushSubscriberTestCase {
 	 * @dataProvider addDataProviderThatShouldNotDisableWPRocketLazyLoad
 	 */
 	public function testShouldNotDisableWPRocketLazyLoad( $lazyload_enabled, array $lazyload_formats ) {
-		$subscriber = new Smush( $this->createMock( 'WP_Rocket\Admin\Options' ), $this->createMock( 'WP_Rocket\Admin\Options_Data' ) );
+		$subscriber = new Smush( Mockery::mock( Options::class ), Mockery::mock( Options_Data::class ) );
 
 		$this->mock_is_smush_lazyload_enabled( $lazyload_enabled, $lazyload_formats );
 
@@ -32,7 +35,7 @@ class Test_IsSmushLazyloadActive extends SmushSubscriberTestCase {
 	 */
 	public function testShouldDisableWPRocketLazyLoadWhenAtLeastOneImageFormat( $lazyload_enabled, array $lazyload_formats ) {
 
-		$subscriber = new Smush( $this->createMock( 'WP_Rocket\Admin\Options' ), $this->createMock( 'WP_Rocket\Admin\Options_Data' ) );
+		$subscriber = new Smush( Mockery::mock( Options::class ), Mockery::mock( Options_Data::class ) );
 
 		$this->mock_is_smush_lazyload_enabled( $lazyload_enabled, $lazyload_formats );
 

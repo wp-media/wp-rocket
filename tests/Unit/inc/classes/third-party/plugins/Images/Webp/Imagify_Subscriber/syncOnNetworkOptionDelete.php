@@ -4,6 +4,8 @@ namespace WP_Rocket\Tests\Unit\inc\classes\third_party\plugins\Images\Webp\Imagi
 
 use Brain\Monkey\Actions;
 use Brain\Monkey\Functions;
+use Mockery;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
 
@@ -19,17 +21,10 @@ class Test_SyncOnNetworkOptionDelete extends TestCase {
 		$network_id = 3;
 
 		Functions\when( 'get_current_network_id' )->justReturn( $network_id );
+		Functions\when( 'get_imagify_option' )->justReturn( true );
 
-		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
-
-		$subscriber = $this->getMockBuilder( Imagify_Subscriber::class )
-		                   ->setConstructorArgs( [ $optionsData ] )
-		                   ->setMethods( [ 'is_serving_webp' ] )
-		                   ->getMock();
-		$subscriber
-			->expects( $this->once() )
-			->method( 'is_serving_webp' )
-			->willReturn( true );
+		$optionsData = Mockery::mock( Options_Data::class );
+		$subscriber = new Imagify_Subscriber( $optionsData );
 
 		Actions\expectDone( 'rocket_third_party_webp_change' )->once();
 
@@ -42,17 +37,10 @@ class Test_SyncOnNetworkOptionDelete extends TestCase {
 		$network_id = 3;
 
 		Functions\when( 'get_current_network_id' )->justReturn( $network_id );
+		Functions\when( 'get_imagify_option' )->justReturn( false );
 
-		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
-
-		$subscriber = $this->getMockBuilder( Imagify_Subscriber::class )
-		                   ->setConstructorArgs( [ $optionsData ] )
-		                   ->setMethods( [ 'is_serving_webp' ] )
-		                   ->getMock();
-		$subscriber
-			->expects( $this->once() )
-			->method( 'is_serving_webp' )
-			->willReturn( false );
+		$optionsData = Mockery::mock( Options_Data::class );
+		$subscriber = new Imagify_Subscriber( $optionsData );
 
 		Actions\expectDone( 'rocket_third_party_webp_change' )->never();
 
@@ -65,17 +53,10 @@ class Test_SyncOnNetworkOptionDelete extends TestCase {
 		$network_id = 3;
 
 		Functions\when( 'get_current_network_id' )->justReturn( 2 );
+		Functions\when( 'get_imagify_option' )->justReturn( true );
 
-		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
-
-		$subscriber = $this->getMockBuilder( Imagify_Subscriber::class )
-		                   ->setConstructorArgs( [ $optionsData ] )
-		                   ->setMethods( [ 'is_serving_webp' ] )
-		                   ->getMock();
-		$subscriber
-			->expects( $this->never() )
-			->method( 'is_serving_webp' )
-			->willReturn( true );
+		$optionsData = Mockery::mock( Options_Data::class );
+		$subscriber = new Imagify_Subscriber( $optionsData );
 
 		Actions\expectDone( 'rocket_third_party_webp_change' )->never();
 
