@@ -140,7 +140,7 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 	 *
 	 * @return bool True for stylesheet; false for anything else.
 	 */
-	private function is_link_stylesheet( string $link ) {
+	private function is_link_stylesheet( string $link ) : bool {
 		return (bool) preg_match( '/rel=[\'"]stylesheet[\'"]/is', $link );
 	}
 
