@@ -14,7 +14,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 class Test_ValidateIntegrity extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/Optimization/AssetsLocalCache/validateIntegrity.php';
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->stubWpParseUrl();

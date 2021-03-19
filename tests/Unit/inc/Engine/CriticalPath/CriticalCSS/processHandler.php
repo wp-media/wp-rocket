@@ -24,13 +24,13 @@ class Test_ProcessHandler extends FilesystemTestCase {
 	private $expected_items = [];
 	private $wpdb;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/wpdb.php';
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->expected_items = [

@@ -1,6 +1,7 @@
 <?php
 namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Sitemap;
 
+use Mockery;
 use Brain\Monkey\Actions;
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
@@ -12,9 +13,14 @@ use WP_Rocket\Engine\Preload\Sitemap;
  * @group Preload
  */
 class Test_RunPreload extends TestCase {
+	public function setUp() : void {
+		parent::setUp();
+
+		Functions\stubEscapeFunctions();
+	}
 
 	public function testShouldNotPreloadWhenNoUrls() {
-		$preload_process = $this->createMock( FullProcess::class );
+		$preload_process = Mockery::mock( FullProcess::class );
 
 		Actions\expectDone( 'before_run_rocket_sitemap_preload' )->never();
 
@@ -30,27 +36,23 @@ class Test_RunPreload extends TestCase {
 		];
 
 		// Stubs.
-		$preload_process = $this->getMockBuilder( FullProcess::class )
-			->setMethods( [ 'is_mobile_preload_enabled', 'push_to_queue', 'save', 'dispatch' ] )
-			->getMock();
+		$preload_process = Mockery::mock( FullProcess::class );
 		$preload_process
-			->expects( $this->any() )
-			->method( 'is_mobile_preload_enabled' )
-			->willReturn( true );
+			->shouldReceive( 'is_mobile_preload_enabled' )
+			->andReturn( true );
 		$preload_process
-			->expects( $this->any() )
-			->method( 'push_to_queue' )
-			->will( $this->returnCallback( function ( $item ) use ( &$queue ) {
+			->shouldReceive( 'push_to_queue' )
+			->andReturnUsing( function ( $item ) use ( &$queue ) {
 				$queue[] = $item;
-			} ) );
+			} );
 		$preload_process
-			->expects( $this->once() )
-			->method( 'save' )
-			->willReturnSelf();
+			->shouldReceive( 'save' )
+			->once()
+			->andReturnSelf();
 		$preload_process
-			->expects( $this->once() )
-			->method( 'dispatch' )
-			->willReturn( null );
+			->shouldReceive( 'dispatch' )
+			->once()
+			->andReturn( null );
 
 		Functions\when( 'wp_parse_url' )->alias( function( $url, $component = -1 ) {
 			return parse_url( $url, $component );
@@ -59,7 +61,6 @@ class Test_RunPreload extends TestCase {
 		Functions\when( 'set_transient' )->justReturn( null );
 
 		// Stubs for $this->process_sitemap().
-		Functions\when( 'esc_url_raw' )->returnArg();
 		Functions\when( 'wp_remote_get' )->alias( function( $url, $args = [] ) {
 			switch ( $url ) {
 				case 'https://example.org/sitemap.xml':

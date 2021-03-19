@@ -16,7 +16,7 @@ class Test_CacheDynamicResource extends FilesystemTestCase {
 	private $isCSSTestData;
 	private $minify_type;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->isCSSTestData = false;

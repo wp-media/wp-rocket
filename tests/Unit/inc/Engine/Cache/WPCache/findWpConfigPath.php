@@ -23,8 +23,7 @@ class Test_FindWpConfigPath extends FileSystemTestCase {
 	 */
 	private $config_file_name = null;
 
-	public function setUp()
-	{
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->abspath = $this->filesystem->getUrl( $this->config['vfs_dir'] );

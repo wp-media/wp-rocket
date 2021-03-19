@@ -18,7 +18,7 @@ abstract class TestCase extends BaseTestCase {
 	protected $config;
 	protected $original_wp_filter;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		CapTrait::hasAdminCapBeforeClass();
@@ -52,7 +52,7 @@ abstract class TestCase extends BaseTestCase {
 		}
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		if ( empty( $this->config ) ) {
 			$this->loadTestDataConfig();
 		}

@@ -15,7 +15,7 @@ class Test_SetAsyncCssMobileDefaultValue extends TestCase {
     use ProviderTrait;
 	protected static $provider_class = 'Settings';
 
-    public function setUp() {
+    public function setUp() : void {
         parent::setUp();
 
         remove_action( 'wp_rocket_upgrade', 'rocket_new_upgrade' );

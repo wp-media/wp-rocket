@@ -3,6 +3,8 @@
 namespace WP_Rocket\Tests\Unit\inc\classes\third_party\plugins\Images\Webp\EwwwSubscriber;
 
 use Brain\Monkey\Functions;
+use Mockery;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
 
@@ -14,7 +16,7 @@ use WPMedia\PHPUnit\Unit\TestCase;
 class Test_GetBasename extends TestCase {
 
 	private function getSubscriber() {
-		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
+		$optionsData = Mockery::mock( Options_Data::class );
 
 		return new EWWW_Subscriber( $optionsData );
 	}

@@ -18,7 +18,7 @@ class GetPricingData extends TestCase {
 		'wp_rocket_pricing_timeout_active'
 	];
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		delete_transient( 'wp_rocket_pricing' );

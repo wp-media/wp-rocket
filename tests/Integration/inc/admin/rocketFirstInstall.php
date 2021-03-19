@@ -26,7 +26,7 @@ class Test_RocketFirstInstall extends TestCase {
 		self::$user_id = $factory->user->create( [ 'role' => 'administrator' ] );
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->previous_user_id = get_current_user_id();

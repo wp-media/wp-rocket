@@ -19,7 +19,7 @@ class GetUserData extends TestCase {
 	protected static $api_credentials_config_file = 'license.php';
 	private static $client;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		self::pathToApiCredentialsConfigFile( WP_ROCKET_TESTS_DIR . '/../env/local/' );
@@ -29,7 +29,7 @@ class GetUserData extends TestCase {
 		self::$client = $container->get( 'user_client' );
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		add_filter( 'pre_get_rocket_option_consumer_email', [ $this, 'set_consumer_email' ] );

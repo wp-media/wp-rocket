@@ -17,14 +17,14 @@ use WPMedia\PHPUnit\Unit\TestCase;
  */
 class Test_GetRocketI18nUri extends TestCase {
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/i18n/PLL_Frontend.php';
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/i18n/SitePress.php';
 	}
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		Functions\when( 'home_url' )->justReturn( 'http://example.org' );

@@ -12,19 +12,22 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group WPCache
  */
 class Test_CheckWpCacheValue extends TestCase {
-    protected static $mockCommonWpFunctionsInSetUp = true;
+	public function setUp() : void {
+		parent::setUp();
+		Functions\stubTranslationFunctions();
+	}
 
-    /**
+	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldMaybeAddWpCacheConstant( $wp_cache, $expected ) {
-        $this->wp_cache_constant = $wp_cache;
+		$this->wp_cache_constant = $wp_cache;
 
-        $wp_cache = new WPCache( null );
+		$wp_cache = new WPCache( null );
 
-        $this->assertSame(
-            $expected,
-            $wp_cache->check_wp_cache_value()
-        );
-    }
+		$this->assertSame(
+			$expected,
+			$wp_cache->check_wp_cache_value()
+		);
+	}
 }

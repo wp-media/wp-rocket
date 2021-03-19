@@ -23,7 +23,7 @@ class Test_RocketGetPurgeUrls extends FilesystemTestCase {
 	private $authors_map = [];
 	private $post_data   = [];
 
-	public function setUp() {
+	public function setUp() : void {
 		$this->set_permalink_structure( "/%postname%/" );
 		parent::setUp();
 

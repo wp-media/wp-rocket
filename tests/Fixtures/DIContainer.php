@@ -8,7 +8,7 @@ use WP_Rocket\Engine\Cache\AdvancedCache;
 class DIContainer implements ArrayAccess {
 	private $container = [];
 
-	public function setUp() {
+	public function setUp() : void {
 		add_filter( 'rocket_container', [ $this, 'getContainer' ] );
 	}
 

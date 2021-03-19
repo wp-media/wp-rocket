@@ -17,7 +17,7 @@ class Test_DeferInlineJs extends TestCase {
 	private $exclude_defer_js;
 	private $rocket_defer_inline_exclusions_filter;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		set_current_screen( 'front' );
