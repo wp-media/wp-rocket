@@ -36,9 +36,10 @@ class APIClient extends AbstractAPIClient {
 			],
 		];
 
-		$response = $this->handle_post( self::TREESHAKE_PATH, $args );
+		$request       = $this->handle_post( self::TREESHAKE_PATH, $args );
+		$error_request = $this->handle_request_error( $request );
 
-		return 200 === wp_remote_retrieve_response_code( $response );
+		return 200 === $error_request['code'];
 	}
 
 }
