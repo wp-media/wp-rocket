@@ -10,7 +10,6 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
  * @covers ::do_admin_post_rocket_purge_cache
  * @group Common
  * @group vfs
- * @runTestsInSeparateProcesses
  */
 class Test_DoAdminPostRocketPurgeCache extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/common/doAdminPostRocketPurgeCache.php';
@@ -18,9 +17,10 @@ class Test_DoAdminPostRocketPurgeCache extends FilesystemTestCase {
 	public function setUp() : void {
 		parent::setUp();
 
+		Functions\expect( 'get_option' )->with( 'stylesheet' )->andReturn( 'twentytwelve' );
+
 		// Load the file once.
 		if ( ! function_exists( 'do_admin_post_rocket_purge_cache' ) ) {
-			Functions\expect( 'get_option' )->with( 'stylesheet' )->andReturn( 'twentytwelve' );
 			require_once WP_ROCKET_PLUGIN_ROOT . 'inc/common/purge.php';
 		}
 
