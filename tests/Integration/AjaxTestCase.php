@@ -13,6 +13,7 @@ abstract class AjaxTestCase extends WPMediaAjaxTestCase {
 	use CapTrait;
 	use SettingsTrait;
 	use StubTrait;
+	use DBTrait;
 
 	protected static $use_settings_trait = false;
 	protected static $transients         = [];
@@ -57,6 +58,8 @@ abstract class AjaxTestCase extends WPMediaAjaxTestCase {
 		if ( empty( $this->config ) ) {
 			$this->loadTestDataConfig();
 		}
+
+		DBTrait::removeDBHooks();
 
 		$this->stubRocketGetConstant();
 

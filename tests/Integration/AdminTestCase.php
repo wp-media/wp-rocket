@@ -7,6 +7,7 @@ use WPMedia\PHPUnit\Integration\TestCase as BaseTestCase;
 
 abstract class AdminTestCase extends BaseTestCase {
 	use StubTrait;
+	use DBTrait;
 
 	protected $error_level;
 	protected $user_id = 0;
@@ -21,6 +22,8 @@ abstract class AdminTestCase extends BaseTestCase {
 
 	public function setUp() {
 		parent::setUp();
+
+		DBTrait::removeDBHooks();
 
 		$this->stubRocketGetConstant();
 

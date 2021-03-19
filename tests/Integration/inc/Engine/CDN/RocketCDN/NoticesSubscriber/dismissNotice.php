@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\NoticesSubscriber;
 
-use WPMedia\PHPUnit\Integration\AjaxTestCase;
+use WP_Rocket\Tests\Integration\AjaxTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::dismiss_notice
