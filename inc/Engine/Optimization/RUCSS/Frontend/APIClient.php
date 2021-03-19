@@ -31,12 +31,9 @@ class APIClient extends AbstractAPIClient {
 			'timeout' => 5,
 		];
 
-		$request = wp_remote_post(
-			self::API_URL . self::TREESHAKE_PATH,
-			$args
-		);
-
+		$request       = $this->handle_post( self::TREESHAKE_PATH, $args );
 		$error_request = $this->handle_request_error( $request );
+
 		if ( ! empty( $error_request ) ) {
 			return $error_request;
 		}

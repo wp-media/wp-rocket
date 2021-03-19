@@ -10,6 +10,23 @@ abstract class AbstractAPIClient {
 	const API_URL = 'https://central-saas.wp-rocket.me/';
 
 	/**
+	 * Handle remote POST.
+	 *
+	 * @param string $path API path.
+	 * @param array  $args Array with options sent to Saas API.
+	 *
+	 * @return array|WP_Error $request WP Remote request.
+	 */
+	protected function handle_post( string $path, array $args ) {
+		$request = wp_remote_post(
+			self::API_URL . $path,
+			$args
+		);
+
+		return $request;
+	}
+
+	/**
 	 * Handle Saas request error.
 	 *
 	 * @param  array|WP_Error $request WP Remote request.

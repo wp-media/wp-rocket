@@ -28,17 +28,15 @@ class APIClient extends AbstractAPIClient {
 				'content' => '',
 			]
 		);
-
-		$response = wp_remote_post(
-			self::API_URL . self::WARMUP_PATH,
-			[
-				'body' => [
-					'resources' => [
-						$atts,
-					],
+		$args = [
+			'body' => [
+				'resources' => [
+					$atts,
 				],
-			]
-		);
+			],
+		];
+
+		$response = $this->handle_post( self::TREESHAKE_PATH, $args );
 
 		return 200 === wp_remote_retrieve_response_code( $response );
 	}
