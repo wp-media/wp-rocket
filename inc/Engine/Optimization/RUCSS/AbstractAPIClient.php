@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare( strict_types=1 );
 
 namespace WP_Rocket\Engine\Optimization\RUCSS;
 
@@ -51,7 +51,7 @@ abstract class AbstractAPIClient {
 	/**
 	 * Handle Saas request error.
 	 *
-	 * @param  array|WP_Error $response WP Remote request.
+	 * @param array|WP_Error $response WP Remote request.
 	 *
 	 * @return bool
 	 */
