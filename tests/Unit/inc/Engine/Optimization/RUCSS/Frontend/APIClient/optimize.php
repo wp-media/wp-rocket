@@ -11,6 +11,9 @@ use WP_Rocket\Tests\Unit\TestCase;
 /**
  * @covers \WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient::optimize
  *
+ * @uses \WP_Rocket\Engine\Optimization\RUCSS\AbstractAPIClient::handle_post()
+ * @uses \WP_Rocket\Engine\Optimization\RUCSS\AbstractAPIClient::check_response()
+ *
  * @group  RUCSS
  */
 class Test_Optimize extends TestCase {
