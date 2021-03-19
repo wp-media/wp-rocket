@@ -9,8 +9,10 @@ class APIClient extends AbstractAPIClient {
 
 	/**
 	 * SAAS main API path.
+	 *
+	 * @var string
 	 */
-	const TREESHAKE_PATH = 'api';
+	protected $request_path = 'api';
 
 	/**
 	 * Calls Central Saas API.
@@ -31,11 +33,13 @@ class APIClient extends AbstractAPIClient {
 			'timeout' => 5,
 		];
 
-		$request       = $this->handle_post( self::TREESHAKE_PATH, $args );
-		$error_request = $this->handle_request_error( $request );
+		$sent = $this->handle_post( $args );
 
-		if ( ! empty( $error_request ) ) {
-			return $error_request;
+		if ( ! $sent ) {
+			return [
+				'code'    => 400,
+				'message' => $this->error_message,
+			];
 		}
 
 		$default = [
@@ -47,9 +51,8 @@ class APIClient extends AbstractAPIClient {
 			],
 		];
 
-		$result = json_decode( wp_remote_retrieve_body( $request ), true );
-		$result = array_intersect_key( (array) $result, $default );
-		$result = array_merge( $default, (array) $result );
+		$result = json_decode( $this->response_body, true );
+		$result = wp_parse_args( (array) $result, $default );
 
 		return [
 			'code'            => $result['code'],

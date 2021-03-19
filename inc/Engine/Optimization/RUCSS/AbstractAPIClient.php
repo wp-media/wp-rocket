@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\RUCSS;
 
+use WP_Error;
+
 abstract class AbstractAPIClient {
 	/**
 	 * API URL.
@@ -10,46 +12,58 @@ abstract class AbstractAPIClient {
 	const API_URL = 'https://central-saas.wp-rocket.me/';
 
 	/**
+	 * Part of request Url after the main API_URL.
+	 *
+	 * @var string
+	 */
+	protected $request_path;
+
+	/**
+	 * Error message.
+	 *
+	 * @var string
+	 */
+	protected $error_message = '';
+
+	/**
+	 * Response Body.
+	 *
+	 * @var string
+	 */
+	protected $response_body;
+
+	/**
 	 * Handle remote POST.
 	 *
-	 * @param string $path API path.
-	 * @param array  $args Array with options sent to Saas API.
+	 * @param array $args Array with options sent to Saas API.
 	 *
-	 * @return array|WP_Error $request WP Remote request.
+	 * @return bool $request WP Remote request.
 	 */
-	protected function handle_post( string $path, array $args ) {
-		$request = wp_remote_post(
-			self::API_URL . $path,
+	protected function handle_post( array $args ) {
+		$response = wp_remote_post(
+			self::API_URL . $this->request_path,
 			$args
 		);
 
-		return $request;
+		return $this->check_response( $response );
 	}
 
 	/**
 	 * Handle Saas request error.
 	 *
-	 * @param  array|WP_Error $request WP Remote request.
+	 * @param  array|WP_Error $response WP Remote request.
 	 *
-	 * @return array
+	 * @return bool
 	 */
-	protected function handle_request_error( $request ) {
-		if ( is_wp_error( $request ) ) {
-			return [
-				'code'    => 400,
-				'message' => $request->get_error_message(),
-			];
+	private function check_response( $response ) {
+		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
+			$this->error_message = wp_remote_retrieve_response_message( $response );
+
+			return false;
 		}
 
-		$code = wp_remote_retrieve_response_code( $request );
+		$this->response_body = wp_remote_retrieve_body( $response );
 
-		if ( 200 !== $code ) {
-			return [
-				'code'    => $code,
-				'message' => __( 'Remove Unused CSS is not available at the moment. Please retry later', 'rocket' ),
-			];
-		}
-
-		return false;
+		return true;
 	}
 }

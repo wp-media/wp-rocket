@@ -9,8 +9,10 @@ class APIClient extends AbstractAPIClient {
 
 	/**
 	 * API Warmup path.
+	 *
+	 * @var string
 	 */
-	const WARMUP_PATH = 'warmup';
+	protected $request_path = 'warmup';
 
 	/**
 	 * Send the request to Warmup.
@@ -36,10 +38,7 @@ class APIClient extends AbstractAPIClient {
 			],
 		];
 
-		$request       = $this->handle_post( self::TREESHAKE_PATH, $args );
-		$error_request = $this->handle_request_error( $request );
-
-		return 200 === $error_request['code'];
+		return $this->handle_post( $args );
 	}
 
 }
