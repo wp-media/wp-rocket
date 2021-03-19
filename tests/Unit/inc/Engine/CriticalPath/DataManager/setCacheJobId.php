@@ -13,7 +13,7 @@ use WP_Rocket\Tests\Unit\TestCase;
  */
 class Test_SetCacheJobId extends TestCase {
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		Functions\when( 'get_current_blog_id' )->justReturn( 1 );

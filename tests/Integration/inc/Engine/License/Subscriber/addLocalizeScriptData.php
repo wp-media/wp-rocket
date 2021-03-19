@@ -16,7 +16,7 @@ class AddLocalizeScriptData extends TestCase {
 	private $original_user;
 	private $original_pricing;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		$container     = apply_filters( 'rocket_container', null );
@@ -24,7 +24,7 @@ class AddLocalizeScriptData extends TestCase {
 		self::$pricing = $container->get( 'pricing' );
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->original_user    = $this->getNonPublicPropertyValue( 'user', self::$user, self::$user );

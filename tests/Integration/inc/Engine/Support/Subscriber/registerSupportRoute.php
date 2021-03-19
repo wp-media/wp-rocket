@@ -20,13 +20,13 @@ class Test_RegisterSupportRoute extends WPMediaRESTfulTestCase {
 	private $consumer_key;
 	private $consumer_email;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		self::pathToApiCredentialsConfigFile( WP_ROCKET_TESTS_DIR . '/../env/local/' );
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		if ( empty( $this->config ) ) {

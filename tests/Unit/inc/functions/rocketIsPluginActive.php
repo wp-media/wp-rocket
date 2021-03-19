@@ -14,13 +14,13 @@ use WPMedia\PHPUnit\Unit\TestCase;
 class Test_RocketIsPluginActive extends TestCase {
 	private $config;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/functions/options.php';
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		if ( empty( $this->config ) ) {

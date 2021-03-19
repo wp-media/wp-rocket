@@ -17,7 +17,7 @@ abstract class RESTVfsTestCase extends BaseTestCase {
 	protected static $skip_setting_up_settings = false;
 	protected static $transients               = [];
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		CapTrait::hasAdminCapBeforeClass();
@@ -57,7 +57,7 @@ abstract class RESTVfsTestCase extends BaseTestCase {
 		_rocket_get_cache_dirs( '', '', true );
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		$this->initDefaultStructure();
 
 		if ( static::$use_settings_trait && ! static::$skip_setting_up_settings ) {

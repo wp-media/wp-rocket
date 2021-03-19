@@ -3,14 +3,20 @@ namespace WP_Rocket\Tests\Unit\inc\classes\subscriber\Media\WebpSubscriber;
 
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
+use Mockery;
 use WP_Rocket\Subscriber\Media\Webp_Subscriber;
+use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Webp_Interface;
 
 /**
  * @covers \WP_Rocket\Subscriber\Media\Webp_Subscriber::webp_section_description
  * @group Subscriber
  */
 class Test_WebpSectionDescription extends TestCase {
-	protected static $mockCommonWpFunctionsInSetUp = true;
+	public function setUp() : void {
+		parent::setUp();
+		Functions\stubTranslationFunctions();
+		Functions\stubEscapeFunctions();
+	}
 
 	public function testShouldReturnTextWhenNoPluginsAndCacheOptionDisabled() {
 		Functions\when( 'rocket_valid_key' )->justReturn( false );
@@ -60,25 +66,25 @@ class Test_WebpSectionDescription extends TestCase {
 			return implode( ', ', $args );
 		} );
 
-		$webpPluginMock = $this->createMock( '\WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Webp_Interface' );
+		$webpPluginMock = Mockery::mock( Webp_Interface::class );
 		$webpPluginMock
-			->method( 'get_name' )
-			->willReturn( 'Mock' );
+			->shouldReceive( 'get_name' )
+			->andReturn( 'Mock' );
 		$webpPluginMock
-			->method( 'get_id' )
-			->willReturn( 'mock' );
+			->shouldReceive( 'get_id' )
+			->andReturn( 'mock' );
 		$webpPluginMock
-			->method( 'is_converting_to_webp' )
-			->willReturn( true );
+			->shouldReceive( 'is_converting_to_webp' )
+			->andReturn( true );
 		$webpPluginMock
-			->method( 'is_serving_webp' )
-			->willReturn( false );
+			->shouldReceive( 'is_serving_webp' )
+			->andReturn( false );
 		$webpPluginMock
-			->method( 'is_serving_webp_compatible_with_cdn' )
-			->willReturn( false );
+			->shouldReceive( 'is_serving_webp_compatible_with_cdn' )
+			->andReturn( false );
 		$webpPluginMock
-			->method( 'get_basename' )
-			->willReturn( 'mock/mock.php' );
+			->shouldReceive( 'get_basename' )
+			->andReturn( 'mock/mock.php' );
 
 		Filters\expectApplied( 'rocket_webp_plugins' )
 			->once()
@@ -107,25 +113,25 @@ class Test_WebpSectionDescription extends TestCase {
 			return implode( ', ', $args );
 		} );
 
-		$webpPluginMock = $this->createMock( '\WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Webp_Interface' );
+		$webpPluginMock = Mockery::mock( Webp_Interface::class );
 		$webpPluginMock
-			->method( 'get_name' )
-			->willReturn( 'Mock' );
+			->shouldReceive( 'get_name' )
+			->andReturn( 'Mock' );
 		$webpPluginMock
-			->method( 'get_id' )
-			->willReturn( 'mock' );
+			->shouldReceive( 'get_id' )
+			->andReturn( 'mock' );
 		$webpPluginMock
-			->method( 'is_converting_to_webp' )
-			->willReturn( true );
+			->shouldReceive( 'is_converting_to_webp' )
+			->andReturn( true );
 		$webpPluginMock
-			->method( 'is_serving_webp' )
-			->willReturn( false );
+			->shouldReceive( 'is_serving_webp' )
+			->andReturn( false );
 		$webpPluginMock
-			->method( 'is_serving_webp_compatible_with_cdn' )
-			->willReturn( false );
+			->shouldReceive( 'is_serving_webp_compatible_with_cdn' )
+			->andReturn( false );
 		$webpPluginMock
-			->method( 'get_basename' )
-			->willReturn( 'mock/mock.php' );
+			->shouldReceive( 'get_basename' )
+			->andReturn( 'mock/mock.php' );
 
 		Filters\expectApplied( 'rocket_webp_plugins' )
 			->once()
@@ -154,25 +160,25 @@ class Test_WebpSectionDescription extends TestCase {
 			return implode( ', ', $args );
 		} );
 
-		$webpPluginMock = $this->createMock( '\WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Webp_Interface' );
+		$webpPluginMock = Mockery::mock( Webp_Interface::class );
 		$webpPluginMock
-			->method( 'get_name' )
-			->willReturn( 'Mock' );
+			->shouldReceive( 'get_name' )
+			->andReturn( 'Mock' );
 		$webpPluginMock
-			->method( 'get_id' )
-			->willReturn( 'mock' );
+			->shouldReceive( 'get_id' )
+			->andReturn( 'mock' );
 		$webpPluginMock
-			->method( 'is_converting_to_webp' )
-			->willReturn( true );
+			->shouldReceive( 'is_converting_to_webp' )
+			->andReturn( true );
 		$webpPluginMock
-			->method( 'is_serving_webp' )
-			->willReturn( true );
+			->shouldReceive( 'is_serving_webp' )
+			->andReturn( true );
 		$webpPluginMock
-			->method( 'is_serving_webp_compatible_with_cdn' )
-			->willReturn( false );
+			->shouldReceive( 'is_serving_webp_compatible_with_cdn' )
+			->andReturn( false );
 		$webpPluginMock
-			->method( 'get_basename' )
-			->willReturn( 'mock/mock.php' );
+			->shouldReceive( 'get_basename' )
+			->andReturn( 'mock/mock.php' );
 
 		Filters\expectApplied( 'rocket_webp_plugins' )
 			->once()
@@ -201,25 +207,25 @@ class Test_WebpSectionDescription extends TestCase {
 			return implode( ', ', $args );
 		} );
 
-		$webpPluginMock = $this->createMock( '\WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Webp_Interface' );
+		$webpPluginMock = Mockery::mock( Webp_Interface::class );
 		$webpPluginMock
-			->method( 'get_name' )
-			->willReturn( 'Mock' );
+			->shouldReceive( 'get_name' )
+			->andReturn( 'Mock' );
 		$webpPluginMock
-			->method( 'get_id' )
-			->willReturn( 'mock' );
+			->shouldReceive( 'get_id' )
+			->andReturn( 'mock' );
 		$webpPluginMock
-			->method( 'is_converting_to_webp' )
-			->willReturn( true );
+			->shouldReceive( 'is_converting_to_webp' )
+			->andReturn( true );
 		$webpPluginMock
-			->method( 'is_serving_webp' )
-			->willReturn( true );
+			->shouldReceive( 'is_serving_webp' )
+			->andReturn( true );
 		$webpPluginMock
-			->method( 'is_serving_webp_compatible_with_cdn' )
-			->willReturn( false );
+			->shouldReceive( 'is_serving_webp_compatible_with_cdn' )
+			->andReturn( false );
 		$webpPluginMock
-			->method( 'get_basename' )
-			->willReturn( 'mock/mock.php' );
+			->shouldReceive( 'get_basename' )
+			->andReturn( 'mock/mock.php' );
 
 		Filters\expectApplied( 'rocket_webp_plugins' )
 			->once()
@@ -248,25 +254,25 @@ class Test_WebpSectionDescription extends TestCase {
 			return implode( ', ', $args );
 		} );
 
-		$webpPluginMock = $this->createMock( '\WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Webp_Interface' );
+		$webpPluginMock = Mockery::mock( Webp_Interface::class );
 		$webpPluginMock
-			->method( 'get_name' )
-			->willReturn( 'Mock' );
+			->shouldReceive( 'get_name' )
+			->andReturn( 'Mock' );
 		$webpPluginMock
-			->method( 'get_id' )
-			->willReturn( 'mock' );
+			->shouldReceive( 'get_id' )
+			->andReturn( 'mock' );
 		$webpPluginMock
-			->method( 'is_converting_to_webp' )
-			->willReturn( true );
+			->shouldReceive( 'is_converting_to_webp' )
+			->andReturn( true );
 		$webpPluginMock
-			->method( 'is_serving_webp' )
-			->willReturn( true );
+			->shouldReceive( 'is_serving_webp' )
+			->andReturn( true );
 		$webpPluginMock
-			->method( 'is_serving_webp_compatible_with_cdn' )
-			->willReturn( true );
+			->shouldReceive( 'is_serving_webp_compatible_with_cdn' )
+			->andReturn( true );
 		$webpPluginMock
-			->method( 'get_basename' )
-			->willReturn( 'mock/mock.php' );
+			->shouldReceive( 'get_basename' )
+			->andReturn( 'mock/mock.php' );
 
 		Filters\expectApplied( 'rocket_webp_plugins' )
 			->twice()
@@ -309,25 +315,25 @@ class Test_WebpSectionDescription extends TestCase {
 			->andReturn( true ); // Simulate a filter.
 
 		// Not generating nor serving webp.
-		$webpPluginMock = $this->createMock( '\WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Webp_Interface' );
+		$webpPluginMock = Mockery::mock( Webp_Interface::class );
 		$webpPluginMock
-			->method( 'get_name' )
-			->willReturn( 'Mock' );
+			->shouldReceive( 'get_name' )
+			->andReturn( 'Mock' );
 		$webpPluginMock
-			->method( 'get_id' )
-			->willReturn( 'mock' );
+			->shouldReceive( 'get_id' )
+			->andReturn( 'mock' );
 		$webpPluginMock
-			->method( 'is_converting_to_webp' )
-			->willReturn( false );
+			->shouldReceive( 'is_converting_to_webp' )
+			->andReturn( false );
 		$webpPluginMock
-			->method( 'is_serving_webp' )
-			->willReturn( false );
+			->shouldReceive( 'is_serving_webp' )
+			->andReturn( false );
 		$webpPluginMock
-			->method( 'is_serving_webp_compatible_with_cdn' )
-			->willReturn( false );
+			->shouldReceive( 'is_serving_webp_compatible_with_cdn' )
+			->andReturn( false );
 		$webpPluginMock
-			->method( 'get_basename' )
-			->willReturn( 'mock/mock.php' );
+			->shouldReceive( 'get_basename' )
+			->andReturn( 'mock/mock.php' );
 
 		Filters\expectApplied( 'rocket_webp_plugins' )
 			->times( 2 )
@@ -353,8 +359,8 @@ class Test_WebpSectionDescription extends TestCase {
 
 		// Generating but not serving webp.
 		$webpPluginMock
-			->method( 'is_converting_to_webp' )
-			->willReturn( true );
+			->shouldReceive( 'is_converting_to_webp' )
+			->andReturn( true );
 
 		Filters\expectApplied( 'rocket_webp_plugins' )
 			->times( 2 )

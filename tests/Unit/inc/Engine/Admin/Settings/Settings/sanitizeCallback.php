@@ -20,7 +20,7 @@ class Test_SanitizeCallback extends TestCase {
 	private $options;
 	private $settings;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->options = Mockery::mock( Options_Data::class );

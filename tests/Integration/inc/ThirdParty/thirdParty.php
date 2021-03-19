@@ -10,7 +10,7 @@ use WPMedia\PHPUnit\Integration\TestCase;
 class Test_ThirdParty extends TestCase {
 	private static $included_files;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		self::$included_files = get_included_files();

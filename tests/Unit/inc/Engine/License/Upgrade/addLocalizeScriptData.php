@@ -19,7 +19,7 @@ class AddLocalizeScriptData extends TestCase {
 	private $user;
 	private $upgrade;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->pricing = Mockery::mock( Pricing::class );

@@ -23,7 +23,7 @@ use Brain\Monkey\Functions;
 class Test_Process extends TestCase {
 	protected $path_to_test_data = '/inc/Engine/Optimization/Minify/CSS/Subscriber/process.php';
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		add_filter( 'pre_get_rocket_option_minify_css', [ $this, 'return_true' ] );

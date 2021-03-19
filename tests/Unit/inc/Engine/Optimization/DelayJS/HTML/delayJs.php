@@ -18,7 +18,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 class Test_DelayJs extends TestCase {
 	private $options;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->options = Mockery::mock( Options_Data::class );

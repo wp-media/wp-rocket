@@ -21,7 +21,7 @@ class Test_DisplayGoogleFontsEnabler extends FilesystemTestCase {
 	private $options;
 	private $settings;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->beacon       = Mockery::mock( Beacon::class );

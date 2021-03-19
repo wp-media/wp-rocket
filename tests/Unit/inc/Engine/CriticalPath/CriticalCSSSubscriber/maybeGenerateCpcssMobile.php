@@ -23,7 +23,7 @@ class Test_MaybeGenerateCpcssMobile extends TestCase {
 	private $critical_css;
 	private $processor_service;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		Functions\when( 'get_current_blog_id' )->justReturn( 1 );

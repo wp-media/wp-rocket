@@ -18,7 +18,7 @@ use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
  */
 class Test_DisplayRocketcdnCta extends TestCase {
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		update_option( 'date_format', 'Y-m-d' );

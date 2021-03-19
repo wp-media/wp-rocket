@@ -12,12 +12,12 @@ abstract class TestCase extends BaseTestCase {
 		'rocketcdn_status' => null,
 	];
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		static::$use_settings_trait = true;
 		parent::setUpBeforeClass();
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		set_current_screen( 'settings_page_wprocket' );

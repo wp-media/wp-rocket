@@ -3,6 +3,8 @@
 namespace WP_Rocket\Tests\Unit\inc\classes\third_party\plugins\Images\Webp\EwwwSubscriber;
 
 use Brain\Monkey\Functions;
+use Mockery;
+use WP_Rocket\Admin\Options_Data;
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber;
 
@@ -14,7 +16,7 @@ use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber;
 class Test_MaybeRemoveImagesFromCdnDropdown extends TestCase {
 
 	public function testShouldReturnIdenticalWhenExactdnNotEnabled() {
-		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
+		$optionsData = Mockery::mock( Options_Data::class );
 
 		Functions\when( 'ewww_image_optimizer_get_option' )
 			->justReturn( false );
@@ -26,7 +28,7 @@ class Test_MaybeRemoveImagesFromCdnDropdown extends TestCase {
 	}
 
 	public function testShouldReturnFalseWhenExactdnIsEnabled() {
-		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
+		$optionsData = Mockery::mock( Options_Data::class );
 
 		Functions\when( 'ewww_image_optimizer_get_option' )
 			->justReturn( true );

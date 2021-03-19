@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\DelayJS\Admin\Subscriber;
 
+use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\Subscriber;
@@ -13,7 +14,10 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group  DelayJS
  */
 class Test_DisplayRestoreDefaultsButton extends TestCase {
-	protected static $mockCommonWpFunctionsInSetUp = true;
+	public function setUp() : void {
+		parent::setUp();
+		Functions\stubTranslationFunctions();
+	}
 
 	public function testShouldDoExpected() {
 		$settings     = Mockery::mock( Settings::class );
