@@ -3,12 +3,9 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\RUCSS\Warmup;
 
-class APIClient {
+use WP_Rocket\Engine\Optimization\RUCSS\AbstractAPIClient;
 
-	/**
-	 * Warmup API url.
-	 */
-	const API_URL = 'http://localhost/wp-media/warmup/public/index.php/warmup';
+class APIClient extends AbstractAPIClient {
 
 	/**
 	 * Send the request to Warmup.
@@ -28,7 +25,7 @@ class APIClient {
 		);
 
 		$response = wp_remote_post(
-			self::API_URL,
+			self::API_URL . self::WARMUP_PATH,
 			[
 				'body' => [
 					'resources' => [

@@ -6,7 +6,6 @@ namespace WP_Rocket\Engine\Optimization\RUCSS\Frontend;
 use WP_Rocket\Logger\Logger;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Rocket\Engine\Optimization\RUCSS\APIClient;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 
 class Subscriber implements Subscriber_Interface {
