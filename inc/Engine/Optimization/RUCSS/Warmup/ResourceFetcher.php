@@ -165,7 +165,7 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 				]
 			);
 
-			return [];
+			return [ md5( uniqid() ), '*' ];
 		}
 
 		$file_content = $external_url ? $this->local_cache->get_content( $url ) : $this->get_file_content( $file_path );
@@ -179,7 +179,7 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 				]
 			);
 
-			return [];
+			return [ md5( uniqid() ), '*' ];
 		}
 
 		return [ $file_path, $file_content ];

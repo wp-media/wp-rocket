@@ -10,6 +10,7 @@ return [
 			'style1.css' => '.first{color:red;}',
 			'style2.css' => '.second{color:green;}',
 			'style3.css' => '.third{color:#000000;}',
+			'style-empty.css' => '',
 		],
 		'scripts' => [
 			'script1.js' => 'var first = "content 1";',
@@ -37,7 +38,28 @@ return [
 			],
 		],
 
-
+		'shouldBailoutWithNotFoundResourcesOrEmptyContent' => [
+			'input' => [
+				'html' => '<!DOCTYPE html><html><head><title></title>'.
+				          '<link rel="stylesheet" type="text/css" href="http://example.org/css/style-empty.css">'.
+				          '<link rel="stylesheet" type="text/css" href="http://example.org/css/style-notfound.css">'.
+				          '</head><body>Content here</body></html>',
+			],
+			'expected' => [
+				'resources' => [
+					[
+						'url' => 'http://example.org/css/style-empty.css',
+						'content' => '*',
+						'type' => 'css'
+					],
+					[
+						'url' => 'http://example.org/css/style-notfound.css',
+						'content' => '*',
+						'type' => 'css'
+					]
+				],
+			],
+		],
 
 		'shouldQueueResources' => [
 			'input' => [

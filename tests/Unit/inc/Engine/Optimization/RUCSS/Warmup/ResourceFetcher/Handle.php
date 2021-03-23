@@ -33,43 +33,45 @@ class Test_Handle extends FilesystemTestCase {
 			}
 		);
 
+		Functions\when( 'wp_parse_url' )->alias( function( $url, $component = -1 ) {
+			return parse_url( $url, $component );
+		} );
+
+		$site_url = $config['site_url'] ?? 'http://example.org/';
+		$home_url = $config['home_url'] ?? 'http://example.org/';
+
+		Functions\when( 'site_url' )->alias( function( $path = '') use ( $site_url ) {
+			return $site_url . ltrim( $path, '/' );
+		} );
+
+		Functions\when( 'home_url' )->alias( function( $path = '') use ( $home_url ) {
+			return $home_url . ltrim( $path, '/' );
+		} );
+
+		Functions\when( 'wp_basename' )->alias( function ( $path, $suffix = '' ) {
+			return urldecode( basename( str_replace( array( '%2F', '%5C' ), '/', urlencode( $path ) ), $suffix ) );
+		} );
+
+		Functions\when( 'content_url' )->justReturn( "{$home_url}/wp-content/" );
+
+		Functions\when( 'wp_make_link_relative' )->alias( function( $url ) {
+			return preg_replace( '|^(https?:)?//[^/]+(/?.*)|i', '$2', $url );
+		} );
+
+		Functions\when( 'sanitize_text_field' )->returnArg();
+
 		if ( empty( $expected['resources'] ) ) {
 			$process
 				->shouldReceive( 'push_to_queue' )
 				->never();
 		}else{
 
-			Functions\when( 'wp_parse_url' )->alias( function( $url, $component = -1 ) {
-				return parse_url( $url, $component );
-			} );
-
-			$site_url = $config['site_url'] ?? 'http://example.org/';
-			$home_url = $config['home_url'] ?? 'http://example.org/';
-
-			Functions\when( 'site_url' )->alias( function( $path = '') use ( $site_url ) {
-				return $site_url . ltrim( $path, '/' );
-			} );
-
-			Functions\when( 'home_url' )->alias( function( $path = '') use ( $home_url ) {
-				return $home_url . ltrim( $path, '/' );
-			} );
-
-			Functions\expect( 'wp_basename' )->andReturnUsing( function ( $path, $suffix = '' ) {
-				return urldecode( basename( str_replace( array( '%2F', '%5C' ), '/', urlencode( $path ) ), $suffix ) );
-			} );
-
-			Functions\when( 'content_url' )->justReturn( "{$home_url}/wp-content/" );
-
-			Functions\expect( 'wp_make_link_relative' )->andReturnUsing( function( $url ) {
-				return preg_replace( '|^(https?:)?//[^/]+(/?.*)|i', '$2', $url );
-			} );
-
-			Functions\when( 'sanitize_text_field' )->returnArg();
-
-			$process
-				->shouldReceive( 'push_to_queue' )
-				->withArgs( $expected['resources'] )
-				->times( count( $expected['resources'] ) );
+			foreach ( $expected['resources'] as $resource ) {
+				$process
+					->shouldReceive( 'push_to_queue' )
+					->with( $resource )
+					->once();
+			}
 
 			$process
 				->shouldReceive( 'save' )
@@ -85,6 +87,7 @@ class Test_Handle extends FilesystemTestCase {
 		$_POST = [
 			'html' => $input['html'],
 		];
+
 		$resource_fetcher->handle();
 
 	}
