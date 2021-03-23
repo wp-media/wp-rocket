@@ -7,20 +7,23 @@ defined( 'ABSPATH' ) || exit;
  * @since 1.0
  */
 function rocket_need_api_key() {
-	$message = '';
-	$errors  = get_transient( 'rocket_check_key_errors' );
+	$message      = '';
+	$errors       = get_transient( 'rocket_check_key_errors' );
+	$errors_count = 0;
 
 	if ( false !== $errors ) {
 		foreach ( $errors as $error ) {
 			$message .= '<p>' . $error . '</p>';
 		}
+
+		$errors_count = count( $errors );
 	}
 
 	?>
 	<div class="notice notice-error">
 		<p><strong><?php echo esc_html( WP_ROCKET_PLUGIN_NAME ); ?></strong>
 		<?php
-		echo esc_html( _n( 'There seems to be an issue validating your license. Please see the error message below.', 'There seems to be an issue validating your license. You can see the error messages below.', count( $errors ), 'rocket' ) );
+		echo esc_html( _n( 'There seems to be an issue validating your license. Please see the error message below.', 'There seems to be an issue validating your license. You can see the error messages below.', $errors_count, 'rocket' ) );
 		?>
 		</p>
 		<?php echo wp_kses_post( $message ); ?>
