@@ -117,13 +117,13 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 				continue;
 			}
 
-			$contents = $this->get_url_contents( $resource['url'] );
+			list( $path, $contents ) = $this->get_url_details( $resource['url'] );
 
 			if ( empty( $contents ) ) {
 				continue;
 			}
 
-			$this->resources[] = [
+			$this->resources[ $path ] = [
 				'url'     => rocket_add_url_protocol( $resource['url'] ),
 				'content' => $contents,
 				'type'    => $type,
@@ -145,14 +145,15 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 	}
 
 	/**
-	 * Get url file contents.
+	 * Get url file path and contents.
 	 *
 	 * @param string $url File url.
 	 *
-	 * @return string
+	 * @return array
 	 */
-	private function get_url_contents( $url ) {
+	private function get_url_details( $url ) {
 		$external_url = $this->is_external_file( $url );
+
 		$file_path    = $external_url ? $this->local_cache->get_filepath( $url ) : $this->get_file_path( $url );
 
 		if ( empty( $file_path ) ) {
@@ -164,7 +165,7 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 				]
 			);
 
-			return '';
+			return [];
 		}
 
 		$file_content = $external_url ? $this->local_cache->get_content( $url ) : $this->get_file_content( $file_path );
@@ -178,10 +179,10 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 				]
 			);
 
-			return '';
+			return [];
 		}
 
-		return $file_content;
+		return [ $file_path, $file_content ];
 	}
 
 	/**
