@@ -10,7 +10,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group  RUCSS
  */
 class Test_AddOptionsFirstTime extends TestCase {
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->unregisterAllCallbacksExcept( 'rocket_first_install_options', 'add_options_first_time' );
