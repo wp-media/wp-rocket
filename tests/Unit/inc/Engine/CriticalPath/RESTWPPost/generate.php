@@ -79,6 +79,9 @@ class Test_Generate extends FilesystemTestCase {
 		$is_mobile                    = isset( $config['mobile'] )
 			? $config['mobile']
 			: false;
+		$no_fontface                  = isset( $config['no_fontface'] )
+			? $config['no_fontface']
+			: true;
 		$file                         = $this->config['vfs_dir'] . "cache/critical-css/1/posts/{$post_type}-{$post_id}" . ( $is_mobile ? '-mobile' : '' ). ".css";
 		$post_url = ('post_not_exists' === $expected['code'])
 			? null
@@ -151,8 +154,9 @@ class Test_Generate extends FilesystemTestCase {
 				'https://cpcss.wp-rocket.me/api/job/',
 				[
 					'body' => [
-						'url' => "http://example.org/?p={$post_id}",
-						'mobile' => (int) $is_mobile
+						'url'        => "http://example.org/?p={$post_id}",
+						'mobile'     => (int) $is_mobile,
+						'nofontface' => $no_fontface,
 					],
 				]
 			)
