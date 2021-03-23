@@ -91,6 +91,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 			'switch_theme'                      => 'maybe_regenerate_cpcss',
 			'rocket_excluded_inline_js_content' => 'exclude_inline_js',
 			'before_delete_post'                => 'delete_cpcss',
+			'rocket_disable_preload_fonts'      => 'maybe_disable_preload_fonts',
 		];
 		// phpcs:enable WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned
 	}
@@ -686,6 +687,34 @@ JS;
 		}
 
 		$this->critical_css->process_handler();
+	}
+
+	/**
+	 * Maybe disable adding the preload fonts links
+	 *
+	 * @since 3.8.8
+	 *
+	 * @return bool
+	 */
+	public function maybe_disable_preload_fonts() : bool {
+		if ( ! $this->should_async_css() ) {
+			return false;
+		}
+
+		// This filter is documented in inc/classes/Buffer/class-tests.php.
+		if ( is_search() && ! apply_filters( 'rocket_cache_search', false ) ) {
+			return false;
+		}
+
+		if ( is_404() ) {
+			return false;
+		}
+
+		return (
+			! empty( $this->critical_css->get_current_page_critical_css() )
+			||
+			! empty( $this->options->get( 'critical_css', '' ) )
+		);
 	}
 
 	/**
