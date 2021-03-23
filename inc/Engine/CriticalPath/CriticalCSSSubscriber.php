@@ -701,15 +701,6 @@ JS;
 			return false;
 		}
 
-		// This filter is documented in inc/classes/Buffer/class-tests.php.
-		if ( is_search() && ! apply_filters( 'rocket_cache_search', false ) ) {
-			return false;
-		}
-
-		if ( is_404() ) {
-			return false;
-		}
-
 		return (
 			! empty( $this->critical_css->get_current_page_critical_css() )
 			||
