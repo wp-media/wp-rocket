@@ -16,10 +16,6 @@ trait UrlTrait {
 	private function is_external_file( $url ) {
 		$file = get_rocket_parse_url( $url );
 
-		if ( ! empty( $file['query'] ) ) {
-			return true;
-		}
-
 		if ( empty( $file['path'] ) ) {
 			return true;
 		}
