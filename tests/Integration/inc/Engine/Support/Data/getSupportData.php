@@ -14,7 +14,7 @@ use WP_Rocket\Tests\Integration\TestCase;
 class Test_GetSupportData extends TestCase {
 	private $wp_version;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		global $wp_version;

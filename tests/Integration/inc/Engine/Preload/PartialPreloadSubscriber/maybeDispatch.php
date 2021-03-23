@@ -19,7 +19,7 @@ class Test_MaybeDispatch extends TestCase {
 		self::$post_id = $factory->post->create();
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		add_filter( 'pre_get_rocket_option_manual_preload', [ $this, 'return_true' ] );

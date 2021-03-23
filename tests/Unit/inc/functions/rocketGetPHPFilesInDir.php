@@ -12,7 +12,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 class Test_RocketGetDirectoryPHPFilesArray extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/functions/rocketGetPHPFilesInDir.php';
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_PLUGIN_ROOT . '/inc/functions/files.php';

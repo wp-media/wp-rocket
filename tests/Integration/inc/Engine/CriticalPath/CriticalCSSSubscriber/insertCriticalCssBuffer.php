@@ -34,7 +34,7 @@ class Test_InsertCriticalCssBuffer extends FilesystemTestCase {
 		);
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		add_filter( 'pre_get_rocket_option_async_css', [ $this, 'return_1' ] );

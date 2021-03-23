@@ -13,7 +13,7 @@ use WPMedia\PHPUnit\Unit\TestCase;
  * @group AdminOnly
  */
 class Test_RocketFirstInstall extends TestCase {
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/admin/upgrader.php';

@@ -18,7 +18,7 @@ use WPDieException;
 class Test_PurgeCdnCache extends TestCase {
 	use CapTrait;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		CapTrait::hasAdminCapBeforeClass();
@@ -31,7 +31,7 @@ class Test_PurgeCdnCache extends TestCase {
 		CapTrait::resetAdminCap();
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		unset( $_GET['_wpnonce'] );

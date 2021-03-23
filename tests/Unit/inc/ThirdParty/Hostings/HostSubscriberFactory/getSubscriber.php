@@ -17,7 +17,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 class Test_GetSubscriber extends TestCase {
 	private $factory;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->factory = new HostSubscriberFactory(

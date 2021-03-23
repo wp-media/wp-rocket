@@ -19,13 +19,14 @@ class Test_PreloadFonts extends TestCase {
 	private $cdn;
 	private $fonts;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->options = Mockery::mock( Options_Data::class );
 		$this->cdn     = Mockery::mock( CDN::class );
 		$this->fonts   = new Fonts( $this->options, $this->cdn );
 
+		Functions\stubEscapeFunctions();
 		$this->stubWpParseUrl();
 	}
 
@@ -37,7 +38,7 @@ class Test_PreloadFonts extends TestCase {
 		Functions\when( 'untrailingslashit' )->alias( function( $thing ) {
 			return rtrim( $thing, '\/' );
 		} );
-		Functions\when( 'esc_url' )->returnArg();
+
 		Functions\when( 'home_url' )->justReturn( 'http://example.org' );
 
 		if ( ! $bypass ) {

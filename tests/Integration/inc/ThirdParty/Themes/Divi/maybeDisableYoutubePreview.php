@@ -14,7 +14,7 @@ class Test_MaybeDisableYoutubePreview extends WPThemeTestcase {
 	protected $path_to_test_data = '/inc/ThirdParty/Themes/Divi/maybeDisableYoutubePreview.php';
 	private static $container;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		self::$container = apply_filters( 'rocket_container', '' );
@@ -26,7 +26,7 @@ class Test_MaybeDisableYoutubePreview extends WPThemeTestcase {
 		self::$container->get( 'event_manager' )->remove_subscriber( self::$container->get( 'divi' ) );
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		self::$container->get( 'event_manager' )->add_subscriber( self::$container->get( 'divi' ) );

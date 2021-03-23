@@ -16,7 +16,7 @@ class Test_AddDismissScript extends TestCase {
 	protected $user_id = 0;
 	protected $cap;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		Functions\when( 'wp_create_nonce' )->justReturn( 'wp_rocket_nonce' );

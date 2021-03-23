@@ -23,8 +23,10 @@ class Test_Optimize extends TestCase {
 	private   $combine;
 	private   $local_cache;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
+
+		Functions\stubEscapeFunctions();
 
 		$this->options
 			 ->shouldReceive( 'get' )
@@ -60,7 +62,6 @@ class Test_Optimize extends TestCase {
 			->with( 'https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' )
 			->andReturn( "@font-face{font-family:'FontAwesome';src:url('../fonts/fontawesome-webfont.eot?v=4.7.0');src:url('../fonts/fontawesome-webfont.eot?#iefix&v=4.7.0') format('embedded-opentype'),url('../fonts/fontawesome-webfont.woff2?v=4.7.0') format('woff2'),url('../fonts/fontawesome-webfont.woff?v=4.7.0') format('woff'),url('../fonts/fontawesome-webfont.ttf?v=4.7.0') format('truetype'),url('../fonts/fontawesome-webfont.svg?v=4.7.0#fontawesomeregular') format('svg');font-weight:normal;font-style:normal}" );
 
-		Functions\when( 'esc_url' )->returnArg();
 
 		Functions\when( 'site_url' )->alias( function( $path = '') {
 			return 'http://example.org/' . ltrim( $path, '/' );

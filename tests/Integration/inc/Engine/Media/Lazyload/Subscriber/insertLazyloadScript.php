@@ -17,7 +17,7 @@ class Test_InsertLazyloadScript extends TestCase {
 	private $iframes;
 	private $threshold;
 
-	public function setUp() {
+	public function setUp() : void {
 		$this->script_debug = false;
 
 		parent::setUp();

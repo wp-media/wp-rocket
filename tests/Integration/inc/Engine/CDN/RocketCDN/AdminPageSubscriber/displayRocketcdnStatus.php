@@ -18,13 +18,13 @@ use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
  */
 class Test_DisplayRocketcdnStatus extends TestCase {
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		update_option( 'date_format', 'Y-m-d' );
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		add_filter( 'home_url', [ $this, 'home_url_cb' ] );

@@ -16,7 +16,7 @@ class Test__RocketGetCacheDirs extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/functions/_rocketGetCacheDirs.php';
 	protected $mock_rocket_get_constant = false;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		// Clean out the cached dirs before we run these tests.

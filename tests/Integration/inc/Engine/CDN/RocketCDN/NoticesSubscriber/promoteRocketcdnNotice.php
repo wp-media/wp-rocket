@@ -16,7 +16,7 @@ use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
 class Test_PromoteRocketcdnNotice extends TestCase {
 	private $notice;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		if ( empty( $this->notice ) ) {

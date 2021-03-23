@@ -15,7 +15,7 @@ class Test_CacheDirSizeCheck extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/HealthCheck/CacheDirSizeCheck/cacheDirSizeCheck.php';
 	private $subscriber;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		Functions\expect( 'get_current_blog_id' )

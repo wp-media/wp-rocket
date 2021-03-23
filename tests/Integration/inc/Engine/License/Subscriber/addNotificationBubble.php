@@ -21,7 +21,7 @@ class AddNotificationBubble extends TestCase {
 		self::$user_id = $factory->user->create( [ 'role' => 'administrator' ] );
 	}
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		$container     = apply_filters( 'rocket_container', null );
@@ -29,7 +29,7 @@ class AddNotificationBubble extends TestCase {
 		self::$pricing = $container->get( 'pricing' );
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		wp_set_current_user( self::$user_id );
