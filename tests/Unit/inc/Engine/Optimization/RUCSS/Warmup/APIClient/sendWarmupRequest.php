@@ -21,7 +21,7 @@ class Test_SendWarmupRequest extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldSendWarmupRequest( $atts, $success, $expected ): void {
+	public function testShouldSendWarmupRequest( $atts, $success, $mockResponse ): void {
 		$response = $this->get_reflective_property( 'response_body', AbstractAPIClient::class );
 		$error    = $this->get_reflective_property( 'error_message', AbstractAPIClient::class );
 
@@ -42,15 +42,7 @@ class Test_SendWarmupRequest extends TestCase {
 				'https://central-saas.wp-rocket.me/warmup',
 				$args
 			)
-			->andReturn( $success
-				? [
-					'response' => [
-						'code' => 200,
-						'body' => $expected,
-					]
-				]
-				: new WP_Error( 400, $expected )
-			);
+			->andReturn( $mockResponse );
 		Monkey\expect( 'wp_remote_retrieve_response_code' )
 			->once()
 			->andReturn( $success ? 200 : 400 );
@@ -58,15 +50,20 @@ class Test_SendWarmupRequest extends TestCase {
 		if ( $success ) {
 			Monkey\expect( 'wp_remote_retrieve_body' )
 				->once()
-				->andReturn( $expected );
+				->andReturn( $mockResponse['body'] );
 			$this->assertTrue( $apiClient->send_warmup_request( $atts ) );
-			$this->assertEquals( $expected, $response->getValue( $apiClient ) );
+			$this->assertEquals( $mockResponse['body'], $response->getValue( $apiClient ) );
 		} else {
+			$error_message = is_array($mockResponse)
+				? $mockResponse['response']['message']
+				: $mockResponse->get_error_message();
+
 			Monkey\expect( 'wp_remote_retrieve_response_message' )
 				->once()
-				->andReturn( $expected );
+				->andReturn( $error_message );
+
 			$this->assertFalse( $apiClient->send_warmup_request( $atts ) );
-			$this->assertEquals( $expected, $error->getValue( $apiClient ) );
+			$this->assertEquals( $error_message, $error->getValue( $apiClient ) );
 		}
 	}
 }
