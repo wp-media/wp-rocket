@@ -151,7 +151,7 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 	 *
 	 * @return array
 	 */
-	private function get_url_details( $url ) {
+	private function get_url_details( $url ) : array {
 		$external_url = $this->is_external_file( $url );
 
 		$file_path    = $external_url ? $this->local_cache->get_filepath( $url ) : $this->get_file_path( $url );
@@ -190,7 +190,7 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 	 *
 	 * @return array
 	 */
-	public function get_zones() {
+	public function get_zones() : array {
 		return [ 'all', 'css_and_js' ];
 	}
 
