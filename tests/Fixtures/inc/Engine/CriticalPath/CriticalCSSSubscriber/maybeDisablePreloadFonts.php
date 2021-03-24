@@ -1,76 +1,99 @@
 <?php
 
 return [
-    'testShouldReturnFalseWhenDONOTROCKETOPTIMIZE' => [
-        'config'   => [
-            'DONOTROCKETOPTIMIZE'            => true,
-            'options'                        => [
-                'async_css'    => true,
-                'critical_css' => '',
+    'vfs_dir'   => 'wp-content/cache/critical-css/',
+	'structure' => [
+		'wp-content' => [
+			'cache'   => [
+				'critical-css' => [
+					'1' => [
+						'posts'            => [
+							'post-100.css' => '.post-10 { color: red; }',
+						],
+						'front_page.css'   => '.front_page { color: red; }',
+					],
+				],
+			],
+		],
+	],
+    'test_data' => [
+        'testShouldReturnFalseWhenDONOTROCKETOPTIMIZE' => [
+            'config'   => [
+                'type'                           => 'front_page',
+                'DONOTROCKETOPTIMIZE'            => true,
+                'options'                        => [
+                    'async_css'    => true,
+                    'critical_css' => '',
+                ],
+                'is_rocket_post_excluded_option' => false,
+                'get_current_page_critical_css'  => '',
             ],
-            'is_rocket_post_excluded_option' => false,
-            'get_current_page_critical_css'  => '',
+            'expected' => false,
         ],
-        'expected' => false,
-    ],
-    'testShouldReturnFalseWhenAsyncDisabled' => [
-        'config'   => [
-            'DONOTROCKETOPTIMIZE'            => false,
-            'options'                        => [
-                'async_css'    => false,
-                'critical_css' => '',
+        'testShouldReturnFalseWhenAsyncDisabled' => [
+            'config'   => [
+                'type'                           => 'front_page',
+                'DONOTROCKETOPTIMIZE'            => false,
+                'options'                        => [
+                    'async_css'    => false,
+                    'critical_css' => '',
+                ],
+                'is_rocket_post_excluded_option' => false,
+                'get_current_page_critical_css'  => '',
             ],
-            'is_rocket_post_excluded_option' => false,
-            'get_current_page_critical_css'  => '',
+            'expected' => false,
         ],
-        'expected' => false,
-    ],
-    'testShouldReturnFalseWhenAsyncDisabledPost' => [
-        'config'   => [
-            'DONOTROCKETOPTIMIZE'            => false,
-            'options'                        => [
-                'async_css'    => true,
-                'critical_css' => '',
+        'testShouldReturnFalseWhenAsyncDisabledPost' => [
+            'config'   => [
+                'type'                           => 'is_post',
+                'DONOTROCKETOPTIMIZE'            => false,
+                'options'                        => [
+                    'async_css'    => true,
+                    'critical_css' => '',
+                ],
+                'is_rocket_post_excluded_option' => true,
+                'get_current_page_critical_css'  => '',
             ],
-            'is_rocket_post_excluded_option' => true,
-            'get_current_page_critical_css'  => '',
+            'expected' => false,
         ],
-        'expected' => false,
-    ],
-    'testShouldReturnFalseWhenNoCPCSS' => [
-        'config'   => [
-            'DONOTROCKETOPTIMIZE'            => false,
-            'options'                        => [
-                'async_css'    => true,
-                'critical_css' => '',
+        'testShouldReturnFalseWhenNoCPCSS' => [
+            'config'   => [
+                'type'                           => 'is_page',
+                'DONOTROCKETOPTIMIZE'            => false,
+                'options'                        => [
+                    'async_css'    => true,
+                    'critical_css' => '',
+                ],
+                'is_rocket_post_excluded_option' => false,
+                'get_current_page_critical_css'  => '',
             ],
-            'is_rocket_post_excluded_option' => false,
-            'get_current_page_critical_css'  => '',
+            'expected' => false,
         ],
-        'expected' => false,
-    ],
-    'testShouldReturnTrueWhenCPCSS' => [
-        'config'   => [
-            'DONOTROCKETOPTIMIZE'            => false,
-            'options'                        => [
-                'async_css'    => true,
-                'critical_css' => '',
+        'testShouldReturnTrueWhenCPCSS' => [
+            'config'   => [
+                'type'                           => 'front_page',
+                'DONOTROCKETOPTIMIZE'            => false,
+                'options'                        => [
+                    'async_css'    => true,
+                    'critical_css' => '',
+                ],
+                'is_rocket_post_excluded_option' => false,
+                'get_current_page_critical_css'  => 'Critical CSS content',
             ],
-            'is_rocket_post_excluded_option' => false,
-            'get_current_page_critical_css'  => 'Critical CSS content',
+            'expected' => true,
         ],
-        'expected' => true,
-    ],
-    'testShouldReturnTrueWhenCPCSSFallback' => [
-        'config'   => [
-            'DONOTROCKETOPTIMIZE'            => false,
-            'options'                        => [
-                'async_css'    => true,
-                'critical_css' => 'Critical CSS Fallback',
+        'testShouldReturnTrueWhenCPCSSFallback' => [
+            'config'   => [
+                'type'                           => 'is_page',
+                'DONOTROCKETOPTIMIZE'            => false,
+                'options'                        => [
+                    'async_css'    => true,
+                    'critical_css' => 'Critical CSS Fallback',
+                ],
+                'is_rocket_post_excluded_option' => false,
+                'get_current_page_critical_css'  => '',
             ],
-            'is_rocket_post_excluded_option' => false,
-            'get_current_page_critical_css'  => '',
+            'expected' => true,
         ],
-        'expected' => true,
     ],
 ];
