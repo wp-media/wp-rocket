@@ -352,7 +352,7 @@ class Tests {
 			return false;
 		}
 
-		if ( $this->has_test( 'is_html' ) && ! $this->is_html( $buffer ) ) {
+		if ( $this->has_test( 'is_html' ) && ! $this->is_html( $buffer ) && ! defined( 'REST_REQUEST' ) ) {
 			// Don't process if there isn't a closing </html>.
 			$this->set_error( 'No closing </html> was found.' );
 			return false;
