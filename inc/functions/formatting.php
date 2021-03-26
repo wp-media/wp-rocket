@@ -28,11 +28,11 @@ function rocket_clean_exclude_file( $file ) {
  * @author Soponar Cristina
  *
  * @param  string $path URL which needs to be cleaned.
- * @return bool\string  false if $path is empty or cleaned URL
+ * @return string Cleaned URL
  */
 function rocket_clean_wildcards( $path ) {
 	if ( ! $path ) {
-		return false;
+		return '';
 	}
 
 	$path_components = explode( '/', $path );
@@ -208,7 +208,7 @@ function rocket_sanitize_textarea_field( $field, $value ) {
 
 	// Sanitize.
 	foreach ( $sanitizations as $sanitization ) {
-		$value = array_map( $sanitization, $value );
+		$value = array_filter( array_map( $sanitization, $value ) );
 	}
 
 	return array_unique( $value );
