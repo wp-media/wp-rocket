@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\RUCSS\Warmup\APIClient;
 
-use Brain\Monkey\Functions as Monkey;
+use Brain\Monkey\Functions;
 use WP_Error;
 use WP_Rocket\Engine\Optimization\RUCSS\AbstractAPIClient;
 use WP_Rocket\Engine\Optimization\RUCSS\Warmup\APIClient;
@@ -34,8 +34,8 @@ class Test_SendWarmupRequest extends TestCase {
 
 		$apiClient = new APIClient();
 
-		Monkey\when( 'wp_parse_args' )->returnArg( 1 );
-		Monkey\expect( 'wp_remote_post' )
+		Functions\when( 'wp_parse_args' )->returnArg( 1 );
+		Functions\expect( 'wp_remote_post' )
 			->once()
 			->with(
 				'https://central-saas.wp-rocket.me/warmup',
@@ -44,19 +44,19 @@ class Test_SendWarmupRequest extends TestCase {
 			->andReturn( $mockResponse );
 
 		if ( is_array( $mockResponse ) ) {
-			Monkey\expect( 'wp_remote_retrieve_response_code' )
+			Functions\expect( 'wp_remote_retrieve_response_code' )
 				->once()
 				->andReturn( $success ? 200 : 400 );
 
 			if ( 200 !== $mockResponse['response']['code'] ) {
-				Monkey\expect( 'wp_remote_retrieve_response_message' )
+				Functions\expect( 'wp_remote_retrieve_response_message' )
 					->once()
 					->andReturn( $mockResponse['response']['message'] );
 			}
 		}
 
 		if ( $success ) {
-			Monkey\expect( 'wp_remote_retrieve_body' )
+			Functions\expect( 'wp_remote_retrieve_body' )
 				->once()
 				->andReturn( $mockResponse['body'] );
 			$this->assertTrue( $apiClient->send_warmup_request( $atts ) );
