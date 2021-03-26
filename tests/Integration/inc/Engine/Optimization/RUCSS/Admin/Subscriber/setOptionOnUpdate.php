@@ -11,7 +11,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group  AdminOnly
  */
 class Test_SetOptionOnUpdate extends TestCase{
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->unregisterAllCallbacksExcept( 'wp_rocket_upgrade', 'set_option_on_update' );
