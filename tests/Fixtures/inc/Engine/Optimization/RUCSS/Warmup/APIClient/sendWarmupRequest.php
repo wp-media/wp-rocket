@@ -67,7 +67,7 @@ HTML,
 				'content' => 'h1 {color: red;}',
 			],
 			'success'      => false,
-			'mockResponse' => new WP_Error( 200, 'Whoops!' ),
+			'mockResponse' => new WP_Error( 500, 'Whoops!' ),
 		],
 	],
 ];
