@@ -19,6 +19,13 @@ abstract class AbstractAPIClient {
 	protected $request_path;
 
 	/**
+	 * Response Code.
+	 *
+	 * @var int
+	 */
+	protected $response_code = 200;
+
+	/**
 	 * Error message.
 	 *
 	 * @var string
@@ -57,7 +64,12 @@ abstract class AbstractAPIClient {
 	 */
 	private function check_response( $response ): bool {
 		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
-			$this->error_message = wp_remote_retrieve_response_message( $response );
+			$this->error_message = is_array( $response )
+				? wp_remote_retrieve_response_message( $response )
+				: $response->get_error_message();
+			$this->response_code = is_array( $response )
+				? wp_remote_retrieve_response_code( $response )
+				: $response->get_error_code();
 
 			return false;
 		}

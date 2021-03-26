@@ -37,7 +37,7 @@ class APIClient extends AbstractAPIClient {
 
 		if ( ! $sent ) {
 			return [
-				'code'    => 400,
+				'code'    => $this->response_code,
 				'message' => $this->error_message,
 			];
 		}
