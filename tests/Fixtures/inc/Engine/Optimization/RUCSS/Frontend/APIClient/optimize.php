@@ -2,11 +2,11 @@
 
 return [
 	'test_data' => [
-		'shouldReturnExpectedDataWhenSuccess' => [
-			'config' => [
-				'html' => 'some html',
-				'url' => 'http://example.com/path/to/style.css',
-				'options' => [1],
+		'shouldReturnExpectedDataWhenSuccess'           => [
+			'config'       => [
+				'html'    => 'some html',
+				'url'     => 'http://example.com/path/to/style.css',
+				'options' => [ 1 ],
 			],
 			'mockResponse' => [
 				'headers'  => [
@@ -21,10 +21,10 @@ return [
 				],
 				'body'     => json_encode(
 					[
-						'code' => 200,
-						'message' => 'OK',
+						'code'     => 200,
+						'message'  => 'OK',
 						'contents' => [
-							'shakedCSS' => 'h1{color:red;}',
+							'shakedCSS'      => 'h1{color:red;}',
 							'unProcessedCss' => [],
 						],
 					]
@@ -36,13 +36,60 @@ return [
 				'cookies'  => [],
 				'filename' => null,
 			],
-			'expected' => [
-				'code' => 200,
-				'message' => 'OK',
-				'css' => 'h1{color:red;}',
+			'expected'     => [
+				'code'            => 200,
+				'message'         => 'OK',
+				'css'             => 'h1{color:red;}',
 				'unprocessed_css' => [],
 			],
 		],
+		'shouldSetErrorAndReturnFalseOnNon200Response'  => [
+			'config'         => [
+				'html'    => 'some html',
+				'url'     => 'http://example.com/path/to/style.css',
+				'options' => [ 1 ],
+			],
+			'mockResponse' => [
+				'headers'  => [
+					'cache-control' => 'max-age=604800',
+					'content-type'  => 'text/html; charset=UTF-8',
+					'date'          => 'Wed, 24 Mar, 2021 14:26:14 GMT',
+				],
+				'body'     => <<<HTML
+<html lang="en">
+        <head>
+                <title>404 - Not Found</title>
+        </head>
+        <body>
+                <h1>404 - Not Found</h1>
+        </body>
+</html>
+HTML,
+				'response' => [
+					'code'    => 404,
+					'message' => 'Not Found',
+				],
+				'cookies'  => [],
+				'filename' => null,
+			],
+			'expected'     => [
+				'code' => 404,
+				'message' => 'Not Found'
+			],
+		],
+		'shouldSetErrorAndReturnFalseOnWPErrorResponse' => [
+			'config'         => [
+				'html'    => 'some html',
+				'url'     => 'http://example.com/path/to/style.css',
+				'options' => [ 1 ],
+			],
+			'mockResponse' => new WP_Error( 500, 'Whoops!' ),
+			'expected'     => [
+				'code' => 500,
+				'message' => 'Whoops!'
+			],
+		],
+	],
 
 //			'html'     => 'some html',
 //			'url'      => 'http://example.com/path/to/style.css',
@@ -57,7 +104,7 @@ return [
 //					],
 //				]
 //			)
-		],
+
 //		'shouldReturnErrorDataWhenFail' => [
 //			'html' => 'some html',
 //			'url' => 'http://example.com.path/to/my-script.js',
