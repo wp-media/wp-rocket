@@ -1,4 +1,4 @@
-<?php
+<?	
 
 namespace WP_Rocket\Engine\Admin\Beacon;
 
@@ -222,11 +222,6 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 						'url'   => 'https://docs.wp-rocket.me/article/106-my-site-is-broken/?utm_source=wp_plugin&utm_medium=wp_rocket',
 						'title' => 'My Site Is Broken',
 					],
-					[
-						'id'    => '54205957e4b099def9b55df0',
-						'url'   => 'https://docs.wp-rocket.me/article/19-resolving-issues-with-file-optimization/?utm_source=wp_plugin&utm_medium=wp_rocket',
-						'title' => 'Resolving Issues with File Optimization',
-					],
 				],
 				'fr' => [
 					[
@@ -243,11 +238,6 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 						'id'    => '5697d03bc69791436155ed69',
 						'url'   => 'https://fr.docs.wp-rocket.me/article/263-site-casse/?utm_source=wp_plugin&utm_medium=wp_rocket',
 						'title' => 'Mon site est cassé',
-					],
-					[
-						'id'    => '56967d73c69791436155e637',
-						'url'   => 'https://fr.docs.wp-rocket.me/article/241-problemes-minification/?utm_source=wp_plugin&utm_medium=wp_rocket',
-						'title' => "Résoudre les problèmes avec l'optimisation des fichiers",
 					],
 				],
 			],
@@ -318,22 +308,14 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 				'fr' => '569568269033603f7da30334,58e3be72dd8c8e5c57311c6e,59b7f049042863033a1cc5d0',
 			],
 			'css_section'                => [
-				'en' => '54205957e4b099def9b55df0,5419ec47e4b099def9b5565f,5578cfbbe4b027e1978e6bb1,5569b671e4b027e1978e3c51,5923772c2c7d3a074e8ab8b9',
-				'fr' => '56967d73c69791436155e637,56967e80c69791436155e646,56957209c69791436155e0f6,5697d2dc9033603f7da31041593fec6d2c7d3a0747cddb93',
+				'en' => '5569b671e4b027e1978e3c51,5d5214d10428631e94f94ae6',
+				'fr' => '5697d2dc9033603f7da31041,5d5abcce0428634552d85c1c',
 			],
 			'js_section'                 => [
-				'en' => '54205957e4b099def9b55df0,5419ec47e4b099def9b5565f,5578cfbbe4b027e1978e6bb1,587904cf90336009736c678e,54b9509de4b07997ea3f27c7,59236dfb0428634b4a3358f9',
-				'fr' => '56967d73c69791436155e637,56967e80c69791436155e646,56957209c69791436155e0f6,58a337c12c7d3a576d352cde,56967eebc69791436155e649,593fe9882c7d3a0747cddb77',
+				'en' => '587904cf90336009736c678e,54b9509de4b07997ea3f27c7,59236dfb0428634b4a3358f9,5f359695042863444aa04e26,556ef48ce4b01a224b428691,6001a83b2e764327f87bf189',
+				'fr' => '58a337c12c7d3a576d352cde,56967eebc69791436155e649,593fe9882c7d3a0747cddb77,5f523c46c9e77c0016384ba0,5697d03bc69791436155ed69,601d4b83ac2f834ec5385ca5',
 			],
 			'file_optimization'          => [
-				'en' => [
-					'id'  => '54205957e4b099def9b55df0',
-					'url' => 'https://docs.wp-rocket.me/article/19-resolving-issues-with-file-optimization/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-				'fr' => [
-					'id'  => '56967d73c69791436155e637',
-					'url' => 'https://fr.docs.wp-rocket.me/article/241-problemes-minification/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
 			],
 			'combine'                    => [
 				'en' => [
@@ -400,8 +382,8 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 				],
 			],
 			'lazyload_section'           => [
-				'en' => '5c884cf80428633d2cf38314,54b85754e4b0512429883a86,5418c792e4b0e7b8127bed99,569ec4a69033603f7da32c93,5419e246e4b099def9b5561e,5a299b332c7d3a1a640cb402',
-				'fr' => '56967a859033603f7da30858,56967952c69791436155e60a,56cb9c9d90336008e9e9e3dc,569676ea9033603f7da3083d,5a3a66f52c7d3a1943676524',
+				'en' => '5c884cf80428633d2cf38314,54b85754e4b0512429883a86,5418c792e4b0e7b8127bed99,569ec4a69033603f7da32c93,5419e246e4b099def9b5561e',
+				'fr' => '56967a859033603f7da30858,56967952c69791436155e60a,56cb9c9d90336008e9e9e3dc,569676ea9033603f7da3083d',
 			],
 			'sitemap_preload'            => [
 				'en' => '541780fde4b005ed2d11784c,5a71c8ab2c7d3a4a4198a9b3,55b282ede4b0b0593824f852',
