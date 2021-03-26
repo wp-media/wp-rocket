@@ -1,4 +1,4 @@
-<?php
+<?php	
 
 namespace WP_Rocket\Engine\Admin\Beacon;
 
@@ -222,6 +222,16 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 						'url'   => 'https://docs.wp-rocket.me/article/106-my-site-is-broken/?utm_source=wp_plugin&utm_medium=wp_rocket',
 						'title' => 'My Site Is Broken',
 					],
+					[
+						'id'    => '6001a83b2e764327f87bf189',
+						'url'   => 'https://docs.wp-rocket.me/article/1407-eliminate-render-blocking-resources/?utm_source=wp_plugin&utm_medium=wp_rocket',
+						'title' => 'Eliminate Render Blocking Resources',
+					],
+					[
+						'id'    => '54e6f7e5e4b034c37ea9095f',
+						'url'   => 'https://docs.wp-rocket.me/article/46-how-to-check-if-wp-rocket-is-caching-your-pages/?utm_source=wp_plugin&utm_medium=wp_rocket',
+						'title' => 'How to check if WP Rocket is caching your pages',
+					],
 				],
 				'fr' => [
 					[
@@ -238,6 +248,16 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 						'id'    => '5697d03bc69791436155ed69',
 						'url'   => 'https://fr.docs.wp-rocket.me/article/263-site-casse/?utm_source=wp_plugin&utm_medium=wp_rocket',
 						'title' => 'Mon site est cassé',
+					],
+					[
+						'id'    => '601d4b83ac2f834ec5385ca5',
+						'url'   => 'https://fr.docs.wp-rocket.me/article/1440-eliminez-les-ressources-qui-bloquent-le-rendu/?utm_source=wp_plugin&utm_medium=wp_rocket',
+						'title' => 'Éliminez les ressources qui bloquent le rendu',
+					],
+					[
+						'id'    => '568fe9ebc69791436155cd32',
+						'url'   => 'https://fr.docs.wp-rocket.me/article/180-verifier-cache/?utm_source=wp_plugin&utm_medium=wp_rocket',
+						'title' => 'Comment vérifier si WP Rocket met bien en cache vos pages',
 					],
 				],
 			],
@@ -404,8 +424,8 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 				],
 			],
 			'dns_prefetch'               => [
-				'en' => '541780fde4b005ed2d11784c',
-				'fr' => '5693d582c69791436155d645',
+				'en' => '5e055a602c7d3a7e9ae5881c',
+				'fr' => '5e1891892c7d3a7e9ae60983',
 			],
 			'fonts_preload'              => [
 				'en' => [
@@ -421,6 +441,10 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 				'en' => [
 					'id'  => '5f35939b042863444aa04df9',
 					'url' => 'https://docs.wp-rocket.me/article/1348-preload-links/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '5f58527cc9e77c001603746c',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1358-precharger-les-liens/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'never_cache'                => [
@@ -471,33 +495,35 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://docs.wp-rocket.me/article/1382-never-cache-cookies/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
-			'always_purge'               => [
+			'exclude_user_agent'          => [
 				'en' => [
-					'id'  => '555c7e9ee4b027e1978e17a5',
-					'url' => 'https://docs.wp-rocket.me/article/78-how-often-is-the-cache-updated/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-				'fr' => [
-					'id'  => '568f7df49033603f7da2ec72',
-					'url' => 'https://fr.docs.wp-rocket.me/article/171-intervalle-cache/?utm_source=wp_plugin&utm_medium=wp_rocket',
+					'id'  => '5ff728d3551e0c2853f3a245',
+					'url' => 'https://docs.wp-rocket.me/article/1389-never-cache-user-agents/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
+			'always_purge'               => [
+				'en' => [
+					'id'  => '5ff72b4dfd168b77735328b7',
+					'url' => 'https://docs.wp-rocket.me/article/1391-always-purge-url-s/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				]
+			],
 			'cleanup'                    => [
-				'en' => '55dcaa28e4b01d7a6a9bd373,578cd762c6979160ca1441cd,5569d11ae4b01a224b427725',
-				'fr' => '5697cebbc69791436155ed5e,58b6e7a0dd8c8e56bfa819f5,5697cd85c69791436155ed50',
+				'en' => '60259156b3ebfb109b58182d,55dcaa28e4b01d7a6a9bd373,578cd762c6979160ca1441cd,5569d11ae4b01a224b427725',
+				'fr' => '60259156b3ebfb109b58182d,5697cebbc69791436155ed5e,58b6e7a0dd8c8e56bfa819f5,5697cd85c69791436155ed50',
 			],
 			'slow_admin'                 => [
 				'en' => [
-					'id'  => '55dcaa28e4b01d7a6a9bd373',
-					'url' => 'https://docs.wp-rocket.me/article/121-wp-admin-area-is-slow/?utm_source=wp_plugin&utm_medium=wp_rocket',
+					'id'  => '60259156b3ebfb109b58182d',
+					'url' => 'https://docs.wp-rocket.me/article/1443-database-optimizations-are-not-working/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 				'fr' => [
-					'id'  => '5697cebbc69791436155ed5e',
-					'url' => 'https://fr.docs.wp-rocket.me/article/260-la-zone-d-administration-wp-est-lente/?utm_source=wp_plugin&utm_medium=wp_rocket',
+					'id'  => '60259156b3ebfb109b58182d',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1486-les-optimisations-de-la-base-de-donnees-ne-fonctionne-pas/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'cdn_section'                => [
-				'en' => '54c7fa3de4b0512429885b5c,54205619e4b0e7b8127bf849,54a6d578e4b047ebb774a687,56b2b4459033603f7da37acf,566f749f9033603f7da28459,5434667fe4b0310ce5ee867a',
-				'fr' => '5696830b9033603f7da308ac,5696837e9033603f7da308ae,569685749033603f7da308c0,57a4961190336059d4edc9d8,5697d5f8c69791436155ed8e,569684d29033603f7da308b9',
+				'en' => '5e4c84bd04286364bc958833,54c7fa3de4b0512429885b5c,54205619e4b0e7b8127bf849,54a6d578e4b047ebb774a687,56b2b4459033603f7da37acf,566f749f9033603f7da28459,5434667fe4b0310ce5ee867a',
+				'fr' => '5f351e42042863444aa04652,5696830b9033603f7da308ac,5696837e9033603f7da308ae,569685749033603f7da308c0,57a4961190336059d4edc9d8,5697d5f8c69791436155ed8e,569684d29033603f7da308b9',
 			],
 			'cdn'                        => [
 				'en' => [
@@ -515,8 +541,8 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://docs.wp-rocket.me/article/1307-rocketcdn/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 				'fr' => [
-					'id'  => '5e5e36712c7d3a7e9ae89555',
-					'url' => 'https://fr.docs.wp-rocket.me/article/1308-rocketcdn/?utm_source=wp_plugin&utm_medium=wp_rocket',
+					'id'  => '5f351e42042863444aa04652',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1343-comment-utiliser-rocketcdn/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'exclude_cdn'                => [
@@ -620,6 +646,14 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'id'  => '5fc70216de1bfa158fb54737',
 					'url' => 'https://docs.wp-rocket.me/article/1366-add-missing-image-dimensions/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
+				'fr' => [
+					'id'  => '5fd20dcab6c6251cd1c35079',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1369-ajouter-les-dimensions-dimage-manquantes/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
+			'image_dimensions_section'           => [
+				'en' => '5fc70216de1bfa158fb54737',
+				'fr' => '5fd20dcab6c6251cd1c35079',
 			],
 			'exclude_defer_js'           => [
 				'en' => [
