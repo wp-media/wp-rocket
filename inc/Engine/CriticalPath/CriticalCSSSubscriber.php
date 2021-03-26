@@ -702,9 +702,9 @@ JS;
 		}
 
 		return (
-			! empty( $this->critical_css->get_current_page_critical_css() )
-			||
 			! empty( $this->options->get( 'critical_css', '' ) )
+			||
+			! empty( $this->critical_css->get_current_page_critical_css() )
 		);
 	}
 
