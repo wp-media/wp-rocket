@@ -11,9 +11,8 @@ use WP_Rocket\Tests\Unit\TestCase;
 /**
  * @covers \WP_Rocket\Engine\Optimization\RUCSS\Warmup\APIClient::send_warmup_request
  *
- * @uses \WP_Rocket\Engine\Optimization\RUCSS\AbstractAPIClient::handle_post()
- * @uses \WP_Rocket\Engine\Optimization\RUCSS\AbstractAPIClient::check_response()
-
+ * @uses   \WP_Rocket\Engine\Optimization\RUCSS\AbstractAPIClient::handle_post()
+ * @uses   \WP_Rocket\Engine\Optimization\RUCSS\AbstractAPIClient::check_response()
  * @group  RUCSS
  */
 class Test_SendWarmupRequest extends TestCase {
@@ -43,9 +42,18 @@ class Test_SendWarmupRequest extends TestCase {
 				$args
 			)
 			->andReturn( $mockResponse );
-		Monkey\expect( 'wp_remote_retrieve_response_code' )
-			->once()
-			->andReturn( $success ? 200 : 400 );
+
+		if ( is_array( $mockResponse ) ) {
+			Monkey\expect( 'wp_remote_retrieve_response_code' )
+				->once()
+				->andReturn( $success ? 200 : 400 );
+
+			if ( 200 !== $mockResponse['response']['code'] ) {
+				Monkey\expect( 'wp_remote_retrieve_response_message' )
+					->once()
+					->andReturn( $mockResponse['response']['message'] );
+			}
+		}
 
 		if ( $success ) {
 			Monkey\expect( 'wp_remote_retrieve_body' )
@@ -54,13 +62,10 @@ class Test_SendWarmupRequest extends TestCase {
 			$this->assertTrue( $apiClient->send_warmup_request( $atts ) );
 			$this->assertEquals( $mockResponse['body'], $response->getValue( $apiClient ) );
 		} else {
-			$error_message = is_array($mockResponse)
+			$error_message = is_array( $mockResponse )
 				? $mockResponse['response']['message']
 				: $mockResponse->get_error_message();
 
-			Monkey\expect( 'wp_remote_retrieve_response_message' )
-				->once()
-				->andReturn( $error_message );
 
 			$this->assertFalse( $apiClient->send_warmup_request( $atts ) );
 			$this->assertEquals( $error_message, $error->getValue( $apiClient ) );
