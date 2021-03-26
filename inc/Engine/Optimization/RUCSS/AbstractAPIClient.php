@@ -63,13 +63,14 @@ abstract class AbstractAPIClient {
 	 * @return bool
 	 */
 	private function check_response( $response ): bool {
-		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
+		$this->response_code = is_array( $response )
+			? wp_remote_retrieve_response_code( $response )
+			: $response->get_error_code();
+
+		if ( 200 !== $this->response_code ) {
 			$this->error_message = is_array( $response )
 				? wp_remote_retrieve_response_message( $response )
 				: $response->get_error_message();
-			$this->response_code = is_array( $response )
-				? wp_remote_retrieve_response_code( $response )
-				: $response->get_error_code();
 
 			return false;
 		}
