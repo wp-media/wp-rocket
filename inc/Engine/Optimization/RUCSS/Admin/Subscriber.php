@@ -3,8 +3,9 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\RUCSS\Admin;
 
-use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
+use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class Subscriber implements Subscriber_Interface {
 	/**
@@ -49,6 +50,7 @@ class Subscriber implements Subscriber_Interface {
 	public static function get_subscribed_events() : array {
 		return [
 			'rocket_first_install_options'     => 'add_options_first_time',
+			'rocket_input_sanitize'            => [ 'sanitize_options', 10, 2 ],
 			'wp_rocket_upgrade'                => [
 				[ 'set_option_on_update', 13, 2 ],
 			],
@@ -142,5 +144,19 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function set_option_on_update( $new_version, $old_version ) {
 		$this->settings->set_option_on_update( $old_version );
+	}
+
+	/**
+	 * Sanitizes RUCSS options values when the settings form is submitted
+	 *
+	 * @since 3.9
+	 *
+	 * @param array         $input    Array of values submitted from the form.
+	 * @param AdminSettings $settings Settings class instance.
+	 *
+	 * @return array
+	 */
+	public function sanitize_options( $input, AdminSettings $settings ) : array {
+		return $this->settings->sanitize_options( $input, $settings );
 	}
 }
