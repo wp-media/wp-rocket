@@ -922,6 +922,10 @@ class Page {
 					'type'        => 'fields_container',
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description' => sprintf( __( 'Add missing width and height attributes to images. Helps prevent layout shifts and improve the reading experience for your visitors. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $dimensions['url'] ) . '" data-beacon-article="' . esc_attr( $dimensions['id'] ) . '" target="_blank" rel="noopener noreferrer">', '</a>' ),
+					'help'        => [
+						'id'  => $this->beacon->get_suggest( 'image_dimensions_section' ),
+						'url' => $dimensions['url'],
+					],
 					'page'        => 'media',
 				],
 				'embeds_section'     => [
@@ -1223,6 +1227,7 @@ class Page {
 		$cache_query_strings_beacon = $this->beacon->get_suggest( 'cache_query_strings' );
 		$never_cache_beacon         = $this->beacon->get_suggest( 'exclude_cache' );
 		$never_cache_cookie_beacon  = $this->beacon->get_suggest( 'exclude_cookie' );
+		$exclude_user_agent_beacon  = $this->beacon->get_suggest( 'exclude_user_agent' );
 		$always_purge_beacon        = $this->beacon->get_suggest( 'always_purge' );
 
 		$ecommerce_plugin = '';
@@ -1272,15 +1277,13 @@ class Page {
 				'cache_reject_ua_section'      => [
 					'title' => __( 'Never Cache User Agent(s)', 'rocket' ),
 					'type'  => 'fields_container',
+					'help'  => $exclude_user_agent_beacon,
 					'page'  => 'advanced_cache',
 				],
 				'cache_purge_pages_section'    => [
 					'title' => __( 'Always Purge URL(s)', 'rocket' ),
 					'type'  => 'fields_container',
-					'help'  => [
-						'id'  => $this->beacon->get_suggest( 'always_purge_section' ),
-						'url' => $always_purge_beacon['url'],
-					],
+					'help'  => $always_purge_beacon,
 					'page'  => 'advanced_cache',
 				],
 				'cache_query_strings_section'  => [
