@@ -6,7 +6,12 @@ return [
 			'config'       => [
 				'html'    => 'some html',
 				'url'     => 'http://example.com/path/to/style.css',
-				'options' => [ 1 ],
+				'options' => [
+					'treeshake'      => 1,
+					'wpr_email'      => 'rocketeer@wp-rocket.me',
+					'wpr_key'        => 'SuperSecretRocketeerKey',
+					'rucss_safelist' => [ 'http://example.com/my/safe/css.css' ],
+				],
 			],
 			'mockResponse' => [
 				'headers'  => [
@@ -43,11 +48,17 @@ return [
 				'unprocessed_css' => [],
 			],
 		],
+
 		'shouldSetErrorAndReturnFalseOnNon200Response'  => [
 			'config'         => [
 				'html'    => 'some html',
 				'url'     => 'http://example.com/path/to/style.css',
-				'options' => [ 1 ],
+				'options' => [
+					'treeshake'      => 1,
+					'wpr_email'      => 'rocketeer@wp-rocket.me',
+					'wpr_key'        => 'SuperSecretRocketeerKey',
+					'rucss_safelist' => [ 'http://example.com/my/safe/css.css' ],
+				],
 			],
 			'mockResponse' => [
 				'headers'  => [
@@ -77,11 +88,17 @@ HTML,
 				'message' => 'Not Found'
 			],
 		],
+
 		'shouldSetErrorAndReturnFalseOnWPErrorResponse' => [
 			'config'         => [
 				'html'    => 'some html',
 				'url'     => 'http://example.com/path/to/style.css',
-				'options' => [ 1 ],
+				'options' => [
+					'treeshake'      => 1,
+					'wpr_email'      => 'rocketeer@wp-rocket.me',
+					'wpr_key'        => 'SuperSecretRocketeerKey',
+					'rucss_safelist' => [ 'http://example.com/my/safe/css.css' ],
+				],
 			],
 			'mockResponse' => new WP_Error( 500, 'Whoops!' ),
 			'expected'     => [
@@ -90,29 +107,4 @@ HTML,
 			],
 		],
 	],
-
-//			'html'     => 'some html',
-//			'url'      => 'http://example.com/path/to/style.css',
-//			'success'  => true,
-//			'expected' => json_encode(
-//				[
-//					'code' => 200,
-//					'message' => 'Success',
-//					'contents' => [
-//						'shakedCSS' => 'h1 { color: red; }',
-//						'unProcessedCss' => [],
-//					],
-//				]
-//			)
-
-//		'shouldReturnErrorDataWhenFail' => [
-//			'html' => 'some html',
-//			'url' => 'http://example.com.path/to/my-script.js',
-//			'success' => false,
-//			'expected' => [
-//				'code' => 400,
-//				'message' => 'Unused CSS service is unavailable',
-//			]
-//		],
-//	],
 ];
