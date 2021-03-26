@@ -21,7 +21,7 @@ class APIClient extends AbstractAPIClient {
 	 *
 	 * @return bool
 	 */
-	public function send_warmup_request( $atts ) {
+	public function send_warmup_request( $atts ): bool {
 		$atts = wp_parse_args(
 			$atts,
 			[
@@ -40,5 +40,4 @@ class APIClient extends AbstractAPIClient {
 
 		return $this->handle_post( $args );
 	}
-
 }

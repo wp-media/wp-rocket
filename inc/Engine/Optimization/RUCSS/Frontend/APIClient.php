@@ -23,7 +23,7 @@ class APIClient extends AbstractAPIClient {
 	 *
 	 * @return array
 	 */
-	public function optimize( string $html, string $url, array $options ) : array {
+	public function optimize( string $html, string $url, array $options ): array {
 		$args = [
 			'body'    => [
 				'html'   => $html,
@@ -37,7 +37,7 @@ class APIClient extends AbstractAPIClient {
 
 		if ( ! $sent ) {
 			return [
-				'code'    => 400,
+				'code'    => $this->response_code,
 				'message' => $this->error_message,
 			];
 		}
@@ -61,5 +61,4 @@ class APIClient extends AbstractAPIClient {
 			'unprocessed_css' => ( is_array( $result['contents']['unProcessedCss'] ) ? $result['contents']['unProcessedCss'] : [] ),
 		];
 	}
-
 }
