@@ -1,4 +1,4 @@
-<?	
+<?php
 
 namespace WP_Rocket\Engine\Admin\Beacon;
 
