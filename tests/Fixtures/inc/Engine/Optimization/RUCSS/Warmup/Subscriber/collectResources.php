@@ -62,6 +62,34 @@ return [
 			],
 		],
 
+		'shouldCallResourceFetcherWithSomeResources' => [
+			'input' => [
+				'html' => '<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="http://example.org/wp-content/themes/theme-name/style.css">
+	<link rel="stylesheet" type="text/css" href="//example.org/wp-content/themes/theme-name/style.css">
+	<link rel="stylesheet" type="text/css" href="/wp-content/themes/theme-name/style.css">
+	<link rel="stylesheet" type="text/css" href="wp-content/themes/theme-name/style.css">
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<link rel="stylesheet" type="text/css" href="http://external.com/css/style.css">
+	<link rel="stylesheet" type="text/css" href="//external.com/css/style.css">
+</head>
+<body>
+content here
+</body>
+</html>',
+				'DONOTROCKETOPTIMIZE' => false,
+				'rocket_bypass' => false,
+				'remove_unused_css' => true,
+			],
+			'expected' => [
+				'allowed' => true,
+			],
+		],
+
 	],
 
 ];
