@@ -31,7 +31,7 @@ class Test_ProcessGenerate extends FilesystemTestCase {
 		self::$container = apply_filters( 'rocket_container', null );
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->api_client = Mockery::mock( APIClient::class );

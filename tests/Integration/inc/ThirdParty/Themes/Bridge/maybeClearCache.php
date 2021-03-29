@@ -14,7 +14,7 @@ class Test_MaybeClearCache extends FilesystemTestCase {
 	protected      $path_to_test_data = '/inc/ThirdParty/Themes/Bridge/maybeClearCache.php';
 	private static $container;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		self::$container = apply_filters( 'rocket_container', '' );
@@ -26,7 +26,7 @@ class Test_MaybeClearCache extends FilesystemTestCase {
 		self::$container->get( 'event_manager' )->remove_subscriber( self::$container->get( 'bridge_subscriber' ) );
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		add_filter( 'pre_option_stylesheet', [ $this, 'set_stylesheet' ] );

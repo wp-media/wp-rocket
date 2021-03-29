@@ -24,7 +24,7 @@ class Test_Optimize extends TestCase {
 	private   $minify;
 	private   $defer_js;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->minify = Mockery::mock( Minify\JS::class );
@@ -34,7 +34,7 @@ class Test_Optimize extends TestCase {
 
 		$this->defer_js = Mockery::mock( DeferJS::class );
 
-		Functions\when( 'esc_url' )->returnArg();
+		Functions\stubEscapeFunctions();
 		Functions\when( 'wp_scripts' )->alias( function () {
 			$wp_scripts                                 = new \stdClass();
 			$jquery                                     = new \stdClass();

@@ -17,7 +17,11 @@ use WP_Rocket\Engine\CriticalPath\DataManager;
  */
 class Test_ProcessGenerate extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/ProcessorService/processGenerate.php';
-	protected static $mockCommonWpFunctionsInSetUp = true;
+
+	public function setUp() : void {
+		parent::setUp();
+		Functions\stubTranslationFunctions();
+	}
 
 	/**
 	 * @dataProvider dataProvider

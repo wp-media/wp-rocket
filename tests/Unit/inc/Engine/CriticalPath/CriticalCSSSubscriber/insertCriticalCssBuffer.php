@@ -21,7 +21,7 @@ class Test_InsertCriticalCssBuffer extends FilesystemTestCase {
 
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSSSubscriber/insertCriticalCssBufferUnit.php';
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		Functions\when( 'wp_strip_all_tags' )->returnArg();

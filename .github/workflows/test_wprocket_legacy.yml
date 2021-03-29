@@ -1,4 +1,4 @@
-name: WPRocket Test - Legacy
+name: Unit/Integration tests - Legacy
 
 on:
   pull_request:
@@ -17,11 +17,13 @@ jobs:
       matrix:
         operating-system: [ubuntu-latest]
         php-versions: ['7.1', '7.2']
-        wp-versions: ['5.2.9']
+        wp-versions: ['5.3.6']
   
     name: WP ${{ matrix.wp-versions }} with PHP ${{ matrix.php-versions }} on ${{ matrix.operating-system }}.
     
     env:
+      WP_TESTS_DIR: "/tmp/tests/phpunit"
+      WP_CORE_DIR: "/tmp/wordpress-develop"
       ROCKETCDN_EMAIL: ${{ secrets.ROCKETCDN_EMAIL }}
       ROCKETCDN_PWD: ${{ secrets.ROCKETCDN_PWD }}
       ROCKETCDN_TOKEN: ${{ secrets.ROCKETCDN_TOKEN }}

@@ -14,21 +14,16 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group  HealthCheck
  */
 class Test_MissedCron extends TestCase {
-	protected static $mockCommonWpFunctionsInSetUp = true;
 	protected        $options;
 	private          $health;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
+
+		Functions\stubTranslationFunctions();
 
 		$this->options = Mockery::mock( Options_Data::class );
 		$this->health  = new HealthCheck( $this->options );
-
-		Functions\when( '_n' )->alias(
-			function ( $singular, $plural, $count ) {
-				return ( $count > 1 ) ? $plural : $singular;
-			}
-		);
 	}
 
 	/**

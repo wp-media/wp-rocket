@@ -11,11 +11,12 @@ use WP_Rocket\ThirdParty\Plugins\ModPagespeed;
  * @group ThirdParty
  */
 class Test_ShowAdminNotice extends TestCase {
-	protected static $mockCommonWpFunctionsInSetUp = true;
 	private $subscriber;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
+
+		Functions\stubTranslationFunctions();
 
 		$this->subscriber = new ModPagespeed();
 	}

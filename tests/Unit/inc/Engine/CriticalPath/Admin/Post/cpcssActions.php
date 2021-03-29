@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\Post;
 
+use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Engine\CriticalPath\Admin\Post;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
@@ -18,14 +19,13 @@ class Test_CpcssActions extends FilesystemTestCase {
 	use AdminTrait;
 
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/Admin/Post/cpcssActions.php';
-	protected static $mockCommonWpFunctionsInSetUp = true;
-
 	private $post;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->setUpMocks();
+		Functions\stubTranslationFunctions();
 
 		$this->post = Mockery::mock( Post::class . '[generate]', [
 				$this->options,

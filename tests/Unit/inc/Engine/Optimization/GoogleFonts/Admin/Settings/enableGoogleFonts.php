@@ -18,7 +18,7 @@ class Test_EnableGoogleFonts extends TestCase {
 	private $options;
 	private $settings;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->beacon       = Mockery::mock( Beacon::class );

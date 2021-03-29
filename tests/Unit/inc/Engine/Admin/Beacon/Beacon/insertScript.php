@@ -19,15 +19,16 @@ class Test_InsertScript extends TestCase {
 	private $options;
 	private $data;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/WP_Theme.php';
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
+		Functions\stubEscapeFunctions();
 		$this->options = Mockery::mock( Options_Data::class );
 		$this->data    = Mockery::mock( Data::class );
 		$this->beacon  = Mockery::mock( Beacon::class . '[generate]', [
@@ -49,7 +50,6 @@ class Test_InsertScript extends TestCase {
 	public function testShouldReturnBeaconScript( $config, $expected ) {
 		Functions\when( 'current_user_can' )->justReturn( true );
 		Functions\when( 'get_user_locale' )->justReturn( $config['locale'] );
-		Functions\when( 'esc_js' )->returnArg();
 		Functions\when( 'wp_json_encode' )->alias( 'json_encode' );
 		Functions\when( 'home_url' )->justReturn( 'http://example.org' );
 		Functions\when( 'get_transient' )->justReturn( $config['customer_data'] );

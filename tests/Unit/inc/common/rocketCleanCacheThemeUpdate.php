@@ -15,7 +15,7 @@ use WP_Theme;
 class Test_RocketCleanCacheThemeUpdate extends TestCase {
 	protected $path_to_test_data = 'rocketCleanCacheThemeUpdate.php';
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/WP_Theme.php';

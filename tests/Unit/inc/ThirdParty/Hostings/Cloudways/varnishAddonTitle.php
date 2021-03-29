@@ -1,6 +1,7 @@
 <?php
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\Cloudways;
 
+use Brain\Monkey\Functions;
 use WP_Rocket\ThirdParty\Hostings\Cloudways;
 use WPMedia\PHPUnit\Unit\TestCase;
 
@@ -10,7 +11,10 @@ use WPMedia\PHPUnit\Unit\TestCase;
  * @group ThirdParty
  */
 class Test_VarnishAddonTitle extends TestCase {
-	protected static $mockCommonWpFunctionsInSetUp = true;
+	public function setUp() : void {
+		parent::setUp();
+		Functions\stubTranslationFunctions();
+	}
 
 	public function tearDown() {
 		parent::tearDown();

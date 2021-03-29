@@ -10,7 +10,10 @@ use WP_Rocket\Subscriber\Tools\Detect_Missing_Tags_Subscriber;
  * @group Subscriber
  */
 class Test_MaybeMissingTags extends TestCase {
-	protected static $mockCommonWpFunctionsInSetUp = true;
+	public function setUp() : void {
+		parent::setUp();
+		Functions\stubTranslationFunctions();
+	}
 
 	public function testShouldIdentifyMissingHtmlAndBodyAndWPFooter() {
 		$missing_tag = new Detect_Missing_Tags_Subscriber();

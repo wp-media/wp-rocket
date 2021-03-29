@@ -10,7 +10,7 @@ use WP_Rocket\Tests\Integration\AdminTestCase;
  * @group  SettingsPage
  */
 class Test_EnqueueRocketScripts extends AdminTestCase {
-    public function setUp() {
+    public function setUp() : void {
         parent::setUp();
 
         $this->setRoleCap( 'administrator', 'rocket_manage_options' );

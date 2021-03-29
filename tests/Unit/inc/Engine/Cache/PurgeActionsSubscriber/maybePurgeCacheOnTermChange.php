@@ -17,7 +17,7 @@ use WP_Rocket\Engine\Cache\PurgeActionsSubscriber;
 class Test_MaybePurgeCacheOnTermChange extends TestCase {
 	private $subscriber;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->subscriber = new PurgeActionsSubscriber( Mockery::mock( Options_Data::class ), Mockery::mock( Purge::class ) );

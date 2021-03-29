@@ -16,7 +16,7 @@ use WPMedia\PHPUnit\Unit\TestCase;
 class Test_GetRocketI18nHomeUrl extends TestCase {
 	use i18nTrait;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->always_qtranxf_convertURL = true;

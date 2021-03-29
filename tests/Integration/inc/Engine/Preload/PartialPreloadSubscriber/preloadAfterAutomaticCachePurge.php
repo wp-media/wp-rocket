@@ -15,7 +15,7 @@ class Test_PreloadAfterAutomaticCachePurge extends TestCase {
 	private $permalink_structure;
 	private $manual_preload;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$container        = apply_filters( 'rocket_container', null );

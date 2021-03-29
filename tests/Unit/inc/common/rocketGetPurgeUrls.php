@@ -18,7 +18,7 @@ class Test_RocketGetPurgeUrls extends FilesystemTestCase {
 		'stylesheet' => '',
 	];
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		Functions\expect( 'get_option' )->withAnyArgs()->andReturnUsing( function( $option_name, $default=null ) {
