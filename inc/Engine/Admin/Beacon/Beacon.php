@@ -323,24 +323,18 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://fr.docs.wp-rocket.me/article/1015-nonces-delai-nettoyage-cache/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
-			'basic_section'              => [
-				'en' => '55231415e4b0221aadf25676,588286b32c7d3a4a60b95b6c,58869c492c7d3a7846303a3d',
-				'fr' => '569568269033603f7da30334,58e3be72dd8c8e5c57311c6e,59b7f049042863033a1cc5d0',
-			],
 			'css_section'                => [
-				'en' => '5569b671e4b027e1978e3c51,5d5214d10428631e94f94ae6,5f359695042863444aa04e26',
-				'fr' => '5697d2dc9033603f7da31041,5d5abcce0428634552d85c1c',
+				'en' => '556ef48ce4b01a224b428691,6001a83b2e764327f87bf189,5569b671e4b027e1978e3c51,5d5214d10428631e94f94ae6',
+				'fr' => '5697d2dc9033603f7da31041,5d5abcce0428634552d85c1c,5697d03bc69791436155ed69,601d4b83ac2f834ec5385ca5',
 			],
 			'js_section'                 => [
-				'en' => '587904cf90336009736c678e,54b9509de4b07997ea3f27c7,59236dfb0428634b4a3358f9,5f359695042863444aa04e26,556ef48ce4b01a224b428691,6001a83b2e764327f87bf189',
-				'fr' => '58a337c12c7d3a576d352cde,56967eebc69791436155e649,593fe9882c7d3a0747cddb77,5f523c46c9e77c0016384ba0,5697d03bc69791436155ed69,601d4b83ac2f834ec5385ca5',
+				'en' => '54b9509de4b07997ea3f27c7,59236dfb0428634b4a3358f9,5f359695042863444aa04e26,556ef48ce4b01a224b428691,6001a83b2e764327f87bf189',
+				'fr' => '56967eebc69791436155e649,593fe9882c7d3a0747cddb77,5f523c46c9e77c0016384ba0,5697d03bc69791436155ed69,601d4b83ac2f834ec5385ca5',
 			],
 			'file_optimization'          => [
 				'en' => [
-					[
-						'id' => '6001a83b2e764327f87bf189',
-						'url' => 'https://docs.wp-rocket.me/article/1407-eliminate-render-blocking-resources/?utm_source=wp_plugin&utm_medium=wp_rocket',
-					],
+					'id' => '6001a83b2e764327f87bf189',
+					'url' => 'https://docs.wp-rocket.me/article/1407-eliminate-render-blocking-resources/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 				'fr' => [
 					'id' => '601d4b83ac2f834ec5385ca5',
@@ -457,18 +451,6 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://fr.docs.wp-rocket.me/article/1358-precharger-les-liens/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
-			'never_cache'                => [
-				'en' => '5519ab03e4b061031402119f,559110d0e4b027e1978eba09,56b55ba49033600da1c0b687,553ac7bfe4b0eb143c62af44,587920b5c697915403a0e1f4,5569b671e4b027e1978e3c51',
-				'fr' => '56941c0cc69791436155d8ab,56943395c69791436155d99a,56cb9ba990336008e9e9e3d9,56942fc3c69791436155d987,5879230cc697915403a0e211,5697d2dc9033603f7da31041',
-			],
-			'always_purge_section'       => [
-				'en' => '555c7e9ee4b027e1978e17a,55151406e4b0610314020a3f,5632858890336002f86d903e,5792c0c1903360293603896b',
-				'fr' => '568f7df49033603f7da2ec72,5694194d9033603f7da2fb00,56951208c69791436155de2a,57a4a0c3c697910783242008',
-			],
-			'query_strings'              => [
-				'en' => '590a83610428634b4a32d52c',
-				'fr' => '597a04fd042863033a1b6da4',
-			],
 			'ecommerce'                  => [
 				'en' => [
 					'id'  => '555c619ce4b027e1978e1767',
@@ -519,7 +501,7 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 			],
 			'cleanup'                    => [
 				'en' => '60259156b3ebfb109b58182d,55dcaa28e4b01d7a6a9bd373,578cd762c6979160ca1441cd,5569d11ae4b01a224b427725',
-				'fr' => '60259156b3ebfb109b58182d,5697cebbc69791436155ed5e,58b6e7a0dd8c8e56bfa819f5,5697cd85c69791436155ed50',
+				'fr' => '6040c5b90a2dae5b58fb5d29,5697cebbc69791436155ed5e,58b6e7a0dd8c8e56bfa819f5,5697cd85c69791436155ed50',
 			],
 			'slow_admin'                 => [
 				'en' => [
@@ -527,7 +509,7 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://docs.wp-rocket.me/article/1443-database-optimizations-are-not-working/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 				'fr' => [
-					'id'  => '60259156b3ebfb109b58182d',
+					'id'  => '6040c5b90a2dae5b58fb5d29',
 					'url' => 'https://fr.docs.wp-rocket.me/article/1486-les-optimisations-de-la-base-de-donnees-ne-fonctionne-pas/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
