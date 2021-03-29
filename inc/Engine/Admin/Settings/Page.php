@@ -1262,10 +1262,7 @@ class Page {
 					'type'        => 'fields_container',
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description' => $reject_uri_desc,
-					'help'        => [
-						'id'  => $this->beacon->get_suggest( 'never_cache' ),
-						'url' => $never_cache_beacon['url'],
-					],
+					'help'        => $never_cache_beacon,
 					'page'        => 'advanced_cache',
 				],
 				'cache_reject_cookies_section' => [
@@ -1291,10 +1288,7 @@ class Page {
 					'type'        => 'fields_container',
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description' => sprintf( __( '%1$sCache for query strings%2$s enables you to force caching for specific GET parameters.', 'rocket' ), '<a href="' . esc_url( $cache_query_strings_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $cache_query_strings_beacon['id'] ) . '" target="_blank">', '</a>' ),
-					'help'        => [
-						'id'  => $this->beacon->get_suggest( 'query_strings' ),
-						'url' => $cache_query_strings_beacon['url'],
-					],
+					'help'        => $cache_query_strings_beacon,
 					'page'        => 'advanced_cache',
 				],
 			]
@@ -1654,6 +1648,7 @@ class Page {
 	 */
 	private function heartbeat_section() {
 		$heartbeat_beacon = $this->beacon->get_suggest( 'heartbeat_settings' );
+
 		$this->settings->add_page_section(
 			'heartbeat',
 			[
@@ -1669,10 +1664,7 @@ class Page {
 					'description' => __( 'Reducing or disabling the Heartbeat API’s activity can help save some of your server’s resources.', 'rocket' ),
 					'type'        => 'fields_container',
 					'page'        => 'heartbeat',
-					'help'        => [
-						'id'  => $heartbeat_beacon['id'],
-						'url' => $heartbeat_beacon['url'],
-					],
+					'help'        => $heartbeat_beacon,
 				],
 				'heartbeat_settings' => [
 					'title'       => __( 'Reduce or disable Heartbeat activity', 'rocket' ),
