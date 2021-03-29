@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Engine\Deactivation;
 
-use WP_Rocket\Engine\Container\Container;
+use WP_Rocket\Dependencies\League\Container\Container;
 use WP_Rocket\ThirdParty\Hostings\HostResolver;
 
 class Deactivation {

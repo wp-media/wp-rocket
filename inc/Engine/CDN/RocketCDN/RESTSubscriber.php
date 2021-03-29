@@ -125,7 +125,7 @@ class RESTSubscriber implements Subscriber_Interface {
 	 *
 	 * @param \WP_REST_Request $request the WP REST Request object.
 	 *
-	 * @return string
+	 * @return \WP_REST_Response|\WP_Error
 	 */
 	public function enable( \WP_REST_Request $request ) {
 		$params = $request->get_body_params();
@@ -150,7 +150,7 @@ class RESTSubscriber implements Subscriber_Interface {
 	 *
 	 * @param \WP_REST_Request $request the WP Rest Request object.
 	 *
-	 * @return string
+	 * @return \WP_REST_Response|\WP_Error
 	 */
 	public function disable( \WP_REST_Request $request ) {
 		$this->cdn_options->disable();

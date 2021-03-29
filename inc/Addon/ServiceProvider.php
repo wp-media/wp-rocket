@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Addon;
 
-use WP_Rocket\Engine\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Admin\Options_Data;
 
 /**
@@ -29,31 +29,34 @@ class ServiceProvider extends AbstractServiceProvider {
 	];
 
 	/**
-	 * Registers the subscribers in the container.
+	 * Registers items with the container
 	 *
-	 * @since 3.3
+	 * @return void
 	 */
 	public function register() {
 		$options = $this->getContainer()->get( 'options' );
 
 		// Busting Factory.
 		$this->getContainer()->add( 'busting_factory', 'WP_Rocket\Addon\Busting\BustingFactory' )
-			->withArgument( rocket_get_constant( 'WP_ROCKET_CACHE_BUSTING_PATH' ) )
-			->withArgument( rocket_get_constant( 'WP_ROCKET_CACHE_BUSTING_URL' ) );
+			->addArgument( rocket_get_constant( 'WP_ROCKET_CACHE_BUSTING_PATH' ) )
+			->addArgument( rocket_get_constant( 'WP_ROCKET_CACHE_BUSTING_URL' ) );
 
 		// Facebook Tracking Subscriber.
 		$this->getContainer()->share( 'facebook_tracking', 'WP_Rocket\Addon\FacebookTracking\Subscriber' )
-			->withArgument( $this->getContainer()->get( 'busting_factory' ) )
-			->withArgument( $options );
+			->addArgument( $this->getContainer()->get( 'busting_factory' ) )
+			->addArgument( $options )
+			->addTag( 'common_subscriber' );
 
 		// Google Tracking Subscriber.
 		$this->getContainer()->share( 'google_tracking', 'WP_Rocket\Addon\GoogleTracking\Subscriber' )
-			->withArgument( $this->getContainer()->get( 'busting_factory' ) )
-			->withArgument( $options );
+			->addArgument( $this->getContainer()->get( 'busting_factory' ) )
+			->addArgument( $options )
+			->addTag( 'common_subscriber' );
 
 		// Sucuri Addon.
 		$this->getContainer()->share( 'sucuri_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Security\Sucuri_Subscriber' )
-			->withArgument( $options );
+			->addArgument( $options )
+			->addTag( 'common_subscriber' );
 
 		// Cloudflare Addon.
 		$this->addon_cloudflare( $options );
@@ -76,13 +79,14 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->provides[] = 'cloudflare_subscriber';
 
 		$this->getContainer()->add( 'cloudflare_api', 'WPMedia\Cloudflare\APIClient' )
-			->withArgument( rocket_get_constant( 'WP_ROCKET_VERSION' ) );
+			->addArgument( rocket_get_constant( 'WP_ROCKET_VERSION' ) );
 		$this->getContainer()->add( 'cloudflare', 'WPMedia\Cloudflare\Cloudflare' )
-			->withArgument( $options )
-			->withArgument( $this->getContainer()->get( 'cloudflare_api' ) );
+			->addArgument( $options )
+			->addArgument( $this->getContainer()->get( 'cloudflare_api' ) );
 		$this->getContainer()->share( 'cloudflare_subscriber', 'WPMedia\Cloudflare\Subscriber' )
-			->withArgument( $this->getContainer()->get( 'cloudflare' ) )
-			->withArgument( $options )
-			->withArgument( $this->getContainer()->get( 'options_api' ) );
+			->addArgument( $this->getContainer()->get( 'cloudflare' ) )
+			->addArgument( $options )
+			->addArgument( $this->getContainer()->get( 'options_api' ) )
+			->addTag( 'cloudflare_subscriber' );
 	}
 }
