@@ -433,7 +433,7 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://docs.wp-rocket.me/article/1302-prefetch-dns-requests/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 				'fr' => [
-					'id' => '5e1891892c7d3a7e9ae60983',
+					'id'  => '5e1891892c7d3a7e9ae60983',
 					'url' => 'https://fr.docs.wp-rocket.me/article/1303-prechargement-requetes-dns/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
@@ -487,13 +487,13 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://fr.docs.wp-rocket.me/article/196-exclure-pages-cache/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
-			'exclude_cookie'              => [
+			'exclude_cookie'             => [
 				'en' => [
 					'id'  => '5fe5462df24ccf588e3fe804',
 					'url' => 'https://docs.wp-rocket.me/article/1382-never-cache-cookies/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
-			'exclude_user_agent'          => [
+			'exclude_user_agent'         => [
 				'en' => [
 					'id'  => '5ff728d3551e0c2853f3a245',
 					'url' => 'https://docs.wp-rocket.me/article/1389-never-cache-user-agents/?utm_source=wp_plugin&utm_medium=wp_rocket',
