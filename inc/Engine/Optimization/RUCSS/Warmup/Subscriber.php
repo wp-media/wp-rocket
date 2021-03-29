@@ -53,7 +53,6 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function collect_resources( $html ) {
 		if ( $this->is_allowed() ) {
-			var_dump('aaaaaaaaaaaaaaa');
 			$this->resource_fetcher->data(
 				[
 					'html' => $html,
