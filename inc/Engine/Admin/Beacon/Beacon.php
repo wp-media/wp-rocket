@@ -328,7 +328,7 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 				'fr' => '569568269033603f7da30334,58e3be72dd8c8e5c57311c6e,59b7f049042863033a1cc5d0',
 			],
 			'css_section'                => [
-				'en' => '5569b671e4b027e1978e3c51,5d5214d10428631e94f94ae6',
+				'en' => '5569b671e4b027e1978e3c51,5d5214d10428631e94f94ae6,5f359695042863444aa04e26',
 				'fr' => '5697d2dc9033603f7da31041,5d5abcce0428634552d85c1c',
 			],
 			'js_section'                 => [
@@ -336,6 +336,16 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 				'fr' => '58a337c12c7d3a576d352cde,56967eebc69791436155e649,593fe9882c7d3a0747cddb77,5f523c46c9e77c0016384ba0,5697d03bc69791436155ed69,601d4b83ac2f834ec5385ca5',
 			],
 			'file_optimization'          => [
+				'en' => [
+					[
+						'id' => '6001a83b2e764327f87bf189',
+						'url' => 'https://docs.wp-rocket.me/article/1407-eliminate-render-blocking-resources/?utm_source=wp_plugin&utm_medium=wp_rocket',
+					],
+				],
+				'fr' => [
+					'id' => '601d4b83ac2f834ec5385ca5',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1440-eliminez-les-ressources-qui-bloquent-le-rendu/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
 			],
 			'combine'                    => [
 				'en' => [
