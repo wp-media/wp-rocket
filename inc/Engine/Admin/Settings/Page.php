@@ -922,10 +922,7 @@ class Page {
 					'type'        => 'fields_container',
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description' => sprintf( __( 'Add missing width and height attributes to images. Helps prevent layout shifts and improve the reading experience for your visitors. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $dimensions['url'] ) . '" data-beacon-article="' . esc_attr( $dimensions['id'] ) . '" target="_blank" rel="noopener noreferrer">', '</a>' ),
-					'help'        => [
-						'id'  => $this->beacon->get_suggest( 'image_dimensions_section' ),
-						'url' => $dimensions['url'],
-					],
+					'help'        => $dimensions,
 					'page'        => 'media',
 				],
 				'embeds_section'     => [
@@ -1103,10 +1100,7 @@ class Page {
 					'title'       => __( 'Prefetch DNS Requests', 'rocket' ),
 					'type'        => 'fields_container',
 					'description' => __( 'DNS prefetching can make external files load faster, especially on mobile networks', 'rocket' ),
-					'help'        => [
-						'id'  => $this->beacon->get_suggest( 'dns_prefetch' ),
-						'url' => $bot_beacon['url'],
-					],
+					'help'        => $this->beacon->get_suggest( 'dns_prefetch' ),
 					'page'        => 'preload',
 				],
 				'preload_fonts_section' => [
