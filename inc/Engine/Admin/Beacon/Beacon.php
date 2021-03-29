@@ -333,11 +333,11 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 			],
 			'file_optimization'          => [
 				'en' => [
-					'id' => '6001a83b2e764327f87bf189',
+					'id'  => '6001a83b2e764327f87bf189',
 					'url' => 'https://docs.wp-rocket.me/article/1407-eliminate-render-blocking-resources/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 				'fr' => [
-					'id' => '601d4b83ac2f834ec5385ca5',
+					'id'  => '601d4b83ac2f834ec5385ca5',
 					'url' => 'https://fr.docs.wp-rocket.me/article/1440-eliminez-les-ressources-qui-bloquent-le-rendu/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
@@ -428,8 +428,14 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 				],
 			],
 			'dns_prefetch'               => [
-				'en' => '5e055a602c7d3a7e9ae5881c',
-				'fr' => '5e1891892c7d3a7e9ae60983',
+				'en' => [
+					'id'  => '5e055a602c7d3a7e9ae5881c',
+					'url' => 'https://docs.wp-rocket.me/article/1302-prefetch-dns-requests/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id' => '5e1891892c7d3a7e9ae60983',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1303-prechargement-requetes-dns/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
 			],
 			'fonts_preload'              => [
 				'en' => [
@@ -481,7 +487,7 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://fr.docs.wp-rocket.me/article/196-exclure-pages-cache/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
-			'exclude_cookie'             => [
+			'exclude_cookie'              => [
 				'en' => [
 					'id'  => '5fe5462df24ccf588e3fe804',
 					'url' => 'https://docs.wp-rocket.me/article/1382-never-cache-cookies/?utm_source=wp_plugin&utm_medium=wp_rocket',
@@ -497,7 +503,7 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 				'en' => [
 					'id'  => '5ff72b4dfd168b77735328b7',
 					'url' => 'https://docs.wp-rocket.me/article/1391-always-purge-url-s/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				]
+				],
 			],
 			'cleanup'                    => [
 				'en' => '60259156b3ebfb109b58182d,55dcaa28e4b01d7a6a9bd373,578cd762c6979160ca1441cd,5569d11ae4b01a224b427725',
@@ -642,10 +648,6 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'id'  => '5fd20dcab6c6251cd1c35079',
 					'url' => 'https://fr.docs.wp-rocket.me/article/1369-ajouter-les-dimensions-dimage-manquantes/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
-			],
-			'image_dimensions_section'           => [
-				'en' => '5fc70216de1bfa158fb54737',
-				'fr' => '5fd20dcab6c6251cd1c35079',
 			],
 			'exclude_defer_js'           => [
 				'en' => [
