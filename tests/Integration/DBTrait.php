@@ -6,6 +6,22 @@ use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\Resources;
 
 trait DBTrait {
 
+	public static function installFresh() {
+		$container             = apply_filters( 'rocket_container', null );
+
+		$rucss_resources_table = $container->get( 'rucss_resources_table' );
+		if ( $rucss_resources_table->exists() ) {
+			$rucss_resources_table->uninstall();
+		}
+		$rucss_resources_table->install();
+
+		$rucss_usedcss_table   = $container->get( 'rucss_usedcss_table' );
+		if ( $rucss_usedcss_table->exists() ) {
+			$rucss_usedcss_table->uninstall();
+		}
+		$rucss_usedcss_table->install();
+	}
+
 	public static function removeDBHooks() {
 		$container             = apply_filters( 'rocket_container', null );
 		$rucss_resources_table = $container->get( 'rucss_resources_table' );

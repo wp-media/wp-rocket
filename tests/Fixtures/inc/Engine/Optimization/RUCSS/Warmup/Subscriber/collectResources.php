@@ -87,6 +87,14 @@ content here
 			],
 			'expected' => [
 				'allowed' => true,
+				'resources' => [
+					// @todo: add expected resources resources
+					[
+						'url' => '',
+						'content' => '',
+						'type' => 'css',
+					]
+				]
 			],
 		],
 

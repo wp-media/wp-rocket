@@ -147,6 +147,14 @@ class UsedCSS {
 		$unprocessed_links  = $this->unprocessed_flat_array( 'link', $unprocessed_css );
 		$unprocessed_styles = $this->unprocessed_flat_array( 'inline', $unprocessed_css );
 
+		if ( ! $link_styles ) {
+			$link_styles = [];
+		}
+
+		if ( ! $inline_styles ) {
+			$inline_styles = [];
+		}
+
 		foreach ( $link_styles as $style ) {
 			if (
 				! (bool) preg_match( '/rel=[\'"]stylesheet[\'"]/is', $style[0] )
