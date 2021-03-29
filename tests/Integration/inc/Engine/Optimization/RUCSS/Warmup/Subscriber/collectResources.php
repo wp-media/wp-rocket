@@ -19,15 +19,25 @@ class Test_CollectResources extends TestCase {
 	private $input = [];
 
 	public function setUp(): void {
-		parent::setUp();
-
 		DBTrait::removeDBHooks();
+
+		$GLOBALS['wp'] = (object) [
+			'query_vars' => [],
+			'request'    => 'http://example.org',
+			'public_query_vars' => [
+				'embed',
+			],
+		];
+
+		parent::setUp();
 	}
 
 	public function tearDown() {
-		parent::tearDown();
+		unset( $GLOBALS['wp'] );
 
 		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
+
+		parent::tearDown();
 	}
 
 	/**
@@ -38,6 +48,10 @@ class Test_CollectResources extends TestCase {
 		$this->donotrocketoptimize = isset( $input['DONOTROCKETOPTIMIZE'] ) ? $input['DONOTROCKETOPTIMIZE'] : false;
 
 		$this->input = $input;
+
+		if ( isset( $input['rocket_bypass'] ) ) {
+			$GLOBALS['wp']->query_vars['nowprocket'] = $input['rocket_bypass'];
+		}
 
 		add_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
 
