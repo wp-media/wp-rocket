@@ -50,7 +50,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() : array {
 		return [
-			'rocket_buffer' => [ 'treeshake', 1 ],
+			'rocket_buffer' => [ 'treeshake', 11 ],
 		];
 	}
 
