@@ -1,6 +1,7 @@
 <?php
 namespace WP_Rocket\Addon\GoogleTracking;
 
+use WP_Rocket\deprecated\DeprecatedClassTrait;
 use WP_Rocket\Addon\Busting\FileBustingTrait;
 use WP_Rocket\Logger\Logger;
 use WP_Rocket\Busting\Abstract_Busting;
@@ -9,10 +10,12 @@ use WP_Filesystem_Direct;
 /**
  * Manages the cache busting of the Google Tag Manager file
  *
+ * @since 3.9 deprecated.
  * @since 3.1
  */
 class GoogleTagManager extends Abstract_Busting {
 	use FileBustingTrait;
+	use DeprecatedClassTrait;
 
 	/**
 	 * Context used for the logger.
@@ -71,6 +74,8 @@ class GoogleTagManager extends Abstract_Busting {
 	 * @param WP_Filesystem_Direct $filesystem   Instance of the filesystem handler.
 	 */
 	public function __construct( $busting_path, $busting_url, GoogleAnalytics $ga_busting, $filesystem = null ) {
+		self::deprecated_class( '3.9' );
+
 		$blog_id            = get_current_blog_id();
 		$this->busting_path = $busting_path . $blog_id . '/';
 		$this->busting_url  = $busting_url . $blog_id . '/';

@@ -1,15 +1,18 @@
 <?php
 namespace WP_Rocket\Busting;
 
+use WP_Rocket\deprecated\DeprecatedClassTrait;
 use WP_Rocket\Logger\Logger;
 
 /**
  * Manages the cache busting of the Facebook SDK file.
  *
- * @since  3.2
+ * @since 3.9 deprecated.
+ * @since 3.2
  * @author Grégory Viguier
  */
 class Facebook_SDK extends Abstract_Busting {
+	use DeprecatedClassTrait;
 
 	/**
 	 * Facebook SDK URL.
@@ -54,6 +57,8 @@ class Facebook_SDK extends Abstract_Busting {
 	 * @param string $busting_url  URL of the busting directory.
 	 */
 	public function __construct( $busting_path, $busting_url ) {
+		self::deprecated_class( '3.9' );
+
 		/** Warning: the file name and script URL are dynamic, and must be run through sprintf(). */
 		$this->busting_path = $busting_path . 'facebook-tracking/';
 		$this->busting_url  = $busting_url . 'facebook-tracking/';
