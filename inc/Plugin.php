@@ -239,8 +239,6 @@ class Plugin {
 			'cdn_subscriber',
 			'critical_css_subscriber',
 			'sucuri_subscriber',
-			'facebook_tracking',
-			'google_tracking',
 			'expired_cache_purge_subscriber',
 			'preload_subscriber',
 			'sitemap_preload_subscriber',
