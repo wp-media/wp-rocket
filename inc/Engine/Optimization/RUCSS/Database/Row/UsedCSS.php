@@ -23,8 +23,7 @@ class UsedCSS extends Row {
 		$this->css            = str_replace( 'shaker-parser:"dashf', 'content:"\f', $this->css );
 		$this->css            = str_replace( 'shaker-parser:"dashe', 'content:"\e', $this->css );
 		$this->css            = str_replace( 'shaker-parser:\'dashf', 'content:\'\f', $this->css );
-		$this->css            = str_replace( 'shaker-parser:\'dashe', 'content:\'\e', $this->css );d
-
+		$this->css            = str_replace( 'shaker-parser:\'dashe', 'content:\'\e', $this->css );
 		$this->unprocessedcss = json_decode( $this->unprocessedcss, true );
 		$this->retries        = (int) $this->retries;
 		$this->is_mobile      = (bool) $this->is_mobile;
