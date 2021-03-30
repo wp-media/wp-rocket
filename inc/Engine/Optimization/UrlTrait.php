@@ -98,9 +98,11 @@ trait UrlTrait {
 	 * @return string Normalized url.
 	 */
 	private function normalize_url( $url ) {
-		$url_host = wp_parse_url( $url, PHP_URL_HOST );
+		$parsed_url = wp_parse_url( $url );
 
-		if ( empty( $url_host ) ) {
+		$url = str_replace('?' . $parsed_url['query'], '', $url);
+
+		if ( empty( $parsed_url['host'] ) ) {
 			$relative_url        = ltrim( wp_make_link_relative( $url ), '/' );
 			$site_url_components = wp_parse_url( site_url( '/' ) );
 			return $site_url_components['scheme'] . '://' . $site_url_components['host'] . '/' . $relative_url;
