@@ -47,8 +47,6 @@ class Test_Uninstall extends FilesystemTestCase {
 	private $events = [
 		'rocket_purge_time_event',
 		'rocket_database_optimization_time_event',
-		'rocket_google_tracking_cache_update',
-		'rocket_facebook_tracking_cache_update',
 		'rocket_cache_dir_size_check',
 		'rocketcdn_check_subscription_status_event',
 		'rocket_cron_deactivate_cloudflare_devmode',

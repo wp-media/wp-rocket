@@ -66,8 +66,6 @@ $default = [
 	'heartbeat_editor_behavior'   => 'reduce_periodicity',
 	'varnish_auto_purge'          => 0,
 	'analytics_enabled'           => 0,
-	'google_analytics_cache'      => 0,
-	'facebook_pixel_cache'        => 0,
 	'sucury_waf_cache_sync'       => 0,
 	'sucury_waf_api_key'          => '',
 ];
@@ -128,8 +126,10 @@ $integration[ 'exclude_lazyload' ] = [];
 return [
 	'test_data' => [
 		'defaultOptionsArray' => [
-			'unit'        => $default,
-			'integration' => $integration,
+			[
+				'unit'        => $default,
+				'integration' => $integration,
+			],
 		],
 	],
 ];

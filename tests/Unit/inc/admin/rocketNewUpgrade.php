@@ -3,7 +3,7 @@
 namespace WP_Rocket\Tests\Unit\inc\admin;
 
 use Brain\Monkey\Functions;
-use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * @covers ::rocket_new_upgrade
@@ -38,6 +38,7 @@ class Test_RocketNewUpgrade extends TestCase {
 			->andReturn( [] );
 		Functions\expect( 'update_option' )
 			->once();
+		Functions\when( 'wp_clear_scheduled_hook' )->justReturn( 1 );
 
 		rocket_new_upgrade( '3.7', '3.4.4' );
 	}
