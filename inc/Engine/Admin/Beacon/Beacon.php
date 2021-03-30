@@ -505,11 +505,7 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://docs.wp-rocket.me/article/1391-always-purge-url-s/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
-			'cleanup'                    => [
-				'en' => '60259156b3ebfb109b58182d,55dcaa28e4b01d7a6a9bd373,578cd762c6979160ca1441cd,5569d11ae4b01a224b427725',
-				'fr' => '6040c5b90a2dae5b58fb5d29,5697cebbc69791436155ed5e,58b6e7a0dd8c8e56bfa819f5,5697cd85c69791436155ed50',
-			],
-			'slow_admin'                 => [
+			'db_optimization'            => [
 				'en' => [
 					'id'  => '60259156b3ebfb109b58182d',
 					'url' => 'https://docs.wp-rocket.me/article/1443-database-optimizations-are-not-working/?utm_source=wp_plugin&utm_medium=wp_rocket',

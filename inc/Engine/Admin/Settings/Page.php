@@ -1359,18 +1359,13 @@ class Page {
 			]
 		);
 
-		$database_beacon = $this->beacon->get_suggest( 'slow_admin' );
-
 		$this->settings->add_settings_sections(
 			[
 				'post_cleanup_section'       => [
 					'title'       => __( 'Post Cleanup', 'rocket' ),
 					'type'        => 'fields_container',
 					'description' => __( 'Post revisions and drafts will be permanently deleted. Do not use this option if you need to retain revisions or drafts.', 'rocket' ),
-					'help'        => [
-						'id'  => $this->beacon->get_suggest( 'cleanup' ),
-						'url' => $database_beacon['url'],
-					],
+					'help'        => $this->beacon->get_suggest( 'db_optimization' ),
 					'page'        => 'database',
 				],
 				'comments_cleanup_section'   => [
