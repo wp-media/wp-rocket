@@ -2,9 +2,15 @@
 
 namespace WP_Rocket\Tests\Integration;
 
-use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\Resources;
-
 trait DBTrait {
+
+	public static function resourceFound( array $resource ) : bool {
+		$container = apply_filters( 'rocket_container', null );
+		$resource_query = $container->get( 'rucss_resources_query' );
+		$result = $resource_query->query( $resource );
+
+		return true;
+	}
 
 	public static function installFresh() {
 		$container             = apply_filters( 'rocket_container', null );

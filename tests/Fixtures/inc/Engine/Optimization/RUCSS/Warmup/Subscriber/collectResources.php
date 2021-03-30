@@ -2,6 +2,22 @@
 
 return [
 
+	'vfs_dir' => 'public/',
+
+	'structure' => [
+		'wp-content' => [
+			'themes' => [
+				'theme-name' => [
+					'style.css' => '.theme-name{color:red;}'
+				]
+			]
+		],
+
+		'css' => [
+			'style.css' => '.first{color:red;}',
+		],
+	],
+
 	'test_data' => [
 
 		'shouldBailoutWhenDONOTROCKETOPTIMIZEEnabled' => [
@@ -88,11 +104,15 @@ content here
 			'expected' => [
 				'allowed' => true,
 				'resources' => [
-					// @todo: add expected resources resources
 					[
-						'url' => '',
-						'content' => '',
-						'type' => 'css',
+						'url' => 'http://example.org/wp-content/themes/theme-name/style.css',
+						'content' => '.theme-name{color:red;}',
+						'type' => 'css'
+					],
+					[
+						'url' => 'http://example.org/css/style.css',
+						'content' => '.first{color:green;}',
+						'type' => 'css'
 					]
 				]
 			],
