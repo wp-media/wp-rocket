@@ -13,7 +13,14 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 
 	use RegexTrait, UrlTrait;
 
+	/**
+	 * Regex for stylesheets
+	 */
 	const LINK_PATTERN   = '<link\s+(?:[^>]+[\s"\'])?href\s*=\s*[\'"]\s*(?<url>[^\'"\s]+)\s*?[\'"](?:[^>]+)?\/?>';
+
+	/**
+	 * Regex for scripts.
+	 */
 	const SCRIPT_PATTERN = '<script\s+(?:[^>]+[\s\'"])?src\s*=\s*[\'"]\s*?(?<url>[^\'"\s]+)\s*?[\'"](?:[^>]+)?\/?>';
 
 	/**
@@ -117,6 +124,10 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 				continue;
 			}
 
+			if ( 'js' === $type && ! $this->is_valid_script( $resource[0] ) ) {
+				continue;
+			}
+
 			list( $path, $contents ) = $this->get_url_details( $resource['url'] );
 
 			if ( empty( $contents ) ) {
@@ -142,6 +153,19 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 	 */
 	private function is_link_stylesheet( string $link ) : bool {
 		return (bool) preg_match( '/rel=[\'"]stylesheet[\'"]/is', $link );
+	}
+
+	/**
+	 * Check if script is valid.
+	 *
+	 * @since 3.9
+	 *
+	 * @param string $script Script tag to be validated.
+	 *
+	 * @return bool
+	 */
+	private function is_valid_script( string $script ) : bool {
+		return ! preg_match( '/(application\/ld\+json)/i', $script );
 	}
 
 	/**
