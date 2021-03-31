@@ -71,14 +71,6 @@ class Test_CollectResources extends FilesystemTestCase {
 		}
 
 		$this->assertSame( $input['html'], apply_filters( 'rocket_buffer', $input['html'] ) );
-
-		// Check if resources are saved into DB with proper values.
-		if ( ! empty( $expected['resources'] ) ) {
-			foreach ( $expected['resources'] as $resource ) {
-				$this->assertTrue( self::resourceFound( $resource ) );
-			}
-		}
-
 	}
 
 	public function set_rucss_option() {
