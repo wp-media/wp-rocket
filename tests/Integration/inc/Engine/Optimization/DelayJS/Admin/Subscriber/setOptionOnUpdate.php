@@ -14,33 +14,35 @@ class Test_SetOptionOnUpdate extends TestCase{
 	public function setUp() : void {
 		parent::setUp();
 
-		$this->unregisterAllCallbacksExcept( 'wp_rocket_upgrade', 'set_option_on_update' );
+		$this->setUpSettings();
+		$this->unregisterAllCallbacksExcept( 'wp_rocket_upgrade', 'set_option_on_update', 13 );
 	}
 
 	public function tearDown() {
 		parent::tearDown();
 
+		$this->tearDownSettings();
 		$this->restoreWpFilter( 'wp_rocket_upgrade' );
 	}
 
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldDoExpected( $old_version, $valid_version ) {
+	public function testShouldDoExpected( $options, $old_version, $expected ) {
+		$this->mergeExistingSettingsAndUpdate( $options );
+
 		do_action( 'wp_rocket_upgrade', '', $old_version );
 
-		$options = get_option( 'wp_rocket_settings' );
+		$updated = get_option( 'wp_rocket_settings' );
 
-		if ( $valid_version ) {
-			$this->assertSame(
-				0,
-				$options['delay_js']
-			);
-		} else {
-			$this->assertSame(
-				1,
-				$options['delay_js']
-			);
-		}
+		$this->assertSame(
+			$expected['delay_js'],
+			$updated['delay_js']
+		);
+
+		$this->assertSame(
+			$expected['delay_js_exclusions'],
+			$updated['delay_js_exclusions']
+		);
 	}
 }
