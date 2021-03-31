@@ -16,7 +16,7 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 	/**
 	 * Regex for stylesheets
 	 */
-	const LINK_PATTERN   = '<link\s+(?:[^>]+[\s"\'])?href\s*=\s*[\'"]\s*(?<url>[^\'"\s]+)\s*?[\'"](?:[^>]+)?\/?>';
+	const LINK_PATTERN = '<link\s+(?:[^>]+[\s"\'])?href\s*=\s*[\'"]\s*(?<url>[^\'"\s]+)\s*?[\'"](?:[^>]+)?\/?>';
 
 	/**
 	 * Regex for scripts.
@@ -165,7 +165,7 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 	 * @return bool
 	 */
 	private function is_valid_script( string $script ) : bool {
-		return ! preg_match( '/(application\/ld\+json)/i', $script );
+		return ! preg_match( '/(application\/ld\+json)|(application\/json)/i', $script );
 	}
 
 	/**
