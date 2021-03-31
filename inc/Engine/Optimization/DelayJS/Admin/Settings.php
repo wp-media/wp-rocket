@@ -70,7 +70,7 @@ class Settings {
 	 */
 	public function sanitize_options( $input, $settings ) : array {
 		$input['delay_js']            = $settings->sanitize_checkbox( $input, 'delay_js' );
-		$input['delay_js_exclusions'] = !empty( $input['delay_js_exclusions'] ) ? rocket_sanitize_textarea_field( 'delay_js_exclusions', $input['delay_js_exclusions'] ) : [];
+		$input['delay_js_exclusions'] = ! empty( $input['delay_js_exclusions'] ) ? rocket_sanitize_textarea_field( 'delay_js_exclusions', $input['delay_js_exclusions'] ) : [];
 
 		return $input;
 	}
@@ -84,7 +84,7 @@ class Settings {
 	 */
 	private function get_excluded_internal_paths() : string {
 		$wp_content = wp_parse_url( content_url(), PHP_URL_PATH );
-		$pattern = 'wp-includes(.*)';
+		$pattern    = 'wp-includes(.*)';
 
 		if ( ! $wp_content ) {
 			return $pattern;
