@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\ServiceProvider;
 
-use WP_Rocket\Engine\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 
 /**
  * Service provider for the WP Rocket options
@@ -34,6 +34,6 @@ class Options extends AbstractServiceProvider {
 	 */
 	public function register() {
 		$this->getContainer()->add( 'options', 'WP_Rocket\Admin\Options_Data' )
-			->withArgument( $this->getContainer()->get( 'options_api' )->get( 'settings', [] ) );
+			->addArgument( $this->getContainer()->get( 'options_api' )->get( 'settings', [] ) );
 	}
 }

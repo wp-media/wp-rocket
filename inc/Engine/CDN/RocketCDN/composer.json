@@ -19,16 +19,20 @@
 		"source": "https://github.com/wp-media/module-rocketcdn"
 	},
 	"require-dev": {
-		"php": "^5.6 || ^7",
+		"php": "^7 || ^8",
 		"brain/monkey": "^2.0",
+		"coenjacobs/mozart": "^0.7",
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
+		"league/container": "^3.3",
 		"phpcompatibility/phpcompatibility-wp": "^2.0",
-		"phpunit/phpunit": "^5.7 || ^7",
+		"phpstan/phpstan": "^0.12.81",
+		"phpunit/phpunit": "^7",
+		"psr/container": "1.0.0",
 		"roave/security-advisories": "dev-master",
+		"szepeviktor/phpstan-wordpress": "^0.7.4",
 		"wp-coding-standards/wpcs": "^2",
 		"wp-media/event-manager": "^3.1",
 		"wp-media/options": "^3.0",
-		"wp-media/module-container": "^2.4",
 		"wp-media/phpunit": "^1.0",
 		"wp-media/phpunit-wp-rocket": "^1.0"
 	},
@@ -36,7 +40,21 @@
 		"psr-4": { "WP_Rocket\\Engine\\CDN\\RocketCDN\\": "." }
 	},
 	"autoload-dev": {
-		"psr-4": { "WP_Rocket\\Tests\\": "Tests/"	}
+		"psr-4": {
+			"WP_Rocket\\Tests\\": "Tests/",
+			"WP_Rocket\\Dependencies\\": "Dependencies/"
+		}
+	},
+	"extra": {
+		"mozart": {
+			"dep_namespace": "WP_Rocket\\Dependencies\\",
+			"dep_directory": "/Dependencies/",
+			"classmap_directory": "/classes/dependencies/",
+			"classmap_prefix": "WP_Rocket_",
+			"packages": [
+				"league/container"
+			]
+		}
 	},
 	"scripts": {
 		"test-unit": "\"vendor/bin/phpunit\" --testsuite unit --colors=always --configuration Tests/Unit/phpunit.xml.dist",
@@ -48,8 +66,16 @@
 			"@test-integration-adminonly"
 		],
 		"install-codestandards": "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run",
-		"phpcs": "phpcs --basepath=.",
-		"phpcs-changed": "./bin/phpcs-changed.sh",
-		"phpcs:fix": "phpcbf"
+		"phpcs": "\"vendor/bin/phpcs\" .",
+        "phpcs:fix": "\"vendor/bin/phpcbf\" ",
+		"phpstan": "\"vendor/bin/phpstan\" analyse",
+		"post-install-cmd": [
+			"\"vendor/bin/mozart\" compose",
+			"composer dump-autoload"
+		],
+		"post-update-cmd": [
+			"\"vendor/bin/mozart\" compose",
+			"composer dump-autoload"
+		]
 	}
 }
