@@ -1572,16 +1572,16 @@ class Page {
 		}
 
 		if ( ! empty( $addons ) ) {
-			$maybe_display_cdn_helper = sprintf(
-				// translators: %1$s = opening em tag, %2$s = add-on name(s), %3$s = closing em tag.
+			$maybe_display_cdn_helper = wp_sprintf(
+				// translators: %1$s = opening em tag, %2$l = list of add-on name(s), %3$s = closing em tag.
 				_n(
-					'%1$s%2$s Add-on%3$s is currently enabled. Configuration of the CDN settings is not required for %2$s to work on your site.',
-					'%1$s%2$s Add-ons%3$s are currently enabled. Configuration of the CDN settings is not required for %2$s to work on your site.',
+					'%1$s%2$l Add-on%3$s is currently enabled. Configuration of the CDN settings is not required for %2$l to work on your site.',
+					'%1$s%2$l Add-ons%3$s are currently enabled. Configuration of the CDN settings is not required for %2$l to work on your site.',
 					count( $addons ),
 					'rocket'
 				),
 				'<em>',
-				implode( ' and ', $addons ),
+				$addons,
 				'</em>'
 			) . '<br>';
 		}
