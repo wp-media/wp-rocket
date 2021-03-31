@@ -12,13 +12,13 @@ trait RegexTrait {
 	 * @param string $html HTML content.
 	 * @param string $modifiers Regex modifiers.
 	 *
-	 * @return bool|array
+	 * @return array
 	 */
 	protected function find( string $pattern, string $html, string $modifiers = 'Umsi' ) {
 		preg_match_all( '/' . $pattern . '/' . $modifiers, $html, $matches, PREG_SET_ORDER );
 
 		if ( empty( $matches ) ) {
-			return false;
+			return [];
 		}
 
 		return $matches;
