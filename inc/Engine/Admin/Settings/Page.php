@@ -809,11 +809,10 @@ class Page {
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
-				'delay_js_scripts'       => [
+				'delay_js_exclusions'    => [
 					'type'              => 'textarea',
-					'label'             => __( 'Scripts to delay', 'rocket' ),
-					'description'       => __( 'Specify keywords that can identify inline or JavaScript files to be delayed (one per line).', 'rocket' ),
-					'helper'            => __( 'A curated list of scripts that are safe to delay is provided. They may not all apply to your website and it is safe to leave the list as-is unless you face issues.', 'rocket' ),
+					'label'             => __( 'Excluded JavaScript Files', 'rocket' ),
+					'description'       => __( 'Specify URLs or keywords that can identify inline or JavaScript files to be excluded from delaying execution (one per line).', 'rocket' ),
 					'container_class'   => [
 						'wpr-field--children',
 					],
