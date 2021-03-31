@@ -100,7 +100,7 @@ trait UrlTrait {
 	private function normalize_url( $url ) {
 		$parsed_url = wp_parse_url( $url );
 
-		$url = str_replace('?' . $parsed_url['query'], '', $url);
+		$url = str_replace( '?' . $parsed_url['query'], '', $url );
 
 		if ( empty( $parsed_url['host'] ) ) {
 			$relative_url        = ltrim( wp_make_link_relative( $url ), '/' );

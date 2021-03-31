@@ -154,7 +154,7 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 	private function get_url_details( $url ) : array {
 		$external_url = $this->is_external_file( $url );
 
-		$file_path    = $external_url ? $this->local_cache->get_filepath( $url ) : $this->get_file_path( $url );
+		$file_path = $external_url ? $this->local_cache->get_filepath( $url ) : $this->get_file_path( $url );
 
 		if ( empty( $file_path ) ) {
 			Logger::error(
