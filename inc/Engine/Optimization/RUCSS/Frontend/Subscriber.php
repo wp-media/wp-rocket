@@ -50,7 +50,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() : array {
 		return [
-			'rocket_buffer' => [ 'treeshake', 12 ],
+			'rocket_buffer' => 'treeshake',
 		];
 	}
 
@@ -65,7 +65,7 @@ class Subscriber implements Subscriber_Interface {
 		if ( ! $this->is_allowed() ) {
 			return $html;
 		}
-
+return 'ok';
 		global $wp;
 		$url       = untrailingslashit( home_url( add_query_arg( [], $wp->request ) ) );
 		$is_mobile = $this->is_mobile();
@@ -128,7 +128,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return boolean
 	 */
-	public function is_allowed() : bool {
+	protected function is_allowed() : bool {
 		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
 			return false;
 		}
@@ -154,7 +154,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return boolean
 	 */
-	public function is_mobile() : bool {
+	protected function is_mobile() : bool {
 		return (bool) $this->options->get( 'cache_mobile', 0 ) &&
 				(bool) $this->options->get( 'do_caching_mobile_files', 0 ) &&
 				wp_is_mobile();
