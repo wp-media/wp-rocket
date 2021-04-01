@@ -1,5 +1,8 @@
 <?php
 
+use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\Resources;
+use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS;
+
 /**
  * Manages the deletion of WP Rocket data and files on uninstall.
  */
@@ -88,7 +91,7 @@ class WPRocketUninstall {
 	/**
 	 * Instance of RUCSS resources table.
 	 *
-	 * @var WP_Rocket\Engine\Optimization\RUCSS\Tables\Resources
+	 * @var WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\Resources
 	 */
 	private $rucss_resources_table;
 
@@ -119,7 +122,7 @@ class WPRocketUninstall {
 		$this->delete_plugin_data();
 		$this->delete_cache_files();
 		$this->delete_config_files();
-		$this->drop_rucss_databse_tables();
+		$this->drop_rucss_database_tables();
 	}
 
 	/**
@@ -127,7 +130,7 @@ class WPRocketUninstall {
 	 *
 	 * @return void
 	 */
-	private function drop_rucss_databse_tables() {
+	private function drop_rucss_database_tables() {
 		// If the table exist, then drop the table.
 		if ( $this->rucss_resources_table->exists() ) {
 			$this->rucss_resources_table->uninstall();
