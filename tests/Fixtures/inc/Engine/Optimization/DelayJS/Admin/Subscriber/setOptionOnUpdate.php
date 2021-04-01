@@ -30,7 +30,7 @@ return [
 		'expected'      => [
 			'delay_js'            => 1,
 			'delay_js_exclusions' => [
-				'wp-includes(.*)|/wp-content(.*)',
+				'(?:/wp-content|/wp-includes/)(.*)',
 				'/jquery-?[0-9.]*(.min|.slim|.slim.min)?.js',
 			],
 		],
