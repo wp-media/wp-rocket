@@ -35,7 +35,7 @@ class Test_CollectResources extends FilesystemTestCase {
 
 		parent::setUp();
 
-		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'collect_resources', 10 );
+		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'collect_resources', 1 );
 	}
 
 	public function tearDown() : void {
