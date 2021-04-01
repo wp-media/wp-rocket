@@ -116,6 +116,8 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.9
 	 *
+	 * @param null $value Original value. Should be always null.
+	 *
 	 * @return null|false
 	 */
 	public function maybe_disable_defer_js( $value ) {
