@@ -53,7 +53,7 @@ class HTML {
 			return $html;
 		}
 
-		$this->excluded = array_merge( $this->excluded, $this->options->get( 'delay_js_exclusions', []  ) );
+		$this->excluded = array_merge( $this->excluded, $this->options->get( 'delay_js_exclusions', [] ) );
 
 		/**
 		 * Filters the delay JS exclusions array
@@ -80,7 +80,6 @@ class HTML {
 		}
 
 		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
-			error_log( 'donotoptimize' );
 			return false;
 		}
 
