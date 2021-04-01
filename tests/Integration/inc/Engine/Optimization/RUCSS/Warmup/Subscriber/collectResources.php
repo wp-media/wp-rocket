@@ -24,6 +24,12 @@ class Test_CollectResources extends FilesystemTestCase {
 		parent::setUpBeforeClass();
 	}
 
+	public static function tearDownAfterClass() {
+		parent::tearDownAfterClass();
+
+		self::uninstallAll();
+	}
+
 	public function setUp(): void {
 		$GLOBALS['wp'] = (object) [
 			'query_vars' => [],

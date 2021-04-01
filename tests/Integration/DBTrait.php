@@ -3,7 +3,6 @@
 namespace WP_Rocket\Tests\Integration;
 
 trait DBTrait {
-
 	public static function resourceFound( array $resource ) : bool {
 		$container = apply_filters( 'rocket_container', null );
 		$resource_query = $container->get( 'rucss_resources_query' );
@@ -13,17 +12,27 @@ trait DBTrait {
 	public static function installFresh() {
 		$container             = apply_filters( 'rocket_container', null );
 
+		self::uninstallAll();
+
+		$rucss_resources_table = $container->get( 'rucss_resources_table' );
+		$rucss_resources_table->install();
+
+		$rucss_usedcss_table   = $container->get( 'rucss_usedcss_table' );
+		$rucss_usedcss_table->install();
+	}
+
+	public static function uninstallAll() {
+		$container             = apply_filters( 'rocket_container', null );
+
 		$rucss_resources_table = $container->get( 'rucss_resources_table' );
 		if ( $rucss_resources_table->exists() ) {
 			$rucss_resources_table->uninstall();
 		}
-		$rucss_resources_table->install();
 
 		$rucss_usedcss_table   = $container->get( 'rucss_usedcss_table' );
 		if ( $rucss_usedcss_table->exists() ) {
 			$rucss_usedcss_table->uninstall();
 		}
-		$rucss_usedcss_table->install();
 	}
 
 	public static function removeDBHooks() {
