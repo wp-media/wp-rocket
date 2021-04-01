@@ -83,13 +83,27 @@ class Settings {
 	 * @return string
 	 */
 	private function get_excluded_internal_paths() : string {
-		$wp_content = wp_parse_url( content_url(), PHP_URL_PATH );
-		$pattern    = 'wp-includes(.*)';
+		$wp_content  = wp_parse_url( content_url(), PHP_URL_PATH );
+		$wp_includes = wp_parse_url( includes_url(), PHP_URL_PATH );
+		$pattern     = '(?:placeholder)(.*)';
+		$paths       = [];
 
-		if ( ! $wp_content ) {
-			return $pattern;
+		if (
+			! $wp_content
+			&&
+			! $wp_includes
+		) {
+			return '';
 		}
 
-		return "{$pattern}|{$wp_content}(.*)";
+		if ( $wp_content ) {
+			$paths[] = $wp_content;
+		}
+
+		if ( $wp_includes ) {
+			$paths[] = $wp_includes;
+		}
+
+		return str_replace( 'placeholder', implode( '|', $paths ), $pattern );
 	}
 }

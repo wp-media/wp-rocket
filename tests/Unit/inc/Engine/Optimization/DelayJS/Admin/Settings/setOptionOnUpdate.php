@@ -22,6 +22,7 @@ class Test_SetOptionOnUpdate extends TestCase {
 			$this->stubWpParseUrl();
 			Functions\when( 'get_option' )->justReturn( $options );
 			Functions\when( 'content_url' )->justReturn( 'http://example.org/wp-content' );
+			Functions\when( 'includes_url' )->justReturn( 'http://example.org/wp-includes' );
 			Functions\expect( 'update_option' )
 				->with( 'wp_rocket_settings', $expected )
 				->once();
