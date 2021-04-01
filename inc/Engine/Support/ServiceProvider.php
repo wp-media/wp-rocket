@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Engine\Support;
 
-use WP_Rocket\Engine\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Support\Data;
 use WP_Rocket\Engine\Support\Rest;
 use WP_Rocket\Engine\Support\Subscriber;
@@ -32,11 +32,12 @@ class ServiceProvider extends AbstractServiceProvider {
 		$options = $this->getContainer()->get( 'options' );
 
 		$this->getContainer()->add( 'support_data', Data::class )
-			->withArgument( $options );
+			->addArgument( $options );
 		$this->getContainer()->add( 'rest_support', Rest::class )
-			->withArgument( $this->getContainer()->get( 'support_data' ) )
-			->withArgument( $options );
+			->addArgument( $this->getContainer()->get( 'support_data' ) )
+			->addArgument( $options );
 		$this->getContainer()->share( 'support_subscriber', Subscriber::class )
-			->withArgument( $this->getContainer()->get( 'rest_support' ) );
+			->addArgument( $this->getContainer()->get( 'rest_support' ) )
+			->addTag( 'common_subscriber' );
 	}
 }

@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Optimization\RUCSS\Admin;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
 
 class Settings {
-
 	/**
 	 * Instance of options handler.
 	 *
@@ -66,9 +66,28 @@ class Settings {
 	/**
 	 * Determines if Remove Unused CSS option is enabled.
 	 *
+	 * @since 3.9
+	 *
 	 * @return boolean
 	 */
 	public function is_enabled() : bool {
 		return (bool) $this->options->get( 'remove_unused_css', 0 );
+	}
+
+	/**
+	 * Sanitizes RUCSS options values when the settings form is submitted
+	 *
+	 * @since 3.9
+	 *
+	 * @param array         $input    Array of values submitted from the form.
+	 * @param AdminSettings $settings Settings class instance.
+	 *
+	 * @return array
+	 */
+	public function sanitize_options( array $input, AdminSettings $settings ) : array {
+		$input['remove_unused_css']          = $settings->sanitize_checkbox( $input, 'remove_unused_css' );
+		$input['remove_unused_css_safelist'] = ! empty( $input['remove_unused_css_safelist'] ) ? rocket_sanitize_textarea_field( 'remove_unused_css_safelist', $input['remove_unused_css_safelist'] ) : [];
+
+		return $input;
 	}
 }

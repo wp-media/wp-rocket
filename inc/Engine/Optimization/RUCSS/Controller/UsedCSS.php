@@ -68,6 +68,11 @@ class UsedCSS {
 	public function save_or_update_used_css( array $data ) {
 		$used_css = $this->get_used_css( $data['url'], $data['is_mobile'] );
 
+		$data['css'] = preg_replace( '/content\s*:\s*"\\\\f/i', 'shaker-parser:"dashf', $data['css'] );
+		$data['css'] = preg_replace( '/content\s*:\s*"\\\\e/i', 'shaker-parser:"dashe', $data['css'] );
+		$data['css'] = preg_replace( '/content\s*:\s*\'\\\\f/i', 'shaker-parser:\'dashf', $data['css'] );
+		$data['css'] = preg_replace( '/content\s*:\s*\'\\\\e/i', 'shaker-parser:\'dashe', $data['css'] );
+
 		if ( empty( $used_css ) ) {
 			return $this->insert_used_css( $data );
 		}

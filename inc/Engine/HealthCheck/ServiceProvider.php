@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\HealthCheck;
 
-use WP_Rocket\Engine\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 
 /**
  * Service Provider for health check subscribers
@@ -25,18 +25,17 @@ class ServiceProvider extends AbstractServiceProvider {
 	];
 
 	/**
-	 * Registers the option array in the container
-	 *
-	 * @since 3.6
-	 * @author Remy Perona
+	 * Registers items with the container
 	 *
 	 * @return void
 	 */
 	public function register() {
 		$this->getContainer()->share( 'health_check', 'WP_Rocket\Engine\HealthCheck\HealthCheck' )
-			->withArgument( $this->getContainer()->get( 'options' ) );
+			->addArgument( $this->getContainer()->get( 'options' ) )
+			->addTag( 'admin_subscriber' );
 		$this->getContainer()->share( 'cache_dir_size_check', 'WP_Rocket\Engine\HealthCheck\CacheDirSizeCheck' )
-		->withArgument( rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' ) )
-		->withArgument( rocket_get_constant( 'WP_ROCKET_WEB_MAIN' ) );
+			->addArgument( rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' ) )
+			->addArgument( rocket_get_constant( 'WP_ROCKET_WEB_MAIN' ) )
+			->addTag( 'common_subscriber' );
 	}
 }
