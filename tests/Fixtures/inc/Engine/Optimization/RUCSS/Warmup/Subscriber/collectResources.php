@@ -107,12 +107,14 @@ content here
 					[
 						'url' => 'http://example.org/wp-content/themes/theme-name/style.css',
 						'content' => '.theme-name{color:red;}',
-						'type' => 'css'
+						'type' => 'css',
+						'media' => 'all'
 					],
 					[
 						'url' => 'http://example.org/css/style.css',
 						'content' => '.first{color:green;}',
-						'type' => 'css'
+						'type' => 'css',
+						'media' => 'all'
 					]
 				]
 			],
