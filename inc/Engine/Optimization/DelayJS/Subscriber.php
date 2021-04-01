@@ -116,9 +116,13 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.9
 	 *
-	 * @return bool
+	 * @return null|false
 	 */
-	public function maybe_disable_defer_js() : bool {
-		return ! $this->html->is_allowed();
+	public function maybe_disable_defer_js( $value ) {
+		if ( $this->html->is_allowed() ) {
+			return false;
+		}
+
+		return $value;
 	}
 }
