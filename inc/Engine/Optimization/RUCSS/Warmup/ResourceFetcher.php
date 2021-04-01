@@ -120,7 +120,7 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 
 		foreach ( $resources as $resource ) {
 
-			if ( 'css' === $type && ! $this->is_link_stylesheet( $resource[0] ) ) {
+			if ( 'css' === $type && ! $this->is_valid_stylesheet( $resource[0] ) ) {
 				continue;
 			}
 
@@ -139,6 +139,10 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 				'content' => $contents,
 				'type'    => $type,
 			];
+
+			if ( 'css' === $type ) {
+				$this->resources[ $path ]['media'] = $this->get_stylesheet_media( $resource[0] );
+			}
 		}
 	}
 
@@ -151,7 +155,7 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 	 *
 	 * @return bool True for stylesheet; false for anything else.
 	 */
-	private function is_link_stylesheet( string $link ) : bool {
+	private function is_valid_stylesheet( string $link ) : bool {
 		return (bool) preg_match( '/rel=[\'"]stylesheet[\'"]/is', $link );
 	}
 
@@ -166,6 +170,25 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 	 */
 	private function is_valid_script( string $script ) : bool {
 		return ! preg_match( '/(application\/ld\+json)|(application\/json)/i', $script );
+	}
+
+	/**
+	 * Get media attribute from stylesheet.
+	 *
+	 * @param string $link Link HTML tag.
+	 *
+	 * @return string
+	 */
+	private function get_stylesheet_media( string $link ) : string {
+		if (
+			! preg_match( '/media\s*=\s*[\'"](?<media>.*)[\'"]/iUs', $link, $media_matches )
+			||
+			! isset( $media_matches['media'] )
+		) {
+			return 'all';
+		}
+
+		return $media_matches['media'];
 	}
 
 	/**

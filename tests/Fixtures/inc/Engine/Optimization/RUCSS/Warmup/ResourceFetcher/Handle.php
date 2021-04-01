@@ -50,12 +50,14 @@ return [
 					[
 						'url' => 'http://example.org/css/style-empty.css',
 						'content' => '*',
-						'type' => 'css'
+						'type' => 'css',
+						'media' => 'all'
 					],
 					[
 						'url' => 'http://example.org/css/style-notfound.css',
 						'content' => '*',
-						'type' => 'css'
+						'type' => 'css',
+						'media' => 'all'
 					]
 				],
 			],
@@ -66,8 +68,8 @@ return [
 				'html' => '<!DOCTYPE html><html><head><title></title>'.
 				          '<link rel="stylesheet" type="text/css" href="http://example.org/css/style1.css?ver=123">'.
 				          '<link rel="stylesheet" type="text/css" href="http://example.org/css/style2.css">'.
-				          '<script type="application/ld+json" src="http://example.org/js/script.js"></script>'.
-				          '<script type="application/json" src="http://example.org/js/script2.js"></script>'.
+				          '<script type="application/ld+json" src="http://example.org/scripts/script1.js"></script>'.
+				          '<script src="http://example.org/scripts/script2.js"></script>'.
 				          '</head><body>Content here</body></html>',
 			],
 			'expected' => [
@@ -75,12 +77,44 @@ return [
 					[
 						'url' => 'http://example.org/css/style1.css?ver=123',
 						'content' => '.first{color:red;}',
-						'type' => 'css'
+						'type' => 'css',
+						'media' => 'all'
 					],
 					[
 						'url' => 'http://example.org/css/style2.css',
 						'content' => '.second{color:green;}',
-						'type' => 'css'
+						'type' => 'css',
+						'media' => 'all'
+					],
+					[
+						'url' => 'http://example.org/scripts/script2.js',
+						'content' => 'var second = "content 2";',
+						'type' => 'js'
+					]
+				],
+			],
+		],
+
+		'shouldQueueResourcesWithMedias' => [
+			'input' => [
+				'html' => '<!DOCTYPE html><html><head><title></title>'.
+				          '<link rel="stylesheet" type="text/css" href="http://example.org/css/style1.css?ver=123" media="all">'.
+				          '<link media="print" rel="stylesheet" type="text/css" href="http://example.org/css/style2.css">'.
+				          '</head><body>Content here</body></html>',
+			],
+			'expected' => [
+				'resources' => [
+					[
+						'url' => 'http://example.org/css/style1.css?ver=123',
+						'content' => '.first{color:red;}',
+						'type' => 'css',
+						'media' => 'all'
+					],
+					[
+						'url' => 'http://example.org/css/style2.css',
+						'content' => '.second{color:green;}',
+						'type' => 'css',
+						'media' => 'print'
 					]
 
 				],
