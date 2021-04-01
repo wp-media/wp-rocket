@@ -172,6 +172,13 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 		return ! preg_match( '/(application\/ld\+json)|(application\/json)/i', $script );
 	}
 
+	/**
+	 * Get media attribute from stylesheet.
+	 *
+	 * @param string $link Link HTML tag.
+	 *
+	 * @return string
+	 */
 	private function get_stylesheet_media( string $link ) : string {
 		if (
 			! preg_match( '/media\s*=\s*[\'"](?<media>.*)[\'"]/iUs', $link, $media_matches )

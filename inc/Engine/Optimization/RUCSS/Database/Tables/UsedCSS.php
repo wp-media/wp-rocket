@@ -37,7 +37,7 @@ final class UsedCSS extends Table {
 	 * @var array
 	 */
 	protected $upgrades = [
-		20210401 => 'remove_unique_url'
+		20210401 => 'remove_unique_url',
 	];
 
 	/**
