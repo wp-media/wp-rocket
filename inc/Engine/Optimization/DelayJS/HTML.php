@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\DelayJS;
 
@@ -16,13 +17,15 @@ class HTML {
 	protected $options;
 
 	/**
-	 * Allowed scripts regex.
+	 * Array of excluded patterns from delay JS
 	 *
-	 * @since 3.7
+	 * @since 3.9
 	 *
-	 * @var string
+	 * @var array
 	 */
-	private $allowed_scripts = '';
+	protected $excluded = [
+		'nowprocket',
+	];
 
 	/**
 	 * Creates an instance of HTML.
@@ -38,21 +41,28 @@ class HTML {
 	/**
 	 * Adjust HTML to have delay js structure.
 	 *
+	 * @since 3.9 Updated to use exclusions list instead of inclusions list.
+	 * @since 3.7
+	 *
 	 * @param string $html Buffer html for the page.
 	 *
 	 * @return string
 	 */
-	public function delay_js( $html ) {
-
+	public function delay_js( $html ) : string {
 		if ( ! $this->is_allowed() ) {
 			return $html;
 		}
 
-		$this->allowed_scripts = $this->prepare_allowed_scripts_regex();
+		$this->excluded = array_merge( $this->excluded, $this->options->get( 'delay_js_exclusions', []  ) );
 
-		if ( empty( $this->allowed_scripts ) ) {
-			return $html;
-		}
+		/**
+		 * Filters the delay JS exclusions array
+		 *
+		 * @since 3.9
+		 *
+		 * @param array $excluded Array of excluded patterns.
+		 */
+		$this->excluded = apply_filters( 'rocket_delay_js_exclusions', $this->excluded );
 
 		return $this->parse( $html );
 	}
@@ -64,12 +74,13 @@ class HTML {
 	 *
 	 * @return bool
 	 */
-	public function is_allowed() {
+	public function is_allowed() : bool {
 		if ( rocket_bypass() ) {
 			return false;
 		}
 
 		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
+			error_log( 'donotoptimize' );
 			return false;
 		}
 
@@ -81,13 +92,26 @@ class HTML {
 	}
 
 	/**
+	 * Gets Javascript to redirect IE visitors to the uncached page
+	 *
+	 * @since 3.9
+	 *
+	 * @return string
+	 */
+	public function get_ie_fallback() {
+		return 'if(navigator.userAgent.match(/MSIE|Internet Explorer/i)||navigator.userAgent.match(/Trident\/7\..*?rv:11/i)){var href=document.location.href;if(!href.match(/[?&]nowprocket/)){if(href.indexOf("?")==-1){if(href.indexOf("#")==-1){document.location.href=href+"?nowprocket=1"}else{document.location.href=href.replace("#","?nowprocket=1#")}}else{if(href.indexOf("#")==-1){document.location.href=href+"&nowprocket=1"}else{document.location.href=href.replace("#","&nowprocket=1#")}}}}';
+	}
+
+	/**
 	 * Parse the html and add/remove attributes from specific scripts.
+	 *
+	 * @since 3.7
 	 *
 	 * @param string $html Buffer html for the page.
 	 *
 	 * @return string
 	 */
-	private function parse( $html ) {
+	private function parse( $html ) : string {
 		$replaced_html = preg_replace_callback( '/<\s*script\s*(?<attr>[^>]*?)?>(?<content>.*?)?<\s*\/\s*script\s*>/ims', [ $this, 'replace_scripts' ], $html );
 
 		if ( empty( $replaced_html ) ) {
@@ -98,78 +122,30 @@ class HTML {
 	}
 
 	/**
-	 * Callback method for preg_replace_callback that is used to adjust attributes for specific scripts.
+	 * Callback method for preg_replace_callback that is used to adjust attributes for scripts.
+	 *
+	 * @since 3.9 Use exclusions list & fake type attribute.
+	 * @since 3.7
 	 *
 	 * @param array $matches Matches array for scripts regex.
 	 *
 	 * @return string
 	 */
-	public function replace_scripts( $matches ) {
-		if (
-			empty( $this->allowed_scripts )
-			||
-			(
-				! empty( $this->allowed_scripts )
-				&&
-				! preg_match( '#(' . $this->allowed_scripts . ')#', $matches[0] )
-			)
-		) {
-			return $matches[0];
+	public function replace_scripts( $matches ) : string {
+		foreach ( $this->excluded as $pattern ) {
+			if ( preg_match( "#{$pattern}#i", $matches[0] ) ) {
+				return $matches[0];
+			}
 		}
 
-		$src             = '';
 		$matches['attr'] = trim( $matches['attr'] );
+		$delay_js        = $matches[0];
 
 		if ( ! empty( $matches['attr'] ) ) {
-			if ( preg_match( '/src=(["\'])(.*?)\1/', $matches['attr'], $src_matches ) ) {
-				$src = $src_matches[2];
-
-				// Remove the src attribute.
-				$matches['attr'] = str_replace( $src_matches[0], '', $matches['attr'] );
-			}
+			$delay_attr = preg_replace( '/type=(["\'])(.*?)\1/i', 'data-rocket-$0', $matches['attr'], 1 );
+			$delay_js   = str_replace( $matches['attr'], $delay_attr, $matches[0] );
 		}
 
-		if ( empty( $src ) ) {
-			// Get the JS content.
-			if ( ! empty( $matches['content'] ) ) {
-				$src = 'data:text/javascript;base64,' . base64_encode( $matches['content'] );// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
-			}
-		}
-
-		if ( empty( $src ) ) {
-			return $matches[0];
-		}
-
-		return "<script data-rocketlazyloadscript='{$src}' {$matches['attr']}></script>";
+		return str_replace( '<script', '<script type="rocketlazyloadscript"', $delay_js );
 	}
-
-	/**
-	 * Prepare allowed scripts to be used as regex.
-	 *
-	 * @return string
-	 */
-	private function prepare_allowed_scripts_regex() {
-		$delay_js_scripts = $this->options->get( 'delay_js_scripts', [] );
-
-		/**
-		 * Filters JS files to included into delay JS.
-		 *
-		 * @since 3.7
-		 *
-		 * @param array $delay_js_scripts List of allowed JS files.
-		 */
-		$delay_js_scripts = (array) apply_filters( 'rocket_delay_js_scripts', $delay_js_scripts );
-
-		if ( empty( $delay_js_scripts ) ) {
-			return '';
-		}
-
-		foreach ( $delay_js_scripts as $i => $delay_js_script ) {
-			$delay_js_scripts[ $i ] = preg_quote( str_replace( '#', '\#', $delay_js_script ), '#' );
-		}
-
-		return implode( '|', $delay_js_scripts );
-
-	}
-
 }
