@@ -2,7 +2,6 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\WPRocketUninstall;
 
-use WP_Rocket\Tests\Integration\DBTrait;
 use WPRocketUninstall;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
@@ -14,7 +13,6 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group  vfs
  */
 class Test_Uninstall extends FilesystemTestCase {
-	use DBTrait;
 
 	protected $path_to_test_data = '/inc/Engine/WPRocketUninstall/uninstall.php';
 
@@ -101,8 +99,6 @@ class Test_Uninstall extends FilesystemTestCase {
 		foreach ( $this->events as $event ) {
 			wp_schedule_event( time() + 3600, 'hourly', $event );
 		}
-
-		self::installFresh();
 	}
 
 	public function tearDown() {
