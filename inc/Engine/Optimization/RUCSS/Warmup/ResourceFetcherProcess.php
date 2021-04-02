@@ -38,6 +38,13 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 	private $api_client;
 
 	/**
+	 * Flag set if content changed for any resource on the page.
+	 *
+	 * @var bool
+	 */
+	private $content_changed = false;
+
+	/**
 	 * ResourceFetcherProcess constructor.
 	 *
 	 * @param ResourcesQuery $resources_query ResourcesQuery instance.
@@ -54,7 +61,7 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 	/**
 	 * Do the task for each page resources.
 	 *
-	 * @param array $resource Resource array consists of url, content and type.
+	 * @param array $resource Resource array consists of url, content, type and media (for css only).
 	 *
 	 * @return false
 	 */
@@ -64,6 +71,7 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 		}
 
 		if ( $this->resources_query->create_or_update( $resource ) ) {
+			$this->content_changed = true;
 			return ! $this->send_warmup_request( $resource );
 		}
 
@@ -79,5 +87,19 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 	 */
 	protected function send_warmup_request( array $resource ) {
 		return $this->api_client->send_warmup_request( $resource );
+	}
+
+
+	/**
+	 * The full queue is completed.
+	 */
+	protected function complete() {
+		parent::complete();
+
+		if ( ! $this->content_changed ) {
+			return;
+		}
+
+		do_action( 'rocket_rucss_file_changed' );
 	}
 }
