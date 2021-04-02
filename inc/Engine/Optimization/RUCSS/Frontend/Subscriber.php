@@ -35,7 +35,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @var string
 	 */
-	const CRON_NAME = 'rocket_rucss_retries';
+	const CRON_NAME = 'rocket_rucss_retries_cron';
 
 	/**
 	 * Instantiate the class
@@ -157,7 +157,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function rucss_retries() {
-		if ( ! $this->is_allowed() ) {
+		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
 			return;
 		}
 

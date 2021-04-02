@@ -77,7 +77,7 @@ class UsedCSS {
 	/**
 	 * Get UsedCSS from DB table which has unprocessed CSS files.
 	 *
-	 * @return void
+	 * @return array
 	 */
 	public function get_used_css_with_unprocessed_css() {
 		$query = $this->used_css_query->query(
