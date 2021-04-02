@@ -65,7 +65,7 @@ class Subscriber implements Subscriber_Interface {
 		if ( ! $this->is_allowed() ) {
 			return $html;
 		}
-return 'ok';
+
 		global $wp;
 		$url       = untrailingslashit( home_url( add_query_arg( [], $wp->request ) ) );
 		$is_mobile = $this->is_mobile();
@@ -90,7 +90,7 @@ return 'ok';
 						'code'    => $treeshaked_result['code'],
 						'message' => $treeshaked_result['message'],
 					]
-				);
+				); return 'bad-result from api';
 				return $html;
 			}
 

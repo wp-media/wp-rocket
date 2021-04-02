@@ -1,94 +1,106 @@
 <?php
 
 return [
+	'vfs_dir' => 'public/',
+
+	'structure' => [
+		'wp-content' => [
+			'themes' => [
+				'theme-name' => [
+					'style.css' => '.theme-name{color:red;}'
+				]
+			]
+		],
+
+		'css' => [
+			'style.css' => '.first{color:red;}',
+		],
+	],
+
 	'test_data' => [
 		// Testcases for Bailout/Short-circuit
 		'shouldBailOutWhenNoOptimizeConstSet'  => [
 			'config'       => [
 				'no-optimize'     => true,
-				'bypass'          => false,
-				'rucss-enabled'   => true,
-				'logged-in'       => true,
-				'logged-in-cache' => true,
-				'html'            => 'html content that should be left alone'
+				'html'            => 'any html'
 			],
 			'api-response' => false,
-			'expected'     => 'html content that should be left alone'
+			'expected'     => 'any html'
 		],
 		'shouldBailOutWhenRocketBypassEnabled' => [
 			'config'       => [
-				'no-optimize'     => false,
 				'bypass'          => true,
-				'rucss-enabled'   => true,
-				'logged-in'       => true,
-				'logged-in-cache' => true,
-				'html'            => 'html content that should be left alone'
+				'html'            => 'any html'
 			],
 			'api-response' => false,
-			'expected'     => 'html content that should be left alone'
+			'expected'     => 'any html'
 		],
 		'shouldBailOutWhenRucssNotEnabled'     => [
 			'config'       => [
-				'no-optimize'     => false,
-				'bypass'          => false,
 				'rucss-enabled'   => false,
+				'html'            => 'any html'
+			],
+			'api-response' => false,
+			'expected'     => 'any html'
+		],
+		'shouldBailOutWhenUserLoggedInAndLoggedUserCacheActive'        => [
+			'config'       => [
 				'logged-in'       => true,
 				'logged-in-cache' => true,
-				'html'            => 'html content that should be left alone'
+				'html'            => 'any html'
 			],
 			'api-response' => false,
-			'expected'     => 'html content that should be left alone'
-		],
-		'shouldBailOutWhenUserLoggedIn'        => [
-			'config'       => [
-				'no-optimize'     => false,
-				'bypass'          => false,
-				'rucss-enabled'   => true,
-				'logged-in'       => true,
-				'logged-in-cache' => false,
-				'html'            => 'html content that should be left alone'
-			],
-			'api-response' => false,
-			'expected'     => 'html content that should be left alone'
-		],
-		'shouldBailOutWhenUserCached'          => [
-			'config'       => [
-				'no-optimize'     => false,
-				'bypass'          => false,
-				'rucss-enabled'   => true,
-				'logged-in'       => false,
-				'logged-in-cache' => true,
-				'html'            => 'html content that should be left alone'
-			],
-			'api-response' => false,
-			'expected'     => 'html content that should be left alone'
+			'expected'     => 'any html'
 		],
 		'shouldBailOutWhenApiErrors'           => [
 			'config'       => [
-				'no-optimize'     => false,
-				'bypass'          => false,
-				'rucss-enabled'   => true,
-				'logged-in'       => false,
-				'logged-in-cache' => false,
-				'html'            => 'html content that should be left alone'
+				'html'            => 'any html'
 			],
 			'api-response' => new WP_Error( 400, 'Not Available' ),
-			'expected'     => 'html content that should be left alone'
+			'expected'     => 'any html'
 		],
+
 		// Testcase "Happy Path"
 		'shouldRunRucssWhenExpected' => [
 			'config'   => [
-				'no-optimize'   => false,
-				'bypass'        => false,
-				'rucss-enabled' => true,
-				'logged-in'     => false,
-				'logged-in-cache' => false,
-				'html'          => 'html content that should be processed'
+				'html'          => '<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>My Awesome Page</title>
+	<link rel="stylesheet" type="text/css" href="http://example.org/wp-content/themes/theme-name/style.css">
+	<link rel="stylesheet" type="text/css" href="//example.org/wp-content/themes/theme-name/style.css">
+	<link rel="stylesheet" type="text/css" href="/wp-content/themes/theme-name/style.css">
+	<link rel="stylesheet" type="text/css" href="wp-content/themes/theme-name/style.css">
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<link rel="stylesheet" type="text/css" href="http://external.com/css/style.css">
+	<link rel="stylesheet" type="text/css" href="//external.com/css/style.css">
+</head>
+<body>
+ content here
+</body>
+</html>'
 			],
 			'api-response' => [
-
+				'code' => 200,
 			],
-			'expected' => 'html content that should be processed'// 'This html has been successfully shaken!'
+			'expected' => '<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>My Awesome Page</title><style id="used-css">/**shaken css*/</style>
+	<link rel="stylesheet" type="text/css" href="http://example.org/wp-content/themes/theme-name/style.css">
+	<link rel="stylesheet" type="text/css" href="//example.org/wp-content/themes/theme-name/style.css">
+	<link rel="stylesheet" type="text/css" href="/wp-content/themes/theme-name/style.css">
+	<link rel="stylesheet" type="text/css" href="wp-content/themes/theme-name/style.css">
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<link rel="stylesheet" type="text/css" href="http://external.com/css/style.css">
+	<link rel="stylesheet" type="text/css" href="//external.com/css/style.css">
+</head>
+<body>
+ content here
+</body>
+</html>'
 		],
 
 	],
