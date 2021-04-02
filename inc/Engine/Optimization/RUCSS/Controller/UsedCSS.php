@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\RUCSS\Controller;
 
+use WP_Rocket\Engine\Cache\Purge;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Row\UsedCSS as UsedCSS_Row;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Query\UsedCSS as UsedCSS_Query;
 
@@ -14,14 +15,22 @@ class UsedCSS {
 	 */
 	private $used_css_query;
 
+	/**
+	 * Purge instance
+	 *
+	 * @var Purge
+	 */
+	private $purge;
 
 	/**
 	 * Instantiate the class
 	 *
 	 * @param UsedCSS_Query $used_css_query UsedCSS Query instance.
+	 * @param Purge         $purge          Purge instance.
 	 */
-	public function __construct( UsedCSS_Query $used_css_query ) {
+	public function __construct( UsedCSS_Query $used_css_query, Purge $purge ) {
 		$this->used_css_query = $used_css_query;
+		$this->purge          = $purge;
 	}
 
 	/**
@@ -45,6 +54,41 @@ class UsedCSS {
 		}
 
 		return $query[0];
+	}
+
+	/**
+	 * Resets retries to 1 and cleans URL cache for retrying the regeneration of the used CSS.
+	 *
+	 * @return void
+	 */
+	public function retries_pages_with_unprocessed_css() {
+		$used_css_list = $this->get_used_css_with_unprocessed_css();
+
+		foreach ( $used_css_list as $used_css_item ) {
+			// Resets retries to 1.
+			$updated = $this->used_css_query->update_item(
+							$used_css_item->id,
+							[ 'retries' => 1 ]
+						);
+			// Cleans page cache.
+			$this->purge->purge_url( $used_css_item->url );
+		}
+	}
+	/**
+	 * Get UsedCSS from DB table which has unprocessed CSS files.
+	 *
+	 * @return void
+	 */
+	public function get_used_css_with_unprocessed_css() {
+		$query = $this->used_css_query->query(
+			[
+				'unprocessedcss__not_in' => [
+					'not_in' => '[]',
+				],
+			]
+		);
+
+		return $query;
 	}
 
 	/**
