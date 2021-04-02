@@ -103,7 +103,7 @@ return 'ok';
 				'url'            => $url,
 				'css'            => $treeshaked_result['css'],
 				'unprocessedcss' => wp_json_encode( $treeshaked_result['unprocessed_css'] ),
-				'retries'        => $retries + 1,
+				'retries'        => empty( $treeshaked_result['unprocessed_css'] ) ? 3 : $retries + 1,
 				'is_mobile'      => $is_mobile,
 				'modified'       => current_time( 'mysql', true ),
 			];

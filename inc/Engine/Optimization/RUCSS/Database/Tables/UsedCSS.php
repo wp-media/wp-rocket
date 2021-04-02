@@ -28,7 +28,7 @@ final class UsedCSS extends Table {
 	 *
 	 * @var int
 	 */
-	protected $version = 20210305;
+	protected $version = 20210401;
 
 
 	/**
@@ -36,7 +36,9 @@ final class UsedCSS extends Table {
 	 *
 	 * @var array
 	 */
-	protected $upgrades = [];
+	protected $upgrades = [
+		20210401 => 'remove_unique_url',
+	];
 
 	/**
 	 * Setup the database schema
@@ -54,7 +56,7 @@ final class UsedCSS extends Table {
 			modified         timestamp           NOT NULL default '0000-00-00 00:00:00',
 			last_accessed    timestamp           NOT NULL default '0000-00-00 00:00:00',
 			PRIMARY KEY (id),
-			UNIQUE KEY url (url(150), is_mobile),
+			KEY url (url(150), is_mobile),
 			KEY modified (modified),
 			KEY last_accessed (last_accessed)";
 	}
@@ -78,5 +80,23 @@ final class UsedCSS extends Table {
 		$rows_affected       = $db->query( $query );
 
 		return $rows_affected;
+	}
+
+	/**
+	 * Remove unique from url column.
+	 *
+	 * @return bool
+	 */
+	protected function remove_unique_url() {
+		$url_key_exists = $this->index_exists( 'url' );
+
+		if ( ! $url_key_exists ) {
+			return $this->is_success( true );
+		}
+
+		$removed = $this->get_db()->query( "ALTER TABLE {$this->table_name} DROP INDEX url" );
+		$added   = $this->get_db()->query( "ALTER TABLE {$this->table_name} ADD INDEX url (url(150), is_mobile)" );
+
+		$this->is_success( $removed && $added );
 	}
 }

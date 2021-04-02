@@ -13,6 +13,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group  vfs
  */
 class Test_Uninstall extends FilesystemTestCase {
+
 	protected $path_to_test_data = '/inc/Engine/WPRocketUninstall/uninstall.php';
 
 	private static $options = [

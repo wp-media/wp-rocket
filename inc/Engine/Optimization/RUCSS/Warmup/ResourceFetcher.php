@@ -13,7 +13,14 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 
 	use RegexTrait, UrlTrait;
 
-	const LINK_PATTERN   = '<link\s+(?:[^>]+[\s"\'])?href\s*=\s*[\'"]\s*(?<url>[^\'"\s]+)\s*?[\'"](?:[^>]+)?\/?>';
+	/**
+	 * Regex for stylesheets
+	 */
+	const LINK_PATTERN = '<link\s+(?:[^>]+[\s"\'])?href\s*=\s*[\'"]\s*(?<url>[^\'"\s]+)\s*?[\'"](?:[^>]+)?\/?>';
+
+	/**
+	 * Regex for scripts.
+	 */
 	const SCRIPT_PATTERN = '<script\s+(?:[^>]+[\s\'"])?src\s*=\s*[\'"]\s*?(?<url>[^\'"\s]+)\s*?[\'"](?:[^>]+)?\/?>';
 
 	/**
@@ -113,21 +120,29 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 
 		foreach ( $resources as $resource ) {
 
-			if ( 'css' === $type && ! $this->is_link_stylesheet( $resource[0] ) ) {
+			if ( 'css' === $type && ! $this->is_valid_stylesheet( $resource[0] ) ) {
 				continue;
 			}
 
-			$contents = $this->get_url_contents( $resource['url'] );
+			if ( 'js' === $type && ! $this->is_valid_script( $resource[0] ) ) {
+				continue;
+			}
+
+			list( $path, $contents ) = $this->get_url_details( $resource['url'] );
 
 			if ( empty( $contents ) ) {
 				continue;
 			}
 
-			$this->resources[] = [
+			$this->resources[ $path ] = [
 				'url'     => rocket_add_url_protocol( $resource['url'] ),
 				'content' => $contents,
 				'type'    => $type,
 			];
+
+			if ( 'css' === $type ) {
+				$this->resources[ $path ]['media'] = $this->get_stylesheet_media( $resource[0] );
+			}
 		}
 	}
 
@@ -140,20 +155,53 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 	 *
 	 * @return bool True for stylesheet; false for anything else.
 	 */
-	private function is_link_stylesheet( string $link ) : bool {
+	private function is_valid_stylesheet( string $link ) : bool {
 		return (bool) preg_match( '/rel=[\'"]stylesheet[\'"]/is', $link );
 	}
 
 	/**
-	 * Get url file contents.
+	 * Check if script is valid.
 	 *
-	 * @param string $url File url.
+	 * @since 3.9
+	 *
+	 * @param string $script Script tag to be validated.
+	 *
+	 * @return bool
+	 */
+	private function is_valid_script( string $script ) : bool {
+		return ! preg_match( '/(application\/ld\+json)|(application\/json)/i', $script );
+	}
+
+	/**
+	 * Get media attribute from stylesheet.
+	 *
+	 * @param string $link Link HTML tag.
 	 *
 	 * @return string
 	 */
-	private function get_url_contents( $url ) {
+	private function get_stylesheet_media( string $link ) : string {
+		if (
+			! preg_match( '/media\s*=\s*[\'"](?<media>.*)[\'"]/iUs', $link, $media_matches )
+			||
+			! isset( $media_matches['media'] )
+		) {
+			return 'all';
+		}
+
+		return $media_matches['media'];
+	}
+
+	/**
+	 * Get url file path and contents.
+	 *
+	 * @param string $url File url.
+	 *
+	 * @return array
+	 */
+	private function get_url_details( $url ) : array {
 		$external_url = $this->is_external_file( $url );
-		$file_path    = $external_url ? $this->local_cache->get_filepath( $url ) : $this->get_file_path( $url );
+
+		$file_path = $external_url ? $this->local_cache->get_filepath( $url ) : $this->get_file_path( $url );
 
 		if ( empty( $file_path ) ) {
 			Logger::error(
@@ -164,7 +212,7 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 				]
 			);
 
-			return '';
+			return [ md5( uniqid() ), '*' ];
 		}
 
 		$file_content = $external_url ? $this->local_cache->get_content( $url ) : $this->get_file_content( $file_path );
@@ -178,10 +226,10 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 				]
 			);
 
-			return '';
+			return [ md5( uniqid() ), '*' ];
 		}
 
-		return $file_content;
+		return [ $file_path, $file_content ];
 	}
 
 	/**
@@ -189,7 +237,7 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 	 *
 	 * @return array
 	 */
-	public function get_zones() {
+	public function get_zones() : array {
 		return [ 'all', 'css_and_js' ];
 	}
 
