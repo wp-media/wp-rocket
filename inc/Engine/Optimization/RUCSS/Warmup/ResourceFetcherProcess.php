@@ -63,7 +63,7 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 	 *
 	 * @param array $resource Resource array consists of url, content, type and media (for css only).
 	 *
-	 * @return false
+	 * @return bool False for success, remove item from queue and True for failure so requeue this item.
 	 */
 	protected function task( $resource ) {
 		if ( ! is_array( $resource ) ) {
