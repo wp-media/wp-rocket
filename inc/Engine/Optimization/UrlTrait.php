@@ -76,7 +76,41 @@ trait UrlTrait {
 	 * @return bool|string
 	 */
 	protected function get_file_path( $url ) {
-		return rocket_url_to_path( strtok( $url, '?' ), $this->get_zones() );
+		$url = $this->normalize_url( $url );
+
+		$path = rocket_url_to_path( $url );
+		if ( $path ) {
+			return $path;
+		}
+
+		$relative_url = ltrim( wp_make_link_relative( $url ), '/' );
+		$ds           = rocket_get_constant( 'DIRECTORY_SEPARATOR' );
+		$base_path    = isset( $_SERVER['DOCUMENT_ROOT'] ) ? ( sanitize_text_field( wp_unslash( $_SERVER['DOCUMENT_ROOT'] ) ) . $ds ) : '';
+
+		return $base_path . str_replace( '/', $ds, $relative_url );
+	}
+
+	/**
+	 * Normalize relative url to full url.
+	 *
+	 * @param string $url Url to be normalized.
+	 *
+	 * @return string Normalized url.
+	 */
+	private function normalize_url( $url ) {
+		$parsed_url = wp_parse_url( $url );
+
+		if ( ! empty( $parsed_url['query'] ) ) {
+			$url = str_replace( '?' . $parsed_url['query'], '', $url );
+		}
+
+		if ( empty( $parsed_url['host'] ) ) {
+			$relative_url        = ltrim( wp_make_link_relative( $url ), '/' );
+			$site_url_components = wp_parse_url( site_url( '/' ) );
+			return $site_url_components['scheme'] . '://' . $site_url_components['host'] . '/' . $relative_url;
+		}
+
+		return $url;
 	}
 
 	/**

@@ -4,10 +4,13 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Optimization\RUCSS\Controller;
 
 use WP_Rocket\Engine\Cache\Purge;
+use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Row\UsedCSS as UsedCSS_Row;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Query\UsedCSS as UsedCSS_Query;
 
 class UsedCSS {
+	use RegexTrait;
+
 	/**
 	 * UsedCss Query instance
 	 *
@@ -262,24 +265,6 @@ class UsedCSS {
 		$html = preg_replace( '/<!--(.*)-->/Uis', '', $html );
 
 		return $html;
-	}
-
-	/**
-	 * Finds nodes matching the pattern in the HTML.
-	 *
-	 * @param string $pattern Pattern to match.
-	 * @param string $html    HTML content.
-	 *
-	 * @return bool|array
-	 */
-	protected function find( string $pattern, string $html ) {
-		preg_match_all( '/' . $pattern . '/Umsi', $html, $matches, PREG_SET_ORDER );
-
-		if ( empty( $matches ) ) {
-			return false;
-		}
-
-		return $matches;
 	}
 
 	/**
