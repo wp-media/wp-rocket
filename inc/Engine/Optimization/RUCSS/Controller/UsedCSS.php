@@ -159,6 +159,8 @@ class UsedCSS {
 			if (
 				! (bool) preg_match( '/rel=[\'"]stylesheet[\'"]/is', $style[0] )
 				||
+				strstr( $style['url'], '//fonts.googleapis.com/css' )
+				||
 				in_array( $style['url'], $unprocessed_links, true )
 				) {
 				continue;
