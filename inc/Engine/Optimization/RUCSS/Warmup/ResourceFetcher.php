@@ -59,6 +59,15 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 	private $process;
 
 	/**
+	 * Excluded stylesheets patterns.
+	 *
+	 * @var string[]
+	 */
+	private $excluded_stylesheets = [
+		'//fonts.googleapis.com/css',
+	];
+
+	/**
 	 * Resource constructor.
 	 *
 	 * @param AssetsLocalCache       $local_cache Local cache instance.
@@ -144,6 +153,7 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 				$this->resources[ $path ]['media'] = $this->get_stylesheet_media( $resource[0] );
 			}
 		}
+
 	}
 
 	/**
@@ -156,7 +166,23 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 	 * @return bool True for stylesheet; false for anything else.
 	 */
 	private function is_valid_stylesheet( string $link ) : bool {
-		return (bool) preg_match( '/rel=[\'"]stylesheet[\'"]/is', $link );
+		$valid_rel = $this->find( '(?:rel=[\'"]stylesheet[\'"])', $link, 'is' );
+		if ( empty( $valid_rel ) ) {
+			return false;
+		}
+
+		$exclusions = '';
+		foreach ( $this->excluded_stylesheets as $excluded_item ) {
+			$exclusions .= preg_quote( $excluded_item, '/' ) . '|';
+		}
+
+		$excluded = $this->find( rtrim( $exclusions, '|' ), $link );
+		if ( ! empty( $excluded ) ) {
+			return false;
+		}
+
+		return true;
+
 	}
 
 	/**

@@ -85,6 +85,7 @@ class ResourcesQuery extends Query {
 					'url'           => $resource['url'],
 					'type'          => $resource['type'],
 					'content'       => $resource['content'],
+					'media'         => isset( $resource['media'] ) ? $resource['media'] : '',
 					'hash'          => md5( $resource['content'] ),
 					'last_accessed' => current_time( 'mysql', true ),
 				]
