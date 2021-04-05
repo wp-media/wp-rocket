@@ -3,7 +3,6 @@
 namespace WP_Rocket\Engine\Optimization\RUCSS\Database\Tables;
 
 use WP_Rocket\Dependencies\Database\Table;
-use WP_Rocket\Logger\Logger;
 
 /**
  * RUCSS Resources Table.
@@ -115,7 +114,7 @@ final class Resources extends Table {
 
 		$prefixed_table_name = $this->apply_prefix( $this->table_name );
 		$query               = "DELETE FROM `$prefixed_table_name` WHERE `last_accessed` <= date_sub(now(), interval 1 month)";
-		Logger::critical( 'asa', compact( 'query' ) );
+
 		return $db->query( $query );
 	}
 
