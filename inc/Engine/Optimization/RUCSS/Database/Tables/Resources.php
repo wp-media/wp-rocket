@@ -98,4 +98,24 @@ final class Resources extends Table {
 		return $this->is_success( $created );
 	}
 
+	/**
+	 * Delete all resources which were not accessed in the last month.
+	 *
+	 * @return int|false
+	 */
+	public function delete_old_items() {
+		// Get the database interface.
+		$db = $this->get_db();
+
+		// Bail if no database interface is available.
+		if ( empty( $db ) ) {
+			return false;
+		}
+
+		$prefixed_table_name = $this->apply_prefix( $this->table_name );
+		$query               = "DELETE FROM `$prefixed_table_name` WHERE `last_accessed` <= date_sub(now(), interval 1 month)";
+
+		return $db->query( $query );
+	}
+
 }
