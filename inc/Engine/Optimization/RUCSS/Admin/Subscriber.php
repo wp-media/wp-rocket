@@ -60,7 +60,7 @@ class Subscriber implements Subscriber_Interface {
 			'delete_post'                        => 'delete_used_css_on_update_or_delete',
 			'clean_post_cache'                   => 'delete_used_css_on_update_or_delete',
 			'wp_update_comment_count'            => 'delete_used_css_on_update_or_delete',
-			'init'                               => [ 'schedule_clean_not_commonly_used_rows' ],
+			'init'                               => 'schedule_clean_not_commonly_used_rows',
 			'rocket_rucss_clean_rows_time_event' => 'cron_clean_rows',
 		];
 	}
