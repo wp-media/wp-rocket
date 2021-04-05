@@ -97,6 +97,6 @@ final class UsedCSS extends Table {
 		$removed = $this->get_db()->query( "ALTER TABLE {$this->table_name} DROP INDEX url" );
 		$added   = $this->get_db()->query( "ALTER TABLE {$this->table_name} ADD INDEX url (url(150), is_mobile)" );
 
-		$this->is_success( $removed && $added );
+		return $this->is_success( $removed && $added );
 	}
 }

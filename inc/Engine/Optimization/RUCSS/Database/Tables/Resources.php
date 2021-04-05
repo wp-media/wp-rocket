@@ -78,8 +78,7 @@ final class Resources extends Table {
 		$removed = $this->get_db()->query( "ALTER TABLE {$this->table_name} DROP INDEX hash" );
 		$added   = $this->get_db()->query( "ALTER TABLE {$this->table_name} ADD INDEX hash (hash)" );
 
-		$this->is_success( $removed && $added );
-
+		return $this->is_success( $removed && $added );
 	}
 
 	/**
@@ -96,8 +95,7 @@ final class Resources extends Table {
 
 		$created = $this->get_db()->query( "ALTER TABLE {$this->table_name} ADD COLUMN media VARCHAR(255) NULL default 'all' AFTER type " );
 
-		$this->is_success( $created );
-
+		return $this->is_success( $created );
 	}
 
 }
