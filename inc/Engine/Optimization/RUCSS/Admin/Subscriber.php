@@ -84,9 +84,17 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function schedule_clean_used_css() {
-		if ( ! wp_next_scheduled( 'rocket_clean_used_css_time_event' ) ) {
-			wp_schedule_event( time(), 'weekly', 'rocket_clean_used_css_time_event' );
+		if ( ! $this->settings->is_enabled() ) {
+			wp_clear_scheduled_hook( 'rocket_clean_used_css_time_event' );
+
+			return;
 		}
+
+		if ( wp_next_scheduled( 'rocket_clean_used_css_time_event' ) ) {
+			return;
+		}
+
+		wp_schedule_event( time(), 'weekly', 'rocket_clean_used_css_time_event' );
 	}
 
 	/**
