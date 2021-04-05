@@ -67,4 +67,14 @@ class Database {
 			$this->rucss_usedcss_table->delete_old_used_css();
 		}
 	}
+
+	/**
+	 * Delete old used css based on last accessed date.
+	 */
+	public function delete_old_resources() {
+		if ( $this->rucss_resources_table->exists() ) {
+			$this->rucss_resources_table->delete_old_items();
+		}
+	}
+
 }

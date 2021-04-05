@@ -49,33 +49,34 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() : array {
 		return [
-			'rocket_first_install_options'     => 'add_options_first_time',
-			'rocket_input_sanitize'            => [ 'sanitize_options', 10, 2 ],
-			'wp_rocket_upgrade'                => [
+			'rocket_first_install_options'       => 'add_options_first_time',
+			'rocket_input_sanitize'              => [ 'sanitize_options', 10, 2 ],
+			'wp_rocket_upgrade'                  => [
 				[ 'set_option_on_update', 13, 2 ],
 			],
-			'switch_theme'                     => 'truncate_used_css',
-			'rocket_rucss_file_changed'        => 'truncate_used_css',
-			'wp_trash_post'                    => 'delete_used_css_on_update_or_delete',
-			'delete_post'                      => 'delete_used_css_on_update_or_delete',
-			'clean_post_cache'                 => 'delete_used_css_on_update_or_delete',
-			'wp_update_comment_count'          => 'delete_used_css_on_update_or_delete',
-			'init'                             => 'schedule_clean_used_css',
-			'rocket_clean_used_css_time_event' => 'cron_clean_used_css',
+			'switch_theme'                       => 'truncate_used_css',
+			'rocket_rucss_file_changed'          => 'truncate_used_css',
+			'wp_trash_post'                      => 'delete_used_css_on_update_or_delete',
+			'delete_post'                        => 'delete_used_css_on_update_or_delete',
+			'clean_post_cache'                   => 'delete_used_css_on_update_or_delete',
+			'wp_update_comment_count'            => 'delete_used_css_on_update_or_delete',
+			'init'                               => [ 'schedule_clean_not_commonly_used_rows' ],
+			'rocket_rucss_clean_rows_time_event' => 'cron_clean_rows',
 		];
 	}
 
 	/**
-	 * Used CSS cron callback for deleting old used css.
+	 * Cron callback for deleting old rows in both table databases.
 	 *
 	 * @return void
 	 */
-	public function cron_clean_used_css() {
+	public function cron_clean_rows() {
 		if ( ! $this->settings->is_enabled() ) {
 			return;
 		}
 
 		$this->database->delete_old_used_css();
+		$this->database->delete_old_resources();
 	}
 
 	/**
@@ -83,18 +84,18 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return void
 	 */
-	public function schedule_clean_used_css() {
+	public function schedule_clean_not_commonly_used_rows() {
 		if ( ! $this->settings->is_enabled() ) {
-			wp_clear_scheduled_hook( 'rocket_clean_used_css_time_event' );
+			wp_clear_scheduled_hook( 'rocket_rucss_clean_rows_time_event' );
 
 			return;
 		}
 
-		if ( wp_next_scheduled( 'rocket_clean_used_css_time_event' ) ) {
+		if ( wp_next_scheduled( 'rocket_rucss_clean_rows_time_event' ) ) {
 			return;
 		}
 
-		wp_schedule_event( time(), 'weekly', 'rocket_clean_used_css_time_event' );
+		wp_schedule_event( time(), 'weekly', 'rocket_rucss_clean_rows_time_event' );
 	}
 
 	/**

@@ -3,6 +3,7 @@
 namespace WP_Rocket\Engine\Optimization\RUCSS\Database\Tables;
 
 use WP_Rocket\Dependencies\Database\Table;
+use WP_Rocket\Logger\Logger;
 
 /**
  * RUCSS Resources Table.
@@ -96,6 +97,26 @@ final class Resources extends Table {
 		$created = $this->get_db()->query( "ALTER TABLE {$this->table_name} ADD COLUMN media VARCHAR(255) NULL default 'all' AFTER type " );
 
 		return $this->is_success( $created );
+	}
+
+	/**
+	 * Delete all resources which were not accessed in the last month.
+	 *
+	 * @return int|false
+	 */
+	public function delete_old_items() {
+		// Get the database interface.
+		$db = $this->get_db();
+
+		// Bail if no database interface is available.
+		if ( empty( $db ) ) {
+			return false;
+		}
+
+		$prefixed_table_name = $this->apply_prefix( $this->table_name );
+		$query               = "DELETE FROM `$prefixed_table_name` WHERE `last_accessed` <= date_sub(now(), interval 1 month)";
+		Logger::critical( 'asa', compact( 'query' ) );
+		return $db->query( $query );
 	}
 
 }
