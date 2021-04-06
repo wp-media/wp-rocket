@@ -101,7 +101,13 @@ class Subscriber implements Subscriber_Interface {
 		// Combine Google Font API V2.
 		$html = $this->combine_v2->optimize( $html );
 		// Combine Google Font API V1.
-		return $this->combine->optimize( $html );
+		$html = $this->combine->optimize( $html );
+
+		if ( ! $this->combine->has_google_fonts() && ! $this->combine_v2->has_google_fonts() ) {
+			$html = preg_replace( '/<link\s+(?:[^>]+[\s"\'])?href\s*=\s*[\'"]https:\/\/fonts\.gstatic\.com[\'"](?:[^>]+[\s"\'])?\s?\/?>/', '', $html );
+		}
+
+		return $html;
 	}
 
 	/**

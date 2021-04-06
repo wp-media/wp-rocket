@@ -81,7 +81,8 @@ class ProcessorService {
 	private function send_generation_request( $item_url, $item_path, $is_mobile = false, $item_type = 'custom' ) {
 		// call send generation request from APIClient for the first time.
 		$params        = [
-			'mobile' => (int) $is_mobile,
+			'mobile'     => (int) $is_mobile,
+			'nofontface' => true,
 		];
 		$generated_job = $this->api_client->send_generation_request( $item_url, $params, $item_type );
 
