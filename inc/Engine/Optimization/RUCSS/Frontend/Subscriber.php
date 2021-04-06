@@ -148,7 +148,7 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		wp_schedule_single_event( time() + ( 60 * 30 ), self::CRON_NAME );
+		wp_schedule_single_event( time() + ( 0.5 * HOUR_IN_SECONDS ), self::CRON_NAME );
 	}
 
 	/**
