@@ -9,6 +9,14 @@ trait DBTrait {
 		return $resource_query->query( $resource );
 	}
 
+	public static function truncateUsedCssTable() {
+		$container             = apply_filters( 'rocket_container', null );
+		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
+		if ( $rucss_usedcss_table->exists() ){
+			$rucss_usedcss_table->truncate();
+		}
+	}
+
 	public static function installFresh() {
 		$container             = apply_filters( 'rocket_container', null );
 
