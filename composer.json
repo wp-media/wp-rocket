@@ -155,7 +155,7 @@
 			"@test-integration-spinupwp",
 			"@test-integration-wpcom",
 			"@test-integration-o2switch",
-			"@test-integration-dreampress",
+			"@test-integration-dreampress"
 		],
 		"run-stan":"vendor/bin/phpstan analyze --memory-limit=2G --no-progress",
 		"install-codestandards": "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run",
