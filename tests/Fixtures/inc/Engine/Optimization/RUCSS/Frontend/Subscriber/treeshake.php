@@ -52,13 +52,13 @@ return [
 			'api-response' => false,
 			'expected'     => 'any html'
 		],
-		'shouldBailOutWhenApiErrors'           => [
-			'config'       => [
-				'html'            => 'any html'
-			],
-			'api-response' => new WP_Error( 400, 'Not Available' ),
-			'expected'     => 'any html'
-		],
+//		'shouldBailOutWhenApiErrors'           => [
+//			'config'       => [
+//				'html'            => 'any html'
+//			],
+//			'api-response' => new WP_Error( 400, 'Not Available' ),
+//			'expected'     => 'any html'
+//		],
 
 		// Testcase "Happy Path"
 		'shouldRunRucssWhenExpected' => [

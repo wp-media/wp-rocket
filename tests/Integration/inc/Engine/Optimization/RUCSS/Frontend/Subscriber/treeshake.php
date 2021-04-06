@@ -8,7 +8,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 /**
  * @covers \WP_Rocket\Engine\Optimization\RUCSS\Frontend\Subscriber::treeshake
  *
- * @group RUCSS
+ * @group  RUCSS
  */
 class Test_Treeshake extends FilesystemTestCase {
 	use DBTrait;
@@ -32,8 +32,8 @@ class Test_Treeshake extends FilesystemTestCase {
 	public function setUp(): void {
 
 		$GLOBALS['wp'] = (object) [
-			'query_vars' => [],
-			'request'    => 'http://example.org/home',
+			'query_vars'        => [],
+			'request'           => 'home',
 			'public_query_vars' => [
 				'embed',
 			],
@@ -48,8 +48,10 @@ class Test_Treeshake extends FilesystemTestCase {
 		unset( $GLOBALS['wp'] );
 
 		remove_filter( 'pre_get_rocket_option_rucss', [ $this, 'set_rucss_option' ] );
-		remove_filter( 'pre_get_rocket_option_cache_logged_user', [$this, 'set_cached_user'] );
-		remove_filter( 'pre_http_request', [$this, 'set_api_response'] );
+		remove_filter( 'pre_get_rocket_option_cache_logged_user', [ $this, 'set_cached_user' ] );
+		remove_filter( 'pre_http_request', [ $this, 'set_api_response' ] );
+
+		self::truncateUsedCssTable();
 
 		parent::tearDown();
 
@@ -78,7 +80,25 @@ class Test_Treeshake extends FilesystemTestCase {
 		add_filter( 'pre_get_rocket_option_cache_logged_user', [ $this, 'set_cached_user' ] );
 
 		$this->config_data['api-response'] = $mockApiResponse;
-		add_filter( 'pre_http_request', [$this, 'set_api_response'] );
+		add_filter( 'pre_http_request', [ $this, 'set_api_response' ] );
+
+		$container           = apply_filters( 'rocket_container', null );
+		$rucss_usedcss_query = $container->get( 'rucss_used_css_query' );
+
+		/**
+		 * @type string $url             The page URL.
+		 * @type string $css             The page used css.
+		 * @type array  $unprocessed_css The page unprocessed CSS list.
+		 * @type int    $retries         No of automatically retries for generating the unused css.
+		 * @type bool   $is_mobile       Is mobile page.
+		 */
+			$rucss_usedcss_query->add_item( [
+				'url'             => 'http://example.org/' . $GLOBALS['wp']->request,
+				'css'             => 'h1{color:red;}',
+				'unprocessed_css' => [],
+				'retries'         => 3,
+				'is_mobile'       => false,
+			] );
 
 		$this->assertEquals( $expected, apply_filters( 'rocket_buffer', $config['html'] ) );
 	}
