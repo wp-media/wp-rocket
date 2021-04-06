@@ -95,7 +95,7 @@ class Test_Treeshake extends FilesystemTestCase {
 			$rucss_usedcss_query->add_item( [
 				'url'             => 'http://example.org/' . $GLOBALS['wp']->request,
 				'css'             => 'h1{color:red;}',
-				'unprocessed_css' => [],
+				'unprocessedcss' => wp_json_encode([]),
 				'retries'         => 3,
 				'is_mobile'       => false,
 			] );
