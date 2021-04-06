@@ -82,25 +82,17 @@ class Test_Treeshake extends FilesystemTestCase {
 		$this->config_data['api-response'] = $mockApiResponse;
 		add_filter( 'pre_http_request', [ $this, 'set_api_response' ] );
 
-		$container           = apply_filters( 'rocket_container', null );
-		$rucss_usedcss_query = $container->get( 'rucss_used_css_query' );
+		if ( isset( $config['used-css-row-contents'] ) ) {
+			$container           = apply_filters( 'rocket_container', null );
+			$rucss_usedcss_query = $container->get( 'rucss_used_css_query' );
 
-		/**
-		 * @type string $url             The page URL.
-		 * @type string $css             The page used css.
-		 * @type array  $unprocessed_css The page unprocessed CSS list.
-		 * @type int    $retries         No of automatically retries for generating the unused css.
-		 * @type bool   $is_mobile       Is mobile page.
-		 */
-			$rucss_usedcss_query->add_item( [
-				'url'             => 'http://example.org/' . $GLOBALS['wp']->request,
-				'css'             => 'h1{color:red;}',
-				'unprocessedcss' => wp_json_encode([]),
-				'retries'         => 3,
-				'is_mobile'       => false,
-			] );
+			$rucss_usedcss_query->add_item( $config['used-css-row-contents'] );
+		}
 
-		$this->assertEquals( $expected, apply_filters( 'rocket_buffer', $config['html'] ) );
+		$this->assertEquals(
+			$this->format_the_html( $expected ),
+			$this->format_the_html( apply_filters( 'rocket_buffer', $config['html'] ) )
+		);
 	}
 
 	public function set_rucss_option() {

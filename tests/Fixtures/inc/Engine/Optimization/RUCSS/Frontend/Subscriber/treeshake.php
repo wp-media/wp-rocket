@@ -52,13 +52,13 @@ return [
 			'api-response' => false,
 			'expected'     => 'any html'
 		],
-//		'shouldBailOutWhenApiErrors'           => [
-//			'config'       => [
-//				'html'            => 'any html'
-//			],
-//			'api-response' => new WP_Error( 400, 'Not Available' ),
-//			'expected'     => 'any html'
-//		],
+		'shouldBailOutWhenApiErrors'           => [
+			'config'       => [
+				'html'            => 'any html'
+			],
+			'api-response' => new WP_Error( 400, 'Not Available' ),
+			'expected'     => 'any html'
+		],
 
 		// Testcase "Happy Path"
 		'shouldRunRucssWhenExpected' => [
@@ -79,7 +79,15 @@ return [
 <body>
  content here
 </body>
-</html>'
+</html>',
+				'used-css-row-contents' => [
+					'url'            => 'http://example.org/home',
+					'css'            => 'h1{color:red;}',
+					'unprocessedcss' => wp_json_encode( [] ),
+					'retries'        => 3,
+					'is_mobile'      => false,
+				],
+
 			],
 			'api-response' => [
 				'code' => 200,
@@ -88,14 +96,7 @@ return [
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>My Awesome Page</title><style id="used-css">/**shaken css*/</style>
-	<link rel="stylesheet" type="text/css" href="http://example.org/wp-content/themes/theme-name/style.css">
-	<link rel="stylesheet" type="text/css" href="//example.org/wp-content/themes/theme-name/style.css">
-	<link rel="stylesheet" type="text/css" href="/wp-content/themes/theme-name/style.css">
-	<link rel="stylesheet" type="text/css" href="wp-content/themes/theme-name/style.css">
-	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link rel="stylesheet" type="text/css" href="http://external.com/css/style.css">
-	<link rel="stylesheet" type="text/css" href="//external.com/css/style.css">
+	<title>My Awesome Page</title><style id="wpr-usedcss">h1{color:red;}</style>
 </head>
 <body>
  content here
