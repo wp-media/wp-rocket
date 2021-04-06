@@ -114,7 +114,7 @@ class Subscriber implements Subscriber_Interface {
 				return $html;
 			}
 		}
-var_dump($used_css);
+
 		$html = $this->used_css->remove_used_css_from_html( $html, $used_css->unprocessedcss );
 		$html = $this->used_css->add_used_css_to_html( $html, $used_css->css );
 
