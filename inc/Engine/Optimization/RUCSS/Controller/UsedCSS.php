@@ -6,7 +6,7 @@ namespace WP_Rocket\Engine\Optimization\RUCSS\Controller;
 use WP_Rocket\Engine\Cache\Purge;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Row\UsedCSS as UsedCSS_Row;
-use WP_Rocket\Engine\Optimization\RUCSS\Database\Query\UsedCSS as UsedCSS_Query;
+use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
 
 class UsedCSS {
 	use RegexTrait;
@@ -202,6 +202,8 @@ class UsedCSS {
 		foreach ( $link_styles as $style ) {
 			if (
 				! (bool) preg_match( '/rel=[\'"]stylesheet[\'"]/is', $style[0] )
+				||
+				strstr( $style['url'], '//fonts.googleapis.com/css' )
 				||
 				in_array( $style['url'], $unprocessed_links, true )
 				) {

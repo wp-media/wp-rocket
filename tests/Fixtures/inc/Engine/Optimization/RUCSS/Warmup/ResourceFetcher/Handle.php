@@ -68,6 +68,12 @@ return [
 				'html' => '<!DOCTYPE html><html><head><title></title>'.
 				          '<link rel="stylesheet" type="text/css" href="http://example.org/css/style1.css?ver=123">'.
 				          '<link rel="stylesheet" type="text/css" href="http://example.org/css/style2.css">'.
+
+				          '<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">'.
+				          '<link href="https://fonts.googleapis.com/css?family=Roboto:wght@100&display=swap" rel="stylesheet">'.
+				          '<link href="//fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">'.
+				          '<link href="//fonts.googleapis.com/css?family=Roboto:wght@100&display=swap" rel="stylesheet">'.
+
 				          '<script type="application/ld+json" src="http://example.org/scripts/script1.js"></script>'.
 				          '<script src="http://example.org/scripts/script2.js"></script>'.
 				          '</head><body>Content here</body></html>',

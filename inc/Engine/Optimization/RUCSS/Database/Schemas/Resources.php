@@ -70,6 +70,17 @@ class Resources extends Schema {
 			'sortable'   => true,
 		],
 
+		// MEDIA column.
+		[
+			'name'       => 'media',
+			'type'       => 'varchar',
+			'length'     => '255',
+			'default'    => 'all',
+			'cache_key'  => true,
+			'searchable' => true,
+			'sortable'   => true,
+		],
+
 		// MODIFIED column.
 		[
 			'name'       => 'modified',

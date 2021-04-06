@@ -78,8 +78,7 @@ final class Resources extends Table {
 		$removed = $this->get_db()->query( "ALTER TABLE {$this->table_name} DROP INDEX hash" );
 		$added   = $this->get_db()->query( "ALTER TABLE {$this->table_name} ADD INDEX hash (hash)" );
 
-		$this->is_success( $removed && $added );
-
+		return $this->is_success( $removed && $added );
 	}
 
 	/**
@@ -96,8 +95,27 @@ final class Resources extends Table {
 
 		$created = $this->get_db()->query( "ALTER TABLE {$this->table_name} ADD COLUMN media VARCHAR(255) NULL default 'all' AFTER type " );
 
-		$this->is_success( $created );
+		return $this->is_success( $created );
+	}
 
+	/**
+	 * Delete all resources which were not accessed in the last month.
+	 *
+	 * @return int|false
+	 */
+	public function delete_old_items() {
+		// Get the database interface.
+		$db = $this->get_db();
+
+		// Bail if no database interface is available.
+		if ( empty( $db ) ) {
+			return false;
+		}
+
+		$prefixed_table_name = $this->apply_prefix( $this->table_name );
+		$query               = "DELETE FROM `$prefixed_table_name` WHERE `last_accessed` <= date_sub(now(), interval 1 month)";
+
+		return $db->query( $query );
 	}
 
 }
