@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare( strict_types=1 );
 
 namespace WP_Rocket\Engine\Optimization\RUCSS\Frontend;
 
@@ -33,7 +33,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Instantiate the class
 	 *
-	 * @param Options_Data $options      Plugin options instance.
+	 * @param Options_Data $options  Plugin options instance.
 	 * @param UsedCSS      $used_css Settings instance.
 	 * @param APIClient    $api      Database instance.
 	 */
@@ -48,7 +48,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return array
 	 */
-	public static function get_subscribed_events() : array {
+	public static function get_subscribed_events(): array {
 		return [
 			'rocket_buffer' => 'treeshake',
 		];
@@ -57,11 +57,11 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Apply TreeShaked CSS to the current HTML page.
 	 *
-	 * @param string $html  HTML content.
+	 * @param string $html HTML content.
 	 *
 	 * @return string  HTML content.
 	 */
-	public function treeshake( string $html ) : string {
+	public function treeshake( string $html ): string {
 		if ( ! $this->is_allowed() ) {
 			return $html;
 		}
@@ -72,6 +72,7 @@ class Subscriber implements Subscriber_Interface {
 		$used_css  = $this->used_css->get_used_css( $url, $is_mobile );
 
 		if ( empty( $used_css ) || ( $used_css->retries < 3 ) ) {
+
 			$config = [
 				'treeshake'      => 1,
 				'wpr_email'      => $this->options->get( 'consumer_email', '' ),
@@ -91,6 +92,7 @@ class Subscriber implements Subscriber_Interface {
 						'message' => $treeshaked_result['message'],
 					]
 				);
+
 				return $html;
 			}
 
@@ -128,7 +130,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return boolean
 	 */
-	protected function is_allowed() : bool {
+	protected function is_allowed(): bool {
 		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
 			return false;
 		}
@@ -154,9 +156,9 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return boolean
 	 */
-	protected function is_mobile() : bool {
+	protected function is_mobile(): bool {
 		return (bool) $this->options->get( 'cache_mobile', 0 ) &&
-				(bool) $this->options->get( 'do_caching_mobile_files', 0 ) &&
-				wp_is_mobile();
+			(bool) $this->options->get( 'do_caching_mobile_files', 0 ) &&
+			wp_is_mobile();
 	}
 }
