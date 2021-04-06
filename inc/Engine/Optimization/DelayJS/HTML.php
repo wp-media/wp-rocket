@@ -25,6 +25,7 @@ class HTML {
 	 */
 	protected $excluded = [
 		'nowprocket',
+		'/wp-includes/js/wp-embed.min.js',
 	];
 
 	/**
