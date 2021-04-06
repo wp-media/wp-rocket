@@ -19,31 +19,31 @@ return [
 
 	'test_data' => [
 		// Testcases for Bailout/Short-circuit
-		'shouldBailOutWhenNoOptimizeConstSet'  => [
+		'shouldBailOutWhenNoOptimizeConstSet'                   => [
 			'config'       => [
-				'no-optimize'     => true,
-				'html'            => 'any html'
+				'no-optimize' => true,
+				'html'        => 'any html'
 			],
 			'api-response' => false,
 			'expected'     => 'any html'
 		],
-		'shouldBailOutWhenRocketBypassEnabled' => [
+		'shouldBailOutWhenRocketBypassEnabled'                  => [
 			'config'       => [
-				'bypass'          => true,
-				'html'            => 'any html'
+				'bypass' => true,
+				'html'   => 'any html'
 			],
 			'api-response' => false,
 			'expected'     => 'any html'
 		],
-		'shouldBailOutWhenRucssNotEnabled'     => [
+		'shouldBailOutWhenRucssNotEnabled'                      => [
 			'config'       => [
-				'rucss-enabled'   => false,
-				'html'            => 'any html'
+				'rucss-enabled' => false,
+				'html'          => 'any html'
 			],
 			'api-response' => false,
 			'expected'     => 'any html'
 		],
-		'shouldBailOutWhenUserLoggedInAndLoggedUserCacheActive'        => [
+		'shouldBailOutWhenUserLoggedInAndLoggedUserCacheActive' => [
 			'config'       => [
 				'logged-in'       => true,
 				'logged-in-cache' => true,
@@ -52,18 +52,17 @@ return [
 			'api-response' => false,
 			'expected'     => 'any html'
 		],
-		'shouldBailOutWhenApiErrors'           => [
+		'shouldBailOutWhenApiErrors'                            => [
 			'config'       => [
-				'html'            => 'any html'
+				'html' => 'any html'
 			],
 			'api-response' => new WP_Error( 400, 'Not Available' ),
 			'expected'     => 'any html'
 		],
 
-		// Testcase "Happy Path"
-		'shouldRunRucssWhenExpected' => [
-			'config'   => [
-				'html'          => '<!DOCTYPE html>
+		'shouldRunRucssWithoutRetriesWhenRetriesAre3' => [
+			'config'       => [
+				'html'                  => '<!DOCTYPE html>
 <html>
 <head>
 	<meta charset="utf-8">
@@ -92,7 +91,7 @@ return [
 			'api-response' => [
 				'code' => 200,
 			],
-			'expected' => '<!DOCTYPE html>
+			'expected'     => '<!DOCTYPE html>
 <html>
 <head>
 	<meta charset="utf-8">
@@ -104,5 +103,136 @@ return [
 </html>'
 		],
 
+		'shouldRunRucssWithRetriesWhenRetriesAreUnder3' => [
+			'config'       => [
+				'html'                  => '<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>My Awesome Page</title>
+	<link rel="stylesheet" type="text/css" href="http://example.org/wp-content/themes/theme-name/style.css">
+	<link rel="stylesheet" type="text/css" href="//example.org/wp-content/themes/theme-name/style.css">
+	<link rel="stylesheet" type="text/css" href="/wp-content/themes/theme-name/style.css">
+	<link rel="stylesheet" type="text/css" href="wp-content/themes/theme-name/style.css">
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<link rel="stylesheet" type="text/css" href="http://external.com/css/style.css">
+	<link rel="stylesheet" type="text/css" href="//external.com/css/style.css">
+</head>
+<body>
+ content here
+</body>
+</html>',
+				'used-css-row-contents' => [
+					'url'            => 'http://example.org/home',
+					'css'            => '',
+					'unprocessedcss' => wp_json_encode(
+						[
+							'http://example.org/wp-content/themes/theme-name/style.css',
+						]
+					),
+					'retries'        => 1,
+					'is_mobile'      => false,
+				],
+
+			],
+			'api-response' => [
+				'body'     => json_encode(
+					[
+						'code'     => 200,
+						'message'  => 'OK',
+						'contents' => [
+							'shakedCSS'      => 'h1{color:red;}',
+							'unProcessedCss' => [],
+						],
+					]
+				),
+				'response' => [
+					'code'    => 200,
+					'message' => 'OK',
+				],
+			],
+			'expected'     => '<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>My Awesome Page</title><style id="wpr-usedcss">h1{color:red;}</style>
+</head>
+<body>
+ content here
+</body>
+</html>'
+		],
+
+		'shouldNotReplaceUnprocessedCssItems' => [
+			'config'       => [
+				'html'                  => '<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>My Awesome Page</title>
+	<link rel="stylesheet" type="text/css" href="http://example.org/wp-content/themes/theme-name/style.css">
+	<link rel="stylesheet" type="text/css" href="//example.org/wp-content/themes/theme-name/style.css">
+	<link rel="stylesheet" type="text/css" href="/wp-content/themes/theme-name/style.css">
+	<link rel="stylesheet" type="text/css" href="wp-content/themes/theme-name/style.css">
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<link rel="stylesheet" type="text/css" href="http://external.com/css/style.css">
+	<link rel="stylesheet" type="text/css" href="//external.com/css/style.css">
+	<style>h2{color:blue;}</style>
+</head>
+<body>
+ content here
+</body>
+</html>',
+				'used-css-row-contents' => [
+					'url'            => 'http://example.org/home',
+					'css'            => '',
+					'unprocessedcss' => wp_json_encode(
+						[
+							'http://example.org/wp-content/themes/theme-name/style.css',
+						]
+					),
+					'retries'        => 1,
+					'is_mobile'      => false,
+				],
+
+			],
+			'api-response' => [
+				'body'     => json_encode(
+					[
+						'code'     => 200,
+						'message'  => 'OK',
+						'contents' => [
+							'shakedCSS'      => 'h1{color:red;}',
+							'unProcessedCss' => [
+								[
+									'type'    => 'link',
+									'content' => 'http://example.org/wp-content/themes/theme-name/style.css',
+								],
+								[
+									'type' => 'inline',
+									'content' => 'h2{color:blue;}',
+								],
+							],
+						],
+					]
+				),
+				'response' => [
+					'code'    => 200,
+					'message' => 'OK',
+				],
+			],
+			'expected'     => '<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>My Awesome Page</title><style id="wpr-usedcss">h1{color:red;}</style>
+	<link rel="stylesheet" type="text/css" href="http://example.org/wp-content/themes/theme-name/style.css">
+	<style>h2{color:blue;}</style>
+</head>
+<body>
+ content here
+</body>
+</html>'
+		],
 	],
 ];
