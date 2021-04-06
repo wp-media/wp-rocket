@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Engine\Optimization\RUCSS\Database\Query;
+namespace WP_Rocket\Engine\Optimization\RUCSS\Database\Queries;
 
 use WP_Rocket\Dependencies\Database\Query;
 
