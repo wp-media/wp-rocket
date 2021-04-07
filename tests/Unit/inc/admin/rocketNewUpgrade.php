@@ -39,6 +39,7 @@ class Test_RocketNewUpgrade extends TestCase {
 		Functions\expect( 'update_option' )
 			->once();
 		Functions\when( 'wp_clear_scheduled_hook' )->justReturn( 1 );
+		Functions\when( 'rocket_rrmdir' )->justReturn( 1 );
 
 		rocket_new_upgrade( '3.7', '3.4.4' );
 	}

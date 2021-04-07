@@ -355,6 +355,7 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 	}
 
 	if ( version_compare( $actual_version, '3.6', '<' ) ) {
+		rocket_clean_cache_busting();
 		rocket_clean_domain();
 	}
 
@@ -374,7 +375,10 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 	}
 
 	if ( version_compare( $actual_version, '3.9', '<' ) ) {
-		rocket_clean_cache_busting();
+		$busting_path = rocket_get_constant( 'WP_ROCKET_CACHE_BUSTING_PATH' );
+
+		rocket_rrmdir( $busting_path . 'facebook-tracking' );
+		rocket_rrmdir( $busting_path . 'google-tracking' );
 		wp_clear_scheduled_hook( 'rocket_facebook_tracking_cache_update' );
 		wp_clear_scheduled_hook( 'rocket_google_tracking_cache_update' );
 	}
