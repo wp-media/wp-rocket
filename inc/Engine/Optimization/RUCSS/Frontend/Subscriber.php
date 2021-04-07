@@ -1,5 +1,5 @@
 <?php
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\RUCSS\Frontend;
 
@@ -31,11 +31,18 @@ class Subscriber implements Subscriber_Interface {
 	private $used_css;
 
 	/**
+	 * Name of the cron.
+	 *
+	 * @var string
+	 */
+	const CRON_NAME = 'rocket_rucss_retries_cron';
+
+	/**
 	 * Instantiate the class
 	 *
 	 * @param Options_Data $options  Plugin options instance.
-	 * @param UsedCSS      $used_css Settings instance.
-	 * @param APIClient    $api      Database instance.
+	 * @param UsedCSS      $used_css UsedCSS instance.
+	 * @param APIClient    $api      APIClient instance.
 	 */
 	public function __construct( Options_Data $options, UsedCSS $used_css, APIClient $api ) {
 		$this->options  = $options;
@@ -48,20 +55,21 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return array
 	 */
-	public static function get_subscribed_events(): array {
+	public static function get_subscribed_events() : array {
 		return [
 			'rocket_buffer' => [ 'treeshake', 12 ],
+			self::CRON_NAME => 'rucss_retries',
 		];
 	}
 
 	/**
 	 * Apply TreeShaked CSS to the current HTML page.
 	 *
-	 * @param string $html HTML content.
+	 * @param string $html  HTML content.
 	 *
 	 * @return string  HTML content.
 	 */
-	public function treeshake( string $html ): string {
+	public function treeshake( string $html ) : string {
 		if ( ! $this->is_allowed() ) {
 			return $html;
 		}
@@ -72,7 +80,6 @@ class Subscriber implements Subscriber_Interface {
 		$used_css  = $this->used_css->get_used_css( $url, $is_mobile );
 
 		if ( empty( $used_css ) || ( $used_css->retries < 3 ) ) {
-
 			$config = [
 				'treeshake'      => 1,
 				'wpr_email'      => $this->options->get( 'consumer_email', '' ),
@@ -92,13 +99,16 @@ class Subscriber implements Subscriber_Interface {
 						'message' => $treeshaked_result['message'],
 					]
 				);
-
 				return $html;
 			}
 
 			$retries = 0;
 			if ( isset( $used_css->retries ) ) {
 				$retries = $used_css->retries;
+			}
+
+			if ( ! empty( $treeshaked_result['unprocessed_css'] ) ) {
+				$this->schedule_rucss_retry();
 			}
 
 			$data = [
@@ -126,11 +136,40 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
+	 * Schedules RUCSS to retry pages with missing CSS files.
+	 * Retries happen after 30 minutes.
+	 *
+	 * @return void
+	 */
+	public function schedule_rucss_retry() {
+		$scheduled = wp_next_scheduled( self::CRON_NAME );
+
+		if ( $scheduled ) {
+			return;
+		}
+
+		wp_schedule_single_event( time() + ( 0.5 * HOUR_IN_SECONDS ), self::CRON_NAME );
+	}
+
+	/**
+	 * Retries to regenerate the used css.
+	 *
+	 * @return void
+	 */
+	public function rucss_retries() {
+		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
+			return;
+		}
+
+		$this->used_css->retries_pages_with_unprocessed_css();
+	}
+
+	/**
 	 * Determines if we treeshake the CSS.
 	 *
 	 * @return boolean
 	 */
-	protected function is_allowed(): bool {
+	public function is_allowed() : bool {
 		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
 			return false;
 		}
@@ -156,9 +195,9 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return boolean
 	 */
-	protected function is_mobile(): bool {
+	public function is_mobile() : bool {
 		return (bool) $this->options->get( 'cache_mobile', 0 ) &&
-			(bool) $this->options->get( 'do_caching_mobile_files', 0 ) &&
-			wp_is_mobile();
+				(bool) $this->options->get( 'do_caching_mobile_files', 0 ) &&
+				wp_is_mobile();
 	}
 }
