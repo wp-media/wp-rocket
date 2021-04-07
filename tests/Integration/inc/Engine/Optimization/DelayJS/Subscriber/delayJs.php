@@ -21,7 +21,7 @@ class Test_DelayJs extends TestCase {
 	public function setUp() : void {
 		parent::setUp();
 
-		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'delay_js', 23 );
+		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'delay_js', 26 );
 	}
 
 	public function tearDown() {

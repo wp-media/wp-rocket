@@ -54,9 +54,9 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_buffer'                      => [ 'delay_js', 23 ],
-			'wp_enqueue_scripts'                 => 'add_delay_js_script',
-			'pre_get_rocket_option_defer_all_js' => 'maybe_disable_defer_js',
+			'rocket_buffer'                               => [ 'delay_js', 26 ],
+			'wp_enqueue_scripts'                          => 'add_delay_js_script',
+			'pre_get_rocket_option_minify_concatenate_js' => 'maybe_disable_option',
 		];
 	}
 
@@ -120,7 +120,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return null|false
 	 */
-	public function maybe_disable_defer_js( $value ) {
+	public function maybe_disable_option( $value ) {
 		if ( $this->html->is_allowed() ) {
 			return false;
 		}
