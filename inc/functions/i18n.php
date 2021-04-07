@@ -489,9 +489,10 @@ function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $r
 
 			if ( ! empty( $translations ) ) {
 				foreach ( $translations as $post_id ) {
-					if( 'publish' !== get_post_status( $post_id ) {
+					if ( 'publish' !== get_post_status( $post_id ) ) {
 						continue;
 					}
+
 					$urls[] = wp_parse_url( get_permalink( $post_id ), PHP_URL_PATH ) . $regex;
 				}
 			}
