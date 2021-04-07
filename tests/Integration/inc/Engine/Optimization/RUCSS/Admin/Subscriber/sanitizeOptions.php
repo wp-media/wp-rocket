@@ -7,7 +7,6 @@ use WP_Rocket\Tests\Integration\TestCase;
 /**
  * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::sanitize_options
  *
- * @group  RUCSS
  * @group  AdminOnly
  */
 class Test_SanitizeOptions extends TestCase {

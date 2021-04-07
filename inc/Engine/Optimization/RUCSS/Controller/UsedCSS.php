@@ -102,7 +102,7 @@ class UsedCSS {
 	 *
 	 *      @type string $url             The page URL.
 	 *      @type string $css             The page used css.
-	 *      @type array  $unprocessed_css The page unprocessed CSS list.
+	 *      @type string  $unprocessedcss A json_encoded array of the page unprocessed CSS list.
 	 *      @type int    $retries         No of automatically retries for generating the unused css.
 	 *      @type bool   $is_mobile       Is mobile page.
 	 * }
