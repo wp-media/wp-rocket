@@ -352,7 +352,13 @@ class Tests {
 			return false;
 		}
 
-		if ( $this->has_test( 'is_html' ) && ! $this->is_html( $buffer ) && ! defined( 'REST_REQUEST' ) ) {
+		if (
+			$this->has_test( 'is_html' )
+			&&
+			! $this->is_html( $buffer )
+			&&
+			! defined( 'REST_REQUEST' )
+		) {
 			// Don't process if there isn't a closing </html>.
 			$this->set_error( 'No closing </html> was found.' );
 			return false;
@@ -792,14 +798,13 @@ class Tests {
 	/**
 	 * Tell if the page content has a closing </html>.
 	 *
-	 * @since  3.8.8
-	 * @access public
+	 * @since 3.9
 	 *
 	 * @param  string $buffer The buffer content.
 	 * @return bool
 	 */
 	public function is_html( $buffer ) {
-		return preg_match( '/<\/html>/i', $buffer );
+		return (bool) preg_match( '/<\/html>/i', $buffer );
 	}
 
 	/** ----------------------------------------------------------------------------------------- */
