@@ -21,6 +21,12 @@ class Test_DropRucssDatabaseTables extends TestCase{
 	public function setUp() : void {
 		parent::setUp();
 
+		$version = explode('.', PHP_VERSION);
+		if ( $version[0] >= 8 ) {
+			$this->assertTrue(true);
+			return;
+		}
+
 		$this->resources = $this->getMockBuilder('WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\Resources')
 			->disableOriginalConstructor()
 			->getMock();
