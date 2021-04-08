@@ -79,6 +79,8 @@ class Subscriber implements Subscriber_Interface {
 		$is_mobile = $this->is_mobile();
 		$used_css  = $this->used_css->get_used_css( $url, $is_mobile );
 
+		$this->used_css->set_cpcss_enabled( (bool) $this->options->get( 'async_css', 0 ) );
+
 		if ( empty( $used_css ) || ( $used_css->retries < 3 ) ) {
 			$config = [
 				'treeshake'      => 1,
@@ -128,7 +130,8 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		$html = $this->used_css->remove_used_css_from_html( $html, $used_css->unprocessedcss );
-		$html = $this->used_css->add_used_css_to_html( $html, $used_css->css );
+
+		$html = $this->used_css->add_used_css_to_html( $html, $used_css->css, $used_css->url, (bool) $used_css->is_mobile );
 
 		$this->used_css->update_last_accessed( (int) $used_css->id );
 

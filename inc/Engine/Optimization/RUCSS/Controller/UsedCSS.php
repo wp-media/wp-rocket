@@ -26,6 +26,13 @@ class UsedCSS {
 	private $purge;
 
 	/**
+	 * Status of CPCSS option.
+	 *
+	 * @var bool
+	 */
+	private $cpcss_enabled = false;
+
+	/**
 	 * Instantiate the class
 	 *
 	 * @param UsedCSS_Query $used_css_query UsedCSS Query instance.
@@ -137,6 +144,9 @@ class UsedCSS {
 			return false;
 		}
 
+		// Save used_css into filesystem.
+		$this->save_used_css_in_filesystem( $data['url'], $data['css'], $data['is_mobile'] );
+
 		return $this->used_css_query->get_item( $id );
 	}
 
@@ -154,6 +164,9 @@ class UsedCSS {
 		if ( ! $updated ) {
 			return false;
 		}
+
+		// Save used_css into filesystem.
+		$this->save_used_css_in_filesystem( $data['url'], $data['css'], $data['is_mobile'] );
 
 		return $this->used_css_query->get_item( $id );
 	}
@@ -225,15 +238,17 @@ class UsedCSS {
 	/**
 	 * Alter HTML string and add the used CSS style in <head> tag,
 	 *
-	 * @param string $html     HTML content.
+	 * @param string $html HTML content.
 	 * @param string $used_css Used CSS content.
+	 * @param string $url Page Url.
+	 * @param bool   $is_mobile For mobile or desktop.
 	 *
 	 * @return string HTML content.
 	 */
-	public function add_used_css_to_html( string $html, string $used_css ) : string {
+	public function add_used_css_to_html( string $html, string $used_css, $url = '', bool $is_mobile = false ) : string {
 		return preg_replace(
 			'#</title>#iU',
-			'</title><style id="wpr-usedcss">' . wp_strip_all_tags( $used_css ) . '</style>',
+			'</title>' . $this->get_used_css_markup( $used_css, $url, $is_mobile ),
 			$html,
 			1
 		);
@@ -297,5 +312,84 @@ class UsedCSS {
 	protected function strip_line_breaks( string $value ) : string {
 		$value = str_replace( [ "\r", "\n", "\r\n", "\t" ], '', $value );
 		return trim( $value );
+	}
+
+	/**
+	 * Set status of CPCSS option
+	 *
+	 * @param bool $status Status of CPCSS option.
+	 */
+	public function set_cpcss_enabled( bool $status ) {
+		$this->cpcss_enabled = (bool) $status;
+	}
+
+	/**
+	 * Save Used CSS into filesystem in case CPCSS is enabled only.
+	 *
+	 * @param string $url Page Url.
+	 * @param string $used_css Used CSS contents.
+	 * @param bool   $is_mobile Used CSS for mobile or desktop.
+	 *
+	 * @return bool
+	 */
+	private function save_used_css_in_filesystem( string $url, string $used_css, bool $is_mobile = false ) : bool {
+
+		if ( ! $this->cpcss_enabled ) {
+			return false;
+		}
+
+		$used_css_path = rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH' );
+
+		if ( ! rocket_direct_filesystem()->is_dir( $used_css_path ) ) {
+			if ( rocket_mkdir_p( $used_css_path ) ) {
+				rocket_direct_filesystem()->touch( $used_css_path . 'index.html' );
+			}
+		}
+
+		$used_css_filepath = rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH' ) . $this->get_used_css_filename( $url, $is_mobile );
+
+		return rocket_put_content( $used_css_filepath, $used_css );
+	}
+
+	/**
+	 * Get Used CSS filename.
+	 *
+	 * @param string $url Page Url.
+	 * @param bool   $is_mobile For mobile version or desktop.
+	 *
+	 * @return string
+	 */
+	private function get_used_css_filename( string $url, bool $is_mobile = false ) : string {
+		return md5( $url ) . ( $is_mobile ? '-mobile' : '' ) . '.css';
+	}
+
+	/**
+	 * Return Markup for used_css into the page.
+	 *
+	 * @param string $used_css Used CSS contents.
+	 * @param string $url Page url.
+	 * @param bool   $is_mobile Used CSS for mobile or desktop.
+	 *
+	 * @return string
+	 */
+	private function get_used_css_markup( string $used_css, string $url = '', bool $is_mobile = false ) : string {
+		if ( ! $this->cpcss_enabled ) {
+			return sprintf(
+				'<style id="wpr-usedcss">%s</style>',
+				wp_strip_all_tags( $used_css )
+			);
+		}
+
+		$used_css_filename = $this->get_used_css_filename( $url, $is_mobile );
+		$used_css_filepath = rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH' ) . $used_css_filename;
+
+		if ( ! rocket_direct_filesystem()->exists( $used_css_filepath ) ) {
+			$this->save_used_css_in_filesystem( $url, $used_css, $is_mobile );
+		}
+
+		return sprintf(
+			'<link rel="stylesheet" id="wpr-usedcss-css" href="%s">', // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
+			rocket_get_constant( 'WP_ROCKET_USED_CSS_URL' ) . $used_css_filename
+		);
 	}
 }
