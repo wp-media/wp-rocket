@@ -21,9 +21,7 @@ class Test_DropRucssDatabaseTables extends TestCase{
 	public function setUp() : void {
 		parent::setUp();
 
-		$version = explode('.', PHP_VERSION);
-		if ( $version[0] >= 8 ) {
-			$this->assertTrue(true);
+		if ( $this->isPHP8() ) {
 			return;
 		}
 
@@ -41,8 +39,7 @@ class Test_DropRucssDatabaseTables extends TestCase{
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $input ){
-		$version = explode('.', PHP_VERSION);
-		if ( $version[0] >= 8 ) {
+		if ( $this->isPHP8() ) {
 			$this->assertTrue(true);
 			return;
 		}
@@ -66,5 +63,20 @@ class Test_DropRucssDatabaseTables extends TestCase{
 		}
 
 		$this->database->drop_rucss_database_tables();
+	}
+
+	/**
+	 * Check if is PHP8.
+	 *
+	 * @return bool
+	 */
+	public function isPHP8() {
+		$version = explode('.', PHP_VERSION);
+		if ( $version[0] >= 8 ) {
+			$this->assertTrue(true);
+			return true;
+		}
+
+		return false;
 	}
 }
