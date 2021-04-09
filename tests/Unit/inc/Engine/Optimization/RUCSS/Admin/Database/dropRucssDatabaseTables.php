@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\RUCSS\Admin\Settings;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\RUCSS\Admin\Database;
 
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Database;
