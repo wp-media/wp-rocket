@@ -28,11 +28,11 @@ function rocket_clean_exclude_file( $file ) {
  * @author Soponar Cristina
  *
  * @param  string $path URL which needs to be cleaned.
- * @return bool\string  false if $path is empty or cleaned URL
+ * @return string Cleaned URL
  */
 function rocket_clean_wildcards( $path ) {
 	if ( ! $path ) {
-		return false;
+		return '';
 	}
 
 	$path_components = explode( '/', $path );
@@ -185,7 +185,7 @@ function rocket_sanitize_textarea_field( $field, $value ) {
 		'exclude_defer_js'     => [ 'sanitize_text_field' ],
 		'exclude_js'           => [ 'rocket_validate_js', 'rocket_clean_wildcards' ], // Pattern.
 		'exclude_lazyload'     => [ 'sanitize_text_field' ],
-		'delay_js_scripts'     => [ 'sanitize_text_field' ],
+		'delay_js_exclusions'  => [ 'sanitize_text_field', 'rocket_clean_wildcards' ],
 	];
 
 	if ( ! isset( $fields[ $field ] ) ) {
@@ -207,7 +207,7 @@ function rocket_sanitize_textarea_field( $field, $value ) {
 
 	// Sanitize.
 	foreach ( $sanitizations as $sanitization ) {
-		$value = array_map( $sanitization, $value );
+		$value = array_filter( array_map( $sanitization, $value ) );
 	}
 
 	return array_unique( $value );

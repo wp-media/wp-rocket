@@ -22,6 +22,8 @@ class ServiceProvider extends AbstractServiceProvider {
 	protected $provides = [
 		'delay_js_settings',
 		'delay_js_admin_subscriber',
+		'delay_js_html',
+		'delay_js_subscriber',
 	];
 
 	/**
@@ -30,11 +32,15 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-		$this->getContainer()->add( 'delay_js_settings', 'WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings' )
-			->addArgument( $this->getContainer()->get( 'options' ) );
+		$this->getContainer()->add( 'delay_js_settings', 'WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings' );
 		$this->getContainer()->share( 'delay_js_admin_subscriber', 'WP_Rocket\Engine\Optimization\DelayJS\Admin\Subscriber' )
 			->addArgument( $this->getContainer()->get( 'delay_js_settings' ) )
-			->addArgument( $this->getContainer()->get( 'template_path' ) . '/settings' )
 			->addTag( 'admin_subscriber' );
+		$this->getContainer()->add( 'delay_js_html', 'WP_Rocket\Engine\Optimization\DelayJS\HTML' )
+			->addArgument( $this->getContainer()->get( 'options' ) );
+		$this->getContainer()->share( 'delay_js_subscriber', 'WP_Rocket\Engine\Optimization\DelayJS\Subscriber' )
+			->addArgument( $this->getContainer()->get( 'delay_js_html' ) )
+			->addArgument( rocket_direct_filesystem() )
+			->addTag( 'front_subscriber' );
 	}
 }

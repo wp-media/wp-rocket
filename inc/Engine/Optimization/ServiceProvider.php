@@ -32,8 +32,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		'combine_google_fonts_subscriber',
 		'minify_css_subscriber',
 		'minify_js_subscriber',
-		'delay_js_html',
-		'delay_js_subscriber',
 	];
 
 	/**
@@ -75,13 +73,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $filesystem )
 			->addTag( 'front_subscriber' );
 		$this->getContainer()->share( 'ie_conditionals_subscriber', 'WP_Rocket\Engine\Optimization\IEConditionalSubscriber' )
-			->addTag( 'front_subscriber' );
-
-		$this->getContainer()->add( 'delay_js_html', 'WP_Rocket\Engine\Optimization\DelayJS\HTML' )
-			->addArgument( $options );
-		$this->getContainer()->share( 'delay_js_subscriber', 'WP_Rocket\Engine\Optimization\DelayJS\Subscriber' )
-			->addArgument( $this->getContainer()->get( 'delay_js_html' ) )
-			->addArgument( $filesystem )
 			->addTag( 'front_subscriber' );
 	}
 }
