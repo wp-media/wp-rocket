@@ -244,10 +244,20 @@ class UsedCSS {
 		$data['css'] = preg_replace( '/content\s*:\s*\'\\\\e/i', 'shaker-parser:\'dashe', $data['css'] );
 
 		if ( empty( $used_css ) ) {
-			return $this->insert_used_css( $data );
+			$inserted = $this->insert_used_css( $data );
+
+			// Save used_css into filesystem.
+			$this->save_used_css_in_filesystem( $inserted );
+
+			return $inserted;
 		}
 
-		return $this->update_used_css( (int) $used_css->id, $data );
+		$updated = $this->update_used_css( (int) $used_css->id, $data );
+
+		// Save used_css into filesystem.
+		$this->save_used_css_in_filesystem( $updated );
+
+		return $updated;
 	}
 
 	/**
@@ -262,9 +272,6 @@ class UsedCSS {
 		if ( empty( $id ) ) {
 			return false;
 		}
-
-		// Save used_css into filesystem.
-		$this->save_used_css_in_filesystem( $data['url'], $data['css'], $data['is_mobile'] );
 
 		return $this->used_css_query->get_item( $id );
 	}
@@ -283,9 +290,6 @@ class UsedCSS {
 		if ( ! $updated ) {
 			return false;
 		}
-
-		// Save used_css into filesystem.
-		$this->save_used_css_in_filesystem( $data['url'], $data['css'], $data['is_mobile'] );
 
 		return $this->used_css_query->get_item( $id );
 	}
