@@ -27,6 +27,7 @@ class HTML {
 		'nowprocket',
 		'/wp-includes/js/wp-embed.min.js',
 		'lazyLoadOptions',
+		'lazyLoadThumb',
 		'wp-rocket/assets/js/lazyload/(.*)',
 	];
 
