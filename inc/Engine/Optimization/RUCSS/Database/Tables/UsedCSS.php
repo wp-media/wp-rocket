@@ -7,7 +7,7 @@ use WP_Rocket\Dependencies\Database\Table;
 /**
  * RUCSS UsedCSS Table.
  */
-final class UsedCSS extends Table {
+class UsedCSS extends Table {
 
 	/**
 	 * Table name

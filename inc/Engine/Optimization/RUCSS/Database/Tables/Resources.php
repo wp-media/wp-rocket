@@ -7,7 +7,7 @@ use WP_Rocket\Dependencies\Database\Table;
 /**
  * RUCSS Resources Table.
  */
-final class Resources extends Table {
+class Resources extends Table {
 
 	/**
 	 * Table name
