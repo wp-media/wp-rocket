@@ -48,6 +48,7 @@ class Test_Treeshake extends FilesystemTestCase {
 		unset( $GLOBALS['wp'] );
 
 		remove_filter( 'pre_get_rocket_option_rucss', [ $this, 'set_rucss_option' ] );
+		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'set_cpcss_option' ] );
 		remove_filter( 'pre_get_rocket_option_cache_logged_user', [ $this, 'set_cached_user' ] );
 		remove_filter( 'pre_http_request', [ $this, 'set_api_response' ] );
 
@@ -71,6 +72,7 @@ class Test_Treeshake extends FilesystemTestCase {
 		}
 
 		add_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
+		add_filter( 'pre_get_rocket_option_async_css', [ $this, 'set_cpcss_option' ] );
 
 		if ( $config['logged-in'] ?? false ) {
 			$user = $this->factory->user->create();
@@ -93,10 +95,24 @@ class Test_Treeshake extends FilesystemTestCase {
 			$this->format_the_html( $expected ),
 			$this->format_the_html( apply_filters( 'rocket_buffer', $config['html'] ) )
 		);
+
+		if ( isset( $this->config_data['cpcss-enabled'] ) && true === $this->config_data['cpcss-enabled'] ) {
+			$this->assertTrue(
+				$this->filesystem->is_readable('public/wp-content/cache/used-css/2664e301f9920094b0c21e1378f8702a.css' )
+			);
+			$this->assertEquals(
+				$config['shaked-css'],
+				$this->filesystem->get_contents('public/wp-content/cache/used-css/2664e301f9920094b0c21e1378f8702a.css' )
+			);
+		}
 	}
 
 	public function set_rucss_option() {
 		return $this->config_data['rucss-enabled'] ?? true;
+	}
+
+	public function set_cpcss_option() {
+		return $this->config_data['cpcss-enabled'] ?? false;
 	}
 
 	public function set_cached_user() {
