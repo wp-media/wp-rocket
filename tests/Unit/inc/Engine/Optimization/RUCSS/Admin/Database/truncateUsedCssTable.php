@@ -11,7 +11,7 @@ use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS;
 /**
  * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Database::truncate_used_css_table
  *
- * @group  RUCSSX
+ * @group  RUCSS
  */
 class Test_TruncateUsedCssTable extends TestCase{
 	private $resources;
