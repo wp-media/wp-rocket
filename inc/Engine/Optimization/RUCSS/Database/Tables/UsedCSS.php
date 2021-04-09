@@ -36,9 +36,7 @@ final class UsedCSS extends Table {
 	 *
 	 * @var array
 	 */
-	protected $upgrades = [
-		20210401 => 'remove_unique_url',
-	];
+	protected $upgrades = [];
 
 	/**
 	 * Setup the database schema
@@ -82,21 +80,4 @@ final class UsedCSS extends Table {
 		return $rows_affected;
 	}
 
-	/**
-	 * Remove unique from url column.
-	 *
-	 * @return bool
-	 */
-	protected function remove_unique_url() {
-		$url_key_exists = $this->index_exists( 'url' );
-
-		if ( ! $url_key_exists ) {
-			return $this->is_success( true );
-		}
-
-		$removed = $this->get_db()->query( "ALTER TABLE {$this->table_name} DROP INDEX url" );
-		$added   = $this->get_db()->query( "ALTER TABLE {$this->table_name} ADD INDEX url (url(150), is_mobile)" );
-
-		return $this->is_success( $removed && $added );
-	}
 }
