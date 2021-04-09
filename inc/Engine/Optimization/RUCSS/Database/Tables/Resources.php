@@ -36,10 +36,7 @@ final class Resources extends Table {
 	 *
 	 * @var array
 	 */
-	protected $upgrades = [
-		20210331 => 'remove_hash_unique',
-		20210401 => 'add_media_column',
-	];
+	protected $upgrades = [];
 
 	/**
 	 * Setup the database schema
@@ -61,41 +58,6 @@ final class Resources extends Table {
 			KEY url (url),
 			KEY type (type),
 			KEY last_accessed (last_accessed)";
-	}
-
-	/**
-	 * Remove hash from being unique column and just make it an index.
-	 *
-	 * @return bool
-	 */
-	protected function remove_hash_unique() {
-		$hash_key_exists = $this->index_exists( 'hash' );
-
-		if ( ! $hash_key_exists ) {
-			return $this->is_success( true );
-		}
-
-		$removed = $this->get_db()->query( "ALTER TABLE {$this->table_name} DROP INDEX hash" );
-		$added   = $this->get_db()->query( "ALTER TABLE {$this->table_name} ADD INDEX hash (hash)" );
-
-		return $this->is_success( $removed && $added );
-	}
-
-	/**
-	 * Add media column.
-	 *
-	 * @return bool
-	 */
-	protected function add_media_column() {
-		$media_column_exists = $this->column_exists( 'media' );
-
-		if ( $media_column_exists ) {
-			return $this->is_success( true );
-		}
-
-		$created = $this->get_db()->query( "ALTER TABLE {$this->table_name} ADD COLUMN media VARCHAR(255) NULL default 'all' AFTER type " );
-
-		return $this->is_success( $created );
 	}
 
 	/**
