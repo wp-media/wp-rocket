@@ -2156,7 +2156,7 @@ msgid ""
 "renewal rate: you will only pay %1$s%4$s%3$s!"
 msgstr ""
 "Lisansınızı 1 yıllığına yenileyin ve yenileme fiyatınızda hemen %1$s%2$s "
-"indirim%3$s alın: sadece %1$s%4$s ödeyeceksiniz%3$s!"
+"indirim%3$s alın: sadece %1$s%4$s%3$s ödeyeceksiniz!"
 
 #: inc/Engine/License/views/renewal-expired-banner.php:37
 #: inc/Engine/License/views/renewal-soon-banner.php:42
