@@ -825,7 +825,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:1027
 msgid "Add missing image dimensions"
-msgstr "Eksik resim boyutlarını ekleyin"
+msgstr "Eksik resim boyutlarını ekle"
 
 #: inc/Engine/Admin/Settings/Page.php:1035
 msgid "Disable WordPress embeds"
