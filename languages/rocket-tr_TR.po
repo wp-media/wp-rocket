@@ -2113,7 +2113,7 @@ msgstr "%s promosyonu geçerli!"
 
 #: inc/Engine/License/views/promo-banner.php:27
 msgid "Hurry Up! Deal ends in:"
-msgstr "Acele Et! Anlaşmanın bitiş zamanı:"
+msgstr "Acele Edin! Anlaşmanın bitiş zamanı:"
 
 #: inc/Engine/License/views/promo-banner.php:31
 #: inc/Engine/License/views/renewal-soon-banner.php:14
