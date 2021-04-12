@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Addon\FacebookTracking;
 
+use WP_Rocket\deprecated\DeprecatedClassTrait;
 use WP_Rocket\Addon\Busting\BustingFactory;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Admin\Options_Data as Options;
@@ -9,9 +10,11 @@ use WP_Rocket\Admin\Options_Data as Options;
 /**
  * Event subscriber for Facebook tracking cache busting.
  *
+ * @since 3.9 deprecated.
  * @since 3.2
  */
 class Subscriber implements Subscriber_Interface {
+	use DeprecatedClassTrait;
 
 	/**
 	 * Name of the cron.
@@ -46,6 +49,8 @@ class Subscriber implements Subscriber_Interface {
 	 * @param Options        $options         Instance of the Options_Data class.
 	 */
 	public function __construct( BustingFactory $busting_factory, Options $options ) {
+		self::deprecated_class( '3.9' );
+
 		$this->busting_factory = $busting_factory;
 		$this->options         = $options;
 	}

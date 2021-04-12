@@ -292,8 +292,6 @@ class Page {
 			'varnish_auto_purge'          => 1,
 			'do_cloudflare'               => 1,
 			'cloudflare_protocol_rewrite' => 1,
-			'google_analytics_cache'      => 1,
-			'facebook_pixel_cache'        => 1,
 			'sucury_waf_cache_sync'       => 1,
 			'sucury_waf_api_key'          => 1,
 		];
@@ -1741,52 +1739,6 @@ class Page {
 					'description' => __( 'Rocket Add-ons are complementary features extending available options.', 'rocket' ),
 					'type'        => 'addons_container',
 					'page'        => 'addons',
-				],
-			]
-		);
-
-		$ga_beacon = $this->beacon->get_suggest( 'google_tracking' );
-
-		$this->settings->add_settings_fields(
-			[
-				'google_analytics_cache' => [
-					'type'              => 'one_click_addon',
-					'label'             => __( 'Google Tracking', 'rocket' ),
-					'logo'              => [
-						'url'    => WP_ROCKET_ASSETS_IMG_URL . 'logo-google-analytics.svg',
-						'width'  => 153,
-						'height' => 111,
-					],
-					'title'             => __( 'Improve browser caching for Google Analytics', 'rocket' ),
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'WP Rocket will host these Google scripts locally on your server to help satisfy the PageSpeed recommendation for <em>Leverage browser caching</em>.<br>%1$sLearn more%2$s', 'rocket' ), '<a href="' . esc_url( $ga_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $ga_beacon['id'] ) . '" target="_blank">', '</a>' ),
-					'section'           => 'one_click',
-					'page'              => 'addons',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
-				],
-			]
-		);
-
-		$fb_beacon = $this->beacon->get_suggest( 'facebook_tracking' );
-
-		$this->settings->add_settings_fields(
-			[
-				'facebook_pixel_cache' => [
-					'type'              => 'one_click_addon',
-					'label'             => __( 'Facebook Pixel', 'rocket' ),
-					'logo'              => [
-						'url'    => WP_ROCKET_ASSETS_IMG_URL . 'logo-facebook.svg',
-						'width'  => 114,
-						'height' => 114,
-					],
-					'title'             => __( 'Improve browser caching for Facebook Pixel', 'rocket' ),
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'WP Rocket will host these Facebook Pixels locally on your server to help satisfy the PageSpeed recommendation for <em>Leverage browser caching</em>.<br>%1$sLearn more%2$s', 'rocket' ), '<a href="' . esc_url( $fb_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $fb_beacon['id'] ) . '" target="_blank">', '</a>' ),
-					'section'           => 'one_click',
-					'page'              => 'addons',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
 				],
 			]
 		);

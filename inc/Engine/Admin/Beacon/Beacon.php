@@ -609,22 +609,6 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://fr.docs.wp-rocket.me/article/1124-controler-api-wordpress-heartbeat/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
-			'google_tracking'            => [
-				'en' => [
-					'id'  => '5b4693220428630abc0bf97b',
-					'url' => 'https://docs.wp-rocket.me/article/1103-google-tracking-add-on/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-			],
-			'facebook_tracking'          => [
-				'en' => [
-					'id'  => '5bc904e7042863158cc79d57',
-					'url' => 'https://docs.wp-rocket.me/article/1117-facebook-pixel-add-on/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-				'fr' => [
-					'id'  => '5bcf3d35042863215a46bb7f',
-					'url' => 'https://fr.docs.wp-rocket.me/article/1123-add-on-facebook-pixel/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-			],
 			'google_fonts'               => [
 				'en' => [
 					'id'  => '5e8687c22c7d3a7e9aea4c4a',

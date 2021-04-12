@@ -1,6 +1,7 @@
 <?php
 namespace WP_Rocket\Addon\GoogleTracking;
 
+use WP_Rocket\deprecated\DeprecatedClassTrait;
 use WP_Rocket\Addon\Busting\FileBustingTrait;
 use WP_Rocket\Busting\Abstract_Busting;
 use WP_Rocket\Logger\Logger;
@@ -8,10 +9,12 @@ use WP_Rocket\Logger\Logger;
 /**
  * Manages the cache busting of the Google Analytics file.
  *
- * @since  3.1
+ * @since 3.9 deprecated
+ * @since 3.1
  */
 class GoogleAnalytics extends Abstract_Busting {
 	use FileBustingTrait;
+	use DeprecatedClassTrait;
 
 	/**
 	 * Context used for the logger.
@@ -84,6 +87,8 @@ class GoogleAnalytics extends Abstract_Busting {
 	 * @param string $busting_url  URL of the busting directory.
 	 */
 	public function __construct( $busting_path, $busting_url ) {
+		self::deprecated_class( '3.9' );
+
 		$this->busting_path = $busting_path . 'google-tracking/';
 		$this->busting_url  = $busting_url . 'google-tracking/';
 		$this->filesystem   = rocket_direct_filesystem();

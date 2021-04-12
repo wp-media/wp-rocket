@@ -1,6 +1,7 @@
 <?php
 namespace WP_Rocket\Addon\Busting;
 
+use WP_Rocket\deprecated\DeprecatedClassTrait;
 use WP_Rocket\Addon\GoogleTracking\GoogleAnalytics;
 use WP_Rocket\Addon\GoogleTracking\GoogleTagManager;
 use WP_Rocket\Busting\Facebook_Pickles;
@@ -9,9 +10,12 @@ use WP_Rocket\Busting\Facebook_SDK;
 /**
  * Busting classes Factory
  *
+ * @since 3.9 deprecated.
  * @since 3.6.2
  */
 class BustingFactory {
+	use DeprecatedClassTrait;
+
 	/**
 	 * Base cache busting filepath.
 	 *
@@ -33,6 +37,7 @@ class BustingFactory {
 	 * @param string $busting_url Base cache busting URL.
 	 */
 	public function __construct( $busting_path, $busting_url ) {
+		self::deprecated_class( '3.9' );
 		$this->busting_path = $busting_path;
 		$this->busting_url  = $busting_url;
 	}
