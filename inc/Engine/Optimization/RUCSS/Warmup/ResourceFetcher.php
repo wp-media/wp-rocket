@@ -93,8 +93,8 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 			return;
 		}
 
-		$this->find_resources( $html, 'css' );
 		$this->find_resources( $html, 'js' );
+		$this->find_resources( $html, 'css' );
 
 		if ( empty( $this->resources ) ) {
 			return;
