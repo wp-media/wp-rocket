@@ -155,6 +155,32 @@ class UsedCSS {
 	}
 
 	/**
+	 * Delete used css based on URL.
+	 *
+	 * @param string $url The page URL.
+	 *
+	 * @return boolean
+	 */
+	public function delete_used_css( string $url ) : bool {
+		$used_css_arr = $this->used_css_query->query( [ 'url' => $url ] );
+
+		if ( empty( $used_css_arr ) ) {
+			return false;
+		}
+
+		$deleted = true;
+
+		foreach ( $used_css_arr as $used_css ) {
+			if ( empty( $used_css->id ) ) {
+				continue;
+			}
+			$deleted = $deleted && $this->used_css_query->delete_item( $used_css->id );
+		}
+
+		return $deleted;
+	}
+
+	/**
 	 * Determines if we treeshake the CSS.
 	 *
 	 * @return boolean
@@ -292,32 +318,6 @@ class UsedCSS {
 		}
 
 		return $this->used_css_query->get_item( $id );
-	}
-
-	/**
-	 * Delete used css based on URL.
-	 *
-	 * @param string $url The page URL.
-	 *
-	 * @return boolean
-	 */
-	private function delete_used_css( string $url ) : bool {
-		$used_css_arr = $this->used_css_query->query( [ 'url' => $url ] );
-
-		if ( empty( $used_css_arr ) ) {
-			return false;
-		}
-
-		$deleted = true;
-
-		foreach ( $used_css_arr as $used_css ) {
-			if ( empty( $used_css->id ) ) {
-				continue;
-			}
-			$deleted = $deleted && $this->used_css_query->delete_item( $used_css->id );
-		}
-
-		return $deleted;
 	}
 
 	/**
