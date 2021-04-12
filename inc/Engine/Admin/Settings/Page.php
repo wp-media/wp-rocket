@@ -292,8 +292,6 @@ class Page {
 			'varnish_auto_purge'          => 1,
 			'do_cloudflare'               => 1,
 			'cloudflare_protocol_rewrite' => 1,
-			'google_analytics_cache'      => 1,
-			'facebook_pixel_cache'        => 1,
 			'sucury_waf_cache_sync'       => 1,
 			'sucury_waf_api_key'          => 1,
 		];
@@ -840,11 +838,10 @@ class Page {
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
-				'delay_js_scripts'           => [
+				'delay_js_exclusions'    => [
 					'type'              => 'textarea',
-					'label'             => __( 'Scripts to delay', 'rocket' ),
-					'description'       => __( 'Specify keywords that can identify inline or JavaScript files to be delayed (one per line).', 'rocket' ),
-					'helper'            => __( 'A curated list of scripts that are safe to delay is provided. They may not all apply to your website and it is safe to leave the list as-is unless you face issues.', 'rocket' ),
+					'label'             => __( 'Excluded JavaScript Files', 'rocket' ),
+					'description'       => __( 'Specify URLs or keywords that can identify inline or JavaScript files to be excluded from delaying execution (one per line).', 'rocket' ),
 					'container_class'   => [
 						'wpr-field--children',
 					],
@@ -953,6 +950,7 @@ class Page {
 					'type'        => 'fields_container',
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description' => sprintf( __( 'Add missing width and height attributes to images. Helps prevent layout shifts and improve the reading experience for your visitors. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $dimensions['url'] ) . '" data-beacon-article="' . esc_attr( $dimensions['id'] ) . '" target="_blank" rel="noopener noreferrer">', '</a>' ),
+					'help'        => $dimensions,
 					'page'        => 'media',
 				],
 				'embeds_section'     => [
@@ -1130,10 +1128,7 @@ class Page {
 					'title'       => __( 'Prefetch DNS Requests', 'rocket' ),
 					'type'        => 'fields_container',
 					'description' => __( 'DNS prefetching can make external files load faster, especially on mobile networks', 'rocket' ),
-					'help'        => [
-						'id'  => $this->beacon->get_suggest( 'dns_prefetch' ),
-						'url' => $bot_beacon['url'],
-					],
+					'help'        => $this->beacon->get_suggest( 'dns_prefetch' ),
 					'page'        => 'preload',
 				],
 				'preload_fonts_section' => [
@@ -1254,6 +1249,7 @@ class Page {
 		$cache_query_strings_beacon = $this->beacon->get_suggest( 'cache_query_strings' );
 		$never_cache_beacon         = $this->beacon->get_suggest( 'exclude_cache' );
 		$never_cache_cookie_beacon  = $this->beacon->get_suggest( 'exclude_cookie' );
+		$exclude_user_agent_beacon  = $this->beacon->get_suggest( 'exclude_user_agent' );
 		$always_purge_beacon        = $this->beacon->get_suggest( 'always_purge' );
 
 		$ecommerce_plugin = '';
@@ -1288,10 +1284,7 @@ class Page {
 					'type'        => 'fields_container',
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description' => $reject_uri_desc,
-					'help'        => [
-						'id'  => $this->beacon->get_suggest( 'never_cache' ),
-						'url' => $never_cache_beacon['url'],
-					],
+					'help'        => $never_cache_beacon,
 					'page'        => 'advanced_cache',
 				],
 				'cache_reject_cookies_section' => [
@@ -1303,15 +1296,13 @@ class Page {
 				'cache_reject_ua_section'      => [
 					'title' => __( 'Never Cache User Agent(s)', 'rocket' ),
 					'type'  => 'fields_container',
+					'help'  => $exclude_user_agent_beacon,
 					'page'  => 'advanced_cache',
 				],
 				'cache_purge_pages_section'    => [
 					'title' => __( 'Always Purge URL(s)', 'rocket' ),
 					'type'  => 'fields_container',
-					'help'  => [
-						'id'  => $this->beacon->get_suggest( 'always_purge_section' ),
-						'url' => $always_purge_beacon['url'],
-					],
+					'help'  => $always_purge_beacon,
 					'page'  => 'advanced_cache',
 				],
 				'cache_query_strings_section'  => [
@@ -1319,10 +1310,7 @@ class Page {
 					'type'        => 'fields_container',
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description' => sprintf( __( '%1$sCache for query strings%2$s enables you to force caching for specific GET parameters.', 'rocket' ), '<a href="' . esc_url( $cache_query_strings_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $cache_query_strings_beacon['id'] ) . '" target="_blank">', '</a>' ),
-					'help'        => [
-						'id'  => $this->beacon->get_suggest( 'query_strings' ),
-						'url' => $cache_query_strings_beacon['url'],
-					],
+					'help'        => $cache_query_strings_beacon,
 					'page'        => 'advanced_cache',
 				],
 			]
@@ -1399,18 +1387,13 @@ class Page {
 			]
 		);
 
-		$database_beacon = $this->beacon->get_suggest( 'slow_admin' );
-
 		$this->settings->add_settings_sections(
 			[
 				'post_cleanup_section'       => [
 					'title'       => __( 'Post Cleanup', 'rocket' ),
 					'type'        => 'fields_container',
 					'description' => __( 'Post revisions and drafts will be permanently deleted. Do not use this option if you need to retain revisions or drafts.', 'rocket' ),
-					'help'        => [
-						'id'  => $this->beacon->get_suggest( 'cleanup' ),
-						'url' => $database_beacon['url'],
-					],
+					'help'        => $this->beacon->get_suggest( 'db_optimization' ),
 					'page'        => 'database',
 				],
 				'comments_cleanup_section'   => [
@@ -1617,16 +1600,16 @@ class Page {
 		}
 
 		if ( ! empty( $addons ) ) {
-			$maybe_display_cdn_helper = sprintf(
-				// translators: %1$s = opening em tag, %2$s = add-on name(s), %3$s = closing em tag.
+			$maybe_display_cdn_helper = wp_sprintf(
+				// translators: %1$s = opening em tag, %2$l = list of add-on name(s), %3$s = closing em tag.
 				_n(
-					'%1$s%2$s Add-on%3$s is currently enabled. Configuration of the CDN settings is not required for %2$s to work on your site.',
-					'%1$s%2$s Add-ons%3$s are currently enabled. Configuration of the CDN settings is not required for %2$s to work on your site.',
+					'%1$s%2$l Add-on%3$s is currently enabled. Configuration of the CDN settings is not required for %2$l to work on your site.',
+					'%1$s%2$l Add-ons%3$s are currently enabled. Configuration of the CDN settings is not required for %2$l to work on your site.',
 					count( $addons ),
 					'rocket'
 				),
 				'<em>',
-				implode( ' and ', $addons ),
+				$addons,
 				'</em>'
 			) . '<br>';
 		}
@@ -1682,6 +1665,7 @@ class Page {
 	 */
 	private function heartbeat_section() {
 		$heartbeat_beacon = $this->beacon->get_suggest( 'heartbeat_settings' );
+
 		$this->settings->add_page_section(
 			'heartbeat',
 			[
@@ -1697,10 +1681,7 @@ class Page {
 					'description' => __( 'Reducing or disabling the Heartbeat API’s activity can help save some of your server’s resources.', 'rocket' ),
 					'type'        => 'fields_container',
 					'page'        => 'heartbeat',
-					'help'        => [
-						'id'  => $heartbeat_beacon['id'],
-						'url' => $heartbeat_beacon['url'],
-					],
+					'help'        => $heartbeat_beacon,
 				],
 				'heartbeat_settings' => [
 					'title'       => __( 'Reduce or disable Heartbeat activity', 'rocket' ),
@@ -1789,52 +1770,6 @@ class Page {
 					'description' => __( 'Rocket Add-ons are complementary features extending available options.', 'rocket' ),
 					'type'        => 'addons_container',
 					'page'        => 'addons',
-				],
-			]
-		);
-
-		$ga_beacon = $this->beacon->get_suggest( 'google_tracking' );
-
-		$this->settings->add_settings_fields(
-			[
-				'google_analytics_cache' => [
-					'type'              => 'one_click_addon',
-					'label'             => __( 'Google Tracking', 'rocket' ),
-					'logo'              => [
-						'url'    => WP_ROCKET_ASSETS_IMG_URL . 'logo-google-analytics.svg',
-						'width'  => 153,
-						'height' => 111,
-					],
-					'title'             => __( 'Improve browser caching for Google Analytics', 'rocket' ),
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'WP Rocket will host these Google scripts locally on your server to help satisfy the PageSpeed recommendation for <em>Leverage browser caching</em>.<br>%1$sLearn more%2$s', 'rocket' ), '<a href="' . esc_url( $ga_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $ga_beacon['id'] ) . '" target="_blank">', '</a>' ),
-					'section'           => 'one_click',
-					'page'              => 'addons',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
-				],
-			]
-		);
-
-		$fb_beacon = $this->beacon->get_suggest( 'facebook_tracking' );
-
-		$this->settings->add_settings_fields(
-			[
-				'facebook_pixel_cache' => [
-					'type'              => 'one_click_addon',
-					'label'             => __( 'Facebook Pixel', 'rocket' ),
-					'logo'              => [
-						'url'    => WP_ROCKET_ASSETS_IMG_URL . 'logo-facebook.svg',
-						'width'  => 114,
-						'height' => 114,
-					],
-					'title'             => __( 'Improve browser caching for Facebook Pixel', 'rocket' ),
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'WP Rocket will host these Facebook Pixels locally on your server to help satisfy the PageSpeed recommendation for <em>Leverage browser caching</em>.<br>%1$sLearn more%2$s', 'rocket' ), '<a href="' . esc_url( $fb_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $fb_beacon['id'] ) . '" target="_blank">', '</a>' ),
-					'section'           => 'one_click',
-					'page'              => 'addons',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
 				],
 			]
 		);

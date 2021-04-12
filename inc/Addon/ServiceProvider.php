@@ -22,9 +22,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
-		'busting_factory',
-		'facebook_tracking',
-		'google_tracking',
 		'sucuri_subscriber',
 	];
 
@@ -35,23 +32,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	public function register() {
 		$options = $this->getContainer()->get( 'options' );
-
-		// Busting Factory.
-		$this->getContainer()->add( 'busting_factory', 'WP_Rocket\Addon\Busting\BustingFactory' )
-			->addArgument( rocket_get_constant( 'WP_ROCKET_CACHE_BUSTING_PATH' ) )
-			->addArgument( rocket_get_constant( 'WP_ROCKET_CACHE_BUSTING_URL' ) );
-
-		// Facebook Tracking Subscriber.
-		$this->getContainer()->share( 'facebook_tracking', 'WP_Rocket\Addon\FacebookTracking\Subscriber' )
-			->addArgument( $this->getContainer()->get( 'busting_factory' ) )
-			->addArgument( $options )
-			->addTag( 'common_subscriber' );
-
-		// Google Tracking Subscriber.
-		$this->getContainer()->share( 'google_tracking', 'WP_Rocket\Addon\GoogleTracking\Subscriber' )
-			->addArgument( $this->getContainer()->get( 'busting_factory' ) )
-			->addArgument( $options )
-			->addTag( 'common_subscriber' );
 
 		// Sucuri Addon.
 		$this->getContainer()->share( 'sucuri_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Security\Sucuri_Subscriber' )

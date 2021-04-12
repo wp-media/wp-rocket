@@ -29,6 +29,27 @@ abstract class AbstractGFOptimization extends AbstractOptimization {
 	];
 
 	/**
+	 * Flag for whether google fonts have been detected (Default: true)
+	 *
+	 * @since 3.8.8
+	 *
+	 * @var bool
+	 */
+	protected $has_google_fonts = true;
+
+
+	/**
+	 * Check whether the optimizer has found google fonts on the page.
+	 *
+	 * @since 3.8.8
+	 *
+	 * @return bool Will default to true when extending classes have not set via the optimize() method.
+	 */
+	public function has_google_fonts() {
+		return $this->has_google_fonts;
+	}
+
+	/**
 	 * Returns font with display value.
 	 *
 	 * @since  3.8 Moved here from GoogleFonts\Combine::class

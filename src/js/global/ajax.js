@@ -138,29 +138,6 @@ $(document).ready(function(){
         );
     });
 
-    /**
-     * Restores default value of the Delay JS textarea.
-     */
-    $('#wpr-action-rocket_delay_js_restore_defaults').on('click', function(e) {
-        e.preventDefault();
-
-		$('#wpr-action-rocket_delay_js_restore_defaults').addClass('wpr-isLoading');
-
-        $.post(
-            ajaxurl,
-            {
-                action: 'rocket_restore_delay_js_defaults',
-                _ajax_nonce: rocket_ajax_data.nonce
-            },
-			function(response) {
-				if ( response.success ) {
-					// Fill the textarea with the returned data on success.
-					$('#delay_js_scripts').val(response.data);
-				}
-			}
-        );
-    });
-
     $( '#rocket-dismiss-promotion' ).on( 'click', function( e ) {
         e.preventDefault();
 
