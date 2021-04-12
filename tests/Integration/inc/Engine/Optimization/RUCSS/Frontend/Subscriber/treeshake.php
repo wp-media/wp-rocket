@@ -41,7 +41,7 @@ class Test_Treeshake extends FilesystemTestCase {
 
 		parent::setUp();
 
-		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'treeshake' );
+		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'treeshake', 12 );
 	}
 
 	public function tearDown() {

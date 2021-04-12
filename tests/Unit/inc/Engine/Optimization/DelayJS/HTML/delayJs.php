@@ -28,8 +28,7 @@ class Test_DelayJs extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldProcessScriptHTML( $config, $html, $expected ) {
-		$allowed_scripts           = isset( $config['allowed-scripts'] ) ? $config['allowed-scripts'] : [];
-		$this->donotrocketoptimize = isset( $config['donotoptimize'] ) ? $config['donotoptimize'] : false;
+		$this->donotrocketoptimize = $config['donotoptimize'];
 
 		Functions\expect( 'rocket_bypass' )
 			->atMost()
@@ -42,22 +41,17 @@ class Test_DelayJs extends TestCase {
 			$this->options->shouldReceive( 'get' )
 				->with( 'delay_js', 0 )
 				->never();
-
-			$this->options->shouldReceive( 'get' )
-				->with( 'delay_js_scripts', [] )
-				->never();
 		} else {
 			$this->options->shouldReceive( 'get' )
 				->with( 'delay_js', 0 )
 				->once()
-				->andReturn( $config['do-not-delay-setting'] );
+				->andReturn( $config['delay_js'] );
 
-			if ( $config['do-not-delay-setting'] ) {
-				$this->options->shouldReceive( 'get' )
-					->with( 'delay_js_scripts', [] )
-					->once()
-					->andReturn( $allowed_scripts );
-			}
+			$this->options->shouldReceive( 'get' )
+				->with( 'delay_js_exclusions', [] )
+				->atMost()
+				->once()
+				->andReturn( $config['delay_js_exclusions'] );
 
 		}
 

@@ -221,8 +221,6 @@ class Settings {
 
 		$input['defer_all_js']     = ! empty( $input['defer_all_js'] ) ? 1 : 0;
 		$input['exclude_defer_js'] = ! empty( $input['exclude_defer_js'] ) ? rocket_sanitize_textarea_field( 'exclude_defer_js', $input['exclude_defer_js'] ) : [];
-		$input['delay_js']         = $this->sanitize_checkbox( $input, 'delay_js' );
-		$input['delay_js_scripts'] = ! empty( $input['delay_js_scripts'] ) ? rocket_sanitize_textarea_field( 'delay_js_scripts', $input['delay_js_scripts'] ) : [];
 
 		$input['embeds'] = ! empty( $input['embeds'] ) ? 1 : 0;
 		$input['emoji']  = ! empty( $input['emoji'] ) ? 1 : 0;

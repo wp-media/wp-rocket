@@ -117,4 +117,31 @@ return [
 				'</body>' .
 			'</html>'
 	],
+	'shouldRemovePreconnectWhenNoGoogleFontsPresentOnPage' => [
+		'given' =>
+			'<!doctype html>' .
+			'<html>' .
+				'<head>' .
+					'<meta charset="UTF-8" />' .
+					'<title>Sample Page</title>' .
+					"<link href='https://fonts.gstatic.com' crossorigin rel='preconnect' />" .
+					'<link rel="prefetch" href="https://my-cdn.com" crossorigin>' .
+					'<style>h1 { color: red; }</style>' .
+					'</head>' .
+				'<body></body>' .
+			'</html>'
+		,
+		'expected' =>
+			'<!doctype html>' .
+			'<html>' .
+				'<head>' .
+					'<meta charset="UTF-8" />' .
+					'<title>Sample Page</title>' .
+					'<link rel="prefetch" href="https://my-cdn.com" crossorigin>' .
+					'<style>h1 { color: red; }</style>' .
+					'</head>' .
+				'<body></body>' .
+			'</html>'
+		,
+	]
 ];

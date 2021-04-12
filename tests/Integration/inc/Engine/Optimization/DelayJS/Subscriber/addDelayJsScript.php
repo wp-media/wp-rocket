@@ -12,7 +12,6 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @uses   rocket_get_constant()
  */
 class Test_AddDelayJsScript extends TestCase {
-
 	private $delay_js = false;
 
 	public function tearDown() {
@@ -21,7 +20,6 @@ class Test_AddDelayJsScript extends TestCase {
 
 		$this->delay_js = false;
 
-		wp_dequeue_script('rocket-browser-checker');
 		wp_dequeue_script('rocket-delay-js');
 
 		parent::tearDown();
@@ -30,7 +28,7 @@ class Test_AddDelayJsScript extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldProcessScriptHTML( $config, $expected ) {
+	public function testShouldDoExpected( $config, $expected ) {
 		$this->donotrocketoptimize = $config['donotoptimize'];
 		$this->delay_js            = $config['delay_js'];
 
@@ -51,10 +49,8 @@ class Test_AddDelayJsScript extends TestCase {
 		do_action( 'wp_enqueue_scripts' );
 
 		if ( false === $expected ) {
-			$this->assertFalse( wp_script_is( 'rocket-browser-checker' ) );
 			$this->assertFalse( wp_script_is( 'rocket-delay-js' ) );
 		} else {
-			$this->assertTrue( wp_script_is( 'rocket-browser-checker' ) );
 			$this->assertTrue( wp_script_is( 'rocket-delay-js' ) );
 		}
 

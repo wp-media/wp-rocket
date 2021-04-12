@@ -83,7 +83,7 @@ class Test_PurgeExpiredFiles extends FilesystemTestCase {
 	private function setFilesToExpire( $files, $expirationTime = '11 hours ago' ) {
 		foreach ( $files as $filepath ) {
 			$file = $this->filesystem->getFile( $filepath );
-			$file->lastAttributeModified( strtotime( $expirationTime ) );
+			$file->lastModified( strtotime( $expirationTime ) );
 		}
 	}
 }

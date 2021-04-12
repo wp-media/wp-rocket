@@ -79,7 +79,7 @@ class Fonts implements Subscriber_Interface {
 	 * @since 3.6
 	 */
 	public function preload_fonts() {
-		if ( rocket_bypass() ) {
+		if ( ! $this->is_allowed() ) {
 			return;
 		}
 
@@ -136,5 +136,27 @@ class Fonts implements Subscriber_Interface {
 		}
 
 		return $file;
+	}
+
+	/**
+	 * Checks if we should add the preload links
+	 *
+	 * @since 3.8.8
+	 *
+	 * @return bool
+	 */
+	private function is_allowed() : bool {
+		if ( rocket_bypass() ) {
+			return false;
+		}
+
+		/**
+		 * Filters the preload fonts links addition
+		 *
+		 * @since 3.8.8
+		 *
+		 * @param bool $disable_preload_fonts True to disable, false otherwise.
+		 */
+		return ! apply_filters( 'rocket_disable_preload_fonts', false );
 	}
 }
