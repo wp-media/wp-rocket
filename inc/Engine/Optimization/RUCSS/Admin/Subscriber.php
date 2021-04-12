@@ -52,7 +52,7 @@ class Subscriber implements Subscriber_Interface {
 
 		return [
 			'rocket_first_install_options'       => 'add_options_first_time',
-			'rocket_input_sanitize'              => [ 'sanitize_options', 10, 2 ],
+			'rocket_input_sanitize'              => [ 'sanitize_options', 14, 2 ],
 			'update_option_' . $slug             => [ 'clean_used_css_and_cache', 10, 2 ],
 			'wp_rocket_upgrade'                  => [
 				[ 'set_option_on_update', 13, 2 ],
