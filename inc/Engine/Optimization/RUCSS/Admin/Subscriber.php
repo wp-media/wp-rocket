@@ -53,7 +53,7 @@ class Subscriber implements Subscriber_Interface {
 		return [
 			'rocket_first_install_options'       => 'add_options_first_time',
 			'rocket_input_sanitize'              => [ 'sanitize_options', 10, 2 ],
-			'pre_update_option_' . $slug         => [ 'clean_used_css_and_cache', 10, 2 ],
+			'update_option_' . $slug             => [ 'clean_used_css_and_cache', 10, 2 ],
 			'wp_rocket_upgrade'                  => [
 				[ 'set_option_on_update', 13, 2 ],
 			],
@@ -180,14 +180,14 @@ class Subscriber implements Subscriber_Interface {
 	 * @param array $value     An array of previous values for the settings.
 	 * @param array $old_value An array of submitted values for the settings.
 	 *
-	 * @return array settings with settings.
+	 * @return void
 	 */
-	public function clean_used_css_and_cache( $value, $old_value ) : array {
+	public function clean_used_css_and_cache( $value, $old_value ) {
 		if ( ! current_user_can( 'rocket_manage_options' )
 			||
 			! $this->settings->is_enabled()
 		) {
-			return $value;
+			return;
 		}
 
 		if (
@@ -199,7 +199,5 @@ class Subscriber implements Subscriber_Interface {
 			// Clear all caching files.
 			rocket_clean_domain();
 		}
-
-		return $value;
 	}
 }
