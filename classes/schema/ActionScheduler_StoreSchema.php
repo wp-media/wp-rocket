@@ -56,7 +56,7 @@ class ActionScheduler_StoreSchema extends ActionScheduler_Abstract_Schema {
 				        KEY group_id (group_id),
 				        KEY last_attempt_gmt (last_attempt_gmt),
 				        KEY claim_id (claim_id),
-						KEY `claim_id, status, scheduled_date_gmt` (`claim_id`, `status`, `scheduled_date_gmt`)
+				        KEY `claim_id_status_scheduled_date_gmt` (`claim_id`, `status`, `scheduled_date_gmt`)
 				        ) $charset_collate";
 
 			case self::CLAIMS_TABLE:
