@@ -11,7 +11,8 @@ $simple_html_with_local_image = <<<HTML
 	<img src="http://example.org/wp-content/themes/image.jpg">
 </body>
 </html>
-HTML;
+HTML
+;
 
 $simple_html_without_images = <<<HTML
 <!DOCTYPE html>
@@ -26,7 +27,8 @@ $simple_html_without_images = <<<HTML
 	</div>
 </body>
 </html>
-HTML;
+HTML
+;
 
 
 return [
