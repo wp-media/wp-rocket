@@ -15,6 +15,7 @@ class Test_DeleteUsedCssOnUpdateOrDelete extends TestCase{
 	use DBTrait;
 
 	private $posts;
+	private $input;
 
 	public static function setUpBeforeClass(): void {
 		self::installFresh();

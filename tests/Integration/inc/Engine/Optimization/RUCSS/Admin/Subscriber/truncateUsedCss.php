@@ -14,6 +14,8 @@ use WP_Rocket\Tests\Integration\TestCase;
 class Test_TruncateUsedCss extends TestCase{
 	use DBTrait;
 
+	private $input;
+
 	public static function setUpBeforeClass(): void {
 		self::installFresh();
 

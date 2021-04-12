@@ -14,7 +14,7 @@ use WP_Rocket\Tests\Integration\TestCase;
 class Test_CronCleanRows extends TestCase{
 	use DBTrait;
 
-	private $posts;
+	private $input;
 
 	public static function setUpBeforeClass(): void {
 		self::installFresh();
