@@ -15,7 +15,6 @@ return [
 	'testShouldNotUpdateOptionWhenDelayJSEquals0'  => [
 		'options'       => [
 			'delay_js' => 0,
-			'delay_js_exclusions' => [],
 		],
 		'old_version'   => '3.8',
 		'expected'      => [
@@ -26,7 +25,6 @@ return [
 	'testShouldUpdateOptionWhenVersionBelow3.9AndDelayJSEquals1'    => [
 		'options'       => [
 			'delay_js' => 1,
-			'delay_js_exclusions' => [],
 		],
 		'old_version'   => '3.8',
 		'expected'      => [

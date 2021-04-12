@@ -37,8 +37,6 @@ class Test_SanitizeOptions extends TestCase {
 	public function testShouldDoExpected( $config, $expected ) {
         $result = apply_filters( 'rocket_input_sanitize', $config['input'], self::$admin_settings );
 
-		print_r( $result );
-
         $this->assertArrayHasKey( 'delay_js', $result );
         $this->assertArrayHasKey( 'delay_js_exclusions', $result );
 
