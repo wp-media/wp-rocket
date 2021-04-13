@@ -14,7 +14,7 @@ class Test_SetOptionOnUpdate extends TestCase{
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->unregisterAllCallbacksExcept( 'wp_rocket_upgrade', 'set_option_on_update' );
+		$this->unregisterAllCallbacksExcept( 'wp_rocket_upgrade', 'set_option_on_update', 14 );
 	}
 
 	public function tearDown() {
