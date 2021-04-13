@@ -55,7 +55,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_input_sanitize'              => [ 'sanitize_options', 14, 2 ],
 			'update_option_' . $slug             => [ 'clean_used_css_and_cache', 10, 2 ],
 			'wp_rocket_upgrade'                  => [
-				[ 'set_option_on_update', 13, 2 ],
+				[ 'set_option_on_update', 14, 2 ],
 			],
 			'switch_theme'                       => 'truncate_used_css',
 			'rocket_rucss_file_changed'          => 'truncate_used_css',
