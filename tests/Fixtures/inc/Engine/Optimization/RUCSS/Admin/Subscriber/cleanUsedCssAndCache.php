@@ -18,17 +18,16 @@ $items = [
 ];
 
 $cache_files = [
-	'wp-content/cache/wp-rocket/example.org/index.html',
-	'wp-content/cache/wp-rocket/example.org/index.html_gzip',
-	'wp-content/cache/wp-rocket/example.org-wpmedia-594d03f6ae698691165999/index.html',
-	'wp-content/cache/wp-rocket/example.org-wpmedia-594d03f6ae698691165999/index.html_gzip',
-	'wp-content/cache/wp-rocket/example.org-Foo-594d03f6ae698691165999/index.html',
-	'wp-content/cache/wp-rocket/example.org-Foo-594d03f6ae698691165999/index.html_gzip',
+	'vfs://public/wp-content/cache/wp-rocket/example.org/index.html'                                     => null,
+	'vfs://public/wp-content/cache/wp-rocket/example.org/index.html_gzip'                                => null,
+	'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-594d03f6ae698691165999/index.html'      => null,
+	'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-594d03f6ae698691165999/index.html_gzip' => null,
+	'vfs://public/wp-content/cache/wp-rocket/example.org-Foo-594d03f6ae698691165999/index.html'          => null,
+	'vfs://public/wp-content/cache/wp-rocket/example.org-Foo-594d03f6ae698691165999/index.html_gzip'     => null,
 ];
 
-
 return [
-	'vfs_dir'   => 'wp-content/cache/wp-rocket/',
+	'vfs_dir' => 'wp-content/',
 
 	// Virtual filesystem structure.
 	'structure' => [

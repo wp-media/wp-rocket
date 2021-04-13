@@ -39,9 +39,7 @@ class Test_CleanUsedCssAndCache extends FilesystemTestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldDoExpected( $input ){
-		$path = "vfs://public/";
-
+	public function testShouldDoExpected( $input ) {
 		Functions\expect( 'current_user_can' )
 				->once()
 				->with( 'rocket_manage_options' )
