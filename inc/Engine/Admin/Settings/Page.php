@@ -695,7 +695,7 @@ class Page {
 					'type'              => 'checkbox',
 					'label'             => __( 'Remove unused CSS', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'Improves performance by removing unused CSS from all pages. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $delay_js_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $delay_js_beacon['id'] ) . '" target="_blank">', '</a>' ),
+					'description'       => sprintf( __( 'Removes unused CSS per page and helps to reduce page size and HTTP requests for better performance. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $delay_js_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $delay_js_beacon['id'] ) . '" target="_blank">', '</a>' ),
 					'section'           => 'css',
 					'page'              => 'file_optimization',
 					'default'           => 0,
@@ -703,12 +703,12 @@ class Page {
 				],
 				'remove_unused_css_safelist' => [
 					'type'              => 'textarea',
-					'label'             => __( 'Remove unused CSS safe list', 'rocket' ),
-					'description'       => __( 'Specify safe list (one per line).', 'rocket' ),
-					'helper'            => __( 'A curated safe list of all selectors that need to be always kept in CSS.', 'rocket' ),
+					'label'             => __( 'CSS safelist', 'rocket' ),
+					'description'       => __( 'Specify CSS filenames, IDs or classes that should not be removed (one per line).', 'rocket' ),
 					'container_class'   => [
 						'wpr-field--children',
 					],
+					'placeholder'       => "/wp-content/plugins/some-plugin/(.*).css\n.css-class-(.*)",
 					'parent'            => 'remove_unused_css',
 					'section'           => 'css',
 					'page'              => 'file_optimization',
