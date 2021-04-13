@@ -804,7 +804,7 @@ class Tests {
 	 * @return bool
 	 */
 	public function is_html( $buffer ) {
-		return (bool) preg_match( '/<\/html>/i', $buffer );
+		return (bool) preg_match( '/<\s*\/\s*html\s*>/i', $buffer );
 	}
 
 	/** ----------------------------------------------------------------------------------------- */
