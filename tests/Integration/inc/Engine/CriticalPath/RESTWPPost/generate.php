@@ -66,7 +66,7 @@ class Test_Generate extends RESTVfsTestCase {
 			: false;
 		$no_fontface                    = isset( $config['no_fontface'] )
 			? $config['no_fontface']
-			: true;
+			: false;
 		$async_css_mobile             = isset( $config['async_css_mobile'] )
 			? $config['async_css_mobile']
 			: 0;
