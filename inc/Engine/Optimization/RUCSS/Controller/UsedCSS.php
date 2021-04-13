@@ -72,6 +72,10 @@ class UsedCSS {
 			return false;
 		}
 
+		if ( is_rocket_post_excluded_option( 'remove_unused_css' ) ) {
+			return false;
+		}
+
 		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
 			return false;
 		}
@@ -530,11 +534,17 @@ class UsedCSS {
 	}
 
 	/**
-	 * Is CPCSS option active or not?
+	 * Checks if CPCSS is enabled on the current page
+	 *
+	 * @since 3.9
 	 *
 	 * @return bool
 	 */
-	private function cpcss_enabled() {
-		return (bool) $this->options->get( 'async_css', 0 );
+	public function cpcss_enabled() {
+		if ( ! $this->options->get( 'async_css', 0 ) ) {
+			return false;
+		}
+
+		return ! is_rocket_post_excluded_option( 'async_css' );
 	}
 }
