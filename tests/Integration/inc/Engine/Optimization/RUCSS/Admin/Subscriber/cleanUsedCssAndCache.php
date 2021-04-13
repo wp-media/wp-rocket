@@ -11,6 +11,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  *
  * @uses   ::rocket_clean_domain
  *
+ * @group  AdminOnly
  * @group  RUCSS
  */
 class Test_CleanUsedCssAndCache extends FilesystemTestCase {
@@ -69,9 +70,9 @@ class Test_CleanUsedCssAndCache extends FilesystemTestCase {
 
 		if ( $this->input['remove_unused_css']
 				&&
-				isset( $input['settings']['remove_unused_css_safelist'], $input['settings']['remove_unused_css_safelist'] )
+				isset( $input['settings']['remove_unused_css_safelist'], $input['old_settings']['remove_unused_css_safelist'] )
 				&&
-				$input['settings']['remove_unused_css_safelist'] !== $input['settings']['remove_unused_css_safelist']
+				$input['settings']['remove_unused_css_safelist'] !== $input['old_settings']['remove_unused_css_safelist']
 		 ) {
 			$this->assertCount( 0, $resultAfterTruncate );
 
