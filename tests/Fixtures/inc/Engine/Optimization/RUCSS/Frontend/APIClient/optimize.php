@@ -75,7 +75,8 @@ return [
                 <h1>404 - Not Found</h1>
         </body>
 </html>
-HTML,
+HTML
+,
 				'response' => [
 					'code'    => 404,
 					'message' => 'Not Found',

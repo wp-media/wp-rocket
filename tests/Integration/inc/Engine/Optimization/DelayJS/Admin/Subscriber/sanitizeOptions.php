@@ -22,7 +22,7 @@ class Test_SanitizeOptions extends TestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->unregisterAllCallbacksExcept( 'rocket_input_sanitize', 'sanitize_options' );
+		$this->unregisterAllCallbacksExcept( 'rocket_input_sanitize', 'sanitize_options', 13 );
 	}
 
 	public function tearDown() {

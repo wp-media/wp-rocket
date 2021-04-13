@@ -7,7 +7,8 @@ $html = <<<HTML
 	<script integrity="sha512-VtmdOFNyOniRUIHzkfL4GAe+yuAhoWzJIWYW/9elcd+7zNu12OKscWFIe9PRQ6VBy4djrwGVzK6MLD3oTpLpRQ==" crossorigin="anonymous" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js" defer></script>
 	<script data-cfasync="false" src="/javascript.js"></script>
 	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-51f58c4473f92506"></script>
-HTML;
+HTML
+;
 
 $expected = <<<HTML
 	<script src="http://example.org/wp-includes/js/jquery/jquery.js?v=3.1.15" id="jquery-core" defer></script>
@@ -16,7 +17,8 @@ $expected = <<<HTML
 	<script integrity="sha512-VtmdOFNyOniRUIHzkfL4GAe+yuAhoWzJIWYW/9elcd+7zNu12OKscWFIe9PRQ6VBy4djrwGVzK6MLD3oTpLpRQ==" crossorigin="anonymous" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js" defer></script>
 	<script data-cfasync="false" src="/javascript.js" defer></script>
 	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-51f58c4473f92506" defer></script>
-HTML;
+HTML
+;
 
 $expected_exclusion = <<<HTML
 	<script src="http://example.org/wp-includes/js/jquery/jquery.js?v=3.1.15" id="jquery-core" defer></script>
@@ -25,7 +27,8 @@ $expected_exclusion = <<<HTML
 	<script integrity="sha512-VtmdOFNyOniRUIHzkfL4GAe+yuAhoWzJIWYW/9elcd+7zNu12OKscWFIe9PRQ6VBy4djrwGVzK6MLD3oTpLpRQ==" crossorigin="anonymous" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js" defer></script>
 	<script data-cfasync="false" src="/javascript.js" defer></script>
 	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-51f58c4473f92506" defer></script>
-HTML;
+HTML
+;
 
 return [
 	'testShouldReturnOriginalWhenConstantSet' => [
