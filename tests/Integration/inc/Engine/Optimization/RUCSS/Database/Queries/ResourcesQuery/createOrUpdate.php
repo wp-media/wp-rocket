@@ -39,9 +39,9 @@ class Test_CreateOrUpdate extends TestCase{
 
 		$this->assertFalse( $rucss_resources_query->get_item_by( 'url', $item['url'] ) );
 
-		$this->assertTrue( $rucss_resources_query->create_or_update( $item ) > 0 );
+		$this->assertGreaterThan( 0, $rucss_resources_query->create_or_update( $item ) );
 
-		$this->assertTrue( is_object( $rucss_resources_query->get_item_by( 'url', $item['url'] ) ) );
+		$this->assertIsObject( $rucss_resources_query->get_item_by( 'url', $item['url'] ) );
 	}
 
 	public function testShouldUpdateItemIfExists(){
@@ -57,7 +57,7 @@ class Test_CreateOrUpdate extends TestCase{
 
 		$original_id = $rucss_resources_query->add_item( $item );
 
-		$this->assertTrue( is_object( $rucss_resources_query->get_item_by( 'url', $item['url'] ) ) );
+		$this->assertIsObject( $rucss_resources_query->get_item_by( 'url', $item['url'] ) );
 
 		// Change one attribute and assert it's updated.
 		$item['content'] = '.content-changed{color:#efefef;}';
@@ -67,7 +67,7 @@ class Test_CreateOrUpdate extends TestCase{
 
 		$new_row = $rucss_resources_query->get_item_by( 'url', $item['url'] );
 
-		$this->assertTrue( is_object( $new_row ) );
+		$this->assertIsObject( $new_row );
 		$this->assertSame( $new_row->content, $item['content'] );
 	}
 
