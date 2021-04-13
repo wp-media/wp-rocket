@@ -40,9 +40,11 @@ class Test_SetOptionOnUpdate extends TestCase{
 			$updated['delay_js']
 		);
 
-		$this->assertSame(
-			$expected['delay_js_exclusions'],
-			$updated['delay_js_exclusions']
-		);
+		if ( $updated['delay_js'] ) {
+			$this->assertSame(
+				$expected['delay_js_exclusions'],
+				$updated['delay_js_exclusions']
+			);
+		}
 	}
 }
