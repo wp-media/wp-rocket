@@ -63,7 +63,7 @@ class Resources extends Table {
 	/**
 	 * Delete all resources which were not accessed in the last month.
 	 *
-	 * @return int|false
+	 * @return bool|int
 	 */
 	public function delete_old_items() {
 		// Get the database interface.
@@ -79,5 +79,4 @@ class Resources extends Table {
 
 		return $db->query( $query );
 	}
-
 }
