@@ -694,7 +694,7 @@ class Page {
 						'wpr-RemoveUnUsedCss',
 					],
 					'type'              => 'checkbox',
-					'label'             => __( 'Remove unused CSS', 'rocket' ),
+					'label'             => __( 'Remove Unused CSS', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description'       => sprintf( __( 'Removes unused CSS per page and helps to reduce page size and HTTP requests for better performance. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $rucss_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $rucss_beacon['id'] ) . '" target="_blank">', '</a>' ),
 					'section'           => 'css',
