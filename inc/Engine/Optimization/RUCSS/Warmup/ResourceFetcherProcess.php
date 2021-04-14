@@ -92,6 +92,8 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 
 	/**
 	 * The full queue is completed.
+	 *
+	 * @return void
 	 */
 	protected function complete() {
 		parent::complete();
