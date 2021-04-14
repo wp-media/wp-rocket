@@ -557,6 +557,7 @@ class Page {
 		$exclude_js_beacon = $this->beacon->get_suggest( 'exclude_js' );
 		$delay_js_beacon   = $this->beacon->get_suggest( 'delay_js' );
 		$exclude_defer_js  = $this->beacon->get_suggest( 'exclude_defer_js' );
+		$rucss_beacon      = $this->beacon->get_suggest( 'remove_unused_css' );
 
 		$this->settings->add_page_section(
 			'file_optimization',
@@ -695,7 +696,7 @@ class Page {
 					'type'              => 'checkbox',
 					'label'             => __( 'Remove unused CSS', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'Removes unused CSS per page and helps to reduce page size and HTTP requests for better performance. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $delay_js_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $delay_js_beacon['id'] ) . '" target="_blank">', '</a>' ),
+					'description'       => sprintf( __( 'Removes unused CSS per page and helps to reduce page size and HTTP requests for better performance. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $rucss_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $rucss_beacon['id'] ) . '" target="_blank">', '</a>' ),
 					'section'           => 'css',
 					'page'              => 'file_optimization',
 					'default'           => 0,
