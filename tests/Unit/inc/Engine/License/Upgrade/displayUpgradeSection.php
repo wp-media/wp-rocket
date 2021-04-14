@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\License\Upgrade;
 
+use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Engine\License\API\Pricing;
 use WP_Rocket\Engine\License\API\User;
@@ -14,13 +15,13 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group License
  */
 class DisplayUpgradeSection extends TestCase {
-	protected static $mockCommonWpFunctionsInSetUp = true;
-
 	private $user;
 	private $upgrade;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
+
+		Functions\stubTranslationFunctions();
 
 		$this->user    = Mockery::mock( User::class );
 		$this->upgrade = Mockery::mock(

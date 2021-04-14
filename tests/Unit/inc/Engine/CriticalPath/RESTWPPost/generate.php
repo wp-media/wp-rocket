@@ -21,12 +21,16 @@ use Mockery;
  */
 class Test_Generate extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/RESTWPPost/generate.php';
-	protected static $mockCommonWpFunctionsInSetUp = true;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/WP_REST_Request.php';
+	}
+
+	public function setUp() : void {
+		parent::setUp();
+		Functions\stubTranslationFunctions();
 	}
 
 	/**
@@ -75,6 +79,9 @@ class Test_Generate extends FilesystemTestCase {
 		$is_mobile                    = isset( $config['mobile'] )
 			? $config['mobile']
 			: false;
+		$no_fontface                  = isset( $config['no_fontface'] )
+			? $config['no_fontface']
+			: true;
 		$file                         = $this->config['vfs_dir'] . "cache/critical-css/1/posts/{$post_type}-{$post_id}" . ( $is_mobile ? '-mobile' : '' ). ".css";
 		$post_url = ('post_not_exists' === $expected['code'])
 			? null
@@ -147,8 +154,9 @@ class Test_Generate extends FilesystemTestCase {
 				'https://cpcss.wp-rocket.me/api/job/',
 				[
 					'body' => [
-						'url' => "http://example.org/?p={$post_id}",
-						'mobile' => (int) $is_mobile
+						'url'        => "http://example.org/?p={$post_id}",
+						'mobile'     => (int) $is_mobile,
+						'nofontface' => $no_fontface,
 					],
 				]
 			)

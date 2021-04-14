@@ -13,7 +13,10 @@ use WP_Error;
  * @group  CriticalPath
  */
 class Test_GetJobDetails extends TestCase {
-	protected static $mockCommonWpFunctionsInSetUp = true;
+	public function setUp() : void {
+		parent::setUp();
+		Functions\stubTranslationFunctions();
+	}
 
 	/**
 	 * @dataProvider configTestData

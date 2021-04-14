@@ -17,7 +17,11 @@ trait VirtualFilesystemTrait {
 			$this->loadConfig();
 		}
 
-		if ( array_key_exists( 'structure', $this->config ) ) {
+		if (
+			array_key_exists( 'structure', $this->config )
+			&&
+			! empty( $this->config['structure'] )
+		) {
 			return;
 		}
 

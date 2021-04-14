@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\License\Subscriber;
 
-use WPMedia\PHPUnit\Integration\AjaxTestCase;
+use WP_Rocket\Tests\Integration\AjaxTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\License\Subscriber::dismiss_renewal_banner
@@ -27,7 +27,7 @@ class Test_DismissRenewalBanner extends AjaxTestCase {
 		self::$user_id = $factory->user->create( [ 'role' => 'administrator' ] );
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		wp_set_current_user( self::$user_id );

@@ -13,7 +13,7 @@ class Test_MaybeDeactivateRocketLazyload extends SmushSubscriberTestCase {
 	private $rocket_settings;
 	private $filters;
 
-	public function setUp() {
+	public function setUp() : void {
 		global $wp_filter;
 
 		parent::setUp();

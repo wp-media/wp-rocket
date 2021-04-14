@@ -3,7 +3,7 @@
 namespace WP_Rocket;
 
 use Imagify_Partner;
-use WP_Rocket\Engine\Container\Container;
+use WP_Rocket\Dependencies\League\Container\Container;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\ThirdParty\Hostings\HostResolver;
@@ -233,14 +233,13 @@ class Plugin {
 		$this->container->addServiceProvider( 'WP_Rocket\ThirdParty\Hostings\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Updater_Subscribers' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\DelayJS\ServiceProvider' );
+		$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\RUCSS\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Heartbeat\ServiceProvider' );
 
 		$common_subscribers = [
 			'cdn_subscriber',
 			'critical_css_subscriber',
 			'sucuri_subscriber',
-			'facebook_tracking',
-			'google_tracking',
 			'expired_cache_purge_subscriber',
 			'preload_subscriber',
 			'sitemap_preload_subscriber',
@@ -273,11 +272,19 @@ class Plugin {
 			'simple_custom_css',
 			'pdfembedder',
 			'delay_js_admin_subscriber',
+			'rucss_admin_subscriber',
+			'rucss_frontend_subscriber',
 			'divi',
 			'preload_links_admin_subscriber',
 			'preload_links_subscriber',
 			'support_subscriber',
 			'mod_pagespeed',
+			'rucss_warmup_subscriber',
+			'webp_subscriber',
+			'imagify_webp_subscriber',
+			'shortpixel_webp_subscriber',
+			'ewww_webp_subscriber',
+			'optimus_webp_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();
@@ -290,19 +297,6 @@ class Plugin {
 			$common_subscribers[] = 'cloudflare_subscriber';
 		}
 
-		if ( ! $this->is_valid_key ) {
-			return $common_subscribers;
-		}
-
-		return array_merge(
-			$common_subscribers,
-			[
-				'webp_subscriber',
-				'imagify_webp_subscriber',
-				'shortpixel_webp_subscriber',
-				'ewww_webp_subscriber',
-				'optimus_webp_subscriber',
-			]
-		);
+		return $common_subscribers;
 	}
 }

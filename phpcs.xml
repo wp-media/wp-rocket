@@ -82,17 +82,20 @@
 		<exclude-pattern>inc/classes/admin/Database/class-optimization-process.php</exclude-pattern>
 		<exclude-pattern>inc/classes/admin/Database/class-optimization.php</exclude-pattern>
 		<exclude-pattern>inc/Engine/CriticalPath/CriticalCSS.php</exclude-pattern>
+		<exclude-pattern>inc/Engine/Optimization/RUCSS/Database/Query/UsedCSS.php</exclude-pattern>
 	</rule>
 
 	<rule ref="WordPress.DB.DirectDatabaseQuery.NoCaching">
 		<exclude-pattern>inc/classes/admin/Database/class-optimization-process.php</exclude-pattern>
 		<exclude-pattern>inc/classes/admin/Database/class-optimization.php</exclude-pattern>
 		<exclude-pattern>inc/Engine/CriticalPath/CriticalCSS.php</exclude-pattern>
+		<exclude-pattern>inc/Engine/Optimization/RUCSS/Database/Query/UsedCSS.php</exclude-pattern>
 	</rule>
 
 	<rule ref="WordPress.DB.PreparedSQL.NotPrepared">
 		<exclude-pattern>inc/classes/admin/Database/class-optimization-process.php</exclude-pattern>
 		<exclude-pattern>inc/classes/admin/Database/class-optimization.php</exclude-pattern>
+		<exclude-pattern>inc/Engine/Optimization/RUCSS/Database/Query/UsedCSS.php</exclude-pattern>
 	</rule>
 
 	<rule ref="WordPress.DB.PreparedSQL.InterpolatedNotPrepared">

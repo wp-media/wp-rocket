@@ -216,6 +216,7 @@ function rocket_get_ignored_parameters() {
 		'msclkid'               => 1,
 		'dm_i'                  => 1,
 		'epik'                  => 1,
+		'pp'                    => 1,
 	];
 
 	/**
@@ -458,7 +459,25 @@ function rocket_valid_key() {
 		return false;
 	}
 
-	return 8 === strlen( get_rocket_option( 'consumer_key' ) ) && hash_equals( $rocket_secret_key, hash( 'crc32', get_rocket_option( 'consumer_email' ) ) );
+	$valid_details = 8 === strlen( get_rocket_option( 'consumer_key' ) ) && hash_equals( $rocket_secret_key, hash( 'crc32', get_rocket_option( 'consumer_email' ) ) );
+
+	if ( ! $valid_details ) {
+		set_transient(
+			'rocket_check_key_errors',
+			[
+				__( 'The provided license data are not valid.', 'rocket' ) .
+				' <br>' .
+				// Translators: %1$s = opening link tag, %2$s = closing link tag.
+				sprintf( __( 'To resolve, please %1$scontact support%2$s.', 'rocket' ), '<a href="https://wp-rocket.me/support/" rel="noopener noreferrer" target=_"blank">', '</a>' ),
+			]
+		);
+
+		return $valid_details;
+	}
+
+	delete_transient( 'rocket_check_key_errors' );
+
+	return $valid_details;
 }
 
 /**

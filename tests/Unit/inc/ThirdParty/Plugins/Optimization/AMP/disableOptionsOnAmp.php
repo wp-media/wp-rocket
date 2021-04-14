@@ -20,7 +20,7 @@ class Test_DisableOptionsOnAmp extends TestCase {
 	private $options;
 	private $cdn_subscriber;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->options        = Mockery::mock( Options_Data::class );

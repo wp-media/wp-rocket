@@ -38,7 +38,7 @@ class Test_CpcssHeartbeat extends AjaxTestCase {
 	protected $async_css;
 	protected $subscriber;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		CapTrait::setAdminCap();
@@ -47,7 +47,7 @@ class Test_CpcssHeartbeat extends AjaxTestCase {
 		self::$admin_user_id = static::factory()->user->create( [ 'role' => 'administrator' ] );
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->action = 'rocket_cpcss_heartbeat';
@@ -105,8 +105,9 @@ class Test_CpcssHeartbeat extends AjaxTestCase {
 			return;
 		}
 		$params = [
-			'url'    => $config['rocket_cpcss_generation_pending']['front_page.css']['url'],
-			'mobile' => $config['rocket_cpcss_generation_pending']['front_page.css']['mobile'],
+			'url'        => $config['rocket_cpcss_generation_pending']['front_page.css']['url'],
+			'mobile'     => $config['rocket_cpcss_generation_pending']['front_page.css']['mobile'],
+			'nofontface' => true,
 		];
 
 		$job_id = 999;

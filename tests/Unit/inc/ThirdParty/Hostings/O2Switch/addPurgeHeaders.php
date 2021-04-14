@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\O2Switch;
 
+use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Hostings\O2Switch;
 
@@ -12,7 +13,10 @@ use WP_Rocket\ThirdParty\Hostings\O2Switch;
  * @group  ThirdParty
  */
 class Test_AddPurgeHeaders extends TestCase {
-	protected static $mockCommonWpFunctionsInSetUp = true;
+	public function setUp() : void {
+		parent::setUp();
+		Functions\stubTranslationFunctions();
+	}
 
 	/**
 	 * @dataProvider configTestData

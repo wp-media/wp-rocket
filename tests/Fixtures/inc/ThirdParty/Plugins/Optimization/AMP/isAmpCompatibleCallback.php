@@ -1,6 +1,10 @@
 <?php
 
 return [
+	'testShouldBailoutIfAmpNotEnabled'      => [
+		'setting'  => null,
+		'expected' => [],
+	],
 	'testShouldBailoutIfAmpThemeOptionsAreNull'      => [
 		'setting'  => null,
 		'expected' => [],

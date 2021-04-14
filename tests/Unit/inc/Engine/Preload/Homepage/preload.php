@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Homepage;
 
+use Mockery;
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Engine\Preload\FullProcess;
@@ -12,16 +13,21 @@ use WP_Rocket\Engine\Preload\Homepage;
  * @group  Preload
  */
 class Test_Preload extends TestCase {
+	public function setUp() : void {
+		parent::setUp();
+
+		Functions\stubEscapeFunctions();
+	}
 
 	public function testShouldNotPreloadWhenInvalidUrls() {
-		$preload_process = $this->createMock( FullProcess::class );
+		$preload_process = Mockery::mock( FullProcess::class );
 		$preload_process
-			->expects( $this->exactly( 3 ) )
-			->method( 'format_item' )
-			->willReturn( [] );
+			->shouldReceive( 'format_item' )
+			->times( 3 )
+			->andReturn( [] );
 		$preload_process
-			->expects( $this->never() )
-			->method( 'is_mobile_preload_enabled' );
+			->shouldReceive( 'is_mobile_preload_enabled' )
+			->never();
 
 		$preload = new Homepage( $preload_process );
 
@@ -41,33 +47,42 @@ class Test_Preload extends TestCase {
 	public function testShouldPreloadWhenValidUrls() {
 		$queue     = [];
 		$home_urls = [
-			[ 'url' => 'https://example.org' ],
-			[ 'url' => 'https://example.org/foobar/' ],
+			[ 'url' => 'https://example.org', 'mobile' => 0 ],
+			[ 'url' => 'https://example.org/foobar/', 'mobile' => 0 ],
 			[ 'url' => 'https://example.org/category/barbaz/', 'mobile' => 1 ],
 		];
 
 		// Stubs.
-		$preload_process = $this->getMockBuilder( FullProcess::class )
-		                        ->setMethods( [ 'is_mobile_preload_enabled', 'push_to_queue', 'save', 'dispatch' ] )
-		                        ->getMock();
+		$preload_process = Mockery::mock( FullProcess::class );
 		$preload_process
-			->expects( $this->once() )
-			->method( 'is_mobile_preload_enabled' )
-			->willReturn( true );
+			->shouldReceive( 'is_mobile_preload_enabled' )
+			->once()
+			->andReturn( true );
 		$preload_process
-			->expects( $this->any() )
-			->method( 'push_to_queue' )
-			->will( $this->returnCallback( function( $item ) use ( &$queue ) {
+			->shouldReceive( 'push_to_queue' )
+			->andReturnUsing( function( $item ) use ( &$queue ) {
 				$queue[] = $item;
-			} ) );
+			} );
 		$preload_process
-			->expects( $this->once() )
-			->method( 'save' )
-			->willReturnSelf();
+			->shouldReceive( 'save' )
+			->once()
+			->andReturnSelf();
 		$preload_process
-			->expects( $this->once() )
-			->method( 'dispatch' )
-			->willReturn( null );
+			->shouldReceive( 'dispatch' )
+			->once()
+			->andReturn( null );
+		$preload_process
+			->shouldReceive( 'format_item' )
+			->andReturnArg(0);
+		$preload_process
+			->shouldReceive( 'get_item_user_agent' )
+			->andReturnUsing( function ( $item ) {
+				if ( $item['mobile'] ) {
+					return 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1 WP Rocket/Preload';
+				}
+
+				return 'WP Rocket/Preload';
+			} );
 
 		Functions\when( 'wp_parse_url' )->alias( function( $url, $component = - 1 ) {
 			return parse_url( $url, $component );
@@ -75,7 +90,6 @@ class Test_Preload extends TestCase {
 		Functions\when( 'set_transient' )->justReturn( null );
 
 		// Stubs for $this->get_urls().
-		Functions\when( 'esc_url_raw' )->returnArg();
 		Functions\when( 'wp_remote_get' )->alias( function( $url, $args = [] ) {
 			$mobile_sub = ! empty( $args['user-agent'] ) && strpos( $args['user-agent'], 'iPhone' ) ? '/mobile' : '';
 			$home_url   = 'https://example.org' . $mobile_sub;

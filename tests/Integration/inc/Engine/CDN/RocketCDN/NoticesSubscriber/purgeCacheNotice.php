@@ -13,7 +13,7 @@ use Brain\Monkey\Functions;
  * @group  RocketCDN
  */
 class Test_PurgeCacheNotice extends TestCase {
-	public static function SetUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		$role = get_role( 'administrator' );
 		$role->add_cap( 'rocket_manage_options' );
 	}

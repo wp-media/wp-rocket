@@ -13,7 +13,7 @@ use WP_Rocket\Tests\Integration\AjaxTestCase;
  */
 class Test_EnableGoogleFonts extends AjaxTestCase {
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$options                        = get_option( 'wp_rocket_settings' );

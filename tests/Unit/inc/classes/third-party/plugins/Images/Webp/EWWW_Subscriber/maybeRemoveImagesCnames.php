@@ -3,7 +3,9 @@
 namespace WP_Rocket\Tests\Unit\inc\classes\third_party\plugins\Images\Webp\EwwwSubscriber;
 
 use Brain\Monkey\Functions;
+use Mockery;
 use SebastianBergmann\Exporter\Exporter;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
 
@@ -15,7 +17,7 @@ use WPMedia\PHPUnit\Unit\TestCase;
 class Test_MaybeRemoveImagesCnames extends TestCase {
 
 	public function testShouldReturnIdenticalWhenExactdnNotEnabled() {
-		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
+		$optionsData = Mockery::mock( Options_Data::class );
 
 		Functions\when( 'ewww_image_optimizer_get_option' )
 			->justReturn( false );
@@ -29,10 +31,10 @@ class Test_MaybeRemoveImagesCnames extends TestCase {
 	}
 
 	public function testShouldReturnIdenticalWhenNoImagesZone() {
-		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
+		$optionsData = Mockery::mock( Options_Data::class );
 		$optionsData
-			->expects( $this->never() )
-			->method( 'get' );
+			->shouldReceive( 'get' )
+			->never();
 
 		Functions\when( 'ewww_image_optimizer_get_option' )
 			->justReturn( true );
@@ -46,10 +48,10 @@ class Test_MaybeRemoveImagesCnames extends TestCase {
 	}
 
 	public function testShouldReturnEmptyArrayWhenOnlyImagesAllZones() {
-		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
+		$optionsData = Mockery::mock( Options_Data::class );
 		$optionsData
-			->expects( $this->never() )
-			->method( 'get' );
+			->shouldReceive( 'get' )
+			->never();
 
 		Functions\when( 'ewww_image_optimizer_get_option' )
 			->justReturn( true );
@@ -67,11 +69,10 @@ class Test_MaybeRemoveImagesCnames extends TestCase {
 	}
 
 	public function testShouldReturnIdenticalWhenNoCdnNames() {
-		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
+		$optionsData = Mockery::mock( Options_Data::class );
 		$optionsData
-			->expects( $this->any() )
-			->method( 'get' )
-			->willReturnCallback( function( $option_name, $default = '' ) {
+			->shouldReceive( 'get' )
+			->andReturnUsing( function( $option_name, $default = '' ) {
 				// `->get()` can be called any number of times, but never with 'cdn_zone' as first argument.
 				if ( 'cdn_zone' !== $option_name ) {
 					return $default;
@@ -106,18 +107,16 @@ class Test_MaybeRemoveImagesCnames extends TestCase {
 	}
 
 	public function testShouldReturnIdenticalWhenNoImagesHosts() {
-		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
+		$optionsData = Mockery::mock( Options_Data::class );
 		$optionsData
-			->expects( $this->exactly( 2 ) )
-			->method( 'get' )
-			->will(
-				$this->returnValueMap(
-					[
-						[ 'cdn_cnames', [], [ 'dns.example.com, all.example.com', 'evil.example.com' ] ],
-						[ 'cdn_zone', [], [ 'all', 'js' ] ],
-					]
-				)
-			);
+			->shouldReceive( 'get' )
+			->with( 'cdn_cnames', [] )
+			->andReturn( [ 'dns.example.com, all.example.com', 'evil.example.com' ] );
+		
+		$optionsData
+			->shouldReceive( 'get' )
+			->with( 'cdn_zone', [] )
+			->andReturn( [ 'all', 'js' ] );
 
 		Functions\when( 'ewww_image_optimizer_get_option' )
 			->justReturn( true );
@@ -131,26 +130,20 @@ class Test_MaybeRemoveImagesCnames extends TestCase {
 	}
 
 	public function testShouldReturnIdenticalWhenImagesHostSameForAll() {
-		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
+		$optionsData = Mockery::mock( Options_Data::class );
 		$optionsData
-			->expects( $this->exactly( 2 ) )
-			->method( 'get' )
-			->will(
-				$this->returnValueMap(
-					[
-						[
-							'cdn_cnames',
-							[],
-							[
-								'dns.example.com, all.example.com',
-								'dns.example.com, images.example.com',
-								'evil.example.com',
-							],
-						],
-						[ 'cdn_zone', [], [ 'all', 'images', 'js' ] ],
-					]
-				)
-			);
+			->shouldReceive( 'get' )
+			->with( 'cdn_cnames', [] )
+			->andReturn( [
+				'dns.example.com, all.example.com',
+				'dns.example.com, images.example.com',
+				'evil.example.com',
+			] );
+
+		$optionsData
+			->shouldReceive( 'get' )
+			->with( 'cdn_zone', [] )
+			->andReturn( [ 'all', 'images', 'js' ] );
 
 		Functions\when( 'ewww_image_optimizer_get_option' )
 			->justReturn( true );
@@ -164,25 +157,23 @@ class Test_MaybeRemoveImagesCnames extends TestCase {
 	}
 
 	public function testShouldRemoveHostForImages() {
-		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
+		$optionsData = Mockery::mock( Options_Data::class );
 		$optionsData
-			->expects( $this->exactly( 2 ) )
-			->method( 'get' )
-			->will(
-				$this->returnValueMap(
-					[
-						[
-							'cdn_cnames',
-							[],
-							[
-								'dns.example.com, all.example.com',
-								'dns.example.com, images.example.com',
-								'evil.example.com',
-							],
-						],
-						[ 'cdn_zone', [], [ 'all', 'images', 'js' ] ],
-					]
-				)
+			->shouldReceive( 'get' )
+			->with( 'cdn_cnames', [] )
+			->andReturn(
+				[
+					'dns.example.com, all.example.com',
+					'dns.example.com, images.example.com',
+					'evil.example.com',
+				]
+			);
+
+		$optionsData
+			->shouldReceive( 'get' )
+			->with( 'cdn_zone', [] )
+			->andReturn(
+				[ 'all', 'images', 'js' ]
 			);
 
 		Functions\when( 'ewww_image_optimizer_get_option' )
@@ -198,21 +189,19 @@ class Test_MaybeRemoveImagesCnames extends TestCase {
 
 		$this->assertSame( $expected, $result );
 
-		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
+		$optionsData = Mockery::mock( Options_Data::class );
 		$optionsData
-			->expects( $this->exactly( 2 ) )
-			->method( 'get' )
-			->will(
-				$this->returnValueMap(
-					[
-						[
-							'cdn_cnames',
-							[],
-							[ 'all.example.com', 'dns.example.com, images.example.com', 'evil.example.com' ],
-						],
-						[ 'cdn_zone', [], [ 'all', 'images', 'js' ] ],
-					]
-				)
+			->shouldReceive( 'get' )
+			->with( 'cdn_cnames', [] )
+			->andReturn(
+				[ 'all.example.com', 'dns.example.com, images.example.com', 'evil.example.com' ]
+			);
+
+		$optionsData
+			->shouldReceive( 'get' )
+			->with( 'cdn_zone', [] )
+			->andReturn(
+				[ 'all', 'images', 'js' ]
 			);
 
 		$subscriber = new EWWW_Subscriber( $optionsData );

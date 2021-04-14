@@ -31,7 +31,7 @@ class Test_ProcessGenerate extends FilesystemTestCase {
 		self::$container = apply_filters( 'rocket_container', null );
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->api_client = Mockery::mock( APIClient::class );
@@ -88,6 +88,9 @@ class Test_ProcessGenerate extends FilesystemTestCase {
 		$is_mobile                    = isset( $config['mobile'] )
 			? $config['mobile']
 			: false;
+		$no_fontface                    = isset( $config['no_fontface'] )
+			? $config['no_fontface']
+			: true;
 		$item_type                    = isset( $config['type'] )
 			? $config['type']
 			: 'custom';
@@ -98,7 +101,14 @@ class Test_ProcessGenerate extends FilesystemTestCase {
 				if ( $cpcss_post_job_id && 200 === $post_request_response_code ) {
 					$this->api_client->shouldReceive( 'send_generation_request' )
 						->once()
-						->with( $item_url, [ 'mobile' => $is_mobile ], $item_type )
+						->with(
+							$item_url,
+							[
+								'mobile'     => $is_mobile,
+								'nofontface' => $no_fontface,
+							],
+							$item_type
+						)
 						->andReturn( $cpcss_post_job_body );
 
 					if ( ! in_array( (int) $get_request_response_code, [ 400, 404 ], true ) ) {
@@ -115,7 +125,14 @@ class Test_ProcessGenerate extends FilesystemTestCase {
 				} else {
 					$this->api_client->shouldReceive( 'send_generation_request' )
 						->once()
-						->with( $item_url, [ 'mobile' => $is_mobile ], $item_type )
+						->with(
+							$item_url,
+							[
+								'mobile'     => $is_mobile,
+								'nofontface' => $no_fontface,
+							],
+							$item_type
+						)
 						->andReturn( $send_generation_request_error );
 				}
 			}

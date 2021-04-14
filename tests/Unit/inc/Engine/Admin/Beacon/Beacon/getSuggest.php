@@ -17,7 +17,7 @@ class Test_GetSuggest extends TestCase {
 	private $beacon;
 	private $options;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->options = Mockery::mock( Options_Data::class );
