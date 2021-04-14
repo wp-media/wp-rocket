@@ -107,7 +107,7 @@ class Test_CpcssHeartbeat extends AjaxTestCase {
 		$params = [
 			'url'        => $config['rocket_cpcss_generation_pending']['front_page.css']['url'],
 			'mobile'     => $config['rocket_cpcss_generation_pending']['front_page.css']['mobile'],
-			'nofontface' => true,
+			'nofontface' => false,
 		];
 
 		$job_id = 999;

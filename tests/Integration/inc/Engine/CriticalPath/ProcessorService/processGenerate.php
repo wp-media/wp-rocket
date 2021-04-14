@@ -90,7 +90,7 @@ class Test_ProcessGenerate extends FilesystemTestCase {
 			: false;
 		$no_fontface                    = isset( $config['no_fontface'] )
 			? $config['no_fontface']
-			: true;
+			: false;
 		$item_type                    = isset( $config['type'] )
 			? $config['type']
 			: 'custom';
