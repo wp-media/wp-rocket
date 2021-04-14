@@ -146,7 +146,10 @@ class HTML {
 
 		if ( ! empty( $matches['attr'] ) ) {
 			$delay_attr = preg_replace( '/type=(["\'])(.*?)\1/i', 'data-rocket-$0', $matches['attr'], 1 );
-			$delay_js   = str_replace( $matches['attr'], $delay_attr, $matches[0] );
+
+			if ( null !== $delay_attr ) {
+				$delay_js = str_replace( $matches['attr'], $delay_attr, $matches[0] );
+			}
 		}
 
 		return str_replace( '<script', '<script type="rocketlazyloadscript"', $delay_js );
