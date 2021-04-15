@@ -65,6 +65,8 @@ class Subscriber implements Subscriber_Interface {
 			'wp_update_comment_count'            => 'delete_used_css_on_update_or_delete',
 			'init'                               => 'schedule_clean_not_commonly_used_rows',
 			'rocket_rucss_clean_rows_time_event' => 'cron_clean_rows',
+			'admin_post_rocket_clear_usedcss'    => 'truncate_used_css_handler',
+			'admin_notices'                      => 'rocket_clear_usedcss_result',
 		];
 	}
 
@@ -199,5 +201,52 @@ class Subscriber implements Subscriber_Interface {
 			// Clear all caching files.
 			rocket_clean_domain();
 		}
+	}
+
+	/**
+	 * Truncate used_css table when clicking on the dashboard button.
+	 *
+	 * @since 3.9
+	 */
+	public function truncate_used_css_handler() {
+		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'rocket_clear_usedcss' ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+			wp_nonce_ays( '' );
+		}
+
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			wp_die();
+		}
+
+		$this->truncate_used_css();
+
+		set_transient(
+			'rocket_clear_usedcss_response',
+			[
+				'status'  => 'success',
+				'message' => __( 'Used CSS cache cleared!', 'rocket' ),
+			]
+		);
+
+		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
+		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
+	}
+
+	/**
+	 * Show admin notice after clearing used_css table.
+	 */
+	public function rocket_clear_usedcss_result() {
+		if ( ! current_user_can( 'rocket_remove_unused_css' ) ) {
+			return;
+		}
+
+		$response = get_transient( 'rocket_clear_usedcss_response' );
+		if ( ! $response ) {
+			return;
+		}
+
+		delete_transient( 'rocket_clear_usedcss_response' );
+
+		rocket_notice_html( $response );
+
 	}
 }
