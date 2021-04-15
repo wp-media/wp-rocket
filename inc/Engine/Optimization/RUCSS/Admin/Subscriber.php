@@ -214,7 +214,7 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
-			wp_die();
+			rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
 		}
 
 		$this->truncate_used_css();
