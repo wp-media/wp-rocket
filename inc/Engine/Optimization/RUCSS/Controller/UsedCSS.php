@@ -500,7 +500,7 @@ class UsedCSS {
 		$used_css_filepath = $this->base_path . $this->get_used_css_filepath( $used_css );
 
 		if ( ! $this->filesystem->is_dir( dirname( $used_css_filepath ) ) ) {
-			if( ! rocket_mkdir_p( dirname( $used_css_filepath ) ) ) {
+			if ( ! rocket_mkdir_p( dirname( $used_css_filepath ) ) ) {
 				return false;
 			}
 		}
@@ -554,7 +554,7 @@ class UsedCSS {
 
 		return sprintf(
 			'<link rel="stylesheet" id="wpr-usedcss-css" href="%1$s?ver=%2$s">', // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
-			$this->base_url .  $used_css_filepath,
+			$this->base_url . $used_css_filepath,
 			$this->filesystem->mtime( $absolute_path ) ?? strtotime( $used_css->modified )
 		);
 	}
