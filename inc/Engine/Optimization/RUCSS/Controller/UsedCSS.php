@@ -347,6 +347,15 @@ class UsedCSS {
 				||
 				in_array( $style['url'], $unprocessed_links, true )
 				||
+				/**
+				 * Filters If this CSS file needs to be excluded from being removed from the page HTML.
+				 *
+				 * @since  3.9
+				 *
+				 * @param bool     $excluded Status of exclusion.
+				 * @param string   $style_url Url of the stylesheet.
+				 * @param string[] $style Full style regex matched.
+				 */
 				apply_filters( 'rocket_rucss_exclude_link_style_remove', false, $style[0], $style )
 				) {
 				continue;
