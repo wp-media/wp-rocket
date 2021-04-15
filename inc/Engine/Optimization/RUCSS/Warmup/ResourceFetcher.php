@@ -84,6 +84,8 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 	 * Handle Collecting resources and save them into the DB
 	 *
 	 * @since 3.9
+	 *
+	 * @return void
 	 */
 	public function handle() {
 		// Grab resources from page HTML.

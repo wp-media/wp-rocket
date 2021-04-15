@@ -269,7 +269,7 @@ class UsedCSS {
 	 *
 	 * @param array $data Data to be inserted in used_css table.
 	 *
-	 * @return UsedCSS_Row|false
+	 * @return object|false
 	 */
 	public function insert_used_css( array $data ) {
 		$id = $this->used_css_query->add_item( $data );
@@ -286,7 +286,7 @@ class UsedCSS {
 	 * @param integer $id   Used CSS ID.
 	 * @param array   $data Data to be updated in used_css table.
 	 *
-	 * @return UsedCSS_Row|false
+	 * @return object|false
 	 */
 	public function update_used_css( int $id, array $data ) {
 		$updated = $this->used_css_query->update_item( $id, $data );
@@ -371,12 +371,18 @@ class UsedCSS {
 	 * @return string HTML content.
 	 */
 	public function add_used_css_to_html( string $html, UsedCSS_Row $used_css ) : string {
-		return preg_replace(
+		$replace = preg_replace(
 			'#</title>#iU',
 			'</title>' . $this->get_used_css_markup( $used_css ),
 			$html,
 			1
 		);
+
+		if ( null === $replace ) {
+			return $html;
+		}
+
+		return $replace;
 	}
 
 	/**
@@ -403,10 +409,19 @@ class UsedCSS {
 	 * @return string
 	 */
 	protected function hide_comments( string $html ) : string {
-		$html = preg_replace( '#<!--\s*noptimize\s*-->.*?<!--\s*/\s*noptimize\s*-->#is', '', $html );
-		$html = preg_replace( '/<!--(.*)-->/Uis', '', $html );
+		$replace = preg_replace( '#<!--\s*noptimize\s*-->.*?<!--\s*/\s*noptimize\s*-->#is', '', $html );
 
-		return $html;
+		if ( null === $replace ) {
+			return $html;
+		}
+
+		$replace = preg_replace( '/<!--(.*)-->/Uis', '', $replace );
+
+		if ( null === $replace ) {
+			return $html;
+		}
+
+		return $replace;
 	}
 
 	/**
