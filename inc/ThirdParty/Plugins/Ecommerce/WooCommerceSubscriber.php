@@ -481,6 +481,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 			'_wc_additional_variation_images_nonce', // WooCommerce Additional Variation Images.
 			'get_price_table', // Tiered Pricing Table for WooCommerce.
 			'wccs_single_product_nonce', // Discount Rules and Dynamic Pricing for WooCommerce.
+			'sign_signin', // Custom Login for Improvise Theme by Noomia.
 		];
 	}
 }
