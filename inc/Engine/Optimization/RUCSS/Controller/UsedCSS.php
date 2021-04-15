@@ -495,14 +495,16 @@ class UsedCSS {
 
 		$used_css_filename = $this->get_used_css_filename( $used_css->url, (bool) $used_css->is_mobile );
 		$used_css_filepath = rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH' ) . $used_css_filename;
+		$filesystem        = rocket_direct_filesystem();
 
-		if ( ! rocket_direct_filesystem()->exists( $used_css_filepath ) ) {
+		if ( ! $filesystem->exists( $used_css_filepath ) ) {
 			$this->save_used_css_in_filesystem( $used_css );
 		}
 
 		return sprintf(
-			'<link rel="stylesheet" id="wpr-usedcss-css" href="%s">', // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
-			rocket_get_constant( 'WP_ROCKET_USED_CSS_URL' ) . $used_css_filename
+			'<link rel="stylesheet" id="wpr-usedcss-css" href="%s?ver=%s">', // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
+			rocket_get_constant( 'WP_ROCKET_USED_CSS_URL' ) . $used_css_filename,
+			$filesystem->mtime( $used_css_filepath ) ?? $used_css->modified
 		);
 	}
 
