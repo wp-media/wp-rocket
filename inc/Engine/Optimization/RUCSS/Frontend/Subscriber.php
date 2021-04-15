@@ -31,9 +31,10 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() : array {
 		return [
-			'rocket_buffer'                => [ 'treeshake', 12 ],
-			'rocket_rucss_retries_cron'    => 'rucss_retries',
-			'rocket_disable_preload_fonts' => 'maybe_disable_preload_fonts',
+			'rocket_buffer'                          => [ 'treeshake', 12 ],
+			'rocket_rucss_retries_cron'              => 'rucss_retries',
+			'rocket_disable_preload_fonts'           => 'maybe_disable_preload_fonts',
+			'rocket_rucss_exclude_link_style_remove' => [ 'exclude_safelist_files', 10, 2 ],
 		];
 	}
 
@@ -77,4 +78,17 @@ class Subscriber implements Subscriber_Interface {
 
 		return $value;
 	}
+
+	/**
+	 * Exclude this link CSS file from being removed from the page if it matches with the safelist files.
+	 *
+	 * @param bool   $exclude_status Status of exclusion.
+	 * @param string $url Url of linked CSS to be checked.
+	 *
+	 * @return bool
+	 */
+	public function exclude_safelist_files( bool $exclude_status, string $url ) {
+		return $exclude_status || $this->used_css->safelist_files_contains( $url );
+	}
+
 }

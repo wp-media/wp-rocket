@@ -346,6 +346,8 @@ class UsedCSS {
 				strstr( $style['url'], '//fonts.googleapis.com/css' )
 				||
 				in_array( $style['url'], $unprocessed_links, true )
+				||
+				apply_filters( 'rocket_rucss_exclude_link_style_remove', false, $style[0], $style )
 				) {
 				continue;
 			}
@@ -546,5 +548,42 @@ class UsedCSS {
 		}
 
 		return ! is_rocket_post_excluded_option( 'async_css' );
+	}
+
+	/**
+	 * Check if safelist contains this url string or pattern.
+	 *
+	 * @param string $css_url Url to be checked.
+	 *
+	 * @return bool
+	 */
+	public function safelist_files_contains( string $css_url ) {
+		$filtered_list_files = array_filter( $this->options->get( 'remove_unused_css_safelist', [] ), [ $this, 'is_file' ] );
+		if ( empty( $filtered_list_files ) ) {
+			return false;
+		}
+
+		$filtered_list_files = array_map(
+				function ( $item ) {
+					// I used this replace as preg_quote is converting (.*) to such one and we need to exclude that.
+					return str_replace( '\(\.\*\)', '(.*)', preg_quote( $item, '/' ) );
+				},
+			$filtered_list_files
+			);
+
+		$filtered_list_files_regex = implode( '|', $filtered_list_files );
+
+		return ! empty( $this->find( $filtered_list_files_regex, $css_url ) );
+	}
+
+	/**
+	 * Check if passed string is a file schema.
+	 *
+	 * @param string $item Item to be checked.
+	 *
+	 * @return bool
+	 */
+	private function is_file( string $item ) {
+		return false !== strpos( $item, '/' ) || false !== strpos( $item, '.css' );
 	}
 }
