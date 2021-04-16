@@ -8,6 +8,7 @@ use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::delete_used_css_on_update_or_delete
+ * @covers \WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS::delete_used_css
  *
  * @group  RUCSS
  */
