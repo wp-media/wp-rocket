@@ -217,7 +217,20 @@ class Subscriber implements Subscriber_Interface {
 			rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
 		}
 
-		$this->truncate_used_css();
+		if ( ! $this->settings->is_enabled() ) {
+			set_transient(
+				'rocket_clear_usedcss_response',
+				[
+					'status'  => 'error',
+					'message' => __( 'Used CSS option is not enabled!', 'rocket' ),
+				]
+			);
+
+			wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
+			rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
+		}
+
+		$this->database->truncate_used_css_table();
 		rocket_clean_domain();
 
 		set_transient(
