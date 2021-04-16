@@ -146,7 +146,7 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 			}
 
 			$this->resources[ $path ] = [
-				'url'     => rocket_add_url_protocol( $resource['url'] ),
+				'url'     => $this->normalize_url( $resource['url'] ),
 				'content' => $contents,
 				'type'    => $type,
 			];
