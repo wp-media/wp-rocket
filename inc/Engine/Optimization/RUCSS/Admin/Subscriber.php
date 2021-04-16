@@ -218,6 +218,7 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		$this->truncate_used_css();
+		rocket_clean_domain();
 
 		set_transient(
 			'rocket_clear_usedcss_response',
