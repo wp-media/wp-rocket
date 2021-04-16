@@ -113,9 +113,13 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$url = untrailingslashit( get_permalink( $post_id ) );
+		$url = get_permalink( $post_id );
 
-		$this->used_css->delete_used_css( $url );
+		if ( false === $url ) {
+			return;
+		}
+
+		$this->used_css->delete_used_css( untrailingslashit( $url ) );
 	}
 
 	/**

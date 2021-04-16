@@ -62,7 +62,7 @@ class UsedCSS extends Table {
 	/**
 	 * Delete all used_css which were not accessed in the last month.
 	 *
-	 * @return int|false
+	 * @return bool|int
 	 */
 	public function delete_old_used_css() {
 		// Get the database interface.

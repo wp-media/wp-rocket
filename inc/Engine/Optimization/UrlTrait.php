@@ -94,13 +94,14 @@ trait UrlTrait {
 	 * Normalize relative url to full url.
 	 *
 	 * @param string $url Url to be normalized.
+	 * @param bool   $remove_query Remove Query string or not.
 	 *
 	 * @return string Normalized url.
 	 */
-	private function normalize_url( $url ) {
+	public function normalize_url( string $url, bool $remove_query = true ) {
 		$parsed_url = wp_parse_url( $url );
 
-		if ( ! empty( $parsed_url['query'] ) ) {
+		if ( $remove_query && ! empty( $parsed_url['query'] ) ) {
 			$url = str_replace( '?' . $parsed_url['query'], '', $url );
 		}
 

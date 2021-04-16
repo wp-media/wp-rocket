@@ -89,6 +89,21 @@ class UsedCSS {
 	}
 
 	/**
+	 * Checks if CPCSS is enabled on the current page
+	 *
+	 * @since 3.9
+	 *
+	 * @return bool
+	 */
+	public function cpcss_enabled() {
+		if ( ! $this->options->get( 'async_css', 0 ) ) {
+			return false;
+		}
+
+		return ! is_rocket_post_excluded_option( 'async_css' );
+	}
+
+	/**
 	 * Apply TreeShaked CSS to the current HTML page.
 	 *
 	 * @param string $html  HTML content.
@@ -163,26 +178,29 @@ class UsedCSS {
 	}
 
 	/**
-	 * Get UsedCSS from DB table based on page url.
+	 * Delete used css based on URL.
 	 *
-	 * @param string $url       The page URL.
-	 * @param bool   $is_mobile Page is_mobile.
+	 * @param string $url The page URL.
 	 *
-	 * @return UsedCSS_Row|false
+	 * @return boolean
 	 */
-	public function get_used_css( string $url, bool $is_mobile = false ) {
-		$query = $this->used_css_query->query(
-					[
-						'url'       => $url,
-						'is_mobile' => $is_mobile,
-					]
-				);
+	public function delete_used_css( string $url ) : bool {
+		$used_css_arr = $this->used_css_query->query( [ 'url' => $url ] );
 
-		if ( empty( $query[0] ) ) {
+		if ( empty( $used_css_arr ) ) {
 			return false;
 		}
 
-		return $query[0];
+		$deleted = true;
+
+		foreach ( $used_css_arr as $used_css ) {
+			if ( empty( $used_css->id ) ) {
+				continue;
+			}
+			$deleted = $deleted && $this->used_css_query->delete_item( $used_css->id );
+		}
+
+		return $deleted;
 	}
 
 	/**
@@ -200,19 +218,43 @@ class UsedCSS {
 		foreach ( $used_css_list as $used_css_item ) {
 			// Resets retries to 1.
 			$updated = $this->used_css_query->update_item(
-							$used_css_item->id,
-							[ 'retries' => 1 ]
-						);
+				$used_css_item->id,
+				[ 'retries' => 1 ]
+			);
 			// Cleans page cache.
 			$this->purge->purge_url( $used_css_item->url );
 		}
 	}
+
+	/**
+	 * Get UsedCSS from DB table based on page url.
+	 *
+	 * @param string $url       The page URL.
+	 * @param bool   $is_mobile Page is_mobile.
+	 *
+	 * @return UsedCSS_Row|false
+	 */
+	private function get_used_css( string $url, bool $is_mobile = false ) {
+		$query = $this->used_css_query->query(
+					[
+						'url'       => $url,
+						'is_mobile' => $is_mobile,
+					]
+				);
+
+		if ( empty( $query[0] ) ) {
+			return false;
+		}
+
+		return $query[0];
+	}
+
 	/**
 	 * Get UsedCSS from DB table which has unprocessed CSS files.
 	 *
 	 * @return array
 	 */
-	public function get_used_css_with_unprocessed_css() {
+	private function get_used_css_with_unprocessed_css() {
 		$query = $this->used_css_query->query(
 			[
 				'unprocessedcss__not_in' => [
@@ -239,7 +281,7 @@ class UsedCSS {
 	 *
 	 * @return UsedCSS_Row|false
 	 */
-	public function save_or_update_used_css( array $data ) {
+	private function save_or_update_used_css( array $data ) {
 		$used_css = $this->get_used_css( $data['url'], $data['is_mobile'] );
 
 		$data['css'] = preg_replace( '/content\s*:\s*"\\\\f/i', 'shaker-parser:"dashf', $data['css'] );
@@ -269,9 +311,9 @@ class UsedCSS {
 	 *
 	 * @param array $data Data to be inserted in used_css table.
 	 *
-	 * @return UsedCSS_Row|false
+	 * @return object|false
 	 */
-	public function insert_used_css( array $data ) {
+	private function insert_used_css( array $data ) {
 		$id = $this->used_css_query->add_item( $data );
 		if ( empty( $id ) ) {
 			return false;
@@ -286,9 +328,9 @@ class UsedCSS {
 	 * @param integer $id   Used CSS ID.
 	 * @param array   $data Data to be updated in used_css table.
 	 *
-	 * @return UsedCSS_Row|false
+	 * @return object|false
 	 */
-	public function update_used_css( int $id, array $data ) {
+	private function update_used_css( int $id, array $data ) {
 		$updated = $this->used_css_query->update_item( $id, $data );
 
 		if ( ! $updated ) {
@@ -299,32 +341,6 @@ class UsedCSS {
 	}
 
 	/**
-	 * Delete used css based on URL.
-	 *
-	 * @param string $url The page URL.
-	 *
-	 * @return boolean
-	 */
-	public function delete_used_css( string $url ) : bool {
-		$used_css_arr = $this->used_css_query->query( [ 'url' => $url ] );
-
-		if ( empty( $used_css_arr ) ) {
-			return false;
-		}
-
-		$deleted = true;
-
-		foreach ( $used_css_arr as $used_css ) {
-			if ( empty( $used_css->id ) ) {
-				continue;
-			}
-			$deleted = $deleted && $this->used_css_query->delete_item( $used_css->id );
-		}
-
-		return $deleted;
-	}
-
-	/**
 	 * Alter HTML and remove all CSS which was processed from HTML page.
 	 *
 	 * @param string $html            HTML content.
@@ -332,7 +348,7 @@ class UsedCSS {
 	 *
 	 * @return string HTML content.
 	 */
-	public function remove_used_css_from_html( string $html, array $unprocessed_css ) : string {
+	private function remove_used_css_from_html( string $html, array $unprocessed_css ) : string {
 		$html_nocomments    = $this->hide_comments( $html );
 		$link_styles        = $this->find( '<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?(?<url>[^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html_nocomments );
 		$inline_styles      = $this->find( '<style.*>(?<content>.*)<\/style>', $html_nocomments );
@@ -381,13 +397,19 @@ class UsedCSS {
 	 *
 	 * @return string HTML content.
 	 */
-	public function add_used_css_to_html( string $html, UsedCSS_Row $used_css ) : string {
-		return preg_replace(
+	private function add_used_css_to_html( string $html, UsedCSS_Row $used_css ) : string {
+		$replace = preg_replace(
 			'#</title>#iU',
 			'</title>' . $this->get_used_css_markup( $used_css ),
 			$html,
 			1
 		);
+
+		if ( null === $replace ) {
+			return $html;
+		}
+
+		return $replace;
 	}
 
 	/**
@@ -397,7 +419,7 @@ class UsedCSS {
 	 *
 	 * @return bool
 	 */
-	public function update_last_accessed( int $id ) : bool {
+	private function update_last_accessed( int $id ) : bool {
 		return (bool) $this->used_css_query->update_item(
 			$id,
 			[
@@ -413,11 +435,20 @@ class UsedCSS {
 	 *
 	 * @return string
 	 */
-	protected function hide_comments( string $html ) : string {
-		$html = preg_replace( '#<!--\s*noptimize\s*-->.*?<!--\s*/\s*noptimize\s*-->#is', '', $html );
-		$html = preg_replace( '/<!--(.*)-->/Uis', '', $html );
+	private function hide_comments( string $html ) : string {
+		$replace = preg_replace( '#<!--\s*noptimize\s*-->.*?<!--\s*/\s*noptimize\s*-->#is', '', $html );
 
-		return $html;
+		if ( null === $replace ) {
+			return $html;
+		}
+
+		$replace = preg_replace( '/<!--(.*)-->/Uis', '', $replace );
+
+		if ( null === $replace ) {
+			return $html;
+		}
+
+		return $replace;
 	}
 
 	/**
@@ -428,7 +459,7 @@ class UsedCSS {
 	 *
 	 * @return array Array with type of unprocessed CSS.
 	 */
-	protected function unprocessed_flat_array( string $type, array $unprocessed_css ) : array {
+	private function unprocessed_flat_array( string $type, array $unprocessed_css ) : array {
 		$unprocessed_array = [];
 		foreach ( $unprocessed_css as $css ) {
 			if ( $type === $css['type'] ) {
@@ -445,7 +476,7 @@ class UsedCSS {
 	 *
 	 * @return string
 	 */
-	protected function strip_line_breaks( string $value ) : string {
+	private function strip_line_breaks( string $value ) : string {
 		$value = str_replace( [ "\r", "\n", "\r\n", "\t" ], '', $value );
 		return trim( $value );
 	}
@@ -506,14 +537,16 @@ class UsedCSS {
 
 		$used_css_filename = $this->get_used_css_filename( $used_css->url, (bool) $used_css->is_mobile );
 		$used_css_filepath = rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH' ) . $used_css_filename;
+		$filesystem        = rocket_direct_filesystem();
 
-		if ( ! rocket_direct_filesystem()->exists( $used_css_filepath ) ) {
+		if ( ! $filesystem->exists( $used_css_filepath ) ) {
 			$this->save_used_css_in_filesystem( $used_css );
 		}
 
 		return sprintf(
-			'<link rel="stylesheet" id="wpr-usedcss-css" href="%s">', // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
-			rocket_get_constant( 'WP_ROCKET_USED_CSS_URL' ) . $used_css_filename
+			'<link rel="stylesheet" id="wpr-usedcss-css" href="%s?ver=%s">', // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
+			rocket_get_constant( 'WP_ROCKET_USED_CSS_URL' ) . $used_css_filename,
+			$filesystem->mtime( $used_css_filepath ) ?? $used_css->modified
 		);
 	}
 
@@ -534,7 +567,7 @@ class UsedCSS {
 	 *
 	 * @return void
 	 */
-	public function schedule_rucss_retry() {
+	private function schedule_rucss_retry() {
 		$scheduled = wp_next_scheduled( 'rocket_rucss_retries_cron' );
 
 		if ( $scheduled ) {
@@ -542,21 +575,6 @@ class UsedCSS {
 		}
 
 		wp_schedule_single_event( time() + ( 0.5 * HOUR_IN_SECONDS ), 'rocket_rucss_retries_cron' );
-	}
-
-	/**
-	 * Checks if CPCSS is enabled on the current page
-	 *
-	 * @since 3.9
-	 *
-	 * @return bool
-	 */
-	public function cpcss_enabled() {
-		if ( ! $this->options->get( 'async_css', 0 ) ) {
-			return false;
-		}
-
-		return ! is_rocket_post_excluded_option( 'async_css' );
 	}
 
 	/**

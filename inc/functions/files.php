@@ -1056,7 +1056,7 @@ function rocket_rrmdir( $dir, array $dirs_to_preserve = [], $filesystem = null )
  *
  * @since 2.10
  *
- * @return object WP_Filesystem_Direct instance
+ * @return WP_Filesystem_Direct WP_Filesystem_Direct instance
  */
 function rocket_direct_filesystem() {
 	require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php';
