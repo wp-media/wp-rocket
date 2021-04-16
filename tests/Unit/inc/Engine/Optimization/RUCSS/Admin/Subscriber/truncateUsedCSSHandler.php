@@ -35,6 +35,12 @@ class Test_TruncateUsedCSSHandler extends TestCase {
 		$this->subscriber = new Subscriber( $this->settings, $this->database, $this->usedCSS );
 	}
 
+	public function tearDown() : void {
+		parent::tearDown();
+
+		unset( $_GET['_wpnonce'] );
+	}
+
 	/**
 	 * @dataProvider configTestData
 	 */

@@ -66,7 +66,7 @@ class Subscriber implements Subscriber_Interface {
 			'init'                               => 'schedule_clean_not_commonly_used_rows',
 			'rocket_rucss_clean_rows_time_event' => 'cron_clean_rows',
 			'admin_post_rocket_clear_usedcss'    => 'truncate_used_css_handler',
-			'admin_notices'                      => 'rocket_clear_usedcss_result',
+			'admin_notices'                      => 'clear_usedcss_result',
 		];
 	}
 
@@ -248,7 +248,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Show admin notice after clearing used_css table.
 	 */
-	public function rocket_clear_usedcss_result() {
+	public function clear_usedcss_result() {
 		if ( ! current_user_can( 'rocket_remove_unused_css' ) ) {
 			return;
 		}
