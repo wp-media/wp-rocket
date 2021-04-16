@@ -912,7 +912,7 @@ msgstr "Vorladen aktivieren"
 
 #: inc/Engine/Admin/Settings/Page.php:1172
 msgid "Activate sitemap-based cache preloading"
-msgstr "Sitemap-basiertes Füllen des Cache aktivieren"
+msgstr "Sitemap-basiertes Füllen des Caches aktivieren"
 
 #: inc/Engine/Admin/Settings/Page.php:1191
 msgid "Sitemaps for preloading"
