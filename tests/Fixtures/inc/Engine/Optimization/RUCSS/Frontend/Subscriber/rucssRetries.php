@@ -10,12 +10,18 @@ return [
 					'example.org'                                => [
 						'index.html'      => '',
 						'index.html_gzip' => '',
-						'page1.html'      => '',
-						'page1.html_gzip' => '',
-						'page2.html'      => '',
-						'page2.html_gzip' => '',
-						'page3.html'      => '',
-						'page3.html_gzip' => '',
+						'page1' => [
+							'index.html'      => '',
+							'index.html_gzip' => '',
+						],
+						'page2'      => [
+							'index.html'      => '',
+							'index.html_gzip' => '',
+						],
+						'page3'      => [
+							'index.html'      => '',
+							'index.html_gzip' => '',
+						],
 					],
 					'example.org-wpmedia-594d03f6ae698691165999' => [
 						'index.html'      => '',
@@ -112,7 +118,7 @@ return [
 				'items'         => [
 					[
 						'id'             => '2',
-						'url'            => 'http://example.org/page2.html',
+						'url'            => 'http://example.org/page2/',
 						'css'            => '.example{color:green;}',
 						'unprocessedcss' => json_encode( [
 							'styles/mystyle.css'
@@ -121,7 +127,7 @@ return [
 					],
 					[
 						'id'             => '3',
-						'url'            => 'http://example.org/page3.html',
+						'url'            => 'http://example.org/page3/',
 						'css'            => '.example{color:blue;}',
 						'unprocessedcss' => json_encode( [
 							'styles/yourstyle.css',
@@ -143,10 +149,10 @@ return [
 					],
 				],
 				'purged-files' => [
-					'vfs://public/wp-content/cache/wp-rocket/example.org/page1.html',
-					'vfs://public/wp-content/cache/wp-rocket/example.org/page1.html_gzip',
-					'vfs://public/wp-content/cache/wp-rocket/example.org/page2.html',
-					'vfs://public/wp-content/cache/wp-rocket/example.org/page2.html_gzip',
+					'vfs://public/wp-content/cache/wp-rocket/example.org/page2/index.html',
+					'vfs://public/wp-content/cache/wp-rocket/example.org/page2/index.html_gzip',
+					'vfs://public/wp-content/cache/wp-rocket/example.org/page3/index.html',
+					'vfs://public/wp-content/cache/wp-rocket/example.org/page3/index.html_gzip',
 				]
 			],
 		],
