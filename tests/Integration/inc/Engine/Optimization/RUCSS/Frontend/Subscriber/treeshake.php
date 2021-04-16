@@ -1,12 +1,13 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\RUCSS\Frontend\APIClient;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\RUCSS\Frontend\Subscriber;
 
 use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\RUCSS\Frontend\Subscriber::treeshake
+ * @uses \WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS::treeshake()
  *
  * @group  RUCSS
  */
