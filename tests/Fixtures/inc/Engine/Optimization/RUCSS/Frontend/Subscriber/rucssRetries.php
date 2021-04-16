@@ -1,21 +1,30 @@
 <?php
 
 return [
-	'vfs_dir' => 'public/',
+	'vfs_dir' => 'wp-content/',
 
 	'structure' => [
 		'wp-content' => [
-			'themes' => [
-				'theme-name' => [
-					'style.css' => '.theme-name{color:red;}'
-				]
-			],
 			'cache' => [
-				'unused-css' => [
-					'leaveMeHere.css' => 'random css file contents',
-					'page1.css' => '.first{color:red;}',
-					'page2.css' => '.second{color:green;}',
-					'page3.css' => '.third{color:blue;}',
+				'wp-rocket' => [
+					'example.org'                                => [
+						'index.html'      => '',
+						'index.html_gzip' => '',
+						'page1.html'      => '',
+						'page1.html_gzip' => '',
+						'page2.html'      => '',
+						'page2.html_gzip' => '',
+						'page3.html'      => '',
+						'page3.html_gzip' => '',
+					],
+					'example.org-wpmedia-594d03f6ae698691165999' => [
+						'index.html'      => '',
+						'index.html_gzip' => '',
+					],
+					'example.org-Foo-594d03f6ae698691165999'     => [
+						'index.html'      => '',
+						'index.html_gzip' => '',
+					],
 				],
 			],
 		],
@@ -28,14 +37,14 @@ return [
 				'items'         => [
 					[
 						'id'             => '1',
-						'url'            => 'example.com/wp-content/cache/unused-css/page1.css',
+						'url'            => 'http://example.org/page1.html',
 						'css'            => '.example{color:red;}',
 						'unprocessedcss' => json_encode( [] ),
 						'retries'        => '1',
 					],
 					[
 						'id'             => '2',
-						'url'            => 'vfs://public/wp-content/cache/unused-css/page2.css',
+						'url'            => 'http://example.org/page2.html',
 						'css'            => '.example{color:green;}',
 						'unprocessedcss' => json_encode( [
 							'styles/mystyle.css'
@@ -44,7 +53,7 @@ return [
 					],
 					[
 						'id'             => '3',
-						'url'            => 'vfs://public/wp-content/cache/unused-css/page3.css',
+						'url'            => 'http://example.org/page3.html',
 						'css'            => '.example{color:blue;}',
 						'unprocessedcss' => json_encode( [
 							'styles/yourstyle.css',
@@ -69,12 +78,7 @@ return [
 						'retries' => '3',
 					],
 				],
-				'files-after' => [
-					'leaveMeHere.css',
-					'page1.css',
-					'page2.css',
-					'page3.css',
-				],
+				'purged-files' => [],
 			],
 		],
 
@@ -84,7 +88,7 @@ return [
 				'items'         => [
 					[
 						'id'             => '1',
-						'url'            => 'vfs://public/wp-content/cache/unused-css/page1.css',
+						'url'            => 'http://example.org/page1.css',
 						'css'            => '.example{color:red;}',
 						'unprocessedcss' => json_encode( [] ),
 						'retries'        => '3',
@@ -98,12 +102,7 @@ return [
 						'retries' => '3',
 					],
 				],
-				'files-after' => [
-					'leaveMeHere.css',
-					'page1.css',
-					'page2.css',
-					'page3.css',
-				],
+				'purged-files' => [],
 			],
 		],
 
@@ -113,7 +112,7 @@ return [
 				'items'         => [
 					[
 						'id'             => '2',
-						'url'            => 'https://example.com/wp-content/cache/unused-css/page2.css',
+						'url'            => 'http://example.org/page2.html',
 						'css'            => '.example{color:green;}',
 						'unprocessedcss' => json_encode( [
 							'styles/mystyle.css'
@@ -122,7 +121,7 @@ return [
 					],
 					[
 						'id'             => '3',
-						'url'            => 'https://example.com/wp-content/cache/unused-css/page3.css',
+						'url'            => 'http://example.org/page3.html',
 						'css'            => '.example{color:blue;}',
 						'unprocessedcss' => json_encode( [
 							'styles/yourstyle.css',
@@ -133,19 +132,21 @@ return [
 				],
 			],
 			'expected' => [
-				'items-after' => [
+				'items-after'  => [
 					[
 						'id'      => '2',
 						'retries' => '1',
 					],
 					[
-						'id' => '3',
+						'id'      => '3',
 						'retries' => '1',
 					],
 				],
-				'files-after' => [
-					'leaveMeHere.css',
-					'page1.css',
+				'purged-files' => [
+					'vfs://public/wp-content/cache/wp-rocket/example.org/page1.html',
+					'vfs://public/wp-content/cache/wp-rocket/example.org/page1.html_gzip',
+					'vfs://public/wp-content/cache/wp-rocket/example.org/page2.html',
+					'vfs://public/wp-content/cache/wp-rocket/example.org/page2.html_gzip',
 				]
 			],
 		],

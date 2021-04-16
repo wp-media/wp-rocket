@@ -62,6 +62,11 @@ class Test_RucssRetries extends FilesystemTestCase {
 		);
 
 		$this->assertSame( $expected['items-after'], $itemsAfter );
+
+		foreach ( $expected['purged-files'] as $file ) {
+			$this->assertFalse( $this->filesystem->exists( $file )
+			);
+		}
 	}
 
 	public function set_rucss_option(): bool {
