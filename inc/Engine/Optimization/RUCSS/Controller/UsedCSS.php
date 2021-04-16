@@ -372,7 +372,7 @@ class UsedCSS {
 	 *
 	 * @return string HTML content.
 	 */
-	public function remove_used_css_from_html( string $html, array $unprocessed_css ): string {
+	private function remove_used_css_from_html( string $html, array $unprocessed_css ): string {
 		$html_nocomments    = $this->hide_comments( $html );
 		$link_styles        = $this->find( '<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?(?<url>[^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html_nocomments );
 		$inline_styles      = $this->find( '<style.*>(?<content>.*)<\/style>', $html_nocomments );
@@ -410,7 +410,7 @@ class UsedCSS {
 	 *
 	 * @return string HTML content.
 	 */
-	public function add_used_css_to_html( string $html, UsedCSS_Row $used_css ): string {
+	private function add_used_css_to_html( string $html, UsedCSS_Row $used_css ): string {
 		$replace = preg_replace(
 			'#</title>#iU',
 			'</title>' . $this->get_used_css_markup( $used_css ),
