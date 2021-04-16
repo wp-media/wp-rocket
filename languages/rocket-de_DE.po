@@ -341,7 +341,7 @@ msgid ""
 "%1$spreloading%2$s for the cache to be rebuilt automatically after lifespan "
 "expiration."
 msgstr ""
-"Cache-Dateien, die älter sind, als die angegebene Lebensdauer, werden "
+"Cache-Dateien, die älter als die angegebene Lebensdauer sind, werden "
 "gelöscht.<br>Aktiviere %1$sCache füllen%2$s, um den Cache nach dem Ablauf "
 "der Lebensdauer automatisch neu zu generieren."
 
