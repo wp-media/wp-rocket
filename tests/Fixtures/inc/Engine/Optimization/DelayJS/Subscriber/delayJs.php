@@ -92,7 +92,7 @@ return [
 				'post-excluded'        => false,
 				'delay_js'             => 1,
 				'delay_js_exclusions'  => [
-					'/wp-includes/js/comment-reply.min.js',
+					'/wp-includes/js/comment-reply.min.js?ver=5.7',
 					'js-(after|extra)',
 				],
 			],
