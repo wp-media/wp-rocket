@@ -6,10 +6,10 @@ use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Frontend\Subscriber::rucss_retries
- * @uses   \WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS::retries_pages_with_unprocessed_css()
+ * @covers   \WP_Rocket\Engine\Optimization\RUCSS\Frontend\Subscriber::rucss_retries
+ * @covers   \WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS::retries_pages_with_unprocessed_css()
  *
- * @group  RUCSS
+ * @group    RUCSS
  */
 class Test_RucssRetries extends FilesystemTestCase {
 	use DBTrait;
