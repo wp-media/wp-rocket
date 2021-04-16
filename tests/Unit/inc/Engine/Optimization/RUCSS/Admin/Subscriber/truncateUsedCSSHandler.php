@@ -51,10 +51,10 @@ class Test_TruncateUsedCSSHandler extends TestCase {
 
 		if ( ! isset( $input['nonce'] ) ) {
 			Functions\expect( 'wp_verify_nonce' )->never();
-		} elseif ( isset( $input['nonce'] ) && 'rocket_clear_usedcss' !== $input['nonce'] ) {
-			Functions\expect( 'wp_verify_nonce' )->once()->with( $input['nonce'], 'rocket_clear_usedcss' )->andReturn( false );
-		} else {
-			Functions\expect( 'wp_verify_nonce' )->once()->with( $input['nonce'], 'rocket_clear_usedcss' )->andReturn( true );
+			Functions\expect( 'sanitize_key' )->never();
+		} else{
+			Functions\expect( 'wp_verify_nonce' )->once()->with( $input['nonce'], 'rocket_clear_usedcss' )->andReturn( 'rocket_clear_usedcss' === $input['nonce'] );
+			Functions\expect( 'sanitize_key' )->once()->andReturnFirstArg();
 		}
 
 		if ( 'rocket_clear_usedcss' === $input['nonce'] ) {

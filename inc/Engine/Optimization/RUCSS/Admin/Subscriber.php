@@ -209,7 +209,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @since 3.9
 	 */
 	public function truncate_used_css_handler() {
-		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'rocket_clear_usedcss' ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'rocket_clear_usedcss' ) ) {
 			wp_nonce_ays( '' );
 		}
 

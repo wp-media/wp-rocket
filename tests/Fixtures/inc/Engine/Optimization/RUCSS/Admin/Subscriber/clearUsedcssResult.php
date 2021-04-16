@@ -9,6 +9,7 @@ return [
 			],
 			'expected' => [
 				'show_notice' => false,
+				'notice_html' => '<div class="notice notice-success is-dismissible"><p>Used CSS cache cleared!</p></div>',
 			],
 		],
 
@@ -19,16 +20,21 @@ return [
 			],
 			'expected' => [
 				'show_notice' => false,
+				'notice_html' => '<div class="notice notice-success is-dismissible"><p>Used CSS cache cleared!</p></div>',
 			],
 		],
 
 		'shouldShowNotice' => [
 			'input' => [
 				'cap' => true,
-				'transient' => 'any value',
+				'transient' => [
+					'status'  => 'success',
+					'message' => 'Used CSS cache cleared!', 'rocket',
+				],
 			],
 			'expected' => [
 				'show_notice' => true,
+				'notice_html' => '<div class="notice notice-success is-dismissible"><p>Used CSS cache cleared!</p></div>',
 			],
 		],
 
