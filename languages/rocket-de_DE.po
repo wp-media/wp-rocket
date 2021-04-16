@@ -921,7 +921,7 @@ msgstr "Sitemaps für das Cache-Füllen"
 #: inc/Engine/Admin/Settings/Page.php:1195
 msgid "Specify XML sitemap(s) to be used for preloading"
 msgstr ""
-"Sitemap-Dateien (XML), die für das Füllen des Cache genutzt werden sollen"
+"Sitemap-Dateien (XML), die für das Füllen des Caches genutzt werden sollen"
 
 #: inc/Engine/Admin/Settings/Page.php:1205
 msgid "URLs to prefetch"
