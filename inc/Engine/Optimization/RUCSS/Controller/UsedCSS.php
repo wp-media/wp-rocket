@@ -241,9 +241,9 @@ class UsedCSS {
 		foreach ( $used_css_list as $used_css_item ) {
 			// Resets retries to 1.
 			$this->used_css_query->update_item(
-							$used_css_item->id,
-							[ 'retries' => 1 ]
-						);
+				$used_css_item->id,
+				[ 'retries' => 1 ]
+			);
 			// Cleans page cache.
 			$this->purge->purge_url( $used_css_item->url );
 		}
