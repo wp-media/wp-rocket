@@ -347,7 +347,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:489
 msgid "Enable caching for logged-in WordPress users"
-msgstr "Aktiviere Caching für angemeldete WordPress-Benutzer/-innen"
+msgstr "Caching für angemeldete WordPress-Benutzer/-innen aktivieren"
 
 #: inc/Engine/Admin/Settings/Page.php:497
 msgid "Enable caching for mobile devices"
