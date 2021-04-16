@@ -112,6 +112,21 @@ class UsedCSS {
 	}
 
 	/**
+	 * Checks if CPCSS is enabled on the current page
+	 *
+	 * @since 3.9
+	 *
+	 * @return bool
+	 */
+	public function cpcss_enabled() {
+		if ( ! $this->options->get( 'async_css', 0 ) ) {
+			return false;
+		}
+
+		return ! is_rocket_post_excluded_option( 'async_css' );
+	}
+
+	/**
 	 * Apply TreeShaked CSS to the current HTML page.
 	 *
 	 * @param string $html  HTML content.
@@ -186,26 +201,29 @@ class UsedCSS {
 	}
 
 	/**
-	 * Get UsedCSS from DB table based on page url.
+	 * Delete used css based on URL.
 	 *
-	 * @param string $url       The page URL.
-	 * @param bool   $is_mobile Page is_mobile.
+	 * @param string $url The page URL.
 	 *
-	 * @return UsedCSS_Row|false
+	 * @return boolean
 	 */
-	private function get_used_css( string $url, bool $is_mobile = false ) {
-		$query = $this->used_css_query->query(
-					[
-						'url'       => $url,
-						'is_mobile' => $is_mobile,
-					]
-				);
+	public function delete_used_css( string $url ) : bool {
+		$used_css_arr = $this->used_css_query->query( [ 'url' => $url ] );
 
-		if ( empty( $query[0] ) ) {
+		if ( empty( $used_css_arr ) ) {
 			return false;
 		}
 
-		return $query[0];
+		$deleted = true;
+
+		foreach ( $used_css_arr as $used_css ) {
+			if ( empty( $used_css->id ) ) {
+				continue;
+			}
+			$deleted = $deleted && $this->used_css_query->delete_item( $used_css->id );
+		}
+
+		return $deleted;
 	}
 
 	/**
@@ -229,6 +247,29 @@ class UsedCSS {
 			// Cleans page cache.
 			$this->purge->purge_url( $used_css_item->url );
 		}
+	}
+
+	/**
+	 * Get UsedCSS from DB table based on page url.
+	 *
+	 * @param string $url       The page URL.
+	 * @param bool   $is_mobile Page is_mobile.
+	 *
+	 * @return UsedCSS_Row|false
+	 */
+	private function get_used_css( string $url, bool $is_mobile = false ) {
+		$query = $this->used_css_query->query(
+					[
+						'url'       => $url,
+						'is_mobile' => $is_mobile,
+					]
+				);
+
+		if ( empty( $query[0] ) ) {
+			return false;
+		}
+
+		return $query[0];
 	}
 
 	/**
@@ -321,32 +362,6 @@ class UsedCSS {
 		}
 
 		return $this->used_css_query->get_item( $id );
-	}
-
-	/**
-	 * Delete used css based on URL.
-	 *
-	 * @param string $url The page URL.
-	 *
-	 * @return boolean
-	 */
-	public function delete_used_css( string $url ): bool {
-		$used_css_arr = $this->used_css_query->query( [ 'url' => $url ] );
-
-		if ( empty( $used_css_arr ) ) {
-			return false;
-		}
-
-		$deleted = true;
-
-		foreach ( $used_css_arr as $used_css ) {
-			if ( empty( $used_css->id ) ) {
-				continue;
-			}
-			$deleted = $deleted && $this->used_css_query->delete_item( $used_css->id );
-		}
-
-		return $deleted;
 	}
 
 	/**
@@ -576,7 +591,7 @@ class UsedCSS {
 	 *
 	 * @return void
 	 */
-	public function schedule_rucss_retry() {
+	private function schedule_rucss_retry() {
 		$scheduled = wp_next_scheduled( 'rocket_rucss_retries_cron' );
 
 		if ( $scheduled ) {
@@ -584,20 +599,5 @@ class UsedCSS {
 		}
 
 		wp_schedule_single_event( time() + ( 0.5 * HOUR_IN_SECONDS ), 'rocket_rucss_retries_cron' );
-	}
-
-	/**
-	 * Checks if CPCSS is enabled on the current page
-	 *
-	 * @since 3.9
-	 *
-	 * @return bool
-	 */
-	public function cpcss_enabled() {
-		if ( ! $this->options->get( 'async_css', 0 ) ) {
-			return false;
-		}
-
-		return ! is_rocket_post_excluded_option( 'async_css' );
 	}
 }
