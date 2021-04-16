@@ -94,7 +94,7 @@ trait UrlTrait {
 	 * Normalize relative url to full url.
 	 *
 	 * @param string $url Url to be normalized.
-	 * @param string $remove_query Remove Query string or not.
+	 * @param bool   $remove_query Remove Query string or not.
 	 *
 	 * @return string Normalized url.
 	 */
