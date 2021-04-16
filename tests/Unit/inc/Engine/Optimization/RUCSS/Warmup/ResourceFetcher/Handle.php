@@ -67,6 +67,7 @@ class Test_Handle extends FilesystemTestCase {
 		}else{
 
 			foreach ( $expected['resources'] as $resource ) {
+
 				$process
 					->shouldReceive( 'push_to_queue' )
 					->with( $resource )
