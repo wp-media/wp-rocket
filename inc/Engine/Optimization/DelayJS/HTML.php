@@ -67,9 +67,10 @@ class HTML {
 		 * @param array $excluded Array of excluded patterns.
 		 */
 		$this->excluded = apply_filters( 'rocket_delay_js_exclusions', $this->excluded );
-		$this->excluded = array_map( function( $value ) {
+		$this->excluded = array_map(
+			function( $value ) {
 				return str_replace(
-					[ '+', '?', '#', ],
+					[ '+', '?', '#' ],
 					[ '\+', '\?', '\#' ],
 					$value
 				);
