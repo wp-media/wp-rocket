@@ -42,7 +42,7 @@ class Test_CleanUsedCssAndCache extends FilesystemTestCase {
 	public function testShouldDoExpected( $input ) {
 		Functions\expect( 'current_user_can' )
 				->once()
-				->with( 'rocket_remove_unused_css' )
+				->with( 'rocket_manage_options' )
 				->andReturn( true );
 
 		$this->settings
