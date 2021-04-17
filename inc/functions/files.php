@@ -60,7 +60,7 @@ function get_rocket_config_file() { // phpcs:ignore WordPress.NamingConventions.
 	if ( ! $options ) {
 		return [
 			[],
-			''
+			'',
 		];
 	}
 
