@@ -22,6 +22,7 @@ class Manager implements ActivationInterface, DeactivationInterface {
 		'rocket_purge_sucuri_cache',
 		'rocket_preload_cache',
 		'rocket_regenerate_critical_css',
+		'rocket_remove_unused_css',
 	];
 
 	/**

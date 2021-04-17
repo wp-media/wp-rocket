@@ -3,7 +3,7 @@
 namespace WP_Rocket\Tests\Unit\Inc\admin;
 
 use Brain\Monkey\Functions;
-use WPMedia\PHPUnit\Integration\TestCase;
+use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * @covers ::rocket_new_upgrade

@@ -58,7 +58,10 @@ function get_rocket_config_file() { // phpcs:ignore WordPress.NamingConventions.
 	$options = get_option( WP_ROCKET_SLUG );
 
 	if ( ! $options ) {
-		return;
+		return [
+			[],
+			'',
+		];
 	}
 
 	$buffer  = "<?php\n";
