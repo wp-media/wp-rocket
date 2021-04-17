@@ -66,6 +66,7 @@ class Tests {
 		'donotcachepage'   => 1,
 		'wp_404'           => 1,
 		'search'           => 1,
+		'is_html'          => 1,
 	];
 
 	/**
@@ -348,6 +349,18 @@ class Tests {
 		if ( $this->has_test( 'search' ) && $this->is_search() ) {
 			// Don't process search results.
 			$this->set_error( 'Search page is excluded.' );
+			return false;
+		}
+
+		if (
+			$this->has_test( 'is_html' )
+			&&
+			! $this->is_html( $buffer )
+			&&
+			! defined( 'REST_REQUEST' )
+		) {
+			// Don't process if there isn't a closing </html>.
+			$this->set_error( 'No closing </html> was found.' );
 			return false;
 		}
 
@@ -780,6 +793,18 @@ class Tests {
 		 * @param bool $cache_search True will force caching search results.
 		 */
 		return ! apply_filters( 'rocket_cache_search', false );
+	}
+
+	/**
+	 * Tell if the page content has a closing </html>.
+	 *
+	 * @since 3.9
+	 *
+	 * @param  string $buffer The buffer content.
+	 * @return bool
+	 */
+	public function is_html( $buffer ) {
+		return (bool) preg_match( '/<\s*\/\s*html\s*>/i', $buffer );
 	}
 
 	/** ----------------------------------------------------------------------------------------- */
