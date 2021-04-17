@@ -215,7 +215,7 @@ defined( 'ABSPATH' ) || exit;
 
 					<?php if ( get_rocket_option( 'remove_unused_css' ) && current_user_can( 'rocket_remove_unused_css' ) ) : ?>
 						<div class="wpr-field">
-							<h4 class="wpr-title3"><?php esc_html_e( 'Remove used CSS cache', 'rocket' ); ?></h4>
+							<h4 class="wpr-title3"><?php esc_html_e( 'Remove Used CSS Cache', 'rocket' ); ?></h4>
 							<?php
 							$this->render_action_button(
 									'link',
@@ -223,7 +223,7 @@ defined( 'ABSPATH' ) || exit;
 									[
 										'label'      => __( 'Clear Used CSS', 'rocket' ),
 										'attributes' => [
-											'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-icon-refresh',
+											'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-icon-trash',
 										],
 									]
 							);
