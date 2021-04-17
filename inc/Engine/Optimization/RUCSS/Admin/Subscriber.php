@@ -67,6 +67,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_rucss_clean_rows_time_event' => 'cron_clean_rows',
 			'admin_post_rocket_clear_usedcss'    => 'truncate_used_css_handler',
 			'admin_notices'                      => 'clear_usedcss_result',
+			'rocket_admin_bar_items'             => 'add_clean_used_css_menu_item',
 		];
 	}
 
@@ -189,7 +190,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function clean_used_css_and_cache( $value, $old_value ) {
-		if ( ! current_user_can( 'rocket_manage_options' )
+		if ( ! current_user_can( 'rocket_remove_unused_css' )
 			||
 			! $this->settings->is_enabled()
 		) {
@@ -217,7 +218,7 @@ class Subscriber implements Subscriber_Interface {
 			wp_nonce_ays( '' );
 		}
 
-		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+		if ( ! current_user_can( 'rocket_remove_unused_css' ) ) {
 			rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
 		}
 
@@ -265,6 +266,18 @@ class Subscriber implements Subscriber_Interface {
 		delete_transient( 'rocket_clear_usedcss_response' );
 
 		rocket_notice_html( $response );
+	}
 
+	/**
+	 * Add Clean used CSS link to WP Rocket admin bar item
+	 *
+	 * @since 3.9
+	 *
+	 * @param WP_Admin_Bar $wp_admin_bar WP_Admin_Bar instance, passed by reference.
+	 *
+	 * @return void
+	 */
+	public function add_clean_used_css_menu_item( $wp_admin_bar ) {
+		$this->settings->add_clean_used_css_menu_item( $wp_admin_bar );
 	}
 }
