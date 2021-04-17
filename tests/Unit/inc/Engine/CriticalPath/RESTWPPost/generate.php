@@ -81,7 +81,7 @@ class Test_Generate extends FilesystemTestCase {
 			: false;
 		$no_fontface                  = isset( $config['no_fontface'] )
 			? $config['no_fontface']
-			: true;
+			: false;
 		$file                         = $this->config['vfs_dir'] . "cache/critical-css/1/posts/{$post_type}-{$post_id}" . ( $is_mobile ? '-mobile' : '' ). ".css";
 		$post_url = ('post_not_exists' === $expected['code'])
 			? null

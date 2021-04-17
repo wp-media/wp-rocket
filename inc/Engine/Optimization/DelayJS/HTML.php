@@ -52,7 +52,7 @@ class HTML {
 	 *
 	 * @return string
 	 */
-	public function delay_js( $html ) : string {
+	public function delay_js( $html ): string {
 		if ( ! $this->is_allowed() ) {
 			return $html;
 		}
@@ -67,6 +67,16 @@ class HTML {
 		 * @param array $excluded Array of excluded patterns.
 		 */
 		$this->excluded = apply_filters( 'rocket_delay_js_exclusions', $this->excluded );
+		$this->excluded = array_map(
+			function( $value ) {
+				return str_replace(
+					[ '+', '?', '#' ],
+					[ '\+', '\?', '\#' ],
+					$value
+				);
+			},
+			$this->excluded
+		);
 
 		return $this->parse( $html );
 	}
@@ -78,7 +88,7 @@ class HTML {
 	 *
 	 * @return bool
 	 */
-	public function is_allowed() : bool {
+	public function is_allowed(): bool {
 		if ( rocket_bypass() ) {
 			return false;
 		}
@@ -101,7 +111,7 @@ class HTML {
 	 *
 	 * @return string
 	 */
-	public function get_ie_fallback() {
+	public function get_ie_fallback(): string {
 		return 'if(navigator.userAgent.match(/MSIE|Internet Explorer/i)||navigator.userAgent.match(/Trident\/7\..*?rv:11/i)){var href=document.location.href;if(!href.match(/[?&]nowprocket/)){if(href.indexOf("?")==-1){if(href.indexOf("#")==-1){document.location.href=href+"?nowprocket=1"}else{document.location.href=href.replace("#","?nowprocket=1#")}}else{if(href.indexOf("#")==-1){document.location.href=href+"&nowprocket=1"}else{document.location.href=href.replace("#","&nowprocket=1#")}}}}';
 	}
 
@@ -114,7 +124,7 @@ class HTML {
 	 *
 	 * @return string
 	 */
-	private function parse( $html ) : string {
+	private function parse( $html ): string {
 		$replaced_html = preg_replace_callback( '/<\s*script\s*(?<attr>[^>]*?)?>(?<content>.*?)?<\s*\/\s*script\s*>/ims', [ $this, 'replace_scripts' ], $html );
 
 		if ( empty( $replaced_html ) ) {
@@ -134,7 +144,7 @@ class HTML {
 	 *
 	 * @return string
 	 */
-	public function replace_scripts( $matches ) : string {
+	public function replace_scripts( $matches ): string {
 		foreach ( $this->excluded as $pattern ) {
 			if ( preg_match( "#{$pattern}#i", $matches[0] ) ) {
 				return $matches[0];
@@ -146,7 +156,10 @@ class HTML {
 
 		if ( ! empty( $matches['attr'] ) ) {
 			$delay_attr = preg_replace( '/type=(["\'])(.*?)\1/i', 'data-rocket-$0', $matches['attr'], 1 );
-			$delay_js   = str_replace( $matches['attr'], $delay_attr, $matches[0] );
+
+			if ( null !== $delay_attr ) {
+				$delay_js = str_replace( $matches['attr'], $delay_attr, $matches[0] );
+			}
 		}
 
 		return str_replace( '<script', '<script type="rocketlazyloadscript"', $delay_js );
