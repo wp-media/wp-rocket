@@ -190,7 +190,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function clean_used_css_and_cache( $value, $old_value ) {
-		if ( ! current_user_can( 'rocket_remove_unused_css' )
+		if ( ! current_user_can( 'rocket_manage_options' )
 			||
 			! $this->settings->is_enabled()
 		) {
