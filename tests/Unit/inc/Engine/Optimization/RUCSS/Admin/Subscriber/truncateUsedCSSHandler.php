@@ -70,7 +70,7 @@ class Test_TruncateUsedCSSHandler extends TestCase {
 		}else{
 			Functions\expect( 'current_user_can' )
 				->once()
-				->with( 'rocket_manage_options' )
+				->with( 'rocket_remove_unused_css' )
 				->andReturn( $input['cap'] );
 
 			if ( ! $input['cap'] ) {
