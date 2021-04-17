@@ -19,14 +19,14 @@ class Test_ClearUsedcssResult extends TestCase {
 	private static $admin_user_id = 0;
 	private static $contributer_user_id = 0;
 
-	public function setUp() : void {
-		parent::setUp();
+	public static function setUpBeforeClass() : void {
+		parent::setUpBeforeClass();
 
 		$admin_role = get_role( 'administrator' );
 		$admin_role->add_cap( 'rocket_remove_unused_css' );
 
-		self::$admin_user_id = $this->factory->user->create( [ 'role' => 'administrator' ] );
-		self::$contributer_user_id = $this->factory->user->create( [ 'role' => 'contributor' ] );
+		self::$admin_user_id = static::factory()->user->create( [ 'role' => 'administrator' ] );
+		self::$contributer_user_id = static::factory()->user->create( [ 'role' => 'contributor' ] );
 	}
 
 	public function tearDown() : void {

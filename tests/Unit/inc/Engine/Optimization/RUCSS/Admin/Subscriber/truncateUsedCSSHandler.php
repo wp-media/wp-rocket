@@ -92,7 +92,7 @@ class Test_TruncateUsedCSSHandler extends TestCase {
 					->once()
 					->with(
 						'rocket_clear_usedcss_response',
-						$expected['norice_details']
+						$expected['notice_details']
 					);
 
 				Functions\expect( 'wp_get_referer' )->once()->andReturn( 'http://example.org' );
@@ -109,19 +109,11 @@ class Test_TruncateUsedCSSHandler extends TestCase {
 
 		}
 
-		if ( ! $expected['truncated'] && isset( $expected['reason'] ) ) {
-			switch ( $expected['reason'] ) {
-				case 'nonce':
-				case 'cap':
-				case 'option':
-					$this->expectException( WPDieException::class );
-					break;
-			}
-		}
-
 		if ( $expected['truncated'] ) {
 			$this->database->shouldReceive( 'truncate_used_css_table' )->once();
 			Functions\expect( 'rocket_clean_domain' )->once();
+			$this->expectException( WPDieException::class );
+		}else{
 			$this->expectException( WPDieException::class );
 		}
 
