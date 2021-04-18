@@ -84,6 +84,8 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 	 * Handle Collecting resources and save them into the DB
 	 *
 	 * @since 3.9
+	 *
+	 * @return void
 	 */
 	public function handle() {
 		// Grab resources from page HTML.
@@ -144,7 +146,7 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 			}
 
 			$this->resources[ $path ] = [
-				'url'     => rocket_add_url_protocol( $resource['url'] ),
+				'url'     => $this->normalize_url( $resource['url'], false ),
 				'content' => $contents,
 				'type'    => $type,
 			];

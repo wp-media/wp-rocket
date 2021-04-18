@@ -61,6 +61,8 @@ class Database {
 
 	/**
 	 * Delete old used css based on last accessed date.
+	 *
+	 * @return void
 	 */
 	public function delete_old_used_css() {
 		if ( $this->rucss_usedcss_table->exists() ) {
@@ -70,6 +72,8 @@ class Database {
 
 	/**
 	 * Delete old used css based on last accessed date.
+	 *
+	 * @return void
 	 */
 	public function delete_old_resources() {
 		if ( $this->rucss_resources_table->exists() ) {

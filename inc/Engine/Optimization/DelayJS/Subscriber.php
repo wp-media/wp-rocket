@@ -93,7 +93,7 @@ class Subscriber implements Subscriber_Interface {
 		wp_register_script(
 			'rocket-delay-js',
 			'',
-			'',
+			[],
 			'',
 			true
 		);
@@ -103,10 +103,15 @@ class Subscriber implements Subscriber_Interface {
 			'rocket-delay-js',
 			$this->html->get_ie_fallback()
 		);
-		wp_add_inline_script(
-			'rocket-delay-js',
-			$this->filesystem->get_contents( rocket_get_constant( 'WP_ROCKET_PATH' ) . 'assets/js/lazyload-scripts.min.js' )
-		);
+
+		$lazyload_script = $this->filesystem->get_contents( rocket_get_constant( 'WP_ROCKET_PATH' ) . 'assets/js/lazyload-scripts.min.js' );
+
+		if ( false !== $lazyload_script ) {
+			wp_add_inline_script(
+				'rocket-delay-js',
+				$lazyload_script
+			);
+		}
 
 		$this->is_enqueued = true;
 	}
