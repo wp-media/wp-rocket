@@ -315,6 +315,10 @@ class UsedCSS {
 		if ( empty( $used_css ) ) {
 			$inserted = $this->insert_used_css( $data );
 
+			if ( ! $inserted ) {
+				return false;
+			}
+
 			// Save used_css into filesystem.
 			$this->save_used_css_in_filesystem( $inserted );
 
@@ -322,6 +326,10 @@ class UsedCSS {
 		}
 
 		$updated = $this->update_used_css( (int) $used_css->id, $data );
+
+		if ( ! $updated ) {
+			return false;
+		}
 
 		// Save used_css into filesystem.
 		$this->save_used_css_in_filesystem( $updated );
