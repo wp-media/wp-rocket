@@ -38,7 +38,7 @@ class Test_SendWarmupRequest extends TestCase {
 		Functions\expect( 'wp_remote_post' )
 			->once()
 			->with(
-				'https://central-saas.wp-rocket.me/warmup',
+				'https://central-saas.wp-rocket.me:30443/warmup',
 				$args
 			)
 			->andReturn( $mockResponse );
