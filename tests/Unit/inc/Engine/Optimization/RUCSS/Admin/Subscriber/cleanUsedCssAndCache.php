@@ -62,6 +62,7 @@ class Test_CleanUsedCssAndCache extends FilesystemTestCase {
 
 			Functions\expect( 'rocket_clean_domain' )
 				->once();
+			$this->usedCSS->shouldReceive( 'delete_all_used_css_files' )->once();
 		} else {
 			$this->database
 				->shouldReceive( 'truncate_used_css_table' )
@@ -69,6 +70,8 @@ class Test_CleanUsedCssAndCache extends FilesystemTestCase {
 
 			Functions\expect( 'rocket_clean_domain' )
 				->never();
+
+			$this->usedCSS->shouldReceive( 'delete_all_used_css_files' )->never();
 		}
 
 		$this->subscriber->clean_used_css_and_cache( $input['settings'], $input['old_settings'] );
