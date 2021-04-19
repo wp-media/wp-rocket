@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\RUCSS\Admin\Subscriber;
 
 use WP_Rocket\Tests\Integration\DBTrait;
-use WP_Rocket\Tests\Integration\TestCase;
+use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::delete_used_css_on_update_or_delete
@@ -12,8 +12,10 @@ use WP_Rocket\Tests\Integration\TestCase;
  *
  * @group  RUCSS
  */
-class Test_DeleteUsedCssOnUpdateOrDelete extends TestCase{
+class Test_DeleteUsedCssOnUpdateOrDelete extends FilesystemTestCase{
 	use DBTrait;
+
+	protected $path_to_test_data = '/inc/Engine/Optimization/RUCSS/Admin/Subscriber/deleteUsedCssOnUpdateOrDelete.php';
 
 	private $posts;
 	private $input;
@@ -37,7 +39,7 @@ class Test_DeleteUsedCssOnUpdateOrDelete extends TestCase{
 	}
 
 	/**
-	 * @dataProvider configTestData
+	 * @dataProvider providerTestData
 	 */
 	public function testShouldTruncateTableWhenOptionIsEnabled( $input ){
 		$container           = apply_filters( 'rocket_container', null );
@@ -45,9 +47,13 @@ class Test_DeleteUsedCssOnUpdateOrDelete extends TestCase{
 
 		$this->input = $input;
 		add_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
+		$this->set_permalink_structure( "/%postname%/" );
 
-		foreach ( $input['items'] as $item ) {
-			$post          = $this->factory->post->create_and_get();
+		foreach ( $input['items'] as $key => $item ) {
+			$post          = $this->factory->post->create_and_get([
+				'post_name' => 'slug_' . $key
+			]);
+
 			$url           = untrailingslashit( get_permalink( $post->ID ) );
 			$item['url']   = $url;
 			$this->posts[] = $post;
@@ -58,6 +64,14 @@ class Test_DeleteUsedCssOnUpdateOrDelete extends TestCase{
 		$result = $rucss_usedcss_query->query();
 		$this->assertCount( count( $input['items'] ), $result );
 
+		foreach ( $input['files_deleted'] as $file ) {
+			$this->assertTrue( $this->filesystem->exists( $file ) );
+		}
+
+		foreach ( $input['files_preserved'] as $file ) {
+			$this->assertTrue( $this->filesystem->exists( $file ) );
+		}
+
 		foreach ( $this->posts as $post ) {
 			do_action( 'delete_post', $post->ID );
 		}
@@ -67,8 +81,20 @@ class Test_DeleteUsedCssOnUpdateOrDelete extends TestCase{
 
 		if ( $this->input['remove_unused_css'] ) {
 			$this->assertCount( 0, $resultAfterTruncate );
+
+			foreach ( $input['files_deleted'] as $file ) {
+				$this->assertFalse( $this->filesystem->exists( $file ) );
+			}
 		} else {
 			$this->assertCount( count( $input['items'] ), $result );
+
+			foreach ( $input['files_deleted'] as $file ) {
+				$this->asserttrue( $this->filesystem->exists( $file ) );
+			}
+		}
+
+		foreach ( $input['files_preserved'] as $file ) {
+			$this->assertTrue( $this->filesystem->exists( $file ) );
 		}
 	}
 
