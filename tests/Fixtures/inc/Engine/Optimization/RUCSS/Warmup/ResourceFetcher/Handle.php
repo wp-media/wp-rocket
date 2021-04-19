@@ -126,6 +126,32 @@ return [
 				],
 			],
 		],
+
+		'shouldQueueResourcesWithoutSchema' => [
+			'input' => [
+				'html' => '<!DOCTYPE html><html><head><title></title>'.
+				          '<link rel="stylesheet" type="text/css" href="//example.org/css/style1.css?ver=123">'.
+
+				          '<script type="text/javascript" src="//example.org/scripts/script1.js"></script>'.
+				          '</head><body>Content here</body></html>',
+			],
+			'expected' => [
+				'resources' => [
+					[
+						'url' => 'http://example.org/css/style1.css?ver=123',
+						'content' => '.first{color:red;}',
+						'type' => 'css',
+						'media' => 'all'
+					],
+					[
+						'url' => 'http://example.org/scripts/script1.js',
+						'content' => 'var first = "content 1";',
+						'type' => 'js'
+					]
+				],
+			],
+		],
+
 	]
 
 ];

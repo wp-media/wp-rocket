@@ -88,6 +88,15 @@ class Test_Handle extends FilesystemTestCase {
 			'html' => $input['html'],
 		];
 
+		Functions\when( 'set_url_scheme')->alias( function ( $url ) {
+			$url = trim( $url );
+			if ( substr( $url, 0, 2 ) === '//' ) {
+				$url = 'http:' . $url;
+			}
+
+			return preg_replace( '#^\w+://#', 'http://', $url );
+		});
+
 		$resource_fetcher->handle();
 
 	}
