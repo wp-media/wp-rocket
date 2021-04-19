@@ -33,6 +33,7 @@ class Test_CleanUsedCssDirectoryCpcssDisabled extends FilesystemTestCase {
 	}
 
 	public function tearDown() : void {
+		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
 
 		parent::tearDown();
 	}
