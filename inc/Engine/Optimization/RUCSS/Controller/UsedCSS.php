@@ -508,7 +508,8 @@ class UsedCSS {
 
 		if ( ! $this->filesystem->is_dir( $this->base_path ) ) {
 			if ( rocket_mkdir_p( $this->base_path ) ) {
-				$this->filesystem->touch( $this->base_path . 'index.html' );
+				$this->filesystem->touch( rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH' ) . 'index.html' );
+				$this->filesystem->touch( $this->base_path . DIRECTORY_SEPARATOR . 'index.html' );
 			}
 		}
 
