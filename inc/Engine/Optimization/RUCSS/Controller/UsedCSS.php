@@ -521,7 +521,8 @@ class UsedCSS {
 			}
 		}
 
-		return rocket_put_content( $used_css_filepath, $used_css->css );
+		// This filter is documented in inc/Engine/Optimization/CSSTrait.php#52.
+		return rocket_put_content( $used_css_filepath, apply_filters( 'rocket_css_content', $used_css->css ) );
 	}
 
 	/**
