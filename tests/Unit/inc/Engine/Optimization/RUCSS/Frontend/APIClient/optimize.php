@@ -41,7 +41,7 @@ class Test_Optimize extends TestCase {
 		Functions\expect( 'wp_remote_post' )
 			->once()
 			->with(
-				'https://central-saas.wp-rocket.me:30443/api',
+				$apiClient::API_URL . 'api',
 				$args
 			)
 			->andReturn( $mockResponse );
