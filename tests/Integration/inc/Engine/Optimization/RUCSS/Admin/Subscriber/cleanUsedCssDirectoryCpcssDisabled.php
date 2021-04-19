@@ -20,7 +20,7 @@ class Test_CleanUsedCssDirectoryCpcssDisabled extends FilesystemTestCase {
 	private static $admin_user_id;
 	private static $contributer_user_id;
 
-	protected $path_to_test_data = '/inc/Engine/Optimization/RUCSS/Admin/Subscriber/cleanUsedCssdirectoryCpcssDisabled.php';
+	protected $path_to_test_data = '/inc/Engine/Optimization/RUCSS/Admin/Subscriber/cleanUsedCssDirectoryCpcssDisabled.php';
 
 	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
@@ -54,14 +54,14 @@ class Test_CleanUsedCssDirectoryCpcssDisabled extends FilesystemTestCase {
 		add_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
 
 		// Test that used_css Files are available.
-		foreach ( $input['files'] as $file => $content ) {
+		foreach ( $input['files'] as $file ) {
 			$this->assertTrue( $this->filesystem->exists( $file ) );
 		}
 
 		do_action( 'update_option_wp_rocket_settings', $input['old_value'], $input['new_value'] );
 
 		// Test that used_css Files are available.
-		foreach ( $expected['files'] as $file => $content ) {
+		foreach ( $input['files'] as $file ) {
 			if ( $expected['cleaned'] ) {
 				$this->assertFalse( $this->filesystem->exists( $file ) );
 			}else{

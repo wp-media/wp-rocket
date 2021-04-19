@@ -1,14 +1,14 @@
 <?php
 
 $files = [
-	'vfs://public/wp-content/cache/used_css/1/',
-	'vfs://public/wp-content/cache/used_css/1/'.md5( 'https://example.org/' ).'/',
-	'vfs://public/wp-content/cache/used_css/1/'.md5( 'https://example.org/' ).'/used.css',
-	'vfs://public/wp-content/cache/used_css/1/'.md5( 'https://example.org/' ).'/used-mobile.css',
-	'vfs://public/wp-content/cache/used_css/1/category/',
-	'vfs://public/wp-content/cache/used_css/1/category/level1/',
-	'vfs://public/wp-content/cache/used_css/1/category/level1/used.css',
-	'vfs://public/wp-content/cache/used_css/1/category/level1/used-mobile.css',
+	'vfs://public/wp-content/cache/used-css/1/',
+	'vfs://public/wp-content/cache/used-css/1/'.md5( 'https://example.org/' ).'/',
+	'vfs://public/wp-content/cache/used-css/1/'.md5( 'https://example.org/' ).'/used.css',
+	'vfs://public/wp-content/cache/used-css/1/'.md5( 'https://example.org/' ).'/used-mobile.css',
+	'vfs://public/wp-content/cache/used-css/1/category/',
+	'vfs://public/wp-content/cache/used-css/1/category/level1/',
+	'vfs://public/wp-content/cache/used-css/1/category/level1/used.css',
+	'vfs://public/wp-content/cache/used-css/1/category/level1/used-mobile.css',
 ];
 
 return [
@@ -19,16 +19,16 @@ return [
 	'structure' => [
 		'wp-content' => [
 			'cache' => [
-				'used_css' => [
+				'used-css' => [
 					1 => [
 						md5( 'https://example.org/' ) => [
 							'used.css' => '',
-							'used-mobile.css',
+							'used-mobile.css' => '',
 						],
 						'category' => [
 							'level1' => [
-								'used.css',
-								'used-mobile.css',
+								'used.css' => '',
+								'used-mobile.css' => '',
 							]
 						]
 					],

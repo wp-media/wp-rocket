@@ -85,11 +85,16 @@ class Test_CleanUsedCssAndCache extends FilesystemTestCase {
 
 			// Test that cache Files are deleted.
 			$this->checkEntriesDeleted( $input['cache_files'] );
+			$this->checkEntriesDeleted( $input['used_css_files'] );
 		} else {
 			$this->assertCount( count( $input['items'] ), $result );
 
 			// Test that cache Files are still available.
 			foreach ( $input['cache_files'] as $file => $content ) {
+				$this->assertTrue( $this->filesystem->exists( $file ) );
+			}
+
+			foreach ( $input['used_css_files'] as $file => $content ) {
 				$this->assertTrue( $this->filesystem->exists( $file ) );
 			}
 		}
