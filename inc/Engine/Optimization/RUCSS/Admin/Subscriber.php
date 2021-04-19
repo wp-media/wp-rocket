@@ -53,7 +53,10 @@ class Subscriber implements Subscriber_Interface {
 		return [
 			'rocket_first_install_options'       => 'add_options_first_time',
 			'rocket_input_sanitize'              => [ 'sanitize_options', 14, 2 ],
-			'update_option_' . $slug             => [ 'clean_used_css_and_cache', 10, 2 ],
+			'update_option_' . $slug             => [
+				[ 'clean_used_css_and_cache', 10, 2 ],
+				[ 'clean_used_css_directory_cpcss_disabled', 10, 2 ],
+			],
 			'wp_rocket_upgrade'                  => [
 				[ 'set_option_on_update', 14, 2 ],
 			],
@@ -136,6 +139,7 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		$this->database->truncate_used_css_table();
+		$this->used_css->delete_all_used_css_files();
 	}
 
 	/**
@@ -184,12 +188,12 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.9
 	 *
-	 * @param array $value     An array of previous values for the settings.
 	 * @param array $old_value An array of submitted values for the settings.
+	 * @param array $value     An array of previous values for the settings.
 	 *
 	 * @return void
 	 */
-	public function clean_used_css_and_cache( $value, $old_value ) {
+	public function clean_used_css_and_cache( $old_value, $value ) {
 		if ( ! current_user_can( 'rocket_manage_options' )
 			||
 			! $this->settings->is_enabled()
@@ -205,6 +209,34 @@ class Subscriber implements Subscriber_Interface {
 			$this->database->truncate_used_css_table();
 			// Clear all caching files.
 			rocket_clean_domain();
+			$this->used_css->delete_all_used_css_files();
+		}
+	}
+
+	/**
+	 * Clean used_css directory with CPCSS option disabled.
+	 *
+	 * @since 3.9
+	 *
+	 * @param array $old_value Options old value.
+	 * @param array $value Options new value.
+	 */
+	public function clean_used_css_directory_cpcss_disabled( array $old_value, array $value ) {
+		if ( ! current_user_can( 'rocket_manage_options' )
+			||
+			! $this->settings->is_enabled()
+		) {
+			return;
+		}
+
+		if (
+			isset( $value['async_css'], $old_value['async_css'] )
+			&&
+			$value['async_css'] !== $old_value['async_css']
+			&&
+			! (bool) $value['async_css']
+		) {
+			$this->used_css->delete_all_used_css_files();
 		}
 	}
 
@@ -237,6 +269,7 @@ class Subscriber implements Subscriber_Interface {
 
 		$this->database->truncate_used_css_table();
 		rocket_clean_domain();
+		$this->used_css->delete_all_used_css_files();
 
 		set_transient(
 			'rocket_clear_usedcss_response',
