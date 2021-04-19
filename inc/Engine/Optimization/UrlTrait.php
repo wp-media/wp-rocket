@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization;
 
+use WP_Rocket\Logger\Logger;
+
 trait UrlTrait {
 
 	/**
@@ -111,7 +113,7 @@ trait UrlTrait {
 			return $site_url_components['scheme'] . '://' . $site_url_components['host'] . '/' . $relative_url;
 		}
 
-		return $url;
+		return rocket_add_url_protocol( $url );
 	}
 
 	/**
