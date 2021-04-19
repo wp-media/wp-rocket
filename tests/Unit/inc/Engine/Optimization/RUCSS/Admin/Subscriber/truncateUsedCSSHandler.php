@@ -24,7 +24,7 @@ class Test_TruncateUsedCSSHandler extends TestCase {
 	private $usedCSS;
 	private $subscriber;
 
-	protected $path_to_test_data = '/inc/Engine/Optimization/RUCSS/Admin/Subscriber/TruncateUsedCSSHandler.php';
+	protected $path_to_test_data = '/inc/Engine/Optimization/RUCSS/Admin/Subscriber/truncateUsedCSSHandler.php';
 
 	public function setUp() : void {
 		parent::setUp();
