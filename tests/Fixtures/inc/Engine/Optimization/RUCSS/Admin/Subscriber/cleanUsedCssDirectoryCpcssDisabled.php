@@ -1,6 +1,41 @@
 <?php
 
+$files = [
+	'vfs://public/wp-content/cache/used_css/1/',
+	'vfs://public/wp-content/cache/used_css/1/'.md5( 'https://example.org/' ).'/',
+	'vfs://public/wp-content/cache/used_css/1/'.md5( 'https://example.org/' ).'/used.css',
+	'vfs://public/wp-content/cache/used_css/1/'.md5( 'https://example.org/' ).'/used-mobile.css',
+	'vfs://public/wp-content/cache/used_css/1/category/',
+	'vfs://public/wp-content/cache/used_css/1/category/level1/',
+	'vfs://public/wp-content/cache/used_css/1/category/level1/used.css',
+	'vfs://public/wp-content/cache/used_css/1/category/level1/used-mobile.css',
+];
+
 return [
+
+	'vfs_dir' => 'wp-content/',
+
+	// Virtual filesystem structure.
+	'structure' => [
+		'wp-content' => [
+			'cache' => [
+				'used_css' => [
+					1 => [
+						md5( 'https://example.org/' ) => [
+							'used.css' => '',
+							'used-mobile.css',
+						],
+						'category' => [
+							'level1' => [
+								'used.css',
+								'used-mobile.css',
+							]
+						]
+					],
+				],
+			],
+		],
+	],
 
 	'test_data' => [
 		'BailoutWhenCurrentUserCant' => [
@@ -12,10 +47,11 @@ return [
 				'new_value' => [
 					'async_css' => true,
 				],
+				'files' => $files,
 			],
 			'expected' => [
 				'cleaned' => false,
-				'reason' => 'cap'
+				'reason' => 'cap',
 			],
 		],
 
@@ -29,10 +65,11 @@ return [
 				'new_value' => [
 					'async_css' => true,
 				],
+				'files' => $files,
 			],
 			'expected' => [
 				'cleaned' => false,
-				'reason' => 'option'
+				'reason' => 'option',
 			],
 		],
 
@@ -44,10 +81,11 @@ return [
 				'new_value' => [
 					'async_css' => true,
 				],
+				'files' => $files,
 			],
 			'expected' => [
 				'cleaned' => false,
-				'reason' => 'cpcss'
+				'reason' => 'cpcss',
 			],
 		],
 
@@ -59,6 +97,7 @@ return [
 					'async_css' => true,
 				],
 				'new_value' => [],
+				'files' => $files,
 			],
 			'expected' => [
 				'cleaned' => false,
@@ -76,6 +115,7 @@ return [
 				'new_value' => [
 					'async_css' => true,
 				],
+				'files' => $files
 			],
 			'expected' => [
 				'cleaned' => false,
@@ -93,6 +133,7 @@ return [
 				'new_value' => [
 					'async_css' => false,
 				],
+				'files' => $files
 			],
 			'expected' => [
 				'cleaned' => true,
