@@ -146,8 +146,6 @@ class UsedCSS {
 		if ( empty( $used_css ) || ( $used_css->retries < 3 ) ) {
 			$config = [
 				'treeshake'      => 1,
-				'wpr_email'      => $this->options->get( 'consumer_email', '' ),
-				'wpr_key'        => $this->options->get( 'consumer_key', '' ),
 				'rucss_safelist' => $this->options->get( 'remove_unused_css_safelist', [] ),
 			];
 

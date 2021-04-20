@@ -3,7 +3,8 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\RUCSS\Warmup\APIClient;
 
 use Brain\Monkey\Functions;
-use WP_Error;
+use Mockery;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\RUCSS\AbstractAPIClient;
 use WP_Rocket\Engine\Optimization\RUCSS\Warmup\APIClient;
 use WP_Rocket\Tests\Unit\TestCase;
@@ -32,7 +33,24 @@ class Test_SendWarmupRequest extends TestCase {
 			],
 		];
 
-		$apiClient = new APIClient();
+		$options = Mockery::mock( Options_Data::class );
+
+		$options->shouldReceive( 'get' )
+		        ->once()
+		        ->with( 'consumer_key', '' )
+		        ->andReturn( 'rocket_key' );
+
+		$options->shouldReceive( 'get' )
+		        ->once()
+		        ->with( 'consumer_email', '' )
+		        ->andReturn( 'rocket_email' );
+
+		$apiClient = new APIClient( $options );
+
+		$args['body']['credentials'] = [
+			'wpr_email' => 'rocket_email',
+			'wpr_key'   => 'rocket_key',
+		];
 
 		Functions\when( 'wp_parse_args' )->returnArg( 1 );
 		Functions\expect( 'wp_remote_post' )
