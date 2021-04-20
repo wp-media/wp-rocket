@@ -11,7 +11,7 @@ return [
 		[
 			'style_loader_src',
 			'http://example.org/wp-content/themes/twentytwenty/style.php',
-			'http://example.org/wp-content/cache/busting/1/wp-content/themes/twentytwenty/style-123456.css',
+			'http://example.org/wp-content/cache/busting/1/wp-content/themes/twentytwenty/style.css',
 			[
 				'cdn'        => 0,
 				'cdn_cnames' => [],
@@ -21,7 +21,7 @@ return [
 		[
 			'style_loader_src',
 			'http://example.org/wp-content/plugins/hello-dolly/style.php?ver=5.3',
-			'http://example.org/wp-content/cache/busting/1/wp-content/plugins/hello-dolly/style-123456.css',
+			'http://example.org/wp-content/cache/busting/1/wp-content/plugins/hello-dolly/style.css',
 			[
 				'cdn'        => 0,
 				'cdn_cnames' => [],
@@ -31,7 +31,7 @@ return [
 		[
 			'script_loader_src',
 			'http://example.org/wp-content/themes/twentytwenty/assets/script.php',
-			'http://example.org/wp-content/cache/busting/1/wp-content/themes/twentytwenty/assets/script-123456.js',
+			'http://example.org/wp-content/cache/busting/1/wp-content/themes/twentytwenty/assets/script.js',
 			[
 				'cdn'        => 0,
 				'cdn_cnames' => [],
@@ -41,7 +41,7 @@ return [
 		[
 			'script_loader_src',
 			'http://example.org/wp-content/plugins/hello-dolly/script.php?ver=5.3',
-			'http://example.org/wp-content/cache/busting/1/wp-content/plugins/hello-dolly/script-123456.js',
+			'http://example.org/wp-content/cache/busting/1/wp-content/plugins/hello-dolly/script.js',
 			[
 				'cdn'        => 0,
 				'cdn_cnames' => [],
@@ -53,7 +53,7 @@ return [
 		[
 			'style_loader_src',
 			'http://example.org/wp-content/themes/twentytwenty/style.php',
-			'https://123456.rocketcdn.me/wp-content/cache/busting/1/wp-content/themes/twentytwenty/style-123456.css',
+			'https://123456.rocketcdn.me/wp-content/cache/busting/1/wp-content/themes/twentytwenty/style.css',
 			[
 				'cdn'        => 1,
 				'cdn_cnames' => [
@@ -67,7 +67,7 @@ return [
 		[
 			'style_loader_src',
 			'http://example.org/wp-content/plugins/hello-dolly/style.php?ver=5.3',
-			'https://123456.rocketcdn.me/wp-content/cache/busting/1/wp-content/plugins/hello-dolly/style-123456.css',
+			'https://123456.rocketcdn.me/wp-content/cache/busting/1/wp-content/plugins/hello-dolly/style.css',
 			[
 				'cdn'        => 1,
 				'cdn_cnames' => [
@@ -81,7 +81,7 @@ return [
 		[
 			'script_loader_src',
 			'http://example.org/wp-content/themes/twentytwenty/assets/script.php',
-			'https://123456.rocketcdn.me/wp-content/cache/busting/1/wp-content/themes/twentytwenty/assets/script-123456.js',
+			'https://123456.rocketcdn.me/wp-content/cache/busting/1/wp-content/themes/twentytwenty/assets/script.js',
 			[
 				'cdn'        => 1,
 				'cdn_cnames' => [
@@ -95,7 +95,7 @@ return [
 		[
 			'script_loader_src',
 			'http://example.org/wp-content/plugins/hello-dolly/script.php?ver=5.3',
-			'https://123456.rocketcdn.me/wp-content/cache/busting/1/wp-content/plugins/hello-dolly/script-123456.js',
+			'https://123456.rocketcdn.me/wp-content/cache/busting/1/wp-content/plugins/hello-dolly/script.js',
 			[
 				'cdn'        => 1,
 				'cdn_cnames' => [
@@ -109,7 +109,7 @@ return [
 		[
 			'script_loader_src',
 			'http://example.org/wp-content/plugins/hello-dolly/script.php?ver=5.3',
-			'https://123456.rocketcdn.me/cdnpath/wp-content/cache/busting/1/wp-content/plugins/hello-dolly/script-123456.js',
+			'https://123456.rocketcdn.me/cdnpath/wp-content/cache/busting/1/wp-content/plugins/hello-dolly/script.js',
 			[
 				'cdn'        => 1,
 				'cdn_cnames' => [
@@ -123,7 +123,7 @@ return [
 		[
 			'style_loader_src',
 			'http://example.org/wp-content/plugins/hello-dolly/style.php?ver=5.3',
-			'https://123456.rocketcdn.me/cdnpath/wp-content/cache/busting/1/wp-content/plugins/hello-dolly/style-123456.css',
+			'https://123456.rocketcdn.me/cdnpath/wp-content/cache/busting/1/wp-content/plugins/hello-dolly/style.css',
 			[
 				'cdn'        => 1,
 				'cdn_cnames' => [
