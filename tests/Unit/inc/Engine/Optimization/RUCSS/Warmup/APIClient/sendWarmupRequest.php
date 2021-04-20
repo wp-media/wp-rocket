@@ -3,10 +3,12 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\RUCSS\Warmup\APIClient;
 
 use Brain\Monkey\Functions;
-use WP_Error;
+use Mockery;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\RUCSS\AbstractAPIClient;
 use WP_Rocket\Engine\Optimization\RUCSS\Warmup\APIClient;
 use WP_Rocket\Tests\Unit\TestCase;
+use WPMedia\PHPUnit\Integration\ApiTrait;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\RUCSS\Warmup\APIClient::send_warmup_request
@@ -16,6 +18,9 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group  RUCSS
  */
 class Test_SendWarmupRequest extends TestCase {
+	use ApiTrait;
+
+	protected static $api_credentials_config_file = 'license.php';
 
 	/**
 	 * @dataProvider configTestData
@@ -32,7 +37,24 @@ class Test_SendWarmupRequest extends TestCase {
 			],
 		];
 
-		$apiClient = new APIClient();
+		$options = Mockery::mock( Options_Data::class );
+
+		$options->shouldReceive( 'get' )
+		        ->once()
+		        ->with( 'consumer_key', '' )
+		        ->andReturn( self::getApiCredential( 'ROCKET_KEY' ) );
+
+		$options->shouldReceive( 'get' )
+		        ->once()
+		        ->with( 'consumer_email', '' )
+		        ->andReturn( self::getApiCredential( 'ROCKET_EMAIL' ) );
+
+		$apiClient = new APIClient( $options );
+
+		$args['body']['credentials'] = [
+			'wpr_email' => self::getApiCredential( 'ROCKET_EMAIL' ),
+			'wpr_key'   => self::getApiCredential( 'ROCKET_KEY' ),
+		];
 
 		Functions\when( 'wp_parse_args' )->returnArg( 1 );
 		Functions\expect( 'wp_remote_post' )
