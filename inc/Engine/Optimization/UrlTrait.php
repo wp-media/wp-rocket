@@ -76,7 +76,7 @@ trait UrlTrait {
 	 * @return bool|string
 	 */
 	protected function get_file_path( $url ) {
-		$url = $this->normalize_url( $url );
+		$url = $this->normalize_fullurl( $url );
 
 		$path = rocket_url_to_path( $url );
 		if ( $path ) {
@@ -98,7 +98,7 @@ trait UrlTrait {
 	 *
 	 * @return string Normalized url.
 	 */
-	public function normalize_url( string $url, bool $remove_query = true ) {
+	public function normalize_fullurl( string $url, bool $remove_query = true ) {
 		$parsed_url = wp_parse_url( $url );
 
 		if ( $remove_query && ! empty( $parsed_url['query'] ) ) {

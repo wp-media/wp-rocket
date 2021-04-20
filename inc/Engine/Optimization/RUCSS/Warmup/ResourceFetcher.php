@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Optimization\RUCSS\Warmup;
 
 use WP_Rocket\Engine\Optimization\AssetsLocalCache;
+use WP_Rocket\Engine\Optimization\CSSTrait;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Engine\Optimization\UrlTrait;
 use WP_Rocket\Logger\Logger;
@@ -11,7 +12,7 @@ use WP_Rocket_WP_Async_Request;
 
 class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 
-	use RegexTrait, UrlTrait;
+	use RegexTrait, UrlTrait, CSSTrait;
 
 	/**
 	 * Regex for stylesheets
@@ -146,8 +147,8 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 			}
 
 			$this->resources[ $path ] = [
-				'url'     => $this->normalize_url( $resource['url'], false ),
-				'content' => $contents,
+				'url'     => $this->normalize_fullurl( $resource['url'], false ),
+				'content' => 'css' === $type ? $this->rewrite_paths( $path, $path, $contents ) : $contents,
 				'type'    => $type,
 			];
 
