@@ -8,7 +8,6 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\RUCSS\AbstractAPIClient;
 use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
 use WP_Rocket\Tests\Unit\TestCase;
-use WPMedia\PHPUnit\Integration\ApiTrait;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient::optimize
@@ -19,9 +18,6 @@ use WPMedia\PHPUnit\Integration\ApiTrait;
  * @group  RUCSS
  */
 class Test_Optimize extends TestCase {
-	use ApiTrait;
-
-	protected static $api_credentials_config_file = 'license.php';
 
 	/**
 	 * @dataProvider configTestData
@@ -44,20 +40,20 @@ class Test_Optimize extends TestCase {
 		$options->shouldReceive( 'get' )
 		              ->once()
 		              ->with( 'consumer_key', '' )
-		              ->andReturn( self::getApiCredential( 'ROCKET_KEY' ) );
+		              ->andReturn( 'rocket_key' );
 
 		$options->shouldReceive( 'get' )
 		              ->once()
 		              ->with( 'consumer_email', '' )
-		              ->andReturn( self::getApiCredential( 'ROCKET_EMAIL' ) );
+		              ->andReturn( 'rocket_email' );
 
 		$apiClient = new APIClient( $options );
 
 		Functions\when( 'wp_parse_args' )->returnArg( 1 );
 
 		$args['body']['credentials'] = [
-			'wpr_email' => self::getApiCredential( 'ROCKET_EMAIL' ),
-			'wpr_key'   => self::getApiCredential( 'ROCKET_KEY' ),
+			'wpr_email' => 'rocket_email',
+			'wpr_key'   => 'rocket_key',
 		];
 
 		Functions\expect( 'wp_remote_post' )
