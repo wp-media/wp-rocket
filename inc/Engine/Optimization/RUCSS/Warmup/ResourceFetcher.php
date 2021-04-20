@@ -148,7 +148,7 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 
 			$this->resources[ $path ] = [
 				'url'     => $this->normalize_fullurl( $resource['url'], false ),
-				'content' => 'css' === $type ? $this->rewrite_paths( $path, $path, $contents ) : $contents,
+				'content' => 'css' === $type ? trim( $this->rewrite_paths( $path, $path, $contents ) ) : $contents,
 				'type'    => $type,
 			];
 
