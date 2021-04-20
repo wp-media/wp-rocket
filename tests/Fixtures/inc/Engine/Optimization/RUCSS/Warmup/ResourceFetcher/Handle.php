@@ -201,7 +201,7 @@ return [
 						'content' => 'var first = "content 1";',
 						'type'    => 'js'
 					],
-					[
+					[ // this item should be added only once, even though it imports itself again.
 						'url'     => 'http://example.org/css/myimportedstyles.css?ver=456',
 						'content' => '@import http://example.org/css/myimportedstyles.css?ver=456; .second{color:blue;}',
 						'type'    => 'css',
