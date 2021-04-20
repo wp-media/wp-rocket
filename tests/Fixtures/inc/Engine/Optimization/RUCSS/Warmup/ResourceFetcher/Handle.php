@@ -12,6 +12,7 @@ return [
 			'style3.css'      => '.third{color:#000000;}',
 			'style-empty.css' => '',
 			'stylewithimport.css' => '@import "style1.css";.another-class-in-stylewithimport{color: white;}',
+			'stylewithimportedmqs.css' => '@import "style3.css" screen;.another-imported-class{color: blue;}',
 			'stylewithimport-recursion.css' => '@import "stylewithimport-recursion.css";.another-class-in-stylewithimport-recursion{color: white;}',
 		],
 		'scripts' => [
@@ -165,6 +166,30 @@ return [
 					[
 						'url'     => 'http://example.org/css/stylewithimport.css?ver=123',
 						'content' => '.first{color:red;}.another-class-in-stylewithimport{color: white;}',
+						'type'    => 'css',
+						'media'   => 'all'
+					],
+					[
+						'url'     => 'http://example.org/scripts/script1.js',
+						'content' => 'var first = "content 1";',
+						'type'    => 'js'
+					],
+				],
+			],
+		],
+
+		'shouldFindAndQueueResourcesWithMediaQueryFoundFromCSSImport' => [
+			'input' => [
+				'html' => '<!DOCTYPE html><html><head><title></title>' .
+						  '<link rel="stylesheet" type="text/css" href="//example.org/css/stylewithimportedmqs.css?ver=123">' .
+						  '<script type="text/javascript" src="//example.org/scripts/script1.js"></script>' .
+						  '</head><body>Content here</body></html>'
+			],
+			'expected' => [
+				'resources' => [
+					[
+						'url'     => 'http://example.org/css/stylewithimportedmqs.css?ver=123',
+						'content' => '@media screen{.third{color:#000000;}}.another-imported-class{color: blue;}',
 						'type'    => 'css',
 						'media'   => 'all'
 					],
