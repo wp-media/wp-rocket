@@ -60,7 +60,10 @@ class Subscriber implements Subscriber_Interface {
 			'wp_rocket_upgrade'                  => [
 				[ 'set_option_on_update', 14, 2 ],
 			],
-			'switch_theme'                       => 'truncate_used_css',
+			'switch_theme'                       => [
+				[ 'truncate_used_css' ],
+				[ 'clear_used_css_directory' ],
+			],
 			'rocket_rucss_file_changed'          => 'truncate_used_css',
 			'wp_trash_post'                      => 'delete_used_css_on_update_or_delete',
 			'delete_post'                        => 'delete_used_css_on_update_or_delete',
@@ -139,6 +142,12 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		$this->database->truncate_used_css_table();
+	}
+
+	/**
+	 * Clear used_css directory completely.
+	 */
+	public function clear_used_css_directory() {
 		$this->used_css->delete_all_used_css_files();
 	}
 
@@ -209,7 +218,7 @@ class Subscriber implements Subscriber_Interface {
 			$this->database->truncate_used_css_table();
 			// Clear all caching files.
 			rocket_clean_domain();
-			$this->used_css->delete_all_used_css_files();
+			$this->clear_used_css_directory();
 		}
 	}
 
@@ -236,7 +245,7 @@ class Subscriber implements Subscriber_Interface {
 			&&
 			! (bool) $value['async_css']
 		) {
-			$this->used_css->delete_all_used_css_files();
+			$this->clear_used_css_directory();
 		}
 	}
 
@@ -269,7 +278,7 @@ class Subscriber implements Subscriber_Interface {
 
 		$this->database->truncate_used_css_table();
 		rocket_clean_domain();
-		$this->used_css->delete_all_used_css_files();
+		$this->clear_used_css_directory();
 
 		set_transient(
 			'rocket_clear_usedcss_response',
