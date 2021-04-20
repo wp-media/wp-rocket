@@ -220,6 +220,9 @@ class UsedCSS {
 			if ( empty( $used_css->id ) ) {
 				continue;
 			}
+			// Delete file from filesystem.
+			$this->delete_used_css_file( $used_css );
+
 			$deleted = $deleted && $this->used_css_query->delete_item( $used_css->id );
 		}
 
@@ -609,5 +612,35 @@ class UsedCSS {
 		}
 
 		wp_schedule_single_event( time() + ( 0.5 * HOUR_IN_SECONDS ), 'rocket_rucss_retries_cron' );
+	}
+
+	/**
+	 * Remove used_css for one page.
+	 *
+	 * @since 3.9
+	 *
+	 * @param UsedCSS_Row $used_css Used CSS DB row.
+	 */
+	private function delete_used_css_file( UsedCSS_Row $used_css ) {
+		// Delete the file itself and its directory.
+		$file_path = $this->base_path . $this->get_used_css_filepath( $used_css );
+		$dir       = dirname( $file_path );
+
+		if ( ! $this->filesystem->exists( $dir ) ) {
+			return;
+		}
+
+		rocket_rrmdir( $dir );
+	}
+
+	/**
+	 * Remove all used_css directory contents.
+	 */
+	public function delete_all_used_css_files() {
+		if ( ! $this->filesystem->exists( $this->base_path ) ) {
+			return;
+		}
+
+		rocket_rrmdir( $this->base_path );
 	}
 }
