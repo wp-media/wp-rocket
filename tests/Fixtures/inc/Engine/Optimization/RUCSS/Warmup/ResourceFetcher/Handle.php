@@ -14,12 +14,14 @@ return [
 			'stylewithimport.css' => '@import "style1.css";.another-class-in-stylewithimport{color: white;}',
 			'stylewithimportedmqs.css' => '@import "style3.css" screen;.another-imported-class{color: blue;}',
 			'stylewithimport-recursion.css' => '@import "stylewithimport-recursion.css";.another-class-in-stylewithimport-recursion{color: white;}',
+			'stylewithrelativepathimport.css' => '@import "./../relativelypathedstyles.css";.some-imported-class{color:pink;}',
 		],
 		'scripts' => [
 			'script1.js' => 'var first = "content 1";',
 			'script2.js' => 'var second = "content 2";',
 			'script3.js' => 'var third = "content 3";',
 		],
+		'relativelypathedstyles.css' => '.relatively-pathed-imported-class{color:black;}'
 	],
 
 	'test_data' => [
@@ -201,6 +203,31 @@ return [
 				],
 			],
 		],
+
+		'shouldFindAndQueueResourcesWithRelativePathCSSImport' => [
+			'input' => [
+				'html' => '<!DOCTYPE html><html><head><title></title>' .
+						  '<link rel="stylesheet" type="text/css" href="//example.org/css/stylewithrelativepathimport.css?ver=123">' .
+						  '<script type="text/javascript" src="//example.org/scripts/script1.js"></script>' .
+						  '</head><body>Content here</body></html>'
+			],
+			'expected' => [
+				'resources' => [
+					[
+						'url'     => 'http://example.org/css/stylewithrelativepathimport.css?ver=123',
+						'content' => '.relatively-pathed-imported-class{color:black;}.some-imported-class{color:pink;}',
+						'type'    => 'css',
+						'media'   => 'all'
+					],
+					[
+						'url'     => 'http://example.org/scripts/script1.js',
+						'content' => 'var first = "content 1";',
+						'type'    => 'js'
+					],
+				],
+			],
+		],
+
 
 		'shouldNotRequeueResourcesFoundFromRecursiveCSSImport' => [
 			'input' => [
