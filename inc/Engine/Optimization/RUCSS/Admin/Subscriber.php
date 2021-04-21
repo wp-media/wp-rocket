@@ -57,9 +57,6 @@ class Subscriber implements Subscriber_Interface {
 				[ 'clean_used_css_and_cache', 10, 2 ],
 				[ 'clean_used_css_directory_cpcss_disabled', 10, 2 ],
 			],
-			'wp_rocket_upgrade'                  => [
-				[ 'set_option_on_update', 14, 2 ],
-			],
 			'switch_theme'                       => [
 				[ 'truncate_used_css' ],
 				[ 'clear_used_css_directory' ],
@@ -162,20 +159,6 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function add_options_first_time( $options ) : array {
 		return $this->settings->add_options( $options );
-	}
-
-	/**
-	 * Sets the RUCSS options to defaults when updating to 3.9
-	 *
-	 * @since 3.9
-	 *
-	 * @param string $new_version New plugin version.
-	 * @param string $old_version Previous plugin version.
-	 *
-	 * @return void
-	 */
-	public function set_option_on_update( $new_version, $old_version ) {
-		$this->settings->set_option_on_update( $old_version );
 	}
 
 	/**

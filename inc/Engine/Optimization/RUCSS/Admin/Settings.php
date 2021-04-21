@@ -42,28 +42,6 @@ class Settings {
 	}
 
 	/**
-	 * Sets the RUCSS options to defaults when updating to 3.9 from older versions.
-	 *
-	 * @since 3.9
-	 *
-	 * @param string $old_version Previous plugin version.
-	 *
-	 * @return void
-	 */
-	public function set_option_on_update( $old_version ) {
-		if ( version_compare( $old_version, '3.9', '>' ) ) {
-			return;
-		}
-
-		$options = get_option( 'wp_rocket_settings', [] );
-
-		$options['remove_unused_css']          = 0;
-		$options['remove_unused_css_safelist'] = [];
-
-		update_option( 'wp_rocket_settings', $options );
-	}
-
-	/**
 	 * Determines if Remove Unused CSS option is enabled.
 	 *
 	 * @since 3.9
