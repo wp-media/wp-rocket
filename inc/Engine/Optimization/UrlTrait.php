@@ -99,6 +99,7 @@ trait UrlTrait {
 	 * @return string Normalized url.
 	 */
 	public function normalize_url( string $url, bool $remove_query = true ) {
+		$url        = htmlspecialchars_decode( $url );
 		$parsed_url = wp_parse_url( $url );
 
 		if ( $remove_query && ! empty( $parsed_url['query'] ) ) {

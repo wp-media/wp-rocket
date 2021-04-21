@@ -394,7 +394,7 @@ class UsedCSS {
 				||
 				strstr( $style['url'], '//fonts.googleapis.com/css' )
 				||
-				in_array( $style['url'], $unprocessed_links, true )
+				in_array( htmlspecialchars_decode( $style['url'] ), $unprocessed_links, true )
 				) {
 				continue;
 			}
