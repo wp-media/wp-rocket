@@ -30,9 +30,10 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_first_install_options' => 'add_options',
-			'wp_rocket_upgrade'            => [ 'set_option_on_update', 13, 2 ],
-			'rocket_input_sanitize'        => [ 'sanitize_options', 13, 2 ],
+			'rocket_first_install_options'         => 'add_options',
+			'wp_rocket_upgrade'                    => [ 'set_option_on_update', 13, 2 ],
+			'rocket_input_sanitize'                => [ 'sanitize_options', 13, 2 ],
+			'pre_update_option_wp_rocket_settings' => [ 'maybe_disable_combine_js', 11, 2 ],
 		];
 	}
 
@@ -76,5 +77,19 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function sanitize_options( $input, AdminSettings $settings ) : array {
 		return $this->settings->sanitize_options( $input, $settings );
+	}
+
+	/**
+	 * Disable combine JS option when delay JS is enabled
+	 *
+	 * @since 3.9
+	 *
+	 * @param array $value     The new, unserialized option value.
+	 * @param array $old_value The old option value.
+	 *
+	 * @return array
+	 */
+	public function maybe_disable_combine_js( $value, $old_value ): array {
+		return $this->settings->maybe_disable_combine_js( $value, $old_value );
 	}
 }
