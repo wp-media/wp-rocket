@@ -7,6 +7,14 @@ use WP_Rocket\Dependencies\PathConverter\Converter;
 use WP_Rocket\Logger\Logger;
 
 trait CSSTrait {
+
+	/**
+	 * Currently imported files.
+	 *
+	 * @var array
+	 */
+	private $imports = [];
+
 	/**
 	 * Rewrites the paths inside the CSS file content
 	 *
@@ -37,6 +45,8 @@ trait CSSTrait {
 		$target = apply_filters( 'rocket_css_asset_target_path', $target );
 
 		$content = $this->move( $this->get_converter( $source, $target ), $content, $source );
+
+		$this->imports[ md5( $target ) ] = $target;
 
 		$content = $this->combine_imports( $content, $target );
 
@@ -313,6 +323,15 @@ trait CSSTrait {
 			if ( empty( $import_content ) ) {
 				continue;
 			}
+
+			if ( isset( $this->imports[ md5( $import_path ) ] ) ) {
+				$search[]  = $match[0];
+				$replace[] = '';
+
+				continue;
+			}
+
+			$this->imports[ md5( $import_path ) ] = $import_path;
 
 			// check if this is only valid for certain media.
 			if ( ! empty( $match['media'] ) ) {
