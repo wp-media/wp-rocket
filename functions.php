@@ -214,7 +214,7 @@ function as_has_scheduled_action( $hook, $args = NULL, $group = '' ) {
 
 	$query_args = array(
 		'hook'     => $hook,
-		'status'   => [ ActionScheduler_Store::STATUS_RUNNING, ActionScheduler_Store::STATUS_PENDING ],
+		'status'   => array( ActionScheduler_Store::STATUS_RUNNING, ActionScheduler_Store::STATUS_PENDING ),
 		'group'    => $group,
 		'per_page' => 1,
 		'orderby'  => 'none',
