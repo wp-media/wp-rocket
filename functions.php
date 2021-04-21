@@ -195,6 +195,41 @@ function as_next_scheduled_action( $hook, $args = NULL, $group = '' ) {
 }
 
 /**
+ * Check if there is a scheduled action in the queue but more efficiently than as_next_scheduled_action().
+ *
+ * This function runs fewer database queries (1, or 2 if a group is used) compared to as_next_scheduled_action() but
+ * provides less information about the action. It's recommended to use this when you only need to know whether a
+ * specific action is scheduled (pending or in-progress).
+ *
+ * @param string $hook  The hook of the action.
+ * @param array  $args  Args that have been passed to the action. Null will matches any args.
+ * @param string $group The group the job is assigned to.
+ *
+ * @return bool True if a matching action is pending or in-progress, false otherwise.
+ */
+function as_has_scheduled_action( $hook, $args = NULL, $group = '' ) {
+	if ( ! ActionScheduler::is_initialized( __FUNCTION__ ) ) {
+		return false;
+	}
+
+	$query_args = array(
+		'hook'     => $hook,
+		'status'   => [ ActionScheduler_Store::STATUS_RUNNING, ActionScheduler_Store::STATUS_PENDING ],
+		'group'    => $group,
+		'per_page' => 1,
+		'orderby'  => 'none',
+	);
+
+	if ( NULL !== $args ) {
+		$query_args['args'] = $args;
+	}
+
+	$result = ActionScheduler::store()->query_actions( $query_args );
+
+	return count( $result ) > 0;
+}
+
+/**
  * Find scheduled actions
  *
  * @param array $args Possible arguments, with their default values:
