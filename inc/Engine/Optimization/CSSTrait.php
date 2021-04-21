@@ -4,7 +4,6 @@ namespace WP_Rocket\Engine\Optimization;
 
 use WP_Rocket\Dependencies\PathConverter\ConverterInterface;
 use WP_Rocket\Dependencies\PathConverter\Converter;
-use WP_Rocket\Logger\Logger;
 
 trait CSSTrait {
 
@@ -46,7 +45,7 @@ trait CSSTrait {
 
 		$content = $this->move( $this->get_converter( $source, $target ), $content, $source );
 
-		$this->imports[ md5( $target ) ] = $target;
+		$this->set_cached_import( $source );
 
 		$content = $this->combine_imports( $content, $target );
 
@@ -324,14 +323,14 @@ trait CSSTrait {
 				continue;
 			}
 
-			if ( isset( $this->imports[ md5( $import_path ) ] ) ) {
+			if ( $this->check_cached_import( $import_path ) ) {
 				$search[]  = $match[0];
 				$replace[] = '';
 
 				continue;
 			}
 
-			$this->imports[ md5( $import_path ) ] = $import_path;
+			$this->set_cached_import( $import_path );
 
 			// check if this is only valid for certain media.
 			if ( ! empty( $match['media'] ) ) {
@@ -517,6 +516,27 @@ trait CSSTrait {
 		$site_url_components = wp_parse_url( site_url( '/' ) );
 
 		return $site_url_components['scheme'] . '://' . $site_url_components['host'] . '/' . $relative_url;
+	}
+
+	/**
+	 * Set cached import locally not to imported again.
+	 *
+	 * @param string $path Path to be cached.
+	 */
+	private function set_cached_import( string $path ) {
+		$real_path                          = rocket_realpath( $path );
+		$this->imports[ md5( $real_path ) ] = $real_path;
+	}
+
+	/**
+	 * Check if path imported before.
+	 *
+	 * @param string $path Path to be checked.
+	 *
+	 * @return bool
+	 */
+	private function check_cached_import( string $path ) : bool {
+		return isset( $this->imports[ md5( rocket_realpath( $path ) ) ] );
 	}
 
 }
