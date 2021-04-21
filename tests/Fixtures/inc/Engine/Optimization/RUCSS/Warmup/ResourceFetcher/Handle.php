@@ -228,7 +228,6 @@ return [
 			],
 		],
 
-
 		'shouldNotRequeueResourcesFoundFromRecursiveCSSImport' => [
 			'input' => [
 				'html' => '<!DOCTYPE html><html><head><title></title>' .
@@ -248,6 +247,24 @@ return [
 						'url'     => 'http://example.org/scripts/script1.js',
 						'content' => 'var first = "content 1";',
 						'type'    => 'js'
+					],
+				],
+			],
+		],
+
+		'shouldQueueResourcesWithSpecialCharacters' => [
+			'input'    => [
+				'html' => '<!DOCTYPE html><html><head><title></title>' .
+				          '<link rel="stylesheet" type="text/css" href="http://example.org/css/style1.css?ver=123&#038;q=5">' .
+				          '</head><body>Content here</body></html>',
+			],
+			'expected' => [
+				'resources' => [
+					[
+						'url'     => 'http://example.org/css/style1.css?ver=123&q=5',
+						'content' => '.first{color:red;}',
+						'type'    => 'css',
+						'media'   => 'all'
 					],
 				],
 			],
