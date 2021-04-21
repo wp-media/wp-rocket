@@ -235,6 +235,72 @@ return [
 </html>'
 		],
 
+		'shouldNotReplaceUnprocessedCssItemsWithSpecialCharacters' => [
+			'config'       => [
+				'html'                  => '<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>My Awesome Page</title>
+	<link rel="stylesheet" type="text/css" href="http://example.org/wp-content/themes/theme-name/style.css?q=1&#038;ver=5.7.1">
+	<style>h2{color:blue;}</style>
+</head>
+<body>
+ <h1>content here</h1>
+</body>
+</html>',
+				'used-css-row-contents' => [
+					'url'            => 'http://example.org/home',
+					'css'            => '',
+					'unprocessedcss' => wp_json_encode(
+						[
+							'vfs://public/wp-content/themes/theme-name/style.css?q=1&ver=5.7.1',
+						]
+					),
+					'retries'        => 1,
+					'is_mobile'      => false,
+				],
+
+			],
+			'api-response' => [
+				'body'     => json_encode(
+					[
+						'code'     => 200,
+						'message'  => 'OK',
+						'contents' => [
+							'shakedCSS'      => 'h1{color:red;}',
+							'unProcessedCss' => [
+								[
+									'type'    => 'link',
+									'content' => 'http://example.org/wp-content/themes/theme-name/style.css?q=1&ver=5.7.1',
+								],
+								[
+									'type'    => 'inline',
+									'content' => 'h2{color:blue;}',
+								],
+							],
+						],
+					]
+				),
+				'response' => [
+					'code'    => 200,
+					'message' => 'OK',
+				],
+			],
+			'expected'     => '<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>My Awesome Page</title><style id="wpr-usedcss">h1{color:red;}</style>
+	<link rel="stylesheet" type="text/css" href="http://example.org/wp-content/themes/theme-name/style.css?q=1&#038;ver=5.7.1">
+	<style>h2{color:blue;}</style>
+</head>
+<body>
+ <h1>content here</h1>
+</body>
+</html>'
+		],
+
 		'shouldNotInterfereWithCPCSS' => [
 			'config'       => [
 				'html'                  => '<!DOCTYPE html>
