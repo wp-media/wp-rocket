@@ -715,7 +715,7 @@ class Page {
 					'label'             => __( 'Combine JavaScript files <em>(Enable Minify JavaScript files to select)</em>', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description'       => sprintf( __( 'Combine JavaScript files combines your site’s internal, 3rd party and inline JS reducing HTTP requests. Not recommended if your site uses HTTP/2. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $combine_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $combine_beacon['id'] ) . '" target="_blank">', '</a>' ),
-					'helper'            => get_rocket_option( 'delay_js' ) ? __( 'For compatibility and best results, this option is disabled when delay javascript execution is enabled.', 'wp-rocket' ) : '',
+					'helper'            => get_rocket_option( 'delay_js' ) ? __( 'For compatibility and best results, this option is disabled when delay javascript execution is enabled.', 'rocket' ) : '',
 					'container_class'   => [
 						$disable_combine_js ? 'wpr-isDisabled' : '',
 						'wpr-field--parent',

@@ -49,7 +49,7 @@ class Settings {
 			&&
 			1 === (int) $options['delay_js']
 		) {
-			$options['delay_js_exclusions'] = [
+			$options['delay_js_exclusions']   = [
 				$this->get_excluded_internal_paths(),
 				'/jquery-?[0-9.]*(.min|.slim|.slim.min)?.js',
 				'js-(extra|after)',
