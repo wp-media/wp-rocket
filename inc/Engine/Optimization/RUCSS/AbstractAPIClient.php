@@ -10,7 +10,7 @@ abstract class AbstractAPIClient {
 	/**
 	 * API URL.
 	 */
-	const API_URL = 'https://central-saas.wp-rocket.me:30443/';
+	const API_URL = 'https://central-saas.wp-rocket.me/';
 
 	/**
 	 * Part of request Url after the main API_URL.
