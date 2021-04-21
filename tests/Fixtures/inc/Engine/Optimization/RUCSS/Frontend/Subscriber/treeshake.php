@@ -267,7 +267,7 @@ return [
 					'is_mobile'      => false,
 				],
 				'has_cpcss'             => true,
-				'generated-file' => 'vfs://public/wp-content/cache/used-css/1/home/used.css',
+				'generated-file' => 'vfs://public/wp-content/cache/used-css/1/home/used.min.css',
 			],
 			'api-response' => [
 				'body'     => json_encode(
@@ -299,7 +299,7 @@ return [
 <head>
 	<meta charset="utf-8">
 	<title>My Awesome Page</title>
-	<link rel="stylesheet" id="wpr-usedcss-css" href="http://example.org/wp-content/cache/used-css/1/home/used.css?ver={{mtime}}">
+	<link rel="stylesheet" data-no-minify="" id="wpr-usedcss-css" href="http://example.org/wp-content/cache/used-css/1/home/used.min.css?ver={{mtime}}">
 	<link rel="stylesheet" type="text/css" href="http://example.org/wp-content/themes/theme-name/style.css">
 	<style>h2{color:blue;}</style>
 </head>
