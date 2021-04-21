@@ -281,19 +281,18 @@ return [
 				"<link rel='stylesheet' media='screen , (max-width: 900px)' href='http://example.org/wp-content/plugins/hello-dolly/style.css' />
 				<link rel='stylesheet' media='all , (max-width: 900px)' href='http://example.org/wp-includes/css/dashicons.min.css' />
 				<link rel='stylesheet' media='(max-width: 900px), screen' href='http://example.org/wp-content/themes/twentytwenty/style-font-face.min.css' />
-				<link rel='stylesheet' media='(max-width: 900px), all' href='http://example.org/wp-content/themes/twentytwenty/style-import.css' />
 				<link rel='stylesheet' media='screen' href='http://example.org/wp-content/themes/twentytwenty/new-style.css' />" .
 				'</head><body></body></html>',
 
 			'expected' => [
 				'html'  => '<html><head><title>Sample Page</title>' .
-				           '<link rel="stylesheet" href="http://example.org/wp-content/cache/min/1/074f89d1546ea3c6df831e874538e908.css" media="all" data-minify="1" />' .
+				           '<link rel="stylesheet" href="http://example.org/wp-content/cache/min/1/8f6853115b8a8668f3eb52abd6d0f200.css" media="all" data-minify="1" />' .
 				           '</head><body></body></html>',
 				'files' => [
-					'wp-content/cache/min/1/074f89d1546ea3c6df831e874538e908.css',
-					'wp-content/cache/min/1/074f89d1546ea3c6df831e874538e908.css.gz',
+					'wp-content/cache/min/1/8f6853115b8a8668f3eb52abd6d0f200.css',
+					'wp-content/cache/min/1/8f6853115b8a8668f3eb52abd6d0f200.css.gz',
 				],
-				'css' => "@font-face{font-display:swap;font-family:'FontAwesome';src:url(https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/../fonts/fontawesome-webfont.eot?v=4.7.0);src:url('https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/../fonts/fontawesome-webfont.eot?#iefix&v=4.7.0') format('embedded-opentype'),url(https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/../fonts/fontawesome-webfont.woff2?v=4.7.0) format('woff2'),url(https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/../fonts/fontawesome-webfont.woff?v=4.7.0) format('woff'),url(https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/../fonts/fontawesome-webfont.ttf?v=4.7.0) format('truetype'),url('https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/../fonts/fontawesome-webfont.svg?v=4.7.0#fontawesomeregular') format('svg');font-weight:400;font-style:normal}body{font-family:Helvetica,Arial,sans-serif;text-align:center}body{font-family:Helvetica,Arial,sans-serif;text-align:center}body{font-family:Helvetica,Arial,sans-serif;text-align:center}@font-face{font-display:swap;font-family:Helvetica}body{font-family:Helvetica,Arial,sans-serif;text-align:center}footer{color:red}",
+				'css' => "@font-face{font-display:swap;font-family:'FontAwesome';src:url(https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/../fonts/fontawesome-webfont.eot?v=4.7.0);src:url('https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/../fonts/fontawesome-webfont.eot?#iefix&v=4.7.0') format('embedded-opentype'),url(https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/../fonts/fontawesome-webfont.woff2?v=4.7.0) format('woff2'),url(https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/../fonts/fontawesome-webfont.woff?v=4.7.0) format('woff'),url(https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/../fonts/fontawesome-webfont.ttf?v=4.7.0) format('truetype'),url('https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/../fonts/fontawesome-webfont.svg?v=4.7.0#fontawesomeregular') format('svg');font-weight:400;font-style:normal}body{font-family:Helvetica,Arial,sans-serif;text-align:center}body{font-family:Helvetica,Arial,sans-serif;text-align:center}body{font-family:Helvetica,Arial,sans-serif;text-align:center}@font-face{font-display:swap;font-family:Helvetica}footer{color:red}",
 			],
 
 			'cdn_host' => [],
