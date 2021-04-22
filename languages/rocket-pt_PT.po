@@ -2890,11 +2890,11 @@ msgid_plural ""
 msgstr[0] ""
 "Está a usar %1$s para servir imagens WebP, pelo que não precisa de activar "
 "esta opção. Se, em alternativa, preferir que seja o WP Rocket a servir estas"
-" imagens, por favor desactive essa opção em %1$s. %2$sMais informações%3$s"
+" imagens, por favor desactive esta opção em %1$s. %2$sMais informações%3$s"
 msgstr[1] ""
 "Está a usar %1$s para servir imagens WebP, pelo que não precisa de activar "
 "esta opção. Se, em alternativa, preferir que seja o WP Rocket a servir estas"
-" imagens, por favor desactive essa opção em %1$s. %2$sMais informações%3$s"
+" imagens, por favor desactive esta opção em %1$s. %2$sMais informações%3$s"
 
 #: inc/classes/subscriber/Media/class-webp-subscriber.php:280
 msgid "WebP cache is disabled by filter."
