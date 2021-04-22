@@ -155,7 +155,7 @@ return [
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>My Awesome Page</title><style id="wpr-usedcss">h1{color:red;}</style>
+	<title>My Awesome Page</title><style id="wpr-usedcss">h1{color:red}</style>
 </head>
 <body>
  content here
@@ -225,7 +225,7 @@ return [
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>My Awesome Page</title><style id="wpr-usedcss">h1{color:red;}</style>
+	<title>My Awesome Page</title><style id="wpr-usedcss">h1{color:red}</style>
 	<link rel="stylesheet" type="text/css" href="http://example.org/wp-content/themes/theme-name/style.css">
 	<style>h2{color:blue;}</style>
 </head>
@@ -291,7 +291,7 @@ return [
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>My Awesome Page</title><style id="wpr-usedcss">h1{color:red;}</style>
+	<title>My Awesome Page</title><style id="wpr-usedcss">h1{color:red}</style>
 	<link rel="stylesheet" type="text/css" href="http://example.org/wp-content/themes/theme-name/style.css?q=1&#038;ver=5.7.1">
 	<style>h2{color:blue;}</style>
 </head>
