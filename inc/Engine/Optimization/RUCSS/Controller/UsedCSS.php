@@ -24,6 +24,7 @@ class UsedCSS {
 
 	/**
 	 * Resources Query instance.
+	 *
 	 * @var ResourcesQuery
 	 */
 	private $resources_query;
