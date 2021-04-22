@@ -49,11 +49,12 @@ class Settings {
 			&&
 			1 === (int) $options['delay_js']
 		) {
-			$options['delay_js_exclusions'] = [
+			$options['delay_js_exclusions']   = [
 				$this->get_excluded_internal_paths(),
 				'/jquery-?[0-9.]*(.min|.slim|.slim.min)?.js',
 				'js-(extra|after)',
 			];
+			$options['minify_concatenate_js'] = 0;
 		}
 
 		update_option( 'wp_rocket_settings', $options );
@@ -74,6 +75,46 @@ class Settings {
 		$input['delay_js_exclusions'] = ! empty( $input['delay_js_exclusions'] ) ? rocket_sanitize_textarea_field( 'delay_js_exclusions', $input['delay_js_exclusions'] ) : [];
 
 		return $input;
+	}
+
+	/**
+	 * Disable combine JS option when delay JS is enabled
+	 *
+	 * @since 3.9
+	 *
+	 * @param array $value     The new, unserialized option value.
+	 * @param array $old_value The old option value.
+	 *
+	 * @return array
+	 */
+	public function maybe_disable_combine_js( $value, $old_value ): array {
+		if ( ! isset( $value['delay_js'], $value['minify_concatenate_js'] ) ) {
+			return $value;
+		}
+
+		if (
+			0 === $value['minify_concatenate_js']
+			||
+			0 === $value['delay_js']
+		) {
+			return $value;
+		}
+
+		if (
+			isset( $old_value['delay_js'], $old_value['minify_concatenate_js'] )
+			&&
+			$value['delay_js'] === $old_value['delay_js']
+			&&
+			1 === $value['delay_js']
+			&&
+			0 === $old_value['minify_concatenate_js']
+		) {
+			return $value;
+		}
+
+		$value['minify_concatenate_js'] = 0;
+
+		return $value;
 	}
 
 	/**
