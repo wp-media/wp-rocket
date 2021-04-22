@@ -56,6 +56,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'rucss_used_css_controller', 'WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS' )
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_used_css_query' ) )
+			->addArgument( $this->getContainer()->get( 'rucss_resources_query' ) )
 			->addArgument( $this->getContainer()->get( 'purge' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_frontend_api_client' ) );
 
@@ -84,6 +85,5 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'rucss_warmup_subscriber', '\WP_Rocket\Engine\Optimization\RUCSS\Warmup\Subscriber' )
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_resource_fetcher' ) );
-
 	}
 }
