@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Optimization\RUCSS\Controller;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Dependencies\Minify\CSS as MinifyCSS;
 use WP_Rocket\Engine\Cache\Purge;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Row\UsedCSS as UsedCSS_Row;
@@ -312,6 +313,11 @@ class UsedCSS {
 		$data['css'] = preg_replace( '/content\s*:\s*"\\\\e/i', 'shaker-parser:"dashe', $data['css'] );
 		$data['css'] = preg_replace( '/content\s*:\s*\'\\\\f/i', 'shaker-parser:\'dashf', $data['css'] );
 		$data['css'] = preg_replace( '/content\s*:\s*\'\\\\e/i', 'shaker-parser:\'dashe', $data['css'] );
+
+		$minifier = new MinifyCSS();
+		$minifier->add( $data['css'] );
+
+		$data['css'] = $minifier->minify();
 
 		if ( empty( $used_css ) ) {
 			$inserted = $this->insert_used_css( $data );
