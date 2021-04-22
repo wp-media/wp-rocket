@@ -6,6 +6,7 @@ namespace WP_Rocket\Engine\Optimization\RUCSS\Controller;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Cache\Purge;
 use WP_Rocket\Engine\Optimization\RegexTrait;
+use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\ResourcesQuery;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Row\UsedCSS as UsedCSS_Row;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
 use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
@@ -20,6 +21,11 @@ class UsedCSS {
 	 * @var UsedCSS_Query
 	 */
 	private $used_css_query;
+
+	/**
+	 * @var ResourcesQuery
+	 */
+	private $resources_query;
 
 	/**
 	 * Purge instance
@@ -66,19 +72,27 @@ class UsedCSS {
 	/**
 	 * Instantiate the class.
 	 *
-	 * @param Options_Data  $options Options instance.
-	 * @param UsedCSS_Query $used_css_query Usedcss Query instance.
-	 * @param Purge         $purge Purge instance.
-	 * @param APIClient     $api Apiclient instance.
+	 * @param Options_Data   $options         Options instance.
+	 * @param UsedCSS_Query  $used_css_query  Usedcss Query instance.
+	 * @param ResourcesQuery $resources_query Resources Query instance.
+	 * @param Purge          $purge           Purge instance.
+	 * @param APIClient      $api             Apiclient instance.
 	 */
-	public function __construct( Options_Data $options, UsedCSS_Query $used_css_query, Purge $purge, APIClient $api ) {
-		$this->options        = $options;
-		$this->used_css_query = $used_css_query;
-		$this->purge          = $purge;
-		$this->api            = $api;
-		$this->filesystem     = rocket_direct_filesystem();
-		$this->base_path      = rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH' ) . get_current_blog_id();
-		$this->base_url       = rocket_get_constant( 'WP_ROCKET_USED_CSS_URL' ) . get_current_blog_id();
+	public function __construct(
+		Options_Data $options,
+		UsedCSS_Query $used_css_query,
+		ResourcesQuery $resources_query,
+		Purge $purge,
+		APIClient $api
+	) {
+		$this->options         = $options;
+		$this->used_css_query  = $used_css_query;
+		$this->resources_query = $resources_query;
+		$this->purge           = $purge;
+		$this->api             = $api;
+		$this->filesystem      = rocket_direct_filesystem();
+		$this->base_path       = rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH' ) . get_current_blog_id();
+		$this->base_url        = rocket_get_constant( 'WP_ROCKET_USED_CSS_URL' ) . get_current_blog_id();
 	}
 
 	/**
@@ -171,6 +185,10 @@ class UsedCSS {
 
 			if ( ! empty( $treeshaked_result['unprocessed_css'] ) ) {
 				$this->schedule_rucss_retry();
+			}
+
+			if ( 3 === $retries && ! empty( $treeshaked_result['unprocessed_css'] ) ) {
+				$this->remove_unprocessed_from_resources($treeshaked_result['unprocessed_css'] );
 			}
 
 			$data = [
@@ -610,6 +628,21 @@ class UsedCSS {
 		}
 
 		wp_schedule_single_event( time() + ( 0.5 * HOUR_IN_SECONDS ), 'rocket_rucss_retries_cron' );
+	}
+
+	/**
+	 * Remove any unprocessed items from the resources table.
+	 *
+	 * @since 3.9
+	 *
+	 * @param array $unprocessed_css Unprocessed CSS Items
+	 *
+	 * @return void
+	 */
+	private function remove_unprocessed_from_resources( $unprocessed_css ) {
+		foreach ( $unprocessed_css as $resource ) {
+			$this->resources_query->remove( $resource );
+		}
 	}
 
 	/**
