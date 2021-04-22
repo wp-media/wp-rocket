@@ -125,4 +125,24 @@ class ResourcesQuery extends Query {
 		return $db_row->id;
 	}
 
+	/**
+	 * Remove a resource from the table (if it is there).
+	 *
+	 * @since 3.9
+	 *
+	 * @param string $url URL of the item to remove.
+	 *
+	 * @return bool|int ID of the resource row removed, or false if was not in the table.
+	 */
+	public function remove( $url ) {
+		$db_row = $this->get_item_by( 'url', $url );
+
+		if ( empty( $db_row ) ) {
+			return false;
+		}
+
+		$this->delete_item( $db_row->id );
+
+		return $db_row->id;
+	}
 }
