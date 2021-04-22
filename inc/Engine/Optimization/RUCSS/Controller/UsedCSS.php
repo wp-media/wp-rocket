@@ -16,13 +16,14 @@ class UsedCSS {
 	use RegexTrait;
 
 	/**
-	 * UsedCss Query instance
+	 * UsedCss Query instance.
 	 *
 	 * @var UsedCSS_Query
 	 */
 	private $used_css_query;
 
 	/**
+	 * Resources Query instance.
 	 * @var ResourcesQuery
 	 */
 	private $resources_query;
@@ -188,7 +189,7 @@ class UsedCSS {
 			}
 
 			if ( 3 === $retries && ! empty( $treeshaked_result['unprocessed_css'] ) ) {
-				$this->remove_unprocessed_from_resources($treeshaked_result['unprocessed_css'] );
+				$this->remove_unprocessed_from_resources( $treeshaked_result['unprocessed_css'] );
 			}
 
 			$data = [
@@ -635,7 +636,7 @@ class UsedCSS {
 	 *
 	 * @since 3.9
 	 *
-	 * @param array $unprocessed_css Unprocessed CSS Items
+	 * @param array $unprocessed_css Unprocessed CSS Items.
 	 *
 	 * @return void
 	 */
