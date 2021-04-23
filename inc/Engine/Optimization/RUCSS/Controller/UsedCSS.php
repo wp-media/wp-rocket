@@ -3,7 +3,6 @@ declare( strict_types=1 );
 
 namespace WP_Rocket\Engine\Optimization\RUCSS\Controller;
 
-use phpDocumentor\Reflection\DocBlock\Tags\Uses;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Cache\Purge;
 use WP_Rocket\Engine\Optimization\RegexTrait;
@@ -649,7 +648,7 @@ class UsedCSS {
 	 */
 	private function remove_unprocessed_from_resources( $unprocessed_css ) {
 		foreach ( $unprocessed_css as $resource ) {
-			$this->resources_query->remove( $resource['content'] );
+			$this->resources_query->remove_by_url( $resource['content'] );
 		}
 	}
 

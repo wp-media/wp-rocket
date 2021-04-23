@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare( strict_types=1 );
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\RUCSS\Database\Queries\ResourcesQuery;
 
@@ -11,7 +11,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  *
  * @group  RUCSS
  */
-class Test_Remove extends TestCase {
+class Test_RemoveByUrl extends TestCase {
 	use DBTrait;
 
 	public static function setUpBeforeClass(): void {
@@ -26,14 +26,7 @@ class Test_Remove extends TestCase {
 		self::uninstallAll();
 	}
 
-	public function testShouldReturnFalseWhenItemNotExists() {
-		$container             = apply_filters( 'rocket_container', null );
-		$rucss_resources_query = $container->get( 'rucss_resources_query' );
-
-		$this->assertFalse( $rucss_resources_query->remove('https://www.example.org/style.css') );
-	}
-
-	public function testShouldRemoveItemReturningIdOfRemovedWhenExists() {
+	public function testShouldRemoveResourceItem() {
 		$container             = apply_filters( 'rocket_container', null );
 		$rucss_resources_query = $container->get( 'rucss_resources_query' );
 
@@ -44,8 +37,14 @@ class Test_Remove extends TestCase {
 			'media'   => 'all',
 		];
 
-		$id = $rucss_resources_query->add_item( $item );
+		$added = $rucss_resources_query->add_item( $item );
 
-		$this->assertEquals( $id, $rucss_resources_query->remove($item['url'] ) );
+		// Check that it was added properly for the test.
+		$this->assertIsObject( $rucss_resources_query->get_item_by( 'url', $item['url'] ) );
+
+		$rucss_resources_query->remove_by_url( $item['url'] );
+
+		// Check that the method under test has removed it.
+		$this->assertFalse( $rucss_resources_query->get_item_by( 'url', $item['url'] ) );
 	}
 }
