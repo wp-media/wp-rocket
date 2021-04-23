@@ -80,4 +80,25 @@ class UsedCSS extends Table {
 		return $rows_affected;
 	}
 
+	/**
+	 * Get all used_css which were not accessed in the last month.
+	 *
+	 * @return array|bool
+	 */
+	public function get_old_used_css() {
+		// Get the database interface.
+		$db = $this->get_db();
+
+		// Bail if no database interface is available.
+		if ( empty( $db ) ) {
+			return false;
+		}
+
+		$prefixed_table_name = $this->apply_prefix( $this->table_name );
+		$query               = "SELECT * FROM `$prefixed_table_name` WHERE `last_accessed` <= date_sub(now(), interval 1 month)";
+		$rows_affected       = $db->get_results( $query );
+
+		return $rows_affected;
+	}
+
 }
