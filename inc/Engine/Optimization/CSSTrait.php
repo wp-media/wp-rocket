@@ -15,6 +15,13 @@ trait CSSTrait {
 	private $imports = [];
 
 	/**
+	 * Found charset on CSS.
+	 *
+	 * @var null|string
+	 */
+	private $found_charset = null;
+
+	/**
 	 * Rewrites the paths inside the CSS file content
 	 *
 	 * @since 3.1
@@ -537,6 +544,38 @@ trait CSSTrait {
 	 */
 	private function check_cached_import( string $path ) : bool {
 		return isset( $this->imports[ md5( rocket_realpath( $path ) ) ] );
+	}
+
+	/**
+	 * Move charset to top for CSS content.
+	 *
+	 * @param string $content CSS content.
+	 *
+	 * @return string
+	 */
+	public function move_charset_to_top( string $content ) : string {
+		$new_content = preg_replace_callback( '/@charset\s+["|\'](.*?)["|\'];?/i', [ $this, 'match_charsets' ], $content );
+
+		if ( is_null( $this->found_charset ) ) {
+			return $content;
+		}
+
+		return "@charset '{$this->found_charset}';" . $new_content;
+	}
+
+	/**
+	 * Match each charset on the CSS file.
+	 *
+	 * @param array $match Match array.
+	 *
+	 * @return string
+	 */
+	public function match_charsets( array $match ) : string {
+		if ( is_null( $this->found_charset ) ) {
+			$this->found_charset = $match[1];
+		}
+
+		return '';
 	}
 
 }

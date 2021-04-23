@@ -6,6 +6,7 @@ namespace WP_Rocket\Engine\Optimization\RUCSS\Controller;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Dependencies\Minify\CSS as MinifyCSS;
 use WP_Rocket\Engine\Cache\Purge;
+use WP_Rocket\Engine\Optimization\CSSTrait;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Row\UsedCSS as UsedCSS_Row;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
@@ -13,7 +14,7 @@ use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
 use WP_Rocket\Logger\Logger;
 
 class UsedCSS {
-	use RegexTrait;
+	use RegexTrait, CSSTrait;
 
 	/**
 	 * UsedCss Query instance
@@ -318,6 +319,7 @@ class UsedCSS {
 		$minifier->add( $data['css'] );
 
 		$data['css'] = $minifier->minify();
+		$data['css'] = $this->move_charset_to_top( $data['css'] );
 
 		if ( empty( $used_css ) ) {
 			$inserted = $this->insert_used_css( $data );
