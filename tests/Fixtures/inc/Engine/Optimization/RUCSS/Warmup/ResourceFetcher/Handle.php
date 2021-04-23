@@ -87,13 +87,13 @@ return [
 				'resources' => [
 					[
 						'url'     => 'http://example.org/css/style1.css?ver=123',
-						'content' => '.first{color:red;}',
+						'content' => '.first{color:red}',
 						'type'    => 'css',
 						'media'   => 'all'
 					],
 					[
 						'url'     => 'http://example.org/css/style2.css',
-						'content' => '.second{color:green;}',
+						'content' => '.second{color:green}',
 						'type'    => 'css',
 						'media'   => 'all'
 					],
@@ -117,13 +117,13 @@ return [
 				'resources' => [
 					[
 						'url'     => 'http://example.org/css/style1.css?ver=123',
-						'content' => '.first{color:red;}',
+						'content' => '.first{color:red}',
 						'type'    => 'css',
 						'media'   => 'all'
 					],
 					[
 						'url'     => 'http://example.org/css/style2.css',
-						'content' => '.second{color:green;}',
+						'content' => '.second{color:green}',
 						'type'    => 'css',
 						'media'   => 'print'
 					]
@@ -143,7 +143,7 @@ return [
 				'resources' => [
 					[
 						'url'     => 'http://example.org/css/style1.css?ver=123',
-						'content' => '.first{color:red;}',
+						'content' => '.first{color:red}',
 						'type'    => 'css',
 						'media'   => 'all'
 					],
@@ -167,7 +167,7 @@ return [
 				'resources' => [
 					[
 						'url'     => 'http://example.org/css/stylewithimport.css?ver=123',
-						'content' => '.first{color:red;}.another-class-in-stylewithimport{color: white;}',
+						'content' => '.first{color:red}.another-class-in-stylewithimport{color:#fff}',
 						'type'    => 'css',
 						'media'   => 'all'
 					],
@@ -191,7 +191,7 @@ return [
 				'resources' => [
 					[
 						'url'     => 'http://example.org/css/stylewithimportedmqs.css?ver=123',
-						'content' => '@media screen{.third{color:#000000;}}.another-imported-class{color: blue;}',
+						'content' => '@media screen{.third{color:#000}}.another-imported-class{color:blue}',
 						'type'    => 'css',
 						'media'   => 'all'
 					],
@@ -215,7 +215,7 @@ return [
 				'resources' => [
 					[
 						'url'     => 'http://example.org/css/stylewithrelativepathimport.css?ver=123',
-						'content' => '.relatively-pathed-imported-class{color:black;}.some-imported-class{color:pink;}',
+						'content' => '.relatively-pathed-imported-class{color:#000}.some-imported-class{color:pink}',
 						'type'    => 'css',
 						'media'   => 'all'
 					],
@@ -239,7 +239,7 @@ return [
 				'resources' => [
 					[
 						'url'     => 'http://example.org/css/stylewithimport-recursion.css?ver=123',
-						'content' => ".another-class-in-stylewithimport-recursion{color: white;}",
+						'content' => ".another-class-in-stylewithimport-recursion{color:#fff}",
 						'type'    => 'css',
 						'media'   => 'all'
 					],
@@ -262,7 +262,7 @@ return [
 				'resources' => [
 					[
 						'url'     => 'http://example.org/css/style1.css?ver=123&q=5',
-						'content' => '.first{color:red;}',
+						'content' => '.first{color:red}',
 						'type'    => 'css',
 						'media'   => 'all'
 					],

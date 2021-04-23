@@ -4,7 +4,9 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Optimization\RUCSS\Controller;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Dependencies\Minify\CSS as MinifyCSS;
 use WP_Rocket\Engine\Cache\Purge;
+use WP_Rocket\Engine\Optimization\CSSTrait;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Row\UsedCSS as UsedCSS_Row;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
@@ -12,7 +14,7 @@ use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
 use WP_Rocket\Logger\Logger;
 
 class UsedCSS {
-	use RegexTrait;
+	use RegexTrait, CSSTrait;
 
 	/**
 	 * UsedCss Query instance
@@ -313,6 +315,10 @@ class UsedCSS {
 		$data['css'] = preg_replace( '/content\s*:\s*\'\\\\f/i', 'shaker-parser:\'dashf', $data['css'] );
 		$data['css'] = preg_replace( '/content\s*:\s*\'\\\\e/i', 'shaker-parser:\'dashe', $data['css'] );
 
+		$minifier = new MinifyCSS( $data['css'] );
+
+		$data['css'] = $minifier->minify();
+
 		if ( empty( $used_css ) ) {
 			$inserted = $this->insert_used_css( $data );
 
@@ -530,8 +536,10 @@ class UsedCSS {
 			}
 		}
 
+		$used_css = $this->handle_charsets( $used_css->css );
+
 		// This filter is documented in inc/Engine/Optimization/CSSTrait.php#52.
-		return rocket_put_content( $used_css_filepath, apply_filters( 'rocket_css_content', $used_css->css ) );
+		return rocket_put_content( $used_css_filepath, apply_filters( 'rocket_css_content', $used_css ) );
 	}
 
 	/**
@@ -565,9 +573,10 @@ class UsedCSS {
 	 */
 	private function get_used_css_markup( UsedCSS_Row $used_css ): string {
 		if ( ! $this->cpcss_enabled() ) {
+			$used_css_contents = $this->handle_charsets( $used_css->css, false );
 			return sprintf(
 				'<style id="wpr-usedcss">%s</style>',
-				wp_strip_all_tags( $used_css->css )
+				wp_strip_all_tags( $used_css_contents )
 			);
 		}
 
