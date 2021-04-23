@@ -33,7 +33,7 @@ class Test_Remove extends TestCase {
 		$this->assertFalse( $rucss_resources_query->remove('https://www.example.org/style.css') );
 	}
 
-	public function testShouldRemoveItemIfExists() {
+	public function testShouldRemoveItemReturningIdOfRemovedWhenExists() {
 		$container             = apply_filters( 'rocket_container', null );
 		$rucss_resources_query = $container->get( 'rucss_resources_query' );
 

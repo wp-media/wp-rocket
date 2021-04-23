@@ -333,7 +333,7 @@ return [
 					'is_mobile'      => false,
 				],
 				'has_cpcss'             => true,
-				'generated-file' => 'vfs://public/wp-content/cache/used-css/1/home/used.min.css',
+				'generated-file'        => 'vfs://public/wp-content/cache/used-css/1/home/used.min.css',
 			],
 			'api-response' => [
 				'body'     => json_encode(
@@ -374,6 +374,84 @@ return [
 </body>
 </html>'
 		],
-	],
 
+		'shouldRemovePreviouslySavedResourcesWhenInUnprocessedCssAndRetries3' => [
+			'config'       => [
+				'html'                  => '<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>My Awesome Page</title>
+	<link rel="stylesheet" type="text/css" href="http://example.org/wp-content/themes/theme-name/style.css">
+	<link rel="stylesheet" type="text/css" href="//example.org/wp-content/themes/theme-name/style.css">
+	<link rel="stylesheet" type="text/css" href="/wp-content/themes/theme-name/style.css">
+	<link rel="stylesheet" type="text/css" href="wp-content/themes/theme-name/style.css">
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<link rel="stylesheet" type="text/css" href="http://external.com/css/style.css">
+	<link rel="stylesheet" type="text/css" href="//external.com/css/style.css">
+	<style>h2{color:blue;}</style>
+</head>
+<body>
+ content here
+</body>
+</html>',
+				'used-css-row-contents' => [
+					'url'            => 'http://example.org/home',
+					'css'            => '',
+					'unprocessedcss' => wp_json_encode(
+						[
+							[
+								'type'    => 'link',
+								'content' => 'http://example.org/wp-content/themes/theme-name/style.css',
+							],
+						]
+					),
+					'retries'        => 3,
+					'is_mobile'      => false,
+				],
+				'has_cpcss'             => true,
+				'generated-file'        => 'vfs://public/wp-content/cache/used-css/1/home/used.min.css',
+				'saved-resources'       => [
+					'http://example.org/wp-content/themes/theme-name/style.css',
+				],
+			],
+			'api-response' => [
+				'body'     => json_encode(
+					[
+						'code'     => 200,
+						'message'  => 'OK',
+						'contents' => [
+							'shakedCSS'      => 'h1{color:red;}',
+							'unProcessedCss' => [
+								[
+									'type'    => 'link',
+									'content' => 'http://example.org/wp-content/themes/theme-name/style.css',
+								],
+								[
+									'type'    => 'inline',
+									'content' => 'h2{color:blue;}',
+								],
+							],
+						],
+					]
+				),
+				'response' => [
+					'code'    => 200,
+					'message' => 'OK',
+				],
+			],
+			'expected'     => '<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>My Awesome Page</title>
+	<link rel="stylesheet" data-no-minify="" id="wpr-usedcss-css" href="http://example.org/wp-content/cache/used-css/1/home/used.min.css?ver={{mtime}}">
+	<link rel="stylesheet" type="text/css" href="http://example.org/wp-content/themes/theme-name/style.css">
+</head>
+<body>
+ content here
+</body>
+</html>'
+		],
+	],
 ];

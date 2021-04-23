@@ -1,8 +1,9 @@
 <?php
-declare(strict_types=1);
+declare( strict_types=1 );
 
 namespace WP_Rocket\Engine\Optimization\RUCSS\Controller;
 
+use phpDocumentor\Reflection\DocBlock\Tags\Uses;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Cache\Purge;
 use WP_Rocket\Engine\Optimization\RegexTrait;
@@ -145,7 +146,7 @@ class UsedCSS {
 	/**
 	 * Apply TreeShaked CSS to the current HTML page.
 	 *
-	 * @param string $html  HTML content.
+	 * @param string $html HTML content.
 	 *
 	 * @return string  HTML content.
 	 */
@@ -177,6 +178,7 @@ class UsedCSS {
 						'message' => $treeshaked_result['message'],
 					]
 				);
+
 				return $html;
 			}
 
@@ -187,10 +189,6 @@ class UsedCSS {
 
 			if ( ! empty( $treeshaked_result['unprocessed_css'] ) ) {
 				$this->schedule_rucss_retry();
-			}
-
-			if ( 3 === $retries && ! empty( $treeshaked_result['unprocessed_css'] ) ) {
-				$this->remove_unprocessed_from_resources( $treeshaked_result['unprocessed_css'] );
 			}
 
 			$data = [
@@ -209,6 +207,10 @@ class UsedCSS {
 			}
 		}
 
+		if ( 3 === $used_css->retries && ! empty( $used_css->unprocessedcss ) ) {
+			$this->remove_unprocessed_from_resources( $used_css->unprocessedcss );
+		}
+
 		$html = $this->remove_used_css_from_html( $html, $used_css->unprocessedcss );
 
 		$html = $this->add_used_css_to_html( $html, $used_css );
@@ -225,7 +227,7 @@ class UsedCSS {
 	 *
 	 * @return boolean
 	 */
-	public function delete_used_css( string $url ) : bool {
+	public function delete_used_css( string $url ): bool {
 		$used_css_arr = $this->used_css_query->query( [ 'url' => $url ] );
 
 		if ( empty( $used_css_arr ) ) {
@@ -280,11 +282,11 @@ class UsedCSS {
 	 */
 	private function get_used_css( string $url, bool $is_mobile = false ) {
 		$query = $this->used_css_query->query(
-					[
-						'url'       => $url,
-						'is_mobile' => $is_mobile,
-					]
-				);
+			[
+				'url'       => $url,
+				'is_mobile' => $is_mobile,
+			]
+		);
 
 		if ( empty( $query[0] ) ) {
 			return false;
@@ -313,14 +315,14 @@ class UsedCSS {
 	/**
 	 * Insert or update used css row based on URL.
 	 *
-	 * @param  array $data {
-	 *      Data to be saved / updated in database.
+	 * @param array $data           {
+	 *                              Data to be saved / updated in database.
 	 *
-	 *      @type string $url             The page URL.
-	 *      @type string $css             The page used css.
-	 *      @type string  $unprocessedcss A json_encoded array of the page unprocessed CSS list.
-	 *      @type int    $retries         No of automatically retries for generating the unused css.
-	 *      @type bool   $is_mobile       Is mobile page.
+	 * @type string $url            The page URL.
+	 * @type string $css            The page used css.
+	 * @type string $unprocessedcss A json_encoded array of the page unprocessed CSS list.
+	 * @type int    $retries        No of automatically retries for generating the unused css.
+	 * @type bool   $is_mobile      Is mobile page.
 	 * }
 	 *
 	 * @return UsedCSS_Row|false
@@ -415,7 +417,7 @@ class UsedCSS {
 				strstr( $style['url'], '//fonts.googleapis.com/css' )
 				||
 				in_array( htmlspecialchars_decode( $style['url'] ), $unprocessed_links, true )
-				) {
+			) {
 				continue;
 			}
 			$html = str_replace( $style[0], '', $html );
@@ -434,7 +436,7 @@ class UsedCSS {
 	/**
 	 * Alter HTML string and add the used CSS style in <head> tag,
 	 *
-	 * @param string      $html HTML content.
+	 * @param string      $html     HTML content.
 	 * @param UsedCSS_Row $used_css Used CSS DB row.
 	 *
 	 * @return string HTML content.
@@ -508,6 +510,7 @@ class UsedCSS {
 				$unprocessed_array[] = $this->strip_line_breaks( $css['content'] );
 			}
 		}
+
 		return $unprocessed_array;
 	}
 
@@ -520,6 +523,7 @@ class UsedCSS {
 	 */
 	private function strip_line_breaks( string $value ): string {
 		$value = str_replace( [ "\r", "\n", "\r\n", "\t" ], '', $value );
+
 		return trim( $value );
 	}
 
@@ -612,8 +616,8 @@ class UsedCSS {
 	 */
 	private function is_mobile(): bool {
 		return $this->options->get( 'cache_mobile', 0 ) &&
-			$this->options->get( 'do_caching_mobile_files', 0 ) &&
-			wp_is_mobile();
+		       $this->options->get( 'do_caching_mobile_files', 0 ) &&
+		       wp_is_mobile();
 	}
 
 	/**
@@ -643,7 +647,7 @@ class UsedCSS {
 	 */
 	private function remove_unprocessed_from_resources( $unprocessed_css ) {
 		foreach ( $unprocessed_css as $resource ) {
-			$this->resources_query->remove( $resource );
+			$this->resources_query->remove( $resource['content'] );
 		}
 	}
 
