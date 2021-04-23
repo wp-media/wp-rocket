@@ -18,6 +18,8 @@ class Test_Treeshake extends FilesystemTestCase {
 
 	private $config_data = [];
 
+	private $resource_ids = [];
+
 	public static function setUpBeforeClass(): void {
 		self::installFresh();
 
@@ -53,6 +55,8 @@ class Test_Treeshake extends FilesystemTestCase {
 		remove_filter( 'pre_get_rocket_option_cache_logged_user', [ $this, 'set_cached_user' ] );
 		remove_filter( 'pre_http_request', [ $this, 'set_api_response' ] );
 
+		$this->resource_ids = [];
+
 		self::truncateUsedCssTable();
 
 		parent::tearDown();
@@ -66,6 +70,8 @@ class Test_Treeshake extends FilesystemTestCase {
 	public function testShouldDoExpected( $config, $mockApiResponse, $expected ): void {
 		$this->config_data = $config;
 
+		$container                 = apply_filters( 'rocket_container', null );
+		$rucss_resources_query     = $container->get( 'rucss_resources_query' );
 		$this->donotrocketoptimize = isset( $config['no-optimize'] ) ? $config['no-optimize'] : false;
 
 		if ( isset( $config['bypass'] ) ) {
@@ -90,10 +96,22 @@ class Test_Treeshake extends FilesystemTestCase {
 		add_filter( 'pre_http_request', [ $this, 'set_api_response' ] );
 
 		if ( isset( $config['used-css-row-contents'] ) ) {
-			$container           = apply_filters( 'rocket_container', null );
 			$rucss_usedcss_query = $container->get( 'rucss_used_css_query' );
 
 			$rucss_usedcss_query->add_item( $config['used-css-row-contents'] );
+		}
+
+		if ( isset( $config['saved-resources'] ) ) {
+			foreach ( $config['saved-resources'] as $resource ) {
+				$rucss_resources_query->add_item(
+					[
+						'url'     => $resource,
+						'type'    => 'css',
+						'content' => '/*fancy-styling*/',
+						'media'   => 'all',
+					]
+				);
+			}
 		}
 
 		$actual = apply_filters( 'rocket_buffer', $config['html'] );
@@ -107,6 +125,12 @@ class Test_Treeshake extends FilesystemTestCase {
 			$this->format_the_html( $expected ),
 			$this->format_the_html( $actual )
 		);
+
+		if ( isset( $config['saved-resources'] ) ) {
+			foreach ( $config['saved-resources'] as $resource ) {
+				$this->assertFalse( $rucss_resources_query->get_item_by( 'url', $resource ) );
+			}
+		}
 	}
 
 	public function set_rucss_option() {
