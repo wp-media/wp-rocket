@@ -318,7 +318,6 @@ class UsedCSS {
 		$minifier = new MinifyCSS( $data['css'] );
 
 		$data['css'] = $minifier->minify();
-		$data['css'] = $this->move_charset_to_top( $data['css'] );
 
 		if ( empty( $used_css ) ) {
 			$inserted = $this->insert_used_css( $data );
@@ -537,8 +536,10 @@ class UsedCSS {
 			}
 		}
 
+		$used_css = $this->handle_charsets( $used_css->css );
+
 		// This filter is documented in inc/Engine/Optimization/CSSTrait.php#52.
-		return rocket_put_content( $used_css_filepath, apply_filters( 'rocket_css_content', $used_css->css ) );
+		return rocket_put_content( $used_css_filepath, apply_filters( 'rocket_css_content', $used_css ) );
 	}
 
 	/**
@@ -572,9 +573,10 @@ class UsedCSS {
 	 */
 	private function get_used_css_markup( UsedCSS_Row $used_css ): string {
 		if ( ! $this->cpcss_enabled() ) {
+			$used_css_contents = $this->handle_charsets( $used_css->css, false );
 			return sprintf(
 				'<style id="wpr-usedcss">%s</style>',
-				wp_strip_all_tags( $used_css->css )
+				wp_strip_all_tags( $used_css_contents )
 			);
 		}
 

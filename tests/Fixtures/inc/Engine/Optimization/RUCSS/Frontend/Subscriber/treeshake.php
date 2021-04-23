@@ -301,6 +301,56 @@ return [
 </html>'
 		],
 
+		'shouldSendCharsetToTop' => [
+			'config'       => [
+				'html'                  => '<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>My Awesome Page</title>
+	<link rel="stylesheet" type="text/css" href="http://example.org/wp-content/themes/theme-name/style.css">
+</head>
+<body>
+ <h1>content here</h1>
+</body>
+</html>',
+				'used-css-row-contents' => [
+					'url'            => 'http://example.org/home',
+					'css'            => '',
+					'unprocessedcss' => wp_json_encode( [] ),
+					'retries'        => 1,
+					'is_mobile'      => false,
+				],
+
+			],
+			'api-response' => [
+				'body'     => json_encode(
+					[
+						'code'     => 200,
+						'message'  => 'OK',
+						'contents' => [
+							'shakedCSS'      => 'h1{color:red;}@import "anyfile404.css";@charset "UTF-8";@charset "UTF-16";@charset "UTF-32";',
+							'unProcessedCss' => [],
+						],
+					]
+				),
+				'response' => [
+					'code'    => 200,
+					'message' => 'OK',
+				],
+			],
+			'expected'     => '<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>My Awesome Page</title><style id="wpr-usedcss">@import "anyfile404.css";h1{color:red}</style>
+</head>
+<body>
+ <h1>content here</h1>
+</body>
+</html>'
+		],
+
 		'shouldNotInterfereWithCPCSS' => [
 			'config'       => [
 				'html'                  => '<!DOCTYPE html>

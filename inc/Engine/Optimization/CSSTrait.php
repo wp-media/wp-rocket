@@ -547,20 +547,25 @@ trait CSSTrait {
 	}
 
 	/**
-	 * Move charset to top for CSS content.
+	 * Move charset to top of CSS file OR remove all charsets for internal CSS.
 	 *
 	 * @param string $content CSS content.
+	 * @param bool   $keep_first_charset Keep first charset if true, otherwise remove all charsets.
 	 *
 	 * @return string
 	 */
-	public function move_charset_to_top( string $content ) : string {
+	public function handle_charsets( string $content, bool $keep_first_charset = true ) : string {
 		$new_content = preg_replace_callback( '/@charset\s+["|\'](.*?)["|\'];?/i', [ $this, 'match_charsets' ], $content );
+
+		if ( ! $keep_first_charset ) {
+			return $new_content;
+		}
 
 		if ( is_null( $this->found_charset ) ) {
 			return $content;
 		}
 
-		return "@charset '{$this->found_charset}';" . $new_content;
+		return "@charset \"{$this->found_charset}\";" . $new_content;
 	}
 
 	/**
