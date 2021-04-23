@@ -575,7 +575,7 @@ trait CSSTrait {
 	 *
 	 * @return string
 	 */
-	public function match_charsets( array $match ) : string {
+	private function match_charsets( array $match ) : string {
 		if ( is_null( $this->found_charset ) ) {
 			$this->found_charset = $match[1];
 		}
