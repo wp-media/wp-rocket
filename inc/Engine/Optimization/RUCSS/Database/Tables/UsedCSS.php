@@ -83,9 +83,9 @@ class UsedCSS extends Table {
 	/**
 	 * Get all used_css which were not accessed in the last month.
 	 *
-	 * @return array|bool
+	 * @return array
 	 */
-	public function get_old_used_css() {
+	public function get_old_used_css() : array {
 		// Get the database interface.
 		$db = $this->get_db();
 

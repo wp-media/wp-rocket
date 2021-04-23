@@ -84,9 +84,9 @@ class Database {
 	/**
 	 * Get old used css based on last accessed date.
 	 *
-	 * @return array|bool
+	 * @return array
 	 */
-	public function get_old_used_css() {
+	public function get_old_used_css() : array {
 		$old_used_css = [];
 		if ( $this->rucss_usedcss_table->exists() ) {
 			$old_used_css = $this->rucss_usedcss_table->get_old_used_css();
