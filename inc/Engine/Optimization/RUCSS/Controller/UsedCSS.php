@@ -615,9 +615,11 @@ class UsedCSS {
 	 * @return boolean
 	 */
 	private function is_mobile(): bool {
-		return $this->options->get( 'cache_mobile', 0 ) &&
-		       $this->options->get( 'do_caching_mobile_files', 0 ) &&
-		       wp_is_mobile();
+		return $this->options->get( 'cache_mobile', 0 )
+			&&
+			$this->options->get( 'do_caching_mobile_files', 0 )
+			&&
+			wp_is_mobile();
 	}
 
 	/**
