@@ -315,8 +315,7 @@ class UsedCSS {
 		$data['css'] = preg_replace( '/content\s*:\s*\'\\\\f/i', 'shaker-parser:\'dashf', $data['css'] );
 		$data['css'] = preg_replace( '/content\s*:\s*\'\\\\e/i', 'shaker-parser:\'dashe', $data['css'] );
 
-		$minifier = new MinifyCSS();
-		$minifier->add( $data['css'] );
+		$minifier = new MinifyCSS( $data['css'] );
 
 		$data['css'] = $minifier->minify();
 		$data['css'] = $this->move_charset_to_top( $data['css'] );

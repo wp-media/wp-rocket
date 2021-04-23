@@ -170,8 +170,7 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 	 */
 	private function prepare_css_content( string $path, string $contents ) : string {
 		$contents = trim( $this->rewrite_paths( $path, $path, $contents ) );
-		$minifier = new MinifyCSS();
-		$minifier->add( $contents );
+		$minifier = new MinifyCSS( $contents );
 
 		return $minifier->minify();
 	}
