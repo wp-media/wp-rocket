@@ -372,7 +372,7 @@ msgstr ""
 msgid ""
 "Specify time after which the global cache is cleared<br>(0 = unlimited )"
 msgstr ""
-"Zeitangabe, nach welcher der globale Cache gelöscht wird<br>(0 = unbegrenzt)"
+"Zeitangabe, nach welcher der globale Cache geleert wird<br>(0 = unbegrenzt)"
 
 #: inc/Engine/Admin/Settings/Page.php:532
 #, php-format
