@@ -71,6 +71,7 @@ class Subscriber implements Subscriber_Interface {
 
 	/**
 	 * Cron callback for deleting old rows in both table databases.
+	 * Deletes used css files and also cache file for old used css.
 	 *
 	 * @return void
 	 */

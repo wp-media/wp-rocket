@@ -626,6 +626,9 @@ class UsedCSS {
 			return;
 		}
 
+		// Cleans page cache.
+		$this->purge->purge_url( $used_css->url );
+
 		rocket_rrmdir( $dir );
 	}
 }
