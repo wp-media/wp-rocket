@@ -2787,7 +2787,7 @@ msgstr "%s: Cache für Beitrag/Seite geleert."
 #: inc/admin/ui/notices.php:719
 #, php-format
 msgid "%s: Term cache cleared."
-msgstr "%s: Cache für Begriff gelöscht."
+msgstr "%s: Cache für Begriff geleert."
 
 #: inc/admin/ui/notices.php:726
 #, php-format
