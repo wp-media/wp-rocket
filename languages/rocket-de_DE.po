@@ -2782,7 +2782,7 @@ msgstr "%s: Cache geleert."
 #: inc/admin/ui/notices.php:712
 #, php-format
 msgid "%s: Post cache cleared."
-msgstr "%s: Cache für Beitrag/Seite gelöscht."
+msgstr "%s: Cache für Beitrag/Seite geleert."
 
 #: inc/admin/ui/notices.php:719
 #, php-format
