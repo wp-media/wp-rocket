@@ -1781,7 +1781,7 @@ msgstr ""
 #: inc/Engine/Cache/AdminSubscriber.php:118 inc/admin/admin.php:71
 #: inc/admin/admin.php:92 inc/deprecated/3.5.php:908
 msgid "Clear this cache"
-msgstr "Aus dem Cache entfernen"
+msgstr "Diesen Cache leeren"
 
 #: inc/Engine/Cache/PurgeExpired/Subscriber.php:75
 msgid "WP Rocket Expired Cache Interval"
