@@ -3858,7 +3858,7 @@ msgstr "Google Fonts optimieren"
 
 #: views/settings/fields/cache-lifespan.php:26
 msgid "Clear cache after"
-msgstr "Cache löschen nach"
+msgstr "Cache leeren nach"
 
 #: views/settings/fields/cnames.php:49 views/settings/fields/cnames.php:81
 #: views/settings/fields/cnames.php:111
