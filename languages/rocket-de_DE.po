@@ -2777,7 +2777,7 @@ msgstr "WP Rocket erhebt jetzt die folgenden Kennzahlen von deiner Website:"
 #: inc/admin/ui/notices.php:705
 #, php-format
 msgid "%s: Cache cleared."
-msgstr "%s: Cache gelöscht."
+msgstr "%s: Cache geleert."
 
 #: inc/admin/ui/notices.php:712
 #, php-format
