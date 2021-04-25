@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.4\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2021-04-14 11:16-0400\n"
+"POT-Creation-Date: 2021-04-18 09:34-0400\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Christian Herrmann, 2021\n"
 "Language-Team: German (Germany) (https://www.transifex.com/wp-media/teams/18133/de_DE/)\n"
@@ -1901,11 +1901,11 @@ msgstr ""
 msgid "Enable Optimize CSS delivery in the options above"
 msgstr "Optimierte CSS-Darstellung in den Optionen oben aktivieren"
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:148
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:147
 msgid "Critical CSS generation is currently running."
 msgstr "Kritisches CSS wird gerade neu erstellt."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:153
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:152
 #: inc/Engine/Preload/PreloadSubscriber.php:241
 #, php-format
 msgid "Go to the %1$sWP Rocket settings%2$s page to track progress."
@@ -1913,7 +1913,7 @@ msgstr ""
 "Gehe zu den %1$sEinstellungen von WP Rocket%2$s, um den Fortschritt zu "
 "beobachten."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:367
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:366
 #, php-format
 msgid ""
 "Critical CSS generation is currently running: %1$d of %2$d page types "
@@ -1922,17 +1922,17 @@ msgstr ""
 "Kritisches CSS wird gerade neu erstellt: %1$d von %2$d Seiten-Typen "
 "komplett. (Seite neu laden für aktuellen Stand)"
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:439
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:438
 #, php-format
 msgid "Critical CSS generation finished for %1$d of %2$d page types."
 msgstr "Kritisches CSS erstellt für %1$d von %2$d Seiten-Typen."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:446
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:445
 msgid "Critical CSS generation encountered one or more errors."
 msgstr ""
 "Bei der Erzeugung von Kritischem CSS sind ein oder mehr Fehler aufgetreten."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:446
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:445
 msgid "Learn more."
 msgstr "Mehr erfahren."
 
@@ -2216,6 +2216,19 @@ msgstr ""
 "Lizenz durchführst (bezahle nur die Preisdifferenz  zwischen deiner jetzigen"
 " und neuen Lizenzen)-"
 
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:128
+#: views/settings/page-sections/dashboard.php:224
+msgid "Clear Used CSS"
+msgstr "Benutztes CSS leeren"
+
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:230
+msgid "Used CSS option is not enabled!"
+msgstr "Option für benutztes CSS ist nicht aktiv!"
+
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:245
+msgid "Used CSS cache cleared!"
+msgstr "Cache für benutztes CSS geleert!"
+
 #: inc/Engine/Preload/Homepage.php:153
 #, php-format
 msgid ""
@@ -2473,7 +2486,7 @@ msgstr "Smush"
 msgid "Avada"
 msgstr "Avada"
 
-#: inc/admin/admin.php:18 inc/common/admin-bar.php:367
+#: inc/admin/admin.php:18 inc/common/admin-bar.php:368
 #: inc/deprecated/deprecated.php:1787
 msgid "Support"
 msgstr "Hilfe"
@@ -2482,11 +2495,11 @@ msgstr "Hilfe"
 msgid "Docs"
 msgstr "Dokumentation"
 
-#: inc/admin/admin.php:22 inc/common/admin-bar.php:355
+#: inc/admin/admin.php:22 inc/common/admin-bar.php:356
 msgid "FAQ"
 msgstr "FAQ"
 
-#: inc/admin/admin.php:24 inc/common/admin-bar.php:64
+#: inc/admin/admin.php:24 inc/common/admin-bar.php:65
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -2544,7 +2557,7 @@ msgstr[0] "Folgendes Muster ist ungültig und wurde entfernt:"
 msgstr[1] "Folgende Muster sind ungültig und wurden entfernt:"
 
 #: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:769
-#: inc/common/admin-bar.php:85 inc/common/admin-bar.php:137
+#: inc/common/admin-bar.php:86 inc/common/admin-bar.php:138
 #: views/settings/page-sections/dashboard.php:143
 msgid "Clear cache"
 msgstr "Cache leeren"
@@ -2858,17 +2871,17 @@ msgstr " Version %s wiederherstellen"
 msgid "Every %d Minutes"
 msgstr "Alle %d Minuten"
 
-#: inc/classes/logger/class-logger.php:254
-#: inc/classes/logger/class-logger.php:286
+#: inc/classes/logger/class-logger.php:260
+#: inc/classes/logger/class-logger.php:292
 msgid "The log file does not exist."
 msgstr "Es existiert keine Protokolldatei."
 
-#: inc/classes/logger/class-logger.php:260
-#: inc/classes/logger/class-logger.php:292
+#: inc/classes/logger/class-logger.php:266
+#: inc/classes/logger/class-logger.php:298
 msgid "The log file could not be read."
 msgstr "Die Protokolldatei konnte nicht gelesen werden."
 
-#: inc/classes/logger/class-logger.php:279
+#: inc/classes/logger/class-logger.php:285
 msgid "The logs are not saved into a file."
 msgstr "Das Protokoll wurde nicht in eine Datei gespeichert."
 
@@ -3073,41 +3086,41 @@ msgstr ""
 "rocket.me oder mit dieser Server-Einstellung schief gelaufen. Falls es "
 "weiterhin Probleme geben sollte, <a href=\"%s\">kontaktiere den Support</a>."
 
-#: inc/common/admin-bar.php:125 inc/common/admin-bar.php:293
+#: inc/common/admin-bar.php:126 inc/common/admin-bar.php:294
 #: inc/functions/i18n.php:41 inc/functions/i18n.php:51
 msgid "All languages"
 msgstr "Alle Sprachen"
 
-#: inc/common/admin-bar.php:152
+#: inc/common/admin-bar.php:153
 msgid "Clear this post"
 msgstr "Lösche diesen Eintrag"
 
-#: inc/common/admin-bar.php:166
+#: inc/common/admin-bar.php:167
 msgid "Purge this URL"
 msgstr "Entferne diese URL aus dem Cache"
 
-#: inc/common/admin-bar.php:192
+#: inc/common/admin-bar.php:193
 msgid "Purge OPcache"
 msgstr "OPcache leeren"
 
-#: inc/common/admin-bar.php:210
+#: inc/common/admin-bar.php:211
 msgid "Clear Cloudflare cache"
 msgstr "Cloudflare-Cache leeren"
 
-#: inc/common/admin-bar.php:228
+#: inc/common/admin-bar.php:229
 msgid "Purge Sucuri cache"
 msgstr "Sucuri-Cache leeren"
 
-#: inc/common/admin-bar.php:251 inc/common/admin-bar.php:305
+#: inc/common/admin-bar.php:252 inc/common/admin-bar.php:306
 #: views/settings/page-sections/dashboard.php:163
 msgid "Preload cache"
 msgstr "Cache füllen"
 
-#: inc/common/admin-bar.php:330 views/settings/fields/rocket-cdn.php:55
+#: inc/common/admin-bar.php:331 views/settings/fields/rocket-cdn.php:55
 msgid "Purge RocketCDN cache"
 msgstr "RocketCDN-Cache leeren"
 
-#: inc/common/admin-bar.php:343 views/settings/partials/documentation.php:14
+#: inc/common/admin-bar.php:344 views/settings/partials/documentation.php:14
 msgid "Documentation"
 msgstr "Dokumentation"
 
@@ -3866,20 +3879,6 @@ msgstr "CSS"
 msgid "Import settings"
 msgstr "Einstellungen importieren"
 
-#: views/settings/fields/one-click-addon.php:40
-#: views/settings/fields/rocket-addon.php:31
-#: views/settings/fields/sliding-checkbox.php:25 views/settings/page.php:55
-msgctxt "Active state of checkbox"
-msgid "On"
-msgstr "an"
-
-#: views/settings/fields/one-click-addon.php:41
-#: views/settings/fields/rocket-addon.php:32
-#: views/settings/fields/sliding-checkbox.php:26 views/settings/page.php:56
-msgctxt "Inactive state of checkbox"
-msgid "Off"
-msgstr "aus"
-
 #: views/settings/fields/one-click-addon.php:42
 #: views/settings/fields/rocket-addon.php:33
 msgid "Add-on status"
@@ -4000,22 +3999,26 @@ msgstr "OPCache leeren"
 msgid "Regenerate Critical CSS"
 msgstr "Kritisches CSS neu generieren"
 
-#: views/settings/page-sections/dashboard.php:223
+#: views/settings/page-sections/dashboard.php:218
+msgid "Remove Used CSS Cache"
+msgstr "Cache für benutztes CSS entfernen"
+
+#: views/settings/page-sections/dashboard.php:241
 msgid "Frequently Asked Questions"
 msgstr "Häufig gestellte Fragen"
 
-#: views/settings/page-sections/dashboard.php:236
+#: views/settings/page-sections/dashboard.php:254
 msgid "Still cannot find a solution?"
 msgstr "Noch keine Lösung gefunden?"
 
-#: views/settings/page-sections/dashboard.php:237
+#: views/settings/page-sections/dashboard.php:255
 msgid ""
 "Submit a ticket and get help from our friendly and knowledgeable Rocketeers."
 msgstr ""
 "Sende eine Support-Anfrage und lass dir von unseren freundlichen und "
 "kompetenten Rocketeers helfen."
 
-#: views/settings/page-sections/dashboard.php:245
+#: views/settings/page-sections/dashboard.php:263
 msgid "Ask support"
 msgstr "Support fragen"
 
