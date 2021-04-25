@@ -2792,7 +2792,7 @@ msgstr "%s: Cache für Begriff geleert."
 #: inc/admin/ui/notices.php:726
 #, php-format
 msgid "%s: User cache cleared."
-msgstr "%s: Cache für Benutzer/-in gelöscht."
+msgstr "%s: Cache für Benutzer/-in geleert."
 
 #: inc/admin/ui/notices.php:772
 msgid "Stop Preload"
