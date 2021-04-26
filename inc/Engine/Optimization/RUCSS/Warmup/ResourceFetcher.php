@@ -274,7 +274,7 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 			return [ md5( uniqid() ), '*' ];
 		}
 
-		return [ $file_path, addslashes( $file_content ) ];
+		return [ $file_path, $file_content ];
 	}
 
 	/**
