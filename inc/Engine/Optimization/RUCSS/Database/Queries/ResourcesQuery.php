@@ -78,8 +78,6 @@ class ResourcesQuery extends Query {
 		// check the database if those resources added before.
 		$db_row = $this->get_item_by( 'url', $resource['url'] );
 
-		$resource['content'] = addslashes( $resource['content'] );
-
 		if ( empty( $db_row ) ) {
 			// Create this new row in DB.
 			$resource_id = $this->add_item(
