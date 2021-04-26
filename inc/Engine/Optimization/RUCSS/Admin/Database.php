@@ -81,4 +81,15 @@ class Database {
 		}
 	}
 
+	/**
+	 * Get old used css based on last accessed date.
+	 *
+	 * @return array
+	 */
+	public function get_old_used_css() : array {
+		if ( ! $this->rucss_usedcss_table->exists() ) {
+			return [];
+		}
+		return $this->rucss_usedcss_table->get_old_used_css();
+	}
 }

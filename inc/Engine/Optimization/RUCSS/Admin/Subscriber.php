@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Optimization\RUCSS\Admin;
 
 use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
+use WP_Rocket\Engine\Optimization\RUCSS\Database\Row\UsedCSS as UsedCSS_Row;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class Subscriber implements Subscriber_Interface {
@@ -53,14 +54,8 @@ class Subscriber implements Subscriber_Interface {
 		return [
 			'rocket_first_install_options'       => 'add_options_first_time',
 			'rocket_input_sanitize'              => [ 'sanitize_options', 14, 2 ],
-			'update_option_' . $slug             => [
-				[ 'clean_used_css_and_cache', 10, 2 ],
-				[ 'clean_used_css_directory_cpcss_disabled', 10, 2 ],
-			],
-			'switch_theme'                       => [
-				[ 'truncate_used_css' ],
-				[ 'clear_used_css_directory' ],
-			],
+			'update_option_' . $slug             => [ 'clean_used_css_and_cache', 10, 2 ],
+			'switch_theme'                       => 'truncate_used_css',
 			'rocket_rucss_file_changed'          => 'truncate_used_css',
 			'wp_trash_post'                      => 'delete_used_css_on_update_or_delete',
 			'delete_post'                        => 'delete_used_css_on_update_or_delete',
@@ -76,12 +71,20 @@ class Subscriber implements Subscriber_Interface {
 
 	/**
 	 * Cron callback for deleting old rows in both table databases.
+	 * Deletes used css files and also cache file for old used css.
 	 *
 	 * @return void
 	 */
 	public function cron_clean_rows() {
 		if ( ! $this->settings->is_enabled() ) {
 			return;
+		}
+
+		$old_used_css_ids = $this->database->get_old_used_css();
+		foreach ( $old_used_css_ids as $old_used_css ) {
+			$used_css_item = new UsedCSS_Row( $old_used_css );
+			// Delete file from filesystem.
+			$this->used_css->delete_used_css_file( $used_css_item );
 		}
 
 		$this->database->delete_old_used_css();
@@ -142,13 +145,6 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Clear used_css directory completely.
-	 */
-	public function clear_used_css_directory() {
-		$this->used_css->delete_all_used_css_files();
-	}
-
-	/**
 	 * Add the RUCSS options to the WP Rocket options array.
 	 *
 	 * @since 3.9
@@ -201,34 +197,6 @@ class Subscriber implements Subscriber_Interface {
 			$this->database->truncate_used_css_table();
 			// Clear all caching files.
 			rocket_clean_domain();
-			$this->clear_used_css_directory();
-		}
-	}
-
-	/**
-	 * Clean used_css directory with CPCSS option disabled.
-	 *
-	 * @since 3.9
-	 *
-	 * @param array $old_value Options old value.
-	 * @param array $value Options new value.
-	 */
-	public function clean_used_css_directory_cpcss_disabled( array $old_value, array $value ) {
-		if ( ! current_user_can( 'rocket_manage_options' )
-			||
-			! $this->settings->is_enabled()
-		) {
-			return;
-		}
-
-		if (
-			isset( $value['async_css'], $old_value['async_css'] )
-			&&
-			$value['async_css'] !== $old_value['async_css']
-			&&
-			! (bool) $value['async_css']
-		) {
-			$this->clear_used_css_directory();
 		}
 	}
 
@@ -261,7 +229,6 @@ class Subscriber implements Subscriber_Interface {
 
 		$this->database->truncate_used_css_table();
 		rocket_clean_domain();
-		$this->clear_used_css_directory();
 
 		set_transient(
 			'rocket_clear_usedcss_response',

@@ -112,7 +112,6 @@ class Test_TruncateUsedCSSHandler extends TestCase {
 		if ( $expected['truncated'] ) {
 			$this->database->shouldReceive( 'truncate_used_css_table' )->once();
 			Functions\expect( 'rocket_clean_domain' )->once();
-			$this->usedCSS->shouldReceive( 'delete_all_used_css_files' )->once();
 		}
 
 		$this->expectException( WPDieException::class );

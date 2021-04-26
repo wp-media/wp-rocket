@@ -241,8 +241,6 @@ class UsedCSS {
 			if ( empty( $used_css->id ) ) {
 				continue;
 			}
-			// Delete file from filesystem.
-			$this->delete_used_css_file( $used_css );
 
 			$deleted = $deleted && $this->used_css_query->delete_item( $used_css->id );
 		}
@@ -668,7 +666,7 @@ class UsedCSS {
 	 *
 	 * @param UsedCSS_Row $used_css Used CSS DB row.
 	 */
-	private function delete_used_css_file( UsedCSS_Row $used_css ) {
+	public function delete_used_css_file( UsedCSS_Row $used_css ) {
 		// Delete the file itself and its directory.
 		$file_path = $this->base_path . $this->get_used_css_filepath( $used_css );
 		$dir       = dirname( $file_path );
@@ -677,17 +675,9 @@ class UsedCSS {
 			return;
 		}
 
+		// Cleans page cache.
+		$this->purge->purge_url( $used_css->url );
+
 		rocket_rrmdir( $dir );
-	}
-
-	/**
-	 * Remove all used_css directory contents.
-	 */
-	public function delete_all_used_css_files() {
-		if ( ! $this->filesystem->exists( $this->base_path ) ) {
-			return;
-		}
-
-		rocket_rrmdir( $this->base_path );
 	}
 }

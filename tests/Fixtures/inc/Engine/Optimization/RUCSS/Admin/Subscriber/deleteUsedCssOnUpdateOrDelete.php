@@ -73,8 +73,8 @@ return [
 			'input' => [
 				'remove_unused_css' => true,
 				'items'             => $items,
-				'files_deleted'     => $files,
-				'files_preserved'   => $preserved,
+				'files_deleted'     => [],
+				'files_preserved'   => array_merge( $files, $preserved ),
 			]
 		],
 	]

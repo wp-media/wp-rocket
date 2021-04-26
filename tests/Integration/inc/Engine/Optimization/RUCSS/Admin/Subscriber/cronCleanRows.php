@@ -4,17 +4,19 @@ declare(strict_types=1);
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\RUCSS\Admin\Subscriber;
 
 use WP_Rocket\Tests\Integration\DBTrait;
-use WP_Rocket\Tests\Integration\TestCase;
+use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::cron_clean_rows
  *
  * @group  RUCSS
  */
-class Test_CronCleanRows extends TestCase{
+class Test_CronCleanRows extends FilesystemTestCase {
 	use DBTrait;
 
 	private $input;
+
+	protected $path_to_test_data = '/inc/Engine/Optimization/RUCSS/Admin/Subscriber/cronCleanRows.php';
 
 	public static function setUpBeforeClass(): void {
 		self::installFresh();
@@ -35,7 +37,7 @@ class Test_CronCleanRows extends TestCase{
 	}
 
 	/**
-	 * @dataProvider configTestData
+	 * @dataProvider providerTestData
 	 */
 	public function testShouldDoExpected( $input ){
 		$container              = apply_filters( 'rocket_container', null );
@@ -46,6 +48,11 @@ class Test_CronCleanRows extends TestCase{
 
 		$this->input = $input;
 		add_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
+		$this->set_permalink_structure( "/%postname%/" );
+
+		foreach ( $input['deleted_used_css_files'] as $file => $content ) {
+			$this->assertTrue( $this->filesystem->exists( $file ) );
+		}
 
 		$count_remain_used_css = 0;
 		foreach ( $input['used_css'] as $used_css ) {
@@ -84,6 +91,10 @@ class Test_CronCleanRows extends TestCase{
 		} else {
 			$this->assertCount( count( $input['used_css'] ), $resultUsedCssAfterClean );
 			$this->assertCount( count( $input['resources'] ), $resultResourcesAfterClean );
+		}
+
+		foreach ( $input['deleted_used_css_files'] as $file => $content ) {
+			$this->assertFalse( $this->filesystem->exists( $file ) );
 		}
 	}
 
