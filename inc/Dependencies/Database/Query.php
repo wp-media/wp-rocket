@@ -2045,9 +2045,9 @@ class Query extends Base {
 		foreach ( $item as $key => $value ) {
 
 			// Strip slashes from all strings
-			if ( is_string( $value ) ) {
-				//$value = stripslashes( $value );// We removed this line at PR #3847 to solve if the content has backslash.
-			}
+			/*if ( is_string( $value ) ) {
+				$value = stripslashes( $value );// We removed this line at PR #3847 to solve if the content has backslash.
+			}*/
 
 			// Get the column
 			$column = $this->get_column_by( array( 'name' => $key ) );
