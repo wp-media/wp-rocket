@@ -174,18 +174,19 @@ function rocket_is_internal_file( $file ) {
  */
 function rocket_sanitize_textarea_field( $field, $value ) {
 	$fields = [
-		'cache_purge_pages'    => [ 'esc_url', 'rocket_clean_exclude_file', 'rocket_clean_wildcards' ], // Pattern.
-		'cache_reject_cookies' => [ 'rocket_sanitize_key' ],
-		'cache_reject_ua'      => [ 'rocket_sanitize_ua', 'rocket_clean_wildcards' ], // Pattern.
-		'cache_reject_uri'     => [ 'esc_url', 'rocket_clean_exclude_file', 'rocket_clean_wildcards' ], // Pattern.
-		'cache_query_strings'  => [ 'rocket_sanitize_key' ],
-		'cdn_reject_files'     => [ 'rocket_clean_exclude_file', 'rocket_clean_wildcards' ], // Pattern.
-		'exclude_css'          => [ 'rocket_validate_css', 'rocket_clean_wildcards' ], // Pattern.
-		'exclude_inline_js'    => [ 'sanitize_text_field' ],
-		'exclude_defer_js'     => [ 'sanitize_text_field' ],
-		'exclude_js'           => [ 'rocket_validate_js', 'rocket_clean_wildcards' ], // Pattern.
-		'exclude_lazyload'     => [ 'sanitize_text_field' ],
-		'delay_js_exclusions'  => [ 'sanitize_text_field', 'rocket_clean_wildcards' ],
+		'cache_purge_pages'          => [ 'esc_url', 'rocket_clean_exclude_file', 'rocket_clean_wildcards' ],   // Pattern.
+		'cache_reject_cookies'       => [ 'rocket_sanitize_key' ],
+		'cache_reject_ua'            => [ 'rocket_sanitize_ua', 'rocket_clean_wildcards' ],                     // Pattern.
+		'cache_reject_uri'           => [ 'esc_url', 'rocket_clean_exclude_file', 'rocket_clean_wildcards' ],   // Pattern.
+		'cache_query_strings'        => [ 'rocket_sanitize_key' ],
+		'cdn_reject_files'           => [ 'rocket_clean_exclude_file', 'rocket_clean_wildcards' ],              // Pattern.
+		'exclude_css'                => [ 'rocket_validate_css', 'rocket_clean_wildcards' ],                    // Pattern.
+		'exclude_inline_js'          => [ 'sanitize_text_field' ],
+		'exclude_defer_js'           => [ 'sanitize_text_field' ],
+		'exclude_js'                 => [ 'rocket_validate_js', 'rocket_clean_wildcards' ],                     // Pattern.
+		'exclude_lazyload'           => [ 'sanitize_text_field' ],
+		'delay_js_exclusions'        => [ 'sanitize_text_field', 'rocket_clean_wildcards' ],
+		'remove_unused_css_safelist' => [ 'sanitize_text_field', 'rocket_clean_wildcards' ],
 	];
 
 	if ( ! isset( $fields[ $field ] ) ) {
