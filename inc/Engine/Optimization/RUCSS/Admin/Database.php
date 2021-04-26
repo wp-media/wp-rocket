@@ -87,10 +87,9 @@ class Database {
 	 * @return array
 	 */
 	public function get_old_used_css() : array {
-		$old_used_css = [];
-		if ( $this->rucss_usedcss_table->exists() ) {
-			$old_used_css = $this->rucss_usedcss_table->get_old_used_css();
+		if ( ! $this->rucss_usedcss_table->exists() ) {
+			return [];
 		}
-		return $old_used_css;
+		return $this->rucss_usedcss_table->get_old_used_css();
 	}
 }
