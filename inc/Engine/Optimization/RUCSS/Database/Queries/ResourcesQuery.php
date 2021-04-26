@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare( strict_types=1 );
 
 namespace WP_Rocket\Engine\Optimization\RUCSS\Database\Queries;
 
@@ -125,4 +125,18 @@ class ResourcesQuery extends Query {
 		return $db_row->id;
 	}
 
+	/**
+	 * Remove a resource from the table (if it is there).
+	 *
+	 * @since 3.9
+	 *
+	 * @param string $url URL of the item to remove_by_url.
+	 *
+	 * @return void
+	 */
+	public function remove_by_url( $url ) {
+		$db_row = $this->get_item_by( 'url', $url );
+
+		$this->delete_item( $db_row->id );
+	}
 }

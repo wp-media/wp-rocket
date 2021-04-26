@@ -1,25 +1,35 @@
 <?php
-declare(strict_types=1);
+declare( strict_types=1 );
 
 namespace WP_Rocket\Engine\Optimization\RUCSS\Controller;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Dependencies\Minify\CSS as MinifyCSS;
 use WP_Rocket\Engine\Cache\Purge;
+use WP_Rocket\Engine\Optimization\CSSTrait;
 use WP_Rocket\Engine\Optimization\RegexTrait;
+use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\ResourcesQuery;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Row\UsedCSS as UsedCSS_Row;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
 use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
 use WP_Rocket\Logger\Logger;
 
 class UsedCSS {
-	use RegexTrait;
+	use RegexTrait, CSSTrait;
 
 	/**
-	 * UsedCss Query instance
+	 * UsedCss Query instance.
 	 *
 	 * @var UsedCSS_Query
 	 */
 	private $used_css_query;
+
+	/**
+	 * Resources Query instance.
+	 *
+	 * @var ResourcesQuery
+	 */
+	private $resources_query;
 
 	/**
 	 * Purge instance
@@ -66,19 +76,27 @@ class UsedCSS {
 	/**
 	 * Instantiate the class.
 	 *
-	 * @param Options_Data  $options Options instance.
-	 * @param UsedCSS_Query $used_css_query Usedcss Query instance.
-	 * @param Purge         $purge Purge instance.
-	 * @param APIClient     $api Apiclient instance.
+	 * @param Options_Data   $options         Options instance.
+	 * @param UsedCSS_Query  $used_css_query  Usedcss Query instance.
+	 * @param ResourcesQuery $resources_query Resources Query instance.
+	 * @param Purge          $purge           Purge instance.
+	 * @param APIClient      $api             Apiclient instance.
 	 */
-	public function __construct( Options_Data $options, UsedCSS_Query $used_css_query, Purge $purge, APIClient $api ) {
-		$this->options        = $options;
-		$this->used_css_query = $used_css_query;
-		$this->purge          = $purge;
-		$this->api            = $api;
-		$this->filesystem     = rocket_direct_filesystem();
-		$this->base_path      = rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH' ) . get_current_blog_id();
-		$this->base_url       = rocket_get_constant( 'WP_ROCKET_USED_CSS_URL' ) . get_current_blog_id();
+	public function __construct(
+		Options_Data $options,
+		UsedCSS_Query $used_css_query,
+		ResourcesQuery $resources_query,
+		Purge $purge,
+		APIClient $api
+	) {
+		$this->options         = $options;
+		$this->used_css_query  = $used_css_query;
+		$this->resources_query = $resources_query;
+		$this->purge           = $purge;
+		$this->api             = $api;
+		$this->filesystem      = rocket_direct_filesystem();
+		$this->base_path       = rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH' ) . get_current_blog_id();
+		$this->base_url        = rocket_get_constant( 'WP_ROCKET_USED_CSS_URL' ) . get_current_blog_id();
 	}
 
 	/**
@@ -129,7 +147,7 @@ class UsedCSS {
 	/**
 	 * Apply TreeShaked CSS to the current HTML page.
 	 *
-	 * @param string $html  HTML content.
+	 * @param string $html HTML content.
 	 *
 	 * @return string  HTML content.
 	 */
@@ -146,8 +164,6 @@ class UsedCSS {
 		if ( empty( $used_css ) || ( $used_css->retries < 3 ) ) {
 			$config = [
 				'treeshake'      => 1,
-				'wpr_email'      => $this->options->get( 'consumer_email', '' ),
-				'wpr_key'        => $this->options->get( 'consumer_key', '' ),
 				'rucss_safelist' => $this->options->get( 'remove_unused_css_safelist', [] ),
 			];
 
@@ -163,6 +179,7 @@ class UsedCSS {
 						'message' => $treeshaked_result['message'],
 					]
 				);
+
 				return $html;
 			}
 
@@ -191,6 +208,10 @@ class UsedCSS {
 			}
 		}
 
+		if ( 3 === $used_css->retries && ! empty( $used_css->unprocessedcss ) ) {
+			$this->remove_unprocessed_from_resources( $used_css->unprocessedcss );
+		}
+
 		$html = $this->remove_used_css_from_html( $html, $used_css->unprocessedcss );
 
 		$html = $this->add_used_css_to_html( $html, $used_css );
@@ -207,7 +228,7 @@ class UsedCSS {
 	 *
 	 * @return boolean
 	 */
-	public function delete_used_css( string $url ) : bool {
+	public function delete_used_css( string $url ): bool {
 		$used_css_arr = $this->used_css_query->query( [ 'url' => $url ] );
 
 		if ( empty( $used_css_arr ) ) {
@@ -220,6 +241,7 @@ class UsedCSS {
 			if ( empty( $used_css->id ) ) {
 				continue;
 			}
+
 			$deleted = $deleted && $this->used_css_query->delete_item( $used_css->id );
 		}
 
@@ -259,11 +281,11 @@ class UsedCSS {
 	 */
 	private function get_used_css( string $url, bool $is_mobile = false ) {
 		$query = $this->used_css_query->query(
-					[
-						'url'       => $url,
-						'is_mobile' => $is_mobile,
-					]
-				);
+			[
+				'url'       => $url,
+				'is_mobile' => $is_mobile,
+			]
+		);
 
 		if ( empty( $query[0] ) ) {
 			return false;
@@ -292,14 +314,14 @@ class UsedCSS {
 	/**
 	 * Insert or update used css row based on URL.
 	 *
-	 * @param  array $data {
-	 *      Data to be saved / updated in database.
+	 * @param array $data           {
+	 *                              Data to be saved / updated in database.
 	 *
-	 *      @type string $url             The page URL.
-	 *      @type string $css             The page used css.
-	 *      @type string  $unprocessedcss A json_encoded array of the page unprocessed CSS list.
-	 *      @type int    $retries         No of automatically retries for generating the unused css.
-	 *      @type bool   $is_mobile       Is mobile page.
+	 * @type string $url            The page URL.
+	 * @type string $css            The page used css.
+	 * @type string $unprocessedcss A json_encoded array of the page unprocessed CSS list.
+	 * @type int    $retries        No of automatically retries for generating the unused css.
+	 * @type bool   $is_mobile      Is mobile page.
 	 * }
 	 *
 	 * @return UsedCSS_Row|false
@@ -312,8 +334,16 @@ class UsedCSS {
 		$data['css'] = preg_replace( '/content\s*:\s*\'\\\\f/i', 'shaker-parser:\'dashf', $data['css'] );
 		$data['css'] = preg_replace( '/content\s*:\s*\'\\\\e/i', 'shaker-parser:\'dashe', $data['css'] );
 
+		$minifier = new MinifyCSS( $data['css'] );
+
+		$data['css'] = $minifier->minify();
+
 		if ( empty( $used_css ) ) {
 			$inserted = $this->insert_used_css( $data );
+
+			if ( ! $inserted ) {
+				return false;
+			}
 
 			// Save used_css into filesystem.
 			$this->save_used_css_in_filesystem( $inserted );
@@ -322,6 +352,10 @@ class UsedCSS {
 		}
 
 		$updated = $this->update_used_css( (int) $used_css->id, $data );
+
+		if ( ! $updated ) {
+			return false;
+		}
 
 		// Save used_css into filesystem.
 		$this->save_used_css_in_filesystem( $updated );
@@ -385,8 +419,8 @@ class UsedCSS {
 				||
 				strstr( $style['url'], '//fonts.googleapis.com/css' )
 				||
-				in_array( $style['url'], $unprocessed_links, true )
-				) {
+				in_array( htmlspecialchars_decode( $style['url'] ), $unprocessed_links, true )
+			) {
 				continue;
 			}
 			$html = str_replace( $style[0], '', $html );
@@ -405,7 +439,7 @@ class UsedCSS {
 	/**
 	 * Alter HTML string and add the used CSS style in <head> tag,
 	 *
-	 * @param string      $html HTML content.
+	 * @param string      $html     HTML content.
 	 * @param UsedCSS_Row $used_css Used CSS DB row.
 	 *
 	 * @return string HTML content.
@@ -479,6 +513,7 @@ class UsedCSS {
 				$unprocessed_array[] = $this->strip_line_breaks( $css['content'] );
 			}
 		}
+
 		return $unprocessed_array;
 	}
 
@@ -491,6 +526,7 @@ class UsedCSS {
 	 */
 	private function strip_line_breaks( string $value ): string {
 		$value = str_replace( [ "\r", "\n", "\r\n", "\t" ], '', $value );
+
 		return trim( $value );
 	}
 
@@ -508,7 +544,8 @@ class UsedCSS {
 
 		if ( ! $this->filesystem->is_dir( $this->base_path ) ) {
 			if ( rocket_mkdir_p( $this->base_path ) ) {
-				$this->filesystem->touch( $this->base_path . 'index.html' );
+				$this->filesystem->touch( rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH' ) . 'index.html' );
+				$this->filesystem->touch( $this->base_path . DIRECTORY_SEPARATOR . 'index.html' );
 			}
 		}
 
@@ -520,7 +557,10 @@ class UsedCSS {
 			}
 		}
 
-		return rocket_put_content( $used_css_filepath, $used_css->css );
+		$used_css = $this->handle_charsets( $used_css->css );
+
+		// This filter is documented in inc/Engine/Optimization/CSSTrait.php#52.
+		return rocket_put_content( $used_css_filepath, apply_filters( 'rocket_css_content', $used_css ) );
 	}
 
 	/**
@@ -542,7 +582,7 @@ class UsedCSS {
 			$path = '/' . md5( $used_css->url );
 		}
 
-		return trailingslashit( $path ) . "used{$suffix}.css";
+		return trailingslashit( $path ) . "used{$suffix}.min.css";
 	}
 
 	/**
@@ -554,9 +594,10 @@ class UsedCSS {
 	 */
 	private function get_used_css_markup( UsedCSS_Row $used_css ): string {
 		if ( ! $this->cpcss_enabled() ) {
+			$used_css_contents = $this->handle_charsets( $used_css->css, false );
 			return sprintf(
 				'<style id="wpr-usedcss">%s</style>',
-				wp_strip_all_tags( $used_css->css )
+				wp_strip_all_tags( $used_css_contents )
 			);
 		}
 
@@ -568,7 +609,7 @@ class UsedCSS {
 		}
 
 		return sprintf(
-			'<link rel="stylesheet" id="wpr-usedcss-css" href="%1$s?ver=%2$s">', // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
+			'<link rel="stylesheet" data-no-minify="" id="wpr-usedcss-css" href="%1$s?ver=%2$s">', // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
 			$this->base_url . $used_css_filepath,
 			$this->filesystem->mtime( $absolute_path ) ?? strtotime( $used_css->modified )
 		);
@@ -580,8 +621,10 @@ class UsedCSS {
 	 * @return boolean
 	 */
 	private function is_mobile(): bool {
-		return $this->options->get( 'cache_mobile', 0 ) &&
-			$this->options->get( 'do_caching_mobile_files', 0 ) &&
+		return $this->options->get( 'cache_mobile', 0 )
+			&&
+			$this->options->get( 'do_caching_mobile_files', 0 )
+			&&
 			wp_is_mobile();
 	}
 
@@ -599,5 +642,42 @@ class UsedCSS {
 		}
 
 		wp_schedule_single_event( time() + ( 0.5 * HOUR_IN_SECONDS ), 'rocket_rucss_retries_cron' );
+	}
+
+	/**
+	 * Remove any unprocessed items from the resources table.
+	 *
+	 * @since 3.9
+	 *
+	 * @param array $unprocessed_css Unprocessed CSS Items.
+	 *
+	 * @return void
+	 */
+	private function remove_unprocessed_from_resources( $unprocessed_css ) {
+		foreach ( $unprocessed_css as $resource ) {
+			$this->resources_query->remove_by_url( $resource['content'] );
+		}
+	}
+
+	/**
+	 * Remove used_css for one page.
+	 *
+	 * @since 3.9
+	 *
+	 * @param UsedCSS_Row $used_css Used CSS DB row.
+	 */
+	public function delete_used_css_file( UsedCSS_Row $used_css ) {
+		// Delete the file itself and its directory.
+		$file_path = $this->base_path . $this->get_used_css_filepath( $used_css );
+		$dir       = dirname( $file_path );
+
+		if ( ! $this->filesystem->exists( $dir ) ) {
+			return;
+		}
+
+		// Cleans page cache.
+		$this->purge->purge_url( $used_css->url );
+
+		rocket_rrmdir( $dir );
 	}
 }

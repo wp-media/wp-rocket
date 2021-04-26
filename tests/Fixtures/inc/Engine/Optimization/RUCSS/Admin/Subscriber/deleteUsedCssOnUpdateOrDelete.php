@@ -17,18 +17,66 @@ $items = [
 	],
 ];
 
+$files = [
+	'vfs://public/wp-content/cache/used-css/1/slug_0/',
+	'vfs://public/wp-content/cache/used-css/1/slug_0/used.css',
+	'vfs://public/wp-content/cache/used-css/1/slug_0/used-mobile.css',
+	'vfs://public/wp-content/cache/used-css/1/slug_1/',
+	'vfs://public/wp-content/cache/used-css/1/slug_1/used.css',
+	'vfs://public/wp-content/cache/used-css/1/slug_1/used-mobile.css',
+];
+
+$preserved = [
+	'vfs://public/wp-content/cache/used-css/1/slug_preserved/',
+	'vfs://public/wp-content/cache/used-css/1/slug_preserved/used.css',
+	'vfs://public/wp-content/cache/used-css/1/slug_preserved/used-mobile.css',
+];
 
 return [
-	'shouldNotDeleteOnUpdateDueToMissingSettings' => [
-		'input' => [
-			'remove_unused_css' => false,
-			'items'             => $items,
-		]
+
+	'vfs_dir' => 'wp-content/',
+
+	// Virtual filesystem structure.
+	'structure' => [
+		'wp-content' => [
+			'cache' => [
+				'used-css' => [
+					1 => [
+						'slug_0' => [
+							'used.css' => '',
+							'used-mobile.css' => '',
+						],
+						'slug_1' => [
+							'used.css' => '',
+							'used-mobile.css' => '',
+						],
+						'slug_preserved' => [
+							'used.css' => '',
+							'used-mobile.css' => '',
+						],
+					],
+				],
+			],
+		],
 	],
-	'shouldDeleteOnUpdate' => [
-		'input' => [
-			'remove_unused_css' => true,
-			'items'             => $items,
-		]
-	],
+
+	'test_data' => [
+		'shouldNotDeleteOnUpdateDueToMissingSettings' => [
+			'input' => [
+				'remove_unused_css' => false,
+				'items'             => $items,
+				'files_deleted'     => [],
+				'files_preserved'   => array_merge( $files, $preserved ),
+			]
+		],
+		'shouldDeleteOnUpdate' => [
+			'input' => [
+				'remove_unused_css' => true,
+				'items'             => $items,
+				'files_deleted'     => [],
+				'files_preserved'   => array_merge( $files, $preserved ),
+			]
+		],
+	]
+
 ];

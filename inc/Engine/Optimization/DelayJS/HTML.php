@@ -70,8 +70,8 @@ class HTML {
 		$this->excluded = array_map(
 			function( $value ) {
 				return str_replace(
-					[ '+', '?', '#' ],
-					[ '\+', '\?', '\#' ],
+					[ '+', '?ver', '#' ],
+					[ '\+', '\?ver', '\#' ],
 					$value
 				);
 			},
@@ -155,6 +155,10 @@ class HTML {
 		$delay_js        = $matches[0];
 
 		if ( ! empty( $matches['attr'] ) ) {
+			if ( false !== strpos( $matches['attr'], 'application/ld+json' ) ) {
+				return $matches[0];
+			}
+
 			$delay_attr = preg_replace( '/type=(["\'])(.*?)\1/i', 'data-rocket-$0', $matches['attr'], 1 );
 
 			if ( null !== $delay_attr ) {

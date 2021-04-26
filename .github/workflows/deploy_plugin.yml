@@ -2,7 +2,6 @@ on:
   release:
     types: 
       - published
-      - edited
 
 name: Deploy Rocket Plugin
 jobs:
@@ -30,9 +29,9 @@ jobs:
 
       - name: Download zip
         run: |
-          wget "https://github.com/wp-media/wp-rocket/archive/trunk.zip"
-          unzip trunk.zip
-          mv wp-rocket-trunk wp-rocket
+          wget -O base.zip "https://github.com/wp-media/wp-rocket/archive/${{ github.event.release.target_commitish }}.zip"
+          unzip base.zip
+          mv wp-rocket-* wp-rocket
         working-directory: /tmp
 
       - name: Run composer

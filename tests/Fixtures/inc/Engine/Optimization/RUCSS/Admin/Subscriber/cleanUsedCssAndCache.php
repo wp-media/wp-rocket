@@ -17,6 +17,17 @@ $items = [
 	],
 ];
 
+$used_css_files = [
+	'vfs://public/wp-content/cache/used-css/1/' => null,
+	'vfs://public/wp-content/cache/used-css/1/'.md5( 'https://example.org/' ).'/' => null,
+	'vfs://public/wp-content/cache/used-css/1/'.md5( 'https://example.org/' ).'/used.css' => null,
+	'vfs://public/wp-content/cache/used-css/1/'.md5( 'https://example.org/' ).'/used-mobile.css' => null,
+	'vfs://public/wp-content/cache/used-css/1/category/' => null,
+	'vfs://public/wp-content/cache/used-css/1/category/level1/' => null,
+	'vfs://public/wp-content/cache/used-css/1/category/level1/used.css' => null,
+	'vfs://public/wp-content/cache/used-css/1/category/level1/used-mobile.css' => null,
+];
+
 $cache_files = [
 	'vfs://public/wp-content/cache/wp-rocket/example.org/index.html'                                     => null,
 	'vfs://public/wp-content/cache/wp-rocket/example.org/index.html_gzip'                                => null,
@@ -47,6 +58,21 @@ return [
 						'index.html_gzip' => '',
 					],
 				],
+
+				'used-css' => [
+					'1' => [
+						md5( 'https://example.org/' ) => [
+							'used.css' => '',
+							'used-mobile.css' => '',
+						],
+						'category' => [
+							'level1' => [
+								'used.css' => '',
+								'used-mobile.css' => '',
+							]
+						]
+					],
+				],
 			],
 		],
 	],
@@ -60,6 +86,7 @@ return [
 				'settings'          => [],
 				'old_settings'      => [],
 				'cache_files'       => $cache_files,
+				'used_css_files' => $used_css_files,
 			],
 		],
 		'shouldNotTruncateUnusedCSSDueToSettings' => [
@@ -73,6 +100,7 @@ return [
 					'remove_unused_css_safelist' => [],
 				],
 				'cache_files'       => $cache_files,
+				'used_css_files' => $used_css_files,
 			],
 		],
 		'shouldTruncateUnusedCSS' => [
@@ -86,6 +114,7 @@ return [
 					'remove_unused_css_safelist' => [ 'class1' ],
 				],
 				'cache_files'       => $cache_files,
+				'used_css_files' => $used_css_files,
 			],
 		],
 	],

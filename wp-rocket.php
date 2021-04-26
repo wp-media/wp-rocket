@@ -3,7 +3,7 @@
  * Plugin Name: WP Rocket
  * Plugin URI: https://wp-rocket.me
  * Description: The best WordPress performance plugin.
- * Version: 3.9-alpha2
+ * Version: 3.9-alpha4
  * Requires at least: 5.3
  * Requires PHP: 7.0
  * Code Name: Naboo
@@ -20,7 +20,7 @@
 defined( 'ABSPATH' ) || exit;
 
 // Rocket defines.
-define( 'WP_ROCKET_VERSION',               '3.9-alpha2' );
+define( 'WP_ROCKET_VERSION',               '3.9-alpha4' );
 define( 'WP_ROCKET_WP_VERSION',            '5.3' );
 define( 'WP_ROCKET_WP_VERSION_TESTED',     '5.5.1' );
 define( 'WP_ROCKET_PHP_VERSION',           '7.0' );
@@ -80,7 +80,7 @@ if ( ! defined( 'CHMOD_WP_ROCKET_CACHE_DIRS' ) ) {
 	define( 'CHMOD_WP_ROCKET_CACHE_DIRS', 0755 ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 }
 if ( ! defined( 'WP_ROCKET_LASTVERSION' ) ) {
-	define( 'WP_ROCKET_LASTVERSION', '3.7.6.1' );
+	define( 'WP_ROCKET_LASTVERSION', '3.8.8' );
 }
 
 /**

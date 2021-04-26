@@ -51,10 +51,12 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'rucss_usedcss_table' ) );
 
 		$this->getContainer()->add( 'rucss_used_css_query', 'WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS' );
-		$this->getContainer()->add( 'rucss_frontend_api_client', 'WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient' );
+		$this->getContainer()->add( 'rucss_frontend_api_client', 'WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient' )
+			->addArgument( $this->getContainer()->get( 'options' ) );
 		$this->getContainer()->add( 'rucss_used_css_controller', 'WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS' )
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_used_css_query' ) )
+			->addArgument( $this->getContainer()->get( 'rucss_resources_query' ) )
 			->addArgument( $this->getContainer()->get( 'purge' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_frontend_api_client' ) );
 
@@ -69,7 +71,8 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' ) )
 			->addArgument( rocket_direct_filesystem() );
 
-		$this->getContainer()->add( 'rucss_warmup_api_client', '\WP_Rocket\Engine\Optimization\RUCSS\Warmup\APIClient' );
+		$this->getContainer()->add( 'rucss_warmup_api_client', '\WP_Rocket\Engine\Optimization\RUCSS\Warmup\APIClient' )
+			->addArgument( $this->getContainer()->get( 'options' ) );
 
 		$this->getContainer()->add( 'rucss_resource_fetcher_process', '\WP_Rocket\Engine\Optimization\RUCSS\Warmup\ResourceFetcherProcess' )
 			->addArgument( $this->getContainer()->get( 'rucss_resources_query' ) )
@@ -82,6 +85,5 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'rucss_warmup_subscriber', '\WP_Rocket\Engine\Optimization\RUCSS\Warmup\Subscriber' )
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_resource_fetcher' ) );
-
 	}
 }

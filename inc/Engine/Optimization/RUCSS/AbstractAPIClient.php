@@ -4,6 +4,7 @@ declare( strict_types=1 );
 namespace WP_Rocket\Engine\Optimization\RUCSS;
 
 use WP_Error;
+use WP_Rocket\Admin\Options_Data;
 
 abstract class AbstractAPIClient {
 	/**
@@ -40,6 +41,22 @@ abstract class AbstractAPIClient {
 	protected $response_body;
 
 	/**
+	 * Plugin options instance.
+	 *
+	 * @var Options_Data
+	 */
+	private $options;
+
+	/**
+	 * Instantiate the class.
+	 *
+	 * @param Options_Data $options Options instance.
+	 */
+	public function __construct( Options_Data $options ) {
+		$this->options = $options;
+	}
+
+	/**
 	 * Handle remote POST.
 	 *
 	 * @param array $args Array with options sent to Saas API.
@@ -47,6 +64,16 @@ abstract class AbstractAPIClient {
 	 * @return bool WP Remote request status.
 	 */
 	protected function handle_post( array $args ): bool {
+
+		if ( empty( $args['body'] ) ) {
+			$args['body'] = [];
+		}
+
+		$args['body']['credentials'] = [
+			'wpr_email' => $this->options->get( 'consumer_email', '' ),
+			'wpr_key'   => $this->options->get( 'consumer_key', '' ),
+		];
+
 		$response = wp_remote_post(
 			self::API_URL . $this->request_path,
 			$args

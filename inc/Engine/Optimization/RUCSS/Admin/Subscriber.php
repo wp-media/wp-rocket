@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Optimization\RUCSS\Admin;
 
 use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
+use WP_Rocket\Engine\Optimization\RUCSS\Database\Row\UsedCSS as UsedCSS_Row;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class Subscriber implements Subscriber_Interface {
@@ -54,9 +55,6 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_first_install_options'       => 'add_options_first_time',
 			'rocket_input_sanitize'              => [ 'sanitize_options', 14, 2 ],
 			'update_option_' . $slug             => [ 'clean_used_css_and_cache', 10, 2 ],
-			'wp_rocket_upgrade'                  => [
-				[ 'set_option_on_update', 14, 2 ],
-			],
 			'switch_theme'                       => 'truncate_used_css',
 			'rocket_rucss_file_changed'          => 'truncate_used_css',
 			'wp_trash_post'                      => 'delete_used_css_on_update_or_delete',
@@ -73,12 +71,20 @@ class Subscriber implements Subscriber_Interface {
 
 	/**
 	 * Cron callback for deleting old rows in both table databases.
+	 * Deletes used css files and also cache file for old used css.
 	 *
 	 * @return void
 	 */
 	public function cron_clean_rows() {
 		if ( ! $this->settings->is_enabled() ) {
 			return;
+		}
+
+		$old_used_css_ids = $this->database->get_old_used_css();
+		foreach ( $old_used_css_ids as $old_used_css ) {
+			$used_css_item = new UsedCSS_Row( $old_used_css );
+			// Delete file from filesystem.
+			$this->used_css->delete_used_css_file( $used_css_item );
 		}
 
 		$this->database->delete_old_used_css();
@@ -152,20 +158,6 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Sets the RUCSS options to defaults when updating to 3.9
-	 *
-	 * @since 3.9
-	 *
-	 * @param string $new_version New plugin version.
-	 * @param string $old_version Previous plugin version.
-	 *
-	 * @return void
-	 */
-	public function set_option_on_update( $new_version, $old_version ) {
-		$this->settings->set_option_on_update( $old_version );
-	}
-
-	/**
 	 * Sanitizes RUCSS options values when the settings form is submitted
 	 *
 	 * @since 3.9
@@ -184,12 +176,12 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.9
 	 *
-	 * @param array $value     An array of previous values for the settings.
 	 * @param array $old_value An array of submitted values for the settings.
+	 * @param array $value     An array of previous values for the settings.
 	 *
 	 * @return void
 	 */
-	public function clean_used_css_and_cache( $value, $old_value ) {
+	public function clean_used_css_and_cache( $old_value, $value ) {
 		if ( ! current_user_can( 'rocket_manage_options' )
 			||
 			! $this->settings->is_enabled()

@@ -55,7 +55,7 @@ class Resources extends Table {
 			last_accessed    DATETIME            NOT NULL default '0000-00-00 00:00:00',
 			PRIMARY KEY (id),
 			KEY hash (hash),
-			KEY url (url),
+			KEY url (url(150)),
 			KEY type (type),
 			KEY last_accessed (last_accessed)";
 	}

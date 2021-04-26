@@ -66,6 +66,31 @@ class Test_Handle extends FilesystemTestCase {
 				->never();
 		}else{
 
+			Functions\expect( 'wp_check_filetype' )->andReturnUsing( function( $file, $mimes ) {
+				$filename_array = explode( '.', $file );
+				$ext = false;
+				$type = false;
+				if ( $filename_array ) {
+					$ext = end( $filename_array );
+					if ( isset( $mimes[$ext] ) ) {
+						$type = $mimes[$ext];
+					}else{
+						$type = $ext = false;
+					}
+				}
+				return [
+					'ext' => $ext,
+					'type' => $type,
+				];
+			} );
+
+			Functions\when( 'wp_http_validate_url' )->alias( function( $path = '') {
+				if ( false !== strpos( 'vfs://', $path ) ) {
+					return $path;
+				}
+				return false;
+			} );
+
 			foreach ( $expected['resources'] as $resource ) {
 				$process
 					->shouldReceive( 'push_to_queue' )
@@ -87,6 +112,15 @@ class Test_Handle extends FilesystemTestCase {
 		$_POST = [
 			'html' => $input['html'],
 		];
+
+		Functions\when( 'set_url_scheme')->alias( function ( $url ) {
+			$url = trim( $url );
+			if ( substr( $url, 0, 2 ) === '//' ) {
+				$url = 'http:' . $url;
+			}
+
+			return preg_replace( '#^\w+://#', 'http://', $url );
+		});
 
 		$resource_fetcher->handle();
 
