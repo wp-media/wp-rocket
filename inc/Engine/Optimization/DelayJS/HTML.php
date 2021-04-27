@@ -29,6 +29,7 @@ class HTML {
 		'lazyLoadOptions',
 		'lazyLoadThumb',
 		'wp-rocket/assets/js/lazyload/(.*)',
+		'js-extra',
 	];
 
 	/**
