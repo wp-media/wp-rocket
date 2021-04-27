@@ -329,11 +329,6 @@ class UsedCSS {
 	private function save_or_update_used_css( array $data ) {
 		$used_css = $this->get_used_css( $data['url'], $data['is_mobile'] );
 
-		$data['css'] = preg_replace( '/content\s*:\s*"\\\\f/i', 'shaker-parser:"dashf', $data['css'] );
-		$data['css'] = preg_replace( '/content\s*:\s*"\\\\e/i', 'shaker-parser:"dashe', $data['css'] );
-		$data['css'] = preg_replace( '/content\s*:\s*\'\\\\f/i', 'shaker-parser:\'dashf', $data['css'] );
-		$data['css'] = preg_replace( '/content\s*:\s*\'\\\\e/i', 'shaker-parser:\'dashe', $data['css'] );
-
 		$minifier = new MinifyCSS( $data['css'] );
 
 		$data['css'] = $minifier->minify();
