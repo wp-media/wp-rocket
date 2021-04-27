@@ -41,9 +41,9 @@ function rocket_upgrader() {
 	$page = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING );
 
 	if (
-		did_action( 'wp_rocket_upgrade' )
-		&&
 		'wprocket' === $page
+		&&
+		did_action( 'wp_rocket_upgrade' )
 	) {
 		wp_safe_redirect( esc_url_raw( admin_url( 'options-general.php?page=wprocket' ) ) );
 		exit;
