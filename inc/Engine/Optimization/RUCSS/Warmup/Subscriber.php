@@ -23,14 +23,22 @@ class Subscriber implements Subscriber_Interface {
 	private $resource_fetcher;
 
 	/**
+	 * Scanner instance
+	 *
+	 * @var Scanner
+	 */
+	private $scanner;
+
+	/**
 	 * Subscriber constructor.
 	 *
 	 * @param Options_Data    $options Options instance.
 	 * @param ResourceFetcher $resource_fetcher Resource object.
 	 */
-	public function __construct( Options_Data $options, ResourceFetcher $resource_fetcher ) {
+	public function __construct( Options_Data $options, ResourceFetcher $resource_fetcher, Scanner $scanner ) {
 		$this->resource_fetcher = $resource_fetcher;
 		$this->options          = $options;
+		$this->scanner          = $scanner;
 	}
 
 	/**
@@ -40,7 +48,8 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() : array {
 		return [
-			'rocket_buffer' => [ 'collect_resources', 1 ],
+			'rocket_buffer'                                            => [ 'collect_resources', 11 ],
+			'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ) => [ 'start_scanner', 15, 2 ],
 		];
 	}
 
@@ -61,6 +70,20 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		return $html;
+	}
+
+	/**
+	 * Launches the scanner when activating the RUCSS option
+	 *
+	 * @since 3.9
+	 *
+	 * @param array $old_value Previous values for WP Rocket settings.
+	 * @param array $value     New values for WP Rocket settings.
+	 *
+	 * @return void
+	 */
+	public function start_scanner( $value, $old_value ) {
+		$this->scanner->start_scanner( $value, $old_value );
 	}
 
 	/**
