@@ -34,6 +34,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @param Options_Data    $options Options instance.
 	 * @param ResourceFetcher $resource_fetcher Resource object.
+	 * @param Scanner         $scanner Scanner instance.
 	 */
 	public function __construct( Options_Data $options, ResourceFetcher $resource_fetcher, Scanner $scanner ) {
 		$this->resource_fetcher = $resource_fetcher;
@@ -48,7 +49,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() : array {
 		return [
-			'rocket_buffer'                                            => [ 'collect_resources', 11 ],
+			'rocket_buffer' => [ 'collect_resources', 11 ],
 			'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ) => [ 'start_scanner', 15, 2 ],
 		];
 	}
@@ -82,8 +83,8 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return void
 	 */
-	public function start_scanner( $value, $old_value ) {
-		$this->scanner->start_scanner( $value, $old_value );
+	public function start_scanner( $old_value, $value ) {
+		$this->scanner->start_scanner( $old_value, $value );
 	}
 
 	/**

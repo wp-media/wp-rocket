@@ -15,7 +15,7 @@ class ScannerProcess extends WP_Rocket_WP_Background_Process {
 	/**
 	 * Instantiate the class
 	 *
-	 * @param ResourceFetcher $resource_fetcher
+	 * @param ResourceFetcher $resource_fetcher Resource fetcher instance.
 	 */
 	public function __construct( ResourceFetcher $resource_fetcher ) {
 		parent::__construct();
@@ -40,7 +40,7 @@ class ScannerProcess extends WP_Rocket_WP_Background_Process {
 		$response = wp_remote_get(
 			add_query_arg( 'nowprocket', '1', $item['url'] ),
 			[
-				'sslverify'  => apply_filters( 'https_local_ssl_verify', false ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+				'sslverify' => apply_filters( 'https_local_ssl_verify', false ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			]
 		);
 
