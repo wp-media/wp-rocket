@@ -77,7 +77,7 @@ class Scanner {
 
 		array_map( [ $this->process, 'push_to_queue' ], $this->items );
 
-		$this->options_api->set( 'scanner_start_time', current_time( 'timestamp' ) );
+		$this->options_api->set( 'scanner_start_time', time() );
 
 		$this->process->save()->dispatch();
 	}
