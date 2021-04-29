@@ -94,11 +94,7 @@ class RESTWP {
 	 * @return WP_REST_Response
 	 */
 	public function respond_status( WP_REST_Request $request ) : WP_REST_Response {
-		$urls = (array) $request->get_param( 'urls' );
-
 		if (
-			empty( $urls )
-			||
 			(bool) $this->options->get( 'remove_unused_css', 0 )
 		) {
 			return rest_ensure_response(
@@ -106,7 +102,7 @@ class RESTWP {
 			);
 		}
 
-		$warmup_total_resources_count = $this->resources_query->get_prewarmup_total_count( $urls );
+		$warmup_total_resources_count = $this->resources_query->get_prewarmup_total_count();
 
 		if ( empty( $warmup_total_resources_count ) ) {
 			return rest_ensure_response(
@@ -116,12 +112,12 @@ class RESTWP {
 
 		$output = [
 			'total'               => $warmup_total_resources_count,
-			'warmed_count'        => $this->resources_query->get_prewarmup_warmed_count( $urls ),
+			'warmed_count'        => $this->resources_query->get_prewarmup_warmed_count(),
 			'notwarmed_resources' => [],
 		];
 
 		if ( $output['warmed_count'] < $output['total'] ) {
-			$output['notwarmed_resources'] = array_values( $this->resources_query->get_prewarmup_notwarmed_urls( $urls ) );
+			$output['notwarmed_resources'] = array_values( $this->resources_query->get_prewarmup_notwarmed_urls() );
 		}
 
 		return rest_ensure_response(
