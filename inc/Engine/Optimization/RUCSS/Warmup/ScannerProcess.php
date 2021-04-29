@@ -66,7 +66,8 @@ class ScannerProcess extends WP_Rocket_WP_Background_Process {
 
 		$this->resource_fetcher->data(
 			[
-				'html' => $html,
+				'html'      => $html,
+				'prewarmup' => 1,
 			]
 		)->dispatch();
 
