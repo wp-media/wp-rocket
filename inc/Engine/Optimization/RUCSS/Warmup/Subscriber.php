@@ -144,6 +144,8 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
+		delete_transient( 'rocket_rucss_prewarmup_notice' );
+
 		rocket_notice_html(
 			$notice
 		);
