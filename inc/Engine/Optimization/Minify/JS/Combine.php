@@ -696,6 +696,9 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'reload_attached_coupons',
 			'var ftpp',
 			'forminatorFront',
+			'_EPYT_',
+			'edd_free_downloads_vars',
+			'edd_stripe_vars',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
