@@ -30,16 +30,24 @@ class Subscriber implements Subscriber_Interface {
 	private $scanner;
 
 	/**
+	 * Status Checker instance
+	 *
+	 * @var StatusChecker
+	 */
+	private $status_checker;
+
+	/**
 	 * Subscriber constructor.
 	 *
 	 * @param Options_Data    $options Options instance.
 	 * @param ResourceFetcher $resource_fetcher Resource object.
 	 * @param Scanner         $scanner Scanner instance.
 	 */
-	public function __construct( Options_Data $options, ResourceFetcher $resource_fetcher, Scanner $scanner ) {
+	public function __construct( Options_Data $options, ResourceFetcher $resource_fetcher, Scanner $scanner, StatusChecker $status_checker ) {
 		$this->resource_fetcher = $resource_fetcher;
 		$this->options          = $options;
 		$this->scanner          = $scanner;
+		$this->status_checker   = $status_checker;
 	}
 
 	/**
@@ -50,6 +58,7 @@ class Subscriber implements Subscriber_Interface {
 	public static function get_subscribed_events() : array {
 		return [
 			'rocket_buffer' => [ 'collect_resources', 11 ],
+			'init'          => 'check_warmup_status',
 			'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ) => [ 'start_scanner', 15, 2 ],
 		];
 	}
@@ -85,6 +94,21 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function start_scanner( $old_value, $value ) {
 		$this->scanner->start_scanner( $old_value, $value );
+	}
+
+	/**
+	 * Checks the warmup status for resources in the prewarmup process
+	 *
+	 * @since 3.9
+	 *
+	 * @return void
+	 */
+	public function check_warmup_status() {
+		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
+			return;
+		}
+
+		$this->status_checker->check_warmup_status();
 	}
 
 	/**
