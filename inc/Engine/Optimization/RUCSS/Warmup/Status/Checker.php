@@ -1,13 +1,13 @@
 <?php
 
-namespace WP_Rocket\Engine\Optimization\RUCSS\Warmup;
+namespace WP_Rocket\Engine\Optimization\RUCSS\Warmup\Status;
 
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\RUCSS\AbstractAPIClient;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\ResourcesQuery;
 
-class StatusChecker extends AbstractAPIClient {
+class Checker extends AbstractAPIClient {
 	/**
 	 * Options API instance
 	 *
