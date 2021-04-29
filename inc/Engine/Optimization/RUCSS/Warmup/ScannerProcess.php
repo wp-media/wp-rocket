@@ -3,6 +3,7 @@
 namespace WP_Rocket\Engine\Optimization\RUCSS\Warmup;
 
 use WP_Rocket_WP_Background_Process;
+use WP_Rocket\Admin\Options;
 
 class ScannerProcess extends WP_Rocket_WP_Background_Process {
 	/**
@@ -13,14 +14,23 @@ class ScannerProcess extends WP_Rocket_WP_Background_Process {
 	private $resource_fetcher;
 
 	/**
+	 * Options API instance.
+	 *
+	 * @var Options
+	 */
+	private $options_api;
+
+	/**
 	 * Instantiate the class
 	 *
 	 * @param ResourceFetcher $resource_fetcher Resource fetcher instance.
+	 * @param Options         $options_api Options API instance.
 	 */
-	public function __construct( ResourceFetcher $resource_fetcher ) {
+	public function __construct( ResourceFetcher $resource_fetcher, Options $options_api ) {
 		parent::__construct();
 
 		$this->resource_fetcher = $resource_fetcher;
+		$this->options_api      = $options_api;
 	}
 
 	/**
@@ -61,10 +71,10 @@ class ScannerProcess extends WP_Rocket_WP_Background_Process {
 		)->dispatch();
 
 		$item['is_scanned'] = true;
-		$option             = get_option( 'wp_rocket_resources_scanner', [] );
+		$option             = $this->options_api->get( 'resources_scanner', [] );
 		$option[]           = $item;
 
-		update_option( 'wp_rocket_resources_scanner', $option );
+		$this->options_api->set( 'resources_scanner', $option );
 
 		return false;
 	}
