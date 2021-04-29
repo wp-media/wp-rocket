@@ -28,7 +28,7 @@ class Resources extends Table {
 	 *
 	 * @var int
 	 */
-	protected $version = 20210401;
+	protected $version = 20210429;
 
 
 	/**
