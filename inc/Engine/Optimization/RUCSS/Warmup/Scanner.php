@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\RUCSS\Warmup;
 
@@ -52,10 +53,11 @@ class Scanner {
 	 */
 	public function start_scanner( $old_value, $value ) {
 		if (
-			! isset( $old_value['remove_unused_css'], $value['remove_unused_css'] )
+			! isset( $value['remove_unused_css'] )
 			||
 			( $old_value['remove_unused_css'] === $value['remove_unused_css'] )
-			|| 1 !== (int) $value['remove_unused_css']
+			||
+			1 !== (int) $value['remove_unused_css']
 		) {
 			return;
 		}
@@ -75,7 +77,7 @@ class Scanner {
 
 		array_map( [ $this->process, 'push_to_queue' ], $this->items );
 
-		$this->options_api->set( 'scanner_start_time', current_time() );
+		$this->options_api->set( 'scanner_start_time', current_time( 'timestamp' ) );
 
 		$this->process->save()->dispatch();
 	}
