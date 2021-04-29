@@ -34,6 +34,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'rucss_warmup_api_client',
 		'rucss_scanner',
 		'rucss_scanner_process',
+		'rucss_status_checker',
 	];
 
 	/**
@@ -91,9 +92,15 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'rucss_scanner_process' ) )
 			->addArgument( $this->getContainer()->get( 'options_api' ) );
 
+		$this->getContainer()->add( 'rucss_status_checker', '\WP_Rocket\Engine\Optimization\RUCSS\Warmup\Status\Checker' )
+			->addArgument( $this->getContainer()->get( 'options_api' ) )
+			->addArgument( $this->getContainer()->get( 'options' ) )
+			->addArgument( $this->getContainer()->get( 'rucss_resources_query' ) );
+
 		$this->getContainer()->share( 'rucss_warmup_subscriber', '\WP_Rocket\Engine\Optimization\RUCSS\Warmup\Subscriber' )
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_resource_fetcher' ) )
-			->addArgument( $this->getContainer()->get( 'rucss_scanner' ) );
+			->addArgument( $this->getContainer()->get( 'rucss_scanner' ) )
+			->addArgument( $this->getContainer()->get( 'rucss_status_checker' ) );
 	}
 }
