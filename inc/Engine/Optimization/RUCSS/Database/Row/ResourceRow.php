@@ -20,6 +20,8 @@ class ResourceRow extends Row {
 		$this->type          = (string) $this->type;
 		$this->content       = (string) $this->content;
 		$this->hash          = (string) $this->hash;
+		$this->prewarmup     = (int) $this->prewarmup;
+		$this->warmup_status = (int) $this->warmup_status;
 		$this->media         = (string) $this->media;
 		$this->modified      = false === $this->modified ? 0 : strtotime( $this->modified );
 		$this->last_accessed = false === $this->last_accessed ? 0 : strtotime( $this->last_accessed );
