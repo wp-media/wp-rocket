@@ -161,7 +161,7 @@ class ResourcesQuery extends Query {
 	 *
 	 * @since 3.9
 	 *
-	 * @param string $url URL of the resource
+	 * @param string $url URL of the resource.
 	 *
 	 * @return bool
 	 */

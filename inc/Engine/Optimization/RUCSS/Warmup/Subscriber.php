@@ -33,7 +33,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Status Checker instance
 	 *
-	 * @var StatusChecker
+	 * @var Checker
 	 */
 	private $status_checker;
 
@@ -43,6 +43,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @param Options_Data    $options Options instance.
 	 * @param ResourceFetcher $resource_fetcher Resource object.
 	 * @param Scanner         $scanner Scanner instance.
+	 * @param Checker         $status_checker Status checker instance.
 	 */
 	public function __construct( Options_Data $options, ResourceFetcher $resource_fetcher, Scanner $scanner, Checker $status_checker ) {
 		$this->resource_fetcher = $resource_fetcher;
@@ -58,10 +59,10 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() : array {
 		return [
-			'rocket_buffer' => [ 'collect_resources', 11 ],
-			'init'          => 'check_warmup_status',
-			'admin_notices' => 'prewarmup_result_notice',
-			'rocket_rucss_prewarmup_error' => 'prepare_error_notice',
+			'rocket_buffer'                  => [ 'collect_resources', 11 ],
+			'init'                           => 'check_warmup_status',
+			'admin_notices'                  => 'prewarmup_result_notice',
+			'rocket_rucss_prewarmup_error'   => 'prepare_error_notice',
 			'rocket_rucss_prewarmup_success' => 'prepare_success_notice',
 			'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ) => [ 'start_scanner', 15, 2 ],
 		];
