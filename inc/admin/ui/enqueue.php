@@ -2,16 +2,6 @@
 
 defined( 'ABSPATH' ) || exit;
 
-// function rocket_add_type_module_attribute( $tag, $handle ) {
-//  if ( 'react-rucss-progress-bar' !== $handle ) {
-//      return $tag;
-//  }
-//  $tag = '<script type="module" id="react-rucss-progress-bar-js" src="' . esc_url( WP_ROCKET_ASSETS_JS_URL . 'react/components/rucss_progress_bar.js' ) . '"></script>';
-//  return $tag;
-// }
-// add_filter('script_loader_tag', 'rocket_add_type_module_attribute' , 10, 2);
-
-
 /**
  * Add the CSS and JS files for WP Rocket options page
  *
