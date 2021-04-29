@@ -35,7 +35,7 @@ class Checker extends AbstractAPIClient {
 	 *
 	 * @param Options        $options_api Options API instance.
 	 * @param Options_Data   $options Options instance.
-	 * @param ResourcesQuery $resource_query Resources Query instance.
+	 * @param ResourcesQuery $resources_query Resources Query instance.
 	 */
 	public function __construct( Options $options_api, Options_Data $options, ResourcesQuery $resources_query ) {
 		parent::__construct( $options );
@@ -168,7 +168,7 @@ class Checker extends AbstractAPIClient {
 		foreach ( $items as $item ) {
 			if ( 'css' === $item['type'] ) {
 				$resources['css'][] = $item['url'];
- 			} elseif ( 'js' === $item['type'] ) {
+			} elseif ( 'js' === $item['type'] ) {
 				$resources['js'][] = $item['url'];
 			}
 		}
