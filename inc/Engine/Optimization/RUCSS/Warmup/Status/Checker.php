@@ -64,6 +64,7 @@ class Checker extends AbstractAPIClient {
 			do_action( 'rocket_rucss_prewarmup_error' );
 
 			$this->options_api->delete( 'scanner_start_time' );
+			rocket_clean_domain();
 
 			return;
 		}
@@ -79,6 +80,7 @@ class Checker extends AbstractAPIClient {
 			do_action( 'rocket_rucss_prewarmup_success' );
 
 			$this->options_api->delete( 'scanner_start_time' );
+			rocket_clean_domain();
 
 			return;
 		}
