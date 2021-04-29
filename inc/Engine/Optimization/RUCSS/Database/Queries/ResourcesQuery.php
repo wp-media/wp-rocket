@@ -139,4 +139,57 @@ class ResourcesQuery extends Query {
 
 		$this->delete_item( $db_row->id );
 	}
+
+	/**
+	 * Get prewarmup total resources count.
+	 *
+	 * @param array $urls Urls to be checked.
+	 *
+	 * @return int
+	 */
+	public function get_prewarmup_total_count( array $urls ) : int {
+		return $this->query(
+			[
+				'count'     => true,
+				'prewarmup' => 1,
+				'url__in'   => $urls,
+			]
+		);
+	}
+
+	/**
+	 * Get prewarmup warmed resources count.
+	 *
+	 * @param array $urls Urls to be checked.
+	 *
+	 * @return int
+	 */
+	public function get_prewarmup_warmed_count( array $urls ) : int {
+		return $this->query(
+			[
+				'count'         => true,
+				'prewarmup'     => 1,
+				'warmup_status' => 1,
+				'url__in'       => $urls,
+			]
+		);
+	}
+
+	/**
+	 * Get prewarmup NOT warmed resources' urls.
+	 *
+	 * @param array $urls Urls to be checked.
+	 *
+	 * @return array|string[]
+	 */
+	public function get_prewarmup_notwarmed_urls( array $urls ) : array {
+		return $this->query(
+			[
+				'fields'        => 'url',
+				'prewarmup'     => 1,
+				'warmup_status' => 0,
+				'url__in'       => $urls,
+			]
+		);
+	}
 }

@@ -46,12 +46,11 @@ class RESTWP {
 	 *
 	 * @since 3.9
 	 *
-	 * @param Options_Data $options Instance of options data handler.
+	 * @param Options_Data   $options Instance of options data handler.
 	 * @param ResourcesQuery $resources_query Resources Query instance.
-	 *
 	 */
 	public function __construct( Options_Data $options, ResourcesQuery $resources_query ) {
-		$this->options       = $options;
+		$this->options         = $options;
 		$this->resources_query = $resources_query;
 	}
 
@@ -107,20 +106,7 @@ class RESTWP {
 			);
 		}
 
-		$warmup_total_resources_count = $this->resources_query->query(
-			[
-				'count' => true,
-				'fields' => [
-					'prewarmup' => 1,
-					'url__in' => [
-						'in' => $urls,
-					],
-				]
-
-			]
-		);
-
-		die(var_dump($warmup_total_resources_count));
+		$warmup_total_resources_count = $this->resources_query->get_prewarmup_total_count( $urls );
 
 		if ( empty( $warmup_total_resources_count ) ) {
 			return rest_ensure_response(
@@ -128,23 +114,53 @@ class RESTWP {
 			);
 		}
 
+		$output = [
+			'total'               => $warmup_total_resources_count,
+			'warmed_count'        => $this->resources_query->get_prewarmup_warmed_count( $urls ),
+			'notwarmed_resources' => [],
+		];
 
+		if ( $output['warmed_count'] < $output['total'] ) {
+			$output['notwarmed_resources'] = array_values( $this->resources_query->get_prewarmup_notwarmed_urls( $urls ) );
+		}
+
+		return rest_ensure_response(
+			$this->return_success( $output )
+		);
 
 	}
 
+	/**
+	 * Get array of error response.
+	 *
+	 * @since 3.9
+	 *
+	 * @param string $message Error message.
+	 * @param array  $data Data to be passed.
+	 *
+	 * @return array
+	 */
 	private function return_error( string $message, array $data = [] ) : array {
 		return [
 			'success' => false,
 			'message' => $message,
-			'data' => $data,
+			'data'    => $data,
 		];
 	}
 
-	private function return_success( string $message, array $data = [] ) : array {
+	/**
+	 * Get array of success response.
+	 *
+	 * @since 3.9
+	 *
+	 * @param array $data Data to be passed.
+	 *
+	 * @return array
+	 */
+	private function return_success( array $data = [] ) : array {
 		return [
 			'success' => true,
-			'message' => $message,
-			'data' => $data,
+			'data'    => $data,
 		];
 	}
 

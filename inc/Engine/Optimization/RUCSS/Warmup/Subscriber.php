@@ -35,12 +35,12 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @param Options_Data    $options Options instance.
 	 * @param ResourceFetcher $resource_fetcher Resource object.
-	 * @param RESTWP $restwp RESTWP instance.
+	 * @param RESTWP          $restwp RESTWP instance.
 	 */
 	public function __construct( Options_Data $options, ResourceFetcher $resource_fetcher, RESTWP $restwp ) {
 		$this->resource_fetcher = $resource_fetcher;
 		$this->options          = $options;
-		$this->restwp = $restwp;
+		$this->restwp           = $restwp;
 	}
 
 	/**
