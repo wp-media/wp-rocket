@@ -70,6 +70,28 @@ class Resources extends Schema {
 			'sortable'   => true,
 		],
 
+		// prewarmup column.
+		[
+			'name'       => 'prewarmup',
+			'type'       => 'tinyint',
+			'length'     => '1',
+			'default'    => 0,
+			'cache_key'  => true,
+			'searchable' => true,
+			'sortable'   => true,
+		],
+
+		// warmup_status column.
+		[
+			'name'       => 'warmup_status',
+			'type'       => 'tinyint',
+			'length'     => '1',
+			'default'    => '0',
+			'cache_key'  => true,
+			'searchable' => true,
+			'sortable'   => true,
+		],
+
 		// MEDIA column.
 		[
 			'name'       => 'media',
