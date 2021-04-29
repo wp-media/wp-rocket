@@ -55,12 +55,25 @@ class Checker extends AbstractAPIClient {
 		}
 
 		if ( current_time() > strtotime( '+1 hour', $start_time ) ) {
+			/**
+			 * Fires this action when the prewarmup lifespan is expired
+			 *
+			 * @since 3.9
+			 */
+			do_action( 'rocket_rucss_prewarmup_error' );
+
 			return;
 		}
 
 		$items = $this->resources_query->get_waiting_prewarmup_items();
 
 		if ( empty( $items ) ) {
+			/**
+			 * Fires this action when the prewarmup is complete
+			 *
+			 * @since 3.9
+			 */
+			do_action( 'rocket_rucss_prewarmup_success' );
 			return;
 		}
 
