@@ -68,20 +68,11 @@ class RESTWP {
 			[
 				'methods'             => 'POST',
 				'callback'            => [ $this, 'respond_status' ],
-				'permission_callback' => [ $this, 'check_permissions' ],
+				'permission_callback' => function() {
+					return current_user_can( 'rocket_remove_unused_css' );
+				},
 			]
 		);
-	}
-
-	/**
-	 * Checks user's permissions. This is a callback registered to REST route's "permission_callback" parameter.
-	 *
-	 * @since 3.9
-	 *
-	 * @return bool true if the user has permission; else false.
-	 */
-	public function check_permissions() {
-		return current_user_can( 'rocket_remove_unused_css' );
 	}
 
 	/**
