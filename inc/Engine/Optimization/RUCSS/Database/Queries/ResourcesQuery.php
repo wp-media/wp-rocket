@@ -139,4 +139,44 @@ class ResourcesQuery extends Query {
 
 		$this->delete_item( $db_row->id );
 	}
+
+	/**
+	 * Gets resources waiting for prewarmup response
+	 *
+	 * @since 3.9
+	 *
+	 * @return array
+	 */
+	public function get_waiting_prewarmup_items(): array {
+		return $this->query(
+			[
+				'prewarmup'     => 1,
+				'warmup_status' => 0,
+			]
+		);
+	}
+
+	/**
+	 * Updates the resource row when the warmup status is ok
+	 *
+	 * @since 3.9
+	 *
+	 * @param string $url URL of the resource
+	 *
+	 * @return bool
+	 */
+	public function update_warmup_status( string $url ) {
+		$db_row = $this->get_item_by( 'url', $url );
+
+		if ( empty( $db_row ) ) {
+			return false;
+		}
+
+		return $this->update_item(
+			$db_row->id,
+			[
+				'warmup_status' => 1,
+			]
+		);
+	}
 }
