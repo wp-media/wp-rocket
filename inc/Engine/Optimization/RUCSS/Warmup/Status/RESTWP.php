@@ -98,7 +98,7 @@ class RESTWP {
 			(bool) $this->options->get( 'remove_unused_css', 0 )
 		) {
 			return rest_ensure_response(
-				$this->return_error( __( 'Remove unused CSS option is disabled or Invalid request!', 'rocket' ) )
+				$this->return_error( __( 'Remove unused CSS option is disabled.', 'rocket' ) )
 			);
 		}
 
