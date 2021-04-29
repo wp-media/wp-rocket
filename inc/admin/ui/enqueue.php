@@ -2,6 +2,16 @@
 
 defined( 'ABSPATH' ) || exit;
 
+// function rocket_add_type_module_attribute( $tag, $handle ) {
+//  if ( 'react-rucss-progress-bar' !== $handle ) {
+//      return $tag;
+//  }
+//  $tag = '<script type="module" id="react-rucss-progress-bar-js" src="' . esc_url( WP_ROCKET_ASSETS_JS_URL . 'react/components/rucss_progress_bar.js' ) . '"></script>';
+//  return $tag;
+// }
+// add_filter('script_loader_tag', 'rocket_add_type_module_attribute' , 10, 2);
+
+
 /**
  * Add the CSS and JS files for WP Rocket options page
  *
@@ -11,6 +21,9 @@ function rocket_add_admin_css_js() {
 	wp_enqueue_style( 'wpr-admin', WP_ROCKET_ASSETS_CSS_URL . 'wpr-admin.css', null, WP_ROCKET_VERSION );
 	wp_enqueue_script( 'micromodal', WP_ROCKET_ASSETS_JS_URL . 'micromodal.min.js', null, '0.4.2', true );
 	wp_enqueue_script( 'wpr-admin', WP_ROCKET_ASSETS_JS_URL . 'wpr-admin.js', [ 'micromodal' ], WP_ROCKET_VERSION, true );
+
+	wp_enqueue_script( 'react-rucss-progress-bar', WP_ROCKET_ASSETS_JS_URL . 'react/rucss_progress_bar.js', null, '1.0.0', true );
+
 	wp_localize_script(
 		'wpr-admin',
 		'rocket_ajax_data',
@@ -26,6 +39,8 @@ function rocket_add_admin_css_js() {
 			[
 				'nonce'      => wp_create_nonce( 'rocket-ajax' ),
 				'origin_url' => untrailingslashit( rocket_get_constant( 'WP_ROCKET_WEB_MAIN' ) ),
+				'api_url'    => rest_url( 'wp-rocket/v1/' ),
+				'api_nonce'  => wp_create_nonce( 'rocket-ajax' ),
 			]
 		)
 	);

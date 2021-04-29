@@ -704,6 +704,19 @@ class Page {
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
+				'remove_unused_css_progress_bar' => [
+					'type'            => 'react_component',
+					'container_class' => [
+						'wpr-field--children',
+					],
+					'parent'          => 'remove_unused_css',
+					'section'         => 'css',
+					'page'            => 'file_optimization',
+					'default'         => [],
+					'input_attr'      => [
+						'disabled' => get_rocket_option( 'remove_unused_css' ) ? 0 : 1,
+					],
+				],
 				'remove_unused_css_safelist' => [
 					'type'              => 'textarea',
 					'label'             => __( 'CSS safelist', 'rocket' ),

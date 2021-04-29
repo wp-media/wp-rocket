@@ -473,4 +473,15 @@ class Render extends Abstract_render {
 	public function render_part( $part ) {
 		echo $this->generate( 'partials/' . $part ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
+
+	/**
+	 * Displays the react component template.
+	 *
+	 * @since 3.9
+	 *
+	 * @param array $args Array of arguments to populate the template.
+	 */
+	public function react_component( $args ) {
+		echo $this->generate( 'fields/react_component', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+	}
 }
