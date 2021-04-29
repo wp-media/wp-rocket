@@ -7,6 +7,7 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\AssetsLocalCache;
 use WP_Rocket\Engine\Optimization\RUCSS\Warmup\ResourceFetcher;
 use WP_Rocket\Engine\Optimization\RUCSS\Warmup\ResourceFetcherProcess;
+use WP_Rocket\Engine\Optimization\RUCSS\Warmup\Scanner;
 use WP_Rocket\Engine\Optimization\RUCSS\Warmup\Subscriber;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
@@ -26,6 +27,7 @@ class Test_CollectResources extends TestCase {
 
 		$options_data = Mockery::mock( Options_Data::class );
 		$fetcher = Mockery::mock( ResourceFetcher::class );
+		$scanner = Mockery::mock( Scanner::class );
 
 		$this->donotrocketoptimize = isset( $input['DONOTROCKETOPTIMIZE'] ) ? $input['DONOTROCKETOPTIMIZE'] : false;
 
@@ -60,7 +62,7 @@ class Test_CollectResources extends TestCase {
 				->andReturn( null );
 		}
 
-		$subscriber = new Subscriber( $options_data, $fetcher );
+		$subscriber = new Subscriber( $options_data, $fetcher, $scanner );
 		$this->assertSame( $input['html'], $subscriber->collect_resources( $input['html'] ) );
 
 	}
