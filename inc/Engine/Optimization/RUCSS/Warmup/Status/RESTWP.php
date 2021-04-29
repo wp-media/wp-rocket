@@ -93,7 +93,7 @@ class RESTWP {
 	 *
 	 * @return WP_REST_Response
 	 */
-	public function respond_status( WP_REST_Request $request ) : WP_REST_Response {
+	public function respond_status( WP_REST_Request $request ): WP_REST_Response {
 		if (
 			(bool) $this->options->get( 'remove_unused_css', 0 )
 		) {
@@ -106,7 +106,7 @@ class RESTWP {
 
 		if ( empty( $warmup_total_resources_count ) ) {
 			return rest_ensure_response(
-				$this->return_error( __( 'No resources into the DB!', 'rocket' ) )
+				$this->return_error( __( 'No resources currently exists into the resources table.', 'rocket' ) )
 			);
 		}
 
@@ -136,7 +136,7 @@ class RESTWP {
 	 *
 	 * @return array
 	 */
-	private function return_error( string $message, array $data = [] ) : array {
+	private function return_error( string $message, array $data = [] ): array {
 		return [
 			'success' => false,
 			'message' => $message,
@@ -153,7 +153,7 @@ class RESTWP {
 	 *
 	 * @return array
 	 */
-	private function return_success( array $data = [] ) : array {
+	private function return_success( array $data = [] ): array {
 		return [
 			'success' => true,
 			'data'    => $data,

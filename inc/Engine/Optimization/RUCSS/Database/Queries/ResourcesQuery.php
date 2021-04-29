@@ -145,7 +145,7 @@ class ResourcesQuery extends Query {
 	 *
 	 * @return int
 	 */
-	public function get_prewarmup_total_count() : int {
+	public function get_prewarmup_total_count(): int {
 		return $this->query(
 			[
 				'count'     => true,
@@ -159,7 +159,7 @@ class ResourcesQuery extends Query {
 	 *
 	 * @return int
 	 */
-	public function get_prewarmup_warmed_count() : int {
+	public function get_prewarmup_warmed_count(): int {
 		return $this->query(
 			[
 				'count'         => true,
@@ -174,7 +174,7 @@ class ResourcesQuery extends Query {
 	 *
 	 * @return array|string[]
 	 */
-	public function get_prewarmup_notwarmed_urls() : array {
+	public function get_prewarmup_notwarmed_urls(): array {
 		return $this->query(
 			[
 				'fields'        => 'url',
