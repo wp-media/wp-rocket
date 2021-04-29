@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Optimization\RUCSS\Warmup;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Optimization\RUCSS\Warmup\Status\RESTWP;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class Subscriber implements Subscriber_Interface {
@@ -23,14 +24,23 @@ class Subscriber implements Subscriber_Interface {
 	private $resource_fetcher;
 
 	/**
+	 * Resource object.
+	 *
+	 * @var RESTWP
+	 */
+	private $restwp;
+
+	/**
 	 * Subscriber constructor.
 	 *
 	 * @param Options_Data    $options Options instance.
 	 * @param ResourceFetcher $resource_fetcher Resource object.
+	 * @param RESTWP $restwp RESTWP instance.
 	 */
-	public function __construct( Options_Data $options, ResourceFetcher $resource_fetcher ) {
+	public function __construct( Options_Data $options, ResourceFetcher $resource_fetcher, RESTWP $restwp ) {
 		$this->resource_fetcher = $resource_fetcher;
 		$this->options          = $options;
+		$this->restwp = $restwp;
 	}
 
 	/**
@@ -41,6 +51,7 @@ class Subscriber implements Subscriber_Interface {
 	public static function get_subscribed_events() : array {
 		return [
 			'rocket_buffer' => [ 'collect_resources', 1 ],
+			'rest_api_init' => 'register_routes',
 		];
 	}
 
@@ -82,6 +93,17 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		return ! is_rocket_post_excluded_option( 'remove_unused_css' );
+	}
+
+	/**
+	 * Registers status routes in the API.
+	 *
+	 * @since 3.9
+	 *
+	 * @return void
+	 */
+	public function register_routes() {
+		$this->restwp->register_status_route();
 	}
 
 }

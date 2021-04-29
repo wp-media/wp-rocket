@@ -32,6 +32,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'rucss_resource_fetcher',
 		'rucss_resources_query',
 		'rucss_warmup_api_client',
+		'rucss_warmup_restwp',
 	];
 
 	/**
@@ -82,8 +83,13 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'local_cache' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_resource_fetcher_process' ) );
 
+		$this->getContainer()->share( 'rucss_warmup_restwp', '\WP_Rocket\Engine\Optimization\RUCSS\Warmup\Status\RESTWP' )
+		     ->addArgument( $this->getContainer()->get( 'options' ) )
+		     ->addArgument( $this->getContainer()->get( 'rucss_resources_query' ) );
+
 		$this->getContainer()->share( 'rucss_warmup_subscriber', '\WP_Rocket\Engine\Optimization\RUCSS\Warmup\Subscriber' )
 			->addArgument( $this->getContainer()->get( 'options' ) )
-			->addArgument( $this->getContainer()->get( 'rucss_resource_fetcher' ) );
+			->addArgument( $this->getContainer()->get( 'rucss_resource_fetcher' ) )
+			->addArgument( $this->getContainer()->get( 'rucss_warmup_restwp' ) );
 	}
 }
