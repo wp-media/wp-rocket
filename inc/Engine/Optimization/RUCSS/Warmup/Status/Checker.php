@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\RUCSS\Warmup\Status;
 
@@ -62,6 +63,8 @@ class Checker extends AbstractAPIClient {
 			 */
 			do_action( 'rocket_rucss_prewarmup_error' );
 
+			$this->options_api->delete( 'scanner_start_time' );
+
 			return;
 		}
 
@@ -74,6 +77,9 @@ class Checker extends AbstractAPIClient {
 			 * @since 3.9
 			 */
 			do_action( 'rocket_rucss_prewarmup_success' );
+
+			$this->options_api->delete( 'scanner_start_time' );
+
 			return;
 		}
 
@@ -90,6 +96,55 @@ class Checker extends AbstractAPIClient {
 		}
 
 		$this->update_from_response();
+	}
+
+	/**
+	 * Prepares the success transient to be used for the RUCSS prewarmup notice
+	 *
+	 * @since 3.9
+	 *
+	 * @return void
+	 */
+	public function prepare_success_notice() {
+		$message = '<p>' . __( 'WP Rocket: Remove Unused CSS warmup is complete!', 'rocket' ) . '</p>';
+
+		$notice_data = [
+			'message' => $message,
+		];
+
+		set_transient( 'rocket_rucss_prewarmup_notice', $notice_data, HOUR_IN_SECONDS );
+	}
+
+	/**
+	 * Prepares the error transient to be used for the RUCSS prewarmup notice
+	 *
+	 * @since 3.9
+	 *
+	 * @return void
+	 */
+	public function prepare_error_notice() {
+		$items = $this->resources_query->get_waiting_prewarmup_items();
+
+		$urls = wp_list_pluck( $items, 'url' );
+
+		$message = '<p>' . __( 'WP Rocket: Remove Unused CSS warmup was not fully completed. You can find the resources that were not warmed-up below:', 'rocket' ) . '</p>';
+
+		if ( ! empty( $urls ) ) {
+			$message .= '<ul>';
+
+			foreach ( $urls as $url ) {
+				$message .= '<li>' . $url . '</li>';
+			}
+
+			$message .= '</ul>';
+		}
+
+		$notice_data = [
+			'status'  => 'warning',
+			'message' => $message,
+		];
+
+		set_transient( 'rocket_rucss_prewarmup_notice', $notice_data, HOUR_IN_SECONDS );
 	}
 
 	/**
