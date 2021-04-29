@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Engine\Optimization\RUCSS\Warmup;
 
+use WP_Rocket\Admin\Options;
 use WP_Rocket\Engine\Optimization\ContentTrait;
 
 class Scanner {
@@ -15,6 +16,13 @@ class Scanner {
 	public $process;
 
 	/**
+	 * Options API instance.
+	 *
+	 * @var Options
+	 */
+	private $options_api;
+
+	/**
 	 * Items for which we get the resources to warmup.
 	 *
 	 * @var array
@@ -25,9 +33,11 @@ class Scanner {
 	 * Instantiate the class
 	 *
 	 * @param ScannerProcess $process Background process instance.
+	 * @param Options        $options_api Options API instance.
 	 */
-	public function __construct( ScannerProcess $process ) {
-		$this->process = $process;
+	public function __construct( ScannerProcess $process, Options $options_api ) {
+		$this->process     = $process;
+		$this->options_api = $options_api;
 	}
 
 	/**
@@ -64,6 +74,8 @@ class Scanner {
 		$this->set_items();
 
 		array_map( [ $this->process, 'push_to_queue' ], $this->items );
+
+		$this->options_api->set( 'scanner_start_time', current_time() );
 
 		$this->process->save()->dispatch();
 	}
