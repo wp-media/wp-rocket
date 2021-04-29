@@ -8,7 +8,7 @@ use WP_Rocket\Engine\Optimization\AssetsLocalCache;
 use WP_Rocket\Engine\Optimization\RUCSS\Warmup\ResourceFetcher;
 use WP_Rocket\Engine\Optimization\RUCSS\Warmup\ResourceFetcherProcess;
 use WP_Rocket\Engine\Optimization\RUCSS\Warmup\Scanner;
-use WP_Rocket\Engine\Optimization\RUCSS\Warmup\StatusChecker;
+use WP_Rocket\Engine\Optimization\RUCSS\Warmup\Status\Checker;
 use WP_Rocket\Engine\Optimization\RUCSS\Warmup\Subscriber;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
@@ -29,7 +29,7 @@ class Test_CollectResources extends TestCase {
 		$options_data = Mockery::mock( Options_Data::class );
 		$fetcher = Mockery::mock( ResourceFetcher::class );
 		$scanner = Mockery::mock( Scanner::class );
-		$status_checker = Mockery::mock( StatusChecker::class );
+		$status_checker = Mockery::mock( Checker::class );
 
 		$this->donotrocketoptimize = isset( $input['DONOTROCKETOPTIMIZE'] ) ? $input['DONOTROCKETOPTIMIZE'] : false;
 
