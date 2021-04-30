@@ -107,8 +107,8 @@ class ResourcesQuery extends Query {
 			]
 		);
 
-		// Check the content hash.
-		if ( md5( $resource['content'] ) === $db_row->hash ) {
+		// Check the content hash and bailour if the content is the same and we are not in prewarmup.
+		if ( md5( $resource['content'] ) === $db_row->hash && ! $resource['prewarmup'] ) {
 			// Do nothing.
 			return false;
 		}
