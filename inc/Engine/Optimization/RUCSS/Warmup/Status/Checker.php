@@ -166,11 +166,11 @@ class Checker extends AbstractAPIClient {
 		];
 
 		foreach ( $items as $item ) {
-			if ( 'css' === $item->type ) {
-				$resources['css'][] = $item->url;
-			} elseif ( 'js' === $item->type ) {
-				$resources['js'][] = $item->url;
+			if ( ! in_array( $item->type, [ 'css', 'js' ] ) ){
+				continue;
 			}
+
+			$resources[ $item->type ][] = $item->url;
 		}
 
 		return $resources;
