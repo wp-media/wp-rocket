@@ -85,8 +85,9 @@ class ResourcesQuery extends Query {
 					'url'           => $resource['url'],
 					'type'          => $resource['type'],
 					'content'       => $resource['content'],
-					'media'         => isset( $resource['media'] ) ? $resource['media'] : '',
+					'media'         => $resource['media'] ?? '',
 					'hash'          => md5( $resource['content'] ),
+					'prewarmup'     => $resource['prewarmup'] ?? 0,
 					'last_accessed' => current_time( 'mysql', true ),
 				]
 			);
@@ -116,9 +117,10 @@ class ResourcesQuery extends Query {
 		$this->update_item(
 			$db_row->id,
 			[
-				'content'  => $resource['content'],
-				'hash'     => md5( $resource['content'] ),
-				'modified' => current_time( 'mysql', true ),
+				'prewarmup' => $resource['prewarmup'] ?? 0,
+				'content'   => $resource['content'],
+				'hash'      => md5( $resource['content'] ),
+				'modified'  => current_time( 'mysql', true ),
 			]
 		);
 
