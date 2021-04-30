@@ -126,6 +126,10 @@ class UsedCSS {
 			return false;
 		}
 
+		if ( get_option( 'wp_rocket_scanner_start_time', false ) ) {
+			return false;
+		}
+
 		return true;
 	}
 
