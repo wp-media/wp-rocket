@@ -56,7 +56,7 @@ class Checker extends AbstractAPIClient {
 			return;
 		}
 
-		if ( time() > strtotime( '+1 hour', $start_time ) ) {
+		if ( time() > strtotime( '+1 hour', (int) $start_time ) ) {
 			/**
 			 * Fires this action when the prewarmup lifespan is expired
 			 *
