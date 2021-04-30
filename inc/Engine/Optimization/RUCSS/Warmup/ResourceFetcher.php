@@ -97,6 +97,8 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 			return;
 		}
 
+		$prewarmup = (int) $_POST['prewarmup'];
+
 		$this->find_resources( $html, 'js' );
 		$this->find_resources( $html, 'css' );
 
@@ -106,6 +108,7 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 
 		// Send resources to the background process to be saved into DB.
 		foreach ( $this->resources as $resource ) {
+			$resource['prewarmup'] = $prewarmup ? 1 : 0;// Normalize the value.
 			$this->process->push_to_queue( $resource );
 		}
 
