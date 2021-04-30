@@ -166,7 +166,7 @@ class Checker extends AbstractAPIClient {
 		];
 
 		foreach ( $items as $item ) {
-			if ( ! in_array( $item->type, [ 'css', 'js' ] ) ){
+			if ( ! in_array( $item->type, [ 'css', 'js' ], true ) ) {
 				continue;
 			}
 
