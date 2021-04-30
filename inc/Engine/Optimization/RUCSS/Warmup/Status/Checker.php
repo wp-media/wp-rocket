@@ -7,6 +7,7 @@ use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\RUCSS\AbstractAPIClient;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\ResourcesQuery;
+use WP_Rocket\Logger\Logger;
 
 class Checker extends AbstractAPIClient {
 	/**
@@ -185,12 +186,11 @@ class Checker extends AbstractAPIClient {
 	 */
 	private function update_from_response() {
 		$response = json_decode( $this->response_body );
-
-		if ( empty( $response->data ) ) {
+		if ( empty( $response->contents ) ) {
 			return;
 		}
 
-		foreach ( $response->data as $url => $status ) {
+		foreach ( $response->contents as $url => $status ) {
 			if ( false === $status ) {
 				continue;
 			}
