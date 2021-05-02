@@ -108,4 +108,15 @@ class Settings {
 			]
 		);
 	}
+
+	/**
+	 * Displays the RUCSS progressbar
+	 *
+	 * @since 3.9
+	 *
+	 * @return void
+	 */
+	public function display_progress_bar() {
+		echo '<div id="rucss-progressbar"></div>';
+	}
 }

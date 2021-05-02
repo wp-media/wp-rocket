@@ -596,7 +596,7 @@ class Page {
 
 		$this->settings->add_settings_fields(
 			[
-				'minify_css'                     => [
+				'minify_css'                 => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Minify CSS files', 'rocket' ),
 					'description'       => __( 'Minify CSS removes whitespace and comments to reduce the file size.', 'rocket' ),
@@ -617,7 +617,7 @@ class Page {
 						'button_label' => __( 'Activate minify CSS', 'rocket' ),
 					],
 				],
-				'minify_concatenate_css'         => [
+				'minify_concatenate_css'     => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Combine CSS files <em>(Enable Minify CSS files to select)</em>', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
@@ -639,7 +639,7 @@ class Page {
 						'button_label' => __( 'Activate combine CSS', 'rocket' ),
 					],
 				],
-				'exclude_css'                    => [
+				'exclude_css'                => [
 					'type'              => 'textarea',
 					'label'             => __( 'Excluded CSS Files', 'rocket' ),
 					'description'       => __( 'Specify URLs of CSS files to be excluded from minification and concatenation (one per line).', 'rocket' ),
@@ -656,7 +656,7 @@ class Page {
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
 				],
-				'async_css'                      => [
+				'async_css'                  => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Optimize CSS delivery', 'rocket' ),
 					'container_class'   => [
@@ -676,7 +676,7 @@ class Page {
 						'disabled' => is_plugin_active( 'wp-criticalcss/wp-criticalcss.php' ) ? 1 : 0,
 					],
 				],
-				'critical_css'                   => [
+				'critical_css'               => [
 					'type'              => 'textarea',
 					'label'             => __( 'Fallback critical CSS', 'rocket' ),
 					'container_class'   => [
@@ -690,7 +690,7 @@ class Page {
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
 				],
-				'remove_unused_css'              => [
+				'remove_unused_css'          => [
 					'container_class'   => [
 						'wpr-isParent',
 						'wpr-RemoveUnUsedCss',
@@ -704,20 +704,7 @@ class Page {
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
-				'remove_unused_css_progress_bar' => [
-					'type'            => 'react_component',
-					'container_class' => [
-						'wpr-field--children',
-					],
-					'parent'          => 'remove_unused_css',
-					'section'         => 'css',
-					'page'            => 'file_optimization',
-					'default'         => [],
-					'input_attr'      => [
-						'disabled' => get_rocket_option( 'remove_unused_css' ) ? 0 : 1,
-					],
-				],
-				'remove_unused_css_safelist'     => [
+				'remove_unused_css_safelist' => [
 					'type'              => 'textarea',
 					'label'             => __( 'CSS safelist', 'rocket' ),
 					'description'       => __( 'Specify CSS filenames, IDs or classes that should not be removed (one per line).', 'rocket' ),
@@ -734,7 +721,7 @@ class Page {
 						'disabled' => get_rocket_option( 'remove_unused_css' ) ? 0 : 1,
 					],
 				],
-				'minify_js'                      => [
+				'minify_js'                  => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Minify JavaScript files', 'rocket' ),
 					'description'       => __( 'Minify JavaScript removes whitespace and comments to reduce the file size.', 'rocket' ),
@@ -755,7 +742,7 @@ class Page {
 						'button_label' => __( 'Activate minify JavaScript', 'rocket' ),
 					],
 				],
-				'minify_concatenate_js'          => [
+				'minify_concatenate_js'      => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Combine JavaScript files <em>(Enable Minify JavaScript files to select)</em>', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
@@ -778,7 +765,7 @@ class Page {
 						'button_label' => __( 'Activate combine JavaScript', 'rocket' ),
 					],
 				],
-				'exclude_inline_js'              => [
+				'exclude_inline_js'          => [
 					'type'              => 'textarea',
 					'label'             => __( 'Excluded Inline JavaScript', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
@@ -796,7 +783,7 @@ class Page {
 						'disabled' => get_rocket_option( 'minify_concatenate_js' ) ? 0 : 1,
 					],
 				],
-				'exclude_js'                     => [
+				'exclude_js'                 => [
 					'type'              => 'textarea',
 					'label'             => __( 'Excluded JavaScript Files', 'rocket' ),
 					'description'       => __( 'Specify URLs of JavaScript files to be excluded from minification and concatenation (one per line).', 'rocket' ),
@@ -813,7 +800,7 @@ class Page {
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
 				],
-				'defer_all_js'                   => [
+				'defer_all_js'               => [
 					'container_class'   => [
 						'wpr-isParent',
 					],
@@ -826,7 +813,7 @@ class Page {
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
-				'exclude_defer_js'               => [
+				'exclude_defer_js'           => [
 					'container_class'   => [
 						'wpr-field--children',
 					],
@@ -841,7 +828,7 @@ class Page {
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
 				],
-				'delay_js'                       => [
+				'delay_js'                   => [
 					'container_class'   => [
 						'wpr-isParent',
 						'wpr-Delayjs',
@@ -855,7 +842,7 @@ class Page {
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
-				'delay_js_exclusions'            => [
+				'delay_js_exclusions'        => [
 					'type'              => 'textarea',
 					'label'             => __( 'Excluded JavaScript Files', 'rocket' ),
 					'description'       => __( 'Specify URLs or keywords that can identify inline or JavaScript files to be excluded from delaying execution (one per line).', 'rocket' ),
