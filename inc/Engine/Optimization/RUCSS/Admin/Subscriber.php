@@ -49,25 +49,45 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() : array {
-		$slug = rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' );
+		$slug        = rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' );
+		$plugin_slug = rocket_get_constant( 'WP_ROCKET_PLUGIN_SLUG' );
 
 		return [
-			'rocket_first_install_options'       => 'add_options_first_time',
-			'rocket_input_sanitize'              => [ 'sanitize_options', 14, 2 ],
-			'update_option_' . $slug             => [ 'clean_used_css_and_cache', 10, 2 ],
-			'switch_theme'                       => 'truncate_used_css',
-			'rocket_rucss_file_changed'          => 'truncate_used_css',
-			'wp_trash_post'                      => 'delete_used_css_on_update_or_delete',
-			'delete_post'                        => 'delete_used_css_on_update_or_delete',
-			'clean_post_cache'                   => 'delete_used_css_on_update_or_delete',
-			'wp_update_comment_count'            => 'delete_used_css_on_update_or_delete',
-			'init'                               => 'schedule_clean_not_commonly_used_rows',
-			'rocket_rucss_clean_rows_time_event' => 'cron_clean_rows',
-			'admin_post_rocket_clear_usedcss'    => 'truncate_used_css_handler',
-			'admin_notices'                      => 'clear_usedcss_result',
-			'rocket_admin_bar_items'             => 'add_clean_used_css_menu_item',
-			'rocket_after_settings_checkbox'     => 'display_progress_bar',
+			'rocket_first_install_options'                     => 'add_options_first_time',
+			'rocket_input_sanitize'                            => [ 'sanitize_options', 14, 2 ],
+			'update_option_' . $slug                           => [ 'clean_used_css_and_cache', 10, 2 ],
+			'switch_theme'                                     => 'truncate_used_css',
+			'rocket_rucss_file_changed'                        => 'truncate_used_css',
+			'wp_trash_post'                                    => 'delete_used_css_on_update_or_delete',
+			'delete_post'                                      => 'delete_used_css_on_update_or_delete',
+			'clean_post_cache'                                 => 'delete_used_css_on_update_or_delete',
+			'wp_update_comment_count'                          => 'delete_used_css_on_update_or_delete',
+			'init'                                             => 'schedule_clean_not_commonly_used_rows',
+			'rocket_rucss_clean_rows_time_event'               => 'cron_clean_rows',
+			'admin_post_rocket_clear_usedcss'                  => 'truncate_used_css_handler',
+			'admin_notices'                                    => 'clear_usedcss_result',
+			'rocket_admin_bar_items'                           => 'add_clean_used_css_menu_item',
+			'rocket_after_settings_checkbox'                   => 'display_progress_bar',
+			'admin_print_styles-settings_page_' . $plugin_slug => 'add_admin_js',
 		];
+	}
+
+	/**
+	 * Enqueue React params and Progress bar.
+	 *
+	 * @return void
+	 */
+	public function add_admin_js() {
+		wp_enqueue_script( 'wpr-rucss-progress-bar', WP_ROCKET_ASSETS_JS_URL . 'react/rucss_progress_bar.js', [ 'react-dom' ], '1.0.0', true );
+
+		wp_localize_script(
+			'wpr-rucss-progress-bar',
+			'rocket_rucss_ajax_data',
+			[
+				'api_url'   => rest_url( 'wp-rocket/v1/' ),
+				'api_nonce' => wp_create_nonce( 'rocket-ajax' ),
+			]
+		);
 	}
 
 	/**

@@ -12,7 +12,8 @@ function rocket_add_admin_css_js() {
 	wp_enqueue_script( 'micromodal', WP_ROCKET_ASSETS_JS_URL . 'micromodal.min.js', null, '0.4.2', true );
 	wp_enqueue_script( 'wpr-admin', WP_ROCKET_ASSETS_JS_URL . 'wpr-admin.js', [ 'micromodal' ], WP_ROCKET_VERSION, true );
 
-	wp_enqueue_script( 'react-rucss-progress-bar', WP_ROCKET_ASSETS_JS_URL . 'react/rucss_progress_bar.js', null, '1.0.0', true );
+	wp_enqueue_script( 'react' );
+	wp_enqueue_script( 'react-dom' );
 
 	wp_localize_script(
 		'wpr-admin',
@@ -29,8 +30,6 @@ function rocket_add_admin_css_js() {
 			[
 				'nonce'      => wp_create_nonce( 'rocket-ajax' ),
 				'origin_url' => untrailingslashit( rocket_get_constant( 'WP_ROCKET_WEB_MAIN' ) ),
-				'api_url'    => rest_url( 'wp-rocket/v1/' ),
-				'api_nonce'  => wp_create_nonce( 'rocket-ajax' ),
 			]
 		)
 	);
