@@ -56,13 +56,15 @@ return [
 						'url'     => 'http://example.org/css/style-empty.css',
 						'content' => '*',
 						'type'    => 'css',
-						'media'   => 'all'
+						'media'   => 'all',
+						'prewarmup' => 0,
 					],
 					[
 						'url'     => 'http://example.org/css/style-notfound.css',
 						'content' => '*',
 						'type'    => 'css',
-						'media'   => 'all'
+						'media'   => 'all',
+						'prewarmup' => 0,
 					]
 				],
 			],
@@ -89,18 +91,21 @@ return [
 						'url'     => 'http://example.org/css/style1.css?ver=123',
 						'content' => '.first{color:red}',
 						'type'    => 'css',
-						'media'   => 'all'
+						'media'   => 'all',
+						'prewarmup' => 0,
 					],
 					[
 						'url'     => 'http://example.org/css/style2.css',
 						'content' => '.second{color:green}',
 						'type'    => 'css',
-						'media'   => 'all'
+						'media'   => 'all',
+						'prewarmup' => 0,
 					],
 					[
 						'url'     => 'http://example.org/scripts/script2.js',
 						'content' => 'var second = "content 2";',
-						'type'    => 'js'
+						'type'    => 'js',
+						'prewarmup' => 0,
 					]
 				],
 			],
@@ -119,13 +124,15 @@ return [
 						'url'     => 'http://example.org/css/style1.css?ver=123',
 						'content' => '.first{color:red}',
 						'type'    => 'css',
-						'media'   => 'all'
+						'media'   => 'all',
+						'prewarmup' => 0,
 					],
 					[
 						'url'     => 'http://example.org/css/style2.css',
 						'content' => '.second{color:green}',
 						'type'    => 'css',
-						'media'   => 'print'
+						'media'   => 'print',
+						'prewarmup' => 0,
 					]
 
 				],
@@ -145,12 +152,14 @@ return [
 						'url'     => 'http://example.org/css/style1.css?ver=123',
 						'content' => '.first{color:red}',
 						'type'    => 'css',
-						'media'   => 'all'
+						'media'   => 'all',
+						'prewarmup' => 0,
 					],
 					[
 						'url'     => 'http://example.org/scripts/script1.js',
 						'content' => 'var first = "content 1";',
-						'type'    => 'js'
+						'type'    => 'js',
+						'prewarmup' => 0,
 					]
 				],
 			],
@@ -169,12 +178,14 @@ return [
 						'url'     => 'http://example.org/css/stylewithimport.css?ver=123',
 						'content' => '.first{color:red}.another-class-in-stylewithimport{color:#fff}',
 						'type'    => 'css',
-						'media'   => 'all'
+						'media'   => 'all',
+						'prewarmup' => 0,
 					],
 					[
 						'url'     => 'http://example.org/scripts/script1.js',
 						'content' => 'var first = "content 1";',
-						'type'    => 'js'
+						'type'    => 'js',
+						'prewarmup' => 0,
 					],
 				],
 			],
@@ -193,12 +204,14 @@ return [
 						'url'     => 'http://example.org/css/stylewithimportedmqs.css?ver=123',
 						'content' => '@media screen{.third{color:#000}}.another-imported-class{color:blue}',
 						'type'    => 'css',
-						'media'   => 'all'
+						'media'   => 'all',
+						'prewarmup' => 0,
 					],
 					[
 						'url'     => 'http://example.org/scripts/script1.js',
 						'content' => 'var first = "content 1";',
-						'type'    => 'js'
+						'type'    => 'js',
+						'prewarmup' => 0,
 					],
 				],
 			],
@@ -217,12 +230,14 @@ return [
 						'url'     => 'http://example.org/css/stylewithrelativepathimport.css?ver=123',
 						'content' => '.relatively-pathed-imported-class{color:#000}.some-imported-class{color:pink}',
 						'type'    => 'css',
-						'media'   => 'all'
+						'media'   => 'all',
+						'prewarmup' => 0,
 					],
 					[
 						'url'     => 'http://example.org/scripts/script1.js',
 						'content' => 'var first = "content 1";',
-						'type'    => 'js'
+						'type'    => 'js',
+						'prewarmup' => 0,
 					],
 				],
 			],
@@ -241,12 +256,14 @@ return [
 						'url'     => 'http://example.org/css/stylewithimport-recursion.css?ver=123',
 						'content' => ".another-class-in-stylewithimport-recursion{color:#fff}",
 						'type'    => 'css',
-						'media'   => 'all'
+						'media'   => 'all',
+						'prewarmup' => 0,
 					],
 					[
 						'url'     => 'http://example.org/scripts/script1.js',
 						'content' => 'var first = "content 1";',
-						'type'    => 'js'
+						'type'    => 'js',
+						'prewarmup' => 0,
 					],
 				],
 			],
@@ -264,7 +281,8 @@ return [
 						'url'     => 'http://example.org/css/style1.css?ver=123&q=5',
 						'content' => '.first{color:red}',
 						'type'    => 'css',
-						'media'   => 'all'
+						'media'   => 'all',
+						'prewarmup' => 0,
 					],
 				],
 			],

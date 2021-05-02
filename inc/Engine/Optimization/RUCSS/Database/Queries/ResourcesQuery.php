@@ -85,8 +85,9 @@ class ResourcesQuery extends Query {
 					'url'           => $resource['url'],
 					'type'          => $resource['type'],
 					'content'       => $resource['content'],
-					'media'         => isset( $resource['media'] ) ? $resource['media'] : '',
+					'media'         => $resource['media'] ?? '',
 					'hash'          => md5( $resource['content'] ),
+					'prewarmup'     => $resource['prewarmup'] ?? 0,
 					'last_accessed' => current_time( 'mysql', true ),
 				]
 			);
@@ -106,8 +107,8 @@ class ResourcesQuery extends Query {
 			]
 		);
 
-		// Check the content hash.
-		if ( md5( $resource['content'] ) === $db_row->hash ) {
+		// Check the content hash and bailour if the content is the same and we are not in prewarmup.
+		if ( md5( $resource['content'] ) === $db_row->hash && ! $resource['prewarmup'] ) {
 			// Do nothing.
 			return false;
 		}
@@ -116,9 +117,10 @@ class ResourcesQuery extends Query {
 		$this->update_item(
 			$db_row->id,
 			[
-				'content'  => $resource['content'],
-				'hash'     => md5( $resource['content'] ),
-				'modified' => current_time( 'mysql', true ),
+				'prewarmup' => $resource['prewarmup'] ?? 0,
+				'content'   => $resource['content'],
+				'hash'      => md5( $resource['content'] ),
+				'modified'  => current_time( 'mysql', true ),
 			]
 		);
 
@@ -138,5 +140,45 @@ class ResourcesQuery extends Query {
 		$db_row = $this->get_item_by( 'url', $url );
 
 		$this->delete_item( $db_row->id );
+	}
+
+	/**
+	 * Gets resources waiting for prewarmup response
+	 *
+	 * @since 3.9
+	 *
+	 * @return array
+	 */
+	public function get_waiting_prewarmup_items(): array {
+		return $this->query(
+			[
+				'prewarmup'     => 1,
+				'warmup_status' => 0,
+			]
+		);
+	}
+
+	/**
+	 * Updates the resource row when the warmup status is ok
+	 *
+	 * @since 3.9
+	 *
+	 * @param string $url URL of the resource.
+	 *
+	 * @return bool
+	 */
+	public function update_warmup_status( string $url ) {
+		$db_row = $this->get_item_by( 'url', $url );
+
+		if ( empty( $db_row ) ) {
+			return false;
+		}
+
+		return $this->update_item(
+			$db_row->id,
+			[
+				'warmup_status' => 1,
+			]
+		);
 	}
 }
