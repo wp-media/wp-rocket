@@ -68,7 +68,7 @@ defined( 'ABSPATH' ) || exit;
 <?php if ( ! empty( $data['warning'] ) ) : ?>
 </div>
 <?php
-endif;
+	endif;
 	/**
 	 * Fires after displaying the checkbox field on the settings page
 	 *
