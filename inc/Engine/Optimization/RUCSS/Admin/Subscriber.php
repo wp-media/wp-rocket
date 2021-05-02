@@ -66,6 +66,7 @@ class Subscriber implements Subscriber_Interface {
 			'admin_post_rocket_clear_usedcss'    => 'truncate_used_css_handler',
 			'admin_notices'                      => 'clear_usedcss_result',
 			'rocket_admin_bar_items'             => 'add_clean_used_css_menu_item',
+			'rocket_after_settings_checkbox'     => 'display_progress_bar',
 		];
 	}
 
@@ -271,5 +272,22 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function add_clean_used_css_menu_item( $wp_admin_bar ) {
 		$this->settings->add_clean_used_css_menu_item( $wp_admin_bar );
+	}
+
+	/**
+	 * Displays the RUCSS progressbar
+	 *
+	 * @since 3.9
+	 *
+	 * @param string $field_id ID of the settings field.
+	 *
+	 * @return void
+	 */
+	public function display_progress_bar( $field_id ) {
+		if ( 'remove_unused_css' !== $field_id ) {
+			return;
+		}
+
+		$this->settings->display_progress_bar();
 	}
 }
