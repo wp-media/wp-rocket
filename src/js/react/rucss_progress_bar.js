@@ -1,6 +1,6 @@
 /* global window, document */
-import Admin from './containers/Admin.jsx';
+import RUCSSStatus from './containers/rucss_status.jsx';
 
 document.addEventListener('DOMContentLoaded', function() {
-  ReactDOM.render(<Admin wpObject={window.rocket_rucss_ajax_data} />, document.getElementById('rucss-progressbar'));
+  ReactDOM.render(<RUCSSStatus wpObject={window.rocket_rucss_ajax_data} />, document.getElementById('rucss-progressbar'));
 });

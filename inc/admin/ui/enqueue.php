@@ -14,6 +14,7 @@ function rocket_add_admin_css_js() {
 
 	wp_enqueue_script( 'react' );
 	wp_enqueue_script( 'react-dom' );
+	wp_enqueue_script( 'wp-api-fetch' );
 
 	wp_localize_script(
 		'wpr-admin',
