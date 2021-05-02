@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\RUCSS\Warmup;
 
+use WP_Rocket\Admin\Options;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\ResourcesQuery;
 use \WP_Rocket_WP_Background_Process;
 
@@ -45,16 +46,32 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 	private $content_changed = false;
 
 	/**
+	 * Current page url that has the current resource.
+	 *
+	 * @var string
+	 */
+	public $page_url = '';
+
+	/**
+	 * Options API instance.
+	 *
+	 * @var Options
+	 */
+	private $options_api;
+
+	/**
 	 * ResourceFetcherProcess constructor.
 	 *
 	 * @param ResourcesQuery $resources_query ResourcesQuery instance.
 	 * @param APIClient      $api_client APIClient instance.
+	 * @param Options        $options_api Options API instance.
 	 */
-	public function __construct( ResourcesQuery $resources_query, APIClient $api_client ) {
+	public function __construct( ResourcesQuery $resources_query, APIClient $api_client, Options $options_api ) {
 		parent::__construct();
 
 		$this->resources_query = $resources_query;
 		$this->api_client      = $api_client;
+		$this->options_api     = $options_api;
 	}
 
 
@@ -69,6 +86,8 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 		if ( ! is_array( $resource ) ) {
 			return false;
 		}
+
+		$this->page_url = $resource['page_url'] ?? '';
 
 		if ( $this->resources_query->create_or_update( $resource ) ) {
 			$this->content_changed = true;
@@ -96,6 +115,7 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 	 * @return void
 	 */
 	protected function complete() {
+
 		parent::complete();
 
 		if ( ! $this->content_changed ) {
@@ -103,5 +123,26 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 		}
 
 		do_action( 'rocket_rucss_file_changed' );
+	}
+
+	/**
+	 * Batch completed callback.
+	 */
+	protected function complete_batch() {
+		if ( empty( $this->page_url ) ) {
+			return;
+		}
+
+		$option = $this->options_api->get( 'resources_scanner', [] );
+		foreach ( $option as $key => $item ) {
+			if ( $this->page_url !== $item['url'] ) {
+				continue;
+			}
+
+			$item['is_fetched'] = true;
+			$option[ $key ]     = $item;
+		}
+
+		$this->options_api->set( 'resources_scanner', $option );
 	}
 }

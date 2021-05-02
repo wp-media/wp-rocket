@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Optimization\RUCSS\Warmup;
 
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Engine\Optimization\ContentTrait;
+use WP_Rocket\Logger\Logger;
 
 class Scanner {
 	use ContentTrait;
@@ -87,6 +88,8 @@ class Scanner {
 	 */
 	private function dispatcher() {
 		$this->set_items();
+
+		$this->options_api->delete( 'resources_scanner' );
 
 		array_map( [ $this->process, 'push_to_queue' ], $this->items );
 
