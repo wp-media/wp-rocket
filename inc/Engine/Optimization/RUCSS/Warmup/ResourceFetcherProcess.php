@@ -50,7 +50,7 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 	 *
 	 * @var string
 	 */
-	public $page_url = '';
+	private $page_url = '';
 
 	/**
 	 * Options API instance.
@@ -139,8 +139,7 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 				continue;
 			}
 
-			$item['is_fetched'] = true;
-			$option[ $key ]     = $item;
+			$option[ $key ]['is_fetched'] = true;
 		}
 
 		$this->options_api->set( 'resources_scanner', $option );
