@@ -696,6 +696,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'reload_attached_coupons',
 			'var ftpp',
 			'forminatorFront',
+			'var ASP',
 			'ecwidOriginalTitle',
 			'defaultCategoryId',
 			'translation-revision-date',
