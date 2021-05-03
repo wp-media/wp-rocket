@@ -699,6 +699,11 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'_EPYT_',
 			'edd_free_downloads_vars',
 			'edd_stripe_vars',
+			'var ASP',
+			'ecwidOriginalTitle',
+			'defaultCategoryId',
+			'translation-revision-date',
+			'google_conversion_id',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );

@@ -106,6 +106,9 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 
 		// Send resources to the background process to be saved into DB.
 		foreach ( $this->resources as $resource ) {
+			$resource['prewarmup'] = (int) ! empty( $_POST['prewarmup'] );// phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$resource['page_url']  = ! empty( $_POST['page_url'] ) ? esc_url_raw( wp_unslash( $_POST['page_url'] ) ) : '';// phpcs:ignore WordPress.Security.NonceVerification.Missing
+
 			$this->process->push_to_queue( $resource );
 		}
 
