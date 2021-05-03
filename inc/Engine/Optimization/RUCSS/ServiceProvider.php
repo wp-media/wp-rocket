@@ -80,7 +80,8 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->getContainer()->add( 'rucss_resource_fetcher_process', '\WP_Rocket\Engine\Optimization\RUCSS\Warmup\ResourceFetcherProcess' )
 			->addArgument( $this->getContainer()->get( 'rucss_resources_query' ) )
-			->addArgument( $this->getContainer()->get( 'rucss_warmup_api_client' ) );
+			->addArgument( $this->getContainer()->get( 'rucss_warmup_api_client' ) )
+			->addArgument( $this->getContainer()->get( 'options_api' ) );
 
 		$this->getContainer()->share( 'rucss_resource_fetcher', '\WP_Rocket\Engine\Optimization\RUCSS\Warmup\ResourceFetcher' )
 			->addArgument( $this->getContainer()->get( 'local_cache' ) )

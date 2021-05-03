@@ -7,6 +7,7 @@ use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\RUCSS\AbstractAPIClient;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\ResourcesQuery;
+use WP_Rocket\Logger\Logger;
 
 class Checker extends AbstractAPIClient {
 	/**
@@ -50,13 +51,13 @@ class Checker extends AbstractAPIClient {
 	 * @return void
 	 */
 	public function check_warmup_status() {
-		$start_time = $this->options_api->get( 'scanner_start_time', false );
+		$prewarmup_stats = $this->options_api->get( 'prewarmup_stats', [] );
 
-		if ( false === $start_time ) {
+		if ( empty( $prewarmup_stats['scan_start_time'] ) ) {
 			return;
 		}
 
-		if ( current_time() > strtotime( '+1 hour', $start_time ) ) {
+		if ( time() > strtotime( '+1 hour', (int) $prewarmup_stats['scan_start_time'] ) ) {
 			/**
 			 * Fires this action when the prewarmup lifespan is expired
 			 *
@@ -64,7 +65,6 @@ class Checker extends AbstractAPIClient {
 			 */
 			do_action( 'rocket_rucss_prewarmup_error' );
 
-			$this->options_api->delete( 'scanner_start_time' );
 			rocket_clean_domain();
 
 			return;
@@ -80,7 +80,6 @@ class Checker extends AbstractAPIClient {
 			 */
 			do_action( 'rocket_rucss_prewarmup_success' );
 
-			$this->options_api->delete( 'scanner_start_time' );
 			rocket_clean_domain();
 
 			return;
@@ -166,11 +165,11 @@ class Checker extends AbstractAPIClient {
 		];
 
 		foreach ( $items as $item ) {
-			if ( 'css' === $item['type'] ) {
-				$resources['css'][] = $item['url'];
-			} elseif ( 'js' === $item['type'] ) {
-				$resources['js'][] = $item['url'];
+			if ( ! in_array( $item->type, [ 'css', 'js' ], true ) ) {
+				continue;
 			}
+
+			$resources[ $item->type ][] = $item->url;
 		}
 
 		return $resources;
@@ -185,12 +184,11 @@ class Checker extends AbstractAPIClient {
 	 */
 	private function update_from_response() {
 		$response = json_decode( $this->response_body );
-
-		if ( empty( $response->data ) ) {
+		if ( empty( $response->contents ) ) {
 			return;
 		}
 
-		foreach ( $response->data as $url => $status ) {
+		foreach ( $response->contents as $url => $status ) {
 			if ( false === $status ) {
 				continue;
 			}

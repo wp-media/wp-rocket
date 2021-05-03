@@ -75,7 +75,8 @@ class Subscriber implements Subscriber_Interface {
 			'admin_notices'                  => 'prewarmup_result_notice',
 			'rocket_rucss_prewarmup_error'   => 'prepare_error_notice',
 			'rocket_rucss_prewarmup_success' => 'prepare_success_notice',
-			'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ) => [ 'start_scanner', 15, 2 ],
+			// The following priority should be less than 10.
+			'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ) => [ 'start_scanner', 9, 2 ],
 		];
 	}
 
@@ -121,6 +122,11 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function check_warmup_status() {
 		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
+			return;
+		}
+
+		$prewarmup_stats = get_option( 'wp_rocket_prewarmup_stats', [] );
+		if ( empty( $prewarmup_stats ) || empty( $prewarmup_stats['fetch_finish_time'] ) ) {
 			return;
 		}
 
