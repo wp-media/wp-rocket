@@ -7,13 +7,13 @@ return [
 	'structure' => [
 
 		'css'     => [
-			'style1.css'      => '.first{color:red;}',
-			'style2.css'      => '.second{color:green;}',
-			'style3.css'      => '.third{color:#000000;}',
-			'style-empty.css' => '',
-			'stylewithimport.css' => '@import "style1.css";.another-class-in-stylewithimport{color: white;}',
-			'stylewithimportedmqs.css' => '@import "style3.css" screen;.another-imported-class{color: blue;}',
-			'stylewithimport-recursion.css' => '@import "stylewithimport-recursion.css";.another-class-in-stylewithimport-recursion{color: white;}',
+			'style1.css'                      => '.first{color:red;}',
+			'style2.css'                      => '.second{color:green;}',
+			'style3.css'                      => '.third{color:#000000;}',
+			'style-empty.css'                 => '',
+			'stylewithimport.css'             => '@import "style1.css";.another-class-in-stylewithimport{color: white;}',
+			'stylewithimportedmqs.css'        => '@import "style3.css" screen;.another-imported-class{color: blue;}',
+			'stylewithimport-recursion.css'   => '@import "stylewithimport-recursion.css";.another-class-in-stylewithimport-recursion{color: white;}',
 			'stylewithrelativepathimport.css' => '@import "./../relativelypathedstyles.css";.some-imported-class{color:pink;}',
 		],
 		'scripts' => [
@@ -53,18 +53,20 @@ return [
 			'expected' => [
 				'resources' => [
 					[
-						'url'     => 'http://example.org/css/style-empty.css',
-						'content' => '*',
-						'type'    => 'css',
-						'media'   => 'all',
+						'url'       => 'http://example.org/css/style-empty.css',
+						'content'   => '*',
+						'type'      => 'css',
+						'media'     => 'all',
 						'prewarmup' => 0,
+						'page_url'  => '',
 					],
 					[
-						'url'     => 'http://example.org/css/style-notfound.css',
-						'content' => '*',
-						'type'    => 'css',
-						'media'   => 'all',
+						'url'       => 'http://example.org/css/style-notfound.css',
+						'content'   => '*',
+						'type'      => 'css',
+						'media'     => 'all',
 						'prewarmup' => 0,
+						'page_url'  => '',
 					]
 				],
 			],
@@ -88,24 +90,27 @@ return [
 			'expected' => [
 				'resources' => [
 					[
-						'url'     => 'http://example.org/css/style1.css?ver=123',
-						'content' => '.first{color:red}',
-						'type'    => 'css',
-						'media'   => 'all',
+						'url'       => 'http://example.org/css/style1.css?ver=123',
+						'content'   => '.first{color:red}',
+						'type'      => 'css',
+						'media'     => 'all',
 						'prewarmup' => 0,
+						'page_url'  => '',
 					],
 					[
-						'url'     => 'http://example.org/css/style2.css',
-						'content' => '.second{color:green}',
-						'type'    => 'css',
-						'media'   => 'all',
+						'url'       => 'http://example.org/css/style2.css',
+						'content'   => '.second{color:green}',
+						'type'      => 'css',
+						'media'     => 'all',
 						'prewarmup' => 0,
+						'page_url'  => '',
 					],
 					[
-						'url'     => 'http://example.org/scripts/script2.js',
-						'content' => 'var second = "content 2";',
-						'type'    => 'js',
+						'url'       => 'http://example.org/scripts/script2.js',
+						'content'   => 'var second = "content 2";',
+						'type'      => 'js',
 						'prewarmup' => 0,
+						'page_url'  => '',
 					]
 				],
 			],
@@ -121,18 +126,20 @@ return [
 			'expected' => [
 				'resources' => [
 					[
-						'url'     => 'http://example.org/css/style1.css?ver=123',
-						'content' => '.first{color:red}',
-						'type'    => 'css',
-						'media'   => 'all',
+						'url'       => 'http://example.org/css/style1.css?ver=123',
+						'content'   => '.first{color:red}',
+						'type'      => 'css',
+						'media'     => 'all',
 						'prewarmup' => 0,
+						'page_url'  => '',
 					],
 					[
-						'url'     => 'http://example.org/css/style2.css',
-						'content' => '.second{color:green}',
-						'type'    => 'css',
-						'media'   => 'print',
+						'url'       => 'http://example.org/css/style2.css',
+						'content'   => '.second{color:green}',
+						'type'      => 'css',
+						'media'     => 'print',
 						'prewarmup' => 0,
+						'page_url'  => '',
 					]
 
 				],
@@ -149,17 +156,19 @@ return [
 			'expected' => [
 				'resources' => [
 					[
-						'url'     => 'http://example.org/css/style1.css?ver=123',
-						'content' => '.first{color:red}',
-						'type'    => 'css',
-						'media'   => 'all',
+						'url'       => 'http://example.org/css/style1.css?ver=123',
+						'content'   => '.first{color:red}',
+						'type'      => 'css',
+						'media'     => 'all',
 						'prewarmup' => 0,
+						'page_url'  => '',
 					],
 					[
-						'url'     => 'http://example.org/scripts/script1.js',
-						'content' => 'var first = "content 1";',
-						'type'    => 'js',
+						'url'       => 'http://example.org/scripts/script1.js',
+						'content'   => 'var first = "content 1";',
+						'type'      => 'js',
 						'prewarmup' => 0,
+						'page_url'  => '',
 					]
 				],
 			],
@@ -175,17 +184,19 @@ return [
 			'expected' => [
 				'resources' => [
 					[
-						'url'     => 'http://example.org/css/stylewithimport.css?ver=123',
-						'content' => '.first{color:red}.another-class-in-stylewithimport{color:#fff}',
-						'type'    => 'css',
-						'media'   => 'all',
+						'url'       => 'http://example.org/css/stylewithimport.css?ver=123',
+						'content'   => '.first{color:red}.another-class-in-stylewithimport{color:#fff}',
+						'type'      => 'css',
+						'media'     => 'all',
 						'prewarmup' => 0,
+						'page_url'  => '',
 					],
 					[
-						'url'     => 'http://example.org/scripts/script1.js',
-						'content' => 'var first = "content 1";',
-						'type'    => 'js',
+						'url'       => 'http://example.org/scripts/script1.js',
+						'content'   => 'var first = "content 1";',
+						'type'      => 'js',
 						'prewarmup' => 0,
+						'page_url'  => '',
 					],
 				],
 			],
@@ -201,17 +212,19 @@ return [
 			'expected' => [
 				'resources' => [
 					[
-						'url'     => 'http://example.org/css/stylewithimportedmqs.css?ver=123',
-						'content' => '@media screen{.third{color:#000}}.another-imported-class{color:blue}',
-						'type'    => 'css',
-						'media'   => 'all',
+						'url'       => 'http://example.org/css/stylewithimportedmqs.css?ver=123',
+						'content'   => '@media screen{.third{color:#000}}.another-imported-class{color:blue}',
+						'type'      => 'css',
+						'media'     => 'all',
 						'prewarmup' => 0,
+						'page_url'  => '',
 					],
 					[
-						'url'     => 'http://example.org/scripts/script1.js',
-						'content' => 'var first = "content 1";',
-						'type'    => 'js',
+						'url'       => 'http://example.org/scripts/script1.js',
+						'content'   => 'var first = "content 1";',
+						'type'      => 'js',
 						'prewarmup' => 0,
+						'page_url'  => '',
 					],
 				],
 			],
@@ -227,17 +240,19 @@ return [
 			'expected' => [
 				'resources' => [
 					[
-						'url'     => 'http://example.org/css/stylewithrelativepathimport.css?ver=123',
-						'content' => '.relatively-pathed-imported-class{color:#000}.some-imported-class{color:pink}',
-						'type'    => 'css',
-						'media'   => 'all',
+						'url'       => 'http://example.org/css/stylewithrelativepathimport.css?ver=123',
+						'content'   => '.relatively-pathed-imported-class{color:#000}.some-imported-class{color:pink}',
+						'type'      => 'css',
+						'media'     => 'all',
 						'prewarmup' => 0,
+						'page_url'  => '',
 					],
 					[
-						'url'     => 'http://example.org/scripts/script1.js',
-						'content' => 'var first = "content 1";',
-						'type'    => 'js',
+						'url'       => 'http://example.org/scripts/script1.js',
+						'content'   => 'var first = "content 1";',
+						'type'      => 'js',
 						'prewarmup' => 0,
+						'page_url'  => '',
 					],
 				],
 			],
@@ -253,17 +268,19 @@ return [
 			'expected' => [
 				'resources' => [
 					[
-						'url'     => 'http://example.org/css/stylewithimport-recursion.css?ver=123',
-						'content' => ".another-class-in-stylewithimport-recursion{color:#fff}",
-						'type'    => 'css',
-						'media'   => 'all',
+						'url'       => 'http://example.org/css/stylewithimport-recursion.css?ver=123',
+						'content'   => ".another-class-in-stylewithimport-recursion{color:#fff}",
+						'type'      => 'css',
+						'media'     => 'all',
 						'prewarmup' => 0,
+						'page_url'  => '',
 					],
 					[
-						'url'     => 'http://example.org/scripts/script1.js',
-						'content' => 'var first = "content 1";',
-						'type'    => 'js',
+						'url'       => 'http://example.org/scripts/script1.js',
+						'content'   => 'var first = "content 1";',
+						'type'      => 'js',
 						'prewarmup' => 0,
+						'page_url'  => '',
 					],
 				],
 			],
@@ -278,11 +295,12 @@ return [
 			'expected' => [
 				'resources' => [
 					[
-						'url'     => 'http://example.org/css/style1.css?ver=123&q=5',
-						'content' => '.first{color:red}',
-						'type'    => 'css',
-						'media'   => 'all',
+						'url'       => 'http://example.org/css/style1.css?ver=123&q=5',
+						'content'   => '.first{color:red}',
+						'type'      => 'css',
+						'media'     => 'all',
 						'prewarmup' => 0,
+						'page_url'  => '',
 					],
 				],
 			],

@@ -7,6 +7,7 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\AssetsLocalCache;
 use WP_Rocket\Engine\Optimization\RUCSS\Warmup\ResourceFetcher;
 use WP_Rocket\Engine\Optimization\RUCSS\Warmup\ResourceFetcherProcess;
+use WP_Rocket\Engine\Optimization\RUCSS\Warmup\Status\RESTWP;
 use WP_Rocket\Engine\Optimization\RUCSS\Warmup\Scanner;
 use WP_Rocket\Engine\Optimization\RUCSS\Warmup\Status\Checker;
 use WP_Rocket\Engine\Optimization\RUCSS\Warmup\Subscriber;
@@ -64,7 +65,8 @@ class Test_CollectResources extends TestCase {
 				->andReturn( null );
 		}
 
-		$subscriber = new Subscriber( $options_data, $fetcher, $scanner, $status_checker );
+		$restwp = Mockery::mock( RESTWP::class );
+		$subscriber = new Subscriber( $options_data, $fetcher, $restwp, $scanner, $status_checker );
 		$this->assertSame( $input['html'], $subscriber->collect_resources( $input['html'] ) );
 
 	}
