@@ -115,7 +115,6 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 	 * @return void
 	 */
 	protected function complete() {
-
 		parent::complete();
 
 		if ( ! $this->content_changed ) {
