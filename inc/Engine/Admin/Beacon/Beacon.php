@@ -351,6 +351,12 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://fr.docs.wp-rocket.me/article/1018-configuration-http-2/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
+			'remove_unused_css'          => [
+				'en' => [
+					'id'  => '6076083ff8c0ef2d98df1f97',
+					'url' => 'https://docs.wp-rocket.me/article/1529-remove-unused-css?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
 			'exclude_inline_js'          => [
 				'en' => [
 					'id'  => '5b4879100428630abc0c0713',

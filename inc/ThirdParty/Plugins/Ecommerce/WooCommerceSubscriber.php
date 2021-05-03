@@ -482,6 +482,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 			'get_price_table', // Tiered Pricing Table for WooCommerce.
 			'wccs_single_product_nonce', // Discount Rules and Dynamic Pricing for WooCommerce.
 			'bookyourtravel_nonce', // Book Your Travel theme.
+			'sign_signin', // Custom Login for Improvise Theme by Noomia.
 		];
 	}
 }

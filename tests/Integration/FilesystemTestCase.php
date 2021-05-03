@@ -11,6 +11,7 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 	use SettingsTrait;
 	use StubTrait;
 	use VirtualFilesystemTrait;
+	use FilterTrait;
 
 	protected static $use_settings_trait = false;
 	protected static $skip_setting_up_settings = false;

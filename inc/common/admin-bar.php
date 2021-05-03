@@ -31,6 +31,7 @@ function rocket_admin_bar( $wp_admin_bar ) {
 		'rocket_purge_cloudflare_cache',
 		'rocket_preload_cache',
 		'rocket_regenerate_critical_css',
+		'rocket_remove_unused_css',
 	];
 
 	foreach ( $capabilities as $cap ) {

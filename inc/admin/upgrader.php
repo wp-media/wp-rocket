@@ -40,6 +40,15 @@ function rocket_upgrader() {
 
 	$page = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING );
 
+	if (
+		'wprocket' === $page
+		&&
+		did_action( 'wp_rocket_upgrade' )
+	) {
+		wp_safe_redirect( esc_url_raw( admin_url( 'options-general.php?page=wprocket' ) ) );
+		exit;
+	}
+
 	if ( ! rocket_valid_key() && current_user_can( 'rocket_manage_options' ) && 'wprocket' === $page ) {
 		add_action( 'admin_notices', 'rocket_need_api_key' );
 	}
