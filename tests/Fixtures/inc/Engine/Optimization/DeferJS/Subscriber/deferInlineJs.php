@@ -35,7 +35,8 @@ $html = <<<HTML
 		});
 	</script>
 	<script>(function(html){html.className = html.className.replace(/\bno-js\b/,'js')})(document.documentElement);</script>
-HTML;
+HTML
+;
 
 $expected = <<<HTML
 	<script src="http://example.org/wp-includes/js/jquery/jquery.js?v=3.1.15" id="jquery-core" defer></script>
@@ -78,7 +79,8 @@ $expected = <<<HTML
 	});
 	</script>
 	<script>(function(html){html.className = html.className.replace(/\bno-js\b/,'js')})(document.documentElement);</script>
-HTML;
+HTML
+;
 
 return [
 	'testShouldReturnOriginalWhenConstantSet' => [
@@ -164,7 +166,8 @@ HTML
 	<script type="text/javascript">var first_string = jQuery('#first_selector');</script>
 	<script type="text/javascript">window.addEventListener('DOMContentLoaded', function() {var second_string = jQuery('#second_selector');});</script>
 	<script type="text/javascript">var third_string = jQuery('#third_selector');</script>
-HTML,
+HTML
+		,
 	],
 
 	'testShouldExcludeUsingArrayOfStringsFilter' => [
@@ -190,7 +193,8 @@ HTML
 	<script type="text/javascript">var first_string = jQuery('#first_selector');</script>
 	<script type="text/javascript">window.addEventListener('DOMContentLoaded', function() {var second_string = jQuery('#second_selector');});</script>
 	<script type="text/javascript">var third_string = jQuery('#third_selector');</script>
-HTML,
+HTML
+		,
 	],
 
 	'testShouldExcludeUsingArrayOfIntegersFilter' => [
@@ -217,7 +221,8 @@ HTML
 	<script type="text/javascript">window.addEventListener('DOMContentLoaded', function() {var first_string = jQuery('#first_selector');});</script>
 	<script type="text/javascript">window.addEventListener('DOMContentLoaded', function() {var second_string = jQuery('#second_selector');});</script>
 	<script type="text/javascript">window.addEventListener('DOMContentLoaded', function() {var third_string = jQuery('#third_selector');});</script>
-HTML,
+HTML
+		,
 	],
 
 	'testShouldExcludeUsingObjectFilter' => [
@@ -240,7 +245,8 @@ HTML
 	<script type="text/javascript">window.addEventListener('DOMContentLoaded', function() {var first_string = jQuery('#first_selector');});</script>
 	<script type="text/javascript">window.addEventListener('DOMContentLoaded', function() {var second_string = jQuery('#second_selector');});</script>
 	<script type="text/javascript">window.addEventListener('DOMContentLoaded', function() {var third_string = jQuery('#third_selector');});</script>
-HTML,
+HTML
+		,
 	],
 
 	'testShouldExcludeUsingEmptyFilter' => [
@@ -263,7 +269,8 @@ HTML
 	<script type="text/javascript">window.addEventListener('DOMContentLoaded', function() {var first_string = jQuery('#first_selector');});</script>
 	<script type="text/javascript">window.addEventListener('DOMContentLoaded', function() {var second_string = jQuery('#second_selector');});</script>
 	<script type="text/javascript">document.write('test');</script>
-HTML,
+HTML
+		,
 	],
 
 	'testShouldExcludeUsingBooleanFilter' => [
@@ -282,7 +289,8 @@ HTML
 		,
 		'expected' => <<<HTML
 	<script type="text/javascript">window.addEventListener('DOMContentLoaded', function() {var first_string = jQuery('#first_selector');});</script>
-HTML,
+HTML
+		,
 	],
 
 	'testShouldExcludeUsingFloatFilter' => [
@@ -301,6 +309,7 @@ HTML
 		,
 		'expected' => <<<HTML
 	<script type="text/javascript">window.addEventListener('DOMContentLoaded', function() {var first_string = jQuery('#first_selector');});</script>
-HTML,
+HTML
+		,
 	],
 ];

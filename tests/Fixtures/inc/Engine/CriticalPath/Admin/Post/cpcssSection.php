@@ -23,7 +23,8 @@ $cpcss_content = <<<HTML
 		Revert back to the default CPCSS</span>
 	</button>
 </div>
-HTML;
+HTML
+;
 
 $cpcss_content_not_disabled = <<<HTML
 <p class="cpcss_generate ">
@@ -48,7 +49,8 @@ $cpcss_content_not_disabled = <<<HTML
 		Revert back to the default CPCSS</span>
 	</button>
 </div>
-HTML;
+HTML
+;
 
 return [
 

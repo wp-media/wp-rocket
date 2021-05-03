@@ -22,17 +22,19 @@ return [
 			'delay_js_exclusions' => [],
 		],
 	],
-	'testShouldUpdateOptionWhenVersionBelow3.9AndDelayJSEquals1'    => [
+	'testShouldUpdateOptionWhenVersionBelow3.9AndDelayJSEquals1' => [
 		'options'       => [
-			'delay_js' => 1,
+			'delay_js'              => 1,
+			'minify_concatenate_js' => 1,
 		],
 		'old_version'   => '3.8',
 		'expected'      => [
-			'delay_js'            => 1,
-			'delay_js_exclusions' => [
+			'delay_js'              => 1,
+			'minify_concatenate_js' => 0,
+			'delay_js_exclusions'   => [
 				'(?:/wp-content|/wp-includes/)(.*)',
 				'/jquery-?[0-9.]*(.min|.slim|.slim.min)?.js',
-				'js-(extra|after)',
+				'js-(before|after)',
 			],
 		],
 	],
