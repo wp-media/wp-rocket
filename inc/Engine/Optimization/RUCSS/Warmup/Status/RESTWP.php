@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Optimization\RUCSS\Warmup\Status;
 
 use WP_REST_Request;
 use WP_REST_Response;
+use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\ResourcesQuery;
 
@@ -42,16 +43,25 @@ class RESTWP {
 	private $resources_query;
 
 	/**
+	 * Options API instance.
+	 *
+	 * @var Options
+	 */
+	private $options_api;
+
+	/**
 	 * RESTWP constructor.
 	 *
 	 * @since 3.9
 	 *
 	 * @param Options_Data   $options Instance of options data handler.
 	 * @param ResourcesQuery $resources_query Resources Query instance.
+	 * @param Options        $options_api Options API instance.
 	 */
-	public function __construct( Options_Data $options, ResourcesQuery $resources_query ) {
+	public function __construct( Options_Data $options, ResourcesQuery $resources_query, Options $options_api ) {
 		$this->options         = $options;
 		$this->resources_query = $resources_query;
+		$this->options_api     = $options_api;
 	}
 
 	/**
@@ -93,23 +103,17 @@ class RESTWP {
 			);
 		}
 
-		$warmup_total_resources_count = $this->resources_query->get_prewarmup_total_count();
-
-		if ( empty( $warmup_total_resources_count ) ) {
+		$resources_scanner_option = $this->options_api->get( 'resources_scanner', [] );
+		if ( empty( $resources_scanner_option ) ) {
 			return rest_ensure_response(
-				$this->return_error( __( 'No resources currently exists into the resources table.', 'rocket' ) )
+				$this->return_error( __( 'Pre-Warmup process didn\'t start yet.', 'rocket' ) )
 			);
 		}
 
 		$output = [
-			'total'               => $warmup_total_resources_count,
-			'warmed_count'        => $this->resources_query->get_prewarmup_warmed_count(),
-			'notwarmed_resources' => [],
+			'scan_status'   => $this->get_scan_status( $resources_scanner_option ),
+			'warmup_status' => $this->get_warmup_status(),
 		];
-
-		if ( $output['warmed_count'] < $output['total'] ) {
-			$output['notwarmed_resources'] = array_values( $this->resources_query->get_prewarmup_notwarmed_urls() );
-		}
 
 		return rest_ensure_response(
 			$this->return_success( $output )
@@ -149,6 +153,52 @@ class RESTWP {
 			'success' => true,
 			'data'    => $data,
 		];
+	}
+
+	/**
+	 * Get scan status array based on the passed option array.
+	 *
+	 * @param array $resources_scanner_option Option array that has scanning details.
+	 *
+	 * @return array
+	 */
+	private function get_scan_status( array $resources_scanner_option ) : array {
+		$status = [
+			'total_pages' => count( $resources_scanner_option ),
+			'scanned'     => 0,
+			'fetched'     => 0,
+		];
+
+		foreach ( $resources_scanner_option as $item ) {
+			if ( ! empty( $item['is_scanned'] ) ) {
+				$status['scanned']++;
+			}
+
+			if ( ! empty( $item['is_fetched'] ) ) {
+				$status['fetched']++;
+			}
+		}
+
+		return $status;
+	}
+
+	/**
+	 * Get warmup status from the DB.
+	 *
+	 * @return array
+	 */
+	private function get_warmup_status() : array {
+		$status = [
+			'total'               => $this->resources_query->get_prewarmup_total_count(),
+			'warmed_count'        => $this->resources_query->get_prewarmup_warmed_count(),
+			'notwarmed_resources' => [],
+		];
+
+		if ( $status['warmed_count'] < $status['total'] ) {
+			$status['notwarmed_resources'] = array_values( $this->resources_query->get_prewarmup_notwarmed_urls() );
+		}
+
+		return $status;
 	}
 
 }
