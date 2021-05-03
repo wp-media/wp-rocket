@@ -126,7 +126,7 @@ class UsedCSS {
 			return false;
 		}
 
-		if ( get_option( 'wp_rocket_scanner_start_time', false ) ) {
+		if ( get_option( 'wp_rocket_prewarmup_stats', false ) ) {
 			return false;
 		}
 

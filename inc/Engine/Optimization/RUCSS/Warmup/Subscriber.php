@@ -114,6 +114,11 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
+		$prewarmup_stats = get_option( 'wp_rocket_prewarmup_stats', [] );
+		if ( empty( $prewarmup_stats ) || empty( $prewarmup_stats['fetch_finish_time'] ) ) {
+			return;
+		}
+
 		$this->status_checker->check_warmup_status();
 	}
 

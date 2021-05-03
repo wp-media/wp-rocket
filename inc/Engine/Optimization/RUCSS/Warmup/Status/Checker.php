@@ -51,13 +51,13 @@ class Checker extends AbstractAPIClient {
 	 * @return void
 	 */
 	public function check_warmup_status() {
-		$start_time = $this->options_api->get( 'scanner_start_time', false );
+		$prewarmup_stats = $this->options_api->get( 'prewarmup_stats', [] );
 
-		if ( false === $start_time ) {
+		if ( empty( $prewarmup_stats['scan_start_time'] ) ) {
 			return;
 		}
 
-		if ( time() > strtotime( '+1 hour', (int) $start_time ) ) {
+		if ( time() > strtotime( '+1 hour', (int) $prewarmup_stats['scan_start_time'] ) ) {
 			/**
 			 * Fires this action when the prewarmup lifespan is expired
 			 *
@@ -65,7 +65,6 @@ class Checker extends AbstractAPIClient {
 			 */
 			do_action( 'rocket_rucss_prewarmup_error' );
 
-			$this->options_api->delete( 'scanner_start_time' );
 			rocket_clean_domain();
 
 			return;
@@ -81,7 +80,6 @@ class Checker extends AbstractAPIClient {
 			 */
 			do_action( 'rocket_rucss_prewarmup_success' );
 
-			$this->options_api->delete( 'scanner_start_time' );
 			rocket_clean_domain();
 
 			return;
