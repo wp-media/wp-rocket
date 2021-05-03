@@ -143,6 +143,50 @@ class ResourcesQuery extends Query {
 	}
 
 	/**
+	 * Get prewarmup total resources count.
+	 *
+	 * @return int
+	 */
+	public function get_prewarmup_total_count(): int {
+		return $this->query(
+			[
+				'count'     => true,
+				'prewarmup' => 1,
+			]
+		);
+	}
+
+	/**
+	 * Get prewarmup warmed resources count.
+	 *
+	 * @return int
+	 */
+	public function get_prewarmup_warmed_count(): int {
+		return $this->query(
+			[
+				'count'         => true,
+				'prewarmup'     => 1,
+				'warmup_status' => 1,
+			]
+		);
+	}
+
+	/**
+	 * Get prewarmup NOT warmed resources' urls.
+	 *
+	 * @return array|string[]
+	 */
+	public function get_prewarmup_notwarmed_urls(): array {
+		return $this->query(
+			[
+				'fields'        => 'url',
+				'prewarmup'     => 1,
+				'warmup_status' => 0,
+			]
+		);
+	}
+
+	/**
 	 * Gets resources waiting for prewarmup response
 	 *
 	 * @since 3.9

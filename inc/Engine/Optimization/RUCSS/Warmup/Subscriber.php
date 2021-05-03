@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Optimization\RUCSS\Warmup;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Optimization\RUCSS\Warmup\Status\RESTWP;
 use WP_Rocket\Engine\Optimization\RUCSS\Warmup\Status\Checker;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
@@ -24,6 +25,13 @@ class Subscriber implements Subscriber_Interface {
 	private $resource_fetcher;
 
 	/**
+	 * Resource object.
+	 *
+	 * @var RESTWP
+	 */
+	private $restwp;
+
+	/**
 	 * Scanner instance
 	 *
 	 * @var Scanner
@@ -42,12 +50,14 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @param Options_Data    $options Options instance.
 	 * @param ResourceFetcher $resource_fetcher Resource object.
+	 * @param RESTWP          $restwp RESTWP instance.
 	 * @param Scanner         $scanner Scanner instance.
 	 * @param Checker         $status_checker Status checker instance.
 	 */
-	public function __construct( Options_Data $options, ResourceFetcher $resource_fetcher, Scanner $scanner, Checker $status_checker ) {
+	public function __construct( Options_Data $options, ResourceFetcher $resource_fetcher, RESTWP $restwp, Scanner $scanner, Checker $status_checker ) {
 		$this->resource_fetcher = $resource_fetcher;
 		$this->options          = $options;
+		$this->restwp           = $restwp;
 		$this->scanner          = $scanner;
 		$this->status_checker   = $status_checker;
 	}
@@ -60,6 +70,7 @@ class Subscriber implements Subscriber_Interface {
 	public static function get_subscribed_events() : array {
 		return [
 			'rocket_buffer'                  => [ 'collect_resources', 11 ],
+			'rest_api_init'                  => 'register_routes',
 			'init'                           => 'check_warmup_status',
 			'admin_notices'                  => 'prewarmup_result_notice',
 			'rocket_rucss_prewarmup_error'   => 'prepare_error_notice',
@@ -198,6 +209,17 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		return ! is_rocket_post_excluded_option( 'remove_unused_css' );
+	}
+
+	/**
+	 * Registers status routes in the API.
+	 *
+	 * @since 3.9
+	 *
+	 * @return void
+	 */
+	public function register_routes() {
+		$this->restwp->register_status_route();
 	}
 
 }
