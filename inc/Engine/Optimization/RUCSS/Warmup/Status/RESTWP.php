@@ -163,8 +163,13 @@ class RESTWP {
 	 * @return array
 	 */
 	private function get_scan_status( array $resources_scanner_option ) : array {
+		$prewarmup_stats = $this->options_api->get( 'prewarmup_stats', [] );
+		if ( empty( $prewarmup_stats['resources_scanner_count'] ) ) {
+			$prewarmup_stats['resources_scanner_count'] = 0;
+		}
+
 		$status = [
-			'total_pages' => count( $resources_scanner_option ),
+			'total_pages' => $prewarmup_stats['resources_scanner_count'],
 			'scanned'     => 0,
 			'fetched'     => 0,
 		];
