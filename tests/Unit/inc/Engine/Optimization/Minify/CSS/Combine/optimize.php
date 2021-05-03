@@ -23,8 +23,10 @@ class Test_Optimize extends TestCase {
 	private   $combine;
 	private   $local_cache;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
+
+		Functions\stubEscapeFunctions();
 
 		$this->options
 			 ->shouldReceive( 'get' )
@@ -60,20 +62,65 @@ class Test_Optimize extends TestCase {
 			->with( 'https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' )
 			->andReturn( "@font-face{font-family:'FontAwesome';src:url('../fonts/fontawesome-webfont.eot?v=4.7.0');src:url('../fonts/fontawesome-webfont.eot?#iefix&v=4.7.0') format('embedded-opentype'),url('../fonts/fontawesome-webfont.woff2?v=4.7.0') format('woff2'),url('../fonts/fontawesome-webfont.woff?v=4.7.0') format('woff'),url('../fonts/fontawesome-webfont.ttf?v=4.7.0') format('truetype'),url('../fonts/fontawesome-webfont.svg?v=4.7.0#fontawesomeregular') format('svg');font-weight:normal;font-style:normal}" );
 
-		Functions\when( 'esc_url' )->returnArg();
 
-		$this->assertSame(
-			$expected['html'],
-			$this->combine->optimize( $original )
+		Functions\when( 'site_url' )->alias( function( $path = '') {
+			return 'http://example.org/' . ltrim( $path, '/' );
+		} );
+
+		Functions\when( 'wp_http_validate_url' )->alias( function( $path = '') {
+			if ( false !== strpos( 'vfs://', $path ) ) {
+				return $path;
+			}
+			return false;
+		} );
+
+		Functions\expect( 'wp_make_link_relative' )->andReturnUsing( function( $url ) {
+			return preg_replace( '|^(https?:)?//[^/]+(/?.*)|i', '$2', $url );
+		} );
+
+		Functions\when( 'sanitize_text_field' )->returnArg();
+
+		Functions\when( 'wp_unslash' )->alias(
+			function ( $value ) {
+				return stripslashes( $value );
+			}
 		);
 
+		Functions\expect( 'wp_check_filetype' )->andReturnUsing( function( $file, $mimes ) {
+			$filename_array = explode( '.', $file );
+			$ext = false;
+			$type = false;
+			if ( $filename_array ) {
+				$ext = end( $filename_array );
+				if ( isset( $mimes[$ext] ) ) {
+					$type = $mimes[$ext];
+				}else{
+					$type = $ext = false;
+				}
+			}
+			return [
+				'ext' => $ext,
+				'type' => $type,
+			];
+		} );
+
 		$this->assertSame(
-			$expected['css'],
-			$this->filesystem->get_contents(
-				$this->filesystem->getUrl( $expected['files'][0] )
-			)
+			$this->format_the_html($expected['html']),
+			$this->format_the_html( $this->combine->optimize( $original ) )
 		);
 
-		$this->assertFilesExists( $expected['files'] );
+		if ( ! empty( $expected['files'] ) ) {
+			$this->assertSame(
+				$expected['css'],
+				$this->filesystem->get_contents(
+					$this->filesystem->getUrl( $expected['files'][0] )
+				)
+			);
+
+			$this->assertFilesExists( $expected['files'] );
+		}else{
+			$this->assertFalse( $expected['css'] );
+		}
+
 	}
 }

@@ -21,28 +21,26 @@ use Mockery;
  * @group  CriticalPath
  */
 class Test_Delete extends TestCase {
-	protected static $mockCommonWpFunctionsInSetUp = true;
-
 	protected $post_id;
 	protected $post_status;
 	protected $post_type;
 	protected $is_mobile;
-
 	protected $cpcss_service;
 	protected $options;
 	protected $request;
 	protected $restwppost;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/WP_REST_Request.php';
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/WP_Error.php';
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
+		Functions\stubTranslationFunctions();
 		Functions\when( 'get_current_blog_id' )->justReturn( 1 );
 
 		$this->is_mobile = false;

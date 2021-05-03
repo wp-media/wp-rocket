@@ -27,9 +27,7 @@ class Test_Process extends TestCase {
 
 		remove_filter( 'pre_get_rocket_option_minify_js', [ $this, 'return_true' ] );
 		remove_filter( 'pre_get_rocket_option_minify_js_key', [ $this, 'return_key' ] );
-
 		remove_filter( 'pre_get_rocket_option_defer_all_js', [ $this, 'return_defer_all_js' ] );
-		remove_filter( 'pre_get_rocket_option_defer_all_js_safe', [ $this, 'return_defer_all_js_safe' ] );
 
 		$this->unsetSettings();
 	}
@@ -37,22 +35,29 @@ class Test_Process extends TestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldMinifyCSS( $original, $expected, $settings ) {
+	public function testShouldMinifyJS( $original, $expected, $settings ) {
 		add_filter( 'pre_get_rocket_option_minify_js', [ $this, 'return_true' ] );
 		add_filter( 'pre_get_rocket_option_minify_js_key', [ $this, 'return_key' ] );
 
-		$this->defer_all_js      = $settings['defer_all_js'];
-		$this->defer_all_js_safe = $settings['defer_all_js_safe'];
+		$this->defer_all_js = $settings['defer_all_js'];
 
 		add_filter( 'pre_get_rocket_option_defer_all_js', [ $this, 'return_defer_all_js' ] );
-		add_filter( 'pre_get_rocket_option_defer_all_js_safe', [ $this, 'return_defer_all_js_safe' ] );
 
 		$this->settings = $settings;
 		$this->setSettings();
 
+		$actual = apply_filters( 'rocket_buffer', $original );
+
+		foreach ($expected['files'] as $file) {
+			$file_mtime = $this->filesystem->mtime( $file );
+			if ( $file_mtime ) {
+				$expected['html'] = str_replace( $file."?ver={{mtime}}", $file."?ver=".$file_mtime, $expected['html'] );
+			}
+		}
+
 		$this->assertSame(
 			$this->format_the_html( $expected['html'] ),
-			$this->format_the_html( apply_filters( 'rocket_buffer', $original ) )
+			$this->format_the_html( $actual )
 		);
 
 		$this->assertFilesExists( $expected['files'] );
@@ -60,9 +65,5 @@ class Test_Process extends TestCase {
 
 	public function return_defer_all_js() {
 		return $this->defer_all_js;
-	}
-
-	public function return_defer_all_js_safe() {
-		return $this->defer_all_js_safe;
 	}
 }

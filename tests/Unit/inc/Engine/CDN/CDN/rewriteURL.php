@@ -15,7 +15,7 @@ class Test_RewriteURL extends TestCase {
 	private $cdn;
 	private $options;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		Functions\when( 'home_url' )->justReturn( 'http://example.org' );

@@ -65,7 +65,7 @@ abstract class AbstractOptimization {
 	 * @param string $html HTML content.
 	 * @return bool|array
 	 */
-	protected function find( $pattern, $html ) {
+	protected function find( string $pattern, string $html ) {
 		preg_match_all( '/' . $pattern . '/Umsi', $html, $matches, PREG_SET_ORDER );
 
 		if ( empty( $matches ) ) {
@@ -213,5 +213,21 @@ abstract class AbstractOptimization {
 		$html = preg_replace( '/<!--(.*)-->/Uis', '', $html );
 
 		return $html;
+	}
+
+	/**
+	 * Get full minified url with ?ver query string.
+	 *
+	 * @param string $minified_path Path of minified file.
+	 * @param string $minified_url Url of minified file.
+	 *
+	 * @return string
+	 */
+	protected function get_full_minified_url( $minified_path, $minified_url ) {
+		$file_mtime = rocket_direct_filesystem()->mtime( $minified_path );
+
+		$version = $file_mtime ? $file_mtime : md5( $minified_url . $this->minify_key );
+
+		return add_query_arg( 'ver', $version, $minified_url );
 	}
 }

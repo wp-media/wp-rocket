@@ -20,7 +20,7 @@ class Test_EnqueueAdminCpcssHeartbeatScript extends TestCase {
 
 	private static $user_id;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		CapTrait::setAdminCap();

@@ -28,11 +28,11 @@ function rocket_clean_exclude_file( $file ) {
  * @author Soponar Cristina
  *
  * @param  string $path URL which needs to be cleaned.
- * @return bool\string  false if $path is empty or cleaned URL
+ * @return string Cleaned URL
  */
 function rocket_clean_wildcards( $path ) {
 	if ( ! $path ) {
-		return false;
+		return '';
 	}
 
 	$path_components = explode( '/', $path );
@@ -99,7 +99,7 @@ function rocket_validate_js( $file ) {
 		return $file;
 	}
 
-	return sanitize_text_field( rocket_remove_url_protocol( strtok( $file, '?' ) ) );
+	return rocket_remove_url_protocol( esc_url_raw( strtok( $file, '?' ) ) );
 }
 
 /**
@@ -115,21 +115,19 @@ function rocket_validate_css( $file ) {
 		return rocket_sanitize_css( rocket_clean_exclude_file( trim( $file ) ) );
 	}
 
-	return sanitize_text_field( rocket_remove_url_protocol( strtok( $file, '?' ) ) );
+	return rocket_remove_url_protocol( esc_url_raw( strtok( $file, '?' ) ) );
 }
 
 /**
  * Check if the passed value is an internal URL (default domain or CDN/Multilingual).
  *
  * @since  3.3.7
- * @author Remy Perona
- * @author Grégory Viguier
  *
  * @param  string $file string to test.
  * @return bool
  */
 function rocket_is_internal_file( $file ) {
-	$file_host = wp_parse_url( $file, PHP_URL_HOST );
+	$file_host = wp_parse_url( rocket_add_url_protocol( $file ), PHP_URL_HOST );
 
 	if ( empty( $file_host ) ) {
 		return false;
@@ -139,7 +137,6 @@ function rocket_is_internal_file( $file ) {
 	 * Filters the allowed hosts for optimization
 	 *
 	 * @since  3.4
-	 * @author Remy Perona
 	 *
 	 * @param array $hosts Allowed hosts.
 	 * @param array $zones Zones to check available hosts.
@@ -168,7 +165,6 @@ function rocket_is_internal_file( $file ) {
  * Sanitize a setting value meant for a textarea.
  *
  * @since  3.3.7
- * @author Grégory Viguier
  *
  * @param  string       $field The field’s name. Can be one of the following:
  *                             'exclude_css', 'exclude_inline_js', 'exclude_js', 'cache_reject_uri',
@@ -178,16 +174,19 @@ function rocket_is_internal_file( $file ) {
  */
 function rocket_sanitize_textarea_field( $field, $value ) {
 	$fields = [
-		'cache_purge_pages'    => [ 'esc_url', 'rocket_clean_exclude_file', 'rocket_clean_wildcards' ], // Pattern.
-		'cache_reject_cookies' => [ 'rocket_sanitize_key' ],
-		'cache_reject_ua'      => [ 'rocket_sanitize_ua', 'rocket_clean_wildcards' ], // Pattern.
-		'cache_reject_uri'     => [ 'esc_url', 'rocket_clean_exclude_file', 'rocket_clean_wildcards' ], // Pattern.
-		'cache_query_strings'  => [ 'rocket_sanitize_key' ],
-		'cdn_reject_files'     => [ 'rocket_clean_exclude_file', 'rocket_clean_wildcards' ], // Pattern.
-		'exclude_css'          => [ 'rocket_validate_css', 'rocket_clean_wildcards' ], // Pattern.
-		'exclude_inline_js'    => [ 'sanitize_text_field' ], // Pattern.
-		'exclude_js'           => [ 'rocket_validate_js', 'rocket_clean_wildcards' ], // Pattern.
-		'delay_js_scripts'     => [ 'rocket_validate_js' ],
+		'cache_purge_pages'          => [ 'esc_url', 'rocket_clean_exclude_file', 'rocket_clean_wildcards' ],   // Pattern.
+		'cache_reject_cookies'       => [ 'rocket_sanitize_key' ],
+		'cache_reject_ua'            => [ 'rocket_sanitize_ua', 'rocket_clean_wildcards' ],                     // Pattern.
+		'cache_reject_uri'           => [ 'esc_url', 'rocket_clean_exclude_file', 'rocket_clean_wildcards' ],   // Pattern.
+		'cache_query_strings'        => [ 'rocket_sanitize_key' ],
+		'cdn_reject_files'           => [ 'rocket_clean_exclude_file', 'rocket_clean_wildcards' ],              // Pattern.
+		'exclude_css'                => [ 'rocket_validate_css', 'rocket_clean_wildcards' ],                    // Pattern.
+		'exclude_inline_js'          => [ 'sanitize_text_field' ],
+		'exclude_defer_js'           => [ 'sanitize_text_field' ],
+		'exclude_js'                 => [ 'rocket_validate_js', 'rocket_clean_wildcards' ],                     // Pattern.
+		'exclude_lazyload'           => [ 'sanitize_text_field' ],
+		'delay_js_exclusions'        => [ 'sanitize_text_field', 'rocket_clean_wildcards' ],
+		'remove_unused_css_safelist' => [ 'sanitize_text_field', 'rocket_clean_wildcards' ],
 	];
 
 	if ( ! isset( $fields[ $field ] ) ) {
@@ -209,7 +208,7 @@ function rocket_sanitize_textarea_field( $field, $value ) {
 
 	// Sanitize.
 	foreach ( $sanitizations as $sanitization ) {
-		$value = array_map( $sanitization, $value );
+		$value = array_filter( array_map( $sanitization, $value ) );
 	}
 
 	return array_unique( $value );
@@ -492,6 +491,7 @@ function rocket_url_to_path( $url, array $zones = [ 'all' ] ) {
 	 */
 	$url = apply_filters( 'rocket_asset_url', $url, $zones );
 
+	$url      = rawurldecode( $url );
 	$root_url = preg_replace( '/^https?:/', '', $root_url );
 	$url      = preg_replace( '/^https?:/', '', $url );
 	$file     = str_replace( $root_url, $root_dir, $url );

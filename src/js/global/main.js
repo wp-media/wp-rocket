@@ -9,7 +9,7 @@ $(document).ready(function(){
 	var $notice = $('.wpr-notice');
 	var $noticeClose = $('.wpr-notice-close');
 
-	$noticeClose.click(function() {
+	$noticeClose.on('click', function() {
 		wprCloseDashboardNotice();
 		return false;
 	});
@@ -41,7 +41,7 @@ $(document).ready(function(){
 		var $checkbox = $button.closest( '.wpr-fieldsContainer-fieldset' ).find( '.wpr-radio :checkbox' );
 		var $menuItem = $( '[href="' + $button.attr( 'href' ) + '"].wpr-menuItem' );
 
-		$checkbox.change( function() {
+		$checkbox.on('change', function() {
 			if ( $checkbox.is( ':checked' ) ) {
 				$menuItem.css( 'display', 'block' );
 				$button.css( 'display', 'inline-block' );
@@ -67,19 +67,19 @@ $(document).ready(function(){
 		$wprAnalyticsOpenPopin = $('.wpr-js-popin')
 	;
 
-	$wprAnalyticsOpenPopin.click(function(e) {
+	$wprAnalyticsOpenPopin.on('click', function(e) {
 		e.preventDefault();
 		wprOpenAnalytics();
 		return false;
 	});
 
-	$wprAnalyticsClosePopin.click(function(e) {
+	$wprAnalyticsClosePopin.on('click', function(e) {
 		e.preventDefault();
 		wprCloseAnalytics();
 		return false;
 	});
 
-	$wprAnalyticsPopinButton.click(function(e) {
+	$wprAnalyticsPopinButton.on('click', function(e) {
 		e.preventDefault();
 		wprActivateAnalytics();
 		return false;
@@ -110,53 +110,42 @@ $(document).ready(function(){
 	}
 
 	/***
-	* Show popin beta test
+	* Show popin upgrade
 	***/
 
-	var $wprBetaPopin = $('.wpr-Popin-Beta'),
-	$wprBetaClosePopin = $('.wpr-Popin-Beta-close'),
-	$wprBetaPopinButton = $('.wpr-Popin-Beta .wpr-button'),
-	$wprBetaOpenPopin = $('#do_beta');
+	var $wprUpgradePopin = $('.wpr-Popin-Upgrade'),
+	$wprUpgradeClosePopin = $('.wpr-Popin-Upgrade-close'),
+	$wprUpgradeOpenPopin = $('.wpr-popin-upgrade-toggle');
 
-	$wprBetaOpenPopin.change(function(e) {
-		if ($wprBetaOpenPopin.is(':checked')) {
-			wprOpenBeta();
-			return false;
-		}
-	});
-
-	$wprBetaClosePopin.click(function() {
-		wprDeactivateBeta();
+	$wprUpgradeOpenPopin.on('click', function(e) {
+		e.preventDefault();
+		wprOpenUpgradePopin();
 		return false;
 	});
 
-	$wprBetaPopinButton.click(function() {
-		wprCloseBeta();
+	$wprUpgradeClosePopin.on('click', function() {
+		wprCloseUpgradePopin();
 		return false;
 	});
 
-	function wprOpenBeta(){
-		var vTL = new TimelineLite()
-			.set($wprBetaPopin, {'display':'block'})
+	function wprOpenUpgradePopin(){
+		var vTL = new TimelineLite();
+
+		vTL.set($wprUpgradePopin, {'display':'block'})
 			.set($wprPopinOverlay, {'display':'block'})
 			.fromTo($wprPopinOverlay, 0.6, {autoAlpha:0},{autoAlpha:1, ease:Power4.easeOut})
-			.fromTo($wprBetaPopin, 0.6, {autoAlpha:0, marginTop: -24}, {autoAlpha:1, marginTop:0, ease:Power4.easeOut}, '=-.5')
+			.fromTo($wprUpgradePopin, 0.6, {autoAlpha:0, marginTop: -24}, {autoAlpha:1, marginTop:0, ease:Power4.easeOut}, '=-.5')
 		;
 	}
 
-	function wprCloseBeta(){
-		var vTL = new TimelineLite()
-			.fromTo($wprBetaPopin, 0.6, {autoAlpha:1, marginTop: 0}, {autoAlpha:0, marginTop:-24, ease:Power4.easeOut})
+	function wprCloseUpgradePopin(){
+		var vTL = new TimelineLite();
+
+		vTL.fromTo($wprUpgradePopin, 0.6, {autoAlpha:1, marginTop: 0}, {autoAlpha:0, marginTop:-24, ease:Power4.easeOut})
 			.fromTo($wprPopinOverlay, 0.6, {autoAlpha:1},{autoAlpha:0, ease:Power4.easeOut}, '=-.5')
-			.set($wprBetaPopin, {'display':'none'})
+			.set($wprUpgradePopin, {'display':'none'})
 			.set($wprPopinOverlay, {'display':'none'})
 		;
-	}
-
-	function wprDeactivateBeta(){
-		wprCloseBeta();
-		$('#do_beta').prop('checked', false);
-		$('#do_beta').trigger('change');
 	}
 
 	/***
@@ -165,7 +154,7 @@ $(document).ready(function(){
 	var $wprSidebar    = $( '.wpr-Sidebar' );
 	var $wprButtonTips = $('.wpr-js-tips');
 
-	$wprButtonTips.change(function() {
+	$wprButtonTips.on('change', function() {
 		wprDetectTips($(this));
 	});
 
@@ -195,7 +184,7 @@ $(document).ready(function(){
 	var $adblock = $('.wpr-adblock');
 	var $adblockClose = $('.wpr-adblock-close');
 
-	$adblockClose.click(function() {
+	$adblockClose.on('click', function() {
 		wprCloseAdblockNotice();
 		return false;
 	});

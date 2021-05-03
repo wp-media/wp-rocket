@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\ThirdParty;
 
-use WP_Rocket\Engine\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 
 /**
  * Service provider for WP Rocket third party compatibility
@@ -25,6 +25,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'syntaxhighlighter_subscriber',
 		'elementor_subscriber',
 		'bridge_subscriber',
+		'avada_subscriber',
 		'ngg_subscriber',
 		'smush_subscriber',
 		'imagify_webp_subscriber',
@@ -38,6 +39,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'simple_custom_css',
 		'pdfembedder',
 		'divi',
+		'mod_pagespeed',
 	];
 
 	/**
@@ -51,51 +53,76 @@ class ServiceProvider extends AbstractServiceProvider {
 		$options = $this->getContainer()->get( 'options' );
 
 		$this->getContainer()
-			->share( 'mobile_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Mobile_Subscriber' );
+			->share( 'mobile_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Mobile_Subscriber' )
+			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'elementor_subscriber', 'WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor' )
-			->withArgument( $options );
+			->addArgument( $options )
+			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'woocommerce_subscriber', 'WP_Rocket\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber' );
+			->share( 'woocommerce_subscriber', 'WP_Rocket\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber' )
+			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'syntaxhighlighter_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\SyntaxHighlighter_Subscriber' );
+			->share( 'syntaxhighlighter_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\SyntaxHighlighter_Subscriber' )
+			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'bridge_subscriber', 'WP_Rocket\ThirdParty\Themes\Bridge' )
-			->withArgument( $options );
+			->addArgument( $options )
+			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'divi', 'WP_Rocket\ThirdParty\Themes\Divi' )
-			->withArgument( $this->getContainer()->get( 'options_api' ) )
-			->withArgument( $options );
+			->addArgument( $this->getContainer()->get( 'options_api' ) )
+			->addArgument( $options )
+			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'ngg_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\NGG_Subscriber' );
+			->share( 'avada_subscriber', 'WP_Rocket\ThirdParty\Themes\Avada' )
+			->addArgument( $options )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'ngg_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\NGG_Subscriber' )
+			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'smush_subscriber', 'WP_Rocket\ThirdParty\Plugins\Smush' )
-			->withArgument( $this->getContainer()->get( 'options_api' ) )
-			->withArgument( $this->getContainer()->get( 'options' ) );
+			->addArgument( $this->getContainer()->get( 'options_api' ) )
+			->addArgument( $this->getContainer()->get( 'options' ) )
+			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'imagify_webp_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber' )
-			->withArgument( $options );
+			->addArgument( $options )
+			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'shortpixel_webp_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\ShortPixel_Subscriber' )
-			->withArgument( $options );
+			->addArgument( $options )
+			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'ewww_webp_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber' )
-			->withArgument( $options );
+			->addArgument( $options )
+			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'optimus_webp_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Optimus_Subscriber' );
+			->share( 'optimus_webp_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Optimus_Subscriber' )
+			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'bigcommerce_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Ecommerce\BigCommerce_Subscriber' );
+			->share( 'bigcommerce_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Ecommerce\BigCommerce_Subscriber' )
+			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'beaverbuilder_subscriber', 'WP_Rocket\ThirdParty\Plugins\PageBuilder\BeaverBuilder' );
+			->share( 'beaverbuilder_subscriber', 'WP_Rocket\ThirdParty\Plugins\PageBuilder\BeaverBuilder' )
+			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'amp_subscriber', 'WP_Rocket\ThirdParty\Plugins\Optimization\AMP' )
-			->withArgument( $options )->withArgument( $this->getContainer()->get( 'cdn_subscriber' ) );
+			->addArgument( $options )->addArgument( $this->getContainer()->get( 'cdn_subscriber' ) )
+			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'litespeed_subscriber', 'WP_Rocket\Subscriber\Third_Party\Hostings\Litespeed_Subscriber' );
+			->share( 'litespeed_subscriber', 'WP_Rocket\Subscriber\Third_Party\Hostings\Litespeed_Subscriber' )
+			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'simple_custom_css', 'WP_Rocket\ThirdParty\Plugins\SimpleCustomCss' )
-			->withArgument( WP_ROCKET_CACHE_BUSTING_PATH )->withArgument( WP_ROCKET_CACHE_BUSTING_URL );
+			->addArgument( WP_ROCKET_CACHE_BUSTING_PATH )->addArgument( WP_ROCKET_CACHE_BUSTING_URL )
+			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'pdfembedder', 'WP_Rocket\ThirdParty\Plugins\PDFEmbedder' );
+			->share( 'pdfembedder', 'WP_Rocket\ThirdParty\Plugins\PDFEmbedder' )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'mod_pagespeed', 'WP_Rocket\ThirdParty\Plugins\ModPagespeed' )
+			->addTag( 'common_subscriber' );
 	}
 }

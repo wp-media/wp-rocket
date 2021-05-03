@@ -1,11 +1,12 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\DelayJS\Admin;
 
-use WP_Rocket\Abstract_Render;
+use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
-class Subscriber extends Abstract_Render implements Subscriber_Interface {
+class Subscriber implements Subscriber_Interface {
 	/**
 	 * Settings instance
 	 *
@@ -16,12 +17,9 @@ class Subscriber extends Abstract_Render implements Subscriber_Interface {
 	/**
 	 * Instantiate the class
 	 *
-	 * @param Settings $settings      Settings instance.
-	 * @param string   $template_path Template path.
+	 * @param Settings $settings Settings instance.
 	 */
-	public function __construct( Settings $settings, $template_path ) {
-		parent::__construct( $template_path );
-
+	public function __construct( Settings $settings ) {
 		$this->settings = $settings;
 	}
 
@@ -32,14 +30,10 @@ class Subscriber extends Abstract_Render implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_first_install_options'                 => 'add_options',
-			'rocket_after_textarea_field_delay_js_scripts' => 'display_restore_defaults_button',
-			'wp_rocket_upgrade'                            => [
-				[ 'set_option_on_update', 13, 2 ],
-				[ 'option_update_3_7_2', 13, 2 ],
-			],
-			'wp_ajax_rocket_restore_delay_js_defaults'     => 'restore_defaults',
-			'rocket_safe_mode_reset_options'               => 'add_options',
+			'rocket_first_install_options'         => 'add_options',
+			'wp_rocket_upgrade'                    => [ 'set_option_on_update', 13, 2 ],
+			'rocket_input_sanitize'                => [ 'sanitize_options', 13, 2 ],
+			'pre_update_option_wp_rocket_settings' => [ 'maybe_disable_combine_js', 11, 2 ],
 		];
 	}
 
@@ -52,30 +46,14 @@ class Subscriber extends Abstract_Render implements Subscriber_Interface {
 	 *
 	 * @return array
 	 */
-	public function add_options( $options ) {
+	public function add_options( $options ) : array {
 		return $this->settings->add_options( $options );
 	}
 
 	/**
-	 * Displays the restore defaults button under the textarea field
+	 * Sets the delay_js_exclusions default value for users with delay JS enabled on upgrade
 	 *
-	 * @since 3.7
-	 *
-	 * @return void
-	 */
-	public function display_restore_defaults_button() {
-		$data = $this->settings->get_button_data();
-
-		$this->render_action_button(
-			$data['type'],
-			$data['action'],
-			$data['attributes']
-		);
-	}
-
-	/**
-	 * Sets the delay_js option to zero when updating to 3.7
-	 *
+	 * @since 3.9 Sets the delay_js_exclusions default value if delay_js is 1
 	 * @since 3.7
 	 *
 	 * @param string $new_version New plugin version.
@@ -88,37 +66,30 @@ class Subscriber extends Abstract_Render implements Subscriber_Interface {
 	}
 
 	/**
-	 * Update the delay_js options when updating to 3.7.2.
+	 * Sanitizes Delay JS options values when the settings form is submitted
 	 *
-	 * @since 3.7.2
+	 * @since 3.9
 	 *
-	 * @param string $new_version New plugin version.
-	 * @param string $old_version Old plugin version.
+	 * @param array         $input    Array of values submitted from the form.
+	 * @param AdminSettings $settings Settings class instance.
 	 *
-	 * @return void
+	 * @return array
 	 */
-	public function option_update_3_7_2( $new_version, $old_version ) {
-		$this->settings->option_update_3_7_2( $old_version );
+	public function sanitize_options( $input, AdminSettings $settings ) : array {
+		return $this->settings->sanitize_options( $input, $settings );
 	}
 
 	/**
-	 * AJAX callback to restore the default value for the delay JS scripts
+	 * Disable combine JS option when delay JS is enabled
 	 *
-	 * @since 3.7
+	 * @since 3.9
 	 *
-	 * @return void
+	 * @param array $value     The new, unserialized option value.
+	 * @param array $old_value The old option value.
+	 *
+	 * @return array
 	 */
-	public function restore_defaults() {
-		check_ajax_referer( 'rocket-ajax', 'nonce', true );
-
-		$result = $this->settings->restore_defaults();
-
-		if ( false === $result ) {
-			wp_send_json_error();
-
-			return;
-		}
-
-		wp_send_json_success( $result );
+	public function maybe_disable_combine_js( $value, $old_value ): array {
+		return $this->settings->maybe_disable_combine_js( $value, $old_value );
 	}
 }

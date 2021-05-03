@@ -11,12 +11,13 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 	use SettingsTrait;
 	use StubTrait;
 	use VirtualFilesystemTrait;
+	use FilterTrait;
 
 	protected static $use_settings_trait = false;
 	protected static $skip_setting_up_settings = false;
 	protected static $transients         = [];
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		if ( static::$use_settings_trait ) {
@@ -52,7 +53,7 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 		_rocket_get_cache_dirs( '', '', true );
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		$this->initDefaultStructure();
 		if ( static::$use_settings_trait && ! static::$skip_setting_up_settings ) {
 			$this->setUpSettings();

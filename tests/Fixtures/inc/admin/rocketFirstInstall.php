@@ -20,7 +20,6 @@ $default = [
 	'exclude_js'                  => [],
 	'exclude_inline_js'           => [],
 	'defer_all_js'                => 0,
-	'defer_all_js_safe'           => 1,
 	'async_css'                   => 0,
 	'critical_css'                => '',
 	'lazyload'                    => 0,
@@ -61,74 +60,34 @@ $default = [
 	'cloudflare_protocol_rewrite' => 0,
 	'cloudflare_auto_settings'    => 0,
 	'cloudflare_old_settings'     => '',
-	'control_heartbeat'           => 0,
+	'control_heartbeat'           => 1,
 	'heartbeat_site_behavior'     => 'reduce_periodicity',
 	'heartbeat_admin_behavior'    => 'reduce_periodicity',
 	'heartbeat_editor_behavior'   => 'reduce_periodicity',
 	'varnish_auto_purge'          => 0,
-	'do_beta'                     => 0,
 	'analytics_enabled'           => 0,
-	'google_analytics_cache'      => 0,
-	'facebook_pixel_cache'        => 0,
 	'sucury_waf_cache_sync'       => 0,
 	'sucury_waf_api_key'          => '',
 ];
 
-$integration = $default;
-$integration[ 'async_css_mobile' ] = 1;
-$integration[ 'delay_js' ]         = 1;
-$integration[ 'delay_js_scripts' ] = [
-	'getbutton.io',
-	'//a.omappapi.com/app/js/api.min.js',
-	'feedbackcompany.com/includes/widgets/feedback-company-widget.min.js',
-	'snap.licdn.com/li.lms-analytics/insight.min.js',
-	'static.ads-twitter.com/uwt.js',
-	'platform.twitter.com/widgets.js',
-	'twq(',
-	'/sdk.js#xfbml',
-	'static.leadpages.net/leadbars/current/embed.js',
-	'translate.google.com/translate_a/element.js',
-	'widget.manychat.com',
-	'xfbml.customerchat.js',
-	'static.hotjar.com/c/hotjar-',
-	'smartsuppchat.com/loader.js',
-	'grecaptcha.execute',
-	'Tawk_API',
-	'shareaholic',
-	'sharethis',
-	'simple-share-buttons-adder',
-	'addtoany',
-	'font-awesome',
-	'wpdiscuz',
-	'cookie-law-info',
-	'pinit.js',
-	'/gtag/js',
-	'gtag(',
-	'/gtm.js',
-	'/gtm-',
-	'fbevents.js',
-	'fbq(',
-	'google-analytics.com/analytics.js',
-	'ga( \'',
-	'ga(\'',
-	'adsbygoogle',
-	'ShopifyBuy',
-	'widget.trustpilot.com/bootstrap',
-	'ft.sdk.min.js',
-	'apps.elfsight.com/p/platform.js',
-	'livechatinc.com/tracking.js',
-	'LiveChatWidget',
-	'/busting/facebook-tracking/',
-	'olark',
-	'pixel-caffeine/build/frontend.js',
-];
-$integration[ 'preload_links' ]    = 0;
+$integration                                 = $default;
+$integration[ 'async_css_mobile' ]           = 1;
+$integration[ 'exclude_defer_js' ]           = [];
+$integration[ 'delay_js' ]                   = 1;
+$integration[ 'delay_js_exclusions' ]        = [];
+$integration[ 'remove_unused_css' ]          = 0;
+$integration[ 'remove_unused_css_safelist' ] = [];
+$integration[ 'preload_links' ]              = 1;
+$integration[ 'image_dimensions' ]           = 0;
+$integration[ 'exclude_lazyload' ]           = [];
 
 return [
 	'test_data' => [
 		'defaultOptionsArray' => [
-			'unit'        => $default,
-			'integration' => $integration,
+			[
+				'unit'        => $default,
+				'integration' => $integration,
+			],
 		],
 	],
 ];

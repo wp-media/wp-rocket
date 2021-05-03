@@ -1,13 +1,12 @@
 <?php
 namespace WP_Rocket\ServiceProvider;
 
-use WP_Rocket\Engine\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 
 /**
  * Service provider for WP Rocket features common for admin and front
  *
  * @since 3.3
- * @author Remy Perona
  */
 class Common_Subscribers extends AbstractServiceProvider {
 
@@ -23,16 +22,11 @@ class Common_Subscribers extends AbstractServiceProvider {
 	protected $provides = [
 		'db_optimization_subscriber',
 		'webp_subscriber',
-		'expired_cache_purge',
-		'expired_cache_purge_subscriber',
 		'detect_missing_tags',
 	];
 
 	/**
-	 * Registers the subscribers in the container
-	 *
-	 * @since 3.3
-	 * @author Remy Perona
+	 * Registers items with the container
 	 *
 	 * @return void
 	 */
@@ -40,18 +34,16 @@ class Common_Subscribers extends AbstractServiceProvider {
 		$options = $this->getContainer()->get( 'options' );
 
 		$this->getContainer()->share( 'db_optimization_subscriber', 'WP_Rocket\Subscriber\Admin\Database\Optimization_Subscriber' )
-			->withArgument( $this->getContainer()->get( 'db_optimization' ) )
-			->withArgument( $options );
-		$this->getContainer()->add( 'expired_cache_purge', 'WP_Rocket\Cache\Expired_Cache_Purge' )
-			->withArgument( rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) );
-		$this->getContainer()->share( 'expired_cache_purge_subscriber', 'WP_Rocket\Subscriber\Cache\Expired_Cache_Purge_Subscriber' )
-			->withArgument( $options )
-			->withArgument( $this->getContainer()->get( 'expired_cache_purge' ) );
+			->addArgument( $this->getContainer()->get( 'db_optimization' ) )
+			->addArgument( $options )
+			->addTag( 'common_subscriber' );
 		$this->getContainer()->share( 'webp_subscriber', 'WP_Rocket\Subscriber\Media\Webp_Subscriber' )
-			->withArgument( $options )
-			->withArgument( $this->getContainer()->get( 'options_api' ) )
-			->withArgument( $this->getContainer()->get( 'cdn_subscriber' ) )
-			->withArgument( $this->getContainer()->get( 'beacon' ) );
-		$this->getContainer()->share( 'detect_missing_tags_subscriber', 'WP_Rocket\Subscriber\Tools\Detect_Missing_Tags_Subscriber' );
+			->addArgument( $options )
+			->addArgument( $this->getContainer()->get( 'options_api' ) )
+			->addArgument( $this->getContainer()->get( 'cdn_subscriber' ) )
+			->addArgument( $this->getContainer()->get( 'beacon' ) )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()->share( 'detect_missing_tags_subscriber', 'WP_Rocket\Subscriber\Tools\Detect_Missing_Tags_Subscriber' )
+			->addTag( 'common_subscriber' );
 	}
 }

@@ -22,7 +22,8 @@ Optimize Google Fonts</button>
 </div>
 </div>
 
-HTML;
+HTML
+;
 
 return [
 	'shouldOutputEnablerSettingHtml' => [

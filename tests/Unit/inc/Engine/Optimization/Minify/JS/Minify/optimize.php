@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\Minify\JS\Minify;
 
+use Brain\Monkey\Functions;
 use Brain\Monkey\Filters;
 use Mockery;
 use WP_Rocket\Engine\Optimization\AssetsLocalCache;
@@ -20,7 +21,7 @@ class Test_Optimize extends TestCase {
 	protected $minify;
 	private $local_cache;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$GLOBALS['wp_scripts'] = (object) [
@@ -42,7 +43,7 @@ class Test_Optimize extends TestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldMinifyJS( $original, $expected, $cdn_hosts, $cdn_url, $site_url, $external_url ) {
+	public function testShouldMinifyJS( $original, $expected, $cdn_hosts, $cdn_url, $site_url, $external_url, $has_integrity = false, $valid_integrity = true ) {
 		Filters\expectApplied( 'rocket_cdn_hosts' )
 			->zeroOrMoreTimes()
 			->with( [], [ 'all', 'css_and_js', 'js' ] )
@@ -76,9 +77,36 @@ class Test_Optimize extends TestCase {
 			->with( $external_url )
 			->andReturn( 'console.log("hello world");' );
 
+		$this->local_cache
+			->shouldReceive( 'validate_integrity' )
+			->zeroOrMoreTimes()
+			->andReturnUsing( function ( $asset_match ) use ($has_integrity, $valid_integrity) {
+				if ( $has_integrity ) {
+					if ( ! $valid_integrity ) {
+						return false;
+					}
+
+					return preg_replace( '#integrity\s*=[\'"](.*)-(.*)[\'"]#Ui', '', $asset_match[0] );
+				}
+				return $asset_match[0];
+			} );
+
+		Functions\expect( 'add_query_arg' )->andReturnUsing( function ( $key, $value, $url ) {
+			return $url . '?' . $key . '=' . $value;
+		} );
+
+		$optimized_html = $this->minify->optimize( $original );
+
+		foreach ($expected['files'] as $file) {
+			$file_mtime = $this->filesystem->mtime( $file );
+			if ( $file_mtime ) {
+				$expected['html'] = str_replace( $file."?ver={{mtime}}", $file."?ver=".$file_mtime, $expected['html'] );
+			}
+		}
+
 		$this->assertSame(
 			$this->format_the_html( $expected['html'] ),
-			$this->format_the_html( $this->minify->optimize( $original ) )
+			$this->format_the_html( $optimized_html )
 		);
 
 		$this->assertFilesExists( $expected['files'] );

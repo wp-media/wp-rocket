@@ -14,7 +14,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 class Test_MaybePurgeCacheOnTermChange extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/Cache/PurgeActionsSubscriber/maybePurgeCacheOnTermChange.php';
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		register_taxonomy(

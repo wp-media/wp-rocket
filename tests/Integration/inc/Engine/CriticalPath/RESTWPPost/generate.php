@@ -64,6 +64,9 @@ class Test_Generate extends RESTVfsTestCase {
 		$is_mobile                    = isset( $config['mobile'] )
 			? $config['mobile']
 			: false;
+		$no_fontface                    = isset( $config['no_fontface'] )
+			? $config['no_fontface']
+			: false;
 		$async_css_mobile             = isset( $config['async_css_mobile'] )
 			? $config['async_css_mobile']
 			: 0;
@@ -78,8 +81,9 @@ class Test_Generate extends RESTVfsTestCase {
 				'https://cpcss.wp-rocket.me/api/job/',
 				[
 					'body' => [
-						'url' => "http://example.org/?p={$post_id}",
-						'mobile' => (int) $is_mobile
+						'url'        => "http://example.org/?p={$post_id}",
+						'mobile'     => (int) $is_mobile,
+						'nofontface' => $no_fontface,
 					],
 				]
 			)

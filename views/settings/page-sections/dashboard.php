@@ -41,13 +41,20 @@ defined( 'ABSPATH' ) || exit;
 			<br>
 			<?php esc_html_e( 'Your website should be loading faster now!', 'rocket' ); ?>
 			</h2>
-				<div class="wpr-notice-description"><?php esc_html_e( 'To guarantee fast websites, WP Rocket applies 80% of web performance best practices.', 'rocket' ); ?><br> <?php esc_html_e( 'We also enable options that provide immediate benefits to your website.', 'rocket' ); ?></div>
+				<div class="wpr-notice-description"><?php esc_html_e( 'To guarantee fast websites, WP Rocket automatically applies 80% of web performance best practices.', 'rocket' ); ?><br> <?php esc_html_e( 'We also enable options that provide immediate benefits to your website.', 'rocket' ); ?></div>
 				<div class="wpr-notice-continue"><?php esc_html_e( 'Continue to the options to further optimize your site!', 'rocket' ); ?></div>
 				<a class="wpr-notice-close wpr-icon-close rocket-dismiss" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=rocket_activation_notice' ), 'rocket_ignore_rocket_activation_notice' ) ); ?>"><span class="screen-reader-text"><?php esc_html_e( 'Dismiss this notice.', 'rocket' ); ?></span></a>
 		</div>
 	</div>
 	<?php endif; ?>
-
+	<?php
+		/**
+		 * Fires before displaying the dashboard tab content
+		 *
+		 * @since 3.7.4
+		 */
+		do_action( 'rocket_before_dashboard_content' );
+	?>
 	<div class="wpr-Page-row">
 		<div class="wpr-Page-col">
 			<?php if ( ! defined( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) || ! WP_ROCKET_WHITE_LABEL_ACCOUNT ) : ?>
@@ -68,12 +75,24 @@ defined( 'ABSPATH' ) || exit;
 			</div>
 
 			<div class="wpr-field wpr-field-account">
-				<div class="wpr-flex wpr-flex--egal">
-					<div>
+				<div class="wpr-flex">
+					<div class="wpr-infoAccount-License">
 						<span class="wpr-title3"><?php esc_html_e( 'License', 'rocket' ); ?></span>
-						<span class="wpr-infoAccount wpr-isValid" id="wpr-account-data"><?php echo esc_html( $data['customer_data']->licence_account ); ?></span><br>
-						<span class="wpr-title3"><?php esc_html_e( 'Expiration Date', 'rocket' ); ?></span>
-						<span class="wpr-infoAccount <?php echo esc_attr( $data['customer_data']->class ); ?>" id="wpr-expiration-data"><?php echo esc_html( $data['customer_data']->licence_expiration ); ?></span>
+						<span class="wpr-infoAccount wpr-isValid" id="wpr-account-data">
+							<?php echo esc_html( $data['customer_data']['license_type'] ); ?>
+						</span><br>
+						<?php
+						/**
+						 * Fires when displaying the license information
+						 *
+						 * @since 3.7.3
+						 */
+						do_action( 'rocket_dashboard_license_info' );
+						?>
+						<p>
+							<span class="wpr-title3"><?php esc_html_e( 'Expiration Date', 'rocket' ); ?></span>
+							<span class="wpr-infoAccount <?php echo esc_attr( $data['customer_data']['license_class'] ); ?>" id="wpr-expiration-data"><?php echo esc_html( $data['customer_data']['license_expiration'] ); ?></span>
+						</p>
 					</div>
 					<div>
 						<?php
@@ -193,6 +212,24 @@ defined( 'ABSPATH' ) || exit;
 						?>
 					</div>
 					<?php endif; ?>
+
+					<?php if ( get_rocket_option( 'remove_unused_css' ) && current_user_can( 'rocket_remove_unused_css' ) ) : ?>
+						<div class="wpr-field">
+							<h4 class="wpr-title3"><?php esc_html_e( 'Remove Used CSS Cache', 'rocket' ); ?></h4>
+							<?php
+							$this->render_action_button(
+									'link',
+									'rocket_clear_usedcss',
+									[
+										'label'      => __( 'Clear Used CSS', 'rocket' ),
+										'attributes' => [
+											'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-icon-trash',
+										],
+									]
+							);
+							?>
+						</div>
+					<?php endif; ?>
 				</fieldset>
 			</div>
 		</div>
@@ -225,7 +262,7 @@ defined( 'ABSPATH' ) || exit;
 								[
 									'label'      => __( 'Ask support', 'rocket' ),
 									'attributes' => [
-										'class'  => 'wpr-button wpr-button--icon wpr-button--small wpr-button--blue wpr-icon-help wpr-js-askSupport',
+										'class'  => 'wpr-button wpr-button--icon wpr-button--small wpr-button--blue wpr-icon-help',
 										'target' => '_blank',
 									],
 								]

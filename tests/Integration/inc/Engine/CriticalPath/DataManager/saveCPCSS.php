@@ -17,7 +17,7 @@ class Test_SaveCPCSS extends FilesystemTestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldDoExpected( $url, $path, $cpcss_code, $is_mobile, $expected ) {
+	public function testShouldDoExpected( $url, $path, $cpcss_code, $is_mobile, $expected, $expected_cpcss ) {
 		$cache_path = $this->filesystem->getUrl( $this->config['vfs_dir'] );
 		$file_path  = "{$cache_path}1/{$path}";
 
@@ -26,6 +26,6 @@ class Test_SaveCPCSS extends FilesystemTestCase {
 
 		$this->assertSame( $expected, $actual );
 		$this->assertTrue( $this->filesystem->exists( $file_path ) );
-		$this->assertSame( $cpcss_code, $this->filesystem->get_contents( $file_path ) );
+		$this->assertSame( $expected_cpcss, $this->filesystem->get_contents( $file_path ) );
 	}
 }

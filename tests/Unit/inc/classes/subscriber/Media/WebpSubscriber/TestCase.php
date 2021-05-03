@@ -2,6 +2,12 @@
 
 namespace WP_Rocket\Tests\Unit\inc\classes\subscriber\Media\WebpSubscriber;
 
+use Mockery;
+use WP_Rocket\Admin\Options;
+use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Admin\Beacon\Beacon;
+use WP_Rocket\Engine\CDN\Subscriber;
+use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Webp_Interface;
 use WPMedia\PHPUnit\Unit\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase {
@@ -17,46 +23,30 @@ abstract class TestCase extends BaseTestCase {
 	protected function getConstructorMocks( $cache_webp_option_value = 1, $cdn_hosts = [ 'cdn-example.net' ] ) {
 		// Mock the required objets for Webp_Subscriber.
 		$mocks = [
-			'optionsData' => $this->createMock( 'WP_Rocket\Admin\Options_Data' ),
-			'optionsApi'  => $this->createMock( 'WP_Rocket\Admin\Options' ),
-			'cdn'         => $this->createMock( 'WP_Rocket\Engine\CDN\Subscriber' ),
-			'beacon'      => $this->createMock( 'WP_Rocket\Engine\Admin\Beacon\Beacon' ),
+			'optionsData' => Mockery::mock( Options_Data::class ),
+			'optionsApi'  => Mockery::mock( Options::class ),
+			'cdn'         => Mockery::mock( Subscriber::class ),
+			'beacon'      => Mockery::mock( Beacon::class ),
 		];
 
 		$mocks['optionsData']
-			->method( 'get' )
-			->will(
-				$this->returnValueMap(
-					[
-						[ 'cache_webp', '', $cache_webp_option_value ],
-					]
-				)
-			);
+			->shouldReceive( 'get' )
+			->with( 'cache_webp' )
+			->andReturn( $cache_webp_option_value );
 
 		$mocks['cdn']
-			->method( 'get_cdn_hosts' )
-			->will(
-				$this->returnValueMap(
-					[
-						[ [], [ 'all', 'images' ], $cdn_hosts ],
-					]
-				)
-			);
+			->shouldReceive( 'get_cdn_hosts' )
+			->with( [], [ 'all', 'images' ] )
+			->andReturn( $cdn_hosts );
 
 		$mocks['beacon']
-			->method( 'get_suggest' )
-			->will(
-				$this->returnValueMap(
-					[
-						[
-							'webp',
-							[
-								'id'  => 'some-random-id',
-								'url' => 'https://docs.wp-rocket.me/some/request-uri/part',
-							],
-						],
-					]
-				)
+			->shouldReceive( 'get_suggest' )
+			->with( 'webp' )
+			->andReturn(
+				[
+					'id'  => 'some-random-id',
+					'url' => 'https://docs.wp-rocket.me/some/request-uri/part',
+				]
 			);
 
 		return $mocks;
@@ -72,25 +62,25 @@ abstract class TestCase extends BaseTestCase {
 	 * @return object
 	 */
 	protected function getWebpPluginMock( $convert_to_webp = false, $serve_webp = false, $serve_webp_compatible_with_cdn = false ) {
-		$webpPluginMock = $this->createMock( '\WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Webp_Interface' );
+		$webpPluginMock = Mockery::mock( Webp_Interface::class );
 		$webpPluginMock
-			->method( 'get_name' )
-			->willReturn( 'Mock' );
+			->shouldReceive( 'get_name' )
+			->andReturn( 'Mock' );
 		$webpPluginMock
-			->method( 'get_id' )
-			->willReturn( 'mock' );
+			->shouldReceive( 'get_id' )
+			->andReturn( 'mock' );
 		$webpPluginMock
-			->method( 'is_converting_to_webp' )
-			->willReturn( $convert_to_webp );
+			->shouldReceive( 'is_converting_to_webp' )
+			->andReturn( $convert_to_webp );
 		$webpPluginMock
-			->method( 'is_serving_webp' )
-			->willReturn( $serve_webp );
+			->shouldReceive( 'is_serving_webp' )
+			->andReturn( $serve_webp );
 		$webpPluginMock
-			->method( 'is_serving_webp_compatible_with_cdn' )
-			->willReturn( $serve_webp_compatible_with_cdn );
+			->shouldReceive( 'is_serving_webp_compatible_with_cdn' )
+			->andReturn( $serve_webp_compatible_with_cdn );
 		$webpPluginMock
-			->method( 'get_basename' )
-			->willReturn( 'mock/mock.php' );
+			->shouldReceive( 'get_basename' )
+			->andReturn( 'mock/mock.php' );
 
 		return $webpPluginMock;
 	}

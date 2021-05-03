@@ -2,7 +2,7 @@
 /**
  * Handle the lazyload required assets: inline CSS and JS
  *
- * @package RocketLazyload
+ * @package WP_Rocket\Dependencies\RocketLazyload
  */
 
 namespace WP_Rocket\Dependencies\RocketLazyload;
@@ -103,11 +103,11 @@ class Assets {
                     mutations.forEach(function(mutation) {
                         for (i = 0; i < mutation.addedNodes.length; i++) {
                             if (typeof mutation.addedNodes[i].getElementsByTagName !== \'function\') {
-                                return;
+                                continue;
                             }
 
                            if (typeof mutation.addedNodes[i].getElementsByClassName !== \'function\') {
-                                return;
+                                continue;
                             }
 
                             images = mutation.addedNodes[i].getElementsByTagName(\'img\');

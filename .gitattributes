@@ -15,7 +15,7 @@ tests export-ignore
 composer.lock export-ignore
 CONTRIBUTING.md export-ignore
 gulpfile.js export-ignore
-LICENSE.md export-ignore
+LICENSE export-ignore
 package.json export-ignore
 package-lock.json export-ignore
 phpcs.xml export-ignore

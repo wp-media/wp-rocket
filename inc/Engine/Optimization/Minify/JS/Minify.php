@@ -79,7 +79,23 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 				continue;
 			}
 
-			$minify_url = $this->replace_url( $script['url'] );
+			$integrity_validated = $this->local_cache->validate_integrity( $script );
+
+			if ( false === $integrity_validated ) {
+				Logger::debug(
+					'Script integrity attribute not valid.',
+					[
+						'js minification process',
+						'tag' => $script[0],
+					]
+				);
+
+				continue;
+			}
+
+			$script['final'] = $integrity_validated;
+
+			$minify_url = $this->replace_url( strtok( $script['url'], '?' ) );
 
 			if ( ! $minify_url ) {
 				Logger::error(
@@ -167,12 +183,20 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 		}
 
 		// This filter is documented in /inc/classes/optimization/class-abstract-optimization.php.
-		$url       = apply_filters( 'rocket_asset_url', $url, $this->get_zones() );
-		$unique_id = md5( $url . $this->minify_key );
-		$filename  = preg_replace( '/\.js$/', '-' . $unique_id . '.js', ltrim( rocket_realpath( wp_parse_url( $url, PHP_URL_PATH ) ), '/' ) );
+		$url = apply_filters( 'rocket_asset_url', $url, $this->get_zones() );
 
-		$minified_file = $this->minify_base_path . $filename;
-		$minified_url  = $this->get_minify_url( $filename, $url );
+		$parsed_url = wp_parse_url( $url );
+
+		if ( empty( $parsed_url['path'] ) ) {
+			return false;
+		}
+
+		if ( ! empty( $parsed_url['host'] ) ) {
+			$url = rocket_add_url_protocol( $url );
+		}
+
+		$filename      = ltrim( rocket_realpath( $parsed_url['path'] ), '/' );
+		$minified_file = rawurldecode( $this->minify_base_path . $filename );
 
 		if ( rocket_direct_filesystem()->exists( $minified_file ) ) {
 			Logger::debug(
@@ -182,7 +206,7 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 					'path' => $minified_file,
 				]
 			);
-			return $minified_url;
+			return $this->get_full_minified_url( $minified_file, $this->get_minify_url( $filename, $url ) );
 		}
 
 		$is_external_url = $this->is_external_file( $url );
@@ -232,7 +256,7 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 			return false;
 		}
 
-		return $minified_url;
+		return $this->get_full_minified_url( $minified_file, $this->get_minify_url( $filename, $url ) );
 	}
 
 	/**
@@ -245,7 +269,7 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 	 * @return string
 	 */
 	private function replace_script( $script, $minify_url, $html ) {
-		$replace_script = str_replace( $script['url'], $minify_url, $script[0] );
+		$replace_script = str_replace( $script['url'], $minify_url, $script['final'] );
 		$replace_script = str_replace( '<script', '<script data-minify="1"', $replace_script );
 		$html           = str_replace( $script[0], $replace_script, $html );
 

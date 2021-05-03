@@ -3,6 +3,8 @@
 namespace WP_Rocket\Tests\Unit\inc\classes\third_party\plugins\Images\Webp\Imagify_Subscriber;
 
 use Brain\Monkey\Actions;
+use Mockery;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
 
@@ -14,7 +16,7 @@ use WPMedia\PHPUnit\Unit\TestCase;
 class Test_SyncOnOptionUpdate extends TestCase {
 
 	public function testShouldSyncWhenOptionsChange() {
-		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
+		$optionsData = Mockery::mock( Options_Data::class );
 		$subscriber  = new Imagify_Subscriber( $optionsData );
 
 		Actions\expectDone( 'rocket_third_party_webp_change' )->times( 4 );
@@ -41,7 +43,7 @@ class Test_SyncOnOptionUpdate extends TestCase {
 	}
 
 	public function testShouldNotSyncWhenOptionsDontChange() {
-		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
+		$optionsData = Mockery::mock( Options_Data::class );
 		$subscriber  = new Imagify_Subscriber( $optionsData );
 
 		Actions\expectDone( 'rocket_third_party_webp_change' )->never();

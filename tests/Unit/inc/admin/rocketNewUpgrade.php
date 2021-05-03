@@ -3,7 +3,7 @@
 namespace WP_Rocket\Tests\Unit\inc\admin;
 
 use Brain\Monkey\Functions;
-use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * @covers ::rocket_new_upgrade
@@ -11,7 +11,7 @@ use WPMedia\PHPUnit\Unit\TestCase;
  * @group upgrade
  */
 class Test_RocketNewUpgrade extends TestCase {
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/admin/upgrader.php';
@@ -30,6 +30,16 @@ class Test_RocketNewUpgrade extends TestCase {
 		Functions\expect( 'rocket_clean_minify' )
 			->with( 'css' )
 			->once();
+		Functions\expect( 'rocket_get_constant' )
+			->with( 'WP_ROCKET_SLUG' )
+			->andReturn( 'wp_rocket_settings' );
+		Functions\expect( 'get_option' )
+			->once()
+			->andReturn( [] );
+		Functions\expect( 'update_option' )
+			->once();
+		Functions\when( 'wp_clear_scheduled_hook' )->justReturn( 1 );
+		Functions\when( 'rocket_rrmdir' )->justReturn( 1 );
 
 		rocket_new_upgrade( '3.7', '3.4.4' );
 	}

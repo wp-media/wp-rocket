@@ -13,7 +13,7 @@ use WP_Rocket\ThirdParty\Plugins\PageBuilder\BeaverBuilder;
 class Test_PurgeCache extends TestCase {
 	private $beaver;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->beaver = new BeaverBuilder();

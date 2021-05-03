@@ -12,7 +12,7 @@ $(document).ready(function(){
 
             e.preventDefault();
             _isRefreshing = true;
-            button.blur();
+            button.trigger( 'blur' );
             button.addClass('wpr-isLoading');
             expire.removeClass('wpr-isValid wpr-isInvalid');
 
@@ -27,8 +27,8 @@ $(document).ready(function(){
                     button.addClass('wpr-isHidden');
 
                     if ( true === response.success ) {
-                        account.html(response.data.licence_account);
-                        expire.addClass(response.data.class).html(response.data.licence_expiration);
+                        account.html(response.data.license_type);
+                        expire.addClass(response.data.license_class).html(response.data.license_expiration);
                         setTimeout(function() {
                             button.removeClass('wpr-icon-refresh wpr-isHidden');
                             button.addClass('wpr-icon-check');
@@ -138,26 +138,37 @@ $(document).ready(function(){
         );
     });
 
-    /**
-     * Restores default value of the Delay JS textarea.
-     */
-    $('#wpr-action-rocket_delay_js_restore_defaults').on('click', function(e) {
+    $( '#rocket-dismiss-promotion' ).on( 'click', function( e ) {
         e.preventDefault();
-
-		$('#wpr-action-rocket_delay_js_restore_defaults').addClass('wpr-isLoading');
 
         $.post(
             ajaxurl,
             {
-                action: 'rocket_restore_delay_js_defaults',
-                _ajax_nonce: rocket_ajax_data.nonce
+                action: 'rocket_dismiss_promo',
+                nonce: rocket_ajax_data.nonce
             },
 			function(response) {
 				if ( response.success ) {
-					// Fill the textarea with the returned data on success.
-					$('#delay_js_scripts').val(response.data);
+					$('#rocket-promo-banner').hide( 'slow' );
 				}
 			}
         );
-    });
+    } );
+
+    $( '#rocket-dismiss-renewal' ).on( 'click', function( e ) {
+        e.preventDefault();
+
+        $.post(
+            ajaxurl,
+            {
+                action: 'rocket_dismiss_renewal',
+                nonce: rocket_ajax_data.nonce
+            },
+			function(response) {
+				if ( response.success ) {
+					$('#rocket-renewal-banner').hide( 'slow' );
+				}
+			}
+        );
+    } );
 });

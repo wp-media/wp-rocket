@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\DelayJS;
 
@@ -25,6 +26,15 @@ class Subscriber implements Subscriber_Interface {
 	private $filesystem;
 
 	/**
+	 * Script enqueued status.
+	 *
+	 * @since 3.7
+	 *
+	 * @var bool
+	 */
+	private $is_enqueued = false;
+
+	/**
 	 * Subscriber constructor.
 	 *
 	 * @param HTML                  $html HTML Instance.
@@ -44,15 +54,16 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_buffer'      => [
-				[ 'delay_js', 21 ],
-			],
-			'wp_enqueue_scripts' => 'add_delay_js_script',
+			'rocket_buffer'                               => [ 'delay_js', 26 ],
+			'wp_enqueue_scripts'                          => 'add_delay_js_script',
+			'pre_get_rocket_option_minify_concatenate_js' => 'maybe_disable_option',
 		];
 	}
 
 	/**
-	 * Using html buffer get scripts to be delayed and adjust their html.
+	 * Modifies scripts HTML to apply delay JS attribute
+	 *
+	 * @since 3.7
 	 *
 	 * @param string $buffer_html Html for the page.
 	 *
@@ -70,28 +81,11 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function add_delay_js_script() {
-		if ( ! $this->html->is_allowed() ) {
+		if ( $this->is_enqueued ) {
 			return;
 		}
-
-		$js_assets_path = rocket_get_constant( 'WP_ROCKET_PATH' ) . 'assets/js/';
-
-		if ( ! wp_script_is( 'rocket-browser-checker' ) ) {
-			$checker_filename = rocket_get_constant( 'SCRIPT_DEBUG' ) ? 'browser-checker.js' : 'browser-checker.min.js';
-
-			// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NoExplicitVersion
-			wp_register_script(
-				'rocket-browser-checker',
-				'',
-				[],
-				'',
-				true
-			);
-			wp_enqueue_script( 'rocket-browser-checker' );
-			wp_add_inline_script(
-				'rocket-browser-checker',
-				$this->filesystem->get_contents( "{$js_assets_path}{$checker_filename}" )
-			);
+		if ( ! $this->html->is_allowed() ) {
+			return;
 		}
 
 		// Register handle with no src to add the inline script after.
@@ -99,19 +93,43 @@ class Subscriber implements Subscriber_Interface {
 		wp_register_script(
 			'rocket-delay-js',
 			'',
-			[
-				'rocket-browser-checker',
-			],
+			[],
 			'',
 			true
 		);
 		wp_enqueue_script( 'rocket-delay-js' );
 
-		$script_filename = rocket_get_constant( 'SCRIPT_DEBUG' ) ? 'lazyload-scripts.js' : 'lazyload-scripts.min.js';
-
 		wp_add_inline_script(
 			'rocket-delay-js',
-			$this->filesystem->get_contents( "{$js_assets_path}{$script_filename}" )
+			$this->html->get_ie_fallback()
 		);
+
+		$lazyload_script = $this->filesystem->get_contents( rocket_get_constant( 'WP_ROCKET_PATH' ) . 'assets/js/lazyload-scripts.min.js' );
+
+		if ( false !== $lazyload_script ) {
+			wp_add_inline_script(
+				'rocket-delay-js',
+				$lazyload_script
+			);
+		}
+
+		$this->is_enqueued = true;
+	}
+
+	/**
+	 * Disables defer JS if delay JS is enabled
+	 *
+	 * @since 3.9
+	 *
+	 * @param null $value Original value. Should be always null.
+	 *
+	 * @return null|false
+	 */
+	public function maybe_disable_option( $value ) {
+		if ( $this->html->is_allowed() ) {
+			return false;
+		}
+
+		return $value;
 	}
 }

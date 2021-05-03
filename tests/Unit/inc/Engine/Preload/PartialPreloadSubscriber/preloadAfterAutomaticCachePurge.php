@@ -20,7 +20,7 @@ class Test_PreloadAfterAutomaticCachePurge extends TestCase {
 	private $subscriber;
 	private $property;
 
-	public function setUp() {
+	public function setUp() : void {
 		$this->options         = Mockery::mock( Options_Data::class );
 		$this->partial_process = Mockery::mock( PartialProcess::class );
 		$this->subscriber      = new PartialPreloadSubscriber( $this->partial_process, $this->options );

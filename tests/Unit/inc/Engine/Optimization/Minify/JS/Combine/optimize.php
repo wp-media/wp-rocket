@@ -7,6 +7,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Dependencies\Minify;
 use Mockery;
 use WP_Rocket\Engine\Optimization\AssetsLocalCache;
+use WP_Rocket\Engine\Optimization\DeferJS\DeferJS;
 use WP_Rocket\Engine\Optimization\Minify\JS\Combine;
 use WP_Rocket\Tests\Unit\inc\Engine\Optimization\TestCase;
 
@@ -21,16 +22,19 @@ use WP_Rocket\Tests\Unit\inc\Engine\Optimization\TestCase;
 class Test_Optimize extends TestCase {
 	protected $path_to_test_data = '/inc/Engine/Optimization/Minify/JS/Combine/combine.php';
 	private   $minify;
+	private   $defer_js;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->minify = Mockery::mock( Minify\JS::class );
 		$this->minify->shouldReceive( 'add' );
 		$this->minify->shouldReceive( 'minify' )
-		             ->andReturn( 'minified JS' );
+					 ->andReturn( 'minified JS' );
 
-		Functions\when( 'esc_url' )->returnArg();
+		$this->defer_js = Mockery::mock( DeferJS::class );
+
+		Functions\stubEscapeFunctions();
 		Functions\when( 'wp_scripts' )->alias( function () {
 			$wp_scripts                                 = new \stdClass();
 			$jquery                                     = new \stdClass();
@@ -61,14 +65,10 @@ class Test_Optimize extends TestCase {
 			->with( 'exclude_inline_js', [] )
 			->andReturn( [] );
 		$this->options->shouldReceive( 'get' )
-			->with( 'defer_all_js', 0 )
-			->andReturn( $config['defer_all_js'] );
-		$this->options->shouldReceive( 'get' )
-			->with( 'defer_all_js_safe', 0 )
-			->andReturn( $config['defer_all_js_safe'] );
-		$this->options->shouldReceive( 'get' )
 			->with( 'exclude_js', [] )
 			->andReturn( [] );
+		$this->defer_js->shouldReceive( 'get_excluded' )
+			->andReturn( $config['exclude_defer_js'] );
 
 		Filters\expectApplied( 'rocket_cdn_hosts' )
 			->zeroOrMoreTimes()
@@ -87,7 +87,7 @@ class Test_Optimize extends TestCase {
 				return str_replace( 'http://example.org', $config['cdn_url'], $url );
 			} );
 
-		$combine = new Combine( $this->options, $this->minify, Mockery::mock( AssetsLocalCache::class ) );
+		$combine = new Combine( $this->options, $this->minify, Mockery::mock( AssetsLocalCache::class ), $this->defer_js );
 
 		$this->assertSame(
 			$this->format_the_html( $expected['html'] ),

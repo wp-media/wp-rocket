@@ -20,7 +20,7 @@ class Test_DisableOptionsOnAmp extends TestCase {
 	private $options;
 	private $cdn_subscriber;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->options        = Mockery::mock( Options_Data::class );
@@ -46,10 +46,20 @@ class Test_DisableOptionsOnAmp extends TestCase {
 			add_filter( 'wp_calculate_image_srcset', 'rocket_protocol_rewrite_srcset', PHP_INT_MAX );
 
 			// Check the hooks before invoking the method.
-			$this->assertTrue( has_filter( 'wp_resource_hints', 'rocket_dns_prefetch', 10, 2 ) );
+			$this->assertSame(
+				10,
+				has_filter( 'wp_resource_hints', 'rocket_dns_prefetch', 10, 2 )
+			);
 			$this->assertFalse( has_filter( 'do_rocket_lazyload', '__return_false' ) );
 			$this->assertFalse( has_filter( 'do_rocket_lazyload_iframes', '__return_false' ) );
-			$this->assertTrue( has_filter( 'wp_calculate_image_srcset', 'rocket_protocol_rewrite_srcset', PHP_INT_MAX ) );
+			$this->assertFalse( has_filter( 'pre_get_rocket_option_async_css', '__return_false' ) );
+			$this->assertFalse( has_filter( 'pre_get_rocket_option_delay_js', '__return_false' ) );
+			$this->assertFalse( has_filter( 'pre_get_rocket_option_preload_links', '__return_false' ) );
+
+			$this->assertSame(
+				PHP_INT_MAX,
+				has_filter( 'wp_calculate_image_srcset', 'rocket_protocol_rewrite_srcset', PHP_INT_MAX )
+			);
 			$this->assertFalse( has_filter( 'rocket_buffer', [ $this->cdn_subscriber, 'rewrite' ] ) );
 			$this->assertFalse( has_filter( 'rocket_buffer', [ $this->cdn_subscriber, 'rewrite_srcset' ] ) );
 
@@ -83,19 +93,34 @@ class Test_DisableOptionsOnAmp extends TestCase {
 		if ( ! $expected[ 'bailout' ] ) {
 			// Check the hooks after invoking the method.
 			$this->assertFalse( has_filter( 'wp_resource_hints', 'rocket_dns_prefetch', 10, 2 ) );
-			$this->assertTrue( has_filter( 'do_rocket_lazyload', '__return_false' ) );
-			$this->assertTrue( has_filter( 'do_rocket_lazyload_iframes', '__return_false' ) );
+			$this->assertSame(
+				10,
+				has_filter( 'do_rocket_lazyload', '__return_false' )
+			);
+			$this->assertSame(
+				10,
+				has_filter( 'do_rocket_lazyload_iframes', '__return_false' )
+			);
 			$this->assertEmpty( $wp_filter );
 
 			if ( $expected[ 'remove_filter' ] ) {
 				$this->assertFalse( has_filter( 'wp_calculate_image_srcset', 'rocket_protocol_rewrite_srcset', PHP_INT_MAX ) );
 			} else {
-				$this->assertTrue( has_filter( 'wp_calculate_image_srcset', 'rocket_protocol_rewrite_srcset', PHP_INT_MAX ) );
+				$this->assertSame(
+					PHP_INT_MAX,
+					has_filter( 'wp_calculate_image_srcset', 'rocket_protocol_rewrite_srcset', PHP_INT_MAX )
+				);
 			}
 
 			if ( in_array( $config[ 'amp_options' ][ 'theme_support' ], [ 'transitional', 'reader' ], true ) ) {
-				$this->assertTrue( has_filter( 'rocket_buffer', [ $this->cdn_subscriber, 'rewrite' ] ) );
-				$this->assertTrue( has_filter( 'rocket_buffer', [ $this->cdn_subscriber, 'rewrite_srcset' ] ) );
+				$this->assertSame(
+					10,
+					has_filter( 'rocket_buffer', [ $this->cdn_subscriber, 'rewrite' ] )
+				);
+				$this->assertSame(
+					10,
+					has_filter( 'rocket_buffer', [ $this->cdn_subscriber, 'rewrite_srcset' ] )
+				);
 			} else {
 				$this->assertFalse( has_filter( 'rocket_buffer', [ $this->cdn_subscriber, 'rewrite' ] ) );
 				$this->assertFalse( has_filter( 'rocket_buffer', [ $this->cdn_subscriber, 'rewrite_srcset' ] ) );

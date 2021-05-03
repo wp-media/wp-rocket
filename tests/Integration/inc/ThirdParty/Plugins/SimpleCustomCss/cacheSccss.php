@@ -13,7 +13,7 @@ class Test_CacheSccss extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/ThirdParty/Plugins/SimpleCustomCss/cacheSccss.php';
 	private $wp_styles;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->wp_styles = wp_styles();

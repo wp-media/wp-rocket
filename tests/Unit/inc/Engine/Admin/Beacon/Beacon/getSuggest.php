@@ -7,6 +7,7 @@ use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
+use WP_Rocket\Engine\Support\Data;
 
 /**
  * @covers \WP_Rocket\Engine\Admin\Beacon\Beacon::get_suggest
@@ -16,11 +17,11 @@ class Test_GetSuggest extends TestCase {
 	private $beacon;
 	private $options;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->options = Mockery::mock( Options_Data::class );
-		$this->beacon  = new Beacon( $this->options, 'views/settings' );
+		$this->beacon  = new Beacon( $this->options, 'views/settings', Mockery::mock( Data::class ) );
 	}
 
 	/**
