@@ -93,7 +93,11 @@ class Scanner {
 
 		array_map( [ $this->process, 'push_to_queue' ], $this->items );
 
-		$this->options_api->set( 'scanner_start_time', time() );
+		$prewarmup_stats = [
+			'scan_start_time'   => time(),
+			'fetch_finish_time' => null,
+		];
+		$this->options_api->set( 'prewarmup_stats', $prewarmup_stats );
 
 		$this->process->save()->dispatch();
 	}

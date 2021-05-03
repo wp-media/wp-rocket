@@ -133,15 +133,27 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 			return;
 		}
 
-		$option = $this->options_api->get( 'resources_scanner', [] );
+		$option          = $this->options_api->get( 'resources_scanner', [] );
+		$fetched_counter = 0;
 		foreach ( $option as $key => $item ) {
+			if ( isset( $item['is_fetched'] ) && $item['is_fetched'] ) {
+				$fetched_counter++;
+			}
 			if ( $this->page_url !== $item['url'] ) {
 				continue;
 			}
 
 			$option[ $key ]['is_fetched'] = true;
+			$fetched_counter++;
 		}
 
 		$this->options_api->set( 'resources_scanner', $option );
+
+		if ( count( $option ) === $fetched_counter ) {
+			// Fetching resources is finished.
+			$prewarmup_stats                      = $this->options_api->get( 'prewarmup_stats', [] );
+			$prewarmup_stats['fetch_finish_time'] = time();
+			$this->options_api->set( 'prewarmup_stats', $prewarmup_stats );
+		}
 	}
 }
