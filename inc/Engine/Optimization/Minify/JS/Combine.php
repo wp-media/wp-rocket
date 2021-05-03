@@ -654,6 +654,8 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'aepro',
 			'cdn.jst.ai',
 			'w2dc_fields_in_categories',
+			'jetMenuPublicSettings',
+			'JetTricksSettings',
 			'aepc_pixel',
 			'avadaWooCommerceVars',
 			'var isb',
