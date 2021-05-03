@@ -5,7 +5,6 @@ namespace WP_Rocket\Engine\Optimization\RUCSS\Warmup;
 
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Engine\Optimization\ContentTrait;
-use WP_Rocket\Logger\Logger;
 
 class Scanner {
 	use ContentTrait;
