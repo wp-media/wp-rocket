@@ -96,7 +96,7 @@ class RESTWP {
 	 */
 	public function respond_status( WP_REST_Request $request ): WP_REST_Response {
 		if (
-			(bool) $this->options->get( 'remove_unused_css', 0 )
+			(bool) ! $this->options->get( 'remove_unused_css', 0 )
 		) {
 			return rest_ensure_response(
 				$this->return_error( __( 'Remove unused CSS option is disabled.', 'rocket' ) )

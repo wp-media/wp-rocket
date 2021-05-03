@@ -117,6 +117,9 @@ class Settings {
 	 * @return void
 	 */
 	public function display_progress_bar() {
+		if ( ! $this->is_enabled() ) {
+			return;
+		}
 		echo '<div id="rucss-progressbar"></div>';
 	}
 }

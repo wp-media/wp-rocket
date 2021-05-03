@@ -78,13 +78,17 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function add_admin_js() {
+		if ( ! $this->settings->is_enabled() ) {
+			return;
+		}
+
 		wp_enqueue_script( 'wpr-rucss-progress-bar', WP_ROCKET_ASSETS_JS_URL . 'react/rucss_progress_bar.js', [ 'react-dom' ], '1.0.0', true );
 
 		wp_localize_script(
 			'wpr-rucss-progress-bar',
 			'rocket_rucss_ajax_data',
 			[
-				'api_url'   => rest_url( 'wp-rocket/v1/' ),
+				'api_url'   => rest_url( 'wp-rocket/v1/rucss/warmup/status' ),
 				'api_nonce' => wp_create_nonce( 'rocket-ajax' ),
 			]
 		);
