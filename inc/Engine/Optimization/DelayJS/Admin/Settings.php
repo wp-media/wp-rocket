@@ -52,7 +52,7 @@ class Settings {
 			$options['delay_js_exclusions']   = [
 				$this->get_excluded_internal_paths(),
 				'/jquery-?[0-9.]*(.min|.slim|.slim.min)?.js',
-				'js-(extra|after)',
+				'js-(before|after)',
 			];
 			$options['minify_concatenate_js'] = 0;
 		}

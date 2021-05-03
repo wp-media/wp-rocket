@@ -32,6 +32,7 @@ class Data {
 		'cache_webp'              => 'WebP Cache',
 		'minify_css'              => 'Minify CSS',
 		'minify_concatenate_css'  => 'Combine CSS',
+		'remove_unused_css'       => 'Remove Unused CSS',
 		'minify_js'               => 'Minify JS',
 		'minify_concatenate_js'   => 'Combine JS',
 		'minify_google_fonts'     => 'Combine Google Fonts',

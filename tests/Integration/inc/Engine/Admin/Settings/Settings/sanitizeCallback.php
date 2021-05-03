@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\Settings\Settings;
 
 use WPMedia\PHPUnit\Integration\AdminTestCase;
+use WP_Rocket\Tests\Integration\DBTrait;
 
 /**
  * @covers \WP_Rocket\Engine\Admin\Settings\Settings::sanitize_callback
@@ -12,6 +13,13 @@ use WPMedia\PHPUnit\Integration\AdminTestCase;
  * @group  Settings
  */
 class Test_SanitizeCallback extends AdminTestCase {
+	use DBTrait;
+
+	public function setUp() {
+		DBTrait::removeDBHooks();
+
+		parent::setUp();
+	}
 
 	/**
 	 * @dataProvider addDNSPrefetchProvider

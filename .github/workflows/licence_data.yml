@@ -23,7 +23,7 @@ jobs:
 
       - name: Add a file
         if: ${{ steps.find.outcome == 'failure' }}
-        run: git checkout origin/master licence-data.php
+        run: git checkout origin/trunk licence-data.php
         id: add
 
       - name: Commit the missing file
