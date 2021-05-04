@@ -65,6 +65,8 @@ class Checker extends AbstractAPIClient {
 			 */
 			do_action( 'rocket_rucss_prewarmup_error' );
 
+			$this->set_warmup_status_finish_time();
+
 			rocket_clean_domain();
 
 			return;
@@ -79,6 +81,8 @@ class Checker extends AbstractAPIClient {
 			 * @since 3.9
 			 */
 			do_action( 'rocket_rucss_prewarmup_success' );
+
+			$this->set_warmup_status_finish_time();
 
 			rocket_clean_domain();
 
@@ -195,5 +199,14 @@ class Checker extends AbstractAPIClient {
 
 			$this->resources_query->update_warmup_status( $url );
 		}
+	}
+
+	/**
+	 * Set warmup Status process finish time.
+	 */
+	private function set_warmup_status_finish_time() {
+		$prewarmup_stats                              = $this->options_api->get( 'prewarmup_stats', [] );
+		$prewarmup_stats['warmup_status_finish_time'] = time();
+		$this->options_api->set( 'prewarmup_stats', $prewarmup_stats );
 	}
 }

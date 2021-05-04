@@ -199,13 +199,20 @@ class RESTWP {
 	 * @return array
 	 */
 	private function get_warmup_status() : array {
+		$prewarmup_stats = $this->options_api->get( 'prewarmup_stats', [] );
+
 		$status = [
 			'total'               => $this->resources_query->get_prewarmup_total_count(),
 			'warmed_count'        => $this->resources_query->get_prewarmup_warmed_count(),
 			'notwarmed_resources' => [],
-			// 'completed'           => TO DO,
-			// 'duration'            => TO DO,
+			'duration'            => 0,
 		];
+
+		$status['completed'] = $status['total'] === $status['warmed_count'] || ! empty( $prewarmup_stats['warmup_status_finish_time'] );
+
+		if ( $status['completed'] ) {
+			$status['duration'] = $prewarmup_stats['fetch_finish_time'] - $prewarmup_stats['warmup_status_finish_time'];
+		}
 
 		if ( $status['warmed_count'] < $status['total'] ) {
 			$status['notwarmed_resources'] = array_values( $this->resources_query->get_prewarmup_notwarmed_urls() );
