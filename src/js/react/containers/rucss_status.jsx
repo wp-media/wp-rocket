@@ -88,6 +88,9 @@ export default class RUCSSStatus extends Component {
 	}
 
     componentDidMount() {
+		this.getStatus();
+		this.computeProgress();
+
 		this.timeout = setInterval(() => {
 			this.getStatus();
 			this.computeProgress();
@@ -95,7 +98,7 @@ export default class RUCSSStatus extends Component {
 			if ( this.state.progress > 100 ) {
 				clearInterval(this.timeout);
 			}
-		}, 1000);
+		}, 3000);
 	}
 
 	step1Completed() {
@@ -103,7 +106,7 @@ export default class RUCSSStatus extends Component {
 	}
 
 	step1Progress() {
-		return this.state.scan_status.scanned;
+		return this.state.scan_status.fetched;
 	}
 
 	step1MaxProgress() {
@@ -136,8 +139,9 @@ export default class RUCSSStatus extends Component {
 	renderScanStep() {
 		let step1;
 		if ( this.state.success ) {
-			let classNames = this.step1Completed() ? 'rucss-progress-step1  wpr-icon-important' : 'rucss-progress-step1  wpr-icon-refresh';
+			let classNames = this.step1Completed() ? 'rucss-progress-step completed step1  wpr-icon-check' : 'rucss-progress-step step1';
 			step1 = (<div className={classNames}>
+						<div className="spinner"></div>
 						Scanning {this.state.scan_status.scanned} from {this.state.scan_status.total_pages} in {this.state.scan_status.duration} seconds
 					</div>);
 		}
@@ -147,8 +151,9 @@ export default class RUCSSStatus extends Component {
 	renderWarmupStep() {
 		let step2;
 		if ( this.state.success && this.step1Completed() ) {
-			let classNames = this.step2Completed() ? 'rucss-progress-step2  wpr-icon-important' : 'rucss-progress-step2  wpr-icon-refresh';
+			let classNames = this.step2Completed() ? 'rucss-progress-step completed step2  wpr-icon-check' : 'rucss-progress-step  step2';
 			step2 = <div className={classNames}>
+						<div className="spinner"></div>
 						Warming resources {this.state.warmup_status.warmed_count} from {this.state.warmup_status.total} in {this.state.warmup_status.duration} seconds
 					</div>;
 		}
@@ -158,9 +163,9 @@ export default class RUCSSStatus extends Component {
 	renderNotWarmedResourcesList() {
 		let step2_list;
 		if ( this.state.success && this.step1Completed() && this.state.warmup_status.notwarmed_resources.length > 0) {
-			step2_list = <div className="wpr-fieldsContainer-helper wpr-icon-important rucss-progress-step2-list">
+			step2_list = <div className="rucss-progress-step wpr-icon-important rucss-progress-step2-list">
 							Not warmed resources list:
-							<ul className="list-group">
+							<ul className="rucss-notwarmed-resources">
 								{this.state.warmup_status.notwarmed_resources.map(resource => (
 									<li key="{resource}" className="list-group-item list-group-item-primary">
 										{resource}

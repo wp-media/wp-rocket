@@ -43,14 +43,15 @@
 		border-radius: 9px;
 		background-image:
 		  -webkit-linear-gradient(-45deg,
-		                          transparent 33%, rgba(0, 0, 0, .1) 33%,
-		                          rgba(0,0, 0, .1) 66%, transparent 66%),
+		                          transparent 33%, rgba(255, 253, 253, 0.1) 33%,
+		                          rgba(255, 255, 255, 0.1) 66%, transparent 66%),
 		  -webkit-linear-gradient(top,
-		                          rgba(255, 255, 255, .25),
-		                          rgba(0, 0, 0, .25)),
-		  -webkit-linear-gradient(left, $cRedLight1, $cGreenDark1);
+		                          rgba(0, 0, 0, 0.25),
+		                          rgba(255, 255, 255, 0.25)),
+		  -webkit-linear-gradient(left, $cGreenLight3, $cGreenDark1);
 
 		background-size: 50px 20px, 100% 100%, 100% 100%;
+		transition: width 3s;
 	}
 
 	progress[value]::-moz-progress-bar {
@@ -62,4 +63,40 @@
 
 .rucss-progress-error {
 	margin-top: 10px;
+}
+
+
+.rucss-progress-step {
+    padding: 10px 0px 0px 0px;
+    line-height: 24px;
+
+	&.completed {
+		.spinner {
+			visibility: hidden;
+			display: none;
+		}
+		&.wpr-icon-check:before {
+			color: $cGreenDark1;
+			margin: 4px 14px 0;
+		}
+	}
+	.spinner {
+		visibility: visible;
+		float: left;
+	}
+
+	&.rucss-progress-step2-list {
+		color: $cRed;
+
+		&.wpr-icon-important:before {
+			margin: 4px 14px 0;
+		}
+
+		ul {
+			&.rucss-notwarmed-resources {
+				margin-top: 0px;
+				padding-left: 40px;
+			}
+		}
+	}
 }
