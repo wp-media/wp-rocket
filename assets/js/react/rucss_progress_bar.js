@@ -3244,7 +3244,7 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       if (this.state.progress > 100) {
         clearInterval(this.timeout);
       }
-    }, 3000);
+    }, 5000);
   }
 
   step1Completed() {
@@ -3329,11 +3329,11 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     let btn, duration;
     duration = this.state.warmup_status.duration;
 
-    if (!this.state.allow_optimization && duration > 600) {
+    if (!this.state.allow_optimization && duration > 200) {
       btn = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-        className: "",
+        className: "wpr-button",
         onClick: this.enableOptimization
-      }, "Activate Lasers"));
+      }, "Generate Used CSS now"));
     }
 
     return btn;

@@ -111,7 +111,7 @@ class RESTWP {
 		}
 
 		$allow_optimization = $request->get_param( 'allow_optimization' );
-		if ( isset( $allow_optimization) ) {
+		if ( isset( $allow_optimization ) ) {
 			$this->set_allow_optimization();
 		}
 
@@ -177,9 +177,9 @@ class RESTWP {
 	 * @return void
 	 */
 	private function set_allow_optimization() {
-		$prewarmup_stats                       = $this->options_api->get( 'prewarmup_stats', [] );
-		$prewarmup_stats['allow_optimization'] = true;
-		$prewarmup_stats['completed']          = true;
+		$prewarmup_stats                              = $this->options_api->get( 'prewarmup_stats', [] );
+		$prewarmup_stats['allow_optimization']        = true;
+		$prewarmup_stats['warmup_status_finish_time'] = time();
 		$this->options_api->set( 'prewarmup_stats', $prewarmup_stats );
 	}
 	/**

@@ -102,7 +102,7 @@ export default class RUCSSStatus extends Component {
 			if ( this.state.progress > 100 ) {
 				clearInterval(this.timeout);
 			}
-		}, 3000);
+		}, 5000);
 	}
 
 	step1Completed() {
@@ -177,10 +177,10 @@ export default class RUCSSStatus extends Component {
 	renderButtonAllowOptimization() {
 		let btn, duration;
 		duration = this.state.warmup_status.duration;
-		if ( ! this.state.allow_optimization && duration > 600 ) {
+		if ( ! this.state.allow_optimization && duration > 200 ) {
 			btn = <div>
-					<button className="" onClick={this.enableOptimization}>
-						Activate Lasers
+					<button className="wpr-button" onClick={this.enableOptimization}>
+						Generate Used CSS now
 					</button>
 				</div>;
 		}
