@@ -179,6 +179,7 @@ class RESTWP {
 	private function set_allow_optimization() {
 		$prewarmup_stats                       = $this->options_api->get( 'prewarmup_stats', [] );
 		$prewarmup_stats['allow_optimization'] = true;
+		$prewarmup_stats['completed']          = true;
 		$this->options_api->set( 'prewarmup_stats', $prewarmup_stats );
 	}
 	/**
@@ -236,12 +237,14 @@ class RESTWP {
 
 		$status['completed'] = $status['total'] === $status['warmed_count'] || ! empty( $prewarmup_stats['warmup_status_finish_time'] );
 
-		if ( $status['completed'] ) {
-			$duration = $prewarmup_stats['fetch_finish_time'] - $prewarmup_stats['warmup_status_finish_time'];
+		if ( ! empty( $prewarmup_stats['warmup_status_finish_time'] ) ) {
+			$duration = $prewarmup_stats['warmup_status_finish_time'] - $prewarmup_stats['fetch_finish_time'];
 			if ( $duration < 0 ) {
 				$duration = $prewarmup_stats['fetch_finish_time'] - $prewarmup_stats['scan_start_time'];
 			}
 			$status['duration'] = $duration;
+		} else {
+			$status['duration'] = time() - $prewarmup_stats['fetch_finish_time'];
 		}
 
 		if ( $status['warmed_count'] < $status['total'] ) {

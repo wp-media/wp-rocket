@@ -175,8 +175,9 @@ export default class RUCSSStatus extends Component {
 	}
 
 	renderButtonAllowOptimization() {
-		let btn;
-		if ( ! this.state.allow_optimization ) {
+		let btn, duration;
+		duration = this.state.warmup_status.duration;
+		if ( ! this.state.allow_optimization && duration > 600 ) {
 			btn = <div>
 					<button className="" onClick={this.enableOptimization}>
 						Activate Lasers
@@ -198,7 +199,6 @@ export default class RUCSSStatus extends Component {
 									</li>
 								))}
 							</ul>
-							{this.renderButtonAllowOptimization()}
 						</div>;
 		}
 
@@ -239,6 +239,7 @@ export default class RUCSSStatus extends Component {
 					{this.renderScanStep()}
 					{this.renderWarmupStep()}
 					{this.renderNotWarmedResourcesList()}
+					{this.renderButtonAllowOptimization()}
 					{this.renderRUCSSEnabled()}
 				</div>
 			</div>

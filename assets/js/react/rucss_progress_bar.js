@@ -3326,9 +3326,10 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
   }
 
   renderButtonAllowOptimization() {
-    let btn;
+    let btn, duration;
+    duration = this.state.warmup_status.duration;
 
-    if (!this.state.allow_optimization) {
+    if (!this.state.allow_optimization && duration > 600) {
       btn = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         className: "",
         onClick: this.enableOptimization
@@ -3349,7 +3350,7 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       }, this.state.warmup_status.notwarmed_resources.map(resource => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
         key: "{resource}",
         className: "list-group-item list-group-item-primary"
-      }, resource))), this.renderButtonAllowOptimization());
+      }, resource))));
     }
 
     return step2_list;
@@ -3383,7 +3384,7 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_progress_bar__WEBPACK_IMPORTED_MODULE_2__["default"], {
       value: this.state.progress,
       max: this.state.max
-    })), this.renderError(), this.renderScanStep(), this.renderWarmupStep(), this.renderNotWarmedResourcesList(), this.renderRUCSSEnabled()));
+    })), this.renderError(), this.renderScanStep(), this.renderWarmupStep(), this.renderNotWarmedResourcesList(), this.renderButtonAllowOptimization(), this.renderRUCSSEnabled()));
   }
 
 }
