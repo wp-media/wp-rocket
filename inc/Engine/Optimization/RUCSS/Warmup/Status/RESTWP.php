@@ -211,7 +211,11 @@ class RESTWP {
 		$status['completed'] = $status['total'] === $status['warmed_count'] || ! empty( $prewarmup_stats['warmup_status_finish_time'] );
 
 		if ( $status['completed'] ) {
-			$status['duration'] = $prewarmup_stats['fetch_finish_time'] - $prewarmup_stats['warmup_status_finish_time'];
+			$duration = $prewarmup_stats['fetch_finish_time'] - $prewarmup_stats['warmup_status_finish_time'];
+			if ( $duration < 0 ) {
+				$duration = $prewarmup_stats['fetch_finish_time'] - $prewarmup_stats['scan_start_time'];
+			}
+			$status['duration'] = $duration;
 		}
 
 		if ( $status['warmed_count'] < $status['total'] ) {
