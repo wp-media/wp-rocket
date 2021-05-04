@@ -40,11 +40,11 @@ export default class RUCSSStatus extends Component {
 		).then(
 			data => this.setState(
 				{
-					scan_status: data.data.scan_status,
-					warmup_status: data.data.warmup_status,
-					code: data.code,
-					success: data.success,
-					error_message: data.message
+					scan_status: typeof data.data.scan_status != 'undefined' ?  data.data.scan_status : this.state.scan_status,
+					warmup_status: typeof data.data.warmup_status != 'undefined' ?  data.data.warmup_status : this.state.warmup_status,
+					code: typeof data.code != 'undefined' ?  data.code : this.state.code,
+					success: typeof data.success != 'undefined' ?  data.success : this.state.success,
+					error_message: typeof data.message != 'undefined' ?  data.message : this.state.error_message,
 				}
 			)
 		);
@@ -99,64 +99,34 @@ export default class RUCSSStatus extends Component {
 	}
 
 	step1Completed() {
-		let step1Completed = false;
-		if ( this.state.scan_status != 'undefined' ) {
-			step1Completed = this.state.scan_status.completed;
-		}
-
-		return step1Completed;
+		return this.state.scan_status.completed;
 	}
 
 	step1Progress() {
-		let step1Progress = 0;
-		if ( this.state.scan_status != 'undefined' ) {
-			step1Progress = this.state.scan_status.scanned;
-		}
-
-		return step1Progress;
+		return this.state.scan_status.scanned;
 	}
 
 	step1MaxProgress() {
-		let step1MaxProgress = 0;
-		if ( this.state.scan_status != 'undefined' ) {
-			step1MaxProgress = this.state.scan_status.total_pages;
-		}
-
-		return step1MaxProgress;
+		return this.state.scan_status.total_pages;
 	}
 
 	step2Completed() {
-		let step2Completed = false;
-		if ( this.state.warmup_status != 'undefined' ) {
-			step2Completed = this.state.warmup_status.completed;
-		}
-
-		return step2Completed;
+		return this.state.warmup_status.completed;
 	}
 
 
 	step2Progress() {
-		let step2Progress = 0;
-		if ( this.state.warmup_status != 'undefined' ) {
-			step2Progress = this.state.warmup_status.warmed_count;
-		}
-
-		return step2Progress;
+		return this.state.warmup_status.warmed_count;
 	}
 
 	step2MaxProgress() {
-		let step2MaxProgress = 0;
-		if ( this.state.warmup_status != 'undefined' ) {
-			step2MaxProgress = this.state.warmup_status.total;
-		}
-
-		return step2MaxProgress;
+		return this.state.warmup_status.total;
 	}
 
 	renderError() {
 		let error;
-		if ( '' != this.state.error_message) {
-			error = <div className="rucss-progress-error">
+		if ( ! this.state.success && this.state.error_message != '' ) {
+			error = <div className="rucss-progress-error wpr-fieldWarning-title wpr-icon-important">
 						{this.state.error_message}
 					</div>;
 		}
@@ -165,7 +135,7 @@ export default class RUCSSStatus extends Component {
 
 	renderScanStep() {
 		let step1;
-		if ( typeof this.state.scan_status != 'undefined' ) {
+		if ( this.state.success ) {
 			let classNames = this.step1Completed() ? 'rucss-progress-step1  wpr-icon-important' : 'rucss-progress-step1  wpr-icon-refresh';
 			step1 = (<div className={classNames}>
 						Scanning {this.state.scan_status.scanned} from {this.state.scan_status.total_pages} in {this.state.scan_status.duration} seconds
@@ -176,7 +146,7 @@ export default class RUCSSStatus extends Component {
 
 	renderWarmupStep() {
 		let step2;
-		if ( this.step1Completed() && typeof this.state.warmup_status != 'undefined' ) {
+		if ( this.state.success && this.step1Completed() ) {
 			let classNames = this.step2Completed() ? 'rucss-progress-step2  wpr-icon-important' : 'rucss-progress-step2  wpr-icon-refresh';
 			step2 = <div className={classNames}>
 						Warming resources {this.state.warmup_status.warmed_count} from {this.state.warmup_status.total} in {this.state.warmup_status.duration} seconds
@@ -187,7 +157,7 @@ export default class RUCSSStatus extends Component {
 
 	renderNotWarmedResourcesList() {
 		let step2_list;
-		if ( this.step1Completed() && this.state.warmup_status.notwarmed_resources.length > 0) {
+		if ( this.state.success && this.step1Completed() && this.state.warmup_status.notwarmed_resources.length > 0) {
 			step2_list = <div className="wpr-fieldsContainer-helper wpr-icon-important rucss-progress-step2-list">
 							Not warmed resources list:
 							<ul className="list-group">
