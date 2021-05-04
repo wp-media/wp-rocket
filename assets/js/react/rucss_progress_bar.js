@@ -3244,7 +3244,7 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       if (this.state.progress > 100) {
         clearInterval(this.timeout);
       }
-    }, 5000);
+    }, 3000);
   }
 
   step1Completed() {
@@ -3329,7 +3329,7 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     let btn, duration;
     duration = this.state.warmup_status.duration;
 
-    if (!this.state.allow_optimization && duration > 200) {
+    if (!this.state.allow_optimization && duration > 30) {
       btn = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         className: "wpr-button",
         onClick: this.enableOptimization

@@ -55,14 +55,20 @@ class ScannerProcess extends WP_Rocket_WP_Background_Process {
 			]
 		);
 
+		$item['is_error'] = false;
+
 		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
-			return false;
+			$item['is_scanned'] = true;
+			$item['is_error']   = true;
+			$item['is_fetched'] = true;
 		}
 
 		$html = wp_remote_retrieve_body( $response );
 
 		if ( empty( $html ) ) {
-			return false;
+			$item['is_scanned'] = true;
+			$item['is_error']   = true;
+			$item['is_fetched'] = true;
 		}
 
 		$this->resource_fetcher->data(

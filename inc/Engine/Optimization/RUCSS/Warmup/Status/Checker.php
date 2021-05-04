@@ -206,7 +206,12 @@ class Checker extends AbstractAPIClient {
 	 * Set warmup Status process finish time.
 	 */
 	private function set_warmup_status_finish_time() {
-		$prewarmup_stats                              = $this->options_api->get( 'prewarmup_stats', [] );
+		$prewarmup_stats = $this->options_api->get( 'prewarmup_stats', [] );
+
+		if ( ! empty( $prewarmup_stats['warmup_status_finish_time'] ) ) {
+			return;
+		}
+
 		$prewarmup_stats['warmup_status_finish_time'] = time();
 		$this->options_api->set( 'prewarmup_stats', $prewarmup_stats );
 	}

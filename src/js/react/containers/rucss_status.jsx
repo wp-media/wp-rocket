@@ -102,7 +102,7 @@ export default class RUCSSStatus extends Component {
 			if ( this.state.progress > 100 ) {
 				clearInterval(this.timeout);
 			}
-		}, 5000);
+		}, 3000);
 	}
 
 	step1Completed() {
@@ -177,7 +177,7 @@ export default class RUCSSStatus extends Component {
 	renderButtonAllowOptimization() {
 		let btn, duration;
 		duration = this.state.warmup_status.duration;
-		if ( ! this.state.allow_optimization && duration > 200 ) {
+		if ( ! this.state.allow_optimization && duration > 30 ) {
 			btn = <div>
 					<button className="wpr-button" onClick={this.enableOptimization}>
 						Generate Used CSS now
