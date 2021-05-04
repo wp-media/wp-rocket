@@ -168,7 +168,7 @@ class RESTWP {
 			$prewarmup_stats['resources_scanner_count'] = 0;
 		}
 		$duration = time() - $prewarmup_stats['scan_start_time'];
-		if ( ! empty( $fetch_finish_time['fetch_finish_time'] ) ) {
+		if ( ! empty( $prewarmup_stats['fetch_finish_time'] ) ) {
 			$duration = $prewarmup_stats['fetch_finish_time'] - $prewarmup_stats['scan_start_time'];
 		}
 
@@ -176,7 +176,7 @@ class RESTWP {
 			'total_pages' => $prewarmup_stats['resources_scanner_count'],
 			'scanned'     => 0,
 			'fetched'     => 0,
-			'completed'   => ! empty( $fetch_finish_time['fetch_finish_time'] ) ? true : false,
+			'completed'   => ! empty( $prewarmup_stats['fetch_finish_time'] ) ? true : false,
 			'duration'    => $duration,
 		];
 
@@ -203,6 +203,8 @@ class RESTWP {
 			'total'               => $this->resources_query->get_prewarmup_total_count(),
 			'warmed_count'        => $this->resources_query->get_prewarmup_warmed_count(),
 			'notwarmed_resources' => [],
+			// 'completed'           => TO DO,
+			// 'duration'            => TO DO,
 		];
 
 		if ( $status['warmed_count'] < $status['total'] ) {

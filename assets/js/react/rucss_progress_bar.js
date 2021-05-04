@@ -3163,15 +3163,20 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 
     this.state = {
       progress: 0,
+      max: 0,
       scan_status: {
         scanned: 0,
         fetched: 0,
-        total_pages: 0
+        total_pages: 0,
+        completed: false,
+        duration: 0
       },
       warmup_status: {
         total: 0,
         warmed_count: 0,
-        notwarmed_resources: []
+        notwarmed_resources: [],
+        completed: false,
+        duration: 0
       },
       error_message: '',
       code: 0,
@@ -3199,13 +3204,30 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         error_message: this.state.error_message
       });
       return;
-    } // let scan_status   = this.state.scan_status;
-    // let warmup_status = this.state.warmup_status;
+    }
 
+    let progress = 0;
+    let max = 0;
 
-    let progress = this.state.progress + 0.1;
+    if (!this.step1Completed()) {
+      progress = this.step1Progress();
+      max = this.step1MaxProgress();
+    }
+
+    if (this.step1Completed() && !this.step2Completed()) {
+      progress = this.step2Progress();
+      max = this.step2MaxProgress();
+    }
+
+    if (this.step1Completed() && this.step2Completed()) {
+      clearInterval(this.timeout);
+      progress = 100;
+      max = 100;
+    }
+
     this.setState({
-      progress: progress
+      progress: progress,
+      max: max
     });
   }
 
@@ -3220,8 +3242,68 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     }, 1000);
   }
 
-  render() {
-    let error, step1, step2, step2_list;
+  step1Completed() {
+    let step1Completed = false;
+
+    if (this.state.scan_status != 'undefined') {
+      step1Completed = this.state.scan_status.completed;
+    }
+
+    return step1Completed;
+  }
+
+  step1Progress() {
+    let step1Progress = 0;
+
+    if (this.state.scan_status != 'undefined') {
+      step1Progress = this.state.scan_status.scanned;
+    }
+
+    return step1Progress;
+  }
+
+  step1MaxProgress() {
+    let step1MaxProgress = 0;
+
+    if (this.state.scan_status != 'undefined') {
+      step1MaxProgress = this.state.scan_status.total_pages;
+    }
+
+    return step1MaxProgress;
+  }
+
+  step2Completed() {
+    let step2Completed = false;
+
+    if (this.state.warmup_status != 'undefined') {
+      step2Completed = this.state.warmup_status.completed;
+    }
+
+    return step2Completed;
+  }
+
+  step2Progress() {
+    let step2Progress = 0;
+
+    if (this.state.warmup_status != 'undefined') {
+      step2Progress = this.state.warmup_status.warmed_count;
+    }
+
+    return step2Progress;
+  }
+
+  step2MaxProgress() {
+    let step2MaxProgress = 0;
+
+    if (this.state.warmup_status != 'undefined') {
+      step2MaxProgress = this.state.warmup_status.total;
+    }
+
+    return step2MaxProgress;
+  }
+
+  renderError() {
+    let error;
 
     if ('' != this.state.error_message) {
       error = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -3229,19 +3311,39 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       }, this.state.error_message);
     }
 
+    return error;
+  }
+
+  renderScanStep() {
+    let step1;
+
     if (typeof this.state.scan_status != 'undefined') {
+      let classNames = this.step1Completed() ? 'rucss-progress-step1  wpr-icon-important' : 'rucss-progress-step1  wpr-icon-refresh';
       step1 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "rucss-progress-step1"
-      }, "Scanning ", this.state.scan_status.scanned, " from ", this.state.scan_status.total_pages);
+        className: classNames
+      }, "Scanning ", this.state.scan_status.scanned, " from ", this.state.scan_status.total_pages, " in ", this.state.scan_status.duration, " seconds");
     }
 
-    if (typeof this.state.warmup_status != 'undefined') {
+    return step1;
+  }
+
+  renderWarmupStep() {
+    let step2;
+
+    if (this.step1Completed() && typeof this.state.warmup_status != 'undefined') {
+      let classNames = this.step2Completed() ? 'rucss-progress-step2  wpr-icon-important' : 'rucss-progress-step2  wpr-icon-refresh';
       step2 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "rucss-progress-step2"
-      }, "Warming resources ", this.state.warmup_status.warmed_count, " from ", this.state.warmup_status.total);
+        className: classNames
+      }, "Warming resources ", this.state.warmup_status.warmed_count, " from ", this.state.warmup_status.total, " in ", this.state.warmup_status.duration, " seconds");
     }
 
-    if (typeof this.state.warmup_status != 'undefined') {
+    return step2;
+  }
+
+  renderNotWarmedResourcesList() {
+    let step2_list;
+
+    if (this.step1Completed() && this.state.warmup_status.notwarmed_resources.length > 0) {
       step2_list = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "wpr-fieldsContainer-helper wpr-icon-important rucss-progress-step2-list"
       }, "Not warmed resources list:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
@@ -3252,6 +3354,10 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       }, resource))));
     }
 
+    return step2_list;
+  }
+
+  render() {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       className: "wpr-field wpr-field--textarea wpr-field--children"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -3260,8 +3366,8 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       className: "rucss-progress-bar"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_progress_bar__WEBPACK_IMPORTED_MODULE_2__["default"], {
       value: this.state.progress,
-      max: 100
-    })), error, step1, step2, step2_list));
+      max: this.state.max
+    })), this.renderError(), this.renderScanStep(), this.renderWarmupStep(), this.renderNotWarmedResourcesList()));
   }
 
 }
