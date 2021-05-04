@@ -137,12 +137,7 @@ class WPRocketUninstall {
 	 */
 	private function drop_rucss_database_tables() {
 		// If the table exist, then drop the table.
-		if ( $this->rucss_resources_table->exists() ) {
-			$this->rucss_resources_table->uninstall();
-		}
-		if ( $this->rucss_usedcss_table->exists() ) {
-			$this->rucss_usedcss_table->uninstall();
-		}
+		$this->drop_rucss_current_site_tables();
 
 		if ( ! is_multisite() ) {
 			return;
@@ -151,16 +146,23 @@ class WPRocketUninstall {
 		foreach ( get_sites( [ 'fields' => 'ids' ] ) as $site_id ) {
 			switch_to_blog( $site_id );
 
-			if ( $this->rucss_resources_table->exists() ) {
-				$this->rucss_resources_table->uninstall();
-			}
-			if ( $this->rucss_usedcss_table->exists() ) {
-				$this->rucss_usedcss_table->uninstall();
-			}
+			$this->drop_rucss_current_site_tables();
 
 			restore_current_blog();
 		}
 
+	}
+
+	/**
+	 * Drop RUCSS tables for current active site.
+	 */
+	private function drop_rucss_current_site_tables() {
+		if ( $this->rucss_resources_table->exists() ) {
+			$this->rucss_resources_table->uninstall();
+		}
+		if ( $this->rucss_usedcss_table->exists() ) {
+			$this->rucss_usedcss_table->uninstall();
+		}
 	}
 
 	/**
