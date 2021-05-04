@@ -94,6 +94,13 @@ class WPRocketUninstall {
 	private $rucss_resources_table;
 
 	/**
+	 * Instance of RUCSS used_css table.
+	 *
+	 * @var WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS
+	 */
+	private $rucss_usedcss_table;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param string    $cache_path            Path to the cache folder.
@@ -136,6 +143,24 @@ class WPRocketUninstall {
 		if ( $this->rucss_usedcss_table->exists() ) {
 			$this->rucss_usedcss_table->uninstall();
 		}
+
+		if ( ! is_multisite() ) {
+			return;
+		}
+
+		foreach ( get_sites( [ 'fields' => 'ids' ] ) as $site_id ) {
+			switch_to_blog( $site_id );
+
+			if ( $this->rucss_resources_table->exists() ) {
+				$this->rucss_resources_table->uninstall();
+			}
+			if ( $this->rucss_usedcss_table->exists() ) {
+				$this->rucss_usedcss_table->uninstall();
+			}
+
+			restore_current_blog();
+		}
+
 	}
 
 	/**
