@@ -3243,8 +3243,8 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 
     if (typeof this.state.warmup_status != 'undefined') {
       step2_list = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "rucss-progress-step2-list"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+        className: "wpr-fieldsContainer-helper wpr-icon-important rucss-progress-step2-list"
+      }, "Not warmed resources list:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
         className: "list-group"
       }, this.state.warmup_status.notwarmed_resources.map(resource => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
         key: "{resource}",
@@ -3253,13 +3253,15 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     }
 
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-      className: "rucss-status"
+      className: "wpr-field wpr-field--textarea wpr-field--children"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "rucss-status wpr-field-description"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       className: "rucss-progress-bar"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_progress_bar__WEBPACK_IMPORTED_MODULE_2__["default"], {
       value: this.state.progress,
       max: 100
-    })), error, step1, step2, step2_list);
+    })), error, step1, step2, step2_list));
   }
 
 }

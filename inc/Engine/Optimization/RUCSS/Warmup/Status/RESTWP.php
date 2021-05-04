@@ -167,11 +167,17 @@ class RESTWP {
 		if ( empty( $prewarmup_stats['resources_scanner_count'] ) ) {
 			$prewarmup_stats['resources_scanner_count'] = 0;
 		}
+		$duration = time() - $prewarmup_stats['scan_start_time'];
+		if ( ! empty( $fetch_finish_time['fetch_finish_time'] ) ) {
+			$duration = $prewarmup_stats['fetch_finish_time'] - $prewarmup_stats['scan_start_time'];
+		}
 
 		$status = [
 			'total_pages' => $prewarmup_stats['resources_scanner_count'],
 			'scanned'     => 0,
 			'fetched'     => 0,
+			'completed'   => ! empty( $fetch_finish_time['fetch_finish_time'] ) ? true : false,
+			'duration'    => $duration,
 		];
 
 		foreach ( $resources_scanner_option as $item ) {

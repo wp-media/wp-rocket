@@ -99,7 +99,8 @@ export default class RUCSSStatus extends Component {
 		}
 
 		if ( typeof this.state.warmup_status != 'undefined' ) {
-			step2_list = <div className="rucss-progress-step2-list">
+			step2_list = <div className="wpr-fieldsContainer-helper wpr-icon-important rucss-progress-step2-list">
+							Not warmed resources list:
 							<ul className="list-group">
 								{this.state.warmup_status.notwarmed_resources.map(resource => (
 									<li key="{resource}" className="list-group-item list-group-item-primary">
@@ -111,14 +112,16 @@ export default class RUCSSStatus extends Component {
 		}
 
 		return (
-			<div className="rucss-status">
-				<div className="rucss-progress-bar">
-					<ProgressBar value={this.state.progress} max={100}/>
+			<div className="wpr-field wpr-field--textarea wpr-field--children">
+				<div className="rucss-status wpr-field-description">
+					<div className="rucss-progress-bar">
+						<ProgressBar value={this.state.progress} max={100}/>
+					</div>
+					{error}
+					{step1}
+					{step2}
+					{step2_list}
 				</div>
-				{error}
-				{step1}
-				{step2}
-				{step2_list}
 			</div>
 		);
 	}
