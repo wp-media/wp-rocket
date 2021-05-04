@@ -96,6 +96,7 @@ class Scanner {
 			'scan_start_time'         => time(),
 			'fetch_finish_time'       => null,
 			'resources_scanner_count' => count( $this->items ),
+			'allow_optimization'      => false,
 		];
 		$this->options_api->set( 'prewarmup_stats', $prewarmup_stats );
 

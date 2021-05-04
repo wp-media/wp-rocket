@@ -83,6 +83,7 @@ class Checker extends AbstractAPIClient {
 			do_action( 'rocket_rucss_prewarmup_success' );
 
 			$this->set_warmup_status_finish_time();
+			$this->set_warmup_force_optimization();
 
 			rocket_clean_domain();
 
@@ -207,6 +208,15 @@ class Checker extends AbstractAPIClient {
 	private function set_warmup_status_finish_time() {
 		$prewarmup_stats                              = $this->options_api->get( 'prewarmup_stats', [] );
 		$prewarmup_stats['warmup_status_finish_time'] = time();
+		$this->options_api->set( 'prewarmup_stats', $prewarmup_stats );
+	}
+
+	/**
+	 * Set warmup force optimization.
+	 */
+	private function set_warmup_force_optimization() {
+		$prewarmup_stats                       = $this->options_api->get( 'prewarmup_stats', [] );
+		$prewarmup_stats['allow_optimization'] = true;
 		$this->options_api->set( 'prewarmup_stats', $prewarmup_stats );
 	}
 }

@@ -3178,10 +3178,12 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         completed: false,
         duration: 0
       },
+      allow_optimization: false,
       error_message: '',
       code: 0,
       success: true
     };
+    this.enableOptimization = this.enableOptimization.bind(this);
   }
 
   getStatus() {
@@ -3193,7 +3195,8 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       warmup_status: typeof data.data.warmup_status != 'undefined' ? data.data.warmup_status : this.state.warmup_status,
       code: typeof data.code != 'undefined' ? data.code : this.state.code,
       success: typeof data.success != 'undefined' ? data.success : this.state.success,
-      error_message: typeof data.message != 'undefined' ? data.message : this.state.error_message
+      error_message: typeof data.message != 'undefined' ? data.message : this.state.error_message,
+      allow_optimization: typeof data.data.allow_optimization != 'undefined' ? data.data.allow_optimization : this.state.allow_optimization
     }));
   }
 
@@ -3249,7 +3252,7 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
   }
 
   step1Progress() {
-    return this.state.scan_status.fetched;
+    return this.state.scan_status.scanned;
   }
 
   step1MaxProgress() {
@@ -3310,6 +3313,31 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     return step2;
   }
 
+  renderRUCSSEnabled() {
+    let rucssEnabled;
+
+    if (this.state.allow_optimization) {
+      rucssEnabled = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "rucss-progress-step completed  wpr-icon-check"
+      }, "RUCSS working!");
+    }
+
+    return rucssEnabled;
+  }
+
+  renderButtonAllowOptimization() {
+    let btn;
+
+    if (!this.state.allow_optimization) {
+      btn = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        className: "",
+        onClick: this.enableOptimization
+      }, "Activate Lasers"));
+    }
+
+    return btn;
+  }
+
   renderNotWarmedResourcesList() {
     let step2_list;
 
@@ -3321,10 +3349,28 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       }, this.state.warmup_status.notwarmed_resources.map(resource => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
         key: "{resource}",
         className: "list-group-item list-group-item-primary"
-      }, resource))));
+      }, resource))), this.renderButtonAllowOptimization());
     }
 
     return step2_list;
+  }
+
+  enableOptimization(e) {
+    e.preventDefault();
+    wp.apiFetch({
+      url: this.props.wpObject.api_url,
+      method: 'POST',
+      data: {
+        allow_optimization: true
+      }
+    }).then(data => this.setState({
+      scan_status: typeof data.data.scan_status != 'undefined' ? data.data.scan_status : this.state.scan_status,
+      warmup_status: typeof data.data.warmup_status != 'undefined' ? data.data.warmup_status : this.state.warmup_status,
+      code: typeof data.code != 'undefined' ? data.code : this.state.code,
+      success: typeof data.success != 'undefined' ? data.success : this.state.success,
+      error_message: typeof data.message != 'undefined' ? data.message : this.state.error_message,
+      allow_optimization: typeof data.data.allow_optimization != 'undefined' ? data.data.allow_optimization : this.state.allow_optimization
+    }));
   }
 
   render() {
@@ -3337,7 +3383,7 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_progress_bar__WEBPACK_IMPORTED_MODULE_2__["default"], {
       value: this.state.progress,
       max: this.state.max
-    })), this.renderError(), this.renderScanStep(), this.renderWarmupStep(), this.renderNotWarmedResourcesList()));
+    })), this.renderError(), this.renderScanStep(), this.renderWarmupStep(), this.renderNotWarmedResourcesList(), this.renderRUCSSEnabled()));
   }
 
 }

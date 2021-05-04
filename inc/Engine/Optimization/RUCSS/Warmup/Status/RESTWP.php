@@ -110,9 +110,15 @@ class RESTWP {
 			);
 		}
 
+		$allow_optimization = $request->get_param( 'allow_optimization' );
+		if ( isset( $allow_optimization) ) {
+			$this->set_allow_optimization();
+		}
+
 		$output = [
-			'scan_status'   => $this->get_scan_status( $resources_scanner_option ),
-			'warmup_status' => $this->get_warmup_status(),
+			'scan_status'        => $this->get_scan_status( $resources_scanner_option ),
+			'warmup_status'      => $this->get_warmup_status(),
+			'allow_optimization' => $this->get_allow_optimization(),
 		];
 
 		return rest_ensure_response(
@@ -155,6 +161,26 @@ class RESTWP {
 		];
 	}
 
+	/**
+	 * Get allow RUCSS optimization.
+	 *
+	 * @return boolean
+	 */
+	private function get_allow_optimization() : bool {
+		$prewarmup_stats = $this->options_api->get( 'prewarmup_stats', [] );
+		return $prewarmup_stats['allow_optimization'];
+	}
+
+	/**
+	 * Set allow RUCSS optimization.
+	 *
+	 * @return void
+	 */
+	private function set_allow_optimization() {
+		$prewarmup_stats                       = $this->options_api->get( 'prewarmup_stats', [] );
+		$prewarmup_stats['allow_optimization'] = true;
+		$this->options_api->set( 'prewarmup_stats', $prewarmup_stats );
+	}
 	/**
 	 * Get scan status array based on the passed option array.
 	 *

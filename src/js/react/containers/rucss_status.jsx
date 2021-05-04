@@ -25,10 +25,13 @@ export default class RUCSSStatus extends Component {
 				completed: false,
 				duration: 0,
 			},
+			allow_optimization: false,
 			error_message: '',
 			code: 0,
 			success: true,
 		};
+
+		this.enableOptimization = this.enableOptimization.bind(this);
 	}
 
 	getStatus() {
@@ -45,6 +48,7 @@ export default class RUCSSStatus extends Component {
 					code: typeof data.code != 'undefined' ?  data.code : this.state.code,
 					success: typeof data.success != 'undefined' ?  data.success : this.state.success,
 					error_message: typeof data.message != 'undefined' ?  data.message : this.state.error_message,
+					allow_optimization: typeof data.data.allow_optimization != 'undefined' ?  data.data.allow_optimization : this.state.allow_optimization,
 				}
 			)
 		);
@@ -106,7 +110,7 @@ export default class RUCSSStatus extends Component {
 	}
 
 	step1Progress() {
-		return this.state.scan_status.fetched;
+		return this.state.scan_status.scanned;
 	}
 
 	step1MaxProgress() {
@@ -160,6 +164,28 @@ export default class RUCSSStatus extends Component {
 		return step2;
 	}
 
+	renderRUCSSEnabled() {
+		let rucssEnabled;
+		if ( this.state.allow_optimization ) {
+			rucssEnabled = <div className="rucss-progress-step completed  wpr-icon-check">
+						RUCSS working!
+					</div>;
+		}
+		return rucssEnabled;
+	}
+
+	renderButtonAllowOptimization() {
+		let btn;
+		if ( ! this.state.allow_optimization ) {
+			btn = <div>
+					<button className="" onClick={this.enableOptimization}>
+						Activate Lasers
+					</button>
+				</div>;
+		}
+		return btn;
+	}
+
 	renderNotWarmedResourcesList() {
 		let step2_list;
 		if ( this.state.success && this.step1Completed() && this.state.warmup_status.notwarmed_resources.length > 0) {
@@ -172,10 +198,34 @@ export default class RUCSSStatus extends Component {
 									</li>
 								))}
 							</ul>
+							{this.renderButtonAllowOptimization()}
 						</div>;
 		}
 
 		return step2_list;
+	}
+
+	enableOptimization( e ) {
+		e.preventDefault();
+
+		wp.apiFetch(
+			{
+				url: this.props.wpObject.api_url,
+				method: 'POST',
+				data: { allow_optimization: true },
+			}
+		).then(
+			data => this.setState(
+				{
+					scan_status: typeof data.data.scan_status != 'undefined' ?  data.data.scan_status : this.state.scan_status,
+					warmup_status: typeof data.data.warmup_status != 'undefined' ?  data.data.warmup_status : this.state.warmup_status,
+					code: typeof data.code != 'undefined' ?  data.code : this.state.code,
+					success: typeof data.success != 'undefined' ?  data.success : this.state.success,
+					error_message: typeof data.message != 'undefined' ?  data.message : this.state.error_message,
+					allow_optimization: typeof data.data.allow_optimization != 'undefined' ?  data.data.allow_optimization : this.state.allow_optimization,
+				}
+			)
+		);
 	}
 
 	render() {
@@ -189,6 +239,7 @@ export default class RUCSSStatus extends Component {
 					{this.renderScanStep()}
 					{this.renderWarmupStep()}
 					{this.renderNotWarmedResourcesList()}
+					{this.renderRUCSSEnabled()}
 				</div>
 			</div>
 		);
