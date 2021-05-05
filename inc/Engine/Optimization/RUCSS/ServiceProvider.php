@@ -97,7 +97,8 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'options_api' ) );
 		$this->getContainer()->add( 'rucss_scanner', '\WP_Rocket\Engine\Optimization\RUCSS\Warmup\Scanner' )
 			->addArgument( $this->getContainer()->get( 'rucss_scanner_process' ) )
-			->addArgument( $this->getContainer()->get( 'options_api' ) );
+			->addArgument( $this->getContainer()->get( 'options_api' ) )
+			->addArgument( $this->getContainer()->get( 'rucss_resources_table' ) );
 
 		$this->getContainer()->add( 'rucss_status_checker', '\WP_Rocket\Engine\Optimization\RUCSS\Warmup\Status\Checker' )
 			->addArgument( $this->getContainer()->get( 'options_api' ) )

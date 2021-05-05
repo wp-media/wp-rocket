@@ -81,4 +81,24 @@ class Resources extends Table {
 
 		return $db->query( $query );
 	}
+
+	/**
+	 * Reset warmup fields [prewarmup and warmup_status].
+	 *
+	 * @return bool|int
+	 */
+	public function reset_prewarmup_fields() {
+		// Get the database interface.
+		$db = $this->get_db();
+
+		// Bail if no database interface is available.
+		if ( empty( $db ) ) {
+			return false;
+		}
+
+		$prefixed_table_name = $this->apply_prefix( $this->table_name );
+		$query               = "UPDATE `$prefixed_table_name` SET prewarmup = 0, warmup_status = 0 WHERE prewarmup = 1";
+
+		return $db->query( $query );
+	}
 }
