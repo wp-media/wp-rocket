@@ -168,7 +168,7 @@ class RESTWP {
 	 */
 	private function get_allow_optimization() : bool {
 		$prewarmup_stats = $this->options_api->get( 'prewarmup_stats', [] );
-		return $prewarmup_stats['allow_optimization'];
+		return (bool) $prewarmup_stats['allow_optimization'];
 	}
 
 	/**
